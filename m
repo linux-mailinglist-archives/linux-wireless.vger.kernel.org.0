@@ -1,165 +1,222 @@
-Return-Path: <linux-wireless+bounces-529-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-530-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 256848083BB
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Dec 2023 10:02:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EA4B8083E7
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Dec 2023 10:11:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D558D283D3C
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Dec 2023 09:02:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E93FA1F227BD
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Dec 2023 09:11:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5D7A1DA2E;
-	Thu,  7 Dec 2023 09:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34F2332C84;
+	Thu,  7 Dec 2023 09:10:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=zerobeat@gmx.de header.b="SVLM3Gmt"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="tg8NdadU";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="eNkRt1wW"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE23A19A
-	for <linux-wireless@vger.kernel.org>; Thu,  7 Dec 2023 01:02:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-	t=1701939748; x=1702544548; i=zerobeat@gmx.de;
-	bh=nCoWDj+94biRTSBEEn5UWu6toGrQLJo4sRq372HXMns=;
-	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
-	 In-Reply-To;
-	b=SVLM3GmtJSr17zXjhqrsbwlm2/E2fS4NUXyOI4RVLWqmvSUNGobF+ZkxC69cn7uH
-	 ZT3tg2gnVFAUbcNbP0IVyWCl3CbiCyAJ5+QMEqpz4omB77tFFkwcY/BHT5DFWWEBd
-	 OdCw3nLapkc7Q10Xcq1uxH9smJH5+IlkDiCzW85jxElyIgu3W2msUVQqFrliJitzP
-	 Vn6mshFk3d/kUyJ2uzEBtK+gEXDg1eIE1W35yMqZVYgVJijiP0YFUxXc07XpZ5lnF
-	 etB+vOeRucep9pVWj6Y+HFlky2bECAYYFXXDkezkvjXIcXHX/gYZGukfxsHamMInc
-	 D8ke4eAIx7M2vcEDcA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.0.2] ([217.244.252.215]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mi2Jt-1rfZLf3RDN-00e3G5; Thu, 07
- Dec 2023 10:02:26 +0100
-Message-ID: <f68e8ae0-e4c5-4a10-8b5f-f9ab3bc55068@gmx.de>
-Date: Thu, 7 Dec 2023 10:02:25 +0100
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EC901987;
+	Thu,  7 Dec 2023 01:10:26 -0800 (PST)
+Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [10.150.64.98])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 5B8831F897;
+	Thu,  7 Dec 2023 09:10:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1701940224; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jXiKfid97FD5zi8RqmP75wazePMuM2Vj4JZ4H26JF/w=;
+	b=tg8NdadUlk4VfBBiX/KnTc8KWn4/+I2eqU3OCsMmSGO5fGxGo+xFF7FC1+cL85+pnkxgh6
+	+2Q+t+yvWpRrlmhVvY0iaqUjhOk6aDapKv8aWDgxXaeYBRQUq2bq9mHOv8yIv2mkt3uJBW
+	DjcnaOKBqBG38BR6qn1JnsOv3SGRVLU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1701940224;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jXiKfid97FD5zi8RqmP75wazePMuM2Vj4JZ4H26JF/w=;
+	b=eNkRt1wWHc2B/3UiJ7gBmgVmSJJtzZTtEviOYNX31SorNi0ot/Q0TzM7nhemVkTB8kzvHE
+	aOrpBsXvOqOVy6BQ==
+Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 34B3813907;
+	Thu,  7 Dec 2023 09:10:24 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
+	by imap2.dmz-prg2.suse.org with ESMTPSA
+	id w3HWDACMcWWqPwAAn2gu4w
+	(envelope-from <jack@suse.cz>); Thu, 07 Dec 2023 09:10:24 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 7AF80A07C7; Thu,  7 Dec 2023 10:10:23 +0100 (CET)
+Date: Thu, 7 Dec 2023 10:10:23 +0100
+From: Jan Kara <jack@suse.cz>
+To: Yury Norov <yury.norov@gmail.com>
+Cc: Jan Kara <jack@suse.cz>, linux-kernel@vger.kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"James E.J. Bottomley" <jejb@linux.ibm.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	"Md. Haris Iqbal" <haris.iqbal@ionos.com>,
+	Akinobu Mita <akinobu.mita@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Borislav Petkov <bp@alien8.de>, Chaitanya Kulkarni <kch@nvidia.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	David Disseldorp <ddiss@suse.de>,
+	Edward Cree <ecree.xilinx@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Fenghua Yu <fenghua.yu@intel.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Hugh Dickins <hughd@google.com>, Ingo Molnar <mingo@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Jens Axboe <axboe@kernel.dk>,
+	Jiri Pirko <jiri@resnulli.us>, Jiri Slaby <jirislaby@kernel.org>,
+	Kalle Valo <kvalo@kernel.org>, Karsten Graul <kgraul@linux.ibm.com>,
+	Karsten Keil <isdn@linux-pingi.de>,
+	Kees Cook <keescook@chromium.org>,
+	Leon Romanovsky <leon@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Martin Habets <habetsm.xilinx@gmail.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Michal Simek <monstr@monstr.eu>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Oliver Neukum <oneukum@suse.com>, Paolo Abeni <pabeni@redhat.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ping-Ke Shih <pkshih@realtek.com>, Rich Felker <dalias@libc.org>,
+	Rob Herring <robh@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Stanislaw Gruszka <stf_xl@wp.pl>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Wenjia Zhang <wenjia@linux.ibm.com>, Will Deacon <will@kernel.org>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	GR-QLogic-Storage-Upstream@marvell.com, alsa-devel@alsa-project.org,
+	ath10k@lists.infradead.org, dmaengine@vger.kernel.org,
+	iommu@lists.linux.dev, kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+	linux-hyperv@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+	linux-media@vger.kernel.org, linux-mips@vger.kernel.org,
+	linux-net-drivers@amd.com, linux-pci@vger.kernel.org,
+	linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
+	linux-scsi@vger.kernel.org, linux-serial@vger.kernel.org,
+	linux-sh@vger.kernel.org, linux-sound@vger.kernel.org,
+	linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, mpi3mr-linuxdrv.pdl@broadcom.com,
+	netdev@vger.kernel.org, sparclinux@vger.kernel.org, x86@kernel.org,
+	Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
+	Matthew Wilcox <willy@infradead.org>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Maxim Kuvyrkov <maxim.kuvyrkov@linaro.org>,
+	Alexey Klimov <klimov.linux@gmail.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>
+Subject: Re: [PATCH v2 00/35] bitops: add atomic find_bit() operations
+Message-ID: <20231207091023.kioii5mgmnphrvl4@quack3>
+References: <20231203192422.539300-1-yury.norov@gmail.com>
+ <20231204185101.ddmkvsr2xxsmoh2u@quack3>
+ <ZXAFM2VZugdhM3oE@yury-ThinkPad>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifiwifi: Realtek: rtl8xxxu Add new device ID
-Content-Language: de-DE, en-US
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
- "Jes.Sorensen@gmail.com" <Jes.Sorensen@gmail.com>
-References: <415ecdaf-eebc-4a9e-9053-4cc999711ad7@gmx.de>
- <c81f09d43fab416ba7233dd9d5cfcd2d@realtek.com>
-From: ZeroBeat <ZeroBeat@gmx.de>
-In-Reply-To: <c81f09d43fab416ba7233dd9d5cfcd2d@realtek.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------9xJEXvQYjrIFoz46bZaJFkrq"
-X-Provags-ID: V03:K1:hIYKZOrO76ABuCq262jRA7E9m3AEkDsah+gIVwMRPvIQ06PXB6e
- DnXGeVKrDhYmjpnF1l8/AeRHYg4BPswWtGTkQNuex8zSKxBY+QVO2pqRtwrFa1gImgHPMX/
- 1pS5ZUyhXIFI6uuUcj/jC80CF92Bk5BxDj9mvQBWm57Jikfmm7BzEetbIC/W9SFsvCZ57Ui
- POVQReyr5NEjf06H4KlUA==
-UI-OutboundReport: notjunk:1;M01:P0:3R+X0zvukVM=;IZqvHuGZtcyERllSESD2uSVtI9n
- +WYJX5Ctv63bd9lnh2KNzCnGSmWoxQZsmlnxMQiNnc3mzzMjxr1ITeFzsRpc7p+AcUoKcOJ+r
- frMlnhFoPKCeNR/Qy4D86CVyDRkb9Ef3trEt9M80C/TDYPvo1CmIlHdUn6yWJ0mbnXECFw/W3
- NZrajTAUksvm+01tjRD598EA1c7VdlGLEFfKbKOFpwAXfQoDaXeCEozrZnjNx504b+wFsifan
- ZzfkLmo14QIQ9gdL2dmmuQQFFY2Hs8MvdDFqlpA6QlRXWAH9ocd/xJwJD2thcNzSjPfU+UwI/
- 65XG039c8FMFHqu4sDAmsyslkDyoQMgl3iHSX6j1lQgmhlliqorF0hFNxkK9wg+bFvXUtt51O
- YzWmD1i8gJyX4FmFQcneBixJd2s6Vxz1PfCmXWOfrpG3+ZSQ/wkvdQVFgbjr/3Txqwy35LaGN
- HlNvLx0Q4gF7WxGYiJ+g4n/kGpOtq/37yiApHUybPyLVcf+56y4QM6zVTtK9g9nIs+ByG8uj/
- WqiriDR9wyDsPE6aC1U49S1OiK8XSapxF4WZ69tlyeeGUjqSvlqkfZhn1jdRxyNTiiWRbiCa8
- fi/oarLdJpWkoV2yG4hwaN5Hx4RPg0TGRDmd+Ly5aREJ+WZlK+s9MqONyDb5kTX6idNkWmbIe
- g+LtNVt2KnOfy82glLxictpc3VZaupevCkCbcO//5edhmjF6I8pFjr+PLW339l4PFYYprdJRq
- HFqlo59Sf6P+cjKaM57re2OOOVKtdxQGQ/4WV5+1K4mxtrsAc9zHrWBHv1gFn2BM3ZDKFTQjk
- wO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZXAFM2VZugdhM3oE@yury-ThinkPad>
+Authentication-Results: smtp-out2.suse.de;
+	none
+X-Spam-Score: 2.70
+X-Spamd-Result: default: False [2.70 / 50.00];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 TO_DN_SOME(0.00)[];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 NEURAL_HAM_SHORT(-0.20)[-1.000];
+	 RCPT_COUNT_GT_50(0.00)[100];
+	 FREEMAIL_TO(0.00)[gmail.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 FORGED_RECIPIENTS(2.00)[m:yury.norov@gmail.com,m:davem@davemloft.net,m:jejb@linux.ibm.com,m:haris.iqbal@ionos.com,m:akinobu.mita@gmail.com,m:akpm@linux-foundation.org,m:andersson@kernel.org,m:bp@alien8.de,m:brauner@kernel.org,m:dave.hansen@linux.intel.com,m:ecree.xilinx@gmail.com,m:edumazet@google.com,m:fenghua.yu@intel.com,m:geert@linux-m68k.org,m:gregory.greenman@intel.com,m:hughd@google.com,m:kuba@kernel.org,m:axboe@kernel.dk,m:jirislaby@kernel.org,m:kvalo@kernel.org,m:kgraul@linux.ibm.com,m:isdn@linux-pingi.de,m:keescook@chromium.org,m:leon@kernel.org,m:mark.rutland@arm.com,m:habetsm.xilinx@gmail.com,m:mchehab@kernel.org,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:peterz@infradead.org,m:dalias@libc.org,m:robh@kernel.org,m:robin.murphy@arm.com,m:seanjc@google.com,m:xueshuai@linux.alibaba.com,m:rostedt@goodmis.org,m:tsbogend@alpha.franken.de,m:tglx@linutronix.de,m:wenjia@linux.ibm.com,m:will@kernel.org,m:alsa-devel@alsa-project.org,m:linux-net-drivers@amd.com,m:mpi3mr-linuxdrv.pdl
+ @broadcom.com,m:x86@kernel.org,m:mirsad.todorovac@alu.unizg.hr,m:willy@infradead.org,m:andriy.shevchenko@linux.intel.com,m:maxim.kuvyrkov@linaro.org,m:klimov.linux@gmail.com,m:bvanassche@acm.org,s:s.shtylyov@omp.ru];
+	 BAYES_HAM(-0.00)[40.06%];
+	 ARC_NA(0.00)[];
+	 FROM_HAS_DN(0.00)[];
+	 FREEMAIL_ENVRCPT(0.00)[wp.pl,xs4all.nl];
+	 NEURAL_HAM_LONG(-1.00)[-1.000];
+	 TAGGED_RCPT(0.00)[];
+	 MIME_GOOD(-0.10)[text/plain];
+	 TO_MATCH_ENVRCPT_SOME(0.00)[];
+	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 MID_RHS_NOT_FQDN(0.50)[];
+	 FREEMAIL_CC(0.00)[suse.cz,vger.kernel.org,davemloft.net,zytor.com,linux.ibm.com,microsoft.com,ionos.com,gmail.com,linux-foundation.org,kernel.org,alien8.de,nvidia.com,opensource.wdc.com,linux.intel.com,suse.de,google.com,intel.com,linux-m68k.org,linuxfoundation.org,xs4all.nl,redhat.com,perex.cz,ziepe.ca,kernel.dk,resnulli.us,linux-pingi.de,chromium.org,arm.com,ellerman.id.au,monstr.eu,suse.com,infradead.org,realtek.com,libc.org,linux.alibaba.com,wp.pl,goodmis.org,alpha.franken.de,linutronix.de,users.sourceforge.jp,marvell.com,alsa-project.org,lists.infradead.org,lists.linux.dev,lists.linux-m68k.org,amd.com,lists.ozlabs.org,broadcom.com,alu.unizg.hr,rasmusvillemoes.dk,linaro.org,acm.org,omp.ru];
+	 RCVD_TLS_ALL(0.00)[];
+	 SUSPICIOUS_RECIPS(1.50)[]
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------9xJEXvQYjrIFoz46bZaJFkrq
-Content-Type: multipart/mixed; boundary="------------LXhzwqtZwp5UzGfV43egS0Yh";
- protected-headers="v1"
-From: ZeroBeat <ZeroBeat@gmx.de>
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
- "Jes.Sorensen@gmail.com" <Jes.Sorensen@gmail.com>
-Message-ID: <f68e8ae0-e4c5-4a10-8b5f-f9ab3bc55068@gmx.de>
-Subject: Re: [PATCH] wifiwifi: Realtek: rtl8xxxu Add new device ID
-References: <415ecdaf-eebc-4a9e-9053-4cc999711ad7@gmx.de>
- <c81f09d43fab416ba7233dd9d5cfcd2d@realtek.com>
-In-Reply-To: <c81f09d43fab416ba7233dd9d5cfcd2d@realtek.com>
+On Tue 05-12-23 21:22:59, Yury Norov wrote:
+> On Mon, Dec 04, 2023 at 07:51:01PM +0100, Jan Kara wrote:
+> > > This series is a result of discussion [1]. All find_bit() functions imply
+> > > exclusive access to the bitmaps. However, KCSAN reports quite a number
+> > > of warnings related to find_bit() API. Some of them are not pointing
+> > > to real bugs because in many situations people intentionally allow
+> > > concurrent bitmap operations.
+> > > 
+> > > If so, find_bit() can be annotated such that KCSAN will ignore it:
+> > > 
+> > >         bit = data_race(find_first_bit(bitmap, nbits));
+> > 
+> > No, this is not a correct thing to do. If concurrent bitmap changes can
+> > happen, find_first_bit() as it is currently implemented isn't ever a safe
+> > choice because it can call __ffs(0) which is dangerous as you properly note
+> > above. I proposed adding READ_ONCE() into find_first_bit() / find_next_bit()
+> > implementation to fix this issue but you disliked that. So other option we
+> > have is adding find_first_bit() and find_next_bit() variants that take
+> > volatile 'addr' and we have to use these in code like xas_find_chunk()
+> > which cannot be converted to your new helpers.
+> 
+> Here is some examples when concurrent operations with plain find_bit()
+> are acceptable:
+> 
+>  - two threads running find_*_bit(): safe wrt ffs(0) and returns correct
+>    value, because underlying bitmap is unchanged;
+>  - find_next_bit() in parallel with set or clear_bit(), when modifying
+>    a bit prior to the start bit to search: safe and correct;
+>  - find_first_bit() in parallel with set_bit(): safe, but may return wrong
+>    bit number;
+>  - find_first_zero_bit() in parallel with clear_bit(): same as above.
+> 
+> In last 2 cases find_bit() may not return a correct bit number, but
+> it may be OK if caller requires any (not exactly first) set or clear
+> bit, correspondingly.
+> 
+> In such cases, KCSAN may be safely silenced.
 
---------------LXhzwqtZwp5UzGfV43egS0Yh
-Content-Type: multipart/mixed; boundary="------------Wy0zd1CIZzO5dU7tJCjX2KOy"
+True - but these are special cases. In particular the case in xas_find_chunk()
+is not any of these special cases. It is using find_next_bit() which is can
+be racing with clear_bit(). So what are your plans for such usecase?
 
---------------Wy0zd1CIZzO5dU7tJCjX2KOy
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
-
-T2suIFBsZWFzZSBnaXZlIG1lIGF3aGlsZSB0byB1bmRlcnN0YW5kIHRoZSBlbnRpcmUgcHJv
-Y2VkdXJlDQpob3cgdG8gZG8gdGhhdCBpbiB0aGUgcHJlZmVycmVkIHdheS4NCg0KDQoNCkFt
-IDA3LjEyLjIzIHVtIDA5OjUyIHNjaHJpZWIgUGluZy1LZSBTaGloOg0KPiANCj4+IC0tLS0t
-T3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+PiBGcm9tOiBaZXJvQmVhdCA8WmVyb0JlYXRAZ214
-LmRlPg0KPj4gU2VudDogVGh1cnNkYXksIERlY2VtYmVyIDcsIDIwMjMgNDo0NiBQTQ0KPj4g
-VG86IFBpbmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPg0KPj4gQ2M6IGxpbnV4LXdp
-cmVsZXNzQHZnZXIua2VybmVsLm9yZzsgSmVzLlNvcmVuc2VuQGdtYWlsLmNvbQ0KPj4gU3Vi
-amVjdDogUmU6IFtQQVRDSF0gd2lmaXdpZmk6IFJlYWx0ZWs6IHJ0bDh4eHh1IEFkZCBuZXcg
-ZGV2aWNlIElEDQo+Pg0KPj4gQmV0dGVyIG5vdz8NCj4+DQo+IA0KPiBZb3VyIHBhdGNoIGlz
-bid0IG11Y2ggbGlrZSBvdGhlcnMuIFBsZWFzZSBjaGVjayBwYXRjaGVzIFsxXSBtYWRlIGJ5
-IG90aGVycy4NCj4gDQo+IFsxXSBodHRwczovL2xvcmUua2VybmVsLm9yZy9saW51eC13aXJl
-bGVzcy8NCj4gDQo+IA0K
---------------Wy0zd1CIZzO5dU7tJCjX2KOy
-Content-Type: application/pgp-keys; name="OpenPGP_0x375516A45DB88630.asc"
-Content-Disposition: attachment; filename="OpenPGP_0x375516A45DB88630.asc"
-Content-Description: OpenPGP public key
-Content-Transfer-Encoding: quoted-printable
-
------BEGIN PGP PUBLIC KEY BLOCK-----
-
-xsBNBE5aUQ0BCADlsVJE1z92lgySX+Nro7RSqTCAd6y41EljlISd8fGCoFbu0UBO
-OPHFVQ1RYvjdRf29IUqfrtGjzucMBFs0Z061rna+omw4LqwMeMlMk1GLMWttCAnm
-PQIYqj5BcqtIp5jh1vRggdg3Am6DTHhjqAAnGO+94sW2XnBLESRayGdBrQtUH2UL
-Qe1XvTtG066HB3RtzPNO7irB/UDBs7PfJgXmvF1sQB7UyqEMaMr1Oi5DzYGn8AVa
-zWTjuN7nQ5D8w3hnGbXmtPwm8dhKUO/UQjtOty8K95/0dP4Py/roBUTbNxzrC+Iz
-FAiU5t4l83T1cg8fERl9a3kBB++A0y3OFmi7ABEBAAHNGlplcm9CZWF0IDxaZXJv
-QmVhdEBnbXguZGU+wsB4BBMBAgAiBQJOWlENAhsjBgsJCAcDAgYVCAIJCgsEFgID
-AQIeAQIXgAAKCRA3VRakXbiGMJLfB/4uTRxIRDrMrKXoy5IshxbyPpcKPt2fFsyJ
-7lwozr8bZbYJfbrdXpYH2Arzegqy+gStJ94UNw3e2heihS0x+x8ukOHJ4XmzocDT
-TgQDiciLF/y/T9GwvEeHiaws024hZ729w5eA/Gaa046lkYt6eqfW9+VIkzWMAl0V
-/pNa63QVfHhZWBuj8EYIyCVhysxBa0tDyRPK1Ulih42lDXWCd1yN/ddaKE+m/+Nu
-yWSybV2w/yaboWLQWZNVRRLcdFnognXUo2P3+MM8XNP6EePtQgJaKQ7vfm7RmM8F
-3R8gX6lOiDIPZCoatsbSyPdlQ/rVkIDZ6FT0VW9yfdkV1RRLoCd5zsBNBE5aUQ0B
-CADV1OCkQeXFo+C76N4QMxGf72FGrbbdTMQcyTtVAEgMh5Kkzuuf5OfP5FCGxOtw
-YVXFe8mZeO3C6RrYid2GR0HFkx/wV4w/W68bRa85Hb6hxVddgmPhwvsJQpXItTaX
-AjKH5soPHBmPZcl+3KUfqfL/nA4x4JrUJeMaM/X8Gek+uVbTKhwTvObSxPG6DvOd
-mfHyUM0bhFV48ooC6IIc+VaHwyY1cgCLliErHrpKhIqP/N+UZpwDtZ+r0fFYIkuw
-eJvU+qJmgEgyKrSHY06GspHOMSk5OclLQ8vxvyPbTeemz7fnnYlDc+yBLUfi5/wf
-hW0vBI/pAhFVIvTCOtuLbgVhABEBAAHCwF8EGAECAAkFAk5aUQ0CGwwACgkQN1UW
-pF24hjC74gf/V9YDe9ZnOUobCghW5qMK0wT2EGcl85rAQ878Awt0/ZMiHaCyAvXp
-gsXVKeBFwfGzLdp5RGZJGYnEv3SltrF8uPslcCVmiFe+sZzR8RP61b6fdtRj8x+u
-UMKMojonhQWNbkGcFtjbFZcbL91kjTwXJP8QV/KRaw6w2BtZf8he4LiCU3Mj1VVw
-DIu16iodSb84NyvRRJtoW9qRakS78aDCHhJuPV0o8dDhZie1OqJDFODrlRsfPSCK
-59xYsi6FMxT1fTp9mnh52Qre1YEvOtYgaps8mvtLI0wuJ4QwLgbGPk5WJvooGkKS
-9e9rzZBHTO1QuH+ZvMR4+BDER+Pj9nXw4Q=3D=3D
-=3D5ikK
------END PGP PUBLIC KEY BLOCK-----
-
---------------Wy0zd1CIZzO5dU7tJCjX2KOy--
-
---------------LXhzwqtZwp5UzGfV43egS0Yh--
-
---------------9xJEXvQYjrIFoz46bZaJFkrq
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-wsB5BAABCAAjFiEEWSDOHFZ5SK/SwKm3N1UWpF24hjAFAmVxiiEFAwAAAAAACgkQN1UWpF24hjAG
-Hwf8D11ks4PZOsImi+xnqleswxyrBV61wSqKzR79aA0DIWVyBilflgZveqLHhevZGkKfdb6338bQ
-iq/C/56j9UAAX6P08Mih0xTJVW2DF9JDf82RUhYPJpoGpDbPK9tx1uBidp6v1eSCIyb1ubkr71GP
-4WjP/uI94kndttfpAQG/5M2NxbhcUFO4HbzL3afxdroOxY+rbrqysIytwhTN6xP/ezMipgEtvWTk
-aWOte9HU2H+QR6AcwGss/CBt0an97QeT4FbuCsOZdwUH/GDrUo6mfbUZbD8dubRF5nTxTwk1rD6j
-CtdAvofmL1fEvUgQ8PCeN9QoR7dO6NZ9OOweoHWSNQ==
-=Xgjy
------END PGP SIGNATURE-----
-
---------------9xJEXvQYjrIFoz46bZaJFkrq--
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
