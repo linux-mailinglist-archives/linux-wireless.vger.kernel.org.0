@@ -1,269 +1,202 @@
-Return-Path: <linux-wireless+bounces-540-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-541-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB37A8088B1
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Dec 2023 14:00:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FFB9808904
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Dec 2023 14:20:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5790EB20B48
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Dec 2023 13:00:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A180C1C209D5
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Dec 2023 13:20:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5661A39AF1;
-	Thu,  7 Dec 2023 13:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73B773FE5E;
+	Thu,  7 Dec 2023 13:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EKOI3Spz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F2wMD8s7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 946A810FF
-	for <linux-wireless@vger.kernel.org>; Thu,  7 Dec 2023 05:00:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1701954047; x=1733490047;
-  h=date:from:to:cc:subject:message-id;
-  bh=UrTe012P/phbv6C5M7yzobcCe4X/xaJHaflhrR8eY2o=;
-  b=EKOI3Spzd2iA9xRBtYnzaByUFiedxvqeZZcRc+/kJQ74bsDCRSu1GdgF
-   L5wANVsgRojfr592s8X9vDfhIUNvK+b1cWoh8cfADe1VaegT7f/pns9aG
-   fWrimJlUWE/T/H8QbI1yT9s4tnzr0vb6xEbOsqzDIXPbMZ30ILJlffNl2
-   DoNBNa/1p/DFzEocdFOIVc6pIQm8ssZ40dav6t716LrtEirG49QuUVRWI
-   bCAbcxVqCTxpo2zSTG30Mb4T47q7KzkDAjwT1dHoyOYnTAf7ZTjbt80wZ
-   93XrMFFArIHvjyq0Dmpko5kCPDSsHtmFvseVjHsq7LTMGYb8+pR5w1F/Q
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10916"; a="1308921"
-X-IronPort-AV: E=Sophos;i="6.04,256,1695711600"; 
-   d="scan'208";a="1308921"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2023 05:00:46 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10916"; a="721454148"
-X-IronPort-AV: E=Sophos;i="6.04,256,1695711600"; 
-   d="scan'208";a="721454148"
-Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
-  by orsmga003.jf.intel.com with ESMTP; 07 Dec 2023 05:00:44 -0800
-Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rBDze-000CG2-0q;
-	Thu, 07 Dec 2023 13:00:42 +0000
-Date: Thu, 07 Dec 2023 20:59:42 +0800
-From: kernel test robot <lkp@intel.com>
-To: Johannes Berg <johannes.berg@intel.com>
-Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
-Subject: [wireless-next:main] BUILD SUCCESS
- 88f29324042752a28245ec0ab285d71c7f4d9c6a
-Message-ID: <202312072040.ZTe4pOTQ-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51AB83D0D9;
+	Thu,  7 Dec 2023 13:20:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 994CEC433C8;
+	Thu,  7 Dec 2023 13:20:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701955253;
+	bh=VGXZlD3aN+zu4hUiBpFuDVMj9agW847mPvkLNy/30Ic=;
+	h=Date:From:To:Cc:Subject:From;
+	b=F2wMD8s7Ojo3UFBA7f7XhebyaRfJ4DefpifbWzDLuPw7mPHwZciZqYPcAGx3pD/ku
+	 Iqv86I36x+wppuT3GpJWcYRNrxQIgZ3VMgnXKrDmFm1CJp2rNEQMnw3R8Y0TH03Hoo
+	 SiZog/kv6N3qxXyzS2vRFupKgysiSwd4QbpWU0cX+qvCPM8UFwM52kut4MENAP1+on
+	 niE48Qz7Re8uOfyoggR/jHP57fLjL/Q42yq1PLIVzgQL19iazur/YrMgappPRNWjLk
+	 T1QUlekCVO6pz/Fx5sMbGgLMoGY90I4yt3LoZZWYq4pMqf0ECnp9AYShI9vCLUyMUk
+	 5d5vY1lGrLppg==
+Received: by wens.tw (Postfix, from userid 1000)
+	id F10035FA01; Thu,  7 Dec 2023 21:20:50 +0800 (CST)
+Date: Thu, 7 Dec 2023 21:20:50 +0800
+From: Chen-Yu Tsai <wens@kernel.org>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Seth Forshee <sforshee@kernel.org>
+Subject: [PATCH] cfg80211: Add my certificate
+Message-ID: <ZXHGsqs34qZyzZng@wens.tw>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="V4A1Neu/yLTY82M4"
+Content-Disposition: inline
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: 88f29324042752a28245ec0ab285d71c7f4d9c6a  wifi: cfg80211: make RX assoc data const
 
-elapsed time: 1486m
+--V4A1Neu/yLTY82M4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-configs tested: 191
-configs skipped: 2
+As announced [1][2], I have taken over maintainership of the
+wireless-regdb project.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Add my certificate so that newer releases are valid to the kernel.
+Seth's certificate should be kept around for awhile, at least until
+a few new releases by me happen.
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                   randconfig-001-20231207   gcc  
-arc                   randconfig-002-20231207   gcc  
-arc                        vdk_hs38_defconfig   gcc  
-arm                              alldefconfig   clang
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   clang
-arm                           h3600_defconfig   gcc  
-arm                      jornada720_defconfig   gcc  
-arm                        multi_v7_defconfig   gcc  
-arm                   randconfig-001-20231207   gcc  
-arm                   randconfig-002-20231207   gcc  
-arm                   randconfig-003-20231207   gcc  
-arm                   randconfig-004-20231207   gcc  
-arm64                            allmodconfig   clang
-arm64                             allnoconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                 randconfig-001-20231207   gcc  
-arm64                 randconfig-002-20231207   gcc  
-arm64                 randconfig-003-20231207   gcc  
-arm64                 randconfig-004-20231207   gcc  
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-csky                  randconfig-001-20231207   gcc  
-csky                  randconfig-002-20231207   gcc  
-hexagon                          allmodconfig   clang
-hexagon                           allnoconfig   clang
-hexagon                          allyesconfig   clang
-hexagon                             defconfig   clang
-hexagon               randconfig-001-20231207   clang
-hexagon               randconfig-002-20231207   clang
-i386                             allmodconfig   clang
-i386                              allnoconfig   clang
-i386                             allyesconfig   clang
-i386         buildonly-randconfig-001-20231206   clang
-i386         buildonly-randconfig-002-20231206   clang
-i386         buildonly-randconfig-003-20231206   clang
-i386         buildonly-randconfig-004-20231206   clang
-i386         buildonly-randconfig-005-20231206   clang
-i386         buildonly-randconfig-006-20231206   clang
-i386                                defconfig   gcc  
-i386                  randconfig-001-20231206   clang
-i386                  randconfig-002-20231206   clang
-i386                  randconfig-003-20231206   clang
-i386                  randconfig-004-20231206   clang
-i386                  randconfig-005-20231206   clang
-i386                  randconfig-006-20231206   clang
-i386                  randconfig-011-20231206   gcc  
-i386                  randconfig-012-20231206   gcc  
-i386                  randconfig-013-20231206   gcc  
-i386                  randconfig-014-20231206   gcc  
-i386                  randconfig-015-20231206   gcc  
-i386                  randconfig-016-20231206   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20231207   gcc  
-loongarch             randconfig-002-20231207   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                          hp300_defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                              allnoconfig   clang
-mips                             allyesconfig   gcc  
-mips                  cavium_octeon_defconfig   clang
-mips                           ci20_defconfig   gcc  
-mips                      loongson3_defconfig   gcc  
-mips                           rs90_defconfig   clang
-mips                         rt305x_defconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                 randconfig-001-20231207   gcc  
-nios2                 randconfig-002-20231207   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc                randconfig-001-20231207   gcc  
-parisc                randconfig-002-20231207   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   clang
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   clang
-powerpc                      ep88xc_defconfig   gcc  
-powerpc                     mpc512x_defconfig   clang
-powerpc                 mpc836x_rdk_defconfig   clang
-powerpc                     ppa8548_defconfig   gcc  
-powerpc                     rainier_defconfig   gcc  
-powerpc               randconfig-001-20231207   gcc  
-powerpc               randconfig-002-20231207   gcc  
-powerpc               randconfig-003-20231207   gcc  
-powerpc                     stx_gp3_defconfig   gcc  
-powerpc                     tqm8555_defconfig   gcc  
-powerpc                        warp_defconfig   gcc  
-powerpc64                        alldefconfig   gcc  
-powerpc64             randconfig-001-20231207   gcc  
-powerpc64             randconfig-002-20231207   gcc  
-powerpc64             randconfig-003-20231207   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   clang
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv             nommu_k210_sdcard_defconfig   gcc  
-riscv                 randconfig-001-20231207   gcc  
-riscv                 randconfig-002-20231207   gcc  
-riscv                          rv32_defconfig   clang
-s390                             allmodconfig   gcc  
-s390                              allnoconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                  randconfig-001-20231207   clang
-s390                  randconfig-002-20231207   clang
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                         ap325rxa_defconfig   gcc  
-sh                                  defconfig   gcc  
-sh                         ecovec24_defconfig   gcc  
-sh                          landisk_defconfig   gcc  
-sh                          lboxre2_defconfig   gcc  
-sh                    randconfig-001-20231207   gcc  
-sh                    randconfig-002-20231207   gcc  
-sh                           se7722_defconfig   gcc  
-sh                              ul2_defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-sparc64               randconfig-001-20231207   gcc  
-sparc64               randconfig-002-20231207   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                    randconfig-001-20231207   gcc  
-um                    randconfig-002-20231207   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   clang
-x86_64       buildonly-randconfig-001-20231207   gcc  
-x86_64       buildonly-randconfig-002-20231207   gcc  
-x86_64       buildonly-randconfig-003-20231207   gcc  
-x86_64       buildonly-randconfig-004-20231207   gcc  
-x86_64       buildonly-randconfig-005-20231207   gcc  
-x86_64       buildonly-randconfig-006-20231207   gcc  
-x86_64                              defconfig   gcc  
-x86_64                randconfig-001-20231207   clang
-x86_64                randconfig-002-20231207   clang
-x86_64                randconfig-003-20231207   clang
-x86_64                randconfig-004-20231207   clang
-x86_64                randconfig-005-20231207   clang
-x86_64                randconfig-006-20231207   clang
-x86_64                randconfig-011-20231207   gcc  
-x86_64                randconfig-012-20231207   gcc  
-x86_64                randconfig-013-20231207   gcc  
-x86_64                randconfig-014-20231207   gcc  
-x86_64                randconfig-015-20231207   gcc  
-x86_64                randconfig-016-20231207   gcc  
-x86_64                randconfig-071-20231207   gcc  
-x86_64                randconfig-072-20231207   gcc  
-x86_64                randconfig-073-20231207   gcc  
-x86_64                randconfig-074-20231207   gcc  
-x86_64                randconfig-075-20231207   gcc  
-x86_64                randconfig-076-20231207   gcc  
-x86_64                          rhel-8.3-rust   clang
-xtensa                            allnoconfig   gcc  
-xtensa                       common_defconfig   gcc  
-xtensa                randconfig-001-20231207   gcc  
-xtensa                randconfig-002-20231207   gcc  
-xtensa                    smp_lx200_defconfig   gcc  
+This should also be applied to stable trees so that stable kernels
+can utilize newly released database binaries.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+[1] https://lore.kernel.org/linux-wireless/CAGb2v657baNMPKU3QADijx7hZa=3DGU=
+cSv2LEDdn6N=3DQQaFX8r-g@mail.gmail.com/
+[2] https://lore.kernel.org/linux-wireless/ZWmRR5ul7EDfxCan@wens.tw/
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Chen-Yu Tsai <wens@kernel.org>
+---
+ net/wireless/certs/wens.hex | 87 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 87 insertions(+)
+ create mode 100644 net/wireless/certs/wens.hex
+
+diff --git a/net/wireless/certs/wens.hex b/net/wireless/certs/wens.hex
+new file mode 100644
+index 000000000000..ccd5b5dc3360
+--- /dev/null
++++ b/net/wireless/certs/wens.hex
+@@ -0,0 +1,87 @@
++/* Chen-Yu Tsai's regdb certificate */
++0x30, 0x82, 0x02, 0xa7, 0x30, 0x82, 0x01, 0x8f,
++0x02, 0x14, 0x61, 0xc0, 0x38, 0x65, 0x1a, 0xab,
++0xdc, 0xf9, 0x4b, 0xd0, 0xac, 0x7f, 0xf0, 0x6c,
++0x72, 0x48, 0xdb, 0x18, 0xc6, 0x00, 0x30, 0x0d,
++0x06, 0x09, 0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d,
++0x01, 0x01, 0x0b, 0x05, 0x00, 0x30, 0x0f, 0x31,
++0x0d, 0x30, 0x0b, 0x06, 0x03, 0x55, 0x04, 0x03,
++0x0c, 0x04, 0x77, 0x65, 0x6e, 0x73, 0x30, 0x20,
++0x17, 0x0d, 0x32, 0x33, 0x31, 0x32, 0x30, 0x31,
++0x30, 0x37, 0x34, 0x31, 0x31, 0x34, 0x5a, 0x18,
++0x0f, 0x32, 0x31, 0x32, 0x33, 0x31, 0x31, 0x30,
++0x37, 0x30, 0x37, 0x34, 0x31, 0x31, 0x34, 0x5a,
++0x30, 0x0f, 0x31, 0x0d, 0x30, 0x0b, 0x06, 0x03,
++0x55, 0x04, 0x03, 0x0c, 0x04, 0x77, 0x65, 0x6e,
++0x73, 0x30, 0x82, 0x01, 0x22, 0x30, 0x0d, 0x06,
++0x09, 0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x01,
++0x01, 0x01, 0x05, 0x00, 0x03, 0x82, 0x01, 0x0f,
++0x00, 0x30, 0x82, 0x01, 0x0a, 0x02, 0x82, 0x01,
++0x01, 0x00, 0xa9, 0x7a, 0x2c, 0x78, 0x4d, 0xa7,
++0x19, 0x2d, 0x32, 0x52, 0xa0, 0x2e, 0x6c, 0xef,
++0x88, 0x7f, 0x15, 0xc5, 0xb6, 0x69, 0x54, 0x16,
++0x43, 0x14, 0x79, 0x53, 0xb7, 0xae, 0x88, 0xfe,
++0xc0, 0xb7, 0x5d, 0x47, 0x8e, 0x1a, 0xe1, 0xef,
++0xb3, 0x90, 0x86, 0xda, 0xd3, 0x64, 0x81, 0x1f,
++0xce, 0x5d, 0x9e, 0x4b, 0x6e, 0x58, 0x02, 0x3e,
++0xb2, 0x6f, 0x5e, 0x42, 0x47, 0x41, 0xf4, 0x2c,
++0xb8, 0xa8, 0xd4, 0xaa, 0xc0, 0x0e, 0xe6, 0x48,
++0xf0, 0xa8, 0xce, 0xcb, 0x08, 0xae, 0x37, 0xaf,
++0xf6, 0x40, 0x39, 0xcb, 0x55, 0x6f, 0x5b, 0x4f,
++0x85, 0x34, 0xe6, 0x69, 0x10, 0x50, 0x72, 0x5e,
++0x4e, 0x9d, 0x4c, 0xba, 0x38, 0x36, 0x0d, 0xce,
++0x73, 0x38, 0xd7, 0x27, 0x02, 0x2a, 0x79, 0x03,
++0xe1, 0xac, 0xcf, 0xb0, 0x27, 0x85, 0x86, 0x93,
++0x17, 0xab, 0xec, 0x42, 0x77, 0x37, 0x65, 0x8a,
++0x44, 0xcb, 0xd6, 0x42, 0x93, 0x92, 0x13, 0xe3,
++0x39, 0x45, 0xc5, 0x6e, 0x00, 0x4a, 0x7f, 0xcb,
++0x42, 0x17, 0x2b, 0x25, 0x8c, 0xb8, 0x17, 0x3b,
++0x15, 0x36, 0x59, 0xde, 0x42, 0xce, 0x21, 0xe6,
++0xb6, 0xc7, 0x6e, 0x5e, 0x26, 0x1f, 0xf7, 0x8a,
++0x57, 0x9e, 0xa5, 0x96, 0x72, 0xb7, 0x02, 0x32,
++0xeb, 0x07, 0x2b, 0x73, 0xe2, 0x4f, 0x66, 0x58,
++0x9a, 0xeb, 0x0f, 0x07, 0xb6, 0xab, 0x50, 0x8b,
++0xc3, 0x8f, 0x17, 0xfa, 0x0a, 0x99, 0xc2, 0x16,
++0x25, 0xbf, 0x2d, 0x6b, 0x1a, 0xaa, 0xe6, 0x3e,
++0x5f, 0xeb, 0x6d, 0x9b, 0x5d, 0x4d, 0x42, 0x83,
++0x2d, 0x39, 0xb8, 0xc9, 0xac, 0xdb, 0x3a, 0x91,
++0x50, 0xdf, 0xbb, 0xb1, 0x76, 0x6d, 0x15, 0x73,
++0xfd, 0xc6, 0xe6, 0x6b, 0x71, 0x9e, 0x67, 0x36,
++0x22, 0x83, 0x79, 0xb1, 0xd6, 0xb8, 0x84, 0x52,
++0xaf, 0x96, 0x5b, 0xc3, 0x63, 0x02, 0x4e, 0x78,
++0x70, 0x57, 0x02, 0x03, 0x01, 0x00, 0x01, 0x30,
++0x0d, 0x06, 0x09, 0x2a, 0x86, 0x48, 0x86, 0xf7,
++0x0d, 0x01, 0x01, 0x0b, 0x05, 0x00, 0x03, 0x82,
++0x01, 0x01, 0x00, 0x24, 0x28, 0xee, 0x22, 0x74,
++0x7f, 0x7c, 0xfa, 0x6c, 0x1f, 0xb3, 0x18, 0xd1,
++0xc2, 0x3d, 0x7d, 0x29, 0x42, 0x88, 0xad, 0x82,
++0xa5, 0xb1, 0x8a, 0x05, 0xd0, 0xec, 0x5c, 0x91,
++0x20, 0xf6, 0x82, 0xfd, 0xd5, 0x67, 0x60, 0x5f,
++0x31, 0xf5, 0xbd, 0x88, 0x91, 0x70, 0xbd, 0xb8,
++0xb9, 0x8c, 0x88, 0xfe, 0x53, 0xc9, 0x54, 0x9b,
++0x43, 0xc4, 0x7a, 0x43, 0x74, 0x6b, 0xdd, 0xb0,
++0xb1, 0x3b, 0x33, 0x45, 0x46, 0x78, 0xa3, 0x1c,
++0xef, 0x54, 0x68, 0xf7, 0x85, 0x9c, 0xe4, 0x51,
++0x6f, 0x06, 0xaf, 0x81, 0xdb, 0x2a, 0x7b, 0x7b,
++0x6f, 0xa8, 0x9c, 0x67, 0xd8, 0xcb, 0xc9, 0x91,
++0x40, 0x00, 0xae, 0xd9, 0xa1, 0x9f, 0xdd, 0xa6,
++0x43, 0x0e, 0x28, 0x7b, 0xaa, 0x1b, 0xe9, 0x84,
++0xdb, 0x76, 0x64, 0x42, 0x70, 0xc9, 0xc0, 0xeb,
++0xae, 0x84, 0x11, 0x16, 0x68, 0x4e, 0x84, 0x9e,
++0x7e, 0x92, 0x36, 0xee, 0x1c, 0x3b, 0x08, 0x63,
++0xeb, 0x79, 0x84, 0x15, 0x08, 0x9d, 0xaf, 0xc8,
++0x9a, 0xc7, 0x34, 0xd3, 0x94, 0x4b, 0xd1, 0x28,
++0x97, 0xbe, 0xd1, 0x45, 0x75, 0xdc, 0x35, 0x62,
++0xac, 0x1d, 0x1f, 0xb7, 0xb7, 0x15, 0x87, 0xc8,
++0x98, 0xc0, 0x24, 0x31, 0x56, 0x8d, 0xed, 0xdb,
++0x06, 0xc6, 0x46, 0xbf, 0x4b, 0x6d, 0xa6, 0xd5,
++0xab, 0xcc, 0x60, 0xfc, 0xe5, 0x37, 0xb6, 0x53,
++0x7d, 0x58, 0x95, 0xa9, 0x56, 0xc7, 0xf7, 0xee,
++0xc3, 0xa0, 0x76, 0xf7, 0x65, 0x4d, 0x53, 0xfa,
++0xff, 0x5f, 0x76, 0x33, 0x5a, 0x08, 0xfa, 0x86,
++0x92, 0x5a, 0x13, 0xfa, 0x1a, 0xfc, 0xf2, 0x1b,
++0x8c, 0x7f, 0x42, 0x6d, 0xb7, 0x7e, 0xb7, 0xb4,
++0xf0, 0xc7, 0x83, 0xbb, 0xa2, 0x81, 0x03, 0x2d,
++0xd4, 0x2a, 0x63, 0x3f, 0xf7, 0x31, 0x2e, 0x40,
++0x33, 0x5c, 0x46, 0xbc, 0x9b, 0xc1, 0x05, 0xa5,
++0x45, 0x4e, 0xc3
+--=20
+2.39.2
+
+
+--V4A1Neu/yLTY82M4
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEE2nN1m/hhnkhOWjtHOJpUIZwPJDAFAmVxxq8ACgkQOJpUIZwP
+JDDyfw/+NxGYOoA07MHtSH+zz0SdUfLgBVH1I2jIuVaXQdLYiOE03Spl6tNP+Kac
+kYcTa06bNc73VxVkPHTcXxOCgbCo12uI2/Koq7UzfgjYW3qoF/r4xo5U9+kdK+he
+M+7PZoF12Fjj1z8FtVt8HI5O+gDL5KLvypr3InrgjMvHgPTZ2Un0sFfYvZFb9mhP
+LnfYB61IeoZHrHEuLzvLLuNXfMds/zSeqe0hXNgMUsgs/HEi5/5is3oaNjeSgzCi
+QIPs2Ch1LmKgAggq61gvmmkJ6djNu7SylSlNmZley8Dcvf+LJdyS24HLe315tq/+
+Z0Mj4VpjiCjN5rdi60ECZ1eFmMN+MF3XRsFTVrHa0C+3g3yRe+mf7hSqr4xfQAEF
+DH8P9i3WZAdr3VTjYivRLpF2gUnLqr3Ajd+3QGoG9Lw5uFpUJuPM3sSCWym3J+JX
+5ACMYqZpOML7Zgk4trl0FTyUkooGQF4UhTub5xhIXHTkhl30uhgwUjMZreLxPDFV
+fLobkAN2+VugxX8PA3ZD8c35VbVTJ1xWO/JG4IN4pV016ziIB/9iaap7reDewX+C
+kP+UcH6DlntcnpQA6UDpKnxd50+Gu+I5NmV7x7ngahnZf1qSAOFDj32X4RE0oDbE
+C79kBaFbdVoUpgvXYyBnXnTUgqbCHM3CB85pwjXF0RHCwXeL3v4=
+=g4/W
+-----END PGP SIGNATURE-----
+
+--V4A1Neu/yLTY82M4--
 
