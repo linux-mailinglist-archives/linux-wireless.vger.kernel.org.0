@@ -1,108 +1,86 @@
-Return-Path: <linux-wireless+bounces-550-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-551-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30978808CEC
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Dec 2023 17:11:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51AD5808D03
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Dec 2023 17:21:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE1BB1F20FC1
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Dec 2023 16:11:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B4092817B1
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Dec 2023 16:21:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69DC044372;
-	Thu,  7 Dec 2023 16:11:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A111446DF;
+	Thu,  7 Dec 2023 16:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="mY5disBs";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Y7GNY5nA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LRO/73Yh"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 748FEB9;
-	Thu,  7 Dec 2023 08:11:29 -0800 (PST)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailout.nyi.internal (Postfix) with ESMTP id E066E5C021E;
-	Thu,  7 Dec 2023 11:11:28 -0500 (EST)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Thu, 07 Dec 2023 11:11:28 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:sender
-	:subject:subject:to:to; s=fm1; t=1701965488; x=1702051888; bh=Y5
-	EtfXRSI/+ixNFoU04FOFaVdI+LJixYoWPRJ9FkR5c=; b=mY5disBsuPFMVlEEPk
-	0cc9XMc6QWCWGB+uMWnfiO3pOHGhKeLZz6QymL1oOZsnWzzk/KUNLW2jsml1vMLG
-	VShStlaQsAJmd7YZz6qnGL+jkxdNAs34o25ajZ9+bFr3ZfzQsX1lM3z5ZoS+Dnvc
-	0CLVA+NUk6Ska/S7DydrCMGN63l9A7tn3m8Pru58MJDqYftoheutQLddR4kC1Uad
-	/YidtYklvTW7ask6TJKhHBXBMSXnAEi9Yu8a/jtvwkC4D3fH2j0sZZooXi5Buf7i
-	GSycLxwxMpYzX5MwdyPa1VG/w9HbI03hjaQZpM/gJfP/GFPV7rRzBuSp7gYy9Sqt
-	E8Xg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm1; t=1701965488; x=1702051888; bh=Y5EtfXRSI/+ix
-	NFoU04FOFaVdI+LJixYoWPRJ9FkR5c=; b=Y7GNY5nALvpo2EKuAaGU6+Jd06Q+c
-	nFH4PRliG1iE4bcGsB0GziCFWLyAx+95Sy0F42dTow06az/D+ja4wfWE4eaj92HZ
-	6vH2xVsFWuaQbp78pjWBRV66RQh5cuhMqXtQxt/kIJSIv+SzoDodFj1IpUA6zdXs
-	Yfa5bdWWoMXrpQvZUwm99XvMqPvP3ZXiJny99oultBoG0yA8c3Q1PZUuypOzkL0K
-	ycTtcbrtTok0nOt3HQnxfe2SQQvO5JxNdw6N6hnyeuHCrZL7AoydA4LHFClbwCt9
-	1n7P4cqZexpQ18yqO3/7BiBFT4w6QZlrr+VqTo/FYAoENIBIGtj3n2arw==
-X-ME-Sender: <xms:sO5xZWclTWKxVhBIizJucOoDtJTB8-e4tB6AjPPs8QaN36_LIbwVPw>
-    <xme:sO5xZQOTXT9bcoKLgpnybEqOvTfM5vN2I8e1EUHWPU_C4tlgHHGSi_gdRXv8csxl6
-    NextYnhPuT_xsmVWfg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudekfedgvdehucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepvefhffeltdegheeffffhtdegvdehjedtgfekueevgfduffettedtkeekueef
-    hedunecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpe
-    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:sO5xZXiiECUZ-NrIY2dYBr4dQzHbCL9RvnoWMsjLfDsYjdchDrAGoA>
-    <xmx:sO5xZT9pkNWvC6U2UtMpqwvB8VQe8jak3M4T9HgGJ19-YWeXImLV_Q>
-    <xmx:sO5xZSsuY5Hy8hNkb3iu7qIpDJEOP4yHRT93dphu_VQlwGVgh88CLg>
-    <xmx:sO5xZUIIcz4NyJFTwnsKodvyLZi79lC1dkoGcgWzd9o2aab2SoOW5A>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 69B56B60089; Thu,  7 Dec 2023 11:11:28 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-1178-geeaf0069a7-fm-20231114.001-geeaf0069
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D2BA3309C
+	for <linux-wireless@vger.kernel.org>; Thu,  7 Dec 2023 16:21:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FC9AC433CA;
+	Thu,  7 Dec 2023 16:21:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701966090;
+	bh=8vGpLp3+bjYjIpmxZeb1wm8wdVrlZJ6LWlZ0kMqu1U8=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=LRO/73Yhf+RL7+j+KH0CFfGPtFC53ihdzPXUu2wHSPtxKgnsbJoAROr5qDNr7jIt2
+	 ROdWFOS0x1E/QfWJ/WG9XtJ8EgGXoO3imhJI6RExzhup1qXIbudcS2CkuFWr1mZQMW
+	 GGFPpm+NEYZ09w/6sCGMTIFtZL9USO4aCOsuvSWgk5y+XOHyO1oWaRdIIAsb7dco/n
+	 /1IlAm2VRMcquosK7sAkCx4lcQlGeSfIUSwRUyyMtwB9O2PMUOi48V9nOz0BCDfFm4
+	 jzuwj5c8uRcydARDn25JxVXF0sxkS+MZFSbmD1lYjrqaEGO2x5tjL+uAA1Z0pFwp9C
+	 CbQSxOoNosS/A==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <f39d5940-2030-4378-9a44-3355a4429e31@app.fastmail.com>
-In-Reply-To: <170196405395.2897000.836367709392997740.kvalo@kernel.org>
-References: <20231204073020.1105416-1-arnd@kernel.org>
- <170196405395.2897000.836367709392997740.kvalo@kernel.org>
-Date: Thu, 07 Dec 2023 17:11:06 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Kalle Valo" <kvalo@kernel.org>, "Arnd Bergmann" <arnd@kernel.org>
-Cc: "Ping-Ke Shih" <pkshih@realtek.com>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- "Ching-Te Ku" <ku920601@realtek.com>, linux-wireless@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rtw89: avoid stringop-overflow warning
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 4/5] wifi: rtw89: 8922a: dump MAC registers when SER
+ occurs
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20231204080751.15354-5-pkshih@realtek.com>
+References: <20231204080751.15354-5-pkshih@realtek.com>
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: <leo.li@realtek.com>, <kevin_yang@realtek.com>,
+ <linux-wireless@vger.kernel.org>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <170196608744.2897000.6455822302893464057.kvalo@kernel.org>
+Date: Thu,  7 Dec 2023 16:21:29 +0000 (UTC)
 
-On Thu, Dec 7, 2023, at 16:47, Kalle Valo wrote:
-> Arnd Bergmann <arnd@kernel.org> wrote:
->> From: Arnd Bergmann <arnd@arndb.de>
->> 
->> Fixes: 89741e7e42f6 ("Makefile: Enable -Wstringop-overflow globally")
->> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
->
-> ERROR: 'wifi:' prefix missing: '[PATCH] rtw89: avoid stringop-overflow 
-> warning'
-> ERROR: Failed to find commit id: Fixes: 89741e7e42f6 ("Makefile: Enable 
-> -Wstringop-overflow globally")
->
-> I can add the "wifi:" prefix but where can I find the commit 89741e7e42f6?
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-It's in linux-next and came in from Gustavo's tree at
-https://git.kernel.org/pub/scm/linux/kernel/git/gustavoars/linux.git/log/?h=for-next/kspp
+> From: Chia-Yuan Li <leo.li@realtek.com>
+> 
+> To diagnose the reason why firmware or hardware get abnormal, add to dump
+> MAC registers related to counters and interrupt masks. With these values,
+> people can classify problems and check if registers values are unexpected,
+> and then correct them. However, it could possible false alarm because
+> firmware triggers this SER event by wrong conditions that we should
+> correct it at firmware or register settings.
+> 
+> In field, SER might happen under special conditions, and very hard to
+> happen again, so dump lots of registers to provide rich information to
+> catch the problem.
+> 
+> Signed-off-by: Chia-Yuan Li <leo.li@realtek.com>
+> Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-    Arnd
+I can understand printing few essential firmware/hardware information to dmesg
+but from quickly looking at the patch it looks like rtw89 is dumping A LOT of
+values during a firmware crash. I think that's too extensive and other means
+should be considered, for example providing the data using coredump framework.
+
+This is not a blocker but more like a comment for future design decisions.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20231204080751.15354-5-pkshih@realtek.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
 
