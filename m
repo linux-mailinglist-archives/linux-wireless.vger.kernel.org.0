@@ -1,56 +1,56 @@
-Return-Path: <linux-wireless+bounces-477-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-478-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63FE1806A17
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 09:50:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFE7E806A1B
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 09:50:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F54D281BC1
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 08:50:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 930AB281C60
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 08:50:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 886422D7B6;
-	Wed,  6 Dec 2023 08:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC912199D6;
+	Wed,  6 Dec 2023 08:50:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DPj1p7/5"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jW8AEDjr"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E04B61999
-	for <linux-wireless@vger.kernel.org>; Wed,  6 Dec 2023 00:49:44 -0800 (PST)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 551331BF7
+	for <linux-wireless@vger.kernel.org>; Wed,  6 Dec 2023 00:49:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1701852584; x=1733388584;
+  t=1701852592; x=1733388592;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=FWwAuqLWHJNe+v+l01WL2+v0UHdBKo53jWlmim3ySkE=;
-  b=DPj1p7/5TIwS+B0XWl4PEIIwZgkmaUD0X8X3gGU3ZBwGknAcynySj1Yn
-   FNihb/FUnKzE1SeHnJT75KDIgBbbUlpPJDZ0wT7fJFlV18lDWbXbVMB47
-   P1toEPBL+P5Oj3QCljEzT151JmllrOlQmbmOyGeuP3ouuF79YsYgYGLhK
-   s1qlgtmmrtNMnGwWEFpv69iql7JE7908zsvRs4V+Fwb0egi4SrjbDJ7xt
-   cvfNY3RUNmwHrZx2IzVGGHf/3mBOfcs+uG3KL+n/YRV7EINk17mVttnZC
-   6d4V4YH4jVWCrt4MWO0KOIb3crHcPVPaWZDkgRZxiD4Op9oEQ+Vxu059d
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10915"; a="397916523"
+  bh=sZp0vpaR6yvco0Yj77nO77CJ75aJ4VqgoH7o9vzET6w=;
+  b=jW8AEDjrfe7u9sl4R8+V+5CDrnKRnl2XRu+sGRddRlqgE5/awTvfo2x8
+   kvx66VoZw6w2aJ3pVLyrVPtaa5+PnhdjK8Kq6oBTE+KN/ArJXGHOD5P17
+   FwB/YPvd+9L0XfOcTQlZp9I+mfOyxX/z7E/YFmwF4+sRHO60S4ZOeV7Um
+   ZS7yWVVUnZAsZ1BJIK8DoOS/bG06PsqoIOHnU4dn4GGEufykRDoSEJQbK
+   a0RkJzQL7Oge7h/1LVUVHwe85dgtlCM4OQ3FxAAt1zmNEmOI7u/mfFRN4
+   6ICQkThLKdKSCUm/mqNsXABxR1vH4Z3vny4ALNdBNxgpK9QFKe1NRmfiH
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10915"; a="397916539"
 X-IronPort-AV: E=Sophos;i="6.04,254,1695711600"; 
-   d="scan'208";a="397916523"
+   d="scan'208";a="397916539"
 Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2023 00:49:44 -0800
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2023 00:49:52 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10915"; a="805575389"
+X-IronPort-AV: E=McAfee;i="6600,9927,10915"; a="805575399"
 X-IronPort-AV: E=Sophos;i="6.04,254,1695711600"; 
-   d="scan'208";a="805575389"
+   d="scan'208";a="805575399"
 Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2023 00:49:42 -0800
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2023 00:49:50 -0800
 From: Miri@web.codeaurora.org, Korenblit@web.codeaurora.org,
 	miriam.rachel.korenblit@intel.com
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
 	Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Subject: [PATCH 04/13] wifi: iwlwifi: refactor RX tracing
-Date: Thu,  7 Dec 2023 04:50:09 +0200
-Message-Id: <20231207044813.13325a4848d2.Ic9e7d794fc4aebfe5ac5136b539ee62789f210f3@changeid>
+Subject: [PATCH 05/13] wifi: iwlwifi: mvm: add a debugfs hook to clear the monitor data
+Date: Thu,  7 Dec 2023 04:50:10 +0200
+Message-Id: <20231207044813.d5e97d5ec0d9.I7a5e836e6109e1fce7e6301dba8d1f28e60a5440@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231207025018.1022929-1-miriam.rachel.korenblit@intel.com>
 References: <20231207025018.1022929-1-miriam.rachel.korenblit@intel.com>
@@ -64,203 +64,117 @@ Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 X-Spam-Level: ****
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-When there's not going to be any data in the data event, we
-don't need to add it at all (unlike the TX version, it has
-no data at all.)
+This can be used by the user space when it wants to clear the data we
+collected so far for privacy reasons.
 
-Also combine the tracing into a separate inline so we only
-call iwl_rx_trace_len() once, which also simplifies things,
-and lets us have a single place to later add other checks.
-
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../intel/iwlwifi/iwl-devtrace-data.h         | 15 ++++++-------
- .../intel/iwlwifi/iwl-devtrace-iwlwifi.h      | 17 +++++++--------
- .../net/wireless/intel/iwlwifi/iwl-devtrace.c | 17 +++++++++++++--
- .../net/wireless/intel/iwlwifi/iwl-devtrace.h | 21 +++++++++++++++----
- drivers/net/wireless/intel/iwlwifi/pcie/rx.c  |  3 +--
- 5 files changed, 46 insertions(+), 27 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c      | 10 ++++++++++
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.h      |  1 +
+ drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c |  2 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.h |  1 +
+ drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c | 16 ++++++++++++++++
+ 5 files changed, 29 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-devtrace-data.h b/drivers/net/wireless/intel/iwlwifi/iwl-devtrace-data.h
-index 347fd95c4e3a..2c280a2fe3df 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-devtrace-data.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-devtrace-data.h
-@@ -3,7 +3,7 @@
-  *
-  * Copyright(c) 2009 - 2014 Intel Corporation. All rights reserved.
-  * Copyright(c) 2015        Intel Deutschland GmbH
-- * Copyright(c) 2018 - 2019 Intel Corporation
-+ * Copyright(c) 2018 - 2019, 2023 Intel Corporation
-  *****************************************************************************/
- 
- #if !defined(__IWLWIFI_DEVICE_TRACE_DATA) || defined(TRACE_HEADER_MULTI_READ)
-@@ -36,20 +36,17 @@ TRACE_EVENT(iwlwifi_dev_tx_tb,
- 
- TRACE_EVENT(iwlwifi_dev_rx_data,
- 	TP_PROTO(const struct device *dev,
--		 const struct iwl_trans *trans,
--		 void *rxbuf, size_t len),
--	TP_ARGS(dev, trans, rxbuf, len),
-+		 void *rxbuf, size_t len, size_t start),
-+	TP_ARGS(dev, rxbuf, len, start),
- 	TP_STRUCT__entry(
- 		DEV_ENTRY
--		__dynamic_array(u8, data,
--				len - iwl_rx_trace_len(trans, rxbuf, len, NULL))
-+		__dynamic_array(u8, data, len - start)
- 	),
- 	TP_fast_assign(
--		size_t offs = iwl_rx_trace_len(trans, rxbuf, len, NULL);
- 		DEV_ASSIGN;
--		if (offs < len)
-+		if (start < len)
- 			memcpy(__get_dynamic_array(data),
--			       ((u8 *)rxbuf) + offs, len - offs);
-+			       ((u8 *)rxbuf) + start, len - start);
- 	),
- 	TP_printk("[%s] RX frame data", __get_str(dev))
- );
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-devtrace-iwlwifi.h b/drivers/net/wireless/intel/iwlwifi/iwl-devtrace-iwlwifi.h
-index 46ed723f138a..e656bf6bc003 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-devtrace-iwlwifi.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-devtrace-iwlwifi.h
-@@ -4,7 +4,7 @@
-  * Copyright(c) 2009 - 2014 Intel Corporation. All rights reserved.
-  * Copyright(c) 2015 Intel Mobile Communications GmbH
-  * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
-- * Copyright(c) 2018        Intel Corporation
-+ * Copyright(c) 2018, 2023  Intel Corporation
-  *****************************************************************************/
- 
- #if !defined(__IWLWIFI_DEVICE_TRACE_IWLWIFI) || defined(TRACE_HEADER_MULTI_READ)
-@@ -50,23 +50,20 @@ TRACE_EVENT(iwlwifi_dev_hcmd,
- );
- 
- TRACE_EVENT(iwlwifi_dev_rx,
--	TP_PROTO(const struct device *dev, const struct iwl_trans *trans,
--		 struct iwl_rx_packet *pkt, size_t len),
--	TP_ARGS(dev, trans, pkt, len),
-+	TP_PROTO(const struct device *dev,
-+		 struct iwl_rx_packet *pkt, size_t len, size_t trace_len,
-+		 size_t hdr_offset),
-+	TP_ARGS(dev, pkt, len, trace_len, hdr_offset),
- 	TP_STRUCT__entry(
- 		DEV_ENTRY
- 		__field(u16, cmd)
- 		__field(u8, hdr_offset)
--		__dynamic_array(u8, rxbuf,
--				iwl_rx_trace_len(trans, pkt, len, NULL))
-+		__dynamic_array(u8, rxbuf, trace_len)
- 	),
- 	TP_fast_assign(
--		size_t hdr_offset = 0;
--
- 		DEV_ASSIGN;
- 		__entry->cmd = WIDE_ID(pkt->hdr.group_id, pkt->hdr.cmd);
--		memcpy(__get_dynamic_array(rxbuf), pkt,
--		       iwl_rx_trace_len(trans, pkt, len, &hdr_offset));
-+		memcpy(__get_dynamic_array(rxbuf), pkt, trace_len);
- 		__entry->hdr_offset = hdr_offset;
- 	),
- 	TP_printk("[%s] RX cmd %#.2x",
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-devtrace.c b/drivers/net/wireless/intel/iwlwifi/iwl-devtrace.c
-index e46639b097f4..7e686297963d 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-devtrace.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-devtrace.c
-@@ -2,7 +2,7 @@
- /******************************************************************************
-  *
-  * Copyright(c) 2009 - 2014 Intel Corporation. All rights reserved.
-- * Copyright (C) 2018 Intel Corporation
-+ * Copyright (C) 2018, 2023 Intel Corporation
-  *****************************************************************************/
- 
- #include <linux/module.h>
-@@ -20,4 +20,17 @@
- EXPORT_TRACEPOINT_SYMBOL(iwlwifi_dev_ucode_event);
- EXPORT_TRACEPOINT_SYMBOL(iwlwifi_dev_ucode_cont_event);
- EXPORT_TRACEPOINT_SYMBOL(iwlwifi_dev_ucode_wrap_event);
--#endif
-+#else
-+#include "iwl-devtrace.h"
-+#endif /* __CHECKER__ */
-+
-+void __trace_iwlwifi_dev_rx(struct iwl_trans *trans, void *pkt, size_t len)
-+{
-+	size_t hdr_offset = 0, trace_len;
-+
-+	trace_len = iwl_rx_trace_len(trans, pkt, len, &hdr_offset);
-+	trace_iwlwifi_dev_rx(trans->dev, pkt, len, trace_len, hdr_offset);
-+
-+	if (trace_len < len)
-+		trace_iwlwifi_dev_rx_data(trans->dev, pkt, len, trace_len);
-+}
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-devtrace.h b/drivers/net/wireless/intel/iwlwifi/iwl-devtrace.h
-index 01fb7b900a6d..c3e09f4fefeb 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-devtrace.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-devtrace.h
-@@ -7,12 +7,12 @@
-  *****************************************************************************/
- 
- #ifndef __IWLWIFI_DEVICE_TRACE
-+#define __IWLWIFI_DEVICE_TRACE
- #include <linux/skbuff.h>
- #include <linux/ieee80211.h>
- #include <net/cfg80211.h>
- #include <net/mac80211.h>
- #include "iwl-trans.h"
--#if !defined(__IWLWIFI_DEVICE_TRACE)
- static inline bool iwl_trace_data(struct sk_buff *skb)
- {
- 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
-@@ -70,9 +70,6 @@ static inline size_t iwl_rx_trace_len(const struct iwl_trans *trans,
- 	return sizeof(__le32) + sizeof(*cmd) + trans->rx_mpdu_cmd_hdr_size +
- 		ieee80211_hdrlen(hdr->frame_control);
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+index 7ee9b7c8a3ab..f6e399d1e95c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+@@ -3395,3 +3395,13 @@ void iwl_fw_disable_dbg_asserts(struct iwl_fw_runtime *fwrt)
+ 	iwl_trans_send_cmd(fwrt->trans, &hcmd);
  }
--#endif
--
--#define __IWLWIFI_DEVICE_TRACE
- 
- #include <linux/tracepoint.h>
- #include <linux/device.h>
-@@ -98,4 +95,20 @@ static inline void trace_ ## name(proto) {}
- #include "iwl-devtrace-data.h"
- #include "iwl-devtrace-iwlwifi.h"
- 
-+#ifdef CONFIG_IWLWIFI_DEVICE_TRACING
-+DECLARE_TRACEPOINT(iwlwifi_dev_rx);
-+DECLARE_TRACEPOINT(iwlwifi_dev_rx_data);
-+#endif
+ IWL_EXPORT_SYMBOL(iwl_fw_disable_dbg_asserts);
 +
-+void __trace_iwlwifi_dev_rx(struct iwl_trans *trans, void *pkt, size_t len);
-+
-+static inline void maybe_trace_iwlwifi_dev_rx(struct iwl_trans *trans,
-+					      void *pkt, size_t len)
++void iwl_fw_dbg_clear_monitor_buf(struct iwl_fw_runtime *fwrt)
 +{
-+#ifdef CONFIG_IWLWIFI_DEVICE_TRACING
-+	if (tracepoint_enabled(iwlwifi_dev_rx) ||
-+	    tracepoint_enabled(iwlwifi_dev_rx_data))
-+		__trace_iwlwifi_dev_rx(trans, pkt, len);
-+#endif
++	struct iwl_fw_dbg_params params = {0};
++
++	iwl_fw_dbg_stop_sync(fwrt);
++	iwl_dbg_tlv_init_cfg(fwrt);
++	iwl_fw_dbg_stop_restart_recording(fwrt, &params, false);
 +}
- #endif /* __IWLWIFI_DEVICE_TRACE */
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-index 146bc7bd14fb..ab0c72c55b2d 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-@@ -1351,8 +1351,7 @@ static void iwl_pcie_rx_handle_rb(struct iwl_trans *trans,
- 		if (len < sizeof(*pkt) || offset > max_len)
- 			break;
++IWL_EXPORT_SYMBOL(iwl_fw_dbg_clear_monitor_buf);
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.h b/drivers/net/wireless/intel/iwlwifi/fw/dbg.h
+index 66b233250c7c..eb38c686b5cb 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.h
+@@ -330,6 +330,7 @@ void iwl_send_dbg_dump_complete_cmd(struct iwl_fw_runtime *fwrt,
+ 				    u32 timepoint,
+ 				    u32 timepoint_data);
+ void iwl_fw_disable_dbg_asserts(struct iwl_fw_runtime *fwrt);
++void iwl_fw_dbg_clear_monitor_buf(struct iwl_fw_runtime *fwrt);
  
--		trace_iwlwifi_dev_rx(trans->dev, trans, pkt, len);
--		trace_iwlwifi_dev_rx_data(trans->dev, trans, pkt, len);
-+		maybe_trace_iwlwifi_dev_rx(trans, pkt, len);
+ #define IWL_FW_CHECK_FAILED(_obj, _fmt, ...)				\
+ 	IWL_ERR_LIMIT(_obj, _fmt, __VA_ARGS__)
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
+index b658cf228fbe..3b14f6476743 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
+@@ -1274,7 +1274,7 @@ iwl_dbg_tlv_tp_trigger(struct iwl_fw_runtime *fwrt, bool sync,
+ 	return 0;
+ }
  
- 		/* Reclaim a command buffer only if this packet is a response
- 		 *   to a (driver-originated) command.
+-static void iwl_dbg_tlv_init_cfg(struct iwl_fw_runtime *fwrt)
++void iwl_dbg_tlv_init_cfg(struct iwl_fw_runtime *fwrt)
+ {
+ 	enum iwl_fw_ini_buffer_location *ini_dest = &fwrt->trans->dbg.ini_dest;
+ 	int ret, i;
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.h b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.h
+index 06fb7d665390..7ed6329fd8ca 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.h
+@@ -57,6 +57,7 @@ void _iwl_dbg_tlv_time_point(struct iwl_fw_runtime *fwrt,
+ 			     enum iwl_fw_ini_time_point tp_id,
+ 			     union iwl_dbg_tlv_tp_data *tp_data,
+ 			     bool sync);
++void iwl_dbg_tlv_init_cfg(struct iwl_fw_runtime *fwrt);
+ 
+ static inline void iwl_dbg_tlv_time_point(struct iwl_fw_runtime *fwrt,
+ 					  enum iwl_fw_ini_time_point tp_id,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
+index 329c545f65fd..e016fce7ab24 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
+@@ -1714,6 +1714,20 @@ static ssize_t iwl_dbgfs_fw_dbg_collect_write(struct iwl_mvm *mvm,
+ 	return count;
+ }
+ 
++static ssize_t iwl_dbgfs_fw_dbg_clear_write(struct iwl_mvm *mvm,
++					    char *buf, size_t count,
++					    loff_t *ppos)
++{
++	if (mvm->trans->trans_cfg->device_family < IWL_DEVICE_FAMILY_9000)
++		return -EOPNOTSUPP;
++
++	mutex_lock(&mvm->mutex);
++	iwl_fw_dbg_clear_monitor_buf(&mvm->fwrt);
++	mutex_unlock(&mvm->mutex);
++
++	return count;
++}
++
+ static ssize_t iwl_dbgfs_dbg_time_point_write(struct iwl_mvm *mvm,
+ 					      char *buf, size_t count,
+ 					      loff_t *ppos)
+@@ -2166,6 +2180,7 @@ MVM_DEBUGFS_WRITE_FILE_OPS(bt_force_ant, 10);
+ MVM_DEBUGFS_READ_WRITE_FILE_OPS(scan_ant_rxchain, 8);
+ MVM_DEBUGFS_READ_WRITE_FILE_OPS(fw_dbg_conf, 8);
+ MVM_DEBUGFS_WRITE_FILE_OPS(fw_dbg_collect, 64);
++MVM_DEBUGFS_WRITE_FILE_OPS(fw_dbg_clear, 64);
+ MVM_DEBUGFS_WRITE_FILE_OPS(dbg_time_point, 64);
+ MVM_DEBUGFS_WRITE_FILE_OPS(indirection_tbl,
+ 			   (IWL_RSS_INDIRECTION_TABLE_SIZE * 2));
+@@ -2372,6 +2387,7 @@ void iwl_mvm_dbgfs_register(struct iwl_mvm *mvm)
+ 	MVM_DEBUGFS_ADD_FILE(prph_reg, mvm->debugfs_dir, 0600);
+ 	MVM_DEBUGFS_ADD_FILE(fw_dbg_conf, mvm->debugfs_dir, 0600);
+ 	MVM_DEBUGFS_ADD_FILE(fw_dbg_collect, mvm->debugfs_dir, 0200);
++	MVM_DEBUGFS_ADD_FILE(fw_dbg_clear, mvm->debugfs_dir, 0200);
+ 	MVM_DEBUGFS_ADD_FILE(dbg_time_point, mvm->debugfs_dir, 0200);
+ 	MVM_DEBUGFS_ADD_FILE(send_echo_cmd, mvm->debugfs_dir, 0200);
+ 	MVM_DEBUGFS_ADD_FILE(indirection_tbl, mvm->debugfs_dir, 0200);
 -- 
 2.34.1
 
