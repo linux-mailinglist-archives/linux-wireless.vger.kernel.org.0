@@ -1,56 +1,56 @@
-Return-Path: <linux-wireless+bounces-479-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-480-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D21F806A1C
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 09:51:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A4E0806A1D
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 09:51:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E89BF282039
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 08:51:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8102D1C2146B
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 08:51:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B79B81A5B6;
-	Wed,  6 Dec 2023 08:51:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 844171A73E;
+	Wed,  6 Dec 2023 08:51:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bCssQrSI"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CONdxmTq"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BCB61FE4
-	for <linux-wireless@vger.kernel.org>; Wed,  6 Dec 2023 00:49:55 -0800 (PST)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8837710EB
+	for <linux-wireless@vger.kernel.org>; Wed,  6 Dec 2023 00:49:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1701852595; x=1733388595;
+  t=1701852597; x=1733388597;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=sZwZ+doVhLe9eOvBwRN4d8gpT5zQxfiWZ1DO7IotUB8=;
-  b=bCssQrSIlAjMu6Zd1dWC1KILvA5mDJCAwG4G5Qtp+sjzLxith+m4AkH5
-   bmZELWK2/atSnFxvfP9TBRYwpv8ImHHTpcoh8vtMoPZaiMqVX1vlWihA+
-   i2ODTZIT4KtkCTi/cDE8A2aubk7oFdVumEA9j/voHs2iUDMj5bOnvJjYB
-   wD/UV61vvVr2n8llZv1ZQ1YN8v2T8zoH4uOYzLon6pkt63PPmtShQm89U
-   3AfEtf5YuAVmpZwX4MSjLLtvzF9E6gsmeif3mfur7HqPimFIOF2DuOaZ0
-   HbKeQIxuwDvUBLpKaPSSvmucn6flHPBGBg9Dg02v34SEkmaIGrTCqOP63
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10915"; a="397916547"
+  bh=1tAPfprFcqc/8EVMzk0W63CvNgwtslkDUikG3RQIBts=;
+  b=CONdxmTqdfsjceZTqgvE07KkubGYMkWqZIAEisocnP8TLV0CsXjTM6ZT
+   I8jWMURr/P60+AswUhwmf5R3jyXAfU4on7roeqUgx264UJgfYdQBMgPZp
+   yAfrijfVMJgUWrp5n1ni4zYFlgrhprAAC5njpXCUbwMXIVnYkp0EIqgm/
+   VHsxOyw5TRTOrRELI17AtOEcGus1E+0bTgAfceNODy+T05pZN7ifJapkU
+   Pdj5rG19FFbS6f9Umwl7pP2Q6PlLpsqplTz8/JtLz4jC/wLvbZhZXR8j5
+   CQeN61vDoXmc9tJhr03BXIOLRsW4c1CkI2x1b01WR9fDyWDN4O6O+gmCw
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10915"; a="397916557"
 X-IronPort-AV: E=Sophos;i="6.04,254,1695711600"; 
-   d="scan'208";a="397916547"
+   d="scan'208";a="397916557"
 Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2023 00:49:54 -0800
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2023 00:49:57 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10915"; a="805575402"
+X-IronPort-AV: E=McAfee;i="6600,9927,10915"; a="805575405"
 X-IronPort-AV: E=Sophos;i="6.04,254,1695711600"; 
-   d="scan'208";a="805575402"
+   d="scan'208";a="805575405"
 Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2023 00:49:53 -0800
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2023 00:49:55 -0800
 From: Miri@web.codeaurora.org, Korenblit@web.codeaurora.org,
 	miriam.rachel.korenblit@intel.com
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	Johannes Berg <johannes.berg@intel.com>,
 	Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Subject: [PATCH 06/13] wifi: iwlwifi: pcie: clean up device removal work
-Date: Thu,  7 Dec 2023 04:50:11 +0200
-Message-Id: <20231207044813.6c0879e695f7.I1d3ce75ecad32a4cbf1b9dad61bfb7bc7821fdd9@changeid>
+Subject: [PATCH 07/13] wifi: iwlwifi: pcie: dump CSRs before removal
+Date: Thu,  7 Dec 2023 04:50:12 +0200
+Message-Id: <20231207044813.a0e2198e9afd.I3bf737ba5ec1b3013218001e808f6bae0c834543@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231207025018.1022929-1-miriam.rachel.korenblit@intel.com>
 References: <20231207025018.1022929-1-miriam.rachel.korenblit@intel.com>
@@ -66,55 +66,24 @@ X-Spam-Level: ****
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-We shouldn't access the device if we don't hold a reference,
-and if - after locking - we see that it has no bus, we also
-can't do anything, in fact, pci_stop_and_remove_bus_device()
-will be a no-op.
-
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/pcie/trans.c   | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/pcie/trans.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-index a468e5efeecd..31a6e34b33ff 100644
+index 31a6e34b33ff..eb77575f5b12 100644
 --- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
 +++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-@@ -2107,18 +2107,29 @@ static void iwl_trans_pcie_removal_wk(struct work_struct *wk)
- 		container_of(wk, struct iwl_trans_pcie_removal, work);
- 	struct pci_dev *pdev = removal->pdev;
- 	static char *prop[] = {"EVENT=INACCESSIBLE", NULL};
--	struct pci_bus *bus = pdev->bus;
-+	struct pci_bus *bus;
-+
-+	pci_lock_rescan_remove();
-+
-+	bus = pdev->bus;
-+	/* in this case, something else already removed the device */
-+	if (!bus)
-+		goto out;
+@@ -2144,6 +2144,7 @@ void iwl_trans_pcie_remove(struct iwl_trans *trans, bool rescan)
+ 		return;
  
- 	dev_err(&pdev->dev, "Device gone - attempting removal\n");
-+
- 	kobject_uevent_env(&pdev->dev.kobj, KOBJ_CHANGE, prop);
--	pci_lock_rescan_remove();
--	pci_dev_put(pdev);
-+
- 	pci_stop_and_remove_bus_device(pdev);
--	if (removal->rescan && bus) {
-+	pci_dev_put(pdev);
-+
-+	if (removal->rescan) {
- 		if (bus->parent)
- 			bus = bus->parent;
- 		pci_rescan_bus(bus);
- 	}
-+
-+out:
- 	pci_unlock_rescan_remove();
+ 	IWL_ERR(trans, "Device gone - scheduling removal!\n");
++	iwl_pcie_dump_csr(trans);
  
- 	kfree(removal);
+ 	/*
+ 	 * get a module reference to avoid doing this
 -- 
 2.34.1
 
