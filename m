@@ -1,148 +1,96 @@
-Return-Path: <linux-wireless+bounces-548-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-549-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA832808B01
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Dec 2023 15:49:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1AB4808C23
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Dec 2023 16:47:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71308282E43
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Dec 2023 14:49:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DEA128174D
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Dec 2023 15:47:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 164494185B;
-	Thu,  7 Dec 2023 14:49:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2E8544C8D;
+	Thu,  7 Dec 2023 15:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W2JCN7X/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E0d1vBL/"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED5F240C07
-	for <linux-wireless@vger.kernel.org>; Thu,  7 Dec 2023 14:49:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1133C433C7;
-	Thu,  7 Dec 2023 14:49:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8CE41D54E
+	for <linux-wireless@vger.kernel.org>; Thu,  7 Dec 2023 15:47:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFE7CC433C7;
+	Thu,  7 Dec 2023 15:47:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701960566;
-	bh=IcBWMYQlbFYpDxnAIk+Jk20qDDu9aXKuMpFk3AIunOw=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=W2JCN7X/eXCeAegQm6DdAqck67UHemwbx5CjDZq96bBLybUHuSknz5K6rHOKkYdLl
-	 zc6lcsgLDJtmhUKLl2pEQrDSJwpGXqe5rEz5FZB2h134EZ2Y06UvklhrtN4XmkfAxk
-	 G4kUAd61MDzBjK92XPhdIOOd7wVKjPmySRMo0S09IQDfXxvw4IeTByl68Er78s2kOg
-	 T9PvQflC1CwgqIzMgk8M35zZDrRRJcOTLo8tJGNmSCGlonDYaenpnm1ct79ZAoESMx
-	 MQhv2TRfZWZncrkdA7TZpQxa9vmoMk3JTd0bppGiJenwgnbxQu9ykRMp5/nC9t8fdO
-	 NUqmtRY5AOZzg==
-From: Kalle Valo <kvalo@kernel.org>
-To: Yongqin Liu <yongqin.liu@linaro.org>
-Cc: Douglas Anderson <dianders@chromium.org>,  ath10k@lists.infradead.org,
-  Abhishek Kumar <kuabhs@chromium.org>,  Youghandhar Chintala
- <quic_youghand@quicinc.com>,  linux-kernel@vger.kernel.org,
-  linux-wireless@vger.kernel.org,  Manivannan Sadhasivam
- <manivannan.sadhasivam@linaro.org>,  Sumit Semwal
- <sumit.semwal@linaro.org>,  John Stultz <jstultz@google.com>,  Viktor
- Martensson <vmartensson@google.com>,  Amit Pundir <amit.pundir@linaro.org>
-Subject: Re: [PATCH] ath10k: Don't touch the CE interrupt registers after
- power up
-References: <20230630151842.1.If764ede23c4e09a43a842771c2ddf99608f25f8e@changeid>
-	<CAMSo37XcwAn9znSQ8202LUTdBKLDz94QJ9i43aXya5LHs-4GiQ@mail.gmail.com>
-Date: Thu, 07 Dec 2023 16:49:21 +0200
-In-Reply-To: <CAMSo37XcwAn9znSQ8202LUTdBKLDz94QJ9i43aXya5LHs-4GiQ@mail.gmail.com>
-	(Yongqin Liu's message of "Thu, 7 Dec 2023 22:29:03 +0800")
-Message-ID: <87wmtqnk3y.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=k20201202; t=1701964057;
+	bh=/ZDHgbY7Qojq5NSOaS3ODtQuPI8wdf01S4O6ylvQ4SI=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=E0d1vBL/4aGpOEQtNh5W274I6t+fB4VirOSjzn/XML6rDD+UnjGgt3ohtFvMsmqNk
+	 ULIKqdgiezEcVjB0XHj11u352aB1aytMQu4vUdVvuHkRoJ+aFKF4McyjRL4VEi1Qhl
+	 xrFBVyfCJSKpeTDlKEeCrfFNDc4OlG4SZXUGmBUvnr2TNKnRInua8KVfQPBLX55c0Y
+	 dLfr4vcVFqJaJGI9Zds4Yttd65AJ4Dl/0bW2mVjBTz6+GsqH5+yqLRrIneEjby7zWw
+	 hDBvMB8lIsM50U0q+QYzni0m5RLobflwPK90M9v64AtEGugT6ItS5d1VUWSmrcEjlC
+	 htfNe6paRjfsA==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] rtw89: avoid stringop-overflow warning
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20231204073020.1105416-1-arnd@kernel.org>
+References: <20231204073020.1105416-1-arnd@kernel.org>
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: Ping-Ke Shih <pkshih@realtek.com>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Ching-Te Ku <ku920601@realtek.com>, linux-wireless@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <170196405395.2897000.836367709392997740.kvalo@kernel.org>
+Date: Thu,  7 Dec 2023 15:47:35 +0000 (UTC)
 
-Yongqin Liu <yongqin.liu@linaro.org> writes:
+Arnd Bergmann <arnd@kernel.org> wrote:
 
-> On Sat, 1 Jul 2023 at 06:19, Douglas Anderson <dianders@chromium.org> wrote:
->>
->> As talked about in commit d66d24ac300c ("ath10k: Keep track of which
->> interrupts fired, don't poll them"), if we access the copy engine
->> register at a bad time then ath10k can go boom. However, it's not
->> necessarily easy to know when it's safe to access them.
->>
->> The ChromeOS test labs saw a crash that looked like this at
->> shutdown/reboot time (on a chromeos-5.15 kernel, but likely the
->> problem could also reproduce upstream):
->>
->> Internal error: synchronous external abort: 96000010 [#1] PREEMPT SMP
->> ...
->> CPU: 4 PID: 6168 Comm: reboot Not tainted
->> 5.15.111-lockdep-19350-g1d624fe6758f #1
->> 010b9b233ab055c27c6dc88efb0be2f4e9e86f51
->> Hardware name: Google Kingoftown (DT)
->> ...
->> pc : ath10k_snoc_read32+0x50/0x74 [ath10k_snoc]
->> lr : ath10k_snoc_read32+0x24/0x74 [ath10k_snoc]
->> ...
->> Call trace:
->> ath10k_snoc_read32+0x50/0x74 [ath10k_snoc ...]
->> ath10k_ce_disable_interrupt+0x190/0x65c [ath10k_core ...]
->> ath10k_ce_disable_interrupts+0x8c/0x120 [ath10k_core ...]
->> ath10k_snoc_hif_stop+0x78/0x660 [ath10k_snoc ...]
->> ath10k_core_stop+0x13c/0x1ec [ath10k_core ...]
->> ath10k_halt+0x398/0x5b0 [ath10k_core ...]
->> ath10k_stop+0xfc/0x1a8 [ath10k_core ...]
->> drv_stop+0x148/0x6b4 [mac80211 ...]
->> ieee80211_stop_device+0x70/0x80 [mac80211 ...]
->> ieee80211_do_stop+0x10d8/0x15b0 [mac80211 ...]
->> ieee80211_stop+0x144/0x1a0 [mac80211 ...]
->> __dev_close_many+0x1e8/0x2c0
->> dev_close_many+0x198/0x33c
->> dev_close+0x140/0x210
->> cfg80211_shutdown_all_interfaces+0xc8/0x1e0 [cfg80211 ...]
->> ieee80211_remove_interfaces+0x118/0x5c4 [mac80211 ...]
->> ieee80211_unregister_hw+0x64/0x1f4 [mac80211 ...]
->> ath10k_mac_unregister+0x4c/0xf0 [ath10k_core ...]
->> ath10k_core_unregister+0x80/0xb0 [ath10k_core ...]
->> ath10k_snoc_free_resources+0xb8/0x1ec [ath10k_snoc ...]
->> ath10k_snoc_shutdown+0x98/0xd0 [ath10k_snoc ...]
->> platform_shutdown+0x7c/0xa0
->> device_shutdown+0x3e0/0x58c
->> kernel_restart_prepare+0x68/0xa0
->> kernel_restart+0x28/0x7c
->>
->> Though there's no known way to reproduce the problem, it makes sense
->> that it would be the same issue where we're trying to access copy
->> engine registers when it's not allowed.
->>
->> Let's fix this by changing how we "disable" the interrupts. Instead of
->> tweaking the copy engine registers we'll just use disable_irq() and
->> enable_irq(). Then we'll configure the interrupts once at power up
->> time.
->>
->> Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.2.2.c10-00754-QCAHLSWMTPL-1
->>
->> Signed-off-by: Douglas Anderson <dianders@chromium.org>
->> ---
->
-> Recently during our Android build test on the Dragonboard 845c board,
-> with the Android Common Kernel android11-5.4-lts and android12-5.4-lts branches,
->
-> we found there are some ufshcd related changes printed,
-> and the serial console gets stuck, no response for input,
-> and the Android boot is stuck at the animation window.
->
-> The problem is reported here
->     https://issuetracker.google.com/issues/314366682
-> You could check there for more log details.
->
-> And with some bisection, I found it's related to this commit,
-> when I revert this commit, the problem is gone.
->
-> So replied here, not sure if you have any idea about it,
-> or any suggestions on what we should do next to resolve the problem?
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> After -Wstringop-overflow got enabled, the rtw89 driver produced
+> two odd warnings with gcc-13:
+> 
+> drivers/net/wireless/realtek/rtw89/coex.c: In function 'rtw89_btc_ntfy_scan_start':
+> drivers/net/wireless/realtek/rtw89/coex.c:5362:50: error: writing 1 byte into a region of size 0 [-Werror=stringop-overflow=]
+>  5362 |                 wl->dbcc_info.scan_band[phy_idx] = band;
+>       |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~
+> In file included from drivers/net/wireless/realtek/rtw89/coex.h:8,
+>                  from drivers/net/wireless/realtek/rtw89/coex.c:5:
+> drivers/net/wireless/realtek/rtw89/core.h:1441:12: note: at offset [64, 255] into destination object 'scan_band' of size 2
+>  1441 |         u8 scan_band[RTW89_PHY_MAX]; /* scan band in  each phy */
+>       |            ^~~~~~~~~
+> drivers/net/wireless/realtek/rtw89/coex.c: In function 'rtw89_btc_ntfy_switch_band':
+> drivers/net/wireless/realtek/rtw89/coex.c:5406:50: error: writing 1 byte into a region of size 0 [-Werror=stringop-overflow=]
+>  5406 |                 wl->dbcc_info.scan_band[phy_idx] = band;
+>       |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~
+> drivers/net/wireless/realtek/rtw89/core.h:1441:12: note: at offset [64, 255] into destination object 'scan_band' of size 2
+>  1441 |         u8 scan_band[RTW89_PHY_MAX]; /* scan band in  each phy */
+>       |            ^~~~~~~~~
+> 
+> I don't know what happened here, but adding an explicit range check
+> shuts up the output.
+> 
+> Fixes: 89741e7e42f6 ("Makefile: Enable -Wstringop-overflow globally")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-FWIW we don't support Android kernels, only kernel.org releases.
+ERROR: 'wifi:' prefix missing: '[PATCH] rtw89: avoid stringop-overflow warning'
+ERROR: Failed to find commit id: Fixes: 89741e7e42f6 ("Makefile: Enable -Wstringop-overflow globally")
+
+I can add the "wifi:" prefix but where can I find the commit 89741e7e42f6?
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+https://patchwork.kernel.org/project/linux-wireless/patch/20231204073020.1105416-1-arnd@kernel.org/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
 
