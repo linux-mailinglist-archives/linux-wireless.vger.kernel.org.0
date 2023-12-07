@@ -1,56 +1,56 @@
-Return-Path: <linux-wireless+bounces-480-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-481-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A4E0806A1D
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 09:51:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77AB6806A1E
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 09:51:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8102D1C2146B
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 08:51:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25FF71F21846
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 08:51:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 844171A73E;
-	Wed,  6 Dec 2023 08:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F23928DA9;
+	Wed,  6 Dec 2023 08:51:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CONdxmTq"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZT6AtdH6"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8837710EB
-	for <linux-wireless@vger.kernel.org>; Wed,  6 Dec 2023 00:49:57 -0800 (PST)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CABC2127
+	for <linux-wireless@vger.kernel.org>; Wed,  6 Dec 2023 00:50:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1701852597; x=1733388597;
+  t=1701852600; x=1733388600;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=1tAPfprFcqc/8EVMzk0W63CvNgwtslkDUikG3RQIBts=;
-  b=CONdxmTqdfsjceZTqgvE07KkubGYMkWqZIAEisocnP8TLV0CsXjTM6ZT
-   I8jWMURr/P60+AswUhwmf5R3jyXAfU4on7roeqUgx264UJgfYdQBMgPZp
-   yAfrijfVMJgUWrp5n1ni4zYFlgrhprAAC5njpXCUbwMXIVnYkp0EIqgm/
-   VHsxOyw5TRTOrRELI17AtOEcGus1E+0bTgAfceNODy+T05pZN7ifJapkU
-   Pdj5rG19FFbS6f9Umwl7pP2Q6PlLpsqplTz8/JtLz4jC/wLvbZhZXR8j5
-   CQeN61vDoXmc9tJhr03BXIOLRsW4c1CkI2x1b01WR9fDyWDN4O6O+gmCw
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10915"; a="397916557"
+  bh=s/6BA6r2IysRiM+EXs6o2zeUp+Hfn65Z9cgixQhGHu8=;
+  b=ZT6AtdH68XPhPQAylXLTQfCx3MObb/Fd7zFCPSscw850VBOI5k0zDZrG
+   +ZrMU9i1ErFRYY64o6iFb/aeb0jq3YUoL7qia/dgbyW2di3xz308jL+hn
+   pyHS0/hxYHCR3CeqmkIScc1vAIG34t5akKb3A00Zn3OGbEEhTMgUDi2CS
+   bCmNTVGBGVMxGLHcZzPDqRP901JRFXMqDgFLiZa9BGP9DzpyorBnaLwWy
+   I8SJKEpqKkI7615Rmn3C62E3per+aQtF0nLm0RTyy8iXVDvBVdu5VjthY
+   UQjcRZFq2meUprlTOs0R09QmpvSG1zNO05aTHDn9IvSABerLUVkeJxhAj
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10915"; a="397916570"
 X-IronPort-AV: E=Sophos;i="6.04,254,1695711600"; 
-   d="scan'208";a="397916557"
+   d="scan'208";a="397916570"
 Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2023 00:49:57 -0800
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2023 00:49:59 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10915"; a="805575405"
+X-IronPort-AV: E=McAfee;i="6600,9927,10915"; a="805575408"
 X-IronPort-AV: E=Sophos;i="6.04,254,1695711600"; 
-   d="scan'208";a="805575405"
+   d="scan'208";a="805575408"
 Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2023 00:49:55 -0800
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2023 00:49:58 -0800
 From: Miri@web.codeaurora.org, Korenblit@web.codeaurora.org,
 	miriam.rachel.korenblit@intel.com
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	Johannes Berg <johannes.berg@intel.com>,
 	Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Subject: [PATCH 07/13] wifi: iwlwifi: pcie: dump CSRs before removal
-Date: Thu,  7 Dec 2023 04:50:12 +0200
-Message-Id: <20231207044813.a0e2198e9afd.I3bf737ba5ec1b3013218001e808f6bae0c834543@changeid>
+Subject: [PATCH 08/13] wifi: iwlwifi: pcie: get_crf_id() can be void
+Date: Thu,  7 Dec 2023 04:50:13 +0200
+Message-Id: <20231207044813.898b7e99206f.I61378115093fe70e6f5baca7f334651e4190eb3b@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231207025018.1022929-1-miriam.rachel.korenblit@intel.com>
 References: <20231207025018.1022929-1-miriam.rachel.korenblit@intel.com>
@@ -66,24 +66,39 @@ X-Spam-Level: ****
 
 From: Johannes Berg <johannes.berg@intel.com>
 
+This never returns an error and the return value is never
+checked anyway, so it can just be void.
+
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/trans.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-index 31a6e34b33ff..eb77575f5b12 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-@@ -2144,6 +2144,7 @@ void iwl_trans_pcie_remove(struct iwl_trans *trans, bool rescan)
- 		return;
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+index 26a0953603ab..2c9b98c8184b 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+@@ -1121,9 +1121,8 @@ static const struct iwl_dev_info iwl_dev_info_table[] = {
+ /*
+  * Read rf id and cdb info from prph register and store it
+  */
+-static int get_crf_id(struct iwl_trans *iwl_trans)
++static void get_crf_id(struct iwl_trans *iwl_trans)
+ {
+-	int ret = 0;
+ 	u32 sd_reg_ver_addr;
+ 	u32 val = 0;
  
- 	IWL_ERR(trans, "Device gone - scheduling removal!\n");
-+	iwl_pcie_dump_csr(trans);
+@@ -1150,8 +1149,6 @@ static int get_crf_id(struct iwl_trans *iwl_trans)
+ 	IWL_INFO(iwl_trans, "Detected crf-id 0x%x, cnv-id 0x%x wfpm id 0x%x\n",
+ 		 iwl_trans->hw_crf_id, iwl_trans->hw_cnv_id,
+ 		 iwl_trans->hw_wfpm_id);
+-
+-	return ret;
+ }
  
- 	/*
- 	 * get a module reference to avoid doing this
+ /*
 -- 
 2.34.1
 
