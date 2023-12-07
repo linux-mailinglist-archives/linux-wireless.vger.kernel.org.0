@@ -1,222 +1,236 @@
-Return-Path: <linux-wireless+bounces-530-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-531-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EA4B8083E7
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Dec 2023 10:11:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A70478084D5
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Dec 2023 10:39:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E93FA1F227BD
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Dec 2023 09:11:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1FA78B2169E
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Dec 2023 09:39:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34F2332C84;
-	Thu,  7 Dec 2023 09:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A836E3309C;
+	Thu,  7 Dec 2023 09:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="tg8NdadU";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="eNkRt1wW"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=zerobeat@gmx.de header.b="cGgCszqc"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EC901987;
-	Thu,  7 Dec 2023 01:10:26 -0800 (PST)
-Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [10.150.64.98])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 5B8831F897;
-	Thu,  7 Dec 2023 09:10:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1701940224; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jXiKfid97FD5zi8RqmP75wazePMuM2Vj4JZ4H26JF/w=;
-	b=tg8NdadUlk4VfBBiX/KnTc8KWn4/+I2eqU3OCsMmSGO5fGxGo+xFF7FC1+cL85+pnkxgh6
-	+2Q+t+yvWpRrlmhVvY0iaqUjhOk6aDapKv8aWDgxXaeYBRQUq2bq9mHOv8yIv2mkt3uJBW
-	DjcnaOKBqBG38BR6qn1JnsOv3SGRVLU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1701940224;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jXiKfid97FD5zi8RqmP75wazePMuM2Vj4JZ4H26JF/w=;
-	b=eNkRt1wWHc2B/3UiJ7gBmgVmSJJtzZTtEviOYNX31SorNi0ot/Q0TzM7nhemVkTB8kzvHE
-	aOrpBsXvOqOVy6BQ==
-Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 34B3813907;
-	Thu,  7 Dec 2023 09:10:24 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap2.dmz-prg2.suse.org with ESMTPSA
-	id w3HWDACMcWWqPwAAn2gu4w
-	(envelope-from <jack@suse.cz>); Thu, 07 Dec 2023 09:10:24 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 7AF80A07C7; Thu,  7 Dec 2023 10:10:23 +0100 (CET)
-Date: Thu, 7 Dec 2023 10:10:23 +0100
-From: Jan Kara <jack@suse.cz>
-To: Yury Norov <yury.norov@gmail.com>
-Cc: Jan Kara <jack@suse.cz>, linux-kernel@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"James E.J. Bottomley" <jejb@linux.ibm.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	"Md. Haris Iqbal" <haris.iqbal@ionos.com>,
-	Akinobu Mita <akinobu.mita@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Borislav Petkov <bp@alien8.de>, Chaitanya Kulkarni <kch@nvidia.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	David Disseldorp <ddiss@suse.de>,
-	Edward Cree <ecree.xilinx@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Fenghua Yu <fenghua.yu@intel.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Hugh Dickins <hughd@google.com>, Ingo Molnar <mingo@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Jens Axboe <axboe@kernel.dk>,
-	Jiri Pirko <jiri@resnulli.us>, Jiri Slaby <jirislaby@kernel.org>,
-	Kalle Valo <kvalo@kernel.org>, Karsten Graul <kgraul@linux.ibm.com>,
-	Karsten Keil <isdn@linux-pingi.de>,
-	Kees Cook <keescook@chromium.org>,
-	Leon Romanovsky <leon@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Martin Habets <habetsm.xilinx@gmail.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Michal Simek <monstr@monstr.eu>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Oliver Neukum <oneukum@suse.com>, Paolo Abeni <pabeni@redhat.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ping-Ke Shih <pkshih@realtek.com>, Rich Felker <dalias@libc.org>,
-	Rob Herring <robh@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	Stanislaw Gruszka <stf_xl@wp.pl>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Wenjia Zhang <wenjia@linux.ibm.com>, Will Deacon <will@kernel.org>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	GR-QLogic-Storage-Upstream@marvell.com, alsa-devel@alsa-project.org,
-	ath10k@lists.infradead.org, dmaengine@vger.kernel.org,
-	iommu@lists.linux.dev, kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-	linux-hyperv@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-	linux-media@vger.kernel.org, linux-mips@vger.kernel.org,
-	linux-net-drivers@amd.com, linux-pci@vger.kernel.org,
-	linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
-	linux-scsi@vger.kernel.org, linux-serial@vger.kernel.org,
-	linux-sh@vger.kernel.org, linux-sound@vger.kernel.org,
-	linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, mpi3mr-linuxdrv.pdl@broadcom.com,
-	netdev@vger.kernel.org, sparclinux@vger.kernel.org, x86@kernel.org,
-	Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
-	Matthew Wilcox <willy@infradead.org>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Maxim Kuvyrkov <maxim.kuvyrkov@linaro.org>,
-	Alexey Klimov <klimov.linux@gmail.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>
-Subject: Re: [PATCH v2 00/35] bitops: add atomic find_bit() operations
-Message-ID: <20231207091023.kioii5mgmnphrvl4@quack3>
-References: <20231203192422.539300-1-yury.norov@gmail.com>
- <20231204185101.ddmkvsr2xxsmoh2u@quack3>
- <ZXAFM2VZugdhM3oE@yury-ThinkPad>
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 513D1C9
+	for <linux-wireless@vger.kernel.org>; Thu,  7 Dec 2023 01:39:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+	t=1701941938; x=1702546738; i=zerobeat@gmx.de;
+	bh=UhcMnQsy5nJFQQC+OSXK7fwnJ8FloHzWUwtBedaf7b4=;
+	h=X-UI-Sender-Class:Date:To:Cc:References:From:Subject:
+	 In-Reply-To;
+	b=cGgCszqcpTQBWOyu48ztZrFlFD0LHtrx+sEgTc41sNlv2F8BBvYbwr9pjrHbnBNa
+	 Mg09y0d0JDB1BvE8x8xDqSnTohFLp53l75Oz9R23yjB05J4i8gQrpu87HSyLeERq+
+	 i6Brv1/0etAOOHX0P6Kr3L3/eueB73F7eiKg52fFfC4P0fQS6C9DgqlJrW9egGRJT
+	 kzw8B7ZjiSAV1D2xAxp69dDhlSZ3j2HqpeKIdCg0HGXCxmm/+xquFR0lWWURWZdGi
+	 IqHFcPtPbjcLglVAEVVOl2x4JVmumLKkUs+lKX453dib+4zoW8yorqNhLZNLEB9+r
+	 GR4Tc8Piux6t4UkPmg==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.0.2] ([217.244.252.215]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MnJhO-1rcZZG2IA0-00jLTk; Thu, 07
+ Dec 2023 10:38:58 +0100
+Message-ID: <09b41f73-33c9-4c82-82ad-09c51840149f@gmx.de>
+Date: Thu, 7 Dec 2023 10:38:57 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZXAFM2VZugdhM3oE@yury-ThinkPad>
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spam-Score: 2.70
-X-Spamd-Result: default: False [2.70 / 50.00];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 NEURAL_HAM_SHORT(-0.20)[-1.000];
-	 RCPT_COUNT_GT_50(0.00)[100];
-	 FREEMAIL_TO(0.00)[gmail.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 FORGED_RECIPIENTS(2.00)[m:yury.norov@gmail.com,m:davem@davemloft.net,m:jejb@linux.ibm.com,m:haris.iqbal@ionos.com,m:akinobu.mita@gmail.com,m:akpm@linux-foundation.org,m:andersson@kernel.org,m:bp@alien8.de,m:brauner@kernel.org,m:dave.hansen@linux.intel.com,m:ecree.xilinx@gmail.com,m:edumazet@google.com,m:fenghua.yu@intel.com,m:geert@linux-m68k.org,m:gregory.greenman@intel.com,m:hughd@google.com,m:kuba@kernel.org,m:axboe@kernel.dk,m:jirislaby@kernel.org,m:kvalo@kernel.org,m:kgraul@linux.ibm.com,m:isdn@linux-pingi.de,m:keescook@chromium.org,m:leon@kernel.org,m:mark.rutland@arm.com,m:habetsm.xilinx@gmail.com,m:mchehab@kernel.org,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:peterz@infradead.org,m:dalias@libc.org,m:robh@kernel.org,m:robin.murphy@arm.com,m:seanjc@google.com,m:xueshuai@linux.alibaba.com,m:rostedt@goodmis.org,m:tsbogend@alpha.franken.de,m:tglx@linutronix.de,m:wenjia@linux.ibm.com,m:will@kernel.org,m:alsa-devel@alsa-project.org,m:linux-net-drivers@amd.com,m:mpi3mr-linuxdrv.pdl
- @broadcom.com,m:x86@kernel.org,m:mirsad.todorovac@alu.unizg.hr,m:willy@infradead.org,m:andriy.shevchenko@linux.intel.com,m:maxim.kuvyrkov@linaro.org,m:klimov.linux@gmail.com,m:bvanassche@acm.org,s:s.shtylyov@omp.ru];
-	 BAYES_HAM(-0.00)[40.06%];
-	 ARC_NA(0.00)[];
-	 FROM_HAS_DN(0.00)[];
-	 FREEMAIL_ENVRCPT(0.00)[wp.pl,xs4all.nl];
-	 NEURAL_HAM_LONG(-1.00)[-1.000];
-	 TAGGED_RCPT(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 TO_MATCH_ENVRCPT_SOME(0.00)[];
-	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 MID_RHS_NOT_FQDN(0.50)[];
-	 FREEMAIL_CC(0.00)[suse.cz,vger.kernel.org,davemloft.net,zytor.com,linux.ibm.com,microsoft.com,ionos.com,gmail.com,linux-foundation.org,kernel.org,alien8.de,nvidia.com,opensource.wdc.com,linux.intel.com,suse.de,google.com,intel.com,linux-m68k.org,linuxfoundation.org,xs4all.nl,redhat.com,perex.cz,ziepe.ca,kernel.dk,resnulli.us,linux-pingi.de,chromium.org,arm.com,ellerman.id.au,monstr.eu,suse.com,infradead.org,realtek.com,libc.org,linux.alibaba.com,wp.pl,goodmis.org,alpha.franken.de,linutronix.de,users.sourceforge.jp,marvell.com,alsa-project.org,lists.infradead.org,lists.linux.dev,lists.linux-m68k.org,amd.com,lists.ozlabs.org,broadcom.com,alu.unizg.hr,rasmusvillemoes.dk,linaro.org,acm.org,omp.ru];
-	 RCVD_TLS_ALL(0.00)[];
-	 SUSPICIOUS_RECIPS(1.50)[]
+User-Agent: Mozilla Thunderbird
+Content-Language: de-DE, en-US
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ "Jes.Sorensen@gmail.com" <Jes.Sorensen@gmail.com>
+References: <415ecdaf-eebc-4a9e-9053-4cc999711ad7@gmx.de>
+ <c81f09d43fab416ba7233dd9d5cfcd2d@realtek.com>
+From: ZeroBeat <ZeroBeat@gmx.de>
+Subject: Re: [PATCH] wifiwifi: Realtek: rtl8xxxu Add new device ID
+In-Reply-To: <c81f09d43fab416ba7233dd9d5cfcd2d@realtek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:754EDbtLouSePzN+4aDlzLCbqw0NR763/Nrm/5LAu2Rm32w1ger
+ v52sAKfcV/1g28rLH/9vjrC3wPTloNNTO7wvz8p4kIlqqGlkuu4cJyFTNKKbZL6ukJYm7tm
+ awdyuIMKI+Ep5c89tOR4ZMc2SjGX5eKdR43Zue449ElaQo6q5NNijpNrEmYc3MdATfxu7N6
+ OIjD8dXqOaVBR1v/Mnm8Q==
+UI-OutboundReport: notjunk:1;M01:P0:Lg6PIcTLp+g=;GwCtzRXQq8PVrgHJbjvNdtbVCKz
+ ItNfyCLSZ48pGRUKrsdzM+lTfOXJIUHHh02YPiXAgV1YDMm6dAY34+6UIiAtfK4To8usgyyr1
+ iAKKpvQi6TrvyozYIEZwns3KFQlsrnDFu9baM7t6zhN+GpDl1C0m9qNuTwAM3FdX0joPRhhz3
+ rdQ2Q9RkdQ5SDMFBpzDCVPIK6H5OZHuARimENdOO7GwHmky2ZfU2Yjfgf86QjZvPBNHVl6GK+
+ dGP93XvA1oVEH43nfTmNDoAjMlTR7IBNwkcdhA7WZaLYMixj98nb40qe+Ag5/pH6B7fMpD9Ka
+ OQ/2KQC92pSmR3XMtYfcH2e02O/2xHNfukpAd4sh85hA5S4/5clIG9YVJQuPuT1yMHBdYQeJj
+ 5J4pZ2TXQ90o9TPTzHulZSevv56nEkBS0WbLGK7bEc1oGBeOriInUB+tA8AGocoGqjqU7mO5P
+ 6iH/FqNxLIOZiegtKeT7rzemXJhG0Qg1DIsdBfpmMIKQ0gG7Z1QLfF2eHNQUMtLhFtJtJXgMu
+ X6X1ZgNDIIEF1f1QUT4zwdz3d/R8DfYcjh22kEPMS2BZkqhDeO2vfUI5J/cTq0mrH+ifciNtt
+ GCd1Lsd4M+MTXsgCMW0yadoGnYAki4NFtt7CL6Ct/QBbgimIIse2Bd0US2q8ZPnwUmuguf9ro
+ QhOTlYWCNIzDqQGMx1Tnev8JvafBGdr0vhi82K+cLzL0uyJSvXWYYlJsghGDnZvg4/XVXoc5P
+ /tVOHaJKTCgl3Pfty3QE2n3IgJZBRSUofx+QEXvQU1jJPilOyYfEAJI3iMbPmQNk+WvVAP305
+ ScK96TzaHj242DJgrbUqwR4XvvC2w/TJSXi16BsiVeLa0lm7KBegtk1vOAGDWfovjJdtsCW0V
+ 4rdMlKvGeWDliHMBpWTiUjb2socfIV2HKN7kfDeNxFXZjxkECQPSAsCgmO3uaiL6+9amagLmj
+ 9Bjwm5+7bvx23KpA3guaHfmwYZk=
 
-On Tue 05-12-23 21:22:59, Yury Norov wrote:
-> On Mon, Dec 04, 2023 at 07:51:01PM +0100, Jan Kara wrote:
-> > > This series is a result of discussion [1]. All find_bit() functions imply
-> > > exclusive access to the bitmaps. However, KCSAN reports quite a number
-> > > of warnings related to find_bit() API. Some of them are not pointing
-> > > to real bugs because in many situations people intentionally allow
-> > > concurrent bitmap operations.
-> > > 
-> > > If so, find_bit() can be annotated such that KCSAN will ignore it:
-> > > 
-> > >         bit = data_race(find_first_bit(bitmap, nbits));
-> > 
-> > No, this is not a correct thing to do. If concurrent bitmap changes can
-> > happen, find_first_bit() as it is currently implemented isn't ever a safe
-> > choice because it can call __ffs(0) which is dangerous as you properly note
-> > above. I proposed adding READ_ONCE() into find_first_bit() / find_next_bit()
-> > implementation to fix this issue but you disliked that. So other option we
-> > have is adding find_first_bit() and find_next_bit() variants that take
-> > volatile 'addr' and we have to use these in code like xas_find_chunk()
-> > which cannot be converted to your new helpers.
-> 
-> Here is some examples when concurrent operations with plain find_bit()
-> are acceptable:
-> 
->  - two threads running find_*_bit(): safe wrt ffs(0) and returns correct
->    value, because underlying bitmap is unchanged;
->  - find_next_bit() in parallel with set or clear_bit(), when modifying
->    a bit prior to the start bit to search: safe and correct;
->  - find_first_bit() in parallel with set_bit(): safe, but may return wrong
->    bit number;
->  - find_first_zero_bit() in parallel with clear_bit(): same as above.
-> 
-> In last 2 cases find_bit() may not return a correct bit number, but
-> it may be OK if caller requires any (not exactly first) set or clear
-> bit, correspondingly.
-> 
-> In such cases, KCSAN may be safely silenced.
+Is this correct to commit inline patches?
+Looks for me similar to this one
+https://lore.kernel.org/linux-wireless/20231127162022.518834-2-kvalo@kerne=
+l.org/T/#u
 
-True - but these are special cases. In particular the case in xas_find_chunk()
-is not any of these special cases. It is using find_next_bit() which is can
-be racing with clear_bit(). So what are your plans for such usecase?
 
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+
+subject: [RFC PATCH] wifi: rtl8xxxu: Add new device ID
+
+This patch will add a new device ID (2357:0126)
+Patch will close: https://bugzilla.kernel.org/show_bug.cgi?id=3D218231
+
+
+TP-Link TL-WN8200ND(UN) v3.0
+ID 2357:0126 TP-Link 802.11n NIC
+https://www.tp-link.com/de/home-networking/adapter/tl-wn8200nd/
+Sold in Germany.
+
+tested:
+[  855.204083] usb 1-9.3: New USB device found, idVendor=3D2357, idProduct=
+=3D0126, bcdDevice=3D 2.00
+[  855.204091] usb 1-9.3: New USB device strings: Mfr=3D1, Product=3D2, Se=
+rialNumber=3D3
+[  855.204094] usb 1-9.3: Product: 802.11n NIC
+[  855.204096] usb 1-9.3: Manufacturer: Realtek
+[  855.204097] usb 1-9.3: SerialNumber: 5091E3C3A09F
+[  855.242127] usb 1-9.3: This Realtek USB WiFi dongle (0x2357:0x0126) is =
+untested!
+[  855.242134] usb 1-9.3: Please report results to Jes.Sorensen@gmail.com
+[  859.592016] usb 1-9.3: Dumping efuse for RTL8192EU (0x200 bytes):
+[  859.592024] 00000000: 29 81 00 7c 01 40 03 00 70 34 04 50 14 00 00 00  =
+)..|.@..p4.P....
+[  859.592027] 00000010: 20 20 20 21 21 21 28 28 28 28 28 f0 00 ef ff ff  =
+   !!!(((((.....
+[  859.592028] 00000020: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  =
+................
+[  859.592030] 00000030: ff ff ff ff ff ff ff ff ff ff 2d 2d 2d 2d 2d 2d  =
+..........------
+[  859.592031] 00000040: 2d 2d 2d 2d 2d f0 ef ef ff ff ff ff ff ff ff ff  =
+=2D----...........
+[  859.592032] 00000050: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  =
+................
+[  859.592034] 00000060: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  =
+................
+[  859.592035] 00000070: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  =
+................
+[  859.592036] 00000080: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  =
+................
+[  859.592038] 00000090: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  =
+................
+[  859.592039] 000000a0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  =
+................
+[  859.592040] 000000b0: ff ff ff ff ff ff ff ff a1 1f 1a 00 00 00 ff ff  =
+................
+[  859.592041] 000000c0: ff 01 00 10 00 00 00 ff 00 00 31 ff ff ff ff ff  =
+..........1.....
+[  859.592043] 000000d0: 57 23 26 01 e6 47 02 50 91 e3 c3 a0 9f 09 03 52  =
+W#&..G.P.......R
+[  859.592044] 000000e0: 65 61 6c 74 65 6b 0d 03 38 30 32 2e 31 31 6e 20  =
+ealtek..802.11n
+[  859.592046] 000000f0: 4e 49 43 00 ff ff ff ff ff ff ff ff ff ff ff ff  =
+NIC.............
+[  859.592047] 00000100: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  =
+................
+[  859.592048] 00000110: ff ff ff ff ff ff ff 0d 03 00 05 00 30 00 00 00  =
+............0...
+[  859.592050] 00000120: 00 93 ff ff ff ff ff ff ff ff ff ff ff ff ff ff  =
+................
+[  859.592051] 00000130: f6 a8 98 2d 03 92 98 00 fc 8c 00 11 9b 44 02 0a  =
+...-.........D..
+[  859.592052] 00000140: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  =
+................
+[  859.592053] 00000150: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  =
+................
+[  859.592055] 00000160: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  =
+................
+[  859.592056] 00000170: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  =
+................
+[  859.592057] 00000180: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  =
+................
+[  859.592059] 00000190: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  =
+................
+[  859.592060] 000001a0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  =
+................
+[  859.592061] 000001b0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  =
+................
+[  859.592062] 000001c0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  =
+................
+[  859.592064] 000001d0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  =
+................
+[  859.592065] 000001e0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  =
+................
+[  859.592066] 000001f0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  =
+................
+[  859.592068] usb 1-9.3: RTL8192EU rev B (SMIC) romver 0, 2T2R, TX queues=
+ 3, WiFi=3D1, BT=3D0, GPS=3D0, HI PA=3D0
+[  859.592072] usb 1-9.3: RTL8192EU MAC: 50:91:e3:c3:a0:9f
+[  859.592074] usb 1-9.3: rtl8xxxu: Loading firmware rtlwifi/rtl8192eu_nic=
+.bin
+[  859.600070] usb 1-9.3: Firmware revision 35.7 (signature 0x92e1)
+[  868.683025] rtl8xxxu 1-9.3:1.0 wlp22s0f0u9u3: renamed from wlan0
+
+
+$ iw dev
+phy#1
+	Interface wlp22s0f0u9u3
+		ifindex 4
+		wdev 0x100000001
+		addr 50:91:e3:c3:a0:9f
+		type managed
+		txpower 20.00 dBm
+		multicast TXQ:
+			qsz-byt	qsz-pkt	flows	drops	marks	overlmt	hashcol	tx-bytes	tx-packets
+			0	0	0	0	0	0	0	0		0
+$
+
+
+
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drive=
+rs/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+index 43ee7592bc6e..47b5e6d20e54 100644
+=2D-- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+@@ -7957,6 +7957,8 @@ static const struct usb_device_id dev_table[] =3D {
+  /* found in rtl8192eu vendor driver */
+  {USB_DEVICE_AND_INTERFACE_INFO(0x2357, 0x0107, 0xff, 0xff, 0xff),
+         .driver_info =3D (unsigned long)&rtl8192eu_fops},
++{USB_DEVICE_AND_INTERFACE_INFO(0x2357, 0x0126, 0xff, 0xff, 0xff),
++       .driver_info =3D (unsigned long)&rtl8192eu_fops},
+  {USB_DEVICE_AND_INTERFACE_INFO(0x2019, 0xab33, 0xff, 0xff, 0xff),
+         .driver_info =3D (unsigned long)&rtl8192eu_fops},
+  {USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0x818c, 0xff, 0xff=
+, 0xff),
+
+Signed-off-by: Michael Dieckmann <zerobeat@gmx.de>
+=2D--
+  drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c |  2 ++
+
+
+
+
+
+Am 07.12.23 um 09:52 schrieb Ping-Ke Shih:
+>
+>> -----Original Message-----
+>> From: ZeroBeat <ZeroBeat@gmx.de>
+>> Sent: Thursday, December 7, 2023 4:46 PM
+>> To: Ping-Ke Shih <pkshih@realtek.com>
+>> Cc: linux-wireless@vger.kernel.org; Jes.Sorensen@gmail.com
+>> Subject: Re: [PATCH] wifiwifi: Realtek: rtl8xxxu Add new device ID
+>>
+>> Better now?
+>>
+>
+> Your patch isn't much like others. Please check patches [1] made by othe=
+rs.
+>
+> [1] https://lore.kernel.org/linux-wireless/
+>
+>
 
