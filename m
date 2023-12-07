@@ -1,120 +1,148 @@
-Return-Path: <linux-wireless+bounces-538-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-539-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9E1C808708
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Dec 2023 12:52:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1929808741
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Dec 2023 13:02:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A480828372A
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Dec 2023 11:52:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F1821C21365
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Dec 2023 12:02:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 210DF3308F;
-	Thu,  7 Dec 2023 11:52:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08F3C39ADE;
+	Thu,  7 Dec 2023 12:02:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=zerobeat@gmx.de header.b="kJj1mOxC"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e1kHBT/7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9428B1731
-	for <linux-wireless@vger.kernel.org>; Thu,  7 Dec 2023 03:52:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-	t=1701949918; x=1702554718; i=zerobeat@gmx.de;
-	bh=yyQQor8VqlyfEyy8C7JN+1AdgRagJoQvPeCciTQsJyY=;
-	h=X-UI-Sender-Class:Date:Subject:From:To:Cc:References:
-	 In-Reply-To;
-	b=kJj1mOxCG/Grof/l1oSkNm2Oz4ARLv6pf4I7g2gbBC8Y94pEiZQ8jLpvUGE55peW
-	 ccVIisCQJ8tDQt/4re4JBV58Epx3B/UHIeAShYaB7N0HyjXKYNU2mRUa5F607akcP
-	 vF6WXEzh6/1PMZ5GlRNgk5+jOmr8e2tghpsKJQrRKE3LwqUjY9qeQcKGFJXtuePcL
-	 V8KR5q7KsUx/m+MpUWmr/hIDMyhdXPPjKv54d46oKsjhAyNBqeIDdy0q798oZkAj6
-	 W+jxdUY5M0Ep1QhXXfcZGMu5raxmohOfgoC4+WDhJzkqqmoqosAMb4aHjiHQrt/FQ
-	 lv8iDgHzrpRUilxMVQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.0.2] ([217.244.252.215]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MLzBp-1qtOv91d6v-00I0B3; Thu, 07
- Dec 2023 12:51:58 +0100
-Message-ID: <bbbecb92-82ae-4920-b26a-f23f257c4b46@gmx.de>
-Date: Thu, 7 Dec 2023 12:51:58 +0100
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD67CA9;
+	Thu,  7 Dec 2023 04:02:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1701950562; x=1733486562;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=jjebZ/3jB6yBXogRzbFTiLh94dgst6N2OkVomZJsYDM=;
+  b=e1kHBT/7BJgXcqzrs/jrvqLQ4Yp52BY+Gy3o52oUg5sNOHkONa3UZP/m
+   I7E09f+JZOkTb7mq0yVAQL1lKtagUbboirWmr7V6ORQ9ISiz6EhPGEldF
+   mvd5SHA2v7JJRxJEHzoxZ7S3iYkFiQ9N6amZ124j/0u8xPCpI/VU56NU/
+   5qccJlkaYVn3YSkT0JNH2rdX65eCbKRx4ZBj0lxFVPNGUaNBWCS8jlXne
+   MnwP6vTE7R6zrylT9QIh4HtBoOi7LseKFlq5ktOfywZOfgm6HotudyKR9
+   SqMFBrWeS7zSKFD7hgNGqYmfwmI1+9naaPTPThtallN4OvuV/qZYALqDO
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10916"; a="12933467"
+X-IronPort-AV: E=Sophos;i="6.04,256,1695711600"; 
+   d="scan'208";a="12933467"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2023 04:02:42 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10916"; a="1103177243"
+X-IronPort-AV: E=Sophos;i="6.04,256,1695711600"; 
+   d="scan'208";a="1103177243"
+Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
+  by fmsmga005.fm.intel.com with ESMTP; 07 Dec 2023 04:02:36 -0800
+Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rBD5O-000CCM-02;
+	Thu, 07 Dec 2023 12:02:34 +0000
+Date: Thu, 7 Dec 2023 20:01:34 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ma Jun <Jun.Ma2@amd.com>, amd-gfx@lists.freedesktop.org,
+	lenb@kernel.org, hdegoede@redhat.com, johannes@sipsolutions.net,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, alexander.deucher@amd.com, Lijo.Lazar@amd.com,
+	mario.limonciello@amd.com, netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, platform-driver-x86@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, majun@amd.com, Ma Jun <Jun.Ma2@amd.com>
+Subject: Re: [PATCH v15 1/9] Documentation/driver-api: Add document about
+ WBRF mechanism
+Message-ID: <202312071941.JXQXsK1C-lkp@intel.com>
+References: <20231206072947.1331729-2-Jun.Ma2@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifiwifi: Realtek: rtl8xxxu Add new device ID
-From: ZeroBeat <ZeroBeat@gmx.de>
-To: linux-wireless@vger.kernel.org
-Cc: Jes.Sorensen@gmail.com
-References: <5fe2c3dd-5eb8-45df-9717-87808537ff6b@gmx.de>
-Content-Language: de-DE, en-US
-In-Reply-To: <5fe2c3dd-5eb8-45df-9717-87808537ff6b@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:SZ8/6tBR2x6DndejsZp4GRCA5NyoRNOywhsksGdiZP8y/LRXe8Z
- Hftsmksux5ULXM+cvc2VnIY+TII8TK8972Yb1nAKTXLsQRa+oRxyyPb/P6bxPV+DwjiqUtQ
- w2dbfxmTt860pVB7RPtEGugHPmDk7EWnBtgj5NZddIlBrKQDQpzLqum5MT19UWTBRbsv9Xd
- IkTX7LUGz6JGVARRjsLDw==
-UI-OutboundReport: notjunk:1;M01:P0:Kd26Csq3+uo=;jMeOEiQWV/cQe2gUtsytUOVIssT
- i7OtWto3GqEMwbw7eAIL9AUzQzBrumluttYA1K1rUJuieZf1RG7EjS5OvbJDDqMAihy2XM+Nu
- DGIRAoJaejIRNagE0+lA8PW85DOmeOLT3keMcgEwPMj705KqobZuNG8bldJT5OIor1hjyq1eU
- SetBHct26hkaDvxiyb8Yg4XHapTTXXnabb4NyWcW0MUL2JHoy8OIGevf+w6YvS0nKIvMp0lOu
- 411eH3zLbjX5YFUXkUjJjGZi6wR7XxxjD3MVjOetbs1bL7NUbsYhAr3v3DlsfpSh4AhuJPBb/
- YnkwlQrTYdlUnGfBjxByryGcJhssGWs4zeHhSNXVGCy8GU89hD2wgK5fxLA+xbOydP30U+fNy
- GAhlasycgnbDW9cqhTi1vM/n9akEAPCby+q/a7ev93gNlPFd0i6oC8mRrPi1DKNLlvrXvExBC
- cT03rws96bEONF4yQXAn8K7CGlHebIIAPVpGj5mZG4mibNg1qiSCXdlXx7nEMFY+rknR1L3L3
- PPGQhW2rWncCGYoiKNNciUDcEQ8v+5g8qCsGxqxm0wZTSVul+Bf2Ichs0Jb0+IM9HtbXS4ehh
- 5rjgAgjrku92cBoKJQ/c7Fb/Q94phc+hx6wsT2wc7zaVGimrbfG4KpZ1FrPn8wGioKvawqDIo
- uStxZAEwFUbMW+SYDHJWrIvandwL/jEd1N9Nb7i/KGPt3H7mGOujPtgoDEc8eOCaJBhwgcCv4
- VdrWtlMY1zsMb/znKVaM/syUgef6S8KdH9fSFklEqHYdH/K8e4dZRXUSAJnktLecxLAANWNjU
- 5nwn0xiY1UBl4xGXlblCHqaNx1lqll5wiyL8qudrT97KpWBwVisoop/qTX9Mky/fX/SNiITZK
- TF0ovh8gV2lLpciOcO3CLE9xrY2QIUTfFmPRyIj7HG4EY4RVk4URpucgMEfBqV6mnRJjKVpYj
- csMRsOMl2J2C+TLwJWt6DUAerac=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231206072947.1331729-2-Jun.Ma2@amd.com>
 
-Please delete the suggestion.
-Further changes are needed to ensure the driver runs stable in combination=
- with
-TL-WN8200ND(UN) v3.0.
+Hi Ma,
 
+kernel test robot noticed the following build warnings:
 
+[auto build test WARNING on linus/master]
+[also build test WARNING on v6.7-rc4 next-20231207]
+[cannot apply to drm-misc/drm-misc-next wireless-next/main wireless/main]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
+url:    https://github.com/intel-lab-lkp/linux/commits/Ma-Jun/Documentation-driver-api-Add-document-about-WBRF-mechanism/20231206-153327
+base:   linus/master
+patch link:    https://lore.kernel.org/r/20231206072947.1331729-2-Jun.Ma2%40amd.com
+patch subject: [PATCH v15 1/9] Documentation/driver-api: Add document about WBRF mechanism
+reproduce: (https://download.01.org/0day-ci/archive/20231207/202312071941.JXQXsK1C-lkp@intel.com/reproduce)
 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202312071941.JXQXsK1C-lkp@intel.com/
 
-Am 06.12.23 um 12:48 schrieb ZeroBeat:
-> From: Michael Dieckmann (https://github.com/ZerBea)
-> To: linux-wireless
->
-> Subject: [PATCH] wifi: Realtek: rtl8xxxu Add new device ID
->
-> This patch will add a new device ID.
-> Patch will close: https://bugzilla.kernel.org/show_bug.cgi?id=3D218231
->
->
-> TP-Link TL-WN8200ND(UN) v3.0
-> ID 2357:0126 TP-Link 802.11n NIC
-> https://www.tp-link.com/de/home-networking/adapter/tl-wn8200nd/
-> Sold in Germany.
->
->
-> --- linux/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c.orig=C2=
-=A0=C2=A0=C2=A0 2023-12-06 12:38:51.929484252 +0100
-> +++ linux/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c=C2=A0=C2=
-=A0=C2=A0 2023-12-06 11:54:12.524302276 +0100
-> @@ -7957,6 +7957,8 @@ static const struct usb_device_id dev_ta
->  =C2=A0/* found in rtl8192eu vendor driver */
->  =C2=A0{USB_DEVICE_AND_INTERFACE_INFO(0x2357, 0x0107, 0xff, 0xff, 0xff),
->  =C2=A0=C2=A0=C2=A0=C2=A0 .driver_info =3D (unsigned long)&rtl8192eu_fop=
-s},
-> +{USB_DEVICE_AND_INTERFACE_INFO(0x2357, 0x0126, 0xff, 0xff, 0xff),
-> +=C2=A0=C2=A0=C2=A0 .driver_info =3D (unsigned long)&rtl8192eu_fops},
->  =C2=A0{USB_DEVICE_AND_INTERFACE_INFO(0x2019, 0xab33, 0xff, 0xff, 0xff),
->  =C2=A0=C2=A0=C2=A0=C2=A0 .driver_info =3D (unsigned long)&rtl8192eu_fop=
-s},
->  =C2=A0{USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0x818c, 0xf=
-f, 0xff, 0xff),
->
->
-> Thanks for maintaining this driver.
-> Best regards
-> Michael Dieckmann
+All warnings (new ones prefixed by >>):
+
+>> Documentation/driver-api/wbrf.rst:28: WARNING: Unexpected indentation.
+>> Documentation/driver-api/wbrf.rst:61: WARNING: Block quote ends without a blank line; unexpected unindent.
+>> Documentation/driver-api/wbrf.rst: WARNING: document isn't included in any toctree
+
+vim +28 Documentation/driver-api/wbrf.rst
+
+    25	
+    26	Producer: such component who can produce high-powered radio frequency
+    27	Consumer: such component who can adjust its in-use frequency in
+  > 28	           response to the radio frequencies of other components to
+    29	           mitigate the possible RFI.
+    30	
+    31	To make the mechanism function, those producers should notify active use
+    32	of their particular frequencies so that other consumers can make relative
+    33	internal adjustments as necessary to avoid this resonance.
+    34	
+    35	ACPI interface
+    36	==============
+    37	
+    38	Although initially used by for wifi + dGPU use cases, the ACPI interface
+    39	can be scaled to any type of device that a platform designer discovers
+    40	can cause interference.
+    41	
+    42	The GUID used for the _DSM is 7B7656CF-DC3D-4C1C-83E9-66E721DE3070.
+    43	
+    44	3 functions are available in this _DSM:
+    45	
+    46	* 0: discover # of functions available
+    47	* 1: record RF bands in use
+    48	* 2: retrieve RF bands in use
+    49	
+    50	Driver programming interface
+    51	============================
+    52	
+    53	.. kernel-doc:: drivers/platform/x86/amd/wbrf.c
+    54	
+    55	Sample Usage
+    56	=============
+    57	
+    58	The expected flow for the producers:
+    59	1. During probe, call `acpi_amd_wbrf_supported_producer` to check if WBRF
+    60	   can be enabled for the device.
+  > 61	2. On using some frequency band, call `acpi_amd_wbrf_add_remove` with 'add'
+    62	   param to get other consumers properly notified.
+    63	3. Or on stopping using some frequency band, call
+    64	   `acpi_amd_wbrf_add_remove` with 'remove' param to get other consumers notified.
+    65	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
