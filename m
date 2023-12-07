@@ -1,54 +1,55 @@
-Return-Path: <linux-wireless+bounces-471-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-473-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9E558069B5
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 09:35:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBCDE806A12
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 09:49:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 698E01F215AF
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 08:35:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D6CD1C20F76
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Dec 2023 08:49:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B94AE1947C;
-	Wed,  6 Dec 2023 08:35:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0218619455;
+	Wed,  6 Dec 2023 08:49:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GB6qQH2n"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CY+WjroR"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E9AD1A4
-	for <linux-wireless@vger.kernel.org>; Wed,  6 Dec 2023 00:35:40 -0800 (PST)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF537109
+	for <linux-wireless@vger.kernel.org>; Wed,  6 Dec 2023 00:49:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1701851740; x=1733387740;
+  t=1701852569; x=1733388569;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=6PnsMg4rP7Gr5XYlr9YFhOvgN9KD9C/P5ep/0T+MY/c=;
-  b=GB6qQH2nqiky7GNTRCU7aL14tRKVDYXoJ7L3GVL8hFgXnjxCcDBPX48W
-   6KWRoxfatZY/69VufAiaV/Vx6ymopaFDXMle/x25UmtE0pgxj/V1xd0PS
-   gqagLPWb6jEtVa9AjE/2mebMWpsFpsuiBprBCIWooWzb19YIbq5GzmJSU
-   /nFBUDT+g+63xaAJC4BeGXU/xnzeY7B68PdYcXCcak3aRi8/hO8JDsnmE
-   nKlBesgX/mK4jaeAPEjSJr/GhHtcBJrw0LbvE6HomKQyYXWtoYBbMaVdg
-   l1cQefz2SQJu9rK6od53wkwAjqVsHjquPmhhtfI1C8YT1vu2SBpRzLmPZ
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10915"; a="397915212"
+  bh=IeHX6Wu/w+NO+M0i+a2CEmxIM81e8VaERENzim3fk4U=;
+  b=CY+WjroRc5uOM9xP+j+4ufjEceneq2gh8k460Q5YmBJI0Ik1xv8uKVXQ
+   q6VKeU0dERqmd/f/l4tbiigynU/d2GMGaMhlSiNauvDvIW2UObGClxyEk
+   7ctWxPDb/TSSmAz6PPU4o5M87EjGvsCQQppena1k40FYAtqrAQZ1757o7
+   smkMeEOMd8hcZHTwzG3lACAz98X8t5nupI9XU550n6ove9pKPp+trBb6H
+   K8uWcU1YcM2SMeYkyHN4AWb2Ld/hxRFiELkRPJ7T33Jem13tt+7f6abSc
+   ZWAzZgvwf97emUC09hDxbCcegG+yhgh7e64pUXIEddZrE08ioO0kuaOIk
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10915"; a="397916493"
 X-IronPort-AV: E=Sophos;i="6.04,254,1695711600"; 
-   d="scan'208";a="397915212"
+   d="scan'208";a="397916493"
 Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2023 00:35:39 -0800
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2023 00:49:29 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10915"; a="805572477"
+X-IronPort-AV: E=McAfee;i="6600,9927,10915"; a="805575339"
 X-IronPort-AV: E=Sophos;i="6.04,254,1695711600"; 
-   d="scan'208";a="805572477"
+   d="scan'208";a="805575339"
 Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2023 00:35:38 -0800
-From: miriam.rachel.korenblit@intel.com
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2023 00:49:27 -0800
+From: Miri@web.codeaurora.org, Korenblit@web.codeaurora.org,
+	miriam.rachel.korenblit@intel.com
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Subject: [PATCH 00/13] wifi: iwlwifi: updates - 2023-12-06
-Date: Thu,  7 Dec 2023 04:35:49 +0200
-Message-Id: <20231207023602.968890-1-miriam.rachel.korenblit@intel.com>
+Date: Thu,  7 Dec 2023 04:50:05 +0200
+Message-Id: <20231207025018.1022929-1-miriam.rachel.korenblit@intel.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -58,7 +59,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
-X-Spam-Level: *
+X-Spam-Level: ****
 
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
@@ -70,7 +71,6 @@ It contains a few bugfixes and cleanups.
 
 Thanks,
 Miri
-
 
 Avraham Stern (1):
   wifi: iwlwifi: avoid a NULL pointer dereference
