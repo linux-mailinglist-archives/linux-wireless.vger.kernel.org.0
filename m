@@ -1,147 +1,107 @@
-Return-Path: <linux-wireless+bounces-578-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-579-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4779C809FEB
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Dec 2023 10:50:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9421280A697
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Dec 2023 16:07:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C6CC281566
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Dec 2023 09:50:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C56C81C209D4
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Dec 2023 15:07:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9918612B74;
-	Fri,  8 Dec 2023 09:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98C07208D5;
+	Fri,  8 Dec 2023 15:07:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dJfliCgu"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E7RZkBxi"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B25012B72
-	for <linux-wireless@vger.kernel.org>; Fri,  8 Dec 2023 09:50:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DD36C433C7;
-	Fri,  8 Dec 2023 09:50:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702029048;
-	bh=L9DxrpPFg0VTqK80YUh2VKclrBVQGECuF1G7kvWyV08=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dJfliCguy5HYrm4dng/CDcIi4Poly96g1Yf1IcD9+MxktxlX+kuhFvXFJkt2CsDZv
-	 aTzTNiwJ8JcgBtiwJNw/OwE4jb4nuhDkx1wvGtjPOTUdG+IyLOPqRLK/VWnbqGKg1x
-	 GvnacppmAvOc6FaDcz4W6tr0ssIqmHMSQpOBeFc65EDNM05Xwrww1RVFm6k3MzxAeB
-	 IWUDviA31y7+oz2A9xfl8bx+FE6G555wd5I8WEg/FExInujs34l3gKCsjyx0KKB+0l
-	 wLXC0TuZDRNFGYnZ/27xz5XbSoWXheu78rsO39fx0DdumjrZUhKZVh5J3XdWsuR8tV
-	 vLOaerldC/MmA==
-Date: Fri, 8 Dec 2023 10:50:45 +0100
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: Felix Fietkau <nbd@nbd.name>
-Cc: linux-wireless@vger.kernel.org, kvalo@kernel.org
-Subject: Re: [PATCH wireless] wifi: mt76: fix crash with WED rx support
- enabled
-Message-ID: <ZXLm9Xx5kBpRDwmY@lore-desk>
-References: <20231208075004.69843-1-nbd@nbd.name>
+Received: from mail-oa1-x2e.google.com (mail-oa1-x2e.google.com [IPv6:2001:4860:4864:20::2e])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B9FE10DE
+	for <linux-wireless@vger.kernel.org>; Fri,  8 Dec 2023 07:07:47 -0800 (PST)
+Received: by mail-oa1-x2e.google.com with SMTP id 586e51a60fabf-1fa37df6da8so1272423fac.2
+        for <linux-wireless@vger.kernel.org>; Fri, 08 Dec 2023 07:07:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1702048066; x=1702652866; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=k/5sf7YXHl59eaNcPPevpGlaZPuPIosZsE/gU2DlAFg=;
+        b=E7RZkBxiYrQvV48hibVRStrxdhESoWqOCvGF5Mq3uJCb8+WWAp2t/+5gctftSltLP/
+         DR2WEomDZb27jkWy4Fbq9JpoL+ZkxrwcF1Qixz/AmpF1U/4Lv8Y41iy2iBufaSmL7Lcj
+         Yy12j5d6jc27jEljD5DUdOvTIzUZDvZcwgS6Ygkd+Ylnp7iX5/J2J9zg3h/v7w7X4yKo
+         +XaSW/t8vK/qhq+Qmn/t8wtRPYKWwL5N8IQQ8L31yB7HRcwAOfIgP3Aqh9nk8jQNvtqk
+         5UuCRW1oFWFPCK5wLOoifpfzagA01pyPVIQJpbbv0Ue1XDFPAtSwBd1nM1ihAnr8mBtS
+         wyBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702048066; x=1702652866;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=k/5sf7YXHl59eaNcPPevpGlaZPuPIosZsE/gU2DlAFg=;
+        b=nYSL1efO7XgDW9QOsT9S5jI2Oi8SMpBkGIaZfi1MrYdX3SKYRbVonZQMuvShVb1XAf
+         KC9j+bdo7r6Kl9m68dRwtz704VBNeraNoOPU1u96Du6BdomxBQaB+YUjPoOC2eab5fDF
+         ECL3NPlzjDINzdlSrkp59vn3wrfIP2xWH4U+VOYklvJKhzkKe07p+Zx2q5vk1xGoE1LA
+         rRtG7zzwMUxCYuQF03/VNzIgKyLXXR93FAs4ykL1ZEJ5PxytK5FYSfDcrPtjBvOeFX7c
+         nay9Z6N8AWIVzLhkCssU0E7rThiXUSdDE86ZtuTEAveqZ+wk9HrRnQR0Kpo2u0FYdKWr
+         WDGA==
+X-Gm-Message-State: AOJu0YyrB+3Lk5DrPy0rr6mnLn1Uj0ahfrstPOLkvcp9YUAl1dwlhTwn
+	kvmB2FzGTHhPB6PZfHUF3BB7BzGb2pc=
+X-Google-Smtp-Source: AGHT+IGvSNLI0aeJvIZGZwpycO3tWJIekTHhd9WvcrKAphJBoStbR2q1LXMfgKL9EwAiLGSdsTRF6w==
+X-Received: by 2002:a05:6870:7b48:b0:1ff:a89:58a6 with SMTP id ji8-20020a0568707b4800b001ff0a8958a6mr239240oab.75.1702048066269;
+        Fri, 08 Dec 2023 07:07:46 -0800 (PST)
+Received: from localhost.localdomain ([75.28.21.198])
+        by smtp.gmail.com with ESMTPSA id yl13-20020a05687c218d00b001fb17559927sm425636oab.48.2023.12.08.07.07.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 Dec 2023 07:07:46 -0800 (PST)
+From: Chris Morgan <macroalpha82@gmail.com>
+To: linux-wireless@vger.kernel.org
+Cc: kvalo@kernel.org,
+	pkshih@realtek.com,
+	Chris Morgan <macromorgan@hotmail.com>
+Subject: [PATCH] wifi: rtw88: Use random MAC when efuse MAC invalid
+Date: Fri,  8 Dec 2023 09:07:39 -0600
+Message-Id: <20231208150739.129753-1-macroalpha82@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="tGMiBgMY/Bp2dzE7"
-Content-Disposition: inline
-In-Reply-To: <20231208075004.69843-1-nbd@nbd.name>
+Content-Transfer-Encoding: 8bit
 
+From: Chris Morgan <macromorgan@hotmail.com>
 
---tGMiBgMY/Bp2dzE7
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+When the MAC address read from the efuse data is invalid, warn the
+user and use a random MAC address instead.
 
-> If WED rx is enabled, rx buffers are added to a buffer pool that can be
-> filled from multiple page pools. Because buffers freed from rx poll are
-> not guaranteed to belong to the processed queue's page pool, lockless
-> caching must not be used in this case.
+On a device I am currently using (Anbernic RG-ARC) with a rtw8821cs
+the efuse appears to be incompletely/improperly programmed. The MAC
+address reads as ff:ff:ff:ff:ff:ff. When networkmanager attempts to
+initiate a connection (and I haven't hard-coded a MAC address or
+set it to random) it fails to establish a connection.
 
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
+---
+ drivers/net/wireless/realtek/rtw88/main.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
->=20
-> Cc: stable@vger.kernel.org
-> Fixes: 2f5c3c77fc9b ("wifi: mt76: switch to page_pool allocator")
-> Signed-off-by: Felix Fietkau <nbd@nbd.name>
-> ---
->  drivers/net/wireless/mediatek/mt76/dma.c | 10 ++++++----
->  1 file changed, 6 insertions(+), 4 deletions(-)
->=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/dma.c b/drivers/net/wirel=
-ess/mediatek/mt76/dma.c
-> index 511fe7e6e744..68ad915203aa 100644
-> --- a/drivers/net/wireless/mediatek/mt76/dma.c
-> +++ b/drivers/net/wireless/mediatek/mt76/dma.c
-> @@ -783,7 +783,7 @@ mt76_dma_rx_reset(struct mt76_dev *dev, enum mt76_rxq=
-_id qid)
-> =20
->  static void
->  mt76_add_fragment(struct mt76_dev *dev, struct mt76_queue *q, void *data,
-> -		  int len, bool more, u32 info)
-> +		  int len, bool more, u32 info, bool allow_direct)
->  {
->  	struct sk_buff *skb =3D q->rx_head;
->  	struct skb_shared_info *shinfo =3D skb_shinfo(skb);
-> @@ -795,7 +795,7 @@ mt76_add_fragment(struct mt76_dev *dev, struct mt76_q=
-ueue *q, void *data,
-> =20
->  		skb_add_rx_frag(skb, nr_frags, page, offset, len, q->buf_size);
->  	} else {
-> -		mt76_put_page_pool_buf(data, true);
-> +		mt76_put_page_pool_buf(data, allow_direct);
->  	}
-> =20
->  	if (more)
-> @@ -815,6 +815,7 @@ mt76_dma_rx_process(struct mt76_dev *dev, struct mt76=
-_queue *q, int budget)
->  	struct sk_buff *skb;
->  	unsigned char *data;
->  	bool check_ddone =3D false;
-> +	bool allow_direct =3D !mt76_queue_is_wed_rx(q);
->  	bool more;
-> =20
->  	if (IS_ENABLED(CONFIG_NET_MEDIATEK_SOC_WED) &&
-> @@ -855,7 +856,8 @@ mt76_dma_rx_process(struct mt76_dev *dev, struct mt76=
-_queue *q, int budget)
->  		}
-> =20
->  		if (q->rx_head) {
-> -			mt76_add_fragment(dev, q, data, len, more, info);
-> +			mt76_add_fragment(dev, q, data, len, more, info,
-> +					  allow_direct);
->  			continue;
->  		}
-> =20
-> @@ -884,7 +886,7 @@ mt76_dma_rx_process(struct mt76_dev *dev, struct mt76=
-_queue *q, int budget)
->  		continue;
-> =20
->  free_frag:
-> -		mt76_put_page_pool_buf(data, true);
-> +		mt76_put_page_pool_buf(data, allow_direct);
->  	}
-> =20
->  	mt76_dma_rx_fill(dev, q, true);
-> --=20
-> 2.41.0
->=20
->=20
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index 4a33d2e47f33..6d22628129d0 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -2008,6 +2008,11 @@ static int rtw_chip_efuse_info_setup(struct rtw_dev *rtwdev)
+ 	efuse->ext_pa_5g = efuse->pa_type_5g & BIT(0) ? 1 : 0;
+ 	efuse->ext_lna_2g = efuse->lna_type_5g & BIT(3) ? 1 : 0;
+ 
++	if (!is_valid_ether_addr(efuse->addr)) {
++		eth_random_addr(efuse->addr);
++		dev_warn(rtwdev->dev, "efuse MAC invalid, using random\n");
++	}
++
+ out_disable:
+ 	rtw_chip_efuse_disable(rtwdev);
+ 
+-- 
+2.34.1
 
---tGMiBgMY/Bp2dzE7
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCZXLm9QAKCRA6cBh0uS2t
-rC5oAQC2nXTmX8376jlL9OSpVjDymjH8FNbX4BDUDKlymEtS1QD/elhhDUgbxmQp
-XqlSBSDw47VbaFgcXo2OA3RZN71hCQI=
-=r7Qu
------END PGP SIGNATURE-----
-
---tGMiBgMY/Bp2dzE7--
 
