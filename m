@@ -1,104 +1,108 @@
-Return-Path: <linux-wireless+bounces-582-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-560-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C990880A8DA
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Dec 2023 17:27:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB38E80955E
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Dec 2023 23:31:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68FD2B20B2A
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Dec 2023 16:27:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0AFA1F2108B
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Dec 2023 22:31:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5145374EC;
-	Fri,  8 Dec 2023 16:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A74657302;
+	Thu,  7 Dec 2023 22:31:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E/Wgz/m3"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7744A19A2;
-	Fri,  8 Dec 2023 08:27:31 -0800 (PST)
-Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-6d9f514f796so256476a34.3;
-        Fri, 08 Dec 2023 08:27:31 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702052850; x=1702657650;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=o9ER5qIprpwLYgCbIQAvqPacoHFK4xi4mCA2pH+f0WM=;
-        b=YiAYbI9hGXLuDpo/mBPT432mwQk6/f35zQvDWfP2+WCI6dSV9KQXIrkvjFwrtsFjxn
-         qExgaTU409RicCepC5szRM+PXdq53Ef1ICHtwciTVZjHJANFlLQWNaurqwMB5qBnIqrt
-         eK6tFcPuYbGxOh6HizRQgXjsJdf5Vh7ELv6VXumVR3mUyEBaHnPhfu8cAlSdE3OFeXl2
-         dcYf4u9dfQ3Mc2efiii/+3tmwEZ5Rz8UCmB4c/srKCxigh/mWKrjKARi5HR2++udB56J
-         L1PbTY+Ndd+njcjGl3FujNpG76jXaB/gBaYJ9WfBTAcNRe7iStSB16YxRw+WGAPoK4Yf
-         ac3A==
-X-Gm-Message-State: AOJu0YxRbAnFfpzOZiAyvtstH+U5Fd5CRxqGAJISrm8pd8NiV6pgTabG
-	0zzczR0B3rJehnHc9ExLNrLtz/0GMA==
-X-Google-Smtp-Source: AGHT+IGoCBIdUoYHkFT9QQgUxa2omYYXOQwXX4AzFygvyqUJIp41c4SIZsAORINlyDflchYMlvWtxg==
-X-Received: by 2002:a9d:7758:0:b0:6d9:dd14:3a75 with SMTP id t24-20020a9d7758000000b006d9dd143a75mr304450otl.70.1702052850656;
-        Fri, 08 Dec 2023 08:27:30 -0800 (PST)
-Received: from herring.priv (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id e7-20020a0568301e4700b006d87df1c53dsm339278otj.65.2023.12.08.08.27.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Dec 2023 08:27:30 -0800 (PST)
-Received: (nullmailer pid 1634379 invoked by uid 1000);
-	Fri, 08 Dec 2023 16:27:29 -0000
-Date: Fri, 8 Dec 2023 10:27:29 -0600
-From: Rob Herring <robh@kernel.org>
-To: Peter Chiu <chui-hao.chiu@mediatek.com>
-Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo.bianconi@redhat.com>, Ryder Lee <ryder.Lee@mediatek.com>, Evelyn Tsai <evelyn.tsai@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>, Sam Shih <sam.shih@mediatek.com>, linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v2] dt-bindings: net: wireless: mt76: add interrupts
- description for MT7986
-Message-ID: <20231208162729.GA1575094-robh@kernel.org>
-References: <20231204091156.6535-1-chui-hao.chiu@mediatek.com>
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88C76A4
+	for <linux-wireless@vger.kernel.org>; Thu,  7 Dec 2023 14:31:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1701988275; x=1733524275;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=9c4OqDL9uM1O4qAKCxZ63Qu3L+Sv5X7NG+CW5iiGSqA=;
+  b=E/Wgz/m31bjKNmAk9kxgXgmm54rSXc1+vWfmhHLOxqm19zcjlq9tzMue
+   +cYMZANqkWF5C2E//NbdZGfiL6UlyPPt78emdXSpcQUlpq2EnLwpu1JCJ
+   nMN01sIzlfF6F812s0VGvZ9kUyjxrpzve64NahRYqfW4cKHcul+gWYdRH
+   9rUZ5u8pxZ+g5qrqvkqJR2psbeFlqZVFnhgcGpvziV8jJyhz5gPAeQLO5
+   /GcRNnyVUZiVT9/PYWEw2vR/qZFSHZg+o/At952RUV4161hFc/GaaAOz9
+   dvpqIZ/Se7rp3pbwkmHWNt8MFLQ20dqRpo7D2V8FfskvmsGWDnd0IdNBo
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10917"; a="1396132"
+X-IronPort-AV: E=Sophos;i="6.04,258,1695711600"; 
+   d="scan'208";a="1396132"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2023 14:31:15 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10917"; a="721636313"
+X-IronPort-AV: E=Sophos;i="6.04,258,1695711600"; 
+   d="scan'208";a="721636313"
+Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2023 14:31:13 -0800
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org,
+	Johannes Berg <johannes.berg@intel.com>,
+	Brian Norris <briannorris@chromium.org>
+Subject: [PATCH 13/13 v2] wifi: iwlwifi: pcie: add another missing bh-disable for rxq->lock
+Date: Fri,  8 Dec 2023 18:32:02 +0200
+Message-Id: <20231208183100.e79ad3dae649.I8f19713c4383707f8be7fc20ff5cc1ecf12429bb@changeid>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231204091156.6535-1-chui-hao.chiu@mediatek.com>
+Organization: Intel Israel (74) Limited
+Content-Transfer-Encoding: 8bit
+X-Spam-Level: ***
 
-On Mon, Dec 04, 2023 at 05:11:56PM +0800, Peter Chiu wrote:
-> The mt7986 can support four interrupts to distribute the interrupts
-> to different CPUs.
-> 
-> Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
-> ---
-> v2: Change to use description instead of using items.
+From: Johannes Berg <johannes.berg@intel.com>
 
-Not what I said to do...
+Hi,
+I Added the 'wifi' prefix
 
-Let me spell it out:
+Thanks,
+Miri
 
-  interrupts:
-    minItems: 1
-      items:
-        - description: major interrupt for rings
-        - description: addditional interrupt for ring 19
-        - description: addditional interrupt for ring 4
-        - description: addditional interrupt for ring 5
+Evidently I had only looked at all the ones in rx.c, and missed this.
+Add bh-disable to this use of the rxq->lock as well.
 
-if:
-  properties:
-    compatible:
-      contains:
-        enum:
-          - mediatek,mt7986-wmac
-then:
-  properties:
-    interrupts:
-      minItems: 4
-else:
-  properties:
-    interrupts:
-      maxItems: 1
+Fixes: 25edc8f259c7 ("iwlwifi: pcie: properly implement NAPI")
+Reported-by: Brian Norris <briannorris@chromium.org>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+---
+ drivers/net/wireless/intel/iwlwifi/pcie/trans.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+index f39c436f0b6d..fc64e1e7f5ee 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+@@ -3092,7 +3092,7 @@ static u32 iwl_trans_pcie_dump_rbs(struct iwl_trans *trans,
+ 	struct iwl_rxq *rxq = &trans_pcie->rxq[0];
+ 	u32 i, r, j, rb_len = 0;
+ 
+-	spin_lock(&rxq->lock);
++	spin_lock_bh(&rxq->lock);
+ 
+ 	r = iwl_get_closed_rb_stts(trans, rxq);
+ 
+@@ -3116,7 +3116,7 @@ static u32 iwl_trans_pcie_dump_rbs(struct iwl_trans *trans,
+ 		*data = iwl_fw_error_next_data(*data);
+ 	}
+ 
+-	spin_unlock(&rxq->lock);
++	spin_unlock_bh(&rxq->lock);
+ 
+ 	return rb_len;
+ }
+-- 
+2.34.1
 
-If there are 4 interrupts then you should always have all 4. It's not 
-some OS config. However, as an ABI, you might want to allow 1. If so, 
-then the if/then should just have the 'maxItems: 1' restriction for the 
-compatibles which only have 1 interrupt in the h/w.
-
-Rob
 
