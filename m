@@ -1,122 +1,104 @@
-Return-Path: <linux-wireless+bounces-581-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-582-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C08280A896
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Dec 2023 17:17:14 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C990880A8DA
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Dec 2023 17:27:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51BFF1F21083
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Dec 2023 16:17:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68FD2B20B2A
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Dec 2023 16:27:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6110532C9B;
-	Fri,  8 Dec 2023 16:17:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WOshdzg0"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5145374EC;
+	Fri,  8 Dec 2023 16:27:34 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oi1-x230.google.com (mail-oi1-x230.google.com [IPv6:2607:f8b0:4864:20::230])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A77E19A1
-	for <linux-wireless@vger.kernel.org>; Fri,  8 Dec 2023 08:17:07 -0800 (PST)
-Received: by mail-oi1-x230.google.com with SMTP id 5614622812f47-3b2e330033fso1643661b6e.3
-        for <linux-wireless@vger.kernel.org>; Fri, 08 Dec 2023 08:17:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702052226; x=1702657026; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=KqLOEpU6i4cWRcRsrFgCO2vfOp2+vlSaElORfK5x/U0=;
-        b=WOshdzg02Xe+Ky0tInrvKWzX1SYqh/v1JvSOLh1euF+r73MUzkwHgBYYDRG43yr8xI
-         TtsfAW/OSvCwStqWVEnHL04nkMfPRK8hXQyrbG3oBHWYN6yUajaTL0UfORbaMGswBsvw
-         JRncjACCcKoF6OGuYVIPhC3ft2GNM50wGow/Lrk4EG7I78IOuExeLk+o6jrcUh2RkwHW
-         brj2UHm9Ulk/V2/HdJZ1A0S3RgNC9wwfiZt51f+1mAmrfEOet44u7kyvZaHzzGYj1I+A
-         1gQBsSy0ayHWVbtzfUHxg+ivfpnsnzcZ1g9cqCpJsa/2Ex7oqMOY/uhH51oYyyMl7EkN
-         EV8A==
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7744A19A2;
+	Fri,  8 Dec 2023 08:27:31 -0800 (PST)
+Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-6d9f514f796so256476a34.3;
+        Fri, 08 Dec 2023 08:27:31 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702052226; x=1702657026;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KqLOEpU6i4cWRcRsrFgCO2vfOp2+vlSaElORfK5x/U0=;
-        b=ehHpJqqogvfbpISJpXjqtbIRjZhTQoH+Qxm0yIvyMXXpS41CoL2WnNTmrQ0hNR+b7C
-         CU3qI3lG1YDQ9m6miscjTCWhD/QsEjTIU6010YyNDPEoJYKisQQo5ivLgn6K10zQu6g+
-         HFHxVpr8pRCjIRrwx42QrfBptZysY6jIAVYAQTwvvb3nZ73NtnwXp36nk45DWzTcV9U2
-         LIrCm/bHGRcUxKmE+awy/n6hrqNlIcAR/hqv0apNMtcAFqptFeI8cp/0ohne36/zyCur
-         MJCm1iH+mP7cSIm3+eLQv3P7+xizaT3cOk5Tc3Vghc0gGN8WFZtHczJN8OC4kNWCXXlI
-         pidw==
-X-Gm-Message-State: AOJu0YxA8QZc/N9GxWgWJdZX81CNvXnRm6kAMyd+tScdl/R+2BzFEs+C
-	LL97JXO31KfbnyF+s5NYGz0=
-X-Google-Smtp-Source: AGHT+IG4sr9MT5uLtSNCeutocxvyLl866UcYhYsyd1mAAzM+J+CYq5JnVmS7goeseEQVn5T/hciTRA==
-X-Received: by 2002:a05:6870:f806:b0:1fb:75a:de79 with SMTP id fr6-20020a056870f80600b001fb075ade79mr358489oab.103.1702052221818;
-        Fri, 08 Dec 2023 08:17:01 -0800 (PST)
-Received: from [192.168.0.162] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id qb7-20020a056871e78700b001fac77ee907sm455790oac.33.2023.12.08.08.17.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 08 Dec 2023 08:17:01 -0800 (PST)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <c06e862c-e5b7-4459-aaed-4f69c3881b84@lwfinger.net>
-Date: Fri, 8 Dec 2023 10:17:00 -0600
+        d=1e100.net; s=20230601; t=1702052850; x=1702657650;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=o9ER5qIprpwLYgCbIQAvqPacoHFK4xi4mCA2pH+f0WM=;
+        b=YiAYbI9hGXLuDpo/mBPT432mwQk6/f35zQvDWfP2+WCI6dSV9KQXIrkvjFwrtsFjxn
+         qExgaTU409RicCepC5szRM+PXdq53Ef1ICHtwciTVZjHJANFlLQWNaurqwMB5qBnIqrt
+         eK6tFcPuYbGxOh6HizRQgXjsJdf5Vh7ELv6VXumVR3mUyEBaHnPhfu8cAlSdE3OFeXl2
+         dcYf4u9dfQ3Mc2efiii/+3tmwEZ5Rz8UCmB4c/srKCxigh/mWKrjKARi5HR2++udB56J
+         L1PbTY+Ndd+njcjGl3FujNpG76jXaB/gBaYJ9WfBTAcNRe7iStSB16YxRw+WGAPoK4Yf
+         ac3A==
+X-Gm-Message-State: AOJu0YxRbAnFfpzOZiAyvtstH+U5Fd5CRxqGAJISrm8pd8NiV6pgTabG
+	0zzczR0B3rJehnHc9ExLNrLtz/0GMA==
+X-Google-Smtp-Source: AGHT+IGoCBIdUoYHkFT9QQgUxa2omYYXOQwXX4AzFygvyqUJIp41c4SIZsAORINlyDflchYMlvWtxg==
+X-Received: by 2002:a9d:7758:0:b0:6d9:dd14:3a75 with SMTP id t24-20020a9d7758000000b006d9dd143a75mr304450otl.70.1702052850656;
+        Fri, 08 Dec 2023 08:27:30 -0800 (PST)
+Received: from herring.priv (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id e7-20020a0568301e4700b006d87df1c53dsm339278otj.65.2023.12.08.08.27.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 Dec 2023 08:27:30 -0800 (PST)
+Received: (nullmailer pid 1634379 invoked by uid 1000);
+	Fri, 08 Dec 2023 16:27:29 -0000
+Date: Fri, 8 Dec 2023 10:27:29 -0600
+From: Rob Herring <robh@kernel.org>
+To: Peter Chiu <chui-hao.chiu@mediatek.com>
+Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo.bianconi@redhat.com>, Ryder Lee <ryder.Lee@mediatek.com>, Evelyn Tsai <evelyn.tsai@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>, Sam Shih <sam.shih@mediatek.com>, linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v2] dt-bindings: net: wireless: mt76: add interrupts
+ description for MT7986
+Message-ID: <20231208162729.GA1575094-robh@kernel.org>
+References: <20231204091156.6535-1-chui-hao.chiu@mediatek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: rtw88: Use random MAC when efuse MAC invalid
-Content-Language: en-US
-To: Chris Morgan <macroalpha82@gmail.com>, linux-wireless@vger.kernel.org
-Cc: kvalo@kernel.org, pkshih@realtek.com,
- Chris Morgan <macromorgan@hotmail.com>
-References: <20231208150739.129753-1-macroalpha82@gmail.com>
-From: Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <20231208150739.129753-1-macroalpha82@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231204091156.6535-1-chui-hao.chiu@mediatek.com>
 
-On 12/8/23 09:07, Chris Morgan wrote:
-> From: Chris Morgan <macromorgan@hotmail.com>
+On Mon, Dec 04, 2023 at 05:11:56PM +0800, Peter Chiu wrote:
+> The mt7986 can support four interrupts to distribute the interrupts
+> to different CPUs.
 > 
-> When the MAC address read from the efuse data is invalid, warn the
-> user and use a random MAC address instead.
-> 
-> On a device I am currently using (Anbernic RG-ARC) with a rtw8821cs
-> the efuse appears to be incompletely/improperly programmed. The MAC
-> address reads as ff:ff:ff:ff:ff:ff. When networkmanager attempts to
-> initiate a connection (and I haven't hard-coded a MAC address or
-> set it to random) it fails to establish a connection.
-> 
-> Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
+> Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
 > ---
->   drivers/net/wireless/realtek/rtw88/main.c | 5 +++++
->   1 file changed, 5 insertions(+)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-> index 4a33d2e47f33..6d22628129d0 100644
-> --- a/drivers/net/wireless/realtek/rtw88/main.c
-> +++ b/drivers/net/wireless/realtek/rtw88/main.c
-> @@ -2008,6 +2008,11 @@ static int rtw_chip_efuse_info_setup(struct rtw_dev *rtwdev)
->   	efuse->ext_pa_5g = efuse->pa_type_5g & BIT(0) ? 1 : 0;
->   	efuse->ext_lna_2g = efuse->lna_type_5g & BIT(3) ? 1 : 0;
->   
-> +	if (!is_valid_ether_addr(efuse->addr)) {
-> +		eth_random_addr(efuse->addr);
-> +		dev_warn(rtwdev->dev, "efuse MAC invalid, using random\n");
-> +	}
-> +
->   out_disable:
->   	rtw_chip_efuse_disable(rtwdev);
->   
+> v2: Change to use description instead of using items.
 
-Reviewed by Larry Finger <Larry.Finger@lwfinger.net>
+Not what I said to do...
 
-Thanks for this patch.
+Let me spell it out:
 
-There are a number of SDIO devices known to me with improperly coded EFUSE 
-values. It seems that RTW8723DS chips perform poorly even when given a valid MAC 
-address. Is this also true for RTW8821CS chips?
+  interrupts:
+    minItems: 1
+      items:
+        - description: major interrupt for rings
+        - description: addditional interrupt for ring 19
+        - description: addditional interrupt for ring 4
+        - description: addditional interrupt for ring 5
 
-Larry
+if:
+  properties:
+    compatible:
+      contains:
+        enum:
+          - mediatek,mt7986-wmac
+then:
+  properties:
+    interrupts:
+      minItems: 4
+else:
+  properties:
+    interrupts:
+      maxItems: 1
 
+
+If there are 4 interrupts then you should always have all 4. It's not 
+some OS config. However, as an ABI, you might want to allow 1. If so, 
+then the if/then should just have the 'maxItems: 1' restriction for the 
+compatibles which only have 1 interrupt in the h/w.
+
+Rob
 
