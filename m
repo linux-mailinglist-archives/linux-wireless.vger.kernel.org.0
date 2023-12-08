@@ -1,123 +1,131 @@
-Return-Path: <linux-wireless+bounces-573-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-574-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A53EC809C86
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Dec 2023 07:39:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE82D809C8B
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Dec 2023 07:42:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E569282505
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Dec 2023 06:39:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D1651F2106D
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Dec 2023 06:42:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2545D63AA;
-	Fri,  8 Dec 2023 06:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC7E563AD;
+	Fri,  8 Dec 2023 06:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="Ow1uqMj3"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=zerobeat@gmx.de header.b="fNBxo/JH"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CACD1708
-	for <linux-wireless@vger.kernel.org>; Thu,  7 Dec 2023 22:38:51 -0800 (PST)
-X-UUID: 6f9374b4959411eea5db2bebc7c28f94-20231208
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=z+7//TjXr90B58SC9BAM6tUD4VYYh+8yYZBEuenz64Y=;
-	b=Ow1uqMj3O+AS9w6aNrL53HBLYrfMrrYRrw7xWE3TDJUtIy/axkvHoOlQYJjOOU78ewedcjNajH9uwZIsd7MvMEQ9rbcr6OhI7e1oz/pNNGkc7mCMcrqHvMszBYPeGw8RKNliVHkpiA10GJFMdeuOsy0hEUk1VQuALK2YfBTA7Q0=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.35,REQID:62a95550-6281-4e2f-a3ae-875ccb892c85,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:5d391d7,CLOUDID:ef55f0bc-2ac7-4da2-9f94-677a477649d9,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-	RL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:
-	NO,DKR:0,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
-X-UUID: 6f9374b4959411eea5db2bebc7c28f94-20231208
-Received: from mtkmbs11n1.mediatek.inc [(172.21.101.185)] by mailgw01.mediatek.com
-	(envelope-from <allen.ye@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 355470112; Fri, 08 Dec 2023 14:38:45 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Fri, 8 Dec 2023 14:38:43 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Fri, 8 Dec 2023 14:38:43 +0800
-From: Allen Ye <allen.ye@mediatek.com>
-To: <linux-wireless@vger.kernel.org>
-CC: Johannes Berg <johannes.berg@intel.com>, Felix Fietkau <nbd@nbd.name>,
-	Lorenzo Bianconi <lorenzo.bianconi@redhat.com>, Evelyn Tsai
-	<evelyn.tsai@mediatek.com>, Money Wang <money.wang@mediatek.com>,
-	<linux-mediatek@lists.infradead.org>, Allen Ye <allen.ye@mediatek.com>
-Subject: [PATCH v2] wifi: mac80211: Update bssid indicator with real BSS numbers
-Date: Fri, 8 Dec 2023 14:38:20 +0800
-Message-ID: <20231208063820.25983-1-allen.ye@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FDEB1708
+	for <linux-wireless@vger.kernel.org>; Thu,  7 Dec 2023 22:42:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+	t=1702017720; x=1702622520; i=zerobeat@gmx.de;
+	bh=OSeDY6wOAQMP5ADfuKvLvTt35aIhjEpu21Hjs8GYJ8k=;
+	h=X-UI-Sender-Class:Date:To:Cc:References:From:Subject:
+	 In-Reply-To;
+	b=fNBxo/JH301V2JHsL5OAzYTkkF1OgcljR5WVGY+YnmbJWoqiYJba4hTb3I+H51+6
+	 r3FPgFUPA1B+3/BsvjOh42e4HG1zpXgEs+3Vb2TkSucROJ7kdVlZeHhSlRFRpGYQA
+	 jUU72SgDBaUqkWk1VO935eMJpV6ZeldFZZ6vcfhsG2jO+rd066ztLDxzPfaux5lbG
+	 ZKHVJAXRkkL2cIXvRyUCPz1rROqU/hfKrK51xqokvy1CXCo5mik9POD+n+sbtb5pl
+	 x3jOEZorsgBdq254sI7UYHAyxtVB1O2njRDagfdxmNwAWNDUeKe4yS35yJFWIz5N7
+	 ajTCJ4IRzhvRP5mPwA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.0.2] ([217.244.241.184]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mnpnm-1rYwKY3JIg-00pL1j; Fri, 08
+ Dec 2023 07:42:00 +0100
+Message-ID: <a6a23ccf-b571-49bf-855b-4fba3501f09b@gmx.de>
+Date: Fri, 8 Dec 2023 07:41:59 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-Product-Ver: SMEX-14.0.0.3152-9.1.1006-23728.005
-X-TM-AS-Result: No-10--7.827400-8.000000
-X-TMASE-MatchedRID: aIMFWkTGGx22jsN8aguKvC97pb4g5HCtvtVce6w5+K9bLUcJ8BGOxWD/
-	jkY+Hb4OeejfEBgiuSAkTiFDx5Ln6W94Ipa1otxoP6pyf9NtizR6zDxGcFEbCkPL6pqegFS6jGT
-	DyIuhciDc0NDBaoYShQ9CP6VIrQmOWt71IsCTbXGeAiCmPx4NwBnUJ0Ek6yhjxEHRux+uk8hfNj
-	F5BHUO+wax7kVctRdPxm1GKEdCief7eCqlRXtydMSWMYvbQRfP1AnhESIjQag=
-X-TM-AS-User-Approved-Sender: No
-X-TM-AS-User-Blocked-Sender: No
-X-TMASE-Result: 10--7.827400-8.000000
-X-TMASE-Version: SMEX-14.0.0.3152-9.1.1006-23728.005
-X-TM-SNTS-SMTP: F4D371DF9CB6022027055843B20B7EDEC59B7FF7ECCFEFF863B2047F81BB808A2000:8
-X-MTK: N
+User-Agent: Mozilla Thunderbird
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ "Jes.Sorensen@gmail.com" <Jes.Sorensen@gmail.com>
+References: <415ecdaf-eebc-4a9e-9053-4cc999711ad7@gmx.de>
+ <c81f09d43fab416ba7233dd9d5cfcd2d@realtek.com>
+ <09b41f73-33c9-4c82-82ad-09c51840149f@gmx.de>
+ <d654be3682e545d09bc7ca7a91e1b58a@realtek.com>
+Content-Language: en-US
+From: ZeroBeat <ZeroBeat@gmx.de>
+Subject: Re: [PATCH] wifiwifi: Realtek: rtl8xxxu Add new device ID
+In-Reply-To: <d654be3682e545d09bc7ca7a91e1b58a@realtek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:GTVpZNPu7kEWhm6/eOuVtVIJSkgi4tzIP4j9KTr714rwEXjizgV
+ cdJpU1uJiXjXQo37GYb+i+va/4eUZ/cmTECcBl2VmSXTIrF44JjPOzh6+2CQuEfMDxhJHoI
+ GgDy2ssdYvthF63pAB9lGtYhBiDJ7qF05dUlTSmtgXpgHPzNUeFyfZaHkeYI2ZAFA1HtbhU
+ 8ohmMCGx16595BfimTitA==
+UI-OutboundReport: notjunk:1;M01:P0:GJem9NalXpU=;aOxvKBDYazYtHgyyJFaWcsurrSt
+ LUjXUMWNsc90DbTRmi4TFyPNxF3JOjNqR53smoL2d2PFdJI19De1djUDXbM7EvdQxROmdY3qn
+ OrFegLX/UxEYgkXzBy6qdqKOj+C6p2aa958onKWByLuwqQMOhi69qzQ1acf9QICRgQf8q/7uL
+ AJhxykxG+o7sLC5FkM85Nl9PCru888EQ70XwSCGSK74BZYRY1nWDxqcZ6ppdMT1D/jV/pOFwF
+ dY0qN/vOJsj5OoYkwZHTd7ZL9/T4Qd4onb/lY7BZvN8qzVixZJhLhXNI5V/K0OraEM/4o/mKp
+ LEs3lRjhC3u6lYn/6HOMmyrvnMZoU66axyig1tsWLO7LRjUuE6OQZGSgjq54BGlOF+Aiz2iyQ
+ aN6kQsI6ZZElDb4NW+ZT4mc1s8PRi40OEXGoAOfK/g7YEpmid2CxE4O9hcEzLDOpEMeFVYchm
+ au8PGDO8cTqYJ0okcUQGDNnIcg9NWVtaGLHMNSkFuVafu+EXJKrnNLkY9bxOnuxOfCsWiQ+Dm
+ Bri01rIyYDpvyiKZbyTWb/8Bukk3bL27+IudftT5qHIh+EKNa4SkXBocPhU0wPtH3X0zHLrbu
+ fSt+87LWeZUalx6Oy20oLpYCLr4G/x/H1T10G4eP2SeAJ3ULFdouSI+Q0aPrsy1My1B4VpeSj
+ dCAk8NCFaTAOO88uMUpN7h1C0cH90NsxcFHVjz4AleWZGr4f7Z0wmKMTdpYSXj1Gc9UjAiuOy
+ 4LjwL0VM2ioMFqndISW/ccoo5cUdwh0ntESJRs5EQEXZaLQ6ZofBKxOInGyit6sN5nO2nMz+n
+ g4/zzRprhseG46Yh7i+7vtXXdNmjpyIH3eDDbI34sz7qWrQOfRBxy3e6sMgmElCio0VVxp2Vm
+ U+diz0OeBuU8MqLnxHn23GgcavDyC4CHeBYHReCIWjUfADl2brAB4l6EF7p7M6BGgtICDZetd
+ ciNOpUH84HwBV49Dq7l+ps7qu8E=
 
-The cnt member in mbssid is the count of total number of MBSSID elements
-instead of BSSID. Therefore, we fix this by reading the MaxBSSID Indicator
-field directly.
+Thanks for this very helpful information.
+It is much better to understand than this ones:
+https://www.kernel.org/doc/html/v4.11/process/submitting-patches.html
+https://wireless.wiki.kernel.org/en/developers/Documentation/SubmittingPat=
+ches
 
-Co-developed-by: Evelyn Tsai <evelyn.tsai@mediatek.com>
-Signed-off-by: Evelyn Tsai <evelyn.tsai@mediatek.com>
-Co-developed-by: Money Wang <money.wang@mediatek.com>
-Signed-off-by: Money Wang <money.wang@mediatek.com>
-Signed-off-by: Allen Ye <allen.ye@mediatek.com>
----
-v2:
-  - Fix From and s-o-b format error
----
- net/mac80211/cfg.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+At the moment I still have no idea why the TP-Link TL-WN8200ND(UN) v3.0 so=
+metimes work and
+sometimes not (after its device idea has been added).
+But I have seen this behavior (rtl8188eu), before:
+https://bugzilla.kernel.org/show_bug.cgi?id=3D217205
+Confirmed and fixed, now.
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 606b1b2e4123..f90bcd59f85a 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1164,9 +1164,11 @@ ieee80211_assign_beacon(struct ieee80211_sub_if_data *sdata,
- 	/* copy in optional mbssid_ies */
- 	if (mbssid) {
- 		u8 *pos = new->tail + new->tail_len;
-+		const struct element *mbssid_elem;
- 
- 		new->mbssid_ies = (void *)pos;
- 		pos += struct_size(new->mbssid_ies, elem, mbssid->cnt);
-+		mbssid_elem = (const struct element *)pos;
- 		pos += ieee80211_copy_mbssid_beacon(pos, new->mbssid_ies,
- 						    mbssid);
- 		if (rnr) {
-@@ -1175,8 +1177,7 @@ ieee80211_assign_beacon(struct ieee80211_sub_if_data *sdata,
- 			ieee80211_copy_rnr_beacon(pos, new->rnr_ies, rnr);
- 		}
- 		/* update bssid_indicator */
--		link_conf->bssid_indicator =
--			ilog2(__roundup_pow_of_two(mbssid->cnt + 1));
-+		link_conf->bssid_indicator = mbssid_elem->data[0];
- 	}
- 
- 	if (csa) {
--- 
-2.18.0
+Maybe the problem of the rtl8192eu is similar to this - but I'm not sure, =
+because
+I haven't fully understood the entire driver code (relationship driver cod=
+e and
+firmware) yet.
 
+
+
+
+Am 08.12.23 um 01:43 schrieb Ping-Ke Shih:
+>
+>
+>> -----Original Message-----
+>> From: ZeroBeat <ZeroBeat@gmx.de>
+>> Sent: Thursday, December 7, 2023 5:39 PM
+>> To: Ping-Ke Shih <pkshih@realtek.com>
+>> Cc: linux-wireless@vger.kernel.org; Jes.Sorensen@gmail.com
+>> Subject: Re: [PATCH] wifiwifi: Realtek: rtl8xxxu Add new device ID
+>>
+>> Is this correct to commit inline patches?
+>> Looks for me similar to this one
+>> https://lore.kernel.org/linux-wireless/20231127162022.518834-2-kvalo@ke=
+rnel.org/T/#u
+>>
+>
+> The basic steps to submit a patch are:
+> 1. add this patch to wireless-next tree locally
+> 2. git format-patch -1
+> 3. run ./scripts/checkpatch.pl with your patch and fix warnings
+> 4. git send-email to send out the patch.
+>
+> With above steps, your patch would be much similar to others.
+>
+> More detail can reference Documentation/process/submitting-patches.rst a=
+nd
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingp=
+atches
+>
+>
+>
 
