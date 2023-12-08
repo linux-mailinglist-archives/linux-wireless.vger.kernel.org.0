@@ -1,80 +1,130 @@
-Return-Path: <linux-wireless+bounces-567-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-568-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADAB780976F
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Dec 2023 01:43:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15DA480983B
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Dec 2023 01:56:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE3721C20BE8
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Dec 2023 00:43:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C15382823B7
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Dec 2023 00:56:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DF85A32;
-	Fri,  8 Dec 2023 00:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 633D5A32;
+	Fri,  8 Dec 2023 00:54:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Xaovjfqy"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C7A61729
-	for <linux-wireless@vger.kernel.org>; Thu,  7 Dec 2023 16:43:50 -0800 (PST)
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 3B80hcD53449017, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 3B80hcD53449017
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 8 Dec 2023 08:43:38 +0800
-Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Fri, 8 Dec 2023 08:43:39 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Fri, 8 Dec 2023 08:43:38 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7]) by
- RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7%5]) with mapi id
- 15.01.2375.007; Fri, 8 Dec 2023 08:43:38 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: ZeroBeat <ZeroBeat@gmx.de>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Jes.Sorensen@gmail.com" <Jes.Sorensen@gmail.com>
-Subject: RE: [PATCH] wifiwifi: Realtek: rtl8xxxu Add new device ID
-Thread-Topic: [PATCH] wifiwifi: Realtek: rtl8xxxu Add new device ID
-Thread-Index: AQHaKOnSMO77xna6akOZJq4x2zvwerCc/XEggAANBYCAAYDaQA==
-Date: Fri, 8 Dec 2023 00:43:37 +0000
-Message-ID: <d654be3682e545d09bc7ca7a91e1b58a@realtek.com>
-References: <415ecdaf-eebc-4a9e-9053-4cc999711ad7@gmx.de>
- <c81f09d43fab416ba7233dd9d5cfcd2d@realtek.com>
- <09b41f73-33c9-4c82-82ad-09c51840149f@gmx.de>
-In-Reply-To: <09b41f73-33c9-4c82-82ad-09c51840149f@gmx.de>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 208021BFF
+	for <linux-wireless@vger.kernel.org>; Thu,  7 Dec 2023 16:54:15 -0800 (PST)
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3B80aq7E007678;
+	Fri, 8 Dec 2023 00:53:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=hjrOs9j/VugZGmBVLVIsfa089L7TlJJ1W+3kc4q0ycE=;
+ b=XaovjfqytCA93Or7V8qUG54LFDfZu0HrhQc8sTbpDDBgaJ4xO84+QWXgLWcECsyZbDz0
+ YZ30U9ocTMbXgCFhs0ZLDLfajvL+hdpbHb40wNzWyLjRCuzx1tov9bIxJUEFRChzcGpE
+ Wt5WFWYea8EJEtdtkgK6JsymX2YyO9flUT+8eeKI476lIAzpQUcXdKdkR/UD1tNGYDf8
+ KlUDeJ3nC8XcB3SdP/QKUFP63YjNaGE+5t+QpflV/cII9H5Srn8TwokIo6yQjf56bJe/
+ KWHd1bJUQmrQMqXiZbMGfHbY6IoF/Stp3CcgCjQFN9cpwK5ayOQJ1gxIi/Ct1I/dt4HC tg== 
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3uu2p8b74q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 08 Dec 2023 00:53:50 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3B80rn37019108
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 8 Dec 2023 00:53:49 GMT
+Received: from [10.110.111.75] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Thu, 7 Dec
+ 2023 16:53:48 -0800
+Message-ID: <cfad2ad7-213e-454c-9108-a52f56ae2c01@quicinc.com>
+Date: Thu, 7 Dec 2023 16:53:47 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 13/13 v2] wifi: iwlwifi: pcie: add another missing
+ bh-disable for rxq->lock
+Content-Language: en-US
+To: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+        <johannes@sipsolutions.net>
+CC: <linux-wireless@vger.kernel.org>, Johannes Berg <johannes.berg@intel.com>,
+        Brian Norris <briannorris@chromium.org>
+References: <20231208183100.e79ad3dae649.I8f19713c4383707f8be7fc20ff5cc1ecf12429bb@changeid>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20231208183100.e79ad3dae649.I8f19713c4383707f8be7fc20ff5cc1ecf12429bb@changeid>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: CjRPw2QLv8AUjHGs5q3jU_EvdGSrlpM1
+X-Proofpoint-ORIG-GUID: CjRPw2QLv8AUjHGs5q3jU_EvdGSrlpM1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-07_19,2023-12-07_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 clxscore=1011
+ suspectscore=0 mlxlogscore=890 mlxscore=0 adultscore=0 lowpriorityscore=0
+ malwarescore=0 priorityscore=1501 impostorscore=0 spamscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
+ definitions=main-2312080005
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogWmVyb0JlYXQgPFplcm9C
-ZWF0QGdteC5kZT4NCj4gU2VudDogVGh1cnNkYXksIERlY2VtYmVyIDcsIDIwMjMgNTozOSBQTQ0K
-PiBUbzogUGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRlay5jb20+DQo+IENjOiBsaW51eC13aXJl
-bGVzc0B2Z2VyLmtlcm5lbC5vcmc7IEplcy5Tb3JlbnNlbkBnbWFpbC5jb20NCj4gU3ViamVjdDog
-UmU6IFtQQVRDSF0gd2lmaXdpZmk6IFJlYWx0ZWs6IHJ0bDh4eHh1IEFkZCBuZXcgZGV2aWNlIElE
-DQo+IA0KPiBJcyB0aGlzIGNvcnJlY3QgdG8gY29tbWl0IGlubGluZSBwYXRjaGVzPw0KPiBMb29r
-cyBmb3IgbWUgc2ltaWxhciB0byB0aGlzIG9uZQ0KPiBodHRwczovL2xvcmUua2VybmVsLm9yZy9s
-aW51eC13aXJlbGVzcy8yMDIzMTEyNzE2MjAyMi41MTg4MzQtMi1rdmFsb0BrZXJuZWwub3JnL1Qv
-I3UNCj4gDQoNClRoZSBiYXNpYyBzdGVwcyB0byBzdWJtaXQgYSBwYXRjaCBhcmU6DQoxLiBhZGQg
-dGhpcyBwYXRjaCB0byB3aXJlbGVzcy1uZXh0IHRyZWUgbG9jYWxseQ0KMi4gZ2l0IGZvcm1hdC1w
-YXRjaCAtMQ0KMy4gcnVuIC4vc2NyaXB0cy9jaGVja3BhdGNoLnBsIHdpdGggeW91ciBwYXRjaCBh
-bmQgZml4IHdhcm5pbmdzDQo0LiBnaXQgc2VuZC1lbWFpbCB0byBzZW5kIG91dCB0aGUgcGF0Y2gu
-DQoNCldpdGggYWJvdmUgc3RlcHMsIHlvdXIgcGF0Y2ggd291bGQgYmUgbXVjaCBzaW1pbGFyIHRv
-IG90aGVycy4gDQoNCk1vcmUgZGV0YWlsIGNhbiByZWZlcmVuY2UgRG9jdW1lbnRhdGlvbi9wcm9j
-ZXNzL3N1Ym1pdHRpbmctcGF0Y2hlcy5yc3QgYW5kDQpodHRwczovL3dpcmVsZXNzLndpa2kua2Vy
-bmVsLm9yZy9lbi9kZXZlbG9wZXJzL2RvY3VtZW50YXRpb24vc3VibWl0dGluZ3BhdGNoZXMNCg0K
-DQoNCg==
+On 12/8/2023 8:32 AM, Miri Korenblit wrote:
+> From: Johannes Berg <johannes.berg@intel.com>
+> 
+> Hi,
+> I Added the 'wifi' prefix
+> 
+> Thanks,
+> Miri
+
+you don't want the above to be part of the git history
+
+> 
+> Evidently I had only looked at all the ones in rx.c, and missed this.
+> Add bh-disable to this use of the rxq->lock as well.
+> 
+> Fixes: 25edc8f259c7 ("iwlwifi: pcie: properly implement NAPI")
+> Reported-by: Brian Norris <briannorris@chromium.org>
+> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+> ---
+
+instead you should have added the v2 change log here, "after the cut"
+
+>  drivers/net/wireless/intel/iwlwifi/pcie/trans.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+> index f39c436f0b6d..fc64e1e7f5ee 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+> @@ -3092,7 +3092,7 @@ static u32 iwl_trans_pcie_dump_rbs(struct iwl_trans *trans,
+>  	struct iwl_rxq *rxq = &trans_pcie->rxq[0];
+>  	u32 i, r, j, rb_len = 0;
+>  
+> -	spin_lock(&rxq->lock);
+> +	spin_lock_bh(&rxq->lock);
+>  
+>  	r = iwl_get_closed_rb_stts(trans, rxq);
+>  
+> @@ -3116,7 +3116,7 @@ static u32 iwl_trans_pcie_dump_rbs(struct iwl_trans *trans,
+>  		*data = iwl_fw_error_next_data(*data);
+>  	}
+>  
+> -	spin_unlock(&rxq->lock);
+> +	spin_unlock_bh(&rxq->lock);
+>  
+>  	return rb_len;
+>  }
+
 
