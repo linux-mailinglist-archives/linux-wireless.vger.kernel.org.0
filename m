@@ -1,130 +1,141 @@
-Return-Path: <linux-wireless+bounces-568-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-569-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15DA480983B
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Dec 2023 01:56:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DA5380990D
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Dec 2023 03:11:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C15382823B7
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Dec 2023 00:56:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 806531C20A38
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Dec 2023 02:11:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 633D5A32;
-	Fri,  8 Dec 2023 00:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA4BB1878;
+	Fri,  8 Dec 2023 02:11:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Xaovjfqy"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="BvxLr56n"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 208021BFF
-	for <linux-wireless@vger.kernel.org>; Thu,  7 Dec 2023 16:54:15 -0800 (PST)
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3B80aq7E007678;
-	Fri, 8 Dec 2023 00:53:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=hjrOs9j/VugZGmBVLVIsfa089L7TlJJ1W+3kc4q0ycE=;
- b=XaovjfqytCA93Or7V8qUG54LFDfZu0HrhQc8sTbpDDBgaJ4xO84+QWXgLWcECsyZbDz0
- YZ30U9ocTMbXgCFhs0ZLDLfajvL+hdpbHb40wNzWyLjRCuzx1tov9bIxJUEFRChzcGpE
- Wt5WFWYea8EJEtdtkgK6JsymX2YyO9flUT+8eeKI476lIAzpQUcXdKdkR/UD1tNGYDf8
- KlUDeJ3nC8XcB3SdP/QKUFP63YjNaGE+5t+QpflV/cII9H5Srn8TwokIo6yQjf56bJe/
- KWHd1bJUQmrQMqXiZbMGfHbY6IoF/Stp3CcgCjQFN9cpwK5ayOQJ1gxIi/Ct1I/dt4HC tg== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3uu2p8b74q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 08 Dec 2023 00:53:50 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3B80rn37019108
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 8 Dec 2023 00:53:49 GMT
-Received: from [10.110.111.75] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Thu, 7 Dec
- 2023 16:53:48 -0800
-Message-ID: <cfad2ad7-213e-454c-9108-a52f56ae2c01@quicinc.com>
-Date: Thu, 7 Dec 2023 16:53:47 -0800
+Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BD311719
+	for <linux-wireless@vger.kernel.org>; Thu,  7 Dec 2023 18:11:05 -0800 (PST)
+Received: by mail-yb1-xb32.google.com with SMTP id 3f1490d57ef6-daf26d84100so1752741276.3
+        for <linux-wireless@vger.kernel.org>; Thu, 07 Dec 2023 18:11:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1702001464; x=1702606264; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NrS1+gj4SQqrLBMUECtVXORlr6dGcnhoysWJjVqwxW0=;
+        b=BvxLr56noAj0MwngcFDn9sBX4EkG4BqwIc4Ak82p+YDnmjrGZciQPj2XKeG9dXgxtM
+         CGnKbQYASOFJbdM+AHJd83wDVE7rgJOgN0bIoUQWzSfWmF/exmxNVSrfATL5tz87AZRe
+         0VRXEwfL6Gu7O1lDn/lKAqCcZlraQ6i2HBfKHN4RMhGY38o7V+iZsl1zrybPPOowbOtk
+         FTesiy4M6Gkr7vvNz68zXWA6JLaUZRmOgJD55lMRL1TomYVVCtIdenNjqNxlcdhIh9Ah
+         d6JNZZScjjbxp8YbRa37wGMXjsVAparQZYvs56jrRTqWnQkC6451RKKNi1gs/cjHGrey
+         WZ4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702001464; x=1702606264;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NrS1+gj4SQqrLBMUECtVXORlr6dGcnhoysWJjVqwxW0=;
+        b=NPWUCdAIQfWMHoTizcp9083FokPnJTVr+haDPTzhaMHxfjx1X4AkNuhiEFovcHqtA+
+         BdfFXnkCwT1dAsuZ41ac2SYOjBjW4xtRrEWOxPDN3qvrFZYdCpK6SrUbx/mdt2MOCngv
+         FCXRdZ+/km1NooSh8vOSd570s+Nrdmb4pLQlIzfDpPZdLwK6NaBdSGCfdbZVcNRbb67a
+         wyALY/XCMJL5p6ScvsQyOQBQsqpVzrmS2UXQ16+PfZavxcJ8G7Ze85XBIa7i4iDFIBG9
+         Z3Keo6yZk5wR4rzT526SEcm/U7mMVP11iuA7CVSVcpQoBeviYOVWOcX4cbhGBQYTH6hU
+         D82A==
+X-Gm-Message-State: AOJu0YyhIpcPi90aOFTxzzt0El6GHRVesGQt+fezRqLRY2VLGJed+nxA
+	WHyeMTvqE1O9hMa1TZFLuAZ+fe22Mcfm2ndr8bdetg==
+X-Google-Smtp-Source: AGHT+IFzB/fvfpt3l9KUjfBQeyBhYz5PrQ3cvYlMjYHNiikQIZ+vKmYh5c3DKdUmzSxnO8b96mhu8iTGOuCgu0Nogu4=
+X-Received: by 2002:a25:d415:0:b0:db7:dacf:59f1 with SMTP id
+ m21-20020a25d415000000b00db7dacf59f1mr3933594ybf.101.1702001464147; Thu, 07
+ Dec 2023 18:11:04 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 13/13 v2] wifi: iwlwifi: pcie: add another missing
- bh-disable for rxq->lock
-Content-Language: en-US
-To: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-        <johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>, Johannes Berg <johannes.berg@intel.com>,
-        Brian Norris <briannorris@chromium.org>
-References: <20231208183100.e79ad3dae649.I8f19713c4383707f8be7fc20ff5cc1ecf12429bb@changeid>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20231208183100.e79ad3dae649.I8f19713c4383707f8be7fc20ff5cc1ecf12429bb@changeid>
+References: <20230630151842.1.If764ede23c4e09a43a842771c2ddf99608f25f8e@changeid>
+ <CAMSo37XcwAn9znSQ8202LUTdBKLDz94QJ9i43aXya5LHs-4GiQ@mail.gmail.com>
+ <87wmtqnk3y.fsf@kernel.org> <CAD=FV=VHHCsjJmVWDXN4g3U=-_SLWc2iWqbAdZPOykn+QMQojw@mail.gmail.com>
+In-Reply-To: <CAD=FV=VHHCsjJmVWDXN4g3U=-_SLWc2iWqbAdZPOykn+QMQojw@mail.gmail.com>
+From: Yongqin Liu <yongqin.liu@linaro.org>
+Date: Fri, 8 Dec 2023 10:10:52 +0800
+Message-ID: <CAMSo37UfQmpTb3_+URbGTbX77mTJNn4SC0aaVD5KXasMsW7Jow@mail.gmail.com>
+Subject: Re: [PATCH] ath10k: Don't touch the CE interrupt registers after
+ power up
+To: Doug Anderson <dianders@chromium.org>
+Cc: Kalle Valo <kvalo@kernel.org>, ath10k@lists.infradead.org, 
+	Abhishek Kumar <kuabhs@chromium.org>, Youghandhar Chintala <quic_youghand@quicinc.com>, 
+	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, Sumit Semwal <sumit.semwal@linaro.org>, 
+	John Stultz <jstultz@google.com>, Viktor Martensson <vmartensson@google.com>, 
+	Amit Pundir <amit.pundir@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: CjRPw2QLv8AUjHGs5q3jU_EvdGSrlpM1
-X-Proofpoint-ORIG-GUID: CjRPw2QLv8AUjHGs5q3jU_EvdGSrlpM1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-07_19,2023-12-07_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 clxscore=1011
- suspectscore=0 mlxlogscore=890 mlxscore=0 adultscore=0 lowpriorityscore=0
- malwarescore=0 priorityscore=1501 impostorscore=0 spamscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
- definitions=main-2312080005
+Content-Transfer-Encoding: quoted-printable
 
-On 12/8/2023 8:32 AM, Miri Korenblit wrote:
-> From: Johannes Berg <johannes.berg@intel.com>
-> 
+On Fri, 8 Dec 2023 at 00:49, Doug Anderson <dianders@chromium.org> wrote:
+>
 > Hi,
-> I Added the 'wifi' prefix
-> 
-> Thanks,
-> Miri
+>
+> On Thu, Dec 7, 2023 at 6:49=E2=80=AFAM Kalle Valo <kvalo@kernel.org> wrot=
+e:
+> >
+> > > Recently during our Android build test on the Dragonboard 845c board,
+> > > with the Android Common Kernel android11-5.4-lts and android12-5.4-lt=
+s branches,
+> > >
+> > > we found there are some ufshcd related changes printed,
+> > > and the serial console gets stuck, no response for input,
+> > > and the Android boot is stuck at the animation window.
+> > >
+> > > The problem is reported here
+> > >     https://issuetracker.google.com/issues/314366682
+> > > You could check there for more log details.
+> > >
+> > > And with some bisection, I found it's related to this commit,
+> > > when I revert this commit, the problem is gone.
+> > >
+> > > So replied here, not sure if you have any idea about it,
+> > > or any suggestions on what we should do next to resolve the problem?
+> >
+> > FWIW we don't support Android kernels, only kernel.org releases.
+>
+> Right. If the problem also reproduces on mainline Linux then that
+> would be interesting to know. I think db845c is at least somewhat well
+> supported by mainline so it should be possible to test it there.
 
-you don't want the above to be part of the git history
+I checked with the ACK android-mainline branch, which is based on the
+mainline Linux,
+this commit is there, but the problem is not seen.
 
-> 
-> Evidently I had only looked at all the ones in rx.c, and missed this.
-> Add bh-disable to this use of the rxq->lock as well.
-> 
-> Fixes: 25edc8f259c7 ("iwlwifi: pcie: properly implement NAPI")
-> Reported-by: Brian Norris <briannorris@chromium.org>
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-> ---
+> If I had to guess, I'd think that probably the CE interrupts are
+> firing nonstop for you and not getting handled. Then those constant
+> interrupts are (presumably) causing the UFS controller to timeout. If
+> this is true, the question is: why? Maybe you could use ftrace to
+> confirm this by adding some traces to
+> ath10k_snoc_per_engine_handler()? There's a way to get ftrace buffers
+> dumped on panic (or, if you use kdb, it has a command for it).
 
-instead you should have added the v2 change log here, "after the cut"
+Thanks for the suggestions, I will check internally on how to debug that.
 
->  drivers/net/wireless/intel/iwlwifi/pcie/trans.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-> index f39c436f0b6d..fc64e1e7f5ee 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-> +++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-> @@ -3092,7 +3092,7 @@ static u32 iwl_trans_pcie_dump_rbs(struct iwl_trans *trans,
->  	struct iwl_rxq *rxq = &trans_pcie->rxq[0];
->  	u32 i, r, j, rb_len = 0;
->  
-> -	spin_lock(&rxq->lock);
-> +	spin_lock_bh(&rxq->lock);
->  
->  	r = iwl_get_closed_rb_stts(trans, rxq);
->  
-> @@ -3116,7 +3116,7 @@ static u32 iwl_trans_pcie_dump_rbs(struct iwl_trans *trans,
->  		*data = iwl_fw_error_next_data(*data);
->  	}
->  
-> -	spin_unlock(&rxq->lock);
-> +	spin_unlock_bh(&rxq->lock);
->  
->  	return rb_len;
->  }
+> If this reproduces on mainline and it's not obvious how to fix this, I
+> don't object to a revert. As per the description of the original
+> patch, the problem being fixed was fairly rare and I didn't have a way
+> to reproduce it. The fix seemed safe to me and we've been using it on
+> Chromebooks based on sc7180, but if it had to get reverted it wouldn't
+> be the end of the world.
+>
+> -Doug
 
+
+
+--=20
+Best Regards,
+Yongqin Liu
+---------------------------------------------------------------
+#mailing list
+linaro-android@lists.linaro.org
+http://lists.linaro.org/mailman/listinfo/linaro-android
 
