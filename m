@@ -1,40 +1,40 @@
-Return-Path: <linux-wireless+bounces-637-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-638-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C598980C358
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Dec 2023 09:35:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3875D80C359
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Dec 2023 09:35:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CE2D2B20B45
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Dec 2023 08:35:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC6F7B20BA1
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Dec 2023 08:35:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CD3521105;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF00F2110D;
 	Mon, 11 Dec 2023 08:35:09 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18DECC4
-	for <linux-wireless@vger.kernel.org>; Mon, 11 Dec 2023 00:35:05 -0800 (PST)
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 3BB8Z0Ku82598528, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 3BB8Z0Ku82598528
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F0A3ED
+	for <linux-wireless@vger.kernel.org>; Mon, 11 Dec 2023 00:35:06 -0800 (PST)
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 3BB8Z1W802598543, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 3BB8Z1W802598543
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 11 Dec 2023 16:35:00 +0800
+	Mon, 11 Dec 2023 16:35:01 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Mon, 11 Dec 2023 16:35:00 +0800
+ 15.1.2375.32; Mon, 11 Dec 2023 16:35:01 +0800
 Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Mon, 11 Dec
- 2023 16:34:59 +0800
+ 2023 16:35:00 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <kvalo@kernel.org>
 CC: <linux-wireless@vger.kernel.org>
-Subject: [PATCH 5/6] wifi: rtw89: add DBCC H2C to notify firmware the status
-Date: Mon, 11 Dec 2023 16:33:40 +0800
-Message-ID: <20231211083341.118047-6-pkshih@realtek.com>
+Subject: [PATCH 6/6] wifi: rtw89: only reset BB/RF for existing WiFi 6 chips while starting up
+Date: Mon, 11 Dec 2023 16:33:41 +0800
+Message-ID: <20231211083341.118047-7-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20231211083341.118047-1-pkshih@realtek.com>
 References: <20231211083341.118047-1-pkshih@realtek.com>
@@ -52,95 +52,64 @@ X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
 X-KSE-AntiSpam-Interceptor-Info: fallback
 X-KSE-Antivirus-Interceptor-Info: fallback
 X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-To support MLO of WiFi 7, we should configure hardware as DBCC mode, and
-notify this status to firmware.
+The new WiFi 7 chips change the design, so no need to disable/enable
+BB/RF when core_start(). Keep the same logic for existing chips.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/fw.c | 35 +++++++++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/fw.h |  8 ++++++
- 2 files changed, 43 insertions(+)
+ drivers/net/wireless/realtek/rtw89/core.c |  5 +----
+ drivers/net/wireless/realtek/rtw89/mac.h  | 17 +++++++++++++++++
+ 2 files changed, 18 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 81034b6ce4b0..f3555e0ed63b 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -2224,6 +2224,41 @@ int rtw89_fw_h2c_join_info(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif,
- 	return ret;
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index d5ee2aa053d4..fd527a249996 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -3956,10 +3956,7 @@ int rtw89_core_start(struct rtw89_dev *rtwdev)
+ 	/* efuse process */
+ 
+ 	/* pre-config BB/RF, BB reset/RFC reset */
+-	ret = rtw89_chip_disable_bb_rf(rtwdev);
+-	if (ret)
+-		return ret;
+-	ret = rtw89_chip_enable_bb_rf(rtwdev);
++	ret = rtw89_chip_reset_bb_rf(rtwdev);
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
+index 56cd81347784..ed98b49809a4 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.h
++++ b/drivers/net/wireless/realtek/rtw89/mac.h
+@@ -1108,6 +1108,23 @@ static inline int rtw89_chip_disable_bb_rf(struct rtw89_dev *rtwdev)
+ 	return chip->ops->disable_bb_rf(rtwdev);
  }
  
-+int rtw89_fw_h2c_notify_dbcc(struct rtw89_dev *rtwdev, bool en)
++static inline int rtw89_chip_reset_bb_rf(struct rtw89_dev *rtwdev)
 +{
-+	struct rtw89_h2c_notify_dbcc *h2c;
-+	u32 len = sizeof(*h2c);
-+	struct sk_buff *skb;
 +	int ret;
 +
-+	skb = rtw89_fw_h2c_alloc_skb_with_hdr(rtwdev, len);
-+	if (!skb) {
-+		rtw89_err(rtwdev, "failed to alloc skb for h2c notify dbcc\n");
-+		return -ENOMEM;
-+	}
-+	skb_put(skb, len);
-+	h2c = (struct rtw89_h2c_notify_dbcc *)skb->data;
++	if (rtwdev->chip->chip_gen != RTW89_CHIP_AX)
++		return 0;
 +
-+	h2c->w0 = le32_encode_bits(en, RTW89_H2C_NOTIFY_DBCC_EN);
-+
-+	rtw89_h2c_pkt_set_hdr(rtwdev, skb, FWCMD_TYPE_H2C,
-+			      H2C_CAT_MAC, H2C_CL_MAC_MEDIA_RPT,
-+			      H2C_FUNC_NOTIFY_DBCC, 0, 1,
-+			      len);
-+
-+	ret = rtw89_h2c_tx(rtwdev, skb, false);
-+	if (ret) {
-+		rtw89_err(rtwdev, "failed to send h2c\n");
-+		goto fail;
-+	}
++	ret = rtw89_chip_disable_bb_rf(rtwdev);
++	if (ret)
++		return ret;
++	ret = rtw89_chip_enable_bb_rf(rtwdev);
++	if (ret)
++		return ret;
 +
 +	return 0;
-+fail:
-+	dev_kfree_skb_any(skb);
-+
-+	return ret;
 +}
 +
- int rtw89_fw_h2c_macid_pause(struct rtw89_dev *rtwdev, u8 sh, u8 grp,
- 			     bool pause)
- {
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
-index 2b2d14284465..8501f6c6819d 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.h
-+++ b/drivers/net/wireless/realtek/rtw89/fw.h
-@@ -1685,6 +1685,12 @@ static inline void SET_JOININFO_SELF_ROLE(void *h2c, u32 val)
- 	le32p_replace_bits((__le32 *)h2c, val, GENMASK(31, 30));
- }
- 
-+struct rtw89_h2c_notify_dbcc {
-+	__le32 w0;
-+} __packed;
-+
-+#define RTW89_H2C_NOTIFY_DBCC_EN BIT(0)
-+
- static inline void SET_GENERAL_PKT_MACID(void *h2c, u32 val)
- {
- 	le32p_replace_bits((__le32 *)h2c, val, GENMASK(7, 0));
-@@ -3577,6 +3583,7 @@ struct rtw89_fw_h2c_rf_reg_info {
- #define H2C_CL_MAC_MEDIA_RPT		0x8
- #define H2C_FUNC_MAC_JOININFO		0x0
- #define H2C_FUNC_MAC_FWROLE_MAINTAIN	0x4
-+#define H2C_FUNC_NOTIFY_DBCC		0x5
- 
- /* CLASS 9 - FW offload */
- #define H2C_CL_MAC_FW_OFLD		0x9
-@@ -3702,6 +3709,7 @@ int rtw89_fw_h2c_role_maintain(struct rtw89_dev *rtwdev,
- 			       enum rtw89_upd_mode upd_mode);
- int rtw89_fw_h2c_join_info(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif,
- 			   struct rtw89_sta *rtwsta, bool dis_conn);
-+int rtw89_fw_h2c_notify_dbcc(struct rtw89_dev *rtwdev, bool en);
- int rtw89_fw_h2c_macid_pause(struct rtw89_dev *rtwdev, u8 sh, u8 grp,
- 			     bool pause);
- int rtw89_fw_h2c_set_edca(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif,
+ u32 rtw89_mac_get_err_status(struct rtw89_dev *rtwdev);
+ int rtw89_mac_set_err_status(struct rtw89_dev *rtwdev, u32 err);
+ bool rtw89_mac_c2h_chk_atomic(struct rtw89_dev *rtwdev, u8 class, u8 func);
 -- 
 2.25.1
 
