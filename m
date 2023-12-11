@@ -1,54 +1,54 @@
-Return-Path: <linux-wireless+bounces-607-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-608-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9935780BAD6
-	for <lists+linux-wireless@lfdr.de>; Sun, 10 Dec 2023 14:06:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C2E680BAD7
+	for <lists+linux-wireless@lfdr.de>; Sun, 10 Dec 2023 14:06:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAC751C20955
-	for <lists+linux-wireless@lfdr.de>; Sun, 10 Dec 2023 13:06:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CD6F1C20985
+	for <lists+linux-wireless@lfdr.de>; Sun, 10 Dec 2023 13:06:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D86011709;
-	Sun, 10 Dec 2023 13:06:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D113E11739;
+	Sun, 10 Dec 2023 13:06:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gCpuDAvg"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VepM5+pV"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47EA7106
-	for <linux-wireless@vger.kernel.org>; Sun, 10 Dec 2023 05:06:37 -0800 (PST)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69A70FE
+	for <linux-wireless@vger.kernel.org>; Sun, 10 Dec 2023 05:06:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1702213597; x=1733749597;
+  t=1702213600; x=1733749600;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=OtIV/haCqIx3IMwa8K87ABGlJlO3Ox4zUxlfdavbFyw=;
-  b=gCpuDAvg/u+5q3DL4vVAndpAvX+F+yynIXPT386lcA6M/S1ST8j/fk1Y
-   NvTOwuCdnu6N3mMS1RwbtGeYEmRx76VfM84eNBcRF51g2RUijuljs/EMj
-   djdV0GjIzfjo82u8Nki3Fv91Ymx4hWxfSJFHjx5YINsNsftEKfZAc5cp5
-   SP71cm2Va06yQ0ATeH5f44XLnzTTAZky2ExgUOutpqOIIsRmiHZiJ42U3
-   fo+626YMplx/tRlOaK1S4Gb4NJc0iS/mKY7rWAHwNu9vEtOeEFwMhC4vf
-   EOiiyOqjA+lOKAoQRZYhTqfNcwbMIiLMTyMqHBwVFXzx7I4rtqLqIZd6v
+  bh=Obljw/Y/m4jyhO1dt1IsTA1mQkbsqykZ2iOFA2osfLY=;
+  b=VepM5+pVPd1Y8Hl96JCZvVIOTQmFegkoFDrMvNDq/QzTUl+z3oVGz8tB
+   ZF2RGc5LLMXUPkbnmP+L0YdbcHOeK8bMV5jrKcVnXIS7XqFumEvQQGAXD
+   DWPxSbICCv0QO6msmcb9bQL3VSK69WQLeLsyZwnl5JhcFuvOMFL2FbLc9
+   b//VOM9B9BZLBYXPYPkZiwJgeIz1neCFQXVSqJPHLVFI65kA32yK2pN2w
+   lyZW6xMIWimMFzKpKhsgiOJ1bQEYIO9NA4/ag6Aizb+DjGQ2dWZcLT+95
+   dNEdrb/eyX1HIOJSDptURKEtRo6qnVpDcY2mkCocL8rWEX8iWb7FIQKMO
    A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10919"; a="480746177"
+X-IronPort-AV: E=McAfee;i="6600,9927,10919"; a="480746181"
 X-IronPort-AV: E=Sophos;i="6.04,265,1695711600"; 
-   d="scan'208";a="480746177"
+   d="scan'208";a="480746181"
 Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2023 05:06:36 -0800
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2023 05:06:40 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10919"; a="748926451"
+X-IronPort-AV: E=McAfee;i="6600,9927,10919"; a="748926476"
 X-IronPort-AV: E=Sophos;i="6.04,265,1695711600"; 
-   d="scan'208";a="748926451"
+   d="scan'208";a="748926476"
 Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2023 05:06:35 -0800
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2023 05:06:38 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 12/14] wifi: mac80211: check defragmentation succeeded
-Date: Mon, 11 Dec 2023 09:05:30 +0200
-Message-Id: <20231211085121.8595a6b67fc0.I1225edd8f98355e007f96502e358e476c7971d8c@changeid>
+Subject: [PATCH 13/14] wifi: mac80211: mesh_plink: fix matches_local logic
+Date: Mon, 11 Dec 2023 09:05:31 +0200
+Message-Id: <20231211085121.795480fa0e0b.I017d501196a5bbdcd9afd33338d342d6fe1edd79@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231211070532.2458539-1-miriam.rachel.korenblit@intel.com>
 References: <20231211070532.2458539-1-miriam.rachel.korenblit@intel.com>
@@ -63,39 +63,43 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-We need to check that cfg80211_defragment_element()
-didn't return an error, since it can fail due to bad
-input, and we didn't catch that before.
+During refactoring the "else" here got lost, add it back.
 
-Fixes: 8eb8dd2ffbbb ("wifi: mac80211: Support link removal using Reconfiguration ML element")
+Fixes: c99a89edb106 ("mac80211: factor out plink event gathering")
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- net/mac80211/mlme.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/mac80211/mesh_plink.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index a693ca2cf8cd..40a4fbfff530 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -5800,7 +5800,7 @@ static void ieee80211_ml_reconfiguration(struct ieee80211_sub_if_data *sdata,
- {
- 	const struct ieee80211_multi_link_elem *ml;
- 	const struct element *sub;
--	size_t ml_len;
-+	ssize_t ml_len;
- 	unsigned long removed_links = 0;
- 	u16 link_removal_timeout[IEEE80211_MLD_MAX_NUM_LINKS] = {};
- 	u8 link_id;
-@@ -5816,6 +5816,8 @@ static void ieee80211_ml_reconfiguration(struct ieee80211_sub_if_data *sdata,
- 					     elems->scratch + elems->scratch_len -
- 					     elems->scratch_pos,
- 					     WLAN_EID_FRAGMENT);
-+	if (ml_len < 0)
-+		return;
- 
- 	elems->ml_reconf = (const void *)elems->scratch_pos;
- 	elems->ml_reconf_len = ml_len;
+diff --git a/net/mac80211/mesh_plink.c b/net/mac80211/mesh_plink.c
+index dbabeefe4515..efffde7e5695 100644
+--- a/net/mac80211/mesh_plink.c
++++ b/net/mac80211/mesh_plink.c
+@@ -1068,8 +1068,8 @@ mesh_plink_get_event(struct ieee80211_sub_if_data *sdata,
+ 	case WLAN_SP_MESH_PEERING_OPEN:
+ 		if (!matches_local)
+ 			event = OPN_RJCT;
+-		if (!mesh_plink_free_count(sdata) ||
+-		    (sta->mesh->plid && sta->mesh->plid != plid))
++		else if (!mesh_plink_free_count(sdata) ||
++			 (sta->mesh->plid && sta->mesh->plid != plid))
+ 			event = OPN_IGNR;
+ 		else
+ 			event = OPN_ACPT;
+@@ -1077,9 +1077,9 @@ mesh_plink_get_event(struct ieee80211_sub_if_data *sdata,
+ 	case WLAN_SP_MESH_PEERING_CONFIRM:
+ 		if (!matches_local)
+ 			event = CNF_RJCT;
+-		if (!mesh_plink_free_count(sdata) ||
+-		    sta->mesh->llid != llid ||
+-		    (sta->mesh->plid && sta->mesh->plid != plid))
++		else if (!mesh_plink_free_count(sdata) ||
++			 sta->mesh->llid != llid ||
++			 (sta->mesh->plid && sta->mesh->plid != plid))
+ 			event = CNF_IGNR;
+ 		else
+ 			event = CNF_ACPT;
 -- 
 2.34.1
 
