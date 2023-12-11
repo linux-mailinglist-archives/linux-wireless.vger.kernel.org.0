@@ -1,133 +1,194 @@
-Return-Path: <linux-wireless+bounces-673-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-674-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D09780DD71
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Dec 2023 22:46:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F285F80DD7E
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Dec 2023 22:47:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0CA55B213D7
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Dec 2023 21:46:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A49E1F21ABD
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Dec 2023 21:47:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5859451010;
-	Mon, 11 Dec 2023 21:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9FA854FA0;
+	Mon, 11 Dec 2023 21:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="gx4foxXr"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="oGNr9FtC"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB97ABD
-	for <linux-wireless@vger.kernel.org>; Mon, 11 Dec 2023 13:46:30 -0800 (PST)
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 3BBLY7iV004858;
-	Mon, 11 Dec 2023 21:46:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=fkcBVKA/a6ncrLS9B200BQa7oO+QJWSQs7ila1NiWcQ=; b=gx
-	4foxXr8heIwMB9rW1Aq7Co0PNOfxPB8F5MPt28odvZF0e/NiWliyXXrgYsJmTxfF
-	tuDtn/Eblf1py+6SPn0szcPIjM4EPNVzxAyR+7JxvIR20m7KwOMKj4xPWwp5DzBW
-	BTe2rjJ8eOpACdL3nMwUcZcN+rkSP3Wn8uM31vYlv5pQ/w5s0n2do0B/v0vWT8BM
-	F5B9f3fy0qYS6qs/f5P638krPkfqttHSksvYTyYw7vWjMdtnHiXjC8GVLNR14qIB
-	5/a0Sbz9O37FEWtt7wcQO+c9oohKAswxfLQ+YSpNpvjM7D+MMoWLnIi+vU8cwpIZ
-	4GLF4Qsd0b9eb3pXKuGQ==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ux28s99qp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 11 Dec 2023 21:46:26 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3BBLkQOk009280
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 11 Dec 2023 21:46:26 GMT
-Received: from [10.110.106.103] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Mon, 11 Dec
- 2023 13:46:25 -0800
-Message-ID: <889fdf9c-0c86-4553-984b-d4e64682d12a@quicinc.com>
-Date: Mon, 11 Dec 2023 13:46:25 -0800
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2054.outbound.protection.outlook.com [40.107.220.54])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F00BEBD;
+	Mon, 11 Dec 2023 13:47:00 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Z13Yw80k3EfcIbIa87xA26lC/w1wnKEzjix2ExkbIuHj9hsPGEs/EOuBkvtnCBCNybjNOwl/fozYlIFlXA7wY5nHWNn9v28H7da5c8wjA03xAi+AcMFguP7tF/aZ6vv25nxznyrD4DIFVn1RQar8ns6uaUOHsFvOOjV+b0DlaT0lehLY6oRH183r05HMd8EDrRj0ZFlL0dwqF7GpvuH92Fk1LIz/OWGF4wWl3WZrGIexvOEZbdUydekOR6X+os37xLqxW89omSyrcqX+JOkkgcysem3TOGFlyRKiv+BNVr7zETIW6uCx+u4PPcPiKRFj8AFpZOWazGLy+RnI3dffEA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jjj1mkZnKgXgoZR4EPwq3SootZWaHc8fCNxfsRkIxTg=;
+ b=HZnUqXTcp+QzMJWobAdILzhV7J2ArU/YOiMvy+pzcKAWm9/VN5Alf/fUSlNOLC9UepwtjobGqwkMDF7lN7TTeTKUx/Sxg2xBrSaglGcd/gip4QT/oFR1cixA0D2n0PBqpJGeZ1i1HVp8o9qxiJeMSYFH5YVmiukO3os8McYrDWmOrY230YFU4X6GGJR3M/xQ5QV9g03En1j1GSeNQ3mSjTYTI2BUB60ZBLq4lrdycNofowbSvavlfwfvZF65dUU7XmgtX8OJCeN4BZWdDRLQLiJcu/1PGyHzjKGwhiSgFQqg0agLW83i2UUbBm4f3z7EthmDbvWuCGT54o16nwmgnw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jjj1mkZnKgXgoZR4EPwq3SootZWaHc8fCNxfsRkIxTg=;
+ b=oGNr9FtC7BxD6le5JE7M0zl6So4h23Dc050L/3N7xvaDEcPAdDjE5iDue1ihP+2gzO02/mA1QzIIp8lUxgCDjgC7FVsHNjErpv3Fg4WdVrSqTVyY9P9rM3T3MmnghZIiCwKhPFrN/Jdxoj1gt+PgPHHTBrHfxvUShlUXeCXeoDE=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
+ by SN7PR12MB8604.namprd12.prod.outlook.com (2603:10b6:806:273::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.33; Mon, 11 Dec
+ 2023 21:46:57 +0000
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::83d7:9c4f:4d9b:1f2a]) by MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::83d7:9c4f:4d9b:1f2a%5]) with mapi id 15.20.7068.033; Mon, 11 Dec 2023
+ 21:46:56 +0000
+Message-ID: <8f28351e-27c7-428b-8b9a-6f0755a3878f@amd.com>
+Date: Mon, 11 Dec 2023 15:46:54 -0600
+User-Agent: Mozilla Thunderbird
+Subject: Re: [GIT PULL] mmutable branch between pdx86 amd wbrf branch and wifi
+ / amdgpu due for the v6.8 merge window
+Content-Language: en-US
+To: Alex Deucher <alexdeucher@gmail.com>
+Cc: =?UTF-8?Q?Christian_K=C3=B6nig?= <ckoenig.leichtzumerken@gmail.com>,
+ Hans de Goede <hdegoede@redhat.com>,
+ Johannes Berg <johannes@sipsolutions.net>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Ma Jun <Jun.Ma2@amd.com>,
+ "platform-driver-x86@vger.kernel.org" <platform-driver-x86@vger.kernel.org>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ linux-wireless <linux-wireless@vger.kernel.org>,
+ amd-gfx list <amd-gfx@lists.freedesktop.org>
+References: <6395b87b-7cb6-4412-b6e5-e6075353fb6d@redhat.com>
+ <b2a4dfa9-e3ec-4c90-bb53-f2e6c70603b2@gmail.com>
+ <23850b71-f530-4094-81cc-26cd762dc231@amd.com>
+ <CADnq5_OXRrGRH6iyFc_kfP2BARyav4uw3X0kuV3tP-7VXv3tMw@mail.gmail.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
+In-Reply-To: <CADnq5_OXRrGRH6iyFc_kfP2BARyav4uw3X0kuV3tP-7VXv3tMw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SN7P222CA0003.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:806:124::21) To MN0PR12MB6101.namprd12.prod.outlook.com
+ (2603:10b6:208:3cb::10)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 02/12] wifi: ath11k: store cur_regulatory_info for each
- radio
-Content-Language: en-US
-To: Baochen Qiang <quic_bqiang@quicinc.com>, <ath11k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20231211062216.382164-1-quic_bqiang@quicinc.com>
- <20231211062216.382164-3-quic_bqiang@quicinc.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20231211062216.382164-3-quic_bqiang@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: OL8wMNP-30e2Vl0Hu0T0Ef1wJHSk773p
-X-Proofpoint-GUID: OL8wMNP-30e2Vl0Hu0T0Ef1wJHSk773p
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-09_01,2023-12-07_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- priorityscore=1501 clxscore=1015 lowpriorityscore=0 suspectscore=0
- adultscore=0 malwarescore=0 bulkscore=0 mlxscore=0 phishscore=0
- spamscore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2311290000 definitions=main-2312110179
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|SN7PR12MB8604:EE_
+X-MS-Office365-Filtering-Correlation-Id: ca56a841-f9fb-4d55-8b36-08dbfa92b246
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	o5n8p2QZjwBYQb3G6jmZgy2Jq6LfrcIWSHTfiU6ZlGK90sAK+VUYkBoxwiz7+GDYviasWatxm+NMbiIqRyw+6Dfb6eDQ4Iim8Yl61zvPwv4enLU0TyzWZBAEqnZ6YRnsMisWSif+UX3la+istOxeEACkxA+4TVlAnv9VV00ziU41BxJRbl5P6VeK82Zzt6rx2T6e4PLI+wjZOexePPS/RMpJwFlxNE6BwO9ClXYgyx1bvgWyJAkTmJAfxm00B4uuBdMTzw2ryifS9pCsn56sljJLO+0FGMt8+qY3iIdgkKjWrnOvnKcA/io11h5E0CySCnBjLcl8DTucg/j61ftiV9MxKxvXVrobYqrLu38d/dvSedjGWWLxE0vMrs4FRcS3fBH6S/v8NY/Qy/U14ujJEmDgPxC0fFrjd0NHUUAt/cHwNIx8wOoS3CausZTiwq5sZpGUijnL1EJ5clxfeZIpdz8dciNrbZxLNwINxHyIFn1yYQIR4VQwytNXfhGW12e/XYeeCUvQaB867ihapSIFSwc04RGNs80hdeLe0ZtFA3rfQlXXGw6EtXzHcvxgceDMirqEB7+lTDu2YVlJDM6ZanlzjYbod0H8XmM/9sxqxHE4Ma0I9iYoPIeOEGJx0PqZAUZdNUwTphYcD0MQWZRRkGUAzJyVDqgmhtBWuyW06Dw=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(136003)(39860400002)(396003)(376002)(346002)(230922051799003)(64100799003)(451199024)(1800799012)(186009)(31686004)(41300700001)(38100700002)(2906002)(44832011)(5660300002)(316002)(4326008)(8936002)(66946007)(8676002)(6916009)(66476007)(66556008)(54906003)(2616005)(31696002)(36756003)(86362001)(66574015)(966005)(26005)(6512007)(478600001)(6506007)(53546011)(83380400001)(6486002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?cG12UUEveEtNRWp5bllTaXNLa3NKamprNVlXOHZaSUhsWWRxWkFGRk4rVlp5?=
+ =?utf-8?B?ZHcweUtPdzBFSEFPZHpVTGd3Zm1XSDB1Ulc4RlFaQXozWkRrS0hZdlVpN0dH?=
+ =?utf-8?B?OURVOEF6YVRWV3VxWGt0Y3hnSFQwR01mMVdYelRFMzRRZGduVzRBUEdJdTF2?=
+ =?utf-8?B?ZEhnSEE1TzdmZ1dsc1NON083QllsdlhYbVBvTkhaeGdrNm9aTjg4N3lLaktM?=
+ =?utf-8?B?bGVUVnlkVERua21wZVBVd0VOcjd6djgrbXE0OFY5WFNSK3ZFVU1wcHZWSEZn?=
+ =?utf-8?B?UGRVcERaUzlTb2p4TVp4SzVUMkd3blNlZCtZekpUWVJCemdVdXB1aGtweTFk?=
+ =?utf-8?B?TnNzTHNwOWQrQjJqZ0xnUjNpb3UvY3dQaEwrRzRaalMxSDdRTEp5aVArVHNL?=
+ =?utf-8?B?RVV2TDFjSC9nUm04cnoxS0RuSHg0dnBmbkV1bjYwaGZ3WTV5bGNBWjFVZWxM?=
+ =?utf-8?B?dlIxNGlHSGM3eDNTNUhMdUhldUF6SHZ6b25yWmdBWDFkM1dsRTc5dmpiUjdB?=
+ =?utf-8?B?RUFxcWFkcGRoeFRsb2VIbDJ0SFpJcG81RXBxRk16ZVlxU0pYRWljUG9ocCsx?=
+ =?utf-8?B?bEpXaWQzRTF4SzZRUStXM2xYMGRNZHhsbzhaVVN2dUxGVUIyOHdGa3lURTB2?=
+ =?utf-8?B?Ylk2bWFnRkFxc2s5SmpKcEFDVEZHNjlSZm9BVm83bnFUU1ppQ2N1NE0vSFJR?=
+ =?utf-8?B?bCtPNm1RdXF4YmNNd0RZNjdUeUZmU3F2MlhhbmdJeVZKMHJvc3VUR2tsMzFN?=
+ =?utf-8?B?bkdOa01pVlZtQlFoaWw1Z3ZHRFBzNjdoKy9iTjIzTzlFeHNTMkJUNjlXZERX?=
+ =?utf-8?B?QVMvN3lBdVZEOXZPRXo1TXh2V3QwdkNTYnhyRWRDakk4d3pnZDMvNXdOQW5n?=
+ =?utf-8?B?U3JydkxoNUtjUnFEaUd5TURyZXdPOVZrZEZSV1NMeGFGRjlEdUJQUHhmSDhn?=
+ =?utf-8?B?bTBIVENGUU9KaElGK0k0WE9WNUVPNGZqTms2SHFOaDVpcTFYZ0l6bjFtRnVU?=
+ =?utf-8?B?dThONTRJUk5MTEtXT3dFVEIwU2ovODFySkdpVnZLTHdxUFJlRVdNc2o0S0Mr?=
+ =?utf-8?B?NHRKa3ZqcG0rV1BpL2NzNC9wYnIzbE5LTjN2bUxQS0x2Uk1JYU51SEVMNm9r?=
+ =?utf-8?B?MmxEQzlMUmljN2dkK1Jvd2Z1VCt5VDJVQ2Vsb09HVWRFazdWeDIrbmJnYVgv?=
+ =?utf-8?B?eU9QdjFSUmhDSWRtcVVoT3JZc2QyTzR1eTJsY2FrNmNBbnZYQUw1K05la2Zu?=
+ =?utf-8?B?dmhZeWlrSnZRTFhsZXJrMmZMRXh0bUZtUGxMWjVXdW0zclp1OFF4bENXc2dM?=
+ =?utf-8?B?QVNhMXhsMjN1elNOeVRBSGYremNMNUtCMFZrenFKTjlKakI2ZC9tVlRXNTBH?=
+ =?utf-8?B?UEpnUDJaTmNNMEVVSW14M3h3ZWZ6cC9JV2VBUWliZ000WWkxSk9aUjJIYlZx?=
+ =?utf-8?B?VG4ydlBsY1llalU5REQ5Mml3M25QVm1RV3pIQ3RZYVBid2dNRXFaQ1RUelNG?=
+ =?utf-8?B?cEpOOWpabnQrZkhPOVIzYVgwN1J6clJvRHduZ04xT0dqekg5T015TmQzenNF?=
+ =?utf-8?B?SkJFYUMzeXlmUHJkMXQ5S3l5TkNGMDB3TkJ2ejcrcFR6U0JDWC9BRzdNcnly?=
+ =?utf-8?B?VVkreFcwdmZMclk5NG4rUEpOYXJldWk1WDRSS291WVE5WGZxdEFwNDVGMWp2?=
+ =?utf-8?B?OW1hWGFFQmY2RDVFU3pDSWlSeEJrRkJSN3AzMmtPMS9POHpZN29ORGlURGdW?=
+ =?utf-8?B?cXFIQjAyM3lGOXprUisrVzI3UXI1L2wxN2hPOXVUM2MybnBSakpqVG44TExy?=
+ =?utf-8?B?UGhNbUtVeGNVb2hVNkJ5Ukp4czBIN2RtWHhPMnI1Z2V3M3RiR1VuVjFVb3pK?=
+ =?utf-8?B?RXdrL2RidGlVZUVIekV3TGJldHFwM2Evall6MXlSeEdSMzhCMDRjMElhdGs2?=
+ =?utf-8?B?UXFaZUJsYW1ldStwa0x6VjQzK0ptU1BhNnhqUXcyYmduSWwwalI4UTlQNk5Z?=
+ =?utf-8?B?VGtoQ3lnZStBcXF6SER3OEtmYnE4TGg3SitVcDNQaUowVG9aVHhQWG8rMGJM?=
+ =?utf-8?B?cTRlRG4wT2pROVNFSlVuMnJLZlpjUFJkU3JiOW1xUEVsa0poTHNYSHRlQktX?=
+ =?utf-8?Q?eGW9mHm44Y1Hjeia6DQqkfNxu?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ca56a841-f9fb-4d55-8b36-08dbfa92b246
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Dec 2023 21:46:56.8608
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9fLCCbqrwgxjYeodbxGyIcpXUwGWKYH9zwJrJUMFrFhgOGMCqP/05bZWGx/jw1R2GvPCKjOJX4znthbkD5Shtw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8604
 
-On 12/10/2023 10:22 PM, Baochen Qiang wrote:
-> From: Wen Gong <quic_wgong@quicinc.com>
+On 12/11/2023 09:27, Alex Deucher wrote:
+> On Mon, Dec 11, 2023 at 10:20 AM Mario Limonciello
+> <mario.limonciello@amd.com> wrote:
+>>
+>> On 12/11/2023 08:47, Christian König wrote:
+>>> Am 11.12.23 um 12:02 schrieb Hans de Goede:
+>>>> Hi Wifi and AMDGPU maintainers,
+>>>>
+>>>> Here is a pull-request for the platform-drivers-x86 parts of:
+>>>>
+>>>> https://lore.kernel.org/platform-driver-x86/20231211100630.2170152-1-Jun.Ma2@amd.com/
+>>>>
+>>>>   From my pov the pdx86 bits are ready and the
+>>>> platform-drivers-x86-amd-wbrf-v6.8-1 tag can be merged by you to merge
+>>>> the wifi-subsys resp. the amdgpu driver changes on top.
+>>>
+>>> The few comments I had for the amdgpu patches were addressed and I
+>>> honestly don't have time to take a detailed look at the general framework.
+>>>
+>>> So perfectly fine to merge that stuff from my side. Alex or Mario might
+>>> have some additional comments, but I think they will give their go as well.
+>>
+>> My feedback has been taken into account already, I'm happy with the
+>> series now.
+>>
+>> I'm a bit confused how exactly the drm/amd patches get applied though.
+>> Is it like this:
+>> 1) immutable branch for platform-x86
+>> 2) immutable branch for platform-x86 merged into wlan-next
+>> 3) immutable branch for platform-x86 merged into drm-next?
+>> 4) wlan-next and drm-next come together for 6.8
+>>
+>> Normally stuff from amd-staging-drm-next is put into the drm-next branch
+>> and then merge through the drm.
+>>
+>> amd-staging-drm-next tracks a much older tree so I'm thinking merging
+>> the immutable branch for platform-x86 won't work.
+>>
+>> Maybe the right answer is that the "immutable branch gets merged into
+>> drm-next" and we just have some cherry-picks for all the commits into
+>> amd-staging-drm-next so we can compile but Alex doesn't put them as part
+>> of the next PR to drm-next.  When ASDN rebased to 6.8 or newer they
+>> would drop off.
 > 
-> The regulatory info of WMI_REG_CHAN_LIST_CC_EXT_EVENTID is not saved
-> in ath11k now, the info should be saved in ath11k. Save the info for
-> each radio and support switch regulatory rules dynamically.
+> amd-staging-drm-next is just our development branch, the actual
+> amdgpu-next branch is:
+> https://gitlab.freedesktop.org/agd5f/linux/-/commits/drm-next
+> I'll merge the platform branch there and then apply the amdgpu patches on top.
+> For amd-staging-drm-next, we can just apply the whole set since that
+> branch is just for development so there won't be any conflicts with
+> upstream.
 > 
-> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
-> 
-> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
-> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-> ---
-> v9:
->  1. add check to soc->reg_info_store in case memory allocation fails.
->  2. remove irrelevant change w.r.t commit message.
-> v8:
->  no change.
-> v7:
->  1. fix ath11k-check warning
->  2. fix memory leak.
-> 
->  drivers/net/wireless/ath/ath11k/core.h |   1 +
->  drivers/net/wireless/ath/ath11k/reg.c  |   6 +
->  drivers/net/wireless/ath/ath11k/wmi.c  | 153 ++++++++++++++++++-------
->  drivers/net/wireless/ath/ath11k/wmi.h  |   5 +
->  4 files changed, 122 insertions(+), 43 deletions(-)
 
-I came across a nit during re-review. Kalle, can you fix in the pending
-branch?
-
-> diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-> index 75c79c99faa9..78bc2715e476 100644
-> --- a/drivers/net/wireless/ath/ath11k/wmi.c
-> +++ b/drivers/net/wireless/ath/ath11k/wmi.c
-
-> +static
-> +enum wmi_vdev_type ath11k_reg_get_ar_vdev_type(struct ath11k *ar)
-> +{
-> +	struct ath11k_vif *arvif;
->  
-> -	ath11k_dbg(ab, ATH11K_DBG_WMI, "event reg chan list id %d", id);
-> +	/* Currently each struct ath11k maps to one struct ieee80211_hw/wiphy
-> +	 * and one struct ieee80211_regdomain, so it could only store one group
-> +	 * reg rules. It means muti-interface concurrency in the same ath11k is
-
-nit: s/muti/multi/
-
-> +	 * not support for the regdomain. So get the vdev type of the first entry
-> +	 * now. After concurrency support for the regdomain, this should change.
-> +	 */
-
+Got it, thanks.
 
