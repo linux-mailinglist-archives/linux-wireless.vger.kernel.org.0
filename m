@@ -1,116 +1,96 @@
-Return-Path: <linux-wireless+bounces-638-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-640-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3875D80C359
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Dec 2023 09:35:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F5C080C4E4
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Dec 2023 10:40:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC6F7B20BA1
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Dec 2023 08:35:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C5C3281663
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Dec 2023 09:40:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF00F2110D;
-	Mon, 11 Dec 2023 08:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD06021373;
+	Mon, 11 Dec 2023 09:40:26 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F0A3ED
-	for <linux-wireless@vger.kernel.org>; Mon, 11 Dec 2023 00:35:06 -0800 (PST)
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 3BB8Z1W802598543, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 3BB8Z1W802598543
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 11 Dec 2023 16:35:01 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Mon, 11 Dec 2023 16:35:01 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Mon, 11 Dec
- 2023 16:35:00 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <kvalo@kernel.org>
-CC: <linux-wireless@vger.kernel.org>
-Subject: [PATCH 6/6] wifi: rtw89: only reset BB/RF for existing WiFi 6 chips while starting up
-Date: Mon, 11 Dec 2023 16:33:41 +0800
-Message-ID: <20231211083341.118047-7-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20231211083341.118047-1-pkshih@realtek.com>
-References: <20231211083341.118047-1-pkshih@realtek.com>
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D559E12C
+	for <linux-wireless@vger.kernel.org>; Mon, 11 Dec 2023 01:40:21 -0800 (PST)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-251-ceEQz8YcNQinqR1vFYLgmA-1; Mon, 11 Dec 2023 09:40:18 +0000
+X-MC-Unique: ceEQz8YcNQinqR1vFYLgmA-1
+Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
+ (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Mon, 11 Dec
+ 2023 09:39:57 +0000
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.048; Mon, 11 Dec 2023 09:39:57 +0000
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Kees Cook' <keescook@chromium.org>, Jakub Kicinski <kuba@kernel.org>
+CC: kernel test robot <lkp@intel.com>, "David S . Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+	<pabeni@redhat.com>, Johannes Berg <johannes@sipsolutions.net>, Jeff Johnson
+	<quic_jjohnson@quicinc.com>, Michael Walle <mwalle@kernel.org>, Max Schulze
+	<max.schulze@online.de>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>
+Subject: RE: [PATCH v3] netlink: Return unsigned value for nla_len()
+Thread-Topic: [PATCH v3] netlink: Return unsigned value for nla_len()
+Thread-Index: AQHaKIcLTIYg1qNNHkOXUp+SE3zDFLCj2bDQ
+Date: Mon, 11 Dec 2023 09:39:57 +0000
+Message-ID: <72800762d59a4a61ad1999dd5b816e00@AcuMS.aculab.com>
+References: <20231206205904.make.018-kees@kernel.org>
+In-Reply-To: <20231206205904.make.018-kees@kernel.org>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-The new WiFi 7 chips change the design, so no need to disable/enable
-BB/RF when core_start(). Keep the same logic for existing chips.
+From: Kees Cook
+> Sent: 06 December 2023 20:59
+>=20
+> The return value from nla_len() is never expected to be negative, and can
+> never be more than struct nlattr::nla_len (a u16). Adjust the prototype
+> on the function. This will let GCC's value range optimization passes
+> know that the return can never be negative, and can never be larger than
+> u16. As recently discussed[1], this silences the following warning in
+> GCC 12+:
+>=20
+...
+> -static inline int nla_len(const struct nlattr *nla)
+> +static inline u16 nla_len(const struct nlattr *nla)
+>  {
+>  =09return nla->nla_len - NLA_HDRLEN;
+>  }
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/core.c |  5 +----
- drivers/net/wireless/realtek/rtw89/mac.h  | 17 +++++++++++++++++
- 2 files changed, 18 insertions(+), 4 deletions(-)
+It also adds an explicit mask with 0xffff.
+I suspect that returning 'unsigned int' will silence the warning
+from gcc (since the error message has a huge max size).
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index d5ee2aa053d4..fd527a249996 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -3956,10 +3956,7 @@ int rtw89_core_start(struct rtw89_dev *rtwdev)
- 	/* efuse process */
- 
- 	/* pre-config BB/RF, BB reset/RFC reset */
--	ret = rtw89_chip_disable_bb_rf(rtwdev);
--	if (ret)
--		return ret;
--	ret = rtw89_chip_enable_bb_rf(rtwdev);
-+	ret = rtw89_chip_reset_bb_rf(rtwdev);
- 	if (ret)
- 		return ret;
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
-index 56cd81347784..ed98b49809a4 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.h
-+++ b/drivers/net/wireless/realtek/rtw89/mac.h
-@@ -1108,6 +1108,23 @@ static inline int rtw89_chip_disable_bb_rf(struct rtw89_dev *rtwdev)
- 	return chip->ops->disable_bb_rf(rtwdev);
- }
- 
-+static inline int rtw89_chip_reset_bb_rf(struct rtw89_dev *rtwdev)
-+{
-+	int ret;
-+
-+	if (rtwdev->chip->chip_gen != RTW89_CHIP_AX)
-+		return 0;
-+
-+	ret = rtw89_chip_disable_bb_rf(rtwdev);
-+	if (ret)
-+		return ret;
-+	ret = rtw89_chip_enable_bb_rf(rtwdev);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
-+}
-+
- u32 rtw89_mac_get_err_status(struct rtw89_dev *rtwdev);
- int rtw89_mac_set_err_status(struct rtw89_dev *rtwdev, u32 err);
- bool rtw89_mac_c2h_chk_atomic(struct rtw89_dev *rtwdev, u8 class, u8 func);
--- 
-2.25.1
+If the value is too small copying ~64k or ~4G will both overflow the
+buffer.
+The former might (just) be exploitable, the latter will crash
+(so is probably better!)
+
+=09David
+=20
+
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
+PT, UK
+Registration No: 1397386 (Wales)
 
 
