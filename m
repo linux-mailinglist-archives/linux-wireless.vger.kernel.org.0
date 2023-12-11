@@ -1,213 +1,201 @@
-Return-Path: <linux-wireless+bounces-667-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-668-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 472FD80CF4C
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Dec 2023 16:18:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1067680CF7E
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Dec 2023 16:27:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94A501F21383
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Dec 2023 15:18:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A5BCB21472
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Dec 2023 15:27:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C33004AF65;
-	Mon, 11 Dec 2023 15:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02E2D4B5B5;
+	Mon, 11 Dec 2023 15:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VYpy3mKh"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AnegP7d6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A84444A9AE
-	for <linux-wireless@vger.kernel.org>; Mon, 11 Dec 2023 15:18:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 472CAC433C7;
-	Mon, 11 Dec 2023 15:18:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702307903;
-	bh=Sg9LH3dFc3PNlGjbWX6hAhLHhjdap8awuYbouxTP5OY=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=VYpy3mKhDmzToxUD0q7aDhAl5Fa0NQOou+v16Oi/Mu6gwGMYtl8h/xOGDf4emq4cA
-	 AdxEojpCIUqtnQYJH6UexnwoDYJQ7si9eUs7Sj8msYnbZmMGcEXekwXri3zmlA70Ho
-	 nFML4XAApHUhb/0s9/4TXgXuHur/0S2uwVKxGnxoGy6gfwLdw87PGXLLT0pU1XqC/C
-	 NnsGjoinhU6pqLDGjuMafAZpR5qWnxIxiHccYUqsEqEszYgU/xGLOJ15fu+NA5Oiyh
-	 1HhKgKBW0YawkeIID4FZmecNu7ZIpqcLjQ6wBOaKMb9TB33xfkSY+aCAe9zaSPJEL4
-	 Kkv/1W2grEPZg==
-From: Kalle Valo <kvalo@kernel.org>
-To: Baochen Qiang <quic_bqiang@quicinc.com>
-Cc: Aditya Kumar Singh <quic_adisi@quicinc.com>,
-  <ath11k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v8 02/12] wifi: ath11k: store cur_regulatory_info for
- each radio
-References: <20231204081323.5582-1-quic_bqiang@quicinc.com>
-	<20231204081323.5582-3-quic_bqiang@quicinc.com>
-	<db8b0734-8e4e-43f9-ba48-b3df2d33e29e@quicinc.com>
-	<2c70dfd6-9e0e-468b-8585-252f0c23ff0a@quicinc.com>
-Date: Mon, 11 Dec 2023 17:18:19 +0200
-In-Reply-To: <2c70dfd6-9e0e-468b-8585-252f0c23ff0a@quicinc.com> (Baochen
-	Qiang's message of "Mon, 11 Dec 2023 11:56:52 +0800")
-Message-ID: <871qbs6a4k.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+Received: from mail-ot1-x332.google.com (mail-ot1-x332.google.com [IPv6:2607:f8b0:4864:20::332])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CD73E3;
+	Mon, 11 Dec 2023 07:27:32 -0800 (PST)
+Received: by mail-ot1-x332.google.com with SMTP id 46e09a7af769-6d9f8578932so2190354a34.2;
+        Mon, 11 Dec 2023 07:27:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1702308452; x=1702913252; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MfbKV2/TY0MfyawkcDgwd2rGAqmms78JFhMnLhUszH0=;
+        b=AnegP7d6FVHTiM1TWhKEHsbQoDWP4NFKLBYO0IsD2XFcJv61jCl4DERNyV2Qz+JKyw
+         +lg7OOGgQ24lEMOEqvnN3ZBszrrE6s7I/LnSrXd6bXEqvJusEL6QohzD2k1UFiMdMh84
+         RukRiQcQgHYkX8iT+YN8GwL7dSfBQibyYhoLBPd8RZP2eeZNhveC3+Q15T/iq3G/8mJt
+         hD0zfHTq97xb7OtQR+eHi/9MND5EWYUpjzyfslTPfONmoDuMlkHpF+RoWIZuOqqhZufk
+         EaqZzRufxYIwKh40avtIRctfmT8Z5+vplFqPPVpgdGb2+QTjB/f00KJHTOUAJrubBTlt
+         GkKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702308452; x=1702913252;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MfbKV2/TY0MfyawkcDgwd2rGAqmms78JFhMnLhUszH0=;
+        b=Wddb1DsuZ3OTJPVU6mbbaVkYarYp6O7ye8qLPBUm9RyJMoz7heeO5BEuIAZeR47IZY
+         rymLeJEYNaq73RIqkZOvsNeaSNsSbGfDbMMKiZRqPe8ynpB0ciadDQfbti36jGjux5SY
+         ki+D/aOIy8ocGcVIp/tg/KQCcFGH1WcfRAJpllxh5DA6HCsnzU2EqlYhvigBqhtYNh4X
+         3iRDqVNpZskp05xvwYT0fkFilKazDdxfJd4su2t4ofjqTEt4EVC8LxYFCaOMZJvZlpYZ
+         HD+qUmjMzcM9QwTliqekL9pOqdaBKm/HA3vahJLzJxaeGd4KWLozu+p7H3frvHav3eVH
+         YKuQ==
+X-Gm-Message-State: AOJu0Ywf3amesbTWRKtFbx2v9ygTzigRhByFcRzjuWhoimc0pDiVtEhk
+	WWNK9JvGk4NqUpfs3Dc9IroJBTALcy3u2E+P9gw=
+X-Google-Smtp-Source: AGHT+IG47sj6ougdG5tZAq3pwxJM83q+ankLP1ExYCnj8m+DGDohDP/ngyWyaNlX5BmakhSLo/EonuSm6eoGu5HEvI8=
+X-Received: by 2002:a05:6870:350d:b0:1fb:1304:56b7 with SMTP id
+ k13-20020a056870350d00b001fb130456b7mr5788311oah.7.1702308451822; Mon, 11 Dec
+ 2023 07:27:31 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <6395b87b-7cb6-4412-b6e5-e6075353fb6d@redhat.com>
+ <b2a4dfa9-e3ec-4c90-bb53-f2e6c70603b2@gmail.com> <23850b71-f530-4094-81cc-26cd762dc231@amd.com>
+In-Reply-To: <23850b71-f530-4094-81cc-26cd762dc231@amd.com>
+From: Alex Deucher <alexdeucher@gmail.com>
+Date: Mon, 11 Dec 2023 10:27:20 -0500
+Message-ID: <CADnq5_OXRrGRH6iyFc_kfP2BARyav4uw3X0kuV3tP-7VXv3tMw@mail.gmail.com>
+Subject: Re: [GIT PULL] mmutable branch between pdx86 amd wbrf branch and wifi
+ / amdgpu due for the v6.8 merge window
+To: Mario Limonciello <mario.limonciello@amd.com>
+Cc: =?UTF-8?Q?Christian_K=C3=B6nig?= <ckoenig.leichtzumerken@gmail.com>, 
+	Hans de Goede <hdegoede@redhat.com>, Johannes Berg <johannes@sipsolutions.net>, 
+	Alex Deucher <alexander.deucher@amd.com>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	Ma Jun <Jun.Ma2@amd.com>, 
+	"platform-driver-x86@vger.kernel.org" <platform-driver-x86@vger.kernel.org>, 
+	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+	linux-wireless <linux-wireless@vger.kernel.org>, 
+	amd-gfx list <amd-gfx@lists.freedesktop.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Baochen Qiang <quic_bqiang@quicinc.com> writes:
+On Mon, Dec 11, 2023 at 10:20=E2=80=AFAM Mario Limonciello
+<mario.limonciello@amd.com> wrote:
+>
+> On 12/11/2023 08:47, Christian K=C3=B6nig wrote:
+> > Am 11.12.23 um 12:02 schrieb Hans de Goede:
+> >> Hi Wifi and AMDGPU maintainers,
+> >>
+> >> Here is a pull-request for the platform-drivers-x86 parts of:
+> >>
+> >> https://lore.kernel.org/platform-driver-x86/20231211100630.2170152-1-J=
+un.Ma2@amd.com/
+> >>
+> >>  From my pov the pdx86 bits are ready and the
+> >> platform-drivers-x86-amd-wbrf-v6.8-1 tag can be merged by you to merge
+> >> the wifi-subsys resp. the amdgpu driver changes on top.
+> >
+> > The few comments I had for the amdgpu patches were addressed and I
+> > honestly don't have time to take a detailed look at the general framewo=
+rk.
+> >
+> > So perfectly fine to merge that stuff from my side. Alex or Mario might
+> > have some additional comments, but I think they will give their go as w=
+ell.
+>
+> My feedback has been taken into account already, I'm happy with the
+> series now.
+>
+> I'm a bit confused how exactly the drm/amd patches get applied though.
+> Is it like this:
+> 1) immutable branch for platform-x86
+> 2) immutable branch for platform-x86 merged into wlan-next
+> 3) immutable branch for platform-x86 merged into drm-next?
+> 4) wlan-next and drm-next come together for 6.8
+>
+> Normally stuff from amd-staging-drm-next is put into the drm-next branch
+> and then merge through the drm.
+>
+> amd-staging-drm-next tracks a much older tree so I'm thinking merging
+> the immutable branch for platform-x86 won't work.
+>
+> Maybe the right answer is that the "immutable branch gets merged into
+> drm-next" and we just have some cherry-picks for all the commits into
+> amd-staging-drm-next so we can compile but Alex doesn't put them as part
+> of the next PR to drm-next.  When ASDN rebased to 6.8 or newer they
+> would drop off.
 
-> On 12/7/2023 11:15 AM, Aditya Kumar Singh wrote:
->> On 12/4/23 13:43, Baochen Qiang wrote:
->>> --- a/drivers/net/wireless/ath/ath11k/mac.h
->>> +++ b/drivers/net/wireless/ath/ath11k/mac.h
->>> @@ -159,7 +159,6 @@ struct ath11k_vif *ath11k_mac_get_vif_up(struct
->>> ath11k_base *ab);
->>> =C2=A0 struct ath11k *ath11k_mac_get_ar_by_vdev_id(struct ath11k_base
->>> *ab, u32 vdev_id);
->>> =C2=A0 struct ath11k *ath11k_mac_get_ar_by_pdev_id(struct ath11k_base
->>> *ab, u32 pdev_id);
->>> -
->> Irrelevant change w.r.t commit message?
->>=20
->>> =C2=A0 void ath11k_mac_drain_tx(struct ath11k *ar);
->>> =C2=A0 void ath11k_mac_peer_cleanup_all(struct ath11k *ar);
->>> =C2=A0 int ath11k_mac_tx_mgmt_pending_free(int buf_id, void *skb, void =
-*ctx);
->> ...
->>> @@ -4749,6 +4749,11 @@ static int
->>> ath11k_wmi_tlv_ext_soc_hal_reg_caps_parse(struct ath11k_base *soc,
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 soc->pdevs[0].pd=
-ev_id =3D 0;
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
->>> +=C2=A0=C2=A0=C2=A0 if (!soc->reg_info_store)
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 soc->reg_info_store =3D kca=
-lloc(soc->num_radios,
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 sizeof(*soc->reg_info_store),
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 GFP_ATOMIC);
->> What if this memory allocation request fails? Any negative case
->> check should be present?
->>=20
->>> +
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return 0;
->>> =C2=A0 }
->>> @@ -7071,33 +7076,54 @@ static bool ath11k_reg_is_world_alpha(char
->>> *alpha)
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return false;
->>> =C2=A0 }
->>> -static int ath11k_reg_chan_list_event(struct ath11k_base *ab,
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct sk_buff *s=
-kb,
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 enum wmi_reg_chan=
-_list_cmd_type id)
->>> +void ath11k_reg_reset_info(struct cur_regulatory_info *reg_info)
->>> =C2=A0 {
->>> -=C2=A0=C2=A0=C2=A0 struct cur_regulatory_info *reg_info =3D NULL;
->>> -=C2=A0=C2=A0=C2=A0 struct ieee80211_regdomain *regd =3D NULL;
->>> -=C2=A0=C2=A0=C2=A0 bool intersect =3D false;
->>> -=C2=A0=C2=A0=C2=A0 int ret =3D 0, pdev_idx, i, j;
->>> -=C2=A0=C2=A0=C2=A0 struct ath11k *ar;
->>> +=C2=A0=C2=A0=C2=A0 int i, j;
->>> -=C2=A0=C2=A0=C2=A0 reg_info =3D kzalloc(sizeof(*reg_info), GFP_ATOMIC);
->>> -=C2=A0=C2=A0=C2=A0 if (!reg_info) {
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ret =3D -ENOMEM;
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 goto fallback;
->>> -=C2=A0=C2=A0=C2=A0 }
->>> +=C2=A0=C2=A0=C2=A0 if (reg_info) {
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 kfree(reg_info->reg_rules_2=
-ghz_ptr);
->>> -=C2=A0=C2=A0=C2=A0 if (id =3D=3D WMI_REG_CHAN_LIST_CC_ID)
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ret =3D ath11k_pull_reg_cha=
-n_list_update_ev(ab, skb, reg_info);
->>> -=C2=A0=C2=A0=C2=A0 else
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ret =3D ath11k_pull_reg_cha=
-n_list_ext_update_ev(ab, skb,
->>> reg_info);
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 kfree(reg_info->reg_rules_5=
-ghz_ptr);
->>> -=C2=A0=C2=A0=C2=A0 if (ret) {
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ath11k_warn(ab, "failed to =
-extract regulatory info from
->>> received event\n");
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 goto fallback;
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 for (i =3D 0; i < WMI_REG_C=
-URRENT_MAX_AP_TYPE; i++) {
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 kfr=
-ee(reg_info->reg_rules_6ghz_ap_ptr[i]);
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 for=
- (j =3D 0; j < WMI_REG_MAX_CLIENT_TYPE; j++)
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 kfree(reg_info->reg_rules_6ghz_client_ptr[i][j]);
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
->>> +
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 memset(reg_info, 0, sizeof(=
-*reg_info));
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
->>> +}
->>> +
->>> +static
->>> +enum wmi_vdev_type ath11k_reg_get_ar_vdev_type(struct ath11k *ar)
->>> +{
->>> +=C2=A0=C2=A0=C2=A0 struct ath11k_vif *arvif;
->>> +
->>> +=C2=A0=C2=A0=C2=A0 /* Currently each struct ath11k maps to one struct
->>> ieee80211_hw/wiphy
->>> +=C2=A0=C2=A0=C2=A0=C2=A0 * and one struct ieee80211_regdomain, so it c=
-ould only store
->>> one group
->>> +=C2=A0=C2=A0=C2=A0=C2=A0 * reg rules. It means muti-interface concurre=
-ncy in the same
->>> ath11k is
->>> +=C2=A0=C2=A0=C2=A0=C2=A0 * not support for the regdomain. So get the v=
-dev type of the
->>> first entry
->>> +=C2=A0=C2=A0=C2=A0=C2=A0 * now. After concurrency support for the regd=
-omain, this
->>> should change.
->>> +=C2=A0=C2=A0=C2=A0=C2=A0 */
->>> +=C2=A0=C2=A0=C2=A0 arvif =3D list_first_entry_or_null(&ar->arvifs, str=
-uct
->>> ath11k_vif, list);
->>> +=C2=A0=C2=A0=C2=A0 if (arvif)
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return arvif->vdev_type;
->>> +
->>> +=C2=A0=C2=A0=C2=A0 return WMI_VDEV_TYPE_UNSPEC;
->>> +}
->>> +
->>> +int ath11k_reg_handle_chan_list(struct ath11k_base *ab,
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 struct cur_regulatory_info *reg_info,
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 enum ieee80211_ap_reg_power power_type)
->>> +{
->>> +=C2=A0=C2=A0=C2=A0 struct ieee80211_regdomain *regd;
->>> +=C2=A0=C2=A0=C2=A0 bool intersect =3D false;
->>> +=C2=A0=C2=A0=C2=A0 int pdev_idx;
->>> +=C2=A0=C2=A0=C2=A0 struct ath11k *ar;
->>> +=C2=A0=C2=A0=C2=A0 enum wmi_vdev_type vdev_type;
->>> -=C2=A0=C2=A0=C2=A0 ath11k_dbg(ab, ATH11K_DBG_WMI, "event reg chan list=
- id %d", id);
->>> +=C2=A0=C2=A0=C2=A0 ath11k_dbg(ab, ATH11K_DBG_WMI, "event reg handle ch=
-an list");
->> I believe this debug was helpful in the sense it showed which type
->> of event came. Can't we still print this somehow? Or may be
->> somewhere else?You can check the event type from logs of=20
-> ath11k_pull_reg_chan_list_update_ev() and
-> ath11k_pull_reg_chan_list_ext_update_ev().
+amd-staging-drm-next is just our development branch, the actual
+amdgpu-next branch is:
+https://gitlab.freedesktop.org/agd5f/linux/-/commits/drm-next
+I'll merge the platform branch there and then apply the amdgpu patches on t=
+op.
+For amd-staging-drm-next, we can just apply the whole set since that
+branch is just for development so there won't be any conflicts with
+upstream.
 
-Baochen, I didn't see any comments from you. Did you send an empty mail
-by accident?
+Alex
 
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+>
+> >
+> > Regards,
+> > Christian.
+> >
+> >>
+> >> This only adds kernel internal API, so if in the future the API needs
+> >> work that can be done.
+> >>
+> >> I've not merged this branch into pdx86/for-next yet, since I see
+> >> little use in merging it without any users. I'll merge it once either
+> >> the wifi or amdgpu changes are also merged
+> >> (and if some blocking issues get identified before either are merged I
+> >> can prepare a new pull-request fixing the issues).
+> >>
+> >> Regards,
+> >>
+> >> Hans
+> >>
+> >>
+> >>
+> >> The following changes since commit
+> >> b85ea95d086471afb4ad062012a4d73cd328fa86:
+> >>
+> >>    Linux 6.7-rc1 (2023-11-12 16:19:07 -0800)
+> >>
+> >> are available in the Git repository at:
+> >>
+> >>
+> >> git://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x=
+86.git tags/platform-drivers-x86-amd-wbrf-v6.8-1
+> >>
+> >> for you to fetch changes up to 58e82a62669da52e688f4a8b89922c1839bf100=
+1:
+> >>
+> >>    platform/x86/amd: Add support for AMD ACPI based Wifi band RFI
+> >> mitigation feature (2023-12-11 11:33:44 +0100)
+> >>
+> >> ----------------------------------------------------------------
+> >> Immutable branch between pdx86 amd wbrf branch and wifi / amdgpu due
+> >> for the v6.8 merge window
+> >>
+> >> platform-drivers-x86-amd-wbrf-v6.8-1: v6.7-rc1 + AMD WBRF support
+> >> for merging into the wifi subsys and amdgpu driver for 6.8.
+> >>
+> >> ----------------------------------------------------------------
+> >> Ma Jun (2):
+> >>        Documentation/driver-api: Add document about WBRF mechanism
+> >>        platform/x86/amd: Add support for AMD ACPI based Wifi band RFI
+> >> mitigation feature
+> >>
+> >>   Documentation/driver-api/index.rst |   1 +
+> >>   Documentation/driver-api/wbrf.rst  |  78 +++++++++
+> >>   drivers/platform/x86/amd/Kconfig   |  14 ++
+> >>   drivers/platform/x86/amd/Makefile  |   1 +
+> >>   drivers/platform/x86/amd/wbrf.c    | 317
+> >> +++++++++++++++++++++++++++++++++++++
+> >>   include/linux/acpi_amd_wbrf.h      |  91 +++++++++++
+> >>   6 files changed, 502 insertions(+)
+> >>   create mode 100644 Documentation/driver-api/wbrf.rst
+> >>   create mode 100644 drivers/platform/x86/amd/wbrf.c
+> >>   create mode 100644 include/linux/acpi_amd_wbrf.h
+> >>
+> >
+>
 
