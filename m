@@ -1,167 +1,118 @@
-Return-Path: <linux-wireless+bounces-629-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-595-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1B0E80C145
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Dec 2023 07:23:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A13280BACA
+	for <lists+linux-wireless@lfdr.de>; Sun, 10 Dec 2023 14:05:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B324280D04
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Dec 2023 06:23:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 908F6280C99
+	for <lists+linux-wireless@lfdr.de>; Sun, 10 Dec 2023 13:04:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AA1820B01;
-	Mon, 11 Dec 2023 06:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7048C134;
+	Sun, 10 Dec 2023 13:04:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="CHrDoiOl"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T7U7Meow"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61243ED
-	for <linux-wireless@vger.kernel.org>; Sun, 10 Dec 2023 22:22:44 -0800 (PST)
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 3BB5NLRb025021;
-	Mon, 11 Dec 2023 06:22:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-transfer-encoding:content-type; s=
-	qcppdkim1; bh=AaJbKgMg7s+Qfhl4L4Lej7ZpETZGIzf/4rma0jmrJTk=; b=CH
-	rDoiOlnV5w2nHP3Go1AURGWkVgYnxSuO/qHEFT0BPCkRX/JQxO5WJTkvUVjKxT2w
-	9dLkxstgkAzEcx6s7fsd36lrc6Vj9Jrg/IRUSufCtIa5K0YqSbApPBRRrdo4S6bx
-	Nfh469k+8ugcBtQ8x6Vof7s+cIcEQcunOotMSqcBzXN7NiM8MNZeGEgppTjYIA7J
-	ew6JgKXAoigADxPGUItAmtdLeSTwBEcO1IUwBt33gP/me+QskKQOFdRlgEV4iaTV
-	LLTr/rliBXd066wFk9gXzq2ZdSXI/KOohLB7AhUfAWY7Ybb5oHvtFWhVuOicCevZ
-	z6b2iQPSSp4+5dWMlhhw==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3uvnhdteeq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 11 Dec 2023 06:22:42 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3BB6MfrG004376
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 11 Dec 2023 06:22:41 GMT
-Received: from bqiang-Celadon-RN.qca.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Sun, 10 Dec 2023 22:22:40 -0800
-From: Baochen Qiang <quic_bqiang@quicinc.com>
-To: <ath11k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-Subject: [PATCH v9 12/12] wifi: ath11k: use WMI_VDEV_SET_TPC_POWER_CMDID when EXT_TPC_REG_SUPPORT for 6 GHz
-Date: Mon, 11 Dec 2023 14:22:16 +0800
-Message-ID: <20231211062216.382164-13-quic_bqiang@quicinc.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20231211062216.382164-1-quic_bqiang@quicinc.com>
-References: <20231211062216.382164-1-quic_bqiang@quicinc.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15466A6
+	for <linux-wireless@vger.kernel.org>; Sun, 10 Dec 2023 05:04:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1702213493; x=1733749493;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=2ENQ9Mn8M2QVd+OlbdSsTwWfUxrcqzNimDmtirbkCXA=;
+  b=T7U7MeoweB8E3LY2BTjq5JMgiSG1n359ys5c7GvEG3Zm/vliHqBqhMgG
+   z/+M72BKjvHMEss+SV0P5rnVBjV1CfHsEPMbQL964oLpozNyBahzljPhi
+   nkLDu9l4TK4DKf7V/Tj9JB1gaRAN5yWBiE26Hy7oppKFh5ybqHMGFSOfD
+   8WX4hURpCVp8nJgXlXm0VmkfQKL02qXsfdTKHRZcJSmpxbgfakyvE/GdL
+   jhD4m2AV+vYKpnTsOwaSF43Fkm0xGdkNW53f9XuRNYsqzFDJXGLkIm0KD
+   4MQKyGztM6ULQxJqNqO0Mch+Ib1MzP6PNKlSaFc5juHeEtZP4KyfX43CY
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10919"; a="480745621"
+X-IronPort-AV: E=Sophos;i="6.04,265,1695711600"; 
+   d="scan'208";a="480745621"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2023 05:04:52 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10919"; a="748925394"
+X-IronPort-AV: E=Sophos;i="6.04,265,1695711600"; 
+   d="scan'208";a="748925394"
+Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2023 05:04:50 -0800
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org
+Subject: [PATCH 00/14] cfg80211/mac80211 patches from our internal tree 2023-12-10
+Date: Mon, 11 Dec 2023 09:05:18 +0200
+Message-Id: <20231211070532.2458539-1-miriam.rachel.korenblit@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 74qBNpc-iNPlq44i_s3O6Z9K_t253LSR
-X-Proofpoint-ORIG-GUID: 74qBNpc-iNPlq44i_s3O6Z9K_t253LSR
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-09_01,2023-12-07_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 impostorscore=0
- malwarescore=0 spamscore=0 suspectscore=0 phishscore=0 priorityscore=1501
- clxscore=1015 adultscore=0 lowpriorityscore=0 mlxscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2311290000
- definitions=main-2312110051
+X-Spam-Level: *
 
-From: Wen Gong <quic_wgong@quicinc.com>
+Hi,
 
-When station is connected to a 6 GHz AP, it has 2 ways to configure
-the power limit to firmware. The first way is to send 2 WMI commands
-WMI_PDEV_PARAM_TXPOWER_LIMIT2G/WMI_PDEV_PARAM_TXPOWER_LIMIT5G to
-firmware, the second way is to send WMI_VDEV_SET_TPC_POWER_CMDID to
-firmware which include more parameters for power control.
+A bunch of patches from our internal tree with mac80211 and
+cfg80211 changes. It's the usual developement, adding a few small
+features, bugfixes, and cleanups.
 
-When firmware supports SERVICE_EXT_TPC_REG, it means firmware supports
-WMI_VDEV_SET_TPC_POWER_CMDID, then ath11k selects the second way.
+Thanks,
+Miri
 
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
+Andrei Otcheretianski (2):
+  wifi: mac80211: Replace ENOTSUPP with EOPNOTSUPP
+  wifi: cfg80211: Replace ENOTSUPP with EOPNOTSUPP
 
-Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
----
-v9:
- 1. do not discard txpower setting for BSS_CHANGED_TXPOWER.
- 2. rename subject and update commit log.
-v8:
- no change.
-v7:
- 1. squash original patch 11 and patch 13.
- 2. s/wmi command/WMI commands/
- 3. s/way/ways/
- 4. add TODO tag for CSA.
+Benjamin Berg (2):
+  wifi: cfg80211: generate an ML element for per-STA profiles
+  wifi: cfg80211: consume both probe response and beacon IEs
 
- drivers/net/wireless/ath/ath11k/mac.c | 24 ++++++++++++++++++++++--
- 1 file changed, 22 insertions(+), 2 deletions(-)
+Ilan Peer (2):
+  wifi: cfg80211: Add support for setting TID to link mapping
+  wifi: cfg80211: Update the default DSCP-to-UP mapping
 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 2520f78c9c0b..2ed64119ce1c 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -3397,6 +3397,18 @@ static int ath11k_mac_config_obss_pd(struct ath11k *ar,
- 	return 0;
- }
- 
-+static bool ath11k_mac_supports_station_tpc(struct ath11k *ar,
-+					    struct ath11k_vif *arvif,
-+					    const struct cfg80211_chan_def *chandef)
-+{
-+	return ath11k_wmi_supports_6ghz_cc_ext(ar) &&
-+		test_bit(WMI_TLV_SERVICE_EXT_TPC_REG_SUPPORT, ar->ab->wmi_ab.svc_map) &&
-+		arvif->vdev_type == WMI_VDEV_TYPE_STA &&
-+		arvif->vdev_subtype == WMI_VDEV_SUBTYPE_NONE &&
-+		chandef->chan &&
-+		chandef->chan->band == NL80211_BAND_6GHZ;
-+}
-+
- static void ath11k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
- 					   struct ieee80211_vif *vif,
- 					   struct ieee80211_bss_conf *info,
-@@ -3596,7 +3608,6 @@ static void ath11k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
- 	if (changed & BSS_CHANGED_TXPOWER) {
- 		ath11k_dbg(ar->ab, ATH11K_DBG_MAC, "vdev_id %i txpower %d\n",
- 			   arvif->vdev_id, info->txpower);
--
- 		arvif->txpower = info->txpower;
- 		ath11k_mac_txpower_recalc(ar);
- 	}
-@@ -7279,6 +7290,15 @@ ath11k_mac_vdev_start_restart(struct ath11k_vif *arvif,
- 		return ret;
- 	}
- 
-+	/* TODO: For now we only set TPC power here. However when
-+	 * channel changes, say CSA, it should be updated again.
-+	 */
-+	if (ath11k_mac_supports_station_tpc(ar, arvif, chandef)) {
-+		ath11k_mac_fill_reg_tpc_info(ar, arvif->vif, &arvif->chanctx);
-+		ath11k_wmi_send_vdev_set_tpc_power(ar, arvif->vdev_id,
-+						   &arvif->reg_tpc_info);
-+	}
-+
- 	if (!restart)
- 		ar->num_started_vdevs++;
- 
-@@ -8093,7 +8113,7 @@ ath11k_mac_op_assign_vif_chanctx(struct ieee80211_hw *hw,
- 			goto out;
- 		}
- 		ath11k_reg_handle_chan_list(ab, reg_info, power_type);
--
-+		arvif->chanctx = *ctx;
- 		ath11k_mac_parse_tx_pwr_env(ar, vif, ctx);
- 	}
- 
+Johannes Berg (8):
+  wifi: mac80211: don't re-add debugfs during reconfig
+  wifi: cfg80211: add BSS usage reporting
+  wifi: mac80211: update some locking documentation
+  wifi: mac80211: add a flag to disallow puncturing
+  wifi: mac80211: don't set ESS capab bit in assoc request
+  wifi: mac80211: check defragmentation succeeded
+  wifi: mac80211: mesh_plink: fix matches_local logic
+  wifi: mac80211: mesh: check element parsing succeeded
+
+ include/net/cfg80211.h       |  78 ++++++++++++++++++++++---
+ include/net/mac80211.h       |  23 ++++----
+ include/uapi/linux/nl80211.h |  59 +++++++++++++++++++
+ net/mac80211/cfg.c           |   4 +-
+ net/mac80211/chan.c          |   4 +-
+ net/mac80211/debugfs.c       |   1 +
+ net/mac80211/driver-ops.c    |   6 +-
+ net/mac80211/driver-ops.h    |   2 +-
+ net/mac80211/mesh_hwmp.c     |   2 +-
+ net/mac80211/mesh_pathtbl.c  |   8 +--
+ net/mac80211/mesh_plink.c    |  16 +++---
+ net/mac80211/mlme.c          |  29 ++++++++--
+ net/mac80211/scan.c          |   4 +-
+ net/mac80211/tdls.c          |  18 +++---
+ net/wireless/core.h          |   3 +
+ net/wireless/nl80211.c       |  95 ++++++++++++++++++++++++++----
+ net/wireless/rdev-ops.h      |  26 +++++++--
+ net/wireless/scan.c          | 108 +++++++++++++++++++++++++++++------
+ net/wireless/trace.h         |  20 +++++++
+ net/wireless/util.c          |  46 +++++++++++++++
+ 20 files changed, 467 insertions(+), 85 deletions(-)
+
 -- 
-2.25.1
+2.34.1
 
 
