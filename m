@@ -1,173 +1,154 @@
-Return-Path: <linux-wireless+bounces-717-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-718-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05E1180FA1F
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Dec 2023 23:18:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40D7A80FB5E
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Dec 2023 00:27:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6A751F21825
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Dec 2023 22:18:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F06D92812E0
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Dec 2023 23:27:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33026660E3;
-	Tue, 12 Dec 2023 22:18:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B4FF64734;
+	Tue, 12 Dec 2023 23:27:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Cdw8Bx7J"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0E149C;
-	Tue, 12 Dec 2023 14:18:43 -0800 (PST)
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-1d319a7a35bso25037715ad.1;
-        Tue, 12 Dec 2023 14:18:43 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702419523; x=1703024323;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PvY1eWl3lKFXHEN46vG5hFlccI2oevea3+BmMQLJsrc=;
-        b=Sil14H59nmgOl1bCG252KjNzigSfW5HNV0fmWcIm1fdr0pfoe+ssjvZWzDY56aokdc
-         4ciAbTXioTPbczo8+Ha4ONDrjeDUSsa6r35hcz6c6YSQ7K0pVvcev5zEazWMoLTObfPm
-         C/fhW35RLdW8JhdPygc4z0ijvW85gKt8hFxYH2IfQK424Cxcv3NPjBaMq9gfkeecXldk
-         8gA9JnquK07whHThUhX9QIBnv8OSbQ2bVNnKDDeKi6469aLKf3dLOOqGSx3rnRBVKIgC
-         gWGiQHBt7SHkaS74ZS2y6MkhI81prVVwJ6r0c74vFt4BUsmPETD2sDZDctAGRxNuo0p5
-         20BQ==
-X-Gm-Message-State: AOJu0YxICo21o/x4xL6+wZ8gxFHqE1gwV6kcdgdFDZRG+OOCIThaTwI5
-	Fo8z78cW16DO76fUiDR+Zoc=
-X-Google-Smtp-Source: AGHT+IGauSeo8T0m4lPBuVMy5qhZ3L6G9zLsDODSHevJyslBAa9OfC/TfMPkPD2KsM2lLP2jOkCLNQ==
-X-Received: by 2002:a17:902:e54b:b0:1d0:796c:b06d with SMTP id n11-20020a170902e54b00b001d0796cb06dmr8010754plf.7.1702419523173;
-        Tue, 12 Dec 2023 14:18:43 -0800 (PST)
-Received: from sultan-box.localdomain ([142.147.89.200])
-        by smtp.gmail.com with ESMTPSA id h8-20020a170902704800b001d0c09cc6ebsm9127532plt.92.2023.12.12.14.18.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Dec 2023 14:18:42 -0800 (PST)
-Date: Tue, 12 Dec 2023 14:18:39 -0800
-From: Sultan Alsawaf <sultan@kerneltoast.com>
-To: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
-	Ryder Lee <ryder.lee@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Sean Wang <sean.wang@mediatek.com>, Kalle Valo <kvalo@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Deren Wu <deren.wu@mediatek.com>,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-	Ben Greear <greearb@candelatech.com>,
-	"open list:MEDIATEK MT76 WIRELESS LAN DRIVER" <linux-wireless@vger.kernel.org>,
-	"open list:ARM/Mediatek SoC support" <linux-kernel@vger.kernel.org>,
-	"moderated list:ARM/Mediatek SoC support" <linux-mediatek@lists.infradead.org>
-Subject: Re: [PATCH 1/2] wifi: mt76: mt7921: Disable powersaving by default
-Message-ID: <ZXjcPyIgWzKWyBQ8@sultan-box.localdomain>
-References: <20231212090852.162787-1-mario.limonciello@amd.com>
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAFF9FD;
+	Tue, 12 Dec 2023 15:27:27 -0800 (PST)
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 3BCH5n9c013622;
+	Tue, 12 Dec 2023 23:27:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:from:to:cc:references
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=SWhMvNaoYsP+58utWELVB8tF6xTUlOKZmRPgNdYB/MM=; b=Cd
+	w8Bx7J27a3PIgZ4Ea88ItRJ5WCvxIj5nSccJKHeTsVu4XmD3MOPJ2LjaZriSb7yV
+	iQ6ryUW/I4N+6jBRCzS5IX9hGhh5+IeJJ9WVsMsEKrJwOt8/sn8QB/v4T8Kpggqx
+	fwIrYC9fWCmdTCMvryB2DbEsdj32GN4aOy5L4b6UZJmsXlvgocCcANbP2pvfuxNR
+	9EY/5yCH6msj43h9w9RlrfRpWSnn0D8NUwCpRrKunzPa+x87wU3/09sk66XfEDM8
+	iAHpQ3LmiDMRyIc2siukc+zOfCuFAUf0J7Tby33lSgbBJUOSKggOID8TORraEC4J
+	FUI+epEv7MhrcDQCOqsw==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3uxctatx5g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 Dec 2023 23:27:02 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3BCNR1VO024896
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 Dec 2023 23:27:01 GMT
+Received: from [10.110.106.103] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Tue, 12 Dec
+ 2023 15:27:00 -0800
+Message-ID: <ada88ef1-d290-441a-b6f1-97d7f478cccc@quicinc.com>
+Date: Tue, 12 Dec 2023 15:26:59 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231212090852.162787-1-mario.limonciello@amd.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC - is this a bug?] wifi: ath10k: Asking for some light on
+ this, please :)
+Content-Language: en-US
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+To: "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+        Johannes Berg
+	<johannes@sipsolutions.net>,
+        Kalle Valo <kvalo@kernel.org>
+CC: <ath10k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        "Gustavo A. R. Silva"
+	<gustavoars@kernel.org>,
+        <linux-hardening@vger.kernel.org>
+References: <626ae2e7-66f8-423b-b17f-e75c1a6d29b3@embeddedor.com>
+ <26b15f4702cef17fe70b496a62f03735874bd16a.camel@sipsolutions.net>
+ <07e9bb04-f9fc-46d5-bfb9-a00a63a707c0@embeddedor.com>
+ <f8daa53ee8a8019e4fd2b823c1fcb85a6cc4d806.camel@sipsolutions.net>
+ <8219c79e-0359-4136-afa4-fba76fde191a@embeddedor.com>
+ <afaadf5e-556c-4fd6-bfd3-9c486a35a08f@quicinc.com>
+In-Reply-To: <afaadf5e-556c-4fd6-bfd3-9c486a35a08f@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 5ea7PuvC2gPKd5hS6zoaxzmbgueU3cQu
+X-Proofpoint-ORIG-GUID: 5ea7PuvC2gPKd5hS6zoaxzmbgueU3cQu
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-09_01,2023-12-07_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 malwarescore=0
+ lowpriorityscore=0 phishscore=0 impostorscore=0 bulkscore=0 mlxscore=0
+ adultscore=0 suspectscore=0 priorityscore=1501 clxscore=1011
+ mlxlogscore=789 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2311290000 definitions=main-2312120183
 
-On Tue, Dec 12, 2023 at 03:08:51AM -0600, Mario Limonciello wrote:
-> Several users have reported awful latency when powersaving is enabled
-> with certain access point combinations. It's also reported that the
-> powersaving feature doesn't provide an ample enough savings to justify
-> being enabled by default with these issues.
+On 10/25/2023 8:52 AM, Jeff Johnson wrote:
+> On 10/24/2023 7:37 PM, Gustavo A. R. Silva wrote:
+>>
+>>
+>> On 10/24/23 14:49, Johannes Berg wrote:
+>>> On Tue, 2023-10-24 at 14:41 -0600, Gustavo A. R. Silva wrote:
+>>>>
+>>>> It seems we run into the same issue in the function below, even in the
+>>>> case this `memset()` is unnecessary (which it seems it's not):
+>>>>
+>>>>     8920         memset(skb->data, 0, sizeof(*cmd));
+>>>>
+>>>> Notice that if `cap->peer_chan_len == 0` or `cap->peer_chan_len == 1`,
+>>>> in the original code, we have `len == sizeof(*cmd) == 128`:
+>>>
+>>> Right.
+>>>
+>>>> -       /* tdls peer update cmd has place holder for one channel*/
+>>>> -       chan_len = cap->peer_chan_len ? (cap->peer_chan_len - 1) : 0;
+>>>> -
+>>>> -       len = sizeof(*cmd) + chan_len * sizeof(*chan);
+>>>> +       len = struct_size(cmd, peer_capab.peer_chan_list, 
+>>>> cap->peer_chan_len);
+>>>>
+>>>>           skb = ath10k_wmi_alloc_skb(ar, len);
+>>>>           if (!skb)
+>>>>
+>>>> which makes `round_len == roundup(len, 4) == struct_size(cmd,...,...) 
+>>>> == 104`
+>>>> when `cap->peer_chan_len == 0`
+>>>
+>>> And yeah, that's really the issue, it only matters for ==0. For a moment
+>>> there I thought that doesn't even make sense, but it looks like it never
+>>> even becomes non-zero.
+>>>
+>>> No idea then, sorry. You'd hope firmware doesn't care about the actual
+>>> message size if the inner data says "0 entries", but who knows? And how
+>>> many firmware versions are there? :)
+>>>
+>>> So I guess you'd want to stay compatible, even if it means having a
+>>>
+>>>     chan_len = min(cap->peer_chan_len, 1);
+>>>
+>>> for the struct_size()?
+>>
+>> Yeah, that's an alternative.
+>>
+>> I'll wait for the maintainers to chime in and see if they have a different
+>> opinion.
 > 
-> Introduce a module parameter that would control the power saving
-> behavior.  Set it to default as disabled. This mirrors what some other
-> WLAN drivers like iwlwifi do.
+> I'm seeing clarification from the development team.
 > 
-> Suggested-by: Sultan Alsawaf <sultan@kerneltoast.com>
-> Link: https://codeberg.org/Hybrid-Project-Developers/linux-tkg/blame/branch/master/mt76:-mt7921:-Disable-powersave-features-by-default.mypatch
-> Link: https://aur.archlinux.org/cgit/aur.git/tree/0027-mt76_-mt7921_-Disable-powersave-features-by-default.patch?h=linux-g14
-> Link: https://community.frame.work/t/responded-strange-wlan-problems-with-kernel-branch-6-2/41868/4
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
->  drivers/net/wireless/mediatek/mt76/mt7921/init.c | 9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-> index 7d6a9d746011..78d4197988c8 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-> @@ -10,6 +10,11 @@
->  #include "../mt76_connac2_mac.h"
->  #include "mcu.h"
->  
-> +static bool mt7921_powersave;
-> +module_param_named(power_save, mt7921_powersave, bool, 0444);
-> +MODULE_PARM_DESC(power_save,
-> +		 "enable WiFi power management (default: disable)");
-> +
->  static ssize_t mt7921_thermal_temp_show(struct device *dev,
->  					struct device_attribute *attr,
->  					char *buf)
-> @@ -271,11 +276,13 @@ int mt7921_register_device(struct mt792x_dev *dev)
->  	dev->pm.idle_timeout = MT792x_PM_TIMEOUT;
->  	dev->pm.stats.last_wake_event = jiffies;
->  	dev->pm.stats.last_doze_event = jiffies;
-> -	if (!mt76_is_usb(&dev->mt76)) {
-> +	if (mt7921_powersave && !mt76_is_usb(&dev->mt76)) {
->  		dev->pm.enable_user = true;
->  		dev->pm.enable = true;
->  		dev->pm.ds_enable_user = true;
->  		dev->pm.ds_enable = true;
-> +	} else {
-> +		hw->wiphy->flags &= ~WIPHY_FLAG_PS_ON_BY_DEFAULT;
->  	}
->  
->  	if (!mt76_is_mmio(&dev->mt76))
-> -- 
-> 2.34.1
+> /jeff
 > 
 
-A few things to note:
+I was not able to get a response from the firmware team.
 
-1. Power savings can be significant on some systems where keeping the PCIe link
-   active consumes significant energy (e.g., Intel HX chipsets in laptops and
-   probably desktops in general). On desktops this isn't a big deal, but on
-   desktop-class laptops the battery impact will be noticeable.
+I have gone ahead and created a series of patches to fix the remaining
+flexible array issues in ath10k including the one discussed here. I
+should be able to post those sometime this week.
 
-2. This doesn't mirror iwlwifi, which has powersave enabled by default.
-
-   Beacon filtering is tied to powersave in mt76, whereas it isn't in iwlwifi.
-   Thus, disabling powersave on mt76 results in the loss of beacon filtering.
-   This means you'll get a constant stream of interrupts from beacon frames
-   transmitted by the AP, which can also have power implications.
-
-   And iwlwifi handles powersave transitions in firmware, which allows it
-   enter/exit powersave with very low latency. This isn't the case on mt76,
-   which enters/exits powersave in software.
-   
-3. For insignificant/low-bandwidth traffic like ICMP to the AP, high latency is
-   expected since the amount of traffic doesn't warrant kicking the chipset out
-   of powersave. So although it's not pretty to look at, bad ping times to the
-   AP aren't representative of the full user experience.
-
-That being said, given that my patch to disable powersave from over a year ago
-has apparently become a commonplace addition to mt76, it seems like users
-generally aren't happy with the current powersave UX. I agree that it should be
-better, though I'm not certain disabling powersave outright is the best move.
-Maybe the powersave behavior can be tweaked instead?
-
-The reason I disabled powersave on my mt76 hardware was because I wanted the
-lowest latency + highest throughput possible.
-
-I know that on smartphones, QCA chipsets exhibit the same latency issue when
-pinging the AP, due to powersave. But no one seems to be upset about that on
-their phone, so I think there's probably a way to make powersave work well for
-all parties.
-
-Regarding the patch itself, I think a better idea would be to tie the wiphy
-powersave flag to the deep sleep flag (`dev->pm.ds_enable_user`), so that users
-can really disable powersave through `iw` at runtime without needing to use
-debugfs. This would eliminate the need for a module parameter too.
-
-Also, I find it quite sad that my patch from over a year ago [1] was blatantly
-reauthored in that frame.work link. The commit message is even the same, word
-for word. :-(
-
-[1] https://github.com/kerneltoast/kernel_x86_laptop/commit/ca89780690f7492c2d357e0ed2213a1d027341ae
-
-Sultan
+/jeff
 
