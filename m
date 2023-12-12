@@ -1,83 +1,75 @@
-Return-Path: <linux-wireless+bounces-693-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-694-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C67180E810
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Dec 2023 10:47:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65D3180E842
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Dec 2023 10:54:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2663A1F20DD2
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Dec 2023 09:47:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2496028123B
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Dec 2023 09:54:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F32858AD0;
-	Tue, 12 Dec 2023 09:47:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40F3359143;
+	Tue, 12 Dec 2023 09:54:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="W9CG72uG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BFs0Vsbj"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C330D2;
-	Tue, 12 Dec 2023 01:46:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=sVUr0dBPvE4hjj2hRHA9dzust08BK20shWiG7p98Mdo=;
-	t=1702374416; x=1703584016; b=W9CG72uGRZb0/h6Whij0HnNzpV5ckaTzglZF+9VWakYGTA9
-	mkmDL35hPAMnJwR0zFpp8FK6pY8r4UPDStv3NYvoisI4apISBr2GUvPgP+NooTltvUQ0hC33VZ0P4
-	td1LNtQdJg4vIrqbs3eF8Gajse6NAr70RvlksBHyUggkUxGeUk3+8yGt6tL8xw/auDGbZYp6j9/ks
-	QMmJ7OrZ77gy2wQugi7ZFgw4MzyB/HKHjL+sVOAk97MPmpaptRbsOgxpK4C+5CNyNBBDc1Oi+UADd
-	lqGF8Q31S/a+bXS/UhauvjcIRRQjpS3IRLHLGdM6Lqid7bRAbNqECjywDG/5CAKQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1rCzLp-000000084TA-2X0d;
-	Tue, 12 Dec 2023 10:46:53 +0100
-Message-ID: <3a06ae67808800386117c90714637ef9a0267b37.camel@sipsolutions.net>
-Subject: Re: [GIT PULL] mmutable branch between pdx86 amd wbrf branch and
- wifi / amdgpu due for the v6.8 merge window
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Hans de Goede <hdegoede@redhat.com>, Alex Deucher
-	 <alexander.deucher@amd.com>, Christian =?ISO-8859-1?Q?K=F6nig?=
-	 <christian.koenig@amd.com>, Ma Jun <Jun.Ma2@amd.com>, "Limonciello, Mario"
-	 <Mario.Limonciello@amd.com>, "platform-driver-x86@vger.kernel.org"
-	 <platform-driver-x86@vger.kernel.org>
-Cc: linux-wireless <linux-wireless@vger.kernel.org>, amd-gfx list
-	 <amd-gfx@lists.freedesktop.org>, Ilpo =?ISO-8859-1?Q?J=E4rvinen?=
-	 <ilpo.jarvinen@linux.intel.com>
-Date: Tue, 12 Dec 2023 10:46:52 +0100
-In-Reply-To: <6395b87b-7cb6-4412-b6e5-e6075353fb6d@redhat.com>
-References: <6395b87b-7cb6-4412-b6e5-e6075353fb6d@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.2 (3.50.2-1.fc39) 
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB9D58ADA;
+	Tue, 12 Dec 2023 09:54:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D57EDC433C7;
+	Tue, 12 Dec 2023 09:54:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1702374881;
+	bh=g44so0aXENb1ZbYVlFiZWeI/HIvhAHxzBBi5p4XGpb8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BFs0VsbjwcxWVEkl3pXaSvyYM4X2Whkvb6oF9daOqpon9n89n7CCqsti8gUebdR2R
+	 +clPMLnHbXFu+jQwf8uQvDs/tq+mKSCExqEkGkjpIROV45xBnjwYIh5V0qlIfRkyq5
+	 bx6Ythe77BYpy+bOer+3uX6ncBG4HON8uowwMv5zNo6O2J5PwNjmk85saMFDiez1o8
+	 4S1rKVJcYFWQ99fbKhm4DQgjhg2+U0ShImfMsXbYl+PZ6fq7zAxmg489KMVIr+m9DO
+	 o3s0GpVg9aia5ugwjeKG33JFwAKTK+j0i5mIPiwMhmqIk8reskp5bMzQA7zDFmjEJW
+	 iucHoZIM+mC+w==
+Date: Tue, 12 Dec 2023 09:54:35 +0000
+From: Simon Horman <horms@kernel.org>
+To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	Josua Mayer <josua@solid-run.com>, linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	pza@pengutronix.de, stable@vger.kernel.org,
+	Johannes Berg <johannes@sipsolutions.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH v2] net: rfkill: gpio: set GPIO direction
+Message-ID: <20231212095435.GT5817@kernel.org>
+References: <20231206131336.3099727-1-r.czerwinski@pengutronix.de>
+ <20231207075835.3091694-1-r.czerwinski@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231207075835.3091694-1-r.czerwinski@pengutronix.de>
 
-On Mon, 2023-12-11 at 12:02 +0100, Hans de Goede wrote:
-> Hi Wifi and AMDGPU maintainers,
->=20
-> Here is a pull-request for the platform-drivers-x86 parts of:
->=20
-> https://lore.kernel.org/platform-driver-x86/20231211100630.2170152-1-Jun.=
-Ma2@amd.com/
->=20
-> From my pov the pdx86 bits are ready and the platform-drivers-x86-amd-wbr=
-f-v6.8-1 tag can be merged by you to merge the wifi-subsys resp. the amdgpu=
- driver changes on top.
->=20
-> This only adds kernel internal API, so if in the future the API needs wor=
-k that can be done.
+On Thu, Dec 07, 2023 at 08:58:36AM +0100, Rouven Czerwinski wrote:
+> Fix the undefined usage of the GPIO consumer API after retrieving the
+> GPIO description with GPIO_ASIS. The API documentation mentions that
+> GPIO_ASIS won't set a GPIO direction and requires the user to set a
+> direction before using the GPIO.
+> 
+> This can be confirmed on i.MX6 hardware, where rfkill-gpio is no longer
+> able to enabled/disable a device, presumably because the GPIO controller
+> was never configured for the output direction.
+> 
+> Fixes: b2f750c3a80b ("net: rfkill: gpio: prevent value glitch during probe")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-OK, thanks! I've pulled this into wireless-next, and applied the two
-wireless related patches on top.
-
-I guess if AMDGPU does the same, it will combine nicely in 6.8.
-
-johannes
+Reviewed-by: Simon Horman <horms@kernel.org>
 
