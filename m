@@ -1,83 +1,71 @@
-Return-Path: <linux-wireless+bounces-687-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-688-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A01680E4C0
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Dec 2023 08:20:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C463C80E56F
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Dec 2023 09:05:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41D6AB220BE
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Dec 2023 07:20:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3DD01C212A7
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Dec 2023 08:05:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 595D71642E;
-	Tue, 12 Dec 2023 07:20:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EF2B18B1B;
+	Tue, 12 Dec 2023 08:05:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nMUszGCH"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6485A1;
-	Mon, 11 Dec 2023 23:19:58 -0800 (PST)
-X-UUID: 5b8d87fd12064b718bfe91c22cbc4b51-20231212
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.33,REQID:1272927b-c14b-423b-965e-88a0f32fa671,IP:15,
-	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:0
-X-CID-INFO: VERSION:1.1.33,REQID:1272927b-c14b-423b-965e-88a0f32fa671,IP:15,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:0
-X-CID-META: VersionHash:364b77b,CLOUDID:20281961-c89d-4129-91cb-8ebfae4653fc,B
-	ulkID:231212151949FMQZSAO8,BulkQuantity:0,Recheck:0,SF:66|38|24|17|19|44|1
-	02,TC:nil,Content:0,EDM:-3,IP:-2,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,CO
-	L:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_FSI
-X-UUID: 5b8d87fd12064b718bfe91c22cbc4b51-20231212
-X-User: shitao@kylinos.cn
-Received: from kylin-pc.. [(112.64.161.44)] by mailgw
-	(envelope-from <shitao@kylinos.cn>)
-	(Generic MTA)
-	with ESMTP id 180846737; Tue, 12 Dec 2023 15:19:46 +0800
-From: shitao <shitao@kylinos.cn>
-To: gregory.greenman@intel.com,
-	kvalo@kernel.org,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: shitao <shitao@kylinos.cn>,
-	k2ci <kernel-bot@kylinos.cn>
-Subject: [PATCH] net: Fix spelling typo in comment
-Date: Tue, 12 Dec 2023 15:19:35 +0800
-Message-Id: <20231212071935.3098275-1-shitao@kylinos.cn>
-X-Mailer: git-send-email 2.34.1
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A1118B19
+	for <linux-wireless@vger.kernel.org>; Tue, 12 Dec 2023 08:05:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABF2CC433C8;
+	Tue, 12 Dec 2023 08:05:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1702368342;
+	bh=gpNj8I/75OB5szd1g/dOW3OTP6BzEjuRG5ADKuihkok=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=nMUszGCH9FX8/9eCqx9A1bdo4CS3slOBK6DdDZykUgYpjfoZ2REWvRyC6nlTKEOb/
+	 fJDYezW6gy/v7bgrLUkKBIiufO4Lug8v62hEzREmON33GkXmd/ZJ7V3PBUjJtPAq2F
+	 GIAuKFRpx1UarXZIo70yY0xhjPnmCiUMzggVUrsUK2zlrg9x8iKqKZLL+sqrpfjH3p
+	 hYwt2DvCqLjqWd4zePq4nqJHCVCUGfviuQwFGuuYqxFPiLZZ+9xiZnOCSx/D+OPkqj
+	 2JtDP/o1UFJAF8Uc96bXP19O5WCU0auyccrc/g689Mei1iCnQmPWre5pfgkre9EIAN
+	 hwZbwMbKYKYrQ==
+From: Kalle Valo <kvalo@kernel.org>
+To: shitao <shitao@kylinos.cn>
+Cc: gregory.greenman@intel.com,  linux-wireless@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  k2ci <kernel-bot@kylinos.cn>
+Subject: Re: [PATCH] net: Fix spelling typo in comment
+References: <20231212071935.3098275-1-shitao@kylinos.cn>
+Date: Tue, 12 Dec 2023 10:05:39 +0200
+In-Reply-To: <20231212071935.3098275-1-shitao@kylinos.cn> (shitao@kylinos.cn's
+	message of "Tue, 12 Dec 2023 15:19:35 +0800")
+Message-ID: <87wmtjonfw.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Fix spelling typo in iwl-context-info.h comment.
+shitao <shitao@kylinos.cn> writes:
 
-Reported-by: k2ci <kernel-bot@kylinos.cn>
-Signed-off-by: shitao <shitao@kylinos.cn>
----
- drivers/net/wireless/intel/iwlwifi/iwl-context-info.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> Fix spelling typo in iwl-context-info.h comment.
+>
+> Reported-by: k2ci <kernel-bot@kylinos.cn>
+> Signed-off-by: shitao <shitao@kylinos.cn>
+> ---
+>  drivers/net/wireless/intel/iwlwifi/iwl-context-info.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-context-info.h b/drivers/net/wireless/intel/iwlwifi/iwl-context-info.h
-index 1a1321db137c..3ab6f127041f 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-context-info.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-context-info.h
-@@ -6,7 +6,7 @@
- #ifndef __iwl_context_info_file_h__
- #define __iwl_context_info_file_h__
- 
--/* maximmum number of DRAM map entries supported by FW */
-+/* maximum number of DRAM map entries supported by FW */
- #define IWL_MAX_DRAM_ENTRY	64
- #define CSR_CTXT_INFO_BA	0x40
- 
+The title should start with "wifi: iwlwifi:". Please read our wiki, link
+below.
+
 -- 
-2.34.1
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
