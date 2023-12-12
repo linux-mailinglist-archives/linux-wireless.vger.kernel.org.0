@@ -1,76 +1,125 @@
-Return-Path: <linux-wireless+bounces-707-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-708-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 392C280F425
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Dec 2023 18:12:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A21B280F42C
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Dec 2023 18:14:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D85941F212A9
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Dec 2023 17:12:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60AB11F213C1
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Dec 2023 17:14:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 393057B3C7;
-	Tue, 12 Dec 2023 17:12:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A102F7B3C8;
+	Tue, 12 Dec 2023 17:14:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JUaoRgfn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ceS2iLLs"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D6137A221
-	for <linux-wireless@vger.kernel.org>; Tue, 12 Dec 2023 17:12:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF99DC433C7;
-	Tue, 12 Dec 2023 17:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E2EC7A221;
+	Tue, 12 Dec 2023 17:14:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE9B9C433C9;
+	Tue, 12 Dec 2023 17:14:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702401163;
-	bh=11KCF6eSfX3xll38pRiWQMZTkETjMhw6UMQe+oezm78=;
-	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=JUaoRgfnbG3rvgefKvEPEIVdTLPOtFJN5zQ42Fh1q7LwJIk11bBtG/fSym3OaFS4X
-	 8qyGvBj+NLb+mcwzSbuOghxn6a9l/E5Hjv4Mi0G/p4rhyO6uD/9tkPVNH+d3dmsr0k
-	 PTbIPFnx9NrjdRdWQdSQARv5GU1EGVDRIYd3Cj80kKij6aOSPrV8btNNt1aD/Lnodx
-	 crc1c/nXU+NB4z8CNtz4cw5j0dDOXZDbnj3z1DAZjjidn5czF/Quhz6VtG2ZGtzGyo
-	 NxBn+VjFRyk7xqKDamf6cq0qZDZhVUVbCawrLU39Qba21U14d+rpiEjYwuYV+Pd1AJ
-	 oQz4W6NGLcBmQ==
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1702401274;
+	bh=0is0y5MIjJZL1a2nJQ3+WOieM1cLmm0UpcX5nHtvags=;
+	h=Date:From:To:Cc:Subject:From;
+	b=ceS2iLLsFyMbhxsaoD2DWiCS35QLZHUdW8HSs9hsJJ7x4jreQ+qE68G0AIYt+5Yrx
+	 KVwiwF0imPXk+dfes9RjhYBpvOfvxUwpumb9Cg0e2HCGl5z2+fgG8LHoGGvoDEYPYx
+	 DxaqKSg5k3KJV8Jx8gd8XLg8hv4TYMghrMPKWINvNmHGNQliZOf9aAL2UmIHVwmEZC
+	 oZw+rhk7ZBVdcEmiWIqL1z+71o5h4SByhC0ROCQJ86Usqzj9kdVIAawGkTsGMhfsxX
+	 t46aDHMMzUfL2H4T7c46I0zHcX2osq5XL7ND93jhmAgu9J8aTVSJNb/2/mIY+tNec0
+	 S+gFCOZ1tefuA==
+Date: Tue, 12 Dec 2023 11:14:29 -0600
+From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+To: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
+	Ryder Lee <ryder.lee@mediatek.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Sean Wang <sean.wang@mediatek.com>, Kalle Valo <kvalo@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	linux-hardening@vger.kernel.org
+Subject: [PATCH v2][wireless-next/for-next] wifi: mt76: mt7996: Use
+ DECLARE_FLEX_ARRAY() and fix -Warray-bounds warnings
+Message-ID: <ZXiU9ayVCslt3qiI@work>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] wifi: ath11k: Fix ath11k_htc_record flexible record
-From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20231205-flexarray-htc_record-v2-1-fbb56d436951@quicinc.com>
-References: <20231205-flexarray-htc_record-v2-1-fbb56d436951@quicinc.com>
-To: Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>, Kees Cook
-	<keescook@chromium.org>, <ath11k@lists.infradead.org>,
- <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Jeff
- Johnson" <quic_jjohnson@quicinc.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170240115970.422537.17165398794556525510.kvalo@kernel.org>
-Date: Tue, 12 Dec 2023 17:12:41 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Jeff Johnson <quic_jjohnson@quicinc.com> wrote:
+Transform zero-length arrays `rate`, `adm_stat` and `msdu_cnt` into
+proper flexible-array members in anonymous union in `struct
+mt7996_mcu_all_sta_info_event` via the DECLARE_FLEX_ARRAY()
+helper; and fix multiple -Warray-bounds warnings:
 
-> Transform the zero-length ath11k_htc_record::credit_report array into
-> a proper flexible array. Since this is the only array in
-> ath11k_htc_record, remove the unnecessary union.
-> 
-> Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-> Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-> Reviewed-by: Kees Cook <keescook@chromium.org>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:544:61: warning: array subscript <unknown> is outside array bounds of 'struct <anonymous>[0]' [-Warray-bounds=]
+drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:551:58: warning: array subscript <unknown> is outside array bounds of 'struct <anonymous>[0]' [-Warray-bounds=]
+drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:553:58: warning: array subscript <unknown> is outside array bounds of 'struct <anonymous>[0]' [-Warray-bounds=]
+drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:530:61: warning: array subscript <unknown> is outside array bounds of 'struct <anonymous>[0]' [-Warray-bounds=]
+drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:538:66: warning: array subscript <unknown> is outside array bounds of 'struct <anonymous>[0]' [-Warray-bounds=]
+drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:540:66: warning: array subscript <unknown> is outside array bounds of 'struct <anonymous>[0]' [-Warray-bounds=]
+drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:520:57: warning: array subscript <unknown> is outside array bounds of 'struct all_sta_trx_rate[0]' [-Warray-bounds=]
+drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:526:76: warning: array subscript <unknown> is outside array bounds of 'struct all_sta_trx_rate[0]' [-Warray-bounds=]
+drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:526:76: warning: array subscript <unknown> is outside array bounds of 'struct all_sta_trx_rate[0]' [-Warray-bounds=]
+drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:526:76: warning: array subscript <unknown> is outside array bounds of 'struct all_sta_trx_rate[0]' [-Warray-bounds=]
+drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:526:76: warning: array subscript <unknown> is outside array bounds of 'struct all_sta_trx_rate[0]' [-Warray-bounds=]
 
-Patch applied to ath-next branch of ath.git, thanks.
+This results in no differences in binary output, helps with the ongoing
+efforts to globally enable -Warray-bounds.
 
-add731385eed wifi: ath11k: Fix ath11k_htc_record flexible record
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+---
+Changes in v2:
+ - Add Kees' RB tag.
+ - Transform zero-length array `rate` into flex-array member.
+ - Address five more -Warray-bounds warnings introduced by fake
+   flexible array `rate`
 
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.h | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
+index 3e013b20ee5e..36cacc495c75 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
+@@ -206,20 +206,20 @@ struct mt7996_mcu_all_sta_info_event {
+ 	u8 rsv3[4];
+ 
+ 	union {
+-		struct all_sta_trx_rate rate[0];
+-		struct {
++		DECLARE_FLEX_ARRAY(struct all_sta_trx_rate, rate);
++		DECLARE_FLEX_ARRAY(struct {
+ 			__le16 wlan_idx;
+ 			u8 rsv[2];
+ 			__le32 tx_bytes[IEEE80211_NUM_ACS];
+ 			__le32 rx_bytes[IEEE80211_NUM_ACS];
+-		} adm_stat[0] __packed;
++		} __packed, adm_stat);
+ 
+-		struct {
++		DECLARE_FLEX_ARRAY(struct {
+ 			__le16 wlan_idx;
+ 			u8 rsv[2];
+ 			__le32 tx_msdu_cnt;
+ 			__le32 rx_msdu_cnt;
+-		} msdu_cnt[0] __packed;
++		} __packed, msdu_cnt);
+ 	} __packed;
+ } __packed;
+ 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20231205-flexarray-htc_record-v2-1-fbb56d436951@quicinc.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.34.1
 
 
