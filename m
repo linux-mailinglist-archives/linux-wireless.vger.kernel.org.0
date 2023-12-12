@@ -1,49 +1,53 @@
-Return-Path: <linux-wireless+bounces-691-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-693-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2281980E7E0
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Dec 2023 10:39:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C67180E810
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Dec 2023 10:47:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2B7E1F215D9
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Dec 2023 09:39:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2663A1F20DD2
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Dec 2023 09:47:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 998F458AA6;
-	Tue, 12 Dec 2023 09:39:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F32858AD0;
+	Tue, 12 Dec 2023 09:47:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="YlWhji/n"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="W9CG72uG"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EB5FCE
-	for <linux-wireless@vger.kernel.org>; Tue, 12 Dec 2023 01:39:37 -0800 (PST)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C330D2;
+	Tue, 12 Dec 2023 01:46:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=AKAoD3uDMz34onWlzxNrICjDI79e/wHhbjx2C9z6ckg=;
-	t=1702373978; x=1703583578; b=YlWhji/nNRb2JsEuksytXA1xQgC4bUMZ3gpvGeJx+NJ4ZpW
-	cVbg3nHhGHrI5ot7CMg53WX5Vs1lY+Y3xIom2R2UfeaI7+jk5m8XbkcbA6X/doEtct4zh5qbX0LPE
-	MDkWaIVDlxV5iGkPgFY6Z2QcPuK3UVXI9a/aUigDyiZXEz4XvoePOiy/uvBZ/WrUsi/A03NhF88+i
-	iHiSXuP5WYj6BlJtFWxSx1OVaqHjFLjfjbJyPXrS6pTeN59jkCaWzDjH6nf/xu8i2iErulhDse2Ln
-	hDiyfuRYikR2RtxpJ3WtbPc5OyZcGcfZupnGM2j95H60GO7xPyapXfXf9ljArP7w==;
+	Resent-Cc:Resent-Message-ID; bh=sVUr0dBPvE4hjj2hRHA9dzust08BK20shWiG7p98Mdo=;
+	t=1702374416; x=1703584016; b=W9CG72uGRZb0/h6Whij0HnNzpV5ckaTzglZF+9VWakYGTA9
+	mkmDL35hPAMnJwR0zFpp8FK6pY8r4UPDStv3NYvoisI4apISBr2GUvPgP+NooTltvUQ0hC33VZ0P4
+	td1LNtQdJg4vIrqbs3eF8Gajse6NAr70RvlksBHyUggkUxGeUk3+8yGt6tL8xw/auDGbZYp6j9/ks
+	QMmJ7OrZ77gy2wQugi7ZFgw4MzyB/HKHjL+sVOAk97MPmpaptRbsOgxpK4C+5CNyNBBDc1Oi+UADd
+	lqGF8Q31S/a+bXS/UhauvjcIRRQjpS3IRLHLGdM6Lqid7bRAbNqECjywDG/5CAKQ==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.97)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1rCzEk-000000084CH-3QL3;
-	Tue, 12 Dec 2023 10:39:35 +0100
-Message-ID: <71ab1f7295860699713a018c69503f63d903a0be.camel@sipsolutions.net>
-Subject: Re: [PATCH 06/14] wifi: cfg80211: Update the default DSCP-to-UP
- mapping
+	id 1rCzLp-000000084TA-2X0d;
+	Tue, 12 Dec 2023 10:46:53 +0100
+Message-ID: <3a06ae67808800386117c90714637ef9a0267b37.camel@sipsolutions.net>
+Subject: Re: [GIT PULL] mmutable branch between pdx86 amd wbrf branch and
+ wifi / amdgpu due for the v6.8 merge window
 From: Johannes Berg <johannes@sipsolutions.net>
-To: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Cc: linux-wireless@vger.kernel.org, Ilan Peer <ilan.peer@intel.com>, Gregory
-	Greenman <gregory.greenman@intel.com>, Jouni Malinen <j@w1.fi>
-Date: Tue, 12 Dec 2023 10:39:33 +0100
-In-Reply-To: <20231211085121.8a1c7d1f0034.I50aed38be78ae9aea052938e2cb6b5800010ecd4@changeid>
-References: <20231211070532.2458539-1-miriam.rachel.korenblit@intel.com>
-	 <20231211085121.8a1c7d1f0034.I50aed38be78ae9aea052938e2cb6b5800010ecd4@changeid>
+To: Hans de Goede <hdegoede@redhat.com>, Alex Deucher
+	 <alexander.deucher@amd.com>, Christian =?ISO-8859-1?Q?K=F6nig?=
+	 <christian.koenig@amd.com>, Ma Jun <Jun.Ma2@amd.com>, "Limonciello, Mario"
+	 <Mario.Limonciello@amd.com>, "platform-driver-x86@vger.kernel.org"
+	 <platform-driver-x86@vger.kernel.org>
+Cc: linux-wireless <linux-wireless@vger.kernel.org>, amd-gfx list
+	 <amd-gfx@lists.freedesktop.org>, Ilpo =?ISO-8859-1?Q?J=E4rvinen?=
+	 <ilpo.jarvinen@linux.intel.com>
+Date: Tue, 12 Dec 2023 10:46:52 +0100
+In-Reply-To: <6395b87b-7cb6-4412-b6e5-e6075353fb6d@redhat.com>
+References: <6395b87b-7cb6-4412-b6e5-e6075353fb6d@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.50.2 (3.50.2-1.fc39) 
@@ -55,20 +59,25 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
+On Mon, 2023-12-11 at 12:02 +0100, Hans de Goede wrote:
+> Hi Wifi and AMDGPU maintainers,
 >=20
-> The default DSCP-to-UP mapping method defined in RFC8325
-> applied to packets marked per recommendations in RFC4594 and
-> destined to 802.11 WLAN clients will yield a number of inconsistent
-> QoS mappings.
+> Here is a pull-request for the platform-drivers-x86 parts of:
 >=20
-> To handle this, modify the mapping of specific DSCP values for
-> which the default mapping will create inconsistencies, based on
-> the recommendations in section 4 in RFC8325.
+> https://lore.kernel.org/platform-driver-x86/20231211100630.2170152-1-Jun.=
+Ma2@amd.com/
 >=20
+> From my pov the pdx86 bits are ready and the platform-drivers-x86-amd-wbr=
+f-v6.8-1 tag can be merged by you to merge the wifi-subsys resp. the amdgpu=
+ driver changes on top.
+>=20
+> This only adds kernel internal API, so if in the future the API needs wor=
+k that can be done.
 
-This breaks ap_qosmap_default_acm ap_qosmap_default test cases.
+OK, thanks! I've pulled this into wireless-next, and applied the two
+wireless related patches on top.
 
-How should we handle that?
+I guess if AMDGPU does the same, it will combine nicely in 6.8.
 
 johannes
 
