@@ -1,131 +1,84 @@
-Return-Path: <linux-wireless+bounces-695-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-696-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C99A180EE11
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Dec 2023 14:48:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10A4180EE94
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Dec 2023 15:23:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85ACD281790
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Dec 2023 13:48:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACB641F21590
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Dec 2023 14:23:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 123BD6F602;
-	Tue, 12 Dec 2023 13:48:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94E357317C;
+	Tue, 12 Dec 2023 14:23:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I1bcz+Ll"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aQ3Yp75g"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E55F76DD02;
-	Tue, 12 Dec 2023 13:48:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1063C433C7;
-	Tue, 12 Dec 2023 13:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 771C47316F
+	for <linux-wireless@vger.kernel.org>; Tue, 12 Dec 2023 14:23:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E53CC433C8;
+	Tue, 12 Dec 2023 14:23:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702388919;
-	bh=vMWkOLosreYFfJ9xVON5sXNCA2fynG36OvDNxFrE51s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=I1bcz+LlvgB6SRxGT6ZdgATiv1KLf3q9mLiOckLOH//Bt/WfHe+7KJ4pbFikHCrFd
-	 qinaFVog666Obq0FK2VsYMwyGYl78WaUh9i5/l3r1GPgscTC2S+QgVEDEk45EOEOb7
-	 l+JB3Lc3Pke9d+OyFaOvCmY34jxCo/DG2g76bTPjQW0SRGR6BCKhbMLmFvTSCMmU0d
-	 fQUool7HZlBQtY2ymybxrXQtnzo4alFNJsup3EQhmQBQ1MyjAU6w3ZDvAgWqDQynrX
-	 fqcIm0zsaTs7nbljdzhOr2nUNP/jaTsp25PQ1td9yIfjPwBY/vMyUnkzvfaGwD/Mxm
-	 cKHo+xDe9ZFRA==
-Date: Tue, 12 Dec 2023 13:48:31 +0000
-From: Lee Jones <lee@kernel.org>
-To: Zheng Wang <zyytlz.wz@163.com>
-Cc: aspriel@gmail.com, franky.lin@broadcom.com, hante.meuleman@broadcom.com,
-	kvalo@kernel.org, johannes.berg@intel.com, marcan@marcan.st,
-	linus.walleij@linaro.org, jisoo.jang@yonsei.ac.kr,
-	linuxlovemin@yonsei.ac.kr, wataru.gohda@cypress.com,
-	linux-wireless@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
-	arend.vanspriel@broadcom.com, SHA-cyfmac-dev-list@infineon.com,
-	linux-kernel@vger.kernel.org, security@kernel.org,
-	stable@vger.kernel.org, hackerzheng666@gmail.com
-Subject: Re: [PATCH v5] wifi: brcmfmac: Fix use-after-free bug in
-  brcmf_cfg80211_detach
-Message-ID: <20231212134831.GA564365@google.com>
-References: <20231106141704.866455-1-zyytlz.wz@163.com>
+	s=k20201202; t=1702391033;
+	bh=RFzRehKbJal1Ks9fvN2tnfICVyLscWmgOdTrzxAZvZg=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=aQ3Yp75gmNkZuCijEJY1nQKZftJVe08ds9T555jbNMl0x6BxVvBXBghGlPxXPxPLE
+	 i1tyxUsZdS7O0ZJQmEz6kDXr/iCnAa5OC2yn3DGJYpHIIbwf3gX2wR6drV+BX28FSB
+	 lj+oM/27DX5TIvyXEIlxthtv463T3Pi9lpOBfcnqXfHkwwP2uICFQcuAaIf5+GEpBk
+	 cbdfqWZENCDsgNeqU5L6GFSBJTKe5NbwRhkli0x/kadIhNjswpPt8voM5D301BE5Nn
+	 9s4k3wd9IGQoC0lzhYUN+AlWgexr+CE6duCMD75JcYEYWSU8zG3JzR5hIR3rp5B2Hg
+	 exYaho6TqvtJw==
+From: Kalle Valo <kvalo@kernel.org>
+To: "Arnd Bergmann" <arnd@arndb.de>
+Cc: "Arnd Bergmann" <arnd@kernel.org>,  "Ping-Ke Shih" <pkshih@realtek.com>,
+  "Gustavo A. R. Silva" <gustavoars@kernel.org>,  "Ching-Te Ku"
+ <ku920601@realtek.com>,  linux-wireless@vger.kernel.org,
+  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rtw89: avoid stringop-overflow warning
+References: <20231204073020.1105416-1-arnd@kernel.org>
+	<170196405395.2897000.836367709392997740.kvalo@kernel.org>
+	<f39d5940-2030-4378-9a44-3355a4429e31@app.fastmail.com>
+Date: Tue, 12 Dec 2023 16:23:49 +0200
+In-Reply-To: <f39d5940-2030-4378-9a44-3355a4429e31@app.fastmail.com> (Arnd
+	Bergmann's message of "Thu, 07 Dec 2023 17:11:06 +0100")
+Message-ID: <87plzbo5xm.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231106141704.866455-1-zyytlz.wz@163.com>
+Content-Type: text/plain
 
-On Mon, 06 Nov 2023, Zheng Wang wrote:
+"Arnd Bergmann" <arnd@arndb.de> writes:
 
-> This is the candidate patch of CVE-2023-47233 :
-> https://nvd.nist.gov/vuln/detail/CVE-2023-47233
-> 
-> In brcm80211 driver,it starts with the following invoking chain
-> to start init a timeout worker:
-> 
-> ->brcmf_usb_probe
->   ->brcmf_usb_probe_cb
->     ->brcmf_attach
->       ->brcmf_bus_started
->         ->brcmf_cfg80211_attach
->           ->wl_init_priv
->             ->brcmf_init_escan
->               ->INIT_WORK(&cfg->escan_timeout_work,
-> 		  brcmf_cfg80211_escan_timeout_worker);
-> 
-> If we disconnect the USB by hotplug, it will call
-> brcmf_usb_disconnect to make cleanup. The invoking chain is :
-> 
-> brcmf_usb_disconnect
->   ->brcmf_usb_disconnect_cb
->     ->brcmf_detach
->       ->brcmf_cfg80211_detach
->         ->kfree(cfg);
-> 
-> While the timeout woker may still be running. This will cause
-> a use-after-free bug on cfg in brcmf_cfg80211_escan_timeout_worker.
-> 
-> Fix it by deleting the timer and canceling the worker in
-> brcmf_cfg80211_detach.
-> 
-> Fixes: e756af5b30b0 ("brcmfmac: add e-scan support.")
-> Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
-> Cc: stable@vger.kernel.org
-> ---
-> v5:
-> - replace del_timer_sync with timer_shutdown_sync suggested by
-> Arend and Takashi
-> v4:
-> - rename the subject and add CVE number as Ping-Ke Shih suggested
-> v3:
-> - rename the subject as Johannes suggested
-> v2:
-> - fix the error of kernel test bot reported
-> ---
->  drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> index 667462369a32..a8723a61c9e4 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> @@ -8431,6 +8431,8 @@ void brcmf_cfg80211_detach(struct brcmf_cfg80211_info *cfg)
->  	if (!cfg)
->  		return;
->  
-> +	timer_shutdown_sync(&cfg->escan_timeout);
-> +	cancel_work_sync(&cfg->escan_timeout_work);
->  	brcmf_pno_detach(cfg);
->  	brcmf_btcoex_detach(cfg);
->  	wiphy_unregister(cfg->wiphy);
+> On Thu, Dec 7, 2023, at 16:47, Kalle Valo wrote:
+>> Arnd Bergmann <arnd@kernel.org> wrote:
+>>> From: Arnd Bergmann <arnd@arndb.de>
+>>> 
+>>> Fixes: 89741e7e42f6 ("Makefile: Enable -Wstringop-overflow globally")
+>>> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+>>
+>> ERROR: 'wifi:' prefix missing: '[PATCH] rtw89: avoid stringop-overflow 
+>> warning'
+>> ERROR: Failed to find commit id: Fixes: 89741e7e42f6 ("Makefile: Enable 
+>> -Wstringop-overflow globally")
+>>
+>> I can add the "wifi:" prefix but where can I find the commit 89741e7e42f6?
+>
+> It's in linux-next and came in from Gustavo's tree at
+> https://git.kernel.org/pub/scm/linux/kernel/git/gustavoars/linux.git/log/?h=for-next/kspp
 
-Has there been any progress on this please?
-
-Are we expecting a v6 to this?
+Ah, I think then I'll drop the Fixes tag to avoid warnings or reports.
+My understanding is that a commit in the Fixes tag should be a parent.
 
 -- 
-Lee Jones [李琼斯]
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
