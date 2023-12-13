@@ -1,169 +1,111 @@
-Return-Path: <linux-wireless+bounces-761-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-762-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EC3E811EE3
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Dec 2023 20:28:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF330811F03
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Dec 2023 20:36:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F056282824
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Dec 2023 19:28:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 649BE28251F
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Dec 2023 19:36:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8324468269;
-	Wed, 13 Dec 2023 19:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92B3768265;
+	Wed, 13 Dec 2023 19:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="SZnR0UBd"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="g+78Cxxk"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2061.outbound.protection.outlook.com [40.107.92.61])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 564F6D0;
-	Wed, 13 Dec 2023 11:28:05 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aEB8HwFL3dtCUA0l/8UQ3ucWXH/jbm9IissBCy4vYtx/Y44Xg04CbGoh/Y+6nDPhsUSBVuyNSwx+ACs0Uxjc3MNymJbgDZZNLU4sDSPY2h2e0bgZwCCU0ywtT0MSalXZPAgLKgBi+VDgheahhVSel6PV8zlRPS/UmwkaiNvCTIIBEWTc0cL6JoBrf9WE1txMXnEYTFGzqV2JZMANeDtKA7xnbW390Yx3SPRBh74WOE/wTjhc2vBdAVYnPTNG7wRanxLjc1KOqYi6OXLkb72RonR3MZqqkmfexAKMUTkLL9Abm0BQQg8tA+GK0WOP/sC2O5usKVeUarGavzMGJejRqg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=COzrvbIMoEJiE0++OECcORA1Sw65f9Vqk0EV2kS4fZI=;
- b=gN+jx+3m4npPc+d0LpYg/z4x0JfbOlNsOnnoZ8dTqJrf6BpYQOouW1/k1SC3U4mrb8zUjXGulu7BoKfj1bBQi7XWr+kI2rCueC6E14XISXrZhLl/+W4NMc9zixIln0udDwEEUDS8EpbDk6ewc0qGP3YpAB/Z8n0tIv34UQ3j+qfbsbRdDvHWyfSyNCdp1Rsj/2fPAe9umqMRDdmzNOFwHdrwAUymnHEjMrLxuZfDG0JNhaOJKD3CNeFajGmAf4tm29ho/KxYgGCGKrYK0l1r9FEgQh4zhLzrkLdxxT2tcZiMO6rHzKghUHfo50hRTNu22L9HUyHUKPrbP/IYoyLDlA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=COzrvbIMoEJiE0++OECcORA1Sw65f9Vqk0EV2kS4fZI=;
- b=SZnR0UBdK4wjJI+agcuND5JrNSzVRGsz29SBlM0CWZC/ZG9axwRA7XS6w0+IK21HjHPz3f4yniqumLZAt4pekO30W7jE345k0PAFetcVp+cmwPXHrKEb5u+qfqZf0/bZgWVwYKfelzdehoHxfNyIaU+d6/oUOxbeC26gr/xfOBk=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by LV2PR12MB5966.namprd12.prod.outlook.com (2603:10b6:408:171::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7091.26; Wed, 13 Dec
- 2023 19:28:02 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::83d7:9c4f:4d9b:1f2a]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::83d7:9c4f:4d9b:1f2a%5]) with mapi id 15.20.7091.022; Wed, 13 Dec 2023
- 19:28:02 +0000
-Message-ID: <dfc24ec8-4741-4c11-bd50-d5cc8d60447e@amd.com>
-Date: Wed, 13 Dec 2023 13:28:01 -0600
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] wifi: mt76: mt7921: Disable powersaving by default
-Content-Language: en-US
-To: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
- Ryder Lee <ryder.lee@mediatek.com>
-Cc: Shayne Chen <shayne.chen@mediatek.com>, Sean Wang
- <sean.wang@mediatek.com>, Kalle Valo <kvalo@kernel.org>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Deren Wu <deren.wu@mediatek.com>, Ming Yen Hsieh
- <mingyen.hsieh@mediatek.com>, Ben Greear <greearb@candelatech.com>,
- "open list:MEDIATEK MT76 WIRELESS LAN DRIVER"
- <linux-wireless@vger.kernel.org>,
- "open list:ARM/Mediatek SoC support" <linux-kernel@vger.kernel.org>,
- "moderated list:ARM/Mediatek SoC support"
- <linux-mediatek@lists.infradead.org>, Sultan Alsawaf <sultan@kerneltoast.com>
-References: <20231212090852.162787-1-mario.limonciello@amd.com>
- <9da16cfc-d0e4-4e9f-91b0-42b0bf4141cc@nbd.name>
-From: Mario Limonciello <mario.limonciello@amd.com>
-In-Reply-To: <9da16cfc-d0e4-4e9f-91b0-42b0bf4141cc@nbd.name>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: DS7PR03CA0333.namprd03.prod.outlook.com
- (2603:10b6:8:55::15) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0F0B9C;
+	Wed, 13 Dec 2023 11:36:29 -0800 (PST)
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 3BDFU2FI010333;
+	Wed, 13 Dec 2023 19:36:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=e10Quh6ypHocogNDj3DfFg/zcaIVq5u4rHnANYa2BMw=; b=g+
+	78CxxkeX9aR2uTKkPX4FgP6zvmIuUCTt68g2hfvg4SfK1hK9lPsiQk0jSZYpBJPW
+	02hndBm6IeNopLbiPTBFxd0Yn+ZA9NRyBjDRZAdzgyeRd8dAMFPUz9JgHqpdKige
+	qY655OPAPuLoiHJ7lEupsI/mKEiLPWjOdzw4LHVbXKLg4q8sz+fNjdvlpdD6pitk
+	9wki0m8DqCFbUeNpurTdaRKzy/Sz4oJRZPGWBF0zkivT+PMD/lKcy+cJr+CIZXoZ
+	dBnHGLab1lrRipSv67V2viPRHOshRITA6Wcd+8bDorv8YHtce2itReiJjQJAlXWg
+	x6hHJJam2BQt7V4VKCWg==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3uy5tvj121-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 13 Dec 2023 19:36:10 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3BDJa9VT029811
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 13 Dec 2023 19:36:09 GMT
+Received: from [10.110.106.103] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Wed, 13 Dec
+ 2023 11:36:09 -0800
+Message-ID: <bdabfb74-ea4f-4455-bb4c-1d93977393ea@quicinc.com>
+Date: Wed, 13 Dec 2023 11:36:08 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|LV2PR12MB5966:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5e67b802-7339-4350-85d8-08dbfc119f70
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	7/UpLD+ygiF5ys5umHFiXXabtO/U+WdnPh7FpcfKEAxQ5CrZLO/wR2s5S+8YY38TEGay4wJpRioqdA0gBZv7CxjxbYvUcxZPAes9ySpfeLim6LqZHaxX/aU3E6ieMB+wrxgQWiJcCh/ep8X0vih1XFO1pxSkDBkUtbRPQCBrSzyAf3KQbzCCK0olL0+M2OVZxuWAiffeNzkaN6St0/DLfccO+vLdmHwXfy0/5C1eGDp1TTaq1+47R9zeau/TKSID8P6/gq76TQzWISIgBLiQbQZRQomBU5sHgmuaf0oT7PBLW30xpGmrRIKmkXpOb4UG1qZFV0VWcYLRR5kaLdS2kAx7yprMVJcymutWs2ExLPsIglmcVRLpU1yOpCF0aAnG1TgKT7BKt4uojks3uGI6CIqHgUKxAE9ne+iQ8aDKnuXguclg/jIKwxUyx5VlAy1RAbfFcTRV/tFRzjIZWIs7FCAOYQet6XTA8VJ0406nWc01JK6eicM9sGI3n0qJfAndGphO/uz57u33lQ/1yducywsbwR5GBnDr5dD997o8WlwdI2RP8hh+dcfobseaimDS2bsEaIH+RDt7+Nb2aQCzYQgVWh2ollyI7msHkjr4gd67TDHK00hRX7e6sg2lemoa
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(39860400002)(366004)(346002)(396003)(376002)(230922051799003)(451199024)(1800799012)(186009)(64100799003)(31686004)(2616005)(26005)(6512007)(6506007)(31696002)(86362001)(36756003)(38100700002)(5660300002)(8676002)(8936002)(7416002)(44832011)(4326008)(966005)(83380400001)(66476007)(54906003)(66556008)(110136005)(66946007)(41300700001)(2906002)(316002)(6486002)(478600001)(53546011)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cDcrYXZiaTdmZGNQUjJveWgySzNQd1Z3MC9wYmtzK3BwYUhLMytnRHRVWHhr?=
- =?utf-8?B?ZVhWZ0JncktUSStRSjc3UzZRL0hpUWZtYW5JcTBodFNvNHpyaE95Wit3STZY?=
- =?utf-8?B?NFl4dXd6QmdObHYySTNzLzcrNThJcy9ENVQ2ckpJTXhhekR2YmhQblBYYWJi?=
- =?utf-8?B?WXJQbjNqNEMyZ01xdURUc0Y4MlRiTXRiOUZjcXhITERRUEtLT3JoR2Nrckhp?=
- =?utf-8?B?TnZzTG5UOEJwTTBwT0E5NHhBU21mQitIcmxEdXp6RU4yRDZiZ3NIVExJNzVp?=
- =?utf-8?B?TkxPbm9SQWY1Vmh0T1JwRzBneVNwYUFadGtLZzB6dTA1TmIvWmQ5TmxOS2Na?=
- =?utf-8?B?M2JJNnYySFFNbll2QWNKRWt6eDN3V3o4SzRsZmpPTEpvUG1PS3IxaVhWUnha?=
- =?utf-8?B?Qk1OL3lVbjlMYUVFZ014bjZWQUE1YW1lelRNVklleUU0TStLN0FlQ0FlY2g1?=
- =?utf-8?B?RVZ6a2g1emYxT09kazgrQkU3WHZpWG1BVEhjVU1JSkNUU1hFWlBsN0hVbDdH?=
- =?utf-8?B?WFBjMGF2Y0FLTUVkVERlbGZBMjF3a3o1NVVFK3Z4T1FBMVZKMUtYeVNYSXUz?=
- =?utf-8?B?MVhBVHZqd2pmd2dqKzZwWXJ3U2R2QStRa3lQOE95NDVTWkRFUnY2OGVOdTVP?=
- =?utf-8?B?RlhIZmI5RXpGU2hiZ2VhYjJVUkdheklGYmZ2cmtiWWVkT1dBQ0hVNDNlSk5X?=
- =?utf-8?B?aEFpN0YydEJDeCt4b0VtM21HTnR2ZjZIa1pESk4rYjZXRGdWN0w5a0RpZjcv?=
- =?utf-8?B?YjZRRGFkRnkrMlEvK3dYbFEwYVYrWks1TUtFL3F1MEhJeisyWmwzektoZEM0?=
- =?utf-8?B?eVpJcVlRa2NhOThlaElRSHVBL0o3Z1ZOOHFBejVibDZaaEUzWjBKY2VMdnBG?=
- =?utf-8?B?MHg2Uk1sNGRySjZLUVdwVzAyK1ZmSjgwVkxQYnVjTnVYcEt6dGJHT1JRU3RQ?=
- =?utf-8?B?UlNJMVNITTdiQTl6VXFCMlZUdVN5RXNBMUJhQkZrNWNDK2UzZytLdlNCc0JH?=
- =?utf-8?B?S2R1SEUxdDJjTDRwd3IxWXpOSHZsYWh2Y0k4L0xldk1WRXM0czFQeU1SdjdK?=
- =?utf-8?B?THhGeWdOZmxsKzdNLzBjWmlDWkFxWFhFMkJsNnh4RWRHaWdRS0hQTVRnOWpI?=
- =?utf-8?B?Q29FSFdxNWMwd05saXRlVUZ2R2ZmSUVtU3MwYytPR1FGL20yTjJZcURGQndV?=
- =?utf-8?B?OHRZODN6ZnRsOHA5amxJUmFwT1Z1S2FhZzR6TllNOW56czJIb0thSGZZbjlS?=
- =?utf-8?B?aEltVWVMSmR2UzN6d0RqNVZPc3IvMTdJMkNsMlZmQXhvdW45SkFyRUJJdEFI?=
- =?utf-8?B?U3VOd25oWTBlaXJVWVJFdHdHYnJTMlBpRnVpR2dtMExoVjNwUDFsUzdaRncw?=
- =?utf-8?B?UGZMTENUc1orZjJSWnN2bFN6T0RrWUxFMVo3SnhpOVljSXJ1aVR4QUxxY2lj?=
- =?utf-8?B?dFVSSlFiWkcxVzNrdlVUUzVpblRoSnhVWHZUeW5DWStnQmk3OG1OK1ZpRnp0?=
- =?utf-8?B?eEF1YzFqSnlreEYxY2xxS3BKeDZ1WHRvNWJ5UUhZckVmRkJLOGthS0JiMWlL?=
- =?utf-8?B?cmFKSHlzRWYzckxQWVNTa0tFak4rWVhVbWViTDBqeFovTjk3QzFBbDRGZWRW?=
- =?utf-8?B?cTk5aW95am12bGNTS3pTNi84a2hmNWVvajVEdWtuZk9yd0lBOVlsSUV4TERL?=
- =?utf-8?B?bk5IUE5pYzltdGVscG1JTnJZcTZuaU8vY3Y4elpUWGtvZVErbzU2WjVDU2cr?=
- =?utf-8?B?YW5oR0hIRkN0SG8ydXZsZDVsR0ozRGpOUHpFeHcybSs2RS9pNDY5MnZPZUMv?=
- =?utf-8?B?d1lYTm1ZaVoyT2tnVUtsOU1NaTVVdWNIaW1yU2xZV0RMck5jMExxWjhkeFZ3?=
- =?utf-8?B?ejlzZVlxYXlTN3VEMDRJT0xvK3JFL015NjUzcW5JWjExNS8xUkdzZGJ2dnp3?=
- =?utf-8?B?U0krQ0RKem82L0RlajI3VjJZTUs4WURtY2tGOGN3NGt5L3RhQWVSU3BlNDNt?=
- =?utf-8?B?OVd1U0JmMEVKaWo5KzlOb0NqeWlQQ04xRk05alVXS2FPOCtqYkhkdlk2L0Jo?=
- =?utf-8?B?dlFDei9uZzZNekE4eXdnUXhSZnM4aGJtSkNlSjQ1NnlxcENJSXhRdmh4Qndp?=
- =?utf-8?Q?88HBSoxF2HcUqBdj64sf1j4uc?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5e67b802-7339-4350-85d8-08dbfc119f70
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Dec 2023 19:28:02.5196
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: f5Fu3llq+HexAjaxzS4K19e16aLj8zuzTlqUCBKnbvBCYstRPlbrGobhQ3r5P2f/DnPeZiUOQEnl2Y32Zn5GoA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB5966
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6/6] wifi: ath10k: remove duplicate memset() in 10.4 TDLS
+ peer update
+Content-Language: en-US
+To: Kees Cook <keescook@chromium.org>
+CC: Kalle Valo <kvalo@kernel.org>,
+        "Gustavo A. R. Silva"
+	<gustavo@embeddedor.com>,
+        <ath10k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+References: <20231213-wmi_host_mem_chunks_flexarray-v1-0-92922d92fa2c@quicinc.com>
+ <20231213-wmi_host_mem_chunks_flexarray-v1-6-92922d92fa2c@quicinc.com>
+ <202312131113.4C01D1DD5A@keescook>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <202312131113.4C01D1DD5A@keescook>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: M2IxbTZn4GckO0QFKlvmZIGyxCcH9-HB
+X-Proofpoint-GUID: M2IxbTZn4GckO0QFKlvmZIGyxCcH9-HB
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-09_01,2023-12-07_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 phishscore=0
+ priorityscore=1501 impostorscore=0 mlxscore=0 clxscore=1015
+ mlxlogscore=557 bulkscore=0 spamscore=0 adultscore=0 lowpriorityscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2311290000 definitions=main-2312130139
 
-On 12/13/2023 07:35, Felix Fietkau wrote:
-> On 12.12.23 10:08, Mario Limonciello wrote:
->> Several users have reported awful latency when powersaving is enabled
->> with certain access point combinations. It's also reported that the
->> powersaving feature doesn't provide an ample enough savings to justify
->> being enabled by default with these issues.
->>
->> Introduce a module parameter that would control the power saving
->> behavior.  Set it to default as disabled. This mirrors what some other
->> WLAN drivers like iwlwifi do.
->>
->> Suggested-by: Sultan Alsawaf <sultan@kerneltoast.com>
->> Link: 
->> https://codeberg.org/Hybrid-Project-Developers/linux-tkg/blame/branch/master/mt76:-mt7921:-Disable-powersave-features-by-default.mypatch
->> Link: 
->> https://aur.archlinux.org/cgit/aur.git/tree/0027-mt76_-mt7921_-Disable-powersave-features-by-default.patch?h=linux-g14
->> Link: 
->> https://community.frame.work/t/responded-strange-wlan-problems-with-kernel-branch-6-2/41868/4
->> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+On 12/13/2023 11:16 AM, Kees Cook wrote:
+> On Wed, Dec 13, 2023 at 09:06:44AM -0800, Jeff Johnson wrote:
+>> In [1] it was identified that in ath10k_wmi_10_4_gen_tdls_peer_update()
+>> the memset(skb->data, 0, sizeof(*cmd)) is unnecessary since function
+>> ath10k_wmi_alloc_skb() already zeroes skb->data, so remove it.
 > 
-> This patch is disabling two different things at the same time:
-> - Wifi powersaving
-> - Device hardware powersaving
-> 
-> Have you tried simply disabling 802.11 powersave via nl80211 to mitigate 
-> the issues with affected APs?
-> 
-> - Felix
+> Is .gen_tdls_peer_update only ever called after a fresh allocation? It
+> wasn't obvious to me as I tried to follow the call paths. Is there harm
+> in leaving this?
 
-Kalle suggested this as well, I will experiment, thanks.
+The only harm is a slight increase in code size and cpu cycles.
+
+However note the skb allocation is done within
+ath10k_wmi_10_4_gen_tdls_peer_update() itself, just before the code
+being removed:
+	skb = ath10k_wmi_alloc_skb(ar, len);
+	if (!skb)
+		return ERR_PTR(-ENOMEM);
+
+And in ath10k_wmi_alloc_skb() we have:
+	memset(skb->data, 0, round_len);
+
+So the memset() being removed is always redundant.
+
+/jeff
 
