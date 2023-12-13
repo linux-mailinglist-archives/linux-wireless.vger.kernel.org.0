@@ -1,123 +1,246 @@
-Return-Path: <linux-wireless+bounces-740-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-742-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4044F811522
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Dec 2023 15:45:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCD6C811576
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Dec 2023 16:00:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4274C28286B
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Dec 2023 14:45:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 098421C21148
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Dec 2023 15:00:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE22026AC7;
-	Wed, 13 Dec 2023 14:45:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03A192FC43;
+	Wed, 13 Dec 2023 15:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="FtctL3Xf"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gYecqjhP"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.183])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 599631BFE;
-	Wed, 13 Dec 2023 06:45:32 -0800 (PST)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 25BDF3C0063;
-	Wed, 13 Dec 2023 14:45:27 +0000 (UTC)
-Received: from [192.168.1.115] (unknown [98.97.113.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id 5A6FA13C2B0;
-	Wed, 13 Dec 2023 06:45:23 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 5A6FA13C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1702478724;
-	bh=CyzNsGLkg4WlGdYLD0CORyHCimqERrevF4Jayf7AZrI=;
-	h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-	b=FtctL3XfK12CbRTl5KHhn9cT9j3FXr5yCvhS9Xeakwq9IcOq7UGhZok9Zp5wfhEBH
-	 /iRLEzUwz012MLtiuCU3BMuCtLx75xTl22OG5aq3TxxGAvt3BOSitdlbPoGODFuQwW
-	 YVntLFUGLNlf+XLJAtZ7c8uNqHUPgHSp8a9lhY3Y=
-Subject: Re: [PATCH 1/2] wifi: mt76: mt7921: Disable powersaving by default
-To: Lorenzo Bianconi <lorenzo@kernel.org>, Kalle Valo <kvalo@kernel.org>
-Cc: Mario Limonciello <mario.limonciello@amd.com>,
- Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>,
- Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Deren Wu <deren.wu@mediatek.com>, Ming Yen Hsieh
- <mingyen.hsieh@mediatek.com>,
- "open list:MEDIATEK MT76 WIRELESS LAN DRIVER"
- <linux-wireless@vger.kernel.org>,
- "open list:ARM/Mediatek SoC support" <linux-kernel@vger.kernel.org>,
- "moderated list:ARM/Mediatek SoC support"
- <linux-mediatek@lists.infradead.org>, Sultan Alsawaf <sultan@kerneltoast.com>
-References: <20231212090852.162787-1-mario.limonciello@amd.com>
- <874jgmnud8.fsf@kernel.org> <ZXmxD1foASMaCDIe@lore-desk>
-From: Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-Message-ID: <d92c081e-47dd-5c57-a6f1-bd72b2748141@candelatech.com>
-Date: Wed, 13 Dec 2023 06:45:22 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5373293
+	for <linux-wireless@vger.kernel.org>; Wed, 13 Dec 2023 07:00:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1702479630; x=1734015630;
+  h=date:from:to:cc:subject:message-id;
+  bh=ln6g+SMYmCLkVfAh9jy45WHRY/LAOY89ZWeJhNema8k=;
+  b=gYecqjhPvX00lxS+P2UvorN3Efs9l/ZZbLoRDtbK5tthgDnsBk77Qr0j
+   oG7vCfyAZT7t+AYVKgiguXQ8kQq6e7whvkB0wAPmTpH7Sx2dUNe8BBVRP
+   QZ6PUrJoEfYf2rv4odzMV4mUrYt6b6LOkHXXq1zDpzd0k+B/uzyB1zGWy
+   gBYdoSTKzC++q7LM/LYnoudMk9wr464yDNg+iA0WKh95VyM+ct4iRtbXk
+   1Nd3NGBCg72Wbs1COfZWu4D2YNmKTHMV877ZH2t7EFLPwOL1S1lL9/o++
+   AskzaHgY41WmlQl+Fmb2VT6Gq4ZLXuf1KjjLuIbD4qEPkV+F36nJtlqKg
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10922"; a="8366536"
+X-IronPort-AV: E=Sophos;i="6.04,273,1695711600"; 
+   d="scan'208";a="8366536"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2023 07:00:30 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10922"; a="808186010"
+X-IronPort-AV: E=Sophos;i="6.04,273,1695711600"; 
+   d="scan'208";a="808186010"
+Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
+  by orsmga001.jf.intel.com with ESMTP; 13 Dec 2023 07:00:27 -0800
+Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rDQin-000KiN-0T;
+	Wed, 13 Dec 2023 15:00:25 +0000
+Date: Wed, 13 Dec 2023 22:59:56 +0800
+From: kernel test robot <lkp@intel.com>
+To: Kalle Valo <kvalo@kernel.org>
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+ linux-wireless@vger.kernel.org
+Subject: [wireless:for-next] BUILD SUCCESS
+ cd607f2cbbbec90682b2f6d6b85e1525d0f43b19
+Message-ID: <202312132253.KgTG720i-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-In-Reply-To: <ZXmxD1foASMaCDIe@lore-desk>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: en-MW
-Content-Transfer-Encoding: 7bit
-X-MDID: 1702478729-Q2nO4rVjVD1u
-X-MDID-O:
- us5;at1;1702478729;Q2nO4rVjVD1u;<greearb@candelatech.com>;0636e1de1030682809d49efeedd0cda8
 
-On 12/13/23 5:26 AM, Lorenzo Bianconi wrote:
->> Mario Limonciello <mario.limonciello@amd.com> writes:
->>
->>> Several users have reported awful latency when powersaving is enabled
->>> with certain access point combinations.
->>
->> What APs are these exactly? In the past 802.11 Power Save Mode was
->> challenging due to badly behaving APs. But nowadays with so many mobile
->> devices in the market I would assume that APs work a lot better. It
->> would be best to investigate the issues in detail and try to fix them in
->> mt76, assuming the bugs are in mt76 driver or firmware.
->>
->>> It's also reported that the powersaving feature doesn't provide an
->>> ample enough savings to justify being enabled by default with these
->>> issues.
->>
->> Any numbers or how was this concluded?
->>
->>> Introduce a module parameter that would control the power saving
->>> behavior.  Set it to default as disabled. This mirrors what some other
->>> WLAN drivers like iwlwifi do.
->>
->> We have already several ways to control 802.11 power save mode:
->>
->> * NL80211_CMD_SET_POWER_SAVE (for example used by 'iw set power_save')
->>
->> * CONFIG_CFG80211_DEFAULT_PS (for kernel level default)
->>
->> * WIPHY_FLAG_PS_ON_BY_DEFAULT (for the driver to control the default setting)
->>
->> Adding module parameters as a fourth method sounds confusing so not
->> really a fan of this. And the bar is quite high for adding new module
->> parameters anyway.
-> 
-> agree, I think we do not need a new parameter for this, just use the current
-> APIs.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
+branch HEAD: cd607f2cbbbec90682b2f6d6b85e1525d0f43b19  wifi: mt76: fix crash with WED rx support enabled
 
-Is there a convenient way for a user to make any of those options above stick through
-reboots?
+elapsed time: 1469m
 
-To me, the ability to set system defaults through reboots is a nice feature of
-module options.
+configs tested: 167
+configs skipped: 2
 
-Thanks,
-Ben
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                   randconfig-001-20231213   gcc  
+arc                   randconfig-002-20231213   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   clang
+arm                   randconfig-001-20231213   clang
+arm                   randconfig-002-20231213   clang
+arm                   randconfig-003-20231213   clang
+arm                   randconfig-004-20231213   clang
+arm                             rpc_defconfig   gcc  
+arm64                            allmodconfig   clang
+arm64                             allnoconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                 randconfig-001-20231213   clang
+arm64                 randconfig-002-20231213   clang
+arm64                 randconfig-003-20231213   clang
+arm64                 randconfig-004-20231213   clang
+csky                             alldefconfig   gcc  
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+csky                  randconfig-001-20231213   gcc  
+csky                  randconfig-002-20231213   gcc  
+hexagon                          allmodconfig   clang
+hexagon                           allnoconfig   clang
+hexagon                          allyesconfig   clang
+hexagon                             defconfig   clang
+hexagon               randconfig-001-20231213   clang
+hexagon               randconfig-002-20231213   clang
+i386                             allmodconfig   clang
+i386                              allnoconfig   clang
+i386                             allyesconfig   clang
+i386         buildonly-randconfig-001-20231213   clang
+i386         buildonly-randconfig-002-20231213   clang
+i386         buildonly-randconfig-003-20231213   clang
+i386         buildonly-randconfig-004-20231213   clang
+i386         buildonly-randconfig-005-20231213   clang
+i386         buildonly-randconfig-006-20231213   clang
+i386                                defconfig   gcc  
+i386                  randconfig-001-20231213   clang
+i386                  randconfig-002-20231213   clang
+i386                  randconfig-003-20231213   clang
+i386                  randconfig-004-20231213   clang
+i386                  randconfig-005-20231213   clang
+i386                  randconfig-006-20231213   clang
+i386                  randconfig-011-20231213   gcc  
+i386                  randconfig-012-20231213   gcc  
+i386                  randconfig-013-20231213   gcc  
+i386                  randconfig-014-20231213   gcc  
+i386                  randconfig-015-20231213   gcc  
+i386                  randconfig-016-20231213   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch                 loongson3_defconfig   gcc  
+loongarch             randconfig-001-20231213   gcc  
+loongarch             randconfig-002-20231213   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                       m5275evb_defconfig   gcc  
+m68k                        mvme147_defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                              allnoconfig   clang
+mips                             allyesconfig   gcc  
+mips                  decstation_64_defconfig   gcc  
+mips                           ip22_defconfig   gcc  
+mips                           ip32_defconfig   gcc  
+mips                           mtx1_defconfig   clang
+mips                        qi_lb60_defconfig   clang
+mips                           rs90_defconfig   clang
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                 randconfig-001-20231213   gcc  
+nios2                 randconfig-002-20231213   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc                randconfig-001-20231213   gcc  
+parisc                randconfig-002-20231213   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   clang
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   clang
+powerpc                 canyonlands_defconfig   gcc  
+powerpc                      makalu_defconfig   gcc  
+powerpc               randconfig-001-20231213   clang
+powerpc               randconfig-002-20231213   clang
+powerpc               randconfig-003-20231213   clang
+powerpc64             randconfig-001-20231213   clang
+powerpc64             randconfig-002-20231213   clang
+powerpc64             randconfig-003-20231213   clang
+riscv                            allmodconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv                 randconfig-001-20231213   clang
+riscv                 randconfig-002-20231213   clang
+riscv                          rv32_defconfig   clang
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                  randconfig-001-20231213   gcc  
+s390                  randconfig-002-20231213   gcc  
+sh                               allmodconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                         ecovec24_defconfig   gcc  
+sh                          landisk_defconfig   gcc  
+sh                    randconfig-001-20231213   gcc  
+sh                    randconfig-002-20231213   gcc  
+sh                           se7724_defconfig   gcc  
+sh                           se7751_defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64               randconfig-001-20231213   gcc  
+sparc64               randconfig-002-20231213   gcc  
+um                               allmodconfig   clang
+um                               allyesconfig   clang
+um                    randconfig-001-20231213   clang
+um                    randconfig-002-20231213   clang
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   clang
+x86_64       buildonly-randconfig-001-20231213   clang
+x86_64       buildonly-randconfig-002-20231213   clang
+x86_64       buildonly-randconfig-003-20231213   clang
+x86_64       buildonly-randconfig-004-20231213   clang
+x86_64       buildonly-randconfig-005-20231213   clang
+x86_64       buildonly-randconfig-006-20231213   clang
+x86_64                              defconfig   gcc  
+x86_64                randconfig-001-20231213   gcc  
+x86_64                randconfig-002-20231213   gcc  
+x86_64                randconfig-003-20231213   gcc  
+x86_64                randconfig-004-20231213   gcc  
+x86_64                randconfig-005-20231213   gcc  
+x86_64                randconfig-006-20231213   gcc  
+x86_64                randconfig-011-20231213   clang
+x86_64                randconfig-012-20231213   clang
+x86_64                randconfig-013-20231213   clang
+x86_64                randconfig-014-20231213   clang
+x86_64                randconfig-015-20231213   clang
+x86_64                randconfig-016-20231213   clang
+x86_64                randconfig-071-20231213   clang
+x86_64                randconfig-072-20231213   clang
+x86_64                randconfig-073-20231213   clang
+x86_64                randconfig-074-20231213   clang
+x86_64                randconfig-075-20231213   clang
+x86_64                randconfig-076-20231213   clang
+x86_64                          rhel-8.3-rust   clang
+xtensa                randconfig-001-20231213   gcc  
+xtensa                randconfig-002-20231213   gcc  
 
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
