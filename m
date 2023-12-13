@@ -1,40 +1,40 @@
-Return-Path: <linux-wireless+bounces-722-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-723-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29FB6810703
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Dec 2023 01:52:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08C0F810704
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Dec 2023 01:52:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62B91281463
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Dec 2023 00:52:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B14481F210AE
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Dec 2023 00:52:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CE631C06;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC3D9211C;
 	Wed, 13 Dec 2023 00:52:24 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7F95D2
-	for <linux-wireless@vger.kernel.org>; Tue, 12 Dec 2023 16:52:19 -0800 (PST)
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 3BD0qCqfD3838297, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 3BD0qCqfD3838297
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07E9BAA
+	for <linux-wireless@vger.kernel.org>; Tue, 12 Dec 2023 16:52:20 -0800 (PST)
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 3BD0qDi853838303, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 3BD0qDi853838303
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 13 Dec 2023 08:52:12 +0800
+	Wed, 13 Dec 2023 08:52:13 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Wed, 13 Dec 2023 08:52:13 +0800
+ 15.1.2507.17; Wed, 13 Dec 2023 08:52:14 +0800
 Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Wed, 13 Dec
- 2023 08:52:12 +0800
+ 2023 08:52:13 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <kvalo@kernel.org>
 CC: <linux-wireless@vger.kernel.org>
-Subject: [PATCH v2 3/6] wifi: rtw89: load RFK log format string from firmware file
-Date: Wed, 13 Dec 2023 08:50:51 +0800
-Message-ID: <20231213005054.10568-4-pkshih@realtek.com>
+Subject: [PATCH v2 4/6] wifi: rtw89: add C2H event handlers of RFK log and report
+Date: Wed, 13 Dec 2023 08:50:52 +0800
+Message-ID: <20231213005054.10568-5-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20231213005054.10568-1-pkshih@realtek.com>
 References: <20231213005054.10568-1-pkshih@realtek.com>
@@ -52,177 +52,173 @@ X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
 X-KSE-AntiSpam-Interceptor-Info: fallback
 X-KSE-Antivirus-Interceptor-Info: fallback
 X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
 
-To debug RFK (RF calibration) in firmware, it sends log via firmware C2H
-events to driver with string format ID and four arguments. Load formatted
-string from firmware file, and the string ID can get back its string. Then,
-use regular print format to show the message.
+Trigger a RFK (RF calibration) in firmware by a H2C command, and in
+progress it reports log and a result finally by C2H events. Firstly, add
+prototype of the C2H event handlers to have a simple picture of framework.
 
-This firmware element layout looks like
-
-    +============================================+
-    |  elm ID  | elm size | version  |           |
-    +----------+----------+----------+-----------+
-    |                     | nr |rsvd |rfk_id|rsvd|
-    +--------------------------------------------+
-    | offset[] (__le16 * nr)                     |
-    | ...                                        |
-    +--------------------------------------------+
-    | formatted string with null termintor (*nr) |
-    | ...                                        |
-    +============================================+
-
- * a firmware file can contains more than one elements with this element ID
-   named RTW89_FW_ELEMENT_ID_RFKLOG_FMT (19), because many RFK needs its
-   own formatted strings, so add 'rfk_id' to know it belongs to which RFK.
- * the 'formatted string' just follow 'offset[]' without padding to align
-   32bits.
+The callers who trigger H2C will wait until a C2H event is received,
+so we must process these C2H events in receiving process. Thus, mark this
+kind of C2H events as atomic. Also, timestamp is also useful for
+debugging, mark C2H events carrying RFK log as atomic as well.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.h |  2 ++
- drivers/net/wireless/realtek/rtw89/fw.c   | 29 +++++++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/fw.h   |  8 +++++++
- drivers/net/wireless/realtek/rtw89/phy.h  | 15 ++++++++++++
- 4 files changed, 54 insertions(+)
+ drivers/net/wireless/realtek/rtw89/fw.c  |  2 +
+ drivers/net/wireless/realtek/rtw89/phy.c | 87 ++++++++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/phy.h |  7 ++
+ 3 files changed, 96 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index e5dd51f79a6f..5c266f349d37 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -18,6 +18,7 @@ struct rtw89_mac_gen_def;
- struct rtw89_phy_gen_def;
- struct rtw89_efuse_block_cfg;
- struct rtw89_fw_txpwr_track_cfg;
-+struct rtw89_phy_rfk_log_fmt;
- 
- extern const struct ieee80211_ops rtw89_ops;
- 
-@@ -3952,6 +3953,7 @@ struct rtw89_fw_elm_info {
- 	struct rtw89_phy_table *rf_radio[RF_PATH_MAX];
- 	struct rtw89_phy_table *rf_nctl;
- 	struct rtw89_fw_txpwr_track_cfg *txpwr_trk;
-+	struct rtw89_phy_rfk_log_fmt *rfk_log_fmt;
- };
- 
- struct rtw89_fw_info {
 diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 76c948da669e..c1ebf1b13c0f 100644
+index c1ebf1b13c0f..8c1065278faf 100644
 --- a/drivers/net/wireless/realtek/rtw89/fw.c
 +++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -729,6 +729,31 @@ int rtw89_build_txpwr_trk_tbl_from_elm(struct rtw89_dev *rtwdev,
- 	return -EFAULT;
+@@ -3566,6 +3566,8 @@ static bool rtw89_fw_c2h_chk_atomic(struct rtw89_dev *rtwdev,
+ 		return false;
+ 	case RTW89_C2H_CAT_MAC:
+ 		return rtw89_mac_c2h_chk_atomic(rtwdev, class, func);
++	case RTW89_C2H_CAT_OUTSRC:
++		return rtw89_phy_c2h_chk_atomic(rtwdev, class, func);
+ 	}
  }
  
-+static
-+int rtw89_build_rfk_log_fmt_from_elm(struct rtw89_dev *rtwdev,
-+				     const struct rtw89_fw_element_hdr *elm,
-+				     const union rtw89_fw_element_arg arg)
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
+index bfb1d8cfc531..8a4a72b00340 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.c
++++ b/drivers/net/wireless/realtek/rtw89/phy.c
+@@ -2445,6 +2445,85 @@ void (* const rtw89_phy_c2h_ra_handler[])(struct rtw89_dev *rtwdev,
+ 	[RTW89_PHY_C2H_FUNC_TXSTS] = NULL,
+ };
+ 
++static void
++rtw89_phy_c2h_rfk_log_iqk(struct rtw89_dev *rtwdev, struct sk_buff *c2h, u32 len)
 +{
-+	struct rtw89_fw_elm_info *elm_info = &rtwdev->fw.elm_info;
-+	u8 rfk_id;
-+
-+	if (elm_info->rfk_log_fmt)
-+		goto allocated;
-+
-+	elm_info->rfk_log_fmt = kzalloc(sizeof(*elm_info->rfk_log_fmt), GFP_KERNEL);
-+	if (!elm_info->rfk_log_fmt)
-+		return 1; /* this is an optional element, so just ignore this */
-+
-+allocated:
-+	rfk_id = elm->u.rfk_log_fmt.rfk_id;
-+	if (rfk_id >= RTW89_PHY_C2H_RFK_LOG_FUNC_NUM)
-+		return 1;
-+
-+	elm_info->rfk_log_fmt->elm[rfk_id] = elm;
-+
-+	return 0;
 +}
 +
- static const struct rtw89_fw_element_handler __fw_element_handlers[] = {
- 	[RTW89_FW_ELEMENT_ID_BBMCU0] = {__rtw89_fw_recognize_from_elm,
- 					{ .fw_type = RTW89_FW_BBMCU0 }, NULL},
-@@ -784,6 +809,9 @@ static const struct rtw89_fw_element_handler __fw_element_handlers[] = {
- 	[RTW89_FW_ELEMENT_ID_TXPWR_TRK] = {
- 		rtw89_build_txpwr_trk_tbl_from_elm, {}, "PWR_TRK",
- 	},
-+	[RTW89_FW_ELEMENT_ID_RFKLOG_FMT] = {
-+		rtw89_build_rfk_log_fmt_from_elm, {}, NULL,
-+	},
- };
- 
- int rtw89_fw_recognize_elements(struct rtw89_dev *rtwdev)
-@@ -1221,6 +1249,7 @@ static void rtw89_unload_firmware_elements(struct rtw89_dev *rtwdev)
- 	rtw89_free_phy_tbl_from_elm(elm_info->rf_nctl);
- 
- 	kfree(elm_info->txpwr_trk);
-+	kfree(elm_info->rfk_log_fmt);
- }
- 
- void rtw89_unload_firmware(struct rtw89_dev *rtwdev)
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
-index f2b61e9ad8a7..55ccc07580df 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.h
-+++ b/drivers/net/wireless/realtek/rtw89/fw.h
-@@ -3427,6 +3427,7 @@ enum rtw89_fw_element_id {
- 	RTW89_FW_ELEMENT_ID_TX_SHAPE_LMT = 16,
- 	RTW89_FW_ELEMENT_ID_TX_SHAPE_LMT_RU = 17,
- 	RTW89_FW_ELEMENT_ID_TXPWR_TRK = 18,
-+	RTW89_FW_ELEMENT_ID_RFKLOG_FMT = 19,
- 
- 	RTW89_FW_ELEMENT_ID_NUM,
- };
-@@ -3542,6 +3543,13 @@ struct rtw89_fw_element_hdr {
- 			__le32 rsvd;
- 			s8 contents[][DELTA_SWINGIDX_SIZE];
- 		} __packed txpwr_trk;
-+		struct {
-+			u8 nr;
-+			u8 rsvd[3];
-+			u8 rfk_id; /* enum rtw89_phy_c2h_rfk_log_func */
-+			u8 rsvd1[3];
-+			__le16 offset[];
-+		} __packed rfk_log_fmt;
- 		struct __rtw89_fw_txpwr_element txpwr;
- 	} __packed u;
- } __packed;
++static void
++rtw89_phy_c2h_rfk_log_dpk(struct rtw89_dev *rtwdev, struct sk_buff *c2h, u32 len)
++{
++}
++
++static void
++rtw89_phy_c2h_rfk_log_dack(struct rtw89_dev *rtwdev, struct sk_buff *c2h, u32 len)
++{
++}
++
++static void
++rtw89_phy_c2h_rfk_log_rxdck(struct rtw89_dev *rtwdev, struct sk_buff *c2h, u32 len)
++{
++}
++
++static void
++rtw89_phy_c2h_rfk_log_tssi(struct rtw89_dev *rtwdev, struct sk_buff *c2h, u32 len)
++{
++}
++
++static void
++rtw89_phy_c2h_rfk_log_txgapk(struct rtw89_dev *rtwdev, struct sk_buff *c2h, u32 len)
++{
++}
++
++static
++void (* const rtw89_phy_c2h_rfk_log_handler[])(struct rtw89_dev *rtwdev,
++					       struct sk_buff *c2h, u32 len) = {
++	[RTW89_PHY_C2H_RFK_LOG_FUNC_IQK] = rtw89_phy_c2h_rfk_log_iqk,
++	[RTW89_PHY_C2H_RFK_LOG_FUNC_DPK] = rtw89_phy_c2h_rfk_log_dpk,
++	[RTW89_PHY_C2H_RFK_LOG_FUNC_DACK] = rtw89_phy_c2h_rfk_log_dack,
++	[RTW89_PHY_C2H_RFK_LOG_FUNC_RXDCK] = rtw89_phy_c2h_rfk_log_rxdck,
++	[RTW89_PHY_C2H_RFK_LOG_FUNC_TSSI] = rtw89_phy_c2h_rfk_log_tssi,
++	[RTW89_PHY_C2H_RFK_LOG_FUNC_TXGAPK] = rtw89_phy_c2h_rfk_log_txgapk,
++};
++
++static void
++rtw89_phy_c2h_rfk_report_state(struct rtw89_dev *rtwdev, struct sk_buff *c2h, u32 len)
++{
++}
++
++static
++void (* const rtw89_phy_c2h_rfk_report_handler[])(struct rtw89_dev *rtwdev,
++						  struct sk_buff *c2h, u32 len) = {
++	[RTW89_PHY_C2H_RFK_REPORT_FUNC_STATE] = rtw89_phy_c2h_rfk_report_state,
++};
++
++bool rtw89_phy_c2h_chk_atomic(struct rtw89_dev *rtwdev, u8 class, u8 func)
++{
++	switch (class) {
++	case RTW89_PHY_C2H_RFK_LOG:
++		switch (func) {
++		case RTW89_PHY_C2H_RFK_LOG_FUNC_IQK:
++		case RTW89_PHY_C2H_RFK_LOG_FUNC_DPK:
++		case RTW89_PHY_C2H_RFK_LOG_FUNC_DACK:
++		case RTW89_PHY_C2H_RFK_LOG_FUNC_RXDCK:
++		case RTW89_PHY_C2H_RFK_LOG_FUNC_TSSI:
++		case RTW89_PHY_C2H_RFK_LOG_FUNC_TXGAPK:
++			return true;
++		default:
++			return false;
++		}
++	case RTW89_PHY_C2H_RFK_REPORT:
++		switch (func) {
++		case RTW89_PHY_C2H_RFK_REPORT_FUNC_STATE:
++			return true;
++		default:
++			return false;
++		}
++	default:
++		return false;
++	}
++}
++
+ void rtw89_phy_c2h_handle(struct rtw89_dev *rtwdev, struct sk_buff *skb,
+ 			  u32 len, u8 class, u8 func)
+ {
+@@ -2456,6 +2535,14 @@ void rtw89_phy_c2h_handle(struct rtw89_dev *rtwdev, struct sk_buff *skb,
+ 		if (func < RTW89_PHY_C2H_FUNC_RA_MAX)
+ 			handler = rtw89_phy_c2h_ra_handler[func];
+ 		break;
++	case RTW89_PHY_C2H_RFK_LOG:
++		if (func < ARRAY_SIZE(rtw89_phy_c2h_rfk_log_handler))
++			handler = rtw89_phy_c2h_rfk_log_handler[func];
++		break;
++	case RTW89_PHY_C2H_RFK_REPORT:
++		if (func < ARRAY_SIZE(rtw89_phy_c2h_rfk_report_handler))
++			handler = rtw89_phy_c2h_rfk_report_handler[func];
++		break;
+ 	case RTW89_PHY_C2H_CLASS_DM:
+ 		if (func == RTW89_PHY_C2H_DM_FUNC_LOWRT_RTY)
+ 			return;
 diff --git a/drivers/net/wireless/realtek/rtw89/phy.h b/drivers/net/wireless/realtek/rtw89/phy.h
-index 6792b73e9ca3..b60bc563d86f 100644
+index b60bc563d86f..3e379077c6ca 100644
 --- a/drivers/net/wireless/realtek/rtw89/phy.h
 +++ b/drivers/net/wireless/realtek/rtw89/phy.h
-@@ -136,6 +136,17 @@ enum rtw89_phy_c2h_ra_func {
- 	RTW89_PHY_C2H_FUNC_RA_MAX,
+@@ -147,6 +147,10 @@ enum rtw89_phy_c2h_rfk_log_func {
+ 	RTW89_PHY_C2H_RFK_LOG_FUNC_NUM,
  };
  
-+enum rtw89_phy_c2h_rfk_log_func {
-+	RTW89_PHY_C2H_RFK_LOG_FUNC_IQK = 0,
-+	RTW89_PHY_C2H_RFK_LOG_FUNC_DPK = 1,
-+	RTW89_PHY_C2H_RFK_LOG_FUNC_DACK = 2,
-+	RTW89_PHY_C2H_RFK_LOG_FUNC_RXDCK = 3,
-+	RTW89_PHY_C2H_RFK_LOG_FUNC_TSSI = 4,
-+	RTW89_PHY_C2H_RFK_LOG_FUNC_TXGAPK = 5,
-+
-+	RTW89_PHY_C2H_RFK_LOG_FUNC_NUM,
++enum rtw89_phy_c2h_rfk_report_func {
++	RTW89_PHY_C2H_RFK_REPORT_FUNC_STATE = 0,
 +};
 +
  enum rtw89_phy_c2h_dm_func {
  	RTW89_PHY_C2H_DM_FUNC_FW_TEST,
  	RTW89_PHY_C2H_DM_FUNC_FW_TRIG_TX_RPT,
-@@ -483,6 +494,10 @@ struct rtw89_txpwr_limit_ru_be {
- 	s8 ru106_26[RTW89_RU_SEC_NUM_BE];
- };
- 
-+struct rtw89_phy_rfk_log_fmt {
-+	const struct rtw89_fw_element_hdr *elm[RTW89_PHY_C2H_RFK_LOG_FUNC_NUM];
-+};
-+
- struct rtw89_phy_gen_def {
- 	u32 cr_base;
- 	const struct rtw89_ccx_regs *ccx;
+@@ -160,6 +164,8 @@ enum rtw89_phy_c2h_class {
+ 	RTW89_PHY_C2H_CLASS_RUA,
+ 	RTW89_PHY_C2H_CLASS_RA,
+ 	RTW89_PHY_C2H_CLASS_DM,
++	RTW89_PHY_C2H_RFK_LOG = 0x8,
++	RTW89_PHY_C2H_RFK_REPORT = 0x9,
+ 	RTW89_PHY_C2H_CLASS_BTC_MIN = 0x10,
+ 	RTW89_PHY_C2H_CLASS_BTC_MAX = 0x17,
+ 	RTW89_PHY_C2H_CLASS_MAX,
+@@ -800,6 +806,7 @@ void rtw89_phy_ra_updata_sta(struct rtw89_dev *rtwdev, struct ieee80211_sta *sta
+ void rtw89_phy_rate_pattern_vif(struct rtw89_dev *rtwdev,
+ 				struct ieee80211_vif *vif,
+ 				const struct cfg80211_bitrate_mask *mask);
++bool rtw89_phy_c2h_chk_atomic(struct rtw89_dev *rtwdev, u8 class, u8 func);
+ void rtw89_phy_c2h_handle(struct rtw89_dev *rtwdev, struct sk_buff *skb,
+ 			  u32 len, u8 class, u8 func);
+ void rtw89_phy_cfo_track(struct rtw89_dev *rtwdev);
 -- 
 2.25.1
 
