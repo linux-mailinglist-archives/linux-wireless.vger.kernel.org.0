@@ -1,109 +1,92 @@
-Return-Path: <linux-wireless+bounces-751-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-752-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38F6D811C30
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Dec 2023 19:18:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE059811DC0
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Dec 2023 19:59:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6E362829E3
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Dec 2023 18:18:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04287282C1C
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Dec 2023 18:59:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F33559B60;
-	Wed, 13 Dec 2023 18:18:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PC5RWoWM"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79CFE65A82;
+	Wed, 13 Dec 2023 18:59:35 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 447FF59B59
-	for <linux-wireless@vger.kernel.org>; Wed, 13 Dec 2023 18:18:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA7DBC433C8;
-	Wed, 13 Dec 2023 18:18:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702491534;
-	bh=PjfwdZOSR2dwBs3EAJKkgyjx0b0MU1xrVZTWAWbnAYg=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=PC5RWoWME/Cb01hoJ4tntBmUrXtAKuXoxFLNoat77qpUCkpi6EHqrE/iIP2i9e9eP
-	 oXMkSt/45erQi7CTpnE9V/5F8/bz91tZHHLkEayh1Gxeam5OUf5uPEulZnRCBflOnD
-	 ulDOExq2qlbPkWGzDJ//bBMkrqUKzApzlhW6S3bSaoj6lCiC83x37rXKHjPSFGNbly
-	 abUHlvrBUFnWh4vNcuunwFVNdZp7LcEgxOaVUHtSMwVEDupR7gXNSOm47xS+A9pBjE
-	 IgMYMA6dnziiUQVe36g3uBnISWV4iSORhMxnEaYUDDG97RJY8W9QjRD+77ZZj3u3CC
-	 agrZuxgTksK3w==
-From: Kalle Valo <kvalo@kernel.org>
-To: rwahler@gmx.net
-Cc: linux-kernel@vger.kernel.org,  Sultan Alsawaf <sultan@kerneltoast.com>,
-    linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 1/2] wifi: mt76: mt7921: Disable powersaving by default
-References: <874jgmnud8.fsf@kernel.org>
-	<20231213172757.46199-1-rwahler@gmx.net>
-Date: Wed, 13 Dec 2023 20:18:51 +0200
-In-Reply-To: <20231213172757.46199-1-rwahler@gmx.net> (rwahler@gmx.net's
-	message of "Wed, 13 Dec 2023 18:27:57 +0100")
-Message-ID: <87sf46m0dw.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85598D5;
+	Wed, 13 Dec 2023 10:59:32 -0800 (PST)
+Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-6d9e756cf32so4798964a34.2;
+        Wed, 13 Dec 2023 10:59:32 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702493972; x=1703098772;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HeK0cW3CYjJ4+DfiuKUFos/Az6mhlvyWdViJpwMXZc8=;
+        b=T3IaK71925yG97S8veP7f09+NxVq3MtNvm8lA3x52KRmE+PxrlWwmzasBUPM1JU3U0
+         Bs2F5Yd/LlWf+xsDIzVrYQrjD7nusWLEIzPKIcZiVZjnGcqEBx//cHQwZQsCKb/8SEim
+         rSPvm2qGnd1Y+UZ6scAozAHefS5VJ8Uk+k/8yOCzoFJpGpm40OEW0XfsAYq0xPx6R/7P
+         TS5JAyeF54KP8v/WmgXfVl0dbq2d7zqPXnWbcTpK+MIanDjpwwzKz8F0FlerXicw7tRN
+         lwxGXWm/6v+HLdg15tBweIeFUZCjXP86zEkH3a8JGpJYWd2F19UdMIDUc6ETIq4pv4NM
+         u/UA==
+X-Gm-Message-State: AOJu0YxWA9xmIImfuiewPMFrIjZBEHk6fh1GC+CdAkcYIq83h/ZdaKvv
+	thWNcNTBzUhZbR5/mziqfw==
+X-Google-Smtp-Source: AGHT+IG0Cq8wvVnID/6qOI5cs3vksMULR/gsiDuT8TlocRTc5hlZ5/6MWbi6jQSItp2CJI63aNiItQ==
+X-Received: by 2002:a05:6830:1e4a:b0:6d8:74e2:a3e2 with SMTP id e10-20020a0568301e4a00b006d874e2a3e2mr7477380otj.62.1702493971838;
+        Wed, 13 Dec 2023 10:59:31 -0800 (PST)
+Received: from herring.priv (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id g19-20020a9d6a13000000b006d99e0667e4sm2901837otn.28.2023.12.13.10.59.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Dec 2023 10:59:31 -0800 (PST)
+Received: (nullmailer pid 1720212 invoked by uid 1000);
+	Wed, 13 Dec 2023 18:59:30 -0000
+Date: Wed, 13 Dec 2023 12:59:30 -0600
+From: Rob Herring <robh@kernel.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Kalle Valo <kvalo@kernel.org>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, van Spriel <arend@broadcom.com>, linux-wireless@vger.kernel.org, netdev@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] dt-bindings: net: wireless: brcm,bcm4329-fmac:
+ allow local-mac-address
+Message-ID: <20231213185930.GA1713843-robh@kernel.org>
+References: <20231209160505.237843-1-krzysztof.kozlowski@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231209160505.237843-1-krzysztof.kozlowski@linaro.org>
 
-(adding back linux-wireless, please don't drop lists and people from Cc)
+On Sat, Dec 09, 2023 at 05:05:05PM +0100, Krzysztof Kozlowski wrote:
+> Some boards come with local-mac-address property.  Allow it, and
+> mac-address as well, to fix dtbs_check warnings like:
+> 
+>   apple/t8103-j456.dtb: network@0,0: Unevaluated properties are not allowed ('local-mac-address' was unexpected)
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> ---
+>  .../devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml  | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
+> index 4aa521f1be8c..4c8a7950c83e 100644
+> --- a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
+> +++ b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
+> @@ -67,6 +67,9 @@ properties:
+>      description: Name for the OOB IRQ, this must be set to "host-wake".
+>      const: host-wake
+>  
+> +  local-mac-address: true
+> +  mac-address: true
 
-rwahler@gmx.net writes:
+This doesn't work because the schema for these properties are never 
+applied. There was some work to split them out from 
+ethernet-controller.yaml to a network device schema[1]. Perhaps you can 
+revive that.
 
-> From: Sultan Alsawaf <sultan@kerneltoast.com>
->
-> Sultan Alsawaf <sultan@kerneltoast.com> writes:
->
->> 3. For insignificant/low-bandwidth traffic like ICMP to the AP, high latency is
->>    expected since the amount of traffic doesn't warrant kicking the chipset out
->>    of powersave. So although it's not pretty to look at, bad ping times to the
->>    AP aren't representative of the full user experience.
->
-> Without the proposed patch ping times are often > 3000ms with a packet
-> loss of ~20%. And it's not only ICMP packets because i.e. ssh to the
-> laptop is also not working. It is unusable slow and very often the
-> connection breaks completely.
+Rob
 
-To which direction? When reporting power save issues it's a good idea to
-be specific as possible, we don't have crystal balls.
-
-> Kalle Valo <kvalo@kernel.org> writes:
->
->> Mario Limonciello <mario.limonciello@amd.com> writes:
->>
->> > Several users have reported awful latency when powersaving is enabled
->> > with certain access point combinations.
->>
->> What APs are these exactly? In the past 802.11 Power Save Mode was
->> challenging due to badly behaving APs. But nowadays with so many mobile
->> devices in the market I would assume that APs work a lot better. It
->> would be best to investigate the issues in detail and try to fix them in
->> mt76, assuming the bugs are in mt76 driver or firmware.
->
-> I'm using a FritzBox 6591 Cable Router with latest Firmware for Wlan
-> and use a Framework13 Laptop with built in MT7921 module. I can
-> reliably reproduce the problem with high round trip times and packet
-> loss for inbound connections.
-
-Have you tried other clients with that AP? Especially mobile devices
-like phones is good to test, they usually have pretty aggressive power
-savings. Also testing with other APs is good.
-
-> If i can help with some tests to find the problem i'm happy to support you.
-
-I don't know about mt76 driver internals but hopefully others can help.
-But what I recommend is to provide comprehensive and detailed bug
-reports, even better if you can include a 802.11 frame capture from a
-sniffer. Just saying "it doesn't work" doesn't get very far.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+[1] https://lore.kernel.org/all/20230203-dt-bindings-network-class-v2-0-499686795073@jannau.net/#t
 
