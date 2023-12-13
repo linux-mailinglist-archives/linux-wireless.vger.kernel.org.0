@@ -1,71 +1,70 @@
-Return-Path: <linux-wireless+bounces-760-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-761-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D156811EE0
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Dec 2023 20:27:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EC3E811EE3
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Dec 2023 20:28:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8BCBEB20F00
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Dec 2023 19:27:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F056282824
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Dec 2023 19:28:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0953C68269;
-	Wed, 13 Dec 2023 19:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8324468269;
+	Wed, 13 Dec 2023 19:28:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Xyw2Ybnj"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="SZnR0UBd"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2075.outbound.protection.outlook.com [40.107.100.75])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 170439C;
-	Wed, 13 Dec 2023 11:27:47 -0800 (PST)
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2061.outbound.protection.outlook.com [40.107.92.61])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 564F6D0;
+	Wed, 13 Dec 2023 11:28:05 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=LBTK3Ti1OY2+RyIwUUd22OZPBra6WwVhIWK7mi7jgnDuZXfrvVKOOPCZ+hN2b05P3JRYkKXdD2A3bkR5T1pa7sLtZDeQ7jiPSe9m3mKeFozhUr9jfWqYEP8+u8QnCv9jgmYjw2lyHtmAfu/wxEjV0h302LONrEtC8uvVZXbwT6T4J2yMAC88O3r+y1jGdC6rajvHQcHzdfsBDdxDEq1OnrrXe/pLnjTh2f81HhY492IDppjwnys6/BmLP7pw6yojxYam3XWRAUAjN7J5iZ65q0LBOWbOPupkONJp1rOiWRwTzWy9c9QxD5rGAS9EytrlSvuBiaf4MT4sSKWV1Va5PQ==
+ b=aEB8HwFL3dtCUA0l/8UQ3ucWXH/jbm9IissBCy4vYtx/Y44Xg04CbGoh/Y+6nDPhsUSBVuyNSwx+ACs0Uxjc3MNymJbgDZZNLU4sDSPY2h2e0bgZwCCU0ywtT0MSalXZPAgLKgBi+VDgheahhVSel6PV8zlRPS/UmwkaiNvCTIIBEWTc0cL6JoBrf9WE1txMXnEYTFGzqV2JZMANeDtKA7xnbW390Yx3SPRBh74WOE/wTjhc2vBdAVYnPTNG7wRanxLjc1KOqYi6OXLkb72RonR3MZqqkmfexAKMUTkLL9Abm0BQQg8tA+GK0WOP/sC2O5usKVeUarGavzMGJejRqg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=G0J9WuRfmk98KWhuC4pV+d+VOO658C5hxxybsqPJjQc=;
- b=PXp0brU8pp6id6GIKjEaXG7x8JLRwKtADe8HiYVEoMq2JqxoKwgE8DNxyB3Bd88pOKd3Kn86ZT1kQrNWBypTM9vnwTcSUZVGiy590VTnJ1HvAwiFJ7hyCVdjBZwECbS+he+mWsYvDha+hGnyNUerBb5qMBPlhNIzI6rtGCXn494eHhS1pwthuuwBaN8Sd5uLaroCOp28ONsIwW6/I59BX+lMCK5wmZMiKP2mnbl41MX8nsMUXnfOpP6oI88RoqikORwKnpgRjECiWVFi7kljxx/pUoj2cSC9eSBXy+YfyYHtbMU2zt4ORbr4W60i4Qcap/hPNJShykKBAGEJ3i2i6g==
+ bh=COzrvbIMoEJiE0++OECcORA1Sw65f9Vqk0EV2kS4fZI=;
+ b=gN+jx+3m4npPc+d0LpYg/z4x0JfbOlNsOnnoZ8dTqJrf6BpYQOouW1/k1SC3U4mrb8zUjXGulu7BoKfj1bBQi7XWr+kI2rCueC6E14XISXrZhLl/+W4NMc9zixIln0udDwEEUDS8EpbDk6ewc0qGP3YpAB/Z8n0tIv34UQ3j+qfbsbRdDvHWyfSyNCdp1Rsj/2fPAe9umqMRDdmzNOFwHdrwAUymnHEjMrLxuZfDG0JNhaOJKD3CNeFajGmAf4tm29ho/KxYgGCGKrYK0l1r9FEgQh4zhLzrkLdxxT2tcZiMO6rHzKghUHfo50hRTNu22L9HUyHUKPrbP/IYoyLDlA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=G0J9WuRfmk98KWhuC4pV+d+VOO658C5hxxybsqPJjQc=;
- b=Xyw2YbnjVU71zUICzwUflQqUjs/JTRUa4Exxqk4p/pU6nnK4ak0YFk/4QEaI8ef84SS69yhUtkFueR23vnzGR7cqd8bKXXEiJSjTtOWUX/IuH1Bi5Z8F7qLb7w5ITWsSOmjLpkE6WhHONZadqTeVL6vaf9SeAYOcWsM5NkxVvmc=
+ bh=COzrvbIMoEJiE0++OECcORA1Sw65f9Vqk0EV2kS4fZI=;
+ b=SZnR0UBdK4wjJI+agcuND5JrNSzVRGsz29SBlM0CWZC/ZG9axwRA7XS6w0+IK21HjHPz3f4yniqumLZAt4pekO30W7jE345k0PAFetcVp+cmwPXHrKEb5u+qfqZf0/bZgWVwYKfelzdehoHxfNyIaU+d6/oUOxbeC26gr/xfOBk=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
 Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by SJ2PR12MB8739.namprd12.prod.outlook.com (2603:10b6:a03:549::10) with
+ by LV2PR12MB5966.namprd12.prod.outlook.com (2603:10b6:408:171::21) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7091.26; Wed, 13 Dec
- 2023 19:27:39 +0000
+ 2023 19:28:02 +0000
 Received: from MN0PR12MB6101.namprd12.prod.outlook.com
  ([fe80::83d7:9c4f:4d9b:1f2a]) by MN0PR12MB6101.namprd12.prod.outlook.com
  ([fe80::83d7:9c4f:4d9b:1f2a%5]) with mapi id 15.20.7091.022; Wed, 13 Dec 2023
- 19:27:39 +0000
-Message-ID: <1ef12773-74ca-489c-b36b-d3cf7da22c43@amd.com>
-Date: Wed, 13 Dec 2023 13:27:38 -0600
+ 19:28:02 +0000
+Message-ID: <dfc24ec8-4741-4c11-bd50-d5cc8d60447e@amd.com>
+Date: Wed, 13 Dec 2023 13:28:01 -0600
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 1/2] wifi: mt76: mt7921: Disable powersaving by default
 Content-Language: en-US
-To: Ben Greear <greearb@candelatech.com>,
- Lorenzo Bianconi <lorenzo@kernel.org>, Kalle Valo <kvalo@kernel.org>
-Cc: Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>,
- Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>,
+To: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
+ Ryder Lee <ryder.lee@mediatek.com>
+Cc: Shayne Chen <shayne.chen@mediatek.com>, Sean Wang
+ <sean.wang@mediatek.com>, Kalle Valo <kvalo@kernel.org>,
  Matthias Brugger <matthias.bgg@gmail.com>,
  AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
  Deren Wu <deren.wu@mediatek.com>, Ming Yen Hsieh
- <mingyen.hsieh@mediatek.com>,
+ <mingyen.hsieh@mediatek.com>, Ben Greear <greearb@candelatech.com>,
  "open list:MEDIATEK MT76 WIRELESS LAN DRIVER"
  <linux-wireless@vger.kernel.org>,
  "open list:ARM/Mediatek SoC support" <linux-kernel@vger.kernel.org>,
  "moderated list:ARM/Mediatek SoC support"
  <linux-mediatek@lists.infradead.org>, Sultan Alsawaf <sultan@kerneltoast.com>
 References: <20231212090852.162787-1-mario.limonciello@amd.com>
- <874jgmnud8.fsf@kernel.org> <ZXmxD1foASMaCDIe@lore-desk>
- <d92c081e-47dd-5c57-a6f1-bd72b2748141@candelatech.com>
+ <9da16cfc-d0e4-4e9f-91b0-42b0bf4141cc@nbd.name>
 From: Mario Limonciello <mario.limonciello@amd.com>
-In-Reply-To: <d92c081e-47dd-5c57-a6f1-bd72b2748141@candelatech.com>
+In-Reply-To: <9da16cfc-d0e4-4e9f-91b0-42b0bf4141cc@nbd.name>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-ClientProxiedBy: DS7PR03CA0333.namprd03.prod.outlook.com
@@ -78,119 +77,93 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|SJ2PR12MB8739:EE_
-X-MS-Office365-Filtering-Correlation-Id: 28196a1b-379f-4892-f3e2-08dbfc1191d9
+X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|LV2PR12MB5966:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5e67b802-7339-4350-85d8-08dbfc119f70
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	jYHAonz3MdTn8B8S/W0sIRUgWZinO3mx7Q5zRfRKBzWQrxAm5pneQXOarEXnSOWcsno123xOBPJ+sr2xAZLmCGHf/TYrB46XbjiV3c5JzWxhyaM5EuOYOMkRlis1GLXiOR5IQt3+RXBaC+fzFMoGtPJONhK00nJqucUs8aZIXYrHb9O/4A0vwk1UoStNawDNyLv98fHPK2HxGcNh7rh65n7tQQF3b3hB1OTz1i7TL40rt0FmK9h9w1jUogMzc1/z8QS7CtAu12/WNPHqbtBz75+m859wn1i1UWdNcOnSJ5Ew5JfmbsqzZAclr8B4TcWICnPZK9z7LXMP4vGKvVLOrAyrbNp6TmcFGBmWfIK8DohpV6o8iGLykZ9rv9BkZYgLOCUkLxWpfNb/yCVQ9aAyZBVYKHg7kA49Qp42rZqPH+OWck5S8XfvBKxo+TmqIpWucCpJAkGzmskqCM5eBmAXxx/ARypygLCiBcJ6VUNAA+/2BE4BxcZ6AP7Zl3MwalUxdix6kI2z3PDm4x2ER4LvU8+It8D4gdax5hSGdMLfxEaAFd1khvmV4iu5/fCWiqvfpCPfUi6S682/Pc20Ebk92GXigY55zcmqVd4Pe2T2NGK+yozbRKb8NMCyi6dfqqtUFn27vF+owJZ4YkK3uBEa7Q==
+	7/UpLD+ygiF5ys5umHFiXXabtO/U+WdnPh7FpcfKEAxQ5CrZLO/wR2s5S+8YY38TEGay4wJpRioqdA0gBZv7CxjxbYvUcxZPAes9ySpfeLim6LqZHaxX/aU3E6ieMB+wrxgQWiJcCh/ep8X0vih1XFO1pxSkDBkUtbRPQCBrSzyAf3KQbzCCK0olL0+M2OVZxuWAiffeNzkaN6St0/DLfccO+vLdmHwXfy0/5C1eGDp1TTaq1+47R9zeau/TKSID8P6/gq76TQzWISIgBLiQbQZRQomBU5sHgmuaf0oT7PBLW30xpGmrRIKmkXpOb4UG1qZFV0VWcYLRR5kaLdS2kAx7yprMVJcymutWs2ExLPsIglmcVRLpU1yOpCF0aAnG1TgKT7BKt4uojks3uGI6CIqHgUKxAE9ne+iQ8aDKnuXguclg/jIKwxUyx5VlAy1RAbfFcTRV/tFRzjIZWIs7FCAOYQet6XTA8VJ0406nWc01JK6eicM9sGI3n0qJfAndGphO/uz57u33lQ/1yducywsbwR5GBnDr5dD997o8WlwdI2RP8hh+dcfobseaimDS2bsEaIH+RDt7+Nb2aQCzYQgVWh2ollyI7msHkjr4gd67TDHK00hRX7e6sg2lemoa
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(346002)(376002)(396003)(39860400002)(366004)(230922051799003)(64100799003)(186009)(451199024)(1800799012)(31686004)(26005)(66946007)(66476007)(54906003)(66556008)(86362001)(31696002)(36756003)(966005)(83380400001)(6506007)(2616005)(6512007)(53546011)(316002)(2906002)(110136005)(478600001)(6486002)(7416002)(5660300002)(4326008)(8676002)(44832011)(38100700002)(41300700001)(8936002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(39860400002)(366004)(346002)(396003)(376002)(230922051799003)(451199024)(1800799012)(186009)(64100799003)(31686004)(2616005)(26005)(6512007)(6506007)(31696002)(86362001)(36756003)(38100700002)(5660300002)(8676002)(8936002)(7416002)(44832011)(4326008)(966005)(83380400001)(66476007)(54906003)(66556008)(110136005)(66946007)(41300700001)(2906002)(316002)(6486002)(478600001)(53546011)(43740500002)(45980500001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Q1YyZXRkOGJBMGc2WHFGb2k1eW1xU0VaQVpPZDQ1WkFjd00xVHgvbHdKVUM3?=
- =?utf-8?B?UG9xMUxBWGVzTXFheHllV1BIYzFCNGxPSk9sa0RsRHFrajYzNkZla0FMRkNK?=
- =?utf-8?B?NXRINlU2enFObXBIZ0hZaFNEdGhtN25BQmRMS0wxeVI2eWticFpEK2RuQ3dH?=
- =?utf-8?B?bFBZTjV5Y0t5OTNPWkRsZm9qSFlrbXBHdzNPcTJrVWJBbVZ2WGdTcGx5U0VD?=
- =?utf-8?B?anBCamRNODYyU25EcXJZUkNjV1NPTE1ZVTNSWWVaYXIwSVhLNUk2endIZmF4?=
- =?utf-8?B?bFBOL3c5U3JuWlR0S2NPRFh1SFRtampxUUVlVVNtK1YxcDNvSU9na2dDZ0lX?=
- =?utf-8?B?NmFoVnpJeU9aUWZ1QlVXSWZOT0dET3NZSUQ2NXRsSE5EYzdCNE1GZWN6SVRj?=
- =?utf-8?B?RXdFMHVuMUdUSlZmNnBwWmh3RGcvTWdmRHYrdmdUdzVCSTh0S0hXKzFTekNs?=
- =?utf-8?B?MHZ1M1hCTTlZVEtsdzVxbE9ja1R0NkJORUhRenptNExYMnBwQldQdkhMSGI0?=
- =?utf-8?B?T0FLME5Ea3YrdWtLT1gwcndpeW9sdjlFTldhZ1g1a00zRWFxNzltQzdrdkxG?=
- =?utf-8?B?SkhUR1p4dnQ2UGVnMGdjb2JaRTYyQU5HT2pyWlhxZG1NZC9jdzVQaTJlYm9u?=
- =?utf-8?B?YVFqdkx2V1pGSTZGNjRMTHlMdFVoU2lLeWpPSmJJN3RFRG5laU5Fcm54bEZZ?=
- =?utf-8?B?R2MwOTYvZjMzQmR3aXM4OHZJdnFUR0UzVVl3d0JtYStxSXJhdk5uTFd2WVpn?=
- =?utf-8?B?c2g0eStsdVljUWdtT0xZbWhhc215aGQ1a0YzOG5IcTcvSHNHL2hYRW9MdE5E?=
- =?utf-8?B?VHNOcGZGbTRKNWNUKytrZWsySG0yZXZzZSsyU0IyaEhqT1dMUlFxamR6RHIr?=
- =?utf-8?B?U3JUdjcvQzFtUE91S2haMS9zckxCQXBMSVpucHJJUE53YmZsenNhUVU4SWdO?=
- =?utf-8?B?TGQ3cFhrZ1k3WXhEd2N1SmhkK3RSTnAzQVJnZm8yQUZDTi9FbDM3MEZpWE56?=
- =?utf-8?B?SVM5L3pNK0EyU1NPaUNlQ2wvNlU3K3Viby80a2I0M1VRL1pPUml0VURkV2JW?=
- =?utf-8?B?dmJQaDRrTVZMMjI4L1V1Z1M5M2xkV0gyVTBISFNxNVpPWlc5TjNRTzdWTURC?=
- =?utf-8?B?M0FMc3NaeTgwb2VaVDVpa0t5SnJKVXJqbDE1WXhSYTJUOGFBYjBkSDdOTDRC?=
- =?utf-8?B?enBtY1A2RVdXU2lDb09VOXFPaHNOMm5tNHJteExUbHdRSjRZdnJxVldPQzNi?=
- =?utf-8?B?UFh0OWlSQkJHN3ZOdFFwbkUyQXIyVjNYWWdJYVBFZWJlWjdxYWpSSHhwNjFC?=
- =?utf-8?B?WitINVFzT3VSbW1zNS9ZN1g3cFNXbE9zSWZKTmJFS3FmbktEWmtzRTdqWXZu?=
- =?utf-8?B?Q0ExbGlLaHJ5TjdQSHJ5bU90YWh4UWhwaU9FZVZrRHBkdE1Oc1BpOTlpTHVh?=
- =?utf-8?B?b0F3emx1Zzg3YjUyaXozYll2VnFGbno2NDBzblhXc2dIdUVNbUU2bkk5SmhT?=
- =?utf-8?B?U0NNQldKREFzanBWeDBRaFBBcXBIa0tUcExsV2NvVnhDRTdrbjd1SkRleFpD?=
- =?utf-8?B?OVJ1dy9jdGpBbHRvT2ViRUE2ZEhIcTRtNWIveXhhNlUxVEhpZzZTUkNEOGFv?=
- =?utf-8?B?V1JrVmdLWmJIaVUxMmRZUXQ1L0xaZ0sreGJGVEFLcEtaNEZIR1IzMExpWGw3?=
- =?utf-8?B?QlkvS1BGM2NzU3h0aFpEV2sxeHBZc1M5My9FWDFwY3NSWTFyWG5MSDFUSjhB?=
- =?utf-8?B?by9EMEN0Ui95R3labHVCTTFXY0YrZTZWVkUzSmdEYk1zSFV1cHQ2dDFURlRC?=
- =?utf-8?B?MGIvNTBvQTlGZ3BqUGN3aUZTQ1FlNlA0TUxQVmJzeXJ6bW1xT1hjaWFrUGVL?=
- =?utf-8?B?Y2JsVk53YlFld25mZHJSWUx6MDJTMXNkM3BvT2NCWWVEWmg0Y01VYi9ITVlq?=
- =?utf-8?B?ak9nOTVjcGN2WEZ5ZVNUcHdMUVlLQlh6QVVhQW1JNU5QdE14amdSKzdibld0?=
- =?utf-8?B?aFBsdDFWMldXWmh4UTB4aTZ5WnYyQ0h6akZsV2dNYUJHYTN2WjFEVjVUTS9o?=
- =?utf-8?B?WTFvV3o1Y2E2MVZwOS9YZkx3VXlGMWRFL09GQ281WnZQdTVyL3R4TGJ5WVV4?=
- =?utf-8?Q?YC6HX2fM4c+7xGmPNy8FCHcfU?=
+	=?utf-8?B?cDcrYXZiaTdmZGNQUjJveWgySzNQd1Z3MC9wYmtzK3BwYUhLMytnRHRVWHhr?=
+ =?utf-8?B?ZVhWZ0JncktUSStRSjc3UzZRL0hpUWZtYW5JcTBodFNvNHpyaE95Wit3STZY?=
+ =?utf-8?B?NFl4dXd6QmdObHYySTNzLzcrNThJcy9ENVQ2ckpJTXhhekR2YmhQblBYYWJi?=
+ =?utf-8?B?WXJQbjNqNEMyZ01xdURUc0Y4MlRiTXRiOUZjcXhITERRUEtLT3JoR2Nrckhp?=
+ =?utf-8?B?TnZzTG5UOEJwTTBwT0E5NHhBU21mQitIcmxEdXp6RU4yRDZiZ3NIVExJNzVp?=
+ =?utf-8?B?TkxPbm9SQWY1Vmh0T1JwRzBneVNwYUFadGtLZzB6dTA1TmIvWmQ5TmxOS2Na?=
+ =?utf-8?B?M2JJNnYySFFNbll2QWNKRWt6eDN3V3o4SzRsZmpPTEpvUG1PS3IxaVhWUnha?=
+ =?utf-8?B?Qk1OL3lVbjlMYUVFZ014bjZWQUE1YW1lelRNVklleUU0TStLN0FlQ0FlY2g1?=
+ =?utf-8?B?RVZ6a2g1emYxT09kazgrQkU3WHZpWG1BVEhjVU1JSkNUU1hFWlBsN0hVbDdH?=
+ =?utf-8?B?WFBjMGF2Y0FLTUVkVERlbGZBMjF3a3o1NVVFK3Z4T1FBMVZKMUtYeVNYSXUz?=
+ =?utf-8?B?MVhBVHZqd2pmd2dqKzZwWXJ3U2R2QStRa3lQOE95NDVTWkRFUnY2OGVOdTVP?=
+ =?utf-8?B?RlhIZmI5RXpGU2hiZ2VhYjJVUkdheklGYmZ2cmtiWWVkT1dBQ0hVNDNlSk5X?=
+ =?utf-8?B?aEFpN0YydEJDeCt4b0VtM21HTnR2ZjZIa1pESk4rYjZXRGdWN0w5a0RpZjcv?=
+ =?utf-8?B?YjZRRGFkRnkrMlEvK3dYbFEwYVYrWks1TUtFL3F1MEhJeisyWmwzektoZEM0?=
+ =?utf-8?B?eVpJcVlRa2NhOThlaElRSHVBL0o3Z1ZOOHFBejVibDZaaEUzWjBKY2VMdnBG?=
+ =?utf-8?B?MHg2Uk1sNGRySjZLUVdwVzAyK1ZmSjgwVkxQYnVjTnVYcEt6dGJHT1JRU3RQ?=
+ =?utf-8?B?UlNJMVNITTdiQTl6VXFCMlZUdVN5RXNBMUJhQkZrNWNDK2UzZytLdlNCc0JH?=
+ =?utf-8?B?S2R1SEUxdDJjTDRwd3IxWXpOSHZsYWh2Y0k4L0xldk1WRXM0czFQeU1SdjdK?=
+ =?utf-8?B?THhGeWdOZmxsKzdNLzBjWmlDWkFxWFhFMkJsNnh4RWRHaWdRS0hQTVRnOWpI?=
+ =?utf-8?B?Q29FSFdxNWMwd05saXRlVUZ2R2ZmSUVtU3MwYytPR1FGL20yTjJZcURGQndV?=
+ =?utf-8?B?OHRZODN6ZnRsOHA5amxJUmFwT1Z1S2FhZzR6TllNOW56czJIb0thSGZZbjlS?=
+ =?utf-8?B?aEltVWVMSmR2UzN6d0RqNVZPc3IvMTdJMkNsMlZmQXhvdW45SkFyRUJJdEFI?=
+ =?utf-8?B?U3VOd25oWTBlaXJVWVJFdHdHYnJTMlBpRnVpR2dtMExoVjNwUDFsUzdaRncw?=
+ =?utf-8?B?UGZMTENUc1orZjJSWnN2bFN6T0RrWUxFMVo3SnhpOVljSXJ1aVR4QUxxY2lj?=
+ =?utf-8?B?dFVSSlFiWkcxVzNrdlVUUzVpblRoSnhVWHZUeW5DWStnQmk3OG1OK1ZpRnp0?=
+ =?utf-8?B?eEF1YzFqSnlreEYxY2xxS3BKeDZ1WHRvNWJ5UUhZckVmRkJLOGthS0JiMWlL?=
+ =?utf-8?B?cmFKSHlzRWYzckxQWVNTa0tFak4rWVhVbWViTDBqeFovTjk3QzFBbDRGZWRW?=
+ =?utf-8?B?cTk5aW95am12bGNTS3pTNi84a2hmNWVvajVEdWtuZk9yd0lBOVlsSUV4TERL?=
+ =?utf-8?B?bk5IUE5pYzltdGVscG1JTnJZcTZuaU8vY3Y4elpUWGtvZVErbzU2WjVDU2cr?=
+ =?utf-8?B?YW5oR0hIRkN0SG8ydXZsZDVsR0ozRGpOUHpFeHcybSs2RS9pNDY5MnZPZUMv?=
+ =?utf-8?B?d1lYTm1ZaVoyT2tnVUtsOU1NaTVVdWNIaW1yU2xZV0RMck5jMExxWjhkeFZ3?=
+ =?utf-8?B?ejlzZVlxYXlTN3VEMDRJT0xvK3JFL015NjUzcW5JWjExNS8xUkdzZGJ2dnp3?=
+ =?utf-8?B?U0krQ0RKem82L0RlajI3VjJZTUs4WURtY2tGOGN3NGt5L3RhQWVSU3BlNDNt?=
+ =?utf-8?B?OVd1U0JmMEVKaWo5KzlOb0NqeWlQQ04xRk05alVXS2FPOCtqYkhkdlk2L0Jo?=
+ =?utf-8?B?dlFDei9uZzZNekE4eXdnUXhSZnM4aGJtSkNlSjQ1NnlxcENJSXhRdmh4Qndp?=
+ =?utf-8?Q?88HBSoxF2HcUqBdj64sf1j4uc?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 28196a1b-379f-4892-f3e2-08dbfc1191d9
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5e67b802-7339-4350-85d8-08dbfc119f70
 X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Dec 2023 19:27:39.5910
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Dec 2023 19:28:02.5196
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6FmA9nJyj/w4XvS61PNZ9ydv8yrBqc+Pbv4K7yJarKw4kXk6VjImHCkrXU4+2ZqjDrJ7vp9WkTU7GvLsb3XAwg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8739
+X-MS-Exchange-CrossTenant-UserPrincipalName: f5Fu3llq+HexAjaxzS4K19e16aLj8zuzTlqUCBKnbvBCYstRPlbrGobhQ3r5P2f/DnPeZiUOQEnl2Y32Zn5GoA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB5966
 
-On 12/13/2023 08:45, Ben Greear wrote:
-> On 12/13/23 5:26 AM, Lorenzo Bianconi wrote:
->>> Mario Limonciello <mario.limonciello@amd.com> writes:
->>>
->>>> Several users have reported awful latency when powersaving is enabled
->>>> with certain access point combinations.
->>>
->>> What APs are these exactly? In the past 802.11 Power Save Mode was
->>> challenging due to badly behaving APs. But nowadays with so many mobile
->>> devices in the market I would assume that APs work a lot better. It
->>> would be best to investigate the issues in detail and try to fix them in
->>> mt76, assuming the bugs are in mt76 driver or firmware.
->>>
->>>> It's also reported that the powersaving feature doesn't provide an
->>>> ample enough savings to justify being enabled by default with these
->>>> issues.
->>>
->>> Any numbers or how was this concluded?
->>>
->>>> Introduce a module parameter that would control the power saving
->>>> behavior.  Set it to default as disabled. This mirrors what some other
->>>> WLAN drivers like iwlwifi do.
->>>
->>> We have already several ways to control 802.11 power save mode:
->>>
->>> * NL80211_CMD_SET_POWER_SAVE (for example used by 'iw set power_save')
->>>
->>> * CONFIG_CFG80211_DEFAULT_PS (for kernel level default)
->>>
->>> * WIPHY_FLAG_PS_ON_BY_DEFAULT (for the driver to control the default 
->>> setting)
->>>
->>> Adding module parameters as a fourth method sounds confusing so not
->>> really a fan of this. And the bar is quite high for adding new module
->>> parameters anyway.
+On 12/13/2023 07:35, Felix Fietkau wrote:
+> On 12.12.23 10:08, Mario Limonciello wrote:
+>> Several users have reported awful latency when powersaving is enabled
+>> with certain access point combinations. It's also reported that the
+>> powersaving feature doesn't provide an ample enough savings to justify
+>> being enabled by default with these issues.
 >>
->> agree, I think we do not need a new parameter for this, just use the 
->> current
->> APIs.
+>> Introduce a module parameter that would control the power saving
+>> behavior.  Set it to default as disabled. This mirrors what some other
+>> WLAN drivers like iwlwifi do.
+>>
+>> Suggested-by: Sultan Alsawaf <sultan@kerneltoast.com>
+>> Link: 
+>> https://codeberg.org/Hybrid-Project-Developers/linux-tkg/blame/branch/master/mt76:-mt7921:-Disable-powersave-features-by-default.mypatch
+>> Link: 
+>> https://aur.archlinux.org/cgit/aur.git/tree/0027-mt76_-mt7921_-Disable-powersave-features-by-default.patch?h=linux-g14
+>> Link: 
+>> https://community.frame.work/t/responded-strange-wlan-problems-with-kernel-branch-6-2/41868/4
+>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 > 
-> Is there a convenient way for a user to make any of those options above 
-> stick through
-> reboots?
+> This patch is disabling two different things at the same time:
+> - Wifi powersaving
+> - Device hardware powersaving
 > 
-> To me, the ability to set system defaults through reboots is a nice 
-> feature of
-> module options.
+> Have you tried simply disabling 802.11 powersave via nl80211 to mitigate 
+> the issues with affected APs?
 > 
-> Thanks,
-> Ben
-> 
+> - Felix
 
-Some userspace has the ability to do this.  For example in Network Manager:
-
-https://unix.stackexchange.com/questions/595116/wi-fi-powersaving-in-networkmanager
-
+Kalle suggested this as well, I will experiment, thanks.
 
