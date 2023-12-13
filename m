@@ -1,51 +1,38 @@
-Return-Path: <linux-wireless+bounces-732-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-733-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4507D81099A
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Dec 2023 06:48:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 693CA810EAD
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Dec 2023 11:42:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 777591C20CC7
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Dec 2023 05:48:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AC3C1C209CD
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Dec 2023 10:42:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1378CC8F7;
-	Wed, 13 Dec 2023 05:48:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A597D22EF3;
+	Wed, 13 Dec 2023 10:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="AhgcvZ4d"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p4r2l8nX"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FA4AD3;
-	Tue, 12 Dec 2023 21:48:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=x/Zgvs4f8I9sq98lJ2V+vIqYNZFeN0wHjrKY4LrcOgM=; b=AhgcvZ4dTiHzFmI/88FRjjtM+b
-	BKiGaQdABhu2lFj6MwZ4N2frVG7/h68yh8R4OMTaVWltqVQ1ijR5GDK/qVu9dkJcAS5XduEU8UWF5
-	JeuBXRVyvL+8tuKQRBAT/wGNqj9PA8zJV7AfuRkeNi4MJ8gUm+OUU3RlLKfApXbZyd5qk3yo2V5ST
-	1FJcjYaI20d1tP9LAqS0/vcJ/B7KD+B9bYtI0Qnkfo02upHGoa/dwF0f1GbKejqqMLcUlMKviVXXs
-	to3sfT2kekTZ6ajdAWVI+5RN5+ZX3yFzAmXfoZ2HUauJLYC5JpROCTj4DkARTwG6nqoUxS2j4k5LV
-	mQfeIgWA==;
-Received: from [50.53.46.231] (helo=bombadil.infradead.org)
-	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-	id 1rDI6M-00DgBG-1R;
-	Wed, 13 Dec 2023 05:48:10 +0000
-From: Randy Dunlap <rdunlap@infradead.org>
-To: netdev@vger.kernel.org
-Cc: Randy Dunlap <rdunlap@infradead.org>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Kalle Valo <kvalo@kernel.org>,
-	linux-wireless@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH] wifi: mac80211: sta_info.c: fix sentence grammar
-Date: Tue, 12 Dec 2023 21:48:09 -0800
-Message-ID: <20231213054809.23475-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.43.0
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A75822EEE
+	for <linux-wireless@vger.kernel.org>; Wed, 13 Dec 2023 10:42:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B7BBC433C7;
+	Wed, 13 Dec 2023 10:42:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1702464170;
+	bh=h9Jm4NjJwTZw0xLyMaHDvBK708cAUTtuUTHwL1TXShU=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=p4r2l8nX/9T7xJYGhBPdVxyd7dTyMBKsBPDQnPlYV1cC2XmU/qk/IvTwoPKffCUBx
+	 9hIUn5pfiEfuf8NWWY/i6Ak4XrpYkFde+gmOnLxDPEH8slRwcnQj9vpkeZtydQDIeJ
+	 ZGznlrAknCwbo1LBWMozu+/dXJM7IL++r2xwd1UMhyTI8ArNzXBVZ5Pj8f5odEINDX
+	 LzOeNyu7VS+VREqFBBiv7Tu2G2Sf7kNzBsTUF4uRs4TklW8DrD1PZvxS96gJqFg1bu
+	 k5yAVNobDiee6am8l4I+uOklhBPsGyqo0P5n5gfwOlEDn4WXKOlQ3fS5xBdJKZMTQ0
+	 ygyDPIob+ojdw==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -53,40 +40,36 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH 1/1] ath9k: reset survey of current channel after a scan
+ started
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20231205170623.3029689-1-hyang@freebox.fr>
+References: <20231205170623.3029689-1-hyang@freebox.fr>
+To: Hancheng Yang <hyang@freebox.fr>
+Cc: toke@toke.dk, hyang@freebox.fr, linux-wireless@vger.kernel.org
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <170246416722.1034819.1398233208931697231.kvalo@kernel.org>
+Date: Wed, 13 Dec 2023 10:42:48 +0000 (UTC)
 
-Correct run-on sentences by changing "," to ";".
+Hancheng Yang <hyang@freebox.fr> wrote:
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>
-Cc: Kalle Valo <kvalo@kernel.org>
-Cc: linux-wireless@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
----
- net/mac80211/sta_info.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> In the `ath_set_channel()` function, we only reset surveys that are not
+> from the current channel. This leads to the accumulation of survey data for
+> the current channel indefinitely. This may not be the most optimal
+> approach, as we want the ACS to rely on the most recent survey.
+> So reset the survey data for the current channel at the start of each scan.
+> 
+> Signed-off-by: Hancheng Yang <hyang@freebox.fr>
+> Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-diff -- a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -40,7 +40,7 @@
-  * either sta_info_insert() or sta_info_insert_rcu(); only in the latter
-  * case (which acquires an rcu read section but must not be called from
-  * within one) will the pointer still be valid after the call. Note that
-- * the caller may not do much with the STA info before inserting it, in
-+ * the caller may not do much with the STA info before inserting it; in
-  * particular, it may not start any mesh peer link management or add
-  * encryption keys.
-  *
-@@ -58,7 +58,7 @@
-  * In order to remove a STA info structure, various sta_info_destroy_*()
-  * calls are available.
-  *
-- * There is no concept of ownership on a STA entry, each structure is
-+ * There is no concept of ownership on a STA entry; each structure is
-  * owned by the global hash table/list until it is removed. All users of
-  * the structure need to be RCU protected so that the structure won't be
-  * freed before they are done using it.
+Patch applied to ath-next branch of ath.git, thanks.
+
+4fadce88cb9f wifi: ath9k: reset survey of current channel after a scan started
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20231205170623.3029689-1-hyang@freebox.fr/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
 
