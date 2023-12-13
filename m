@@ -1,104 +1,92 @@
-Return-Path: <linux-wireless+bounces-711-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-719-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8864980F4D7
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Dec 2023 18:45:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE4668106FF
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Dec 2023 01:52:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BB611F21699
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Dec 2023 17:45:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B4CA1C20DC7
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Dec 2023 00:52:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AACCF61FCB;
-	Tue, 12 Dec 2023 17:45:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XgPJgtRC"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13DCFA50;
+	Wed, 13 Dec 2023 00:52:20 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82DE6CE
-	for <linux-wireless@vger.kernel.org>; Tue, 12 Dec 2023 09:45:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1702403121; x=1733939121;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=gQqpnCLTfhm+oRnG7qRwdE8IIR5WlktBCZV51moCWug=;
-  b=XgPJgtRC5bnrz6ZBf40uzd3VWmH6kgmZH5yfSp+OyS1k9ZXcNX8EmC3q
-   JSkKBnFWvHbzw5TrnWqCoCIlXSLF9tOQh08ymQIbARxNq0/EZYsfYQT3J
-   DSxYpywfOLvoyDOuj4KlxFWr30qBsMp8IVq+0F9N21D9/nG/HVKmz0t8J
-   MDLu3YcIuIzPeBGGPXfA04TBqWD8coc8rXAJYwvsd4V7+d0ALrg9UXrqJ
-   LIw+13KFwd5N2YWCe7V8z8X/NTWJK3pxnwOHSeSnpr98je9g7IMPYgXCh
-   UKly2ZLldyhyoRirVdF/kmHSQ2rC5nHqfuFU5zl7LsaGYiRH/8ZwCbDFU
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10922"; a="16395967"
-X-IronPort-AV: E=Sophos;i="6.04,270,1695711600"; 
-   d="scan'208";a="16395967"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2023 09:45:17 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10922"; a="749796943"
-X-IronPort-AV: E=Sophos;i="6.04,270,1695711600"; 
-   d="scan'208";a="749796943"
-Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2023 09:45:13 -0800
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>,
-	Brian Norris <briannorris@chromium.org>
-Subject: [PATCH 13/13 v2] wifi: iwlwifi: pcie: add another missing bh-disable for rxq->lock
-Date: Wed, 13 Dec 2023 13:46:03 +0200
-Message-Id: <20231213134350.5929ce913431.I8f19713c4383707f8be7fc20ff5cc1ecf12429bb@changeid>
-X-Mailer: git-send-email 2.34.1
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FA90A0
+	for <linux-wireless@vger.kernel.org>; Tue, 12 Dec 2023 16:52:15 -0800 (PST)
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 3BD0q7IR13838288, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 3BD0q7IR13838288
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 13 Dec 2023 08:52:07 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.17; Wed, 13 Dec 2023 08:52:07 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Wed, 13 Dec
+ 2023 08:52:07 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: <kvalo@kernel.org>
+CC: <linux-wireless@vger.kernel.org>
+Subject: [PATCH v2 0/6] wifi: rtw89: add/modify three fw elements and related RFK log
+Date: Wed, 13 Dec 2023 08:50:48 +0800
+Message-ID: <20231213005054.10568-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
-X-Spam-Level: ***
+Content-Type: text/plain
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-From: Johannes Berg <johannes.berg@intel.com>
+Patches 1/6 to 3/6 are to add/modify three firmware elements. First is to
+add an new element to add TX power track tables that helps to adjust TX
+power according to increasing/decreasing thermal value. Second is to modify
+existing element of BB MCU firmware, because we need to add a field to
+point out hardware version. Since we have not released firmware yet,
+no need to process backward compatible thing.
 
-Evidently I had only looked at all the ones in rx.c, and missed this.
-Add bh-disable to this use of the rxq->lock as well.
+The third patch is to add formatted string of firmware C2H events triggered
+by firmware RFK (RF calibration) to help debugging. When RFK is running in
+firmware, it sends logs with formatted string ID via C2H events, and then
+patch 6/6 uses the ID to find corresponding formatted string as first
+argument of printf() with fixed four arguments.
 
-Fixes: 25edc8f259c7 ("iwlwifi: pcie: properly implement NAPI")
-Reported-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
----
-v2: add 'wifi' prefix
----
- drivers/net/wireless/intel/iwlwifi/pcie/trans.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+The remaining patches are to handle the C2H events and print out RFK status
+or log in plain text. 
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-index f39c436f0b6d..fc64e1e7f5ee 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-@@ -3092,7 +3092,7 @@ static u32 iwl_trans_pcie_dump_rbs(struct iwl_trans *trans,
- 	struct iwl_rxq *rxq = &trans_pcie->rxq[0];
- 	u32 i, r, j, rb_len = 0;
- 
--	spin_lock(&rxq->lock);
-+	spin_lock_bh(&rxq->lock);
- 
- 	r = iwl_get_closed_rb_stts(trans, rxq);
- 
-@@ -3116,7 +3116,7 @@ static u32 iwl_trans_pcie_dump_rbs(struct iwl_trans *trans,
- 		*data = iwl_fw_error_next_data(*data);
- 	}
- 
--	spin_unlock(&rxq->lock);
-+	spin_unlock_bh(&rxq->lock);
- 
- 	return rb_len;
- }
+v2:
+  - rebase to top of wireless-next to avoid conflict of patch 5/6, because
+    another patchset change fw.h nearby.
+
+Ping-Ke Shih (6):
+  wifi: rtw89: fw: load TX power track tables from fw_element
+  wifi: rtw89: fw: add version field to BB MCU firmware element
+  wifi: rtw89: load RFK log format string from firmware file
+  wifi: rtw89: add C2H event handlers of RFK log and report
+  wifi: rtw89: parse and print out RFK log from C2H events
+  wifi: rtw89: phy: print out RFK log with formatted string
+
+ drivers/net/wireless/realtek/rtw89/core.h |   6 +
+ drivers/net/wireless/realtek/rtw89/fw.c   | 110 +++++++-
+ drivers/net/wireless/realtek/rtw89/fw.h   | 144 +++++++++++
+ drivers/net/wireless/realtek/rtw89/phy.c  | 300 ++++++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/phy.h  |  24 +-
+ 5 files changed, 581 insertions(+), 3 deletions(-)
+
 -- 
-2.34.1
+2.25.1
 
 
