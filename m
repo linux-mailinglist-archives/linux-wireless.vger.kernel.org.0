@@ -1,99 +1,142 @@
-Return-Path: <linux-wireless+bounces-764-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-765-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2E1D811FAB
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Dec 2023 21:06:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D21B0811FC2
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Dec 2023 21:15:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1DD01C2040D
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Dec 2023 20:06:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 816471F213F0
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Dec 2023 20:15:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67A9577624;
-	Wed, 13 Dec 2023 20:06:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 995717E553;
+	Wed, 13 Dec 2023 20:14:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=wp.pl header.i=@wp.pl header.b="KOjQTqgA"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="F19Xfa/f"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx4.wp.pl (mx4.wp.pl [212.77.101.11])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 816F1C9
-	for <linux-wireless@vger.kernel.org>; Wed, 13 Dec 2023 12:06:20 -0800 (PST)
-Received: (wp-smtpd smtp.wp.pl 42379 invoked from network); 13 Dec 2023 21:06:17 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
-          t=1702497977; bh=oYqT+z3zv+88VX7/KyR98U20ZSfEL2KkqJKJNS04oJc=;
-          h=From:To:Cc:Subject;
-          b=KOjQTqgAILsY/CFqVWa2OhiEcou6fDfpoM7vzWafunMYhjokmbcx10MFw8mnsh7gv
-           C0/N/ldXW+gjFl/5VYxsbvrK22dfCnfpgzOdxKKFV2mcDJKWd2oSbfmN6dxcXrFrVa
-           Rl8FTpO2ctnOFkWPNdT4HFBjvoruIXTKGcAbj8JI=
-Received: from 89-64-13-61.dynamic.chello.pl (HELO localhost) (stf_xl@wp.pl@[89.64.13.61])
-          (envelope-sender <stf_xl@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <dmantipov@yandex.ru>; 13 Dec 2023 21:06:17 +0100
-Date: Wed, 13 Dec 2023 21:06:16 +0100
-From: Stanislaw Gruszka <stf_xl@wp.pl>
-To: Dmitry Antipov <dmantipov@yandex.ru>
-Cc: Kalle Valo <kvalo@kernel.org>, lvc-project@linuxtesting.org,
-	linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] [v2] wifi: rt2x00: remove useless code in
- rt2x00queue_create_tx_descriptor()
-Message-ID: <20231213200616.GA63361@wp.pl>
-References: <87il53nvqc.fsf@kernel.org>
- <20231213051449.126963-1-dmantipov@yandex.ru>
+Received: from omta34.uswest2.a.cloudfilter.net (omta34.uswest2.a.cloudfilter.net [35.89.44.33])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A717FDB
+	for <linux-wireless@vger.kernel.org>; Wed, 13 Dec 2023 12:14:56 -0800 (PST)
+Received: from eig-obgw-6006a.ext.cloudfilter.net ([10.0.30.182])
+	by cmsmtp with ESMTPS
+	id DUeirKZP58HteDVd9rdlYp; Wed, 13 Dec 2023 20:14:55 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+	by cmsmtp with ESMTPS
+	id DVd8rQolqGKIcDVd9rHGVN; Wed, 13 Dec 2023 20:14:55 +0000
+X-Authority-Analysis: v=2.4 cv=E+beGIRl c=1 sm=1 tr=0 ts=657a10bf
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=WzbPXH4gqzPVN0x6HrNMNA==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=IkcTkHD0fZMA:10 a=e2cXIFwxEfEA:10 a=wYkD_t78qR0A:10 a=VwQbUJbxAAAA:8
+ a=COk6AnOGAAAA:8 a=uucgfnjzxiVboiWmI4QA:9 a=QEXdDO2ut3YA:10 a=phs4urI-Bf8A:10
+ a=AjGcO6oz07-iQ99wixmX:22 a=TjNXssC_j7lpFel5tvFf:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=1HyjzJtPl2sUntsAoFxkWgAbY6M7c0HaPJqZRErlf6Y=; b=F19Xfa/fVsko11ZYAAp+fLLgQE
+	JKYZf7l5jeio10XKdoJ92Ca6CIbpzzE303mOM8CFzMLyyaaYFNqZorcLQrm3F//jBfGRyM9q+hRw8
+	85yPu0ZLN1Q0GNj5Wq4d5zJLjkRV/9hcqK5MaeeRLZ1al/HZ7LJ/EKWPIn7LYl+BqV+NUym24eO5o
+	nG1bZsdkm7VNFItpWobUGQCFEJpHzpWyw/14YxHbbaqfGjOfTZoVSKAIdLW2q9Om9sjw86EwnDRoZ
+	XfY6tdpgITObdjqjbmfxrL3jq8ChxnJTW2Y4CE8dLMginTZCjjVGXAe4B8FzflF5iQ6CzIkJnywY1
+	lugecQPQ==;
+Received: from 187-162-21-192.static.axtel.net ([187.162.21.192]:60998 helo=[192.168.15.10])
+	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <gustavo@embeddedor.com>)
+	id 1rDVd8-003PFj-0p;
+	Wed, 13 Dec 2023 14:14:54 -0600
+Message-ID: <f5a23931-6c05-4eed-91a5-5b829ad3aa94@embeddedor.com>
+Date: Wed, 13 Dec 2023 14:14:53 -0600
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231213051449.126963-1-dmantipov@yandex.ru>
-X-WP-MailID: a391f45dd210ab3d53d92b195197980f
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 0000000 [gTNw]                               
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/6] wifi: ath10k: use flexible array in struct
+ wmi_host_mem_chunks
+Content-Language: en-US
+To: Jeff Johnson <quic_jjohnson@quicinc.com>, Kalle Valo <kvalo@kernel.org>
+Cc: Kees Cook <keescook@chromium.org>, ath10k@lists.infradead.org,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20231213-wmi_host_mem_chunks_flexarray-v1-0-92922d92fa2c@quicinc.com>
+ <20231213-wmi_host_mem_chunks_flexarray-v1-1-92922d92fa2c@quicinc.com>
+From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+In-Reply-To: <20231213-wmi_host_mem_chunks_flexarray-v1-1-92922d92fa2c@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 187.162.21.192
+X-Source-L: No
+X-Exim-ID: 1rDVd8-003PFj-0p
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: 187-162-21-192.static.axtel.net ([192.168.15.10]) [187.162.21.192]:60998
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 2
+X-Org: HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfGo9bQFmk0BbUINlFDdu6Ia+vprTEJjBV0KU4cDd035Rev7hqawnFoaka/EEL4YxdvcgF251F025a3iGbmTvCqfoj3S7r5pT9lgCkRTIGtPN9Cghe5ix
+ TYn2vpgrBkNjs2lKyf38pj9QKOqLFT4d+hd3TDjuVdoad4xUaaoOe70onH26vGN34RAsYaN8kZ3EHpyVaVWvsJcs7RhW2F7SqudlpdZZw6/ZMW2lbNwmimIn
 
-On Wed, Dec 13, 2023 at 08:14:43AM +0300, Dmitry Antipov wrote:
-> In 'rt2x00queue_create_tx_descriptor()', there is no need to call
-> 'ieee80211_get_rts_cts_rate()' while checking for RTS/CTS frame
-> since this function returns NULL or pointer to internal bitrate
-> table entry, and the return value is not actually used. Compile
-> tested only.
+
+
+On 12/13/23 11:06, Jeff Johnson wrote:
+> Currently struct wmi_host_mem_chunks defines:
+> 	struct host_memory_chunk items[1];
 > 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> Per the guidance in [1] this should be a flexible array. However there
+> is a documented requirement:
+> 	some fw revisions require at least 1 chunk regardless of count
 > 
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+> To satisfy this requirement, follow the guidance from [2] and wrap the
+> array in a union which contains both the flexible array and a single
+> instance of the underlying struct. Since the footprint of the struct
+> is unchanged, no additional driver changes are required.
+> 
+> No functional changes, compile tested only.
+> 
+> [1] https://docs.kernel.org/process/deprecated.html#zero-length-and-one-element-arrays
+> [2] https://lore.kernel.org/linux-wireless/202308301529.AC90A9EF98@keescook/
+> 
+> Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+
+Thanks!
+--
+Gustavo
+
 > ---
-> v2: avoid scoped locals (Kalle Valo)
-> ---
->  drivers/net/wireless/ralink/rt2x00/rt2x00queue.c | 3 ---
->  1 file changed, 3 deletions(-)
+>   drivers/net/wireless/ath/ath10k/wmi.h | 5 ++++-
+>   1 file changed, 4 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00queue.c b/drivers/net/wireless/ralink/rt2x00/rt2x00queue.c
-> index 98df0aef8168..013003777fee 100644
-> --- a/drivers/net/wireless/ralink/rt2x00/rt2x00queue.c
-> +++ b/drivers/net/wireless/ralink/rt2x00/rt2x00queue.c
-> @@ -416,9 +416,6 @@ static void rt2x00queue_create_tx_descriptor(struct rt2x00_dev *rt2x00dev,
->  			__set_bit(ENTRY_TXD_RTS_FRAME, &txdesc->flags);
->  		else
->  			__set_bit(ENTRY_TXD_CTS_FRAME, &txdesc->flags);
-> -		if (tx_info->control.rts_cts_rate_idx >= 0)
-> -			rate =
-> -			    ieee80211_get_rts_cts_rate(rt2x00dev->hw, tx_info);
->  	}
-So we do not choose rate for RTS/CTS. Maybe we should actually,
-but the patch does not change the logic that exist here for 
-more than 12 years, since
-
-commit 55b585e29095ce64900b6192aadf399fa007161e
-Author: Helmut Schaa <helmut.schaa@googlemail.com>
-Date:   Thu Mar 3 19:43:49 2011 +0100
-
-    rt2x00: Don't call ieee80211_get_tx_rate for MCS rates
-
-I'm ok with the patch.
-
-Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
-
-Thanks
-Stanislaw
+> diff --git a/drivers/net/wireless/ath/ath10k/wmi.h b/drivers/net/wireless/ath/ath10k/wmi.h
+> index 9146df98fcee..833ce0251a2c 100644
+> --- a/drivers/net/wireless/ath/ath10k/wmi.h
+> +++ b/drivers/net/wireless/ath/ath10k/wmi.h
+> @@ -3069,7 +3069,10 @@ struct host_memory_chunk {
+>   struct wmi_host_mem_chunks {
+>   	__le32 count;
+>   	/* some fw revisions require at least 1 chunk regardless of count */
+> -	struct host_memory_chunk items[1];
+> +	union {
+> +		struct host_memory_chunk item;
+> +		DECLARE_FLEX_ARRAY(struct host_memory_chunk, items);
+> +	};
+>   } __packed;
+>   
+>   struct wmi_init_cmd {
+> 
 
