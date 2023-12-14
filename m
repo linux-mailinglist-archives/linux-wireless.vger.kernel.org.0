@@ -1,113 +1,161 @@
-Return-Path: <linux-wireless+bounces-793-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-794-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C739B81301F
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Dec 2023 13:29:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3798F81305C
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Dec 2023 13:40:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D801D1C21556
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Dec 2023 12:29:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD761B21970
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Dec 2023 12:40:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9D2148CED;
-	Thu, 14 Dec 2023 12:29:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE1274BA8A;
+	Thu, 14 Dec 2023 12:39:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="fRdOkDDJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SNU1xSFp"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C29F6A3
-	for <linux-wireless@vger.kernel.org>; Thu, 14 Dec 2023 04:29:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=zK16PLC7YyQ800P7XqS/d4WVwRulehjggbN68Vyp2H4=;
-	t=1702556987; x=1703766587; b=fRdOkDDJ83MWvkARGaoni2Wosu+EICwWSWlX0C1szoN6iCa
-	SJ75FZtvUebObHaqGVXTFcNs0J7jSYS8IasQEKG1gkswHfklCbHKnzjgkNca+wGYZMziQqWxjigZJ
-	y8kyFT49U7D3/T10rr3n0U3cfg79Ssieo7wyvZOoZKm3XAlRH9Jvp2ASzwl8TvNy/w/4AtmeNpYhT
-	SChN79YqZmLstxWopc7e+QcTTrNuY7r+AGIJ3qhaa+M6vGAHqy7PSmCSNhNVvPpthPCkIF1oj10W1
-	AMaSvI/uPeGbtVEPGz9Vf/xm7UT3E7apLpn+7GtKMauAUgDCy9XK0Ntb1MkF+rrg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1rDkqV-0000000Ap4b-1qtm;
-	Thu, 14 Dec 2023 13:29:43 +0100
-Message-ID: <65d21336e8f7e180352403a3e894aeaf27a22cab.camel@sipsolutions.net>
-Subject: Re: [PATCH v2] wifi: mac80211: Update bssid indicator with real BSS
- numbers
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Allen Ye <allen.ye@mediatek.com>, linux-wireless@vger.kernel.org, 
-	Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi
- <lorenzo.bianconi@redhat.com>,  Evelyn Tsai <evelyn.tsai@mediatek.com>,
- Money Wang <money.wang@mediatek.com>,  linux-mediatek@lists.infradead.org
-Date: Thu, 14 Dec 2023 13:29:42 +0100
-In-Reply-To: <20231208063820.25983-1-allen.ye@mediatek.com>
-References: <20231208063820.25983-1-allen.ye@mediatek.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.2 (3.50.2-1.fc39) 
+Received: from mail-oi1-x22b.google.com (mail-oi1-x22b.google.com [IPv6:2607:f8b0:4864:20::22b])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09B66115;
+	Thu, 14 Dec 2023 04:39:24 -0800 (PST)
+Received: by mail-oi1-x22b.google.com with SMTP id 5614622812f47-3b9e7f4a0d7so5547925b6e.1;
+        Thu, 14 Dec 2023 04:39:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1702557563; x=1703162363; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/2CpqYu2Yz1Ozrx0CUYVWM6SPUKyooHq2Zq4S2qE3CE=;
+        b=SNU1xSFpBtsbK2qHGzt+aVA05B5PnOOzezdmdppw5jRgQkH+nFyxApDu8bZDpYY8sI
+         TJiD1QvkNX7XsKAETBe/f6DqP16GBpn/b7iI4ttYc11INORgbctDJZI0l6jRBjsOwDY4
+         oISYR+yrfrmKg0agj5a4qiMuQh6KJQfi1BR0tjdDyFzdgvFFhDCxhUq4kCVpTr39dgNp
+         JwAuGvQRstIUflZMb9HHDUeUTCW1jSY0RcvgOZQ2zC7Mp7qvVscK2IqzPl+i99jRf4Qh
+         P/lNrQHNtiGFYu6JzQXGhDKCaOukf/9+nNRFiSWF2BrY2lQ4lUWg/idi9tMzCH5gCSIb
+         FgVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702557563; x=1703162363;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/2CpqYu2Yz1Ozrx0CUYVWM6SPUKyooHq2Zq4S2qE3CE=;
+        b=LAaS7wDLy+7oFuW176qlHm9ecju7XKlwk/OvBK+BVauF0ouhU200WxsF4pAPtIuyxe
+         8hW9U50QQVYUPgynJJOmUIuzTGlyfSZ6MjurPBYNbXojC2MwT2s4b1rz/XYg0tI55zuW
+         ctCGDmx2Rd2qW0Fx8r1bfVvfSpbgVSHuASi0TgR//ddODbxVLDoPY68VSuS6CMOpOpM5
+         TjtZNA4bM1K7hjh9KD2JHpge2A9pGme8CFF0wVAxCPOgAQMeGXvMy3vZ+dyHObyzrrrU
+         THfmXMKVAQgPYWBUHoEvdRFIWYLPmfA8C9Su1Sj/n9S/G0NjOaRVNOYJ7/QCjfFj9FSK
+         oHHA==
+X-Gm-Message-State: AOJu0YwNAhN0QrZNDdXWy9oJzn2glYmGflyjv4I0iG09ZMWTpOI7lDFc
+	LLx63G1fsm45CBB+ju0PoHg=
+X-Google-Smtp-Source: AGHT+IGPMLwm24ar1acxnS3uJOwx1vCUvY364Zwt7fHWyytA0SrFUbX3usGL3teXpIfhBy+VQwBCpw==
+X-Received: by 2002:a05:6808:bc7:b0:3b8:b063:5048 with SMTP id o7-20020a0568080bc700b003b8b0635048mr11757906oik.73.1702557563334;
+        Thu, 14 Dec 2023 04:39:23 -0800 (PST)
+Received: from [10.102.4.159] ([208.195.13.130])
+        by smtp.gmail.com with ESMTPSA id or15-20020a05620a618f00b0077da7a46b0fsm5250357qkn.69.2023.12.14.04.39.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 14 Dec 2023 04:39:23 -0800 (PST)
+Message-ID: <e0fbe9cb-22de-462f-9123-14a220d5a9c6@gmail.com>
+Date: Thu, 14 Dec 2023 04:39:19 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] wifi: mt76: mt7921: Disable powersaving by default
+To: Mario Limonciello <mario.limonciello@amd.com>,
+ Ben Greear <greearb@candelatech.com>, Lorenzo Bianconi <lorenzo@kernel.org>,
+ Kalle Valo <kvalo@kernel.org>
+Cc: Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>,
+ Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Deren Wu <deren.wu@mediatek.com>, Ming Yen Hsieh
+ <mingyen.hsieh@mediatek.com>,
+ "open list:MEDIATEK MT76 WIRELESS LAN DRIVER"
+ <linux-wireless@vger.kernel.org>,
+ "open list:ARM/Mediatek SoC support" <linux-kernel@vger.kernel.org>,
+ "moderated list:ARM/Mediatek SoC support"
+ <linux-mediatek@lists.infradead.org>, Sultan Alsawaf <sultan@kerneltoast.com>
+References: <20231212090852.162787-1-mario.limonciello@amd.com>
+ <874jgmnud8.fsf@kernel.org> <ZXmxD1foASMaCDIe@lore-desk>
+ <d92c081e-47dd-5c57-a6f1-bd72b2748141@candelatech.com>
+ <1ef12773-74ca-489c-b36b-d3cf7da22c43@amd.com>
+Content-Language: en-US
+From: James Prestwood <prestwoj@gmail.com>
+In-Reply-To: <1ef12773-74ca-489c-b36b-d3cf7da22c43@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi,
+On 12/13/23 11:27, Mario Limonciello wrote:
+> On 12/13/2023 08:45, Ben Greear wrote:
+>> On 12/13/23 5:26 AM, Lorenzo Bianconi wrote:
+>>>> Mario Limonciello <mario.limonciello@amd.com> writes:
+>>>>
+>>>>> Several users have reported awful latency when powersaving is enabled
+>>>>> with certain access point combinations.
+>>>>
+>>>> What APs are these exactly? In the past 802.11 Power Save Mode was
+>>>> challenging due to badly behaving APs. But nowadays with so many 
+>>>> mobile
+>>>> devices in the market I would assume that APs work a lot better. It
+>>>> would be best to investigate the issues in detail and try to fix 
+>>>> them in
+>>>> mt76, assuming the bugs are in mt76 driver or firmware.
+>>>>
+>>>>> It's also reported that the powersaving feature doesn't provide an
+>>>>> ample enough savings to justify being enabled by default with these
+>>>>> issues.
+>>>>
+>>>> Any numbers or how was this concluded?
+>>>>
+>>>>> Introduce a module parameter that would control the power saving
+>>>>> behavior.  Set it to default as disabled. This mirrors what some 
+>>>>> other
+>>>>> WLAN drivers like iwlwifi do.
+>>>>
+>>>> We have already several ways to control 802.11 power save mode:
+>>>>
+>>>> * NL80211_CMD_SET_POWER_SAVE (for example used by 'iw set power_save')
+>>>>
+>>>> * CONFIG_CFG80211_DEFAULT_PS (for kernel level default)
+>>>>
+>>>> * WIPHY_FLAG_PS_ON_BY_DEFAULT (for the driver to control the 
+>>>> default setting)
+>>>>
+>>>> Adding module parameters as a fourth method sounds confusing so not
+>>>> really a fan of this. And the bar is quite high for adding new module
+>>>> parameters anyway.
+>>>
+>>> agree, I think we do not need a new parameter for this, just use the 
+>>> current
+>>> APIs.
+>>
+>> Is there a convenient way for a user to make any of those options 
+>> above stick through
+>> reboots?
+>>
+>> To me, the ability to set system defaults through reboots is a nice 
+>> feature of
+>> module options.
+>>
+>> Thanks,
+>> Ben
+>>
+>
+> Some userspace has the ability to do this.  For example in Network 
+> Manager:
+>
+> https://unix.stackexchange.com/questions/595116/wi-fi-powersaving-in-networkmanager 
+>
 
-We should have Lorenzo here, he wrote the original code.
+And recently added to IWD for this very reason, there are no decent ways 
+to persist between reboots (except when using NM).
 
-On Fri, 2023-12-08 at 14:38 +0800, Allen Ye wrote:
-> The cnt member in mbssid is the count of total number of MBSSID elements
-> instead of BSSID. Therefore, we fix this by reading the MaxBSSID Indicato=
-r
-> field directly.
+https://git.kernel.org/pub/scm/network/wireless/iwd.git/commit/?id=29edb1626d88bb713db71f7b374d8f24832fd94f
 
-I'll say I don't understand this much ...
+Thanks,
 
-Are you trying to have BSSIDs that are hidden from the kernel? Or not
-contiguous in the MBSSID set? Not sure how the two can be not
-equivalent?
+James
 
-> Co-developed-by: Evelyn Tsai <evelyn.tsai@mediatek.com>
-> Signed-off-by: Evelyn Tsai <evelyn.tsai@mediatek.com>
-> Co-developed-by: Money Wang <money.wang@mediatek.com>
-> Signed-off-by: Money Wang <money.wang@mediatek.com>
-> Signed-off-by: Allen Ye <allen.ye@mediatek.com>
-
-I have to admit that I chuckled a bit about this for a 5 line patch :-)
-
-> diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-> index 606b1b2e4123..f90bcd59f85a 100644
-> --- a/net/mac80211/cfg.c
-> +++ b/net/mac80211/cfg.c
-> @@ -1164,9 +1164,11 @@ ieee80211_assign_beacon(struct ieee80211_sub_if_da=
-ta *sdata,
->  	/* copy in optional mbssid_ies */
->  	if (mbssid) {
->  		u8 *pos =3D new->tail + new->tail_len;
-> +		const struct element *mbssid_elem;
-> =20
->  		new->mbssid_ies =3D (void *)pos;
->  		pos +=3D struct_size(new->mbssid_ies, elem, mbssid->cnt);
-> +		mbssid_elem =3D (const struct element *)pos;
->  		pos +=3D ieee80211_copy_mbssid_beacon(pos, new->mbssid_ies,
->  						    mbssid);
->  		if (rnr) {
-> @@ -1175,8 +1177,7 @@ ieee80211_assign_beacon(struct ieee80211_sub_if_dat=
-a *sdata,
->  			ieee80211_copy_rnr_beacon(pos, new->rnr_ies, rnr);
->  		}
->  		/* update bssid_indicator */
-> -		link_conf->bssid_indicator =3D
-> -			ilog2(__roundup_pow_of_two(mbssid->cnt + 1));
-> +		link_conf->bssid_indicator =3D mbssid_elem->data[0];
-
-But this seems fishy to me, if you look into the element itself, you're
-going to have to do some validation on it? And what about fragmentation?
-
-johannes
 
