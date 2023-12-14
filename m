@@ -1,98 +1,177 @@
-Return-Path: <linux-wireless+bounces-782-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-783-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E0DA812972
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Dec 2023 08:35:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D5E0812BB6
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Dec 2023 10:29:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23B0E1F21211
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Dec 2023 07:35:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A65892828DD
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Dec 2023 09:29:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F1D912E55;
-	Thu, 14 Dec 2023 07:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CA192EB09;
+	Thu, 14 Dec 2023 09:29:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b="mOSj2KQ1"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A116F95;
-	Wed, 13 Dec 2023 23:35:36 -0800 (PST)
-Received: from francesco-nb.int.toradex.com (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 4FD39206E7;
-	Thu, 14 Dec 2023 08:35:31 +0100 (CET)
-Date: Thu, 14 Dec 2023 08:35:27 +0100
-From: Francesco Dolcini <francesco@dolcini.it>
-To: David Lin <yu-hao.lin@nxp.com>
-Cc: Brian Norris <briannorris@chromium.org>,
+Received: from JPN01-OS0-obe.outbound.protection.outlook.com (mail-os0jpn01on2091.outbound.protection.outlook.com [40.107.113.91])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3599FB7;
+	Thu, 14 Dec 2023 01:29:32 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=JCwSGGlqmYlDtOxPaPx4rU8qdzMQZX7seIcAUca5CNTEIvrf76bAiMIh13WbbLujLmPdPixF20akDuQf7vuTIi20TnF2lt/31KFpQq957Er91qsPBDhtNV7jK0LG9F6vVxq2loksRN8jG+pk8SjedlrU7BItbpCN0YaaugnW1ueuUPgF9CTJtiDR6mIjw60gp7NOPbLuWzsAaaNT97zHsyTD9A+Ch2TOmW0Mi1vO8IlBnt+1kwg/By65xMLJGu8Ck5yuBWoYaftAg+GDipgVAp7w/G/Xn+eXKzqvWbUB4sbwmWOVvq2emkK8UmoLZqFNxAEh2LuBz9tVhBlfGxIUZw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=C3C9NM7j9NrLEN1Iz31KfrlYOa/iyN8z0lEJ+6QjxnA=;
+ b=Dz83DP+Eo0U0HAfrJbWQMeUmh2+zN+BmTLr8RYzxxJBnzLLdEtWh13Q7dz6liC7hPmxJVTfW9cQQWHMYcDL1aogJdttxtOBX/vdyVMchfA7TnMvsF6rztBbP2dKAPmFvS55uBmtFtTZRi3IgtQkkrfIaXu1oFO6CyRA7F1p+R6i0SNcBDsfXj38nN4QsdnpZj4/NDNabUFIaHmwH3YH5SSuhD7koNR7eEx0KU3eYlG0zNb6jwPOf4HOJxQbpYxNICZkMxhbwfqR/npMZhIyKO7bgXep9bfLZNfesiMSGnBMzXTezKEbRNx9ADrQ4Km8+xhwrIoEvRQmG5lpAj/vXGg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=bp.renesas.com; dmarc=pass action=none
+ header.from=bp.renesas.com; dkim=pass header.d=bp.renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bp.renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=C3C9NM7j9NrLEN1Iz31KfrlYOa/iyN8z0lEJ+6QjxnA=;
+ b=mOSj2KQ1fPiSxbXQR/0DPF9tr2oVhy0XOugoj1cCO7p9Vdb44jvE+T1lsL5BnEWx5FWbhp9xfad4Fp63bh75FLJDLCKihmByjBpQsKzWi5dmd7XkD3SvkPRrKjE1RGIU7tIsBcx+CtUZgO4rxSLfz+D5BJ7oqNK830dB1rIr4kE=
+Received: from TYCPR01MB11269.jpnprd01.prod.outlook.com
+ (2603:1096:400:3c0::10) by TY3PR01MB12070.jpnprd01.prod.outlook.com
+ (2603:1096:400:3db::9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7113.8; Thu, 14 Dec
+ 2023 09:29:29 +0000
+Received: from TYCPR01MB11269.jpnprd01.prod.outlook.com
+ ([fe80::f216:24ab:3668:3a48]) by TYCPR01MB11269.jpnprd01.prod.outlook.com
+ ([fe80::f216:24ab:3668:3a48%4]) with mapi id 15.20.7113.008; Thu, 14 Dec 2023
+ 09:29:28 +0000
+From: Biju Das <biju.das.jz@bp.renesas.com>
+To: "naresh.kamboju@linaro.org" <naresh.kamboju@linaro.org>,
 	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"kvalo@kernel.org" <kvalo@kernel.org>,
-	"francesco@dolcini.it" <francesco@dolcini.it>,
-	Pete Hsieh <tsung-hsien.hsieh@nxp.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [EXT] Re: [PATCH v2] wifi: mwifiex: fix STA cannot connect to AP
-Message-ID: <ZXqwP7NscRtE1uGL@francesco-nb.int.toradex.com>
-References: <20231208234127.2251-1-yu-hao.lin@nxp.com>
- <ZXpjjmD5Se7axJju@google.com>
- <PA4PR04MB96383A106724AC1CE683112BD18CA@PA4PR04MB9638.eurprd04.prod.outlook.com>
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, Stephen Rothwell
+	<sfr@canb.auug.org.au>
+CC: "arnd@arndb.de" <arnd@arndb.de>, "benjamin.berg@intel.com"
+	<benjamin.berg@intel.com>, "dan.carpenter@linaro.org"
+	<dan.carpenter@linaro.org>, "davem@davemloft.net" <davem@davemloft.net>,
+	"johannes.berg@intel.com" <johannes.berg@intel.com>,
+	"lkft-triage@lists.linaro.org" <lkft-triage@lists.linaro.org>,
+	"miriam.rachel.korenblit@intel.com" <miriam.rachel.korenblit@intel.com>,
+	"regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: Re: next: arm64: gcc-8-defconfig - failed -
+ net/wireless/shipped-certs.c:92:1: error: expected '}' before numeric
+ constant
+Thread-Topic: Re: next: arm64: gcc-8-defconfig - failed -
+ net/wireless/shipped-certs.c:92:1: error: expected '}' before numeric
+ constant
+Thread-Index: Adot078PtDDEl6shQJysZ7bF7F4DCQAm7U9A
+Date: Thu, 14 Dec 2023 09:29:28 +0000
+Message-ID:
+ <TYCPR01MB11269A0200358724E126E7ECD868CA@TYCPR01MB11269.jpnprd01.prod.outlook.com>
+References:
+ <TYCPR01MB11269DD29E89EF09A4B053C1C868DA@TYCPR01MB11269.jpnprd01.prod.outlook.com>
+In-Reply-To:
+ <TYCPR01MB11269DD29E89EF09A4B053C1C868DA@TYCPR01MB11269.jpnprd01.prod.outlook.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=bp.renesas.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: TYCPR01MB11269:EE_|TY3PR01MB12070:EE_
+x-ms-office365-filtering-correlation-id: ec66281d-df7c-435e-419b-08dbfc872bd4
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ 2HLxJRA/2sxFVEIMYSgmwH+P4lgLYtxjgWztIP/2oOtsXanD+7586iZt2z6napKvnjK5BH3M8fyfPsn/R+V+vsoQGNBnJUx9K2syozjGJHSMvthG6mwSl1yAXVUUbrQok/KzKhvrAnH8ho0jHiOX4RBO3aJOYxGgx3scTdV0B8au8ln1qofkLAnLOhjdi9RTcWtN1NFajcOqEccUqJLXQEOxS/6H3Vs+J1KtQCSJ+wj5Hks02cVZMi1bJNOWY+ALP8r8AA5hIrOr+qmomrd2px0gCiDlAxaBtygyQOtovlm//U/4FHC6doz82a7P5tuDM77hH9pnSPbaLLc6szQ1GzL22Pxnx3cX/QgS8X8x8jfr+SLGo4wlip/fCOa0S8BvtGnWhYXuJfH3lndicacvPGFleUjOqRky+z1RX+2SpLev/HsZb32lBa2Yfe8v7dYSeaT2sQSgI56YjiN6I4Bo2AXIpsy8yyylZhCNnA2ivbjD8NQex1yejW7M2RL+XUaRot+SgMqRNUc10gJSsVF0imDcyfNrmXMt1I8RsYvEcBHdBeKC9ioZFs64D/3670WKWAy0VIH1QK6rEcCD5NEfAIIzjOYFvyOyunPnnn2Abwg=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB11269.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(346002)(396003)(366004)(136003)(39860400002)(230922051799003)(186009)(451199024)(64100799003)(1800799012)(2906002)(7416002)(4744005)(122000001)(41300700001)(7696005)(38100700002)(6506007)(38070700009)(53546011)(71200400001)(86362001)(110136005)(9686003)(55016003)(66946007)(66556008)(316002)(66446008)(76116006)(54906003)(64756008)(66476007)(33656002)(966005)(478600001)(5660300002)(83380400001)(52536014)(4326008)(8676002)(8936002)(26005);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?wLNkY6mMfAtKvVu16kvWFE8sud06iaspFVPaLxCpe9cO4buc8p10mJAbabHj?=
+ =?us-ascii?Q?VCiWGiuLdWNApbQ1K9eft0i9WW11N0mVtbsnoxBXarKrGZvysUDkjg+cIxrR?=
+ =?us-ascii?Q?65p069acqmYU1oVgShOPWoAabF7nFQl+cstRAa8lsmHA4SkSrpJfRmjw8hW1?=
+ =?us-ascii?Q?sHne2edxXb3yQr66rWTHd/TQ6DSKJNEHYuVpSSdwUgF2FwPDeCWkDcwHbvWP?=
+ =?us-ascii?Q?yZW5JEy2AkSMyrYn5rhbkJ2TFcERWvlbX7UM18muM1efKomNSiSkEdxFlmZV?=
+ =?us-ascii?Q?OOTG95k0nZ5HaonRRe9Mftea3EeSKykdfc9k72pToFWiMIzp00Ff5cENHj2W?=
+ =?us-ascii?Q?7QfhS7jMIIGx6yCSgL1mBJmMHV7tva+M1zE2W73H6fREh9BJrDUc/XfTwtpC?=
+ =?us-ascii?Q?xQrKRssMPUKnCCIQoVnSKP7VT1MCATN6NoADMKe55Ebo8bx8GngpHNt3QYo3?=
+ =?us-ascii?Q?7ZHnLMQuOU1U+5AGkHKfY/7zWC1TptQtEAPK7XeFgNKjZg7Y0jNXNK1zAAu5?=
+ =?us-ascii?Q?zHyQNikoKVx45Y3NeFKQARSbh868ZF0uP5aRjPv+4GyG5bTLC4l2RARc3gMc?=
+ =?us-ascii?Q?KDi4WqHSrSBECavkziksfR78+m21hggj9AaORVX8aiKJMVjSws2xQnVcVqVa?=
+ =?us-ascii?Q?wzeMUwnJfZCliul3ziLGQzBtRLbJ2HXJTiNDuCt0vYg6Q3vprGihIxRbfES2?=
+ =?us-ascii?Q?h4UJbGueVQKNB0e3yheriGTjaK4r3Uhn3Gzg4euRYGTRc2I5zI6ELAqHnQj0?=
+ =?us-ascii?Q?VpNf27CIvmbYeF+7HJcToGqr3khvR1s/C3DV8TNNKT17nHEMmINkOVW2H2nP?=
+ =?us-ascii?Q?8hd5nvJZnrKUaUsaTE51m80f9m0h2of2qe7k6sl9R2ZZh5oyuu3Kca6gnPAt?=
+ =?us-ascii?Q?uh6W0NbW/FQlA0vaKxvlnfmrU6z9kLHfTZ8L4+e2GjKQhb/botZqiR5DS64z?=
+ =?us-ascii?Q?GO8QVXimx2hCJMm9IHfSVFV0/LORdMKc4SSjq4xwxQsPfNaLcVnC2Ickhni1?=
+ =?us-ascii?Q?EPVoXJwzh0yOa0ZFmFwM2z76i0ea1p/7NeXWMWB4q3TbdqY2nQJG5GgZ5pG7?=
+ =?us-ascii?Q?yC96veum1pqTVm4DolU6oz4Bp9WRh7Bixsu6ixQzGZ24SukqVAsOFtUssmZT?=
+ =?us-ascii?Q?bci/8qDpPthjvZozUQJ9iaNY+FmNSJQkRBy+gsftWBMTczgWUGk7TdEbKFtR?=
+ =?us-ascii?Q?WZndSE69iUH/stTStkys2C8nXiHeVfwa0QQK4iOmVv7AUca0mBChZrycRDPN?=
+ =?us-ascii?Q?DebpnHowfsWE8zBJvAWSwZkMrUCpjU3Q0Ud8YhF9AhWDFtApvs9WqIR5sVwL?=
+ =?us-ascii?Q?jwMHAeQ2+IudkFxG3IkFWL7BLXY1P5a3MlrC/HLVAqycuI9D7cOqbpgYqjOQ?=
+ =?us-ascii?Q?QXR4ZAVE9VseNsAeMJLKKy2j165OGul72y5pSVb10nH7sdeHHxEXPwVvbcUW?=
+ =?us-ascii?Q?MI9UPx+j1zZwf2mmJJZpYaZr7B2z2suu30VfY9oHj70989f/8Fvab59u5/a2?=
+ =?us-ascii?Q?oFsKnFjbB3UzcGU438JUaUHjGpKCg951SlofdRhIjl45tnc9H+aNzHMV5sJG?=
+ =?us-ascii?Q?JCuaupdxzyT9rGIRf1Xqzjw0K+5gi05Xu7uedoYbgITRFUBbef2JZHe6Fe++?=
+ =?us-ascii?Q?Ww=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <PA4PR04MB96383A106724AC1CE683112BD18CA@PA4PR04MB9638.eurprd04.prod.outlook.com>
+X-OriginatorOrg: bp.renesas.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB11269.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ec66281d-df7c-435e-419b-08dbfc872bd4
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Dec 2023 09:29:28.8838
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: yBPeP9J/lPoT3X9Z+LkYJ0oziD9IATyDX0HLrI5WFAUuPdYuXgLdjj8PgEmKMPA4SgEqTvcrsvgWaAV7l7vC4PExIvV/4DgucQJ4s/YnM80=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY3PR01MB12070
 
-Hello David,
+Hi all,
 
-On Thu, Dec 14, 2023 at 02:22:57AM +0000, David Lin wrote:
-> > From: Brian Norris <briannorris@chromium.org>
-...
-> > Nitpick: "fix STA cannot connect to AP" isn't the best commit message; that
-> > could describe an enormous number of fixes. Maybe something more like
-> > "Configure BSSID consistently when starting AP"?
-> 
-> Thanks for your suggestion. I will change commit message as you
-> suggested. Does it mean I should create another patch from v1?
+> -----Original Message-----
+> From: Biju Das
+> Sent: Wednesday, December 13, 2023 3:00 PM
+> Subject: Re: next: arm64: gcc-8-defconfig - failed - net/wireless/shipped=
+-
+> certs.c:92:1: error: expected '}' before numeric constant
+>=20
+> Hi All,
+>=20
+> I am also seeing similar issue[1] with below tool chain[2] on linux-next.
+>=20
+> [1]
+> gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu
+>=20
+> Looks like latest code in net/wireless is not buildable with older
+> toolchain.
+>=20
+> Can we revert the change to unblock build failure on next?
+>=20
+>=20
+[1]
+https://lore.kernel.org/all/CA+G9fYv9j08=3D+-CpJdtAV1z9-8KYbYcH8YOvWjbz4TgP=
+7pB2TA@mail.gmail.com/
 
-Just create `[PATCH v3] wifi: mwifiex: fix STA cannot connect to AP`
 
-Add the change suggested by Brian and the tags you received on this v2:
+FYI, This issue is seen on today next as well,=20
+the generated code[2] is missing a comma leading to
+Build failure. Is it a requirement to use latest toolchain for linux-next?
 
- - Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
- - Tested-by: Rafael Beims <rafael.beims@toradex.com> # Verdin iMX8MP / SD8997 SD
- - Acked-by: Brian Norris <briannorris@chromium.org>
 
-> > Not directly related to this patch, but while you're expanding the size of this
-> > command buffer: it always felt like a security-hole-in-waiting that none of
-> > these command producers do any kinds of bounds checking.
-> > We're just "lucky" that these function only generate contents of ~100 bytes at
-> > max, while MWIFIEX_SIZE_OF_CMD_BUFFER=2048. But, just add a few more
-> > user-space controlled TLV params, and boom, we'll have ourselves a nice
-> > little CVE.
-> > 
-> > It probably wouldn't hurt to significantly write much of this driver, but at a
-> > minimum, we could probably use a few checks like this:
-> > 
-> >         cmd_size += sizeof(struct host_cmd_tlv_mac_addr);
-> >         if (cmd_size > MWIFIEX_SIZE_OF_CMD_BUFFER)
-> >                 return -1;
-> >         // Only touch tlv *after* the bounds check.
-> > 
-> > That doesn't need to block this patch, of course.
-> > 
-> > Brian
-> >
-> 
-> I will modify the code for next patch.
+[2]
+0x45, 0x4e, 0xc3
+/* Seth Forshee's regdb certificate */
+0x30, 0x82, 0x02, 0xa4, 0x30, 0x82, 0x01, 0x8c,
 
-I would suggest not modify this in this patch, we should fix all the code that
-is subjected to this potential issue.
-
-I would personally do a follow-up patch just to add the check to avoid
-overflowing the cmd buffer everywhere it is used.
-
-Francesco
-
+Cheers,
+Biju
 
