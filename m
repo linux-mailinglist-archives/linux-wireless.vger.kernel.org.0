@@ -1,116 +1,93 @@
-Return-Path: <linux-wireless+bounces-804-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-806-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8545E813609
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Dec 2023 17:17:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA5A3813682
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Dec 2023 17:41:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C10A91C2031F
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Dec 2023 16:17:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 643D11F21ED1
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Dec 2023 16:41:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CF545F1C1;
-	Thu, 14 Dec 2023 16:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3446C60BA1;
+	Thu, 14 Dec 2023 16:41:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LV6roAwc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GAkZjkxq"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F475EE94
-	for <linux-wireless@vger.kernel.org>; Thu, 14 Dec 2023 16:17:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3A57C433C8;
-	Thu, 14 Dec 2023 16:17:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1187C60B9C;
+	Thu, 14 Dec 2023 16:41:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8033C433C7;
+	Thu, 14 Dec 2023 16:41:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702570664;
-	bh=HK2BDsbsHED2loV2Pn+V2u8GAyC11wNlFeiJkuRxH6U=;
-	h=From:To:Cc:Subject:Date:From;
-	b=LV6roAwc0lWjnq+YxsLp4q3/4VyNnCZ13UP7MKvqXOm//3zZvGKp4MnRCLuNdCwfS
-	 UiLWF61E7BN2KwkduWgwY040wbmcULQawvK0bLsQmHX9392QFOtzbS7gvR8cews22G
-	 almDKa1VZW7Agkt0KXhlkETgfVvyRsa5k7L29vSLSjJWXvUHn3khz4Rrpt3vwnIYrk
-	 bNx79nVbr0V73gku6wv06RoQ5nCQPxQ3IfgExtui/zlaumIYdeVTScY8JtRzJ4CPV6
-	 Q8ksQlgLPY0cGBgH4LEhrvixwOJpeptUocu+8Gd1yaEjpUt2/wBLYvUlpAlzjIGueq
-	 uOKv9htCb36Fg==
+	s=k20201202; t=1702572082;
+	bh=aR0AfO4Zo8a3/6CuOkcgFklla3J0GR//5YEavtZmcQs=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=GAkZjkxq8d7vJm4HIljWKOFiPA/2BaPPlaKZHPZLRO4DD9wbOPXlgbeH+TLYP80AN
+	 FwpgqFP1DI/D308SUJ9TxRb+/r63ETwuEw//2P2LhWxPQv75QE7qZXYHYXty/YuwJW
+	 pPRySd8xG8XoCoQ55EaAlQIfVfGovXBUuY3xBOeRa8WbqAZ7aU2+N9avI86gzFNPcq
+	 plgeZFHkfCFUJIXkWPhhYUYjyJfxnlp58CCzIelrlYYYO+TS58TbEWqa1LO2RiWaPV
+	 hnNMPKstrMT6M9WYuL3zUy4iNnZm1hux6CKimeuWh6NV5lqEsqQ6YD84lp/FSyJIYx
+	 sWEKi2H6vIl4g==
 From: Kalle Valo <kvalo@kernel.org>
-To: ath11k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH] wifi: ath11k: workaround too long expansion sparse warnings
-Date: Thu, 14 Dec 2023 18:17:40 +0200
-Message-Id: <20231214161740.1582340-1-kvalo@kernel.org>
-X-Mailer: git-send-email 2.39.2
+To: Hans de Goede <hdegoede@redhat.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>,  Alex Deucher
+ <alexander.deucher@amd.com>,  Christian =?utf-8?Q?K=C3=B6nig?=
+ <christian.koenig@amd.com>,
+  Ma Jun <Jun.Ma2@amd.com>,  "Limonciello, Mario"
+ <Mario.Limonciello@amd.com>,  "platform-driver-x86@vger.kernel.org"
+ <platform-driver-x86@vger.kernel.org>,  linux-wireless
+ <linux-wireless@vger.kernel.org>,  amd-gfx list
+ <amd-gfx@lists.freedesktop.org>,  Ilpo =?utf-8?Q?J=C3=A4rvinen?=
+ <ilpo.jarvinen@linux.intel.com>
+Subject: Re: [GIT PULL] mmutable branch between pdx86 amd wbrf branch and
+ wifi / amdgpu due for the v6.8 merge window
+References: <6395b87b-7cb6-4412-b6e5-e6075353fb6d@redhat.com>
+Date: Thu, 14 Dec 2023 18:36:56 +0200
+In-Reply-To: <6395b87b-7cb6-4412-b6e5-e6075353fb6d@redhat.com> (Hans de
+	Goede's message of "Mon, 11 Dec 2023 12:02:16 +0100")
+Message-ID: <87le9w4u6v.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-From: Kalle Valo <quic_kvalo@quicinc.com>
+Hans de Goede <hdegoede@redhat.com> writes:
 
-In v6.7-rc1 sparse warns:
+> Hi Wifi and AMDGPU maintainers,
+>
+> Here is a pull-request for the platform-drivers-x86 parts of:
+>
+> https://lore.kernel.org/platform-driver-x86/20231211100630.2170152-1-Jun.Ma2@amd.com/
+>
+> From my pov the pdx86 bits are ready and the
+> platform-drivers-x86-amd-wbrf-v6.8-1 tag can be merged by you to merge
+> the wifi-subsys resp. the amdgpu driver changes on top.
+>
+> This only adds kernel internal API, so if in the future the API needs work that can be done.
+>
+> I've not merged this branch into pdx86/for-next yet, since I see
+> little use in merging it without any users. I'll merge it once either
+> the wifi or amdgpu changes are also merged (and if some blocking
+> issues get identified before either are merged I can prepare a new
+> pull-request fixing the issues).
 
-drivers/net/wireless/ath/ath11k/mac.c:4702:15: error: too long token expansion
-drivers/net/wireless/ath/ath11k/mac.c:4702:15: error: too long token expansion
-drivers/net/wireless/ath/ath11k/mac.c:8393:23: error: too long token expansion
-drivers/net/wireless/ath/ath11k/mac.c:8393:23: error: too long token expansion
+I was testing latest wireless-testing with ath11k and noticed this:
 
-Workaround the warnings by refactoring the code to a new function, which also
-reduces code duplication. And in the new function use max3() to make the code
-more readable.
+[  370.796884] ath11k_pci 0000:06:00.0: WBRF is not supported
 
-No functional changes, compile tested only.
+I think that's just spam and not really necessary. Could someone remove
+that or change to a debug message, please?
 
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
----
- drivers/net/wireless/ath/ath11k/mac.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 7f7b39817773..db241589424d 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -4654,6 +4654,14 @@ static int ath11k_station_disassoc(struct ath11k *ar,
- 	return 0;
- }
- 
-+static u32 ath11k_mac_max_nss(const u8 *ht_mcs_mask, const u16 *vht_mcs_mask,
-+			      const u16 *he_mcs_mask)
-+{
-+	return max3(ath11k_mac_max_ht_nss(ht_mcs_mask),
-+		    ath11k_mac_max_vht_nss(vht_mcs_mask),
-+		    ath11k_mac_max_he_nss(he_mcs_mask));
-+}
-+
- static void ath11k_sta_rc_update_wk(struct work_struct *wk)
- {
- 	struct ath11k *ar;
-@@ -4699,9 +4707,7 @@ static void ath11k_sta_rc_update_wk(struct work_struct *wk)
- 	mutex_lock(&ar->conf_mutex);
- 
- 	nss = max_t(u32, 1, nss);
--	nss = min(nss, max(max(ath11k_mac_max_ht_nss(ht_mcs_mask),
--			       ath11k_mac_max_vht_nss(vht_mcs_mask)),
--			   ath11k_mac_max_he_nss(he_mcs_mask)));
-+	nss = min(nss, ath11k_mac_max_nss(ht_mcs_mask, vht_mcs_mask, he_mcs_mask));
- 
- 	if (changed & IEEE80211_RC_BW_CHANGED) {
- 		/* Get the peer phymode */
-@@ -8391,9 +8397,7 @@ ath11k_mac_op_set_bitrate_mask(struct ieee80211_hw *hw,
- 			ath11k_warn(ar->ab,
- 				    "could not update fixed rate settings to all peers due to mcs/nss incompatibility\n");
- 		nss = min_t(u32, ar->num_tx_chains,
--			    max(max(ath11k_mac_max_ht_nss(ht_mcs_mask),
--				    ath11k_mac_max_vht_nss(vht_mcs_mask)),
--				ath11k_mac_max_he_nss(he_mcs_mask)));
-+			    ath11k_mac_max_nss(ht_mcs_mask, vht_mcs_mask, he_mcs_mask));
- 
- 		/* If multiple rates across different preambles are given
- 		 * we can reconfigure this info with all peers using PEER_ASSOC
-
-base-commit: e0d94824fa388d81bb1f27e9486cb2d0f6fee3fb
 -- 
-2.39.2
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
