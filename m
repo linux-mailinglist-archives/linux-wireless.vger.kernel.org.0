@@ -1,124 +1,151 @@
-Return-Path: <linux-wireless+bounces-771-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-772-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C36EB811FD9
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Dec 2023 21:21:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59E37812497
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Dec 2023 02:31:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F1F51C20EF7
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Dec 2023 20:21:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3C6F281CAA
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Dec 2023 01:31:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE6A97E540;
-	Wed, 13 Dec 2023 20:21:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1EA5645;
+	Thu, 14 Dec 2023 01:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="x52FsXjf"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="fjZ2HvA0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from omta038.useast.a.cloudfilter.net (omta038.useast.a.cloudfilter.net [44.202.169.37])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FA2FDB
-	for <linux-wireless@vger.kernel.org>; Wed, 13 Dec 2023 12:21:02 -0800 (PST)
-Received: from eig-obgw-6008a.ext.cloudfilter.net ([10.0.30.227])
-	by cmsmtp with ESMTPS
-	id D5TWrbbdGWcCIDVj4rvllN; Wed, 13 Dec 2023 20:21:02 +0000
-Received: from gator4166.hostgator.com ([108.167.133.22])
-	by cmsmtp with ESMTPS
-	id DVj3rhQtd0xkrDVj3rcmiN; Wed, 13 Dec 2023 20:21:01 +0000
-X-Authority-Analysis: v=2.4 cv=N7U6qkxB c=1 sm=1 tr=0 ts=657a122d
- a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=WzbPXH4gqzPVN0x6HrNMNA==:17
- a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
- a=IkcTkHD0fZMA:10 a=e2cXIFwxEfEA:10 a=wYkD_t78qR0A:10 a=VwQbUJbxAAAA:8
- a=NTzXNMFqqmFafkXJ348A:9 a=QEXdDO2ut3YA:10 a=phs4urI-Bf8A:10
- a=AjGcO6oz07-iQ99wixmX:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=7UAQwQ7IEtUhKOpC9ppXTt8xH6jO7zZPX28hM2QTFvA=; b=x52FsXjfxbUcEeG9/WkQOhe+2y
-	jct1laMvmnHlYE2wFSApdVD2VqsiYlBPyH4EAm7tA04/0pPCbZm23IaZNzHzcrc+FYSeE8vTmVUMp
-	ZMsdVq2OrSPvRy6BH0pkMg9xHXfjopFoNawyVLlK7t/mocBLeTjdtQxUwpuG9GO/3mXLDjkNH7zLd
-	OAfhFOX/l/leXxYamAy3tZB8V1NEm/lLeLEdaWF9owd5voG9iTx5y2We1sj4x1HNHRVfRg+iKmbYV
-	ieuNz1ubExRMreRfX2hvnEJlvlVYXnUcwcRa725grxbpmxo2bm0JoJPodPIwwz0sB91REK3xvl+3/
-	zNfHEv5w==;
-Received: from 187-162-21-192.static.axtel.net ([187.162.21.192]:36860 helo=[192.168.15.10])
-	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <gustavo@embeddedor.com>)
-	id 1rDVj2-003Rqk-2d;
-	Wed, 13 Dec 2023 14:21:00 -0600
-Message-ID: <6f95ea62-ff20-4aea-817f-6c5f84ab5a97@embeddedor.com>
-Date: Wed, 13 Dec 2023 14:21:00 -0600
+Received: from mail-io1-xd2a.google.com (mail-io1-xd2a.google.com [IPv6:2607:f8b0:4864:20::d2a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D389BE4
+	for <linux-wireless@vger.kernel.org>; Wed, 13 Dec 2023 17:31:07 -0800 (PST)
+Received: by mail-io1-xd2a.google.com with SMTP id ca18e2360f4ac-7b6fc474d16so316446839f.1
+        for <linux-wireless@vger.kernel.org>; Wed, 13 Dec 2023 17:31:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1702517467; x=1703122267; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=faxZCPIB6BA+PKGwJpg3jnTyxYaNnS6OziZiTTL7mN4=;
+        b=fjZ2HvA0KDvtNR/kLUU17y+TsPB3txOhrWtlMBL0RaEjpWIV1MOukUrtr3NgDlZ9ha
+         blSlioyHuVSkWHF8oDZTKVMY+z6vJeJmEVicRw/yOB1Wv3fmGGUvARbEdgr8RpoBQ4hP
+         cnkzXVPh+2MWz4+Hu34akFMK3MUq7UnrE7HWQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702517467; x=1703122267;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=faxZCPIB6BA+PKGwJpg3jnTyxYaNnS6OziZiTTL7mN4=;
+        b=XrsHVC2BvYM+Zq0ZtfSQvQCmOPogBRZ660gnGNptwc1urH8pmy/Dq8aK9Q4PahYFXM
+         8omLctl4uH7iTguEyxBN4TO0zKq38YKQrVHMZ+CzITONc4QysSMi1vDlKFhvHS8nDqpk
+         oukgslPL8s1E00r+NLNWA/Si7gTyPt21VHMxgGUiAKWeyDgsn8UKogVcq+oScLUaH/3M
+         rZmLoZnVc+jsoKqqqTxGIJJhWd4h1wgtZbDyc5aj2yCsAG08eh7Efwz60EtcUsdIKThY
+         DfJABiSnokng00uF88vpLHpPbodevL9sBlXGuZU+sX0UQSWPnjIJ6UCg3IcDIPUgedga
+         IOmw==
+X-Gm-Message-State: AOJu0YzPh1yWOnTlr3JsPlHnp9aAzRROX/nhZArkcHREpxENEPnIXcgu
+	+l5mu8XKFCVJOUxTMeQEcjWM0Wvl2la+lzDtAhU=
+X-Google-Smtp-Source: AGHT+IGcft8mTr1NcnoXOaDWWv6KIsuOrSLK8C2duW5H45U6QWQb3tGGHvbC6VAZWxKswazTsZZJmQ==
+X-Received: by 2002:a05:6e02:1605:b0:35d:7ac7:359c with SMTP id t5-20020a056e02160500b0035d7ac7359cmr15752917ilu.40.1702517467173;
+        Wed, 13 Dec 2023 17:31:07 -0800 (PST)
+Received: from localhost ([2620:15c:9d:2:17f:673b:ab18:3603])
+        by smtp.gmail.com with UTF8SMTPSA id j3-20020a170902c08300b001cfc68125desm11207835pld.203.2023.12.13.17.31.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 13 Dec 2023 17:31:06 -0800 (PST)
+Date: Wed, 13 Dec 2023 17:31:04 -0800
+From: Brian Norris <briannorris@chromium.org>
+To: Alex Bee <knaerzche@gmail.com>
+Cc: Amitkumar Karwar <amitkumar.karwar@nxp.com>,
+	Ganapathi Bhat <ganapathi.bhat@nxp.com>,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] wifi: mwifiex: Restore USB8897 chipset support
+Message-ID: <ZXpa2PE_qMmCoEec@google.com>
+References: <20231205210237.209332-1-knaerzche@gmail.com>
+ <ZXDHgo5QnZjb237S@google.com>
+ <ZXDH5S7rM32y48Fc@google.com>
+ <f0f3a0fd-8019-4950-8682-902cf985a81e@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/6] wifi: ath10k: use flexible arrays
-Content-Language: en-US
-To: Jeff Johnson <quic_jjohnson@quicinc.com>, Kalle Valo <kvalo@kernel.org>
-Cc: Kees Cook <keescook@chromium.org>, ath10k@lists.infradead.org,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20231213-wmi_host_mem_chunks_flexarray-v1-0-92922d92fa2c@quicinc.com>
-From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-In-Reply-To: <20231213-wmi_host_mem_chunks_flexarray-v1-0-92922d92fa2c@quicinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 187.162.21.192
-X-Source-L: No
-X-Exim-ID: 1rDVj2-003Rqk-2d
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: 187-162-21-192.static.axtel.net ([192.168.15.10]) [187.162.21.192]:36860
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 38
-X-Org: HG=hgshared;ORG=hostgator;
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfKCsDuGZAbxmmow0Tg+5QLG2tUVhzAGM4jRQKox816HGPMQ7ZlXTF1xTRLnEbYm0lfjDba2GDLRmHIXxRTaTP/9TM3jdtjNMYEKASpI7p9qADpL7zYug
- GzHXcjrOq1RP2A5Un7iO10rkXUfPu/fEVDFUFaQsiwSXkEEU6VKuyMRhsO3dWiKJHs4HJfYnd001B542ymB7L+fvdkWOL/LCJQqxBbELAorPkZXaRc8ABvk4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f0f3a0fd-8019-4950-8682-902cf985a81e@gmail.com>
 
+Hi,
 
-
-On 12/13/23 11:06, Jeff Johnson wrote:
-> Clean up the last remaining zero-length and one-element arrays in
-> ath10k to comply with:
-> https://docs.kernel.org/process/deprecated.html#zero-length-and-one-element-arrays
+On Wed, Dec 06, 2023 at 10:51:03PM +0100, Alex Bee wrote:
+> Am 06.12.23 um 20:13 schrieb Brian Norris:
+> > On Wed, Dec 06, 2023 at 11:12:02AM -0800, Brian Norris wrote:
+> > > On Tue, Dec 05, 2023 at 10:02:37PM +0100, Alex Bee wrote:
+> > > > This patch restores USB8897 support which was removed with
+> > > > Commit 60a188a2715f ("mwifiex: remove USB8897 chipset support")
+> > > Did you look at the reason for that removal?
+> I did. And honestly I didn't understand it - in the first place.
+> > > "if both mwifiex_pcie and mwifiex_usb modules are enabled by user,
+> > > sometimes mwifiex_usb wins the race even if user wants wlan interface to
+> > > be on PCIe and USB for bluetooth. This patch solves the problem."
+> > > 
+> > > That sounds like a legitimate problem, even if the solution isn't
+> > > perfect. Do you have any alternatives?
+> > > 
+> > > I don't have such hardware, so I don't know its behaviors nor can I test
+> > > it. But it'd be nice if we could differentiate USB-only vs PCIe+USB
+> > > somehow.
 > 
-> With these cleanups done the ath10k-check script no longer reports any
-> issues.
-
-This is really great!
-
-Thank you for taking care of this. :)
---
-Gustavo
-
+> I re-tried to decipher the commit message and re-checked everything and I
+> think the patch is fine as is:
 > 
-> ---
-> Jeff Johnson (6):
->        wifi: ath10k: use flexible array in struct wmi_host_mem_chunks
->        wifi: ath10k: use flexible arrays for WMI start scan TLVs
->        wifi: ath10k: remove struct wmi_pdev_chanlist_update_event
->        wifi: ath10k: remove unused template structs
->        wifi: ath10k: use flexible array in struct wmi_tdls_peer_capabilities
->        wifi: ath10k: remove duplicate memset() in 10.4 TDLS peer update
+> What they probably mean in the commit message is: There is an USB id clash
+> for 1286:2046 with their "Marvell NFC-over-USB driver" [0]. So that has
+> nothing to do with bluetooth :)
+> However Commit 8a81a96bd116 ("NFC: nfcmrvl: update USB device id")
+> restricted the InterfaceSubClass and the InterfaceProtocol for those
+> devices, so that this clash does no longer exist. This patch here takes the
+> correct ones fot this wifi adapter (I checked with lsusb).
+
+That's a nice theory, but they never mentioned NFC. I'd expect they
+wouldn't have such a large omission in their description ... but maybe I
+place too much faith.
+
+It also doesn't make sense how commit 60a188a2715f would have helped
+anything for such an explanation, because they were already using an
+appropriately restrictive ID (via USB_DEVICE_AND_INTERFACE_INFO) in
+mwifiex_usb. Disabling mwifiex_usb wouldn't do anything interesting;
+disabling nfcmrvl would.
+
+And I suspect Bluetooth is mentioned as that's typically the thing they
+expect to use for USB (and not WiFi). Clearly that expectation has
+changed in the intervening years though.
+
+> If it's not that I really don't know what they mean: Neither 1286:2045 nor
+> 1286:2046 usb ids are used anywhere else tree-wide.
+
+I suppose I'm not 100% sure either, but I'm guessing that somehow both
+PCIe and USB interfaces are enabled for WLAN -- i.e., we see a PCIe
+11ab:2b38 and a USB 1286:2046 device show up -- and it's just a matter
+of which one probes first (and downloads the relevant firmware).
+
+That'd be an awfully silly design, and the datasheets I've seen suggest
+that their pin strappings determine a single host interface for WLAN
+(SDIO, USB, HSIC(?), or PCIe). But then, they also suggest the strapping
+don't impact the hardware; they only affect software, which may or not
+be coded well.
+
+Personally, I only ever had SDIO modules around for 8897, so I don't
+know how this PCIe+USB combo works in practice.
+
+> [0] https://cateee.net/lkddb/web-lkddb/NFC_MRVL_USB.html
 > 
->   drivers/net/wireless/ath/ath10k/wmi.c | 10 +++----
->   drivers/net/wireless/ath/ath10k/wmi.h | 55 +++++++++--------------------------
->   2 files changed, 17 insertions(+), 48 deletions(-)
-> ---
-> base-commit: 7133b072dfbfac8763ffb017642c9c894894c50d
-> change-id: 20231212-wmi_host_mem_chunks_flexarray-78264e146731
-> 
+> Fine?
+
+I'm not sure. While I don't have sympathy for the Marvell/NXP folks
+who've abandoned their products, I do have sympathy for the users who
+may still have such systems and who we may be broken by reintrocing this
+change.
+
+On the other hand, if such users pop up again, we could probably cook a
+modprobe.d entry to hack things up. I'm still not sure how to *really*
+fix such an odd system in a generic way.
+
+Brian
 
