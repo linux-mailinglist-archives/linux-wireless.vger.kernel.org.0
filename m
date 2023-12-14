@@ -1,64 +1,40 @@
-Return-Path: <linux-wireless+bounces-815-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-816-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98CA1813B14
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Dec 2023 20:54:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80222813CF7
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Dec 2023 22:53:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F89C2814FA
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Dec 2023 19:54:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F81F1C21D60
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Dec 2023 21:53:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B23DE697BC;
-	Thu, 14 Dec 2023 19:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 678002C681;
+	Thu, 14 Dec 2023 21:53:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cm4uKUfU"
+	dkim=pass (1024-bit key) header.d=o2.pl header.i=@o2.pl header.b="NVv+CRCF"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx-out.tlen.pl (mx-out.tlen.pl [193.222.135.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0BD76E599
-	for <linux-wireless@vger.kernel.org>; Thu, 14 Dec 2023 19:53:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-4260b657ed5so1530101cf.0
-        for <linux-wireless@vger.kernel.org>; Thu, 14 Dec 2023 11:53:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702583607; x=1703188407; darn=vger.kernel.org;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=m/Nw/PH8S1wxjlLYHgUA+Ypffm5JnPxCBtNSvpU4FfY=;
-        b=cm4uKUfUmvuHo7Rzh8AkGk2Zyzj2Zi/hKz3q9ugHr72kjtRO+Hel3Zxleq2z4DZm7L
-         9c6Zl+N8w3tCLI8uENC1RvkZjI26l/yc9ss2emIzEYyUmLMR5jKjFQH0uxHGGasFLztD
-         tyKGBHwuZs4P9TVrOf05xljEmBMSSgyqPBZLF8Pp5HqugiYkGixfYrFMcMUJbPNBlgrA
-         RCk7P+k2rd0cv9du3tJw1jG1xHe/lEUGSLHSu364bStSC/KrAw9p4w5O/ZajSg5PqlQV
-         +7TvkeCbf1fDOcPzzbdLQCQp3vNYV+96gyuCE+d5pj8vhKw2Jkysbgwe+XBnnZCKNkUr
-         qWVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702583607; x=1703188407;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=m/Nw/PH8S1wxjlLYHgUA+Ypffm5JnPxCBtNSvpU4FfY=;
-        b=U7ho4SQx7Hknw3tQBFYY4tXH7MaSRdzvij3rts+aWIUkoRwkyLr0yLxMQ9S9cdeET6
-         kzY/7PYNFmrp5SVH8wGSg8fRC6oGj33W1h2eudzll78RqIVa3ugMhUgXfB020kGW9jGu
-         Eh5g1ZCh6W5Jl7ctRGbNtppNX5T9I2Rgn5E90gUUQRvze3lD39kzlv/KS5nXULToFhFP
-         i4btnmQg4GJoHnP1IpZ7IIB1mGzP8CeiR9010hwTibPgsOfA61R56+PffDG0FIuv/si+
-         FiVrzUo+ZASDJDHLV1hXkOOIoERf8x6gxk4fKb3YxpD+lrpUwCq/++XYqie/spkjgM8d
-         OLeg==
-X-Gm-Message-State: AOJu0Yxbic6VLRF27Jhv0KIz+xDJBaMfmC7tN/vN8oW1Atg08WRxrAbB
-	bvMBzNyqsmzgFoh22JzvQD+Mm07Ziis=
-X-Google-Smtp-Source: AGHT+IH7dCDvPS4XW5nfLHTt5EcFtdJLqZ0QvQImq3WHnRXq+1lPLDeHT8Hjp6QS1ZFIWs+o0Gu0dg==
-X-Received: by 2002:a05:622a:16:b0:423:8287:dc68 with SMTP id x22-20020a05622a001600b004238287dc68mr13119376qtw.52.1702583607021;
-        Thu, 14 Dec 2023 11:53:27 -0800 (PST)
-Received: from [10.102.4.159] ([208.195.13.130])
-        by smtp.gmail.com with ESMTPSA id f17-20020ac84651000000b0042545901450sm6020951qto.72.2023.12.14.11.53.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 Dec 2023 11:53:26 -0800 (PST)
-Message-ID: <abbb7874-7f7f-423b-b67c-6ef850ae5bd6@gmail.com>
-Date: Thu, 14 Dec 2023 11:53:23 -0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAAD72C6A0
+	for <linux-wireless@vger.kernel.org>; Thu, 14 Dec 2023 21:52:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=o2.pl
+Received: (wp-smtpd smtp.tlen.pl 26350 invoked from network); 14 Dec 2023 22:45:35 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=o2.pl; s=1024a;
+          t=1702590335; bh=7EkbqXzJulL0qIo4NQZvIDOhqIMpiQuBQw7hVugbnjk=;
+          h=To:Cc:From:Subject;
+          b=NVv+CRCFHVMmH1dXhfDJNuwjri0QFZLmwvRpBfVHTKkRDreWhSUiZsVRSalK5f1no
+           dVbbRUUt/GHo7FcBQ1z9hdHFPXXImBTjbwLckXmMJynT9K6wyU7hXyNKFL6Tsse6C1
+           gEa6ovyVOATFUccbYGEIStU3ysIWzv6ehxXDHow4=
+Received: from aaep161.neoplus.adsl.tpnet.pl (HELO [192.168.1.22]) (mat.jonczyk@o2.pl@[83.4.119.161])
+          (envelope-sender <mat.jonczyk@o2.pl>)
+          by smtp.tlen.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
+          for <miriam.rachel.korenblit@intel.com>; 14 Dec 2023 22:45:35 +0100
+Message-ID: <da91e776-b192-4e2b-9157-e83a5a2659b1@o2.pl>
+Date: Thu, 14 Dec 2023 22:45:32 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -66,327 +42,184 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: "open list:MEDIATEK MT76 WIRELESS LAN DRIVER"
- <linux-wireless@vger.kernel.org>
-Cc: ath10k@lists.infradead.org
-From: James Prestwood <prestwoj@gmail.com>
-Subject: Ath10k warn, then 4-way timeout after bringing interface up
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Language: en-GB
+To: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+ Johannes Berg <johannes.berg@intel.com>
+Cc: Gregory Greenman <gregory.greenman@intel.com>,
+ linux-wireless@vger.kernel.org,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+From: =?UTF-8?Q?Mateusz_Jo=C5=84czyk?= <mat.jonczyk@o2.pl>
+Subject: [Regression] debugfs warnings when resuming from suspend on 6.7-rc5
+Autocrypt: addr=mat.jonczyk@o2.pl; keydata=
+ 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
+ TANkZ3QqXNX2
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-WP-MailID: ee0a7f3a7e275e6a5657cfb69c59c089
+X-WP-AV: skaner antywirusowy Poczty o2
+X-WP-SPAM: NO 0000000 [UdOE]                               
 
-Hi,
+Hello,
 
-This seems to be related to to a problem I reported in the past [1] 
-where cycling the interface up/down causes a timeout in ath10k. I 
-originally thought this was specific to setting power save while the 
-interface was down, but I'm now seeing (more rarely) it with PS taken 
-out of the equation. I attempted a work around for this in userspace by 
-retrying the ifup after it failed. This succeeded and a connection was 
-made but ath10k spewed a warning, then no data frames (EAPoL) were being 
-passed after that. The device could repeatedly associate to BSS's but 
-would timeout on the 4-way handshake. This went on indefinitely. When 
-this happens the driver seem to be in a very bad and unrecoverable state.
+Since upgrading to 6.7-rc kernels, I have been getting the following error
+message in dmesg
+while resuming from suspend:
 
-I'm using a 6.2 debian kernel (single patch applied [2]). I also found a 
-report of this on the arch forums [3], seems like identical behavior, 
-under a 5.17 kernel
+[   83.302944] debugfs: Directory 'iwlmvm' with parent 'netdev:wlp2s0' already
+present!
+[   83.302963] iwlwifi 0000:02:00.0: Failed to create debugfs directory under
+netdev:wlp2s0
 
-[1] 
-https://lore.kernel.org/linux-wireless/304ce305-fbe6-420e-ac2a-d61ae5e6ca1a@gmail.com/
+I have placed a dump_stack() in a respective debugfs function and obtained a
+stack trace (see below).
 
-[2] 
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?id=63b896629353157e8ca77cabdfab340b5c69ca59
+This may be connected with recent commits by Miri and Johannes:
 
-[3] https://bbs.archlinux.org/viewtopic.php?id=276259
+commit c36235acb34fb ("wifi: iwlwifi: mvm: rework debugfs handling")
 
-Dec 14 18:36:45 iwd[1571924]: src/manager.c:manager_interface_dump_done()
-Dec 14 18:36:45 iwd[1571924]: src/manager.c:manager_create_interfaces() 
-creating wlan0
-Dec 14 18:36:45 iwd[1571924]: src/manager.c:manager_create_interfaces() 
-creating wlan0-p2p
-Dec 14 18:36:45 iwd[1571924]: src/wiphy.c:wiphy_update_reg_domain() New 
-reg domain country code for phy0 is 99
-Dec 14 18:36:45 iwd[1571924]: src/manager.c:manager_config_notify() 
-Notification of command New Interface(7)
-Dec 14 18:36:45 iwd[1571924]: src/netdev.c:netdev_link_notify() event 16 
-on ifindex 14
-Dec 14 18:36:45 iwd[1571924]: 
-src/manager.c:manager_new_station_interface_cb()
-Dec 14 18:36:45 iwd[1571924]: src/netdev.c:netdev_create_from_genl() 
-Created interface wlan0[14 14]
-Dec 14 18:36:45 iwd[1571924]: src/manager.c:manager_config_notify() 
-Notification of command New Interface(7)
-Dec 14 18:36:45 iwd[1571924]: src/manager.c:manager_new_p2p_interface_cb()
-Dec 14 18:36:45 iwd[1571924]: src/p2p.c:p2p_device_update_from_genl() 
-Created P2P device 15
-#
-# Issue bringing the interface up, retried and succeeded
-#
-Dec 14 18:36:50 kernel: ath10k_pci 0000:02:00.0: wmi service ready event 
-not received
-Dec 14 18:36:50 iwd[1571924]: Error bringing interface 14 up: Connection 
-timed out, retrying in 1s
-Dec 14 18:36:50 kernel: ath10k_pci 0000:02:00.0: Could not init core: -110
-Dec 14 18:36:51 iwd[1571924]: src/netdev.c:netdev_link_notify() event 16 
-on ifindex 14
-Dec 14 18:36:51 iwd[1571924]: src/netdev.c:netdev_set_4addr() netdev: 14 
-use_4addr: 0
-Dec 14 18:36:51 iwd[1571924]: src/netdev.c:netdev_initial_up_cb() 
-Interface 14 initialized
-Dec 14 18:36:51 iwd[1571924]: src/netconfig.c:netconfig_new() Creating 
-netconfig for interface: 14
-Dec 14 18:36:51 iwd[1571924]: src/station.c:station_enter_state() Old 
-State: disconnected, new state: autoconnect_quick
-Dec 14 18:36:51 iwd[1571924]: src/wiphy.c:wiphy_radio_work_insert() 
-Inserting work item 1
-Dec 14 18:36:51 iwd[1571924]: src/wiphy.c:wiphy_radio_work_next() 
-Starting work item 1
-Dec 14 18:36:51 iwd[1571924]: src/rrm.c:rrm_add_frame_watches()
-Dec 14 18:36:51 iwd[1571924]: src/netdev.c:netdev_link_notify() event 16 
-on ifindex 14
-Dec 14 18:36:51 iwd[1571924]: src/netdev.c:netdev_link_notify() event 16 
-on ifindex 14
-Dec 14 18:36:51 iwd[1571924]: src/manager.c:manager_config_notify() 
-Notification of command Set Interface(6)
-Dec 14 18:36:51 iwd[1571924]: src/scan.c:scan_notify() Scan notification 
-Trigger Scan(33)
-Dec 14 18:36:51 iwd[1571924]: src/scan.c:scan_request_triggered() Active 
-scan triggered for wdev 14
-Dec 14 18:36:51 iwd[1571924]: 
-src/station.c:station_quick_scan_triggered() Quick scan triggered for wlan0
-Dec 14 18:36:51 iwd[1571924]: src/wiphy.c:wiphy_reg_notify() 
-Notification of command Reg Beacon Hint(42)
-Dec 14 18:36:51 iwd[1571924]: src/wiphy.c:wiphy_reg_notify() 
-Notification of command Reg Beacon Hint(42)
-Dec 14 18:36:52 iwd[1571924]: src/wiphy.c:wiphy_reg_notify() 
-Notification of command Reg Beacon Hint(42)
-Dec 14 18:36:52 iwd[1571924]: src/scan.c:scan_notify() Scan notification 
-New Scan Results(34)
-Dec 14 18:36:52 iwd[1571924]: src/netdev.c:netdev_link_notify() event 16 
-on ifindex 14
-#
-# Removed scan results for privacy
-#
-Dec 14 18:36:52 iwd[1571924]: src/station.c:station_autoconnect_start()
-Dec 14 18:36:52 iwd[1571924]: src/station.c:station_autoconnect_next() 
-autoconnect: Trying SSID: <ssid>
-Dec 14 18:36:52 iwd[1571924]: src/station.c:station_autoconnect_next() 
-autoconnect: 'aa:bb:cc:dd:ee:ff' freq: 5220, rank: 1576, strength: -5600
-Dec 14 18:36:52 iwd[1571924]: src/netdev.c:netdev_cqm_rssi_update()
-Dec 14 18:36:52 iwd[1571924]: src/wiphy.c:wiphy_radio_work_insert() 
-Inserting work item 2
-Dec 14 18:36:52 iwd[1571924]: src/station.c:__station_connect_network() 
-connecting to BSS aa:bb:cc:dd:ee:ff
-Dec 14 18:36:52 iwd[1571924]: src/station.c:station_enter_state() Old 
-State: autoconnect_quick, new state: connecting (auto)
-Dec 14 18:36:52 iwd[1571924]: src/scan.c:scan_cancel() Trying to cancel 
-scan id 1 for wdev 14
-Dec 14 18:36:52 iwd[1571924]: src/wiphy.c:wiphy_radio_work_done() Work 
-item 1 done
-Dec 14 18:36:52 iwd[1571924]: src/wiphy.c:wiphy_radio_work_next() 
-Starting work item 2
-Dec 14 18:36:52 kernel: wlan0: authenticate with aa:bb:cc:dd:ee:ff
-Dec 14 18:36:52 iwd[1571924]: src/netdev.c:netdev_mlme_notify() MLME 
-notification New Station(19)
-Dec 14 18:36:52 iwd[1571924]: src/station.c:station_netdev_event() 
-Associating
-Dec 14 18:36:52 kernel: wlan0: send auth to aa:bb:cc:dd:ee:ff (try 1/3)
-Dec 14 18:36:52 iwd[1571924]: src/netdev.c:netdev_mlme_notify() MLME 
-notification Authenticate(37)
-Dec 14 18:36:52 iwd[1571924]: src/netdev.c:netdev_authenticate_event()
-Dec 14 18:36:52 kernel: wlan0: authenticated
-Dec 14 18:36:52 kernel: wlan0: associate with aa:bb:cc:dd:ee:ff (try 1/3)
-Dec 14 18:36:52 kernel: wlan0: RX AssocResp from aa:bb:cc:dd:ee:ff 
-(capab=0x1511 status=0 aid=3)
-Dec 14 18:36:52 kernel: ------------[ cut here ]------------
-Dec 14 18:36:52 kernel: WARNING: CPU: 5 PID: 0 at 
-drivers/net/wireless/ath/ath10k/htt_rx.c:38 
-ath10k_htt_rx_pop_paddr+0xcf/0xf0 [ath10k_core]
-Dec 14 18:36:52 kernel: Modules linked in: tls nft_chain_nat xt_nat 
-xt_MASQUERADE nf_nat xt_tcpudp xt_conntrack nf_conntrack nf_defrag_ipv6 
-nf_defrag_ipv4 nft_compat nf_tables libcrc32c nfnetlink ccm algif_aead 
-des_generic libdes algif_skcipher bnep cmac md4 algif_hash af_alg 
-snd_sof_pci_intel_cnl snd_sof_intel_hda_common soundwire_intel 
-soundwire_generic_allocation soundwire_cadence snd_sof_intel_hda 
-snd_sof_pci snd_sof_xtensa_dsp snd_hda_codec_hdmi snd_sof snd_sof_utils 
-snd_soc_hdac_hda snd_hda_ext_core snd_soc_acpi_intel_match 
-snd_hda_codec_realtek snd_soc_acpi soundwire_bus snd_hda_codec_generic 
-ledtrig_audio snd_soc_core snd_compress ac97_bus >
-Dec 14 18:36:52 kernel:  mac80211 irqbypass snd_timer videobuf2_v4l2 
-bluetooth snd videodev rapl ecdh_generic ee1004 wmi_bmof soundcore 
-libarc4 intel_cstate videobuf2_common ecc mei_me mc mei 
-intel_pch_thermal mac_hid acpi_pad acpi_tad cfg80211 pkcs8_key_parser 
-ramoops pstore_blk reed_solomon pstore_zone efi_pstore ip_tables 
-x_tables autofs4 overlay hid_generic usbhid hid i915 drm_buddy ttm 
-drm_display_helper cec rc_core crct10dif_pclmul crc32_pclmul 
-drm_kms_helper polyval_clmulni polyval_generic ghash_clmulni_intel 
-syscopyarea sha512_ssse3 sysfillrect aesni_intel sysimgblt crypto_simd 
-drm igb cryptd e1000e xhci_pci dca video ahci i2c_i801 intel_lp>
-Dec 14 18:36:52 kernel: CPU: 5 PID: 0 Comm: swapper/5 Not tainted 
-6.2.0-37-generic #38~22.04.1
-Dec 14 18:36:52 kernel: Hardware name: <removed> QP-8565B-S4/MWHU7AS-S4, 
-BIOS F2 10/25/2021
-Dec 14 18:36:52 kernel: RIP: 0010:ath10k_htt_rx_pop_paddr+0xcf/0xf0 
-[ath10k_core]
-Dec 14 18:36:52 kernel: Code: 00 00 48 8b 30 45 31 c0 b9 02 00 00 00 e8 
-a9 bb 0e c9 4c 89 e0 4c 8b 65 f8 c9 31 d2 31 c9 31 f6 31 ff 45 31 c0 c3 
-cc cc cc cc <0f> 0b 45 31 e4 4c 89 e0 4c 8b 65 f8 c9 31 d2 31 c9 31 f6 
-31 ff 45
-Dec 14 18:36:52 kernel: RSP: 0018:ffffac9f80260ce0 EFLAGS: 00010246
-Dec 14 18:36:52 kernel: RAX: 0000000000000000 RBX: ffff950486b72150 RCX: 
-ffff9505856b2080
-Dec 14 18:36:52 kernel: RDX: ffffac9f80260d70 RSI: 0000000006b1cf80 RDI: 
-ffff9505856b2cf8
-Dec 14 18:36:52 kernel: RBP: ffffac9f80260ce8 R08: ffff9505856b2cf8 R09: 
-0000000000000000
-Dec 14 18:36:52 kernel: R10: ffffac9f80260e00 R11: 0000000000000000 R12: 
-0000000000000001
-Dec 14 18:36:52 kernel: R13: ffff9505856b2080 R14: ffff9505856b2cf8 R15: 
-ffffac9f80260d70
-Dec 14 18:36:52 kernel: FS:  0000000000000000(0000) 
-GS:ffff9508cbd40000(0000) knlGS:0000000000000000
-Dec 14 18:36:52 kernel: CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-Dec 14 18:36:52 kernel: CR2: 00007f4742b11e68 CR3: 00000001107a8001 CR4: 
-00000000003706e0
-Dec 14 18:36:52 kernel: Call Trace:
-Dec 14 18:36:52 kernel:  <IRQ>
-Dec 14 18:36:52 kernel:  ? show_regs+0x72/0x90
-Dec 14 18:36:52 kernel:  ? ath10k_htt_rx_pop_paddr+0xcf/0xf0 [ath10k_core]
-Dec 14 18:36:52 kernel:  ? __warn+0x8d/0x160
-Dec 14 18:36:52 kernel:  ? ath10k_htt_rx_pop_paddr+0xcf/0xf0 [ath10k_core]
-Dec 14 18:36:52 kernel:  ? report_bug+0x1bb/0x1d0
-Dec 14 18:36:52 kernel:  ? handle_bug+0x46/0x90
-Dec 14 18:36:52 kernel:  ? exc_invalid_op+0x19/0x80
-Dec 14 18:36:52 kernel:  ? asm_exc_invalid_op+0x1b/0x20
-Dec 14 18:36:52 kernel:  ? ath10k_htt_rx_pop_paddr+0xcf/0xf0 [ath10k_core]
-Dec 14 18:36:52 kernel:  ath10k_htt_rx_pop_paddr32_list+0x96/0x300 
-[ath10k_core]
-Dec 14 18:36:52 kernel:  ath10k_htt_rx_in_ord_ind+0x112/0x330 [ath10k_core]
-Dec 14 18:36:52 kernel:  ath10k_htt_txrx_compl_task+0x9a/0x2c0 [ath10k_core]
-Dec 14 18:36:52 kernel:  ? ath10k_htt_txrx_compl_task+0x9a/0x2c0 
-[ath10k_core]
-Dec 14 18:36:52 kernel:  ? ath10k_ce_per_engine_service+0x6b/0xb0 
-[ath10k_core]
-Dec 14 18:36:52 kernel:  ? ath10k_bus_pci_read32+0xd7/0x130 [ath10k_pci]
-Dec 14 18:36:52 kernel:  ath10k_pci_napi_poll+0x5a/0x160 [ath10k_pci]
-Dec 14 18:36:52 kernel:  ? mod_timer+0x10/0x20
-Dec 14 18:36:52 kernel:  __napi_poll+0x30/0x1f0
-Dec 14 18:36:52 kernel:  net_rx_action+0x185/0x2d0
-Dec 14 18:36:52 kernel:  ? __napi_schedule+0x71/0xa0
-Dec 14 18:36:52 kernel:  __do_softirq+0xda/0x330
-Dec 14 18:36:52 kernel:  __irq_exit_rcu+0xa2/0xd0
-Dec 14 18:36:52 kernel:  irq_exit_rcu+0xe/0x20
-Dec 14 18:36:52 kernel:  common_interrupt+0xa4/0xb0
-Dec 14 18:36:52 kernel:  </IRQ>
-Dec 14 18:36:52 kernel:  <TASK>
-Dec 14 18:36:52 kernel:  asm_common_interrupt+0x27/0x40
-Dec 14 18:36:52 kernel: RIP: 0010:cpuidle_enter_state+0xde/0x6f0
-Dec 14 18:36:52 kernel: Code: 4f 31 74 e8 94 1a 45 ff 8b 53 04 49 89 c7 
-0f 1f 44 00 00 31 ff e8 92 f8 43 ff 80 7d d0 00 0f 85 e8 00 00 00 fb 0f 
-1f 44 00 00 <45> 85 f6 0f 88 0f 02 00 00 4d 63 ee 49 83 fd 09 0f 87 c4 
-04 00 00
-Dec 14 18:36:52 kernel: RSP: 0018:ffffac9f80143e28 EFLAGS: 00000246
-Dec 14 18:36:52 kernel: RAX: 0000000000000000 RBX: ffffcc9f7fd40000 RCX: 
-0000000000000000
-Dec 14 18:36:52 kernel: RDX: 0000000000000005 RSI: 0000000000000000 RDI: 
-0000000000000000
-Dec 14 18:36:52 kernel: RBP: ffffac9f80143e78 R08: 0000000000000000 R09: 
-0000000000000000
-Dec 14 18:36:52 kernel: R10: 0000000000000000 R11: 0000000000000000 R12: 
-ffffffff8d4c2f80
-Dec 14 18:36:52 kernel: R13: 0000000000000001 R14: 0000000000000001 R15: 
-000043051b8b1781
-Dec 14 18:36:52 kernel:  ? cpuidle_enter_state+0xce/0x6f0
-Dec 14 18:36:52 kernel:  cpuidle_enter+0x2e/0x50
-Dec 14 18:36:52 kernel:  cpuidle_idle_call+0x14f/0x1e0
-Dec 14 18:36:52 kernel:  do_idle+0x82/0x110
-Dec 14 18:36:52 kernel:  cpu_startup_entry+0x20/0x30
-Dec 14 18:36:52 kernel:  start_secondary+0x138/0x170
-Dec 14 18:36:52 kernel:  secondary_startup_64_no_verify+0xe5/0xeb
-Dec 14 18:36:52 kernel:  </TASK>
-Dec 14 18:36:52 kernel: ---[ end trace 0000000000000000 ]---
-Dec 14 18:36:52 kernel: ath10k_pci 0000:02:00.0: failed to pop paddr 
-list: -2
-Dec 14 18:36:52 iwd[1571924]: src/netdev.c:netdev_mlme_notify() MLME 
-notification Associate(38)
-Dec 14 18:36:52 iwd[1571924]: src/netdev.c:netdev_associate_event()
-Dec 14 18:36:52 iwd[1571924]: src/netdev.c:netdev_mlme_notify() MLME 
-notification Connect(46)
-Dec 14 18:36:52 iwd[1571924]: src/netdev.c:netdev_connect_event()
-Dec 14 18:36:52 iwd[1571924]: src/netdev.c:netdev_connect_event() 
-aborting and ignore_connect_event not set, proceed
-Dec 14 18:36:52 iwd[1571924]: src/netdev.c:netdev_connect_event() 
-expect_connect_failure not set, proceed
-Dec 14 18:36:52 iwd[1571924]: src/netdev.c:parse_request_ies()
-Dec 14 18:36:52 iwd[1571924]: src/netdev.c:netdev_connect_event() 
-Request / Response IEs parsed
-Dec 14 18:36:52 iwd[1571924]: src/netdev.c:netdev_get_oci()
-Dec 14 18:36:52 iwd[1571924]: src/netdev.c:netdev_link_notify() event 16 
-on ifindex 14
-Dec 14 18:36:52 iwd[1571924]: src/netdev.c:netdev_link_notify() event 16 
-on ifindex 14
-Dec 14 18:36:52 iwd[1571924]: src/wiphy.c:wiphy_reg_notify() 
-Notification of command Reg Change(36)
-Dec 14 18:36:52 iwd[1571924]: src/wiphy.c:wiphy_update_reg_domain() New 
-reg domain country code for (global) is US
-Dec 14 18:36:52 iwd[1571924]: src/netdev.c:netdev_link_notify() event 16 
-on ifindex 14
-Dec 14 18:36:52 iwd[1571924]: src/netdev.c:netdev_link_notify() event 16 
-on ifindex 14
-Dec 14 18:36:52 iwd[1571924]: src/netdev.c:netdev_get_oci_cb() Obtained 
-OCI: freq: 5220, width: 1, center1: 5220, center2: 0
-Dec 14 18:36:52 iwd[1571924]: src/eapol.c:eapol_start()
-Dec 14 18:36:52 kernel: wlan0: associated
-Dec 14 18:36:52 kernel: ath: EEPROM regdomain: 0x8348
-Dec 14 18:36:52 kernel: ath: EEPROM indicates we should expect a country 
-code
-Dec 14 18:36:52 kernel: ath: doing EEPROM country->regdmn map search
-Dec 14 18:36:52 kernel: ath: country maps to regdmn code: 0x3a
-Dec 14 18:36:52 kernel: ath: Country alpha2 being used: US
-Dec 14 18:36:52 kernel: ath: Regpair used: 0x3a
-Dec 14 18:36:52 kernel: ath: regdomain 0x8348 dynamically updated by 
-country element
-Dec 14 18:36:52 kernel: wlan0: Limiting TX power to 30 (30 - 0) dBm as 
-advertised by aa:bb:cc:dd:ee:ff
-Dec 14 18:36:52 iwd[1571924]: src/netdev.c:netdev_mlme_notify() MLME 
-notification Notify CQM(64)
-Dec 14 18:36:52 iwd[1571924]: src/netdev.c:netdev_cqm_event() Signal 
-change event (above=1 signal=-61)
-Dec 14 18:36:55 iwd[1571924]: src/netdev.c:netdev_link_notify() event 16 
-on ifindex 14
-Dec 14 18:36:55 kernel: wlan0: deauthenticated from aa:bb:cc:dd:ee:ff 
-(Reason: 15=4WAY_HANDSHAKE_TIMEOUT)
-Dec 14 18:36:55 iwd[1571924]: src/netdev.c:netdev_mlme_notify() MLME 
-notification Del Station(20)
-Dec 14 18:36:55 iwd[1571924]: src/netdev.c:netdev_mlme_notify() MLME 
-notification Deauthenticate(39)
-Dec 14 18:36:55 iwd[1571924]: src/netdev.c:netdev_deauthenticate_event()
-Dec 14 18:36:55 iwd[1571924]: src/netdev.c:netdev_mlme_notify() MLME 
-notification Disconnect(48)
-Dec 14 18:36:55 iwd[1571924]: src/netdev.c:netdev_disconnect_event()
-Dec 14 18:36:55 iwd[1571924]: Received Deauthentication event, reason: 
-15, from_ap: true
-Dec 14 18:36:55 iwd[1571924]: src/wiphy.c:wiphy_radio_work_done() Work 
-item 2 done
-Dec 14 18:36:55 iwd[1571924]: src/station.c:station_disconnect_event() 14
-Dec 14 18:36:55 iwd[1571924]: src/station.c:station_connect_cb() 14, 
-result: 3
-Dec 14 18:36:55 iwd[1571924]: src/netdev.c:netdev_cqm_rssi_update()
-Dec 14 18:36:55 iwd[1571924]: src/wiphy.c:wiphy_radio_work_insert() 
-Inserting work item 3
-Dec 14 18:36:55 iwd[1571924]: src/wiphy.c:wiphy_radio_work_next() 
-Starting work item 3
-#
-# 4-way handshake timeouts repeated on every connection attempt. The AP 
-showed that it was sending
-# the 1/4 message, but got no response.
-#
-Dec 14 18:36:55 iwd[1571924]: src/station.c:__station_connect_network() 
-connecting to BSS ff:ee:dd:cc:bb:aa
+commit e9dd25550770a ("wifi: iwlwifi: mvm: add a per-link debugfs")
 
-Thanks,
+I am ready to test any patches and to investigate further.
 
-James
+Hardware:
+
+02:00.0 Network controller [0280]: Intel Corporation Wireless 7265 [8086:095a]
+(rev 61)
+        Subsystem: Intel Corporation Dual Band Wireless-AC 7265 [8086:5010]
+
+Old AMD AM2+ motherboard (MSI KA780G) from around 2010.
+
+Greetings,
+
+Mateusz
+
+--------------------------------------------
+
+[   48.624560] iwlwifi 0000:02:00.0: Applying debug destination EXTERNAL_DRAM
+[   48.702116] iwlwifi 0000:02:00.0: Applying debug destination EXTERNAL_DRAM
+[   48.704281] iwlwifi 0000:02:00.0: FW already configured (0) - re-configuring
+[   48.706863] ACPI: \: failed to evaluate _DSM
+bf0212f2-788f-c64d-a5b3-1f738e285ade (0x1001)
+[   48.706872] ACPI: \: failed to evaluate _DSM
+bf0212f2-788f-c64d-a5b3-1f738e285ade (0x1001)
+[   48.706876] ACPI: \: failed to evaluate _DSM
+bf0212f2-788f-c64d-a5b3-1f738e285ade (0x1001)
+[   48.706879] ACPI: \: failed to evaluate _DSM
+bf0212f2-788f-c64d-a5b3-1f738e285ade (0x1001)
+[   48.706882] ACPI: \: failed to evaluate _DSM
+bf0212f2-788f-c64d-a5b3-1f738e285ade (0x1001)
+[   48.706884] ACPI: \: failed to evaluate _DSM
+bf0212f2-788f-c64d-a5b3-1f738e285ade (0x1001)
+[   48.706887] ACPI: \: failed to evaluate _DSM
+bf0212f2-788f-c64d-a5b3-1f738e285ade (0x1001)
+[   48.708274] debugfs: Directory 'iwlmvm' with parent 'netdev:wlp2s0' already
+present!
+[   48.708283] CPU: 1 PID: 1331 Comm: NetworkManager Not tainted
+6.7.0-rc5unif32-gf3e457d6f075 #430
+[   48.708287] Hardware name: MICRO-STAR INTERNATIONAL CO.,LTD MS-7551/KA780G
+(MS-7551), BIOS V16.7 08/05/2010
+[   48.708290] Call Trace:
+[   48.708293]  <TASK>
+[   48.708297]  dump_stack_lvl+0x37/0x50
+[   48.708305]  dump_stack+0x10/0x20
+[   48.708308]  start_creating+0xfa/0x1a0
+[   48.708317]  debugfs_create_dir+0x1b/0x170
+[   48.708323]  iwl_mvm_vif_add_debugfs+0x2b/0x220 [iwlmvm]
+[   48.708388]  drv_add_interface+0x240/0x270 [mac80211]
+[   48.708533]  ieee80211_do_open+0x4d6/0x710 [mac80211]
+[   48.708633]  ? ieee80211_check_concurrent_iface+0x180/0x230 [mac80211]
+[   48.708732]  ieee80211_open+0x69/0x90 [mac80211]
+[   48.708832]  __dev_open+0xf0/0x1a0
+[   48.708839]  __dev_change_flags+0x190/0x200
+[   48.708842]  ? skb_queue_tail+0x48/0x60
+[   48.708847]  dev_change_flags+0x26/0x70
+[   48.708850]  do_setlink+0x867/0x11e0
+[   48.708854]  ? rtnl_getlink+0x390/0x420
+[   48.708857]  ? __nla_validate_parse+0x5d/0xf90
+[   48.708865]  __rtnl_newlink+0x523/0xaa0
+[   48.708869]  ? rtnl_newlink+0x30/0x70
+[   48.708873]  rtnl_newlink+0x49/0x70
+[   48.708876]  rtnetlink_rcv_msg+0x16f/0x440
+[   48.708879]  ? _raw_write_unlock_bh+0x1a/0x20
+[   48.708884]  ? fib6_walker_unlink+0x49/0x60
+[   48.708889]  ? fib6_walk+0x8b/0xa0
+[   48.708893]  ? __pfx_rtnetlink_rcv_msg+0x10/0x10
+[   48.708896]  netlink_rcv_skb+0x5b/0x110
+[   48.708901]  rtnetlink_rcv+0x15/0x20
+[   48.708906]  netlink_unicast+0x1b5/0x260
+[   48.708909]  netlink_sendmsg+0x250/0x4d0
+[   48.708913]  __sock_sendmsg+0xba/0xc0
+[   48.708918]  ____sys_sendmsg+0x236/0x340
+[   48.708923]  ___sys_sendmsg+0x81/0xc0
+[   48.708927]  ? _copy_from_iter+0xb7/0x5d0
+[   48.708932]  ? kfree+0x76/0x110
+[   48.708936]  ? proc_sys_call_handler+0xb8/0x250
+[   48.708942]  ? __fget_light+0xd1/0x130
+[   48.708947]  __sys_sendmsg+0x65/0xc0
+[   48.708951]  __x64_sys_sendmsg+0x1f/0x30
+[   48.708954]  do_syscall_64+0x41/0xf0
+[   48.708959]  entry_SYSCALL_64_after_hwframe+0x56/0x5e
+[   48.708965] RIP: 0033:0x7feceb7cb18d
+[   48.708970] Code: 28 89 54 24 1c 48 89 74 24 10 89 7c 24 08 e8 ca ee ff ff 8b
+54 24 1c 48 8b 74 24 10 41 89 c0 8b 7c 24 08 b8 2e 00 00 00 0f 05 <48> 3d 00 f0
+ff ff 77 2f 44 89 c7 48 89 44 24 08 e8 fe ee ff ff 48
+[   48.708974] RSP: 002b:00007ffecdd37c60 EFLAGS: 00000293 ORIG_RAX:
+000000000000002e
+[   48.708978] RAX: ffffffffffffffda RBX: 00005638fb6c1c00 RCX: 00007feceb7cb18d
+[   48.708981] RDX: 0000000000000000 RSI: 00007ffecdd37cb0 RDI: 000000000000000c
+[   48.708983] RBP: 00007ffecdd37cb0 R08: 0000000000000000 R09: 0000000000000000
+[   48.708985] R10: 0000000000000001 R11: 0000000000000293 R12: 00005638fb6c1c00
+[   48.708987] R13: 00007ffecdd37e68 R14: 00007ffecdd37e5c R15: 0000000000000000
+[   48.708991]  </TASK>
+[   48.709032] iwlwifi 0000:02:00.0: Failed to create debugfs directory under
+netdev:wlp2s0
+[   52.403523] wlp2s0: authenticate with 50:c7:bf:2c:a9:31 (local
+address=b8:9a:2a:5a:b8:56)
+[   52.404492] wlp2s0: send auth to 50:c7:bf:2c:a9:31 (try 1/3)
+[   52.406824] wlp2s0: authenticated
+[   52.408269] wlp2s0: associate with 50:c7:bf:2c:a9:31 (try 1/3)
+[   52.410136] wlp2s0: RX AssocResp from 50:c7:bf:2c:a9:31 (capab=0x11 status=0
+aid=3)
+[   52.412299] wlp2s0: associated
 
 
