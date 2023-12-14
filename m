@@ -1,66 +1,62 @@
-Return-Path: <linux-wireless+bounces-776-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-777-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66F95812527
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Dec 2023 03:21:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB7D2812530
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Dec 2023 03:23:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93D4CB21147
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Dec 2023 02:20:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13E5B1C2106E
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Dec 2023 02:23:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C71D803;
-	Thu, 14 Dec 2023 02:20:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B0D0808;
+	Thu, 14 Dec 2023 02:23:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="EF3wqtcC"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="j0zibBq7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2086.outbound.protection.outlook.com [40.107.20.86])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61578BD;
-	Wed, 13 Dec 2023 18:20:49 -0800 (PST)
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2057.outbound.protection.outlook.com [40.107.21.57])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8DA9E3;
+	Wed, 13 Dec 2023 18:23:14 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=G7WG/DspcyvzhWOSlj712nL1J6f+yXH+9ylndy4VfuSCXdbNP/Me+y+mGxbZLiadglG37f3Mb58GR13QtCHQspPD5SBDVy878teJMXtAEGkdf9zxqekkgys3huTdOzmmBOaNMnCBuvAL2F6gfrR6QZphFeERYrTdvn8+OB9PAyHDuaJLQ79we/LtRxMGqZ3uG/ooOaSI+5LEm+NtkM5j/9RU4a8vGqhk+gXKTWmLpbh15P00UBGXDD/qrX6y+k/kx8VxEP9hC59sMD1l7UxrR1CPaH75xuyOIhevyV/9+73T6ajVvJBa4Gtd/h+CrIGIt+b56HCAr+2ZMTD868UJJw==
+ b=VZyHLr5N6prJ+fIcHr+O2PMLWCQReJD58TvMgQbvkUF8l/Q5qgPnlGtpijoIRDfOXgHKhzfY4EVCAHq3Kiqgdr36xZXpEDk2DY/voV4N9rrX1p26qV8yIuLvf08bst+Y1kI2fF2hvGHuhpmyn0GD9I2vE3ka/G4/HGvC8PISFRfJUwE6SlgL0ZHXPeHHUCZ71ghY5w3i9QUnmzoMRQJcnLzVuiFknJsz5oQsvq8K+4nwetvAfEyM86n/phu8sevZAM0upc7Bb5iqBwZTxhfXX6XsIxJrreMgH0rupaOhUyS1Wf7RQNcDnAn5BBxASf3LwVrxVOlnwOEKFRpu/BLhkQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=flqlZIL6m0N8CDq3wHTmY0ZyXGQ5lgxpKOi1iweAy+M=;
- b=jkYrVReg445BirFZzotqwF64N9l/9cUMjWLJHRcQXeG8/9V/aQ4TnJQqVgfjm/hbxKf642xLrDvRyAD1ajO7Ua+LE5HEQF4k2pb4yzLPx+woFPCLwD2uFnhTug0ATf2ZI82aq3o3mN6DEIIHwZO2hYQP6hbE1AUM0upDmmPRFSndTU+NPjJiZhtALkdlzJQ3h87yeSH4POjunb/UUmJli18cmCYPcP7qjQ5AM2rUDVTnJExxcr7u8Nu6tPX7f/I8VI+P9c8nxGpx/A0KxlgaVmm3GeEohg9NljRho5ODKJsNNCNsqN2cXAauLuMZp3qfFybKXIOWo58Ed/qwLVMXNQ==
+ bh=otUApAgWFvsxeEfJsIOmQVoC5sAdxRyZZGkzriSFuQc=;
+ b=BUHqTNgYOlC9fNmUSzZaQMWem9IFKf0C19s4Sf7Q/rY7VESD4oqJPx/On1xxsR9GlvXEZZkDjIEi6JJadj6t40CdC7oybx/fpyG8OCeJhxuU7Om3iVbAZLgU6eUW7PzPK8alpBBZ1s8bfNJrEET8lrb1WwkV1+uFo5DhRs3zgnNzmm9NYSOKCat8V1p/4f0Doq7bA03brV0j4j41ihrw/sqlucN3IlZhP/lmevWvDdXzAuIgiKZqmUJcIF4lrGRNGuNm82w3NOp0bt2UrRdSvwqag7+WN2ZT5Gn7warJ+raAsIkqlq7ORSdMRRNcp3TkngWAdY0bioS0iq+LiqFSjg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=flqlZIL6m0N8CDq3wHTmY0ZyXGQ5lgxpKOi1iweAy+M=;
- b=EF3wqtcCwAGoduYJCsdZoiIFzGVvonzxufQnLdP1uv4Tmsmk+ERp8J2pkMSzhXFrJgMv4zA0TwAzv4z6i5pCtsPuaQDlWUr5Lyu3W0AaqW7gEvL9VFu+Wvuj5QzEFtuUoNCvxWk6F+nkFdjz80r2wdImozzFzjwUaCeArcy9ae8=
+ bh=otUApAgWFvsxeEfJsIOmQVoC5sAdxRyZZGkzriSFuQc=;
+ b=j0zibBq7d5iwi4WlDM+z185dh0/LxCBW8nDsmBWJISR8Q/utHPyFnAK2jcAvSlYVCYnaNjeckYpWYYMY47iKzQh4niUmlck3QzSZpq+sGUXTbPmug//GPbkimmWDDUA1yxPX4511qI4UtG9hcnBx/PyK4zvEgy43Qw/QNFjta8o=
 Received: from PA4PR04MB9638.eurprd04.prod.outlook.com (2603:10a6:102:273::20)
- by PA4PR04MB7775.eurprd04.prod.outlook.com (2603:10a6:102:c3::15) with
+ by GVXPR04MB9758.eurprd04.prod.outlook.com (2603:10a6:150:110::12) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.33; Thu, 14 Dec
- 2023 02:20:47 +0000
+ 2023 02:23:12 +0000
 Received: from PA4PR04MB9638.eurprd04.prod.outlook.com
  ([fe80::34dd:289e:9e8b:9c9b]) by PA4PR04MB9638.eurprd04.prod.outlook.com
  ([fe80::34dd:289e:9e8b:9c9b%7]) with mapi id 15.20.7068.033; Thu, 14 Dec 2023
- 02:20:47 +0000
+ 02:23:11 +0000
 From: David Lin <yu-hao.lin@nxp.com>
 To: Brian Norris <briannorris@chromium.org>
-CC: Francesco Dolcini <francesco@dolcini.it>, "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "kvalo@kernel.org" <kvalo@kernel.org>, Pete
- Hsieh <tsung-hsien.hsieh@nxp.com>
-Subject: RE: [EXT] Re: [PATCH v7 04/12] wifi: mwifiex: fixed missing WMM IE
- for assoc req.
-Thread-Topic: [EXT] Re: [PATCH v7 04/12] wifi: mwifiex: fixed missing WMM IE
- for assoc req.
-Thread-Index: AQHaIdVYu6BJedWzZkuajUNTuEil2bCUO9iAgADQvWCAExa5gIAAAKJg
-Date: Thu, 14 Dec 2023 02:20:47 +0000
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"kvalo@kernel.org" <kvalo@kernel.org>, "francesco@dolcini.it"
+	<francesco@dolcini.it>, Pete Hsieh <tsung-hsien.hsieh@nxp.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [EXT] Re: [PATCH v2] wifi: mwifiex: fix STA cannot connect to AP
+Thread-Topic: [EXT] Re: [PATCH v2] wifi: mwifiex: fix STA cannot connect to AP
+Thread-Index: AQHaKjAcb/i+pQpnHEy+2M8UmgtSVbCoEGkAgAADiBA=
+Date: Thu, 14 Dec 2023 02:22:57 +0000
 Message-ID:
- <PA4PR04MB963845409055281417132AA3D18CA@PA4PR04MB9638.eurprd04.prod.outlook.com>
-References: <20231128083115.613235-1-yu-hao.lin@nxp.com>
- <20231128083115.613235-5-yu-hao.lin@nxp.com>
- <ZWmzAWlh7o4bLZB8@francesco-nb.int.toradex.com>
- <PA4PR04MB963816B99845D943B4D061E2D181A@PA4PR04MB9638.eurprd04.prod.outlook.com>
- <ZXplY3Gi6Fv19Y_t@google.com>
-In-Reply-To: <ZXplY3Gi6Fv19Y_t@google.com>
+ <PA4PR04MB96383A106724AC1CE683112BD18CA@PA4PR04MB9638.eurprd04.prod.outlook.com>
+References: <20231208234127.2251-1-yu-hao.lin@nxp.com>
+ <ZXpjjmD5Se7axJju@google.com>
+In-Reply-To: <ZXpjjmD5Se7axJju@google.com>
 Accept-Language: zh-TW, en-US
 Content-Language: zh-TW
 X-MS-Has-Attach:
@@ -68,44 +64,44 @@ X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PA4PR04MB9638:EE_|PA4PR04MB7775:EE_
-x-ms-office365-filtering-correlation-id: 1f3e7503-371a-4a21-ec7f-08dbfc4b4873
+x-ms-traffictypediagnostic: PA4PR04MB9638:EE_|GVXPR04MB9758:EE_
+x-ms-office365-filtering-correlation-id: f542afdb-eaa2-4bf8-d586-08dbfc4b9667
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
 x-microsoft-antispam-message-info:
- qJZJr35ye+6lsuYdHbJLnhcz2GDbmhvB/fkLVUATfWXdN41cwwFQXGu4FJnaJELeleBjd5hXLoHRa78RnwTsD0rmyNdQEnH2wAxcjTiqbyYydfHxHeaCy43LuljcwAImJ37qYWGuiLVYj+EVN4s4Mhhiu6EKT8ZN8zKW+wzhtLw6p1KZh5pBewQWu3+6LcllU/xiIlON9E5LmNdopaOVpHcKn2Bs5ofVYhL8I0Eb0qf8DbxIt2YAEUh75nxZa9CMqHG0CAjkoMyFits4O9D1pXT32U+5C8L29iYfft0UEnk9zF4wqUXKyEU7RW+iEWjLwSVT5o0ggY0nJnlXfozk4aYR/OIx2iAs12gwOBEDQENEM2A7FBBh73PHOUNEvqPfvc43AfFv5KW15Mn557IY9MqzDIvN34CQoFGSuS04gd3DdVLPMXxd4OmEnbqUk5ZarZp85+ogmPEpqLiL1hZ0haUuyW+Oj5S0j7Foh9dAEyDuwHLCmNBEmVdjc+gyvR3p7ICi2PzrCkpBiHmenrSYlHxn0wjIKt3qRieodgnr0Y17McjOHYBMsro9suNiGCvn7bCmpNmxLaImwIFEKw70DTrSDvnHCA1v/jY3r9uBB/AxAGXO/Kqdry7fj5hBOxD1/jpitqWvwvJD5p5vkB2Hkw==
+ FazUFj4Gqo5T21DoBuS4k5zDxGl+RX7xS+NyZB5p5bUnckj9c/ur2FfuF/2NgcBw9u+WK7udePM8TQ7HeerBBmwwgamRfNOr9ZIhTTE7AiKnGB7Jrzb96re8d7XTuD3uitD5gdTFR36+bht35/0AcKFX60bRMr5ThQQCJsVfj3Ow2i1f3iMImEIsWnG/8MmB/rbZxXFa8boxvxDolU2HQcrxjUyQg8dgIY+q/CkAzfWFDc6LQoQluePWRlf5fRGdlgccr5i0FjJmCNS7Zy8oa00YQPtbBWVNSjmqRv0HyVQajvKG97kPClMi8I1vLhNe4PD5pfD3zHyUAv5mj+bIIAQWg0eB2wjSQDIKka6XWN1n2GMCVMPwFvkVin1e4d/Qe2QG9yutLT4cZS4WFP4PlqvprmTvgSYM75Hp+qtR6DN0uah+nIoLJExkUT2skAk2NzC4Eb6SolUM1mRXoFBb2VdveCVPUZZbb42r99BLSXi4KgGbQIW4UGsIOvvzGEAWC+LB/RxnBaAR8QUVwK19u1E+QjIt+1u7Cy1C4rVKF8NbaG6H0Njt5HlzBrymjfOOgbqAdyrF9C4uzt417S65/Bd4599plDKXFd8l/cETcWnd+/fJzgi+1/TTknuMu3DZlMhN7U6H/A5kdETsqJwcQRSZmbt4A7Sx5A3G7J+h79E=
 x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9638.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(396003)(39860400002)(376002)(346002)(136003)(230922051799003)(230173577357003)(230273577357003)(186009)(64100799003)(451199024)(1800799012)(26005)(6506007)(53546011)(71200400001)(9686003)(52536014)(83380400001)(45080400002)(5660300002)(966005)(2906002)(41300700001)(4326008)(478600001)(54906003)(8676002)(8936002)(66946007)(66446008)(66556008)(7696005)(76116006)(64756008)(66476007)(316002)(6916009)(86362001)(38100700002)(33656002)(122000001)(38070700009)(55016003);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9638.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(396003)(39860400002)(346002)(376002)(136003)(230922051799003)(230173577357003)(230273577357003)(451199024)(186009)(64100799003)(1800799012)(122000001)(9686003)(83380400001)(38100700002)(8676002)(4326008)(8936002)(52536014)(26005)(316002)(2906002)(5660300002)(6916009)(71200400001)(41300700001)(6506007)(66556008)(66476007)(66446008)(7696005)(54906003)(6666004)(66946007)(76116006)(64756008)(478600001)(53546011)(86362001)(38070700009)(33656002)(55016003);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?aTmQJrFgKPYrAl/GxskwDSTrClN0mw0K8D5wPw6toxOI9dX24F4sl+ObZpHP?=
- =?us-ascii?Q?H72x9x6/yIyVa4wN0+H/ymxhIR90wpiwkrva8w1aUZMm02FmgEW+F3zP7bxi?=
- =?us-ascii?Q?yvOl73k0Rh0Vus/Bopp24MCU46lkS+tx6EOI+9Xc0vJY86+s34CkhInyfAI3?=
- =?us-ascii?Q?pxdXuCHv/mS/7SVheRxRVaH1gfMkdhUB7BflyeQdm2tRYX+apzQqA9LcHY+u?=
- =?us-ascii?Q?9DZLpdSGnHn6jkJG5pLj9K7x6+eTUWovtx5V9OdVGO4rkwgbe1QpLXC6gbBU?=
- =?us-ascii?Q?8IW9E3aKZAWrUekkQreE1j3luxC0Fey2HSY9ZOkvjVOQU58HbzfFWMTTuH6y?=
- =?us-ascii?Q?hPIisIhBmtbTHgrTXexZEAcjqFgtxk3KjkXdLLsG79ilx0UR8YZxOjB4TAbY?=
- =?us-ascii?Q?kVaFsAPUExcUcGS5/zYlFkVZfFBoxVITRn7YTdmx+w8QLKplthyamIXWbgtI?=
- =?us-ascii?Q?4v7IKUxJbAauOlI4M+rn/GHrkNCz7iVXCoSufFlbqEXgqwDpxs5EzsbnaQCn?=
- =?us-ascii?Q?5yqO23ZI7czSozJaGR3lCiU/jgfJKMH5KSC2tebEYKdIicixbZDQ1s70xJwF?=
- =?us-ascii?Q?iZ+1edtlOCMHu2nf6LkflFQCYhQX6QGuiV2Ww4QuQUhizaqSG0CkgELVIwSn?=
- =?us-ascii?Q?LP1y9JprcW/7gZjEubEoCiHNa4tt/QVq8ENVABO07vU5k72WXenE3B3KJpu3?=
- =?us-ascii?Q?cdUcdBaQasl4dmNNYXWPBFoBIEsIqsuXmyg0K+/ZDDTUuRUNTaJmJGCjy9mY?=
- =?us-ascii?Q?+o4Vvi3gHKdqTUC1Ijw6NvAxKNHfY8sodNHrW8CA6yHZp95Vm6Iy2y/vFOr7?=
- =?us-ascii?Q?KyJw4bxujUrTMKyNlrj/nduhK1XvHHz6UsuwSGi9aW1ZdwQPIJBCHnoLbtyp?=
- =?us-ascii?Q?UE3T/6aXeg++zwPoyH5zTeEsvL0tuIr0w0jaojV5Augn6DDV9kkKzBGMJFJl?=
- =?us-ascii?Q?uSaQ+fEZnQaIab3Va7tHuWBEOJo25eE4+JNZtK3w4LYcfOzM6SMWSserVUbL?=
- =?us-ascii?Q?VQk3q4onxH8t385UfhgGxyXU4BShMGbWK3ftoP8ZkLqweoqaD5WlrztYQXet?=
- =?us-ascii?Q?Y8zhAx49eovFr+P+MMSEDIU/rN/v3tsHp2RmLgHcKSvGtonZ6x/Ljkn7Dx9w?=
- =?us-ascii?Q?Uh8IWPRNtpKeUXv5LPLkPWadC0EjGz6v3bapLvHn+MVOfrcEs2dh2OvAryic?=
- =?us-ascii?Q?QwA+PdveetT2P1hS3gKvlm1SuYHpM4WHD/UkAP3RCIj49p17IiFPCZI2oXbj?=
- =?us-ascii?Q?2+lfuttxZM46R2tZ05nyfdwNjpceDNTaUjtGhlacH9yc1I6OCH3p65TEfnAU?=
- =?us-ascii?Q?+3GIGupYcI1Pqrht/Ggx4MuGa+y0O/h0s8fUtFAiknQlyiMnCmRDVqIWdwtM?=
- =?us-ascii?Q?0Azn/kBo3mHh8PZAonWnex2ApsphBS1b3QzBhSCDoFSHTVoYbLvsR5HU7+BY?=
- =?us-ascii?Q?PICAAVGbwrbeEvhdSxb+yl+VnCmpQJiEEmOvFjZ6XeDGfUctLhOaowf6rMIF?=
- =?us-ascii?Q?cVbV6EbygtKY7l3FFj+KTkX3PyBnlNmkWLAMhfLe/D/1aDM2URVwxUb4/Sv+?=
- =?us-ascii?Q?PEH+21oZOPvNBmC/XHrjU6SeDx+QGn30E9SWcrCC?=
+ =?us-ascii?Q?QRuI02T3D09X+C/onmQ0LpxNqtSiV/gh5cwWtuJN9o/Nu2rM2rw0OQfcNzTX?=
+ =?us-ascii?Q?QNtlaWnos+kZatdN7+XkqrErsnxIpsI0lDoPU3bHin9r8u0HvKn60TLBIqhr?=
+ =?us-ascii?Q?YSkcajU57dTwlyVIvF5mhiPZJ7QE+quxxdKAxtEvEfSqwDGsLnZmBVD8BihI?=
+ =?us-ascii?Q?TZ5laVX/T03zIVr8E1OdA7LoAixjbd3udRsFLffna3AEyblNDtlQyT9gkeWc?=
+ =?us-ascii?Q?XDPLo4dasj9WVgHheXNPBpoq+u6j1r//PKK/aWquY6l8MwyRzGWXWzhdHipR?=
+ =?us-ascii?Q?jCjsmcEMUXfjbQQnloAhnoORTSMFnRm3tOotKehGtDSOlLNv1m5myhaAi/Wi?=
+ =?us-ascii?Q?0XISITK7xlXd+LR4pvDh/zO/wLB3M/sJ1xtMxdZDDPAKeKK10PwcCoBnzGYi?=
+ =?us-ascii?Q?mbRL2goWV+g+FH75FqzAnmJktTaz08/rXuLKE0G3VVyBrTEgYEdbMba6LKg6?=
+ =?us-ascii?Q?OIfSrVXOqiL1fRy+1WPQ5HBKpyx+lbkUj5KybdiNjv2cDY/9ifDj0xJ+MI4I?=
+ =?us-ascii?Q?14WwaR/HFLm7hYmFEAfhjCSCCzqfCH2B7UN3jUtL+xHdIslnmKP8fiLaIfZX?=
+ =?us-ascii?Q?kwiNJa9Rp+OZ1ob8MQItNJyB8N2EUYawPa0ePt/gBKN3f5Z8pc2E7N51X9r8?=
+ =?us-ascii?Q?lRXQsHrLHR0yOi72Hcs9gyxmGO8mdzb6OWWyqmpger0VwpoEiw5ZKzX7OUFl?=
+ =?us-ascii?Q?1NbIJFj4WJa8wII3kVWkL+MVqQqp4GhZearoD8Zncud67szpa3ciYRJ0XnPn?=
+ =?us-ascii?Q?WfYoruDJUaEpth+ey+QFFfOu1Imlcj+/Y7OT1BghIPLONSef9JV3iL6IymhP?=
+ =?us-ascii?Q?ocYrJ6g4aT99SKVufzyoEH5l4jjl3S0qoEGCJpQSdmEX3fH1ZGvGdIeN4mbc?=
+ =?us-ascii?Q?u1md3RFh8TJ4tLCbtjpFnx+Ikgjj41gB/zGzvD+TTcQDzs1B1jSSM5LUK21j?=
+ =?us-ascii?Q?ecdsBw8dvSXFt3TpT6eocLS6qR9ZIEQ4Mzkx2L48gQ5ssAx/XhFxd/IDglmK?=
+ =?us-ascii?Q?iQMaJ6RzRhKwr5uWah7hLbowxMdZBFL1q7anykHGwLW0l3wSpxj5aLPXo0p6?=
+ =?us-ascii?Q?e5rZFy8cM2+EfKi3fDqAww9F3CVrWkK6ZdDdpXDWyv7B4DvVSjIw1mPJv3aG?=
+ =?us-ascii?Q?2afoScJtcZu+xWf6avKHvN41TVn6kRUBCJV08El0IUbwzJMdpuKQpn+GEveF?=
+ =?us-ascii?Q?MaWqRsNxwgtibaz+K4Jn0mI6yS9jvu/zJpzEs932kmIBSmg4ffSgb22uwQTc?=
+ =?us-ascii?Q?dFMRm5wbS/ZrdCG2EdrAD2qeAfMuJ3/wW+iEkXhiICVVrsTV3thica3A56P9?=
+ =?us-ascii?Q?HY7/Bs6f7dfhPFIcA/5B00t4dOCzSzPxG+5uKoxS4FbIfv2PCI0Cndp+ddng?=
+ =?us-ascii?Q?nnZ6vF7/0R3z8r/qwZYVrt+BNM01BVUBRbiLWxOBUsXisr7Hnm9pzWP31NcQ?=
+ =?us-ascii?Q?SRRqX4vecSPym+e76lFIhDy2HEHbbSOMTThDjlnTUtEzxobRyrWZBnAXIu6m?=
+ =?us-ascii?Q?YQPTjABfJE7xP7TnKVR9XQm2BNMT8E8xiXXjlPTNbYzGZP0LG4j/aaR8L5OG?=
+ =?us-ascii?Q?UAAHsavBvnpncaiz+vgXiu1gHoCcFT6v7qox/Gfx?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -117,85 +113,126 @@ MIME-Version: 1.0
 X-OriginatorOrg: nxp.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9638.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1f3e7503-371a-4a21-ec7f-08dbfc4b4873
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Dec 2023 02:20:47.1020
+X-MS-Exchange-CrossTenant-Network-Message-Id: f542afdb-eaa2-4bf8-d586-08dbfc4b9667
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Dec 2023 02:22:57.8970
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: CYWa6tDUT6VcMkSt+a53wa+Kv9FgDKP8Qt+1p0vmvoEcbwObE4WZBZk4jEdGtGM+a1jwRK9rRx0C+bcqBk552Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7775
+X-MS-Exchange-CrossTenant-userprincipalname: nIrvPgw2p2gfyXfJ/KYp+7WQwpm+36h7MHk6VFq8q5TDDBhi7/roiV4zSJ7QPOAcckgIC9v6211T8Pdo60vJSQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB9758
+
 
 > From: Brian Norris <briannorris@chromium.org>
-> Sent: Thursday, December 14, 2023 10:16 AM
+> Sent: Thursday, December 14, 2023 10:08 AM
 > To: David Lin <yu-hao.lin@nxp.com>
-> Cc: Francesco Dolcini <francesco@dolcini.it>; linux-wireless@vger.kernel.=
-org;
-> linux-kernel@vger.kernel.org; kvalo@kernel.org; Pete Hsieh
-> <tsung-hsien.hsieh@nxp.com>
-> Subject: Re: [EXT] Re: [PATCH v7 04/12] wifi: mwifiex: fixed missing WMM =
-IE
-> for assoc req.
->
+> Cc: linux-wireless@vger.kernel.org; linux-kernel@vger.kernel.org;
+> kvalo@kernel.org; francesco@dolcini.it; Pete Hsieh
+> <tsung-hsien.hsieh@nxp.com>; stable@vger.kernel.org
+> Subject: [EXT] Re: [PATCH v2] wifi: mwifiex: fix STA cannot connect to AP
+>=20
 > Caution: This is an external email. Please take care when clicking links =
 or
 > opening attachments. When in doubt, report the message using the 'Report
 > this email' button
->
->
-> On Fri, Dec 01, 2023 at 10:47:41PM +0000, David Lin wrote:
-> > > From: Francesco Dolcini <francesco@dolcini.it>
-> > > Sent: Friday, December 1, 2023 6:19 PM
->
-> > > On Tue, Nov 28, 2023 at 04:31:07PM +0800, David Lin wrote:
-> > > > Remain on channel must be removed after authentication is done.
-> > > > Otherwise WMM setting for assoiation request will be removed.
-> > >
-> > > Same comment as patch 2, this seems a fixup of commit 1, you should
-> > > fix that patch, not add a followup fixup commit.
-> >
-> > So you think patch 1 to 4 should be merged as a single patch? In fact,
-> > patch 2 to 4 is issues reported by our QA for patch 1. If you insisted
-> > merge all of them, I can do this for patch v8.
->
-> In case you didn't get a sufficient answer elsewhere: yes, probably? We d=
-on't
-> care to see:
->
->   patch 1: introduce feature
->   patch 2: fix bug in patch 1
->   patch 3: fix bug in patch 1 and 2
->   patch 4: ...
->
->
-> Just ... actually fix patch 1, and send 1 patch. (Or more, if you have se=
-veral
-> logical changes. Be sure to read [1].)
->
-> In case you're used to GitHub: we don't work like GitHub, where people te=
-nd
-> to stack a bunch of incremental changes during review, and then the
-> changes get squashed together before committing. We expect each patch to
-> be a good commit, and that it will get committed as-is.
->
-> If we're interested in the history and evolution of your changes, we can =
-look
-> at the mailing list archives.
->
-> Brian
+>=20
+>=20
+> Hi,
+>=20
+> Nitpick: "fix STA cannot connect to AP" isn't the best commit message; th=
+at
+> could describe an enormous number of fixes. Maybe something more like
+> "Configure BSSID consistently when starting AP"?
 
-Thanks for your information. In fact Patch v8 is almost ready and it only i=
-ncludes two patches: one for client mode and one for AP mode.
+Thanks for your suggestion. I will change commit message as you suggested. =
+Does it mean I should create another patch from v1?
+
+>=20
+> On Sat, Dec 09, 2023 at 07:41:27AM +0800, David Lin wrote:
+> > AP BSSID configuration is missing at AP start.
+> > Without this fix, FW returns STA interface MAC address after first init=
+.
+> > When hostapd restarts, it gets MAC address from netdev before driver
+> > sets STA MAC to netdev again. Now MAC address between hostapd and
+> net
+> > interface are different causes STA cannot connect to AP.
+> > After that MAC address of uap0 mlan0 become the same. And issue
+> > disappears after following hostapd restart (another issue is AP/STA
+> > MAC address become the same).
+> > This patch fixes the issue cleanly.
+> >
+> > Signed-off-by: David Lin <yu-hao.lin@nxp.com>
+> > Fixes: 12190c5d80bd ("mwifiex: add cfg80211 start_ap and stop_ap
+> > handlers")
+> > Cc: stable@vger.kernel.org
+> >
+> > ---
+> >
+> > v2:
+> >    - v1 was a not finished patch that was send to the LKML by mistake
+>=20
+> Looks fine to me:
+>=20
+> Acked-by: Brian Norris <briannorris@chromium.org>
+>=20
+> >  drivers/net/wireless/marvell/mwifiex/cfg80211.c | 2 ++
+> >  drivers/net/wireless/marvell/mwifiex/fw.h       | 1 +
+> >  drivers/net/wireless/marvell/mwifiex/ioctl.h    | 1 +
+> >  drivers/net/wireless/marvell/mwifiex/uap_cmd.c  | 8 ++++++++
+> >  4 files changed, 12 insertions(+)
+>=20
+> > --- a/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
+> > +++ b/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
+>=20
+> > @@ -487,6 +488,13 @@ mwifiex_uap_bss_param_prepare(u8 *tlv, void
+> *cmd_buf, u16 *param_size)
+> >       int i;
+> >       u16 cmd_size =3D *param_size;
+> >
+> > +     mac_tlv =3D (struct host_cmd_tlv_mac_addr *)tlv;
+>=20
+> Not directly related to this patch, but while you're expanding the size o=
+f this
+> command buffer: it always felt like a security-hole-in-waiting that none =
+of
+> these command producers do any kinds of bounds checking.
+> We're just "lucky" that these function only generate contents of ~100 byt=
+es at
+> max, while MWIFIEX_SIZE_OF_CMD_BUFFER=3D2048. But, just add a few more
+> user-space controlled TLV params, and boom, we'll have ourselves a nice
+> little CVE.
+>=20
+> It probably wouldn't hurt to significantly write much of this driver, but=
+ at a
+> minimum, we could probably use a few checks like this:
+>=20
+>         cmd_size +=3D sizeof(struct host_cmd_tlv_mac_addr);
+>         if (cmd_size > MWIFIEX_SIZE_OF_CMD_BUFFER)
+>                 return -1;
+>         // Only touch tlv *after* the bounds check.
+>=20
+> That doesn't need to block this patch, of course.
+>=20
+> Brian
+>
+
+I will modify the code for next patch.
 
 David
-
->
-> [1]
-> https://docs.ke/
-> rnel.org%2Fprocess%2Fsubmitting-patches.html%23separate-your-changes&
-> data=3D05%7C02%7Cyu-hao.lin%40nxp.com%7Cc031726831234d8efdf108dbfc4
-> aa160%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7C638381169686
-> 467616%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2l
-> uMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&sdata=3Dfg0y2
-> dg6hCyUyHyDnBQS3PmMQqJD5n1h2lpq0ea9tys%3D&reserved=3D0
+=20
+> > +     mac_tlv->header.type =3D
+> cpu_to_le16(TLV_TYPE_UAP_MAC_ADDRESS);
+> > +     mac_tlv->header.len =3D cpu_to_le16(ETH_ALEN);
+> > +     memcpy(mac_tlv->mac_addr, bss_cfg->mac_addr, ETH_ALEN);
+> > +     cmd_size +=3D sizeof(struct host_cmd_tlyyv_mac_addr);
+> > +     tlv +=3D sizeof(struct host_cmd_tlv_mac_addr);
+> > +
+> >       if (bss_cfg->ssid.ssid_len) {
+> >               ssid =3D (struct host_cmd_tlv_ssid *)tlv;
+> >               ssid->header.type =3D cpu_to_le16(TLV_TYPE_UAP_SSID);
+> >
+> > base-commit: 783004b6dbda2cfe9a552a4cc9c1d168a2068f6c
+> > --
+> > 2.25.1
+> >
 
