@@ -1,55 +1,47 @@
-Return-Path: <linux-wireless+bounces-806-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-805-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA5A3813682
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Dec 2023 17:41:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2357581367B
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Dec 2023 17:40:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 643D11F21ED1
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Dec 2023 16:41:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55D161C20C8F
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Dec 2023 16:40:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3446C60BA1;
-	Thu, 14 Dec 2023 16:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD10160BA9;
+	Thu, 14 Dec 2023 16:40:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GAkZjkxq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WTv3fVXj"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1187C60B9C;
-	Thu, 14 Dec 2023 16:41:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8033C433C7;
-	Thu, 14 Dec 2023 16:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D97D60BA6
+	for <linux-wireless@vger.kernel.org>; Thu, 14 Dec 2023 16:40:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34495C433C8;
+	Thu, 14 Dec 2023 16:40:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702572082;
-	bh=aR0AfO4Zo8a3/6CuOkcgFklla3J0GR//5YEavtZmcQs=;
+	s=k20201202; t=1702572043;
+	bh=7q4xziHGQZPDQMbjsW2etL7QNNmAAzU2B1pJxrK6e9U=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=GAkZjkxq8d7vJm4HIljWKOFiPA/2BaPPlaKZHPZLRO4DD9wbOPXlgbeH+TLYP80AN
-	 FwpgqFP1DI/D308SUJ9TxRb+/r63ETwuEw//2P2LhWxPQv75QE7qZXYHYXty/YuwJW
-	 pPRySd8xG8XoCoQ55EaAlQIfVfGovXBUuY3xBOeRa8WbqAZ7aU2+N9avI86gzFNPcq
-	 plgeZFHkfCFUJIXkWPhhYUYjyJfxnlp58CCzIelrlYYYO+TS58TbEWqa1LO2RiWaPV
-	 hnNMPKstrMT6M9WYuL3zUy4iNnZm1hux6CKimeuWh6NV5lqEsqQ6YD84lp/FSyJIYx
-	 sWEKi2H6vIl4g==
+	b=WTv3fVXjIgFvGu1uedym2kbxmcukkRvuBgsdXQTg1ZeOWfiQM6AnWogT8AtbWMdXW
+	 1W/bqxkYc+ixqbsVPUjPPMG88tKGOcK02WhUqzuvU9BVCrQWdw/NU1lExdMim2WrqW
+	 eIF91R+a2Lba91Mm3ERSN4DM6yuomlcNjZyvYy/LuHFwq7E4eGcGGZuGSTWLYqI+At
+	 u8iGMqVCugdDaR5L1bE8KlBUrEz7oAZF+l4GTLmn7p8F76MO4eftL5SCsHE7pJH4CD
+	 AYvZBKveayrKsGFXMyoWJxzjvzl8Cd2HHeAyim7VNMjUpeTBNfhWgIk3Qd2qeEkyNU
+	 CkUA0zweHLYNg==
 From: Kalle Valo <kvalo@kernel.org>
-To: Hans de Goede <hdegoede@redhat.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>,  Alex Deucher
- <alexander.deucher@amd.com>,  Christian =?utf-8?Q?K=C3=B6nig?=
- <christian.koenig@amd.com>,
-  Ma Jun <Jun.Ma2@amd.com>,  "Limonciello, Mario"
- <Mario.Limonciello@amd.com>,  "platform-driver-x86@vger.kernel.org"
- <platform-driver-x86@vger.kernel.org>,  linux-wireless
- <linux-wireless@vger.kernel.org>,  amd-gfx list
- <amd-gfx@lists.freedesktop.org>,  Ilpo =?utf-8?Q?J=C3=A4rvinen?=
- <ilpo.jarvinen@linux.intel.com>
-Subject: Re: [GIT PULL] mmutable branch between pdx86 amd wbrf branch and
- wifi / amdgpu due for the v6.8 merge window
-References: <6395b87b-7cb6-4412-b6e5-e6075353fb6d@redhat.com>
-Date: Thu, 14 Dec 2023 18:36:56 +0200
-In-Reply-To: <6395b87b-7cb6-4412-b6e5-e6075353fb6d@redhat.com> (Hans de
-	Goede's message of "Mon, 11 Dec 2023 12:02:16 +0100")
-Message-ID: <87le9w4u6v.fsf@kernel.org>
+To: Dmitry Antipov <dmantipov@yandex.ru>
+Cc: Jeff Johnson <quic_jjohnson@quicinc.com>,  linux-wireless@vger.kernel.org,
+    ath11k@lists.infradead.org
+Subject: Re: [PATCH] wifi: ath11k: refactor ath11k_wmi_tlv_parse_alloc()
+References: <20231214161117.75145-1-dmantipov@yandex.ru>
+Date: Thu, 14 Dec 2023 18:40:38 +0200
+In-Reply-To: <20231214161117.75145-1-dmantipov@yandex.ru> (Dmitry Antipov's
+	message of "Thu, 14 Dec 2023 19:11:14 +0300")
+Message-ID: <87fs04n3eh.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -59,32 +51,24 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Hans de Goede <hdegoede@redhat.com> writes:
+Dmitry Antipov <dmantipov@yandex.ru> writes:
 
-> Hi Wifi and AMDGPU maintainers,
+> Since 'ath11k_wmi_tlv_parse_alloc()' always operates on
+> 'skb->data, skb->len' tuple, it may be simplified to pass
+> the only 'skb' argument instead (which also implies
+> refactoring of 'ath11k_pull_bcn_tx_status_ev()' and
+> 'ath11k_pull_chan_info_ev()' in the same way). Compile
+> tested only.
 >
-> Here is a pull-request for the platform-drivers-x86 parts of:
->
-> https://lore.kernel.org/platform-driver-x86/20231211100630.2170152-1-Jun.Ma2@amd.com/
->
-> From my pov the pdx86 bits are ready and the
-> platform-drivers-x86-amd-wbrf-v6.8-1 tag can be merged by you to merge
-> the wifi-subsys resp. the amdgpu driver changes on top.
->
-> This only adds kernel internal API, so if in the future the API needs work that can be done.
->
-> I've not merged this branch into pdx86/for-next yet, since I see
-> little use in merging it without any users. I'll merge it once either
-> the wifi or amdgpu changes are also merged (and if some blocking
-> issues get identified before either are merged I can prepare a new
-> pull-request fixing the issues).
+> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+> ---
+>  drivers/net/wireless/ath/ath11k/testmode.c |  2 +-
+>  drivers/net/wireless/ath/ath11k/wmi.c      | 73 +++++++++++-----------
+>  drivers/net/wireless/ath/ath11k/wmi.h      |  4 +-
+>  3 files changed, 39 insertions(+), 40 deletions(-)
 
-I was testing latest wireless-testing with ath11k and noticed this:
-
-[  370.796884] ath11k_pci 0000:06:00.0: WBRF is not supported
-
-I think that's just spam and not really necessary. Could someone remove
-that or change to a debug message, please?
+Please Cc ath11k list for all ath11k patches, added it now. No need to
+resend because of this.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
