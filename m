@@ -1,164 +1,139 @@
-Return-Path: <linux-wireless+bounces-840-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-841-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1DC38149AD
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Dec 2023 14:52:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34E05814B02
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Dec 2023 15:55:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 634141F23B6F
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Dec 2023 13:52:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9488D1F24AB7
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Dec 2023 14:55:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11FCA30328;
-	Fri, 15 Dec 2023 13:52:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1E5E35884;
+	Fri, 15 Dec 2023 14:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eGdgk9GD"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="B/lwUzTL"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2061.outbound.protection.outlook.com [40.107.93.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BD2730336
-	for <linux-wireless@vger.kernel.org>; Fri, 15 Dec 2023 13:52:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1702648362; x=1734184362;
-  h=date:from:to:cc:subject:message-id;
-  bh=i/Ssw1zM6Ooo7HnlksYBuvcwFhPpJ5zZCl8Yzr07/sg=;
-  b=eGdgk9GDX6l5qnVLaDsix/Hhaby9S02ugAw6HVj5qvRvkFqklRwhL2YT
-   a3ErSh2b/6LBbhcw30QJ+81Pr+qKqgAelZp7q5da0EYqA4S9kaiXOt2kq
-   CLuf8jIxfNHUFy8QUmUtYlQYS3dOLZ49O9AkkRKIsPP4UcJTVbyCWQsKe
-   HmqxJ6rgbDAMyVuyA23skSJLpbiI+XKVsWmx1Fu9Zp3+5St1XodYX3MDY
-   eHvBwFkl+032ZDTCqUc4cpAQV/axfBFX1QLpxY0EqFjyqH5Stu2lu1kzl
-   R3mw3+6U6+DmMPYZHf9+6MoAxBt3zhlk8NLsGZFdc6qMmBjpi0wqNs6Na
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10924"; a="2448531"
-X-IronPort-AV: E=Sophos;i="6.04,278,1695711600"; 
-   d="scan'208";a="2448531"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2023 05:52:41 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10924"; a="774774486"
-X-IronPort-AV: E=Sophos;i="6.04,278,1695711600"; 
-   d="scan'208";a="774774486"
-Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
-  by orsmga002.jf.intel.com with ESMTP; 15 Dec 2023 05:52:39 -0800
-Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rE8cH-0000Gs-0V;
-	Fri, 15 Dec 2023 13:52:37 +0000
-Date: Fri, 15 Dec 2023 21:52:24 +0800
-From: kernel test robot <lkp@intel.com>
-To: Johannes Berg <johannes.berg@intel.com>
-Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
-Subject: [wireless-next:main] BUILD SUCCESS
- cc6bbfe84f30fa9c70327c6a098e709f3f876a6d
-Message-ID: <202312152121.VsBBdEs5-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8607A1856;
+	Fri, 15 Dec 2023 14:55:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=kiXBpmmOH9SlMZonuka24y0C74Cekj36evxW/ccAS6YGt+9Er2UkY53DN9rnNMu8Us5eS12Q6WHYroSc2R+su9bp9qsaIC8XqtKH7RdsZ17SF+SapXe3+g6XXAffWQmJJ/WrHKdVIQaOrbkUDZFhJB/7dLcKA/tyjRV/BPk8vZdQK/dnCXIpiLW+Xi4g30YdI0o89BX+iTdXGUhKe7TOAaAwTfPjQLrCpsWaSwhJuyjw9wY09tVBIkYP1Jd06aJ42w5rQJjTITXxitY37szTRGLa14NMnGH9skdSBYRdwpwzqh3YMquJH8aLuY9XV9tl/WvtdO8o3zaa0Zo+fRzi1g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=4+98QjCgvTYEn+OxbjbviKAM/7wMMvgvSL072VQPSjo=;
+ b=BP2hCCrw7Kc1/nNGokFZ3J+mbdHzl2yHnD+R9c3z8QuKl0RghCD75WaZtaZYXhNYPICsAaBVvNl+GSN5lkF2dnSvhMlHO5IXu8pG39kUTmY6Me9PdINcuUJ6v9stqXz8XxfqHBuMhg1vcfwcKmNhwU2f/2axMDDTbXkcVTetHgaoJnh7Unvjn3zdxkfzP1AW1+q9+zd1SeiRPbVxDpirmmpxdYS8wDj6sHHJGRY+aKzese/pN+esImXCGLAj3SeVPS0XnyUF0JPd2M6MveBWn1/iwWMe6bMc33h3gwV+tY46VqPA/zcoPVBlAq3UI94/jHhvq1O/XIDPNt6PbMMXsg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=sipsolutions.net smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4+98QjCgvTYEn+OxbjbviKAM/7wMMvgvSL072VQPSjo=;
+ b=B/lwUzTLh53/EcOh+QABUVVtSPJlooGh5Xq5piOREKxwVmBNlGtZEYkJZEKv7OGbLe4pcsAKxC0K33zSMBYOjYV7TBdHNw8EBdjaFEB7XX23RHBs5Op04/bq39ZCuqmgfoSiyBfS1oDShNpAaUPFve9uarwXC7v5Y1oOqD8oJbk=
+Received: from DM6PR12CA0003.namprd12.prod.outlook.com (2603:10b6:5:1c0::16)
+ by CH0PR12MB5025.namprd12.prod.outlook.com (2603:10b6:610:d5::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7091.31; Fri, 15 Dec
+ 2023 14:55:01 +0000
+Received: from DS1PEPF00017094.namprd03.prod.outlook.com
+ (2603:10b6:5:1c0:cafe::22) by DM6PR12CA0003.outlook.office365.com
+ (2603:10b6:5:1c0::16) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7091.31 via Frontend
+ Transport; Fri, 15 Dec 2023 14:55:01 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ DS1PEPF00017094.mail.protection.outlook.com (10.167.17.137) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7113.14 via Frontend Transport; Fri, 15 Dec 2023 14:55:00 +0000
+Received: from AUS-P9-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Fri, 15 Dec
+ 2023 08:54:49 -0600
+From: Mario Limonciello <mario.limonciello@amd.com>
+To: Johannes Berg <johannes@sipsolutions.net>
+CC: "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, "open list:MAC80211" <linux-wireless@vger.kernel.org>,
+	"open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>, open list
+	<linux-kernel@vger.kernel.org>, Mario Limonciello
+	<mario.limonciello@amd.com>, Jun Ma <Jun.ma2@amd.com>, <kvalo@kernel.org>
+Subject: [PATCH] wifi: mac80211: Use subsystem appropriate debug call
+Date: Fri, 15 Dec 2023 08:54:39 -0600
+Message-ID: <20231215145439.57286-1-mario.limonciello@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS1PEPF00017094:EE_|CH0PR12MB5025:EE_
+X-MS-Office365-Filtering-Correlation-Id: e85cd8c8-5c0a-4cf6-b02c-08dbfd7dd046
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	xhgxoUypo/mU/7bJ4TYYZRxwZSf2fk8hGso9jLqWHxtasQfJKTinjFBWkPt1L64G0hBTHrXzOOR+GrHBEcjFOPbMZv+08qUoiSAmcJwtNsXWpXkdOCrony9A8wKJrVLgGmwUTzJGeYbm/4fvoebTRsgNICD1gg+D0AkO6vLr3N0p9+PdpoCHBbuQX+TbBslcMvLK8iUTKfudzQmPOrJY/SeV8cKQYfMGe2g6Kf7bZpWLt34/gXM+KB5GUKhInqiRH3el2iaT+Fz3NbmNqESm9wLOaFbotG3gFObt2HIGPYnGgfZA+iN1MY1VX5eObLgXK51YjfFdDXx0/SbjPc+ZZ4aQ8JYxzkvftBNfeA3wtyfnq+QDWdLZ52MRDot7ZlHdsZB3rUYs0OeLpoqppVB7aejriZ+fF2em6TA6rJZnMvcFBbE/wt7yp+x6smw6rHzYwJVCSjVPTGobn6Dx9KLDoEX413PfeuX/mxgh7w1gwGeafGhfsCZAk/F0edgSdXccqojy9NxO38yCWOwvup4A/FmjVlRn0xpY/F6LPNZmiMZ+kBcRh+c6Xjlo18kKPDiMJ/i8M1ZSqowga3v9+w3anzCygh65Xgfm2Bpcz7iUcyZbDkyS1fOsGeHzUA+hF8MNno2CVpKxf04RpCWNYv2ErXAIoT/t1a/I4+3xMGTYBoxhjmqs9OS2XqsYzezrOhKbjlVLPGxtxGt0FHkcQ3K8RVmthC7GhfAtIgE6KOE52mxr7J6QPvZXokj0EY5+6/bQJPPCNZJ/3FnM98vyo5hcIw==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(39860400002)(376002)(396003)(136003)(346002)(230922051799003)(186009)(82310400011)(64100799003)(451199024)(1800799012)(46966006)(36840700001)(40470700004)(40480700001)(40460700003)(16526019)(26005)(426003)(336012)(7696005)(2616005)(1076003)(82740400003)(356005)(36756003)(86362001)(81166007)(47076005)(83380400001)(4326008)(5660300002)(44832011)(36860700001)(6666004)(70586007)(6916009)(316002)(70206006)(8676002)(8936002)(54906003)(2906002)(41300700001)(478600001)(966005)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Dec 2023 14:55:00.9308
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: e85cd8c8-5c0a-4cf6-b02c-08dbfd7dd046
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS1PEPF00017094.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR12MB5025
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: cc6bbfe84f30fa9c70327c6a098e709f3f876a6d  wifi: mac80211: sta_info.c: fix sentence grammar
+mac80211 doesn't use dev_dbg() but instead various macros from
+net/mac80211/debug.h. Adjust wbrf code to use wiphy_dbg() instead.
 
-elapsed time: 1501m
+Cc: Jun Ma <Jun.ma2@amd.com>
+Reported-by: kvalo@kernel.org
+Closes: https://lore.kernel.org/amd-gfx/8bd60010-7534-4c22-9337-c4219946d8d6@amd.com/T/#mfe2f29372c45130d27745912faf33d9f7ce50118
+Fixes: d34be4310cbe ("wifi: mac80211: Add support for WBRF features")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+---
+ net/mac80211/wbrf.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-configs tested: 82
-configs skipped: 2
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                               defconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                                 defconfig   gcc  
-arm                               allnoconfig   gcc  
-arm                                 defconfig   clang
-arm64                             allnoconfig   gcc  
-arm64                               defconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                                defconfig   gcc  
-hexagon                           allnoconfig   clang
-hexagon                             defconfig   clang
-i386                             allmodconfig   clang
-i386                              allnoconfig   clang
-i386                             allyesconfig   clang
-i386         buildonly-randconfig-001-20231215   clang
-i386         buildonly-randconfig-002-20231215   clang
-i386         buildonly-randconfig-003-20231215   clang
-i386         buildonly-randconfig-004-20231215   clang
-i386         buildonly-randconfig-005-20231215   clang
-i386         buildonly-randconfig-006-20231215   clang
-i386                                defconfig   gcc  
-i386                  randconfig-001-20231215   clang
-i386                  randconfig-002-20231215   clang
-i386                  randconfig-003-20231215   clang
-i386                  randconfig-004-20231215   clang
-i386                  randconfig-005-20231215   clang
-i386                  randconfig-006-20231215   clang
-i386                  randconfig-011-20231215   gcc  
-i386                  randconfig-012-20231215   gcc  
-i386                  randconfig-013-20231215   gcc  
-i386                  randconfig-014-20231215   gcc  
-i386                  randconfig-015-20231215   gcc  
-i386                  randconfig-016-20231215   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                              allnoconfig   clang
-mips                             allyesconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                              defconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                           allnoconfig   gcc  
-riscv                             allnoconfig   clang
-riscv                               defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                              allnoconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   clang
-x86_64                              defconfig   gcc  
-x86_64                          rhel-8.3-rust   clang
-xtensa                            allnoconfig   gcc  
-
+diff --git a/net/mac80211/wbrf.c b/net/mac80211/wbrf.c
+index a05c5b971789..12c23e14f884 100644
+--- a/net/mac80211/wbrf.c
++++ b/net/mac80211/wbrf.c
+@@ -23,8 +23,8 @@ void ieee80211_check_wbrf_support(struct ieee80211_local *local)
+ 		return;
+ 
+ 	local->wbrf_supported = acpi_amd_wbrf_supported_producer(dev);
+-	dev_dbg(dev, "WBRF is %s supported\n",
+-		local->wbrf_supported ? "" : "not");
++	wiphy_dbg(wiphy, "WBRF is %s supported\n",
++		  local->wbrf_supported ? "" : "not");
+ }
+ 
+ static void get_chan_freq_boundary(u32 center_freq, u32 bandwidth, u64 *start, u64 *end)
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.34.1
+
 
