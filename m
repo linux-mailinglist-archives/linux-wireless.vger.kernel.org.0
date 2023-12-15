@@ -1,77 +1,164 @@
-Return-Path: <linux-wireless+bounces-839-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-840-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FAED814978
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Dec 2023 14:40:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1DC38149AD
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Dec 2023 14:52:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 518661C2324A
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Dec 2023 13:40:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 634141F23B6F
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Dec 2023 13:52:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D64092DB8B;
-	Fri, 15 Dec 2023 13:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11FCA30328;
+	Fri, 15 Dec 2023 13:52:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IGGCUMWw"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eGdgk9GD"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD3972D7B7
-	for <linux-wireless@vger.kernel.org>; Fri, 15 Dec 2023 13:40:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B684C433C8;
-	Fri, 15 Dec 2023 13:40:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702647642;
-	bh=rGXhACWnvWZKELA2A2+uXVV/y/a4lDqndImovMajIqA=;
-	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=IGGCUMWw0MiteM/Qd4XVfmdoWtFM+Ez1qXnkI4w7oXx4QqTIrN2bsTxYzHwU5T8r4
-	 oR98S8bvZOLhc3ZISvZvEyjCcenIO5XXZD1p2NlgrfgV2SfzD/tjcOO7ECL2Ogxvv3
-	 B02+m34IHw+jeWXOE7YeF5iWs2KfiBKLxdeT+scUJKCUgBOU4QGvLXnfFTbHmBEyGj
-	 vkBzjQKgcVJzD5lzn3Zsxt7zzC3bI8eey7ZfHgOmKaDIjsadedlDIf4xHIBppXuTVj
-	 q4wUc+zSFRBxOm29Qmvd1I2HRj+K4G7TrQEvTtLczbOD3UF8RS6lEUO2MvqSdI4vuu
-	 0jZYjWUvsPBTQ==
-Content-Type: text/plain; charset="utf-8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BD2730336
+	for <linux-wireless@vger.kernel.org>; Fri, 15 Dec 2023 13:52:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1702648362; x=1734184362;
+  h=date:from:to:cc:subject:message-id;
+  bh=i/Ssw1zM6Ooo7HnlksYBuvcwFhPpJ5zZCl8Yzr07/sg=;
+  b=eGdgk9GDX6l5qnVLaDsix/Hhaby9S02ugAw6HVj5qvRvkFqklRwhL2YT
+   a3ErSh2b/6LBbhcw30QJ+81Pr+qKqgAelZp7q5da0EYqA4S9kaiXOt2kq
+   CLuf8jIxfNHUFy8QUmUtYlQYS3dOLZ49O9AkkRKIsPP4UcJTVbyCWQsKe
+   HmqxJ6rgbDAMyVuyA23skSJLpbiI+XKVsWmx1Fu9Zp3+5St1XodYX3MDY
+   eHvBwFkl+032ZDTCqUc4cpAQV/axfBFX1QLpxY0EqFjyqH5Stu2lu1kzl
+   R3mw3+6U6+DmMPYZHf9+6MoAxBt3zhlk8NLsGZFdc6qMmBjpi0wqNs6Na
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10924"; a="2448531"
+X-IronPort-AV: E=Sophos;i="6.04,278,1695711600"; 
+   d="scan'208";a="2448531"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2023 05:52:41 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10924"; a="774774486"
+X-IronPort-AV: E=Sophos;i="6.04,278,1695711600"; 
+   d="scan'208";a="774774486"
+Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
+  by orsmga002.jf.intel.com with ESMTP; 15 Dec 2023 05:52:39 -0800
+Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rE8cH-0000Gs-0V;
+	Fri, 15 Dec 2023 13:52:37 +0000
+Date: Fri, 15 Dec 2023 21:52:24 +0800
+From: kernel test robot <lkp@intel.com>
+To: Johannes Berg <johannes.berg@intel.com>
+Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
+Subject: [wireless-next:main] BUILD SUCCESS
+ cc6bbfe84f30fa9c70327c6a098e709f3f876a6d
+Message-ID: <202312152121.VsBBdEs5-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] [v2] wifi: rt2x00: remove useless code in
- rt2x00queue_create_tx_descriptor()
-From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20231213051449.126963-1-dmantipov@yandex.ru>
-References: <20231213051449.126963-1-dmantipov@yandex.ru>
-To: Dmitry Antipov <dmantipov@yandex.ru>
-Cc: Stanislaw Gruszka <stf_xl@wp.pl>, lvc-project@linuxtesting.org,
- linux-wireless@vger.kernel.org, Dmitry Antipov <dmantipov@yandex.ru>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170264763943.1759617.7972468780385237703.kvalo@kernel.org>
-Date: Fri, 15 Dec 2023 13:40:40 +0000 (UTC)
 
-Dmitry Antipov <dmantipov@yandex.ru> wrote:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: cc6bbfe84f30fa9c70327c6a098e709f3f876a6d  wifi: mac80211: sta_info.c: fix sentence grammar
 
-> In 'rt2x00queue_create_tx_descriptor()', there is no need to call
-> 'ieee80211_get_rts_cts_rate()' while checking for RTS/CTS frame
-> since this function returns NULL or pointer to internal bitrate
-> table entry, and the return value is not actually used. Compile
-> tested only.
-> 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
-> 
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-> Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
+elapsed time: 1501m
 
-Patch applied to wireless-next.git, thanks.
+configs tested: 82
+configs skipped: 2
 
-5a1745807580 wifi: rt2x00: remove useless code in rt2x00queue_create_tx_descriptor()
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                               defconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                                 defconfig   gcc  
+arm                               allnoconfig   gcc  
+arm                                 defconfig   clang
+arm64                             allnoconfig   gcc  
+arm64                               defconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                                defconfig   gcc  
+hexagon                           allnoconfig   clang
+hexagon                             defconfig   clang
+i386                             allmodconfig   clang
+i386                              allnoconfig   clang
+i386                             allyesconfig   clang
+i386         buildonly-randconfig-001-20231215   clang
+i386         buildonly-randconfig-002-20231215   clang
+i386         buildonly-randconfig-003-20231215   clang
+i386         buildonly-randconfig-004-20231215   clang
+i386         buildonly-randconfig-005-20231215   clang
+i386         buildonly-randconfig-006-20231215   clang
+i386                                defconfig   gcc  
+i386                  randconfig-001-20231215   clang
+i386                  randconfig-002-20231215   clang
+i386                  randconfig-003-20231215   clang
+i386                  randconfig-004-20231215   clang
+i386                  randconfig-005-20231215   clang
+i386                  randconfig-006-20231215   clang
+i386                  randconfig-011-20231215   gcc  
+i386                  randconfig-012-20231215   gcc  
+i386                  randconfig-013-20231215   gcc  
+i386                  randconfig-014-20231215   gcc  
+i386                  randconfig-015-20231215   gcc  
+i386                  randconfig-016-20231215   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                              allnoconfig   clang
+mips                             allyesconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                              defconfig   gcc  
+parisc64                            defconfig   gcc  
+powerpc                           allnoconfig   gcc  
+riscv                             allnoconfig   clang
+riscv                               defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                              allnoconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   clang
+x86_64                              defconfig   gcc  
+x86_64                          rhel-8.3-rust   clang
+xtensa                            allnoconfig   gcc  
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20231213051449.126963-1-dmantipov@yandex.ru/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
