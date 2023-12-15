@@ -1,37 +1,37 @@
-Return-Path: <linux-wireless+bounces-835-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-836-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6C38814923
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Dec 2023 14:25:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2854681493B
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Dec 2023 14:29:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A7501C2080D
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Dec 2023 13:25:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB7C71F2447F
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Dec 2023 13:29:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E156C2DB7F;
-	Fri, 15 Dec 2023 13:25:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82DB02DB81;
+	Fri, 15 Dec 2023 13:29:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LawAyRwb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JXsLTunK"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE8022E416;
-	Fri, 15 Dec 2023 13:25:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3086AC433C8;
-	Fri, 15 Dec 2023 13:25:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CBA72DB75;
+	Fri, 15 Dec 2023 13:29:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0408EC433C7;
+	Fri, 15 Dec 2023 13:29:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702646702;
-	bh=B5mkdMwDaQnB5bTZYj5vwz6563xv3c52j7DWyphB6cs=;
+	s=k20201202; t=1702646980;
+	bh=rpyS4v8W+CuN4+EjjXEahB1+6g1qTTqMvB9+ugujzJg=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=LawAyRwbtZyiJinItWdg5oqA+kTvzO/zDaHNJlTc2h3afd9+46Mc3U1lhG3esm6Ju
-	 mVUKEN/6aWhESjTIytVCyFK5FrRHhowwfbiZUC8E4+P4yn7pVgzziNPvyXQtiU/cs7
-	 7ts539n6An9ir5y5jObk8x2tm6WwSxvy4OwKCjQeKRQhKh+x5OTdmpntrntBQoMABU
-	 ETAHDbbdiEF1JLngVJnkSz/cKAPJItYWOEP1+Sv1fL3qwWVcO97svD+PESMsdj0PHu
-	 bRjS1NiVKJE2lVPrypIm0jKIxwMfleDx7zH3cBX2S/4fdXZwc7H/L3hdkPPzZBR1C9
-	 hkRFdQZo8drPw==
+	b=JXsLTunKMBBISI4ECLjoovakgd/auY72meweT5jEaGxWUmWWMPpUZ0/zdNwREoc2g
+	 2aS2ZNCm1VcCgKfG9UUbi1WD7ytS5cCUCgEypqXTrz2rzw7bDJr566wVPY4/Pny+JZ
+	 9e+Ey7VpBE4EOB0iIPpVVjiFfWnmnA44lv/DdIN36uMLpGqTXCll4jaanDarSgmOP2
+	 ZKcszw82ho2s3UYGfr7Wgo8tVp1rJ/hNwk1umGZv2WpM+73haNqFR0Rz01Xs04Y/af
+	 xJEUIKZhkdybjvF/4OYAtLELSFBU4uAHRvGWHL0FUfH+95hDrJL/ICpWFM3DS5YP2S
+	 sCWwwaOTG5JxQ==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -40,45 +40,54 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [v3] wifi: mwifiex: configure BSSID consistently when starting AP
+Subject: Re: [PATCH v2][wireless-next/for-next] wifi: mt76: mt7996: Use
+ DECLARE_FLEX_ARRAY() and fix -Warray-bounds warnings
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20231215005118.17031-1-yu-hao.lin@nxp.com>
-References: <20231215005118.17031-1-yu-hao.lin@nxp.com>
-To: David Lin <yu-hao.lin@nxp.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- briannorris@chromium.org, francesco@dolcini.it, tsung-hsien.hsieh@nxp.com,
- David Lin <yu-hao.lin@nxp.com>, stable@vger.kernel.org,
- Francesco Dolcini <francesco.dolcini@toradex.com>,
- Rafael Beims <rafael.beims@toradex.com>
+In-Reply-To: <ZXiU9ayVCslt3qiI@work>
+References: <ZXiU9ayVCslt3qiI@work>
+To: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
+ Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>,
+ Sean Wang <sean.wang@mediatek.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ linux-hardening@vger.kernel.org
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170264669803.1759617.3948805099666949892.kvalo@kernel.org>
-Date: Fri, 15 Dec 2023 13:25:00 +0000 (UTC)
+Message-ID: <170264697580.1759617.6397953788753678096.kvalo@kernel.org>
+Date: Fri, 15 Dec 2023 13:29:37 +0000 (UTC)
 
-David Lin <yu-hao.lin@nxp.com> wrote:
+"Gustavo A. R. Silva" <gustavoars@kernel.org> wrote:
 
-> AP BSSID configuration is missing at AP start.  Without this fix, FW returns
-> STA interface MAC address after first init.  When hostapd restarts, it gets MAC
-> address from netdev before driver sets STA MAC to netdev again. Now MAC address
-> between hostapd and net interface are different causes STA cannot connect to
-> AP.  After that MAC address of uap0 mlan0 become the same. And issue disappears
-> after following hostapd restart (another issue is AP/STA MAC address become the
-> same).
+> Transform zero-length arrays `rate`, `adm_stat` and `msdu_cnt` into
+> proper flexible-array members in anonymous union in `struct
+> mt7996_mcu_all_sta_info_event` via the DECLARE_FLEX_ARRAY()
+> helper; and fix multiple -Warray-bounds warnings:
 > 
-> This patch fixes the issue cleanly.
+> drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:544:61: warning: array subscript <unknown> is outside array bounds of 'struct <anonymous>[0]' [-Warray-bounds=]
+> drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:551:58: warning: array subscript <unknown> is outside array bounds of 'struct <anonymous>[0]' [-Warray-bounds=]
+> drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:553:58: warning: array subscript <unknown> is outside array bounds of 'struct <anonymous>[0]' [-Warray-bounds=]
+> drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:530:61: warning: array subscript <unknown> is outside array bounds of 'struct <anonymous>[0]' [-Warray-bounds=]
+> drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:538:66: warning: array subscript <unknown> is outside array bounds of 'struct <anonymous>[0]' [-Warray-bounds=]
+> drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:540:66: warning: array subscript <unknown> is outside array bounds of 'struct <anonymous>[0]' [-Warray-bounds=]
+> drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:520:57: warning: array subscript <unknown> is outside array bounds of 'struct all_sta_trx_rate[0]' [-Warray-bounds=]
+> drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:526:76: warning: array subscript <unknown> is outside array bounds of 'struct all_sta_trx_rate[0]' [-Warray-bounds=]
+> drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:526:76: warning: array subscript <unknown> is outside array bounds of 'struct all_sta_trx_rate[0]' [-Warray-bounds=]
+> drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:526:76: warning: array subscript <unknown> is outside array bounds of 'struct all_sta_trx_rate[0]' [-Warray-bounds=]
+> drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:526:76: warning: array subscript <unknown> is outside array bounds of 'struct all_sta_trx_rate[0]' [-Warray-bounds=]
 > 
-> Signed-off-by: David Lin <yu-hao.lin@nxp.com>
-> Fixes: 12190c5d80bd ("mwifiex: add cfg80211 start_ap and stop_ap handlers")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-> Tested-by: Rafael Beims <rafael.beims@toradex.com> # Verdin iMX8MP/SD8997 SD
-> Acked-by: Brian Norris <briannorris@chromium.org>
+> This results in no differences in binary output, helps with the ongoing
+> efforts to globally enable -Warray-bounds.
+> 
+> Reviewed-by: Kees Cook <keescook@chromium.org>
+> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-Patch applied to wireless-next.git, thanks.
-
-f0dd488e11e7 wifi: mwifiex: configure BSSID consistently when starting AP
+I'll take this directly wireless-next, ok?
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20231215005118.17031-1-yu-hao.lin@nxp.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/ZXiU9ayVCslt3qiI@work/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
