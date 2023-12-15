@@ -1,37 +1,37 @@
-Return-Path: <linux-wireless+bounces-842-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-843-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D796B814C31
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Dec 2023 16:58:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48B09814C35
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Dec 2023 16:59:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15A8E1C23316
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Dec 2023 15:58:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03EFB280C4E
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Dec 2023 15:59:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8837E39FC3;
-	Fri, 15 Dec 2023 15:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA6573A8EB;
+	Fri, 15 Dec 2023 15:59:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DnMuWxHY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TRnyJeQ0"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F173381C8
-	for <linux-wireless@vger.kernel.org>; Fri, 15 Dec 2023 15:58:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCEDCC433C7;
-	Fri, 15 Dec 2023 15:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E6F03A8E9
+	for <linux-wireless@vger.kernel.org>; Fri, 15 Dec 2023 15:59:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BF6EC433C8;
+	Fri, 15 Dec 2023 15:59:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702655887;
-	bh=+SRuaRH9TFJnZpf+5dCEqvsOBgddW5XNqa4kkhWfp5Q=;
+	s=k20201202; t=1702655943;
+	bh=GhGX6p5fY5yn/kiJvEGNAHpMjIe44xbBAOgiPpDCRdg=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=DnMuWxHYPQ1SWa74i4dIJR9ddfxawsxak03jSekaF2Pt2+9EqPz5WJdQjQQZ+/Qe4
-	 IFQQUINLMnk6k/VnXoYMDFEtNJzAWwoVeUM2TuOURg84QwS5atbe93SScSl6naR0Yz
-	 yUwwPmU52mTMECqWm6ujM2WDcUK8HAlfZs5TRBM80oZY9lqD0QwOwj8lv3KmceWKq7
-	 BbrP2cYJShUkJYTd1nTTFJNJVSFYCZjC1krW2MVEQ+xFkto6DLLdlkDCscckaYsv/8
-	 seWdelRLTGkJvoheAH7CGQS53SEN4T/y3vYkPa/U3VHR4QFNsSER3vWaDgjJpVHWUv
-	 LjFKmuS7JGXQg==
+	b=TRnyJeQ0lT7YobcnukUhEnB5maG3BUEl8ROLNCmhuEGPHTP0E3/a6vY3wSUffKwd6
+	 m3WNlSDnpwS0CLENNjWbWK2kDWfkE0OoAeZEH0TvNGg04h4IdBkkCZGkafehIkXeDn
+	 OTmjs7hDJ8xNugW4rMDwDj29EFJlcNb48N4m2p0H51CaFUZ9MFmi+6LeqHJoP74VYo
+	 NT9vL3z/FT0+5kf/CXE0KdSoDNKgY1UyCLgH27jLh1gXbNkRUzyN+JHkzaMGHpa7p7
+	 IeQonlmKKvWpoCRBanB7MMm+bitAMaCYH93RViT3aHvM2phb0wAjvOTO85STEfuJbm
+	 0ZcOvYLwcwVuA==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -40,49 +40,41 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] Revert "wifi: ath12k: use ATH12K_PCI_IRQ_DP_OFFSET for DP
- IRQ"
+Subject: Re: [PATCH] wifi: ath11k: workaround too long expansion sparse
+ warnings
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20231214053215.2087308-1-quic_periyasa@quicinc.com>
-References: <20231214053215.2087308-1-quic_periyasa@quicinc.com>
-To: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-Cc: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
- <quic_kangyang@quicinc.com>,
- "Karthikeyan Periyasamy" <quic_periyasa@quicinc.com>
+In-Reply-To: <20231214161740.1582340-1-kvalo@kernel.org>
+References: <20231214161740.1582340-1-kvalo@kernel.org>
+To: Kalle Valo <kvalo@kernel.org>
+Cc: ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170265588405.1834402.8684389045597196068.kvalo@kernel.org>
-Date: Fri, 15 Dec 2023 15:58:05 +0000 (UTC)
+Message-ID: <170265593947.1834402.14524206742930296560.kvalo@kernel.org>
+Date: Fri, 15 Dec 2023 15:59:02 +0000 (UTC)
 
-Karthikeyan Periyasamy <quic_periyasa@quicinc.com> wrote:
+Kalle Valo <kvalo@kernel.org> wrote:
 
-> This reverts commit 1f1f7d548a00ebe50808cb1f580df9693e194a7c. The commit
-> caused bootup failure on QCN9274 hw2.0 platform. Incorrect hardcode DP
-> irq offset overwrite the CE irq, which caused the driver to miss the
-> mandatory bootup message from the firmware through the CE interrupt. This
-> occurs because the CE count differs between platforms. The revert has no
-> impact since the original change was based on an incorrect assumption.
+> In v6.7-rc1 sparse warns:
 > 
-> Log:
+> drivers/net/wireless/ath/ath11k/mac.c:4702:15: error: too long token expansion
+> drivers/net/wireless/ath/ath11k/mac.c:4702:15: error: too long token expansion
+> drivers/net/wireless/ath/ath11k/mac.c:8393:23: error: too long token expansion
+> drivers/net/wireless/ath/ath11k/mac.c:8393:23: error: too long token expansion
 > 
-> ath12k_pci 0000:06:00.0: fw_version 0x1011001d fw_build_timestamp 2022-12-02 01:16 fw_build_id QC_IMAGE_VERSION_STRING=WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-> ath12k_pci 0000:06:00.0: failed to receive control response completion, polling..
-> ath12k_pci 0000:06:00.0: Service connect timeout
-> ath12k_pci 0000:06:00.0: failed to connect to HTT: -110
-> ath12k_pci 0000:06:00.0: failed to start core: -110
+> Workaround the warnings by refactoring the code to a new function, which also
+> reduces code duplication. And in the new function use max3() to make the code
+> more readable.
 > 
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+> No functional changes, compile tested only.
 > 
-> Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
 > Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-e75fda64f0fe Revert "wifi: ath12k: use ATH12K_PCI_IRQ_DP_OFFSET for DP IRQ"
+fd6ed1772b2c wifi: ath11k: workaround too long expansion sparse warnings
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20231214053215.2087308-1-quic_periyasa@quicinc.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20231214161740.1582340-1-kvalo@kernel.org/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
