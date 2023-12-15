@@ -1,121 +1,176 @@
-Return-Path: <linux-wireless+bounces-823-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-824-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 806AA8141DB
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Dec 2023 07:35:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29B6C81436A
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Dec 2023 09:17:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BFEB2846F2
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Dec 2023 06:35:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BD131C2105C
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Dec 2023 08:17:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C680F748A;
-	Fri, 15 Dec 2023 06:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E10F4111AE;
+	Fri, 15 Dec 2023 08:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fOePsk9b"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a+nxdrPE"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B85D528;
-	Fri, 15 Dec 2023 06:35:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BCD7C433C8;
-	Fri, 15 Dec 2023 06:35:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C166FD292;
+	Fri, 15 Dec 2023 08:17:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FDCDC433C8;
+	Fri, 15 Dec 2023 08:17:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702622140;
-	bh=Dn71pnp1Fex8QG4wBzzTBZfQB4hdIO33Nsn74V1lK2I=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=fOePsk9bBNBlA1shPOJMUTrvU7RBq6fRxexVtCBTacxkiDhTiMOfoZEHdCUC7Ati7
-	 j5dSki9HgTHaM81FW66DPJB9K5hLaFvNiTsLRbip71VCTu3ifwEsf1fTvqu+5h9lxW
-	 d3OJiI6+tJk1gkIfsO6GTQr7v+P59e/rQHR5BUeXyknGpsKtOHrdkWDKRNywBA9cwk
-	 TO2pAy8gttM30GwW2ueLNioLr0X3ia5uLs3ACi0EmdZ0npsrc69fS2jW+nrOeAoqIl
-	 AG3mJZNaFjSyuLJ7jmMK6JrKy0+hkNFnf8dViVPT4GqdmmwJzG5+6yNj+cDaqz9G0f
-	 l95v+vmnK5zpA==
-From: Kalle Valo <kvalo@kernel.org>
-To: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Hans de Goede <hdegoede@redhat.com>,  Johannes Berg
- <johannes@sipsolutions.net>,  Alex Deucher <alexander.deucher@amd.com>,
-  Christian =?utf-8?Q?K=C3=B6nig?= <christian.koenig@amd.com>,  Ma Jun
- <Jun.Ma2@amd.com>,
-  "platform-driver-x86@vger.kernel.org"
- <platform-driver-x86@vger.kernel.org>,  linux-wireless
- <linux-wireless@vger.kernel.org>,  amd-gfx list
- <amd-gfx@lists.freedesktop.org>,  Ilpo =?utf-8?Q?J=C3=A4rvinen?=
- <ilpo.jarvinen@linux.intel.com>
-Subject: Re: [GIT PULL] mmutable branch between pdx86 amd wbrf branch and
- wifi / amdgpu due for the v6.8 merge window
-References: <6395b87b-7cb6-4412-b6e5-e6075353fb6d@redhat.com>
-	<87le9w4u6v.fsf@kernel.org>
-	<8bd60010-7534-4c22-9337-c4219946d8d6@amd.com>
-Date: Fri, 15 Dec 2023 08:35:35 +0200
-In-Reply-To: <8bd60010-7534-4c22-9337-c4219946d8d6@amd.com> (Mario
-	Limonciello's message of "Thu, 14 Dec 2023 10:47:01 -0600")
-Message-ID: <87bkasm0qw.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=k20201202; t=1702628240;
+	bh=F1CXXRqhDAr4CC23oo+qsnko48KdygOUUfkEhM7Spd0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=a+nxdrPEwLV0+es+zs13bUnqN8nQtgQ96aYDCzt9U03nkJI4SFi+AEtORANdrquRR
+	 JJFl1z2ae6zmEnSgubs/rYgqcMAzMqEsfFSKHJ2gOKOXEumw/MkYDg0CqTrsWc4Sqi
+	 cJQTKFYrD0WmDbXVMzFLgZZ9H5W2nVBZEdCU0gTwmKUt1zT9apH3wSXeAy5tuNXRiV
+	 dFn/haiVkobmtnVucBs8XmAKqu0dnVsHseZnRLb5oYj3kYpWtOonfzeQBpJx/koseF
+	 8l4FLTZ06icdxqp6vcKeu56nOAHpTmjZWcg3szlJOBvADed2OPvXxPrDtyU0MITKH7
+	 w+VKRqDBoyz4g==
+Message-ID: <2ad594e0-e1ef-4488-b59e-4560d90f10f4@kernel.org>
+Date: Fri, 15 Dec 2023 09:17:11 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] dt-bindings: net: wireless: mt76: add interrupts
+ description for MT7986
+Content-Language: en-US
+To: Peter Chiu <chui-hao.chiu@mediatek.com>, Felix Fietkau <nbd@nbd.name>,
+ Rob Herring <robh+dt@kernel.org>
+Cc: Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+ Ryder Lee <ryder.Lee@mediatek.com>, Evelyn Tsai <evelyn.tsai@mediatek.com>,
+ Shayne Chen <shayne.chen@mediatek.com>, Sam Shih <sam.shih@mediatek.com>,
+ linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
+ devicetree@vger.kernel.org
+References: <20231215023833.8881-1-chui-hao.chiu@mediatek.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Autocrypt: addr=krzk@kernel.org; keydata=
+ xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
+ cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
+ JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
+ gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
+ J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
+ NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
+ BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
+ vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
+ Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
+ TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
+ S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
+ FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJgPO8PBQkUX63hAAoJEBuTQ307
+ QWKbBn8P+QFxwl7pDsAKR1InemMAmuykCHl+XgC0LDqrsWhAH5TYeTVXGSyDsuZjHvj+FRP+
+ gZaEIYSw2Yf0e91U9HXo3RYhEwSmxUQ4Fjhc9qAwGKVPQf6YuQ5yy6pzI8brcKmHHOGrB3tP
+ /MODPt81M1zpograAC2WTDzkICfHKj8LpXp45PylD99J9q0Y+gb04CG5/wXs+1hJy/dz0tYy
+ iua4nCuSRbxnSHKBS5vvjosWWjWQXsRKd+zzXp6kfRHHpzJkhRwF6ArXi4XnQ+REnoTfM5Fk
+ VmVmSQ3yFKKePEzoIriT1b2sXO0g5QXOAvFqB65LZjXG9jGJoVG6ZJrUV1MVK8vamKoVbUEe
+ 0NlLl/tX96HLowHHoKhxEsbFzGzKiFLh7hyboTpy2whdonkDxpnv/H8wE9M3VW/fPgnL2nPe
+ xaBLqyHxy9hA9JrZvxg3IQ61x7rtBWBUQPmEaK0azW+l3ysiNpBhISkZrsW3ZUdknWu87nh6
+ eTB7mR7xBcVxnomxWwJI4B0wuMwCPdgbV6YDUKCuSgRMUEiVry10xd9KLypR9Vfyn1AhROrq
+ AubRPVeJBf9zR5UW1trJNfwVt3XmbHX50HCcHdEdCKiT9O+FiEcahIaWh9lihvO0ci0TtVGZ
+ MCEtaCE80Q3Ma9RdHYB3uVF930jwquplFLNF+IBCn5JRzsFNBFVDXDQBEADNkrQYSREUL4D3
+ Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
+ MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
+ OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
+ GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
+ 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
+ YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
+ 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
+ BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
+ JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
+ 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
+ YpsFAmA872oFCRRflLYACgkQG5NDfTtBYpvScw/9GrqBrVLuJoJ52qBBKUBDo4E+5fU1bjt0
+ Gv0nh/hNJuecuRY6aemU6HOPNc2t8QHMSvwbSF+Vp9ZkOvrM36yUOufctoqON+wXrliEY0J4
+ ksR89ZILRRAold9Mh0YDqEJc1HmuxYLJ7lnbLYH1oui8bLbMBM8S2Uo9RKqV2GROLi44enVt
+ vdrDvo+CxKj2K+d4cleCNiz5qbTxPUW/cgkwG0lJc4I4sso7l4XMDKn95c7JtNsuzqKvhEVS
+ oic5by3fbUnuI0cemeizF4QdtX2uQxrP7RwHFBd+YUia7zCcz0//rv6FZmAxWZGy5arNl6Vm
+ lQqNo7/Poh8WWfRS+xegBxc6hBXahpyUKphAKYkah+m+I0QToCfnGKnPqyYIMDEHCS/RfqA5
+ t8F+O56+oyLBAeWX7XcmyM6TGeVfb+OZVMJnZzK0s2VYAuI0Rl87FBFYgULdgqKV7R7WHzwD
+ uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
+ 7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
+ 5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
+In-Reply-To: <20231215023833.8881-1-chui-hao.chiu@mediatek.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Mario Limonciello <mario.limonciello@amd.com> writes:
+On 15/12/2023 03:38, Peter Chiu wrote:
+> The mt7986 can support four interrupts to distribute the interrupts
+> to different CPUs.
+> 
+> Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+> ---
+> v2: Change to use description instead of using items.
+> v3: Change to use items and set different minItems for mediatek,mt7986-wmac
 
-> On 12/14/2023 10:36, Kalle Valo wrote:
->
->> Hans de Goede <hdegoede@redhat.com> writes:
->> 
->>> Hi Wifi and AMDGPU maintainers,
->>>
->>> Here is a pull-request for the platform-drivers-x86 parts of:
->>>
->>> https://lore.kernel.org/platform-driver-x86/20231211100630.2170152-1-Jun.Ma2@amd.com/
->>>
->>>  From my pov the pdx86 bits are ready and the
->>> platform-drivers-x86-amd-wbrf-v6.8-1 tag can be merged by you to merge
->>> the wifi-subsys resp. the amdgpu driver changes on top.
->>>
->>> This only adds kernel internal API, so if in the future the API
->>> needs work that can be done.
->>>
->>> I've not merged this branch into pdx86/for-next yet, since I see
->>> little use in merging it without any users. I'll merge it once either
->>> the wifi or amdgpu changes are also merged (and if some blocking
->>> issues get identified before either are merged I can prepare a new
->>> pull-request fixing the issues).
->> I was testing latest wireless-testing with ath11k and noticed this:
->> [  370.796884] ath11k_pci 0000:06:00.0: WBRF is not supported
->> I think that's just spam and not really necessary. Could someone
->> remove
->> that or change to a debug message, please?
->> 
->
-> Do you have dynamic debug turned up perhaps?  It's already supposed to
-> be a dbg message.
->
-> +	dev_dbg(dev, "WBRF is %s supported\n",
-> +		local->wbrf_supported ? "" : "not");
+Please use scripts/get_maintainers.pl to get a list of necessary people
+and lists to CC (and consider --no-git-fallback argument). It might
+happen, that command when run on an older kernel, gives you outdated
+entries. Therefore please be sure you base your patches on recent Linux
+kernel.
 
-Oh, I should have checked that. I do have it enabled:
+> ---
+>  .../bindings/net/wireless/mediatek,mt76.yaml  | 28 +++++++++++++++++--
+>  1 file changed, 26 insertions(+), 2 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
+> index 252207adbc54..58bbddabd388 100644
+> --- a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
+> +++ b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
+> @@ -38,7 +38,12 @@ properties:
+>        MT7986 should contain 3 regions consys, dcm, and sku, in this order.
+>  
+>    interrupts:
+> -    maxItems: 1
+> +    minItems: 1
+> +    items:
+> +      - description: major interrupt for rings
+> +      - description: additional interrupt for ring 19
+> +      - description: additional interrupt for ring 4
+> +      - description: additional interrupt for ring 5
 
-CONFIG_DYNAMIC_DEBUG=y
-CONFIG_DYNAMIC_DEBUG_CORE=y
 
-But that shouldn't enable the debug message unless I specifically enable
-it via debugfs, right? But then I noticed this in net/mac80211/Makefile:
+>  
+>    power-domains:
+>      maxItems: 1
+> @@ -213,6 +218,22 @@ properties:
+>                      description:
+>                        Half-dBm power delta for different numbers of antennas
+>  
 
-ccflags-y += -DDEBUG
+allOf:
 
-I'm guessing this is the reason why the debug message is always printed?
+And then please look at example-schema. This should be placed after
+required:.
 
-It looks like wbrf.c has the only dev_dbg() call in mac80211, all others
-use the macros from net/mac80211/debug.h. I think wbrf.c should also use
-one of the macros from debug.h and not dev_dbg().
+> +if:
+> +  properties:
+> +    compatible:
+> +      contains:
+> +        enum:
+> +          - mediatek,mt7986-wmac
+> +then:
+> +  properties:
+> +    interrupts:
+> +      minItems: 4
+> +else:
+> +  properties:
+> +    interrupts:
+> +      maxItems: 1
+> +
+> +
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+Just one blank line.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+>  required:
+>    - compatible
+Best regards,
+Krzysztof
+
 
