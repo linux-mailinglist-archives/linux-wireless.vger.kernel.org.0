@@ -1,83 +1,103 @@
-Return-Path: <linux-wireless+bounces-859-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-860-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BE7C815A89
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 Dec 2023 17:58:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6485C815B15
+	for <lists+linux-wireless@lfdr.de>; Sat, 16 Dec 2023 19:35:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E4BC1C20BA3
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 Dec 2023 16:58:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A987FB236D3
+	for <lists+linux-wireless@lfdr.de>; Sat, 16 Dec 2023 18:35:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43ECF3035F;
-	Sat, 16 Dec 2023 16:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76F021DFF2;
+	Sat, 16 Dec 2023 18:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lAhDslOy"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eVJr2pn+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com [209.85.160.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1509A30357;
-	Sat, 16 Dec 2023 16:58:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B55B81A29D;
+	Sat, 16 Dec 2023 18:35:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lwfinger.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-5ca29c131ebso1403092a12.0;
-        Sat, 16 Dec 2023 08:58:29 -0800 (PST)
+Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-1f5bd86ceb3so1265797fac.2;
+        Sat, 16 Dec 2023 10:35:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702745909; x=1703350709; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=A0OEMB3r5xVAiMPcaeFSYag9LYwQiHdes4TT0FG2G0E=;
-        b=lAhDslOy6Lf2pBCPJG/RJqn6L15jZ6VKANB0muEgkvtXGvkM6jzrRAoKwr2EYUlWl4
-         KTY4IFlcX7+sY/lH6uBVbinO6jYUe4+LRTTMVeKYE2PF4cJm1/is1ew3thOpDO9Ttd9Y
-         CfSIzNVnlrFr+gJVGvyT841aHVpQNX/7qMpTgipcaPAM4ErIcN5khQP4mzTUzPX+PsBw
-         55BmovWG5wDnQQ3Vdwj3EqAe8maGEr3SgZ/1UXUyn3AfoOUap1aNTYfK8hXuUdiA/qSE
-         nCpG0KXBry/ePl4F9Sh1cJL1+gqgd+8sdAGC0wuNFETZMyUcAwer65j16dgk2Ajd2zBk
-         sdIg==
+        d=gmail.com; s=20230601; t=1702751735; x=1703356535; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=vyGJh+oLCg2opE9iZKuTamXk3uGWDZ4BeXKLK0KVs/Y=;
+        b=eVJr2pn+L9gQUQIgVhRfr1tgIwr5EBRYm45wsYTezxodqJnP8nfzurmFIgLPMjyvNq
+         mWdpU/04BGHa8Tr+5fbwAnP303iK+TDdxNzbbhYX39vhUs9M4jZRAMQLV3WN3hFotrYF
+         i9kel/ncGhhXG+RHDdbc68TZmNLcGTFLzU4jdP6K/GgdkD0YmUNfsS0NC26WNY5F/1ve
+         3IAayhHb/sLlgUEa7FVH9k9pkGSYoycES25ROrti9zDgcYkGPhE+jO6Y8ASuLpoGZzWz
+         4PuXZWR5eODe7ogjdIZsD3M7M7hi2QqJ3CC5ZGw0Sj8pz/breHIPHUmctR08LmDMudTy
+         E2HQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702745909; x=1703350709;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=A0OEMB3r5xVAiMPcaeFSYag9LYwQiHdes4TT0FG2G0E=;
-        b=WwIL/2+ffSLILsOZaeimoPGdSoscWVBDCDQfxG3PZqWD57zMJi2RzzRqUzRTzfpTD/
-         nNuN77U6QGPYoWsmRSkwai7IU6MxaF4zeeGacc75HKjlkR3t4i2Fgdje+Hby+pCZtzBx
-         jex4+QjMLwafozKT9jJuqfM9cVeRn1yNDZQy8OAMwbnLOciocXsYlEcVnHxySHlQDw2j
-         jT0eRAATy/S/PP0Qi4rFhGSiCVXqaQPnv9LFtyPwfYx3IzNDRgq3sO5EEw50Q9M69cpM
-         y8gEkmXVpnBfUHg0n7zP3cshlgoHOJvPu65/8cK7IZeMKq4wuOSHm6O7+RzfAwLA0AgQ
-         1fRw==
-X-Gm-Message-State: AOJu0YykYtLPTlvZsAF9Jwg4LiRljV//hzpGLxDAYOegw6z8EAypzAak
-	7gwrFefHnHOGWFIFKh3b22yzPr1Fi62frUGn
-X-Google-Smtp-Source: AGHT+IG7IoA2fnirYvJoXHfoKktiKmaLtcjaIjSZFHphKYKy8WmNLcKE6VYsX53NqNGD9oOeM4X3lw==
-X-Received: by 2002:a05:6a21:6d86:b0:18b:8475:410a with SMTP id wl6-20020a056a216d8600b0018b8475410amr17660331pzb.7.1702745909143;
-        Sat, 16 Dec 2023 08:58:29 -0800 (PST)
-Received: from localhost.localdomain (1-170-85-161.dynamic-ip.hinet.net. [1.170.85.161])
-        by smtp.googlemail.com with ESMTPSA id m2-20020a635802000000b005b6c1972c99sm14956919pgb.7.2023.12.16.08.58.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 16 Dec 2023 08:58:28 -0800 (PST)
-From: Zenm Chen <zenmchen@gmail.com>
-To: zenmchen@gmail.com
-Cc: Jes.Sorensen@gmail.com,
-	kvalo@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	pkshih@realtek.com,
-	rtl8821cerfe2@gmail.com
-Subject: [PATCH] wifi: rtl8xxxu: Add additional USB IDs for RTL8192EU devices
-Date: Sun, 17 Dec 2023 00:58:25 +0800
-Message-ID: <20231216165825.5438-1-zenmchen@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231216145655.3772-1-zenmchen@gmail.com>
-References: <20231216145655.3772-1-zenmchen@gmail.com>
+        d=1e100.net; s=20230601; t=1702751735; x=1703356535;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vyGJh+oLCg2opE9iZKuTamXk3uGWDZ4BeXKLK0KVs/Y=;
+        b=c1A8G0/PB+/PN6t7SFGCFwHKSCiCVIlQz9t1ju3MBMYLn+cQD80kwxGpopoA67kqlK
+         Nq/yvsKhASGppyEMw57KEHz+NJVJHyjSwPsxB691yChgc2qwktZtJrMSWtMw5kf3rsi1
+         HnAfdmzKL+lyKfcMPM02yNMUlVThW0518Z2oPFkqphJrzr9UT/XaArvnS4+9VLmgCu46
+         j2DEfJvkSPwZXTNwRKKP9cmNyaGusjKJ5wFxpF5MdEDCb2o1f9jl6dV5AGJtFCTkwR5X
+         YdjH3AIm+i1opDIMfvvut0vK4cKjaOhNIKFFfCle1XSzIS2MdPmdZUmp/CT9W3WrWOjr
+         r9Hg==
+X-Gm-Message-State: AOJu0YwmHJRIcL7XzAwJ0deEztSS0O4WcWNca/OjW+nmGBaUqMod7ZYC
+	/L+R080fQx53+mXhDTvmZQI=
+X-Google-Smtp-Source: AGHT+IEYfMjQqALBoB0K9HmeyBytRJKkN4Rt+thWJXgUjf2Sp/Rc9wSBY3eE4sRkxwhLYefZJnpLWA==
+X-Received: by 2002:a05:6870:32ce:b0:203:4935:15d6 with SMTP id r14-20020a05687032ce00b00203493515d6mr5934970oac.116.1702751735450;
+        Sat, 16 Dec 2023 10:35:35 -0800 (PST)
+Received: from [192.168.0.162] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id s38-20020a0568302aa600b006da11489f70sm3124704otu.44.2023.12.16.10.35.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 16 Dec 2023 10:35:35 -0800 (PST)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <c1d61da8-3aba-4d4a-a852-3e743666da11@lwfinger.net>
+Date: Sat, 16 Dec 2023 12:35:29 -0600
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] wifi: rtl8xxxu: Add additional USB IDs for RTL8192EU
+ devices
+Content-Language: en-US
+To: Zenm Chen <zenmchen@gmail.com>, Jes.Sorensen@gmail.com
+Cc: kvalo@kernel.org, linux-wireless@vger.kernel.org,
+ linux-kernel@vger.kernel.org, pkshih@realtek.com, rtl8821cerfe2@gmail.com
+References: <20231216165259.5389-1-zenmchen@gmail.com>
+From: Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <20231216165259.5389-1-zenmchen@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Sorry, please drop this patch.
+On 12/16/23 10:52, Zenm Chen wrote:
+> Add additional USB IDs found in the vendor driver from
+> https://github.com/Mange/rtl8192eu-linux-driver to support more
+> RTL8192EU devices.
+> 
+> Signed-off-by: Zenm Chen <zenmchen@gmail.com>
+> ---
+> v2:
+>   - Not to put these USB IDs in CONFIG_RTL8XXXU_UNTESTED
+
+Have you tested all modes including STA, AP, P2P, etc? If not, then your devices 
+belong in the CONFIG_RTL8XXXU_UNTESTED section.
+
+I am also not fond of splitting the rtl8192eu devices into several different 
+spots in the table. That only makes it harder to see what devices are supported.
+
+NACKed by Larry Finger <Larry.Finger@lwfinger.net>
+
+Larry
+
 
