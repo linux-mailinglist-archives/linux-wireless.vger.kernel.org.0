@@ -1,208 +1,94 @@
-Return-Path: <linux-wireless+bounces-854-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-855-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10B438157F2
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 Dec 2023 07:02:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4217815867
+	for <lists+linux-wireless@lfdr.de>; Sat, 16 Dec 2023 09:16:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35E191C24B22
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 Dec 2023 06:02:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D656E1C24ADC
+	for <lists+linux-wireless@lfdr.de>; Sat, 16 Dec 2023 08:16:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AC6A1798D;
-	Sat, 16 Dec 2023 06:02:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA7E714264;
+	Sat, 16 Dec 2023 08:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="D4R0NJa8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="glBY3Y/Q"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7886C15AC0
-	for <linux-wireless@vger.kernel.org>; Sat, 16 Dec 2023 06:02:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 3BG5lQiF002505;
-	Sat, 16 Dec 2023 06:02:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-transfer-encoding:content-type; s=
-	qcppdkim1; bh=ccnYDzYCh/CkO1D7uGW3fKax017MNZlWbhfQtq3XnfY=; b=D4
-	R0NJa8+3VTs10cqhXvs5pWX9lrk1D0UE1+rHkKQmXMVdleFc2xH6ZjmrLZ7OBKJw
-	cAvSb1BNxQShvOikDB77lkOmWvfkx6jLTmkpG0l/33hlYAxgMhnqJD2yM67nSJ09
-	NouZn78wiScDCsf3SGSuZnpPOfH1F+YRSUctNR86zA1WBn4OGdhvpuCLMLaR28Wm
-	093dyjELNwFcOXzQfKmIkTBbEafYC9LR0MAEYFA5EVG0uKXdW/fXLX6QJrcxfNaD
-	wuzQstxE0VNztprm8TEGC5Pqkv8pPltHiyTqJ+8LVa794yTUEumsEjcfTKPOyvUE
-	E2xmGu/Ksy75eQqerfpw==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3v151jg3ce-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 16 Dec 2023 06:02:17 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3BG62H32005539
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 16 Dec 2023 06:02:17 GMT
-Received: from bqiang-SFF.lan (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Fri, 15 Dec
- 2023 22:02:16 -0800
-From: Baochen Qiang <quic_bqiang@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-Subject: [PATCH 5/5] wifi: ath12k: support default regdb while searching board-2.bin for WCN7850
-Date: Sat, 16 Dec 2023 14:01:40 +0800
-Message-ID: <20231216060140.30611-6-quic_bqiang@quicinc.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20231216060140.30611-1-quic_bqiang@quicinc.com>
-References: <20231216060140.30611-1-quic_bqiang@quicinc.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B43714280
+	for <linux-wireless@vger.kernel.org>; Sat, 16 Dec 2023 08:16:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-50e277b272bso305213e87.0
+        for <linux-wireless@vger.kernel.org>; Sat, 16 Dec 2023 00:16:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1702714609; x=1703319409; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=xcV7anTLIYCi4kf6/f5fzgC9vzxXu0sYcluoEeSDLXo=;
+        b=glBY3Y/QJink8glCUqK20VuJaAMc7tprb+4nuQTq1p11UoHr9mGxL5XhLfZm/3nITX
+         goBpt2DpfRQmtBGMLWh/dhR1BT6ub5xkR8wx+AjYqW1pjv4WZsKSn9feI3G8ZRUsS41f
+         750rCL3YUU7/zE9wW58Phl9NXsLg9k+vZ8Z0QhP3RKaI1zfc3w25PZ2e64S4Yl6uwyOg
+         YBM0Z6yz+sKlHw0cxY/0oFgip/i70C0udPCjYyOZ3pFIFdklvlFITQYx9GvGHNOBVshj
+         /Cw4w0lquyJ9aCVP9uT2J0yLglGz0Zt1dLzyJDwvXao/qo37/MeIZoGOQi3kfqxuSILi
+         Hm2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702714609; x=1703319409;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=xcV7anTLIYCi4kf6/f5fzgC9vzxXu0sYcluoEeSDLXo=;
+        b=pip47O/6L1KW0HJxNwwNYvYg5fAi6YEEcRo/tx+aehttXgkBUcAfm7wdt3ehnUlPAK
+         1b6WIkC/jnYQR4tVP/MZrsLjp+STqLHuK0hz/eI7sdISnGQZAbd2WsbchwCWubr5eni6
+         EUz243ICCBON3zztQs9T1xrgG7V67FCpP1bOpzYu+0Bd6/3GSo58zDlmTL5O0k8VlWsi
+         qD4M0tUjBR6Fuo2+atMM6pRZH5LhW/NRkgWiGdXX62sF5p48GD+unZr3jJVG/XvNT8Oa
+         PzcNpz/E7EMNyM0WeyRPi2J0J5sjIu6dTIzQShKswx5u6mZ5/6B/pCWHFo/T1m+B+xgY
+         +ZDA==
+X-Gm-Message-State: AOJu0YwHPsaAXF1kzFTkj9szPdVwopijCZUuucEFUeqytF/TReLQgGnu
+	ctnT4hfe9Y47BJXOx8mwMqq8tU6um4uibBWAgnlGt8oWuus=
+X-Google-Smtp-Source: AGHT+IG2UkYRjJpjq+B62+bJSDM8T56tpfiSMgV8UtNJ04xYMzKGXH35ipvI9uQQcbBQGq433mn6zFN1Jm0R1WyjYGU=
+X-Received: by 2002:a05:6512:a8d:b0:50b:fc8e:a531 with SMTP id
+ m13-20020a0565120a8d00b0050bfc8ea531mr7953000lfu.12.1702714608707; Sat, 16
+ Dec 2023 00:16:48 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 3ee4Qrq9GzQZf2PLutlesFnRGQIiKIRn
-X-Proofpoint-GUID: 3ee4Qrq9GzQZf2PLutlesFnRGQIiKIRn
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-09_01,2023-12-07_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 impostorscore=0
- lowpriorityscore=0 mlxlogscore=999 adultscore=0 malwarescore=0 spamscore=0
- phishscore=0 mlxscore=0 suspectscore=0 bulkscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2311290000
- definitions=main-2312160043
+From: Leonam Uerba <ghostdog0777@gmail.com>
+Date: Sat, 16 Dec 2023 05:16:36 -0300
+Message-ID: <CA+f0+YH_yAAvqz5_hPVwPHvWvK52cD10XjWye2=S5+OhLS-hwQ@mail.gmail.com>
+Subject: Realtek rtl8723de load krn 6.5 but dont work
+To: linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Sometimes board-2.bin does not have the regdb data which matches the
-parameters such as vendor, device, subsystem-vendor, subsystem-device
-etc. Add default regdb data with only 'bus=%s' into board-2.bin for
-WCN7850, then ath12k uses 'bus=pci' to search regdb data in board-2.bin
-for WCN7850.
+Hi Realtek Engineers,
 
-[   46.114895] ath12k_pci 0000:03:00.0: boot using board name 'bus=pci,vendor=17cb,device=1107,subsystem-vendor=17cb,subsystem-device=3378,qmi-chip-id=2,qmi-board-id=260'
-[   46.118167] ath12k_pci 0000:03:00.0: boot firmware request ath12k/WCN7850/hw2.0/board-2.bin size 380280
-[   46.118173] ath12k_pci 0000:03:00.0: board name
-[   46.118176] ath12k_pci 0000:03:00.0: 00000000: 62 75 73 3d 70 63 69                             bus=pci
-[   46.118179] ath12k_pci 0000:03:00.0: failed to fetch regdb data for bus=pci,vendor=17cb,device=1107,subsystem-vendor=17cb,subsystem-device=3378,qmi-chip-id=2,qmi-board-id=260 from ath12k/WCN7850/hw2.0/board-2.bin
-[   46.118239] ath12k_pci 0000:03:00.0: boot using board name 'bus=pci'
-[   46.119842] ath12k_pci 0000:03:00.0: boot firmware request ath12k/WCN7850/hw2.0/board-2.bin size 380280
-[   46.119847] ath12k_pci 0000:03:00.0: board name
-[   46.119849] ath12k_pci 0000:03:00.0: 00000000: 62 75 73 3d 70 63 69                             bus=pci
-[   46.119852] ath12k_pci 0000:03:00.0: boot found match regdb data for name 'bus=pci'
-[   46.119855] ath12k_pci 0000:03:00.0: boot found regdb data for 'bus=pci'
-[   46.119857] ath12k_pci 0000:03:00.0: fetched regdb
+In the hope that they can help me understand and correct why the
+driver installs and (apparently) loads correctly after compiling the
+driver (using the project: https://github.com/lwfinger/rtw88) but it
+doesn't work in NetworkManager and dmesg gives me this error when
+loading it via modprobe:
 
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+[  166.218608] rtw_8723de 0000:02:00.0: firmware: direct-loading
+firmware rtw88/rtw8723d_fw.bin
+[  166.219439] rtw_8723de 0000:02:00.0: Firmware version 48.0.0, H2C version 0
+[  172.152525] rtw_8723de 0000:02:00.0: failed to poll offset=0x5
+mask=0x3 value=0x0
+[  172.152531] rtw_8723de 0000:02:00.0: mac power on failed
+[  172.152533] rtw_8723de 0000:02:00.0: failed to power on mac
+[  172.152535] rtw_8723de 0000:02:00.0: failed to setup chip efuse info
+[  172.152537] rtw_8723de 0000:02:00.0: failed to setup chip information
+[  172.167493] rtw_8723de: probe of 0000:02:00.0 failed with error -16
 
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/core.c | 53 +++++++++++++++++++-------
- 1 file changed, 40 insertions(+), 13 deletions(-)
+Kernel: 6.5.0-kali3-amd64
+Hardware: built-in chipset: on Notebook HP 15-DA0012DX
 
-diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
-index 80fce8099bdf..d73e2d33a41e 100644
---- a/drivers/net/wireless/ath/ath12k/core.c
-+++ b/drivers/net/wireless/ath/ath12k/core.c
-@@ -105,7 +105,8 @@ int ath12k_core_resume(struct ath12k_base *ab)
- }
- 
- static int __ath12k_core_create_board_name(struct ath12k_base *ab, char *name,
--					   size_t name_len, bool with_variant)
-+					   size_t name_len, bool with_variant,
-+					   bool bus_type_mode)
- {
- 	/* strlen(',variant=') + strlen(ab->qmi.target.bdf_ext) */
- 	char variant[9 + ATH12K_QMI_BDF_EXT_STR_LENGTH] = { 0 };
-@@ -116,15 +117,20 @@ static int __ath12k_core_create_board_name(struct ath12k_base *ab, char *name,
- 
- 	switch (ab->id.bdf_search) {
- 	case ATH12K_BDF_SEARCH_BUS_AND_BOARD:
--		scnprintf(name, name_len,
--			  "bus=%s,vendor=%04x,device=%04x,subsystem-vendor=%04x,subsystem-device=%04x,qmi-chip-id=%d,qmi-board-id=%d%s",
--			  ath12k_bus_str(ab->hif.bus),
--			  ab->id.vendor, ab->id.device,
--			  ab->id.subsystem_vendor,
--			  ab->id.subsystem_device,
--			  ab->qmi.target.chip_id,
--			  ab->qmi.target.board_id,
--			  variant);
-+		if (bus_type_mode)
-+			scnprintf(name, name_len,
-+				  "bus=%s",
-+				  ath12k_bus_str(ab->hif.bus));
-+		else
-+			scnprintf(name, name_len,
-+				  "bus=%s,vendor=%04x,device=%04x,subsystem-vendor=%04x,subsystem-device=%04x,qmi-chip-id=%d,qmi-board-id=%d%s",
-+				  ath12k_bus_str(ab->hif.bus),
-+				  ab->id.vendor, ab->id.device,
-+				  ab->id.subsystem_vendor,
-+				  ab->id.subsystem_device,
-+				  ab->qmi.target.chip_id,
-+				  ab->qmi.target.board_id,
-+				  variant);
- 		break;
- 	default:
- 		scnprintf(name, name_len,
-@@ -143,13 +149,19 @@ static int __ath12k_core_create_board_name(struct ath12k_base *ab, char *name,
- static int ath12k_core_create_board_name(struct ath12k_base *ab, char *name,
- 					 size_t name_len)
- {
--	return __ath12k_core_create_board_name(ab, name, name_len, true);
-+	return __ath12k_core_create_board_name(ab, name, name_len, true, false);
- }
- 
- static int ath12k_core_create_fallback_board_name(struct ath12k_base *ab, char *name,
- 						  size_t name_len)
- {
--	return __ath12k_core_create_board_name(ab, name, name_len, false);
-+	return __ath12k_core_create_board_name(ab, name, name_len, false, false);
-+}
-+
-+static int ath12k_core_create_bus_type_board_name(struct ath12k_base *ab, char *name,
-+						  size_t name_len)
-+{
-+	return __ath12k_core_create_board_name(ab, name, name_len, false, true);
- }
- 
- const struct firmware *ath12k_core_firmware_request(struct ath12k_base *ab,
-@@ -453,7 +465,7 @@ int ath12k_core_fetch_bdf(struct ath12k_base *ab, struct ath12k_board_data *bd)
- 
- int ath12k_core_fetch_regdb(struct ath12k_base *ab, struct ath12k_board_data *bd)
- {
--	char boardname[BOARD_NAME_SIZE];
-+	char boardname[BOARD_NAME_SIZE], default_boardname[BOARD_NAME_SIZE];
- 	int ret;
- 
- 	ret = ath12k_core_create_board_name(ab, boardname, BOARD_NAME_SIZE);
-@@ -470,6 +482,21 @@ int ath12k_core_fetch_regdb(struct ath12k_base *ab, struct ath12k_board_data *bd
- 	if (!ret)
- 		goto exit;
- 
-+	ret = ath12k_core_create_bus_type_board_name(ab, default_boardname,
-+						     BOARD_NAME_SIZE);
-+	if (ret) {
-+		ath12k_dbg(ab, ATH12K_DBG_BOOT,
-+			   "failed to create default board name for regdb: %d", ret);
-+		goto exit;
-+	}
-+
-+	ret = ath12k_core_fetch_board_data_api_n(ab, bd, default_boardname,
-+						 ATH12K_BD_IE_REGDB,
-+						 ATH12K_BD_IE_REGDB_NAME,
-+						 ATH12K_BD_IE_REGDB_DATA);
-+	if (!ret)
-+		goto exit;
-+
- 	ret = ath12k_core_fetch_board_data_api_1(ab, bd, ATH12K_REGDB_FILE_NAME);
- 	if (ret)
- 		ath12k_dbg(ab, ATH12K_DBG_BOOT, "failed to fetch %s from %s\n",
--- 
-2.25.1
+I've done a lot of research and haven't found anything that can get
+around this error, can you help me?
 
+Best regards,
 
