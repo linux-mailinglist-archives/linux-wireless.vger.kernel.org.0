@@ -1,115 +1,173 @@
-Return-Path: <linux-wireless+bounces-870-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-871-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05ECE815C89
-	for <lists+linux-wireless@lfdr.de>; Sun, 17 Dec 2023 00:15:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD2E4815E64
+	for <lists+linux-wireless@lfdr.de>; Sun, 17 Dec 2023 10:50:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B6C1EB228D9
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 Dec 2023 23:15:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 746202834B5
+	for <lists+linux-wireless@lfdr.de>; Sun, 17 Dec 2023 09:50:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E343237D01;
-	Sat, 16 Dec 2023 23:15:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 786DA1FAD;
+	Sun, 17 Dec 2023 09:50:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aKUYxaez"
+	dkim=pass (2048-bit key) header.d=w1.fi header.i=@w1.fi header.b="KSEk208r"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.w1.fi (mail.w1.fi [212.71.239.96])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B8CE37D00
-	for <linux-wireless@vger.kernel.org>; Sat, 16 Dec 2023 23:15:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lwfinger.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-5bdbe2de25fso1534121a12.3
-        for <linux-wireless@vger.kernel.org>; Sat, 16 Dec 2023 15:15:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702768500; x=1703373300; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=P0owA1NYh7prLjnJ8vwBejfsmew9vNh7zYTFMzggcss=;
-        b=aKUYxaez/sAG8lcqxq4XdiWZsmGfghDdWlbqqTM1xaQ8tPIsN522KK1a8CQ13516na
-         NAcjJFn7gUCd/AydonOEsoUtP6y0P4V/L/QuZNpbWagapdorpSvYvl8twx+CzYkMgO8E
-         mOXVG0Iu+cf+/sHiYsbeq7qynsIaV2KeExk96kLNwyjsLMKHYJQxz4JPlwR5M4su8noD
-         DhLS1+HWvwcs5S4M3Myepl2jFhPaRN8yJXEjvTaqRe6U/YvGHLDUW9UgvWivRigjEp8Y
-         8f8QTfuVDXBAv/Wvke10oHwnlheaWIM6Jg6eGOXgYO0ixBMbC0ISrgpKeoX4zQe3P24s
-         A0Bw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702768500; x=1703373300;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=P0owA1NYh7prLjnJ8vwBejfsmew9vNh7zYTFMzggcss=;
-        b=oYBiN1xz6e6NQvmx//RiLUeQvom9+KZYgtmzU25oaVGSHbwvIm9lsJASJwLjHLTW6e
-         Qrnd5hyRJQCoFOyjM19ynGR5wRfuOkEMrcscH1LHo8iCwvxM2Qq5z1MJvsq2tXYjlIcD
-         6hDxHbxJfISPBzepwHk+P+54dT/x1z1wktCfXXopNAHcMHE5e12/9vYWgjVUpFxp9lem
-         lEBjgyen8DqzQsfJkq4u6Uoj8vPbKyWA2024fYb7/ohlU5SWFypU3h8nZ9JB6O9dzU9V
-         juAJ978g8EE53ccyneiuRvhAZFiJEnkUYebgA+VtXL+mkLhFKDIBawgmgtzXhrzv3xwK
-         ME9g==
-X-Gm-Message-State: AOJu0YwJvkA3xWibhMoxKTDgT2Yi99k1w5ZoG4SLsPkAoDD9NV1llXXf
-	Pqvl17S7xP/2YaqbgJFDA+MICVTOfua5UQ==
-X-Google-Smtp-Source: AGHT+IFzuLhXYnEv6yrziZpSEUfMAaOCotTsh8djdwsupmamEB40fa04Fn19aPSIA3Wbz0DkubF3rw==
-X-Received: by 2002:a05:6a20:5657:b0:193:fda5:8278 with SMTP id is23-20020a056a20565700b00193fda58278mr3048590pzc.16.1702768500211;
-        Sat, 16 Dec 2023 15:15:00 -0800 (PST)
-Received: from [192.168.0.162] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id pb11-20020a0568701e8b00b001fad96b0264sm5836435oab.10.2023.12.16.15.14.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 16 Dec 2023 15:14:59 -0800 (PST)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <dc58789d-0d60-407e-8fdf-ba56f139877f@lwfinger.net>
-Date: Sat, 16 Dec 2023 17:14:55 -0600
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1975C1FB2
+	for <linux-wireless@vger.kernel.org>; Sun, 17 Dec 2023 09:50:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=w1.fi
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w1.fi
+Received: from localhost (localhost [127.0.0.1])
+	by mail.w1.fi (Postfix) with ESMTP id DCFAC11717;
+	Sun, 17 Dec 2023 09:42:41 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at w1.fi
+Received: from mail.w1.fi ([127.0.0.1])
+	by localhost (mail.w1.fi [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id FOTIgX7cxu8b; Sun, 17 Dec 2023 09:42:07 +0000 (UTC)
+Received: by jm (sSMTP sendmail emulation); Sun, 17 Dec 2023 11:42:05 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=w1.fi; s=default;
+	t=1702806127; bh=vl6aQBoqcJn88mjLXDa+tGyx/qSRdbLm9kx6eorx8xk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KSEk208rqlmfX++L+tS4N79W8yJLHATL7Laa8bkn5RAlXBqQz6QurwdSGWX9huAcs
+	 I+v07or5ODnpkclbdYFN+bpwIaYJuwqI08sK3JdWB/ThdNDaCvgQ5NdPNbuq2Chl80
+	 k93UW9giEpHE3og/Zj3tnwaHzjfsbnLLNntZZcNuwUzA7xWK3E/dsecABsuRkZlSr/
+	 Ma7ukViTNjjYozQZoDzDz5a1K10Tzm/jP2Gu+BimN/G9ONthUt9SZ0KWXEU9sja17z
+	 yWQ9EAj8P/X2qAM1jbfYPdd526iU3K9mP3V6IXnX/SDcxS/EyfVU2P7v1y5SuSsp2J
+	 HsmkD4VxUxHOw==
+Date: Sun, 17 Dec 2023 11:42:05 +0200
+From: Jouni Malinen <j@w1.fi>
+To: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Cc: johannes@sipsolutions.net, linux-wireless@vger.kernel.org,
+	Ilan Peer <ilan.peer@intel.com>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: Re: [PATCH 06/14] wifi: cfg80211: Update the default DSCP-to-UP
+ mapping
+Message-ID: <ZX7CbSCEv7Zvv476@w1.fi>
+References: <20231211070532.2458539-1-miriam.rachel.korenblit@intel.com>
+ <20231211085121.8a1c7d1f0034.I50aed38be78ae9aea052938e2cb6b5800010ecd4@changeid>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Realtek rtl8723de load krn 6.5 but dont work
-Content-Language: en-US
-To: Leonam Uerba <ghostdog0777@gmail.com>, linux-wireless@vger.kernel.org
-References: <CA+f0+YH_yAAvqz5_hPVwPHvWvK52cD10XjWye2=S5+OhLS-hwQ@mail.gmail.com>
-From: Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <CA+f0+YH_yAAvqz5_hPVwPHvWvK52cD10XjWye2=S5+OhLS-hwQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231211085121.8a1c7d1f0034.I50aed38be78ae9aea052938e2cb6b5800010ecd4@changeid>
 
-On 12/16/23 02:16, Leonam Uerba wrote:
-> Hi Realtek Engineers,
+On Mon, Dec 11, 2023 at 09:05:24AM +0200, Miri Korenblit wrote:
+> The default DSCP-to-UP mapping method defined in RFC8325
+> applied to packets marked per recommendations in RFC4594 and
+> destined to 802.11 WLAN clients will yield a number of inconsistent
+> QoS mappings.
 > 
-> In the hope that they can help me understand and correct why the
-> driver installs and (apparently) loads correctly after compiling the
-> driver (using the project: https://github.com/lwfinger/rtw88) but it
-> doesn't work in NetworkManager and dmesg gives me this error when
-> loading it via modprobe:
-> 
-> [  166.218608] rtw_8723de 0000:02:00.0: firmware: direct-loading
-> firmware rtw88/rtw8723d_fw.bin
-> [  166.219439] rtw_8723de 0000:02:00.0: Firmware version 48.0.0, H2C version 0
-> [  172.152525] rtw_8723de 0000:02:00.0: failed to poll offset=0x5
-> mask=0x3 value=0x0
-> [  172.152531] rtw_8723de 0000:02:00.0: mac power on failed
-> [  172.152533] rtw_8723de 0000:02:00.0: failed to power on mac
-> [  172.152535] rtw_8723de 0000:02:00.0: failed to setup chip efuse info
-> [  172.152537] rtw_8723de 0000:02:00.0: failed to setup chip information
-> [  172.167493] rtw_8723de: probe of 0000:02:00.0 failed with error -16
-> 
-> Kernel: 6.5.0-kali3-amd64
-> Hardware: built-in chipset: on Notebook HP 15-DA0012DX
-> 
-> I've done a lot of research and haven't found anything that can get
-> around this error, can you help me?
+> To handle this, modify the mapping of specific DSCP values for
+> which the default mapping will create inconsistencies, based on
+> the recommendations in section 4 in RFC8325.
 
-I am not a Realtek engineer, but you might try setting some options for 
-rtw88_pci or rtw_pci (depends on whether you are using the built-in kernel 
-drivers or the GitHub repo) such as disable_msi=y and disable_aspm=y.
+Could this commit message give some more justification for why these
+exact specifications are the best source of this information? For
+example, should this also reference the Wi-Fi QoS Management
+specification?
 
-Similarly, add the option disable_lps_deep=y for rtw88_core or rtw_core.
+> diff --git a/net/wireless/util.c b/net/wireless/util.c
+> @@ -980,7 +980,53 @@ unsigned int cfg80211_classify8021d(struct sk_buff *skb,
+>  		}
+>  	}
+>  
+> +	/* The default mapping as defined in RFC8325 */
+>  	ret = dscp >> 5;
 
-Late-model HP and Lenovo laptops have BIOS coding that seems to need these options.
+Could you point to the exact location in RFC 8325 that has that as the
+default mapping? Figure 1 has this note: "Note: All unused codepoints
+are RECOMMENDED to be mapped to UP 0".
 
-Larry
+Section 2.4 does describe what many APs do, but that section is called
+"Default UP-to-DSCP Mappings and Conflicts" which does not sound like a
+recommended default mapping in RFC 8325..
+
+> +	/* Handle specific DSCP values for which the default mapping doesn't
+> +	 * adhere to the intended usage of the DSCP value. See section 4 in
+> +	 * RFC8325.
+> +	 */
+> +	switch (dscp >> 2) {
+
+What about "Standard: DF" (0 --> 0) and "Low-Priority Data: CS1" (8 ->
+1)? Are those omitted here because the "dscp >> 5" happens to have same
+value? It would seem to be good to have at least a comment here pointing
+that out in particular taken into account that comment above about the
+status of that "default mapping" and how it relates to RFC 8325.
+
+> +	case 10:
+> +	case 12:
+> +	case 14:
+> +		/* High throughput data: AF11, AF12, AF13 */
+> +		ret = 0;
+> +		break;
+> +	case 16:
+> +		/* Operations, Administration, and Maintenance and Provisioning:
+> +		 * CS2
+> +		 */
+> +		ret = 0;
+> +		break;
+> +	case 18:
+> +	case 20:
+> +	case 22:
+> +		/* Low latency data: AF21, AF22, AF23 */
+> +		ret = 3;
+> +		break;
+> +	case 24:
+> +		/* Broadcasting video: CS23 */
+> +		ret = 4;
+> +		break;
+
+Typo.. Should be "CS3" instead of "CS23".
+
+What about "Multimedia Streaming: AF31, AF32, AF33"? Shouldn't those
+values 26, 28, 30 be mapped to 4? If not, it would be good to add a
+comment explaining why that is not here while it is included in RFC 8325
+Figure 1.
+
+What about "Real-Time Interactive: CS4"? Shouldn't that value 32 be
+mapped to 4? If not, it would be good to add a comment explaining why
+that is not here while it is included in RFC 8325 Figure 1.
+
+What about "Multimedia Conferencing: AF41, AF42, AF43"? Shouldn't those
+values 34, 36, 38 be mapped to 4? If not, it would be good to add a
+comment explaining why that is not here while it is included in RFC 8325
+Figure 1.
+
+> +	case 40:
+> +		/* Signaling: CS5 */
+> +		ret = 5;
+> +		break;
+> +	case 44:
+> +		/* Voice Admit */
+> +		ret = 6;
+> +		break;
+
+To be consistent, that comment should be "VOICE-ADMIT: VA".
+
+> +	case 46:
+> +		/* Telephony traffic: EF */
+> +		ret = 6;
+> +		break;
+> +	case 48:
+> +		/* Network Control Traffic: CS6 */
+> +		ret = 7;
+> +		break;
+> +	}
+
+This does not include "Network Control: CS7". Is there a reason for not
+covering that case 56 now? I know it is "reserved for future use", but
+RFC 8325 does provide mapping for it as well.
+
+-- 
+Jouni Malinen                                            PGP id EFC895FA
 
