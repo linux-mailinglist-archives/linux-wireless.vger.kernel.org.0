@@ -1,37 +1,37 @@
-Return-Path: <linux-wireless+bounces-944-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-945-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3A998179F5
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Dec 2023 19:46:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95F6B8179FC
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Dec 2023 19:47:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADC351C22F7A
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Dec 2023 18:46:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 329441F23326
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Dec 2023 18:47:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF7251DDFC;
-	Mon, 18 Dec 2023 18:46:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42C265BF9D;
+	Mon, 18 Dec 2023 18:47:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MIry3h0G"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="duhDDjH/"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD8592904
-	for <linux-wireless@vger.kernel.org>; Mon, 18 Dec 2023 18:46:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 006BCC433C7;
-	Mon, 18 Dec 2023 18:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B6A26287;
+	Mon, 18 Dec 2023 18:47:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E79AEC433C9;
+	Mon, 18 Dec 2023 18:47:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702925199;
-	bh=EptGzg58+cPDd7g/9aUY/r/Wd8WbVa8/AZav0tjNyM0=;
+	s=k20201202; t=1702925249;
+	bh=MNFpGtT+UDTrh+CtH/56pWdeRMJBi6mOCBVEoln6zPk=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=MIry3h0Gsxssmek7lwBHVtR046CRJURNbNjUvX5PElaU3dQKE0aAHbKQTG761dXV4
-	 DeWQzHjX+hUQXOQKjkUGr+pvEbo4EVo+sBh76TPJb19Qb1Rq+4ZQGVQeRpRiYrIi/T
-	 9QJMmb3mgGJCiTMuVN0nD+nfsDFdAdwUb8wxGTn9bhFZb2gBN1rlSbG737xkiJeW23
-	 vuOWFINkFxsC37fyV0ey65jIw9tN3lkXNU+lDR80sz5q6XfBjw4XKOccZKZcwGVj5Q
-	 5h6+Thj++axj9aayjtaT2mtwugd6CWjvFlKgEmTt70qimDi4D2CYp1g9INghQdCtWM
-	 2ba/9Dl535whw==
+	b=duhDDjH/pkjlzzSF5hSbzWfVyBHh5y4eEVQPfd8Ew+i34CDgDiqcdy9XYpKW8FK8x
+	 pm9jt9QzWfC4TyqVDv9GJ09DigCsTkIfcegcBLCqKhGkOCDA1NQ1ZUU2t2w+8QdxsI
+	 EC0ILgNSRzU4zpM2XhjjW2XejeKFyCh09+pj2r8XT8CMKnbsN4P5MUKND28vpHdt3u
+	 VUxULwBDqNKChmhFVg7Gu/BcASIPx8tgwZ1+1cA+exEJ4mRQTK4pXwi35DGMVGtWRO
+	 wEVKlFidpkQtdQHI7yBvvfmdBMvI3JdHdl+n7ipDCB25UoI1JOFzrMMJFsWfA+TC2V
+	 NdSYAhAvCPU4w==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -39,37 +39,58 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] wifi: ath9k: fix LNA selection in ath_ant_try_scan()
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 1/6] wifi: ath10k: use flexible array in struct
+ wmi_host_mem_chunks
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20231211172502.25202-1-dmantipov@yandex.ru>
-References: <20231211172502.25202-1-dmantipov@yandex.ru>
-To: Dmitry Antipov <dmantipov@yandex.ru>
-Cc: =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen_?= <toke@toke.dk>,
- lvc-project@linuxtesting.org, linux-wireless@vger.kernel.org,
- Dmitry Antipov <dmantipov@yandex.ru>
+In-Reply-To: 
+ <20231213-wmi_host_mem_chunks_flexarray-v1-1-92922d92fa2c@quicinc.com>
+References: 
+ <20231213-wmi_host_mem_chunks_flexarray-v1-1-92922d92fa2c@quicinc.com>
+To: Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc: Jeff Johnson <quic_jjohnson@quicinc.com>,
+ Kees Cook <keescook@chromium.org>, "Gustavo A. R. Silva"
+	<gustavo@embeddedor.com>, <ath10k@lists.infradead.org>,
+ <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170292519633.424292.4014017811010090345.kvalo@kernel.org>
-Date: Mon, 18 Dec 2023 18:46:37 +0000 (UTC)
+Message-ID: <170292524618.424292.1640750049894446616.kvalo@kernel.org>
+Date: Mon, 18 Dec 2023 18:47:27 +0000 (UTC)
 
-Dmitry Antipov <dmantipov@yandex.ru> wrote:
+Jeff Johnson <quic_jjohnson@quicinc.com> wrote:
 
-> In 'ath_ant_try_scan()', (most likely) the 2nd LNA's signal
-> strength should be used in comparison against RSSI when
-> selecting first LNA as the main one. Compile tested only.
+> Currently struct wmi_host_mem_chunks defines:
+>         struct host_memory_chunk items[1];
 > 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> Per the guidance in [1] this should be a flexible array. However there
+> is a documented requirement:
+>         some fw revisions require at least 1 chunk regardless of count
 > 
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-> Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+> To satisfy this requirement, follow the guidance from [2] and wrap the
+> array in a union which contains both the flexible array and a single
+> instance of the underlying struct. Since the footprint of the struct
+> is unchanged, no additional driver changes are required.
+> 
+> No functional changes, compile tested only.
+> 
+> [1] https://docs.kernel.org/process/deprecated.html#zero-length-and-one-element-arrays
+> [2] https://lore.kernel.org/linux-wireless/202308301529.AC90A9EF98@keescook/
+> 
+> Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> Reviewed-by: Kees Cook <keescook@chromium.org>
+> Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-Patch applied to ath-next branch of ath.git, thanks.
+6 patches applied to ath-next branch of ath.git, thanks.
 
-d6b27eb997ef wifi: ath9k: fix LNA selection in ath_ant_try_scan()
+d2eb318f4b6b wifi: ath10k: use flexible array in struct wmi_host_mem_chunks
+72ca7c4073ac wifi: ath10k: use flexible arrays for WMI start scan TLVs
+26eb704a46f8 wifi: ath10k: remove struct wmi_pdev_chanlist_update_event
+b0c0794b05ec wifi: ath10k: remove unused template structs
+cb188e862c1c wifi: ath10k: use flexible array in struct wmi_tdls_peer_capabilities
+6b9923f1f6d1 wifi: ath10k: remove duplicate memset() in 10.4 TDLS peer update
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20231211172502.25202-1-dmantipov@yandex.ru/
+https://patchwork.kernel.org/project/linux-wireless/patch/20231213-wmi_host_mem_chunks_flexarray-v1-1-92922d92fa2c@quicinc.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
