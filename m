@@ -1,88 +1,133 @@
-Return-Path: <linux-wireless+bounces-934-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-933-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 777A38174BD
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Dec 2023 16:05:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B04428174B5
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Dec 2023 16:05:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18E3F1F23315
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Dec 2023 15:05:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1DB15B22F9C
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Dec 2023 15:05:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19FB6200C0;
-	Mon, 18 Dec 2023 15:05:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34FF042377;
+	Mon, 18 Dec 2023 15:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="NWj70zYm"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m28TP9DS"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from forward103b.mail.yandex.net (forward103b.mail.yandex.net [178.154.239.150])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 825603D540
-	for <linux-wireless@vger.kernel.org>; Mon, 18 Dec 2023 15:05:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
-Received: from mail-nwsmtp-smtp-production-main-84.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-84.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:30a4:0:640:6426:0])
-	by forward103b.mail.yandex.net (Yandex) with ESMTP id E2A9A60A95;
-	Mon, 18 Dec 2023 18:04:55 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-84.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id s4q4qX8PfuQ0-A9zrS1Bi;
-	Mon, 18 Dec 2023 18:04:55 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1702911895; bh=9APtOO4AkWSIUPxuEeY1iDf0BKjrWx98wgRgAmiaKUg=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=NWj70zYmefUfhIsm1YuRqKhMPAnLfPl0eZp3rAAIWTXToqNfeSoBr+S8M347uASmM
-	 wKWDWVtGog9g4OO+kGYE06bcBCpaBqgI+P/PmYx6iVKSRVcagXZBILgi6vDi1UWrg5
-	 cZ1Q9Elz5ENnqbC6IxyLD8j7+sThyhxJ8xDIsRaY=
-Authentication-Results: mail-nwsmtp-smtp-production-main-84.iva.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From: Dmitry Antipov <dmantipov@yandex.ru>
-To: Johannes Berg <johannes.berg@intel.com>
-Cc: Kalle Valo <kvalo@kernel.org>,
-	linux-wireless@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH] wifi: iwlwifi: dvm: do not set priv_sta of rs_get_rate()
-Date: Mon, 18 Dec 2023 18:02:34 +0300
-Message-ID: <20231218150245.343691-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DCD13D577;
+	Mon, 18 Dec 2023 15:04:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a23566e91d5so155376266b.0;
+        Mon, 18 Dec 2023 07:04:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1702911847; x=1703516647; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=u6foNHtyZRIJvWBTng3wISgU2MfZKVaXRv3N1MNnrMQ=;
+        b=m28TP9DSddRi5til0MsICR6zvrahO27MrcAlHQ9YSGssvofIAGhz/UCiu0tiaTjg0Q
+         3xpGwLuZIALP+XnWPB1dgBMUNQ4dq5mXKN4QKjGQdIjij4pvMMvH1BiwfHqulKbAlPuK
+         Pf3D8BBGCV+zlTDS05y4EqFFU40EFtZOBEKfzsUq9MuBBb91k9ii71U1WsdGAU0tDObs
+         U7tWS5gIq2lJm45HkHR/cmCbaXxNtiI5i4g3/X3dY4vEDW58uSLCq9Z1+sL3K+/voQ+v
+         aWqCiZ2m1VjEsUxY2nQDLbCgwhsuNF1T9PBtRtUHOLSZb0iDVmYDNqZaIp96NKoTpW2P
+         U7cA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702911847; x=1703516647;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=u6foNHtyZRIJvWBTng3wISgU2MfZKVaXRv3N1MNnrMQ=;
+        b=KsLv0ksuERdHNSvD+Bk+ZYfkE+j2cTWE+h8QIVYoSj9ev3yvpG24GWM4a7Z9WS3p55
+         Gf5BD4oa0dN1YD8M1Fpm5gPIOLpZ+R/fYNBGcR+2rOTsIrF9MLkFPtMMorQ62JSqVm8k
+         sYNNKngn9WcAqVEP4dZz2PU3XiZTRhofd+gNlYJx3IRT2EJGMBrT0zQIIrXgSdAeX9W3
+         BOq/g1/ZL4FdN+lFQKN4PLwbdQt5WuDZCTdMDKaSsiUx1kFuZfGGcWHegHxbrrms33DR
+         vbY2jpAjEnXbC8hK2ldTMKGwp1s6gul+wJ84yHQzCSnGD1mi57RtVORROIlzAVPQkDGp
+         Xc/w==
+X-Gm-Message-State: AOJu0Yw5v+JXaXtPJBLlcg+2MKA/rCF09l8Gqy8HPqwYqhDeo6o5UeJK
+	XlXhXHP/GEqVvHhwANgO94qHFeI6nAgZi4nY064=
+X-Google-Smtp-Source: AGHT+IGpphjTUnAqLE+hQAj1yH6sXJlSe/0XhogaISq5mrc01gwsmD6+HxIIpJz2iD0xeckt1xV5LbaknP1N/+M7VSo=
+X-Received: by 2002:a17:906:b203:b0:a19:a19b:424a with SMTP id
+ p3-20020a170906b20300b00a19a19b424amr5114987ejz.181.1702911846667; Mon, 18
+ Dec 2023 07:04:06 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20231218115802.15859-1-lukas.bulwahn@gmail.com>
+ <26207725d5025318b831dd5a5feca67248aaa221.camel@sipsolutions.net> <87o7ensgjv.fsf@kernel.org>
+In-Reply-To: <87o7ensgjv.fsf@kernel.org>
+From: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Date: Mon, 18 Dec 2023 16:03:54 +0100
+Message-ID: <CAKXUXMxh3rM8da9kJG_=Sy8fQqqf7f8xXaHDHPLvpvRiYg1e5w@mail.gmail.com>
+Subject: Re: [PATCH] bcma,ssb: simplify dependency handling for bcma and ssb drivers
+To: Kalle Valo <kvalo@kernel.org>
+Cc: Johannes Berg <johannes@sipsolutions.net>, =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Larry Finger <Larry.Finger@lwfinger.net>, Arend van Spriel <aspriel@gmail.com>, 
+	Franky Lin <franky.lin@broadcom.com>, Hante Meuleman <hante.meuleman@broadcom.com>, 
+	Michael Buesch <m@bues.ch>, linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	b43-dev@lists.infradead.org, brcm80211-dev-list.pdl@broadcom.com, 
+	SHA-cyfmac-dev-list@infineon.com, kernel-janitors@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Since commit 1e87fec9fa52 ("mac80211: call rate_control_send_low()
-internally") removes an explicit call to 'rate_control_send_low()'
-from 'rs_get_rate()' and 'priv_sta' is no longer used till the end
-of the function, there is no need to reset it to NULL. Compile
-tested only.
+On Mon, Dec 18, 2023 at 3:59=E2=80=AFPM Kalle Valo <kvalo@kernel.org> wrote=
+:
+>
+> Johannes Berg <johannes@sipsolutions.net> writes:
+>
+> > On Mon, 2023-12-18 at 12:58 +0100, Lukas Bulwahn wrote:
+> >
+> > Dunno, I'm not super involved with this but ...
+> >
+> >> +++ b/drivers/bcma/Kconfig
+> >> @@ -1,12 +1,7 @@
+> >>  # SPDX-License-Identifier: GPL-2.0
+> >> -config BCMA_POSSIBLE
+> >> -    bool
+> >> -    depends on HAS_IOMEM && HAS_DMA
+> >> -    default y
+> >> -
+> >>  menuconfig BCMA
+> >>      tristate "Broadcom specific AMBA"
+> >> -    depends on BCMA_POSSIBLE
+> >> +    depends on HAS_IOMEM && HAS_DMA
+> >
+> > [...]
+> >>  config BRCMSMAC
+> >>      tristate "Broadcom IEEE802.11n PCIe SoftMAC WLAN driver"
+> >> -    depends on MAC80211
+> >> -    depends on BCMA_POSSIBLE
+> >> +    depends on HAS_IOMEM && HAS_DMA && MAC80211
+> >>      select BCMA
+> >
+> > to me it kind of seems more obvious for example in this case to say
+> > "depend on BCMA_POSSIBLE and select BCMA" rather than open-coding the
+> > BCMA dependencies both here and in BCMA? Now granted, they're rather
+> > unlikely to _change_, but it still seems more obvious?
+>
+> I was thinking the same. Lukas, is there a specific reason why you want
+> to change this or this just something you noticed by chance?
+>
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+I just noticed this by chance---well, I was wondering what these
+config symbols were doing in my kernel build configuration (they are
+actually in every config). While reading through the code, I was
+confused on what the dependencies were trying to tell me, as the
+config symbols and conditions seemed to repeat over and over in
+different places.
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
- drivers/net/wireless/intel/iwlwifi/dvm/rs.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+I thought it was worth a clean up and this was the patch I came up
+with in the end.
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/rs.c b/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
-index f4a6f76cf193..ab237cb1d91d 100644
---- a/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
-+++ b/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
-@@ -2684,10 +2684,8 @@ static void rs_get_rate(void *priv_r, struct ieee80211_sta *sta, void *priv_sta,
- 	}
- 
- 	/* Treat uninitialized rate scaling data same as non-existing. */
--	if (lq_sta && !lq_sta->drv) {
-+	if (lq_sta && !lq_sta->drv)
- 		IWL_DEBUG_RATE(priv, "Rate scaling not initialized yet.\n");
--		priv_sta = NULL;
--	}
- 
- 	rate_idx  = lq_sta->last_txrate_idx;
- 
--- 
-2.43.0
-
+Lukas
 
