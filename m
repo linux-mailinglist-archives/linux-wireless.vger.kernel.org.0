@@ -1,133 +1,105 @@
-Return-Path: <linux-wireless+bounces-933-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-935-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B04428174B5
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Dec 2023 16:05:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82182817515
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Dec 2023 16:18:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1DB15B22F9C
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Dec 2023 15:05:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF21828A198
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Dec 2023 15:18:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34FF042377;
-	Mon, 18 Dec 2023 15:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76672498B2;
+	Mon, 18 Dec 2023 15:17:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m28TP9DS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qsGzLhld"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DCD13D577;
-	Mon, 18 Dec 2023 15:04:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a23566e91d5so155376266b.0;
-        Mon, 18 Dec 2023 07:04:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702911847; x=1703516647; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=u6foNHtyZRIJvWBTng3wISgU2MfZKVaXRv3N1MNnrMQ=;
-        b=m28TP9DSddRi5til0MsICR6zvrahO27MrcAlHQ9YSGssvofIAGhz/UCiu0tiaTjg0Q
-         3xpGwLuZIALP+XnWPB1dgBMUNQ4dq5mXKN4QKjGQdIjij4pvMMvH1BiwfHqulKbAlPuK
-         Pf3D8BBGCV+zlTDS05y4EqFFU40EFtZOBEKfzsUq9MuBBb91k9ii71U1WsdGAU0tDObs
-         U7tWS5gIq2lJm45HkHR/cmCbaXxNtiI5i4g3/X3dY4vEDW58uSLCq9Z1+sL3K+/voQ+v
-         aWqCiZ2m1VjEsUxY2nQDLbCgwhsuNF1T9PBtRtUHOLSZb0iDVmYDNqZaIp96NKoTpW2P
-         U7cA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702911847; x=1703516647;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=u6foNHtyZRIJvWBTng3wISgU2MfZKVaXRv3N1MNnrMQ=;
-        b=KsLv0ksuERdHNSvD+Bk+ZYfkE+j2cTWE+h8QIVYoSj9ev3yvpG24GWM4a7Z9WS3p55
-         Gf5BD4oa0dN1YD8M1Fpm5gPIOLpZ+R/fYNBGcR+2rOTsIrF9MLkFPtMMorQ62JSqVm8k
-         sYNNKngn9WcAqVEP4dZz2PU3XiZTRhofd+gNlYJx3IRT2EJGMBrT0zQIIrXgSdAeX9W3
-         BOq/g1/ZL4FdN+lFQKN4PLwbdQt5WuDZCTdMDKaSsiUx1kFuZfGGcWHegHxbrrms33DR
-         vbY2jpAjEnXbC8hK2ldTMKGwp1s6gul+wJ84yHQzCSnGD1mi57RtVORROIlzAVPQkDGp
-         Xc/w==
-X-Gm-Message-State: AOJu0Yw5v+JXaXtPJBLlcg+2MKA/rCF09l8Gqy8HPqwYqhDeo6o5UeJK
-	XlXhXHP/GEqVvHhwANgO94qHFeI6nAgZi4nY064=
-X-Google-Smtp-Source: AGHT+IGpphjTUnAqLE+hQAj1yH6sXJlSe/0XhogaISq5mrc01gwsmD6+HxIIpJz2iD0xeckt1xV5LbaknP1N/+M7VSo=
-X-Received: by 2002:a17:906:b203:b0:a19:a19b:424a with SMTP id
- p3-20020a170906b20300b00a19a19b424amr5114987ejz.181.1702911846667; Mon, 18
- Dec 2023 07:04:06 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51A2815485;
+	Mon, 18 Dec 2023 15:17:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE153C433C8;
+	Mon, 18 Dec 2023 15:17:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1702912673;
+	bh=gdw2rG1kHMxFAFPOz78qJY9ASvmd2ILrgUQz0xLeORE=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=qsGzLhldjXDOoUeKXNf619KvH5SkEYA4I+fGoUcCNWOxv3vJIetK15Ui3BnVr9wMZ
+	 qk3TzhQEXcftcZv4sXkPWxKO0PAqCo0srqyRoZ3iXVY56jfeL+Eo80+m6SXtQ+jBK5
+	 Fy8IJ66lZwBfnXeoaNJ+14DUjs5uI5K1ZNGfuCao1I9tN6kH+08lZfSZy8aVQnTsiS
+	 XoL5mfU/MpW+kFx+Becsv72a06N92eq/iESC8IA6nsVq9Axk62nC4QgTKxzj9CqNes
+	 N3uq+ZVW8cEXxp1D3KBVHT9oNNfzYyp0bYQFMYU5EmZhNEjzGPsCbkMJonYgSDOnip
+	 5ljboZDb0DhNw==
+From: Kalle Valo <kvalo@kernel.org>
+To: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>,  "David S . Miller"
+ <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,  Jakub
+ Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>,  "open
+ list:MAC80211" <linux-wireless@vger.kernel.org>,  "open list:NETWORKING
+ [GENERAL]" <netdev@vger.kernel.org>,  open list
+ <linux-kernel@vger.kernel.org>,  Jun Ma <Jun.ma2@amd.com>
+Subject: Re: [PATCH] wifi: mac80211: Use subsystem appropriate debug call
+References: <20231215145439.57286-1-mario.limonciello@amd.com>
+Date: Mon, 18 Dec 2023 17:17:49 +0200
+In-Reply-To: <20231215145439.57286-1-mario.limonciello@amd.com> (Mario
+	Limonciello's message of "Fri, 15 Dec 2023 08:54:39 -0600")
+Message-ID: <87frzzsfoi.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231218115802.15859-1-lukas.bulwahn@gmail.com>
- <26207725d5025318b831dd5a5feca67248aaa221.camel@sipsolutions.net> <87o7ensgjv.fsf@kernel.org>
-In-Reply-To: <87o7ensgjv.fsf@kernel.org>
-From: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Date: Mon, 18 Dec 2023 16:03:54 +0100
-Message-ID: <CAKXUXMxh3rM8da9kJG_=Sy8fQqqf7f8xXaHDHPLvpvRiYg1e5w@mail.gmail.com>
-Subject: Re: [PATCH] bcma,ssb: simplify dependency handling for bcma and ssb drivers
-To: Kalle Valo <kvalo@kernel.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>, =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Larry Finger <Larry.Finger@lwfinger.net>, Arend van Spriel <aspriel@gmail.com>, 
-	Franky Lin <franky.lin@broadcom.com>, Hante Meuleman <hante.meuleman@broadcom.com>, 
-	Michael Buesch <m@bues.ch>, linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	b43-dev@lists.infradead.org, brcm80211-dev-list.pdl@broadcom.com, 
-	SHA-cyfmac-dev-list@infineon.com, kernel-janitors@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Mon, Dec 18, 2023 at 3:59=E2=80=AFPM Kalle Valo <kvalo@kernel.org> wrote=
-:
->
-> Johannes Berg <johannes@sipsolutions.net> writes:
->
-> > On Mon, 2023-12-18 at 12:58 +0100, Lukas Bulwahn wrote:
-> >
-> > Dunno, I'm not super involved with this but ...
-> >
-> >> +++ b/drivers/bcma/Kconfig
-> >> @@ -1,12 +1,7 @@
-> >>  # SPDX-License-Identifier: GPL-2.0
-> >> -config BCMA_POSSIBLE
-> >> -    bool
-> >> -    depends on HAS_IOMEM && HAS_DMA
-> >> -    default y
-> >> -
-> >>  menuconfig BCMA
-> >>      tristate "Broadcom specific AMBA"
-> >> -    depends on BCMA_POSSIBLE
-> >> +    depends on HAS_IOMEM && HAS_DMA
-> >
-> > [...]
-> >>  config BRCMSMAC
-> >>      tristate "Broadcom IEEE802.11n PCIe SoftMAC WLAN driver"
-> >> -    depends on MAC80211
-> >> -    depends on BCMA_POSSIBLE
-> >> +    depends on HAS_IOMEM && HAS_DMA && MAC80211
-> >>      select BCMA
-> >
-> > to me it kind of seems more obvious for example in this case to say
-> > "depend on BCMA_POSSIBLE and select BCMA" rather than open-coding the
-> > BCMA dependencies both here and in BCMA? Now granted, they're rather
-> > unlikely to _change_, but it still seems more obvious?
->
-> I was thinking the same. Lukas, is there a specific reason why you want
-> to change this or this just something you noticed by chance?
->
+Mario Limonciello <mario.limonciello@amd.com> writes:
 
-I just noticed this by chance---well, I was wondering what these
-config symbols were doing in my kernel build configuration (they are
-actually in every config). While reading through the code, I was
-confused on what the dependencies were trying to tell me, as the
-config symbols and conditions seemed to repeat over and over in
-different places.
+> mac80211 doesn't use dev_dbg() but instead various macros from
+> net/mac80211/debug.h. Adjust wbrf code to use wiphy_dbg() instead.
+>
+> Cc: Jun Ma <Jun.ma2@amd.com>
+> Reported-by: kvalo@kernel.org
+> Closes:
+> https://lore.kernel.org/amd-gfx/8bd60010-7534-4c22-9337-c4219946d8d6@amd.com/T/#mfe2f29372c45130d27745912faf33d9f7ce50118
+> Fixes: d34be4310cbe ("wifi: mac80211: Add support for WBRF features")
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> ---
+>  net/mac80211/wbrf.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/net/mac80211/wbrf.c b/net/mac80211/wbrf.c
+> index a05c5b971789..12c23e14f884 100644
+> --- a/net/mac80211/wbrf.c
+> +++ b/net/mac80211/wbrf.c
+> @@ -23,8 +23,8 @@ void ieee80211_check_wbrf_support(struct ieee80211_local *local)
+>  		return;
+>  
+>  	local->wbrf_supported = acpi_amd_wbrf_supported_producer(dev);
+> -	dev_dbg(dev, "WBRF is %s supported\n",
+> -		local->wbrf_supported ? "" : "not");
+> +	wiphy_dbg(wiphy, "WBRF is %s supported\n",
+> +		  local->wbrf_supported ? "" : "not");
+>  }
 
-I thought it was worth a clean up and this was the patch I came up
-with in the end.
+This won't work, I still see the debug message:
 
-Lukas
+[  333.765867] ieee80211 phy0: WBRF is not supported
+
+The issue seems to be that mac80211 defines DEBUG in
+net/mac80211/Makefile:
+
+ccflags-y += -DDEBUG
+
+That -DDEBUG should be cleaned up, but I think separately. It's just
+that I cannot come up with any good proposal, all the macros in
+net/mac80211/debug.h require sdata and we don't have that in this stage.
+Any ideas?
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
