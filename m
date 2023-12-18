@@ -1,105 +1,122 @@
-Return-Path: <linux-wireless+bounces-935-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-938-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82182817515
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Dec 2023 16:18:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ED1E8177B5
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Dec 2023 17:40:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF21828A198
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Dec 2023 15:18:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42B5E1C21D43
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Dec 2023 16:40:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76672498B2;
-	Mon, 18 Dec 2023 15:17:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qsGzLhld"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5D301E4A3;
+	Mon, 18 Dec 2023 16:40:30 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bues.ch (bues.ch [80.190.117.144])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51A2815485;
-	Mon, 18 Dec 2023 15:17:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE153C433C8;
-	Mon, 18 Dec 2023 15:17:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702912673;
-	bh=gdw2rG1kHMxFAFPOz78qJY9ASvmd2ILrgUQz0xLeORE=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=qsGzLhldjXDOoUeKXNf619KvH5SkEYA4I+fGoUcCNWOxv3vJIetK15Ui3BnVr9wMZ
-	 qk3TzhQEXcftcZv4sXkPWxKO0PAqCo0srqyRoZ3iXVY56jfeL+Eo80+m6SXtQ+jBK5
-	 Fy8IJ66lZwBfnXeoaNJ+14DUjs5uI5K1ZNGfuCao1I9tN6kH+08lZfSZy8aVQnTsiS
-	 XoL5mfU/MpW+kFx+Becsv72a06N92eq/iESC8IA6nsVq9Axk62nC4QgTKxzj9CqNes
-	 N3uq+ZVW8cEXxp1D3KBVHT9oNNfzYyp0bYQFMYU5EmZhNEjzGPsCbkMJonYgSDOnip
-	 5ljboZDb0DhNw==
-From: Kalle Valo <kvalo@kernel.org>
-To: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>,  "David S . Miller"
- <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,  Jakub
- Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>,  "open
- list:MAC80211" <linux-wireless@vger.kernel.org>,  "open list:NETWORKING
- [GENERAL]" <netdev@vger.kernel.org>,  open list
- <linux-kernel@vger.kernel.org>,  Jun Ma <Jun.ma2@amd.com>
-Subject: Re: [PATCH] wifi: mac80211: Use subsystem appropriate debug call
-References: <20231215145439.57286-1-mario.limonciello@amd.com>
-Date: Mon, 18 Dec 2023 17:17:49 +0200
-In-Reply-To: <20231215145439.57286-1-mario.limonciello@amd.com> (Mario
-	Limonciello's message of "Fri, 15 Dec 2023 08:54:39 -0600")
-Message-ID: <87frzzsfoi.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 756731E4AF;
+	Mon, 18 Dec 2023 16:40:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bues.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bues.ch
+Received: by bues.ch with esmtpsa (Exim 4.96)
+	(envelope-from <m@bues.ch>)
+	id 1rFGIr-000A6d-38;
+	Mon, 18 Dec 2023 17:17:13 +0100
+Date: Mon, 18 Dec 2023 17:16:29 +0100
+From: Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
+To: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc: Kalle Valo <kvalo@kernel.org>, Johannes Berg
+ <johannes@sipsolutions.net>, =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?=
+ <zajec5@gmail.com>, "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Larry Finger <Larry.Finger@lwfinger.net>, Arend van
+ Spriel <aspriel@gmail.com>, Franky Lin <franky.lin@broadcom.com>, Hante
+ Meuleman <hante.meuleman@broadcom.com>, linux-wireless@vger.kernel.org,
+ netdev@vger.kernel.org, b43-dev@lists.infradead.org,
+ brcm80211-dev-list.pdl@broadcom.com, SHA-cyfmac-dev-list@infineon.com,
+ kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] bcma,ssb: simplify dependency handling for bcma and ssb
+ drivers
+Message-ID: <20231218171629.5cf95fd3@barney>
+In-Reply-To: <CAKXUXMxh3rM8da9kJG_=Sy8fQqqf7f8xXaHDHPLvpvRiYg1e5w@mail.gmail.com>
+References: <20231218115802.15859-1-lukas.bulwahn@gmail.com>
+ <26207725d5025318b831dd5a5feca67248aaa221.camel@sipsolutions.net>
+ <87o7ensgjv.fsf@kernel.org>
+ <CAKXUXMxh3rM8da9kJG_=Sy8fQqqf7f8xXaHDHPLvpvRiYg1e5w@mail.gmail.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: multipart/signed; boundary="Sig_/Q7GEDofx/o0YmJSgzfmcjUH";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
 
-Mario Limonciello <mario.limonciello@amd.com> writes:
+--Sig_/Q7GEDofx/o0YmJSgzfmcjUH
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-> mac80211 doesn't use dev_dbg() but instead various macros from
-> net/mac80211/debug.h. Adjust wbrf code to use wiphy_dbg() instead.
->
-> Cc: Jun Ma <Jun.ma2@amd.com>
-> Reported-by: kvalo@kernel.org
-> Closes:
-> https://lore.kernel.org/amd-gfx/8bd60010-7534-4c22-9337-c4219946d8d6@amd.com/T/#mfe2f29372c45130d27745912faf33d9f7ce50118
-> Fixes: d34be4310cbe ("wifi: mac80211: Add support for WBRF features")
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
->  net/mac80211/wbrf.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/net/mac80211/wbrf.c b/net/mac80211/wbrf.c
-> index a05c5b971789..12c23e14f884 100644
-> --- a/net/mac80211/wbrf.c
-> +++ b/net/mac80211/wbrf.c
-> @@ -23,8 +23,8 @@ void ieee80211_check_wbrf_support(struct ieee80211_local *local)
->  		return;
->  
->  	local->wbrf_supported = acpi_amd_wbrf_supported_producer(dev);
-> -	dev_dbg(dev, "WBRF is %s supported\n",
-> -		local->wbrf_supported ? "" : "not");
-> +	wiphy_dbg(wiphy, "WBRF is %s supported\n",
-> +		  local->wbrf_supported ? "" : "not");
->  }
+Hi Lukas,
 
-This won't work, I still see the debug message:
+thanks for your patch.
 
-[  333.765867] ieee80211 phy0: WBRF is not supported
+On Mon, 18 Dec 2023 16:03:54 +0100
+Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
 
-The issue seems to be that mac80211 defines DEBUG in
-net/mac80211/Makefile:
+> While reading through the code, I was
+> confused on what the dependencies were trying to tell me, as the
+> config symbols and conditions seemed to repeat over and over in
+> different places.
 
-ccflags-y += -DDEBUG
+The {SSB,BCMA}_POSSIBLE constants are defining the conditions under
+which it is possible to 'select' SSB/BCMA.
+SSB and BCMA are usually 'select'ed rather than depended on, for better
+user experience while configuring.
 
-That -DDEBUG should be cleaned up, but I think separately. It's just
-that I cannot come up with any good proposal, all the macros in
-net/mac80211/debug.h require sdata and we don't have that in this stage.
-Any ideas?
+> I thought it was worth a clean up and this was the patch I came up
+> with in the end.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+IMO this does not clean up or simplify the code.
+It rather makes it more complicated to maintain.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+The idea behind the POSSIBLE constants it to _not_ spread the
+conditions all across the drivers. That has significant advantages, if
+the condition changes.
+
+I also don't see the redundancy in the resulting dependency conditions
+as a bad thing. It's better if every option explicitly defines its
+dependencies rather than expecting something else to depend on it.
+That's fragile.
+
+NAK from me.
+
+--=20
+Michael B=C3=BCsch
+https://bues.ch/
+
+--Sig_/Q7GEDofx/o0YmJSgzfmcjUH
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAmWAcF0ACgkQ9TK+HZCN
+iw5l7BAAgpdZdzT7v2hPcLw7K9DpHS31i4y/GGlvC4rtJuMzznJNJQGs1MQDH5qM
+xo1mioY+gzeH17iRop1VCJynuzBTwOkJNz0cKPq6Iia2dS1z+YNZWwaJp0jvF0aQ
+0OQO+rzX+z2ydUmiE9jSbeS1CO9l1Pk9pvKBQhp/Axg/fq1Om+MOQSdngezPdH/7
+pgJnhM7XYnEy5xyKEjB5yPzcR3LuCC5NPnq964J7/+Y4A5HfWGtQBKLO6F0+XWBF
+xeUlNl7uvmXilz6MwSsQkiIoSmkQBJKQwpYXV1uXi4VXiz7man3cY+ZuayqlyuVL
+JfgM0pbmldVPiiXTeL0ds+LuZm+1/xiXQtmoWNp4O1VxBR+XdPKoDxL2nkC4GB4W
+Okq2+TA6n1WKPIrI4WAdhASvw+skaIx8HawIoM4jhGrc4tFaX93DA80gNOQuJ1Yt
+PH752DI0wcM03qnYoPIrkcfYxrdX/h7sYEY8BCYJfetRjWwSsZT8y7CtVz47qszE
+WhwU2E1sMSLM5rHV+W8t8RXmvzZEo2AUMNDQ2V1PFtn/FALO52cQ3HvwbOee1OjE
+HZeMAJE3m2g5xxm2O/omOXSPwm8H7QE6DhPhA3JmrSSqjFv1vSVEx/3n/DuX8DmG
+JkmrPATbaZbRYQFthprmECBBXcOgnAhCa4ZDDja1+/lL3q0ArCY=
+=fqXM
+-----END PGP SIGNATURE-----
+
+--Sig_/Q7GEDofx/o0YmJSgzfmcjUH--
 
