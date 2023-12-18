@@ -1,122 +1,175 @@
-Return-Path: <linux-wireless+bounces-938-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-936-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ED1E8177B5
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Dec 2023 17:40:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD48A817749
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Dec 2023 17:20:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42B5E1C21D43
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Dec 2023 16:40:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71B591F2503D
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Dec 2023 16:20:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5D301E4A3;
-	Mon, 18 Dec 2023 16:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CCBF4988B;
+	Mon, 18 Dec 2023 16:20:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="GHKQ48H/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from bues.ch (bues.ch [80.190.117.144])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 756731E4AF;
-	Mon, 18 Dec 2023 16:40:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bues.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bues.ch
-Received: by bues.ch with esmtpsa (Exim 4.96)
-	(envelope-from <m@bues.ch>)
-	id 1rFGIr-000A6d-38;
-	Mon, 18 Dec 2023 17:17:13 +0100
-Date: Mon, 18 Dec 2023 17:16:29 +0100
-From: Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
-To: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc: Kalle Valo <kvalo@kernel.org>, Johannes Berg
- <johannes@sipsolutions.net>, =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?=
- <zajec5@gmail.com>, "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Larry Finger <Larry.Finger@lwfinger.net>, Arend van
- Spriel <aspriel@gmail.com>, Franky Lin <franky.lin@broadcom.com>, Hante
- Meuleman <hante.meuleman@broadcom.com>, linux-wireless@vger.kernel.org,
- netdev@vger.kernel.org, b43-dev@lists.infradead.org,
- brcm80211-dev-list.pdl@broadcom.com, SHA-cyfmac-dev-list@infineon.com,
- kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] bcma,ssb: simplify dependency handling for bcma and ssb
- drivers
-Message-ID: <20231218171629.5cf95fd3@barney>
-In-Reply-To: <CAKXUXMxh3rM8da9kJG_=Sy8fQqqf7f8xXaHDHPLvpvRiYg1e5w@mail.gmail.com>
-References: <20231218115802.15859-1-lukas.bulwahn@gmail.com>
- <26207725d5025318b831dd5a5feca67248aaa221.camel@sipsolutions.net>
- <87o7ensgjv.fsf@kernel.org>
- <CAKXUXMxh3rM8da9kJG_=Sy8fQqqf7f8xXaHDHPLvpvRiYg1e5w@mail.gmail.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-pc-linux-gnu)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D13D449887;
+	Mon, 18 Dec 2023 16:20:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 3BICShi2013722;
+	Mon, 18 Dec 2023 16:20:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=oh6WOAgMbRlFvpoY5zeQ+UPwLxf/DsG3j8pELKI+vs4=; b=GH
+	KQ48H/pOcKWoD9M+yHT0AyOscPmOOdMJ1vNdSTHZjaDXZiHaNQcmzUU0wIEEHIfd
+	Wy/xrE+itM9sXS1AD0FbBFvdvUuC6yl5lYUluRkKI5hEaRX64+lVpHu2qkTKdltc
+	mOn+OUNWOiHUPasKicRN6nBOQQq0Q2sXqk3qlRF70sdvlr0w/B+SezY3j+m5Ha/l
+	yFp46fBJws6cwrWLo9BduJYnKY4mLJFWm22XHOFhw52CzTuDR+6cYwMcJWGDfY7m
+	gJ3cpxlbjiX8zQcDkdyGT3dDbG8+uKSdcU1+8fbV+NHWEaaxcnA5jn0/HyPKTuTm
+	JsfnIa9OajPWMjOH1BBA==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3v2mfe0vpv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 18 Dec 2023 16:20:01 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3BIGK1Rd025655
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 18 Dec 2023 16:20:01 GMT
+Received: from [10.110.4.21] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Mon, 18 Dec
+ 2023 08:19:57 -0800
+Message-ID: <6cf3e5aa-411b-4c6c-a67b-6e61c1258b9c@quicinc.com>
+Date: Mon, 18 Dec 2023 08:19:56 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/Q7GEDofx/o0YmJSgzfmcjUH";
- protocol="application/pgp-signature"; micalg=pgp-sha512
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v2 1/8] bus: mhi: host: add
+ mhi_power_down_no_destroy()
+Content-Language: en-US
+To: Kalle Valo <kvalo@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>,
+        Mayank Rana <quic_mrana@quicinc.com>
+CC: <mhi@lists.linux.dev>, <ath11k@lists.infradead.org>,
+        <linux-wireless@vger.kernel.org>,
+        "kernel@quicinc.com" <kernel@quicinc.com>
+References: <20231127162022.518834-1-kvalo@kernel.org>
+ <20231127162022.518834-2-kvalo@kernel.org> <20231130054250.GC3043@thinkpad>
+ <87v89cq1ci.fsf@kernel.org>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <87v89cq1ci.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: K4MNfyV7sWdzA1R_VX3VNoL1TKeXcZmS
+X-Proofpoint-GUID: K4MNfyV7sWdzA1R_VX3VNoL1TKeXcZmS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-09_01,2023-12-07_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ clxscore=1011 suspectscore=0 malwarescore=0 lowpriorityscore=0 mlxscore=0
+ mlxlogscore=876 phishscore=0 adultscore=0 impostorscore=0 spamscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2311290000 definitions=main-2312180120
 
---Sig_/Q7GEDofx/o0YmJSgzfmcjUH
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+On 12/5/2023 4:29 AM, Kalle Valo wrote:
+> Manivannan Sadhasivam <mani@kernel.org> writes:
+> 
+>> On Mon, Nov 27, 2023 at 06:20:15PM +0200, Kalle Valo wrote:
+>>
+>>> From: Baochen Qiang <quic_bqiang@quicinc.com>
+>>>
+>>> If ath11k tries to call mhi_power_up() during resume it fails:
+>>>
+>>> ath11k_pci 0000:06:00.0: timeout while waiting for restart complete
+>>>
+>>> This happens because when calling mhi_power_up() the MHI subsystem eventually
+>>> calls device_add() from mhi_create_devices() but the device creation is
+>>> deferred:
+>>>
+>>> mhi mhi0_IPCR: Driver qcom_mhi_qrtr force probe deferral
+>>>
+>>> The reason for deferring device creation is explained in dpm_prepare():
+>>>
+>>> 	/*
+>>> 	 * It is unsafe if probing of devices will happen during suspend or
+>>> 	 * hibernation and system behavior will be unpredictable in this case.
+>>> 	 * So, let's prohibit device's probing here and defer their probes
+>>> 	 * instead. The normal behavior will be restored in dpm_complete().
+>>> 	 */
+>>>
+>>> Because the device probe is deferred, the qcom_mhi_qrtr_probe() is not called and
+>>> qcom_mhi_qrtr_dl_callback() fails silently as qdev is zero:
+>>>
+>>> static void qcom_mhi_qrtr_dl_callback(struct mhi_device *mhi_dev,
+>>> 				      struct mhi_result *mhi_res)
+>>> {
+>>> 	struct qrtr_mhi_dev *qdev = dev_get_drvdata(&mhi_dev->dev);
+>>> 	int rc;
+>>>
+>>> 	if (!qdev || mhi_res->transaction_status)
+>>> 		return;
+>>>
+>>> So what this means that QRTR is not delivering messages and the QMI connection
+>>> is not working between ath11k and the firmware, resulting a failure in firmware
+>>> initialisation.
+>>>
+>>> To fix this add new function mhi_power_down_no_destroy() which does not destroy
+>>> the devices during power down. This way mhi_power_up() can be called during
+>>> resume and we can get ath11k hibernation working with the following patches.
+>>>
+>>> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
+>>>
+>>> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+>>> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+>>
+>> Any reason for reposting this series without discussing the suggestion from
+>> Mayank?
+> 
+> Baochen quickly sent me fixes for the v1 review comments, as I have been
+> out of office for some time I didn't want to sit on Baochen's fixes for
+> too long. Better to get them out of the door as soon as possible. I will
+> definitely look at Mayank's proposal but that will take longer.
+> 
+>> As I said in the internal thread, this patch breaks the Linux device
+>> driver model by not destroying the "struct device" when the actual
+>> device gets removed.
+> 
+> This patchset has been tested by several people, I'm even using this
+> patchset on main laptop every day, and we haven't noticed any issues.
+> 
+> Can you elaborate more about this driver model? We are not removing any
+> ath11k devices, we just want to power down the ath11k (and in the future
+> ath12k) devices for suspend and power up during resume.
+> 
+>> We should try to explore alternate options instead of persisting with
+>> this solution.
+> 
+> What other options we have here? At least Baochen is not optimistic that
+> using PM_POST_HIBERNATION as a workaround would work. The issue we have
+> here is that mhi_power_up() doesn't work in the resume handler and
+> that's what we should try to fix, not make workarounds.
+> 
 
-Hi Lukas,
+Adding Mayank directly plus others to this discussion since we need a
+solution to have proper hibernation support for devices containing
+ath11k (and in the near future ath12k).
 
-thanks for your patch.
+/jeff
+/jeff
 
-On Mon, 18 Dec 2023 16:03:54 +0100
-Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
-
-> While reading through the code, I was
-> confused on what the dependencies were trying to tell me, as the
-> config symbols and conditions seemed to repeat over and over in
-> different places.
-
-The {SSB,BCMA}_POSSIBLE constants are defining the conditions under
-which it is possible to 'select' SSB/BCMA.
-SSB and BCMA are usually 'select'ed rather than depended on, for better
-user experience while configuring.
-
-> I thought it was worth a clean up and this was the patch I came up
-> with in the end.
-
-IMO this does not clean up or simplify the code.
-It rather makes it more complicated to maintain.
-
-The idea behind the POSSIBLE constants it to _not_ spread the
-conditions all across the drivers. That has significant advantages, if
-the condition changes.
-
-I also don't see the redundancy in the resulting dependency conditions
-as a bad thing. It's better if every option explicitly defines its
-dependencies rather than expecting something else to depend on it.
-That's fragile.
-
-NAK from me.
-
---=20
-Michael B=C3=BCsch
-https://bues.ch/
-
---Sig_/Q7GEDofx/o0YmJSgzfmcjUH
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAmWAcF0ACgkQ9TK+HZCN
-iw5l7BAAgpdZdzT7v2hPcLw7K9DpHS31i4y/GGlvC4rtJuMzznJNJQGs1MQDH5qM
-xo1mioY+gzeH17iRop1VCJynuzBTwOkJNz0cKPq6Iia2dS1z+YNZWwaJp0jvF0aQ
-0OQO+rzX+z2ydUmiE9jSbeS1CO9l1Pk9pvKBQhp/Axg/fq1Om+MOQSdngezPdH/7
-pgJnhM7XYnEy5xyKEjB5yPzcR3LuCC5NPnq964J7/+Y4A5HfWGtQBKLO6F0+XWBF
-xeUlNl7uvmXilz6MwSsQkiIoSmkQBJKQwpYXV1uXi4VXiz7man3cY+ZuayqlyuVL
-JfgM0pbmldVPiiXTeL0ds+LuZm+1/xiXQtmoWNp4O1VxBR+XdPKoDxL2nkC4GB4W
-Okq2+TA6n1WKPIrI4WAdhASvw+skaIx8HawIoM4jhGrc4tFaX93DA80gNOQuJ1Yt
-PH752DI0wcM03qnYoPIrkcfYxrdX/h7sYEY8BCYJfetRjWwSsZT8y7CtVz47qszE
-WhwU2E1sMSLM5rHV+W8t8RXmvzZEo2AUMNDQ2V1PFtn/FALO52cQ3HvwbOee1OjE
-HZeMAJE3m2g5xxm2O/omOXSPwm8H7QE6DhPhA3JmrSSqjFv1vSVEx/3n/DuX8DmG
-JkmrPATbaZbRYQFthprmECBBXcOgnAhCa4ZDDja1+/lL3q0ArCY=
-=fqXM
------END PGP SIGNATURE-----
-
---Sig_/Q7GEDofx/o0YmJSgzfmcjUH--
 
