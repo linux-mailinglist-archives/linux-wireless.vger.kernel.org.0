@@ -1,101 +1,88 @@
-Return-Path: <linux-wireless+bounces-880-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-881-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27744816517
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Dec 2023 03:52:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D706281665A
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Dec 2023 07:15:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0DA51F214E3
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Dec 2023 02:52:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 928C3281241
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Dec 2023 06:15:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5B386FDD;
-	Mon, 18 Dec 2023 02:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C997C7464;
+	Mon, 18 Dec 2023 06:15:13 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D10F36FCB;
-	Mon, 18 Dec 2023 02:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42DDE7460
+	for <linux-wireless@vger.kernel.org>; Mon, 18 Dec 2023 06:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 3BI2opalF3102410, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 3BI2opalF3102410
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 3BI6F2rB43224806, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 3BI6F2rB43224806
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 18 Dec 2023 10:50:51 +0800
-Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Mon, 18 Dec 2023 10:50:51 +0800
+	Mon, 18 Dec 2023 14:15:02 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Mon, 18 Dec 2023 10:50:50 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7]) by
- RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7%5]) with mapi id
- 15.01.2375.007; Mon, 18 Dec 2023 10:50:50 +0800
+ 15.1.2507.17; Mon, 18 Dec 2023 14:15:02 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Mon, 18 Dec
+ 2023 14:15:02 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
-To: Zenm Chen <zenmchen@gmail.com>,
-        "Jes.Sorensen@gmail.com"
-	<Jes.Sorensen@gmail.com>
-CC: "kvalo@kernel.org" <kvalo@kernel.org>,
-        "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        "rtl8821cerfe2@gmail.com"
-	<rtl8821cerfe2@gmail.com>,
-        "Larry.Finger@lwfinger.net"
-	<Larry.Finger@lwfinger.net>
-Subject: RE: [PATCH v3] wifi: rtl8xxxu: Add additional USB IDs for RTL8192EU devices
-Thread-Topic: [PATCH v3] wifi: rtl8xxxu: Add additional USB IDs for RTL8192EU
- devices
-Thread-Index: AQHaMOTRtIFu/98Os0G2P5EnNLaRJ7CuV8rQ
-Date: Mon, 18 Dec 2023 02:50:50 +0000
-Message-ID: <28fdf59235e34c089482dd9cbab55446@realtek.com>
-References: <20231217123017.1982-1-zenmchen@gmail.com>
-In-Reply-To: <20231217123017.1982-1-zenmchen@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-kse-serverinfo: RTEXDAG01.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+To: <kvalo@kernel.org>
+CC: <ku920601@realtek.com>, <linux-wireless@vger.kernel.org>
+Subject: [PATCH 00/11] wifi: rtw89: coex: improve BT-coexistence performance for 8852B and 8851B
+Date: Mon, 18 Dec 2023 14:13:30 +0800
+Message-ID: <20231218061341.51255-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
 X-KSE-AntiSpam-Interceptor-Info: fallback
 X-KSE-Antivirus-Interceptor-Info: fallback
 X-KSE-AntiSpam-Interceptor-Info: fallback
 
+In some situations, coexistence of WiFi and BT doesn't work well, such as
+WiFi PS mode, BT inquiry, BT idle and etc. Also, we found some formats of
+debugging report from firmware are wrong during debugging above situations,
+so correct them as well.
 
+Ching-Te Ku (11):
+  wifi: rtw89: coex: Fix wrong Wi-Fi role info and FDDT parameter
+    members
+  wifi: rtw89: coex: Record down Wi-Fi initial mode information
+  wifi: rtw89: coex: Add Pre-AGC control to enhance Wi-Fi RX performance
+  wifi: rtw89: coex: Update BTG control related logic
+  wifi: rtw89: coex: Still show hardware grant signal info even Wi-Fi is
+    PS
+  wifi: rtw89: coex: Update coexistence policy for Wi-Fi LPS
+  wifi: rtw89: coex: Set Bluetooth scan low-priority when Wi-Fi
+    link/scan
+  wifi: rtw89: coex: Add Bluetooth RSSI level information
+  wifi: rtw89: coex: Update RF parameter control setting logic
+  wifi: rtw89: coex: Translate antenna configuration from ID to string
+  wifi: rtw89: coex: To improve Wi-Fi performance while BT is idle
 
-> -----Original Message-----
-> From: Zenm Chen <zenmchen@gmail.com>
-> Sent: Sunday, December 17, 2023 8:30 PM
-> To: Jes.Sorensen@gmail.com
-> Cc: kvalo@kernel.org; linux-wireless@vger.kernel.org; linux-kernel@vger.k=
-ernel.org; Ping-Ke Shih
-> <pkshih@realtek.com>; rtl8821cerfe2@gmail.com; Larry.Finger@lwfinger.net;=
- Zenm Chen <zenmchen@gmail.com>
-> Subject: [PATCH v3] wifi: rtl8xxxu: Add additional USB IDs for RTL8192EU =
-devices
->=20
-> Add additional USB IDs found in the vendor driver from
-> https://github.com/Mange/rtl8192eu-linux-driver to support more
-> RTL8192EU devices.
->=20
-> Signed-off-by: Zenm Chen <zenmchen@gmail.com>
+ drivers/net/wireless/realtek/rtw89/coex.c | 640 +++++++++++++++++-----
+ drivers/net/wireless/realtek/rtw89/coex.h |  38 ++
+ drivers/net/wireless/realtek/rtw89/core.h |  23 +-
+ drivers/net/wireless/realtek/rtw89/mac.c  |   3 +-
+ 4 files changed, 548 insertions(+), 156 deletions(-)
 
-Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
-
+-- 
+2.25.1
 
 
