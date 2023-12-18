@@ -1,100 +1,100 @@
-Return-Path: <linux-wireless+bounces-908-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-909-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42A81816DB2
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Dec 2023 13:14:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CA6A817069
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Dec 2023 14:26:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E09D1C23BE9
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Dec 2023 12:14:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CD5928523A
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Dec 2023 13:26:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1542B4B128;
-	Mon, 18 Dec 2023 12:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B86E076914;
+	Mon, 18 Dec 2023 13:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f4U1kRjJ"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="AcDH1kEU"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A63E8495F0;
-	Mon, 18 Dec 2023 12:11:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-553046ea641so1984875a12.3;
-        Mon, 18 Dec 2023 04:11:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702901470; x=1703506270; darn=vger.kernel.org;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bcl+6+3YL9EARZxu79BgP77yuw4dwcRKEDjQGoe+jcE=;
-        b=f4U1kRjJT6CMLkpY0LIwJ5r27/7FnWxgG/T7xUxOPbiOeAlCjUO/zG1RtpMzr78PjK
-         Biwjf+56BiqNaGdpmjdtFFESFkKWgUZZ8fKd/eWs22ijagzMN/SGzfcH4UM8iC5Vw/QO
-         inv6Qnb8muLJdMKdazuQF5RiWlSgXHjepziQSLV3DTYlX8IQmOsnAnnRszasUEyaP0g/
-         O4wOYuPUgacOsxdmSA7hfEITP5ypeueNhfBG21gLSTQgHzzyuyGchVA7ukYNiom6l0Li
-         Pyir5IhsWXg767qNOd/OoZMO3e9yLQie9o8gz8E5dgxwKdWSCUE7V+UyU2TlXR+7dA9J
-         Eetg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702901470; x=1703506270;
-        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bcl+6+3YL9EARZxu79BgP77yuw4dwcRKEDjQGoe+jcE=;
-        b=RR6aZ8xWWFyy/bTZ9DMcmR8ZTTt987PpPNQunmrZXBqvRmkYbhdbHAsO2p7+4uUhy7
-         UzIwYJIPoxN4jSu6SwuVS+TuUlkB5ATpPXuoOVZcFgOVflJa1cjSpbPcvnTXa4904BgK
-         AGrrr8kkGBNJ+k0FqNqvLUkDt6LIKIBzA7qpNPUS7mHianEbEk6F3bbuld9L7QuITcP3
-         R3IK7gSMVqvAj2Wxwo6GwBj2pkLnLEkSzdP3qFKJ9tQEXoFEsVdUIoA7+YG/lRRdCZzO
-         qpGphJg/ru+gWpAswaci2Cn1+bHcnIFIe55N65IF5itFrkOSBgxlmOOjbTBlW3dTIPQO
-         pcxQ==
-X-Gm-Message-State: AOJu0Yxblh52qYBlJtO+YNOYNXshAsAO9lO3u4c4bCUxdhnPkwfLAzip
-	vKi0gyUdxOeOBhspC9Z3PUo=
-X-Google-Smtp-Source: AGHT+IGvY+/MLO836UxK0KN3FbrCCW1ixC/a0qxzKQ5O69sm9GdqpJBJxE1ZgrBIazFhU82UaIpD2A==
-X-Received: by 2002:a17:906:340d:b0:a23:56a6:2c56 with SMTP id c13-20020a170906340d00b00a2356a62c56mr390655ejb.180.1702901469657;
-        Mon, 18 Dec 2023 04:11:09 -0800 (PST)
-Received: from felia.fritz.box ([2a02:810d:7e40:14b0:801c:2315:7dea:474f])
-        by smtp.gmail.com with ESMTPSA id gc18-20020a170906c8d200b00a235e5139cfsm774221ejb.78.2023.12.18.04.11.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Dec 2023 04:11:09 -0800 (PST)
-From: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To: Arend van Spriel <aspriel@gmail.com>,
-	Franky Lin <franky.lin@broadcom.com>,
-	Hante Meuleman <hante.meuleman@broadcom.com>,
-	linux-wireless@vger.kernel.org,
-	brcm80211-dev-list.pdl@broadcom.com
-Cc: kernel-janitors@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] MAINTAINERS: remove non-existing SHA-cyfmac-dev-list@infineon.com
-Date: Mon, 18 Dec 2023 13:11:05 +0100
-Message-Id: <20231218121105.23882-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4767B129ED9;
+	Mon, 18 Dec 2023 13:18:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=CbJYyBnHSJO5HpsM1rF1MdLZBV/rqZTitFQxv3HNgg4=;
+	t=1702905496; x=1704115096; b=AcDH1kEUKaxt8lKZRCfQ5cFR1//iEBJV6PdxXPYUNWUIQ0/
+	/kr5IkqwjsWTdTGpb7rCYRlnsEjz1YWqeraGkuv7ipRzu1j/x1JIi49y2QTtpsPKBJZCrBBKpZ5uG
+	NJfEILTqzbVmKpf8JGMJ2LUofZLYaBKwtJ4Fy1qalX+PVCrZ9YGprDPn2biaI5jJirmv6E7XVaGI9
+	apsMZxZqf8E7esShfqSKyFmsXGp2XSvROrN5PkXVSojGIj4NRficzE2Vmzxm2Sq2O7JiNLh6x8pds
+	hz0sqfe6zrZEq/6567MDaiIL8hWxyHQaw+gbiprCLORGHsrngEQ7bU6wG2j7PQ2g==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rFDVR-0000000GE7Q-0yMv;
+	Mon, 18 Dec 2023 14:18:01 +0100
+Message-ID: <26207725d5025318b831dd5a5feca67248aaa221.camel@sipsolutions.net>
+Subject: Re: [PATCH] bcma,ssb: simplify dependency handling for bcma and ssb
+ drivers
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Lukas Bulwahn <lukas.bulwahn@gmail.com>, 
+ =?UTF-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <zajec5@gmail.com>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Kalle Valo
+ <kvalo@kernel.org>, Larry Finger <Larry.Finger@lwfinger.net>, Arend van
+ Spriel <aspriel@gmail.com>, Franky Lin <franky.lin@broadcom.com>, Hante
+ Meuleman <hante.meuleman@broadcom.com>,  Michael Buesch <m@bues.ch>,
+ linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+ b43-dev@lists.infradead.org, brcm80211-dev-list.pdl@broadcom.com, 
+ SHA-cyfmac-dev-list@infineon.com
+Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Mon, 18 Dec 2023 14:17:59 +0100
+In-Reply-To: <20231218115802.15859-1-lukas.bulwahn@gmail.com>
+References: <20231218115802.15859-1-lukas.bulwahn@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.2 (3.50.2-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-malware-bazaar: not-scanned
 
-When sending an email to SHA-cyfmac-dev-list@infineon.com, the server
-responds '550 #5.1.0 Address rejected.'
+On Mon, 2023-12-18 at 12:58 +0100, Lukas Bulwahn wrote:
 
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
----
- MAINTAINERS | 1 -
- 1 file changed, 1 deletion(-)
+Dunno, I'm not super involved with this but ...
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index d984bd745e93..0db8909f4fc0 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4156,7 +4156,6 @@ M:	Franky Lin <franky.lin@broadcom.com>
- M:	Hante Meuleman <hante.meuleman@broadcom.com>
- L:	linux-wireless@vger.kernel.org
- L:	brcm80211-dev-list.pdl@broadcom.com
--L:	SHA-cyfmac-dev-list@infineon.com
- S:	Supported
- F:	drivers/net/wireless/broadcom/brcm80211/
- 
--- 
-2.17.1
+> +++ b/drivers/bcma/Kconfig
+> @@ -1,12 +1,7 @@
+>  # SPDX-License-Identifier: GPL-2.0
+> -config BCMA_POSSIBLE
+> -	bool
+> -	depends on HAS_IOMEM && HAS_DMA
+> -	default y
+> -
+>  menuconfig BCMA
+>  	tristate "Broadcom specific AMBA"
+> -	depends on BCMA_POSSIBLE
+> +	depends on HAS_IOMEM && HAS_DMA
 
+[...]
+>  config BRCMSMAC
+>  	tristate "Broadcom IEEE802.11n PCIe SoftMAC WLAN driver"
+> -	depends on MAC80211
+> -	depends on BCMA_POSSIBLE
+> +	depends on HAS_IOMEM && HAS_DMA && MAC80211
+>  	select BCMA
+
+to me it kind of seems more obvious for example in this case to say
+"depend on BCMA_POSSIBLE and select BCMA" rather than open-coding the
+BCMA dependencies both here and in BCMA? Now granted, they're rather
+unlikely to _change_, but it still seems more obvious?
+
+johannes
 
