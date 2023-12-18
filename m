@@ -1,37 +1,37 @@
-Return-Path: <linux-wireless+bounces-945-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-946-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95F6B8179FC
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Dec 2023 19:47:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C200817A03
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Dec 2023 19:48:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 329441F23326
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Dec 2023 18:47:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90FC91C22959
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Dec 2023 18:48:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42C265BF9D;
-	Mon, 18 Dec 2023 18:47:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC2361EA7D;
+	Mon, 18 Dec 2023 18:48:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="duhDDjH/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KKxqtYya"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B6A26287;
-	Mon, 18 Dec 2023 18:47:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E79AEC433C9;
-	Mon, 18 Dec 2023 18:47:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B307B1E530
+	for <linux-wireless@vger.kernel.org>; Mon, 18 Dec 2023 18:48:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76EBBC433C8;
+	Mon, 18 Dec 2023 18:48:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702925249;
-	bh=MNFpGtT+UDTrh+CtH/56pWdeRMJBi6mOCBVEoln6zPk=;
+	s=k20201202; t=1702925303;
+	bh=W5pDp/Xk6bcXYEyHt0i/qxoIwl3g0rlTDIvftKERqZA=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=duhDDjH/pkjlzzSF5hSbzWfVyBHh5y4eEVQPfd8Ew+i34CDgDiqcdy9XYpKW8FK8x
-	 pm9jt9QzWfC4TyqVDv9GJ09DigCsTkIfcegcBLCqKhGkOCDA1NQ1ZUU2t2w+8QdxsI
-	 EC0ILgNSRzU4zpM2XhjjW2XejeKFyCh09+pj2r8XT8CMKnbsN4P5MUKND28vpHdt3u
-	 VUxULwBDqNKChmhFVg7Gu/BcASIPx8tgwZ1+1cA+exEJ4mRQTK4pXwi35DGMVGtWRO
-	 wEVKlFidpkQtdQHI7yBvvfmdBMvI3JdHdl+n7ipDCB25UoI1JOFzrMMJFsWfA+TC2V
-	 NdSYAhAvCPU4w==
+	b=KKxqtYyauP0FnHa8EY0g7ZZx08lXZ3xggrE+0AqnXt7ynlLv6LpF5G8vJVaQbLrvl
+	 k7r+ynRpsErOqNTxdrMK3P0AoEol3rLI6+HV3O/XjenDnQ51aTz2rIaf3FfSmXWkKV
+	 7CcYvkWsh+Cir9xZILvB/8tUYIGSwWZrs4D2QKIz3Mf9jXL2tMYpA+gzcKNzocTvlA
+	 FwLcFD/GTJqKmrorhAxDToa8gy7xDlETCr/hd4sUrLKZ7ltjhT5KaATjSnECdXAwtr
+	 YTkiNZ+p+YtekKI26PempXDVIzICDt4S7zfw/lAH1F1hOB3fcQtYQq2JBix8Wbs7w3
+	 8J6i78R3N2Vnw==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -40,57 +40,47 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/6] wifi: ath10k: use flexible array in struct
- wmi_host_mem_chunks
+Subject: Re: [PATCH 1/5] wifi: ath12k: add string type to search board data in
+ board-2.bin for WCN7850
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: 
- <20231213-wmi_host_mem_chunks_flexarray-v1-1-92922d92fa2c@quicinc.com>
-References: 
- <20231213-wmi_host_mem_chunks_flexarray-v1-1-92922d92fa2c@quicinc.com>
-To: Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc: Jeff Johnson <quic_jjohnson@quicinc.com>,
- Kees Cook <keescook@chromium.org>, "Gustavo A. R. Silva"
-	<gustavo@embeddedor.com>, <ath10k@lists.infradead.org>,
- <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+In-Reply-To: <20231216060140.30611-2-quic_bqiang@quicinc.com>
+References: <20231216060140.30611-2-quic_bqiang@quicinc.com>
+To: Baochen Qiang <quic_bqiang@quicinc.com>
+Cc: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170292524618.424292.1640750049894446616.kvalo@kernel.org>
-Date: Mon, 18 Dec 2023 18:47:27 +0000 (UTC)
+Message-ID: <170292530072.424292.15296808219565634981.kvalo@kernel.org>
+Date: Mon, 18 Dec 2023 18:48:22 +0000 (UTC)
 
-Jeff Johnson <quic_jjohnson@quicinc.com> wrote:
+Baochen Qiang <quic_bqiang@quicinc.com> wrote:
 
-> Currently struct wmi_host_mem_chunks defines:
->         struct host_memory_chunk items[1];
+> Currently ath12k only supports string type with bus, chip id and board id
+> such as "bus=ahb,qmi-chip-id=1,qmi-board-id=4" for AHB bus chip and
+> "bus=pci,qmi-chip-id=0,qmi-board-id=255" for PCI bus chip in board-2.bin.
+> For WCN7850, it is not enough to distinguish all different chips.
 > 
-> Per the guidance in [1] this should be a flexible array. However there
-> is a documented requirement:
->         some fw revisions require at least 1 chunk regardless of count
+> Add a new string type which includes bus, chip id, board id, vendor,
+> device, subsystem-vendor and subsystem-device for WCN7850.
 > 
-> To satisfy this requirement, follow the guidance from [2] and wrap the
-> array in a union which contains both the flexible array and a single
-> instance of the underlying struct. Since the footprint of the struct
-> is unchanged, no additional driver changes are required.
+> ath12k will first load board-2.bin and searches in it for the board data
+> with the above parameters. If matched with one board data, ath12k downloads
+> it to firmware. And if not, downloads board.bin instead.
 > 
-> No functional changes, compile tested only.
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
 > 
-> [1] https://docs.kernel.org/process/deprecated.html#zero-length-and-one-element-arrays
-> [2] https://lore.kernel.org/linux-wireless/202308301529.AC90A9EF98@keescook/
-> 
-> Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-> Reviewed-by: Kees Cook <keescook@chromium.org>
-> Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-6 patches applied to ath-next branch of ath.git, thanks.
+5 patches applied to ath-next branch of ath.git, thanks.
 
-d2eb318f4b6b wifi: ath10k: use flexible array in struct wmi_host_mem_chunks
-72ca7c4073ac wifi: ath10k: use flexible arrays for WMI start scan TLVs
-26eb704a46f8 wifi: ath10k: remove struct wmi_pdev_chanlist_update_event
-b0c0794b05ec wifi: ath10k: remove unused template structs
-cb188e862c1c wifi: ath10k: use flexible array in struct wmi_tdls_peer_capabilities
-6b9923f1f6d1 wifi: ath10k: remove duplicate memset() in 10.4 TDLS peer update
+f4c2a9d62213 wifi: ath12k: add string type to search board data in board-2.bin for WCN7850
+7173972a2eb1 wifi: ath12k: add fallback board name without variant while searching board-2.bin
+97474e5f5424 wifi: ath12k: remove unused ATH12K_BD_IE_BOARD_EXT
+511207452221 wifi: ath12k: add support to search regdb data in board-2.bin for WCN7850
+52f8c45fa36d wifi: ath12k: support default regdb while searching board-2.bin for WCN7850
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20231213-wmi_host_mem_chunks_flexarray-v1-1-92922d92fa2c@quicinc.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20231216060140.30611-2-quic_bqiang@quicinc.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
