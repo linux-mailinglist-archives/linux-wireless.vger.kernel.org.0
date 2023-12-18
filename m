@@ -1,100 +1,107 @@
-Return-Path: <linux-wireless+bounces-909-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-910-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CA6A817069
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Dec 2023 14:26:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 179518173BC
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Dec 2023 15:37:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CD5928523A
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Dec 2023 13:26:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C50D1C238FA
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Dec 2023 14:37:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B86E076914;
-	Mon, 18 Dec 2023 13:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DCDF3787B;
+	Mon, 18 Dec 2023 14:37:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="AcDH1kEU"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="EoDCHLOb";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kjvaVfG9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4767B129ED9;
-	Mon, 18 Dec 2023 13:18:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=CbJYyBnHSJO5HpsM1rF1MdLZBV/rqZTitFQxv3HNgg4=;
-	t=1702905496; x=1704115096; b=AcDH1kEUKaxt8lKZRCfQ5cFR1//iEBJV6PdxXPYUNWUIQ0/
-	/kr5IkqwjsWTdTGpb7rCYRlnsEjz1YWqeraGkuv7ipRzu1j/x1JIi49y2QTtpsPKBJZCrBBKpZ5uG
-	NJfEILTqzbVmKpf8JGMJ2LUofZLYaBKwtJ4Fy1qalX+PVCrZ9YGprDPn2biaI5jJirmv6E7XVaGI9
-	apsMZxZqf8E7esShfqSKyFmsXGp2XSvROrN5PkXVSojGIj4NRficzE2Vmzxm2Sq2O7JiNLh6x8pds
-	hz0sqfe6zrZEq/6567MDaiIL8hWxyHQaw+gbiprCLORGHsrngEQ7bU6wG2j7PQ2g==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1rFDVR-0000000GE7Q-0yMv;
-	Mon, 18 Dec 2023 14:18:01 +0100
-Message-ID: <26207725d5025318b831dd5a5feca67248aaa221.camel@sipsolutions.net>
-Subject: Re: [PATCH] bcma,ssb: simplify dependency handling for bcma and ssb
- drivers
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Lukas Bulwahn <lukas.bulwahn@gmail.com>, 
- =?UTF-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <zajec5@gmail.com>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Kalle Valo
- <kvalo@kernel.org>, Larry Finger <Larry.Finger@lwfinger.net>, Arend van
- Spriel <aspriel@gmail.com>, Franky Lin <franky.lin@broadcom.com>, Hante
- Meuleman <hante.meuleman@broadcom.com>,  Michael Buesch <m@bues.ch>,
- linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
- b43-dev@lists.infradead.org, brcm80211-dev-list.pdl@broadcom.com, 
- SHA-cyfmac-dev-list@infineon.com
-Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Mon, 18 Dec 2023 14:17:59 +0100
-In-Reply-To: <20231218115802.15859-1-lukas.bulwahn@gmail.com>
-References: <20231218115802.15859-1-lukas.bulwahn@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.2 (3.50.2-1.fc39) 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD510D308
+	for <linux-wireless@vger.kernel.org>; Mon, 18 Dec 2023 14:37:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Martin Kaistra <martin.kaistra@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1702910226;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=y5wR/t7KVf6ulWvrj1nbhoTnVW9Z+lHAr/N+sEU4FnY=;
+	b=EoDCHLObS5UeHkiuakYZkxyMId6BNkHHK0CWrJO+iXuONDpAJZfjO1cwhxXs2fQEOnA+Mq
+	VyoeCVxwOd76r1Xw8tfcaltZLmpk2evfKnmqZN1YcWUc68mXyLe6CDtbtTVfnn1n27oLGp
+	BebuYD+e6YVbSppZvXZyVRfj9eyde3iCgUu7iYDoJYq9GEs2p308hqIORweFSUY8SMw7eC
+	GPNiahXl1t7dw/Ys9vxAA1Al9aWoE/VG/36GbC6xBnk+T9JIHQVn8Y3qkxpR+pyEd6En6P
+	Ud0ap7L9YlUM8oviI65Ao7tAxg9htlkmK94thT4Z/OhYm2d7syCS4MSAtmv/mQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1702910226;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=y5wR/t7KVf6ulWvrj1nbhoTnVW9Z+lHAr/N+sEU4FnY=;
+	b=kjvaVfG9sstzNwBSJg7x/jrzfR6rBx0wi1ZbGexOWJ8jdS0fo0kisaRvebiEOAWxevfcxL
+	qio/LrjV3BcPZoAg==
+To: linux-wireless@vger.kernel.org
+Cc: Jes Sorensen <Jes.Sorensen@gmail.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: [PATCH 00/20] wifi: rtl8xxxu: Add concurrent mode for 8188f
+Date: Mon, 18 Dec 2023 15:36:25 +0100
+Message-Id: <20231218143645.433356-1-martin.kaistra@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 
-On Mon, 2023-12-18 at 12:58 +0100, Lukas Bulwahn wrote:
+This series adds the possibility to use two virtual interfaces on the
+same channel. Supported combinations are STA+STA and STA+AP. The
+conversion of the driver to support multiple interfaces is split into
+individual patches to hopefully make it easier to understand what is
+going on.
 
-Dunno, I'm not super involved with this but ...
+Thanks,
+  Martin
 
-> +++ b/drivers/bcma/Kconfig
-> @@ -1,12 +1,7 @@
->  # SPDX-License-Identifier: GPL-2.0
-> -config BCMA_POSSIBLE
-> -	bool
-> -	depends on HAS_IOMEM && HAS_DMA
-> -	default y
-> -
->  menuconfig BCMA
->  	tristate "Broadcom specific AMBA"
-> -	depends on BCMA_POSSIBLE
-> +	depends on HAS_IOMEM && HAS_DMA
+Martin Kaistra (20):
+  wifi: rtl8xxxu: remove assignment of priv->vif in
+    rtl8xxxu_bss_info_changed()
+  wifi: rtl8xxxu: prepare supporting two virtual interfaces
+  wifi: rtl8xxxu: support setting linktype for both interfaces
+  wifi: rtl8xxxu: 8188e: convert usage of priv->vif to priv->vifs[0]
+  wifi: rtl8xxxu: support setting mac address register for both
+    interfaces
+  wifi: rtl8xxxu: extend wifi connected check to both interfaces
+  wifi: rtl8xxxu: extend check for matching bssid to both interfaces
+  wifi: rtl8xxxu: support setting bssid register for multiple interfaces
+  wifi: rtl8xxxu: support multiple interfaces in set_aifs()
+  wifi: rtl8xxxu: support multiple interfaces in
+    update_beacon_work_callback()
+  wifi: rtl8xxxu: support multiple interfaces in configure_filter()
+  wifi: rtl8xxxu: support multiple interfaces in watchdog_callback()
+  wifi: rtl8xxxu: support multiple interfaces in
+    {add,remove}_interface()
+  wifi: rtl8xxxu: support multiple interfaces in bss_info_changed()
+  wifi: rtl8xxxu: support multiple interface in start_ap()
+  wifi: rtl8xxxu: support multiple interfaces in get_macid()
+  wifi: rtl8xxxu: remove obsolete priv->vif
+  wifi: rtl8xxxu: add hw crypto support for AP mode
+  wifi: rtl8xxxu: make supporting AP mode only on port 0 transparent
+  wifi: rtl8xxxu: declare concurrent mode support for 8188f
 
-[...]
->  config BRCMSMAC
->  	tristate "Broadcom IEEE802.11n PCIe SoftMAC WLAN driver"
-> -	depends on MAC80211
-> -	depends on BCMA_POSSIBLE
-> +	depends on HAS_IOMEM && HAS_DMA && MAC80211
->  	select BCMA
+ .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  |  16 +-
+ .../realtek/rtl8xxxu/rtl8xxxu_8188e.c         |   2 +-
+ .../realtek/rtl8xxxu/rtl8xxxu_8188f.c         |   1 +
+ .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 361 +++++++++++++-----
+ 4 files changed, 283 insertions(+), 97 deletions(-)
 
-to me it kind of seems more obvious for example in this case to say
-"depend on BCMA_POSSIBLE and select BCMA" rather than open-coding the
-BCMA dependencies both here and in BCMA? Now granted, they're rather
-unlikely to _change_, but it still seems more obvious?
+-- 
+2.39.2
 
-johannes
 
