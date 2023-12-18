@@ -1,210 +1,216 @@
-Return-Path: <linux-wireless+bounces-892-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-894-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB2A8816665
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Dec 2023 07:16:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E0538168F2
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Dec 2023 09:59:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 276D3B21C03
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Dec 2023 06:16:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FA671F22F70
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Dec 2023 08:59:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94835F508;
-	Mon, 18 Dec 2023 06:15:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4A3810A09;
+	Mon, 18 Dec 2023 08:59:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="MtsQaFpx"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01F1BDF4B
-	for <linux-wireless@vger.kernel.org>; Mon, 18 Dec 2023 06:15:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 3BI6FJB203224896, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 3BI6FJB203224896
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 18 Dec 2023 14:15:19 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Mon, 18 Dec 2023 14:15:19 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Mon, 18 Dec
- 2023 14:15:18 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <kvalo@kernel.org>
-CC: <ku920601@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 11/11] wifi: rtw89: coex: To improve Wi-Fi performance while BT is idle
-Date: Mon, 18 Dec 2023 14:13:41 +0800
-Message-ID: <20231218061341.51255-12-pkshih@realtek.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5392110976
+	for <linux-wireless@vger.kernel.org>; Mon, 18 Dec 2023 08:59:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 3BI8qPbF006372;
+	Mon, 18 Dec 2023 08:58:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id:mime-version:content-type
+	:content-transfer-encoding; s=qcppdkim1; bh=ZCgSpapPmPGOsg67FChX
+	U671PccySgTTlUM9qqlr7I4=; b=MtsQaFpxfGVJ3+O5SiTaYqgfilLG2vCThdqC
+	X1aVcQAudDTfE4hwGvpCThOLdivskwQI4Tv+ARybnnBKTHptzVMmyHdKxA2S60Ik
+	8Z0i0e8VFG8F/NWRBQvr+AXnygOdXfHo4ZX2WhjlH54AD5oh87ogt8KDDzZcPtpQ
+	8BQMLgl9bv3m+EeN/F+v8IaWoH4S+1vwgQT3MTUB818uFu24ABQJFFAhyD1kjXq1
+	+ijftpOJW3lJtoY5fCvWBwDFxt+pUE2f8UhlYVFjg7RdcDArgTxZ5nw1BDqrbI3+
+	iJ9vzoZWkLDCnKwAr8D28/RtzLLLhSb9m2iyn4akcjyw2+vA+Q==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3v2jx0g0hf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 18 Dec 2023 08:58:57 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3BI8wuuO011355
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 18 Dec 2023 08:58:56 GMT
+Received: from bqiang-Celadon-RN.qca.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Mon, 18 Dec 2023 00:58:54 -0800
+From: Baochen Qiang <quic_bqiang@quicinc.com>
+To: <ath11k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+Subject: [PATCH v10 00/12] wifi: ath11k: add support for 6 GHz station for various modes : LPI, SP and VLP
+Date: Mon, 18 Dec 2023 16:58:32 +0800
+Message-ID: <20231218085844.2658-1-quic_bqiang@quicinc.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20231218061341.51255-1-pkshih@realtek.com>
-References: <20231218061341.51255-1-pkshih@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: a7BrtJkM_QLmTqSq0Kgf4pDrFQI9x5X0
+X-Proofpoint-GUID: a7BrtJkM_QLmTqSq0Kgf4pDrFQI9x5X0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-09_02,2023-12-07_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 clxscore=1015
+ phishscore=0 priorityscore=1501 suspectscore=0 impostorscore=0
+ lowpriorityscore=0 adultscore=0 mlxscore=0 malwarescore=0 spamscore=0
+ mlxlogscore=975 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2311290000 definitions=main-2312180064
 
-From: Ching-Te Ku <ku920601@realtek.com>
+This introduced some new concept:
+power type of AP(STANDARD_POWER_AP, INDOOR_AP, VERY_LOW_POWER_AP)
+power type of STATION(DEFAULT_CLIENT, SUBORDINATE_CLIENT)
+power spectral density(psd)
 
-Because some platform Bluetooth will have many background scan when idle.
-And the frequently Bluetooth scan will break Wi-Fi traffic many times at
-a short duration, it will make Wi-Fi throughput become lower. This patch
-will shorter Bluetooth slot and adjust priority settings, make Wi-Fi can
-have a more completed duration to do traffic.
+This patchset is to implement the new rules for 6 GHz band in
+ath11k.
 
-Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/coex.c | 63 +++++++++++++----------
- 1 file changed, 37 insertions(+), 26 deletions(-)
+ath11k parsed the reg rules from new WMI event
+WMI_REG_CHAN_LIST_CC_EXT_EVENTID and parse the
+transmit power envelope element in beacon of AP
+and then set new WMI command WMI_VDEV_SET_TPC_POWER_CMDID
+to firmware when connect to 6G AP, also support backward
+compatibility with firmware which not support new wmi
+cmd WMI_VDEV_SET_TPC_POWER_CMDID.
 
-diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wireless/realtek/rtw89/coex.c
-index 0b430eace1aa..f37afb4cbb63 100644
---- a/drivers/net/wireless/realtek/rtw89/coex.c
-+++ b/drivers/net/wireless/realtek/rtw89/coex.c
-@@ -123,7 +123,8 @@ static const u32 cxtbl[] = {
- 	0xea55556a, /* 21 */
- 	0xaafafafa, /* 22 */
- 	0xfafaaafa, /* 23 */
--	0xfafffaff  /* 24 */
-+	0xfafffaff, /* 24 */
-+	0xea6a5a5a, /* 25 */
- };
- 
- static const struct rtw89_btc_ver rtw89_btc_ver_defs[] = {
-@@ -413,11 +414,14 @@ enum btc_cx_poicy_type {
- 	/* TDMA Fix slot-8: W1:B1 = user-define */
- 	BTC_CXP_FIX_TDW1B1 = (BTC_CXP_FIX << 8) | 8,
- 
--	/* TDMA Fix slot-9: W1:B1 = 40:20 */
--	BTC_CXP_FIX_TD4020 = (BTC_CXP_FIX << 8) | 9,
--
- 	/* TDMA Fix slot-9: W1:B1 = 40:10 */
--	BTC_CXP_FIX_TD4010ISO = (BTC_CXP_FIX << 8) | 10,
-+	BTC_CXP_FIX_TD4010ISO = (BTC_CXP_FIX << 8) | 9,
-+
-+	/* TDMA Fix slot-10: W1:B1 = 40:10 */
-+	BTC_CXP_FIX_TD4010ISO_DL = (BTC_CXP_FIX << 8) | 10,
-+
-+	/* TDMA Fix slot-11: W1:B1 = 40:10 */
-+	BTC_CXP_FIX_TD4010ISO_UL = (BTC_CXP_FIX << 8) | 11,
- 
- 	/* PS-TDMA Fix slot-0: W1:B1 = 30:30 */
- 	BTC_CXP_PFIX_TD3030 = (BTC_CXP_PFIX << 8) | 0,
-@@ -2815,9 +2819,17 @@ void rtw89_btc_set_policy(struct rtw89_dev *rtwdev, u16 policy_type)
- 			_slot_set(btc, CXST_W1, 40, tbl_w1, SLOT_ISO);
- 			_slot_set(btc, CXST_B1, 10, tbl_b1, SLOT_MIX);
- 			break;
--		case BTC_CXP_FIX_TD4020:
--			_slot_set(btc, CXST_W1, 40, cxtbl[1], SLOT_MIX);
--			_slot_set(btc, CXST_B1, 20, tbl_b1, SLOT_MIX);
-+		case BTC_CXP_FIX_TD4010ISO:
-+			_slot_set(btc, CXST_W1, 40, cxtbl[1], SLOT_ISO);
-+			_slot_set(btc, CXST_B1, 10, tbl_b1, SLOT_MIX);
-+			break;
-+		case BTC_CXP_FIX_TD4010ISO_DL:
-+			_slot_set(btc, CXST_W1, 40, cxtbl[25], SLOT_ISO);
-+			_slot_set(btc, CXST_B1, 10, cxtbl[25], SLOT_ISO);
-+			break;
-+		case BTC_CXP_FIX_TD4010ISO_UL:
-+			_slot_set(btc, CXST_W1, 40, cxtbl[20], SLOT_ISO);
-+			_slot_set(btc, CXST_B1, 10, cxtbl[25], SLOT_MIX);
- 			break;
- 		case BTC_CXP_FIX_TD7010:
- 			_slot_set(btc, CXST_W1, 70, tbl_w1, SLOT_ISO);
-@@ -3156,9 +3168,13 @@ void rtw89_btc_set_policy_v1(struct rtw89_dev *rtwdev, u16 policy_type)
- 			_slot_set(btc, CXST_W1, 40, cxtbl[1], SLOT_ISO);
- 			_slot_set(btc, CXST_B1, 10, tbl_b1, SLOT_MIX);
- 			break;
--		case BTC_CXP_FIX_TD4020:
--			_slot_set(btc, CXST_W1, 40, cxtbl[1], SLOT_MIX);
--			_slot_set(btc, CXST_B1, 20, tbl_b1, SLOT_MIX);
-+		case BTC_CXP_FIX_TD4010ISO_DL:
-+			_slot_set(btc, CXST_W1, 40, cxtbl[25], SLOT_ISO);
-+			_slot_set(btc, CXST_B1, 10, cxtbl[25], SLOT_ISO);
-+			break;
-+		case BTC_CXP_FIX_TD4010ISO_UL:
-+			_slot_set(btc, CXST_W1, 40, cxtbl[20], SLOT_ISO);
-+			_slot_set(btc, CXST_B1, 10, cxtbl[25], SLOT_MIX);
- 			break;
- 		case BTC_CXP_FIX_TD7010:
- 			_slot_set(btc, CXST_W1, 70, tbl_w1, SLOT_ISO);
-@@ -3595,31 +3611,25 @@ static void _action_bt_idle(struct rtw89_dev *rtwdev)
- {
- 	struct rtw89_btc *btc = &rtwdev->btc;
- 	struct rtw89_btc_bt_link_info *b = &btc->cx.bt.link_info;
-+	struct rtw89_btc_wl_info *wl = &btc->cx.wl;
- 
- 	_set_ant(rtwdev, NM_EXEC, BTC_PHY_ALL, BTC_ANT_W2G);
- 
- 	if (btc->mdinfo.ant.type == BTC_ANT_SHARED) { /* shared-antenna */
- 		switch (btc->cx.state_map) {
- 		case BTC_WBUSY_BNOSCAN: /*wl-busy + bt idle*/
--			if (b->profile_cnt.now > 0)
--				_set_policy(rtwdev, BTC_CXP_FIX_TD4010,
--					    BTC_ACT_BT_IDLE);
-+		case BTC_WSCAN_BNOSCAN: /* wl-scan + bt-idle */
-+			if (b->status.map.connect)
-+				_set_policy(rtwdev, BTC_CXP_FIX_TD4010, BTC_ACT_BT_IDLE);
-+			else if (wl->status.map.traffic_dir & BIT(RTW89_TFC_DL))
-+				_set_policy(rtwdev, BTC_CXP_FIX_TD4010ISO_DL, BTC_ACT_BT_IDLE);
- 			else
--				_set_policy(rtwdev, BTC_CXP_FIX_TD4020,
--					    BTC_ACT_BT_IDLE);
-+				_set_policy(rtwdev, BTC_CXP_FIX_TD4010ISO_UL, BTC_ACT_BT_IDLE);
- 			break;
- 		case BTC_WBUSY_BSCAN: /*wl-busy + bt-inq */
- 			_set_policy(rtwdev, BTC_CXP_PFIX_TD5050,
- 				    BTC_ACT_BT_IDLE);
- 			break;
--		case BTC_WSCAN_BNOSCAN: /* wl-scan + bt-idle */
--			if (b->profile_cnt.now > 0)
--				_set_policy(rtwdev, BTC_CXP_FIX_TD4010,
--					    BTC_ACT_BT_IDLE);
--			else
--				_set_policy(rtwdev, BTC_CXP_FIX_TD4020,
--					    BTC_ACT_BT_IDLE);
--			break;
- 		case BTC_WSCAN_BSCAN: /* wl-scan + bt-inq */
- 			_set_policy(rtwdev, BTC_CXP_FIX_TD5050,
- 				    BTC_ACT_BT_IDLE);
-@@ -3786,7 +3796,7 @@ static void _action_bt_pan(struct rtw89_dev *rtwdev)
- 		_set_policy(rtwdev, BTC_CXP_FIX_TD3060, BTC_ACT_BT_PAN);
- 		break;
- 	case BTC_WLINKING: /* wl-connecting + bt-PAN */
--		_set_policy(rtwdev, BTC_CXP_FIX_TD4020, BTC_ACT_BT_PAN);
-+		_set_policy(rtwdev, BTC_CXP_FIX_TD4010ISO, BTC_ACT_BT_PAN);
- 		break;
- 	case BTC_WIDLE: /* wl-idle + bt-pan */
- 		_set_policy(rtwdev, BTC_CXP_PFIX_TD2080, BTC_ACT_BT_PAN);
-@@ -6945,8 +6955,9 @@ static const char *steps_to_str(u16 step)
- 	CASE_BTC_POLICY_STR(FIX_TD3060);
- 	CASE_BTC_POLICY_STR(FIX_TD2080);
- 	CASE_BTC_POLICY_STR(FIX_TDW1B1);
--	CASE_BTC_POLICY_STR(FIX_TD4020);
- 	CASE_BTC_POLICY_STR(FIX_TD4010ISO);
-+	CASE_BTC_POLICY_STR(FIX_TD4010ISO_DL);
-+	CASE_BTC_POLICY_STR(FIX_TD4010ISO_UL);
- 	CASE_BTC_POLICY_STR(PFIX_TD3030);
- 	CASE_BTC_POLICY_STR(PFIX_TD5050);
- 	CASE_BTC_POLICY_STR(PFIX_TD2030);
+v10:
+ 1. [PATCH 02/12] wifi: ath11k: store cur_regulatory_info for each radio
+  a. s/muti/multi/
+ 2. [PATCH v9 09/12] wifi: ath11k: fill parameters for vdev set tpc power WMI command
+  a. add idle_ps check when calculating EIRP.
+
+v9；
+ 1. [PATCH 02/12] wifi: ath11k: store cur_regulatory_info for each radio:
+  a. add check to soc->reg_info_store in case memory allocation fails.
+  b. remove irrelevant change w.r.t commit message.
+
+ 2. [PATCH 04/12] wifi: ath11k: update regulatory rules when interface added:
+  a. remove unnecessary parenthesis.
+  b. remove irrelevant change w.r.t commit message.
+
+ 3. [PATCH 12/12] wifi: ath11k: discard BSS_CHANGED_TXPOWER when EXT_TPC_REG_SUPPORT for 6 GHz
+drop below patch:
+  a. do not discard txpower setting for BSS_CHANGED_TXPOWER.
+  b. renamed subject as below and update commit log:
+  	wifi: ath11k: use WMI_VDEV_SET_TPC_POWER_CMDID when
+    		EXT_TPC_REG_SUPPORT for 6 GHz
+
+ 4. rebased to ToT.
+
+v8:
+    add my own s-o-b tag to each patch if not present. Also rebased to ToT.
+
+v7: address review comments per Kalle, Jeff and Aditya. Also rebased to ToT.
+
+v6: (NOT depends to any patch now)
+   1. The dependent patch "wifi: cfg80211: save power spectral density(psd) of regulatory rule"
+      has upstream to wireless-next https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git/commit/?id=ddd7f45c899f7524bdbe6a32fe4906cde8b07b9b
+      The prerequisite-patch is cherry-pick from wireless-next
+      So add back the other patches in v3 since no dependency to cfg80211 public patch above now.
+      [v3,08/15] wifi: ath11k: save power spectral density(psd) of regulatory rule
+      [v3,09/15] wifi: ath11k: add parse of transmit power envelope element
+      [v3,10/15] wifi: ath11k: save max tx power in vdev start response event from firmware
+      [v3,11/15] wifi: ath11k: fill parameters for vdev_set_tpc_power wmi command
+      [v3,12/15] wifi: ath11k: add WMI_TLV_SERVICE_EXT_TPC_REG_SUPPORT service bit
+      [v3,13/15] wifi: ath11k: discard BSS_CHANGED_TXPOWER when EXT_TPC_REG_SUPPORT for 6 GHz
+      [v3,14/15] wifi: ath11k: add handler for WMI_VDEV_SET_TPC_POWER_CMDID
+      [v3,15/15] wifi: ath11k: send TPC power to firmware for 6 GHz station
+   2. rename some "6g" to "6ghz"
+   3. remove "static" for ath11k_reg_ap_pwr_convert()
+   4. add 20 Mhz check in ath11k_mac_get_eirp_power()
+   5. remove min_t() in ath11k_mac_fill_reg_tpc_info() for not is_tpe_present
+   6. rebased to ath-202309051328
+
+   link of v5:
+   [PATCH v5 0/5] fix wrong TX power and frequency in regdomain by dynamic switch 6 GHz reg rules of LPI/SP/VLP for station mode
+   https://lore.kernel.org/linux-wireless/20230803071701.15084-1-quic_wgong@quicinc.com/
+
+v5: change per Kalle and rebased to ath.git ath-202306211808
+   1. ath11k_ieee80211_ap_pwr_type_convert() to ath11k_reg_ap_pwr_convert()
+   2. used list_first_entry_or_null() and add comments
+   3. ath11k_dbg() to ath11k_warn()
+   4. ath11k_hw_supports_6g_cc_ext() to ath11k_mac_supports_6g_cc_ext()
+   5. add mesh in commit log
+
+v4: (NOT depends to any patch now).
+   1. removed patches which depends on
+      wifi: cfg80211: save Power Spectral Density (PSD) of the regulatory rule
+      https://lore.kernel.org/linux-wireless/20230315132904.31779-3-quic_adisi@quicinc.com/
+      removed:
+      [v3,08/15] wifi: ath11k: save power spectral density(psd) of regulatory rule
+      [v3,09/15] wifi: ath11k: add parse of transmit power envelope element
+      [v3,10/15] wifi: ath11k: save max tx power in vdev start response event from firmware
+      [v3,11/15] wifi: ath11k: fill parameters for vdev_set_tpc_power wmi command
+      [v3,12/15] wifi: ath11k: add WMI_TLV_SERVICE_EXT_TPC_REG_SUPPORT service bit
+      [v3,13/15] wifi: ath11k: discard BSS_CHANGED_TXPOWER when EXT_TPC_REG_SUPPORT for 6 GHz
+      [v3,14/15] wifi: ath11k: add handler for WMI_VDEV_SET_TPC_POWER_CMDID
+      [v3,15/15] wifi: ath11k: send TPC power to firmware for 6 GHz station
+
+   2. rebased to ath.git ath-202304281700
+
+   3. deleted "wifi: ath11k: Add support to parse new wmi event for 6 GHz regulatory" which is alreay upstream.
+
+   link of v3:
+   [v3,00/15] wifi: ath11k: add support for 6 GHz station for various modes : LPI, SP and VLP
+   https://patchwork.kernel.org/project/linux-wireless/cover/20220913051518.23051-1-quic_wgong@quicinc.com/
+
+v3:
+   1. added "ath11k: fix a possible dead lock caused by ab->base_lock".
+   3. deleted "ath11k: add support for extended wmi service bit" which is alreay upstream.
+
+v2:
+   1. change some minor comments by Kalle.
+   2. rebased to ath.git ath-202112220603
+
+Baochen Qiang (1):
+  wifi: ath11k: fix a possible dead lock caused by ab->base_lock
+
+Wen Gong (11):
+  wifi: ath11k: add support to select 6 GHz regulatory type
+  wifi: ath11k: store cur_regulatory_info for each radio
+  wifi: ath11k: update regulatory rules when interface added
+  wifi: ath11k: update regulatory rules when connect to AP on 6 GHz band
+    for station
+  wifi: ath11k: save power spectral density(PSD) of regulatory rule
+  wifi: ath11k: add parse of transmit power envelope element
+  wifi: ath11k: save max tx power in vdev start response event from
+    firmware
+  wifi: ath11k: fill parameters for vdev set tpc power WMI command
+  wifi: ath11k: add WMI_TLV_SERVICE_EXT_TPC_REG_SUPPORT service bit
+  wifi: ath11k: add handler for WMI_VDEV_SET_TPC_POWER_CMDID
+  wifi: ath11k: use WMI_VDEV_SET_TPC_POWER_CMDID when
+    EXT_TPC_REG_SUPPORT for 6 GHz
+
+ drivers/net/wireless/ath/ath11k/core.h |  40 ++
+ drivers/net/wireless/ath/ath11k/mac.c  | 515 ++++++++++++++++++++++++-
+ drivers/net/wireless/ath/ath11k/mac.h  |   3 +
+ drivers/net/wireless/ath/ath11k/reg.c  |  89 ++++-
+ drivers/net/wireless/ath/ath11k/reg.h  |   6 +-
+ drivers/net/wireless/ath/ath11k/wmi.c  | 234 ++++++++---
+ drivers/net/wireless/ath/ath11k/wmi.h  |  69 ++++
+ 7 files changed, 886 insertions(+), 70 deletions(-)
+
+
+base-commit: 6c4f0b0146c7c9c7791dc1a55e13e317897e91ac
 -- 
 2.25.1
 
