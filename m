@@ -1,59 +1,59 @@
-Return-Path: <linux-wireless+bounces-1039-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1040-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88DD6819128
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Dec 2023 21:00:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08A3E819129
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Dec 2023 21:00:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 474132871DD
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Dec 2023 20:00:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA42728717F
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Dec 2023 20:00:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 230F43B78B;
-	Tue, 19 Dec 2023 19:59:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17A2F3C46D;
+	Tue, 19 Dec 2023 20:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EPb9mHdw"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ex1E6FIF"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84F033B78E
-	for <linux-wireless@vger.kernel.org>; Tue, 19 Dec 2023 19:59:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85F993C068
+	for <linux-wireless@vger.kernel.org>; Tue, 19 Dec 2023 20:00:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1703015997; x=1734551997;
+  t=1703016000; x=1734552000;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=lrGbN54njcR2m69EMA/fkaBjiMY+Gxoq776vfAQ7+pc=;
-  b=EPb9mHdwqDnIxAqOAiurdpyB6zZfI9Q4IP8s92kkfO2/8Czu711z4lqc
-   CN+Y5SA+L7+ZUC0hNbdpY62M+jIT6c+ZIkN6NAOBcOD9kK3Bf2OPWdrJL
-   NfJjBTn4LeVNCoT2JWbKtRR4AIcOR77zb6Q1KjDJ9ee7e9XPudBrxs2zK
-   ywmEBujHQtpq4V7KeRM+ELhJnQKH6e/heaotC65E3SolgiUOrhBl9dhsD
-   ysfbD4TYUFD5ZbBq7ixNSdpu3JbW/8Sk7gv7WJ5AWmkQxHLZsN88bAucg
-   2wjahp03sSo2CMH6oWqAJ6YBgK0PWqQ+TnlNn0P3mtlngXD6WNGn0A0yj
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10929"; a="380694981"
+  bh=lEyT9XudBa09mjLleIm6mXtUDigywoaHeJAT1HS4N2E=;
+  b=Ex1E6FIFC7JVGdfauA4uXkhsvOVYnDIK9DeJR8VpCqTzhVtLoQjO8ip3
+   OxJ9msSB9vsjCUFB5tlBUND783rCd2v4NZSjoza9dHaWYY71ixyAV4/KR
+   TPU0KjHiCbAIXUzC+ZeJ8oMkZMuV3VbYx5/GiPytOi0zcU3qS9KSX5FtO
+   KB8pR9oeDJtpGaHFQAJ/wmK1aMYSf+A8UgtfOrLv/bMnrF5EKHBt8Pabh
+   AUyF5Now0mbHGygKRokQ20ojoRhiYPjqUKh8ctrNKR58ZPE5wCIWbg0uo
+   WQanliPrSg+VgYVc6DQdwn8EyYA5zjcySDFmSaJkbbc7Q5SQ29hH1fuuA
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10929"; a="380694985"
 X-IronPort-AV: E=Sophos;i="6.04,289,1695711600"; 
-   d="scan'208";a="380694981"
+   d="scan'208";a="380694985"
 Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2023 11:59:57 -0800
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2023 12:00:00 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10929"; a="779589152"
+X-IronPort-AV: E=McAfee;i="6600,9927,10929"; a="779589164"
 X-IronPort-AV: E=Sophos;i="6.04,289,1695711600"; 
-   d="scan'208";a="779589152"
+   d="scan'208";a="779589164"
 Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2023 11:59:55 -0800
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2023 11:59:58 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Andrei Otcheretianski <andrei.otcheretianski@intel.com>,
 	Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 13/14] wifi: iwlwifi: mvm: use the new command to clear the internal buffer
-Date: Tue, 19 Dec 2023 21:59:01 +0200
-Message-Id: <20231219215605.99aed3efbacb.Ib5bda1d1ff4bae476667737d4081ad066d1d7e6b@changeid>
+Subject: [PATCH 14/14] wifi: iwlwifi: replace ENOTSUPP with EOPNOTSUPP
+Date: Tue, 19 Dec 2023 21:59:02 +0200
+Message-Id: <20231219215605.a69f4347b5f8.I88429d5de8251287ec0b58ff26a588465b9049a5@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231219195902.3336105-1-miriam.rachel.korenblit@intel.com>
 References: <20231219195902.3336105-1-miriam.rachel.korenblit@intel.com>
@@ -66,80 +66,150 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Andrei Otcheretianski <andrei.otcheretianski@intel.com>
 
-The firmware can allow to clear the internal debug buffer. This can be
-used to sanitize the data when requested to.
+ENOTSUPP isn't a standard error code, don't use it. Replace with
+EOPNOTSUPP instead.
 
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Andrei Otcheretianski <andrei.otcheretianski@intel.com>
 Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/api/debug.h | 6 ++++++
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c       | 9 +++++++++
- drivers/net/wireless/intel/iwlwifi/fw/file.h      | 4 ++++
- 3 files changed, 19 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/iwl-trans.h         | 8 ++++----
+ drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c       | 2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/ftm-responder.c | 8 ++++----
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c      | 2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c           | 4 ++--
+ 5 files changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/debug.h b/drivers/net/wireless/intel/iwlwifi/fw/api/debug.h
-index 7b18e098b125..798731ecbefd 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/debug.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/debug.h
-@@ -59,6 +59,12 @@ enum iwl_debug_cmds {
- 	 * &struct iwl_dbg_dump_complete_cmd
- 	 */
- 	FW_DUMP_COMPLETE_CMD = 0xB,
-+	/**
-+	 * @FW_CLEAR_BUFFER:
-+	 * clears the firmware's internal buffer
-+	 * no payload
-+	 */
-+	FW_CLEAR_BUFFER = 0xD,
- 	/**
- 	 * @MFU_ASSERT_DUMP_NTF:
- 	 * &struct iwl_mfu_assert_dump_notif
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-index f6e399d1e95c..e27774e7ed74 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-@@ -3401,6 +3401,15 @@ void iwl_fw_dbg_clear_monitor_buf(struct iwl_fw_runtime *fwrt)
- 	struct iwl_fw_dbg_params params = {0};
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
+index ef7dc0a7b56c..5789a8735976 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
+@@ -1316,7 +1316,7 @@ iwl_trans_get_rxq_dma_data(struct iwl_trans *trans, int queue,
+ 			   struct iwl_trans_rxq_dma_data *data)
+ {
+ 	if (WARN_ON_ONCE(!trans->ops->rxq_dma_data))
+-		return -ENOTSUPP;
++		return -EOPNOTSUPP;
  
- 	iwl_fw_dbg_stop_sync(fwrt);
-+
-+	if (fw_has_api(&fwrt->fw->ucode_capa,
-+		       IWL_UCODE_TLV_API_INT_DBG_BUF_CLEAR)) {
-+		struct iwl_host_cmd hcmd = {
-+			.id = WIDE_ID(DEBUG_GROUP, FW_CLEAR_BUFFER),
-+		};
-+		iwl_trans_send_cmd(fwrt->trans, &hcmd);
-+	}
-+
- 	iwl_dbg_tlv_init_cfg(fwrt);
- 	iwl_fw_dbg_stop_restart_recording(fwrt, &params, false);
+ 	return trans->ops->rxq_dma_data(trans, queue, data);
  }
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/file.h b/drivers/net/wireless/intel/iwlwifi/fw/file.h
-index c38e5194c55f..bfc39bd5bbc6 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/file.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/file.h
-@@ -245,6 +245,8 @@ typedef unsigned int __bitwise iwl_ucode_tlv_api_t;
-  *  SCAN_CONFIG_DB_CMD_API_S.
-  * @IWL_UCODE_TLV_API_NO_HOST_DISABLE_TX: Firmware offloaded the station disable tx
-  *	logic.
-+ * @IWL_UCODE_TLV_API_INT_DBG_BUF_CLEAR: Firmware supports clearing the debug
-+ *	internal buffer
-  *
-  * @NUM_IWL_UCODE_TLV_API: number of bits used
-  */
-@@ -282,7 +284,9 @@ enum iwl_ucode_tlv_api {
- 	IWL_UCODE_TLV_API_ADWELL_HB_DEF_N_AP	= (__force iwl_ucode_tlv_api_t)57,
- 	IWL_UCODE_TLV_API_SCAN_EXT_CHAN_VER	= (__force iwl_ucode_tlv_api_t)58,
- 	IWL_UCODE_TLV_API_BAND_IN_RX_DATA	= (__force iwl_ucode_tlv_api_t)59,
-+	/* API Set 2 */
- 	IWL_UCODE_TLV_API_NO_HOST_DISABLE_TX	= (__force iwl_ucode_tlv_api_t)66,
-+	IWL_UCODE_TLV_API_INT_DBG_BUF_CLEAR     = (__force iwl_ucode_tlv_api_t)67,
+@@ -1338,7 +1338,7 @@ iwl_trans_txq_alloc(struct iwl_trans *trans,
+ 	might_sleep();
  
- 	NUM_IWL_UCODE_TLV_API
- /*
+ 	if (WARN_ON_ONCE(!trans->ops->txq_alloc))
+-		return -ENOTSUPP;
++		return -EOPNOTSUPP;
+ 
+ 	if (WARN_ON_ONCE(trans->state != IWL_TRANS_FW_ALIVE)) {
+ 		IWL_ERR(trans, "%s bad state = %d\n", __func__, trans->state);
+@@ -1404,7 +1404,7 @@ static inline int iwl_trans_wait_tx_queues_empty(struct iwl_trans *trans,
+ 						 u32 txqs)
+ {
+ 	if (WARN_ON_ONCE(!trans->ops->wait_tx_queues_empty))
+-		return -ENOTSUPP;
++		return -EOPNOTSUPP;
+ 
+ 	/* No need to wait if the firmware is not alive */
+ 	if (trans->state != IWL_TRANS_FW_ALIVE) {
+@@ -1418,7 +1418,7 @@ static inline int iwl_trans_wait_tx_queues_empty(struct iwl_trans *trans,
+ static inline int iwl_trans_wait_txq_empty(struct iwl_trans *trans, int queue)
+ {
+ 	if (WARN_ON_ONCE(!trans->ops->wait_txq_empty))
+-		return -ENOTSUPP;
++		return -EOPNOTSUPP;
+ 
+ 	if (WARN_ON_ONCE(trans->state != IWL_TRANS_FW_ALIVE)) {
+ 		IWL_ERR(trans, "%s bad state = %d\n", __func__, trans->state);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
+index 16a104de8371..edc8204f7c0e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
+@@ -1521,7 +1521,7 @@ static ssize_t iwl_dbgfs_inject_packet_write(struct iwl_mvm *mvm,
+ 
+ 	/* supporting only MQ RX */
+ 	if (!mvm->trans->trans_cfg->mq_rx_supported)
+-		return -ENOTSUPP;
++		return -EOPNOTSUPP;
+ 
+ 	rxb._page = alloc_pages(GFP_ATOMIC, 0);
+ 	if (!rxb._page)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-responder.c b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-responder.c
+index 10b9219b3bfd..8f10590f9cdd 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-responder.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-responder.c
+@@ -39,7 +39,7 @@ static int iwl_mvm_ftm_responder_set_bw_v1(struct cfg80211_chan_def *chandef,
+ 		*ctrl_ch_position = iwl_mvm_get_ctrl_pos(chandef);
+ 		break;
+ 	default:
+-		return -ENOTSUPP;
++		return -EOPNOTSUPP;
+ 	}
+ 
+ 	return 0;
+@@ -77,7 +77,7 @@ static int iwl_mvm_ftm_responder_set_bw_v2(struct cfg80211_chan_def *chandef,
+ 		}
+ 		fallthrough;
+ 	default:
+-		return -ENOTSUPP;
++		return -EOPNOTSUPP;
+ 	}
+ 
+ 	return 0;
+@@ -291,7 +291,7 @@ iwl_mvm_ftm_responder_dyn_cfg_cmd(struct iwl_mvm *mvm,
+ 	default:
+ 		IWL_ERR(mvm, "Unsupported DYN_CONFIG_CMD version %u\n",
+ 			cmd_ver);
+-		ret = -ENOTSUPP;
++		ret = -EOPNOTSUPP;
+ 	}
+ 
+ 	return ret;
+@@ -333,7 +333,7 @@ int iwl_mvm_ftm_respoder_add_pasn_sta(struct iwl_mvm *mvm,
+ 
+ 	if (cmd_ver < 3) {
+ 		IWL_ERR(mvm, "Adding PASN station not supported by FW\n");
+-		return -ENOTSUPP;
++		return -EOPNOTSUPP;
+ 	}
+ 
+ 	if ((!hltk || !hltk_len) && (!tk || !tk_len)) {
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 5276df717ca1..7f13dff04b26 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -298,7 +298,7 @@ int iwl_mvm_op_set_antenna(struct ieee80211_hw *hw, u32 tx_ant, u32 rx_ant)
+ 	/* This has been tested on those devices only */
+ 	if (mvm->trans->trans_cfg->device_family != IWL_DEVICE_FAMILY_9000 &&
+ 	    mvm->trans->trans_cfg->device_family != IWL_DEVICE_FAMILY_22000)
+-		return -ENOTSUPP;
++		return -EOPNOTSUPP;
+ 
+ 	if (!mvm->nvm_data)
+ 		return -EBUSY;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
+index efe3e111ea0a..2a3ca9785974 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
+@@ -2550,7 +2550,7 @@ int iwl_mvm_add_mcast_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif)
+ 
+ 	if (WARN_ON(vif->type != NL80211_IFTYPE_AP &&
+ 		    vif->type != NL80211_IFTYPE_ADHOC))
+-		return -ENOTSUPP;
++		return -EOPNOTSUPP;
+ 
+ 	/*
+ 	 * In IBSS, ieee80211_check_queues() sets the cab_queue to be
+@@ -3234,7 +3234,7 @@ int iwl_mvm_sta_tx_agg_oper(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+ 		 * should be updated as well.
+ 		 */
+ 		if (buf_size < IWL_FRAME_LIMIT)
+-			return -ENOTSUPP;
++			return -EOPNOTSUPP;
+ 
+ 		ret = iwl_mvm_sta_tx_agg(mvm, sta, tid, queue, true);
+ 		if (ret)
 -- 
 2.34.1
 
