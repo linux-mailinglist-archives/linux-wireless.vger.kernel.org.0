@@ -1,107 +1,84 @@
-Return-Path: <linux-wireless+bounces-1000-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1001-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82FC0818DAF
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Dec 2023 18:14:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 529E4818E37
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Dec 2023 18:33:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09D14B20BD3
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Dec 2023 17:14:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 859071C2170D
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Dec 2023 17:33:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFC3F31A6C;
-	Tue, 19 Dec 2023 17:13:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E9AB341BA;
+	Tue, 19 Dec 2023 17:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=o2.pl header.i=@o2.pl header.b="M1+tHjDR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ud7EygRw"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx-out.tlen.pl (mx-out.tlen.pl [193.222.135.175])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F8931A68
-	for <linux-wireless@vger.kernel.org>; Tue, 19 Dec 2023 17:13:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=o2.pl
-Received: (wp-smtpd smtp.tlen.pl 43152 invoked from network); 19 Dec 2023 18:13:40 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=o2.pl; s=1024a;
-          t=1703006021; bh=7kmec4JawjMGqIyJHMmL9kvU9jkRy/9Mu2C9xIhcivU=;
-          h=From:To:CC:Subject;
-          b=M1+tHjDRUQtBwb4H5/uULVeXDgu2ZvGQqpINl4plkiqU7FTpqWToro37Rl7tYprF6
-           7vDBQAUSttkoTJmNPzfvEXwKDMfXC7pboVQ0UMvKmONhU65HTgn6XNqrIk5/EfvOT1
-           MN7CEPqQc3mkkncc6miAAcPEMItSo/gxIBIjjoMY=
-Received: from 37.30.118.70.mobile.internet.t-mobile.pl (HELO [127.0.0.1]) (mat.jonczyk@o2.pl@[37.30.118.70])
-          (envelope-sender <mat.jonczyk@o2.pl>)
-          by smtp.tlen.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <johannes@sipsolutions.net>; 19 Dec 2023 18:13:40 +0100
-Date: Tue, 19 Dec 2023 18:13:40 +0100
-From: =?UTF-8?Q?Mateusz_Jo=C5=84czyk?= <mat.jonczyk@o2.pl>
-To: Johannes Berg <johannes@sipsolutions.net>,
- Miri Korenblit <miriam.rachel.korenblit@intel.com>
-CC: Gregory Greenman <gregory.greenman@intel.com>, linux-wireless@vger.kernel.org,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: =?US-ASCII?Q?Re=3A_=5BRegression=5D_debugfs_warnings_w?= =?US-ASCII?Q?hen_resuming_from_suspend_on_6=2E7-rc5?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <798e32d457e3ea029fecd423fdb2b1317016e02f.camel@sipsolutions.net>
-References: <da91e776-b192-4e2b-9157-e83a5a2659b1@o2.pl> <d8aef271-418c-4644-a3fd-72ee5f1959b7@o2.pl> <798e32d457e3ea029fecd423fdb2b1317016e02f.camel@sipsolutions.net>
-Message-ID: <1F32CD27-682E-452D-8EC1-904314844CCB@o2.pl>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43ED8341AC
+	for <linux-wireless@vger.kernel.org>; Tue, 19 Dec 2023 17:33:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DA3AC433C7;
+	Tue, 19 Dec 2023 17:33:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1703007204;
+	bh=YV1viPAvkQj1veDTA8/RlWO8+ONFJQx0r0bJB5cx4OI=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=Ud7EygRwL0ADipNVOObBqNGjRQBQQqgn9cr9YZW+rxaExU0lAeOBIEA8pEsJqWPvR
+	 OcSr0dMNuGVQfAJhAJ5rZO9WtC/J3LG2TnXy4CNY5NIN5pvhKpo/LRWmsOMh/MV5wY
+	 OQNJKNIPfHCA1XoVOrBcR/jDm+z7sFupz4I36jWlPZJwrNZq/6l6Uj1rKb6rnRd5Fx
+	 bwG2YaWhelTp02x7gpKh+bhMbIrWdI0Hn8GYWgwotpJZ5MBqiTW5AylAu6DYqmVVse
+	 aOPY6GRtoc5HRAo8amFlK0pZl4JitdnQXxSeJTF5XGwNOGDtJcOCT9Luff/4rm6SBF
+	 ndi2dYQZDYVaA==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-WP-MailID: 41bfcf3e8fadcf864875140a23e25358
-X-WP-AV: skaner antywirusowy Poczty o2
-X-WP-SPAM: NO 0000000 [4eM0]                               
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] wifi: p54: fix GCC format truncation warning with
+ wiphy->fw_version
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20231219162516.898205-1-kvalo@kernel.org>
+References: <20231219162516.898205-1-kvalo@kernel.org>
+To: Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org, chunkeey@googlemail.com
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <170300720199.899034.3258255171064401475.kvalo@kernel.org>
+Date: Tue, 19 Dec 2023 17:33:23 +0000 (UTC)
 
+Kalle Valo <kvalo@kernel.org> wrote:
 
+> GCC 13.2 warns:
+> 
+> drivers/net/wireless/intersil/p54/fwio.c:128:34: warning: '%s' directive output may be truncated writing up to 39 bytes into a region of size 32 [-Wformat-truncation=]
+> drivers/net/wireless/intersil/p54/fwio.c:128:33: note: directive argument in the range [0, 16777215]
+> drivers/net/wireless/intersil/p54/fwio.c:128:33: note: directive argument in the range [0, 255]
+> drivers/net/wireless/intersil/p54/fwio.c:127:17: note: 'snprintf' output between 7 and 52 bytes into a destination of size 32
+> 
+> The issue here is that wiphy->fw_version is 32 bytes and in theory the string
+> we try to place there can be 39 bytes. wiphy->fw_version is used for providing
+> the firmware version to user space via ethtool, so not really important.
+> fw_version in theory can be 24 bytes but in practise it's shorter, so even if
+> print only 19 bytes via ethtool there should not be any practical difference.
+> 
+> I did consider removing fw_var from the string altogether or making the maximum
+> length for fw_version 19 bytes, but chose this approach as it was the least
+> intrusive.
+> 
+> Signed-off-by: Kalle Valo <kvalo@kernel.org>
 
-Dnia 19 grudnia 2023 13:03:12 CET, Johannes Berg <johannes@sipsolutions=2E=
-net> napisa=C5=82/a:
->On Thu, 2023-12-14 at 22:49 +0100, Mateusz Jo=C5=84czyk wrote:
->> W dniu 14=2E12=2E2023 o=C2=A022:45, Mateusz Jo=C5=84czyk pisze:
->> > Hello,
->> >=20
->> > Since upgrading to 6=2E7-rc kernels, I have been getting the followin=
-g error
->> > message in dmesg
->> > while resuming from suspend:
->> >=20
->> > [=C2=A0=C2=A0 83=2E302944] debugfs: Directory 'iwlmvm' with parent 'n=
-etdev:wlp2s0' already
->> > present!
->> > [=C2=A0=C2=A0 83=2E302963] iwlwifi 0000:02:00=2E0: Failed to create d=
-ebugfs directory under
->> > netdev:wlp2s0
->> >=20
->> OK, now I see
->>=20
->> https://patchwork=2Ekernel=2Eorg/project/linux-wireless/patch/202312110=
-85121=2E88a950f43e16=2EId71181780994649219685887c0fcad33d387cc78@changeid/
->>=20
->> ("wifi: mac80211: don't re-add debugfs during reconfig")
->>=20
->> Will see if this fixes the issue=2E
->>=20
->
->Did that work? I think we need
->
->https://patchwork=2Ekernel=2Eorg/project/linux-wireless/patch/20231220043=
-149=2Eddd48c66ec6b=2EIa81080d92129ceecf462eceb4966bab80df12060@changeid/
->
->in addition =2E=2E=2E=20
+I forgot to include:
 
-No, it didn't=2E I have tested it only yesterday, did not write yet=2E=20
-Will retest with the new patch=2E=20
+Compile tested only.
 
-BTW, it seems that NetworkManager does not display the=20
-WiFi signal level correctly on 6=2E7-rc5=2E I did not pinpoint it yet thou=
-gh=2E=20
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20231219162516.898205-1-kvalo@kernel.org/
 
-Greetings,=20
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
-Mateusz
 
