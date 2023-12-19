@@ -1,164 +1,179 @@
-Return-Path: <linux-wireless+bounces-994-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-995-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DACA28189E5
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Dec 2023 15:29:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 605B5818A50
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Dec 2023 15:42:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62591282487
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Dec 2023 14:29:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0133028E6C0
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Dec 2023 14:42:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5379C20DD4;
-	Tue, 19 Dec 2023 14:26:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D865F1C296;
+	Tue, 19 Dec 2023 14:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gnlr7Eio"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c0tuLIkT"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFD881D541;
-	Tue, 19 Dec 2023 14:26:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-77fa980b50aso295982785a.3;
-        Tue, 19 Dec 2023 06:26:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702996001; x=1703600801; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wM23hrtmmwZJoFn95qL7Z6AlVX+PhKPgm+RhZG4LXDU=;
-        b=gnlr7EioWil2fvGqN4ej6ZgFJ2RRaTEyo2drpWLDfnXWXEjZf37mdBvz6EjdH3nDNj
-         eKvU2zfe/kruqGIbjMNFA5sW246kMLeHBU6ZrB5udqzMmSETLdUiKuDGAfDdq++frXcX
-         zRMpq6aNmUMVomUz+STr7HIBmM8SmonvXSrq/9gvdv0RGntIbppa5fUbQAcazdMB/05v
-         N6Z7V8DDC/AmMQXh5U3AP1NcHqA+BWs+nLffpxWCq6OR2klqGZ0sehPSU04uPWjgS/kG
-         MsP6xvOcTtUyBobLb0EogQ2wXOg4Nq8mQJg3Ra1W20lbFk/csu1wLkysE4i4qeGBcM10
-         RpZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702996001; x=1703600801;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wM23hrtmmwZJoFn95qL7Z6AlVX+PhKPgm+RhZG4LXDU=;
-        b=wHldcC2iLy2nyFFvveWoYg2eRDKp0IhXTxZnqCuEwqW6rTFt4FhNOpByoCJGw+nhc0
-         s21grv/B2cAMtflB4NZlRthCGekuFXCJ9i2hLpelSL4WB7FQ7Oow2rv6wk1hxKEQ5TdT
-         feW8Tb1+TdXHXwgGIqpoaAs3zTtXnZR729HNaCmcUAZWtmLyV+R93pwed5OZ3medp/zw
-         oq3G1ssdW1/G7hcpvT12wWeNX3guYr9XxKKZ8Kx4bMxGeNhRJ+TIQW9qd4ZtfSYmZcdi
-         AdU6HeMCsig5113c2/2zv/06UZtK/Aq7xF0CHvaAsW52CLtRlSCbyDlYFXtXA0C6NVlt
-         s1wQ==
-X-Gm-Message-State: AOJu0YynzFfWWGMno9xUINXkjA9CJfFpKfrBRbUdsmJNa4WjOn/FrViT
-	J1ur24EGW0ZkSDkNxF1ogTkyh6rSsK6ziPLsGzM=
-X-Google-Smtp-Source: AGHT+IHx9eDarbPTGhFlRlrMZrUjj0C9/fRBqeQRfE6exoHoYzUvUicFz01LayrhuIRerOGpu2U2D9uwGjwIoB8Ox40=
-X-Received: by 2002:a05:6214:5287:b0:67f:3f4f:82c9 with SMTP id
- kj7-20020a056214528700b0067f3f4f82c9mr4575429qvb.45.1702996001532; Tue, 19
- Dec 2023 06:26:41 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF5ED2FC;
+	Tue, 19 Dec 2023 14:42:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5A3FC433C8;
+	Tue, 19 Dec 2023 14:42:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1702996935;
+	bh=eBFadiHuXwmJfGGqWpIvFNr/M7Pv8cI/lMfcRTLRiAM=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=c0tuLIkTYsPGnlHcAqYGRIeFk6q49PcnQUqZOMVID722iDuTnl3CMxcCyNKxZRWSd
+	 F1aDctTLeA3ISQgMRhwWd5JHEY3nrLGTKwLAYYnKPIUW3tfpDjQZabLBjEE15ZE1/+
+	 xtI4oerLSn8apddbF1b3bpT4bvopRC1LhkyFDWLkekXOP2t3mP/khcxYe28XbBCU6c
+	 jdvY+ZUoS9wzXJ6So72ILzPHJ2ZGCc6914ATV77RuFod3WHGEmUuMj2jXEiOpej4eb
+	 WR+Mnqgvvdrle+eHgqkbh/Q9JSQe6HrPxPXJsjAIyNWlwXpWo+PdiPRW0liPAJl6lp
+	 saiKTvmDjuaoQ==
+From: Kalle Valo <kvalo@kernel.org>
+To: Daniel Berlin <dberlin@dberlin.org>
+Cc: Arend van Spriel <arend.vanspriel@broadcom.com>,  Arend van Spriel
+ <aspriel@gmail.com>,  Franky Lin <franky.lin@broadcom.com>,  Hante
+ Meuleman <hante.meuleman@broadcom.com>,  Hector Martin <marcan@marcan.st>,
+  SHA-cyfmac-dev-list@infineon.com,  asahi@lists.linux.dev,
+  brcm80211-dev-list.pdl@broadcom.com,  linux-kernel@vger.kernel.org,
+  linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] wifi: brcmfmac: cfg80211: Use WSEC to set SAE password
+References: <20231107-brcmfmac-wpa3-v1-1-4c7db8636680@marcan.st>
+	<170281231651.2255653.7498073085103487666.kvalo@kernel.org>
+	<18c80d15e30.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+	<1b51997f-2994-46e8-ac58-90106d1c486d@marcan.st>
+	<c392f901-789a-42e2-8cf7-5e246365a1ca@broadcom.com>
+	<CAF4BwTXNtu30DAgBXo4auDaDK0iWc9Ch8f=EH+facQ-_F-oMUQ@mail.gmail.com>
+Date: Tue, 19 Dec 2023 16:42:10 +0200
+In-Reply-To: <CAF4BwTXNtu30DAgBXo4auDaDK0iWc9Ch8f=EH+facQ-_F-oMUQ@mail.gmail.com>
+	(Daniel Berlin's message of "Tue, 19 Dec 2023 08:07:16 -0600")
+Message-ID: <87r0jiqmnx.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231107-brcmfmac-wpa3-v1-1-4c7db8636680@marcan.st>
- <170281231651.2255653.7498073085103487666.kvalo@kernel.org>
- <18c80d15e30.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <1b51997f-2994-46e8-ac58-90106d1c486d@marcan.st> <c392f901-789a-42e2-8cf7-5e246365a1ca@broadcom.com>
-In-Reply-To: <c392f901-789a-42e2-8cf7-5e246365a1ca@broadcom.com>
-From: Julian Calaby <julian.calaby@gmail.com>
-Date: Wed, 20 Dec 2023 01:26:30 +1100
-Message-ID: <CAGRGNgW0h_uqHn0rKwGx0L41R+YgzgWPEh83kSKVCeqfCDeOug@mail.gmail.com>
-Subject: Re: [PATCH] wifi: brcmfmac: cfg80211: Use WSEC to set SAE password
-To: Arend van Spriel <arend.vanspriel@broadcom.com>, Kalle Valo <kvalo@kernel.org>
-Cc: Hector Martin <marcan@marcan.st>, Arend van Spriel <aspriel@gmail.com>, 
-	Franky Lin <franky.lin@broadcom.com>, Hante Meuleman <hante.meuleman@broadcom.com>, 
-	Daniel Berlin <dberlin@dberlin.org>, linux-wireless@vger.kernel.org, 
-	brcm80211-dev-list.pdl@broadcom.com, SHA-cyfmac-dev-list@infineon.com, 
-	linux-kernel@vger.kernel.org, asahi@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Hi Arend and Kalle,
+Daniel Berlin <dberlin@dberlin.org> writes:
 
-On Wed, Dec 20, 2023 at 12:47=E2=80=AFAM Arend van Spriel
-<arend.vanspriel@broadcom.com> wrote:
+> On Tue, Dec 19, 2023 at 7:46=E2=80=AFAM Arend van Spriel <arend.vanspriel=
+@broadcom.com> wrote:
 >
-> On 12/19/2023 12:01 PM, Hector Martin wrote:
-> >
-> >
-> > On 2023/12/19 17:52, Arend Van Spriel wrote:
-> >> On December 17, 2023 12:25:23 PM Kalle Valo <kvalo@kernel.org> wrote:
-> >>
-> >>> Hector Martin <marcan@marcan.st> wrote:
-> >>>
-> >>>> Using the WSEC command instead of sae_password seems to be the suppo=
-rted
-> >>>> mechanism on newer firmware, and also how the brcmdhd driver does it=
-.
-> >>>>
-> >>>> According to user reports [1], the sae_password codepath doesn't act=
-ually
-> >>>> work on machines with Cypress chips anyway, so no harm in removing i=
+>  On 12/19/2023 12:01 PM, Hector Martin wrote:
+>  >=20
+>  >=20
+>  > On 2023/12/19 17:52, Arend Van Spriel wrote:
+>  >> On December 17, 2023 12:25:23 PM Kalle Valo <kvalo@kernel.org> wrote:
+>  >>
+>  >>> Hector Martin <marcan@marcan.st> wrote:
+>  >>>
+>  >>>> Using the WSEC command instead of sae_password seems to be the supp=
+orted
+>  >>>> mechanism on newer firmware, and also how the brcmdhd driver does i=
 t.
-> >>>>
-> >>>> This makes WPA3 work with iwd, or with wpa_supplicant pending a supp=
-ort
-> >>>> patchset [2].
-> >>>>
-> >>>> [1] https://rachelbythebay.com/w/2023/11/06/wpa3/
-> >>>> [2] http://lists.infradead.org/pipermail/hostap/2023-July/041653.htm=
-l
-> >>>>
-> >>>> Signed-off-by: Hector Martin <marcan@marcan.st>
-> >>>> Reviewed-by: Neal Gompa <neal@gompa.dev>
-> >>>
-> >>> Arend, what do you think?
-> >>>
-> >>> We recently talked about people testing brcmfmac patches, has anyone =
-else
-> >>> tested this?
-> >>
-> >> Not sure I already replied so maybe I am repeating myself. I would pre=
-fer
-> >> to keep the Cypress sae_password path as well although it reportedly d=
-oes
-> >> not work. The vendor support in the driver can be used to accommodate =
-for
-> >> that. The other option would be to have people with Cypress chipset te=
-st
-> >> this patch. If that works for both we can consider dropping the
-> >> sae_password path.
-> >>
-> >> Regards,
-> >> Arend
-> >
-> > So, if nobody from Cypress chimes in ever, and nobody cares nor tests
-> > Cypress chipsets, are we keeping any and all existing Cypress code-path=
-s
-> > as bitrotting code forever and adding gratuitous conditionals every tim=
-e
-> > any functionality needs to change "just in case it breaks Cypress" even
-> > though it has been tested compatible on Broadcom chipsets/firmware?
-> >
-> > Because that's not sustainable long term.
+>  >>>>
+>  >>>> According to user reports [1], the sae_password codepath doesn't ac=
+tually
+>  >>>> work on machines with Cypress chips anyway, so no harm in removing =
+it.
+>  >>>>
+>  >>>> This makes WPA3 work with iwd, or with wpa_supplicant pending a sup=
+port
+>  >>>> patchset [2].
+>  >>>>
+>  >>>> [1] https://rachelbythebay.com/w/2023/11/06/wpa3/
+>  >>>> [2] http://lists.infradead.org/pipermail/hostap/2023-July/041653.ht=
+ml
+>  >>>>
+>  >>>> Signed-off-by: Hector Martin <marcan@marcan.st>
+>  >>>> Reviewed-by: Neal Gompa <neal@gompa.dev>
+>  >>>
+>  >>> Arend, what do you think?
+>  >>>
+>  >>> We recently talked about people testing brcmfmac patches, has anyone=
+ else
+>  >>> tested this?
+>  >>
+>  >> Not sure I already replied so maybe I am repeating myself. I would pr=
+efer
+>  >> to keep the Cypress sae_password path as well although it reportedly =
+does
+>  >> not work. The vendor support in the driver can be used to accommodate=
+ for
+>  >> that. The other option would be to have people with Cypress chipset t=
+est
+>  >> this patch. If that works for both we can consider dropping the
+>  >> sae_password path.
+>  >>
+>  >> Regards,
+>  >> Arend
+>  >=20
+>  > So, if nobody from Cypress chimes in ever, and nobody cares nor tests
+>  > Cypress chipsets, are we keeping any and all existing Cypress code-pat=
+hs
+>  > as bitrotting code forever and adding gratuitous conditionals every ti=
+me
+>  > any functionality needs to change "just in case it breaks Cypress" even
+>  > though it has been tested compatible on Broadcom chipsets/firmware?
+>  >=20
+>  > Because that's not sustainable long term.
 >
-> You should look into WEXT just for the fun of it. If it were up to me
-> and a bunch of other people that would have been gone decades ago. Maybe
-> a bad example if the sae_password is indeed not working, but the Cypress
-> chipset is used in RPi3 and RPi4 so there must be a couple of users.
+>  You should look into WEXT just for the fun of it. If it were up to me=20
+>  and a bunch of other people that would have been gone decades ago. Maybe=
+=20
+>  a bad example if the sae_password is indeed not working, but the Cypress=
+=20
+>  chipset is used in RPi3 and RPi4 so there must be a couple of users.
+>
+> None of this refutes what he said
+>
+> We already know it doesn't work for the rpi3/4 users because they are
+> blogging about it. The fact that you (not personally but as a
+> maintainer) don't know what works for who or doesn't is part of the
+> issue. Who are the users who this is for, how are you getting feedback
+> on what is working or not, how are you testing that it stays working?
+>
+> I'm with Hector - this approach has mainly resulted in a driver that
+> kind of works for some people with no rhyme or reason - but nobody
+> knows who and what works for them. This isn't sustainable. You need
+> testing and feedback loops from some defined populations.
+>
+> Of course, This will all become moot as we argue about it - more and
+> more is breaking for more and more people (for example, management
+> frames are totally broken on newer chips because we silently assume
+> version 1).
+>
+> The driver is about one real upgrade cycle away from not working, in
+> current form, for the vast majority of its users.
+>
+> One would hope we don't sit and argue about how to support the future
+> while waiting for that to happen, instead we should be moving the
+> driver forward. If we need to worry about specific older chip users,
+> we should name who they are, how many there are, and what the limits
+> of support are. We should then talk about the best way to support them
+> while still moving the world forward.
 
-There are reports that WPA3 is broken on the Cypress chipsets the
-Raspberry Pis are using and this patch fixes it:
-https://rachelbythebay.com/w/2023/11/06/wpa3/
+Why is it that every patch Hector submits seems to end up with flame
+wars? Look, we have a lot to do and please understand that our time is
+limited. PLEASE listen to the review feedback and try to fix the patches
+for the next review round, so that we can get this patch applied and
+move forward.
 
-Based on that, it appears that all known users of WPA3 capable
-hardware with this driver require this fix.
-
-Thanks,
+And also these "we know better than you do" comments from people who
+clearly are not really familiar with Linux wireless project, or even
+kernel development, are not helping. Especially if it's in an HTML mail
+(which our lists automatically drop).
 
 --=20
-Julian Calaby
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-Email: julian.calaby@gmail.com
-Profile: http://www.google.com/profiles/julian.calaby/
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
 
