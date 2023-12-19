@@ -1,199 +1,164 @@
-Return-Path: <linux-wireless+bounces-993-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-994-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 527758188FD
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Dec 2023 14:52:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DACA28189E5
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Dec 2023 15:29:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D642E1F255C0
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Dec 2023 13:52:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62591282487
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Dec 2023 14:29:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DD051B27B;
-	Tue, 19 Dec 2023 13:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5379C20DD4;
+	Tue, 19 Dec 2023 14:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dcwICVwl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gnlr7Eio"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C9391A72F
-	for <linux-wireless@vger.kernel.org>; Tue, 19 Dec 2023 13:51:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFD881D541;
+	Tue, 19 Dec 2023 14:26:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-42782601608so155181cf.2
-        for <linux-wireless@vger.kernel.org>; Tue, 19 Dec 2023 05:51:27 -0800 (PST)
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-77fa980b50aso295982785a.3;
+        Tue, 19 Dec 2023 06:26:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702993887; x=1703598687; darn=vger.kernel.org;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1702996001; x=1703600801; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=iTFV7JJq/mmtCsGfFXzITv3h5Nljdw/pT1c5FOrQNFg=;
-        b=dcwICVwln3+v0tFZjxYJvIYcn44UXwk2hDuTBhNKgnJpYO2VdB1OqxrK0vi9Oqz6wE
-         65i9t+BQ2zDmeFGTFvPV1yxBiPg3AHwlWOmeEmuoVhvv/tObXxNv4PSweUj54l/Ccb7n
-         dm5kAtq/+vA6eZZXM1HhDulbZDZRxC/22R+mVlpSG1hIwq1WR/NytH8SaKwHmFjtf08L
-         wVsNg2HckAPpVyt3WWH3vF9wcJW9U/+vNgYtK6mZQntsSkGc8hoheNgTxWaUzG6Be17g
-         T2qRIrblKfL8atDiq4iaOqhd8k8s8E3cCAJiL6IfEhc06PR1GYCWfQdIZN768cdCLvD4
-         Do/g==
+        bh=wM23hrtmmwZJoFn95qL7Z6AlVX+PhKPgm+RhZG4LXDU=;
+        b=gnlr7EioWil2fvGqN4ej6ZgFJ2RRaTEyo2drpWLDfnXWXEjZf37mdBvz6EjdH3nDNj
+         eKvU2zfe/kruqGIbjMNFA5sW246kMLeHBU6ZrB5udqzMmSETLdUiKuDGAfDdq++frXcX
+         zRMpq6aNmUMVomUz+STr7HIBmM8SmonvXSrq/9gvdv0RGntIbppa5fUbQAcazdMB/05v
+         N6Z7V8DDC/AmMQXh5U3AP1NcHqA+BWs+nLffpxWCq6OR2klqGZ0sehPSU04uPWjgS/kG
+         MsP6xvOcTtUyBobLb0EogQ2wXOg4Nq8mQJg3Ra1W20lbFk/csu1wLkysE4i4qeGBcM10
+         RpZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702993887; x=1703598687;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=iTFV7JJq/mmtCsGfFXzITv3h5Nljdw/pT1c5FOrQNFg=;
-        b=sJX64AXaDs59YT7Fuhj3W3BEJQQo7DacZmaOATRpPlQgBHa9QVh9dtLgpOpSk+0aUg
-         U6SfUgf/j7BBIT1lUWAsB/094BKI+H8tICEmvMRc1jM9fHI6F3HUfCtUM8jI77t8N0+9
-         O0ImStO1IocrAoAFUlMUYKiXvE9ar3DqTSnmOICJPtn8xXp4sEXurGQQPVqp8OfcQJJh
-         IYaXSswTTska2HlMfEbv6C9CzBTc5sBuXhPFyhb1BNxcWcKFy9O67qKITEBP4jYO6P/M
-         Wg2WM9BiFksy1GRwAAAhseXSwXm/YT7Qpmd3LPVpNLhCHPf5ZROYozTfSW2k6jbmySL7
-         /3vw==
-X-Gm-Message-State: AOJu0YykX6ZwhM2ODRC1rL7A9ZV+fgX/CUYMsnJUlWIuoyu2uu7c2wWy
-	W4amIycPVnj0WAJs6eda8Uc4gXFFJzY=
-X-Google-Smtp-Source: AGHT+IHfqym+D9e2n1fzXmbLK767HPyHSLyQnoZ6eaos+0UkUk6xBJe6L1CyCUseCYY2rwAOMzL6BA==
-X-Received: by 2002:a05:622a:190d:b0:425:4043:8d52 with SMTP id w13-20020a05622a190d00b0042540438d52mr15351675qtc.109.1702993886613;
-        Tue, 19 Dec 2023 05:51:26 -0800 (PST)
-Received: from [10.102.4.159] ([208.195.13.130])
-        by smtp.gmail.com with ESMTPSA id ef8-20020a05622a53c800b0042753a7ada2sm2787200qtb.85.2023.12.19.05.51.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 19 Dec 2023 05:51:26 -0800 (PST)
-Message-ID: <ab00ff77-23de-43a1-9eb9-6ac036ab80e3@gmail.com>
-Date: Tue, 19 Dec 2023 05:51:24 -0800
+        d=1e100.net; s=20230601; t=1702996001; x=1703600801;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wM23hrtmmwZJoFn95qL7Z6AlVX+PhKPgm+RhZG4LXDU=;
+        b=wHldcC2iLy2nyFFvveWoYg2eRDKp0IhXTxZnqCuEwqW6rTFt4FhNOpByoCJGw+nhc0
+         s21grv/B2cAMtflB4NZlRthCGekuFXCJ9i2hLpelSL4WB7FQ7Oow2rv6wk1hxKEQ5TdT
+         feW8Tb1+TdXHXwgGIqpoaAs3zTtXnZR729HNaCmcUAZWtmLyV+R93pwed5OZ3medp/zw
+         oq3G1ssdW1/G7hcpvT12wWeNX3guYr9XxKKZ8Kx4bMxGeNhRJ+TIQW9qd4ZtfSYmZcdi
+         AdU6HeMCsig5113c2/2zv/06UZtK/Aq7xF0CHvaAsW52CLtRlSCbyDlYFXtXA0C6NVlt
+         s1wQ==
+X-Gm-Message-State: AOJu0YynzFfWWGMno9xUINXkjA9CJfFpKfrBRbUdsmJNa4WjOn/FrViT
+	J1ur24EGW0ZkSDkNxF1ogTkyh6rSsK6ziPLsGzM=
+X-Google-Smtp-Source: AGHT+IHx9eDarbPTGhFlRlrMZrUjj0C9/fRBqeQRfE6exoHoYzUvUicFz01LayrhuIRerOGpu2U2D9uwGjwIoB8Ox40=
+X-Received: by 2002:a05:6214:5287:b0:67f:3f4f:82c9 with SMTP id
+ kj7-20020a056214528700b0067f3f4f82c9mr4575429qvb.45.1702996001532; Tue, 19
+ Dec 2023 06:26:41 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: "open list:MEDIATEK MT76 WIRELESS LAN DRIVER"
- <linux-wireless@vger.kernel.org>
-Cc: ath11k@lists.infradead.org
-From: James Prestwood <prestwoj@gmail.com>
-Subject: Ath11k warnings, and eventual phy going away requiring reboot
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20231107-brcmfmac-wpa3-v1-1-4c7db8636680@marcan.st>
+ <170281231651.2255653.7498073085103487666.kvalo@kernel.org>
+ <18c80d15e30.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+ <1b51997f-2994-46e8-ac58-90106d1c486d@marcan.st> <c392f901-789a-42e2-8cf7-5e246365a1ca@broadcom.com>
+In-Reply-To: <c392f901-789a-42e2-8cf7-5e246365a1ca@broadcom.com>
+From: Julian Calaby <julian.calaby@gmail.com>
+Date: Wed, 20 Dec 2023 01:26:30 +1100
+Message-ID: <CAGRGNgW0h_uqHn0rKwGx0L41R+YgzgWPEh83kSKVCeqfCDeOug@mail.gmail.com>
+Subject: Re: [PATCH] wifi: brcmfmac: cfg80211: Use WSEC to set SAE password
+To: Arend van Spriel <arend.vanspriel@broadcom.com>, Kalle Valo <kvalo@kernel.org>
+Cc: Hector Martin <marcan@marcan.st>, Arend van Spriel <aspriel@gmail.com>, 
+	Franky Lin <franky.lin@broadcom.com>, Hante Meuleman <hante.meuleman@broadcom.com>, 
+	Daniel Berlin <dberlin@dberlin.org>, linux-wireless@vger.kernel.org, 
+	brcm80211-dev-list.pdl@broadcom.com, SHA-cyfmac-dev-list@infineon.com, 
+	linux-kernel@vger.kernel.org, asahi@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+Hi Arend and Kalle,
 
-I noticed this after one of our devices dropped offline. The device had 
-roamed 7 minutes prior so I doubt that had anything to do with it. But 
-then we get this, and then tons of warnings. I'm happy to provide full 
-stack traces but its quite a few, not sure which ones are relevant or 
-not. After all the warnings IWD got an RTNL del link event and was 
-unable to recover from that. It seems after that ath11k tried to power 
-back on but failed.
+On Wed, Dec 20, 2023 at 12:47=E2=80=AFAM Arend van Spriel
+<arend.vanspriel@broadcom.com> wrote:
+>
+> On 12/19/2023 12:01 PM, Hector Martin wrote:
+> >
+> >
+> > On 2023/12/19 17:52, Arend Van Spriel wrote:
+> >> On December 17, 2023 12:25:23 PM Kalle Valo <kvalo@kernel.org> wrote:
+> >>
+> >>> Hector Martin <marcan@marcan.st> wrote:
+> >>>
+> >>>> Using the WSEC command instead of sae_password seems to be the suppo=
+rted
+> >>>> mechanism on newer firmware, and also how the brcmdhd driver does it=
+.
+> >>>>
+> >>>> According to user reports [1], the sae_password codepath doesn't act=
+ually
+> >>>> work on machines with Cypress chips anyway, so no harm in removing i=
+t.
+> >>>>
+> >>>> This makes WPA3 work with iwd, or with wpa_supplicant pending a supp=
+ort
+> >>>> patchset [2].
+> >>>>
+> >>>> [1] https://rachelbythebay.com/w/2023/11/06/wpa3/
+> >>>> [2] http://lists.infradead.org/pipermail/hostap/2023-July/041653.htm=
+l
+> >>>>
+> >>>> Signed-off-by: Hector Martin <marcan@marcan.st>
+> >>>> Reviewed-by: Neal Gompa <neal@gompa.dev>
+> >>>
+> >>> Arend, what do you think?
+> >>>
+> >>> We recently talked about people testing brcmfmac patches, has anyone =
+else
+> >>> tested this?
+> >>
+> >> Not sure I already replied so maybe I am repeating myself. I would pre=
+fer
+> >> to keep the Cypress sae_password path as well although it reportedly d=
+oes
+> >> not work. The vendor support in the driver can be used to accommodate =
+for
+> >> that. The other option would be to have people with Cypress chipset te=
+st
+> >> this patch. If that works for both we can consider dropping the
+> >> sae_password path.
+> >>
+> >> Regards,
+> >> Arend
+> >
+> > So, if nobody from Cypress chimes in ever, and nobody cares nor tests
+> > Cypress chipsets, are we keeping any and all existing Cypress code-path=
+s
+> > as bitrotting code forever and adding gratuitous conditionals every tim=
+e
+> > any functionality needs to change "just in case it breaks Cypress" even
+> > though it has been tested compatible on Broadcom chipsets/firmware?
+> >
+> > Because that's not sustainable long term.
+>
+> You should look into WEXT just for the fun of it. If it were up to me
+> and a bunch of other people that would have been gone decades ago. Maybe
+> a bad example if the sae_password is indeed not working, but the Cypress
+> chipset is used in RPi3 and RPi4 so there must be a couple of users.
 
-This is a stock 6.2 ubuntu kernel, WCN6855:
+There are reports that WPA3 is broken on the Cypress chipsets the
+Raspberry Pis are using and this patch fixes it:
+https://rachelbythebay.com/w/2023/11/06/wpa3/
 
-fw_version 0x1106996e fw_build_timestamp 2023-10-13 07:30 fw_build_id 
-WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
-
-I see there is a new FW as of 5 days ago, so I could try that if you 
-think this is a FW problem.
-
-Dec 19 11:53:33 kernel: ieee80211 phy0: Hardware restart was requested
-Dec 19 11:53:33 kernel: mhi mhi0: Requested to power ON
-Dec 19 11:53:33 kernel: mhi mhi0: Power on setup success
-Dec 19 11:53:34 kernel: mhi mhi0: Wait for device to enter SBL or 
-Mission mode
-Dec 19 11:53:34 kernel: ath11k_pci 0000:01:00.0: already resetting count 2
-Dec 19 11:53:43 kernel: ath11k_pci 0000:01:00.0: failed to send 
-WMI_PDEV_SET_PARAM cmd
-Dec 19 11:53:43 kernel: ath11k_pci 0000:01:00.0: failed to enable PMF 
-QOS: (-108
-Dec 19 11:53:43 kernel: Hardware became unavailable during restart.
-Dec 19 11:53:43 kernel: WARNING: CPU: 1 PID: 1328948 at 
-net/mac80211/util.c:2555 ieee80211_reconfig+0x505/0x1100 [mac80211]
-Dec 19 11:53:43 kernel: WARNING: CPU: 1 PID: 1328948 at 
-net/mac80211/driver-ops.h:627 drv_flush+0x16f/0x180 [mac80211]
-Dec 19 11:53:43 kernel: WARNING: CPU: 1 PID: 1328948 at 
-net/mac80211/driver-ops.h:839 drv_mgd_complete_tx+0x169/0x190 [mac80211]
-Dec 19 11:53:43 kernel: WARNING: CPU: 1 PID: 1328948 at 
-net/mac80211/driver-ops.c:399 drv_ampdu_action+0x176/0x1a0 [mac80211]
-Dec 19 11:53:43 kernel: WARNING: CPU: 1 PID: 1328948 at 
-net/mac80211/driver-ops.h:508 drv_sta_pre_rcu_remove+0x15f/0x180 [mac80211]
-Dec 19 11:53:43 kernel: WARNING: CPU: 1 PID: 1328948 at 
-net/mac80211/driver-ops.c:120 drv_sta_state+0x226/0x230 [mac80211]
-Dec 19 11:53:43 kernel: WARNING: CPU: 1 PID: 1328948 at 
-net/mac80211/sta_info.c:1291 __sta_info_destroy_part2+0x19b/0x1b0 [mac80211]
-Dec 19 11:53:43 kernel: WARNING: CPU: 1 PID: 1328948 at 
-net/mac80211/driver-ops.c:462 drv_set_key+0x1d5/0x1e0 [mac80211]
-Dec 19 11:53:43 kernel: WARNING: CPU: 1 PID: 1328948 at 
-net/mac80211/sta_info.c:1308 __sta_info_destroy_part2+0x15a/0x1b0 [mac80211]
-Dec 19 11:53:43 kernel: WARNING: CPU: 1 PID: 1328948 at 
-net/mac80211/sta_info.c:1316 __sta_info_destroy_part2+0x17f/0x1b0 [mac80211]
-Dec 19 11:53:43 kernel: WARNING: CPU: 1 PID: 1328948 at 
-net/mac80211/driver-ops.h:555 drv_sta_statistics+0x160/0x180 [mac80211]
-Dec 19 11:53:43 kernel: WARNING: CPU: 1 PID: 1328948 at 
-net/mac80211/sta_info.c:417 sta_info_free+0xf4/0x170 [mac80211]
-Dec 19 11:53:43 kernel: WARNING: CPU: 1 PID: 1328948 at 
-net/mac80211/sta_info.c:420 sta_info_free+0x162/0x170 [mac80211]
-Dec 19 11:53:43 kernel: WARNING: CPU: 1 PID: 1328948 at 
-net/mac80211/main.c:235 ieee80211_bss_info_change_notify+0x2dd/0x2f0 
-[mac80211]
-Dec 19 11:53:43 kernel: WARNING: CPU: 1 PID: 1328948 at 
-net/mac80211/driver-ops.c:193 drv_conf_tx+0x1e5/0x250 [mac80211]
-Dec 19 11:53:43 kernel: WARNING: CPU: 1 PID: 1328948 at 
-net/mac80211/driver-ops.c:316 drv_unassign_vif_chanctx+0x19d/0x1d0 
-[mac80211]
-Dec 19 11:53:43 kernel: WARNING: CPU: 1 PID: 1328948 at 
-net/mac80211/driver-ops.h:156 
-ieee80211_vif_cfg_change_notify+0x19c/0x1b0 [mac80211]
-Dec 19 11:53:43 kernel: WARNING: CPU: 1 PID: 1328948 at 
-net/mac80211/driver-ops.h:888 ieee80211_del_chanctx+0x1d6/0x1e0 [mac80211]
-Dec 19 11:53:48 kernel: WARNING: CPU: 1 PID: 1328948 at 
-net/mac80211/driver-ops.c:99 drv_remove_interface+0x137/0x150 [mac80211]
-Dec 19 11:53:48 kernel: WARNING: CPU: 1 PID: 1328948 at 
-net/mac80211/driver-ops.c:38 drv_stop+0x10f/0x120 [mac80211]
-Dec 19 11:53:48 iwd[490]: src/station.c:station_enter_state() Old State: 
-autoconnect_quick, new state: autoconnect_full
-Dec 19 11:53:48 iwd[490]: src/scan.c:scan_periodic_start() Starting 
-periodic scan for wdev 2
-Dec 19 11:53:48 iwd[490]: src/wiphy.c:wiphy_radio_work_insert() 
-Inserting work item 1466
-Dec 19 11:53:48 iwd[490]: src/wiphy.c:wiphy_radio_work_done() Work item 
-1465 done
-Dec 19 11:53:48 iwd[490]: src/wiphy.c:wiphy_radio_work_next() Starting 
-work item 1466
-Dec 19 11:53:48 iwd[490]: Received error during CMD_TRIGGER_SCAN: 
-Network is down (100)
-Dec 19 11:53:48 iwd[490]: src/netdev.c:netdev_link_notify() event 16 on 
-ifindex 5
-Dec 19 11:53:48 iwd[490]: src/station.c:station_free()
-Dec 19 11:53:48 iwd[490]: src/netconfig.c:netconfig_destroy()
-Dec 19 11:53:48 iwd[490]: src/scan.c:scan_periodic_stop() Stopping 
-periodic scan for wdev 2
-Dec 19 11:53:48 iwd[490]: src/scan.c:scan_cancel() Trying to cancel scan 
-id 1466 for wdev 2
-Dec 19 11:53:48 iwd[490]: src/scan.c:scan_cancel() Scan is already started
-Dec 19 11:53:48 iwd[490]: src/wiphy.c:wiphy_radio_work_done() Work item 
-1466 done
-Dec 19 11:53:48 iwd[490]: src/station.c:station_roam_state_clear() 5
-Dec 19 11:53:55 kernel: qcom_mhi_qrtr mhi0_IPCR: 20: Failed to receive 
-START channel command completion
-Dec 19 11:53:55 kernel: qcom_mhi_qrtr: probe of mhi0_IPCR failed with 
-error -5
-Dec 19 11:54:16 kernel: mhi mhi0: Requested to power ON
-Dec 19 11:54:16 kernel: mhi mhi0: Power on setup success
-Dec 19 11:54:45 kernel: mhi mhi0: Device failed to enter MHI Ready
-Dec 19 11:54:45 kernel: mhi mhi0: MHI did not enter READY state
-Dec 19 11:54:45 kernel: ath11k_pci 0000:01:00.0: failed to power up mhi: 
--110
-Dec 19 11:54:45 kernel: ath11k_pci 0000:01:00.0: failed to start mhi: -110
-Dec 19 11:54:45 kernel: ath11k_pci 0000:01:00.0: already resetting count 3
-Dec 19 11:55:27 kernel: mhi mhi0: Requested to power ON
-Dec 19 11:55:27 kernel: mhi mhi0: Power on setup success
-Dec 19 11:55:57 kernel: mhi mhi0: Device failed to enter MHI Ready
-Dec 19 11:55:57 kernel: mhi mhi0: MHI did not enter READY state
-Dec 19 11:55:57 kernel: ath11k_pci 0000:01:00.0: failed to power up mhi: 
--110
-Dec 19 11:55:57 kernel: ath11k_pci 0000:01:00.0: failed to start mhi: -110
-Dec 19 12:15:25 kernel: usb 4-1: USB disconnect, device number 3
+Based on that, it appears that all known users of WPA3 capable
+hardware with this driver require this fix.
 
 Thanks,
 
-James
+--=20
+Julian Calaby
 
+Email: julian.calaby@gmail.com
+Profile: http://www.google.com/profiles/julian.calaby/
 
