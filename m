@@ -1,89 +1,119 @@
-Return-Path: <linux-wireless+bounces-986-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-987-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBC09818469
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Dec 2023 10:29:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56A7981855B
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Dec 2023 11:37:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B125284E36
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Dec 2023 09:29:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 823021C227DE
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Dec 2023 10:37:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A24C114265;
-	Tue, 19 Dec 2023 09:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B80F614263;
+	Tue, 19 Dec 2023 10:37:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pqlizl3/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dO+ZRXru"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 887721401E
-	for <linux-wireless@vger.kernel.org>; Tue, 19 Dec 2023 09:28:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07C53C433C7;
-	Tue, 19 Dec 2023 09:28:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702978129;
-	bh=UlGVreEYe07dxABhbLM2JZklQIzzpf6y6MGrP8koCAg=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=Pqlizl3/Sp9F/tLFrXVIZQWTFPy8H48bukzoQ4VBKH5hL8dUjSAgub1RtAZVmyfhX
-	 edd/ITe/vElzLum5aI5X3lWFs6sfmKGqCgiL4fCHAaAGwEgklW1OyvINJeXJLsjNOJ
-	 tsKJmSb7jrxktM92298NVpq4cd8Yv9JdmFLzMTjk0gUME0hcNP7P8BNk2lov3Mnc26
-	 I4d+nrrv4hUqASDN1tF2IdceCCLut0f4t0rI8C58YD4RClr00w04W8bBFN47vNQvZP
-	 xxYoOD4s6s1YRXz8SkyuRg3Vv3ql8HyDEiORqy/Ytiu7Vtw1pwDA4X7aaxEpAzf/gm
-	 3YAqlAQvkNNfw==
-From: Kalle Valo <kvalo@kernel.org>
-To: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Cc: johannes@sipsolutions.net,  linux-wireless@vger.kernel.org,  Mukesh
- Sisodiya <mukesh.sisodiya@intel.com>,  Gregory
- <gregory.greenman@intel.com>
-Subject: Re: [PATCH 05/15] wifi: cfg80211: handle UHB AP and STA power type
-References: <20231220023803.2901117-1-miriam.rachel.korenblit@intel.com>
-	<20231220043149.1cb06b8555f3.I432f78438de18aa9f5c9006be12e41dc34cc47c5@changeid>
-Date: Tue, 19 Dec 2023 11:28:46 +0200
-In-Reply-To: <20231220043149.1cb06b8555f3.I432f78438de18aa9f5c9006be12e41dc34cc47c5@changeid>
-	(Miri Korenblit's message of "Wed, 20 Dec 2023 04:37:53 +0200")
-Message-ID: <87y1dq35ip.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 335E212B7D;
+	Tue, 19 Dec 2023 10:37:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-a235eb41251so258129166b.3;
+        Tue, 19 Dec 2023 02:37:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1702982238; x=1703587038; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bvYdBgUbLN8ILqoDHw/+fzF2NrJ3PvPzv3OUIPhHu3M=;
+        b=dO+ZRXruzTNEw+q+0O3pIk1OFHXwipfsmDl52WdERvpL0ZhQFHe6swB/pduQdf0GEY
+         RKqp6+f6qmp+25T8f6EAmrOenlAVEX7mppEplxDCIsd8wDwWmDLjIJv9GsqgvAe7+XQr
+         GpCGQzvicZ6XrmMK4koaTYLiVCIot/kYIyEjI26PtkV7O0wiPvGvklZmi8uHKIQdXsVm
+         ibpaBqIyaf52GCKQhnrtrUe5uBEyt7VBZVMSFG5jhkXetzphqEgK1O5/bOgJ7bvIZ2zb
+         FcsSFsnRqbKcKx2gTW1e5B15yOhnzG/6lKcAHwm8U6vzG1s9nN+n7xy3GHFqopKZFoga
+         3VSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702982238; x=1703587038;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bvYdBgUbLN8ILqoDHw/+fzF2NrJ3PvPzv3OUIPhHu3M=;
+        b=wM9B05uFDTk7yq+X8GPY4uQunAipEyAozTZ0llJqiQG9MbQWeilokMaY7Sff3nr3dm
+         EKaT0OrtfC17syjer+QKnPHAG5YJaqR9mI3HSKnTb3T9OLglqR11RJ9PXCfBq6beXomB
+         zj1gFSBy4G4V3J9KGDHYqUj6TyclRw1MwXhvR1UHmjZaaUE8dZ3sjAHcJMWaGbpNTcQn
+         /RqR+LYZeuQH5kpO2fQumKgieXXigYgovDtJ6fsamrW3xgQb+K6fOdpfuOEtJs94GlNo
+         B1oJZPOGl9gBj7smqHUb/YjhdUel9UtfRGj+o1xth19u5dfhFkYRr7hhvmmi7reI0/02
+         Bj/w==
+X-Gm-Message-State: AOJu0Yz5mT6S8SxZ9ypIZWwpAqOVwA1TraDptjLPbCBvQ2/Bt4LwUUF1
+	9X0uMxhT6zzn/klWj631iaZn95zpDowyrhiB+h8=
+X-Google-Smtp-Source: AGHT+IF26m4+JfVhhro6alt66IQ1rZt/WmYV/jjFl9I3HsbEWYPFaqiy7vbLItMDbqPoyR5ul9XjoeiDSp5rvQwvqkU=
+X-Received: by 2002:a17:906:6801:b0:a23:401e:2d5b with SMTP id
+ k1-20020a170906680100b00a23401e2d5bmr1330241ejr.177.1702982238024; Tue, 19
+ Dec 2023 02:37:18 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20231218121105.23882-1-lukas.bulwahn@gmail.com>
+ <170295913267.640718.8284035097366475252.kvalo@kernel.org> <18c814f4890.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+In-Reply-To: <18c814f4890.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+From: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Date: Tue, 19 Dec 2023 11:37:06 +0100
+Message-ID: <CAKXUXMyMz9w=Ki3ZpsODkr9j-ei_CJRe03d7NYnhLEhuO7JD-w@mail.gmail.com>
+Subject: Re: MAINTAINERS: wifi: brcm80211: remove non-existing SHA-cyfmac-dev-list@infineon.com
+To: Arend Van Spriel <arend.vanspriel@broadcom.com>
+Cc: Kalle Valo <kvalo@kernel.org>, Arend van Spriel <aspriel@gmail.com>, 
+	Franky Lin <franky.lin@broadcom.com>, Hante Meuleman <hante.meuleman@broadcom.com>, 
+	linux-wireless@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com, 
+	kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Miri Korenblit <miriam.rachel.korenblit@intel.com> writes:
-
-> From: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
+On Tue, Dec 19, 2023 at 10:01=E2=80=AFAM Arend Van Spriel
+<arend.vanspriel@broadcom.com> wrote:
 >
-> UHB AP send supported power type(LPI, SP, VLP)
-> in beacon and probe response IE and STA should
-> connect to these AP only if their regulatory support
-> the AP power type.
+> On December 19, 2023 5:12:19 AM Kalle Valo <kvalo@kernel.org> wrote:
 >
-> Beacon/Probe response are reported to userspace
-> with reason "STA regulatory not supporting to connect to AP
-> based on transmitted power type" and it should
-> not connect to AP.
+> > Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
+> >
+> >> When sending an email to SHA-cyfmac-dev-list@infineon.com, the server
+> >> responds '550 #5.1.0 Address rejected.'
+> >>
+> >> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> >
+> > Patch applied to wireless.git, thanks.
+> >
+> > 044879ce5406 MAINTAINERS: wifi: brcm80211: remove non-existing
+> > SHA-cyfmac-dev-list@infineon.com
 >
-> Signed-off-by: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
-> Reviewed-by: Greenman, Gregory <gregory.greenman@intel.com>
+> Is the claim here true? In another thread I replied all including this li=
+st
+> and I am not getting a bounce message.
+>
+> Googling error code 550 seems to indicate a sender issue:
+>
+> """"
+> This means the recipient's server doesn't trust the domain name you are
+> using. If this happens, then your email IP is blacklisted, and your
+> messages will bounce.
+> """
+>
 
-The Cc headers in this patchset has again the weird web.codeaurora.org
-address:
+Well, I am using a standard gmail email account and the email is
+connect from some server from google. It is unfortunate if emails from
+such email accounts would be excluded to reach the people behind this
+infineon.com email.
 
-Cc: linux-wireless@vger.kernel.org,
-	Mukesh Sisodiya <mukesh.sisodiya@intel.com>,
-	Greenman@web.codeaurora.org, Gregory <gregory.greenman@intel.com>
+In the end, if the actual content the receivers get at this
+infineon.com email is so partial, they might just use and follow all
+discussion they are interested in with the tools (lei and friends)
+relying on lore.kernel.org.
 
-I guess it's because there's ',' in Reviewed-by tag? The recommended
-style for the name is:
-
-Gregory Greenman <gregory.greenman@intel.com>
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Lukas
 
