@@ -1,40 +1,37 @@
-Return-Path: <linux-wireless+bounces-949-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-950-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 872FA817EDF
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Dec 2023 01:41:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3D77818065
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Dec 2023 05:12:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 272DA1F21DDF
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Dec 2023 00:41:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F7AB1F24C45
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Dec 2023 04:12:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4982717D5;
-	Tue, 19 Dec 2023 00:40:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64C3E523F;
+	Tue, 19 Dec 2023 04:12:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SlKvu4tf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hacsjPYR"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22A8217CB;
-	Tue, 19 Dec 2023 00:40:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 917F5C43395;
-	Tue, 19 Dec 2023 00:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D0BFC123;
+	Tue, 19 Dec 2023 04:12:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD2D9C433C8;
+	Tue, 19 Dec 2023 04:12:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702946444;
-	bh=CfLFULyCobbm11Ctyb+YHPSIvzQ3Pji0eKUQGAROm+M=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=SlKvu4tfSZ6phtWDJBib5qNJD9JlpfwsZejraqBlrG0zpismyOgUfaHWqFZZYNXwq
-	 EX9qGaC5mRJjceP3VxH/FlkBg8DYd6FE/GaQxtT4Vx/CjUyLtEMLPFF+qPlHkXr1Yo
-	 BYUqK38WSD8axVCQXzymQx+PVURSjXlobsl2pyrRBquesjH6t5Zc6iw8HICOxp3ErZ
-	 CcYVvD4le4QuslpBuuFnda+noa99/NME9q4dlZPSOYDox1x6nYRNiEilVtPSs80aYG
-	 Bhy8h6UOn4kCXHnPHjE994qrKMwD3Cv5cYxctYEBY9uKySGCOpXikdMJhb2zJN50kA
-	 BdS77fkRRRuww==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 6DC08D8C984;
-	Tue, 19 Dec 2023 00:40:44 +0000 (UTC)
+	s=k20201202; t=1702959136;
+	bh=A0o8Cis9GBjzQ0hNF1DI0Tm54wJQapdqNKfZp687fdk=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=hacsjPYRpmQLBdQOHlxQAhBoakr18Tg1A9SQdR0eslFvVCCTZhZvnUQ+viZu4ZlxR
+	 cK2E4QSJ25vU8CaSE5T/cdC1z5kTUKLA3OHDQxIP+Q2VQwH3MTkKr7wY8MxsskA+4V
+	 VcNrOXf/P1pEU2DQ7OlVVkjZnLsAHZUlIjd518cV84s4rklM5hvvemh4lBl7/84+Q4
+	 cUT40z76A29opWk44inb+v+2bvYsqUiCMKX99PrmuD18KlmQhCj8Enl32QgcGRbUmZ
+	 Mscg/c06Ya0TKESklv9QUuqwRD+U5sHoLlpr2X0zZgKH57PUEgMAY9H/nrR5Fu9m4M
+	 rR6U8SW0+2nNA==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -42,40 +39,36 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: pull-request: wireless-next-2023-12-18
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <170294644444.1070.13230618944313891274.git-patchwork-notify@kernel.org>
-Date: Tue, 19 Dec 2023 00:40:44 +0000
-References: <20231218163900.C031DC433C9@smtp.kernel.org>
-In-Reply-To: <20231218163900.C031DC433C9@smtp.kernel.org>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Subject: Re: MAINTAINERS: wifi: brcm80211: remove non-existing
+ SHA-cyfmac-dev-list@infineon.com
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20231218121105.23882-1-lukas.bulwahn@gmail.com>
+References: <20231218121105.23882-1-lukas.bulwahn@gmail.com>
+To: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc: Arend van Spriel <aspriel@gmail.com>,
+ Franky Lin <franky.lin@broadcom.com>,
+ Hante Meuleman <hante.meuleman@broadcom.com>, linux-wireless@vger.kernel.org,
+ brcm80211-dev-list.pdl@broadcom.com, kernel-janitors@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Lukas Bulwahn <lukas.bulwahn@gmail.com>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <170295913267.640718.8284035097366475252.kvalo@kernel.org>
+Date: Tue, 19 Dec 2023 04:12:14 +0000 (UTC)
 
-Hello:
+Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
 
-This pull request was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Mon, 18 Dec 2023 16:39:00 +0000 (UTC) you wrote:
-> Hi,
+> When sending an email to SHA-cyfmac-dev-list@infineon.com, the server
+> responds '550 #5.1.0 Address rejected.'
 > 
-> here's a pull request to net-next tree, more info below. Please let me know if
-> there are any problems.
-> 
-> Kalle
-> 
-> [...]
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 
-Here is the summary with links:
-  - pull-request: wireless-next-2023-12-18
-    https://git.kernel.org/netdev/net-next/c/0ee28c9ae042
+Patch applied to wireless.git, thanks.
 
-You are awesome, thank you!
+044879ce5406 MAINTAINERS: wifi: brcm80211: remove non-existing SHA-cyfmac-dev-list@infineon.com
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+https://patchwork.kernel.org/project/linux-wireless/patch/20231218121105.23882-1-lukas.bulwahn@gmail.com/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
 
