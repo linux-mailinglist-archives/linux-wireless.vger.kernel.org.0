@@ -1,59 +1,59 @@
-Return-Path: <linux-wireless+bounces-1027-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1028-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06BC0819119
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Dec 2023 20:59:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A73981911A
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Dec 2023 20:59:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9C441C21461
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Dec 2023 19:59:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F3B251F250B6
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Dec 2023 19:59:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E628439AC5;
-	Tue, 19 Dec 2023 19:59:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FEBD39AC4;
+	Tue, 19 Dec 2023 19:59:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iJf3iRjA"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RalUefHX"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 335FC39AC4
-	for <linux-wireless@vger.kernel.org>; Tue, 19 Dec 2023 19:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C9CB39AC1
+	for <linux-wireless@vger.kernel.org>; Tue, 19 Dec 2023 19:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1703015958; x=1734551958;
+  t=1703015964; x=1734551964;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=hI7LjjysimauNPp7SG57cRxuLO+YIRZhG1B4eNI6360=;
-  b=iJf3iRjAniW5UwwYW/ahR9fwPBeLPLsVjdcDJpocCgrSUOmmBMlKH3IZ
-   2ZThrKz99A/zj8wuE8Mr7zgRNzRkZnX68onXVOW0UQh09hcqpcov37Awb
-   EGaCcFR3FkVWIYFXuFZ3ZQFr1WZf/2Ta1vqAdk7l/5Veyr7l5kIp9HfTb
-   HnADSg1XRvYQEgcYKplw6XRPwoILONlKAm890gkdWgis2ifce2RaKvBW4
-   gMxRi9MXcPH1XRcBDmaNR75yM27zQtYdCA+OtYl/fgWu9hrvyP3lQY09Y
-   urxfr1enjckojBOy8A39jdp+tusvxDRpbBSdlEhJ2qtjD0NDPeMRH94lZ
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10929"; a="380694927"
+  bh=cmNcMPwLJ9Tv2Ejg2JgR3rVq92AD56HyI4B1TvrJ0NA=;
+  b=RalUefHXOvQaC/frdvr2pMagJkHwHckCLMSdPXn0pwCRdd7BDO0XGZjG
+   1d03vMW1spcRua5N0BLPvhAKaQeJ39AvHh+POOcfNZ+nJNbxvjYlLDrsy
+   vGogvdGEOsFC8unWeuokPcc78Wlv9UT+p9QEcRIp7KIEa/FykA9hrjrIn
+   soH386uVVp68EsWnydca9othhYIV0k+9VYa/FiQE+Mi6BZvJB4a9hmyB4
+   9GSGDbM0Zhyvb9X72WG9F4uP6X6wm0xwl/wIWw23mEUzTb1XETRmi6UpQ
+   N7OSODlxou7YFnPTPcEDeJT8G0HHnZir2Xm+DQVkYA2NIC+DQOaQNlwFc
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10929"; a="380694933"
 X-IronPort-AV: E=Sophos;i="6.04,289,1695711600"; 
-   d="scan'208";a="380694927"
+   d="scan'208";a="380694933"
 Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2023 11:59:18 -0800
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2023 11:59:24 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10929"; a="779589076"
+X-IronPort-AV: E=McAfee;i="6600,9927,10929"; a="779589085"
 X-IronPort-AV: E=Sophos;i="6.04,289,1695711600"; 
-   d="scan'208";a="779589076"
+   d="scan'208";a="779589085"
 Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2023 11:59:16 -0800
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2023 11:59:22 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>,
-	Luciano Coelho <luciano.coelho@intel.com>
-Subject: [PATCH 01/14] iwlwifi: mvm: set siso/mimo chains to 1 in FW SMPS request
-Date: Tue, 19 Dec 2023 21:58:49 +0200
-Message-Id: <20231219215605.7f031f1a127f.Idc816e0f604b07d22a9d5352bc23c445512fad14@changeid>
+	Andrei Otcheretianski <andrei.otcheretianski@intel.com>,
+	Gregory Greenman <gregory.greenman@intel.com>
+Subject: [PATCH 02/14] wifi: iwlwifi: mvm: Allow DFS concurrent operation
+Date: Tue, 19 Dec 2023 21:58:50 +0200
+Message-Id: <20231219215605.dc39b33bf507.I04dfda24d73091fb75701279d10ac400314de488@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231219195902.3336105-1-miriam.rachel.korenblit@intel.com>
 References: <20231219195902.3336105-1-miriam.rachel.korenblit@intel.com>
@@ -66,42 +66,54 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Andrei Otcheretianski <andrei.otcheretianski@intel.com>
 
-The firmware changed their mind, don't set the chains to zero,
-instead set them to 1 as we normally would for connections to
-APs that don't use MIMO.
+AX210 devices allow concurrent P2P operation on DFS channels.
 
-Fixes: 2a7ce54ccc23 ("iwlwifi: mvm: honour firmware SMPS requests")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Luciano Coelho <luciano.coelho@intel.com>
+Signed-off-by: Andrei Otcheretianski <andrei.otcheretianski@intel.com>
+Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c | 11 -----------
- 1 file changed, 11 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c | 10 ++++++----
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c  |  4 ++++
+ 2 files changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c
-index 4e1fccff3987..334d1f59f6e4 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c
-@@ -99,17 +99,6 @@ static void iwl_mvm_phy_ctxt_set_rxchain(struct iwl_mvm *mvm,
- 		active_cnt = 2;
- 	}
- 
--	/*
--	 * If the firmware requested it, then we know that it supports
--	 * getting zero for the values to indicate "use one, but pick
--	 * which one yourself", which means it can dynamically pick one
--	 * that e.g. has better RSSI.
--	 */
--	if (mvm->fw_static_smps_request && active_cnt == 1 && idle_cnt == 1) {
--		idle_cnt = 0;
--		active_cnt = 0;
--	}
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
+index 480f8edbfd35..1bccbbe9a5ea 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
+@@ -1609,10 +1609,12 @@ static u32 iwl_nvm_get_regdom_bw_flags(const u16 *nvm_chan,
+ 	/* Set the GO concurrent flag only in case that NO_IR is set.
+ 	 * Otherwise it is meaningless
+ 	 */
+-	if ((nvm_flags & NVM_CHANNEL_GO_CONCURRENT) &&
+-	    (flags & NL80211_RRF_NO_IR))
+-		flags |= NL80211_RRF_GO_CONCURRENT;
 -
- 	*rxchain_info = cpu_to_le32(iwl_mvm_get_valid_rx_ant(mvm) <<
- 					PHY_RX_CHAIN_VALID_POS);
- 	*rxchain_info |= cpu_to_le32(idle_cnt << PHY_RX_CHAIN_CNT_POS);
++	if ((nvm_flags & NVM_CHANNEL_GO_CONCURRENT)) {
++		if (flags & NL80211_RRF_NO_IR)
++			flags |= NL80211_RRF_GO_CONCURRENT;
++		if (flags & NL80211_RRF_DFS)
++			flags |= NL80211_RRF_DFS_CONCURRENT;
++	}
+ 	/*
+ 	 * reg_capa is per regulatory domain so apply it for every channel
+ 	 */
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index a64600f0ed9f..06de4dc2a915 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -517,6 +517,10 @@ int iwl_mvm_mac_setup_register(struct iwl_mvm *mvm)
+ 		hw->wiphy->regulatory_flags |= REGULATORY_CUSTOM_REG |
+ 					       REGULATORY_DISABLE_BEACON_HINTS;
+ 
++	if (mvm->trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_AX210)
++		wiphy_ext_feature_set(hw->wiphy,
++				      NL80211_EXT_FEATURE_DFS_CONCURRENT);
++
+ 	hw->wiphy->flags |= WIPHY_FLAG_AP_UAPSD;
+ 	hw->wiphy->flags |= WIPHY_FLAG_HAS_CHANNEL_SWITCH;
+ 	hw->wiphy->flags |= WIPHY_FLAG_SPLIT_SCAN_6GHZ;
 -- 
 2.34.1
 
