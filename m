@@ -1,129 +1,139 @@
-Return-Path: <linux-wireless+bounces-1055-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1056-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21C3E819679
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 02:44:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A26E8196C9
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 03:28:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1720281D0C
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 01:44:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA8E41F2523D
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 02:28:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8D6C168C6;
-	Wed, 20 Dec 2023 01:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C12278486;
+	Wed, 20 Dec 2023 02:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ZwDKgOzy"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="eDgUbFiY"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f65.google.com (mail-wr1-f65.google.com [209.85.221.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E23EC16412
-	for <linux-wireless@vger.kernel.org>; Wed, 20 Dec 2023 01:44:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-wr1-f65.google.com with SMTP id ffacd0b85a97d-3367a304091so190066f8f.3
-        for <linux-wireless@vger.kernel.org>; Tue, 19 Dec 2023 17:44:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1703036676; x=1703641476; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=AKiRzNtGGIY1uHjH837oLbfNwwCc/Uk8HlilWVS2/0M=;
-        b=ZwDKgOzyuzg6J3eBJ/xnrAk5schcCdMtldiXlfrUF91qrcGxX2f93pS65Mxs7En3YR
-         RrmVwOQ6vGU55zEJfO+TQMMYtRNyZVs7Qg3XrxkHfMhyKmGNzGw9W61xQvaJo7uleHhS
-         D5zGzMxWaGcpZlkdxg16qWWtSo10J2EfJ0xKc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703036676; x=1703641476;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AKiRzNtGGIY1uHjH837oLbfNwwCc/Uk8HlilWVS2/0M=;
-        b=urNyVDseebq6XLh6xljeNZV5m4A9NYhuikxyAT3DeEbCgIJE2LkNM6zVZ5T/XEjjt1
-         8ASsDPLAVgWYUhyVuXFV73wkfRNZg/4szDqkUTkj4dR2yihfk/POzdNj6y4p+HRVtzUc
-         LPX0wnhfP4fjoxNAjTUzt1SGI/4n8OAEKn9RqECShFCrEVq7ilSJi/7JIjRMHWlkbGYN
-         mrYKSX24oT59UlF3ftJIHxRefMZZTUrAlRRjGkPs4Kc+d+S0S7BCn3xxpubx+/vwlSEz
-         ci07YpWqNSgdTyOsneCTAcoICKZTMGySId73MzbSbX728Z3KB0sPNJcZYLBVyN5b3UKS
-         1htA==
-X-Gm-Message-State: AOJu0YyM0s+wWj3c8vJCBSlqWrkVdZOS2HFdAEAvveC7hvWfyfz29YRs
-	M9X9ZInJZcVPDK6h+2Y/1WL5RTYV0PLD4hDDgvU5nDaSBY8=
-X-Google-Smtp-Source: AGHT+IHHASBMjJ24Dg8wAlERePpM7l6nd+Jttcs0MRRFR4qezYSBYbW6zpudAbIrARvwvR61+GEwBQ==
-X-Received: by 2002:a5d:4084:0:b0:336:597c:ce5c with SMTP id o4-20020a5d4084000000b00336597cce5cmr2975549wrp.178.1703036676074;
-        Tue, 19 Dec 2023 17:44:36 -0800 (PST)
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com. [209.85.128.47])
-        by smtp.gmail.com with ESMTPSA id q3-20020a5085c3000000b0054ccac03945sm11974779edh.12.2023.12.19.17.44.35
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 19 Dec 2023 17:44:35 -0800 (PST)
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-40d2e5e8d1dso9069035e9.0
-        for <linux-wireless@vger.kernel.org>; Tue, 19 Dec 2023 17:44:35 -0800 (PST)
-X-Received: by 2002:a05:600c:524b:b0:40c:4857:e012 with SMTP id
- fc11-20020a05600c524b00b0040c4857e012mr5485525wmb.85.1703036675282; Tue, 19
- Dec 2023 17:44:35 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F06B846B;
+	Wed, 20 Dec 2023 02:28:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=S6hBBZYUTdu1SR1857lmwvYGVoEU9Tl7+LRs2NQaAd8=; b=eDgUbFiY79P17VReQHuHCRVBo7
+	54vBKiszoO2sKY7W03M+6FSkyO0rohkApYaptKXK3LKWpI7Zfak54m+3ZnK9J4ZDbmbBFdcDQxFbr
+	dslLnFi8G5uCkYSrg0lS20kIcy4igWQQiR4gA27uEyRKbcNRO/ktcHzHww0Na68RZpkpf4DjL541j
+	cc/GMZtFRuGQ773feihpSavEJjh4LTktm7esjMe6LsShFXYKg9Y1o2p7CNjhLSiMs46I9yfAdd2Yi
+	Mh9rae7qDTWF+5rVls4KJl621Rt4hax8BQr9iuaHSpifQD5HJmJpijJ6mdn5jCTYGlj/R1frWIsLq
+	ClEtFCYg==;
+Received: from [50.53.46.231] (helo=[192.168.254.15])
+	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+	id 1rFmJq-00FyTs-1y;
+	Wed, 20 Dec 2023 02:28:22 +0000
+Message-ID: <8fd18c6b-3a26-4cdc-a18f-48587d0ce79b@infradead.org>
+Date: Tue, 19 Dec 2023 18:28:22 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231107-brcmfmac-wpa3-v1-1-4c7db8636680@marcan.st>
- <170281231651.2255653.7498073085103487666.kvalo@kernel.org>
- <18c80d15e30.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <1b51997f-2994-46e8-ac58-90106d1c486d@marcan.st> <c392f901-789a-42e2-8cf7-5e246365a1ca@broadcom.com>
- <CAF4BwTXNtu30DAgBXo4auDaDK0iWc9Ch8f=EH+facQ-_F-oMUQ@mail.gmail.com>
- <87r0jiqmnx.fsf@kernel.org> <01bd8c68-1b9c-49b2-8ace-1c7d1b5192ad@marcan.st>
-In-Reply-To: <01bd8c68-1b9c-49b2-8ace-1c7d1b5192ad@marcan.st>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Tue, 19 Dec 2023 17:44:18 -0800
-X-Gmail-Original-Message-ID: <CAHk-=whDLKZZEuxU_jEhZRdeWjXAkL8=J_JRk2Ar6wp9UK3h2w@mail.gmail.com>
-Message-ID: <CAHk-=whDLKZZEuxU_jEhZRdeWjXAkL8=J_JRk2Ar6wp9UK3h2w@mail.gmail.com>
-Subject: Re: [PATCH] wifi: brcmfmac: cfg80211: Use WSEC to set SAE password
-To: Hector Martin <marcan@marcan.st>
-Cc: Kalle Valo <kvalo@kernel.org>, Daniel Berlin <dberlin@dberlin.org>, 
-	Arend van Spriel <arend.vanspriel@broadcom.com>, Arend van Spriel <aspriel@gmail.com>, 
-	Franky Lin <franky.lin@broadcom.com>, Hante Meuleman <hante.meuleman@broadcom.com>, 
-	SHA-cyfmac-dev-list@infineon.com, asahi@lists.linux.dev, 
-	brcm80211-dev-list.pdl@broadcom.com, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, David Airlie <airlied@redhat.com>, 
-	Daniel Vetter <daniel@ffwll.ch>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: cfg80211: address several kerneldoc warnings
+Content-Language: en-US
+To: Jonathan Corbet <corbet@lwn.net>,
+ Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <87plz1g2sc.fsf@meer.lwn.net>
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <87plz1g2sc.fsf@meer.lwn.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, 19 Dec 2023 at 16:06, Hector Martin <marcan@marcan.st> wrote:
->
-> On 2023/12/19 23:42, Kalle Valo wrote:
-> >
-> > Why is it that every patch Hector submits seems to end up with flame
-> > wars?
 
-Well, I do think some of it is Hector's personality and forceful
-approaches, but I do think part of it is also the area in question.
 
-Because I do agree with Hector that..
+On 12/19/23 16:01, Jonathan Corbet wrote:
+> include/net/cfg80211.h includes a number of kerneldoc entries for struct
+> members that do not exist, leading to these warnings:
+> 
+>   ./include/net/cfg80211.h:3192: warning: Excess struct member 'band_pref' description in 'cfg80211_bss_selection'
+>   ./include/net/cfg80211.h:3192: warning: Excess struct member 'adjust' description in 'cfg80211_bss_selection'
+>   ./include/net/cfg80211.h:6181: warning: Excess struct member 'bssid' description in 'wireless_dev'
+>   ./include/net/cfg80211.h:6181: warning: Excess struct member 'beacon_interval' description in 'wireless_dev'
+>   ./include/net/cfg80211.h:7299: warning: Excess struct member 'bss' description in 'cfg80211_rx_assoc_resp_data'
+> 
+> Remove and/or repair each entry to address the warnings and ensure a proper
+> docs build for the affected structures.
+> 
+> Signed-off-by: Jonathan Corbet <corbet@lwn.net>
 
-> Just recently a patch was posted to remove the Infineon list from
-> MAINTAINERS because that company cares so little they have literally
-> stopped accepting emails from us. Meanwhile they are telling their
-> customers that they do not recommend upstream brcmfmac and they should
-> use their downstream driver [1].
+Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
 
-Unquestionably broadcom is not helping maintain things, and I think it
-should matter.
 
-As Hector says, they point to their random driver dumps on their site
-that you can't even download unless you are a "Broadcom community
-member" or whatever, and hey - any company that works that way should
-be seen as pretty much hostile to any actual maintenance and proper
-development.
+> ---
+>  include/net/cfg80211.h | 11 ++++-------
+>  1 file changed, 4 insertions(+), 7 deletions(-)
+> 
+> diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+> index b137a33a1b68..81c46c8e2a68 100644
+> --- a/include/net/cfg80211.h
+> +++ b/include/net/cfg80211.h
+> @@ -3180,8 +3180,8 @@ struct cfg80211_ibss_params {
+>   *
+>   * @behaviour: requested BSS selection behaviour.
+>   * @param: parameters for requestion behaviour.
+> - * @band_pref: preferred band for %NL80211_BSS_SELECT_ATTR_BAND_PREF.
+> - * @adjust: parameters for %NL80211_BSS_SELECT_ATTR_RSSI_ADJUST.
+> + * @param.band_pref: preferred band for %NL80211_BSS_SELECT_ATTR_BAND_PREF.
+> + * @param.adjust: parameters for %NL80211_BSS_SELECT_ATTR_RSSI_ADJUST.
+>   */
+>  struct cfg80211_bss_selection {
+>  	enum nl80211_bss_select_attr behaviour;
+> @@ -6013,7 +6013,6 @@ void wiphy_delayed_work_flush(struct wiphy *wiphy,
+>   *	wireless device if it has no netdev
+>   * @u: union containing data specific to @iftype
+>   * @connected: indicates if connected or not (STA mode)
+> - * @bssid: (private) Used by the internal configuration code
+>   * @wext: (private) Used by the internal wireless extensions compat code
+>   * @wext.ibss: (private) IBSS data part of wext handling
+>   * @wext.connect: (private) connection handling data
+> @@ -6033,8 +6032,6 @@ void wiphy_delayed_work_flush(struct wiphy *wiphy,
+>   * @mgmt_registrations: list of registrations for management frames
+>   * @mgmt_registrations_need_update: mgmt registrations were updated,
+>   *	need to propagate the update to the driver
+> - * @beacon_interval: beacon interval used on this device for transmitting
+> - *	beacons, 0 when not valid
+>   * @address: The address for this device, valid only if @netdev is %NULL
+>   * @is_running: true if this is a non-netdev device that has been started, e.g.
+>   *	the P2P Device.
+> @@ -7270,8 +7267,6 @@ void cfg80211_auth_timeout(struct net_device *dev, const u8 *addr);
+>  
+>  /**
+>   * struct cfg80211_rx_assoc_resp_data - association response data
+> - * @bss: the BSS that association was requested with, ownership of the pointer
+> - *	moves to cfg80211 in the call to cfg80211_rx_assoc_resp()
+>   * @buf: (Re)Association Response frame (header + body)
+>   * @len: length of the frame data
+>   * @uapsd_queues: bitmap of queues configured for uapsd. Same format
+> @@ -7281,6 +7276,8 @@ void cfg80211_auth_timeout(struct net_device *dev, const u8 *addr);
+>   * @ap_mld_addr: AP MLD address (in case of MLO)
+>   * @links: per-link information indexed by link ID, use links[0] for
+>   *	non-MLO connections
+> + * @links.bss: the BSS that association was requested with, ownership of the
+> + *      pointer moves to cfg80211 in the call to cfg80211_rx_assoc_resp()
+>   * @links.status: Set this (along with a BSS pointer) for links that
+>   *	were rejected by the AP.
+>   */
 
-If Daniel and Hector are responsive to actual problem reports for the
-changes they cause, I do think that should count a lot.
-
-I don't think Cypress support should necessarily be removed (or marked
-broken), but if the sae_password code already doesn't work, _that_
-part certainly shouldn't hold things up?
-
-Put another way: if we effectively don't have a driver maintainer that
-can test things, and somebody is willing to step up, shouldn't we take
-that person up on it?
-
-                  Linus
+-- 
+#Randy
+https://people.kernel.org/tglx/notes-about-netiquette
+https://subspace.kernel.org/etiquette.html
 
