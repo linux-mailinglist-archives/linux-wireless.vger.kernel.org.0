@@ -1,197 +1,126 @@
-Return-Path: <linux-wireless+bounces-983-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-964-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB72B8183FF
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Dec 2023 10:02:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F930818386
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Dec 2023 09:37:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 10F1BB23266
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Dec 2023 09:02:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E35D286103
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Dec 2023 08:37:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BCAF12B71;
-	Tue, 19 Dec 2023 09:02:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BED1513FF7;
+	Tue, 19 Dec 2023 08:37:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Iragtcib"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bW5tFN/N"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C74ED12B6F
-	for <linux-wireless@vger.kernel.org>; Tue, 19 Dec 2023 09:01:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-6d39132d6baso1533035b3a.0
-        for <linux-wireless@vger.kernel.org>; Tue, 19 Dec 2023 01:01:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1702976518; x=1703581318; darn=vger.kernel.org;
-        h=mime-version:subject:user-agent:references:in-reply-to:message-id
-         :date:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=4ojE9SfoRxB/NhEUjnvZ49SuQsjpDnxSuI9bPqXhnz4=;
-        b=Iragtcib2db2bPx/Z64jaOmd/EEcFwhL6CJh2EyOC+QM/Og88evWZNJEsO5EUIEhRE
-         iuoKA9GFsHOzyJ/viBzcaeEkWpYsKodD0m0F8kaUPqyO8cadllkmAq/NeMv+Jb7/D/8c
-         qqTEDoIQBKheBMVQ90s75uR93780PM506Bv4M=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702976518; x=1703581318;
-        h=mime-version:subject:user-agent:references:in-reply-to:message-id
-         :date:cc:to:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4ojE9SfoRxB/NhEUjnvZ49SuQsjpDnxSuI9bPqXhnz4=;
-        b=F/Pr3yKAQ08KS0zQyYh2OHlR53kwOcqbAQC+T4USn4m0ycdgj7qvOmCkaWd3aTIT1n
-         mP8reCXLJnwA7KpWqxevA7A0OBUV/rbyerBkhfgqQxQXPE8nZNgAuoV4uV2116z6XWLS
-         TkcRdfn2oj77PYW+uYEQA13IRGML3TCiFodobYJxVtrQKYO1x6VSFFlTpbx0bbw3gJ2J
-         mSo+TNb2Btu8QeQjGJtP+UdK+pGeOny8sFx3Cf2zmgR7XgZjeIO2mxBEPbQ9doI8t+Mt
-         8coW2TANj1mo8HzOZb2cCBOM0FI2kPGJpfKCQQy9dCwIxjhxXf9gPPP2jYuPbA1sSNdL
-         xUbA==
-X-Gm-Message-State: AOJu0YxtPNrNE5iXWUdF4GBeS012L9T061xQgkv1qVguZ6qrzFPyAlA3
-	Eh8HTDWrEClyuTpA+WUqaEv8fQ==
-X-Google-Smtp-Source: AGHT+IEeX46HPldTf62RcNMdmmDHDQlNnj9aDS5hPL0VVv1fkr8gB7pp4OdlIZL7ePqzCB93t46OZA==
-X-Received: by 2002:a05:6a21:999c:b0:18f:97c:5b99 with SMTP id ve28-20020a056a21999c00b0018f097c5b99mr8761086pzb.103.1702976517978;
-        Tue, 19 Dec 2023 01:01:57 -0800 (PST)
-Received: from [192.168.178.38] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id du16-20020a056a002b5000b006d93cc20792sm162316pfb.90.2023.12.19.01.01.53
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 19 Dec 2023 01:01:57 -0800 (PST)
-From: Arend Van Spriel <arend.vanspriel@broadcom.com>
-To: Kalle Valo <kvalo@kernel.org>, Lukas Bulwahn <lukas.bulwahn@gmail.com>
-CC: Arend van Spriel <aspriel@gmail.com>, Franky Lin <franky.lin@broadcom.com>, Hante Meuleman <hante.meuleman@broadcom.com>, <linux-wireless@vger.kernel.org>, <brcm80211-dev-list.pdl@broadcom.com>, <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Date: Tue, 19 Dec 2023 10:01:46 +0100
-Message-ID: <18c814f4890.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <170295913267.640718.8284035097366475252.kvalo@kernel.org>
-References: <20231218121105.23882-1-lukas.bulwahn@gmail.com>
- <170295913267.640718.8284035097366475252.kvalo@kernel.org>
-User-Agent: AquaMail/1.49.0 (build: 104900403)
-Subject: Re: MAINTAINERS: wifi: brcm80211: remove non-existing SHA-cyfmac-dev-list@infineon.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA77C13AC2
+	for <linux-wireless@vger.kernel.org>; Tue, 19 Dec 2023 08:37:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1702975034; x=1734511034;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=vyVwl8VOlQKIZZ+qB1nGLh36OeNdSWGae98fDFkWIsU=;
+  b=bW5tFN/N3uOHDGwmw23QqV361nh4MwnnmF4Qlqt5dU09fDptHeVFrS5w
+   CtoKTO0nLlJQhidxqzGz2EFM/bW9zMQA4N3Q2vRjlUs7bqgq5YNa9E6jS
+   p56FOEAadhYOh5+G6pHpY8uLg9qQI2ANsBEVDRVaUr/1+KAbLI4hxGsGB
+   LpCd1ZroSuQslSC/XgGNMgTkZ4TYWgSQwrLIznIi2jjIE0aBfPUqpZDh0
+   B/61OTEnkq7VMQE++yti9qqTbS4qXQ5p7EMNoK0M6Iuh7zG0pKm3f7PY+
+   gkM5RSLM41KYeoNCYtb97RFLWK12WKKQ4LBVz4yCRfXvIl6wnBqZD6Rov
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10928"; a="459969094"
+X-IronPort-AV: E=Sophos;i="6.04,287,1695711600"; 
+   d="scan'208";a="459969094"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2023 00:37:12 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10928"; a="846265903"
+X-IronPort-AV: E=Sophos;i="6.04,287,1695711600"; 
+   d="scan'208";a="846265903"
+Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
+  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2023 00:37:11 -0800
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org
+Subject: [PATCH 00/15] cfg80211/mac80211 patches from our internal tree 2023-12-19
+Date: Wed, 20 Dec 2023 04:37:48 +0200
+Message-Id: <20231220023803.2901117-1-miriam.rachel.korenblit@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="00000000000070cef8060cd91e40"
-
---00000000000070cef8060cd91e40
-Content-Type: text/plain; format=flowed; charset="us-ascii"
+Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-On December 19, 2023 5:12:19 AM Kalle Valo <kvalo@kernel.org> wrote:
+Hi,
 
-> Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
->
->> When sending an email to SHA-cyfmac-dev-list@infineon.com, the server
->> responds '550 #5.1.0 Address rejected.'
->>
->> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
->
-> Patch applied to wireless.git, thanks.
->
-> 044879ce5406 MAINTAINERS: wifi: brcm80211: remove non-existing 
-> SHA-cyfmac-dev-list@infineon.com
+A bunch of patches from our internal tree with mac80211 and
+cfg80211 changes. It's the usual developement, adding a few small
+features, bugfixes, and cleanups.
 
-Is the claim here true? In another thread I replied all including this list 
-and I am not getting a bounce message.
+Thanks,
+Miri
 
-Googling error code 550 seems to indicate a sender issue:
+Andrei Otcheretianski (4):
+  wifi: cfg80211: reg: Support P2P operation on DFS channels
+  wifi: cfg80211: Schedule regulatory check on BSS STA channel change
+  wifi: mac80211: Schedule regulatory channels check on bandwith change
+  wifi: mac80211_hwsim: Add custom reg for DFS concurrent
 
-""""
-This means the recipient's server doesn't trust the domain name you are 
-using. If this happens, then your email IP is blacklisted, and your 
-messages will bounce.
-"""
+Ayala Beker (1):
+  wifi: mac80211: fix advertised TTLM scheduling
 
-Regards,
-Arend
+Benjamin Berg (5):
+  wifi: cfg80211: free beacon_ies when overridden from hidden BSS
+  wifi: cfg80211: ensure cfg80211_bss_update frees IEs on error
+  wifi: cfg80211: avoid double free if updating BSS fails
+  wifi: mac80211: do not re-add debugfs entries during resume
+  wifi: mac80211: add/remove driver debugfs entries as appropriate
 
-> --
-> https://patchwork.kernel.org/project/linux-wireless/patch/20231218121105.23882-1-lukas.bulwahn@gmail.com/
->
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Johannes Berg (2):
+  wifi: mac80211: rework RX timestamp flags
+  wifi: mac80211: allow 64-bit radiotap timestamps
 
+Miri Korenblit (2):
+  wifi: mac80211: add a driver callback to check active_links
+  wifi: mac80211_hwsim: support HE 40MHz in 2.4Ghz band
 
+Mukesh Sisodiya (1):
+  wifi: cfg80211: handle UHB AP and STA power type
 
+ drivers/net/wireless/virtual/mac80211_hwsim.c | 25 +++++
+ include/linux/ieee80211.h                     |  1 +
+ include/net/cfg80211.h                        | 19 ++++
+ include/net/mac80211.h                        | 23 ++++-
+ include/uapi/linux/nl80211.h                  | 29 ++++++
+ net/mac80211/debugfs_netdev.c                 |  9 +-
+ net/mac80211/driver-ops.c                     | 14 ++-
+ net/mac80211/driver-ops.h                     | 20 ++++
+ net/mac80211/ieee80211_i.h                    |  5 +-
+ net/mac80211/link.c                           |  3 +
+ net/mac80211/mlme.c                           | 50 ++++++++--
+ net/mac80211/rx.c                             | 13 ++-
+ net/mac80211/trace.h                          | 25 +++++
+ net/mac80211/util.c                           | 16 ++--
+ net/wireless/chan.c                           | 94 +++++++++++++++++--
+ net/wireless/nl80211.c                        | 24 +++++
+ net/wireless/reg.c                            |  8 +-
+ net/wireless/reg.h                            |  5 +
+ net/wireless/scan.c                           | 79 ++++++++++++----
+ net/wireless/sme.c                            |  2 +
+ 20 files changed, 405 insertions(+), 59 deletions(-)
 
---00000000000070cef8060cd91e40
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+-- 
+2.34.1
 
-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
-2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
-Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
-HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
-Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
-KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
-Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
-dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
-OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
-MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
-BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
-ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
-zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
-sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
-BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
-N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
-p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
-YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCLbMeM4ucMjh0u24BR
-DH+g0zBFFfuLTOz2C1dEq+3dKDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMzEyMTkwOTAxNThaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
-AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAZ30g+RjmwtZHwR6H5oof3T0HKy8Bv+1M6toJ
-MfLMmuLNqUA/JLX4byrDbUVUt3XKEG+Gonvs6l5li0iMEiKjFrTkyJFTG/Y+e6B1sEdY4Pb9gTfo
-XKGLV3UDdUDAj6MLZjsNr2Gg33Y5axr8+SsyNgWRYUFMNiCUMCtNNRLfI8fbV/BqzHNgAwNC1Y9S
-uwMt38jm/391Wxat5HEBAP6oojWivkAytAJFOl+pu0zvVivpCwFTZwxHaQyyvbUsou7613NH6Dt4
-efPtX8gDF3JfQXbQytCNyRmf6pv1d+xbLFYthpZ6Drs3bTw1jStCK9QF7k5fzxynXbbsf5LF++99
-4w==
---00000000000070cef8060cd91e40--
 
