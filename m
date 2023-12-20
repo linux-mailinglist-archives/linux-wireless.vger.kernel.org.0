@@ -1,319 +1,190 @@
-Return-Path: <linux-wireless+bounces-1118-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1119-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55DC781A74F
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 20:36:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45B0581A75F
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 20:43:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BFD4288D2B
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 19:36:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 749091C2295F
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 19:43:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74E653A29A;
-	Wed, 20 Dec 2023 19:36:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E913A4879E;
+	Wed, 20 Dec 2023 19:43:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="CTHuGOuF"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FgNhzsQu"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB18482F8
-	for <linux-wireless@vger.kernel.org>; Wed, 20 Dec 2023 19:36:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5534dcfdd61so63730a12.0
-        for <linux-wireless@vger.kernel.org>; Wed, 20 Dec 2023 11:36:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1703100990; x=1703705790; darn=vger.kernel.org;
-        h=in-reply-to:autocrypt:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jfay4AcEk5Ks7/fVIZzdfowyIx0Cp9kVEXvfsfsqe9s=;
-        b=CTHuGOuFBLML5HjnBH9CFF26XY6hMeoPZjrzJwMPPOayR/modwY+oN+hyNgxnbqWQL
-         g8Jma8a/xPp0QNtZ8a8A4DPN/WXuXf/G2N/5XMDyLRS4M1Jojgio0hWd+7HMBGsrEJBu
-         cY0IbFIYXCEDSVNwXsmKSo16O+iOhcHvpT0Iw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703100990; x=1703705790;
-        h=in-reply-to:autocrypt:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=jfay4AcEk5Ks7/fVIZzdfowyIx0Cp9kVEXvfsfsqe9s=;
-        b=kxjjNQrdYa8XEOvPV00LQ3sD/Jp9p751+e/gn52JM/nD9nVkYVgW9CvlduwA/4LPuy
-         ME/uGmv8Muegd6jsWZxhfcpDAMtn5LC5HUWjTJwEW7p0SesxdCA2A3kFPi45ujtl0PM7
-         ui0fCw7jaGt+0DG2h/u/dTnVCE6UusWTf1YGsol+RRaz9wXgtWXi855UiJl11lYzSgMl
-         lFlkZEXiOqVp3hETh4khWAHJs0cABaqkN7vYOxAk9/O1qnc4v30KbRlzX1H7uTAzfqqA
-         iHASUGG6x68R6Md/sNBFUWmc593cfKiQsSL0XenPoDwmsmWuwDGwr49m82mbgT1x0cCW
-         5ekQ==
-X-Gm-Message-State: AOJu0YzQgJPoFht2MlihGfxckwaaGQftB4+n0N0ZNN7qBDwQVEV6oOIf
-	nGqmbmDCdek67AJDHLwjHeN0H/j7Bbvy
-X-Google-Smtp-Source: AGHT+IF1orvEckdH6I4jP9nA3YtE6lCTIg3uXffTlRXj703LsV4R2JtE9vSIDmV+JhjAxv/hShgBVw==
-X-Received: by 2002:aa7:c393:0:b0:553:451c:c047 with SMTP id k19-20020aa7c393000000b00553451cc047mr3559823edq.1.1703100989947;
-        Wed, 20 Dec 2023 11:36:29 -0800 (PST)
-Received: from [192.168.178.137] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id u17-20020a05640207d100b005538d504793sm175846edy.23.2023.12.20.11.36.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 20 Dec 2023 11:36:28 -0800 (PST)
-Message-ID: <bdb078c0-2f45-485a-86a0-bb7d0b5e3516@broadcom.com>
-Date: Wed, 20 Dec 2023 20:36:26 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E23AA482FC
+	for <linux-wireless@vger.kernel.org>; Wed, 20 Dec 2023 19:43:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1703101396; x=1734637396;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=q6/yZvKqtgOzMut48pOdIeoY9DKXbzZl6O/TMrpySoU=;
+  b=FgNhzsQuF48PLs640eoWYP6tnN98ftSwIruJ6QHFM4U9rPtGkM1sC+Fk
+   G9/aOVMu5mVOB4rTN+sReE+IOTcnb5nsMZ2iuk6k77GePiHdcXnpZcoLe
+   prlwUvq5rLytnjnKnq1vXMzgbhTg2T8A4tmVC3HNNKZ+4wr9Q8XlopBYc
+   BXZSwSZejvrNM+5O1XOt7Tjrm/iYcv+LeWFNZBrElHdkOQCPhcvu0M12g
+   r1uDJlU+Thm8QE/Huj19RFg+BZNZ11agXMCroJQfhzC+wgj+niJV32Hwo
+   x+7PpdAVQkCZVZ/Ih8whkf6G4Uc6je3+oFtuFp6J5os5HoHLO+0iKIEC/
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10930"; a="399698854"
+X-IronPort-AV: E=Sophos;i="6.04,292,1695711600"; 
+   d="scan'208";a="399698854"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2023 11:43:14 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10930"; a="867078322"
+X-IronPort-AV: E=Sophos;i="6.04,292,1695711600"; 
+   d="scan'208";a="867078322"
+Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
+  by FMSMGA003.fm.intel.com with ESMTP; 20 Dec 2023 11:43:12 -0800
+Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rG2TG-0007Oz-1c;
+	Wed, 20 Dec 2023 19:43:10 +0000
+Date: Thu, 21 Dec 2023 03:42:12 +0800
+From: kernel test robot <lkp@intel.com>
+To: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	johannes@sipsolutions.net
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-wireless@vger.kernel.org,
+	Andrei Otcheretianski <andrei.otcheretianski@intel.com>,
+	Gregory Greenman <gregory.greenman@intel.com>
+Subject: Re: [PATCH 02/14] wifi: iwlwifi: mvm: Allow DFS concurrent operation
+Message-ID: <202312210330.BRAWF2Tp-lkp@intel.com>
+References: <20231219215605.dc39b33bf507.I04dfda24d73091fb75701279d10ac400314de488@changeid>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: brcmfmac: cfg80211: Use WSEC to set SAE password
-To: Hector Martin <marcan@marcan.st>, Kalle Valo <kvalo@kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Daniel Berlin <dberlin@dberlin.org>, Arend van Spriel
- <aspriel@gmail.com>, Franky Lin <franky.lin@broadcom.com>,
- Hante Meuleman <hante.meuleman@broadcom.com>,
- SHA-cyfmac-dev-list@infineon.com, asahi@lists.linux.dev,
- brcm80211-dev-list.pdl@broadcom.com, linux-kernel@vger.kernel.org,
- linux-wireless@vger.kernel.org, David Airlie <airlied@redhat.com>,
- Daniel Vetter <daniel@ffwll.ch>
-References: <20231107-brcmfmac-wpa3-v1-1-4c7db8636680@marcan.st>
- <170281231651.2255653.7498073085103487666.kvalo@kernel.org>
- <18c80d15e30.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <1b51997f-2994-46e8-ac58-90106d1c486d@marcan.st>
- <c392f901-789a-42e2-8cf7-5e246365a1ca@broadcom.com>
- <CAF4BwTXNtu30DAgBXo4auDaDK0iWc9Ch8f=EH+facQ-_F-oMUQ@mail.gmail.com>
- <87r0jiqmnx.fsf@kernel.org> <01bd8c68-1b9c-49b2-8ace-1c7d1b5192ad@marcan.st>
- <CAHk-=whDLKZZEuxU_jEhZRdeWjXAkL8=J_JRk2Ar6wp9UK3h2w@mail.gmail.com>
- <871qbhqio8.fsf@kernel.org> <4c89b71e-8667-40fe-add0-205748de51ef@marcan.st>
-From: Arend van Spriel <arend.vanspriel@broadcom.com>
-Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
- 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
-In-Reply-To: <4c89b71e-8667-40fe-add0-205748de51ef@marcan.st>
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="0000000000008ab1d5060cf6197e"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231219215605.dc39b33bf507.I04dfda24d73091fb75701279d10ac400314de488@changeid>
 
---0000000000008ab1d5060cf6197e
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Hi Miri,
 
-On 12/20/2023 7:14 PM, Hector Martin wrote:
-> 
-> 
-> On 2023/12/20 19:20, Kalle Valo wrote:
->> Linus Torvalds <torvalds@linux-foundation.org> writes:
->>
->>>> Just recently a patch was posted to remove the Infineon list from
->>>> MAINTAINERS because that company cares so little they have literally
->>>> stopped accepting emails from us. Meanwhile they are telling their
->>>> customers that they do not recommend upstream brcmfmac and they should
->>>> use their downstream driver [1].
->>>
->>> Unquestionably broadcom is not helping maintain things, and I think it
->>> should matter.
->>>
->>> As Hector says, they point to their random driver dumps on their site
->>> that you can't even download unless you are a "Broadcom community
->>> member" or whatever, and hey - any company that works that way should
->>> be seen as pretty much hostile to any actual maintenance and proper
->>> development.
->>
->> Sadly this is the normal in the wireless world. All vendors focus on the
->> latest generation, currently it's Wi-Fi 7, and lose interest on older
->> generations. And vendors lose focus on the upstream drivers even faster,
->> usually after a customer project ends.
->>
->> So in practise what we try to do is keep the drivers working somehow on
->> our own, even after the vendors are long gone. If we would deliberately
->> allow breaking drivers because vendor/corporations don't support us, I
->> suspect we would have sevaral broken drivers in upstream.
->>
->>> If Daniel and Hector are responsive to actual problem reports for the
->>> changes they cause, I do think that should count a lot.
->>
->> Sure, but they could also respect to the review comments. I find Arend's
->> proposal is reasonable and that's what I would implement in v2. We
->> (linux-wireless) make abstractions to workaround firmware problems or
->> interface conflicts all the time, just look at ath10k for example. I
->> would not be surprised if we need to add even more abstractions to
->> brcmfmac in the future. And Arend is the expert here, he has best
->> knowledge of Broadcom devices and I trust him.
->>
->> Has anyone even investigated what it would need to implement Arend's
->> proposal? At least I don't see any indication of that.
-> 
-> Of course we can implement it (and we will as we actually got a report
-> of this patch breaking Cypress now, finally).
-> 
-> The question was never whether it could be done, we're already doing a
-> bunch of abstractions to deal with just the Broadcom-only side of things
-> too. The point I was trying to make is that we need to *know* what
-> firmware abstractions we need and *why* they are needed. We can't just
-> say, for every change, "well, nobody knows if the existing code works or
-> not, so let's just add an abstraction just in case the change breaks
-> something". As far as anyone involved in the discussions until now could
-> tell, this code was just something some Cypress person dumped upstream,
-> and nobody involved was being responsive to any of our inquiries, so
-> there was no way to be certain it worked at all, whether it was
-> supported in public firmware, or anything else.
-> 
-> *Now* that we know the existing code is actually functional and not just
-> dead/broken, and that the WSEC approach is conversely not functional on
-> the Cypress firmwares, it makes sense to introduce an abstraction.
+kernel test robot noticed the following build errors:
 
-Just a quick look in the git history could have told you that it was not 
-just dumped upstream and at least one person was using it and extended 
-it for 802.11r support (fast-roaming):
+[auto build test ERROR on wireless-next/main]
+[also build test ERROR on wireless/main linus/master v6.7-rc6 next-20231220]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Miri-Korenblit/iwlwifi-mvm-set-siso-mimo-chains-to-1-in-FW-SMPS-request/20231220-040247
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+patch link:    https://lore.kernel.org/r/20231219215605.dc39b33bf507.I04dfda24d73091fb75701279d10ac400314de488%40changeid
+patch subject: [PATCH 02/14] wifi: iwlwifi: mvm: Allow DFS concurrent operation
+config: x86_64-allyesconfig (https://download.01.org/0day-ci/archive/20231221/202312210330.BRAWF2Tp-lkp@intel.com/config)
+compiler: clang version 16.0.4 (https://github.com/llvm/llvm-project.git ae42196bc493ffe877a7e3dff8be32035dea4d07)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231221/202312210330.BRAWF2Tp-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202312210330.BRAWF2Tp-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c:1616:13: error: use of undeclared identifier 'NL80211_RRF_DFS_CONCURRENT'; did you mean 'NL80211_RRF_IR_CONCURRENT'?
+                           flags |= NL80211_RRF_DFS_CONCURRENT;
+                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~
+                                    NL80211_RRF_IR_CONCURRENT
+   include/uapi/linux/nl80211.h:4515:2: note: 'NL80211_RRF_IR_CONCURRENT' declared here
+           NL80211_RRF_IR_CONCURRENT       = 1<<12,
+           ^
+   1 error generated.
+--
+>> drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c:522:11: error: use of undeclared identifier 'NL80211_EXT_FEATURE_DFS_CONCURRENT'
+                                         NL80211_EXT_FEATURE_DFS_CONCURRENT);
+                                         ^
+   1 error generated.
 
 
-author	Paweł Drewniak <czajernia@gmail.com>	2021-08-24 23:13:30 +0100
-committer	Kalle Valo <kvalo@codeaurora.org>	2021-08-29 11:33:07 +0300
-commit	4b51de063d5310f1fb297388b7955926e63e45c9 (patch)
-tree	ba2ccb5cbd055d482a8daa263f5e53531c07667f 
-/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-parent	81f9ebd43659320a88cae8ed5124c50b4d47ab66 (diff)
-download	wireless-4b51de063d5310f1fb297388b7955926e63e45c9.tar.gz
-brcmfmac: Add WPA3 Personal with FT to supported cipher suites
-This allows the driver to connect to BSSIDs supporting SAE with 802.11r.
-Tested on Raspberry Pi 4 Model B (STA) and UniFi 6LR/OpenWRT 21.02.0-rc2.
-AP was set to 'sae-mixed' (WPA2/3 Personal).
+vim +1616 drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
 
-Signed-off-by: Paweł Drewniak <czajernia@gmail.com>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/20210824221330.3847139-1-czajernia@gmail.com
+  1574	
+  1575	static u32 iwl_nvm_get_regdom_bw_flags(const u16 *nvm_chan,
+  1576					       int ch_idx, u16 nvm_flags,
+  1577					       struct iwl_reg_capa reg_capa,
+  1578					       const struct iwl_cfg *cfg)
+  1579	{
+  1580		u32 flags = NL80211_RRF_NO_HT40;
+  1581	
+  1582		if (ch_idx < NUM_2GHZ_CHANNELS &&
+  1583		    (nvm_flags & NVM_CHANNEL_40MHZ)) {
+  1584			if (nvm_chan[ch_idx] <= LAST_2GHZ_HT_PLUS)
+  1585				flags &= ~NL80211_RRF_NO_HT40PLUS;
+  1586			if (nvm_chan[ch_idx] >= FIRST_2GHZ_HT_MINUS)
+  1587				flags &= ~NL80211_RRF_NO_HT40MINUS;
+  1588		} else if (nvm_flags & NVM_CHANNEL_40MHZ) {
+  1589			if ((ch_idx - NUM_2GHZ_CHANNELS) % 2 == 0)
+  1590				flags &= ~NL80211_RRF_NO_HT40PLUS;
+  1591			else
+  1592				flags &= ~NL80211_RRF_NO_HT40MINUS;
+  1593		}
+  1594	
+  1595		if (!(nvm_flags & NVM_CHANNEL_80MHZ))
+  1596			flags |= NL80211_RRF_NO_80MHZ;
+  1597		if (!(nvm_flags & NVM_CHANNEL_160MHZ))
+  1598			flags |= NL80211_RRF_NO_160MHZ;
+  1599	
+  1600		if (!(nvm_flags & NVM_CHANNEL_ACTIVE))
+  1601			flags |= NL80211_RRF_NO_IR;
+  1602	
+  1603		if (nvm_flags & NVM_CHANNEL_RADAR)
+  1604			flags |= NL80211_RRF_DFS;
+  1605	
+  1606		if (nvm_flags & NVM_CHANNEL_INDOOR_ONLY)
+  1607			flags |= NL80211_RRF_NO_OUTDOOR;
+  1608	
+  1609		/* Set the GO concurrent flag only in case that NO_IR is set.
+  1610		 * Otherwise it is meaningless
+  1611		 */
+  1612		if ((nvm_flags & NVM_CHANNEL_GO_CONCURRENT)) {
+  1613			if (flags & NL80211_RRF_NO_IR)
+  1614				flags |= NL80211_RRF_GO_CONCURRENT;
+  1615			if (flags & NL80211_RRF_DFS)
+> 1616				flags |= NL80211_RRF_DFS_CONCURRENT;
+  1617		}
+  1618		/*
+  1619		 * reg_capa is per regulatory domain so apply it for every channel
+  1620		 */
+  1621		if (ch_idx >= NUM_2GHZ_CHANNELS) {
+  1622			if (!reg_capa.allow_40mhz)
+  1623				flags |= NL80211_RRF_NO_HT40;
+  1624	
+  1625			if (!reg_capa.allow_80mhz)
+  1626				flags |= NL80211_RRF_NO_80MHZ;
+  1627	
+  1628			if (!reg_capa.allow_160mhz)
+  1629				flags |= NL80211_RRF_NO_160MHZ;
+  1630	
+  1631			if (!reg_capa.allow_320mhz)
+  1632				flags |= NL80211_RRF_NO_320MHZ;
+  1633		}
+  1634	
+  1635		if (reg_capa.disable_11ax)
+  1636			flags |= NL80211_RRF_NO_HE;
+  1637	
+  1638		if (reg_capa.disable_11be)
+  1639			flags |= NL80211_RRF_NO_EHT;
+  1640	
+  1641		return flags;
+  1642	}
+  1643	
 
-> Here's an example of the case where an abstraction was *not* needed: I
-> switched over WPA PSK configuration from hex-encoded to binary. That was
-> needed to make more recent Apple firmwares work. My evidence at the time
-> that that change *was* at least fairly backwards compatible was that the
-> OpenBSD driver had been doing it that way all along. Had we introduced
-> an abstraction/conditional for that case "just in case", it would have
-> generated superfluous technical debt for no reason.
-
-Fully agreeing here and you already given the argument for that in the 
-commit message. Hence there was no discussion whatsoever about that.
-
-Regards,
-Arend
-
---0000000000008ab1d5060cf6197e
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-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
-2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
-Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
-HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
-Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
-KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
-Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
-dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
-OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
-MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
-BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
-ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
-zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
-sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
-BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
-N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
-p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
-YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCBeYrHevTqLVYKh97F7
-AWLfUKlkQF7nxjpOrdNsMsnkVDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMzEyMjAxOTM2MzBaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
-AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAobWTvc7lcsORrj4Q//NSnVp5/YTvzsbEAaRK
-zk7VZ9q8AvXAO5fjUebW2bIH5NGKAzi4Yv16AwlzvcQlmYBRXmEiRHJTEIJTWyrsWBOhYvKcST2Q
-UFXSPxfV6ZqCXCN9g1XkdrwAFDgzMkCIuhbU5eX5yntE/Nt+93b+S8MYaQ8ix8f3Bi+f172Nl0sX
-ng6mvni/z4+mUcLHhik4wcringxKyeMKlpzazmDQUc9feDoCAPtQunZp7J8BjQpgZg/s5v63x8h7
-YyoY5m/50XsSrJ9mvWBSLuLgBXFar/ImMxLkvrdJ3hilkL7S/FnUs4IuYHK693UDjj9aC5nJYn7O
-bw==
---0000000000008ab1d5060cf6197e--
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
