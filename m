@@ -1,152 +1,132 @@
-Return-Path: <linux-wireless+bounces-1086-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1087-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A0E1819E21
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 12:33:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACBD7819F45
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 13:43:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F16E1C25C56
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 11:33:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E80D31C22F98
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 12:43:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1EB02136C;
-	Wed, 20 Dec 2023 11:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A40936AFE;
+	Wed, 20 Dec 2023 12:42:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="b9fVYFGg"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ir6qD7nS"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f44.google.com (mail-oo1-f44.google.com [209.85.161.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 279DF2230A
-	for <linux-wireless@vger.kernel.org>; Wed, 20 Dec 2023 11:33:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1703072015;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GZvXo9n7E1BUG9QukBdJSLRTxHIpYEVliraJ+HgqD48=;
-	b=b9fVYFGgzsupIl3ZGFiMbVCBZjibCB6GWG13j/5vqeYoIl/LRzjin4XywIkrrwWKxnmuQW
-	K3kINiOxhSQ3+3GGsdwQfN25npYjDtDeT+HEzRWySxKOjRqBiiLLZezZd07J3XaYCIKsh+
-	6X5AfIxnTC9Pkqo9LHOMi2TN4Bl/ge4=
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
- [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-540-ONnFqpXOPSeDZ45Kp_x8tw-1; Wed, 20 Dec 2023 06:33:33 -0500
-X-MC-Unique: ONnFqpXOPSeDZ45Kp_x8tw-1
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-5cdd4747877so284051a12.1
-        for <linux-wireless@vger.kernel.org>; Wed, 20 Dec 2023 03:33:33 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAF9236AF0
+	for <linux-wireless@vger.kernel.org>; Wed, 20 Dec 2023 12:42:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-59067f03282so3774253eaf.0
+        for <linux-wireless@vger.kernel.org>; Wed, 20 Dec 2023 04:42:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1703076154; x=1703680954; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DP0zvxoQ566YYbRy4QMCmGwXsJhdmh/xrNsxiUti8ko=;
+        b=Ir6qD7nSrhsL3PSojtQCv3Us4jg9kIBSqdl7WhPgmDbPuPjHluQRyjahQf9h/W8gVk
+         vYajgOVpuUZEnV/a/fvRd2zlqnIqcafXJSouH2kXL0vlmD3EHl+jSsB3kUXHacmQZ/S4
+         2FPhL/8uOELmAuAMYlzm5Il0fBwjLGMwH9PuaaT4Mbyn+luCDCXXXykIZsfB2I3Zk+xt
+         6btXkf6a/ehnHqzvnBntWU/wWcOwITpkhlH911d8Fnk3d3BrwGoSY0bSww2Df6nIpnU6
+         X0xh7NMvYq9cG47L77dDwMLQde8YndbFuPKJb/d+ASHaeR+tPhrN3GGGSYTNChx351zY
+         D/5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703072013; x=1703676813;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GZvXo9n7E1BUG9QukBdJSLRTxHIpYEVliraJ+HgqD48=;
-        b=fFJnJCMsOz14IeOCmxs2VvOZG0mlXLEgfYzPRu2mWqRmbzRB4Frl5piDbGlrh8oBxY
-         kvU4hq6khhrkjL5dfdJ2K8wtdFLmSbeL0JgfUmIaJAlIJcQr93jX+FrgnUWBCuaP3rix
-         aBsDt1779U3TePHDK8dMT+RKNVqa2BqB5wCXat0M7l6ZsqXQ70u+JOXtqUWUYyeq4g4b
-         tPBqRC8j9Ekc220EVuwT4vGNgJc+KsZOHOZdaqy+hpF3kxJF5VqOl3aAe0Q6b+0dZsEX
-         28ZL5a+jJmjiiv3Z8W73C8WGQsZ9vTbfK3w/erfslzZi2+POSw+JMu9JIny/lWwteZwR
-         xGLg==
-X-Gm-Message-State: AOJu0Yz0wiwvNO1/Jp0ax9Oxs7rBkXx3fJ8bOcWbYRknKtBGNlde7QXh
-	kePUvSdmD8yPmepG/0vmEVg6KKGxbnHwGrTkfuLRw/JKpawUhj111OzrJ2Cgk6khy7QgZaa2A0U
-	OfQqEIvP8yY/qYtYmifEeSdf/B7RuyLtQGl8Gr8W9OhM=
-X-Received: by 2002:a17:90b:4f8b:b0:28b:cfea:c3a with SMTP id qe11-20020a17090b4f8b00b0028bcfea0c3amr915932pjb.39.1703072012769;
-        Wed, 20 Dec 2023 03:33:32 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFrvhx2+ke9fT+Ck2vv/eRkSRqKHgA3znkYCpalIpUXY7DbRWaaCOV/vGf7lKVHCsZIv8L3LHll2lJL8n/QSCE=
-X-Received: by 2002:a17:90b:4f8b:b0:28b:cfea:c3a with SMTP id
- qe11-20020a17090b4f8b00b0028bcfea0c3amr915916pjb.39.1703072012512; Wed, 20
- Dec 2023 03:33:32 -0800 (PST)
+        d=1e100.net; s=20230601; t=1703076154; x=1703680954;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DP0zvxoQ566YYbRy4QMCmGwXsJhdmh/xrNsxiUti8ko=;
+        b=AF4DEMhYJF3cX3YHJu09emPDdF8toHH2iwWo/Eyj2HXe9j/zFQxl8p+MmIT9fab866
+         AKW5mZCA+0euPuA8RKPFaYn2uVpYliL1aOUkZnbLezYxljzKY/exQEibFdVcHZmcBcSb
+         vxZ3TEkQokU0AtCxgaUz9rtzFGx6VgjtC1+yu1e4xSw/iogQTpmdgcVvGVUZgEnEgjnk
+         Q2i0/UFDdxBOI2G4ozbN9I2tUtdowIEYwR530WkyyLwtV60oqhw2IrC9+saxwxp1QCxO
+         zbr0U3ENEdbUXJVCLUQCAEetBg0glqlFqVwJ/sbvl8Dl2eQhadhtF/bxYscYqbRmA6TL
+         KsKA==
+X-Gm-Message-State: AOJu0Yy0PHmnFUBXOaM2c1XJ/DvCYYTEiEqf0V8IF0AWpICCGMZ73Ph6
+	6PHANAMTBMtBmxUOJm1hg14NSC3rNZs=
+X-Google-Smtp-Source: AGHT+IHzTGl5VPicMbIcW+KWYWcb9kp9FFuc5dvpUMJEUN4ACyswLyDhbRQEnmvJDbC5cudUkzkuVg==
+X-Received: by 2002:a4a:98ea:0:b0:590:f5fc:df58 with SMTP id b39-20020a4a98ea000000b00590f5fcdf58mr9555540ooj.17.1703076153712;
+        Wed, 20 Dec 2023 04:42:33 -0800 (PST)
+Received: from [10.175.247.41] ([50.222.209.222])
+        by smtp.gmail.com with ESMTPSA id j12-20020a4aab4c000000b00591994c94f6sm2173700oon.24.2023.12.20.04.42.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 20 Dec 2023 04:42:33 -0800 (PST)
+Message-ID: <6122eb4e-66f5-4772-b211-8fc69ac88ebe@gmail.com>
+Date: Wed, 20 Dec 2023 04:42:31 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231107-brcmfmac-wpa3-v1-1-4c7db8636680@marcan.st>
- <170281231651.2255653.7498073085103487666.kvalo@kernel.org>
- <18c80d15e30.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <1b51997f-2994-46e8-ac58-90106d1c486d@marcan.st> <c392f901-789a-42e2-8cf7-5e246365a1ca@broadcom.com>
- <CAF4BwTXNtu30DAgBXo4auDaDK0iWc9Ch8f=EH+facQ-_F-oMUQ@mail.gmail.com>
- <87r0jiqmnx.fsf@kernel.org> <01bd8c68-1b9c-49b2-8ace-1c7d1b5192ad@marcan.st> <CAHk-=whDLKZZEuxU_jEhZRdeWjXAkL8=J_JRk2Ar6wp9UK3h2w@mail.gmail.com>
-In-Reply-To: <CAHk-=whDLKZZEuxU_jEhZRdeWjXAkL8=J_JRk2Ar6wp9UK3h2w@mail.gmail.com>
-From: Eric Curtin <ecurtin@redhat.com>
-Date: Wed, 20 Dec 2023 11:32:56 +0000
-Message-ID: <CAOgh=FyX5tfzB+yN17pYQGy=8pBy4hmL-jc4cMZexzdp=aZSdg@mail.gmail.com>
-Subject: Re: [PATCH] wifi: brcmfmac: cfg80211: Use WSEC to set SAE password
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Hector Martin <marcan@marcan.st>, Kalle Valo <kvalo@kernel.org>, 
-	Daniel Berlin <dberlin@dberlin.org>, Arend van Spriel <arend.vanspriel@broadcom.com>, 
-	Arend van Spriel <aspriel@gmail.com>, Franky Lin <franky.lin@broadcom.com>, 
-	Hante Meuleman <hante.meuleman@broadcom.com>, SHA-cyfmac-dev-list@infineon.com, 
-	asahi@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com, 
-	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	David Airlie <airlied@redhat.com>, Daniel Vetter <daniel@ffwll.ch>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: Ath11k warnings, and eventual phy going away requiring reboot
+Content-Language: en-US
+To: Kalle Valo <kvalo@kernel.org>
+Cc: "open list:MEDIATEK MT76 WIRELESS LAN DRIVER"
+ <linux-wireless@vger.kernel.org>, ath11k@lists.infradead.org
+References: <ab00ff77-23de-43a1-9eb9-6ac036ab80e3@gmail.com>
+ <87edfiqcdi.fsf@kernel.org>
+From: James Prestwood <prestwoj@gmail.com>
+In-Reply-To: <87edfiqcdi.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed, 20 Dec 2023 at 01:54, Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
->
-> On Tue, 19 Dec 2023 at 16:06, Hector Martin <marcan@marcan.st> wrote:
-> >
-> > On 2023/12/19 23:42, Kalle Valo wrote:
-> > >
-> > > Why is it that every patch Hector submits seems to end up with flame
-> > > wars?
->
-> Well, I do think some of it is Hector's personality and forceful
-> approaches, but I do think part of it is also the area in question.
->
-> Because I do agree with Hector that..
->
-> > Just recently a patch was posted to remove the Infineon list from
-> > MAINTAINERS because that company cares so little they have literally
-> > stopped accepting emails from us. Meanwhile they are telling their
-> > customers that they do not recommend upstream brcmfmac and they should
-> > use their downstream driver [1].
->
-> Unquestionably broadcom is not helping maintain things, and I think it
-> should matter.
->
-> As Hector says, they point to their random driver dumps on their site
-> that you can't even download unless you are a "Broadcom community
-> member" or whatever, and hey - any company that works that way should
-> be seen as pretty much hostile to any actual maintenance and proper
-> development.
->
-> If Daniel and Hector are responsive to actual problem reports for the
-> changes they cause, I do think that should count a lot.
->
-> I don't think Cypress support should necessarily be removed (or marked
-> broken), but if the sae_password code already doesn't work, _that_
-> part certainly shouldn't hold things up?
->
-> Put another way: if we effectively don't have a driver maintainer that
-> can test things, and somebody is willing to step up, shouldn't we take
-> that person up on it?
+Hi Kalle,
 
-I am trying to help try and find a maintainer in the community, but of
-course I can't guarantee anything. Theoretically of course it should
-be someone from Broadcom, Raspberry Pi, etc. and not the community
-(not that this helps unblock us promptly).
-
-I just would like to say this upstream Cypress driver has a large
-number of users via Fedora and CentOS Stream Automotive Distribution.
-And that's just the Fedora family of distros. But the Apple Silicon
-devices have a pretty large amount of users also.
-
-We need to find a way of accommodating both. If that's either fork the
-code into two separate files somehow or find another maintainer, I
-don't know (just my uninformed opinion).
-
-Is mise le meas/Regards,
-
-Eric Curtin
-
+On 12/19/23 10:24 AM, Kalle Valo wrote:
+> James Prestwood <prestwoj@gmail.com> writes:
 >
->                   Linus
->
+>> I noticed this after one of our devices dropped offline. The device
+>> had roamed 7 minutes prior so I doubt that had anything to do with it.
+>> But then we get this, and then tons of warnings. I'm happy to provide
+>> full stack traces but its quite a few, not sure which ones are
+>> relevant or not. After all the warnings IWD got an RTNL del link event
+>> and was unable to recover from that. It seems after that ath11k tried
+>> to power back on but failed.
+>>
+>> This is a stock 6.2 ubuntu kernel, WCN6855:
+> BTW I don't know how it's nowadays, but back in the day Ubuntu heavily
+> modified ath11k. And we can't support distro kernels anyway as we don't
+> know what they have changed in the kernel.
+
+Ok. I understand where your coming from, but at the same time Ubuntu is 
+the largest linux distribution so it seems like these type of reports 
+wouldn't be uncommon. OTOH maybe users just go directly to Ubuntu. 
+Anyways, this is a list of patches isn't huge according to the changelog 
+(for 6.2):
+
+      - wifi: ath11k: fix registration of 6Ghz-only phy without the full 
+channel
+      - wifi: ath11k: add support default regdb while searching 
+board-2.bin for
+      - wifi: ath11k: fix memory leak in WMI firmware stats
+      - wifi: ath11k: Add missing check for ioremap
+      - wifi: ath11k: Ignore frags from uninitialized peer in dp.
+      - wifi: ath11k: Fix SKB corruption in REO destination ring
+      - wifi: ath11k: reduce the MHI timeout to 20s
+      - wifi: ath11k: Use platform_get_irq() to get the interrupt
+      - wifi: ath11k: fix SAC bug on peer addition with sta band migration
+      - wifi: ath11k: fix deinitialization of firmware resources
+      - wifi: ath11k: fix writing to unintended memory region
+      - wifi: ath11k: Fix memory leak in ath11k_peer_rx_frag_setup
+      - wifi: ath11k: fix monitor mode bringup crash
+      - wifi: ath11k: debugfs: fix to work with multiple PCI devices
+      - wifi: ath11k: allow system suspend to survive ath11k
+
+I see the dilemma of not wanting to waste time debugging when there are 
+unknown changes applied. I was hoping someone would recognize the 
+behavior and could suggest a patch/kernel/firmware to try, I do see some 
+recent patches related to firmware powering down which seems related. I 
+also will try the latest firmware that was just released.
+
+Thanks,
+James
 
 
