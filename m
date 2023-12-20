@@ -1,148 +1,152 @@
-Return-Path: <linux-wireless+bounces-1085-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1086-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E1EA819DED
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 12:22:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A0E1819E21
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 12:33:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2FD4EB216BB
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 11:22:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F16E1C25C56
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 11:33:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A46021119;
-	Wed, 20 Dec 2023 11:22:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1EB02136C;
+	Wed, 20 Dec 2023 11:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XrTHVQ6x"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="b9fVYFGg"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22E3D21340;
-	Wed, 20 Dec 2023 11:22:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-1d3e05abcaeso9333755ad.1;
-        Wed, 20 Dec 2023 03:22:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1703071358; x=1703676158; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=FLv841g2aqTtUASe3tU8xGXA52jFUerqlxRz8E8fkBI=;
-        b=XrTHVQ6xKuOf+g9/1CKxHS6FD2q1cQT/Q21pqfo+E4A9kGjYqML+Naf/wmwvTNJJBd
-         viocbV2AQ1f5H3ibWUzxgKB7Z7vyDB6HGnkTGgv1w4ufNucBh25D/Fa9jgx98oE0Vi1G
-         es8BRQRp2NCy7fEpQ4d7nmTlWAvjvgeMmifmTTI/uCbr5lyJcQjXJY6pvJ1Gs+djAodd
-         PIcqGjFF8ABfCpO5pYe1XC4xdBxAwCLDVtNlNddMrxenHi9gr04dN6Oj9aF5+vLyP0bj
-         l7EmEAZcaLlGax8A0htspLL3NNpZHtmzyeLqcYJNUOhaLOZV1ZIV1CSjpz+cdJq+v83S
-         vvlg==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 279DF2230A
+	for <linux-wireless@vger.kernel.org>; Wed, 20 Dec 2023 11:33:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1703072015;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GZvXo9n7E1BUG9QukBdJSLRTxHIpYEVliraJ+HgqD48=;
+	b=b9fVYFGgzsupIl3ZGFiMbVCBZjibCB6GWG13j/5vqeYoIl/LRzjin4XywIkrrwWKxnmuQW
+	K3kINiOxhSQ3+3GGsdwQfN25npYjDtDeT+HEzRWySxKOjRqBiiLLZezZd07J3XaYCIKsh+
+	6X5AfIxnTC9Pkqo9LHOMi2TN4Bl/ge4=
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
+ [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-540-ONnFqpXOPSeDZ45Kp_x8tw-1; Wed, 20 Dec 2023 06:33:33 -0500
+X-MC-Unique: ONnFqpXOPSeDZ45Kp_x8tw-1
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-5cdd4747877so284051a12.1
+        for <linux-wireless@vger.kernel.org>; Wed, 20 Dec 2023 03:33:33 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703071358; x=1703676158;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FLv841g2aqTtUASe3tU8xGXA52jFUerqlxRz8E8fkBI=;
-        b=FKiceH4m43e8m6GhHWS4YUsY9eAB4Qp2RfLS0qKDtK0z4jtz6gbqrkOviJhNP1yJJj
-         eyT/iUSt3mStB4aA+/sO0yjmENg41ZAM7S7UxLccSyJp+Ig3dkC5q9AHIxzSC7Zt6osA
-         Bmt+xbDmsNA6YxSOxrIZJ3fK5agzA1mtVv4Hs5WdScp4cPcTvgv3Xvcd8wMW6I6ZPbZu
-         EcfUiK5zgHWwY0QSDMyP6S5MbHrxpCPhPhJ+XWy+G1gdm4GxDOsDuEZ4Nk2A3MIxdX82
-         8fOLL15C938s+h2//W/6DqN+U7kkv8J5+HhmLYsgqDcPE2zIWw3btjSuwOYjAJjkoCgL
-         oweg==
-X-Gm-Message-State: AOJu0YykYDmk+yeu1Yxjs7uNUyFNwbSF2/yucBJNdApGyk932XniHxeL
-	xKqb+yKtzjZqCUXBm9SHa8g=
-X-Google-Smtp-Source: AGHT+IHfKNyn3tRwqYqENrZS+iVr48qtnl+3lNEWbte23UJlNo9Glq8cb8PkGO5ih115XQXmTesABQ==
-X-Received: by 2002:a17:902:e849:b0:1d3:ee70:87c5 with SMTP id t9-20020a170902e84900b001d3ee7087c5mr508306plg.70.1703071358341;
-        Wed, 20 Dec 2023 03:22:38 -0800 (PST)
-Received: from archie.me ([103.131.18.64])
-        by smtp.gmail.com with ESMTPSA id y3-20020a170902ed4300b001cfb4d36eb1sm196077plb.215.2023.12.20.03.22.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Dec 2023 03:22:37 -0800 (PST)
-Received: by archie.me (Postfix, from userid 1000)
-	id 00AA01028B298; Wed, 20 Dec 2023 18:22:33 +0700 (WIB)
-Date: Wed, 20 Dec 2023 18:22:33 +0700
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-To: Kalle Valo <kvalo@kernel.org>,
-	Johannes Berg <johannes@sipsolutions.net>
-Cc: Arend Van Spriel <arend.vanspriel@broadcom.com>,
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-	Arend van Spriel <aspriel@gmail.com>,
-	Franky Lin <franky.lin@broadcom.com>,
-	Hante Meuleman <hante.meuleman@broadcom.com>,
-	linux-wireless@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
-	kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: MAINTAINERS: wifi: brcm80211: remove non-existing
- SHA-cyfmac-dev-list@infineon.com
-Message-ID: <ZYLOef1s5Ul7uz3_@archie.me>
-References: <20231218121105.23882-1-lukas.bulwahn@gmail.com>
- <170295913267.640718.8284035097366475252.kvalo@kernel.org>
- <18c814f4890.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <29c3122ca8e4d72c07942d09dca7a0fbd0138024.camel@sipsolutions.net>
- <8734vysbtt.fsf@kernel.org>
+        d=1e100.net; s=20230601; t=1703072013; x=1703676813;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GZvXo9n7E1BUG9QukBdJSLRTxHIpYEVliraJ+HgqD48=;
+        b=fFJnJCMsOz14IeOCmxs2VvOZG0mlXLEgfYzPRu2mWqRmbzRB4Frl5piDbGlrh8oBxY
+         kvU4hq6khhrkjL5dfdJ2K8wtdFLmSbeL0JgfUmIaJAlIJcQr93jX+FrgnUWBCuaP3rix
+         aBsDt1779U3TePHDK8dMT+RKNVqa2BqB5wCXat0M7l6ZsqXQ70u+JOXtqUWUYyeq4g4b
+         tPBqRC8j9Ekc220EVuwT4vGNgJc+KsZOHOZdaqy+hpF3kxJF5VqOl3aAe0Q6b+0dZsEX
+         28ZL5a+jJmjiiv3Z8W73C8WGQsZ9vTbfK3w/erfslzZi2+POSw+JMu9JIny/lWwteZwR
+         xGLg==
+X-Gm-Message-State: AOJu0Yz0wiwvNO1/Jp0ax9Oxs7rBkXx3fJ8bOcWbYRknKtBGNlde7QXh
+	kePUvSdmD8yPmepG/0vmEVg6KKGxbnHwGrTkfuLRw/JKpawUhj111OzrJ2Cgk6khy7QgZaa2A0U
+	OfQqEIvP8yY/qYtYmifEeSdf/B7RuyLtQGl8Gr8W9OhM=
+X-Received: by 2002:a17:90b:4f8b:b0:28b:cfea:c3a with SMTP id qe11-20020a17090b4f8b00b0028bcfea0c3amr915932pjb.39.1703072012769;
+        Wed, 20 Dec 2023 03:33:32 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFrvhx2+ke9fT+Ck2vv/eRkSRqKHgA3znkYCpalIpUXY7DbRWaaCOV/vGf7lKVHCsZIv8L3LHll2lJL8n/QSCE=
+X-Received: by 2002:a17:90b:4f8b:b0:28b:cfea:c3a with SMTP id
+ qe11-20020a17090b4f8b00b0028bcfea0c3amr915916pjb.39.1703072012512; Wed, 20
+ Dec 2023 03:33:32 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="x85mmRQAZSrLT8xn"
-Content-Disposition: inline
-In-Reply-To: <8734vysbtt.fsf@kernel.org>
+References: <20231107-brcmfmac-wpa3-v1-1-4c7db8636680@marcan.st>
+ <170281231651.2255653.7498073085103487666.kvalo@kernel.org>
+ <18c80d15e30.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+ <1b51997f-2994-46e8-ac58-90106d1c486d@marcan.st> <c392f901-789a-42e2-8cf7-5e246365a1ca@broadcom.com>
+ <CAF4BwTXNtu30DAgBXo4auDaDK0iWc9Ch8f=EH+facQ-_F-oMUQ@mail.gmail.com>
+ <87r0jiqmnx.fsf@kernel.org> <01bd8c68-1b9c-49b2-8ace-1c7d1b5192ad@marcan.st> <CAHk-=whDLKZZEuxU_jEhZRdeWjXAkL8=J_JRk2Ar6wp9UK3h2w@mail.gmail.com>
+In-Reply-To: <CAHk-=whDLKZZEuxU_jEhZRdeWjXAkL8=J_JRk2Ar6wp9UK3h2w@mail.gmail.com>
+From: Eric Curtin <ecurtin@redhat.com>
+Date: Wed, 20 Dec 2023 11:32:56 +0000
+Message-ID: <CAOgh=FyX5tfzB+yN17pYQGy=8pBy4hmL-jc4cMZexzdp=aZSdg@mail.gmail.com>
+Subject: Re: [PATCH] wifi: brcmfmac: cfg80211: Use WSEC to set SAE password
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Hector Martin <marcan@marcan.st>, Kalle Valo <kvalo@kernel.org>, 
+	Daniel Berlin <dberlin@dberlin.org>, Arend van Spriel <arend.vanspriel@broadcom.com>, 
+	Arend van Spriel <aspriel@gmail.com>, Franky Lin <franky.lin@broadcom.com>, 
+	Hante Meuleman <hante.meuleman@broadcom.com>, SHA-cyfmac-dev-list@infineon.com, 
+	asahi@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com, 
+	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	David Airlie <airlied@redhat.com>, Daniel Vetter <daniel@ffwll.ch>
+Content-Type: text/plain; charset="UTF-8"
 
-
---x85mmRQAZSrLT8xn
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, Dec 19, 2023 at 12:53:18PM +0200, Kalle Valo wrote:
-> Johannes Berg <johannes@sipsolutions.net> writes:
->=20
-> > On Tue, 2023-12-19 at 10:01 +0100, Arend Van Spriel wrote:
-> >> >=20
-> >> > > When sending an email to SHA-cyfmac-dev-list@infineon.com, the ser=
-ver
-> >> > > responds '550 #5.1.0 Address rejected.'
-> >>=20
-> >> Is the claim here true? In another thread I replied all including this=
- list=20
-> >> and I am not getting a bounce message.
+On Wed, 20 Dec 2023 at 01:54, Linus Torvalds
+<torvalds@linux-foundation.org> wrote:
+>
+> On Tue, 19 Dec 2023 at 16:06, Hector Martin <marcan@marcan.st> wrote:
 > >
-> > I also got the bounce, FWIW. And Lukas is using gmail ... if you're not
-> > accepting mail from gmail I'm not sure you get to call it "email" in the
-> > 21st century, for (better or) worse...
->=20
-> And is Infineon even contributing anything to upstream? At least I don't
-> have recollection any recent activity, though happy to be proven wrong.
-> We shouldn't have dormant information in MAINTAINERS file.
->=20
+> > On 2023/12/19 23:42, Kalle Valo wrote:
+> > >
+> > > Why is it that every patch Hector submits seems to end up with flame
+> > > wars?
+>
+> Well, I do think some of it is Hector's personality and forceful
+> approaches, but I do think part of it is also the area in question.
+>
+> Because I do agree with Hector that..
+>
+> > Just recently a patch was posted to remove the Infineon list from
+> > MAINTAINERS because that company cares so little they have literally
+> > stopped accepting emails from us. Meanwhile they are telling their
+> > customers that they do not recommend upstream brcmfmac and they should
+> > use their downstream driver [1].
+>
+> Unquestionably broadcom is not helping maintain things, and I think it
+> should matter.
+>
+> As Hector says, they point to their random driver dumps on their site
+> that you can't even download unless you are a "Broadcom community
+> member" or whatever, and hey - any company that works that way should
+> be seen as pretty much hostile to any actual maintenance and proper
+> development.
+>
+> If Daniel and Hector are responsive to actual problem reports for the
+> changes they cause, I do think that should count a lot.
+>
+> I don't think Cypress support should necessarily be removed (or marked
+> broken), but if the sae_password code already doesn't work, _that_
+> part certainly shouldn't hold things up?
+>
+> Put another way: if we effectively don't have a driver maintainer that
+> can test things, and somebody is willing to step up, shouldn't we take
+> that person up on it?
 
-I'm also using gmail (and GMX as backup). When I sent my reply about rPI
-testing [1] with SHA-cyfmac-dev-list@infineon.com Cc'ed, I got `Address
-not found` error instead (but the DSN message was in spam folder instead
-as I treated it as junk).
+I am trying to help try and find a maintainer in the community, but of
+course I can't guarantee anything. Theoretically of course it should
+be someone from Broadcom, Raspberry Pi, etc. and not the community
+(not that this helps unblock us promptly).
 
-For Infineon, they're now focusing on TPM subsystem, with the latest message
-is 6 months (or a semester in academic speak) ago [2].
+I just would like to say this upstream Cypress driver has a large
+number of users via Fedora and CentOS Stream Automotive Distribution.
+And that's just the Fedora family of distros. But the Apple Silicon
+devices have a pretty large amount of users also.
 
-Thanks.
+We need to find a way of accommodating both. If that's either fork the
+code into two separate files somehow or find another maintainer, I
+don't know (just my uninformed opinion).
 
-[1]: https://lore.kernel.org/lkml/ZYLKftqKFJ_PMmF3@archie.me/
-[2]: https://lore.kernel.org/lkml/20230613180259.3525-4-Alexander.Steffen@i=
-nfineon.com/
+Is mise le meas/Regards,
 
---=20
-An old man doll... just what I always wanted! - Clara
+Eric Curtin
 
---x85mmRQAZSrLT8xn
-Content-Type: application/pgp-signature; name="signature.asc"
+>
+>                   Linus
+>
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZYLOdgAKCRD2uYlJVVFO
-o98gAP4yOBKMBVs5YC/xxJc9ZWWlDpUX3Hm41puwaNZW55ftNAD/VVzZ/QTjzPv6
-9WYs5N9WaXzO/OmTYYMhbWRfDRWpJgQ=
-=btd9
------END PGP SIGNATURE-----
-
---x85mmRQAZSrLT8xn--
 
