@@ -1,103 +1,116 @@
-Return-Path: <linux-wireless+bounces-1078-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1080-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6A05819B4F
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 10:22:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 727AA819B53
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 10:24:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 254DA1C25733
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 09:22:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11DC21F228AC
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 09:24:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F3F5200AB;
-	Wed, 20 Dec 2023 09:21:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="ix31NINS"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 810881F5F4;
+	Wed, 20 Dec 2023 09:24:38 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+Received: from bues.ch (bues.ch [80.190.117.144])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EFDA1EB46
-	for <linux-wireless@vger.kernel.org>; Wed, 20 Dec 2023 09:21:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 320363d29f1911eeba30773df0976c77-20231220
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=Kh4ADFx8DyKsyheb1kxCqsOD8YqzwyrfLZNAEnzeVrQ=;
-	b=ix31NINSD0OkKODYZQgev4gfbK+l5PXvqkRyY8O3GezSAcbjsyqEw3i0ochq6aI+KoQeev6pLP4ehCD4odwRoiHHpwDZvCdWtR6QXPfH1x2fJtsDeAFbJekTfwYbYaHWMw3FVjP3F1zmWrwg5cvyJs9H/SUeRZGOTfkdF0JBJAM=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.35,REQID:0634e7e5-d16c-4a9d-9212-ca541a3dabdc,IP:0,U
-	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:-5
-X-CID-META: VersionHash:5d391d7,CLOUDID:58514b2e-1ab8-4133-9780-81938111c800,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-	RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,
-	DKR:0,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 320363d29f1911eeba30773df0976c77-20231220
-Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw02.mediatek.com
-	(envelope-from <mingyen.hsieh@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1750732036; Wed, 20 Dec 2023 17:21:45 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Wed, 20 Dec 2023 17:21:44 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Wed, 20 Dec 2023 17:21:44 +0800
-From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
-To: <nbd@nbd.name>, <lorenzo@kernel.org>
-CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
-	<Soul.Huang@mediatek.com>, <Leon.Yen@mediatek.com>,
-	<Eric-SY.Chang@mediatek.com>, <km.lin@mediatek.com>,
-	<robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
-	<Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
-	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
-	<linux-mediatek@lists.infradead.org>, Ming Yen Hsieh
-	<mingyen.hsieh@mediatek.com>, Leon Yen <leon.yen@mediatek.com>
-Subject: [PATCH 4/4] wifi: mt76: mt792x: update the country list of EU for ACPI SAR
-Date: Wed, 20 Dec 2023 17:21:38 +0800
-Message-ID: <20231220092138.12830-5-mingyen.hsieh@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20231220092138.12830-1-mingyen.hsieh@mediatek.com>
-References: <20231220092138.12830-1-mingyen.hsieh@mediatek.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6ED1F5E4;
+	Wed, 20 Dec 2023 09:24:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bues.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bues.ch
+Received: by bues.ch with esmtpsa (Exim 4.96)
+	(envelope-from <m@bues.ch>)
+	id 1rFsoJ-0001dV-37;
+	Wed, 20 Dec 2023 10:24:15 +0100
+Date: Wed, 20 Dec 2023 10:23:07 +0100
+From: Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
+To: Yang Li <yang.lee@linux.alibaba.com>
+Cc: Larry.Finger@lwfinger.net, kvalo@kernel.org,
+ linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Abaci Robot <abaci@linux.alibaba.com>
+Subject: Re: [PATCH net-next] wifi: b43legacy: clean up some inconsistent
+ indentings
+Message-ID: <20231220102307.7dd1f187@barney>
+In-Reply-To: <20231220011209.127586-1-yang.lee@linux.alibaba.com>
+References: <20231220011209.127586-1-yang.lee@linux.alibaba.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: multipart/signed; boundary="Sig_/y4FaB=q8xjAQErvJOYfvURh";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
 
-From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+--Sig_/y4FaB=q8xjAQErvJOYfvURh
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-This patch updates the EU country list to ensure the MTCL table
-works correctly.
+On Wed, 20 Dec 2023 09:12:09 +0800
+Yang Li <yang.lee@linux.alibaba.com> wrote:
 
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Signed-off-by: Leon Yen <leon.yen@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt792x_acpi_sar.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> Closes: https://bugzilla.openanolis.cn/show_bug.cgi?id=3D7783
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_acpi_sar.c b/drivers/net/wireless/mediatek/mt76/mt792x_acpi_sar.c
-index 8fee3d481df0..571ef03cd4cd 100644
---- a/drivers/net/wireless/mediatek/mt76/mt792x_acpi_sar.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x_acpi_sar.c
-@@ -376,7 +376,7 @@ u8 mt792x_acpi_get_mtcl_conf(struct mt792x_phy *phy, char *alpha2)
- 		"AT", "BE", "BG", "CY", "CZ", "HR", "DK", "EE",
- 		"FI", "FR", "DE", "GR", "HU", "IS", "IE", "IT",
- 		"LV", "LI", "LT", "LU", "MT", "NL", "NO", "PL",
--		"PT", "RO", "MT", "SK", "SI", "ES", "CH",
-+		"PT", "RO", "SK", "SI", "ES", "SE", "CH",
- 	};
- 	struct mt792x_acpi_sar *sar = phy->acpisar;
- 	struct mt792x_asar_cl *cl;
--- 
-2.18.0
+This link is not publicly accessible.
 
+> a/drivers/net/wireless/broadcom/b43legacy/dma.c +++
+> b/drivers/net/wireless/broadcom/b43legacy/dma.c @@ -174,8 +174,8 @@
+> static struct b43legacy_dmaring *priority_to_txring( {
+>  	struct b43legacy_dmaring *ring;
+> =20
+> -/*FIXME: For now we always run on TX-ring-1 */
+> -return dev->dma.tx_ring1;
+> +	/*FIXME: For now we always run on TX-ring-1 */
+> +	return dev->dma.tx_ring1;
+> =20
+>  	/* 0 =3D highest priority */
+>  	switch (queue_priority) {
+
+Thanks for your patch.
+
+But actually, I am kind of annoyed by the constant stream of whitespace
+fixing and dead code removal and other trivial changes to this legacy
+driver.
+
+It does not improve the code to add two tabs to this _ancient_ code.
+
+And I can already see the next patch coming that removes the dead code
+after this FIXME return. And then the next patch will come to remove
+this function altogether, and so on and so on.
+
+This driver has a _lot_ of such code, because it is based on reverse
+engineered knowledge with many many unknowns.
+
+IMO this just creates additional maintenance work and pressure on our
+maintainers for no good reason.
+
+--=20
+Michael B=C3=BCsch
+https://bues.ch/
+
+--Sig_/y4FaB=q8xjAQErvJOYfvURh
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAmWCsnsACgkQ9TK+HZCN
+iw4Obw/8CbjI5T2OUyKj3zauqWP5vWhCTIrGTywS57QuhuSpqOqr8Tg6AGyyMNQO
+PUpdDFtUku5QZP/Wpv32SMdS2DX+HL0tStHSFOifCBpeErcryBhh6O0fe9uiY9cU
+Pbp4PWbE7wVYRckm6N+swumi6VXS17Sh1695W3WYUwoknGRJJO31bn7q1AS2pwat
+vUbKDSXwA0qYSnk6OPyH86V+xPW4FPpNmjMos4H4H5iVob5ACLDdQoPlL+8UCtDX
+orc8l50tqiPWxtBHTUh98E0OPLqFIsANfqgNoEmMFEwOQ2+40bttUQ51YnLeW1Xd
+dZpZORtqNyiB/GWGXiAnzLB2hBaMhNLokV02lpntqFHykTitdcSZafQRNAHQPhMU
+NFucT+Ydg1qr1QCcFmIOhwHsz5rdQ64PKPTM1+ikwz/P4wmMGHE9KZJeOUr/iXbj
+FFr75+FzzQCfgziuA9fazuiqyec2rdvJHu83ytcVKhH8/lUv+SQoNmUyIk7aAT1t
+WVmD6ipunBLQkZKUa2ZiifvyKkuXmf7K1mmiqPB/rfNjuy1gVuNMvIxhAkZwapoz
+7PkUrg6BDeWZsLF9P8AAq9ZbvNvrULE7e3HR2XPHX3vSfkDP7b+ttK3TaUJfS0N+
+HRxy1L5xBuMO1krzfl7SFoLy9QiuWYChUqj8eIKx0TC501yHslU=
+=wt9n
+-----END PGP SIGNATURE-----
+
+--Sig_/y4FaB=q8xjAQErvJOYfvURh--
 
