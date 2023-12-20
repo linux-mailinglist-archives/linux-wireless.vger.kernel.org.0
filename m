@@ -1,162 +1,83 @@
-Return-Path: <linux-wireless+bounces-1101-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1102-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A291381A2E8
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 16:43:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0443881A348
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 16:56:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E955283BAC
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 15:43:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AD3D1C24535
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 15:56:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1453741206;
-	Wed, 20 Dec 2023 15:42:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A7234776A;
+	Wed, 20 Dec 2023 15:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="F6LGtRol";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="lNULCViz";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="F6LGtRol";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="lNULCViz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AfZuHwHt"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F43540BFA
-	for <linux-wireless@vger.kernel.org>; Wed, 20 Dec 2023 15:42:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:98])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 3BDF11F838
-	for <linux-wireless@vger.kernel.org>; Wed, 20 Dec 2023 15:42:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1703086970; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type;
-	bh=Lt84uzYKMClfMYnrjQajLygvkJUg34stoKUbByEnYtk=;
-	b=F6LGtRolyIqmivkIYjb5bpbkuFSWGcdMT5c15nDHss7tMosjCV87XEaxWnTkQp9x9mZpwe
-	YCSWeBdTZE8eFRzq3K8wtAVb5qCOeyzMjpmO9AmACNjxNrZB1v2+HNfWc/LuvZWGeSgYX0
-	hs+dv4pTn1pXXrYXaVXYOtZv0l5fCNU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1703086970;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type;
-	bh=Lt84uzYKMClfMYnrjQajLygvkJUg34stoKUbByEnYtk=;
-	b=lNULCVizVN9BuVumG8zz8iAy9M2y2Bx5GBCeoVLIC2Voo2wKsH8gN7AsWOlF2VcK1kUHqd
-	3ZSunHIFNd1EfPAw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1703086970; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type;
-	bh=Lt84uzYKMClfMYnrjQajLygvkJUg34stoKUbByEnYtk=;
-	b=F6LGtRolyIqmivkIYjb5bpbkuFSWGcdMT5c15nDHss7tMosjCV87XEaxWnTkQp9x9mZpwe
-	YCSWeBdTZE8eFRzq3K8wtAVb5qCOeyzMjpmO9AmACNjxNrZB1v2+HNfWc/LuvZWGeSgYX0
-	hs+dv4pTn1pXXrYXaVXYOtZv0l5fCNU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1703086970;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type;
-	bh=Lt84uzYKMClfMYnrjQajLygvkJUg34stoKUbByEnYtk=;
-	b=lNULCVizVN9BuVumG8zz8iAy9M2y2Bx5GBCeoVLIC2Voo2wKsH8gN7AsWOlF2VcK1kUHqd
-	3ZSunHIFNd1EfPAw==
-Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 1DDD613A08
-	for <linux-wireless@vger.kernel.org>; Wed, 20 Dec 2023 15:42:50 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap2.dmz-prg2.suse.org with ESMTPSA
-	id ZUZqBHoLg2V8NgAAn2gu4w
-	(envelope-from <pperego@suse.de>)
-	for <linux-wireless@vger.kernel.org>; Wed, 20 Dec 2023 15:42:50 +0000
-Date: Wed, 20 Dec 2023 16:42:49 +0100
-From: Paolo Perego <pperego@suse.de>
-To: linux-wireless@vger.kernel.org
-Subject: Interested in helping maintaining cypress wifi
-Message-ID: <2quekdwievucb5nit6ryan3hnpqax2sgvj4i5xmt44o6fsfmul@otnkywddp2be>
-X-Responsible-Disclosure: https://en.opensuse.org/openSUSE:Security_disclosure_policy
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77D384185D;
+	Wed, 20 Dec 2023 15:55:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DE81C433C7;
+	Wed, 20 Dec 2023 15:55:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1703087752;
+	bh=ljBVQFPPMODMjkz27mK+HvRvrQ2qgtBuUctiUK99lTU=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=AfZuHwHtUUThfYKrshL7QiFG3Oa+621djFBCRJLsYLw2mZ5P5fl9acub90I+Zf3bA
+	 7tJTOc6yxfzbk5g3EGNcC1pD2Vpb6nZWANoj20GZ3kxNbhK6n3ukliee3g80cixhiN
+	 dDnlDk3EbIhQqIYKr2tGntA8o4BrtlIMkcaSC53v25SoD4M+E3cYLRM+BgX3XHcgM0
+	 Ck2saQ3QgFjAEQ+co/lO0c2lXytaDXH+u99+bpc6I6S4YBI5VKV1I+PZGGwKmZ2LnO
+	 BUCCYAmfVDH6+OcjJwFVZ5uEfEaq0YKfV0LQMnvwBeubrqGIzE3zLAAb7wCE4Hw8Jm
+	 o1RycnaLAX5Jg==
+From: Kalle Valo <kvalo@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Hector Martin <marcan@marcan.st>,  Daniel Berlin <dberlin@dberlin.org>,
+  Arend van Spriel <arend.vanspriel@broadcom.com>,  Arend van Spriel
+ <aspriel@gmail.com>,  Franky Lin <franky.lin@broadcom.com>,  Hante
+ Meuleman <hante.meuleman@broadcom.com>,  SHA-cyfmac-dev-list@infineon.com,
+  asahi@lists.linux.dev,  brcm80211-dev-list.pdl@broadcom.com,
+  linux-kernel@vger.kernel.org,  linux-wireless@vger.kernel.org,  David
+ Airlie <airlied@redhat.com>,  Daniel Vetter <daniel@ffwll.ch>
+Subject: Re: [PATCH] wifi: brcmfmac: cfg80211: Use WSEC to set SAE password
+References: <20231107-brcmfmac-wpa3-v1-1-4c7db8636680@marcan.st>
+	<170281231651.2255653.7498073085103487666.kvalo@kernel.org>
+	<18c80d15e30.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+	<1b51997f-2994-46e8-ac58-90106d1c486d@marcan.st>
+	<c392f901-789a-42e2-8cf7-5e246365a1ca@broadcom.com>
+	<CAF4BwTXNtu30DAgBXo4auDaDK0iWc9Ch8f=EH+facQ-_F-oMUQ@mail.gmail.com>
+	<87r0jiqmnx.fsf@kernel.org>
+	<01bd8c68-1b9c-49b2-8ace-1c7d1b5192ad@marcan.st>
+	<CAHk-=whDLKZZEuxU_jEhZRdeWjXAkL8=J_JRk2Ar6wp9UK3h2w@mail.gmail.com>
+	<871qbhqio8.fsf@kernel.org>
+Date: Wed, 20 Dec 2023 17:55:48 +0200
+In-Reply-To: <871qbhqio8.fsf@kernel.org> (Kalle Valo's message of "Wed, 20 Dec
+	2023 12:20:39 +0200")
+Message-ID: <871qbg3m2j.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="6h5tf7ghiphcrno2"
-Content-Disposition: inline
-X-Spam-Level: 
-X-Spam-Level: 
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=F6LGtRol;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=lNULCViz
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-5.72 / 50.00];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 ARC_NA(0.00)[];
-	 R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:98:from];
-	 FROM_HAS_DN(0.00)[];
-	 DWL_DNSWL_MED(-2.00)[suse.de:dkim];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 NEURAL_HAM_LONG(-1.00)[-1.000];
-	 MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	 PREVIOUSLY_DELIVERED(0.00)[linux-wireless@vger.kernel.org];
-	 TO_DN_NONE(0.00)[];
-	 RCPT_COUNT_ONE(0.00)[1];
-	 NEURAL_HAM_SHORT(-0.20)[-1.000];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 DKIM_TRACE(0.00)[suse.de:+];
-	 MX_GOOD(-0.01)[];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim];
-	 SIGNED_PGP(-2.00)[];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+,1:+,2:~];
-	 MID_RHS_NOT_FQDN(0.50)[];
-	 RCVD_TLS_ALL(0.00)[];
-	 BAYES_HAM(-0.61)[81.95%]
-X-Spam-Score: -5.72
-X-Rspamd-Queue-Id: 3BDF11F838
-X-Spam-Flag: NO
+Content-Type: text/plain
 
+Kalle Valo <kvalo@kernel.org> writes:
 
---6h5tf7ghiphcrno2
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> And Arend is the expert here, he has best knowledge of Broadcom
+> devices and I trust him.
 
-Hi list, I read on LinkedIN, Eric Curtin talking about the opportunity
-to become an upstream maintainer for Cypress Wifi.
+But Arend decided to step down:
 
-I'm really interested in joining and taking care of this.
+https://patchwork.kernel.org/project/linux-wireless/patch/20231220095750.307829-1-arend.vanspriel@broadcom.com/
 
-Please tell me how to procede.
-Regards,
---
-(*_  Paolo Perego                           @thesp0nge
-//\  Software security engineer               suse.com
-V_/_ 0A1A 2003 9AE0 B09C 51A4 7ACD FC0D CEA6 0806 294B
+And no wonder.
 
---6h5tf7ghiphcrno2
-Content-Type: application/pgp-signature; name="signature.asc"
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEChogA5rgsJxRpHrN/A3OpggGKUsFAmWDC3gACgkQ/A3OpggG
-KUvFMg//fgBmbEHBIJPsEZnsGqGxxJcmunTevjf3MOHs/EUqxr2OXj1o7LPo26Cr
-9XXlq4nz13lFQ+eOnfEQa7y3djyFQDlB3JuJa7m/pGPNVOgMAuI1YtHTvG18+G0O
-Dqmfl8vD+R3dtWSSg2gL3LRIGPSxhA/HYc4RUQnVnZph7wFS0euB5h5cC8m3cTrq
-6u1lIwbthR32KmCUiUdxZpu2hLUB7hJmB83MFUa6glXuuvOk+AQh0KsGUl5eRjWP
-JcjRnVyWJkSexlBy4N/1FDnnE2ABVXl8mTx6Xw/se9ev+L6bTKiPTzlY+/A7XFph
-CEvdVDoIbK9l8/krdNXvdd6FGeuuzbJaEMoxOswA+cD3NTXEW6IViBTiUNXC/98N
-Hrf956M9jw0GTYX9cIsYkaW5nwdgdI6SUlCei2+frFb/viON+BH87z1SZwY+gZK4
-Eq0t1WUtR+a5B/+U+TcZldvSZcHUWWOUdFzacce2TjTi8nfuSqJKfQfwMxslPMrQ
-w1OkLxtKGpoyUa+dO6mw5nmkwhT58Hv4dj7PRbsl6u0Fv4dj0ZJzzgFUlU3UjFyb
-tcjVb+5wbiSMGiDDP6R9Ee2HgguHId+2JdF5OMQTjtmuPqOvEiXdS/8I2flug9mb
-PhFxnT84vvfYB0P61n+23UH66Y0q9HHdPVwzyoQ9XbaCSTHW/yg=
-=Z8wr
------END PGP SIGNATURE-----
-
---6h5tf7ghiphcrno2--
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
