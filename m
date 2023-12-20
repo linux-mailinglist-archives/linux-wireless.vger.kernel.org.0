@@ -1,65 +1,64 @@
-Return-Path: <linux-wireless+bounces-1119-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1120-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45B0581A75F
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 20:43:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E57C81A777
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 21:03:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 749091C2295F
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 19:43:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AAAAF1F23BE3
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 20:03:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E913A4879E;
-	Wed, 20 Dec 2023 19:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA76E48CC9;
+	Wed, 20 Dec 2023 20:03:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FgNhzsQu"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ikFmhRbs"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E23AA482FC
-	for <linux-wireless@vger.kernel.org>; Wed, 20 Dec 2023 19:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D93D048CCA
+	for <linux-wireless@vger.kernel.org>; Wed, 20 Dec 2023 20:03:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1703101396; x=1734637396;
+  t=1703102616; x=1734638616;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=q6/yZvKqtgOzMut48pOdIeoY9DKXbzZl6O/TMrpySoU=;
-  b=FgNhzsQuF48PLs640eoWYP6tnN98ftSwIruJ6QHFM4U9rPtGkM1sC+Fk
-   G9/aOVMu5mVOB4rTN+sReE+IOTcnb5nsMZ2iuk6k77GePiHdcXnpZcoLe
-   prlwUvq5rLytnjnKnq1vXMzgbhTg2T8A4tmVC3HNNKZ+4wr9Q8XlopBYc
-   BXZSwSZejvrNM+5O1XOt7Tjrm/iYcv+LeWFNZBrElHdkOQCPhcvu0M12g
-   r1uDJlU+Thm8QE/Huj19RFg+BZNZ11agXMCroJQfhzC+wgj+niJV32Hwo
-   x+7PpdAVQkCZVZ/Ih8whkf6G4Uc6je3+oFtuFp6J5os5HoHLO+0iKIEC/
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10930"; a="399698854"
+  bh=dSrI6PiNH8+PjAoKRADh74C4SR8bFbXDzLlhwsDQTd4=;
+  b=ikFmhRbsL1OVJ2yCFF8p9zhDI4eyjuX7Cy38b+1UHVBJWhCoJdYURXwG
+   AoFNmOapyMppHa9MSQQOCKoxLDE7mzpRPU+jChYjk+hlDtazvVzrzHBG6
+   By1bZcDp0m9IiPXcfRygvE65w0w2SFOEiUk7+4eHTBgffkGAl5+IZN7Kf
+   ttpNsnkH8ZvoX+cyA1ZwR0JNt7+HgTW8NvvhtRqaZAueUWsEghz3eFOFH
+   JCgfA+0KPl0x2ztWyCQtyJeh5QtBY1JgiW4M7+jsl+TB7FG7+G+Wo4/wT
+   HDkd6Wgu/0sxtJSiVcMGM5GPoPDE9Vh/Iw/PYDrji3GybHT2DFHVHPSWd
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10930"; a="398648268"
 X-IronPort-AV: E=Sophos;i="6.04,292,1695711600"; 
-   d="scan'208";a="399698854"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2023 11:43:14 -0800
+   d="scan'208";a="398648268"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2023 12:03:35 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10930"; a="867078322"
+X-IronPort-AV: E=McAfee;i="6600,9927,10930"; a="769700136"
 X-IronPort-AV: E=Sophos;i="6.04,292,1695711600"; 
-   d="scan'208";a="867078322"
+   d="scan'208";a="769700136"
 Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
-  by FMSMGA003.fm.intel.com with ESMTP; 20 Dec 2023 11:43:12 -0800
+  by orsmga007.jf.intel.com with ESMTP; 20 Dec 2023 12:03:33 -0800
 Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1rG2TG-0007Oz-1c;
-	Wed, 20 Dec 2023 19:43:10 +0000
-Date: Thu, 21 Dec 2023 03:42:12 +0800
+	id 1rG2mv-0007Qv-1c;
+	Wed, 20 Dec 2023 20:03:29 +0000
+Date: Thu, 21 Dec 2023 04:02:31 +0800
 From: kernel test robot <lkp@intel.com>
 To: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	johannes@sipsolutions.net
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-wireless@vger.kernel.org,
+Cc: oe-kbuild-all@lists.linux.dev, linux-wireless@vger.kernel.org,
 	Andrei Otcheretianski <andrei.otcheretianski@intel.com>,
 	Gregory Greenman <gregory.greenman@intel.com>
 Subject: Re: [PATCH 02/14] wifi: iwlwifi: mvm: Allow DFS concurrent operation
-Message-ID: <202312210330.BRAWF2Tp-lkp@intel.com>
+Message-ID: <202312210343.J7eedmDf-lkp@intel.com>
 References: <20231219215605.dc39b33bf507.I04dfda24d73091fb75701279d10ac400314de488@changeid>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -85,30 +84,30 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Miri-Korenblit/iwlwifi-mv
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
 patch link:    https://lore.kernel.org/r/20231219215605.dc39b33bf507.I04dfda24d73091fb75701279d10ac400314de488%40changeid
 patch subject: [PATCH 02/14] wifi: iwlwifi: mvm: Allow DFS concurrent operation
-config: x86_64-allyesconfig (https://download.01.org/0day-ci/archive/20231221/202312210330.BRAWF2Tp-lkp@intel.com/config)
-compiler: clang version 16.0.4 (https://github.com/llvm/llvm-project.git ae42196bc493ffe877a7e3dff8be32035dea4d07)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231221/202312210330.BRAWF2Tp-lkp@intel.com/reproduce)
+config: loongarch-allmodconfig (https://download.01.org/0day-ci/archive/20231221/202312210343.J7eedmDf-lkp@intel.com/config)
+compiler: loongarch64-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231221/202312210343.J7eedmDf-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202312210330.BRAWF2Tp-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202312210343.J7eedmDf-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
->> drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c:1616:13: error: use of undeclared identifier 'NL80211_RRF_DFS_CONCURRENT'; did you mean 'NL80211_RRF_IR_CONCURRENT'?
-                           flags |= NL80211_RRF_DFS_CONCURRENT;
-                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~
-                                    NL80211_RRF_IR_CONCURRENT
-   include/uapi/linux/nl80211.h:4515:2: note: 'NL80211_RRF_IR_CONCURRENT' declared here
-           NL80211_RRF_IR_CONCURRENT       = 1<<12,
-           ^
-   1 error generated.
+   drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c: In function 'iwl_nvm_get_regdom_bw_flags':
+>> drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c:1616:34: error: 'NL80211_RRF_DFS_CONCURRENT' undeclared (first use in this function); did you mean 'NL80211_RRF_IR_CONCURRENT'?
+    1616 |                         flags |= NL80211_RRF_DFS_CONCURRENT;
+         |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~
+         |                                  NL80211_RRF_IR_CONCURRENT
+   drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c:1616:34: note: each undeclared identifier is reported only once for each function it appears in
 --
->> drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c:522:11: error: use of undeclared identifier 'NL80211_EXT_FEATURE_DFS_CONCURRENT'
-                                         NL80211_EXT_FEATURE_DFS_CONCURRENT);
-                                         ^
-   1 error generated.
+   drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c: In function 'iwl_mvm_mac_setup_register':
+>> drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c:522:39: error: 'NL80211_EXT_FEATURE_DFS_CONCURRENT' undeclared (first use in this function); did you mean 'NL80211_EXT_FEATURE_BSS_COLOR'?
+     522 |                                       NL80211_EXT_FEATURE_DFS_CONCURRENT);
+         |                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+         |                                       NL80211_EXT_FEATURE_BSS_COLOR
+   drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c:522:39: note: each undeclared identifier is reported only once for each function it appears in
 
 
 vim +1616 drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
