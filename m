@@ -1,93 +1,148 @@
-Return-Path: <linux-wireless+bounces-1114-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1115-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C666381A6A3
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 19:03:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A275181A6BA
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 19:14:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02AE31C2376C
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 18:03:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DCAB286B98
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 18:14:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15159482C0;
-	Wed, 20 Dec 2023 18:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45B4F482D7;
+	Wed, 20 Dec 2023 18:14:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FAuIRe/S"
+	dkim=pass (2048-bit key) header.d=marcan.st header.i=@marcan.st header.b="lOFusqj8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E54C482C2
-	for <linux-wireless@vger.kernel.org>; Wed, 20 Dec 2023 18:03:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2cc7087c6c4so46596471fa.2
-        for <linux-wireless@vger.kernel.org>; Wed, 20 Dec 2023 10:03:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1703095412; x=1703700212; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+VFVpKA5l5WRhi6iFr6WgzjQ1BJaMwNlfF8FJIbQtqE=;
-        b=FAuIRe/SqgnlXvWwB4lS5ldqVnfi4Q/2mgjis6hCjgAgwXLVPEYeABc9Eh3WVmzjGU
-         5Ib1XK1emU0r2SjLx33hSzuY4p7nzqOHGJSOpEk3izBij8rvOvsOd07UlOn/0bY8LjkF
-         NRopflKStlwBceTcoiMmVVlwvQ9SY5pKll5aPjxKtEeUNbWVGS6d8ppu1TsThxFxDpQu
-         GgGBesfeZ8/VZHwEScpKVrBBX4ExuAXAA3IbEN156i+fsIJo97PDqrOp8GXTKLqahXT4
-         NVaoLeXPS5G1jP85JT7SDoNR3wMOKL2d2cdiJxTG1hz1JTdczO1Fu+ebd2NsJX/C6Vef
-         T2kA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703095412; x=1703700212;
-        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+VFVpKA5l5WRhi6iFr6WgzjQ1BJaMwNlfF8FJIbQtqE=;
-        b=MDO4ty5JaclFWEnERcDsWjPNpoMtDyzfFDL6ao02ZSNZL/+eufSAXBAYhgutj6C0mm
-         e/Xoes8VdP6kSGy+8iPIuDaDK522iKoz4x3lHDvAOi9rrXtxquEP3XxpKDFZygEhLG6j
-         OSZEnJmfUIDFqjsaSylqwHfSOt/rc14K8gTDTQ3PR1kV/baejNAZ1EDFAwAbEIPACbgD
-         gWOPdyeVO4+6PCUuTuAEQ1kItxlydb1kBYD6qxlbd7873gZ65Ln9iI1t10Ra4ew4TJFa
-         6kU4OHCDcYt62bmfx8vT3Q13oE9YBs8jE2g8kMtYR3L9sc7TgTVVLQbSIKZBrF4lRu3t
-         m9ig==
-X-Gm-Message-State: AOJu0YyTa/5GwL/BJ8jNrBF2GJ3fH877GfXHQHc8ltIFINgHnPkBtsPL
-	bKeFofR/mrtnfSRZUYKtyBN2vpBX2R1G9ImsmhPxtCYcKuA=
-X-Google-Smtp-Source: AGHT+IGf2KVyYXYYhDiimbCAsZhksPmpSYd14gbx1h9ho8gM2tc9K24ygaaMyY+DjcZ9TCIaZnhvhyGKcJDBgGSTqPs=
-X-Received: by 2002:a05:651c:514:b0:2cc:1def:18aa with SMTP id
- o20-20020a05651c051400b002cc1def18aamr9537934ljp.96.1703095412225; Wed, 20
- Dec 2023 10:03:32 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63893482D6;
+	Wed, 20 Dec 2023 18:14:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marcan.st
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marcan.st
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
+	(No client certificate requested)
+	(Authenticated sender: marcan@marcan.st)
+	by mail.marcansoft.com (Postfix) with ESMTPSA id C981241EC4;
+	Wed, 20 Dec 2023 18:14:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=marcan.st; s=default;
+	t=1703096070; bh=0Ruf0uIt2rqlsafRm8hWJqxuBvI8xmomb8EP+jsV6e0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=lOFusqj8rv3nosUxmw0TU/RJ4TCdPhl8aMAFf+AeAoeD1jHAaP5w6xVOAkzjLlFfz
+	 NyiyGeFALRHdKovnCvTv4g1O0XZw8L/uidUKT4tHcXZNgCG5ZnhX+uV5I5/Fg0ecI+
+	 /o9ztQzI0eQG/6Z7NrRsMeIpKjp+7wleKfI/7WVb6sUAutf1d2cr8Awv3qtSCwIu7A
+	 Glof+lHsxsdRvmAT6LiRZbdZv9FwWPYJs3KLvi3V6MB7/XZyx7FMaI7ZgqX/uzw7Qy
+	 1GDgRdh6qo3Td0u5YiliHCA6ZR687tCikPJbY+objKKdQ6OT8OeeHsBxoeJqZzjQo1
+	 NPTYyPrHNmj1w==
+Message-ID: <4c89b71e-8667-40fe-add0-205748de51ef@marcan.st>
+Date: Thu, 21 Dec 2023 03:14:25 +0900
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAFwS=wUORO=qs=RvVEEyMLspxcHxUDy+1aVXKPnwtHaggZ7D=A@mail.gmail.com>
-In-Reply-To: <CAFwS=wUORO=qs=RvVEEyMLspxcHxUDy+1aVXKPnwtHaggZ7D=A@mail.gmail.com>
-From: Fernando Piacente <nandopiacente@gmail.com>
-Date: Wed, 20 Dec 2023 15:03:21 -0300
-Message-ID: <CAFwS=wUiJXgh6uG-5h+Je5Ks83+khB_p9Zi3GrqpcJqPLjQu0A@mail.gmail.com>
-Subject: Cypress Wifi collaboration request
-To: linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: brcmfmac: cfg80211: Use WSEC to set SAE password
+Content-Language: en-US
+To: Kalle Valo <kvalo@kernel.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Daniel Berlin <dberlin@dberlin.org>,
+ Arend van Spriel <arend.vanspriel@broadcom.com>,
+ Arend van Spriel <aspriel@gmail.com>, Franky Lin <franky.lin@broadcom.com>,
+ Hante Meuleman <hante.meuleman@broadcom.com>,
+ SHA-cyfmac-dev-list@infineon.com, asahi@lists.linux.dev,
+ brcm80211-dev-list.pdl@broadcom.com, linux-kernel@vger.kernel.org,
+ linux-wireless@vger.kernel.org, David Airlie <airlied@redhat.com>,
+ Daniel Vetter <daniel@ffwll.ch>
+References: <20231107-brcmfmac-wpa3-v1-1-4c7db8636680@marcan.st>
+ <170281231651.2255653.7498073085103487666.kvalo@kernel.org>
+ <18c80d15e30.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+ <1b51997f-2994-46e8-ac58-90106d1c486d@marcan.st>
+ <c392f901-789a-42e2-8cf7-5e246365a1ca@broadcom.com>
+ <CAF4BwTXNtu30DAgBXo4auDaDK0iWc9Ch8f=EH+facQ-_F-oMUQ@mail.gmail.com>
+ <87r0jiqmnx.fsf@kernel.org> <01bd8c68-1b9c-49b2-8ace-1c7d1b5192ad@marcan.st>
+ <CAHk-=whDLKZZEuxU_jEhZRdeWjXAkL8=J_JRk2Ar6wp9UK3h2w@mail.gmail.com>
+ <871qbhqio8.fsf@kernel.org>
+From: Hector Martin <marcan@marcan.st>
+In-Reply-To: <871qbhqio8.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hello,
 
-Based on Eric Curtin post on linkedin, I want to manifest my interest
-in collaborating with Cypress Wifi.
 
-I'm an embedded software developer and aspiring kernel developer, so
-I'm looking for open source projects to collaborate with.
+On 2023/12/20 19:20, Kalle Valo wrote:
+> Linus Torvalds <torvalds@linux-foundation.org> writes:
+> 
+>>> Just recently a patch was posted to remove the Infineon list from
+>>> MAINTAINERS because that company cares so little they have literally
+>>> stopped accepting emails from us. Meanwhile they are telling their
+>>> customers that they do not recommend upstream brcmfmac and they should
+>>> use their downstream driver [1].
+>>
+>> Unquestionably broadcom is not helping maintain things, and I think it
+>> should matter.
+>>
+>> As Hector says, they point to their random driver dumps on their site
+>> that you can't even download unless you are a "Broadcom community
+>> member" or whatever, and hey - any company that works that way should
+>> be seen as pretty much hostile to any actual maintenance and proper
+>> development.
+> 
+> Sadly this is the normal in the wireless world. All vendors focus on the
+> latest generation, currently it's Wi-Fi 7, and lose interest on older
+> generations. And vendors lose focus on the upstream drivers even faster,
+> usually after a customer project ends.
+> 
+> So in practise what we try to do is keep the drivers working somehow on
+> our own, even after the vendors are long gone. If we would deliberately
+> allow breaking drivers because vendor/corporations don't support us, I
+> suspect we would have sevaral broken drivers in upstream.
+> 
+>> If Daniel and Hector are responsive to actual problem reports for the
+>> changes they cause, I do think that should count a lot.
+> 
+> Sure, but they could also respect to the review comments. I find Arend's
+> proposal is reasonable and that's what I would implement in v2. We
+> (linux-wireless) make abstractions to workaround firmware problems or
+> interface conflicts all the time, just look at ath10k for example. I
+> would not be surprised if we need to add even more abstractions to
+> brcmfmac in the future. And Arend is the expert here, he has best
+> knowledge of Broadcom devices and I trust him.
+> 
+> Has anyone even investigated what it would need to implement Arend's
+> proposal? At least I don't see any indication of that.
 
-It would be a big pleasure to help with any kind of code-related
-tasks, being a maintainer or just a developer.
+Of course we can implement it (and we will as we actually got a report
+of this patch breaking Cypress now, finally).
 
-Right now I'm working full time but I choose my schedules, so I can
-invest a good amount of time and energy in this.
+The question was never whether it could be done, we're already doing a
+bunch of abstractions to deal with just the Broadcom-only side of things
+too. The point I was trying to make is that we need to *know* what
+firmware abstractions we need and *why* they are needed. We can't just
+say, for every change, "well, nobody knows if the existing code works or
+not, so let's just add an abstraction just in case the change breaks
+something". As far as anyone involved in the discussions until now could
+tell, this code was just something some Cypress person dumped upstream,
+and nobody involved was being responsive to any of our inquiries, so
+there was no way to be certain it worked at all, whether it was
+supported in public firmware, or anything else.
 
-My experience with Linux is vast, but I have two years focusing on
-kernel development (courses, experiments and some minor job tasks).
+*Now* that we know the existing code is actually functional and not just
+dead/broken, and that the WSEC approach is conversely not functional on
+the Cypress firmwares, it makes sense to introduce an abstraction.
 
-Let me know if and how I can help.
+Here's an example of the case where an abstraction was *not* needed: I
+switched over WPA PSK configuration from hex-encoded to binary. That was
+needed to make more recent Apple firmwares work. My evidence at the time
+that that change *was* at least fairly backwards compatible was that the
+OpenBSD driver had been doing it that way all along. Had we introduced
+an abstraction/conditional for that case "just in case", it would have
+generated superfluous technical debt for no reason.
 
-Ps.: I'm open to another project's recommendation as well.
-
-Cheers,
-Fernando P. Nazario
+- Hector
 
