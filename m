@@ -1,81 +1,82 @@
-Return-Path: <linux-wireless+bounces-1084-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1085-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B074B819DA5
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 12:05:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E1EA819DED
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 12:22:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 667F21F238F9
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 11:05:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2FD4EB216BB
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 11:22:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6692E21103;
-	Wed, 20 Dec 2023 11:05:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A46021119;
+	Wed, 20 Dec 2023 11:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nNpkHQ5Q"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XrTHVQ6x"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC41210F6;
-	Wed, 20 Dec 2023 11:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22E3D21340;
+	Wed, 20 Dec 2023 11:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-6d9f8578932so4198443a34.2;
-        Wed, 20 Dec 2023 03:05:39 -0800 (PST)
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-1d3e05abcaeso9333755ad.1;
+        Wed, 20 Dec 2023 03:22:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1703070339; x=1703675139; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZK4NlSSPgQwsGSHLA/Pycg97M136hutjFPJCvYqz4Ck=;
-        b=nNpkHQ5Q3t4Vo5jzD23CVoq4WvQoIo0KMvz3puhxF8NGoLAumpp9y9YCesviDnkEYE
-         IIpHKqK+yqGtcCv6967F9JmIfMAoeIhyji6Wr2grvc+OaJIAgaOcfuqgndq/NC9RlzuD
-         yZCQahT8PryFRjVvHkfhOzsggEW7QpsBPEtkLiwyhUXVVLznCJpJyt9nub3z8XU889G2
-         6faxu/zp/He6sCK1H26wrro2HQw7J2cnjGxPsswQzMpAYbaL5C4rYI59g+EsXSTEiKlp
-         TCqwGWTjaNwKV9H/sRGBRDnjgK2OcrwqVHziTBtXbNU2aHGXMTgcI9fIew9mzudbbma7
-         EgdQ==
+        d=gmail.com; s=20230601; t=1703071358; x=1703676158; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=FLv841g2aqTtUASe3tU8xGXA52jFUerqlxRz8E8fkBI=;
+        b=XrTHVQ6xKuOf+g9/1CKxHS6FD2q1cQT/Q21pqfo+E4A9kGjYqML+Naf/wmwvTNJJBd
+         viocbV2AQ1f5H3ibWUzxgKB7Z7vyDB6HGnkTGgv1w4ufNucBh25D/Fa9jgx98oE0Vi1G
+         es8BRQRp2NCy7fEpQ4d7nmTlWAvjvgeMmifmTTI/uCbr5lyJcQjXJY6pvJ1Gs+djAodd
+         PIcqGjFF8ABfCpO5pYe1XC4xdBxAwCLDVtNlNddMrxenHi9gr04dN6Oj9aF5+vLyP0bj
+         l7EmEAZcaLlGax8A0htspLL3NNpZHtmzyeLqcYJNUOhaLOZV1ZIV1CSjpz+cdJq+v83S
+         vvlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703070339; x=1703675139;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZK4NlSSPgQwsGSHLA/Pycg97M136hutjFPJCvYqz4Ck=;
-        b=LLZqY+EKJWTt9E0GaXodjQlmpSbz0x+V3lTTp7qIXTurvcq1vMW4GbE43+Wh8LxU13
-         cf91NbsjqKmGo2pCy1IPG+JjBODo22gDgUu8HqjqXZw4UtSFCEV9C41LaLhWw1kAOrcL
-         krLk8IGEyBhes0VN0xL+EBYqg0vf3Is+p2zJTA8kL45f+deeXyeEo53gHGY9FCrTjfYV
-         IjBjhu1aCIDKMT428Oi+rp5QwjOvEcmD1r3IumJY7PVhM9CiNY8PyLS8zcwvY0xPOo/d
-         AcFqRnkKE1QVnZSwIIL0v2HcFBXO+1l39hacSXd1UEEOQo4IUbBTbvSbsB+YhTRNVfOu
-         +k+w==
-X-Gm-Message-State: AOJu0YxICztuiizqOEvtUtOpT2P9e1KAH60aCheMIxsGRcajqqNv6Ybv
-	2Y8wbDKMdDu9KfWPy1kr6Uo=
-X-Google-Smtp-Source: AGHT+IHNw5Fjt6eji/RZDZ0VYxrLINVasZMdhYpFeaAe+l8GXMP3b8PGNjKBysKhnQL06umOFZ4krA==
-X-Received: by 2002:a05:6359:4c1c:b0:170:bd6c:b7cf with SMTP id kj28-20020a0563594c1c00b00170bd6cb7cfmr23746012rwc.46.1703070339040;
-        Wed, 20 Dec 2023 03:05:39 -0800 (PST)
+        d=1e100.net; s=20230601; t=1703071358; x=1703676158;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FLv841g2aqTtUASe3tU8xGXA52jFUerqlxRz8E8fkBI=;
+        b=FKiceH4m43e8m6GhHWS4YUsY9eAB4Qp2RfLS0qKDtK0z4jtz6gbqrkOviJhNP1yJJj
+         eyT/iUSt3mStB4aA+/sO0yjmENg41ZAM7S7UxLccSyJp+Ig3dkC5q9AHIxzSC7Zt6osA
+         Bmt+xbDmsNA6YxSOxrIZJ3fK5agzA1mtVv4Hs5WdScp4cPcTvgv3Xvcd8wMW6I6ZPbZu
+         EcfUiK5zgHWwY0QSDMyP6S5MbHrxpCPhPhJ+XWy+G1gdm4GxDOsDuEZ4Nk2A3MIxdX82
+         8fOLL15C938s+h2//W/6DqN+U7kkv8J5+HhmLYsgqDcPE2zIWw3btjSuwOYjAJjkoCgL
+         oweg==
+X-Gm-Message-State: AOJu0YykYDmk+yeu1Yxjs7uNUyFNwbSF2/yucBJNdApGyk932XniHxeL
+	xKqb+yKtzjZqCUXBm9SHa8g=
+X-Google-Smtp-Source: AGHT+IHfKNyn3tRwqYqENrZS+iVr48qtnl+3lNEWbte23UJlNo9Glq8cb8PkGO5ih115XQXmTesABQ==
+X-Received: by 2002:a17:902:e849:b0:1d3:ee70:87c5 with SMTP id t9-20020a170902e84900b001d3ee7087c5mr508306plg.70.1703071358341;
+        Wed, 20 Dec 2023 03:22:38 -0800 (PST)
 Received: from archie.me ([103.131.18.64])
-        by smtp.gmail.com with ESMTPSA id fk1-20020a056a003a8100b006d40f44dc03sm7642917pfb.11.2023.12.20.03.05.38
+        by smtp.gmail.com with ESMTPSA id y3-20020a170902ed4300b001cfb4d36eb1sm196077plb.215.2023.12.20.03.22.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Dec 2023 03:05:38 -0800 (PST)
+        Wed, 20 Dec 2023 03:22:37 -0800 (PST)
 Received: by archie.me (Postfix, from userid 1000)
-	id AF6051028B299; Wed, 20 Dec 2023 18:05:34 +0700 (WIB)
-Date: Wed, 20 Dec 2023 18:05:34 +0700
+	id 00AA01028B298; Wed, 20 Dec 2023 18:22:33 +0700 (WIB)
+Date: Wed, 20 Dec 2023 18:22:33 +0700
 From: Bagas Sanjaya <bagasdotme@gmail.com>
-To: Hector Martin <marcan@marcan.st>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Kalle Valo <kvalo@kernel.org>, Daniel Berlin <dberlin@dberlin.org>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
+To: Kalle Valo <kvalo@kernel.org>,
+	Johannes Berg <johannes@sipsolutions.net>
+Cc: Arend Van Spriel <arend.vanspriel@broadcom.com>,
+	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
 	Arend van Spriel <aspriel@gmail.com>,
 	Franky Lin <franky.lin@broadcom.com>,
 	Hante Meuleman <hante.meuleman@broadcom.com>,
-	SHA-cyfmac-dev-list@infineon.com, asahi@lists.linux.dev,
-	brcm80211-dev-list.pdl@broadcom.com, linux-kernel@vger.kernel.org,
-	linux-wireless@vger.kernel.org, David Airlie <airlied@redhat.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Phil Elwell <phil@raspberrypi.com>,
-	Nick Hollinghurst <nick.hollinghurst@raspberrypi.com>
-Subject: Re: [PATCH] wifi: brcmfmac: cfg80211: Use WSEC to set SAE password
-Message-ID: <ZYLKftqKFJ_PMmF3@archie.me>
+	linux-wireless@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
+	kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: MAINTAINERS: wifi: brcm80211: remove non-existing
+ SHA-cyfmac-dev-list@infineon.com
+Message-ID: <ZYLOef1s5Ul7uz3_@archie.me>
+References: <20231218121105.23882-1-lukas.bulwahn@gmail.com>
+ <170295913267.640718.8284035097366475252.kvalo@kernel.org>
+ <18c814f4890.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+ <29c3122ca8e4d72c07942d09dca7a0fbd0138024.camel@sipsolutions.net>
+ <8734vysbtt.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -83,56 +84,65 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="rMlNXoe/imCf0D6r"
+	protocol="application/pgp-signature"; boundary="x85mmRQAZSrLT8xn"
 Content-Disposition: inline
-In-Reply-To: <6e330280-0b0a-4483-ac09-cd974d87a7ae@marcan.st>
+In-Reply-To: <8734vysbtt.fsf@kernel.org>
 
 
---rMlNXoe/imCf0D6r
+--x85mmRQAZSrLT8xn
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Dec 20, 2023 at 01:16:20PM +0900, Hector Martin wrote:
+On Tue, Dec 19, 2023 at 12:53:18PM +0200, Kalle Valo wrote:
+> Johannes Berg <johannes@sipsolutions.net> writes:
 >=20
+> > On Tue, 2023-12-19 at 10:01 +0100, Arend Van Spriel wrote:
+> >> >=20
+> >> > > When sending an email to SHA-cyfmac-dev-list@infineon.com, the ser=
+ver
+> >> > > responds '550 #5.1.0 Address rejected.'
+> >>=20
+> >> Is the claim here true? In another thread I replied all including this=
+ list=20
+> >> and I am not getting a bounce message.
+> >
+> > I also got the bounce, FWIW. And Lukas is using gmail ... if you're not
+> > accepting mail from gmail I'm not sure you get to call it "email" in the
+> > 21st century, for (better or) worse...
 >=20
-> On 2023/12/20 10:44, Linus Torvalds wrote:
-> > Put another way: if we effectively don't have a driver maintainer that
-> > can test things, and somebody is willing to step up, shouldn't we take
-> > that person up on it?
+> And is Infineon even contributing anything to upstream? At least I don't
+> have recollection any recent activity, though happy to be proven wrong.
+> We shouldn't have dormant information in MAINTAINERS file.
 >=20
-> Personally, I do think the rPi folks themselves should step up for
-> *testing* at the very least. I did point them at our downstream WiFi
-> branch at one point during a previous discussion and haven't heard back,
-> so either they never tested it, or they did and it didn't break
-> anything. If they're shipping popular Linux hardware where the WiFi
-> chipset vendor has fully and completely checked out of any upstream
-> support, they need to either accept that upstream support will likely
-> break at some point (because that's just what happens when nobody cares
-> about a given piece of hardware, especially with drivers shared across
-> others like this one) or they need to proactively step up and take on,
-> minimally, an early testing role themselves.
 
-I'm agree that downstream (e.g. rPi) developers should also participating
-in upstream kernel development.
+I'm also using gmail (and GMX as backup). When I sent my reply about rPI
+testing [1] with SHA-cyfmac-dev-list@infineon.com Cc'ed, I got `Address
+not found` error instead (but the DSN message was in spam folder instead
+as I treated it as junk).
 
-Also Cc: rPi folks to solicit their opinions.
+For Infineon, they're now focusing on TPM subsystem, with the latest message
+is 6 months (or a semester in academic speak) ago [2].
 
 Thanks.
+
+[1]: https://lore.kernel.org/lkml/ZYLKftqKFJ_PMmF3@archie.me/
+[2]: https://lore.kernel.org/lkml/20230613180259.3525-4-Alexander.Steffen@i=
+nfineon.com/
 
 --=20
 An old man doll... just what I always wanted! - Clara
 
---rMlNXoe/imCf0D6r
+--x85mmRQAZSrLT8xn
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZYLKewAKCRD2uYlJVVFO
-ozFjAP9RYxpZvqkXRWkXgtGFOlqyvnG5Y1UEvsJdEKmqzdW30AD8CHkVFxApQ5TK
-WCwps84FH+6ExEtPz0RrClRSWpi05QI=
-=ea1G
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZYLOdgAKCRD2uYlJVVFO
+o98gAP4yOBKMBVs5YC/xxJc9ZWWlDpUX3Hm41puwaNZW55ftNAD/VVzZ/QTjzPv6
+9WYs5N9WaXzO/OmTYYMhbWRfDRWpJgQ=
+=btd9
 -----END PGP SIGNATURE-----
 
---rMlNXoe/imCf0D6r--
+--x85mmRQAZSrLT8xn--
 
