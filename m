@@ -1,43 +1,45 @@
-Return-Path: <linux-wireless+bounces-1057-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1058-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEB158196D5
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 03:30:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29878819798
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 05:16:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88E912877A4
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 02:29:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B64BC282917
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 04:16:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAAF2846B;
-	Wed, 20 Dec 2023 02:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 161788F66;
+	Wed, 20 Dec 2023 04:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="kacXMSXl"
+	dkim=pass (2048-bit key) header.d=marcan.st header.i=@marcan.st header.b="zOH3w1TV"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4859DFC07;
-	Wed, 20 Dec 2023 02:29:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=vI6BjtvZa1OtwQfscOfCYySPSF4W/z+9OUCWNtr2S0Q=; b=kacXMSXlVR7wQyIQbqm2dFOL2y
-	75gcSjsTqGnIEzCDqmkcRrCl4P7oVgOF/TSgbLHJ1cu2wL2qo6F+g80/UW42QLcYUygeJvsTY14Jd
-	S0MgiIheFV2Xn7RnUkxrVk1mwSDHkql9aZbxtDS6aOdcw10uCHvaBxLOxSDXcbY5ZNUZv8v9yHzol
-	XFg45yBJZ2mgEzsldQC3sPM0meY9t1fEzsQzcKRaO5p/PS5buuDQiK83zPAi0GMDtQE+uj0mNIc+e
-	FBnrSm5aOvPjF0FHmt3bia5VdPmL7wGUcAUWRZbvnDD3AXoVJlp69GYLkyeNkTcuqobsFDKrZ2iMn
-	Nk4Mwiuw==;
-Received: from [50.53.46.231] (helo=[192.168.254.15])
-	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-	id 1rFmL1-00FyTs-0t;
-	Wed, 20 Dec 2023 02:29:35 +0000
-Message-ID: <5e0e5d84-3891-47a1-bce1-beb26cd19b7b@infradead.org>
-Date: Tue, 19 Dec 2023 18:29:35 -0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8A788F7D;
+	Wed, 20 Dec 2023 04:16:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marcan.st
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marcan.st
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: marcan@marcan.st)
+	by mail.marcansoft.com (Postfix) with ESMTPSA id BE74847314;
+	Wed, 20 Dec 2023 04:16:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=marcan.st; s=default;
+	t=1703045788; bh=BrnxJH9/C3KSa/UBf7qYkK+w34sJ9NZAo3NodYr1qto=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=zOH3w1TVBh+i+6a/usCFyjujtAnNWAyjCPfbnTPgGba9+a2RTtOLNJ5RXQ3sKKuzJ
+	 mkWBbMwCznIpfW+7oSNnlRjzqYR90E9e4Y4GYJVYq0MSZg9e1CFYU+BoKlnBLJIa05
+	 y1+iqFQAE46mFpUa8AuABef7C9Av0w2RhCiZZxiDfvJDJ0QOEafqKSiOtE68eHSqAJ
+	 EUEnqR7tpsFbi0CNKgQyTDhF+u9xnvutKjpd6DViTEYDH0dDuEq7B7lfkmOB7YlRqG
+	 GCqt934fiGbq1oGrEbYt0YkCT5/VOhZMBHkQGx5FIJBrEE++QUlgD4SHVJN94T7cZn
+	 0D1qB8k2OjpIg==
+Message-ID: <6e330280-0b0a-4483-ac09-cd974d87a7ae@marcan.st>
+Date: Wed, 20 Dec 2023 13:16:20 +0900
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -45,106 +47,123 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: cfg80211: address several kerneldoc warnings
+Subject: Re: [PATCH] wifi: brcmfmac: cfg80211: Use WSEC to set SAE password
 Content-Language: en-US
-To: Jeff Johnson <quic_jjohnson@quicinc.com>, Jonathan Corbet
- <corbet@lwn.net>, Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <87plz1g2sc.fsf@meer.lwn.net>
- <56d7f97e-bc8b-465f-9e59-80028ccec995@quicinc.com>
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <56d7f97e-bc8b-465f-9e59-80028ccec995@quicinc.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Kalle Valo <kvalo@kernel.org>, Daniel Berlin <dberlin@dberlin.org>,
+ Arend van Spriel <arend.vanspriel@broadcom.com>,
+ Arend van Spriel <aspriel@gmail.com>, Franky Lin <franky.lin@broadcom.com>,
+ Hante Meuleman <hante.meuleman@broadcom.com>,
+ SHA-cyfmac-dev-list@infineon.com, asahi@lists.linux.dev,
+ brcm80211-dev-list.pdl@broadcom.com, linux-kernel@vger.kernel.org,
+ linux-wireless@vger.kernel.org, David Airlie <airlied@redhat.com>,
+ Daniel Vetter <daniel@ffwll.ch>
+References: <20231107-brcmfmac-wpa3-v1-1-4c7db8636680@marcan.st>
+ <170281231651.2255653.7498073085103487666.kvalo@kernel.org>
+ <18c80d15e30.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+ <1b51997f-2994-46e8-ac58-90106d1c486d@marcan.st>
+ <c392f901-789a-42e2-8cf7-5e246365a1ca@broadcom.com>
+ <CAF4BwTXNtu30DAgBXo4auDaDK0iWc9Ch8f=EH+facQ-_F-oMUQ@mail.gmail.com>
+ <87r0jiqmnx.fsf@kernel.org> <01bd8c68-1b9c-49b2-8ace-1c7d1b5192ad@marcan.st>
+ <CAHk-=whDLKZZEuxU_jEhZRdeWjXAkL8=J_JRk2Ar6wp9UK3h2w@mail.gmail.com>
+From: Hector Martin <marcan@marcan.st>
+In-Reply-To: <CAHk-=whDLKZZEuxU_jEhZRdeWjXAkL8=J_JRk2Ar6wp9UK3h2w@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 
 
-On 12/19/23 17:00, Jeff Johnson wrote:
-> On 12/19/2023 4:01 PM, Jonathan Corbet wrote:
->> include/net/cfg80211.h includes a number of kerneldoc entries for struct
->> members that do not exist, leading to these warnings:
+On 2023/12/20 10:44, Linus Torvalds wrote:
+> On Tue, 19 Dec 2023 at 16:06, Hector Martin <marcan@marcan.st> wrote:
 >>
->>   ./include/net/cfg80211.h:3192: warning: Excess struct member 'band_pref' description in 'cfg80211_bss_selection'
->>   ./include/net/cfg80211.h:3192: warning: Excess struct member 'adjust' description in 'cfg80211_bss_selection'
->>   ./include/net/cfg80211.h:6181: warning: Excess struct member 'bssid' description in 'wireless_dev'
->>   ./include/net/cfg80211.h:6181: warning: Excess struct member 'beacon_interval' description in 'wireless_dev'
->>   ./include/net/cfg80211.h:7299: warning: Excess struct member 'bss' description in 'cfg80211_rx_assoc_resp_data'
->>
->> Remove and/or repair each entry to address the warnings and ensure a proper
->> docs build for the affected structures.
->>
->> Signed-off-by: Jonathan Corbet <corbet@lwn.net>
->> ---
->>  include/net/cfg80211.h | 11 ++++-------
->>  1 file changed, 4 insertions(+), 7 deletions(-)
->>
->> diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
->> index b137a33a1b68..81c46c8e2a68 100644
->> --- a/include/net/cfg80211.h
->> +++ b/include/net/cfg80211.h
->> @@ -3180,8 +3180,8 @@ struct cfg80211_ibss_params {
->>   *
->>   * @behaviour: requested BSS selection behaviour.
->>   * @param: parameters for requestion behaviour.
->> - * @band_pref: preferred band for %NL80211_BSS_SELECT_ATTR_BAND_PREF.
->> - * @adjust: parameters for %NL80211_BSS_SELECT_ATTR_RSSI_ADJUST.
->> + * @param.band_pref: preferred band for %NL80211_BSS_SELECT_ATTR_BAND_PREF.
->> + * @param.adjust: parameters for %NL80211_BSS_SELECT_ATTR_RSSI_ADJUST.
->>   */
->>  struct cfg80211_bss_selection {
->>  	enum nl80211_bss_select_attr behaviour;
->> @@ -6013,7 +6013,6 @@ void wiphy_delayed_work_flush(struct wiphy *wiphy,
->>   *	wireless device if it has no netdev
->>   * @u: union containing data specific to @iftype
->>   * @connected: indicates if connected or not (STA mode)
->> - * @bssid: (private) Used by the internal configuration code
->>   * @wext: (private) Used by the internal wireless extensions compat code
->>   * @wext.ibss: (private) IBSS data part of wext handling
->>   * @wext.connect: (private) connection handling data
->> @@ -6033,8 +6032,6 @@ void wiphy_delayed_work_flush(struct wiphy *wiphy,
->>   * @mgmt_registrations: list of registrations for management frames
->>   * @mgmt_registrations_need_update: mgmt registrations were updated,
->>   *	need to propagate the update to the driver
->> - * @beacon_interval: beacon interval used on this device for transmitting
->> - *	beacons, 0 when not valid
->>   * @address: The address for this device, valid only if @netdev is %NULL
->>   * @is_running: true if this is a non-netdev device that has been started, e.g.
->>   *	the P2P Device.
->> @@ -7270,8 +7267,6 @@ void cfg80211_auth_timeout(struct net_device *dev, const u8 *addr);
->>  
->>  /**
->>   * struct cfg80211_rx_assoc_resp_data - association response data
->> - * @bss: the BSS that association was requested with, ownership of the pointer
->> - *	moves to cfg80211 in the call to cfg80211_rx_assoc_resp()
->>   * @buf: (Re)Association Response frame (header + body)
->>   * @len: length of the frame data
->>   * @uapsd_queues: bitmap of queues configured for uapsd. Same format
->> @@ -7281,6 +7276,8 @@ void cfg80211_auth_timeout(struct net_device *dev, const u8 *addr);
->>   * @ap_mld_addr: AP MLD address (in case of MLO)
->>   * @links: per-link information indexed by link ID, use links[0] for
->>   *	non-MLO connections
+>> On 2023/12/19 23:42, Kalle Valo wrote:
+>>>
+>>> Why is it that every patch Hector submits seems to end up with flame
+>>> wars?
 > 
-> also missing the following?
->  * @links.addr: MLO per-link MAC address
-
-Yes, that should also be fixed at some point.
-
-What Jon is trying to do here is address a boatload of new kernel-doc warnings of the
-"Excess struct member" variety.
-
+> Well, I do think some of it is Hector's personality and forceful
+> approaches, but I do think part of it is also the area in question.
 > 
->> + * @links.bss: the BSS that association was requested with, ownership of the
->> + *      pointer moves to cfg80211 in the call to cfg80211_rx_assoc_resp()
->>   * @links.status: Set this (along with a BSS pointer) for links that
->>   *	were rejected by the AP.
->>   */
+> Because I do agree with Hector that..
 > 
+>> Just recently a patch was posted to remove the Infineon list from
+>> MAINTAINERS because that company cares so little they have literally
+>> stopped accepting emails from us. Meanwhile they are telling their
+>> customers that they do not recommend upstream brcmfmac and they should
+>> use their downstream driver [1].
 > 
+> Unquestionably broadcom is not helping maintain things, and I think it
+> should matter.
+> 
+> As Hector says, they point to their random driver dumps on their site
+> that you can't even download unless you are a "Broadcom community
+> member" or whatever, and hey - any company that works that way should
+> be seen as pretty much hostile to any actual maintenance and proper
+> development.
+> 
+> If Daniel and Hector are responsive to actual problem reports for the
+> changes they cause, I do think that should count a lot.
 
-Thanks.
--- 
-#Randy
-https://people.kernel.org/tglx/notes-about-netiquette
-https://subspace.kernel.org/etiquette.html
+Of course we're happy to do that. If this change goes in and we get an
+actual report of breakage from someone, we'll have learned some very
+valuable information: That there is, in fact, an end-user use case
+(hardware/firmware/AP setting combination) where this code functions and
+matters, and perhaps we'll have found someone willing to test things in
+the future. Then we revert and rework the patch to keep the old code
+path alive in that case.
+
+The report will also give us valuable information about how to condition
+it, because e.g. right now we don't even know if the sae_password code
+works on any Cypress chips/firmwares at all, or conversely whether the
+new WSEC code rather makes things work on some subset of Cypress
+chips/firmwares instead. It is largely a mystery to everyone outside of
+Broadcom and Cypress how that whole corporate division fork worked and
+when and how the firmwares started diverging (never mind how Apple's
+Broadcom firmwares may themselves differ).
+
+It's the "don't touch it just in case" approach that is not sustainable,
+because then we'll just be accumulating technical debt without the
+slightest clue whether it even does anything useful or not, and
+needlessly setting back development on the other and newer chips.
+
+All this would, of course, be much easier if the vendor actually replied
+to our emails, since evidently they know what chips/firmware branches
+might have support for this, but even before Cypress names got removed
+from MAINTAINERS I was already getting radio silence from them when I
+asked questions like this, and even on the Broadcom side I had trouble
+getting Arend to answer simple questions. Ultimately, with minimal to no
+vendor cooperation, this driver becomes a reverse engineered, community
+supported driver, with the inevitable gaps in testing and support that
+entails when we don't have the information the manufacturers do, and
+people need to understand the consequences of that. If the manufacturers
+aren't stepping up to do their job, other members of the community (or
+customers of those vendors) need to do so if there are hardware
+configurations they rely on, because Daniel and I can't sign up to
+proactively maintain and test every single Broadcom and Cypress/Infineon
+chip out there. We don't have the hardware, nor do we have that kind of
+bandwidth/time. Support for hardware that no maintainer/developer is
+proactively testing will necessarily fall back to being reactive to
+regression reports.
+
+> I don't think Cypress support should necessarily be removed (or marked
+> broken), but if the sae_password code already doesn't work, _that_
+> part certainly shouldn't hold things up?
+> 
+> Put another way: if we effectively don't have a driver maintainer that
+> can test things, and somebody is willing to step up, shouldn't we take
+> that person up on it?
+
+Personally, I do think the rPi folks themselves should step up for
+*testing* at the very least. I did point them at our downstream WiFi
+branch at one point during a previous discussion and haven't heard back,
+so either they never tested it, or they did and it didn't break
+anything. If they're shipping popular Linux hardware where the WiFi
+chipset vendor has fully and completely checked out of any upstream
+support, they need to either accept that upstream support will likely
+break at some point (because that's just what happens when nobody cares
+about a given piece of hardware, especially with drivers shared across
+others like this one) or they need to proactively step up and take on,
+minimally, an early testing role themselves.
+
+- Hector
 
