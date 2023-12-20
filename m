@@ -1,111 +1,133 @@
-Return-Path: <linux-wireless+bounces-1092-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1093-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AA9A81A0EF
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 15:18:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8822281A125
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 15:31:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBF8E1F21B8B
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 14:18:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A0EE81C21D83
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Dec 2023 14:31:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE97D38DDF;
-	Wed, 20 Dec 2023 14:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EE771EB4E;
+	Wed, 20 Dec 2023 14:30:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kvPST8UF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WuTVSssM"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D4B38DDD;
-	Wed, 20 Dec 2023 14:18:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3367a304091so739074f8f.3;
-        Wed, 20 Dec 2023 06:18:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1703081913; x=1703686713; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=wtboqIOajZ+9kRzpEuYvtN45b5wd0evNFunITw7khVI=;
-        b=kvPST8UFr0/7w/lyjF61+teanbCnJhBRWVCdAwxh3v/Sm0eHr0f8b5uO+bUrqpTT8z
-         zmGMWV5xOo+dZ1CrJ8y1s72tFSAJGaryEW3Gy7jPdgESiX9eeaVdXnAJmlVdpYv4W/fa
-         ket62nCJ3wr1fpRUsctfkiAfmMQOUojvsvyZ/nT4YUB3wWa63VbrYuV/fFSIfG/xY6hf
-         xPRWDarR/HZzNHubv8SbFkLei5PODmGR56ib128zb8WCbM9Papi+6lu2mRjaSv3/yQZt
-         b0fswzmYIVN90ILKBIHAqJEzircBVrFvsL49LgjyLj2NGTJIyOwgsPEF7YtN9HENa4tO
-         W0DA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703081913; x=1703686713;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wtboqIOajZ+9kRzpEuYvtN45b5wd0evNFunITw7khVI=;
-        b=GuPVqLe8M4u3pKbyM4BwLZvZ05p8HVejppUTnhT2Zvu+nAtpZgBaR3Epw7FxZElzdj
-         hIcOcOtDVw+YVJjpBDye3p5bXxFDRBNvnNA9UmTK8UDYt2ZGcxab+yxa+Oq/dMp41r4g
-         gYusePCI/L1ua+bDC37cz8DYK95YcH3R9adu/839d4UogYaMCycp3c3/Utls0Q6PxEGj
-         opbt6WDcBcyMt4lrAB27otNpeDZt6w8oLxAgQM8tusYfkwbPDCGYHazobTDczJA0cMxI
-         csqzUHyGI1iWMMYttjqafRzCQzDekSsmHoKhrKoElbTmd2o0PsPsEiFeCOIAhsSXSTjV
-         v8fg==
-X-Gm-Message-State: AOJu0YyKadpb9bcnOxWorIY2WYpBB4gRAAgFNwbwod+5esuwHnP4Ucqh
-	x+voGo/zL+DibCamxDaiGRM=
-X-Google-Smtp-Source: AGHT+IEdWbD6d9z5TZVQdQB/EtJYkGf8Koa4xBUah2AE+redPoWpaaBIVcCqUqvlX3O6qFbmdBWG4Q==
-X-Received: by 2002:a05:600c:4e4b:b0:40d:35a6:af23 with SMTP id e11-20020a05600c4e4b00b0040d35a6af23mr358445wmq.26.1703081913140;
-        Wed, 20 Dec 2023 06:18:33 -0800 (PST)
-Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
-        by smtp.gmail.com with ESMTPSA id j7-20020a05600c190700b0040c31bb66dcsm7466687wmq.20.2023.12.20.06.18.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Dec 2023 06:18:32 -0800 (PST)
-From: Colin Ian King <colin.i.king@gmail.com>
-To: Ping-Ke Shih <pkshih@realtek.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	linux-wireless@vger.kernel.org
-Cc: kernel-janitors@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH][next] wifi: rtw89: mac: Fix spelling mistakes "notfify" -> "notify"
-Date: Wed, 20 Dec 2023 14:18:31 +0000
-Message-Id: <20231220141831.10063-1-colin.i.king@gmail.com>
-X-Mailer: git-send-email 2.39.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 437801385
+	for <linux-wireless@vger.kernel.org>; Wed, 20 Dec 2023 14:30:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53D71C433C8;
+	Wed, 20 Dec 2023 14:30:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1703082657;
+	bh=N39PxtHZcFs3qJ4hh3xlM/jq0KDCehSTsf7Y9YbXRRw=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=WuTVSssMIulKIbbWlo4i1oWwARMyVJUI7d0DJg80mE4ZHhFPADvIsTOei8eL3KR49
+	 sMZ3I6MlXXRqUjlIbQ8VfmucTRmNQIqsC/rPl6eYyFlA3mvn5vfHq7dMmphuQVj4X2
+	 O0EVsMmvuP/j2K4QDgIzb+wewQcrEHICYQe1FeoHVQVcARxDyNalvcys6bATFuOg/j
+	 z0gKGoaSj+Cz+vLR7swu9qfXKQzZQQ9dIEAk109veC3tTelcNWrjjXyMFfNF07VtLk
+	 1+mTQ4TxfQ0U5okWzETz/0Ah2u42SV+QNzIkjx/Zda+BnWTyXBsU5hUTpUf5bmZ0U0
+	 uslLPYScy5mzA==
+From: Kalle Valo <kvalo@kernel.org>
+To: James Prestwood <prestwoj@gmail.com>
+Cc: "open list:MEDIATEK MT76 WIRELESS LAN DRIVER"
+ <linux-wireless@vger.kernel.org>,  ath11k@lists.infradead.org
+Subject: Re: Ath11k warnings, and eventual phy going away requiring reboot
+References: <ab00ff77-23de-43a1-9eb9-6ac036ab80e3@gmail.com>
+	<87edfiqcdi.fsf@kernel.org>
+	<6122eb4e-66f5-4772-b211-8fc69ac88ebe@gmail.com>
+Date: Wed, 20 Dec 2023 16:30:54 +0200
+In-Reply-To: <6122eb4e-66f5-4772-b211-8fc69ac88ebe@gmail.com> (James
+	Prestwood's message of "Wed, 20 Dec 2023 04:42:31 -0800")
+Message-ID: <87o7elosip.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-There are two spelling mistakes in rtw89_err error messages. Fix these
-and also add space between [ERR] and message text.
+James Prestwood <prestwoj@gmail.com> writes:
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
----
- drivers/net/wireless/realtek/rtw89/mac_be.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> Hi Kalle,
+>
+> On 12/19/23 10:24 AM, Kalle Valo wrote:
+>> James Prestwood <prestwoj@gmail.com> writes:
+>>
+>>> I noticed this after one of our devices dropped offline. The device
+>>> had roamed 7 minutes prior so I doubt that had anything to do with it.
+>>> But then we get this, and then tons of warnings. I'm happy to provide
+>>> full stack traces but its quite a few, not sure which ones are
+>>> relevant or not. After all the warnings IWD got an RTNL del link event
+>>> and was unable to recover from that. It seems after that ath11k tried
+>>> to power back on but failed.
+>>>
+>>> This is a stock 6.2 ubuntu kernel, WCN6855:
+>> BTW I don't know how it's nowadays, but back in the day Ubuntu heavily
+>> modified ath11k. And we can't support distro kernels anyway as we don't
+>> know what they have changed in the kernel.
+>
+> Ok. I understand where your coming from, but at the same time Ubuntu
+> is the largest linux distribution so it seems like these type of
+> reports wouldn't be uncommon. OTOH maybe users just go directly to
+> Ubuntu.
 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac_be.c b/drivers/net/wireless/realtek/rtw89/mac_be.c
-index be30c9346293..4befbe06cd15 100644
---- a/drivers/net/wireless/realtek/rtw89/mac_be.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac_be.c
-@@ -1616,7 +1616,7 @@ static int dbcc_enable_be(struct rtw89_dev *rtwdev, bool enable)
- 		if (test_bit(RTW89_FLAG_FW_RDY, rtwdev->flags)) {
- 			ret = rtw89_fw_h2c_notify_dbcc(rtwdev, true);
- 			if (ret) {
--				rtw89_err(rtwdev, "%s:[ERR]notfify dbcc1 fail %d\n",
-+				rtw89_err(rtwdev, "%s:[ERR] notify dbcc1 fail %d\n",
- 					  __func__, ret);
- 				return ret;
- 			}
-@@ -1625,7 +1625,7 @@ static int dbcc_enable_be(struct rtw89_dev *rtwdev, bool enable)
- 		if (test_bit(RTW89_FLAG_FW_RDY, rtwdev->flags)) {
- 			ret = rtw89_fw_h2c_notify_dbcc(rtwdev, false);
- 			if (ret) {
--				rtw89_err(rtwdev, "%s:[ERR]notfify dbcc1 fail %d\n",
-+				rtw89_err(rtwdev, "%s:[ERR] notify dbcc1 fail %d\n",
- 					  __func__, ret);
- 				return ret;
- 			}
--- 
-2.39.2
+Isn't the recommendation that distro kernel bugs should be reported to
+distro bug trackers? At least that's what I have understood. At least
+our bugzilla says that:
 
+https://bugzilla.kernel.org/
+
+> Anyways, this is a list of patches isn't huge according to the
+> changelog (for 6.2):
+>
+> =C2=A0=C2=A0=C2=A0=C2=A0 - wifi: ath11k: fix registration of 6Ghz-only ph=
+y without the
+> full channel
+> =C2=A0=C2=A0=C2=A0=C2=A0 - wifi: ath11k: add support default regdb while =
+searching
+> board-2.bin for
+> =C2=A0=C2=A0=C2=A0=C2=A0 - wifi: ath11k: fix memory leak in WMI firmware =
+stats
+> =C2=A0=C2=A0=C2=A0=C2=A0 - wifi: ath11k: Add missing check for ioremap
+> =C2=A0=C2=A0=C2=A0=C2=A0 - wifi: ath11k: Ignore frags from uninitialized =
+peer in dp.
+> =C2=A0=C2=A0=C2=A0=C2=A0 - wifi: ath11k: Fix SKB corruption in REO destin=
+ation ring
+> =C2=A0=C2=A0=C2=A0=C2=A0 - wifi: ath11k: reduce the MHI timeout to 20s
+> =C2=A0=C2=A0=C2=A0=C2=A0 - wifi: ath11k: Use platform_get_irq() to get th=
+e interrupt
+> =C2=A0=C2=A0=C2=A0=C2=A0 - wifi: ath11k: fix SAC bug on peer addition wit=
+h sta band migration
+> =C2=A0=C2=A0=C2=A0=C2=A0 - wifi: ath11k: fix deinitialization of firmware=
+ resources
+> =C2=A0=C2=A0=C2=A0=C2=A0 - wifi: ath11k: fix writing to unintended memory=
+ region
+> =C2=A0=C2=A0=C2=A0=C2=A0 - wifi: ath11k: Fix memory leak in ath11k_peer_r=
+x_frag_setup
+> =C2=A0=C2=A0=C2=A0=C2=A0 - wifi: ath11k: fix monitor mode bringup crash
+> =C2=A0=C2=A0=C2=A0=C2=A0 - wifi: ath11k: debugfs: fix to work with multip=
+le PCI devices
+> =C2=A0=C2=A0=C2=A0=C2=A0 - wifi: ath11k: allow system suspend to survive =
+ath11k
+>
+> I see the dilemma of not wanting to waste time debugging when there
+> are unknown changes applied. I was hoping someone would recognize the
+> behavior and could suggest a patch/kernel/firmware to try
+
+Sure, I also get where you are coming from :) Just wanted to make sure
+you know the problem with distro kernels.
+
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
 
