@@ -1,59 +1,60 @@
-Return-Path: <linux-wireless+bounces-969-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-970-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4407D81838B
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Dec 2023 09:38:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 466E581838C
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Dec 2023 09:38:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B20641F250A0
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Dec 2023 08:38:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D703F2861E2
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Dec 2023 08:38:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77AEF14283;
-	Tue, 19 Dec 2023 08:37:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70E8A11C9D;
+	Tue, 19 Dec 2023 08:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jthkgkxN"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dwAQbiur"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 442AE14277
-	for <linux-wireless@vger.kernel.org>; Tue, 19 Dec 2023 08:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C889111C9E
+	for <linux-wireless@vger.kernel.org>; Tue, 19 Dec 2023 08:37:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1702975072; x=1734511072;
+  t=1702975077; x=1734511077;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=43C+AAjP77cLzMR7X6bXnmvppdh+stryactiRm+QgL4=;
-  b=jthkgkxNbdu4pn8k3kX3OvRWpACo0BSkdB11fkd2sf1sTmaPIMWozdL4
-   uNEQUV61z051nnQRR0JO0NGOF2US4AG49A969iY97N/CVmm6tRBbumXMw
-   cvaJmacSl/1GNHhzAROfyA7JOFbP+1pwWFvHgXL0EurYr+aMY+3A7hsvY
-   ilTLkgZFbBF07iv9j4t50ziwE6YATD0i9rHgqZv1KSEmv6i/IhH1AlRtK
-   TOKaCer1A7xm5Oc6KjAai9Ers/INTP8gyYFgyfq/FKdFNc4OMIRKyLb6m
-   evflKHQ71kJ9LMFDdH3DLhDd+smPApESnQ5OJISef5gXrCtbKwsaCNDRW
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10928"; a="459969206"
+  bh=COKq1bR1TZUNtdJb6hqhjGUfHMD/7h9pcbx5wmH1PFo=;
+  b=dwAQbiurqX66hxoVblGmppkiMrtLYhXaxp5Cq2cT+GBxBrPZCbtrnbXm
+   qqyPXVvsPU9LRfulYXE4hRn1LYJgZf2R9ae3/LAE2d48niYzjAB+zhljW
+   f6lK+va00phHmNcktgz0DJHGzR6hd4QISWnyLcpKTRRNJ/tIF8ctg6UJh
+   9uMC6YTfnTmZHuHTSNNJmGEOJEvxgwnQynuv5juzaSVhMvla5KNt6sQXf
+   0DjpBDGHJvAkjtz+Mv4BW4Y6gsIsMBUUMhe3ZVy7ErFMum/81OzUg+iju
+   8r18azxGS2BkpGThLl5QnpUgLpccFYyEm+J99q/iSKBygqPMjFTKCin5g
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10928"; a="459969215"
 X-IronPort-AV: E=Sophos;i="6.04,287,1695711600"; 
-   d="scan'208";a="459969206"
+   d="scan'208";a="459969215"
 Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2023 00:37:52 -0800
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2023 00:37:57 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10928"; a="846266331"
+X-IronPort-AV: E=McAfee;i="6600,9927,10928"; a="846266356"
 X-IronPort-AV: E=Sophos;i="6.04,287,1695711600"; 
-   d="scan'208";a="846266331"
+   d="scan'208";a="846266356"
 Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
-  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2023 00:37:50 -0800
+  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2023 00:37:52 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Mukesh Sisodiya <mukesh.sisodiya@intel.com>,
-	Greenman@web.codeaurora.org, Gregory <gregory.greenman@intel.com>
-Subject: [PATCH 05/15] wifi: cfg80211: handle UHB AP and STA power type
-Date: Wed, 20 Dec 2023 04:37:53 +0200
-Message-Id: <20231220043149.1cb06b8555f3.I432f78438de18aa9f5c9006be12e41dc34cc47c5@changeid>
+	Johannes Berg <johannes.berg@intel.com>, Greenman@web.codeaurora.org,
+	Gregory <gregory.greenman@intel.com>, Berg@web.codeaurora.org,
+	Benjamin <benjamin.berg@intel.com>
+Subject: [PATCH 06/15] wifi: mac80211: rework RX timestamp flags
+Date: Wed, 20 Dec 2023 04:37:54 +0200
+Message-Id: <20231220043149.caaf422c940d.I20c8900106f9bf81316bed778b1e3ce145785274@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231220023803.2901117-1-miriam.rachel.korenblit@intel.com>
 References: <20231220023803.2901117-1-miriam.rachel.korenblit@intel.com>
@@ -66,209 +67,160 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-UHB AP send supported power type(LPI, SP, VLP)
-in beacon and probe response IE and STA should
-connect to these AP only if their regulatory support
-the AP power type.
+We only have a single flag free, and before using that for
+another mactime flag, instead refactor the mactime flags
+to use a 2-bit field.
 
-Beacon/Probe response are reported to userspace
-with reason "STA regulatory not supporting to connect to AP
-based on transmitted power type" and it should
-not connect to AP.
+NOTE: For upstream, ath10k needs to be changed like this:
+ -status->flag &= ~RX_FLAG_MACTIME_END
+ +status->flag &= ~RX_FLAG_MACTIME
 
-Signed-off-by: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Reviewed-by: Greenman, Gregory <gregory.greenman@intel.com>
+Reviewed-by: Berg, Benjamin <benjamin.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- include/linux/ieee80211.h    |  1 +
- include/net/cfg80211.h       |  6 ++++++
- include/uapi/linux/nl80211.h | 13 ++++++++++++
- net/wireless/nl80211.c       |  6 ++++++
- net/wireless/reg.c           |  4 ++++
- net/wireless/scan.c          | 38 ++++++++++++++++++++++++++++++++++++
- 6 files changed, 68 insertions(+)
+ include/net/mac80211.h     | 13 +++++++++----
+ net/mac80211/ieee80211_i.h |  5 +----
+ net/mac80211/util.c        | 16 ++++++++++------
+ 3 files changed, 20 insertions(+), 14 deletions(-)
 
-diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
-index 5e5ea216f341..e484d9d10630 100644
---- a/include/linux/ieee80211.h
-+++ b/include/linux/ieee80211.h
-@@ -2720,6 +2720,7 @@ static inline bool ieee80211_he_capa_size_ok(const u8 *data, u8 len)
- 
- #define IEEE80211_6GHZ_CTRL_REG_LPI_AP	0
- #define IEEE80211_6GHZ_CTRL_REG_SP_AP	1
-+#define IEEE80211_6GHZ_CTRL_REG_VLP_AP	2
- 
- /**
-  * struct ieee80211_he_6ghz_oper - HE 6 GHz operation Information field
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index d8150d8b13e5..427a83c78c8c 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -118,6 +118,10 @@ struct wiphy;
-  *	restrictions.
-  * @IEEE80211_CHAN_NO_EHT: EHT operation is not permitted on this channel.
-  * @IEEE80211_CHAN_DFS_CONCURRENT: See %NL80211_RRF_DFS_CONCURRENT
-+ * @IEEE80211_CHAN_NO_UHB_VLP_CLIENT: Client connection with VLP AP
-+ *	not permitted using this channel
-+ * @IEEE80211_CHAN_NO_UHB_AFC_CLIENT: Client connection with AFC AP
-+ *	not permitted using this channel
-  */
- enum ieee80211_channel_flags {
- 	IEEE80211_CHAN_DISABLED		= 1<<0,
-@@ -142,6 +146,8 @@ enum ieee80211_channel_flags {
- 	IEEE80211_CHAN_NO_320MHZ	= 1<<19,
- 	IEEE80211_CHAN_NO_EHT		= 1<<20,
- 	IEEE80211_CHAN_DFS_CONCURRENT	= 1<<21,
-+	IEEE80211_CHAN_NO_UHB_VLP_CLIENT= 1<<22,
-+	IEEE80211_CHAN_NO_UHB_AFC_CLIENT= 1<<23,
- };
- 
- #define IEEE80211_CHAN_NO_HT40 \
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 466da830e65f..1ccdcae24372 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -4260,6 +4260,10 @@ enum nl80211_wmm_rule {
-  *	allowed for peer-to-peer or adhoc communication under the control
-  *	of a DFS master which operates on the same channel (FCC-594280 D01
-  *	Section B.3). Should be used together with %NL80211_RRF_DFS only.
-+ * @NL80211_FREQUENCY_ATTR_NO_UHB_VLP_CLIENT: Client connection to VLP AP
-+ *	not allowed using this channel
-+ * @NL80211_FREQUENCY_ATTR_NO_UHB_AFC_CLIENT: Client connection to AFC AP
-+ *	not allowed using this channel
-  * @NL80211_FREQUENCY_ATTR_MAX: highest frequency attribute number
-  *	currently defined
-  * @__NL80211_FREQUENCY_ATTR_AFTER_LAST: internal use
-@@ -4300,6 +4304,8 @@ enum nl80211_frequency_attr {
- 	NL80211_FREQUENCY_ATTR_NO_EHT,
- 	NL80211_FREQUENCY_ATTR_PSD,
- 	NL80211_FREQUENCY_ATTR_DFS_CONCURRENT,
-+	NL80211_FREQUENCY_ATTR_NO_UHB_VLP_CLIENT,
-+	NL80211_FREQUENCY_ATTR_NO_UHB_AFC_CLIENT,
- 
- 	/* keep last */
- 	__NL80211_FREQUENCY_ATTR_AFTER_LAST,
-@@ -4509,6 +4515,8 @@ enum nl80211_sched_scan_match_attr {
- 	peer-to-peer or adhoc communication under the control of a DFS master
- 	which operates on the same channel (FCC-594280 D01 Section B.3).
- 	Should be used together with %NL80211_RRF_DFS only.
-+ * @NL80211_RRF_NO_UHB_VLP_CLIENT: Client connection to VLP AP not allowed
-+ * @NL80211_RRF_NO_UHB_AFC_CLIENT: Client connection to AFC AP not allowed
-  */
- enum nl80211_reg_rule_flags {
- 	NL80211_RRF_NO_OFDM		= 1<<0,
-@@ -4531,6 +4539,8 @@ enum nl80211_reg_rule_flags {
- 	NL80211_RRF_NO_EHT		= 1<<19,
- 	NL80211_RRF_PSD			= 1<<20,
- 	NL80211_RRF_DFS_CONCURRENT	= 1<<21,
-+	NL80211_RRF_NO_UHB_VLP_CLIENT	= 1<<22,
-+	NL80211_RRF_NO_UHB_AFC_CLIENT	= 1<<23,
- };
- 
- #define NL80211_RRF_PASSIVE_SCAN	NL80211_RRF_NO_IR
-@@ -5086,9 +5096,12 @@ enum nl80211_bss_use_for {
-  *	BSS isn't possible
-  * @NL80211_BSS_CANNOT_USE_NSTR_NONPRIMARY: NSTR nonprimary links aren't
-  *	supported by the device, and this BSS entry represents one.
-+ * @NL80211_BSS_CANNOT_USE_UHB_PWR_MISMATCH: STA is not supporting
-+ *	the AP power type (SP, VLP, AP) that the AP uses.
-  */
- enum nl80211_bss_cannot_use_reasons {
- 	NL80211_BSS_CANNOT_USE_NSTR_NONPRIMARY	= 1 << 0,
-+	NL80211_BSS_CANNOT_USE_UHB_PWR_MISMATCH	= 1 << 1,
- };
- 
- /**
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index f64005d62b19..299f2622b00d 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -1204,6 +1204,12 @@ static int nl80211_msg_put_channel(struct sk_buff *msg, struct wiphy *wiphy,
- 		if ((chan->flags & IEEE80211_CHAN_DFS_CONCURRENT) &&
- 		    nla_put_flag(msg, NL80211_FREQUENCY_ATTR_DFS_CONCURRENT))
- 			goto nla_put_failure;
-+		if ((chan->flags & IEEE80211_CHAN_NO_UHB_VLP_CLIENT) &&
-+		    nla_put_flag(msg, NL80211_FREQUENCY_ATTR_NO_UHB_VLP_CLIENT))
-+			goto nla_put_failure;
-+		if ((chan->flags & IEEE80211_CHAN_NO_UHB_AFC_CLIENT) &&
-+		    nla_put_flag(msg, NL80211_FREQUENCY_ATTR_NO_UHB_AFC_CLIENT))
-+			goto nla_put_failure;
- 	}
- 
- 	if (nla_put_u32(msg, NL80211_FREQUENCY_ATTR_MAX_TX_POWER,
-diff --git a/net/wireless/reg.c b/net/wireless/reg.c
-index 44684df64734..2741b626919a 100644
---- a/net/wireless/reg.c
-+++ b/net/wireless/reg.c
-@@ -1595,6 +1595,10 @@ static u32 map_regdom_flags(u32 rd_flags)
- 		channel_flags |= IEEE80211_CHAN_NO_EHT;
- 	if (rd_flags & NL80211_RRF_DFS_CONCURRENT)
- 		channel_flags |= IEEE80211_CHAN_DFS_CONCURRENT;
-+	if (rd_flags & NL80211_RRF_NO_UHB_VLP_CLIENT)
-+		channel_flags |= IEEE80211_CHAN_NO_UHB_VLP_CLIENT;
-+	if (rd_flags & NL80211_RRF_NO_UHB_AFC_CLIENT)
-+		channel_flags |= IEEE80211_CHAN_NO_UHB_AFC_CLIENT;
- 	if (rd_flags & NL80211_RRF_PSD)
- 		channel_flags |= IEEE80211_CHAN_PSD;
- 	return channel_flags;
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 3d260c99c348..a601f1c7f835 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -2848,6 +2848,36 @@ cfg80211_inform_bss_data(struct wiphy *wiphy,
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index 77a71b1396b1..00274d1cdeeb 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -1362,6 +1362,9 @@ ieee80211_tx_info_clear_status(struct ieee80211_tx_info *info)
+  *	the frame.
+  * @RX_FLAG_FAILED_PLCP_CRC: Set this flag if the PCLP check failed on
+  *	the frame.
++ * @RX_FLAG_MACTIME: The timestamp passed in the RX status (@mactime
++ *	field) is valid if this field is non-zero, and the position
++ *	where the timestamp was sampled depends on the value.
+  * @RX_FLAG_MACTIME_START: The timestamp passed in the RX status (@mactime
+  *	field) is valid and contains the time the first symbol of the MPDU
+  *	was received. This is useful in monitor mode and for proper IBSS
+@@ -1441,12 +1444,12 @@ ieee80211_tx_info_clear_status(struct ieee80211_tx_info *info)
+ enum mac80211_rx_flags {
+ 	RX_FLAG_MMIC_ERROR		= BIT(0),
+ 	RX_FLAG_DECRYPTED		= BIT(1),
+-	RX_FLAG_MACTIME_PLCP_START	= BIT(2),
++	RX_FLAG_ONLY_MONITOR		= BIT(2),
+ 	RX_FLAG_MMIC_STRIPPED		= BIT(3),
+ 	RX_FLAG_IV_STRIPPED		= BIT(4),
+ 	RX_FLAG_FAILED_FCS_CRC		= BIT(5),
+ 	RX_FLAG_FAILED_PLCP_CRC 	= BIT(6),
+-	RX_FLAG_MACTIME_START		= BIT(7),
++	/* one free bit at 7 */
+ 	RX_FLAG_NO_SIGNAL_VAL		= BIT(8),
+ 	RX_FLAG_AMPDU_DETAILS		= BIT(9),
+ 	RX_FLAG_PN_VALIDATED		= BIT(10),
+@@ -1455,8 +1458,10 @@ enum mac80211_rx_flags {
+ 	RX_FLAG_AMPDU_IS_LAST		= BIT(13),
+ 	RX_FLAG_AMPDU_DELIM_CRC_ERROR	= BIT(14),
+ 	RX_FLAG_AMPDU_DELIM_CRC_KNOWN	= BIT(15),
+-	RX_FLAG_MACTIME_END		= BIT(16),
+-	RX_FLAG_ONLY_MONITOR		= BIT(17),
++	RX_FLAG_MACTIME			= BIT(16) | BIT(17),
++	RX_FLAG_MACTIME_PLCP_START	= 1 << 16,
++	RX_FLAG_MACTIME_START		= 2 << 16,
++	RX_FLAG_MACTIME_END		= 3 << 16,
+ 	RX_FLAG_SKIP_MONITOR		= BIT(18),
+ 	RX_FLAG_AMSDU_MORE		= BIT(19),
+ 	RX_FLAG_RADIOTAP_TLV_AT_END	= BIT(20),
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index 29312f6638a1..938f4d255668 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -1775,10 +1775,7 @@ static inline bool txq_has_queue(struct ieee80211_txq *txq)
+ static inline bool
+ ieee80211_have_rx_timestamp(struct ieee80211_rx_status *status)
+ {
+-	WARN_ON_ONCE(status->flag & RX_FLAG_MACTIME_START &&
+-		     status->flag & RX_FLAG_MACTIME_END);
+-	return !!(status->flag & (RX_FLAG_MACTIME_START | RX_FLAG_MACTIME_END |
+-				  RX_FLAG_MACTIME_PLCP_START));
++	return status->flag & RX_FLAG_MACTIME;
  }
- EXPORT_SYMBOL(cfg80211_inform_bss_data);
  
-+static bool cfg80211_uhb_power_type_valid(const u8 *ie,
-+					  size_t ielen,
-+					  const u32 flags)
-+{
-+	const struct element *tmp;
-+	struct ieee80211_he_operation *he_oper;
-+
-+	tmp = cfg80211_find_ext_elem(WLAN_EID_EXT_HE_OPERATION, ie, ielen);
-+	if (tmp && tmp->datalen >= sizeof(*he_oper) + 1) {
-+		const struct ieee80211_he_6ghz_oper *he_6ghz_oper;
-+
-+		he_oper = (void *)&tmp->data[1];
-+		he_6ghz_oper = ieee80211_he_6ghz_oper(he_oper);
-+
-+		if (!he_6ghz_oper)
-+			return false;
-+
-+		switch (u8_get_bits(he_6ghz_oper->control,
-+				    IEEE80211_HE_6GHZ_OPER_CTRL_REG_INFO)) {
-+		case IEEE80211_6GHZ_CTRL_REG_LPI_AP:
-+			return true;
-+		case IEEE80211_6GHZ_CTRL_REG_SP_AP:
-+			return !(flags & IEEE80211_CHAN_NO_UHB_AFC_CLIENT);
-+		case IEEE80211_6GHZ_CTRL_REG_VLP_AP:
-+			return !(flags & IEEE80211_CHAN_NO_UHB_VLP_CLIENT);
-+		}
-+	}
-+	return false;
-+}
-+
- /* cfg80211_inform_bss_width_frame helper */
- static struct cfg80211_bss *
- cfg80211_inform_single_bss_frame_data(struct wiphy *wiphy,
-@@ -2906,6 +2936,14 @@ cfg80211_inform_single_bss_frame_data(struct wiphy *wiphy,
- 	if (!channel)
- 		return NULL;
+ void ieee80211_vif_inc_num_mcast(struct ieee80211_sub_if_data *sdata);
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index ed680120d5a7..643c54855be6 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -4176,6 +4176,7 @@ u64 ieee80211_calculate_rx_timestamp(struct ieee80211_local *local,
+ 				     unsigned int mpdu_offset)
+ {
+ 	u64 ts = status->mactime;
++	bool mactime_plcp_start;
+ 	struct rate_info ri;
+ 	u16 rate;
+ 	u8 n_ltf;
+@@ -4183,6 +4184,9 @@ u64 ieee80211_calculate_rx_timestamp(struct ieee80211_local *local,
+ 	if (WARN_ON(!ieee80211_have_rx_timestamp(status)))
+ 		return 0;
  
-+	if (channel->band == NL80211_BAND_6GHZ &&
-+	    !cfg80211_uhb_power_type_valid(variable, ielen, channel->flags)) {
-+		data->restrict_use = 1;
-+		data->use_for = 0;
-+		data->cannot_use_reasons =
-+			NL80211_BSS_CANNOT_USE_UHB_PWR_MISMATCH;
-+	}
++	mactime_plcp_start = (status->flag & RX_FLAG_MACTIME) ==
++				RX_FLAG_MACTIME_PLCP_START;
 +
- 	if (ext) {
- 		const struct ieee80211_s1g_bcn_compat_ie *compat;
- 		const struct element *elem;
+ 	memset(&ri, 0, sizeof(ri));
+ 
+ 	ri.bw = status->bw;
+@@ -4197,7 +4201,7 @@ u64 ieee80211_calculate_rx_timestamp(struct ieee80211_local *local,
+ 		if (status->enc_flags & RX_ENC_FLAG_SHORT_GI)
+ 			ri.flags |= RATE_INFO_FLAGS_SHORT_GI;
+ 		/* TODO/FIXME: is this right? handle other PPDUs */
+-		if (status->flag & RX_FLAG_MACTIME_PLCP_START) {
++		if (mactime_plcp_start) {
+ 			mpdu_offset += 2;
+ 			ts += 36;
+ 		}
+@@ -4214,7 +4218,7 @@ u64 ieee80211_calculate_rx_timestamp(struct ieee80211_local *local,
+ 		 * See P802.11ax_D6.0, section 27.3.4 for
+ 		 * VHT PPDU format.
+ 		 */
+-		if (status->flag & RX_FLAG_MACTIME_PLCP_START) {
++		if (mactime_plcp_start) {
+ 			mpdu_offset += 2;
+ 			ts += 36;
+ 
+@@ -4238,7 +4242,7 @@ u64 ieee80211_calculate_rx_timestamp(struct ieee80211_local *local,
+ 		 * See P802.11REVmd_D3.0, section 19.3.2 for
+ 		 * HT PPDU format.
+ 		 */
+-		if (status->flag & RX_FLAG_MACTIME_PLCP_START) {
++		if (mactime_plcp_start) {
+ 			mpdu_offset += 2;
+ 			if (status->enc_flags & RX_ENC_FLAG_HT_GF)
+ 				ts += 24;
+@@ -4266,7 +4270,7 @@ u64 ieee80211_calculate_rx_timestamp(struct ieee80211_local *local,
+ 		 * See P802.11REVmd_D3.0, section 21.3.2 for
+ 		 * VHT PPDU format.
+ 		 */
+-		if (status->flag & RX_FLAG_MACTIME_PLCP_START) {
++		if (mactime_plcp_start) {
+ 			mpdu_offset += 2;
+ 			ts += 36;
+ 
+@@ -4288,7 +4292,7 @@ u64 ieee80211_calculate_rx_timestamp(struct ieee80211_local *local,
+ 		sband = local->hw.wiphy->bands[status->band];
+ 		ri.legacy = sband->bitrates[status->rate_idx].bitrate;
+ 
+-		if (status->flag & RX_FLAG_MACTIME_PLCP_START) {
++		if (mactime_plcp_start) {
+ 			if (status->band == NL80211_BAND_5GHZ) {
+ 				ts += 20;
+ 				mpdu_offset += 2;
+@@ -4310,7 +4314,7 @@ u64 ieee80211_calculate_rx_timestamp(struct ieee80211_local *local,
+ 		return 0;
+ 
+ 	/* rewind from end of MPDU */
+-	if (status->flag & RX_FLAG_MACTIME_END)
++	if ((status->flag & RX_FLAG_MACTIME) == RX_FLAG_MACTIME_END)
+ 		ts -= mpdu_len * 8 * 10 / rate;
+ 
+ 	ts += mpdu_offset * 8 * 10 / rate;
 -- 
 2.34.1
 
