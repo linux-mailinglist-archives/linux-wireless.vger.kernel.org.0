@@ -1,150 +1,86 @@
-Return-Path: <linux-wireless+bounces-1180-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1181-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3E2381BFAB
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Dec 2023 21:39:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4555C81BFB1
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Dec 2023 21:40:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 547671F2587C
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Dec 2023 20:39:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 768281C230D2
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Dec 2023 20:40:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02CA47690C;
-	Thu, 21 Dec 2023 20:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5241A768EC;
+	Thu, 21 Dec 2023 20:40:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="mzwvDZ6C"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.holtmann.org (coyote.holtmann.net [212.227.132.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 017A1768EC;
-	Thu, 21 Dec 2023 20:39:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=holtmann.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=holtmann.org
-Received: from smtpclient.apple (p5b3d29b7.dip0.t-ipconnect.de [91.61.41.183])
-	by mail.holtmann.org (Postfix) with ESMTPSA id E1C15CECC7;
-	Thu, 21 Dec 2023 21:39:35 +0100 (CET)
-Content-Type: text/plain;
-	charset=us-ascii
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AAE9BA2F;
+	Thu, 21 Dec 2023 20:40:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=DYz9UKukQQi0+UkBLQMWrkToy7MoAxOJpeupjT9wAhk=;
+	t=1703191246; x=1704400846; b=mzwvDZ6CFHQKTPzeqMfH/bCrCALbvN+N+1r1b2rZnzVdy/V
+	08KzF5tbCOKnLsgIbusyYU62uHrLRvWUHRiJo3DVrans03Ao0uiAG53uZZGPDVXRPUWTE+mvb7HeK
+	tY7r8WNV/bIiMjDty4YUCvP8SqT3K4D/wmyDf9dt+gx7T3u9VQmx1596VjgyHFNOxEm7oTrgbPo05
+	PGIyFX2mrHIPmOSr3f9zE167IKGbTQ8fvKJrZEhYeJjIUcMQ7PswDcVFUqtRVUy5gkWEGVQtzA+Su
+	QqX0Gb2NLSmQyknMW4lgqheOMYLeosv80f0AsUKgyU1aPmVl6Ot6smuOI16qH7WQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rGPqT-000000037IZ-1U0F;
+	Thu, 21 Dec 2023 21:40:41 +0100
+Message-ID: <dbcadbe4430cd314373f15a9f4b814e44662bef6.camel@sipsolutions.net>
+Subject: Re: [PATCH 0/6] Add some more cfg80211 and mac80211 kunit tests
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Shuah Khan <skhan@linuxfoundation.org>, benjamin@sipsolutions.net, 
+ linux-wireless@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ kunit-dev@googlegroups.com, David Gow <davidgow@google.com>, Brendan
+ Higgins <brendanhiggins@google.com>
+Cc: Benjamin Berg <benjamin.berg@intel.com>
+Date: Thu, 21 Dec 2023 21:40:40 +0100
+In-Reply-To: <ae651d3d-58f7-40de-a625-4882cf0efc9b@linuxfoundation.org>
+References: <20231220151952.415232-1-benjamin@sipsolutions.net>
+	 <fab3c87ea726208cbdec03dfd61230e4c8ceb694.camel@sipsolutions.net>
+	 <ae651d3d-58f7-40de-a625-4882cf0efc9b@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.2 (3.50.2-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.300.61.1.2\))
-Subject: Re: [PATCH] wifi: brcmfmac: cfg80211: Use WSEC to set SAE password
-From: Marcel Holtmann <marcel@holtmann.org>
-In-Reply-To: <CAGRGNgW0h_uqHn0rKwGx0L41R+YgzgWPEh83kSKVCeqfCDeOug@mail.gmail.com>
-Date: Thu, 21 Dec 2023 21:39:25 +0100
-Cc: Arend van Spriel <arend.vanspriel@broadcom.com>,
- Kalle Valo <kvalo@kernel.org>,
- Hector Martin <marcan@marcan.st>,
- Arend van Spriel <aspriel@gmail.com>,
- Franky Lin <franky.lin@broadcom.com>,
- Hante Meuleman <hante.meuleman@broadcom.com>,
- Daniel Berlin <dberlin@dberlin.org>,
- linux-wireless@vger.kernel.org,
- brcm80211-dev-list.pdl@broadcom.com,
- SHA-cyfmac-dev-list@infineon.com,
- linux-kernel@vger.kernel.org,
- asahi@lists.linux.dev
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <C3F2FB99-C022-4BEE-8F1C-8B6F0E14DAA1@holtmann.org>
-References: <20231107-brcmfmac-wpa3-v1-1-4c7db8636680@marcan.st>
- <170281231651.2255653.7498073085103487666.kvalo@kernel.org>
- <18c80d15e30.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <1b51997f-2994-46e8-ac58-90106d1c486d@marcan.st>
- <c392f901-789a-42e2-8cf7-5e246365a1ca@broadcom.com>
- <CAGRGNgW0h_uqHn0rKwGx0L41R+YgzgWPEh83kSKVCeqfCDeOug@mail.gmail.com>
-To: Julian Calaby <julian.calaby@gmail.com>
-X-Mailer: Apple Mail (2.3774.300.61.1.2)
+MIME-Version: 1.0
+X-malware-bazaar: not-scanned
 
-Hi Julian,
-
->>>>>> Using the WSEC command instead of sae_password seems to be the =
-supported
->>>>>> mechanism on newer firmware, and also how the brcmdhd driver does =
-it.
->>>>>>=20
->>>>>> According to user reports [1], the sae_password codepath doesn't =
-actually
->>>>>> work on machines with Cypress chips anyway, so no harm in =
-removing it.
->>>>>>=20
->>>>>> This makes WPA3 work with iwd, or with wpa_supplicant pending a =
-support
->>>>>> patchset [2].
->>>>>>=20
->>>>>> [1] https://rachelbythebay.com/w/2023/11/06/wpa3/
->>>>>> [2] =
-http://lists.infradead.org/pipermail/hostap/2023-July/041653.html
->>>>>>=20
->>>>>> Signed-off-by: Hector Martin <marcan@marcan.st>
->>>>>> Reviewed-by: Neal Gompa <neal@gompa.dev>
->>>>>=20
->>>>> Arend, what do you think?
->>>>>=20
->>>>> We recently talked about people testing brcmfmac patches, has =
-anyone else
->>>>> tested this?
->>>>=20
->>>> Not sure I already replied so maybe I am repeating myself. I would =
-prefer
->>>> to keep the Cypress sae_password path as well although it =
-reportedly does
->>>> not work. The vendor support in the driver can be used to =
-accommodate for
->>>> that. The other option would be to have people with Cypress chipset =
-test
->>>> this patch. If that works for both we can consider dropping the
->>>> sae_password path.
->>>>=20
->>>> Regards,
->>>> Arend
->>>=20
->>> So, if nobody from Cypress chimes in ever, and nobody cares nor =
-tests
->>> Cypress chipsets, are we keeping any and all existing Cypress =
-code-paths
->>> as bitrotting code forever and adding gratuitous conditionals every =
-time
->>> any functionality needs to change "just in case it breaks Cypress" =
-even
->>> though it has been tested compatible on Broadcom chipsets/firmware?
->>>=20
->>> Because that's not sustainable long term.
->>=20
->> You should look into WEXT just for the fun of it. If it were up to me
->> and a bunch of other people that would have been gone decades ago. =
-Maybe
->> a bad example if the sae_password is indeed not working, but the =
-Cypress
->> chipset is used in RPi3 and RPi4 so there must be a couple of users.
+On Thu, 2023-12-21 at 13:06 -0700, Shuah Khan wrote:
+> On 12/21/23 12:39, Johannes Berg wrote:
+> > >=20
+> > > This patchset adds a couple of helpers for kunit as well as tests for
+> > > cfg80211 and mac80211 that use them.
+> >=20
+> > I can take this through the wireless tree, but then I'd like to have
+> > ACKs from kunit folks for the kunit patches:
+> >=20
 >=20
-> There are reports that WPA3 is broken on the Cypress chipsets the
-> Raspberry Pis are using and this patch fixes it:
-> https://rachelbythebay.com/w/2023/11/06/wpa3/
->=20
-> Based on that, it appears that all known users of WPA3 capable
-> hardware with this driver require this fix.
+> We have run into conflicts in the past with the kunit tree. I take the
+> kunit patches through linux-kselftest tree. I do want to make sure there
+> are no conflicts. I don't mind taking these through my tree.
 
-the Pis are all using an outdated firmware. In their distro they put the
-firmware already under the alternates systems, but it just lacks the SAE
-offload support that is required to make WPA3 work. The linux-firmware
-version does the trick nicely.
+OK, fair enough.
 
-I documented what I did to make this work on Pi5 (note that I normally
-use Fedora on Pi4 and thus never encountered this issue)
+If you can still put it into 6.8, then I think you can also take the
+wireless tests, assuming they pass (I haven't run them in the posted
+version). I don't think we'll have conflicts there, we don't have much
+work in wireless that's likely to land for 6.8.
 
-https://holtmann.dev/enabling-wpa3-on-raspberry-pi/
-
-However you need to use iwd and not hope that you get a wpa_supplicant
-released version that will work.
-
-So whole game of wpa_supplicant is vendor specific to the company that
-provides the driver is also insane, but that is another story. Use iwd
-and you can most likely have WPA3 support if you have the right =
-firmware.
-
-Regards
-
-Marcel
-
+johannes
 
