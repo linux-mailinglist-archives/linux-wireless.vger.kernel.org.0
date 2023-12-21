@@ -1,86 +1,114 @@
-Return-Path: <linux-wireless+bounces-1181-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1182-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4555C81BFB1
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Dec 2023 21:40:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5CD381C06D
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Dec 2023 22:47:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 768281C230D2
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Dec 2023 20:40:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 620EC287024
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Dec 2023 21:47:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5241A768EC;
-	Thu, 21 Dec 2023 20:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3734855E59;
+	Thu, 21 Dec 2023 21:47:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="mzwvDZ6C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RPfIoOAo"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f169.google.com (mail-il1-f169.google.com [209.85.166.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AAE9BA2F;
-	Thu, 21 Dec 2023 20:40:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=DYz9UKukQQi0+UkBLQMWrkToy7MoAxOJpeupjT9wAhk=;
-	t=1703191246; x=1704400846; b=mzwvDZ6CFHQKTPzeqMfH/bCrCALbvN+N+1r1b2rZnzVdy/V
-	08KzF5tbCOKnLsgIbusyYU62uHrLRvWUHRiJo3DVrans03Ao0uiAG53uZZGPDVXRPUWTE+mvb7HeK
-	tY7r8WNV/bIiMjDty4YUCvP8SqT3K4D/wmyDf9dt+gx7T3u9VQmx1596VjgyHFNOxEm7oTrgbPo05
-	PGIyFX2mrHIPmOSr3f9zE167IKGbTQ8fvKJrZEhYeJjIUcMQ7PswDcVFUqtRVUy5gkWEGVQtzA+Su
-	QqX0Gb2NLSmQyknMW4lgqheOMYLeosv80f0AsUKgyU1aPmVl6Ot6smuOI16qH7WQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1rGPqT-000000037IZ-1U0F;
-	Thu, 21 Dec 2023 21:40:41 +0100
-Message-ID: <dbcadbe4430cd314373f15a9f4b814e44662bef6.camel@sipsolutions.net>
-Subject: Re: [PATCH 0/6] Add some more cfg80211 and mac80211 kunit tests
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Shuah Khan <skhan@linuxfoundation.org>, benjamin@sipsolutions.net, 
- linux-wireless@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- kunit-dev@googlegroups.com, David Gow <davidgow@google.com>, Brendan
- Higgins <brendanhiggins@google.com>
-Cc: Benjamin Berg <benjamin.berg@intel.com>
-Date: Thu, 21 Dec 2023 21:40:40 +0100
-In-Reply-To: <ae651d3d-58f7-40de-a625-4882cf0efc9b@linuxfoundation.org>
-References: <20231220151952.415232-1-benjamin@sipsolutions.net>
-	 <fab3c87ea726208cbdec03dfd61230e4c8ceb694.camel@sipsolutions.net>
-	 <ae651d3d-58f7-40de-a625-4882cf0efc9b@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.2 (3.50.2-1.fc39) 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA28976DBB
+	for <linux-wireless@vger.kernel.org>; Thu, 21 Dec 2023 21:47:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-il1-f169.google.com with SMTP id e9e14a558f8ab-35fd4856abbso216615ab.0
+        for <linux-wireless@vger.kernel.org>; Thu, 21 Dec 2023 13:47:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1703195224; x=1703800024; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=T5CHLrR4EMTucnMkbYGinuiGUovrY8mvDNYXvJwsxgw=;
+        b=RPfIoOAoE6D7eyHYl+GpQz7/QWupIcw/Ed9MePMcu3A0pErf4xCJFLKQ7Q3To7cc8w
+         vuL0x47RqXTwRLBYhbTMwBPxL8pjE36ch5aOHHSHecnrxY7A017VOohgcVqbVnUaiRBF
+         18saKSseYHoigVk7cKBDJafC5MSXAtEfkwgU4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1703195224; x=1703800024;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=T5CHLrR4EMTucnMkbYGinuiGUovrY8mvDNYXvJwsxgw=;
+        b=SAfpSdk1kacuedEmLuIptC32B67JpzzQ6q62a3U0EyijL4IxJFhQBuf8Tl8M9NiEL3
+         XwX3tfVwRR2cbGsCud4QX7UKN2wVHbXPBs0VihxuHhx2rIVUVnK/uMoxZ2Aii5syjPev
+         s9wKL4RO697EMttFw+gYkarzAu08QBdQOn1NSo9KMRm5ILbdiMvFMedK+EkK4h4qQiqq
+         TSz+lR3SLgO43EEHrqhUOml5HU1hgCeY24yfGpCmOnnw2vPXpsrRuo2MzxdxoESwDs8L
+         sN3dMSq9zi22dM9EbmTtS8C4M6MQesFVCDMWvXIsMlSFPfCYqT0sORBCcVHrpx+UAP45
+         H3Dg==
+X-Gm-Message-State: AOJu0YxatIACUvjbIjQ9/F9w3VEhljiFd9PdDyPcyuOw4lUy/Qg9F/t5
+	yx5Pxo0GSHdiDLG3Fi46gNL5JMyV+cMudQ==
+X-Google-Smtp-Source: AGHT+IEoGSoXva572vluYRiQgTXBokcH749+S1X5DWwWq7246hcPsKVRMkiwq2VvJEFYIoQC+iRBqg==
+X-Received: by 2002:a05:6602:2bce:b0:7ba:9b12:35d2 with SMTP id s14-20020a0566022bce00b007ba9b1235d2mr250473iov.0.1703195223820;
+        Thu, 21 Dec 2023 13:47:03 -0800 (PST)
+Received: from [192.168.1.128] ([38.175.170.29])
+        by smtp.gmail.com with ESMTPSA id x6-20020a056638034600b0046b6f096e3bsm677886jap.134.2023.12.21.13.47.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 21 Dec 2023 13:47:03 -0800 (PST)
+Message-ID: <a2ef9ea4-00e8-4fa4-bc2e-58fbec306503@linuxfoundation.org>
+Date: Thu, 21 Dec 2023 14:47:02 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/6] Add some more cfg80211 and mac80211 kunit tests
+Content-Language: en-US
+To: Johannes Berg <johannes@sipsolutions.net>, benjamin@sipsolutions.net,
+ linux-wireless@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ kunit-dev@googlegroups.com, David Gow <davidgow@google.com>,
+ Brendan Higgins <brendanhiggins@google.com>
+Cc: Benjamin Berg <benjamin.berg@intel.com>,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <20231220151952.415232-1-benjamin@sipsolutions.net>
+ <fab3c87ea726208cbdec03dfd61230e4c8ceb694.camel@sipsolutions.net>
+ <ae651d3d-58f7-40de-a625-4882cf0efc9b@linuxfoundation.org>
+ <dbcadbe4430cd314373f15a9f4b814e44662bef6.camel@sipsolutions.net>
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <dbcadbe4430cd314373f15a9f4b814e44662bef6.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, 2023-12-21 at 13:06 -0700, Shuah Khan wrote:
-> On 12/21/23 12:39, Johannes Berg wrote:
-> > >=20
-> > > This patchset adds a couple of helpers for kunit as well as tests for
-> > > cfg80211 and mac80211 that use them.
-> >=20
-> > I can take this through the wireless tree, but then I'd like to have
-> > ACKs from kunit folks for the kunit patches:
-> >=20
->=20
-> We have run into conflicts in the past with the kunit tree. I take the
-> kunit patches through linux-kselftest tree. I do want to make sure there
-> are no conflicts. I don't mind taking these through my tree.
+On 12/21/23 13:40, Johannes Berg wrote:
+> On Thu, 2023-12-21 at 13:06 -0700, Shuah Khan wrote:
+>> On 12/21/23 12:39, Johannes Berg wrote:
+>>>>
+>>>> This patchset adds a couple of helpers for kunit as well as tests for
+>>>> cfg80211 and mac80211 that use them.
+>>>
+>>> I can take this through the wireless tree, but then I'd like to have
+>>> ACKs from kunit folks for the kunit patches:
+>>>
+>>
+>> We have run into conflicts in the past with the kunit tree. I take the
+>> kunit patches through linux-kselftest tree. I do want to make sure there
+>> are no conflicts. I don't mind taking these through my tree.
+> 
+> OK, fair enough.
+> 
+> If you can still put it into 6.8, then I think you can also take the
+> wireless tests, assuming they pass (I haven't run them in the posted
+> version). I don't think we'll have conflicts there, we don't have much
+> work in wireless that's likely to land for 6.8.
+> 
 
-OK, fair enough.
+Sounds good.
 
-If you can still put it into 6.8, then I think you can also take the
-wireless tests, assuming they pass (I haven't run them in the posted
-version). I don't think we'll have conflicts there, we don't have much
-work in wireless that's likely to land for 6.8.
+David, will you be able to look at these patches and let me know if
+I can apply for Linux 6.8-rc1.
 
-johannes
+thanks,
+-- Shuah
+
 
