@@ -1,118 +1,88 @@
-Return-Path: <linux-wireless+bounces-1133-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1134-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6898C81AEDA
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Dec 2023 07:38:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EBEC81AFDD
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Dec 2023 08:57:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24C29286799
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Dec 2023 06:38:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 544541F23D90
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Dec 2023 07:57:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F192B672;
-	Thu, 21 Dec 2023 06:38:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jBtKBo2Z"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E174154BB;
+	Thu, 21 Dec 2023 07:57:21 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE5B11733;
-	Thu, 21 Dec 2023 06:38:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9343DC433C8;
-	Thu, 21 Dec 2023 06:38:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703140716;
-	bh=Yhl/ykyxVA6LA1kDZOxQMgUP3Z7vfjny1ZSJoKucqog=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=jBtKBo2ZiBpDcT422t0EOms8MP/5gNWYSaAN1ggNe2OggUvouJznOezeC94w6b1Z6
-	 cTAX5Rrnp/va+W1GfKitWezNesm2EIoqYKPnvu3vIdjaTTgEiJr58GuXy1Oc3CZXX8
-	 KK5lDh23OJ6Vj1fHORrGFO7wWF8ZjKASNFD2//xaAjVwp0lu1KPO1TqVgpKvSmANOq
-	 veWV8V6Fndry8QbjxQkrO1LIM9K5eVkZbu3uQ2cb6Sy3VAcnohMYZlsKq6cNomkKM7
-	 Cz0u9b+SIwnDAo/oLZzh5fiv29mgP6wX2hJeVDCVRb9BE7fnU/ychZW+Yrv9DsR9zl
-	 RdooDQ6blXDIw==
-From: Kalle Valo <kvalo@kernel.org>
-To: "Ma, Jun" <majun@amd.com>
-Cc: Mario Limonciello <mario.limonciello@amd.com>,  Johannes Berg
- <johannes@sipsolutions.net>,  "David S . Miller" <davem@davemloft.net>,
-  Eric Dumazet <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,
-  Paolo Abeni <pabeni@redhat.com>,  "open list:MAC80211"
- <linux-wireless@vger.kernel.org>,  "open list:NETWORKING [GENERAL]"
- <netdev@vger.kernel.org>,  open list <linux-kernel@vger.kernel.org>,  Jun
- Ma <Jun.ma2@amd.com>
-Subject: Re: [PATCH] wifi: mac80211: Use subsystem appropriate debug call
-References: <20231215145439.57286-1-mario.limonciello@amd.com>
-	<87frzzsfoi.fsf@kernel.org>
-	<46bf6ed5-31f6-48f4-b63d-f532e163204e@amd.com>
-Date: Thu, 21 Dec 2023 08:38:32 +0200
-In-Reply-To: <46bf6ed5-31f6-48f4-b63d-f532e163204e@amd.com> (Jun Ma's message
-	of "Thu, 21 Dec 2023 13:57:50 +0800")
-Message-ID: <87cyv0oyaf.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD6F9154AA
+	for <linux-wireless@vger.kernel.org>; Thu, 21 Dec 2023 07:57:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 3BL7ukL031303734, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 3BL7ukL031303734
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 21 Dec 2023 15:56:46 +0800
+Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.17; Thu, 21 Dec 2023 15:56:46 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Thu, 21 Dec 2023 15:56:45 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7]) by
+ RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7%5]) with mapi id
+ 15.01.2375.007; Thu, 21 Dec 2023 15:56:45 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "martin.kaistra@linutronix.de" <martin.kaistra@linutronix.de>
+CC: "Jes.Sorensen@gmail.com" <Jes.Sorensen@gmail.com>,
+        "kvalo@kernel.org"
+	<kvalo@kernel.org>,
+        "rtl8821cerfe2@gmail.com" <rtl8821cerfe2@gmail.com>,
+        "bigeasy@linutronix.de" <bigeasy@linutronix.de>
+Subject: Re: [PATCH 07/20] wifi: rtl8xxxu: extend check for matching bssid to both interfaces
+Thread-Topic: [PATCH 07/20] wifi: rtl8xxxu: extend check for matching bssid to
+ both interfaces
+Thread-Index: AQHaMb/F+8FmqtnoUU+G0r/J9qn1AbCxpxFAgAA2qYCAAP7QgA==
+Date: Thu, 21 Dec 2023 07:56:45 +0000
+Message-ID: <f2f6f794a4ad206281c9f7cc4b9f410db5618ada.camel@realtek.com>
+References: <20231218143645.433356-1-martin.kaistra@linutronix.de>
+	 <20231218143645.433356-8-martin.kaistra@linutronix.de>
+	 <cddf0a0b59a1425fa0e37743feaaafa4@realtek.com>
+	 <19477f91-4a4e-4ce2-91ca-09ab4f56384a@linutronix.de>
+In-Reply-To: <19477f91-4a4e-4ce2-91ca-09ab4f56384a@linutronix.de>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+user-agent: Evolution 3.36.1-2 
+x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <746A7C68E04B814BA6967195B1C48ABF@realtek.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-"Ma, Jun" <majun@amd.com> writes:
-
-> Hi,
->
-> On 12/18/2023 11:17 PM, Kalle Valo wrote:
->> Mario Limonciello <mario.limonciello@amd.com> writes:
->> 
->>> mac80211 doesn't use dev_dbg() but instead various macros from
->>> net/mac80211/debug.h. Adjust wbrf code to use wiphy_dbg() instead.
->>>
->>> Cc: Jun Ma <Jun.ma2@amd.com>
->>> Reported-by: kvalo@kernel.org
->>> Closes:
->>> https://lore.kernel.org/amd-gfx/8bd60010-7534-4c22-9337-c4219946d8d6@amd.com/T/#mfe2f29372c45130d27745912faf33d9f7ce50118
->>> Fixes: d34be4310cbe ("wifi: mac80211: Add support for WBRF features")
->>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
->>> ---
->>>  net/mac80211/wbrf.c | 4 ++--
->>>  1 file changed, 2 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/net/mac80211/wbrf.c b/net/mac80211/wbrf.c
->>> index a05c5b971789..12c23e14f884 100644
->>> --- a/net/mac80211/wbrf.c
->>> +++ b/net/mac80211/wbrf.c
->>> @@ -23,8 +23,8 @@ void ieee80211_check_wbrf_support(struct ieee80211_local *local)
->>>  		return;
->>>  
->>>  	local->wbrf_supported = acpi_amd_wbrf_supported_producer(dev);
->>> -	dev_dbg(dev, "WBRF is %s supported\n",
->>> -		local->wbrf_supported ? "" : "not");
->>> +	wiphy_dbg(wiphy, "WBRF is %s supported\n",
->>> +		  local->wbrf_supported ? "" : "not");
->>>  }
->> 
->> This won't work, I still see the debug message:
->> 
->> [  333.765867] ieee80211 phy0: WBRF is not supported
->> 
->> The issue seems to be that mac80211 defines DEBUG in
->> net/mac80211/Makefile:
->> 
->> ccflags-y += -DDEBUG
->> 
->> That -DDEBUG should be cleaned up, but I think separately. It's just
->> that I cannot come up with any good proposal, all the macros in
->> net/mac80211/debug.h require sdata and we don't have that in this stage.
->> Any ideas?
->
-> I will submit a patch that only compiles wbrf.c when CONFIG_AMD_WBRF=y
-
-But does this mean that the debug is still printed when CONFIG_AMD_WBRF
-is enabled? And I would assume all distros enable that, right?
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+T24gV2VkLCAyMDIzLTEyLTIwIGF0IDE3OjQzICswMTAwLCBNYXJ0aW4gS2Fpc3RyYSB3cm90ZToN
+Cj4gDQo+IEFtIDIwLjEyLjIzIHVtIDA2OjUxIHNjaHJpZWIgUGluZy1LZSBTaGloOg0KPiA+IA0K
+PiA+IEkgZmVlbCB0aGF0IGRyaXZlciBjYW4gb25seSB0cmFjayBzaW5nbGUgb25lIENGTyAoY2Fy
+cmllciBmcmVxdWVuY3kgb2Zmc2V0KQ0KPiA+IGZyb20gQVAuIENvbnNpZGVyaW5nIFNUQStTVEEg
+Y2FzZSB3aXRoIHR3byBkaWZmZXJlbnQgQVBzLCBpdCB3b3VsZCBjYXVzZQ0KPiA+IHBpbmctcG9u
+ZyBDRk8gdmFsdWVzIGJldHdlZW4gdHdvIEFQcy4NCj4gPiANCj4gPiBBIHNpbXBsZSB3YXkgaXMg
+anVzdCB0byBpZ25vcmUgQ0ZPIGZvciBTVEErU1RBIGNhc2UuIEFub3RoZXIgd2F5IGlzIHRvDQo+
+ID4gcmVmZXJlbmNlIHRoZSBtZXRob2RzIGltcGxlbWVudGVkIGJ5IHJ0dzg5IHdoZXJlIGZ1bmN0
+aW9uIG5hbWUgaXMNCj4gPiBydHc4OV9waHlfbXVsdGlfc3RhX2Nmb19jYWxjKCkuIE9uZSBtZXRo
+b2QgaXMgdG8gcmVjb3JkIENGTyB0YWlsIGZvciBlYWNoDQo+ID4gbWFjX2lkIGFuZCB1c2UgdGhl
+IGF2ZXJhZ2UgYXMgdGFyZ2V0IENGTyB2YWx1ZSB0byBoYXJkd2FyZS4NCj4gDQo+IFRoaXMgaXMg
+b25seSBhIHByb2JsZW0sIGlmIGJvdGggaW50ZXJmYWNlcyBhcmUgaW4gU1RBIG1vZGUgYW5kIGFy
+ZSBhY3R1YWxseQ0KPiBjb25uZWN0ZWQsIHJpZ2h0Pw0KDQpZZXMuIA0KDQoNCg0K
 
