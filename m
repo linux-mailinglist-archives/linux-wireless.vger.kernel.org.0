@@ -1,77 +1,121 @@
-Return-Path: <linux-wireless+bounces-1149-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1150-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93DE581B9BA
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Dec 2023 15:41:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C178C81BC36
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Dec 2023 17:44:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3030B22134
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Dec 2023 14:41:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DDE7284615
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Dec 2023 16:44:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EF40A5C;
-	Thu, 21 Dec 2023 14:41:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6976539F8;
+	Thu, 21 Dec 2023 16:44:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="atejqCvs"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tB/XxQZX";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Y/JoTo/M"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D0441D69C;
-	Thu, 21 Dec 2023 14:41:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31C6AC433C8;
-	Thu, 21 Dec 2023 14:41:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703169702;
-	bh=EVUMYl3rOlHtN/K6V9hi9IeUlzUhMbQYqoThI5xvNHg=;
-	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=atejqCvskyYhQxXzNXFV6zuf9UR1fIL0CqfG4VlLwRt6ReMNwXqKiEpjvy5Srdbjo
-	 aIAoXM7fxtWEgsF4Vl7SCvoXfWvWcgIGLlH6FHcrAHUQTxHWxnAhJfgAUZXFNmbTjH
-	 78KXRF43V6YN+eQQAqbsBn6hNVAwHSXDW/Mne5Q7swkujLyi+VRAOiAPJi7224VyXx
-	 tZDoTBwuXAuHy7bUAlP+5ZM6vjZj5lbjnQTTDoMXrCH43D9jAxvLp1irrd391jcA2N
-	 8cGw1UxMsDDlaNynY+mgmlw9gm7pjgel+C5JVXv2sKLoJvtoWB0LfBe2P2yBhK/fdn
-	 gjEa9yzYV5CkA==
-Content-Type: text/plain; charset="utf-8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71C5E55E68
+	for <linux-wireless@vger.kernel.org>; Thu, 21 Dec 2023 16:44:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Martin Kaistra <martin.kaistra@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1703177042;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=aSygvLvTthPd559pqe9YTU8NPDJ1TN86SpHZ1+KXmqI=;
+	b=tB/XxQZXZBV7/KUGZvjwebYm04una3nOVwRcIkI5OSme+Do/WopX6rFCDVbK9qOznTd9Iw
+	Xju10zskii4OvxBk24VeEhHUDEH8uoLzK0sTkACawIvZqXIrlrCEcvTHTFJU/azt49Hm56
+	dm6iMZXI4MCLFYKcJOnTmg0FVNTSXZmYxh8XNgiaFsLWc3E0ofmfE/yHV/VxC7PhLL+ZQe
+	uSB7oxeUAW9dD3GCpnBAzOgMskKrtzmdTF9HThQBNnsvMF+4MKZh4OGFjDPMGfpIBeOUd0
+	AIMvLoopt2vnK8YI/FGmMwvSK3/KspuDrpMN4E2pBqrwDvO0mQ7Hts9g94VZ6Q==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1703177042;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=aSygvLvTthPd559pqe9YTU8NPDJ1TN86SpHZ1+KXmqI=;
+	b=Y/JoTo/MolHtd0MySGcmipFRu8tLTdufF45m7qrMS1rQHSVHsxnz2Lxye+AmwnT/nnm00V
+	2EgcJ5MhFZYAPUCQ==
+To: linux-wireless@vger.kernel.org
+Cc: Jes Sorensen <Jes.Sorensen@gmail.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: [PATCH v2 00/21] wifi: rtl8xxxu: Add concurrent mode for 8188f
+Date: Thu, 21 Dec 2023 17:43:32 +0100
+Message-Id: <20231221164353.603258-1-martin.kaistra@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] wifi: mwifiex: fix uninitialized firmware_stat
-From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20231221015511.1032128-1-yu-hao.lin@nxp.com>
-References: <20231221015511.1032128-1-yu-hao.lin@nxp.com>
-To: David Lin <yu-hao.lin@nxp.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- briannorris@chromium.org, francesco@dolcini.it, tsung-hsien.hsieh@nxp.com,
- David Lin <yu-hao.lin@nxp.com>, stable@vger.kernel.org,
- kernel test robot <lkp@intel.com>, Dan Carpenter <error27@gmail.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170316969802.1243375.17807414549323669608.kvalo@kernel.org>
-Date: Thu, 21 Dec 2023 14:41:40 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
 
-David Lin <yu-hao.lin@nxp.com> wrote:
+This series adds the possibility to use two virtual interfaces on the
+same channel. Supported combinations are STA+STA and STA+AP. The
+conversion of the driver to support multiple interfaces is split into
+individual patches to hopefully make it easier to understand what is
+going on.
 
-> Variable firmware_stat is possible to be used without initialization.
-> 
-> Signed-off-by: David Lin <yu-hao.lin@nxp.com>
-> Fixes: 1c5d463c0770 ("wifi: mwifiex: add extra delay for firmware ready")
-> Cc: stable@vger.kernel.org
-> Reported-by: kernel test robot <lkp@intel.com>
-> Reported-by: Dan Carpenter <error27@gmail.com>
-> Closes: https://lore.kernel.org/r/202312192236.ZflaWYCw-lkp@intel.com/
-> Acked-by: Brian Norris <briannorris@chromium.org>
+Thanks,
+  Martin
 
-Patch applied to wireless-next.git, thanks.
+changes for v2:
+- collect reviewed-by tags
+- coding style changess
+- ignore CFO for STA+STA
+- extend watchdog_callback to call refresh_rate_mask for both interfaces
+- remove port_num check for BEACON change notifications
+- add macids for STA mode
+- add number of sec cam entries to rtl8xxxu_fileops
+- add comment to switch_ports about using the function in the future
 
-3df95e265924 wifi: mwifiex: fix uninitialized firmware_stat
+v1: https://lore.kernel.org/linux-wireless/20231218143645.433356-1-martin.kaistra@linutronix.de/
+
+Martin Kaistra (21):
+  wifi: rtl8xxxu: remove assignment of priv->vif in
+    rtl8xxxu_bss_info_changed()
+  wifi: rtl8xxxu: prepare supporting two virtual interfaces
+  wifi: rtl8xxxu: support setting linktype for both interfaces
+  wifi: rtl8xxxu: 8188e: convert usage of priv->vif to priv->vifs[0]
+  wifi: rtl8xxxu: support setting mac address register for both
+    interfaces
+  wifi: rtl8xxxu: extend wifi connected check to both interfaces
+  wifi: rtl8xxxu: extend check for matching bssid to both interfaces
+  wifi: rtl8xxxu: don't parse CFO, if both interfaces are connected in
+    STA mode
+  wifi: rtl8xxxu: support setting bssid register for multiple interfaces
+  wifi: rtl8xxxu: support multiple interfaces in set_aifs()
+  wifi: rtl8xxxu: support multiple interfaces in
+    update_beacon_work_callback()
+  wifi: rtl8xxxu: support multiple interfaces in configure_filter()
+  wifi: rtl8xxxu: support multiple interfaces in watchdog_callback()
+  wifi: rtl8xxxu: support multiple interfaces in
+    {add,remove}_interface()
+  wifi: rtl8xxxu: support multiple interfaces in bss_info_changed()
+  wifi: rtl8xxxu: support multiple interface in start_ap()
+  wifi: rtl8xxxu: add macids for STA mode
+  wifi: rtl8xxxu: remove obsolete priv->vif
+  wifi: rtl8xxxu: add hw crypto support for AP mode
+  wifi: rtl8xxxu: make supporting AP mode only on port 0 transparent
+  wifi: rtl8xxxu: declare concurrent mode support for 8188f
+
+ .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  |  18 +-
+ .../realtek/rtl8xxxu/rtl8xxxu_8188e.c         |   2 +-
+ .../realtek/rtl8xxxu/rtl8xxxu_8188f.c         |   2 +
+ .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 381 ++++++++++++++----
+ 4 files changed, 312 insertions(+), 91 deletions(-)
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20231221015511.1032128-1-yu-hao.lin@nxp.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.39.2
 
 
