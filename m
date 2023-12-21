@@ -1,89 +1,155 @@
-Return-Path: <linux-wireless+bounces-1129-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1130-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98F1D81ACB0
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Dec 2023 03:38:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02F6B81AD7A
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Dec 2023 04:27:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E3141F22ED9
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Dec 2023 02:38:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A268EB22319
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Dec 2023 03:27:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A299C4404;
-	Thu, 21 Dec 2023 02:38:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D585F5247;
+	Thu, 21 Dec 2023 03:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="ian7/FeH"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="F5RWXqHP"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F2B2441A
-	for <linux-wireless@vger.kernel.org>; Thu, 21 Dec 2023 02:38:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-5c21e185df5so279844a12.1
-        for <linux-wireless@vger.kernel.org>; Wed, 20 Dec 2023 18:38:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1703126321; x=1703731121; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1vJGbIHxG2ZsYy3EApEYIrka9GfydAEUv+b6Hz8AzfM=;
-        b=ian7/FeHw6NJNiqpPaz4eJcj6EU8bgem2UJ6Uw5zy37pldCXYlh7dA6axpDnAJNZ6v
-         QYxNrDbChc0c1RUMOOUAQpNYaOj3mGBkAjj2UlhL8BFgt9g9Abu/lt03COzRvYkY1f76
-         gathwJDmWev4kvIPr4U5WYpW+BpJihYY0t0uQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703126321; x=1703731121;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1vJGbIHxG2ZsYy3EApEYIrka9GfydAEUv+b6Hz8AzfM=;
-        b=qVSx1FTu/L/iNa4kKLu8qJO13OsdlULgcs5znpLG/GM1d6dYdip8LMeRhnvs4KLh85
-         tMgybSfFQ/5/uJS2eAhZkpdewWeRoJXZw1LpFhxuSeO+wxpnjdoRvBx34KW7+VhdNHTl
-         5CjhDVMkY0eLbxAbEUqu+43eIDEhyKoJ/qBHYrefqP7P5ZIngK3T3yVYHUq/ZPfDDCkH
-         aKEgIBABaveQPx6GFYAx5hnkbt5/QZTceYstfSGuT7GotwhVOlWj7VhmT/6ub/LqHC/M
-         lWN9UEW/s2Bnx380Umv0lzb3F3MT1U/0HxwQ2C0MIxwvBGGf2F0wYSW/24s8LQVImAsQ
-         GuRA==
-X-Gm-Message-State: AOJu0Yw3WHNOVWDuheIc+hl7UKLW6ecuAP3bicK5FS0ACdoTun7lcsOB
-	I6vAqf6l3WUDUJw243V06FqgHA==
-X-Google-Smtp-Source: AGHT+IFZTzHJljAEY9dBckgyqNlZpe7i9t37+5ZwyzFVa+SsJmG4tRtrmgdjSlzgL/JHtsz/d7gP0A==
-X-Received: by 2002:a05:6a21:6d99:b0:194:d254:301a with SMTP id wl25-20020a056a216d9900b00194d254301amr735237pzb.119.1703126320783;
-        Wed, 20 Dec 2023 18:38:40 -0800 (PST)
-Received: from localhost ([2620:15c:9d:2:dc4e:6304:4aae:aecc])
-        by smtp.gmail.com with UTF8SMTPSA id w128-20020a626286000000b006d8840a5923sm471801pfb.166.2023.12.20.18.38.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 20 Dec 2023 18:38:40 -0800 (PST)
-Date: Wed, 20 Dec 2023 18:38:37 -0800
-From: Brian Norris <briannorris@chromium.org>
-To: David Lin <yu-hao.lin@nxp.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kvalo@kernel.org, francesco@dolcini.it, tsung-hsien.hsieh@nxp.com,
-	stable@vger.kernel.org, kernel test robot <lkp@intel.com>,
-	Dan Carpenter <error27@gmail.com>
-Subject: Re: [PATCH v2] wifi: mwifiex: fix uninitialized firmware_stat
-Message-ID: <ZYOlLanvv6DTGSw1@google.com>
-References: <20231221015511.1032128-1-yu-hao.lin@nxp.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDA604C64;
+	Thu, 21 Dec 2023 03:26:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: c7d0b8c89fb011eeba30773df0976c77-20231221
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=qlh/VbDYXlXEU1JaXc715148R0jpddLs+ZhwUrdEA90=;
+	b=F5RWXqHPPTCwYDeM+Zckon9CTQAHP5hBqWehQOEoNSgOYogk8NQyQmBOGY8G2n6A9J67oAMM5+fW04FcKAjjXzHsIH/XNv85ENYea1vWUkO6gHze/aXIjYOc0qQbb/VQUpH9JXiNScjFx+4ohb/TRvw6ni6hLkfCos4TE4Rk0zY=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.35,REQID:0cb7be99-254d-456c-9198-ace6eb0f5d96,IP:0,U
+	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:-25
+X-CID-META: VersionHash:5d391d7,CLOUDID:3b18688d-e2c0-40b0-a8fe-7c7e47299109,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+	RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,
+	DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: c7d0b8c89fb011eeba30773df0976c77-20231221
+Received: from mtkmbs11n1.mediatek.inc [(172.21.101.185)] by mailgw02.mediatek.com
+	(envelope-from <chui-hao.chiu@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 1023971889; Thu, 21 Dec 2023 11:26:51 +0800
+Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
+ mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Thu, 21 Dec 2023 11:26:49 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Thu, 21 Dec 2023 11:26:49 +0800
+From: Peter Chiu <chui-hao.chiu@mediatek.com>
+To: Felix Fietkau <nbd@nbd.name>, Rob Herring <robh+dt@kernel.org>, Krzysztof
+ Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+CC: Conor Dooley <conor+dt@kernel.org>, Lorenzo Bianconi <lorenzo@kernel.org>,
+	Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>,
+	Sean Wang <sean.wang@mediatek.com>, Kalle Valo <kvalo@kernel.org>, Matthias
+ Brugger <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
+	<angelogioacchino.delregno@collabora.com>, <linux-wireless@vger.kernel.org>,
+	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-mediatek@lists.infradead.org>,
+	Peter Chiu <chui-hao.chiu@mediatek.com>
+Subject: [PATCH v4] dt-bindings: net: wireless: mt76: add interrupts description for MT7986
+Date: Thu, 21 Dec 2023 11:26:48 +0800
+Message-ID: <20231221032648.641-1-chui-hao.chiu@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231221015511.1032128-1-yu-hao.lin@nxp.com>
+Content-Type: text/plain
+X-MTK: N
 
-On Thu, Dec 21, 2023 at 09:55:11AM +0800, David Lin wrote:
-> Variable firmware_stat is possible to be used without initialization.
-> 
-> Signed-off-by: David Lin <yu-hao.lin@nxp.com>
-> Fixes: 1c5d463c0770 ("wifi: mwifiex: add extra delay for firmware ready")
-> Cc: stable@vger.kernel.org
-> Reported-by: kernel test robot <lkp@intel.com>
-> Reported-by: Dan Carpenter <error27@gmail.com>
-> Closes: https://lore.kernel.org/r/202312192236.ZflaWYCw-lkp@intel.com/
+The mt7986 can support four interrupts to distribute the interrupts
+to different CPUs.
 
-Repeating:
+Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+---
+v2: Change to use description instead of using items.
+v3: Change to use items and set different minItems for mediatek,mt7986-wmac
+v4: Move allOf after required and remove duplicated blank line.
+---
+ .../bindings/net/wireless/mediatek,mt76.yaml  | 32 ++++++++++++++++---
+ 1 file changed, 27 insertions(+), 5 deletions(-)
 
-Acked-by: Brian Norris <briannorris@chromium.org>
+diff --git a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
+index 252207adbc54..0c6835db397f 100644
+--- a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
++++ b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
+@@ -19,9 +19,6 @@ description: |
+   Alternatively, it can specify the wireless part of the MT7628/MT7688
+   or MT7622/MT7986 SoC.
+ 
+-allOf:
+-  - $ref: ieee80211.yaml#
+-
+ properties:
+   compatible:
+     enum:
+@@ -38,7 +35,12 @@ properties:
+       MT7986 should contain 3 regions consys, dcm, and sku, in this order.
+ 
+   interrupts:
+-    maxItems: 1
++    minItems: 1
++    items:
++      - description: major interrupt for rings
++      - description: additional interrupt for ring 19
++      - description: additional interrupt for ring 4
++      - description: additional interrupt for ring 5
+ 
+   power-domains:
+     maxItems: 1
+@@ -217,6 +219,23 @@ required:
+   - compatible
+   - reg
+ 
++allOf:
++  - $ref: ieee80211.yaml#
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - mediatek,mt7986-wmac
++    then:
++      properties:
++        interrupts:
++          minItems: 4
++    else:
++      properties:
++        interrupts:
++          maxItems: 1
++
+ unevaluatedProperties: false
+ 
+ examples:
+@@ -293,7 +312,10 @@ examples:
+         reg = <0x18000000 0x1000000>,
+               <0x10003000 0x1000>,
+               <0x11d10000 0x1000>;
+-        interrupts = <GIC_SPI 213 IRQ_TYPE_LEVEL_HIGH>;
++        interrupts = <GIC_SPI 213 IRQ_TYPE_LEVEL_HIGH>,
++                     <GIC_SPI 214 IRQ_TYPE_LEVEL_HIGH>,
++                     <GIC_SPI 215 IRQ_TYPE_LEVEL_HIGH>,
++                     <GIC_SPI 216 IRQ_TYPE_LEVEL_HIGH>;
+         clocks = <&topckgen 50>,
+                  <&topckgen 62>;
+         clock-names = "mcu", "ap2conn";
+-- 
+2.18.0
+
 
