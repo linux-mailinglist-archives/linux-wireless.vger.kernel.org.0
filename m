@@ -1,103 +1,85 @@
-Return-Path: <linux-wireless+bounces-1147-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1148-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C747A81B974
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Dec 2023 15:23:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A036481B9B6
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Dec 2023 15:40:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2D791C23EAF
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Dec 2023 14:23:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A4812856BA
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Dec 2023 14:40:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7806736085;
-	Thu, 21 Dec 2023 14:23:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABDD41EB46;
+	Thu, 21 Dec 2023 14:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F0KZNngN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jTINVrUo"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D06336084
-	for <linux-wireless@vger.kernel.org>; Thu, 21 Dec 2023 14:23:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E6DAC433C7;
-	Thu, 21 Dec 2023 14:23:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893B71D6A9;
+	Thu, 21 Dec 2023 14:40:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6A74C433C9;
+	Thu, 21 Dec 2023 14:40:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703168593;
-	bh=VJVm9sAChmhhS6GxWESn6J/w+ak9YS7aw1uRnA4naCM=;
-	h=From:List-Id:To:Cc:Subject:Date:From;
-	b=F0KZNngNNerCSpNgXx08zdCJ7MWD3cQz2V7WGtrDChd5eGMN6wktSGBsL1swgycGC
-	 EVPB4u9Ui87pncDv3e6pp2p8U8NPrplg/Ad6F7YgWT6itHfn9jU2nATIlIDkhYCgBQ
-	 liMCaFOqhuVdu1kKCKHDN/GFE2HHafnxw6D7w02WotV1s8BYm6BXp1jaqqMC51LNIb
-	 G8l5x8WxH51g13VlzUmPE0I/XBaN4eBfVuS+X+ESmTpo/6s53Hf7bFXHDtR73b6ZZn
-	 hmtApyxWPU6ZOTWUad7haCHdhS2wgRxzYuaO0ZMCHr2x5rE0GoZSQqPaf5MyjQVqxT
-	 TPxqpfPS3D06A==
-From: Kalle Valo <kvalo@kernel.org>
-To: linux-firmware@kernel.org
-Cc: linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
- ath11k@lists.infradead.org, ath12k@lists.infradead.org
-Subject: [PULL linux-firmware] ath10k, ath11k and ath12k firmware 2023-12-21
-Date: Thu, 21 Dec 2023 16:23:10 +0200
-Message-ID: <878r5nprch.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=k20201202; t=1703169652;
+	bh=ri5KEEnsiQYrzG321GXsHIE5EoVCZaliNnZtZXHZhxY=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=jTINVrUoxf0xMKKDKtGckqKXUM6nl+CkqezQpPY3seXQlzd/MDpf4SYcNsQmaEBAL
+	 caKLw4FjqDCaxl2x4U2VbAVoyQDlo7q8E3JCAzl8TIcSQNwhI8txmuzrcbJ6AnwFKE
+	 6BP0IUy/vqT015XN/BnrQdBiGPSzIRuc3qv/fehgvGpsoLFy/tHNp35rP6qgwv58fZ
+	 XmGTnNV6vYPDlh7KP3aPCDo/zAnytA77aVVzm9sLr0Sjv/2NjiSNcVbM9//85exDdi
+	 4P9v6RNLAMTpiYkAgfTPUBYdOj7JRmih5kCcasYLkhLTE/U4wEaj+/PST1o4OkdyJ0
+	 PxaqfSZacuXxQ==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH wireless-next 01/11] wifi: rtlwifi: add
+ calculate_bit_shift()
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20231219065739.1895666-2-suhui@nfschina.com>
+References: <20231219065739.1895666-2-suhui@nfschina.com>
+To: Su Hui <suhui@nfschina.com>
+Cc: pkshih@realtek.com, Su Hui <suhui@nfschina.com>,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kernel-janitors@vger.kernel.org
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <170316964846.1243375.3938053797242635689.kvalo@kernel.org>
+Date: Thu, 21 Dec 2023 14:40:50 +0000 (UTC)
 
-Hi,
+Su Hui <suhui@nfschina.com> wrote:
 
-Here's a new pull request for ath10k, ath11k and ath12k. We have a new
-driver ath12k and the first firmware for WCN7850. And as usual firmware
-and board files to other hardware.
+> There are many same functions like _rtl88e_phy_calculate_bit_shift(),
+> _rtl92c_phy_calculate_bit_shift() and so on. And these functions can
+> cause undefined bitwise shift behavior. Add calculate_bit_shift() to
+> replace them and fix undefined behavior in subsequent patches.
+> 
+> Signed-off-by: Su Hui <suhui@nfschina.com>
+> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 
-Please let me know if there are any problems.
+11 patches applied to wireless-next.git, thanks.
 
-Kalle
+52221dfddbbf wifi: rtlwifi: add calculate_bit_shift()
+acefef7a7e7a wifi: rtlwifi: rtl8821ae: phy: using calculate_bit_shift()
+969bc926f04b wifi: rtlwifi: rtl8188ee: phy: using calculate_bit_shift()
+1dedc3a6699d wifi: rtlwifi: rtl8192c: using calculate_bit_shift()
+f4088c8fcbab wifi: rtlwifi: rtl8192cu: using calculate_bit_shift()
+3d03e8231031 wifi: rtlwifi: rtl8192ce: using calculate_bit_shift()
+b8b2baad2e65 wifi: rtlwifi: rtl8192de: using calculate_bit_shift()
+63526897fc0d wifi: rtlwifi: rtl8192ee: using calculate_bit_shift()
+ac32b9317063 wifi: rtlwifi: rtl8192se: using calculate_bit_shift()
+98d9c7731dbb wifi: rtlwifi: rtl8723_common: using calculate_bit_shift()
+5c16618bc06a wifi: rtlwifi: rtl8723{be,ae}: using calculate_bit_shift()
 
-The following changes since commit c156e6be6d4a0a2290e7059bc74fb0612aa19693:
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20231219065739.1895666-2-suhui@nfschina.com/
 
-  Merge branch 'robot/pr-0-1702625169' into 'main' (2023-12-15 12:16:57 +0000)
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/linux-firmware.git ath10k-20231221
-
-for you to fetch changes up to 17509e53b97baaefeb287b98d3358da8a6e1c199:
-
-  ath11k: WCN6855 hw2.0: update to WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.36 (2023-12-21 16:13:58 +0200)
-
-----------------------------------------------------------------
-Kalle Valo (9):
-      ath12k: add new driver and firmware for WCN7850
-      ath10k: QCA6174 hw3.0: update firmware-6.bin to WLAN.RM.4.4.1-00309-
-      ath10k: QCA4019 hw1.0: update board-2.bin
-      ath10k: QCA9888 hw2.0: update board-2.bin
-      ath10k: WCN3990 hw1.0: update board-2.bin
-      ath11k: IPQ8074 hw2.0: update board-2.bin
-      ath11k: WCN6750 hw1.0: update board-2.bin
-      ath11k: WCN6855 hw2.0: update board-2.bin
-      ath11k: WCN6855 hw2.0: update to WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.36
-
- WHENCE                              |   16 +-
- ath10k/QCA4019/hw1.0/board-2.bin    |  Bin 1798148 -> 1822336 bytes
- ath10k/QCA6174/hw3.0/firmware-6.bin |  Bin 706004 -> 706360 bytes
- ath10k/QCA9888/hw2.0/board-2.bin    |  Bin 206444 -> 218596 bytes
- ath10k/WCN3990/hw1.0/board-2.bin    |  Bin 513892 -> 670116 bytes
- ath11k/IPQ8074/hw2.0/board-2.bin    |  Bin 1311380 -> 1442536 bytes
- ath11k/WCN6750/hw1.0/board-2.bin    |  Bin 843548 -> 843548 bytes
- ath11k/WCN6855/hw2.0/amss.bin       |  Bin 4980736 -> 4988928 bytes
- ath11k/WCN6855/hw2.0/board-2.bin    |  Bin 6278772 -> 6308684 bytes
- ath12k/WCN7850/hw2.0/Notice.txt     | 3386 +++++++++++++++++++++++++++++++++++
- ath12k/WCN7850/hw2.0/amss.bin       |  Bin 0 -> 6000704 bytes
- ath12k/WCN7850/hw2.0/board-2.bin    |  Bin 0 -> 382856 bytes
- ath12k/WCN7850/hw2.0/m3.bin         |  Bin 0 -> 299660 bytes
- 13 files changed, 3400 insertions(+), 2 deletions(-)
- create mode 100644 ath12k/WCN7850/hw2.0/Notice.txt
- create mode 100644 ath12k/WCN7850/hw2.0/amss.bin
- create mode 100644 ath12k/WCN7850/hw2.0/board-2.bin
- create mode 100644 ath12k/WCN7850/hw2.0/m3.bin
 
