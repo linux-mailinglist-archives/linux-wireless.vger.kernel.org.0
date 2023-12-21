@@ -1,191 +1,153 @@
-Return-Path: <linux-wireless+bounces-1124-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1125-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59D3881ABE1
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Dec 2023 01:49:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8221D81AC40
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Dec 2023 02:35:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D35928770C
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Dec 2023 00:49:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A7BB11C23454
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Dec 2023 01:35:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 728C515B7;
-	Thu, 21 Dec 2023 00:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7244715AE;
+	Thu, 21 Dec 2023 01:35:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marcan.st header.i=@marcan.st header.b="yAC+tX25"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="B1zuYYfy"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2063.outbound.protection.outlook.com [40.107.20.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CD9910FF;
-	Thu, 21 Dec 2023 00:49:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marcan.st
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marcan.st
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: marcan@marcan.st)
-	by mail.marcansoft.com (Postfix) with ESMTPSA id 2810541EC4;
-	Thu, 21 Dec 2023 00:49:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=marcan.st; s=default;
-	t=1703119764; bh=CqQ+Tm1lCQF1aHtQ7ijDsp2WEslXk+ZdGq6SK1W3+lY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=yAC+tX25PsMIYont0Bqq8ekIDkQ3fVnUYZYFaGmlIEvwZpaNECIsG8O2s/7H5Fdof
-	 OlnNnUlMhE96JEZFYEGn689vPtHrjz1F+/eDmOUBApby1g+dHTonR7r2p055V2VcGb
-	 AN5c3f6bcFWym2zItaxkEHLptXs/T3Bk93HR4QXC0d5/MDmJHT1UHElrbAOM8u+KsU
-	 o+lDOXFb78qOEyZG9GLU0UtUqsrXqRQqWqLru++MYv61qCJ3T5586vyMlFQtemgqS8
-	 56iQtdBskdv2JsasVK7qN8JjGY/b7thUTFdF58ENRrpMLnrwdTywXHEMkh9i5yfx1V
-	 TR1+SiHfc99uw==
-Message-ID: <d5e26dd4-483d-4662-ba83-5cb19187b24a@marcan.st>
-Date: Thu, 21 Dec 2023 09:49:17 +0900
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93AB323A5;
+	Thu, 21 Dec 2023 01:34:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Op/dZ1/CY+sf+ngDR8U6lIsnUTyiqV05ja4thxhl8XOapCv0j+O1YOlePDcsjHZFLzT0Xl1SMHSU5f+JV+wmNT6ShFNI5wy9O6zxxBtuJkKKxPHmrea+rqeNsJSb79h42rkqoWlKso2WnVfJPefSxR/Rw5GbHeA3eNQAsc2rDmuag3iSVWBz7W6Lfem9svGJPrn6rsMhSL5S5EfGJbWrpdr0UzPu5fGjwVfQmIM/2PK/xTEFplL+vfbKRDRx87egC8x+jKKFrv3Gb0eGCTeSpq7XEZm/6UBTT4tYREyIxufV2uBaL0toz4d1m5M8+n50WOF+c52/KPNzYMLAZt1t1g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bB9xouCOaJLzesUK1vRoFTb3UKZO8jw9S0hezwozfgw=;
+ b=ATgiGzKxlHGwNVTNXpGo28eY5mhBYrK4XnQj+gIsbaxU60j1G/X51Pab4rX3mRIMO1C7aIsHdV5tZkIVyn5I4wI8wDWM2p77+ebPU4UVFk/Vb4U58NKjytrVLK7vBWBYdz9cuow4tTHMX6re/OIssS/vKUziyeHvF2c/i1fzZ1DmOmn4m1GY6+0zApvmfIEGWGUwW+JodzE7+3TdnPo26Ly0PRR+2YGwucWKNJHnSywnLQsNswCAOm9gR4073YSc4+TPUczVgoXfgN3IuqMDl9bOAwtfdKWaEEF/2dgaNeN9t8GF5GDcd4ebIo2tU9R/X1QnQFThyy4srXSz+nXjAg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=bB9xouCOaJLzesUK1vRoFTb3UKZO8jw9S0hezwozfgw=;
+ b=B1zuYYfyx1lFt3smUMOQr1AtyvVn+LGTOlhXSg81AUCK26U3+NCQ73Bj4jruan+KK5670YZs95EpRlfQGqA7WgVDVVmoovVjzkVv5IeAvIeH4LVMjzUctFZqGC8/CLxuIZrO4Ior+3rb/1rjKjh/qTXTDYWdS6KMWK+YBLsdMpc=
+Received: from DU0PR04MB9636.eurprd04.prod.outlook.com (2603:10a6:10:320::21)
+ by AM9PR04MB8795.eurprd04.prod.outlook.com (2603:10a6:20b:40a::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7113.18; Thu, 21 Dec
+ 2023 01:34:55 +0000
+Received: from DU0PR04MB9636.eurprd04.prod.outlook.com
+ ([fe80::1f29:340e:75ac:d14a]) by DU0PR04MB9636.eurprd04.prod.outlook.com
+ ([fe80::1f29:340e:75ac:d14a%7]) with mapi id 15.20.7113.016; Thu, 21 Dec 2023
+ 01:34:55 +0000
+From: David Lin <yu-hao.lin@nxp.com>
+To: Jeff Johnson <quic_jjohnson@quicinc.com>, "linux-wireless@vger.kernel.org"
+	<linux-wireless@vger.kernel.org>
+CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"briannorris@chromium.org" <briannorris@chromium.org>, "kvalo@kernel.org"
+	<kvalo@kernel.org>, "francesco@dolcini.it" <francesco@dolcini.it>, Pete Hsieh
+	<tsung-hsien.hsieh@nxp.com>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>, kernel test robot <lkp@intel.com>, Dan Carpenter
+	<error27@gmail.com>
+Subject: RE: [EXT] Re: [PATCH] wifi: mwifiex: fix uninitialized firmware_stat
+Thread-Topic: [EXT] Re: [PATCH] wifi: mwifiex: fix uninitialized firmware_stat
+Thread-Index: AQHaMyNDm6C8sypSXkiQD8E90uHiOrCyyxCAgAAqPVA=
+Date: Thu, 21 Dec 2023 01:34:54 +0000
+Message-ID:
+ <DU0PR04MB963668D2E2308B467EB188D5D195A@DU0PR04MB9636.eurprd04.prod.outlook.com>
+References: <20231220090135.1028991-1-yu-hao.lin@nxp.com>
+ <452a71aa-1e66-479c-bd68-f5ef7b409ade@quicinc.com>
+In-Reply-To: <452a71aa-1e66-479c-bd68-f5ef7b409ade@quicinc.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DU0PR04MB9636:EE_|AM9PR04MB8795:EE_
+x-ms-office365-filtering-correlation-id: 41d7a883-d916-42e0-71d4-08dc01c508f3
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ Z5+Ji1tAvPcLTdEdfXmHlBVUFookeU3kQzMlctvKyx5r3w2NeEZLtSFHoDEBpxkmHfe0HVbrBEFqgqQxa7PknS6YI036rVl20NwjirEoCbbjEIpv9VdJXAsf1a1Pinv23PEN4dyYcgPlZPFFdua9kXtIeD6K/XAfIZUp8Qm4I7qm0ydzBo1YDqgxpc08xF02EVSbp+Omk8ATvCjHQkpXrD8yZKbgv+GA7RboP/Kr8VXYyVSjjBcgRPZvWoLk9oOndlEP+m9NEfcQG49FdgAVkjwFyJb3sdH568droXeOSpZV7lwv3s4wQBy2LEvY26j+JFwgBFL0VjAoz7lW7YGy/bsFG2h61y2u2wsAKF0MZAv6U1UORNtBARabWVKUILA2bGeg07Q7cb2khfLa6j5iHnyq6UfFb0w1jlgQVggmBlRJyvZNEcRGw2xvqTAHQzrZHWVlvDtMhKWyspte+knpM/Ghwsrb4v4ESAuA6ZdAZz8qU75tV0XSjbjBCiBYdqZwQ0a8ceWxzAZkV5Xx0MxW3w9aA3VjKFTDCwPssatXM3BeM75FDYg3zkylAGcyT68eCiKilJWGXD7taxV1dOvipU/ofbqoM1ilgDEdB5L8WGM=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9636.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(396003)(346002)(136003)(366004)(376002)(230922051799003)(64100799003)(1800799012)(451199024)(186009)(38100700002)(38070700009)(8676002)(5660300002)(71200400001)(4326008)(8936002)(26005)(4744005)(2906002)(52536014)(53546011)(54906003)(64756008)(316002)(66556008)(66446008)(110136005)(66476007)(66946007)(9686003)(76116006)(7696005)(6506007)(122000001)(478600001)(41300700001)(55016003)(86362001)(33656002);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?T29uaEhGbWRvK3BrWC9ld3kvUFM0NmMzNVh6T0JHVC8zYXJ1SDZxK09OTldM?=
+ =?utf-8?B?S2MwdzlBdlJ0ekREblNGdmUxK2lQZnZudVRFOHBoRVh1R1hBMDh2SDNuZE9p?=
+ =?utf-8?B?Y1NkNDRVL3VjaGJlRFpEcGxXKy9hVjQzcklOVUhRazJJQ3ZxMHRtV3BsaG9N?=
+ =?utf-8?B?TlpzVEhnR0lhdDFJODZNUkVXVnlnY1Q5RCtrREdYZ2tpbHNoOTh3TTVmUTF3?=
+ =?utf-8?B?MUNleXV0RlR5b25wTmRSOWtaV0xla3pVbUNNRHE3WXlNUGpaWFFQdXJtbVpQ?=
+ =?utf-8?B?T2FwWjAyTjJBR1U0OCtYa3dmVVR3OXVPenNQcFdDMEsyNjAzS0ZjdDBmSmU5?=
+ =?utf-8?B?L2RxWHN3VEJxYnhYMHM1UmpMUWtRVmwwVHVZaUF4MDhTSGFxRVROOTdvbGlB?=
+ =?utf-8?B?WUVlS2VIUy9wOEtrRkRqYjZEQmFveW9Ka0Y2K3E4d0htYzdkdHUxbk9WQTFP?=
+ =?utf-8?B?RkMzRU1vKzNBMFZ5QlJFc2xIU096QVRIN3pxU2g1Rmdsb1ByRXNzbDdkK1BG?=
+ =?utf-8?B?bXFrMlpaemRxYlVtelljTHNYY1BZKzNnVDVtYXR1OVdmdVF0eTVXVzVyYmhw?=
+ =?utf-8?B?SWdDcVdwUW4veUJ5V3Q4WHNzVkdRckRMb1FzR2gvdmZ5RzhPOVAraGQreHZC?=
+ =?utf-8?B?eHBnUHBLRnR6QUVaM1plRlA4SVBvL0diZld0NE84dUtWNTFsM0Q3N01JRFNq?=
+ =?utf-8?B?aGE5R1VYY01QMjJlNmlwc2xqK21laFNtTG51SFdhVnF2SmQxaUdvNWVzcFRW?=
+ =?utf-8?B?aFNadEpVZC9vZGp4SktmZW9vOXlrWHlpOUJGN1NVVHp6VE4rbGFReC95OU5t?=
+ =?utf-8?B?bGFwZkZ3bXZVcVRQMlVXVndTaHlKa2ZST1pSVGM4VzIrNVdVMzVrbWJsNGR2?=
+ =?utf-8?B?Q0wxZVM1S0NjMStzMEpzZ3pNNmRvYTVzMXpoMWNlV1k4Um1idU80QUVTcW5R?=
+ =?utf-8?B?QnV3M0NNUjZUdVVRb3MwSmY1L1RZbkh0NUlrSGNiemNIdmpqTUtYaHhsNWlt?=
+ =?utf-8?B?ZjErSFU2eDhZWHBIbzlUSmtHY3NndGZTKzN0eXd5THdIYWtJbndBdFlCc2g2?=
+ =?utf-8?B?RGJqQXl0c3ROOE0yaWxMSC9Lc1N6TktkbDdEbW0zaU1EbENOM3FmeStDN2VR?=
+ =?utf-8?B?VHcxUTkzeWdjaThnSDMwTGdsanJUK3hPZlpFVy9ZUDFSTktvY3NNUTNBY2lz?=
+ =?utf-8?B?SGlHWFE1Yit2Q2RxTU5XMktFRGgzdk9aRnA4VmlPTWt2UDQ5Mm92RTY4ZFE5?=
+ =?utf-8?B?RWg1cUxFeG8vMEFuMVFkNUNGUnNKSTlsMGJ3L2w3WUoyK1ZUL2NyNDBDZzVV?=
+ =?utf-8?B?RmJEb0FzQi9YeVYrdE9WYTVOVTRHUjRQV1ZNLzJtclkxYjZ2MEthaW5OUFhi?=
+ =?utf-8?B?WDNHeXZCWWtEVHk3YmRlakwwRnNnZXJXUkNuMWZQNXFqQUNJanM5MVdOYytl?=
+ =?utf-8?B?T3JlS2lOeExicEtIZHBTN1FtN3RuNUhyTVNHT3ZZVWMrKzdTa3hwMXI2a2Fl?=
+ =?utf-8?B?dXM3SDJzQkoxancwazM4eGEyblZ1d1g2UUxldWxDQTdRM3Njek5xVEdvOE1C?=
+ =?utf-8?B?OHVheDlMZTR1SW9JME4xb1VNL0kvaW9kaXBTeTYrM0FEYXdlcWRYUUx6REZz?=
+ =?utf-8?B?SkdPeUxHOVBMYTI2aHdaTzlUS3pvbHNCZWVUendOcW9xNHBsM0QvZjZaRGJR?=
+ =?utf-8?B?ZEpxdjkxaER6SFl2ZnBOUGd0a1RRN1dONWZjbm1mWXNPdk5TczMzSjMyTFEw?=
+ =?utf-8?B?NXdtU3RvUG9pRlN0SWw3Wlo4TXpMNkpJa2IrQjhaU3VCWk9XZHhjNEpCTSsw?=
+ =?utf-8?B?TVFNRDhNYnBEZzBpWlBXV0dsMW5VMFlmN3dwM25KRTRuQWM2eE4vZTV3ZzNn?=
+ =?utf-8?B?eDRZb1ZMd3U0cHNFTUVZbHVtSzJhdlR5UHFpZWNsckFvRHN2TDVyOEpZNUJL?=
+ =?utf-8?B?bzVwbFJObjRqNVBkZWZybDZRRDVCOVpWanBmNXdaNE12SlBxN3JheFVHdmt6?=
+ =?utf-8?B?RlpFUHVXTDR0T2xhbWFxcWpyd2U4dVdFd3JNSTRIb2pMVHVRNjhqQmw5QVRP?=
+ =?utf-8?B?RU1Xam1mZ0J4Rlhsc0xRYmdRRFU1b09PamM2aUVYc2RjS0JQOTNqV1NZK1Mv?=
+ =?utf-8?Q?apvhPfCNpcfn9H/QHhD6/siSx?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: brcmfmac: cfg80211: Use WSEC to set SAE password
-Content-Language: en-US
-To: Arend van Spriel <arend.vanspriel@broadcom.com>,
- Kalle Valo <kvalo@kernel.org>, Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Daniel Berlin <dberlin@dberlin.org>, Arend van Spriel
- <aspriel@gmail.com>, Franky Lin <franky.lin@broadcom.com>,
- Hante Meuleman <hante.meuleman@broadcom.com>,
- SHA-cyfmac-dev-list@infineon.com, asahi@lists.linux.dev,
- brcm80211-dev-list.pdl@broadcom.com, linux-kernel@vger.kernel.org,
- linux-wireless@vger.kernel.org, David Airlie <airlied@redhat.com>,
- Daniel Vetter <daniel@ffwll.ch>
-References: <20231107-brcmfmac-wpa3-v1-1-4c7db8636680@marcan.st>
- <170281231651.2255653.7498073085103487666.kvalo@kernel.org>
- <18c80d15e30.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <1b51997f-2994-46e8-ac58-90106d1c486d@marcan.st>
- <c392f901-789a-42e2-8cf7-5e246365a1ca@broadcom.com>
- <CAF4BwTXNtu30DAgBXo4auDaDK0iWc9Ch8f=EH+facQ-_F-oMUQ@mail.gmail.com>
- <87r0jiqmnx.fsf@kernel.org> <01bd8c68-1b9c-49b2-8ace-1c7d1b5192ad@marcan.st>
- <CAHk-=whDLKZZEuxU_jEhZRdeWjXAkL8=J_JRk2Ar6wp9UK3h2w@mail.gmail.com>
- <871qbhqio8.fsf@kernel.org> <4c89b71e-8667-40fe-add0-205748de51ef@marcan.st>
- <bdb078c0-2f45-485a-86a0-bb7d0b5e3516@broadcom.com>
-From: Hector Martin <marcan@marcan.st>
-In-Reply-To: <bdb078c0-2f45-485a-86a0-bb7d0b5e3516@broadcom.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9636.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 41d7a883-d916-42e0-71d4-08dc01c508f3
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Dec 2023 01:34:54.9767
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: TDEiL/3pJKFkb+usuu+I/A8GSsyPF1eRPkJDISavHi1qfmpgimTYmhPXffjc8C/h787MP3j3xklUUJmeERVZ9g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8795
 
-
-
-On 2023/12/21 4:36, Arend van Spriel wrote:
-> On 12/20/2023 7:14 PM, Hector Martin wrote:
->>
->>
->> On 2023/12/20 19:20, Kalle Valo wrote:
->>> Linus Torvalds <torvalds@linux-foundation.org> writes:
->>>
->>>>> Just recently a patch was posted to remove the Infineon list from
->>>>> MAINTAINERS because that company cares so little they have literally
->>>>> stopped accepting emails from us. Meanwhile they are telling their
->>>>> customers that they do not recommend upstream brcmfmac and they should
->>>>> use their downstream driver [1].
->>>>
->>>> Unquestionably broadcom is not helping maintain things, and I think it
->>>> should matter.
->>>>
->>>> As Hector says, they point to their random driver dumps on their site
->>>> that you can't even download unless you are a "Broadcom community
->>>> member" or whatever, and hey - any company that works that way should
->>>> be seen as pretty much hostile to any actual maintenance and proper
->>>> development.
->>>
->>> Sadly this is the normal in the wireless world. All vendors focus on the
->>> latest generation, currently it's Wi-Fi 7, and lose interest on older
->>> generations. And vendors lose focus on the upstream drivers even faster,
->>> usually after a customer project ends.
->>>
->>> So in practise what we try to do is keep the drivers working somehow on
->>> our own, even after the vendors are long gone. If we would deliberately
->>> allow breaking drivers because vendor/corporations don't support us, I
->>> suspect we would have sevaral broken drivers in upstream.
->>>
->>>> If Daniel and Hector are responsive to actual problem reports for the
->>>> changes they cause, I do think that should count a lot.
->>>
->>> Sure, but they could also respect to the review comments. I find Arend's
->>> proposal is reasonable and that's what I would implement in v2. We
->>> (linux-wireless) make abstractions to workaround firmware problems or
->>> interface conflicts all the time, just look at ath10k for example. I
->>> would not be surprised if we need to add even more abstractions to
->>> brcmfmac in the future. And Arend is the expert here, he has best
->>> knowledge of Broadcom devices and I trust him.
->>>
->>> Has anyone even investigated what it would need to implement Arend's
->>> proposal? At least I don't see any indication of that.
->>
->> Of course we can implement it (and we will as we actually got a report
->> of this patch breaking Cypress now, finally).
->>
->> The question was never whether it could be done, we're already doing a
->> bunch of abstractions to deal with just the Broadcom-only side of things
->> too. The point I was trying to make is that we need to *know* what
->> firmware abstractions we need and *why* they are needed. We can't just
->> say, for every change, "well, nobody knows if the existing code works or
->> not, so let's just add an abstraction just in case the change breaks
->> something". As far as anyone involved in the discussions until now could
->> tell, this code was just something some Cypress person dumped upstream,
->> and nobody involved was being responsive to any of our inquiries, so
->> there was no way to be certain it worked at all, whether it was
->> supported in public firmware, or anything else.
->>
->> *Now* that we know the existing code is actually functional and not just
->> dead/broken, and that the WSEC approach is conversely not functional on
->> the Cypress firmwares, it makes sense to introduce an abstraction.
-> 
-> Just a quick look in the git history could have told you that it was not 
-> just dumped upstream and at least one person was using it and extended 
-> it for 802.11r support (fast-roaming):
-> 
-> 
-> author	Paweł Drewniak <czajernia@gmail.com>	2021-08-24 23:13:30 +0100
-> committer	Kalle Valo <kvalo@codeaurora.org>	2021-08-29 11:33:07 +0300
-> commit	4b51de063d5310f1fb297388b7955926e63e45c9 (patch)
-> tree	ba2ccb5cbd055d482a8daa263f5e53531c07667f 
-> /drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> parent	81f9ebd43659320a88cae8ed5124c50b4d47ab66 (diff)
-> download	wireless-4b51de063d5310f1fb297388b7955926e63e45c9.tar.gz
-> brcmfmac: Add WPA3 Personal with FT to supported cipher suites
-> This allows the driver to connect to BSSIDs supporting SAE with 802.11r.
-> Tested on Raspberry Pi 4 Model B (STA) and UniFi 6LR/OpenWRT 21.02.0-rc2.
-> AP was set to 'sae-mixed' (WPA2/3 Personal).
-> 
-> Signed-off-by: Paweł Drewniak <czajernia@gmail.com>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-> Link: https://lore.kernel.org/r/20210824221330.3847139-1-czajernia@gmail.com
-
-Sure, but we also had user reports of it *not* actually working (maybe
-it regressed?). We didn't know whether it was functional with the
-linux-firmware blobs in any way, I wanted confirmation of that. And we
-also didn't know that the patch *would* break it at all; perhaps the
-Cypress firmware had also grown support for the WSEC mechanism.
-
-That's why I wanted someone to actually confirm the code worked (in some
-subset of cases) and the patch didn't, before starting to introduce
-conditionals. There is, of course, also the element that the Cypress
-side has been long unmaintained, and if nobody is testing/giving
-feedback/complaining, perhaps it's better to err on the side of maybe
-breaking something and see if that gets someone to come out of the
-woodwork if it really breaks, rather than tiptoeing around the code
-without knowing what's going on and without anyone actually testing things.
-
-It's not about this *specific* patch, it's about the general situation
-of not being able to touch firmware interfaces "just in case Cypress
-breaks" being unsustainable in the long term. I wasn't pushing back
-because I think this particular one will be hard, I was pushing back
-because I can read the tea leaves and see this is not going to end well
-if it's the approach we start taking for everything. We *need* someone
-to be testing patches on Cypress, we can't just "try not to touch it"
-and cross our fingers. That just ends in disaster, we are not going to
-succeed in not breaking it either way and it's going to make the driver
-worse.
-
-- Hector
+PiBGcm9tOiBKZWZmIEpvaG5zb24gPHF1aWNfampvaG5zb25AcXVpY2luYy5jb20+DQo+IFNlbnQ6
+IFRodXJzZGF5LCBEZWNlbWJlciAyMSwgMjAyMyA3OjAzIEFNDQo+IFRvOiBEYXZpZCBMaW4gPHl1
+LWhhby5saW5AbnhwLmNvbT47IGxpbnV4LXdpcmVsZXNzQHZnZXIua2VybmVsLm9yZw0KPiBDYzog
+bGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZzsgYnJpYW5ub3JyaXNAY2hyb21pdW0ub3JnOw0K
+PiBrdmFsb0BrZXJuZWwub3JnOyBmcmFuY2VzY29AZG9sY2luaS5pdDsgUGV0ZSBIc2llaA0KPiA8
+dHN1bmctaHNpZW4uaHNpZWhAbnhwLmNvbT47IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmc7IGtlcm5l
+bCB0ZXN0IHJvYm90DQo+IDxsa3BAaW50ZWwuY29tPjsgRGFuIENhcnBlbnRlciA8ZXJyb3IyN0Bn
+bWFpbC5jb20+DQo+IFN1YmplY3Q6IFtFWFRdIFJlOiBbUEFUQ0hdIHdpZmk6IG13aWZpZXg6IGZp
+eCB1bmluaXRpYWxpemVkIGZpcm13YXJlX3N0YXQNCj4gDQo+IE9uIDEyLzIwLzIwMjMgMTowMSBB
+TSwgRGF2aWQgTGluIHdyb3RlOg0KPiA+IFZhcmlhYmxlIGZpcm13YXJlX3N0YXQgaXMgcG9zc2ls
+YmUgdG8gYmUgdXNlZCB3aXRob3V0IGluaXRpYWxpemF0aW9uLg0KPiANCj4gcy9wb3NzaWxiZSAv
+cG9zc2libGUgLw0KPiANCj4gS2FsbGUgY2FuIHByb2JhYmx5IGZpeCB3aGVuIGhlIHBpY2tzIGl0
+IHVwDQoNCg0KU29ycnkuIFRoYW5rcyBmb3IgeW91ciBjb3JyZWN0aW9uLg0K
 
