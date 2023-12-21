@@ -1,37 +1,37 @@
-Return-Path: <linux-wireless+bounces-1148-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1149-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A036481B9B6
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Dec 2023 15:40:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93DE581B9BA
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Dec 2023 15:41:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A4812856BA
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Dec 2023 14:40:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3030B22134
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Dec 2023 14:41:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABDD41EB46;
-	Thu, 21 Dec 2023 14:40:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EF40A5C;
+	Thu, 21 Dec 2023 14:41:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jTINVrUo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="atejqCvs"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893B71D6A9;
-	Thu, 21 Dec 2023 14:40:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6A74C433C9;
-	Thu, 21 Dec 2023 14:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D0441D69C;
+	Thu, 21 Dec 2023 14:41:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31C6AC433C8;
+	Thu, 21 Dec 2023 14:41:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703169652;
-	bh=ri5KEEnsiQYrzG321GXsHIE5EoVCZaliNnZtZXHZhxY=;
+	s=k20201202; t=1703169702;
+	bh=EVUMYl3rOlHtN/K6V9hi9IeUlzUhMbQYqoThI5xvNHg=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=jTINVrUoxf0xMKKDKtGckqKXUM6nl+CkqezQpPY3seXQlzd/MDpf4SYcNsQmaEBAL
-	 caKLw4FjqDCaxl2x4U2VbAVoyQDlo7q8E3JCAzl8TIcSQNwhI8txmuzrcbJ6AnwFKE
-	 6BP0IUy/vqT015XN/BnrQdBiGPSzIRuc3qv/fehgvGpsoLFy/tHNp35rP6qgwv58fZ
-	 XmGTnNV6vYPDlh7KP3aPCDo/zAnytA77aVVzm9sLr0Sjv/2NjiSNcVbM9//85exDdi
-	 4P9v6RNLAMTpiYkAgfTPUBYdOj7JRmih5kCcasYLkhLTE/U4wEaj+/PST1o4OkdyJ0
-	 PxaqfSZacuXxQ==
+	b=atejqCvskyYhQxXzNXFV6zuf9UR1fIL0CqfG4VlLwRt6ReMNwXqKiEpjvy5Srdbjo
+	 aIAoXM7fxtWEgsF4Vl7SCvoXfWvWcgIGLlH6FHcrAHUQTxHWxnAhJfgAUZXFNmbTjH
+	 78KXRF43V6YN+eQQAqbsBn6hNVAwHSXDW/Mne5Q7swkujLyi+VRAOiAPJi7224VyXx
+	 tZDoTBwuXAuHy7bUAlP+5ZM6vjZj5lbjnQTTDoMXrCH43D9jAxvLp1irrd391jcA2N
+	 8cGw1UxMsDDlaNynY+mgmlw9gm7pjgel+C5JVXv2sKLoJvtoWB0LfBe2P2yBhK/fdn
+	 gjEa9yzYV5CkA==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -40,45 +40,37 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH wireless-next 01/11] wifi: rtlwifi: add
- calculate_bit_shift()
+Subject: Re: [PATCH v2] wifi: mwifiex: fix uninitialized firmware_stat
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20231219065739.1895666-2-suhui@nfschina.com>
-References: <20231219065739.1895666-2-suhui@nfschina.com>
-To: Su Hui <suhui@nfschina.com>
-Cc: pkshih@realtek.com, Su Hui <suhui@nfschina.com>,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- kernel-janitors@vger.kernel.org
+In-Reply-To: <20231221015511.1032128-1-yu-hao.lin@nxp.com>
+References: <20231221015511.1032128-1-yu-hao.lin@nxp.com>
+To: David Lin <yu-hao.lin@nxp.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ briannorris@chromium.org, francesco@dolcini.it, tsung-hsien.hsieh@nxp.com,
+ David Lin <yu-hao.lin@nxp.com>, stable@vger.kernel.org,
+ kernel test robot <lkp@intel.com>, Dan Carpenter <error27@gmail.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170316964846.1243375.3938053797242635689.kvalo@kernel.org>
-Date: Thu, 21 Dec 2023 14:40:50 +0000 (UTC)
+Message-ID: <170316969802.1243375.17807414549323669608.kvalo@kernel.org>
+Date: Thu, 21 Dec 2023 14:41:40 +0000 (UTC)
 
-Su Hui <suhui@nfschina.com> wrote:
+David Lin <yu-hao.lin@nxp.com> wrote:
 
-> There are many same functions like _rtl88e_phy_calculate_bit_shift(),
-> _rtl92c_phy_calculate_bit_shift() and so on. And these functions can
-> cause undefined bitwise shift behavior. Add calculate_bit_shift() to
-> replace them and fix undefined behavior in subsequent patches.
+> Variable firmware_stat is possible to be used without initialization.
 > 
-> Signed-off-by: Su Hui <suhui@nfschina.com>
-> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+> Signed-off-by: David Lin <yu-hao.lin@nxp.com>
+> Fixes: 1c5d463c0770 ("wifi: mwifiex: add extra delay for firmware ready")
+> Cc: stable@vger.kernel.org
+> Reported-by: kernel test robot <lkp@intel.com>
+> Reported-by: Dan Carpenter <error27@gmail.com>
+> Closes: https://lore.kernel.org/r/202312192236.ZflaWYCw-lkp@intel.com/
+> Acked-by: Brian Norris <briannorris@chromium.org>
 
-11 patches applied to wireless-next.git, thanks.
+Patch applied to wireless-next.git, thanks.
 
-52221dfddbbf wifi: rtlwifi: add calculate_bit_shift()
-acefef7a7e7a wifi: rtlwifi: rtl8821ae: phy: using calculate_bit_shift()
-969bc926f04b wifi: rtlwifi: rtl8188ee: phy: using calculate_bit_shift()
-1dedc3a6699d wifi: rtlwifi: rtl8192c: using calculate_bit_shift()
-f4088c8fcbab wifi: rtlwifi: rtl8192cu: using calculate_bit_shift()
-3d03e8231031 wifi: rtlwifi: rtl8192ce: using calculate_bit_shift()
-b8b2baad2e65 wifi: rtlwifi: rtl8192de: using calculate_bit_shift()
-63526897fc0d wifi: rtlwifi: rtl8192ee: using calculate_bit_shift()
-ac32b9317063 wifi: rtlwifi: rtl8192se: using calculate_bit_shift()
-98d9c7731dbb wifi: rtlwifi: rtl8723_common: using calculate_bit_shift()
-5c16618bc06a wifi: rtlwifi: rtl8723{be,ae}: using calculate_bit_shift()
+3df95e265924 wifi: mwifiex: fix uninitialized firmware_stat
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20231219065739.1895666-2-suhui@nfschina.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20231221015511.1032128-1-yu-hao.lin@nxp.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
