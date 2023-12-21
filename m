@@ -1,225 +1,191 @@
-Return-Path: <linux-wireless+bounces-1131-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1132-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F372981ADA2
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Dec 2023 04:49:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DDC181AE8E
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Dec 2023 06:58:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA82E286224
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Dec 2023 03:49:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98C2B1C21FEA
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Dec 2023 05:58:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2B624C64;
-	Thu, 21 Dec 2023 03:49:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A2C2AD58;
+	Thu, 21 Dec 2023 05:58:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bLme7CEZ"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="KkgyHtCi"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2062.outbound.protection.outlook.com [40.107.220.62])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 758565239;
-	Thu, 21 Dec 2023 03:49:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-28ad7a26f4aso325187a91.0;
-        Wed, 20 Dec 2023 19:49:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1703130592; x=1703735392; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RO0C/qx0Z2G0L/Qx5cv4RD2VJ4wMeiv02dG05G53QD8=;
-        b=bLme7CEZiv6A4fsfsWAqEAGNO78FUZhBCDklTPAy6b3RN6WqbVcgHNSWuKFlDllhK8
-         5ayXH5ScIBe6wKixlrTJof1EqBd0B5np1LS3ht91RYCuMQCyhzV3KBfXqZhLizCIeHN0
-         bBL9jDwvfeKBAGtie0Md+wHV7Z3/d2KjpH6W7asda8nVeumSUGnsKHU1b0AIuSMslSD7
-         CmcxS9Vv5WgO5N9jK/sH5fjQq/Xxd5QXN7AsWTcJJ8buOeYQYBiSrHLUwipvM1nnPxVm
-         u2qB/cYMd+ZShanEpJMcqxhrhauQ71oknRAfPdx852tbQdErQIV+VM3oza6dhDh58gte
-         3rNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703130592; x=1703735392;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RO0C/qx0Z2G0L/Qx5cv4RD2VJ4wMeiv02dG05G53QD8=;
-        b=gZilb/MNTFFId9NwXQr5BhJKSD9VvGJgpU7z/sQbm//EQ6hWvTA08wWWSDOoGwWTWm
-         fOkpApMp/5bE+DajbfZLlBnAAQgg36eoWhJ839u1dEmKGl1WMBkcD2bV1Zuj9Djg3s5z
-         6FaWnWsPObZ7eQOkR/rqq22BpzFnHO4q96dMb2kJAsWJSq55nY3mxgTThhH1PLvrJSHV
-         UJR+q0K4RD98Y+Q0nFexaI6MYNH7JkrUG77h6TNgXyrEUy6860TRmG4X0VhOzv5w8Vkf
-         tqh4pHm4h/FaRHIm4EK8jMP8zCFdfmAMzOz8ieii2LxL7h2G0WMWkV5is4JVth+EHoFZ
-         mPnQ==
-X-Gm-Message-State: AOJu0YyC5csK1/3zuKJadaW3fBnuEHdXK8P7RWj9gq+Ydz0WqM/kjW3Z
-	flB7LzigD20GePDlAhGxKeI=
-X-Google-Smtp-Source: AGHT+IF58I5Cpilp72LVsymbFf/NlBPYQ1bhw+Lpf6NnacSyfEYM8AVL7rk/xFQQw56h4UhncnM0rw==
-X-Received: by 2002:a17:902:eb91:b0:1d3:c3f0:463a with SMTP id q17-20020a170902eb9100b001d3c3f0463amr7474532plg.137.1703130591641;
-        Wed, 20 Dec 2023 19:49:51 -0800 (PST)
-Received: from archie.me ([103.131.18.64])
-        by smtp.gmail.com with ESMTPSA id e8-20020a17090301c800b001d34126d64dsm482952plh.222.2023.12.20.19.49.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Dec 2023 19:49:51 -0800 (PST)
-Received: by archie.me (Postfix, from userid 1000)
-	id CE1061024D796; Thu, 21 Dec 2023 10:49:45 +0700 (WIB)
-Date: Thu, 21 Dec 2023 10:49:45 +0700
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Wireless <linux-wireless@vger.kernel.org>,
-	Linux ath11k <ath11k@lists.infradead.org>,
-	Linux Networking <netdev@vger.kernel.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
-	"John W. Linville" <linville@tuxdriver.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Evgenii Ilchenko <evgenii.ilchenko@protonmail.com>
-Subject: Fwd: ath11k: QCNFA765: Bug with non-standard router setting.
- Crashes, terrible latensy and speed.
-Message-ID: <ZYO12aX3RpWzWuDs@archie.me>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03C009477;
+	Thu, 21 Dec 2023 05:58:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=gvpTbkad8ZDzhaYMRkAerd0F15Q98tviaxvxwOl4TiblYvCf0vJ5Gv1ZTxvmiUgRLFtNl5KS/ULNZ5qn46U9ehotUsk19/bd6QxcL8PwS1WGzJkXYejnt74JDFALK1ZvIQPLcY9zPKcjOYYaT5qe4c9E9h41sFQPMeI1manMaVKzJVSLT0nEyfh8Ccdu9+mLX+hjLQDTwLbfRzY6xYDwb108o0qRBzULMlBenKKoewoCkg4d2F9Ao8ABclbMubtI/yqHQ15EPDPybUnAn98kQXPwV0E80JqFn2QJzcB3Z+6ZLi6zfecNyvM8s/AWj4GU0ANeCP2Pgw0CZF3MKG828g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QeSSgyp+q0gBQ2aJfXzCNu9DNdrdjMTrZVrVm8b0pP4=;
+ b=MpugOWsH7m/dNNHwAWXylUsFgeaUMZVV5mDjCNXl4ZVo26RiaOfdIBOAhIvK+uAr6kUHShRhwjWVVB7Yusuxb6c1F1Adz1aajQnEplmL+fMSTA86uMHhFuLglj1JUiQMT20o/ujvi3J2oQmPXWYojmw3SrWBV5IdfdRv6wvQSSM7Km8yVhunuotB7QWdzC6s1bwB0RwAvYiHY12GthqgVFjyxEj39vTzyZ5yAYcKa0aMxv2h++qlv5xtMkzaFK2sw6vlnkhJcY2XJArbs7/M7pf2S1VYns+OtnwH219UkfbDwayVAvMxQq9p2ecoq+exBAskjOVO5kY5zYX8a9GlJA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QeSSgyp+q0gBQ2aJfXzCNu9DNdrdjMTrZVrVm8b0pP4=;
+ b=KkgyHtCitnR8/iL+SHxLEiQcxJADypYScuBgUueL3x3jiZ7ord8j4qSaHdh/PurzL7BW8KpG0wiE62/u1OHyUX8SZnMZa1FGjuW24IG0Tcq38TdKYBiNfdqLTPTV+9mhT7JomyqRpAMLxwiEgn0qfMD4P6yS8+1+gqPHdWHOvUg=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB6351.namprd12.prod.outlook.com (2603:10b6:8:a2::6) by
+ CH0PR12MB5041.namprd12.prod.outlook.com (2603:10b6:610:e0::16) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7113.18; Thu, 21 Dec 2023 05:57:58 +0000
+Received: from DM4PR12MB6351.namprd12.prod.outlook.com
+ ([fe80::8650:7935:179:f18c]) by DM4PR12MB6351.namprd12.prod.outlook.com
+ ([fe80::8650:7935:179:f18c%5]) with mapi id 15.20.7113.016; Thu, 21 Dec 2023
+ 05:57:58 +0000
+Message-ID: <46bf6ed5-31f6-48f4-b63d-f532e163204e@amd.com>
+Date: Thu, 21 Dec 2023 13:57:50 +0800
+User-Agent: Mozilla Thunderbird
+Cc: majun@amd.com, Johannes Berg <johannes@sipsolutions.net>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>,
+ "open list:MAC80211" <linux-wireless@vger.kernel.org>,
+ "open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
+ open list <linux-kernel@vger.kernel.org>, Jun Ma <Jun.ma2@amd.com>
+Subject: Re: [PATCH] wifi: mac80211: Use subsystem appropriate debug call
+Content-Language: en-US
+To: Kalle Valo <kvalo@kernel.org>,
+ Mario Limonciello <mario.limonciello@amd.com>
+References: <20231215145439.57286-1-mario.limonciello@amd.com>
+ <87frzzsfoi.fsf@kernel.org>
+From: "Ma, Jun" <majun@amd.com>
+In-Reply-To: <87frzzsfoi.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: TY2PR04CA0016.apcprd04.prod.outlook.com
+ (2603:1096:404:f6::28) To DM4PR12MB6351.namprd12.prod.outlook.com
+ (2603:10b6:8:a2::6)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="N3Q2B03KdscU10Yb"
-Content-Disposition: inline
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR12MB6351:EE_|CH0PR12MB5041:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8c33fb51-72be-4970-9d3d-08dc01e9c85d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	xYL5mGSvAE6LQ6VsSk+fMyBFixfvarNBX0LNaG7AgfnzXBzF3sERNt6FwPPysPFEUiUS9C4soCZx87nZ3Fg/YvAYDUIRa5/lhdLZzfogK4tQXndoOv9yO7LOVCOcTn6g2y4jOS0aWFPe653ti8NKgClIqzTchK5vyj/7aL9r9+EvPCnp0BywMxIjrlL1VJCTeJOTGkbv+2LAlFsY2uwUnOJGd8PHgONswaRd8a+Ppt5AuFSIU8BZQRr0cEf8EDZdWdOXkBNIxVnnyTp5Y47tmXJbCHaL35PLZEsLJ5irELLpfgvfByQfH2mpWUmBfaB0/Zo+qxy/LMx1DhyE+P0qHWxWX7Evs5lGxc1tOtCuvp41my3QghQqVZLTS0BXgKsD/vPlXcsFd3J5poUAGhel8UpK7Yy0usy6bCuq8Cp25Vx9Ud6p4frETibHQsf7jjDzQ+I4dlWAN/XQsbpwcKH0YsfhkNTxQ+Xdk6MuiwzpiNoNzRTJjJf95r38n4BN8UQTyuvweuF1245Q2ynNZrBqcjHXDdr3WGd9wGh6jvhO/fuaqibpOaSafAPG5QoJgfMNA+kIbiq2MCh8zFkrLX/afyFW4TzeO0rbWKos8zyTnyZN7f+DDKNe7GOc36EfNQDB4nqseZiyv470YVad2nDJqQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB6351.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(346002)(376002)(39860400002)(396003)(136003)(230922051799003)(186009)(64100799003)(451199024)(1800799012)(478600001)(38100700002)(110136005)(66556008)(66476007)(6636002)(66946007)(316002)(6666004)(36756003)(6512007)(41300700001)(31696002)(6506007)(53546011)(26005)(4326008)(5660300002)(83380400001)(2616005)(8936002)(54906003)(2906002)(8676002)(31686004)(6486002)(966005)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZEduZDR3NmZZLzJhTGU5akpMUy9COUpjNW1zZDJPNFVxZk1NYUk3WGdpTy9U?=
+ =?utf-8?B?OUtNRUkxa0lBY0FBSS9JbXVjQmFDTTRwTm9ONFJsWnNpS1ducS96ZElRU0pm?=
+ =?utf-8?B?ZnJ0TWZOa00rdzFUWFYvUGpCcVBKV1NUcHBRT05GU0ZqS2puc3NuamFFTzJW?=
+ =?utf-8?B?MThXV01tOW1RbHNMSGRDc2JtYVJOS2N0R3NEMWx4NW5paDhVbXlYbCsrbzlm?=
+ =?utf-8?B?a2JiTUF6NDAzR21wRGZibEp5YjNWNlUzR1A3VXpia3pLWVEzdHg3elVzeWx5?=
+ =?utf-8?B?dlQxWTRkM29PRFlrYnMvUU9TQ3ZPM2FkWWZjN1RYTzhhNEpUUUxPNDFQakZn?=
+ =?utf-8?B?aUk1cmNiOWgvcGt5TW9lRW0vZ1ZITzRvNjVDQ2NnSzJXR3czSjNOdEp1UlhT?=
+ =?utf-8?B?T1J6R0hpMEhodlMzVEczYWFyTjBTZnZHU0ZtT0pYZWVYZlRqMS9oQUd6QnBY?=
+ =?utf-8?B?NWtaUXpWNHZPNk04VmV2VGo2UzFjT2N3ZnpvMnNBSWVrNGtUQ0dONm00NGh4?=
+ =?utf-8?B?SnlBalQxQnhRYXN4dGF4Z3gzcEVHQlBIaW45Nm8zTFI0Yi93bDl0WnRpK0w3?=
+ =?utf-8?B?bU91UXUwQWo2MUJiSC9ZeHhMVFQ4aGRla2lwYXJjNXB6ZVpJLyt6dlFPMjMx?=
+ =?utf-8?B?UVpnWlJLamtWWVhMaXhUbUhSckVjK3M3Sk1LUTJFYm9nRDRjRmZvTnpCTkFJ?=
+ =?utf-8?B?M0pydTBPbEFPQ0FWUU44ckZvNE9wbENMZEtXNW9ab2V5ZTk2S0NiSDJRbDNy?=
+ =?utf-8?B?eG5TUEFUazkxTXVkaWhWMmRxcWorN0d4ZG5rOCtob01DYnlZVEc1ZjJ2b2J4?=
+ =?utf-8?B?OERndDJzcTNzVmtIaTF2T0FmSFJLL2VlK0FpendVWlVOTE9QRENIcEJ5Ynpu?=
+ =?utf-8?B?bENuWnlTTytTS0tKNWZNRCtJeS9Tamp6MkthT1o0SDZ0NGhsNFp6U29aVitR?=
+ =?utf-8?B?ODM0Q0psTTVBWVpBTGxWN2hVZkNyVVhGS0FhellrWDZqWms1TmlBekl4Z3BY?=
+ =?utf-8?B?dXdhN1hFVSttZjI3MnVZS1FOUWRWSTczN3dpQzYvRWJCR1FnOWNEZzBzaEZx?=
+ =?utf-8?B?bWVTQUxmUmtTSUVwdG1tYTNxVE5zWDNuS2kxcDFPQzlFQWpsUTJZQ294NC8w?=
+ =?utf-8?B?T1VMazV1VkpzRFJJMzBPVlFCTU5BUURBYnk1RW1hVkZ1bTBFaE5TS2w2elFi?=
+ =?utf-8?B?Mkl5eFI1amlrN0duTWRrZEg0ak9wTzRSVDZXQ1plNEdRYkdoR09lTVVTcjdl?=
+ =?utf-8?B?azhiQ3NFZzlvZStIWjR4M2tTS0NCRVE3M3crUXhtUS9lM1VTOXd0UTc2SUhX?=
+ =?utf-8?B?Zk13Y0tYeFhMaC9LZU5wcWg0UXFLd0VkOWlJeTlHaHMrbEI4VjNlNG51ZXla?=
+ =?utf-8?B?T1JtRE04aU13WkpjRjduYXhZVkhZaGFQLzRGUnhEcG5RNEI2cGlILzgzdFdD?=
+ =?utf-8?B?WTRULzFqUHpQV0o2N2VkOStJY09rOGozT3pvOUpQRVJVZ1dlMDhNVVZJcGp3?=
+ =?utf-8?B?WGpUTnJjc3NSSGhRYXo5UTh2NGJ2TEZPeHZBdWtYWVRVSVA5RktpY2NXTUpn?=
+ =?utf-8?B?K3k0OFQ3eXNPR3pIN2k0TCtnUmlqVnRCcU1hWk95WXF6M1ZpemZRRzJNWUlZ?=
+ =?utf-8?B?TUppTkoxdDh1aUREQ0xzamVrVUtMWGdLaWhEWGlxczd2R0ZZcHlHUUwrckNz?=
+ =?utf-8?B?UEU2aTVWSFp6eUNRR0xUT3llamI4WjdldXJsajlxNC9UT2hhRGNkUnpIY0Fm?=
+ =?utf-8?B?NE9xRytOZzlBdVlPdU9UOXFtMXBwMHAwdmQ0K05OK1NiN0UwTjVBUk1KTWNX?=
+ =?utf-8?B?bGpORlZZcy9Pdmk5YmIvd1pwbWdzVi96RDlodlpSQ3FNTnlzNkRQeXIvbXdD?=
+ =?utf-8?B?OUtCQVdaUk5rMmdDbFlacHgxbDA0bUNiRU5pcUpmTVZRSlpRY2s0UUYzaTd4?=
+ =?utf-8?B?a2F2N0dKekNZdHF3TTM1VStNckFVZGdVOG1DZ2NIenhLaWsxVyt5dnF4VjVN?=
+ =?utf-8?B?djNHTHJYV1VGU3FrWkZnTmpBQTdLSkhaeHRlUkJGNGNTcFVCeXdWM2pBV0JQ?=
+ =?utf-8?B?SnRBTWllLytldGpDNVFVWVM5Qk9oVjVPQUhxalM3SGtUYTJZZlBYWFZIakYr?=
+ =?utf-8?Q?BnFV2bETFV7nW5STqCEPUjSu1?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8c33fb51-72be-4970-9d3d-08dc01e9c85d
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB6351.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Dec 2023 05:57:58.2837
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5J0wQ40c7ypokZep8eGLsqR2AowVyamgkyMSbY7THGVkg/2+H1gkDflA2KcDwQpL
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR12MB5041
+
+Hi,
+
+On 12/18/2023 11:17 PM, Kalle Valo wrote:
+> Mario Limonciello <mario.limonciello@amd.com> writes:
+> 
+>> mac80211 doesn't use dev_dbg() but instead various macros from
+>> net/mac80211/debug.h. Adjust wbrf code to use wiphy_dbg() instead.
+>>
+>> Cc: Jun Ma <Jun.ma2@amd.com>
+>> Reported-by: kvalo@kernel.org
+>> Closes:
+>> https://lore.kernel.org/amd-gfx/8bd60010-7534-4c22-9337-c4219946d8d6@amd.com/T/#mfe2f29372c45130d27745912faf33d9f7ce50118
+>> Fixes: d34be4310cbe ("wifi: mac80211: Add support for WBRF features")
+>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+>> ---
+>>  net/mac80211/wbrf.c | 4 ++--
+>>  1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/net/mac80211/wbrf.c b/net/mac80211/wbrf.c
+>> index a05c5b971789..12c23e14f884 100644
+>> --- a/net/mac80211/wbrf.c
+>> +++ b/net/mac80211/wbrf.c
+>> @@ -23,8 +23,8 @@ void ieee80211_check_wbrf_support(struct ieee80211_local *local)
+>>  		return;
+>>  
+>>  	local->wbrf_supported = acpi_amd_wbrf_supported_producer(dev);
+>> -	dev_dbg(dev, "WBRF is %s supported\n",
+>> -		local->wbrf_supported ? "" : "not");
+>> +	wiphy_dbg(wiphy, "WBRF is %s supported\n",
+>> +		  local->wbrf_supported ? "" : "not");
+>>  }
+> 
+> This won't work, I still see the debug message:
+> 
+> [  333.765867] ieee80211 phy0: WBRF is not supported
+> 
+> The issue seems to be that mac80211 defines DEBUG in
+> net/mac80211/Makefile:
+> 
+> ccflags-y += -DDEBUG
+> 
+> That -DDEBUG should be cleaned up, but I think separately. It's just
+> that I cannot come up with any good proposal, all the macros in
+> net/mac80211/debug.h require sdata and we don't have that in this stage.
+> Any ideas?
+
+I will submit a patch that only compiles wbrf.c when CONFIG_AMD_WBRF=y
+
+Regards,
+Ma Jun
 
 
---N3Q2B03KdscU10Yb
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi all,
-
-On Bugzilla [1], Evgenii Ilchenko <evgenii.ilchenko@protonmail.com> (Cc'ed)
-wrote ath11k bug report with his non-standard router setup:
-
-> Hardware:
-> Lenovo Thinkpad P14s (21K5001JUS)
-> AMD Ryzen 7450u with Qualcomm QCNFA765 Wireless Network Adapter
-> Router: Huawei HG8245X6-10
->=20
-> Software:
-> Debian Testing (trixie).
-> Testing with 6.1.0, 6.5.0, 6.5.13 kernels.
->=20
->=20
-> The problem is reproduced in the following environment:
->=20
-> 802.11ax is turned off on the router.
-> In this case, a lot of messages like this are printed to the logs:
->=20
-> ath11k_pci 0000:02:00.0: Received with invalid mcs in VHT mode 11
-> ath11k_pci 0000:02:00.0: Received with invalid mcs in VHT mode 10
->=20
-> and:
->=20
-> [   19.498035] ------------[ cut here ]------------
-> [   19.498039] Rate marked as a VHT rate but data is invalid: MCS: 10, NS=
-S: 0
-> [   19.498138] WARNING: CPU: 12 PID: 3107 at net/mac80211/rx.c:5337 ieee8=
-0211_rx_list+0x2b3/0xda0 [mac80211]
-> .........
-> [   19.498631] RIP: 0010:ieee80211_rx_list+0x2b3/0xda0 [mac80211]
-> [   19.498684] Code: 00 00 80 3d 96 a7 07 00 00 0f 85 2d ff ff ff 0f b6 5=
-3 4a 40 0f b6 f7 48 c7 c7 e0 a4 e2 c1 c6 05 7a a7 07 00 01 e8 dd 5d b6 e3 <=
-0f> 0b e9 0b ff ff ff 40 80 ff 0b 0f 86 26 03 00 00 80 3d 5c a7 07
-> .......
-> [   19.498724] Call Trace:
-> [   19.498731]  <IRQ>
-> [   19.498735]  ? ieee80211_rx_list+0x2b3/0xda0 [mac80211]
-> [   19.498785]  ? __warn+0x81/0x130
-> [   19.498799]  ? ieee80211_rx_list+0x2b3/0xda0 [mac80211]
-> [   19.498852]  ? report_bug+0x171/0x1a0
-> [   19.498861]  ? prb_read_valid+0x1b/0x30
-> [   19.498871]  ? srso_alias_return_thunk+0x5/0x7f
-> [   19.498882]  ? handle_bug+0x3c/0x80
-> [   19.498891]  ? exc_invalid_op+0x17/0x70
-> [   19.498897]  ? asm_exc_invalid_op+0x1a/0x20
-> [   19.498910]  ? ieee80211_rx_list+0x2b3/0xda0 [mac80211]
-> [   19.498941]  ? srso_alias_return_thunk+0x5/0x7f
-> [   19.498944]  ? _dev_warn+0x79/0xa0
-> [   19.498952]  ? srso_alias_return_thunk+0x5/0x7f
-> [   19.498956]  ? ath11k_peer_find_by_id+0x100/0x1c0 [ath11k]
-> [   19.498978]  ieee80211_rx_napi+0x53/0xe0 [mac80211]
-> [   19.498999]  ath11k_dp_rx_process_received_packets+0x23e/0x660 [ath11k]
-> [   19.499013]  ath11k_dp_process_rx+0x2cf/0x3c0 [ath11k]
-> [   19.499026]  ath11k_dp_service_srng+0x2e0/0x320 [ath11k]
-> [   19.499037]  ath11k_pcic_ext_grp_napi_poll+0x25/0x80 [ath11k]
-> [   19.499047]  __napi_poll+0x28/0x1b0
-> [   19.499055]  net_rx_action+0x2a4/0x380
-> [   19.499058]  ? srso_alias_return_thunk+0x5/0x7f
-> [   19.499060]  ? __napi_schedule+0xb0/0xc0
-> [   19.499065]  __do_softirq+0xc7/0x2ae
-> [   19.499070]  ? handle_edge_irq+0x8b/0x230
-> [   19.499076]  __irq_exit_rcu+0x96/0xb0
-> [   19.499083]  common_interrupt+0x86/0xa0
-> [   19.499086]  </IRQ>
-> [   19.499087]  <TASK>
-> [   19.499089]  asm_common_interrupt+0x26/0x40
-> .........
-> [   19.499179] ---[ end trace 0000000000000000 ]---
-> full dmesg are attached.
->=20
-> Under these conditions, there is a high proportion of packet loss and ter=
-rible
-> network speed.
-> --- 8.8.8.8 ping statistics ---
-> 1897 packets transmitted, 1868 received, 1.52873% packet loss, time 18998=
-29ms
-> rtt min/avg/max/mdev =3D 8.361/19.235/182.594/10.237 ms
->=20
-> Workaround: When you enable 802.11ax in the router settings, everything b=
-ecomes
-> fine.
->=20
-> From my side, looks like router is sending incompatible in 802.11ac mode =
-MCS
-> setting and this cause the problem. But a lot of devices (include thinkpa=
-d t14
-> g2 with AX201 intel wi-fi) work well with this router and this setting.
-
-To see full dmesg attachment, visit Bugzilla [1].
-
-Later, after I asked to check mainline kernel, he could still reproduce
-the bug:
-
-> > Can you check current mainline (v6.7-rc5)?
-> Of course.
-> At first glance it seemed to be better, but the problem is still reproduc=
-ible.
-> 1800 packets transmitted, 1715 received, 4.72222% packet loss, time 18033=
-70ms
->=20
-> Dmesg:
-> https://drive.proton.me/urls/ANXKYVSSE0#1UAg2yv5RbvD
-> Ping with timestamps:
-> https://drive.proton.me/urls/0X1YVJ0QEG#HWiaF4ZtM2YZ
->=20
-> There appears to be a correlation between log messages (ath11k_pci ... Re=
-ceived
-> with invalid mcs) and packet loss.
-
-Visit above Proton Drive links for full dmesg and ping test output.
-
-Thanks.
-
-[1]: https://bugzilla.kernel.org/show_bug.cgi?id=3D218276
-
---=20
-An old man doll... just what I always wanted! - Clara
-
---N3Q2B03KdscU10Yb
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZYO11gAKCRD2uYlJVVFO
-o58bAP0YVKJa2zL9g2A/ZOkIwqtmOULNKJ/d349c6gblv/1/WAEAxbPkgjKhiHJT
-x8YpaNRuNevTP72aVm8uimANZWiGQAk=
-=0JS+
------END PGP SIGNATURE-----
-
---N3Q2B03KdscU10Yb--
+> 
 
