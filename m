@@ -1,216 +1,125 @@
-Return-Path: <linux-wireless+bounces-1143-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1144-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65E8F81B4A4
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Dec 2023 12:05:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAEA681B6A5
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Dec 2023 13:57:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B3F4284F3C
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Dec 2023 11:05:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED66A1C23007
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Dec 2023 12:57:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DD536A34B;
-	Thu, 21 Dec 2023 11:05:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="W7CGFNr9"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 623E476DB4;
+	Thu, 21 Dec 2023 12:51:14 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 080A36720B;
-	Thu, 21 Dec 2023 11:05:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 3BL65DX8003047;
-	Thu, 21 Dec 2023 11:05:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=cwyLE3ONTL0QWnPBxD1H4N27lQJtWFsVt/zVs1TVX+w=; b=W7
-	CGFNr9Bq1Fg262PU8MyeHVVZVfvPKPuJvk/pBsuXk3RECnUthc0K6RRaEbAobvmd
-	DcK1CASMbrlRAoEWW/VDWkgoD1bW8Es4Vlp/1OO8Bv3cJGxF/2e/CL1T2C1PtSgt
-	Kvyb8Nz4ZtIN0O2UXUPT4uCt20PofoNIXKdbr9rmOlbcbZh8/jx0wMl6WlkSKJi2
-	ckFQnvltvt9tbPliNJsb8puPgoc1IcYimE0p0a0FDsvpX/R904Eod1dv+YJobQvf
-	Fv/DzwRLSBtD48G8eyFXO9Armj14/gtk53pOD7omD4BuwuHhEQuHmmQFTKMpkqQD
-	NRqCKSZTz2LtFQTEFPpA==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3v4eg9hehx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 21 Dec 2023 11:05:14 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3BLB5Eu0025252
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 21 Dec 2023 11:05:14 GMT
-Received: from [10.231.195.68] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Thu, 21 Dec
- 2023 03:05:12 -0800
-Message-ID: <7a31696b-cf2b-48c0-bad3-327e9ce47172@quicinc.com>
-Date: Thu, 21 Dec 2023 19:05:09 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91F7D76DA3
+	for <linux-wireless@vger.kernel.org>; Thu, 21 Dec 2023 12:51:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 3BLCos4U31427669, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 3BLCos4U31427669
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 21 Dec 2023 20:50:54 +0800
+Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Thu, 21 Dec 2023 20:50:55 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.34; Thu, 21 Dec 2023 20:50:54 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7]) by
+ RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7%5]) with mapi id
+ 15.01.2375.007; Thu, 21 Dec 2023 20:50:54 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "martin.kaistra@linutronix.de" <martin.kaistra@linutronix.de>
+CC: "Jes.Sorensen@gmail.com" <Jes.Sorensen@gmail.com>,
+        "kvalo@kernel.org"
+	<kvalo@kernel.org>,
+        "rtl8821cerfe2@gmail.com" <rtl8821cerfe2@gmail.com>,
+        "bigeasy@linutronix.de" <bigeasy@linutronix.de>
+Subject: Re: [PATCH 19/20] wifi: rtl8xxxu: make supporting AP mode only on port 0 transparent
+Thread-Topic: [PATCH 19/20] wifi: rtl8xxxu: make supporting AP mode only on
+ port 0 transparent
+Thread-Index: AQHaMb/t7UraxeutE0+U7Z3itK4it7Cxt0zAgAAj5oCAAQluAIAAKeiAgAAgL4A=
+Date: Thu, 21 Dec 2023 12:50:54 +0000
+Message-ID: <63bdc9685e553cb745f1e1ae0acbeee4233413ab.camel@realtek.com>
+References: <20231218143645.433356-1-martin.kaistra@linutronix.de>
+	 <20231218143645.433356-20-martin.kaistra@linutronix.de>
+	 <56eed6a3e237435f9d21082ca12eeaec@realtek.com>
+	 <797e4962-2ff3-4ae5-a1a7-d4d964fb768d@linutronix.de>
+	 <97e91ccfa2d8118b15166a9f2f25a56f84b460c8.camel@realtek.com>
+	 <2c444230-bf30-427e-a498-877ed6d3e7cd@linutronix.de>
+In-Reply-To: <2c444230-bf30-427e-a498-877ed6d3e7cd@linutronix.de>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+user-agent: Evolution 3.36.1-2 
+x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <F2147B501C95844DAF92870461B77E5A@realtek.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v2 1/8] bus: mhi: host: add
- mhi_power_down_no_destroy()
-Content-Language: en-US
-To: Manivannan Sadhasivam <mani@kernel.org>, Kalle Valo <kvalo@kernel.org>
-CC: <mhi@lists.linux.dev>, <ath11k@lists.infradead.org>,
-        <linux-wireless@vger.kernel.org>
-References: <20231127162022.518834-1-kvalo@kernel.org>
- <20231127162022.518834-2-kvalo@kernel.org> <20231130054250.GC3043@thinkpad>
- <87v89cq1ci.fsf@kernel.org> <20231220163209.GJ3544@thinkpad>
- <20231220165113.GK3544@thinkpad>
-From: Baochen Qiang <quic_bqiang@quicinc.com>
-In-Reply-To: <20231220165113.GK3544@thinkpad>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: HWLgVgY4eUPgeBZ-9OOk4Ifvy6beLB3e
-X-Proofpoint-ORIG-GUID: HWLgVgY4eUPgeBZ-9OOk4Ifvy6beLB3e
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-09_01,2023-12-07_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxlogscore=999
- impostorscore=0 malwarescore=0 phishscore=0 priorityscore=1501 spamscore=0
- clxscore=1015 mlxscore=0 lowpriorityscore=0 suspectscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2311290000
- definitions=main-2312210082
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-
-
-On 12/21/2023 12:51 AM, Manivannan Sadhasivam wrote:
-> On Wed, Dec 20, 2023 at 10:02:25PM +0530, Manivannan Sadhasivam wrote:
->> On Tue, Dec 05, 2023 at 02:29:33PM +0200, Kalle Valo wrote:
->>> Manivannan Sadhasivam <mani@kernel.org> writes:
->>>
->>>> On Mon, Nov 27, 2023 at 06:20:15PM +0200, Kalle Valo wrote:
->>>>
->>>>> From: Baochen Qiang <quic_bqiang@quicinc.com>
->>>>>
->>>>> If ath11k tries to call mhi_power_up() during resume it fails:
->>>>>
->>>>> ath11k_pci 0000:06:00.0: timeout while waiting for restart complete
->>>>>
->>>>> This happens because when calling mhi_power_up() the MHI subsystem eventually
->>>>> calls device_add() from mhi_create_devices() but the device creation is
->>>>> deferred:
->>>>>
->>>>> mhi mhi0_IPCR: Driver qcom_mhi_qrtr force probe deferral
->>>>>
->>>>> The reason for deferring device creation is explained in dpm_prepare():
->>>>>
->>>>> 	/*
->>>>> 	 * It is unsafe if probing of devices will happen during suspend or
->>>>> 	 * hibernation and system behavior will be unpredictable in this case.
->>>>> 	 * So, let's prohibit device's probing here and defer their probes
->>>>> 	 * instead. The normal behavior will be restored in dpm_complete().
->>>>> 	 */
->>>>>
->>>>> Because the device probe is deferred, the qcom_mhi_qrtr_probe() is not called and
->>>>> qcom_mhi_qrtr_dl_callback() fails silently as qdev is zero:
->>>>>
->>>>> static void qcom_mhi_qrtr_dl_callback(struct mhi_device *mhi_dev,
->>>>> 				      struct mhi_result *mhi_res)
->>>>> {
->>>>> 	struct qrtr_mhi_dev *qdev = dev_get_drvdata(&mhi_dev->dev);
->>>>> 	int rc;
->>>>>
->>>>> 	if (!qdev || mhi_res->transaction_status)
->>>>> 		return;
->>>>>
->>>>> So what this means that QRTR is not delivering messages and the QMI connection
->>>>> is not working between ath11k and the firmware, resulting a failure in firmware
->>>>> initialisation.
->>>>>
->>>>> To fix this add new function mhi_power_down_no_destroy() which does not destroy
->>>>> the devices during power down. This way mhi_power_up() can be called during
->>>>> resume and we can get ath11k hibernation working with the following patches.
->>>>>
->>>>> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
->>>>>
->>>>> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
->>>>> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
->>>>
->>>> Any reason for reposting this series without discussing the suggestion from
->>>> Mayank?
->>>
->>> Baochen quickly sent me fixes for the v1 review comments, as I have been
->>> out of office for some time I didn't want to sit on Baochen's fixes for
->>> too long. Better to get them out of the door as soon as possible. I will
->>> definitely look at Mayank's proposal but that will take longer.
->>>
->>>> As I said in the internal thread, this patch breaks the Linux device
->>>> driver model by not destroying the "struct device" when the actual
->>>> device gets removed.
->>>
->>> This patchset has been tested by several people, I'm even using this
->>> patchset on main laptop every day, and we haven't noticed any issues.
->>>
->>> Can you elaborate more about this driver model? We are not removing any
->>> ath11k devices, we just want to power down the ath11k (and in the future
->>> ath12k) devices for suspend and power up during resume.
->>>
->>
->> Devices (struct dev) for each channels are created once the device (WLAN) enters
->> runtime mode such as (MISSION, SBL etc...). During hibernation, ath11k stack
->> calls mhi_power_down() which essentially resets the device to POR and also the
->> stack powers down the device properly.
->>
->> In that case, MHI channels do not exist as the device (WLAN) itself is powered
->> down. As per kernel driver model, each struct device is tied to its reference
->> count. And the reference count should be decremented whenever the actual device
->> is not in use. Once the actual device is removed from the system, then the
->> respective struct device has to be destroyed altogether.
->>
->> So in this case, even though the channels are not active (present) in the
->> device, the device itself gets powered off, you want MHI stack to keep the
->> struct device active, which is against the model I referenced above.
->>
->> To fix this issue properly, we need to investigate on how other subsystems are
->> handling this situation (device getting powered down during hibernation), like
->> USB.
->>
-> 
-> To me it all sounds like the probe deferral is not handled properly in mac80211
-> stack. As you mentioned in the commit message that the dpm_prepare() blocks
-> probing of devices. It gets unblocked and trigerred in dpm_complete():
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/base/power/main.c#n1131
-> 
-> So if mac80211/ath11k cannot probe the devices at the dpm_complete() stage, then
-> it is definitely an issue that needs to be fixed properly.
-To clarify, ath11k CAN probe the devices at dpm_complete() stage. The 
-problem is kernel does not wait for all probes to finish, and in that 
-way we will face the issue that user space applications are likely to 
-fail because they get thawed BEFORE WLAN is ready.
-
-> 
-> - Mani
-> 
->> - Mani
->>
->>>> We should try to explore alternate options instead of persisting with
->>>> this solution.
->>>
->>> What other options we have here? At least Baochen is not optimistic that
->>> using PM_POST_HIBERNATION as a workaround would work. The issue we have
->>> here is that mhi_power_up() doesn't work in the resume handler and
->>> that's what we should try to fix, not make workarounds.
->>>
->>> -- 
->>> https://patchwork.kernel.org/project/linux-wireless/list/
->>>
->>> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
->>
->> -- 
->> மணிவண்ணன் சதாசிவம்
-> 
+T24gVGh1LCAyMDIzLTEyLTIxIGF0IDExOjU0ICswMTAwLCBNYXJ0aW4gS2Fpc3RyYSB3cm90ZToN
+Cj4gDQo+IEFtIDIxLjEyLjIzIHVtIDA5OjI1IHNjaHJpZWIgUGluZy1LZSBTaGloOg0KPiA+IE9u
+IFdlZCwgMjAyMy0xMi0yMCBhdCAxNzozNCArMDEwMCwgTWFydGluIEthaXN0cmEgd3JvdGU6DQo+
+ID4gPiANCj4gPiA+IEFtIDIwLjEyLjIzIHVtIDA3OjI4IHNjaHJpZWIgUGluZy1LZSBTaGloOg0K
+PiA+ID4gPiA+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+ID4gPiA+ID4gRnJvbTogTWFy
+dGluIEthaXN0cmEgPG1hcnRpbi5rYWlzdHJhQGxpbnV0cm9uaXguZGU+DQo+ID4gPiA+ID4gU2Vu
+dDogTW9uZGF5LCBEZWNlbWJlciAxOCwgMjAyMyAxMDozNyBQTQ0KPiA+ID4gPiA+IFRvOiBsaW51
+eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmcNCj4gPiA+ID4gPiBDYzogSmVzIFNvcmVuc2VuIDxK
+ZXMuU29yZW5zZW5AZ21haWwuY29tPjsgS2FsbGUgVmFsbyA8a3ZhbG9Aa2VybmVsLm9yZz47IFBp
+bmctS2UgU2hpaA0KPiA+ID4gPiA+IDxwa3NoaWhAcmVhbHRlay5jb20+OyBCaXR0ZXJibHVlIFNt
+aXRoIDxydGw4ODIxY2VyZmUyQGdtYWlsLmNvbT47IFNlYmFzdGlhbiBBbmRyemVqDQo+ID4gPiA+
+ID4gU2lld2lvcg0KPiA+ID4gPiA+IDxiaWdlYXN5QGxpbnV0cm9uaXguZGU+DQo+ID4gPiA+ID4g
+U3ViamVjdDogW1BBVENIIDE5LzIwXSB3aWZpOiBydGw4eHh4dTogbWFrZSBzdXBwb3J0aW5nIEFQ
+IG1vZGUgb25seSBvbiBwb3J0IDAgdHJhbnNwYXJlbnQNCj4gPiA+ID4gPiANCj4gPiA+ID4gPiAr
+DQo+ID4gPiA+ID4gKyAgICAgICB2aWYgPSBwcml2LT52aWZzWzBdOw0KPiA+ID4gPiA+ICsgICAg
+ICAgcHJpdi0+dmlmc1swXSA9IHByaXYtPnZpZnNbMV07DQo+ID4gPiA+ID4gKyAgICAgICBwcml2
+LT52aWZzWzFdID0gdmlmOw0KPiA+ID4gPiA+ICsgICAgICAgcnRsdmlmID0gKHN0cnVjdCBydGw4
+eHh4dV92aWYgKilwcml2LT52aWZzWzFdLT5kcnZfcHJpdjsNCj4gPiA+ID4gPiArICAgICAgIHJ0
+bHZpZi0+cG9ydF9udW0gPSAxOw0KPiA+ID4gPiANCj4gPiA+ID4gbml0OiBXb3VsZCBpdCBiZSBi
+ZXR0ZXIgdG8gc3dhcCBwb3J0X251bSBhcyB3ZWxsPyBDdXJyZW50bHksIHBvcnRfbnVtIG9mIHZp
+ZnNbMF0NCj4gPiA+ID4gd2lsbCBiZSBzZXQgdG8gMCBieSBjYWxsZXIsIGJ1dCBub3Qgc3VyZSBp
+ZiBmdXJ0aGVyIHBlb3BsZSBjb3VsZCBtaXN1c2UgdGhpcw0KPiA+ID4gPiBmdW5jdGlvbi4NCj4g
+PiA+IA0KPiA+ID4gdGhlIG1haW4gcmVhc29uLCBJIGRpZCBub3QgaW5jbHVkZSBzZXR0aW5nIHBv
+cnRfbnVtIGZvciBwcml2LT52aWZzWzBdLCBpcyB0aGF0DQo+ID4gPiBwcml2LT52aWZzWzBdIGlz
+IGEgTlVMTCBwb2ludGVyIGluIHRoZSBjdXJyZW50IHdheSB0aGlzIGZ1bmN0aW9uIGlzIGNhbGxl
+ZCBmcm9tDQo+ID4gPiBydGw4eHh4dV9hZGRfaW50ZXJmYWNlKCkuDQo+ID4gPiANCj4gPiA+IGRv
+IHlvdSB0aGluayBpdCBtYWtlcyBzZW5zZSB0byBhZGQNCj4gPiA+IA0KPiA+ID4gaWYgKHByaXYt
+PnZpZnNbMF0pDQo+ID4gPiAgICAgICAgICBydGx2aWYgPSAoc3RydWN0IHJ0bDh4eHh1X3ZpZiAq
+KXByaXYtPnZpZnNbMF0tPmRydl9wcml2Ow0KPiA+ID4gICAgICAgICAgcnRsdmlmLT5wb3J0X251
+bSA9IDA7DQo+ID4gPiANCj4gPiA+IGp1c3QgZm9yIGNvbXBsZXRlbmVzcyBzYWtlLCBldmVuIHRo
+b3VnaCB0aGlzIGNvZGUgcGF0aCB3aWxsIGN1cnJlbnRseSBuZXZlciBnZXQNCj4gPiA+IGV4ZWN1
+dGVkPw0KPiA+ID4gDQo+ID4gDQo+ID4gSSBtaXNzZWQgdGhhdCBwb2ludC4gSSBqdXN0IGRpZCBm
+b2N1cyBvbiAic3dpdGNoIiwgYnV0IGFjdHVhbGx5IHRoaXMgaXMNCj4gPiAibW92ZSIgZnJvbSBw
+b3J0IDAgdG8gMSwgcmlnaHQ/DQo+IA0KPiBZZXMsIGN1cnJlbnRseSwgdGhlIGZ1bmN0aW9uIGlz
+IG9ubHkgdXNlZCB0byBtb3ZlIHRoZSBTVEEgbW9kZSBpbnRlcmZhY2UgZnJvbSAwDQo+IHRvIDEg
+aW4gb3JkZXIgdG8gbWFrZSByb29tIGZvciBBUCBvbiAwLg0KPiANCj4gSSB3aWxsIGxlYXZlIHRo
+aXMgcGF0Y2ggYXMgaXMgZm9yIHYyLiBXaGVuIHRoZSBmdW5jdGlvbiBpcyB1c2VkIGluIHRoZSBm
+dXR1cmUNCj4gZm9yIGEgZGlmZmVyZW50IHNjZW5hcmlvLCB0aGUgcG9zc2liaWxpdHkgb2Ygdmlm
+c1swXSBvciB2aWZzWzFdIGJlaW5nIE5VTEwgbmVlZHMNCj4gdG8gYmUgdGhvdWdodCB0aHJvdWdo
+IGFueXdheSBhbmQgaWYgbmVjZXNzYXJ5IHRoZSBzZXR0aW5nIG9mIHBvcnRfbnVtID0gMCBjYW4g
+YmUNCj4gYWRkZWQgdGhlbiBhcyB3ZWxsLg0KPiANCg0KV291bGQgeW91IGxpa2UgdG8gYWRkIGEg
+Y29tbWVudCBsaWtlIGFib3ZlIGRlc2NyaXB0aW9uIHRvIGhlbHAgcGVvcGxlIHRvDQp1bmRlcnN0
+YW5kIHlvdXIgdGhpbmtpbmc/DQoNCkFueXdheSwgdGhpcyBwYXRjaCBsb29rcyBnb29kIHRvIG1l
+LiBQbGVhc2UgYWRkIG15IHJldmlld2VkLWJ5IGJ5IHYyLg0KDQoNCg==
 
