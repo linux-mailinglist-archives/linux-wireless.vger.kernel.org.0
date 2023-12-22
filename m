@@ -1,86 +1,180 @@
-Return-Path: <linux-wireless+bounces-1207-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1208-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C429281C63A
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Dec 2023 09:08:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C0BC81C67E
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Dec 2023 09:25:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01F1D1C24FBD
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Dec 2023 08:08:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2FE21F2624A
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Dec 2023 08:25:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E14014F75;
-	Fri, 22 Dec 2023 08:08:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFA68D301;
+	Fri, 22 Dec 2023 08:25:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fGilFavi"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LX3wqr3Q";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="VHqBgUlH"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12AC314F73
-	for <linux-wireless@vger.kernel.org>; Fri, 22 Dec 2023 08:08:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 705EBC433C8;
-	Fri, 22 Dec 2023 08:08:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703232485;
-	bh=WL/L6yV91Pcri6kImsWABDutafkXNQ13K7WcccGnUwM=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=fGilFavidWj48CYvAcePAKhwZFWgStw88m8+rV3KZ3EfhrNjp1Y3l7NLRIEgAexzf
-	 p65VurpdPx9AMpDtpPYglfYNf5+TqTqMnggVbJ/5YzEjrxcglKTq7iCgQSbUpBqrkH
-	 CTU29LoYtMo8deAxDewuMyrpEWnWpT1+2Y97zi+QSW2XFOMRFoD3wzObLE1DD2O3Dc
-	 AWGGedwRsKRKE4N59QVb3O/FyyZ9IsruQ2cdfEp6t2BTimfFCGJBXf7sdOhbuzYqaq
-	 70WoBkUHka19P3vBu1rXXofcj+xlAE31qAx8tM2zi3aSWs17zWPYNeHFR3xWbeUvO5
-	 FOYze4R6+2LPg==
-From: Kalle Valo <kvalo@kernel.org>
-To: Chen-Yu Tsai <wens@kernel.org>
-Cc: Jeff Johnson <quic_jjohnson@quicinc.com>,  Johannes Berg
- <johannes@sipsolutions.net>,  linux-wireless@vger.kernel.org,
-  wireless-regdb@lists.infradead.org
-Subject: Re: [wireless-regdb] [PATCH v3 2/9] wifi: cfg80211: save Power
- Spectral Density (PSD) of the regulatory rule
-References: <20230315132904.31779-1-quic_adisi@quicinc.com>
-	<20230315132904.31779-3-quic_adisi@quicinc.com>
-	<4cb3e92530d3f4db3b414e2a7536a0f01b765c4d.camel@sipsolutions.net>
-	<46343a69-5f27-4ffa-bbd8-5b5e7616dbbf@quicinc.com>
-	<CAGb2v66gfifO4oSt7R=EZYNjEOZtovaOLeJPCUZPkyJP1shbeQ@mail.gmail.com>
-Date: Fri, 22 Dec 2023 10:08:02 +0200
-In-Reply-To: <CAGb2v66gfifO4oSt7R=EZYNjEOZtovaOLeJPCUZPkyJP1shbeQ@mail.gmail.com>
-	(Chen-Yu Tsai's message of "Fri, 22 Dec 2023 11:57:46 +0800")
-Message-ID: <87sf3u1wyl.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4D12D295
+	for <linux-wireless@vger.kernel.org>; Fri, 22 Dec 2023 08:25:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Message-ID: <f3949264-c530-43e1-a528-eedcc2b31d0d@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1703233506;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ogs4EWhQIaFPkCSZ8fLyjBvUwZixqh5Q8T0YgFfFN1I=;
+	b=LX3wqr3Qt5sOfq7ciMUcbug8/rxiPwzjXkqRq0nyJRny0Lo/xgLVvwvCMNUfzXKf8itqKV
+	Ty2iu6n1GjYux4HkJhbPuBjY6p+MMqNV5wkBt2KbgesqHuTRwBrOVFfTHnBAWHilDehPNe
+	PE7TXA8vEySPa4l2z27uJ29dhI/I54dNLQ0lqoC0uIOWWpXj5zd0FVHU7zzJWd7EYprgyN
+	8gvCwTEzD/53nvsm2tH+wdUmmwITOc97di33887WcRwUE1iAlCL/BozPEzul6+rsVC6a/K
+	3gTPXOwE1ZSrOvqi0yagw28TXdq7v6qdENjOljAyI2FgX5q5VuXho4ZzxRBR8g==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1703233506;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ogs4EWhQIaFPkCSZ8fLyjBvUwZixqh5Q8T0YgFfFN1I=;
+	b=VHqBgUlHpMldIf4cdNX0iW9NO/vgkCFEsWeIM8Xsyr+0Z0eMyHL6Fn7/l3vNS9weOJniSA
+	alXwuA5K9364qFCg==
+Date: Fri, 22 Dec 2023 09:25:06 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v2 13/21] wifi: rtl8xxxu: support multiple interfaces in
+ watchdog_callback()
+Content-Language: de-DE
+From: Martin Kaistra <martin.kaistra@linutronix.de>
+To: Ping-Ke Shih <pkshih@realtek.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Jes Sorensen <Jes.Sorensen@gmail.com>, Kalle Valo <kvalo@kernel.org>,
+ Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+References: <20231221164353.603258-1-martin.kaistra@linutronix.de>
+ <20231221164353.603258-14-martin.kaistra@linutronix.de>
+ <CAKFoaw3o-LkqADNvfE0TXmvr8_LK19mpVQtUZ66CWS=AN5AkJQ@mail.gmail.com>
+ <f71b29e17ff14ee9b28dd514a94cf1be@realtek.com>
+ <b8764bec-4dc6-4779-a3c3-d22e7d5acce9@linutronix.de>
+In-Reply-To: <b8764bec-4dc6-4779-a3c3-d22e7d5acce9@linutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Chen-Yu Tsai <wens@kernel.org> writes:
-
-> On Thu, Sep 14, 2023 at 11:15=E2=80=AFAM Jeff Johnson <quic_jjohnson@quic=
-inc.com> wrote:
+Am 22.12.23 um 09:05 schrieb Martin Kaistra:
+> Am 22.12.23 um 02:45 schrieb Ping-Ke Shih:
 >>
->> On 9/13/2023 7:58 AM, Johannes Berg wrote:
->> > So I'd say we shouldn't touch any of the code under #ifdef
->> > CONFIG_CFG80211_CRDA_SUPPORT any more since CRDA will not continue to
->> > developed with any updates here.
+>> On Fri, Dec 22, 2023 at 12:45 AM Martin Kaistra
+>> <martin.kaistra@linutronix.de> wrote:
+>>>
+>>> Check first whether priv->vifs[0] exists and is of type STATION, then go
+>>> to priv->vifs[1]. Make sure to call refresh_rate_mask for both
+>>> interfaces.
+>>>
+>>> Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
+>>> ---
+>>>   .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 19 +++++++++++--------
+>>>   1 file changed, 11 insertions(+), 8 deletions(-)
+>>>
+>>> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c 
+>>> b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>>> index c5b71892369c9..fd0108668bcda 100644
+>>> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>>> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>>> @@ -7200,11 +7200,15 @@ static void rtl8xxxu_watchdog_callback(struct 
+>>> work_struct *work)
+>>>   {
+>>>          struct ieee80211_vif *vif;
+>>>          struct rtl8xxxu_priv *priv;
+>>> +       int i;
+>>>
+>>>          priv = container_of(work, struct rtl8xxxu_priv, ra_watchdog.work);
+>>> -       vif = priv->vif;
+>>> +       for (i = 0; i < ARRAY_SIZE(priv->vifs); i++) {
+>>> +               vif = priv->vifs[i];
+>>> +
+>>> +               if (!vif || vif->type != NL80211_IFTYPE_STATION)
+>>> +                       continue;
 >>
->> On a related note, what will happen to ongoing wireless-regdb support
->> now that Seth has stepped down as maintainer? Have enough vendors moved
->> to self-managed such that regdb is obsolete?
->
-> I've picked up maintainership for wireless-regdb.
+>> Currently, this loop becomes to get RSSI and update rate mask, but only for
+>> station mode. That means we don't update them for peer stations in AP mode.
+>> Maybe, we need ieee80211_iterate_stations_atomic() for all stations, but
+>> ieee80211_ave_rssi() is only for 'vif', so we need to add a driver level
+>> RSSI for all stations (macid). Also, we need to extend priv->rssi_level for
+>> all macid as well.
+>>
+>> I suppose _default_ value can work to stations in AP mode, so you can decide
+>> if you will defer this support temporarily.
+>>
+>> (Sorry, I don't dig rtl8xxxu very deeply, so I'm not able to tell you all
+>> things in one go.)
+> 
+> It probably makes sense to fix this, however if it's ok for you, I would like to 
+> do it separatly from this series.
+> 
+> 
+>>
+>>>
+>>> -       if (vif && vif->type == NL80211_IFTYPE_STATION) {
+>>>                  int signal;
+>>>                  struct ieee80211_sta *sta;
+>>>
+>>> @@ -7215,22 +7219,21 @@ static void rtl8xxxu_watchdog_callback(struct 
+>>> work_struct *work)
+>>>
+>>>                          dev_dbg(dev, "%s: no sta found\n", __func__);
+>>>                          rcu_read_unlock();
+>>> -                       goto out;
+>>> +                       continue;
+>>>                  }
+>>>                  rcu_read_unlock();
+>>>
+>>>                  signal = ieee80211_ave_rssi(vif);
+>>>
+>>> -               priv->fops->report_rssi(priv, 0,
+>>> +               priv->fops->report_rssi(priv, rtl8xxxu_get_macid(priv, sta),
+>>>                                          rtl8xxxu_signal_to_snr(signal));
+>>>
+>>> -               if (priv->fops->set_crystal_cap)
+>>> -                       rtl8xxxu_track_cfo(priv);
+>>> -
+>>>                  rtl8xxxu_refresh_rate_mask(priv, signal, sta, false);
+>>
+>> It seems like 'sta' isn't protected by RCU read lock.
+>> (an existing bug, not introduced by this patch)
+> 
+> I will add a patch which moves the rcu_read_unlock() to fix this.
 
-Chen-Yu, sorry that I haven't been able to comment anything earlier but
-I want to thank you for taking the role. And big thanks to Seth for
-maintaining regdb for all these years!
+Actually, looking at the code again, rtl8xxxu_refresh_rate_mask() seems to 
+already contain calls to rcu_read_lock(). Just the call to 
+rtl8xxxu_get_macid(priv, sta) in there might need additional protection.
 
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
+> 
+>>
+>>
+>>>          }
+>>>
+>>> -out:
+>>> +       if (priv->fops->set_crystal_cap)
+>>> +               rtl8xxxu_track_cfo(priv);
+>>> +
+>>>          schedule_delayed_work(&priv->ra_watchdog, 2 * HZ);
+>>>   }
+>>>
+>>> -- 
+>>> 2.39.2
+>>>
+>>>
+> 
+> 
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
 
