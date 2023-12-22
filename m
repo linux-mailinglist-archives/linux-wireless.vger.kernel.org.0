@@ -1,125 +1,377 @@
-Return-Path: <linux-wireless+bounces-1249-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1250-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2BA881C9B6
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Dec 2023 13:08:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6FEA81C9EB
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Dec 2023 13:26:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52A601F25EAF
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Dec 2023 12:08:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E17BBB20C2D
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Dec 2023 12:26:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAF6017989;
-	Fri, 22 Dec 2023 12:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3BA418026;
+	Fri, 22 Dec 2023 12:26:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AKjWkAsh"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="T8awk124"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23021182A8;
-	Fri, 22 Dec 2023 12:08:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-40d4a7f0d17so989305e9.1;
-        Fri, 22 Dec 2023 04:08:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1703246916; x=1703851716; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=wLmNJV1KCwtCk4AJyZ66y9UiWpbx0XO2tfF5Ht++t+4=;
-        b=AKjWkAshUtHbqIvFrQI0NqlA/25ztuRopsGnPS3hvlR2rjRjRekvK2ulhAWZHNfP/b
-         udeW6zzchVSjKGtxhf1a0bsNBFn1MMRMGwjp/Wr3sBHrRYRoopJ+RrsLHhJbRN8P7iX7
-         QNODP3Ye1U862UebOPkQCTYJARBdfMWRyjtP9gzYV1KhceaaJQUamF1D27axrV8+5X3p
-         G+PAcO5UFEM2w4pPCmtc13UtEMlGQerlhFFmie7/eACIgGcDEaUFIrx0NNg9Fyk64U48
-         iJXlqmwIR4pJp4P7/LvCTey69xYQbgnF5+FKL6BymRv0zwWPgqQdjMiuaHTIA0pKqAKT
-         8ROg==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C5FD1773E
+	for <linux-wireless@vger.kernel.org>; Fri, 22 Dec 2023 12:26:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1703247967;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=V+0hAFQoNGhjkC4iJFy3Bycv+540PspoS2JpzLVmy1I=;
+	b=T8awk124O9pPeAMh1rjDZ8Iq9r53s8u9A7+svoxf6TSAjwC8TM9hG+ghuTTrgXoTVpFGYJ
+	VtYV3k2v506+zS7LwJIW/YTy5cuEAx1bkxnMIl8sz9g+dKR707hIaY1aveHu/FENexphy8
+	S6fywYjlA+SgcU/OolPpPKagOJVdFK8=
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com
+ [209.85.210.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-679-mOglbWlzNlKC-ktVGniZbw-1; Fri, 22 Dec 2023 07:26:06 -0500
+X-MC-Unique: mOglbWlzNlKC-ktVGniZbw-1
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-6d64b546e7eso1401581b3a.2
+        for <linux-wireless@vger.kernel.org>; Fri, 22 Dec 2023 04:26:05 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703246916; x=1703851716;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wLmNJV1KCwtCk4AJyZ66y9UiWpbx0XO2tfF5Ht++t+4=;
-        b=DecvjThc7HJnXEObVdG24YB8ZNX7M2JGMRyKTzrjhI4rpV3v0OkIsgINdfhlthMcPR
-         TX1FNEQ6kKR8/6zE4XPBDjqBe+y7+Isc0/cUcgYCP1zuc3so1BU98yPo40zrWCJ+vECU
-         ZBx6UhoOShh8w14n1CVymnwPMamNpwKuiyXgFW5fk/EMeOWHLaC4YpMAKOF15deAJAsp
-         PybaY1XS3xX9m1DTinrc0M7V4/RHuAzlbr6t7Nw0jvc4tdB0aIgsEV941orHEfJtk43u
-         r3/ov4GWcVqL1akN0Nj4HZtQl1L4MURVXZ+B/WCaEyawftDR5Ua1lG7f+41sBr0PtMWS
-         laXA==
-X-Gm-Message-State: AOJu0YzK+lsA7V4P1jfSgNQKeK/h9Qi3dCetC4Bajb7mfXMSRzGu2/eW
-	Ysu23DwCr1JPCor36dwRt0E=
-X-Google-Smtp-Source: AGHT+IHoGTr2p2JAjQmbfoEPN/+cqVGVjgmUq+aoT4KXXzWTti1FsgE83RW6pxbzizHKFOXmgyzILw==
-X-Received: by 2002:a05:600c:5409:b0:40c:357e:289 with SMTP id he9-20020a05600c540900b0040c357e0289mr649594wmb.65.1703246916101;
-        Fri, 22 Dec 2023 04:08:36 -0800 (PST)
-Received: from [192.168.0.101] (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
-        by smtp.googlemail.com with ESMTPSA id w19-20020a05600c475300b0040c4620b9fasm6658024wmo.11.2023.12.22.04.08.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 22 Dec 2023 04:08:35 -0800 (PST)
-Message-ID: <75cd2090-857e-4082-bbc1-e3726235bda1@gmail.com>
-Date: Fri, 22 Dec 2023 12:08:33 +0000
+        d=1e100.net; s=20230601; t=1703247965; x=1703852765;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=V+0hAFQoNGhjkC4iJFy3Bycv+540PspoS2JpzLVmy1I=;
+        b=X+Mu5oCcqQACmqBHasMEOynLp86Xhoy9B9g5yvYx62KFHTxRq7Z9hHnB0Cw6B9RKJh
+         VqNrtw+vrD3urR/RXZ8N8/mwt4RUzSz7qyyJjIeTGJdddrpdVgUdMWIG2zFtqlaENqDj
+         mscXBiyiZvSMUtBmZrXmQ5WBN3Qm1paPNzryEBQug7LMMU0MDKHKKBAYc4VHWA9BxQJp
+         AE8OMuoL5Bfiof9utQSPR4MTN7+sndnTdDiv0SlzyZriZvSMz4Ccx0uLggxsTU6J6iUv
+         8QJ8mC4QmgkYDJZEo5KFA1WPaOfCT3coRnloYMkyIF8hG1cXJRy/kC64lc7aUUjshcza
+         9T1A==
+X-Gm-Message-State: AOJu0Yw7USM9wuoXSQcDzPWhjd4PUaM6Bq+D7Vg84utY36UPHYu67R+h
+	Nqn01SWrncAIkQwolKHTYqv8P1cdnT5iY8HYacGrH6fTue9H6mlt/nOnjCSRtgsbWsMN0YAtcmV
+	J7n4t25NEDnkg+90cIB/0bSm1Ci9dX4KONSNGFisGckpl03/OgZk=
+X-Received: by 2002:a05:6a21:194:b0:195:4744:20ca with SMTP id le20-20020a056a21019400b00195474420camr207637pzb.60.1703247964779;
+        Fri, 22 Dec 2023 04:26:04 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEzHElDkJAQblkzKA51PWs9j3gE5oL7guxFvxkZsOrdWTU8pSAwm/O7EcrvYE9E/82xJ1beWCcAKPM052io4aM=
+X-Received: by 2002:a05:6a21:194:b0:195:4744:20ca with SMTP id
+ le20-20020a056a21019400b00195474420camr207616pzb.60.1703247964290; Fri, 22
+ Dec 2023 04:26:04 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH][next] wifi: rtw89: mac: Fix spelling mistakes "notfify"
- -> "notify"
-To: Ping-Ke Shih <pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20231220141831.10063-1-colin.i.king@gmail.com>
- <2839b824a2a04aab9514ce89b3735e52@realtek.com>
-Content-Language: en-US
-From: "Colin King (gmail)" <colin.i.king@gmail.com>
-In-Reply-To: <2839b824a2a04aab9514ce89b3735e52@realtek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20231107-brcmfmac-wpa3-v1-1-4c7db8636680@marcan.st>
+ <170281231651.2255653.7498073085103487666.kvalo@kernel.org>
+ <18c80d15e30.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+ <1b51997f-2994-46e8-ac58-90106d1c486d@marcan.st> <c392f901-789a-42e2-8cf7-5e246365a1ca@broadcom.com>
+ <CAF4BwTXNtu30DAgBXo4auDaDK0iWc9Ch8f=EH+facQ-_F-oMUQ@mail.gmail.com>
+ <87r0jiqmnx.fsf@kernel.org> <01bd8c68-1b9c-49b2-8ace-1c7d1b5192ad@marcan.st>
+ <CAHk-=whDLKZZEuxU_jEhZRdeWjXAkL8=J_JRk2Ar6wp9UK3h2w@mail.gmail.com>
+ <871qbhqio8.fsf@kernel.org> <4c89b71e-8667-40fe-add0-205748de51ef@marcan.st>
+ <bdb078c0-2f45-485a-86a0-bb7d0b5e3516@broadcom.com> <d5e26dd4-483d-4662-ba83-5cb19187b24a@marcan.st>
+ <31292508-f881-4457-a4bf-2ca0b8e8f435@broadcom.com> <37bd3f8a-1000-4d74-8909-5e821cb5c1dc@marcan.st>
+In-Reply-To: <37bd3f8a-1000-4d74-8909-5e821cb5c1dc@marcan.st>
+From: Eric Curtin <ecurtin@redhat.com>
+Date: Fri, 22 Dec 2023 12:25:27 +0000
+Message-ID: <CAOgh=FxsMMbp1Pyg7GSNmwNvfeX+7JDibQbMbx-hdLsCQz5qYA@mail.gmail.com>
+Subject: Re: [PATCH] wifi: brcmfmac: cfg80211: Use WSEC to set SAE password
+To: Hector Martin <marcan@marcan.st>
+Cc: Arend van Spriel <arend.vanspriel@broadcom.com>, Kalle Valo <kvalo@kernel.org>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Daniel Berlin <dberlin@dberlin.org>, 
+	Arend van Spriel <aspriel@gmail.com>, Franky Lin <franky.lin@broadcom.com>, 
+	Hante Meuleman <hante.meuleman@broadcom.com>, asahi@lists.linux.dev, 
+	brcm80211-dev-list.pdl@broadcom.com, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, David Airlie <airlied@redhat.com>, 
+	Daniel Vetter <daniel@ffwll.ch>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 22/12/2023 00:19, Ping-Ke Shih wrote:
-> 
-> 
->> -----Original Message-----
->> From: Colin Ian King <colin.i.king@gmail.com>
->> Sent: Wednesday, December 20, 2023 10:19 PM
->> To: Ping-Ke Shih <pkshih@realtek.com>; Kalle Valo <kvalo@kernel.org>; linux-wireless@vger.kernel.org
->> Cc: kernel-janitors@vger.kernel.org; linux-kernel@vger.kernel.org
->> Subject: [PATCH][next] wifi: rtw89: mac: Fix spelling mistakes "notfify" -> "notify"
->>
->> There are two spelling mistakes in rtw89_err error messages. Fix these
->> and also add space between [ERR] and message text.
->>
->> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-> 
-> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-> 
-> Thanks for the correctness. Could I know the tool you used to find out these
-> typo?
+On Fri, 22 Dec 2023 at 05:19, Hector Martin <marcan@marcan.st> wrote:
+>
+>
+>
+> On 2023/12/21 18:57, Arend van Spriel wrote:
+> > - SHA-cyfmac-dev-list@infineon.com
+> >
+> > On 12/21/2023 1:49 AM, Hector Martin wrote:
+> >>
+> >>
+> >> On 2023/12/21 4:36, Arend van Spriel wrote:
+> >>> On 12/20/2023 7:14 PM, Hector Martin wrote:
+> >>>>
+> >>>>
+> >>>> On 2023/12/20 19:20, Kalle Valo wrote:
+> >>>>> Linus Torvalds <torvalds@linux-foundation.org> writes:
+> >>>>>
+> >>>>>>> Just recently a patch was posted to remove the Infineon list from
+> >>>>>>> MAINTAINERS because that company cares so little they have litera=
+lly
+> >>>>>>> stopped accepting emails from us. Meanwhile they are telling thei=
+r
+> >>>>>>> customers that they do not recommend upstream brcmfmac and they s=
+hould
+> >>>>>>> use their downstream driver [1].
+> >>>>>>
+> >>>>>> Unquestionably broadcom is not helping maintain things, and I thin=
+k it
+> >>>>>> should matter.
+> >>>>>>
+> >>>>>> As Hector says, they point to their random driver dumps on their s=
+ite
+> >>>>>> that you can't even download unless you are a "Broadcom community
+> >>>>>> member" or whatever, and hey - any company that works that way sho=
+uld
+> >>>>>> be seen as pretty much hostile to any actual maintenance and prope=
+r
+> >>>>>> development.
+> >>>>>
+> >>>>> Sadly this is the normal in the wireless world. All vendors focus o=
+n the
+> >>>>> latest generation, currently it's Wi-Fi 7, and lose interest on old=
+er
+> >>>>> generations. And vendors lose focus on the upstream drivers even fa=
+ster,
+> >>>>> usually after a customer project ends.
+> >>>>>
+> >>>>> So in practise what we try to do is keep the drivers working someho=
+w on
+> >>>>> our own, even after the vendors are long gone. If we would delibera=
+tely
+> >>>>> allow breaking drivers because vendor/corporations don't support us=
+, I
+> >>>>> suspect we would have sevaral broken drivers in upstream.
+> >>>>>
+> >>>>>> If Daniel and Hector are responsive to actual problem reports for =
+the
+> >>>>>> changes they cause, I do think that should count a lot.
+> >>>>>
+> >>>>> Sure, but they could also respect to the review comments. I find Ar=
+end's
+> >>>>> proposal is reasonable and that's what I would implement in v2. We
+> >>>>> (linux-wireless) make abstractions to workaround firmware problems =
+or
+> >>>>> interface conflicts all the time, just look at ath10k for example. =
+I
+> >>>>> would not be surprised if we need to add even more abstractions to
+> >>>>> brcmfmac in the future. And Arend is the expert here, he has best
+> >>>>> knowledge of Broadcom devices and I trust him.
+> >>>>>
+> >>>>> Has anyone even investigated what it would need to implement Arend'=
+s
+> >>>>> proposal? At least I don't see any indication of that.
+> >>>>
+> >>>> Of course we can implement it (and we will as we actually got a repo=
+rt
+> >>>> of this patch breaking Cypress now, finally).
+> >>>>
+> >>>> The question was never whether it could be done, we're already doing=
+ a
+> >>>> bunch of abstractions to deal with just the Broadcom-only side of th=
+ings
+> >>>> too. The point I was trying to make is that we need to *know* what
+> >>>> firmware abstractions we need and *why* they are needed. We can't ju=
+st
+> >>>> say, for every change, "well, nobody knows if the existing code work=
+s or
+> >>>> not, so let's just add an abstraction just in case the change breaks
+> >>>> something". As far as anyone involved in the discussions until now c=
+ould
+> >>>> tell, this code was just something some Cypress person dumped upstre=
+am,
+> >>>> and nobody involved was being responsive to any of our inquiries, so
+> >>>> there was no way to be certain it worked at all, whether it was
+> >>>> supported in public firmware, or anything else.
+> >>>>
+> >>>> *Now* that we know the existing code is actually functional and not =
+just
+> >>>> dead/broken, and that the WSEC approach is conversely not functional=
+ on
+> >>>> the Cypress firmwares, it makes sense to introduce an abstraction.
+> >>>
+> >>> Just a quick look in the git history could have told you that it was =
+not
+> >>> just dumped upstream and at least one person was using it and extende=
+d
+> >>> it for 802.11r support (fast-roaming):
+> >>>
+> >>>
+> >>> author      Pawe=C5=82 Drewniak <czajernia@gmail.com>    2021-08-24 2=
+3:13:30 +0100
+> >>> committer   Kalle Valo <kvalo@codeaurora.org>       2021-08-29 11:33:=
+07 +0300
+> >>> commit      4b51de063d5310f1fb297388b7955926e63e45c9 (patch)
+> >>> tree        ba2ccb5cbd055d482a8daa263f5e53531c07667f
+> >>> /drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+> >>> parent      81f9ebd43659320a88cae8ed5124c50b4d47ab66 (diff)
+> >>> download    wireless-4b51de063d5310f1fb297388b7955926e63e45c9.tar.gz
+> >>> brcmfmac: Add WPA3 Personal with FT to supported cipher suites
+> >>> This allows the driver to connect to BSSIDs supporting SAE with 802.1=
+1r.
+> >>> Tested on Raspberry Pi 4 Model B (STA) and UniFi 6LR/OpenWRT 21.02.0-=
+rc2.
+> >>> AP was set to 'sae-mixed' (WPA2/3 Personal).
+> >>>
+> >>> Signed-off-by: Pawe=C5=82 Drewniak <czajernia@gmail.com>
+> >>> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+> >>> Link: https://lore.kernel.org/r/20210824221330.3847139-1-czajernia@gm=
+ail.com
+> >>
+> >> Sure, but we also had user reports of it *not* actually working (maybe
+> >> it regressed?). We didn't know whether it was functional with the
+> >> linux-firmware blobs in any way, I wanted confirmation of that. And we
+> >> also didn't know that the patch *would* break it at all; perhaps the
+> >> Cypress firmware had also grown support for the WSEC mechanism.
+> >>
+> >> That's why I wanted someone to actually confirm the code worked (in so=
+me
+> >> subset of cases) and the patch didn't, before starting to introduce
+> >> conditionals. There is, of course, also the element that the Cypress
+> >> side has been long unmaintained, and if nobody is testing/giving
+> >> feedback/complaining, perhaps it's better to err on the side of maybe
+> >> breaking something and see if that gets someone to come out of the
+> >> woodwork if it really breaks, rather than tiptoeing around the code
+> >> without knowing what's going on and without anyone actually testing th=
+ings.
+> >
+> > That is because you distrust the intent that Cypress was really
+> > contributing. They were and I trusted them to not just throw in a
+> > feature like WPA3. When Infineon took over they went mute. Upon
+> > reviewing your patch (again) I also sent an email to them asking
+> > specifically about the status of the sae_password interface. I did not
+> > use the mailing list which indeed bounces these days (hence removed
+> > them) but the last living soul that I had contact with about a year ago
+> > whether they were still comitted to be involved. I guess out of
+> > politeness or embarrassment I got confirmation they were and never hear=
+d
+> > from him again. The query about the sae_password interface is still pen=
+ding.
+>
+> If only corporate acquisition politics didn't repeatedly throw a wrench
+> into this one... :/
+>
+> This is where we are though, Infineon clearly doesn't care, so it's time
+> to move on.
+>
+> >> It's not about this *specific* patch, it's about the general situation
+> >> of not being able to touch firmware interfaces "just in case Cypress
+> >> breaks" being unsustainable in the long term. I wasn't pushing back
+> >> because I think this particular one will be hard, I was pushing back
+> >> because I can read the tea leaves and see this is not going to end wel=
+l
+> >> if it's the approach we start taking for everything. We *need* someone
+> >> to be testing patches on Cypress, we can't just "try not to touch it"
+> >> and cross our fingers. That just ends in disaster, we are not going to
+> >> succeed in not breaking it either way and it's going to make the drive=
+r
+> >> worse.
+> >
+> > I admire you ability of reading tea leaves. You saw the Grim I reckon.
+> > Admittedly your responses on every comment from my side (or Kalle for
+> > that matter) was polarizing every discussion. That is common way people
+> > treat each other nowadays especially online where a conversation is jus=
+t
+> > a pile of text going shit. It does not bring out the best in me either,
+> > but it was draining every ounce of energy from me so better end it by
+> > stepping out.
+>
+> The hilariously outdated kernel development model surely doesn't help
+> either (I've stated my opinion on this quite a few times if you've
+> followed around) ;)
+>
+> This stuff gets *really* frustrating when you're trying to improve what
+> is, I hope we can all admit, an undermaintained driver (that is not to
+> say it's anyone's fault personally), and end up getting held back due to
+> everything from coding style nitpicks to people not having the time to
+> be responsive. It's just not helpful. It's important to know when to
+> step aside and let people actually get stuff done.
+>
+> When Daniel started sending me brcmfmac patches downstream, I took a
+> look at a few of them, decided he knew what he was doing, and just
+> started pulling in his branches wholesale. Was it perfect? No, I had to
+> debug at least one regression at one point. But it took me less time to
+> do that than it would've to go through the commits with a fine toothed
+> comb, so it was clearly the right decision.
+>
+> That is not to say that should be the standard upstream (we make a point
+> of moving fast and breaking things more downstream, since it's a proving
+> ground for what eventually will be upstreamed), but I think it does
+> demonstrate the kind of delegation ability that is sorely lacking in
+> many drivers and subsystems in the kernel these days. Maintainers become
+> entrenched in their position, long beyond the point where they have the
+> time/motivation/ability to drive the code forward, and end up in the way
+> of new people who are trying to make a difference. I think Linus knows
+> full well the kernel maintainer community is stagnating.
+>
+> That doesn't mean people should step down entirely. But it does mean
+> they need to recognize when this is happening and, at least, proactively
+> try to bring new people in, instead of just continuing to play a
+> gatekeeping role. The role of maintainers should not be that of a wall
+> people have to climb over to get their changes in, it should be to guide
+> new contributors and help onboard people who can contribute, as peers
+> and eventually as future maintainers.
+>
+> Kalle, in the other thread you said "this is not fun anymore, this is
+> more like a business with requirements and demands coming from
+> everywhere.". That's what it feels like to us when our changes get
+> rejected because the local vars aren't in reverse Christmas tree order,
+> or because our commit messages have "v2:" in them. It feels like some
+> manager is trying to justify their position by creating busywork for
+> everyone else. Nobody should actually care about any of those things,
+> and if they do, they need to step back and really ask themselves how
+> they ended up believing that. If the goal is to enforce a reasonable
+> shared coding style so things don't spiral into chaos, FFS, let's just
+> do what every other project does these days and adopt clang-format. Then
+> *all* of us can stop wasting time on these trivialities and go back to
+> getting stuff done. And really, nobody cares about commit messages as
+> long as the tags are right, the subject line is succinct, and the
+> important information is in there. Extra stuff never hurt anyone.
+>
+> > I added the ground work for multi-vendor support, but have not decided
+> > on the approach to take. Abstract per firmware interface primitive or
+> > simply have a cfg80211.c and fwil_types.h per vendor OR implement a
+> > vendor-specific cfg80211 callback and override the default callback
+> > during the driver attach, ie. in brcmf_fwvid_wcc_attach(). The latter
+> > duplicates things, but lean towards that as it may be easier on the
+> > long-term. What do your tea leaves tell you ;-)
+>
+> FWIW, I was hoping you'd stay on at least as a reviewer. Your
+> contributions are valuable. You obviously know the driver and hardware
+> much better than most people. I encourage you to, at least, post a v2 of
+> the MAINTAINERS patch with yourself as an R: line.
 
-Sure,
+I generally agree with this email, especially that Arend should stay
+on as a reviewer/maintainer.
 
-https://github.com/ColinIanKing/kernelscan
+We need more people as either maintainers/contributors/reviewers/code
+writers/testers, not less, to delegate, co-maintain, test, merge, make
+the code more portable to many wifi devices, etc.
 
-It needs the american dictionary, installed in /usr/share/dict e.g.
-apt-get install wamerican
+What really matters at the end of the day I guess is writing the code
+that works across all the devices and testing it.
 
-and then spellcheck with:
+Which is why I spread awareness about this area, got 100s of
+responses, especially on Linkedin, there's at least a portion of these
+that want to help, in good spirits.
 
-./kernelscan -k path-to-code-you-want-to-scan
+Is mise le meas/Regards,
 
-I run kernelscan on the entire linux-next source daily and diff the 
-days's results with the previous day using the meld diff tool.
+Eric Curtin
 
-Colin
-
-
-> 
-> Ping-Ke
-> 
-> 
+>
+> As far as the actual driver abstraction architecture, I'm going to leave
+> it to Daniel to decide what makes the most sense, since he's the one
+> introducing new mechanisms for that already. There's always room for
+> refactoring later though, depending on the direction things take with
+> the vendor split. BTW, clang-format also makes refactoring a lot less
+> painful ;)
+>
+> - Hector
+>
 
 
