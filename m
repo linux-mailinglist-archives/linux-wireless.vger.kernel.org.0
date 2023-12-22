@@ -1,135 +1,80 @@
-Return-Path: <linux-wireless+bounces-1244-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1245-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2714281C885
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Dec 2023 11:47:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50E5B81C8AC
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Dec 2023 12:01:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7501286BB9
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Dec 2023 10:47:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BEAB1F22612
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Dec 2023 11:01:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F5B41773B;
-	Fri, 22 Dec 2023 10:47:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE737156D3;
+	Fri, 22 Dec 2023 11:01:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ns+gf9Oz"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from forward502b.mail.yandex.net (forward502b.mail.yandex.net [178.154.239.146])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1376817730
-	for <linux-wireless@vger.kernel.org>; Fri, 22 Dec 2023 10:47:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=16depo.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=16depo.xyz
-Received: from mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net [IPv6:2a02:6b8:c14:6e01:0:640:627f:0])
-	by forward502b.mail.yandex.net (Yandex) with ESMTP id D79125ECB8;
-	Fri, 22 Dec 2023 13:47:14 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id CkM9uO99VCg0-m0LreQMZ;
-	Fri, 22 Dec 2023 13:47:14 +0300
-X-Yandex-Fwd: 1
-Authentication-Results: mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net; dkim=pass
-Message-ID: <468ebce2-24c1-4a5a-b45c-6c0196840d90@16depo.xyz>
-Date: Fri, 22 Dec 2023 13:46:12 +0300
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2ECA156C6
+	for <linux-wireless@vger.kernel.org>; Fri, 22 Dec 2023 11:01:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50B7BC433C7;
+	Fri, 22 Dec 2023 11:01:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1703242910;
+	bh=9/FdFWOB5iCNAUVyOtjoyl/7WTC3JR6KTO5cgeI4TcA=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=Ns+gf9OzXkbhakTtvVtmrqoFGHY1/80RgzS+IjheF44MOAaKtCS7vmGAIB7T5x72O
+	 C8mAkSuTrWBidUB5NStAxF8cs8awWb81DXA7uKPfSEfzotqyjClDnZawax/GiX3Kfw
+	 +rNXnGG2LFFRV2tNEndXAXejGmKUewZWJpgrDfhN9jVYXZDtxpXY6X9JBdg6qwigi8
+	 N0RJwkWhfQEFOdHCMvw0fwRmkZJZwh3zA2rHMeyN51ocovtK1Qwx4m+H5mO+yCg0Ue
+	 eI6XBLHBbl+mjGenhL9seDNQT6bDlNORamAbzHN2OKHfk6BQWbub794c+lMeym2VNy
+	 eJjHmixMxLTMA==
+From: Kalle Valo <kvalo@kernel.org>
+To: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Cc: johannes@sipsolutions.net,  linux-wireless@vger.kernel.org,  Mukesh
+ Sisodiya <mukesh.sisodiya@intel.com>,  Gregory Greenman
+ <gregory.greenman@intel.com>
+Subject: Re: [PATCH v2 05/13] wifi: cfg80211: handle UHB AP and STA power type
+References: <20231220133549.bdfb8a9c7c54.I973563562969a27fea8ec5685b96a3a47afe142f@changeid>
+	<20231220133549.cbfbef9170a9.I432f78438de18aa9f5c9006be12e41dc34cc47c5@changeid>
+Date: Fri, 22 Dec 2023 13:01:47 +0200
+In-Reply-To: <20231220133549.cbfbef9170a9.I432f78438de18aa9f5c9006be12e41dc34cc47c5@changeid>
+	(Miri Korenblit's message of "Wed, 20 Dec 2023 13:41:38 +0200")
+Message-ID: <87jzp61ox0.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [wireless-regdb] [PATCH] Update regulatory info for Armenia (AM)
-Content-Language: en-US
-To: wens@kernel.org
-Cc: wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
-References: <411a77cb-47f1-2f97-76c6-939c024654b4@16depo.xyz>
- <a0480e18-7b67-4e16-983e-c8f888c97261@16depo.xyz>
- <CAGb2v65V==YE=NLYyE=2ApN04jPeuFFc9d6bfTaQYBUsXoFWsQ@mail.gmail.com>
- <21b0fc55-6b5d-404b-88d1-3ad2b7acbbcd@16depo.xyz>
- <CAGb2v65RqgpA8RMyTKSq3FrDQMQyKqOi5ycQ8Wu81PwiRyi0JA@mail.gmail.com>
-From: Kirill <me@16depo.xyz>
-In-Reply-To: <CAGb2v65RqgpA8RMyTKSq3FrDQMQyKqOi5ycQ8Wu81PwiRyi0JA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-There is new information. I've found commit that restrict bandwidth 
-without reference to any law or act from Armenia regulators:
-https://patchwork.kernel.org/project/linux-wireless/patch/1422013872-9732-1-git-send-email-jouni@qca.qualcomm.com/
+Miri Korenblit <miriam.rachel.korenblit@intel.com> writes:
 
-I would like to remove this restriction altogether from 2.4 GHz range as 
-well as 5GHz. Before i make another patch with, please confirm that the 
-bandwidth restriction should be removed.
+> From: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
+>
+> UHB AP send supported power type(LPI, SP, VLP)
+> in beacon and probe response IE and STA should
+> connect to these AP only if their regulatory support
+> the AP power type.
+>
+> Beacon/Probe response are reported to userspace
+> with reason "STA regulatory not supporting to connect to AP
+> based on transmitted power type" and it should
+> not connect to AP.
+>
+> Signed-off-by: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
+> Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
+> Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-On 22.12.2023 06:32, Chen-Yu Tsai wrote:
-> On Thu, Dec 14, 2023 at 11:40 PM Kirill Matvienko <me@16depo.xyz> wrote:
->> I have no evidence to why bandwidth restriction exist in the first
->> place, and my main concern in not power or bandwidth, but number of
->> channels. Now most wireless vendors use only UNII-1 and (less often)
->> UNII-2 for AM regulatory domain, but this decision from regulators will
->> allow to use UNII-2 extended and UNII-3.
->> The document that being amended is N-169
->> (https://www.arlis.am/documentview.aspx?docid=76877), and there is only
->> this passage about 5GHz:
->>
->> 5150 - 5250 ՄՀց, 5725 - 5875 ՄՀց ռադիոհաճախականությունների շերտերում
->> աշխատող, մինչև 100 մՎտ հզորությամբ, լոկալ ցանցերի սարքավորումների
->> օգտագործման համար (միայն շենքերի ներսում, ինչպես նաև օդանավերում` երկրի
->> մակերևույթից 3000 մետրից բարձր թռիչքի ժամանակ), 5250 - 5350 ՄՀց, 5470 -
->> 5725 ՄՀց ռադիոհաճախականությունների շերտերում աշխատող, մինչև100 մՎտ
->> հզորությամբ, լոկալ ցանցերի սարքավորումների օգտագործման համար
->> (օդանավերում` երկրի մակերևույթից 3000 մետրից բարձր թռիչքի ժամանակ),
->>
->> which translated as:
->>
->> Operating in the radio frequency bands 5150 - 5250 MHz, 5725 - 5875 MHz,
->> for the use of local area network equipment with a power of up to 100 mW
->> (only inside buildings, as well as in aircraft when flying above 3000
->> meters above the earth's surface), 5250 - 5350 MHz, 5470 - 5725 MHz for
->> the use of local network equipment operating in radio frequency bands
->> with a power of up to 100 mW (in airplanes during flight above 3000
->> meters above the earth's surface);
->>
->> Anyway, if you think that we can't use wider channels, please, change
->> only frequencies and power.
-> Can you send a new version changing not the bandwidth but everything else?
-> That would provide a better trail.
->
-> Please also included the translated text in the commit log. Sometimes
-> URLs will disappear due to one reason or another.
->
->
-> Thanks
-> ChenYu
->
->> On 14.12.2023 18:02, Chen-Yu Tsai wrote:
->>> On Thu, Dec 14, 2023 at 7:04 PM Kirill Matvienko <me@16depo.xyz> wrote:
->>>> Source:https://www.arlis.am/DocumentView.aspx?DocID=181829
->>> This only justifies the power limit change. What about the
->>> maximum bandwidth?
->>>
->>>
->>> ChenYu
->>>
->>>> Signed-off-by: Kirill Matvienko <me@16depo.xyz>
->>>>
->>>> ---
->>>>     db.txt | 4 ++--
->>>>     1 file changed, 2 insertions(+), 2 deletions(-)
->>>>
->>>> diff --git a/db.txt b/db.txt
->>>> index fdc2c13..0708039 100644
->>>> --- a/db.txt
->>>> +++ b/db.txt
->>>> @@ -80,8 +80,8 @@ country AL: DFS-ETSI
->>>>
->>>>     country AM: DFS-ETSI
->>>>         (2402 - 2482 @ 40), (20)
->>>> -    (5170 - 5250 @ 20), (18)
->>>> -    (5250 - 5330 @ 20), (18), DFS
->>>> +    (5150 - 5350 @ 80), (100mW)
->>>> +    (5470 - 5875 @ 80), (100mW), NO-OUTDOOR,DFS
->>>>
->>>>     country AN: DFS-ETSI
->>>>         (2402 - 2482 @ 40), (20)
->>>> --
->>>> 2.34.1
->>>>
+What's an UHB AP? Never heard of that before.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
