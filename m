@@ -1,73 +1,125 @@
-Return-Path: <linux-wireless+bounces-1248-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1249-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44E6E81C8E4
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Dec 2023 12:16:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2BA881C9B6
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Dec 2023 13:08:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE48C1F227FF
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Dec 2023 11:16:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52A601F25EAF
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Dec 2023 12:08:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 411E11642B;
-	Fri, 22 Dec 2023 11:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAF6017989;
+	Fri, 22 Dec 2023 12:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u0sqN2mn"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AKjWkAsh"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 285F415ACC
-	for <linux-wireless@vger.kernel.org>; Fri, 22 Dec 2023 11:16:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7123FC433C8;
-	Fri, 22 Dec 2023 11:16:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703243771;
-	bh=CYXSLlFqvBHfZEc+Lu3mYNceXKCFOBBD/skhfedlFvE=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=u0sqN2mnep+Rvc8hkpb7OtBup8aC8DfuwnkdMpJIcxzyKBRv/MVC0OXpSi8ZgVsY6
-	 97vOKb3VtVavMpllji7GqYdypq3NYtw2x5YYkiQA8K2rpFjgb/5WPByMy8oEZxIHC3
-	 ghigguHOnPkbnRfnQt2igGGK/TtWnptficqN0AEKg/h9A6j2N2BElOJlrghtGcAt9K
-	 S5tlXPuoICHS1Uo3mZ0OLPvqS7nC4Y54SSbjQqpGTJ21EvdPblq1T5IPcP21LcuhRE
-	 2KyPrguTLtbTHxqchqJDjvss1HTTEVOAIIUrEDwzEW7L//dlpcOCMMtOQHLOgBikM8
-	 YPY2rbQH2pthw==
-From: Kalle Valo <kvalo@kernel.org>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes@sipsolutions.net>,  Jakub Kicinski
- <kuba@kernel.org>,  David Miller <davem@davemloft.net>,  Paolo Abeni
- <pabeni@redhat.com>
-Subject: Re: Kalle taking a two week break
-References: <87msu6qlup.fsf@kernel.org>
-Date: Fri, 22 Dec 2023 13:16:08 +0200
-In-Reply-To: <87msu6qlup.fsf@kernel.org> (Kalle Valo's message of "Tue, 19 Dec
-	2023 16:59:42 +0200")
-Message-ID: <87edfe1o93.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23021182A8;
+	Fri, 22 Dec 2023 12:08:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-40d4a7f0d17so989305e9.1;
+        Fri, 22 Dec 2023 04:08:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1703246916; x=1703851716; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=wLmNJV1KCwtCk4AJyZ66y9UiWpbx0XO2tfF5Ht++t+4=;
+        b=AKjWkAshUtHbqIvFrQI0NqlA/25ztuRopsGnPS3hvlR2rjRjRekvK2ulhAWZHNfP/b
+         udeW6zzchVSjKGtxhf1a0bsNBFn1MMRMGwjp/Wr3sBHrRYRoopJ+RrsLHhJbRN8P7iX7
+         QNODP3Ye1U862UebOPkQCTYJARBdfMWRyjtP9gzYV1KhceaaJQUamF1D27axrV8+5X3p
+         G+PAcO5UFEM2w4pPCmtc13UtEMlGQerlhFFmie7/eACIgGcDEaUFIrx0NNg9Fyk64U48
+         iJXlqmwIR4pJp4P7/LvCTey69xYQbgnF5+FKL6BymRv0zwWPgqQdjMiuaHTIA0pKqAKT
+         8ROg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1703246916; x=1703851716;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wLmNJV1KCwtCk4AJyZ66y9UiWpbx0XO2tfF5Ht++t+4=;
+        b=DecvjThc7HJnXEObVdG24YB8ZNX7M2JGMRyKTzrjhI4rpV3v0OkIsgINdfhlthMcPR
+         TX1FNEQ6kKR8/6zE4XPBDjqBe+y7+Isc0/cUcgYCP1zuc3so1BU98yPo40zrWCJ+vECU
+         ZBx6UhoOShh8w14n1CVymnwPMamNpwKuiyXgFW5fk/EMeOWHLaC4YpMAKOF15deAJAsp
+         PybaY1XS3xX9m1DTinrc0M7V4/RHuAzlbr6t7Nw0jvc4tdB0aIgsEV941orHEfJtk43u
+         r3/ov4GWcVqL1akN0Nj4HZtQl1L4MURVXZ+B/WCaEyawftDR5Ua1lG7f+41sBr0PtMWS
+         laXA==
+X-Gm-Message-State: AOJu0YzK+lsA7V4P1jfSgNQKeK/h9Qi3dCetC4Bajb7mfXMSRzGu2/eW
+	Ysu23DwCr1JPCor36dwRt0E=
+X-Google-Smtp-Source: AGHT+IHoGTr2p2JAjQmbfoEPN/+cqVGVjgmUq+aoT4KXXzWTti1FsgE83RW6pxbzizHKFOXmgyzILw==
+X-Received: by 2002:a05:600c:5409:b0:40c:357e:289 with SMTP id he9-20020a05600c540900b0040c357e0289mr649594wmb.65.1703246916101;
+        Fri, 22 Dec 2023 04:08:36 -0800 (PST)
+Received: from [192.168.0.101] (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
+        by smtp.googlemail.com with ESMTPSA id w19-20020a05600c475300b0040c4620b9fasm6658024wmo.11.2023.12.22.04.08.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 22 Dec 2023 04:08:35 -0800 (PST)
+Message-ID: <75cd2090-857e-4082-bbc1-e3726235bda1@gmail.com>
+Date: Fri, 22 Dec 2023 12:08:33 +0000
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH][next] wifi: rtw89: mac: Fix spelling mistakes "notfify"
+ -> "notify"
+To: Ping-Ke Shih <pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20231220141831.10063-1-colin.i.king@gmail.com>
+ <2839b824a2a04aab9514ce89b3735e52@realtek.com>
+Content-Language: en-US
+From: "Colin King (gmail)" <colin.i.king@gmail.com>
+In-Reply-To: <2839b824a2a04aab9514ce89b3735e52@realtek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Kalle Valo <kvalo@kernel.org> writes:
+On 22/12/2023 00:19, Ping-Ke Shih wrote:
+> 
+> 
+>> -----Original Message-----
+>> From: Colin Ian King <colin.i.king@gmail.com>
+>> Sent: Wednesday, December 20, 2023 10:19 PM
+>> To: Ping-Ke Shih <pkshih@realtek.com>; Kalle Valo <kvalo@kernel.org>; linux-wireless@vger.kernel.org
+>> Cc: kernel-janitors@vger.kernel.org; linux-kernel@vger.kernel.org
+>> Subject: [PATCH][next] wifi: rtw89: mac: Fix spelling mistakes "notfify" -> "notify"
+>>
+>> There are two spelling mistakes in rtw89_err error messages. Fix these
+>> and also add space between [ERR] and message text.
+>>
+>> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+> 
+> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+> 
+> Thanks for the correctness. Could I know the tool you used to find out these
+> typo?
 
-> Starting from Friday December 22nd I will be offline for two weeks. If
-> the weather is bad (read: not cold enough) I might sporadically do some
-> upstream work but don't expect on it.
->
-> Our plan is to submit a wireless-next pull request on Friday so if
-> there's something you definitely want to have in v6.8 send it now.
->
-> I will be back on Monday January 8th.
+Sure,
 
-A reminder. wireless-next pull request is just sent so from wireless
-point of view everything should be all set for our break.
+https://github.com/ColinIanKing/kernelscan
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+It needs the american dictionary, installed in /usr/share/dict e.g.
+apt-get install wamerican
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+and then spellcheck with:
+
+./kernelscan -k path-to-code-you-want-to-scan
+
+I run kernelscan on the entire linux-next source daily and diff the 
+days's results with the previous day using the meld diff tool.
+
+Colin
+
+
+> 
+> Ping-Ke
+> 
+> 
+
 
