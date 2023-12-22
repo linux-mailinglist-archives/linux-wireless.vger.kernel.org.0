@@ -1,377 +1,320 @@
-Return-Path: <linux-wireless+bounces-1250-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1251-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6FEA81C9EB
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Dec 2023 13:26:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3022C81CB27
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Dec 2023 15:13:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E17BBB20C2D
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Dec 2023 12:26:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C39F1F22D63
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Dec 2023 14:13:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3BA418026;
-	Fri, 22 Dec 2023 12:26:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F5B11B271;
+	Fri, 22 Dec 2023 14:13:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="T8awk124"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Co6t40F7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C5FD1773E
-	for <linux-wireless@vger.kernel.org>; Fri, 22 Dec 2023 12:26:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1703247967;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=V+0hAFQoNGhjkC4iJFy3Bycv+540PspoS2JpzLVmy1I=;
-	b=T8awk124O9pPeAMh1rjDZ8Iq9r53s8u9A7+svoxf6TSAjwC8TM9hG+ghuTTrgXoTVpFGYJ
-	VtYV3k2v506+zS7LwJIW/YTy5cuEAx1bkxnMIl8sz9g+dKR707hIaY1aveHu/FENexphy8
-	S6fywYjlA+SgcU/OolPpPKagOJVdFK8=
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com
- [209.85.210.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-679-mOglbWlzNlKC-ktVGniZbw-1; Fri, 22 Dec 2023 07:26:06 -0500
-X-MC-Unique: mOglbWlzNlKC-ktVGniZbw-1
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-6d64b546e7eso1401581b3a.2
-        for <linux-wireless@vger.kernel.org>; Fri, 22 Dec 2023 04:26:05 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDF121C2BE
+	for <linux-wireless@vger.kernel.org>; Fri, 22 Dec 2023 14:13:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-40d3102d5d6so58745e9.0
+        for <linux-wireless@vger.kernel.org>; Fri, 22 Dec 2023 06:13:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1703254383; x=1703859183; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=LxTtqS/VUlKhCy7VoVRokFIdSCrB9czWJR6mcKcrU+8=;
+        b=Co6t40F7ijzduGyF16niD0Zlxf37Mm5aQ30PtMHKGcf8fsO+D0P7aLJOtN2CnH6IZl
+         bhDtqahg79CQQC4bUxozFpPkmTFwYisXzYm1Sc0/TVwnXErcPlLVdPucRVyeSQAWS008
+         rz4xhEAdTAgmYtB796ToWeQZ4tSyHT2WNQnZ4nRAdr1CdR6nb0xrit/KNK6np507AUux
+         H7CxeaZaVrACMBMJ9l9yadWIw0cB728VDeUEJnP0uZ2ka0RkxTaZMJNTB+vS9bzU1yVm
+         F9RL/CC4fagxpD/SbKws1fKkVVplOFf7UvlGnEdwIQWco0+5EhD2f8rKL2gQ8l7JRufE
+         2Okw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703247965; x=1703852765;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=V+0hAFQoNGhjkC4iJFy3Bycv+540PspoS2JpzLVmy1I=;
-        b=X+Mu5oCcqQACmqBHasMEOynLp86Xhoy9B9g5yvYx62KFHTxRq7Z9hHnB0Cw6B9RKJh
-         VqNrtw+vrD3urR/RXZ8N8/mwt4RUzSz7qyyJjIeTGJdddrpdVgUdMWIG2zFtqlaENqDj
-         mscXBiyiZvSMUtBmZrXmQ5WBN3Qm1paPNzryEBQug7LMMU0MDKHKKBAYc4VHWA9BxQJp
-         AE8OMuoL5Bfiof9utQSPR4MTN7+sndnTdDiv0SlzyZriZvSMz4Ccx0uLggxsTU6J6iUv
-         8QJ8mC4QmgkYDJZEo5KFA1WPaOfCT3coRnloYMkyIF8hG1cXJRy/kC64lc7aUUjshcza
-         9T1A==
-X-Gm-Message-State: AOJu0Yw7USM9wuoXSQcDzPWhjd4PUaM6Bq+D7Vg84utY36UPHYu67R+h
-	Nqn01SWrncAIkQwolKHTYqv8P1cdnT5iY8HYacGrH6fTue9H6mlt/nOnjCSRtgsbWsMN0YAtcmV
-	J7n4t25NEDnkg+90cIB/0bSm1Ci9dX4KONSNGFisGckpl03/OgZk=
-X-Received: by 2002:a05:6a21:194:b0:195:4744:20ca with SMTP id le20-20020a056a21019400b00195474420camr207637pzb.60.1703247964779;
-        Fri, 22 Dec 2023 04:26:04 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEzHElDkJAQblkzKA51PWs9j3gE5oL7guxFvxkZsOrdWTU8pSAwm/O7EcrvYE9E/82xJ1beWCcAKPM052io4aM=
-X-Received: by 2002:a05:6a21:194:b0:195:4744:20ca with SMTP id
- le20-20020a056a21019400b00195474420camr207616pzb.60.1703247964290; Fri, 22
- Dec 2023 04:26:04 -0800 (PST)
+        d=1e100.net; s=20230601; t=1703254383; x=1703859183;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LxTtqS/VUlKhCy7VoVRokFIdSCrB9czWJR6mcKcrU+8=;
+        b=YyyFZTbEdEzO4B6AHMDwZ/tDXIDainXSYzLXEfkWsI1FVH48qW9DQ1SJeYEUAGIJY4
+         UdJZDW/JdS5oImDYLMfzfQexG/NwOOER0u/+OQqVQ8B7TQ0+j2XkLFMzk0yLTcMc967k
+         EXFlSFia8NlvGnOi38v7DvY9whGq9pLlAsHsHXFhQpuKxH5dkGLGxVmnSAfkHqXRCjQH
+         VUbp7+lxiPLAKMTFqpkPwjC1XVkJyN3LJ86kdIRNZu2bAPslsIHokvUaoYr9Jo5FXPa0
+         QKgj3XOc/ID9di/SFGOSROq6jXvlV70NKqoEUuB6WM7p+wiKlZsp6qbLtXhxDjwu2Knr
+         ycAQ==
+X-Gm-Message-State: AOJu0Yy9qlq/Wf9yOXrjvDSmS+IAoIN+ZhjqFMmzx16IH0I8IHYCSyby
+	AAkbdU9a1WQ/93OTuLKcsVyRM2GU1jZn61y0UvZv54RacsSl
+X-Google-Smtp-Source: AGHT+IFcMy1+oVuuHIE+e5KhBTlsTnp0EsiQUCMsYi16qfjRRFioxerV7yS/mezA5uOilIRCFSyU4nI7xocnwp03og8=
+X-Received: by 2002:a05:600c:229a:b0:40d:400c:1b1f with SMTP id
+ 26-20020a05600c229a00b0040d400c1b1fmr90933wmf.5.1703254382865; Fri, 22 Dec
+ 2023 06:13:02 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231107-brcmfmac-wpa3-v1-1-4c7db8636680@marcan.st>
- <170281231651.2255653.7498073085103487666.kvalo@kernel.org>
- <18c80d15e30.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <1b51997f-2994-46e8-ac58-90106d1c486d@marcan.st> <c392f901-789a-42e2-8cf7-5e246365a1ca@broadcom.com>
- <CAF4BwTXNtu30DAgBXo4auDaDK0iWc9Ch8f=EH+facQ-_F-oMUQ@mail.gmail.com>
- <87r0jiqmnx.fsf@kernel.org> <01bd8c68-1b9c-49b2-8ace-1c7d1b5192ad@marcan.st>
- <CAHk-=whDLKZZEuxU_jEhZRdeWjXAkL8=J_JRk2Ar6wp9UK3h2w@mail.gmail.com>
- <871qbhqio8.fsf@kernel.org> <4c89b71e-8667-40fe-add0-205748de51ef@marcan.st>
- <bdb078c0-2f45-485a-86a0-bb7d0b5e3516@broadcom.com> <d5e26dd4-483d-4662-ba83-5cb19187b24a@marcan.st>
- <31292508-f881-4457-a4bf-2ca0b8e8f435@broadcom.com> <37bd3f8a-1000-4d74-8909-5e821cb5c1dc@marcan.st>
-In-Reply-To: <37bd3f8a-1000-4d74-8909-5e821cb5c1dc@marcan.st>
-From: Eric Curtin <ecurtin@redhat.com>
-Date: Fri, 22 Dec 2023 12:25:27 +0000
-Message-ID: <CAOgh=FxsMMbp1Pyg7GSNmwNvfeX+7JDibQbMbx-hdLsCQz5qYA@mail.gmail.com>
-Subject: Re: [PATCH] wifi: brcmfmac: cfg80211: Use WSEC to set SAE password
-To: Hector Martin <marcan@marcan.st>
-Cc: Arend van Spriel <arend.vanspriel@broadcom.com>, Kalle Valo <kvalo@kernel.org>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, Daniel Berlin <dberlin@dberlin.org>, 
-	Arend van Spriel <aspriel@gmail.com>, Franky Lin <franky.lin@broadcom.com>, 
-	Hante Meuleman <hante.meuleman@broadcom.com>, asahi@lists.linux.dev, 
-	brcm80211-dev-list.pdl@broadcom.com, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, David Airlie <airlied@redhat.com>, 
-	Daniel Vetter <daniel@ffwll.ch>
+References: <20231220151952.415232-1-benjamin@sipsolutions.net>
+ <fab3c87ea726208cbdec03dfd61230e4c8ceb694.camel@sipsolutions.net>
+ <ae651d3d-58f7-40de-a625-4882cf0efc9b@linuxfoundation.org>
+ <dbcadbe4430cd314373f15a9f4b814e44662bef6.camel@sipsolutions.net>
+ <a2ef9ea4-00e8-4fa4-bc2e-58fbec306503@linuxfoundation.org>
+ <CABVgOSkrhEYXvzjtWfdxmKVGZwGnJTKwbd9+kBSRWxbOfyaRUA@mail.gmail.com> <2a508793563c46116ef8ef274a9fa3b5675cd7b3.camel@sipsolutions.net>
+In-Reply-To: <2a508793563c46116ef8ef274a9fa3b5675cd7b3.camel@sipsolutions.net>
+From: David Gow <davidgow@google.com>
+Date: Fri, 22 Dec 2023 22:12:51 +0800
+Message-ID: <CABVgOS=vZzDdr0xxqUgYoZ39i3ADdwKnRyp4hXOSLGwAU0eN_g@mail.gmail.com>
+Subject: Re: [PATCH 0/6] Add some more cfg80211 and mac80211 kunit tests
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Shuah Khan <skhan@linuxfoundation.org>, benjamin@sipsolutions.net, 
+	linux-wireless@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kunit-dev@googlegroups.com, Brendan Higgins <brendanhiggins@google.com>, 
+	Benjamin Berg <benjamin.berg@intel.com>
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="0000000000007a8af1060d19d0f6"
+
+--0000000000007a8af1060d19d0f6
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, 22 Dec 2023 at 05:19, Hector Martin <marcan@marcan.st> wrote:
+On Fri, 22 Dec 2023 at 18:09, Johannes Berg <johannes@sipsolutions.net> wrote:
 >
+> Hi,
 >
+> Thanks for taking a look!
 >
-> On 2023/12/21 18:57, Arend van Spriel wrote:
-> > - SHA-cyfmac-dev-list@infineon.com
-> >
-> > On 12/21/2023 1:49 AM, Hector Martin wrote:
-> >>
-> >>
-> >> On 2023/12/21 4:36, Arend van Spriel wrote:
-> >>> On 12/20/2023 7:14 PM, Hector Martin wrote:
-> >>>>
-> >>>>
-> >>>> On 2023/12/20 19:20, Kalle Valo wrote:
-> >>>>> Linus Torvalds <torvalds@linux-foundation.org> writes:
-> >>>>>
-> >>>>>>> Just recently a patch was posted to remove the Infineon list from
-> >>>>>>> MAINTAINERS because that company cares so little they have litera=
-lly
-> >>>>>>> stopped accepting emails from us. Meanwhile they are telling thei=
-r
-> >>>>>>> customers that they do not recommend upstream brcmfmac and they s=
-hould
-> >>>>>>> use their downstream driver [1].
-> >>>>>>
-> >>>>>> Unquestionably broadcom is not helping maintain things, and I thin=
-k it
-> >>>>>> should matter.
-> >>>>>>
-> >>>>>> As Hector says, they point to their random driver dumps on their s=
-ite
-> >>>>>> that you can't even download unless you are a "Broadcom community
-> >>>>>> member" or whatever, and hey - any company that works that way sho=
-uld
-> >>>>>> be seen as pretty much hostile to any actual maintenance and prope=
-r
-> >>>>>> development.
-> >>>>>
-> >>>>> Sadly this is the normal in the wireless world. All vendors focus o=
-n the
-> >>>>> latest generation, currently it's Wi-Fi 7, and lose interest on old=
-er
-> >>>>> generations. And vendors lose focus on the upstream drivers even fa=
-ster,
-> >>>>> usually after a customer project ends.
-> >>>>>
-> >>>>> So in practise what we try to do is keep the drivers working someho=
-w on
-> >>>>> our own, even after the vendors are long gone. If we would delibera=
-tely
-> >>>>> allow breaking drivers because vendor/corporations don't support us=
-, I
-> >>>>> suspect we would have sevaral broken drivers in upstream.
-> >>>>>
-> >>>>>> If Daniel and Hector are responsive to actual problem reports for =
-the
-> >>>>>> changes they cause, I do think that should count a lot.
-> >>>>>
-> >>>>> Sure, but they could also respect to the review comments. I find Ar=
-end's
-> >>>>> proposal is reasonable and that's what I would implement in v2. We
-> >>>>> (linux-wireless) make abstractions to workaround firmware problems =
-or
-> >>>>> interface conflicts all the time, just look at ath10k for example. =
-I
-> >>>>> would not be surprised if we need to add even more abstractions to
-> >>>>> brcmfmac in the future. And Arend is the expert here, he has best
-> >>>>> knowledge of Broadcom devices and I trust him.
-> >>>>>
-> >>>>> Has anyone even investigated what it would need to implement Arend'=
-s
-> >>>>> proposal? At least I don't see any indication of that.
-> >>>>
-> >>>> Of course we can implement it (and we will as we actually got a repo=
-rt
-> >>>> of this patch breaking Cypress now, finally).
-> >>>>
-> >>>> The question was never whether it could be done, we're already doing=
- a
-> >>>> bunch of abstractions to deal with just the Broadcom-only side of th=
-ings
-> >>>> too. The point I was trying to make is that we need to *know* what
-> >>>> firmware abstractions we need and *why* they are needed. We can't ju=
-st
-> >>>> say, for every change, "well, nobody knows if the existing code work=
-s or
-> >>>> not, so let's just add an abstraction just in case the change breaks
-> >>>> something". As far as anyone involved in the discussions until now c=
-ould
-> >>>> tell, this code was just something some Cypress person dumped upstre=
-am,
-> >>>> and nobody involved was being responsive to any of our inquiries, so
-> >>>> there was no way to be certain it worked at all, whether it was
-> >>>> supported in public firmware, or anything else.
-> >>>>
-> >>>> *Now* that we know the existing code is actually functional and not =
-just
-> >>>> dead/broken, and that the WSEC approach is conversely not functional=
- on
-> >>>> the Cypress firmwares, it makes sense to introduce an abstraction.
-> >>>
-> >>> Just a quick look in the git history could have told you that it was =
-not
-> >>> just dumped upstream and at least one person was using it and extende=
-d
-> >>> it for 802.11r support (fast-roaming):
-> >>>
-> >>>
-> >>> author      Pawe=C5=82 Drewniak <czajernia@gmail.com>    2021-08-24 2=
-3:13:30 +0100
-> >>> committer   Kalle Valo <kvalo@codeaurora.org>       2021-08-29 11:33:=
-07 +0300
-> >>> commit      4b51de063d5310f1fb297388b7955926e63e45c9 (patch)
-> >>> tree        ba2ccb5cbd055d482a8daa263f5e53531c07667f
-> >>> /drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> >>> parent      81f9ebd43659320a88cae8ed5124c50b4d47ab66 (diff)
-> >>> download    wireless-4b51de063d5310f1fb297388b7955926e63e45c9.tar.gz
-> >>> brcmfmac: Add WPA3 Personal with FT to supported cipher suites
-> >>> This allows the driver to connect to BSSIDs supporting SAE with 802.1=
-1r.
-> >>> Tested on Raspberry Pi 4 Model B (STA) and UniFi 6LR/OpenWRT 21.02.0-=
-rc2.
-> >>> AP was set to 'sae-mixed' (WPA2/3 Personal).
-> >>>
-> >>> Signed-off-by: Pawe=C5=82 Drewniak <czajernia@gmail.com>
-> >>> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-> >>> Link: https://lore.kernel.org/r/20210824221330.3847139-1-czajernia@gm=
-ail.com
-> >>
-> >> Sure, but we also had user reports of it *not* actually working (maybe
-> >> it regressed?). We didn't know whether it was functional with the
-> >> linux-firmware blobs in any way, I wanted confirmation of that. And we
-> >> also didn't know that the patch *would* break it at all; perhaps the
-> >> Cypress firmware had also grown support for the WSEC mechanism.
-> >>
-> >> That's why I wanted someone to actually confirm the code worked (in so=
-me
-> >> subset of cases) and the patch didn't, before starting to introduce
-> >> conditionals. There is, of course, also the element that the Cypress
-> >> side has been long unmaintained, and if nobody is testing/giving
-> >> feedback/complaining, perhaps it's better to err on the side of maybe
-> >> breaking something and see if that gets someone to come out of the
-> >> woodwork if it really breaks, rather than tiptoeing around the code
-> >> without knowing what's going on and without anyone actually testing th=
-ings.
-> >
-> > That is because you distrust the intent that Cypress was really
-> > contributing. They were and I trusted them to not just throw in a
-> > feature like WPA3. When Infineon took over they went mute. Upon
-> > reviewing your patch (again) I also sent an email to them asking
-> > specifically about the status of the sae_password interface. I did not
-> > use the mailing list which indeed bounces these days (hence removed
-> > them) but the last living soul that I had contact with about a year ago
-> > whether they were still comitted to be involved. I guess out of
-> > politeness or embarrassment I got confirmation they were and never hear=
-d
-> > from him again. The query about the sae_password interface is still pen=
-ding.
+> On Fri, 2023-12-22 at 18:02 +0800, David Gow wrote:
+> > The two initial KUnit patches look fine, modulo a couple of minor docs
+> > issues and checkpatch warnings.
 >
-> If only corporate acquisition politics didn't repeatedly throw a wrench
-> into this one... :/
->
-> This is where we are though, Infineon clearly doesn't care, so it's time
-> to move on.
->
-> >> It's not about this *specific* patch, it's about the general situation
-> >> of not being able to touch firmware interfaces "just in case Cypress
-> >> breaks" being unsustainable in the long term. I wasn't pushing back
-> >> because I think this particular one will be hard, I was pushing back
-> >> because I can read the tea leaves and see this is not going to end wel=
-l
-> >> if it's the approach we start taking for everything. We *need* someone
-> >> to be testing patches on Cypress, we can't just "try not to touch it"
-> >> and cross our fingers. That just ends in disaster, we are not going to
-> >> succeed in not breaking it either way and it's going to make the drive=
-r
-> >> worse.
-> >
-> > I admire you ability of reading tea leaves. You saw the Grim I reckon.
-> > Admittedly your responses on every comment from my side (or Kalle for
-> > that matter) was polarizing every discussion. That is common way people
-> > treat each other nowadays especially online where a conversation is jus=
-t
-> > a pile of text going shit. It does not bring out the best in me either,
-> > but it was draining every ounce of energy from me so better end it by
-> > stepping out.
->
-> The hilariously outdated kernel development model surely doesn't help
-> either (I've stated my opinion on this quite a few times if you've
-> followed around) ;)
->
-> This stuff gets *really* frustrating when you're trying to improve what
-> is, I hope we can all admit, an undermaintained driver (that is not to
-> say it's anyone's fault personally), and end up getting held back due to
-> everything from coding style nitpicks to people not having the time to
-> be responsive. It's just not helpful. It's important to know when to
-> step aside and let people actually get stuff done.
->
-> When Daniel started sending me brcmfmac patches downstream, I took a
-> look at a few of them, decided he knew what he was doing, and just
-> started pulling in his branches wholesale. Was it perfect? No, I had to
-> debug at least one regression at one point. But it took me less time to
-> do that than it would've to go through the commits with a fine toothed
-> comb, so it was clearly the right decision.
->
-> That is not to say that should be the standard upstream (we make a point
-> of moving fast and breaking things more downstream, since it's a proving
-> ground for what eventually will be upstreamed), but I think it does
-> demonstrate the kind of delegation ability that is sorely lacking in
-> many drivers and subsystems in the kernel these days. Maintainers become
-> entrenched in their position, long beyond the point where they have the
-> time/motivation/ability to drive the code forward, and end up in the way
-> of new people who are trying to make a difference. I think Linus knows
-> full well the kernel maintainer community is stagnating.
->
-> That doesn't mean people should step down entirely. But it does mean
-> they need to recognize when this is happening and, at least, proactively
-> try to bring new people in, instead of just continuing to play a
-> gatekeeping role. The role of maintainers should not be that of a wall
-> people have to climb over to get their changes in, it should be to guide
-> new contributors and help onboard people who can contribute, as peers
-> and eventually as future maintainers.
->
-> Kalle, in the other thread you said "this is not fun anymore, this is
-> more like a business with requirements and demands coming from
-> everywhere.". That's what it feels like to us when our changes get
-> rejected because the local vars aren't in reverse Christmas tree order,
-> or because our commit messages have "v2:" in them. It feels like some
-> manager is trying to justify their position by creating busywork for
-> everyone else. Nobody should actually care about any of those things,
-> and if they do, they need to step back and really ask themselves how
-> they ended up believing that. If the goal is to enforce a reasonable
-> shared coding style so things don't spiral into chaos, FFS, let's just
-> do what every other project does these days and adopt clang-format. Then
-> *all* of us can stop wasting time on these trivialities and go back to
-> getting stuff done. And really, nobody cares about commit messages as
-> long as the tags are right, the subject line is succinct, and the
-> important information is in there. Extra stuff never hurt anyone.
->
-> > I added the ground work for multi-vendor support, but have not decided
-> > on the approach to take. Abstract per firmware interface primitive or
-> > simply have a cfg80211.c and fwil_types.h per vendor OR implement a
-> > vendor-specific cfg80211 callback and override the default callback
-> > during the driver attach, ie. in brcmf_fwvid_wcc_attach(). The latter
-> > duplicates things, but lean towards that as it may be easier on the
-> > long-term. What do your tea leaves tell you ;-)
->
-> FWIW, I was hoping you'd stay on at least as a reviewer. Your
-> contributions are valuable. You obviously know the driver and hardware
-> much better than most people. I encourage you to, at least, post a v2 of
-> the MAINTAINERS patch with yourself as an R: line.
-
-I generally agree with this email, especially that Arend should stay
-on as a reviewer/maintainer.
-
-We need more people as either maintainers/contributors/reviewers/code
-writers/testers, not less, to delegate, co-maintain, test, merge, make
-the code more portable to many wifi devices, etc.
-
-What really matters at the end of the day I guess is writing the code
-that works across all the devices and testing it.
-
-Which is why I spread awareness about this area, got 100s of
-responses, especially on Linkedin, there's at least a portion of these
-that want to help, in good spirits.
-
-Is mise le meas/Regards,
-
-Eric Curtin
-
->
-> As far as the actual driver abstraction architecture, I'm going to leave
-> it to Daniel to decide what makes the most sense, since he's the one
-> introducing new mechanisms for that already. There's always room for
-> refactoring later though, depending on the direction things take with
-> the vendor split. BTW, clang-format also makes refactoring a lot less
-> painful ;)
->
-> - Hector
+> I can run checkpatch (even if I can't always take it seriously), but do
+> you want to comment more specifically wrt. the docs?
 >
 
+Sorry, the 'docs' issue was just the initial comment on the
+include/linux/skbuff.h file in patch 2, which could have been more
+specific to skbuff and resource management.
+The actual kerneldoc comments seem fine to me.
+
+
+
+> > They apply cleanly, and I doubt
+> > there's much chance of there being a merge conflict for 6.8 -- there
+> > are no other changes to the parameterised test macros, and the skb
+> > stuff is in its own file.
+>
+> Right.
+>
+> > The remaining patches don't apply on top of the kunit branch as-is.
+>
+> Oh, OK. That makes some sense though, we've had a number of changes in
+> the stack this cycle before. I somehow thought the tests were likely
+> standalone, but apparently not.
+>
+
+I managed to get this to apply locally. The only real changes are to
+net/mac80211/ieee80211_i.h  so it may be possible to port this across
+to the kselftest/kunit branch if you want, but it doesn't apply
+cleanly as-is.
+
+Also, there are a couple of cfg80211 failures:
+---
+KTAP version 1
+1..1
+   KTAP version 1
+   # Subtest: cfg80211-inform-bss
+   # module: cfg80211_tests
+   1..2
+platform regulatory.0: Direct firmware load for regulatory.db failed
+with error -2
+cfg80211: failed to load regulatory.db
+   ok 1 test_inform_bss_ssid_only
+       KTAP version 1
+       # Subtest: test_inform_bss_ml_sta
+   # test_inform_bss_ml_sta: EXPECTATION FAILED at net/wireless/tests/scan.c:592
+   Expected ies->len == 6 + 2 + sizeof(rnr) + 2 + 155 +
+mle_basic_common_info.var_len + 5, but
+       ies->len == 185 (0xb9)
+       6 + 2 + sizeof(rnr) + 2 + 155 + mle_basic_common_info.var_len +
+5 == 203 (0xcb)
+       not ok 1 no_mld_id
+   # test_inform_bss_ml_sta: EXPECTATION FAILED at net/wireless/tests/scan.c:588
+   Expected ies->len == 6 + 2 + sizeof(rnr) + 2 + 160 + 2 + 165 +
+mle_basic_common_info.var_len + 5, but
+       ies->len == 357 (0x165)
+       6 + 2 + sizeof(rnr) + 2 + 160 + 2 + 165 +
+mle_basic_common_info.var_len + 5 == 376 (0x178)
+       not ok 2 mld_id_eq_1
+   # test_inform_bss_ml_sta: pass:0 fail:2 skip:0 total:2
+   not ok 2 test_inform_bss_ml_sta
+# cfg80211-inform-bss: pass:1 fail:1 skip:0 total:2
+# Totals: pass:1 fail:2 skip:0 total:3
+not ok 1 cfg80211-inform-bss
+---
+
+If the failures are because of the missing 'regulatory.db' file, would
+it make more sense to have that SKIP the tests instead? (And, if you
+actually want to check that it loads correctly, have that be its own,
+separate test?)
+
+> > I
+> > haven't had a chance to review them properly yet; the initial glance I
+> > had didn't show any serious issues (though I think checkpatch
+> > suggested some things to 'check').
+>
+> I can check.
+
+Yeah, it mostly looks like really minor style 'suggestions' around
+indenting and putting blank lines in, along with a couple of "you're
+reusing a value in a macro, double check this" ones.. I'll paste them
+below (but warning, they're a bit verbose).
+
+CHECK: Please use a blank line after function/struct/union/enum declarations
+#1142: FILE: net/wireless/tests/scan.c:225:
++};
++KUNIT_ARRAY_PARAM_DESC(gen_new_ie, gen_new_ie_cases, desc)
+
+CHECK: Please use a blank line after function/struct/union/enum declarations
+#1330: FILE: net/wireless/tests/scan.c:413:
++};
++KUNIT_ARRAY_PARAM_DESC(inform_bss_ml_sta, inform_bss_ml_sta_cases, desc)
+
+CHECK: Alignment should match open parenthesis
+#1489: FILE: net/wireless/tests/scan.c:572:
++       KUNIT_EXPECT_EQ(test, link_bss->beacon_interval,
++                             le16_to_cpu(sta_prof.beacon_int));
+
+CHECK: Alignment should match open parenthesis
+#1491: FILE: net/wireless/tests/scan.c:574:
++       KUNIT_EXPECT_EQ(test, link_bss->capability,
++                             le16_to_cpu(sta_prof.capabilities));
+
+CHECK: Macro argument reuse '_freq' - possible side-effects?
+#1620: FILE: net/wireless/tests/util.h:10:
++#define CHAN2G(_freq)  { \
++       .band = NL80211_BAND_2GHZ, \
++       .center_freq = (_freq), \
++       .hw_value = (_freq), \
++}
+
+CHECK: Macro argument reuse 'test' - possible side-effects?
+#1653: FILE: net/wireless/tests/util.h:43:
++#define T_WIPHY(test, ctx) ({                                          \
++               struct wiphy *__wiphy =                                 \
++                       kunit_alloc_resource(test, t_wiphy_init,        \
++                                            t_wiphy_exit,              \
++                                            GFP_KERNEL, &(ctx));       \
++                                                                       \
++               KUNIT_ASSERT_NOT_NULL(test, __wiphy);                   \
++               __wiphy;                                                \
++       })
+
+
+
+
+>
+> > So (once those small issues are finished), I'm okay with the first two
+> > patches going in via either tree. The remaining ones are probably best
+> > done via the wireless tree, as they seem to depend on some existing
+> > patches there, so maybe it makes sense to push everything via
+> > wireless.
+>
+> If not through wireless I doubt we'll get it synchronized for 6.8,
+> though of course it's also not needed for 6.8 to have the extra unit
+> tests :)
+>
+> I'll let Shuah decide.
+>
+
+I think you should be able to rebase on top of the kunit tree if Shuah
+prefers that -- it's a reasonably straightforward conflict. But I
+think we'd want to make sure that the various issues above are fixed
+(and I'd not want the tests to fail out-of-the-box on the kunit.py UML
+setup, though having them depend on !UML or 'SKIP' should be fine).
+
+Cheers,
+-- David
+
+--0000000000007a8af1060d19d0f6
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+MIIPnwYJKoZIhvcNAQcCoIIPkDCCD4wCAQExDzANBglghkgBZQMEAgEFADALBgkqhkiG9w0BBwGg
+ggz5MIIEtjCCA56gAwIBAgIQeAMYYHb81ngUVR0WyMTzqzANBgkqhkiG9w0BAQsFADBMMSAwHgYD
+VQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBSMzETMBEGA1UEChMKR2xvYmFsU2lnbjETMBEGA1UE
+AxMKR2xvYmFsU2lnbjAeFw0yMDA3MjgwMDAwMDBaFw0yOTAzMTgwMDAwMDBaMFQxCzAJBgNVBAYT
+AkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMSowKAYDVQQDEyFHbG9iYWxTaWduIEF0bGFz
+IFIzIFNNSU1FIENBIDIwMjAwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCvLe9xPU9W
+dpiHLAvX7kFnaFZPuJLey7LYaMO8P/xSngB9IN73mVc7YiLov12Fekdtn5kL8PjmDBEvTYmWsuQS
+6VBo3vdlqqXZ0M9eMkjcKqijrmDRleudEoPDzTumwQ18VB/3I+vbN039HIaRQ5x+NHGiPHVfk6Rx
+c6KAbYceyeqqfuJEcq23vhTdium/Bf5hHqYUhuJwnBQ+dAUcFndUKMJrth6lHeoifkbw2bv81zxJ
+I9cvIy516+oUekqiSFGfzAqByv41OrgLV4fLGCDH3yRh1tj7EtV3l2TngqtrDLUs5R+sWIItPa/4
+AJXB1Q3nGNl2tNjVpcSn0uJ7aFPbAgMBAAGjggGKMIIBhjAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0l
+BBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMEMBIGA1UdEwEB/wQIMAYBAf8CAQAwHQYDVR0OBBYEFHzM
+CmjXouseLHIb0c1dlW+N+/JjMB8GA1UdIwQYMBaAFI/wS3+oLkUkrk1Q+mOai97i3Ru8MHsGCCsG
+AQUFBwEBBG8wbTAuBggrBgEFBQcwAYYiaHR0cDovL29jc3AyLmdsb2JhbHNpZ24uY29tL3Jvb3Ry
+MzA7BggrBgEFBQcwAoYvaHR0cDovL3NlY3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvcm9vdC1y
+My5jcnQwNgYDVR0fBC8wLTAroCmgJ4YlaHR0cDovL2NybC5nbG9iYWxzaWduLmNvbS9yb290LXIz
+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
+ddIn9n5Jt6Z1o79zxraLMEwGA1UdIARFMEMwQQYJKwYBBAGgMgEoMDQwMgYIKwYBBQUHAgEWJmh0
+dHBzOi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAwGA1UdEwEB/wQCMAAwgZoGCCsG
+AQUFBwEBBIGNMIGKMD4GCCsGAQUFBzABhjJodHRwOi8vb2NzcC5nbG9iYWxzaWduLmNvbS9jYS9n
+c2F0bGFzcjNzbWltZWNhMjAyMDBIBggrBgEFBQcwAoY8aHR0cDovL3NlY3VyZS5nbG9iYWxzaWdu
+LmNvbS9jYWNlcnQvZ3NhdGxhc3Izc21pbWVjYTIwMjAuY3J0MB8GA1UdIwQYMBaAFHzMCmjXouse
+LHIb0c1dlW+N+/JjMEYGA1UdHwQ/MD0wO6A5oDeGNWh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20v
+Y2EvZ3NhdGxhc3Izc21pbWVjYTIwMjAuY3JsMA0GCSqGSIb3DQEBCwUAA4IBAQBtHFwIgQZjer5K
+H+4Q+wns10k7qN+4wN2Uf+JsyOYjukaMEgdLErfA1wwtQ9uHkoYQZcWBuVVkQFa5hI+sqI2m1Weq
+riMCFSiU38s1tADdMX12IMfJRN60Nznhrw+nPyDRZqRhUTW24TwnHorkDnFPW8PHo7fAw4FrpI0n
+impZAng7ccvvK09K3ZuhwTIxJMsPXCZYsrXWORTw5sczRAP6XvKbPBJnsJoSTe5dFBPBHOQJOGhU
+qWfEfWnWMJPF3LxSGLpLFQXO3RwQqmxv08avwXfVPouh1xuB3FX7rpDabT8YDhu9JgIZkLEKko7L
+yQt6zWwng7k8YF/jGbiAta6VMYICajCCAmYCAQEwaDBUMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQ
+R2xvYmFsU2lnbiBudi1zYTEqMCgGA1UEAxMhR2xvYmFsU2lnbiBBdGxhcyBSMyBTTUlNRSBDQSAy
+MDIwAhABzgV+4+mJnUzG7XDy6d2uMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCD+
+WKrDFwDyu5+H1+FjzZggUrB1zgjGVwqso2ioUUPH+jAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcB
+MBwGCSqGSIb3DQEJBTEPFw0yMzEyMjIxNDEzMDNaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUD
+BAEqMAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsG
+CSqGSIb3DQEBBzALBglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAIWHmppYj9PmuP+CZycUk
+Dk3aJxslwMwmDEqHmjiwsYt8gHQjqQVLh5ZnIs5s5o4UBzOYtPFCu1mYmMFMQeskZjFZnvIYke9s
+1xZNsaBqUwKqkGyUbmqu8GxlXaqRsUnc/ua4xRigye2u+MIzLtsPDgWPvgR/qjG1KqLXOvNjk5WY
+9Q83zrYzyYbh+eEl4Nb+dPCsG6D0tsU5vlYTQNNzwH7V2Iy3sPe660P5mrkTMpLL0vNS9PYHvSkM
+YINkdNORTdaFpDSeXUJEyMBfFvgApwrRXnyvkuTrnpNTcZIof4MQcp9eOu41wfEBZnY+D2yzpjc3
+sBdsY835Hob+xuhVRw==
+--0000000000007a8af1060d19d0f6--
 
