@@ -1,71 +1,111 @@
-Return-Path: <linux-wireless+bounces-1264-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1265-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A8F481D392
-	for <lists+linux-wireless@lfdr.de>; Sat, 23 Dec 2023 11:41:08 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 855FD81D426
+	for <lists+linux-wireless@lfdr.de>; Sat, 23 Dec 2023 14:09:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5F1C1F21865
-	for <lists+linux-wireless@lfdr.de>; Sat, 23 Dec 2023 10:41:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7E8FB21567
+	for <lists+linux-wireless@lfdr.de>; Sat, 23 Dec 2023 13:09:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F34729456;
-	Sat, 23 Dec 2023 10:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EF98D2F2;
+	Sat, 23 Dec 2023 13:09:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=w1.fi header.i=@w1.fi header.b="GXCeGKwj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gfqls4tl"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.w1.fi (mail.w1.fi [212.71.239.96])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A4AA4F
-	for <linux-wireless@vger.kernel.org>; Sat, 23 Dec 2023 10:40:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=w1.fi
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w1.fi
-Received: from localhost (localhost [127.0.0.1])
-	by mail.w1.fi (Postfix) with ESMTP id A7DB3115C5;
-	Sat, 23 Dec 2023 10:40:51 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at w1.fi
-Received: from mail.w1.fi ([127.0.0.1])
-	by localhost (mail.w1.fi [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id PdH--Sp0PfUt; Sat, 23 Dec 2023 10:40:13 +0000 (UTC)
-Received: by jm (sSMTP sendmail emulation); Sat, 23 Dec 2023 12:40:10 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=w1.fi; s=default;
-	t=1703328013; bh=MNttMzNopoiCMIk0Vl9YO/OTUaftnsHK0b+WCOVdwms=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GXCeGKwjx2/WzOu1dSO/Ej5TKQH98kf5cOdvSZXxfLUh7Lrv5E0D7O3uj4XH0x67j
-	 AYalgpBQay9CBC4wJdyLOPmqjbs8q5Jg5cJSzTSd3fatsmoY8WsiaSYT3xTprL7uSz
-	 Kd2jTs7oZJDvg7WT/lXdESUFFFAtPAS37Z+xF1byGjoc2O6EqYak7ZnfStEpUFHa95
-	 O2C7N8K1n6Vf+4QILs7UfJHp76E+4s1J3nCkkjtryDO1rjIo/IMT3GzRJvOO9+4WGW
-	 /emG5EGTkTg0WQHvtnc6B56NtEXfq5Y+tVMMuEnEgtKoJnWEU+DqlIeIBnJEl6ZKnP
-	 XxPzgymvIN2Qg==
-Date: Sat, 23 Dec 2023 12:40:10 +0200
-From: Jouni Malinen <j@w1.fi>
-To: Andrei Otcheretianski <andrei.otcheretianski@intel.com>
-Cc: hostap@lists.infradead.org, johannes@sipsolutions.net,
-	linux-wireless@vger.kernel.org, Ilan Peer <ilan.peer@intel.com>
-Subject: Re: [PATCH] tests: Modify the QoS mapping tests
-Message-ID: <ZYa5CotWy+00CHII@w1.fi>
-References: <20231213113735.289408-1-andrei.otcheretianski@intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC13D2E9
+	for <linux-wireless@vger.kernel.org>; Sat, 23 Dec 2023 13:08:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-6d9a7233133so1129b3a.0
+        for <linux-wireless@vger.kernel.org>; Sat, 23 Dec 2023 05:08:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1703336938; x=1703941738; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=giEk1ukUCaG6bmqGiBslb7r3jzbq49P7oe4tCxYAA1E=;
+        b=Gfqls4tlq7nQG4KTB/xAk+zVyNWh3cfUcqqHOvy5WWaKJ+WMHmGMNzpfwh2bK1Ctye
+         mXJLjUhDXc44q+nXW8EOC/FYFX+iK750FidQdNmArxlPStSaaQ8yBGScKFQN+k00P4M0
+         C9yjgY0MRvNG0Cd7cJ3mB4IL3NvemKSpUkR5RqGpRJUQYZZGqxXcD3luhDYjbLrMowOH
+         hrYLsYKCNA+23/xUzbLiysgAUH4627lGM4c1Zj3uoe8IxtZQymoKoXOYUsahsVbvSgE5
+         mdKOX49Oxm3BMcosK6aHtyC8aBbltuX9fo7BidOJCKDb9Ly1PcnT4eyDcKpsCYEqg9L2
+         qIIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1703336938; x=1703941738;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=giEk1ukUCaG6bmqGiBslb7r3jzbq49P7oe4tCxYAA1E=;
+        b=LAbM8+4XTvX+HKy/f2gJUn6cnAjrttNVa5A0bZQXd1OlBjJxUs+OAX9AR4hHesYoNL
+         IVPZwf75hyU2aZ8OYLDMxtEWr8O1whrkjADkaZxcnheKTPGjf8b2L/45ble79alQq4SK
+         m/M8lXldiVv4ybJQFvAcywuyYjMy88NntAQEow52h27PygZRXYbhoHgVQkb0jeo4Cs5w
+         BBljZXLMzLH7ocQomnrg1DxN/XDB4OykANOh3Z7gEoc1CIXMk9pf8I8oL/VvBr96Q3Mi
+         jp33hsuFAX9VSK++H6Y9929fWWfeDrDkMNG0n+t0eDf9fPjg0M8HiEmwgL0UeAWV0KTL
+         AtWQ==
+X-Gm-Message-State: AOJu0YzCliWQfxJLwQXN/8IG5i915abuKGULCkiaieOC5JT1ZcqdVEXx
+	2AVxgvEVdd7YauvBlpmGKCJzdoXgCJ+llw==
+X-Google-Smtp-Source: AGHT+IHDAFk+ShOsE8erbpqJpgU4kaJHDB5HCe2u4GxUw9HU/il708ZE/Pc8RHzDzw0NFtXoeGfoFQ==
+X-Received: by 2002:aa7:804e:0:b0:6d9:a70d:7732 with SMTP id y14-20020aa7804e000000b006d9a70d7732mr66153pfm.24.1703336937650;
+        Sat, 23 Dec 2023 05:08:57 -0800 (PST)
+Received: from nuc11atkpe.. (113x34x39x75.ap113.ftth.ucom.ne.jp. [113.34.39.75])
+        by smtp.gmail.com with ESMTPSA id fa20-20020a056a002d1400b006d64c4cb661sm4999489pfb.200.2023.12.23.05.08.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 23 Dec 2023 05:08:57 -0800 (PST)
+From: CaffeeLake <pascalcoffeelake@gmail.com>
+X-Google-Original-From: CaffeeLake <PascalCoffeeLake@gmail.com>
+To: linux-wireless@vger.kernel.org
+Cc: wireless-regdb@lists.infradead.org,
+	CaffeeLake <PascalCoffeeLake@gmail.com>
+Subject: [PATCH] wireless-regdb: Update regulatory rules for Japan (JP) for December 2023
+Date: Sat, 23 Dec 2023 22:08:52 +0900
+Message-ID: <20231223130852.44711-1-PascalCoffeeLake@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231213113735.289408-1-andrei.otcheretianski@intel.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Dec 13, 2023 at 01:37:35PM +0200, Andrei Otcheretianski wrote:
-> The cfg80211 default QoS mapping was updated to align
-> with the recommendations in section 4 in RFC8325. Align the QoS
-> mapping test accordingly.
+Support 320MHz bandwidth for JP region.
 
-Thanks, applied. Though, I changed this to accept both the current
-mac80211 mapping and the one proposed in the patch that has not yet been
-applied.
- 
--- 
-Jouni Malinen                                            PGP id EFC895FA
+The Ministry of Internal Affairs and Communications has approved 320MHz bandwidth with 11be in Japan.
+
+Source: https://www.soumu.go.jp/main_content/000919158.pdf
+
+Signed-off-by: CaffeeLake <PascalCoffeeLake@gmail.com>
+---
+ db.txt | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/db.txt b/db.txt
+index 24bb6d4..01e7338 100644
+--- a/db.txt
++++ b/db.txt
+@@ -944,6 +944,7 @@ country JO: DFS-JP
+ # Source:
+ # https://www.soumu.go.jp/main_content/000635492.pdf
+ # https://www.soumu.go.jp/main_content/000833682.pdf
++# https://www.soumu.go.jp/main_content/000919158.pdf
+ country JP: DFS-JP
+ 	(2402 - 2482 @ 40), (20)
+ 	(2474 - 2494 @ 20), (20), NO-OFDM
+@@ -951,7 +952,7 @@ country JP: DFS-JP
+ 	(5170 - 5250 @ 80), (20), AUTO-BW
+ 	(5250 - 5330 @ 80), (20), DFS, AUTO-BW
+ 	(5490 - 5730 @ 160), (23), DFS
+-	(5925 - 6425 @ 160), (200 mW), NO-OUTDOOR
++	(5925 - 6425 @ 320), (200 mW), NO-OUTDOOR
+ 	# 60 GHz band channels 2-4 at 10mW,
+ 	# ref: http://www.arib.or.jp/english/html/overview/doc/1-STD-T74v1_1.pdf
+ 	(57000 - 66000 @ 2160), (10 mW)
+--
+2.43.0
+
 
