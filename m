@@ -1,129 +1,79 @@
-Return-Path: <linux-wireless+bounces-1266-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1267-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6203781D48A
-	for <lists+linux-wireless@lfdr.de>; Sat, 23 Dec 2023 15:20:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0008381D4ED
+	for <lists+linux-wireless@lfdr.de>; Sat, 23 Dec 2023 17:02:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9395F1C209C3
-	for <lists+linux-wireless@lfdr.de>; Sat, 23 Dec 2023 14:20:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CFC51C21109
+	for <lists+linux-wireless@lfdr.de>; Sat, 23 Dec 2023 16:02:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB5ECDDB7;
-	Sat, 23 Dec 2023 14:20:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FF1F10958;
+	Sat, 23 Dec 2023 16:02:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="d2YLNJal"
+	dkim=pass (2048-bit key) header.d=w1.fi header.i=@w1.fi header.b="Z9ybt5KK"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from mail.w1.fi (mail.w1.fi [212.71.239.96])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 673C5DDD9
-	for <linux-wireless@vger.kernel.org>; Sat, 23 Dec 2023 14:20:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1703341213; x=1734877213;
-  h=date:from:to:cc:subject:message-id;
-  bh=K2oh0CK3+ByvqeIlIAPvvIf+pJZyF+RRseNgU6FsyQs=;
-  b=d2YLNJalsAWS9UQO9OeN7s3bMgPoJNPwGjDUBxjR9krKiRB5hGPolBem
-   CTJTORQjGCrwtI3Sb62rkIdVQxFUEp/PNES3iYta3jRcMt7JET8SNDWdL
-   lqKjAIxIxkiYAFbeiECYuwVYOe8XK4prAEddoUpwQ59HFyEAsQXZC1InW
-   1LJWOvHrwqr4m2ChmFHwi9chUeI2fw2nptA8PDzd936/WUfPhij8Kldiw
-   oupQFV3BNIT+03M/+FASgg0ial9ui1E6mxFuczWa0fycSa2MVOSNyllju
-   mc46vPQqnWIqmo1w45pGmSycMVJHI9Sdve4ZC/07e6j+leUkVZYZVYhUd
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10933"; a="14877882"
-X-IronPort-AV: E=Sophos;i="6.04,299,1695711600"; 
-   d="scan'208";a="14877882"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Dec 2023 06:20:10 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10933"; a="806275199"
-X-IronPort-AV: E=Sophos;i="6.04,299,1695711600"; 
-   d="scan'208";a="806275199"
-Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
-  by orsmga008.jf.intel.com with ESMTP; 23 Dec 2023 06:20:09 -0800
-Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rH2r6-000B6m-37;
-	Sat, 23 Dec 2023 14:19:59 +0000
-Date: Sat, 23 Dec 2023 22:18:53 +0800
-From: kernel test robot <lkp@intel.com>
-To: Johannes Berg <johannes.berg@intel.com>
-Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
-Subject: [wireless-next:main] BUILD SUCCESS
- 968509128207f122d7177ffb6ff51c9c6fa7e13d
-Message-ID: <202312232250.wa6XAvM4-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A7051094E
+	for <linux-wireless@vger.kernel.org>; Sat, 23 Dec 2023 16:02:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=w1.fi
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w1.fi
+Received: from localhost (localhost [127.0.0.1])
+	by mail.w1.fi (Postfix) with ESMTP id 1C8A711664;
+	Sat, 23 Dec 2023 16:02:15 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at w1.fi
+Received: from mail.w1.fi ([127.0.0.1])
+	by localhost (mail.w1.fi [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id Akm_sSP3l6ob; Sat, 23 Dec 2023 16:01:38 +0000 (UTC)
+Received: by jm (sSMTP sendmail emulation); Sat, 23 Dec 2023 18:01:36 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=w1.fi; s=default;
+	t=1703347298; bh=4aSWUjx06gmC5HXE41ceYZVLlZYn/WDmPgA8VfwzTe0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Z9ybt5KKBQCIMSRaCyriJ4P3Dlf3NbWrVyngnKWDxWNb769dMynHEO/OffHyRpClQ
+	 aSyLw8At2vVIYiW5UzU+lIaudFZwvG2en17GVhpo4VjwroLtuvhe1b/nspvZzUjsFh
+	 5w9NqxwBT1DNUNuoYJe+QSWJ+AL6j4PN1ujMUtWh5g365Ia0grGsxuvBF9TFSMVvNC
+	 3juXjNi68Ud01evCPxTD5sL0UCsTBMkOLv3XigMlgdg+EeG016LFNVWKzgsXXDbVpt
+	 POP/hXJx45SfaHiqx8O8ZhxMVIE+JaFdX6nF8hGQeAMxcybU0gpS5vtdFmV9n0WpYL
+	 2Qi5jf2+uEjjQ==
+Date: Sat, 23 Dec 2023 18:01:36 +0200
+From: Jouni Malinen <j@w1.fi>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 15/15] wifi: mac80211_hwsim: support HE 40MHz in 2.4Ghz
+ band
+Message-ID: <ZYcEYIauIJAz0q2q@w1.fi>
+References: <20231220023803.2901117-1-miriam.rachel.korenblit@intel.com>
+ <20231220043149.56bf8f5cd373.I1ba6905c806be6e0548ed15130c0bbb2ee04c9fd@changeid>
+ <19b41966397952fc18cb90346550eb3f2f03711c.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <19b41966397952fc18cb90346550eb3f2f03711c.camel@sipsolutions.net>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: 968509128207f122d7177ffb6ff51c9c6fa7e13d  wifi: iwlwifi: replace ENOTSUPP with EOPNOTSUPP
+On Tue, Dec 19, 2023 at 09:57:52AM +0100, Johannes Berg wrote:
+> On Wed, 2023-12-20 at 04:38 +0200, Miri Korenblit wrote:
+> > We are missing the flag that indicates that capability
+> > of 40MHz bandwidth support in HE on the LB.
+> > Add it.
 
-elapsed time: 2530m
+> Jouni, I had basically the same patch and I'm going to apply it...
+> 
+> However, it breaks two tests in hostap - according to my earlier
+> analysis, this is because throughput estimation for HE/EHT doesn't take
+> the AP *operation* into account, only the *capabilities*.
 
-configs tested: 47
-configs skipped: 0
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-arc                   randconfig-001-20231223   gcc  
-arc                   randconfig-002-20231223   gcc  
-arm                   randconfig-001-20231223   clang
-arm                   randconfig-002-20231223   clang
-arm                   randconfig-003-20231223   clang
-arm                   randconfig-004-20231223   clang
-arm64                 randconfig-001-20231223   clang
-arm64                 randconfig-002-20231223   clang
-arm64                 randconfig-003-20231223   clang
-arm64                 randconfig-004-20231223   clang
-csky                  randconfig-001-20231223   gcc  
-csky                  randconfig-002-20231223   gcc  
-hexagon               randconfig-001-20231223   clang
-hexagon               randconfig-002-20231223   clang
-i386                             allmodconfig   clang
-i386                              allnoconfig   clang
-i386                             allyesconfig   clang
-i386         buildonly-randconfig-001-20231223   clang
-i386         buildonly-randconfig-002-20231223   clang
-i386         buildonly-randconfig-003-20231223   clang
-i386         buildonly-randconfig-004-20231223   clang
-i386         buildonly-randconfig-005-20231223   clang
-i386         buildonly-randconfig-006-20231223   clang
-i386                                defconfig   gcc  
-i386                  randconfig-001-20231223   clang
-i386                  randconfig-002-20231223   clang
-i386                  randconfig-003-20231223   clang
-i386                  randconfig-004-20231223   clang
-i386                  randconfig-005-20231223   clang
-i386                  randconfig-006-20231223   clang
-i386                  randconfig-011-20231223   gcc  
-i386                  randconfig-012-20231223   gcc  
-i386                  randconfig-013-20231223   gcc  
-i386                  randconfig-014-20231223   gcc  
-i386                  randconfig-015-20231223   gcc  
-i386                  randconfig-016-20231223   gcc  
-loongarch             randconfig-001-20231223   gcc  
-loongarch             randconfig-002-20231223   gcc  
-nios2                 randconfig-001-20231223   gcc  
-nios2                 randconfig-002-20231223   gcc  
-parisc                randconfig-001-20231223   gcc  
-parisc                randconfig-002-20231223   gcc  
-powerpc               randconfig-001-20231223   clang
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   clang
-x86_64                              defconfig   gcc  
-x86_64                          rhel-8.3-rust   clang
+That's now fixed in hostap.git.
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Jouni Malinen                                            PGP id EFC895FA
 
