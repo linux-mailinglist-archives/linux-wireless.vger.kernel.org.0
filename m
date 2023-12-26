@@ -1,121 +1,99 @@
-Return-Path: <linux-wireless+bounces-1280-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1281-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3306381E0F3
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Dec 2023 14:41:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B3F381E333
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Dec 2023 01:24:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF856B20F08
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Dec 2023 13:41:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74C121C21433
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Dec 2023 00:24:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84B73524A3;
-	Mon, 25 Dec 2023 13:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16A2C1852;
+	Tue, 26 Dec 2023 00:21:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="IOVsXiXQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l08BFTo2"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7633A524A0
-	for <linux-wireless@vger.kernel.org>; Mon, 25 Dec 2023 13:41:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=68N15PMvPC9IDOw8yCFsYMBFB0mBJurIK/pkQiUzWYw=;
-	t=1703511664; x=1704721264; b=IOVsXiXQ+uw+kXodyBRo1/gUtLT/d1Y5uGzqGNJkWNHojg0
-	UrF79cnICfcqM1koApBh1b2clutfMeU6tMV81o3zygPPvRYjBD8y8PBNkFI6lvD1cnL8WjzwkpOGt
-	GFJmx6kFnC/DfPljoOI0/4+1uQ3WHmQPWPQH/DjweCkh55WbjjTINar2D9qT/HWyxpskBw+HCqdo+
-	tpmz2cTliutMELNlJXaUGLgT9hKOVyn38vkUlEM4HsTbxZZByEpkSxQnMghxTPK4cCvzmbnIuYtGw
-	O57DufbKsUtPSuM9hYmZMuea7QDjM4DtAJIDfu+kMic6Yhf8oHu+PWZ1BpuAKv5A==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1rHlCR-00000008KFn-1Tcw;
-	Mon, 25 Dec 2023 14:40:55 +0100
-Message-ID: <dbe8a8334edc56e2488bacaeccf8474a79faae0f.camel@sipsolutions.net>
-Subject: Re: mac80211: WARN_ONCE("no supported rates for sta ...")
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Dmitry Antipov <dmantipov@yandex.ru>
-Cc: linux-wireless@vger.kernel.org
-Date: Mon, 25 Dec 2023 14:40:54 +0100
-In-Reply-To: <92f0017d-7b1d-4562-984f-885179b50435@yandex.ru>
-References: <92f0017d-7b1d-4562-984f-885179b50435@yandex.ru>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.2 (3.50.2-1.fc39) 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E933D44364;
+	Tue, 26 Dec 2023 00:20:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29513C433C8;
+	Tue, 26 Dec 2023 00:20:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1703550059;
+	bh=zF4otZIt+lMUKIFWNrITLIV7/l+UmEx2S5/AymxJq1M=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=l08BFTo2vnJ1VwaVcbAYhfG4i/dDZUUNqr7f9m1P5p/6qDuYMbGX4kQPtQT7NddYL
+	 AbsmWaZhcb5isyprhOqRavtAc4YT+c3Nw5/W0TCm6tRCNo7A4QNb+jBFVL/093aP4m
+	 xY8gK72trYG7lPcQqPHKc+XMM978ucWlQjHoOZxcLkZOxqd8jT95TnoXh62CA/cD26
+	 5xdJG21hpSpA5r4nWUJezRR0RvV717tJ3lkTzJJz/LtDw6bGUDszW54XxFv6YcDHke
+	 +vit+IZk10W4JfbqvN1w+KYCyUy3Hx9xhzvP+xnT+wkkBIkOlGrd+H9WTsUUGsfN20
+	 qRjOR96HCZcOA==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Avraham Stern <avraham.stern@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	gregory.greenman@intel.com,
+	kvalo@kernel.org,
+	benjamin.berg@intel.com,
+	ansuelsmth@gmail.com,
+	pagadala.yesu.anjaneyulu@intel.com,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 14/39] wifi: iwlwifi: pcie: avoid a NULL pointer dereference
+Date: Mon, 25 Dec 2023 19:19:04 -0500
+Message-ID: <20231226002021.4776-14-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20231226002021.4776-1-sashal@kernel.org>
+References: <20231226002021.4776-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.6.8
+Content-Transfer-Encoding: 8bit
 
-On Mon, 2023-12-25 at 14:00 +0300, Dmitry Antipov wrote:
-> I'm trying to investigate the following WARN_ONCE() observed at
-> https://syzkaller.appspot.com/bug?extid=3Dfdc5123366fb9c3fdc6d:
->=20
-> ------------[ cut here ]------------
-> no supported rates for sta (null) (0xffffffff, band 1) in rate_mask 0x0 w=
-ith flags 0x0
-> WARNING: CPU: 1 PID: 2875 at net/mac80211/rate.c:379 __rate_control_send_=
-low+0x6d9/0x800 net/mac80211/rate.c:379
-> ...
->=20
-> There is a (weird and completely unreadable) reproducer, the most recent =
-one
-> https://syzkaller.appspot.com/text?tag=3DReproC&x=3D10437de6e80000 matche=
-s 6.7.0-rc6.
-> IIUC it creates a kind of a virtual subnet of 'mac80211_hwsim' instances =
-and then
-> enforces an attempt to setup an incorrect set of rates. Since I assume th=
-at
-> this WARN_ONCE() shouldn't happen, there might be some missing check for =
-the
-> contents of rate-related fields of 'struct ieee80211_sub_if_data'. I've f=
-ound
-> that this WARN_ONCE() may be avoided one step later by silently dropping =
-the
-> (presumably invalid?) rate control packet in 'ieee80211_tx_h_rate_ctrl()'=
-,
-> i. e.:
->=20
-> diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-> index ed4fdf655343..3ca1db6bb0fd 100644
-> --- a/net/mac80211/tx.c
-> +++ b/net/mac80211/tx.c
-> @@ -703,6 +703,9 @@ ieee80211_tx_h_rate_ctrl(struct ieee80211_tx_data *tx=
-)
->          txrc.reported_rate.idx =3D -1;
->          txrc.rate_idx_mask =3D tx->sdata->rc_rateidx_mask[info->band];
->=20
-> +       if (unlikely(txrc.rate_idx_mask =3D=3D 0))
-> +               return TX_DROP;
-> +
->          if (tx->sdata->rc_has_mcs_mask[info->band])
->                  txrc.rate_idx_mcs_mask =3D
->                          tx->sdata->rc_rateidx_mcs_mask[info->band];
->=20
-> but most likely this is wrong and should be handled in some another
-> way somewhere else.
->=20
+From: Avraham Stern <avraham.stern@intel.com>
 
-Yeah. I'd say rate_mask 0 is the problem, but ... oh, right. I think the
-problem is that we apply the rate mask while scanning, that doesn't
-really make sense ...
+[ Upstream commit ce038edfce43fb345f8dfdca0f7b17f535896701 ]
 
-If you're making a connection on 2.4 GHz (band 0) then you need not have
-a rate mask set up for 5 GHz (band 1), and so it's probably 0 by
-default, but scanning will go on that band anyway ...
+It possible that while the rx rb is being handled, the transport has
+been stopped and re-started. In this case the tx queue pointer is not
+yet initialized, which will lead to a NULL pointer dereference.
+Fix it.
 
-I think it stands to reason that the rate mask really should only apply
-to the operation on the interface, not the scanning, which would
-probably fix that?
+Signed-off-by: Avraham Stern <avraham.stern@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20231207044813.cd0898cafd89.I0b84daae753ba9612092bf383f5c6f761446e964@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/wireless/intel/iwlwifi/pcie/rx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-johannes
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
+index 4614acee9f7ba..586e1f860c169 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
+@@ -1385,7 +1385,7 @@ static void iwl_pcie_rx_handle_rb(struct iwl_trans *trans,
+ 		 * if it is true then one of the handlers took the page.
+ 		 */
+ 
+-		if (reclaim) {
++		if (reclaim && txq) {
+ 			u16 sequence = le16_to_cpu(pkt->hdr.sequence);
+ 			int index = SEQ_TO_INDEX(sequence);
+ 			int cmd_index = iwl_txq_get_cmd_index(txq, index);
+-- 
+2.43.0
+
 
