@@ -1,99 +1,187 @@
-Return-Path: <linux-wireless+bounces-1283-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1284-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D736A81E3CE
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Dec 2023 01:39:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66CF681E4BF
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Dec 2023 04:42:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C7B61F21FE6
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Dec 2023 00:39:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2E3A1F2203F
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Dec 2023 03:42:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEB2344392;
-	Tue, 26 Dec 2023 00:24:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lapp6Olt"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E21621096F;
+	Tue, 26 Dec 2023 03:42:11 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02AD5AB86;
-	Tue, 26 Dec 2023 00:24:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7076FC433C7;
-	Tue, 26 Dec 2023 00:24:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703550281;
-	bh=t6CoWWqDA/gKJAE5fJ4bN2zST9m9RRV2BiBwNbT1vb0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lapp6OltJBLG9s5Xy5+hyUVnXhdxiE12rduSYkp5I7KYkkjfIHTVWBjhZWDtHl5GS
-	 kwFEaL5U32AitKHhzauJWg8oYawJNvaz9II3tuR/tvTFiejy7G1KqtC7InwGpj58zJ
-	 4Wcj+v17eR6iKdF9JoosjOi7eypSgy2AxaJ6Szez972cyjz/pYdTv5RK9D/XH4D/9n
-	 QJ8crYksdSCNvbG3xdyALdqqPLFgxtaVNIgkg9IncWRPsfOvMgBbN6fd57Q4z2epBV
-	 gTBsZEoK7yYNyK8qq/M4jfvGJgqAdbVZNCAqAmdKlJ/0/Rk8URK6Ksy+ar1WCobef6
-	 AR1aCtia8GygA==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Avraham Stern <avraham.stern@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	gregory.greenman@intel.com,
-	kvalo@kernel.org,
-	benjamin.berg@intel.com,
-	ansuelsmth@gmail.com,
-	pagadala.yesu.anjaneyulu@intel.com,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 07/11] wifi: iwlwifi: pcie: avoid a NULL pointer dereference
-Date: Mon, 25 Dec 2023 19:23:56 -0500
-Message-ID: <20231226002420.6303-7-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231226002420.6303-1-sashal@kernel.org>
-References: <20231226002420.6303-1-sashal@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CFB012B79
+	for <linux-wireless@vger.kernel.org>; Tue, 26 Dec 2023 03:42:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 3BQ3g3irD216920, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 3BQ3g3irD216920
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 26 Dec 2023 11:42:03 +0800
+Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2375.32; Tue, 26 Dec 2023 11:42:03 +0800
+Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
+ RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 26 Dec 2023 11:42:03 +0800
+Received: from RTEXDAG02.realtek.com.tw ([fe80::5d58:7838:d352:d6b8]) by
+ RTEXDAG02.realtek.com.tw ([fe80::5d58:7838:d352:d6b8%5]) with mapi id
+ 15.01.2375.007; Tue, 26 Dec 2023 11:42:03 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Ali Ghandour <gandour.ali@gmail.com>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: Lenovo LOQ rtw_8852be
+Thread-Topic: Lenovo LOQ rtw_8852be
+Thread-Index: AQHaH+dudVZVMpW7Qk6t1f3PxKDyKLCNY6tQ///EsACAAAT0AIAAh+ZQgAeHaQCABKhgsP//2SiAgAHUHECABgrNAIABysFggAFMj4CAAIfLEIAV3eZQ
+Date: Tue, 26 Dec 2023 03:42:03 +0000
+Message-ID: <ec85daec1dd64b2ca731078cd0dd95d3@realtek.com>
+References: <1700948088-16140-mlmmj-666d2532@vger.kernel.org>
+ <CAOE0c97T1cVvqFkqfrP_h53X08yQ7kLinZP09L35nVHc_V89+g@mail.gmail.com>
+ <5abfc98859504795b50f7f343784c886@realtek.com>
+ <CAOE0c96uJ9x8gbJZdHiMEiOM5gTd_ZqM_rUV7Cs1NyA_t0Ncfg@mail.gmail.com>
+ <CAOE0c97fDaLTfsMJVmEh4HxOAPY19kD60qsV5AKJbWW5nnqWzw@mail.gmail.com>
+ <b4cfd676c0b24d98b82302aefac7f379@realtek.com>
+ <CAOE0c97NvXFhttfNNm3+NsXw9SKV7sC-nJriwF43pujvJugvSg@mail.gmail.com>
+ <1ad457d646ba4d9d99dc2f5cb8a1b590@realtek.com>
+ <CAOE0c97cFjF=LGD8-nb95ihQhE0YRRqM=4PKud4nccQa06MVxw@mail.gmail.com>
+ <f5e03fd6c26544b48cb493ec428338fb@realtek.com>
+ <CAOE0c94UMKymy8mV2unbNo9CRe9n0pUmg6dGQ-xnRRKZvMxNJA@mail.gmail.com>
+ <973fe7f5ec2c474c8a88f8933c7dde83@realtek.com>
+ <CAOE0c94tf8y2hv0QHKEiuo5a7Ly=oJAw+g4Uh6BktHOMdbWY1Q@mail.gmail.com> 
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: yes
+x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: multipart/mixed;
+	boundary="_002_ec85daec1dd64b2ca731078cd0dd95d3realtekcom_"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.145
-Content-Transfer-Encoding: 8bit
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-From: Avraham Stern <avraham.stern@intel.com>
+--_002_ec85daec1dd64b2ca731078cd0dd95d3realtekcom_
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-[ Upstream commit ce038edfce43fb345f8dfdca0f7b17f535896701 ]
+SGkgQWxpLA0KDQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IFBpbmctS2Ug
+U2hpaA0KPiBTZW50OiBUdWVzZGF5LCBEZWNlbWJlciAxMiwgMjAyMyAyOjAyIFBNDQo+IFRvOiAn
+QWxpIEdoYW5kb3VyJyA8Z2FuZG91ci5hbGlAZ21haWwuY29tPg0KPiBDYzogbGludXgtd2lyZWxl
+c3NAdmdlci5rZXJuZWwub3JnDQo+IFN1YmplY3Q6IFJFOiBMZW5vdm8gTE9RIHJ0d184ODUyYmUN
+Cj4gDQo+ID4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gPiBGcm9tOiBBbGkgR2hhbmRv
+dXIgPGdhbmRvdXIuYWxpQGdtYWlsLmNvbT4NCj4gPiBTZW50OiBUdWVzZGF5LCBEZWNlbWJlciAx
+MiwgMjAyMyAxOjM2IFBNDQo+ID4gVG86IFBpbmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsuY29t
+Pg0KPiA+IENjOiBsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmcNCj4gPiBTdWJqZWN0OiBS
+ZTogTGVub3ZvIExPUSBydHdfODg1MmJlDQo+ID4NCj4gPiA+IFBsZWFzZSB0cnkgYmVsb3cgd29y
+a2Fyb3VuZCBwYXRjaCB0byBpZ25vcmUgdGhlIHNldHRpbmcuIEkgaGF2ZSB0cmllZCB0aGF0LCBh
+bmQNCj4gPiA+IGluIG15IHNpZGUgaXQgc3RpbGwgd29ya3Mgd2l0aG91dCBvYnZpb3VzIHByb2Js
+ZW0uIEkgd2lsbCBjaGVjayBpbnRlcm5hbGx5IHRvDQo+ID4gPiBjaGVjayBob3cgbXVjaCB0aGlz
+IGNhbiBhZmZlY3QuIElmIG5vdCwgSSB3b3VsZCBpZ25vcmUgdGhpcyBpZiBjZXJ0YWluIHBsYXRm
+b3JtDQo+ID4gPiBsaWtlIHlvdXJzIGNhbid0IGFjY2VzcyBQQ0kgc3BhY2Ugb3ZlciAweDEwMC4N
+Cj4gPg0KPiA+IEkgd2FzIGFibGUgdG8gY29ubmVjdC4gVGhhbmtzIGEgbG90IFBpbmctS2UhDQo+
+ID4NCj4gDQo+IEdvb2QuIFBsZWFzZSB1c2UgaXQgYXMgdXN1YWwgYW5kIG1vbml0b3IgaWYgaXQg
+d29ya3Mgc3RhYmxlLiBJIHdvdWxkIGxpa2UNCj4gdGFrZSB5b3VyIHJlc3VsdHMgYXMgcmVmZXJl
+bmNlIHRvIGRlY2lkZSBob3cgSSBjYW4gbW9kaWZ5IHRoZSBkcml2ZXIuDQo+IA0KDQpBZnRlciBp
+bnRlcm5hbCBkaXNjdXNzaW9uLCBwZW9wbGUgc3VnZ2VzdCB0byBpbXBsZW1lbnQgREJJIHRvIGFj
+Y2VzcyBQQ0kgY29uZmlnDQpzcGFjZSBhcyBhdHRhY2hlZCBwYXRjaC4gUGxlYXNlIGhlbHAgdG8g
+cmV2ZXJ0IHdvcmthcm91bmQgYW5kIGFwcGx5IHRoaXMgb25lLA0KYW5kIGdpdmUgdXMga2VybmVs
+IGxvZyB0byBzZWUgaWYgaXQgd29ya3MgYXMgZXhwZWN0ZWQuDQoNClBpbmctS2UNCg0K
 
-It possible that while the rx rb is being handled, the transport has
-been stopped and re-started. In this case the tx queue pointer is not
-yet initialized, which will lead to a NULL pointer dereference.
-Fix it.
+--_002_ec85daec1dd64b2ca731078cd0dd95d3realtekcom_
+Content-Type: application/octet-stream;
+	name="0001-wifi-rtw89-pci-use-DBI-function-for-8852AE-8852BE-88.patch"
+Content-Description: 0001-wifi-rtw89-pci-use-DBI-function-for-8852AE-8852BE-88.patch
+Content-Disposition: attachment;
+	filename="0001-wifi-rtw89-pci-use-DBI-function-for-8852AE-8852BE-88.patch";
+	size=3824; creation-date="Tue, 26 Dec 2023 03:36:16 GMT";
+	modification-date="Tue, 26 Dec 2023 03:36:14 GMT"
+Content-Transfer-Encoding: base64
 
-Signed-off-by: Avraham Stern <avraham.stern@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20231207044813.cd0898cafd89.I0b84daae753ba9612092bf383f5c6f761446e964@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/wireless/intel/iwlwifi/pcie/rx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+RnJvbSAwOTc0Y2Q5NWM2Y2YzZTYwOTYwMzVlZTYzOTM1NGI2OWJkNmNhOTU0IE1vbiBTZXAgMTcg
+MDA6MDA6MDAgMjAwMQpGcm9tOiBDaGluLVllbiBMZWUgPHRpbWxlZUByZWFsdGVrLmNvbT4KRGF0
+ZTogRnJpLCAxNSBEZWMgMjAyMyAxODo1NToyOCArMDgwMApTdWJqZWN0OiBbUEFUQ0hdIHdpZmk6
+IHJ0dzg5OiBwY2k6IHVzZSBEQkkgZnVuY3Rpb24gZm9yIDg4NTJBRS84ODUyQkUvODg1MUJFCgpT
+b21ldGltZXMgZHJpdmVyIGNhbid0IHVzZSBrZXJuZWwgYXBpIHBjaV9yZWFkL3dyaXRlX2NvbmZp
+Z19ieXRlCnRvIGFjY2VzcyB0aGUgcGNpIGNvbmZpZyBzcGFjZSBvZiBhYm92ZSBhZGRyZXNzIDB4
+MTAwIGR1ZSB0bwp0aGUgbmVnb3RpYXRlZCBwY2kgc2V0dGluZy4gODg1MkFFLzg4NTJCRS84ODUx
+QkUgcHJvdmlkZSBhbm90aGVyCndheSBjYWxsZWQgZGJpIGZ1bmN0aW9uLCB3aGljaCBiZWxvbmdz
+IHRvIHdpZmkgbWFjIGFuZCBjb3VsZAphY2Nlc3MgYWxsIHBjaSBjb25maWcgc3BhY2UgZm9yIHRo
+aXMgY2FzZS4KCkNoYW5nZS1JZDogSTM0ZjRiNzBhY2NmYWIyNGFlYzhmZjMzZGRmZGM5ZWUzYTMx
+ZThlNmEKU2lnbmVkLW9mZi1ieTogQ2hpbi1ZZW4gTGVlIDx0aW1sZWVAcmVhbHRlay5jb20+Ci0t
+LQogcGNpLmMgfCA2OSArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKystLQogcGNpLmggfCAgMSArCiAyIGZpbGVzIGNoYW5nZWQsIDY4IGluc2Vy
+dGlvbnMoKyksIDIgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvcGNpLmMgYi9wY2kuYwppbmRl
+eCBlNjYzOTZkZmVjYjcuLmM0OGNiOTE4M2M2OCAxMDA2NDQKLS0tIGEvcGNpLmMKKysrIGIvcGNp
+LmMKQEAgLTE5MDcsMjIgKzE5MDcsODcgQEAgc3RhdGljIGludCBydHc4OV93cml0ZTE2X21kaW9f
+Y2xyKHN0cnVjdCBydHc4OV9kZXYgKnJ0d2RldiwgdTggYWRkciwgdTE2IG1hc2ssIHUKIAlyZXR1
+cm4gMDsKIH0KIAorc3RhdGljIGludCBydHc4OV9kYmlfd3JpdGU4KHN0cnVjdCBydHc4OV9kZXYg
+KnJ0d2RldiwgdTE2IGFkZHIsIHU4IGRhdGEpCit7CisJdTE2IGFkZHJfMmxzYiA9IGFkZHIgJiBC
+X0FYX0RCSV8yTFNCOworCXUxNiB3cml0ZV9hZGRyOworCXU4IGZsYWc7CisJaW50IHJldDsKKwor
+CXdyaXRlX2FkZHIgPSBhZGRyICYgQl9BWF9EQklfQUREUl9NU0s7CisJd3JpdGVfYWRkciB8PSB1
+MTZfZW5jb2RlX2JpdHMoQklUKGFkZHJfMmxzYiksIEJfQVhfREJJX1dSRU5fTVNLKTsKKwlydHc4
+OV93cml0ZTgocnR3ZGV2LCBSX0FYX0RCSV9XREFUQSArIGFkZHJfMmxzYiwgZGF0YSk7CisJcnR3
+ODlfd3JpdGUxNihydHdkZXYsIFJfQVhfREJJX0ZMQUcsIHdyaXRlX2FkZHIpOworCXJ0dzg5X3dy
+aXRlOChydHdkZXYsIFJfQVhfREJJX0ZMQUcgKyAyLCBCX0FYX0RCSV9XRkxBRyA+PiAxNik7CisK
+KwlyZXQgPSByZWFkX3BvbGxfdGltZW91dF9hdG9taWMocnR3ODlfcmVhZDgsIGZsYWcsICFmbGFn
+LCAxMCwKKwkJCQkgICAgICAgMTAgKiBSVFc4OV9QQ0lfV1JfUkVUUllfQ05ULCBmYWxzZSwKKwkJ
+CQkgICAgICAgcnR3ZGV2LCBSX0FYX0RCSV9GTEFHICsgMik7CisJaWYgKHJldCkKKwkJcnR3ODlf
+ZXJyKHJ0d2RldiwgImZhaWxlZCB0byB3cml0ZSBEQkkgcmVnaXN0ZXIsIGFkZHI9MHglWFxuIiwK
+KwkJCSAgYWRkcik7CisKKwlyZXR1cm4gcmV0OworfQorCitzdGF0aWMgaW50IHJ0dzg5X2RiaV9y
+ZWFkOChzdHJ1Y3QgcnR3ODlfZGV2ICpydHdkZXYsIHUxNiBhZGRyLCB1OCAqdmFsdWUpCit7CisJ
+dTE2IHJlYWRfYWRkciA9IGFkZHIgJiBCX0FYX0RCSV9BRERSX01TSzsKKwl1OCBmbGFnOworCWlu
+dCByZXQ7CisKKwlydHc4OV93cml0ZTE2KHJ0d2RldiwgUl9BWF9EQklfRkxBRywgcmVhZF9hZGRy
+KTsKKwlydHc4OV93cml0ZTgocnR3ZGV2LCBSX0FYX0RCSV9GTEFHICsgMiwgQl9BWF9EQklfUkZM
+QUcgPj4gMTYpOworCisJcmV0ID0gcmVhZF9wb2xsX3RpbWVvdXRfYXRvbWljKHJ0dzg5X3JlYWQ4
+LCBmbGFnLCAhZmxhZywgMTAsCisJCQkJICAgICAgIDEwICogUlRXODlfUENJX1dSX1JFVFJZX0NO
+VCwgZmFsc2UsCisJCQkJICAgICAgIHJ0d2RldiwgUl9BWF9EQklfRkxBRyArIDIpOworCWlmIChy
+ZXQpIHsKKwkJcnR3ODlfZXJyKHJ0d2RldiwgImZhaWxlZCB0byByZWFkIERCSSByZWdpc3Rlciwg
+YWRkcj0weCVYXG4iLAorCQkJICBhZGRyKTsKKwkJcmV0dXJuIHJldDsKKwl9CisKKwlyZWFkX2Fk
+ZHIgPSBSX0FYX0RCSV9SREFUQSArIChhZGRyICYgMyk7CisJKnZhbHVlID0gcnR3ODlfcmVhZDgo
+cnR3ZGV2LCByZWFkX2FkZHIpOworCisJcmV0dXJuIDA7Cit9CisKIHN0YXRpYyBpbnQgcnR3ODlf
+cGNpX3dyaXRlX2NvbmZpZ19ieXRlKHN0cnVjdCBydHc4OV9kZXYgKnJ0d2RldiwgdTE2IGFkZHIs
+CiAJCQkJICAgICAgIHU4IGRhdGEpCiB7CiAJc3RydWN0IHJ0dzg5X3BjaSAqcnR3cGNpID0gKHN0
+cnVjdCBydHc4OV9wY2kgKilydHdkZXYtPnByaXY7CisJZW51bSBydHc4OV9jb3JlX2NoaXBfaWQg
+Y2hpcF9pZCA9IHJ0d2Rldi0+Y2hpcC0+Y2hpcF9pZDsKIAlzdHJ1Y3QgcGNpX2RldiAqcGRldiA9
+IHJ0d3BjaS0+cGRldjsKKwlpbnQgcmV0OworCisJcmV0ID0gcGNpX3dyaXRlX2NvbmZpZ19ieXRl
+KHBkZXYsIGFkZHIsIGRhdGEpOworCWlmICghcmV0KQorCQlyZXR1cm4gMDsKIAotCXJldHVybiBw
+Y2lfd3JpdGVfY29uZmlnX2J5dGUocGRldiwgYWRkciwgZGF0YSk7CisJaWYgKGNoaXBfaWQgPT0g
+UlRMODg1MkEgfHwgY2hpcF9pZCA9PSBSVEw4ODUyQiB8fCBjaGlwX2lkID09IFJUTDg4NTFCKQor
+CQlyZXQgPSBydHc4OV9kYmlfd3JpdGU4KHJ0d2RldiwgYWRkciwgZGF0YSk7CisKKwlyZXR1cm4g
+cmV0OwogfQogCiBzdGF0aWMgaW50IHJ0dzg5X3BjaV9yZWFkX2NvbmZpZ19ieXRlKHN0cnVjdCBy
+dHc4OV9kZXYgKnJ0d2RldiwgdTE2IGFkZHIsCiAJCQkJICAgICAgdTggKnZhbHVlKQogewogCXN0
+cnVjdCBydHc4OV9wY2kgKnJ0d3BjaSA9IChzdHJ1Y3QgcnR3ODlfcGNpICopcnR3ZGV2LT5wcml2
+OworCWVudW0gcnR3ODlfY29yZV9jaGlwX2lkIGNoaXBfaWQgPSBydHdkZXYtPmNoaXAtPmNoaXBf
+aWQ7CiAJc3RydWN0IHBjaV9kZXYgKnBkZXYgPSBydHdwY2ktPnBkZXY7CisJaW50IHJldDsKIAot
+CXJldHVybiBwY2lfcmVhZF9jb25maWdfYnl0ZShwZGV2LCBhZGRyLCB2YWx1ZSk7CisJcmV0ID0g
+cGNpX3JlYWRfY29uZmlnX2J5dGUocGRldiwgYWRkciwgdmFsdWUpOworCWlmICghcmV0KQorCQly
+ZXR1cm4gMDsKKworCWlmIChjaGlwX2lkID09IFJUTDg4NTJBIHx8IGNoaXBfaWQgPT0gUlRMODg1
+MkIgfHwgY2hpcF9pZCA9PSBSVEw4ODUxQikKKwkJcmV0ID0gcnR3ODlfZGJpX3JlYWQ4KHJ0d2Rl
+diwgYWRkciwgdmFsdWUpOworCisJcmV0dXJuIHJldDsKIH0KIAogc3RhdGljIGludCBydHc4OV9w
+Y2lfY29uZmlnX2J5dGVfc2V0KHN0cnVjdCBydHc4OV9kZXYgKnJ0d2RldiwgdTE2IGFkZHIsCmRp
+ZmYgLS1naXQgYS9wY2kuaCBiL3BjaS5oCmluZGV4IGNhNWRlNzdmZWU5MC4uMWZiN2MyMDlmYTBk
+IDEwMDY0NAotLS0gYS9wY2kuaAorKysgYi9wY2kuaApAQCAtNDIsNiArNDIsNyBAQAogI2RlZmlu
+ZSBCX0FYX0RCSV9XRkxBRwkJCUJJVCgxNikKICNkZWZpbmUgQl9BWF9EQklfV1JFTl9NU0sJCUdF
+Tk1BU0soMTUsIDEyKQogI2RlZmluZSBCX0FYX0RCSV9BRERSX01TSwkJR0VOTUFTSygxMSwgMikK
+KyNkZWZpbmUgQl9BWF9EQklfMkxTQgkJCUdFTk1BU0soMSwgMCkKICNkZWZpbmUgUl9BWF9EQklf
+V0RBVEEJCQkweDEwOTQKICNkZWZpbmUgUl9BWF9EQklfUkRBVEEJCQkweDEwOTgKIAotLSAKMi4y
+NS4xCgo=
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-index df201d40f6c95..92f14ea13a573 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-@@ -1380,7 +1380,7 @@ static void iwl_pcie_rx_handle_rb(struct iwl_trans *trans,
- 		 * if it is true then one of the handlers took the page.
- 		 */
- 
--		if (reclaim) {
-+		if (reclaim && txq) {
- 			u16 sequence = le16_to_cpu(pkt->hdr.sequence);
- 			int index = SEQ_TO_INDEX(sequence);
- 			int cmd_index = iwl_txq_get_cmd_index(txq, index);
--- 
-2.43.0
-
+--_002_ec85daec1dd64b2ca731078cd0dd95d3realtekcom_--
 
