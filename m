@@ -1,37 +1,37 @@
-Return-Path: <linux-wireless+bounces-1282-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1283-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22F1081E38E
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Dec 2023 01:32:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D736A81E3CE
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Dec 2023 01:39:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92F6E287E44
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Dec 2023 00:32:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C7B61F21FE6
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Dec 2023 00:39:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27F9A2B9B3;
-	Tue, 26 Dec 2023 00:23:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEB2344392;
+	Tue, 26 Dec 2023 00:24:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s/Jn+x3C"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lapp6Olt"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09BEC56751;
-	Tue, 26 Dec 2023 00:23:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81175C433C7;
-	Tue, 26 Dec 2023 00:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02AD5AB86;
+	Tue, 26 Dec 2023 00:24:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7076FC433C7;
+	Tue, 26 Dec 2023 00:24:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703550199;
-	bh=SRsxFrnuCE9KyJCeIMY4hXWwwSzEg9UJgZlvQtl0Urg=;
+	s=k20201202; t=1703550281;
+	bh=t6CoWWqDA/gKJAE5fJ4bN2zST9m9RRV2BiBwNbT1vb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s/Jn+x3CsvxaXaOHG4BBvgWvS6j4/AiydSGQEFITRdIMwbOHhcjl127cZSW15tvIR
-	 c2tMQGEgEmxcsO2gpOR7PCX5PahcOpE1P66A0gx2qqURPZHbMaW6zYzHph+ct1qM/5
-	 knAFNAq7HOS4PriTPzDRHbmDVfQA0Cvt7xT4iSm0SE28MxfActqG0UOVk9p6GURde0
-	 JA8HLngDNlYUUhkh/BMjcGQkS04AQV8FcqCfoyi18b0ZTUBEafa8mGkz8KqbqpcDI0
-	 fIo9boQ7c4xTcaoxeHbJvTBIaiV+7NkktVLXnwKFXG5O456VB8TYKY8Rt/qRlZqSu+
-	 BLHXCh+EUNzPg==
+	b=lapp6OltJBLG9s5Xy5+hyUVnXhdxiE12rduSYkp5I7KYkkjfIHTVWBjhZWDtHl5GS
+	 kwFEaL5U32AitKHhzauJWg8oYawJNvaz9II3tuR/tvTFiejy7G1KqtC7InwGpj58zJ
+	 4Wcj+v17eR6iKdF9JoosjOi7eypSgy2AxaJ6Szez972cyjz/pYdTv5RK9D/XH4D/9n
+	 QJ8crYksdSCNvbG3xdyALdqqPLFgxtaVNIgkg9IncWRPsfOvMgBbN6fd57Q4z2epBV
+	 gTBsZEoK7yYNyK8qq/M4jfvGJgqAdbVZNCAqAmdKlJ/0/Rk8URK6Ksy+ar1WCobef6
+	 AR1aCtia8GygA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -42,16 +42,15 @@ Cc: Avraham Stern <avraham.stern@intel.com>,
 	gregory.greenman@intel.com,
 	kvalo@kernel.org,
 	benjamin.berg@intel.com,
-	kuba@kernel.org,
 	ansuelsmth@gmail.com,
 	pagadala.yesu.anjaneyulu@intel.com,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 08/24] wifi: iwlwifi: pcie: avoid a NULL pointer dereference
-Date: Mon, 25 Dec 2023 19:22:01 -0500
-Message-ID: <20231226002255.5730-8-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 07/11] wifi: iwlwifi: pcie: avoid a NULL pointer dereference
+Date: Mon, 25 Dec 2023 19:23:56 -0500
+Message-ID: <20231226002420.6303-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231226002255.5730-1-sashal@kernel.org>
-References: <20231226002255.5730-1-sashal@kernel.org>
+In-Reply-To: <20231226002420.6303-1-sashal@kernel.org>
+References: <20231226002420.6303-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -60,7 +59,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.69
+X-stable-base: Linux 5.15.145
 Content-Transfer-Encoding: 8bit
 
 From: Avraham Stern <avraham.stern@intel.com>
@@ -82,10 +81,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-index 90a46faaaffdf..260500427634c 100644
+index df201d40f6c95..92f14ea13a573 100644
 --- a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
 +++ b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-@@ -1381,7 +1381,7 @@ static void iwl_pcie_rx_handle_rb(struct iwl_trans *trans,
+@@ -1380,7 +1380,7 @@ static void iwl_pcie_rx_handle_rb(struct iwl_trans *trans,
  		 * if it is true then one of the handlers took the page.
  		 */
  
