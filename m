@@ -1,81 +1,76 @@
-Return-Path: <linux-wireless+bounces-1292-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1293-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2685881EF1A
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Dec 2023 14:10:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A85781F192
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Dec 2023 20:18:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB8561F220C2
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Dec 2023 13:10:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6777AB2140C
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Dec 2023 19:18:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AA8D44C7D;
-	Wed, 27 Dec 2023 13:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2643F47761;
+	Wed, 27 Dec 2023 19:18:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gWuNE2hD"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="xvc4qGAC"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09D51446C6;
-	Wed, 27 Dec 2023 13:10:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 69029C433C9;
-	Wed, 27 Dec 2023 13:10:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703682623;
-	bh=lW2vlwL5kbNeD89dDzyGv8dgNeqvg05mKbI50T2JKk8=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=gWuNE2hDIwOpXBt3f6Wx/9RdbI5okDGAEQci0xaY+jM47MSaUfMCD0gj6QWtnls3b
-	 C0Byj1VMLxI/VqnO3aBUHQwSJ6vN0h6ebouqlCa9BkusJ5SArylWOZjFFEhOBMucbK
-	 V35EwW3pcUJp1Q3hC0XPU118HCteMkGSul0VB9UqNObYDSjNe5spj+w5xqk9+kYhdn
-	 4zCCbQUBO1T2es+N+jReT1rZ2rvzri4Bkqx80/DDe53bIMaMh3Cyd5a/GjRPjZK1SD
-	 e0RTYNFaCdFvEc0dIrjLHQpsw20cJn4Xub816Bn5WQiag/jZ4+JJFP9bjRaRmxm82O
-	 wQ/CnmPbW+8/Q==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 4E991E333D9;
-	Wed, 27 Dec 2023 13:10:23 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0387C46B85;
+	Wed, 27 Dec 2023 19:18:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=u2wnuuLQYT1m8FdbY7tnB65SRTLaJoA6JvL7yUFYK8Y=;
+	t=1703704716; x=1704914316; b=xvc4qGAC2Z+1lxNzocrSdlU4jPyM/c080xqd2eRPcboR2fC
+	SqB8UHFUzSW9y73IsqLPfM/dIZ0RCpkMC+i3F+XAU8PTEftX7GleVAMJiTwADftSrd29F+/cTajED
+	S6HTDiYPmAIgGcqx+949+uBAFj/o9utv54Ee54kh7iSXsIyem0EHj55nz/jUBJfcMJumD+lRpuop7
+	wNJS6Xug6/LEy5Mtj/dij99clWqVb4xYiFcyrvXH29YA+WAEdNlUTCkOCro8CK+/exxIaxD3ZPdNr
+	PTCfLMdbnZkHntLFe6xSiOOTNPGg3SgLv+uHIrmQypiEVzlZcXBzO9l1gegsAOuA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rIZQA-0000000BHAS-2v1t;
+	Wed, 27 Dec 2023 20:18:26 +0100
+Message-ID: <4274b2d3892f548f3a56fd6040d4a9c1109069d8.camel@sipsolutions.net>
+Subject: Re: [linux-next:master] [wifi]  ce10e8653f: hwsim.prefer_eht_20.fail
+From: Johannes Berg <johannes@sipsolutions.net>
+To: kernel test robot <oliver.sang@intel.com>, Miri Korenblit
+	 <miriam.rachel.korenblit@intel.com>
+Cc: oe-lkp@lists.linux.dev, lkp@intel.com, Linux Memory Management List
+	 <linux-mm@kvack.org>, Gregory Greenman <gregory.greenman@intel.com>, 
+	linux-wireless@vger.kernel.org
+Date: Wed, 27 Dec 2023 20:18:25 +0100
+In-Reply-To: <202312271555.3fbe1cf4-oliver.sang@intel.com>
+References: <202312271555.3fbe1cf4-oliver.sang@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.2 (3.50.2-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: pull-request: wireless-2023-12-19
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <170368262331.3726.8214220872504350917.git-patchwork-notify@kernel.org>
-Date: Wed, 27 Dec 2023 13:10:23 +0000
-References: <20231219223233.189152-3-johannes@sipsolutions.net>
-In-Reply-To: <20231219223233.189152-3-johannes@sipsolutions.net>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+X-malware-bazaar: not-scanned
 
-Hello:
+On Wed, 2023-12-27 at 15:41 +0800, kernel test robot wrote:
+>=20
+> Hello,
+>=20
+> kernel test robot noticed "hwsim.prefer_eht_20.fail" on:
+>=20
+> commit: ce10e8653f8b6569ea5d4f96917b5eaee7437072 ("wifi: mac80211_hwsim: =
+support HE 40 MHz in 2.4 GHz band")
+> https://git.kernel.org/cgit/linux/kernel/git/next/linux-next.git master
+>=20
 
-This pull request was applied to netdev/net.git (main)
-by David S. Miller <davem@davemloft.net>:
+Known issue, should be fixed in hostap master.
 
-On Tue, 19 Dec 2023 23:32:14 +0100 you wrote:
-> Hi,
-> 
-> Here are a couple of more fixes, the most important
-> one really being the iwlwifi rfkill fix.
-> 
-> Please pull and let us know if there's any problem.
-> 
-> [...]
-
-Here is the summary with links:
-  - pull-request: wireless-2023-12-19
-    https://git.kernel.org/netdev/net/c/49fcf34ac908
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+johannes
 
