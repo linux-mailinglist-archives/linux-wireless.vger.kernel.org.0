@@ -1,116 +1,78 @@
-Return-Path: <linux-wireless+bounces-1288-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1289-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26B8181EAD6
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Dec 2023 01:01:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D33A181EBDF
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Dec 2023 04:33:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08EF41C21285
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Dec 2023 00:01:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B81051C2136E
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Dec 2023 03:33:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1FD3A2D;
-	Wed, 27 Dec 2023 00:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 677E02581;
+	Wed, 27 Dec 2023 03:33:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nSiZLD5Q"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DO5Fdo2Z"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9176D5384;
-	Wed, 27 Dec 2023 00:01:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D34E4C433C7;
-	Wed, 27 Dec 2023 00:01:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48E152571
+	for <linux-wireless@vger.kernel.org>; Wed, 27 Dec 2023 03:33:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 943AFC433C8;
+	Wed, 27 Dec 2023 03:33:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703635286;
-	bh=QD6esAQC2zUHMhdcnID2iNc0cTpprT0pIKR+PaI0cRI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=nSiZLD5QD83Yy6uWll+7uVy99sjqNnEuLgMgpABkq6i3uMWNPE3XB3QOikJFnc/fh
-	 9RuiSoI1eCn2DvOWLvslq20tdKiwOvJ45MO8ydwM6FRAM3krPe6ZQAHwPPFz5AUo3m
-	 6kMOCWM0HYuYNqTCewW/7Ue41tgh6SjCPRw9Eyu4GcJ3TsxYZgozV4PvpJcjhb3ROz
-	 TS89+/k8ZuYRr2lWCrcYT/G3kPvn5r55BGnAFievDz7kvA/LHE30rZa/oPpMQSECy0
-	 PPzrb+8XBEXGFzYCxkSMx1hNEt7WmWnjjtsex4+HjzxxjLQAny7ZzkbjKkR6t4Zsva
-	 mW1OYKrmCLBdQ==
-Date: Tue, 26 Dec 2023 18:01:24 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Mathias Krause <minipli@grsecurity.net>
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Franky Lin <franky.lin@broadcom.com>,
-	Hante Meuleman <hante.meuleman@broadcom.com>,
-	Kalle Valo <kvalo@kernel.org>, linux-pci@vger.kernel.org,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	SHA-cyfmac-dev-list@infineon.com,
-	brcm80211-dev-list.pdl@broadcom.com
-Subject: Re: [PATCH] PCI: Remove unused 'node' member from struct pci_driver
-Message-ID: <20231227000124.GA1484252@bhelgaas>
+	s=k20201202; t=1703648013;
+	bh=KwTNs2I5Gc7G3gRH1bQlkYzl7DzwzHQlsgG8bEBH5O4=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=DO5Fdo2ZyhUjTbgh6ZmlFKV5M505k23KCAUt+Gsel495HV5bZQbAoL4z5hJuOdWco
+	 wqhAMnd+87h/SqupRQ//lbAN71L0AVEQWFvnnmPVdgeI2+kWtGcwzgtaP1xOeLXdoG
+	 LhM59Bm1KHNt0DmtTilOjvsd05UYjz3cnMuU6B0lIsB6H8e6YS1CJujpTCJnDr3L1B
+	 OBFh9jgsKpvMIW52x0UdwcmYDx8io8zFBh+JDylD8gSn7LI/JAgRUowrBP97iDcChf
+	 NC+peDGN7w2MiNqPsvry6UkUjZ4ZARKENavy/XrIGe4mBumb+aw50EO35nHjbgiPcl
+	 SXiEQm0PvlT3w==
+Received: from wens.tw (localhost [127.0.0.1])
+	by wens.tw (Postfix) with ESMTP id 6957A5F8F9;
+	Wed, 27 Dec 2023 11:33:31 +0800 (CST)
+From: Chen-Yu Tsai <wens@kernel.org>
+To: linux-wireless@vger.kernel.org, CaffeeLake <pascalcoffeelake@gmail.com>
+Cc: wireless-regdb@lists.infradead.org, 
+ CaffeeLake <PascalCoffeeLake@gmail.com>
+In-Reply-To: <20231223130852.44711-1-PascalCoffeeLake@gmail.com>
+References: <20231223130852.44711-1-PascalCoffeeLake@gmail.com>
+Subject: Re: [PATCH] wireless-regdb: Update regulatory rules for Japan (JP)
+ for December 2023
+Message-Id: <170364801140.3396033.12249221541805414020.b4-ty@kernel.org>
+Date: Wed, 27 Dec 2023 11:33:31 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231220133505.8798-1-minipli@grsecurity.net>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.4
 
-On Wed, Dec 20, 2023 at 02:35:05PM +0100, Mathias Krause wrote:
-> Remove the unused 'node' member. It got replaced by device_driver
-> chaining more than 20 years ago in commit 4b4a837f2b57 ("PCI: start to
-> use common fields of struct device_driver more...") of the history.git
-> tree.
-> 
-> Signed-off-by: Mathias Krause <minipli@grsecurity.net>
 
-Applied with Kalle's ack to pci/misc for v6.8, thanks!
+On Sat, 23 Dec 2023 22:08:52 +0900, CaffeeLake wrote:
+> Support 320MHz bandwidth for JP region.
+> 
+> The Ministry of Internal Affairs and Communications has approved 320MHz bandwidth with 11be in Japan.
+> 
+> Source: https://www.soumu.go.jp/main_content/000919158.pdf
+> 
+> 
+> [...]
 
-> ---
-> There is only one "user" that makes use of the 'node' member, which is
-> the brcm80211 driver. However, its "use" is clearly wrong (a list head
-> cannot be initialized this way) and, obviously, not needed.
-> 
-> If netdev folks instead want to split this off into a separate commit, I
-> can do that. However, I don't expect any cross-tree conflicts regarding
-> this change.
-> 
->  drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c | 1 -
->  include/linux/pci.h                                     | 2 --
->  2 files changed, 3 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-> index 80220685f5e4..d7fb88bb6ae1 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-> @@ -2707,7 +2707,6 @@ MODULE_DEVICE_TABLE(pci, brcmf_pcie_devid_table);
->  
->  
->  static struct pci_driver brcmf_pciedrvr = {
-> -	.node = {},
->  	.name = KBUILD_MODNAME,
->  	.id_table = brcmf_pcie_devid_table,
->  	.probe = brcmf_pcie_probe,
-> diff --git a/include/linux/pci.h b/include/linux/pci.h
-> index dea043bc1e38..835a937fd233 100644
-> --- a/include/linux/pci.h
-> +++ b/include/linux/pci.h
-> @@ -885,7 +885,6 @@ struct module;
->  
->  /**
->   * struct pci_driver - PCI driver structure
-> - * @node:	List of driver structures.
->   * @name:	Driver name.
->   * @id_table:	Pointer to table of device IDs the driver is
->   *		interested in.  Most drivers should export this
-> @@ -940,7 +939,6 @@ struct module;
->   *		own I/O address space.
->   */
->  struct pci_driver {
-> -	struct list_head	node;
->  	const char		*name;
->  	const struct pci_device_id *id_table;	/* Must be non-NULL for probe to be called */
->  	int  (*probe)(struct pci_dev *dev, const struct pci_device_id *id);	/* New device inserted */
-> -- 
-> 2.39.2
-> 
+Applied, thanks!
+
+[1/1] wireless-regdb: Update regulatory rules for Japan (JP) for December 2023
+      commit: 149c709aa510fa3fb6e98d8f30f9698ff19c26d9
+
+Best regards,
+-- 
+Chen-Yu Tsai <wens@kernel.org>
+
 
