@@ -1,215 +1,334 @@
-Return-Path: <linux-wireless+bounces-1332-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1333-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CAEF81FFC0
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Dec 2023 14:51:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D12382016F
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Dec 2023 21:51:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 478341C20AA2
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Dec 2023 13:51:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C7FAB220DC
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Dec 2023 20:51:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1503A11712;
-	Fri, 29 Dec 2023 13:51:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B59EA14267;
+	Fri, 29 Dec 2023 20:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BCrvE+2C"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VF9ximjX"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 701F811706
-	for <linux-wireless@vger.kernel.org>; Fri, 29 Dec 2023 13:51:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1703857883; x=1735393883;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=/akdBmneIea825pN/mks2ZvV/KY6lz48VTJuzQdYZPs=;
-  b=BCrvE+2CEKlHhSp76/LGh+ELqjQaHwi+He3cwpPlaxWGyPVhP0tdreMg
-   S9s5bI8Rvp/b4INX2Amlu2X1/Yh9pmXZn5hj8fBqbEbW4+w2fgbCHsXJ0
-   W6CnROTtghlJ1OC2xjgogVz3cF6h0WRN4hjuunqNy4IE2b0YKH66IjsYc
-   Wl+60qFE1I7G26MTYKtY+qn5971Gm3ouIExCJ2jmq516t2p6hhZlAIq0Y
-   KWb3in4QxezGV/vUEC2Nrp63vb0Qf3bRXgu/X0OpdmQC5m2TN39zpDrVO
-   FA59aZjIBRXMIJAUbMgCaUoIID3hBQ21mEMIZz1oQgdm691Zq9dMYGK6I
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10938"; a="10235669"
-X-IronPort-AV: E=Sophos;i="6.04,315,1695711600"; 
-   d="scan'208";a="10235669"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Dec 2023 05:51:22 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10938"; a="897514251"
-X-IronPort-AV: E=Sophos;i="6.04,315,1695711600"; 
-   d="scan'208";a="897514251"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
-  by fmsmga002.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 29 Dec 2023 05:51:21 -0800
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Fri, 29 Dec 2023 05:51:17 -0800
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Fri, 29 Dec 2023 05:51:17 -0800
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Fri, 29 Dec 2023 05:51:17 -0800
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.100)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Fri, 29 Dec 2023 05:51:16 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kuUMfrhJlfFejc3ZdXFkY4kEBDnDjtZVoxRFQl1xt1Hupa5cRs2XsdZO7YkME+2VhOjgO6hn/NgL/n01WzIv71ZRVx370MHdQOj6Cw2XfhL9zWY7V2+vZrOzgYc64hay2KsodOpRbZoj+OSZhf5oNpdItjYFAdDN4NMMYmIpDgAKxqeJSguHxkSfp53olU5aV4+vnlXgzYwh2TnSjM/lcudJoFA+sUC1/iXB+gQpf+xeVFdAqHb2zyFwmS4AfpPZvbVZaDFbfhkZW2NZQcodhbYuYGMH2PWPOPSmORyoUJmqYq2v/+A3Bqk0cqXhYu3JSTjY+dP/CkhoCRdoaeWqOw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HC/2AtXuOww7R4zK/j9e64oJf+nENftkRRi1sSk4zro=;
- b=cR5uvOmCOJD4IegiVSfRvOc7rlxUCU7lXF85x+0CbsgKnjJtGzsMTV0vuWlbd/00cNoTHQPn/9gx1DFMD0NOMmLkZyT46wnlE9d1TvPi1/LfARf8t+iS+NU2pSqNBoXENcmbrkXzjgQsHJfXfRA79WDU6tfT0Tusf44bFF2XHrtphWYyLCbvb3JQgiUMj0Z0bki5jnIl0GU2E56qRIIN9+M6TYmxqPtfNbgbyLHIqBFydYlMxu8a3gO2GbtrCM+WkKxmfAsCgjj99DzLfXx+xajpZN6+sCTosjS3JsDRlne2qWI0Tec0KqJB68uQkERkhgh+XArVUtxB0IDEkznKeg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SN6PR11MB3421.namprd11.prod.outlook.com (2603:10b6:805:cd::27)
- by PH8PR11MB8064.namprd11.prod.outlook.com (2603:10b6:510:253::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7135.21; Fri, 29 Dec
- 2023 13:51:13 +0000
-Received: from SN6PR11MB3421.namprd11.prod.outlook.com
- ([fe80::1de5:f667:333f:189]) by SN6PR11MB3421.namprd11.prod.outlook.com
- ([fe80::1de5:f667:333f:189%2]) with mapi id 15.20.7135.019; Fri, 29 Dec 2023
- 13:51:13 +0000
-From: "Sisodiya, Mukesh" <mukesh.sisodiya@intel.com>
-To: "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>, Kalle Valo
-	<kvalo@kernel.org>
-CC: "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, "Greenman,
- Gregory" <gregory.greenman@intel.com>
-Subject: RE: [PATCH v2 05/13] wifi: cfg80211: handle UHB AP and STA power type
-Thread-Topic: [PATCH v2 05/13] wifi: cfg80211: handle UHB AP and STA power
- type
-Thread-Index: AQHaMqKb0j5Wr7NUwk6UdK6KdQSdcLC1J4DNgAImc4CACQhRwA==
-Date: Fri, 29 Dec 2023 13:51:12 +0000
-Message-ID: <SN6PR11MB3421B9AC91E1FBDAD531C662FF9DA@SN6PR11MB3421.namprd11.prod.outlook.com>
-References: <20231220133549.bdfb8a9c7c54.I973563562969a27fea8ec5685b96a3a47afe142f@changeid>
-	<20231220133549.cbfbef9170a9.I432f78438de18aa9f5c9006be12e41dc34cc47c5@changeid>
- <87jzp61ox0.fsf@kernel.org>
- <MW5PR11MB581024768AEC355DEE8F15D5A39BA@MW5PR11MB5810.namprd11.prod.outlook.com>
-In-Reply-To: <MW5PR11MB581024768AEC355DEE8F15D5A39BA@MW5PR11MB5810.namprd11.prod.outlook.com>
-Accept-Language: en-IN, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN6PR11MB3421:EE_|PH8PR11MB8064:EE_
-x-ms-office365-filtering-correlation-id: 6d35f717-a104-4942-1655-08dc08753836
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: c38L2H/RA4zOx7G9X3PO/wG6HiiyqF9ksmZ2wX9NcGpYWEztinrwTXHqNiE6Fjfq5KiIx2KzhpEcXNQ3KR3EHYL7bt0GUHIMnLsyiQRp6iYXBaWRK3u5XIkOHlrfZuzFQTpyhAM/G+HFcDWEDmTDvZC8Wg5/09rry8ywZoBC7rvJABnhyQJV8d0Cx+k0ikwLXVZQn0baCCmwMxhKybnl7hLJ1/ViNEEd99Amf3LSi7k3AeiNdBuYwushq3Uc8pRkeBph90TBRVBi44Qv4USxmvHkf9ag6iRnLR4ZbE8ZE+x9lYznjuYHIpfW22rX7tqprx15TY/CBlrm8VVUwzHKnjLPG5ehtgDGi3UJFeb17w7pU7ixZJmmUYitEaumyZTQ7spaLaoR7qAbIkMnffajbu9qFy5pjfxyEP2I4BH12P/bmGVm2nC4GtLPck++hojHoRQsPCNkktmYV2s2SpayZ8imtdOWMYiINX76Fu8yfXtQth3N243PRLtVW4Kr3ASPK0vEFywe/pogFWRSGzNpwaymt442Z/8EVUG7DErE/uM8d2Rj4T3AV91d4bSaAsPmfClsi9ewjafKxN8qO/iyEq3gajScDx025QjZ57XN/4Y=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR11MB3421.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(376002)(366004)(39860400002)(136003)(396003)(230922051799003)(451199024)(1800799012)(64100799003)(186009)(33656002)(82960400001)(122000001)(38100700002)(41300700001)(54906003)(55016003)(110136005)(8676002)(8936002)(66476007)(66946007)(316002)(64756008)(66556008)(76116006)(66446008)(86362001)(83380400001)(38070700009)(107886003)(26005)(4326008)(52536014)(7696005)(2906002)(71200400001)(6506007)(53546011)(9686003)(478600001)(5660300002)(966005);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?JB7T7cV+70g49XpplOp4Gl84AIHieGR8iwn3Agt6j92OcJR+OxRrQ/JKMMmF?=
- =?us-ascii?Q?fBd0vZJKgj85dI7ey5I6subD0kNQ97UEVrdACyzmhAGvT/RajWDURXJfQ4qK?=
- =?us-ascii?Q?TavSIB9TBeSh6MmHOANaSMzoycaFXdw2WZ01C6y3RoJNKjIbfWcRLH6tcojG?=
- =?us-ascii?Q?zEJQ3ol+nUB56UKYZ87pj0x12/il1EQiSNb0LZtaPW4cI4PXZEd1Z3gYRRrt?=
- =?us-ascii?Q?e0ZaFXcUf3DGiirtVh2N+Xk9zuLs9OGT+sfd6xwXfSLlXOlXMXDbcGPEzkse?=
- =?us-ascii?Q?ilGG8S4AluZCsHwbUxWILRWek0cl69IblxTLCc20aKiKURj15s0vAGj1vVnQ?=
- =?us-ascii?Q?EQvZETUVZvbcpVcSAy8gQT7IT2NShAJ4d/OY8UOW208DVl0mQuKjGGgAPZT3?=
- =?us-ascii?Q?DRKjkDcLTWMMU4Gnj4Zb38qLhaTsrG8ih3OYdNjrbZzAa8w6slFPumBJa16D?=
- =?us-ascii?Q?aA8FLP/LKf301lMAj1a8x0BzmUFuLw5vDwPJv49gKpC4xiqLaWfZZvQ6mWN0?=
- =?us-ascii?Q?rxlP9m2ZWllrMchMrTLbgEDwarRimmppxcFrijgeRICy/dY0S0oto5SosUSo?=
- =?us-ascii?Q?23QJ4fUnCdbd3/24Pvc13/aF0ICkdjrgINhOk37KugIWsvvqoNj7CcbWmyQu?=
- =?us-ascii?Q?cxwJpw/6btJzWrKCWzG7wfguwlBwLRQ61agU5lI5Ns4A68ZFdDTH0VFcQ8xu?=
- =?us-ascii?Q?+6qkHSsV8HSo6milZv3Pk5IiHnaZHnCihn+CDo6iEeSyzSMt8+db1e8SbSsA?=
- =?us-ascii?Q?BPXIMoXJjVMOBFN4NMZgj7aIF54yj7iveVgNZH+PMvf+EUaI/x5gc+6mbPab?=
- =?us-ascii?Q?Wot5d/tcRTj55GOHyO3DI/9Nw/cdAPKdbNGvw/vXKqyalBUxP4iQofUCRmfD?=
- =?us-ascii?Q?QyRhTwJ62t96tL2WoBShJdqa6ZBI3Srr08JDf4gvGEaHsP4RVlCbG76VTq9m?=
- =?us-ascii?Q?TEwiVxAg6aT45HmWUPlAVqRCX1xfZvl26ll55g60chtHIRMrXyEDyDCJUYp+?=
- =?us-ascii?Q?uGXisVV4BuSaJuXCsn6tt8AM6dsnMd9WhP8MLy2LMvzzdENnLCYJpj3J6svt?=
- =?us-ascii?Q?Sv2husEgZJD6cpg5TaS2zpjb2SNatohoan/ysaIWoUpgKl09JTZ/RNC2W4KY?=
- =?us-ascii?Q?EMC4JJzNiV0U0BaJP+xLUu0w0eyHZyoJp9Zevclcan8Z/2Xnp/V8nYl7WXtU?=
- =?us-ascii?Q?iquO3BluLpsPES5HG66/QkAO5GtWNEeMgqjJahb4/qqJIMWrZTLdsVPvAsFT?=
- =?us-ascii?Q?fb8PjPqm44kC//OWzWukEmabQd9wckGE81Moc5z+L3RahXvKO25wExOmwBzb?=
- =?us-ascii?Q?yrwJbtYWMv+WLtnP25Xqq+B4Id1TpxAUiaj6c8oZ7xG4JCeVSXMF9MC74wCV?=
- =?us-ascii?Q?KivFFrrrFAacZlEgpvHXdSAKqobwzDqLCVeksjgsZFuN5t7ezJS+j8T87GtG?=
- =?us-ascii?Q?f+89RMl7tYcD/T2VUIWAm+YUBiEkAm9PLjdkzFBEXMgNkhj2LKGOD2KzHIUM?=
- =?us-ascii?Q?CxNdQiiKcMFdP/blICVUhC0ch1cGm5GmOfSXriMGPYdPXxQAt5qVba6PpDnZ?=
- =?us-ascii?Q?DUnf/SFH4T+zJ67HpBTHmcxd9nkZD0OEBTV0fKka?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB201426F
+	for <linux-wireless@vger.kernel.org>; Fri, 29 Dec 2023 20:51:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-40d5d8a6730so26091805e9.1
+        for <linux-wireless@vger.kernel.org>; Fri, 29 Dec 2023 12:51:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1703883081; x=1704487881; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FNc245D/BAq9HlkqelvZ+jO/WoBo6ssnlFr40wVqNVw=;
+        b=VF9ximjXGvq96mzuHNNj8BHcADV4bqi8WCDkeXx5xpKh/1WMIkXGT014G01JYK2888
+         0Uvvu8VRV3u8BAy6qOjx6h/QEqlu0TvnUDdKf6z0u1m/LDwE8inhAV/KZGMRXeIWLdIV
+         mqb8LaU7OVc/QiVb8+t3MUMUyitnraAZM4pX4u+VA5Bqn7TWsNMMZGvioIBzOfskAjB3
+         5clZx9JH/i7s+AVra6Ct7HgP8RmVXtogGGuBjRc1viwjmiLlB2twpXVUXv4PMhKB3BxR
+         A3ieHJAG2/Re0hXdkft5JzNZMmfsehuZvRilMoewaM0oudbY0GjnA1kfeCcf1tpgJGpl
+         aIXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1703883081; x=1704487881;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=FNc245D/BAq9HlkqelvZ+jO/WoBo6ssnlFr40wVqNVw=;
+        b=f4un1ej38ANM/UhoQEIJG/QngEoKqQrpBihc7pH5DNBiCApy3wDDXdIboYYexv5Zvv
+         S4Gn4V8XWk6Ph/UzGoXE+J1k3IcLtjYQ2+m2vxz3JdQa6v33dGTxKoCoh4Sh+DS0MNC0
+         ZIgVm6sQrpZIRbAEgL2xww6froYqXRB3zahvkXNWYhT3oeNlem3toK9PTdCUtHxIrZod
+         uWIiqLhFP5escxHr3q8wmIrDk1tHDCL96QyYTD1yObQKh83oQuwxRAxvviOwmGudmKNA
+         D2YxFnL8Mqp5GjzJRVorgBx/vXnBAiyTcwrWWE7sR3Rp3pGEg+COBn68q+cdOYJD4TG5
+         3rMg==
+X-Gm-Message-State: AOJu0YzNMUx7KlGJ16Qod2Bj9MthptDKJpIX6vSVxFeTYujQIXC6cRXU
+	7wtdcJEUsvkDWuoTlzuL5nVgvFGiUt8=
+X-Google-Smtp-Source: AGHT+IFHn413YvlPntElL3bz1BUgQSDfXFsjKhZ4vOk/KqKMOxh/OuAXssS06NgMee95KQxmkyuJcg==
+X-Received: by 2002:a05:600c:1547:b0:40d:5fc7:a2f7 with SMTP id f7-20020a05600c154700b0040d5fc7a2f7mr2081877wmg.34.1703883080820;
+        Fri, 29 Dec 2023 12:51:20 -0800 (PST)
+Received: from [192.168.1.50] ([81.196.40.51])
+        by smtp.gmail.com with ESMTPSA id h12-20020a05600c314c00b0040d6eb44b94sm5933257wmo.2.2023.12.29.12.51.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 29 Dec 2023 12:51:20 -0800 (PST)
+Message-ID: <f806007e-8fba-4f29-8a38-f81d04bd4fb8@gmail.com>
+Date: Fri, 29 Dec 2023 22:51:18 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR11MB3421.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6d35f717-a104-4942-1655-08dc08753836
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Dec 2023 13:51:12.6703
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: c4Wx3etWf7jtsuNimJUzrgnyb3Y35a+nmJzWKa1rlEvrpCbusydtZ/ePRsEE8gzU66IHnYg7a0P2egvEsV2RS3WJ6tLgLAIP75TIJqp4BGs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB8064
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Ping-Ke Shih <pkshih@realtek.com>,
+ Larry Finger <Larry.Finger@lwfinger.net>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: [PATCH] wifi: rtlwifi: rtl_usb: Use sync register writes
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Miri/ Kalle,
-Yes,  it is Ultra High band(6Ghz) AP.
-Regards,
-Mukesh Sisodiya
------Original Message-----
-From: Korenblit, Miriam Rachel <miriam.rachel.korenblit@intel.com>=20
-Sent: Sunday, December 24, 2023 1:23 AM
-To: Kalle Valo <kvalo@kernel.org>
-Cc: johannes@sipsolutions.net; linux-wireless@vger.kernel.org; Sisodiya, Mu=
-kesh <mukesh.sisodiya@intel.com>; Greenman, Gregory <gregory.greenman@intel=
-.com>
-Subject: RE: [PATCH v2 05/13] wifi: cfg80211: handle UHB AP and STA power t=
-ype
+Currently rtl_usb performs register writes using the async
+usb_submit_urb() function. This appears to work fine for the RTL8192CU,
+but the RTL8192DU (soon to be supported by rtlwifi) has a problem:
+it transmits everything at the 1M rate in the 2.4 GHz band. (The 5 GHZ
+band is still untested.)
 
-> -----Original Message-----
-> From: Kalle Valo <kvalo@kernel.org>
-> Sent: Friday, December 22, 2023 13:02
-> To: Korenblit, Miriam Rachel <miriam.rachel.korenblit@intel.com>
-> Cc: johannes@sipsolutions.net; linux-wireless@vger.kernel.org;=20
-> Sisodiya, Mukesh <mukesh.sisodiya@intel.com>; Greenman, Gregory=20
-> <gregory.greenman@intel.com>
-> Subject: Re: [PATCH v2 05/13] wifi: cfg80211: handle UHB AP and STA=20
-> power type
->=20
-> Miri Korenblit <miriam.rachel.korenblit@intel.com> writes:
->=20
-> > From: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
-> >
-> > UHB AP send supported power type(LPI, SP, VLP) in beacon and probe=20
-> > response IE and STA should connect to these AP only if their=20
-> > regulatory support the AP power type.
-> >
-> > Beacon/Probe response are reported to userspace with reason "STA=20
-> > regulatory not supporting to connect to AP based on transmitted=20
-> > power type" and it should not connect to AP.
-> >
-> > Signed-off-by: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
-> > Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
-> > Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
->=20
-> What's an UHB AP? Never heard of that before.
+With this patch, rtl_usb performs the register writes using the
+synchronous usb_control_msg() function, and the RTL8192DU works
+normally. The RTL8192CU still works.
 
-Ultra High Band (6 GHz) Aps
+The vendor drivers use the async writes in only one function,
+rtl8192du_trigger_gpio_0 / rtl8192cu_trigger_gpio_0, which probably
+doesn't even run in real life. They use sync writes everywhere else.
 
->=20
-> --
-> https://patchwork.kernel.org/project/linux-wireless/list/
->=20
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittin
-> gpatch
-> es
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+---
 
+Larry, do you remember why, back in 2011, you chose to implement the
+async writes?
+
+I'm not happy about this part:
+
++	rtlpriv->io.write8_async	= _usb_write8_sync;
+
+The variables say "async" but the functions are not async anymore.
+But I couldn't think of a good way to avoid this.
+
+---
+ drivers/net/wireless/realtek/rtlwifi/usb.c | 157 ++++++---------------
+ 1 file changed, 42 insertions(+), 115 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c b/drivers/net/wireless/realtek/rtlwifi/usb.c
+index 30bf2775a335..25394ef702c8 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/usb.c
++++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
+@@ -23,86 +23,23 @@ MODULE_DESCRIPTION("USB basic driver for rtlwifi");
+ 
+ #define MAX_USBCTRL_VENDORREQ_TIMES		10
+ 
+-static void usbctrl_async_callback(struct urb *urb)
+-{
+-	if (urb) {
+-		/* free dr */
+-		kfree(urb->setup_packet);
+-		/* free databuf */
+-		kfree(urb->transfer_buffer);
+-	}
+-}
+-
+-static int _usbctrl_vendorreq_async_write(struct usb_device *udev, u8 request,
+-					  u16 value, u16 index, void *pdata,
+-					  u16 len)
+-{
+-	int rc;
+-	unsigned int pipe;
+-	u8 reqtype;
+-	struct usb_ctrlrequest *dr;
+-	struct urb *urb;
+-	const u16 databuf_maxlen = REALTEK_USB_VENQT_MAX_BUF_SIZE;
+-	u8 *databuf;
+-
+-	if (WARN_ON_ONCE(len > databuf_maxlen))
+-		len = databuf_maxlen;
+-
+-	pipe = usb_sndctrlpipe(udev, 0); /* write_out */
+-	reqtype =  REALTEK_USB_VENQT_WRITE;
+-
+-	dr = kzalloc(sizeof(*dr), GFP_ATOMIC);
+-	if (!dr)
+-		return -ENOMEM;
+-
+-	databuf = kzalloc(databuf_maxlen, GFP_ATOMIC);
+-	if (!databuf) {
+-		kfree(dr);
+-		return -ENOMEM;
+-	}
+-
+-	urb = usb_alloc_urb(0, GFP_ATOMIC);
+-	if (!urb) {
+-		kfree(databuf);
+-		kfree(dr);
+-		return -ENOMEM;
+-	}
+-
+-	dr->bRequestType = reqtype;
+-	dr->bRequest = request;
+-	dr->wValue = cpu_to_le16(value);
+-	dr->wIndex = cpu_to_le16(index);
+-	dr->wLength = cpu_to_le16(len);
+-	/* data are already in little-endian order */
+-	memcpy(databuf, pdata, len);
+-	usb_fill_control_urb(urb, udev, pipe,
+-			     (unsigned char *)dr, databuf, len,
+-			     usbctrl_async_callback, NULL);
+-	rc = usb_submit_urb(urb, GFP_ATOMIC);
+-	if (rc < 0) {
+-		kfree(databuf);
+-		kfree(dr);
+-	}
+-	usb_free_urb(urb);
+-	return rc;
+-}
+-
+-static int _usbctrl_vendorreq_sync_read(struct usb_device *udev, u8 request,
+-					u16 value, u16 index, void *pdata,
+-					u16 len)
++static void _usbctrl_vendorreq_sync(struct usb_device *udev, u8 reqtype,
++				   u16 value, void *pdata, u16 len)
+ {
+ 	unsigned int pipe;
+ 	int status;
+-	u8 reqtype;
+ 	int vendorreq_times = 0;
+ 	static int count;
+ 
+-	pipe = usb_rcvctrlpipe(udev, 0); /* read_in */
+-	reqtype =  REALTEK_USB_VENQT_READ;
++	if (reqtype == REALTEK_USB_VENQT_READ)
++		pipe = usb_rcvctrlpipe(udev, 0); /* read_in */
++	else
++		pipe = usb_sndctrlpipe(udev, 0); /* write_out */
+ 
+ 	do {
+-		status = usb_control_msg(udev, pipe, request, reqtype, value,
+-					 index, pdata, len, 1000);
++		status = usb_control_msg(udev, pipe, REALTEK_USB_VENQT_CMD_REQ,
++					 reqtype, value, REALTEK_USB_VENQT_CMD_IDX,
++					 pdata, len, 1000);
+ 		if (status < 0) {
+ 			/* firmware download is checksumed, don't retry */
+ 			if ((value >= FW_8192C_START_ADDRESS &&
+@@ -114,18 +51,15 @@ static int _usbctrl_vendorreq_sync_read(struct usb_device *udev, u8 request,
+ 	} while (++vendorreq_times < MAX_USBCTRL_VENDORREQ_TIMES);
+ 
+ 	if (status < 0 && count++ < 4)
+-		pr_err("reg 0x%x, usbctrl_vendorreq TimeOut! status:0x%x value=0x%x\n",
+-		       value, status, *(u32 *)pdata);
+-	return status;
++		pr_err("reg 0x%x, usbctrl_vendorreq TimeOut! status:0x%x value=0x%x reqtype=0x%x\n",
++		       value, status, *(u32 *)pdata, reqtype);
+ }
+ 
+ static u32 _usb_read_sync(struct rtl_priv *rtlpriv, u32 addr, u16 len)
+ {
+ 	struct device *dev = rtlpriv->io.dev;
+ 	struct usb_device *udev = to_usb_device(dev);
+-	u8 request;
+ 	u16 wvalue;
+-	u16 index;
+ 	__le32 *data;
+ 	unsigned long flags;
+ 
+@@ -134,14 +68,33 @@ static u32 _usb_read_sync(struct rtl_priv *rtlpriv, u32 addr, u16 len)
+ 		rtlpriv->usb_data_index = 0;
+ 	data = &rtlpriv->usb_data[rtlpriv->usb_data_index];
+ 	spin_unlock_irqrestore(&rtlpriv->locks.usb_lock, flags);
+-	request = REALTEK_USB_VENQT_CMD_REQ;
+-	index = REALTEK_USB_VENQT_CMD_IDX; /* n/a */
+ 
+ 	wvalue = (u16)addr;
+-	_usbctrl_vendorreq_sync_read(udev, request, wvalue, index, data, len);
++	_usbctrl_vendorreq_sync(udev, REALTEK_USB_VENQT_READ, wvalue, data, len);
+ 	return le32_to_cpu(*data);
+ }
+ 
++
++static void _usb_write_sync(struct rtl_priv *rtlpriv, u32 addr, u32 val, u16 len)
++{
++	struct device *dev = rtlpriv->io.dev;
++	struct usb_device *udev = to_usb_device(dev);
++	unsigned long flags;
++	__le32 *data;
++	u16 wvalue;
++
++	spin_lock_irqsave(&rtlpriv->locks.usb_lock, flags);
++	if (++rtlpriv->usb_data_index >= RTL_USB_MAX_RX_COUNT)
++		rtlpriv->usb_data_index = 0;
++	data = &rtlpriv->usb_data[rtlpriv->usb_data_index];
++	spin_unlock_irqrestore(&rtlpriv->locks.usb_lock, flags);
++
++	wvalue = (u16)(addr & 0x0000ffff);
++	*data = cpu_to_le32(val);
++
++	_usbctrl_vendorreq_sync(udev, REALTEK_USB_VENQT_WRITE, wvalue, data, len);
++}
++
+ static u8 _usb_read8_sync(struct rtl_priv *rtlpriv, u32 addr)
+ {
+ 	return (u8)_usb_read_sync(rtlpriv, addr, 1);
+@@ -157,45 +110,19 @@ static u32 _usb_read32_sync(struct rtl_priv *rtlpriv, u32 addr)
+ 	return _usb_read_sync(rtlpriv, addr, 4);
+ }
+ 
+-static void _usb_write_async(struct usb_device *udev, u32 addr, u32 val,
+-			     u16 len)
+-{
+-	u8 request;
+-	u16 wvalue;
+-	u16 index;
+-	__le32 data;
+-	int ret;
+-
+-	request = REALTEK_USB_VENQT_CMD_REQ;
+-	index = REALTEK_USB_VENQT_CMD_IDX; /* n/a */
+-	wvalue = (u16)(addr&0x0000ffff);
+-	data = cpu_to_le32(val);
+-
+-	ret = _usbctrl_vendorreq_async_write(udev, request, wvalue,
+-					     index, &data, len);
+-	if (ret < 0)
+-		dev_err(&udev->dev, "error %d writing at 0x%x\n", ret, addr);
+-}
+-
+-static void _usb_write8_async(struct rtl_priv *rtlpriv, u32 addr, u8 val)
++static void _usb_write8_sync(struct rtl_priv *rtlpriv, u32 addr, u8 val)
+ {
+-	struct device *dev = rtlpriv->io.dev;
+-
+-	_usb_write_async(to_usb_device(dev), addr, val, 1);
++	_usb_write_sync(rtlpriv, addr, val, 1);
+ }
+ 
+-static void _usb_write16_async(struct rtl_priv *rtlpriv, u32 addr, u16 val)
++static void _usb_write16_sync(struct rtl_priv *rtlpriv, u32 addr, u16 val)
+ {
+-	struct device *dev = rtlpriv->io.dev;
+-
+-	_usb_write_async(to_usb_device(dev), addr, val, 2);
++	_usb_write_sync(rtlpriv, addr, val, 2);
+ }
+ 
+-static void _usb_write32_async(struct rtl_priv *rtlpriv, u32 addr, u32 val)
++static void _usb_write32_sync(struct rtl_priv *rtlpriv, u32 addr, u32 val)
+ {
+-	struct device *dev = rtlpriv->io.dev;
+-
+-	_usb_write_async(to_usb_device(dev), addr, val, 4);
++	_usb_write_sync(rtlpriv, addr, val, 4);
+ }
+ 
+ static void _rtl_usb_io_handler_init(struct device *dev,
+@@ -205,9 +132,9 @@ static void _rtl_usb_io_handler_init(struct device *dev,
+ 
+ 	rtlpriv->io.dev = dev;
+ 	mutex_init(&rtlpriv->io.bb_mutex);
+-	rtlpriv->io.write8_async	= _usb_write8_async;
+-	rtlpriv->io.write16_async	= _usb_write16_async;
+-	rtlpriv->io.write32_async	= _usb_write32_async;
++	rtlpriv->io.write8_async	= _usb_write8_sync;
++	rtlpriv->io.write16_async	= _usb_write16_sync;
++	rtlpriv->io.write32_async	= _usb_write32_sync;
+ 	rtlpriv->io.read8_sync		= _usb_read8_sync;
+ 	rtlpriv->io.read16_sync		= _usb_read16_sync;
+ 	rtlpriv->io.read32_sync		= _usb_read32_sync;
+-- 
+2.43.0
 
