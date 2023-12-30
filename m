@@ -1,99 +1,121 @@
-Return-Path: <linux-wireless+bounces-1352-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1354-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B771820818
-	for <lists+linux-wireless@lfdr.de>; Sat, 30 Dec 2023 19:04:15 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAAFE820847
+	for <lists+linux-wireless@lfdr.de>; Sat, 30 Dec 2023 20:38:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05094283F37
-	for <lists+linux-wireless@lfdr.de>; Sat, 30 Dec 2023 18:04:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56360B2126A
+	for <lists+linux-wireless@lfdr.de>; Sat, 30 Dec 2023 19:38:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD50FC2C6;
-	Sat, 30 Dec 2023 18:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E17FBE5D;
+	Sat, 30 Dec 2023 19:38:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HE+Zh+8p"
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="Aahj92t5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6839C2C5;
-	Sat, 30 Dec 2023 18:04:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lwfinger.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-6dc1fe0889fso1421762a34.3;
-        Sat, 30 Dec 2023 10:04:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1703959447; x=1704564247; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=fpYHdg9CMaw6456egcFr0yg5mUTzURSDHrDt2C+JeYc=;
-        b=HE+Zh+8pFO2ieNbxqgTwBhpGjMf1OeNdk4iyzIezJB1OJMs89w7vOurR1PbvVqa1U+
-         o12sWzptz8euZYfw39jwnx1HoUfKSfCMZNE6PYPoH/WWUeWuA6sJMSA061kIEoKDgnub
-         95J4DTb68z7kVdF8FAjB7Gth5qwqlRqtXsGh7aWmQmzadxKA2kFmjy+BEC94lpGyMxbt
-         8Lem7Nouu8/IaEv4QYNYIrlbU7CHrGnfKT2fdkMWUgc9TiihErpZ5BBFuLkVEmFrQDpW
-         PtbY6VAZvrpBtXa/2NvZeB3AKJqzlV22yM9PYja3mu+BRSUaGuDoQhrYQWlefpvUf/Qt
-         gJ5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703959447; x=1704564247;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fpYHdg9CMaw6456egcFr0yg5mUTzURSDHrDt2C+JeYc=;
-        b=jmHeTBCSESmA+ktp4NNteuYXfDpVBqHXkRsBCJB4KTQ0L4ic4EIliMe587mf/NVN/Q
-         1LpN2HQAZju3T1vCPUvCBLCdJwWcEbYi+5emrNzlKV6y4E7v1GgJEbz1zmtp6XKAIcT+
-         /cQr/htNn4ViWYWBtqTE9fWfGf70/TzcKWRnKF4k93VQ7+oaQWKS8HKTjn7Q4m4n+foL
-         G40BAGmsafSsjELNpXBldGSxDR5hXj8mCW/CdR8n/dVMV9M9dqttPrkFyj/Xewhu8uOO
-         M7ruuDDMiamdF9pBopzd9eh6RJKzyRj4HnuIa+pt04RdyakwSI2G3V47z3WybgCzejAl
-         iN+w==
-X-Gm-Message-State: AOJu0Yx4KiOpMXsfJGIh7YxCUO1jRGoUuRVCRSfZ0mwcHxPC+sqJDv9v
-	GPnkEsJ82Zd7tKtUzTv8swk=
-X-Google-Smtp-Source: AGHT+IGBLhlO2DsQhJl5YasbkNy/gvJ9k50GfzbjjS5fKNPrcVEIk2qhepd9yVSpqToecPLdE0nZEA==
-X-Received: by 2002:a05:6870:c6a2:b0:203:bd9f:3be5 with SMTP id cv34-20020a056870c6a200b00203bd9f3be5mr15703938oab.106.1703959446795;
-        Sat, 30 Dec 2023 10:04:06 -0800 (PST)
-Received: from [192.168.0.162] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id q9-20020a9d57c9000000b006dbfc48c7f0sm1437696oti.63.2023.12.30.10.04.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 30 Dec 2023 10:04:06 -0800 (PST)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <cb9dcb49-ad94-40df-9f01-a28df3daf6c3@lwfinger.net>
-Date: Sat, 30 Dec 2023 12:04:02 -0600
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC5FEC12B
+	for <linux-wireless@vger.kernel.org>; Sat, 30 Dec 2023 19:38:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1703965094; x=1704224294;
+	bh=hzDnlR2JtaWtfwJIyhGyRAK5TYxs41N11mbfkjjCeuA=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=Aahj92t5uGFWTqmOxjniE5OZ3TRJguziyPxCCgQ29EPrxtCqZ3kR9LtjXcV1/LdZq
+	 9j8dwpnozl5p+zuocdqzsViooERopNkJy5IEHRpUXIvGkV2uQVFYVoULoJOGoGBpI2
+	 BXLOQmcihq1llvS/oZJ07g9Qq5mE/P040mT9XhiI8iJbUc2iexcxjxzySToYm/rW3W
+	 fL6kBJIZQfAeTMxTNqYQZ9rXklN8a7aY0bWDyf5VeNpbDqr7VRo0BGRJpdbvKJ5ds5
+	 Z+bSqsWNDnAaMOSv7vKYvXRbEPX5NW21pIht+Qe0yue4PeDz9t3NRaVhZwl/GroKXy
+	 WHdWzXYC5iuag==
+Date: Sat, 30 Dec 2023 19:37:56 +0000
+To: =?utf-8?Q?Michael_B=C3=BCsch?= <m@bues.ch>
+From: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+Cc: Julian Calaby <julian.calaby@gmail.com>, Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH wireless 2/5] wifi: b43: Stop/wake correct queue in DMA Tx path when QoS is disabled
+Message-ID: <87bka7wkfm.fsf@protonmail.com>
+In-Reply-To: <20231230184113.3ecfed4f@barney>
+References: <20231230045105.91351-1-sergeantsagara@protonmail.com> <20231230045105.91351-3-sergeantsagara@protonmail.com> <CAGRGNgWYLTmRfvw94Ok_FfcEVGPa0tRg-ELxkD8K6nxTTNZ9jg@mail.gmail.com> <20231230144036.7f48b739@barney> <878r5bk3x9.fsf@protonmail.com> <20231230184113.3ecfed4f@barney>
+Feedback-ID: 26003777:user:proton
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH wireless 3/5] wifi: b43: Stop/wake correct queue in PIO Tx
- path when QoS is disabled
-Content-Language: en-US
-To: Rahul Rameshbabu <sergeantsagara@protonmail.com>,
- Kalle Valo <kvalo@kernel.org>
-Cc: linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <20231230045105.91351-1-sergeantsagara@protonmail.com>
- <20231230045105.91351-4-sergeantsagara@protonmail.com>
-From: Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <20231230045105.91351-4-sergeantsagara@protonmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 12/29/23 22:51, Rahul Rameshbabu wrote:
-> +		if (dev->qos_enabled)
-> +			ieee80211_stop_queue(dev->wl->hw,
-> +					     skb_get_queue_mapping(skb));
-> +		else
-> +			ieee80211_stop_queue(dev->wl->hw, 0);
+On Sat, 30 Dec, 2023 18:41:13 +0100 Michael B=C3=BCsch <m@bues.ch> wrote:
+> [[PGP Signed Part:Undecided]]
+> On Sat, 30 Dec 2023 17:15:18 +0000
+> Rahul Rameshbabu <sergeantsagara@protonmail.com> wrote:
+>
+>> On Sat, 30 Dec, 2023 14:40:36 +0100 Michael B=C3=BCsch <m@bues.ch> wrote=
+:
+>> > [[PGP Signed Part:Undecided]]
+>> > On Sat, 30 Dec 2023 18:48:45 +1100
+>> > Julian Calaby <julian.calaby@gmail.com> wrote: =20
+>> >> > --- a/drivers/net/wireless/broadcom/b43/dma.c
+>> >> > +++ b/drivers/net/wireless/broadcom/b43/dma.c
+>> >> > @@ -1399,7 +1399,10 @@ int b43_dma_tx(struct b43_wldev *dev, struct=
+ sk_buff *skb)
+>> >> >             should_inject_overflow(ring)) {
+>> >> >                 /* This TX ring is full. */
+>> >> >                 unsigned int skb_mapping =3D skb_get_queue_mapping(=
+skb);
+>> >> > -               ieee80211_stop_queue(dev->wl->hw, skb_mapping);
+>> >> > +               if (dev->qos_enabled)
+>> >> > +                       ieee80211_stop_queue(dev->wl->hw, skb_mappi=
+ng);
+>> >> > +               else
+>> >> > +                       ieee80211_stop_queue(dev->wl->hw, 0);   =20
+>> >>=20
+>> >> Would this be a little cleaner if we only look up the queue mapping i=
+f
+>> >> QOS is enabled? I.e. =20
+>> >
+>> > No. It would break the other uses of skb_mapping.
+>> >
+>> > But I am wondering why skb_mapping is non-zero in the first place.
+>> > I think the actual bug might be somewhere else. =20
+>>=20
+>> Right, skb_mapping is used to map to the correct software structures DMA
+>> mapped to the device. The reason the mapping for the best effort queue
+>> (the default/defacto when QoS is disabled) is not zero is due to the way
+>> initialization of the queues/rings occurs in the driver. The best effort
+>> queue is mapped as the third queue, which leads to this issue when QoS
+>> is disabled. Would it make more sense to change the mappings in
+>> initialization such that the best effort queue is by default mapped to
+>> zero, so we would not need such conditionals?
+>
+> Maybe it is a good idea to find the patch that broke non-QoS.
+> That possibly helps to understand the situation.
+>
+> Non-QoS used to work just fine.
 
-This code sequence occurs in several places. Would it be better to put this in a 
-routine specific to b43, thus it would only be used once?
+I did some git analysis, and I actually believe that this issue has been
+present since the commit e6f5b934fba8 ("b43: Add QOS support"). Before
+then, non-QOS would not trigger this issue. There is a cosmetic change
+after this commit, b27faf8ebf25 ("b43: Rename the DMA ring pointers"),
+but this change does not introduce the issue (but makes it more
+obvious). I think the reason nobody has ever reported this is that even
+when the warnings are triggered, everything appears to work fine. I
+think therefore the two options are the following.
 
-We certainly could try extracting firmware from a newer binary. Any suggestions?
+1. Remap the BE queue to 0 instead of the BK queue.
+2. Use this kind of conditional to handle the mapping when QoS is
+   disabled.
 
-Larry
+--
+Thanks,
+
+Rahul Rameshbabu
 
 
