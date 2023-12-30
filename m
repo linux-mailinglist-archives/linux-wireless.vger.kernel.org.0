@@ -1,47 +1,47 @@
-Return-Path: <linux-wireless+bounces-1348-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1349-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D262820792
-	for <lists+linux-wireless@lfdr.de>; Sat, 30 Dec 2023 18:15:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E14B820798
+	for <lists+linux-wireless@lfdr.de>; Sat, 30 Dec 2023 18:17:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C56F01F21347
-	for <lists+linux-wireless@lfdr.de>; Sat, 30 Dec 2023 17:15:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D5251F2145C
+	for <lists+linux-wireless@lfdr.de>; Sat, 30 Dec 2023 17:17:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF2228F45;
-	Sat, 30 Dec 2023 17:15:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4A35C140;
+	Sat, 30 Dec 2023 17:17:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="MLN/rQ0/"
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="BH6JKtWm"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41D988F44;
-	Sat, 30 Dec 2023 17:15:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B626C12B
+	for <linux-wireless@vger.kernel.org>; Sat, 30 Dec 2023 17:17:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1703956524; x=1704215724;
-	bh=09Hmr6FulL4GOGnkm6RTp3Uh3iuibt0XtEnBi3NKpx0=;
+	s=protonmail3; t=1703956671; x=1704215871;
+	bh=QQ0ltPLjZpeG5P5hw0GwaUTAFyp/TZCuilQIFffY7L4=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=MLN/rQ0//gvkGbqBg5K0NlNmP/OmjnP8M0ydYz3Vfm5Q9VhHo65tFsttgxjI373kY
-	 DLsdsatl10g40/HIWtIbK949a2mjL+/3aqGkGVSFRTUqq0UNziRjpysRTVwUKopUU8
-	 kpi/7S9Ec2n1btgdDV9oJdv6WtP++98Nd4131EuT9x7b7WAInfo+yrBE8gIFI2+hPT
-	 S9AY37xg0JgEnPP1B8/a0N77HgXBbKXuRlvmNjlqENoWpUjtuc6XureBi9VcYunmXX
-	 mhj+Rjexpufc8LfWWgH2/zUw7dhjOO37XDDmcaCihEddzsXHPcezCrCY1bBJ/z4oii
-	 vgaH11JAEEyKw==
-Date: Sat, 30 Dec 2023 17:15:18 +0000
+	b=BH6JKtWmsCx/bk+7ArCWqZLg3Ym49iUdiCkEvm5KWnafwtYLvqpJDX/ee71Nf9PyL
+	 jRyTggQa5u8GUTm9RCCXE2fSr3Enz04U1YdCIoeQ1ZpFYZwfsAf6cTY0niQttQsRuR
+	 9VIzjxhA7k32R+usnLJ5XjPlLnpUCOgK+C73qQpWzHVAbAOTqvkgj/zuXZJElUdILs
+	 3w78rHinKJNCt5glyUgaOleGgn7/qe43O98vddIOwuEhrChXaOkLOeuerv9x25+HMi
+	 HLPA1DczAuavfbH8LN7GpM/+mGJZ7awU3Eu25JQHhcSH4TfUXzUz48ypx2onZ0L+ka
+	 4+OfozbHgTPoA==
+Date: Sat, 30 Dec 2023 17:17:40 +0000
 To: =?utf-8?Q?Michael_B=C3=BCsch?= <m@bues.ch>
 From: Rahul Rameshbabu <sergeantsagara@protonmail.com>
-Cc: Julian Calaby <julian.calaby@gmail.com>, Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH wireless 2/5] wifi: b43: Stop/wake correct queue in DMA Tx path when QoS is disabled
-Message-ID: <878r5bk3x9.fsf@protonmail.com>
-In-Reply-To: <20231230144036.7f48b739@barney>
-References: <20231230045105.91351-1-sergeantsagara@protonmail.com> <20231230045105.91351-3-sergeantsagara@protonmail.com> <CAGRGNgWYLTmRfvw94Ok_FfcEVGPa0tRg-ELxkD8K6nxTTNZ9jg@mail.gmail.com> <20231230144036.7f48b739@barney>
+Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH wireless 1/5] wifi: b43: Correct OpenFW QoS capability warning conditional
+Message-ID: <874jfzk3tb.fsf@protonmail.com>
+In-Reply-To: <20231230143455.4d64ffc7@barney>
+References: <20231230045105.91351-1-sergeantsagara@protonmail.com> <20231230045105.91351-2-sergeantsagara@protonmail.com> <20231230143455.4d64ffc7@barney>
 Feedback-ID: 26003777:user:proton
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -52,41 +52,38 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, 30 Dec, 2023 14:40:36 +0100 Michael B=C3=BCsch <m@bues.ch> wrote:
+On Sat, 30 Dec, 2023 14:34:55 +0100 Michael B=C3=BCsch <m@bues.ch> wrote:
 > [[PGP Signed Part:Undecided]]
-> On Sat, 30 Dec 2023 18:48:45 +1100
-> Julian Calaby <julian.calaby@gmail.com> wrote:
->> > --- a/drivers/net/wireless/broadcom/b43/dma.c
->> > +++ b/drivers/net/wireless/broadcom/b43/dma.c
->> > @@ -1399,7 +1399,10 @@ int b43_dma_tx(struct b43_wldev *dev, struct sk=
-_buff *skb)
->> >             should_inject_overflow(ring)) {
->> >                 /* This TX ring is full. */
->> >                 unsigned int skb_mapping =3D skb_get_queue_mapping(skb=
-);
->> > -               ieee80211_stop_queue(dev->wl->hw, skb_mapping);
->> > +               if (dev->qos_enabled)
->> > +                       ieee80211_stop_queue(dev->wl->hw, skb_mapping)=
+> On Sat, 30 Dec 2023 04:51:29 +0000
+> Rahul Rameshbabu <sergeantsagara@protonmail.com> wrote:
+>
+>> Trigger the warning message should be when the OpenFW capability for QoS
+>> does not advertise QoS support. Previously, the warning would be
+>> incorrectly triggered when OpenFW reported QoS capability is present.
+>
+>> --- a/drivers/net/wireless/broadcom/b43/main.c
+>> +++ b/drivers/net/wireless/broadcom/b43/main.c
+>> @@ -2713,7 +2713,7 @@ static int b43_upload_microcode(struct b43_wldev *=
+dev)
+>>  =09=09=09dev->hwcrypto_enabled =3D false;
+>>  =09=09}
+>>  =09=09/* adding QoS support should use an offline discovery mechanism *=
+/
+>> -=09=09WARN(fwcapa & B43_FWCAPA_QOS, "QoS in OpenFW not supported\n");
+>> +=09=09WARN(!(fwcapa & B43_FWCAPA_QOS), "QoS in OpenFW not supported\n")=
 ;
->> > +               else
->> > +                       ieee80211_stop_queue(dev->wl->hw, 0); =20
->>=20
->> Would this be a little cleaner if we only look up the queue mapping if
->> QOS is enabled? I.e.
+>>  =09} else {
+>>  =09=09b43info(dev->wl, "Loading firmware version %u.%u "
+>>  =09=09=09"(20%.2i-%.2i-%.2i %.2i:%.2i:%.2i)\n",
 >
-> No. It would break the other uses of skb_mapping.
->
-> But I am wondering why skb_mapping is non-zero in the first place.
-> I think the actual bug might be somewhere else.
+> I don't think this patch is correct.
+> It should warn, if the firmware advertises QoS, because that is not
+> supported by b43 in case of OpenFW.
 
-Right, skb_mapping is used to map to the correct software structures DMA
-mapped to the device. The reason the mapping for the best effort queue
-(the default/defacto when QoS is disabled) is not zero is due to the way
-initialization of the queues/rings occurs in the driver. The best effort
-queue is mapped as the third queue, which leads to this issue when QoS
-is disabled. Would it make more sense to change the mappings in
-initialization such that the best effort queue is by default mapped to
-zero, so we would not need such conditionals?
+Thanks. I had a hard time understanding the intention of this warning. I
+figured it could be the case where the warning is about the driver
+disabling QoS when firmware has support but was not sure. Will drop this
+patch going forward.
 
 --
 Thanks,
