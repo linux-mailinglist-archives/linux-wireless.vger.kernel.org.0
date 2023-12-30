@@ -1,40 +1,42 @@
-Return-Path: <linux-wireless+bounces-1346-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1344-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDB508206AC
-	for <lists+linux-wireless@lfdr.de>; Sat, 30 Dec 2023 15:10:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 911ED820695
+	for <lists+linux-wireless@lfdr.de>; Sat, 30 Dec 2023 14:41:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AACD2813EA
-	for <lists+linux-wireless@lfdr.de>; Sat, 30 Dec 2023 14:10:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2F411C21096
+	for <lists+linux-wireless@lfdr.de>; Sat, 30 Dec 2023 13:41:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02B788C0B;
-	Sat, 30 Dec 2023 14:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1C798BE3;
+	Sat, 30 Dec 2023 13:41:11 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from bues.ch (bues.ch [80.190.117.144])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3508BED;
-	Sat, 30 Dec 2023 14:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E68DC8BED;
+	Sat, 30 Dec 2023 13:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bues.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bues.ch
 Received: by bues.ch with esmtpsa (Exim 4.96)
 	(envelope-from <m@bues.ch>)
-	id 1rJZVD-000B92-1i;
-	Sat, 30 Dec 2023 14:35:46 +0100
-Date: Sat, 30 Dec 2023 14:34:55 +0100
+	id 1rJZaI-000BEm-05;
+	Sat, 30 Dec 2023 14:41:01 +0100
+Date: Sat, 30 Dec 2023 14:40:36 +0100
 From: Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
-To: Rahul Rameshbabu <sergeantsagara@protonmail.com>
-Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+To: Julian Calaby <julian.calaby@gmail.com>
+Cc: Rahul Rameshbabu <sergeantsagara@protonmail.com>, Kalle Valo
+ <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
  b43-dev@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH wireless 1/5] wifi: b43: Correct OpenFW QoS capability
- warning conditional
-Message-ID: <20231230143455.4d64ffc7@barney>
-In-Reply-To: <20231230045105.91351-2-sergeantsagara@protonmail.com>
+Subject: Re: [PATCH wireless 2/5] wifi: b43: Stop/wake correct queue in DMA
+ Tx path when QoS is disabled
+Message-ID: <20231230144036.7f48b739@barney>
+In-Reply-To: <CAGRGNgWYLTmRfvw94Ok_FfcEVGPa0tRg-ELxkD8K6nxTTNZ9jg@mail.gmail.com>
 References: <20231230045105.91351-1-sergeantsagara@protonmail.com>
-	<20231230045105.91351-2-sergeantsagara@protonmail.com>
+	<20231230045105.91351-3-sergeantsagara@protonmail.com>
+	<CAGRGNgWYLTmRfvw94Ok_FfcEVGPa0tRg-ELxkD8K6nxTTNZ9jg@mail.gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.39; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -42,62 +44,60 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/DPVM1GyukumrzwBTrXX/GYf";
+Content-Type: multipart/signed; boundary="Sig_/TCfuXrtMG=ku6EJFF1A=u3k";
  protocol="application/pgp-signature"; micalg=pgp-sha512
 
---Sig_/DPVM1GyukumrzwBTrXX/GYf
+--Sig_/TCfuXrtMG=ku6EJFF1A=u3k
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, 30 Dec 2023 04:51:29 +0000
-Rahul Rameshbabu <sergeantsagara@protonmail.com> wrote:
+On Sat, 30 Dec 2023 18:48:45 +1100
+Julian Calaby <julian.calaby@gmail.com> wrote:
+> > --- a/drivers/net/wireless/broadcom/b43/dma.c
+> > +++ b/drivers/net/wireless/broadcom/b43/dma.c
+> > @@ -1399,7 +1399,10 @@ int b43_dma_tx(struct b43_wldev *dev, struct sk_=
+buff *skb)
+> >             should_inject_overflow(ring)) {
+> >                 /* This TX ring is full. */
+> >                 unsigned int skb_mapping =3D skb_get_queue_mapping(skb);
+> > -               ieee80211_stop_queue(dev->wl->hw, skb_mapping);
+> > +               if (dev->qos_enabled)
+> > +                       ieee80211_stop_queue(dev->wl->hw, skb_mapping);
+> > +               else
+> > +                       ieee80211_stop_queue(dev->wl->hw, 0); =20
+>=20
+> Would this be a little cleaner if we only look up the queue mapping if
+> QOS is enabled? I.e.
 
-> Trigger the warning message should be when the OpenFW capability for QoS
-> does not advertise QoS support. Previously, the warning would be
-> incorrectly triggered when OpenFW reported QoS capability is present.
+No. It would break the other uses of skb_mapping.
 
-> --- a/drivers/net/wireless/broadcom/b43/main.c
-> +++ b/drivers/net/wireless/broadcom/b43/main.c
-> @@ -2713,7 +2713,7 @@ static int b43_upload_microcode(struct b43_wldev *d=
-ev)
->  			dev->hwcrypto_enabled =3D false;
->  		}
->  		/* adding QoS support should use an offline discovery mechanism */
-> -		WARN(fwcapa & B43_FWCAPA_QOS, "QoS in OpenFW not supported\n");
-> +		WARN(!(fwcapa & B43_FWCAPA_QOS), "QoS in OpenFW not supported\n");
->  	} else {
->  		b43info(dev->wl, "Loading firmware version %u.%u "
->  			"(20%.2i-%.2i-%.2i %.2i:%.2i:%.2i)\n",
-
-I don't think this patch is correct.
-It should warn, if the firmware advertises QoS, because that is not
-supported by b43 in case of OpenFW.
-
+But I am wondering why skb_mapping is non-zero in the first place.
+I think the actual bug might be somewhere else.
 
 --=20
 Michael B=C3=BCsch
 https://bues.ch/
 
---Sig_/DPVM1GyukumrzwBTrXX/GYf
+--Sig_/TCfuXrtMG=ku6EJFF1A=u3k
 Content-Type: application/pgp-signature
 Content-Description: OpenPGP digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAmWQHH8ACgkQ9TK+HZCN
-iw76ZxAAurASq9nsjCyeOlHYgd0pN/3LqmEX3OSxwMsOry8MP3yjmQk5xRT/mfSL
-SeU4V6KqkvH3tBpHRkHhua8X3TkDRqKv2e0YvjOOAUpPm5U0qlWzdZhHQNyypum4
-uAYLTUHL325m5k91mlnmC70wRrKn/GLrCewOCTdJa1g5+TUIq6Xx1J266GK2nmRl
-1DTIsBoz8R9wLE5vk3UiIS3WFudddofd2A+Fwpqe601sX5CNKBlL2Leis0oZcLBR
-xZ+H1f07AslPR9BR47wyohMdPXOGpyo1HloG6IeCgqp1l149mQVLlvNuw20uRGjN
-JGe37rp22nc8n8qudMIobZT8+IeW2/8JRYBSeQ3eft+43c5pySkQcMEOPRhb4mLH
-1CC3BYeeGoe40eCiJOVrdf1jGLtRsv8wCYUCsZ/T8jAHziKZ1dObyxTG/10JBtDi
-2JuiWSHxsEFaKkbjbq5B0nsorb29YpuEQya7IYyHy7dixtP3mMdB3F4g//qHZb1S
-i9YgtI0mcUaSE/0ahR4pRnbScyJV54uJfa+L9xHRTEpbp3y8toeVWcRncAOoPTQ+
-x7pcqkOVQESjYfqmUfmab1zo/roXw9yN226THi5aQEv3S+uU7OpZffLOI5YkDV/a
-TyOZKf75WIzDkUydwVPEqf+3J54T8tdYMZKaan4mMeF0VlA/bro=
-=mRQS
+iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAmWQHdQACgkQ9TK+HZCN
+iw4Dgw//UdhkJsEMI+LxdCItWs0laiTytoyk135y6K81oXnImGPWuN51vh99z/Fd
+s5cjPp0e8IJ27FzDxzyM+0mo0+uqUPqPE1nO6VM4vgt0wgVl+iA6ulkbk3Xr0LkI
+4CoIk0GZZkFsuubT6yF71gSImSvSoIFP/GJMOlWrjecGAOtRbvpi1o6rIcRYQTLn
+MQ6kHNASJbhbbNJd5/XCOro27YdO2OkKRq3xs4YOfd6bV567j71SPEQN8f5I6/UZ
+uiAd6MhP6noVsXepzz/QA4exUAW9RhPHwVmh6QHnbEoXfHWM+lSrvlv/fcmtbh7o
+Pfxg9df9lftT+2WMSfcpr3rks7d/idx9XqPA1T5ndDB7vdP4qLofzzgXG3Ig0KUH
+tu0SomIfu4xOemEfPTIFIL1EGPOdsNYWcL4yX2GMZuti9dtfw0jf6d31qa08IfoC
+OEqIx2+WbluTwFaeGwPw2/xmtA7q8wK2dgeN0feNDSZHPN1/PrYyL9tvjuZCkIR/
+LCs9HFMwVb5HwNvIvCY1sAFIzIsup7XhZVfPRi0d/qYA66mlXG4mWFpQMC1ko/Ze
+43oahhSLaShjrmYPJ0ZN/fAmyJo94mMshrqtbtFGqsR17ue7zsfbLpjT4IVmsCv0
+ShKV2hWciHCKo5xxoe6GD9PfRhC3bnnIb81aY5ks2tPx8+RvPHo=
+=5i0z
 -----END PGP SIGNATURE-----
 
---Sig_/DPVM1GyukumrzwBTrXX/GYf--
+--Sig_/TCfuXrtMG=ku6EJFF1A=u3k--
 
