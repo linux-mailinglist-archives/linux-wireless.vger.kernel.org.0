@@ -1,97 +1,99 @@
-Return-Path: <linux-wireless+bounces-1351-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1352-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03817820812
-	for <lists+linux-wireless@lfdr.de>; Sat, 30 Dec 2023 18:44:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B771820818
+	for <lists+linux-wireless@lfdr.de>; Sat, 30 Dec 2023 19:04:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29F701C221FB
-	for <lists+linux-wireless@lfdr.de>; Sat, 30 Dec 2023 17:44:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05094283F37
+	for <lists+linux-wireless@lfdr.de>; Sat, 30 Dec 2023 18:04:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2860F9DF;
-	Sat, 30 Dec 2023 17:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD50FC2C6;
+	Sat, 30 Dec 2023 18:04:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HE+Zh+8p"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from bues.ch (bues.ch [80.190.117.144])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C34BF9C4;
-	Sat, 30 Dec 2023 17:44:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bues.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bues.ch
-Received: by bues.ch with esmtpsa (Exim 4.96)
-	(envelope-from <m@bues.ch>)
-	id 1rJdNP-000FuJ-1Y;
-	Sat, 30 Dec 2023 18:43:58 +0100
-Date: Sat, 30 Dec 2023 18:43:35 +0100
-From: Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
-To: Rahul Rameshbabu <sergeantsagara@protonmail.com>
-Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
- b43-dev@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH wireless 5/5] wifi: b43: Support advertising lack of QoS
- capability
-Message-ID: <20231230184335.53e33db2@barney>
-In-Reply-To: <87cyunk45e.fsf@protonmail.com>
-References: <20231230045105.91351-1-sergeantsagara@protonmail.com>
-	<20231230045105.91351-6-sergeantsagara@protonmail.com>
-	<20231230144523.7df01ff5@barney>
-	<87cyunk45e.fsf@protonmail.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.39; x86_64-pc-linux-gnu)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6839C2C5;
+	Sat, 30 Dec 2023 18:04:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lwfinger.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-6dc1fe0889fso1421762a34.3;
+        Sat, 30 Dec 2023 10:04:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1703959447; x=1704564247; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=fpYHdg9CMaw6456egcFr0yg5mUTzURSDHrDt2C+JeYc=;
+        b=HE+Zh+8pFO2ieNbxqgTwBhpGjMf1OeNdk4iyzIezJB1OJMs89w7vOurR1PbvVqa1U+
+         o12sWzptz8euZYfw39jwnx1HoUfKSfCMZNE6PYPoH/WWUeWuA6sJMSA061kIEoKDgnub
+         95J4DTb68z7kVdF8FAjB7Gth5qwqlRqtXsGh7aWmQmzadxKA2kFmjy+BEC94lpGyMxbt
+         8Lem7Nouu8/IaEv4QYNYIrlbU7CHrGnfKT2fdkMWUgc9TiihErpZ5BBFuLkVEmFrQDpW
+         PtbY6VAZvrpBtXa/2NvZeB3AKJqzlV22yM9PYja3mu+BRSUaGuDoQhrYQWlefpvUf/Qt
+         gJ5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1703959447; x=1704564247;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fpYHdg9CMaw6456egcFr0yg5mUTzURSDHrDt2C+JeYc=;
+        b=jmHeTBCSESmA+ktp4NNteuYXfDpVBqHXkRsBCJB4KTQ0L4ic4EIliMe587mf/NVN/Q
+         1LpN2HQAZju3T1vCPUvCBLCdJwWcEbYi+5emrNzlKV6y4E7v1GgJEbz1zmtp6XKAIcT+
+         /cQr/htNn4ViWYWBtqTE9fWfGf70/TzcKWRnKF4k93VQ7+oaQWKS8HKTjn7Q4m4n+foL
+         G40BAGmsafSsjELNpXBldGSxDR5hXj8mCW/CdR8n/dVMV9M9dqttPrkFyj/Xewhu8uOO
+         M7ruuDDMiamdF9pBopzd9eh6RJKzyRj4HnuIa+pt04RdyakwSI2G3V47z3WybgCzejAl
+         iN+w==
+X-Gm-Message-State: AOJu0Yx4KiOpMXsfJGIh7YxCUO1jRGoUuRVCRSfZ0mwcHxPC+sqJDv9v
+	GPnkEsJ82Zd7tKtUzTv8swk=
+X-Google-Smtp-Source: AGHT+IGBLhlO2DsQhJl5YasbkNy/gvJ9k50GfzbjjS5fKNPrcVEIk2qhepd9yVSpqToecPLdE0nZEA==
+X-Received: by 2002:a05:6870:c6a2:b0:203:bd9f:3be5 with SMTP id cv34-20020a056870c6a200b00203bd9f3be5mr15703938oab.106.1703959446795;
+        Sat, 30 Dec 2023 10:04:06 -0800 (PST)
+Received: from [192.168.0.162] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id q9-20020a9d57c9000000b006dbfc48c7f0sm1437696oti.63.2023.12.30.10.04.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 30 Dec 2023 10:04:06 -0800 (PST)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <cb9dcb49-ad94-40df-9f01-a28df3daf6c3@lwfinger.net>
+Date: Sat, 30 Dec 2023 12:04:02 -0600
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/04xsz+cOeeKNmqlab4tIDAR";
- protocol="application/pgp-signature"; micalg=pgp-sha512
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH wireless 3/5] wifi: b43: Stop/wake correct queue in PIO Tx
+ path when QoS is disabled
+Content-Language: en-US
+To: Rahul Rameshbabu <sergeantsagara@protonmail.com>,
+ Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20231230045105.91351-1-sergeantsagara@protonmail.com>
+ <20231230045105.91351-4-sergeantsagara@protonmail.com>
+From: Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <20231230045105.91351-4-sergeantsagara@protonmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
---Sig_/04xsz+cOeeKNmqlab4tIDAR
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+On 12/29/23 22:51, Rahul Rameshbabu wrote:
+> +		if (dev->qos_enabled)
+> +			ieee80211_stop_queue(dev->wl->hw,
+> +					     skb_get_queue_mapping(skb));
+> +		else
+> +			ieee80211_stop_queue(dev->wl->hw, 0);
 
-On Sat, 30 Dec 2023 17:10:26 +0000
-Rahul Rameshbabu <sergeantsagara@protonmail.com> wrote:
+This code sequence occurs in several places. Would it be better to put this in a 
+routine specific to b43, thus it would only be used once?
 
-> > The firmware probably is just too old for this device. =20
->=20
-> I just retested with newer firmware released on 2012-08-15. I still see
-> the same issue with QoS. This appears to be the newest firmware I can
-> acquire from http://lwfinger.com/b43-firmware/, which I extract from
-> broadcom-wl-6.30.163.46.
+We certainly could try extracting firmware from a newer binary. Any suggestions?
 
-It's still pretty old.
-Nobody has worked on getting a newer version extracted for a long time.
+Larry
 
-But I'm fine with just disabling QoS on this device.
-Upgrading to a newer firmware probably is a bigger change.
-That could be done later.
-
---=20
-Michael B=C3=BCsch
-https://bues.ch/
-
---Sig_/04xsz+cOeeKNmqlab4tIDAR
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAmWQVscACgkQ9TK+HZCN
-iw4dZw//dQ+J3UdZS2OD5DDjJw7tXIufz5nExYFDCnCPhiW9dArIJGqqZHi2TbTW
-6fwbXwKma3TgOaUYLWKBVmbsBqDbCRcX63Wum4BBnrZQHml1YlY1b3Qow9348Rtz
-btqV1tCaOd6dgTWtZsGcotTiXsh+qXoOI/hclbNkr32Oh+3D47f10x4i+N6uJSdA
-X+G3wvfyI0LZbj3wxxkQ1uNL7r5SdwpQKdqaiidnW77IRT3nJYWEtSK2UqaeDdDw
-U2xGkOdW8J/5qPAiUHdD7Pvla56xBO+RsMtxuDWWfHfqtrXF7psNV3sBK/IXrtA+
-cHmQEO66J0WwGSZlBxEwrI0A0iF4k+StjmZEz/SZ/T9Grsoqh8PXFgBAJ6zHpriF
-Z+W4BgS81VvdsioKvvUlaU296i8BU1Q7OjUBa1GMAJabdMmAkIZSL0Qj8Szwe3Ow
-lBXXkTPeMbt2u/hMmFQe+Ws1KX/fCJJSlb8KpGWkUgAkzifuqdq+07/j+MRTUnQ1
-x7EUxzd1jh0EWLRxe1uh554F7WKX360BYZYrWnILTQ9stzibAtqsU3ZKOv/OJqF+
-jy7d+hs5k0JouILMxFVkb/FqqEids0lgYf2iS8tfHPGpY4WT7cqc5kwXGKeNE0vF
-AEnGZSejBr+sYnhOpDqRwmdRXXPa0RYlK/vJKePJT3YjE5I1YUw=
-=fzl9
------END PGP SIGNATURE-----
-
---Sig_/04xsz+cOeeKNmqlab4tIDAR--
 
