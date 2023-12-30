@@ -1,66 +1,64 @@
-Return-Path: <linux-wireless+bounces-1356-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1357-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8289F8208A2
-	for <lists+linux-wireless@lfdr.de>; Sat, 30 Dec 2023 23:24:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB4378208B2
+	for <lists+linux-wireless@lfdr.de>; Sat, 30 Dec 2023 23:46:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2010A1F22425
-	for <lists+linux-wireless@lfdr.de>; Sat, 30 Dec 2023 22:24:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38A741F2147C
+	for <lists+linux-wireless@lfdr.de>; Sat, 30 Dec 2023 22:46:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06DDDD29F;
-	Sat, 30 Dec 2023 22:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4E53D2FF;
+	Sat, 30 Dec 2023 22:46:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iGNnpcV6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mNCwYjeJ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 195C3D26D;
-	Sat, 30 Dec 2023 22:24:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lwfinger.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9E3D30B
+	for <linux-wireless@vger.kernel.org>; Sat, 30 Dec 2023 22:45:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-7810827e54eso741364185a.2;
-        Sat, 30 Dec 2023 14:24:03 -0800 (PST)
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-33678156e27so7236910f8f.1
+        for <linux-wireless@vger.kernel.org>; Sat, 30 Dec 2023 14:45:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1703975043; x=1704579843; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ytqw2FHmhrz2Q/Vvd/gZICZv8ex4sbCt21vyO6FDogw=;
-        b=iGNnpcV6PGi/HH0advNart2vEnLIH16GLqd/o5TY6K+mDQ3fNqkLG2Byzm9HHy67/h
-         SAeBF2JTjogEyf/y0uEWeqx6UNM1xqiEsbl+HE6AB5vCQlUmv9e2ndR1dEaDEM2RAINy
-         4RzTPIKA0ITCTpmLpE1kHUQSjjf/aLxsABOOgeuk0Ubdc/HhJzmpsnBDKdcxRh/5490D
-         gRsZs2/eQPBrp/KaEsu1ZyC5UKDTiO9EPzJDEWYNFlxr7XxbGeTSvx5Jq6O1MRSnQnI4
-         terliPgxCZIQj/tw5AYg/gGxyu6YGq6BFwg3gsTavyAHr7V278IZXZD11MjNLwTaZR8G
-         5TYg==
+        d=gmail.com; s=20230601; t=1703976357; x=1704581157; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=d3uWNZKv2NjPkr80eo02lK+LDeO6tD8duM2QRgGpEp0=;
+        b=mNCwYjeJwV/teSaxOePRKs8qh1nrWkc6n0fdg0/1dzAqDS2ZYtlkzVy4m+oPKVSUyM
+         ojc2L4q2FMqBQz35VatvAa1/rGb8Sh388XGyOP4Ndi3fODaWEUE2Gh+XWSSgMgB+zuMj
+         ynVKS2mCesJIZ+ojJTU7dG8YFogOYn9vTe4beVzuDDNULOsFMIVanZ8v8+Jzg1UuyGf7
+         GjSFkReiPEtrItPMbtwok22hFOpWOAO/yNFy2M8tL8Wh+krEeYdIo5WTmNvWYa614bK+
+         OT9vO2tjsO52wNi4nq2+XDwYbQgUzsDMmhbCALZX/QFhgSawKfYo/X5OLgvul5FXVo1z
+         QFQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703975043; x=1704579843;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Ytqw2FHmhrz2Q/Vvd/gZICZv8ex4sbCt21vyO6FDogw=;
-        b=KiHXPlOK0cjFFXOxv7uR3w0SiglZpZ64N4eAR9gYdMNmohOgA2Y5AD2W+p1RwW5UdT
-         XmooAtIGuDr1wgkweswfinHC+AzJyGr7RWPvO680UweCtSWFMH1HCHrTmaDlmD5io2Hb
-         aZiZ102NA9VieFKeGQQ29AutC3gswR4Sq/MqyxQg5DNfERRyWs+Q+n/FWZI6XXlJ/Z05
-         eoeIvJ47SZKOsbTaNsVeRrTu9qZpFQTAjD8pv/leMOaoxmjS+TRUPy7yVx5LkV6KUYt6
-         1k+Fe7qmLBajth/Yj/w69KqRnY0bPX+98losrWtDqafOSXQlFSICFjZXaUx0hju7QqLx
-         vj2Q==
-X-Gm-Message-State: AOJu0YxhTocbdyWR3GT92+1XzDhW74pp78ccVvz4hVgHhrGaHZiBdZAd
-	p8E/VSpcJwJuPtQv1+WbRzw=
-X-Google-Smtp-Source: AGHT+IGTWXvfDNFHuJs/2JwYmQDseU7HorFDI4IceT3cAbf4f88WDlSNXxN5ZhWt0jW2njXpvMCx1Q==
-X-Received: by 2002:a05:620a:1aa9:b0:781:5c68:a5ee with SMTP id bl41-20020a05620a1aa900b007815c68a5eemr9616536qkb.45.1703975042959;
-        Sat, 30 Dec 2023 14:24:02 -0800 (PST)
-Received: from [192.168.0.162] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id u11-20020a9d4d8b000000b006d9fb0458cdsm3232223otk.39.2023.12.30.14.24.01
+        d=1e100.net; s=20230601; t=1703976357; x=1704581157;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=d3uWNZKv2NjPkr80eo02lK+LDeO6tD8duM2QRgGpEp0=;
+        b=RrzAm1nM470J3J1DOJ3ytI/j0XYOyuIIWz9TskS22mthj/sE8kaXyeoETBlKUnKVYN
+         /Z8C9Ewca6RaKJW09oBYeYxf/QJ+8T+x170iV4nNZa78WjVx4S+/tb3eO9fGHa29rIRN
+         MmomMYRbqsCYuWQKfceUJGq+swMDQbfd4KkZXm4KmymXYDfHFH0wuNkSJuWjGVywc7bz
+         TgccJRb84F180ecEdLndew9Qpw8+XMMlEuJz2sr/GprBwTBePrKOTHn+CoRjbUxOqtac
+         ork9WHTS0HmcsijQc3/kJuHV9gLV3hEEJXC3ATm4e5mI5HXi2UPn1xJ7vnY4juIc5n9H
+         S4sQ==
+X-Gm-Message-State: AOJu0YzLmNqsIUWI77nI9kx9mWhkOUZkMG2gM9RqvtcFLE3//rOWb44C
+	clKW3hdv1x2hZuyBXhxjjmIOh17ZZ1M=
+X-Google-Smtp-Source: AGHT+IHx8UzHaWXPLNzLFbuA5e4nZyJN0Pek8r/TEJR18DmRc8e0hI0vivclbYcIhZ3uswc80tJL1w==
+X-Received: by 2002:a05:600c:b93:b0:40d:8682:9640 with SMTP id fl19-20020a05600c0b9300b0040d86829640mr133435wmb.84.1703976357008;
+        Sat, 30 Dec 2023 14:45:57 -0800 (PST)
+Received: from [192.168.1.50] ([81.196.40.51])
+        by smtp.gmail.com with ESMTPSA id hg10-20020a05600c538a00b0040d7c3d5454sm6154127wmb.3.2023.12.30.14.45.55
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 30 Dec 2023 14:24:02 -0800 (PST)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <ca357d13-7da9-490f-9e69-4674c6ede057@lwfinger.net>
-Date: Sat, 30 Dec 2023 16:23:58 -0600
+        Sat, 30 Dec 2023 14:45:56 -0800 (PST)
+Message-ID: <7a2c3158-3a45-4466-b11e-fc09802b20e2@gmail.com>
+Date: Sun, 31 Dec 2023 00:45:54 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -68,34 +66,123 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH wireless 3/5] wifi: b43: Stop/wake correct queue in PIO Tx
- path when QoS is disabled
 Content-Language: en-US
-To: Rahul Rameshbabu <sergeantsagara@protonmail.com>
-Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
- b43-dev@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20231230045105.91351-1-sergeantsagara@protonmail.com>
- <20231230045105.91351-4-sergeantsagara@protonmail.com>
- <cb9dcb49-ad94-40df-9f01-a28df3daf6c3@lwfinger.net>
- <877ckvwk5v.fsf@protonmail.com>
-From: Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <877ckvwk5v.fsf@protonmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Jes Sorensen <Jes.Sorensen@gmail.com>, Ping-Ke Shih <pkshih@realtek.com>,
+ Zenm Chen <zenmchen@gmail.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: [PATCH v3] wifi: rtl8xxxu: Fix LED control code of RTL8192FU
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 12/30/23 13:43, Rahul Rameshbabu wrote:
-> Unfortunately, new firmware would not prevent the need to fix up the
-> code with regards to QoS being disabled via the kernel parameter or
-> using OpenFW. That said, new firmware could help us drop the fifth patch
-> in this series. I am thinking about using b43-fwcutter to extract
-> proprietary fw from a newer release of broadcom-wl to see if that makes
-> a difference. That said, I am a bit puzzled since the device I am
-> testing on released in early 2011, and I used firmware released in late
-> 2012.
+Some devices, like the Comfast CF-826F, use LED1, which already works.
+Others, like Asus USB-N13 C1, use LED0, which doesn't work correctly.
 
-Unfortunately, it is very difficult to get the parameters for fwcutter from an 
-x86 binary. Some of the other architectures are easier.
+Write the right values to the LED control registers to make LED0 work
+as well.
 
-Larry
+This is unfortunately tested only with the Comfast CF-826F.
 
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+---
+v3:
+ - Use more bit definitions.
+ - Use u32p_replace_bits to touch only the relevant bits.
+ - New author.
+
+v2:
+ - Explain why to fix the issue in this way in the commit message.
+ - Split a long statement into short ones.
+ - Use some of the definitions suggested by Ping-Ke Shih.
+
+Linking v2 and v1 because it's been a while:
+https://lore.kernel.org/linux-wireless/20230912112709.22456-1-zenmchen@gmail.com/
+https://lore.kernel.org/linux-wireless/20230910002038.56362-1-zenmchen@gmail.com/
+---
+ .../realtek/rtl8xxxu/rtl8xxxu_8192f.c         | 32 +++++++++++++------
+ .../wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h | 15 +++++++++
+ 2 files changed, 38 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c
+index 28e93835e05a..585b1a5eed69 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c
+@@ -2014,26 +2014,40 @@ static int rtl8192fu_led_brightness_set(struct led_classdev *led_cdev,
+ 	struct rtl8xxxu_priv *priv = container_of(led_cdev,
+ 						  struct rtl8xxxu_priv,
+ 						  led_cdev);
+-	u16 ledcfg;
++	u32 ledcfg;
+ 
+ 	/* Values obtained by observing the USB traffic from the Windows driver. */
+ 	rtl8xxxu_write32(priv, REG_SW_GPIO_SHARE_CTRL_0, 0x20080);
+ 	rtl8xxxu_write32(priv, REG_SW_GPIO_SHARE_CTRL_1, 0x1b0000);
+ 
+-	ledcfg = rtl8xxxu_read16(priv, REG_LEDCFG0);
++	ledcfg = rtl8xxxu_read32(priv, REG_LEDCFG0);
++
++	/* Comfast CF-826F uses LED1. Asus USB-N13 C1 uses LED0. Set both. */
++
++	u32p_replace_bits(&ledcfg, LED_GPIO_ENABLE, LEDCFG0_LED2EN);
++	u32p_replace_bits(&ledcfg, LED_IO_MODE_OUTPUT, LEDCFG0_LED0_IO_MODE);
++	u32p_replace_bits(&ledcfg, LED_IO_MODE_OUTPUT, LEDCFG0_LED1_IO_MODE);
+ 
+ 	if (brightness == LED_OFF) {
+-		/* Value obtained like above. */
+-		ledcfg = BIT(1) | BIT(7);
++		u32p_replace_bits(&ledcfg, LED_MODE_SW_CTRL, LEDCFG0_LED0CM);
++		u32p_replace_bits(&ledcfg, LED_SW_OFF, LEDCFG0_LED0SV);
++		u32p_replace_bits(&ledcfg, LED_MODE_SW_CTRL, LEDCFG0_LED1CM);
++		u32p_replace_bits(&ledcfg, LED_SW_OFF, LEDCFG0_LED1SV);
+ 	} else if (brightness == LED_ON) {
+-		/* Value obtained like above. */
+-		ledcfg = BIT(1) | BIT(7) | BIT(11);
++		u32p_replace_bits(&ledcfg, LED_MODE_SW_CTRL, LEDCFG0_LED0CM);
++		u32p_replace_bits(&ledcfg, LED_SW_ON, LEDCFG0_LED0SV);
++		u32p_replace_bits(&ledcfg, LED_MODE_SW_CTRL, LEDCFG0_LED1CM);
++		u32p_replace_bits(&ledcfg, LED_SW_ON, LEDCFG0_LED1SV);
+ 	} else if (brightness == RTL8XXXU_HW_LED_CONTROL) {
+-		/* Value obtained by brute force. */
+-		ledcfg = BIT(8) | BIT(9);
++		u32p_replace_bits(&ledcfg, LED_MODE_TX_OR_RX_EVENTS,
++				  LEDCFG0_LED0CM);
++		u32p_replace_bits(&ledcfg, LED_SW_OFF, LEDCFG0_LED0SV);
++		u32p_replace_bits(&ledcfg, LED_MODE_TX_OR_RX_EVENTS,
++				  LEDCFG0_LED1CM);
++		u32p_replace_bits(&ledcfg, LED_SW_OFF, LEDCFG0_LED1SV);
+ 	}
+ 
+-	rtl8xxxu_write16(priv, REG_LEDCFG0, ledcfg);
++	rtl8xxxu_write32(priv, REG_LEDCFG0, ledcfg);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h
+index 920ee50e2115..61c0c0ec07b3 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h
+@@ -146,6 +146,21 @@
+ #define  GPIO_INTM_EDGE_TRIG_IRQ	BIT(9)
+ 
+ #define REG_LEDCFG0			0x004c
++#define  LEDCFG0_LED0CM			GENMASK(2, 0)
++#define  LEDCFG0_LED1CM			GENMASK(10, 8)
++#define   LED_MODE_SW_CTRL		0x0
++#define   LED_MODE_TX_OR_RX_EVENTS	0x3
++#define  LEDCFG0_LED0SV			BIT(3)
++#define  LEDCFG0_LED1SV			BIT(11)
++#define   LED_SW_OFF			0x0
++#define   LED_SW_ON			0x1
++#define  LEDCFG0_LED0_IO_MODE		BIT(7)
++#define  LEDCFG0_LED1_IO_MODE		BIT(15)
++#define   LED_IO_MODE_OUTPUT		0x0
++#define   LED_IO_MODE_INPUT		0x1
++#define  LEDCFG0_LED2EN			BIT(21)
++#define   LED_GPIO_DISABLE		0x0
++#define   LED_GPIO_ENABLE		0x1
+ #define  LEDCFG0_DPDT_SELECT		BIT(23)
+ #define REG_LEDCFG1			0x004d
+ #define  LEDCFG1_HW_LED_CONTROL		BIT(1)
+-- 
+2.43.0
 
