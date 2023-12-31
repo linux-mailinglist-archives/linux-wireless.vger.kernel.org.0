@@ -1,92 +1,71 @@
-Return-Path: <linux-wireless+bounces-1367-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1368-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B75E7820C29
-	for <lists+linux-wireless@lfdr.de>; Sun, 31 Dec 2023 18:29:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47500820F40
+	for <lists+linux-wireless@lfdr.de>; Sun, 31 Dec 2023 22:59:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64811281A76
-	for <lists+linux-wireless@lfdr.de>; Sun, 31 Dec 2023 17:29:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CA5A2B217FB
+	for <lists+linux-wireless@lfdr.de>; Sun, 31 Dec 2023 21:59:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69DCC8F4F;
-	Sun, 31 Dec 2023 17:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90DACBE4A;
+	Sun, 31 Dec 2023 21:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="mOARG1PV"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="rxb2vF7d"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F77D8F40;
-	Sun, 31 Dec 2023 17:29:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1704043773; x=1704302973;
-	bh=hU+O3O0WZy59tVU9PtFRXLLdlxK59XaCKjJYfsYMEPY=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=mOARG1PVmRQaf7Zhnnrdn7cfcZpEoJKtv2dOnFYbBACfCnhTkfEZ3xRcJ+hVp4ioZ
-	 8anPHtZ+xlmHR1XZ26EJn6BsQSHyOO8XLJyzyud1naAxRxGeuc+h1BA4YOlOYIu0L5
-	 RLceeNf7lGn7GJpdKbgtoUjIJQlf9wWiL979J/sco7XMtGTToJLaZTWzM2NZE4oZcd
-	 PNafsdnxLdU525kXHVqPVpYTQq1GGLZx1wVNGIqAAXXkn72QW1o8DzextZyfP2wZ/C
-	 FIZRGjFLULgkY+foKItIeiA7lhedDswK/FbwCl8S55cxdKvn49nSx7tlg6gjSh6mYk
-	 GVlgmOEME0lHw==
-Date: Sun, 31 Dec 2023 17:29:14 +0000
-To: =?utf-8?Q?Michael_B=C3=BCsch?= <m@bues.ch>
-From: Rahul Rameshbabu <sergeantsagara@protonmail.com>
-Cc: Larry Finger <Larry.Finger@lwfinger.net>, Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH wireless 3/5] wifi: b43: Stop/wake correct queue in PIO Tx path when QoS is disabled
-Message-ID: <87sf3iz3ff.fsf@protonmail.com>
-In-Reply-To: <20231231103302.04cc37ae@barney>
-References: <20231230045105.91351-1-sergeantsagara@protonmail.com> <20231230045105.91351-4-sergeantsagara@protonmail.com> <cb9dcb49-ad94-40df-9f01-a28df3daf6c3@lwfinger.net> <877ckvwk5v.fsf@protonmail.com> <ca357d13-7da9-490f-9e69-4674c6ede057@lwfinger.net> <874jfzutm5.fsf@protonmail.com> <20231231103302.04cc37ae@barney>
-Feedback-ID: 26003777:user:proton
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE0EBBE48
+	for <linux-wireless@vger.kernel.org>; Sun, 31 Dec 2023 21:59:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=++BMyKKF3C8qfc7IrsUNPQRSdNbXkOij3kD+cUpCbJY=;
+	t=1704059967; x=1705269567; b=rxb2vF7dzhGK+Yj0K/R9u1RkMKGT1DjPoxSJBWwERG+7rw5
+	Saw64OUkfxamLasIXPzc3+kP8PpuNIltP4xyzURUGyycG3eL9++vRAS6P/lTJ3QVrSuCvnsvXQNTr
+	BFmGejxy6F7cfWQFeEul8oxFyEOVoMOapUyRIVOSjCMhoMNuoH4aNg3fj1FTJsoOBYhh+l0R4mTMO
+	VXpEc7ctY7z3tCRkheKMddCkjX9pQBnRiGG8IyV9MQbf4uUy0E/iHJIA4+v1sXVlODHv4S3orogpY
+	Am3x9WpbSA2mGi9vxPasnFJX9Fbtevj/CbTyWn17khjzOMXMfeA9MiTQ/EY+b3ig==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rK3q1-0000000Gkc8-1riU;
+	Sun, 31 Dec 2023 22:59:17 +0100
+Message-ID: <6a54a2afd9e2b1b67822e3ca9b86654e3886feef.camel@sipsolutions.net>
+Subject: Re: [PATCH] iw: strip NLA_FLAGS from printed bands
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Matthias May <Matthias.May@westermo.com>, 
+	"linux-wireless@vger.kernel.org"
+	 <linux-wireless@vger.kernel.org>
+Cc: Zefir Kurtisi <Zefir.Kurtisi@westermo.com>
+Date: Sun, 31 Dec 2023 22:59:16 +0100
+In-Reply-To: <20231221222842.1310957-1-matthias.may@westermo.com>
+References: <20231221222842.1310957-1-matthias.may@westermo.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.2 (3.50.2-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-malware-bazaar: not-scanned
 
-On Sun, 31 Dec, 2023 10:33:02 +0100 Michael B=C3=BCsch <m@bues.ch> wrote:
-> [[PGP Signed Part:Undecided]]
-> On Sun, 31 Dec 2023 00:02:32 +0000
-> Rahul Rameshbabu <sergeantsagara@protonmail.com> wrote:
->
->> > Unfortunately, it is very difficult to get the parameters for fwcutter=
- from an
->> > x86 binary. Some of the other architectures are easier. =20
->>=20
->> Just tried this with the x86 binary just because and ran into extraction
->> issues as expected. I could not find other architecture options from
->> Broadcom's download page, but I may not have been looking well enough...
->>=20
->>   =E2=9D=AF b43-fwcutter ./wlc_hybrid.o_shipped
->>   Sorry, the input file is either wrong or not supported by b43-fwcutter=
-.
->>   This file has an unknown MD5sum 6889dbd24abf8006de5cc6eddd138518.
->
-> b43-fwcutter works only on known files. It has a table of hashes of these=
- files.
->
-> But there is a script that can be used to create a hash table entry for a=
- .o file:
-> https://bues.ch/cgit/b43-tools.git/plain/fwcutter/mklist.py
->
-> This probably doesn't work on x86 binaries, though.
-> But maybe by reading the script you can get an idea how this works.
+On Thu, 2023-12-21 at 22:29 +0000, Matthias May wrote:
+> nl_band->nla_type might have NLA_F_NESTED (0x8000) set,
 
-Thanks for the pointer. I will take a look and follow up with you and
-Larry with the b43-dev mailing list CCed. If we can get QoS working on
-bcm4331, then I can send a revert for the disablement patch.
+I'm curious - how does that happen?
 
---
-Thanks,
+Not that the change looks wrong per se, but ... I don't think this can
+happen?
 
-Rahul Rameshbabu
+johannes
 
 
