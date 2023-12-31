@@ -1,123 +1,92 @@
-Return-Path: <linux-wireless+bounces-1366-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1367-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 377D8820B0D
-	for <lists+linux-wireless@lfdr.de>; Sun, 31 Dec 2023 11:33:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B75E7820C29
+	for <lists+linux-wireless@lfdr.de>; Sun, 31 Dec 2023 18:29:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69A141C20FCC
-	for <lists+linux-wireless@lfdr.de>; Sun, 31 Dec 2023 10:33:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64811281A76
+	for <lists+linux-wireless@lfdr.de>; Sun, 31 Dec 2023 17:29:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A16F8259D;
-	Sun, 31 Dec 2023 10:33:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69DCC8F4F;
+	Sun, 31 Dec 2023 17:29:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="jtKpTd1m"
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="mOARG1PV"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.4])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9736A8F48;
-	Sun, 31 Dec 2023 10:33:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de; s=s29768273;
-	t=1704018801; x=1704623601; i=markus.elfring@web.de;
-	bh=I0Xu6K601Nm32B7uvcWfNE+QosXgVl3IjaU3K1o4CgM=;
-	h=X-UI-Sender-Class:Date:To:From:Subject:Cc;
-	b=jtKpTd1mVE8EfPH3AgRi3bsjnjZu0bbyDmAl1LXrxczjagkwrkM70hTSTBrYmLMr
-	 evo6ZnUhBhJs+Pg7ugM5f06Vx/GgIRluk3HkhK4dYW7Avop9nGg1upOsNKKCEprY4
-	 HR2/i0T7ndOsd0BSVzX8MXktTkYF5MBvDylQRieOI3PXW+BeNrk6UYUVLPV6KrMYW
-	 fn5DNdN7f2hYnj8vZNLZo49YDt05nXKxEQzZPP6wJSDqtGYCtl4VkuZ5DHI1jC712
-	 LbYgb1MJv1d4auXv/P87flrKrfOouewzAix/58REJaJAJkrA4gmnvCn6/pUM+NQMh
-	 8+917lu1L/wZBimnFA==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.90.95]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1N6sG3-1rAOUA1RyJ-017uVs; Sun, 31
- Dec 2023 11:33:21 +0100
-Message-ID: <873097b9-5a0b-495b-83ae-f2247fbb512b@web.de>
-Date: Sun, 31 Dec 2023 11:33:19 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F77D8F40;
+	Sun, 31 Dec 2023 17:29:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1704043773; x=1704302973;
+	bh=hU+O3O0WZy59tVU9PtFRXLLdlxK59XaCKjJYfsYMEPY=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=mOARG1PVmRQaf7Zhnnrdn7cfcZpEoJKtv2dOnFYbBACfCnhTkfEZ3xRcJ+hVp4ioZ
+	 8anPHtZ+xlmHR1XZ26EJn6BsQSHyOO8XLJyzyud1naAxRxGeuc+h1BA4YOlOYIu0L5
+	 RLceeNf7lGn7GJpdKbgtoUjIJQlf9wWiL979J/sco7XMtGTToJLaZTWzM2NZE4oZcd
+	 PNafsdnxLdU525kXHVqPVpYTQq1GGLZx1wVNGIqAAXXkn72QW1o8DzextZyfP2wZ/C
+	 FIZRGjFLULgkY+foKItIeiA7lhedDswK/FbwCl8S55cxdKvn49nSx7tlg6gjSh6mYk
+	 GVlgmOEME0lHw==
+Date: Sun, 31 Dec 2023 17:29:14 +0000
+To: =?utf-8?Q?Michael_B=C3=BCsch?= <m@bues.ch>
+From: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+Cc: Larry Finger <Larry.Finger@lwfinger.net>, Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH wireless 3/5] wifi: b43: Stop/wake correct queue in PIO Tx path when QoS is disabled
+Message-ID: <87sf3iz3ff.fsf@protonmail.com>
+In-Reply-To: <20231231103302.04cc37ae@barney>
+References: <20231230045105.91351-1-sergeantsagara@protonmail.com> <20231230045105.91351-4-sergeantsagara@protonmail.com> <cb9dcb49-ad94-40df-9f01-a28df3daf6c3@lwfinger.net> <877ckvwk5v.fsf@protonmail.com> <ca357d13-7da9-490f-9e69-4674c6ede057@lwfinger.net> <874jfzutm5.fsf@protonmail.com> <20231231103302.04cc37ae@barney>
+Feedback-ID: 26003777:user:proton
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
- kernel-janitors@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Johannes Berg <johannes@sipsolutions.net>, Paolo Abeni <pabeni@redhat.com>
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] wifi: cfg80211: Replace a label in
- cfg80211_parse_ml_sta_data()
-Cc: LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:iM1BOGtdeD8AtCAAfFlwSOiytaVaoci3r6z1EsCpcglGg4EL/hA
- IXcu2yRVlCN53tgjzSijw6VgV7AsMO5XQQ8aTJLtR00XmbtkBSg9KF3fJdaoLbYfthPZd9m
- vzO0lXKJsuNYJlw6UBcP1P14+EAvlO9UDD5OvpwbEVbz1MMlz3u/3G4Um5kXIvKuBL30qrb
- qdONys6dZdda+oG21cszg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:0+UXqzkwbU8=;mZ1uV5g6EcraQSB7q7DMh40Rgha
- mdyfTu67DW1VQCUIFbjKQs6MVWe8n1uG1O0VR74tK7mCcIEJ5x7Rh2ZQHecIoAY+UnfLEJtVf
- RpTix2ykctPyxxTDEQhbrRDdqxSv2O9DMJBU4RaS2i9tB+/VryJlOZmlhlrggSbm64OYxHzAv
- O2H36Eg+lX4ZdOl96OZG90eZ7Ksar9tK0UkxplhDuNqIr9ciMCWa6w4T7qHRYC/REawypR6ZM
- LUQ9SZ9KSk1BQfgGrIjMvF49YLiV+d2M6KyRg+lIg8t8x8CQgH7tTulKMfOvslkQ0sAVN7/dd
- ckNBF6Xj+KvyATOeLy6R/8+UgWnrA122VvkIfNmlTm7DSdo65jBWceO36GRUvFZZyfuD7BBvc
- 3h9AEaYSIzkvf0rqJUrioBNnubES5gCVYeMOfGR3ANgIEXPdgnOuwwSLSaMZmq/V3B+qGAwn1
- 09fS6gT6w+8ByfNq1h0FoDb2AK20mp0gU+zncpWY8F1DNdkp4x8HfvpSF28w+nLAY7RF2Nu+j
- l5WROVg44dhML8c6wjMJkAWFw3L1Gc/3cI/ARsGkUUL05CCjAVt2Ch3QAKrA4hLtFAb9/PrLF
- dqL5RLfVhApN5yXlJOJWL58q6QTQmWD9m9yVOwezXDao6jSgQwljx26lDqOM1qVv1Kwi+b+WZ
- 38LeByva4HDq2AiLiyrk/UFIDEMuYZishuYy4T2TeibsgqFB+4SZNWy+0VVE7B0TOrY4JP96y
- 6nVfAn7v8TB0WRK61etRq0Gnke+rug4uOUcEanAbpdM91YPCsH+tT+bpYYDaNfKhCl1jTo5l1
- +V/vK34eCgRt5/HSN5G9wQIIxtQisHKpLx7Fnu0LAdSm6CY88V2mpCyFyxPb9TsyEXbSgQLO0
- dgEoBR6WHAYXhnwZ2RownoeOufKaQB0TtHMxbAImFEUpokcjiNEt2ibBB5AgrZRKaNPBrq8YG
- tcL/Rg==
 
-From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Sun, 31 Dec 2023 11:22:42 +0100
+On Sun, 31 Dec, 2023 10:33:02 +0100 Michael B=C3=BCsch <m@bues.ch> wrote:
+> [[PGP Signed Part:Undecided]]
+> On Sun, 31 Dec 2023 00:02:32 +0000
+> Rahul Rameshbabu <sergeantsagara@protonmail.com> wrote:
+>
+>> > Unfortunately, it is very difficult to get the parameters for fwcutter=
+ from an
+>> > x86 binary. Some of the other architectures are easier. =20
+>>=20
+>> Just tried this with the x86 binary just because and ran into extraction
+>> issues as expected. I could not find other architecture options from
+>> Broadcom's download page, but I may not have been looking well enough...
+>>=20
+>>   =E2=9D=AF b43-fwcutter ./wlc_hybrid.o_shipped
+>>   Sorry, the input file is either wrong or not supported by b43-fwcutter=
+.
+>>   This file has an unknown MD5sum 6889dbd24abf8006de5cc6eddd138518.
+>
+> b43-fwcutter works only on known files. It has a table of hashes of these=
+ files.
+>
+> But there is a script that can be used to create a hash table entry for a=
+ .o file:
+> https://bues.ch/cgit/b43-tools.git/plain/fwcutter/mklist.py
+>
+> This probably doesn't work on x86 binaries, though.
+> But maybe by reading the script you can get an idea how this works.
 
-The kfree() function was called in one case by
-the cfg80211_parse_ml_sta_data() function during error handling
-even if the passed variable contained a null pointer.
-This issue was detected by using the Coccinelle software.
+Thanks for the pointer. I will take a look and follow up with you and
+Larry with the b43-dev mailing list CCed. If we can get QoS working on
+bcm4331, then I can send a revert for the disablement patch.
 
-Thus use an other label.
+--
+Thanks,
 
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-=2D--
- net/wireless/scan.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index cf2131671eb6..492e30138418 100644
-=2D-- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -2693,7 +2693,7 @@ static void cfg80211_parse_ml_sta_data(struct wiphy =
-*wiphy,
-
- 	new_ie =3D kmalloc(IEEE80211_MAX_DATA_LEN, gfp);
- 	if (!new_ie)
--		goto out;
-+		goto free_mle;
-
- 	for (i =3D 0; i < ARRAY_SIZE(mle->sta_prof) && mle->sta_prof[i]; i++) {
- 		const struct ieee80211_neighbor_ap_info *ap_info;
-@@ -2812,8 +2812,8 @@ static void cfg80211_parse_ml_sta_data(struct wiphy =
-*wiphy,
- 		cfg80211_put_bss(wiphy, bss);
- 	}
-
--out:
- 	kfree(new_ie);
-+free_mle:
- 	kfree(mle);
- }
-
-=2D-
-2.43.0
+Rahul Rameshbabu
 
 
