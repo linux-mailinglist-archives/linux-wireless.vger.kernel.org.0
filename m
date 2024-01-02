@@ -1,60 +1,60 @@
-Return-Path: <linux-wireless+bounces-1405-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1406-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F535822229
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jan 2024 20:37:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7CD282222A
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jan 2024 20:37:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A652B1C22A6C
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jan 2024 19:37:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBDD21C229CB
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jan 2024 19:37:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF41D1640A;
-	Tue,  2 Jan 2024 19:36:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7033E168A4;
+	Tue,  2 Jan 2024 19:36:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fk2GYce4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RW0ScEqs"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 167F81642D
-	for <linux-wireless@vger.kernel.org>; Tue,  2 Jan 2024 19:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C49168A2
+	for <linux-wireless@vger.kernel.org>; Tue,  2 Jan 2024 19:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1704224195; x=1735760195;
+  t=1704224197; x=1735760197;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=hJxKPqT34mb+nloSGv4tupzORhnFLRpSU1aBQxc0FdI=;
-  b=fk2GYce4patl4nQYhvWwTnYkVgtHKoFGtKgsSix48TogMttA1X1linl5
-   L5FyT5C50XcgZwEikPNJptQ612Zkg1UGFJlTc3SqqUnwL+DZTZL1fSWVb
-   imjnkFyR4uFF6F28H/JR54BwUn8E1P54qSnq25cHFJLnwEFSJCDxtdYzY
-   l+QaBkh0HrMhEE56OP2AXeWpI/ebKM2DnBlar4UazbL7o1x+3RLhJo/33
-   AcbWu/Gb7CV7HREUelfwo529bmHOTpYD8hgTEWa5p3ofWcea3Cga9cop0
-   aLCpjXlLgYyt8a7jnA3rTZohE3lrulsF6V1hn1GoDfOmMsK+jeubhR6Cu
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10941"; a="463314332"
+  bh=Dwd40iwCye8MOYZgPrKiLKOBw0CaB3ao+P27ceHxVzw=;
+  b=RW0ScEqseqa7WE4fl1wQR+UQ1tZMcKDb11r6f9mpRpdPcrL3Kw33SVdr
+   k9T0lMYicPwzLOjrk81X8AaZRto+Re86YB4bzETA4+5bj+GNFLMmnceae
+   Ff9bzckM4tBJd8m+UwC2GWERRqXLhV5HgYcOs+HrbQ9IfA928TCLZGd4u
+   NEcHUvlfVnRlkM5hp2Pj81hTEI+InorLFO2Vtd+3S8yZV2OusfWaAsrkd
+   NSaFwzM+l1G+rtvAnwHHDHCYqwK6bV++9mQfiwgQYIvGV8mVhnLZiIedl
+   HuAV3T+ptR5yyIMJvjy0MvEXldLq4pphp3ht6BOAfwzxwj5UA7n+w44mu
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10941"; a="463314336"
 X-IronPort-AV: E=Sophos;i="6.04,325,1695711600"; 
-   d="scan'208";a="463314332"
+   d="scan'208";a="463314336"
 Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jan 2024 11:36:34 -0800
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jan 2024 11:36:37 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10941"; a="898624577"
+X-IronPort-AV: E=McAfee;i="6600,9927,10941"; a="898624584"
 X-IronPort-AV: E=Sophos;i="6.04,325,1695711600"; 
-   d="scan'208";a="898624577"
+   d="scan'208";a="898624584"
 Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jan 2024 11:36:33 -0800
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jan 2024 11:36:35 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	Johannes Berg <johannes.berg@intel.com>,
 	Daniel Gabay <daniel.gabay@intel.com>,
 	Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 10/15] wifi: cfg80211: add support for SPP A-MSDUs
-Date: Tue,  2 Jan 2024 21:35:39 +0200
-Message-Id: <20240102213313.fadac8df7030.I9240aebcba1be49636a73c647ed0af862713fc6f@changeid>
+Subject: [PATCH 11/15] wifi: mac80211: add support for SPP A-MSDUs
+Date: Tue,  2 Jan 2024 21:35:40 +0200
+Message-Id: <20240102213313.b8ada4514e2b.I1ac25d5f158165b5a88062a5a5e4c4fbeecf9a5d@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240102193544.157749-1-miriam.rachel.korenblit@intel.com>
 References: <20240102193544.157749-1-miriam.rachel.korenblit@intel.com>
@@ -69,202 +69,246 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-Add SPP (signaling and payload protected) AMSDU support.
+If software crypto is used, simply add support for SPP A-MSDUs
+(and use it whenever enabled as required by the cfg80211 API).
 
-Since userspace has to build the RSNX element, add an extended
-feature flag to indicate that this is supported.
-
-In order to avoid downgrade/mismatch attacks, add a flag to the assoc
-command on the station side, so that we can be sure that the value of
-the flag comes from the same RSNX element that will be validated by
-the supplicant against the 4-way-handshake. If we just pulled the
-data out of a beacon/probe response, we could theoretically look an
-RSNX element from a different frame, with a different value for this
-flag, than the supplicant is using to validate in the
-4-way-handshake.
-
-Note that this patch is only geared towards software crypto
-implementations or hardware ones that can perfectly implement SPP
-A-MSDUs, i.e. are able to switch the AAD construction on the fly for
-each TX/RX frame.
-
-For more limited hardware implementations, more capability
-advertisement  would be required, e.g. if the hardware has no way
-to switch this on the fly but has only a global configuration that
-must apply to all stations.
-
-The driver could of course *reject* mismatches, but the supplicant
-must know so it can do things like not negotiating SPP A-MSDUs on
-a T-DLS link when connected to an AP that doesn't support it, or
-similar.
+If hardware crypto is used, leave it up to the driver to set
+the NL80211_EXT_FEATURE_SPP_AMSDU_SUPPORT flag and then check
+sta->spp_amsdu or the IEEE80211_KEY_FLAG_SPP_AMSDU key flag.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
 Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- include/net/cfg80211.h       |  2 ++
- include/uapi/linux/nl80211.h | 14 ++++++++++++++
- net/wireless/nl80211.c       | 24 +++++++++++++++++++++---
- 3 files changed, 37 insertions(+), 3 deletions(-)
+ include/net/mac80211.h     |  5 +++++
+ net/mac80211/cfg.c         |  3 +++
+ net/mac80211/ieee80211_i.h |  1 +
+ net/mac80211/key.c         |  4 ++++
+ net/mac80211/main.c        |  5 ++++-
+ net/mac80211/mlme.c        |  4 ++++
+ net/mac80211/wpa.c         | 33 +++++++++++++++++++++++----------
+ 7 files changed, 44 insertions(+), 11 deletions(-)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 119eec283d2f..523bc69ba8b6 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -3059,6 +3059,7 @@ struct cfg80211_assoc_link {
-  * @CONNECT_REQ_MLO_SUPPORT: Userspace indicates support for handling MLD links.
-  *	Drivers shall disable MLO features for the current association if this
-  *	flag is not set.
-+ * @ASSOC_REQ_SPP_AMSDU: SPP A-MSDUs will be used on this connection (if any)
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index 84cc66dd93c1..8d6ae22c09bf 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -2081,6 +2081,8 @@ static inline bool lockdep_vif_wiphy_mutex_held(struct ieee80211_vif *vif)
+  * @IEEE80211_KEY_FLAG_GENERATE_MMIE: This flag should be set by the driver
+  *	for a AES_CMAC key to indicate that it requires sequence number
+  *	generation only
++ * @IEEE80211_KEY_FLAG_SPP_AMSDU: SPP A-MSDUs can be used with this key
++ *	(set by mac80211 from the sta->spp_amsdu flag)
   */
- enum cfg80211_assoc_req_flags {
- 	ASSOC_REQ_DISABLE_HT			= BIT(0),
-@@ -3068,6 +3069,7 @@ enum cfg80211_assoc_req_flags {
- 	ASSOC_REQ_DISABLE_HE			= BIT(4),
- 	ASSOC_REQ_DISABLE_EHT			= BIT(5),
- 	CONNECT_REQ_MLO_SUPPORT			= BIT(6),
-+	ASSOC_REQ_SPP_AMSDU			= BIT(7),
+ enum ieee80211_key_flags {
+ 	IEEE80211_KEY_FLAG_GENERATE_IV_MGMT	= BIT(0),
+@@ -2094,6 +2096,7 @@ enum ieee80211_key_flags {
+ 	IEEE80211_KEY_FLAG_PUT_MIC_SPACE	= BIT(8),
+ 	IEEE80211_KEY_FLAG_NO_AUTO_TX		= BIT(9),
+ 	IEEE80211_KEY_FLAG_GENERATE_MMIE	= BIT(10),
++	IEEE80211_KEY_FLAG_SPP_AMSDU		= BIT(11),
  };
  
  /**
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 1ccdcae24372..3e239df3528f 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -2851,6 +2851,10 @@ enum nl80211_commands {
-  *      mapping is as defined in section 9.4.2.314 (TID-To-Link Mapping element)
-  *      in Draft P802.11be_D4.0.
-  *
-+ * @NL80211_ATTR_ASSOC_SPP_AMSDU: flag attribute used with
-+ *	%NL80211_CMD_ASSOCIATE indicating the SPP A-MSDUs
-+ *	are used on this connection
-+ *
-  * @NUM_NL80211_ATTR: total number of nl80211_attrs available
-  * @NL80211_ATTR_MAX: highest attribute number currently defined
-  * @__NL80211_ATTR_AFTER_LAST: internal use
-@@ -3394,6 +3398,8 @@ enum nl80211_attrs {
- 	NL80211_ATTR_MLO_TTLM_DLINK,
- 	NL80211_ATTR_MLO_TTLM_ULINK,
- 
-+	NL80211_ATTR_ASSOC_SPP_AMSDU,
-+
- 	/* add attributes here, update the policy in nl80211.c */
- 
- 	__NL80211_ATTR_AFTER_LAST,
-@@ -3534,6 +3540,7 @@ enum nl80211_iftype {
-  * @NL80211_STA_FLAG_ASSOCIATED: station is associated; used with drivers
-  *	that support %NL80211_FEATURE_FULL_AP_CLIENT_STATE to transition a
-  *	previously added station into associated state
-+ * @NL80211_STA_FLAG_SPP_AMSDU: station supports SPP A-MSDUs
-  * @NL80211_STA_FLAG_MAX: highest station flag number currently defined
-  * @__NL80211_STA_FLAG_AFTER_LAST: internal use
+@@ -2392,6 +2395,7 @@ struct ieee80211_link_sta {
+  *	would be assigned to link[link_id] where link_id is the id assigned
+  *	by the AP.
+  * @valid_links: bitmap of valid links, or 0 for non-MLO
++ * @spp_amsdu: indicates whether the STA uses SPP A-MSDU or not.
   */
-@@ -3546,6 +3553,7 @@ enum nl80211_sta_flags {
- 	NL80211_STA_FLAG_AUTHENTICATED,
- 	NL80211_STA_FLAG_TDLS_PEER,
- 	NL80211_STA_FLAG_ASSOCIATED,
-+	NL80211_STA_FLAG_SPP_AMSDU,
+ struct ieee80211_sta {
+ 	u8 addr[ETH_ALEN];
+@@ -2405,6 +2409,7 @@ struct ieee80211_sta {
+ 	bool tdls_initiator;
+ 	bool mfp;
+ 	bool mlo;
++	bool spp_amsdu;
+ 	u8 max_amsdu_subframes;
  
- 	/* keep last */
- 	__NL80211_STA_FLAG_AFTER_LAST,
-@@ -6520,6 +6528,11 @@ enum nl80211_feature_flags {
-  *	DFS master on the same channel as described in FCC-594280 D01
-  *	(Section B.3). This, for example, allows P2P GO and P2P clients to
-  *	operate on DFS channels as long as there's a concurrent BSS connection.
-+ *
-+ * @NL80211_EXT_FEATURE_SPP_AMSDU_SUPPORT: The driver has support for SPP
-+ *	(signaling and payload protected) A-MSDUs and this shall be advertised
-+ *	in the RSNXE.
-+ *
-  * @NUM_NL80211_EXT_FEATURES: number of extended features.
-  * @MAX_NL80211_EXT_FEATURES: highest extended feature index.
-  */
-@@ -6594,6 +6607,7 @@ enum nl80211_ext_feature_index {
- 	NL80211_EXT_FEATURE_OWE_OFFLOAD,
- 	NL80211_EXT_FEATURE_OWE_OFFLOAD_AP,
- 	NL80211_EXT_FEATURE_DFS_CONCURRENT,
-+	NL80211_EXT_FEATURE_SPP_AMSDU_SUPPORT,
- 
- 	/* add new features before the definition below */
- 	NUM_NL80211_EXT_FEATURES,
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 60877b532993..5640ac8c72ad 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -821,6 +821,7 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
- 	[NL80211_ATTR_BSS_DUMP_INCLUDE_USE_DATA] = { .type = NLA_FLAG },
- 	[NL80211_ATTR_MLO_TTLM_DLINK] = NLA_POLICY_EXACT_LEN(sizeof(u16) * 8),
- 	[NL80211_ATTR_MLO_TTLM_ULINK] = NLA_POLICY_EXACT_LEN(sizeof(u16) * 8),
-+	[NL80211_ATTR_ASSOC_SPP_AMSDU] = { .type = NLA_FLAG },
- };
- 
- /* policy for the key attributes */
-@@ -6873,7 +6874,7 @@ int cfg80211_check_station_change(struct wiphy *wiphy,
- 		return -EINVAL;
- 
- 	/* When you run into this, adjust the code below for the new flag */
--	BUILD_BUG_ON(NL80211_STA_FLAG_MAX != 7);
-+	BUILD_BUG_ON(NL80211_STA_FLAG_MAX != 8);
- 
- 	switch (statype) {
- 	case CFG80211_STA_MESH_PEER_KERNEL:
-@@ -6933,6 +6934,8 @@ int cfg80211_check_station_change(struct wiphy *wiphy,
- 		    params->link_sta_params.he_capa ||
- 		    params->link_sta_params.eht_capa)
- 			return -EINVAL;
-+		if (params->sta_flags_mask & BIT(NL80211_STA_FLAG_SPP_AMSDU))
-+			return -EINVAL;
+ 	struct ieee80211_sta_aggregates *cur;
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 035b18a01853..9b5889ea8643 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -1942,6 +1942,9 @@ static int sta_apply_parameters(struct ieee80211_local *local,
+ 			clear_sta_flag(sta, WLAN_STA_TDLS_PEER);
  	}
  
- 	if (statype != CFG80211_STA_AP_CLIENT &&
-@@ -6956,7 +6959,8 @@ int cfg80211_check_station_change(struct wiphy *wiphy,
- 				  BIT(NL80211_STA_FLAG_ASSOCIATED) |
- 				  BIT(NL80211_STA_FLAG_SHORT_PREAMBLE) |
- 				  BIT(NL80211_STA_FLAG_WME) |
--				  BIT(NL80211_STA_FLAG_MFP)))
-+				  BIT(NL80211_STA_FLAG_MFP) |
-+				  BIT(NL80211_STA_FLAG_SPP_AMSDU)))
- 			return -EINVAL;
- 
- 		/* but authenticated/associated only if driver handles it */
-@@ -7515,7 +7519,7 @@ static int nl80211_new_station(struct sk_buff *skb, struct genl_info *info)
- 		return -EINVAL;
- 
- 	/* When you run into this, adjust the code below for the new flag */
--	BUILD_BUG_ON(NL80211_STA_FLAG_MAX != 7);
-+	BUILD_BUG_ON(NL80211_STA_FLAG_MAX != 8);
- 
- 	switch (dev->ieee80211_ptr->iftype) {
- 	case NL80211_IFTYPE_AP:
-@@ -7539,6 +7543,11 @@ static int nl80211_new_station(struct sk_buff *skb, struct genl_info *info)
- 		    params.sta_flags_mask & auth_assoc)
- 			return -EINVAL;
- 
-+		if (!wiphy_ext_feature_isset(&rdev->wiphy,
-+					     NL80211_EXT_FEATURE_SPP_AMSDU_SUPPORT) &&
-+		    params.sta_flags_mask & BIT(NL80211_STA_FLAG_SPP_AMSDU))
-+			return -EINVAL;
++	if (mask & BIT(NL80211_STA_FLAG_SPP_AMSDU))
++		sta->sta.spp_amsdu = set & BIT(NL80211_STA_FLAG_SPP_AMSDU);
 +
- 		/* Older userspace, or userspace wanting to be compatible with
- 		 * !NL80211_FEATURE_FULL_AP_CLIENT_STATE, will not set the auth
- 		 * and assoc flags in the mask, but assumes the station will be
-@@ -11101,6 +11110,15 @@ static int nl80211_associate(struct sk_buff *skb, struct genl_info *info)
- 		       sizeof(req.s1g_capa));
+ 	/* mark TDLS channel switch support, if the AP allows it */
+ 	if (test_sta_flag(sta, WLAN_STA_TDLS_PEER) &&
+ 	    !sdata->deflink.u.mgd.tdls_chan_switch_prohibited &&
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index a821f84f8bb6..e25d47a8455e 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -441,6 +441,7 @@ struct ieee80211_mgd_assoc_data {
+ 	bool timeout_started;
+ 	bool comeback; /* whether the AP has requested association comeback */
+ 	bool s1g;
++	bool spp_amsdu;
+ 
+ 	unsigned int assoc_link_id;
+ 
+diff --git a/net/mac80211/key.c b/net/mac80211/key.c
+index af74d7f9d94d..a2cce62c97b7 100644
+--- a/net/mac80211/key.c
++++ b/net/mac80211/key.c
+@@ -925,6 +925,10 @@ int ieee80211_key_link(struct ieee80211_key *key,
+ 	 */
+ 	key->color = atomic_inc_return(&key_color);
+ 
++	/* keep this flag for easier access later */
++	if (sta && sta->sta.spp_amsdu)
++		key->conf.flags |= IEEE80211_KEY_FLAG_SPP_AMSDU;
++
+ 	increment_tailroom_need_count(sdata);
+ 
+ 	ret = ieee80211_key_replace(sdata, link, sta, pairwise, old_key, key);
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index 13c417eda281..d48fa1147c14 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -735,8 +735,11 @@ struct ieee80211_hw *ieee80211_alloc_hw_nm(size_t priv_data_len,
+ 				      NL80211_EXT_FEATURE_SCAN_MIN_PREQ_CONTENT);
  	}
  
-+	if (nla_get_flag(info->attrs[NL80211_ATTR_ASSOC_SPP_AMSDU])) {
-+		if (!wiphy_ext_feature_isset(&rdev->wiphy,
-+					     NL80211_EXT_FEATURE_SPP_AMSDU_SUPPORT)) {
-+			GENL_SET_ERR_MSG(info, "SPP A-MSDUs not supported");
-+			return -EINVAL;
-+		}
-+		req.flags |= ASSOC_REQ_SPP_AMSDU;
+-	if (!ops->set_key)
++	if (!ops->set_key) {
+ 		wiphy->flags |= WIPHY_FLAG_IBSS_RSN;
++		wiphy_ext_feature_set(wiphy,
++				      NL80211_EXT_FEATURE_SPP_AMSDU_SUPPORT);
 +	}
-+
- 	req.link_id = nl80211_link_id_or_invalid(info->attrs);
  
- 	if (info->attrs[NL80211_ATTR_MLO_LINKS]) {
+ 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_TXQS);
+ 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_RRM);
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 2f81f045eb07..5ded60320132 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -5132,6 +5132,8 @@ static bool ieee80211_assoc_success(struct ieee80211_sub_if_data *sdata,
+ 	if (WARN_ON(!sta))
+ 		goto out_err;
+ 
++	sta->sta.spp_amsdu = assoc_data->spp_amsdu;
++
+ 	if (ieee80211_vif_is_mld(&sdata->vif)) {
+ 		for (link_id = 0; link_id < IEEE80211_MLD_MAX_NUM_LINKS; link_id++) {
+ 			if (!assoc_data->link[link_id].bss)
+@@ -8225,6 +8227,8 @@ int ieee80211_mgd_assoc(struct ieee80211_sub_if_data *sdata,
+ 	assoc_data->wmm = bss->wmm_used &&
+ 			  (local->hw.queues >= IEEE80211_NUM_ACS);
+ 
++	assoc_data->spp_amsdu = req->flags & ASSOC_REQ_SPP_AMSDU;
++
+ 	/*
+ 	 * IEEE802.11n does not allow TKIP/WEP as pairwise ciphers in HT mode.
+ 	 * We still associate in non-HT mode (11a/b/g) if any one of these
+diff --git a/net/mac80211/wpa.c b/net/mac80211/wpa.c
+index 94dae7cb6dbd..e40529b8c5c9 100644
+--- a/net/mac80211/wpa.c
++++ b/net/mac80211/wpa.c
+@@ -315,7 +315,7 @@ ieee80211_crypto_tkip_decrypt(struct ieee80211_rx_data *rx)
+  * Calculate AAD for CCMP/GCMP, returning qos_tid since we
+  * need that in CCMP also for b_0.
+  */
+-static u8 ccmp_gcmp_aad(struct sk_buff *skb, u8 *aad)
++static u8 ccmp_gcmp_aad(struct sk_buff *skb, u8 *aad, bool spp_amsdu)
+ {
+ 	struct ieee80211_hdr *hdr = (void *)skb->data;
+ 	__le16 mask_fc;
+@@ -340,7 +340,14 @@ static u8 ccmp_gcmp_aad(struct sk_buff *skb, u8 *aad)
+ 		len_a += 6;
+ 
+ 	if (ieee80211_is_data_qos(hdr->frame_control)) {
+-		qos_tid = ieee80211_get_tid(hdr);
++		qos_tid = *ieee80211_get_qos_ctl(hdr);
++
++		if (spp_amsdu)
++			qos_tid &= IEEE80211_QOS_CTL_TID_MASK |
++				   IEEE80211_QOS_CTL_A_MSDU_PRESENT;
++		else
++			qos_tid &= IEEE80211_QOS_CTL_TID_MASK;
++
+ 		mask_fc &= ~cpu_to_le16(IEEE80211_FCTL_ORDER);
+ 		len_a += 2;
+ 	} else {
+@@ -369,10 +376,11 @@ static u8 ccmp_gcmp_aad(struct sk_buff *skb, u8 *aad)
+ 	return qos_tid;
+ }
+ 
+-static void ccmp_special_blocks(struct sk_buff *skb, u8 *pn, u8 *b_0, u8 *aad)
++static void ccmp_special_blocks(struct sk_buff *skb, u8 *pn, u8 *b_0, u8 *aad,
++				bool spp_amsdu)
+ {
+ 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
+-	u8 qos_tid = ccmp_gcmp_aad(skb, aad);
++	u8 qos_tid = ccmp_gcmp_aad(skb, aad, spp_amsdu);
+ 
+ 	/* In CCM, the initial vectors (IV) used for CTR mode encryption and CBC
+ 	 * mode authentication are not allowed to collide, yet both are derived
+@@ -479,7 +487,8 @@ static int ccmp_encrypt_skb(struct ieee80211_tx_data *tx, struct sk_buff *skb,
+ 		return 0;
+ 
+ 	pos += IEEE80211_CCMP_HDR_LEN;
+-	ccmp_special_blocks(skb, pn, b_0, aad);
++	ccmp_special_blocks(skb, pn, b_0, aad,
++			    key->conf.flags & IEEE80211_KEY_FLAG_SPP_AMSDU);
+ 	return ieee80211_aes_ccm_encrypt(key->u.ccmp.tfm, b_0, aad, pos, len,
+ 					 skb_put(skb, mic_len));
+ }
+@@ -557,7 +566,8 @@ ieee80211_crypto_ccmp_decrypt(struct ieee80211_rx_data *rx,
+ 			u8 aad[2 * AES_BLOCK_SIZE];
+ 			u8 b_0[AES_BLOCK_SIZE];
+ 			/* hardware didn't decrypt/verify MIC */
+-			ccmp_special_blocks(skb, pn, b_0, aad);
++			ccmp_special_blocks(skb, pn, b_0, aad,
++					    key->conf.flags & IEEE80211_KEY_FLAG_SPP_AMSDU);
+ 
+ 			if (ieee80211_aes_ccm_decrypt(
+ 				    key->u.ccmp.tfm, b_0, aad,
+@@ -581,7 +591,8 @@ ieee80211_crypto_ccmp_decrypt(struct ieee80211_rx_data *rx,
+ 	return RX_CONTINUE;
+ }
+ 
+-static void gcmp_special_blocks(struct sk_buff *skb, u8 *pn, u8 *j_0, u8 *aad)
++static void gcmp_special_blocks(struct sk_buff *skb, u8 *pn, u8 *j_0, u8 *aad,
++				bool spp_amsdu)
+ {
+ 	struct ieee80211_hdr *hdr = (void *)skb->data;
+ 
+@@ -591,7 +602,7 @@ static void gcmp_special_blocks(struct sk_buff *skb, u8 *pn, u8 *j_0, u8 *aad)
+ 	j_0[14] = 0;
+ 	j_0[AES_BLOCK_SIZE - 1] = 0x01;
+ 
+-	ccmp_gcmp_aad(skb, aad);
++	ccmp_gcmp_aad(skb, aad, spp_amsdu);
+ }
+ 
+ static inline void gcmp_pn2hdr(u8 *hdr, const u8 *pn, int key_id)
+@@ -680,7 +691,8 @@ static int gcmp_encrypt_skb(struct ieee80211_tx_data *tx, struct sk_buff *skb)
+ 		return 0;
+ 
+ 	pos += IEEE80211_GCMP_HDR_LEN;
+-	gcmp_special_blocks(skb, pn, j_0, aad);
++	gcmp_special_blocks(skb, pn, j_0, aad,
++			    key->conf.flags & IEEE80211_KEY_FLAG_SPP_AMSDU);
+ 	return ieee80211_aes_gcm_encrypt(key->u.gcmp.tfm, j_0, aad, pos, len,
+ 					 skb_put(skb, IEEE80211_GCMP_MIC_LEN));
+ }
+@@ -753,7 +765,8 @@ ieee80211_crypto_gcmp_decrypt(struct ieee80211_rx_data *rx)
+ 			u8 aad[2 * AES_BLOCK_SIZE];
+ 			u8 j_0[AES_BLOCK_SIZE];
+ 			/* hardware didn't decrypt/verify MIC */
+-			gcmp_special_blocks(skb, pn, j_0, aad);
++			gcmp_special_blocks(skb, pn, j_0, aad,
++					    key->conf.flags & IEEE80211_KEY_FLAG_SPP_AMSDU);
+ 
+ 			if (ieee80211_aes_gcm_decrypt(
+ 				    key->u.gcmp.tfm, j_0, aad,
 -- 
 2.34.1
 
