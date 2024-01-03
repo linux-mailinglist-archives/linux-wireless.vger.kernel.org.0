@@ -1,67 +1,68 @@
-Return-Path: <linux-wireless+bounces-1436-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1437-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5816F822A0E
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jan 2024 10:15:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA9BD822A3A
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jan 2024 10:22:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4F20282886
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jan 2024 09:14:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 10D9FB20D7F
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jan 2024 09:22:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DEC718635;
-	Wed,  3 Jan 2024 09:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBE43182B5;
+	Wed,  3 Jan 2024 09:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="CMUd8TUh"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="PrzCVHh/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02FC118623
-	for <linux-wireless@vger.kernel.org>; Wed,  3 Jan 2024 09:14:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C87E154B1
+	for <linux-wireless@vger.kernel.org>; Wed,  3 Jan 2024 09:22:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-42786514fe6so86478591cf.0
-        for <linux-wireless@vger.kernel.org>; Wed, 03 Jan 2024 01:14:43 -0800 (PST)
+Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-6dbfbd2be99so4176596a34.1
+        for <linux-wireless@vger.kernel.org>; Wed, 03 Jan 2024 01:22:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1704273283; x=1704878083; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1704273765; x=1704878565; darn=vger.kernel.org;
         h=mime-version:subject:user-agent:references:in-reply-to:message-id
          :date:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=egFrQ+cd8PsFSj1Isklehdr+ca+dYttnld4FQlhr8qI=;
-        b=CMUd8TUhabN7gCimnjeKDCUNx/GmvKD9ml8VA5boXDOc/inwJwy3B0nFvc5/kbYoIh
-         kG4gW2K1jCITh28XDXOnYFbgr0QayD6HRIJHZNWO668p9aFz1tT1q9mgVYrxY0oYd8t1
-         z9X8WBCloDlF98xMgelcsfykPLdLIqFnWqp9o=
+        bh=OF9dkzXipPG8KxHmWSi9ruu8GBmRKpU6X0gUto7UIyk=;
+        b=PrzCVHh/J8cfvWnNs5+66p3zPyjuhw/b6v7//JmaZ0pofCT+xi6vEG686WU09o2emR
+         1UwFosU+vgncJsekF4kk4VLq33B05VrO5ekfRVmWvKals0CBcfSy9AposgFHa0ZjxpVU
+         5jjK/pttBfr9Pja26E1rFetpGe4tq8vkAcJyk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704273283; x=1704878083;
+        d=1e100.net; s=20230601; t=1704273765; x=1704878565;
         h=mime-version:subject:user-agent:references:in-reply-to:message-id
          :date:cc:to:from:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=egFrQ+cd8PsFSj1Isklehdr+ca+dYttnld4FQlhr8qI=;
-        b=WUKX2odDxqri4Q1/JkJZyAggue+trLxXZtjwMFo/mOYfwuCnv4hTL6qJOoh7Dm2VZ0
-         UDky4Pr7B16VdrPqASPfQpRmId6BPjPUf9B0Q9VhaGyBw1cxuc0QX1z2IEegvJoEfc8o
-         9cIXTuMPeoYmRoec71qDuIiRWTdBYRntw8qZ1NNMhBxXNOgjOGWFGIcnUc91olqosqrM
-         3LdHNjBrAc3Pefg1pNBbiNSjFaVuiZa1TNdTgHj8v3YvoFR0y6FSu6RG85ylY4vE6cSH
-         MVkOUn6r4pXWnbqCKKGtCNt2KC1wHq3WimEXsf6lARnab+31A0rzZH6tZPJd9Wx6L8xe
-         adaw==
-X-Gm-Message-State: AOJu0Yw8a8A0tf4jhu9GoQSuR4KzRMpCCDLMsmied1t8TNSgjM7SFyYO
-	OCmF06Z4n4X1d4sV4SeRhK55cD3jvg+Y
-X-Google-Smtp-Source: AGHT+IGQecNJXDuifFcPUA/UgFGcMZglmGGTG5yNN/uHS4+N6yLtDszWXPaCbsjiIoEMxCvWSzVyyg==
-X-Received: by 2002:a05:622a:1a1f:b0:428:1ad8:b3d9 with SMTP id f31-20020a05622a1a1f00b004281ad8b3d9mr8185286qtb.79.1704273282843;
-        Wed, 03 Jan 2024 01:14:42 -0800 (PST)
+        bh=OF9dkzXipPG8KxHmWSi9ruu8GBmRKpU6X0gUto7UIyk=;
+        b=JnoOA6ODOnVoxICTzcil9qgvoXXymLOigqZbO44A6ocd7XZG2gqgFjiYMFLFjQdnH1
+         8X7tnp//4qH/Y55I8+vfU1jAW40kRMHpYDYveC7QlYFuslNvndsitqPihfIVbgLyO8xF
+         RIV75TQ2V3MSETEubdWnQaeIt6b1zFQrm14d4ukiosYDvi10SXTU8GkhB1HWStBtZrYl
+         qK+wrP6h12WbhqClDwrqyLB4NpGeweIEjo/jYUhwzbRXqDsrjwdTOh7k9XBlcLa2w6Lp
+         1c4C40hBOwGh22zn/KKdxSk9JV7nts7tUsrFCcL2K7JGEttnjcQop/LIo7R8Gy61JVn3
+         3I7g==
+X-Gm-Message-State: AOJu0YzG4BycFuktsi+ZoME8fYwGfIVfIUKkPQuEHLXSSFAAViJfxIUS
+	sC8UbXNjr/GpMD1vlMBPZDZWcDqo+kI6
+X-Google-Smtp-Source: AGHT+IFU34ZU3g57GZoVjbekoPXX5cLR+C6CuPbeBYr+yHGIkKUFUvDeVmtEM39aqxg5uXb9lo5lSQ==
+X-Received: by 2002:a05:6358:3a0e:b0:175:4048:c590 with SMTP id g14-20020a0563583a0e00b001754048c590mr4305849rwe.58.1704273765053;
+        Wed, 03 Jan 2024 01:22:45 -0800 (PST)
 Received: from [192.168.178.38] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id eo12-20020a05622a544c00b00427692bc384sm13741150qtb.66.2024.01.03.01.14.40
+        by smtp.gmail.com with ESMTPSA id f24-20020a63f758000000b005cda4d88933sm20031054pgk.43.2024.01.03.01.22.42
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 03 Jan 2024 01:14:41 -0800 (PST)
+        Wed, 03 Jan 2024 01:22:44 -0800 (PST)
 From: Arend Van Spriel <arend.vanspriel@broadcom.com>
 To: Svyatoslav Ryhel <clamor95@gmail.com>
-CC: <hdegoede@redhat.com>, <linux-wireless@vger.kernel.org>
-Date: Wed, 03 Jan 2024 10:14:39 +0100
-Message-ID: <18cce9a7818.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <CAPVz0n2Dah1b45c0yUjMZNph5AVJjneLsc2LOQ-dkXNRTv6y+Q@mail.gmail.com>
+CC: <hdegoede@redhat.com>, <linux-wireless@vger.kernel.org>, <linux-firmware@kernel.org>
+Date: Wed, 03 Jan 2024 10:22:42 +0100
+Message-ID: <18ccea1d6d0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+In-Reply-To: <18cce9a7818.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
 References: <CAPVz0n2Ky350xhOv6WvE0YhFJ9QBe59LnWvKiafs2tjFnptP+g@mail.gmail.com>
  <22115037-3a81-4a52-8e64-bc85c2be4212@broadcom.com>
  <CAPVz0n2Dah1b45c0yUjMZNph5AVJjneLsc2LOQ-dkXNRTv6y+Q@mail.gmail.com>
+ <18cce9a7818.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
 User-Agent: AquaMail/1.49.0 (build: 104900403)
 Subject: Re: License of old broadcom BT firmwares and WiFi calibration files
 Precedence: bulk
@@ -71,73 +72,47 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="000000000000a3d01a060e070b19"
+	boundary="000000000000635125060e0728d9"
 
---000000000000a3d01a060e070b19
+--000000000000635125060e0728d9
 Content-Type: text/plain; format=flowed; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
 
-+ linux-wireless
-+ Hans de Goede
+On January 3, 2024 10:14:42 AM Arend Van Spriel 
+<arend.vanspriel@broadcom.com> wrote:
 
-
-On December 16, 2023 9:14:48 PM Svyatoslav Ryhel <clamor95@gmail.com> wrote:
-
-> сб, 16 груд. 2023 р. о 21:57 Arend van Spriel
-> <arend.vanspriel@broadcom.com> пише:
->>
->> On 12/16/2023 6:45 PM, Svyatoslav Ryhel wrote:
->>> Greetings!
->>>
->>> I am trying to submit bluetooth firmwares (BCM4329B1.*,*.hcd and
->>> BCM4330B1.*,*.hcd) and wifi calibration files
->>> (brcmfmac4329-sdio.*,*.txt and brcmfmac4329-sdio.*,*.txt) from a few
->>> Tegra 2 and Tegra 3 based devices into linux-fimware.
->>>
->>> I have faced ambiguous license issue since those files were part of
->>> Android Images of different vendors. Those vendors did not provide a
->>> license nor for android images, not for these files.
->>>
->>> Maybe you can clarify licensing of these files and you can suggest a
->>> way they could be accepted into linux-firmware?
->>
->> Basically, the firmware files in linux-firmware fall under the license
->> conditions that are in the repository. This means the firmware you want
->> to submit would get a different license. The main reason is that the
->> license in linux-firmware allows redistributing the firmware files which
->> is an important aspect for linux distro maintainers.
->>
->> So the device vendors would have to give their blessing. For these old
->> chipsets they probably got it from Broadcom. I never had much contact
->> with BT side so not sure who to contact about this.
+> + linux-wireless
+> + Hans de Goede
 >
-> So even though those files are built from Broadcom sources they still
-> fall under device vendor licensing? Or am I misunderstanding
-> something? I have to contact the vendor of each device for a licence
-> regarding those files?
-
-If you only have the binary firmware files it is  hard to say. Can you 
-refer to a public repository where these can be found?
-
 >
->> Regarding the calibration files it is a bit awkward. There is a
->> precedent as these have been published by community under GPL license.
->> Broadcom never released those as they are board specific and the device
->> vendor should provide them. So maybe you can submit those without any issue.
+> On December 16, 2023 9:14:48 PM Svyatoslav Ryhel <clamor95@gmail.com> wrote:
 >
-> So I may modify them with a GPL license header and pretend this is how it was?
-> Looks like an affair but alright.
+>> сб, 16 груд. 2023 р. о 21:57 Arend van Spriel
+>> <arend.vanspriel@broadcom.com> пише:
+>>>
+>>> On 12/16/2023 6:45 PM, Svyatoslav Ryhel wrote:
+>>>> Greetings!
+>>>>
+>>>> I am trying to submit bluetooth firmwares (BCM4329B1.*,*.hcd and
+>>>> BCM4330B1.*,*.hcd) and wifi calibration files
+>>>> (brcmfmac4329-sdio.*,*.txt and brcmfmac4329-sdio.*,*.txt) from a few
+>>>> Tegra 2 and Tegra 3 based devices into linux-fimware.
+>>>>
+>>>> I have faced ambiguous license issue since those files were part of
+>>>> Android Images of different vendors. Those vendors did not provide a
+>>>> license nor for android images, not for these files.
 
-Well. Most if not all have been submitted by Hans de Goede so maybe he can 
-advice how to go about with this.
+Does this mean you extracted them from the android image? That probably 
+never get accepted without any license information.
 
 Regards,
 Arend
+>>>>
 
 
 
 
---000000000000a3d01a060e070b19
+--000000000000635125060e0728d9
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -208,15 +183,15 @@ BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
 N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
 p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCDZDn6+It+9qNV4HrhU
-aHD87UMv7skAP/CeS67sHiGqmzAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yNDAxMDMwOTE0NDNaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCC7hl4SLFi62WxDjh8P
+EIzspvWIblKEZD5jCSMh8E6WVDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yNDAxMDMwOTIyNDVaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAuQVjzypEBo7QJ+SnV+E49pwd1gJ64l5PJEdJ
-nJFVoI0JpHM9zOT2dORvzZZdSA5BoAVkBRtEZAlC1UH5/aNor7+WLX1HcC4clH5kSNU6Pdjasire
-brG2bAe4B10tG2hLH7qcZ2b/OuJxcXoyi7P6jkr1Z6Q6YsPQ4KGUkBjaLvEJ6Zi4Q+A/Tn11sjsG
-IZlkC5OYpofQUTZ7lZ1xWe7wgu/y2LQW8O7RmquRKg22Ymrmk7SBt5uNnqagxs+Gnz+EmhuIccb5
-eXg5zgYHmW22oRDuT8ZPSVJaOX1d4Bww7VODdAi0ynkBi8r0hITIlXMK6EQ4FUT0mPaCCVanr+rx
-VQ==
---000000000000a3d01a060e070b19--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAZxwt5A8EiXQZaILlwtB8zdxlL8xBiZ4gzgtj
+CnKoFx1mlxvFTC7T8iBjawD1oTedtnCsbj8yJtBunheTcrga+2YzlsfsCL2F1kXNT8GNVr9ix1j4
+8FEEcZ0TDMptdcIaGXppqx/td9vVGNx4PTl0NzpGfjLnQK7bfgqaZTxJpCO0WYxeRCEF8awgRPvt
+T1cGcEg8YPKTQbJt7JPcDjh0vu1Dv/G0xAoZwAiFtR/hi9/Du8/8yH9dPEG+GXB7haqIi5l/wVfD
+sB8cwC1BEeTBZTEf2nYt3SjMUF8yo2uNN21PRCzkmDdfxVGYKlbF8Jsvompo4rRVSVbq6u6bwRNO
+Tw==
+--000000000000635125060e0728d9--
 
