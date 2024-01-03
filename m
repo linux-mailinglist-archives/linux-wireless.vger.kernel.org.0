@@ -1,103 +1,167 @@
-Return-Path: <linux-wireless+bounces-1443-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1444-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2F67822B91
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jan 2024 11:47:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 463B4822BCA
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jan 2024 12:04:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FF38285412
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jan 2024 10:47:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81830B234AD
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jan 2024 11:04:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB1B318C3A;
-	Wed,  3 Jan 2024 10:47:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84AC418C3A;
+	Wed,  3 Jan 2024 11:04:38 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-il1-f199.google.com (mail-il1-f199.google.com [209.85.166.199])
+Received: from mail-io1-f70.google.com (mail-io1-f70.google.com [209.85.166.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9829A18E0E
-	for <linux-wireless@vger.kernel.org>; Wed,  3 Jan 2024 10:47:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA6318E0D
+	for <linux-wireless@vger.kernel.org>; Wed,  3 Jan 2024 11:04:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f199.google.com with SMTP id e9e14a558f8ab-35fcbc79fd3so184465295ab.0
-        for <linux-wireless@vger.kernel.org>; Wed, 03 Jan 2024 02:47:21 -0800 (PST)
+Received: by mail-io1-f70.google.com with SMTP id ca18e2360f4ac-7ba7b2c0c1cso1419126339f.2
+        for <linux-wireless@vger.kernel.org>; Wed, 03 Jan 2024 03:04:36 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704278841; x=1704883641;
+        d=1e100.net; s=20230601; t=1704279876; x=1704884676;
         h=to:from:subject:message-id:date:mime-version:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=V/q3fX7yfr4+OxT/fgvLyZ0FBGYrlGsDU4PTbrFMXMU=;
-        b=ZqVT5IJtDSxQTH7Xg3XIdxnE5poKRw8bdDGm6zEIRtLpb3OOS3TTXm2ApdJudAyAKa
-         OM/ZZkAwWpe7Ct6cPBXlt72xXvRLFEyRarRW2DD8J0ejV/ETPsVWAxAF08cS+fLaDa5t
-         GV5riyvcA3iAsFofwGkL7LkZsjO+umn4qxxaI5uS5dRAIwvU7H5Z1sEna9VeBfBiYOnc
-         1cs90nMWYeZwVtOjbm3GL34yK7RtGxk01KJAtJ7QJrOf5Cpj3W+z46jHJ4YQu0/3hhV3
-         hpG8A6I0jyK/LVjzijdjq4sooLRzRvTxoEdWZrd9YVfz2I15K0JC62YIhU4cCOqfQei1
-         FUaQ==
-X-Gm-Message-State: AOJu0YzO6LlAGynhbtT3W+fbofaNjp8twM6iv7lt7yf3Kt94ZglgPB3A
-	BCz+kh/LUJVMx3Fhqjs1+XGS4XGwRBDkqMFhj+4LLjhYP2UQ
-X-Google-Smtp-Source: AGHT+IF+FHvBiFwTjzjx9Sl+fixAoS3nuebFzJcxhwO8WYaTRSv/XaTiDQiVzT4ZY+vs8TKQ/L+uZlA6cALEF5IwX/UhPcRY/XBS
+        bh=R8KfXmtbwMJMKrl1dAJ+3T+XeGVJU5tYwWqQe05u00k=;
+        b=n/JTHLWtByeHQSLaE6tKybpoU5NpFANzS/xDV6tCheKm1iClcXbZOaPgHhoTMctZDf
+         9ZAvVcJtuU9qLVchELQuRFtm14e5SENWmbbRJYBEJXXLbz8fCHWG0cHG8HjtwNLD8oEK
+         7QHPjrYLKacWkgzwsxs/5dHwEe58sJMZp/Y9bWCO4KS2y4eqfIUoiaGtY+kroyghImOT
+         J9aOJtNnrJVBkfIO6yZ3mfK8u8GfCVWenyt7GIMgAI8weenPkKcq6Ji6IVHu0tGJlkig
+         mtJTJhX1LC5mIQhn75AMIy6715dHciRigFHb23n59TK+2ECLHjOvw4YPZOe+HTzDzYdN
+         NQig==
+X-Gm-Message-State: AOJu0YyVkUzhP9zOebRP04cwfppT7Cdlt5336+pbZ92nPIq25HeXt/kE
+	6hURDFo4jJ974QtICyUEWottXULrE7e/wvKM7gFBlSVeeaVZ
+X-Google-Smtp-Source: AGHT+IHlATu/d3FvAhv+dHu8yoftsb2wcqgtUVNfCH1GkqmOkEVQAREBnssNuGCDmzykc2peSnPvOXe8ezDdtnpksyZ0c7XusCRA
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1a2d:b0:35f:f683:f817 with SMTP id
- g13-20020a056e021a2d00b0035ff683f817mr2185154ile.5.1704278840869; Wed, 03 Jan
- 2024 02:47:20 -0800 (PST)
-Date: Wed, 03 Jan 2024 02:47:20 -0800
+X-Received: by 2002:a05:6e02:1c28:b0:35f:9ada:73a8 with SMTP id
+ m8-20020a056e021c2800b0035f9ada73a8mr3068749ilh.2.1704279876280; Wed, 03 Jan
+ 2024 03:04:36 -0800 (PST)
+Date: Wed, 03 Jan 2024 03:04:36 -0800
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000e8ad89060e0856f8@google.com>
-Subject: [syzbot] Monthly wireless report (Jan 2024)
-From: syzbot <syzbot+list2ced74a42cd2d7138cf6@syzkaller.appspotmail.com>
-To: linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Message-ID: <0000000000009fa770060e089409@google.com>
+Subject: [syzbot] [wireless?] WARNING: suspicious RCU usage in __cfg80211_bss_update
+From: syzbot <syzbot+864a269c27ee06b58374@syzkaller.appspotmail.com>
+To: benjamin.berg@intel.com, davem@davemloft.net, edumazet@google.com, 
+	johannes.berg@intel.com, johannes@sipsolutions.net, kuba@kernel.org, 
+	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	miriam.rachel.korenblit@intel.com, netdev@vger.kernel.org, pabeni@redhat.com, 
+	syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
 
-Hello wireless maintainers/developers,
+Hello,
 
-This is a 31-day syzbot report for the wireless subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/wireless
+syzbot found the following issue on:
 
-During the period, 0 new issues were detected and 0 were fixed.
-In total, 30 issues are still open and 119 have been fixed so far.
+HEAD commit:    954fb2d2d49f Merge branch 'remove-retired-tc-uapi'
+git tree:       net-next
+console+strace: https://syzkaller.appspot.com/x/log.txt?x=16774b7ee80000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=a4e9ca8e3c104d2a
+dashboard link: https://syzkaller.appspot.com/bug?extid=864a269c27ee06b58374
+compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15890ef9e80000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1764956ee80000
 
-Some of the still happening issues:
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/4bca0ab1d263/disk-954fb2d2.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/d2766905a2c7/vmlinux-954fb2d2.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/d12ee4a13afb/bzImage-954fb2d2.xz
 
-Ref  Crashes Repro Title
-<1>  6261    Yes   WARNING in __ieee80211_beacon_get
-                   https://syzkaller.appspot.com/bug?extid=18c783c5cf6a781e3e2c
-<2>  4378    Yes   WARNING in __cfg80211_ibss_joined (2)
-                   https://syzkaller.appspot.com/bug?extid=7f064ba1704c2466e36d
-<3>  3715    Yes   WARNING in ieee80211_link_info_change_notify (2)
-                   https://syzkaller.appspot.com/bug?extid=de87c09cc7b964ea2e23
-<4>  2836    No    WARNING in ieee80211_ibss_csa_beacon (2)
-                   https://syzkaller.appspot.com/bug?extid=b10a54cb0355d83fd75c
-<5>  842     Yes   WARNING in ar5523_submit_rx_cmd/usb_submit_urb
-                   https://syzkaller.appspot.com/bug?extid=6101b0c732dea13ea55b
-<6>  744     Yes   WARNING in ieee80211_start_next_roc
-                   https://syzkaller.appspot.com/bug?extid=c3a167b5615df4ccd7fb
-<7>  507     Yes   WARNING in ieee80211_bss_info_change_notify (2)
-                   https://syzkaller.appspot.com/bug?extid=dd4779978217b1973180
-<8>  65      Yes   WARNING in ieee80211_free_ack_frame (2)
-                   https://syzkaller.appspot.com/bug?extid=ac648b0525be1feba506
-<9>  46      Yes   WARNING in carl9170_usb_submit_cmd_urb/usb_submit_urb
-                   https://syzkaller.appspot.com/bug?extid=9468df99cb63a4a4c4e1
-<10> 38      Yes   WARNING in ar5523_cmd/usb_submit_urb
-                   https://syzkaller.appspot.com/bug?extid=1bc2c2afd44f820a669f
+The issue was bisected to:
+
+commit 32af9a9e1069e55bc02741fb00ac9d0ca1a2eaef
+Author: Benjamin Berg <benjamin.berg@intel.com>
+Date:   Wed Dec 20 11:41:41 2023 +0000
+
+    wifi: cfg80211: free beacon_ies when overridden from hidden BSS
+
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=1496b32de80000
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=1696b32de80000
+console output: https://syzkaller.appspot.com/x/log.txt?x=1296b32de80000
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+864a269c27ee06b58374@syzkaller.appspotmail.com
+Fixes: 32af9a9e1069 ("wifi: cfg80211: free beacon_ies when overridden from hidden BSS")
+
+wlan0: Created IBSS using preconfigured BSSID 50:50:50:50:50:50
+wlan0: Creating new IBSS network, BSSID 50:50:50:50:50:50
+=============================
+WARNING: suspicious RCU usage
+6.7.0-rc6-syzkaller-01863-g954fb2d2d49f #0 Not tainted
+-----------------------------
+net/wireless/scan.c:1867 suspicious rcu_dereference_check() usage!
+
+other info that might help us debug this:
+
+
+rcu_scheduler_active = 2, debug_locks = 1
+4 locks held by kworker/u4:2/35:
+ #0: ffff888013071938 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_one_work+0x789/0x15d0 kernel/workqueue.c:2602
+ #1: ffffc90000abfd80 ((work_completion)(&rdev->wiphy_work)){+.+.}-{0:0}, at: process_one_work+0x7eb/0x15d0 kernel/workqueue.c:2603
+ #2: ffff88807b0f8768 (&rdev->wiphy.mtx){+.+.}-{3:3}, at: wiphy_lock include/net/cfg80211.h:5928 [inline]
+ #2: ffff88807b0f8768 (&rdev->wiphy.mtx){+.+.}-{3:3}, at: cfg80211_wiphy_work+0x2b/0x330 net/wireless/core.c:424
+ #3: ffff88807b0f8168 (&rdev->bss_lock){+...}-{2:2}, at: spin_lock_bh include/linux/spinlock.h:356 [inline]
+ #3: ffff88807b0f8168 (&rdev->bss_lock){+...}-{2:2}, at: cfg80211_inform_single_bss_frame_data+0x8e4/0x12c0 net/wireless/scan.c:3014
+
+stack backtrace:
+CPU: 0 PID: 35 Comm: kworker/u4:2 Not tainted 6.7.0-rc6-syzkaller-01863-g954fb2d2d49f #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/17/2023
+Workqueue: events_unbound cfg80211_wiphy_work
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x125/0x1b0 lib/dump_stack.c:106
+ lockdep_rcu_suspicious+0x20c/0x3b0 kernel/locking/lockdep.c:6712
+ __cfg80211_bss_update+0x17fb/0x25f0 net/wireless/scan.c:1867
+ cfg80211_inform_single_bss_frame_data+0x91e/0x12c0 net/wireless/scan.c:3015
+ cfg80211_inform_bss_frame_data+0x14c/0x340 net/wireless/scan.c:3050
+ __ieee80211_sta_join_ibss+0xcf3/0x1880 net/mac80211/ibss.c:376
+ ieee80211_sta_create_ibss+0x206/0x470 net/mac80211/ibss.c:1320
+ ieee80211_sta_find_ibss net/mac80211/ibss.c:1449 [inline]
+ ieee80211_ibss_work+0xbbb/0x14c0 net/mac80211/ibss.c:1666
+ ieee80211_iface_work+0xbeb/0xda0 net/mac80211/iface.c:1665
+ cfg80211_wiphy_work+0x24e/0x330 net/wireless/core.c:437
+ process_one_work+0x886/0x15d0 kernel/workqueue.c:2627
+ process_scheduled_works kernel/workqueue.c:2700 [inline]
+ worker_thread+0x8b9/0x1290 kernel/workqueue.c:2781
+ kthread+0x2c6/0x3a0 kernel/kthread.c:388
+ ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:242
+ </TASK>
+
 
 ---
 This report is generated by a bot. It may contain errors.
 See https://goo.gl/tpsmEJ for more information about syzbot.
 syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
 
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
-You may send multiple commands in a single email message.
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
