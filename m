@@ -1,167 +1,159 @@
-Return-Path: <linux-wireless+bounces-1444-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1445-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 463B4822BCA
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jan 2024 12:04:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD0E6822BCF
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jan 2024 12:08:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81830B234AD
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jan 2024 11:04:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3ADC6281459
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jan 2024 11:08:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84AC418C3A;
-	Wed,  3 Jan 2024 11:04:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55DEB18EA2;
+	Wed,  3 Jan 2024 11:08:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XzEyvilD"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-io1-f70.google.com (mail-io1-f70.google.com [209.85.166.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA6318E0D
-	for <linux-wireless@vger.kernel.org>; Wed,  3 Jan 2024 11:04:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f70.google.com with SMTP id ca18e2360f4ac-7ba7b2c0c1cso1419126339f.2
-        for <linux-wireless@vger.kernel.org>; Wed, 03 Jan 2024 03:04:36 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD9D518EA1
+	for <linux-wireless@vger.kernel.org>; Wed,  3 Jan 2024 11:08:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1704280093;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QsK2zTzsBP8mr0W5TxJLUBCVnnwGlPVfyttD5Ww9+7c=;
+	b=XzEyvilDuWFByuaydNaNuYgx/hyTFeveUibNWmU9hXQKAUJ9vjEFzChCy4UQAWxj99z+0c
+	La58A9aBu90FuTn4MzpqY5XDRTbvXn4UrGHSbk6anf5i+DVuu1bAAcew7kzgPTJGuNIdVG
+	rI4uB0BgpF0eQlns1qTDrK14V1ziBUA=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-357-Wq4m8HhkPdyhRwdk9Hm83A-1; Wed, 03 Jan 2024 06:08:12 -0500
+X-MC-Unique: Wq4m8HhkPdyhRwdk9Hm83A-1
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-a27619b3a46so208898866b.3
+        for <linux-wireless@vger.kernel.org>; Wed, 03 Jan 2024 03:08:12 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704279876; x=1704884676;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=R8KfXmtbwMJMKrl1dAJ+3T+XeGVJU5tYwWqQe05u00k=;
-        b=n/JTHLWtByeHQSLaE6tKybpoU5NpFANzS/xDV6tCheKm1iClcXbZOaPgHhoTMctZDf
-         9ZAvVcJtuU9qLVchELQuRFtm14e5SENWmbbRJYBEJXXLbz8fCHWG0cHG8HjtwNLD8oEK
-         7QHPjrYLKacWkgzwsxs/5dHwEe58sJMZp/Y9bWCO4KS2y4eqfIUoiaGtY+kroyghImOT
-         J9aOJtNnrJVBkfIO6yZ3mfK8u8GfCVWenyt7GIMgAI8weenPkKcq6Ji6IVHu0tGJlkig
-         mtJTJhX1LC5mIQhn75AMIy6715dHciRigFHb23n59TK+2ECLHjOvw4YPZOe+HTzDzYdN
-         NQig==
-X-Gm-Message-State: AOJu0YyVkUzhP9zOebRP04cwfppT7Cdlt5336+pbZ92nPIq25HeXt/kE
-	6hURDFo4jJ974QtICyUEWottXULrE7e/wvKM7gFBlSVeeaVZ
-X-Google-Smtp-Source: AGHT+IHlATu/d3FvAhv+dHu8yoftsb2wcqgtUVNfCH1GkqmOkEVQAREBnssNuGCDmzykc2peSnPvOXe8ezDdtnpksyZ0c7XusCRA
+        d=1e100.net; s=20230601; t=1704280091; x=1704884891;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=QsK2zTzsBP8mr0W5TxJLUBCVnnwGlPVfyttD5Ww9+7c=;
+        b=DgmOaqPnqPrgdhrzuU4hHGBOmwNj/pW9Y4BXwbYW1XF04CsURkSPYN05i4Gzdf2Ex5
+         qijiI6C+kdOQQpUsJys4ZtVpFDbSrnmV+4bJN9TUDTvoFgtBuQF57rQuqGZDoyQR1d2q
+         Y71WH19Mm+dQqx6fPhQ1hNuE2iM9qQ9ReE+xpRGE7nH9aQUGA8qjrCQQgfVtdG3NcqP6
+         i+kdRtX53al9ZOcDJIO5ymweS70ORAfmGvS/KTRpgYwvarl3kRiK07IjvaUEuPdkZ7dz
+         ZlAAnDwORXlyMwEU2McdoIyHIrN3+OkLjVMaYmfUZ+nVgmmcdco+KcVB5SANqDUdgrEb
+         pxzg==
+X-Gm-Message-State: AOJu0YxyWdf7d655XQVPSw9qC7dIMOySaOH1kN3O951qe8vgFEBknHO3
+	Jjv3I1nR9kIkiHT92uTJkDjKMzfcOcz2GzgE1Omykumhf1fv8tKAK6K5LOWlRPMhI/jpHYMpext
+	Gajv2C+JpnmojcW35/yKswpQhVNzLSCVtQY5YCBQW1Cg=
+X-Received: by 2002:a17:906:25c3:b0:a19:a1ba:da45 with SMTP id n3-20020a17090625c300b00a19a1bada45mr9918923ejb.108.1704280090891;
+        Wed, 03 Jan 2024 03:08:10 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IExggJ5bLSpH1ad1KuTzdmZwdD6JpkDqu4njalckDXsIWCHCiNdA5AIJa/KpQ8SU1itdsikIA==
+X-Received: by 2002:a17:906:25c3:b0:a19:a1ba:da45 with SMTP id n3-20020a17090625c300b00a19a1bada45mr9918918ejb.108.1704280090577;
+        Wed, 03 Jan 2024 03:08:10 -0800 (PST)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id fv14-20020a170907508e00b00a269f8e8869sm12618335ejc.128.2024.01.03.03.08.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 03 Jan 2024 03:08:09 -0800 (PST)
+Message-ID: <0c125614-6258-4743-9e24-a0bd59fe414d@redhat.com>
+Date: Wed, 3 Jan 2024 12:08:09 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1c28:b0:35f:9ada:73a8 with SMTP id
- m8-20020a056e021c2800b0035f9ada73a8mr3068749ilh.2.1704279876280; Wed, 03 Jan
- 2024 03:04:36 -0800 (PST)
-Date: Wed, 03 Jan 2024 03:04:36 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000009fa770060e089409@google.com>
-Subject: [syzbot] [wireless?] WARNING: suspicious RCU usage in __cfg80211_bss_update
-From: syzbot <syzbot+864a269c27ee06b58374@syzkaller.appspotmail.com>
-To: benjamin.berg@intel.com, davem@davemloft.net, edumazet@google.com, 
-	johannes.berg@intel.com, johannes@sipsolutions.net, kuba@kernel.org, 
-	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	miriam.rachel.korenblit@intel.com, netdev@vger.kernel.org, pabeni@redhat.com, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: License of old broadcom BT firmwares and WiFi calibration files
+Content-Language: en-US, nl
+To: Arend Van Spriel <arend.vanspriel@broadcom.com>,
+ Svyatoslav Ryhel <clamor95@gmail.com>
+Cc: linux-wireless@vger.kernel.org
+References: <CAPVz0n2Ky350xhOv6WvE0YhFJ9QBe59LnWvKiafs2tjFnptP+g@mail.gmail.com>
+ <22115037-3a81-4a52-8e64-bc85c2be4212@broadcom.com>
+ <CAPVz0n2Dah1b45c0yUjMZNph5AVJjneLsc2LOQ-dkXNRTv6y+Q@mail.gmail.com>
+ <18cce9a7818.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+From: Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <18cce9a7818.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hello,
+Hi,
 
-syzbot found the following issue on:
+On 1/3/24 10:14, Arend Van Spriel wrote:
+> + linux-wireless
+> + Hans de Goede
+> 
+> 
+> On December 16, 2023 9:14:48 PM Svyatoslav Ryhel <clamor95@gmail.com> wrote:
+> 
+>> сб, 16 груд. 2023 р. о 21:57 Arend van Spriel
+>> <arend.vanspriel@broadcom.com> пише:
+>>>
+>>> On 12/16/2023 6:45 PM, Svyatoslav Ryhel wrote:
+>>>> Greetings!
+>>>>
+>>>> I am trying to submit bluetooth firmwares (BCM4329B1.*,*.hcd and
+>>>> BCM4330B1.*,*.hcd) and wifi calibration files
+>>>> (brcmfmac4329-sdio.*,*.txt and brcmfmac4329-sdio.*,*.txt) from a few
+>>>> Tegra 2 and Tegra 3 based devices into linux-fimware.
+>>>>
+>>>> I have faced ambiguous license issue since those files were part of
+>>>> Android Images of different vendors. Those vendors did not provide a
+>>>> license nor for android images, not for these files.
+>>>>
+>>>> Maybe you can clarify licensing of these files and you can suggest a
+>>>> way they could be accepted into linux-firmware?
+>>>
+>>> Basically, the firmware files in linux-firmware fall under the license
+>>> conditions that are in the repository. This means the firmware you want
+>>> to submit would get a different license. The main reason is that the
+>>> license in linux-firmware allows redistributing the firmware files which
+>>> is an important aspect for linux distro maintainers.
+>>>
+>>> So the device vendors would have to give their blessing. For these old
+>>> chipsets they probably got it from Broadcom. I never had much contact
+>>> with BT side so not sure who to contact about this.
+>>
+>> So even though those files are built from Broadcom sources they still
+>> fall under device vendor licensing? Or am I misunderstanding
+>> something? I have to contact the vendor of each device for a licence
+>> regarding those files?
+> 
+> If you only have the binary firmware files it is  hard to say. Can you refer to a public repository where these can be found?
+> 
+>>
+>>> Regarding the calibration files it is a bit awkward. There is a
+>>> precedent as these have been published by community under GPL license.
+>>> Broadcom never released those as they are board specific and the device
+>>> vendor should provide them. So maybe you can submit those without any issue.
+>>
+>> So I may modify them with a GPL license header and pretend this is how it was?
+>> Looks like an affair but alright.
+> 
+> Well. Most if not all have been submitted by Hans de Goede so maybe he can advice how to go about with this.
 
-HEAD commit:    954fb2d2d49f Merge branch 'remove-retired-tc-uapi'
-git tree:       net-next
-console+strace: https://syzkaller.appspot.com/x/log.txt?x=16774b7ee80000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=a4e9ca8e3c104d2a
-dashboard link: https://syzkaller.appspot.com/bug?extid=864a269c27ee06b58374
-compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15890ef9e80000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1764956ee80000
+The practice of submitting these upstream was actually started by Linaro.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/4bca0ab1d263/disk-954fb2d2.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/d2766905a2c7/vmlinux-954fb2d2.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/d12ee4a13afb/bzImage-954fb2d2.xz
+I believe the thinking behind this is that the calibration + gpio info
+in these files are purely functional and thus this is not copyrightable.
+Note I'm not a lawyer and this is not legal advice.
 
-The issue was bisected to:
+The nvram files as submitted to linux-firmware have all comments stripped
+and have the name=val pairs sorted alphabetically by name.
 
-commit 32af9a9e1069e55bc02741fb00ac9d0ca1a2eaef
-Author: Benjamin Berg <benjamin.berg@intel.com>
-Date:   Wed Dec 20 11:41:41 2023 +0000
+Regards,
 
-    wifi: cfg80211: free beacon_ies when overridden from hidden BSS
-
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=1496b32de80000
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=1696b32de80000
-console output: https://syzkaller.appspot.com/x/log.txt?x=1296b32de80000
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+864a269c27ee06b58374@syzkaller.appspotmail.com
-Fixes: 32af9a9e1069 ("wifi: cfg80211: free beacon_ies when overridden from hidden BSS")
-
-wlan0: Created IBSS using preconfigured BSSID 50:50:50:50:50:50
-wlan0: Creating new IBSS network, BSSID 50:50:50:50:50:50
-=============================
-WARNING: suspicious RCU usage
-6.7.0-rc6-syzkaller-01863-g954fb2d2d49f #0 Not tainted
------------------------------
-net/wireless/scan.c:1867 suspicious rcu_dereference_check() usage!
-
-other info that might help us debug this:
-
-
-rcu_scheduler_active = 2, debug_locks = 1
-4 locks held by kworker/u4:2/35:
- #0: ffff888013071938 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_one_work+0x789/0x15d0 kernel/workqueue.c:2602
- #1: ffffc90000abfd80 ((work_completion)(&rdev->wiphy_work)){+.+.}-{0:0}, at: process_one_work+0x7eb/0x15d0 kernel/workqueue.c:2603
- #2: ffff88807b0f8768 (&rdev->wiphy.mtx){+.+.}-{3:3}, at: wiphy_lock include/net/cfg80211.h:5928 [inline]
- #2: ffff88807b0f8768 (&rdev->wiphy.mtx){+.+.}-{3:3}, at: cfg80211_wiphy_work+0x2b/0x330 net/wireless/core.c:424
- #3: ffff88807b0f8168 (&rdev->bss_lock){+...}-{2:2}, at: spin_lock_bh include/linux/spinlock.h:356 [inline]
- #3: ffff88807b0f8168 (&rdev->bss_lock){+...}-{2:2}, at: cfg80211_inform_single_bss_frame_data+0x8e4/0x12c0 net/wireless/scan.c:3014
-
-stack backtrace:
-CPU: 0 PID: 35 Comm: kworker/u4:2 Not tainted 6.7.0-rc6-syzkaller-01863-g954fb2d2d49f #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/17/2023
-Workqueue: events_unbound cfg80211_wiphy_work
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x125/0x1b0 lib/dump_stack.c:106
- lockdep_rcu_suspicious+0x20c/0x3b0 kernel/locking/lockdep.c:6712
- __cfg80211_bss_update+0x17fb/0x25f0 net/wireless/scan.c:1867
- cfg80211_inform_single_bss_frame_data+0x91e/0x12c0 net/wireless/scan.c:3015
- cfg80211_inform_bss_frame_data+0x14c/0x340 net/wireless/scan.c:3050
- __ieee80211_sta_join_ibss+0xcf3/0x1880 net/mac80211/ibss.c:376
- ieee80211_sta_create_ibss+0x206/0x470 net/mac80211/ibss.c:1320
- ieee80211_sta_find_ibss net/mac80211/ibss.c:1449 [inline]
- ieee80211_ibss_work+0xbbb/0x14c0 net/mac80211/ibss.c:1666
- ieee80211_iface_work+0xbeb/0xda0 net/mac80211/iface.c:1665
- cfg80211_wiphy_work+0x24e/0x330 net/wireless/core.c:437
- process_one_work+0x886/0x15d0 kernel/workqueue.c:2627
- process_scheduled_works kernel/workqueue.c:2700 [inline]
- worker_thread+0x8b9/0x1290 kernel/workqueue.c:2781
- kthread+0x2c6/0x3a0 kernel/kthread.c:388
- ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:242
- </TASK>
+Hans
 
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
 
