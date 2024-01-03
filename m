@@ -1,64 +1,64 @@
-Return-Path: <linux-wireless+bounces-1439-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1440-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFEF8822AA8
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jan 2024 10:57:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B707822AA9
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jan 2024 10:57:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F338285161
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jan 2024 09:57:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B2FF285433
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jan 2024 09:57:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81BAA1864E;
-	Wed,  3 Jan 2024 09:57:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0DA118637;
+	Wed,  3 Jan 2024 09:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Aq6eKyxl"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="ZeNCbH2a"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6B818637
-	for <linux-wireless@vger.kernel.org>; Wed,  3 Jan 2024 09:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1887D1864C
+	for <linux-wireless@vger.kernel.org>; Wed,  3 Jan 2024 09:57:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3374eb61cbcso203072f8f.0
-        for <linux-wireless@vger.kernel.org>; Wed, 03 Jan 2024 01:57:14 -0800 (PST)
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-33748c4f33dso1130310f8f.1
+        for <linux-wireless@vger.kernel.org>; Wed, 03 Jan 2024 01:57:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1704275832; x=1704880632; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1704275834; x=1704880634; darn=vger.kernel.org;
         h=mime-version:references:in-reply-to:message-id:date:subject:cc:to
          :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=on6eER1psI786e0oItRaq0d2yEbkXlA313wsomcJh7E=;
-        b=Aq6eKyxlrOAYDE3yHMh1NLEyv5z7p47bxeJnP+rguOGVhIHi3NMTFyV//RfJd1wFUh
-         6/SpN85W9otoG7Qv+qMuGayi4JllRMDR7q8mbJD0Zicr5pd90OT6+5TNQoB6jscXLrf9
-         +D6iHCOKBeZ5aMjzAmnzrjGzIcuB2KMks5Yms=
+        bh=F/bDYe78B017KT+DMdx0YjLkcrL7umb04HHibM5TfOs=;
+        b=ZeNCbH2aFvLvB9P8AtUlLciLidLidRCwpbAyzl91/GVUIKir5kFKVQOpjRVdCfdD1K
+         R44n4FMQeLnJL59VXdg2UHGJ/+WBanoWENDSc5CStgAvPxarahuCKv3n3TkXSMpcrYat
+         A+bpcRMuii6jO9v5doefkY3srvQcFn5kuD6x8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704275832; x=1704880632;
+        d=1e100.net; s=20230601; t=1704275834; x=1704880634;
         h=mime-version:references:in-reply-to:message-id:date:subject:cc:to
          :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=on6eER1psI786e0oItRaq0d2yEbkXlA313wsomcJh7E=;
-        b=BLXUTr8/ZZme49NekCZoj4BgOOyzrxt+We7lY1TZEURddXKVDo/gxkIine5hSTTnlR
-         GrXx5DpQKnQ5oELp0xgkJvpwoBog4aiGgzLCM+zDEdDMbwN12I2tDd5OptafX2tcWh9r
-         s/gP4kge/9tVVSyZEnJzWxN/uPdOdMdanoMUsKC/kcdWqOCJIt2YdOGu76N/xz2B1Jn9
-         BqacnSwcJNO5ZuHgKAbEj0xc0dJZcfmvDspc5vWqxWi+eCE+2m8ouYODNw1LSK43Wnjc
-         ZFZiAHaC467DOhR8i2o7qMBFmzyZGrBB66RZQMPEtm6pquJGiLB61bLGVXSQV86hRvls
-         NTLA==
-X-Gm-Message-State: AOJu0YyUkaMvUcyvjhLWgPGDYVoMQIs/OmI9Z7LLLerdXmj3/CfSAFka
-	KZ4+kb8GF6id91h7442buUycVQEo7OEC
-X-Google-Smtp-Source: AGHT+IEGUd/rNKM2v7h6KZs9gqZDO3qliD2CI3J4v0zIx+GIOngObIrP8ZsQaXLE7v5cnrPu8gt3lA==
-X-Received: by 2002:a5d:6611:0:b0:336:9eb1:e10e with SMTP id n17-20020a5d6611000000b003369eb1e10emr9867876wru.39.1704275832758;
-        Wed, 03 Jan 2024 01:57:12 -0800 (PST)
+        bh=F/bDYe78B017KT+DMdx0YjLkcrL7umb04HHibM5TfOs=;
+        b=XqelqfcnKJtT6r5shM7y3bmLGKrzs+aecVVz8zmzq3UL4r/N/jDLYQHppAfPlNOFrS
+         biDXCuacecyzdfsxfTGiOtH9rUG8UfEbHgsINcsfuq35zTTIjn7cUGBopunP0AidXvdY
+         zS0mXmFdHBJ5bvy0i5s1BNfSg/hOrVRiH9pJAztm7pkrh5Bwj3O6to8tETSsVj7T5DDZ
+         g18uB/Oe31CN6Z3s1KHKTJhGFMEptsYyQx+ltklNxO6DG6Llmj9v6T//JWYi2vuySmUS
+         pwWhXaNxf3ixOyxnE32RqnKdIoHVjN5GvXV/LXPc6MGFuROwjb5EF9fVjcSk8zLODAPy
+         FZ4A==
+X-Gm-Message-State: AOJu0YylBJKUIFLFmmIsLXWSH5EkA9wQSrXFLVBX0jwH9YwNSM0n1phO
+	a2iJyCTdAo73/Tk6z1GPieVF2rWt3YuyvbGyeV6FpJZwxpe5yA8=
+X-Google-Smtp-Source: AGHT+IGrTxxJjITsBZ4odNPuAea6EWHbiw8rBjVWd11Pn5usuT4fBcn2ZYK4XJqeBXXUQcvsFYa5zw==
+X-Received: by 2002:a05:600c:4ecc:b0:40d:91fd:7b83 with SMTP id g12-20020a05600c4ecc00b0040d91fd7b83mr172897wmq.99.1704275834401;
+        Wed, 03 Jan 2024 01:57:14 -0800 (PST)
 Received: from bld-bun-02.bun.broadcom.net ([192.19.148.250])
-        by smtp.gmail.com with ESMTPSA id d5-20020adffbc5000000b00336e69fbc32sm18868019wrs.102.2024.01.03.01.57.11
+        by smtp.gmail.com with ESMTPSA id d5-20020adffbc5000000b00336e69fbc32sm18868019wrs.102.2024.01.03.01.57.12
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 03 Jan 2024 01:57:11 -0800 (PST)
+        Wed, 03 Jan 2024 01:57:13 -0800 (PST)
 From: Arend van Spriel <arend.vanspriel@broadcom.com>
 To: Kalle Valo <kvalo@kernel.org>
 Cc: linux-wireless@vger.kernel.org,
 	Arend van Spriel <arend.vanspriel@broadcom.com>
-Subject: [PATCH V2 1/4] wifi: brcmfmac: export firmware interface functions
-Date: Wed,  3 Jan 2024 10:57:01 +0100
-Message-Id: <20240103095704.135651-2-arend.vanspriel@broadcom.com>
+Subject: [PATCH V2 2/4] wifi: brcmfmac: add per-vendor feature detection callback
+Date: Wed,  3 Jan 2024 10:57:02 +0100
+Message-Id: <20240103095704.135651-3-arend.vanspriel@broadcom.com>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20240103095704.135651-1-arend.vanspriel@broadcom.com>
 References: <20240103095704.135651-1-arend.vanspriel@broadcom.com>
@@ -69,390 +69,110 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="0000000000009fd742060e07a3c9"
+	boundary="000000000000b93bb8060e07a39d"
 
---0000000000009fd742060e07a3c9
+--000000000000b93bb8060e07a39d
 Content-Transfer-Encoding: 8bit
 
-With multi-vendor support the vendor-specific module may need to use
-the firmware interface functions so export them using the macro
-BRCMF_EXPORT_SYMBOL_GPL() which exports them to driver namespace.
+Adding a .feat_attach() callback allowing per-vendor overrides
+of the driver feature flags. In this patch the callback is only
+provided by BCA vendor to disable SAE feature as it has not been
+confirmed yet. BCA chips generally do not have the in-driver
+supplicant (idsup) feature so they rely on NL80211_CMD_EXTERNAL_AUTH
+to trigger user-space authentication.
 
 Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 ---
-changelog
-  V2: address 0-day compilation failure for sparc64.
----
- .../broadcom/brcm80211/brcmfmac/cfg80211.c    |   4 +-
- .../broadcom/brcm80211/brcmfmac/core.c        |   2 +-
- .../broadcom/brcm80211/brcmfmac/feature.c     |   2 +-
- .../broadcom/brcm80211/brcmfmac/fwil.c        | 115 +---------------
- .../broadcom/brcm80211/brcmfmac/fwil.h        | 127 +++++++++++++++---
- 5 files changed, 121 insertions(+), 129 deletions(-)
+ .../wireless/broadcom/brcm80211/brcmfmac/bca/core.c  |  8 ++++++++
+ .../wireless/broadcom/brcm80211/brcmfmac/feature.c   |  3 +++
+ .../net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h | 12 ++++++++++++
+ 3 files changed, 23 insertions(+)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-index 133c5ea6429c..4df3d53bf5d3 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-@@ -3081,7 +3081,7 @@ brcmf_cfg80211_get_station_ibss(struct brcmf_if *ifp,
- 	struct brcmf_scb_val_le scbval;
- 	struct brcmf_pktcnt_le pktcnt;
- 	s32 err;
--	u32 rate;
-+	u32 rate = 0;
- 	u32 rssi;
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/core.c
+index ac3a36fa3640..a5d9ac5e6763 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/core.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/core.c
+@@ -7,6 +7,7 @@
+ #include <core.h>
+ #include <bus.h>
+ #include <fwvid.h>
++#include <feature.h>
  
- 	/* Get the current tx rate */
-@@ -7269,7 +7269,7 @@ static int brcmf_setup_wiphybands(struct brcmf_cfg80211_info *cfg)
- 	u32 nmode = 0;
- 	u32 vhtmode = 0;
- 	u32 bw_cap[2] = { WLC_BW_20MHZ_BIT, WLC_BW_20MHZ_BIT };
--	u32 rxchain;
-+	u32 rxchain = 0;
- 	u32 nchain;
- 	int err;
- 	s32 i;
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
-index f599d5f896e8..a92f78026cfd 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
-@@ -691,7 +691,7 @@ static int brcmf_net_mon_open(struct net_device *ndev)
- {
- 	struct brcmf_if *ifp = netdev_priv(ndev);
- 	struct brcmf_pub *drvr = ifp->drvr;
--	u32 monitor;
-+	u32 monitor = 0;
- 	int err;
+ #include "vops.h"
  
- 	brcmf_dbg(TRACE, "Enter\n");
+@@ -21,7 +22,14 @@ static void brcmf_bca_detach(struct brcmf_pub *drvr)
+ 	pr_err("%s: executing\n", __func__);
+ }
+ 
++static void brcmf_bca_feat_attach(struct brcmf_if *ifp)
++{
++	/* SAE support not confirmed so disabling for now */
++	ifp->drvr->feat_flags &= ~BIT(BRCMF_FEAT_SAE);
++}
++
+ const struct brcmf_fwvid_ops brcmf_bca_ops = {
+ 	.attach = brcmf_bca_attach,
+ 	.detach = brcmf_bca_detach,
++	.feat_attach = brcmf_bca_feat_attach,
+ };
 diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.c
-index 6d10c9efbe93..7348f73680d6 100644
+index 7348f73680d6..7fef93ede0fb 100644
 --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.c
 +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.c
-@@ -183,7 +183,7 @@ static void brcmf_feat_wlc_version_overrides(struct brcmf_pub *drv)
- static void brcmf_feat_iovar_int_get(struct brcmf_if *ifp,
- 				     enum brcmf_feat_id id, char *name)
- {
--	u32 data;
-+	u32 data = 0;
- 	int err;
+@@ -13,6 +13,7 @@
+ #include "debug.h"
+ #include "fwil.h"
+ #include "fwil_types.h"
++#include "fwvid.h"
+ #include "feature.h"
+ #include "common.h"
  
- 	/* we need to know firmware error */
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.c
-index 72fe8bce6eaf..2aec7d2abd52 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.c
-@@ -142,6 +142,7 @@ brcmf_fil_cmd_data_set(struct brcmf_if *ifp, u32 cmd, void *data, u32 len)
+@@ -339,6 +340,8 @@ void brcmf_feat_attach(struct brcmf_pub *drvr)
+ 	brcmf_feat_iovar_int_get(ifp, BRCMF_FEAT_FWSUP, "sup_wpa");
+ 	brcmf_feat_iovar_int_get(ifp, BRCMF_FEAT_SCAN_V2, "scan_ver");
  
- 	return err;
++	brcmf_fwvid_feat_attach(ifp);
++
+ 	if (drvr->settings->feature_disable) {
+ 		brcmf_dbg(INFO, "Features: 0x%02x, disable: 0x%02x\n",
+ 			  ifp->drvr->feat_flags,
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h
+index 43df58bb70ad..17fbdbb76f51 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h
+@@ -8,10 +8,12 @@
+ #include "firmware.h"
+ 
+ struct brcmf_pub;
++struct brcmf_if;
+ 
+ struct brcmf_fwvid_ops {
+ 	int (*attach)(struct brcmf_pub *drvr);
+ 	void (*detach)(struct brcmf_pub *drvr);
++	void (*feat_attach)(struct brcmf_if *ifp);
+ };
+ 
+ /* exported functions */
+@@ -44,4 +46,14 @@ static inline void brcmf_fwvid_detach(struct brcmf_pub *drvr)
+ 	brcmf_fwvid_detach_ops(drvr);
  }
-+BRCMF_EXPORT_SYMBOL_GPL(brcmf_fil_cmd_data_set);
  
- s32
- brcmf_fil_cmd_data_get(struct brcmf_if *ifp, u32 cmd, void *data, u32 len)
-@@ -160,36 +161,7 @@ brcmf_fil_cmd_data_get(struct brcmf_if *ifp, u32 cmd, void *data, u32 len)
- 
- 	return err;
- }
--
--
--s32
--brcmf_fil_cmd_int_set(struct brcmf_if *ifp, u32 cmd, u32 data)
--{
--	s32 err;
--	__le32 data_le = cpu_to_le32(data);
--
--	mutex_lock(&ifp->drvr->proto_block);
--	brcmf_dbg(FIL, "ifidx=%d, cmd=%d, value=%d\n", ifp->ifidx, cmd, data);
--	err = brcmf_fil_cmd_data(ifp, cmd, &data_le, sizeof(data_le), true);
--	mutex_unlock(&ifp->drvr->proto_block);
--
--	return err;
--}
--
--s32
--brcmf_fil_cmd_int_get(struct brcmf_if *ifp, u32 cmd, u32 *data)
--{
--	s32 err;
--	__le32 data_le = cpu_to_le32(*data);
--
--	mutex_lock(&ifp->drvr->proto_block);
--	err = brcmf_fil_cmd_data(ifp, cmd, &data_le, sizeof(data_le), false);
--	mutex_unlock(&ifp->drvr->proto_block);
--	*data = le32_to_cpu(data_le);
--	brcmf_dbg(FIL, "ifidx=%d, cmd=%d, value=%d\n", ifp->ifidx, cmd, *data);
--
--	return err;
--}
-+BRCMF_EXPORT_SYMBOL_GPL(brcmf_fil_cmd_data_get);
- 
- static u32
- brcmf_create_iovar(const char *name, const char *data, u32 datalen,
-@@ -270,26 +242,7 @@ brcmf_fil_iovar_data_get(struct brcmf_if *ifp, const char *name, void *data,
- 	mutex_unlock(&drvr->proto_block);
- 	return err;
- }
--
--s32
--brcmf_fil_iovar_int_set(struct brcmf_if *ifp, const char *name, u32 data)
--{
--	__le32 data_le = cpu_to_le32(data);
--
--	return brcmf_fil_iovar_data_set(ifp, name, &data_le, sizeof(data_le));
--}
--
--s32
--brcmf_fil_iovar_int_get(struct brcmf_if *ifp, const char *name, u32 *data)
--{
--	__le32 data_le = cpu_to_le32(*data);
--	s32 err;
--
--	err = brcmf_fil_iovar_data_get(ifp, name, &data_le, sizeof(data_le));
--	if (err == 0)
--		*data = le32_to_cpu(data_le);
--	return err;
--}
-+BRCMF_EXPORT_SYMBOL_GPL(brcmf_fil_iovar_data_get);
- 
- static u32
- brcmf_create_bsscfg(s32 bsscfgidx, const char *name, char *data, u32 datalen,
-@@ -364,6 +317,7 @@ brcmf_fil_bsscfg_data_set(struct brcmf_if *ifp, const char *name,
- 	mutex_unlock(&drvr->proto_block);
- 	return err;
- }
-+BRCMF_EXPORT_SYMBOL_GPL(brcmf_fil_bsscfg_data_set);
- 
- s32
- brcmf_fil_bsscfg_data_get(struct brcmf_if *ifp, const char *name,
-@@ -394,28 +348,7 @@ brcmf_fil_bsscfg_data_get(struct brcmf_if *ifp, const char *name,
- 	mutex_unlock(&drvr->proto_block);
- 	return err;
- }
--
--s32
--brcmf_fil_bsscfg_int_set(struct brcmf_if *ifp, const char *name, u32 data)
--{
--	__le32 data_le = cpu_to_le32(data);
--
--	return brcmf_fil_bsscfg_data_set(ifp, name, &data_le,
--					 sizeof(data_le));
--}
--
--s32
--brcmf_fil_bsscfg_int_get(struct brcmf_if *ifp, const char *name, u32 *data)
--{
--	__le32 data_le = cpu_to_le32(*data);
--	s32 err;
--
--	err = brcmf_fil_bsscfg_data_get(ifp, name, &data_le,
--					sizeof(data_le));
--	if (err == 0)
--		*data = le32_to_cpu(data_le);
--	return err;
--}
-+BRCMF_EXPORT_SYMBOL_GPL(brcmf_fil_bsscfg_data_get);
- 
- static u32 brcmf_create_xtlv(const char *name, u16 id, char *data, u32 len,
- 			     char *buf, u32 buflen)
-@@ -465,6 +398,7 @@ s32 brcmf_fil_xtlv_data_set(struct brcmf_if *ifp, const char *name, u16 id,
- 	mutex_unlock(&drvr->proto_block);
- 	return err;
- }
-+BRCMF_EXPORT_SYMBOL_GPL(brcmf_fil_xtlv_data_set);
- 
- s32 brcmf_fil_xtlv_data_get(struct brcmf_if *ifp, const char *name, u16 id,
- 			    void *data, u32 len)
-@@ -494,39 +428,4 @@ s32 brcmf_fil_xtlv_data_get(struct brcmf_if *ifp, const char *name, u16 id,
- 	mutex_unlock(&drvr->proto_block);
- 	return err;
- }
--
--s32 brcmf_fil_xtlv_int_set(struct brcmf_if *ifp, const char *name, u16 id, u32 data)
--{
--	__le32 data_le = cpu_to_le32(data);
--
--	return brcmf_fil_xtlv_data_set(ifp, name, id, &data_le,
--					 sizeof(data_le));
--}
--
--s32 brcmf_fil_xtlv_int_get(struct brcmf_if *ifp, const char *name, u16 id, u32 *data)
--{
--	__le32 data_le = cpu_to_le32(*data);
--	s32 err;
--
--	err = brcmf_fil_xtlv_data_get(ifp, name, id, &data_le, sizeof(data_le));
--	if (err == 0)
--		*data = le32_to_cpu(data_le);
--	return err;
--}
--
--s32 brcmf_fil_xtlv_int8_get(struct brcmf_if *ifp, const char *name, u16 id, u8 *data)
--{
--	return brcmf_fil_xtlv_data_get(ifp, name, id, data, sizeof(*data));
--}
--
--s32 brcmf_fil_xtlv_int16_get(struct brcmf_if *ifp, const char *name, u16 id, u16 *data)
--{
--	__le16 data_le = cpu_to_le16(*data);
--	s32 err;
--
--	err = brcmf_fil_xtlv_data_get(ifp, name, id, &data_le, sizeof(data_le));
--	if (err == 0)
--		*data = le16_to_cpu(data_le);
--	return err;
--}
--
-+BRCMF_EXPORT_SYMBOL_GPL(brcmf_fil_xtlv_data_get);
-\ No newline at end of file
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h
-index bc693157c4b1..a315a7fac6a0 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h
-@@ -81,29 +81,122 @@
- 
- s32 brcmf_fil_cmd_data_set(struct brcmf_if *ifp, u32 cmd, void *data, u32 len);
- s32 brcmf_fil_cmd_data_get(struct brcmf_if *ifp, u32 cmd, void *data, u32 len);
--s32 brcmf_fil_cmd_int_set(struct brcmf_if *ifp, u32 cmd, u32 data);
--s32 brcmf_fil_cmd_int_get(struct brcmf_if *ifp, u32 cmd, u32 *data);
-+static inline
-+s32 brcmf_fil_cmd_int_set(struct brcmf_if *ifp, u32 cmd, u32 data)
++static inline void brcmf_fwvid_feat_attach(struct brcmf_if *ifp)
 +{
-+	s32 err;
-+	__le32 data_le = cpu_to_le32(data);
- 
--s32 brcmf_fil_iovar_data_set(struct brcmf_if *ifp, const char *name, const void *data,
--			     u32 len);
-+	brcmf_dbg(FIL, "ifidx=%d, cmd=%d, value=%d\n", ifp->ifidx, cmd, data);
-+	err = brcmf_fil_cmd_data_set(ifp, cmd, &data_le, sizeof(data_le));
++	const struct brcmf_fwvid_ops *vops = ifp->drvr->vops;
 +
-+	return err;
-+}
-+static inline
-+s32 brcmf_fil_cmd_int_get(struct brcmf_if *ifp, u32 cmd, u32 *data)
-+{
-+	s32 err;
-+	__le32 data_le = cpu_to_le32(*data);
++	if (!vops->feat_attach)
++		return;
 +
-+	err = brcmf_fil_cmd_data_get(ifp, cmd, &data_le, sizeof(data_le));
-+	if (err == 0)
-+		*data = le32_to_cpu(data_le);
-+	brcmf_dbg(FIL, "ifidx=%d, cmd=%d, value=%d\n", ifp->ifidx, cmd, *data);
-+
-+	return err;
++	vops->feat_attach(ifp);
 +}
 +
-+s32 brcmf_fil_iovar_data_set(struct brcmf_if *ifp, const char *name,
-+			     const void *data, u32 len);
- s32 brcmf_fil_iovar_data_get(struct brcmf_if *ifp, const char *name, void *data,
- 			     u32 len);
--s32 brcmf_fil_iovar_int_set(struct brcmf_if *ifp, const char *name, u32 data);
--s32 brcmf_fil_iovar_int_get(struct brcmf_if *ifp, const char *name, u32 *data);
--
--s32 brcmf_fil_bsscfg_data_set(struct brcmf_if *ifp, const char *name, void *data,
--			      u32 len);
--s32 brcmf_fil_bsscfg_data_get(struct brcmf_if *ifp, const char *name, void *data,
--			      u32 len);
--s32 brcmf_fil_bsscfg_int_set(struct brcmf_if *ifp, const char *name, u32 data);
--s32 brcmf_fil_bsscfg_int_get(struct brcmf_if *ifp, const char *name, u32 *data);
-+static inline
-+s32 brcmf_fil_iovar_int_set(struct brcmf_if *ifp, const char *name, u32 data)
-+{
-+	__le32 data_le = cpu_to_le32(data);
-+
-+	return brcmf_fil_iovar_data_set(ifp, name, &data_le, sizeof(data_le));
-+}
-+static inline
-+s32 brcmf_fil_iovar_int_get(struct brcmf_if *ifp, const char *name, u32 *data)
-+{
-+	__le32 data_le = cpu_to_le32(*data);
-+	s32 err;
-+
-+	err = brcmf_fil_iovar_data_get(ifp, name, &data_le, sizeof(data_le));
-+	if (err == 0)
-+		*data = le32_to_cpu(data_le);
-+	return err;
-+}
-+
-+
-+s32 brcmf_fil_bsscfg_data_set(struct brcmf_if *ifp, const char *name,
-+			      void *data, u32 len);
-+s32 brcmf_fil_bsscfg_data_get(struct brcmf_if *ifp, const char *name,
-+			      void *data, u32 len);
-+static inline
-+s32 brcmf_fil_bsscfg_int_set(struct brcmf_if *ifp, const char *name, u32 data)
-+{
-+	__le32 data_le = cpu_to_le32(data);
-+
-+	return brcmf_fil_bsscfg_data_set(ifp, name, &data_le,
-+					 sizeof(data_le));
-+}
-+static inline
-+s32 brcmf_fil_bsscfg_int_get(struct brcmf_if *ifp, const char *name, u32 *data)
-+{
-+	__le32 data_le = cpu_to_le32(*data);
-+	s32 err;
-+
-+	err = brcmf_fil_bsscfg_data_get(ifp, name, &data_le,
-+					sizeof(data_le));
-+	if (err == 0)
-+		*data = le32_to_cpu(data_le);
-+	return err;
-+}
-+
- s32 brcmf_fil_xtlv_data_set(struct brcmf_if *ifp, const char *name, u16 id,
- 			    void *data, u32 len);
- s32 brcmf_fil_xtlv_data_get(struct brcmf_if *ifp, const char *name, u16 id,
- 			    void *data, u32 len);
--s32 brcmf_fil_xtlv_int_set(struct brcmf_if *ifp, const char *name, u16 id, u32 data);
--s32 brcmf_fil_xtlv_int_get(struct brcmf_if *ifp, const char *name, u16 id, u32 *data);
--s32 brcmf_fil_xtlv_int8_get(struct brcmf_if *ifp, const char *name, u16 id, u8 *data);
--s32 brcmf_fil_xtlv_int16_get(struct brcmf_if *ifp, const char *name, u16 id, u16 *data);
-+static inline
-+s32 brcmf_fil_xtlv_int_set(struct brcmf_if *ifp, const char *name, u16 id,
-+			   u32 data)
-+{
-+	__le32 data_le = cpu_to_le32(data);
-+
-+	return brcmf_fil_xtlv_data_set(ifp, name, id, &data_le,
-+					 sizeof(data_le));
-+}
-+static inline
-+s32 brcmf_fil_xtlv_int_get(struct brcmf_if *ifp, const char *name, u16 id,
-+			   u32 *data)
-+{
-+	__le32 data_le = cpu_to_le32(*data);
-+	s32 err;
-+
-+	err = brcmf_fil_xtlv_data_get(ifp, name, id, &data_le, sizeof(data_le));
-+	if (err == 0)
-+		*data = le32_to_cpu(data_le);
-+	return err;
-+}
-+static inline
-+s32 brcmf_fil_xtlv_int8_get(struct brcmf_if *ifp, const char *name, u16 id,
-+			    u8 *data)
-+{
-+	return brcmf_fil_xtlv_data_get(ifp, name, id, data, sizeof(*data));
-+}
-+static inline
-+s32 brcmf_fil_xtlv_int16_get(struct brcmf_if *ifp, const char *name, u16 id,
-+			     u16 *data)
-+{
-+	__le16 data_le = cpu_to_le16(*data);
-+	s32 err;
-+
-+	err = brcmf_fil_xtlv_data_get(ifp, name, id, &data_le, sizeof(data_le));
-+	if (err == 0)
-+		*data = le16_to_cpu(data_le);
-+	return err;
-+}
- 
- #endif /* _fwil_h_ */
+ #endif /* FWVID_H_ */
 -- 
 2.32.0
 
 
---0000000000009fd742060e07a3c9
+--000000000000b93bb8060e07a39d
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -523,15 +243,15 @@ BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
 N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
 p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCALW0g1HcLF1Ky9m1D0
-IHlesqc/fzi9FQ0T51E5FdYurDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yNDAxMDMwOTU3MTJaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCD90sabmQwfkdRPZM6s
+1KQ4NOVfA5JMj1jJU/reoDfftTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yNDAxMDMwOTU3MTRaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEA7FzXHJnechr13LQ1MXOHW2q/3wYe1WNLdEWC
-7k1rOLzQiqE6U7e/9raXvUER7g6QId764nj6klCgpwalIfk0FFsNsbfjjAhr4N85cs3B3QdxQ71F
-4E9Xtl+jNbHMXeI7m2dG52ioWF46HWxJWBH6Tm3hMLLjDG8f6T0iLrqeWPyYdYDOVy6t3XtnQisP
-AhjQEa23uskAv2HB3ZxZoO5RvtdAuc8jC/9gr0E7EPn9Iws5yK8d2lFqLvjK/Bjxgz6BPbgWUq6F
-i+W+ebk4TpaHBnuEl3yhnBc43nOD2ivFm1lFV1ThwEUjI3pM14nVAcCyMOYbOR8RyQPbDQYdMtGr
-yg==
---0000000000009fd742060e07a3c9--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAFj0DY2KE+xdJxEwDd98wboegNA1JkNBiOpVj
+ja6gXHEsSEvQwj7po2cllI7aYZjPXJ67CFsx4H8m5xHXxzUB8Vo3lh731qRqqZ+q/2n9es5/jUNV
+v9RqEU10cr2A7DERPdW7sQSFvz/5leuKPW8msgJiMWFeMNtCTATpRb65/fSpwCi9t8U3Zw8eIDra
+Jcq/ZnfH+hf9Pvjm6S5kZ9v+8z8FhNMRarJYutipz03OTJMFxqv+2tAzt5XjQMXW5AKz5+adR7ng
+kp9nMQ7MPVFltK6IoN7AOL3IyUHemh4loCrreE9HYegDMHmka3JGnZSFwrw3VL5o4X1KkXyz3ket
+og==
+--000000000000b93bb8060e07a39d--
 
