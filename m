@@ -1,95 +1,207 @@
-Return-Path: <linux-wireless+bounces-1451-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1452-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAE78823130
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jan 2024 17:23:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78D3382314E
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jan 2024 17:32:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51D591F22649
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jan 2024 16:23:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F19651F247FF
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jan 2024 16:32:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AAD91BDC5;
-	Wed,  3 Jan 2024 16:23:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F7491BDCD;
+	Wed,  3 Jan 2024 16:32:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Z03Eavi4"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lWTTMVk+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC4561BDC2
-	for <linux-wireless@vger.kernel.org>; Wed,  3 Jan 2024 16:23:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 403Fev5E010163;
-	Wed, 3 Jan 2024 16:23:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=0iMW22XVoA5EYuKjSRktWPaoevirJknKUkzcyB462UM=; b=Z0
-	3Eavi45gTHgpnK4xkBkclqXow08wBHY8pXNFrPvPVWjF6POnGkoxo4+U2mkrD7b8
-	IF/TtLlyc49kol3+ivvlG92Cp4m/jJqJ8Lj0mu+8Gz/lIw55j3+v1npNjlWUHNHx
-	8s/LbDvrkTF4aXD7y0wgruHopRpRLa1DqaS6wpg2Fe7q70KSoF7FZTv4rU2UXLjN
-	1WVCmEnPxUmTRkTh0fwR70ntQWz4nUzBzMmWzJFtrS3M6RtmvNnfMoHMbbPxjrQk
-	0QvknIc9PBB26xsmb/JV2hV7K7fL7Uex/G+Swdp23s2amdgjKMkuC8AqFgdGVKrR
-	s4RwiYMPwiLKxQw9Fx9A==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vd27yhdus-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 03 Jan 2024 16:23:42 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 403GNgWU004987
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 3 Jan 2024 16:23:42 GMT
-Received: from [10.110.76.17] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Wed, 3 Jan
- 2024 08:23:41 -0800
-Message-ID: <70cb1d26-bd6d-4a5e-aecb-b94f1e399d04@quicinc.com>
-Date: Wed, 3 Jan 2024 08:23:41 -0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E88F21BDD5
+	for <linux-wireless@vger.kernel.org>; Wed,  3 Jan 2024 16:32:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-4b7e4a2808bso35757e0c.1
+        for <linux-wireless@vger.kernel.org>; Wed, 03 Jan 2024 08:32:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1704299532; x=1704904332; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=MV54hHlBrsG5HCcLwNQkbjmunnaquuRgTwpjGakV+68=;
+        b=lWTTMVk+lpKlOLTZTB01iHVCmFNCtAqXPF66TWrn5iDQyAiZmD6Qm3extQl8gocxlJ
+         bM64suuPzSzqgxeIYtxW5bD6hqg9ie6NxWDeAKnIBclRAsA1c24uDs8z3boAvf72NwWf
+         yQ2UMNCbZWiIlh1oxhdhdzOQYQoCfckMZBQ6FvphSdVRb9nbtMTG7CUpGsonK17sQHcK
+         k90UPMojEWsSRXcFHxBtPzJsuWZeWjO1vL/F4Xa8ArpwljIqIVebdSHQp8KfuHFgbhcm
+         7akZ5NB8riFssb9Xqerj+a7v/fmdSQ3avsFRdrznA/vdqBbLw9Q3ZIturwQp8Max0LG2
+         OBJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704299532; x=1704904332;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MV54hHlBrsG5HCcLwNQkbjmunnaquuRgTwpjGakV+68=;
+        b=QFn0CcH1lKhq0uZsKJgB4eX34z3GrW3oJ9uSlcu/s2vNZJ/0HtBjvoSNAgm7ERfzza
+         mUqQ07kaftIjiMxADeEAa6DsQHrU1nxaS0/tw6oEVpUmxe6XnktV7kvcW9RW3uEIdJwj
+         /DCCDEOqHn34zyPIeprbLZSEANc/nTu0Bi8PzSBpqcOAQYNdTb6YdMF4aOc+h1ophinN
+         /lLq77ZYVdvQmOrSJg1FHqzxVoN1x+YxFwjnno31a1MNeKAB6UOQs1nqpNh44WHq9SPo
+         dp3f37P7cuGs7LQZ3nyQQDbgk9HyAlsQFyDIr5cb4ERt+BwZ+HrnYBV1hyN25v890hUc
+         UxCQ==
+X-Gm-Message-State: AOJu0YyglpOYHr2hmrwbmuq/6eIKV5cL4VY3CsfBZjwKLaHR5Qpth5gL
+	t6vYjQ9IY71982BJCmtFBQL6FNUNnFtH4UnE6tghizKJLmyByQ==
+X-Google-Smtp-Source: AGHT+IEmN4ihULX6lel2L0ttNUy2SanszwT+ntOj0zaoV75aDf+dIWhdqifANtd8WlrpqBUjTPRMlXSywNsMU7Ss1JY=
+X-Received: by 2002:a1f:1388:0:b0:4b6:b867:c83f with SMTP id
+ 130-20020a1f1388000000b004b6b867c83fmr5726801vkt.22.1704299531712; Wed, 03
+ Jan 2024 08:32:11 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] wifi: ath11k: replace ENOTSUPP with EOPNOTSUPP
-Content-Language: en-US
-To: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
-        <ath12k@lists.infradead.org>, <ath11k@lists.infradead.org>,
-        <ath10k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20240103041220.3082014-1-quic_periyasa@quicinc.com>
- <20240103041220.3082014-3-quic_periyasa@quicinc.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20240103041220.3082014-3-quic_periyasa@quicinc.com>
+References: <20230630151842.1.If764ede23c4e09a43a842771c2ddf99608f25f8e@changeid>
+In-Reply-To: <20230630151842.1.If764ede23c4e09a43a842771c2ddf99608f25f8e@changeid>
+From: Amit Pundir <amit.pundir@linaro.org>
+Date: Wed, 3 Jan 2024 22:01:35 +0530
+Message-ID: <CAMi1Hd2V8PV6j-5GYB7KnCUecBmES+xOkEwRUePORZP+GDKnBw@mail.gmail.com>
+Subject: Re: [PATCH] ath10k: Don't touch the CE interrupt registers after
+ power up
+To: Douglas Anderson <dianders@chromium.org>
+Cc: ath10k@lists.infradead.org, Abhishek Kumar <kuabhs@chromium.org>, 
+	Youghandhar Chintala <quic_youghand@quicinc.com>, Kalle Valo <kvalo@kernel.org>, 
+	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: zTo849a8B9VwkeeUWWkllbQe1bEe13WC
-X-Proofpoint-ORIG-GUID: zTo849a8B9VwkeeUWWkllbQe1bEe13WC
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-09_01,2023-12-07_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 bulkscore=0
- priorityscore=1501 malwarescore=0 lowpriorityscore=0 suspectscore=0
- spamscore=0 mlxlogscore=369 adultscore=0 clxscore=1015 impostorscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2311290000 definitions=main-2401030134
 
-On 1/2/2024 8:12 PM, Karthikeyan Periyasamy wrote:
-> ENOTSUPP is not a standard error code, don't use it. Replace with
-> EOPNOTSUPP instead.
-> 
-> No functional changes, compile tested only.
-> 
-> Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+On Sat, 1 Jul 2023 at 03:49, Douglas Anderson <dianders@chromium.org> wrote:
+>
+> As talked about in commit d66d24ac300c ("ath10k: Keep track of which
+> interrupts fired, don't poll them"),
 
+Hi Douglas, does this fix has a dependency on the above upstream
+commit d66d24ac300c, that you refer to?
+
+Asking because this patch landed on stable v5.4.y branch recently and
+now I see RCU stalls and lockups around "ath10k_snoc 18800000.wifi:
+failed to receive control response completion, polling.." message
+during ath10k_snoc initialization/bringup on DB845c. Here is the
+relevant log https://www.irccloud.com/pastebin/raw/NjKm3mLc, with
+DB845c rebooting into USB crash dump mode eventually.
+
+I wonder if commit d66d24ac300c need to be backported to v5.4.y as
+well? I tried cherry-picking it but ran into non-trivial conflicts, so
+didn't spend much time on it.
+
+Regards,
+Amit Pundir
+
+> if we access the copy engine
+> register at a bad time then ath10k can go boom. However, it's not
+> necessarily easy to know when it's safe to access them.
+>
+> The ChromeOS test labs saw a crash that looked like this at
+> shutdown/reboot time (on a chromeos-5.15 kernel, but likely the
+> problem could also reproduce upstream):
+>
+> Internal error: synchronous external abort: 96000010 [#1] PREEMPT SMP
+> ...
+> CPU: 4 PID: 6168 Comm: reboot Not tainted 5.15.111-lockdep-19350-g1d624fe6758f #1 010b9b233ab055c27c6dc88efb0be2f4e9e86f51
+> Hardware name: Google Kingoftown (DT)
+> ...
+> pc : ath10k_snoc_read32+0x50/0x74 [ath10k_snoc]
+> lr : ath10k_snoc_read32+0x24/0x74 [ath10k_snoc]
+> ...
+> Call trace:
+> ath10k_snoc_read32+0x50/0x74 [ath10k_snoc ...]
+> ath10k_ce_disable_interrupt+0x190/0x65c [ath10k_core ...]
+> ath10k_ce_disable_interrupts+0x8c/0x120 [ath10k_core ...]
+> ath10k_snoc_hif_stop+0x78/0x660 [ath10k_snoc ...]
+> ath10k_core_stop+0x13c/0x1ec [ath10k_core ...]
+> ath10k_halt+0x398/0x5b0 [ath10k_core ...]
+> ath10k_stop+0xfc/0x1a8 [ath10k_core ...]
+> drv_stop+0x148/0x6b4 [mac80211 ...]
+> ieee80211_stop_device+0x70/0x80 [mac80211 ...]
+> ieee80211_do_stop+0x10d8/0x15b0 [mac80211 ...]
+> ieee80211_stop+0x144/0x1a0 [mac80211 ...]
+> __dev_close_many+0x1e8/0x2c0
+> dev_close_many+0x198/0x33c
+> dev_close+0x140/0x210
+> cfg80211_shutdown_all_interfaces+0xc8/0x1e0 [cfg80211 ...]
+> ieee80211_remove_interfaces+0x118/0x5c4 [mac80211 ...]
+> ieee80211_unregister_hw+0x64/0x1f4 [mac80211 ...]
+> ath10k_mac_unregister+0x4c/0xf0 [ath10k_core ...]
+> ath10k_core_unregister+0x80/0xb0 [ath10k_core ...]
+> ath10k_snoc_free_resources+0xb8/0x1ec [ath10k_snoc ...]
+> ath10k_snoc_shutdown+0x98/0xd0 [ath10k_snoc ...]
+> platform_shutdown+0x7c/0xa0
+> device_shutdown+0x3e0/0x58c
+> kernel_restart_prepare+0x68/0xa0
+> kernel_restart+0x28/0x7c
+>
+> Though there's no known way to reproduce the problem, it makes sense
+> that it would be the same issue where we're trying to access copy
+> engine registers when it's not allowed.
+>
+> Let's fix this by changing how we "disable" the interrupts. Instead of
+> tweaking the copy engine registers we'll just use disable_irq() and
+> enable_irq(). Then we'll configure the interrupts once at power up
+> time.
+>
+> Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.2.2.c10-00754-QCAHLSWMTPL-1
+>
+> Signed-off-by: Douglas Anderson <dianders@chromium.org>
+> ---
+>
+>  drivers/net/wireless/ath/ath10k/snoc.c | 18 ++++++++++++++----
+>  1 file changed, 14 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
+> index 26214c00cd0d..2c39bad7ebfb 100644
+> --- a/drivers/net/wireless/ath/ath10k/snoc.c
+> +++ b/drivers/net/wireless/ath/ath10k/snoc.c
+> @@ -828,12 +828,20 @@ static void ath10k_snoc_hif_get_default_pipe(struct ath10k *ar,
+>
+>  static inline void ath10k_snoc_irq_disable(struct ath10k *ar)
+>  {
+> -       ath10k_ce_disable_interrupts(ar);
+> +       struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
+> +       int id;
+> +
+> +       for (id = 0; id < CE_COUNT_MAX; id++)
+> +               disable_irq(ar_snoc->ce_irqs[id].irq_line);
+>  }
+>
+>  static inline void ath10k_snoc_irq_enable(struct ath10k *ar)
+>  {
+> -       ath10k_ce_enable_interrupts(ar);
+> +       struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
+> +       int id;
+> +
+> +       for (id = 0; id < CE_COUNT_MAX; id++)
+> +               enable_irq(ar_snoc->ce_irqs[id].irq_line);
+>  }
+>
+>  static void ath10k_snoc_rx_pipe_cleanup(struct ath10k_snoc_pipe *snoc_pipe)
+> @@ -1090,6 +1098,8 @@ static int ath10k_snoc_hif_power_up(struct ath10k *ar,
+>                 goto err_free_rri;
+>         }
+>
+> +       ath10k_ce_enable_interrupts(ar);
+> +
+>         return 0;
+>
+>  err_free_rri:
+> @@ -1253,8 +1263,8 @@ static int ath10k_snoc_request_irq(struct ath10k *ar)
+>
+>         for (id = 0; id < CE_COUNT_MAX; id++) {
+>                 ret = request_irq(ar_snoc->ce_irqs[id].irq_line,
+> -                                 ath10k_snoc_per_engine_handler, 0,
+> -                                 ce_name[id], ar);
+> +                                 ath10k_snoc_per_engine_handler,
+> +                                 IRQF_NO_AUTOEN, ce_name[id], ar);
+>                 if (ret) {
+>                         ath10k_err(ar,
+>                                    "failed to register IRQ handler for CE %d: %d\n",
+> --
+> 2.41.0.255.g8b1d071c50-goog
+>
 
