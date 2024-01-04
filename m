@@ -1,82 +1,103 @@
-Return-Path: <linux-wireless+bounces-1478-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1479-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA7AD823EBD
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jan 2024 10:35:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94C4F823ED6
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jan 2024 10:42:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7703C281ACC
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jan 2024 09:35:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A58981C23772
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jan 2024 09:42:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0797208AD;
-	Thu,  4 Jan 2024 09:35:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BA3420B02;
+	Thu,  4 Jan 2024 09:42:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="BKV10HtT"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 612D2208A5
-	for <linux-wireless@vger.kernel.org>; Thu,  4 Jan 2024 09:35:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4049ZLzkC1596284, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 4049ZLzkC1596284
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 4 Jan 2024 17:35:21 +0800
-Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Thu, 4 Jan 2024 17:35:21 +0800
-Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
- RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Thu, 4 Jan 2024 17:35:21 +0800
-Received: from RTEXDAG02.realtek.com.tw ([fe80::5d58:7838:d352:d6b8]) by
- RTEXDAG02.realtek.com.tw ([fe80::5d58:7838:d352:d6b8%5]) with mapi id
- 15.01.2375.007; Thu, 4 Jan 2024 17:35:21 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Nicola Mingotti <nico020978@gmail.com>,
-        "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>
-Subject: RE: RTL8822bu as AP rejects Tapo devices
-Thread-Topic: RTL8822bu as AP rejects Tapo devices
-Thread-Index: AQHaPu42gxpRLfS9QUG5qti2XzCwFbDJY6iw
-Date: Thu, 4 Jan 2024 09:35:20 +0000
-Message-ID: <d5219b204fce48e1aa458ac669e2bbd3@realtek.com>
-References: <CAL7TOjnP72fV4en6i3hsd3qgsjas+a9O2rgp2CuCdKMLOh+VEg@mail.gmail.com>
-In-Reply-To: <CAL7TOjnP72fV4en6i3hsd3qgsjas+a9O2rgp2CuCdKMLOh+VEg@mail.gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-kse-serverinfo: RTEXDAG01.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E41208B9
+	for <linux-wireless@vger.kernel.org>; Thu,  4 Jan 2024 09:42:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=eqFUtFVL0U7tdRFhaeYDMZRzFaaJJ9J0Tp73uqe4ZXQ=;
+	t=1704361355; x=1705570955; b=BKV10HtTom20aIAMT7cwOKgg5X20WiHU+IHroCJ0adUNEze
+	o/DzqyMUG6LUdv02TZmRuk65NOXW8HMofcqXmn17RxuBY28vkLtt1lHtyi/Yb6GYFbP59UmVOdj2B
+	7BEO6OFyKkG2TRBxoSbI1HSKT68jy3BEDiDNQQIG+M7XudA27LIXQ1cCXHwynbGEfAnriK9QlOic5
+	o+wLIupYKzr3gPw+bSuL/S71fVV2DkbtqKXdHbgNxRXRLt3SfZJtNpAR2jzpAM5XouMpTdQoQIGEN
+	s7Xaw/Ixh6qmGrPVd1uEswuraehLVza2CjNo0HIn9Ito0LfwRHuvsY//nnVDRYzA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rLKFD-00000004THE-43RE;
+	Thu, 04 Jan 2024 10:42:32 +0100
+Message-ID: <a5123274d5a8d80d554ffb786e25bef72d45f69b.camel@sipsolutions.net>
+Subject: Re: WiF Transmit Power Control (TPC) Regulatory Requirements?
+From: Johannes Berg <johannes@sipsolutions.net>
+To: b.K.il.h.u+tigbuh@gmail.com, wens@kernel.org
+Cc: Seth Forshee <sforshee@kernel.org>, Kalle Valo <kvalo@codeaurora.org>, 
+ wireless-regdb <wireless-regdb@lists.infradead.org>, linux-wireless
+ <linux-wireless@vger.kernel.org>
+Date: Thu, 04 Jan 2024 10:42:30 +0100
+In-Reply-To: <CAPuHQ=GSuKW5=T0GXXCq7Pf9jw=zcEnms-fEJey68QUWH1ishQ@mail.gmail.com>
+References: 
+	<CAGb2v66xVLqr+tUSD_6uzguGXtj04WfbpT0z9M28r8z-g62Z=A@mail.gmail.com>
+	 <CAPuHQ=GSuKW5=T0GXXCq7Pf9jw=zcEnms-fEJey68QUWH1ishQ@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.2 (3.50.2-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
+X-malware-bazaar: not-scanned
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogTmljb2xhIE1pbmdvdHRp
-IDxuaWNvMDIwOTc4QGdtYWlsLmNvbT4NCj4gU2VudDogVGh1cnNkYXksIEphbnVhcnkgNCwgMjAy
-NCA1OjEzIFBNDQo+IFRvOiBsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmcNCj4gU3ViamVj
-dDogUlRMODgyMmJ1IGFzIEFQIHJlamVjdHMgVGFwbyBkZXZpY2VzDQo+IA0KPiANCj4gSW4gdGhl
-IEFQIHdoaWNoIHJ1bnMgbm93IERlYmlhbiBUZXN0aW5nIGl0IGlzIHRydWUgaSBjYW4gcGx1ZyBp
-biB0d28NCj4gQnJvc3RyZW5kIGRvbmdsZXMuIEl0IHdvcmtzIGFzIEFQIDIuNEdoeiwgaW4gdGhl
-IHNlbnNlIHRoYXQgaSBjYW4NCj4gY29ubmVjdCB0byBpdCB3aXRoIG15IFNhbXN1bmcgcGhvbmUu
-IEJVVCwgaGVyZSBjb21lcyB0aGUgcHJvYmxlbSwgTk8NCj4gT05FIG9mIHRoZSA+MTAgVGFwbyBk
-ZXZpY2VzICgyIGNhbWVyYXMgQzIyNSBhbmQgc2V2ZXJhbCBwbHVncyBQMTEwKQ0KPiB3YW50IHRv
-IGNvbm5lY3RzIHRvIHRoZSBBUCB3aXRoIHRoZSBkcml2ZXIgcHJvdmlkZWQgYnkgdGhlIGtlcm5l
-bC4NCj4gDQoNCkNhcHR1cmluZyBhaXIgc25pZmZlciB3b3VsZCBoZWxwIHRvIGRpYWdub3NlIHRo
-ZSBwcm9ibGVtLiANCkFzc3VtaW5nIHdsYW4wIGlzIHlvdXIgUlRMODgyMmJ1LCBhZGQgYSBtb25p
-dG9yIGludGVyZmFjZSBieSANCiAgJCBzdWRvIGl3IGRldiB3bGFuMCBpbnRlcmZhY2UgYWRkIG1v
-bjAgdHlwZSBtb25pdG9yDQoNClVzZSB3aXJlc2hhcmsgdG8gcmVjb3JkcyBwYWNrZXRzIG9mIG1v
-bjAgZHVyaW5nIFRhcG8gZGV2aWNlIGlzIHRyeWluZyB0bw0KY29ubmVjdC4gDQoNCkRvIHlvdSB0
-cnkgdG8gdXNlIG5vbi1zZWN1cmUgY29ubmVjdGlvbj8gSXQgY2FuIGhlbHAgdG8gYmlzZWN0IHBy
-b2JsZW0gdG9vLg0KDQpQaW5nLUtlDQoNCg==
+On Thu, 2024-01-04 at 10:07 +0100, b.K.il.h.u+tigbuh@gmail.com wrote:
+> You can find a wording in most such regulations that if TPC is not
+> supported, the maximal TX power must be reduced by 3 dBmW. Hence in
+> all such cases, the entries in db.txt contain 3 less than the maximum.
+>=20
+> If, on the other hand, you know of a country that specifies that
+> devices lacking TPC may not use the band at all, all such band entries
+> must be omitted (commented out along with a URL).
+
+Yeah, that's how we (currently) handle things.
+
+I'm not even sure what the requirements would be for "TPC" to be
+implemented, tbh.
+
+> > As far as I know the kernel doesn't have facilities to support TPC or
+> > transmit power control,=C2=A0
+
+Right. I have, however, heard the interpretation that the fact that we
+have - even if nobody uses it - the "iw set txpower" command means that
+we *do* have TPC ... Not really sure what to make of that though.
+
+> > nor does the wireless-regdb database.
+
+Correct. With the new regdb format we could add something that would
+enable these ranges in the kernel only with some additional
+requirements, but
+  (a) we don't implement that now, and
+  (b) I don't know what the requirements would actually be, e.g. would
+      it be enough that the driver promises it implements "TPC" in some
+      way? Or even the manual setting?
+
+> > And so
+> > in the database we would either omit rules that require TPC, or include
+> > alternative rules (as specified by local regulations) not requiring TPC=
+.
+> > Am I right?
+
+Right.
+
+johannes
 
