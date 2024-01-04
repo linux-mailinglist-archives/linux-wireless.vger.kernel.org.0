@@ -1,183 +1,263 @@
-Return-Path: <linux-wireless+bounces-1500-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1501-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6E0E8244BA
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jan 2024 16:13:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A2838244F4
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jan 2024 16:29:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 701AA284D4F
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jan 2024 15:13:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D330F1F22CA0
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jan 2024 15:29:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EAFE241FF;
-	Thu,  4 Jan 2024 15:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9306241F4;
+	Thu,  4 Jan 2024 15:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="B2V/7Luf"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Tim/XOS/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com [209.85.221.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5258223762
-	for <linux-wireless@vger.kernel.org>; Thu,  4 Jan 2024 15:13:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-4b71b86ef81so185876e0c.2
-        for <linux-wireless@vger.kernel.org>; Thu, 04 Jan 2024 07:13:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1704381218; x=1704986018; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Uo3GncCKNR0AkCV/1DPqjQ0hOppoX5B784xjEgiLIT0=;
-        b=B2V/7Lufa01ra+BQx/BCUI+1EvXD+HJntVatc7ihvYQb3uyRveLNHeTF++ZjMZgjOv
-         Qs5oTydMw9ifdMHzbvReE9Le8l+bbtchpxCxyYFrKiaJwJIb1sMUuVMU5bhBwdcjBROj
-         Ue0cRmcuSHRxq9X1TQ1nc50Nno34utaFim19ldizvhbLMdu1HmSRgpvHZ+3xigYGQf6J
-         C+r7UiHdsOcSxwk8f3EruqbT7NS+sEI94BEGEHztD3KvhYp02xS1hFlfLz2lh7diVcj0
-         0yw3pQPVepL0+qabCdNwTo9gONEADVQzQMNB033E+O3Dlb0VzapjBxXDOgC5Kz2Wa0To
-         Mo3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704381218; x=1704986018;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Uo3GncCKNR0AkCV/1DPqjQ0hOppoX5B784xjEgiLIT0=;
-        b=fyY79ybR3+bOFi6QsYf/Uoh5Gd74CZtDJAldAbX6DKNrX1SC2XHpxhhSnZW9vbS3c8
-         jqygEkzyWX9sWLY49o9D7F4z6GxK+eZj1cqCDI+dLeMR2HFAycc8wDH0ytKZ1EBmquzj
-         IQMW5sEr0eINhliKw3HvIaQqWJbN8isvpCkmPDlRQnSRuuM/bFNDqjXJLdkOh139Lubn
-         3o5gsBWAORGIdEHJCvwzxsCa+Kjh5xoluk0ChOSQOwe3IxNF2C3d+My5FDERdVkxhjrh
-         A25FAvovtvIkDsH7aL5V/Fah7sVMGphzkoKEZZgg1mLY8GkYvrO62OqpGJc0lVGzZdsZ
-         51pg==
-X-Gm-Message-State: AOJu0YwywEcaPqmQH8gGHuheQoZ7so1fxHgUY3mqOGAZvh7iK7GaavvE
-	p4sIUqZ3p3Tb/gtgjNmwUEpewup1AhYoqqriuClx54sZcGjImw==
-X-Google-Smtp-Source: AGHT+IGaU5XfoSCmXhPgB9dPZjVC5ipLctZH7E/xd+njpdt3eUTn/nDydi+QSdw8aSiqRs0d+1vMZ53MS8OTwZuJ5V8=
-X-Received: by 2002:ac5:c9ab:0:b0:4b7:295d:a048 with SMTP id
- f11-20020ac5c9ab000000b004b7295da048mr619470vkm.29.1704381218190; Thu, 04 Jan
- 2024 07:13:38 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F6D0225DE
+	for <linux-wireless@vger.kernel.org>; Thu,  4 Jan 2024 15:29:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1704382145; x=1735918145;
+  h=date:from:to:cc:subject:message-id;
+  bh=fKkMWQ14V9MfAAnrSpLPycq95RP8ZHhermBd2Towjvg=;
+  b=Tim/XOS/OM05kWJpgkSBJZyU5vs0RNn+lHtBqfPR0f3NT8LC30J5m6PW
+   n8vvuq3EOO1x0OTSk9Nd9fOU31DAwmOqL+3MJZ3WcpbNPhcA21hgKR2o4
+   YXQaqHxS+3QoNLI0yNotTzyZHCl/8QOA+VqM5d3ZXAweELSmUUq4WxFOH
+   k7PCDLS7/1Ix+OpIuotUYOrZ9xGsoiWlgsDErYKLp9MpR/+S4HktuggVP
+   0eZoWGY9yx864jNccHk0pPkXxLq18ELR5Irada7QanKZKmF+HDj+jsmNk
+   ZpkgW8D80aRe88gGLSSzzNcUjimGDARbf8uqD0rFqfojxtroW5Jfj9CEA
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10943"; a="376760088"
+X-IronPort-AV: E=Sophos;i="6.04,331,1695711600"; 
+   d="scan'208";a="376760088"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jan 2024 07:29:04 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10943"; a="870952334"
+X-IronPort-AV: E=Sophos;i="6.04,331,1695711600"; 
+   d="scan'208";a="870952334"
+Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
+  by FMSMGA003.fm.intel.com with ESMTP; 04 Jan 2024 07:29:03 -0800
+Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rLPeX-00006R-0i;
+	Thu, 04 Jan 2024 15:29:01 +0000
+Date: Thu, 04 Jan 2024 23:28:12 +0800
+From: kernel test robot <lkp@intel.com>
+To: Johannes Berg <johannes.berg@intel.com>
+Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
+Subject: [wireless-next:main] BUILD SUCCESS
+ 3aca362a4c1411ec11ff04f81b6cdf2359fee962
+Message-ID: <202401042307.fom8JUzr-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240104130123.37115-1-brgl@bgdev.pl> <20240104130123.37115-3-brgl@bgdev.pl>
- <CAA8EJpqZ8zbNcK1BsJaaoK3Fje9KhrvFvJpgdBa-US3eMhOmOw@mail.gmail.com>
-In-Reply-To: <CAA8EJpqZ8zbNcK1BsJaaoK3Fje9KhrvFvJpgdBa-US3eMhOmOw@mail.gmail.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Thu, 4 Jan 2024 16:13:27 +0100
-Message-ID: <CAMRc=McmhPMb9bykwKXmQ-1DL4sJW+7caXkxUq=8v16hT1k_oA@mail.gmail.com>
-Subject: Re: [RFC 2/9] arm64: dts: qcom: qrb5165-rb5: describe the WLAN module
- of QCA6390
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Kalle Valo <kvalo@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Heiko Stuebner <heiko@sntech.de>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Chris Morgan <macromorgan@hotmail.com>, 
-	Linus Walleij <linus.walleij@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Arnd Bergmann <arnd@arndb.de>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	=?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= <nfraprado@collabora.com>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Peng Fan <peng.fan@nxp.com>, 
-	Robert Richter <rrichter@amd.com>, Dan Williams <dan.j.williams@intel.com>, 
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>, Terry Bowman <terry.bowman@amd.com>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
-	Huacai Chen <chenhuacai@kernel.org>, Alex Elder <elder@linaro.org>, 
-	Srini Kandagatla <srinivas.kandagatla@linaro.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 4, 2024 at 2:44=E2=80=AFPM Dmitry Baryshkov
-<dmitry.baryshkov@linaro.org> wrote:
->
-> On Thu, 4 Jan 2024 at 15:03, Bartosz Golaszewski <brgl@bgdev.pl> wrote:
-> >
-> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> >
-> > Describe the ath11k WLAN on-board the QCA6390 module. Include the
-> > relevant regulators and the enable GPIO.
-> >
-> > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> > ---
-> >  arch/arm64/boot/dts/qcom/qrb5165-rb5.dts | 24 ++++++++++++++++++++++++
-> >  1 file changed, 24 insertions(+)
-> >
-> > diff --git a/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts b/arch/arm64/boot=
-/dts/qcom/qrb5165-rb5.dts
-> > index cd0db4f31d4a..721f86af952b 100644
-> > --- a/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
-> > +++ b/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
-> > @@ -734,6 +734,22 @@ &pcie0_phy {
-> >         vdda-pll-supply =3D <&vreg_l9a_1p2>;
-> >  };
-> >
-> > +&pcieport0 {
-> > +       wifi@0 {
-> > +               compatible =3D "pci17cb,1101";
-> > +               reg =3D <0x10000 0x0 0x0 0x0 0x0>;
-> > +
-> > +               pinctrl-names =3D "default";
-> > +               pinctrl-0 =3D <&wlan_en_state>;
-> > +
-> > +               enable-gpios =3D <&tlmm 20 GPIO_ACTIVE_HIGH>;
-> > +
-> > +               vddpmu-supply =3D <&vreg_s2f_0p95>;
-> > +               vddpcie1-supply =3D <&vreg_s8c_1p3>;
-> > +               vddpcie2-supply =3D <&vreg_s5a_1p9>;
->
-> If I remember correctly, qca6390 has at least 8 power supplies AON,
-> PMU, 3xRFA, 2xPCIe and VDDIO.
->
-> Moreover, these bindings do not solve another problem: the PMU is
-> shared between WiFi and BT parts. For the next gen (WCN6855) this
-> becomes even more important, see the code in msm-5.10 which makes sure
-> that there is a proper time between one of the units going down and
-> another one being powered on.
->
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: 3aca362a4c1411ec11ff04f81b6cdf2359fee962  wifi: mac80211: remove redundant ML element check
 
-Unified, shared power sequencing for this type of loosely coupled MFD
-devices is something I have in mind and that will be orthogonal to
-this. It will come on top of the PCIe power sequencing driver. I
-wanted to address a simpler issue first.
+elapsed time: 1446m
 
-Bartosz
+configs tested: 181
+configs skipped: 3
 
-> > +       };
-> > +};
-> > +
-> >  &pcie1 {
-> >         status =3D "okay";
-> >  };
-> > @@ -1303,6 +1319,14 @@ sdc2_card_det_n: sd-card-det-n-state {
-> >                 function =3D "gpio";
-> >                 bias-pull-up;
-> >         };
-> > +
-> > +       wlan_en_state: wlan-default-state {
-> > +               pins =3D "gpio20";
-> > +               function =3D "gpio";
-> > +               drive-strength =3D <16>;
-> > +               output-low;
-> > +               bias-pull-up;
-> > +       };
-> >  };
-> >
-> >  &uart6 {
-> > --
-> > 2.40.1
-> >
-> >
->
->
-> --
-> With best wishes
-> Dmitry
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                          axs101_defconfig   gcc  
+arc                                 defconfig   gcc  
+arc                   randconfig-001-20240104   gcc  
+arc                   randconfig-002-20240104   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   clang
+arm                       multi_v4t_defconfig   gcc  
+arm                   randconfig-001-20240104   gcc  
+arm                   randconfig-002-20240104   gcc  
+arm                   randconfig-003-20240104   gcc  
+arm                   randconfig-004-20240104   gcc  
+arm                         s3c6400_defconfig   gcc  
+arm64                            allmodconfig   clang
+arm64                             allnoconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                 randconfig-001-20240104   gcc  
+arm64                 randconfig-002-20240104   gcc  
+arm64                 randconfig-003-20240104   gcc  
+arm64                 randconfig-004-20240104   gcc  
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+csky                  randconfig-001-20240104   gcc  
+csky                  randconfig-002-20240104   gcc  
+hexagon                          allmodconfig   clang
+hexagon                           allnoconfig   clang
+hexagon                          allyesconfig   clang
+hexagon                             defconfig   clang
+i386                             allmodconfig   clang
+i386                              allnoconfig   clang
+i386                             allyesconfig   clang
+i386         buildonly-randconfig-001-20240104   gcc  
+i386         buildonly-randconfig-002-20240104   gcc  
+i386         buildonly-randconfig-003-20240104   gcc  
+i386         buildonly-randconfig-004-20240104   gcc  
+i386         buildonly-randconfig-005-20240104   gcc  
+i386         buildonly-randconfig-006-20240104   gcc  
+i386                                defconfig   gcc  
+i386                  randconfig-001-20240104   gcc  
+i386                  randconfig-002-20240104   gcc  
+i386                  randconfig-003-20240104   gcc  
+i386                  randconfig-004-20240104   gcc  
+i386                  randconfig-005-20240104   gcc  
+i386                  randconfig-006-20240104   gcc  
+i386                  randconfig-011-20240104   clang
+i386                  randconfig-012-20240104   clang
+i386                  randconfig-013-20240104   clang
+i386                  randconfig-014-20240104   clang
+i386                  randconfig-015-20240104   clang
+i386                  randconfig-016-20240104   clang
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                        allyesconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20240104   gcc  
+loongarch             randconfig-002-20240104   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                         amcore_defconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                        m5307c3_defconfig   gcc  
+m68k                        stmark2_defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                             allmodconfig   gcc  
+mips                              allnoconfig   clang
+mips                             allyesconfig   gcc  
+mips                        bcm47xx_defconfig   gcc  
+mips                           ci20_defconfig   gcc  
+mips                         db1xxx_defconfig   gcc  
+mips                  decstation_64_defconfig   gcc  
+mips                    maltaup_xpa_defconfig   gcc  
+mips                         rt305x_defconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                 randconfig-001-20240104   gcc  
+nios2                 randconfig-002-20240104   gcc  
+openrisc                         allmodconfig   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc                randconfig-001-20240104   gcc  
+parisc                randconfig-002-20240104   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   clang
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   clang
+powerpc                      ep88xc_defconfig   gcc  
+powerpc                     ksi8560_defconfig   gcc  
+powerpc                       ppc64_defconfig   gcc  
+powerpc               randconfig-001-20240104   gcc  
+powerpc               randconfig-002-20240104   gcc  
+powerpc               randconfig-003-20240104   gcc  
+powerpc                     stx_gp3_defconfig   gcc  
+powerpc64             randconfig-001-20240104   gcc  
+powerpc64             randconfig-002-20240104   gcc  
+powerpc64             randconfig-003-20240104   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   clang
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                 randconfig-001-20240104   gcc  
+riscv                 randconfig-002-20240104   gcc  
+riscv                          rv32_defconfig   clang
+s390                             allmodconfig   gcc  
+s390                              allnoconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                         ap325rxa_defconfig   gcc  
+sh                         apsh4a3a_defconfig   gcc  
+sh                                  defconfig   gcc  
+sh                          polaris_defconfig   gcc  
+sh                    randconfig-001-20240104   gcc  
+sh                    randconfig-002-20240104   gcc  
+sh                     sh7710voipgw_defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc                            allyesconfig   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+sparc64               randconfig-001-20240104   gcc  
+sparc64               randconfig-002-20240104   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                    randconfig-001-20240104   gcc  
+um                    randconfig-002-20240104   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   clang
+x86_64       buildonly-randconfig-001-20240104   gcc  
+x86_64       buildonly-randconfig-002-20240104   gcc  
+x86_64       buildonly-randconfig-003-20240104   gcc  
+x86_64       buildonly-randconfig-004-20240104   gcc  
+x86_64       buildonly-randconfig-005-20240104   gcc  
+x86_64       buildonly-randconfig-006-20240104   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64                randconfig-011-20240104   gcc  
+x86_64                randconfig-012-20240104   gcc  
+x86_64                randconfig-013-20240104   gcc  
+x86_64                randconfig-014-20240104   gcc  
+x86_64                randconfig-015-20240104   gcc  
+x86_64                randconfig-016-20240104   gcc  
+x86_64                randconfig-071-20240104   gcc  
+x86_64                randconfig-072-20240104   gcc  
+x86_64                randconfig-073-20240104   gcc  
+x86_64                randconfig-074-20240104   gcc  
+x86_64                randconfig-075-20240104   gcc  
+x86_64                randconfig-076-20240104   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+xtensa                            allnoconfig   gcc  
+xtensa                           allyesconfig   gcc  
+xtensa                          iss_defconfig   gcc  
+xtensa                randconfig-001-20240104   gcc  
+xtensa                randconfig-002-20240104   gcc  
+xtensa                         virt_defconfig   gcc  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
