@@ -1,93 +1,82 @@
-Return-Path: <linux-wireless+bounces-1476-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1478-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D7AF823E62
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jan 2024 10:12:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA7AD823EBD
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jan 2024 10:35:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C6D81C20E2F
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jan 2024 09:12:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7703C281ACC
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jan 2024 09:35:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A89122030A;
-	Thu,  4 Jan 2024 09:12:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bsvSHTRu"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0797208AD;
+	Thu,  4 Jan 2024 09:35:27 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5960120312
-	for <linux-wireless@vger.kernel.org>; Thu,  4 Jan 2024 09:12:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-5f0462ee645so769867b3.0
-        for <linux-wireless@vger.kernel.org>; Thu, 04 Jan 2024 01:12:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1704359569; x=1704964369; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=q6zy9fgKcFtlSto6sNYmWO9c6tE+E4PhEvJJmzXqdus=;
-        b=bsvSHTRuDlEYnnX6mHMEFtex5gJrG76+cYFjPHE83T7aDwq8LzZXUP1b4MFPbeXBFd
-         yZnFvsJl/NGKWdLqs5Y/p/nXjQ7mcWSkgHx/X9MJn5KPXTUiSkT8fg45LVVHyzOHmNVk
-         Nt0nAomPyWyWLs3609uM5l/o7QMvvc2lLNPQ2TN35s6cyikHpuUI0DbreNBRX8APuj4m
-         8Ra7cYW9U0yFU0nuF9CRBrT0bjP+g8mHx/dMGWotxjqR0WnUyXeNp0AMABp3IliQfVUf
-         erXiYmczu+yCFM3WhHlQIrGVcX1WJnR9Yo6cRCEi5z7YSxMM6DPCRq2IYdLWzU1WT9/P
-         L3Bw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704359569; x=1704964369;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=q6zy9fgKcFtlSto6sNYmWO9c6tE+E4PhEvJJmzXqdus=;
-        b=gpl0Ia//NIimoHDm4NmNMMQioaA7Ri3iGWj7EVmhVsnRpJCzhi8lbpCpf7UG32usF0
-         Z4/ir084Z02Q5ly5eLu8ooq/KJBkszG/NEH7Phnow9nmadIO4PzhE1HxILUm6VKaQKaG
-         0dYJk3tnP6P4+39reswCxGoibRUZyTEvu56ghavOZifroyRDWa+UdKPXGs0sN/t8UplQ
-         GuE05nAOby+WFNC2CaQehodQLidE79QvRtmnOuM5vY6DKJJfYAY3o2sv/3A7MQwtHTsd
-         0rne6Ks9+J82Ynhxyh9VlUeBVreHCi3BiBwSWx5cRBme6Lgx7zSFQC29qruEgWZp3vkq
-         6XIg==
-X-Gm-Message-State: AOJu0Yz6I1xVmihkCnXIwsixtp0ADWI93Jg6GdGZF54p5hI5zGi8qSJY
-	wcuO96Ga9Tt4WyYMxIl6V5P6CUVqZvFQcpAwBxQ4LOivYdM=
-X-Google-Smtp-Source: AGHT+IHu3z9GImaZuA/4OBj8tIDrNXXvaIavnGB4r1v5t8qSupFQ1yOB9vXzhVMVv2DeMqUdrhqGgqHFxfeQUT/aJoQ=
-X-Received: by 2002:a25:d656:0:b0:dbd:5ad0:8a34 with SMTP id
- n83-20020a25d656000000b00dbd5ad08a34mr328185ybg.5.1704359569418; Thu, 04 Jan
- 2024 01:12:49 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 612D2208A5
+	for <linux-wireless@vger.kernel.org>; Thu,  4 Jan 2024 09:35:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4049ZLzkC1596284, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 4049ZLzkC1596284
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 4 Jan 2024 17:35:21 +0800
+Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.17; Thu, 4 Jan 2024 17:35:21 +0800
+Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
+ RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Thu, 4 Jan 2024 17:35:21 +0800
+Received: from RTEXDAG02.realtek.com.tw ([fe80::5d58:7838:d352:d6b8]) by
+ RTEXDAG02.realtek.com.tw ([fe80::5d58:7838:d352:d6b8%5]) with mapi id
+ 15.01.2375.007; Thu, 4 Jan 2024 17:35:21 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Nicola Mingotti <nico020978@gmail.com>,
+        "linux-wireless@vger.kernel.org"
+	<linux-wireless@vger.kernel.org>
+Subject: RE: RTL8822bu as AP rejects Tapo devices
+Thread-Topic: RTL8822bu as AP rejects Tapo devices
+Thread-Index: AQHaPu42gxpRLfS9QUG5qti2XzCwFbDJY6iw
+Date: Thu, 4 Jan 2024 09:35:20 +0000
+Message-ID: <d5219b204fce48e1aa458ac669e2bbd3@realtek.com>
+References: <CAL7TOjnP72fV4en6i3hsd3qgsjas+a9O2rgp2CuCdKMLOh+VEg@mail.gmail.com>
+In-Reply-To: <CAL7TOjnP72fV4en6i3hsd3qgsjas+a9O2rgp2CuCdKMLOh+VEg@mail.gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXDAG01.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Nicola Mingotti <nico020978@gmail.com>
-Date: Thu, 4 Jan 2024 10:12:38 +0100
-Message-ID: <CAL7TOjnP72fV4en6i3hsd3qgsjas+a9O2rgp2CuCdKMLOh+VEg@mail.gmail.com>
-Subject: RTL8822bu as AP rejects Tapo devices
-To: linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-Hi, i wish to signal what seems to me a bug.
-
-I set up a few Linux boxes as AP in our office using Brostrend AC1200
-dongles (chipset RTL8822BU).
-
-Using the external module RTL882xbu suggested by Brostrend it all
-works but there is one issue, i can't put more than one dongle for
-each Linux box. I contacted Brostrend and I was told to wait for the
-driver to be in the Linux kernel.
-
-I saw that now RTL8822bu is in the kernel 6.5.0-5 which for me is
-accessible without risk of wasting the AP configuration upgrading the
-OS from Debian Stable to Debian Testing. I upgraded.
-
-In the AP which runs now Debian Testing it is true i can plug in two
-Brostrend dongles. It works as AP 2.4Ghz, in the sense that i can
-connect to it with my Samsung phone. BUT, here comes the problem, NO
-ONE of the >10 Tapo devices (2 cameras C225 and several plugs P110)
-want to connects to the AP with the driver provided by the kernel.
-
-I installed the RTL882xbu module in the same Debian Testing AP and now
-all the Tapo devices do connect.
-
-bye
-n.m.
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogTmljb2xhIE1pbmdvdHRp
+IDxuaWNvMDIwOTc4QGdtYWlsLmNvbT4NCj4gU2VudDogVGh1cnNkYXksIEphbnVhcnkgNCwgMjAy
+NCA1OjEzIFBNDQo+IFRvOiBsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmcNCj4gU3ViamVj
+dDogUlRMODgyMmJ1IGFzIEFQIHJlamVjdHMgVGFwbyBkZXZpY2VzDQo+IA0KPiANCj4gSW4gdGhl
+IEFQIHdoaWNoIHJ1bnMgbm93IERlYmlhbiBUZXN0aW5nIGl0IGlzIHRydWUgaSBjYW4gcGx1ZyBp
+biB0d28NCj4gQnJvc3RyZW5kIGRvbmdsZXMuIEl0IHdvcmtzIGFzIEFQIDIuNEdoeiwgaW4gdGhl
+IHNlbnNlIHRoYXQgaSBjYW4NCj4gY29ubmVjdCB0byBpdCB3aXRoIG15IFNhbXN1bmcgcGhvbmUu
+IEJVVCwgaGVyZSBjb21lcyB0aGUgcHJvYmxlbSwgTk8NCj4gT05FIG9mIHRoZSA+MTAgVGFwbyBk
+ZXZpY2VzICgyIGNhbWVyYXMgQzIyNSBhbmQgc2V2ZXJhbCBwbHVncyBQMTEwKQ0KPiB3YW50IHRv
+IGNvbm5lY3RzIHRvIHRoZSBBUCB3aXRoIHRoZSBkcml2ZXIgcHJvdmlkZWQgYnkgdGhlIGtlcm5l
+bC4NCj4gDQoNCkNhcHR1cmluZyBhaXIgc25pZmZlciB3b3VsZCBoZWxwIHRvIGRpYWdub3NlIHRo
+ZSBwcm9ibGVtLiANCkFzc3VtaW5nIHdsYW4wIGlzIHlvdXIgUlRMODgyMmJ1LCBhZGQgYSBtb25p
+dG9yIGludGVyZmFjZSBieSANCiAgJCBzdWRvIGl3IGRldiB3bGFuMCBpbnRlcmZhY2UgYWRkIG1v
+bjAgdHlwZSBtb25pdG9yDQoNClVzZSB3aXJlc2hhcmsgdG8gcmVjb3JkcyBwYWNrZXRzIG9mIG1v
+bjAgZHVyaW5nIFRhcG8gZGV2aWNlIGlzIHRyeWluZyB0bw0KY29ubmVjdC4gDQoNCkRvIHlvdSB0
+cnkgdG8gdXNlIG5vbi1zZWN1cmUgY29ubmVjdGlvbj8gSXQgY2FuIGhlbHAgdG8gYmlzZWN0IHBy
+b2JsZW0gdG9vLg0KDQpQaW5nLUtlDQoNCg==
 
