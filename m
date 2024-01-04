@@ -1,47 +1,47 @@
-Return-Path: <linux-wireless+bounces-1498-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1499-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 063EE824443
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jan 2024 15:59:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5EC18244AD
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jan 2024 16:11:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 159E31C213E0
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jan 2024 14:59:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E089283C74
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jan 2024 15:11:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6764523760;
-	Thu,  4 Jan 2024 14:59:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83FE02377B;
+	Thu,  4 Jan 2024 15:11:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="1U7QDAes"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="4ChAmfhZ"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C070523759;
-	Thu,  4 Jan 2024 14:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0D223777;
+	Thu,  4 Jan 2024 15:11:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1704380342;
-	bh=KDp1KlxW4ztxSeOSFhN1rEoylXsyLJ5JvkhJpgJgJnc=;
+	s=mail; t=1704381071;
+	bh=xGey7Z1qQaWQnT1BT1OSgP8+WbNEdnTjqtNlvMAYTEc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=1U7QDAesD642Grt4u1zAfoqQt6hKMbSTMEJ88MrJmPD9TQmpuQLQgsmdPiKZ2WRLl
-	 ISAUdMUyuuarEOF0rXNiYySX4DaXGudcUkVSnKsS0vKtv/Y1q89i0WNrGjfRymA+4I
-	 OFvzMPYBhBLIKlXlMc00snMWVlF3h/FzUQi6O0kc4Odcm4W/ALnLDK89d2Ln523yN7
-	 JLLr0+3yO6rnvF0G9p9lcOJjH6dyjYL0xqV8yXdSmkTxrdzSVCENaMqL0V8niycSOM
-	 i1MUcBnVBUINqa5vsU/Ozp9P15YD2XngxAYpfvYQyhqubeEno1GgfOQQjaCwN06osR
-	 1rmCzbcfMMz3w==
+	b=4ChAmfhZHGzmTHDk6ZhIvFJl79kIFmstiFicB1/eDtYeGIx3/Zyku422RNxzoscnw
+	 mUHMHLqiSDOZuuNdOq2ivfS2/AEjy63PRhlBp49i+/awtqVt7NnKRVR3dqsqDbLJUX
+	 BaGU/dDvtrNjPkeXW1nqJhbcqHZT8tdvKXFWDBjsCf/FBm3CabECr2ROE/nizIXXJO
+	 WYOz4TxONG4A3t/1r7yuwhU8dhr20SitlxiDOQ+LvgTQ281EKSqxI/U0G8AF81LkxS
+	 QsGTLwnkP+UWvg7sHK1thLiI5Zn20h/9W5S3cByXFxOSkq6+h3ceT957q4IByomHCO
+	 8WpwGMPLmjpRw==
 Received: from mercury (cola.collaboradmins.com [195.201.22.229])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
 	(No client certificate requested)
 	(Authenticated sender: sre)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 79B0A378200D;
-	Thu,  4 Jan 2024 14:59:02 +0000 (UTC)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 7F9C2378200D;
+	Thu,  4 Jan 2024 15:11:11 +0000 (UTC)
 Received: by mercury (Postfix, from userid 1000)
-	id 69A7D106062F; Thu,  4 Jan 2024 15:49:21 +0100 (CET)
-Date: Thu, 4 Jan 2024 15:49:21 +0100
+	id 1ADFC106062F; Thu,  4 Jan 2024 16:11:11 +0100 (CET)
+Date: Thu, 4 Jan 2024 16:11:11 +0100
 From: Sebastian Reichel <sebastian.reichel@collabora.com>
 To: Bartosz Golaszewski <brgl@bgdev.pl>
 Cc: Kalle Valo <kvalo@kernel.org>, 
@@ -66,11 +66,10 @@ Cc: Kalle Valo <kvalo@kernel.org>,
 	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
 	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org, 
 	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: [RFC 6/9] dt-bindings: vendor-prefixes: add a PCI prefix for
- Qualcomm Atheros
-Message-ID: <rhs5bzjx3cljxa6xhlzlozmgi44tbohsqnznjhr3piz7ekv3ra@mi6yiljza5oe>
+Subject: Re: [RFC 0/9] PCI: introduce the concept of power sequencing of PCIe
+ devices
+Message-ID: <tfnmgogvqd6crvsv4gal5tndgcj5ee5il5fpfpipfb3zv2vmyr@c42zfar6nvar>
 References: <20240104130123.37115-1-brgl@bgdev.pl>
- <20240104130123.37115-7-brgl@bgdev.pl>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -78,91 +77,105 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="jsminobfkp6hba2d"
+	protocol="application/pgp-signature"; boundary="cy6uey62v4nbmwrk"
 Content-Disposition: inline
-In-Reply-To: <20240104130123.37115-7-brgl@bgdev.pl>
+In-Reply-To: <20240104130123.37115-1-brgl@bgdev.pl>
 
 
---jsminobfkp6hba2d
+--cy6uey62v4nbmwrk
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi,
 
-On Thu, Jan 04, 2024 at 02:01:20PM +0100, Bartosz Golaszewski wrote:
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+On Thu, Jan 04, 2024 at 02:01:14PM +0100, Bartosz Golaszewski wrote:
+> During last year's Linux Plumbers we had several discussions centered
+> around the need to power-on PCI devices before they can be detected on
+> the bus.
 >=20
-> Document the PCI vendor prefix for Qualcomm Atheros so that we can
-> define the QCA PCI devices on device tree.
+> The consensus during the conference was that we need to introduce a
+> class of "PCI slot drivers" that would handle the power-sequencing.
 >=20
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> ---
->  Documentation/devicetree/bindings/vendor-prefixes.yaml | 1 +
->  1 file changed, 1 insertion(+)
+> After some additional brain-storming with Manivannan and the realization
+> that the DT maintainers won't like adding any "fake" nodes not
+> representing actual devices, we decided to reuse the existing
+> infrastructure provided by the PCIe port drivers.
 >=20
-> diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Doc=
-umentation/devicetree/bindings/vendor-prefixes.yaml
-> index 2dc098b39234..297d6037cd12 100644
-> --- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
-> +++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-> @@ -1128,6 +1128,7 @@ patternProperties:
->    "^purism,.*":
->      description: Purism, SPC
->    "^qca,.*":
-> +  "^pci17cb,.*":
+> The general idea is to instantiate platform devices for child nodes of
+> the PCIe port DT node. For those nodes for which a power-sequencing
+> driver exists, we bind it and let it probe. The driver then triggers a
+> rescan of the PCI bus with the aim of detecting the now powered-on
+> device. The device will consume the same DT node as the platform,
+> power-sequencing device. We use device links to make the latter become
+> the parent of the former.
+>=20
+> The main advantage of this approach is not modifying the existing DT in
+> any way and especially not adding any "fake" platform devices.
 
-I don't think it's a good idea to list all the PCI vendor IDs
-in vendor-prefixes.yaml. To please the tooling, I suggest to
-have a generic entry instead. Something like this (untested):
-
-"^pci[0-9a-f][0-9a-f][0-9a-f][0-9a-f],.*":
-  description: PCI SIG Vendor ID
-
-Note, that we we already have a bunch of them:
-
-grep -ho 'pci[0-9a-f][0-9a-f][0-9a-f][0-9a-f],' **/*.dts* | sort | uniq -c
-     70 pci0014,
-      3 pci10b5,
-      1 pci10ee,
-      6 pci14e4,
-      1 pci16c3,
-      2 pci17a0,
-      1 pci17cb,
-      1 pci1b4b,
-     63 pci8086,
-
-Greetings,
+I recently ran into this issue on a Rockchip platform using a PCIe
+based AP6275P WLAN device (broadcom based). As far as I can tell your
+proposal should also work for that one (obviously using a different
+pwrseq driver).
 
 -- Sebastian
 
->      description: Qualcomm Atheros, Inc.
->    "^qcom,.*":
->      description: Qualcomm Technologies, Inc
+> Bartosz Golaszewski (9):
+>   arm64: dts: qcom: sm8250: describe the PCIe port
+>   arm64: dts: qcom: qrb5165-rb5: describe the WLAN module of QCA6390
+>   PCI/portdrv: create platform devices for child OF nodes
+>   PCI: hold the rescan mutex when scanning for the first time
+>   PCI/pwrseq: add pwrseq core code
+>   dt-bindings: vendor-prefixes: add a PCI prefix for Qualcomm Atheros
+>   dt-bindings: wireless: ath11k: describe QCA6390
+>   PCI/pwrseq: add a pwrseq driver for QCA6390
+>   arm64: defconfig: enable the PCIe power sequencing for QCA6390
+>=20
+>  .../net/wireless/qcom,ath11k-pci.yaml         |  14 ++
+>  .../devicetree/bindings/vendor-prefixes.yaml  |   1 +
+>  arch/arm64/boot/dts/qcom/qrb5165-rb5.dts      |  24 +++
+>  arch/arm64/boot/dts/qcom/sm8250.dtsi          |  10 +
+>  arch/arm64/configs/defconfig                  |   2 +
+>  drivers/pci/pcie/Kconfig                      |   2 +
+>  drivers/pci/pcie/Makefile                     |   2 +
+>  drivers/pci/pcie/portdrv.c                    |   3 +-
+>  drivers/pci/pcie/pwrseq/Kconfig               |  19 ++
+>  drivers/pci/pcie/pwrseq/Makefile              |   4 +
+>  drivers/pci/pcie/pwrseq/pcie-pwrseq-qca6390.c | 197 ++++++++++++++++++
+>  drivers/pci/pcie/pwrseq/pwrseq.c              |  83 ++++++++
+>  drivers/pci/probe.c                           |   2 +
+>  include/linux/pcie-pwrseq.h                   |  24 +++
+>  14 files changed, 386 insertions(+), 1 deletion(-)
+>  create mode 100644 drivers/pci/pcie/pwrseq/Kconfig
+>  create mode 100644 drivers/pci/pcie/pwrseq/Makefile
+>  create mode 100644 drivers/pci/pcie/pwrseq/pcie-pwrseq-qca6390.c
+>  create mode 100644 drivers/pci/pcie/pwrseq/pwrseq.c
+>  create mode 100644 include/linux/pcie-pwrseq.h
+>=20
 > --=20
 > 2.40.1
 >=20
 >=20
 
---jsminobfkp6hba2d
+--cy6uey62v4nbmwrk
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmWWxWEACgkQ2O7X88g7
-+pq9NBAAoxlfauETIkIrDgJNle3ZizR1pfBMZu2EGdroqNk8sONiP9ITABAB3GtY
-TeGTr1dYr+gq+Vj8n+BqThMbvUCJdrO8KXgUt/bFQm2IJvHkTUzskAv1gHybmS0Z
-/1qQWzRz2KDoy6I6Is3GDnhlrgSoUlHqfkSj9OP4fAyZ4rCg/RIS+l1BE3qrft6X
-DdkWV5BsmvG+tEAJ0e8FILIv1igb2DU2zdakioYpsftC4eDsOHYI90q1zuMjDWLY
-3HhOX3MvAZnyMYgzKn+i2EJMdUtIOdg1oAr2ZGRghiCQ5WZjzZjXPWPi+WOkY8t3
-g7/0jD8/4IxncHHxai+zhfOxwXhPPSRtiLMOEg6oDM5CQsfdeC14k3iznXZygr+X
-8wZ1GTuz0srs87MZ/n9wolg0ZdBvuwymoO5BU3jptSJ+wR2Xte4uERJgoxbZAlmB
-m9J7qI++us6b8zH2Az2wAce1Lb0j5FtPZ1oXW22+QNbMzyneQJGuB/5gFR6/iJBC
-th648oqH0zRgsWEIPgexNXCxBRZt3HDb2xD7//3c9TEwvJg2C0n3qr+KqQKuuC31
-NjcIt698FfE7izgbv9goadO9cmCMnxxam0YvQaPO2LRlB376Tv9gdbwybCL4pWvl
-G3MWmmmGzLDU55WxS9x3FD4yO69M0LHnXHfjLal9y+7oCMZC24w=
-=qTtZ
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmWWyn8ACgkQ2O7X88g7
++pqYEA/7BHxRVVJzOzyU8+oTZ3jVVPdgfWWRB+8eVAxg6+O3OKc31B9UlAXlEVHU
+BLYObChFlR8wfoA88johSDUjE2GGCTNeC0oDA12GVCdP0RzosAdmnW24uv8IdJvH
+471Kw2n08jnMrzh32HnnehetOZIoF3vORkxkLpH26pZVayzGA8CCq8XI45S16Pfx
+IbiZ3nYuJM0LB7rxj1R9aR9uL3MzH+rCBBKqcbtKJTAvkLkvHhTrFWPhIIm4+Fwh
+anIwi8jhwxHeZ4cQKEuxJF0PzpnXQnUhAj1kUaoUSj6G5ffmJo6pyEgNSXqpoizU
+qAtWaa5zHClBwgEdqjJqMaaXZK7yDFkSekTsKciZeqZzZW476i3ZefIendZSitNT
+IcAVHwGvL+XuI2y2WpET9dtx+Ij+R1FSmk+6HIn24BFu3GV3KaG2+thgfF1J2l0y
+lV76WK3vQDSshWC+9p9f72Ug+h9Wi1UIWBXyLPuA17NjD/v+RG9YV4IntjaHHBZk
+5SjzHrrqyHjIn+s16JU0XH2Wt9oFl+gnPJlhLvx3HdHdNYCCVjR+37T55SERvMlH
+KHWcCk+9qWRJnTdDtkE97T1TWxd803PU6a/pzK/u/m4Hf7/CBnrZmbxQnP7jq/pF
+dm0V0duiFUCn/HckPL1VLuF8IUuSlGTKSj7ypDRR7O8On0KxghE=
+=kqNZ
 -----END PGP SIGNATURE-----
 
---jsminobfkp6hba2d--
+--cy6uey62v4nbmwrk--
 
