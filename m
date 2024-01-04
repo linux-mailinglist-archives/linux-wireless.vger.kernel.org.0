@@ -1,168 +1,98 @@
-Return-Path: <linux-wireless+bounces-1493-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1494-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 429E28242D4
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jan 2024 14:44:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BEB18243DB
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jan 2024 15:33:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67D7E1C23E94
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jan 2024 13:44:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 953281F253D4
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jan 2024 14:33:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E91F62134F;
-	Thu,  4 Jan 2024 13:44:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FEF322EE5;
+	Thu,  4 Jan 2024 14:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="opbxd8AE"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nHJ54JlZ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6934F22335
-	for <linux-wireless@vger.kernel.org>; Thu,  4 Jan 2024 13:44:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-5e54d40cca2so4382357b3.3
-        for <linux-wireless@vger.kernel.org>; Thu, 04 Jan 2024 05:44:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1704375868; x=1704980668; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=PaHFfcOelAjR2MGyweZQdTrdxlz7oJntZOkTBcCfI/8=;
-        b=opbxd8AE34sHMyezy1o5VQjDdK8T42j+qoBaOn7eNu/G0jf4lGpoo+USBc8Ogu3S3H
-         6DGy5kTD2Bo9z68+RvDeZGvXFymh1YeiTDg8t5xfFWJQnFLAPA8MjADeIxjhHomoU3E+
-         5pmK+IxAr/4eAZcSl8eFk03QBwSSjwFbMx1MQ4W/z1hlVFj60K2XzesKjXIFwzKk0CwC
-         nne24IqoJuu4m9Cxdy5vqcEsna3q+/RuN5FQ6JAz1sBEWm+rjo6zOF5/Ddw0S/Kf5EWP
-         Ylxk4d9VR6dZ+5e3fq5624qBtz92Rg7CnJTSeUibgX5KazQZ8SmgWZN7FaqJBpmggdom
-         dqSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704375868; x=1704980668;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=PaHFfcOelAjR2MGyweZQdTrdxlz7oJntZOkTBcCfI/8=;
-        b=v+Glr02AGyCZL+jI7jHj79+idJLUEWGsJOgBh2OfJ+q+4Ut8jcT7QwOUdk2faMrcPm
-         pGUz+O89xsvhUyYFGLT/UXmMe1y+78RrRdSdvvzbH4/5I6gY3LlvD0tP+tpJpSLsmPIg
-         B+kNF/lHYObR3TFUTkpzxthEORiIb+rK1i+NqFK5zne5EF+/UENQVZqyuatUYQliZ0eC
-         fhDvGLrWRgf43m5+NE0/J8uFTiQAOwBLjkuwCYzusXfyM/Ajmb1wdIWIO8aWE1U3/OYw
-         +UtpuJ+jGfcuORXbfKC8PvHa1Jd84uz4hojstmi7qwF+rcUoD2MzToBYLfTMtd3CdC8P
-         KO4Q==
-X-Gm-Message-State: AOJu0YymKBud595osWFetxlmp5W6dcLhCDjWFPiA/d6GyDVlgmo0coal
-	yJSl+bfdON0vh2NpvwcO2RLCjyTnbGF1LtUZtvPcXyfa4vkdcg==
-X-Google-Smtp-Source: AGHT+IEZCkEXOIdEM0j+8NIK0uK6YCf75WCjyHpwydLwlV5/P5Xet8pHKf/9cbHSR3VeVJohCL4uPwgEzC0vSgDbJM8=
-X-Received: by 2002:a0d:cb85:0:b0:5d7:1940:8dea with SMTP id
- n127-20020a0dcb85000000b005d719408deamr463700ywd.81.1704375868283; Thu, 04
- Jan 2024 05:44:28 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 133F5225D0;
+	Thu,  4 Jan 2024 14:33:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05CFFC433C7;
+	Thu,  4 Jan 2024 14:33:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1704378804;
+	bh=aZr4dV3GXhJqOdhebHaFoYyGkow84PQTHg9dzYarFFc=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=nHJ54JlZbk4BdUkdoP5hZ3kixKIu4DNvGIkcvZqvaXk/2k9hIGXJc4nC9RuELRxVS
+	 2yR7pVE4mTE8qeV55ItBYYLXHSSGYiXFP5Hk6UveY08SusZ2aQ2iWs6sfHFEvezEZ8
+	 7fUD56Wi8hYHfcMnLUbeBP8eRLOZMHbPtzL0g1anlWGpMOrH6KbrL4JVNqm6X1k3mH
+	 CIdjKc5cDwCsnJAL6nkjmy6s3g8lDxR+X50lYqWSP8uaXXzySxRK/gMmGhnLo1sP12
+	 /E6h79KFcqRmnzKMBiY7OC9I+/jQlH0hW4zWurvl5ADmehzvcRnEUuQiPEWnaXYWV9
+	 RMjUD3feAZY4g==
+Received: (nullmailer pid 175802 invoked by uid 1000);
+	Thu, 04 Jan 2024 14:33:20 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240104130123.37115-1-brgl@bgdev.pl> <20240104130123.37115-3-brgl@bgdev.pl>
-In-Reply-To: <20240104130123.37115-3-brgl@bgdev.pl>
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Thu, 4 Jan 2024 15:44:16 +0200
-Message-ID: <CAA8EJpqZ8zbNcK1BsJaaoK3Fje9KhrvFvJpgdBa-US3eMhOmOw@mail.gmail.com>
-Subject: Re: [RFC 2/9] arm64: dts: qcom: qrb5165-rb5: describe the WLAN module
- of QCA6390
+From: Rob Herring <robh@kernel.org>
 To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Kalle Valo <kvalo@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Heiko Stuebner <heiko@sntech.de>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Chris Morgan <macromorgan@hotmail.com>, 
-	Linus Walleij <linus.walleij@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Arnd Bergmann <arnd@arndb.de>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	=?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= <nfraprado@collabora.com>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Peng Fan <peng.fan@nxp.com>, 
-	Robert Richter <rrichter@amd.com>, Dan Williams <dan.j.williams@intel.com>, 
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>, Terry Bowman <terry.bowman@amd.com>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
-	Huacai Chen <chenhuacai@kernel.org>, Alex Elder <elder@linaro.org>, 
-	Srini Kandagatla <srinivas.kandagatla@linaro.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Cc: =?utf-8?q?N=C3=ADcolas_F_=2E_R_=2E_A_=2E_Prado?= <nfraprado@collabora.com>, =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, Konrad Dybcio <konrad.dybcio@linaro.org>, Robert Richter <rrichter@amd.com>, Paolo Abeni <pabeni@redhat.com>, linux-wireless@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Linus Walleij <linus.walleij@linaro.org>, Arnd Bergmann <arnd@arndb.de>, Peng Fan <peng.fan@nxp.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Bjorn Andersson <andersson@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, Eric Dumazet <edumazet@google.com>, Huacai Chen <chenhuacai@kernel.org>, linux-pci@vger.kernel.org, Kalle Valo <kvalo@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Alex Elder <elder@linaro.org>, linux-arm-msm@vger.kernel.org, Geert Uytterhoeven <geert+renesas@glider.be>, Heiko Stuebner <heiko@sntech.de>, Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, Dan Williams <dan.j.williams@i
+ ntel.com>, Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Chris Morgan <macromorgan@hotmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Will Deacon <will@kernel.org>, Terry Bowman <terry.bowman@amd.com>, linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, Marek Szyprowski <m.szyprowski@samsung.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, Rob Herring <robh+dt@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, Srini Kandagatla <srinivas.kandagatla@linaro.org>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, "David S . Miller" <davem@davemloft.net>, Bjorn Helgaas <bhelgaas@google.com>
+In-Reply-To: <20240104130123.37115-7-brgl@bgdev.pl>
+References: <20240104130123.37115-1-brgl@bgdev.pl>
+ <20240104130123.37115-7-brgl@bgdev.pl>
+Message-Id: <170437880007.175780.12569173368621506971.robh@kernel.org>
+Subject: Re: [RFC 6/9] dt-bindings: vendor-prefixes: add a PCI prefix for
+ Qualcomm Atheros
+Date: Thu, 04 Jan 2024 07:33:20 -0700
 
-On Thu, 4 Jan 2024 at 15:03, Bartosz Golaszewski <brgl@bgdev.pl> wrote:
->
+
+On Thu, 04 Jan 2024 14:01:20 +0100, Bartosz Golaszewski wrote:
 > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->
-> Describe the ath11k WLAN on-board the QCA6390 module. Include the
-> relevant regulators and the enable GPIO.
->
+> 
+> Document the PCI vendor prefix for Qualcomm Atheros so that we can
+> define the QCA PCI devices on device tree.
+> 
 > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 > ---
->  arch/arm64/boot/dts/qcom/qrb5165-rb5.dts | 24 ++++++++++++++++++++++++
->  1 file changed, 24 insertions(+)
->
-> diff --git a/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts b/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
-> index cd0db4f31d4a..721f86af952b 100644
-> --- a/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
-> +++ b/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
-> @@ -734,6 +734,22 @@ &pcie0_phy {
->         vdda-pll-supply = <&vreg_l9a_1p2>;
->  };
->
-> +&pcieport0 {
-> +       wifi@0 {
-> +               compatible = "pci17cb,1101";
-> +               reg = <0x10000 0x0 0x0 0x0 0x0>;
-> +
-> +               pinctrl-names = "default";
-> +               pinctrl-0 = <&wlan_en_state>;
-> +
-> +               enable-gpios = <&tlmm 20 GPIO_ACTIVE_HIGH>;
-> +
-> +               vddpmu-supply = <&vreg_s2f_0p95>;
-> +               vddpcie1-supply = <&vreg_s8c_1p3>;
-> +               vddpcie2-supply = <&vreg_s5a_1p9>;
+>  Documentation/devicetree/bindings/vendor-prefixes.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+> 
 
-If I remember correctly, qca6390 has at least 8 power supplies AON,
-PMU, 3xRFA, 2xPCIe and VDDIO.
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
-Moreover, these bindings do not solve another problem: the PMU is
-shared between WiFi and BT parts. For the next gen (WCN6855) this
-becomes even more important, see the code in msm-5.10 which makes sure
-that there is a proper time between one of the units going down and
-another one being powered on.
+yamllint warnings/errors:
+./Documentation/devicetree/bindings/vendor-prefixes.yaml:1116:13: [error] empty value in block mapping (empty-values)
 
-> +       };
-> +};
-> +
->  &pcie1 {
->         status = "okay";
->  };
-> @@ -1303,6 +1319,14 @@ sdc2_card_det_n: sd-card-det-n-state {
->                 function = "gpio";
->                 bias-pull-up;
->         };
-> +
-> +       wlan_en_state: wlan-default-state {
-> +               pins = "gpio20";
-> +               function = "gpio";
-> +               drive-strength = <16>;
-> +               output-low;
-> +               bias-pull-up;
-> +       };
->  };
->
->  &uart6 {
-> --
-> 2.40.1
->
->
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/vendor-prefixes.yaml: patternProperties:^qca,.*: None is not of type 'object', 'boolean'
+	from schema $id: http://json-schema.org/draft-07/schema#
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/vendor-prefixes.yaml: ignoring, error in schema: patternProperties: ^qca,.*
 
+doc reference errors (make refcheckdocs):
 
--- 
-With best wishes
-Dmitry
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20240104130123.37115-7-brgl@bgdev.pl
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
+
 
