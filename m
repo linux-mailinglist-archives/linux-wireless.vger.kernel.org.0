@@ -1,103 +1,100 @@
-Return-Path: <linux-wireless+bounces-1479-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1480-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94C4F823ED6
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jan 2024 10:42:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD92B823EE7
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jan 2024 10:49:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A58981C23772
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jan 2024 09:42:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B3701F24ACB
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jan 2024 09:49:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BA3420B02;
-	Thu,  4 Jan 2024 09:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14E7F208B9;
+	Thu,  4 Jan 2024 09:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="BKV10HtT"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="qAsZtAZg"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E41208B9
-	for <linux-wireless@vger.kernel.org>; Thu,  4 Jan 2024 09:42:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=eqFUtFVL0U7tdRFhaeYDMZRzFaaJJ9J0Tp73uqe4ZXQ=;
-	t=1704361355; x=1705570955; b=BKV10HtTom20aIAMT7cwOKgg5X20WiHU+IHroCJ0adUNEze
-	o/DzqyMUG6LUdv02TZmRuk65NOXW8HMofcqXmn17RxuBY28vkLtt1lHtyi/Yb6GYFbP59UmVOdj2B
-	7BEO6OFyKkG2TRBxoSbI1HSKT68jy3BEDiDNQQIG+M7XudA27LIXQ1cCXHwynbGEfAnriK9QlOic5
-	o+wLIupYKzr3gPw+bSuL/S71fVV2DkbtqKXdHbgNxRXRLt3SfZJtNpAR2jzpAM5XouMpTdQoQIGEN
-	s7Xaw/Ixh6qmGrPVd1uEswuraehLVza2CjNo0HIn9Ito0LfwRHuvsY//nnVDRYzA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1rLKFD-00000004THE-43RE;
-	Thu, 04 Jan 2024 10:42:32 +0100
-Message-ID: <a5123274d5a8d80d554ffb786e25bef72d45f69b.camel@sipsolutions.net>
-Subject: Re: WiF Transmit Power Control (TPC) Regulatory Requirements?
-From: Johannes Berg <johannes@sipsolutions.net>
-To: b.K.il.h.u+tigbuh@gmail.com, wens@kernel.org
-Cc: Seth Forshee <sforshee@kernel.org>, Kalle Valo <kvalo@codeaurora.org>, 
- wireless-regdb <wireless-regdb@lists.infradead.org>, linux-wireless
- <linux-wireless@vger.kernel.org>
-Date: Thu, 04 Jan 2024 10:42:30 +0100
-In-Reply-To: <CAPuHQ=GSuKW5=T0GXXCq7Pf9jw=zcEnms-fEJey68QUWH1ishQ@mail.gmail.com>
-References: 
-	<CAGb2v66xVLqr+tUSD_6uzguGXtj04WfbpT0z9M28r8z-g62Z=A@mail.gmail.com>
-	 <CAPuHQ=GSuKW5=T0GXXCq7Pf9jw=zcEnms-fEJey68QUWH1ishQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.2 (3.50.2-1.fc39) 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22053208C5
+	for <linux-wireless@vger.kernel.org>; Thu,  4 Jan 2024 09:49:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: 81d4cbc0aae611eea2298b7352fd921d-20240104
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=frFw3phKhsWMGzBQfo28kukVqr2J7NF9caCnWn+RMlE=;
+	b=qAsZtAZgtcip8kCyIK/vpPFNWn+nXXeUSnGcLrYchzbE/s6p64ICwbLtp9e12UqEyb6z9fKwTqTVQbwhEoAh4FoIb9V3ebRZeiufcYSkH4NrYyabPqUz+uVzbKTlV37x4gDZnGqiqTlbTDxSyJiIq+1zNWxUnPdDCk3Kec8iInQ=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.35,REQID:69396ff1-540d-46d4-8782-c10397ca0cf3,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:5d391d7,CLOUDID:0522fc7e-4f93-4875-95e7-8c66ea833d57,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+	RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,
+	DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 81d4cbc0aae611eea2298b7352fd921d-20240104
+Received: from mtkmbs14n1.mediatek.inc [(172.21.101.75)] by mailgw02.mediatek.com
+	(envelope-from <mingyen.hsieh@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 2028439711; Thu, 04 Jan 2024 17:49:09 +0800
+Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
+ mtkmbs13n2.mediatek.inc (172.21.101.108) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Thu, 4 Jan 2024 17:49:08 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Thu, 4 Jan 2024 17:49:08 +0800
+From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
+To: <nbd@nbd.name>, <lorenzo@kernel.org>
+CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
+	<Soul.Huang@mediatek.com>, <Leon.Yen@mediatek.com>,
+	<Eric-SY.Chang@mediatek.com>, <km.lin@mediatek.com>,
+	<robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
+	<Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
+	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
+	<linux-mediatek@lists.infradead.org>, Ming Yen Hsieh
+	<mingyen.hsieh@mediatek.com>
+Subject: [PATCH] wifi: mt76: mt7925: fix the wrong data type for scan command
+Date: Thu, 4 Jan 2024 17:48:45 +0800
+Message-ID: <20240104094845.11276-1-mingyen.hsieh@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain
 
-On Thu, 2024-01-04 at 10:07 +0100, b.K.il.h.u+tigbuh@gmail.com wrote:
-> You can find a wording in most such regulations that if TPC is not
-> supported, the maximal TX power must be reduced by 3 dBmW. Hence in
-> all such cases, the entries in db.txt contain 3 less than the maximum.
->=20
-> If, on the other hand, you know of a country that specifies that
-> devices lacking TPC may not use the band at all, all such band entries
-> must be omitted (commented out along with a URL).
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-Yeah, that's how we (currently) handle things.
+For the member of 'struct scan_req_tlv', replace data type of
+func_mask_ext from 'u8' to 'u32'.
 
-I'm not even sure what the requirements would be for "TPC" to be
-implemented, tbh.
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> > As far as I know the kernel doesn't have facilities to support TPC or
-> > transmit power control,=C2=A0
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
+index 3c41e21303b1..82b7e277397f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
+@@ -208,7 +208,7 @@ struct scan_req_tlv {
+ 	__le16 channel_dwell_time; /* channel Dwell interval */
+ 	__le16 timeout_value;
+ 	__le16 probe_delay_time;
+-	u8 func_mask_ext;
++	u32 func_mask_ext;
+ };
+ 
+ struct scan_ssid_tlv {
+-- 
+2.18.0
 
-Right. I have, however, heard the interpretation that the fact that we
-have - even if nobody uses it - the "iw set txpower" command means that
-we *do* have TPC ... Not really sure what to make of that though.
-
-> > nor does the wireless-regdb database.
-
-Correct. With the new regdb format we could add something that would
-enable these ranges in the kernel only with some additional
-requirements, but
-  (a) we don't implement that now, and
-  (b) I don't know what the requirements would actually be, e.g. would
-      it be enough that the driver promises it implements "TPC" in some
-      way? Or even the manual setting?
-
-> > And so
-> > in the database we would either omit rules that require TPC, or include
-> > alternative rules (as specified by local regulations) not requiring TPC=
-.
-> > Am I right?
-
-Right.
-
-johannes
 
