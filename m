@@ -1,115 +1,173 @@
-Return-Path: <linux-wireless+bounces-1482-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1483-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85D7C8240AF
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jan 2024 12:32:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A90782422F
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jan 2024 14:02:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E81372850C5
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jan 2024 11:32:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C417A1F223AE
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jan 2024 13:02:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F37BB21347;
-	Thu,  4 Jan 2024 11:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB4B1224C4;
+	Thu,  4 Jan 2024 13:02:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="geOFI75c"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="WK1xaleo"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6BEA21366
-	for <linux-wireless@vger.kernel.org>; Thu,  4 Jan 2024 11:32:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: e55f7c18aaf411eea2298b7352fd921d-20240104
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=++yrsJrzau0SCaizLWufalB6DIb/7OAtjBFolyLrQwU=;
-	b=geOFI75cvRzyU75LbcqVUy+emrrcbImzZs/ENMHm4QmHGfDbEDTyqUAljMiBfLOszoilrPJ/wAJRQVIqC3pOHxDJQyyZ0i/CClxHzSJPcpVbPnGVlmJ+PijMkAXkAjh5J5wedPs0lV4qf7Y7q5fZekDqRT1kXAIa7rwPOPD9Txk=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.35,REQID:3ef41ee4-2a0c-4645-9b57-6577c1561698,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:5d391d7,CLOUDID:bcd0e38d-e2c0-40b0-a8fe-7c7e47299109,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-	RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,
-	DKR:0,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: e55f7c18aaf411eea2298b7352fd921d-20240104
-Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw02.mediatek.com
-	(envelope-from <mingyen.hsieh@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 862628092; Thu, 04 Jan 2024 19:32:09 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Thu, 4 Jan 2024 19:32:07 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Thu, 4 Jan 2024 19:32:07 +0800
-From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
-To: <nbd@nbd.name>, <lorenzo@kernel.org>
-CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
-	<Soul.Huang@mediatek.com>, <Leon.Yen@mediatek.com>,
-	<Eric-SY.Chang@mediatek.com>, <km.lin@mediatek.com>,
-	<robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
-	<Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
-	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
-	<linux-mediatek@lists.infradead.org>, Ming Yen Hsieh
-	<mingyen.hsieh@mediatek.com>
-Subject: [PATCH v2] wifi: mt76: mt7925: fix the wrong data type for scan command
-Date: Thu, 4 Jan 2024 19:32:06 +0800
-Message-ID: <20240104113206.13252-1-mingyen.hsieh@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E73B224D9
+	for <linux-wireless@vger.kernel.org>; Thu,  4 Jan 2024 13:02:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3368b9bbeb4so414559f8f.2
+        for <linux-wireless@vger.kernel.org>; Thu, 04 Jan 2024 05:02:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1704373322; x=1704978122; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=opVDF4AOHQah3OrT16oGMK2ccRRJHeIMJXkpc+aZwFs=;
+        b=WK1xaleoMk7IVXPllfXEUF4Xo7mTNqo5t2Eu1pESyW/Y+enVzlgw2jNS6NG0ix03uW
+         R3eEPFGjgzWgVBUx6oChjpFfyhCOFLNySVeIg9x/1AyeyCOnHphPJBYjCU11dCsbNd67
+         jD4Hsp6G8K54zNh+9zAbbMQJODkn84rl4B92p9Efk6QQ1cboEVYDHPFVdBH2wLBTzHyc
+         o33J/zut+6c66m+g+0Qjkogk7AG+SVphmFVCUlA04TUnXWHsucHF8yBrWPh9MbphLmYk
+         Xjo7Y2Xsk+yhKozFeEUyIquoRJwCHZylOWw21UfOv/pobf7YH8XTUf/8rvEGFVGuVWCy
+         ABaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704373322; x=1704978122;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=opVDF4AOHQah3OrT16oGMK2ccRRJHeIMJXkpc+aZwFs=;
+        b=cNKwgilzK1bAVUZPeIERF1D5Oxi2ICTWYEt2XK5lqJsgJ+cRc9hLOFweoq0RKneXp4
+         cqstJYkBl32Cw++jIvtQYj8vza0YlMPcoAbyB9naQXaoQiM/wA4P8rY8ZzhR2LO0lxB6
+         2zPIq//78CU133TvY6g+ktdA94AvolgBffvHznIhpk6tmma9bKNSqBlAEOq0LPw4aj9P
+         BX4kC/toIUyJVbdxKGOx3fFzVFld94IK3mF0fGxQjuUmXOYDV/P+qCIa1XJtv06443hG
+         LwrsXxG6Oykhz8kFL5gbMzcmA8RdRafmOBE5zCrTZpOM2CQYeTLzgvfbvkgpjPr0z9Ia
+         kLyg==
+X-Gm-Message-State: AOJu0YwuAv8a/IWuK4hfip/SGaXmcjgQq4udU8Vlfayf5pQMbba6saY5
+	gwxNVKVoEIgfnlM+zK8x2qpRHlH2l5HyXg==
+X-Google-Smtp-Source: AGHT+IFsoUaWFe3hNCg6/b09WcRv7wsIMJMlEiNm/lu4Y1OTN1yICGktvfbzMdrteuCPKZTBntbM6g==
+X-Received: by 2002:adf:cc86:0:b0:337:157:2d3e with SMTP id p6-20020adfcc86000000b0033701572d3emr161961wrj.222.1704373322145;
+        Thu, 04 Jan 2024 05:02:02 -0800 (PST)
+Received: from brgl-uxlite.home ([2a01:cb1d:334:ac00:5b69:3768:8459:8fee])
+        by smtp.gmail.com with ESMTPSA id w5-20020a5d5445000000b0033660f75d08sm32887387wrv.116.2024.01.04.05.02.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Jan 2024 05:02:01 -0800 (PST)
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+To: Kalle Valo <kvalo@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Chris Morgan <macromorgan@hotmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	=?UTF-8?q?N=C3=ADcolas=20F=20=2E=20R=20=2E=20A=20=2E=20Prado?= <nfraprado@collabora.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Robert Richter <rrichter@amd.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Terry Bowman <terry.bowman@amd.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Alex Elder <elder@linaro.org>,
+	Srini Kandagatla <srinivas.kandagatla@linaro.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-pci@vger.kernel.org,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [RFC 0/9] PCI: introduce the concept of power sequencing of PCIe devices
+Date: Thu,  4 Jan 2024 14:01:14 +0100
+Message-Id: <20240104130123.37115-1-brgl@bgdev.pl>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-Product-Ver: SMEX-14.0.0.3152-9.1.1006-23728.005
-X-TM-AS-Result: No-10--0.507500-8.000000
-X-TMASE-MatchedRID: EJLkrvRJ8yxIQkQ+2Oh2tcAmcZEx8XHJQl/FdRYkUZL01TdrRxjjBl4s
-	hHbNA5484vM1YF6AJbbGJQ3BiiLAggtuKBGekqUpOlxBO2IcOBaUr4UTaNYjAOxyJvKRzDVEd7r
-	8EQd0X8Jk1fx+G1RLBPiNk75IK0l68wkY9DwRNABPi0PYVK4cl7wh+S5j613tVAlaNPJUwKHBkG
-	BTIlURuXoXDz8+lMxFpW+aIDJ4DaRzkxJ+SIkUjmncuUSUEdOX
-X-TM-AS-User-Approved-Sender: No
-X-TM-AS-User-Blocked-Sender: No
-X-TMASE-Result: 10--0.507500-8.000000
-X-TMASE-Version: SMEX-14.0.0.3152-9.1.1006-23728.005
-X-TM-SNTS-SMTP: E6C718F3336F38C754DA4F673ABCA838045B8B2ED76587825CF1D80AC3135DB32000:8
+Content-Transfer-Encoding: 8bit
 
-From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-For the member of 'struct scan_req_tlv', replace data type of
-func_mask_ext from 'u8' to '__le32'.
+During last year's Linux Plumbers we had several discussions centered
+around the need to power-on PCI devices before they can be detected on
+the bus.
 
-Change-Id: Ib9fc1aadd1f1960b63d35f31f0a4655416884bf0
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
----
-v2:
- change the data type from 'u32' to '__le32'.
----
- drivers/net/wireless/mediatek/mt76/mt7925/mcu.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The consensus during the conference was that we need to introduce a
+class of "PCI slot drivers" that would handle the power-sequencing.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
-index 3c41e21303b1..98cb705e7423 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
-@@ -208,7 +208,7 @@ struct scan_req_tlv {
- 	__le16 channel_dwell_time; /* channel Dwell interval */
- 	__le16 timeout_value;
- 	__le16 probe_delay_time;
--	u8 func_mask_ext;
-+	__le32 func_mask_ext;
- };
- 
- struct scan_ssid_tlv {
+After some additional brain-storming with Manivannan and the realization
+that the DT maintainers won't like adding any "fake" nodes not
+representing actual devices, we decided to reuse the existing
+infrastructure provided by the PCIe port drivers.
+
+The general idea is to instantiate platform devices for child nodes of
+the PCIe port DT node. For those nodes for which a power-sequencing
+driver exists, we bind it and let it probe. The driver then triggers a
+rescan of the PCI bus with the aim of detecting the now powered-on
+device. The device will consume the same DT node as the platform,
+power-sequencing device. We use device links to make the latter become
+the parent of the former.
+
+The main advantage of this approach is not modifying the existing DT in
+any way and especially not adding any "fake" platform devices.
+
+Bartosz Golaszewski (9):
+  arm64: dts: qcom: sm8250: describe the PCIe port
+  arm64: dts: qcom: qrb5165-rb5: describe the WLAN module of QCA6390
+  PCI/portdrv: create platform devices for child OF nodes
+  PCI: hold the rescan mutex when scanning for the first time
+  PCI/pwrseq: add pwrseq core code
+  dt-bindings: vendor-prefixes: add a PCI prefix for Qualcomm Atheros
+  dt-bindings: wireless: ath11k: describe QCA6390
+  PCI/pwrseq: add a pwrseq driver for QCA6390
+  arm64: defconfig: enable the PCIe power sequencing for QCA6390
+
+ .../net/wireless/qcom,ath11k-pci.yaml         |  14 ++
+ .../devicetree/bindings/vendor-prefixes.yaml  |   1 +
+ arch/arm64/boot/dts/qcom/qrb5165-rb5.dts      |  24 +++
+ arch/arm64/boot/dts/qcom/sm8250.dtsi          |  10 +
+ arch/arm64/configs/defconfig                  |   2 +
+ drivers/pci/pcie/Kconfig                      |   2 +
+ drivers/pci/pcie/Makefile                     |   2 +
+ drivers/pci/pcie/portdrv.c                    |   3 +-
+ drivers/pci/pcie/pwrseq/Kconfig               |  19 ++
+ drivers/pci/pcie/pwrseq/Makefile              |   4 +
+ drivers/pci/pcie/pwrseq/pcie-pwrseq-qca6390.c | 197 ++++++++++++++++++
+ drivers/pci/pcie/pwrseq/pwrseq.c              |  83 ++++++++
+ drivers/pci/probe.c                           |   2 +
+ include/linux/pcie-pwrseq.h                   |  24 +++
+ 14 files changed, 386 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/pci/pcie/pwrseq/Kconfig
+ create mode 100644 drivers/pci/pcie/pwrseq/Makefile
+ create mode 100644 drivers/pci/pcie/pwrseq/pcie-pwrseq-qca6390.c
+ create mode 100644 drivers/pci/pcie/pwrseq/pwrseq.c
+ create mode 100644 include/linux/pcie-pwrseq.h
+
 -- 
-2.18.0
+2.40.1
 
 
