@@ -1,320 +1,181 @@
-Return-Path: <linux-wireless+bounces-1539-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1542-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A108825B51
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Jan 2024 20:58:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E526825BD5
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Jan 2024 21:43:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84A101F21342
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Jan 2024 19:58:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BADA1283241
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Jan 2024 20:43:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96BB8364D5;
-	Fri,  5 Jan 2024 19:57:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCA5120310;
+	Fri,  5 Jan 2024 20:39:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="BoKvgH4k"
+	dkim=pass (2048-bit key) header.d=westermo.com header.i=@westermo.com header.b="QL01p+UJ";
+	dkim=pass (1024-bit key) header.d=beijerelectronicsab.onmicrosoft.com header.i=@beijerelectronicsab.onmicrosoft.com header.b="QX94U5/J"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx07-0057a101.pphosted.com (mx07-0057a101.pphosted.com [205.220.184.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7923364BB
-	for <linux-wireless@vger.kernel.org>; Fri,  5 Jan 2024 19:57:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 405ClwiV002883;
-	Fri, 5 Jan 2024 19:57:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-transfer-encoding:content-type; s=
-	qcppdkim1; bh=La4xpov3I+JtCxCGzd7fz8Qr+d24hl4TpRvEJlxPy0M=; b=Bo
-	KvgH4k0BN81kYnTvc/ODBtbhB4iDojulogEMZTjwGTeN4/QGTi3gxjOnO+p2FlaG
-	XGo2sZzFEVZV+7qcq0bI/zNn0xif9zVjviJx1TfVdoojHFu7WAxJtvm1IwdU1VAA
-	B+LGtEYq7XAzk0ROiQuj+y4nbD2Py6z6VU78GZ9NjHxl33k8CVaYES4BJ4piK1ob
-	rE9FhR9m8hrHnmpZE+hJnXgRL3r2HqCW5afdLteNMvxeVyv6FodFk3STU9EZWN74
-	a+qPCDUEEKkg9z5mp7q685cWIXTfbX29A3z2pqBz1+LqCCbTo7MVP2A3XIhL2w6b
-	wosNKpOTsSDkj1xWnV1A==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ve9a3t5nt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 05 Jan 2024 19:57:24 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 405JvO8O008906
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 5 Jan 2024 19:57:24 GMT
-Received: from hu-rajkbhag-blr.qualcomm.com (10.80.80.8) by
- nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Fri, 5 Jan 2024 11:57:22 -0800
-From: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>,
-        Ganesh Babu Jothiram
-	<quic_gjothira@quicinc.com>,
-        Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-Subject: [PATCH v2 12/12] wifi: ath12k: Read board id to support split-PHY QCN9274
-Date: Sat, 6 Jan 2024 01:26:39 +0530
-Message-ID: <20240105195639.3217739-13-quic_rajkbhag@quicinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240105195639.3217739-1-quic_rajkbhag@quicinc.com>
-References: <20240105195639.3217739-1-quic_rajkbhag@quicinc.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43DD1200CC
+	for <linux-wireless@vger.kernel.org>; Fri,  5 Jan 2024 20:39:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=westermo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=westermo.com
+Received: from pps.filterd (m0214197.ppops.net [127.0.0.1])
+	by mx07-0057a101.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 405KZiGI020792;
+	Fri, 5 Jan 2024 21:35:44 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=westermo.com; h=
+	message-id:date:subject:to:cc:references:from:in-reply-to
+	:content-type:content-transfer-encoding:mime-version; s=
+	12052020; bh=cxbGCG5ogZwvbeS3J1DZMpid9C8PK7qpBmEtnCA3L70=; b=QL0
+	1p+UJvQBqU7qi4MDQNkR7P2qvpL/XAhCNT98R08IGHYrMRnDTorKTmd3GmHnKkWD
+	XWbdkHWCmSy6IaoYHATAIAc7ErX0lZ/ZfwpN8ULXjCWsh5U0lSBmN0Dg0VptQpqP
+	Ib/HZhyT0efZk/8hA+tTwJeD17j9RZ1XTH5KIacqBkyk0w1uP+QBbt6O+j+bIaAx
+	rfAdzTwcb1v9LtbDF2EhIb2uHiAcy92qxiWqIr8VPrfE/2411Htf0z12iMqsbFZS
+	WEb6ALsfdblpgwERtIvz877XnG7qtoeInCq/kafNIuN91R8eTxK0rxAmC6P685sG
+	yI91LzcejPfTujwCW2g==
+Received: from mail.beijerelectronics.com ([195.67.87.131])
+	by mx07-0057a101.pphosted.com (PPS) with ESMTPS id 3ve15m90y3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
+	Fri, 05 Jan 2024 21:35:44 +0100 (CET)
+Received: from EX01GLOBAL.beijerelectronics.com (10.101.10.25) by
+ EX01GLOBAL.beijerelectronics.com (10.101.10.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
+ 15.1.2375.17; Fri, 5 Jan 2024 21:35:43 +0100
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com (104.47.13.50) by
+ EX01GLOBAL.beijerelectronics.com (10.101.10.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
+ 15.1.2375.17 via Frontend Transport; Fri, 5 Jan 2024 21:35:43 +0100
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=lLQp9cs17xR/EkNlRieNq9QQelLlQgwMIGBnmO9lywBv74z7hQbmIohIdTm74No6jrQrto8ssPchNwgtqOjn1ffyDebSmbXScu4SjUL4mjfS+ZiW5TRCBx8Wxk4Nvpfre5LyKGQc6Xy67YR7hzMkelA8vJ1wKpnFfxWl5L24Tdpta/w6/AIgnlv7SCmLuKxAT72Eps/fUh0ddz29fH0CCnu0PM4HGtM9e/dYONFWm1OYDsR1wiY5FG/cTU1Z0BcTkGI55ZbNCoqIU+6hllCqkBfiJIGYH6JO8+RkE2OKlQfoU2En+LivNxLnSrV2Fmx26qmwH0eQvZEekm8NB3mPgA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cxbGCG5ogZwvbeS3J1DZMpid9C8PK7qpBmEtnCA3L70=;
+ b=lG4ZIjRE6IleSwFlNd3b7qHwX0vMwBGFp/yhRa+TLxd4IVLOMwGDra8Jd+a+qFUCLedChSJ9Nk3CUfs2fob+GTPRohgyDGGSnKejwhvtXrYH73E+VSkTZwy8dy+l8J0Xy9FPUZVdP+Mf0XlDS2DX18p+L+fB8nSpkOgKzUVT9UcI0lw0wpJCAf+U46VVYBxNEOgHvnkuA8oReCv6BQneEuziIMuexuvBn13WeZH7YLrwqL3KfiF6fnyT2Yj5v/lYvpWsh+bUWwLlJnma+rwCzj/ucB1g/D9zuwKFJcMtgJ3hOGDAhSXE/O7JYtn6QNHsPXhv2dYq5aGkXETP8NK4NQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=westermo.com; dmarc=pass action=none header.from=westermo.com;
+ dkim=pass header.d=westermo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=beijerelectronicsab.onmicrosoft.com;
+ s=selector1-beijerelectronicsab-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cxbGCG5ogZwvbeS3J1DZMpid9C8PK7qpBmEtnCA3L70=;
+ b=QX94U5/JullmDjJbDFzmvczd/xwy85arRi7rLUTGfpjQwWJBB53qdfM4a76cAZZYCHEy2rY38wZe794OZb5TKg0ziz3Knp+HVV3ExXgUHcBclkoo2Cr88r/gLkFNVhcb1aT/cz/h02gjDHgacgFmRbIOuW99QhkuJrCFkZurkrI=
+Received: from DB9P192MB1388.EURP192.PROD.OUTLOOK.COM (2603:10a6:10:296::18)
+ by AM9P192MB0902.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:1f7::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7159.17; Fri, 5 Jan
+ 2024 20:35:42 +0000
+Received: from DB9P192MB1388.EURP192.PROD.OUTLOOK.COM
+ ([fe80::3885:f67b:6780:66ef]) by DB9P192MB1388.EURP192.PROD.OUTLOOK.COM
+ ([fe80::3885:f67b:6780:66ef%5]) with mapi id 15.20.7159.015; Fri, 5 Jan 2024
+ 20:35:42 +0000
+Message-ID: <728b6538-19b3-4fb4-b91e-f72080c4c9f0@westermo.com>
+Date: Fri, 5 Jan 2024 21:35:40 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] iw: strip NLA_FLAGS from printed bands
+Content-Language: en-US
+To: Johannes Berg <johannes@sipsolutions.net>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC: Zefir Kurtisi <Zefir.Kurtisi@westermo.com>
+References: <20231221222842.1310957-1-matthias.may@westermo.com>
+ <6a54a2afd9e2b1b67822e3ca9b86654e3886feef.camel@sipsolutions.net>
+From: Matthias May <matthias.may@westermo.com>
+In-Reply-To: <6a54a2afd9e2b1b67822e3ca9b86654e3886feef.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: ZR0P278CA0132.CHEP278.PROD.OUTLOOK.COM
+ (2603:10a6:910:40::11) To DB9P192MB1388.EURP192.PROD.OUTLOOK.COM
+ (2603:10a6:10:296::18)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: GGGAAG3miXGQKNG-0D4VAwnbG6nPwpge
-X-Proofpoint-ORIG-GUID: GGGAAG3miXGQKNG-0D4VAwnbG6nPwpge
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-09_01,2023-12-07_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- phishscore=0 adultscore=0 spamscore=0 bulkscore=0 impostorscore=0
- lowpriorityscore=0 clxscore=1015 malwarescore=0 mlxlogscore=999 mlxscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2311290000 definitions=main-2401050161
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB9P192MB1388:EE_|AM9P192MB0902:EE_
+X-MS-Office365-Filtering-Correlation-Id: 72608f40-2da1-4b06-9101-08dc0e2de2cf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: hG7Zr+TKh7r9hlSvZG5Bbkz/bWolJ/ZguW7+ngleBXKaLEgUftiWlAOPoleQsdcVmMPHRXJ4uWq6wuMuqln3iq6v0eJq0TjKQrdzPJz+e/65egFh1cQPKuBltFwbTlq/+cNwBBTnkIL4iF/UoqeMCeNWtsQxRq+e2hENLvoXPy94ZWD60hz1SAscLSj8PQHQ2jAtnNk4bAJc5QItiZZuDsts1Yin+mVDMxOFqSa5NYhsRbMY0w6goMnpNH+J9RxafY/hlPJQmf3jW9mDbwiy67jSZBJVpiBnQgmoP1Pihr06JRNtRR95VQnhFHXJCtteUrCIsBjINkdpKP/Kta74p40DtK3xnl6/r+zny+MOqC8eSw2omVKYmkdBic6fxmvtMof7Tk5iCso4SatLtnN7u9RgD05yFrc5aQGs71WvCM7Ve2d1db4GpwKSjwihA/ORXAYW+IHP+ygNn7ssl6UxiMulfbLrFt+5Bb5t6cDZZUXj51Cg19E0zNAG+5L1V9fiO2gVwPi03gfCbL/kPfBfkJHZTLRtu6CTVYqjIAJsDjjK1y1yhKGNUYpNqVaLkX2xvKrW5DPM+i6BpZpB02l/RwZ7jjkHTkXs9yFo1kqTZzo7yAt1nOOmw72f0XTIkhYfnFXfr8J3HfbEMYaRN9Y3nQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9P192MB1388.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(366004)(39850400004)(376002)(346002)(136003)(396003)(230922051799003)(186009)(1800799012)(64100799003)(451199024)(107886003)(2616005)(53546011)(6506007)(6512007)(26005)(41300700001)(6486002)(31696002)(86362001)(4326008)(316002)(8676002)(8936002)(110136005)(4744005)(5660300002)(4001150100001)(2906002)(44832011)(36756003)(66946007)(66556008)(66476007)(478600001)(31686004)(38100700002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?OWpSUjEzSUpYQ0pNZDBOdUZ5akR0ZXVvbVNFOHZ0U1c5dFJCV0R2UHpJNmFm?=
+ =?utf-8?B?RXE5bldqRmg2d3VwM3dDSFBzWkNYMExtM3VxVjQ1dlVxTi9oaC9TTjByV0tG?=
+ =?utf-8?B?U1RPMTBlM28rajg5bEoxKzdJRlNSZW1iUnZSVTh5UEprNDUrdFBkdFFDa2JZ?=
+ =?utf-8?B?T3F6TmRab1N1VS9OSGU3M2FwaVRHbXBMZFFSL0Y4RW5PZFBGMFRVWENIN2Nu?=
+ =?utf-8?B?UjVGTkdKbkJiOFFUSkc1UDRIakxYNFpqSjhESVNEaHRiWUxjc1pYSTJZQXZI?=
+ =?utf-8?B?VDBJK1k2Nk90MC80UGpSZ0ZwWndGWlFWWU9hQUhUUTRKQWFCOEVmYlVEN0Vz?=
+ =?utf-8?B?RU5wMVVOeUREQTZadnBFeVlnTE5TdkxxcGZaOVFXeHZkK2hVVi9FSjhsZW9h?=
+ =?utf-8?B?SnN0czNOUUJ2SElEQTdYaklXcERhRnFPWC9ROWIxZWUyVkZEdUJEQStGRzdF?=
+ =?utf-8?B?NGcxMFlmR3c4eTQ5TUNoUXpLQ0gyTURNcWN6eGRwRkdHRlF2SFZHZFhBVG52?=
+ =?utf-8?B?QWtHY1ZTTS84REpsRTIyWjJkdTRrRjlXejVJMnhIeWdvTnRaNE1FVGZRL2gr?=
+ =?utf-8?B?TFJSNitsc3A3RStoOTdFSU9iRGJkZUtiSDBoY3ZNT3hjK1dJbjdrMUdmTUJ3?=
+ =?utf-8?B?bGtjNEszSnJja3NsS3dHazE2KytKRDdYUnFZYVpXR3lvUk4vVHJsWWVZT2VZ?=
+ =?utf-8?B?d1ZqNkU4OXYwUDdjOCtYL3g0UHNaSjVqSlpNUmU2TXQvZmhPcVI3dzRVMm4y?=
+ =?utf-8?B?Slc0NWRFUjJVMkdPcCtlQkUwNmh0NmVQNXJqSnFZVG5tek5kY0tya0ZkTFNp?=
+ =?utf-8?B?WUtEb011YnY3bE15QTAyWmtmUHBLQWdZN0p4c0g5TDlhQzJxZFNJNjdaTG5Q?=
+ =?utf-8?B?WXUrWmZjWUo3RzFVSitSWXdpeHdjWnVCTE56QlJVSXcyNTZjeG9xVjNVNEho?=
+ =?utf-8?B?ZlhMN0lqSzc0ZDBCdUxVd2NlSURKa0VSSXg4MkhGekZFd1hLUWh2cEh5TUx1?=
+ =?utf-8?B?b2tnZTVQaFpzOHFLUllrUUI0ZHNzb1ZtMEhBUnVnT1ZGdUJ6QnZDd0FpQkw4?=
+ =?utf-8?B?RDFRUC9SV3ptS09aQTRiSUlRcGVSVDViMXZ6QTQzMzR6SHQ0WnVBN01LRGpL?=
+ =?utf-8?B?eUtPcUdUcHRrN0hDUFFPd205RXlzRmZ6Yk00bjZQY0RxVnBseEkwRHFTVHFj?=
+ =?utf-8?B?QUp1RyswekU1QVJMWGl2Y0JnZXhySVJ0eHBLYVREajduck16bkVLb3pQL1Zy?=
+ =?utf-8?B?UWJQZmVxRnhHWUI0eGlvUytiQnk2QUxmUG9vMHdreUZCQTBPa0RVUmRwS0Qz?=
+ =?utf-8?B?U004ZDFLM0JQem1oaGRWQVFGS25UM2wyUWJTMWZXbW5JREptZ2Q4UngwU05G?=
+ =?utf-8?B?eUR1bFpkR2dYU2VxaTI3TnFoWHE4ck5lUGFaWjVFQzJPZ2xsSmtvM0tCdVlp?=
+ =?utf-8?B?MWlpaCtvTGtnd1hpcWgwWHdvbnF1S09XOEhtYzY2MktNUGJZamE2anNTWVFC?=
+ =?utf-8?B?QnpVR2hKN0Q4Mm4vbkVlNDM1NTZENTBKdVlTNTVBUGVQSGtTN2ZzSndkY1Bp?=
+ =?utf-8?B?LzdYMnJtVmJjSGFpT1owSjlQUzEzQzdDT2xVUWNYMlMwZ2pjTFlBNURQWWJ1?=
+ =?utf-8?B?UnErME95STdwZnR0czZCcEVnSVNyTWVJUUNGTk5VdHRJdUJxc1o1ZmkwYnNa?=
+ =?utf-8?B?Mk1EU0E0ZTZNNG5RQ1pLM20wNlF6SVg5bFlUcnY5WDk4VU0rM1NSd0FIV1ZN?=
+ =?utf-8?B?MTB1cnNmZDQ3czUzUlBKUDFDZFh6MnZCNWZ0c0pzay83TlJrLzMzVTVVRGFj?=
+ =?utf-8?B?b1o3aFNKcldNQ1NqM0szaHNlc3doV01zREwzZytDUFBnYVF1TzVIZ0c2OU9M?=
+ =?utf-8?B?NWs4aU5qRjEzRUx6NVVuQytuRUl0WklneUJGb3lJeVlERjFmUGZJeUxEdTIw?=
+ =?utf-8?B?akFOZ2tUaE4xbmlsUEQ4VWNzcmFtOEE2bC9VLysxeFd4WGNqS1hUVk1XaTZK?=
+ =?utf-8?B?U0ZQMXdaSjF2V29rQUYyOWNNbDkvSU1kV0QxQ250cjlyOTJpUzUzUjRDYzc4?=
+ =?utf-8?B?WmVUSU1tU3E4SUZZQzdHQ3ZuM1lxb3lDNENIblRwT3p4aG5kQytpdDgxNzNX?=
+ =?utf-8?Q?T6lWXOJLWuQwE3KT+nP1PRpkz?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 72608f40-2da1-4b06-9101-08dc0e2de2cf
+X-MS-Exchange-CrossTenant-AuthSource: DB9P192MB1388.EURP192.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jan 2024 20:35:42.3235
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4b2e9b91-de77-4ca7-8130-c80faee67059
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: VOtfOqxKcH2V0ZtSGfqkoa3WXzLcGpBTW1cXz94HR4iqsj7rw3djMq0i4txacPTbg52BLpjpL98wY0K5kiRwIA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9P192MB0902
+X-OrganizationHeadersPreserved: AM9P192MB0902.EURP192.PROD.OUTLOOK.COM
+X-CrossPremisesHeadersPromoted: EX01GLOBAL.beijerelectronics.com
+X-CrossPremisesHeadersFiltered: EX01GLOBAL.beijerelectronics.com
+X-OriginatorOrg: westermo.com
+X-Proofpoint-GUID: tBZUidp8DsS0TpxJWAtYGHecojnTvp-0
+X-Proofpoint-ORIG-GUID: tBZUidp8DsS0TpxJWAtYGHecojnTvp-0
 
-From: Ganesh Babu Jothiram <quic_gjothira@quicinc.com>
+On 31/12/2023 22:59, Johannes Berg wrote:
+> On Thu, 2023-12-21 at 22:29 +0000, Matthias May wrote:
+>> nl_band->nla_type might have NLA_F_NESTED (0x8000) set,
+> I'm curious - how does that happen?
+>
+> Not that the change looks wrong per se, but ... I don't think this can
+> happen?
+>
+> johannes
+>
+Hi Johannes
 
-QCN9274 can support single-PHY or split-PHY architecture. Currently,
-only the single-PHY architecture is supported in ath12k.
+We saw that happen on one of our platforms where we are forced to use an 
+out-of-tree driver by QCA (SPF12.2).
+If you think this is something that can not happen with upstream 
+drivers, feel free to ignore this patch.
 
-The split-PHY QCN9274 requires different AMSS firmware binary
-"amss_dualmac.bin".
-
-Hence, add support to read board id from OTP. Based on board id
-decide whether single-mac / dual-mac firmware needs to be downloaded
-to the target. Also, update HW param max_radios to support split-PHY
-in QCN9274.
-
-Also, add new Firmware IE for firmware_N.bin
-"ATH11K_FW_IE_AMSS_DUALMAC_IMAGE" to support dualmac QCN9274.
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00188-QCAHKSWPL_SILICONZ-1
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-
-Depends-On: wifi: ath12k: add firmware-2.bin support
-
-Signed-off-by: Ganesh Babu Jothiram <quic_gjothira@quicinc.com>
-Co-developed-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/core.h |  2 ++
- drivers/net/wireless/ath/ath12k/fw.c   |  7 ++++
- drivers/net/wireless/ath/ath12k/fw.h   |  1 +
- drivers/net/wireless/ath/ath12k/hw.c   |  5 ++-
- drivers/net/wireless/ath/ath12k/hw.h   |  2 ++
- drivers/net/wireless/ath/ath12k/mac.c  |  3 +-
- drivers/net/wireless/ath/ath12k/mhi.c  | 49 +++++++++++++++++++++-----
- drivers/net/wireless/ath/ath12k/pci.h  |  3 ++
- 8 files changed, 61 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-index 36c9dcd57bdc..293eae9849fe 100644
---- a/drivers/net/wireless/ath/ath12k/core.h
-+++ b/drivers/net/wireless/ath/ath12k/core.h
-@@ -814,6 +814,8 @@ struct ath12k_base {
- 		const struct firmware *fw;
- 		const u8 *amss_data;
- 		size_t amss_len;
-+		const u8 *amss_dualmac_data;
-+		size_t amss_dualmac_len;
- 		const u8 *m3_data;
- 		size_t m3_len;
- 
-diff --git a/drivers/net/wireless/ath/ath12k/fw.c b/drivers/net/wireless/ath/ath12k/fw.c
-index 85caa1074499..0f4db594700f 100644
---- a/drivers/net/wireless/ath/ath12k/fw.c
-+++ b/drivers/net/wireless/ath/ath12k/fw.c
-@@ -119,6 +119,13 @@ static int ath12k_fw_request_firmware_api_n(struct ath12k_base *ab,
- 			ab->fw.m3_data = data;
- 			ab->fw.m3_len = ie_len;
- 			break;
-+		case ATH12K_FW_IE_AMSS_DUALMAC_IMAGE:
-+			ath12k_dbg(ab, ATH12K_DBG_BOOT,
-+				   "found dualmac fw image ie (%zd B)\n",
-+				   ie_len);
-+			ab->fw.amss_dualmac_data = data;
-+			ab->fw.amss_dualmac_len = ie_len;
-+			break;
- 		default:
- 			ath12k_warn(ab, "Unknown FW IE: %u\n", ie_id);
- 			break;
-diff --git a/drivers/net/wireless/ath/ath12k/fw.h b/drivers/net/wireless/ath/ath12k/fw.h
-index 687b0d22fce3..f79ce86b3bc9 100644
---- a/drivers/net/wireless/ath/ath12k/fw.h
-+++ b/drivers/net/wireless/ath/ath12k/fw.h
-@@ -14,6 +14,7 @@ enum ath12k_fw_ie_type {
- 	ATH12K_FW_IE_FEATURES = 1,
- 	ATH12K_FW_IE_AMSS_IMAGE = 2,
- 	ATH12K_FW_IE_M3_IMAGE = 3,
-+	ATH12K_FW_IE_AMSS_DUALMAC_IMAGE = 4,
- };
- 
- enum ath12k_fw_features {
-diff --git a/drivers/net/wireless/ath/ath12k/hw.c b/drivers/net/wireless/ath/ath12k/hw.c
-index c4a79167b9f4..60938a8c6967 100644
---- a/drivers/net/wireless/ath/ath12k/hw.c
-+++ b/drivers/net/wireless/ath/ath12k/hw.c
-@@ -913,6 +913,7 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
- 		.rfkill_on_level = 0,
- 
- 		.rddm_size = 0,
-+		.otp_board_id_register = QCN9274_QFPROM_RAW_RFA_PDET_ROW13_LSB,
- 	},
- 	{
- 		.name = "wcn7850 hw2.0",
-@@ -976,6 +977,7 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
- 		.rfkill_on_level = 1,
- 
- 		.rddm_size = 0x780000,
-+		.otp_board_id_register = 0,
- 	},
- 	{
- 		.name = "qcn9274 hw2.0",
-@@ -985,7 +987,7 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
- 			.board_size = 256 * 1024,
- 			.cal_offset = 128 * 1024,
- 		},
--		.max_radios = 1,
-+		.max_radios = 2,
- 		.single_pdev_only = false,
- 		.qmi_service_ins_id = ATH12K_QMI_WLFW_SERVICE_INS_ID_V01_QCN9274,
- 		.internal_sleep_clock = false,
-@@ -1037,6 +1039,7 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
- 		.rfkill_on_level = 0,
- 
- 		.rddm_size = 0,
-+		.otp_board_id_register = QCN9274_QFPROM_RAW_RFA_PDET_ROW13_LSB,
- 	},
- };
- 
-diff --git a/drivers/net/wireless/ath/ath12k/hw.h b/drivers/net/wireless/ath/ath12k/hw.h
-index c82d3a27b4b4..abccdfdddfd8 100644
---- a/drivers/net/wireless/ath/ath12k/hw.h
-+++ b/drivers/net/wireless/ath/ath12k/hw.h
-@@ -204,6 +204,8 @@ struct ath12k_hw_params {
- 	u32 rfkill_on_level;
- 
- 	u32 rddm_size;
-+
-+	u32 otp_board_id_register;
- };
- 
- struct ath12k_hw_ops {
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 55fcd3c560b9..d978210e32e0 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -563,7 +563,8 @@ struct ath12k_vif *ath12k_mac_get_arvif_by_vdev_id(struct ath12k_base *ab,
- 
- 	for (i = 0; i < ab->num_radios; i++) {
- 		pdev = rcu_dereference(ab->pdevs_active[i]);
--		if (pdev && pdev->ar) {
-+		if (pdev && pdev->ar &&
-+		    (pdev->ar->allocated_vdev_map & (1LL << vdev_id))) {
- 			arvif = ath12k_mac_get_arvif(pdev->ar, vdev_id);
- 			if (arvif)
- 				return arvif;
-diff --git a/drivers/net/wireless/ath/ath12k/mhi.c b/drivers/net/wireless/ath/ath12k/mhi.c
-index b7b31978a434..50b9e44504f7 100644
---- a/drivers/net/wireless/ath/ath12k/mhi.c
-+++ b/drivers/net/wireless/ath/ath12k/mhi.c
-@@ -14,6 +14,8 @@
- #include "pci.h"
- 
- #define MHI_TIMEOUT_DEFAULT_MS	90000
-+#define OTP_INVALID_BOARD_ID	0xFFFF
-+#define OTP_VALID_DUALMAC_BOARD_ID_MASK		0x1000
- 
- static const struct mhi_channel_config ath12k_mhi_channels_qcn9274[] = {
- 	{
-@@ -359,7 +361,9 @@ int ath12k_mhi_register(struct ath12k_pci *ab_pci)
- {
- 	struct ath12k_base *ab = ab_pci->ab;
- 	struct mhi_controller *mhi_ctrl;
-+	unsigned int board_id;
- 	int ret;
-+	bool dualmac = false;
- 
- 	mhi_ctrl = mhi_alloc_controller();
- 	if (!mhi_ctrl)
-@@ -371,16 +375,43 @@ int ath12k_mhi_register(struct ath12k_pci *ab_pci)
- 	mhi_ctrl->reg_len = ab->mem_len;
- 	mhi_ctrl->rddm_size = ab->hw_params->rddm_size;
- 
--	if (ab->fw.amss_data && ab->fw.amss_len > 0) {
--		/* use MHI firmware file from firmware-N.bin */
--		mhi_ctrl->fw_data = ab->fw.amss_data;
--		mhi_ctrl->fw_sz = ab->fw.amss_len;
-+	if (ab->hw_params->otp_board_id_register) {
-+		board_id =
-+			ath12k_pci_read32(ab, ab->hw_params->otp_board_id_register);
-+		board_id = u32_get_bits(board_id, OTP_BOARD_ID_MASK);
-+
-+		if (!board_id || (board_id == OTP_INVALID_BOARD_ID)) {
-+			ath12k_dbg(ab, ATH12K_DBG_BOOT,
-+				   "failed to read board id\n");
-+		} else if (board_id & OTP_VALID_DUALMAC_BOARD_ID_MASK) {
-+			dualmac = true;
-+			ath12k_dbg(ab, ATH12K_DBG_BOOT,
-+				   "dualmac fw selected for board id: %x\n", board_id);
-+		}
-+	}
-+
-+	if (dualmac) {
-+		if (ab->fw.amss_dualmac_data && ab->fw.amss_dualmac_len > 0) {
-+			/* use MHI firmware file from firmware-N.bin */
-+			mhi_ctrl->fw_data = ab->fw.amss_dualmac_data;
-+			mhi_ctrl->fw_sz = ab->fw.amss_dualmac_len;
-+		} else {
-+			ath12k_warn(ab, "dualmac firmware IE not present in firmware-N.bin\n");
-+			ret = -ENOENT;
-+			goto free_controller;
-+		}
- 	} else {
--		/* use the old separate mhi.bin MHI firmware file */
--		ath12k_core_create_firmware_path(ab, ATH12K_AMSS_FILE,
--						 ab_pci->amss_path,
--						 sizeof(ab_pci->amss_path));
--		mhi_ctrl->fw_image = ab_pci->amss_path;
-+		if (ab->fw.amss_data && ab->fw.amss_len > 0) {
-+			/* use MHI firmware file from firmware-N.bin */
-+			mhi_ctrl->fw_data = ab->fw.amss_data;
-+			mhi_ctrl->fw_sz = ab->fw.amss_len;
-+		} else {
-+			/* use the old separate mhi.bin MHI firmware file */
-+			ath12k_core_create_firmware_path(ab, ATH12K_AMSS_FILE,
-+							 ab_pci->amss_path,
-+							 sizeof(ab_pci->amss_path));
-+			mhi_ctrl->fw_image = ab_pci->amss_path;
-+		}
- 	}
- 
- 	ret = ath12k_mhi_get_msi(ab_pci);
-diff --git a/drivers/net/wireless/ath/ath12k/pci.h b/drivers/net/wireless/ath/ath12k/pci.h
-index 023616928f03..ca93693ba4e9 100644
---- a/drivers/net/wireless/ath/ath12k/pci.h
-+++ b/drivers/net/wireless/ath/ath12k/pci.h
-@@ -53,6 +53,9 @@
- #define WLAON_QFPROM_PWR_CTRL_REG		0x01f8031c
- #define QFPROM_PWR_CTRL_VDD4BLOW_MASK		0x4
- 
-+#define QCN9274_QFPROM_RAW_RFA_PDET_ROW13_LSB	0x1E20338
-+#define OTP_BOARD_ID_MASK			GENMASK(15, 0)
-+
- #define PCI_BAR_WINDOW0_BASE	0x1E00000
- #define PCI_BAR_WINDOW0_END	0x1E7FFFC
- #define PCI_SOC_RANGE_MASK	0x3FFF
--- 
-2.34.1
+BR
+Matthias
 
 
