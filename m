@@ -1,45 +1,45 @@
-Return-Path: <linux-wireless+bounces-1516-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1517-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E268824EBD
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Jan 2024 07:44:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9411E824EBE
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Jan 2024 07:44:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46B321C21E2F
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Jan 2024 06:44:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11BA32846B3
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Jan 2024 06:44:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A354A20B09;
-	Fri,  5 Jan 2024 06:44:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22D0B7E;
+	Fri,  5 Jan 2024 06:44:43 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F020C20B0E
-	for <linux-wireless@vger.kernel.org>; Fri,  5 Jan 2024 06:44:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69E0620B09
+	for <linux-wireless@vger.kernel.org>; Fri,  5 Jan 2024 06:44:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4056iPBe92204230, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4056iZttD2211731, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 4056iPBe92204230
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 4056iZttD2211731
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 5 Jan 2024 14:44:25 +0800
+	Fri, 5 Jan 2024 14:44:35 +0800
 Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
  RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Fri, 5 Jan 2024 14:44:26 +0800
+ 15.1.2507.17; Fri, 5 Jan 2024 14:44:36 +0800
 Received: from [127.0.1.1] (172.21.69.94) by RTEXDAG02.realtek.com.tw
  (172.21.6.101) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Fri, 5 Jan 2024
- 14:44:25 +0800
+ 14:44:35 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <kvalo@kernel.org>
 CC: <cj.hsieh@realtek.com>, <hsuan8331@realtek.com>,
         <linux-wireless@vger.kernel.org>
-Subject: [PATCH 6/8] wifi: rtw89: 8922a: add NCTL pre-settings for WiFi 7 chips
-Date: Fri, 5 Jan 2024 14:44:22 +0800
-Message-ID: <20240105064422.36812-1-pkshih@realtek.com>
+Subject: [PATCH 7/8] wifi: rtw89: phy: add BB wrapper of TX power for WiFi 7 chips
+Date: Fri, 5 Jan 2024 14:44:33 +0800
+Message-ID: <20240105064433.36870-1-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240105064228.36580-1-pkshih@realtek.com>
 References: <20240105064228.36580-1-pkshih@realtek.com>
@@ -58,179 +58,261 @@ X-KSE-AntiSpam-Interceptor-Info: fallback
 X-KSE-Antivirus-Interceptor-Info: fallback
 X-KSE-AntiSpam-Interceptor-Info: fallback
 
-NCTL standing for nano-controller is used to assist RF calibration.
-Basically, we write settings from a table, but format of the table can't
-describe register mask and additional conditions, so add a function to
-set this kind of settings.
+TX power is controlled by BB layer basically, but it should interact with
+MAC layer, so these registers are put on MAC register domain and called
+BB wrapper, which contains TX power for each MAC ID, OFDMA RU power, and
+consideration of power type table.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/phy.c    | 14 +++++++++++---
- drivers/net/wireless/realtek/rtw89/phy.h    |  8 ++++++++
- drivers/net/wireless/realtek/rtw89/phy_be.c | 19 +++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/reg.h    | 17 +++++++++++++++++
- 4 files changed, 55 insertions(+), 3 deletions(-)
+ drivers/net/wireless/realtek/rtw89/phy.c    |   2 +
+ drivers/net/wireless/realtek/rtw89/phy.h    |   9 ++
+ drivers/net/wireless/realtek/rtw89/phy_be.c | 106 ++++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/reg.h    |  47 +++++++++
+ 4 files changed, 164 insertions(+)
 
 diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-index 3efc6bbdf624..e9baa939d987 100644
+index e9baa939d987..69debc156edb 100644
 --- a/drivers/net/wireless/realtek/rtw89/phy.c
 +++ b/drivers/net/wireless/realtek/rtw89/phy.c
-@@ -1469,11 +1469,9 @@ void rtw89_phy_init_rf_reg(struct rtw89_dev *rtwdev, bool noio)
- 	kfree(rf_reg_info);
- }
- 
--static void rtw89_phy_init_rf_nctl(struct rtw89_dev *rtwdev)
-+static void rtw89_phy_preinit_rf_nctl_ax(struct rtw89_dev *rtwdev)
- {
--	struct rtw89_fw_elm_info *elm_info = &rtwdev->fw.elm_info;
- 	const struct rtw89_chip_info *chip = rtwdev->chip;
--	const struct rtw89_phy_table *nctl_table;
- 	u32 val;
- 	int ret;
- 
-@@ -1493,6 +1491,15 @@ static void rtw89_phy_init_rf_nctl(struct rtw89_dev *rtwdev)
- 				1000, false, rtwdev);
- 	if (ret)
- 		rtw89_err(rtwdev, "failed to poll nctl block\n");
-+}
-+
-+static void rtw89_phy_init_rf_nctl(struct rtw89_dev *rtwdev)
-+{
-+	struct rtw89_fw_elm_info *elm_info = &rtwdev->fw.elm_info;
-+	const struct rtw89_chip_info *chip = rtwdev->chip;
-+	const struct rtw89_phy_table *nctl_table;
-+
-+	rtw89_phy_preinit_rf_nctl(rtwdev);
- 
- 	nctl_table = elm_info->rf_nctl ? elm_info->rf_nctl : chip->nctl_table;
- 	rtw89_phy_init_reg(rtwdev, nctl_table, rtw89_phy_config_bb_reg, NULL);
-@@ -5483,6 +5490,7 @@ const struct rtw89_phy_gen_def rtw89_phy_gen_ax = {
- 	.physts = &rtw89_physts_regs_ax,
+@@ -4966,6 +4966,7 @@ void rtw89_phy_dm_init(struct rtw89_dev *rtwdev)
+ 	rtw89_physts_parsing_init(rtwdev);
+ 	rtw89_phy_dig_init(rtwdev);
+ 	rtw89_phy_cfo_init(rtwdev);
++	rtw89_phy_bb_wrap_init(rtwdev);
+ 	rtw89_phy_edcca_init(rtwdev);
+ 	rtw89_phy_ul_tb_info_init(rtwdev);
+ 	rtw89_phy_antdiv_init(rtwdev);
+@@ -5491,6 +5492,7 @@ const struct rtw89_phy_gen_def rtw89_phy_gen_ax = {
  	.cfo = &rtw89_cfo_regs_ax,
  	.config_bb_gain = rtw89_phy_config_bb_gain_ax,
-+	.preinit_rf_nctl = rtw89_phy_preinit_rf_nctl_ax,
+ 	.preinit_rf_nctl = rtw89_phy_preinit_rf_nctl_ax,
++	.bb_wrap_init = NULL,
  
  	.set_txpwr_byrate = rtw89_phy_set_txpwr_byrate_ax,
  	.set_txpwr_offset = rtw89_phy_set_txpwr_offset_ax,
 diff --git a/drivers/net/wireless/realtek/rtw89/phy.h b/drivers/net/wireless/realtek/rtw89/phy.h
-index 70943117242e..5347aba994df 100644
+index 5347aba994df..2ffd33b078b2 100644
 --- a/drivers/net/wireless/realtek/rtw89/phy.h
 +++ b/drivers/net/wireless/realtek/rtw89/phy.h
-@@ -513,6 +513,7 @@ struct rtw89_phy_gen_def {
- 			       const struct rtw89_reg2_def *reg,
+@@ -514,6 +514,7 @@ struct rtw89_phy_gen_def {
  			       enum rtw89_rf_path rf_path,
  			       void *extra_data);
-+	void (*preinit_rf_nctl)(struct rtw89_dev *rtwdev);
+ 	void (*preinit_rf_nctl)(struct rtw89_dev *rtwdev);
++	void (*bb_wrap_init)(struct rtw89_dev *rtwdev);
  
  	void (*set_txpwr_byrate)(struct rtw89_dev *rtwdev,
  				 const struct rtw89_chan *chan,
-@@ -795,6 +796,13 @@ s8 rtw89_phy_read_txpwr_limit(struct rtw89_dev *rtwdev, u8 band,
- s8 rtw89_phy_read_txpwr_limit_ru(struct rtw89_dev *rtwdev, u8 band,
- 				 u8 ru, u8 ntx, u8 ch);
+@@ -803,6 +804,14 @@ static inline void rtw89_phy_preinit_rf_nctl(struct rtw89_dev *rtwdev)
+ 	phy->preinit_rf_nctl(rtwdev);
+ }
  
-+static inline void rtw89_phy_preinit_rf_nctl(struct rtw89_dev *rtwdev)
++static inline void rtw89_phy_bb_wrap_init(struct rtw89_dev *rtwdev)
 +{
 +	const struct rtw89_phy_gen_def *phy = rtwdev->chip->phy_def;
 +
-+	phy->preinit_rf_nctl(rtwdev);
++	if (phy->bb_wrap_init)
++		phy->bb_wrap_init(rtwdev);
 +}
 +
  static inline
  void rtw89_phy_set_txpwr_byrate(struct rtw89_dev *rtwdev,
  				const struct rtw89_chan *chan,
 diff --git a/drivers/net/wireless/realtek/rtw89/phy_be.c b/drivers/net/wireless/realtek/rtw89/phy_be.c
-index b65de183156b..0f61d86c5e8f 100644
+index 0f61d86c5e8f..e8ce29de1c52 100644
 --- a/drivers/net/wireless/realtek/rtw89/phy_be.c
 +++ b/drivers/net/wireless/realtek/rtw89/phy_be.c
-@@ -252,6 +252,24 @@ static void rtw89_phy_config_bb_gain_be(struct rtw89_dev *rtwdev,
+@@ -270,6 +270,111 @@ static void rtw89_phy_preinit_rf_nctl_be(struct rtw89_dev *rtwdev)
  	}
  }
  
-+static void rtw89_phy_preinit_rf_nctl_be(struct rtw89_dev *rtwdev)
++static
++void rtw89_phy_bb_wrap_pwr_by_macid_init(struct rtw89_dev *rtwdev)
 +{
-+	rtw89_phy_write32_mask(rtwdev, R_GOTX_IQKDPK_C0, B_GOTX_IQKDPK, 0x3);
-+	rtw89_phy_write32_mask(rtwdev, R_GOTX_IQKDPK_C1, B_GOTX_IQKDPK, 0x3);
-+	rtw89_phy_write32_mask(rtwdev, R_IQKDPK_HC, B_IQKDPK_HC, 0x1);
-+	rtw89_phy_write32_mask(rtwdev, R_CLK_GCK, B_CLK_GCK, 0x00fffff);
-+	rtw89_phy_write32_mask(rtwdev, R_IOQ_IQK_DPK, B_IOQ_IQK_DPK_CLKEN, 0x3);
-+	rtw89_phy_write32_mask(rtwdev, R_IQK_DPK_RST, B_IQK_DPK_RST, 0x1);
-+	rtw89_phy_write32_mask(rtwdev, R_IQK_DPK_PRST, B_IQK_DPK_PRST, 0x1);
-+	rtw89_phy_write32_mask(rtwdev, R_IQK_DPK_PRST_C1, B_IQK_DPK_PRST, 0x1);
-+	rtw89_phy_write32_mask(rtwdev, R_TXRFC, B_TXRFC_RST, 0x1);
++	u32 macid_idx, cr, base_macid_lmt, max_macid = 32;
 +
-+	if (rtwdev->dbcc_en) {
-+		rtw89_phy_write32_mask(rtwdev, R_IQK_DPK_RST_C1, B_IQK_DPK_RST, 0x1);
-+		rtw89_phy_write32_mask(rtwdev, R_TXRFC_C1, B_TXRFC_RST, 0x1);
++	base_macid_lmt = R_BE_PWR_MACID_LMT_BASE;
++
++	for (macid_idx = 0; macid_idx < 4 * max_macid; macid_idx += 4) {
++		cr = base_macid_lmt + macid_idx;
++		rtw89_write32(rtwdev, cr, 0x03007F7F);
 +	}
++}
++
++static
++void rtw89_phy_bb_wrap_tx_path_by_macid_init(struct rtw89_dev *rtwdev)
++{
++	int i, max_macid = 32;
++	u32 cr = R_BE_PWR_MACID_PATH_BASE;
++
++	for (i = 0; i < max_macid; i++, cr += 4)
++		rtw89_write32(rtwdev, cr, 0x03C86000);
++}
++
++static void rtw89_phy_bb_wrap_tpu_set_all(struct rtw89_dev *rtwdev,
++					  enum rtw89_mac_idx mac_idx)
++{
++	u32 addr;
++
++	for (addr = R_BE_PWR_BY_RATE; addr <= R_BE_PWR_BY_RATE_END; addr += 4)
++		rtw89_write32(rtwdev, addr, 0);
++	for (addr = R_BE_PWR_RULMT_START; addr <= R_BE_PWR_RULMT_END; addr += 4)
++		rtw89_write32(rtwdev, addr, 0);
++	for (addr = R_BE_PWR_RATE_OFST_CTRL; addr <= R_BE_PWR_RATE_OFST_END; addr += 4)
++		rtw89_write32(rtwdev, addr, 0);
++
++	addr = rtw89_mac_reg_by_idx(rtwdev, R_BE_PWR_REF_CTRL, mac_idx);
++	rtw89_write32_mask(rtwdev, addr, B_BE_PWR_OFST_LMT_DB, 0);
++	addr = rtw89_mac_reg_by_idx(rtwdev, R_BE_PWR_OFST_LMTBF, mac_idx);
++	rtw89_write32_mask(rtwdev, addr, B_BE_PWR_OFST_LMTBF_DB, 0);
++	addr = rtw89_mac_reg_by_idx(rtwdev, R_BE_PWR_RATE_CTRL, mac_idx);
++	rtw89_write32_mask(rtwdev, addr, B_BE_PWR_OFST_BYRATE_DB, 0);
++	addr = rtw89_mac_reg_by_idx(rtwdev, R_BE_PWR_OFST_RULMT, mac_idx);
++	rtw89_write32_mask(rtwdev, addr, B_BE_PWR_OFST_RULMT_DB, 0);
++	addr = rtw89_mac_reg_by_idx(rtwdev, R_BE_PWR_OFST_SW, mac_idx);
++	rtw89_write32_mask(rtwdev, addr, B_BE_PWR_OFST_SW_DB, 0);
++}
++
++static
++void rtw89_phy_bb_wrap_listen_path_en_init(struct rtw89_dev *rtwdev)
++{
++	u32 addr;
++	int ret;
++
++	ret = rtw89_mac_check_mac_en(rtwdev, RTW89_MAC_1, RTW89_CMAC_SEL);
++	if (ret)
++		return;
++
++	addr = rtw89_mac_reg_by_idx(rtwdev, R_BE_PWR_LISTEN_PATH, RTW89_MAC_1);
++	rtw89_write32_mask(rtwdev, addr, B_BE_PWR_LISTEN_PATH_EN, 0x2);
++}
++
++static void rtw89_phy_bb_wrap_force_cr_init(struct rtw89_dev *rtwdev,
++					    enum rtw89_mac_idx mac_idx)
++{
++	u32 addr;
++
++	addr = rtw89_mac_reg_by_idx(rtwdev, R_BE_PWR_FORCE_LMT, mac_idx);
++	rtw89_write32_mask(rtwdev, addr, B_BE_PWR_FORCE_LMT_ON, 0);
++	addr = rtw89_mac_reg_by_idx(rtwdev, R_BE_PWR_BOOST, mac_idx);
++	rtw89_write32_mask(rtwdev, addr, B_BE_PWR_FORCE_RATE_ON, 0);
++	addr = rtw89_mac_reg_by_idx(rtwdev, R_BE_PWR_OFST_RULMT, mac_idx);
++	rtw89_write32_mask(rtwdev, addr, B_BE_PWR_FORCE_RU_ENON, 0);
++	rtw89_write32_mask(rtwdev, addr, B_BE_PWR_FORCE_RU_ON, 0);
++	addr = rtw89_mac_reg_by_idx(rtwdev, R_BE_PWR_FORCE_MACID, mac_idx);
++	rtw89_write32_mask(rtwdev, addr, B_BE_PWR_FORCE_MACID_ON, 0);
++	addr = rtw89_mac_reg_by_idx(rtwdev, R_BE_PWR_COEX_CTRL, mac_idx);
++	rtw89_write32_mask(rtwdev, addr, B_BE_PWR_FORCE_COEX_ON, 0);
++	addr = rtw89_mac_reg_by_idx(rtwdev, R_BE_PWR_RATE_CTRL, mac_idx);
++	rtw89_write32_mask(rtwdev, addr, B_BE_FORCE_PWR_BY_RATE_EN, 0);
++}
++
++static void rtw89_phy_bb_wrap_ftm_init(struct rtw89_dev *rtwdev,
++				       enum rtw89_mac_idx mac_idx)
++{
++	u32 addr;
++
++	addr = rtw89_mac_reg_by_idx(rtwdev, R_BE_PWR_FTM, mac_idx);
++	rtw89_write32(rtwdev, addr, 0xE4E431);
++
++	addr = rtw89_mac_reg_by_idx(rtwdev, R_BE_PWR_FTM_SS, mac_idx);
++	rtw89_write32_mask(rtwdev, addr, 0x7, 0);
++}
++
++static void rtw89_phy_bb_wrap_init_be(struct rtw89_dev *rtwdev)
++{
++	enum rtw89_mac_idx mac_idx = RTW89_MAC_0;
++
++	rtw89_phy_bb_wrap_pwr_by_macid_init(rtwdev);
++	rtw89_phy_bb_wrap_tx_path_by_macid_init(rtwdev);
++	rtw89_phy_bb_wrap_listen_path_en_init(rtwdev);
++	rtw89_phy_bb_wrap_force_cr_init(rtwdev, mac_idx);
++	rtw89_phy_bb_wrap_ftm_init(rtwdev, mac_idx);
++	rtw89_phy_bb_wrap_tpu_set_all(rtwdev, mac_idx);
 +}
 +
  struct rtw89_byr_spec_ent_be {
  	struct rtw89_rate_desc init;
  	u8 num_of_idx;
-@@ -819,6 +837,7 @@ const struct rtw89_phy_gen_def rtw89_phy_gen_be = {
- 	.physts = &rtw89_physts_regs_be,
+@@ -838,6 +943,7 @@ const struct rtw89_phy_gen_def rtw89_phy_gen_be = {
  	.cfo = &rtw89_cfo_regs_be,
  	.config_bb_gain = rtw89_phy_config_bb_gain_be,
-+	.preinit_rf_nctl = rtw89_phy_preinit_rf_nctl_be,
+ 	.preinit_rf_nctl = rtw89_phy_preinit_rf_nctl_be,
++	.bb_wrap_init = rtw89_phy_bb_wrap_init_be,
  
  	.set_txpwr_byrate = rtw89_phy_set_txpwr_byrate_be,
  	.set_txpwr_offset = rtw89_phy_set_txpwr_offset_be,
 diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
-index 61ba52d5990e..dc237f12dc5e 100644
+index dc237f12dc5e..a03fb3784d1c 100644
 --- a/drivers/net/wireless/realtek/rtw89/reg.h
 +++ b/drivers/net/wireless/realtek/rtw89/reg.h
-@@ -7588,13 +7588,20 @@
- #define R_PD_CTRL 0x0C3C
- #define B_PD_HIT_DIS BIT(9)
- #define R_IOQ_IQK_DPK 0x0C60
-+#define B_IOQ_IQK_DPK_CLKEN GENMASK(1, 0)
- #define B_IOQ_IQK_DPK_EN BIT(1)
- #define R_GNT_BT_WGT_EN 0x0C6C
- #define B_GNT_BT_WGT_EN BIT(21)
-+#define R_IQK_DPK_RST 0x0C6C
-+#define R_IQK_DPK_RST_C1 0x1C6C
-+#define B_IQK_DPK_RST BIT(0)
- #define R_TX_COLLISION_T2R_ST 0x0C70
- #define B_TX_COLLISION_T2R_ST_M GENMASK(25, 20)
- #define R_TXGATING 0x0C74
- #define B_TXGATING_EN BIT(4)
-+#define R_TXRFC 0x0C7C
-+#define R_TXRFC_C1 0x1C7C
-+#define B_TXRFC_RST GENMASK(23, 21)
- #define R_PD_ARBITER_OFF 0x0C80
- #define B_PD_ARBITER_OFF BIT(31)
- #define R_SNDCCA_A1 0x0C9C
-@@ -7624,6 +7631,8 @@
- #define R_CTLTOP 0x1008
- #define B_CTLTOP_ON BIT(23)
- #define B_CTLTOP_VAL GENMASK(15, 12)
-+#define R_CLK_GCK 0x1008
-+#define B_CLK_GCK GENMASK(24, 0)
- #define R_EDCCA_RPT_SEL_BE 0x10CC
- #define R_S0_HW_SI_DIS 0x1200
- #define B_S0_HW_SI_DIS_W_R_TRIG GENMASK(30, 28)
-@@ -7771,6 +7780,8 @@
- #define B_P80_AT_HIGH_FREQ_RU_ALLOC_PHY0 BIT(13)
- #define R_DBCC_80P80_SEL_EVM_RPT2 0x2A10
- #define B_DBCC_80P80_SEL_EVM_RPT2_EN BIT(0)
-+#define R_IQKDPK_HC 0x2AB8
-+#define B_IQKDPK_HC BIT(28)
- #define R_P1_EN_SOUND_WO_NDP 0x2D7C
- #define B_P1_EN_SOUND_WO_NDP BIT(1)
- #define R_EDCCA_RPT_A_BE 0x2E38
-@@ -8630,6 +8641,12 @@
- #define B_DACKN0_V GENMASK(21, 14)
- #define R_DACKN1_CTL 0xC224
- #define B_DACKN1_V GENMASK(21, 14)
-+#define R_GOTX_IQKDPK_C0 0xE464
-+#define R_GOTX_IQKDPK_C1 0xE564
-+#define B_GOTX_IQKDPK GENMASK(28, 27)
-+#define R_IQK_DPK_PRST 0xE4AC
-+#define R_IQK_DPK_PRST_C1 0xE5AC
-+#define B_IQK_DPK_PRST BIT(27)
+@@ -5822,6 +5822,9 @@
+ #define B_BE_MACID_ACQ_GRP0_CLR_P BIT(2)
+ #define B_BE_R_MACID_ACQ_CHK_EN BIT(0)
  
- /* WiFi CPU local domain */
- #define R_AX_WDT_CTRL 0x0040
++#define R_BE_PWR_MACID_PATH_BASE 0x0E500
++#define R_BE_PWR_MACID_LMT_BASE 0x0ED00
++
+ #define R_BE_CMAC_FUNC_EN 0x10000
+ #define R_BE_CMAC_FUNC_EN_C1 0x14000
+ #define B_BE_CMAC_CRPRT BIT(31)
+@@ -7178,12 +7181,56 @@
+ 
+ #define R_BE_PWR_MODULE 0x11900
+ #define R_BE_PWR_MODULE_C1 0x15900
++#define R_BE_PWR_LISTEN_PATH 0x11988
++#define B_BE_PWR_LISTEN_PATH_EN GENMASK(31, 28)
++
++#define R_BE_PWR_REF_CTRL 0x11A20
++#define B_BE_PWR_REF_CTRL_OFDM GENMASK(9, 1)
++#define B_BE_PWR_REF_CTRL_CCK GENMASK(18, 10)
++#define B_BE_PWR_OFST_LMT_DB GENMASK(27, 19)
++#define R_BE_PWR_OFST_LMTBF 0x11A24
++#define B_BE_PWR_OFST_LMTBF_DB GENMASK(8, 0)
++#define R_BE_PWR_FORCE_LMT 0x11A28
++#define B_BE_PWR_FORCE_LMT_ON BIT(6)
++
++#define R_BE_PWR_RATE_CTRL 0x11A2C
++#define B_BE_PWR_OFST_BYRATE_DB GENMASK(8, 0)
++#define B_BE_FORCE_PWR_BY_RATE_EN BIT(19)
++#define B_BE_FORCE_PWR_BY_RATE_VAL GENMASK(28, 20)
+ 
+ #define R_BE_PWR_RATE_OFST_CTRL 0x11A30
++#define R_BE_PWR_RATE_OFST_END 0x11A38
++#define R_BE_PWR_RULMT_START 0x12048
++#define R_BE_PWR_RULMT_END 0x120e4
++
++#define R_BE_PWR_BOOST 0x11A40
++#define B_BE_PWR_CTRL_SEL BIT(16)
++#define B_BE_PWR_FORCE_RATE_ON BIT(29)
++#define R_BE_PWR_OFST_RULMT 0x11A44
++#define B_BE_PWR_OFST_RULMT_DB GENMASK(17, 9)
++#define B_BE_PWR_FORCE_RU_ON BIT(18)
++#define B_BE_PWR_FORCE_RU_ENON BIT(28)
++#define R_BE_PWR_FORCE_MACID 0x11A48
++#define B_BE_PWR_FORCE_MACID_ON BIT(9)
++
++#define R_BE_PWR_REG_CTRL 0x11A50
++#define B_BE_PWR_BT_EN BIT(23)
++
++#define R_BE_PWR_COEX_CTRL 0x11A54
++#define B_BE_PWR_BT_VAL GENMASK(8, 0)
++#define B_BE_PWR_FORCE_COEX_ON GENMASK(29, 27)
++
++#define R_BE_PWR_OFST_SW 0x11AE8
++#define B_BE_PWR_OFST_SW_DB GENMASK(27, 24)
++
++#define R_BE_PWR_FTM 0x11B00
++#define R_BE_PWR_FTM_SS 0x11B04
++
+ #define R_BE_PWR_BY_RATE 0x11E00
+ #define R_BE_PWR_BY_RATE_MAX 0x11FA8
+ #define R_BE_PWR_LMT 0x11FAC
+ #define R_BE_PWR_LMT_MAX 0x12040
++#define R_BE_PWR_BY_RATE_END 0x12044
+ #define R_BE_PWR_RU_LMT 0x12048
+ #define R_BE_PWR_RU_LMT_MAX 0x120E4
+ 
 -- 
 2.25.1
 
