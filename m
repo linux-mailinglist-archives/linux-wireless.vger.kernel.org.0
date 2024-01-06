@@ -1,65 +1,64 @@
-Return-Path: <linux-wireless+bounces-1548-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1549-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C0B2825F1E
-	for <lists+linux-wireless@lfdr.de>; Sat,  6 Jan 2024 11:19:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73C4C825F1F
+	for <lists+linux-wireless@lfdr.de>; Sat,  6 Jan 2024 11:19:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E580AB21FA8
-	for <lists+linux-wireless@lfdr.de>; Sat,  6 Jan 2024 10:19:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8DB71F2382C
+	for <lists+linux-wireless@lfdr.de>; Sat,  6 Jan 2024 10:19:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D60D86AA2;
-	Sat,  6 Jan 2024 10:19:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19B776FA2;
+	Sat,  6 Jan 2024 10:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="aY1agAwK"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="QLeJBzzg"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6741A63C0
-	for <linux-wireless@vger.kernel.org>; Sat,  6 Jan 2024 10:19:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDCBD6D18
+	for <linux-wireless@vger.kernel.org>; Sat,  6 Jan 2024 10:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-7811db57cb4so35187285a.0
-        for <linux-wireless@vger.kernel.org>; Sat, 06 Jan 2024 02:19:17 -0800 (PST)
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-78313f4d149so24301085a.1
+        for <linux-wireless@vger.kernel.org>; Sat, 06 Jan 2024 02:19:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1704536356; x=1705141156; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1704536359; x=1705141159; darn=vger.kernel.org;
         h=mime-version:references:in-reply-to:message-id:date:subject:cc:to
          :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=JE1Bwui3iMt1py7rEEdEYZXsahJ8eFqk13DIm0Jm/Yc=;
-        b=aY1agAwKMbGK5Alni33IGOI5CykExL0gGPDRLaTFqFDJU9U0zDeY31br6WTQJ15+iO
-         eEerXDAlnt2mCiu0zENtgvbW77nzXlxrLgz5I3IumgEHs0/gAWPQQkN+RQRPh5PiidzX
-         aZxolr7T8iSJs8B4+pFYpW+imV62ZF1RDPETg=
+        bh=+GCKDwBXsX8eGoVQ2CybdS9in5hQJBx5401de5Jy7po=;
+        b=QLeJBzzgUZ6q9gZUgPg+rXSysL97DQhjgBmkcq+nVSIa3xBrVB6TVMAReQshnAoj5t
+         hUNTijUI7gZkpQPEFoRR1TcnEjARe9RG0DO+qQ28nRRg1i6vTD/+xpyWXwCreH2+kTWJ
+         RyxFEfGqKnop7XDg9NoSW29oWjuMD56Ygu4Xw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704536356; x=1705141156;
+        d=1e100.net; s=20230601; t=1704536359; x=1705141159;
         h=mime-version:references:in-reply-to:message-id:date:subject:cc:to
          :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JE1Bwui3iMt1py7rEEdEYZXsahJ8eFqk13DIm0Jm/Yc=;
-        b=EG0w0o/FmDqKr7TnzATn/bwC99/pL4AN61J7NqgGsPvS8PELY8O48NsESv5QNurqPs
-         lhi3AfOwqgziXSifP3iM5FCoh3PU88caIjif1orDXLobSYcQCaWBkO5wb85YicQsCEPm
-         AH0kqAnctFvwwhS4e33y2njwwMLlzPzloaKoC9lxjIPp9+NvXKV4rr1YUMn+prY+pqtp
-         ScsVCsvyVRRi2PqGPbSCJMKWtVnP/ySVuGD1Vxa3tJu/BjDc7VyISH1HJYjuQF2vxgVz
-         nWSuaxXG5IszQEcutGkZkQg7c0K38UxL5ZgimyptvqVgE4y/cRmjUrl04gFVLu0ZLRcZ
-         OGgA==
-X-Gm-Message-State: AOJu0Ywit7Z+5B84ejHI8My6wM2afRy5q8rLqbTVmRrCsEZMN8vKeS7N
-	ZY+1UNTUR+y2Gdjb/3gS2FsQeRdLxNiG
-X-Google-Smtp-Source: AGHT+IGQzGvjeujJPilBBjPY0nklPprzL32Ialdiiv7RmxFpRN6au+f8f1+hPrT+6uJXNv4i3PxBBQ==
-X-Received: by 2002:a05:620a:e03:b0:782:71cd:252f with SMTP id y3-20020a05620a0e0300b0078271cd252fmr995173qkm.44.1704536356378;
-        Sat, 06 Jan 2024 02:19:16 -0800 (PST)
+        bh=+GCKDwBXsX8eGoVQ2CybdS9in5hQJBx5401de5Jy7po=;
+        b=J4GRoi2ItOF4m6LWC97nuzL8G88jJDzqJeTxyLK8EEAgJgm0uwzp+2o6EGsjvummU7
+         aV4JbU8I+gRBHfeLfYrLW3Wif5H0iDKB3Z5mvCkMfIMbJFvAZLsCXsK4BzMKvzjanGEG
+         rojf8weBGLWYnMNjh2xd3LqDjvCLGJdCNUli47gnJoVJyuQOuRL4ytMcZsGiL4ocT5Wo
+         +JUaS9FTDW8OxdMsR8IDsaI83rwIKGX0RdGUuYMgETR1kjcEdbgt+gJG/VDjr8b3FHPI
+         6iz9berI8LbKNPOAK0z8mg1FyrdpBIUbpEPPgaUODtoJxnU/2hFyS/1jKdcnC/lnkwV5
+         mXwg==
+X-Gm-Message-State: AOJu0YxS6uCiS2Kl6I7d8iiHt66vmQ5+BIIhWt11BFfp9BXTu500u7wx
+	Y1uMCy4EXCCcN4oWJuxHz8Y79ACiSEYz
+X-Google-Smtp-Source: AGHT+IHMiQVwSUFDDXFZg/kKG2tfj5y8N6nQU+4dAWstLOgt/uw5aVyfc2iF0oq8fUjWeYrg1uGYrA==
+X-Received: by 2002:a05:620a:258c:b0:783:13b2:de8a with SMTP id x12-20020a05620a258c00b0078313b2de8amr495955qko.138.1704536358687;
+        Sat, 06 Jan 2024 02:19:18 -0800 (PST)
 Received: from bld-bun-02.bun.broadcom.net ([192.19.148.250])
-        by smtp.gmail.com with ESMTPSA id ow33-20020a05620a822100b007815e176d44sm1241738qkn.64.2024.01.06.02.19.14
+        by smtp.gmail.com with ESMTPSA id ow33-20020a05620a822100b007815e176d44sm1241738qkn.64.2024.01.06.02.19.16
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 06 Jan 2024 02:19:15 -0800 (PST)
+        Sat, 06 Jan 2024 02:19:17 -0800 (PST)
 From: Arend van Spriel <arend.vanspriel@broadcom.com>
 To: Kalle Valo <kvalo@kernel.org>
 Cc: linux-wireless@vger.kernel.org,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 2/3] wifi: brcmfmac: avoid invalid list operation when vendor attach fails
-Date: Sat,  6 Jan 2024 11:19:07 +0100
-Message-Id: <20240106101908.266055-2-arend.vanspriel@broadcom.com>
+	Arend van Spriel <arend.vanspriel@broadcom.com>
+Subject: [PATCH 3/3] wifi: brcmfmac: allow per-vendor event handling
+Date: Sat,  6 Jan 2024 11:19:08 +0100
+Message-Id: <20240106101908.266055-3-arend.vanspriel@broadcom.com>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20240106101908.266055-1-arend.vanspriel@broadcom.com>
 References: <20240106101908.266055-1-arend.vanspriel@broadcom.com>
@@ -70,45 +69,708 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="0000000000000b404a060e444c78"
+	boundary="000000000000302628060e444c2a"
 
---0000000000000b404a060e444c78
+--000000000000302628060e444c2a
 Content-Transfer-Encoding: 8bit
 
-When the brcmf_fwvid_attach() fails the driver instance is not added
-to the vendor list. Hence we should not try to delete it from that
-list when the brcmf_fwvid_detach() function is called in cleanup path.
+The firmware interface also defines events generated by
+firmware on the device. As the get/set primitives the
+events are likely to diverge between the vendors so this
+commit adds support for per-vendor handling. The number
+of events may differ so we let the vendor-specific code
+allocate the struct brcmf_fweh_info which contains array
+of event handlers. The existing event enumeration will be
+used by the higher layers and thus are common definitions.
+The vendor-specific code can provide a mapping table for
+converting the common definition to the vendor-specific
+firmware event definition and vice-versa.
 
-Cc: stable@vger.kernel.org # 6.2.x
-Fixes: d6a5c562214f ("wifi: brcmfmac: add support for vendor-specific firmware api")
 Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ .../broadcom/brcm80211/brcmfmac/bca/core.c    |  17 ++
+ .../broadcom/brcm80211/brcmfmac/common.c      |  18 +-
+ .../broadcom/brcm80211/brcmfmac/core.c        |  10 +-
+ .../broadcom/brcm80211/brcmfmac/core.h        |   2 +-
+ .../broadcom/brcm80211/brcmfmac/cyw/core.c    |  17 ++
+ .../broadcom/brcm80211/brcmfmac/debug.c       |   3 +-
+ .../broadcom/brcm80211/brcmfmac/fweh.c        | 154 +++++++++++++-----
+ .../broadcom/brcm80211/brcmfmac/fweh.h        |  60 +++++--
+ .../broadcom/brcm80211/brcmfmac/fwvid.c       |   3 +-
+ .../broadcom/brcm80211/brcmfmac/fwvid.h       |   9 +
+ .../broadcom/brcm80211/brcmfmac/wcc/core.c    |  17 ++
+ 11 files changed, 246 insertions(+), 64 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.c
-index f633e2bbd891..b427782554b5 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.c
-@@ -186,9 +186,10 @@ void brcmf_fwvid_detach(struct brcmf_pub *drvr)
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/core.c
+index a963c242975a..f471c962104a 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/core.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/core.c
+@@ -11,12 +11,29 @@
  
- 	mutex_lock(&fwvid_list_lock);
+ #include "vops.h"
  
--	drvr->vops = NULL;
--	list_del(&drvr->bus_if->list);
--
-+	if (drvr->vops) {
-+		drvr->vops = NULL;
-+		list_del(&drvr->bus_if->list);
-+	}
- 	mutex_unlock(&fwvid_list_lock);
++#define BRCMF_BCA_E_LAST		212
++
+ static void brcmf_bca_feat_attach(struct brcmf_if *ifp)
+ {
+ 	/* SAE support not confirmed so disabling for now */
+ 	ifp->drvr->feat_flags &= ~BIT(BRCMF_FEAT_SAE);
  }
  
++static int brcmf_bca_alloc_fweh_info(struct brcmf_pub *drvr)
++{
++	struct brcmf_fweh_info *fweh;
++
++	fweh = kzalloc(struct_size(fweh, evt_handler, BRCMF_BCA_E_LAST),
++		       GFP_KERNEL);
++	if (!fweh)
++		return -ENOMEM;
++
++	fweh->num_event_codes = BRCMF_BCA_E_LAST;
++	drvr->fweh = fweh;
++	return 0;
++}
++
+ const struct brcmf_fwvid_ops brcmf_bca_ops = {
+ 	.feat_attach = brcmf_bca_feat_attach,
++	.alloc_fweh_info = brcmf_bca_alloc_fweh_info,
+ };
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
+index b6d458e022fa..b24faae35873 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
+@@ -266,7 +266,7 @@ static int brcmf_c_process_cal_blob(struct brcmf_if *ifp)
+ int brcmf_c_preinit_dcmds(struct brcmf_if *ifp)
+ {
+ 	struct brcmf_pub *drvr = ifp->drvr;
+-	s8 eventmask[BRCMF_EVENTING_MASK_LEN];
++	struct brcmf_fweh_info *fweh = drvr->fweh;
+ 	u8 buf[BRCMF_DCMD_SMLEN];
+ 	struct brcmf_bus *bus;
+ 	struct brcmf_rev_info_le revinfo;
+@@ -413,15 +413,21 @@ int brcmf_c_preinit_dcmds(struct brcmf_if *ifp)
+ 	brcmf_c_set_joinpref_default(ifp);
+ 
+ 	/* Setup event_msgs, enable E_IF */
+-	err = brcmf_fil_iovar_data_get(ifp, "event_msgs", eventmask,
+-				       BRCMF_EVENTING_MASK_LEN);
++	err = brcmf_fil_iovar_data_get(ifp, "event_msgs", fweh->event_mask,
++				       fweh->event_mask_len);
+ 	if (err) {
+ 		bphy_err(drvr, "Get event_msgs error (%d)\n", err);
+ 		goto done;
+ 	}
+-	setbit(eventmask, BRCMF_E_IF);
+-	err = brcmf_fil_iovar_data_set(ifp, "event_msgs", eventmask,
+-				       BRCMF_EVENTING_MASK_LEN);
++	/*
++	 * BRCMF_E_IF can safely be used to set the appropriate bit
++	 * in the event_mask as the firmware event code is guaranteed
++	 * to match the value of BRCMF_E_IF because it is old cruft
++	 * that all vendors have.
++	 */
++	setbit(fweh->event_mask, BRCMF_E_IF);
++	err = brcmf_fil_iovar_data_set(ifp, "event_msgs", fweh->event_mask,
++				       fweh->event_mask_len);
+ 	if (err) {
+ 		bphy_err(drvr, "Set event_msgs error (%d)\n", err);
+ 		goto done;
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
+index a92f78026cfd..bf91b1e1368f 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
+@@ -1348,13 +1348,17 @@ int brcmf_attach(struct device *dev)
+ 		goto fail;
+ 	}
+ 
++	/* attach firmware event handler */
++	ret = brcmf_fweh_attach(drvr);
++	if (ret != 0) {
++		bphy_err(drvr, "brcmf_fweh_attach failed\n");
++		goto fail;
++	}
++
+ 	/* Attach to events important for core code */
+ 	brcmf_fweh_register(drvr, BRCMF_E_PSM_WATCHDOG,
+ 			    brcmf_psm_watchdog_notify);
+ 
+-	/* attach firmware event handler */
+-	brcmf_fweh_attach(drvr);
+-
+ 	ret = brcmf_bus_started(drvr, drvr->ops);
+ 	if (ret != 0) {
+ 		bphy_err(drvr, "dongle is not responding: err=%d\n", ret);
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.h
+index e4f911dd414b..ea76b8d33401 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.h
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.h
+@@ -122,7 +122,7 @@ struct brcmf_pub {
+ 	struct mutex proto_block;
+ 	unsigned char proto_buf[BRCMF_DCMD_MAXLEN];
+ 
+-	struct brcmf_fweh_info fweh;
++	struct brcmf_fweh_info *fweh;
+ 
+ 	struct brcmf_ampdu_rx_reorder
+ 		*reorder_flows[BRCMF_AMPDU_RX_REORDER_MAXFLOWS];
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c
+index bec5748310b9..9a4837881486 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c
+@@ -11,6 +11,8 @@
+ 
+ #include "vops.h"
+ 
++#define BRCMF_CYW_E_LAST		197
++
+ static int brcmf_cyw_set_sae_pwd(struct brcmf_if *ifp,
+ 				 struct cfg80211_crypto_settings *crypto)
+ {
+@@ -37,6 +39,21 @@ static int brcmf_cyw_set_sae_pwd(struct brcmf_if *ifp,
+ 	return err;
+ }
+ 
++static int brcmf_cyw_alloc_fweh_info(struct brcmf_pub *drvr)
++{
++	struct brcmf_fweh_info *fweh;
++
++	fweh = kzalloc(struct_size(fweh, evt_handler, BRCMF_CYW_E_LAST),
++		       GFP_KERNEL);
++	if (!fweh)
++		return -ENOMEM;
++
++	fweh->num_event_codes = BRCMF_CYW_E_LAST;
++	drvr->fweh = fweh;
++	return 0;
++}
++
+ const struct brcmf_fwvid_ops brcmf_cyw_ops = {
+ 	.set_sae_password = brcmf_cyw_set_sae_pwd,
++	.alloc_fweh_info = brcmf_cyw_alloc_fweh_info,
+ };
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/debug.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/debug.c
+index eecf8a38d94a..50edac7b09ec 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/debug.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/debug.c
+@@ -37,7 +37,8 @@ int brcmf_debug_create_memdump(struct brcmf_bus *bus, const void *data,
+ 		return err;
+ 	}
+ 
+-	dev_coredumpv(bus->dev, dump, len + ramsize, GFP_KERNEL);
++	//dev_coredumpv(bus->dev, dump, len + ramsize, GFP_KERNEL);
++	vfree(dump);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c
+index 68960ae98987..0774f6c59226 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c
+@@ -14,7 +14,8 @@
+ #include "fweh.h"
+ #include "fwil.h"
+ #include "proto.h"
+-
++#include "bus.h"
++#include "fwvid.h"
+ /**
+  * struct brcmf_fweh_queue_item - event item on event queue.
+  *
+@@ -28,7 +29,7 @@
+  */
+ struct brcmf_fweh_queue_item {
+ 	struct list_head q;
+-	enum brcmf_fweh_event_code code;
++	u32 code;
+ 	u8 ifidx;
+ 	u8 ifaddr[ETH_ALEN];
+ 	struct brcmf_event_msg_be emsg;
+@@ -94,7 +95,7 @@ static void brcmf_fweh_queue_event(struct brcmf_fweh_info *fweh,
+ 
+ static int brcmf_fweh_call_event_handler(struct brcmf_pub *drvr,
+ 					 struct brcmf_if *ifp,
+-					 enum brcmf_fweh_event_code code,
++					 u32 fwcode,
+ 					 struct brcmf_event_msg *emsg,
+ 					 void *data)
+ {
+@@ -102,13 +103,13 @@ static int brcmf_fweh_call_event_handler(struct brcmf_pub *drvr,
+ 	int err = -EINVAL;
+ 
+ 	if (ifp) {
+-		fweh = &ifp->drvr->fweh;
++		fweh = ifp->drvr->fweh;
+ 
+ 		/* handle the event if valid interface and handler */
+-		if (fweh->evt_handler[code])
+-			err = fweh->evt_handler[code](ifp, emsg, data);
++		if (fweh->evt_handler[fwcode])
++			err = fweh->evt_handler[fwcode](ifp, emsg, data);
+ 		else
+-			bphy_err(drvr, "unhandled event %d ignored\n", code);
++			bphy_err(drvr, "unhandled fwevt %d ignored\n", fwcode);
+ 	} else {
+ 		bphy_err(drvr, "no interface object\n");
+ 	}
+@@ -142,7 +143,7 @@ static void brcmf_fweh_handle_if_event(struct brcmf_pub *drvr,
+ 	is_p2pdev = ((ifevent->flags & BRCMF_E_IF_FLAG_NOIF) &&
+ 		     (ifevent->role == BRCMF_E_IF_ROLE_P2P_CLIENT ||
+ 		      ((ifevent->role == BRCMF_E_IF_ROLE_STA) &&
+-		       (drvr->fweh.p2pdev_setup_ongoing))));
++		       (drvr->fweh->p2pdev_setup_ongoing))));
+ 	if (!is_p2pdev && (ifevent->flags & BRCMF_E_IF_FLAG_NOIF)) {
+ 		brcmf_dbg(EVENT, "event can be ignored\n");
+ 		return;
+@@ -163,7 +164,7 @@ static void brcmf_fweh_handle_if_event(struct brcmf_pub *drvr,
+ 			return;
+ 		if (!is_p2pdev)
+ 			brcmf_proto_add_if(drvr, ifp);
+-		if (!drvr->fweh.evt_handler[BRCMF_E_IF])
++		if (!drvr->fweh->evt_handler[BRCMF_E_IF])
+ 			if (brcmf_net_attach(ifp, false) < 0)
+ 				return;
+ 	}
+@@ -183,6 +184,45 @@ static void brcmf_fweh_handle_if_event(struct brcmf_pub *drvr,
+ 	}
+ }
+ 
++static void brcmf_fweh_map_event_code(struct brcmf_fweh_info *fweh,
++				      enum brcmf_fweh_event_code code,
++				      u32 *fw_code)
++{
++	int i;
++
++	if (WARN_ON(!fw_code))
++		return;
++
++	*fw_code = code;
++	if (fweh->event_map) {
++		for (i = 0; i < fweh->event_map->n_items; i++) {
++			if (fweh->event_map->items[i].code == code) {
++				*fw_code = fweh->event_map->items[i].fwevt_code;
++				break;
++			}
++		}
++	}
++}
++
++static void brcmf_fweh_map_fwevt_code(struct brcmf_fweh_info *fweh, u32 fw_code,
++				      enum brcmf_fweh_event_code *code)
++{
++	int i;
++
++	if (WARN_ON(!code))
++		return;
++
++	*code = fw_code;
++	if (fweh->event_map) {
++		for (i = 0; i < fweh->event_map->n_items; i++) {
++			if (fweh->event_map->items[i].fwevt_code == fw_code) {
++				*code = fweh->event_map->items[i].code;
++				break;
++			}
++		}
++	}
++}
++
+ /**
+  * brcmf_fweh_dequeue_event() - get event from the queue.
+  *
+@@ -221,15 +261,19 @@ static void brcmf_fweh_event_worker(struct work_struct *work)
+ 	struct brcmf_event_msg emsg;
+ 
+ 	fweh = container_of(work, struct brcmf_fweh_info, event_work);
+-	drvr = container_of(fweh, struct brcmf_pub, fweh);
++	drvr = fweh->drvr;
+ 
+ 	while ((event = brcmf_fweh_dequeue_event(fweh))) {
+-		brcmf_dbg(EVENT, "event %s (%u) ifidx %u bsscfg %u addr %pM\n",
+-			  brcmf_fweh_event_name(event->code), event->code,
++		enum brcmf_fweh_event_code code;
++
++		brcmf_fweh_map_fwevt_code(fweh, event->code, &code);
++		brcmf_dbg(EVENT, "event %s (%u:%u) ifidx %u bsscfg %u addr %pM\n",
++			  brcmf_fweh_event_name(code), code, event->code,
+ 			  event->emsg.ifidx, event->emsg.bsscfgidx,
+ 			  event->emsg.addr);
+ 		if (event->emsg.bsscfgidx >= BRCMF_MAX_IFS) {
+-			bphy_err(drvr, "invalid bsscfg index: %u\n", event->emsg.bsscfgidx);
++			bphy_err(drvr, "invalid bsscfg index: %u\n",
++				 event->emsg.bsscfgidx);
+ 			goto event_free;
+ 		}
+ 
+@@ -237,7 +281,7 @@ static void brcmf_fweh_event_worker(struct work_struct *work)
+ 		emsg_be = &event->emsg;
+ 		emsg.version = be16_to_cpu(emsg_be->version);
+ 		emsg.flags = be16_to_cpu(emsg_be->flags);
+-		emsg.event_code = event->code;
++		emsg.event_code = code;
+ 		emsg.status = be32_to_cpu(emsg_be->status);
+ 		emsg.reason = be32_to_cpu(emsg_be->reason);
+ 		emsg.auth_type = be32_to_cpu(emsg_be->auth_type);
+@@ -283,7 +327,7 @@ static void brcmf_fweh_event_worker(struct work_struct *work)
+  */
+ void brcmf_fweh_p2pdev_setup(struct brcmf_if *ifp, bool ongoing)
+ {
+-	ifp->drvr->fweh.p2pdev_setup_ongoing = ongoing;
++	ifp->drvr->fweh->p2pdev_setup_ongoing = ongoing;
+ }
+ 
+ /**
+@@ -291,12 +335,27 @@ void brcmf_fweh_p2pdev_setup(struct brcmf_if *ifp, bool ongoing)
+  *
+  * @drvr: driver information object.
+  */
+-void brcmf_fweh_attach(struct brcmf_pub *drvr)
++int brcmf_fweh_attach(struct brcmf_pub *drvr)
+ {
+-	struct brcmf_fweh_info *fweh = &drvr->fweh;
++	struct brcmf_fweh_info *fweh;
++	int err;
++
++	err = brcmf_fwvid_alloc_fweh_info(drvr);
++	if (err < 0)
++		return err;
++
++	fweh = drvr->fweh;
++	fweh->drvr = drvr;
++
++	fweh->event_mask_len = DIV_ROUND_UP(fweh->num_event_codes, 8);
++	fweh->event_mask = kzalloc(fweh->event_mask_len, GFP_KERNEL);
++	if (!fweh->event_mask)
++		return -ENOMEM;
++
+ 	INIT_WORK(&fweh->event_work, brcmf_fweh_event_worker);
+ 	spin_lock_init(&fweh->evt_q_lock);
+ 	INIT_LIST_HEAD(&fweh->event_q);
++	return 0;
+ }
+ 
+ /**
+@@ -306,14 +365,19 @@ void brcmf_fweh_attach(struct brcmf_pub *drvr)
+  */
+ void brcmf_fweh_detach(struct brcmf_pub *drvr)
+ {
+-	struct brcmf_fweh_info *fweh = &drvr->fweh;
++	struct brcmf_fweh_info *fweh = drvr->fweh;
++
++	if (!fweh)
++		return;
+ 
+ 	/* cancel the worker if initialized */
+ 	if (fweh->event_work.func) {
+ 		cancel_work_sync(&fweh->event_work);
+ 		WARN_ON(!list_empty(&fweh->event_q));
+-		memset(fweh->evt_handler, 0, sizeof(fweh->evt_handler));
+ 	}
++	drvr->fweh = NULL;
++	kfree(fweh->event_mask);
++	kfree(fweh);
+ }
+ 
+ /**
+@@ -326,11 +390,17 @@ void brcmf_fweh_detach(struct brcmf_pub *drvr)
+ int brcmf_fweh_register(struct brcmf_pub *drvr, enum brcmf_fweh_event_code code,
+ 			brcmf_fweh_handler_t handler)
+ {
+-	if (drvr->fweh.evt_handler[code]) {
++	struct brcmf_fweh_info *fweh = drvr->fweh;
++	u32 evt_handler_idx;
++
++	brcmf_fweh_map_event_code(fweh, code, &evt_handler_idx);
++
++	if (fweh->evt_handler[evt_handler_idx]) {
+ 		bphy_err(drvr, "event code %d already registered\n", code);
+ 		return -ENOSPC;
+ 	}
+-	drvr->fweh.evt_handler[code] = handler;
++
++	fweh->evt_handler[evt_handler_idx] = handler;
+ 	brcmf_dbg(TRACE, "event handler registered for %s\n",
+ 		  brcmf_fweh_event_name(code));
+ 	return 0;
+@@ -345,9 +415,12 @@ int brcmf_fweh_register(struct brcmf_pub *drvr, enum brcmf_fweh_event_code code,
+ void brcmf_fweh_unregister(struct brcmf_pub *drvr,
+ 			   enum brcmf_fweh_event_code code)
+ {
++	u32 evt_handler_idx;
++
+ 	brcmf_dbg(TRACE, "event handler cleared for %s\n",
+ 		  brcmf_fweh_event_name(code));
+-	drvr->fweh.evt_handler[code] = NULL;
++	brcmf_fweh_map_event_code(drvr->fweh, code, &evt_handler_idx);
++	drvr->fweh->evt_handler[evt_handler_idx] = NULL;
+ }
+ 
+ /**
+@@ -357,27 +430,28 @@ void brcmf_fweh_unregister(struct brcmf_pub *drvr,
+  */
+ int brcmf_fweh_activate_events(struct brcmf_if *ifp)
+ {
+-	struct brcmf_pub *drvr = ifp->drvr;
++	struct brcmf_fweh_info *fweh = ifp->drvr->fweh;
++	enum brcmf_fweh_event_code code;
+ 	int i, err;
+-	s8 eventmask[BRCMF_EVENTING_MASK_LEN];
+ 
+-	memset(eventmask, 0, sizeof(eventmask));
+-	for (i = 0; i < BRCMF_E_LAST; i++) {
+-		if (ifp->drvr->fweh.evt_handler[i]) {
++	memset(fweh->event_mask, 0, fweh->event_mask_len);
++	for (i = 0; i < fweh->num_event_codes; i++) {
++		if (fweh->evt_handler[i]) {
++			brcmf_fweh_map_fwevt_code(fweh, i, &code);
+ 			brcmf_dbg(EVENT, "enable event %s\n",
+-				  brcmf_fweh_event_name(i));
+-			setbit(eventmask, i);
++				  brcmf_fweh_event_name(code));
++			setbit(fweh->event_mask, i);
+ 		}
+ 	}
+ 
+ 	/* want to handle IF event as well */
+ 	brcmf_dbg(EVENT, "enable event IF\n");
+-	setbit(eventmask, BRCMF_E_IF);
++	setbit(fweh->event_mask, BRCMF_E_IF);
+ 
+-	err = brcmf_fil_iovar_data_set(ifp, "event_msgs",
+-				       eventmask, BRCMF_EVENTING_MASK_LEN);
++	err = brcmf_fil_iovar_data_set(ifp, "event_msgs", fweh->event_mask,
++				       fweh->event_mask_len);
+ 	if (err)
+-		bphy_err(drvr, "Set event_msgs error (%d)\n", err);
++		bphy_err(fweh->drvr, "Set event_msgs error (%d)\n", err);
+ 
+ 	return err;
+ }
+@@ -397,21 +471,21 @@ void brcmf_fweh_process_event(struct brcmf_pub *drvr,
+ 			      struct brcmf_event *event_packet,
+ 			      u32 packet_len, gfp_t gfp)
+ {
+-	enum brcmf_fweh_event_code code;
+-	struct brcmf_fweh_info *fweh = &drvr->fweh;
++	u32 fwevt_idx;
++	struct brcmf_fweh_info *fweh = drvr->fweh;
+ 	struct brcmf_fweh_queue_item *event;
+ 	void *data;
+ 	u32 datalen;
+ 
+ 	/* get event info */
+-	code = get_unaligned_be32(&event_packet->msg.event_type);
++	fwevt_idx = get_unaligned_be32(&event_packet->msg.event_type);
+ 	datalen = get_unaligned_be32(&event_packet->msg.datalen);
+ 	data = &event_packet[1];
+ 
+-	if (code >= BRCMF_E_LAST)
++	if (fwevt_idx >= fweh->num_event_codes)
+ 		return;
+ 
+-	if (code != BRCMF_E_IF && !fweh->evt_handler[code])
++	if (fwevt_idx != BRCMF_E_IF && !fweh->evt_handler[fwevt_idx])
+ 		return;
+ 
+ 	if (datalen > BRCMF_DCMD_MAXLEN ||
+@@ -422,13 +496,13 @@ void brcmf_fweh_process_event(struct brcmf_pub *drvr,
+ 	if (!event)
+ 		return;
+ 
+-	event->datalen = datalen;
+-	event->code = code;
++	event->code = fwevt_idx;
+ 	event->ifidx = event_packet->msg.ifidx;
+ 
+ 	/* use memcpy to get aligned event message */
+ 	memcpy(&event->emsg, &event_packet->msg, sizeof(event->emsg));
+ 	memcpy(event->data, data, datalen);
++	event->datalen = datalen;
+ 	memcpy(event->ifaddr, event_packet->eth.h_dest, ETH_ALEN);
+ 
+ 	brcmf_fweh_queue_event(fweh, event);
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.h
+index 48414e8b9389..9ca1b2aadcb5 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.h
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.h
+@@ -17,6 +17,10 @@ struct brcmf_pub;
+ struct brcmf_if;
+ struct brcmf_cfg80211_info;
+ 
++#define BRCMF_ABSTRACT_EVENT_BIT	BIT(31)
++#define BRCMF_ABSTRACT_ENUM_DEF(_id, _val) \
++	BRCMF_ENUM_DEF(_id, (BRCMF_ABSTRACT_EVENT_BIT | (_val)))
++
+ /* list of firmware events */
+ #define BRCMF_FWEH_EVENT_ENUM_DEFLIST \
+ 	BRCMF_ENUM_DEF(SET_SSID, 0) \
+@@ -98,16 +102,9 @@ struct brcmf_cfg80211_info;
+ /* firmware event codes sent by the dongle */
+ enum brcmf_fweh_event_code {
+ 	BRCMF_FWEH_EVENT_ENUM_DEFLIST
+-	/* this determines event mask length which must match
+-	 * minimum length check in device firmware so it is
+-	 * hard-coded here.
+-	 */
+-	BRCMF_E_LAST = 139
+ };
+ #undef BRCMF_ENUM_DEF
+ 
+-#define BRCMF_EVENTING_MASK_LEN		DIV_ROUND_UP(BRCMF_E_LAST, 8)
+-
+ /* flags field values in struct brcmf_event_msg */
+ #define BRCMF_EVENT_MSG_LINK		0x01
+ #define BRCMF_EVENT_MSG_FLUSHTXQ	0x02
+@@ -287,6 +284,33 @@ typedef int (*brcmf_fweh_handler_t)(struct brcmf_if *ifp,
+ 				    const struct brcmf_event_msg *evtmsg,
+ 				    void *data);
+ 
++/**
++ * struct brcmf_fweh_event_map_item - fweh event and firmware event pair.
++ *
++ * @code: fweh event code as used by higher layers.
++ * @fwevt_code: firmware event code as used by firmware.
++ *
++ * This mapping is needed when a functionally identical event has a
++ * different numerical definition between vendors. When such mapping
++ * is needed the higher layer event code should not collide with the
++ * firmware event.
++ */
++struct brcmf_fweh_event_map_item {
++	enum brcmf_fweh_event_code code;
++	u32 fwevt_code;
++};
++
++/**
++ * struct brcmf_fweh_event_map - mapping between firmware event and fweh event.
++ *
++ * @n_items: number of mapping items.
++ * @items: array of fweh event and firmware event pairs.
++ */
++struct brcmf_fweh_event_map {
++	u32 n_items;
++	const struct brcmf_fweh_event_map_item items[] __counted_by(n_items);
++};
++
+ /**
+  * struct brcmf_fweh_info - firmware event handling information.
+  *
+@@ -294,21 +318,33 @@ typedef int (*brcmf_fweh_handler_t)(struct brcmf_if *ifp,
+  * @event_work: event worker.
+  * @evt_q_lock: lock for event queue protection.
+  * @event_q: event queue.
+- * @evt_handler: registered event handlers.
++ * @event_mask_len: length of @event_mask used to enable firmware events.
++ * @event_mask: byte array used in 'event_msgs' iovar command.
++ * @event_map: mapping between fweh event and firmware event which
++ *	may be provided by vendor-specific module for events that need
++ *	mapping.
++ * @num_event_codes: number of firmware events supported by firmware which
++ *	does a minimum length check for the @event_mask. This value is to
++ *	be provided by vendor-specific module determining @event_mask_len
++ *	and consequently the allocation size for @event_mask.
++ * @evt_handler: event handler registry indexed by firmware event code.
+  */
+ struct brcmf_fweh_info {
++	struct brcmf_pub *drvr;
+ 	bool p2pdev_setup_ongoing;
+ 	struct work_struct event_work;
+ 	spinlock_t evt_q_lock;
+ 	struct list_head event_q;
+-	int (*evt_handler[BRCMF_E_LAST])(struct brcmf_if *ifp,
+-					 const struct brcmf_event_msg *evtmsg,
+-					 void *data);
++	uint event_mask_len;
++	u8 *event_mask;
++	struct brcmf_fweh_event_map *event_map;
++	uint num_event_codes;
++	brcmf_fweh_handler_t evt_handler[] __counted_by(num_event_codes);
+ };
+ 
+ const char *brcmf_fweh_event_name(enum brcmf_fweh_event_code code);
+ 
+-void brcmf_fweh_attach(struct brcmf_pub *drvr);
++int brcmf_fweh_attach(struct brcmf_pub *drvr);
+ void brcmf_fweh_detach(struct brcmf_pub *drvr);
+ int brcmf_fweh_register(struct brcmf_pub *drvr, enum brcmf_fweh_event_code code,
+ 			int (*handler)(struct brcmf_if *ifp,
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.c
+index b427782554b5..41eafcda77f7 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.c
+@@ -89,7 +89,8 @@ int brcmf_fwvid_register_vendor(enum brcmf_fwvendor fwvid, struct module *vmod,
+ 	if (fwvid >= BRCMF_FWVENDOR_NUM)
+ 		return -ERANGE;
+ 
+-	if (WARN_ON(!vmod) || WARN_ON(!vops))
++	if (WARN_ON(!vmod) || WARN_ON(!vops) ||
++	    WARN_ON(!vops->alloc_fweh_info))
+ 		return -EINVAL;
+ 
+ 	if (WARN_ON(fwvid_list[fwvid].vmod))
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h
+index dac22534d033..e6ac9fc341bc 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h
+@@ -14,6 +14,7 @@ struct brcmf_if;
+ struct brcmf_fwvid_ops {
+ 	void (*feat_attach)(struct brcmf_if *ifp);
+ 	int (*set_sae_password)(struct brcmf_if *ifp, struct cfg80211_crypto_settings *crypto);
++	int (*alloc_fweh_info)(struct brcmf_pub *drvr);
+ };
+ 
+ /* exported functions */
+@@ -47,4 +48,12 @@ static inline int brcmf_fwvid_set_sae_password(struct brcmf_if *ifp,
+ 	return vops->set_sae_password(ifp, crypto);
+ }
+ 
++static inline int brcmf_fwvid_alloc_fweh_info(struct brcmf_pub *drvr)
++{
++	if (!drvr->vops)
++		return -EIO;
++
++	return drvr->vops->alloc_fweh_info(drvr);
++}
++
+ #endif /* FWVID_H_ */
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/wcc/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/wcc/core.c
+index fd593b93ad40..05d7c2a4fba5 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/wcc/core.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/wcc/core.c
+@@ -11,6 +11,8 @@
+ 
+ #include "vops.h"
+ 
++#define BRCMF_WCC_E_LAST		213
++
+ static int brcmf_wcc_set_sae_pwd(struct brcmf_if *ifp,
+ 				 struct cfg80211_crypto_settings *crypto)
+ {
+@@ -18,6 +20,21 @@ static int brcmf_wcc_set_sae_pwd(struct brcmf_if *ifp,
+ 			      BRCMF_WSEC_PASSPHRASE);
+ }
+ 
++static int brcmf_wcc_alloc_fweh_info(struct brcmf_pub *drvr)
++{
++	struct brcmf_fweh_info *fweh;
++
++	fweh = kzalloc(struct_size(fweh, evt_handler, BRCMF_WCC_E_LAST),
++		       GFP_KERNEL);
++	if (!fweh)
++		return -ENOMEM;
++
++	fweh->num_event_codes = BRCMF_WCC_E_LAST;
++	drvr->fweh = fweh;
++	return 0;
++}
++
+ const struct brcmf_fwvid_ops brcmf_wcc_ops = {
+ 	.set_sae_password = brcmf_wcc_set_sae_pwd,
++	.alloc_fweh_info = brcmf_wcc_alloc_fweh_info,
+ };
 -- 
 2.32.0
 
 
---0000000000000b404a060e444c78
+--000000000000302628060e444c2a
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -179,15 +841,15 @@ BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
 N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
 p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCBh4x8LJX/1JQQt1h51
-kOY8Z0rl3TZAjFlYhljZ+inDQTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yNDAxMDYxMDE5MTZaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCC6iN4JuaxOMsxi6rbe
+JT9jPqGFJ3wD62asQIqDD30XIDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yNDAxMDYxMDE5MTlaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAA1/X8+5LsGgl8/ZcMY7rBMy5uacb7ENoVP1i
-ekoleIJ98h+5PK37uNfk+LUK5393y+N/lgEK9nBMoPxHB+U0B7VpjwaN4xtNp2ZrnnN7Fiq8LbAb
-Ifee/ue5Xixx8uNTHuN77eAXUZLST75cmwmkBe9WFgECodKbvJ1yi+8FNiW3IJiDpVzjj0QK4v+7
-hT4XBptSVnWq2kNPhVJNPwjtR0FD2rJmqZIW+eiYeYsDeVYBuMafptwk0xc+nO0t3ySA/T6WnXec
-k/2m2EmGcSObNaEUDeO9DH1lJsO7e6++KAv03c1uWA4/x8vuOOnxxnQKnn4EK1eF5WJvBIwCj3Os
-Ag==
---0000000000000b404a060e444c78--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEANXcj0wZCqlAcYoCGd3Kk9fq2kuY659xfNNDX
+5E6nzQXe36rt0FjHXTtssCNIvd1B67Y4jk9pwhs/6yf8HvjxXCPGveYtDaDS+ByJtwGyW4+SGsQL
+b7T2gAwNh1YmEtXNB/tcAqdx4S4ZP0UU0okai6U58HROKo9UyXS9IAAW1LdjBCY6sOzHyldDBU9Q
+WyfIu4I21t8gygAJwzI01BJgnY2kQVME4jISbZuS5W10lwIsJE8GILATt38GXKfL2sc+gSy91MTk
+HezhcVD6G5geqc8yJoHt+W4MdkXdkGf3ooRCCNhtEEAx297Oapl2t/0S1xLG3VICuZp0amRurjXR
+OA==
+--000000000000302628060e444c2a--
 
