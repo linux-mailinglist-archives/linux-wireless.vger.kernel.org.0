@@ -1,133 +1,111 @@
-Return-Path: <linux-wireless+bounces-1562-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1563-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0625826893
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jan 2024 08:29:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D32B782696A
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jan 2024 09:26:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D3701F21BC9
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jan 2024 07:29:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87E181F21000
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jan 2024 08:26:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 977488827;
-	Mon,  8 Jan 2024 07:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C37259473;
+	Mon,  8 Jan 2024 08:26:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Tc2dtVMY"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dmta0008-f.auone-net.jp (snd00009.auone-net.jp [111.86.247.9])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AD658BF6
-	for <linux-wireless@vger.kernel.org>; Mon,  8 Jan 2024 07:29:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=d1.dion.ne.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=d1.dion.ne.jp
-Received: from kzhr.d1.dion.ne.jp by dmta0008.auone-net.jp with ESMTP
-          id <20240108071835221.UAEY.23294.kzhr.d1.dion.ne.jp@dmta0008.auone-net.jp>;
-          Mon, 8 Jan 2024 16:18:35 +0900
-Date: Mon, 08 Jan 2024 16:18:34 +0900
-Message-ID: <857ckk1eet.wl--xmue@d1.dion.ne.jp>
-From: Kazuhiro Ito <kzhr@d1.dion.ne.jp>
-To: linux-wireless@vger.kernel.org
-Cc: Felix Fietkau <nbd@nbd.name>,
- Lorenzo Bianconi <lorenzo@kernel.org>,
- Ryder Lee <ryder.lee@mediatek.com>,
- Shayne Chen <shayne.chen@mediatek.com>,
- Sean Wang <sean.wang@mediatek.com>
-Subject: [PATCH] wifi: mt76: Create throughput LED trigger always
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
- Emacs/30.0.50 (x86_64-w64-mingw32) MULE/6.0 (HANACHIRUSATO)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B4AB66C
+	for <linux-wireless@vger.kernel.org>; Mon,  8 Jan 2024 08:26:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 4087qBQU001540;
+	Mon, 8 Jan 2024 08:26:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=qcppdkim1; bh=T9P4YVe
+	xqiedBf/xWZBHTQkXKzYHF4Mo8fSg/bHzRgg=; b=Tc2dtVMYLBIEvnH65HeuMQc
+	eFT8Esjx+5rYdHaaPv661+FpLZqINHY38g1FVKid3QiQl2a3vTiE10Mmh9dBywim
+	Ol4f+JUCKpGWI8ceuOTnufF/taKBw5Ar4dtKHksN4f+ueCnu3Nek4i47dErxKjMv
+	5mDB8ZI/gOAwF9bJyRNOP1I+yU/91gbasOWpwbQy/Vr/ZdL3JrUQSkLerZBanlUO
+	cNcNuyhZ90VGlGiEyOleQjkHIidtyu4jek7QkcLgJPTLT3+cwD/wWlW/k3LFV60F
+	3LncdTg73zLuZ81tAls+0PlTjCVjzyWp08vH5uq/G6Pm3n3OhYCSd01ZGGtOnew=
+	=
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vg8nwrh3g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 08 Jan 2024 08:26:26 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 4088QQrx018376
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 8 Jan 2024 08:26:26 GMT
+Received: from yk-E5440.local (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Mon, 8 Jan
+ 2024 00:26:24 -0800
+From: Kang Yang <quic_kangyang@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, <quic_kangyang@quicinc.com>
+Subject: [PATCH 00/10] wifi: ath12k: P2P support for WCN7850
+Date: Mon, 8 Jan 2024 16:25:42 +0800
+Message-ID: <20240108082552.7227-1-quic_kangyang@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: oKoftf4yxrXpaNMnDwc35bhJe4sXf-zp
+X-Proofpoint-ORIG-GUID: oKoftf4yxrXpaNMnDwc35bhJe4sXf-zp
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-09_01,2023-12-07_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 spamscore=0 lowpriorityscore=0 suspectscore=0
+ impostorscore=0 mlxlogscore=854 phishscore=0 mlxscore=0 bulkscore=0
+ adultscore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2311290000 definitions=main-2401080070
 
-There are devices which have wlan LED outside mt76. We need to enable
-throughput LED trigger even if mt76's LED is disabled to make external
-LED blink as if internal one.
+Add P2P support for WCN7850.
 
-Signed-off-by: Kazuhiro Ito <kzhr@d1.dion.ne.jp>
----
- drivers/net/wireless/mediatek/mt76/mac80211.c | 26 +++++++++++++------
- 1 file changed, 18 insertions(+), 8 deletions(-)
+Kang Yang (10):
+  wifi: ath12k: change interface combination for P2P mode
+  wifi: ath12k: add P2P IE in beacon template
+  wifi: ath12k: implement handling of P2P NoA event
+  wifi: ath12k: implement remain on channel for P2P mode
+  wifi: ath12k: change WLAN_SCAN_PARAMS_MAX_IE_LEN from 256 to 512
+  wifi: ath12k: allow specific mgmt frame tx while vdev is not up
+  wifi: ath12k: fix broken structure wmi_vdev_create_cmd
+  wifi: ath12k: move peer delete after vdev stop of station for WCN7850
+  wifi: ath12k: designating channel frequency for ROC scan
+  wifi: ath12k: advertise P2P dev support for WCN7850
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
-index 8a3a90d1bfac..a7bd6e24aac2 100644
---- a/drivers/net/wireless/mediatek/mt76/mac80211.c
-+++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
-@@ -193,7 +193,15 @@ static const struct cfg80211_sar_capa mt76_sar_capa = {
- 	.freq_ranges = &mt76_sar_freq_ranges[0],
- };
- 
--static int mt76_led_init(struct mt76_phy *phy)
-+static const char * mt76_create_tpt_led_trigger(struct ieee80211_hw * hw)
-+{
-+	return ieee80211_create_tpt_led_trigger(hw,
-+				IEEE80211_TPT_LEDTRIG_FL_RADIO,
-+				mt76_tpt_blink,
-+				ARRAY_SIZE(mt76_tpt_blink));
-+}
-+
-+static int mt76_led_init(struct mt76_phy *phy, const char *trigger)
- {
- 	struct mt76_dev *dev = phy->dev;
- 	struct ieee80211_hw *hw = phy->hw;
-@@ -228,11 +236,7 @@ static int mt76_led_init(struct mt76_phy *phy)
- 		 wiphy_name(hw->wiphy));
- 
- 	phy->leds.cdev.name = phy->leds.name;
--	phy->leds.cdev.default_trigger =
--		ieee80211_create_tpt_led_trigger(hw,
--					IEEE80211_TPT_LEDTRIG_FL_RADIO,
--					mt76_tpt_blink,
--					ARRAY_SIZE(mt76_tpt_blink));
-+	phy->leds.cdev.default_trigger = trigger;
- 
- 	dev_info(dev->dev,
- 		"registering led '%s'\n", phy->leds.name);
-@@ -517,6 +521,7 @@ int mt76_register_phy(struct mt76_phy *phy, bool vht,
- 		      struct ieee80211_rate *rates, int n_rates)
- {
- 	int ret;
-+	const char *trigger;
- 
- 	ret = mt76_phy_init(phy, phy->hw);
- 	if (ret)
-@@ -540,8 +545,10 @@ int mt76_register_phy(struct mt76_phy *phy, bool vht,
- 			return ret;
- 	}
- 
-+	trigger = mt76_create_tpt_led_trigger(phy->hw);
-+
- 	if (IS_ENABLED(CONFIG_MT76_LEDS)) {
--		ret = mt76_led_init(phy);
-+		ret = mt76_led_init(phy, trigger);
- 		if (ret)
- 			return ret;
- 	}
-@@ -701,6 +708,7 @@ int mt76_register_device(struct mt76_dev *dev, bool vht,
- 	struct ieee80211_hw *hw = dev->hw;
- 	struct mt76_phy *phy = &dev->phy;
- 	int ret;
-+	const char *trigger;
- 
- 	dev_set_drvdata(dev->dev, dev);
- 	mt76_wcid_init(&dev->global_wcid);
-@@ -731,8 +739,10 @@ int mt76_register_device(struct mt76_dev *dev, bool vht,
- 	mt76_check_sband(&dev->phy, &phy->sband_5g, NL80211_BAND_5GHZ);
- 	mt76_check_sband(&dev->phy, &phy->sband_6g, NL80211_BAND_6GHZ);
- 
-+	trigger = mt76_create_tpt_led_trigger(hw);
-+
- 	if (IS_ENABLED(CONFIG_MT76_LEDS)) {
--		ret = mt76_led_init(phy);
-+		ret = mt76_led_init(phy, trigger);
- 		if (ret)
- 			return ret;
- 	}
+ drivers/net/wireless/ath/ath12k/Makefile |   3 +-
+ drivers/net/wireless/ath/ath12k/core.c   |   1 +
+ drivers/net/wireless/ath/ath12k/hw.c     |   5 +-
+ drivers/net/wireless/ath/ath12k/mac.c    | 358 +++++++++++++++++++----
+ drivers/net/wireless/ath/ath12k/p2p.c    | 142 +++++++++
+ drivers/net/wireless/ath/ath12k/p2p.h    |  23 ++
+ drivers/net/wireless/ath/ath12k/wmi.c    | 116 +++++++-
+ drivers/net/wireless/ath/ath12k/wmi.h    |  48 ++-
+ 8 files changed, 633 insertions(+), 63 deletions(-)
+ create mode 100644 drivers/net/wireless/ath/ath12k/p2p.c
+ create mode 100644 drivers/net/wireless/ath/ath12k/p2p.h
+
+
+base-commit: 2cd4e3f91f264926a6b11df948417b74d52ca9b9
 -- 
-2.43.0
+2.34.1
 
 
