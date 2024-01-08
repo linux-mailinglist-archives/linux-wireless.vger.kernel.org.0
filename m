@@ -1,139 +1,163 @@
-Return-Path: <linux-wireless+bounces-1592-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1593-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 601C18274AD
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jan 2024 17:10:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 424F98275B8
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jan 2024 17:48:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF56B1F23528
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jan 2024 16:10:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 688AA1C219B1
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jan 2024 16:48:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3592E52F64;
-	Mon,  8 Jan 2024 16:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 315B754664;
+	Mon,  8 Jan 2024 16:48:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="Hq+RPIwQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DnoJq9Xw"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com [209.85.221.171])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82643537E2
-	for <linux-wireless@vger.kernel.org>; Mon,  8 Jan 2024 16:10:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-vk1-f171.google.com with SMTP id 71dfb90a1353d-4b732dfa6e4so192645e0c.1
-        for <linux-wireless@vger.kernel.org>; Mon, 08 Jan 2024 08:10:14 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9647954661
+	for <linux-wireless@vger.kernel.org>; Mon,  8 Jan 2024 16:48:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3373bc6d625so2011604f8f.3
+        for <linux-wireless@vger.kernel.org>; Mon, 08 Jan 2024 08:48:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1704730213; x=1705335013; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1704732517; x=1705337317; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8JlDxMUsqbGectUh8EIxrkNYT83uPUecoA8VWJ2a5gw=;
-        b=Hq+RPIwQMKBmofXa4sCQcFnurU/20bnMoA1FCPLVo/bDHvLug6jbgMaDlIV2dRb3mW
-         gjMDZPv9bwTfJDwMWRNiUUo44BwUaifWtG5m7eXz4Vf/2eAL6dCQDoC5lxayiP4yQtzG
-         BOAxoxF+YyouDRkd37iWUwaWm0XNDOxj8ga3kLKnVN25bEkD1HL8qSYgzNlQC98/YUEV
-         jp2k45begzs/Xl2Nqyi2qSYfw8bBeWXdUlcT9Ptuf5+qNq0to5Izqe+H72kJc+WtiCYK
-         4cna/q7uJ8ZGF0T7PX9TflEqfQmLCfKntOWaFzthuLsDga8S8OrM5daOe7zIy7SNwHBL
-         0dSw==
+        bh=TDbtiLbA1iRT2Xe0QDhUmpbL4hjpDHQ12hK+fzVUvx8=;
+        b=DnoJq9XwZd1/dy3nSj9XrFNHvs0+Prhk7DZ/HSugJOZ7MezMBbvXvBEapC9XIaYr4V
+         +EGb5gkL4vKu+jIOB/O792xDpbfvbigvPKhD+2EuFQUPumv3m79PFTPdotnL85MbtFs+
+         iFnF53NvAAhEU91+WDW46nLkCgV3vm18JWYG2/QNNKAdkU2B//gp8CSpqHdOwl53ueLv
+         xvw2IpLhojA42/8rYSm5g2PF4srh1g/7W6eQYdpgc1KGgJcpTzk0rWo0CwY+9WO2TnG4
+         LOuFz7KuVNFnKZWX0z3ijH0jpAWMfsCC+3rVmNKLORzA8TPPBys/T+RQmYCrq1zBJTlf
+         IEdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704730213; x=1705335013;
+        d=1e100.net; s=20230601; t=1704732517; x=1705337317;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=8JlDxMUsqbGectUh8EIxrkNYT83uPUecoA8VWJ2a5gw=;
-        b=LFaM9045Y810ABbJuhiciSPcbsazhQ6784iYjzRW+lp4Mtg8DL9VI6YsC1HeAnOoJY
-         rscyPGw+Zy9wWo0tnSIXI14+n+gIfuqxoaw2K3+oE7jM3vYqH6cksowU4TJ7h9E5HHPk
-         BVmgO3UT97o2ZEmqXCumHycDcU7Q651y9VR/yK5rD0AZqVBAxgflNFxMqF0sZyt3nTI+
-         xXzl9n2jc3xIbE9j4A8JO9PXpuNVexqF4EPMdFQGdlRaiOW/UBEBY7Rg0v+k80rEAfS1
-         Jq69Zn7Wft4Ubw1d48x7VdPHZYHYA9umKFu7SYDt3xj1tdZ/oAx2UxTjHJ3oUh7dP00r
-         BnQA==
-X-Gm-Message-State: AOJu0Yxt9AHF3h+C5U8tIB/aK0YX/wGE0f6EEGfctwGcC1UJbqXgPrNl
-	BnSRyz9FbJzFDjMs+wleZZUax1OYKgdm1LX/GjgI63lq0oXgXA==
-X-Google-Smtp-Source: AGHT+IH2ohe7yImgJmTTE/Wko3CMU+zS3sQUItHcrSLheScuDG9+B0iL9MMp/HN2zRHrDOfHcElD6gfDz+jUZpk0DV8=
-X-Received: by 2002:a05:6122:2513:b0:4b7:53cf:bec6 with SMTP id
- cl19-20020a056122251300b004b753cfbec6mr1204475vkb.0.1704730213337; Mon, 08
- Jan 2024 08:10:13 -0800 (PST)
+        bh=TDbtiLbA1iRT2Xe0QDhUmpbL4hjpDHQ12hK+fzVUvx8=;
+        b=h/gcMxRFxh/Me5xaEEiSizlfa1QgxgWQ8Fn1Qnq8N0JWmop65PkIUHwL0P/6Ctd3m1
+         R7ER2UeSgKyXAjL3zxR3/ziBOHdeQNTtWnQZ4inQCH7oQboOp5FncbB9e0HxTgluNEoe
+         BBqnw+VwN78pbbbImJ/Wtcpe07FX0eM3jcmtwqUr/Pwll6WDwVCIzEaf5YhS8JuML6zo
+         IPTP1uFfFUKimpa5RisIkTIHrfxoXV/ckK494q1+kkFb9DTJwXgL5kD2UnQgZ083KboO
+         MjPYm9cHbm+zUE3MP3QQ0aONqEPxG/IIT3IsPYuBrbPVNbMP5df87mvguFgycmsr8SpU
+         tn1w==
+X-Gm-Message-State: AOJu0YyGmO2eYRj43NG0al82Ei2T98Cfdb3W3/wOlMFo4blHX06rlvJr
+	kSGl80w59WO72ufxVPX/yXVos31pCQDRhooEH50T+QYgYQw1tyyX
+X-Google-Smtp-Source: AGHT+IG/wdGcIK9K0Z2aUS74RQ+7EAINO4ZCISdXTiC4gH6o5gnkLilU2B6Gdf9NRsWD5A/eb/o3uI3mAe38nV8suJc=
+X-Received: by 2002:a5d:440e:0:b0:337:3efd:37a2 with SMTP id
+ z14-20020a5d440e000000b003373efd37a2mr2210153wrq.111.1704732516589; Mon, 08
+ Jan 2024 08:48:36 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240104130123.37115-1-brgl@bgdev.pl> <abefffc7-35d0-4c29-a892-48ec606acbf8@linaro.org>
-In-Reply-To: <abefffc7-35d0-4c29-a892-48ec606acbf8@linaro.org>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Mon, 8 Jan 2024 17:10:02 +0100
-Message-ID: <CAMRc=MdUgY2XScpe6FjyPoC0hxWcxZ5eaa+qKFjNUrin--updg@mail.gmail.com>
-Subject: Re: [RFC 0/9] PCI: introduce the concept of power sequencing of PCIe devices
-To: neil.armstrong@linaro.org
-Cc: Kalle Valo <kvalo@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Heiko Stuebner <heiko@sntech.de>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Chris Morgan <macromorgan@hotmail.com>, 
-	Linus Walleij <linus.walleij@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Arnd Bergmann <arnd@arndb.de>, =?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= <nfraprado@collabora.com>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Peng Fan <peng.fan@nxp.com>, 
-	Robert Richter <rrichter@amd.com>, Dan Williams <dan.j.williams@intel.com>, 
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>, Terry Bowman <terry.bowman@amd.com>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
-	Huacai Chen <chenhuacai@kernel.org>, Alex Elder <elder@linaro.org>, 
-	Srini Kandagatla <srinivas.kandagatla@linaro.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+References: <CAPVz0n2Ky350xhOv6WvE0YhFJ9QBe59LnWvKiafs2tjFnptP+g@mail.gmail.com>
+ <22115037-3a81-4a52-8e64-bc85c2be4212@broadcom.com> <CAPVz0n2Dah1b45c0yUjMZNph5AVJjneLsc2LOQ-dkXNRTv6y+Q@mail.gmail.com>
+ <18cce9a7818.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+ <18ccea1d6d0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+ <BFE6B9E5-CAF5-4E30-A4A2-A2489423C961@gmail.com> <18cd08e83d0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+ <CAPVz0n347PVv28H2wswmO3N63dpfPZ0d3VrdxmQHXMoo9LS69g@mail.gmail.com> <18ce9be5470.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+In-Reply-To: <18ce9be5470.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+From: Svyatoslav Ryhel <clamor95@gmail.com>
+Date: Mon, 8 Jan 2024 18:48:25 +0200
+Message-ID: <CAPVz0n3BxJjaudDnC=QLHa-0NsE9JSs1ezFpwK2yb=9ySyr2cw@mail.gmail.com>
+Subject: Re: License of old broadcom BT firmwares and WiFi calibration files
+To: Arend Van Spriel <arend.vanspriel@broadcom.com>
+Cc: linux-wireless@vger.kernel.org, linux-firmware@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 8, 2024 at 4:24=E2=80=AFPM Neil Armstrong <neil.armstrong@linar=
-o.org> wrote:
+=D0=BF=D0=BD, 8 =D1=81=D1=96=D1=87. 2024=E2=80=AF=D1=80. =D0=BE 17:43 Arend=
+ Van Spriel <arend.vanspriel@broadcom.com> =D0=BF=D0=B8=D1=88=D0=B5:
 >
-> Hi,
+> On January 4, 2024 10:08:04 AM Svyatoslav Ryhel <clamor95@gmail.com> wrot=
+e:
 >
-> On 04/01/2024 14:01, Bartosz Golaszewski wrote:
-> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> > =D1=81=D1=80, 3 =D1=81=D1=96=D1=87. 2024=E2=80=AF=D1=80. =D0=BE 20:20 A=
+rend Van Spriel <arend.vanspriel@broadcom.com>
+> > =D0=BF=D0=B8=D1=88=D0=B5:
+> >>
+> >> On January 3, 2024 6:28:33 PM Svyatoslav Ryhel <clamor95@gmail.com> wr=
+ote:
+> >>
+> >>> 3 =D1=81=D1=96=D1=87=D0=BD=D1=8F 2024 =D1=80. 11:22:42 GMT+02:00, Are=
+nd Van Spriel
+> >>> <arend.vanspriel@broadcom.com> =D0=BD=D0=B0=D0=BF=D0=B8=D1=81=D0=B0=
+=D0=B2(-=D0=BB=D0=B0):
+> >>>> On January 3, 2024 10:14:42 AM Arend Van Spriel
+> >>>> <arend.vanspriel@broadcom.com> wrote:
+> >>>>
+> >>>>> + linux-wireless
+> >>>>> + Hans de Goede
+> >>>>>
+> >>>>>
+> >>>>> On December 16, 2023 9:14:48 PM Svyatoslav Ryhel <clamor95@gmail.co=
+m> wrote:
+> >>>>>
+> >>>>>> =D1=81=D0=B1, 16 =D0=B3=D1=80=D1=83=D0=B4. 2023=E2=80=AF=D1=80. =
+=D0=BE 21:57 Arend van Spriel
+> >>>>>> <arend.vanspriel@broadcom.com> =D0=BF=D0=B8=D1=88=D0=B5:
+> >>>>>>>
+> >>>>>>> On 12/16/2023 6:45 PM, Svyatoslav Ryhel wrote:
+> >>>>>>>> Greetings!
+> >>>>>>>>
+> >>>>>>>> I am trying to submit bluetooth firmwares (BCM4329B1.*,*.hcd and
+> >>>>>>>> BCM4330B1.*,*.hcd) and wifi calibration files
+> >>>>>>>> (brcmfmac4329-sdio.*,*.txt and brcmfmac4329-sdio.*,*.txt) from a=
+ few
+> >>>>>>>> Tegra 2 and Tegra 3 based devices into linux-fimware.
+> >>>>>>>>
+> >>>>>>>> I have faced ambiguous license issue since those files were part=
+ of
+> >>>>>>>> Android Images of different vendors. Those vendors did not provi=
+de a
+> >>>>>>>> license nor for android images, not for these files.
+> >>>>
+> >>>> Does this mean you extracted them from the android image? That proba=
+bly
+> >>>> never get accepted without any license information.
+> >>>
+> >>> Can Broadcom re-grant license to these files?
+> >>>
+> >>> This license is for bcm4329 in crespo
+> >>> <https://android.googlesource.com/device/samsung/crespo/+/refs/heads/=
+main/self-extractors/broadcom/LICENSE>
+> >>
+> >> Actually checked this link:
+> >>
+> >> https://android.googlesource.com/device/samsung/crespo/+/refs/heads/ma=
+in/proprietary-blobs.txt
+> >>
+> >> It lists the bcm4329.hcd file as falling under Apache-2.0 license. Sam=
+e for
+> >> asus/grouper.
+> >>
+> >> Regards,
+> >> Arend
 > >
-> > During last year's Linux Plumbers we had several discussions centered
-> > around the need to power-on PCI devices before they can be detected on
-> > the bus.
-> >
-> > The consensus during the conference was that we need to introduce a
-> > class of "PCI slot drivers" that would handle the power-sequencing.
-> >
-> > After some additional brain-storming with Manivannan and the realizatio=
-n
-> > that the DT maintainers won't like adding any "fake" nodes not
-> > representing actual devices, we decided to reuse the existing
-> > infrastructure provided by the PCIe port drivers.
-> >
-> > The general idea is to instantiate platform devices for child nodes of
-> > the PCIe port DT node. For those nodes for which a power-sequencing
-> > driver exists, we bind it and let it probe. The driver then triggers a
-> > rescan of the PCI bus with the aim of detecting the now powered-on
-> > device. The device will consume the same DT node as the platform,
-> > power-sequencing device. We use device links to make the latter become
-> > the parent of the former.
-> >
-> > The main advantage of this approach is not modifying the existing DT in
-> > any way and especially not adding any "fake" platform devices.
+> > So this actually resolves ambiguity. Thanks
 >
-> I've successfully tested this serie for the WCN7850 Wifi/BT combo onboard=
- chip
-> present on the SM8550-QRD and SM8650-QRD boards and it works just fine.
+> Yes, but ... you should add them to linux-firmware under the same license=
+.
+> That means you need to mark them as such in the WHENCE file. Feel free to
+> cc: me for the patch so I can have a look at it.
 >
-> Here's a branch with the wcn7850 vreg table added to the pwrseq driver,
-> and the DT changes:
-> https://git.codelinaro.org/neil.armstrong/linux/-/commits/topic/sm8x50/wc=
-n7850-wifi-pwrseq/?ref_type=3Dheads
+> Regards,
+> Arend
 
-Thanks, I'll integrate them into v2.
+Thank you for your assistance, it is really appreciated and valued but
+it was rejected
 
-Bart
+https://gitlab.com/kernel-firmware/linux-firmware/-/merge_requests/114
+
+I have referred to our conversation.
 
