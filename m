@@ -1,163 +1,94 @@
-Return-Path: <linux-wireless+bounces-1593-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1594-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 424F98275B8
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jan 2024 17:48:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E11D68276B1
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jan 2024 18:58:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 688AA1C219B1
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jan 2024 16:48:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 808861C21AA9
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jan 2024 17:58:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 315B754664;
-	Mon,  8 Jan 2024 16:48:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BC7254F8D;
+	Mon,  8 Jan 2024 17:52:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DnoJq9Xw"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="fFBLK6g+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9647954661
-	for <linux-wireless@vger.kernel.org>; Mon,  8 Jan 2024 16:48:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3373bc6d625so2011604f8f.3
-        for <linux-wireless@vger.kernel.org>; Mon, 08 Jan 2024 08:48:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1704732517; x=1705337317; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TDbtiLbA1iRT2Xe0QDhUmpbL4hjpDHQ12hK+fzVUvx8=;
-        b=DnoJq9XwZd1/dy3nSj9XrFNHvs0+Prhk7DZ/HSugJOZ7MezMBbvXvBEapC9XIaYr4V
-         +EGb5gkL4vKu+jIOB/O792xDpbfvbigvPKhD+2EuFQUPumv3m79PFTPdotnL85MbtFs+
-         iFnF53NvAAhEU91+WDW46nLkCgV3vm18JWYG2/QNNKAdkU2B//gp8CSpqHdOwl53ueLv
-         xvw2IpLhojA42/8rYSm5g2PF4srh1g/7W6eQYdpgc1KGgJcpTzk0rWo0CwY+9WO2TnG4
-         LOuFz7KuVNFnKZWX0z3ijH0jpAWMfsCC+3rVmNKLORzA8TPPBys/T+RQmYCrq1zBJTlf
-         IEdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704732517; x=1705337317;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TDbtiLbA1iRT2Xe0QDhUmpbL4hjpDHQ12hK+fzVUvx8=;
-        b=h/gcMxRFxh/Me5xaEEiSizlfa1QgxgWQ8Fn1Qnq8N0JWmop65PkIUHwL0P/6Ctd3m1
-         R7ER2UeSgKyXAjL3zxR3/ziBOHdeQNTtWnQZ4inQCH7oQboOp5FncbB9e0HxTgluNEoe
-         BBqnw+VwN78pbbbImJ/Wtcpe07FX0eM3jcmtwqUr/Pwll6WDwVCIzEaf5YhS8JuML6zo
-         IPTP1uFfFUKimpa5RisIkTIHrfxoXV/ckK494q1+kkFb9DTJwXgL5kD2UnQgZ083KboO
-         MjPYm9cHbm+zUE3MP3QQ0aONqEPxG/IIT3IsPYuBrbPVNbMP5df87mvguFgycmsr8SpU
-         tn1w==
-X-Gm-Message-State: AOJu0YyGmO2eYRj43NG0al82Ei2T98Cfdb3W3/wOlMFo4blHX06rlvJr
-	kSGl80w59WO72ufxVPX/yXVos31pCQDRhooEH50T+QYgYQw1tyyX
-X-Google-Smtp-Source: AGHT+IG/wdGcIK9K0Z2aUS74RQ+7EAINO4ZCISdXTiC4gH6o5gnkLilU2B6Gdf9NRsWD5A/eb/o3uI3mAe38nV8suJc=
-X-Received: by 2002:a5d:440e:0:b0:337:3efd:37a2 with SMTP id
- z14-20020a5d440e000000b003373efd37a2mr2210153wrq.111.1704732516589; Mon, 08
- Jan 2024 08:48:36 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F25D654BD3
+	for <linux-wireless@vger.kernel.org>; Mon,  8 Jan 2024 17:52:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 408Ej50l023547;
+	Mon, 8 Jan 2024 17:52:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=OJ5Cxm5UlnPCIE/+NoU4vrvM4xh18aVN066891HC0wY=; b=fF
+	BLK6g+ysh3cL4HdJo3rYYph+DBnjp2TRvzFpbeMDafaGaqbBUgMyqkeARu85B75t
+	aP/mSGj7hM2B8EMA2z1/1oiHd44+g50IduZERzK66xKc6ARqvfFF41FbN3Z8SouJ
+	zUn9/p8MingdfM+Vr6zR6NYJwC8EGfWhOiwbz7Wx0Nc02tpGYpfDp4PBIMC3+t/E
+	8zoir1H07eUyNXEjPjCEVYyfGhXTQWvN3j427Iy/U4Y9i1oC5DDKWFcrD+tJ1ytz
+	qY7ReN3wfgDDH3XfYyUWc1G1FlkMs9+V3yIIk3IAIFwRyPxeZHriAReh3UB8lohP
+	5IB24M0H5yqk3T/Zymrw==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vg8n09rb2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 08 Jan 2024 17:52:46 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 408HqjNR001254
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 8 Jan 2024 17:52:45 GMT
+Received: from [10.110.42.177] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Mon, 8 Jan
+ 2024 09:52:45 -0800
+Message-ID: <6fc15b1d-b8a4-40d2-8c6a-857dcaa0ac96@quicinc.com>
+Date: Mon, 8 Jan 2024 09:52:44 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAPVz0n2Ky350xhOv6WvE0YhFJ9QBe59LnWvKiafs2tjFnptP+g@mail.gmail.com>
- <22115037-3a81-4a52-8e64-bc85c2be4212@broadcom.com> <CAPVz0n2Dah1b45c0yUjMZNph5AVJjneLsc2LOQ-dkXNRTv6y+Q@mail.gmail.com>
- <18cce9a7818.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <18ccea1d6d0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <BFE6B9E5-CAF5-4E30-A4A2-A2489423C961@gmail.com> <18cd08e83d0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <CAPVz0n347PVv28H2wswmO3N63dpfPZ0d3VrdxmQHXMoo9LS69g@mail.gmail.com> <18ce9be5470.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <18ce9be5470.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-From: Svyatoslav Ryhel <clamor95@gmail.com>
-Date: Mon, 8 Jan 2024 18:48:25 +0200
-Message-ID: <CAPVz0n3BxJjaudDnC=QLHa-0NsE9JSs1ezFpwK2yb=9ySyr2cw@mail.gmail.com>
-Subject: Re: License of old broadcom BT firmwares and WiFi calibration files
-To: Arend Van Spriel <arend.vanspriel@broadcom.com>
-Cc: linux-wireless@vger.kernel.org, linux-firmware@kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 00/12] wifi: ath12k: QCN9274 dualmac bring up
+Content-Language: en-US
+To: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240105195639.3217739-1-quic_rajkbhag@quicinc.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20240105195639.3217739-1-quic_rajkbhag@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: Jq-mpVfIck8yLounE4kwvilBy1RuXGPo
+X-Proofpoint-ORIG-GUID: Jq-mpVfIck8yLounE4kwvilBy1RuXGPo
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-09_02,2023-12-07_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ mlxlogscore=467 adultscore=0 lowpriorityscore=0 spamscore=0 phishscore=0
+ malwarescore=0 impostorscore=0 priorityscore=1501 clxscore=1015
+ bulkscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2311290000 definitions=main-2401080151
 
-=D0=BF=D0=BD, 8 =D1=81=D1=96=D1=87. 2024=E2=80=AF=D1=80. =D0=BE 17:43 Arend=
- Van Spriel <arend.vanspriel@broadcom.com> =D0=BF=D0=B8=D1=88=D0=B5:
->
-> On January 4, 2024 10:08:04 AM Svyatoslav Ryhel <clamor95@gmail.com> wrot=
-e:
->
-> > =D1=81=D1=80, 3 =D1=81=D1=96=D1=87. 2024=E2=80=AF=D1=80. =D0=BE 20:20 A=
-rend Van Spriel <arend.vanspriel@broadcom.com>
-> > =D0=BF=D0=B8=D1=88=D0=B5:
-> >>
-> >> On January 3, 2024 6:28:33 PM Svyatoslav Ryhel <clamor95@gmail.com> wr=
-ote:
-> >>
-> >>> 3 =D1=81=D1=96=D1=87=D0=BD=D1=8F 2024 =D1=80. 11:22:42 GMT+02:00, Are=
-nd Van Spriel
-> >>> <arend.vanspriel@broadcom.com> =D0=BD=D0=B0=D0=BF=D0=B8=D1=81=D0=B0=
-=D0=B2(-=D0=BB=D0=B0):
-> >>>> On January 3, 2024 10:14:42 AM Arend Van Spriel
-> >>>> <arend.vanspriel@broadcom.com> wrote:
-> >>>>
-> >>>>> + linux-wireless
-> >>>>> + Hans de Goede
-> >>>>>
-> >>>>>
-> >>>>> On December 16, 2023 9:14:48 PM Svyatoslav Ryhel <clamor95@gmail.co=
-m> wrote:
-> >>>>>
-> >>>>>> =D1=81=D0=B1, 16 =D0=B3=D1=80=D1=83=D0=B4. 2023=E2=80=AF=D1=80. =
-=D0=BE 21:57 Arend van Spriel
-> >>>>>> <arend.vanspriel@broadcom.com> =D0=BF=D0=B8=D1=88=D0=B5:
-> >>>>>>>
-> >>>>>>> On 12/16/2023 6:45 PM, Svyatoslav Ryhel wrote:
-> >>>>>>>> Greetings!
-> >>>>>>>>
-> >>>>>>>> I am trying to submit bluetooth firmwares (BCM4329B1.*,*.hcd and
-> >>>>>>>> BCM4330B1.*,*.hcd) and wifi calibration files
-> >>>>>>>> (brcmfmac4329-sdio.*,*.txt and brcmfmac4329-sdio.*,*.txt) from a=
- few
-> >>>>>>>> Tegra 2 and Tegra 3 based devices into linux-fimware.
-> >>>>>>>>
-> >>>>>>>> I have faced ambiguous license issue since those files were part=
- of
-> >>>>>>>> Android Images of different vendors. Those vendors did not provi=
-de a
-> >>>>>>>> license nor for android images, not for these files.
-> >>>>
-> >>>> Does this mean you extracted them from the android image? That proba=
-bly
-> >>>> never get accepted without any license information.
-> >>>
-> >>> Can Broadcom re-grant license to these files?
-> >>>
-> >>> This license is for bcm4329 in crespo
-> >>> <https://android.googlesource.com/device/samsung/crespo/+/refs/heads/=
-main/self-extractors/broadcom/LICENSE>
-> >>
-> >> Actually checked this link:
-> >>
-> >> https://android.googlesource.com/device/samsung/crespo/+/refs/heads/ma=
-in/proprietary-blobs.txt
-> >>
-> >> It lists the bcm4329.hcd file as falling under Apache-2.0 license. Sam=
-e for
-> >> asus/grouper.
-> >>
-> >> Regards,
-> >> Arend
-> >
-> > So this actually resolves ambiguity. Thanks
->
-> Yes, but ... you should add them to linux-firmware under the same license=
-.
-> That means you need to mark them as such in the WHENCE file. Feel free to
-> cc: me for the patch so I can have a look at it.
->
-> Regards,
-> Arend
+On 1/5/2024 11:56 AM, Raj Kumar Bhagat wrote:
+> QCN9274 Ath12k chipset can support single-mac or dualmac architecture.
+> Currently, Ath12k driver supports only the single-mac QCN9274
+> architecture.
+> 
+> Hence, add support for dualmac QCN9274 chipset.
 
-Thank you for your assistance, it is really appreciated and valued but
-it was rejected
+Can you please have the WCN7850 test team validate there are no
+regression issues with this series, and then add their Tested-on: tag to
+each patch?
 
-https://gitlab.com/kernel-firmware/linux-firmware/-/merge_requests/114
-
-I have referred to our conversation.
 
