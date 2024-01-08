@@ -1,90 +1,206 @@
-Return-Path: <linux-wireless+bounces-1589-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1590-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2581C8272EC
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jan 2024 16:23:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ADD28272F2
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jan 2024 16:24:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEC461F21090
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jan 2024 15:23:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00DF0B21B2E
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jan 2024 15:24:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F18C44C623;
-	Mon,  8 Jan 2024 15:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98C5D4C624;
+	Mon,  8 Jan 2024 15:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UPW+uoMh"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="HfRsZzVp"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D87C94C610
-	for <linux-wireless@vger.kernel.org>; Mon,  8 Jan 2024 15:23:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DA20C433C7;
-	Mon,  8 Jan 2024 15:23:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704727422;
-	bh=+9HfResmFELxvjC7ij37IErxRXfh7YCjAMkpPlssfcY=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=UPW+uoMh8+EuJZVXHmo/j4U7184c6YrnQegTL67nxf7ZUZaRReb6G+HGbab6wuX/s
-	 1125JICvEhM8/xgeOgG+SzEfvZ7hMx5P0tlemtSgbwm/DGQNvJvEkmw2uUF7aOcbrq
-	 lPd9GXRJm6OvCvTdB43uJvjHWRUQ6drZwAmLt9kAVLJglKjkGq3ZSgqbQ/rhJ0tW56
-	 S2phlG0fXxNEpzyFIltT58yJMVyV7BYAfzlu6INjhoeV5j64JBz5p8Ri3/D9WQirAr
-	 VrRh2i1gPaHiATwosBsNDvrH9K0upls+lEVY1oSuGCwqqV5No+OUdqBaAdPWC0q6dC
-	 o2dXa0QvwmnlA==
-From: Kalle Valo <kvalo@kernel.org>
-To: lilinmao <lilinmao@kylinos.cn>
-Cc: "pkshih@realtek.com" <pkshih@realtek.com>,  =?utf-8?Q?linux-wireless?=
- =?utf-8?Q?=40vger=2Ekern=E2=80=A6?=
- <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH] wifi: rtw89: 8852b: fix cppcheck issues
-References: <20240105104542.463834-1-lilinmao@kylinos.cn>
-	<1704693852309064.667.seg@mailgw>
-	<077A3848-0696-4DCC-99C3-DB5389EA2EA2@kylinos.cn>
-Date: Mon, 08 Jan 2024 17:23:39 +0200
-In-Reply-To: <077A3848-0696-4DCC-99C3-DB5389EA2EA2@kylinos.cn>
-	(lilinmao@kylinos.cn's message of "Mon, 8 Jan 2024 14:47:18 +0800")
-Message-ID: <87jzojetms.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE1BA51010
+	for <linux-wireless@vger.kernel.org>; Mon,  8 Jan 2024 15:24:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-50eac018059so2287917e87.0
+        for <linux-wireless@vger.kernel.org>; Mon, 08 Jan 2024 07:24:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1704727486; x=1705332286; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :references:cc:to:content-language:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VDfXxaJLBdAHE/PCKaUTkc4Ha2Yd2YR4JkUzxupj3v0=;
+        b=HfRsZzVpwz7gN1C4c+TM9/cOZ8kaQoM3VdD27geWtxvv2YEovQWTC7auApwsG7sQTI
+         HZTqnrBTHyTfDORhzOjlkSNGvlawYk51wrZeucPuXF/NFwU2QDaNfsKPiQlGdws7oTFg
+         CFLv+02uUINvfdMlN/MTAnVS50d7yAf6pWGVIhaDpRfTurt4yHp6tVhy4XcETpAJT/Qm
+         XzfCzooqf0khLb+zcDw2fXgNkojc79cmcOQbuRwfreTuzMTszmtICANJl2V/I29HZttg
+         y4YPX2aLgdtEJwW8D08E8CI4i+mim1JJMOzTv+E1zIcQEFPiRQ9nAt7ULYPptKvP1g+u
+         VPlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704727486; x=1705332286;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :references:cc:to:content-language:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=VDfXxaJLBdAHE/PCKaUTkc4Ha2Yd2YR4JkUzxupj3v0=;
+        b=uY1h9RuPJRuFEAio9GJyseB2kd8jb+ZMT4O6Gryz/h6io+7EvC3KA2susF665nmmEN
+         lu5AqMlAqTzVNxZPl9blFV93KOdLUHq1o5YmVyUE2iHueRzKdAEzQZbjCD9uPT2YqMYJ
+         NEdi3agqhnlcvq35uUWCPt4mPqURgozDfhAxBlrMSNO6ExG5TbMAGHzkGwKF4MmOuiH+
+         mwF/yZyE+BsZdBTUOoNmTZ36HqNJTNdkbuFfJBbF3+CWbE5KZXKWaO4o2q5a0IkWrnfW
+         s281KUA7q7gW63whBsKftPMRv40toz2uKncok16Dk3zKsFruqTe5XG05ZnWDYlzGYOBc
+         ql5A==
+X-Gm-Message-State: AOJu0Yzgl7Oco6/9cDicMBpdv6ba1hu3FyMtCRiONNWQElTpYPakD01f
+	bpkmzuVgDwex9QQqSu5w3VmUWmtKEuwcDQ==
+X-Google-Smtp-Source: AGHT+IHYCa4xZPwbtgnWPlFUxuQ1nlQ0aFXos10SnAsRHcyZ7Yew62wRDqXCpkRZOGiwrgwv3o6ftQ==
+X-Received: by 2002:ac2:4822:0:b0:50e:6ddb:551d with SMTP id 2-20020ac24822000000b0050e6ddb551dmr1425719lft.73.1704727485712;
+        Mon, 08 Jan 2024 07:24:45 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:982:cbb0:32b:5e85:79f9:3fde? ([2a01:e0a:982:cbb0:32b:5e85:79f9:3fde])
+        by smtp.gmail.com with ESMTPSA id qu27-20020a170907111b00b00a2af877a85dsm457794ejb.6.2024.01.08.07.24.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 08 Jan 2024 07:24:45 -0800 (PST)
+Message-ID: <abefffc7-35d0-4c29-a892-48ec606acbf8@linaro.org>
+Date: Mon, 8 Jan 2024 16:24:40 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+From: Neil Armstrong <neil.armstrong@linaro.org>
+Reply-To: neil.armstrong@linaro.org
+Subject: Re: [RFC 0/9] PCI: introduce the concept of power sequencing of PCIe
+ devices
+Content-Language: en-US, fr
+To: Bartosz Golaszewski <brgl@bgdev.pl>, Kalle Valo <kvalo@kernel.org>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konrad.dybcio@linaro.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Bjorn Helgaas <bhelgaas@google.com>, Heiko Stuebner <heiko@sntech.de>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Chris Morgan <macromorgan@hotmail.com>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Geert Uytterhoeven <geert+renesas@glider.be>, Arnd Bergmann <arnd@arndb.de>,
+ =?UTF-8?Q?N=C3=ADcolas_F_=2E_R_=2E_A_=2E_Prado?= <nfraprado@collabora.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, Peng Fan <peng.fan@nxp.com>,
+ Robert Richter <rrichter@amd.com>, Dan Williams <dan.j.williams@intel.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Terry Bowman <terry.bowman@amd.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ Huacai Chen <chenhuacai@kernel.org>, Alex Elder <elder@linaro.org>,
+ Srini Kandagatla <srinivas.kandagatla@linaro.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-pci@vger.kernel.org,
+ Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+References: <20240104130123.37115-1-brgl@bgdev.pl>
+Autocrypt: addr=neil.armstrong@linaro.org; keydata=
+ xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
+ GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
+ BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
+ qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
+ 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
+ AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
+ OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
+ Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
+ YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
+ GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
+ UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
+ GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
+ yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
+ QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
+ SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
+ 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
+ Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
+ oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
+ M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
+ 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
+ KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
+ 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
+ QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
+Organization: Linaro Developer Services
+In-Reply-To: <20240104130123.37115-1-brgl@bgdev.pl>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-lilinmao <lilinmao@kylinos.cn> writes:
+Hi,
 
-> I'm very sorry for the various issues encountered during my first patch submission.
->
-> My patch didn't change the original logic of the code.Perhaps I just changed the way 
-> of writing the code to avoid the cppcheck issue.
->
->>The original logic looks like 
->> 
->>bool found = false; 
->> 
->>for (idx = 0; idx < RTW89_IQK_CHS_NR; idx++) 
->>if (expr) { 
->>found = true; 
->>break; 
->>} 
->> 
->>if (!found) { 
->>... [A] 
->>}
->
-> After the 'for' loop ends, 'if (idx > RTW89_IQK_CHS_NR - 1)' is
-> equivalent to 'if (!found). Cppcheck might not have detected the
-> changes to 'idx' within branch [A] which leads it to believe later
-> that 'idx' could be greater than or equal to 'RTW89_IQK_CHS_NR'.
+On 04/01/2024 14:01, Bartosz Golaszewski wrote:
+> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> 
+> During last year's Linux Plumbers we had several discussions centered
+> around the need to power-on PCI devices before they can be detected on
+> the bus.
+> 
+> The consensus during the conference was that we need to introduce a
+> class of "PCI slot drivers" that would handle the power-sequencing.
+> 
+> After some additional brain-storming with Manivannan and the realization
+> that the DT maintainers won't like adding any "fake" nodes not
+> representing actual devices, we decided to reuse the existing
+> infrastructure provided by the PCIe port drivers.
+> 
+> The general idea is to instantiate platform devices for child nodes of
+> the PCIe port DT node. For those nodes for which a power-sequencing
+> driver exists, we bind it and let it probe. The driver then triggers a
+> rescan of the PCI bus with the aim of detecting the now powered-on
+> device. The device will consume the same DT node as the platform,
+> power-sequencing device. We use device links to make the latter become
+> the parent of the former.
+> 
+> The main advantage of this approach is not modifying the existing DT in
+> any way and especially not adding any "fake" platform devices.
 
-Our lists drop all html mail, so please use text/plain format and don't
-top post. More info in the wiki link below.
+I've successfully tested this serie for the WCN7850 Wifi/BT combo onboard chip
+present on the SM8550-QRD and SM8650-QRD boards and it works just fine.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+Here's a branch with the wcn7850 vreg table added to the pwrseq driver,
+and the DT changes:
+https://git.codelinaro.org/neil.armstrong/linux/-/commits/topic/sm8x50/wcn7850-wifi-pwrseq/?ref_type=heads
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Thanks,
+Neil
+
+> 
+> Bartosz Golaszewski (9):
+>    arm64: dts: qcom: sm8250: describe the PCIe port
+>    arm64: dts: qcom: qrb5165-rb5: describe the WLAN module of QCA6390
+>    PCI/portdrv: create platform devices for child OF nodes
+>    PCI: hold the rescan mutex when scanning for the first time
+>    PCI/pwrseq: add pwrseq core code
+>    dt-bindings: vendor-prefixes: add a PCI prefix for Qualcomm Atheros
+>    dt-bindings: wireless: ath11k: describe QCA6390
+>    PCI/pwrseq: add a pwrseq driver for QCA6390
+>    arm64: defconfig: enable the PCIe power sequencing for QCA6390
+> 
+>   .../net/wireless/qcom,ath11k-pci.yaml         |  14 ++
+>   .../devicetree/bindings/vendor-prefixes.yaml  |   1 +
+>   arch/arm64/boot/dts/qcom/qrb5165-rb5.dts      |  24 +++
+>   arch/arm64/boot/dts/qcom/sm8250.dtsi          |  10 +
+>   arch/arm64/configs/defconfig                  |   2 +
+>   drivers/pci/pcie/Kconfig                      |   2 +
+>   drivers/pci/pcie/Makefile                     |   2 +
+>   drivers/pci/pcie/portdrv.c                    |   3 +-
+>   drivers/pci/pcie/pwrseq/Kconfig               |  19 ++
+>   drivers/pci/pcie/pwrseq/Makefile              |   4 +
+>   drivers/pci/pcie/pwrseq/pcie-pwrseq-qca6390.c | 197 ++++++++++++++++++
+>   drivers/pci/pcie/pwrseq/pwrseq.c              |  83 ++++++++
+>   drivers/pci/probe.c                           |   2 +
+>   include/linux/pcie-pwrseq.h                   |  24 +++
+>   14 files changed, 386 insertions(+), 1 deletion(-)
+>   create mode 100644 drivers/pci/pcie/pwrseq/Kconfig
+>   create mode 100644 drivers/pci/pcie/pwrseq/Makefile
+>   create mode 100644 drivers/pci/pcie/pwrseq/pcie-pwrseq-qca6390.c
+>   create mode 100644 drivers/pci/pcie/pwrseq/pwrseq.c
+>   create mode 100644 include/linux/pcie-pwrseq.h
+> 
+
 
