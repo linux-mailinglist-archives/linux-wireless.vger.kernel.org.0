@@ -1,117 +1,118 @@
-Return-Path: <linux-wireless+bounces-1604-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1605-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D35282787B
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jan 2024 20:23:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9903E827CC8
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jan 2024 03:14:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A502284F07
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jan 2024 19:22:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 485502855AF
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jan 2024 02:14:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45BA154FB5;
-	Mon,  8 Jan 2024 19:22:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFA1B211C;
+	Tue,  9 Jan 2024 02:14:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="15/oa8U4"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="YncPHkE0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com [209.85.221.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E137654F9A
-	for <linux-wireless@vger.kernel.org>; Mon,  8 Jan 2024 19:22:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-vk1-f178.google.com with SMTP id 71dfb90a1353d-4b7153b8d76so295395e0c.0
-        for <linux-wireless@vger.kernel.org>; Mon, 08 Jan 2024 11:22:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1704741774; x=1705346574; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=t630KAds7hYgoJ0f0LCQ0AiFafn/yi4jTUENLdj9Tv0=;
-        b=15/oa8U4pdYzJkHwwrBD/ZBIkmGcfTosoOL6LTbBCbW9PSojKpdH1liW5vWEyMcehQ
-         vEx6D2purj1hfQkQAL3p7NY67GY3BgKuLDFWxCiRsNi9pB6cnKjGzbPHUmnWKyKCjdtf
-         kCENjprM5m6D9ONGevgO16eUiQJ7c+XnFGq+uwkdXxbjjwgNVYwk/gCf4oAdEpUEQ8L7
-         0OqmMouljJgrcrBqjkntsuGjj4ZJzLOSxVVK8UYut5H65FahRmMsln2nAHcgAK9SzAQK
-         YKS8MBcUY3csqZgpL3Yov7vR97sH6qVXqaOH+q/SooB/SUXyoRfC9X0cu4mQNvPb/ONS
-         J0tQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704741774; x=1705346574;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=t630KAds7hYgoJ0f0LCQ0AiFafn/yi4jTUENLdj9Tv0=;
-        b=dmkvtbpuvwLNpt4m/HyayeinmoP7kK1M4geNtupVDW0FHzfV+vRmWYFbrO7pWGJxK7
-         /MByDah113hzlCj9BCdE9W/RxgsOF8IPsrlzhGbOiqMLroBVteramNklD5WZCroCwxB5
-         /RwUf58uwDw5vCQs2CLGg26CZMRVEUcSuo3AYv7YxSdQqOGLasJH8niSHeRvLyJch3YQ
-         vUDH4Av5JC7oEHsqMLmuyRsx5DhFMlmmMEi3L2l0LAtJ4OGegye2JN8LggtK3WYthZV0
-         Zj+XWnp5WYRZhteUrqp9Rdzzx2NniBydDzRMiu9iLZpLJ3UplsEUh/j4eXM780NMpr19
-         ZlKg==
-X-Gm-Message-State: AOJu0YwhFlAd1+BPV0tvXJN7WBW0aWxXEf0d2hA11637n8370XdTwVC5
-	E2ZdhVbtNt/nxkKA8oXM0aQm0eEqdc1/ipqUO9qT0gvQq0eSUw==
-X-Google-Smtp-Source: AGHT+IEah3V2Xy4oFA525rnBCO8YyKWJvg7Na5/wUj76Z4lWssvjCk0GeQpBn6QxzFQI/HexZWRnBZrcb5Awcliqtng=
-X-Received: by 2002:a05:6122:17a6:b0:4b6:aeb7:3f1d with SMTP id
- o38-20020a05612217a600b004b6aeb73f1dmr1198020vkf.9.1704741773775; Mon, 08 Jan
- 2024 11:22:53 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2488B20FB
+	for <linux-wireless@vger.kernel.org>; Tue,  9 Jan 2024 02:14:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 4092473j030580;
+	Tue, 9 Jan 2024 02:13:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=qcppdkim1; bh=bXBT6LK
+	yOjU8UAIM6kN4eCIly0FIoAPgd+wsnhgPL9A=; b=YncPHkE0AbbgCDM7tovS8sC
+	REyeCjM0M6ROMy1TGk9B2UleMiSFLL6nGe6dVXHU7c7Vk6RDvJTHbzGd6Fm4khxz
+	ocIosshPopNCGEb1s2q3uT0mYTpoKV7SkJfn2QjmiQ3xSXW5g5m/qSJUBgOGw8ow
+	aFldcoew1/X1Bo1wB9AK8cRN/4qtzakhbDPFMcccdKGCoMLhbyYJE1iGK1y4MlZx
+	drvuk6tKjqRvoE3CKSpEahrbnYicze3JKV8g+PvdAYtxVgTJ5qSb2lm87uTcV4q6
+	BuMv1sovmE2U3Nr7YuVUjQ/Xni19HepWo2WJJOik6r5GFXGus6qm9tvlFRtjW8A=
+	=
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vgw1k00e5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 09 Jan 2024 02:13:56 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 4092DtGq032025
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 9 Jan 2024 02:13:55 GMT
+Received: from bqiang-Celadon-RN.qca.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Mon, 8 Jan 2024 18:13:54 -0800
+From: Baochen Qiang <quic_bqiang@quicinc.com>
+To: <ath11k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, <quic_bqiang@quicinc.com>
+Subject: [PATCH v2 0/2] wifi: ath11k: add support for QCA2066
+Date: Tue, 9 Jan 2024 10:13:34 +0800
+Message-ID: <20240109021336.4143-1-quic_bqiang@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240104130123.37115-1-brgl@bgdev.pl> <20240104130123.37115-7-brgl@bgdev.pl>
- <20240108191052.GA1893484-robh@kernel.org>
-In-Reply-To: <20240108191052.GA1893484-robh@kernel.org>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Mon, 8 Jan 2024 20:22:42 +0100
-Message-ID: <CAMRc=Mc7D1rVHaA4yoOC2DHDkkCptF4wjAm=24Rr=kkqM1ztjg@mail.gmail.com>
-Subject: Re: [RFC 6/9] dt-bindings: vendor-prefixes: add a PCI prefix for
- Qualcomm Atheros
-To: Rob Herring <robh@kernel.org>
-Cc: Kalle Valo <kvalo@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Heiko Stuebner <heiko@sntech.de>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Chris Morgan <macromorgan@hotmail.com>, 
-	Linus Walleij <linus.walleij@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Arnd Bergmann <arnd@arndb.de>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	=?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= <nfraprado@collabora.com>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Peng Fan <peng.fan@nxp.com>, 
-	Robert Richter <rrichter@amd.com>, Dan Williams <dan.j.williams@intel.com>, 
-	Terry Bowman <terry.bowman@amd.com>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
-	Huacai Chen <chenhuacai@kernel.org>, Alex Elder <elder@linaro.org>, 
-	Srini Kandagatla <srinivas.kandagatla@linaro.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: NasNqLoOIWpsx3mT7G7YsvgWq46AgreP
+X-Proofpoint-ORIG-GUID: NasNqLoOIWpsx3mT7G7YsvgWq46AgreP
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-09_02,2023-12-07_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 adultscore=0
+ impostorscore=0 suspectscore=0 spamscore=0 bulkscore=0 mlxlogscore=690
+ lowpriorityscore=0 phishscore=0 mlxscore=0 malwarescore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2311290000 definitions=main-2401090011
 
-On Mon, Jan 8, 2024 at 8:10=E2=80=AFPM Rob Herring <robh@kernel.org> wrote:
->
-> On Thu, Jan 04, 2024 at 02:01:20PM +0100, Bartosz Golaszewski wrote:
-> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> >
-> > Document the PCI vendor prefix for Qualcomm Atheros so that we can
-> > define the QCA PCI devices on device tree.
->
-> Why? vendor-prefixes.yaml is only applied to property names. 'qca'
-> should be the prefix for those.
->
-> Rob
+QCA2066 is a PCI based DBS device. It is very similar to WCN6855
+overall: they share the same PCI device ID, the same major and
+minor version numbers, the same register address, and same HAL
+descriptors etc. The most significant difference is that QCA2066
+supports 3-antenna configuration while WCN6855 doesn't. To
+differentiate them, subversion numbers are used. Currently four
+numbers are used by QCA2066: 0x1019A0E1, 0x1019B0E1, 0x1019C0E1
+and 0x1019D0E1.
 
-I didn't have any better idea. PCI devices on DT are defined by their
-"pci<vendor ID>,<model ID>" compatible, not regular human-readable
-strings and this makes checkpatch.pl complain.
+In order to read subversion register, pci.ops needs to be ready
+at that time, this change is done in the first patch.
 
-I'm open to suggestions.
+The second patch enables support for QCA2066.
 
-Bartosz
+v2:
+ - Rebased on ToT.
+
+Depends on:
+Carl Huang: public review
+  wifi: ath11k: supports 2 station interfaces
+
+Baochen Qiang (2):
+  wifi: ath11k: move pci.ops registration ahead
+  wifi: ath11k: add support for QCA2066
+
+ drivers/net/wireless/ath/ath11k/core.c | 86 ++++++++++++++++++++++++++
+ drivers/net/wireless/ath/ath11k/core.h |  1 +
+ drivers/net/wireless/ath/ath11k/mhi.c  |  1 +
+ drivers/net/wireless/ath/ath11k/pci.c  | 43 +++++++++----
+ drivers/net/wireless/ath/ath11k/pcic.c | 11 ++++
+ 5 files changed, 131 insertions(+), 11 deletions(-)
+
+
+base-commit: 2cd4e3f91f264926a6b11df948417b74d52ca9b9
+prerequisite-patch-id: 640366721125b1adea0eeabd5cdfca5e91476e7c
+-- 
+2.25.1
+
 
