@@ -1,147 +1,121 @@
-Return-Path: <linux-wireless+bounces-1636-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1637-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FEF9828A48
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jan 2024 17:46:37 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45A08828AA8
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jan 2024 18:05:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F29C0B24ADC
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jan 2024 16:46:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CA10DB231A4
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jan 2024 17:05:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FDBA3A1D2;
-	Tue,  9 Jan 2024 16:46:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99F5D3A8C5;
+	Tue,  9 Jan 2024 17:04:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="VyaeIcjt";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="zMey0KZ1"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="J+Wq9F6u"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from new3-smtp.messagingengine.com (new3-smtp.messagingengine.com [66.111.4.229])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E1D33A1D4;
-	Tue,  9 Jan 2024 16:46:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailnew.nyi.internal (Postfix) with ESMTP id 41E42580933;
-	Tue,  9 Jan 2024 11:46:27 -0500 (EST)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Tue, 09 Jan 2024 11:46:27 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1704818787; x=1704825987; bh=K+8Wy1yAZf
-	vzApUYsoKLUmFMzPbqlojtP1IkaCbKgfI=; b=VyaeIcjtDpEW47hLyV9G+DBj9k
-	HG/mtiqQbFsH1eRArSMdod8WPjm1GjlPTFPsC2yYEafy/nW+ssHQKN2xTjbFXfpI
-	ypDviyglCkWZDG5Mw2UQfrrdHIUqxeJPvMLlxAL6/psSoA1CnerjSb3Rv97vkGk1
-	QwrsOZ9nDxKKUSCNd1xIf4IO3aYxMhpODCRI1xf1MzajVea+o6HoI14qbae15gW3
-	POLaeYl+l3qNeKsI+7vOMjmLMXiJHd7r3g9Vr5fz3xYp520eLcJV0o3zvxfTFhSh
-	aPSpuzuV8EQJhyYEGbYv4AUA+86+Dx7QaKeCku00HLsw2mi/C9oCuYEsq5MA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1704818787; x=1704825987; bh=K+8Wy1yAZfvzApUYsoKLUmFMzPbq
-	lojtP1IkaCbKgfI=; b=zMey0KZ1NMHzMjkGYizpN9ueFSUqMj79vquTd4VEgRKn
-	rEQ0MfzQGiOOTSs3qj63YUdiMOKwBSkepqUNeds13SqEj+w/Dm3Q3PMe6U0Xn1tP
-	qNpaCAoKC/MYucYxYvL64pLgafOTWsHvVOpkqJ7LboqU+9eooA8yGyeWc59xmebv
-	jrb4WgZz0NSi50+hRMPyvndGxsAovnN5Us9bJG4iRhmoYZ1fniZ02Cy58VPzOYiS
-	gG5LxtmtCsqhXUTBm/fFdeVlDc4bhrrI1N+PM5ZEQIlaGE7c7MHh52GOplPcvhjO
-	D/6/yWEUc3HvV5DDwolEB3XVHlf3UuFey9IVhoY0EA==
-X-ME-Sender: <xms:YHidZWwXxCs0BNw-jN_XU-9eK8zaqKSCw7D8QyHK_Q9aRH_ZETUqng>
-    <xme:YHidZSQdD1c5ccCAimIb6Dsy1jviMDF4tG1AiTig4kudIS_o7LdkCmvxEP0d_Z7Kt
-    DKHKI_r5SZdnMSmzdw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvdehledgleduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:YHidZYUYLrLk8L1MUZljRLK9L29wd0ixRqxCprN_HIBA_wJH9nL0LA>
-    <xmx:YHidZchaJ303hNGYonHCLtZ9daJOcVKQUkt30mk08WrMozi7P_OrPQ>
-    <xmx:YHidZYAb9QGB6jaZr_TLwhZnpSrwWA7ddbDvRQH6eShmkmDablHDgQ>
-    <xmx:Y3idZVU8vFz4Xjvj8h-Ozx7C1awdnweF5b71NNbJigmjHymjox90sQ>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 897C8B6008D; Tue,  9 Jan 2024 11:46:24 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-1364-ga51d5fd3b7-fm-20231219.001-ga51d5fd3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9693A1C2
+	for <linux-wireless@vger.kernel.org>; Tue,  9 Jan 2024 17:04:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 409Gxrx9016339;
+	Tue, 9 Jan 2024 17:04:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=Px4t59WrYaPZaYlhjnIZwc2r0Kl0CuhxBplCQj8p9YA=; b=J+
+	Wq9F6uJHumts9sU9Gqy6hJ6e5dVRRJiKk8ZFo25A7HdzI97Yw/pA82mZFzD0k6PK
+	bZwnwXfiZFW2dVFueUtgm5gaBdaqoU4yUBMQH1OnRSTOWEfVoP1vlU3BtS1xNUsu
+	AxFokWNpieVbPortzGJUY5XWBlRUzNItl/u9GbZBCOKoSAb8U4n9diGAQQu+flkz
+	c7ytSbbpSw5jZV6qdjh2/JsT17Hf3ZVSOfh93PbH5Zgrl8BIz7gB7wVYWCzjLBx+
+	gUS8ZhJpua+anV3y2mTHqLPvo4Ss3iL0uAMGhOOHP67It4RUCMx5vX8hpUlcOZfx
+	S+rRolx0aqBkuZOoGZng==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vh85t0ayh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 09 Jan 2024 17:04:43 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 409H4gCo030936
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 9 Jan 2024 17:04:42 GMT
+Received: from [10.110.103.239] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Tue, 9 Jan
+ 2024 09:04:41 -0800
+Message-ID: <c704b3cc-d6e0-4231-9602-47a3e89b2f1e@quicinc.com>
+Date: Tue, 9 Jan 2024 09:04:40 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <477477cd-a35e-4964-b8b3-8040255c3bf1@app.fastmail.com>
-In-Reply-To: <87y1cycv9h.fsf@kernel.org>
-References: <20240104130123.37115-1-brgl@bgdev.pl>
- <20240104130123.37115-9-brgl@bgdev.pl>
- <15443d5d-6544-45d0-afeb-b23e6a041ecf@quicinc.com>
- <87jzoizwz7.fsf@kernel.org>
- <CAGXv+5FhYY+qyyT8wxY5DggvWPibfM2ypHVKQbsJZ30VkZDAkQ@mail.gmail.com>
- <87bk9uzum9.fsf@kernel.org>
- <5904461c-ca3c-4eb1-a44a-876872234545@app.fastmail.com>
- <87y1cycv9h.fsf@kernel.org>
-Date: Tue, 09 Jan 2024 17:46:03 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Kalle Valo" <kvalo@kernel.org>
-Cc: "Chen-Yu Tsai" <wenst@chromium.org>,
- "Jeff Johnson" <quic_jjohnson@quicinc.com>,
- "Bartosz Golaszewski" <brgl@bgdev.pl>,
- "David S . Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>, "Rob Herring" <robh+dt@kernel.org>,
- "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
- "Conor Dooley" <conor+dt@kernel.org>,
- "Bjorn Andersson" <andersson@kernel.org>,
- "Konrad Dybcio" <konrad.dybcio@linaro.org>,
- "Catalin Marinas" <catalin.marinas@arm.com>,
- "Will Deacon" <will@kernel.org>, "Bjorn Helgaas" <bhelgaas@google.com>,
- =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
- "Jernej Skrabec" <jernej.skrabec@gmail.com>,
- "Chris Morgan" <macromorgan@hotmail.com>,
- "Linus Walleij" <linus.walleij@linaro.org>,
- "Geert Uytterhoeven" <geert+renesas@glider.be>,
- "Neil Armstrong" <neil.armstrong@linaro.org>,
- =?UTF-8?Q?N=C3=ADcolas_F=2E_R=2E_A=2E_Prado?= <nfraprado@collabora.com>,
- "Marek Szyprowski" <m.szyprowski@samsung.com>,
- "Peng Fan" <peng.fan@nxp.com>, "Robert Richter" <rrichter@amd.com>,
- "Dan Williams" <dan.j.williams@intel.com>,
- "Jonathan Cameron" <Jonathan.Cameron@huawei.com>,
- "Terry Bowman" <terry.bowman@amd.com>,
- "Kuppuswamy Sathyanarayanan"
- <sathyanarayanan.kuppuswamy@linux.intel.com>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- "Huacai Chen" <chenhuacai@kernel.org>, "Alex Elder" <elder@linaro.org>,
- "Srinivas Kandagatla" <srinivas.kandagatla@linaro.org>,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- linux-wireless@vger.kernel.org, Netdev <netdev@vger.kernel.org>,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-pci@vger.kernel.org,
- "Bartosz Golaszewski" <bartosz.golaszewski@linaro.org>
-Subject: Re: [RFC 8/9] PCI/pwrseq: add a pwrseq driver for QCA6390
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] wifi: ath11k: fix IOMMU errors on buffer rings
+Content-Language: en-US
+To: Kalle Valo <kvalo@kernel.org>, Zhenghao Gu <imguzh@gmail.com>
+CC: <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+References: <20231212031914.47339-1-imguzh@gmail.com>
+ <8734v6ecp1.fsf@kernel.org>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <8734v6ecp1.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: -ukKjeIaoSKmWrfVNik3bwhDetuo-YhJ
+X-Proofpoint-GUID: -ukKjeIaoSKmWrfVNik3bwhDetuo-YhJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-09_01,2023-12-07_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
+ malwarescore=0 suspectscore=0 mlxlogscore=408 clxscore=1015
+ priorityscore=1501 adultscore=0 impostorscore=0 phishscore=0 spamscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2311290000 definitions=main-2401090138
 
-On Tue, Jan 9, 2024, at 17:43, Kalle Valo wrote:
-> "Arnd Bergmann" <arnd@arndb.de> writes:
->> On Tue, Jan 9, 2024, at 11:09, Kalle Valo wrote:
->>
->> If this is indeed what you want, it's still better to do the
->> equivalent expression in PCIE_PWRSEQ_QCA6390 rather than ATH11K:
->>
->> config PCIE_PWRSEQ_QCA6390
->>       tristate "PCIe Power Sequencing driver for QCA6390"
->>       default ATH11K && ARCH_QCOM
->
-> Sounds good to me but should it be 'default ATH11K_PCI && ARCH_QCOM'? My
-> understanding is that we don't need PWRSEQ for ATH11K_AHB devices.
+On 1/9/2024 7:41 AM, Kalle Valo wrote:
+> Zhenghao Gu <imguzh@gmail.com> writes:
+> 
+>> virt_to_phys doesn't work on systems with IOMMU enabled,
+>> which have non-identity physical-to-IOVA mappings.
+> 
+> Can you give an example of such system? Just curious where you are
+> seeing this.
+> 
+>> It leads to IO_PAGE_FAULTs like this:
+>> [IO_PAGE_FAULT domain=0x0023 address=0x1cce00000 flags=0x0020]
+>> and no link can be established.
+> 
+> What do you mean with link in this context? Are you talking about 802.11
+> association?
+> 
+>> This patch changes that to dma_map_single(), which works correctly.
+> 
+> Good catch. And virt_to_phys() documentation even says this:
+> 
+>  *	This function does not give bus mappings for DMA transfers. In
+>  *	almost all conceivable cases a device driver should not be using
+>  *	this function
+> 
+>> Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
+>> Signed-off-by: Zhenghao Gu <imguzh@gmail.com>
+> 
+> Jeff, are you ok with this?
+> 
+> I did some cosmetics changes in the pending branch (removed unnecessary
+> parenthesis, reverse xmas tree etc), please check:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=fefa43d63e1928fce6e8c2bb626900e9ce98ca69
+> 
+LGTM, incorporates the v1 feedback from the engineering team
 
-Right, that is better.
-
-    Arnd
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
