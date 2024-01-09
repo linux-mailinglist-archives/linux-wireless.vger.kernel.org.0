@@ -1,119 +1,138 @@
-Return-Path: <linux-wireless+bounces-1609-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1610-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 616BE827D1A
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jan 2024 03:56:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFC14827D49
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jan 2024 04:14:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E86F2856E8
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jan 2024 02:56:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D3FC285229
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jan 2024 03:14:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F28E257B;
-	Tue,  9 Jan 2024 02:56:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I+gGxxSN"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70B4B257B;
+	Tue,  9 Jan 2024 03:14:30 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08EFC5665;
-	Tue,  9 Jan 2024 02:56:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80EB9C43390;
-	Tue,  9 Jan 2024 02:56:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704768993;
-	bh=b4jGBQYI3SAR2SqDXJaYSqlSOJc84bSHKk28Q7eQgnw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=I+gGxxSNtyHRtO2VzhAKG1nYxNlizcmiZoXKFCvtLD/bgKnVZGF5THvcV9vOW7Y05
-	 yUZgE0r1M3irhKm3qay8Y69ltwwDSXV2AI9B0sipIr/4srk23nvmBjZoTL8WoIafpO
-	 WG29mqY7ZkOyanTcGEs7uBduM+Wt+Yj2iEKdthTMAljDgW50WynNYvHtr6dn4ffuH/
-	 llRnMeOprdU7EPuL1qqzKYnVFUNQrpzul6nnayxvMmngpwI1P2cmQYo64JNrKFFfZ/
-	 Vi+k4ksax1JmRik1uyJnNoXTg9oTqQrmjMIX1W/sTViYDlaqk0PBgvorXSKtuIrIyI
-	 sFImw2+6UsTCQ==
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2ccec119587so28352311fa.0;
-        Mon, 08 Jan 2024 18:56:33 -0800 (PST)
-X-Gm-Message-State: AOJu0Yzze1mVJlQ+S04p1QibOWengBh4t3O5kMef8019KWu8RJc5fHYg
-	n0zNzitpLos038mBSSW1/tj3aXJHUkk/3o1ZkA==
-X-Google-Smtp-Source: AGHT+IFHEy7UAVttPiN+sVOsHl8ngscwYS/9Rb/gv44VqIDfv2qtD5du9ju0uTnDbeescX9gPj6PS5hAvBUURaQ0pxw=
-X-Received: by 2002:a2e:b7d5:0:b0:2cc:7814:11b with SMTP id
- p21-20020a2eb7d5000000b002cc7814011bmr2061459ljo.65.1704768991715; Mon, 08
- Jan 2024 18:56:31 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EC7123D5
+	for <linux-wireless@vger.kernel.org>; Tue,  9 Jan 2024 03:14:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4093EFTw8157223, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 4093EFTw8157223
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 9 Jan 2024 11:14:15 +0800
+Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Tue, 9 Jan 2024 11:14:16 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.34; Tue, 9 Jan 2024 11:14:15 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::e4c4:c4f:4e4c:d23c]) by
+ RTEXMBS04.realtek.com.tw ([fe80::e4c4:c4f:4e4c:d23c%5]) with mapi id
+ 15.01.2507.035; Tue, 9 Jan 2024 11:14:15 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Martin Kaistra <martin.kaistra@linutronix.de>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC: Jes Sorensen <Jes.Sorensen@gmail.com>, Kalle Valo <kvalo@kernel.org>,
+        Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        Sebastian Andrzej Siewior
+	<bigeasy@linutronix.de>
+Subject: RE: [PATCH] wifi: rtl8xxxu: enable channel switch support
+Thread-Topic: [PATCH] wifi: rtl8xxxu: enable channel switch support
+Thread-Index: AQHaQiODHEhpK9S3y0SNBT3W3hf7YbDQzGgg
+Date: Tue, 9 Jan 2024 03:14:15 +0000
+Message-ID: <3bc29348011242789a7ba1c2883d9b3a@realtek.com>
+References: <20240108111103.121378-1-martin.kaistra@linutronix.de>
+In-Reply-To: <20240108111103.121378-1-martin.kaistra@linutronix.de>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXMBS06.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240104130123.37115-1-brgl@bgdev.pl> <20240104130123.37115-7-brgl@bgdev.pl>
- <20240108191052.GA1893484-robh@kernel.org> <CAMRc=Mc7D1rVHaA4yoOC2DHDkkCptF4wjAm=24Rr=kkqM1ztjg@mail.gmail.com>
-In-Reply-To: <CAMRc=Mc7D1rVHaA4yoOC2DHDkkCptF4wjAm=24Rr=kkqM1ztjg@mail.gmail.com>
-From: Rob Herring <robh@kernel.org>
-Date: Mon, 8 Jan 2024 19:56:19 -0700
-X-Gmail-Original-Message-ID: <CAL_JsqKGrW-v=fr_9NYKg-8cho_-XbVQ92eXpjYYC1ma0_8UuA@mail.gmail.com>
-Message-ID: <CAL_JsqKGrW-v=fr_9NYKg-8cho_-XbVQ92eXpjYYC1ma0_8UuA@mail.gmail.com>
-Subject: Re: [RFC 6/9] dt-bindings: vendor-prefixes: add a PCI prefix for
- Qualcomm Atheros
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Kalle Valo <kvalo@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Heiko Stuebner <heiko@sntech.de>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Chris Morgan <macromorgan@hotmail.com>, 
-	Linus Walleij <linus.walleij@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Arnd Bergmann <arnd@arndb.de>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	=?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= <nfraprado@collabora.com>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Peng Fan <peng.fan@nxp.com>, 
-	Robert Richter <rrichter@amd.com>, Dan Williams <dan.j.williams@intel.com>, 
-	Terry Bowman <terry.bowman@amd.com>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
-	Huacai Chen <chenhuacai@kernel.org>, Alex Elder <elder@linaro.org>, 
-	Srini Kandagatla <srinivas.kandagatla@linaro.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-On Mon, Jan 8, 2024 at 12:22=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.pl>=
- wrote:
->
-> On Mon, Jan 8, 2024 at 8:10=E2=80=AFPM Rob Herring <robh@kernel.org> wrot=
-e:
-> >
-> > On Thu, Jan 04, 2024 at 02:01:20PM +0100, Bartosz Golaszewski wrote:
-> > > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> > >
-> > > Document the PCI vendor prefix for Qualcomm Atheros so that we can
-> > > define the QCA PCI devices on device tree.
-> >
-> > Why? vendor-prefixes.yaml is only applied to property names. 'qca'
-> > should be the prefix for those.
-> >
-> > Rob
->
-> I didn't have any better idea. PCI devices on DT are defined by their
-> "pci<vendor ID>,<model ID>" compatible, not regular human-readable
-> strings and this makes checkpatch.pl complain.
->
-> I'm open to suggestions.
 
-The checkpatch.pl check predates schemas and we could consider just
-dropping it. The only thing it provides is checking a patch rather
-than the tree (which the schema do). It's pretty hacky because it just
-greps the tree for a compatible string which is not entirely accurate.
-Also, we can extract an exact list of compatibles with
-"dt-extract-compatibles" which would make a better check, but I'm not
-sure making dtschema a dependency on checkpatch would be good.
 
-The other option is just ignore the warning. PCI compatibles are fairly rar=
-e.
+> -----Original Message-----
+> From: Martin Kaistra <martin.kaistra@linutronix.de>
+> Sent: Monday, January 8, 2024 7:11 PM
+> To: linux-wireless@vger.kernel.org
+> Cc: Jes Sorensen <Jes.Sorensen@gmail.com>; Kalle Valo <kvalo@kernel.org>;=
+ Ping-Ke Shih
+> <pkshih@realtek.com>; Bitterblue Smith <rtl8821cerfe2@gmail.com>; Sebasti=
+an Andrzej Siewior
+> <bigeasy@linutronix.de>
+> Subject: [PATCH] wifi: rtl8xxxu: enable channel switch support
+>=20
+> The CSA countdown in the beacon frames, which are sent out by firmware,
+> needs to get updated by the driver. Do this at the end of the
+> update_beacon_work function by sleeping for a bit shorter than the
+> beacon interval and then either scheduling another run of
+> update_beacon_work or calling ieee80211_csa_finish() when the end of the
+> countdown is reached.
+>=20
+> Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
+> ---
+>  .../net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c   | 13 ++++++++++++-
+>  1 file changed, 12 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> index 5fddbd6594a24..c4f3f52bde303 100644
+> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> @@ -5696,7 +5696,7 @@ static void rtl8xxxu_send_beacon_frame(struct ieee8=
+0211_hw *hw,
+>         struct rtl8xxxu_priv *priv =3D hw->priv;
+>         struct sk_buff *skb =3D ieee80211_beacon_get(hw, vif, 0);
+>         struct device *dev =3D &priv->udev->dev;
+> -       int retry;
+> +       int retry, interval;
+>         u8 val8;
+>=20
+>         /* BCN_VALID, write 1 to clear, cleared by SW */
+> @@ -5722,6 +5722,15 @@ static void rtl8xxxu_send_beacon_frame(struct ieee=
+80211_hw *hw,
+>=20
+>         if (!retry)
+>                 dev_err(dev, "%s: Failed to read beacon valid bit\n", __f=
+unc__);
+> +
+> +       if (vif->bss_conf.csa_active) {
+> +               interval =3D 1024 * vif->bss_conf.beacon_int;
+> +               usleep_range(interval - 2048, interval - 1024);
 
-Rob
+Can we use a delayed work? And, re-schedule it as early as possible to exec=
+ute
+this function in accurate interval of beacon_int, otherwise processing time=
+ of
+this function will be accumulated.=20
+
+> +               if (ieee80211_beacon_cntdwn_is_complete(vif))
+> +                       ieee80211_csa_finish(vif);
+> +               else
+> +                       schedule_work(&priv->update_beacon_work);
+> +       }
+>  }
+>=20
+
+
 
