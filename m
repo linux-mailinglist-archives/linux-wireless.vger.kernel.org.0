@@ -1,178 +1,442 @@
-Return-Path: <linux-wireless+bounces-1663-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1664-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4CDD829B77
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jan 2024 14:37:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40354829B95
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jan 2024 14:46:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 701911F217C8
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jan 2024 13:37:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9F3A2813E1
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jan 2024 13:46:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C3A4495F9;
-	Wed, 10 Jan 2024 13:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28378495C8;
+	Wed, 10 Jan 2024 13:46:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="TgBFwqHI"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EEyNnEQ+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from forward204c.mail.yandex.net (forward204c.mail.yandex.net [178.154.239.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793E4495F4
-	for <linux-wireless@vger.kernel.org>; Wed, 10 Jan 2024 13:36:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
-Received: from forward100c.mail.yandex.net (forward100c.mail.yandex.net [IPv6:2a02:6b8:c03:500:1:45:d181:d100])
-	by forward204c.mail.yandex.net (Yandex) with ESMTP id B5D37669E0
-	for <linux-wireless@vger.kernel.org>; Wed, 10 Jan 2024 16:30:33 +0300 (MSK)
-Received: from mail-nwsmtp-smtp-production-canary-88.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-canary-88.sas.yp-c.yandex.net [IPv6:2a02:6b8:c08:1215:0:640:367b:0])
-	by forward100c.mail.yandex.net (Yandex) with ESMTP id E28CD60AEA;
-	Wed, 10 Jan 2024 16:30:25 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-canary-88.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id OUioTjPwR0U0-gp35Xlqy;
-	Wed, 10 Jan 2024 16:30:25 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1704893425; bh=juwuPDl4uqnBvOF7vL8FPFfRT2cdTQ/A3G/zNPWGOmc=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=TgBFwqHIBiPJFNNjAHyCm5k6aCmX5WTnf9BjgaBjqB4MIvtdSoHAeWVIGQ3CtT22q
-	 7fDrlloWlfwMn8ytzM02/1vivJIOh3lOsw3Fl8AJFVw5z6raslLUUCrNMyWJlEmVK2
-	 5K89VWHCvW6kMnT6iB33WLHSsv+XH9tRuieI94GE=
-Authentication-Results: mail-nwsmtp-smtp-production-canary-88.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From: Dmitry Antipov <dmantipov@yandex.ru>
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: Kalle Valo <kvalo@kernel.org>,
-	linux-wireless@vger.kernel.org,
-	Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH] wifi: rtw88: use kstrtoX_from_user() in debugfs handlers
-Date: Wed, 10 Jan 2024 16:29:28 +0300
-Message-ID: <20240110132930.438828-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30012495C5
+	for <linux-wireless@vger.kernel.org>; Wed, 10 Jan 2024 13:46:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-40e4d64a431so20277165e9.0
+        for <linux-wireless@vger.kernel.org>; Wed, 10 Jan 2024 05:46:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1704894398; x=1705499198; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1vJ3uVgacrcDR1lT55/ZpNp2hlDHlF2p+h6Jub1OjAA=;
+        b=EEyNnEQ+O6aMO5Q2s8p945EDIAUDMN+Ys5ijkiCq+9U+hI8c6zkc+AeVZpyVZ+R2MC
+         wWz0EHJne8CdNxINMceOxILXkr9xwKnAiYbmBb56Qp94hHjaLid2Xs+3iLfTyS3VMY4u
+         2OgVCaFnJLtrYiOZ0bT1n9xef8DVtV+IZzwhv5cx3udS84skYSnvn3NWQlA/O05UQISt
+         sJDFh3MPV/PmUZ/nswdP3LKVrocM6H61QMMTTyUJtwOFc3Y4HqOJEOtbsB0E/Hn8w0mr
+         ig7OVUp0pn2VMg5+9BNwJs0QHQwqTWikENWGP4kpRVpeN4lXZaHJOD8QvjPfXHwyoIly
+         FA8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704894398; x=1705499198;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=1vJ3uVgacrcDR1lT55/ZpNp2hlDHlF2p+h6Jub1OjAA=;
+        b=M8rKELGJ+tiQWh2ed9i5LBxmMwboaidxodpJom7TRRSq3VO34imW8NFfZltSCfGz2s
+         poCJ9CXV6+Xuv5uwyCsPeSCVwwz+VS2Z5tG5+E8SQCPZins5buE1yzmZ8X/0dVTWvN34
+         fPcH9CK3WB0Sjrnq/U2Vz0qPEXXo3ujMJPnDCjgX7W/RR71menyFCk7xzgO73sge8A+0
+         sbNP812TFEyv7DEzmSj7YxdeeTj5aw6z/qSI4ofuXimMuVz2Nv3Mb6e2wm/PR+Wlf72D
+         28YiBP4TivwrIajR/XJEfY3SuDTVwzgwsMBvAVEbjbJXbPZZYilt59bCueUQQYkvBzwO
+         BJ6w==
+X-Gm-Message-State: AOJu0Yy1rrtAlr5ItJrMLzlYPKHrLINhUnpVovrQN6bctO8OihI3qnt+
+	fSAVaqRf8ISfWX8zc14Rv+8Y9Tt7Ds0=
+X-Google-Smtp-Source: AGHT+IE8ilBR3Vy/0FbBILbH/K3QY9Ru6WbjAA3X74c5m2mOpkCFl6ZvnPU7ww5ZD6F4U5y7ZTvvBw==
+X-Received: by 2002:a05:600c:468a:b0:40e:3d8d:4cc1 with SMTP id p10-20020a05600c468a00b0040e3d8d4cc1mr622382wmo.71.1704894398080;
+        Wed, 10 Jan 2024 05:46:38 -0800 (PST)
+Received: from [192.168.1.50] ([81.196.40.51])
+        by smtp.gmail.com with ESMTPSA id k38-20020a05600c1ca600b0040e5945307esm1128716wms.40.2024.01.10.05.46.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 Jan 2024 05:46:37 -0800 (PST)
+Message-ID: <400ec3ff-2ab7-469f-b32f-43dfd62621f9@gmail.com>
+Date: Wed, 10 Jan 2024 15:46:35 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Ping-Ke Shih <pkshih@realtek.com>,
+ Larry Finger <Larry.Finger@lwfinger.net>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: [PATCH v2] wifi: rtlwifi: rtl_usb: Use sync register writes
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-When 'sscanf()' is not needed to scan an input, prefer common
-'kstrtoX_from_user()' over 'rtw_debugfs_copy_from_user()' with
-following 'kstrtoX()'. Minor adjustments, compile tested only.
+Currently rtl_usb performs register writes using the async
+usb_submit_urb() function. This appears to work fine for the RTL8192CU,
+but the RTL8192DU (soon to be supported by rtlwifi) has a problem:
+it transmits everything at the 1M rate in the 2.4 GHz band. (The 5 GHz
+band is still untested.)
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+With this patch, rtl_usb performs the register writes using the
+synchronous usb_control_msg() function, and the RTL8192DU works
+normally. The RTL8192CU still works.
+
+The vendor drivers use the async writes in only one function,
+rtl8192du_trigger_gpio_0 / rtl8192cu_trigger_gpio_0, which probably
+doesn't even run in real life. They use sync writes everywhere else.
+
+Also, remove "sync" and "async" from the names of the members of
+struct rtl_io to avoid confusion:
+
+write{8,16,32}_async -> write{8,16,32}
+ read{8,16,32}_sync  ->  read{8,16,32}
+
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 ---
- drivers/net/wireless/realtek/rtw88/debug.c | 44 ++++------------------
- 1 file changed, 8 insertions(+), 36 deletions(-)
+v2:
+ - Rename the members of struct rtl_io.
+---
+ drivers/net/wireless/realtek/rtlwifi/pci.c  |  12 +-
+ drivers/net/wireless/realtek/rtlwifi/usb.c  | 163 ++++++--------------
+ drivers/net/wireless/realtek/rtlwifi/wifi.h |  30 ++--
+ 3 files changed, 66 insertions(+), 139 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/debug.c b/drivers/net/wireless/realtek/rtw88/debug.c
-index 1b2ad81838be..5b2036798159 100644
---- a/drivers/net/wireless/realtek/rtw88/debug.c
-+++ b/drivers/net/wireless/realtek/rtw88/debug.c
-@@ -316,23 +316,13 @@ static ssize_t rtw_debugfs_set_single_input(struct file *filp,
+diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
+index 96ce05bcf0b3..d059cfe5a2a9 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/pci.c
++++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
+@@ -378,13 +378,13 @@ static void _rtl_pci_io_handler_init(struct device *dev,
+ 
+ 	rtlpriv->io.dev = dev;
+ 
+-	rtlpriv->io.write8_async = pci_write8_async;
+-	rtlpriv->io.write16_async = pci_write16_async;
+-	rtlpriv->io.write32_async = pci_write32_async;
++	rtlpriv->io.write8 = pci_write8_async;
++	rtlpriv->io.write16 = pci_write16_async;
++	rtlpriv->io.write32 = pci_write32_async;
+ 
+-	rtlpriv->io.read8_sync = pci_read8_sync;
+-	rtlpriv->io.read16_sync = pci_read16_sync;
+-	rtlpriv->io.read32_sync = pci_read32_sync;
++	rtlpriv->io.read8 = pci_read8_sync;
++	rtlpriv->io.read16 = pci_read16_sync;
++	rtlpriv->io.read32 = pci_read32_sync;
+ }
+ 
+ static bool _rtl_update_earlymode_info(struct ieee80211_hw *hw,
+diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c b/drivers/net/wireless/realtek/rtlwifi/usb.c
+index 30bf2775a335..7b91d882f969 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/usb.c
++++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
+@@ -23,86 +23,23 @@ MODULE_DESCRIPTION("USB basic driver for rtlwifi");
+ 
+ #define MAX_USBCTRL_VENDORREQ_TIMES		10
+ 
+-static void usbctrl_async_callback(struct urb *urb)
+-{
+-	if (urb) {
+-		/* free dr */
+-		kfree(urb->setup_packet);
+-		/* free databuf */
+-		kfree(urb->transfer_buffer);
+-	}
+-}
+-
+-static int _usbctrl_vendorreq_async_write(struct usb_device *udev, u8 request,
+-					  u16 value, u16 index, void *pdata,
+-					  u16 len)
+-{
+-	int rc;
+-	unsigned int pipe;
+-	u8 reqtype;
+-	struct usb_ctrlrequest *dr;
+-	struct urb *urb;
+-	const u16 databuf_maxlen = REALTEK_USB_VENQT_MAX_BUF_SIZE;
+-	u8 *databuf;
+-
+-	if (WARN_ON_ONCE(len > databuf_maxlen))
+-		len = databuf_maxlen;
+-
+-	pipe = usb_sndctrlpipe(udev, 0); /* write_out */
+-	reqtype =  REALTEK_USB_VENQT_WRITE;
+-
+-	dr = kzalloc(sizeof(*dr), GFP_ATOMIC);
+-	if (!dr)
+-		return -ENOMEM;
+-
+-	databuf = kzalloc(databuf_maxlen, GFP_ATOMIC);
+-	if (!databuf) {
+-		kfree(dr);
+-		return -ENOMEM;
+-	}
+-
+-	urb = usb_alloc_urb(0, GFP_ATOMIC);
+-	if (!urb) {
+-		kfree(databuf);
+-		kfree(dr);
+-		return -ENOMEM;
+-	}
+-
+-	dr->bRequestType = reqtype;
+-	dr->bRequest = request;
+-	dr->wValue = cpu_to_le16(value);
+-	dr->wIndex = cpu_to_le16(index);
+-	dr->wLength = cpu_to_le16(len);
+-	/* data are already in little-endian order */
+-	memcpy(databuf, pdata, len);
+-	usb_fill_control_urb(urb, udev, pipe,
+-			     (unsigned char *)dr, databuf, len,
+-			     usbctrl_async_callback, NULL);
+-	rc = usb_submit_urb(urb, GFP_ATOMIC);
+-	if (rc < 0) {
+-		kfree(databuf);
+-		kfree(dr);
+-	}
+-	usb_free_urb(urb);
+-	return rc;
+-}
+-
+-static int _usbctrl_vendorreq_sync_read(struct usb_device *udev, u8 request,
+-					u16 value, u16 index, void *pdata,
+-					u16 len)
++static void _usbctrl_vendorreq_sync(struct usb_device *udev, u8 reqtype,
++				   u16 value, void *pdata, u16 len)
  {
- 	struct seq_file *seqpriv = (struct seq_file *)filp->private_data;
- 	struct rtw_debugfs_priv *debugfs_priv = seqpriv->private;
--	struct rtw_dev *rtwdev = debugfs_priv->rtwdev;
--	char tmp[32 + 1];
- 	u32 input;
--	int num;
- 	int ret;
+ 	unsigned int pipe;
+ 	int status;
+-	u8 reqtype;
+ 	int vendorreq_times = 0;
+ 	static int count;
  
--	ret = rtw_debugfs_copy_from_user(tmp, sizeof(tmp), buffer, count, 1);
-+	ret = kstrtou32_from_user(buffer, count, 0, &input);
- 	if (ret)
- 		return ret;
+-	pipe = usb_rcvctrlpipe(udev, 0); /* read_in */
+-	reqtype =  REALTEK_USB_VENQT_READ;
++	if (reqtype == REALTEK_USB_VENQT_READ)
++		pipe = usb_rcvctrlpipe(udev, 0); /* read_in */
++	else
++		pipe = usb_sndctrlpipe(udev, 0); /* write_out */
  
--	num = kstrtoint(tmp, 0, &input);
+ 	do {
+-		status = usb_control_msg(udev, pipe, request, reqtype, value,
+-					 index, pdata, len, 1000);
++		status = usb_control_msg(udev, pipe, REALTEK_USB_VENQT_CMD_REQ,
++					 reqtype, value, REALTEK_USB_VENQT_CMD_IDX,
++					 pdata, len, 1000);
+ 		if (status < 0) {
+ 			/* firmware download is checksumed, don't retry */
+ 			if ((value >= FW_8192C_START_ADDRESS &&
+@@ -114,18 +51,15 @@ static int _usbctrl_vendorreq_sync_read(struct usb_device *udev, u8 request,
+ 	} while (++vendorreq_times < MAX_USBCTRL_VENDORREQ_TIMES);
+ 
+ 	if (status < 0 && count++ < 4)
+-		pr_err("reg 0x%x, usbctrl_vendorreq TimeOut! status:0x%x value=0x%x\n",
+-		       value, status, *(u32 *)pdata);
+-	return status;
++		pr_err("reg 0x%x, usbctrl_vendorreq TimeOut! status:0x%x value=0x%x reqtype=0x%x\n",
++		       value, status, *(u32 *)pdata, reqtype);
+ }
+ 
+ static u32 _usb_read_sync(struct rtl_priv *rtlpriv, u32 addr, u16 len)
+ {
+ 	struct device *dev = rtlpriv->io.dev;
+ 	struct usb_device *udev = to_usb_device(dev);
+-	u8 request;
+ 	u16 wvalue;
+-	u16 index;
+ 	__le32 *data;
+ 	unsigned long flags;
+ 
+@@ -134,14 +68,33 @@ static u32 _usb_read_sync(struct rtl_priv *rtlpriv, u32 addr, u16 len)
+ 		rtlpriv->usb_data_index = 0;
+ 	data = &rtlpriv->usb_data[rtlpriv->usb_data_index];
+ 	spin_unlock_irqrestore(&rtlpriv->locks.usb_lock, flags);
+-	request = REALTEK_USB_VENQT_CMD_REQ;
+-	index = REALTEK_USB_VENQT_CMD_IDX; /* n/a */
+ 
+ 	wvalue = (u16)addr;
+-	_usbctrl_vendorreq_sync_read(udev, request, wvalue, index, data, len);
++	_usbctrl_vendorreq_sync(udev, REALTEK_USB_VENQT_READ, wvalue, data, len);
+ 	return le32_to_cpu(*data);
+ }
+ 
++
++static void _usb_write_sync(struct rtl_priv *rtlpriv, u32 addr, u32 val, u16 len)
++{
++	struct device *dev = rtlpriv->io.dev;
++	struct usb_device *udev = to_usb_device(dev);
++	unsigned long flags;
++	__le32 *data;
++	u16 wvalue;
++
++	spin_lock_irqsave(&rtlpriv->locks.usb_lock, flags);
++	if (++rtlpriv->usb_data_index >= RTL_USB_MAX_RX_COUNT)
++		rtlpriv->usb_data_index = 0;
++	data = &rtlpriv->usb_data[rtlpriv->usb_data_index];
++	spin_unlock_irqrestore(&rtlpriv->locks.usb_lock, flags);
++
++	wvalue = (u16)(addr & 0x0000ffff);
++	*data = cpu_to_le32(val);
++
++	_usbctrl_vendorreq_sync(udev, REALTEK_USB_VENQT_WRITE, wvalue, data, len);
++}
++
+ static u8 _usb_read8_sync(struct rtl_priv *rtlpriv, u32 addr)
+ {
+ 	return (u8)_usb_read_sync(rtlpriv, addr, 1);
+@@ -157,45 +110,19 @@ static u32 _usb_read32_sync(struct rtl_priv *rtlpriv, u32 addr)
+ 	return _usb_read_sync(rtlpriv, addr, 4);
+ }
+ 
+-static void _usb_write_async(struct usb_device *udev, u32 addr, u32 val,
+-			     u16 len)
+-{
+-	u8 request;
+-	u16 wvalue;
+-	u16 index;
+-	__le32 data;
+-	int ret;
 -
--	if (num) {
--		rtw_warn(rtwdev, "kstrtoint failed\n");
--		return num;
--	}
+-	request = REALTEK_USB_VENQT_CMD_REQ;
+-	index = REALTEK_USB_VENQT_CMD_IDX; /* n/a */
+-	wvalue = (u16)(addr&0x0000ffff);
+-	data = cpu_to_le32(val);
 -
- 	debugfs_priv->cb_data = input;
- 
- 	return count;
-@@ -485,19 +475,12 @@ static ssize_t rtw_debugfs_set_fix_rate(struct file *filp,
- 	struct rtw_dev *rtwdev = debugfs_priv->rtwdev;
- 	struct rtw_dm_info *dm_info = &rtwdev->dm_info;
- 	u8 fix_rate;
--	char tmp[32 + 1];
- 	int ret;
- 
--	ret = rtw_debugfs_copy_from_user(tmp, sizeof(tmp), buffer, count, 1);
-+	ret = kstrtou8_from_user(buffer, count, 0, &fix_rate);
- 	if (ret)
- 		return ret;
- 
--	ret = kstrtou8(tmp, 0, &fix_rate);
--	if (ret) {
--		rtw_warn(rtwdev, "invalid args, [rate]\n");
--		return ret;
--	}
+-	ret = _usbctrl_vendorreq_async_write(udev, request, wvalue,
+-					     index, &data, len);
+-	if (ret < 0)
+-		dev_err(&udev->dev, "error %d writing at 0x%x\n", ret, addr);
+-}
 -
- 	dm_info->fix_rate = fix_rate;
- 
- 	return count;
-@@ -879,20 +862,13 @@ static ssize_t rtw_debugfs_set_coex_enable(struct file *filp,
- 	struct rtw_debugfs_priv *debugfs_priv = seqpriv->private;
- 	struct rtw_dev *rtwdev = debugfs_priv->rtwdev;
- 	struct rtw_coex *coex = &rtwdev->coex;
--	char tmp[32 + 1];
- 	bool enable;
- 	int ret;
- 
--	ret = rtw_debugfs_copy_from_user(tmp, sizeof(tmp), buffer, count, 1);
-+	ret = kstrtobool_from_user(buffer, count, &enable);
- 	if (ret)
- 		return ret;
- 
--	ret = kstrtobool(tmp, &enable);
--	if (ret) {
--		rtw_warn(rtwdev, "invalid arguments\n");
--		return ret;
--	}
+-static void _usb_write8_async(struct rtl_priv *rtlpriv, u32 addr, u8 val)
++static void _usb_write8_sync(struct rtl_priv *rtlpriv, u32 addr, u8 val)
+ {
+-	struct device *dev = rtlpriv->io.dev;
 -
- 	mutex_lock(&rtwdev->mutex);
- 	coex->manual_control = !enable;
- 	mutex_unlock(&rtwdev->mutex);
-@@ -951,18 +927,13 @@ static ssize_t rtw_debugfs_set_fw_crash(struct file *filp,
- 	struct seq_file *seqpriv = (struct seq_file *)filp->private_data;
- 	struct rtw_debugfs_priv *debugfs_priv = seqpriv->private;
- 	struct rtw_dev *rtwdev = debugfs_priv->rtwdev;
--	char tmp[32 + 1];
- 	bool input;
- 	int ret;
+-	_usb_write_async(to_usb_device(dev), addr, val, 1);
++	_usb_write_sync(rtlpriv, addr, val, 1);
+ }
  
--	ret = rtw_debugfs_copy_from_user(tmp, sizeof(tmp), buffer, count, 1);
-+	ret = kstrtobool_from_user(buffer, count, &input);
- 	if (ret)
- 		return ret;
- 
--	ret = kstrtobool(tmp, &input);
--	if (ret)
--		return -EINVAL;
+-static void _usb_write16_async(struct rtl_priv *rtlpriv, u32 addr, u16 val)
++static void _usb_write16_sync(struct rtl_priv *rtlpriv, u32 addr, u16 val)
+ {
+-	struct device *dev = rtlpriv->io.dev;
 -
- 	if (!input)
- 		return -EINVAL;
+-	_usb_write_async(to_usb_device(dev), addr, val, 2);
++	_usb_write_sync(rtlpriv, addr, val, 2);
+ }
  
-@@ -1030,11 +1001,12 @@ static ssize_t rtw_debugfs_set_dm_cap(struct file *filp,
- 	struct rtw_debugfs_priv *debugfs_priv = seqpriv->private;
- 	struct rtw_dev *rtwdev = debugfs_priv->rtwdev;
- 	struct rtw_dm_info *dm_info = &rtwdev->dm_info;
--	int bit;
-+	int ret, bit;
- 	bool en;
+-static void _usb_write32_async(struct rtl_priv *rtlpriv, u32 addr, u32 val)
++static void _usb_write32_sync(struct rtl_priv *rtlpriv, u32 addr, u32 val)
+ {
+-	struct device *dev = rtlpriv->io.dev;
+-
+-	_usb_write_async(to_usb_device(dev), addr, val, 4);
++	_usb_write_sync(rtlpriv, addr, val, 4);
+ }
  
--	if (kstrtoint_from_user(buffer, count, 10, &bit))
--		return -EINVAL;
-+	ret = kstrtoint_from_user(buffer, count, 10, &bit);
-+	if (ret)
-+		return ret;
+ static void _rtl_usb_io_handler_init(struct device *dev,
+@@ -205,12 +132,12 @@ static void _rtl_usb_io_handler_init(struct device *dev,
  
- 	en = bit > 0;
- 	bit = abs(bit);
+ 	rtlpriv->io.dev = dev;
+ 	mutex_init(&rtlpriv->io.bb_mutex);
+-	rtlpriv->io.write8_async	= _usb_write8_async;
+-	rtlpriv->io.write16_async	= _usb_write16_async;
+-	rtlpriv->io.write32_async	= _usb_write32_async;
+-	rtlpriv->io.read8_sync		= _usb_read8_sync;
+-	rtlpriv->io.read16_sync		= _usb_read16_sync;
+-	rtlpriv->io.read32_sync		= _usb_read32_sync;
++	rtlpriv->io.write8	= _usb_write8_sync;
++	rtlpriv->io.write16	= _usb_write16_sync;
++	rtlpriv->io.write32	= _usb_write32_sync;
++	rtlpriv->io.read8	= _usb_read8_sync;
++	rtlpriv->io.read16	= _usb_read16_sync;
++	rtlpriv->io.read32	= _usb_read32_sync;
+ }
+ 
+ static void _rtl_usb_io_handler_release(struct ieee80211_hw *hw)
+diff --git a/drivers/net/wireless/realtek/rtlwifi/wifi.h b/drivers/net/wireless/realtek/rtlwifi/wifi.h
+index d87cd2252eac..53af324f3807 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/wifi.h
++++ b/drivers/net/wireless/realtek/rtlwifi/wifi.h
+@@ -1447,13 +1447,13 @@ struct rtl_io {
+ 	/*PCI IO map */
+ 	unsigned long pci_base_addr;	/*device I/O address */
+ 
+-	void (*write8_async)(struct rtl_priv *rtlpriv, u32 addr, u8 val);
+-	void (*write16_async)(struct rtl_priv *rtlpriv, u32 addr, u16 val);
+-	void (*write32_async)(struct rtl_priv *rtlpriv, u32 addr, u32 val);
++	void (*write8)(struct rtl_priv *rtlpriv, u32 addr, u8 val);
++	void (*write16)(struct rtl_priv *rtlpriv, u32 addr, u16 val);
++	void (*write32)(struct rtl_priv *rtlpriv, u32 addr, u32 val);
+ 
+-	u8 (*read8_sync)(struct rtl_priv *rtlpriv, u32 addr);
+-	u16 (*read16_sync)(struct rtl_priv *rtlpriv, u32 addr);
+-	u32 (*read32_sync)(struct rtl_priv *rtlpriv, u32 addr);
++	u8 (*read8)(struct rtl_priv *rtlpriv, u32 addr);
++	u16 (*read16)(struct rtl_priv *rtlpriv, u32 addr);
++	u32 (*read32)(struct rtl_priv *rtlpriv, u32 addr);
+ 
+ };
+ 
+@@ -2916,25 +2916,25 @@ extern u8 channel5g_80m[CHANNEL_MAX_NUMBER_5G_80M];
+ 
+ static inline u8 rtl_read_byte(struct rtl_priv *rtlpriv, u32 addr)
+ {
+-	return rtlpriv->io.read8_sync(rtlpriv, addr);
++	return rtlpriv->io.read8(rtlpriv, addr);
+ }
+ 
+ static inline u16 rtl_read_word(struct rtl_priv *rtlpriv, u32 addr)
+ {
+-	return rtlpriv->io.read16_sync(rtlpriv, addr);
++	return rtlpriv->io.read16(rtlpriv, addr);
+ }
+ 
+ static inline u32 rtl_read_dword(struct rtl_priv *rtlpriv, u32 addr)
+ {
+-	return rtlpriv->io.read32_sync(rtlpriv, addr);
++	return rtlpriv->io.read32(rtlpriv, addr);
+ }
+ 
+ static inline void rtl_write_byte(struct rtl_priv *rtlpriv, u32 addr, u8 val8)
+ {
+-	rtlpriv->io.write8_async(rtlpriv, addr, val8);
++	rtlpriv->io.write8(rtlpriv, addr, val8);
+ 
+ 	if (rtlpriv->cfg->write_readback)
+-		rtlpriv->io.read8_sync(rtlpriv, addr);
++		rtlpriv->io.read8(rtlpriv, addr);
+ }
+ 
+ static inline void rtl_write_byte_with_val32(struct ieee80211_hw *hw,
+@@ -2947,19 +2947,19 @@ static inline void rtl_write_byte_with_val32(struct ieee80211_hw *hw,
+ 
+ static inline void rtl_write_word(struct rtl_priv *rtlpriv, u32 addr, u16 val16)
+ {
+-	rtlpriv->io.write16_async(rtlpriv, addr, val16);
++	rtlpriv->io.write16(rtlpriv, addr, val16);
+ 
+ 	if (rtlpriv->cfg->write_readback)
+-		rtlpriv->io.read16_sync(rtlpriv, addr);
++		rtlpriv->io.read16(rtlpriv, addr);
+ }
+ 
+ static inline void rtl_write_dword(struct rtl_priv *rtlpriv,
+ 				   u32 addr, u32 val32)
+ {
+-	rtlpriv->io.write32_async(rtlpriv, addr, val32);
++	rtlpriv->io.write32(rtlpriv, addr, val32);
+ 
+ 	if (rtlpriv->cfg->write_readback)
+-		rtlpriv->io.read32_sync(rtlpriv, addr);
++		rtlpriv->io.read32(rtlpriv, addr);
+ }
+ 
+ static inline u32 rtl_get_bbreg(struct ieee80211_hw *hw,
 -- 
 2.43.0
-
 
