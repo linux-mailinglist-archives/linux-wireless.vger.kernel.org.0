@@ -1,95 +1,104 @@
-Return-Path: <linux-wireless+bounces-1671-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1672-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 290BA829CDE
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jan 2024 15:54:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9CF7829CE9
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jan 2024 15:55:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 361D11C212A8
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jan 2024 14:54:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5F602B21107
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jan 2024 14:55:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 850724BA84;
-	Wed, 10 Jan 2024 14:54:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D87C7495C5;
+	Wed, 10 Jan 2024 14:55:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZzaGILYT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JzX6nVph"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BCB34BA82
-	for <linux-wireless@vger.kernel.org>; Wed, 10 Jan 2024 14:54:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E64AC433C7;
-	Wed, 10 Jan 2024 14:54:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704898461;
-	bh=CRQOolx/akJ6xXywT8NkUokRhvm4/LmXCeNCy8ZBcJU=;
-	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=ZzaGILYTSG5swvJw3s+o+SOBCyNjEZYVyHRG0A5O6jmB8ZKvVoptyLwqrTe/LR5wD
-	 VjrlHee6lIsIH6K/Z7gvmTILxoYFck0bESjJiV7pUUYRcIpQ+gObI7wWRQYJj/8QkZ
-	 5HwB7+zTEbu9S/qX5/WCgeH262TJaKcb5J/6SXGIDAjT0dDL6LN8f7NYUjo2IfO/P4
-	 8ZgdIyHYr+TvgSCqI3buVB6ESEDeAE08t7Qfs5KBGkV8cynB6RNbT3p8P5mZCb6tzt
-	 cMgGOwWph89jsNKRwrlkr57805dsu2D7gqzUSo/o/6OOgwUoChV/+0KnlUy/7ZIU9/
-	 TKNNlg7PB1w5g==
-Content-Type: text/plain; charset="utf-8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FB834A9B5
+	for <linux-wireless@vger.kernel.org>; Wed, 10 Jan 2024 14:55:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-dbeff495c16so2791000276.3
+        for <linux-wireless@vger.kernel.org>; Wed, 10 Jan 2024 06:55:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1704898526; x=1705503326; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6s/DjyGGlYA04VcYhLlf5rs2XIHUh5tvTkRQGkhtStw=;
+        b=JzX6nVphXrnU1oLB4PeQfzkHxAD0tvJEKiTQywIluMDcvQ6aMOnoPsLALkeQ5Vxe8x
+         WaN4cbduO8FVJ/g0EZVZkdHUm06p1XceO2fp0fohJQY7zjos55kXFvW5nRZvBLn+/pHt
+         6gIEe5HKtB4BvLu6L+un1z6URim9mGSKAJxq1W83qFYFGMyjpAVne9pDzL+sWCcY+llV
+         ToN1B6H60fxcko4TXw/n9tfNGr+cGYmPANFdYUiL6fPVRQu17PB5j/aUocQBsCpLZCwe
+         RUbkxAOANng57eAqsYTZWSv6O2/w+0DUHVl7fCkNXW0xBJUuWUm6gmr8Vdk3FU7nyQj7
+         lU4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704898526; x=1705503326;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6s/DjyGGlYA04VcYhLlf5rs2XIHUh5tvTkRQGkhtStw=;
+        b=LaLQpvajiB2O3+0HYV2NoCAcGY+4Mi8+wxNwvkQvYE96M9X4AmOAXmSM8HJ5ow+czo
+         5lzKZW5k/MNE0rE11ArWDUbOVphezRAanVJafkEmHEDuPjw8aFKoawpYFWNwVCQZnzAM
+         yEpu0u3w3iMbHhadE/GGicz5BmnXtDoq3tuAZ092NRLWcZBX0w2D90kciDtvCRa8jDns
+         qHndn8l3LWOr9Hdn8Akyno6rOsj6iF6YFir1AEHfwzwvZO1HwYI8ntttGQrNXfJu4gnW
+         b1LKeNxepzdjJwIeUZdNgQUKnuJ6YZw+iWFg7krlMXiJ5TNtnKi6XH7gf+uhtOQbs37E
+         bc/w==
+X-Gm-Message-State: AOJu0Yz5ldIFNQZQ3KqsyGA9se5cKm7F1eUjZrKrC55vWigYtb/ECmm5
+	YKFcWHzauQlz+D8FyEuMRhA=
+X-Google-Smtp-Source: AGHT+IFSA6hpG4OYNoXISy+6NXPM9czRtads/xSkt7aYl95uddlxeYmpUxwoyzIzFIz2F8OAqVGjcQ==
+X-Received: by 2002:a05:6902:1023:b0:dbd:bf0d:d97f with SMTP id x3-20020a056902102300b00dbdbf0dd97fmr845117ybt.126.1704898526128;
+        Wed, 10 Jan 2024 06:55:26 -0800 (PST)
+Received: from [10.102.4.159] (50-78-19-50-static.hfc.comcastbusiness.net. [50.78.19.50])
+        by smtp.gmail.com with ESMTPSA id ge8-20020a05622a5c8800b00429bd898838sm53212qtb.47.2024.01.10.06.55.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 Jan 2024 06:55:25 -0800 (PST)
+Message-ID: <356e0b05-f396-4ad7-9b29-c492b54af834@gmail.com>
+Date: Wed, 10 Jan 2024 06:55:23 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: ath11k and vfio-pci support
+Content-Language: en-US
+To: Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
+References: <adcb785e-4dc7-4c4a-b341-d53b72e13467@gmail.com>
+ <8734v5zhol.fsf@kernel.org> <87fa5220-6fd9-433d-879b-c55ac67a0748@gmail.com>
+ <87r0ipcn7j.fsf@kernel.org>
+From: James Prestwood <prestwoj@gmail.com>
+In-Reply-To: <87r0ipcn7j.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3 01/21] wifi: rtl8xxxu: remove assignment of priv->vif
- in
- rtl8xxxu_bss_info_changed()
-From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20231222101442.626837-2-martin.kaistra@linutronix.de>
-References: <20231222101442.626837-2-martin.kaistra@linutronix.de>
-To: Martin Kaistra <martin.kaistra@linutronix.de>
-Cc: linux-wireless@vger.kernel.org, Jes Sorensen <Jes.Sorensen@gmail.com>,
- Ping-Ke Shih <pkshih@realtek.com>,
- Bitterblue Smith <rtl8821cerfe2@gmail.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170489845789.471554.4000045370111948764.kvalo@kernel.org>
-Date: Wed, 10 Jan 2024 14:54:19 +0000 (UTC)
 
-Martin Kaistra <martin.kaistra@linutronix.de> wrote:
+Hi Kalle,
 
-> priv->vif gets already set in rtl8xxxu_add_interface, there is no need
-> to set it also in rtl8xxxu_bss_info_changed().
-> 
-> Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
-> Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+On 1/10/24 5:49 AM, Kalle Valo wrote:
+> James Prestwood <prestwoj@gmail.com> writes:
+>
+>>> But I have also no idea what is causing this, I guess we are doing
+>>> something wrong with the PCI communication? That reminds me, you could
+>>> try this in case that helps:
+>>>
+>>> https://patchwork.kernel.org/project/linux-wireless/patch/20231212031914.47339-1-imguzh@gmail.com/
+>> Heh, I saw this pop up a day after I sent this and was wondering. Is
+>> this something I'd need on the host kernel, guest, or both?
+> On the guest where ath11k is running. I'm not optimistic that this would
+> solve your issue, I suspect there can be also other bugs, but good to
+> know if the patch changes anything.
 
-21 patches applied to wireless-next.git, thanks.
+Looks the same here, didn't seem to change anything based on the kernel 
+logs.
 
-d55cb6d8a994 wifi: rtl8xxxu: remove assignment of priv->vif in rtl8xxxu_bss_info_changed()
-2bbd7d584046 wifi: rtl8xxxu: prepare supporting two virtual interfaces
-7f444692cde8 wifi: rtl8xxxu: support setting linktype for both interfaces
-a047e46a7b98 wifi: rtl8xxxu: 8188e: convert usage of priv->vif to priv->vifs[0]
-00add60cad3c wifi: rtl8xxxu: support setting mac address register for both interfaces
-9aa776209ca3 wifi: rtl8xxxu: extend wifi connected check to both interfaces
-80fd8687db41 wifi: rtl8xxxu: extend check for matching bssid to both interfaces
-f86dd8eaf8da wifi: rtl8xxxu: don't parse CFO, if both interfaces are connected in STA mode
-3ff7a05996f9 wifi: rtl8xxxu: support setting bssid register for multiple interfaces
-43532c050f8e wifi: rtl8xxxu: support multiple interfaces in set_aifs()
-05b22e9b7d84 wifi: rtl8xxxu: support multiple interfaces in update_beacon_work_callback()
-6b7663828705 wifi: rtl8xxxu: support multiple interfaces in configure_filter()
-3f9baa99f842 wifi: rtl8xxxu: support multiple interfaces in watchdog_callback()
-eef55f1545c9 wifi: rtl8xxxu: support multiple interfaces in {add,remove}_interface()
-073401c3b6b9 wifi: rtl8xxxu: support multiple interfaces in bss_info_changed()
-61fdbd9e2a9d wifi: rtl8xxxu: support multiple interface in start_ap()
-5ce0d7e8aee0 wifi: rtl8xxxu: add macids for STA mode
-f232e9d91bb8 wifi: rtl8xxxu: remove obsolete priv->vif
-b837f78fbffa wifi: rtl8xxxu: add hw crypto support for AP mode
-69abad618efd wifi: rtl8xxxu: make supporting AP mode only on port 0 transparent
-1cd165adf314 wifi: rtl8xxxu: declare concurrent mode support for 8188f
+Thanks,
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20231222101442.626837-2-martin.kaistra@linutronix.de/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+James
 
 
