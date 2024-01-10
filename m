@@ -1,144 +1,118 @@
-Return-Path: <linux-wireless+bounces-1660-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1661-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A75DB829ABC
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jan 2024 13:55:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42C78829AE2
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jan 2024 14:05:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48888B266E1
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jan 2024 12:55:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D031B2821BF
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jan 2024 13:05:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C63B348781;
-	Wed, 10 Jan 2024 12:55:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04C24482E4;
+	Wed, 10 Jan 2024 13:04:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="s20dKFSX"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TSWVswea"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-vs1-f50.google.com (mail-vs1-f50.google.com [209.85.217.50])
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 493B7482F9
-	for <linux-wireless@vger.kernel.org>; Wed, 10 Jan 2024 12:55:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-vs1-f50.google.com with SMTP id ada2fe7eead31-4674ca1a2dbso919337137.0
-        for <linux-wireless@vger.kernel.org>; Wed, 10 Jan 2024 04:55:30 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9201F48788
+	for <linux-wireless@vger.kernel.org>; Wed, 10 Jan 2024 13:04:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-781753f52afso378352885a.2
+        for <linux-wireless@vger.kernel.org>; Wed, 10 Jan 2024 05:04:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1704891329; x=1705496129; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7Ee+hHkfAfIFS6WHvmIg35YEx3vQHJAhovJ3w3cPXwo=;
-        b=s20dKFSXv9X0Dth46Eq9po8i1zw++gJAeAovANgJUWtSt/94qMDdNE6z161bIEdp2Z
-         atELqW/ToP33dGrkoHBTOChulkv8Cw7Kv4FTMAuyypFZUkfrX5/Kh6YB3DlBueZvYdEp
-         hzs/zmifuFPCqPeNZwb1WQVnPJHOBHxMIazawurhzd9sIsPVuFMU+IygCX8PilCPsQUr
-         6rZIP5SHmB3SL+0nfD6hPl1tSEpU7f7BOl8k2oh7MKxCiO5WWpJ4hE5B1l1pVP8bf94c
-         1gmLonYfjIGcPzZ8dzA2N7wL0S6x5gcjnngKgw86LHphKpQvU/fy+Ut4dVwNSwtJoZS8
-         MS1Q==
+        d=gmail.com; s=20230601; t=1704891895; x=1705496695; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=c/iE3zonRrD+7/513nkWlW303P6DfLmdTqqBHWTtojI=;
+        b=TSWVsweak95Cfd7XeO91OQ5DU/Tc0hzjIBYDqQ+823VmnGv+/U8qTPcQtnXQ3XqhJj
+         WoCaeHi6uK202axBQGY8/jy6TUHXzLQZszCYELGweICaO+PC4dsmkEGYahpRCmFkdumU
+         wpwIGZAhInEf2Ck54IflCdb71mB97HAiTFOVnLxlfBLl4lGGXHQnJt47zk4OWOtct9h4
+         u5qGn0rKHted+tvOh4ym9wUB8gHi/P4dgo8a0iWh4lL0GU4E/l4KSyHC1PlRDheY2pJp
+         ZERb6QGObYPlF/Iv3Qw+IcX1zVotrXbMAcoRXXN3z0FVSgXUp8nM2VND6DeWiII+/gaK
+         9aVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704891329; x=1705496129;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7Ee+hHkfAfIFS6WHvmIg35YEx3vQHJAhovJ3w3cPXwo=;
-        b=RhG0ylE7IwAfIGMrf/b1CzuOGkTx9yDW1RxaDKroovbYuUR/qpBh0pq2eqpoxnRLn4
-         aJKn5Hmai0Zhw20R8BqMDFM5MaViziBkt9XzKflZg7AlDcXNsNg5aOjeuc+Ayn8eOXpy
-         UWJxoyBBPS04Zzw2hgcb0rj1yVCx7Gt5TRKyFhqP1mLx9SOgBSoEiQ6mp8CA2yb/mmbs
-         9WwUWl4Hjq4CUNgUPKVORxOLFXe6yY9vII2ye0Php6/XCLIH7VMI2CLlYz7C7FgDMBbb
-         ySO1iy16bcrhA70+ohKWoBx5hW4311/8f7FQknW2ky3mgv4J/Nw/Vl8xOkEMnrktvVId
-         eSBQ==
-X-Gm-Message-State: AOJu0Yzb4xyAGzH4jiFTc8Z1CQXj0y5Ttwyy7Y3M0Q1vCer2kGR5c5pF
-	8Z9NLaLVowlMIZseSMtS8OGoPZPDBHsMBdB0L7wKAMmdGb9yOg==
-X-Google-Smtp-Source: AGHT+IFJf1lA0zydsqWg4MMlDwI7GY7aqZwXYX8MZwXUGKbgxRrG/GbjToxomMdYf3iIjG2NRkt8G9T0sjS/5fZgDGY=
-X-Received: by 2002:a05:6102:6248:b0:466:fd31:def8 with SMTP id
- gd8-20020a056102624800b00466fd31def8mr866005vsb.55.1704891329157; Wed, 10 Jan
- 2024 04:55:29 -0800 (PST)
+        d=1e100.net; s=20230601; t=1704891895; x=1705496695;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=c/iE3zonRrD+7/513nkWlW303P6DfLmdTqqBHWTtojI=;
+        b=rZ4ZmIpb4xEuIVScVGNDxHtlsuBhX0YFgV6+TTiGkf6rK+6t1IsroJ4FMJG/C0d5ml
+         IZVlHKGL5VCtDR3I2DzJGgINLtlesBl3NR2hj1Clbvfez8vOkLfy8Uj3dHlcwFuGQ7Ig
+         QqaCFm44WsjZZYNSiAn2Vg8IIR2er0tzXGc7NovCoXNvv91kXaJCqGg8ynKv1Ph8gLwx
+         4krButVP36dvHyF9zPG2DdyWh0RFPx+wf8g0ZicD1B6LE2g5sxcmnP1Ori2TxX1JZNbR
+         WwOm0Rl2RSZsV8umVjAD2YzDhadiyX1/AHhgsLrHaXQx1P53cjzkRRrEPde1V1pvdIPZ
+         Wo6w==
+X-Gm-Message-State: AOJu0Yy8lyO0IcWEQiYb6F+jYL7BvcDcSp4etmplF15GBlpIsUoRKXRp
+	CTWCzBTeTWT8MUru/G4jNFnlgr/SKuk=
+X-Google-Smtp-Source: AGHT+IEhUoaezwc3HlGdpSeYeYVqm1+ENALKEaER1uyKroBqR5tdhBdEvHQYO2hyG4xytfEaaflnjA==
+X-Received: by 2002:a05:6214:1307:b0:681:91b:75a4 with SMTP id pn7-20020a056214130700b00681091b75a4mr1341182qvb.125.1704891895310;
+        Wed, 10 Jan 2024 05:04:55 -0800 (PST)
+Received: from [10.102.4.159] (50-78-19-50-static.hfc.comcastbusiness.net. [50.78.19.50])
+        by smtp.gmail.com with ESMTPSA id j4-20020a0cf9c4000000b00680b1090832sm1654280qvo.146.2024.01.10.05.04.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 Jan 2024 05:04:55 -0800 (PST)
+Message-ID: <87fa5220-6fd9-433d-879b-c55ac67a0748@gmail.com>
+Date: Wed, 10 Jan 2024 05:04:52 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240104130123.37115-1-brgl@bgdev.pl> <20240104130123.37115-4-brgl@bgdev.pl>
- <20240109144327.GA10780@wunner.de>
-In-Reply-To: <20240109144327.GA10780@wunner.de>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Wed, 10 Jan 2024 13:55:18 +0100
-Message-ID: <CAMRc=MdXO6c6asvRSn_Z8-oFS48hroT+dazGKB6WWY1_Zu7f1Q@mail.gmail.com>
-Subject: Re: [RFC 3/9] PCI/portdrv: create platform devices for child OF nodes
-To: Lukas Wunner <lukas@wunner.de>
-Cc: Kalle Valo <kvalo@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Heiko Stuebner <heiko@sntech.de>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Chris Morgan <macromorgan@hotmail.com>, 
-	Linus Walleij <linus.walleij@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Arnd Bergmann <arnd@arndb.de>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	=?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= <nfraprado@collabora.com>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Peng Fan <peng.fan@nxp.com>, 
-	Robert Richter <rrichter@amd.com>, Dan Williams <dan.j.williams@intel.com>, 
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>, Terry Bowman <terry.bowman@amd.com>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
-	Huacai Chen <chenhuacai@kernel.org>, Alex Elder <elder@linaro.org>, 
-	Srini Kandagatla <srinivas.kandagatla@linaro.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: ath11k and vfio-pci support
+Content-Language: en-US
+To: Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
+References: <adcb785e-4dc7-4c4a-b341-d53b72e13467@gmail.com>
+ <8734v5zhol.fsf@kernel.org>
+From: James Prestwood <prestwoj@gmail.com>
+In-Reply-To: <8734v5zhol.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jan 9, 2024 at 3:43=E2=80=AFPM Lukas Wunner <lukas@wunner.de> wrote=
-:
+Hi Kalle,
+
+On 1/10/24 1:00 AM, Kalle Valo wrote:
+> + ath11k list
 >
-> On Thu, Jan 04, 2024 at 02:01:17PM +0100, Bartosz Golaszewski wrote:
-> > In order to introduce PCIe power-sequencing, we need to create platform
-> > devices for child nodes of the port driver node. They will get matched
-> > against the pwrseq drivers (if one exists) and then the actuak PCIe
-> > device will reuse the node once it's detected on the bus.
-> [...]
-> > --- a/drivers/pci/pcie/portdrv.c
-> > +++ b/drivers/pci/pcie/portdrv.c
-> > @@ -715,7 +716,7 @@ static int pcie_portdrv_probe(struct pci_dev *dev,
-> >               pm_runtime_allow(&dev->dev);
-> >       }
-> >
-> > -     return 0;
-> > +     return devm_of_platform_populate(&dev->dev);
-> >  }
+> James Prestwood <prestwoj@gmail.com> writes:
 >
-> I think this belongs in of_pci_make_dev_node(), portdrv seems totally
-> the wrong place.  Note that you're currently calling this for RCECs
-> (Root Complex Event Collectors) as well, which is likely not what
-> you want.
+>> For a while now I've been using vfio-pci to pass through wireless
+>> hardware to a Qemu VM. This makes testing kernel changes quick and
+>> easy compared to swapping the host kernel for reach iterative change.
+>> So far I've had very few issues doing this, maybe I've just been
+>> lucky... I tried doing this with an ath11k (WCN6855) card and ran into
+>> issues with the driver starting up. I'm wondering if its a
+>> configuration issue or just a lack of support by ath11k? The card
+>> works just fine when I use it on my host machine. Based on the logs it
+>> may not even be related to ath11k as wmi-bmof seems to fail first, but
+>> I'm not familiar with anything at the PCI level so I've got no idea
+>> whats going on.
+> There's a bug report about this:
 >
-
-of_pci_make_dev_node() is only called when the relevant PCI device is
-instantiated which doesn't happen until it's powered-up and scanned -
-precisely the problem I'm trying to address.
-
-Calling this for whomever isn't really a problem though, is it? We
-will create a platform device alright - if it's defined on the DT -
-and at worst it won't match against any driver. It seems harmless IMO.
-
-> devm functions can't be used in the PCI core, so symmetrically call
-> of_platform_unpopulate() from of_pci_remove_node().
-
-I don't doubt what you're saying is true (I've seen worse things) but
-this is the probe() callback of a driver using the driver model. Why
-wouldn't devres work?
-
-Bart
-
+> https://bugzilla.kernel.org/show_bug.cgi?id=216055
+Yes I saw that, but apparently didn't read past the first comment... I'm 
+not seeing any of the DMAR faults but the ath-releated ones look the 
+same. Good to know its not just me.
 >
-> Thanks,
+> But I have also no idea what is causing this, I guess we are doing
+> something wrong with the PCI communication? That reminds me, you could
+> try this in case that helps:
 >
-> Lukas
->
+> https://patchwork.kernel.org/project/linux-wireless/patch/20231212031914.47339-1-imguzh@gmail.com/
+
+Heh, I saw this pop up a day after I sent this and was wondering. Is 
+this something I'd need on the host kernel, guest, or both?
+
+Thanks,
+
+James
+
 
