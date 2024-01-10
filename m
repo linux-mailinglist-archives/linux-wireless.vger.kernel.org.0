@@ -1,114 +1,144 @@
-Return-Path: <linux-wireless+bounces-1659-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1660-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E440C829A11
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jan 2024 13:01:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A75DB829ABC
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jan 2024 13:55:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FAE31F215D9
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jan 2024 12:01:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48888B266E1
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jan 2024 12:55:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E32647F47;
-	Wed, 10 Jan 2024 12:01:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C63B348781;
+	Wed, 10 Jan 2024 12:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="MrY5VSu6"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="s20dKFSX"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from forward205c.mail.yandex.net (forward205c.mail.yandex.net [178.154.239.216])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f50.google.com (mail-vs1-f50.google.com [209.85.217.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACE1647F5D
-	for <linux-wireless@vger.kernel.org>; Wed, 10 Jan 2024 12:01:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
-Received: from forward102c.mail.yandex.net (forward102c.mail.yandex.net [IPv6:2a02:6b8:c03:500:1:45:d181:d102])
-	by forward205c.mail.yandex.net (Yandex) with ESMTP id 1BBEF6651A
-	for <linux-wireless@vger.kernel.org>; Wed, 10 Jan 2024 14:54:54 +0300 (MSK)
-Received: from mail-nwsmtp-smtp-production-main-45.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-45.sas.yp-c.yandex.net [IPv6:2a02:6b8:c14:c83:0:640:84f9:0])
-	by forward102c.mail.yandex.net (Yandex) with ESMTP id 8AB7060AB0;
-	Wed, 10 Jan 2024 14:54:45 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-45.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id hsgknrDjA8c0-CAT8gXYb;
-	Wed, 10 Jan 2024 14:54:44 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1704887685; bh=7Rzw0yOYbXR448P7VBVS8s0ZMczc6x3BvrVsOrngqBg=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=MrY5VSu6Ku9bZjil6vnqEJT+2DhbBjwiwpmmsbYiz5c0o9Twk4mE/ZGLjzRkoB02j
-	 cNHebFaAAi1Ppn9sPA7CwuC0bisewWUsRtHvyLzBDUnE1m8VJUkQZgSEDqH2GzNXIm
-	 JetLzxXToFXeCwqpB34mw2+Eg6vXUj2kXTFIPDtw=
-Authentication-Results: mail-nwsmtp-smtp-production-main-45.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From: Dmitry Antipov <dmantipov@yandex.ru>
-To: David Lin <yu-hao.lin@nxp.com>
-Cc: Brian Norris <briannorris@chromium.org>,
-	Kalle Valo <kvalo@kernel.org>,
-	linux-wireless@vger.kernel.org,
-	Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH] wifi: mwifiex: use kstrtoX_from_user() in debugfs handlers
-Date: Wed, 10 Jan 2024 14:53:11 +0300
-Message-ID: <20240110115314.421298-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 493B7482F9
+	for <linux-wireless@vger.kernel.org>; Wed, 10 Jan 2024 12:55:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-vs1-f50.google.com with SMTP id ada2fe7eead31-4674ca1a2dbso919337137.0
+        for <linux-wireless@vger.kernel.org>; Wed, 10 Jan 2024 04:55:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1704891329; x=1705496129; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7Ee+hHkfAfIFS6WHvmIg35YEx3vQHJAhovJ3w3cPXwo=;
+        b=s20dKFSXv9X0Dth46Eq9po8i1zw++gJAeAovANgJUWtSt/94qMDdNE6z161bIEdp2Z
+         atELqW/ToP33dGrkoHBTOChulkv8Cw7Kv4FTMAuyypFZUkfrX5/Kh6YB3DlBueZvYdEp
+         hzs/zmifuFPCqPeNZwb1WQVnPJHOBHxMIazawurhzd9sIsPVuFMU+IygCX8PilCPsQUr
+         6rZIP5SHmB3SL+0nfD6hPl1tSEpU7f7BOl8k2oh7MKxCiO5WWpJ4hE5B1l1pVP8bf94c
+         1gmLonYfjIGcPzZ8dzA2N7wL0S6x5gcjnngKgw86LHphKpQvU/fy+Ut4dVwNSwtJoZS8
+         MS1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704891329; x=1705496129;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7Ee+hHkfAfIFS6WHvmIg35YEx3vQHJAhovJ3w3cPXwo=;
+        b=RhG0ylE7IwAfIGMrf/b1CzuOGkTx9yDW1RxaDKroovbYuUR/qpBh0pq2eqpoxnRLn4
+         aJKn5Hmai0Zhw20R8BqMDFM5MaViziBkt9XzKflZg7AlDcXNsNg5aOjeuc+Ayn8eOXpy
+         UWJxoyBBPS04Zzw2hgcb0rj1yVCx7Gt5TRKyFhqP1mLx9SOgBSoEiQ6mp8CA2yb/mmbs
+         9WwUWl4Hjq4CUNgUPKVORxOLFXe6yY9vII2ye0Php6/XCLIH7VMI2CLlYz7C7FgDMBbb
+         ySO1iy16bcrhA70+ohKWoBx5hW4311/8f7FQknW2ky3mgv4J/Nw/Vl8xOkEMnrktvVId
+         eSBQ==
+X-Gm-Message-State: AOJu0Yzb4xyAGzH4jiFTc8Z1CQXj0y5Ttwyy7Y3M0Q1vCer2kGR5c5pF
+	8Z9NLaLVowlMIZseSMtS8OGoPZPDBHsMBdB0L7wKAMmdGb9yOg==
+X-Google-Smtp-Source: AGHT+IFJf1lA0zydsqWg4MMlDwI7GY7aqZwXYX8MZwXUGKbgxRrG/GbjToxomMdYf3iIjG2NRkt8G9T0sjS/5fZgDGY=
+X-Received: by 2002:a05:6102:6248:b0:466:fd31:def8 with SMTP id
+ gd8-20020a056102624800b00466fd31def8mr866005vsb.55.1704891329157; Wed, 10 Jan
+ 2024 04:55:29 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240104130123.37115-1-brgl@bgdev.pl> <20240104130123.37115-4-brgl@bgdev.pl>
+ <20240109144327.GA10780@wunner.de>
+In-Reply-To: <20240109144327.GA10780@wunner.de>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Wed, 10 Jan 2024 13:55:18 +0100
+Message-ID: <CAMRc=MdXO6c6asvRSn_Z8-oFS48hroT+dazGKB6WWY1_Zu7f1Q@mail.gmail.com>
+Subject: Re: [RFC 3/9] PCI/portdrv: create platform devices for child OF nodes
+To: Lukas Wunner <lukas@wunner.de>
+Cc: Kalle Valo <kvalo@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Rob Herring <robh+dt@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Heiko Stuebner <heiko@sntech.de>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Chris Morgan <macromorgan@hotmail.com>, 
+	Linus Walleij <linus.walleij@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Arnd Bergmann <arnd@arndb.de>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	=?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= <nfraprado@collabora.com>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Peng Fan <peng.fan@nxp.com>, 
+	Robert Richter <rrichter@amd.com>, Dan Williams <dan.j.williams@intel.com>, 
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>, Terry Bowman <terry.bowman@amd.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+	Huacai Chen <chenhuacai@kernel.org>, Alex Elder <elder@linaro.org>, 
+	Srini Kandagatla <srinivas.kandagatla@linaro.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Use convenient 'kstrtou32_from_user()' in 'mwifiex_verext_write()'
-and 'kstrtobool_from_user()' in 'mwifiex_timeshare_coex_write()',
-respectively. Compile tested only.
+On Tue, Jan 9, 2024 at 3:43=E2=80=AFPM Lukas Wunner <lukas@wunner.de> wrote=
+:
+>
+> On Thu, Jan 04, 2024 at 02:01:17PM +0100, Bartosz Golaszewski wrote:
+> > In order to introduce PCIe power-sequencing, we need to create platform
+> > devices for child nodes of the port driver node. They will get matched
+> > against the pwrseq drivers (if one exists) and then the actuak PCIe
+> > device will reuse the node once it's detected on the bus.
+> [...]
+> > --- a/drivers/pci/pcie/portdrv.c
+> > +++ b/drivers/pci/pcie/portdrv.c
+> > @@ -715,7 +716,7 @@ static int pcie_portdrv_probe(struct pci_dev *dev,
+> >               pm_runtime_allow(&dev->dev);
+> >       }
+> >
+> > -     return 0;
+> > +     return devm_of_platform_populate(&dev->dev);
+> >  }
+>
+> I think this belongs in of_pci_make_dev_node(), portdrv seems totally
+> the wrong place.  Note that you're currently calling this for RCECs
+> (Root Complex Event Collectors) as well, which is likely not what
+> you want.
+>
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
- .../net/wireless/marvell/mwifiex/debugfs.c    | 19 ++++---------------
- 1 file changed, 4 insertions(+), 15 deletions(-)
+of_pci_make_dev_node() is only called when the relevant PCI device is
+instantiated which doesn't happen until it's powered-up and scanned -
+precisely the problem I'm trying to address.
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/debugfs.c b/drivers/net/wireless/marvell/mwifiex/debugfs.c
-index f9c9fec7c792..46061bfd0c84 100644
---- a/drivers/net/wireless/marvell/mwifiex/debugfs.c
-+++ b/drivers/net/wireless/marvell/mwifiex/debugfs.c
-@@ -566,14 +566,8 @@ mwifiex_verext_write(struct file *file, const char __user *ubuf,
- 	int ret;
- 	u32 versionstrsel;
- 	struct mwifiex_private *priv = (void *)file->private_data;
--	char buf[16];
- 
--	memset(buf, 0, sizeof(buf));
--
--	if (copy_from_user(&buf, ubuf, min_t(size_t, sizeof(buf) - 1, count)))
--		return -EFAULT;
--
--	ret = kstrtou32(buf, 10, &versionstrsel);
-+	ret = kstrtou32_from_user(ubuf, count, 10, &versionstrsel);
- 	if (ret)
- 		return ret;
- 
-@@ -874,19 +868,14 @@ mwifiex_timeshare_coex_write(struct file *file, const char __user *ubuf,
- {
- 	bool timeshare_coex;
- 	struct mwifiex_private *priv = file->private_data;
--	char kbuf[16];
- 	int ret;
- 
- 	if (priv->adapter->fw_api_ver != MWIFIEX_FW_V15)
- 		return -EOPNOTSUPP;
- 
--	memset(kbuf, 0, sizeof(kbuf));
--
--	if (copy_from_user(&kbuf, ubuf, min_t(size_t, sizeof(kbuf) - 1, count)))
--		return -EFAULT;
--
--	if (kstrtobool(kbuf, &timeshare_coex))
--		return -EINVAL;
-+	ret = kstrtobool_from_user(ubuf, count, &timeshare_coex);
-+	if (ret)
-+		return ret;
- 
- 	ret = mwifiex_send_cmd(priv, HostCmd_CMD_ROBUST_COEX,
- 			       HostCmd_ACT_GEN_SET, 0, &timeshare_coex, true);
--- 
-2.43.0
+Calling this for whomever isn't really a problem though, is it? We
+will create a platform device alright - if it's defined on the DT -
+and at worst it won't match against any driver. It seems harmless IMO.
 
+> devm functions can't be used in the PCI core, so symmetrically call
+> of_platform_unpopulate() from of_pci_remove_node().
+
+I don't doubt what you're saying is true (I've seen worse things) but
+this is the probe() callback of a driver using the driver model. Why
+wouldn't devres work?
+
+Bart
+
+>
+> Thanks,
+>
+> Lukas
+>
 
