@@ -1,159 +1,156 @@
-Return-Path: <linux-wireless+bounces-1656-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1657-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA48E829781
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jan 2024 11:27:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F17088297B6
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jan 2024 11:39:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D9551C21A00
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jan 2024 10:27:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A33171F246DB
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jan 2024 10:39:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B95FF3FB0A;
-	Wed, 10 Jan 2024 10:21:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E62E3FE3E;
+	Wed, 10 Jan 2024 10:39:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="x4U2yQun"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="VJhlLE6A";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KOLLwBNl"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333DF495E3
-	for <linux-wireless@vger.kernel.org>; Wed, 10 Jan 2024 10:21:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-40e43e489e4so44421375e9.1
-        for <linux-wireless@vger.kernel.org>; Wed, 10 Jan 2024 02:21:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1704882108; x=1705486908; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=6VZfB4+k8xBaLXi5rEluezR8q2UeljKzFtnJfHi6ZHE=;
-        b=x4U2yQunae75ykvYLplsdyRJmyzOIn+UnX/3rQ4clVrmCwZDkcE6CBwR6oSkJD07nW
-         1ytZS9ENU7d20/R/+4NyD/JPW4ltJBsUtl0zT6sWoAteswadIdCIR0CLMqYMbuEfizC7
-         VmewghzM7IjYz/gB3KtFUMdmyVBKMDS4SMlwVULevyVGT+tR08NCXVTtAfsdFA/SxvjZ
-         nq79ybmDcuKo0K32Dkoye+lQ/Dlmy12H4F14SHEI7DPb0k9jR06JGqX9hPbEbSOAaW6q
-         oSFgpnNo/wqaOqvr6gHRvddel2hOs99vALkrc5+jTq92ALEn9WJZxyR63jWX8fg2mq+9
-         /PtQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704882108; x=1705486908;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6VZfB4+k8xBaLXi5rEluezR8q2UeljKzFtnJfHi6ZHE=;
-        b=JIce9rNpdV8ROtvGU4kTkf2TP5Z6NsxzSCIkwKg7DhzM5bn7Xw3aRDiZDNG1KmweSh
-         M1vLQdFjEpUhgi1RWvIUrLbRV1WHFEnNB/sEig0PPoPasXn94VW7puMEshk1TFFpclO+
-         SfYtuz9fr2BBFd26/PJJOy7NAHDISvGIWN962sd7kslaRbWba8G2rd3WnLyZ/JIW1YUI
-         RQQHOZSyN2XX0pKjiEnixgllTbKHVdJ2EY8gdthhKTxUT28gjECwZ9h4mibzWS55q1rs
-         uupqY8fT26EChLmBluMkiEhIcBXad1lSI5tEfgu7FPj9vIym2JItLFipv+sujA9y9qZ8
-         S/2g==
-X-Gm-Message-State: AOJu0YzMy0O9DpJtstQahq+4twPitD2TkxcMA2K4BpRuIukQqaiJmONI
-	g3HwKxby/4RitvViZ3QduqhXq79Rs5I6qtYpKF2yMsd7nRo=
-X-Google-Smtp-Source: AGHT+IGREV5P5rz2c+mDEX8IVo9nj0il9xGpWE/1eaZeOQ9LI3N8OEsOMdAcmv7G+VrNcgmPF6hO2Q==
-X-Received: by 2002:a05:600c:3790:b0:40e:42cf:805f with SMTP id o16-20020a05600c379000b0040e42cf805fmr496618wmr.146.1704882108475;
-        Wed, 10 Jan 2024 02:21:48 -0800 (PST)
-Received: from [192.168.1.20] ([178.197.223.112])
-        by smtp.gmail.com with ESMTPSA id s8-20020a05600c45c800b0040e527602c8sm1678078wmo.9.2024.01.10.02.21.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 10 Jan 2024 02:21:48 -0800 (PST)
-Message-ID: <23d69325-11a1-4bb6-9516-051372970fcb@linaro.org>
-Date: Wed, 10 Jan 2024 11:21:46 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEBE63FE56
+	for <linux-wireless@vger.kernel.org>; Wed, 10 Jan 2024 10:39:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Martin Kaistra <martin.kaistra@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1704883153;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=4HZvDuKCWWBllTzkNxtQBDbNMdLDG1pzBZTJQntpfWM=;
+	b=VJhlLE6APv2911FjMySEBgpKJl+BHYMSEA4VmvLvQlG5d7dtOVAM6Q3tnBEpIHomuxV1Eo
+	VvnAL/LfdPm42XxPUQZyBiKC+JSo9+h/x7VdZjTD7IzV+8ajuFwzyfvWgHFNhDg2qzcSCI
+	fInYZZH6h5Norzp/LS6EQc/puTk8ljebNDba9N0u+4ekZ+hPYcq6BYULmHPY5LGYhvTBtb
+	Yb3qRkEnKjnCMpQ6F52WTEsf0OX/WVrJvBE00NhddJPElgQg2RRas5hcBShpeYq0xOZwm2
+	/+D7EgM1XNv/no/1lLtUskLi1gbsg89UXBPihbNswvYQIa/KgxHZligKUodntQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1704883153;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=4HZvDuKCWWBllTzkNxtQBDbNMdLDG1pzBZTJQntpfWM=;
+	b=KOLLwBNlER5PZXpfjEWZGw/RYGxtC2ypkuIRf6vB8LTFvXHb4rusGyzfyTN11VeT9DNJxi
+	4Bs86iX5y6k1x1BA==
+To: linux-wireless@vger.kernel.org
+Cc: Jes Sorensen <Jes.Sorensen@gmail.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: [PATCH v2] wifi: rtl8xxxu: enable channel switch support
+Date: Wed, 10 Jan 2024 11:39:09 +0100
+Message-Id: <20240110103909.240514-1-martin.kaistra@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] dt-bindings: nfc: ti,trf7970a: fix usage example
-Content-Language: en-US
-To: Tobias Schramm <t.schramm@manjaro.org>,
- Mark Greer <mgreer@animalcreek.com>, Rob Herring <robh+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20240110100913.587849-1-t.schramm@manjaro.org>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240110100913.587849-1-t.schramm@manjaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 10/01/2024 11:09, Tobias Schramm wrote:
-> The TRF7970A is a SPI device, not I2C.
-> 
-> Signed-off-by: Tobias Schramm <t.schramm@manjaro.org>
-> ---
->  Documentation/devicetree/bindings/net/nfc/ti,trf7970a.yaml | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
+The CSA countdown in the beacon frames, which are sent out by firmware,
+needs to get updated by the driver. To achieve this, convert
+update_beacon_work to delayed_work and schedule it with the beacon
+interval in case CSA is active and the countdown is not complete.
 
-Please send it to net-next after the merge window.
-
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-
+Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
 ---
+changes v1->v2: use delayed_work instead of usleep_range
+v1: https://lore.kernel.org/linux-wireless/20240108111103.121378-1-martin.kaistra@linutronix.de/
+ .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h   |  2 +-
+ .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c  | 18 ++++++++++++++----
+ 2 files changed, 15 insertions(+), 5 deletions(-)
 
-This is an automated instruction, just in case, because many review tags
-are being ignored. If you know the process, you can skip it (please do
-not feel offended by me posting it here - no bad intentions intended).
-If you do not know the process, here is a short explanation:
-
-Please add Acked-by/Reviewed-by/Tested-by tags when posting new
-versions, under or above your Signed-off-by tag. Tag is "received", when
-provided in a message replied to you on the mailing list. Tools like b4
-can help here. However, there's no need to repost patches *only* to add
-the tags. The upstream maintainer will do that for tags received on the
-version they apply.
-
-https://elixir.bootlin.com/linux/v6.5-rc3/source/Documentation/process/submitting-patches.rst#L577
-
-Best regards,
-Krzysztof
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+index 803c76b3209c4..03307da67c2c3 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+@@ -1900,7 +1900,7 @@ struct rtl8xxxu_priv {
+ 	struct delayed_work ra_watchdog;
+ 	struct work_struct c2hcmd_work;
+ 	struct sk_buff_head c2hcmd_queue;
+-	struct work_struct update_beacon_work;
++	struct delayed_work update_beacon_work;
+ 	struct rtl8xxxu_btcoex bt_coex;
+ 	struct rtl8xxxu_ra_report ra_report;
+ 	struct rtl8xxxu_cfo_tracking cfo_tracking;
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+index 5fddbd6594a24..2cacf17c2f0d7 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+@@ -4605,7 +4605,7 @@ static int rtl8xxxu_set_tim(struct ieee80211_hw *hw, struct ieee80211_sta *sta,
+ {
+ 	struct rtl8xxxu_priv *priv = hw->priv;
+ 
+-	schedule_work(&priv->update_beacon_work);
++	schedule_delayed_work(&priv->update_beacon_work, 0);
+ 
+ 	return 0;
+ }
+@@ -5108,7 +5108,7 @@ rtl8xxxu_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	}
+ 
+ 	if (changed & BSS_CHANGED_BEACON)
+-		schedule_work(&priv->update_beacon_work);
++		schedule_delayed_work(&priv->update_beacon_work, 0);
+ 
+ error:
+ 	return;
+@@ -5727,7 +5727,7 @@ static void rtl8xxxu_send_beacon_frame(struct ieee80211_hw *hw,
+ static void rtl8xxxu_update_beacon_work_callback(struct work_struct *work)
+ {
+ 	struct rtl8xxxu_priv *priv =
+-		container_of(work, struct rtl8xxxu_priv, update_beacon_work);
++		container_of(work, struct rtl8xxxu_priv, update_beacon_work.work);
+ 	struct ieee80211_hw *hw = priv->hw;
+ 	struct ieee80211_vif *vif = priv->vifs[0];
+ 
+@@ -5736,6 +5736,14 @@ static void rtl8xxxu_update_beacon_work_callback(struct work_struct *work)
+ 		return;
+ 	}
+ 
++	if (vif->bss_conf.csa_active) {
++		if (ieee80211_beacon_cntdwn_is_complete(vif)) {
++			ieee80211_csa_finish(vif);
++			return;
++		}
++		schedule_delayed_work(&priv->update_beacon_work,
++				      msecs_to_jiffies(vif->bss_conf.beacon_int));
++	}
+ 	rtl8xxxu_send_beacon_frame(hw, vif);
+ }
+ 
+@@ -7764,7 +7772,7 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
+ 	spin_lock_init(&priv->rx_urb_lock);
+ 	INIT_WORK(&priv->rx_urb_wq, rtl8xxxu_rx_urb_work);
+ 	INIT_DELAYED_WORK(&priv->ra_watchdog, rtl8xxxu_watchdog_callback);
+-	INIT_WORK(&priv->update_beacon_work, rtl8xxxu_update_beacon_work_callback);
++	INIT_DELAYED_WORK(&priv->update_beacon_work, rtl8xxxu_update_beacon_work_callback);
+ 	skb_queue_head_init(&priv->c2hcmd_queue);
+ 
+ 	usb_set_intfdata(interface, hw);
+@@ -7825,6 +7833,8 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
+ 		hw->wiphy->interface_modes |= BIT(NL80211_IFTYPE_AP);
+ 	hw->queues = 4;
+ 
++	hw->wiphy->flags |= WIPHY_FLAG_HAS_CHANNEL_SWITCH;
++
+ 	if (priv->fops->supports_concurrent) {
+ 		hw->wiphy->iface_combinations = rtl8xxxu_combinations;
+ 		hw->wiphy->n_iface_combinations = ARRAY_SIZE(rtl8xxxu_combinations);
+-- 
+2.39.2
 
 
