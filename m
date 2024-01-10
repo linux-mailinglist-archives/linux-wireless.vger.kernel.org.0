@@ -1,144 +1,148 @@
-Return-Path: <linux-wireless+bounces-1677-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1678-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2677C829E65
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jan 2024 17:21:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A43BA829E94
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jan 2024 17:27:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEA991F22672
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jan 2024 16:21:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D0611C22B60
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jan 2024 16:27:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32F9B4C3AA;
-	Wed, 10 Jan 2024 16:20:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3277E4CB40;
+	Wed, 10 Jan 2024 16:27:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="chQaU9jx"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="O/O01Pjz"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB3D48785
-	for <linux-wireless@vger.kernel.org>; Wed, 10 Jan 2024 16:20:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40AE0nmR000806;
-	Wed, 10 Jan 2024 16:20:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=hmUcomUAFN0uAnfvzkXpoc1svcrrGLxqjY4x2TQVtpE=; b=ch
-	QaU9jxf40Ubk2bMYhb+QrI9YIB93xyCdhYxUiQLTgn3ANovODpeeZf0TyLKKkkWZ
-	cf16LbFbobWOYwc4TQLNU4hDYIi9ZKFTYSgZ3Bgvc6chTJf/OvpSB1eeRRQvDKK4
-	Nqoorvg5w5jplZkL2rk1jElkGJBpQenYw5Mq+RxUtLz5mRuv4nivgA7pwWiG/7jJ
-	3ApENMdf+yEbbtcQHSPjJT9918w1axDuFcMf4vkcKEbk+sx7wqYzoLvq8G2VXzm9
-	XbjRmCMAnY/wsiSYJxCpaRViGqhruIb/7MbxorCB/vYtqWX9uvSTTj+ZDvw9U1L4
-	uMvt6C3rCpub6Y8HXijQ==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vhvhp0bf9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 10 Jan 2024 16:20:47 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40AGKlGu032738
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 10 Jan 2024 16:20:47 GMT
-Received: from [10.110.103.239] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Wed, 10 Jan
- 2024 08:20:46 -0800
-Message-ID: <da6ff953-07a4-4226-a7dc-b816f8dc5724@quicinc.com>
-Date: Wed, 10 Jan 2024 08:20:46 -0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 907224CDE8
+	for <linux-wireless@vger.kernel.org>; Wed, 10 Jan 2024 16:27:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-4b7153b8d76so793570e0c.0
+        for <linux-wireless@vger.kernel.org>; Wed, 10 Jan 2024 08:27:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1704904023; x=1705508823; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7uB53QA0E7F+IhblD19yUURwvGBMy4pSNNv3aj7aRQ8=;
+        b=O/O01PjzdBA0CMwQh6BnBjoqZZTOQ6ncSWNIHlFtZ+Gj745Ech4CipC6PSpbfurRcM
+         Z0euVyZuW4FgFjufAW4VRUB//m7Z1C/QF5h5hwqoNJ4M6UcO+aDkPZ7gA8HvDiMdXTaS
+         cCs2n/XO6jMVttyHaUkmW9xjJK0pLmhEipXuo/SUSNBWMBCcO901yZbZCrPIfO9dvS5C
+         yh/278g8Exy//M0VWusCqml4q1whH1jtZC5qvlRYOhq7C7szWj3U0mp3q+I6pRriCbGr
+         LFZ8wGhBrQo/1rmsXcLFVxKnzVroAW6kq5+T5TqMeMg+i0HGMlrKWIUnJQmv2KHKaxLE
+         oTyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704904023; x=1705508823;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7uB53QA0E7F+IhblD19yUURwvGBMy4pSNNv3aj7aRQ8=;
+        b=t/pCizHwCxeybrsgXFGtg0h6zQLehvEoYbtPYGEcZp6ELWr6ZsEdp+fALU+z8PSQUy
+         HWD+0G1d85sNWwn18gYOGxTGHZnc51ChgoM+UNRUmFjLsgPugM5kQ9WkMclV27B3KDwQ
+         OSL88jB3BaYIPeJG3oacmQWw5W4fFfkdkqwXUGYZJI3gTpHr2nqZIEchycUcvLbZuq/t
+         pd/cjy9XEUv1bgIoTZ5vw66CruY1A5R0TFPDS6lNV//FkgBaHGLPn2PAmlXVv2cV+Qvh
+         89rQ35jEoxPvq6xVgTko0X6PXL13LpXMpU+xKfKUuA/jZCb5i8ulLMMAexHFb1LrrOSS
+         6ahw==
+X-Gm-Message-State: AOJu0YxEM+jQahS2R1JI15LPJkU+qKqyxWYuW49DqPfIVYaA7mU59RLj
+	gaXPgcGYdFwYFDgGwxcnGtd9Loe5UOguFkxANObpyQdENf0pgQ==
+X-Google-Smtp-Source: AGHT+IG/6gqAtxJZLTTUV4O4tvffOZMmP4epLvYL4XaS5IigP6LYO/TVheroyq15hW5HpD2+n4VCIuSdCWqd7g4P8XE=
+X-Received: by 2002:a05:6122:270c:b0:4b6:aeb7:3f1d with SMTP id
+ ej12-20020a056122270c00b004b6aeb73f1dmr611316vkb.9.1704904023230; Wed, 10 Jan
+ 2024 08:27:03 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] wifi: ath11k: add support for QCA2066
-Content-Language: en-US
-To: Baochen Qiang <quic_bqiang@quicinc.com>, <ath11k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20240109021336.4143-1-quic_bqiang@quicinc.com>
- <20240109021336.4143-3-quic_bqiang@quicinc.com>
- <e19baf59-c17b-4e2b-96d7-f4fc9812c99a@quicinc.com>
- <56282bad-b59d-4572-a6f1-1b905bf0edbd@quicinc.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <56282bad-b59d-4572-a6f1-1b905bf0edbd@quicinc.com>
+References: <20240104130123.37115-1-brgl@bgdev.pl> <20240104130123.37115-4-brgl@bgdev.pl>
+ <20240109144327.GA10780@wunner.de> <CAMRc=MdXO6c6asvRSn_Z8-oFS48hroT+dazGKB6WWY1_Zu7f1Q@mail.gmail.com>
+ <20240110132853.GA6860@wunner.de>
+In-Reply-To: <20240110132853.GA6860@wunner.de>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Wed, 10 Jan 2024 17:26:52 +0100
+Message-ID: <CAMRc=MdBSAb_kEO2r7r-vwLuRAEv7pMODOMtZoCCRAd=zsQb_w@mail.gmail.com>
+Subject: Re: [RFC 3/9] PCI/portdrv: create platform devices for child OF nodes
+To: Lukas Wunner <lukas@wunner.de>
+Cc: Kalle Valo <kvalo@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Rob Herring <robh+dt@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Heiko Stuebner <heiko@sntech.de>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Chris Morgan <macromorgan@hotmail.com>, 
+	Linus Walleij <linus.walleij@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Arnd Bergmann <arnd@arndb.de>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	=?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= <nfraprado@collabora.com>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Peng Fan <peng.fan@nxp.com>, 
+	Robert Richter <rrichter@amd.com>, Dan Williams <dan.j.williams@intel.com>, 
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>, Terry Bowman <terry.bowman@amd.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+	Huacai Chen <chenhuacai@kernel.org>, Alex Elder <elder@linaro.org>, 
+	Srini Kandagatla <srinivas.kandagatla@linaro.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: ZSaIGInvrtTOQIOAtsQlVpZq_hK23hGY
-X-Proofpoint-ORIG-GUID: ZSaIGInvrtTOQIOAtsQlVpZq_hK23hGY
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-09_01,2023-12-07_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 malwarescore=0
- impostorscore=0 adultscore=0 bulkscore=0 priorityscore=1501
- lowpriorityscore=0 spamscore=0 clxscore=1015 mlxscore=0 mlxlogscore=999
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2311290000 definitions=main-2401100132
+Content-Transfer-Encoding: quoted-printable
 
-On 1/9/2024 6:16 PM, Baochen Qiang wrote:
-> On 1/10/2024 1:41 AM, Jeff Johnson wrote:
->> On 1/8/2024 6:13 PM, Baochen Qiang wrote:
->>> QCA2066 is a PCI based DBS device. It is very similar to WCN6855
->>> overall: they share the same PCI device ID, the same major and
->>> minor version numbers, the same register address, and same HAL
->>> descriptors etc. The most significant difference is that QCA2066
->>> supports 3-antenna configuration while WCN6855 does not. To differentiate
->>> them, subversion numbers are used. Currently four numbers are used
->>> by QCA2066: 0x1019A0E1, 0x1019B0E1, 0x1019C0E1 and 0x1019D0E1.
->>>
->>> Tested-on: QCA2066 hw2.1 PCI WLAN.HSP.1.1-03737-QCAHSPSWPL_V2_SILICONZ_CE-1
->>> Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
->>>
->>> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
->>> ---
->>> v2:
->>>   - Rebased on ToT.
->>
->> hmmm, fails to apply using b4 shazam
->>
->> Checking attestation on all messages, may take a moment...
->> ---
->>    ✓ [PATCH v2 1/2] wifi: ath11k: move pci.ops registration ahead
->>    ✓ [PATCH v2 2/2] wifi: ath11k: add support for QCA2066
->>    ---
->>    ✓ Signed: DKIM/quicinc.com
->> ---
->> Total patches: 2
->> ---
->>   Base: using specified base-commit 2cd4e3f91f264926a6b11df948417b74d52ca9b9
->> Applying: wifi: ath11k: move pci.ops registration ahead
->> Applying: wifi: ath11k: add support for QCA2066
->> Patch failed at 0002 wifi: ath11k: add support for QCA2066
->> error: patch failed: drivers/net/wireless/ath/ath11k/core.c:711
->> error: drivers/net/wireless/ath/ath11k/core.c: patch does not apply
->>
->> And sure enough the code at drivers/net/wireless/ath/ath11k/core.c:711
->> doesn't match the code in the 2nd patch so something is amiss here.
->>
->> note your patch has reference to .support_dual_stations that is not
->> present in ath11k -- perhaps there are other prerequisites?
->> <https://patchwork.kernel.org/project/linux-wireless/patch/20230714023801.2621802-2-quic_cjhuang@quicinc.com/>
-> Yes, as said in the cover letter, this patch set depends on the above patch.
+On Wed, Jan 10, 2024 at 2:28=E2=80=AFPM Lukas Wunner <lukas@wunner.de> wrot=
+e:
+>
+> On Wed, Jan 10, 2024 at 01:55:18PM +0100, Bartosz Golaszewski wrote:
+> > On Tue, Jan 9, 2024 at 3:43???PM Lukas Wunner <lukas@wunner.de> wrote:
+> > > On Thu, Jan 04, 2024 at 02:01:17PM +0100, Bartosz Golaszewski wrote:
+> > > > In order to introduce PCIe power-sequencing, we need to create plat=
+form
+> > > > devices for child nodes of the port driver node. They will get matc=
+hed
+> > > > against the pwrseq drivers (if one exists) and then the actuak PCIe
+> > > > device will reuse the node once it's detected on the bus.
+> > > [...]
+> > > > --- a/drivers/pci/pcie/portdrv.c
+> > > > +++ b/drivers/pci/pcie/portdrv.c
+> > > > @@ -715,7 +716,7 @@ static int pcie_portdrv_probe(struct pci_dev *d=
+ev,
+> > > >               pm_runtime_allow(&dev->dev);
+> > > >       }
+> > > >
+> > > > -     return 0;
+> > > > +     return devm_of_platform_populate(&dev->dev);
+> > > >  }
+> > >
+> > > I think this belongs in of_pci_make_dev_node(), portdrv seems totally
+> > > the wrong place.  Note that you're currently calling this for RCECs
+> > > (Root Complex Event Collectors) as well, which is likely not what
+> > > you want.
+> > >
+> >
+> > of_pci_make_dev_node() is only called when the relevant PCI device is
+> > instantiated which doesn't happen until it's powered-up and scanned -
+> > precisely the problem I'm trying to address.
+>
+> No, of_pci_make_dev_node() is called *before* device_attach(),
+> i.e. before portdrv has even probed.  So it seems this should
+> work perfectly well for your use case.
+>
 
-Unfortunately automated tasks don't parse cover letters. But it looks
-like b4 doesn't handle or warn about:
-prerequisite-patch-id: 640366721125b1adea0eeabd5cdfca5e91476e7c
+Seems like the following must be true but isn't in my case (from
+pci_bus_add_device()):
 
-And not quite sure how it would handle that.
+    if (pci_is_bridge(dev))
+        of_pci_make_dev_node(dev);
 
-Kalle, that prerequisite series is set to Deferred and predates my
-transition to the ath11k maintainer role. What action is needed from the
-developers?
-<https://patchwork.kernel.org/project/linux-wireless/list/?series=765506&state=*>
+Shouldn't it evaluate to true for ports?
 
-/jeff
+Bartosz
 
+[snip]
 
