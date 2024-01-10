@@ -1,133 +1,122 @@
-Return-Path: <linux-wireless+bounces-1644-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1645-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7435082925B
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jan 2024 03:16:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 941EB8292F2
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jan 2024 05:12:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BFDB7B232E4
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jan 2024 02:16:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FD321C23CF1
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jan 2024 04:12:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 548AC15C0;
-	Wed, 10 Jan 2024 02:16:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="LiHr5zaG"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 313724C85;
+	Wed, 10 Jan 2024 04:12:40 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D59AE10F4
-	for <linux-wireless@vger.kernel.org>; Wed, 10 Jan 2024 02:16:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40A1d2W5005296;
-	Wed, 10 Jan 2024 02:16:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=IcypqG5QdjHDIkWJN7bUsD90G9kVZODAofgR0KKRspY=; b=Li
-	Hr5zaGxFZnBnOa5ac+orYta92RhR5Yi3lLpH9ePvnaz/nGLBC99nCraydgvGUb4K
-	z74kl2zS0T3GpGIHb8BIqal/LLB8AFfskbYgroHFpQAWhBp13Gq4SwlDhWBufLZz
-	A1pXIcYiwhegfcRxbeiDot3AQTmN1H5Ua9fu6dyza0Tz7EtXBtJrPLwZIAGGHYgG
-	yWILJKCHmhegNcgTJJrw9VSMKXxe2aEAWXWuTRhLg83pAf2Oeay4lB8Bn+E6z6zJ
-	45Ktax48OG5NVrkvtT73XARGFD/5jc96i0hUNpvCIfGb53wkGGvrnsMj7eYTqsRX
-	p5X6LGEDliomzhVU2mIw==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vh9bmh5wy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 10 Jan 2024 02:16:08 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40A2G7GY013051
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 10 Jan 2024 02:16:07 GMT
-Received: from [10.231.195.68] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Tue, 9 Jan
- 2024 18:16:06 -0800
-Message-ID: <56282bad-b59d-4572-a6f1-1b905bf0edbd@quicinc.com>
-Date: Wed, 10 Jan 2024 10:16:03 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826E44C6B
+	for <linux-wireless@vger.kernel.org>; Wed, 10 Jan 2024 04:12:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 0e99ca455b9f4c518e9f4480f51113f4-20240110
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.35,REQID:e8ca0cfd-a872-453e-aa87-5618790500f3,IP:5,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:-10
+X-CID-INFO: VERSION:1.1.35,REQID:e8ca0cfd-a872-453e-aa87-5618790500f3,IP:5,URL
+	:0,TC:0,Content:0,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:-10
+X-CID-META: VersionHash:5d391d7,CLOUDID:aeb3ff2e-1ab8-4133-9780-81938111c800,B
+	ulkID:24011012122039I1WV0C,BulkQuantity:0,Recheck:0,SF:66|24|17|19|44|102,
+	TC:nil,Content:0,EDM:-3,IP:-2,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
+	,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_FSI,TF_CID_SPAM_SNR
+X-UUID: 0e99ca455b9f4c518e9f4480f51113f4-20240110
+X-User: lilinmao@kylinos.cn
+Received: from localhost.localdomain [(112.64.161.44)] by mailgw
+	(envelope-from <lilinmao@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 162766060; Wed, 10 Jan 2024 12:12:18 +0800
+From: Li Lin Mao <lilinmao@kylinos.cn>
+To: linux-wireless@vger.kernel.org
+Cc: pkshih@realtek.com,
+	kvalo@kernel.org,
+	Li Lin Mao <lilinmao@kylinos.cn>
+Subject: [PATCH v2] wifi: rtw89: 8852b: avoid reporting errors by cppcheck
+Date: Wed, 10 Jan 2024 12:12:13 +0800
+Message-Id: <20240110041213.2803770-1-lilinmao@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] wifi: ath11k: add support for QCA2066
-Content-Language: en-US
-To: Jeff Johnson <quic_jjohnson@quicinc.com>, <ath11k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20240109021336.4143-1-quic_bqiang@quicinc.com>
- <20240109021336.4143-3-quic_bqiang@quicinc.com>
- <e19baf59-c17b-4e2b-96d7-f4fc9812c99a@quicinc.com>
-From: Baochen Qiang <quic_bqiang@quicinc.com>
-In-Reply-To: <e19baf59-c17b-4e2b-96d7-f4fc9812c99a@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: VmM3k_MDIJBlGppvJqy0nT4m-xa8daOK
-X-Proofpoint-GUID: VmM3k_MDIJBlGppvJqy0nT4m-xa8daOK
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-09_01,2023-12-07_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 mlxscore=0
- clxscore=1015 spamscore=0 priorityscore=1501 malwarescore=0
- mlxlogscore=999 adultscore=0 bulkscore=0 suspectscore=0 lowpriorityscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2311290000 definitions=main-2401100017
 
+Due to some reasons in cppcheck, the following issues might be reported:
+drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c:1414:22: error: Array
+ 'iqk_info->iqk_mcc_ch[2][4]' accessed at index iqk_info->iqk_mcc_ch[2][*],
+which is out of bounds. [arrayIndexOutOfBounds]
+ iqk_info->iqk_mcc_ch[idx][path] = chan->channel;
+                     ^
+drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c:1393:2: note: After for
+loop, idx has value 2
+ for (idx = 0; idx < RTW89_IQK_CHS_NR; idx++) {
+ ^
+drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c:1414:22: note: Array index
+out of bounds
+ iqk_info->iqk_mcc_ch[idx][path] = chan->channel;
+                     ^
+drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c:1424:38: error: Array
+'iqk_info->iqk_mcc_ch[2][4]' accessed at index iqk_info->iqk_mcc_ch[2][*],
+which is out of bounds. [arrayIndexOutOfBounds]
+      idx, path, iqk_info->iqk_mcc_ch[idx][path]);
+                                     ^
+drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c:1393:2: note: After for
+loop, idx has value 2
+ for (idx = 0; idx < RTW89_IQK_CHS_NR; idx++) {
+ ^
+drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c:1424:38: note: Array index
+out of bounds
+      idx, path, iqk_info->iqk_mcc_ch[idx][path]);
+                                     ^
+But actually this might be a false alarm. We avoided it in some way.
 
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Li Lin Mao <lilinmao@kylinos.cn>
+---
+ drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-On 1/10/2024 1:41 AM, Jeff Johnson wrote:
-> On 1/8/2024 6:13 PM, Baochen Qiang wrote:
->> QCA2066 is a PCI based DBS device. It is very similar to WCN6855
->> overall: they share the same PCI device ID, the same major and
->> minor version numbers, the same register address, and same HAL
->> descriptors etc. The most significant difference is that QCA2066
->> supports 3-antenna configuration while WCN6855 does not. To differentiate
->> them, subversion numbers are used. Currently four numbers are used
->> by QCA2066: 0x1019A0E1, 0x1019B0E1, 0x1019C0E1 and 0x1019D0E1.
->>
->> Tested-on: QCA2066 hw2.1 PCI WLAN.HSP.1.1-03737-QCAHSPSWPL_V2_SILICONZ_CE-1
->> Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
->>
->> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
->> ---
->> v2:
->>   - Rebased on ToT.
-> 
-> hmmm, fails to apply using b4 shazam
-> 
-> Checking attestation on all messages, may take a moment...
-> ---
->    ✓ [PATCH v2 1/2] wifi: ath11k: move pci.ops registration ahead
->    ✓ [PATCH v2 2/2] wifi: ath11k: add support for QCA2066
->    ---
->    ✓ Signed: DKIM/quicinc.com
-> ---
-> Total patches: 2
-> ---
->   Base: using specified base-commit 2cd4e3f91f264926a6b11df948417b74d52ca9b9
-> Applying: wifi: ath11k: move pci.ops registration ahead
-> Applying: wifi: ath11k: add support for QCA2066
-> Patch failed at 0002 wifi: ath11k: add support for QCA2066
-> error: patch failed: drivers/net/wireless/ath/ath11k/core.c:711
-> error: drivers/net/wireless/ath/ath11k/core.c: patch does not apply
-> 
-> And sure enough the code at drivers/net/wireless/ath/ath11k/core.c:711
-> doesn't match the code in the 2nd patch so something is amiss here.
-> 
-> note your patch has reference to .support_dual_stations that is not
-> present in ath11k -- perhaps there are other prerequisites?
-> <https://patchwork.kernel.org/project/linux-wireless/patch/20230714023801.2621802-2-quic_cjhuang@quicinc.com/>
-Yes, as said in the cover letter, this patch set depends on the above patch.
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c
+index 259df67836a0..03169287667c 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c
+@@ -1388,17 +1388,15 @@ static void _iqk_get_ch_info(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy, u
+ 	u32 reg_rf18;
+ 	u32 reg_35c;
+ 	u8 idx;
+-	u8 get_empty_table = false;
+ 
+ 	for (idx = 0; idx < RTW89_IQK_CHS_NR; idx++) {
+ 		if (iqk_info->iqk_mcc_ch[idx][path] == 0) {
+-			get_empty_table = true;
+ 			break;
+ 		}
+ 	}
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[IQK] (1)idx = %x\n", idx);
+ 
+-	if (!get_empty_table) {
++	if (idx >= RTW89_IQK_CHS_NR) {
+ 		idx = iqk_info->iqk_table_idx[path] + 1;
+ 		if (idx > 1)
+ 			idx = 0;
+-- 
+2.25.1
 
-> 
-> /jeff
 
