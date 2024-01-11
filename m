@@ -1,103 +1,79 @@
-Return-Path: <linux-wireless+bounces-1734-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1735-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1993782B2C7
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 17:21:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 088A182B2D8
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 17:23:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACF431F21EBA
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 16:21:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B10E51F26F04
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 16:23:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73AF55674E;
-	Thu, 11 Jan 2024 16:18:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AA3F51C33;
+	Thu, 11 Jan 2024 16:21:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BUaEQRUt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sd4NHbiu"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 135F856743
-	for <linux-wireless@vger.kernel.org>; Thu, 11 Jan 2024 16:18:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1704989928; x=1736525928;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=cjNzF7bzDhWU0d3QtbNgVgZFEvHazHvccyCBI+S24Mk=;
-  b=BUaEQRUtuIbOPiyUpo0X8s5ZiDTES56QbCeU9dd3tFtsvUnmwMbj/krY
-   fntJZxaoFr4hDApUSpwVYiBI2SLYjsOBugOJtbGPG890Tv+EZURKtHK+e
-   U4DGGnscuQEloe2RvnqZD3lE9Ifmj/9u5DXZLUalVIbiL9GwP7tAIWj5g
-   M4UuuXwcSDJAcbPtaQp5U7zfAI+quNO5oj/EA19l5aoSrnox/fZeVJKLW
-   D2BI1AxBWuGLH3uV6UfTRE5G9kPFvmXxqUji6c1NSpXQtOf0Y7s+gDpEJ
-   Rr8L7Rang+CxAY7TmHtkUAm5hb9vZ70rf34/NAymAMCFj0WbBm9Jyx10F
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10950"; a="463182627"
-X-IronPort-AV: E=Sophos;i="6.04,186,1695711600"; 
-   d="scan'208";a="463182627"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2024 08:18:47 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10950"; a="1029606819"
-X-IronPort-AV: E=Sophos;i="6.04,186,1695711600"; 
-   d="scan'208";a="1029606819"
-Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2024 08:18:46 -0800
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	Ilan Peer <ilan.peer@intel.com>
-Subject: [PATCH 8/8] wifi: mac80211: use deflink and fix typo in link ID check
-Date: Thu, 11 Jan 2024 18:17:46 +0200
-Message-Id: <20240111181514.4c4b1c40eb3c.I2771621dee328c618536596b7e56232df42a79c8@changeid>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240111161746.3978601-1-miriam.rachel.korenblit@intel.com>
-References: <20240111161746.3978601-1-miriam.rachel.korenblit@intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CE4851C27;
+	Thu, 11 Jan 2024 16:21:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE39BC433F1;
+	Thu, 11 Jan 2024 16:21:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1704990081;
+	bh=cLMSls0CclaGc98AAZVASmR+hPSsayxTFbvOAqBnEQQ=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=Sd4NHbiuDtAmFeJViN6EkVGtGanE/TQTIzyeIoRQ1TBpYJFA4se4MwkT0lhmmdoP2
+	 UwOH/0tWuDwDFGs0+VktMMWC06uQDmrTkMMR1jEDikRZTPsfngeGWbHF+Ie1PaUNMu
+	 oOoCzWEw6IUC79iks94p6YnoftyVkzWvKT1t915YKJgt97ySr9ScjRLSV0xjdad6xS
+	 MAG+G21MdgH0t6wZD0HMrQ/uUublvOQXgU4o/IxuHuvI1X5ebtZfEbhmSQQCaJlvrG
+	 7QnTkR5GUrTywjZkEwjh9MaLeCJkeh2NSJc063rn6cGT2UH75tutXnjeT7G7/al5hX
+	 Ln7c0PocxePzQ==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 1/3] wifi: ath12k: Remove unnecessary struct qmi_txn
+ initializers
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20240109-qmi-cleanup-v1-1-607b10858566@quicinc.com>
+References: <20240109-qmi-cleanup-v1-1-607b10858566@quicinc.com>
+To: Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc: Jeff Johnson <quic_jjohnson@quicinc.com>, <ath12k@lists.infradead.org>,
+ <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <170499007813.916301.2323327164409855961.kvalo@kernel.org>
+Date: Thu, 11 Jan 2024 16:21:19 +0000 (UTC)
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+Jeff Johnson <quic_jjohnson@quicinc.com> wrote:
 
-This does not change anything effectively, but it is closer to what the
-code is trying to achieve here. i.e. select the link data if it is an
-MLD and fall back to using the deflink otherwise.
+> Currently most of the ath12k QMI messaging functions define their
+> struct qmi_txn variables with a {} initializer. However, all of these
+> functions subsequently call qmi_txn_init(), and the very first thing
+> that function does is zero the struct. Hence, the initializers are
+> unnecessary. Since these consume code space and cpu cycles, remove
+> them.
+> 
+> No functional changes, compile tested only.
 
-Fixes: 0f99f0878350 ("wifi: mac80211: Print local link address during authentication")
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Reviewed-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
----
- net/mac80211/mlme.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+s-o-b missing on all 3 patches.
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 99188bd84799..cc9a8eaffa6b 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -7869,10 +7869,10 @@ int ieee80211_mgd_auth(struct ieee80211_sub_if_data *sdata,
- 	if (err)
- 		goto err_clear;
- 
--	if (req->link_id > 0)
-+	if (req->link_id >= 0)
- 		link = sdata_dereference(sdata->link[req->link_id], sdata);
- 	else
--		link = sdata_dereference(sdata->link[0], sdata);
-+		link = &sdata->deflink;
- 
- 	if (WARN_ON(!link)) {
- 		err = -ENOLINK;
+3 patches set to Changes Requested.
+
+13515170 [1/3] wifi: ath12k: Remove unnecessary struct qmi_txn initializers
+13515167 [2/3] wifi: ath12k: Add missing qmi_txn_cancel() calls
+13515168 [3/3] wifi: ath12k: Use initializers for QMI message buffers
+
 -- 
-2.34.1
+https://patchwork.kernel.org/project/linux-wireless/patch/20240109-qmi-cleanup-v1-1-607b10858566@quicinc.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
 
