@@ -1,107 +1,126 @@
-Return-Path: <linux-wireless+bounces-1704-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1705-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A60CD82AC49
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 11:43:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3FB382AC71
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 11:49:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A06931C23A0F
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 10:43:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1AD11F20C9E
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 10:49:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3B3014AB6;
-	Thu, 11 Jan 2024 10:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7884C14AB7;
+	Thu, 11 Jan 2024 10:49:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WU3ZFnmz"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CA5B15AC0;
-	Thu, 11 Jan 2024 10:42:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout2.hostsharing.net (Postfix) with ESMTPS id 9C5AD2800B3F1;
-	Thu, 11 Jan 2024 11:42:11 +0100 (CET)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 8DDD01D5B8A; Thu, 11 Jan 2024 11:42:11 +0100 (CET)
-Date: Thu, 11 Jan 2024 11:42:11 +0100
-From: Lukas Wunner <lukas@wunner.de>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Kalle Valo <kvalo@kernel.org>, "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Chris Morgan <macromorgan@hotmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	=?iso-8859-1?Q?N=EDcolas_F_=2E_R_=2E_A_=2E?= Prado <nfraprado@collabora.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Peng Fan <peng.fan@nxp.com>, Robert Richter <rrichter@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Terry Bowman <terry.bowman@amd.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Huacai Chen <chenhuacai@kernel.org>, Alex Elder <elder@linaro.org>,
-	Srini Kandagatla <srinivas.kandagatla@linaro.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-pci@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: [RFC 3/9] PCI/portdrv: create platform devices for child OF nodes
-Message-ID: <20240111104211.GA32504@wunner.de>
-References: <20240104130123.37115-1-brgl@bgdev.pl>
- <20240104130123.37115-4-brgl@bgdev.pl>
- <20240109144327.GA10780@wunner.de>
- <CAMRc=MdXO6c6asvRSn_Z8-oFS48hroT+dazGKB6WWY1_Zu7f1Q@mail.gmail.com>
- <20240110132853.GA6860@wunner.de>
- <CAMRc=MdBSAb_kEO2r7r-vwLuRAEv7pMODOMtZoCCRAd=zsQb_w@mail.gmail.com>
- <20240110164105.GA13451@wunner.de>
- <CAMRc=MdQKPN8UbagmswjFx7_JvmJuBeuq8+9=z-+GBNUmdpWEA@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E81B14AB2
+	for <linux-wireless@vger.kernel.org>; Thu, 11 Jan 2024 10:49:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DAC4C43390;
+	Thu, 11 Jan 2024 10:49:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1704970161;
+	bh=2BwsaHH3RaECoGSLr9kkKwt5y19AQVc+35+9uREmYFQ=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=WU3ZFnmzV9e0gUDD9/IJX9F9Tc3j6m6txyHXCgiyomWY7FWM3BQsC8cWNixE1TTXZ
+	 Xrluo8NENCieT40hGO4hesBPMIetTv92Dg/fFKEzcO+AS175CHVLXLAGJpDISPOxgY
+	 U5KwIdVrd3STkHD+k65yA8mbOWpd843Aj+xK/31fsG12yhDTDUtf32HfGN6Sm/P+ur
+	 myqfuXLMOYdCzK+X++h430wYmCDROtzO4SzYQG51BvSsPJRAI0Of+0gd2PJkhWhVTz
+	 nP1be/nDfOJQ9UsbWyAExlMLU5c//+VIKtBqZimXlT89qDqeNA/GS76Z68UgbCwTNG
+	 +Qvcq9tx0SsAQ==
+From: Kalle Valo <kvalo@kernel.org>
+To: Christian Lamparter <chunkeey@gmail.com>
+Cc: linux-wireless@vger.kernel.org,  chunkeey@googlemail.com
+Subject: Re: [PATCH] wifi: p54: fix GCC format truncation warning with
+ wiphy->fw_version
+References: <20231219162516.898205-1-kvalo@kernel.org>
+	<cf644ed2-6d75-4fc5-9a56-34541ef8eaff@gmail.com>
+Date: Thu, 11 Jan 2024 12:49:19 +0200
+In-Reply-To: <cf644ed2-6d75-4fc5-9a56-34541ef8eaff@gmail.com> (Christian
+	Lamparter's message of "Thu, 21 Dec 2023 20:53:49 +0100")
+Message-ID: <87edeoi1qo.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMRc=MdQKPN8UbagmswjFx7_JvmJuBeuq8+9=z-+GBNUmdpWEA@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain
 
-On Wed, Jan 10, 2024 at 02:18:30PM -0600, Bartosz Golaszewski wrote:
-> On Wed, 10 Jan 2024 17:41:05 +0100, Lukas Wunner <lukas@wunner.de> said:
-> > On Wed, Jan 10, 2024 at 05:26:52PM +0100, Bartosz Golaszewski wrote:
-> > > Seems like the following must be true but isn't in my case (from
-> > > pci_bus_add_device()):
-> > >
-> > >     if (pci_is_bridge(dev))
-> > >         of_pci_make_dev_node(dev);
-> > >
-> > > Shouldn't it evaluate to true for ports?
-> >
-> > It should.
-> >
-> > What does "lspci -vvvvxxxx -s BB:DD.F" say for the port in question?
-> 
-> I cut out the hexdump part, let me know if you really need it.
+Christian Lamparter <chunkeey@gmail.com> writes:
 
-I really need it.
+> On 12/19/23 17:25, Kalle Valo wrote:
+>> GCC 13.2 warns:
+>> drivers/net/wireless/intersil/p54/fwio.c:128:34: warning: '%s'
+>> directive output may be truncated writing up to 39 bytes into a
+>> region of size 32 [-Wformat-truncation=]
+>> drivers/net/wireless/intersil/p54/fwio.c:128:33: note: directive argument in the range [0, 16777215]
+>> drivers/net/wireless/intersil/p54/fwio.c:128:33: note: directive argument in the range [0, 255]
+>> drivers/net/wireless/intersil/p54/fwio.c:127:17: note: 'snprintf'
+>> output between 7 and 52 bytes into a destination of size 32
+>> The issue here is that wiphy->fw_version is 32 bytes and in theory
+>> the string
+>> we try to place there can be 39 bytes.
+> Puh, I've been looking into /lib/vsprintf.c. Looking at the code, it seems
+> that it goes like this:
+>
+> snprintf() -> vsnprintf() -> case FORMAT_TYPE_STR: -> string() -> string_nocheck():
+> | [...]
+> |                if (buf < end)
+> |                      *buf = c;
+> | [...]
+>
+> which dutifully checks for overruns (i.e. before writing into the buffer=wiphy->fw_version).
+> So, thankfully no blind memcpy/strcpy is taking place here.
+> Though, I don't know if this could be used for speculation attacks.
+>
+>> wiphy->fw_version is used for providing
+>> the firmware version to user space via ethtool, so not really important.
+>> fw_version in theory can be 24 bytes but in practise it's shorter, so even if
+>> print only 19 bytes via ethtool there should not be any practical difference.
+>> I did consider removing fw_var from the string altogether or making
+>> the maximum
+>> length for fw_version 19 bytes, but chose this approach as it was the least
+>> intrusive.
+>> Signed-off-by: Kalle Valo <kvalo@kernel.org>
+>
+> |ethtool -i wlx0014a535e989
+> |driver: p54usb
+> |version: 6.7.0-rc6-wt+
+> |firmware-version: 2.13.25.0 - 5.9
+> |expansion-rom-version:
+> |bus-info: 5-2:1.0
+> |supports-statistics: yes
+> |supports-test: no
+> |supports-eeprom-access: no
+> |supports-register-dump: no
+> |supports-priv-flags: no
+>
+> (yes, this doesn't change the output of ethtool. The firmware version is indeed
+> much much shorter than 24 bytes for the firmwares I know of.)
+
+Thanks for checking all this.
+
+> To be honest, I would write something like: "This patch silences gcc" in the commit
+> message. Rather than trying to come up with a well-intended justification. But I get
+> why this happens. That said, I would like to see gcc envolve... And maybe then it
+> will add warnings that go in the other direction (i.e. it will complain that
+> this %.19s was unnecessary here) :D.
+>
+> Acked-by: Christian Lamparter <chunkeey@gmail.com> (Tested with Dell 1450 USB)
+
+Yeah, I get why you dislike this. But it's just that net tree more or
+less requires that our code is W=1 warning free and it will be soon
+become a mess if we have existing warnings. So having this fixed, or
+silenced, makes my life easier.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
