@@ -1,64 +1,62 @@
-Return-Path: <linux-wireless+bounces-1682-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1683-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC0C982A545
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 01:42:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6892482A587
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 02:22:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CCC71F22DED
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 00:42:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1B96285CD5
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 01:22:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C24AF38F;
-	Thu, 11 Jan 2024 00:42:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1278A10FC;
+	Thu, 11 Jan 2024 01:22:04 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DEA636A
-	for <linux-wireless@vger.kernel.org>; Thu, 11 Jan 2024 00:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66AE210F8
+	for <linux-wireless@vger.kernel.org>; Thu, 11 Jan 2024 01:22:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 40B0gBUU11320451, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 40B0gBUU11320451
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 40B1LZpR41342111, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 40B1LZpR41342111
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 11 Jan 2024 08:42:18 +0800
-Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.17; Thu, 11 Jan 2024 08:42:12 +0800
+	Thu, 11 Jan 2024 09:21:35 +0800
+Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Thu, 11 Jan 2024 09:21:35 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 11 Jan 2024 08:42:12 +0800
+ RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Thu, 11 Jan 2024 09:21:35 +0800
 Received: from RTEXMBS04.realtek.com.tw ([fe80::e4c4:c4f:4e4c:d23c]) by
  RTEXMBS04.realtek.com.tw ([fe80::e4c4:c4f:4e4c:d23c%5]) with mapi id
- 15.01.2507.035; Thu, 11 Jan 2024 08:42:12 +0800
+ 15.01.2507.035; Thu, 11 Jan 2024 09:21:35 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
-To: Viacheslav <adeep@lexina.in>,
-        "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>
-CC: =?utf-8?B?SmVybmVqIMWga3JhYmVj?= <jernej.skrabec@gmail.com>,
-        "Martin
- Blumenstingl" <martin.blumenstingl@googlemail.com>
-Subject: RE: rtw88: rtl8822cs AP mode not working
-Thread-Topic: rtw88: rtl8822cs AP mode not working
-Thread-Index: AQHaQ5OsSQGQ9nw7J0iwO3LVKmuk7LDSwwJA//+ZagCAAWoEsA==
-Date: Thu, 11 Jan 2024 00:42:11 +0000
-Message-ID: <0969b1ca039e423dbcc41de18db023c6@realtek.com>
-References: <36972ff5-0c48-4bd2-8f9a-9649bfa24225@lexina.in>
- <11c7333aee0d45fd9fbfc65f6e2a3aa2@realtek.com>
- <216e8522-fa56-4d54-ae32-74c6008a2075@lexina.in>
-In-Reply-To: <216e8522-fa56-4d54-ae32-74c6008a2075@lexina.in>
+To: Martin Kaistra <martin.kaistra@linutronix.de>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC: Jes Sorensen <Jes.Sorensen@gmail.com>, Kalle Valo <kvalo@kernel.org>,
+        Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        Sebastian Andrzej Siewior
+	<bigeasy@linutronix.de>
+Subject: RE: [PATCH v2] wifi: rtl8xxxu: enable channel switch support
+Thread-Topic: [PATCH v2] wifi: rtl8xxxu: enable channel switch support
+Thread-Index: AQHaQ7FJIRSod+cmIUG5nhwVhackgrDTz7Xw
+Date: Thu, 11 Jan 2024 01:21:35 +0000
+Message-ID: <cf31e4c5e1a04230891e5bbbff5d24ff@realtek.com>
+References: <20240110103909.240514-1-martin.kaistra@linutronix.de>
+In-Reply-To: <20240110103909.240514-1-martin.kaistra@linutronix.de>
 Accept-Language: en-US, zh-TW
 Content-Language: zh-TW
-x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
+x-kse-serverinfo: RTEXDAG01.realtek.com.tw, 9
 x-kse-antispam-interceptor-info: fallback
 x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -66,34 +64,67 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogVmlhY2hlc2xhdiA8YWRl
-ZXBAbGV4aW5hLmluPg0KPiBTZW50OiBXZWRuZXNkYXksIEphbnVhcnkgMTAsIDIwMjQgNzowNSBQ
-TQ0KPiBUbzogUGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRlay5jb20+OyBsaW51eC13aXJlbGVz
-c0B2Z2VyLmtlcm5lbC5vcmcNCj4gQ2M6IEplcm5laiDFoGtyYWJlYyA8amVybmVqLnNrcmFiZWNA
-Z21haWwuY29tPjsgTWFydGluIEJsdW1lbnN0aW5nbCA8bWFydGluLmJsdW1lbnN0aW5nbEBnb29n
-bGVtYWlsLmNvbT4NCj4gU3ViamVjdDogUmU6IHJ0dzg4OiBydGw4ODIyY3MgQVAgbW9kZSBub3Qg
-d29ya2luZw0KPiANCj4gSGkhDQo+IA0KPiAxMC8wMS8yMDI0IDEyLjE1LCBQaW5nLUtlIFNoaWgg
-d3JvdGU6DQo+ID4NCj4gPg0KPiA+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiA+PiBG
-cm9tOiBWaWFjaGVzbGF2IDxhZGVlcEBsZXhpbmEuaW4+DQo+ID4+IFNlbnQ6IFdlZG5lc2RheSwg
-SmFudWFyeSAxMCwgMjAyNCAzOjA3IFBNDQo+ID4+IFRvOiBsaW51eC13aXJlbGVzc0B2Z2VyLmtl
-cm5lbC5vcmcNCj4gPj4gQ2M6IFBpbmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPjsgSmVy
-bmVqIMWga3JhYmVjIDxqZXJuZWouc2tyYWJlY0BnbWFpbC5jb20+OyBNYXJ0aW4gQmx1bWVuc3Rp
-bmdsDQo+ID4+IDxtYXJ0aW4uYmx1bWVuc3RpbmdsQGdvb2dsZW1haWwuY29tPg0KPiA+PiBTdWJq
-ZWN0OiBydHc4ODogcnRsODgyMmNzIEFQIG1vZGUgbm90IHdvcmtpbmcNCj4gPj4NCj4gPj4gSGVs
-bG8hDQo+ID4+DQo+ID4+IFdlIHVzZSBSVEw4ODIyQ1MgbW9kdWxlcyBpbiBvdXIgZGV2aWNlcyBh
-bmQgd2Ugc3dpdGNoZWQgdG8gcnR3ODggZnJvbSBhbg0KPiA+PiBleHRlcm5hbCBkcml2ZXIgYnkg
-UmVhbHRlay4gU3VkZGVubHkgd2UgZGlzY292ZXJlZCB0aGF0IHRoZSBBUCBtb2RlDQo+ID4+ICho
-b3RzcG90KSBzdG9wcGVkIHdvcmtpbmcuIFRoZSBob3RzcG90IGlzIHNldCB1cCwgYnV0IGl0IGRv
-ZXMgbm90DQo+ID4+IGF1dGhvcml6ZSBjbGllbnQgY29ubmVjdGlvbnMuDQo+ID4+DQo+ID4+IElu
-IGF0dGFjbWVudHMgbG9nIGFuZCBjb25maWcgZmlsZXMuDQo+ID4+DQo+ID4+IGNsaWVudCAtIG5v
-dGVib29rIHdpdGggaXdsd2lmaSAwMDAwOjAwOjE0LjM6IERldGVjdGVkIEtpbGxlcihSKSBXaS1G
-aSA2RQ0KPiA+PiBBWDE2NzVpIDE2ME1IeiBXaXJlbGVzcyBOZXR3b3JrIEFkYXB0ZXIgKDIxMU5H
-VyksIFJFVj0weDM3MA0KPiA+Pg0KPiA+DQo+ID4gSXQgaXMgcHJvYmFibHkgYmVjYXVzZSBSVEw4
-ODIyQ1MgZG9lc24ndCBpc3N1ZSBiZWFjb24gcHJvcGVybHkuIFRyeWluZyB0bw0KPiA+IGNhcHR1
-cmUgYWlyIHBhY2tldHMgd2lsbCBiZSBoZWxwZnVsIHRvIGNsYXJpZnkgdGhlIHByb2JsZW0uDQo+
-IA0KPiBhaXJkdW1wLW5nIHJlc3VsdCBpbiBhdHRhY2htZW50Lg0KPiBJIGRvbid0IHNlZSBhbnkg
-Y2FwdHVyZWQgYmVhY29uIHBhY2tldHMuDQoNClNvLCB0aGF0IGlzIHRoZSBwcm9ibGVtLiBEaWQg
-eW91IHNlZSBhbnkgd2VpcmQgbWVzc2FnZXMgaW4ga2VybmVsIGxvZyB3aGVuDQp5b3Ugd2VyZSBz
-dGFydGluZyBob3N0YXBkPw0KDQoNCg==
+
+
+> -----Original Message-----
+> From: Martin Kaistra <martin.kaistra@linutronix.de>
+> Sent: Wednesday, January 10, 2024 6:39 PM
+> To: linux-wireless@vger.kernel.org
+> Cc: Jes Sorensen <Jes.Sorensen@gmail.com>; Kalle Valo <kvalo@kernel.org>;=
+ Ping-Ke Shih
+> <pkshih@realtek.com>; Bitterblue Smith <rtl8821cerfe2@gmail.com>; Sebasti=
+an Andrzej Siewior
+> <bigeasy@linutronix.de>
+> Subject: [PATCH v2] wifi: rtl8xxxu: enable channel switch support
+>=20
+> The CSA countdown in the beacon frames, which are sent out by firmware,
+> needs to get updated by the driver. To achieve this, convert
+> update_beacon_work to delayed_work and schedule it with the beacon
+> interval in case CSA is active and the countdown is not complete.
+>=20
+> Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
+> ---
+> changes v1->v2: use delayed_work instead of usleep_range
+> v1: https://lore.kernel.org/linux-wireless/20240108111103.121378-1-martin=
+.kaistra@linutronix.de/
+>  .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h   |  2 +-
+>  .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c  | 18 ++++++++++++++----
+>  2 files changed, 15 insertions(+), 5 deletions(-)
+>=20
+
+[...]
+
+> @@ -7764,7 +7772,7 @@ static int rtl8xxxu_probe(struct usb_interface *int=
+erface,
+>         spin_lock_init(&priv->rx_urb_lock);
+>         INIT_WORK(&priv->rx_urb_wq, rtl8xxxu_rx_urb_work);
+>         INIT_DELAYED_WORK(&priv->ra_watchdog, rtl8xxxu_watchdog_callback)=
+;
+> -       INIT_WORK(&priv->update_beacon_work, rtl8xxxu_update_beacon_work_=
+callback);
+> +       INIT_DELAYED_WORK(&priv->update_beacon_work, rtl8xxxu_update_beac=
+on_work_callback);
+
+It seems like we missed cancel priv->update_beacon_work work at rtl8xxxu_st=
+op().
+Because that isn't introduced by this patch, you can decide to do it in thi=
+s
+patch or not. Also, 'struct work_struct c2hcmd_work;' has similar problem.=
+=20
+
+This could be a problem theoretically, but not easy to see the problem thou=
+gh. =20
+
+
+>         skb_queue_head_init(&priv->c2hcmd_queue);
+>=20
+>         usb_set_intfdata(interface, hw);
+
+[...]
+
 
