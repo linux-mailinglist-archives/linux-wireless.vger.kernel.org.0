@@ -1,124 +1,107 @@
-Return-Path: <linux-wireless+bounces-1703-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1704-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB43982AAD0
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 10:23:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A60CD82AC49
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 11:43:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 734ED282827
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 09:23:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A06931C23A0F
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 10:43:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B765112E4B;
-	Thu, 11 Jan 2024 09:23:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="e1Rk4M+P";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WITZKnaM"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3B3014AB6;
+	Thu, 11 Jan 2024 10:42:24 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1905912E47
-	for <linux-wireless@vger.kernel.org>; Thu, 11 Jan 2024 09:23:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Message-ID: <a89202a3-0dc8-4206-82eb-eddb8b59e729@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1704965011;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l+3pe2xjf0v67zJLczdI2/SCnnxVdkH2AKbVv4woPaI=;
-	b=e1Rk4M+PEOB5ic03awNYyDlSx+nP7UbvzR2JaX82bBrudMDikzp7uvpcDp99Y5xKf+zOzM
-	lQUOa/gcgIgC3c9/yl2ZOI9VWrky35VQyb+tJS/D1dB9prmWcZDt9NUEKKArgt9VHrd1Ud
-	svW7NSUNvwFNaKnVB5tmcMdmvjXAFtoZAr3DhrfJ0BNaSyiMxdQtI+dstxLDSUwdnIZUgt
-	tWmqn0mCxxImJGMY2KToFqe85c4KQ+s1TL7COYbr7b2P00KlrFPuzHL+0QsnYlDloPFJ4M
-	meoEMSB++Ze0adrqG8hkRyyCU9vamivVbRFn2+GHx19wdK1cjIWhkleQ/AeaCQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1704965011;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l+3pe2xjf0v67zJLczdI2/SCnnxVdkH2AKbVv4woPaI=;
-	b=WITZKnaMwsvb8ipQeZtCfOLzkL+Ss/lBkLoDZQn4sPW5GWonxaqsWR4Kgv6iVubt+BAE2E
-	YEtBuxvCaT4zIhCw==
-Date: Thu, 11 Jan 2024 10:23:31 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CA5B15AC0;
+	Thu, 11 Jan 2024 10:42:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout2.hostsharing.net (Postfix) with ESMTPS id 9C5AD2800B3F1;
+	Thu, 11 Jan 2024 11:42:11 +0100 (CET)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 8DDD01D5B8A; Thu, 11 Jan 2024 11:42:11 +0100 (CET)
+Date: Thu, 11 Jan 2024 11:42:11 +0100
+From: Lukas Wunner <lukas@wunner.de>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Kalle Valo <kvalo@kernel.org>, "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Chris Morgan <macromorgan@hotmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	=?iso-8859-1?Q?N=EDcolas_F_=2E_R_=2E_A_=2E?= Prado <nfraprado@collabora.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Peng Fan <peng.fan@nxp.com>, Robert Richter <rrichter@amd.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Terry Bowman <terry.bowman@amd.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Huacai Chen <chenhuacai@kernel.org>, Alex Elder <elder@linaro.org>,
+	Srini Kandagatla <srinivas.kandagatla@linaro.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-pci@vger.kernel.org,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: Re: [RFC 3/9] PCI/portdrv: create platform devices for child OF nodes
+Message-ID: <20240111104211.GA32504@wunner.de>
+References: <20240104130123.37115-1-brgl@bgdev.pl>
+ <20240104130123.37115-4-brgl@bgdev.pl>
+ <20240109144327.GA10780@wunner.de>
+ <CAMRc=MdXO6c6asvRSn_Z8-oFS48hroT+dazGKB6WWY1_Zu7f1Q@mail.gmail.com>
+ <20240110132853.GA6860@wunner.de>
+ <CAMRc=MdBSAb_kEO2r7r-vwLuRAEv7pMODOMtZoCCRAd=zsQb_w@mail.gmail.com>
+ <20240110164105.GA13451@wunner.de>
+ <CAMRc=MdQKPN8UbagmswjFx7_JvmJuBeuq8+9=z-+GBNUmdpWEA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2] wifi: rtl8xxxu: enable channel switch support
-Content-Language: de-DE
-To: Ping-Ke Shih <pkshih@realtek.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Jes Sorensen <Jes.Sorensen@gmail.com>, Kalle Valo <kvalo@kernel.org>,
- Bitterblue Smith <rtl8821cerfe2@gmail.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-References: <20240110103909.240514-1-martin.kaistra@linutronix.de>
- <cf31e4c5e1a04230891e5bbbff5d24ff@realtek.com>
-From: Martin Kaistra <martin.kaistra@linutronix.de>
-In-Reply-To: <cf31e4c5e1a04230891e5bbbff5d24ff@realtek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMRc=MdQKPN8UbagmswjFx7_JvmJuBeuq8+9=z-+GBNUmdpWEA@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-Am 11.01.24 um 02:21 schrieb Ping-Ke Shih:
+On Wed, Jan 10, 2024 at 02:18:30PM -0600, Bartosz Golaszewski wrote:
+> On Wed, 10 Jan 2024 17:41:05 +0100, Lukas Wunner <lukas@wunner.de> said:
+> > On Wed, Jan 10, 2024 at 05:26:52PM +0100, Bartosz Golaszewski wrote:
+> > > Seems like the following must be true but isn't in my case (from
+> > > pci_bus_add_device()):
+> > >
+> > >     if (pci_is_bridge(dev))
+> > >         of_pci_make_dev_node(dev);
+> > >
+> > > Shouldn't it evaluate to true for ports?
+> >
+> > It should.
+> >
+> > What does "lspci -vvvvxxxx -s BB:DD.F" say for the port in question?
 > 
-> 
->> -----Original Message-----
->> From: Martin Kaistra <martin.kaistra@linutronix.de>
->> Sent: Wednesday, January 10, 2024 6:39 PM
->> To: linux-wireless@vger.kernel.org
->> Cc: Jes Sorensen <Jes.Sorensen@gmail.com>; Kalle Valo <kvalo@kernel.org>; Ping-Ke Shih
->> <pkshih@realtek.com>; Bitterblue Smith <rtl8821cerfe2@gmail.com>; Sebastian Andrzej Siewior
->> <bigeasy@linutronix.de>
->> Subject: [PATCH v2] wifi: rtl8xxxu: enable channel switch support
->>
->> The CSA countdown in the beacon frames, which are sent out by firmware,
->> needs to get updated by the driver. To achieve this, convert
->> update_beacon_work to delayed_work and schedule it with the beacon
->> interval in case CSA is active and the countdown is not complete.
->>
->> Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
->> ---
->> changes v1->v2: use delayed_work instead of usleep_range
->> v1: https://lore.kernel.org/linux-wireless/20240108111103.121378-1-martin.kaistra@linutronix.de/
->>   .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h   |  2 +-
->>   .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c  | 18 ++++++++++++++----
->>   2 files changed, 15 insertions(+), 5 deletions(-)
->>
-> 
-> [...]
-> 
->> @@ -7764,7 +7772,7 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
->>          spin_lock_init(&priv->rx_urb_lock);
->>          INIT_WORK(&priv->rx_urb_wq, rtl8xxxu_rx_urb_work);
->>          INIT_DELAYED_WORK(&priv->ra_watchdog, rtl8xxxu_watchdog_callback);
->> -       INIT_WORK(&priv->update_beacon_work, rtl8xxxu_update_beacon_work_callback);
->> +       INIT_DELAYED_WORK(&priv->update_beacon_work, rtl8xxxu_update_beacon_work_callback);
-> 
-> It seems like we missed cancel priv->update_beacon_work work at rtl8xxxu_stop().
-> Because that isn't introduced by this patch, you can decide to do it in this
-> patch or not. Also, 'struct work_struct c2hcmd_work;' has similar problem.
+> I cut out the hexdump part, let me know if you really need it.
 
-Makes sense to me, I will add cancel_delayed_work_sync() for a v3 of this patch. 
-Should I send a second patch for cancelling c2hcmd_work?
-
-
-> 
-> This could be a problem theoretically, but not easy to see the problem though.
-> 
-> 
->>          skb_queue_head_init(&priv->c2hcmd_queue);
->>
->>          usb_set_intfdata(interface, hw);
-> 
-> [...]
-> 
-
-
+I really need it.
 
