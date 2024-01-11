@@ -1,166 +1,153 @@
-Return-Path: <linux-wireless+bounces-1738-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1740-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 233FA82B318
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 17:36:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E10D482B351
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 17:50:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 494811C22CFF
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 16:36:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 40F47B21F3A
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 16:50:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 738CC5025B;
-	Thu, 11 Jan 2024 16:36:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99AAB524A5;
+	Thu, 11 Jan 2024 16:50:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2ToKuYFl";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Bzo6R+uD"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ejJbGzW0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C183D5024E
-	for <linux-wireless@vger.kernel.org>; Thu, 11 Jan 2024 16:36:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Martin Kaistra <martin.kaistra@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1704990995;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iN6GSIO/rEn/FcRbHBi0y7MwzsWweP0cE1KUmloGCF0=;
-	b=2ToKuYFlV3v6Pq8WobWdM4MVtHPU8oeZBPxk2DeXQrWICkodoqwE2oa3+5E5x15PFwabvV
-	L8LOsyCDXwHS77vVv7ZOcsKAjR/OqodXfsB9+nLeHrX+caLo9TOGfRLosy5YVqzh2mu96M
-	BQedoj29CxyhQs+/Ng3YvB1hH72RvWU7gD8NwfQ0Hf1jyh/bU6SkOyzRswmSCVvScwjjSv
-	kFy4to/OoEnDQQYcHkCnkdTirXijU2ncNNQrl87i+sGKkdZHFmSsRNNB0dQcpoUKsHMIrG
-	bX6c84O2GRxwJ34FzV8KDAAOR8UpOioZffDuWbd46jB2VKtuXxaJ5EG6w5wfqw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1704990995;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iN6GSIO/rEn/FcRbHBi0y7MwzsWweP0cE1KUmloGCF0=;
-	b=Bzo6R+uDm5fpOaGT5eDX6doGtUDi5xX0jqCZUCO4IHvBfKQOVA++sCS7WHWpzk2xGzTJno
-	CESXe1PuGUf979Bw==
-To: linux-wireless@vger.kernel.org
-Cc: Jes Sorensen <Jes.Sorensen@gmail.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: [PATCH v3 2/2] wifi: rtl8xxxu: enable channel switch support
-Date: Thu, 11 Jan 2024 17:36:28 +0100
-Message-Id: <20240111163628.320697-3-martin.kaistra@linutronix.de>
-In-Reply-To: <20240111163628.320697-1-martin.kaistra@linutronix.de>
-References: <20240111163628.320697-1-martin.kaistra@linutronix.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CB69524A3
+	for <linux-wireless@vger.kernel.org>; Thu, 11 Jan 2024 16:49:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40BDIUEY009070;
+	Thu, 11 Jan 2024 16:49:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=2/31ducCo/Mc9BgvIqoie7X5lgvj+f9xXKBXGD8rqoc=; b=ej
+	JbGzW0GMMc67nzYOqI4Kt2RxPiUqF0iE8KVdoaf53wdF5mq6BwaI9l5MZIbjOENK
+	Q4NBbGKpQefU+n/lLZMUmZHV7mQ9uGiq6GPf5CtH4lutEKgjqZ0iuKueGStY6apa
+	ClXVaSmv2PL9CVKKOJNOTf+AqmHENpSGyUymwRfqBpveV2Mwab+cdSGx3P4mqLqJ
+	GWg7R3wjo8QWGi4MyfUy+4nLuDp+T8d9LYqiStPAjsRczmjI6abd0E88WDzemPyY
+	8ABRjM5QCFIF5FcGrk7G4XndFHcYP+t2NYvh7o2Yvt8qoLJmxdYVYA446H2AVlLk
+	Pa17bX5ugd98i21PeBYA==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vja9y1g2p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 11 Jan 2024 16:49:54 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40BGnsaD008515
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 11 Jan 2024 16:49:54 GMT
+Received: from [10.227.110.203] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Thu, 11 Jan
+ 2024 08:49:53 -0800
+Message-ID: <eb6e411a-9842-4546-be6e-f533022e0230@quicinc.com>
+Date: Thu, 11 Jan 2024 08:49:52 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 00/12] wifi: ath11k: add support for 6 GHz station for
+ various modes : LPI, SP and VLP
+Content-Language: en-US
+To: Kalle Valo <kvalo@kernel.org>, Baochen Qiang <quic_bqiang@quicinc.com>
+CC: <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+References: <20231218085844.2658-1-quic_bqiang@quicinc.com>
+ <87mstbam42.fsf@kernel.org>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <87mstbam42.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: qne1rDcDCWs5MUVo0ei7sMkDdiM16LCj
+X-Proofpoint-GUID: qne1rDcDCWs5MUVo0ei7sMkDdiM16LCj
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-09_01,2023-12-07_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
+ priorityscore=1501 clxscore=1015 spamscore=0 mlxlogscore=999 adultscore=0
+ malwarescore=0 lowpriorityscore=0 suspectscore=0 phishscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2311290000 definitions=main-2401110132
 
-The CSA countdown in the beacon frames, which are sent out by firmware,
-needs to get updated by the driver. To achieve this, convert
-update_beacon_work to delayed_work and schedule it with the beacon
-interval in case CSA is active and the countdown is not complete.
+On 1/11/2024 8:08 AM, Kalle Valo wrote:
+> Baochen Qiang <quic_bqiang@quicinc.com> writes:
+> 
+>> This introduced some new concept:
+>> power type of AP(STANDARD_POWER_AP, INDOOR_AP, VERY_LOW_POWER_AP)
+>> power type of STATION(DEFAULT_CLIENT, SUBORDINATE_CLIENT)
+>> power spectral density(psd)
+>>
+>> This patchset is to implement the new rules for 6 GHz band in
+>> ath11k.
+>>
+>> ath11k parsed the reg rules from new WMI event
+>> WMI_REG_CHAN_LIST_CC_EXT_EVENTID and parse the
+>> transmit power envelope element in beacon of AP
+>> and then set new WMI command WMI_VDEV_SET_TPC_POWER_CMDID
+>> to firmware when connect to 6G AP, also support backward
+>> compatibility with firmware which not support new wmi
+>> cmd WMI_VDEV_SET_TPC_POWER_CMDID.
+>>
+>> v10:
+>>  1. [PATCH 02/12] wifi: ath11k: store cur_regulatory_info for each radio
+>>   a. s/muti/multi/
+>>  2. [PATCH v9 09/12] wifi: ath11k: fill parameters for vdev set tpc power WMI command
+>>   a. add idle_ps check when calculating EIRP.
+> 
+> I don't see Jeff's ack in patches 1, 11 and 12. Jeff, are you ok with
+> these?
 
-Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
----
- .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  |  2 +-
- .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 19 +++++++++++++++----
- 2 files changed, 16 insertions(+), 5 deletions(-)
+I failed to go back and add my ack after you said you'd make the
+copyright change locally.
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-index 803c76b3209c4..03307da67c2c3 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-@@ -1900,7 +1900,7 @@ struct rtl8xxxu_priv {
- 	struct delayed_work ra_watchdog;
- 	struct work_struct c2hcmd_work;
- 	struct sk_buff_head c2hcmd_queue;
--	struct work_struct update_beacon_work;
-+	struct delayed_work update_beacon_work;
- 	struct rtl8xxxu_btcoex bt_coex;
- 	struct rtl8xxxu_ra_report ra_report;
- 	struct rtl8xxxu_cfo_tracking cfo_tracking;
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index 757ebd46452eb..521faa48803c7 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -4605,7 +4605,7 @@ static int rtl8xxxu_set_tim(struct ieee80211_hw *hw, struct ieee80211_sta *sta,
- {
- 	struct rtl8xxxu_priv *priv = hw->priv;
- 
--	schedule_work(&priv->update_beacon_work);
-+	schedule_delayed_work(&priv->update_beacon_work, 0);
- 
- 	return 0;
- }
-@@ -5107,7 +5107,7 @@ rtl8xxxu_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	}
- 
- 	if (changed & BSS_CHANGED_BEACON)
--		schedule_work(&priv->update_beacon_work);
-+		schedule_delayed_work(&priv->update_beacon_work, 0);
- 
- error:
- 	return;
-@@ -5726,7 +5726,7 @@ static void rtl8xxxu_send_beacon_frame(struct ieee80211_hw *hw,
- static void rtl8xxxu_update_beacon_work_callback(struct work_struct *work)
- {
- 	struct rtl8xxxu_priv *priv =
--		container_of(work, struct rtl8xxxu_priv, update_beacon_work);
-+		container_of(work, struct rtl8xxxu_priv, update_beacon_work.work);
- 	struct ieee80211_hw *hw = priv->hw;
- 	struct ieee80211_vif *vif = priv->vifs[0];
- 
-@@ -5735,6 +5735,14 @@ static void rtl8xxxu_update_beacon_work_callback(struct work_struct *work)
- 		return;
- 	}
- 
-+	if (vif->bss_conf.csa_active) {
-+		if (ieee80211_beacon_cntdwn_is_complete(vif)) {
-+			ieee80211_csa_finish(vif);
-+			return;
-+		}
-+		schedule_delayed_work(&priv->update_beacon_work,
-+				      msecs_to_jiffies(vif->bss_conf.beacon_int));
-+	}
- 	rtl8xxxu_send_beacon_frame(hw, vif);
- }
- 
-@@ -7482,6 +7490,7 @@ static void rtl8xxxu_stop(struct ieee80211_hw *hw)
- 
- 	cancel_work_sync(&priv->c2hcmd_work);
- 	cancel_delayed_work_sync(&priv->ra_watchdog);
-+	cancel_delayed_work_sync(&priv->update_beacon_work);
- 
- 	rtl8xxxu_free_rx_resources(priv);
- 	rtl8xxxu_free_tx_resources(priv);
-@@ -7764,7 +7773,7 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
- 	spin_lock_init(&priv->rx_urb_lock);
- 	INIT_WORK(&priv->rx_urb_wq, rtl8xxxu_rx_urb_work);
- 	INIT_DELAYED_WORK(&priv->ra_watchdog, rtl8xxxu_watchdog_callback);
--	INIT_WORK(&priv->update_beacon_work, rtl8xxxu_update_beacon_work_callback);
-+	INIT_DELAYED_WORK(&priv->update_beacon_work, rtl8xxxu_update_beacon_work_callback);
- 	skb_queue_head_init(&priv->c2hcmd_queue);
- 
- 	usb_set_intfdata(interface, hw);
-@@ -7825,6 +7834,8 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
- 		hw->wiphy->interface_modes |= BIT(NL80211_IFTYPE_AP);
- 	hw->queues = 4;
- 
-+	hw->wiphy->flags |= WIPHY_FLAG_HAS_CHANNEL_SWITCH;
-+
- 	if (priv->fops->supports_concurrent) {
- 		hw->wiphy->iface_combinations = rtl8xxxu_combinations;
- 		hw->wiphy->n_iface_combinations = ARRAY_SIZE(rtl8xxxu_combinations);
--- 
-2.39.2
+> 
+> I did some changes in the pending branch, below is a some kind of list
+> of the changes. The changed patches are available in the pending branch
+> (tag ath-pending-202401111604):
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/log/?h=pending
+> 
+> multiple patches
+> 
+> o whitespace changes, especially adding empty line before after if and
+>   for statements (also in other pathches)
+> 
+> patch 1
+> 
+> o remove unneeded parenthesis
+> 
+> patch 2
+> 
+> o ath11k_reg_reset_info(): invert if check
+> 
+> o ath11k_reg_reset_info(), ath11k_reg_handle_chan_list(),
+>   ath11k_reg_get_ar_vdev_type(), ath11k_reg_is_world_alpha:
+>        move to reg.c, I did also consider renaming these to use
+>        ath11k_wmi_ prefix but thought that reg.c is more approriate
+>        place for them
+> 
+> patch 11
+> 
+> o remove comments from enum wmi_tlv_cmd_id
+> 
+> o other cosmetic changes in wmi.h
+> 
+
+Reviewed the pending changes
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+
 
 
