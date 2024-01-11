@@ -1,59 +1,59 @@
-Return-Path: <linux-wireless+bounces-1729-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1730-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E12A682B2C0
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFF2C82B2BF
 	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 17:20:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3DC7CB2613B
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 16:20:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 813F5B262A4
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 16:20:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB80951C2A;
-	Thu, 11 Jan 2024 16:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 705AB51C26;
+	Thu, 11 Jan 2024 16:18:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fODtv+l6"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QIFg80IH"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EBD24F8AA
-	for <linux-wireless@vger.kernel.org>; Thu, 11 Jan 2024 16:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E276F51C32
+	for <linux-wireless@vger.kernel.org>; Thu, 11 Jan 2024 16:18:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1704989905; x=1736525905;
+  t=1704989907; x=1736525907;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=qzoqWacS6h32MWMkW/bWLrT9QBKnxrDGwy2FHaM+bgU=;
-  b=fODtv+l6sog6BC3nD6SaAp8uhlBOy1FGDHvXkGRsey0ZpS4W7y5suO3U
-   qwUvXnOvwl6hlugtBDDWkonnUCeSqmV33LUSAoL40O7KNweBz4X7Glqa8
-   /Mw7CWNBd9xCa2PiQnubVjiJ7K8W39qk4S1l2qqWVOh/hfVMLB4bEMmZE
-   +3KiNrYhN1C+prsIs1isN/5yWWTQr28aNvmgb/lmu9LGQxz6hI0pxrl3Y
-   ouzdJuN6uueVKcMyStmZ+tjV8A4+V9WRB9crCyqovd5Ez8x1hhzO8gJmR
-   ghR5UcBGZtn5rkVoYAv0R94nj25gx/Tvv9f/UkKpo3g7To00x0/Yb/3c9
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10950"; a="463182501"
+  bh=Zb91ZcZcUAyZakCzkah/W//NRl+08+etHGyLn/C0zHY=;
+  b=QIFg80IHYrn7M6dVTodHUZU544yDLPgB9szkVfgo40vUKf4CEFoSm9ZK
+   KLS5IXFZi7OZ1SglENQENxqTSY7DYNMKc28637KhB9sCoZlQJNWEXxTwM
+   bTeeSRuW1cZ4V4IPas8Wji7xsB+lIjUvr1tyddhkoElWeT7A99ZrMYX3J
+   mnE1kpEi3qH1aYa9qilE+EtGRf3Wc/yYdcB1hDhQ6Yw/G3eUjYKjzkwm3
+   2qtGpm0esBncoKb6VO0vlzOcxGXMWb9veD5LSKmRUaA5DLC8cxHeQdHrV
+   Z7tHX5jBta3dnDQvAk4EQ78gDW+h1dvSve+SCKYJ/bhTcCcesFJbpW7jh
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10950"; a="463182561"
 X-IronPort-AV: E=Sophos;i="6.04,186,1695711600"; 
-   d="scan'208";a="463182501"
+   d="scan'208";a="463182561"
 Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2024 08:18:18 -0800
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2024 08:18:27 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10950"; a="1029606525"
+X-IronPort-AV: E=McAfee;i="6600,9927,10950"; a="1029606611"
 X-IronPort-AV: E=Sophos;i="6.04,186,1695711600"; 
-   d="scan'208";a="1029606525"
+   d="scan'208";a="1029606611"
 Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2024 08:18:16 -0800
+  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2024 08:18:25 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	Johannes Berg <johannes.berg@intel.com>,
 	Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 3/8] wifi: mac80211: remove extra element parsing
-Date: Thu, 11 Jan 2024 18:17:41 +0200
-Message-Id: <20240111181514.c4a55da9f778.I112b1ef00904c4183ac7644800f8daa8a4449875@changeid>
+Subject: [PATCH 4/8] wifi: mac80211: simplify HE capability access
+Date: Thu, 11 Jan 2024 18:17:42 +0200
+Message-Id: <20240111181514.2ef62b43caeb.I8baa604dd3f3399e08b86c99395a2c6a1185d35d@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240111161746.3978601-1-miriam.rachel.korenblit@intel.com>
 References: <20240111161746.3978601-1-miriam.rachel.korenblit@intel.com>
@@ -68,56 +68,77 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-We already parse all the BSS elements into elems, there's
-really no need to separately find EHT/ML again. Remove the
-extra code.
+For verifying the required HE capabilities are supported
+locally, we access the HE capability element of the AP.
+Simplify that access, we've already parsed and validated
+it when parsing elements.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- net/mac80211/mlme.c | 24 ++----------------------
- 1 file changed, 2 insertions(+), 22 deletions(-)
+ net/mac80211/mlme.c | 32 +++++---------------------------
+ 1 file changed, 5 insertions(+), 27 deletions(-)
 
 diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 6fa69ad3ad4f..45be270eaab7 100644
+index 45be270eaab7..5b1bc84760d5 100644
 --- a/net/mac80211/mlme.c
 +++ b/net/mac80211/mlme.c
-@@ -4962,32 +4962,12 @@ static int ieee80211_prep_channel(struct ieee80211_sub_if_data *sdata,
- 			(IEEE80211_CONN_DISABLE_HE |
- 			 IEEE80211_CONN_DISABLE_EHT)) &&
- 	    he_oper) {
--		const struct cfg80211_bss_ies *cbss_ies;
--		const struct element *eht_ml_elem;
--		const u8 *eht_oper_ie;
+@@ -4547,41 +4547,17 @@ static u8 ieee80211_max_rx_chains(struct ieee80211_link_data *link,
+ 
+ static bool
+ ieee80211_verify_peer_he_mcs_support(struct ieee80211_sub_if_data *sdata,
+-				     const struct cfg80211_bss_ies *ies,
++				     const struct ieee80211_he_cap_elem *he_cap,
+ 				     const struct ieee80211_he_operation *he_op)
+ {
+-	const struct element *he_cap_elem;
+-	const struct ieee80211_he_cap_elem *he_cap;
+ 	struct ieee80211_he_mcs_nss_supp *he_mcs_nss_supp;
+ 	u16 mcs_80_map_tx, mcs_80_map_rx;
+ 	u16 ap_min_req_set;
+-	int mcs_nss_size;
+ 	int nss;
+ 
+-	he_cap_elem = cfg80211_find_ext_elem(WLAN_EID_EXT_HE_CAPABILITY,
+-					     ies->data, ies->len);
 -
--		cbss_ies = rcu_dereference(cbss->ies);
--		eht_oper_ie = cfg80211_find_ext_ie(WLAN_EID_EXT_EHT_OPERATION,
--						   cbss_ies->data, cbss_ies->len);
--		if (eht_oper_ie && eht_oper_ie[1] >=
--		    1 + sizeof(struct ieee80211_eht_operation))
--			eht_oper = (void *)(eht_oper_ie + 3);
--		else
--			eht_oper = NULL;
-+		eht_oper = elems->eht_operation;
+-	if (!he_cap_elem)
++	if (!he_cap)
+ 		return false;
  
- 		if (!ieee80211_verify_sta_eht_mcs_support(sdata, sband, eht_oper))
- 			*conn_flags |= IEEE80211_CONN_DISABLE_EHT;
- 
--		eht_ml_elem = cfg80211_find_ext_elem(WLAN_EID_EXT_EHT_MULTI_LINK,
--						     cbss_ies->data, cbss_ies->len);
+-	/* invalid HE IE */
+-	if (he_cap_elem->datalen < 1 + sizeof(*he_cap)) {
+-		sdata_info(sdata,
+-			   "Invalid HE elem, Disable HE\n");
+-		return false;
+-	}
 -
--		/* data + 1 / datalen - 1 since it's an extended element */
--		if (!(*conn_flags & IEEE80211_CONN_DISABLE_EHT) &&
--		    eht_ml_elem &&
--		    ieee80211_mle_type_ok(eht_ml_elem->data + 1,
--					  IEEE80211_ML_CONTROL_TYPE_BASIC,
--					  eht_ml_elem->datalen - 1))
--			supports_mlo = true;
-+		supports_mlo = elems->ml_basic;
- 	}
+-	/* skip one byte ext_tag_id */
+-	he_cap = (void *)(he_cap_elem->data + 1);
+-	mcs_nss_size = ieee80211_he_mcs_nss_size(he_cap);
+-
+-	/* invalid HE IE */
+-	if (he_cap_elem->datalen < 1 + sizeof(*he_cap) + mcs_nss_size) {
+-		sdata_info(sdata,
+-			   "Invalid HE elem with nss size, Disable HE\n");
+-		return false;
+-	}
+-
+ 	/* mcs_nss is right after he_cap info */
+ 	he_mcs_nss_supp = (void *)(he_cap + 1);
  
- 	/* Allow VHT if at least one channel on the sband supports 80 MHz */
+@@ -4946,7 +4922,9 @@ static int ieee80211_prep_channel(struct ieee80211_sub_if_data *sdata,
+ 			}
+ 		}
+ 
+-		if (!ieee80211_verify_peer_he_mcs_support(sdata, ies, he_oper) ||
++		if (!ieee80211_verify_peer_he_mcs_support(sdata,
++							  (void *)elems->he_cap,
++							  he_oper) ||
+ 		    !ieee80211_verify_sta_he_mcs_support(sdata, sband, he_oper))
+ 			*conn_flags |= IEEE80211_CONN_DISABLE_HE |
+ 				       IEEE80211_CONN_DISABLE_EHT;
 -- 
 2.34.1
 
