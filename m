@@ -1,108 +1,116 @@
-Return-Path: <linux-wireless+bounces-1722-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1723-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 827D782B153
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 16:06:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 279C582B27B
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 17:08:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 097E6284326
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 15:06:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB8602839A4
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 16:08:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A5F64B5C9;
-	Thu, 11 Jan 2024 15:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3C614F5E9;
+	Thu, 11 Jan 2024 16:08:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YaqEqfRz"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 056554CB3C;
-	Thu, 11 Jan 2024 15:06:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout3.hostsharing.net (Postfix) with ESMTPS id 3C5A3100CF15A;
-	Thu, 11 Jan 2024 16:06:43 +0100 (CET)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 0CEEB36472; Thu, 11 Jan 2024 16:06:43 +0100 (CET)
-Date: Thu, 11 Jan 2024 16:06:43 +0100
-From: Lukas Wunner <lukas@wunner.de>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: Dan Williams <dan.j.williams@intel.com>,
-	Bartosz Golaszewski <brgl@bgdev.pl>, Kalle Valo <kvalo@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Chris Morgan <macromorgan@hotmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	=?iso-8859-1?Q?N=EDcolas_F_=2E_R_=2E_A_=2E?= Prado <nfraprado@collabora.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Peng Fan <peng.fan@nxp.com>, Robert Richter <rrichter@amd.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Terry Bowman <terry.bowman@amd.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Huacai Chen <chenhuacai@kernel.org>, Alex Elder <elder@linaro.org>,
-	Srini Kandagatla <srinivas.kandagatla@linaro.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-pci@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: [RFC 3/9] PCI/portdrv: create platform devices for child OF nodes
-Message-ID: <20240111150643.GB28409@wunner.de>
-References: <20240104130123.37115-1-brgl@bgdev.pl>
- <20240104130123.37115-4-brgl@bgdev.pl>
- <20240109144327.GA10780@wunner.de>
- <CAMRc=MdXO6c6asvRSn_Z8-oFS48hroT+dazGKB6WWY1_Zu7f1Q@mail.gmail.com>
- <20240110132853.GA6860@wunner.de>
- <659f00ed271b3_5cee2942@dwillia2-xfh.jf.intel.com.notmuch>
- <20240111124009.GA3003@thinkpad>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89A1A4F5E6
+	for <linux-wireless@vger.kernel.org>; Thu, 11 Jan 2024 16:08:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41C27C433C7;
+	Thu, 11 Jan 2024 16:08:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1704989328;
+	bh=0+BrsDPlPGTnVAptII451a+IY2CU9MdrCfvLNwEyBTk=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=YaqEqfRzGoDNo9HYYRxY7VOdQevSp8LjtmP47v6At6KsVVMF/r1t6nUySsFQlLekj
+	 z5IuA0xPdA0hKGj64mZqEVLKxIa4yZRPO204U+8ScgX08f8iJfnHRIRDTJoxUPlIXE
+	 AhTqZBX+GlFlWUV33cPOc9B1bL1AYFDl+TjKDXMWF0oXrHOZAPmOgzHhPfK7UWEBT2
+	 cUTEB/auC/Md4F7Yd5QxJAG1Qp17Tem0opQFMCXn65Ue5sghI75mvJakETG0kIn50e
+	 82TTQ0s/pLwKmnrpdIkdkZAUuAXkew8+GMDIGpl1IoI3itBRZ0Z3xJjCY6P/tVHmMq
+	 LHKjwJUSCY/jg==
+From: Kalle Valo <kvalo@kernel.org>
+To: Baochen Qiang <quic_bqiang@quicinc.com>
+Cc: <ath11k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH v10 00/12] wifi: ath11k: add support for 6 GHz station
+ for various modes : LPI, SP and VLP
+References: <20231218085844.2658-1-quic_bqiang@quicinc.com>
+Date: Thu, 11 Jan 2024 18:08:45 +0200
+In-Reply-To: <20231218085844.2658-1-quic_bqiang@quicinc.com> (Baochen Qiang's
+	message of "Mon, 18 Dec 2023 16:58:32 +0800")
+Message-ID: <87mstbam42.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240111124009.GA3003@thinkpad>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain
 
-On Thu, Jan 11, 2024 at 06:10:09PM +0530, Manivannan Sadhasivam wrote:
-> The primary reason for plugging the power sequencing into portdrv is due to
-> portdrv binding with all the bridge devices and acting as management driver
-> for the bridges.
+Baochen Qiang <quic_bqiang@quicinc.com> writes:
 
-As I've said before, portdrv not only binds to bridges but also
-Root Complex Event Collectors.  And you most likely don't want to
-populate child DT nodes for those.
+> This introduced some new concept:
+> power type of AP(STANDARD_POWER_AP, INDOOR_AP, VERY_LOW_POWER_AP)
+> power type of STATION(DEFAULT_CLIENT, SUBORDINATE_CLIENT)
+> power spectral density(psd)
+>
+> This patchset is to implement the new rules for 6 GHz band in
+> ath11k.
+>
+> ath11k parsed the reg rules from new WMI event
+> WMI_REG_CHAN_LIST_CC_EXT_EVENTID and parse the
+> transmit power envelope element in beacon of AP
+> and then set new WMI command WMI_VDEV_SET_TPC_POWER_CMDID
+> to firmware when connect to 6G AP, also support backward
+> compatibility with firmware which not support new wmi
+> cmd WMI_VDEV_SET_TPC_POWER_CMDID.
+>
+> v10:
+>  1. [PATCH 02/12] wifi: ath11k: store cur_regulatory_info for each radio
+>   a. s/muti/multi/
+>  2. [PATCH v9 09/12] wifi: ath11k: fill parameters for vdev set tpc power WMI command
+>   a. add idle_ps check when calculating EIRP.
 
-> This is where exactly the power sequencing part needs to be plugged
-> in IMO. But if the idea of the portdrv is just to expose services based on
-> interrupts, then please suggest a better place to plug this power sequencing
-> part.
+I don't see Jeff's ack in patches 1, 11 and 12. Jeff, are you ok with
+these?
 
-Again, I'm suggesting to put this into of_pci_make_dev_node().
+I did some changes in the pending branch, below is a some kind of list
+of the changes. The changed patches are available in the pending branch
+(tag ath-pending-202401111604):
 
-Thanks,
+https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/log/?h=pending
 
-Lukas
+multiple patches
+
+o whitespace changes, especially adding empty line before after if and
+  for statements (also in other pathches)
+
+patch 1
+
+o remove unneeded parenthesis
+
+patch 2
+
+o ath11k_reg_reset_info(): invert if check
+
+o ath11k_reg_reset_info(), ath11k_reg_handle_chan_list(),
+  ath11k_reg_get_ar_vdev_type(), ath11k_reg_is_world_alpha:
+       move to reg.c, I did also consider renaming these to use
+       ath11k_wmi_ prefix but thought that reg.c is more approriate
+       place for them
+
+patch 11
+
+o remove comments from enum wmi_tlv_cmd_id
+
+o other cosmetic changes in wmi.h
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
