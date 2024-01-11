@@ -1,87 +1,135 @@
-Return-Path: <linux-wireless+bounces-1706-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1707-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FB9682ACA9
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 11:57:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C48E682ACB1
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 11:58:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFCC2281816
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 10:57:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B1152827A2
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 10:58:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2612154B6;
-	Thu, 11 Jan 2024 10:54:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F04B14F9D;
+	Thu, 11 Jan 2024 10:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pJzifp7H"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f8FOHZFu"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97873154A0
-	for <linux-wireless@vger.kernel.org>; Thu, 11 Jan 2024 10:54:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ABC2C433F1;
-	Thu, 11 Jan 2024 10:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CBBD14F60;
+	Thu, 11 Jan 2024 10:58:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E76BC433B2;
+	Thu, 11 Jan 2024 10:58:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704970479;
-	bh=YAn0gW7c9S02X1yQRKBnWhUNi7TdPFazJhFyTkhUOZg=;
-	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=pJzifp7HCNC7XfYHkeAVVINdNvWxHPUoEj7idL6i+Qfaca+/n0MxNAIDRkQyAMsRR
-	 09JwFjDCM53kXeJcm9AEieB+zekQWSCcxKkrY7FYjsqgfz75p50eV2XP1bUT2BllFh
-	 EflGX7gN0XFUJFMLScrme+KHMPIZgc8uPQ7MNiStVemeyIoLcez8hAZulDQQuOQjKp
-	 TRNjAMz1v5NfzIkRb3nhvJ6llKEqMUmKctSJf3Jvi9CxpW7Hh74uXyMZUdLKcr7STT
-	 t9t112PW0Q5Zf4Hemc+afZXJBMMYlZvfLYJRyIgHwc9kwVP1DZKlYLmGqRImSK0IdL
-	 6l7MlNTIZxK5A==
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1704970691;
+	bh=b4kPg7Dlhoh2Ylgd7Rl0rO+8xy+oTw1hAq/n9H5lbHY=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=f8FOHZFumJgkdpbXCpfREugTvA1/PkK+qa0y+iiwCNQkl5H1QzCshaHj38k7PZCfO
+	 FLAKNEMdDZyibSA+/u1dw3K1+MbiNrAZDzIIhIpdD4YvbW4UvHdegjKuHwhnTc4vqx
+	 RuqSA5bBZtZUk5LKIklpEnPT9qNEBwNsCMB2o2h+8IWuj03Rg9vRs4aMS5aGDgUQ+D
+	 ii6s3LLrj1FLv1SiGxA0otdb2eHs0KugWkm4+qpTuga8/tY4GYMT7VD6KiDtsxUSs4
+	 oKRGMeEvoqy7gIRBM05HMRlnbcCUANxUdIhjWxIoo7nrsDCDmAp4IuFzuwGgR2UEV/
+	 4r61du8RAVmTQ==
+From: Kalle Valo <kvalo@kernel.org>
+To: Mario Limonciello <mario.limonciello@amd.com>
+Cc: "Ma, Jun" <majun@amd.com>,  Johannes Berg <johannes@sipsolutions.net>,
+  "David S . Miller" <davem@davemloft.net>,  Eric Dumazet
+ <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,  Paolo Abeni
+ <pabeni@redhat.com>,  "open list:MAC80211"
+ <linux-wireless@vger.kernel.org>,  "open list:NETWORKING [GENERAL]"
+ <netdev@vger.kernel.org>,  open list <linux-kernel@vger.kernel.org>,  Jun
+ Ma <Jun.ma2@amd.com>
+Subject: Re: [PATCH] wifi: mac80211: Use subsystem appropriate debug call
+References: <20231215145439.57286-1-mario.limonciello@amd.com>
+	<87frzzsfoi.fsf@kernel.org>
+	<46bf6ed5-31f6-48f4-b63d-f532e163204e@amd.com>
+	<87cyv0oyaf.fsf@kernel.org>
+	<0ad78e88-05d5-483f-83fa-87d5f1d80ca5@amd.com>
+Date: Thu, 11 Jan 2024 12:58:07 +0200
+In-Reply-To: <0ad78e88-05d5-483f-83fa-87d5f1d80ca5@amd.com> (Mario
+	Limonciello's message of "Fri, 29 Dec 2023 20:42:10 -0600")
+Message-ID: <87bk9sb0hs.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: wifi: p54: fix GCC format truncation warning with
- wiphy->fw_version
-From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20231219162516.898205-1-kvalo@kernel.org>
-References: <20231219162516.898205-1-kvalo@kernel.org>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: linux-wireless@vger.kernel.org, chunkeey@googlemail.com
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170497047613.594140.11830619859424475231.kvalo@kernel.org>
-Date: Thu, 11 Jan 2024 10:54:38 +0000 (UTC)
+Content-Type: text/plain
 
-Kalle Valo <kvalo@kernel.org> wrote:
+Mario Limonciello <mario.limonciello@amd.com> writes:
 
-> GCC 13.2 warns:
-> 
-> drivers/net/wireless/intersil/p54/fwio.c:128:34: warning: '%s' directive output may be truncated writing up to 39 bytes into a region of size 32 [-Wformat-truncation=]
-> drivers/net/wireless/intersil/p54/fwio.c:128:33: note: directive argument in the range [0, 16777215]
-> drivers/net/wireless/intersil/p54/fwio.c:128:33: note: directive argument in the range [0, 255]
-> drivers/net/wireless/intersil/p54/fwio.c:127:17: note: 'snprintf' output between 7 and 52 bytes into a destination of size 32
-> 
-> The issue here is that wiphy->fw_version is 32 bytes and in theory the string
-> we try to place there can be 39 bytes. wiphy->fw_version is used for providing
-> the firmware version to user space via ethtool, so not really important.
-> fw_version in theory can be 24 bytes but in practise it's shorter, so even if
-> print only 19 bytes via ethtool there should not be any practical difference.
-> 
-> I did consider removing fw_var from the string altogether or making the maximum
-> length for fw_version 19 bytes, but chose this approach as it was the least
-> intrusive.
-> 
-> Compile tested only.
-> 
-> Signed-off-by: Kalle Valo <kvalo@kernel.org>
-> Acked-by: Christian Lamparter <chunkeey@gmail.com> # Tested with Dell 1450 USB
+> On 12/21/2023 00:38, Kalle Valo wrote:
+>
+>> "Ma, Jun" <majun@amd.com> writes:
+>> 
+>>> Hi,
+>>>
+>>> On 12/18/2023 11:17 PM, Kalle Valo wrote:
+>>>> Mario Limonciello <mario.limonciello@amd.com> writes:
+>>>>
+>>>>> mac80211 doesn't use dev_dbg() but instead various macros from
+>>>>> net/mac80211/debug.h. Adjust wbrf code to use wiphy_dbg() instead.
+>>>>>
+>>>>> Cc: Jun Ma <Jun.ma2@amd.com>
+>>>>> Reported-by: kvalo@kernel.org
+>>>>> Closes:
+>>>>> https://lore.kernel.org/amd-gfx/8bd60010-7534-4c22-9337-c4219946d8d6@amd.com/T/#mfe2f29372c45130d27745912faf33d9f7ce50118
+>>>>> Fixes: d34be4310cbe ("wifi: mac80211: Add support for WBRF features")
+>>>>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+>>>>> ---
+>>>>>   net/mac80211/wbrf.c | 4 ++--
+>>>>>   1 file changed, 2 insertions(+), 2 deletions(-)
+>>>>>
+>>>>> diff --git a/net/mac80211/wbrf.c b/net/mac80211/wbrf.c
+>>>>> index a05c5b971789..12c23e14f884 100644
+>>>>> --- a/net/mac80211/wbrf.c
+>>>>> +++ b/net/mac80211/wbrf.c
+>>>>> @@ -23,8 +23,8 @@ void ieee80211_check_wbrf_support(struct ieee80211_local *local)
+>>>>>   		return;
+>>>>>     	local->wbrf_supported =
+>>>>> acpi_amd_wbrf_supported_producer(dev);
+>>>>> -	dev_dbg(dev, "WBRF is %s supported\n",
+>>>>> -		local->wbrf_supported ? "" : "not");
+>>>>> +	wiphy_dbg(wiphy, "WBRF is %s supported\n",
+>>>>> +		  local->wbrf_supported ? "" : "not");
+>>>>>   }
+>>>>
+>>>> This won't work, I still see the debug message:
+>>>>
+>>>> [  333.765867] ieee80211 phy0: WBRF is not supported
+>>>>
+>>>> The issue seems to be that mac80211 defines DEBUG in
+>>>> net/mac80211/Makefile:
+>>>>
+>>>> ccflags-y += -DDEBUG
+>>>>
+>>>> That -DDEBUG should be cleaned up, but I think separately. It's just
+>>>> that I cannot come up with any good proposal, all the macros in
+>>>> net/mac80211/debug.h require sdata and we don't have that in this stage.
+>>>> Any ideas?
+>>>
+>>> I will submit a patch that only compiles wbrf.c when CONFIG_AMD_WBRF=y
+>> But does this mean that the debug is still printed when
+>> CONFIG_AMD_WBRF
+>> is enabled? And I would assume all distros enable that, right?
+>> 
+>
+> Maybe just discard the debug message instead of have to deal with this.
+>
+> We'll be able to tell from the consumer (amdgpu right now) when WBRF
+> is being used and if we need to debug an issue knowing that it's
+> supported or not supported from the producer side is the least of our
+> worries.
 
-Patch applied to wireless.git, thanks.
-
-989cd9fd1ffe wifi: p54: fix GCC format truncation warning with wiphy->fw_version
+Yeah, removing the message for now is the best solution. It can be added
+later after we have improved mac80211 logging.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20231219162516.898205-1-kvalo@kernel.org/
+https://patchwork.kernel.org/project/linux-wireless/list/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
 
