@@ -1,123 +1,146 @@
-Return-Path: <linux-wireless+bounces-1749-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1751-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75AC082B52C
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 20:24:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22C0F82B5B5
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 21:13:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 296581F25B25
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 19:24:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E5DC1C23F05
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 20:13:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCB2154BF2;
-	Thu, 11 Jan 2024 19:24:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35F4954BE0;
+	Thu, 11 Jan 2024 20:13:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="pORZF7Am"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="fsPsy6Is"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426E039F;
-	Thu, 11 Jan 2024 19:24:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9405F4F213
+	for <linux-wireless@vger.kernel.org>; Thu, 11 Jan 2024 20:13:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40BEwjZD012289;
-	Thu, 11 Jan 2024 19:24:28 GMT
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40BKCp8d031054;
+	Thu, 11 Jan 2024 20:13:01 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:date:subject:mime-version:content-type
-	:content-transfer-encoding:message-id:to:cc; s=qcppdkim1; bh=DNl
-	WpZ0L6MS40umooaV+XdQdfO8wM83O25YiAyQqwRU=; b=pORZF7AmE+fo9CUnuGW
-	LFpohaT+NYIAj2hND9gcxZyh03AfScCYHE5CE/H2VlD0JivSyyP+SlVYCfUWC61+
-	mSyJRNHH63HkTVEzYyJLSwGxoCWpqljL8Ejb9EsKHlD6CG2tn0YsLHjFjWJGk9OV
-	b+tFQBc+wCuu7SR78UC9upGmnEVVmmV+uoJNDZWUOWSUdJ4LiBlhyrN6FycJqy4X
-	eKuZUGlbSqdItLkbJ5246B5UNXwgAL8yR38LZ9jlMXKs0H4JsoayAzgncdXQqAfc
-	0aSAHesTODnukmtDnACPKdIOcHl4L+rOe5OhN0DcmkXzSLm/9GCQFbdZGoocvUAe
-	ZxA==
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=rcOVUd9UAOBgD7vaTiue1aOXwBW9kSFcJo+Ihf6OkhI=; b=fs
+	Psy6IsNSiqmV7HFDpeiiY+6BkoHo5gCFcRyXQygEeMZEKlJziTRfjK9vF+U/gga6
+	hU52Zl/1Ln6QlWBdvEYgo/pOM4obxW5Wg77iSzZh1wCAuummhhda12eQSJQWC2oH
+	Qu1VPF1TJIbPXqlPywc0z8B3kEJWNxooMBbIin6OSg//Nousuav4miNdrvPn43lI
+	Em+lQssi+h3Nto9yGBpZKsQfJf8tlJnF50yYUl9Cy0aaLO8l8aJoaiXjn6I0KeHe
+	vnmVcJcxY1E0A+Q/+piFDTeMrf2/DsDNvsMKQ5fCoVEuuYw2AyTmTH8VoLQNtFDK
+	ohZboL26bIdNGWaJ+64Q==
 Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vjjjj0mgn-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vjf231d2f-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 11 Jan 2024 19:24:28 +0000 (GMT)
+	Thu, 11 Jan 2024 20:13:00 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40BJORTs022843
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40BKCxF9009079
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 11 Jan 2024 19:24:27 GMT
-Received: from [169.254.0.1] (10.49.16.6) by nalasex01a.na.qualcomm.com
+	Thu, 11 Jan 2024 20:13:00 GMT
+Received: from [10.227.110.203] (10.80.80.8) by nalasex01a.na.qualcomm.com
  (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Thu, 11 Jan
- 2024 11:24:27 -0800
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-Date: Thu, 11 Jan 2024 11:24:23 -0800
-Subject: [PATCH] wifi: ath11k: document HAL_RX_BUF_RBM_SW4_BM
+ 2024 12:12:59 -0800
+Message-ID: <ea393ad8-5623-45b9-824a-02d7e4c39b90@quicinc.com>
+Date: Thu, 11 Jan 2024 12:12:58 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] wifi: ath12k: Introduce hw abstraction
+Content-Language: en-US
+To: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
+        <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240109051252.3325106-1-quic_periyasa@quicinc.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20240109051252.3325106-1-quic_periyasa@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20240111-document-hal_rx_buf_rbm_sw4_bm-v1-1-ad277e8ab3cc@quicinc.com>
-X-B4-Tracking: v=1; b=H4sIAGZAoGUC/x3NTQqDMBBA4avIrBvIiAj2KqUM+ZnUgSaWSbWCe
- PcGl9/mvQMqq3CFe3eA8iZVltKAtw7C7MqLjcRm6G0/WEQ0cQlr5vI1s3uT7uTXROoz1d9APpv
- JpTiNzvqACVrko5xkvwaP53n+AV6o8HRwAAAA
-To: Kalle Valo <kvalo@kernel.org>, Jeff Johnson <quic_jjohnson@quicinc.com>
-CC: <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-X-Mailer: b4 0.12.3
-X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: -qaC1G6DoNyx-Ab7O8KvO9QvZr6CyBGS
-X-Proofpoint-GUID: -qaC1G6DoNyx-Ab7O8KvO9QvZr6CyBGS
+X-Proofpoint-ORIG-GUID: 7HjE877cb4pYwsZTSmKeG9V8fPYFNzgC
+X-Proofpoint-GUID: 7HjE877cb4pYwsZTSmKeG9V8fPYFNzgC
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-12-09_02,2023-12-07_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 suspectscore=0
- phishscore=0 mlxscore=0 spamscore=0 impostorscore=0 mlxlogscore=423
- lowpriorityscore=0 priorityscore=1501 clxscore=1015 bulkscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2311290000 definitions=main-2401110152
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 impostorscore=0
+ mlxscore=0 phishscore=0 lowpriorityscore=0 mlxlogscore=500
+ priorityscore=1501 spamscore=0 adultscore=0 suspectscore=0 malwarescore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2311290000 definitions=main-2401110157
 
-Commit 7636c9a6e7d7 ("wifi: ath11k: Add multi TX ring support for WCN6750")
-added HAL_RX_BUF_RBM_SW4_BM to enum hal_rx_buf_return_buf_manager. However,
-as flagged by the kernel-doc script, the documentation was not updated:
+On 1/8/2024 9:12 PM, Karthikeyan Periyasamy wrote:
+> To support multi link operation (MLO), need to move from the multi wiphy
+> model to a single wiphy model. However, the single wiphy model allows
+> multiple link/radio to be exposed by the same mac80211 hw. So introduce
+> a new container (ath12k_hw) structure. This approach improves scalability
+> for future multi link operation support.
+> 
+> Note:
+> 
+> This patchset sits on top of below patches
+>   wifi: ath12k: Refactor mac callback of config
+>   wifi: ath12k: Refactor mac callback of bss info changed
+>   wifi: ath12k: Refactor mac callback of conf tx
+>   wifi: ath12k: Refactor mac callback of start
+>   wifi: ath12k: Refactor mac callback of stop
+>   wifi: ath12k: Refactor mac callback of update vif offload
+>   wifi: ath12k: Refactor mac callback of configure filter
+>   wifi: ath12k: Refactor mac callback of ampdu action
+>   wifi: ath12k: Refactor mac callback of flush
+>   wifi: ath12k: Refactor start vdev delay function
+>   wifi: ath12k: Refactor the DP pdev pre alloc call sequence
+>   wifi: ath12k: Refactor the MAC allocation and destroy
+>   wifi: ath12k: Refactor MAC setup channel helper function
+>   wifi: ath12k: Refactor MAC un/register helper function
+> 
+> Karthikeyan Periyasamy (2):
+>   wifi: ath12k: Refactor the mac80211 hw access from link/radio
+>   wifi: ath12k: Introduce the container for mac80211 hw
+> 
+>  drivers/net/wireless/ath/ath12k/core.c   | 108 +++--
+>  drivers/net/wireless/ath/ath12k/core.h   |  47 ++-
+>  drivers/net/wireless/ath/ath12k/dp_mon.c |   4 +-
+>  drivers/net/wireless/ath/ath12k/dp_rx.c  |   6 +-
+>  drivers/net/wireless/ath/ath12k/dp_tx.c  |   6 +-
+>  drivers/net/wireless/ath/ath12k/mac.c    | 480 +++++++++++++++++------
+>  drivers/net/wireless/ath/ath12k/mac.h    |  14 +-
+>  drivers/net/wireless/ath/ath12k/reg.c    |   9 +-
+>  drivers/net/wireless/ath/ath12k/wmi.c    |  17 +-
+>  9 files changed, 510 insertions(+), 181 deletions(-)
+> 
+> 
+> base-commit: 2cd4e3f91f264926a6b11df948417b74d52ca9b9
+> prerequisite-patch-id: c2cebfe634adf505f1dd4fff4235dac6162c7da7
+> prerequisite-patch-id: cc11dc22588dbbd884ce44bcc4680ff0cc64b696
+> prerequisite-patch-id: 2eb8549471f3a66e200d82f6d3e902de2832a210
+> prerequisite-patch-id: 330f495e6871998fddc71c735e7fbfe5efc9c798
+> prerequisite-patch-id: 903acc7b989d5974623fdf4b9be901e2664dbef3
+> prerequisite-patch-id: 53378c45727417943331a0b98c5718b24a8e3577
+> prerequisite-patch-id: 9f1e02951355b889eddf23c24d063e9933008b2a
+> prerequisite-patch-id: 9b662f69fa076e61e089a15b5559c4ee913f94a8
+> prerequisite-patch-id: 4e079d284495ae939dc2173cae9e3fa082e607cb
+> prerequisite-patch-id: f81c109928533db71c84e64e102f5921db406f2d
+> prerequisite-patch-id: 70e3b0429286e17f26ea53369027a6f43a3653c3
+> prerequisite-patch-id: c2bebc5a0ea8cea79d6aec293096a168860bb48d
+> prerequisite-patch-id: e89f6abeea9771cb0832b8db13507a2b08f774ce
+> prerequisite-patch-id: c26a2ceec9261bec16474d1c8e3ff093d404b778
 
-drivers/net/wireless/ath/ath11k/hal.h:689: warning: Enum value 'HAL_RX_BUF_RBM_SW4_BM' not described in enum 'hal_rx_buf_return_buf_manager'
+In my workspace your patches are not applying. Can you rebase against
+the 'pending' branch since that has the pending versions of the
+prerequisite patches?
 
-So update the documentation. No functional changes, compile tested only.
-
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
----
- drivers/net/wireless/ath/ath11k/hal.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/hal.h b/drivers/net/wireless/ath/ath11k/hal.h
-index 80447f488954..65e8f244ebb9 100644
---- a/drivers/net/wireless/ath/ath11k/hal.h
-+++ b/drivers/net/wireless/ath/ath11k/hal.h
-@@ -1,7 +1,7 @@
- /* SPDX-License-Identifier: BSD-3-Clause-Clear */
- /*
-  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2022 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2021-2022, 2024 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- 
- #ifndef ATH11K_HAL_H
-@@ -674,6 +674,7 @@ struct hal_srng_config {
-  * @HAL_RX_BUF_RBM_SW1_BM: For Tx completion -- returned to host
-  * @HAL_RX_BUF_RBM_SW2_BM: For Tx completion -- returned to host
-  * @HAL_RX_BUF_RBM_SW3_BM: For Rx release -- returned to host
-+ * @HAL_RX_BUF_RBM_SW4_BM: For Tx completion -- returned to host
-  */
- 
- enum hal_rx_buf_return_buf_manager {
-
----
-base-commit: fba97a777dcb90896ab1dc32e796d85bb7bbcd69
-change-id: 20240111-document-hal_rx_buf_rbm_sw4_bm-9afd96a0bc1f
-
+/jeff
 
