@@ -1,81 +1,195 @@
-Return-Path: <linux-wireless+bounces-1712-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1713-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5B2782ADAF
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 12:38:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EC3F82AEDB
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 13:40:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A48C1F220C4
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 11:38:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 884CF1C2223B
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 12:40:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FE5F15488;
-	Thu, 11 Jan 2024 11:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53DC415AF1;
+	Thu, 11 Jan 2024 12:40:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="I7L9pOnj"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 056C715482
-	for <linux-wireless@vger.kernel.org>; Thu, 11 Jan 2024 11:38:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 40BBcV3z91690368, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 40BBcV3z91690368
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 11 Jan 2024 19:38:31 +0800
-Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Thu, 11 Jan 2024 19:38:31 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.34; Thu, 11 Jan 2024 19:38:31 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::e4c4:c4f:4e4c:d23c]) by
- RTEXMBS04.realtek.com.tw ([fe80::e4c4:c4f:4e4c:d23c%5]) with mapi id
- 15.01.2507.035; Thu, 11 Jan 2024 19:38:31 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "martin.kaistra@linutronix.de" <martin.kaistra@linutronix.de>
-CC: "Jes.Sorensen@gmail.com" <Jes.Sorensen@gmail.com>,
-        "kvalo@kernel.org"
-	<kvalo@kernel.org>,
-        "rtl8821cerfe2@gmail.com" <rtl8821cerfe2@gmail.com>,
-        "bigeasy@linutronix.de" <bigeasy@linutronix.de>
-Subject: Re: [PATCH v2] wifi: rtl8xxxu: enable channel switch support
-Thread-Topic: [PATCH v2] wifi: rtl8xxxu: enable channel switch support
-Thread-Index: AQHaQ7FJIRSod+cmIUG5nhwVhackgrDTz7XwgAACe4CAACWvAA==
-Date: Thu, 11 Jan 2024 11:38:31 +0000
-Message-ID: <557e467f23b0649ae9cb00f0b2a7671ccdb00b94.camel@realtek.com>
-References: <20240110103909.240514-1-martin.kaistra@linutronix.de>
-	 <cf31e4c5e1a04230891e5bbbff5d24ff@realtek.com>
-	 <a89202a3-0dc8-4206-82eb-eddb8b59e729@linutronix.de>
-In-Reply-To: <a89202a3-0dc8-4206-82eb-eddb8b59e729@linutronix.de>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-user-agent: Evolution 3.36.1-2 
-x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <85D7882A931EC540BE99373941A66158@realtek.com>
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF8ED15ADF
+	for <linux-wireless@vger.kernel.org>; Thu, 11 Jan 2024 12:40:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-28bc7155755so2786001a91.2
+        for <linux-wireless@vger.kernel.org>; Thu, 11 Jan 2024 04:40:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1704976825; x=1705581625; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=lUjrrZ3Jg1GUMAie5ebnK4hlRzI9jSk+yPsyIMgP7Cg=;
+        b=I7L9pOnj2gmHPXX3UUbnrWYfZH2x5047cV/fypzF3Y4ux3Y0oF/TgcPKblFJhFqyfN
+         uRt+i6HwRmtVLCXSAecx2Ihe27aeeuvT5TpzeIlMY+pOieEKi5vEYiIqh8Yh10B/i7CD
+         RswIwp5eHwjY6N1qjV8nIrBBXxP6J14XSk3vW2Bn7p6zOzOIE/PEiBwUrY0QGlV1B3uq
+         5jloVDT1ujj9h5SuzxJPTboxkF1HAHNqZEefAsPr+DxEp2kTY7JW+n/TN6Iti8VvdcC1
+         B9JbnzOo84Tyhq4z4XFf3s4P+tBtYNJme3NJUYiuB1DgqPvdhTHQvmnigGmTOd/jg4fy
+         8JSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704976825; x=1705581625;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=lUjrrZ3Jg1GUMAie5ebnK4hlRzI9jSk+yPsyIMgP7Cg=;
+        b=VDHSM6jS3zyhrp9t9yFd5TV/yQj659+968NOQ0IiVG5fxRjOI4eBauuX4j6nGLROU8
+         vQLnCuALW0aH4Heff+7cgVazUvaQilFCPXqn4kjMXum4nRgLNbHeuz4PAyu8HM+/xslk
+         goHXbhF8rfZVH6lhrPRVuaodLzIgUzvaFd0aU8GM9rb0XdQtzhzwxW5JaVXjtQnbau4h
+         wMiDNikVAnxmCk1wzE0ECYefAO1vpJiPnOXQBfdFdPf8TnSRLSn6E7VUmfh1TFSqMzmp
+         sf5bq3cC4h8cpuUXeCgzjSq/LSxiVEGfLM9eRYgHNTkOlq8K1/oJJ6z94uwTencgF4bL
+         ZjDA==
+X-Gm-Message-State: AOJu0YykgJ/d5sq3R2hRRd7ggbe1K4w+Mw5pH47i/kg4d4jq9NOCV5uP
+	8C3EssWP0aHGtLHllRTGbPF1M8usPx97
+X-Google-Smtp-Source: AGHT+IFlzCZDk+7khh2nGY76iLSM3Y0+E3O+l032jjoiVmXYGJDOGVhuEwa5Sr5OwMDDcz8NiN7tAg==
+X-Received: by 2002:a17:90a:4984:b0:28c:f1f3:4dcb with SMTP id d4-20020a17090a498400b0028cf1f34dcbmr914767pjh.69.1704976825101;
+        Thu, 11 Jan 2024 04:40:25 -0800 (PST)
+Received: from thinkpad ([202.131.159.18])
+        by smtp.gmail.com with ESMTPSA id mf15-20020a17090b184f00b0028cef2025ddsm1418530pjb.15.2024.01.11.04.40.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Jan 2024 04:40:24 -0800 (PST)
+Date: Thu, 11 Jan 2024 18:10:09 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: Lukas Wunner <lukas@wunner.de>, Bartosz Golaszewski <brgl@bgdev.pl>,
+	Kalle Valo <kvalo@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Chris Morgan <macromorgan@hotmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	=?iso-8859-1?Q?N=EDcolas_F_=2E_R_=2E_A_=2E?= Prado <nfraprado@collabora.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Peng Fan <peng.fan@nxp.com>, Robert Richter <rrichter@amd.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Terry Bowman <terry.bowman@amd.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Huacai Chen <chenhuacai@kernel.org>, Alex Elder <elder@linaro.org>,
+	Srini Kandagatla <srinivas.kandagatla@linaro.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-pci@vger.kernel.org,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: Re: [RFC 3/9] PCI/portdrv: create platform devices for child OF nodes
+Message-ID: <20240111124009.GA3003@thinkpad>
+References: <20240104130123.37115-1-brgl@bgdev.pl>
+ <20240104130123.37115-4-brgl@bgdev.pl>
+ <20240109144327.GA10780@wunner.de>
+ <CAMRc=MdXO6c6asvRSn_Z8-oFS48hroT+dazGKB6WWY1_Zu7f1Q@mail.gmail.com>
+ <20240110132853.GA6860@wunner.de>
+ <659f00ed271b3_5cee2942@dwillia2-xfh.jf.intel.com.notmuch>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <659f00ed271b3_5cee2942@dwillia2-xfh.jf.intel.com.notmuch>
 
-T24gVGh1LCAyMDI0LTAxLTExIGF0IDEwOjIzICswMTAwLCBNYXJ0aW4gS2Fpc3RyYSB3cm90ZToN
-Cj4gDQo+IFNob3VsZCBJIHNlbmQgYSBzZWNvbmQgcGF0Y2ggZm9yIGNhbmNlbGxpbmcgYzJoY21k
-X3dvcms/DQo+IA0KDQpUaGF0IHdpbGwgYmUgZ29vZC4gVGhhbmsgeW91IGluIGFkdmFuY2UuIDot
-KQ0KDQoNCg==
+On Wed, Jan 10, 2024 at 12:41:17PM -0800, Dan Williams wrote:
+> [ add Terry ]
+> 
+> 
+> Lukas Wunner wrote:
+> > On Wed, Jan 10, 2024 at 01:55:18PM +0100, Bartosz Golaszewski wrote:
+> > > On Tue, Jan 9, 2024 at 3:43???PM Lukas Wunner <lukas@wunner.de> wrote:
+> > > > On Thu, Jan 04, 2024 at 02:01:17PM +0100, Bartosz Golaszewski wrote:
+> > > > > In order to introduce PCIe power-sequencing, we need to create platform
+> > > > > devices for child nodes of the port driver node. They will get matched
+> > > > > against the pwrseq drivers (if one exists) and then the actuak PCIe
+> > > > > device will reuse the node once it's detected on the bus.
+> > > > [...]
+> > > > > --- a/drivers/pci/pcie/portdrv.c
+> > > > > +++ b/drivers/pci/pcie/portdrv.c
+> > > > > @@ -715,7 +716,7 @@ static int pcie_portdrv_probe(struct pci_dev *dev,
+> > > > >               pm_runtime_allow(&dev->dev);
+> > > > >       }
+> > > > >
+> > > > > -     return 0;
+> > > > > +     return devm_of_platform_populate(&dev->dev);
+> > > > >  }
+> > > >
+> > > > I think this belongs in of_pci_make_dev_node(), portdrv seems totally
+> > > > the wrong place.  Note that you're currently calling this for RCECs
+> > > > (Root Complex Event Collectors) as well, which is likely not what
+> > > > you want.
+> > > >
+> > > 
+> > > of_pci_make_dev_node() is only called when the relevant PCI device is
+> > > instantiated which doesn't happen until it's powered-up and scanned -
+> > > precisely the problem I'm trying to address.
+> > 
+> > No, of_pci_make_dev_node() is called *before* device_attach(),
+> > i.e. before portdrv has even probed.  So it seems this should
+> > work perfectly well for your use case.
+> > 
+> > 
+> > > > devm functions can't be used in the PCI core, so symmetrically call
+> > > > of_platform_unpopulate() from of_pci_remove_node().
+> > > 
+> > > I don't doubt what you're saying is true (I've seen worse things) but
+> > > this is the probe() callback of a driver using the driver model. Why
+> > > wouldn't devres work?
+> > 
+> > The long term plan is to move the functionality in portdrv to
+> > the PCI core.  Because devm functions can't be used in the PCI
+> > core, adding new ones to portdrv will *add* a new roadblock to
+> > migrating portdrv to the PCI core.  In other words, it makes
+> > future maintenance more difficult.
+> > 
+> > Generally, only PCIe port services which share the same interrupt
+> > (hotplug, PME, bandwith notification, flit error counter, ...)
+> > need to live in portdrv.  Arbitrary other stuff should not be
+> > shoehorned into portdrv.
+> 
+> I came here to say the same thing. It is already the case that portdrv
+> is not a good model to build new functionality upon [1], and PCI core
+> enlightenment should be considered first.
+> 
+
+The primary reason for plugging the power sequencing into portdrv is due to
+portdrv binding with all the bridge devices and acting as management driver for
+the bridges. This is where exactly the power sequencing part needs to be plugged
+in IMO. But if the idea of the portdrv is just to expose services based on
+interrupts, then please suggest a better place to plug this power sequencing
+part.
+
+- Mani
+
+> The portdrv model is impeding Terry's CXL Port error handling effort, so
+> I am on the lookout for portdrv growing new entanglements to unwind
+> later.
+> 
+> [1]: http://lore.kernel.org/r/20221025232535.GA579167@bhelgaas
+> 
+
+-- 
+மணிவண்ணன் சதாசிவம்
 
