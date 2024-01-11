@@ -1,57 +1,57 @@
-Return-Path: <linux-wireless+bounces-1694-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1695-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FFAE82A712
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 05:52:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C17A782A713
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 05:52:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A23C61F2291B
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 04:52:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2C7D0B26FA4
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 04:52:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8304A63B3;
-	Thu, 11 Jan 2024 04:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72D816AB7;
+	Thu, 11 Jan 2024 04:51:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="VeB25yaQ"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="HWWYXTdu"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F380563B2
-	for <linux-wireless@vger.kernel.org>; Thu, 11 Jan 2024 04:51:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0451F63B9
+	for <linux-wireless@vger.kernel.org>; Thu, 11 Jan 2024 04:51:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40B3rPSN023368;
-	Thu, 11 Jan 2024 04:51:36 GMT
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40B2Y7DD021305;
+	Thu, 11 Jan 2024 04:51:38 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	from:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-type; s=qcppdkim1; bh=CzY31OSUZ7ZaGtpcFOkz
-	9EQWaVfEadynsxJwp4f59cc=; b=VeB25yaQIig/aFQeBb62t4D5FFJKXL9OK+4Q
-	oPHh4xTca7HOYKgdq7FzDJfqAhI/oM3XjnP2uJcf3TCslkjkjyYOaDj8X9etBTJJ
-	Caac0bU+ogOR40KdfT+pP3SJWyRGu4SKn/XEq/LqHRLpZnveDfU5nb4FQF66jgWK
-	Z7EnXWv9KfWmEAI075qdBHgif1JVSGVq/obrtMMGrmrWvNw8sdYzJIDOJIDSAoCp
-	dW46ObEKfzVSHSrCCIBhacriJ+4a0kwwaVv+4r7Fd4soKhpKkpSzNr+CZN95wnFD
-	gFK/iMfkHfLw/XrS2vk5v1niWIM9CTjCUcOHO0iz9NMJXdcWog==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vj16k8wc9-1
+	:mime-version:content-type; s=qcppdkim1; bh=olQ8sTh0TAmuUUuxry4s
+	otAFMG9DPl54fkJJUZnTZcY=; b=HWWYXTdu7G1DnCS1fSr1AfJ030j8YqoOyHZa
+	eARE/Qa4OjlEOHsRkF4jX6mYnJY0mFR4KfUyjtEtDaVfJCsPqYT+RcSfzfF+LKWw
+	SaWGxRZnPif2JwQTKPnCB90tggqiyN0xXf5KFXuImWjOqk9qKWvUYIqx3Fe9JQsS
+	m1rbvWf3xs7Y9ztWXzDqTZi5Pv1PBASjBeI9WrktPLWzIiAkDAEuos42n0/bqe1i
+	ruqM4KbmCl6n6nDTh450vqbixCnPGAtvrPaYv4qDWpcNSEBDwX9Tv+U16wh1GXde
+	zMOIVngLdy03D84PfGhLUnCI2H+LatG4WMZ33hgl14wARvmyTw==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vhsb2j905-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 11 Jan 2024 04:51:36 +0000 (GMT)
+	Thu, 11 Jan 2024 04:51:38 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40B4pZQh010133
+	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40B4pbtZ012978
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 11 Jan 2024 04:51:35 GMT
+	Thu, 11 Jan 2024 04:51:37 GMT
 Received: from srirrama-linux.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Wed, 10 Jan 2024 20:51:33 -0800
+ 15.2.1118.40; Wed, 10 Jan 2024 20:51:35 -0800
 From: Sriram R <quic_srirrama@quicinc.com>
 To: <ath12k@lists.infradead.org>
 CC: <linux-wireless@vger.kernel.org>, Sriram R <quic_srirrama@quicinc.com>
-Subject: [PATCH 08/12] wifi: ath12k: Add additional checks for vif and sta iterators
-Date: Thu, 11 Jan 2024 10:20:41 +0530
-Message-ID: <20240111045045.28377-9-quic_srirrama@quicinc.com>
+Subject: [PATCH 09/12] wifi: ath12k: modify regulatory support for single wiphy architecture
+Date: Thu, 11 Jan 2024 10:20:42 +0530
+Message-ID: <20240111045045.28377-10-quic_srirrama@quicinc.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20240111045045.28377-1-quic_srirrama@quicinc.com>
 References: <20240111045045.28377-1-quic_srirrama@quicinc.com>
@@ -66,134 +66,168 @@ X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: Lnodp3kSrIW_9i5bPWvzPzdYl-NkS3WQ
-X-Proofpoint-GUID: Lnodp3kSrIW_9i5bPWvzPzdYl-NkS3WQ
+X-Proofpoint-ORIG-GUID: teGcM2yJlNwRdEnZV5U1mgB-Q6ljMdYV
+X-Proofpoint-GUID: teGcM2yJlNwRdEnZV5U1mgB-Q6ljMdYV
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-12-09_01,2023-12-07_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 mlxscore=0
- clxscore=1015 adultscore=0 lowpriorityscore=0 spamscore=0
- priorityscore=1501 suspectscore=0 bulkscore=0 mlxlogscore=562 phishscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ mlxlogscore=999 spamscore=0 malwarescore=0 suspectscore=0 impostorscore=0
+ lowpriorityscore=0 bulkscore=0 clxscore=1015 mlxscore=0 phishscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2311290000 definitions=main-2401110035
 
-Since vif and sta objects of different radios are added to same
-local hw list in mac80211, additional checks need to be done
-in driver to ensure we are processing the intended vif
-and sta corresponding to the radio when the vif and sta mac80211
-iterator utils are used from driver.
+With all the radios being combined and registered as a single
+mac80211 hw/wiphy, separate regd built from firmware rules need
+not be updated to cfg80211. Rather we can pick one of the regd
+built from the rules to update to cfg80211 for the whole
+registered device. We prefer 6 GHz pdev based rules since it has
+the rules for all bands. If the hw doesn't support 6 GHz, then update
+rules from one of the pdevs.
+
+Also, when regulatory notification is received, update to all the
+underlying radios/ar so that it becomes aware of the change and as
+well us it updates its local regd with the new country rules. Later
+pick the appropriate pdev's regd(6 GHz if available) and apply to
+cfg80211.
 
 Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
 Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 
 Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
 ---
- drivers/net/wireless/ath/ath12k/core.h |  1 +
- drivers/net/wireless/ath/ath12k/mac.c  | 22 ++++++++++++++++++++--
- 2 files changed, 21 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath12k/core.h |  2 +
+ drivers/net/wireless/ath/ath12k/mac.c  |  2 +
+ drivers/net/wireless/ath/ath12k/reg.c  | 60 ++++++++++++++++++++++----
+ 3 files changed, 55 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-index 0b55a3f533cd..883556313fb0 100644
+index 883556313fb0..ac7b48cc2e7e 100644
 --- a/drivers/net/wireless/ath/ath12k/core.h
 +++ b/drivers/net/wireless/ath/ath12k/core.h
-@@ -288,6 +288,7 @@ struct ath12k_vif {
+@@ -630,6 +630,8 @@ struct ath12k_hw {
+ 	struct mutex conf_mutex;
  
- struct ath12k_vif_iter {
- 	u32 vdev_id;
-+	struct ath12k *ar;
- 	struct ath12k_vif *arvif;
+ 	u8 num_radio;
++	bool regd_updated;
++	bool use_6ghz_regd;
+ 	struct ath12k radio[] __aligned(sizeof(void *));
  };
  
 diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 91d378c5f2cf..25d82c6fe89a 100644
+index 25d82c6fe89a..2f19d6c5b741 100644
 --- a/drivers/net/wireless/ath/ath12k/mac.c
 +++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -533,7 +533,8 @@ static void ath12k_get_arvif_iter(void *data, u8 *mac,
- 	struct ath12k_vif_iter *arvif_iter = data;
- 	struct ath12k_vif *arvif = ath12k_vif_to_arvif(vif);
+@@ -7948,6 +7948,7 @@ static int ath12k_mac_setup_channels_rates(struct ath12k *ar,
+ 	struct ath12k_wmi_hal_reg_capabilities_ext_arg *reg_cap;
+ 	void *channels;
+ 	u32 phy_id;
++	struct ath12k_hw *ah = ar->ah;
  
--	if (arvif->vdev_id == arvif_iter->vdev_id)
-+	if (arvif->vdev_id == arvif_iter->vdev_id &&
-+	    arvif->ar == arvif_iter->ar)
- 		arvif_iter->arvif = arvif;
+ 	BUILD_BUG_ON((ARRAY_SIZE(ath12k_2ghz_channels) +
+ 		      ARRAY_SIZE(ath12k_5ghz_channels) +
+@@ -8000,6 +8001,7 @@ static int ath12k_mac_setup_channels_rates(struct ath12k *ar,
+ 			ath12k_mac_update_ch_list(ar, band,
+ 						  reg_cap->low_5ghz_chan,
+ 						  reg_cap->high_5ghz_chan);
++			ah->use_6ghz_regd = true;
+ 		}
+ 
+ 		if (reg_cap->low_5ghz_chan < ATH12K_MIN_6G_FREQ) {
+diff --git a/drivers/net/wireless/ath/ath12k/reg.c b/drivers/net/wireless/ath/ath12k/reg.c
+index da64482f1024..3a3f66d8ea11 100644
+--- a/drivers/net/wireless/ath/ath12k/reg.c
++++ b/drivers/net/wireless/ath/ath12k/reg.c
+@@ -50,7 +50,7 @@ ath12k_reg_notifier(struct wiphy *wiphy, struct regulatory_request *request)
+ 	struct ath12k_wmi_init_country_arg arg;
+ 	struct ath12k_hw *ah = ath12k_hw_to_ah(hw);
+ 	struct ath12k *ar = ath12k_ah_to_ar(ah, 0);
+-	int ret;
++	int ret, i;
+ 
+ 	ath12k_dbg(ar->ab, ATH12K_DBG_REG,
+ 		   "Regulatory Notification received for %s\n", wiphy_name(wiphy));
+@@ -85,10 +85,17 @@ ath12k_reg_notifier(struct wiphy *wiphy, struct regulatory_request *request)
+ 	memcpy(&arg.cc_info.alpha2, request->alpha2, 2);
+ 	arg.cc_info.alpha2[2] = 0;
+ 
+-	ret = ath12k_wmi_send_init_country_cmd(ar, &arg);
+-	if (ret)
+-		ath12k_warn(ar->ab,
+-			    "INIT Country code set to fw failed : %d\n", ret);
++	/* Allow fresh updates to wiphy regd */
++	ah->regd_updated = false;
++
++	/* Send the reg change request to all the radios */
++	for (i = 0; i < ah->num_radio; i++) {
++		ret = ath12k_wmi_send_init_country_cmd(ar, &arg);
++		if (ret)
++			ath12k_warn(ar->ab,
++				    "INIT Country code set to fw failed : %d\n", ret);
++		ar++;
++	}
  }
  
-@@ -543,6 +544,7 @@ struct ath12k_vif *ath12k_mac_get_arvif(struct ath12k *ar, u32 vdev_id)
- 	u32 flags;
+ int ath12k_reg_update_chan_list(struct ath12k *ar)
+@@ -204,8 +211,31 @@ int ath12k_regd_update(struct ath12k *ar, bool init)
+ 	struct ieee80211_regdomain *regd, *regd_copy = NULL;
+ 	int ret, regd_len, pdev_id;
+ 	struct ath12k_base *ab;
++	struct ath12k_hw *ah;
++	int i;
  
- 	arvif_iter.vdev_id = vdev_id;
-+	arvif_iter.ar = ar;
- 
- 	flags = IEEE80211_IFACE_ITER_RESUME_ALL;
- 	ieee80211_iterate_active_interfaces_atomic(ath12k_ar_to_hw(ar),
-@@ -6770,14 +6772,19 @@ struct ath12k_mac_change_chanctx_arg {
- 	struct ieee80211_vif_chanctx_switch *vifs;
- 	int n_vifs;
- 	int next_vif;
-+	struct ath12k *ar;
- };
- 
- static void
- ath12k_mac_change_chanctx_cnt_iter(void *data, u8 *mac,
- 				   struct ieee80211_vif *vif)
- {
-+	struct ath12k_vif *arvif = ath12k_vif_to_arvif(vif);
- 	struct ath12k_mac_change_chanctx_arg *arg = data;
- 
-+	if (arvif->ar != arg->ar)
-+		return;
+ 	ab = ar->ab;
++	ah = ar->ah;
 +
- 	if (rcu_access_pointer(vif->bss_conf.chanctx_conf) != arg->ctx)
- 		return;
- 
-@@ -6788,9 +6795,13 @@ static void
- ath12k_mac_change_chanctx_fill_iter(void *data, u8 *mac,
- 				    struct ieee80211_vif *vif)
- {
-+	struct ath12k_vif *arvif = ath12k_vif_to_arvif(vif);
- 	struct ath12k_mac_change_chanctx_arg *arg = data;
- 	struct ieee80211_chanctx_conf *ctx;
- 
-+	if (arvif->ar != arg->ar)
-+		return;
++	/* If one of the radios within ah has already updated the regd for
++	 * the wiphy, then avoid setting regd again
++	 */
++	if (ah->regd_updated)
++		return 0;
 +
- 	ctx = rcu_access_pointer(vif->bss_conf.chanctx_conf);
- 	if (ctx != arg->ctx)
- 		return;
-@@ -6907,7 +6918,7 @@ static void
- ath12k_mac_update_active_vif_chan(struct ath12k *ar,
- 				  struct ieee80211_chanctx_conf *ctx)
- {
--	struct ath12k_mac_change_chanctx_arg arg = { .ctx = ctx };
-+	struct ath12k_mac_change_chanctx_arg arg = { .ctx = ctx, .ar = ar };
- 	struct ieee80211_hw *hw = ath12k_ar_to_hw(ar);
- 
- 	lockdep_assert_held(&ar->conf_mutex);
-@@ -7512,6 +7523,9 @@ static void ath12k_mac_set_bitrate_mask_iter(void *data,
- 	struct ath12k_sta *arsta = ath12k_sta_to_arsta(sta);
- 	struct ath12k *ar = arvif->ar;
- 
-+	if (arsta->arvif != arvif)
-+		return;
++	/* firmware provides reg rules which are similar for 2 GHz and 5 GHz
++	 * pdev but 6 GHz pdev has superset of all rules including rules for
++	 * all bands, we prefer 6 GHz pdev's rules to be used for setup of
++	 * the wiphy regd.
++	 * If 6 GHz pdev was part of the ath12k_hw, wait for the 6 GHz pdev,
++	 * else pick the first pdev which calls this function and use its
++	 * regd to update global hw regd.
++	 * The regd_updated flag set at the end will not allow any further
++	 * updates.
++	 */
++	if (ah->use_6ghz_regd && !ar->supports_6ghz)
++		return 0;
 +
- 	spin_lock_bh(&ar->data_lock);
- 	arsta->changed |= IEEE80211_RC_SUPP_RATES_CHANGED;
- 	spin_unlock_bh(&ar->data_lock);
-@@ -7522,10 +7536,14 @@ static void ath12k_mac_set_bitrate_mask_iter(void *data,
- static void ath12k_mac_disable_peer_fixed_rate(void *data,
- 					       struct ieee80211_sta *sta)
- {
-+	struct ath12k_sta *arsta = ath12k_sta_to_arsta(sta);
- 	struct ath12k_vif *arvif = data;
- 	struct ath12k *ar = arvif->ar;
- 	int ret;
+ 	pdev_id = ar->pdev_idx;
  
-+	if (arsta->arvif != arvif)
-+		return;
+ 	spin_lock_bh(&ab->base_lock);
+@@ -258,10 +288,22 @@ int ath12k_regd_update(struct ath12k *ar, bool init)
+ 	if (ret)
+ 		goto err;
+ 
+-	if (ar->state == ATH12K_STATE_ON) {
+-		ret = ath12k_reg_update_chan_list(ar);
+-		if (ret)
+-			goto err;
++	ah->regd_updated = true;
 +
- 	ret = ath12k_wmi_set_peer_param(ar, sta->addr,
- 					arvif->vdev_id,
- 					WMI_PEER_PARAM_FIXED_RATE,
++	/* Apply the new regd to all the radios, this is expected to be received only once
++	 * since we check for ah->regd_updated and allow here only once
++	 */
++	ar = ah->radio;
++	ab = ar->ab;
++
++	for (i = 0; i < ah->num_radio; i++) {
++		if (ar->state == ATH12K_STATE_ON) {
++			ret = ath12k_reg_update_chan_list(ar);
++			if (ret)
++				goto err;
++		}
++		ar++;
++		ab = ar->ab;
+ 	}
+ 
+ 	return 0;
 -- 
 2.17.1
 
