@@ -1,64 +1,64 @@
-Return-Path: <linux-wireless+bounces-1718-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1719-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 351E182AFD4
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 14:39:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EC0C82B10E
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 15:55:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD9FA1F22C15
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 13:39:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4CD60282E1A
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 14:55:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4284032C7F;
-	Thu, 11 Jan 2024 13:38:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 437A94CDEF;
+	Thu, 11 Jan 2024 14:52:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Iw9I0ThP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IsJOdL0w"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3EF932C6C
-	for <linux-wireless@vger.kernel.org>; Thu, 11 Jan 2024 13:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 250264CDF8
+	for <linux-wireless@vger.kernel.org>; Thu, 11 Jan 2024 14:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-4299e43a712so18145981cf.1
-        for <linux-wireless@vger.kernel.org>; Thu, 11 Jan 2024 05:38:53 -0800 (PST)
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-40e62425c60so3102935e9.3
+        for <linux-wireless@vger.kernel.org>; Thu, 11 Jan 2024 06:52:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1704980332; x=1705585132; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1704984726; x=1705589526; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=Qholcl4vTuarhGXHoLJbL1nGyNZ5u3Lwy4788FltX8c=;
-        b=Iw9I0ThPDM9JNOe8kY/L5OCKAy1tbM7dJsO7CZ1/Bobtz8WLurXu5FfpiciiXMSWc2
-         S4MbeF228y7sySIIxvcw3gByFnGnZ7rvJDplRLxiRLjIcOyrbv9xkLVhMzqPDyz5DUZB
-         qwdNU06C3hvjsQpasrure0o5js6QCn4vST2ba4OGXg36jd6bX5xXq0uI/A/kcCUsExmW
-         xcavCIbtjuZRgfj/Sma8iTX6ySJd/Vp7hInjLAxixFsz8jC6v7EesAVdnjgLq0C6bxK9
-         j37IY7Tj58ukuWRxE0a/h+HOzQdDpnWVBGDtsUq4QcqbBkegF+efci8qHZMxb2F+Unmv
-         BTyQ==
+        bh=7E9bHs9XH2CBgscyRBfm1uVKGzD4R3hr2HRsqbzvJKQ=;
+        b=IsJOdL0wnMEhrMLJYMJ00FuXb8gMQfK7gQuok1qzosCmwoewqLuTsErdYzuya9iu3A
+         toc95KeSVMC0ZQt99cMocdwduHj9IYK2iOzggEZc39wiCVeBhWwhFhiZS/96C9SY9jvb
+         DZyD7PmN9lweQzeuJQuM63dLvdCJCubrft/+cdmdu/LbpHQB95cwYfdkiMPAO1Hnjbg8
+         /2owAVz6Bf3UC+Rw2ESVNyokIRFvdF/gTrv9ZFMPbfrc4JfQeU0cdFPRfTW6X7BQl09R
+         2dVKNrWeSUf8NWgSChQAw6E34g7dbJlZhc+wUqhs25ILkUw6dGhnrl+RRGMJKKtZxcLM
+         IC/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704980332; x=1705585132;
+        d=1e100.net; s=20230601; t=1704984726; x=1705589526;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Qholcl4vTuarhGXHoLJbL1nGyNZ5u3Lwy4788FltX8c=;
-        b=TnNBDGDFTWrrrGNvUtPihSsYBQVdhutBl2Robi1WLYsCDzYZ5+UZnclL7KhDro8OSo
-         7mfwwGN6TkodQgVPLLmGTgGK5MYpgvneQFJVi3z4B+2fZcRTbFIAt9N8AI5pRY94YXpG
-         A93MoRjh7riwy7xBi81nUz1RoojEScB+SZ88v2NUzcjOBQj3uG/5FxUtruku3mhPIymi
-         wLzybyeChRi49ioHEhO5XeHX4WINY3631X65Lu4NkzxaEYpxL+vyFr3fyxCcLnWNUOQc
-         rlZlQypqi1y1OWa9QbOK4EjmCvmh0MagbiHyzXqKySR3P1U/EIkxY7LoPzhzdrVbYkqy
-         w/3Q==
-X-Gm-Message-State: AOJu0YyNGtEX9IpC/tsr44u7/8yqNP6HlWsDb9AWOY7UwhQdyt9HexPd
-	Tr+3qFQtLVZScqlRABaiq/E=
-X-Google-Smtp-Source: AGHT+IFWartU9uhnCflOnfggaMnnGu/nXobBrdUEhsvWG6RL3MWsrJWLDYiu5zK/l7vf/9HaCrCj6Q==
-X-Received: by 2002:ac8:5ad0:0:b0:429:c5d8:3f0c with SMTP id d16-20020ac85ad0000000b00429c5d83f0cmr797463qtd.93.1704980332546;
-        Thu, 11 Jan 2024 05:38:52 -0800 (PST)
-Received: from [10.102.4.159] (50-78-19-50-static.hfc.comcastbusiness.net. [50.78.19.50])
-        by smtp.gmail.com with ESMTPSA id w18-20020a05622a135200b00427e3f2ff25sm426379qtk.78.2024.01.11.05.38.51
+        bh=7E9bHs9XH2CBgscyRBfm1uVKGzD4R3hr2HRsqbzvJKQ=;
+        b=udZsQhFepzkA8hjzv17uZCSZCN5yURox4CCt5MDAfW3sUDn3KmC+/ws4K43id6FNUX
+         iFrtRnvPtCEu4AlIagsqQJWSn5LnbBwM4eTRex0qlMsUW3fyT47ROCzLwdVGo2DyaxRW
+         SZ9oA01H6iiqNw/wnSSLMzUC3OKFfaT6kIJ7dS1DkkL3fo+z7GZXWD9MSxgZXYyWSLys
+         m0Go6ugoyB5kUb+HCdR98D7Dy4ZzK8X2EgF4cnZynCyawETwNCN3ZUQo3UUSghyQngnx
+         gf6KQ7y8qPiVBL/1BTx4/twDE7wTcFjkSS6CUeJm7lOekaz+VtqFCCj/XjntZduyLLBa
+         GKMw==
+X-Gm-Message-State: AOJu0YzU5HJ8kyBkK0kgmWDOo5AaVuI7zZJIOM+gwl6yqL/EWUpYQ3NT
+	k/OdXOQ+5bO8eXAgiIQa4TpxMT/Mfks=
+X-Google-Smtp-Source: AGHT+IGxl8+hpNfAwxFg88yIJquHfClHdDoGypSeTXeoX5c8kSLU7dV+xM/oUTTwEN8vmA856dcdWA==
+X-Received: by 2002:a05:600c:1e03:b0:40e:50c5:d88b with SMTP id ay3-20020a05600c1e0300b0040e50c5d88bmr525365wmb.14.1704984725966;
+        Thu, 11 Jan 2024 06:52:05 -0800 (PST)
+Received: from [192.168.1.50] ([81.196.40.51])
+        by smtp.gmail.com with ESMTPSA id j42-20020a05600c1c2a00b0040e48e4bf8asm2266623wms.10.2024.01.11.06.52.04
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 Jan 2024 05:38:52 -0800 (PST)
-Message-ID: <e8878979-1f3f-4635-a716-9ac381c617d9@gmail.com>
-Date: Thu, 11 Jan 2024 05:38:49 -0800
+        Thu, 11 Jan 2024 06:52:05 -0800 (PST)
+Message-ID: <26984f36-2f62-4b28-a332-da62a1ea2d3c@gmail.com>
+Date: Thu, 11 Jan 2024 16:52:02 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -66,89 +66,82 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: ath11k and vfio-pci support
+Subject: Re: [PATCH v2] wifi: rtlwifi: rtl_usb: Use sync register writes
 Content-Language: en-US
-To: Kalle Valo <kvalo@kernel.org>
-Cc: Baochen Qiang <quic_bqiang@quicinc.com>, linux-wireless@vger.kernel.org,
- ath11k@lists.infradead.org
-References: <adcb785e-4dc7-4c4a-b341-d53b72e13467@gmail.com>
- <8734v5zhol.fsf@kernel.org> <87fa5220-6fd9-433d-879b-c55ac67a0748@gmail.com>
- <87r0ipcn7j.fsf@kernel.org> <356e0b05-f396-4ad7-9b29-c492b54af834@gmail.com>
- <26119c3f-9012-47bb-948e-7e976d4773a7@quicinc.com>
- <87mstccmk6.fsf@kernel.org> <df9fd970-5af3-468c-b1f1-18f91215cf44@gmail.com>
- <8734v4auc4.fsf@kernel.org>
-From: James Prestwood <prestwoj@gmail.com>
-In-Reply-To: <8734v4auc4.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+To: Ping-Ke Shih <pkshih@realtek.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Larry Finger <Larry.Finger@lwfinger.net>
+References: <400ec3ff-2ab7-469f-b32f-43dfd62621f9@gmail.com>
+ <d3468d464cab444f93a347e1b612ebca@realtek.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <d3468d464cab444f93a347e1b612ebca@realtek.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-
-On 1/11/24 5:11 AM, Kalle Valo wrote:
-> James Prestwood <prestwoj@gmail.com> writes:
->
->> Hi Kalle, Baochen,
+On 11/01/2024 03:59, Ping-Ke Shih wrote:
+> 
+> 
+>> -----Original Message-----
+>> From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+>> Sent: Wednesday, January 10, 2024 9:47 PM
+>> To: linux-wireless@vger.kernel.org
+>> Cc: Ping-Ke Shih <pkshih@realtek.com>; Larry Finger <Larry.Finger@lwfinger.net>
+>> Subject: [PATCH v2] wifi: rtlwifi: rtl_usb: Use sync register writes
 >>
->> On 1/11/24 12:16 AM, Kalle Valo wrote:
->>> Baochen Qiang <quic_bqiang@quicinc.com> writes:
->>>
->>>> On 1/10/2024 10:55 PM, James Prestwood wrote:
->>>>> Hi Kalle,
->>>>> On 1/10/24 5:49 AM, Kalle Valo wrote:
->>>>>> James Prestwood <prestwoj@gmail.com> writes:
->>>>>>
->>>>>>>> But I have also no idea what is causing this, I guess we are doing
->>>>>>>> something wrong with the PCI communication? That reminds me, you could
->>>>>>>> try this in case that helps:
->>>>>>>>
->>>>>>>> https://patchwork.kernel.org/project/linux-wireless/patch/20231212031914.47339-1-imguzh@gmail.com/
->>>>>>> Heh, I saw this pop up a day after I sent this and was wondering. Is
->>>>>>> this something I'd need on the host kernel, guest, or both?
->>>>>> On the guest where ath11k is running. I'm not optimistic that this would
->>>>>> solve your issue, I suspect there can be also other bugs, but good to
->>>>>> know if the patch changes anything.
->>>>> Looks the same here, didn't seem to change anything based on the
->>>>> kernel logs.
->>>>>
->>>> Could you try this?
->>>>
->>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/drivers/net/wireless/ath/ath11k/pci.c?id=39564b475ac5a589e6c22c43a08cbd283c295d2c
->>> This reminds me, I assumed James was testing with ath.git master branch
->>> (which has that commit) but I never checked that. So for testing please
->>> always use the master branch to get the latest and greatest ath11k:
->>>
->>> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/
->>>
->>> There's a quite long delay from ath.git to official releases.
->> Good to know, and I was not in fact using that branch. Rebuilt from
->> ath.git/master but still roughly the same behavior. There does appear
->> to be more output now though, specifically a firmware crash:
+>> Currently rtl_usb performs register writes using the async
+>> usb_submit_urb() function. This appears to work fine for the RTL8192CU,
+>> but the RTL8192DU (soon to be supported by rtlwifi) has a problem:
+>> it transmits everything at the 1M rate in the 2.4 GHz band. (The 5 GHz
+>> band is still untested.)
 >>
->> [    2.281721] ath11k_pci 0000:00:06.0: failed to receive control
->> response completion, polling..
->> [    2.282101] ip (65) used greatest stack depth: 12464 bytes left
->> [    3.306039] ath11k_pci 0000:00:06.0: Service connect timeout
->> [    3.307588] ath11k_pci 0000:00:06.0: failed to connect to HTT: -110
->> [    3.309286] ath11k_pci 0000:00:06.0: failed to start core: -110
->> [    3.519637] ath11k_pci 0000:00:06.0: firmware crashed: MHI_CB_EE_RDDM
->> [    3.519678] ath11k_pci 0000:00:06.0: ignore reset dev flags 0x4000
->> [    3.627087] ath11k_pci 0000:00:06.0: firmware crashed: MHI_CB_EE_RDDM
->> [    3.627129] ath11k_pci 0000:00:06.0: ignore reset dev flags 0x4000
->> [   13.802105] ath11k_pci 0000:00:06.0: failed to wait wlan mode
->> request (mode 4): -110
->> [   13.802175] ath11k_pci 0000:00:06.0: qmi failed to send wlan mode
->> off: -110
-> Ok, that's progress now. Can you try next try the iommu patch[1] we
-> talked about earlier? It's already in master-pending branch (along with
-> other pending patches) so you can use that branch if you want.
->
-> [1] https://patchwork.kernel.org/project/linux-wireless/patch/20231212031914.47339-1-imguzh@gmail.com/
+>> With this patch, rtl_usb performs the register writes using the
+>> synchronous usb_control_msg() function, and the RTL8192DU works
+>> normally. The RTL8192CU still works.
+>>
+>> The vendor drivers use the async writes in only one function,
+>> rtl8192du_trigger_gpio_0 / rtl8192cu_trigger_gpio_0, which probably
+>> doesn't even run in real life. They use sync writes everywhere else.
+>>
+>> Also, remove "sync" and "async" from the names of the members of
+>> struct rtl_io to avoid confusion:
+>>
+>> write{8,16,32}_async -> write{8,16,32}
+>>  read{8,16,32}_sync  ->  read{8,16,32}
+>>
+>> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+> 
+> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+> 
+>> ---
+>> v2:
+>>  - Rename the members of struct rtl_io.
+>> ---
+>>  drivers/net/wireless/realtek/rtlwifi/pci.c  |  12 +-
+>>  drivers/net/wireless/realtek/rtlwifi/usb.c  | 163 ++++++--------------
+>>  drivers/net/wireless/realtek/rtlwifi/wifi.h |  30 ++--
+>>  3 files changed, 66 insertions(+), 139 deletions(-)
+>>
+> 
+> [...]
+> 
+>> @@ -114,18 +51,15 @@ static int _usbctrl_vendorreq_sync_read(struct usb_device *udev, u8 request,
+>>         } while (++vendorreq_times < MAX_USBCTRL_VENDORREQ_TIMES);
+>>
+>>         if (status < 0 && count++ < 4)
+>> -               pr_err("reg 0x%x, usbctrl_vendorreq TimeOut! status:0x%x value=0x%x\n",
+>> -                      value, status, *(u32 *)pdata);
+>> -       return status;
+>> +               pr_err("reg 0x%x, usbctrl_vendorreq TimeOut! status:0x%x value=0x%x reqtype=0x%x\n",
+> 
+> nit: Since you touch this, would you like to use dev_err() instead?
+> 
+Sure, I can do that.
 
-Same result unfortunately, tried both with just [1] applied to ath.git 
-and at HEAD of master-pending.
-
-Thanks,
-
-James
-
+>> +                      value, status, *(u32 *)pdata, reqtype);
+>>  }
+>>
+> 
+> [...]
+> 
 
 
