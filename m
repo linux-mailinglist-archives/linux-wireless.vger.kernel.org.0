@@ -1,120 +1,170 @@
-Return-Path: <linux-wireless+bounces-1724-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1725-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3192582B293
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 17:16:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E4DE82B29A
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 17:17:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57D111C225AA
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 16:16:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B6141C22B8F
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jan 2024 16:17:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F4B44CE09;
-	Thu, 11 Jan 2024 16:16:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D8F950246;
+	Thu, 11 Jan 2024 16:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lmjGXbOK"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="B2scXr+O"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com [209.85.167.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73F354CB3C
-	for <linux-wireless@vger.kernel.org>; Thu, 11 Jan 2024 16:16:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3879DC433F1;
-	Thu, 11 Jan 2024 16:16:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704989784;
-	bh=586IbbjpftFDYfmI3BMiCS90jeVviDYs5I9sZzMsMyc=;
-	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=lmjGXbOK+8pKz6/XdJ0Nh46R9sVv4Wqjy8w7QFxuFZDhZ7vub6lcmTnYN3SxHkPu8
-	 N6G/3lM6cAl4YRdJz7UmUxxIBUqlpHgOgrX8cIPw5mrbOcDNCAj3gK4lN3BEQVmiNi
-	 XaNx1FkBf6PAEC+wYpyanX27WhtyYqg0y6oUT/Wf0wSApf9cch5E/DNo0hy7bJvnZh
-	 gYkSWkw2Cg+rNCY//OrQBid3a3ltJD+lIy++HqxHFoj+SMLJ92Zt1CxbZjUaIi9XDb
-	 p+/M0MiSURqZk3C1+Cg70W78aeQBebofzLV2F8CC5imXIhstBNdXkQdgUv+Xi1iobP
-	 7ZXJl3DcqnGog==
-Content-Type: text/plain; charset="utf-8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25FF4F8A0
+	for <linux-wireless@vger.kernel.org>; Thu, 11 Jan 2024 16:16:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-3bbbc6b4ed1so3776394b6e.2
+        for <linux-wireless@vger.kernel.org>; Thu, 11 Jan 2024 08:16:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1704989817; x=1705594617; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=M0L8Io9WOaU9zuxGb3WJPoQE4gX/uTxUJ5wFQjECB/w=;
+        b=B2scXr+OKXWnyIR11WNhHl4HnA8sstMVDe5KXjsz/WyqmtmiCB38/AajhI34/s5Zb9
+         Crd5F7aju81hDfjiQs+5gnq8UaWJuK/n9TMraE4vEh1Gg5y78E8xiB6l/bzcuaj6Z/Pe
+         61NPE+Ye0I1ppuwtjod6jxvhHhni9e0TQ+nS9EYK7hTq3mTgGw0XrUMos3m0A5CEkB4I
+         O5wuseypKGTGN3TfA2ZpwDrwE/u3wp/tN/3GKybqgdFvgUbjXUC8OGD1lb2YFc7MaUw9
+         FQYj33p0Wbhbc3fD8yR+tymfYdCD7U5vjcov6VvolmJkaMthF5PkY8/G/jv1jGWet1CB
+         I4LQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704989817; x=1705594617;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=M0L8Io9WOaU9zuxGb3WJPoQE4gX/uTxUJ5wFQjECB/w=;
+        b=DNIwx1jME1exbjL4oI3KOnHL7s6lpefIqVS8LC3UuAR13VSRuQKFzUctUzMr06IW1s
+         Am+t1c++zqW4VzkeX5cpfQOrbJn6REmFWFN73/onRnfhuOMHI0Hi8ks8qp9AU4LM2f53
+         a6bskjSeX/zOmEOgwmarmcyISADm07V8a94fOD1VdLtZ28dwOcQivxZsBmtFmggyn4r+
+         +ZA1SKlge3m2yEZd3GPWsEG374DleQgylj4iMd9B3o+O3MJg67NsGnzGpIw45o+d5OUO
+         OVk/m/reX/sOdMPgMkRGcFOAv0QbX6lLIcXB7vlut8xe2KWZpU0/LjIvdorg8llsvxSL
+         nltQ==
+X-Gm-Message-State: AOJu0YyqIfGR7LWfU1GNSbIylJS+xA05jmd11Hhvx+dMyvIQ52qw7XVd
+	rz6NR2ARiLTTsgKOc9cPElsPba1OT8hEUz3u7iIhmTkZS5nspQ==
+X-Google-Smtp-Source: AGHT+IGJENwweiSWgpyQ2rt2ZAKEMsGtxTp3hgP1clpfKIQ8hkKdJSDGEsbKitZOWDOeRpTbQTmQIXknw6HKsHnJXYg=
+X-Received: by 2002:a05:6808:1289:b0:3bd:3e96:a8ab with SMTP id
+ a9-20020a056808128900b003bd3e96a8abmr1572401oiw.53.1704989816773; Thu, 11 Jan
+ 2024 08:16:56 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/2] wifi: ath12k: add processing for TWT enable event
-From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240103050926.14115-2-quic_lingbok@quicinc.com>
-References: <20240103050926.14115-2-quic_lingbok@quicinc.com>
-To: Lingbo Kong <quic_lingbok@quicinc.com>
-Cc: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170498978118.916301.14993323516499040896.kvalo@kernel.org>
-Date: Thu, 11 Jan 2024 16:16:23 +0000 (UTC)
+References: <20240104130123.37115-1-brgl@bgdev.pl> <20240104130123.37115-4-brgl@bgdev.pl>
+ <20240109144327.GA10780@wunner.de> <CAMRc=MdXO6c6asvRSn_Z8-oFS48hroT+dazGKB6WWY1_Zu7f1Q@mail.gmail.com>
+ <20240110132853.GA6860@wunner.de> <CAMRc=MdBSAb_kEO2r7r-vwLuRAEv7pMODOMtZoCCRAd=zsQb_w@mail.gmail.com>
+ <20240110164105.GA13451@wunner.de> <CAMRc=MdQKPN8UbagmswjFx7_JvmJuBeuq8+9=z-+GBNUmdpWEA@mail.gmail.com>
+ <20240111104211.GA32504@wunner.de> <CAMRc=MfT_VLo7++K4M89iYrciqWSrX_JyS1LX5kaGTNDNVQiOg@mail.gmail.com>
+ <20240111150201.GA28409@wunner.de>
+In-Reply-To: <20240111150201.GA28409@wunner.de>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Thu, 11 Jan 2024 17:16:45 +0100
+Message-ID: <CAMRc=Mcngw1vw9q0DXRWLKk4o9FOY+Mzz-niueT-v2THvbS1Dw@mail.gmail.com>
+Subject: Re: [RFC 3/9] PCI/portdrv: create platform devices for child OF nodes
+To: Lukas Wunner <lukas@wunner.de>
+Cc: Kalle Valo <kvalo@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Rob Herring <robh+dt@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Heiko Stuebner <heiko@sntech.de>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Chris Morgan <macromorgan@hotmail.com>, 
+	Linus Walleij <linus.walleij@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Arnd Bergmann <arnd@arndb.de>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	=?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= <nfraprado@collabora.com>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Peng Fan <peng.fan@nxp.com>, 
+	Robert Richter <rrichter@amd.com>, Dan Williams <dan.j.williams@intel.com>, 
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>, Terry Bowman <terry.bowman@amd.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+	Huacai Chen <chenhuacai@kernel.org>, Alex Elder <elder@linaro.org>, 
+	Srini Kandagatla <srinivas.kandagatla@linaro.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Lingbo Kong <quic_lingbok@quicinc.com> wrote:
+On Thu, Jan 11, 2024 at 4:02=E2=80=AFPM Lukas Wunner <lukas@wunner.de> wrot=
+e:
+>
+> On Thu, Jan 11, 2024 at 05:09:09AM -0600, Bartosz Golaszewski wrote:
+> > On Thu, 11 Jan 2024 11:42:11 +0100, Lukas Wunner <lukas@wunner.de> said=
+:
+> > > On Wed, Jan 10, 2024 at 02:18:30PM -0600, Bartosz Golaszewski wrote:
+> > >> On Wed, 10 Jan 2024 17:41:05 +0100, Lukas Wunner <lukas@wunner.de> s=
+aid:
+> > >> > On Wed, Jan 10, 2024 at 05:26:52PM +0100, Bartosz Golaszewski wrot=
+e:
+> > >> > > Seems like the following must be true but isn't in my case (from
+> > >> > > pci_bus_add_device()):
+> > >> > >
+> > >> > >     if (pci_is_bridge(dev))
+> > >> > >         of_pci_make_dev_node(dev);
+> > >> > >
+> > >> > > Shouldn't it evaluate to true for ports?
+> > >> >
+> > >> > It should.
+> > >> >
+> > >> > What does "lspci -vvvvxxxx -s BB:DD.F" say for the port in questio=
+n?
+> >
+> > # lspci -vvvvxxxx -s 0000:00:00
+> > 0000:00:00.0 PCI bridge: Qualcomm Technologies, Inc Device 010b
+> > (prog-if 00 [Normal decode])
+> >       Device tree node: /sys/firmware/devicetree/base/soc@0/pcie@1c0000=
+0/pcie@0
+> [...]
+> > 00: cb 17 0b 01 07 05 10 00 00 00 04 06 00 00 01 00
+>                                                 ^^
+> The Header Type in config space is 0x1, i.e. PCI_HEADER_TYPE_BRIDGE.
+>
+> So pci_is_bridge(dev) does return true (unlike what you write above)
+> and control flow enters of_pci_make_dev_node().
+>
+> But perhaps of_pci_make_dev_node() returns immediately because:
+>
 
-> When ath12k send TWT enable command to firmware, firmware will return a TWT
-> enable event to ath12k. Through the analysis of TWT enable event status, we
-> can easily obtain the status of TWT enable command. It can be more
-> convenient to debug TWT.
-> 
-> This patch works with WCN7850 and QCN9274.
-> 
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
-> 
-> Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
-> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+No, it was actually a no-op due to CONFIG_PCI_DYNAMIC_OF_NODES not
+being set. But this is only available if CONFIG_OF_DYNAMIC is enabled
+which requires OF_UNITTEST (!).
 
-Fails to compile:
+We definitely don't need to enable dynamic OF nodes. We don't want to
+modify the DT, we want to create devices for existing nodes. Also:
+with the approach in this RFC we maintain a clear hierarchy of devices
+with the port device being the parent of the power sequencing device
+which becomes the parent of the actual PCIe device (the port stays the
+parent of this device too).
 
-drivers/net/wireless/ath/ath12k/wmi.c: In function 'ath12k_wmi_twt_enable_event':
-drivers/net/wireless/ath/ath12k/wmi.c:6675:48: error: passing argument 2 of 'ath12k_wmi_tlv_parse_alloc' from incompatible pointer type [-Werror=incompatible-pointer-types]
- 6675 |         tb = ath12k_wmi_tlv_parse_alloc(ab, skb->data, skb->len, GFP_ATOMIC);
-      |                                             ~~~^~~~~~
-      |                                                |
-      |                                                unsigned char *
-drivers/net/wireless/ath/ath12k/wmi.c:367:44: note: expected 'struct sk_buff *' but argument is of type 'unsigned char *'
-  367 |                            struct sk_buff *skb, gfp_t gfp)
-      |                            ~~~~~~~~~~~~~~~~^~~
-drivers/net/wireless/ath/ath12k/wmi.c:6675:14: error: too many arguments to function 'ath12k_wmi_tlv_parse_alloc'
- 6675 |         tb = ath12k_wmi_tlv_parse_alloc(ab, skb->data, skb->len, GFP_ATOMIC);
-      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~
-drivers/net/wireless/ath/ath12k/wmi.c:366:1: note: declared here
-  366 | ath12k_wmi_tlv_parse_alloc(struct ath12k_base *ab,
-      | ^~~~~~~~~~~~~~~~~~~~~~~~~~
-drivers/net/wireless/ath/ath12k/wmi.c: In function 'ath12k_wmi_twt_disable_event':
-drivers/net/wireless/ath/ath12k/wmi.c:6704:48: error: passing argument 2 of 'ath12k_wmi_tlv_parse_alloc' from incompatible pointer type [-Werror=incompatible-pointer-types]
- 6704 |         tb = ath12k_wmi_tlv_parse_alloc(ab, skb->data, skb->len, GFP_ATOMIC);
-      |                                             ~~~^~~~~~
-      |                                                |
-      |                                                unsigned char *
-drivers/net/wireless/ath/ath12k/wmi.c:367:44: note: expected 'struct sk_buff *' but argument is of type 'unsigned char *'
-  367 |                            struct sk_buff *skb, gfp_t gfp)
-      |                            ~~~~~~~~~~~~~~~~^~~
-drivers/net/wireless/ath/ath12k/wmi.c:6704:14: error: too many arguments to function 'ath12k_wmi_tlv_parse_alloc'
- 6704 |         tb = ath12k_wmi_tlv_parse_alloc(ab, skb->data, skb->len, GFP_ATOMIC);
-      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~
-drivers/net/wireless/ath/ath12k/wmi.c:366:1: note: declared here
-  366 | ath12k_wmi_tlv_parse_alloc(struct ath12k_base *ab,
-      | ^~~~~~~~~~~~~~~~~~~~~~~~~~
-cc1: all warnings being treated as errors
-make[7]: *** [scripts/Makefile.build:243: drivers/net/wireless/ath/ath12k/wmi.o] Error 1
-make[7]: *** Waiting for unfinished jobs....
-make[6]: *** [scripts/Makefile.build:480: drivers/net/wireless/ath/ath12k] Error 2
-make[5]: *** [scripts/Makefile.build:480: drivers/net/wireless/ath] Error 2
-make[4]: *** [scripts/Makefile.build:480: drivers/net/wireless] Error 2
-make[3]: *** [scripts/Makefile.build:480: drivers/net] Error 2
-make[2]: *** [scripts/Makefile.build:480: drivers] Error 2
-make[1]: *** [/home/kvalo/projects/atheros/ath10k/src/ath/Makefile:1911: .] Error 2
-make: *** [Makefile:234: __sub-make] Error 2
+Bartosz
 
-2 patches set to Changes Requested.
-
-13509671 [1/2] wifi: ath12k: add processing for TWT enable event
-13509673 [2/2] wifi: ath12k: add processing for TWT disable event
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240103050926.14115-2-quic_lingbok@quicinc.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+>         /*
+>          * If there is already a device tree node linked to this device,
+>          * return immediately.
+>          */
+>         if (pci_device_to_OF_node(pdev))
+>                 return;
+>
+> ...and lspci does list a devicetree node for that Root Port.
+>
+> In any case, of_pci_make_dev_node() is the right place to add
+> the call to of_platform_populate().  Just make sure it's called
+> even if there is already a DT node for the Root Port itself.
+>
+> Thanks,
+>
+> Lukas
 
