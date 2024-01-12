@@ -1,64 +1,64 @@
-Return-Path: <linux-wireless+bounces-1844-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1845-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0109982C604
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jan 2024 20:50:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0D3482C60D
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jan 2024 20:51:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7CC61C244BF
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jan 2024 19:50:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 25F98B24A4E
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jan 2024 19:51:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6822215AFA;
-	Fri, 12 Jan 2024 19:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE0E915AFE;
+	Fri, 12 Jan 2024 19:51:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OIzg1mTR"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZSikA/01"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B06415AFE
-	for <linux-wireless@vger.kernel.org>; Fri, 12 Jan 2024 19:49:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A4715AFA
+	for <linux-wireless@vger.kernel.org>; Fri, 12 Jan 2024 19:51:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-40e55c885d7so37093965e9.0
-        for <linux-wireless@vger.kernel.org>; Fri, 12 Jan 2024 11:49:59 -0800 (PST)
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-40e636fd3d2so12446945e9.1
+        for <linux-wireless@vger.kernel.org>; Fri, 12 Jan 2024 11:51:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705088998; x=1705693798; darn=vger.kernel.org;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
+        d=gmail.com; s=20230601; t=1705089089; x=1705693889; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-language:cc:to:subject:from
          :user-agent:mime-version:date:message-id:from:to:cc:subject:date
          :message-id:reply-to;
         bh=5KnsbOGdxXkhxj4fVWBh+ufn+zH4Ob6tXtsoNnDKGEA=;
-        b=OIzg1mTR1VHmehIAh8fdvCwi6K4iKTBkCsUqUP8VEHM1y+w81l767djxTXydBtceSN
-         h7RFYJ3opayGaO2/ApHXWg1GtAHOVxX8T30Lr8Jt2djJ5kXup2SDQvx1L+hqxV/nsypV
-         RT3wMfAJTUppYnytY9qc+DAhb2s8g/ccLrQ0rC53Hg5iIOgkbbwR/XJxTsi8mhxdrhGh
-         7pdQJPmaz9HabkUeRX6MjTG+2GZUrCHgBdZAwKrAjPMoAlQBCv1WE5gfCdbsaWSJ361A
-         iTtaZ3gmy3Y6T7RCMwGpuBGl/5OWydFlylC4ctcxj4OlC7BG0Niklg3ymggVQlxGMRaC
-         3bWw==
+        b=ZSikA/012EdeOhbKF/Sk4EYSYs6M23QOu1m9/7mqeAs8sYNHEX6VeSPSuo+/q6FjVR
+         UZmePJ3w976tnS55WhB2nvooLh4O1zbe3fo0ShMgP8tZpXoly6iWC/OBJWRJXlRxek+P
+         e4HR07j8v+3gQc9am8O53DAQE9PruNc6jqUkQoEE0aEXvd9WGpw2fFnYi96oryVBMEUQ
+         qZ3nUX2cv1OO/Ps0TwtQ8NOf2Mj2PpA8uju7gDapfbsmMKnP/GWax64jsS0F91RDbSBv
+         Q6cZUSmiMN6ljyzBNZ+/X1PSh6V50N9sEXeuJKDeyX/NHeiqB6r+ugEPHdjB74BJrF+C
+         C6Tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705088998; x=1705693798;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
+        d=1e100.net; s=20230601; t=1705089089; x=1705693889;
+        h=content-transfer-encoding:content-language:cc:to:subject:from
          :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
         bh=5KnsbOGdxXkhxj4fVWBh+ufn+zH4Ob6tXtsoNnDKGEA=;
-        b=UZcjPVHg1jJdqO/wJ982nXGQSC+qkxjlajVqXgMEUFJ/QllPJOruDnxXg3ggzL4TY7
-         +6LL/1B114r3QO1M5CUNOoAde9pwXPu6wpP3pqIQBuUAfDRD91yZjv2Uki7TWf8bjuZH
-         Tu4Y5rpgL2EPik+SeW+jLvb0W6QgUspJuMGj+Azcy42nR3t3rk5KH/a41BcQxCgbvlvc
-         yy5eaBvAQ3RQYfLe1g/aQdiu1vVRkBvuB0NTQrlf5yib+W9qow9KG6hgyavejfMwyO0o
-         XJ6rixTeXbe9nULje4YDOVNwmcGJYBuLJ6uWgAd3YhdSiA/bOgANCDUCFrTgKmVqu4Z9
-         4eLg==
-X-Gm-Message-State: AOJu0YxqTxV3nct6yxzjSRkgM4cMbU/8C/XD/8HypGkSX9U5WO1HvBQ+
-	GIBr7Nz15r71wB/epdMubPQENL/2owE=
-X-Google-Smtp-Source: AGHT+IEzImGVXSVpTXznKDmd2o6DQZsPtF1k2vmqUSVTinL7IQ7lFG3oi1WOoIhZxFnzRZjVo2WFdA==
-X-Received: by 2002:a05:600c:1c0a:b0:40d:6582:4729 with SMTP id j10-20020a05600c1c0a00b0040d65824729mr1159257wms.130.1705088997494;
-        Fri, 12 Jan 2024 11:49:57 -0800 (PST)
+        b=CTfYHKbiPh8tUNE5nVzEZwZbYRuxfQoVFHQ5g8U+eGOxZRGnsWK+HqNzNhBKqBznWw
+         oyoGbQYhR9Jk2tkpDIHoF97dIdQIsaIcoxdQMWEKO3wvrfXL6iYp8r9o5//oVlZh/viC
+         WwStUCXWn6Zhg8YEeYFgEHTmig0nkl9yupMqxI1/NbAbmnk42+ryMbRVwuiF1e97F7CH
+         Ty8CSACNmrYi09iI0LMV2vHQZ6SNqshAK6pyAl5d4PudtDGcXtrFOO5eecTE0PjwlPe6
+         sWbKJMzsjE43TZJUuK3gKApnghWMtonU1RpDJoftzz+fmQTEiyT8qJW4tvK+ePOqSRSn
+         DjQg==
+X-Gm-Message-State: AOJu0Ywog1YW/jytzr3AJgmTKhZpFhBakDaysMDnoISRrW0zio8B/Q3d
+	pKeEvreHXlNYXtJFFaa4H/cneh/14Ro=
+X-Google-Smtp-Source: AGHT+IHNsHoWNROj4uZwYlTpF9rvVTc+19MaWe4lV9KVYAU2osBHUHHDMJsS8MCNjGkfy0h/9rsO5Q==
+X-Received: by 2002:a05:600c:5490:b0:40e:4e44:96ac with SMTP id iv16-20020a05600c549000b0040e4e4496acmr1044847wmb.6.1705089089084;
+        Fri, 12 Jan 2024 11:51:29 -0800 (PST)
 Received: from [192.168.1.50] ([81.196.40.51])
-        by smtp.gmail.com with ESMTPSA id t21-20020a05600c451500b0040e3ac9f4c8sm10569337wmo.28.2024.01.12.11.49.55
+        by smtp.gmail.com with ESMTPSA id t21-20020a05600c451500b0040e3ac9f4c8sm10569337wmo.28.2024.01.12.11.51.27
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Jan 2024 11:49:57 -0800 (PST)
-Message-ID: <6351ca3f-6b06-4fe1-ace7-6e9d67497dce@gmail.com>
-Date: Fri, 12 Jan 2024 21:49:53 +0200
+        Fri, 12 Jan 2024 11:51:28 -0800 (PST)
+Message-ID: <0d262acd-4f94-41c2-8d15-83486aeb976b@gmail.com>
+Date: Fri, 12 Jan 2024 21:51:27 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -66,12 +66,12 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Content-Language: en-US
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: [PATCH] wifi: rtlwifi: Speed up firmware loading for USB
 To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
 Cc: Ping-Ke Shih <pkshih@realtek.com>,
  Larry Finger <Larry.Finger@lwfinger.net>
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: wifi: rtlwifi: Speed up firmware loading for USB
+Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
