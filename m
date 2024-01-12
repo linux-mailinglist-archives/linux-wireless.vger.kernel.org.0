@@ -1,153 +1,119 @@
-Return-Path: <linux-wireless+bounces-1846-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1847-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFAFE82C656
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jan 2024 21:23:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8421C82C76C
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jan 2024 23:50:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E0151C22992
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jan 2024 20:23:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C26A1F237BE
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jan 2024 22:50:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6264616419;
-	Fri, 12 Jan 2024 20:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6495618B0C;
+	Fri, 12 Jan 2024 22:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="E4QQ7lTB"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A5JK3yVd"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.48])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB41316408
-	for <linux-wireless@vger.kernel.org>; Fri, 12 Jan 2024 20:23:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-Received: from dispatch1-us1.ppe-hosted.com (ip6-localhost [127.0.0.1])
-	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 7AAE52A1BA1
-	for <linux-wireless@vger.kernel.org>; Fri, 12 Jan 2024 19:58:35 +0000 (UTC)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id E78E324006E;
-	Fri, 12 Jan 2024 19:58:26 +0000 (UTC)
-Received: from [192.168.100.159] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id D07E713C2B0;
-	Fri, 12 Jan 2024 11:58:23 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com D07E713C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1705089503;
-	bh=SNr9CT9/p9Tr06YFlc9LY7xL1bszjD0GMbUf7CQrvP0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=E4QQ7lTBcXzXP+sHmECc3xQF/54rjFIa4GzAcCCVcNjSqq3xHahfVWKPY9VjYQb10
-	 X7xMTPh2FzA4GU6Y0IFI/tSYjH7IHMeOozBkWc4iWyO6+gd+aABC029LifQ/9lnZlT
-	 xNpvqYVeUJPFGoFoKxnL80hg69F4j3bW37boAkn0=
-Message-ID: <b1046a3b-8c29-aa64-2954-adec6c5d9bc9@candelatech.com>
-Date: Fri, 12 Jan 2024 11:58:23 -0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB6E218AFA
+	for <linux-wireless@vger.kernel.org>; Fri, 12 Jan 2024 22:50:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-337984681bcso696103f8f.1
+        for <linux-wireless@vger.kernel.org>; Fri, 12 Jan 2024 14:50:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1705099824; x=1705704624; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bH8vcV2OGIj93iwnZZkZGR9G/M20tbOqyl5RT5WJZYU=;
+        b=A5JK3yVdgnwwByzOdcUvnLx7CUQH6U5et5k8fdoEOwhX/7T3AmkGGfT6qNkUatfb8O
+         oCKJJYQJD6tfSoRrexIkH5cZuKhiGYE4sIxKdm0uvH13UH0n45a7AIYDD7smjcwFp0Ot
+         5kYhtJCovujANPJqWYwFzFSdsShLE+VK8n7Pg2dz6zi74C83V66i+hzs9wQEGsgKWX2t
+         pobCbpJ9Snfhf3Q1oVo6aj/ml//goKTLLDuP+quB+rMQielteo/5ltbbzuXq4CTZ8bAm
+         LHCzNjyprHZll3FHqG5UhcW6pedDqjfS2owAJXtPTgRajrz39+0a08gobt7ITjjPKbym
+         gErg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705099824; x=1705704624;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=bH8vcV2OGIj93iwnZZkZGR9G/M20tbOqyl5RT5WJZYU=;
+        b=WvQY9Cuwb07Vvr7aulELyEF6FsY3JNmtcPenQEwKDOSt6Qu5gKV3rFC3FrsXvha4Ry
+         YaXh0np8RdW3w8W1ccjF4X+bs4xMFRItUMk9lka2dmYOmxrbj9BXT3c9LnGeKMlUVX1g
+         sX5Koj5eRaaZLH3/3UEpSAKFm58cj3ttp/HJgghtoFD/lv/t0UUb4xiWQ5w1ueGXEGhS
+         IUd4xxTHVfTuyEKcSFrJMNVnXTNbkoY9xaeV6ah5j54xG1dDvzbXJ3RhGIKIF0W/mVFg
+         xMKv3KCTICni0SWkm4r6nrDyjWvw0wNayva/2SU5JyLUKlWNpcqgGk/2cegaEN2sxtKq
+         xE0g==
+X-Gm-Message-State: AOJu0YxeNdeHiQAX8IQXoX3qMAWWYjuuc5dUTozJdEpe546N4VOK4vdz
+	lHXJpbteiDw3GcijkQT5tPxtOYxVj9A=
+X-Google-Smtp-Source: AGHT+IGYbR7Iz0EtNGefr0n2wH7AJi0tOQ5JB4KhujENONMSrcm3ILRqoVo6eJxp4Jv3LvflUx9VAw==
+X-Received: by 2002:a05:6000:1e91:b0:336:7758:c6f0 with SMTP id dd17-20020a0560001e9100b003367758c6f0mr1000460wrb.70.1705099823629;
+        Fri, 12 Jan 2024 14:50:23 -0800 (PST)
+Received: from [192.168.1.50] ([81.196.40.51])
+        by smtp.gmail.com with ESMTPSA id s27-20020adfa29b000000b003366cf8bda4sm5017806wra.41.2024.01.12.14.50.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 12 Jan 2024 14:50:23 -0800 (PST)
+Message-ID: <81b6c452-e940-423a-acf7-4a7b7c5e7847@gmail.com>
+Date: Sat, 13 Jan 2024 00:50:21 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH 5/8] wifi: mac80211: disallow drivers with HT wider than
- HE
+User-Agent: Mozilla Thunderbird
 Content-Language: en-US
-To: Johannes Berg <johannes@sipsolutions.net>, Kalle Valo <kvalo@kernel.org>,
- Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Cc: linux-wireless@vger.kernel.org,
- Gregory Greenman <gregory.greenman@intel.com>
-References: <20240111161746.3978601-1-miriam.rachel.korenblit@intel.com>
- <20240111181514.da15fe3214d2.I4df51ad2f4c844615c168bf9bdb498925b3c77d4@changeid>
- <87wmsehf3d.fsf@kernel.org>
- <aae05a63171cf0f3c81dedc24d3b0a558ce530f5.camel@sipsolutions.net>
-From: Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <aae05a63171cf0f3c81dedc24d3b0a558ce530f5.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Ping-Ke Shih <pkshih@realtek.com>,
+ Larry Finger <Larry.Finger@lwfinger.net>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: [PATCH] wifi: rtlwifi: rtl8192de: Fix byte order of chip version
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-MDID: 1705089508-S1t5olUemjl8
-X-MDID-O:
- us5;ut7;1705089508;S1t5olUemjl8;<greearb@candelatech.com>;6ed5a8f8c51578afd12669094ba34ba9
 
-On 1/12/24 10:42, Johannes Berg wrote:
-> On Fri, 2024-01-12 at 15:10 +0200, Kalle Valo wrote:
->> Miri Korenblit <miriam.rachel.korenblit@intel.com> writes:
->>
->>> +			/* currently no support for HE client where HT has 40 MHz but not HT */
->>> +			if (iftd->he_cap.has_he &&
->>> +			    iftd->types_mask & (BIT(NL80211_IFTYPE_STATION) |
->>> +						BIT(NL80211_IFTYPE_P2P_CLIENT)) &&
->>> +			    sband->ht_cap.ht_supported &&
->>> +			    sband->ht_cap.cap & IEEE80211_HT_CAP_SUP_WIDTH_20_40 &&
->>> +			    !(iftd->he_cap.he_cap_elem.phy_cap_info[0] & he_40_mhz_cap))
->>> +				return -EINVAL;
->>
->> Should there be a warning message so that this is noticed if it ever
->> happens? I don't know.
-> 
-> Yeah I don't really know either. I've done that a lot in the past, but
-> these days I'm kind of thinking that people who develop their drivers
-> should have some debug story and be able to figure it out? You know
-> better perhaps ...
-> 
-> Though it'd kind of suck to indent this further with WARN_ON ;-)
-> 
-> johannes
+The chip version stored in the efuse is currently assumed to be in
+big endian order:
 
-I tried backporting this patch into my 6.7 tree.  An mtk7915 radio system blows up badly
-in this case.  Likely this is mt76 bug, but also...it used to work and the crash doesn't
-make it very obvious that the above code is to blame.
+#define EEPROME_CHIP_VERSION_L			0x3FF
+#define EEPROME_CHIP_VERSION_H			0x3FE
 
-So, I suggest making this a WARN_ON with appropriate debugging output, let that get some
-testing, and then when drivers are fixed, maybe add in the 'return -EINVAL'.
+But other 2-byte things in the efuse are stored in little endian order.
+For example, the EEPROM ID, the vendor ID, the product ID.
 
+The out-of-kernel driver for the USB version of the chip uses the same
+macros and version detection code as this driver. They recognise
+0xaa55, 0x9966, and 0xcc33 as correct versions. With the original
+macros, my device's version is the unrecognised value of 0x33cc. This
+seems like a mistake.
 
-mt7915e 0000:06:00.0: mt7915_register_device failed, ret: -22
-mt7915e 0000:06:00.0: mt7915_pci_probe had error on try 3/3, ret: -22
-stack segment: 0000 [#1] PREEMPT SMP
-CPU: 3 PID: 35 Comm: ksoftirqd/3 Tainted: G        WC         6.7.0+ #31
-Hardware name: Broachlink NOAH V2 E3845/Aptio CRB, BIOS 5.6.10 08/19/2021
-RIP: 0010:tasklet_action_common.constprop.0+0x80/0x220
-Code: 00 00 00 00 49 8b 44 24 08 48 89 18 49 89 5c 24 08 66 90 65 66 44 09 35 9e a6 ea 7e fb 0f 1f 44 00 00 48 85 ed 74 53 48 89 eb <48> 8b 6d 000
-RSP: 0018:ffffc90000153e50 EFLAGS: 00010202
-RAX: ffff8881283271a8 RBX: 005fff800002012c RCX: 0000000000000006
-RDX: ffffffff82606ad0 RSI: 0000000000000006 RDI: ffffea0004435488
-RBP: 005fff800002012c R08: 0000000000000002 R09: 0000000080000100
-R10: ffffffff826060c0 R11: 000000000002e000 R12: ffff88813bd9c230
-R13: ffffea0004435488 R14: 0000000000000040 R15: 0000000000000006
-FS:  0000000000000000(0000) GS:ffff88813bd80000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000565149684ff4 CR3: 000000012176b000 CR4: 00000000001006f0
-Call Trace:
-  <TASK>
-  ? die+0x2d/0x80
-  ? do_trap+0xcd/0xf0
-  ? do_error_trap+0x65/0x80
-  ? exc_stack_segment+0x33/0x50
-  ? asm_exc_stack_segment+0x22/0x30
-  ? tasklet_action_common.constprop.0+0x80/0x220
-  __do_softirq+0xb4/0x293
-  ? sort_range+0x20/0x20
-  run_ksoftirqd+0x1f/0x30
-  smpboot_thread_fn+0xc2/0x1a0
-  kthread+0xdc/0x110
-  ? kthread_complete_and_exit+0x20/0x20
-  ret_from_fork+0x28/0x40
-  ? kthread_complete_and_exit+0x20/0x20
-  ret_from_fork_asm+0x11/0x20
-  </TASK>
-Modules linked in: qrtr ofpart spi_nor mtd intel_rapl_msr at24 spi_intel_platform regmap_i2c spi_intel iTCO_wdt intel_pmc_bxt iTCO_vendor_supports
----[ end trace 0000000000000000 ]---
+Swap the addresses to fix the chip version detection.
 
-Thanks,
-Ben
+Compile tested only.
 
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+---
+ drivers/net/wireless/realtek/rtlwifi/rtl8192de/reg.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/reg.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/reg.h
+index 2783d7e7b227..bf15c636b092 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/reg.h
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/reg.h
+@@ -657,8 +657,8 @@
+ #define EEPROM_RF_OPT7				0xCC
+ 
+ #define EEPROM_DEF_PART_NO			0x3FD    /* Byte */
+-#define EEPROME_CHIP_VERSION_L			0x3FF
+-#define EEPROME_CHIP_VERSION_H			0x3FE
++#define EEPROME_CHIP_VERSION_L			0x3FE
++#define EEPROME_CHIP_VERSION_H			0x3FF
+ 
+ /*
+  * Current IOREG MAP
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
-
-
+2.43.0
 
