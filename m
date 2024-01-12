@@ -1,222 +1,74 @@
-Return-Path: <linux-wireless+bounces-1774-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1775-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ECBE82B9DC
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jan 2024 04:05:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61DE082B9FA
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jan 2024 04:34:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5C99287587
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jan 2024 03:05:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F199C1F24AC7
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jan 2024 03:34:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4822D15B9;
-	Fri, 12 Jan 2024 03:05:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 945621B286;
+	Fri, 12 Jan 2024 03:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ndoo.sg header.i=@ndoo.sg header.b="ZgGnN2xK"
+	dkim=pass (1024-bit key) header.d=ndoo.sg header.i=@ndoo.sg header.b="JBG4ZcpQ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BCCA805
-	for <linux-wireless@vger.kernel.org>; Fri, 12 Jan 2024 03:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4316A1B27B
+	for <linux-wireless@vger.kernel.org>; Fri, 12 Jan 2024 03:34:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndoo.sg
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ndoo.sg
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-5e7409797a1so58905217b3.0
-        for <linux-wireless@vger.kernel.org>; Thu, 11 Jan 2024 19:05:46 -0800 (PST)
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-6d9b13fe9e9so4842826b3a.2
+        for <linux-wireless@vger.kernel.org>; Thu, 11 Jan 2024 19:34:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ndoo.sg; s=google; t=1705028745; x=1705633545; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9knKDtRrI8UltEJ2z5qWDZ2baxy+kchSQYItq5ySR04=;
-        b=ZgGnN2xKKpDZYSKq+IRegL+43Uu6mhCHAgXpMXJaMInROwv6+D2emLYscDaI4gxP+z
-         EaNtatMYdFwIQTlxBPm9ulZOg419t6a16yKAFOOSeNEBDjCDgbfhdsxkpsdMjqA6rQkn
-         fd3cQG/7wCsxem8SNj1AlimS1eyFCkij0mpCA=
+        d=ndoo.sg; s=google; t=1705030490; x=1705635290; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ng2OfZDJvEV+KTtUP/Iio6uQuCO0WLybP1MXx3qAmCA=;
+        b=JBG4ZcpQ82N6IQtfRVxd2SIf3QHipmPID23TLmnF+wBdV1exCaQRC6LprC3FhQTxiU
+         84T6MLSnL54Vatqyob+dEySqgeeAedSe5foL4nLz40GnsD3mve1JMeSYrXxTAYcV2tQs
+         YI1SnKeEmW2KrBPHWURMC9wM6oEZ33Mq0C0SA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705028745; x=1705633545;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9knKDtRrI8UltEJ2z5qWDZ2baxy+kchSQYItq5ySR04=;
-        b=l9Dklu6DxaYK6tfyDAKj6XBAQ+DKSUS8Woke4eXbLg/rA5e5kR6VMamC3nVP3DjZ8E
-         5moZxORwQpCPEhQ8YJuugmtszldjakXJe3U8elT6v++01vI3R9m6jwwAECDD4mxejvCG
-         b3Y0ptnqPTSjMzQADVHzXwj5X8teifnOAOLEpcd36s8pPZ+idtRtJwyd2VtfC6irG/YO
-         DR7zA+/R9G0WjBg8idecaD+h3w3OKD6d/FTIPwuYL2Lfjem42OmbP4q/1qkfBzRIaakC
-         7/rVgQCFf8nr5dkhDl72IOoNx1bRKrTHKZ8jGTzka6MVwxbYxDfs2SLCf/nhF0m5om0T
-         5mwA==
-X-Gm-Message-State: AOJu0Ywbk93jf5o4d4E5faiRZL/3YUHpvqJg7HMLxzrp/mRkaP4wqry8
-	Pa40chsDgLtxotwjjiAfx9XZDMIbTQFO/K9qwrU2gqix8JJ8
-X-Google-Smtp-Source: AGHT+IHZCs79hVBCria2hmD+rqwczAvYxhoto4hPZfNDPZRUFCXYeYYNHXuk5RXUXcmPt4CeCqM+dxqBVacU7RUFVIM=
-X-Received: by 2002:a81:f10c:0:b0:5fa:5312:743c with SMTP id
- h12-20020a81f10c000000b005fa5312743cmr676766ywm.63.1705028745200; Thu, 11 Jan
- 2024 19:05:45 -0800 (PST)
+        d=1e100.net; s=20230601; t=1705030490; x=1705635290;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ng2OfZDJvEV+KTtUP/Iio6uQuCO0WLybP1MXx3qAmCA=;
+        b=s933U1E5A12VFvvSneSpO/Ma0dRKmw7tJ3JfAkAfrWJAfgz4Axjt7Aw5aZS8kTyDyV
+         nlYEBiR6GrFZXtJn6N/H3Lp7zBZpFoI+FaNfSHC+qbzVgh9470+83Ry1nuYS5DbUbLVr
+         R2VXAw2WeQUIQuB7ULpMK2dClnGbUQdS3AmG+J67DWyN9IXD4rumV2EBwW+ZBVMYgtTU
+         D5VJF9yCcKFHs3c3g6FdsXbNt0pBcWwNJBHrF6s3PW6j571uUlTMqEy+AA8xHw/YNjms
+         w2fUEpzaJ2p56mFc06lNy+Glyz94GVqdXyJ2fY1mgTyfis7MLM16x4UkyiysvbH+G+da
+         w60A==
+X-Gm-Message-State: AOJu0YzwAnDxusmM/Te/HOvIFJiDwBnrm4VtnnNtf3m5ji1nXJhFFIeV
+	JG2f3d4qp42v3RieLuc8Ll0WRs2/fDST/4/oOa1+Sl8WHVn/
+X-Google-Smtp-Source: AGHT+IHFtcunXsNmNQWWgxts/QgkDGL+6kZo4yKuvCLxafR3Ah7Vm39mWCaRyRxxzY5YnWKDNJTCbw==
+X-Received: by 2002:a05:6a00:a0e:b0:6db:3b3e:7460 with SMTP id p14-20020a056a000a0e00b006db3b3e7460mr468557pfh.4.1705030490339;
+        Thu, 11 Jan 2024 19:34:50 -0800 (PST)
+Received: from p14s2i.. ([2401:7400:c808:b52:9565:61c2:9ce0:d352])
+        by smtp.gmail.com with ESMTPSA id 4-20020aa79204000000b006d999f4a3c0sm2062369pfo.152.2024.01.11.19.34.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Jan 2024 19:34:50 -0800 (PST)
+From: Andrew Yong <me@ndoo.sg>
+To: linux-wireless@vger.kernel.org
+Cc: wireless-regdb@lists.infradead.org
+Subject: [PATCH v2] wireless-regdb: Update regulatory rules for Singapore (SG)
+Date: Fri, 12 Jan 2024 11:28:29 +0800
+Message-ID: <20240112033321.23052-2-me@ndoo.sg>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230903102022.11186-1-me@ndoo.sg> <CAGb2v65uD9TQuMzrMo8JoWEMp8WbVrKAf92tn17tA98GXdPWZQ@mail.gmail.com>
-In-Reply-To: <CAGb2v65uD9TQuMzrMo8JoWEMp8WbVrKAf92tn17tA98GXdPWZQ@mail.gmail.com>
-From: Andrew Yong <me@ndoo.sg>
-Date: Fri, 12 Jan 2024 11:05:29 +0800
-Message-ID: <CA+yTfBBUymdYxiO2wFUzVvDX6+nkq9mhx-MWEEi4jEw3WqGgcg@mail.gmail.com>
-Subject: Re: [wireless-regdb] [PATCH] wireless-regdb: Update regulatory rules
- for Singapore (SG) for September 2023
-To: wens@kernel.org
-Cc: linux-wireless@vger.kernel.org, wireless-regdb@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi there Chen-Yu,
-
-On Fri, Dec 22, 2023 at 12:35=E2=80=AFPM Chen-Yu Tsai <wens@kernel.org> wro=
-te:
->
-> On Sun, Sep 3, 2023 at 9:25=E2=80=AFPM Andrew Yong <me@ndoo.sg> wrote:
-> >
-> >  - Update regulatory rules for September 2023 IMDA TS SRD [1]
-> >  - Enable 5945 - 6425 MHz (Wi-Fi 6E) band per legislation
-> >  - Switch units from dBm to mW to match values listed in legislation
-> >  - Allow AUTO-BW between 5470 - 5850 MHz to permit additional 160 MHz B=
-W options
-> >
-> > [1] https://www.imda.gov.sg/-/media/imda/files/regulation-licensing-and=
--consultations/ict-standards/telecommunication-standards/radio-comms/imdats=
-srd.pdf
->
-> Thanks for the patch!
->
-> > Signed-off-by: Andrew Yong <me@ndoo.sg>
-> > ---
-> >  db.txt | 34 ++++++++++++++++++----------------
-> >  1 file changed, 18 insertions(+), 16 deletions(-)
-> >
-> > diff --git a/db.txt b/db.txt
-> > index fdc2c13..cbe1a88 100644
-> > --- a/db.txt
-> > +++ b/db.txt
-> > @@ -1584,25 +1584,27 @@ country SE: DFS-ETSI
-> >         # 60 GHz band channels 1-4 (ETSI EN 302 567)
-> >         (57000 - 66000 @ 2160), (40)
-> >
-> > -# https://www.imda.gov.sg/-/media/Imda/Files/Regulation-Licensing-and-=
-Consultations/ICT-Standards/Telecommunication-Standards/Radio-Comms/IMDATSS=
-RD.pdf
-> > -# IMDA TS SRD, Issue 1 Revision 1, April 2019, subsequently "IMDA TS S=
-RD"
-> > -# 2400 - 2483.5 MHz: IMDA TS SRD, Table 1 (25); ANSI C63.10-2013 and F=
-CC Part 15 Section 15.247 or EN 300 328
-> > -# 5150 - 5350 MHz: IMDA TS SRD, Table 1 (29); FCC Part 15 Section 15.4=
-07 (1) 5.15-5.25 GHz (2) 5.25-5.35 GHz; EN 301 893
-> > -# 5470 - 5725 MHz: IMDA TS SRD, Table 1 (30); FCC Part 15 Section 15.4=
-07 (2) 5.47-5.725 GHz; EN 301 893
-> > -# 5725 - 5850 MHz: IMDA TS SRD, Table 1 (27); FCC Part 15 Section 15.2=
-47; FCC Part 15 Section 15.407 (3) 5.725-5.85 GHz
-> > -# 57000 - 66000 MHz: IMDA TS SRD, Table 1 (31); ETSI EN 302 567
-> > -# Note: 27dBm for 5470-5725MHz bands is 3dBm reduction per FCC Part 15=
- Section 15.407 (2) 5.47-5.725 GHz; EN 301 893 as referenced by IMDA TS SRD
-> > +# https://www.imda.gov.sg/-/media/imda/files/regulation-licensing-and-=
-consultations/ict-standards/telecommunication-standards/radio-comms/imdatss=
-rd.pdf
-> > +# IMDA TS SRD, Issue 1 Revision 3, Sep 2023, subsequently "IMDA TS SRD=
-"
-> > +# 2400 - 2483.5 MHz: IMDA TS SRD, Table 1 Sub-band 32e
-> > +# 5150 - 5350 MHz: IMDA TS SRD, Table 1 Sub-band 33a
-> > +# 5470 - 5725 MHz: IMDA TS SRD, Table 1 Sub-band 34
-> > +# 5725 - 5850 MHz: IMDA TS SRD, Table 1 Sub-band 35
-> > +# 5945 - 6425 MHz: IMDA TS SRD, Table 1 Sub-band 45b
-> > +# 57000 - 66000 MHz: IMDA TS SRD, Table 1 Sub-band 40
-> > +# Note: 500mW for 5470-5725MHz bands per FCC Part 15 Section 15.407 (2=
-) 5.47-5.725 GHz as referenced by IMDA TS SRD
-> >  #  AU and BG regulatory domains use the same interpretation of cited F=
-CC and ETSI standards
-> > -# Note: The transmit power for 5250-5350MHz bands can be raised by 3dB=
-m when TPC is implemented: IMDA TS SRD Table 1 (29)
-> > -# Note: The transmit power for 5470-5725MHz bands can be raised by 3dB=
-m when TPC is implemented: IMDA TS SRD Table 1 (30)
-> > +# Note: The transmit power for 5250-5350MHz bands can be raised by 3dB=
-m when TPC is implemented: IMDA TS SRD, Table 1 Sub-band 33a
-> > +# Note: The transmit power for 5470-5725MHz bands can be raised by 3dB=
-m when TPC is implemented: IMDA TS SRD Table 1 Sub-band 34
->
-> "... raised by 100 mW ..." given the new units?
-
-Ack, will amend in v2.
-
->
-> Also, such a provision is not given for 5470-5725MHz in the spec. My
-> interpretation of the text is that a "reference" is referencing other
-> regulations for "reference" when designing the local rules, not that it
-> allows following those references directly, unless explicitly noted.
-
-From the parallel discussion at [1], it sounds like this has been the
-interpretation used for multiple regdomains, e.g. AU.
-
-IMHO, it would be outside of the scope of this patch which implements
-changes since the last Singapore regulation release. I would prefer a
-separate patch to comment out 5470-5725MHz, which can later be
-reverted/uncommented once a decision is reached.
-
-Though my opinion would be that a separate patchset that universally
-addresses all the interpreted/grey-area TPC offsets, would be more
-appropriate, once that decision is reached.
-
-Anyway, I'll defer to your decision as the maintainer; I'll keep this
-band in my patchv2 meanwhile and do a v3 if I'm not in time for your
-decision.
-
->
-> >  country SG: DFS-FCC
-> > -       (2400 - 2483.5 @ 40), (23)
-> > -       (5150 - 5250 @ 80), (23), AUTO-BW
-> > -       (5250 - 5350 @ 80), (20), DFS, AUTO-BW
-> > -       (5470 - 5725 @ 160), (27), DFS
-> > -       (5725 - 5850 @ 80), (30)
-> > -       (57000 - 66000 @ 2160), (40)
-> > +       (2400 - 2483.5 @ 40), (200 mW)
-> > +       (5150 - 5250 @ 80), (200 mW), AUTO-BW
-> > +       (5250 - 5350 @ 80), (100 mW), DFS, AUTO-BW
-> > +       (5470 - 5725 @ 160), (500 mW), DFS, AUTO-BW
->
-> This needs more justification. Unlike for the 5.15 ~ 5.35 GHz range,
-> the standard does _not_ give an option without TPC for this band.
->
-> > +       (5725 - 5850 @ 80), (1000 mW), AUTO-BW
-
-As above.
-
->
-> Instead of AUTO-BW here, can you follow the examples from TW and US of
-> expanding the previous band by 5 MHz? That should cover the 160 MHz
-> channel.
-
-Ack, will amend in v2.
-
-Thanks for reviewing.
-Andrew
-
-[1] https://lists.infradead.org/pipermail/wireless-regdb/2024-January/00149=
-0.html
-
->
->
-> ChenYu
->
-> > +       (5945 - 6425 @ 320), (250 mW), NO-OUTDOOR
-> > +       (57000 - 66000 @ 2160), (10000 mW)
-> >
-> >  # SI as part of EU/CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN =
-301 893)
-> >  # and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300=
- 440)
-> > --
-> > 2.41.0
-> >
-> >
-> > _______________________________________________
-> > wireless-regdb mailing list
-> > wireless-regdb@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/wireless-regdb
+Changes since v1:
+  - Update comment about raising Tx power upon TPC implementation to specify mW values
+  - Extend (5470 - 5725 @ 160) band to adjacent 5730 MHz to enable Ch 144 similar to US & TW regdomain, instead of using AUTO-BW
 
