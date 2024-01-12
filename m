@@ -1,102 +1,80 @@
-Return-Path: <linux-wireless+bounces-1819-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1820-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4F0E82C2C6
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jan 2024 16:33:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 065B382C30A
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jan 2024 16:48:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72DBC286500
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jan 2024 15:33:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF4861F2513C
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jan 2024 15:48:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14C506EB52;
-	Fri, 12 Jan 2024 15:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A344A76909;
+	Fri, 12 Jan 2024 15:46:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Rnjgk88E"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vH+Z0++E"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67FBC6EB51
-	for <linux-wireless@vger.kernel.org>; Fri, 12 Jan 2024 15:33:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40CEFIdA031495;
-	Fri, 12 Jan 2024 15:33:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=h5mVp3/xObHym7rmC2F8GhBk/QnGnpyN1twM5tGTTb4=; b=Rn
-	jgk88EFmi1LmE/NRDYYAcTwzqEaqRqidWZOAXub2zZ00SrzofD8C0zSbxb00OU8B
-	4W/MwRZO9h8MgLqEtJhuvM2YHh2p02BuYbxQRkVzwWJsn0RVEA2DgF0Yo+831Yms
-	M2buxEWpxWap92DaExpw5RByX5AqQl/SDVYuZHMzvRMyxjlBkX7XyvIZXQgp0xhm
-	rYUZoTHOkhWqKgruQ6uyS17W9gE8pSaRDa5Ok9C/Mrp3nuxwvwexWcq8LIy6M2fY
-	FLhQPag0QlJm57FpSyu+etlWUHaesd/r6n2oKa8L+Rf2pUEDodgxqxNqNTi7jcjE
-	P2w+Q+8Ze1EOnhjpwDwQ==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vk4vsrd45-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 12 Jan 2024 15:33:23 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40CFXMUF016663
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 12 Jan 2024 15:33:22 GMT
-Received: from [10.110.16.29] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Fri, 12 Jan
- 2024 07:33:22 -0800
-Message-ID: <2a214850-46a7-4191-935c-8a766063d89b@quicinc.com>
-Date: Fri, 12 Jan 2024 07:33:21 -0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D24768E0
+	for <linux-wireless@vger.kernel.org>; Fri, 12 Jan 2024 15:46:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E299DC433C7;
+	Fri, 12 Jan 2024 15:46:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705074418;
+	bh=igEeV4GkCvqUGqVrM5kh4M1lITRFNUlb7FBFynlbMJI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=vH+Z0++EVXTiW4epCVxhtxdJs+02tksp8zU2XTP0lVUM+7dwVMaPRoFGK9bV1f4pS
+	 +7EReTkt3uUeBzy/xb6pVn3s/bUGc6H0lwv85TBKkTz+24vfvkmEYZxgDPH/h0zXcE
+	 JhD4rDZiU/BIliE6VkcNmKDPhOyXo/H/KiubJ0VLPmxsicyOWtxXcEIl1J6KwAzZAu
+	 ivHp0Nz3FHx2HUtOAFZz871gEMF4CtSzz6mB32/+1ZiEbWaxGP7hLqGH+L0nKdVyC3
+	 rcgt+ZHKtUr0UBKjuBIn52LXVyDhuCDxe2OTGmFxNOBShUsv9IFpYTVZnePHRgRv6G
+	 vXlfRiJLsFlEw==
+From: Kalle Valo <kvalo@kernel.org>
+To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+Cc: Jeff Johnson <quic_jjohnson@quicinc.com>,  Baochen Qiang
+ <quic_bqiang@quicinc.com>,  ath11k@lists.infradead.org,
+  linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] wifi: ath11k: add support for QCA2066
+In-Reply-To: <20240112-dangerous-cow-of-excitement-fdbaa6@lemur> (Konstantin
+	Ryabitsev's message of "Fri, 12 Jan 2024 09:38:22 -0500")
+References: <20240109021336.4143-1-quic_bqiang@quicinc.com>
+	<20240109021336.4143-3-quic_bqiang@quicinc.com>
+	<e19baf59-c17b-4e2b-96d7-f4fc9812c99a@quicinc.com>
+	<56282bad-b59d-4572-a6f1-1b905bf0edbd@quicinc.com>
+	<da6ff953-07a4-4226-a7dc-b816f8dc5724@quicinc.com>
+	<20240112-dangerous-cow-of-excitement-fdbaa6@lemur>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+Date: Fri, 12 Jan 2024 17:46:54 +0200
+Message-ID: <874jfia70x.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: ath11k: rely on mac80211 debugfs handling for vif
-Content-Language: en-US
-To: <benjamin@sipsolutions.net>, <linux-wireless@vger.kernel.org>
-CC: <lenb@kernel.org>, Benjamin Berg <benjamin.berg@intel.com>
-References: <20240111170629.1257217-1-benjamin@sipsolutions.net>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20240111170629.1257217-1-benjamin@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: OJieljFLGiGSR4IeBcSmBEtNIxx4axOj
-X-Proofpoint-ORIG-GUID: OJieljFLGiGSR4IeBcSmBEtNIxx4axOj
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-09_02,2023-12-07_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxlogscore=501
- priorityscore=1501 clxscore=1011 phishscore=0 suspectscore=0
- malwarescore=0 impostorscore=0 spamscore=0 lowpriorityscore=0 adultscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2311290000 definitions=main-2401120121
+Content-Type: text/plain
 
-On 1/11/2024 9:06 AM, benjamin@sipsolutions.net wrote:
-> From: Benjamin Berg <benjamin.berg@intel.com>
-...
->  #ifdef CONFIG_ATH11K_DEBUGFS
-> +	.vif_add_debugfs		= ath11k_debugfs_op_add_interface,
+Konstantin Ryabitsev <konstantin@linuxfoundation.org> writes:
 
-nit: can we rename to ath11k_debugfs_op_vif_add()?
+> On Wed, Jan 10, 2024 at 08:20:46AM -0800, Jeff Johnson wrote:
+>> Unfortunately automated tasks don't parse cover letters. But it looks
+>> like b4 doesn't handle or warn about:
+>> prerequisite-patch-id: 640366721125b1adea0eeabd5cdfca5e91476e7c
+>> 
+>> And not quite sure how it would handle that.
+>
+> B4 should be able to handle dependencies like that in the future. For example,
+> we can already locate this patch using:
+>
+> https://lore.kernel.org/all/?q=patchid%3A640366721125b1adea0eeabd5cdfca5e91476e7c
 
-this would follow the convention used by almost all of the other methods
-to use the name ath11k_<component>_op_<method>() but in this case
-dropping the redundant "debugfs" from the method
+Oh, that is a very useful feature. Thank you.
 
-I'll submit a separate patch to rename the method below to also align
-with that naming, ath11k_debugfs_op_sta_add()
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
->  	.sta_add_debugfs		= ath11k_debugfs_sta_op_add,
->  #endif
->  
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
