@@ -1,23 +1,23 @@
-Return-Path: <linux-wireless+bounces-1806-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1807-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0268382BD70
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jan 2024 10:43:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35FB782BDAD
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jan 2024 10:50:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6974286D6A
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jan 2024 09:43:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B2F88B25B79
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jan 2024 09:50:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7EDF5B5A2;
-	Fri, 12 Jan 2024 09:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79FE857331;
+	Fri, 12 Jan 2024 09:47:16 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26DB54273;
-	Fri, 12 Jan 2024 09:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E39B6281C;
+	Fri, 12 Jan 2024 09:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
 Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
@@ -25,14 +25,16 @@ Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
 	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
 	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout2.hostsharing.net (Postfix) with ESMTPS id CAFF42800BB21;
-	Fri, 12 Jan 2024 10:43:12 +0100 (CET)
+	by bmailout2.hostsharing.net (Postfix) with ESMTPS id D04802800BB60;
+	Fri, 12 Jan 2024 10:47:11 +0100 (CET)
 Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id BEB0AF32; Fri, 12 Jan 2024 10:43:12 +0100 (CET)
-Date: Fri, 12 Jan 2024 10:43:12 +0100
+	id C31E22C3E0D; Fri, 12 Jan 2024 10:47:11 +0100 (CET)
+Date: Fri, 12 Jan 2024 10:47:11 +0100
 From: Lukas Wunner <lukas@wunner.de>
 To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Kalle Valo <kvalo@kernel.org>, "David S . Miller" <davem@davemloft.net>,
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
+	Kalle Valo <kvalo@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
 	Rob Herring <robh+dt@kernel.org>,
@@ -66,10 +68,8 @@ Cc: Kalle Valo <kvalo@kernel.org>, "David S . Miller" <davem@davemloft.net>,
 	linux-pci@vger.kernel.org,
 	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Subject: Re: [RFC 3/9] PCI/portdrv: create platform devices for child OF nodes
-Message-ID: <20240112094312.GA8704@wunner.de>
-References: <20240109144327.GA10780@wunner.de>
- <CAMRc=MdXO6c6asvRSn_Z8-oFS48hroT+dazGKB6WWY1_Zu7f1Q@mail.gmail.com>
- <20240110132853.GA6860@wunner.de>
+Message-ID: <20240112094711.GA17714@wunner.de>
+References: <20240110132853.GA6860@wunner.de>
  <CAMRc=MdBSAb_kEO2r7r-vwLuRAEv7pMODOMtZoCCRAd=zsQb_w@mail.gmail.com>
  <20240110164105.GA13451@wunner.de>
  <CAMRc=MdQKPN8UbagmswjFx7_JvmJuBeuq8+9=z-+GBNUmdpWEA@mail.gmail.com>
@@ -77,6 +77,8 @@ References: <20240109144327.GA10780@wunner.de>
  <CAMRc=MfT_VLo7++K4M89iYrciqWSrX_JyS1LX5kaGTNDNVQiOg@mail.gmail.com>
  <20240111150201.GA28409@wunner.de>
  <CAMRc=Mcngw1vw9q0DXRWLKk4o9FOY+Mzz-niueT-v2THvbS1Dw@mail.gmail.com>
+ <CAMuHMdUnB_eGhzyOYRczXLMgb65dfHgwHgnv7eXSWDvOvTEdjQ@mail.gmail.com>
+ <CAMRc=MeGsWV_71MzJ-Srm5MnwMfmwac_DLyC9O-8242eekuhNg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -85,27 +87,24 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAMRc=Mcngw1vw9q0DXRWLKk4o9FOY+Mzz-niueT-v2THvbS1Dw@mail.gmail.com>
+In-Reply-To: <CAMRc=MeGsWV_71MzJ-Srm5MnwMfmwac_DLyC9O-8242eekuhNg@mail.gmail.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 
-On Thu, Jan 11, 2024 at 05:16:45PM +0100, Bartosz Golaszewski wrote:
-> On Thu, Jan 11, 2024 at 4:02???PM Lukas Wunner <lukas@wunner.de> wrote:
-> > On Wed, Jan 10, 2024 at 05:26:52PM +0100, Bartosz Golaszewski wrote:
-> > >     if (pci_is_bridge(dev))
-> > >         of_pci_make_dev_node(dev);
-> > 
-> > But perhaps of_pci_make_dev_node() returns immediately because:
-> 
-> No, it was actually a no-op due to CONFIG_PCI_DYNAMIC_OF_NODES not
-> being set. But this is only available if CONFIG_OF_DYNAMIC is enabled
-> which requires OF_UNITTEST (!).
-> 
-> We definitely don't need to enable dynamic OF nodes. We don't want to
-> modify the DT, we want to create devices for existing nodes.
+On Fri, Jan 12, 2024 at 10:43:04AM +0100, Bartosz Golaszewski wrote:
+> Lukas, Terry: am I getting this right - is the port driver supposed to
+> go away at some point?
 
-Consider refactoring of_pci_make_dev_node() to suit your needs or
-add a separate function call inside the "if (pci_is_bridge(dev))"
-clause which populates the child OF nodes.
+Yes, that's the plan.
+
+> Because I'm not sure I understand what the
+> problem is here. To me it seems that when we create a real device for
+> the PCIe port, then it's only normal to populate its child devices
+> from the port driver.
+
+portdrv is not creating a real device for the PCIe port.
+It *binds* to that device.  The device is created much earlier.
+
+NAK for adding this to portdrv.
 
 Thanks,
 
