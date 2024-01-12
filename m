@@ -1,112 +1,77 @@
-Return-Path: <linux-wireless+bounces-1807-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1808-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35FB782BDAD
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jan 2024 10:50:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3519F82BE86
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jan 2024 11:23:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B2F88B25B79
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jan 2024 09:50:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4E9728D419
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jan 2024 10:23:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79FE857331;
-	Fri, 12 Jan 2024 09:47:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0378F60B82;
+	Fri, 12 Jan 2024 10:22:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="O2anVHQK"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E39B6281C;
-	Fri, 12 Jan 2024 09:47:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout2.hostsharing.net (Postfix) with ESMTPS id D04802800BB60;
-	Fri, 12 Jan 2024 10:47:11 +0100 (CET)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id C31E22C3E0D; Fri, 12 Jan 2024 10:47:11 +0100 (CET)
-Date: Fri, 12 Jan 2024 10:47:11 +0100
-From: Lukas Wunner <lukas@wunner.de>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
-	Kalle Valo <kvalo@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Chris Morgan <macromorgan@hotmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	=?iso-8859-1?Q?N=EDcolas_F_=2E_R_=2E_A_=2E?= Prado <nfraprado@collabora.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Peng Fan <peng.fan@nxp.com>, Robert Richter <rrichter@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Terry Bowman <terry.bowman@amd.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Huacai Chen <chenhuacai@kernel.org>, Alex Elder <elder@linaro.org>,
-	Srini Kandagatla <srinivas.kandagatla@linaro.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-pci@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: [RFC 3/9] PCI/portdrv: create platform devices for child OF nodes
-Message-ID: <20240112094711.GA17714@wunner.de>
-References: <20240110132853.GA6860@wunner.de>
- <CAMRc=MdBSAb_kEO2r7r-vwLuRAEv7pMODOMtZoCCRAd=zsQb_w@mail.gmail.com>
- <20240110164105.GA13451@wunner.de>
- <CAMRc=MdQKPN8UbagmswjFx7_JvmJuBeuq8+9=z-+GBNUmdpWEA@mail.gmail.com>
- <20240111104211.GA32504@wunner.de>
- <CAMRc=MfT_VLo7++K4M89iYrciqWSrX_JyS1LX5kaGTNDNVQiOg@mail.gmail.com>
- <20240111150201.GA28409@wunner.de>
- <CAMRc=Mcngw1vw9q0DXRWLKk4o9FOY+Mzz-niueT-v2THvbS1Dw@mail.gmail.com>
- <CAMuHMdUnB_eGhzyOYRczXLMgb65dfHgwHgnv7eXSWDvOvTEdjQ@mail.gmail.com>
- <CAMRc=MeGsWV_71MzJ-Srm5MnwMfmwac_DLyC9O-8242eekuhNg@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9406B5EE9A
+	for <linux-wireless@vger.kernel.org>; Fri, 12 Jan 2024 10:21:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=bzJMTFHtUbKYgtEnCGRs6r87xAVqJ2VCgbLdPauXUpY=;
+	t=1705054919; x=1706264519; b=O2anVHQKyFcRKFH2uZDeLkb0jxh9ohTtsJF13Ixbzq+VH/d
+	byVUWOgq6JnV2NwR4Xa+vqNxT/FKIZ7hGM2TxJDEAqahuYd50T1j7A0qG9b1Wz7Ri/0MOKORSnkyp
+	DX9kAHS67n8YPYsEWAYgHy2HeNje0DzNIwZ7XaLAa7InI3qUrLLg5XKIe5DbHiJcfvii03xWuBMho
+	2hR4v3+B4/B0nCO4lsNgkYuNOnnR07TKAjPKkLWl6pa1IoJRcPosjaKWtVxPV+5E39HF6NRSt5Ls2
+	ei/asal4/V7y+RFpTK+DIGlD530PluXNnvQRIO0mNEVepJhoJaBv8BVCDmjnn6zg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rOEfe-0000000GbJJ-2Ssq;
+	Fri, 12 Jan 2024 11:21:50 +0100
+Message-ID: <8bf953ad3255982277e8eda484b5b2a367f5a19d.camel@sipsolutions.net>
+Subject: Re: [PATCH 5/8] wifi: mac80211: disallow drivers with HT wider than
+ HE
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Jonathan Bither <jonbither@gmail.com>, Miri Korenblit
+	 <miriam.rachel.korenblit@intel.com>
+Cc: linux-wireless@vger.kernel.org, Gregory Greenman
+	 <gregory.greenman@intel.com>
+Date: Fri, 12 Jan 2024 11:21:49 +0100
+In-Reply-To: <037b6a4e-e143-3b69-2ab2-00c4dee75bda@gmail.com>
+References: <20240111161746.3978601-1-miriam.rachel.korenblit@intel.com>
+	 <20240111181514.da15fe3214d2.I4df51ad2f4c844615c168bf9bdb498925b3c77d4@changeid>
+	 <037b6a4e-e143-3b69-2ab2-00c4dee75bda@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.2 (3.50.2-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMRc=MeGsWV_71MzJ-Srm5MnwMfmwac_DLyC9O-8242eekuhNg@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-malware-bazaar: not-scanned
 
-On Fri, Jan 12, 2024 at 10:43:04AM +0100, Bartosz Golaszewski wrote:
-> Lukas, Terry: am I getting this right - is the port driver supposed to
-> go away at some point?
+On Thu, 2024-01-11 at 15:39 -0500, Jonathan Bither wrote:
+>=20
+> > +			/* currently no support for HE client where HT has 40 MHz but not H=
+T */
+> where HT has 40 MHz but not HE?
+>=20
 
-Yes, that's the plan.
+Yep, typo, thanks. I'll just fix it when I apply it.
 
-> Because I'm not sure I understand what the
-> problem is here. To me it seems that when we create a real device for
-> the PCIe port, then it's only normal to populate its child devices
-> from the port driver.
+(Btw, it'd help to trim quotes - no need to quote _all_ the context
+before and after.)
 
-portdrv is not creating a real device for the PCIe port.
-It *binds* to that device.  The device is created much earlier.
-
-NAK for adding this to portdrv.
-
-Thanks,
-
-Lukas
+johannes
 
