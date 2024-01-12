@@ -1,158 +1,145 @@
-Return-Path: <linux-wireless+bounces-1804-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1805-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDCAC82BD41
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jan 2024 10:30:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F0C382BD69
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jan 2024 10:43:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00F911C2048A
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jan 2024 09:30:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D2321F25ECF
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jan 2024 09:43:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5070E5EE6C;
-	Fri, 12 Jan 2024 09:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B577456B9F;
+	Fri, 12 Jan 2024 09:43:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="LBTo5RLy"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="TXwmvMkQ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f49.google.com (mail-ua1-f49.google.com [209.85.222.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F815DF3F
-	for <linux-wireless@vger.kernel.org>; Fri, 12 Jan 2024 09:28:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40C7esG0018971;
-	Fri, 12 Jan 2024 09:28:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-transfer-encoding:content-type; s=
-	qcppdkim1; bh=hczmYvediNtpijpTXbDHi83aRiBE5sT8RSY912eBhXo=; b=LB
-	To5RLyMNOEGuJduAfgFpuqJN5BhVIu44ptFOhaXUiF1dbA5d6GxwY2B5/I7vRuDR
-	sEILzgWYiwRCVUylr9MCCuzk3z9kE5TxcWBcY9uiryHtjms0KgaZuGFQVlC3WVFl
-	6ZqHdsyJuJccQhplTA5yEB8i6m5dp2bXKiy9qvlF0WyHjVY/HSXFK5WlVy2olxAm
-	2I82uCF//zg9i/8gAQgx0mvKsjU3zRs/zwqn0wEKOlsxIychuqaWfjr0tVuFnoUp
-	j1DxLj+ovK0y2P6XjFCXbXGpL0S/1NZkNVq9WhXG1SwOtsBw517yDupncYIh2pD8
-	Ohgxo2So9l0QxMIJB9Hg==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vk18d0c4d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 12 Jan 2024 09:28:53 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40C9SrB2021415
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 12 Jan 2024 09:28:53 GMT
-Received: from yk-E5440.qca.qualcomm.com (10.80.80.8) by
- nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Fri, 12 Jan 2024 01:28:52 -0800
-From: Kang Yang <quic_kangyang@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, <quic_kangyang@quicinc.com>
-Subject: [PATCH v2 10/10] wifi: ath12k: advertise P2P dev support for WCN7850
-Date: Fri, 12 Jan 2024 17:28:24 +0800
-Message-ID: <20240112092824.7664-11-quic_kangyang@quicinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240112092824.7664-1-quic_kangyang@quicinc.com>
-References: <20240112092824.7664-1-quic_kangyang@quicinc.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C5156B9A
+	for <linux-wireless@vger.kernel.org>; Fri, 12 Jan 2024 09:43:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-ua1-f49.google.com with SMTP id a1e0cc1a2514c-7cc92a83200so1497550241.3
+        for <linux-wireless@vger.kernel.org>; Fri, 12 Jan 2024 01:43:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1705052595; x=1705657395; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7SOKaW2woRervs3SEctxvdhsDA2CX0fXEo5IZIZEkjI=;
+        b=TXwmvMkQt1bOumNT9ex0KA1MwvpznXy0lLXDMsJFXN+cnNl2GWlLSfZaFxsjYsWF9q
+         KQuvfv4cjMnyMvqCIC8QnRA4z2lrgXxakAnNvkb7iDmqX1X59vyi9F8ASou8YzD8BknU
+         ZjMlx7pocpxBBPNoGDAN4oCPgtF7Noz0slVoAEAP8mKPbVnnmnqTfrr6OVBLPsTvnCI8
+         qJIrBAILq9vRyzZqZuBhhQYoJOWNGAqiBRiDdJW0f2/D52c9XwRhccAncOdIceHb6YLf
+         1YK/T8iE0U3rl9C3fw0UqyHc4Al6UJVfBS0ZUCswy9SsL4dyz54iGYahruAMR97cI7rG
+         hdJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705052595; x=1705657395;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7SOKaW2woRervs3SEctxvdhsDA2CX0fXEo5IZIZEkjI=;
+        b=at14S16cFk5woBDG4+9W+xnnqm5/blB2HAs19bWXkGKjzAF3Fqec6OinXyWPPo6DQ0
+         awX9//BjrEsHqlY9vlsX+niNm+JKcqqgs/2diZqtFVJJCFlJCOqxnFDt1Z0LmENXI0h9
+         MNFhqbjohWszmmLVCqDCElthAo/MKkxHrO1s3H5TiOg/4FONDlFINyk4OgtDu+vkHLRU
+         E2xQ/hDWFfMqmFpvFhMlJXtXBHm2KEELPz/CoSojGB1S7jXU5/Z9xNeVSAlQJJuhJzfq
+         d5OyKIBz4eheWvm3phybrfk/gl/L8WcS+M1LjfIodA35TIXJhSppSos/Yjye5fHPVDvV
+         wMNA==
+X-Gm-Message-State: AOJu0Yznrzv/hMJ2qsUm/ZNJepL+Zi8uI+Yfw+ObEp8NV4ok87KQRzLL
+	I0onWoRrDSdzYBsj/69MUNaoH5gZBZQxZorFpf7A682AhrOTJw==
+X-Google-Smtp-Source: AGHT+IGaXoThckSM8NX1Ht9fT8RFyHBo65nMhJgSYIF7TWGvCDsemWJEAEquS+QXpokkqOQiXcw1Whlfv4mDa2JkGVI=
+X-Received: by 2002:a05:6122:3b88:b0:4b6:aeb7:3f1d with SMTP id
+ fs8-20020a0561223b8800b004b6aeb73f1dmr839449vkb.9.1705052595200; Fri, 12 Jan
+ 2024 01:43:15 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: _91eoYOlKZLFXUOPmz2n5a0h42S8rZll
-X-Proofpoint-ORIG-GUID: _91eoYOlKZLFXUOPmz2n5a0h42S8rZll
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-09_01,2023-12-07_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- impostorscore=0 phishscore=0 mlxscore=0 lowpriorityscore=0 adultscore=0
- malwarescore=0 suspectscore=0 bulkscore=0 clxscore=1015 mlxlogscore=602
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2311290000 definitions=main-2401120072
+References: <20240104130123.37115-1-brgl@bgdev.pl> <20240104130123.37115-4-brgl@bgdev.pl>
+ <20240109144327.GA10780@wunner.de> <CAMRc=MdXO6c6asvRSn_Z8-oFS48hroT+dazGKB6WWY1_Zu7f1Q@mail.gmail.com>
+ <20240110132853.GA6860@wunner.de> <CAMRc=MdBSAb_kEO2r7r-vwLuRAEv7pMODOMtZoCCRAd=zsQb_w@mail.gmail.com>
+ <20240110164105.GA13451@wunner.de> <CAMRc=MdQKPN8UbagmswjFx7_JvmJuBeuq8+9=z-+GBNUmdpWEA@mail.gmail.com>
+ <20240111104211.GA32504@wunner.de> <CAMRc=MfT_VLo7++K4M89iYrciqWSrX_JyS1LX5kaGTNDNVQiOg@mail.gmail.com>
+ <20240111150201.GA28409@wunner.de> <CAMRc=Mcngw1vw9q0DXRWLKk4o9FOY+Mzz-niueT-v2THvbS1Dw@mail.gmail.com>
+ <CAMuHMdUnB_eGhzyOYRczXLMgb65dfHgwHgnv7eXSWDvOvTEdjQ@mail.gmail.com>
+In-Reply-To: <CAMuHMdUnB_eGhzyOYRczXLMgb65dfHgwHgnv7eXSWDvOvTEdjQ@mail.gmail.com>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Fri, 12 Jan 2024 10:43:04 +0100
+Message-ID: <CAMRc=MeGsWV_71MzJ-Srm5MnwMfmwac_DLyC9O-8242eekuhNg@mail.gmail.com>
+Subject: Re: [RFC 3/9] PCI/portdrv: create platform devices for child OF nodes
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Lukas Wunner <lukas@wunner.de>, Kalle Valo <kvalo@kernel.org>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh+dt@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Heiko Stuebner <heiko@sntech.de>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Chris Morgan <macromorgan@hotmail.com>, 
+	Linus Walleij <linus.walleij@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Arnd Bergmann <arnd@arndb.de>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	=?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= <nfraprado@collabora.com>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Peng Fan <peng.fan@nxp.com>, 
+	Robert Richter <rrichter@amd.com>, Dan Williams <dan.j.williams@intel.com>, 
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>, Terry Bowman <terry.bowman@amd.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+	Huacai Chen <chenhuacai@kernel.org>, Alex Elder <elder@linaro.org>, 
+	Srini Kandagatla <srinivas.kandagatla@linaro.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Now that all the necessary pieces are implemented we can enable P2P
-support for WCN7850.
+On Thu, Jan 11, 2024 at 10:44=E2=80=AFPM Geert Uytterhoeven
+<geert@linux-m68k.org> wrote:
+>
+> Hi Bartosz,
+>
+> On Thu, Jan 11, 2024 at 5:16=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.p=
+l> wrote:
+> > No, it was actually a no-op due to CONFIG_PCI_DYNAMIC_OF_NODES not
+> > being set. But this is only available if CONFIG_OF_DYNAMIC is enabled
+> > which requires OF_UNITTEST (!).
+>
+> Huh? Config PCI_DYNAMIC_OF_NODES does select OF_DYNAMIC.
+>
 
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+Indeed, I got something wrong.
 
-Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
----
+But in any case: we *don't* need dynamic OF nodes as we don't create
+new ones. We use the ones that already exist. This is logically a
+wrong place to add this.
 
-v2:
-    1. add Tested-on tag of QCN9274.
-    2. update copyright.
+Lukas, Terry: am I getting this right - is the port driver supposed to
+go away at some point? Because I'm not sure I understand what the
+problem is here. To me it seems that when we create a real device for
+the PCIe port, then it's only normal to populate its child devices
+from the port driver.
 
----
- drivers/net/wireless/ath/ath12k/hw.c  | 7 +++++--
- drivers/net/wireless/ath/ath12k/mac.c | 8 ++++++++
- 2 files changed, 13 insertions(+), 2 deletions(-)
+Bartosz
 
-diff --git a/drivers/net/wireless/ath/ath12k/hw.c b/drivers/net/wireless/ath/ath12k/hw.c
-index de60d988d860..b71854ae842f 100644
---- a/drivers/net/wireless/ath/ath12k/hw.c
-+++ b/drivers/net/wireless/ath/ath12k/hw.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: BSD-3-Clause-Clear
- /*
-  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2023 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- 
- #include <linux/types.h>
-@@ -950,7 +950,10 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
- 		.vdev_start_delay = true,
- 
- 		.interface_modes = BIT(NL80211_IFTYPE_STATION) |
--				   BIT(NL80211_IFTYPE_AP),
-+				   BIT(NL80211_IFTYPE_AP) |
-+				   BIT(NL80211_IFTYPE_P2P_DEVICE) |
-+				   BIT(NL80211_IFTYPE_P2P_CLIENT) |
-+				   BIT(NL80211_IFTYPE_P2P_GO),
- 		.supports_monitor = false,
- 
- 		.idle_ps = true,
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 717bb26df163..af36d43e9eec 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -5635,17 +5635,25 @@ static int ath12k_mac_op_add_interface(struct ieee80211_hw *hw,
- 	case NL80211_IFTYPE_UNSPECIFIED:
- 	case NL80211_IFTYPE_STATION:
- 		arvif->vdev_type = WMI_VDEV_TYPE_STA;
-+		if (vif->p2p)
-+			arvif->vdev_subtype = WMI_VDEV_SUBTYPE_P2P_CLIENT;
- 		break;
- 	case NL80211_IFTYPE_MESH_POINT:
- 		arvif->vdev_subtype = WMI_VDEV_SUBTYPE_MESH_11S;
- 		fallthrough;
- 	case NL80211_IFTYPE_AP:
- 		arvif->vdev_type = WMI_VDEV_TYPE_AP;
-+		if (vif->p2p)
-+			arvif->vdev_subtype = WMI_VDEV_SUBTYPE_P2P_GO;
- 		break;
- 	case NL80211_IFTYPE_MONITOR:
- 		arvif->vdev_type = WMI_VDEV_TYPE_MONITOR;
- 		ar->monitor_vdev_id = bit;
- 		break;
-+	case NL80211_IFTYPE_P2P_DEVICE:
-+		arvif->vdev_type = WMI_VDEV_TYPE_STA;
-+		arvif->vdev_subtype = WMI_VDEV_SUBTYPE_P2P_DEVICE;
-+		break;
- 	default:
- 		WARN_ON(1);
- 		break;
--- 
-2.34.1
-
+> Gr{oetje,eeting}s,
+>
+>                         Geert
+>
+>
+> --
+> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m6=
+8k.org
+>
+> In personal conversations with technical people, I call myself a hacker. =
+But
+> when I'm talking to journalists I just say "programmer" or something like=
+ that.
+>                                 -- Linus Torvalds
+>
 
