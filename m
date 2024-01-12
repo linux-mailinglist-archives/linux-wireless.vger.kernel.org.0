@@ -1,289 +1,153 @@
-Return-Path: <linux-wireless+bounces-1845-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1846-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0D3482C60D
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jan 2024 20:51:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFAFE82C656
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jan 2024 21:23:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 25F98B24A4E
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jan 2024 19:51:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E0151C22992
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jan 2024 20:23:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE0E915AFE;
-	Fri, 12 Jan 2024 19:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6264616419;
+	Fri, 12 Jan 2024 20:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZSikA/01"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="E4QQ7lTB"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A4715AFA
-	for <linux-wireless@vger.kernel.org>; Fri, 12 Jan 2024 19:51:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-40e636fd3d2so12446945e9.1
-        for <linux-wireless@vger.kernel.org>; Fri, 12 Jan 2024 11:51:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705089089; x=1705693889; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-language:cc:to:subject:from
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5KnsbOGdxXkhxj4fVWBh+ufn+zH4Ob6tXtsoNnDKGEA=;
-        b=ZSikA/012EdeOhbKF/Sk4EYSYs6M23QOu1m9/7mqeAs8sYNHEX6VeSPSuo+/q6FjVR
-         UZmePJ3w976tnS55WhB2nvooLh4O1zbe3fo0ShMgP8tZpXoly6iWC/OBJWRJXlRxek+P
-         e4HR07j8v+3gQc9am8O53DAQE9PruNc6jqUkQoEE0aEXvd9WGpw2fFnYi96oryVBMEUQ
-         qZ3nUX2cv1OO/Ps0TwtQ8NOf2Mj2PpA8uju7gDapfbsmMKnP/GWax64jsS0F91RDbSBv
-         Q6cZUSmiMN6ljyzBNZ+/X1PSh6V50N9sEXeuJKDeyX/NHeiqB6r+ugEPHdjB74BJrF+C
-         C6Tg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705089089; x=1705693889;
-        h=content-transfer-encoding:content-language:cc:to:subject:from
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=5KnsbOGdxXkhxj4fVWBh+ufn+zH4Ob6tXtsoNnDKGEA=;
-        b=CTfYHKbiPh8tUNE5nVzEZwZbYRuxfQoVFHQ5g8U+eGOxZRGnsWK+HqNzNhBKqBznWw
-         oyoGbQYhR9Jk2tkpDIHoF97dIdQIsaIcoxdQMWEKO3wvrfXL6iYp8r9o5//oVlZh/viC
-         WwStUCXWn6Zhg8YEeYFgEHTmig0nkl9yupMqxI1/NbAbmnk42+ryMbRVwuiF1e97F7CH
-         Ty8CSACNmrYi09iI0LMV2vHQZ6SNqshAK6pyAl5d4PudtDGcXtrFOO5eecTE0PjwlPe6
-         sWbKJMzsjE43TZJUuK3gKApnghWMtonU1RpDJoftzz+fmQTEiyT8qJW4tvK+ePOqSRSn
-         DjQg==
-X-Gm-Message-State: AOJu0Ywog1YW/jytzr3AJgmTKhZpFhBakDaysMDnoISRrW0zio8B/Q3d
-	pKeEvreHXlNYXtJFFaa4H/cneh/14Ro=
-X-Google-Smtp-Source: AGHT+IHNsHoWNROj4uZwYlTpF9rvVTc+19MaWe4lV9KVYAU2osBHUHHDMJsS8MCNjGkfy0h/9rsO5Q==
-X-Received: by 2002:a05:600c:5490:b0:40e:4e44:96ac with SMTP id iv16-20020a05600c549000b0040e4e4496acmr1044847wmb.6.1705089089084;
-        Fri, 12 Jan 2024 11:51:29 -0800 (PST)
-Received: from [192.168.1.50] ([81.196.40.51])
-        by smtp.gmail.com with ESMTPSA id t21-20020a05600c451500b0040e3ac9f4c8sm10569337wmo.28.2024.01.12.11.51.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Jan 2024 11:51:28 -0800 (PST)
-Message-ID: <0d262acd-4f94-41c2-8d15-83486aeb976b@gmail.com>
-Date: Fri, 12 Jan 2024 21:51:27 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB41316408
+	for <linux-wireless@vger.kernel.org>; Fri, 12 Jan 2024 20:23:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+Received: from dispatch1-us1.ppe-hosted.com (ip6-localhost [127.0.0.1])
+	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 7AAE52A1BA1
+	for <linux-wireless@vger.kernel.org>; Fri, 12 Jan 2024 19:58:35 +0000 (UTC)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id E78E324006E;
+	Fri, 12 Jan 2024 19:58:26 +0000 (UTC)
+Received: from [192.168.100.159] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by mail3.candelatech.com (Postfix) with ESMTPSA id D07E713C2B0;
+	Fri, 12 Jan 2024 11:58:23 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com D07E713C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1705089503;
+	bh=SNr9CT9/p9Tr06YFlc9LY7xL1bszjD0GMbUf7CQrvP0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=E4QQ7lTBcXzXP+sHmECc3xQF/54rjFIa4GzAcCCVcNjSqq3xHahfVWKPY9VjYQb10
+	 X7xMTPh2FzA4GU6Y0IFI/tSYjH7IHMeOozBkWc4iWyO6+gd+aABC029LifQ/9lnZlT
+	 xNpvqYVeUJPFGoFoKxnL80hg69F4j3bW37boAkn0=
+Message-ID: <b1046a3b-8c29-aa64-2954-adec6c5d9bc9@candelatech.com>
+Date: Fri, 12 Jan 2024 11:58:23 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: [PATCH] wifi: rtlwifi: Speed up firmware loading for USB
-To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Ping-Ke Shih <pkshih@realtek.com>,
- Larry Finger <Larry.Finger@lwfinger.net>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH 5/8] wifi: mac80211: disallow drivers with HT wider than
+ HE
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
+To: Johannes Berg <johannes@sipsolutions.net>, Kalle Valo <kvalo@kernel.org>,
+ Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Cc: linux-wireless@vger.kernel.org,
+ Gregory Greenman <gregory.greenman@intel.com>
+References: <20240111161746.3978601-1-miriam.rachel.korenblit@intel.com>
+ <20240111181514.da15fe3214d2.I4df51ad2f4c844615c168bf9bdb498925b3c77d4@changeid>
+ <87wmsehf3d.fsf@kernel.org>
+ <aae05a63171cf0f3c81dedc24d3b0a558ce530f5.camel@sipsolutions.net>
+From: Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+In-Reply-To: <aae05a63171cf0f3c81dedc24d3b0a558ce530f5.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-MDID: 1705089508-S1t5olUemjl8
+X-MDID-O:
+ us5;ut7;1705089508;S1t5olUemjl8;<greearb@candelatech.com>;6ed5a8f8c51578afd12669094ba34ba9
 
-Currently it takes almost 6 seconds to upload the firmware for RTL8192CU
-(and 11 seconds for RTL8192DU). That's because the firmware is uploaded
-one byte at a time.
+On 1/12/24 10:42, Johannes Berg wrote:
+> On Fri, 2024-01-12 at 15:10 +0200, Kalle Valo wrote:
+>> Miri Korenblit <miriam.rachel.korenblit@intel.com> writes:
+>>
+>>> +			/* currently no support for HE client where HT has 40 MHz but not HT */
+>>> +			if (iftd->he_cap.has_he &&
+>>> +			    iftd->types_mask & (BIT(NL80211_IFTYPE_STATION) |
+>>> +						BIT(NL80211_IFTYPE_P2P_CLIENT)) &&
+>>> +			    sband->ht_cap.ht_supported &&
+>>> +			    sband->ht_cap.cap & IEEE80211_HT_CAP_SUP_WIDTH_20_40 &&
+>>> +			    !(iftd->he_cap.he_cap_elem.phy_cap_info[0] & he_40_mhz_cap))
+>>> +				return -EINVAL;
+>>
+>> Should there be a warning message so that this is noticed if it ever
+>> happens? I don't know.
+> 
+> Yeah I don't really know either. I've done that a lot in the past, but
+> these days I'm kind of thinking that people who develop their drivers
+> should have some debug story and be able to figure it out? You know
+> better perhaps ...
+> 
+> Though it'd kind of suck to indent this further with WARN_ON ;-)
+> 
+> johannes
 
-Also, after plugging the device, the firmware gets uploaded three times
-before a connection to the AP is established.
+I tried backporting this patch into my 6.7 tree.  An mtk7915 radio system blows up badly
+in this case.  Likely this is mt76 bug, but also...it used to work and the crash doesn't
+make it very obvious that the above code is to blame.
 
-Maybe this is fine for most users, but when testing changes to the
-driver it's really annoying to wait so long.
+So, I suggest making this a WARN_ON with appropriate debugging output, let that get some
+testing, and then when drivers are fixed, maybe add in the 'return -EINVAL'.
 
-Speed up the firmware upload by writing chunks of 64 bytes at a time.
-This way it takes about 110 ms for RTL8192CU (and about 210 ms for
-RTL8192DU).
 
-PCI devices could upload it in chunks of 4 bytes, but I don't have any
-to test and commit 89d32c9071aa ("rtlwifi: Download firmware as bytes
-rather than as dwords") decided otherwise anyway.
+mt7915e 0000:06:00.0: mt7915_register_device failed, ret: -22
+mt7915e 0000:06:00.0: mt7915_pci_probe had error on try 3/3, ret: -22
+stack segment: 0000 [#1] PREEMPT SMP
+CPU: 3 PID: 35 Comm: ksoftirqd/3 Tainted: G        WC         6.7.0+ #31
+Hardware name: Broachlink NOAH V2 E3845/Aptio CRB, BIOS 5.6.10 08/19/2021
+RIP: 0010:tasklet_action_common.constprop.0+0x80/0x220
+Code: 00 00 00 00 49 8b 44 24 08 48 89 18 49 89 5c 24 08 66 90 65 66 44 09 35 9e a6 ea 7e fb 0f 1f 44 00 00 48 85 ed 74 53 48 89 eb <48> 8b 6d 000
+RSP: 0018:ffffc90000153e50 EFLAGS: 00010202
+RAX: ffff8881283271a8 RBX: 005fff800002012c RCX: 0000000000000006
+RDX: ffffffff82606ad0 RSI: 0000000000000006 RDI: ffffea0004435488
+RBP: 005fff800002012c R08: 0000000000000002 R09: 0000000080000100
+R10: ffffffff826060c0 R11: 000000000002e000 R12: ffff88813bd9c230
+R13: ffffea0004435488 R14: 0000000000000040 R15: 0000000000000006
+FS:  0000000000000000(0000) GS:ffff88813bd80000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000565149684ff4 CR3: 000000012176b000 CR4: 00000000001006f0
+Call Trace:
+  <TASK>
+  ? die+0x2d/0x80
+  ? do_trap+0xcd/0xf0
+  ? do_error_trap+0x65/0x80
+  ? exc_stack_segment+0x33/0x50
+  ? asm_exc_stack_segment+0x22/0x30
+  ? tasklet_action_common.constprop.0+0x80/0x220
+  __do_softirq+0xb4/0x293
+  ? sort_range+0x20/0x20
+  run_ksoftirqd+0x1f/0x30
+  smpboot_thread_fn+0xc2/0x1a0
+  kthread+0xdc/0x110
+  ? kthread_complete_and_exit+0x20/0x20
+  ret_from_fork+0x28/0x40
+  ? kthread_complete_and_exit+0x20/0x20
+  ret_from_fork_asm+0x11/0x20
+  </TASK>
+Modules linked in: qrtr ofpart spi_nor mtd intel_rapl_msr at24 spi_intel_platform regmap_i2c spi_intel iTCO_wdt intel_pmc_bxt iTCO_vendor_supports
+---[ end trace 0000000000000000 ]---
 
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
----
- drivers/net/wireless/realtek/rtlwifi/efuse.c  | 65 +++++++++++++++++--
- drivers/net/wireless/realtek/rtlwifi/efuse.h  |  4 +-
- .../wireless/realtek/rtlwifi/rtl8192cu/sw.c   |  6 +-
- drivers/net/wireless/realtek/rtlwifi/usb.c    |  9 +++
- drivers/net/wireless/realtek/rtlwifi/wifi.h   |  8 +++
- 5 files changed, 82 insertions(+), 10 deletions(-)
+Thanks,
+Ben
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/efuse.c b/drivers/net/wireless/realtek/rtlwifi/efuse.c
-index 2e945554ed6d..870a276299f5 100644
---- a/drivers/net/wireless/realtek/rtlwifi/efuse.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/efuse.c
-@@ -1287,18 +1287,73 @@ int rtl_get_hwinfo(struct ieee80211_hw *hw, struct rtl_priv *rtlpriv,
- }
- EXPORT_SYMBOL_GPL(rtl_get_hwinfo);
- 
--void rtl_fw_block_write(struct ieee80211_hw *hw, const u8 *buffer, u32 size)
-+static void _rtl_fw_block_write_usb(struct ieee80211_hw *hw, u8 *buffer, u32 size)
-+{
-+	struct rtl_priv *rtlpriv = rtl_priv(hw);
-+	u32 blockcount, blockcount8, blockcount4;
-+	u32 remain8 = 0, remain4 = 0, remain = 0;
-+	const u32 blocksize = 64;
-+	const u32 blocksize8 = 8;
-+	const u32 blocksize4 = 4;
-+	u32 i, offset;
-+
-+	blockcount = size / blocksize;
-+	remain8 = size % blocksize;
-+	for (i = 0; i < blockcount; i++) {
-+		offset = i * blocksize;
-+		rtl_write_chunk(rtlpriv,
-+				START_ADDRESS + offset,
-+				blocksize, buffer + offset);
-+	}
-+
-+	if (remain8) {
-+		offset = blockcount * blocksize;
-+		blockcount8 = remain8 / blocksize8;
-+		remain4 = remain8 % blocksize8;
-+
-+		for (i = 0; i < blockcount8; i++)
-+			rtl_write_chunk(rtlpriv,
-+					START_ADDRESS + offset + i * blocksize8,
-+					blocksize8,
-+					buffer + offset + i * blocksize8);
-+	}
-+
-+	if (remain4) {
-+		offset += blockcount8 * blocksize8;
-+		blockcount4 = remain4 / blocksize4;
-+		remain = remain8 % blocksize4;
-+
-+		for (i = 0; i < blockcount4; i++)
-+			rtl_write_dword(rtlpriv,
-+					START_ADDRESS + offset + i * blocksize4,
-+					cpu_to_le32(*(u32 *)(buffer + offset + i)));
-+	}
-+
-+	if (remain) {
-+		offset += blockcount4 * blocksize4;
-+
-+		for (i = 0; i < remain; i++)
-+			rtl_write_byte(rtlpriv, START_ADDRESS + offset + i,
-+				       *(buffer + offset + i));
-+	}
-+}
-+
-+void rtl_fw_block_write(struct ieee80211_hw *hw, u8 *buffer, u32 size)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
--	u8 *pu4byteptr = (u8 *)buffer;
- 	u32 i;
- 
--	for (i = 0; i < size; i++)
--		rtl_write_byte(rtlpriv, (START_ADDRESS + i), *(pu4byteptr + i));
-+	if (rtlpriv->rtlhal.interface == INTF_PCI) {
-+		for (i = 0; i < size; i++)
-+			rtl_write_byte(rtlpriv, (START_ADDRESS + i),
-+				       *(buffer + i));
-+	} else if (rtlpriv->rtlhal.interface == INTF_USB) {
-+		_rtl_fw_block_write_usb(hw, buffer, size);
-+	}
- }
- EXPORT_SYMBOL_GPL(rtl_fw_block_write);
- 
--void rtl_fw_page_write(struct ieee80211_hw *hw, u32 page, const u8 *buffer,
-+void rtl_fw_page_write(struct ieee80211_hw *hw, u32 page, u8 *buffer,
- 		       u32 size)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
-diff --git a/drivers/net/wireless/realtek/rtlwifi/efuse.h b/drivers/net/wireless/realtek/rtlwifi/efuse.h
-index 1ec59f439382..4821625ad1e5 100644
---- a/drivers/net/wireless/realtek/rtlwifi/efuse.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/efuse.h
-@@ -91,8 +91,8 @@ void efuse_power_switch(struct ieee80211_hw *hw, u8 write, u8 pwrstate);
- int rtl_get_hwinfo(struct ieee80211_hw *hw, struct rtl_priv *rtlpriv,
- 		   int max_size, u8 *hwinfo, int *params);
- void rtl_fill_dummy(u8 *pfwbuf, u32 *pfwlen);
--void rtl_fw_page_write(struct ieee80211_hw *hw, u32 page, const u8 *buffer,
-+void rtl_fw_page_write(struct ieee80211_hw *hw, u32 page, u8 *buffer,
- 		       u32 size);
--void rtl_fw_block_write(struct ieee80211_hw *hw, const u8 *buffer, u32 size);
-+void rtl_fw_block_write(struct ieee80211_hw *hw, u8 *buffer, u32 size);
- void rtl_efuse_ops_init(struct ieee80211_hw *hw);
- #endif
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c
-index 20b4aac69642..9f4cf09090d6 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c
-@@ -40,7 +40,7 @@ static int rtl92cu_init_sw_vars(struct ieee80211_hw *hw)
- 	rtlpriv->dm.thermalvalue = 0;
- 
- 	/* for firmware buf */
--	rtlpriv->rtlhal.pfirmware = vzalloc(0x4000);
-+	rtlpriv->rtlhal.pfirmware = kmalloc(0x4000, GFP_KERNEL);
- 	if (!rtlpriv->rtlhal.pfirmware) {
- 		pr_err("Can't alloc buffer for fw\n");
- 		return 1;
-@@ -61,7 +61,7 @@ static int rtl92cu_init_sw_vars(struct ieee80211_hw *hw)
- 				      fw_name, rtlpriv->io.dev,
- 				      GFP_KERNEL, hw, rtl_fw_cb);
- 	if (err) {
--		vfree(rtlpriv->rtlhal.pfirmware);
-+		kfree(rtlpriv->rtlhal.pfirmware);
- 		rtlpriv->rtlhal.pfirmware = NULL;
- 	}
- 	return err;
-@@ -72,7 +72,7 @@ static void rtl92cu_deinit_sw_vars(struct ieee80211_hw *hw)
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
- 
- 	if (rtlpriv->rtlhal.pfirmware) {
--		vfree(rtlpriv->rtlhal.pfirmware);
-+		kfree(rtlpriv->rtlhal.pfirmware);
- 		rtlpriv->rtlhal.pfirmware = NULL;
- 	}
- }
-diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c b/drivers/net/wireless/realtek/rtlwifi/usb.c
-index 07a7e6fa46af..1fc480fe18ad 100644
---- a/drivers/net/wireless/realtek/rtlwifi/usb.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
-@@ -125,6 +125,14 @@ static void _usb_write32_sync(struct rtl_priv *rtlpriv, u32 addr, u32 val)
- 	_usb_write_sync(rtlpriv, addr, val, 4);
- }
- 
-+static void _usb_write_chunk_sync(struct rtl_priv *rtlpriv, u32 addr,
-+				  u32 length, u8 *data)
-+{
-+	struct usb_device *udev = to_usb_device(rtlpriv->io.dev);
-+
-+	_usbctrl_vendorreq_sync(udev, REALTEK_USB_VENQT_WRITE, addr, data, length);
-+}
-+
- static void _rtl_usb_io_handler_init(struct device *dev,
- 				     struct ieee80211_hw *hw)
- {
-@@ -135,6 +143,7 @@ static void _rtl_usb_io_handler_init(struct device *dev,
- 	rtlpriv->io.write8	= _usb_write8_sync;
- 	rtlpriv->io.write16	= _usb_write16_sync;
- 	rtlpriv->io.write32	= _usb_write32_sync;
-+	rtlpriv->io.write_chunk	= _usb_write_chunk_sync;
- 	rtlpriv->io.read8	= _usb_read8_sync;
- 	rtlpriv->io.read16	= _usb_read16_sync;
- 	rtlpriv->io.read32	= _usb_read32_sync;
-diff --git a/drivers/net/wireless/realtek/rtlwifi/wifi.h b/drivers/net/wireless/realtek/rtlwifi/wifi.h
-index 53af324f3807..3821f6e31447 100644
---- a/drivers/net/wireless/realtek/rtlwifi/wifi.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/wifi.h
-@@ -1450,6 +1450,8 @@ struct rtl_io {
- 	void (*write8)(struct rtl_priv *rtlpriv, u32 addr, u8 val);
- 	void (*write16)(struct rtl_priv *rtlpriv, u32 addr, u16 val);
- 	void (*write32)(struct rtl_priv *rtlpriv, u32 addr, u32 val);
-+	void (*write_chunk)(struct rtl_priv *rtlpriv, u32 addr, u32 length,
-+			    u8 *data);
- 
- 	u8 (*read8)(struct rtl_priv *rtlpriv, u32 addr);
- 	u16 (*read16)(struct rtl_priv *rtlpriv, u32 addr);
-@@ -2962,6 +2964,12 @@ static inline void rtl_write_dword(struct rtl_priv *rtlpriv,
- 		rtlpriv->io.read32(rtlpriv, addr);
- }
- 
-+static inline void rtl_write_chunk(struct rtl_priv *rtlpriv,
-+				   u32 addr, u32 length, u8 *data)
-+{
-+	rtlpriv->io.write_chunk(rtlpriv, addr, length, data);
-+}
-+
- static inline u32 rtl_get_bbreg(struct ieee80211_hw *hw,
- 				u32 regaddr, u32 bitmask)
- {
 -- 
-2.43.0
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
+
+
 
