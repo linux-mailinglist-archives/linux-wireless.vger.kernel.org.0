@@ -1,48 +1,51 @@
-Return-Path: <linux-wireless+bounces-1869-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1870-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E93A882CA43
-	for <lists+linux-wireless@lfdr.de>; Sat, 13 Jan 2024 07:35:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC9AE82CA4D
+	for <lists+linux-wireless@lfdr.de>; Sat, 13 Jan 2024 07:55:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E5ACDB231B6
-	for <lists+linux-wireless@lfdr.de>; Sat, 13 Jan 2024 06:35:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D28351C2171E
+	for <lists+linux-wireless@lfdr.de>; Sat, 13 Jan 2024 06:55:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EC8D1C32;
-	Sat, 13 Jan 2024 06:35:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EED918EBE;
+	Sat, 13 Jan 2024 06:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e4YE+osR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FPH0Ec6Y"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7501AEDD
-	for <linux-wireless@vger.kernel.org>; Sat, 13 Jan 2024 06:35:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9C53C433F1;
-	Sat, 13 Jan 2024 06:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0561D18EBF
+	for <linux-wireless@vger.kernel.org>; Sat, 13 Jan 2024 06:54:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7516BC433C7;
+	Sat, 13 Jan 2024 06:54:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705127750;
-	bh=2lDoVeuLevD2cGbfNrGI37VCjhOWBD5I+sKHOpjsC9c=;
+	s=k20201202; t=1705128893;
+	bh=bxmZhWWVppfZyW25Xz78Kjm2HzG4tyaFtHGTkKRMwfE=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=e4YE+osRpjEd1aEsMdRTUvqs0IzbTkaecOwVsqQr86Qm9ANGHL4BeBrYHw3wGtenC
-	 jfVDra7tv3UZD37zI41Ovf9oi0Os6/R/P/fqrqETDUWZLiX0AaXdBZhXflI23LpB/S
-	 DEEpHjYnVnz9bGtfdJInREBrmIPUkU06VXjXyckHgmNHG4pSnn0FZp5PQ2c4iSHsoH
-	 zD8JH4OpaqNUpdqJW0K694TsaEqp+4H5/+VeYFb0lrej8hh3Lsv5bW8PqbDW77/2Au
-	 CttnviQ64ozP0+9IHfXzEfXTjeKEeMT+NaT5y2wEwhTpAxyx9nkQJpP1HY/LTBVsJC
-	 QSbs1Grksj+Xg==
+	b=FPH0Ec6YKWgDy5+1LJyUyxTbc1pf7bunHlYORLwQCOqxe21WyNM16VZnl7353Qstm
+	 nMskFVyaIIaqEJBNkUyDxTGsGEMvQoJh+yC0eFhTlOw69E3ZVVVd/910OJ8XIQ422h
+	 r8dJV1z2r4HUvp4C9SgGHHRTDH+nMXtU5pbfBucgDdAyHlB5qll95pJnDNazKLBJzP
+	 l8DyBvAcpf1Oob8zaL1OKqP65QsnjYsxLyHws36siQ5HljqrafsE7F6/9zTKSieNsR
+	 AOa54gXb18LOTLrTa0HGYfHRw5q9QD2vCsHQwGepk2TSlDwF93jOrY+tTe5uRAcCol
+	 xDe8RRExJrN2g==
 From: Kalle Valo <kvalo@kernel.org>
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-  Ping-Ke Shih <pkshih@realtek.com>,  Larry Finger
- <Larry.Finger@lwfinger.net>
-Subject: Re: wifi: rtlwifi: Speed up firmware loading for USB
-References: <6351ca3f-6b06-4fe1-ace7-6e9d67497dce@gmail.com>
-Date: Sat, 13 Jan 2024 08:35:48 +0200
-In-Reply-To: <6351ca3f-6b06-4fe1-ace7-6e9d67497dce@gmail.com> (Bitterblue
-	Smith's message of "Fri, 12 Jan 2024 21:49:53 +0200")
-Message-ID: <87o7dphha3.fsf@kernel.org>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+  linux-wireless@vger.kernel.org,  Gregory Greenman
+ <gregory.greenman@intel.com>
+Subject: Re: [PATCH 5/8] wifi: mac80211: disallow drivers with HT wider than HE
+References: <20240111161746.3978601-1-miriam.rachel.korenblit@intel.com>
+	<20240111181514.da15fe3214d2.I4df51ad2f4c844615c168bf9bdb498925b3c77d4@changeid>
+	<87wmsehf3d.fsf@kernel.org>
+	<aae05a63171cf0f3c81dedc24d3b0a558ce530f5.camel@sipsolutions.net>
+Date: Sat, 13 Jan 2024 08:54:50 +0200
+In-Reply-To: <aae05a63171cf0f3c81dedc24d3b0a558ce530f5.camel@sipsolutions.net>
+	(Johannes Berg's message of "Fri, 12 Jan 2024 19:42:27 +0100")
+Message-ID: <87h6jhhged.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -52,31 +55,37 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Bitterblue Smith <rtl8821cerfe2@gmail.com> writes:
+Johannes Berg <johannes@sipsolutions.net> writes:
 
-> Currently it takes almost 6 seconds to upload the firmware for RTL8192CU
-> (and 11 seconds for RTL8192DU). That's because the firmware is uploaded
-> one byte at a time.
+> On Fri, 2024-01-12 at 15:10 +0200, Kalle Valo wrote:
+>> Miri Korenblit <miriam.rachel.korenblit@intel.com> writes:
+>> 
+>> > +			/* currently no support for HE client where HT has 40 MHz but not HT */
+>> > +			if (iftd->he_cap.has_he &&
+>> > +			    iftd->types_mask & (BIT(NL80211_IFTYPE_STATION) |
+>> > +						BIT(NL80211_IFTYPE_P2P_CLIENT)) &&
+>> > +			    sband->ht_cap.ht_supported &&
+>> > +			    sband->ht_cap.cap & IEEE80211_HT_CAP_SUP_WIDTH_20_40 &&
+>> > +			    !(iftd->he_cap.he_cap_elem.phy_cap_info[0] & he_40_mhz_cap))
+>> > +				return -EINVAL;
+>> 
+>> Should there be a warning message so that this is noticed if it ever
+>> happens? I don't know.
 >
-> Also, after plugging the device, the firmware gets uploaded three times
-> before a connection to the AP is established.
->
-> Maybe this is fine for most users, but when testing changes to the
-> driver it's really annoying to wait so long.
->
-> Speed up the firmware upload by writing chunks of 64 bytes at a time.
-> This way it takes about 110 ms for RTL8192CU (and about 210 ms for
-> RTL8192DU).
->
-> PCI devices could upload it in chunks of 4 bytes, but I don't have any
-> to test and commit 89d32c9071aa ("rtlwifi: Download firmware as bytes
-> rather than as dwords") decided otherwise anyway.
->
-> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+> Yeah I don't really know either. I've done that a lot in the past, but
+> these days I'm kind of thinking that people who develop their drivers
+> should have some debug story and be able to figure it out? You know
+> better perhaps ...
 
-There's another version so I assume I can drop this one:
+My worry here is the time needed to figure this all out. Especially if
+we have more of these kind silent checks it could get complex quite
+quick.
 
-https://patchwork.kernel.org/project/linux-wireless/patch/0d262acd-4f94-41c2-8d15-83486aeb976b@gmail.com/
+> Though it'd kind of suck to indent this further with WARN_ON ;-)
+
+Yeah, WARN_ON() feels a bit too much. I was more thinking about a small
+pr_err() or something like that which give at least some hint what's
+happening.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
