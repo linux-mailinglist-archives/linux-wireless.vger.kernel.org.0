@@ -1,71 +1,50 @@
-Return-Path: <linux-wireless+bounces-1871-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1873-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A52282CA9F
-	for <lists+linux-wireless@lfdr.de>; Sat, 13 Jan 2024 10:00:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D24182CAEA
+	for <lists+linux-wireless@lfdr.de>; Sat, 13 Jan 2024 10:44:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDE08284B29
-	for <lists+linux-wireless@lfdr.de>; Sat, 13 Jan 2024 09:00:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2038DB21B67
+	for <lists+linux-wireless@lfdr.de>; Sat, 13 Jan 2024 09:44:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 486D17E9;
-	Sat, 13 Jan 2024 09:00:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11C5AEC5;
+	Sat, 13 Jan 2024 09:44:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="Xa6u4lfK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fvqWcWqt"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F00867E6
-	for <linux-wireless@vger.kernel.org>; Sat, 13 Jan 2024 09:00:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 38bc97cab1f211ee9e680517dc993faa-20240113
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=2XKH1OQynYvIBIkLwQvThFdECmXZ47Au14j7QHW/2sQ=;
-	b=Xa6u4lfKtwDoEG3SfarJ53i24+kkHAItwIaNc0FYXUBy6d+3FaUDs3bfjJXNIaLicW9kZXuiByoEeXqSIHBd+AaJoleycvxtHRcljIemLVdur8rqZno2df+d38RKsjHijXVPKqTpiIz5UysPywzxZc/REgxBOgSeipuE+3xgFBA=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.35,REQID:b61e9a09-9cdb-4a6c-b48d-09e49210d175,IP:0,U
-	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:-5
-X-CID-META: VersionHash:5d391d7,CLOUDID:02034e7f-4f93-4875-95e7-8c66ea833d57,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-	RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,
-	DKR:0,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 38bc97cab1f211ee9e680517dc993faa-20240113
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
-	(envelope-from <deren.wu@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 408661045; Sat, 13 Jan 2024 17:00:38 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Sat, 13 Jan 2024 17:00:37 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Sat, 13 Jan 2024 17:00:37 +0800
-From: Deren Wu <deren.wu@mediatek.com>
-To: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>
-CC: Sean Wang <sean.wang@mediatek.com>, Soul Huang <Soul.Huang@mediatek.com>,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>, Leon Yen
-	<Leon.Yen@mediatek.com>, Eric-SY Chang <Eric-SY.Chang@mediatek.com>, KM Lin
-	<km.lin@mediatek.com>, Robin Chiu <robin.chiu@mediatek.com>, CH Yeh
-	<ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>, Quan Zhou
-	<quan.zhou@mediatek.com>, Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen
-	<shayne.chen@mediatek.com>, linux-wireless <linux-wireless@vger.kernel.org>,
-	linux-mediatek <linux-mediatek@lists.infradead.org>, Deren Wu
-	<deren.wu@mediatek.com>
-Subject: [PATCH 2/2] wifi: mt76: mt7925e: fix use-after-free in free_irq()
-Date: Sat, 13 Jan 2024 17:00:23 +0800
-Message-ID: <6a08840f845587ecd83369760a89c881e6496e5e.1705135817.git.deren.wu@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <572d6af305a09fc8bdd96a8ee57399039803a2bb.1705135817.git.deren.wu@mediatek.com>
-References: <572d6af305a09fc8bdd96a8ee57399039803a2bb.1705135817.git.deren.wu@mediatek.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA2C1A3F
+	for <linux-wireless@vger.kernel.org>; Sat, 13 Jan 2024 09:44:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C082C433C7;
+	Sat, 13 Jan 2024 09:44:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705139079;
+	bh=1hvDFRV24xJJKkGg0jYO3A1J1KEhcdugByo3G/yj7Dw=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=fvqWcWqtTrHxllZ17lSGnOeJciIg627H7RZMhPFhyFImMVvFRvItdWCFNMzykwYli
+	 AOi/QuzHHoFDTMhVsVFh5Cc3VpREmNQK5q3717epyYGH+weq3RZuB9Pnsqz8NbM6Yd
+	 gNnezmr46goqzAaazhkQLF4dV4IkYzdCabnenIShU64nbvMMEwPuxBLMpc0olEf5dj
+	 QGRWWDx+H3lYFM6oQhTyTLR51GlrsZNLjUJKmw7sAbbhodVD4hTi7YsgQGa8DVVVhM
+	 wG4itUKEtvsBf/4tAsUJPyb/YzCSLygfAWmPGziSo0jwjJ+Lo4+aEGFZpxinAm65IF
+	 +tmMeJiyFoDsg==
+From: Kalle Valo <kvalo@kernel.org>
+To: Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc: Sriram R <quic_srirrama@quicinc.com>,  <ath12k@lists.infradead.org>,
+  <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH 07/12] wifi: ath12k: Cache vdev configs before vdev create
+References: <20240111045045.28377-1-quic_srirrama@quicinc.com>
+	<20240111045045.28377-8-quic_srirrama@quicinc.com>
+	<c35da30b-335c-4418-9d7c-0784ec9e8d30@quicinc.com>
+Date: Sat, 13 Jan 2024 11:44:36 +0200
+In-Reply-To: <c35da30b-335c-4418-9d7c-0784ec9e8d30@quicinc.com> (Jeff
+	Johnson's message of "Fri, 12 Jan 2024 09:23:59 -0800")
+Message-ID: <87cyu5h8jf.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -73,33 +52,41 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-MTK: N
 
-From commit a304e1b82808 ("[PATCH] Debug shared irqs"), there is a test
-to make sure the shared irq handler should be able to handle the unexpected
-event after deregistration. For this case, let's apply MT76_REMOVED flag to
-indicate the device was removed and do not run into the resource access
-anymore.
+Jeff Johnson <quic_jjohnson@quicinc.com> writes:
 
-Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips")
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7925/pci.c | 1 +
- 1 file changed, 1 insertion(+)
+>> +static int ath12k_mac_op_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+>> +				 struct ieee80211_vif *vif, struct ieee80211_sta *sta,
+>> +				 struct ieee80211_key_conf *key)
+>> +{
+>> +	struct ath12k_hw *ah = ath12k_hw_to_ah(hw);
+>> +	struct ath12k *ar;
+>> +	struct ath12k_vif *arvif = ath12k_vif_to_arvif(vif);
+>> +	int ret;
+>> +
+>> +	/* BIP needs to be done in software */
+>> +	if (key->cipher == WLAN_CIPHER_SUITE_AES_CMAC ||
+>> +	    key->cipher == WLAN_CIPHER_SUITE_BIP_GMAC_128 ||
+>> +	    key->cipher == WLAN_CIPHER_SUITE_BIP_GMAC_256 ||
+>> +	    key->cipher == WLAN_CIPHER_SUITE_BIP_CMAC_256)
+>> +		return 1;
+>
+> I know this in the existing code, but what is the significance of
+> returning 1? Should this be returning a -errno like the error cases that
+> follow?
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c b/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
-index 734f31ee40d3..689d3f1521ee 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
-@@ -425,6 +425,7 @@ static void mt7925_pci_remove(struct pci_dev *pdev)
- 	struct mt792x_dev *dev = container_of(mdev, struct mt792x_dev, mt76);
- 
- 	mt7925e_unregister_device(dev);
-+	set_bit(MT76_REMOVED, &mdev->phy.state);
- 	devm_free_irq(&pdev->dev, pdev->irq, dev);
- 	mt76_free_device(&dev->mt76);
- 	pci_free_irq_vectors(pdev);
+It's to use software encryption, from mac80211.h:
+
+ * Note that in the case that the @IEEE80211_HW_SW_CRYPTO_CONTROL flag is
+ * set, mac80211 will not automatically fall back to software crypto if
+ * enabling hardware crypto failed. The set_key() call may also return the
+ * value 1 to permit this specific key/algorithm to be done in software.
+
+Yeah, this is confusing. IMHO there should be a define or an enum for
+this value.
+
 -- 
-2.18.0
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
