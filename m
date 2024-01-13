@@ -1,106 +1,71 @@
-Return-Path: <linux-wireless+bounces-1874-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1875-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8F3982CBD0
-	for <lists+linux-wireless@lfdr.de>; Sat, 13 Jan 2024 11:28:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 155C382CBE5
+	for <lists+linux-wireless@lfdr.de>; Sat, 13 Jan 2024 11:36:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF7DD1C21FDF
-	for <lists+linux-wireless@lfdr.de>; Sat, 13 Jan 2024 10:28:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BB9A1C21329
+	for <lists+linux-wireless@lfdr.de>; Sat, 13 Jan 2024 10:36:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 463F118EA8;
-	Sat, 13 Jan 2024 10:26:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j3PCvLUm"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8664B17BC8;
+	Sat, 13 Jan 2024 10:36:13 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2183118E38;
-	Sat, 13 Jan 2024 10:26:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 371DDC433F1;
-	Sat, 13 Jan 2024 10:26:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705141616;
-	bh=JFI/sg9PG8bnP6shSEl0PaqRN8tCMbNQeFxvpUYK4tU=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=j3PCvLUmYJFRYZIniSh4Vb51WLTdh9rzhALwc4E+Xmuzk37yJU3u3xFKcKB5inpTl
-	 dQ6lcf8I0iSHk5+9ZHifVBhNp1/jGC2L6pzO9hzdFFteQi00Muw2CnaMG+MaNyOkOS
-	 RJpuoKU45iQfqdWJ0jblk+EZQUNyGdR7+JYZhusJDCaZC4uLYbDHHjpDeYUceCS38+
-	 NWCfN/85UD0KJ2O5DC05YEYdzliR6OpnFRPkeMGIsBfhE51pHv+jX2Bs/22UXjvSeM
-	 ivZVD93M3fZbOkayTKoh/o88yKvrKWBlspoIjBwNavs9+Vom9kKWAA1RY/LOCPuMNa
-	 +O1uruxECWEaw==
-From: Kalle Valo <kvalo@kernel.org>
-To: Johan Hovold <johan@kernel.org>
-Cc: Johan Hovold <johan+linaro@kernel.org>,  Jeff Johnson
- <quic_jjohnson@quicinc.com>,  ath11k@lists.infradead.org,
-  linux-wireless@vger.kernel.org,  linux-kernel@vger.kernel.org
-Subject: ath11k: checking RCU usage
-References: <20231019153115.26401-1-johan+linaro@kernel.org>
-	<87o7goxget.fsf@kernel.org> <ZTfgJCBxsNv3bVjv@hovoldconsulting.com>
-Date: Sat, 13 Jan 2024 12:26:53 +0200
-In-Reply-To: <ZTfgJCBxsNv3bVjv@hovoldconsulting.com> (Johan Hovold's message
-	of "Tue, 24 Oct 2023 17:17:56 +0200")
-Message-ID: <87zfx98r6a.fsf_-_@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+Received: from mail.holtmann.org (coyote.holtmann.net [212.227.132.17])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C13D020DC6
+	for <linux-wireless@vger.kernel.org>; Sat, 13 Jan 2024 10:36:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=holtmann.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=holtmann.org
+Received: from smtpclient.apple (p5b3d275b.dip0.t-ipconnect.de [91.61.39.91])
+	by mail.holtmann.org (Postfix) with ESMTPSA id EEBCFCECCB;
+	Sat, 13 Jan 2024 11:36:03 +0100 (CET)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.300.61.1.2\))
+Subject: Re: [PATCH V2 2/4] wifi: brcmfmac: add per-vendor feature detection
+ callback
+From: Marcel Holtmann <marcel@holtmann.org>
+In-Reply-To: <20240103095704.135651-3-arend.vanspriel@broadcom.com>
+Date: Sat, 13 Jan 2024 11:35:53 +0100
+Cc: Kalle Valo <kvalo@kernel.org>,
+ linux-wireless@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <A137AF57-B63D-4EE0-9A6B-7CBDC30DA82D@holtmann.org>
+References: <20240103095704.135651-1-arend.vanspriel@broadcom.com>
+ <20240103095704.135651-3-arend.vanspriel@broadcom.com>
+To: Arend van Spriel <arend.vanspriel@broadcom.com>
+X-Mailer: Apple Mail (2.3774.300.61.1.2)
 
-(old discussion, changing title)
+Hi Arend,
 
-Johan Hovold <johan@kernel.org> writes:
+> Adding a .feat_attach() callback allowing per-vendor overrides
+> of the driver feature flags. In this patch the callback is only
+> provided by BCA vendor to disable SAE feature as it has not been
+> confirmed yet. BCA chips generally do not have the in-driver
+> supplicant (idsup) feature so they rely on NL80211_CMD_EXTERNAL_AUTH
+> to trigger user-space authentication.
 
-> On Tue, Oct 24, 2023 at 05:07:38PM +0300, Kalle Valo wrote:
->
->> Johan Hovold <johan+linaro@kernel.org> writes:
->> 
->> > RCU lockdep reported suspicious RCU usage when accessing the temperature
->> > sensor. Inspection revealed that the DFS radar event code was also
->> > missing the required RCU read-side critical section marking.
->> >
->> > Johan
->> >
->> >
->> > Changes in v2
->> >  - add the missing rcu_read_unlock() to an
->> >    ath11k_wmi_pdev_temperature_event() error path as noticed by Jeff
->> >
->> >
->> > Johan Hovold (2):
->> >   wifi: ath11k: fix temperature event locking
->> >   wifi: ath11k: fix dfs radar event locking
->> 
->> Thanks for the fixes. I really like using lockdep_assert_held() to
->> document if a function requires some lock held, is there anything
->> similar for RCU?
->
-> Not really, but the checking is instead built into the primitives like
-> rcu_dereference() and enabled whenever CONFIG_PROVE_RCU is set.
->
-> For some special cases, we have open-coded checks like:
->
-> 	RCU_LOCKDEP_WARN(!rcu_read_lock_held());
->
-> which similarly depend on CONFIG_PROVE_RCU or simply
->
-> 	WARN_ON_ONCE(!rcu_read_lock_held());
+is there any way to tell if idsup is supported (firmware string or
+some other mechanism). The just disabling and not implementing support
+for external_auth is really having this stuck in WPA2 legacy world.
 
-I just found out that sparse has __must_hold():
+The whole out-dated firmware game on Raspberry Pi is already a mess.
 
-https://lore.kernel.org/linux-wireless/87sf31hhfp.fsf@kernel.org/
+My problem is really that WiFi 6E and WiFi 7 are essentially mandating
+WPA3/SAE only support as soon as you move into 6 GHz operation and the
+errors presented to the user are not decodable if you don=E2=80=99t have =
+a
+good understanding on what WiFi certification mandates.
 
-That looks promising, should we start using that in ath11k and ath12k to
-check our RCU usage?
+Regards
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+Marcel
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
