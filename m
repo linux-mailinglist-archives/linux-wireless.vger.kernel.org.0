@@ -1,146 +1,103 @@
-Return-Path: <linux-wireless+bounces-1881-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1882-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE98382CE3C
-	for <lists+linux-wireless@lfdr.de>; Sat, 13 Jan 2024 20:12:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 084D282CEFB
+	for <lists+linux-wireless@lfdr.de>; Sat, 13 Jan 2024 23:50:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 61DD1B22020
-	for <lists+linux-wireless@lfdr.de>; Sat, 13 Jan 2024 19:12:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5D361C20F96
+	for <lists+linux-wireless@lfdr.de>; Sat, 13 Jan 2024 22:50:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76CCD6122;
-	Sat, 13 Jan 2024 19:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29FF5D297;
+	Sat, 13 Jan 2024 22:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dcE+xHZT"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="JF5qzecb"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f181.google.com (mail-il1-f181.google.com [209.85.166.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C866B610D
-	for <linux-wireless@vger.kernel.org>; Sat, 13 Jan 2024 19:12:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1705173151;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=o1Qtp1zHGgOhkFZedtgiIncadcUkn1bw6yNVXo83LI0=;
-	b=dcE+xHZTZ21XVw0XbNqBldiqVhPENZH0eQv+qx7LvFrtgz11SrGzQEjtPgE2s9k5hFjZfS
-	olAHoeDjQDaW4Yv4OUnwkYUKUj/wqAcHi+h8co3I1iZ4At/p2lUJ8Mq7S9oie9nUqO2225
-	2gOvTP34rMk7XPCkxtat0j4GtzCJ2DM=
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
- [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-654-1zX1rek1M-WYxWT1qPfIcA-1; Sat, 13 Jan 2024 14:12:28 -0500
-X-MC-Unique: 1zX1rek1M-WYxWT1qPfIcA-1
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-28c0420e177so8243478a91.2
-        for <linux-wireless@vger.kernel.org>; Sat, 13 Jan 2024 11:12:28 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB766AC0
+	for <linux-wireless@vger.kernel.org>; Sat, 13 Jan 2024 22:50:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-il1-f181.google.com with SMTP id e9e14a558f8ab-3606dc4fdf2so42212705ab.0
+        for <linux-wireless@vger.kernel.org>; Sat, 13 Jan 2024 14:50:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1705186238; x=1705791038; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=u0PR7d6kFss5MEdP8wrBHxjXBuz6CzRaEP26lZSSvbM=;
+        b=JF5qzecbxhKbTYOPxRFWh6dmpzWUxp19SjYy7ImxuODSRxlhR3UFpuK/35US4781vK
+         UwJ2SsdgAIj7BWj6IyFKmXR4eF0Qei1ca2fbQOGbFWXGqUoSNhwvCOIDK0M5fNuFOMlM
+         N0XgpZc17n1aKFUJ06xB/ksf2bz9NtmYTO93+dJTPg8ppGB+XfCL0vm7a5kvWx0LAXPh
+         OPALbT3Ox0ZLLbnR5GkJDusHqosbR+dOmPQAa3hKWKKV3CpH+9IrnFsWnlcI9tZoRiNJ
+         9z36hyF+5dO8NFlTnwJnICpGM2S52iIGo5SLAtXRkoTCEWaWPZiUUWHFCFqPpsOUvtxS
+         q45w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705173147; x=1705777947;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=o1Qtp1zHGgOhkFZedtgiIncadcUkn1bw6yNVXo83LI0=;
-        b=DQQJkFIbue/LCqWRKPE6edB6WN8EPiqGmclPgbE7MPZ8ID9qiYzNgXvPPg4wXzcqbw
-         H6K+42ve/8q5DUMFUeyJaBmjzJ3B5BAM2FUBY0IgT0tiCRxX7uxXhTL4kUX3UcaciqCx
-         Pa2Mcy1UBktGjVOUlz7Hr07xUu3e27ffdIpOXuxoV22uMFDYHGJ4wfgP6e9agHIBTd+L
-         3VuXl7Wq2cSIALxLPLqzzCWSt+IiQIqP9e/NM832kwr4+tfW5eZkxRGfYjeNOUBlTGhJ
-         P6PmnNX9vGVbI1SfoDQinmdLgNR1zVIRvYcsDkSjT8o/UPLLTOPox0jonpM1E0VKSZ65
-         U+Lw==
-X-Gm-Message-State: AOJu0YxX22R3TJz7D/urUPnIx9Qx0zbHJ8JbqRObmxRDee3gUbypZxXI
-	o3Lsa7tvIXUsTmIMvnZKFJ2sXuBJvggUc1doUprs91UAA3t5JevNUEDCPXUHNpS+neY28P6PyUz
-	jifUfN/vWfJwK8g9Db9XWBXeYr22mBAzZRv/56ATssbadbWxhiGZU7Y/Ac/U=
-X-Received: by 2002:a17:90a:9e7:b0:28e:db1:49c8 with SMTP id 94-20020a17090a09e700b0028e0db149c8mr1675181pjo.53.1705173147180;
-        Sat, 13 Jan 2024 11:12:27 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH5JVmWi06sginF0pJC1IlYJxHHs92Y1/+oEg/bspbhraOOMILDBzVZ/fp4g2alo6KRGXHWgLO4R+1iVQZWXMo=
-X-Received: by 2002:a17:90a:9e7:b0:28e:db1:49c8 with SMTP id
- 94-20020a17090a09e700b0028e0db149c8mr1675174pjo.53.1705173146893; Sat, 13 Jan
- 2024 11:12:26 -0800 (PST)
+        d=1e100.net; s=20230601; t=1705186238; x=1705791038;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=u0PR7d6kFss5MEdP8wrBHxjXBuz6CzRaEP26lZSSvbM=;
+        b=N84a4WTOFBIqz87uJA9XpgCam9nzlYXtjH9t6IGL9A6c9q1dwVzbbkcqfhFzlHQN+e
+         VfK4GjwMwwxcYbQr6hsv01bj83FicDBcYr+fQcgK1cFqxdi1mP1lm5ao0TOCb3QXSsmH
+         ly46SD2Ui4JVHmFv/ZWhvhnSkRtt40dDABNx9/k1QtROmlApHvlEz092dSCf4Yc5g+na
+         kVHuIQY2PWBRbHihu/7t3FxKsgLRRdgRE1+6GiCG3Au/0sivP1SEyJtyjSwaLmphSOQ/
+         fsTlypl16Rc7XaOhER7wjX1USUuzbnh8xjVFOw/wGhQmk2iexht/mSPPraXHKVN6YE3C
+         K0ow==
+X-Gm-Message-State: AOJu0Yz4f9czh+XuLF76PAkHVJN4oriVr5vBhrSuqYCcLHWZZAIs82sm
+	+1CZ4NcSwrNczIbJWZ/i29ZBLfZH9Y569OdNgX2OwImpi1s=
+X-Google-Smtp-Source: AGHT+IGSUVOjXFSR/cGn3f4kBlZbvoV4yjhb1el12Jgd6DM4TG4KNi3qSihIryO0XnrYjyagLoQ/4jxOHuO4dbdmWvc=
+X-Received: by 2002:a05:6e02:1d18:b0:35f:b0d1:985b with SMTP id
+ i24-20020a056e021d1800b0035fb0d1985bmr4988409ila.3.1705186237787; Sat, 13 Jan
+ 2024 14:50:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231220095750.307829-1-arend.vanspriel@broadcom.com>
- <87h6kcq1yn.fsf@kernel.org> <ec670eed-cd63-470c-b37b-76925a1ec6d5@broadcom.com>
- <87r0il8ahu.fsf@kernel.org>
-In-Reply-To: <87r0il8ahu.fsf@kernel.org>
-From: Eric Curtin <ecurtin@redhat.com>
-Date: Sat, 13 Jan 2024 19:11:50 +0000
-Message-ID: <CAOgh=Fy2CUxhU7=0JfY+y1Bc59Pz+mVMbEYvMJ0zL7Z=s4LSug@mail.gmail.com>
-Subject: Re: [PATCH] wifi: orphan brcm80211 broadcom drivers
-To: Kalle Valo <kvalo@kernel.org>
-Cc: Arend van Spriel <arend.vanspriel@broadcom.com>, linux-wireless@vger.kernel.org, 
-	Fernando Piacente <nandopiacente@gmail.com>, Paolo Perego <pperego@suse.de>, 
-	Sreekanth <chvsreekanth@gmail.com>, Izabela Bakollari <ibakolla@redhat.com>, 
-	Daniel Berlin <dberlin@dberlin.org>, Hector Martin <marcan@marcan.st>
+References: <36972ff5-0c48-4bd2-8f9a-9649bfa24225@lexina.in>
+ <11c7333aee0d45fd9fbfc65f6e2a3aa2@realtek.com> <216e8522-fa56-4d54-ae32-74c6008a2075@lexina.in>
+ <0969b1ca039e423dbcc41de18db023c6@realtek.com> <cc54a8b2-2fea-406c-8d4a-24ddfd34f983@lexina.in>
+ <0be52db8941c4e609bfda6c69a14184e@realtek.com>
+In-Reply-To: <0be52db8941c4e609bfda6c69a14184e@realtek.com>
+From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Date: Sat, 13 Jan 2024 23:50:26 +0100
+Message-ID: <CAFBinCDT2Pj_BYqCtk+i7y8LPU2qwah-4Scdq29ONBqs3wt0pQ@mail.gmail.com>
+Subject: Re: rtw88: rtl8822cs AP mode not working
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: Viacheslav <adeep@lexina.in>, 
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, 
+	=?UTF-8?Q?Jernej_=C5=A0krabec?= <jernej.skrabec@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, 13 Jan 2024 at 16:27, Kalle Valo <kvalo@kernel.org> wrote:
->
-> (sorry for the really late reply, I was on a long vacation)
->
-> Arend van Spriel <arend.vanspriel@broadcom.com> writes:
->
-> > On 12/20/2023 5:21 PM, Kalle Valo wrote:
+Hi Ping-Ke,
+
+On Fri, Jan 12, 2024 at 1:40=E2=80=AFAM Ping-Ke Shih <pkshih@realtek.com> w=
+rote:
+[...]
+> > dmesg/journalctl is clean. No messages related to wifi.
 > >
-> >> I am so sad about this but I fully understand your decision. You have
-> >> the best knowledge of Broadcom devices and you were involved with
-> >> brcm80211 from the beginning. I can guess how difficult lately it has
-> >> been for you to find time for upstream work but even still you
-> >> replied to my mails and tried to support the community the best you
-> >> can, which I appreciated so much. Everyone else in the corporate
-> >> world usually just ignore, you did not do that.
-> >
-> > Hi Kalle,
-> >
-> > Maybe I should reconsider, because it feels a bit like high school and
-> > the bullies won. I agreed that I can not meet expectations and the
-> > main aspect being testing patch series on fair amount of devices.
 >
-> Yes, please reconsider! I didn't apply your patch because I was hoping I
-> could still convince you to continue maintaining it :)
->
+> Have you ever tried AP mode on SDIO interface wifi cards, like RTL8822CS?
+> It seems no beacon issues properly, but no obvious errors during starting
+> AP mode.
+I haven't tried AP mode before (and I think* that Jernej also hasn't tried =
+it).
 
-+1 on @Arend van Spriel reconsidering.
+> I don't have this kind of wifi cards, could you help to check if AP mode
+> works in your side?
+I'll check that in the next few days.
+Also I'm wondering where code enables beacons (is it
+rtw_core_enable_beacon() or is there another relevant function?).
+Knowing that would be helpful to analyze this further.
 
-We need another maintainer also though, for the amount of users of
-this code, this is undermaintained.
 
-CC'ing @Izabela Bakollari who has a Raspberry Pi 4 coming in the mail
-who offered to help test patches, help with maintenance, etc. She has
-been in contact with @Daniel Berlin .
-
-> I fully understand the challenges of maintaining a huge driver like
-> brcm80211: no proper documentation available, several companies
-> involved, a plethora of firmware branches which might work a bit
-> different and so many hardware variants.
->
-> > Do you think we can address that with some help? For instance by
-> > reaching out to several people in the community that use brcmfmac and
-> > ask them if they are willing to regularly test on wireless-testing. My
-> > experience with community members is not so great as they tend to
-> > loose interest and move on, but it may be worth a try. Let me know
-> > what you think.
->
-> I definitely think that getting a small community around brcm80211 would
-> be beneficial. For example, a good start would be to create a dedicated
-> list for brcm80211 where people can discuss about anything from testing
-> to developing patches and all between. lists.infradead.org is one good
-> place and there's also lists.linux.dev.
->
-> Let me know if there's anything I can help with. I have also CCed people
-> who expressed interest in helping brcm80211 development before the
-> holidays.
->
-> --
-> https://patchwork.kernel.org/project/linux-wireless/list/
->
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
->
-
+Thank you,
+Martin
 
