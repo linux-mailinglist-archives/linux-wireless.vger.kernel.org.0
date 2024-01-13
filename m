@@ -1,49 +1,49 @@
-Return-Path: <linux-wireless+bounces-1873-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1874-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D24182CAEA
-	for <lists+linux-wireless@lfdr.de>; Sat, 13 Jan 2024 10:44:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8F3982CBD0
+	for <lists+linux-wireless@lfdr.de>; Sat, 13 Jan 2024 11:28:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2038DB21B67
-	for <lists+linux-wireless@lfdr.de>; Sat, 13 Jan 2024 09:44:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF7DD1C21FDF
+	for <lists+linux-wireless@lfdr.de>; Sat, 13 Jan 2024 10:28:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11C5AEC5;
-	Sat, 13 Jan 2024 09:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 463F118EA8;
+	Sat, 13 Jan 2024 10:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fvqWcWqt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j3PCvLUm"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA2C1A3F
-	for <linux-wireless@vger.kernel.org>; Sat, 13 Jan 2024 09:44:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C082C433C7;
-	Sat, 13 Jan 2024 09:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2183118E38;
+	Sat, 13 Jan 2024 10:26:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 371DDC433F1;
+	Sat, 13 Jan 2024 10:26:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705139079;
-	bh=1hvDFRV24xJJKkGg0jYO3A1J1KEhcdugByo3G/yj7Dw=;
+	s=k20201202; t=1705141616;
+	bh=JFI/sg9PG8bnP6shSEl0PaqRN8tCMbNQeFxvpUYK4tU=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=fvqWcWqtTrHxllZ17lSGnOeJciIg627H7RZMhPFhyFImMVvFRvItdWCFNMzykwYli
-	 AOi/QuzHHoFDTMhVsVFh5Cc3VpREmNQK5q3717epyYGH+weq3RZuB9Pnsqz8NbM6Yd
-	 gNnezmr46goqzAaazhkQLF4dV4IkYzdCabnenIShU64nbvMMEwPuxBLMpc0olEf5dj
-	 QGRWWDx+H3lYFM6oQhTyTLR51GlrsZNLjUJKmw7sAbbhodVD4hTi7YsgQGa8DVVVhM
-	 wG4itUKEtvsBf/4tAsUJPyb/YzCSLygfAWmPGziSo0jwjJ+Lo4+aEGFZpxinAm65IF
-	 +tmMeJiyFoDsg==
+	b=j3PCvLUmYJFRYZIniSh4Vb51WLTdh9rzhALwc4E+Xmuzk37yJU3u3xFKcKB5inpTl
+	 dQ6lcf8I0iSHk5+9ZHifVBhNp1/jGC2L6pzO9hzdFFteQi00Muw2CnaMG+MaNyOkOS
+	 RJpuoKU45iQfqdWJ0jblk+EZQUNyGdR7+JYZhusJDCaZC4uLYbDHHjpDeYUceCS38+
+	 NWCfN/85UD0KJ2O5DC05YEYdzliR6OpnFRPkeMGIsBfhE51pHv+jX2Bs/22UXjvSeM
+	 ivZVD93M3fZbOkayTKoh/o88yKvrKWBlspoIjBwNavs9+Vom9kKWAA1RY/LOCPuMNa
+	 +O1uruxECWEaw==
 From: Kalle Valo <kvalo@kernel.org>
-To: Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc: Sriram R <quic_srirrama@quicinc.com>,  <ath12k@lists.infradead.org>,
-  <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH 07/12] wifi: ath12k: Cache vdev configs before vdev create
-References: <20240111045045.28377-1-quic_srirrama@quicinc.com>
-	<20240111045045.28377-8-quic_srirrama@quicinc.com>
-	<c35da30b-335c-4418-9d7c-0784ec9e8d30@quicinc.com>
-Date: Sat, 13 Jan 2024 11:44:36 +0200
-In-Reply-To: <c35da30b-335c-4418-9d7c-0784ec9e8d30@quicinc.com> (Jeff
-	Johnson's message of "Fri, 12 Jan 2024 09:23:59 -0800")
-Message-ID: <87cyu5h8jf.fsf@kernel.org>
+To: Johan Hovold <johan@kernel.org>
+Cc: Johan Hovold <johan+linaro@kernel.org>,  Jeff Johnson
+ <quic_jjohnson@quicinc.com>,  ath11k@lists.infradead.org,
+  linux-wireless@vger.kernel.org,  linux-kernel@vger.kernel.org
+Subject: ath11k: checking RCU usage
+References: <20231019153115.26401-1-johan+linaro@kernel.org>
+	<87o7goxget.fsf@kernel.org> <ZTfgJCBxsNv3bVjv@hovoldconsulting.com>
+Date: Sat, 13 Jan 2024 12:26:53 +0200
+In-Reply-To: <ZTfgJCBxsNv3bVjv@hovoldconsulting.com> (Johan Hovold's message
+	of "Tue, 24 Oct 2023 17:17:56 +0200")
+Message-ID: <87zfx98r6a.fsf_-_@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -53,37 +53,51 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Jeff Johnson <quic_jjohnson@quicinc.com> writes:
+(old discussion, changing title)
 
->> +static int ath12k_mac_op_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
->> +				 struct ieee80211_vif *vif, struct ieee80211_sta *sta,
->> +				 struct ieee80211_key_conf *key)
->> +{
->> +	struct ath12k_hw *ah = ath12k_hw_to_ah(hw);
->> +	struct ath12k *ar;
->> +	struct ath12k_vif *arvif = ath12k_vif_to_arvif(vif);
->> +	int ret;
->> +
->> +	/* BIP needs to be done in software */
->> +	if (key->cipher == WLAN_CIPHER_SUITE_AES_CMAC ||
->> +	    key->cipher == WLAN_CIPHER_SUITE_BIP_GMAC_128 ||
->> +	    key->cipher == WLAN_CIPHER_SUITE_BIP_GMAC_256 ||
->> +	    key->cipher == WLAN_CIPHER_SUITE_BIP_CMAC_256)
->> +		return 1;
+Johan Hovold <johan@kernel.org> writes:
+
+> On Tue, Oct 24, 2023 at 05:07:38PM +0300, Kalle Valo wrote:
 >
-> I know this in the existing code, but what is the significance of
-> returning 1? Should this be returning a -errno like the error cases that
-> follow?
+>> Johan Hovold <johan+linaro@kernel.org> writes:
+>> 
+>> > RCU lockdep reported suspicious RCU usage when accessing the temperature
+>> > sensor. Inspection revealed that the DFS radar event code was also
+>> > missing the required RCU read-side critical section marking.
+>> >
+>> > Johan
+>> >
+>> >
+>> > Changes in v2
+>> >  - add the missing rcu_read_unlock() to an
+>> >    ath11k_wmi_pdev_temperature_event() error path as noticed by Jeff
+>> >
+>> >
+>> > Johan Hovold (2):
+>> >   wifi: ath11k: fix temperature event locking
+>> >   wifi: ath11k: fix dfs radar event locking
+>> 
+>> Thanks for the fixes. I really like using lockdep_assert_held() to
+>> document if a function requires some lock held, is there anything
+>> similar for RCU?
+>
+> Not really, but the checking is instead built into the primitives like
+> rcu_dereference() and enabled whenever CONFIG_PROVE_RCU is set.
+>
+> For some special cases, we have open-coded checks like:
+>
+> 	RCU_LOCKDEP_WARN(!rcu_read_lock_held());
+>
+> which similarly depend on CONFIG_PROVE_RCU or simply
+>
+> 	WARN_ON_ONCE(!rcu_read_lock_held());
 
-It's to use software encryption, from mac80211.h:
+I just found out that sparse has __must_hold():
 
- * Note that in the case that the @IEEE80211_HW_SW_CRYPTO_CONTROL flag is
- * set, mac80211 will not automatically fall back to software crypto if
- * enabling hardware crypto failed. The set_key() call may also return the
- * value 1 to permit this specific key/algorithm to be done in software.
+https://lore.kernel.org/linux-wireless/87sf31hhfp.fsf@kernel.org/
 
-Yeah, this is confusing. IMHO there should be a define or an enum for
-this value.
+That looks promising, should we start using that in ath11k and ath12k to
+check our RCU usage?
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
