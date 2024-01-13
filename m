@@ -1,121 +1,104 @@
-Return-Path: <linux-wireless+bounces-1848-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1849-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 090AC82C813
-	for <lists+linux-wireless@lfdr.de>; Sat, 13 Jan 2024 00:43:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA40B82C841
+	for <lists+linux-wireless@lfdr.de>; Sat, 13 Jan 2024 01:17:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADE9B28695F
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jan 2024 23:43:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 465D41F23164
+	for <lists+linux-wireless@lfdr.de>; Sat, 13 Jan 2024 00:17:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C3741BDE0;
-	Fri, 12 Jan 2024 23:42:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5236F195;
+	Sat, 13 Jan 2024 00:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W9kUiCYH"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="O6fTP8+l"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9DA21BDC6
-	for <linux-wireless@vger.kernel.org>; Fri, 12 Jan 2024 23:42:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-40e586a62f7so40454565e9.2
-        for <linux-wireless@vger.kernel.org>; Fri, 12 Jan 2024 15:42:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705102954; x=1705707754; darn=vger.kernel.org;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0RIte2y7M1FzOvcoNgzcBwvhRHKktRIdQOz1wPsAZgM=;
-        b=W9kUiCYHaxEAUOMWeHxNaHIjQIf7I63kWWdQroQdzBp+9moijsCUS5+Xt7smfr+FKn
-         a+b0URi0VKk8zenn9mVzvPyVwU3un+tjppcOPkeM8+3gjASB2s98RmQiMOKWE+3/Luo8
-         tpyIksnrorJEapdmhjkagKZscixnmYj8Wk8jWEqapdOvw0pS62/QJvZTvPHk/FQVmkCL
-         +xnwBo3Gf3TlVirRucHCYyU48h4j2HlivxMxXL5QSg3ISrw7kowm/+Q3I+CnvJ5W9RGq
-         XBE92iTiR+614Uth+lg1AL7aC2a77c1GduVUPzaSKLX+3jcJQlTNGsSdBROExjuSM+5M
-         Yn7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705102954; x=1705707754;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=0RIte2y7M1FzOvcoNgzcBwvhRHKktRIdQOz1wPsAZgM=;
-        b=NzkRsOH8w24xfofENU7qo77dxXEzvHcdjIKjk7NJ3q0w7pEcekGChIOBM/xrzsPhv5
-         qwHO/xuGkdKr6rqc03DUP3n2E7+8tCEPeqR5c/Af1IksY9u0HeR4r4nwQFbQ51jx5VaP
-         sDR5F6JiUb/u5WtKBf7a5XtcjDHc1X3SgKCaq6ymKLghXD6TwLv/NPWr2duLgcHaEgiY
-         wOQkMIHRYxA0g4j+nQV6IR3vjbd4lVWkPYje8N3rJ8k+lEv0p06i8ErQZ0SlEBln7CWU
-         NzZl3+uAXJDQq49/OWPRLP9CSMa90wJUjq7mvpcSsyio46Efdx88Nf5yN+az3oS351Ti
-         Br4w==
-X-Gm-Message-State: AOJu0YyLU9CZRd/xcCIxFNDgLm4gbPPsPFwRVHtKU7VoUx/VZQYqIVJq
-	7DwxpirPTdKhgfonPHdDdrvAbRgHNMQ=
-X-Google-Smtp-Source: AGHT+IEP/Uj1Bys0EzaSWrkFiaQgZEI1HLv+SREkBqW96YF+PFtnIVS6hEjf8O6OUrRVW2kTLnECug==
-X-Received: by 2002:a05:600c:6a06:b0:40e:66ac:dfd7 with SMTP id jj6-20020a05600c6a0600b0040e66acdfd7mr963474wmb.87.1705102953703;
-        Fri, 12 Jan 2024 15:42:33 -0800 (PST)
-Received: from [192.168.1.50] ([81.196.40.51])
-        by smtp.gmail.com with ESMTPSA id l22-20020a05600c4f1600b0040d6b91efd9sm11180319wmq.44.2024.01.12.15.42.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Jan 2024 15:42:33 -0800 (PST)
-Message-ID: <19a3e023-0eaa-4096-9f78-a2c8e909cb54@gmail.com>
-Date: Sat, 13 Jan 2024 01:42:29 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B23232CA6
+	for <linux-wireless@vger.kernel.org>; Sat, 13 Jan 2024 00:17:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40CLTef7023820;
+	Sat, 13 Jan 2024 00:17:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=qcppdkim1; bh=nj3uCmE
+	hK6vA4FWBqxM9U8NjlK52grLTPrAiSnDTfMQ=; b=O6fTP8+lHN5TSuJETZdkphq
+	iGjqZhE5aEeBSS/CWlF43IpMzh48xJB4YECX8u5MFW9+92AMMnTI1gncaaqGucWm
+	9dI/9KQeEuDBD7TvKMKOcD8xePAN03DsUyD9/1oN2dDbopEAWccmPkTleV6v+QF0
+	8zLIeu5KHMVz9YYSmQZkuW/HiR2YkPV1f29jmaW7AD7IWQzxQupsFuo/BCs3+lJi
+	SmkdRftBvrmJbioZ25AfzSOcq0jO9DT61mVcvjaqKdfcPSA/uwaqmrcVG6uFxLLZ
+	pKJX5G5tQqHPhSyDIdHrw/ceNymTpr0uJIdIwgI/QElv5HAM47svpw+WNKjArGg=
+	=
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vkb74gkau-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 13 Jan 2024 00:17:16 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40D0HFpJ009715
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 13 Jan 2024 00:17:15 GMT
+Received: from hu-periyasa-blr.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Fri, 12 Jan 2024 16:17:14 -0800
+From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Karthikeyan Periyasamy
+	<quic_periyasa@quicinc.com>
+Subject: [PATCH 0/2] wifi: ath12k: Enable QMI MLO helper function on QCN9274
+Date: Sat, 13 Jan 2024 05:46:57 +0530
+Message-ID: <20240113001659.1022465-1-quic_periyasa@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Ping-Ke Shih <pkshih@realtek.com>,
- Larry Finger <Larry.Finger@lwfinger.net>
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: [PATCH] wifi: rtlwifi: rtl8192de: Don't read register in
- _rtl92de_query_rxphystatus
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: U-6OyepdyNLulrBYsDmVTZ9KWVGH3VrN
+X-Proofpoint-ORIG-GUID: U-6OyepdyNLulrBYsDmVTZ9KWVGH3VrN
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-09_01,2023-12-07_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 suspectscore=0
+ adultscore=0 lowpriorityscore=0 malwarescore=0 phishscore=0
+ impostorscore=0 priorityscore=1501 bulkscore=0 mlxlogscore=506
+ clxscore=1015 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2311290000 definitions=main-2401130000
 
-Instead of reading bit 9 of RFPGA0_XA_HSSIPARAMETER2 every time a frame
-is received, just use rtlphy->cck_high_power, which is initialised in
-_rtl92d_phy_bb_config(). That bit never changes anyway.
+Currently, the MLO parameter is not enabled in the QMI host capability
+message for the QCN9274 platform due to hardware specific constraints.
+To address this, refactor the ath12k_host_cap_parse_mlo() function and
+introduce a new QMI PHY message to allow for enabling the MLO parameter
+in the QMI host capability request message.
 
-With this change _rtl92de_query_rxphystatus() can be shared with the
-upcoming USB driver. The USB driver can't read registers in this
-function because register reading can sleep.
+Karthikeyan Periyasamy (2):
+  wifi: ath12k: Refactor QMI MLO host capability helper function
+  wifi: ath12k: Add QMI PHY capability learn support
 
-Compile tested only.
+ drivers/net/wireless/ath/ath12k/core.c |   1 +
+ drivers/net/wireless/ath/ath12k/hw.c   |   9 ++
+ drivers/net/wireless/ath/ath12k/hw.h   |   3 +
+ drivers/net/wireless/ath/ath12k/qmi.c  | 154 +++++++++++++++++++++++--
+ drivers/net/wireless/ath/ath12k/qmi.h  |  17 +++
+ 5 files changed, 174 insertions(+), 10 deletions(-)
 
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
----
-"That bit never changes anyway." <- I'm 99% sure this is true.
----
- drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c
-index 02ac69c08ed3..192982ec8152 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c
-@@ -42,6 +42,7 @@ static void _rtl92de_query_rxphystatus(struct ieee80211_hw *hw,
- 				       bool packet_beacon)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
-+	struct rtl_phy *rtlphy = &(rtlpriv->phy);
- 	struct rtl_ps_ctl *ppsc = rtl_psc(rtlpriv);
- 	struct phy_sts_cck_8192d *cck_buf;
- 	s8 rx_pwr_all, rx_pwr[4];
-@@ -62,9 +63,7 @@ static void _rtl92de_query_rxphystatus(struct ieee80211_hw *hw,
- 		u8 report, cck_highpwr;
- 		cck_buf = (struct phy_sts_cck_8192d *)p_drvinfo;
- 		if (ppsc->rfpwr_state == ERFON)
--			cck_highpwr = (u8) rtl_get_bbreg(hw,
--						 RFPGA0_XA_HSSIPARAMETER2,
--						 BIT(9));
-+			cck_highpwr = rtlphy->cck_high_power;
- 		else
- 			cck_highpwr = false;
- 		if (!cck_highpwr) {
+base-commit: dc1702f7b1340dd741bca1005ab52a2c92cc6c84
 -- 
-2.43.0
+2.34.1
+
 
