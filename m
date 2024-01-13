@@ -1,118 +1,108 @@
-Return-Path: <linux-wireless+bounces-1879-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1880-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A43D82CDC3
-	for <lists+linux-wireless@lfdr.de>; Sat, 13 Jan 2024 17:46:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7ABB82CDEF
+	for <lists+linux-wireless@lfdr.de>; Sat, 13 Jan 2024 18:29:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1357F1C21305
-	for <lists+linux-wireless@lfdr.de>; Sat, 13 Jan 2024 16:46:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE5A11C20DBF
+	for <lists+linux-wireless@lfdr.de>; Sat, 13 Jan 2024 17:29:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8FE84C6F;
-	Sat, 13 Jan 2024 16:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DC70538A;
+	Sat, 13 Jan 2024 17:29:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gJq2aJdk"
+	dkim=pass (2048-bit key) header.d=pappasbrent.com header.i=@pappasbrent.com header.b="RYEqEo+S"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from h5.fbrelay.privateemail.com (h5.fbrelay.privateemail.com [162.0.218.228])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6DA24C65;
-	Sat, 13 Jan 2024 16:46:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 929E8C433C7;
-	Sat, 13 Jan 2024 16:46:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705164396;
-	bh=VUclddjcZSmohXUG3CiQi1jaoQVq1DeF2h3vDJ15cM0=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=gJq2aJdkcuDG9gBOJkweuzqeMhuqAU2QPyebUb1kQqVYfhyYvlge5Y6HWGGnexmXf
-	 4010MJ57Uqa8naU4hMWlZ4HRMmnYs8QUK5C73K0bXtYvYhxm1cVdY1lF3pbtKWv54I
-	 rgPFo60mMj2vxShOfggXIfIsmG95e/tSdAaJgFxPLeTVedFt+QSy8LUceWpHdDuItv
-	 tYiNNOWKV7CfGN5zlAKkB5l4WPleLnLT7iYgdEjNM+UI5rqlAUleTW8j/+F5TDj3T/
-	 VvmEKMYVatzICO7F25ETsEd/+G7JS3I6/TQjOAE4sxMLtjdToqXuOcy65Ul1P1J1um
-	 SpfrazZltzCTw==
-From: Kalle Valo <kvalo@kernel.org>
-To: Michael =?utf-8?Q?B=C3=BCsch?= <m@bues.ch>
-Cc: Yang Li <yang.lee@linux.alibaba.com>,  Larry.Finger@lwfinger.net,
-  linux-wireless@vger.kernel.org,  b43-dev@lists.infradead.org,
-  linux-kernel@vger.kernel.org,  Abaci Robot <abaci@linux.alibaba.com>
-Subject: wireless: cleanup patches
-References: <20231220011209.127586-1-yang.lee@linux.alibaba.com>
-	<20231220102307.7dd1f187@barney>
-Date: Sat, 13 Jan 2024 18:46:32 +0200
-In-Reply-To: <20231220102307.7dd1f187@barney> ("Michael =?utf-8?Q?B=C3=BCs?=
- =?utf-8?Q?ch=22's?= message of
-	"Wed, 20 Dec 2023 10:23:07 +0100")
-Message-ID: <87mst989lj.fsf_-_@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EE5B523D;
+	Sat, 13 Jan 2024 17:29:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pappasbrent.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pappasbrent.com
+Received: from MTA-12-4.privateemail.com (mta-12-1.privateemail.com [198.54.122.106])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by h5.fbrelay.privateemail.com (Postfix) with ESMTPSA id EC46160636;
+	Sat, 13 Jan 2024 17:29:33 +0000 (UTC)
+Received: from mta-12.privateemail.com (localhost [127.0.0.1])
+	by mta-12.privateemail.com (Postfix) with ESMTP id BD54518001B5;
+	Sat, 13 Jan 2024 12:29:24 -0500 (EST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=pappasbrent.com;
+	s=default; t=1705166964;
+	bh=xJhkIgx9nO8naQQ8a/I0VKfrFGYxd2LGCl8rS/IP/vg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=RYEqEo+S0zGRoAnXvv9Vyg9mZu4AJI/Huv68zC6g05qFVvvhtbHXJk3HiBqWf/j92
+	 0E/aFdTN0bAqaI0+Pno0tKI2um2t+EB2QYQEJpLJI1bHLxK02v6JHdg9pEo7XkUnRX
+	 f5svPYcj7TFaGU2YbwPeQegRqAwYooroj0WZJfr9SIjWP73+QcRs+cn4FrRHx/IxXD
+	 HCuclvLT3VI6WiOH4GOkifb9zg5eyUAZj+yNAuBiovZgOytCiUptq7Msg4afWtLuP6
+	 cpMRP+PGqKiWFt8Z+2n2hsUcDEOjD8v9dDZl53Q4dA0of+diHUTCmdz332L8R26YS+
+	 kRQxSx9u/X3Fw==
+Received: from bpappas-XPS-13-9310.cfl.rr.com (050-088-208-203.res.spectrum.com [50.88.208.203])
+	by mta-12.privateemail.com (Postfix) with ESMTPA;
+	Sat, 13 Jan 2024 12:29:13 -0500 (EST)
+From: Brent Pappas <bpappas@pappasbrent.com>
+To: bpappas@pappasbrent.com
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	johannes@sipsolutions.net,
+	kuba@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com
+Subject: [PATCH v2] wifi: mac80211: tx: Add __must_hold() annotation
+Date: Sat, 13 Jan 2024 12:27:21 -0500
+Message-ID: <20240113172719.40364-3-bpappas@pappasbrent.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240113011145.10888-2-bpappas@pappasbrent.com>
+References: <20240113011145.10888-2-bpappas@pappasbrent.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-Michael B=C3=BCsch <m@bues.ch> writes:
+Annotates ieee80211_set_beacon_cntdwn() with a __must_hold() annotation to
+make it clear that ieee80211_set_beacon_cntdwn() is only intended to be
+called when the caller has a lock on the argument "link."
 
-> On Wed, 20 Dec 2023 09:12:09 +0800
-> Yang Li <yang.lee@linux.alibaba.com> wrote:
->
->> Closes: https://bugzilla.openanolis.cn/show_bug.cgi?id=3D7783
->
-> This link is not publicly accessible.
->
->> a/drivers/net/wireless/broadcom/b43legacy/dma.c +++
->> b/drivers/net/wireless/broadcom/b43legacy/dma.c @@ -174,8 +174,8 @@
->> static struct b43legacy_dmaring *priority_to_txring( {
->>  	struct b43legacy_dmaring *ring;
->>=20=20
->> -/*FIXME: For now we always run on TX-ring-1 */
->> -return dev->dma.tx_ring1;
->> +	/*FIXME: For now we always run on TX-ring-1 */
->> +	return dev->dma.tx_ring1;
->>=20=20
->>  	/* 0 =3D highest priority */
->>  	switch (queue_priority) {
->
-> Thanks for your patch.
->
-> But actually, I am kind of annoyed by the constant stream of whitespace
-> fixing and dead code removal and other trivial changes to this legacy
-> driver.
->
-> It does not improve the code to add two tabs to this _ancient_ code.
->
-> And I can already see the next patch coming that removes the dead code
-> after this FIXME return. And then the next patch will come to remove
-> this function altogether, and so on and so on.
->
-> This driver has a _lot_ of such code, because it is based on reverse
-> engineered knowledge with many many unknowns.
->
-> IMO this just creates additional maintenance work and pressure on our
-> maintainers for no good reason.
+Signed-off-by: Brent Pappas <bpappas@pappasbrent.com>
+---
+Changelog:
+v1 -> v2: Include linux/compiler_types.h with angle brackets instead of
+          quotes.
 
-Yeah, the cleanup patches are a problem. Even more so that there can be
-people who deliberately try to submit compromised code:
+ net/mac80211/tx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-https://lore.kernel.org/lkml/202105051005.49BFABCE@keescook/
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 314998fdb1a5..ca7adace6a9c 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -10,6 +10,7 @@
+  * Transmit and frame generation functions.
+  */
+ 
++#include <linux/compiler_types.h>
+ #include <linux/kernel.h>
+ #include <linux/slab.h>
+ #include <linux/skbuff.h>
+@@ -4974,6 +4975,7 @@ static int ieee80211_beacon_add_tim(struct ieee80211_sub_if_data *sdata,
+ static void ieee80211_set_beacon_cntdwn(struct ieee80211_sub_if_data *sdata,
+ 					struct beacon_data *beacon,
+ 					struct ieee80211_link_data *link)
++	__must_hold(link)
+ {
+ 	u8 *beacon_data, count, max_count = 1;
+ 	struct probe_resp *resp;
+-- 
+2.43.0
 
-brtfs has a pretty good summary about their feelings towards cleanup
-patches:
-
-https://btrfs.readthedocs.io/en/latest/dev/Developer-s-FAQ.html#how-not-to-=
-start
-
-Johannes and me have been talking that we should write something similar
-for wireless. Maybe we should start by adding that link to our
-documentation :)
-
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
 
