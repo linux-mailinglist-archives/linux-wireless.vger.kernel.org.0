@@ -1,191 +1,149 @@
-Return-Path: <linux-wireless+bounces-1886-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1887-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 400E682D09A
-	for <lists+linux-wireless@lfdr.de>; Sun, 14 Jan 2024 13:43:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F261582D0EC
+	for <lists+linux-wireless@lfdr.de>; Sun, 14 Jan 2024 15:36:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB75528202B
-	for <lists+linux-wireless@lfdr.de>; Sun, 14 Jan 2024 12:43:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8488E281E2B
+	for <lists+linux-wireless@lfdr.de>; Sun, 14 Jan 2024 14:36:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF6D023B9;
-	Sun, 14 Jan 2024 12:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A37C21C14;
+	Sun, 14 Jan 2024 14:36:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H3rgaUDv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qFZabdzF"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B2AA23A6
-	for <linux-wireless@vger.kernel.org>; Sun, 14 Jan 2024 12:43:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1705236201; x=1736772201;
-  h=date:from:to:cc:subject:message-id;
-  bh=bKmSKiRXXFMRp56SGDlwEQWFHStxxpeegbk+LTEJV3c=;
-  b=H3rgaUDvpbuybFmW009KFJBEu/bG7ynKCuDfrmGHGUc+7By0DMVNggxy
-   n6UHgd9Sn8QX3ed3kWaAEvmJ6s2xIOA0Wxj1o4w0ZSG0N4ybV2cQTjb5B
-   CewatJJzN4x5ScZp//vpEZgj/WIq92VF5PkkCEzzyXawmcqPI7Lc+PCCx
-   An1PtqojHFq9huZOtIyK4r+Jz0fOXlj04iqzvVPh3woHKjh46PtplUeP1
-   jLEyx+Pdz+YIFLnksQ2145XcxzLwYzJpOjSY9gcTmIXMp79jiSc2ZbQso
-   iKObbcZjYhcQVx6b42ElTiKE+cr+/VirbEXLjzPZuHxkYhSPyxxFZO0mh
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10952"; a="20934493"
-X-IronPort-AV: E=Sophos;i="6.04,194,1695711600"; 
-   d="scan'208";a="20934493"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2024 04:43:20 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10952"; a="817559268"
-X-IronPort-AV: E=Sophos;i="6.04,194,1695711600"; 
-   d="scan'208";a="817559268"
-Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
-  by orsmga001.jf.intel.com with ESMTP; 14 Jan 2024 04:43:18 -0800
-Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rOzpc-000BVW-0u;
-	Sun, 14 Jan 2024 12:43:16 +0000
-Date: Sun, 14 Jan 2024 20:43:03 +0800
-From: kernel test robot <lkp@intel.com>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
- linux-wireless@vger.kernel.org
-Subject: [wireless-next:main] BUILD SUCCESS
- 178cc55d5129556e290cc05e152138037930419f
-Message-ID: <202401142001.mn9TyDoU-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8487B23BD;
+	Sun, 14 Jan 2024 14:36:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFAB7C433C7;
+	Sun, 14 Jan 2024 14:36:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705242966;
+	bh=2PtpfqJ1Dl46SH4Umiey2RyYGOKuTs63MJB/h3a4M90=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=qFZabdzF5pOjQs656gKVK0gH+mgP3pEf+4EeaIwow7aSlieh5afrXBG1eX3Uumz5k
+	 1onuNWe2M3kKUT2hexzcOiDFUslI4eY+tOdszeL3Nk/5WwKAbZKCaJK+i7k5jYXYSX
+	 JZGwJ3tzaACb7BgdKoY49gVTrvo4u+kaPFjuhiXWdUshnJjAyBETSRZWVC394EGdJ+
+	 u2/5kyNEchoXCUKcLt8mMKgrnYpu7AOJhoqlOMtrvoI6P2bzoXBFZkDNz3MpLpdclx
+	 XQQEUWeX6Gx69nGH18ADbUIY9fzZryD05CVtinNaisoE7G0rPjdSrxrEz+zm4sAbKM
+	 0Sb7NlSrBz/3A==
+From: Kalle Valo <kvalo@kernel.org>
+To: Baochen Qiang <quic_bqiang@quicinc.com>
+Cc: James Prestwood <prestwoj@gmail.com>,  <linux-wireless@vger.kernel.org>,
+  <ath11k@lists.infradead.org>,
+    David Woodhouse <dwmw2@infradead.org>, iommu@lists.linux.dev
+Subject: Re: ath11k and vfio-pci support
+References: <adcb785e-4dc7-4c4a-b341-d53b72e13467@gmail.com>
+	<8734v5zhol.fsf@kernel.org>
+	<87fa5220-6fd9-433d-879b-c55ac67a0748@gmail.com>
+	<87r0ipcn7j.fsf@kernel.org>
+	<356e0b05-f396-4ad7-9b29-c492b54af834@gmail.com>
+	<26119c3f-9012-47bb-948e-7e976d4773a7@quicinc.com>
+	<87mstccmk6.fsf@kernel.org>
+	<df9fd970-5af3-468c-b1f1-18f91215cf44@gmail.com>
+	<8734v4auc4.fsf@kernel.org>
+	<e8878979-1f3f-4635-a716-9ac381c617d9@gmail.com>
+	<285b84d0-229c-4c83-a7d6-4c3c23139597@quicinc.com>
+	<4607fb37-8227-49a3-9e8c-10c9b117ec7b@gmail.com>
+	<3d22a730-aee5-4f2a-9ddc-b4b5bd4d62fe@quicinc.com>
+Date: Sun, 14 Jan 2024 16:36:02 +0200
+In-Reply-To: <3d22a730-aee5-4f2a-9ddc-b4b5bd4d62fe@quicinc.com> (Baochen
+	Qiang's message of "Sun, 14 Jan 2024 20:37:03 +0800")
+Message-ID: <87il3w7zjh.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: 178cc55d5129556e290cc05e152138037930419f  wifi: rtlwifi: rtl_usb: Use sync register writes
+Baochen Qiang <quic_bqiang@quicinc.com> writes:
 
-elapsed time: 2575m
+>>> Strange that still fails. Are you now seeing this error in your
+>>> host or your Qemu? or both?
+>>> Could you share your test steps? And if you can share please be as
+>>> detailed as possible since I'm not familiar with passing WLAN
+>>> hardware to a VM using vfio-pci.
+>>
+>> Just in Qemu, the hardware works fine on my host machine.
+>> I basically follow this guide to set it up, its written in the
+>> context of GPUs/libvirt but the host setup is exactly the same. By
+>> no means do you need to read it all, once you set the vfio-pci.ids
+>> and see your unclaimed adapter you can stop:
+>> https://wiki.archlinux.org/title/PCI_passthrough_via_OVMF
+>> In short you should be able to set the following host kernel options
+>> and reboot (assuming your motherboard/hardware is compatible):
+>> intel_iommu=on iommu=pt vfio-pci.ids=17cb:1103
+>> Obviously change the device/vendor IDs to whatever ath11k hw you
+>> have. Once the host is rebooted you should see your wlan adapter as
+>> UNCLAIMED, showing the driver in use as vfio-pci. If not, its likely
+>> your motherboard just isn't compatible, the device has to be in its
+>> own IOMMU group (you could try switching PCI ports if this is the
+>> case).
+>> I then build a "kvm_guest.config" kernel with the driver/firmware
+>> for ath11k and boot into that with the following Qemu options:
+>> -enable-kvm -device -vfio-pci,host=<PCI address>
+>> If it seems easier you could also utilize IWD's test-runner which
+>> handles launching the Qemu kernel automatically, detecting any
+>> vfio-devices and passes them through and mounts some useful host
+>> folders into the VM. Its actually a very good general purpose tool
+>> for kernel testing, not just for IWD:
+>> https://git.kernel.org/pub/scm/network/wireless/iwd.git/tree/doc/test-runner.txt
+>> Once set up you can just run test-runner with a few flags and you'll
+>> boot into a shell:
+>> ./tools/test-runner -k <kernel-image> --hw --start /bin/bash
+>> Please reach out if you have questions, thanks for looking into
+>> this.
+>
+> Thanks for these details. I reproduced this issue by following your guide.
+>
+> Seems the root cause is that the MSI vector assigned to WCN6855 in
+> qemu is different with that in host. In my case the MSI vector in qemu
+> is [Address: fee00000  Data: 0020] while in host it is [Address:
+> fee00578 Data: 0000]. So in qemu ath11k configures MSI vector
+> [Address: fee00000 Data: 0020] to WCN6855 hardware/firmware, and
+> firmware uses that vector to fire interrupts to host/qemu. However
+> host IOMMU doesn't know that vector because the real vector is
+> [Address: fee00578  Data: 0000], as a result host blocks that
+> interrupt and reports an error, see below log:
+>
+> [ 1414.206069] DMAR: DRHD: handling fault status reg 2
+> [ 1414.206081] DMAR: [INTR-REMAP] Request device [02:00.0] fault index
+> 0x0 [fault reason 0x25] Blocked a compatibility format interrupt
+> request
+> [ 1414.210334] DMAR: DRHD: handling fault status reg 2
+> [ 1414.210342] DMAR: [INTR-REMAP] Request device [02:00.0] fault index
+> 0x0 [fault reason 0x25] Blocked a compatibility format interrupt
+> request
+> [ 1414.212496] DMAR: DRHD: handling fault status reg 2
+> [ 1414.212503] DMAR: [INTR-REMAP] Request device [02:00.0] fault index
+> 0x0 [fault reason 0x25] Blocked a compatibility format interrupt
+> request
+> [ 1414.214600] DMAR: DRHD: handling fault status reg 2
+>
+> While I don't think there is a way for qemu/ath11k to get the real MSI
+> vector from host, I will try to read the vfio code to check further.
+> Before that, to unblock you, a possible hack is to hard code the MSI
+> vector in qemu to the same as in host, on condition that the MSI
+> vector doesn't change.
 
-configs tested: 108
-configs skipped: 1
+Baochen, awesome that you were able to debug this further. Now we at
+least know what's the problem.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+I'll add David Woodhouse and the iommu list in hopes that they could
+give us ideas how to solve this. Full thread here:
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                   randconfig-001-20240114   gcc  
-arc                   randconfig-002-20240114   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                         bcm2835_defconfig   clang
-arm                                 defconfig   clang
-arm                           imxrt_defconfig   gcc  
-arm                      integrator_defconfig   gcc  
-arm                         lpc18xx_defconfig   gcc  
-arm                   randconfig-001-20240114   clang
-arm                   randconfig-002-20240114   clang
-arm                   randconfig-003-20240114   clang
-arm                   randconfig-004-20240114   clang
-arm                        spear6xx_defconfig   gcc  
-arm64                            allmodconfig   clang
-arm64                             allnoconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                 randconfig-001-20240114   clang
-arm64                 randconfig-002-20240114   clang
-arm64                 randconfig-003-20240114   clang
-arm64                 randconfig-004-20240114   clang
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-csky                  randconfig-001-20240114   gcc  
-csky                  randconfig-002-20240114   gcc  
-hexagon                           allnoconfig   clang
-hexagon                             defconfig   clang
-hexagon               randconfig-001-20240114   clang
-hexagon               randconfig-002-20240114   clang
-i386                             allmodconfig   clang
-i386                              allnoconfig   clang
-i386                             allyesconfig   clang
-i386                                defconfig   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20240114   gcc  
-loongarch             randconfig-002-20240114   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                        mvme147_defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                              allnoconfig   clang
-mips                             allyesconfig   gcc  
-mips                           ip22_defconfig   gcc  
-mips                malta_qemu_32r6_defconfig   clang
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                 randconfig-001-20240114   gcc  
-nios2                 randconfig-002-20240114   gcc  
-openrisc                         allyesconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                randconfig-001-20240114   gcc  
-parisc                randconfig-002-20240114   gcc  
-powerpc                          allmodconfig   clang
-powerpc                          allyesconfig   clang
-powerpc                    gamecube_defconfig   clang
-powerpc                      ppc6xx_defconfig   gcc  
-powerpc               randconfig-001-20240114   clang
-powerpc               randconfig-002-20240114   clang
-powerpc               randconfig-003-20240114   clang
-powerpc                  storcenter_defconfig   gcc  
-powerpc                     stx_gp3_defconfig   gcc  
-powerpc64             randconfig-001-20240114   clang
-powerpc64             randconfig-002-20240114   clang
-powerpc64             randconfig-003-20240114   clang
-riscv                            allmodconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                 randconfig-001-20240114   clang
-riscv                 randconfig-002-20240114   clang
-riscv                          rv32_defconfig   clang
-s390                  randconfig-001-20240114   gcc  
-s390                  randconfig-002-20240114   gcc  
-sh                               alldefconfig   gcc  
-sh                               allmodconfig   gcc  
-sh                               j2_defconfig   gcc  
-sh                    randconfig-001-20240114   gcc  
-sh                    randconfig-002-20240114   gcc  
-sh                           se7343_defconfig   gcc  
-sh                           se7721_defconfig   gcc  
-sparc64               randconfig-001-20240114   gcc  
-sparc64               randconfig-002-20240114   gcc  
-um                    randconfig-001-20240114   clang
-um                    randconfig-002-20240114   clang
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   clang
-x86_64                              defconfig   gcc  
-x86_64                          rhel-8.3-rust   clang
-xtensa                randconfig-001-20240114   gcc  
-xtensa                randconfig-002-20240114   gcc  
+https://lore.kernel.org/all/adcb785e-4dc7-4c4a-b341-d53b72e13467@gmail.com/
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
