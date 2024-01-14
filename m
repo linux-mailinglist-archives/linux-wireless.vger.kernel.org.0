@@ -1,48 +1,47 @@
-Return-Path: <linux-wireless+bounces-1890-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1891-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CC6882D112
-	for <lists+linux-wireless@lfdr.de>; Sun, 14 Jan 2024 16:09:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43AB882D125
+	for <lists+linux-wireless@lfdr.de>; Sun, 14 Jan 2024 16:17:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0110828222C
-	for <lists+linux-wireless@lfdr.de>; Sun, 14 Jan 2024 15:09:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D508E28221A
+	for <lists+linux-wireless@lfdr.de>; Sun, 14 Jan 2024 15:17:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 986FA523D;
-	Sun, 14 Jan 2024 15:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DC4523C6;
+	Sun, 14 Jan 2024 15:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dffpTODq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jfudFVxB"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F2057E
-	for <linux-wireless@vger.kernel.org>; Sun, 14 Jan 2024 15:09:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1863C433F1;
-	Sun, 14 Jan 2024 15:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CE3E7E;
+	Sun, 14 Jan 2024 15:17:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4871C433C7;
+	Sun, 14 Jan 2024 15:17:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705244986;
-	bh=KonVwvysHSEyFJbAjmUrw7TyfJrPr/NzwAPENtus/EA=;
+	s=k20201202; t=1705245462;
+	bh=jollSml2+OM4Sa0F+IOmTJVXk53FpYSt8/GqaTL4RT0=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=dffpTODqOU1KwpxGdKP+9C7E1MKQ/ZTW8B5SxTSMpeDocSxUTih+LLZWsYBedL1C4
-	 y29rroLqpHLE7E7W7KRL+TWjVIFpALLQb/sa+zwZZqaEtsTjAVZssYc95BFH+OipWC
-	 3IPdCzrqc1ZeU9gywp9p5luxqBfd4LDnY6TdQlucEBJ90tsjIcfwMdCsc0Xw1nvpnI
-	 Q2r/DtYPZLxGuoW+4yORkTKR8xF+kf1IsZs4bU+dbF3lcnr2CzXwjsrGcjtOcVR7Ga
-	 t/oyLUU3yYZSu35h3dfNYVH861ebw6eoP4DSP24GXcF9GzVi2yZwIlEtdK4hYf6/lL
-	 f+7VDUbuik0UA==
+	b=jfudFVxBK71G0oW06zEROGpzorXRfUYL12QXEEG4r3NWje6A6JYor4oR7Mj5YhuOx
+	 BmZvb5epwfyNICraTP/4Fdmxtw5gyMOdbie4ehD50UPQXfZpwsIyOASzqDM482qMgo
+	 3x4a/zMwxSGHmKlJggrPo0lw5l3IaE80WNw64Rujj6oJQAaEpqw9G4HxIxlrF0GRop
+	 /FUM5IXWoKICk8QBy+8xOjbOZxSG3BT70cllLbHBGefA/Gi2qloa6bKji1mrKRqswu
+	 ZEjhO0QzBtaHjVHUa8YOW+mwDDmq3Y2eI1iNcd3AQhvTeNsNsXknMf3ExQPUvIr+jO
+	 dVLGn00aVkIiQ==
 From: Kalle Valo <kvalo@kernel.org>
-To: benjamin@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,  lenb@kernel.org,  Benjamin Berg
- <benjamin.berg@intel.com>,  ath11k@lists.infradead.org
-Subject: Re: [PATCH] wifi: ath11k: rely on mac80211 debugfs handling for vif
-References: <20240111170629.1257217-1-benjamin@sipsolutions.net>
-	<877ckfip1g.fsf@kernel.org>
-Date: Sun, 14 Jan 2024 17:09:42 +0200
-In-Reply-To: <877ckfip1g.fsf@kernel.org> (Kalle Valo's message of "Thu, 11 Jan
-	2024 22:38:19 +0200")
-Message-ID: <87a5p87xzd.fsf@kernel.org>
+To: Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc: <ath11k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>,
+  <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] wifi: ath11k: document HAL_RX_BUF_RBM_SW4_BM
+References: <20240111-document-hal_rx_buf_rbm_sw4_bm-v1-1-ad277e8ab3cc@quicinc.com>
+Date: Sun, 14 Jan 2024 17:17:39 +0200
+In-Reply-To: <20240111-document-hal_rx_buf_rbm_sw4_bm-v1-1-ad277e8ab3cc@quicinc.com>
+	(Jeff Johnson's message of "Thu, 11 Jan 2024 11:24:23 -0800")
+Message-ID: <874jfg7xm4.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -52,23 +51,21 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Kalle Valo <kvalo@kernel.org> writes:
+Jeff Johnson <quic_jjohnson@quicinc.com> writes:
 
-> benjamin@sipsolutions.net writes:
+> Commit 7636c9a6e7d7 ("wifi: ath11k: Add multi TX ring support for WCN6750")
+> added HAL_RX_BUF_RBM_SW4_BM to enum hal_rx_buf_return_buf_manager. However,
+> as flagged by the kernel-doc script, the documentation was not updated:
 >
->> From: Benjamin Berg <benjamin.berg@intel.com>
->>
->> mac80211 started to delete debugfs entries in certain cases, causing a
->> conflict between ath11k also trying to delete them later on.
+> drivers/net/wireless/ath/ath11k/hal.h:689: warning: Enum value 'HAL_RX_BUF_RBM_SW4_BM' not described in enum 'hal_rx_buf_return_buf_manager'
+>
+> So update the documentation. No functional changes, compile tested only.
+>
+> Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-Instead of calling it a conflict I would prefer to clearly document that
-ath11k was crashing so badly that it was unusable.
-
->>
->> Fixes: 0a3d898ee9a8 ("wifi: mac80211: add/remove driver debugfs entries as appropriate")
->> Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=218364
-
-s/Bugzilla:/Closes:/
+I'm not really a fan of kernel-doc in wireless drivers, it feels more
+unnecessary work. Should we remove the kernel-doc markings from ath11k
+altogether?
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
