@@ -1,130 +1,158 @@
-Return-Path: <linux-wireless+bounces-1883-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1884-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB99482CEFD
-	for <lists+linux-wireless@lfdr.de>; Sat, 13 Jan 2024 23:55:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 091BD82CF65
+	for <lists+linux-wireless@lfdr.de>; Sun, 14 Jan 2024 01:27:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DBFB1C20F90
-	for <lists+linux-wireless@lfdr.de>; Sat, 13 Jan 2024 22:55:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96CA81F21F9A
+	for <lists+linux-wireless@lfdr.de>; Sun, 14 Jan 2024 00:27:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C12318036;
-	Sat, 13 Jan 2024 22:55:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D98B8652;
+	Sun, 14 Jan 2024 00:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ASjtNXuI"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Sjq0zdzT"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C48471802B
-	for <linux-wireless@vger.kernel.org>; Sat, 13 Jan 2024 22:55:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-40e6275e9beso13215365e9.1
-        for <linux-wireless@vger.kernel.org>; Sat, 13 Jan 2024 14:55:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705186530; x=1705791330; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=scyGgWx+S19nzeMm3XKHE4H/wDN57mlqC/FIRkzKKfg=;
-        b=ASjtNXuIkkLeE/RKxc2+mQOY507Gurh0zlyv9wjx2u+wndcagV6PeWJicFQgyvBSJn
-         y8AikifNXfRgj0TN2Q11aR43siRa+Iz2N3ROaLgVXMnIOpVzw2mTHSWfK/vBXUxDh0n8
-         dqfei5J07QTyVeoDH+5D+7nS25iQnrm9McnJBXvUAO1aLpF3hH5babQQaWz7kkGHL5qW
-         LLa9wBmbuhQS9F99CvWUJmsgO/Vh0C+0uIRSEddPHj7t8Oe5CVrw0ywHLXS877bE3nnX
-         nF48TizE7StBj+nIBbua/jaQKjDei6xIhjOw33xtqqfF+C5/yy0VpDzV5iBu1N3+2y4W
-         1N2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705186530; x=1705791330;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=scyGgWx+S19nzeMm3XKHE4H/wDN57mlqC/FIRkzKKfg=;
-        b=PzeVvxh4Cjv4TZQl+xBQiThyspeEAg4kEoQhTbRAEUX+YYlfbUfActS6Y+a5GI1FHN
-         KMpiL4l0Js2h/zAY86M4aiGruVlkOfDPCKJ1yx87R56B6sHvA39MBQDvTsVru7ZEf3Os
-         +gLW6kn9HGCIV5pwSXlt5s0qNTmCT6EtSLwX74R0QzWJEiZ5+27d2SRInMDu5KvEporE
-         WTCJ0b5tQ+CPYX0ka9VOiuaP3YOj8ClB0zKHwM5785++QH7X5pjud7y6z8HJStxbq8Gf
-         sgARJE9kurZvm+SSKVC+fPhOC5CXS0cWrcPMWj6maNN7sIeUw3sxKF65WbIrhbMXY9xM
-         yxwg==
-X-Gm-Message-State: AOJu0YyRz1vyYtfse5TRbhBqbD4PLIQ38ZxzGhYNgkMUZBDK0WV6kZ1z
-	zhY5i6TtaKDamOCkyMKyr8s=
-X-Google-Smtp-Source: AGHT+IFB8VBN5ap4rcu6ShvdCqgRi4rTcAbynsJ8yfsELTnJKDaFCVTGTWnrVzdP/aCci8nJ0iD16Q==
-X-Received: by 2002:a05:600c:4e8d:b0:40e:4a60:4f4b with SMTP id f13-20020a05600c4e8d00b0040e4a604f4bmr1514689wmq.121.1705186529714;
-        Sat, 13 Jan 2024 14:55:29 -0800 (PST)
-Received: from [192.168.1.50] ([81.196.40.51])
-        by smtp.gmail.com with ESMTPSA id m35-20020a05600c3b2300b0040e541ddcb1sm10720483wms.33.2024.01.13.14.55.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 13 Jan 2024 14:55:29 -0800 (PST)
-Message-ID: <d53d8311-efaf-44a2-ac4f-accbbdce2a40@gmail.com>
-Date: Sun, 14 Jan 2024 00:55:28 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05EB7E
+	for <linux-wireless@vger.kernel.org>; Sun, 14 Jan 2024 00:26:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1705192017; x=1736728017;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=I2mL3c3ERQHPa3sjMYvumkTu7KOXnWLKiyk7o7BzM2k=;
+  b=Sjq0zdzTc4uBDG2+XYic/o3cxEutT5CMUMT3sXts2ibaRQTP2Fgt9GOe
+   DQLCcPeyCGQK58IxxrLsA7CZVT7drsUFit+l2r+LG4oG5eyEUzAb1WPKV
+   JwFuWVLIRvQjYb8vZsZTv0ySOFkNW4TSEr7v3fg0TBxM9drZBTAKKddVC
+   4+QiEK7FYFmpvFUg6/WcewdXjEDBAeHFxHrS2FcIPanKVghJK1hDCh3h2
+   b1tC+Xr+mFoDfyqrO0HlXWxmYeXx5h/C2lFqTZlIs+mlK0UHwrkPSklM7
+   KLO65vaH70HU46Qkmznu4YBXbwPqFSvQvkJZgg1S3bJNZ//dH1OaeL/wT
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10952"; a="6174185"
+X-IronPort-AV: E=Sophos;i="6.04,193,1695711600"; 
+   d="scan'208";a="6174185"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2024 16:26:56 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10952"; a="873736301"
+X-IronPort-AV: E=Sophos;i="6.04,193,1695711600"; 
+   d="scan'208";a="873736301"
+Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
+  by FMSMGA003.fm.intel.com with ESMTP; 13 Jan 2024 16:26:54 -0800
+Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rOoKy-000B2W-1Z;
+	Sun, 14 Jan 2024 00:26:52 +0000
+Date: Sun, 14 Jan 2024 08:25:57 +0800
+From: kernel test robot <lkp@intel.com>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev, Ping-Ke Shih <pkshih@realtek.com>,
+	Larry Finger <Larry.Finger@lwfinger.net>
+Subject: Re: [PATCH] wifi: rtlwifi: Speed up firmware loading for USB
+Message-ID: <202401140857.MXysoKVh-lkp@intel.com>
+References: <0d262acd-4f94-41c2-8d15-83486aeb976b@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: wifi: rtlwifi: Speed up firmware loading for USB
-To: Kalle Valo <kvalo@kernel.org>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
- Ping-Ke Shih <pkshih@realtek.com>, Larry Finger <Larry.Finger@lwfinger.net>
-References: <6351ca3f-6b06-4fe1-ace7-6e9d67497dce@gmail.com>
- <87o7dphha3.fsf@kernel.org> <e72fdcf0-2d2c-496e-a9be-8b554dec9fd4@gmail.com>
- <87v87x8kft.fsf@kernel.org>
-Content-Language: en-US
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <87v87x8kft.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0d262acd-4f94-41c2-8d15-83486aeb976b@gmail.com>
 
-On 13/01/2024 14:52, Kalle Valo wrote:
-> Bitterblue Smith <rtl8821cerfe2@gmail.com> writes:
-> 
->> On 13/01/2024 08:35, Kalle Valo wrote:
->>
->>> Bitterblue Smith <rtl8821cerfe2@gmail.com> writes:
->>>
->>>> Currently it takes almost 6 seconds to upload the firmware for RTL8192CU
->>>> (and 11 seconds for RTL8192DU). That's because the firmware is uploaded
->>>> one byte at a time.
->>>>
->>>> Also, after plugging the device, the firmware gets uploaded three times
->>>> before a connection to the AP is established.
->>>>
->>>> Maybe this is fine for most users, but when testing changes to the
->>>> driver it's really annoying to wait so long.
->>>>
->>>> Speed up the firmware upload by writing chunks of 64 bytes at a time.
->>>> This way it takes about 110 ms for RTL8192CU (and about 210 ms for
->>>> RTL8192DU).
->>>>
->>>> PCI devices could upload it in chunks of 4 bytes, but I don't have any
->>>> to test and commit 89d32c9071aa ("rtlwifi: Download firmware as bytes
->>>> rather than as dwords") decided otherwise anyway.
->>>>
->>>> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
->>>
->>> There's another version so I assume I can drop this one:
->>>
->>> https://patchwork.kernel.org/project/linux-wireless/patch/0d262acd-4f94-41c2-8d15-83486aeb976b@gmail.com/
->>>
->>
->> Yes, you can drop this one. Sorry about that. I forgot to write
->> "[PATCH]" in the subject. I thought you wouldn't even notice this
->> one because of that.
-> 
-> I think patchwork assumes that any mail with a diff is a patch, like
-> this one:
-> 
-> https://patchwork.kernel.org/project/linux-wireless/patch/c7b331edd65b66521a6605177d654e55051568a3.camel@toradex.com/
-> 
-> So "[PATCH]" is more like a visual clue. BTW usually it's a good idea to
-> mark the next mail as v2 and explain in changelog what happened/changed,
-> that way everyone are on the same page. But no big deal, just trying to
-> make this smooth for everyone :)
-> 
+Hi Bitterblue,
 
-Ahh, got it. I will remember to do that if something like this happens again.
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on wireless-next/main]
+[cannot apply to wireless/main linus/master v6.7 next-20240112]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Bitterblue-Smith/wifi-rtlwifi-Speed-up-firmware-loading-for-USB/20240113-035326
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+patch link:    https://lore.kernel.org/r/0d262acd-4f94-41c2-8d15-83486aeb976b%40gmail.com
+patch subject: [PATCH] wifi: rtlwifi: Speed up firmware loading for USB
+config: csky-randconfig-r113-20240114 (https://download.01.org/0day-ci/archive/20240114/202401140857.MXysoKVh-lkp@intel.com/config)
+compiler: csky-linux-gcc (GCC) 13.2.0
+reproduce: (https://download.01.org/0day-ci/archive/20240114/202401140857.MXysoKVh-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202401140857.MXysoKVh-lkp@intel.com/
+
+sparse warnings: (new ones prefixed by >>)
+>> drivers/net/wireless/realtek/rtlwifi/efuse.c:1329:41: sparse: sparse: incorrect type in argument 3 (different base types) @@     expected unsigned int [usertype] val32 @@     got restricted __le32 [usertype] @@
+   drivers/net/wireless/realtek/rtlwifi/efuse.c:1329:41: sparse:     expected unsigned int [usertype] val32
+   drivers/net/wireless/realtek/rtlwifi/efuse.c:1329:41: sparse:     got restricted __le32 [usertype]
+
+vim +1329 drivers/net/wireless/realtek/rtlwifi/efuse.c
+
+  1289	
+  1290	static void _rtl_fw_block_write_usb(struct ieee80211_hw *hw, u8 *buffer, u32 size)
+  1291	{
+  1292		struct rtl_priv *rtlpriv = rtl_priv(hw);
+  1293		u32 blockcount, blockcount8, blockcount4;
+  1294		u32 remain8 = 0, remain4 = 0, remain = 0;
+  1295		const u32 blocksize = 64;
+  1296		const u32 blocksize8 = 8;
+  1297		const u32 blocksize4 = 4;
+  1298		u32 i, offset;
+  1299	
+  1300		blockcount = size / blocksize;
+  1301		remain8 = size % blocksize;
+  1302		for (i = 0; i < blockcount; i++) {
+  1303			offset = i * blocksize;
+  1304			rtl_write_chunk(rtlpriv,
+  1305					START_ADDRESS + offset,
+  1306					blocksize, buffer + offset);
+  1307		}
+  1308	
+  1309		if (remain8) {
+  1310			offset = blockcount * blocksize;
+  1311			blockcount8 = remain8 / blocksize8;
+  1312			remain4 = remain8 % blocksize8;
+  1313	
+  1314			for (i = 0; i < blockcount8; i++)
+  1315				rtl_write_chunk(rtlpriv,
+  1316						START_ADDRESS + offset + i * blocksize8,
+  1317						blocksize8,
+  1318						buffer + offset + i * blocksize8);
+  1319		}
+  1320	
+  1321		if (remain4) {
+  1322			offset += blockcount8 * blocksize8;
+  1323			blockcount4 = remain4 / blocksize4;
+  1324			remain = remain8 % blocksize4;
+  1325	
+  1326			for (i = 0; i < blockcount4; i++)
+  1327				rtl_write_dword(rtlpriv,
+  1328						START_ADDRESS + offset + i * blocksize4,
+> 1329						cpu_to_le32(*(u32 *)(buffer + offset + i)));
+  1330		}
+  1331	
+  1332		if (remain) {
+  1333			offset += blockcount4 * blocksize4;
+  1334	
+  1335			for (i = 0; i < remain; i++)
+  1336				rtl_write_byte(rtlpriv, START_ADDRESS + offset + i,
+  1337					       *(buffer + offset + i));
+  1338		}
+  1339	}
+  1340	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
