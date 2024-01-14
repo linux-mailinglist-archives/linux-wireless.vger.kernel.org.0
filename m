@@ -1,80 +1,77 @@
-Return-Path: <linux-wireless+bounces-1889-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1890-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6916582D109
-	for <lists+linux-wireless@lfdr.de>; Sun, 14 Jan 2024 16:01:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CC6882D112
+	for <lists+linux-wireless@lfdr.de>; Sun, 14 Jan 2024 16:09:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F8191C20A7C
-	for <lists+linux-wireless@lfdr.de>; Sun, 14 Jan 2024 15:01:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0110828222C
+	for <lists+linux-wireless@lfdr.de>; Sun, 14 Jan 2024 15:09:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3637A23C6;
-	Sun, 14 Jan 2024 15:01:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 986FA523D;
+	Sun, 14 Jan 2024 15:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xe4D1PxZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dffpTODq"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 182087E;
-	Sun, 14 Jan 2024 15:01:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A519C433C7;
-	Sun, 14 Jan 2024 15:01:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F2057E
+	for <linux-wireless@vger.kernel.org>; Sun, 14 Jan 2024 15:09:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1863C433F1;
+	Sun, 14 Jan 2024 15:09:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705244462;
-	bh=aRieRp79l/B2y5vjKinEX+iYJeaHanzDnbFW5Ls4f7c=;
-	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=Xe4D1PxZsT3269QVH2gTyELMT7aGAoEsaGU8YG8fdfFBHVPNNrrblvLV2MoCokdqg
-	 D1XUnCNMRzsvgdXhvczZx/35lGmUOQbtCs5U2zb5aZv2rtpQbmphTUJSCz/KbjQNNx
-	 5+ZwukFf9axgEUtA7mZGYogLkaZivYrVUAn8xXRQ0ZGLRipyvAcZIAt/DPeGYaieiS
-	 xQQeiLfA0iTewi5iApesC35R+hUr0rQ8z6INWobFL8LtOR09iA0vZkUqIcozYVohLY
-	 fihuo/wsCduIvBOj8oULK6w18TCjfyQVU6BIevIBXgZyL5KZHqrdNJnQTifROaLFIC
-	 y632ne2aIyD7A==
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1705244986;
+	bh=KonVwvysHSEyFJbAjmUrw7TyfJrPr/NzwAPENtus/EA=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=dffpTODqOU1KwpxGdKP+9C7E1MKQ/ZTW8B5SxTSMpeDocSxUTih+LLZWsYBedL1C4
+	 y29rroLqpHLE7E7W7KRL+TWjVIFpALLQb/sa+zwZZqaEtsTjAVZssYc95BFH+OipWC
+	 3IPdCzrqc1ZeU9gywp9p5luxqBfd4LDnY6TdQlucEBJ90tsjIcfwMdCsc0Xw1nvpnI
+	 Q2r/DtYPZLxGuoW+4yORkTKR8xF+kf1IsZs4bU+dbF3lcnr2CzXwjsrGcjtOcVR7Ga
+	 t/oyLUU3yYZSu35h3dfNYVH861ebw6eoP4DSP24GXcF9GzVi2yZwIlEtdK4hYf6/lL
+	 f+7VDUbuik0UA==
+From: Kalle Valo <kvalo@kernel.org>
+To: benjamin@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org,  lenb@kernel.org,  Benjamin Berg
+ <benjamin.berg@intel.com>,  ath11k@lists.infradead.org
+Subject: Re: [PATCH] wifi: ath11k: rely on mac80211 debugfs handling for vif
+References: <20240111170629.1257217-1-benjamin@sipsolutions.net>
+	<877ckfip1g.fsf@kernel.org>
+Date: Sun, 14 Jan 2024 17:09:42 +0200
+In-Reply-To: <877ckfip1g.fsf@kernel.org> (Kalle Valo's message of "Thu, 11 Jan
+	2024 22:38:19 +0200")
+Message-ID: <87a5p87xzd.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 1/3] wifi: ath12k: Remove unnecessary struct qmi_txn
- initializers
-From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240111-qmi-cleanup-v2-1-53343af953d5@quicinc.com>
-References: <20240111-qmi-cleanup-v2-1-53343af953d5@quicinc.com>
-To: Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc: Jeff Johnson <quic_jjohnson@quicinc.com>, <ath12k@lists.infradead.org>,
- <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170524445957.1421352.9255954399937351219.kvalo@kernel.org>
-Date: Sun, 14 Jan 2024 15:01:01 +0000 (UTC)
+Content-Type: text/plain
 
-Jeff Johnson <quic_jjohnson@quicinc.com> wrote:
+Kalle Valo <kvalo@kernel.org> writes:
 
-> Currently most of the ath12k QMI messaging functions define their
-> struct qmi_txn variables with a {} initializer. However, all of these
-> functions subsequently call qmi_txn_init(), and the very first thing
-> that function does is zero the struct. Hence, the initializers are
-> unnecessary. Since these consume code space and cpu cycles, remove
-> them.
-> 
-> No functional changes, compile tested only.
-> 
-> Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+> benjamin@sipsolutions.net writes:
+>
+>> From: Benjamin Berg <benjamin.berg@intel.com>
+>>
+>> mac80211 started to delete debugfs entries in certain cases, causing a
+>> conflict between ath11k also trying to delete them later on.
 
-3 patches applied to ath-next branch of ath.git, thanks.
+Instead of calling it a conflict I would prefer to clearly document that
+ath11k was crashing so badly that it was unusable.
 
-59cf57ab3dee wifi: ath12k: Remove unnecessary struct qmi_txn initializers
-2e82b5f09a97 wifi: ath12k: Add missing qmi_txn_cancel() calls
-6d2b0a066941 wifi: ath12k: Use initializers for QMI message buffers
+>>
+>> Fixes: 0a3d898ee9a8 ("wifi: mac80211: add/remove driver debugfs entries as appropriate")
+>> Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=218364
+
+s/Bugzilla:/Closes:/
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240111-qmi-cleanup-v2-1-53343af953d5@quicinc.com/
+https://patchwork.kernel.org/project/linux-wireless/list/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
 
