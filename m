@@ -1,190 +1,149 @@
-Return-Path: <linux-wireless+bounces-1924-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1925-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19C4282D9D3
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jan 2024 14:15:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDC5882D9D6
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jan 2024 14:15:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0E0E1F2265E
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jan 2024 13:15:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F39B51C21BF5
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jan 2024 13:15:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 383DC1773B;
-	Mon, 15 Jan 2024 13:12:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E40B617993;
+	Mon, 15 Jan 2024 13:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="STlw+97/";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZS10GzSt"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="qd5dpkiS"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC1A17753
-	for <linux-wireless@vger.kernel.org>; Mon, 15 Jan 2024 13:12:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Message-ID: <87e04cfe-f8ed-40da-bb2c-edccfe385b6e@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1705324359;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rPGOnDj14iJPgX8XTAeYcQCVAZyjF5Baq4nHAVUrRQg=;
-	b=STlw+97/PRCH3F5fRDNek3RRCfoSZPrtk3oKahYL9qhNMYzt8DiLGxMXRvj/Dc1+k4MRTY
-	sdxy2KTXMUxoJbM5Bsu9gxrDHzxNIt3I7fpW5seqAA8GGswWZS5oTdllRHSis+WH6hVDbg
-	8yE67aHWbpc4X/VI7BJvp6u+M5aVz9/hrmI/Q/pbedjQbDs0N+6t2HnOfORaZuaQIeGz4a
-	Y7TQ4lUZEn6L5NGneYkQ43FM/qRzivQdunRZ1OHMsRjqz+ssQ3Ermd/BkpJ0KPXe+H8Br+
-	Z0VxAH8E6qZbyWcwfh+nKZ/rLCGoxB5Pa5HJgqyHXoYYp6Z8g++DphgqU0Uy0w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1705324359;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rPGOnDj14iJPgX8XTAeYcQCVAZyjF5Baq4nHAVUrRQg=;
-	b=ZS10GzSt7DQgepFR+E/WVxgNoKXyM0uq7CiqVimRZjDoqw+xwPtXW2M8l7g2yMpu4K/ksW
-	Bx5hJIgesyNnJDDQ==
-Date: Mon, 15 Jan 2024 14:12:39 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 000E81798C;
+	Mon, 15 Jan 2024 13:13:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=z3BzOmqIUzMO6UAJIUQ8GAcKK4W9P4/Fhk70+J3UgU0=;
+	t=1705324423; x=1706534023; b=qd5dpkiSzAphXJFZXmns78MO5/1IaI6mRTWuzzw/sjPLt/t
+	G2HGM0iw9v3bfHHZ3DUVNVVLCKuEbOK/JpUUA05fGBw3LyKMhOXiLolTg/tiDhBYIEqhVW6tpeI4Y
+	CDE3l/toHQFh7KEIQO5+/vFjzRrON0QrmT8K3P5qZ8pgduMzvCVMq81e4OT7Kx6G+2UFVfPLBnAUz
+	waF/1zLQhtY8ZpdyHNS9ts8pd7JCQywXVfl6ABsLJau5PUBFjfwH2CTE7WReuVBJgZzpa2d5iDVgw
+	V1S9BRaDlGjOFEnDe/YxQXj5nT0XtDjqjlEvqQR1OIY+RBwos6wCGsrBUhUqAJPg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rPMmT-00000003V7V-1PaZ;
+	Mon, 15 Jan 2024 14:13:33 +0100
+Message-ID: <26d364547d3bbb04800877e899cfebe0e1ec4dc0.camel@sipsolutions.net>
+Subject: Re: [PATCH] wifi: mac80211: tx: Add __must_hold() annotation
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Kalle Valo <kvalo@kernel.org>, Brent Pappas <bpappas@pappasbrent.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>,  linux-wireless@vger.kernel.org,
+ netdev@vger.kernel.org,  linux-kernel@vger.kernel.org
+Date: Mon, 15 Jan 2024 14:13:31 +0100
+In-Reply-To: <87sf31hhfp.fsf@kernel.org>
+References: <20240113011145.10888-2-bpappas@pappasbrent.com>
+	 <87sf31hhfp.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 19/21] wifi: rtl8xxxu: add hw crypto support for AP
- mode
-Content-Language: de-DE
-To: Ping-Ke Shih <pkshih@realtek.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Jes Sorensen <Jes.Sorensen@gmail.com>, Kalle Valo <kvalo@kernel.org>,
- Bitterblue Smith <rtl8821cerfe2@gmail.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Zenm Chen <zenmchen@gmail.com>
-References: <20231221164353.603258-1-martin.kaistra@linutronix.de>
- <20231221164353.603258-20-martin.kaistra@linutronix.de>
- <92fa5949e8094739883e665abb23ac01@realtek.com>
-From: Martin Kaistra <martin.kaistra@linutronix.de>
-In-Reply-To: <92fa5949e8094739883e665abb23ac01@realtek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 
-Hi Ping-Ke,
+On Sat, 2024-01-13 at 08:32 +0200, Kalle Valo wrote:
+>=20
+> >  static void ieee80211_set_beacon_cntdwn(struct ieee80211_sub_if_data *=
+sdata,
+> >  					struct beacon_data *beacon,
+> >  					struct ieee80211_link_data *link)
+> > +	__must_hold(link)
+>=20
+> Oh, never seen __must_hold() before and looks very useful. So does this
+> work with RCU, mutexes and spinlocks?
+>=20
+> In case others are interested, here's the documentation I was able to fin=
+d:
+>=20
+> https://docs.kernel.org/dev-tools/sparse.html#using-sparse-for-lock-check=
+ing
+>=20
 
-Am 12.01.24 um 07:52 schrieb Ping-Ke Shih:
-> Hi Martin,
-> 
->> -----Original Message-----
->> From: Martin Kaistra <martin.kaistra@linutronix.de>
->> Sent: Friday, December 22, 2023 12:44 AM
->> To: linux-wireless@vger.kernel.org
->> Cc: Jes Sorensen <Jes.Sorensen@gmail.com>; Kalle Valo <kvalo@kernel.org>; Ping-Ke Shih
->> <pkshih@realtek.com>; Bitterblue Smith <rtl8821cerfe2@gmail.com>; Sebastian Andrzej Siewior
->> <bigeasy@linutronix.de>
->> Subject: [PATCH v2 19/21] wifi: rtl8xxxu: add hw crypto support for AP mode
->>
-> 
-> [...]
-> 
-> Zenm reported [1] his RTL8192EU and RTL8192FU don't work in station mode,
-> and cause is this patch. Please try if you can reproduce the symptom, and
-> apply my suggestion to see if help.
-> 
-> [1] https://lore.kernel.org/linux-wireless/20240112045104.12282-1-zenmchen@gmail.com/T/#me0940f522249becf49f25bc281f1992c523673f6
+Except it's not actually useful, and looks more useful than it is. IMHO
+it's actually more harmful than anything else.
 
-I managed to find two other Realtek USB Wifi devices that are supported by the 
-rtl8xxxu driver (RTL8188EU and RTL8192CU) and I can reproduce the issue with 
-both of them.
+One might even consider this patch a good example! The function
+ieee80211_set_beacon_cntdwn() is called from a number of places in this
+file, some of which acquire RCU critical section, and some of which
+acquire no locks nor RCU critical section at all. Most of them nest and
+are called in RCU.
 
-I also tried creating a patch with your suggestions and this seems to help.
+However, there's basically no way to get sparse to warn on this. Even
+inserting a function
 
-Looking at it more closely however, I think the main problem is, that 
-fops->max_sec_cam_num is not set for the other variants. Without the additional 
-patch, this causes rtl8xxxu_get_free_sec_cam() to return 0 for pairwise and 
-group key and so using the same spot for both key entries.
+void test(void);
+void test(void)
+{
+        ieee80211_set_beacon_cntdwn(NULL, NULL, NULL);
+}
 
-I then created a patch using the numbers suggested by Bitterblue Smith in [1] 
-and using 32 for RTL8723AU and RTL8192CU like the rtlwifi driver seems to do. 
-This also seems to solve the issue reported, even without reserving the first 4 
-slots for group keys.
-
-Do you think we need both patches?
-
-[1] 
-https://lore.kernel.org/linux-wireless/f73b5afc-d69f-4a7c-8bf0-877a45327e0b@gmail.com/
-
-> 
->>
->> +static int rtl8xxxu_get_free_sec_cam(struct ieee80211_hw *hw)
->> +{
->> +       struct rtl8xxxu_priv *priv = hw->priv;
-> 
-> We need to reserve entries 0~3 for keys that aren't pairwise key.
-> 
->> +
->> +       return find_first_zero_bit(priv->cam_map, priv->fops->max_sec_cam_num);
->> +}
->> +
->>   static int rtl8xxxu_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
->>                              struct ieee80211_vif *vif,
->>                              struct ieee80211_sta *sta,
->>                              struct ieee80211_key_conf *key)
->>   {
->> +       struct rtl8xxxu_vif *rtlvif = (struct rtl8xxxu_vif *)vif->drv_priv;
->>          struct rtl8xxxu_priv *priv = hw->priv;
->>          struct device *dev = &priv->udev->dev;
->>          u8 mac_addr[ETH_ALEN];
-> 
-> [...]
-> 
->> @@ -6899,16 +6915,28 @@ static int rtl8xxxu_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
->>
->>          switch (cmd) {
->>          case SET_KEY:
->> -               key->hw_key_idx = key->keyidx;
->> +
->> +               retval = rtl8xxxu_get_free_sec_cam(hw);
->> +               if (retval < 0)
->> +                       return -EOPNOTSUPP;
->> +
-> 
-> if (key->flags & IEEE80211_KEY_FLAG_PAIRWISE)
-> 	key->hw_key_idx = retval;
-> else
-> 	key->hw_key_idx = key->keyidx;
-> 
->> +               key->hw_key_idx = retval;
->> +
->> +               if (vif->type == NL80211_IFTYPE_AP && !(key->flags & IEEE80211_KEY_FLAG_PAIRWISE))
->> +                       rtlvif->hw_key_idx = key->hw_key_idx;
->> +
->>                  key->flags |= IEEE80211_KEY_FLAG_GENERATE_IV;
->>                  rtl8xxxu_cam_write(priv, key, mac_addr);
->> +               set_bit(key->hw_key_idx, priv->cam_map);
->>                  retval = 0;
->>                  break;
->>          case DISABLE_KEY:
->>                  rtl8xxxu_write32(priv, REG_CAM_WRITE, 0x00000000);
->>                  val32 = CAM_CMD_POLLING | CAM_CMD_WRITE |
->> -                       key->keyidx << CAM_CMD_KEY_SHIFT;
->> +                       key->hw_key_idx << CAM_CMD_KEY_SHIFT;
->>                  rtl8xxxu_write32(priv, REG_CAM_CMD, val32);
->> +               rtlvif->hw_key_idx = 0xff;
->> +               clear_bit(key->hw_key_idx, priv->cam_map);
-> 
-> Shouldn't swap these two statements? I missed that during reviewing.
-
-I don't think that would make a difference. rtlvif->hw_key_idx is set for use in 
-rtl8xxxu_tx() and the second line uses key->hw_key_idx to clear the map entry.
-
-> 
-> 
->>                  retval = 0;
->>                  break;
->>          default:
->> --
->> 2.39.2
-> 
+will not cause sparse to complain, where this *clearly* doesn't hold an
+locks.
 
 
+Also, as we (should) all know, the argument to __acquires(),
+__releases() and __must_check() is pretty much ignored. I tried to fix
+this in sparse many years ago, some code even got merged (and then
+reverted), and if the experience tells me anything then that it's pretty
+much not fixable.
+
+__acquires() and __releases() at least are useful for tracking that you
+don't have a mismatch, e.g. a function that __acquires() but then takes
+a lock in most paths but forgot one, for example. With __must_hold(),
+this really isn't the case.
+
+And then we could argue that at least it has a documentation effect, but
+... what does it even mean to "hold 'link'"? There isn't even a lock,
+mutex or otherwise, in the link. You can't "own" a reference to it, or
+anything like that. The closest thing in current kernels would be to
+maybe see if you have the wiphy mutex, but that's likely not the case in
+these paths and RCU was used to get to the link struct ...
+
+
+IOW, I find this lacking from an implementation/validation point of
+view, and lacking if not outright confusing from a documentation point
+of view. Much better to put something lockdep_assert_held() or similar
+into the right places.
+
+As for your comment about RCU in ath11k (which points back to this
+thread): I don't find
+
+	RCU_LOCKDEP_WARN(!rcu_read_lock_held());
+or
+	WARN_ON_ONCE(!rcu_read_lock_held());
+
+very persuasive, it's much better to have it checked with
+rcu_dereference_protected(), rcu_dereference_check(), the condition
+argument to list_for_each_rcu(), or (in the case of wiphy) our wrappers
+around these like wiphy_dereference(). I cannot think of any case where
+you'd want to ensure that some code is in an RCU critical section
+without it actually using RCU - and if it does you have
+rcu_dereference() and all those things that (a) check anyway, and also
+(b) serve as their own documentation.
+
+
+Anyway, long story short: I don't see value in this patch and won't be
+applying it unless somebody here can convince me otherwise, ideally
+addressing the concerns stated above.
+
+johannes
 
