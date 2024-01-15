@@ -1,118 +1,104 @@
-Return-Path: <linux-wireless+bounces-1927-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1929-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 627BB82DB88
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jan 2024 15:43:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C524A82DC0D
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jan 2024 16:06:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 106C128208C
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jan 2024 14:43:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5B271C21C69
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jan 2024 15:06:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71A561799E;
-	Mon, 15 Jan 2024 14:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DBE617980;
+	Mon, 15 Jan 2024 15:06:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GN3oz/kl"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="e1hVGCI9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [217.70.178.240])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95C617995
-	for <linux-wireless@vger.kernel.org>; Mon, 15 Jan 2024 14:39:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a2a17f3217aso975851066b.2
-        for <linux-wireless@vger.kernel.org>; Mon, 15 Jan 2024 06:39:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705329571; x=1705934371; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=rUt6qUSC7rZj+/61nIeLHFSyBQOSIsG662zkAFFLuco=;
-        b=GN3oz/kl1jvvTaZ6ZwItnMJd/QRBEQ7quPklnQ698/HP6RuTl39DTA3ZmiiCQYUaL5
-         AUQ5gOGn9W56njXxEQqSVZqJSXpwhRGkGfP5heziIdvjY4AS0TZkmWZgSJQgHo9ByUqA
-         MTW9vzQOCIhi9hGJOLsqMtZrbHS50tyrFkdmt1v19YIvR3HXOCSQKiWkDAyO/omZyeIf
-         UdFIeon9WkYYRx96PN72SOPyKykAwNTRbIwXwn1vuWxWGNmraJZ5WA6fQrh25Y459yYt
-         j8Y+xxjIw6tmc/cSYdCZL17FuO7oXWOSJC03AboAsbAEIqftk9SdQEtABuMI5YvsrmIp
-         Y++A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705329571; x=1705934371;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=rUt6qUSC7rZj+/61nIeLHFSyBQOSIsG662zkAFFLuco=;
-        b=WAc6xiqU4Mb28eZ/HsA2yGR/dy/5nIclZ/6ZRg1BCl8EVBckJKXqlblBerRO47Zx1/
-         0pVr81ZviVnPNBfsSXpDZk9cmWTGPXVLr84jCP+B2UDVkCE7mWeqawN0FIFKkx6tqZL+
-         rQZH4dvdo5E7Y/jtBNOnsQoHpDPCFvrpG0/aJe9NzrcezCGnqwyQhwdWATxqG1brJpDP
-         Mt8P+69TgSDUJ6JDEEveUKNhjXphXAMRt2QZ1t/g3UQ89CIWE5AY3Lw86UZJWLG9Pwb0
-         OCGk1pqNOjiMonSz+2ZSnmgp28Avubb3mnRrk5tUpckotvD1lDAqoYBLB41QIYgwGgo6
-         3pGA==
-X-Gm-Message-State: AOJu0YyHvMVVG/90nG4AKZWpDxe72flBp17bN/yNrF5blGfyEqLBZ8Qr
-	UQGh4f3nV/TbsEiD57eLcvwAEdmQaY2+EQcrLqk=
-X-Google-Smtp-Source: AGHT+IHMWuPKY2gsrGW21Hb+Dr9sHBaRGoxtP+zhdj4/kr9soYMxCpRKk+OpNBcEp/vokTtmcGGLu+qGxd2G73jn0qc=
-X-Received: by 2002:a17:906:da85:b0:a2c:8649:67e1 with SMTP id
- xh5-20020a170906da8500b00a2c864967e1mr3536459ejb.87.1705329570960; Mon, 15
- Jan 2024 06:39:30 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48E0B17753;
+	Mon, 15 Jan 2024 15:06:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from relay9-d.mail.gandi.net (unknown [217.70.183.199])
+	by mslow1.mail.gandi.net (Postfix) with ESMTP id 0F6F8C645D;
+	Mon, 15 Jan 2024 14:59:20 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id CF135FF80D;
+	Mon, 15 Jan 2024 14:59:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1705330752;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=GdcSrLKbLAmb0XpITjqnJYgkexmBzBybbdlQo4fjEDw=;
+	b=e1hVGCI9pE4AL27h/yoR5e7uuInLL603ej3OwM6ucH6Qim117sAFBJ5bm9SJfyOUKW1i0g
+	Ve+yeupLm37+ePGCMeJZ6iUjkausiT6KLS/kXOQ0f08mb0vvVv471azWhYWia3h2cpEGqt
+	uNgjP08caW4Hdu/Mb84BlG8UWskn6edUZGNiWZ++Ek6qf3LUxnQg5xFi3bP/gdkopTnQ/4
+	RolG+zrYYFK6Cgjc+3yvg8CW8PqG4gRh7Z/32uh45wX+xexmQKzviNjqt55c2Ic6zx8TY4
+	ZU5w3TaLjIsGpm0ESlHNBUz6eh6xrowz2nwDZeEDnBt/Ujmi6LIEEvmPXK8mNA==
+From: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+Subject: [PATCH 0/5] wifi: wilc1000: minor fixes
+Date: Mon, 15 Jan 2024 15:56:29 +0100
+Message-Id: <20240115-wilc_1000_fixes-v1-0-54d29463a738@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: coldolt <andypalmadi@gmail.com>
-Date: Mon, 15 Jan 2024 16:39:23 +0200
-Message-ID: <CAJvGw+DQhBk_mHXeu6RTOds5iramMW2FbMB01VbKRA4YbHHDTA@mail.gmail.com>
-Subject: [REGRESSION] 6.7 broke wifi "AP is in CSA process, reject auth"
-To: ayala.beker@intel.com, gregory.greenman@intel.com, johannes.berg@intel.com, 
-	linux-wireless@vger.kernel.org, regressions@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAJ1HpWUC/x3L0QpAMBSA4VfRubY6Z2aTV5GWODgltBVKe3fL5
+ dff/0LkIByhLV4IfEmUY8+gsoBxHfaFlUzZoFEbJKrVLdvoCRH9LA9HNRmqXeWsMbaBfJ2B/5C
+ nrk/pA+0bFyZhAAAA
+To: linux-wireless@vger.kernel.org
+Cc: Ajay Singh <ajay.kathat@microchip.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Kalle Valo <kvalo@kernel.org>, 
+ David Mosberger-Tang <davidm@egauge.net>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>, 
+ Michael Walle <mwalle@kernel.org>
+X-Mailer: b4 0.12.4
+X-GND-Sasl: alexis.lothore@bootlin.com
 
-I'm on Arch linux, updated the kernel from 6.6.10 -> 6.7.
+Hello,
+this series aims to bring some minor fixes on WILC1000 driver. Those fixes
+already live in Microchip internal tree and had been initiated by Ajay
+- some initial firmware configuration adjustments, no visible impact on
+  user
+- a workqueue leak when dealing with multiple VIF
+- a multi-vif fix (adding and removing a vif currently breaks the first
+  one)
+- a power down sequence fix to prevent "Fw not responding" errors on next
+  boot
 
-Now it doesn't connect to my 5GHz wifi, to 2.4GHz it still connects.
-Also the earlier kernel version still works. Output from "sudo dmesg |
-grep -i wlp2s0":
+Those have been tested on SAMA5D2 with WILC1000 SD. All those fixes are
+independent from each other.
 
-> [    6.049600] iwlwifi 0000:02:00.0 wlp2s0: renamed from wlan0
-> [  131.095861] wlp2s0: AP is in CSA process, reject auth
-> [  132.143170] wlp2s0: AP is in CSA process, reject auth
-> [  133.599906] wlp2s0: AP is in CSA process, reject auth
-> [  135.549325] wlp2s0: AP is in CSA process, reject auth
-> [  145.510438] wlp2s0: AP is in CSA process, reject auth
+---
+Ajay Singh (5):
+      wifi: wilc1000: set preamble size to auto as default in wilc_init_fw_config()
+      wifi: wilc1000: fix driver_handler when committing initial configuration
+      wilc: wifi: do not realloc workqueue everytime an interface is added
+      wifi: wilc1000: fix incorrect power down sequence
+      wifi: wilc1000: fix multi-vif management when deleting a vif
 
-I notice that the commit c09c4f31998bac, which was added to kernel
-6.7, introduced rejecting a connection with that error message "AP is
-in CSA process, reject auth".
+ drivers/net/wireless/microchip/wilc1000/cfg80211.c | 12 ++++++--
+ drivers/net/wireless/microchip/wilc1000/netdev.c   | 14 ++-------
+ drivers/net/wireless/microchip/wilc1000/wlan.c     | 33 +++++++++++++---------
+ drivers/net/wireless/microchip/wilc1000/wlan.h     |  6 ++++
+ 4 files changed, 38 insertions(+), 27 deletions(-)
+---
+base-commit: 03b2a1757348d2e8b62d4e8cbcbcd3ff59413d01
+change-id: 20240115-wilc_1000_fixes-d41573764468
 
-My guess is that commit is the cause of the regression.
+Best regards,
+-- 
+Alexis Lothoré, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
-I have a Dell E5550 laptop, lspci -k shows:
-
-> 02:00.0 Network controller: Intel Corporation Wireless 7265 (rev 59)
->        Subsystem: Intel Corporation Dual Band Wireless-AC 7265 [Stone Peak 2 AC]
->        Kernel driver in use: iwlwifi
->        Kernel modules: iwlwifi
-
-Output from "sudo dmesg | grep -i wifi":
-
-> [    5.198655] Intel(R) Wireless WiFi driver for Linux
-> [    5.221823] iwlwifi 0000:02:00.0: enabling device (0000 -> 0002)
-> [    5.230357] iwlwifi 0000:02:00.0: Detected crf-id 0x0, cnv-id 0x0 wfpm id 0x0
-> [    5.230513] iwlwifi 0000:02:00.0: PCI dev 095a/5410, rev=0x210, rfid=0xd55555d5
-> [    5.272339] iwlwifi 0000:02:00.0: Found debug destination: EXTERNAL_DRAM
-> [    5.272344] iwlwifi 0000:02:00.0: Found debug configuration: 0
-> [    5.273573] iwlwifi 0000:02:00.0: loaded firmware version 29.4063824552.0 7265D-29.ucode op_mode iwlmvm
-> [    5.551806] iwlwifi 0000:02:00.0: Detected Intel(R) Dual Band Wireless AC 7265, REV=0x210
-> [    5.565689] iwlwifi 0000:02:00.0: Applying debug destination EXTERNAL_DRAM
-> [    5.566606] iwlwifi 0000:02:00.0: Allocated 0x00400000 bytes for firmware monitor.
-> [    5.577802] iwlwifi 0000:02:00.0: base HW address: 34:02:86:17:53:27, OTP minor version: 0x0
-> [    6.049600] iwlwifi 0000:02:00.0 wlp2s0: renamed from wlan0
-> [    6.559212] iwlwifi 0000:02:00.0: Applying debug destination EXTERNAL_DRAM
-> [    6.638617] iwlwifi 0000:02:00.0: Applying debug destination EXTERNAL_DRAM
-> [    6.640695] iwlwifi 0000:02:00.0: FW already configured (0) - re-configuring
-> [    6.657163] iwlwifi 0000:02:00.0: Registered PHC clock: iwlwifi-PTP, with index: 1
-> [    6.710776] iwlwifi 0000:02:00.0: Applying debug destination EXTERNAL_DRAM
-> [    6.790826] iwlwifi 0000:02:00.0: Applying debug destination EXTERNAL_DRAM
-> [    6.792667] iwlwifi 0000:02:00.0: FW already configured (0) - re-configuring
-
-#regzbot introduced: c09c4f31998bac
 
