@@ -1,120 +1,190 @@
-Return-Path: <linux-wireless+bounces-1923-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1924-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B799382D98F
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jan 2024 14:10:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19C4282D9D3
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jan 2024 14:15:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDD781C21524
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jan 2024 13:10:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0E0E1F2265E
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jan 2024 13:15:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0051171DC;
-	Mon, 15 Jan 2024 13:09:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 383DC1773B;
+	Mon, 15 Jan 2024 13:12:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T7BXAm1Z"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="STlw+97/";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZS10GzSt"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19F60171CE;
-	Mon, 15 Jan 2024 13:09:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-337abfd6151so354466f8f.1;
-        Mon, 15 Jan 2024 05:09:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705324169; x=1705928969; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xqciNHiwX5Xpe9HUhoDTBRkSyWdUM5unYCkQrW8mDZo=;
-        b=T7BXAm1ZKQM4MlPZ5I41/fslMSZjcmVPyKJrnpA4IZV4ieG3GWzR++3wQNm3/KxC++
-         XriUX68TqPhis+B/03djNGPtGeRA14O2AvAvsTumAbEskwjkhlMAzUJViKMaafTOpmq7
-         ua5v99bFtt7ZYqeAH4s5Yq+mNv4auTqL1BIcg0xsTfVTrEvb/tbn8J6Vdt+mS71bkUci
-         ocEEwhW5CcANXn3UW5zMxzcGaok4VTfo+4TzkKP64MEOLVoiEakOOUugAo2F0++zIw/X
-         t2xZucBmgAjCKUc9OOKCerArHlg8HqYDGWLtJfTKhQsCGJo8rlQkVLDnmhEF4qBr23Ij
-         Q45w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705324169; x=1705928969;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=xqciNHiwX5Xpe9HUhoDTBRkSyWdUM5unYCkQrW8mDZo=;
-        b=e+pg1Q6U96CFpcEkn58HZPqCkYm6ScRrpoyzaaXfoRdU/1k86pgK//CogaSTpueFCd
-         r6ySxwBklM+gSzERMUvL/z4Uc8QoUqKSx2ge7Y2ZT2Qig+nG6bNS6x9kBsgx/2zd7W8E
-         ZA7xs9hzxU9G1Q3lg3DIKliN33Gn42NOv4Xe6GuvSel25uvewGsF/kFyYYnDkZvDlw5R
-         uJvm5GuREx6dZz1AuMFKaZkpmDCNaKMKpGRPKPz3pFpkOJvMmaEzmE10bEqm6Es1za90
-         ZjRjsjK442Jinps6b043FskR9z33rsgKlxuta1UW7xihkZ155b48zqNIUMB28yHjhG07
-         +UgQ==
-X-Gm-Message-State: AOJu0Yw0Oj8KdalRRQ0GuQ8Ykzd42SC/nfaufegSOJCdejsXOTspQ6PR
-	pZRzbrbXgotZoot28C1qDiw=
-X-Google-Smtp-Source: AGHT+IE3Hcks9ZuOLGbttyuv2aHArfvLfRvJchXNZtRx7ewfjtOLGEBT8LxfluFLjDM8Gk5c+eFnvQ==
-X-Received: by 2002:a5d:420a:0:b0:337:9015:ab4b with SMTP id n10-20020a5d420a000000b003379015ab4bmr3610104wrq.108.1705324169004;
-        Mon, 15 Jan 2024 05:09:29 -0800 (PST)
-Received: from localhost (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id d16-20020adf9c90000000b003366c058509sm11850615wre.23.2024.01.15.05.09.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 Jan 2024 05:09:28 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC1A17753
+	for <linux-wireless@vger.kernel.org>; Mon, 15 Jan 2024 13:12:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Message-ID: <87e04cfe-f8ed-40da-bb2c-edccfe385b6e@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1705324359;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rPGOnDj14iJPgX8XTAeYcQCVAZyjF5Baq4nHAVUrRQg=;
+	b=STlw+97/PRCH3F5fRDNek3RRCfoSZPrtk3oKahYL9qhNMYzt8DiLGxMXRvj/Dc1+k4MRTY
+	sdxy2KTXMUxoJbM5Bsu9gxrDHzxNIt3I7fpW5seqAA8GGswWZS5oTdllRHSis+WH6hVDbg
+	8yE67aHWbpc4X/VI7BJvp6u+M5aVz9/hrmI/Q/pbedjQbDs0N+6t2HnOfORaZuaQIeGz4a
+	Y7TQ4lUZEn6L5NGneYkQ43FM/qRzivQdunRZ1OHMsRjqz+ssQ3Ermd/BkpJ0KPXe+H8Br+
+	Z0VxAH8E6qZbyWcwfh+nKZ/rLCGoxB5Pa5HJgqyHXoYYp6Z8g++DphgqU0Uy0w==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1705324359;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rPGOnDj14iJPgX8XTAeYcQCVAZyjF5Baq4nHAVUrRQg=;
+	b=ZS10GzSt7DQgepFR+E/WVxgNoKXyM0uq7CiqVimRZjDoqw+xwPtXW2M8l7g2yMpu4K/ksW
+	Bx5hJIgesyNnJDDQ==
+Date: Mon, 15 Jan 2024 14:12:39 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 15 Jan 2024 14:09:28 +0100
-Message-Id: <CYFAYRP5MWTZ.Q272WWLLE7MW@gmail.com>
-Cc: <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <ath11k@lists.infradead.org>
-Subject: Re: [PATCH] wifi: ath11k: fix layout of scan_flags in struct
- scan_req_params
-From: "Nicolas Escande" <nico.escande@gmail.com>
-To: "Jeff Johnson" <quic_jjohnson@quicinc.com>, "Kalle Valo"
- <kvalo@kernel.org>
-X-Mailer: aerc 0.15.2
-References: <20231127180559.1696041-1-nico.escande@gmail.com>
- <bdcdbd06-e9bd-4a92-b27b-d94b2d8fb52d@quicinc.com>
- <CX9YPUDTAT1N.23DMRB5O9FEAO@gmail.com>
- <20c7a367-2243-4e13-b023-9999dc6c6790@quicinc.com>
- <CXC03GYAN4VN.2PQ88Q1S7IL6H@gmail.com>
-In-Reply-To: <CXC03GYAN4VN.2PQ88Q1S7IL6H@gmail.com>
+MIME-Version: 1.0
+Subject: Re: [PATCH v2 19/21] wifi: rtl8xxxu: add hw crypto support for AP
+ mode
+Content-Language: de-DE
+To: Ping-Ke Shih <pkshih@realtek.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Jes Sorensen <Jes.Sorensen@gmail.com>, Kalle Valo <kvalo@kernel.org>,
+ Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Zenm Chen <zenmchen@gmail.com>
+References: <20231221164353.603258-1-martin.kaistra@linutronix.de>
+ <20231221164353.603258-20-martin.kaistra@linutronix.de>
+ <92fa5949e8094739883e665abb23ac01@realtek.com>
+From: Martin Kaistra <martin.kaistra@linutronix.de>
+In-Reply-To: <92fa5949e8094739883e665abb23ac01@realtek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu Nov 30, 2023 at 9:24 AM CET, Nicolas Escande wrote:
-> On Tue Nov 28, 2023 at 1:57 AM CET, Jeff Johnson wrote:
-> > On 11/27/2023 2:54 PM, Nicolas Escande wrote:
+Hi Ping-Ke,
+
+Am 12.01.24 um 07:52 schrieb Ping-Ke Shih:
+> Hi Martin,
+> 
+>> -----Original Message-----
+>> From: Martin Kaistra <martin.kaistra@linutronix.de>
+>> Sent: Friday, December 22, 2023 12:44 AM
+>> To: linux-wireless@vger.kernel.org
+>> Cc: Jes Sorensen <Jes.Sorensen@gmail.com>; Kalle Valo <kvalo@kernel.org>; Ping-Ke Shih
+>> <pkshih@realtek.com>; Bitterblue Smith <rtl8821cerfe2@gmail.com>; Sebastian Andrzej Siewior
+>> <bigeasy@linutronix.de>
+>> Subject: [PATCH v2 19/21] wifi: rtl8xxxu: add hw crypto support for AP mode
+>>
+> 
 > [...]
-> > > So either we should not use WMI_SCAN_XXX with scan_req_params.scan_fl=
-ags ever
-> > > and only use the bitfield to set scan parameters or if we use WMI_SCA=
-N_XXX with
-> > > scan_req_params.scan_flags they need to match the corresponding bitfi=
-eld.
-> >
-> > IMO the correct thing to do is to remove the unions from that struct an=
-d
-> > only leave behind the bitfields and not use the WMI_SCAN_XXX masks
-> > except when filling the firmware structure.
-> >
-> > But don't spin an update to your patches until Kalle has a chance to
-> > give his opinion. I'm new to maintaining these drivers and Kalle may
-> > have a different opinion on this.
-> >
-> > /jeff
->
-> No problem, I'll wait for Kalle's input on this before doing anything.
-> As soon as we decide which way is the right way, I'll work on this. I onl=
-y care
-> that this gets resolved.
+> 
+> Zenm reported [1] his RTL8192EU and RTL8192FU don't work in station mode,
+> and cause is this patch. Please try if you can reproduce the symptom, and
+> apply my suggestion to see if help.
+> 
+> [1] https://lore.kernel.org/linux-wireless/20240112045104.12282-1-zenmchen@gmail.com/T/#me0940f522249becf49f25bc281f1992c523673f6
 
-Hi Kalle/Jeff,
+I managed to find two other Realtek USB Wifi devices that are supported by the 
+rtl8xxxu driver (RTL8188EU and RTL8192CU) and I can reproduce the issue with 
+both of them.
 
-Any new input on this so I can move forward on fixing this ?
-Otherwise I think I'll end up going on with Jeff's proposal of only using t=
-he
-bitfield for intra driver representation & then converting the bitfields to
-their corresponding WMI_SCAN_XXX when transmiting the req to the hw with wm=
-i.
+I also tried creating a patch with your suggestions and this seems to help.
+
+Looking at it more closely however, I think the main problem is, that 
+fops->max_sec_cam_num is not set for the other variants. Without the additional 
+patch, this causes rtl8xxxu_get_free_sec_cam() to return 0 for pairwise and 
+group key and so using the same spot for both key entries.
+
+I then created a patch using the numbers suggested by Bitterblue Smith in [1] 
+and using 32 for RTL8723AU and RTL8192CU like the rtlwifi driver seems to do. 
+This also seems to solve the issue reported, even without reserving the first 4 
+slots for group keys.
+
+Do you think we need both patches?
+
+[1] 
+https://lore.kernel.org/linux-wireless/f73b5afc-d69f-4a7c-8bf0-877a45327e0b@gmail.com/
+
+> 
+>>
+>> +static int rtl8xxxu_get_free_sec_cam(struct ieee80211_hw *hw)
+>> +{
+>> +       struct rtl8xxxu_priv *priv = hw->priv;
+> 
+> We need to reserve entries 0~3 for keys that aren't pairwise key.
+> 
+>> +
+>> +       return find_first_zero_bit(priv->cam_map, priv->fops->max_sec_cam_num);
+>> +}
+>> +
+>>   static int rtl8xxxu_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+>>                              struct ieee80211_vif *vif,
+>>                              struct ieee80211_sta *sta,
+>>                              struct ieee80211_key_conf *key)
+>>   {
+>> +       struct rtl8xxxu_vif *rtlvif = (struct rtl8xxxu_vif *)vif->drv_priv;
+>>          struct rtl8xxxu_priv *priv = hw->priv;
+>>          struct device *dev = &priv->udev->dev;
+>>          u8 mac_addr[ETH_ALEN];
+> 
+> [...]
+> 
+>> @@ -6899,16 +6915,28 @@ static int rtl8xxxu_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+>>
+>>          switch (cmd) {
+>>          case SET_KEY:
+>> -               key->hw_key_idx = key->keyidx;
+>> +
+>> +               retval = rtl8xxxu_get_free_sec_cam(hw);
+>> +               if (retval < 0)
+>> +                       return -EOPNOTSUPP;
+>> +
+> 
+> if (key->flags & IEEE80211_KEY_FLAG_PAIRWISE)
+> 	key->hw_key_idx = retval;
+> else
+> 	key->hw_key_idx = key->keyidx;
+> 
+>> +               key->hw_key_idx = retval;
+>> +
+>> +               if (vif->type == NL80211_IFTYPE_AP && !(key->flags & IEEE80211_KEY_FLAG_PAIRWISE))
+>> +                       rtlvif->hw_key_idx = key->hw_key_idx;
+>> +
+>>                  key->flags |= IEEE80211_KEY_FLAG_GENERATE_IV;
+>>                  rtl8xxxu_cam_write(priv, key, mac_addr);
+>> +               set_bit(key->hw_key_idx, priv->cam_map);
+>>                  retval = 0;
+>>                  break;
+>>          case DISABLE_KEY:
+>>                  rtl8xxxu_write32(priv, REG_CAM_WRITE, 0x00000000);
+>>                  val32 = CAM_CMD_POLLING | CAM_CMD_WRITE |
+>> -                       key->keyidx << CAM_CMD_KEY_SHIFT;
+>> +                       key->hw_key_idx << CAM_CMD_KEY_SHIFT;
+>>                  rtl8xxxu_write32(priv, REG_CAM_CMD, val32);
+>> +               rtlvif->hw_key_idx = 0xff;
+>> +               clear_bit(key->hw_key_idx, priv->cam_map);
+> 
+> Shouldn't swap these two statements? I missed that during reviewing.
+
+I don't think that would make a difference. rtlvif->hw_key_idx is set for use in 
+rtl8xxxu_tx() and the second line uses key->hw_key_idx to clear the map entry.
+
+> 
+> 
+>>                  retval = 0;
+>>                  break;
+>>          default:
+>> --
+>> 2.39.2
+> 
+
+
 
