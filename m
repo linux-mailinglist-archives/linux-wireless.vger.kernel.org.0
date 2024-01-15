@@ -1,108 +1,214 @@
-Return-Path: <linux-wireless+bounces-1947-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1948-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6124682E32D
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 00:15:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEC7D82E421
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 00:56:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 387DCB21F8C
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jan 2024 23:15:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84A61282D50
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jan 2024 23:56:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B60D21B5BA;
-	Mon, 15 Jan 2024 23:15:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B780E1B7EB;
+	Mon, 15 Jan 2024 23:56:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="CFcr2Yc5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jqzopUux"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.48])
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3A831AADB
-	for <linux-wireless@vger.kernel.org>; Mon, 15 Jan 2024 23:15:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 6AD5228007A;
-	Mon, 15 Jan 2024 23:15:02 +0000 (UTC)
-Received: from [192.168.22.29] (unknown [50.225.254.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id 5272613C2B0;
-	Mon, 15 Jan 2024 15:15:00 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 5272613C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1705360500;
-	bh=/tF+9lOWwxU9IAyf2N2jg73nzuINHo5WUqQTl7sVBEU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=CFcr2Yc5GfovH0JCP+q3L06mCvjCCKfnvJt3YQnEoeLCPKgyyr2WHoIxAEG3XZDUn
-	 KF6W/woHs0JGtH0t1zHlt/9tMfzWdqR4teOEBC8scssIoRRZP1pnHh0nhIRpSAp40B
-	 98gS27bWRYWU9PZA2jrjoDgPLaZVFQtWVmag6Yws=
-Message-ID: <e87848a8-da4e-571b-2e07-7b7aa1bc8bed@candelatech.com>
-Date: Mon, 15 Jan 2024 15:14:59 -0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 061B11B7E8
+	for <linux-wireless@vger.kernel.org>; Mon, 15 Jan 2024 23:56:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a277339dcf4so1032580966b.2
+        for <linux-wireless@vger.kernel.org>; Mon, 15 Jan 2024 15:56:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1705362971; x=1705967771; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OP32MFSw3ny7WfjbsVr7W/4A9ct/HGx66eldykG7aiE=;
+        b=jqzopUuxtb0cLEAoGPTdRdPS9/DxEMESP2GdiSkeHmsvmHYM/+7gGYr+MkzZ/0ZXs1
+         Sb9+VApBvbmASoTQUwFGbNSyCKOTNAKQcaSCgofjkOhvxmIqQ4etQxpVDltPgkhlHZ+T
+         b8Y0dndvG6ZcN+KpLsXPrrlJCdqhWmF42hMOKndAX6fTEWFwGGQr/KiHVysGBQpxw8bz
+         a7PyBABB2Yl2SDH/o9CNo2EykAuYNyeSWJkDOTQQ6zFhbw/TZyKxS3nuhN6dKFBmBfHY
+         lhOIEMGTTf4/k5y56uznJ4R7tAZxPaaJO03QGwRWZL60tC8EdKk21LYWup83Ra6E5KRS
+         ys4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705362971; x=1705967771;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=OP32MFSw3ny7WfjbsVr7W/4A9ct/HGx66eldykG7aiE=;
+        b=P+eYV+KlB45BrHAUbAKquCQkuokigmzsQMt7zkVMZaH2QTJLCNDyn9ozAcR0pLItes
+         XgOg8uh5f9ciuc96mdMX/n2lgJ7mLc3DWNLgXmCrI3U6Bv9mBsUvRzz31pDhGJYq+TRZ
+         Jg5ckTZf4uTQFGHDPHQOoFgyFj8jp3yq8boiCF7MqudPmJ4NOJ/esCkpoI+Bd8RSg0MX
+         FKToiTA/z+K/9Yr51KJRDqKHvrOMVB2nrefX/ZAm0NUPUOpBEb9iANlwinvB7Dq2GOmi
+         4c7CaNvYkCUKpEqovRRi2dlgjLJTgYsl43oguisipGf44SZryKg8uvWIcByLyc2nnujS
+         SWnw==
+X-Gm-Message-State: AOJu0YzHfB9B2jWyFq3XOVvcbu6GTlEyo8Y7UFc6Z5XeMCGSZLVSpl/n
+	VwPNe+lN0izfBsUvWUN0Dsq01KHcS0KO1Ut6w/Y=
+X-Google-Smtp-Source: AGHT+IENPQ/sFVda1hFMTyYVM7xu/hE3e1vkx/xmwy+6jXLYZI6pVPI+JByf1ye8dBxy1bImtnwyge5eAifRi/+Avvo=
+X-Received: by 2002:a17:906:f8c4:b0:a28:aab9:911c with SMTP id
+ lh4-20020a170906f8c400b00a28aab9911cmr2808477ejb.47.1705362970912; Mon, 15
+ Jan 2024 15:56:10 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH 5/8] wifi: mac80211: disallow drivers with HT wider than
- HE
-Content-Language: en-MW
-To: Johannes Berg <johannes@sipsolutions.net>, Kalle Valo <kvalo@kernel.org>,
- Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Cc: linux-wireless@vger.kernel.org,
- Gregory Greenman <gregory.greenman@intel.com>
-References: <20240111161746.3978601-1-miriam.rachel.korenblit@intel.com>
- <20240111181514.da15fe3214d2.I4df51ad2f4c844615c168bf9bdb498925b3c77d4@changeid>
- <87wmsehf3d.fsf@kernel.org>
- <aae05a63171cf0f3c81dedc24d3b0a558ce530f5.camel@sipsolutions.net>
- <b1046a3b-8c29-aa64-2954-adec6c5d9bc9@candelatech.com>
- <88ad7e8849f7b29826ddf922734997d73539b21d.camel@sipsolutions.net>
-From: Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <88ad7e8849f7b29826ddf922734997d73539b21d.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MDID: 1705360503-6Un1MdyEga-o
-X-MDID-O:
- us5;ut7;1705360503;6Un1MdyEga-o;<greearb@candelatech.com>;6ed5a8f8c51578afd12669094ba34ba9
+References: <CAJvGw+DQhBk_mHXeu6RTOds5iramMW2FbMB01VbKRA4YbHHDTA@mail.gmail.com>
+ <dae4bb032ad8b0c9fa6547de5e869e51f9f6e766.camel@sipsolutions.net>
+In-Reply-To: <dae4bb032ad8b0c9fa6547de5e869e51f9f6e766.camel@sipsolutions.net>
+From: coldolt <andypalmadi@gmail.com>
+Date: Tue, 16 Jan 2024 01:56:03 +0200
+Message-ID: <CAJvGw+ATM3B09KbuLM0VsmU9GZRSO-ZP6ffwvvOa75xVHR3-kw@mail.gmail.com>
+Subject: Re: [REGRESSION] 6.7 broke wifi "AP is in CSA process, reject auth"
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: ayala.beker@intel.com, linux-wireless@vger.kernel.org, 
+	regressions@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 1/15/24 14:00, Johannes Berg wrote:
-> On Fri, 2024-01-12 at 11:58 -0800, Ben Greear wrote:
->>
->> I tried backporting this patch into my 6.7 tree.  An mtk7915 radio system blows up badly
->> in this case.  Likely this is mt76 bug, but also...it used to work and the crash doesn't
->> make it very obvious that the above code is to blame.
-> 
-> Yeah, hence my comment about kernel developers hopefully being able to
-> figure it out :-)
-> 
->> mt7915e 0000:06:00.0: mt7915_register_device failed, ret: -22
->> mt7915e 0000:06:00.0: mt7915_pci_probe had error on try 3/3, ret: -22
-> 
-> Felix says this kind of retry logic doesn't exist upstream, maybe you
-> have some delta in your tree that's making it crash?
-> 
-> Also, from what he says and looking at the code, it should register with
-> HE 40 MHz capability set whenever has_he==true, so also here, do you
-> have any non-upstream changes that could affect it?
+I can try to keep connecting for over 5 minutes, it never connects,
+keeps outputting the same dmesg message. The kernel before 6.7
+connects immediately.
 
-Yes, I do.  Don't think I have anything that adjusts the 40Mhz, but possible.
+The router is an Asus RT-AC53. Output of "sudo iw wlp2s0 scan -u" for it is=
+:
 
-Anyway, I know how to fix/work around it now, so if it works for Felix
-then fine with me.
+BSS b0:6e:bf:76:0a:3c(on wlp2s0)
+        last seen: 752.658s [boottime]
+        TSF: 177237341 usec (0d, 00:02:57)
+        freq: 5180.0
+        beacon interval: 200 TUs
+        capability: ESS Privacy ShortPreamble SpectrumMgmt APSD (0x0931)
+        signal: -61.00 dBm
+        last seen: 90 ms ago
+        Information elements from Probe Response frame:
+        SSID: internet5
+        Supported rates: 6.0* 9.0 12.0* 18.0 24.0* 36.0 48.0 54.0
+        DS Parameter set: channel 36
+        Unknown IE (60): 01 16 24 09
+        HT capabilities:
+                Capabilities: 0x16e
+                        HT20/HT40
+                        SM Power Save disabled
+                        RX HT20 SGI
+                        RX HT40 SGI
+                        RX STBC 1-stream
+                        Max AMSDU length: 3839 bytes
+                        No DSSS/CCK HT40
+                Maximum RX AMPDU length 32767 bytes (exponent: 0x002)
+                Minimum RX AMPDU time spacing: 4 usec (0x05)
+                HT RX MCS rate indexes supported: 0-7, 32
+                HT TX MCS rate indexes are undefined
+        HT operation:
+                 * primary channel: 36
+                 * secondary channel offset: above
+                 * STA channel width: any
+                 * RIFS: 0
+                 * HT protection: no
+                 * non-GF present: 0
+                 * OBSS non-GF present: 0
+                 * dual beacon: 0
+                 * dual CTS protection: 0
+                 * STBC beacon: 0
+                 * L-SIG TXOP Prot: 0
+                 * PCO active: 0
+                 * PCO phase: 0
+        RSN:     * Version: 1
+                 * Group cipher: CCMP
+                 * Pairwise ciphers: CCMP
+                 * Authentication suites: PSK
+                 * Capabilities: 1-PTKSA-RC 1-GTKSA-RC (0x0000)
+        WMM:     * Parameter version 1
+                 * u-APSD
+                 * BE: CW 15-1023, AIFSN 3
+                 * BK: CW 15-1023, AIFSN 7
+                 * VI: CW 7-15, AIFSN 2, TXOP 3008 usec
+                 * VO: CW 3-7, AIFSN 2, TXOP 1504 usec
+        BSS Load:
+                 * station count: 0
+                 * channel utilisation: 9/255
+                 * available admission capacity: 31250 [*32us]
+        Vendor specific: OUI 00:0c:43, data: 03 00 00 00
+        Power constraint: 3 dB
+        Country: FR     Environment: Indoor/Outdoor
+                Channels [36 - 96] @ 16 dBm
+        VHT capabilities:
+                VHT Capabilities (0x31c00120):
+                        Max MPDU length: 3895
+                        Supported Channel Width: neither 160 nor 80+80
+                        short GI (80 MHz)
+                        +HTC-VHT
+                        RX antenna pattern consistency
+                        TX antenna pattern consistency
+                VHT RX MCS set:
+                        1 streams: MCS 0-9
+                        2 streams: not supported
+                        3 streams: not supported
+                        4 streams: not supported
+                        5 streams: not supported
+                        6 streams: not supported
+                        7 streams: not supported
+                        8 streams: not supported
+                VHT RX highest supported: 292 Mbps
+                VHT TX MCS set:
+                        1 streams: MCS 0-9
+                        2 streams: not supported
+                        3 streams: not supported
+                        4 streams: not supported
+                        5 streams: not supported
+                        6 streams: not supported
+                        7 streams: not supported
+                        8 streams: not supported
+                VHT TX highest supported: 292 Mbps
+                VHT extended NSS: not supported
+        VHT operation:
+                 * channel width: 1 (80 MHz)
+                 * center freq segment 1: 42
+                 * center freq segment 2: 0
+                 * VHT basic MCS set: 0xfffe
 
-I still think you should have a pr_err or warn_on_once though, since if that clause
-hits, at best case the radio suddenly became un-available.
 
-Thanks,
-Ben
-
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+On Mon, Jan 15, 2024 at 10:00=E2=80=AFPM Johannes Berg
+<johannes@sipsolutions.net> wrote:
+>
+> On Mon, 2024-01-15 at 16:39 +0200, coldolt wrote:
+> > I'm on Arch linux, updated the kernel from 6.6.10 -> 6.7.
+> >
+> > Now it doesn't connect to my 5GHz wifi, to 2.4GHz it still connects.
+> > Also the earlier kernel version still works. Output from "sudo dmesg |
+> > grep -i wlp2s0":
+> >
+> > > [    6.049600] iwlwifi 0000:02:00.0 wlp2s0: renamed from wlan0
+> > > [  131.095861] wlp2s0: AP is in CSA process, reject auth
+> > > [  132.143170] wlp2s0: AP is in CSA process, reject auth
+> > > [  133.599906] wlp2s0: AP is in CSA process, reject auth
+> > > [  135.549325] wlp2s0: AP is in CSA process, reject auth
+> > > [  145.510438] wlp2s0: AP is in CSA process, reject auth
+> >
+> > I notice that the commit c09c4f31998bac, which was added to kernel
+> > 6.7, introduced rejecting a connection with that error message "AP is
+> > in CSA process, reject auth".
+> >
+> > My guess is that commit is the cause of the regression.
+>
+> I guess? But that was quite intentional - we don't handle connecting
+> well while the AP is switching channels.
+>
+> This really shouldn't persist for longer than a few seconds though, even
+> the 15 seconds sounds pretty excessive.
+>
+> Could you show the output of
+>
+> $ sudo iw wlp2s0 scan -u
+>
+> for this AP?
+>
+> johannes
 
