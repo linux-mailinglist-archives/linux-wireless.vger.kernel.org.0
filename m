@@ -1,25 +1,25 @@
-Return-Path: <linux-wireless+bounces-1920-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1918-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 223EF82D78A
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jan 2024 11:40:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7615E82D70E
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jan 2024 11:18:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 017B4B20FA4
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jan 2024 10:40:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79B8C1C21758
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jan 2024 10:18:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCCDA1426C;
-	Mon, 15 Jan 2024 10:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4587F9C7;
+	Mon, 15 Jan 2024 10:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Jt12jUur"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="YJTe/mwg"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5A3E63AD
-	for <linux-wireless@vger.kernel.org>; Mon, 15 Jan 2024 10:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B0C613AE9
+	for <linux-wireless@vger.kernel.org>; Mon, 15 Jan 2024 10:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -27,24 +27,24 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
 	Resent-Message-ID:In-Reply-To:References;
-	bh=atlEj+PzljHFeiNDOtXU/bwhsHPVfdma3zGILln3RrY=; t=1705315242; x=1706524842; 
-	b=Jt12jUur0LBCutspK4R6wQ7nawRxrkq5RGD7Zj/mLUoEn3q0R4RL+NyXwm4n+QKjKoBFb5v2BrC
-	HeyFUImzm/ZTXGp1lfHlnd8IvJaRLaxTyTiOb7IBUufwrsgJF7eraP4z7K1j2skW7/uesXAuZJmza
-	Dte/H1dgerQeyTT7TWnp7+J1AC0Iqtr9Mn5ClJXRWEWBesR96KyVB815KFyYMbrr+EOWVnQ++V+t/
-	QM7y/ssGOT2K3crOfjm+DbYg41nmGy1I47vlrgj09zjbyF1fCtnpWk/+m76wDU+h2Y0rrJqalu/Fo
-	cWUyunZ6seEb4MxWDV47bbASevg4SNLRk+QA==;
+	bh=Xzf2Lo9zKemHnyjovifDRAEjSYxaH8QbSwRN6oNEdC8=; t=1705313896; x=1706523496; 
+	b=YJTe/mwgdTP2U3mQvCHm+GEbGkYVeDlm993fxpdsrWOMTeO5Alvh9+YJW0aNMgGXzHfAk1DSM1k
+	AmAGLYecY3pN9QEf7uFn+HUsxOlpoEhnJ8kHsFz6YGKN/jmYz5K8lsCBkPTs4Sqxm1tIVcmiAwyd2
+	f2flYarnKYQVy/mH6c2CZMWxFxO6rXTKcrHbVjdjRJBaWPR913E2uk/h2+G1oPB3xw/SeNOmexGor
+	lYENF3rJZYkNEkJ6oer2/45N1/0aiM0owLCDTU0XefYftKqtbMzBvnpxn/eKIF1W/IuYQOPHn2l64
+	7fMupXsQuinjQl0x9AbDiT7uXYOxHHsjQRlA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.97)
 	(envelope-from <benjamin@sipsolutions.net>)
-	id 1rPJyf-00000003OTd-3KW5;
-	Mon, 15 Jan 2024 11:13:58 +0100
+	id 1rPK2n-00000003Obf-0IHI;
+	Mon, 15 Jan 2024 11:18:13 +0100
 From: benjamin@sipsolutions.net
 To: linux-wireless@vger.kernel.org
 Cc: ath11k@lists.infradead.org,
 	Benjamin Berg <benjamin.berg@intel.com>
-Subject: [PATCH v2] wifi: ath11k: rely on mac80211 debugfs handling for vif
-Date: Mon, 15 Jan 2024 11:13:49 +0100
-Message-ID: <20240115101349.1276608-1-benjamin@sipsolutions.net>
+Subject: [PATCH v3] wifi: ath11k: rely on mac80211 debugfs handling for vif
+Date: Mon, 15 Jan 2024 11:18:05 +0100
+Message-ID: <20240115101805.1277949-1-benjamin@sipsolutions.net>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -70,6 +70,9 @@ Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
 v2:
  * Adjust commit message to say that this caused crashes
  * Fix function name to match mac80211 op
+
+v3:
+ * Remove duplicate debugfs from function name
 ---
  drivers/net/wireless/ath/ath11k/core.h    |  4 ----
  drivers/net/wireless/ath/ath11k/debugfs.c | 25 +++++++++--------------
@@ -93,7 +96,7 @@ index 7e3b6779f4e9..02e160d831be 100644
  
  struct ath11k_vif_iter {
 diff --git a/drivers/net/wireless/ath/ath11k/debugfs.c b/drivers/net/wireless/ath/ath11k/debugfs.c
-index a847bc0d50c0..f53b712e169f 100644
+index a847bc0d50c0..a48e737ef35d 100644
 --- a/drivers/net/wireless/ath/ath11k/debugfs.c
 +++ b/drivers/net/wireless/ath/ath11k/debugfs.c
 @@ -1894,35 +1894,30 @@ static const struct file_operations ath11k_fops_twt_resume_dialog = {
@@ -101,8 +104,8 @@ index a847bc0d50c0..f53b712e169f 100644
  };
  
 -void ath11k_debugfs_add_interface(struct ath11k_vif *arvif)
-+void ath11k_debugfs_op_vif_add_debugfs(struct ieee80211_hw *hw,
-+				      struct ieee80211_vif *vif)
++void ath11k_debugfs_op_vif_add(struct ieee80211_hw *hw,
++			       struct ieee80211_vif *vif)
  {
 +	struct ath11k_vif *arvif = ath11k_vif_to_arvif(vif);
  	struct ath11k_base *ab = arvif->ar->ab;
@@ -143,7 +146,7 @@ index a847bc0d50c0..f53b712e169f 100644
 -	arvif->debugfs_twt = NULL;
 -}
 diff --git a/drivers/net/wireless/ath/ath11k/debugfs.h b/drivers/net/wireless/ath/ath11k/debugfs.h
-index 44d15845f39a..d6e38988fecf 100644
+index 44d15845f39a..a39e458637b0 100644
 --- a/drivers/net/wireless/ath/ath11k/debugfs.h
 +++ b/drivers/net/wireless/ath/ath11k/debugfs.h
 @@ -307,8 +307,8 @@ static inline int ath11k_debugfs_rx_filter(struct ath11k *ar)
@@ -152,8 +155,8 @@ index 44d15845f39a..d6e38988fecf 100644
  
 -void ath11k_debugfs_add_interface(struct ath11k_vif *arvif);
 -void ath11k_debugfs_remove_interface(struct ath11k_vif *arvif);
-+void ath11k_debugfs_op_vif_add_debugfs(struct ieee80211_hw *hw,
-+				       struct ieee80211_vif *vif);
++void ath11k_debugfs_op_vif_add(struct ieee80211_hw *hw,
++			       struct ieee80211_vif *vif);
  void ath11k_debugfs_add_dbring_entry(struct ath11k *ar,
  				     enum wmi_direct_buffer_module id,
  				     enum ath11k_dbg_dbr_event event,
@@ -173,7 +176,7 @@ index 44d15845f39a..d6e38988fecf 100644
  ath11k_debugfs_add_dbring_entry(struct ath11k *ar,
  				enum wmi_direct_buffer_module id,
 diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index db241589424d..b980680e0d9c 100644
+index db241589424d..b13525bbbb80 100644
 --- a/drivers/net/wireless/ath/ath11k/mac.c
 +++ b/drivers/net/wireless/ath/ath11k/mac.c
 @@ -6756,13 +6756,6 @@ static int ath11k_mac_op_add_interface(struct ieee80211_hw *hw,
@@ -212,7 +215,7 @@ index db241589424d..b980680e0d9c 100644
  #endif
  
  #ifdef CONFIG_ATH11K_DEBUGFS
-+	.vif_add_debugfs		= ath11k_debugfs_op_vif_add_debugfs,
++	.vif_add_debugfs		= ath11k_debugfs_op_vif_add,
  	.sta_add_debugfs		= ath11k_debugfs_sta_op_add,
  #endif
  
