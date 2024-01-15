@@ -1,76 +1,89 @@
-Return-Path: <linux-wireless+bounces-1893-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1894-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E923382D1F4
-	for <lists+linux-wireless@lfdr.de>; Sun, 14 Jan 2024 20:10:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CF4982D2BC
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jan 2024 01:30:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13C6D1C209CA
-	for <lists+linux-wireless@lfdr.de>; Sun, 14 Jan 2024 19:10:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A65072812FA
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jan 2024 00:30:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E968D10796;
-	Sun, 14 Jan 2024 19:10:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TW1MSQCi"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BB9510E5;
+	Mon, 15 Jan 2024 00:30:27 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2AD101D2
-	for <linux-wireless@vger.kernel.org>; Sun, 14 Jan 2024 19:10:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E25EEC433C7;
-	Sun, 14 Jan 2024 19:10:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705259404;
-	bh=sfiQpP7+TDJLTjHNyWr8gkkCmSbQwzFSm+rs+Rr8xm0=;
-	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=TW1MSQCi0shp9NgzbBR8PjuoXarhIHO7RSYyOYdQznkk5Pn2iNctWgOTo4O0tOTAI
-	 1aYY87AXN5Hfvf3eF3FquVx+oqkSLXbe3fyMEBOaNtniYWq9mkqFdB3z8K1zdrne5W
-	 EMcRUMvdmb43ooZ3vVsglBt19SiGW9WWwxMIEOC1wrgadDnLLy/0nc0oPkHklxvJSc
-	 mc+wWs8HW96PuCOVxr3jjWTGpCvELdNCPuA+wElaKq+sT1c2ImWIeGGVfCP6XFmzcc
-	 BhsyivQ721h+Qixd2SiAnPk/4FWzu8x7zwGanKJA3uOQnYDRi6Ex84XeUNhBLRMxOR
-	 ZDz3kQ3PdlNdA==
-Content-Type: text/plain; charset="utf-8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7917A636
+	for <linux-wireless@vger.kernel.org>; Mon, 15 Jan 2024 00:30:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 40F0U80b83418623, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 40F0U80b83418623
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 15 Jan 2024 08:30:08 +0800
+Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2375.32; Mon, 15 Jan 2024 08:30:08 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Mon, 15 Jan 2024 08:30:08 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::e4c4:c4f:4e4c:d23c]) by
+ RTEXMBS04.realtek.com.tw ([fe80::e4c4:c4f:4e4c:d23c%5]) with mapi id
+ 15.01.2507.035; Mon, 15 Jan 2024 08:30:08 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Dmitry Antipov <dmantipov@yandex.ru>
+CC: Kalle Valo <kvalo@kernel.org>,
+        "linux-wireless@vger.kernel.org"
+	<linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH] wifi: rtw88: use kstrtoX_from_user() in debugfs handlers
+Thread-Topic: [PATCH] wifi: rtw88: use kstrtoX_from_user() in debugfs handlers
+Thread-Index: AQHaQ8o7vXVFaLQDQEWucRHzE2OAMrDaDFIg
+Date: Mon, 15 Jan 2024 00:30:08 +0000
+Message-ID: <01ee978cdb494ec9821fc7fcd34718d6@realtek.com>
+References: <20240110132930.438828-1-dmantipov@yandex.ru>
+In-Reply-To: <20240110132930.438828-1-dmantipov@yandex.ru>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3 1/2] wifi: rtl8xxxu: add cancel_work_sync() for
- c2hcmd_work
-From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240111163628.320697-2-martin.kaistra@linutronix.de>
-References: <20240111163628.320697-2-martin.kaistra@linutronix.de>
-To: Martin Kaistra <martin.kaistra@linutronix.de>
-Cc: linux-wireless@vger.kernel.org, Jes Sorensen <Jes.Sorensen@gmail.com>,
- Ping-Ke Shih <pkshih@realtek.com>,
- Bitterblue Smith <rtl8821cerfe2@gmail.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170525940101.1549893.9097725363739190681.kvalo@kernel.org>
-Date: Sun, 14 Jan 2024 19:10:02 +0000 (UTC)
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-Martin Kaistra <martin.kaistra@linutronix.de> wrote:
 
-> The workqueue might still be running, when the driver is stopped. To
-> avoid a use-after-free, call cancel_work_sync() in rtl8xxxu_stop().
-> 
-> Fixes: e542e66b7c2e ("rtl8xxxu: add bluetooth co-existence support for single antenna")
-> Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
-> Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
 
-2 patches applied to wireless-next.git, thanks.
+> -----Original Message-----
+> From: Dmitry Antipov <dmantipov@yandex.ru>
+> Sent: Wednesday, January 10, 2024 9:29 PM
+> To: Ping-Ke Shih <pkshih@realtek.com>
+> Cc: Kalle Valo <kvalo@kernel.org>; linux-wireless@vger.kernel.org; Dmitry=
+ Antipov <dmantipov@yandex.ru>
+> Subject: [PATCH] wifi: rtw88: use kstrtoX_from_user() in debugfs handlers
+>=20
+> When 'sscanf()' is not needed to scan an input, prefer common
+> 'kstrtoX_from_user()' over 'rtw_debugfs_copy_from_user()' with
+> following 'kstrtoX()'. Minor adjustments, compile tested only.
+>=20
+> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 
-1213acb478a7 wifi: rtl8xxxu: add cancel_work_sync() for c2hcmd_work
-ece90a862232 wifi: rtl8xxxu: enable channel switch support
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240111163628.320697-2-martin.kaistra@linutronix.de/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
 
