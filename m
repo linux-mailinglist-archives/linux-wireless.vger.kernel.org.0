@@ -1,73 +1,91 @@
-Return-Path: <linux-wireless+bounces-1904-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1905-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7244482D340
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jan 2024 04:14:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A09BC82D364
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jan 2024 04:38:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C1871C20A85
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jan 2024 03:14:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E0FB1F21316
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jan 2024 03:38:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0351F23C5;
-	Mon, 15 Jan 2024 03:14:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c+SiE0bO"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47500186A;
+	Mon, 15 Jan 2024 03:38:10 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7B723BE
-	for <linux-wireless@vger.kernel.org>; Mon, 15 Jan 2024 03:14:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 321EEC43390;
-	Mon, 15 Jan 2024 03:14:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705288474;
-	bh=6XKzR6JpKzRVxLCrT4WttGuLf3DaR7RKYdWUPZ3p29E=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=c+SiE0bOIZ61YUIPVID7IGhSjgB7/OzKdiY4JTGdkrEukqQBABVHn/6YcxJyCyTpl
-	 jzDFxGBBNWbheOccbhBGZfNqrgECgVXgDFpWjc9XP07ie93MuPBj5aZ1nhQRYC9wSA
-	 LV5qAmCJ+fvqvaVRVheJZkJ/GLs9roTRR/uugD0BCwWhn7sKuBBl0kgxWUWbq9qNEL
-	 7ZSy7xhKYrnEJB/yGEFHDvp+3X4r7dwM0REdO6k/WaQNBqA2lhncByhm1MD4XZUDq4
-	 8GtmbUEbQjXFsldGosy6RMTiqX0R1kF2+5lI+wbU4EpXeUZPHSVM2zK8QEBlQgQw1z
-	 lTP0WShOrZdKQ==
-Received: from wens.tw (localhost [127.0.0.1])
-	by wens.tw (Postfix) with ESMTP id 0D39F5FCA8;
-	Mon, 15 Jan 2024 11:14:32 +0800 (CST)
-From: Chen-Yu Tsai <wens@kernel.org>
-To: linux-wireless@vger.kernel.org, Andrew Yong <me@ndoo.sg>
-Cc: wireless-regdb@lists.infradead.org
-In-Reply-To: <20240112040217.24356-1-me@ndoo.sg>
-References: <20240112040217.24356-1-me@ndoo.sg>
-Subject: Re: [PATCH] wireless-regdb: Update and disable 5470-5730MHz band
- according to TPC requirement for Singapore (SG)
-Message-Id: <170528847205.770636.8573617454652565233.b4-ty@kernel.org>
-Date: Mon, 15 Jan 2024 11:14:32 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08B101842
+	for <linux-wireless@vger.kernel.org>; Mon, 15 Jan 2024 03:38:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 40F3c0s853528736, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 40F3c0s853528736
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 15 Jan 2024 11:38:00 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.17; Mon, 15 Jan 2024 11:38:00 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 15 Jan
+ 2024 11:38:00 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: <kvalo@kernel.org>
+CC: <linux-wireless@vger.kernel.org>
+Subject: [PATCH 0/8] wifi: rtw89: fw: add H2C commands to set security CAM, CMAC, DMAC and JOIN
+Date: Mon, 15 Jan 2024 11:37:34 +0800
+Message-ID: <20240115033742.16372-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.4
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
+To support coming WiFi 7 chip 8922AE, add more H2C commands. Security CAM
+is to hardware to encrypt/decrypt packets with pairwise/broadcast keys.
+CMAC and DMAC stand for Control-/Data- MAC that are also CAM to control and
+TX/RX packets. JOIN command is to create a station instance named mac_id,
+so it will be called after establishing connection.
 
-On Fri, 12 Jan 2024 12:02:17 +0800, Andrew Yong wrote:
->   - Use original regulation Tx power of 1000mW with TPC for 5470-5730MHz band instead of -3dBm offset without TPC
->   - Comment out 5470 - 5730 band to disable it since TPC is not implemented
-> 
-> 
+Ping-Ke Shih (8):
+  wifi: rtw89: fw: add H2C command to update security CAM v2
+  wifi: rtw89: fw: fill CMAC table to associated station for WiFi 7
+    chips
+  wifi: rtw89: fw: add chip_ops to update CMAC table to associated
+    station
+  wifi: rtw89: fw: update TX AMPDU parameter to CMAC table
+  wifi: rtw89: fw: add H2C command to reset CMAC table for WiFi 7
+  wifi: rtw89: fw: add H2C command to reset DMAC table for WiFi 7
+  wifi: rtw89: fw: use struct to fill JOIN H2C command
+  wifi: rtw89: fw: extend JOIN H2C command to support WiFi 7 chips
 
-Applied, thanks!
+ drivers/net/wireless/realtek/rtw89/cam.c      |  61 +++
+ drivers/net/wireless/realtek/rtw89/cam.h      | 109 ++++
+ drivers/net/wireless/realtek/rtw89/core.c     |  12 +-
+ drivers/net/wireless/realtek/rtw89/core.h     |  15 +-
+ drivers/net/wireless/realtek/rtw89/fw.c       | 509 +++++++++++++++++-
+ drivers/net/wireless/realtek/rtw89/fw.h       | 303 ++++++++---
+ drivers/net/wireless/realtek/rtw89/mac.c      |   6 +-
+ drivers/net/wireless/realtek/rtw89/mac80211.c |   8 +-
+ drivers/net/wireless/realtek/rtw89/rtw8851b.c |   4 +
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |   4 +
+ drivers/net/wireless/realtek/rtw89/rtw8852b.c |   4 +
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c |   4 +
+ drivers/net/wireless/realtek/rtw89/rtw8922a.c |   6 +
+ drivers/net/wireless/realtek/rtw89/wow.c      |   2 +-
+ 14 files changed, 955 insertions(+), 92 deletions(-)
 
-[1/1] wireless-regdb: Update and disable 5470-5730MHz band according to TPC requirement for Singapore (SG)
-      commit: d695bf21d1cdf02e64924f452c242f7588469609
-
-Best regards,
 -- 
-Chen-Yu Tsai <wens@kernel.org>
+2.25.1
 
 
