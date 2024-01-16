@@ -1,113 +1,131 @@
-Return-Path: <linux-wireless+bounces-1987-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1988-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 024C482F1F4
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 16:55:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FA6A82F2C1
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 17:59:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 915E01F23EFF
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 15:55:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A26A71C23621
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 16:59:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E17BA1C6AB;
-	Tue, 16 Jan 2024 15:54:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A67681CD14;
+	Tue, 16 Jan 2024 16:58:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Jtmo38Y+"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="iZXCTlrI"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D621C6A1;
-	Tue, 16 Jan 2024 15:54:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-40e7065b7bdso29156145e9.3;
-        Tue, 16 Jan 2024 07:54:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705420493; x=1706025293; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=097AIZDFnth5ZFT/ZvzM3lDqkfx5bsjxaBNjsvF0f24=;
-        b=Jtmo38Y+yEH3xxoBYEpykcA+deLoyQkBoQh+85NKJTCfR9lOZMDo6Jel0nKAxAIi99
-         uknJzpXgmnGLB8aNfqEL/xFrzZ+amvwAZaKK/LUzvXWJDCxSS3Ol1tFGiBzfX6yCfGJw
-         EEtKxgEvtl2QdtqOWN3OfKK0k3kLEwcTLMQ7JqqwXcA+PdDKGZAENLYChZo7De5/v6TZ
-         rNj6QLLCJ1Zx/LvY+mmciXwr3xlscbl2fsh/3lpn2CIvul1/56zrfRjfyrQcOjgeKs1n
-         otqHIFtunq0KQ0OVoHowEYMOWUS2rKhZVY0ZcDi6BXvPoldTHGped4zKtTJtMZyvELOP
-         YC4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705420493; x=1706025293;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=097AIZDFnth5ZFT/ZvzM3lDqkfx5bsjxaBNjsvF0f24=;
-        b=m2pU75i/Ro1daatB4/LXkm4Hk6b9/wmLVCATI+fWQJJXxME9JP3Nl5qmVjqr5pnvS8
-         8LlD4cNw+bH7chduapLKx2L/MNZA078xPJ0dvF/oTeN88VxGPuXq4fNmDaenZ6cH7I5U
-         gEbhFRAAvaCb8gk0O1pVBDhwegVxkBS01PTIQhTnGQh60okyQhDlIPCL1chDsM2LrbHp
-         pbUQ6GIIMugMbF3CNK4q6zl8IkXxz/9AVpoyrWEHEpv5OfClqO2sGy4pWluZH9lI9nCg
-         X0rfUxUgXSVu3XJGFkY/vhEF0KSSRLn+j6g/LxlVq0J30TP9G347JiI3MlpjElL5uOvG
-         NsJw==
-X-Gm-Message-State: AOJu0YwAAEtIG1qiAvNKHLW782cZxGO9HyWc7kc0V5ZLm6SKQiyF5U36
-	0msv08mZsx8k5ucm8+jC4qc=
-X-Google-Smtp-Source: AGHT+IHfHURJWF9KvXkLVT6B9aCIpy4k+92SQCv/WP+ixPjOX/LueXlRtXJdGBdNb5AgNn93MHzAkQ==
-X-Received: by 2002:a05:600c:1885:b0:40e:50d7:6902 with SMTP id x5-20020a05600c188500b0040e50d76902mr2588898wmp.64.1705420493390;
-        Tue, 16 Jan 2024 07:54:53 -0800 (PST)
-Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
-        by smtp.gmail.com with ESMTPSA id je6-20020a05600c1f8600b0040d8d11bf63sm19811106wmb.41.2024.01.16.07.54.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jan 2024 07:54:52 -0800 (PST)
-From: Colin Ian King <colin.i.king@gmail.com>
-To: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	Kalle Valo <kvalo@kernel.org>,
-	linux-wireless@vger.kernel.org
-Cc: kernel-janitors@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH][next] wifi: ath9k:  remove redundant assignment to variable ret
-Date: Tue, 16 Jan 2024 15:54:52 +0000
-Message-Id: <20240116155452.2315351-1-colin.i.king@gmail.com>
-X-Mailer: git-send-email 2.39.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B5E71CD0A;
+	Tue, 16 Jan 2024 16:58:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1705424297; cv=none; b=bLsEF6fCrv9do+K8T8bV3wLO1EemtXmERz0MgydlIrdYFbTpxi3HQngsU5j02FjcoV2SR89/Lr+EvK0/za2D9vEQJj/FWxMm7ReHRc+10nTtUCJWZ9de76Hzeq+SWqjNnfBNp0Cg+wC4HdtG7bEVyizEnCDcCUdUtXDq7dn3c2k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1705424297; c=relaxed/simple;
+	bh=EG56JEJr5SSFJa1ProkXXetHXw6Bmln8ueAcpqQwFV4=;
+	h=Received:DKIM-Signature:Received:Received:Received:Message-ID:
+	 Date:MIME-Version:User-Agent:Subject:Content-Language:To:CC:
+	 References:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 X-Originating-IP:X-ClientProxiedBy:X-QCInternal:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-GUID:
+	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details; b=uAQloF64iHPTMCvZy4yAAS75WyIPXc3lel+txursAimIGINgS9BYi4YB/RMINgaOHBedtapwqw76tPxn3VJ8P2bPTzPCfkqbKfi7sKBNOuyUeEDCLQWwxBMNP5P0RJIDu+J1ki48yJUdOGHcdQJInamN0vQIYA1yrsZ1LOOIeXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=iZXCTlrI
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40GE0SRq017782;
+	Tue, 16 Jan 2024 16:58:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=GGCf2oVrPExymJ+LoSpyhflVsJy1oqjW5/tJ73eB70E=; b=iZ
+	XCTlrIAErVdZlGVSb/i0Hn44IG2n7ptRNNEWTfgWeaRMxPgVw0V0TRLwmy+15mH5
+	L/UtoABG2B4NixijR3ewBDVmHgykD+H2Tot3Fu6yTW2UBDsTs0prmJTdnRtU+OI0
+	lxo6Us7c8jAddwoqqjOM1+E6vCekAvtEKo8MXHeOvB+sYYlnaluhxVmEVtUsXAqS
+	a5uUTWyz8DjNTrrxVEUZIGpxk40mRzC1V4qpgQKz12cHOPIJQVARyc4dy0snPa6n
+	WAoo6QpBnRHwukKm+AuZoF/6fg22a3N+IFimqZzthfc3E2+1Iagyfo7e1wnKthc2
+	ElhK4/w/trbrxkAnaprA==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vnq4t13k8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Jan 2024 16:58:06 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40GGw56q005399
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Jan 2024 16:58:05 GMT
+Received: from [10.227.110.203] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Tue, 16 Jan
+ 2024 08:58:04 -0800
+Message-ID: <b4f29511-e001-4964-b88d-208dabf88121@quicinc.com>
+Date: Tue, 16 Jan 2024 08:58:04 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: ath11k: document HAL_RX_BUF_RBM_SW4_BM
+Content-Language: en-US
+To: Kalle Valo <kvalo@kernel.org>
+CC: <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+References: <20240111-document-hal_rx_buf_rbm_sw4_bm-v1-1-ad277e8ab3cc@quicinc.com>
+ <874jfg7xm4.fsf@kernel.org>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <874jfg7xm4.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: yQp3OW0jwCxWbxg37ISj41BS-p-b-ZMg
+X-Proofpoint-ORIG-GUID: yQp3OW0jwCxWbxg37ISj41BS-p-b-ZMg
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-09_01,2023-12-07_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 adultscore=0
+ clxscore=1015 malwarescore=0 suspectscore=0 spamscore=0 lowpriorityscore=0
+ bulkscore=0 mlxlogscore=371 priorityscore=1501 phishscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2311290000 definitions=main-2401160134
 
-The variable ret is being assigned a value but it isn't being
-read afterwards. The assignment is redundant and so ret can be
-removed.
+On 1/14/2024 7:17 AM, Kalle Valo wrote:
+> Jeff Johnson <quic_jjohnson@quicinc.com> writes:
+> 
+>> Commit 7636c9a6e7d7 ("wifi: ath11k: Add multi TX ring support for WCN6750")
+>> added HAL_RX_BUF_RBM_SW4_BM to enum hal_rx_buf_return_buf_manager. However,
+>> as flagged by the kernel-doc script, the documentation was not updated:
+>>
+>> drivers/net/wireless/ath/ath11k/hal.h:689: warning: Enum value 'HAL_RX_BUF_RBM_SW4_BM' not described in enum 'hal_rx_buf_return_buf_manager'
+>>
+>> So update the documentation. No functional changes, compile tested only.
+>>
+>> Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> 
+> I'm not really a fan of kernel-doc in wireless drivers, it feels more
+> unnecessary work. Should we remove the kernel-doc markings from ath11k
+> altogether?
 
-Cleans up clang scan build warning:
-warning: Although the value stored to 'ret' is used in the
-enclosing expression, the value is never actually read from
-'ret' [deadcode.DeadStores]
+Are you not a fan of kernel-doc format specifically, or not a fan of
+documentation at all?
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
----
- drivers/net/wireless/ath/ath9k/xmit.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+I'm personally a fan of documentation since good documentation makes the
+code more maintainable. Yes, there is a cost in creating and maintaining
+the documentation, but this is hopefully offset by cost saving when new
+developers are trying to understand and modify the code.
 
-diff --git a/drivers/net/wireless/ath/ath9k/xmit.c b/drivers/net/wireless/ath/ath9k/xmit.c
-index f15684379b03..d519b676a109 100644
---- a/drivers/net/wireless/ath/ath9k/xmit.c
-+++ b/drivers/net/wireless/ath/ath9k/xmit.c
-@@ -369,12 +369,11 @@ static void ath_tid_drain(struct ath_softc *sc, struct ath_txq *txq,
- 	struct list_head bf_head;
- 	struct ath_tx_status ts;
- 	struct ath_frame_info *fi;
--	int ret;
- 
- 	memset(&ts, 0, sizeof(ts));
- 	INIT_LIST_HEAD(&bf_head);
- 
--	while ((ret = ath_tid_dequeue(tid, &skb)) == 0) {
-+	while (ath_tid_dequeue(tid, &skb) == 0) {
- 		fi = get_frame_info(skb);
- 		bf = fi->bf;
- 
--- 
-2.39.2
+I'm also a fan of consistency. And since kernel-doc is the standard
+format defined for the kernel, it is my personal preference to use that
+format.
 
+I'm curious what others think of the ath10/11/12k level and style of
+documentation.
+
+/jeff
 
