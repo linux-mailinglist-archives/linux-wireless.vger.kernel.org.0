@@ -1,132 +1,87 @@
-Return-Path: <linux-wireless+bounces-1963-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1965-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A56682EAA6
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 09:05:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F5D282EAAF
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 09:10:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17C981F21940
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 08:05:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EB29280ACA
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 08:10:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CB0111702;
-	Tue, 16 Jan 2024 08:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFEFA11C83;
+	Tue, 16 Jan 2024 08:10:27 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C50B4125AD
-	for <linux-wireless@vger.kernel.org>; Tue, 16 Jan 2024 08:05:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-3607ad143c2so81133785ab.1
-        for <linux-wireless@vger.kernel.org>; Tue, 16 Jan 2024 00:05:22 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705392322; x=1705997122;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=XRJjfQnPLTBgxpKiiBjqe0Wn3Mav+RvkhMaMKCvAxdc=;
-        b=kYSjYM87Me3+abjGTVcD0eoiFhtarI1VtOmrLK+3PyAk429NxP698N/UB376RZ/eUd
-         5vst9LmvW9RGT4CYSflIuDVdcFvH5ajAzHudwWFyLph9TTfTVFdXBRDTrt+kPXIB7EHj
-         UqlvVyO5oYYJ2LTmbbvTfqltWQ8vqUMr1nBcMQXtCdYDRZBYMyqic1qyqkmyNY4jgYMO
-         9oalHFGukG7yxGLtUFK/2I4WKSWM9DdWE0DtsgdYaGD1x7YqPzdA6iSvFA6PY6fP8BW5
-         CZmfo7jZq1xc9Qh8pKQ0sp+qK0ZKkGwYH6R6FrdlkEitfIIlKfoB9QV8JshIhxTQ4mWW
-         cVuw==
-X-Gm-Message-State: AOJu0Yyw/j0T6nEHwpllDqOx0jN/uGCuaPjHm1nhO6dkyo6j2550uhLU
-	sA0GXZQmdFQ1d2KGdxuGuznjSKcRA29S6flXSIS5jmAcC/Ne
-X-Google-Smtp-Source: AGHT+IF7wz3ASbidj8tbeNxztPcS5M5jMBiWRt+3G8NchKbnGwMLXkuw3hCCLciBPEyEWc1SkDLerJotzSeGStzR2jQ/nv2lkAzl
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C96D711C84
+	for <linux-wireless@vger.kernel.org>; Tue, 16 Jan 2024 08:10:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 40G8A7Fa8147637, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 40G8A7Fa8147637
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 16 Jan 2024 16:10:07 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2375.32; Tue, 16 Jan 2024 16:10:07 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Tue, 16 Jan
+ 2024 16:10:06 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: <Jes.Sorensen@gmail.com>, <kvalo@kernel.org>
+CC: <martin.kaistra@linutronix.de>, <lkp@intel.com>,
+        <linux-wireless@vger.kernel.org>
+Subject: [PATCH 1/2] wifi: rtl8xxxu: convert EN_DESC_ID of TX descriptor to le32 type
+Date: Tue, 16 Jan 2024 16:09:44 +0800
+Message-ID: <20240116080945.20172-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1aa6:b0:35f:d9cc:1c9b with SMTP id
- l6-20020a056e021aa600b0035fd9cc1c9bmr1014379ilv.0.1705392322110; Tue, 16 Jan
- 2024 00:05:22 -0800 (PST)
-Date: Tue, 16 Jan 2024 00:05:22 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000008fef0b060f0b97cf@google.com>
-Subject: [syzbot] [wireless?] WARNING in cfg80211_chandef_dfs_required
-From: syzbot <syzbot+6939539b3929b3f8d8c3@syzkaller.appspotmail.com>
-To: davem@davemloft.net, edumazet@google.com, johannes@sipsolutions.net, 
-	kuba@kernel.org, linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-Hello,
+Fields of TX descriptor are little-endian order, so correct EN_DESC_ID
+field to le32 type.
 
-syzbot found the following issue on:
-
-HEAD commit:    052d534373b7 Merge tag 'exfat-for-6.8-rc1' of git://git.ke..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=11cc88a5e80000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=878a2a4af11180a7
-dashboard link: https://syzkaller.appspot.com/bug?extid=6939539b3929b3f8d8c3
-compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
-
-Unfortunately, I don't have any reproducer for this issue yet.
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/9085b1d0af36/disk-052d5343.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/dff804edb473/vmlinux-052d5343.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/2a5cd81d366a/bzImage-052d5343.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+6939539b3929b3f8d8c3@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 18619 at net/wireless/chan.c:623 cfg80211_chandef_dfs_required+0x2f4/0x350 net/wireless/chan.c:623
-Modules linked in:
-CPU: 1 PID: 18619 Comm: kworker/1:1 Not tainted 6.7.0-syzkaller-09928-g052d534373b7 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/17/2023
-Workqueue: events_power_efficient reg_check_chans_work
-RIP: 0010:cfg80211_chandef_dfs_required+0x2f4/0x350 net/wireless/chan.c:623
-Code: ee e8 40 b6 9b f7 83 fd 3f 0f 87 a7 36 9e 00 e8 c2 ba 9b f7 41 bc 01 00 00 00 89 e9 49 d3 e4 e9 86 fd ff ff e8 ad ba 9b f7 90 <0f> 0b 90 41 bc ea ff ff ff e9 72 fd ff ff e8 19 31 f3 f7 e9 84 fe
-RSP: 0018:ffffc9000367fb88 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: ffffc9000367fc58 RCX: ffffffff89ec532f
-RDX: ffff888054c70000 RSI: ffffffff89ec55f3 RDI: 0000000000000001
-RBP: 0000000000000001 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
-R13: ffff88807d7c8700 R14: 0000000000000001 R15: 0000000000000001
-FS:  0000000000000000(0000) GS:ffff8880b9900000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f65d08d56c6 CR3: 000000004bbf4000 CR4: 0000000000350ef0
-Call Trace:
- <TASK>
- _cfg80211_reg_can_beacon+0xaa/0x660 net/wireless/chan.c:1424
- reg_wdev_chan_valid net/wireless/reg.c:2442 [inline]
- reg_leave_invalid_chans net/wireless/reg.c:2469 [inline]
- reg_check_chans_work+0x602/0x1050 net/wireless/reg.c:2482
- process_one_work+0x886/0x15d0 kernel/workqueue.c:2633
- process_scheduled_works kernel/workqueue.c:2706 [inline]
- worker_thread+0x8b9/0x1290 kernel/workqueue.c:2787
- kthread+0x2c6/0x3a0 kernel/kthread.c:388
- ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:242
- </TASK>
-
-
+Fixes: b837f78fbffa ("wifi: rtl8xxxu: add hw crypto support for AP mode")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202401161318.YtXoCkjU-lkp@intel.com/
+Cc: Martin Kaistra <martin.kaistra@linutronix.de>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+index 521faa48803c..98700f3ad6f9 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+@@ -5619,7 +5619,7 @@ static void rtl8xxxu_tx(struct ieee80211_hw *hw,
+ 			break;
+ 		}
+ 		if (bmc && rtlvif->hw_key_idx != 0xff) {
+-			tx_desc->txdw1 |= TXDESC_EN_DESC_ID;
++			tx_desc->txdw1 |= cpu_to_le32(TXDESC_EN_DESC_ID);
+ 			macid = rtlvif->hw_key_idx;
+ 		}
+ 	}
+-- 
+2.25.1
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
 
