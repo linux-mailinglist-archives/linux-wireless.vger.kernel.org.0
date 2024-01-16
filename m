@@ -1,100 +1,91 @@
-Return-Path: <linux-wireless+bounces-1973-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1974-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E76BF82EE08
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 12:44:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B98882EE52
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 12:49:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 186B11C22308
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 11:44:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D8A31C20FB6
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 11:49:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6D9F1BC25;
-	Tue, 16 Jan 2024 11:44:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Btb2fs00"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C9411B940;
+	Tue, 16 Jan 2024 11:49:38 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 270791BC20;
-	Tue, 16 Jan 2024 11:44:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=0OCZPW6BtUdee4wcdmdcNhZkbu6nqvpWo+Hiv6o8ilQ=;
-	t=1705405447; x=1706615047; b=Btb2fs00mYKLl4zp+7z7mvXrfVVlJ+cegj5+sWweRYmJzOc
-	JlldMwwUeMofcxeW9Awr2qt8/ylt9BXcuqNFtNp/tb+Q+ZsGzYHl4DIYiDB0DNTE0wUY2b9SLwxaI
-	hqBHJNwf6dcTB5SWj/L0edWPAz0JIH3Krb5arY+pZ72YW2eFUKXcSCw47JoTzUu0bzDCVfXtWfSbd
-	As/4qieHUV7jv6X8qwDqAqy1Wkc9RSDYWDAox1HeVTPqIRzdvNH5rzHmc0VgPoDlGyU80nVXezPn+
-	s+Fq+wEusJfmzH2OFEEuQb2Hv2h0DuODQUL/6Yo/jsLd7pOzzIMNWLe0oCGLUkVg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1rPhrJ-00000004vh7-46DK;
-	Tue, 16 Jan 2024 12:43:58 +0100
-Message-ID: <d14d6b4c02282d6ef48a936b1ac8be71c80a8835.camel@sipsolutions.net>
-Subject: Re: [REGRESSION] 6.7 broke wifi "AP is in CSA process, reject auth"
-From: Johannes Berg <johannes@sipsolutions.net>
-To: coldolt <andypalmadi@gmail.com>
-Cc: ayala.beker@intel.com, linux-wireless@vger.kernel.org, 
-	regressions@lists.linux.dev
-Date: Tue, 16 Jan 2024 12:43:56 +0100
-In-Reply-To: <CAJvGw+ATM3B09KbuLM0VsmU9GZRSO-ZP6ffwvvOa75xVHR3-kw@mail.gmail.com>
-References: 
-	<CAJvGw+DQhBk_mHXeu6RTOds5iramMW2FbMB01VbKRA4YbHHDTA@mail.gmail.com>
-	 <dae4bb032ad8b0c9fa6547de5e869e51f9f6e766.camel@sipsolutions.net>
-	 <CAJvGw+ATM3B09KbuLM0VsmU9GZRSO-ZP6ffwvvOa75xVHR3-kw@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8BA21B7F7
+	for <linux-wireless@vger.kernel.org>; Tue, 16 Jan 2024 11:49:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 40GBnJQO1233158, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 40GBnJQO1233158
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 16 Jan 2024 19:49:19 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2375.32; Tue, 16 Jan 2024 19:49:19 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 16 Jan 2024 19:49:18 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::e4c4:c4f:4e4c:d23c]) by
+ RTEXMBS04.realtek.com.tw ([fe80::e4c4:c4f:4e4c:d23c%5]) with mapi id
+ 15.01.2507.035; Tue, 16 Jan 2024 19:49:18 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "zenmchen@gmail.com" <zenmchen@gmail.com>,
+        "martin.kaistra@linutronix.de"
+	<martin.kaistra@linutronix.de>
+CC: "Jes.Sorensen@gmail.com" <Jes.Sorensen@gmail.com>,
+        "kvalo@kernel.org"
+	<kvalo@kernel.org>,
+        "rtl8821cerfe2@gmail.com" <rtl8821cerfe2@gmail.com>,
+        "bigeasy@linutronix.de" <bigeasy@linutronix.de>
+Subject: Re: [PATCH] wifi: rtl8xxxu: add missing number of sec cam entries for all variants
+Thread-Topic: [PATCH] wifi: rtl8xxxu: add missing number of sec cam entries
+ for all variants
+Thread-Index: AQHaSGF5KTD8y6z8zEGHZ3zLWD9Q17DbzSaA
+Date: Tue, 16 Jan 2024 11:49:18 +0000
+Message-ID: <72e1babe6cf31256d8e18b471d8583658c78636d.camel@realtek.com>
+References: <20240116095001.399500-1-martin.kaistra@linutronix.de>
+In-Reply-To: <20240116095001.399500-1-martin.kaistra@linutronix.de>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+user-agent: Evolution 3.36.1-2 
+x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <17340991D5434042A23AF3915C66DD11@realtek.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-On Tue, 2024-01-16 at 01:56 +0200, coldolt wrote:
-> I can try to keep connecting for over 5 minutes, it never connects,
-> keeps outputting the same dmesg message. The kernel before 6.7
-> connects immediately.
-
-
->         DS Parameter set: channel 36
->         Unknown IE (60): 01 16 24 09
->=20
-
-So it is indeed - as expected of course - advertising that it's about to
-switch channel and even saying everyone else needs to be *quiet*. This
-is
-
-struct ieee80211_ext_chansw_ie {
-        u8 mode;
-        u8 new_operating_class;
-        u8 new_ch_num;
-        u8 count;
-} __packed;
-
-
-so mode=3D=3D1 indicates quiet, new_operating_class/new_ch_num are actually
-the channel it's currently on, and count is 9.
-
-Can you say if it actually changes the count? Maybe capture on channel
-36 using the NIC as a sniffer what it does over time:
-https://wireless.wiki.kernel.org/en/users/drivers/iwlwifi/debugging#air_sni=
-ffing
-
-
-Initially I'd say though that if this situation persists, then your AP
-is having some problems and we'd not have stayed connected without the
-patch in question either. If you want, maybe revert and see what the
-symptom is then?
-
-johannes
+KyBaZW5tDQoNCkhpIFplbm0sDQoNCk9uIFR1ZSwgMjAyNC0wMS0xNiBhdCAxMDo1MCArMDEwMCwg
+TWFydGluIEthaXN0cmEgd3JvdGU6DQo+IA0KPiBDb21taXQgYjgzN2Y3OGZiZmZhICgid2lmaTog
+cnRsOHh4eHU6IGFkZCBodyBjcnlwdG8gc3VwcG9ydCBmb3IgQVANCj4gbW9kZSIpIGludHJvZHVj
+ZWQgbWF4X3NlY19jYW1fbnVtIGFzIGEgbWVtYmVyIG9mIHJ0bDh4eHh1X2ZpbGVvcHMuDQo+IEl0
+IHdhcyBtaXNzZWQgdG8gc2V0IHRoaXMgbnVtYmVyIGZvciBhbGwgdmFyaWFudHMgZXhjZXB0IDgx
+ODhmLCB3aGljaA0KPiBjYXVzZWQgcnRsOHh4eHVfZ2V0X2ZyZWVfc2VjX2NhbSgpIHRvIGFsd2F5
+cyByZXR1cm4gMC4NCj4gDQo+IEZpeCBpdCBieSBhZGRpbmcgdGhlIG51bWJlcnMgZm9yIGFsbCB2
+YXJpYW50cy4gVGhlIHZhbHVlcyBhcmUgdGFrZW4gZnJvbQ0KPiB0aGUgdmVuZG9yIGRyaXZlcnMg
+YW5kIHJ0bHdpZmkuDQo+IA0KPiBGaXhlczogYjgzN2Y3OGZiZmZhICgid2lmaTogcnRsOHh4eHU6
+IGFkZCBodyBjcnlwdG8gc3VwcG9ydCBmb3IgQVAgbW9kZSIpDQo+IFNpZ25lZC1vZmYtYnk6IE1h
+cnRpbiBLYWlzdHJhIDxtYXJ0aW4ua2Fpc3RyYUBsaW51dHJvbml4LmRlPg0KPiANCg0KQ291bGQg
+eW91IHBsZWFzZSB0cnkgaWYgdGhpcyBwYXRjaCBjYW4gZml4IHlvdXIgcHJvYmxlbT8gDQoNClRo
+YW5rcw0KUGluZy1LZQ0KDQoNCg==
 
