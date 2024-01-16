@@ -1,59 +1,59 @@
-Return-Path: <linux-wireless+bounces-2031-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2032-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3704C82F94F
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 22:04:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B143282F960
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 22:06:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE087B2471B
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 21:04:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 569D0287C63
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 21:06:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2A7214138E;
-	Tue, 16 Jan 2024 19:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0E6F1426EF;
+	Tue, 16 Jan 2024 19:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pCdZpuIz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J9jr2bcn"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775DF14138B;
-	Tue, 16 Jan 2024 19:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B951426EA;
+	Tue, 16 Jan 2024 19:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705434939; cv=none; b=awHfFTVFbGzGUen7DLPXx9T0IYUzSwA/nGu6YE27kIiooiel5bWqkowQj2degjne8boA+L6VSwU63ACM9fJEGwg/EZNWpag0RM70yEqmaDi6j34oiQNjH2tD/0LfzGT8goS24axYm8hCyzkvExxL5K+zAoZlI0wpPrPBTt7UIJc=
+	t=1705434953; cv=none; b=JSybk8QS2qYhTv+eaorXpBQSbzvqSA3sqFzHVAo6CfkemHoKr3EaT0RHUSW68PvT1s/3CRcd9lQxTnpQk6iTL5Ql3OLsbhH2H2x6EjNQp6WL0QCdT096853wmgI/0C/Xk5ZB8K2eQVP3fgv144XJ40P16bu3rworfyxZgLa4KZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705434939; c=relaxed/simple;
-	bh=0y769TGzBrbl5VChnyn093dkqOvatr23ZojUupl05OQ=;
+	s=arc-20240116; t=1705434953; c=relaxed/simple;
+	bh=DLXBG8JCaa5ys2bFtaKoPSzsBxvXML071j0o8lBy4tY=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:X-stable:
-	 X-Patchwork-Hint:X-stable-base:Content-Transfer-Encoding; b=rYHuoYXCqP9eJ+//1Ts0lxLgeGA6gZ58LrSs47CAGeGCVEQbRbWUbW31SEQnYShDoh8WRO1hjAzqYDN8yhnHqYLTpANhUXAvjDCqgxn5T7gbUxhdKlKygNlLIkfA/Dnvn/ehRvbqiqpwFAh+we2ynJlNXddWOl6Lui7ePVF0iZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pCdZpuIz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C62AC433F1;
-	Tue, 16 Jan 2024 19:55:38 +0000 (UTC)
+	 X-Mailer:In-Reply-To:References:MIME-Version:Content-Type:X-stable:
+	 X-Patchwork-Hint:X-stable-base:Content-Transfer-Encoding; b=CAdCCReEOSmqJZe0mqJ7fl3XPCzhvGqYeL45orRBcN0GOes7yCtqPggwzy9zjrYHTHLzE9+HHFi5uEqbmeWcELRX+KV9gu5og54Ymnz6I4QC3IpRmDHx6u9q4wUGGC7sMbD/woGaIjXqdtZl+6DQeEFxbf9BR215AEXL8mFTnrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J9jr2bcn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71CFEC433F1;
+	Tue, 16 Jan 2024 19:55:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705434938;
-	bh=0y769TGzBrbl5VChnyn093dkqOvatr23ZojUupl05OQ=;
+	s=k20201202; t=1705434953;
+	bh=DLXBG8JCaa5ys2bFtaKoPSzsBxvXML071j0o8lBy4tY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pCdZpuIzeo7xxyssvPiV4gPXyua3OcvnmNU7oCgYINPYZXPtaSfCoBaHlDJ0wS44d
-	 P5cy8Nq4VAlrebOMEGtPen86KUwtd8mjDajb7Pv35WCqcm/UoLHhM/VESa7Ii0JWzj
-	 Ur45rUNZCwXAmxPxFmPr/O0rH+BwDw/pHBNjOl4Bx0WNeLnT8Ht/oTIt9heMsOyMcD
-	 a0eU8V9unWK6Y6OSLf4H2Cy70Jqiu3NZDFxUcQYxw2vu3JlW7DtEFPOQhxEQ6tmMt1
-	 HYHaCJDqcCvt2c4S2ih+hfK2zzu9z7dUxIoJMquJeRrBKbMU3272HZ+MDvtIsCPBfA
-	 MN0UORuu5odLg==
+	b=J9jr2bcnr73jdaWA41cJ+xn25rIAIyEd8B+sWhHT2gmW3+VkQZQtOy7qTstUCGc7l
+	 2io12UJpPKpU5LVP9xnJkWLTMU/CTDnH//SMDFbwk+znEqrMXpKf1Xeagy3iNXC9NQ
+	 wX4xmtGZHmj4xvZMh2C9jK+fpKoEvxE8k5NJRdH0fPbxEcWZFZ5HZW07Tz03f/2Hc0
+	 kzPve28VO2JmbyZY9l+qtkJGsV5Nv1cbQn1/zuP5V+Cd5sa36udtyf1dl0BOdbD+Bj
+	 UfTLVEBbxrRzXFkMYGVp1XEBnA7XLUrCZfQtbQbwuwMk8htT9iLZ5BkHDa0LKun5Ck
+	 jILPlVIqxzoXg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Liam Kearney <liam.kearney@morsemicro.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: Minsuk Kang <linuxlovemin@yonsei.ac.kr>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
+	kvalo@kernel.org,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 12/68] wifi: ieee80211: fix PV1 frame control field name
-Date: Tue, 16 Jan 2024 14:53:11 -0500
-Message-ID: <20240116195511.255854-12-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 18/68] wifi: ath9k: Fix potential array-index-out-of-bounds read in ath9k_htc_txstatus()
+Date: Tue, 16 Jan 2024 14:53:17 -0500
+Message-ID: <20240116195511.255854-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240116195511.255854-1-sashal@kernel.org>
 References: <20240116195511.255854-1-sashal@kernel.org>
@@ -63,44 +63,61 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.73
 Content-Transfer-Encoding: 8bit
 
-From: Liam Kearney <liam.kearney@morsemicro.com>
+From: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
 
-[ Upstream commit d3ca4ab4f16eb81dc3e7721251adcba49b229d54 ]
+[ Upstream commit 2adc886244dff60f948497b59affb6c6ebb3c348 ]
 
-Update PV1 frame control field TODS to FROMDS to match 802.11 standard
+Fix an array-index-out-of-bounds read in ath9k_htc_txstatus(). The bug
+occurs when txs->cnt, data from a URB provided by a USB device, is
+bigger than the size of the array txs->txstatus, which is
+HTC_MAX_TX_STATUS. WARN_ON() already checks it, but there is no bug
+handling code after the check. Make the function return if that is the
+case.
 
-Signed-off-by: Liam Kearney <liam.kearney@morsemicro.com>
-Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Link: https://lore.kernel.org/r/20231025002755.1752983-1-liam.kearney@morsemicro.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Found by a modified version of syzkaller.
+
+UBSAN: array-index-out-of-bounds in htc_drv_txrx.c
+index 13 is out of range for type '__wmi_event_txstatus [12]'
+Call Trace:
+ ath9k_htc_txstatus
+ ath9k_wmi_event_tasklet
+ tasklet_action_common
+ __do_softirq
+ irq_exit_rxu
+ sysvec_apic_timer_interrupt
+
+Signed-off-by: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20231113065756.1491991-1-linuxlovemin@yonsei.ac.kr
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/ieee80211.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath9k/htc_drv_txrx.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
-index 870ae4cd8202..1525d13e3b1f 100644
---- a/include/linux/ieee80211.h
-+++ b/include/linux/ieee80211.h
-@@ -172,11 +172,11 @@
- #define IEEE80211_SN_MODULO		(IEEE80211_MAX_SN + 1)
+diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c b/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
+index 672789e3c55d..d6a3f001dacb 100644
+--- a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
++++ b/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
+@@ -652,9 +652,10 @@ void ath9k_htc_txstatus(struct ath9k_htc_priv *priv, void *wmi_event)
+ 	struct ath9k_htc_tx_event *tx_pend;
+ 	int i;
  
+-	for (i = 0; i < txs->cnt; i++) {
+-		WARN_ON(txs->cnt > HTC_MAX_TX_STATUS);
++	if (WARN_ON_ONCE(txs->cnt > HTC_MAX_TX_STATUS))
++		return;
  
--/* PV1 Layout 11ah 9.8.3.1 */
-+/* PV1 Layout IEEE 802.11-2020 9.8.3.1 */
- #define IEEE80211_PV1_FCTL_VERS		0x0003
- #define IEEE80211_PV1_FCTL_FTYPE	0x001c
- #define IEEE80211_PV1_FCTL_STYPE	0x00e0
--#define IEEE80211_PV1_FCTL_TODS		0x0100
-+#define IEEE80211_PV1_FCTL_FROMDS		0x0100
- #define IEEE80211_PV1_FCTL_MOREFRAGS	0x0200
- #define IEEE80211_PV1_FCTL_PM		0x0400
- #define IEEE80211_PV1_FCTL_MOREDATA	0x0800
++	for (i = 0; i < txs->cnt; i++) {
+ 		__txs = &txs->txstatus[i];
+ 
+ 		skb = ath9k_htc_tx_get_packet(priv, __txs);
 -- 
 2.43.0
 
