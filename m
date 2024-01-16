@@ -1,150 +1,158 @@
-Return-Path: <linux-wireless+bounces-1955-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1957-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA10882E7FD
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 03:49:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A930482E892
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 05:46:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC6C4284AA7
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 02:49:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 180E7283CFA
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 04:46:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36F0E6FB6;
-	Tue, 16 Jan 2024 02:49:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D09379C1;
+	Tue, 16 Jan 2024 04:46:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="j38GZNfm"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="SCswTzkw"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 836D629AB
-	for <linux-wireless@vger.kernel.org>; Tue, 16 Jan 2024 02:49:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: d2cbb2d2b41911ee9e680517dc993faa-20240116
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=rs5pQYtsKDPVyUyAZq52hdzZEfSXXLZ+MVuujaBw8OU=;
-	b=j38GZNfmS9goJtb0CezpnXcNl2xuqLX4ctmFAqHQ8wX8ZPK+vmTz9sAP/5UAQCd12fkTRq/t4MPaMICsm7dVKCy9HIuv7AzF/h/6yaREjZFg7AC7b4HEQVooeb2BtrhtnnyoM9RD8S64i4bLIvVWL8/m/aZu+avpZHXEhYsAOlA=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.35,REQID:a4a8d79f-e020-488d-a407-a8c4711cc9fb,IP:0,U
-	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:-5
-X-CID-META: VersionHash:5d391d7,CLOUDID:964b342f-1ab8-4133-9780-81938111c800,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-	RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,
-	DKR:0,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: d2cbb2d2b41911ee9e680517dc993faa-20240116
-Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw01.mediatek.com
-	(envelope-from <mingyen.hsieh@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 116684859; Tue, 16 Jan 2024 10:49:09 +0800
-Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
- mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Tue, 16 Jan 2024 10:49:08 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Tue, 16 Jan 2024 10:49:08 +0800
-From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
-To: <nbd@nbd.name>, <lorenzo@kernel.org>
-CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
-	<Soul.Huang@mediatek.com>, <Leon.Yen@mediatek.com>,
-	<Eric-SY.Chang@mediatek.com>, <km.lin@mediatek.com>,
-	<robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
-	<Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
-	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
-	<linux-mediatek@lists.infradead.org>, Ming Yen Hsieh
-	<mingyen.hsieh@mediatek.com>, Leon Yen <leon.yen@mediatek.com>
-Subject: [PATCH v2 4/4] wifi: mt76: mt7921: fix the unfinished command of regd_notifier before suspend
-Date: Tue, 16 Jan 2024 10:48:57 +0800
-Message-ID: <20240116024857.9071-5-mingyen.hsieh@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20240116024857.9071-1-mingyen.hsieh@mediatek.com>
-References: <20240116024857.9071-1-mingyen.hsieh@mediatek.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C6D8256A
+	for <linux-wireless@vger.kernel.org>; Tue, 16 Jan 2024 04:46:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40G48CLI003035;
+	Tue, 16 Jan 2024 04:46:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=fwRt4ShUkKf5hBERPdC1lT0Bavy272wqYTsEgEKcGKU=; b=SC
+	swTzkwhBGBXpuqyMR6GfVuvSfTfUFhdmpCv6HQU5H92yAybC3ke1d4YyssAuTQXG
+	3pNd48jy3lj0NAwliY7tQD0rFBP83uEVMHD+fVZjgrxmQ81j6OwJuHoPOUAQXuKB
+	qMsgwwk6Vgl8zaAlLzFwe6pSd9vBfY890tL1pxks4zg0jOaWW4rjgckS1qy1aO5l
+	G11rTMcsZtRXimN7TbRibdf7FeuJ+JbO9eGh3QeXwL6DdC98zJ4C5KbMM9h3j67n
+	EV3dOjfSOKrL1zr+bb0BnKDUFDim1o0WyOYmL7yBaNR54VkAiQG7HmX4W6FPb90t
+	eTIU/s86RG0rNAKMMpUQ==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vn2bjhv6b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Jan 2024 04:45:59 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40G4jxUs029630
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Jan 2024 04:45:59 GMT
+Received: from [10.50.41.2] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Mon, 15 Jan
+ 2024 20:45:57 -0800
+Message-ID: <de5a4bbc-3533-7666-c079-9164ea98dd27@quicinc.com>
+Date: Tue, 16 Jan 2024 10:15:52 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 01/12] wifi: ath12k: add multiple radio support in a
+ single MAC HW un/register
+Content-Language: en-US
+To: Jeff Johnson <quic_jjohnson@quicinc.com>,
+        Sriram R
+	<quic_srirrama@quicinc.com>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240111045045.28377-1-quic_srirrama@quicinc.com>
+ <20240111045045.28377-2-quic_srirrama@quicinc.com>
+ <aee0419e-c443-4b5d-957c-6c88dd3d4a71@quicinc.com>
+From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+In-Reply-To: <aee0419e-c443-4b5d-957c-6c88dd3d4a71@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: BcYh23J5ipajN6ibLlEM9IN6ev7gfJEN
+X-Proofpoint-ORIG-GUID: BcYh23J5ipajN6ibLlEM9IN6ev7gfJEN
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-09_01,2023-12-07_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
+ priorityscore=1501 mlxscore=0 phishscore=0 spamscore=0 malwarescore=0
+ mlxlogscore=814 adultscore=0 lowpriorityscore=0 bulkscore=0 suspectscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2311290000 definitions=main-2401160034
 
-From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-Before entering suspend, we need to ensure that all MCU command are
-completed. In some cases, such as with regd_notifier, there is a
-chance that CLC commands, will be executed before suspend.
+On 1/12/2024 10:33 PM, Jeff Johnson wrote:
+> On 1/10/2024 8:50 PM, Sriram R wrote:
+> ...
+>
+>> @@ -7553,10 +7553,12 @@ static int ath12k_mac_setup_channels_rates(struct ath12k *ar,
+>>   
+>>   static u16 ath12k_mac_get_ifmodes(struct ath12k_hw *ah)
+>>   {
+>> -	struct ath12k *ar = ath12k_ah_to_ar(ah);
+>> +	struct ath12k *ar;
+>> +	int i;
+>>   	u16 interface_modes = U16_MAX;
+>>   
+>> -	interface_modes &= ar->ab->hw_params->interface_modes;
+>> +	for_each_ar(i, ah, ar)
+>> +		interface_modes &= ar->ab->hw_params->interface_modes;
+> This logic sets interface_modes to be the modes that are supported on
+> every radio (starts with all modes supported and then masks off the ones
+> that are not supported on a given radio). That means that if radio 0
+> supports a mode that radio 1 does not support, then we don't advertise
+> support for that mode. Just want to verify that is the correct logic,
+> and that instead we don't want to start with no modes supported and then
+> OR in the ones that are supported so that we get the list of modes that
+> are supported on ANY radio instead of ALL radios.
 
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Signed-off-by: Leon Yen <leon.yen@mediatek.com>
----
-v2:
- After "mt7921_regd_update" the "regd_in_progress" should reset to false.
 
- drivers/net/wireless/mediatek/mt76/mt7921/init.c | 6 ++++++
- drivers/net/wireless/mediatek/mt76/mt7921/pci.c  | 3 +++
- drivers/net/wireless/mediatek/mt76/mt792x.h      | 2 ++
- 3 files changed, 11 insertions(+)
+Yes, interface_modes to be the modes that are supported on every radio 
+not any radio.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-index 48433c6d5e7d..ef0c721d26e3 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-@@ -138,9 +138,14 @@ mt7921_regd_notifier(struct wiphy *wiphy,
- 	if (pm->suspended)
- 		return;
- 
-+	dev->regd_in_progress = true;
-+
- 	mt792x_mutex_acquire(dev);
- 	mt7921_regd_update(dev);
- 	mt792x_mutex_release(dev);
-+
-+	dev->regd_in_progress = false;
-+	wake_up(&dev->wait);
- }
- 
- int mt7921_mac_init(struct mt792x_dev *dev)
-@@ -261,6 +266,7 @@ int mt7921_register_device(struct mt792x_dev *dev)
- 	spin_lock_init(&dev->pm.wake.lock);
- 	mutex_init(&dev->pm.mutex);
- 	init_waitqueue_head(&dev->pm.wait);
-+	init_waitqueue_head(&dev->wait);
- 	if (mt76_is_sdio(&dev->mt76))
- 		init_waitqueue_head(&dev->mt76.sdio.wait);
- 	spin_lock_init(&dev->pm.txq_lock);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-index 57903c6e4f11..8b226b731ec9 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-@@ -409,6 +409,9 @@ static int mt7921_pci_suspend(struct device *device)
- 	if (err < 0)
- 		goto restore_suspend;
- 
-+	wait_event_timeout(dev->wait,
-+			   !dev->regd_in_progress, 5 * HZ);
-+
- 	err = mt76_connac_mcu_set_hif_suspend(mdev, true);
- 	if (err)
- 		goto restore_suspend;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt792x.h b/drivers/net/wireless/mediatek/mt76/mt792x.h
-index 3c897b34aaa7..a8556de3d480 100644
---- a/drivers/net/wireless/mediatek/mt76/mt792x.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x.h
-@@ -186,6 +186,8 @@ struct mt792x_dev {
- 	bool hw_init_done:1;
- 	bool fw_assert:1;
- 	bool has_eht:1;
-+	bool regd_in_progress:1;
-+	wait_queue_head_t wait;
- 
- 	struct work_struct init_work;
- 
--- 
-2.18.0
+Any radio support can be add in the future ath12k driver once the hw 
+specific interface mode support is added in mac80211/cfg80211.
+
+
+>>   
+>>   	return interface_modes == U16_MAX ? 0 : interface_modes;
+>>   }
+>> @@ -7564,15 +7566,19 @@ static u16 ath12k_mac_get_ifmodes(struct ath12k_hw *ah)
+>>   static bool ath12k_mac_is_iface_mode_enable(struct ath12k_hw *ah,
+>>   					    enum nl80211_iftype type)
+>>   {
+>> -	struct ath12k *ar = ath12k_ah_to_ar(ah);
+>> +	struct ath12k *ar;
+>> +	int i;
+>>   	u16 interface_modes, mode;
+>>   	bool is_enable = true;
+>>   
+>>   	mode = BIT(type);
+>> -
+>> -	interface_modes = ar->ab->hw_params->interface_modes;
+>> -	if (!(interface_modes & mode))
+>> -		is_enable = false;
+>> +	for_each_ar(i, ah, ar) {
+>> +		interface_modes = ar->ab->hw_params->interface_modes;
+>> +		if (!(interface_modes & mode)) {
+>> +			is_enable = false;
+> note that in the example I mentioned above, this logic could say a given
+> mode is enabled even though the bit isn't set in the interface_modes
+> listed above
+
+
+The condition check "if (!(interface_modes & mode))" become true when 
+the the bit isn't set in the interface_modes. So no issues.
+
+
+Thanks,
+
+Karthikeyan
 
 
