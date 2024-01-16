@@ -1,59 +1,58 @@
-Return-Path: <linux-wireless+bounces-2042-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2043-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 518B882FA83
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 22:34:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EBA682FA8C
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 22:35:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D889628B597
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 21:34:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1ABC828B755
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 21:35:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D259157035;
-	Tue, 16 Jan 2024 19:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A0F3157891;
+	Tue, 16 Jan 2024 19:59:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T+9/9/Sr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SC6m74cO"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D758D157032;
-	Tue, 16 Jan 2024 19:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7124215788D;
+	Tue, 16 Jan 2024 19:59:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705435193; cv=none; b=nzN+wdu+7WFlq6l46RQxo8W+Nln6k4ztxvpGVMYi/nUf5iR9ob20s5GUiqE/BT1Kutab5T00NpbkTWmDPSp1/E+2D5r7hac7zLCHS5wjP0o72zll7VWvq0A+4XdYG7Wl/GsO3/sYoF0ANnyttTNS2rHbEORudJu0Q2HJ5rJqDYw=
+	t=1705435196; cv=none; b=Rb1c+DV8X8ulhN4NIh0TGHm3C517KGmBpa3Sr8tNsFSPcXfV/V/Yy2wW2eOfEYWeEioGF7stcsV1NHuVp4s4tVF87nxLnSqVyIfRqJoATOhZAivTW8FhaKofxh5pRDyg8qZCV6oBYoVKAR6JN8EcBmHSE+jCGcTfu5odH/R2oYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705435193; c=relaxed/simple;
-	bh=PyeWW6FVWdIr0mX4Kz1ZCJku7qfV3iqmMBMmop674WQ=;
+	s=arc-20240116; t=1705435196; c=relaxed/simple;
+	bh=FgXKYXjmn6QXTfJ3/fj/E8eIatj7g5+XsrzED+N2P8c=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:X-stable:
-	 X-Patchwork-Hint:X-stable-base:Content-Transfer-Encoding; b=jQAKvjRUjrXwOgopfrLB95Fg0KLgGwSPFqZBa9RQisJy7T20lmBbPXhyfHvSqohVNUaivULPJfw9knxWwm5UzVQEoiOPtXRavVQnomiSovRyBteDWVmS6AYe6ZtuB7jrqaQvNOESHohs2SolT196vulS/HlK71MmudMqo59jLek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T+9/9/Sr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C4C0C43399;
-	Tue, 16 Jan 2024 19:59:52 +0000 (UTC)
+	 X-Patchwork-Hint:X-stable-base:Content-Transfer-Encoding; b=ONhS4ciCjwOzF0N7jnqyD/NqL9ohwyY0BcJL0aaAyHHd7uapWDjxBKwas+XUUiz0hkzJ6BM9PegkgkE+iiMpzROt2c+LntrDyfpwt+5+NQh4xnUXRb3/C6rcpUzcTUlLvXejo2g58vaDnFa3/RDWqTRRO+eMMX/Alqv0p5JEPZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SC6m74cO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 898E7C433F1;
+	Tue, 16 Jan 2024 19:59:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705435193;
-	bh=PyeWW6FVWdIr0mX4Kz1ZCJku7qfV3iqmMBMmop674WQ=;
+	s=k20201202; t=1705435196;
+	bh=FgXKYXjmn6QXTfJ3/fj/E8eIatj7g5+XsrzED+N2P8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T+9/9/SrHwgZFUIopOX00re3hpjotWQZNuCYkGracUH6fzSBouR5MdLauob5cCR6h
-	 R6sh26zyLIgk2hKqG6Y628BExBXDn9YBzlQd7VNosGY+sDkcXxNElAzqGq/bxfb1vF
-	 TtCULa8R/dFsEKd5mvhF+zhlFI6+s/I29XDp/FifvxZ7AOnqNyAN2BoXhZUinasSUV
-	 05NMqn9PygEyZizX0XjNuoxmBZuX8WjxoXLtbxyFblBY56si83oE5gkS/oR4Srt2J3
-	 6/xoezQVyb1VwakZVbxmqV5D3Ojnxcv588vGpgRpeimpZTbLxfY46cXmQwcE0yB20O
-	 e109lpKJhDjaQ==
+	b=SC6m74cOh5zfCkxCsShUPPPyf4VpFEdM7IlaUh48o5mkvnUCyEZcw4cybqvG+1OkO
+	 BWWTQnrQ0gHFm7OxpCTgOLGZNIDmwUapQfH0pe8d1xFOkCSFZqubBGdUb9QCZUny/S
+	 9w9bfINDNftu7+/NYssh5+491Q/usakTtnGNCXB8gSnO9uvGc8DMwCmPW1w/jeZtiZ
+	 e3kjH7ROUu0/5MPhdCWzia8Gd2cIAZvb4NZ+k34+KDnDu0WnqgI6Fjo4dCRujhyF8h
+	 Px0yxwxfjdKQho3PIPOkTD2ZMmiEvMuJlM0EeNvv1hBhdzZqpRYiMHZURir2hSeAIe
+	 vp629xfmoaRUw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Zenm Chen <zenmchen@gmail.com>,
+Cc: Su Hui <suhui@nfschina.com>,
 	Ping-Ke Shih <pkshih@realtek.com>,
 	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	Jes.Sorensen@gmail.com,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 38/47] wifi: rtl8xxxu: Add additional USB IDs for RTL8192EU devices
-Date: Tue, 16 Jan 2024 14:57:41 -0500
-Message-ID: <20240116195834.257313-38-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 40/47] wifi: rtlwifi: add calculate_bit_shift()
+Date: Tue, 16 Jan 2024 14:57:43 -0500
+Message-ID: <20240116195834.257313-40-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240116195834.257313-1-sashal@kernel.org>
 References: <20240116195834.257313-1-sashal@kernel.org>
@@ -68,46 +67,40 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.147
 Content-Transfer-Encoding: 8bit
 
-From: Zenm Chen <zenmchen@gmail.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit 4e87ca403e2008b9e182239e1abbf6876a55eb33 ]
+[ Upstream commit 52221dfddbbfb5b4e029bb2efe9bb7da33ec1e46 ]
 
-Add additional USB IDs found in the vendor driver from
-https://github.com/Mange/rtl8192eu-linux-driver to support more
-RTL8192EU devices.
+There are many same functions like _rtl88e_phy_calculate_bit_shift(),
+_rtl92c_phy_calculate_bit_shift() and so on. And these functions can
+cause undefined bitwise shift behavior. Add calculate_bit_shift() to
+replace them and fix undefined behavior in subsequent patches.
 
-Signed-off-by: Zenm Chen <zenmchen@gmail.com>
-Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20231217123017.1982-1-zenmchen@gmail.com
+Link: https://msgid.link/20231219065739.1895666-2-suhui@nfschina.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c    | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/net/wireless/realtek/rtlwifi/wifi.h | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index be93ffa5086a..30d9a195c6fb 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -6973,6 +6973,18 @@ static const struct usb_device_id dev_table[] = {
- 	.driver_info = (unsigned long)&rtl8192eu_fops},
- {USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0x818c, 0xff, 0xff, 0xff),
- 	.driver_info = (unsigned long)&rtl8192eu_fops},
-+/* D-Link DWA-131 rev C1 */
-+{USB_DEVICE_AND_INTERFACE_INFO(0x2001, 0x3312, 0xff, 0xff, 0xff),
-+	.driver_info = (unsigned long)&rtl8192eu_fops},
-+/* TP-Link TL-WN8200ND V2 */
-+{USB_DEVICE_AND_INTERFACE_INFO(0x2357, 0x0126, 0xff, 0xff, 0xff),
-+	.driver_info = (unsigned long)&rtl8192eu_fops},
-+/* Mercusys MW300UM */
-+{USB_DEVICE_AND_INTERFACE_INFO(0x2c4e, 0x0100, 0xff, 0xff, 0xff),
-+	.driver_info = (unsigned long)&rtl8192eu_fops},
-+/* Mercusys MW300UH */
-+{USB_DEVICE_AND_INTERFACE_INFO(0x2c4e, 0x0104, 0xff, 0xff, 0xff),
-+	.driver_info = (unsigned long)&rtl8192eu_fops},
+diff --git a/drivers/net/wireless/realtek/rtlwifi/wifi.h b/drivers/net/wireless/realtek/rtlwifi/wifi.h
+index aa07856411b1..a1f223c8848b 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/wifi.h
++++ b/drivers/net/wireless/realtek/rtlwifi/wifi.h
+@@ -3106,4 +3106,11 @@ static inline struct ieee80211_sta *rtl_find_sta(struct ieee80211_hw *hw,
+ 	return ieee80211_find_sta(mac->vif, mac_addr);
+ }
+ 
++static inline u32 calculate_bit_shift(u32 bitmask)
++{
++	if (WARN_ON_ONCE(!bitmask))
++		return 0;
++
++	return __ffs(bitmask);
++}
  #endif
- { }
- };
 -- 
 2.43.0
 
