@@ -1,114 +1,123 @@
-Return-Path: <linux-wireless+bounces-2058-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2060-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0136C82FBA6
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 23:00:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB56C82FBB9
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 23:01:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 134941C26D3D
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 22:00:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6691928CBA6
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 22:01:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1791E1690BA;
-	Tue, 16 Jan 2024 20:04:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CC4D16A2DF;
+	Tue, 16 Jan 2024 20:04:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="co+SQyGC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h5N6suqK"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD7131690B7;
-	Tue, 16 Jan 2024 20:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44CF016A2DC;
+	Tue, 16 Jan 2024 20:04:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705435456; cv=none; b=DTZ7sBAwg0XspmIhjjZ7EjvBPG3iPyJPe3mWWZSN8svdaxRbPUBwU06aSOIrcIHJONvzmEj1OVguh3q2p/panLgPGAA1wvKDtsYYSuk5768yhmxdyKsXOq4xjCiFLhES4/PhCfM9VMpbBaTAyyfuiebiF7iF5dmvFXPT2i5d+Zo=
+	t=1705435485; cv=none; b=JAzjGmPm0KRjMIpbb6zS80yXsWZnbWcdWZtbM8+/RCwkbk9nGqj2J+nYx1LLaIXN3eO7iZIaqBQGXer7gyKvbxoZ3CcxnIx5QFhPhBYngPxbvenzUv09L8VOVKQFxpxnswV0Mw7f4puHyukarHG8DIegvutLfuukz0KShSghq7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705435456; c=relaxed/simple;
-	bh=ZacWzLCDX992GlzXe6YpXKHBw5JHUXKwxy/FO9FQ0JQ=;
+	s=arc-20240116; t=1705435485; c=relaxed/simple;
+	bh=z4QBZhjBtqjgBksKnNBwAUZtJdmx9ikdy7MudY7IxIA=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:X-stable:
-	 X-Patchwork-Hint:X-stable-base:Content-Transfer-Encoding; b=Hzs716nCqdKHECrcvuR1B2UgtoFM03EUR+8MU+5lHTDPPKjEeQLXGfAVx7lGluCJhCCUV0wbr5+v1sJLkmBAsZ2Kn2BKeROhIVHSiR2WBP6YjnW/LdGeqCNZRiPZnP814OOjRwmzdnxJXdlJTeTl1vuSfDr6atJ0lca3biI6ASE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=co+SQyGC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69582C433F1;
-	Tue, 16 Jan 2024 20:04:14 +0000 (UTC)
+	 X-Mailer:In-Reply-To:References:MIME-Version:Content-Type:X-stable:
+	 X-Patchwork-Hint:X-stable-base:Content-Transfer-Encoding; b=ou6igZjwHhBkwvcHAzfQZY5nhsfzipLLx6ngmfrk4xMuvBybMjelyC0tSDknAfnJtgh27ES+2BtEARBqY1gBmetgZMWLgFBZE5c4wUO6kwAHKMmfTtRkDxtzeWUtwyz8bQhP18gCJDpyiHOIsnnxIO9Tut0MN9gXo88HQosXPFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h5N6suqK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3D2FC43601;
+	Tue, 16 Jan 2024 20:04:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705435455;
-	bh=ZacWzLCDX992GlzXe6YpXKHBw5JHUXKwxy/FO9FQ0JQ=;
+	s=k20201202; t=1705435484;
+	bh=z4QBZhjBtqjgBksKnNBwAUZtJdmx9ikdy7MudY7IxIA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=co+SQyGC0Sq9vYIaE+6VKYvmUNjW+REajGpbD/co2qCg1dTJXD8DeYC8ZP62Y8ZVc
-	 c6A2LhkhjmXfT4zOnK2BZp/C58nw7CoYX7dry/DbXNfngR3MByVGyjMb0fHCEmx0Eq
-	 5tvNRi+bcv9KNIPN/sftKLIoVk0xMAA91aXKG2k78I9Xk80KBk2gAPp4fLVviuvOSX
-	 rf5lBPFmWpQQ607wYZ3s7Olvk6eo9C58Zndr2UACOa/4UW0g6KzITjb7owFl/j+doC
-	 t3jqW+v3OyR3okfx0FsV42q9W3wtIH3BmxqmQZYgLKVfY/R+RUQK9XIZq5zxPx6poR
-	 vMderklFrZ3+w==
+	b=h5N6suqKk1GnW/noFFVkFYdZJlZOvOgXO7TNxFoej+/nSiQMXZOr95gX5OVOdFfgD
+	 tjQoqqvhGN9zcTTnyYRW3gysq+6QTSKCtJ2+LdrZoIhiYSxzfeV1Au0yJz7NbTloI2
+	 rl660umYZUvQ4EXYvk+IOdeWj1neeyhc6GGyqOCwS1xVmyPwUUdjDWQjF1htydOH13
+	 ec85ZgZUv7TS/Oyre/sl1HEDFF385EqjoYbk9SZfo185yGlzbeDg+pX1bhcb7c97IR
+	 YlBgD7Z1SFZtkJKPQE77OqTg3Rke+aBzHhGYPp7NZ6NupG1jUmaP53AOgjC02BaI5r
+	 7rfDXBOY8mVfA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Benjamin Berg <benjamin.berg@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+Cc: Minsuk Kang <linuxlovemin@yonsei.ac.kr>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 31/31] wifi: cfg80211: free beacon_ies when overridden from hidden BSS
-Date: Tue, 16 Jan 2024 15:02:40 -0500
-Message-ID: <20240116200310.259340-31-sashal@kernel.org>
+	kvalo@kernel.org,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 06/22] wifi: ath9k: Fix potential array-index-out-of-bounds read in ath9k_htc_txstatus()
+Date: Tue, 16 Jan 2024 15:04:00 -0500
+Message-ID: <20240116200432.260016-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240116200310.259340-1-sashal@kernel.org>
-References: <20240116200310.259340-1-sashal@kernel.org>
+In-Reply-To: <20240116200432.260016-1-sashal@kernel.org>
+References: <20240116200432.260016-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.267
+X-stable-base: Linux 4.19.305
 Content-Transfer-Encoding: 8bit
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
 
-[ Upstream commit 32af9a9e1069e55bc02741fb00ac9d0ca1a2eaef ]
+[ Upstream commit 2adc886244dff60f948497b59affb6c6ebb3c348 ]
 
-This is a more of a cosmetic fix. The branch will only be taken if
-proberesp_ies is set, which implies that beacon_ies is not set unless we
-are connected to an AP that just did a channel switch. And, in that case
-we should have found the BSS in the internal storage to begin with.
+Fix an array-index-out-of-bounds read in ath9k_htc_txstatus(). The bug
+occurs when txs->cnt, data from a URB provided by a USB device, is
+bigger than the size of the array txs->txstatus, which is
+HTC_MAX_TX_STATUS. WARN_ON() already checks it, but there is no bug
+handling code after the check. Make the function return if that is the
+case.
 
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20231220133549.b898e22dadff.Id8c4c10aedd176ef2e18a4cad747b299f150f9df@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Found by a modified version of syzkaller.
+
+UBSAN: array-index-out-of-bounds in htc_drv_txrx.c
+index 13 is out of range for type '__wmi_event_txstatus [12]'
+Call Trace:
+ ath9k_htc_txstatus
+ ath9k_wmi_event_tasklet
+ tasklet_action_common
+ __do_softirq
+ irq_exit_rxu
+ sysvec_apic_timer_interrupt
+
+Signed-off-by: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20231113065756.1491991-1-linuxlovemin@yonsei.ac.kr
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/scan.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/wireless/ath/ath9k/htc_drv_txrx.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index e35c54ba2fd5..f3a957f2bc49 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -1294,8 +1294,12 @@ cfg80211_bss_update(struct cfg80211_registered_device *rdev,
- 				list_add(&new->hidden_list,
- 					 &hidden->hidden_list);
- 				hidden->refcount++;
-+
-+				ies = (void *)rcu_dereference(new->pub.beacon_ies);
- 				rcu_assign_pointer(new->pub.beacon_ies,
- 						   hidden->pub.beacon_ies);
-+				if (ies)
-+					kfree_rcu(ies, rcu_head);
- 			}
- 		} else {
- 			/*
+diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c b/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
+index 979ac31a77a0..527bca8f7deb 100644
+--- a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
++++ b/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
+@@ -647,9 +647,10 @@ void ath9k_htc_txstatus(struct ath9k_htc_priv *priv, void *wmi_event)
+ 	struct ath9k_htc_tx_event *tx_pend;
+ 	int i;
+ 
+-	for (i = 0; i < txs->cnt; i++) {
+-		WARN_ON(txs->cnt > HTC_MAX_TX_STATUS);
++	if (WARN_ON_ONCE(txs->cnt > HTC_MAX_TX_STATUS))
++		return;
+ 
++	for (i = 0; i < txs->cnt; i++) {
+ 		__txs = &txs->txstatus[i];
+ 
+ 		skb = ath9k_htc_tx_get_packet(priv, __txs);
 -- 
 2.43.0
 
