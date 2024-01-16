@@ -1,125 +1,151 @@
-Return-Path: <linux-wireless+bounces-1985-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1986-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B0F982F180
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 16:29:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8D0A82F1AF
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 16:38:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF6BE285222
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 15:29:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 993B52851FC
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 15:38:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA6DD1C290;
-	Tue, 16 Jan 2024 15:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ADED1C684;
+	Tue, 16 Jan 2024 15:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="Grg3RyAE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qn1KSv7n"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D86A1C281
-	for <linux-wireless@vger.kernel.org>; Tue, 16 Jan 2024 15:29:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
-Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-3bbc649c275so4455152b6e.0
-        for <linux-wireless@vger.kernel.org>; Tue, 16 Jan 2024 07:29:30 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D88341C683
+	for <linux-wireless@vger.kernel.org>; Tue, 16 Jan 2024 15:37:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-559b9664257so738151a12.1
+        for <linux-wireless@vger.kernel.org>; Tue, 16 Jan 2024 07:37:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1705418969; x=1706023769; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=iJ8kDv4NT77wbV/RUW9AhIRHKupbHjNRdeQr3Ppsnl0=;
-        b=Grg3RyAEhxNFh4XBEI2+PYopf+W6W602ZxENTAyo22cwj3gXyE8kxJDO2EY2kONti+
-         V8+62OK+SSFy//JoyND16D1hP9tpam+R+8oai936XHC0ViIhn7f+E6HxcLJv1U1S/bMS
-         FHZUcyP4+CR4j6LqD0Cj8qCt5MmRt33fAA1HbraEm7rcJDOlhMWCSxBpAZe/Ff8FGb4n
-         YzKnY2/2TTqpdz5TcS0+6KBrBq5NwOsS3wGru4C3t50zdhNGoyswFWkLuEHL0GMrst47
-         aXUeawXQYW3+vxE9WgyD5mHC/F0Ee7IMMDs+EYGsMfCHRbtrbW9yU/T/rzt/c0ANMgMj
-         huGQ==
+        d=gmail.com; s=20230601; t=1705419476; x=1706024276; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=tkpI5ZlAya5lYIVyKdrXQpxTUC8WuzgWwc/JDdo0sCQ=;
+        b=Qn1KSv7nSWjEqj6OWa6SCPcOZ45nl76tRNpYXbuGYFy5VXHqMS0wc8sFCTqCEbJUXj
+         MDvwYX9FMJr3fDs/KsDr8u9M8bOvZouqaLj/Qrlo2ns2gKRpnIZaFPT20duTCvIw/4Tm
+         FxRmQMByypCLkHvr4RK4Aiy6VKcUnsl25Bg2sQiDgaZ1pAdnsTmvsMpuaotS5apLEk9F
+         kvLTvemQAz+rHvjY9xqD9qwMDJZMoNyufln+DQhx0PvIGVKmjUgMDapFb6WO+Ti9In4i
+         KWW1uQuuQfkT34VV6MKYij+d0R1khHnqihizbAHSh6fEWMoT/7ECQGym5cjuvklXNfPs
+         i4BQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705418969; x=1706023769;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
+        d=1e100.net; s=20230601; t=1705419476; x=1706024276;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=iJ8kDv4NT77wbV/RUW9AhIRHKupbHjNRdeQr3Ppsnl0=;
-        b=fHNP46oz8K1W2v9ZR7xNdD8G+BkLTFl72LK8udSpZlea73wu4WDulAeBjL/WuudHoE
-         aLQRzNZGBxXO3PvEb44b60Xmn9t/0E8IxF1rhCWjJN1BzvUjLpPWK+gNKeHBZa3V/baX
-         uaa0Q/Ed68PfSiNkPzjvtfeC7h4P/VOx1AoUxjsKZ3u7nIfdiwmaIzwxhQ95brqOGAvQ
-         HDDXXPyQwcnjVylJwIVfz2Ji8gtmNui2ejWicnu8v0YRoyDy0RybPr3KPjGfXjdGD5Al
-         NNtnxQVPQNE69jsvK0C6DtMTKnb9dBIqgCNWI+t0udngtyW2VqBcewaMpvHquJzoxdUN
-         ok9A==
-X-Gm-Message-State: AOJu0Yyjt/UA6g62AcyCvWA2/kxoP7UdDqIcirI7RDHSGNnB+Ga7Zfkp
-	Ky8hh6GW/atLOhaxvHx4KwknLkBw8BWE/Q==
-X-Google-Smtp-Source: AGHT+IGBWdHLHlu+WKmrXxmyfAaya9jZa+J4uJQ5YBat9EhQgRdlPfVABfpR7u3rUy/Ip3xt+opsKg==
-X-Received: by 2002:a05:6808:2e91:b0:3bd:72dc:65a6 with SMTP id gt17-20020a0568082e9100b003bd72dc65a6mr3757509oib.58.1705418969400;
-        Tue, 16 Jan 2024 07:29:29 -0800 (PST)
-Received: from ziepe.ca (hlfxns017vw-142-68-80-239.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.80.239])
-        by smtp.gmail.com with ESMTPSA id q16-20020a05620a0c9000b007815844a295sm3800321qki.116.2024.01.16.07.29.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jan 2024 07:29:28 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.95)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1rPlNY-0045nl-7f;
-	Tue, 16 Jan 2024 11:29:28 -0400
-Date: Tue, 16 Jan 2024 11:29:28 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Baochen Qiang <quic_bqiang@quicinc.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Kalle Valo <kvalo@kernel.org>, James Prestwood <prestwoj@gmail.com>,
-	linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
-	iommu@lists.linux.dev
-Subject: Re: ath11k and vfio-pci support
-Message-ID: <20240116152928.GF50608@ziepe.ca>
-References: <df9fd970-5af3-468c-b1f1-18f91215cf44@gmail.com>
- <8734v4auc4.fsf@kernel.org>
- <e8878979-1f3f-4635-a716-9ac381c617d9@gmail.com>
- <285b84d0-229c-4c83-a7d6-4c3c23139597@quicinc.com>
- <4607fb37-8227-49a3-9e8c-10c9b117ec7b@gmail.com>
- <3d22a730-aee5-4f2a-9ddc-b4b5bd4d62fe@quicinc.com>
- <87il3w7zjh.fsf@kernel.org>
- <20240115104658.0b56bd35.alex.williamson@redhat.com>
- <543d9d2f-e132-4fdb-8454-68595cd20515@quicinc.com>
- <57d20bd812ccf8d1a5815ad41b5dcea3925d4fe1.camel@infradead.org>
+        bh=tkpI5ZlAya5lYIVyKdrXQpxTUC8WuzgWwc/JDdo0sCQ=;
+        b=h6kaoOMAB4xtC3UhZMM8tBfM2aUNzsJgAXMNR8jniuJEV4ZBj5kf6RfUJPCOrSPifj
+         PxUtRVA7zU1feokqmceSLDc+bo2KHHwBGufLl9YQ2QEF8tpdlZKjmpF411O2ZUOul2L8
+         0TRngJw5Um1bTkOYi41gB59fWhyNlHOg/Yx3THZxSiblgBQGlBP+WCkdTWQ+FulwJLfW
+         K/EuTqoU+IDprVojtCZDB9WxqAG1O12q81RFP0yaUDaHiGuHsYoo6pkMB5Q3cZA255aN
+         9kbTI7qDcYcodTr1FyzXLAmGTthHQd31XlVLrqqcOc8F8wmANkmRkMoX+iAVsexMzDYw
+         fljA==
+X-Gm-Message-State: AOJu0YyYBTyOigeLQ1DXJll2+ge1TewWlKfUqHXdXM0b1pqh9rHT0luk
+	FXbLUHpqntqWhOf8kq/7zlE=
+X-Google-Smtp-Source: AGHT+IHoA9RgcAdvyy/MAo7eoZcruAlt1L5LlF5QntMSsZhkm8P8ukwJFjhnjcy21iuw2PpS+ucJVA==
+X-Received: by 2002:a17:906:b7c8:b0:a2c:572c:b5e7 with SMTP id fy8-20020a170906b7c800b00a2c572cb5e7mr3421891ejb.63.1705419475859;
+        Tue, 16 Jan 2024 07:37:55 -0800 (PST)
+Received: from [192.168.1.50] ([81.196.40.51])
+        by smtp.gmail.com with ESMTPSA id m27-20020a1709060d9b00b00a2c7d34157asm6305853eji.180.2024.01.16.07.37.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 16 Jan 2024 07:37:55 -0800 (PST)
+Message-ID: <78d5f49b-1c97-4a7a-b366-ddcb6c102f6b@gmail.com>
+Date: Tue, 16 Jan 2024 17:37:53 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <57d20bd812ccf8d1a5815ad41b5dcea3925d4fe1.camel@infradead.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: rtlwifi: rtl8192de: Fix byte order of chip version
+To: Ping-Ke Shih <pkshih@realtek.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Larry Finger <Larry.Finger@lwfinger.net>
+References: <81b6c452-e940-423a-acf7-4a7b7c5e7847@gmail.com>
+ <c369eeb8b3014f068d1c60b42b44e206@realtek.com>
+ <d4fa544d-46fc-4795-8da1-5dd6199bdea9@gmail.com>
+ <508550165dc24c3d932565d1adaf3766@realtek.com>
+Content-Language: en-US
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <508550165dc24c3d932565d1adaf3766@realtek.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jan 16, 2024 at 11:41:19AM +0100, David Woodhouse wrote:
+On 16/01/2024 02:56, Ping-Ke Shih wrote:
+> 
+> 
+>> -----Original Message-----
+>> From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+>> Sent: Monday, January 15, 2024 8:51 PM
+>> To: Ping-Ke Shih <pkshih@realtek.com>; linux-wireless@vger.kernel.org
+>> Cc: Larry Finger <Larry.Finger@lwfinger.net>
+>> Subject: Re: [PATCH] wifi: rtlwifi: rtl8192de: Fix byte order of chip version
+>>
+>>
+>> diff --git a/hal/rtl8192d_hal_init.c b/hal/rtl8192d_hal_init.c
+>> index 156541b..175c856 100644
+>> --- a/hal/rtl8192d_hal_init.c
+>> +++ b/hal/rtl8192d_hal_init.c
+>> @@ -1565,6 +1565,8 @@ hal_EfuseUpdateNormalChipVersion_92D(
+>>         ReadEFuseByte(Adapter,EEPROME_CHIP_VERSION_L,&CutValue[0], _FALSE);
+>>
+>>         ChipValue= (CutValue[1]<<8)|CutValue[0];
+>> +
+>> +       pr_err("%s: EEPROME_CHIP_VERSION_H: %#x EEPROME_CHIP_VERSION_L: %#x CutValue[1]: %#x CutValue[0]:
+>> %#x ChipValue: %#x\n", __func__, EEPROME_CHIP_VERSION_H, EEPROME_CHIP_VERSION_L, CutValue[1], CutValue[0],
+>> ChipValue);
+>>         switch(ChipValue){
+>>                 case 0xAA55:
+>>                         //ChipVer |= CHIP_92D_C_CUT;
+>>
+>> This is the output:
+>>
+>> Jan 15 14:35:21 ideapad2 kernel: hal_EfuseUpdateNormalChipVersion_92D: EEPROME_CHIP_VERSION_H: 0x3fe
+>> EEPROME_CHIP_VERSION_L: 0x3ff CutValue[1]: 0x33 CutValue[0]: 0xcc ChipValue: 0x33cc
+> 
+> With the same branch and the same changes you mentioned, output is: 
+> 
+> hal_EfuseUpdateNormalChipVersion_92D: EEPROME_CHIP_VERSION_H: 0x3fe EEPROME_CHIP_VERSION_L: 0x3ff CutValue[1]: 0xcc CutValue[0]: 0x33 ChipValue: 0xcc33
+> 
+>>
+>> Maybe my device really is a different version.
+> 
+> Not sure what happens. I feel no one can remember the definition of these values. 
+> Maybe, we can just add an new value 0x33CC, and test if it works normal. 
+> 
+> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/hw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/hw.c
+> index 743ac6871bf4..c336d4b362f5 100644
+> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/hw.c
+> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/hw.c
+> @@ -1684,6 +1684,7 @@ static void _rtl92de_efuse_update_chip_version(struct ieee80211_hw *hw)
+>                 rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD, "D-CUT!!!\n");
+>                 break;
+>         case 0xCC33:
+> +       case 0x33CC:
+>                 chipver |= CHIP_92D_E_CUT;
+>                 rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD, "E-CUT!!!\n");
+>                 break;
+> 
+> How did you find this weird value? Vendor driver doesn't work for you?
+> 
 
-> If we had had this posted interrupt support from the beginning, perhaps
-> we could have have a much simpler model — we just let the guest write
-> its intended (v)CPU#/vector *directly* to the MSI table in the device,
-> and let the IOMMU fix it up by having a table pointing to the
-> appropriate set of vCPUs. But that isn't how it happened. The model we
-> have is that the VMM has to *emulate* the config space and handle the
-> interrupts as described above.
+It works fine. I just saw the message "Unkown CUT!" and got curious:
+https://github.com/lwfinger/rtl8192du/issues/92#issuecomment-1155420291
 
-I do have a strong desire to rework things to be more like this, just
-not time yet :)
+If the addresses in the efuse are correct, then my device doesn't need
+any patch. Unknown cut is treated the same as D cut, which is treated
+the same as E cut.
 
-We have enough real problems related to the fake interrupt data in
-the guest.
-
-This ath11k thing sounds more like IMS really - it makes zero sense
-that a device would be designed where the MSI vector has to be copied
-to another location - most likely the other location is another
-interrupt source that can be programmed independently, with its own
-irqchip, etc? Linux supports this now. Thomas and Intel did it to
-support SIOV IMS.
-
-Are you sure you have implemented your Linux driver correctly? :)
-
-Of course IMS doesn't work in VMs, but that is a big motivation to fix
-the irq organizing. At least you'd know why the device is broken :)
-
-Jason
+> Ping-Ke
+> 
 
 
