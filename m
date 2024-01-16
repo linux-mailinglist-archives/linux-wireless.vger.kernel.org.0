@@ -1,214 +1,115 @@
-Return-Path: <linux-wireless+bounces-1948-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1949-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEC7D82E421
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 00:56:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10D6A82E666
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 02:15:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84A61282D50
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jan 2024 23:56:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8431D2856C8
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 01:15:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B780E1B7EB;
-	Mon, 15 Jan 2024 23:56:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jqzopUux"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 237708494;
+	Tue, 16 Jan 2024 00:56:38 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 061B11B7E8
-	for <linux-wireless@vger.kernel.org>; Mon, 15 Jan 2024 23:56:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a277339dcf4so1032580966b.2
-        for <linux-wireless@vger.kernel.org>; Mon, 15 Jan 2024 15:56:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705362971; x=1705967771; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OP32MFSw3ny7WfjbsVr7W/4A9ct/HGx66eldykG7aiE=;
-        b=jqzopUuxtb0cLEAoGPTdRdPS9/DxEMESP2GdiSkeHmsvmHYM/+7gGYr+MkzZ/0ZXs1
-         Sb9+VApBvbmASoTQUwFGbNSyCKOTNAKQcaSCgofjkOhvxmIqQ4etQxpVDltPgkhlHZ+T
-         b8Y0dndvG6ZcN+KpLsXPrrlJCdqhWmF42hMOKndAX6fTEWFwGGQr/KiHVysGBQpxw8bz
-         a7PyBABB2Yl2SDH/o9CNo2EykAuYNyeSWJkDOTQQ6zFhbw/TZyKxS3nuhN6dKFBmBfHY
-         lhOIEMGTTf4/k5y56uznJ4R7tAZxPaaJO03QGwRWZL60tC8EdKk21LYWup83Ra6E5KRS
-         ys4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705362971; x=1705967771;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OP32MFSw3ny7WfjbsVr7W/4A9ct/HGx66eldykG7aiE=;
-        b=P+eYV+KlB45BrHAUbAKquCQkuokigmzsQMt7zkVMZaH2QTJLCNDyn9ozAcR0pLItes
-         XgOg8uh5f9ciuc96mdMX/n2lgJ7mLc3DWNLgXmCrI3U6Bv9mBsUvRzz31pDhGJYq+TRZ
-         Jg5ckTZf4uTQFGHDPHQOoFgyFj8jp3yq8boiCF7MqudPmJ4NOJ/esCkpoI+Bd8RSg0MX
-         FKToiTA/z+K/9Yr51KJRDqKHvrOMVB2nrefX/ZAm0NUPUOpBEb9iANlwinvB7Dq2GOmi
-         4c7CaNvYkCUKpEqovRRi2dlgjLJTgYsl43oguisipGf44SZryKg8uvWIcByLyc2nnujS
-         SWnw==
-X-Gm-Message-State: AOJu0YzHfB9B2jWyFq3XOVvcbu6GTlEyo8Y7UFc6Z5XeMCGSZLVSpl/n
-	VwPNe+lN0izfBsUvWUN0Dsq01KHcS0KO1Ut6w/Y=
-X-Google-Smtp-Source: AGHT+IENPQ/sFVda1hFMTyYVM7xu/hE3e1vkx/xmwy+6jXLYZI6pVPI+JByf1ye8dBxy1bImtnwyge5eAifRi/+Avvo=
-X-Received: by 2002:a17:906:f8c4:b0:a28:aab9:911c with SMTP id
- lh4-20020a170906f8c400b00a28aab9911cmr2808477ejb.47.1705362970912; Mon, 15
- Jan 2024 15:56:10 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0280848E
+	for <linux-wireless@vger.kernel.org>; Tue, 16 Jan 2024 00:56:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 40G0uKUw94085729, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 40G0uKUw94085729
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 16 Jan 2024 08:56:20 +0800
+Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Tue, 16 Jan 2024 08:56:20 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Tue, 16 Jan 2024 08:56:20 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::e4c4:c4f:4e4c:d23c]) by
+ RTEXMBS04.realtek.com.tw ([fe80::e4c4:c4f:4e4c:d23c%5]) with mapi id
+ 15.01.2507.035; Tue, 16 Jan 2024 08:56:20 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC: Larry Finger <Larry.Finger@lwfinger.net>
+Subject: RE: [PATCH] wifi: rtlwifi: rtl8192de: Fix byte order of chip version
+Thread-Topic: [PATCH] wifi: rtlwifi: rtl8192de: Fix byte order of chip version
+Thread-Index: AQHaRam9Hy6mYhlr3USS49QlLcoixLDaXnbA///zCQCAAU4poA==
+Date: Tue, 16 Jan 2024 00:56:20 +0000
+Message-ID: <508550165dc24c3d932565d1adaf3766@realtek.com>
+References: <81b6c452-e940-423a-acf7-4a7b7c5e7847@gmail.com>
+ <c369eeb8b3014f068d1c60b42b44e206@realtek.com>
+ <d4fa544d-46fc-4795-8da1-5dd6199bdea9@gmail.com>
+In-Reply-To: <d4fa544d-46fc-4795-8da1-5dd6199bdea9@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXDAG02.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAJvGw+DQhBk_mHXeu6RTOds5iramMW2FbMB01VbKRA4YbHHDTA@mail.gmail.com>
- <dae4bb032ad8b0c9fa6547de5e869e51f9f6e766.camel@sipsolutions.net>
-In-Reply-To: <dae4bb032ad8b0c9fa6547de5e869e51f9f6e766.camel@sipsolutions.net>
-From: coldolt <andypalmadi@gmail.com>
-Date: Tue, 16 Jan 2024 01:56:03 +0200
-Message-ID: <CAJvGw+ATM3B09KbuLM0VsmU9GZRSO-ZP6ffwvvOa75xVHR3-kw@mail.gmail.com>
-Subject: Re: [REGRESSION] 6.7 broke wifi "AP is in CSA process, reject auth"
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: ayala.beker@intel.com, linux-wireless@vger.kernel.org, 
-	regressions@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-I can try to keep connecting for over 5 minutes, it never connects,
-keeps outputting the same dmesg message. The kernel before 6.7
-connects immediately.
-
-The router is an Asus RT-AC53. Output of "sudo iw wlp2s0 scan -u" for it is=
-:
-
-BSS b0:6e:bf:76:0a:3c(on wlp2s0)
-        last seen: 752.658s [boottime]
-        TSF: 177237341 usec (0d, 00:02:57)
-        freq: 5180.0
-        beacon interval: 200 TUs
-        capability: ESS Privacy ShortPreamble SpectrumMgmt APSD (0x0931)
-        signal: -61.00 dBm
-        last seen: 90 ms ago
-        Information elements from Probe Response frame:
-        SSID: internet5
-        Supported rates: 6.0* 9.0 12.0* 18.0 24.0* 36.0 48.0 54.0
-        DS Parameter set: channel 36
-        Unknown IE (60): 01 16 24 09
-        HT capabilities:
-                Capabilities: 0x16e
-                        HT20/HT40
-                        SM Power Save disabled
-                        RX HT20 SGI
-                        RX HT40 SGI
-                        RX STBC 1-stream
-                        Max AMSDU length: 3839 bytes
-                        No DSSS/CCK HT40
-                Maximum RX AMPDU length 32767 bytes (exponent: 0x002)
-                Minimum RX AMPDU time spacing: 4 usec (0x05)
-                HT RX MCS rate indexes supported: 0-7, 32
-                HT TX MCS rate indexes are undefined
-        HT operation:
-                 * primary channel: 36
-                 * secondary channel offset: above
-                 * STA channel width: any
-                 * RIFS: 0
-                 * HT protection: no
-                 * non-GF present: 0
-                 * OBSS non-GF present: 0
-                 * dual beacon: 0
-                 * dual CTS protection: 0
-                 * STBC beacon: 0
-                 * L-SIG TXOP Prot: 0
-                 * PCO active: 0
-                 * PCO phase: 0
-        RSN:     * Version: 1
-                 * Group cipher: CCMP
-                 * Pairwise ciphers: CCMP
-                 * Authentication suites: PSK
-                 * Capabilities: 1-PTKSA-RC 1-GTKSA-RC (0x0000)
-        WMM:     * Parameter version 1
-                 * u-APSD
-                 * BE: CW 15-1023, AIFSN 3
-                 * BK: CW 15-1023, AIFSN 7
-                 * VI: CW 7-15, AIFSN 2, TXOP 3008 usec
-                 * VO: CW 3-7, AIFSN 2, TXOP 1504 usec
-        BSS Load:
-                 * station count: 0
-                 * channel utilisation: 9/255
-                 * available admission capacity: 31250 [*32us]
-        Vendor specific: OUI 00:0c:43, data: 03 00 00 00
-        Power constraint: 3 dB
-        Country: FR     Environment: Indoor/Outdoor
-                Channels [36 - 96] @ 16 dBm
-        VHT capabilities:
-                VHT Capabilities (0x31c00120):
-                        Max MPDU length: 3895
-                        Supported Channel Width: neither 160 nor 80+80
-                        short GI (80 MHz)
-                        +HTC-VHT
-                        RX antenna pattern consistency
-                        TX antenna pattern consistency
-                VHT RX MCS set:
-                        1 streams: MCS 0-9
-                        2 streams: not supported
-                        3 streams: not supported
-                        4 streams: not supported
-                        5 streams: not supported
-                        6 streams: not supported
-                        7 streams: not supported
-                        8 streams: not supported
-                VHT RX highest supported: 292 Mbps
-                VHT TX MCS set:
-                        1 streams: MCS 0-9
-                        2 streams: not supported
-                        3 streams: not supported
-                        4 streams: not supported
-                        5 streams: not supported
-                        6 streams: not supported
-                        7 streams: not supported
-                        8 streams: not supported
-                VHT TX highest supported: 292 Mbps
-                VHT extended NSS: not supported
-        VHT operation:
-                 * channel width: 1 (80 MHz)
-                 * center freq segment 1: 42
-                 * center freq segment 2: 0
-                 * VHT basic MCS set: 0xfffe
-
-
-On Mon, Jan 15, 2024 at 10:00=E2=80=AFPM Johannes Berg
-<johannes@sipsolutions.net> wrote:
->
-> On Mon, 2024-01-15 at 16:39 +0200, coldolt wrote:
-> > I'm on Arch linux, updated the kernel from 6.6.10 -> 6.7.
-> >
-> > Now it doesn't connect to my 5GHz wifi, to 2.4GHz it still connects.
-> > Also the earlier kernel version still works. Output from "sudo dmesg |
-> > grep -i wlp2s0":
-> >
-> > > [    6.049600] iwlwifi 0000:02:00.0 wlp2s0: renamed from wlan0
-> > > [  131.095861] wlp2s0: AP is in CSA process, reject auth
-> > > [  132.143170] wlp2s0: AP is in CSA process, reject auth
-> > > [  133.599906] wlp2s0: AP is in CSA process, reject auth
-> > > [  135.549325] wlp2s0: AP is in CSA process, reject auth
-> > > [  145.510438] wlp2s0: AP is in CSA process, reject auth
-> >
-> > I notice that the commit c09c4f31998bac, which was added to kernel
-> > 6.7, introduced rejecting a connection with that error message "AP is
-> > in CSA process, reject auth".
-> >
-> > My guess is that commit is the cause of the regression.
->
-> I guess? But that was quite intentional - we don't handle connecting
-> well while the AP is switching channels.
->
-> This really shouldn't persist for longer than a few seconds though, even
-> the 15 seconds sounds pretty excessive.
->
-> Could you show the output of
->
-> $ sudo iw wlp2s0 scan -u
->
-> for this AP?
->
-> johannes
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQml0dGVyYmx1ZSBTbWl0
+aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+DQo+IFNlbnQ6IE1vbmRheSwgSmFudWFyeSAxNSwg
+MjAyNCA4OjUxIFBNDQo+IFRvOiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT47IGxp
+bnV4LXdpcmVsZXNzQHZnZXIua2VybmVsLm9yZw0KPiBDYzogTGFycnkgRmluZ2VyIDxMYXJyeS5G
+aW5nZXJAbHdmaW5nZXIubmV0Pg0KPiBTdWJqZWN0OiBSZTogW1BBVENIXSB3aWZpOiBydGx3aWZp
+OiBydGw4MTkyZGU6IEZpeCBieXRlIG9yZGVyIG9mIGNoaXAgdmVyc2lvbg0KPiANCj4gDQo+IGRp
+ZmYgLS1naXQgYS9oYWwvcnRsODE5MmRfaGFsX2luaXQuYyBiL2hhbC9ydGw4MTkyZF9oYWxfaW5p
+dC5jDQo+IGluZGV4IDE1NjU0MWIuLjE3NWM4NTYgMTAwNjQ0DQo+IC0tLSBhL2hhbC9ydGw4MTky
+ZF9oYWxfaW5pdC5jDQo+ICsrKyBiL2hhbC9ydGw4MTkyZF9oYWxfaW5pdC5jDQo+IEBAIC0xNTY1
+LDYgKzE1NjUsOCBAQCBoYWxfRWZ1c2VVcGRhdGVOb3JtYWxDaGlwVmVyc2lvbl85MkQoDQo+ICAg
+ICAgICAgUmVhZEVGdXNlQnl0ZShBZGFwdGVyLEVFUFJPTUVfQ0hJUF9WRVJTSU9OX0wsJkN1dFZh
+bHVlWzBdLCBfRkFMU0UpOw0KPiANCj4gICAgICAgICBDaGlwVmFsdWU9IChDdXRWYWx1ZVsxXTw8
+OCl8Q3V0VmFsdWVbMF07DQo+ICsNCj4gKyAgICAgICBwcl9lcnIoIiVzOiBFRVBST01FX0NISVBf
+VkVSU0lPTl9IOiAlI3ggRUVQUk9NRV9DSElQX1ZFUlNJT05fTDogJSN4IEN1dFZhbHVlWzFdOiAl
+I3ggQ3V0VmFsdWVbMF06DQo+ICUjeCBDaGlwVmFsdWU6ICUjeFxuIiwgX19mdW5jX18sIEVFUFJP
+TUVfQ0hJUF9WRVJTSU9OX0gsIEVFUFJPTUVfQ0hJUF9WRVJTSU9OX0wsIEN1dFZhbHVlWzFdLCBD
+dXRWYWx1ZVswXSwNCj4gQ2hpcFZhbHVlKTsNCj4gICAgICAgICBzd2l0Y2goQ2hpcFZhbHVlKXsN
+Cj4gICAgICAgICAgICAgICAgIGNhc2UgMHhBQTU1Og0KPiAgICAgICAgICAgICAgICAgICAgICAg
+ICAvL0NoaXBWZXIgfD0gQ0hJUF85MkRfQ19DVVQ7DQo+IA0KPiBUaGlzIGlzIHRoZSBvdXRwdXQ6
+DQo+IA0KPiBKYW4gMTUgMTQ6MzU6MjEgaWRlYXBhZDIga2VybmVsOiBoYWxfRWZ1c2VVcGRhdGVO
+b3JtYWxDaGlwVmVyc2lvbl85MkQ6IEVFUFJPTUVfQ0hJUF9WRVJTSU9OX0g6IDB4M2ZlDQo+IEVF
+UFJPTUVfQ0hJUF9WRVJTSU9OX0w6IDB4M2ZmIEN1dFZhbHVlWzFdOiAweDMzIEN1dFZhbHVlWzBd
+OiAweGNjIENoaXBWYWx1ZTogMHgzM2NjDQoNCldpdGggdGhlIHNhbWUgYnJhbmNoIGFuZCB0aGUg
+c2FtZSBjaGFuZ2VzIHlvdSBtZW50aW9uZWQsIG91dHB1dCBpczogDQoNCmhhbF9FZnVzZVVwZGF0
+ZU5vcm1hbENoaXBWZXJzaW9uXzkyRDogRUVQUk9NRV9DSElQX1ZFUlNJT05fSDogMHgzZmUgRUVQ
+Uk9NRV9DSElQX1ZFUlNJT05fTDogMHgzZmYgQ3V0VmFsdWVbMV06IDB4Y2MgQ3V0VmFsdWVbMF06
+IDB4MzMgQ2hpcFZhbHVlOiAweGNjMzMNCg0KPiANCj4gTWF5YmUgbXkgZGV2aWNlIHJlYWxseSBp
+cyBhIGRpZmZlcmVudCB2ZXJzaW9uLg0KDQpOb3Qgc3VyZSB3aGF0IGhhcHBlbnMuIEkgZmVlbCBu
+byBvbmUgY2FuIHJlbWVtYmVyIHRoZSBkZWZpbml0aW9uIG9mIHRoZXNlIHZhbHVlcy4gDQpNYXli
+ZSwgd2UgY2FuIGp1c3QgYWRkIGFuIG5ldyB2YWx1ZSAweDMzQ0MsIGFuZCB0ZXN0IGlmIGl0IHdv
+cmtzIG5vcm1hbC4gDQoNCmRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVr
+L3J0bHdpZmkvcnRsODE5MmRlL2h3LmMgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0
+bHdpZmkvcnRsODE5MmRlL2h3LmMNCmluZGV4IDc0M2FjNjg3MWJmNC4uYzMzNmQ0YjM2MmY1IDEw
+MDY0NA0KLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDgxOTJk
+ZS9ody5jDQorKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODE5
+MmRlL2h3LmMNCkBAIC0xNjg0LDYgKzE2ODQsNyBAQCBzdGF0aWMgdm9pZCBfcnRsOTJkZV9lZnVz
+ZV91cGRhdGVfY2hpcF92ZXJzaW9uKHN0cnVjdCBpZWVlODAyMTFfaHcgKmh3KQ0KICAgICAgICAg
+ICAgICAgIHJ0bF9kYmcocnRscHJpdiwgQ09NUF9JTklULCBEQkdfTE9VRCwgIkQtQ1VUISEhXG4i
+KTsNCiAgICAgICAgICAgICAgICBicmVhazsNCiAgICAgICAgY2FzZSAweENDMzM6DQorICAgICAg
+IGNhc2UgMHgzM0NDOg0KICAgICAgICAgICAgICAgIGNoaXB2ZXIgfD0gQ0hJUF85MkRfRV9DVVQ7
+DQogICAgICAgICAgICAgICAgcnRsX2RiZyhydGxwcml2LCBDT01QX0lOSVQsIERCR19MT1VELCAi
+RS1DVVQhISFcbiIpOw0KICAgICAgICAgICAgICAgIGJyZWFrOw0KDQpIb3cgZGlkIHlvdSBmaW5k
+IHRoaXMgd2VpcmQgdmFsdWU/IFZlbmRvciBkcml2ZXIgZG9lc24ndCB3b3JrIGZvciB5b3U/DQoN
+ClBpbmctS2UNCg0K
 
