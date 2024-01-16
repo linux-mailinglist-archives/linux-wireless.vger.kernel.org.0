@@ -1,60 +1,58 @@
-Return-Path: <linux-wireless+bounces-2017-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2018-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD4F782F81B
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 21:37:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C59FD82F81E
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 21:38:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48F001F26CD7
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 20:37:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44C751F2794D
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 20:38:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C551012D288;
-	Tue, 16 Jan 2024 19:50:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CC5912D2B0;
+	Tue, 16 Jan 2024 19:50:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j6ED+2Cv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HRIIZwp+"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99C6012D281;
-	Tue, 16 Jan 2024 19:50:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F1EB12D2AB;
+	Tue, 16 Jan 2024 19:50:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705434628; cv=none; b=cwsBWW9DqwRPXrTqTDUn4gysmLNCtpmmaGocJYvej5RA8M3oQU3RgOnRIIGk+o9FC8uQUO7iyBhufqDHNHABNx9eHtYpTt780G9MuZYSCtvURbV4vODklwCYmx17NkXPzx/KurISGaoBtMsxnw7hiiRbilzS5T35QjyrePZDbFg=
+	t=1705434630; cv=none; b=ej4MECx/uyimJh8iR8oybRaoUs74zT6Q6qb9TFJbZ1C6qTJoycX76zDBdeKpY7buai4sNlK/wKk5+Aj4fD+7wV36zWIJwQamqh90KoSbLi2/NN8tbyRAUuiipS83NRauACGF7ctPacX2nPIfQWvQEWuI8ctQ+zzUahUp1mmsDy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705434628; c=relaxed/simple;
-	bh=6IgYL5SnuaELuOcHIBQzCwdSCyfs6lnHzt0aCcaMJZ4=;
+	s=arc-20240116; t=1705434630; c=relaxed/simple;
+	bh=x9cXzswagpjrB262o9kc4HKMRBSOS+4Jfsvay3PSTek=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:X-stable:
-	 X-Patchwork-Hint:X-stable-base:Content-Transfer-Encoding; b=ckyYCJYqy+QJCAtFzlqcGa/DQse37EEoRRh8qj/O3CpLh3npP/n26xVg8jsUIMtqUJEhJu/4lh3t4D7EfveK5M0cHaRzFFDiq/K5s18UUmN+wpQYVUNlUeneil5xUxRY05iTnqvEIB9obU3aENTzs/I/We+fbjjQxjsfXujc2C4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j6ED+2Cv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 853C6C433F1;
-	Tue, 16 Jan 2024 19:50:27 +0000 (UTC)
+	 X-Patchwork-Hint:X-stable-base:Content-Transfer-Encoding; b=Bq/aMHosVcGXQlXLi08Od22NsLHZueR1pa/b/eYOl6AxtyhOr/k9wM4MKTXK2Yw3m6PeBNxPBPn51ewXjoPndl0udWkqyP5MuqMrLzdZstACtA8z1Y/ccMpqvHyR5sTVlyqMOfV7GHtZSC+ntTnBPG/WozRxkDVgd9fgw9dWgdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HRIIZwp+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38C81C43390;
+	Tue, 16 Jan 2024 19:50:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705434628;
-	bh=6IgYL5SnuaELuOcHIBQzCwdSCyfs6lnHzt0aCcaMJZ4=;
+	s=k20201202; t=1705434630;
+	bh=x9cXzswagpjrB262o9kc4HKMRBSOS+4Jfsvay3PSTek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j6ED+2CvSCHPJPu17BZPwBwoGzlH7fijr6X3d2kdNQ1L2AKU6AiC7U0xy459RQZOP
-	 Xi1411c+t2UoYAI+aFu1Vq4n3/Tdq53zCCOtyh8KK+nE968qc5rBGFt/PegEIUFfRJ
-	 VAKkWd00xZ9Cx78cjIc2+lHS1QCzqZAWgmydQGz/w/xYsEU4BfhgdcAPvdJGp3gF81
-	 a3ljS9jzIw772G/E6VSTCV6SsKr2IdSG+LlWjJvNVH9bSUdkXUQtCO+DCYnmZEdlYI
-	 4D9DAWRsa9g933gddSUH0ldmjkX2UaoTdFB2ZkbcbM9ORY8JLfMk7Pz0Y34y9W+X9v
-	 KHmXhcLkaoplw==
+	b=HRIIZwp+Q0bzlWPOdTUCaUOF9tXZ/Bk1Q/qev8OCTh0kqKb7+ZCvLd62xcYMT2mxX
+	 1Jdh6WOl9xVKlH9IzHJF+EFba5zIdu/hOpxM6d8zJz2TVMQuz07RiXaYFqhY6Dfgcc
+	 hWzDqd8hmymWBOUBPlzJNQwaXI72JirOWYP1LlGNw/TDHOqb79D78GAK+gFSKWV0W2
+	 nR2KLkF/v8lM7MY5Go+7PXrbVkPOinmfhby7KUa5dKhQ8zUDLZkfJ6CEkNr10ZWua2
+	 7+9oH2Fm9vYrYnJbKxtP/YRusKCGnAz3If6gxp9rrfjOvKeVSTW5lLMvpAgtEEs8Yx
+	 shS7bLLngojMg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Baochen Qiang <quic_bqiang@quicinc.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+Cc: Chih-Kang Chang <gary.chang@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	kvalo@kernel.org,
-	ath11k@lists.infradead.org,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 033/104] wifi: ath11k: fix race due to setting ATH11K_FLAG_EXT_IRQ_ENABLED too early
-Date: Tue, 16 Jan 2024 14:45:59 -0500
-Message-ID: <20240116194908.253437-33-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 034/104] wifi: rtw89: fix misbehavior of TX beacon in concurrent mode
+Date: Tue, 16 Jan 2024 14:46:00 -0500
+Message-ID: <20240116194908.253437-34-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240116194908.253437-1-sashal@kernel.org>
 References: <20240116194908.253437-1-sashal@kernel.org>
@@ -69,72 +67,170 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.12
 Content-Transfer-Encoding: 8bit
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: Chih-Kang Chang <gary.chang@realtek.com>
 
-[ Upstream commit 5082b3e3027eae393a4e86874bffb4ce3f83c26e ]
+[ Upstream commit 756b31203d482d2dd1aa6c208978b0410dc7530f ]
 
-We are seeing below error randomly in the case where only
-one MSI vector is configured:
+In concurrent mode, when STA interface is scanning, it causes
+AP interface TX beacon on wrong channel. We modified it to scan
+with the operating channel when one of the interfaces is already
+connected. Additionally, STA interface need to stop scan when AP
+interface is starting to avoid TX beacon on wrong channel. Finally,
+AP interface need to stop TX beacon when STA interface is scanning
+and switching to non-OP channel,This prevent other device to get
+beacons on wrong channel.
 
-kernel: ath11k_pci 0000:03:00.0: wmi command 16387 timeout
-
-The reason is, currently, in ath11k_pcic_ext_irq_enable(),
-ATH11K_FLAG_EXT_IRQ_ENABLED is set before NAPI is enabled.
-This results in a race condition: after
-ATH11K_FLAG_EXT_IRQ_ENABLED is set but before NAPI enabled,
-CE interrupt breaks in. Since IRQ is shared by CE and data
-path, ath11k_pcic_ext_interrupt_handler() is also called
-where we call disable_irq_nosync() to disable IRQ. Then
-napi_schedule() is called but it does nothing because NAPI
-is not enabled at that time, meaning
-ath11k_pcic_ext_grp_napi_poll() will never run, so we have
-no chance to call enable_irq() to enable IRQ back. Finally
-we get above error.
-
-Fix it by setting ATH11K_FLAG_EXT_IRQ_ENABLED after all
-NAPI and IRQ work are done. With the fix, we are sure that
-by the time ATH11K_FLAG_EXT_IRQ_ENABLED is set, NAPI is
-enabled.
-
-Note that the fix above also introduce some side effects:
-if ath11k_pcic_ext_interrupt_handler() breaks in after NAPI
-enabled but before ATH11K_FLAG_EXT_IRQ_ENABLED set, nothing
-will be done by the handler this time, the work will be
-postponed till the next time the IRQ fires.
-
-Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
-
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20231117003919.26218-1-quic_bqiang@quicinc.com
+Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20231129070046.18443-5-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/pcic.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtw89/fw.c       | 17 +++++++++--
+ drivers/net/wireless/realtek/rtw89/mac.c      | 29 +++++++++++++++----
+ drivers/net/wireless/realtek/rtw89/mac.h      |  1 +
+ drivers/net/wireless/realtek/rtw89/mac80211.c |  3 ++
+ 4 files changed, 43 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/pcic.c b/drivers/net/wireless/ath/ath11k/pcic.c
-index c63083633b37..011cf5fb8023 100644
---- a/drivers/net/wireless/ath/ath11k/pcic.c
-+++ b/drivers/net/wireless/ath/ath11k/pcic.c
-@@ -460,8 +460,6 @@ void ath11k_pcic_ext_irq_enable(struct ath11k_base *ab)
- {
- 	int i;
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
+index df1dc2f43c86..468cfa43ec04 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.c
++++ b/drivers/net/wireless/realtek/rtw89/fw.c
+@@ -3912,6 +3912,7 @@ void rtw89_hw_scan_complete(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif,
+ 	rtw89_core_scan_complete(rtwdev, vif, true);
+ 	ieee80211_scan_completed(rtwdev->hw, &info);
+ 	ieee80211_wake_queues(rtwdev->hw);
++	rtw89_mac_enable_beacon_for_ap_vifs(rtwdev, true);
  
--	set_bit(ATH11K_FLAG_EXT_IRQ_ENABLED, &ab->dev_flags);
--
- 	for (i = 0; i < ATH11K_EXT_IRQ_GRP_NUM_MAX; i++) {
- 		struct ath11k_ext_irq_grp *irq_grp = &ab->ext_irq_grp[i];
- 
-@@ -471,6 +469,8 @@ void ath11k_pcic_ext_irq_enable(struct ath11k_base *ab)
- 		}
- 		ath11k_pcic_ext_grp_enable(irq_grp);
- 	}
-+
-+	set_bit(ATH11K_FLAG_EXT_IRQ_ENABLED, &ab->dev_flags);
+ 	rtw89_release_pkt_list(rtwdev);
+ 	rtwvif = (struct rtw89_vif *)vif->drv_priv;
+@@ -3929,6 +3930,19 @@ void rtw89_hw_scan_abort(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif)
+ 	rtw89_hw_scan_complete(rtwdev, vif, true);
  }
- EXPORT_SYMBOL(ath11k_pcic_ext_irq_enable);
  
++static bool rtw89_is_any_vif_connected_or_connecting(struct rtw89_dev *rtwdev)
++{
++	struct rtw89_vif *rtwvif;
++
++	rtw89_for_each_rtwvif(rtwdev, rtwvif) {
++		/* This variable implies connected or during attempt to connect */
++		if (!is_zero_ether_addr(rtwvif->bssid))
++			return true;
++	}
++
++	return false;
++}
++
+ int rtw89_hw_scan_offload(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif,
+ 			  bool enable)
+ {
+@@ -3941,8 +3955,7 @@ int rtw89_hw_scan_offload(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif,
+ 	if (!rtwvif)
+ 		return -EINVAL;
+ 
+-	/* This variable implies connected or during attempt to connect */
+-	connected = !is_zero_ether_addr(rtwvif->bssid);
++	connected = rtw89_is_any_vif_connected_or_connecting(rtwdev);
+ 	opt.enable = enable;
+ 	opt.target_ch_mode = connected;
+ 	if (enable) {
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
+index fab9f5004a75..3c818c4b4653 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.c
++++ b/drivers/net/wireless/realtek/rtw89/mac.c
+@@ -3833,11 +3833,9 @@ static void rtw89_mac_port_cfg_rx_sync(struct rtw89_dev *rtwdev,
+ }
+ 
+ static void rtw89_mac_port_cfg_tx_sw(struct rtw89_dev *rtwdev,
+-				     struct rtw89_vif *rtwvif)
++				     struct rtw89_vif *rtwvif, bool en)
+ {
+ 	const struct rtw89_port_reg *p = &rtw_port_base;
+-	bool en = rtwvif->net_type == RTW89_NET_TYPE_AP_MODE ||
+-		  rtwvif->net_type == RTW89_NET_TYPE_AD_HOC;
+ 
+ 	if (en)
+ 		rtw89_write32_port_set(rtwdev, rtwvif, p->port_cfg, B_AX_BCNTX_EN);
+@@ -3845,6 +3843,24 @@ static void rtw89_mac_port_cfg_tx_sw(struct rtw89_dev *rtwdev,
+ 		rtw89_write32_port_clr(rtwdev, rtwvif, p->port_cfg, B_AX_BCNTX_EN);
+ }
+ 
++static void rtw89_mac_port_cfg_tx_sw_by_nettype(struct rtw89_dev *rtwdev,
++						struct rtw89_vif *rtwvif)
++{
++	bool en = rtwvif->net_type == RTW89_NET_TYPE_AP_MODE ||
++		  rtwvif->net_type == RTW89_NET_TYPE_AD_HOC;
++
++	rtw89_mac_port_cfg_tx_sw(rtwdev, rtwvif, en);
++}
++
++void rtw89_mac_enable_beacon_for_ap_vifs(struct rtw89_dev *rtwdev, bool en)
++{
++	struct rtw89_vif *rtwvif;
++
++	rtw89_for_each_rtwvif(rtwdev, rtwvif)
++		if (rtwvif->net_type == RTW89_NET_TYPE_AP_MODE)
++			rtw89_mac_port_cfg_tx_sw(rtwdev, rtwvif, en);
++}
++
+ static void rtw89_mac_port_cfg_bcn_intv(struct rtw89_dev *rtwdev,
+ 					struct rtw89_vif *rtwvif)
+ {
+@@ -4137,7 +4153,7 @@ int rtw89_mac_port_update(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif)
+ 	rtw89_mac_port_cfg_bcn_prct(rtwdev, rtwvif);
+ 	rtw89_mac_port_cfg_rx_sw(rtwdev, rtwvif);
+ 	rtw89_mac_port_cfg_rx_sync(rtwdev, rtwvif);
+-	rtw89_mac_port_cfg_tx_sw(rtwdev, rtwvif);
++	rtw89_mac_port_cfg_tx_sw_by_nettype(rtwdev, rtwvif);
+ 	rtw89_mac_port_cfg_bcn_intv(rtwdev, rtwvif);
+ 	rtw89_mac_port_cfg_hiq_win(rtwdev, rtwvif);
+ 	rtw89_mac_port_cfg_hiq_dtim(rtwdev, rtwvif);
+@@ -4298,8 +4314,10 @@ rtw89_mac_c2h_scanofld_rsp(struct rtw89_dev *rtwdev, struct sk_buff *c2h,
+ 
+ 	switch (reason) {
+ 	case RTW89_SCAN_LEAVE_CH_NOTIFY:
+-		if (rtw89_is_op_chan(rtwdev, band, chan))
++		if (rtw89_is_op_chan(rtwdev, band, chan)) {
++			rtw89_mac_enable_beacon_for_ap_vifs(rtwdev, false);
+ 			ieee80211_stop_queues(rtwdev->hw);
++		}
+ 		return;
+ 	case RTW89_SCAN_END_SCAN_NOTIFY:
+ 		if (rtwvif && rtwvif->scan_req &&
+@@ -4317,6 +4335,7 @@ rtw89_mac_c2h_scanofld_rsp(struct rtw89_dev *rtwdev, struct sk_buff *c2h,
+ 		if (rtw89_is_op_chan(rtwdev, band, chan)) {
+ 			rtw89_assign_entity_chan(rtwdev, rtwvif->sub_entity_idx,
+ 						 &rtwdev->scan_info.op_chan);
++			rtw89_mac_enable_beacon_for_ap_vifs(rtwdev, true);
+ 			ieee80211_wake_queues(rtwdev->hw);
+ 		} else {
+ 			rtw89_chan_create(&new, chan, chan, band,
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
+index 7cf34137c0bc..7c57ab2814c7 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.h
++++ b/drivers/net/wireless/realtek/rtw89/mac.h
+@@ -974,6 +974,7 @@ int rtw89_mac_port_get_tsf(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif,
+ void rtw89_mac_set_he_obss_narrow_bw_ru(struct rtw89_dev *rtwdev,
+ 					struct ieee80211_vif *vif);
+ void rtw89_mac_stop_ap(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif);
++void rtw89_mac_enable_beacon_for_ap_vifs(struct rtw89_dev *rtwdev, bool en);
+ int rtw89_mac_remove_vif(struct rtw89_dev *rtwdev, struct rtw89_vif *vif);
+ void rtw89_mac_disable_cpu(struct rtw89_dev *rtwdev);
+ int rtw89_mac_enable_cpu(struct rtw89_dev *rtwdev, u8 boot_reason, bool dlfw);
+diff --git a/drivers/net/wireless/realtek/rtw89/mac80211.c b/drivers/net/wireless/realtek/rtw89/mac80211.c
+index 5e48618706d9..e70757e4dc2c 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac80211.c
++++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
+@@ -472,6 +472,9 @@ static int rtw89_ops_start_ap(struct ieee80211_hw *hw,
+ 		return -EOPNOTSUPP;
+ 	}
+ 
++	if (rtwdev->scanning)
++		rtw89_hw_scan_abort(rtwdev, rtwdev->scan_info.scanning_vif);
++
+ 	ether_addr_copy(rtwvif->bssid, vif->bss_conf.bssid);
+ 	rtw89_cam_bssid_changed(rtwdev, rtwvif);
+ 	rtw89_mac_port_update(rtwdev, rtwvif);
 -- 
 2.43.0
 
