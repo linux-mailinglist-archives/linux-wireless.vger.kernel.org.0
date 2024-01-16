@@ -1,59 +1,62 @@
-Return-Path: <linux-wireless+bounces-2039-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2040-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A52F82FA09
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 22:23:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E21B82FA20
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 22:25:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB8F71F26590
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 21:23:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E33C1C20E1F
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 21:25:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C84DE2E83C;
-	Tue, 16 Jan 2024 19:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E26C0150291;
+	Tue, 16 Jan 2024 19:58:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sQmNEuIg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WuKdoxI/"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98C0F1F958;
-	Tue, 16 Jan 2024 19:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D8C15028D;
+	Tue, 16 Jan 2024 19:58:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705435117; cv=none; b=mIpnu+QmYGzOoGTpjbKTJFpGwe8LXeb1se9riCYZyHg3EINTj56qVOwFCzrPXvcxsrdj33sKM+vCK8VHWHAM/cspp7fWWGzCHQlOmBcz+IeFzT0e3rq4zC4+tDPFcdiE1VlAVFjo848IsDDElTH8Bm7k1Vvfy/spoaOFQSx7OGk=
+	t=1705435132; cv=none; b=snJ6z2JJ8zx+NQ0yNcAUO9tqmt22SLKcIBs7fZ9zH8cAcCyj9iVG/x6lZE/nhY/VQbTOeFqQt6P1dJyRd9zPrWZ1qBaTFUyxmCmVNC0tmfX462BD6oyrHuRp0PieQRzY0bSoxkDdgJ7w+Lqibsko6t96vbEUwm4VfO6BskbaDPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705435117; c=relaxed/simple;
-	bh=WAj2w3RJ4Z3XNrmiV7rSohbyRJBiWOQmiGpLv9/TMRo=;
+	s=arc-20240116; t=1705435132; c=relaxed/simple;
+	bh=X2c5sB66ypY25zuGe1D/JNBGH89hep8+SKqIsX/jOcI=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:MIME-Version:X-stable:X-Patchwork-Hint:X-stable-base:
-	 Content-Transfer-Encoding; b=rvtZ1hwi8vaVJYrLyPfitSvzdTfCoI4fa9d+WMF3nCEQbarmwK6HZqN8BTeYKwCkRdrzt2tZdFUviOxfAP+SFdMy80Oc9ONApt7g+qfXwFCgH94zex/DEOrswD7KeQ0tvojqhRknsx91dHexvBK/Tc454yXjL9MMme6siLADvyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sQmNEuIg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4D3BC433F1;
-	Tue, 16 Jan 2024 19:58:36 +0000 (UTC)
+	 X-Mailer:In-Reply-To:References:MIME-Version:X-stable:
+	 X-Patchwork-Hint:X-stable-base:Content-Transfer-Encoding; b=aspY97K1Qelc44uPz3JoM7lGGP2yTcLw3feDIjGUDbppBajo1fvkFtTKynM5WMHqmAK4PM96KMxLGHXtGyQfw1HEiat0SrglLvV9xvZ5SovJerCX//ttX7Ln7s1k85K/eVElnyFjf7yuKeWdQY+R5BPW/KXDrPQBedqO4IYFhx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WuKdoxI/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA0A0C433F1;
+	Tue, 16 Jan 2024 19:58:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705435117;
-	bh=WAj2w3RJ4Z3XNrmiV7rSohbyRJBiWOQmiGpLv9/TMRo=;
-	h=From:To:Cc:Subject:Date:From;
-	b=sQmNEuIgJ6hP2xg/QOO185xSWDlTe5o+IMO1HzNtnI+Eu9r6eCVch2wq2MBvN7s8w
-	 +/i1bYbnj7zOyWjbEiT8jrK7G48CB4YpNp7a+tQx5EsgptTxEgr0Xx4H4SUvtF56ef
-	 AWIZuOW/16V4G54dkj7go6KON9qAbN4D6XA7N4npCJjrNpBpd1l2BiMBn+Jy2OP/2+
-	 +g+Wqlyxh1o2MS6X6ZAQKMhSwErxChQ0JxSi6NHcjD51kTVy9V5eRG08MmkuqYfD2Y
-	 TThJvaLaPkrEZ4PfVs7rPZiA4O+YTvlLA/EnSAUn676EyFkRr1Yy7saG6sMpDAM+Vg
-	 INm/R9Y7eJiJg==
+	s=k20201202; t=1705435132;
+	bh=X2c5sB66ypY25zuGe1D/JNBGH89hep8+SKqIsX/jOcI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=WuKdoxI/SraQsWnFLdh+OaE0tIkpU2nCijkT27EV1qmvkw0PTsqT5cIB4M/0BAdSw
+	 N/6eNArXJmufWgFIrrTiB8rWOu4/SDP9oxsTQf9aiELtkUOA5egXro60fxJGFvjzei
+	 3DC12AozjVtDGxwmZ13qHPM4UFRpwJFSY5VfUbnQOGHhNk4BWNDO9SHEvh3pa3n00O
+	 qfPEC9fTARLemyMomTnv/VmnxGvLlf23xZE3ZCOBMIQaLYNUULYcjF3shsq89DeXoi
+	 Z5vIaOVDjZxZlM9D/l+VoK+4LzQm1dWFbMpvFNiKcl7LKEu3nfVdihNXOUsCmoPQ72
+	 TmYwcIOVE1RYA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Shiji Yang <yangshiji66@outlook.com>,
-	Stanislaw Gruszka <stf_xl@wp.pl>,
-	Kalle Valo <kvalo@kernel.org>,
+Cc: Liam Kearney <liam.kearney@morsemicro.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
+	johannes@sipsolutions.net,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 01/47] wifi: rt2x00: restart beacon queue when hardware reset
-Date: Tue, 16 Jan 2024 14:57:04 -0500
-Message-ID: <20240116195834.257313-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 08/47] wifi: ieee80211: fix PV1 frame control field name
+Date: Tue, 16 Jan 2024 14:57:11 -0500
+Message-ID: <20240116195834.257313-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240116195834.257313-1-sashal@kernel.org>
+References: <20240116195834.257313-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,77 +68,39 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.147
 Content-Transfer-Encoding: 8bit
 
-From: Shiji Yang <yangshiji66@outlook.com>
+From: Liam Kearney <liam.kearney@morsemicro.com>
 
-[ Upstream commit a11d965a218f0cd95b13fe44d0bcd8a20ce134a8 ]
+[ Upstream commit d3ca4ab4f16eb81dc3e7721251adcba49b229d54 ]
 
-When a hardware reset is triggered, all registers are reset, so all
-queues are forced to stop in hardware interface. However, mac80211
-will not automatically stop the queue. If we don't manually stop the
-beacon queue, the queue will be deadlocked and unable to start again.
-This patch fixes the issue where Apple devices cannot connect to the
-AP after calling ieee80211_restart_hw().
+Update PV1 frame control field TODS to FROMDS to match 802.11 standard
 
-Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
-Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/TYAP286MB031530EB6D98DCE4DF20766CBCA4A@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM
+Signed-off-by: Liam Kearney <liam.kearney@morsemicro.com>
+Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Link: https://lore.kernel.org/r/20231025002755.1752983-1-liam.kearney@morsemicro.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ralink/rt2x00/rt2x00dev.c |  3 +++
- drivers/net/wireless/ralink/rt2x00/rt2x00mac.c | 11 +++++++++++
- 2 files changed, 14 insertions(+)
+ include/linux/ieee80211.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-index 388675d073ce..10ae5e313dda 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-@@ -101,6 +101,7 @@ void rt2x00lib_disable_radio(struct rt2x00_dev *rt2x00dev)
- 	rt2x00link_stop_tuner(rt2x00dev);
- 	rt2x00queue_stop_queues(rt2x00dev);
- 	rt2x00queue_flush_queues(rt2x00dev, true);
-+	rt2x00queue_stop_queue(rt2x00dev->bcn);
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index 00ed7c17698d..32ea9b110055 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -170,11 +170,11 @@
+ #define IEEE80211_SN_MODULO		(IEEE80211_MAX_SN + 1)
  
- 	/*
- 	 * Disable radio.
-@@ -1268,6 +1269,7 @@ int rt2x00lib_start(struct rt2x00_dev *rt2x00dev)
- 	rt2x00dev->intf_ap_count = 0;
- 	rt2x00dev->intf_sta_count = 0;
- 	rt2x00dev->intf_associated = 0;
-+	rt2x00dev->intf_beaconing = 0;
  
- 	/* Enable the radio */
- 	retval = rt2x00lib_enable_radio(rt2x00dev);
-@@ -1294,6 +1296,7 @@ void rt2x00lib_stop(struct rt2x00_dev *rt2x00dev)
- 	rt2x00dev->intf_ap_count = 0;
- 	rt2x00dev->intf_sta_count = 0;
- 	rt2x00dev->intf_associated = 0;
-+	rt2x00dev->intf_beaconing = 0;
- }
- 
- static inline void rt2x00lib_set_if_combinations(struct rt2x00_dev *rt2x00dev)
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c b/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c
-index dea5babd30fe..f81b0ab0b4c5 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c
-@@ -598,6 +598,17 @@ void rt2x00mac_bss_info_changed(struct ieee80211_hw *hw,
- 	 */
- 	if (changes & BSS_CHANGED_BEACON_ENABLED) {
- 		mutex_lock(&intf->beacon_skb_mutex);
-+
-+		/*
-+		 * Clear the 'enable_beacon' flag and clear beacon because
-+		 * the beacon queue has been stopped after hardware reset.
-+		 */
-+		if (test_bit(DEVICE_STATE_RESET, &rt2x00dev->flags) &&
-+		    intf->enable_beacon) {
-+			intf->enable_beacon = false;
-+			rt2x00queue_clear_beacon(rt2x00dev, vif);
-+		}
-+
- 		if (!bss_conf->enable_beacon && intf->enable_beacon) {
- 			rt2x00dev->intf_beaconing--;
- 			intf->enable_beacon = false;
+-/* PV1 Layout 11ah 9.8.3.1 */
++/* PV1 Layout IEEE 802.11-2020 9.8.3.1 */
+ #define IEEE80211_PV1_FCTL_VERS		0x0003
+ #define IEEE80211_PV1_FCTL_FTYPE	0x001c
+ #define IEEE80211_PV1_FCTL_STYPE	0x00e0
+-#define IEEE80211_PV1_FCTL_TODS		0x0100
++#define IEEE80211_PV1_FCTL_FROMDS		0x0100
+ #define IEEE80211_PV1_FCTL_MOREFRAGS	0x0200
+ #define IEEE80211_PV1_FCTL_PM		0x0400
+ #define IEEE80211_PV1_FCTL_MOREDATA	0x0800
 -- 
 2.43.0
 
