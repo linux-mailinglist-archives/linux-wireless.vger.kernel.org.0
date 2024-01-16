@@ -1,58 +1,59 @@
-Return-Path: <linux-wireless+bounces-2030-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2031-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE97382F92E
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 22:01:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3704C82F94F
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 22:04:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A5EB1F23FEB
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 21:01:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE087B2471B
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 21:04:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC7FC2C848;
-	Tue, 16 Jan 2024 19:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2A7214138E;
+	Tue, 16 Jan 2024 19:55:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eUdq9p29"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pCdZpuIz"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8494D2C844;
-	Tue, 16 Jan 2024 19:55:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775DF14138B;
+	Tue, 16 Jan 2024 19:55:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705434923; cv=none; b=Gw3JTlDAaI0Mszu22Os9xzTpeTUQwcH4WjSFKw5LvD+DkGRxUSixNpl8gDZ+kylbtizZJ2Cf6xQOhpCzGn5UNdycvF2JMR6Vx67qkne0vJckdoGPj1bRmRPnz2hvDvQng/e+bd2P0UO0G0DJ0nAaLevfAWdWSuzLSpc5djTTzHs=
+	t=1705434939; cv=none; b=awHfFTVFbGzGUen7DLPXx9T0IYUzSwA/nGu6YE27kIiooiel5bWqkowQj2degjne8boA+L6VSwU63ACM9fJEGwg/EZNWpag0RM70yEqmaDi6j34oiQNjH2tD/0LfzGT8goS24axYm8hCyzkvExxL5K+zAoZlI0wpPrPBTt7UIJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705434923; c=relaxed/simple;
-	bh=Nu67YcmV68YpVzKmLQNFlbjgbFW/NcbGalpeDYXAi2c=;
+	s=arc-20240116; t=1705434939; c=relaxed/simple;
+	bh=0y769TGzBrbl5VChnyn093dkqOvatr23ZojUupl05OQ=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:X-stable:
-	 X-Patchwork-Hint:X-stable-base:Content-Transfer-Encoding; b=eX0zxJy3dltlmmayVpukV+5R2bnYIjWjxSl08mQDS0PU4UOFMjtekFLvwqVJR6USioevJEnu4R9pmF2R71kK7iDBmSpgs4FJ1XwUvSsKzHMggPkNE8xVAPCMvNpRPzb0dRRFG/wR7yYV6FbyhdJPkg5vAM6yZPIaSIxyXOiURD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eUdq9p29; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAF9BC43390;
-	Tue, 16 Jan 2024 19:55:21 +0000 (UTC)
+	 X-Patchwork-Hint:X-stable-base:Content-Transfer-Encoding; b=rYHuoYXCqP9eJ+//1Ts0lxLgeGA6gZ58LrSs47CAGeGCVEQbRbWUbW31SEQnYShDoh8WRO1hjAzqYDN8yhnHqYLTpANhUXAvjDCqgxn5T7gbUxhdKlKygNlLIkfA/Dnvn/ehRvbqiqpwFAh+we2ynJlNXddWOl6Lui7ePVF0iZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pCdZpuIz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C62AC433F1;
+	Tue, 16 Jan 2024 19:55:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705434922;
-	bh=Nu67YcmV68YpVzKmLQNFlbjgbFW/NcbGalpeDYXAi2c=;
+	s=k20201202; t=1705434938;
+	bh=0y769TGzBrbl5VChnyn093dkqOvatr23ZojUupl05OQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eUdq9p291h5oLDCevv+MipIwu1CmDCXW/PUUxhYCRalvm9eBgoNjfQkgAnPigvLvs
-	 UjqxyY7RlZZzycp+rcKKO9GuVjBN3bK8sv4h7k75SgoU+EHC1ry0ih435ZaZq9ZpQQ
-	 FPsg4PUw0k2csOWzc8eRy/4mZjnBue1fzxYsQAEexltxzeaubIVfx8xF6Spoi+RRtE
-	 P4/iO23FmJOZwt7ijAtXWb8/5cQOKqxYSnb5zijAEMWu0zg6w9fgqM2Q9BpjJATuPW
-	 YUc/PApnR6X2AowqzH2ek2qC5Noe5uP4AYoD8CxQRMEw2F9k3lfiEHAhVgO8pp/GQR
-	 fZgiI2SHUtRUQ==
+	b=pCdZpuIzeo7xxyssvPiV4gPXyua3OcvnmNU7oCgYINPYZXPtaSfCoBaHlDJ0wS44d
+	 P5cy8Nq4VAlrebOMEGtPen86KUwtd8mjDajb7Pv35WCqcm/UoLHhM/VESa7Ii0JWzj
+	 Ur45rUNZCwXAmxPxFmPr/O0rH+BwDw/pHBNjOl4Bx0WNeLnT8Ht/oTIt9heMsOyMcD
+	 a0eU8V9unWK6Y6OSLf4H2Cy70Jqiu3NZDFxUcQYxw2vu3JlW7DtEFPOQhxEQ6tmMt1
+	 HYHaCJDqcCvt2c4S2ih+hfK2zzu9z7dUxIoJMquJeRrBKbMU3272HZ+MDvtIsCPBfA
+	 MN0UORuu5odLg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Shiji Yang <yangshiji66@outlook.com>,
-	Stanislaw Gruszka <stf_xl@wp.pl>,
-	Kalle Valo <kvalo@kernel.org>,
+Cc: Liam Kearney <liam.kearney@morsemicro.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
+	johannes@sipsolutions.net,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 04/68] wifi: rt2x00: correct wrong BBP register in RxDCOC calibration
-Date: Tue, 16 Jan 2024 14:53:03 -0500
-Message-ID: <20240116195511.255854-4-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 12/68] wifi: ieee80211: fix PV1 frame control field name
+Date: Tue, 16 Jan 2024 14:53:11 -0500
+Message-ID: <20240116195511.255854-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240116195511.255854-1-sashal@kernel.org>
 References: <20240116195511.255854-1-sashal@kernel.org>
@@ -67,37 +68,39 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.73
 Content-Transfer-Encoding: 8bit
 
-From: Shiji Yang <yangshiji66@outlook.com>
+From: Liam Kearney <liam.kearney@morsemicro.com>
 
-[ Upstream commit 50da74e1e8b682853d1e07fc8bbe3a0774ae5e09 ]
+[ Upstream commit d3ca4ab4f16eb81dc3e7721251adcba49b229d54 ]
 
-Refer to Mediatek vendor driver RxDCOC_Calibration() function, when
-performing gainfreeze calibration, we should write register 140
-instead of 141. This fix can reduce the total calibration time from
-6 seconds to 1 second.
+Update PV1 frame control field TODS to FROMDS to match 802.11 standard
 
-Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
-Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/TYAP286MB0315B13B89DF57B6B27BB854BCAFA@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM
+Signed-off-by: Liam Kearney <liam.kearney@morsemicro.com>
+Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Link: https://lore.kernel.org/r/20231025002755.1752983-1-liam.kearney@morsemicro.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ralink/rt2x00/rt2800lib.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/ieee80211.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-index 12b700c7b9c3..517d9023aae3 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-@@ -8672,7 +8672,7 @@ static void rt2800_rxdcoc_calibration(struct rt2x00_dev *rt2x00dev)
- 	rt2800_rfcsr_write_bank(rt2x00dev, 5, 4, saverfb5r4);
- 	rt2800_rfcsr_write_bank(rt2x00dev, 7, 4, saverfb7r4);
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index 870ae4cd8202..1525d13e3b1f 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -172,11 +172,11 @@
+ #define IEEE80211_SN_MODULO		(IEEE80211_MAX_SN + 1)
  
--	rt2800_bbp_write(rt2x00dev, 158, 141);
-+	rt2800_bbp_write(rt2x00dev, 158, 140);
- 	bbpreg = rt2800_bbp_read(rt2x00dev, 159);
- 	bbpreg = bbpreg & (~0x40);
- 	rt2800_bbp_write(rt2x00dev, 159, bbpreg);
+ 
+-/* PV1 Layout 11ah 9.8.3.1 */
++/* PV1 Layout IEEE 802.11-2020 9.8.3.1 */
+ #define IEEE80211_PV1_FCTL_VERS		0x0003
+ #define IEEE80211_PV1_FCTL_FTYPE	0x001c
+ #define IEEE80211_PV1_FCTL_STYPE	0x00e0
+-#define IEEE80211_PV1_FCTL_TODS		0x0100
++#define IEEE80211_PV1_FCTL_FROMDS		0x0100
+ #define IEEE80211_PV1_FCTL_MOREFRAGS	0x0200
+ #define IEEE80211_PV1_FCTL_PM		0x0400
+ #define IEEE80211_PV1_FCTL_MOREDATA	0x0800
 -- 
 2.43.0
 
