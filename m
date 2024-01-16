@@ -1,59 +1,59 @@
-Return-Path: <linux-wireless+bounces-2048-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2049-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A01482FAD2
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 22:41:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E6E782FB22
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 22:49:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AC1F8B23881
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 21:41:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F6721C2682B
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 21:49:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99A5D15B973;
-	Tue, 16 Jan 2024 20:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03C3865BD0;
+	Tue, 16 Jan 2024 20:02:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L0Z79Yzp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YKhUCJhL"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 701C315B96E;
-	Tue, 16 Jan 2024 20:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C945E65BCD;
+	Tue, 16 Jan 2024 20:02:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705435277; cv=none; b=fitBSpaPPRX0Eri0KeEKU+tJmmt4JHWXryYMk/YKiRFQKAelVb4Efvh+iNjr+HbehBREp/36eGT2cPQpfbiNtup0+BRz8TF4jBLnvpMXTwAgiRnkMdErgn7bOzqqevxTcSGV1tbRJBbSv/X8Xv47fIMU75TdBpJfEEIKG6JCZvY=
+	t=1705435339; cv=none; b=BJuM84ywYcTisoCyckJfqGqc2k+0RvCAXnTetQ3lBZCijyw1IlQ/AFHgDIB8M1tjoPiLAmuqPxv7MwDPCWlRkBey6O7Qpg4es2ZXXaUU8Aw7OeU4RXpiA20lHNfacpbqE7Cfm6xAGHz1icZ06LUEXMWTDDBqzenEZLu+j60qfv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705435277; c=relaxed/simple;
-	bh=kYflBUvRL0rpmTlBidNtRLsXDE9oX/Cv4YkXmWkF1To=;
+	s=arc-20240116; t=1705435339; c=relaxed/simple;
+	bh=7U4AOKZOvUnv7tMLczhSAseXJKsZJVnDVq/2iHCXDTg=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:Content-Type:X-stable:
-	 X-Patchwork-Hint:X-stable-base:Content-Transfer-Encoding; b=DDg9GcdBxduV/wOmGhvY9yrtloHCzNjn14qzGrMPR6LIDq/QfOO9fUWEXc3/qDqhpb0tYSZ6703Izom/NXZCsvqr/hbNN0uDCUn7SDUsgtiUjscotl2+DWwESsG1I8dIP0WaJTzeA3uD/KGD5XGln5nIQJThgqnpwXFgKPBNnRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L0Z79Yzp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15886C433F1;
-	Tue, 16 Jan 2024 20:01:15 +0000 (UTC)
+	 X-Mailer:In-Reply-To:References:MIME-Version:X-stable:
+	 X-Patchwork-Hint:X-stable-base:Content-Transfer-Encoding; b=a4QYMogvzkyDhjTK0L15mh6Oitje5NwhjPZVs4SdeaT8p+GiFtuPNnAJOnnoTLrheD7XywUNKLa6n+5kc8wOWz8RSCHlp52lptRBdTWJpysp96ULUW2d3R3eBRdSvsWHuVrWW6Dk+qfuREw96e54KJIhbo0DP+PifnBLu8+Wnvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YKhUCJhL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69396C43601;
+	Tue, 16 Jan 2024 20:02:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705435276;
-	bh=kYflBUvRL0rpmTlBidNtRLsXDE9oX/Cv4YkXmWkF1To=;
+	s=k20201202; t=1705435339;
+	bh=7U4AOKZOvUnv7tMLczhSAseXJKsZJVnDVq/2iHCXDTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L0Z79Yzpar7cA4RQeSKEkJRW6f24ZoXKcZeq9QCOemuVqlbkIDYmuKor5++bm7h9m
-	 1vn7C7UH6+ZHIrk+YTrcalv/Q3K6hmlT9tDGv54d/Nkl8e0Bv4ZlEceYeO59VrA1YA
-	 kf18LLoZtib/a3iJ36UQXqCTnhmCa8tglUMI8RJPyh7Aj1c0KgdwB58C1ek46HRE2G
-	 IibrjH1qK4vuntclnyMAHDz0Q6Ow+ITz8TzJHLTgPpWdIJXIrMSkjRQVZQfccZl4A4
-	 W9b05Vs1Ed1FHYIt9bHWDRd6jl3z7t6bbD2g/to7xR9S6mZtWGSwMonbAAlHtipo2A
-	 881l0ijLVX4LA==
+	b=YKhUCJhLXeUsnYFPjqnqLh5QTodSPGnRY1rH2OXg0Z9w8msERi+APedAH1ESxr3nl
+	 mmE3Bx392ZgWwg/LV7c/DsQXISLRlEsfA4cl7ywdwaV3439Tar5WnDwX5Nt/QvHZRX
+	 8VBGIJC0iqB7n42IZWQGafqYnsMV+lki4kjNQYuZrGOBuHppKRtIHOW3ZHLxtshy6f
+	 Bmi2qEajebD+LZ876W6u4T/f8dTRSJyJL7CTdJOEl+TMmr5TtrLoD6q7SFaz8m7XpL
+	 kbZ38MddIcoLUsrovzNb6B400ITDJ/xr1GqbRVgeR/B34jtRJxCXhmUMG8U1DvHGO2
+	 BSAaiIw5vPkOw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Minsuk Kang <linuxlovemin@yonsei.ac.kr>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+Cc: Zenm Chen <zenmchen@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	kvalo@kernel.org,
+	Jes.Sorensen@gmail.com,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 12/44] wifi: ath9k: Fix potential array-index-out-of-bounds read in ath9k_htc_txstatus()
-Date: Tue, 16 Jan 2024 14:59:41 -0500
-Message-ID: <20240116200044.258335-12-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 37/44] wifi: rtl8xxxu: Add additional USB IDs for RTL8192EU devices
+Date: Tue, 16 Jan 2024 15:00:06 -0500
+Message-ID: <20240116200044.258335-37-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240116200044.258335-1-sashal@kernel.org>
 References: <20240116200044.258335-1-sashal@kernel.org>
@@ -63,61 +63,51 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.208
 Content-Transfer-Encoding: 8bit
 
-From: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
+From: Zenm Chen <zenmchen@gmail.com>
 
-[ Upstream commit 2adc886244dff60f948497b59affb6c6ebb3c348 ]
+[ Upstream commit 4e87ca403e2008b9e182239e1abbf6876a55eb33 ]
 
-Fix an array-index-out-of-bounds read in ath9k_htc_txstatus(). The bug
-occurs when txs->cnt, data from a URB provided by a USB device, is
-bigger than the size of the array txs->txstatus, which is
-HTC_MAX_TX_STATUS. WARN_ON() already checks it, but there is no bug
-handling code after the check. Make the function return if that is the
-case.
+Add additional USB IDs found in the vendor driver from
+https://github.com/Mange/rtl8192eu-linux-driver to support more
+RTL8192EU devices.
 
-Found by a modified version of syzkaller.
-
-UBSAN: array-index-out-of-bounds in htc_drv_txrx.c
-index 13 is out of range for type '__wmi_event_txstatus [12]'
-Call Trace:
- ath9k_htc_txstatus
- ath9k_wmi_event_tasklet
- tasklet_action_common
- __do_softirq
- irq_exit_rxu
- sysvec_apic_timer_interrupt
-
-Signed-off-by: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20231113065756.1491991-1-linuxlovemin@yonsei.ac.kr
+Signed-off-by: Zenm Chen <zenmchen@gmail.com>
+Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20231217123017.1982-1-zenmchen@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath9k/htc_drv_txrx.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ .../net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c    | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c b/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
-index 622fc7f17040..5037142c5a82 100644
---- a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
-+++ b/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
-@@ -647,9 +647,10 @@ void ath9k_htc_txstatus(struct ath9k_htc_priv *priv, void *wmi_event)
- 	struct ath9k_htc_tx_event *tx_pend;
- 	int i;
- 
--	for (i = 0; i < txs->cnt; i++) {
--		WARN_ON(txs->cnt > HTC_MAX_TX_STATUS);
-+	if (WARN_ON_ONCE(txs->cnt > HTC_MAX_TX_STATUS))
-+		return;
- 
-+	for (i = 0; i < txs->cnt; i++) {
- 		__txs = &txs->txstatus[i];
- 
- 		skb = ath9k_htc_tx_get_packet(priv, __txs);
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+index 004778faf3d0..3051fb358fdd 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+@@ -6973,6 +6973,18 @@ static const struct usb_device_id dev_table[] = {
+ 	.driver_info = (unsigned long)&rtl8192eu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0x818c, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192eu_fops},
++/* D-Link DWA-131 rev C1 */
++{USB_DEVICE_AND_INTERFACE_INFO(0x2001, 0x3312, 0xff, 0xff, 0xff),
++	.driver_info = (unsigned long)&rtl8192eu_fops},
++/* TP-Link TL-WN8200ND V2 */
++{USB_DEVICE_AND_INTERFACE_INFO(0x2357, 0x0126, 0xff, 0xff, 0xff),
++	.driver_info = (unsigned long)&rtl8192eu_fops},
++/* Mercusys MW300UM */
++{USB_DEVICE_AND_INTERFACE_INFO(0x2c4e, 0x0100, 0xff, 0xff, 0xff),
++	.driver_info = (unsigned long)&rtl8192eu_fops},
++/* Mercusys MW300UH */
++{USB_DEVICE_AND_INTERFACE_INFO(0x2c4e, 0x0104, 0xff, 0xff, 0xff),
++	.driver_info = (unsigned long)&rtl8192eu_fops},
+ #endif
+ { }
+ };
 -- 
 2.43.0
 
