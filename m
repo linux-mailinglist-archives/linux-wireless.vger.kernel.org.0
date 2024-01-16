@@ -1,141 +1,123 @@
-Return-Path: <linux-wireless+bounces-2053-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2054-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4970B82FB3C
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 22:51:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 745ED82FB5C
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 22:54:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E2A01C266DB
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 21:51:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 87898B2733C
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 21:54:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00191162E38;
-	Tue, 16 Jan 2024 20:03:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 728F81641BE;
+	Tue, 16 Jan 2024 20:03:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H68tAaI7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aPmurw89"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9CF9162E33;
-	Tue, 16 Jan 2024 20:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4738841C8D;
+	Tue, 16 Jan 2024 20:03:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705435393; cv=none; b=KUJVEmCzmjaTj0XWEylyuuBCLAt1bNDw+Ap70DoBdanyC609wc4b42+o8TjbdSiptpbH2ZRV0TMypv22fQjaS+0S1ZBsrPe4mZHBTID4FZ4KMxwtKHxbIkkymJ8E8umSUAYwY29YHRO237kTLEij5uk92KdXkAyCmdtKggsTQbc=
+	t=1705435413; cv=none; b=R0AF2Wh48RLkgAFOHVvP5/qpFmmcUNUD6saTfiKbu7rhOFY/AGkXPSK/s9N1P/mimgq1+clCL1ggeAeakbmVaS0L19kgFK3J6JjOtD/cyNLnrAqgi9lweeCAH+Nxa7HIvE+/Y5aGIn1umH+kOw7wJS2ed3LQMecthwksBWXSrUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705435393; c=relaxed/simple;
-	bh=bL2TTO0opeE6hdG1ijW9igPA7Kj3xrx8gfgfSS3fAPM=;
+	s=arc-20240116; t=1705435413; c=relaxed/simple;
+	bh=kB8naHT2NG4P0oWELwQgQg5BKDHjBl2vgpSgreY5yRQ=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:MIME-Version:X-stable:X-Patchwork-Hint:X-stable-base:
-	 Content-Transfer-Encoding; b=myIrUo43qw0d37arPPaM6yEq/7qq8pfAlxzlGz1nUqOXIxZbocP4caLYxYlaj2xX7aIQspr3wjKyZ15az5qJWNId1FhrgjDorlmxPUkwkAyPh0zhPzZBJMOj/x/YrKJkoGfrb8/hrbAJsASZSuxtEfiy9Q+EjS537FOrwkdS5Dk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H68tAaI7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91370C433C7;
-	Tue, 16 Jan 2024 20:03:12 +0000 (UTC)
+	 X-Mailer:In-Reply-To:References:MIME-Version:Content-Type:X-stable:
+	 X-Patchwork-Hint:X-stable-base:Content-Transfer-Encoding; b=MC45PRpncMxT1GpmnEKh1hmA719KoAb+/4cJHJ3lnfHavgHA6Bn/l/6J01+JncAUIjDMO8BJ9rhzqtyfUoz3Z1noqaCNb9YsT1miTVNItctfp9t6q0YOnpt63HMnXOKYZ8V38POYrZEbubGjn6L+Q+lRvUANZn6mhxWBi6NieuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aPmurw89; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1426C433C7;
+	Tue, 16 Jan 2024 20:03:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705435393;
-	bh=bL2TTO0opeE6hdG1ijW9igPA7Kj3xrx8gfgfSS3fAPM=;
-	h=From:To:Cc:Subject:Date:From;
-	b=H68tAaI7ry/wdhlzirqIx6zwbJwg2fcVmz48mc7oEcTz5WFs73QiGhabezM9bWjZV
-	 BkmmQmwTnE+bZDbHlUoFdi6OfN0si9nRZrcmI5kTq/4dhBUDnWnGyhrPad9k4+bqk0
-	 aqVwhifKpc0nz0OY4TBz1rOXq4OzNQPaFMqMehxTsm6do4FP1VVjrrYr7M/I4wUQbJ
-	 ZNT0CYBflHY87fF5TV2bHygDg5IIquJT7VVLWDxlhv081VgqNE/WSCjSvaL7ckY2ET
-	 5itEWeSWrL1hRmzLuKJYB+OtTKhs9+XTZUoAGDFAvkrikj/CRWcvSdY4Yp9XygMS5n
-	 oNhg7ZJ2txoHQ==
+	s=k20201202; t=1705435412;
+	bh=kB8naHT2NG4P0oWELwQgQg5BKDHjBl2vgpSgreY5yRQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=aPmurw891cOHjVJTOpWpexn15i+dr1jMUNwm0cQYBdEP9idvhl5k6yKgx03BFsgnm
+	 P0SCQZM4UuccXBuu4El/eWfqucGCe9qUIkRIh20KCFT93b79hRNL9BV7aBGdw7YVzy
+	 +bTNALD8oU/+CtZJW+ttlNpL/eyWKgdyABSf0zzvCCLIIfSVkqEBYwezD9EmXyehXi
+	 ax/dKi/s8gb5czgNQGFiKBi5YfYJ5hm93wHhG+rY2bs/nvZJLaU6n35pOdG3WYUWYQ
+	 NbbMJEjDtnoXTtdJF7xwlcO/rJnqbnVg1WJSUZ4UrWKS7/02LurukvSrWWAU0/WMlg
+	 bBGBElO0ofypA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Shiji Yang <yangshiji66@outlook.com>,
-	Stanislaw Gruszka <stf_xl@wp.pl>,
-	Kalle Valo <kvalo@kernel.org>,
+Cc: Minsuk Kang <linuxlovemin@yonsei.ac.kr>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>,
+	kvalo@kernel.org,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 01/31] wifi: rt2x00: restart beacon queue when hardware reset
-Date: Tue, 16 Jan 2024 15:02:10 -0500
-Message-ID: <20240116200310.259340-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 10/31] wifi: ath9k: Fix potential array-index-out-of-bounds read in ath9k_htc_txstatus()
+Date: Tue, 16 Jan 2024 15:02:19 -0500
+Message-ID: <20240116200310.259340-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240116200310.259340-1-sashal@kernel.org>
+References: <20240116200310.259340-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.267
 Content-Transfer-Encoding: 8bit
 
-From: Shiji Yang <yangshiji66@outlook.com>
+From: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
 
-[ Upstream commit a11d965a218f0cd95b13fe44d0bcd8a20ce134a8 ]
+[ Upstream commit 2adc886244dff60f948497b59affb6c6ebb3c348 ]
 
-When a hardware reset is triggered, all registers are reset, so all
-queues are forced to stop in hardware interface. However, mac80211
-will not automatically stop the queue. If we don't manually stop the
-beacon queue, the queue will be deadlocked and unable to start again.
-This patch fixes the issue where Apple devices cannot connect to the
-AP after calling ieee80211_restart_hw().
+Fix an array-index-out-of-bounds read in ath9k_htc_txstatus(). The bug
+occurs when txs->cnt, data from a URB provided by a USB device, is
+bigger than the size of the array txs->txstatus, which is
+HTC_MAX_TX_STATUS. WARN_ON() already checks it, but there is no bug
+handling code after the check. Make the function return if that is the
+case.
 
-Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
-Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/TYAP286MB031530EB6D98DCE4DF20766CBCA4A@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM
+Found by a modified version of syzkaller.
+
+UBSAN: array-index-out-of-bounds in htc_drv_txrx.c
+index 13 is out of range for type '__wmi_event_txstatus [12]'
+Call Trace:
+ ath9k_htc_txstatus
+ ath9k_wmi_event_tasklet
+ tasklet_action_common
+ __do_softirq
+ irq_exit_rxu
+ sysvec_apic_timer_interrupt
+
+Signed-off-by: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20231113065756.1491991-1-linuxlovemin@yonsei.ac.kr
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ralink/rt2x00/rt2x00dev.c |  3 +++
- drivers/net/wireless/ralink/rt2x00/rt2x00mac.c | 11 +++++++++++
- 2 files changed, 14 insertions(+)
+ drivers/net/wireless/ath/ath9k/htc_drv_txrx.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-index c3eab767bc21..f504f3529407 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-@@ -101,6 +101,7 @@ void rt2x00lib_disable_radio(struct rt2x00_dev *rt2x00dev)
- 	rt2x00link_stop_tuner(rt2x00dev);
- 	rt2x00queue_stop_queues(rt2x00dev);
- 	rt2x00queue_flush_queues(rt2x00dev, true);
-+	rt2x00queue_stop_queue(rt2x00dev->bcn);
+diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c b/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
+index ee021738bef0..be4fa41bdb12 100644
+--- a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
++++ b/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
+@@ -647,9 +647,10 @@ void ath9k_htc_txstatus(struct ath9k_htc_priv *priv, void *wmi_event)
+ 	struct ath9k_htc_tx_event *tx_pend;
+ 	int i;
  
- 	/*
- 	 * Disable radio.
-@@ -1283,6 +1284,7 @@ int rt2x00lib_start(struct rt2x00_dev *rt2x00dev)
- 	rt2x00dev->intf_ap_count = 0;
- 	rt2x00dev->intf_sta_count = 0;
- 	rt2x00dev->intf_associated = 0;
-+	rt2x00dev->intf_beaconing = 0;
+-	for (i = 0; i < txs->cnt; i++) {
+-		WARN_ON(txs->cnt > HTC_MAX_TX_STATUS);
++	if (WARN_ON_ONCE(txs->cnt > HTC_MAX_TX_STATUS))
++		return;
  
- 	/* Enable the radio */
- 	retval = rt2x00lib_enable_radio(rt2x00dev);
-@@ -1310,6 +1312,7 @@ void rt2x00lib_stop(struct rt2x00_dev *rt2x00dev)
- 	rt2x00dev->intf_ap_count = 0;
- 	rt2x00dev->intf_sta_count = 0;
- 	rt2x00dev->intf_associated = 0;
-+	rt2x00dev->intf_beaconing = 0;
- }
++	for (i = 0; i < txs->cnt; i++) {
+ 		__txs = &txs->txstatus[i];
  
- static inline void rt2x00lib_set_if_combinations(struct rt2x00_dev *rt2x00dev)
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c b/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c
-index beb20c5faf5f..a0fb167b58fe 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c
-@@ -578,6 +578,17 @@ void rt2x00mac_bss_info_changed(struct ieee80211_hw *hw,
- 	 */
- 	if (changes & BSS_CHANGED_BEACON_ENABLED) {
- 		mutex_lock(&intf->beacon_skb_mutex);
-+
-+		/*
-+		 * Clear the 'enable_beacon' flag and clear beacon because
-+		 * the beacon queue has been stopped after hardware reset.
-+		 */
-+		if (test_bit(DEVICE_STATE_RESET, &rt2x00dev->flags) &&
-+		    intf->enable_beacon) {
-+			intf->enable_beacon = false;
-+			rt2x00queue_clear_beacon(rt2x00dev, vif);
-+		}
-+
- 		if (!bss_conf->enable_beacon && intf->enable_beacon) {
- 			rt2x00dev->intf_beaconing--;
- 			intf->enable_beacon = false;
+ 		skb = ath9k_htc_tx_get_packet(priv, __txs);
 -- 
 2.43.0
 
