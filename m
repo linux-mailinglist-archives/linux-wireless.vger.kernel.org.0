@@ -1,91 +1,84 @@
-Return-Path: <linux-wireless+bounces-1974-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-1975-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B98882EE52
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 12:49:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CEE282EED6
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 13:20:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D8A31C20FB6
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 11:49:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EC558B212BC
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 12:20:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C9411B940;
-	Tue, 16 Jan 2024 11:49:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 595941B96D;
+	Tue, 16 Jan 2024 12:20:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fZ9RZsgR"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8BA21B7F7
-	for <linux-wireless@vger.kernel.org>; Tue, 16 Jan 2024 11:49:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 40GBnJQO1233158, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 40GBnJQO1233158
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 16 Jan 2024 19:49:19 +0800
-Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2375.32; Tue, 16 Jan 2024 19:49:19 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 16 Jan 2024 19:49:18 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::e4c4:c4f:4e4c:d23c]) by
- RTEXMBS04.realtek.com.tw ([fe80::e4c4:c4f:4e4c:d23c%5]) with mapi id
- 15.01.2507.035; Tue, 16 Jan 2024 19:49:18 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "zenmchen@gmail.com" <zenmchen@gmail.com>,
-        "martin.kaistra@linutronix.de"
-	<martin.kaistra@linutronix.de>
-CC: "Jes.Sorensen@gmail.com" <Jes.Sorensen@gmail.com>,
-        "kvalo@kernel.org"
-	<kvalo@kernel.org>,
-        "rtl8821cerfe2@gmail.com" <rtl8821cerfe2@gmail.com>,
-        "bigeasy@linutronix.de" <bigeasy@linutronix.de>
-Subject: Re: [PATCH] wifi: rtl8xxxu: add missing number of sec cam entries for all variants
-Thread-Topic: [PATCH] wifi: rtl8xxxu: add missing number of sec cam entries
- for all variants
-Thread-Index: AQHaSGF5KTD8y6z8zEGHZ3zLWD9Q17DbzSaA
-Date: Tue, 16 Jan 2024 11:49:18 +0000
-Message-ID: <72e1babe6cf31256d8e18b471d8583658c78636d.camel@realtek.com>
-References: <20240116095001.399500-1-martin.kaistra@linutronix.de>
-In-Reply-To: <20240116095001.399500-1-martin.kaistra@linutronix.de>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-user-agent: Evolution 3.36.1-2 
-x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B9A1B944
+	for <linux-wireless@vger.kernel.org>; Tue, 16 Jan 2024 12:20:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B52A4C433C7;
+	Tue, 16 Jan 2024 12:20:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705407603;
+	bh=0CmDpSQc0Up0qnAibGSGxlDMH4yJggWHuZlFHOc0WmE=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=fZ9RZsgR5qpQOMImVAiv0M4+gLu8eXZDGqlKQpU56XO6/E7oB0aMWCog2Qdd9h6GV
+	 QF2DP5BIXDkrAmctozG85PoZyQE2hldjJ8K5ybnxQ+H2aRFbEp9tVURM6A2hE4/xAp
+	 5gQs6zCuNWuybXI9HIm+8fohhelPSJpTBXVpH/mdXPI3Q97PyKHYrhgDU3GxZDvSCR
+	 932v/bHRaF8iulZm3YNV3YMLh2m1QoFlJLW+TG7nZk3IQRxtiH7dTOy9eB/Eb7bPjr
+	 KineJVsj1DlCD4bGFlcUGT/bk1P0Jwdhm2fdVqNkRm/nWpU8lBXCSjXIiuweNPrGn3
+	 Ie3A2e1grTGig==
 Content-Type: text/plain; charset="utf-8"
-Content-ID: <17340991D5434042A23AF3915C66DD11@realtek.com>
-Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 1/4] wifi: ath12k: Refactor the DP pdev pre alloc call
+ sequence
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20231206034920.1037449-2-quic_periyasa@quicinc.com>
+References: <20231206034920.1037449-2-quic_periyasa@quicinc.com>
+To: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+Cc: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+ Karthikeyan Periyasamy
+	<quic_periyasa@quicinc.com>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <170540760056.1846129.3705979634876364963.kvalo@kernel.org>
+Date: Tue, 16 Jan 2024 12:20:02 +0000 (UTC)
 
-KyBaZW5tDQoNCkhpIFplbm0sDQoNCk9uIFR1ZSwgMjAyNC0wMS0xNiBhdCAxMDo1MCArMDEwMCwg
-TWFydGluIEthaXN0cmEgd3JvdGU6DQo+IA0KPiBDb21taXQgYjgzN2Y3OGZiZmZhICgid2lmaTog
-cnRsOHh4eHU6IGFkZCBodyBjcnlwdG8gc3VwcG9ydCBmb3IgQVANCj4gbW9kZSIpIGludHJvZHVj
-ZWQgbWF4X3NlY19jYW1fbnVtIGFzIGEgbWVtYmVyIG9mIHJ0bDh4eHh1X2ZpbGVvcHMuDQo+IEl0
-IHdhcyBtaXNzZWQgdG8gc2V0IHRoaXMgbnVtYmVyIGZvciBhbGwgdmFyaWFudHMgZXhjZXB0IDgx
-ODhmLCB3aGljaA0KPiBjYXVzZWQgcnRsOHh4eHVfZ2V0X2ZyZWVfc2VjX2NhbSgpIHRvIGFsd2F5
-cyByZXR1cm4gMC4NCj4gDQo+IEZpeCBpdCBieSBhZGRpbmcgdGhlIG51bWJlcnMgZm9yIGFsbCB2
-YXJpYW50cy4gVGhlIHZhbHVlcyBhcmUgdGFrZW4gZnJvbQ0KPiB0aGUgdmVuZG9yIGRyaXZlcnMg
-YW5kIHJ0bHdpZmkuDQo+IA0KPiBGaXhlczogYjgzN2Y3OGZiZmZhICgid2lmaTogcnRsOHh4eHU6
-IGFkZCBodyBjcnlwdG8gc3VwcG9ydCBmb3IgQVAgbW9kZSIpDQo+IFNpZ25lZC1vZmYtYnk6IE1h
-cnRpbiBLYWlzdHJhIDxtYXJ0aW4ua2Fpc3RyYUBsaW51dHJvbml4LmRlPg0KPiANCg0KQ291bGQg
-eW91IHBsZWFzZSB0cnkgaWYgdGhpcyBwYXRjaCBjYW4gZml4IHlvdXIgcHJvYmxlbT8gDQoNClRo
-YW5rcw0KUGluZy1LZQ0KDQoNCg==
+Karthikeyan Periyasamy <quic_periyasa@quicinc.com> wrote:
+
+> Currently, the data path pdev pre alloc and mac allocate are called
+> separately from the core start procedure. The data path pdev pre alloc
+> can be called from the mac allocate procedure itself since initialization
+> related to pdev happens in the mac allocate procedure. So move the caller
+> of DP pdev pre alloc from the core start procedure to the mac allocate
+> procedure. This change helps in the future to easily decouple the mac
+> allocate procedure from core start handling in order to support MLO in
+> multi chip.
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+> 
+> Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+
+4 patches applied to ath-next branch of ath.git, thanks.
+
+eaf9f17b861b wifi: ath12k: relocate ath12k_dp_pdev_pre_alloc() call
+8a742a79f90e wifi: ath12k: refactor ath12k_mac_allocate() and ath12k_mac_destroy()
+d2b7a6e5fa1c wifi: ath12k: refactor ath12k_mac_setup_channels_rates()
+d786c9f5fe34 wifi: ath12k: refactor ath12k_mac_register() and ath12k_mac_unregister()
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20231206034920.1037449-2-quic_periyasa@quicinc.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
 
