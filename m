@@ -1,58 +1,58 @@
-Return-Path: <linux-wireless+bounces-2008-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2009-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D33E082F6E4
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 21:10:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B79882F6EA
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 21:11:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6ECD51F21645
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 20:10:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8E62282133
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jan 2024 20:11:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D648160EED;
-	Tue, 16 Jan 2024 19:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFAC6627E4;
+	Tue, 16 Jan 2024 19:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="myRaPg4w"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LAkyANKC"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC79660EE7;
-	Tue, 16 Jan 2024 19:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B783D6169F;
+	Tue, 16 Jan 2024 19:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705434391; cv=none; b=UntxFNVFuw2w3ipgIXpaNmQZIbYigg73gTLepE1auRnbfYQ84q2YPn5en1VlNwdt6/sPIEP0uujfvB4uBAlWEe6LmuBWpDzlCrcknVEeIsAs5Hosebk/bAJh+1tXunSyRvN/Fm7aisyJJOohzrePdR4R3H/jfz3EkiAlMyyZHf0=
+	t=1705434394; cv=none; b=QvvGgeZ1THjfg+ePGNhFnvuWDPWXu33+tfuN3ZcTfIsMMmEgJF7jQwmWwzw5T7StFlD09FZ5bfFs30VZlZ0PRgLO6FB/2Bpj576aPeAyN2U/2OBHFoiUqy+3IioTyhTsRwEgTRFmuiZwRexkaYpIpLIyNUspS+lFw86bKs1Uvwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705434391; c=relaxed/simple;
-	bh=PA3DB4DoSiGHFmaUE4UnMNsI9MEwD2pOFRYNMBa34ps=;
+	s=arc-20240116; t=1705434394; c=relaxed/simple;
+	bh=2vmIKsWl6DOTug3sX+BOSpbnCLZrMIY2f5WbrQbC0Do=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:X-stable:
-	 X-Patchwork-Hint:X-stable-base:Content-Transfer-Encoding; b=l9QRWQYsb9kwXM33jJ/buS5495cGcQQMc7zjfga6PJTIQGhPPl4ktQtCO0bQGKm+Akg8XWnRPxteX+/SwozuBkL9nhgzOzEIv+ZO/JGJHBt0P1cyKLpykcUoVFwWQc4NPzSkpT5kFMHqhhqUh3PaUWr2wn7ogmwJIkt3OhPwIO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=myRaPg4w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6301C433C7;
-	Tue, 16 Jan 2024 19:46:30 +0000 (UTC)
+	 X-Patchwork-Hint:X-stable-base:Content-Transfer-Encoding; b=tPp8c/8zJRg9gExhmqMtRQ249i05vD3rqOGFd8bl9tnHvRBggcOVnygsi02OVVewBgrBB/q/nzDUgM/+ievqrRhrhro3fXPTdiyRklrEww8MYG495cE7RByu3AeDoUNRytFexciD3xM2TwNbuTPz69FKm3+CNJY4tvYn1pUqB8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LAkyANKC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B761DC433B1;
+	Tue, 16 Jan 2024 19:46:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705434391;
-	bh=PA3DB4DoSiGHFmaUE4UnMNsI9MEwD2pOFRYNMBa34ps=;
+	s=k20201202; t=1705434394;
+	bh=2vmIKsWl6DOTug3sX+BOSpbnCLZrMIY2f5WbrQbC0Do=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=myRaPg4wgq0s2lLe0TFXUAuAZ59HscgVPL/85F8jfEPAI16vc8G/0haSf8cXxx2Bt
-	 P8Rp7kD+tQq7VUcg+gIHBOrFJX3Uz7FAVamGfAisOELkQTldZc8+NeNBJH5Tz6fLeS
-	 5qjs2eTAmw9jfq14webEGKVCdd5Qw+BC2MOYDmHByaJ6fUchfNm0pS4cLajSIcuMZx
-	 ObUhg0/tzjmyeP3p1MZYFtabJsRO8nFc4tZszkPJXXEm29zPfUxz9UVzDusbxK85O/
-	 K6cWQL53x8x4zBucwr6+V7fmdeKVxazHgyMQgtJ+Vt4LYgHs7sNB6iYWqvWY29Zd9N
-	 RSN6VCZOdmA9g==
+	b=LAkyANKCZaLrc51gizkwewj0Umr3OnBnM0pHwD3qOe7qBZhRE9sjrH1WN6cNi4IXI
+	 rzL6HvQOE8SNdzILwCrKhOozYKsbm8vu50pdb+SSWZdNa7Cn/oAolFLgcTCAHg2c2L
+	 LPnOw9TrsSVNKOoHAzZfM64qNZpJE9QdWb3UlxqcBqEMOl1hQvRq5GfS7PjJLDdIdV
+	 NlTzOG1XsXSfp4bXBtZ6K1qZNatX6Y2b5fOltPjkom06DlyOn00J8ElJFFLx+OZWqy
+	 BycZtb2Tae44PRkcHQmZWmWx7Jyuo7JDwLRGAqA4vqZ/71QmEtwt5Vg20yzdw910/w
+	 66ypBLHudshAw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ching-Te Ku <ku920601@realtek.com>,
+Cc: Su Hui <suhui@nfschina.com>,
 	Ping-Ke Shih <pkshih@realtek.com>,
 	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.7 091/108] wifi: rtw89: coex: Fix wrong Wi-Fi role info and FDDT parameter members
-Date: Tue, 16 Jan 2024 14:39:57 -0500
-Message-ID: <20240116194225.250921-91-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.7 093/108] wifi: rtlwifi: add calculate_bit_shift()
+Date: Tue, 16 Jan 2024 14:39:59 -0500
+Message-ID: <20240116194225.250921-93-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240116194225.250921-1-sashal@kernel.org>
 References: <20240116194225.250921-1-sashal@kernel.org>
@@ -67,76 +67,40 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.7
 Content-Transfer-Encoding: 8bit
 
-From: Ching-Te Ku <ku920601@realtek.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit acc55d7dd4de525ac07e43e90ea3cc630677ec8a ]
+[ Upstream commit 52221dfddbbfb5b4e029bb2efe9bb7da33ec1e46 ]
 
-The Wi-Fi firmware 29.29.X should use version 2 role info format. FDDT
-mechanism version 5 use the same cell members to judge traffic situation,
-don't need to add another new format.
+There are many same functions like _rtl88e_phy_calculate_bit_shift(),
+_rtl92c_phy_calculate_bit_shift() and so on. And these functions can
+cause undefined bitwise shift behavior. Add calculate_bit_shift() to
+replace them and fix undefined behavior in subsequent patches.
 
-Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20231218061341.51255-2-pkshih@realtek.com
+Link: https://msgid.link/20231219065739.1895666-2-suhui@nfschina.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/coex.c |  4 ++--
- drivers/net/wireless/realtek/rtw89/core.h | 12 +++---------
- 2 files changed, 5 insertions(+), 11 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/wifi.h | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wireless/realtek/rtw89/coex.c
-index bdcc172639e4..ace7bbf2cf94 100644
---- a/drivers/net/wireless/realtek/rtw89/coex.c
-+++ b/drivers/net/wireless/realtek/rtw89/coex.c
-@@ -131,7 +131,7 @@ static const struct rtw89_btc_ver rtw89_btc_ver_defs[] = {
- 	 .fcxbtcrpt = 105, .fcxtdma = 3,    .fcxslots = 1, .fcxcysta = 5,
- 	 .fcxstep = 3,   .fcxnullsta = 2, .fcxmreg = 2,  .fcxgpiodbg = 1,
- 	 .fcxbtver = 1,  .fcxbtscan = 2,  .fcxbtafh = 2, .fcxbtdevinfo = 1,
--	 .fwlrole = 1,   .frptmap = 3,    .fcxctrl = 1,
-+	 .fwlrole = 2,   .frptmap = 3,    .fcxctrl = 1,
- 	 .info_buf = 1800, .max_role_num = 6,
- 	},
- 	{RTL8852C, RTW89_FW_VER_CODE(0, 27, 57, 0),
-@@ -159,7 +159,7 @@ static const struct rtw89_btc_ver rtw89_btc_ver_defs[] = {
- 	 .fcxbtcrpt = 105, .fcxtdma = 3,  .fcxslots = 1, .fcxcysta = 5,
- 	 .fcxstep = 3,   .fcxnullsta = 2, .fcxmreg = 2,  .fcxgpiodbg = 1,
- 	 .fcxbtver = 1,  .fcxbtscan = 2,  .fcxbtafh = 2, .fcxbtdevinfo = 1,
--	 .fwlrole = 1,   .frptmap = 3,    .fcxctrl = 1,
-+	 .fwlrole = 2,   .frptmap = 3,    .fcxctrl = 1,
- 	 .info_buf = 1800, .max_role_num = 6,
- 	},
- 	{RTL8852B, RTW89_FW_VER_CODE(0, 29, 14, 0),
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 91e4d4e79eea..8f59461e58f2 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -2294,12 +2294,6 @@ struct rtw89_btc_fbtc_fddt_cell_status {
- 	u8 state_phase; /* [0:3] train state, [4:7] train phase */
- } __packed;
+diff --git a/drivers/net/wireless/realtek/rtlwifi/wifi.h b/drivers/net/wireless/realtek/rtlwifi/wifi.h
+index 31a481f43a07..5d842cc394aa 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/wifi.h
++++ b/drivers/net/wireless/realtek/rtlwifi/wifi.h
+@@ -3069,4 +3069,11 @@ static inline struct ieee80211_sta *rtl_find_sta(struct ieee80211_hw *hw,
+ 	return ieee80211_find_sta(mac->vif, mac_addr);
+ }
  
--struct rtw89_btc_fbtc_fddt_cell_status_v5 {
--	s8 wl_tx_pwr;
--	s8 bt_tx_pwr;
--	s8 bt_rx_gain;
--} __packed;
--
- struct rtw89_btc_fbtc_cysta_v3 { /* statistics for cycles */
- 	u8 fver;
- 	u8 rsvd;
-@@ -2363,9 +2357,9 @@ struct rtw89_btc_fbtc_cysta_v5 { /* statistics for cycles */
- 	struct rtw89_btc_fbtc_cycle_a2dp_empty_info a2dp_ept;
- 	struct rtw89_btc_fbtc_a2dp_trx_stat_v4 a2dp_trx[BTC_CYCLE_SLOT_MAX];
- 	struct rtw89_btc_fbtc_cycle_fddt_info_v5 fddt_trx[BTC_CYCLE_SLOT_MAX];
--	struct rtw89_btc_fbtc_fddt_cell_status_v5 fddt_cells[FDD_TRAIN_WL_DIRECTION]
--							    [FDD_TRAIN_WL_RSSI_LEVEL]
--							    [FDD_TRAIN_BT_RSSI_LEVEL];
-+	struct rtw89_btc_fbtc_fddt_cell_status fddt_cells[FDD_TRAIN_WL_DIRECTION]
-+							 [FDD_TRAIN_WL_RSSI_LEVEL]
-+							 [FDD_TRAIN_BT_RSSI_LEVEL];
- 	__le32 except_map;
- } __packed;
- 
++static inline u32 calculate_bit_shift(u32 bitmask)
++{
++	if (WARN_ON_ONCE(!bitmask))
++		return 0;
++
++	return __ffs(bitmask);
++}
+ #endif
 -- 
 2.43.0
 
