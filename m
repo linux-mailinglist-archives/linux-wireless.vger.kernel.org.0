@@ -1,56 +1,55 @@
-Return-Path: <linux-wireless+bounces-2096-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2098-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D72583074B
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jan 2024 14:45:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F95983074D
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jan 2024 14:47:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C8EB1F253E3
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jan 2024 13:45:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06593B23E38
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jan 2024 13:46:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE219200CB;
-	Wed, 17 Jan 2024 13:45:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD09A200CB;
+	Wed, 17 Jan 2024 13:46:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XRM0Mq1z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EJg/+hFg"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89AFF200A4
-	for <linux-wireless@vger.kernel.org>; Wed, 17 Jan 2024 13:45:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9983C200A4
+	for <linux-wireless@vger.kernel.org>; Wed, 17 Jan 2024 13:46:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705499146; cv=none; b=b5DLGA4Wddr6J0kt7r8qYaMgsoH0+O2oB2FHZFcaqR7fE+gL8rSlFnKwFfbG3ELhE3hjdRdaYzdmMpuaDWtAtqk98rPiJvq+pLcGNQiEFashDvPWY18lWY5kjr4QfKEXhLmNW3JAqrJHDcOcZ1PL0GO55ZplFXJxtnBy/EAh3Q8=
+	t=1705499215; cv=none; b=Ixz5mm34vYXPED8NbO6mdohJOXf0BQZ0UlfftskMqERjWsAJtNg7X2yh8BclssoNAXn9F1l1uEw9JlTih5Kmyz/hbdkACGV6/apfXj3vxc5F7gjsOLG7lozVRhohkMTmKIq4Qm5cSLswOriyCrtYNEWYLhhkjh+3w2ZsNvmiobA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705499146; c=relaxed/simple;
-	bh=Wea10r8QPdbUDSZNfU+aEEm35fedoPB+u5pgJIvgJFo=;
+	s=arc-20240116; t=1705499215; c=relaxed/simple;
+	bh=e3JTofgI2+PhasG9mKkzSWi1yrgoiuyT4q7TbhSdBq8=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:References:Date:
-	 In-Reply-To:Message-ID:User-Agent:MIME-Version:Content-Type; b=jTupZCsuW70XvHXxCZiIR+ddf6XRS/5NP/WX2psHKY5e72Lk1GiiT4eP/zTdi1rIAYLZ66wUxcDF9Ls09tctX236TwPM0tFdo3oTDbsojWpdTzfPJMxpRDT+KrevFmqtFzbz7Zz0MQmptHeF7j4DfQSNQaoWjyGVIQLbMFy2j+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XRM0Mq1z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5109BC433C7;
-	Wed, 17 Jan 2024 13:45:45 +0000 (UTC)
+	 In-Reply-To:Message-ID:User-Agent:MIME-Version:Content-Type; b=XiGRBkmhCwDWoD9uJuEUQdiqsX8GAzGWIjhFaf6BKy/f6gobh0pATPnibFjvpNfSw2glgsGDXdqnuuOp6k2wQoQfokL1Gp8xy+zXovwAssS4kMpyOTyHpErdCEPj0UNWejKS/uGtN2GUsTzUOObnxuGacRvXwIFIdw5xxshbhX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EJg/+hFg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58E72C433C7;
+	Wed, 17 Jan 2024 13:46:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705499146;
-	bh=Wea10r8QPdbUDSZNfU+aEEm35fedoPB+u5pgJIvgJFo=;
+	s=k20201202; t=1705499215;
+	bh=e3JTofgI2+PhasG9mKkzSWi1yrgoiuyT4q7TbhSdBq8=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=XRM0Mq1zS2Z3HvmPAFJ2mi986a0gw5m1AcdSZ0bovGwc5LCR6d+EP5rTkAmu+HXcF
-	 IbRmbF+relAX6NYNdh+SAelDfgDxQ+2RDnMFyCB83Z9+lrsnmxGommliuVpUn+zz9g
-	 w7dZzf17AqjAx/G4Db4kKpw6E1pSI5qUE3QUQ+8ANoQhVRpVdJmbo7Fj/C18o6LHu6
-	 AsvnC6vpsh35bQcRm0mo9mEU4m73dQKuEGlDc0p/sfJOv86M44wr5kwaHY6zooxA1f
-	 tTqvkKnsXq3yuQO+ZALIiJzGOUwjIU/topOJzPAUMuWXXE6EVcrBkzBywVpttp6i/z
-	 qBhI8BILGe/UQ==
+	b=EJg/+hFgLtiLLcBu6fyJinitqbBTGn25BNaE/vgzRaHObfB/nJZvG3JjKOVb0POr9
+	 ZKEHoEz/+W3H9GVzbbkOaISdGvpe8mIlID6JSzyexFJeOwbdlv6GEmkYZ3Op6cMDnn
+	 VnqNhjjjkuMf3Uj1PqTef1Pk4IjuV0b23sJrlQQRlYo/+IhCCJ6XjqE/cw/uoNhypi
+	 LCtPZTijIYCvrKYatB+/FefLWOvCLG4Q4Xo7kRjb9a0+0lDcx+FCKghBdK4CHHZS1q
+	 ux6o40PcjxYGlN9i35DXQjc/KZEIB4YNKas2Jp9CM43koLDMHYcZK2aZU4gp9yghd1
+	 iwvyL5vvDX9Aw==
 From: Kalle Valo <kvalo@kernel.org>
-To: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
+To: Baochen Qiang <quic_bqiang@quicinc.com>
 Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH 0/3] wifi: ath12k: Remove unsupported and unused ring
- configurations
-References: <20231122063932.10321-1-quic_tamizhr@quicinc.com>
-Date: Wed, 17 Jan 2024 15:45:43 +0200
-In-Reply-To: <20231122063932.10321-1-quic_tamizhr@quicinc.com> (Tamizh Chelvam
-	Raja's message of "Wed, 22 Nov 2023 12:09:29 +0530")
-Message-ID: <878r4o5b08.fsf@kernel.org>
+Subject: Re: [PATCH v2 0/3] wifi: ath12k: some improvement to RX throughput
+References: <20231129020414.56425-1-quic_bqiang@quicinc.com>
+Date: Wed, 17 Jan 2024 15:46:52 +0200
+In-Reply-To: <20231129020414.56425-1-quic_bqiang@quicinc.com> (Baochen Qiang's
+	message of "Wed, 29 Nov 2023 10:04:11 +0800")
+Message-ID: <874jfc5ayb.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -60,26 +59,41 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Tamizh Chelvam Raja <quic_tamizhr@quicinc.com> writes:
+Baochen Qiang <quic_bqiang@quicinc.com> writes:
 
-> Currently in driver doing memory allocation for tx_monitor, tcl_cmd_ring
-> and tcl_status ring. Here driver support for tx_monitor mode is not
-> there and memory for tcl_cmd and tcl_status rings are allocated by
-> firmware and it uses that memory instead of host allocated. So avoid
-> these unused ring setup configuration.
+> Some fields of hal_reo_update_rx_queue are wrongly
+> defined, fix it in the first patch.
 >
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+> Currently the maximum block ACK window size is 256,
+> with the second patch, it is extended to BA1024.
 >
-> Tamizh Chelvam Raja (3):
->   wifi: ath12k: fix calling correct function for rx monitor mode
->   wifi: ath12k: Remove unsupported tx monitor handling
->   wifi: ath12k: Remove unused tcl_*_ring configuration
+> The small MAC buffer ring becomes the bottle neck
+> in RX throughput test, so enlarge its size to get
+> a better peak result. This is done is the third patch.
+>
+> With above three changes, more than 6% increase is
+> seen in RX throughput test.
+>
+> v2:
+>  1. wifi: ath12k: fix wrong definitions of hal_reo_update_rx_queue
+> 	no change.
+>  2. wifi: ath12k: add support for BA1024
+> 	a) s/doen/done
+> 	b) update struct hal_rx_reo_queue_1k
+>  3. wifi: ath12k: change MAC buffer ring size to 2048
+> 	no change.
+>
+> Baochen Qiang (3):
+>   wifi: ath12k: fix wrong definitions of hal_reo_update_rx_queue
+>   wifi: ath12k: add support for BA1024
+>   wifi: ath12k: change MAC buffer ring size to 2048
 
-I had several conflict, please double check:
+I had conflicts, please double check:
 
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=cfb7ae2dc5d32206d6978625bac055e1f431f450
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=d9e193e606e87fc4da445c1aed12113d2ae72151
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=23c88b95ce6a67eb422ab858e22c90312028b69d
+https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=1ee7c1872873d82a71e05a4e17cbf9a569bc8ec9
+https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=4d75db679457b5b7e04271f5174d9128d7d73ecf
+https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=db549be42740d286ee6ec8b2860b4e4789be2167
+
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
