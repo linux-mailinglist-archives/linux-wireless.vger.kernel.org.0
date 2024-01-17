@@ -1,80 +1,57 @@
-Return-Path: <linux-wireless+bounces-2120-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2121-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C2FE830C75
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jan 2024 19:07:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E68CD830C7A
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jan 2024 19:10:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A5C6EB230C9
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jan 2024 18:07:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 938BF2827C1
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jan 2024 18:10:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BAAF22EFE;
-	Wed, 17 Jan 2024 18:07:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F5F022EF6;
+	Wed, 17 Jan 2024 18:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SO2AByMs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qBl7Bvs8"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F9B22EE4;
-	Wed, 17 Jan 2024 18:07:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B18722EE0
+	for <linux-wireless@vger.kernel.org>; Wed, 17 Jan 2024 18:10:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705514866; cv=none; b=dz9do20jaZVpP9dzcalWbb+NPe9uhELX2L99RbxuifWCqQWTIwErIk8UV5y25AyfKR/320bfID2w4BMSt0QrU5SU9Zh79CSYuKRwW3rbhgiKtB+7l8yiV31ujXuS4HZWl9j9BRsOy6AQLXKHVzLBz4vk9wfJYfrWjfosEwlC6fI=
+	t=1705515042; cv=none; b=peDCfEf3OXk7KXXvVI5Kp5DUkmXXj8iTNHGCre9Fq/MpCWUxiACVzt3L03RtJo2nU0FeQmS2i0EilIp05t/PA0J4B2cyqx+ZFL1VYW/Ugqmj0pgMn+YS/ISQiyc3jqvrV0ykMdkpgSYX8fdEn+/350Ntc11T4O/EqT56GxEKwsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705514866; c=relaxed/simple;
-	bh=zB4Z72eSOkfwWI3re8tML42W8mSuDqpHqplPAWzj9UU=;
+	s=arc-20240116; t=1705515042; c=relaxed/simple;
+	bh=RTRyEp2WNcu13qaBMTceLYJiUr8QpjU4P2esWE0WBWs=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:References:Date:
-	 In-Reply-To:Message-ID:User-Agent:MIME-Version:Content-Type; b=i5MJgBEKrbbkF1FjSZ8jcyxiWCi7KYPKrhqa75Ai9/H8VZXCOf6gsLbpyrsPxtifvwYfePJf7XRlRPqdiS19rCSwPS54p98N5J0VRWUABTCDnx45QkzeQXd1c314KGcjqmIS29MQGesAkJJ1IeEk156FCLhWXDEvH1DN7uSdsOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SO2AByMs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D0C6C43390;
-	Wed, 17 Jan 2024 18:07:37 +0000 (UTC)
+	 In-Reply-To:Message-ID:User-Agent:MIME-Version:Content-Type; b=FmahMcKlh8wqdwwUz04ZIM4oJzSYFUwXkoJUS4rXQmjXCRrcm3uh+KYC0BUfzY2XMPAa2fjxOfB/s6RQA8JvC+W5vsZbcWvkt1xttfNUtNW28iu00UXw7Z/NSZjvFJo02fUOEPCAiFe6n1sXttBIv0+MlshWzi/tzYY/4JD7dKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qBl7Bvs8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D7FEC433C7;
+	Wed, 17 Jan 2024 18:10:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705514865;
-	bh=zB4Z72eSOkfwWI3re8tML42W8mSuDqpHqplPAWzj9UU=;
+	s=k20201202; t=1705515041;
+	bh=RTRyEp2WNcu13qaBMTceLYJiUr8QpjU4P2esWE0WBWs=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=SO2AByMsKqpphqbxHOmbOpabsDsirCKPTUKmHVZ7YoRfPFQEx0P3KKrtpN5H3O04s
-	 359DXm0XbwWY2qG1D6nzQU0JhHovSacnghZSZzN8IUCuOLpPelFWGtusE3xv9uXUzf
-	 2X4nNGDN+HaQflCae9ukU7Ll532UGWMN8akVh6156xUW2jqHs9kPheCs6CM3RQxeel
-	 PK2JOOh/gEYf0csrk5YFXshV+7CIeyXqoxQvEBtx2R1/qEbU3qZJE3PnEq6vadhfKO
-	 LArOwaa7awIM49nhtk+0CpLLL2uwD3c3ocOo0yQRNrSPk3Uu0qbRzjNd0KCDIXE/9E
-	 4Lr+bnC7SGiPw==
+	b=qBl7Bvs8naFzAmPvyUpHcIl1d8CKQB11eXSTW2r9+fGKeNPQ6XAmlxM65bCoKypLW
+	 T3tvJyvw8EKwBBFPftuFiQxw1I5ysnLaK4Fh4JfzakGCeXH4yjMUb3mf1xWHwH66lR
+	 ygEX+m1pQDJ9Z4zUYWSi/CXHVZzg4EdupB2NqY4Gda2+eqCOHKCH1FxcUugnkw4lsp
+	 AHBYZHb4/p4kebKMkwnVuUZnb1VoluebhhHTgGg3zG34siab+yxwqIsgb2OZkkaHK2
+	 9DcOABGNsdJVFMMgA/b1x0R1Duo5ZKKlfBgSSU0eBCa6hwHXolf3FHOLt/UsM77Kyi
+	 dnlFN8/McCE6Q==
 From: Kalle Valo <kvalo@kernel.org>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: "David S . Miller" <davem@davemloft.net>,  Eric Dumazet
- <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,  Paolo Abeni
- <pabeni@redhat.com>,  Rob Herring <robh+dt@kernel.org>,  Krzysztof
- Kozlowski <krzysztof.kozlowski+dt@linaro.org>,  Conor Dooley
- <conor+dt@kernel.org>,  Bjorn Andersson <andersson@kernel.org>,  Konrad
- Dybcio <konrad.dybcio@linaro.org>,  Catalin Marinas
- <catalin.marinas@arm.com>,  Will Deacon <will@kernel.org>,  Bjorn Helgaas
- <bhelgaas@google.com>,  Heiko Stuebner <heiko@sntech.de>,  Jernej Skrabec
- <jernej.skrabec@gmail.com>,  Chris Morgan <macromorgan@hotmail.com>,
-  Linus Walleij <linus.walleij@linaro.org>,  Geert Uytterhoeven
- <geert+renesas@glider.be>,  Arnd Bergmann <arnd@arndb.de>,  Neil Armstrong
- <neil.armstrong@linaro.org>,  =?utf-8?Q?N=C3=ADcolas?= F . R . A . Prado
- <nfraprado@collabora.com>,  Marek Szyprowski <m.szyprowski@samsung.com>,
-  Peng Fan <peng.fan@nxp.com>,  Robert Richter <rrichter@amd.com>,  Dan
- Williams <dan.j.williams@intel.com>,  Jonathan Cameron
- <Jonathan.Cameron@huawei.com>,  Terry Bowman <terry.bowman@amd.com>,
-  Lukas Wunner <lukas@wunner.de>,  Huacai Chen <chenhuacai@kernel.org>,
-  Alex Elder <elder@linaro.org>,  Srini Kandagatla
- <srinivas.kandagatla@linaro.org>,  Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>,  Abel Vesa <abel.vesa@linaro.org>,
-  linux-wireless@vger.kernel.org,  netdev@vger.kernel.org,
-  devicetree@vger.kernel.org,  linux-kernel@vger.kernel.org,
-  linux-arm-msm@vger.kernel.org,  linux-arm-kernel@lists.infradead.org,
-  linux-pci@vger.kernel.org,  Bartosz Golaszewski
- <bartosz.golaszewski@linaro.org>
-Subject: Re: [PATCH 8/9] dt-bindings: wireless: ath11k: describe WCN7850
-References: <20240117160748.37682-1-brgl@bgdev.pl>
-	<20240117160748.37682-9-brgl@bgdev.pl>
-Date: Wed, 17 Jan 2024 20:07:35 +0200
-In-Reply-To: <20240117160748.37682-9-brgl@bgdev.pl> (Bartosz Golaszewski's
-	message of "Wed, 17 Jan 2024 17:07:47 +0100")
-Message-ID: <87v87r4yvs.fsf@kernel.org>
+To: Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc: <benjamin@sipsolutions.net>,  <linux-wireless@vger.kernel.org>,
+  <ath11k@lists.infradead.org>,  Benjamin Berg <benjamin.berg@intel.com>
+Subject: Re: [PATCH v3] wifi: ath11k: rely on mac80211 debugfs handling for vif
+References: <20240115101805.1277949-1-benjamin@sipsolutions.net>
+	<26a42f14-dd38-4c67-8f66-16baaff25885@quicinc.com>
+Date: Wed, 17 Jan 2024 20:10:38 +0200
+In-Reply-To: <26a42f14-dd38-4c67-8f66-16baaff25885@quicinc.com> (Jeff
+	Johnson's message of "Wed, 17 Jan 2024 07:14:18 -0800")
+Message-ID: <87r0if4yqp.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -84,15 +61,25 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Bartosz Golaszewski <brgl@bgdev.pl> writes:
+Jeff Johnson <quic_jjohnson@quicinc.com> writes:
 
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> On 1/15/2024 2:18 AM, benjamin@sipsolutions.net wrote:
+>> From: Benjamin Berg <benjamin.berg@intel.com>
+>> 
+>> mac80211 started to delete debugfs entries in certain cases, causing a
+>> ath11k to crash when it tried to delete the entries later. Fix this by
+>> relying on mac80211 to delete the entries when appropriate and adding
+>> them from the vif_add_debugfs handler.
+>> 
+>> Fixes: 0a3d898ee9a8 ("wifi: mac80211: add/remove driver debugfs
+>> entries as appropriate")
+>> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218364
+>> Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
 >
-> Describe the ath11k variant present on the WCN7850 module.
->
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-ath12k supports WCN7850 (a Wi-Fi 7 chipset), not ath11k.
+This also passes my tests, thanks Benjamin. If there are no objections
+I'll take this to wireless tree tomorrow and try to get it to v6.8-rc2.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
