@@ -1,56 +1,55 @@
-Return-Path: <linux-wireless+bounces-2090-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2091-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F04C7830494
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jan 2024 12:34:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1A10830522
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jan 2024 13:25:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C7241C20EA9
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jan 2024 11:34:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5E781F24B4C
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jan 2024 12:25:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60C9B1DFC4;
-	Wed, 17 Jan 2024 11:34:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A23D1EA6F;
+	Wed, 17 Jan 2024 12:25:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pKe5wN71"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g8OKgXvP"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B4F31DFC3
-	for <linux-wireless@vger.kernel.org>; Wed, 17 Jan 2024 11:34:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16B501EA6E
+	for <linux-wireless@vger.kernel.org>; Wed, 17 Jan 2024 12:25:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705491249; cv=none; b=Ncz6TfOQ9lHnmNbvRx8vG/3B3QjJQK5rPxWZ1nuHiDBd1mmkdL+KOj+MkJlLlrzLapCHt5bGTQmuLpTTu2kOPDMG97JeT2n3IMnTLe2kQzDRGhOk+UewR55yQnoFAKhJTzl7vSrCwlWPyFHuxDXetW0mG9nMaEC+Swcczh6NaFI=
+	t=1705494337; cv=none; b=WOKDWRXvCBw61f3+HwGGz/r9F1aLmyKeQzg6qJsGvZrazaWcu3VDxel16+j0nvijVjShFLyVNAZUV5LVe+PpONOiKpe0QusiZWFtbs3Oh+TJMa67sSsv9MphI6rqnHVlBnzORQt8QIOp8vsyGyEMAPBSML8FSW+mPosYS6H5jck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705491249; c=relaxed/simple;
-	bh=pPKNBBEMNaE9AOSgKnLD5IFuAu+Lw4zwpaYb11q4AVA=;
+	s=arc-20240116; t=1705494337; c=relaxed/simple;
+	bh=gVt7/Sn2odT1iG7XbXOMPV86sBp35yRM/f0EfvTfyNo=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:References:Date:
-	 In-Reply-To:Message-ID:User-Agent:MIME-Version:Content-Type; b=XLif6+rNdeeqPIIfuLae8wgCFRAjHol9hI0U+/0Hq0wlhvQLW/IOsrJFBbumsbpFPGgjrePtdAkCLji3nSwz/Cmz1au9r9tA6PnFsIEacvacuP94d5W+tQgdE0k57NiVPhOQUr3GSkmlIqaLeiDdc1bKqmGCe7Y24JSeXyEdVpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pKe5wN71; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 482F1C433F1;
-	Wed, 17 Jan 2024 11:34:08 +0000 (UTC)
+	 In-Reply-To:Message-ID:User-Agent:MIME-Version:Content-Type; b=tYqz/GFFKb8pKQ1Fm3et1E28gskGWnqLJSh5QVSMiR7ZD91fCmaolhTHRMADfHMg6WhkRA4scK6T160SA2vQXkAUZVMUzCAaCDw2K1nZX2CkwusJKOvxkNYne7JxoIGo5KR+O7P0OdKSpD+bF08wpZv+gQABx6z1HWXoISP+OGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g8OKgXvP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D28C4C433F1;
+	Wed, 17 Jan 2024 12:25:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705491249;
-	bh=pPKNBBEMNaE9AOSgKnLD5IFuAu+Lw4zwpaYb11q4AVA=;
+	s=k20201202; t=1705494336;
+	bh=gVt7/Sn2odT1iG7XbXOMPV86sBp35yRM/f0EfvTfyNo=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=pKe5wN71vM4bB7WDKT0WaRco/mNR34Tqp/fHZmTNulsVlXkC+Tb53d1kEP7xxXMpi
-	 BRx8UP6+Mdxp8PlU1b+AIjmwkZaq8L8Sv2Vx4flgabItKJfxA8IxOoCjYCJarPh/UU
-	 j0KBFtvPWrO47wVvuCLimvAV5MQL7LEIWaIAAhemyG1iEta/nyKS1UHAJsst3ucIo+
-	 4NVPvUkm7RjF5s8Tfc2z90vFgLoKxORMjkbps2IwYkvwnL61im9XqrsZalWy67TluV
-	 2c5RdBwjWWCWxrI+2zbjyGyjqAX24GPdVjpb4RaX5lpfzWSSRQdNzeEsU4sTMosJQS
-	 qcwygC9ofc9rA==
+	b=g8OKgXvPNplxpaU8bvEEywnpd4mb6pAxdXPNcbVVdQDC/Fyp/dO9puraoQ8B9DJCB
+	 ArStu5YLvRaBaX53hKeG3AJfbrw+6TAzO/0Oda9NGaauux2egmqK/TdQF8W5ZJT5gm
+	 a0mdBgFLenWVGGSuRYXuBIClAhx6Mhe4iu/mHWVfNfVKXwGqSqqwL/hvVLaz25alqQ
+	 caxmdHm5+kLVlT3F4czeaXOEb6SNa9b5ZUdp0xAree0g1ivsUGO3rkWs5SlcEkbbjY
+	 Uo9/e/WR/sFHx7NTpF/zMc728Ev+GX+A4OKMYDiGTZ+wIxCnhzV671uH+hIa0S50yF
+	 qSaRPSXQupk5A==
 From: Kalle Valo <kvalo@kernel.org>
-To: Lingbo Kong <quic_lingbok@quicinc.com>
+To: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
 Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v7 0/4] wifi: ath12k: implement some functionalities
- through reading ACPI Table
-References: <20231013114434.81648-1-quic_lingbok@quicinc.com>
-Date: Wed, 17 Jan 2024 13:34:06 +0200
-In-Reply-To: <20231013114434.81648-1-quic_lingbok@quicinc.com> (Lingbo Kong's
-	message of "Fri, 13 Oct 2023 07:44:30 -0400")
-Message-ID: <87ply05h3l.fsf@kernel.org>
+Subject: Re: [PATCH v2 00/12] wifi: ath12k: QCN9274 dualmac bring up
+References: <20240105195639.3217739-1-quic_rajkbhag@quicinc.com>
+Date: Wed, 17 Jan 2024 14:25:33 +0200
+In-Reply-To: <20240105195639.3217739-1-quic_rajkbhag@quicinc.com> (Raj Kumar
+	Bhagat's message of "Sat, 6 Jan 2024 01:26:27 +0530")
+Message-ID: <87le8o5epu.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -60,33 +59,20 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Lingbo Kong <quic_lingbok@quicinc.com> writes:
+Raj Kumar Bhagat <quic_rajkbhag@quicinc.com> writes:
 
-> Through reading ACPI table, implement Time-Average-SAR(TAS), BIOS SAR,
-> configuration of CCA threshold and band edge channel power functionalities.
+> QCN9274 Ath12k chipset can support single-mac or dualmac architecture.
+> Currently, Ath12k driver supports only the single-mac QCN9274
+> architecture.
+>
+> Hence, add support for dualmac QCN9274 chipset.
+>
+> Depends-On: wifi: ath12k: add firmware-2.bin support
 
-The coding style felt more like for a vendor driver style than upstream
-driver so I made quite a lot of changes, too many to list. But for
-example I did changes in naming, code compiled only if CONFIG_ACPI is
-enabled and whitespace cleanup.
+There's no base-commit so it will be very difficult for me to try to fix
+the conflicts. Please ALWAYS use --base, makes it easier for everyone.
 
-The updated patches are here:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=98dbc0c37b480117959221cafa6326e54667a53a
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=c3d84c46ff4029fdfe15036be4f0a0d1839d31c6
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=04ec37eb823d9d9cba01531a938c53e8a142486f
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=fdd99edcb8ce2433fd243b5ae1b57668eab48ef0
-
-I still have at least few things to do which I'll try to do soon:
-
-o find a correct place to call register()&unregister()
-
-o move wmi functions up in wmi.c
-
-o consolidate wmi functions into two functions? (duplicated code)
-
-I'll let you know once I'm done. As I don't have any device with these
-ACPI settings I would need help with testing.
+I'll mark this as Changes Requested and assume there will be v3.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
