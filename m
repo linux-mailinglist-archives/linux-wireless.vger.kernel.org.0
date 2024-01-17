@@ -1,144 +1,128 @@
-Return-Path: <linux-wireless+bounces-2128-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2129-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C7DA831000
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 00:10:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3F0483101F
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 00:39:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37AA528D3D7
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jan 2024 23:10:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8BA71C2212B
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jan 2024 23:39:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82E8D22EFE;
-	Wed, 17 Jan 2024 23:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 288B225620;
+	Wed, 17 Jan 2024 23:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="nR5jN40d"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P/monbzG"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 342332D634;
-	Wed, 17 Jan 2024 23:07:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE94B28DA5;
+	Wed, 17 Jan 2024 23:39:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705532881; cv=none; b=GEoSWD3OfjVcYTqHsyc7rZ8b5op1wYN/gNaJBDFvWWZVllwkGKYlm2ilUv8yD5ecDXLorFqU/70hxYo07G1hcshfbvy6vqHznVx1O6znRuVetgkgY5KmIvmhlf7pcuUlPRq53zJCnObk9YoncUZL/VEWHwSa2H86riv+mmBhY+w=
+	t=1705534742; cv=none; b=ce/9dmsTbk1sOaVJHOchcZtmd3V29Jx9+dt2RjxkDuwu4Qnkhp3dylQeNp+Va3paJ1HnwnnwwgVua06zVQmy+bEq1fvNHTNb6KFEmYiM6hxUUWGpXlfhF3t2Rya6hv1hoxFmnkUgIzQZN9jRRWydtOJqQkdw25dSI2gnSkGfIFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705532881; c=relaxed/simple;
-	bh=RsvBSwKvQ2SL0TwQ0y/xzPi6TaEGjntVaeT7IcC7znE=;
-	h=DKIM-Signature:Received:Message-ID:Subject:From:To:Cc:Date:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:
-	 User-Agent:MIME-Version:X-malware-bazaar; b=oFeB5fzeuB2viwGhr4GDZHhavs80+GtPxkrBBPZNPYyU+Ha9lI7wBcpItW7pDODVbFNpvT9gUAinMpT1ue38su9KtnsP5/HH644FSicWkfACRMU4p8d+lRpy5SdFbVToOUazEo8HhAIETSX+0X6AHwDJzOUcGUE2ta6++/8HSd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=nR5jN40d; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=fL92iJU4SDKpF36FunOx2bUJ2B7KJrwX+j+sVRk1roE=;
-	t=1705532879; x=1706742479; b=nR5jN40ddAm9tVdWN2jq3/J6jPRYiVZecMh9Gfqt+dHVKuk
-	c5700PQUse2zvq/ccaJp3M7vfgpqGzNyZp3u+T0FfC9Sc80QLalK8x0U7vIYmwMxS0+KYkWQNeTEa
-	xP9gkeiv6u0VlRb7BMvUQDbzTcud3pFcEfPt7NIMee5CrpjfXAYUZ2+9ureXEQdgzO0QAm5eTvvIz
-	geW0OZBN8vquo1sQrjLQyXwv76j/VQBPAtdxfoxxu7/mQ/hd+Ow1Hq6oFgAvBVRWdcvuMto90JCfe
-	ZMBnkoB8ldB9Br+5H0gt5WJRxybJ69Jf97cZzEGzpL4i+LeUulotVlAPkaIgwarg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1rQF0f-00000006tEi-3UpA;
-	Thu, 18 Jan 2024 00:07:50 +0100
-Message-ID: <7719f03304bd525e6b85a8700eb3466acf1cc76b.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: mac80211: tx: Add __must_hold() annotation
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Brent Pappas <bpappas@pappasbrent.com>
-Cc: Kalle Valo <kvalo@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>,  linux-wireless@vger.kernel.org,
- netdev@vger.kernel.org,  linux-kernel@vger.kernel.org
-Date: Thu, 18 Jan 2024 00:07:47 +0100
-In-Reply-To: <Zagxwx40ja4JRUQ2@pappasbrent.com>
-References: <20240113011145.10888-2-bpappas@pappasbrent.com>
-	 <87sf31hhfp.fsf@kernel.org>
-	 <26d364547d3bbb04800877e899cfebe0e1ec4dc0.camel@sipsolutions.net>
-	 <Zagxwx40ja4JRUQ2@pappasbrent.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
+	s=arc-20240116; t=1705534742; c=relaxed/simple;
+	bh=GcKMmCstmmaFfeggXxTBt9vMpMX9qJbtMbVXoCROP+E=;
+	h=Received:DKIM-Signature:Received:X-Gm-Message-State:
+	 X-Google-Smtp-Source:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gmail-Original-Message-ID:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding; b=nsMxsDskOK0FCeiivNr9cU6L6EbfiCeoHAv1toeirCJr3dae/f+cA24THAOH2qMUiaQa4UEYSbWNqOf/6vaoawOWBSFx8SisRcTBS/7DonujZu8xbPQkTMlR29BCOit/gRMLDTnZFffo5cQEKcK1ICogLbhbChHkg4/ASaIopSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P/monbzG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CDDAC43394;
+	Wed, 17 Jan 2024 23:39:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705534741;
+	bh=GcKMmCstmmaFfeggXxTBt9vMpMX9qJbtMbVXoCROP+E=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=P/monbzGlW0++yqPjaDQoZLzVooAp6kReBYDiIz8rAJmq88GF9ce70Vl4VjdzDe2k
+	 xkHbL7jN3aYVhUV29HmQCX/xqczOCzb4+sUDWjf6LhGQmLh9ju5jIRmfUVTPU5aGYv
+	 rxTicLT86DwaZcO3g1It5KdDccPNbI23bzVM/tLnLGBTEhDxS7xgJJah2/vEZWopPo
+	 qyAG9tN4JbGq39q1b6DO+Dd16PUcs616Iken9djORnqWMCl1gn0RcHNl9RaBPLwS5y
+	 4PUKFxx29eSO4D4YW7ImRRarUAWTon3QNhmg1wsXFbfX9SgcvlsbPlCUwV8w6ciNqm
+	 cvgheWDst5x5Q==
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-557ad92cabbso11741034a12.0;
+        Wed, 17 Jan 2024 15:39:01 -0800 (PST)
+X-Gm-Message-State: AOJu0YyushLXE8lsCDZH+3td8k1q4zoMrKHd7zWHG4FyVVs7S9ZFCU9/
+	IsHtFHWyhwSmzFjcEUaNrIfqe4M4tqo97bySPGKCW67XRntqTvplOfh2XzZpcSJTHVBzG9ZrJK3
+	E9Jt+UALcyyoFTwzWJa8TWKM4Qg==
+X-Google-Smtp-Source: AGHT+IGAM6hRBqMLs5yi9Y3is013ddTHQ1ph27gXuVJmLiXeCWMAxx71b17TbgWWVx/+9qf/qRCmCYAbYBdLEXTaNXo=
+X-Received: by 2002:a05:6512:234a:b0:50e:9d91:cfb8 with SMTP id
+ p10-20020a056512234a00b0050e9d91cfb8mr2312813lfu.187.1705534719254; Wed, 17
+ Jan 2024 15:38:39 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+References: <20240109144327.GA10780@wunner.de> <CAMRc=MdXO6c6asvRSn_Z8-oFS48hroT+dazGKB6WWY1_Zu7f1Q@mail.gmail.com>
+ <20240110132853.GA6860@wunner.de> <CAMRc=MdBSAb_kEO2r7r-vwLuRAEv7pMODOMtZoCCRAd=zsQb_w@mail.gmail.com>
+ <20240110164105.GA13451@wunner.de> <CAMRc=MdQKPN8UbagmswjFx7_JvmJuBeuq8+9=z-+GBNUmdpWEA@mail.gmail.com>
+ <20240111104211.GA32504@wunner.de> <CAMRc=MfT_VLo7++K4M89iYrciqWSrX_JyS1LX5kaGTNDNVQiOg@mail.gmail.com>
+ <20240111150201.GA28409@wunner.de> <CAMRc=Mcngw1vw9q0DXRWLKk4o9FOY+Mzz-niueT-v2THvbS1Dw@mail.gmail.com>
+ <20240112094312.GA8704@wunner.de>
+In-Reply-To: <20240112094312.GA8704@wunner.de>
+From: Rob Herring <robh+dt@kernel.org>
+Date: Wed, 17 Jan 2024 17:38:27 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqL=HbCbu3kACEc0_BNXGnapdcGz3J+2-dfXQxjyvBqD6A@mail.gmail.com>
+Message-ID: <CAL_JsqL=HbCbu3kACEc0_BNXGnapdcGz3J+2-dfXQxjyvBqD6A@mail.gmail.com>
+Subject: Re: [RFC 3/9] PCI/portdrv: create platform devices for child OF nodes
+To: Lukas Wunner <lukas@wunner.de>
+Cc: Bartosz Golaszewski <brgl@bgdev.pl>, Kalle Valo <kvalo@kernel.org>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Heiko Stuebner <heiko@sntech.de>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Chris Morgan <macromorgan@hotmail.com>, 
+	Linus Walleij <linus.walleij@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Arnd Bergmann <arnd@arndb.de>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	=?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= <nfraprado@collabora.com>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Peng Fan <peng.fan@nxp.com>, 
+	Robert Richter <rrichter@amd.com>, Dan Williams <dan.j.williams@intel.com>, 
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>, Terry Bowman <terry.bowman@amd.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+	Huacai Chen <chenhuacai@kernel.org>, Alex Elder <elder@linaro.org>, 
+	Srini Kandagatla <srinivas.kandagatla@linaro.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Brent,
+On Fri, Jan 12, 2024 at 3:43=E2=80=AFAM Lukas Wunner <lukas@wunner.de> wrot=
+e:
+>
+> On Thu, Jan 11, 2024 at 05:16:45PM +0100, Bartosz Golaszewski wrote:
+> > On Thu, Jan 11, 2024 at 4:02???PM Lukas Wunner <lukas@wunner.de> wrote:
+> > > On Wed, Jan 10, 2024 at 05:26:52PM +0100, Bartosz Golaszewski wrote:
+> > > >     if (pci_is_bridge(dev))
+> > > >         of_pci_make_dev_node(dev);
+> > >
+> > > But perhaps of_pci_make_dev_node() returns immediately because:
+> >
+> > No, it was actually a no-op due to CONFIG_PCI_DYNAMIC_OF_NODES not
+> > being set. But this is only available if CONFIG_OF_DYNAMIC is enabled
+> > which requires OF_UNITTEST (!).
+> >
+> > We definitely don't need to enable dynamic OF nodes. We don't want to
+> > modify the DT, we want to create devices for existing nodes.
+>
+> Consider refactoring of_pci_make_dev_node() to suit your needs or
+> add a separate function call inside the "if (pci_is_bridge(dev))"
+> clause which populates the child OF nodes.
 
-On Wed, 2024-01-17 at 15:00 -0500, Brent Pappas wrote:
-> Thanks for the feedback Johannes. As I mentioned in my original email, I'=
-m still
-> learning the RCU API, so I appreciate the insight from someone more
-> knowledgeable.
+The latter because of_pci_make_dev_node() has absolutely nothing to do
+with the issue this series solves. The uses are pretty much mutually
+exclusive. If we have a DT node with power related properties, there
+is no need to create that node because it already exists.
 
-Note this isn't really all that RCU related.
-
-> > Much better to put something lockdep_assert_held() or similar into the =
-right
-> > places.
->=20
-> I'm not committed to using __must_hold(); would you be willing to accept =
-this
-> patch if I change it to use lockdep_assert_held() instead?
-
-I'm actually not sure what you're trying to check here. The
-rcu_dereference() inside of it? But that'll already be checked at
-runtime by lockdep without any further code.
-
-So ... right now I don't see that there's any point in adding any
-further annotations, but I'm also not sure what you're trying to
-achieve.
-
-> > The function ieee80211_set_beacon_cntdwn() is called from a number of p=
-laces
-> > in this file, some of which acquire RCU critical section, and some of w=
-hich
-> > acquire no locks nor RCU critical section at all.
->=20
-> Grepping through tx.c, I see ieee80211_set_beacon_cntdwn() is invoked in =
-three
-> places:
->=20
-> - Line 5285: Inside the definition of ieee80211_beacon_get_ap(), which is=
- only
->   invoked in critical sections (both directly and in another nested call)=
-.
-> - Line 5439: Directly inside a critical section.
-> - Line 5471: Directly inside a critical section (same as previous).
-
-Right.
-
-> > I tried to fix this in sparse many years ago, some code even got merged=
- (and
-> > then reverted), and if the experience tells me anything then that it's =
-pretty
-> > much not fixable.
->=20
-> I'm sorry to hear that; a solution to this problem sounds very useful. I'=
-m
-> currently working on making my own static analyzer for performing more ch=
-ecks
-> than what sparse currently provides.=C2=A0
-
-Are you aware of smatch?
-
-> Since you've worked on this problem and
-> have deeper insight into than I do, what sort of checks would you like to=
- see
-> added to a tool like sparse (besides checking whether specific locks are =
-held)?
-
-I haven't really thought about that ... some better taint tracking would
-be nice but that's _really_ hard ;-)
-
-johannes
+Rob
 
