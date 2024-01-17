@@ -1,255 +1,332 @@
-Return-Path: <linux-wireless+bounces-2073-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2074-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE45582FF84
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jan 2024 05:18:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7596882FFD2
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jan 2024 06:27:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08DFF1C23920
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jan 2024 04:18:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F5AF288F2D
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jan 2024 05:27:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9D635660;
-	Wed, 17 Jan 2024 04:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81CE48F65;
+	Wed, 17 Jan 2024 05:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="XD4VMnXs"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="mk11eseO"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2080.outbound.protection.outlook.com [40.107.243.80])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC304522E;
-	Wed, 17 Jan 2024 04:18:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.80
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705465103; cv=fail; b=MyIWc1FcYmIHtXWadFargsXWEOL+maBQwGxN5FJoIfxqgFFeFT0VHrcrHrvToGCBMzoEm3L91Dkvtamf1ZjQLNp7AFXz+MzMNqxzmEsrwroa5jEnsKKOV+/przFi5UDvq7FZgjBaoA/4A91x8scX89aE7cNlEV9KuV117p2BFTw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705465103; c=relaxed/simple;
-	bh=4JQLsY9cX+4DmUzkADGeB0+Ith69q8tVPg05DaWR9wA=;
-	h=ARC-Message-Signature:ARC-Authentication-Results:DKIM-Signature:
-	 Received:Received:Message-ID:Date:User-Agent:Subject:
-	 Content-Language:To:Cc:References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:
-	 X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped; b=BgR8pLEEvs4dy/BzLO3HdL8MZDkPw13YJLHuuJXJ6RTmlPxmZfVTnWIR1Dh3MQbb7nUP5kK0a/luWrzqsycPPHftgvMdkbyJQYeY/U0LWTCfe7sZCuvEnXJnWhZyWByTQj5ZGqtiw9vs5/jgUn8v4SvR3oWo7LX4JzOWeNonVdk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=XD4VMnXs; arc=fail smtp.client-ip=40.107.243.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Lr71aFp7UijNTu91mQoPfdZgBfMDcMYFx2Bt/lDyn5jzXPpThbUDPg4C+KaY/tSkh5oFBrbQNM8luQxo9KyfiU7c3OfOWnp3en++y1NP/emWvj1WpKL1dFFNCfMjWrUvZfA20WD013XB+1/ddufNFLfC16Zsys80+BWDkHycFXKAJnGf2L8sNpBxMa57KpgjW9wG+S/lLkoMC++5AYhQSP+9g0FAY4TEu8m4I880Thryy7afSq4ltJruwY+HjJmIvsKZpTrvXRSgdeK68AB+ecYiv8MQhzfHhZwDtwUX8aIyYtNpRWnfFSbyRPvfc5vWbaSlL/NDe37Y3sG/AwVwVQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=r+LdiP284hQSpXTR3cpbcjM3mqB2LluK7C+u1uQIQyg=;
- b=cpq/4LpA5zUBas0kdugJRYPSfI+7t70Xo+qjPK6KBV5QGvDP5F8bu7WbV0mQmcVdkdFZ7qBhYN1JrV3BU3P0BtD9PJlXvJmOVMJjoH0Cid41X6apXZM6U6CzG2rd2396dE9BAVt9WZrhDOqdkzjDvvPZvGsYWCETS1hnUdEGTwokqG8SwjFkvqLT1YvxNVxXxFTrccqd0UIyckXGoMKMvSZ2ErkyaOhZdNJInlfeZLREC9sEbVTpqcT8I62GTeEtWS5mu65xfxWWI6FAPTjrGe0IP8CHPOE4ZcmEwgYq5a7VzYu7GIWmXsm4ANBUwJVfTh3y8FhCjWsYIZVzgPcreA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=r+LdiP284hQSpXTR3cpbcjM3mqB2LluK7C+u1uQIQyg=;
- b=XD4VMnXs9ZNpGJffNDF9hL4uxy/PjO41DhIDC3orFwPFWQHUsyHN5jFcdT04agz3+RT3tn/5ZCQ7ddgZYSfQMzO7+dkQPgZ4XHw+QDLkCox1kbhP9oPzfqZcnSKE8nCuTppwHiElp62yMxynHHvVsHATzvgek4u82DA4g0wJpF0=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by SA0PR12MB4495.namprd12.prod.outlook.com (2603:10b6:806:70::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7181.28; Wed, 17 Jan
- 2024 04:18:18 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::ce8d:7121:cb06:91ba]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::ce8d:7121:cb06:91ba%4]) with mapi id 15.20.7181.029; Wed, 17 Jan 2024
- 04:18:18 +0000
-Message-ID: <045bf616-f69b-4253-92ce-05744d72b084@amd.com>
-Date: Tue, 16 Jan 2024 22:18:14 -0600
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] wifi: mt76: mt7921: Disable powersaving by default
-Content-Language: en-US
-To: James Prestwood <prestwoj@gmail.com>, Ben Greear
- <greearb@candelatech.com>, Lorenzo Bianconi <lorenzo@kernel.org>,
- Kalle Valo <kvalo@kernel.org>
-Cc: Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>,
- Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Deren Wu <deren.wu@mediatek.com>, Ming Yen Hsieh
- <mingyen.hsieh@mediatek.com>,
- "open list:MEDIATEK MT76 WIRELESS LAN DRIVER"
- <linux-wireless@vger.kernel.org>,
- "open list:ARM/Mediatek SoC support" <linux-kernel@vger.kernel.org>,
- "moderated list:ARM/Mediatek SoC support"
- <linux-mediatek@lists.infradead.org>, Sultan Alsawaf <sultan@kerneltoast.com>
-References: <20231212090852.162787-1-mario.limonciello@amd.com>
- <874jgmnud8.fsf@kernel.org> <ZXmxD1foASMaCDIe@lore-desk>
- <d92c081e-47dd-5c57-a6f1-bd72b2748141@candelatech.com>
- <1ef12773-74ca-489c-b36b-d3cf7da22c43@amd.com>
- <e0fbe9cb-22de-462f-9123-14a220d5a9c6@gmail.com>
-From: Mario Limonciello <mario.limonciello@amd.com>
-In-Reply-To: <e0fbe9cb-22de-462f-9123-14a220d5a9c6@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SA0PR11CA0049.namprd11.prod.outlook.com
- (2603:10b6:806:d0::24) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBB078F47
+	for <linux-wireless@vger.kernel.org>; Wed, 17 Jan 2024 05:26:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1705469209; cv=none; b=UvZorO2SCPS3GReTJOcw1xqjWuqgyRj4UcSRIm/vlQkUrmhgijl4cMaS6wuX3K7xL7abmsbjps7W6uIQ1sSIlg1lRbm7k5GdLPtPWmnGvQF+TOpOQy2RCmzPQPiY8/Jb9z219dD7BTlJlh+zQGZxAElQUuPSwYy7kdXFUwr/sbI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1705469209; c=relaxed/simple;
+	bh=nHd3XmR3r7ZSVKWWpzYaKdqNWoPPkfxIuE5xK84XXRY=;
+	h=Received:DKIM-Signature:Received:Received:Received:Message-ID:
+	 Date:MIME-Version:User-Agent:Subject:Content-Language:To:CC:
+	 References:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 X-Originating-IP:X-ClientProxiedBy:X-QCInternal:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-GUID:
+	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details; b=Cs616ydaR6XlEx5/XWGA7dI6JoSP6K/QKRZ1VxjEh/ykJzAHlxkkxs8Tj/NMnygwHu0t0FtcT/5UeIlNNqCXXVqRGQGc/J9nlwhkWUB6LfPnm6XckP080z6rlQ3RkuDSMxBFZwyh7sx5f6XgkD/dyxY2kDiJPtWyxpFKU5kgzAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=mk11eseO; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40H2x1ir019770;
+	Wed, 17 Jan 2024 05:26:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=EK2Q9F0VzalOSp1xYGRINbraJvYUCEpexiyblMBeymU=; b=mk
+	11eseOaHcBRHKniwZb0KDdvHotMQpSjxVoXh89e19pXQUd6/3Nqgu5uKnfcwfkVU
+	0Kga7A2CyDuPdJ3Lx9c6yCJ9kokhIe+20RtQXmQT0ZV2joLFUs6pHytQN48W/FFG
+	gQJhXrKufVc7OsjKR+Z10MX0Ts6ritrzYNLGsOrcpxJXo1dp2tHI3AKxeYDhLhgH
+	OoPJCP4x4E+joNwYQPaCQUlW/iFSDiqc8IhGT+7SBkZxyGbNSzMcXqYVrDqBxmjq
+	4URiCp6i/99Js3BQT0wewCF2M2eDyqln4bGWlltRNNdLKjVOxmBbGy/6jemLR7qZ
+	oFECbpNTdTXR2Iy2vN8Q==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vnrndadpx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 17 Jan 2024 05:26:37 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40H5QaBW001092
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 17 Jan 2024 05:26:36 GMT
+Received: from [10.231.195.68] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Tue, 16 Jan
+ 2024 21:26:35 -0800
+Message-ID: <16cfd010-b62d-4385-92d1-002820a8db38@quicinc.com>
+Date: Wed, 17 Jan 2024 13:26:32 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|SA0PR12MB4495:EE_
-X-MS-Office365-Filtering-Correlation-Id: 44743a7b-c107-4006-9aca-08dc1713551a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	3j3gNyoUs3QcJ7Qzb6axz2g2HgJoyUjcDZdOgxV+SfTmll7gN8lv+LQLu1JEZG+ITjdssFI90jS8hP5TfPNRPGU7L0Tn6EwAWcfLtsCj0Bjw6dyRrBppmvFHuVq0tynA1k9PuCbouMbiFSgJIekMKUttK2aOiYviUecX2DdJx+pQ58AuPHVHRXotdPzurwv6mCHcEKUZ7bIBA8KCtHeeApiDTh3Rkg8+cVRysbnox4em2aPZeSxeWI06zTyqfEeaAwNJ0mCwTjepOcWVXAKhz7Uo4Dk/oL1rXzyvmJQcuobH2KFZR5lJvSCajP/zZFX7pRZEHdua/hvQ4+/MewCB4HmTdXUunknZfvZx3XS0ypkaB27e+YBZp3mhL+tgnQcrOWS5DU6ulICrKC0Hpn+PqOIEI1WblVYjTbXpep469x2/8V0B2i3r7WADWfcqs8UsYnfiTbqs7hp+a9wrQtpHyef4OPxQqEVS/CkEGlbwA3GG++cHd4up/fp+xmQd2dJqHuzIohXDLaSn+Grbz4H3j2NAsPtPH6qMeI4Q3gpbfD/Wz7SXNDWjWsF2pvy1DAVviHjsvrxSvcsaYDmCmymsEeH5Oc3BtFRtOSiW1oaUEIKDbPflwqrmE/4GY5/e0pKdh6Nc26mqqq8jx9GRzwDmMQ==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(376002)(346002)(396003)(39860400002)(136003)(230922051799003)(186009)(64100799003)(1800799012)(451199024)(31686004)(6666004)(83380400001)(478600001)(966005)(5660300002)(4326008)(7416002)(6506007)(8936002)(316002)(66946007)(54906003)(6512007)(66476007)(6486002)(66556008)(26005)(110136005)(44832011)(2616005)(8676002)(38100700002)(53546011)(41300700001)(2906002)(31696002)(86362001)(36756003)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RDR0UVloZ052Tm4yR2s2Q2VtNWEwQ2ZOd0JJMjZxN3dRTURUb0FuKzhVR0JW?=
- =?utf-8?B?S0djWlZBM2kxV1EvbW1yclhIUmpLUjBObXI2UlZTcHpielc0S2RySGhDUHov?=
- =?utf-8?B?bnlCNllTM0dYaS8yMzFzNWs1UE9oR1UxV2tNSGR3N2RqbmV0RDFwejVOa0hH?=
- =?utf-8?B?RlBKa01KZSt6bnEyaVdMR3VyU0JtK05LWkJ4OUttRlJjbFpNOFFBQThSdmpR?=
- =?utf-8?B?YWFJNHJ3c3cxV1NSTHk0STdQVGlCRGVIUGFkRms3U2MxMnl2ZFdUTWhraXU5?=
- =?utf-8?B?bWxUYTE1by9TVHc3d1RBUVUwcklVbHUxWXlUVWlFakVFSEUwSnZpWHV1SURv?=
- =?utf-8?B?dnp1bTZMbWwyZkw3K1hPYmtpOUhwTWVUZlRrNkdLV282bS9ueXIvWUdhZm9J?=
- =?utf-8?B?S09YTGExZkFZS3hQRFIwS1JOY1FNazZtMjg5MGZNdHVXK3dEcFRyQ1NFUEpv?=
- =?utf-8?B?SVhBcmpsejBTVlBBcnJ2VXRNYmxCSHdzdngwRFluYmZPNHAraVkzOCtrTWFm?=
- =?utf-8?B?SGRxbmJRS2ZuUkJYM3B5d0MreFNPV1NlZ003MTFmSldieHVCbGROLytlOFZU?=
- =?utf-8?B?blRqSUlJeU12ZmVZd0Zwc1VNU2JLb0ZiQlZqeG4xWjlQWXRCeDZscW51MGd2?=
- =?utf-8?B?N25KUUloOFBMWmRVSmZFVXR0b3c0WnVidjlidE8rSks5UVR2dzNVcW9HSml1?=
- =?utf-8?B?alhKZ0Q5SmQvT0s5bFlTZlc5WVI2b042TG1MMXdWNmt5SVFWNkROMjloU3hh?=
- =?utf-8?B?OGw0YWl6Z0M0a3JzZ1Y2QkhPY3dOQis3eFVBOWFJL01NZmg2SG5NeklRZUJ4?=
- =?utf-8?B?bHlUekN6R082RGJBL2pNWXlzRk15aU41QlUrcERaeWlyTlJ3d2FxTnVwTXJ0?=
- =?utf-8?B?bTZhUUZNVGlTVlk1VTRnMXcyNU9BZStKa24wNzltZi9WU2dRNkk0dmIzd2NZ?=
- =?utf-8?B?Q2M1V084TFJzL2VTaHlzQWw3QkFPWlZMdytYVXdHRzRZQ2dTT0toU3N3MnFW?=
- =?utf-8?B?S1RBaFZlWVdQajZDeXJsVlBlT1JzeXBKZU1pTDdZVkV4RmliWTM0aEZhclB0?=
- =?utf-8?B?SVVTRFFuSEdMU2pDVVAzYitTa3VKQTFZZ2N3Z2R1d1NURHBwbmthTWdRSDZv?=
- =?utf-8?B?TFd4TXk5ZTAyeFQrZlU0bFVYVjlTSmVHSG5NMXlyTVlNbngrMzJSRVhGaUxZ?=
- =?utf-8?B?S01PMllJMTJUVXRzb1VvTmxubWUyRkVYdHZBQTFqaWpMSU9mN1ZTckZQVzRx?=
- =?utf-8?B?SEtlQ29oYlBHeHFBbm1iUFBYMHFKV2dicG15VW1ndWZsQS8zd0g2bXQvWkFP?=
- =?utf-8?B?czZ0KzhZNGlaQThLKzl2ZDR2SXRsNDhtQnV2VFlVd01sTlF1cUpGMkVySlh6?=
- =?utf-8?B?cG1TOWxMQXVvZnpsOExrc1FLcnlBUVdpKytRZWpwbE51WmJvQnBIRTJEdTdJ?=
- =?utf-8?B?QjRzMTN4MGNmZzJoWWxOSFdWRm5jNFVRemw0YlU2V2FkN2Y3OUg4WkR2Vkpv?=
- =?utf-8?B?K0I2MEpINnE5Szgxb1JEOXVhZnJwMDZ0SVlhSVRQYzFWbzdEeU4xeno1MHpM?=
- =?utf-8?B?TVlIcTRwM0xsTk1SaElYTzR3OHhydUpReGpsWFJhZStsenRHL01SMjVDSE5K?=
- =?utf-8?B?WnFFVUpuQ1k2R2V5ak5TM2lOdS84UXlaMEg5SENsYnduZlFIY3QwWmhISm1V?=
- =?utf-8?B?ZCtGdTVmekY5akFPcW4wOURiMGYrTy9BSG4xMzVKUU9vekl5cXNKR2lDZzZs?=
- =?utf-8?B?cmxyS3oycXR0Tkw5MXY4dHlrdThUa1BSKzdQM25KT2kwV3JvNlRkMy95aytL?=
- =?utf-8?B?VjFqMmtCV1Z0UWpWRVcweSsrWWtieTdvWUl1cmtIZWZ5TEx5WWs4VmF3L3FQ?=
- =?utf-8?B?ZW1xT09peEg1ZzAxOEVxZjVWV1JFSjI1NjhSQ2FCM0JOQlpPeFVISXpnYWZV?=
- =?utf-8?B?cVI0bDJFVFRYSklGaG5ueVFRdHNqazBZbWtVS1BLN0YzalIzTDB4TytZcGRL?=
- =?utf-8?B?d2puUjRhaTVVWGJLdWwwazVaazdtLzB1SWNhamRBc1Z1c3MrckhVWjFFallr?=
- =?utf-8?B?VWlEVzF6ZGU5amZzR20rckVPbmZYOUF3WVVSWFJzRWxsblYyaXdpM3YwT3lI?=
- =?utf-8?Q?Q3QlrHh+KngpF0SBgkDQa3mHP?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 44743a7b-c107-4006-9aca-08dc1713551a
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jan 2024 04:18:18.0764
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: PBF5b1fdCbNhyEwIGWhUCwYm892srfy6kNU2Tdp+myjgjH9w6nuD8YHrI+ldOoNu3FPpqrmDPm0Kst+og+S+bg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4495
+User-Agent: Mozilla Thunderbird
+Subject: Re: ath11k and vfio-pci support
+Content-Language: en-US
+To: James Prestwood <prestwoj@gmail.com>, Kalle Valo <kvalo@kernel.org>
+CC: <linux-wireless@vger.kernel.org>, <ath11k@lists.infradead.org>
+References: <adcb785e-4dc7-4c4a-b341-d53b72e13467@gmail.com>
+ <8734v5zhol.fsf@kernel.org> <87fa5220-6fd9-433d-879b-c55ac67a0748@gmail.com>
+ <87r0ipcn7j.fsf@kernel.org> <356e0b05-f396-4ad7-9b29-c492b54af834@gmail.com>
+ <26119c3f-9012-47bb-948e-7e976d4773a7@quicinc.com>
+ <87mstccmk6.fsf@kernel.org> <df9fd970-5af3-468c-b1f1-18f91215cf44@gmail.com>
+ <8734v4auc4.fsf@kernel.org> <e8878979-1f3f-4635-a716-9ac381c617d9@gmail.com>
+ <285b84d0-229c-4c83-a7d6-4c3c23139597@quicinc.com>
+ <4607fb37-8227-49a3-9e8c-10c9b117ec7b@gmail.com>
+ <3d22a730-aee5-4f2a-9ddc-b4b5bd4d62fe@quicinc.com>
+ <ee0280fd-032c-4f45-a3f9-50d96d8bed6d@gmail.com>
+From: Baochen Qiang <quic_bqiang@quicinc.com>
+In-Reply-To: <ee0280fd-032c-4f45-a3f9-50d96d8bed6d@gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: XHpg58u55UjWk8wZVZx0YhUECWYRQhwR
+X-Proofpoint-ORIG-GUID: XHpg58u55UjWk8wZVZx0YhUECWYRQhwR
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-17_02,2024-01-16_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
+ lowpriorityscore=0 mlxscore=0 suspectscore=0 mlxlogscore=999 clxscore=1015
+ adultscore=0 impostorscore=0 malwarescore=0 bulkscore=0 phishscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2311290000 definitions=main-2401170035
 
-On 12/14/2023 06:39, James Prestwood wrote:
-> On 12/13/23 11:27, Mario Limonciello wrote:
->> On 12/13/2023 08:45, Ben Greear wrote:
->>> On 12/13/23 5:26 AM, Lorenzo Bianconi wrote:
->>>>> Mario Limonciello <mario.limonciello@amd.com> writes:
->>>>>
->>>>>> Several users have reported awful latency when powersaving is enabled
->>>>>> with certain access point combinations.
->>>>>
->>>>> What APs are these exactly? In the past 802.11 Power Save Mode was
->>>>> challenging due to badly behaving APs. But nowadays with so many 
->>>>> mobile
->>>>> devices in the market I would assume that APs work a lot better. It
->>>>> would be best to investigate the issues in detail and try to fix 
->>>>> them in
->>>>> mt76, assuming the bugs are in mt76 driver or firmware.
->>>>>
->>>>>> It's also reported that the powersaving feature doesn't provide an
->>>>>> ample enough savings to justify being enabled by default with these
->>>>>> issues.
->>>>>
->>>>> Any numbers or how was this concluded?
->>>>>
->>>>>> Introduce a module parameter that would control the power saving
->>>>>> behavior.  Set it to default as disabled. This mirrors what some 
->>>>>> other
->>>>>> WLAN drivers like iwlwifi do.
->>>>>
->>>>> We have already several ways to control 802.11 power save mode:
->>>>>
->>>>> * NL80211_CMD_SET_POWER_SAVE (for example used by 'iw set power_save')
->>>>>
->>>>> * CONFIG_CFG80211_DEFAULT_PS (for kernel level default)
->>>>>
->>>>> * WIPHY_FLAG_PS_ON_BY_DEFAULT (for the driver to control the 
->>>>> default setting)
->>>>>
->>>>> Adding module parameters as a fourth method sounds confusing so not
->>>>> really a fan of this. And the bar is quite high for adding new module
->>>>> parameters anyway.
+
+
+On 1/16/2024 9:05 PM, James Prestwood wrote:
+> Hi Baochen,
+> 
+> On 1/14/24 4:37 AM, Baochen Qiang wrote:
+>>
+>>
+>> On 1/12/2024 8:47 PM, James Prestwood wrote:
+>>> Hi,
+>>>
+>>> On 1/11/24 6:04 PM, Baochen Qiang wrote:
 >>>>
->>>> agree, I think we do not need a new parameter for this, just use the 
->>>> current
->>>> APIs.
+>>>>
+>>>> On 1/11/2024 9:38 PM, James Prestwood wrote:
+>>>>>
+>>>>> On 1/11/24 5:11 AM, Kalle Valo wrote:
+>>>>>> James Prestwood <prestwoj@gmail.com> writes:
+>>>>>>
+>>>>>>> Hi Kalle, Baochen,
+>>>>>>>
+>>>>>>> On 1/11/24 12:16 AM, Kalle Valo wrote:
+>>>>>>>> Baochen Qiang <quic_bqiang@quicinc.com> writes:
+>>>>>>>>
+>>>>>>>>> On 1/10/2024 10:55 PM, James Prestwood wrote:
+>>>>>>>>>> Hi Kalle,
+>>>>>>>>>> On 1/10/24 5:49 AM, Kalle Valo wrote:
+>>>>>>>>>>> James Prestwood <prestwoj@gmail.com> writes:
+>>>>>>>>>>>
+>>>>>>>>>>>>> But I have also no idea what is causing this, I guess we 
+>>>>>>>>>>>>> are doing
+>>>>>>>>>>>>> something wrong with the PCI communication? That reminds 
+>>>>>>>>>>>>> me, you could
+>>>>>>>>>>>>> try this in case that helps:
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> https://patchwork.kernel.org/project/linux-wireless/patch/20231212031914.47339-1-imguzh@gmail.com/
+>>>>>>>>>>>> Heh, I saw this pop up a day after I sent this and was 
+>>>>>>>>>>>> wondering. Is
+>>>>>>>>>>>> this something I'd need on the host kernel, guest, or both?
+>>>>>>>>>>> On the guest where ath11k is running. I'm not optimistic that 
+>>>>>>>>>>> this would
+>>>>>>>>>>> solve your issue, I suspect there can be also other bugs, but 
+>>>>>>>>>>> good to
+>>>>>>>>>>> know if the patch changes anything.
+>>>>>>>>>> Looks the same here, didn't seem to change anything based on the
+>>>>>>>>>> kernel logs.
+>>>>>>>>>>
+>>>>>>>>> Could you try this?
+>>>>>>>>>
+>>>>>>>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/drivers/net/wireless/ath/ath11k/pci.c?id=39564b475ac5a589e6c22c43a08cbd283c295d2c
+>>>>>>>> This reminds me, I assumed James was testing with ath.git master 
+>>>>>>>> branch
+>>>>>>>> (which has that commit) but I never checked that. So for testing 
+>>>>>>>> please
+>>>>>>>> always use the master branch to get the latest and greatest ath11k:
+>>>>>>>>
+>>>>>>>> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/
+>>>>>>>>
+>>>>>>>> There's a quite long delay from ath.git to official releases.
+>>>>>>> Good to know, and I was not in fact using that branch. Rebuilt from
+>>>>>>> ath.git/master but still roughly the same behavior. There does 
+>>>>>>> appear
+>>>>>>> to be more output now though, specifically a firmware crash:
+>>>>>>>
+>>>>>>> [    2.281721] ath11k_pci 0000:00:06.0: failed to receive control
+>>>>>>> response completion, polling..
+>>>>>>> [    2.282101] ip (65) used greatest stack depth: 12464 bytes left
+>>>>>>> [    3.306039] ath11k_pci 0000:00:06.0: Service connect timeout
+>>>>>>> [    3.307588] ath11k_pci 0000:00:06.0: failed to connect to HTT: 
+>>>>>>> -110
+>>>>>>> [    3.309286] ath11k_pci 0000:00:06.0: failed to start core: -110
+>>>>>>> [    3.519637] ath11k_pci 0000:00:06.0: firmware crashed: 
+>>>>>>> MHI_CB_EE_RDDM
+>>>>>>> [    3.519678] ath11k_pci 0000:00:06.0: ignore reset dev flags 
+>>>>>>> 0x4000
+>>>>>>> [    3.627087] ath11k_pci 0000:00:06.0: firmware crashed: 
+>>>>>>> MHI_CB_EE_RDDM
+>>>>>>> [    3.627129] ath11k_pci 0000:00:06.0: ignore reset dev flags 
+>>>>>>> 0x4000
+>>>>>>> [   13.802105] ath11k_pci 0000:00:06.0: failed to wait wlan mode
+>>>>>>> request (mode 4): -110
+>>>>>>> [   13.802175] ath11k_pci 0000:00:06.0: qmi failed to send wlan mode
+>>>>>>> off: -110
+>>>>>> Ok, that's progress now. Can you try next try the iommu patch[1] we
+>>>>>> talked about earlier? It's already in master-pending branch (along 
+>>>>>> with
+>>>>>> other pending patches) so you can use that branch if you want.
+>>>>>>
+>>>>>> [1] 
+>>>>>> https://patchwork.kernel.org/project/linux-wireless/patch/20231212031914.47339-1-imguzh@gmail.com/
+>>>>>
+>>>>> Same result unfortunately, tried both with just [1] applied to 
+>>>>> ath.git and at HEAD of master-pending.
+>>>>>
+>>>>> Thanks,
+>>>>>
+>>>>> James
+>>>> Strange that still fails. Are you now seeing this error in your host 
+>>>> or your Qemu? or both?
+>>>> Could you share your test steps? And if you can share please be as 
+>>>> detailed as possible since I'm not familiar with passing WLAN 
+>>>> hardware to a VM using vfio-pci.
 >>>
->>> Is there a convenient way for a user to make any of those options 
->>> above stick through
->>> reboots?
+>>> Just in Qemu, the hardware works fine on my host machine.
 >>>
->>> To me, the ability to set system defaults through reboots is a nice 
->>> feature of
->>> module options.
+>>> I basically follow this guide to set it up, its written in the 
+>>> context of GPUs/libvirt but the host setup is exactly the same. By no 
+>>> means do you need to read it all, once you set the vfio-pci.ids and 
+>>> see your unclaimed adapter you can stop:
 >>>
->>> Thanks,
->>> Ben
+>>> https://wiki.archlinux.org/title/PCI_passthrough_via_OVMF
 >>>
+>>> In short you should be able to set the following host kernel options 
+>>> and reboot (assuming your motherboard/hardware is compatible):
+>>>
+>>> intel_iommu=on iommu=pt vfio-pci.ids=17cb:1103
+>>>
+>>> Obviously change the device/vendor IDs to whatever ath11k hw you 
+>>> have. Once the host is rebooted you should see your wlan adapter as 
+>>> UNCLAIMED, showing the driver in use as vfio-pci. If not, its likely 
+>>> your motherboard just isn't compatible, the device has to be in its 
+>>> own IOMMU group (you could try switching PCI ports if this is the case).
+>>>
+>>> I then build a "kvm_guest.config" kernel with the driver/firmware for 
+>>> ath11k and boot into that with the following Qemu options:
+>>>
+>>> -enable-kvm -device -vfio-pci,host=<PCI address>
+>>>
+>>> If it seems easier you could also utilize IWD's test-runner which 
+>>> handles launching the Qemu kernel automatically, detecting any 
+>>> vfio-devices and passes them through and mounts some useful host 
+>>> folders into the VM. Its actually a very good general purpose tool 
+>>> for kernel testing, not just for IWD:
+>>>
+>>> https://git.kernel.org/pub/scm/network/wireless/iwd.git/tree/doc/test-runner.txt
+>>>
+>>> Once set up you can just run test-runner with a few flags and you'll 
+>>> boot into a shell:
+>>>
+>>> ./tools/test-runner -k <kernel-image> --hw --start /bin/bash
+>>>
+>>> Please reach out if you have questions, thanks for looking into this.
+>>>
+>> Thanks for these details. I reproduced this issue by following your 
+>> guide.
 >>
->> Some userspace has the ability to do this.  For example in Network 
->> Manager:
+>> Seems the root cause is that the MSI vector assigned to WCN6855 in 
+>> qemu is different with that in host. In my case the MSI vector in qemu 
+>> is [Address: fee00000  Data: 0020] while in host it is [Address: 
+>> fee00578 Data: 0000]. So in qemu ath11k configures MSI vector 
+>> [Address: fee00000 Data: 0020] to WCN6855 hardware/firmware, and 
+>> firmware uses that vector to fire interrupts to host/qemu. However 
+>> host IOMMU doesn't know that vector because the real vector is 
+>> [Address: fee00578  Data: 0000], as a result host blocks that 
+>> interrupt and reports an error, see below log:
 >>
->> https://unix.stackexchange.com/questions/595116/wi-fi-powersaving-in-networkmanager
+>> [ 1414.206069] DMAR: DRHD: handling fault status reg 2
+>> [ 1414.206081] DMAR: [INTR-REMAP] Request device [02:00.0] fault index 
+>> 0x0 [fault reason 0x25] Blocked a compatibility format interrupt request
+>> [ 1414.210334] DMAR: DRHD: handling fault status reg 2
+>> [ 1414.210342] DMAR: [INTR-REMAP] Request device [02:00.0] fault index 
+>> 0x0 [fault reason 0x25] Blocked a compatibility format interrupt request
+>> [ 1414.212496] DMAR: DRHD: handling fault status reg 2
+>> [ 1414.212503] DMAR: [INTR-REMAP] Request device [02:00.0] fault index 
+>> 0x0 [fault reason 0x25] Blocked a compatibility format interrupt request
+>> [ 1414.214600] DMAR: DRHD: handling fault status reg 2
+>>
+>> While I don't think there is a way for qemu/ath11k to get the real MSI 
+>> vector from host, I will try to read the vfio code to check further. 
+>> Before that, to unblock you, a possible hack is to hard code the MSI 
+>> vector in qemu to the same as in host, on condition that the MSI 
+>> vector doesn't change. In my case, the change looks like
+>>
+>> diff --git a/drivers/net/wireless/ath/ath11k/pci.c 
+>> b/drivers/net/wireless/ath/ath11k/pci.c
+>> index 09e65c5e55c4..89a9bbe9e4d2 100644
+>> --- a/drivers/net/wireless/ath/ath11k/pci.c
+>> +++ b/drivers/net/wireless/ath/ath11k/pci.c
+>> @@ -459,7 +459,12 @@ static int ath11k_pci_alloc_msi(struct ath11k_pci 
+>> *ab_pci)
+>>                 ab->pci.msi.addr_hi = 0;
+>>         }
+>>
+>> -       ath11k_dbg(ab, ATH11K_DBG_PCI, "msi base data is %d\n", 
+>> ab->pci.msi.ep_base_data);
+>> +       ab->pci.msi.addr_hi = 0;
+>> +       ab->pci.msi.addr_lo = 0xfee00578;
+>> +       ath11k_dbg(ab, ATH11K_DBG_PCI, "msi addr hi 0x%x lo 0x%x base 
+>> data is %d\n",
+>> +                  ab->pci.msi.addr_hi,
+>> +                  ab->pci.msi.addr_lo,
+>> +                  ab->pci.msi.ep_base_data);
+>>
+>>         return 0;
+>>
+>> @@ -487,6 +492,7 @@ static int ath11k_pci_config_msi_data(struct 
+>> ath11k_pci *ab_pci)
+>>         }
+>>
+>>         ab_pci->ab->pci.msi.ep_base_data = msi_desc->msg.data;
+>> +       ab_pci->ab->pci.msi.ep_base_data = 0;
+>>
+>>         ath11k_dbg(ab_pci->ab, ATH11K_DBG_PCI, "after request_irq 
+>> msi_ep_base_data %d\n",
+>>                    ab_pci->ab->pci.msi.ep_base_data);
+>>
+>>
+>> This hack works on my setup.
 > 
-> And recently added to IWD for this very reason, there are no decent ways 
-> to persist between reboots (except when using NM).
+> Progress! Thank you. This didn't work for me but its likely because my 
+> host MSI vector is not fee00578. Where did you come up with this value? 
+It could, and most likely, be different from machine to machine.
+
+> I don't see anything in the dmesg logs, or in lspci etc.
 > 
-> https://git.kernel.org/pub/scm/network/wireless/iwd.git/commit/?id=29edb1626d88bb713db71f7b374d8f24832fd94f
-> 
+fee00578 is the physical MSI vector so I got it using lspci in host, see
+...
+         Capabilities: [50] MSI: Enable+ Count=1/32 Maskable+ 64bit-
+                 Address: fee00578  Data: 0000
+                 Masking: fffffffe  Pending: 00000000
+...
+
 > Thanks,
 > 
 > James
 > 
-
-All,
-
-Just wanted to update you that I looked at this issue again over the 
-holidays and it's fixed by upgrading the linux-firmware for the mt7921 
-that was submitted in late November.
-
-I get the correct performance and latency without modifying power saving 
-now on my Unifi access points.
-
-Thanks,
 
