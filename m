@@ -1,116 +1,96 @@
-Return-Path: <linux-wireless+bounces-2084-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2085-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A2E3830161
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jan 2024 09:37:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91CC783017E
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jan 2024 09:48:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD35B28732A
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jan 2024 08:37:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EA2F287261
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jan 2024 08:48:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22A1D11707;
-	Wed, 17 Jan 2024 08:37:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B14412B6C;
+	Wed, 17 Jan 2024 08:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ne6qfII5"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="dRN2eNIr"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C6D11184;
-	Wed, 17 Jan 2024 08:37:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78FBE12B69;
+	Wed, 17 Jan 2024 08:47:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705480666; cv=none; b=mkWTDHQwe6c/P6dNAqPdCosiBqjrZfnYLH6JfiyY066Pq9fujahiRla3H0yHKYCsrUP/4wAOtrHUpL15EubEQBhPz1y9S4kNwas4/XonI4RNaj9KxYZU10+Ok5B00GoClG2or2QBibURt2ffmCV2wAUqj+sROSOXRD7qO8pWiBk=
+	t=1705481271; cv=none; b=sZE9rPPDyjF5lNFNnSGgUA7cqi3/3mYDeJM8yRY/cy2K2WL25vqXRbT8XbLU89kZQqdnQBZnp8ZTx/41dYp6LfmRiIIWYZmXYzKGFiS1VL3/Fuj7Atz0g8aizkBGF4J4xdrOAaFynnXWtlHONK9BeP4cejV1dUY8FIjO2hhy+ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705480666; c=relaxed/simple;
-	bh=+4nKia+MxGDsWlDfyR/tVIYEDLuXX3TCdF6V2ikrzZQ=;
-	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:MIME-Version:
-	 From:Date:Message-ID:Subject:To:Cc:Content-Type; b=DSoyumAtKyift+nMxxnjHCrnQbLL3BupZeepPiyoMqlUxvTg431xSETeoD1uDP0EyaDgeQHn+TsvHJJgHlIYCKcrwBERDEdOIc1IMBJzzA2mm0k2Hbw3LUDfttJ7IfDMpCwORmnMeF727t3gvLo+dBYqCeGWbwZYtuhalqWNqR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ne6qfII5; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a28da6285c1so1925494766b.0;
-        Wed, 17 Jan 2024 00:37:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705480663; x=1706085463; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=+4nKia+MxGDsWlDfyR/tVIYEDLuXX3TCdF6V2ikrzZQ=;
-        b=ne6qfII5HROuESX0SbIUvscK7Pjtmp9QY2YatXF5LdpuXG8xhGU4x7j8bm94JwoLYZ
-         +Ujff9ZMjQ76jXWv0C3UHq5wC2FhUU4pEhoZ6ODa8rIVtsXzpTH7QdbiKG8NqOietZUZ
-         0OqbpdNrWDYl8scsX7HQzhLWOLue2HCO1aoKOU3GP+D0dYtNFK597UVYay6zBRovUUt5
-         tTxvDYy1XC6wKhR2nVMJ7b5wsnThP5v6ThiFmfTX1Il3Ux7ZuMrjdZqOQ7x2VK0juvRR
-         T6Xeh+4VlpVvx2vwp9reDc8Z75i28Ku0VDqPfIZhfyQvRflUVbVKWhNhg4AtmMaH4EJe
-         3w7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705480663; x=1706085463;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+4nKia+MxGDsWlDfyR/tVIYEDLuXX3TCdF6V2ikrzZQ=;
-        b=iaB/Xd5Oftmuaw/tPMh0sn7qMfq2sjDl4DrCIHVXM8qyZRD5SvV8yBE515rt8gck14
-         IeLUT2XNwhqEh4GBkDIsFWQC5VABNnaBRy36J7Y4aZNyOGArH1Rtw5A8x2Zv9PfI/kJm
-         /RB2E0BwLdvrj5hRZA5LHPeMsjiuTvn9WdEXwL5mWwjV/0UcpSXGv/9RajDEpfrMVxeD
-         N1m0fwNo7nP1FXq39GMvd1Yx+vQV3x+M7/6B9VgEdTgE7JrCRRYIM3vTelGZpzCr1Mc+
-         2YcZZpnzOZGmTZxqm22O2wKq6iblIy6rBx5g7E7R0DjimKl6Jxaqb/0qDJriJno0pPjz
-         emqw==
-X-Gm-Message-State: AOJu0YyodOj4Oqr2vJqLGhzDDL/eKEmXlAWCspY3IwlCyTmTdI0A2WgL
-	hEU+775A2WIqau5IaGaTZSoRepobtWhkG26tmgb4EN6M18M=
-X-Google-Smtp-Source: AGHT+IGHJeQhWQxRVMZYNHEVg+GX0qoJUr59gYGSOZYNlC6nUqQiGhDep3fN9x6ul5DgMscsDfrs+fg5Tag1g01wgJE=
-X-Received: by 2002:a17:906:ee9:b0:a28:b985:8da0 with SMTP id
- x9-20020a1709060ee900b00a28b9858da0mr467271eji.22.1705480662461; Wed, 17 Jan
- 2024 00:37:42 -0800 (PST)
+	s=arc-20240116; t=1705481271; c=relaxed/simple;
+	bh=0igOq/hZ7wqLwJ4zmvH8lJ33zRllN9XdUsSn9KPsCDY=;
+	h=DKIM-Signature:Received:Message-ID:Subject:From:To:Cc:Date:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:
+	 User-Agent:MIME-Version:X-malware-bazaar; b=raYAAzZvf3eGwo9BdEywe2VHb7pERRPyOA1oyJSnnEmI+k7kKSOfCRmu7LcZuprhTIqmlIa7DewNEuUvuJ3VJGSMfMB7h6hqPwJALcMq4fA6zTT2du5Fc9z8LPGBBm2NC1OZL+Lc0aoK9bIErmo41TBes4V7qSo0ZngXyKt87TU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=dRN2eNIr; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=0igOq/hZ7wqLwJ4zmvH8lJ33zRllN9XdUsSn9KPsCDY=;
+	t=1705481269; x=1706690869; b=dRN2eNIreBAgABskcxxhaqAdzjrkKQEoeDsGndoQQqPU79Y
+	YMsH4aodBKMkzchh3OPEmZSH/AFKERgTqbspaYFvv2G7G3yASYclfby34q9lh49KZP+zN1f0jz3K9
+	rHuqdHssUumoSnkwA9xNZ05Z1G3COr1Ywc5xjLQ5RUGBc7c1Xlc/4xiRbUxUHB4/qNQRepLAaNh9d
+	UX36mCZk7jziDCI6NflYt0GgZ/H3AfexHLSIGu46qw4HSWHuxes05rqw7P8w/bE6S41K84m+CaCgm
+	uiwS/POYmPPXmQ2fRgfe0H1EC7uFgg+3N5bx2cxdJ5hKrpeK7xrHXKXKiLsUcLqw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rQ1aL-00000006KBS-1I9g;
+	Wed, 17 Jan 2024 09:47:45 +0100
+Message-ID: <8cce0dee8588b9f3cd0c1a3f073466b01905a703.camel@sipsolutions.net>
+Subject: Re: Question about reference to config KERNEL_6_2
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Lukas Bulwahn <lukas.bulwahn@gmail.com>, linux-wireless
+	 <linux-wireless@vger.kernel.org>
+Cc: Kalle Valo <kvalo@kernel.org>, kernel-janitors
+	 <kernel-janitors@vger.kernel.org>, Linux Kernel Mailing List
+	 <linux-kernel@vger.kernel.org>
+Date: Wed, 17 Jan 2024 09:47:44 +0100
+In-Reply-To: <CAKXUXMyfrM6amOR7Ysim3WNQ-Ckf9HJDqRhAoYmLXujo1UV+yA@mail.gmail.com>
+References: 
+	<CAKXUXMyfrM6amOR7Ysim3WNQ-Ckf9HJDqRhAoYmLXujo1UV+yA@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Date: Wed, 17 Jan 2024 09:37:31 +0100
-Message-ID: <CAKXUXMyfrM6amOR7Ysim3WNQ-Ckf9HJDqRhAoYmLXujo1UV+yA@mail.gmail.com>
-Subject: Question about reference to config KERNEL_6_2
-To: Johannes Berg <johannes.berg@intel.com>, Gregory Greenman <gregory.greenman@intel.com>, 
-	linux-wireless <linux-wireless@vger.kernel.org>
-Cc: Kalle Valo <kvalo@kernel.org>, kernel-janitors <kernel-janitors@vger.kernel.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+X-malware-bazaar: not-scanned
 
-Dear Johannes, dear Gregory,
+>=20
+> Commit ffbd0c8c1e7f ("wifi: mac80211: add an element parsing unit
+> test") and commit 730eeb17bbdd ("wifi: cfg80211: add first kunit
+> tests, for element defrag") add new configs that depend on
+> !KERNEL_6_2, but the config option KERNEL_6_2 does not exist in the
+> tree.
+>=20
+> Also, Kalle Valo [1] asked during patch review about that, but did not
+> get any response on the mailing list.
 
-I am a kernel janitor checking for issues in kernel build config
-options in the repository. Amongst others, I check for references to
-config options that have not been defined anywhere in the tree using
-an existing script in the repository,
-./scripts/checkkconfigsymbols.py.
+Oops, I probably thought I'd clean that up and forgot.
 
-At the beginning of this year, I checked which issues were introduced
-in 2023 and were not yet resolved by others or my janitor work
-throughout the year. In other words, looking at some issues that
-simply slipped through last year.
+> So, what is the KERNEL_6_2 option all about? Is this something that
+> was just used locally for early development?
 
-Commit ffbd0c8c1e7f ("wifi: mac80211: add an element parsing unit
-test") and commit 730eeb17bbdd ("wifi: cfg80211: add first kunit
-tests, for element defrag") add new configs that depend on
-!KERNEL_6_2, but the config option KERNEL_6_2 does not exist in the
-tree.
+It's a backport-ism (backports.wiki.kernel.org) to restrict the option
+to certain kernels.
 
-Also, Kalle Valo [1] asked during patch review about that, but did not
-get any response on the mailing list.
+> Can we just delete this dependency in these two config options?
 
-So, what is the KERNEL_6_2 option all about? Is this something that
-was just used locally for early development?
+Yes, we should.
 
-Can we just delete this dependency in these two config options?
-
-If so, I will gladly send a patch for that.
-
-[1] https://lore.kernel.org/all/877cp6q7ws.fsf@kernel.org/
-
-
-Best regards,
-
-Lukas
+johannes
 
