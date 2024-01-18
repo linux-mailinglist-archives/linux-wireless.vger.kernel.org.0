@@ -1,105 +1,88 @@
-Return-Path: <linux-wireless+bounces-2137-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2138-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4891831283
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 06:49:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2B4E831288
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 06:50:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CA87287189
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 05:49:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0136A1C20930
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 05:50:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72DAA8F51;
-	Thu, 18 Jan 2024 05:49:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1EF3B652;
+	Thu, 18 Jan 2024 05:50:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mGdytAg/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nhhEF4x4"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29DB78F4F;
-	Thu, 18 Jan 2024 05:49:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BAE0B64A
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 05:50:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705556992; cv=none; b=J/kaizWAV1L2YMxYiEKjKii3q2DH406irYw/QnXSLD72sSZ/L8BSeJPYN3m7Oe20hJkJInjbCS4ENRd2EAH3H+ro814kTZs9fN6PjigNcYYF3ZOll6ZJOngN9JEkkPV4uyZ+6wK88CZRKdmaVc3YhTDiaUSzq0NdUvjLHS0Bs3Q=
+	t=1705557043; cv=none; b=X1OQeQMNYaXgsfai7UF2rWXKxUVjKGqYCEqOZx+7dTQOnvNZgT/MZ215BywYocFCeX61WUsz6tofqQalrdejrkmokUA32KPgKZfBvIJp8eHySCLzv0sSbssT9PP6v6mpTBZIWPjLtfFhrCun+r3x9YDcX1CcvTcBiv+ikbc2Ys8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705556992; c=relaxed/simple;
-	bh=VpKUFfNg/HrPvFXUCiGE71qPbuDU/sf0aYz4C+NnmAU=;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:References:Date:
-	 In-Reply-To:Message-ID:User-Agent:MIME-Version:Content-Type; b=WGtcskfKz5GKz4mekGUbA5usRL5tiBEWtSB6Tchg7cx5FbnkQHIYeS8o5ohrGtHu7D2FRv8vX7UMMpdRkKV3dVfQzgB1JPSn+WIzIEnHIBGnbyDn+bNmm+ku17WBxAX3o/XToxB5/bz9QkmANDFYZltgpZuw7T+CA7fDnyUappg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mGdytAg/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3632EC433A6;
-	Thu, 18 Jan 2024 05:49:43 +0000 (UTC)
+	s=arc-20240116; t=1705557043; c=relaxed/simple;
+	bh=mjwx3WCbvWDQ4H30ScARB1J9Rfuf6sNrNVOFpJlAQhQ=;
+	h=Received:DKIM-Signature:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:
+	 Cc:User-Agent:Message-ID:Date; b=lVrZQ/Pf62JYc7BwGglwU1Yj73D1LbcQ8IIBT1A66BgzPKO3tGj7BsC9sU/GAYotxmXjfnqAcyZ2+7XZNK3WulB8afM6RgmakFGSHBCrTY9vza0NT2SmOsUIB7peKC2r12RAixGQz3w6QW+HCgfn+7z3tHVWAxPI+pRKuf4xvFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nhhEF4x4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 666E5C43390;
+	Thu, 18 Jan 2024 05:50:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705556991;
-	bh=VpKUFfNg/HrPvFXUCiGE71qPbuDU/sf0aYz4C+NnmAU=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=mGdytAg/rbFbk1cpzazA43EoXsrFTY6KGL7S6PGPYTpHuXImmM/jrLoxSpgG2sfJe
-	 1S5sNO/EA4PFssquqitUBjqZsJuco7+tIbd4QmpdgQECqR7IOmUL2v56972UxANpNo
-	 45xFQNOBdEmO/NHTpvMdzylYa54Na0Qq02Lxj2vmZyy9Yze08jaX++9LcIxey4+HbI
-	 9kH+JBbtqvO+SMlb5NEqKBrEnyw0PeY1toDUy9v3dQYodY5sPk3DKYVe4IaOd6ftBY
-	 WX9zwwqHjxriA0ani2taf+bn+9GJwo3Etn+ZwYf/T+0i1GLr380x5acgN4K8H0l/XL
-	 VvyKkq8aT0GlA==
-From: Kalle Valo <kvalo@kernel.org>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: "David S . Miller" <davem@davemloft.net>,  Eric Dumazet
- <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,  Paolo Abeni
- <pabeni@redhat.com>,  Rob Herring <robh+dt@kernel.org>,  Krzysztof
- Kozlowski <krzysztof.kozlowski+dt@linaro.org>,  Conor Dooley
- <conor+dt@kernel.org>,  Bjorn Andersson <andersson@kernel.org>,  Konrad
- Dybcio <konrad.dybcio@linaro.org>,  Catalin Marinas
- <catalin.marinas@arm.com>,  Will Deacon <will@kernel.org>,  Bjorn Helgaas
- <bhelgaas@google.com>,  Heiko Stuebner <heiko@sntech.de>,  Jernej Skrabec
- <jernej.skrabec@gmail.com>,  Chris Morgan <macromorgan@hotmail.com>,
-  Linus Walleij <linus.walleij@linaro.org>,  Geert Uytterhoeven
- <geert+renesas@glider.be>,  Arnd Bergmann <arnd@arndb.de>,  Neil Armstrong
- <neil.armstrong@linaro.org>,  =?utf-8?Q?N=C3=ADcolas?= F . R . A . Prado
- <nfraprado@collabora.com>,  Marek Szyprowski <m.szyprowski@samsung.com>,
-  Peng Fan <peng.fan@nxp.com>,  Robert Richter <rrichter@amd.com>,  Dan
- Williams <dan.j.williams@intel.com>,  Jonathan Cameron
- <Jonathan.Cameron@huawei.com>,  Terry Bowman <terry.bowman@amd.com>,
-  Lukas Wunner <lukas@wunner.de>,  Huacai Chen <chenhuacai@kernel.org>,
-  Alex Elder <elder@linaro.org>,  Srini Kandagatla
- <srinivas.kandagatla@linaro.org>,  Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>,  Abel Vesa <abel.vesa@linaro.org>,
-  linux-wireless@vger.kernel.org,  netdev@vger.kernel.org,
-  devicetree@vger.kernel.org,  linux-kernel@vger.kernel.org,
-  linux-arm-msm@vger.kernel.org,  linux-arm-kernel@lists.infradead.org,
-  linux-pci@vger.kernel.org,  Bartosz Golaszewski
- <bartosz.golaszewski@linaro.org>
-Subject: Re: [PATCH 9/9] PCI/pwrseq: add a pwrseq driver for QCA6390
-References: <20240117160748.37682-1-brgl@bgdev.pl>
-	<20240117160748.37682-10-brgl@bgdev.pl>
-Date: Thu, 18 Jan 2024 07:49:41 +0200
-In-Reply-To: <20240117160748.37682-10-brgl@bgdev.pl> (Bartosz Golaszewski's
-	message of "Wed, 17 Jan 2024 17:07:48 +0100")
-Message-ID: <87mst342dm.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=k20201202; t=1705557043;
+	bh=mjwx3WCbvWDQ4H30ScARB1J9Rfuf6sNrNVOFpJlAQhQ=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=nhhEF4x4zmL5ReCojrNUX5hWGpWwUU0HqnTuPFZyZj7MviVQXy7xCcG1J/8AbqRP+
+	 xonO7OKntqGOTBzHMLnbuh3KviUqWKe+yraapI4ZTKUZkJ3O/JZcMOsaa2H4wuQ5n0
+	 /hLkzD5LaL3x3TCfQNvdx1dGsRPGsaDB6Bd80z/DXGdhgknvOhCPTyzQsTRvntqhdQ
+	 fJSMzEU7TYJGGuT2buGBFf9iI2jAghRiViXnixPB6wjCfAM9VyyDnrNLtDBtM6981s
+	 bMG82ifMQmJxYu4QitR4yaF/qC4ZSkesxcdv7JN7XH9s8Z5soTFivTHN1tE9Tt+9KG
+	 P1xIXqltBeKZA==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v3 1/3] wifi: ath12k: replace ENOTSUPP with EOPNOTSUPP
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20240117080431.2907471-2-quic_periyasa@quicinc.com>
+References: <20240117080431.2907471-2-quic_periyasa@quicinc.com>
+To: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+Cc: <ath12k@lists.infradead.org>, <ath11k@lists.infradead.org>,
+ <ath10k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+ Karthikeyan Periyasamy
+	<quic_periyasa@quicinc.com>, Jeff Johnson <quic_jjohnson@quicinc.com>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <170555703932.2637903.971806943065664355.kvalo@kernel.org>
+Date: Thu, 18 Jan 2024 05:50:41 +0000 (UTC)
 
-Bartosz Golaszewski <brgl@bgdev.pl> writes:
+Karthikeyan Periyasamy <quic_periyasa@quicinc.com> wrote:
 
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->
-> Add a PCI power sequencing driver that's capable of correctly powering
-> up the ath11k module on QCA6390 and WCN7850 using the PCI pwrseq
-> functionality.
->
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> [Neil: add support for WCN7850]
-> Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+> ENOTSUPP is not a standard error code, don't use it. Replace with
+> EOPNOTSUPP instead.
+> 
+> No functional changes, compile tested only.
+> 
+> Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-Here also: ath12k supports WCN7850, not ath11k.
+3 patches applied to ath-next branch of ath.git, thanks.
+
+49b88e5f3fa1 wifi: ath12k: replace ENOTSUPP with EOPNOTSUPP
+3422402bacd0 wifi: ath11k: replace ENOTSUPP with EOPNOTSUPP
+bc2ef64931c2 wifi: ath10k: replace ENOTSUPP with EOPNOTSUPP
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+https://patchwork.kernel.org/project/linux-wireless/patch/20240117080431.2907471-2-quic_periyasa@quicinc.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
 
