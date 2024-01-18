@@ -1,76 +1,68 @@
-Return-Path: <linux-wireless+bounces-2193-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2194-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60417831D09
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 16:57:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A239831D24
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 17:03:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3FC51F221CA
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 15:57:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52ACC284FA0
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 16:03:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 040C228DA0;
-	Thu, 18 Jan 2024 15:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 180AA2C18D;
+	Thu, 18 Jan 2024 16:03:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SfZEE4pW"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="V2m/5Qx+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34E5428DAB
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 15:56:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 985632C183
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 16:03:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705593391; cv=none; b=Pf5O0Q2bKhAyl6De9MFjBvtZYUV1uDi+yDrA1CAU/5x433pYRJs4EPXrTo+eDyxTmuMovCn2htyGLGd+2ndJkTsKcMnMzRrN3uCJH6z+NKUZekq71qpPLXI2HXR6AnhFw1wTuprfrKr7pvWu636obpjE6G/tqCWnx/g7BQVswvE=
+	t=1705593782; cv=none; b=gsK7d8+3KZOWAaRb5ToM9pp08Oq92/ODhbnOG0Q4IJefHwIcHsZ8kLzUyqkuSc6tJisiSD5b/S8fZT6a4i3MY5I2cNiNdHoxMXN7OtVEHUta6gu5vMX6NRgmMwW9oiYzII9zqF7x9EerXb4I7KB8M5xnIRz6KpWPSLt9oXRoaEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705593391; c=relaxed/simple;
-	bh=ZWYQp0/LhJLAsiWoCjJd95828/CsH52TAgIVuGWJsL0=;
-	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding; b=pcYOb0sDz7WlvzhBb4ZFdJeuMjbp0meCfqoYkNQ16iXCdqSORO63XhZHmR52aNRN7spe7Rn3zVxZZetW9ZQdc8NhpGrvybmzIKiznv0v1FMa4qV1zMZGaFHaVi0gjCUagM/eGDzAr/wjV3UD1uvVvvGAJl4YfxmAybY9yCRDRbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SfZEE4pW; arc=none smtp.client-ip=209.85.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-55a34e08775so907811a12.1
-        for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 07:56:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705593387; x=1706198187; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=WgWrE5zngMChPwhdZqNrNnSDJ6F0mXRLEZGMGRQhaVQ=;
-        b=SfZEE4pWNKqBK8IkdTlAVJfZUZf66k1C1rceUMu3DLXvgNvcsOhGKn5Ria8gNVdRGo
-         gc9nJ7k53XSkE4aoqSlLX23Ch101WX6cpOoe8exHY4u8eZZfKBzwTQdpXd1uP121zCTy
-         9xDt8PWQu593ylHhdfUzVU3ouNtcKGWwmsc+WbWdm4/MqVzWE6kk/J4pzUDdue8m8AIU
-         KbBrKzAlX+mzwIvxGAxe0OrFHag5+siF37l9GvHEaS+jico0qTNaObLvuKhCSxZg2wUx
-         K/hl1AEvCLLzUAq8MC3gICmlt19LJlnbo5NasphUZrrXNu1tz78YFV9ag5+F21vuKz8e
-         Ubug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705593387; x=1706198187;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WgWrE5zngMChPwhdZqNrNnSDJ6F0mXRLEZGMGRQhaVQ=;
-        b=TdYCaci4OSvevwFRizGW7dF/PEg2PjwJCl29Kq12+d1QqzdzkxZ0QlhHnVSyGnWtpj
-         eGvoI0zLGG5SU16ij6G53hsYp8pG5wPqRoDEPSN3HQ2lBTNKfnvelGUoIJjDZ4jMKYQ6
-         g7OcD8m0vm7zfB+aFelPia3debFWAtMhAbU+BR3DVGkSodMgJ2tJCHPwFHkQC020SUY7
-         02azNlbHlVw10gT9blkKuxmy5XsCN0Wzu2nAlIWjCswSy1nmb4pObRwrAYei3fvgaTsf
-         LYKY9zQdx6ZHTDHasFElxMCH5BSnjAkVcsOx9kA4N8Vrm6bTXbhyOtFg+r38YfIipgOK
-         HAOg==
-X-Gm-Message-State: AOJu0Yz/W3tz+pj6ZDVF8oMSwsPlrL5irJffFF0/4Tvo4hen+6fg8UGT
-	vWPkjdKscTSkyv0qN1oKhzL4gtlYFlfIYec48qtT0uHoTLlC/loVv/qlg+Zp
-X-Google-Smtp-Source: AGHT+IG4H4aapWO4Idz3IjlZC+tv+PVOj/L/B4jyrii+YGMZiLzyO5oKsewsNvWepgtAlKSftJE2hQ==
-X-Received: by 2002:a17:906:dfd8:b0:a2d:b3f8:ef54 with SMTP id jt24-20020a170906dfd800b00a2db3f8ef54mr1270071ejc.40.1705593387286;
-        Thu, 18 Jan 2024 07:56:27 -0800 (PST)
-Received: from [192.168.1.50] ([81.196.40.51])
-        by smtp.gmail.com with ESMTPSA id l18-20020a17090612d200b00a28fd9607a8sm9211490ejb.81.2024.01.18.07.56.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 18 Jan 2024 07:56:26 -0800 (PST)
-Message-ID: <1314347a-a7a7-4021-bcd5-58ff7cfa0fba@gmail.com>
-Date: Thu, 18 Jan 2024 17:56:25 +0200
+	s=arc-20240116; t=1705593782; c=relaxed/simple;
+	bh=H+rHfk87s6FAIoklaEjBHeqxGCqoP55wZ3XDAMjlhnc=;
+	h=Received:DKIM-Signature:Received:Received:Received:Message-ID:
+	 Date:MIME-Version:User-Agent:Subject:Content-Language:To:CC:
+	 References:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 X-Originating-IP:X-ClientProxiedBy:X-QCInternal:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-GUID:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details; b=pElFBybb1NoQFWsnGmokZoxCPlfkv0ImyfxmLx6zm2a3LbTlLU64bAQtnJlfQ1Ugmqx4ejKSYEGTpQhYnuGuf8LsgBqLwliXqdHkILDO2x9Yl7Q47asB6GbZlTWAxsVFda8MrfdfRQnDqLP2+2E3x0okX/dIjjLJdulZuGEaThY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=V2m/5Qx+; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40I62LLL008862;
+	Thu, 18 Jan 2024 16:02:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=2/c3cKyx1hLO3tyFUUGCn9PRx3UYBx3Lah6nksrs3/k=; b=V2
+	m/5Qx+CFPycIoqxO/IZIQDvVVeIFGQYt09GeR/eYNqs5KlLyH7xpSvAmf2JaeYwT
+	cZZkhOUFBpoyx93j3fSzV0Wp4vMoF5oZdptTDRoSL3RuPvg7oaPIkjMWHsw3LjHm
+	ZktoBwfz8aq+Pa621265s3+TMh2FnwsZ0IIw8b4n0YqAoHM32KSEbXdlxN8AeEJI
+	nPE1/6O3XgcCQ8NsJgw2AMeFG8JKvJDCiszlskSK3+/p4dTfd9766KKSYOcI6ZlO
+	4C8x+WPpikv7vV9kJLRrtQcGxDTIXCjvtkVSogbuizUc/dxcpBQWdio8NwCEZxKG
+	9dRk8rpWOnvACWRoWheg==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vpx8shfb9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 18 Jan 2024 16:02:56 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40IG2t6r015993
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 18 Jan 2024 16:02:55 GMT
+Received: from [10.110.99.42] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Thu, 18 Jan
+ 2024 08:02:54 -0800
+Message-ID: <ae765cc9-31c6-49f4-8061-5bc7671e36a8@quicinc.com>
+Date: Thu, 18 Jan 2024 08:02:54 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -78,81 +70,43 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] wifi: rtlwifi: Speed up firmware loading for USB
-To: Ping-Ke Shih <pkshih@realtek.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Larry Finger <Larry.Finger@lwfinger.net>
-References: <d9bd4949-6e92-4f35-8b60-3b45f9ad74ab@gmail.com>
- <69d5e71d354b48ef839fb3d3c47f09c7@realtek.com>
+Subject: Re: [PATCH v4 1/2] wifi: ath12k: Refactor the mac80211 hw access from
+ link/radio
 Content-Language: en-US
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <69d5e71d354b48ef839fb3d3c47f09c7@realtek.com>
-Content-Type: text/plain; charset=UTF-8
+To: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
+        <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240118010320.3918136-1-quic_periyasa@quicinc.com>
+ <20240118010320.3918136-2-quic_periyasa@quicinc.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20240118010320.3918136-2-quic_periyasa@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: CKDY6Sebcv2KBEhR_HZAN99-GpagChOf
+X-Proofpoint-GUID: CKDY6Sebcv2KBEhR_HZAN99-GpagChOf
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-18_08,2024-01-17_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 impostorscore=0
+ mlxscore=0 spamscore=0 bulkscore=0 phishscore=0 suspectscore=0
+ mlxlogscore=568 malwarescore=0 lowpriorityscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2311290000
+ definitions=main-2401180117
 
-On 18/01/2024 02:37, Ping-Ke Shih wrote:
+On 1/17/2024 5:03 PM, Karthikeyan Periyasamy wrote:
+> Currently, mac80211 hardware accesses link/radio structure directly in
+> multiple locations. Introduce helper function to avoid this direct
+> access, as this change will facilitate refactoring for Multi-link
+> operation support.
 > 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 > 
->> -----Original Message-----
->> From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
->> Sent: Thursday, January 18, 2024 4:12 AM
->> To: linux-wireless@vger.kernel.org
->> Cc: Ping-Ke Shih <pkshih@realtek.com>; Larry Finger <Larry.Finger@lwfinger.net>
->> Subject: [PATCH v2] wifi: rtlwifi: Speed up firmware loading for USB
->>
->> Currently it takes almost 6 seconds to upload the firmware for RTL8192CU
->> (and 11 seconds for RTL8192DU). That's because the firmware is uploaded
->> one byte at a time.
->>
->> Also, after plugging the device, the firmware gets uploaded three times
->> before a connection to the AP is established.
->>
->> Maybe this is fine for most users, but when testing changes to the
->> driver it's really annoying to wait so long.
->>
->> Speed up the firmware upload by writing chunks of 64 bytes at a time.
->> This way it takes about 110 ms for RTL8192CU (and about 210 ms for
->> RTL8192DU).
->>
->> PCI devices could upload it in chunks of 4 bytes, but I don't have any
->> to test and commit 89d32c9071aa ("rtlwifi: Download firmware as bytes
->> rather than as dwords") decided otherwise anyway.
->>
->> Allocate memory for the firmware image with kmalloc instead of vzalloc
->> because this memory is passed directly to usb_control_msg(), which
->> can't take memory allocated by vmalloc.
->>
->> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-> 
-> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-> 
-> [...]
-> 
->> diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c b/drivers/net/wireless/realtek/rtlwifi/usb.c
->> index 07a7e6fa46af..1fc480fe18ad 100644
->> --- a/drivers/net/wireless/realtek/rtlwifi/usb.c
->> +++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
->> @@ -125,6 +125,14 @@ static void _usb_write32_sync(struct rtl_priv *rtlpriv, u32 addr, u32 val)
->>         _usb_write_sync(rtlpriv, addr, val, 4);
->>  }
->>
->> +static void _usb_write_chunk_sync(struct rtl_priv *rtlpriv, u32 addr,
->> +                                 u32 length, u8 *data)
->> +{
->> +       struct usb_device *udev = to_usb_device(rtlpriv->io.dev);
->> +
->> +       _usbctrl_vendorreq_sync(udev, REALTEK_USB_VENQT_WRITE, addr, data, length);
-> 
-> Just curious. Originally, it uses 1/2/4 as length for write8/16/32, and this
-> patch additionally uses 8/64 as length. Any limitation of argument 'length' of
-> this function? Is arbitrary number disallowed? 
-> 
+> Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-I didn't find anything in the usb_control_msg() documentation.
-I only found this issue, where some people say 0xffff is fine,
-but older hardware may have a limit of 4096:
-https://github.com/libusb/libusb/issues/125
-
-rtl8xxxu uses lengths of 32, 94, 124, 126, 128, 156, 254 bytes.
-Some other Realtek wifi drivers use 196 bytes.
 
