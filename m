@@ -1,47 +1,47 @@
-Return-Path: <linux-wireless+bounces-2171-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2172-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C694C83186F
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 12:27:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEEFE831872
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 12:28:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92573285B64
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 11:27:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D4121C2269D
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 11:28:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AC6A241E9;
-	Thu, 18 Jan 2024 11:27:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2123F241E9;
+	Thu, 18 Jan 2024 11:28:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="czYhUdp5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="muLUC8KT"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3716A241E6
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 11:27:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1FEF241E6
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 11:28:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705577269; cv=none; b=Y5VwYkELT6c0J6lSJ7VzaxXSTTx/Tsbeikl0VWopwj5F/fL9h32wnPo9fGUgRMZb1ybuXOhLZZ0GTRjEA61z6MaEntc9KbEY0EFhUUZgqKETak35v+AFTV19fk4gbsHxo2zZXfaKHafit8FaY226XoFVG6djlyY6UXmt1ieC+8E=
+	t=1705577318; cv=none; b=kdfbBhUOC6UzZIloPlrioxTNx6JoE+hryzia0Sqzk6CuOzRHjIiUAe62px8+5ajZnLmM+dxrE/kaQ4Gs0REoB8euLAJTPCxYXlxMsjHQOd3K0fw90/fi/CloI8ZiqcCHjmx38VJVf+Qi/kGdCpVIy3C5ko6oNPeKgdvJCKU5PUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705577269; c=relaxed/simple;
-	bh=7FIs+TjXKnt5a3ThLNrp1veujLm+GW2sAhmpr1l3B7I=;
+	s=arc-20240116; t=1705577318; c=relaxed/simple;
+	bh=Vv4gO40NswEfGxLw1AeTJ1J7Eheq6UZCHHv/gjX5ptQ=;
 	h=Received:DKIM-Signature:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:
-	 Cc:User-Agent:Message-ID:Date; b=uSP+iKL9O77v8tjDBSdE+PZJA1qy9PUg6/Yblz6/rafWYspKAhBxLtS9PfizIGfr/7eYa5Cb3u/DWJGQAwv6+f1k5x0n8N8ZEjep+b3UglKbTnBEOPu3PYImv+9j+g3ZPWKmSU5prsi+f2Cjc2OdiG3uav5vFTX52Z192GWFMG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=czYhUdp5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BD3FC433F1;
-	Thu, 18 Jan 2024 11:27:47 +0000 (UTC)
+	 Cc:User-Agent:Message-ID:Date; b=KdgJcv3AXixFanBn4QJAn6LTt/u5WlsF3FY6pTKQqUD7iBMlyT179/4N6Qe24tDvx5U4Y3MgFVJNMdEKJfyERgPTV24R4Jqg/6qhdSb3yjyKRCCGog0gok1c0PIWRUFqHaDO+ie5QZVQ39KsJIwoWSU2JN3/7sjayW5rGgA2ZDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=muLUC8KT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8117C433F1;
+	Thu, 18 Jan 2024 11:28:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705577268;
-	bh=7FIs+TjXKnt5a3ThLNrp1veujLm+GW2sAhmpr1l3B7I=;
+	s=k20201202; t=1705577317;
+	bh=Vv4gO40NswEfGxLw1AeTJ1J7Eheq6UZCHHv/gjX5ptQ=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=czYhUdp5Jmb1qKtg6H25xOQ/wpuYPSB/O4sSpcMsdsje72+/QlD8hkhAYowFhc6c3
-	 Ikik40RzRPnWYdGvA/cx8roCYVHp8pXXNHIcyZoEhmUQHAAvL2hI50IfMpYnfQQ+nR
-	 EED9Bo6E7fjGQh13PuIiY6pFBjBLewWAPW0y4UCb/KZx89sN9uoMiHjYvXTTV3vkkf
-	 m2fxapJTStL0rfQDzsG0uHdyaZja7rsJPBj3exoNFsQ4gUrUFYE2Km4Im/U8x5nqDR
-	 2twzhnE7HgcvVWwBmqFUvoosDWiW2SWBZ5d9eHmKdRA8fZO6YlcT5/zH1IC4rdgL4R
-	 odz1FtEymRO5A==
+	b=muLUC8KT3qjvGyr1PCl5c08sNaQ9vlLHMcTCkRY3rNrQFmCfmRVFdWgmnIcVCMnV7
+	 tv2jt1bX4fxIgO6MBd17Asv3yDHFdnv/Ze8+S33Flmzjso5PaXP9Xjzs+y3xu5mZ5c
+	 efPKdikJRAj8Tzq2glttlNQ0jR0eE5ceTSA3FepkQXlcjYxT2zG+KhzjqgqoLS4cu6
+	 IcIHr6vQzrWP6X0IwF0UITX+2nvTDvxqhUBV4d3qg+Gxp2UgWdvQNtGIOkEoZbwGRF
+	 02a+fgHdGYysRUh+PDsj7RBlRgA6GdD0g9YQunMZGYILhSGt0LbAn5CVR7jW86O5td
+	 lCqrjPGjgnsRQ==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -50,26 +50,26 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: brcmfmac: always check the value returned by
- brcmf_chip_add_core()
+Subject: Re: [PATCH] wifi: brcmfmac: handle possible IE flags reset error
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230821112337.160974-1-dmantipov@yandex.ru>
-References: <20230821112337.160974-1-dmantipov@yandex.ru>
+In-Reply-To: <20230919051130.16316-1-dmantipov@yandex.ru>
+References: <20230919051130.16316-1-dmantipov@yandex.ru>
 To: Dmitry Antipov <dmantipov@yandex.ru>
-Cc: Franky Lin <franky.lin@broadcom.com>,
- Arend van Spriel <aspriel@gmail.com>, linux-wireless@vger.kernel.org,
- brcm80211-dev-list.pdl@broadcom.com, Dmitry Antipov <dmantipov@yandex.ru>
+Cc: Arend van Spriel <aspriel@gmail.com>,
+ Franky Lin <franky.lin@broadcom.com>,
+ Hante Meuleman <hante.meuleman@broadcom.com>, linux-wireless@vger.kernel.org,
+ lvc-project@linuxtesting.org, Dmitry Antipov <dmantipov@yandex.ru>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170557726552.2924528.1111973793443376429.kvalo@kernel.org>
-Date: Thu, 18 Jan 2024 11:27:47 +0000 (UTC)
+Message-ID: <170557731410.2924528.3253975172105424732.kvalo@kernel.org>
+Date: Thu, 18 Jan 2024 11:28:35 +0000 (UTC)
 
 Dmitry Antipov <dmantipov@yandex.ru> wrote:
 
-> In 'brcmf_chip_recognition()', always check the value returned by
-> 'brcmf_chip_add_core()' with 'IS_ERR()' and return convenient
-> 'PTR_ERR()' in case of error.
+> In 'brcmf_vif_clear_mgmt_ies()', check for possible error returned
+> by 'brcmf_vif_set_mgmt_ie()' and issue appropriate message if needed.
 > 
-> Fixes: cb7cf7be9eba ("brcmfmac: make chip related functions host interface independent")
+> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> 
 > Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 
 This should be tested on a real device.
@@ -77,7 +77,7 @@ This should be tested on a real device.
 Patch set to Changes Requested.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230821112337.160974-1-dmantipov@yandex.ru/
+https://patchwork.kernel.org/project/linux-wireless/patch/20230919051130.16316-1-dmantipov@yandex.ru/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
