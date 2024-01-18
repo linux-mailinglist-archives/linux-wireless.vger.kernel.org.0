@@ -1,56 +1,59 @@
-Return-Path: <linux-wireless+bounces-2217-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2216-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39CE283207A
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 21:24:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB2F8832079
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 21:24:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D7461C2219D
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 20:24:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 921C41F21B53
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 20:24:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CC4D2E63A;
-	Thu, 18 Jan 2024 20:24:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86AEA2E63A;
+	Thu, 18 Jan 2024 20:24:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="CJ4b1r0x"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="NLRxCP8a"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from nbd.name (nbd.name [46.4.11.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD9672E638
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 20:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64C912E63B
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 20:24:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705609481; cv=none; b=IQxI23RLC+K6oUqsPv2eMTZwXoj8HZ6ys2dejbCWlMDOqvYTepPFGFARuSnAkEc7VLvD8WErLT9liSFypQq9VUb0l68Wt0WL1hyklrmgPhoNjagjOi/6bdyDY4shzdNJgu3m6TdZ1WMPESuOZfk3rVLCm7pveBCAFycNdVn//sA=
+	t=1705609476; cv=none; b=DoI6wf+4xFbYTMnOuSgRHnqAU1jmbic73XuK0EVu6fkmO/JrczHFQYC8llV9glJqYmv/ZBpQxEP6i3z59eLaySmiDMOTCWy8QQgWg4BAtWASSMj7pejvYr3561oH7Yatws7V0LgbwIyngNeCCzXVfU9ccRXaSDyKpCZ2RaVFkRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705609481; c=relaxed/simple;
-	bh=RI1aKO6DhMyb5MqETo1O88T+LB4RYxLVROc+0gI05zo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=r1wAOA5ZIpBfGXltMNTO3eVNJc8ENZiwd48IPPauI++IykMLd7TjPUUSM7ncSN3CGR8/tgzWdyVdHhRO7Rppzpp8r+Op6TisDYsicFcTYDl2hwyGoNxC77MJ10RINa+A4bsUuhLjY4fo7bYW6dScpy2lmquaS77W6qyq54f3BJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=CJ4b1r0x; arc=none smtp.client-ip=46.4.11.11
+	s=arc-20240116; t=1705609476; c=relaxed/simple;
+	bh=1r+mdaZq+yNTakzipJ+ui54CtKQ1IBnAtt8vq8jvkYo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=AeBcBYqQYpNP0rJguRE33tPE2NjAdUqJDusglZDvTYVm0SYWrjhaUHZZ3/a45tCr0UaV1HK+9FCcufwgMZnVnQGJY+xx0ehsa7VNWAkn8vaTw1RBHFBjk4HLjNEuj43GmIWe8JKjf7W9NEBkhTIN/zRfY4eef+PpugJjDQgrB38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=NLRxCP8a; arc=none smtp.client-ip=46.4.11.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-	s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
-	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	s=20160729; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=6tkEcJFhqIhXum4DqljO2a94J18fHHSMslWTe3EccPw=; b=CJ4b1r0xPn1GWWa9R+46crsZ0K
-	H4vZGf9TrHVvHHjkYJltbAxPNIT0BcNT74nTK1enu4GYYp4W4L7/KZtefikqIUjkbOs1+fTfOwp/W
-	8unoU3C/OWxDmk9LVGOMM7uHutf2HJn+dW5Kod5JN2Z4aua2QeQPE/Jvyg0Ve2ylY378=;
+	bh=26SlX6N5+Pz/rWkz1+xOTiqMeWMakt0FpigpxeykWEM=; b=NLRxCP8aTEDGpb139IPjVpiNos
+	i4MHA45GxAJIy5MKV+470AJItbOksnqpfOHBy7hTwIqSv9S1k7PgsmqRtundJte+1D7sblKUmH00J
+	ZvgPQVeC2sOKshgdtOKBrLx60KjjzDfo4NTndtsGLe+a5qWACCf/BB5jYqxymVyxV5bs=;
 Received: from p200300daa7090900680536e7cb8d8cd3.dip0.t-ipconnect.de ([2003:da:a709:900:6805:36e7:cb8d:8cd3] helo=Maecks.lan)
 	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
 	(Exim 4.94.2)
 	(envelope-from <nbd@nbd.name>)
-	id 1rQYQy-0054tJ-LJ; Thu, 18 Jan 2024 20:52:16 +0100
+	id 1rQYQy-0054tJ-Rl; Thu, 18 Jan 2024 20:52:16 +0100
 From: Felix Fietkau <nbd@nbd.name>
 To: linux-wireless@vger.kernel.org
 Cc: Peter Chiu <chui-hao.chiu@mediatek.com>
-Subject: [PATCH 1/5] wifi: mt76: disable HW AMSDU when using fixed rate
-Date: Thu, 18 Jan 2024 20:52:12 +0100
-Message-ID: <20240118195216.80974-1-nbd@nbd.name>
+Subject: [PATCH 2/5] wifi: mt76: check txs format before getting skb by pid
+Date: Thu, 18 Jan 2024 20:52:13 +0100
+Message-ID: <20240118195216.80974-2-nbd@nbd.name>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240118195216.80974-1-nbd@nbd.name>
+References: <20240118195216.80974-1-nbd@nbd.name>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -61,38 +64,46 @@ Content-Transfer-Encoding: 8bit
 
 From: Peter Chiu <chui-hao.chiu@mediatek.com>
 
-When using fixed rate, HW uses txd DW9 to store tx arrivial time if VTA
-is set. It would overwrite the msdu_id in txd and lead to token pending
-if amsdu is enable.
+The PPDU TxS does not include the error bit so it cannot use to report
+status to mac80211.
 
 Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h | 5 +++++
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c  | 3 +++
+ 2 files changed, 8 insertions(+)
 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h
+index bd2a92467a97..5f132115ebfc 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h
+@@ -32,6 +32,11 @@ enum {
+ 	MT_LMAC_PSMP0,
+ };
+ 
++enum {
++	MT_TXS_MPDU_FMT = 0,
++	MT_TXS_PPDU_FMT = 2,
++};
++
+ #define MT_TX_FREE_MSDU_CNT		GENMASK(9, 0)
+ #define MT_TX_FREE_WLAN_ID		GENMASK(23, 14)
+ #define MT_TX_FREE_COUNT		GENMASK(12, 0)
 diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-index c7914643e9c0..630c6402ec25 100644
+index 630c6402ec25..b841bf628d02 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-@@ -544,7 +544,7 @@ void mt76_connac2_mac_write_txwi(struct mt76_dev *dev, __le32 *txwi,
- 	val = FIELD_PREP(MT_TXD5_PID, pid);
- 	if (pid >= MT_PACKET_ID_FIRST) {
- 		val |= MT_TXD5_TX_STATUS_HOST;
--		amsdu_en = amsdu_en && !is_mt7921(dev);
-+		amsdu_en = 0;
- 	}
+@@ -716,6 +716,9 @@ bool mt76_connac2_mac_add_txs_skb(struct mt76_dev *dev, struct mt76_wcid *wcid,
+ 	struct sk_buff_head list;
+ 	struct sk_buff *skb;
  
- 	txwi[5] = cpu_to_le32(val);
-@@ -579,6 +579,8 @@ void mt76_connac2_mac_write_txwi(struct mt76_dev *dev, __le32 *txwi,
- 				spe_idx = 24 + phy_idx;
- 			txwi[7] |= cpu_to_le32(FIELD_PREP(MT_TXD7_SPE_IDX, spe_idx));
- 		}
++	if (le32_get_bits(txs_data[0], MT_TXS0_TXS_FORMAT) == MT_TXS_PPDU_FMT)
++		return false;
 +
-+		txwi[7] &= ~cpu_to_le32(MT_TXD7_HW_AMSDU);
- 	}
- }
- EXPORT_SYMBOL_GPL(mt76_connac2_mac_write_txwi);
+ 	mt76_tx_status_lock(dev, &list);
+ 	skb = mt76_tx_status_skb_get(dev, wcid, pid, &list);
+ 	if (skb) {
 -- 
 2.43.0
 
