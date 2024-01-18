@@ -1,72 +1,72 @@
-Return-Path: <linux-wireless+bounces-2174-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2175-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10B1E831909
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 13:22:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7962B83191D
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 13:26:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3D4CCB22849
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 12:22:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E088C1F226C9
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 12:26:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2876241F5;
-	Thu, 18 Jan 2024 12:22:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F16AB24A0B;
+	Thu, 18 Jan 2024 12:26:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="IOqHsGOk"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="JTXaZDKW"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C177D241EC
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 12:22:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C97A249E9
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 12:26:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705580566; cv=none; b=KA3SCAMbUF3AY6mm6c2XsYbQJQbDTUHDBOvO2WsCLGn4tEkdcV0gwEhKfmQa65ZBBnVkxL6/D/gJ9aPqzLcyynFNhy0sCqAbUKZow8CDUnY3aj4+KI9yHB9AP440WigPLjP6tvmmcq2qNgB2JOUo3HjEw1Oq7PbYP39OBo005Nw=
+	t=1705580773; cv=none; b=Q027BtUQuIdRVuwAqG/0Khr1unN2oh/sGnknXuaA/LdYiRqO8uEPyUiNqkM5musKN/x4seE9f1WVkUMuaPSo/01qgDkJWOJLnVR9C12kgUX1dbYeRyPZWoa4gXE633U95aLWUHP3vtS7MV2HO7Qa9801KaGOWpfFwFFlO0PHEWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705580566; c=relaxed/simple;
-	bh=LemA9BsqEjRw7Xic0DLBh81RuMdq+78179mjIEdUgbQ=;
+	s=arc-20240116; t=1705580773; c=relaxed/simple;
+	bh=cZKnoKheHGveMhYJM8WTu+Q2GY01VZb/b52Mx18Er/4=;
 	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:Received:
 	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 From:Autocrypt:In-Reply-To:Content-Type; b=ZefATSDPWKSIXUT7vciixbw+Qf0425GVxSYMKtCCMNWQm04IpRXurBrFoUWzyYgvzUFtcuM6/PgGS6VwdzRUFa4IYf4F/hC5edAkDFm2ZiUm0pH+BDrUhi9tjwsDRAGwIA9yPnKS9I4TviXkhalj8kqJD0L9L1PH3szPSKXCvIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=IOqHsGOk; arc=none smtp.client-ip=209.85.221.48
+	 From:Autocrypt:In-Reply-To:Content-Type; b=afI0jRXP/6PquZM21vW5dKe8+zwWl8udAyHbv3211K9zgwI8hBYiu4hQviw3g72VVYX+TtWT8Cdol5eQrS9g21/pnORoIcQuE+rhMawZ++WC2hHWgHALjTuRQ9zin1BCiFoyBWCpQ6L8t1KL3fL7m2byEkWbt1uOUxukpEwQQfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=JTXaZDKW; arc=none smtp.client-ip=209.85.128.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-337d5aa5ef6so258437f8f.3
-        for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 04:22:44 -0800 (PST)
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-40e72a567eeso46594245e9.0
+        for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 04:26:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1705580563; x=1706185363; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1705580770; x=1706185570; darn=vger.kernel.org;
         h=in-reply-to:autocrypt:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=sb/jhTq4Nr7m8ELZAfECpv87zpHWtRN19nvufvIDDzc=;
-        b=IOqHsGOk5hIYiYxSMA0uu+DyPOh1FIHOEvnrAC7tOwvNaWz0wMmUrDie8RuUR6/qJB
-         RFJALAXR11Pe/kymwI9D84GsxMPiG3oioBsdwrzArrzyaumrMGivpeTxCwHcVjWelC1y
-         1mSlLMJDi70SncZ6SCSx3YUq9CQunFqnDvr5s=
+        bh=N0HMl8w2U4mmTJBUaSGFcEHPNzFFLp5ZsFEahTi7ALE=;
+        b=JTXaZDKWSN+M43SVLGcxTjPxx/t4ApQGu2nRzZL86EmwG6rGxHQeyS+IcCpIhSoiSQ
+         BkJrR+ksnp2RAbmHDRJq7tam7kEA119MODEv3GpijHXU/xSdkRy1XQ5OE9OaVyk0y2RK
+         fwOx6ipV29uOA1WPZuNWfq8YeqTxLDj0q3KMs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705580563; x=1706185363;
+        d=1e100.net; s=20230601; t=1705580770; x=1706185570;
         h=in-reply-to:autocrypt:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=sb/jhTq4Nr7m8ELZAfECpv87zpHWtRN19nvufvIDDzc=;
-        b=Qaj5qXsKyexhfe0CpwnGlAqe5XMQJtiETcGPAjFlJujOLXY/2lpDgB7GQmAtnwTVTA
-         GiUwPLmL7HoaMRsF5P7BYvDpRsdrUyF16gjYNiD3iB5wdnNObGgr3IdEK2QhLUmTR2QF
-         8enmegL65KiJAjUIV755/SwNqQutegtxdsMIcKxDKsb/fwAOWfirairFdZQAPQX4v0Au
-         zZcBCiMrJYiVyKAp3Ck2/kzspbwDFwvXm2t+16D4wq8+QMADx234gLZPG9rSiRwvNIWX
-         Nn04Qrz3lwvsmhqr3fQVd1mT7ZdUQZluaFBaMM4fE3RXTbrjx2WOxxUDWJJBbcDG/p87
-         mGoQ==
-X-Gm-Message-State: AOJu0Yy1yaJGab+uQbs02bz4IU84rJll2FufUV4p0i/VoeUg7zC+l3nA
-	ewXXXHhT1riSpaULpNk1CKbVp0L7QGrwLpLFXdDiy6jmlH7Hoq4OEkY6vCV3kA==
-X-Google-Smtp-Source: AGHT+IGb29yPB4hIXsDdR3Z2YwjFsq8p0Y0UCWSMUUOubUbzmA7cq3lryLU5PQSXZNhz1ONjNaBuwg==
-X-Received: by 2002:adf:d1e7:0:b0:337:5588:801f with SMTP id g7-20020adfd1e7000000b003375588801fmr570208wrd.57.1705580562984;
-        Thu, 18 Jan 2024 04:22:42 -0800 (PST)
+        bh=N0HMl8w2U4mmTJBUaSGFcEHPNzFFLp5ZsFEahTi7ALE=;
+        b=JEjx8puo6Dp/U0Z1h1NoZU8rHgh2h/A+zgdv2Qh55tYRTF0bGUdEDLu5EqmrgFnQrN
+         XxSfFHCzgMDWHk8dAdAS8aGPEF2hVqYOKCCUk1fTPxwjIMz7k8enAQ+2Ev3HmxL1r8sX
+         VfrLZUkoNfA0BUosCmUwKTaH4WjOElbGxVQS+XhjVzxg1rqaDddhZSMmKkJmBdx1hi24
+         wTw/VoG4o/zV2Sk4Av8VakdhT3D8B4jDOEOCzDlBbncHw0YuBR9nnUsuPqiBHmo2OccM
+         zpfcra7azHqSlXJoeIwSijlb2RNRR0PX7ckFfXM4o7sTQzENXt6rvrp5k1NMUzBNpl4/
+         LkLg==
+X-Gm-Message-State: AOJu0YzISAig92xuX+wLcj+dI19okHLW4Tz0Dd+XzlOXlKrvp7Cf400w
+	vwHjcD5kGxr7XSinWduPCMrh8WqoP877AfFpx0ENxl5PImFKWzTQGCr/UatWfA==
+X-Google-Smtp-Source: AGHT+IHJSuOX/IC2oeRwJHDtl/DsQnWjWdpnlm2/YXMMvSsmZUOpyy2oP7SNEYIN+QfOn60uEMbIDw==
+X-Received: by 2002:a05:600c:3084:b0:40c:6eda:93a6 with SMTP id g4-20020a05600c308400b0040c6eda93a6mr231573wmn.43.1705580770402;
+        Thu, 18 Jan 2024 04:26:10 -0800 (PST)
 Received: from [10.176.68.61] ([192.19.148.250])
-        by smtp.gmail.com with ESMTPSA id f12-20020adfb60c000000b00336b8461a5esm3919896wre.88.2024.01.18.04.22.41
+        by smtp.gmail.com with ESMTPSA id h6-20020a05600c350600b0040c6d559490sm25729252wmq.3.2024.01.18.04.26.09
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 18 Jan 2024 04:22:42 -0800 (PST)
-Message-ID: <4cc44b07-13bd-49d0-b10f-b88875380f8c@broadcom.com>
-Date: Thu, 18 Jan 2024 13:22:41 +0100
+        Thu, 18 Jan 2024 04:26:09 -0800 (PST)
+Message-ID: <bd0aa2ea-fcde-4df7-bcfb-a6e8c962255d@broadcom.com>
+Date: Thu, 18 Jan 2024 13:26:09 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -74,13 +74,14 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] [v2] wifi: brcmfmac: handle possible completion
- timeouts
+Subject: Re: [PATCH 2/2] [v2] wifi: brcmfmac: handle possible MSI enabling
+ error
 To: Dmitry Antipov <dmantipov@yandex.ru>,
  Hante Meuleman <hante.meuleman@broadcom.com>
 Cc: brcm80211-dev-list.pdl@broadcom.com, linux-wireless@vger.kernel.org,
  Kalle Valo <kvalo@kernel.org>, lvc-project@linuxtesting.org
 References: <20230614075848.80536-1-dmantipov@yandex.ru>
+ <20230614075848.80536-2-dmantipov@yandex.ru>
 From: Arend van Spriel <arend.vanspriel@broadcom.com>
 Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
  xsFNBGP96SABEACfErEjSRi7TA1ttHYaUM3GuirbgqrNvQ41UJs1ag1T0TeyINqG+s6aFuO8
@@ -125,138 +126,70 @@ Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
  NKowQLrlMBGXT4NnRNV0+yHmusXPOPIqQCKEtbWSx9s2slQxmXukPYvLnuRJqkPkvrTgjn5d
  eSE0Dkhni4292/Nn/TnZf5mxCNWH1p3dz/vrT6EIYk2GSJgCLoTkCcqaM6+5E4IwgYOq3UYu
  AAgeEbPV1QeTVAPrntrLb0t0U5vdwG7Xl40baV9OydTv7ghjYZU349w1d5mdxg==
-In-Reply-To: <20230614075848.80536-1-dmantipov@yandex.ru>
+In-Reply-To: <20230614075848.80536-2-dmantipov@yandex.ru>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="0000000000009c95ae060f376bc5"
+	boundary="000000000000f9ce9c060f377748"
 
---0000000000009c95ae060f376bc5
+--000000000000f9ce9c060f377748
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 6/14/2023 9:58 AM, Dmitry Antipov wrote:
-> Handle possible 'wait_for_completion_timeout()' errors in
-> 'brcmf_p2p_af_searching_channel()', 'brcmf_p2p_tx_action_frame()'
-> and 'brcmf_p2p_del_vif()', adjust related code.
+> Handle possible 'pci_enable_msi()' error in
+> 'brcmf_pcie_request_irq()', adjust related code.
 > 
 > Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Thanks for adding this exception handling. Please consider suggestions 
-below.
 
 Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 > Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 > ---
 > v2: rebase against wireless-next tree
 > ---
->   .../broadcom/brcm80211/brcmfmac/p2p.c         | 31 +++++++++++++------
->   1 file changed, 21 insertions(+), 10 deletions(-)
+>   .../net/wireless/broadcom/brcm80211/brcmfmac/pcie.c  | 12 ++++++++----
+>   1 file changed, 8 insertions(+), 4 deletions(-)
 > 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
-> index d4492d02e4ea..e43dabdaeb0b 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
-> @@ -1151,6 +1151,7 @@ static s32 brcmf_p2p_af_searching_channel(struct brcmf_p2p_info *p2p)
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+> index 80220685f5e4..f7d9f2cbd60b 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+> @@ -965,6 +965,7 @@ static irqreturn_t brcmf_pcie_isr_thread(int irq, void *arg)
+>   
+>   static int brcmf_pcie_request_irq(struct brcmf_pciedev_info *devinfo)
 >   {
->   	struct afx_hdl *afx_hdl = &p2p->afx_hdl;
->   	struct brcmf_cfg80211_vif *pri_vif;
-> +	bool timeout = false;
->   	s32 retry;
+> +	int ret;
+>   	struct pci_dev *pdev = devinfo->pdev;
+>   	struct brcmf_bus *bus = dev_get_drvdata(&pdev->dev);
 >   
->   	brcmf_dbg(TRACE, "Enter\n");
-> @@ -1173,8 +1174,11 @@ static s32 brcmf_p2p_af_searching_channel(struct brcmf_p2p_info *p2p)
->   			  retry);
->   		/* search peer on peer's listen channel */
->   		schedule_work(&afx_hdl->afx_work);
-> -		wait_for_completion_timeout(&afx_hdl->act_frm_scan,
-> -					    P2P_AF_FRM_SCAN_MAX_WAIT);
-> +		if (!wait_for_completion_timeout(&afx_hdl->act_frm_scan,
-> +						 P2P_AF_FRM_SCAN_MAX_WAIT)) {
-> +			timeout = true;
-> +			break;
-> +		}
-
-Instead could do:
-		timeout = !wait_for_completion_timeout(...);
-		if (timeout)
-			break;
-
->   		if ((afx_hdl->peer_chan != P2P_INVALID_CHANNEL) ||
->   		    (!test_bit(BRCMF_P2P_STATUS_FINDING_COMMON_CHANNEL,
->   			       &p2p->status)))
-> @@ -1186,8 +1190,11 @@ static s32 brcmf_p2p_af_searching_channel(struct brcmf_p2p_info *p2p)
->   			/* listen on my listen channel */
->   			afx_hdl->is_listen = true;
->   			schedule_work(&afx_hdl->afx_work);
-> -			wait_for_completion_timeout(&afx_hdl->act_frm_scan,
-> -						    P2P_AF_FRM_SCAN_MAX_WAIT);
-> +			if (!wait_for_completion_timeout
-> +			    (&afx_hdl->act_frm_scan, P2P_AF_FRM_SCAN_MAX_WAIT)) {
-> +				timeout = true;
-> +				break;
-> +			}
-
-dito
-
->   		}
->   		if ((afx_hdl->peer_chan != P2P_INVALID_CHANNEL) ||
->   		    (!test_bit(BRCMF_P2P_STATUS_FINDING_COMMON_CHANNEL,
-> @@ -1209,7 +1216,7 @@ static s32 brcmf_p2p_af_searching_channel(struct brcmf_p2p_info *p2p)
+> @@ -972,16 +973,19 @@ static int brcmf_pcie_request_irq(struct brcmf_pciedev_info *devinfo)
 >   
->   	clear_bit(BRCMF_P2P_STATUS_FINDING_COMMON_CHANNEL, &p2p->status);
+>   	brcmf_dbg(PCIE, "Enter\n");
 >   
-> -	return afx_hdl->peer_chan;
-> +	return timeout ? P2P_INVALID_CHANNEL : afx_hdl->peer_chan;
+> -	pci_enable_msi(pdev);
+> +	ret = pci_enable_msi(pdev);
+> +	if (ret)
+> +		return ret;
+
+The above is sufficient. Further adjustments not needed.
+
+>   	if (request_threaded_irq(pdev->irq, brcmf_pcie_quick_check_isr,
+>   				 brcmf_pcie_isr_thread, IRQF_SHARED,
+>   				 "brcmf_pcie_intr", devinfo)) {
+>   		pci_disable_msi(pdev);
+>   		brcmf_err(bus, "Failed to request IRQ %d\n", pdev->irq);
+> -		return -EIO;
+> +		ret = -EIO;
+> +	} else {
+> +		devinfo->irq_allocated = true;
+>   	}
+> -	devinfo->irq_allocated = true;
+> -	return 0;
+> +	return ret;
 >   }
 >   
 >   
-> @@ -1580,14 +1587,18 @@ static s32 brcmf_p2p_tx_action_frame(struct brcmf_p2p_info *p2p,
->   		  (p2p->wait_for_offchan_complete) ?
->   		   "off-channel" : "on-channel");
->   
-> -	wait_for_completion_timeout(&p2p->send_af_done, P2P_AF_MAX_WAIT_TIME);
-> -
-> +	if (!wait_for_completion_timeout(&p2p->send_af_done,
-> +					 P2P_AF_MAX_WAIT_TIME)) {
-> +		err = -ETIMEDOUT;
-> +		goto clear;
-> +	}
 
-Not really needed as timeout would cause the code to proceed in the else 
-branch below.
-
->   	if (test_bit(BRCMF_P2P_STATUS_ACTION_TX_COMPLETED, &p2p->status)) {
->   		brcmf_dbg(TRACE, "TX action frame operation is success\n");
->   	} else {
->   		err = -EIO;
->   		brcmf_dbg(TRACE, "TX action frame operation has failed\n");
->   	}
-> +clear:
->   	/* clear status bit for action tx */
->   	clear_bit(BRCMF_P2P_STATUS_ACTION_TX_COMPLETED, &p2p->status);
->   	clear_bit(BRCMF_P2P_STATUS_ACTION_TX_NOACK, &p2p->status);
-> @@ -2404,10 +2415,10 @@ int brcmf_p2p_del_vif(struct wiphy *wiphy, struct wireless_dev *wdev)
->   	brcmf_dbg(INFO, "P2P: GO_NEG_PHASE status cleared\n");
->   
->   	if (wait_for_disable)
-> -		wait_for_completion_timeout(&cfg->vif_disabled,
-> -					    BRCMF_P2P_DISABLE_TIMEOUT);
-> +		err = (wait_for_completion_timeout(&cfg->vif_disabled,
-> +						   BRCMF_P2P_DISABLE_TIMEOUT)
-> +		       ? 0 : -ETIMEDOUT);
->   
-> -	err = 0;
-
-For P2P_DEVICE wait_for_disable is false so err would be uninitialized 
-here when removing the line above. Looking at the function 
-wait_for_disable is set to true for non-P2P_DEVICE so the wait can move 
-inside the if statement below.
-
->   	if (iftype != NL80211_IFTYPE_P2P_DEVICE) {
->   		brcmf_vif_clear_mgmt_ies(vif);
->   		err = brcmf_p2p_release_p2p_if(vif);
-
---0000000000009c95ae060f376bc5
+--000000000000f9ce9c060f377748
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -327,15 +260,15 @@ BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
 N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
 p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCDTXISb8Uv/+UaS5VFv
-nO1JbMtuGpslPGQlvZb9VOHOfTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yNDAxMTgxMjIyNDNaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCBmt2k+ALug3ZEsKwu6
+GZEHPaBwLJzpEKHThAV2d6o6NjAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yNDAxMTgxMjI2MTBaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAx7HeRyHY6RPi85pBZJbPuMlaasBHVD2I76iQ
-UL5uKW+UIxsuE0TLh4YMQzgWpNCnEI0vkvDo4mReZ2l6kHWpjfrPXql1lkz1F8RiEW2KgZ05Cy8/
-+eyWWpfZN00T3+9gKGfSvLUl3EmjqeKVivzQVR7RtC8EQi/KxRBrKipQpvPwyPdcsPfi+hCzDLJ/
-dAuoLlzjxYb+bdEONZOnFl2gwEGMXsJ0LN8dp39g9OMWusTw0zq8BdW0waJ932W01NppNSOTCAOA
-qK6DAD8IryrNj2qdh0bE1XMBGPbrlwBcPQB0qCZnfJxaaz9YiFfZI56jfpU+jfRmPa8jFzi2tGxX
-RA==
---0000000000009c95ae060f376bc5--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAgqEw+NSP7KqJXZf6Gx/qYacDqyecYD+wiNvc
+4KCTi6Sd0aPCd2aSINC2z8yQ2wYfR9yUhOwvSyy1xyc0oSH3PnfpJgCX2Ws9XeG0uPXgIwXY7V9q
+omuMgnjUKXV3tiJ2PySi6LsKXgJguDr3XSpDSrVUwBX+1FXzL1WjQ9vzaH8B8ANdgyp2kirwELY5
+GNFpiHP46qpxhBDU/ogUYEtRNcpOUOq8tzfOK+kscfr9xbSE9o4DzUui0x4KBEE1pZpEE9A4hXSx
+wBMNOpWzNOZi4dTTYPoaER8uP+t4PerTfCYW/UFhjHoKgw6Akvx6OpGhFVyN2LXcu8T95R9pifwE
+cA==
+--000000000000f9ce9c060f377748--
 
