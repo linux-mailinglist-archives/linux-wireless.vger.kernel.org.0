@@ -1,47 +1,47 @@
-Return-Path: <linux-wireless+bounces-2180-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2181-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E21B28319FE
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 14:07:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3AF9831A06
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 14:07:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D8EE1B25424
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 13:07:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 506B61F213CE
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 13:07:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0818724B5D;
-	Thu, 18 Jan 2024 13:06:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53572250E4;
+	Thu, 18 Jan 2024 13:07:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PHYZ9gkK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qx3oeMIK"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8DCE241FC
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 13:06:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 304B1250E1
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 13:07:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705583217; cv=none; b=mrrycIvLPnhzORznTnJl5K3yQFy71IjIGX9Dr2cGsoLgYicylSRuCphPPHzWQiERJ3yIo8v3jjHTVDn4ZQUdZweLxe9TnBBcVYXHchz8WDdY+BNKRDShDI8ZysBKhWAxQtx12395PpXWYEcj3Gz4LEXJ7sT1Ai4ReDD/CJr2/Ks=
+	t=1705583252; cv=none; b=kjiqVrcOlBTg5jltzCdJpsp4YWet3xZEIslCpTjEFWEm6lvZVs4qGuq6bcYxbRcQm0CqfywSdLcAfAjJqj0npi0M8GxFQSZcFzWrYZ3U24aSwg31wAcwnWtFLTjjpuua4+zs28NOZ0DRLUy11oN5faKYQwteH2P32Vm5DKf/upk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705583217; c=relaxed/simple;
-	bh=+blTKqSBWpW6r7TfXfyfKT3NZkOLFReG37eRdYqyEEY=;
+	s=arc-20240116; t=1705583252; c=relaxed/simple;
+	bh=8n1qMvdhePDwaY9HjjikmpcVO8WTz22ori7cLmW0szM=;
 	h=Received:DKIM-Signature:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:
-	 Cc:User-Agent:Message-ID:Date; b=mGIeELk1IYyDMk4gYa4mtM5RP2EIzjOAYn+FnNSH5vtmx0yss1lB1cggypfldkl9u++VMZ5ZI2WdaaVPfXsmsDxJ2AE4HjnQ14iaqcNy8oZwTZYYSzurEJ/KlIXk6BQWguQvdpfwTcpzZKMgEej0dPRBJX/9osn492mnbR6fbT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PHYZ9gkK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78F31C433C7;
-	Thu, 18 Jan 2024 13:06:51 +0000 (UTC)
+	 Cc:User-Agent:Message-ID:Date; b=nO9MQ7iMneDHIEupGpQvj5Fdirc2lZ+nZP7pK/PgReaKJgmzlF58+v9wsudGaR8A6eExe3QWqqbU1hjjxI6R0hqMsPnk/K3K7fRVemKveISOLxbQslbLstN68J1lcMX/KkGuaRHtPQVzfgqCNUruzgwsdPGjVi+HxRiWIQlQq/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qx3oeMIK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6796FC43390;
+	Thu, 18 Jan 2024 13:07:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705583217;
-	bh=+blTKqSBWpW6r7TfXfyfKT3NZkOLFReG37eRdYqyEEY=;
+	s=k20201202; t=1705583251;
+	bh=8n1qMvdhePDwaY9HjjikmpcVO8WTz22ori7cLmW0szM=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=PHYZ9gkKA4rS8bF3MGyeLxdyXC56bcmR/0vHfBT2kFU/bpbj3vEags0ILi6/Vr16u
-	 dfOOeTuzPkElUdvi2ev0xpDJf/WaLWL5Smzr1MLE1R1C/zqZPWXPMW3ac9vRUPaT9R
-	 3xo5YtqaS7APiuwDrOcKYSUBBT46SncRu/Kc3sHwhrhY1S49tvfDf5pkUK+PHgGqEW
-	 8M7lJERpzXmkVAkldArtlWH6WyBgan9B1gh6EYik0q6U5HkUGz9vfpHjLu4eYHAN//
-	 zbkrmgK1JcInsBmi9vsVHy+pGfYXRA200nMpXGCykdlrlvNCkvDVoZ1xikFFtRwCcw
-	 ZoDP6179LfYPA==
+	b=Qx3oeMIKWf64rY4yRHx/YrL0Tx/Bt4xCftwBpmHlXnDKT2BAP7URbKa/g7EYuirJ2
+	 VI1iWS3HbQWBkVbEo+s+0C1/jgFI3ziCcbtQa7tco17wLW9aaXRW3MhDAzlI4OObji
+	 AKgY9AQ+1c4i1zhiUIBNCHZUI4ga426ArfY/QWyeWNC6g/FygC7PTK2wsYr1bRW/bt
+	 xDmwUmiC1NVLUl6fvl6u0yuKr/1y3fZFsooAcViT1O6r4xSL+t0iBtKwisXHe3jgVb
+	 v8/qjDOD5jAd7Ck1vXaxrQTpHY0MWmYxPgsmLijd7TJ9wWV1mXoZKBGq3TZsW9kHVj
+	 rWT7K1pVqExSA==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -50,49 +50,34 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [wireless-next,v2,2/3] wifi: mwifiex: debugfs: Drop unnecessary
- error check for debugfs_create_dir()
+Subject: Re: [PATCH] wifi: rt2x00: simplify rt2x00crypto_rx_insert_iv()
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230903030216.1509013-3-ruanjinjie@huawei.com>
-References: <20230903030216.1509013-3-ruanjinjie@huawei.com>
-To: Jinjie Ruan <ruanjinjie@huawei.com>
-Cc: <gregory.greenman@intel.com>, <briannorris@chromium.org>, <nbd@nbd.name>,
- <lorenzo@kernel.org>, <ryder.lee@mediatek.com>, <shayne.chen@mediatek.com>,
- <sean.wang@mediatek.com>, <matthias.bgg@gmail.com>,
- <angelogioacchino.delregno@collabora.com>, <avraham.stern@intel.com>,
- <johannes.berg@intel.com>, <emmanuel.grumbach@intel.com>, <trix@redhat.com>,
- <dmantipov@yandex.ru>, <christophe.jaillet@wanadoo.fr>,
- <yangyang@marvell.com>, <linville@tuxdriver.com>, <rramesh@marvell.com>,
- <akarwar@marvell.com>, <nishants@marvell.com>,
- <linux-wireless@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
- <linux-mediatek@lists.infradead.org>, Bing Zhao <bzhao@marvell.com>,
- Frank Huang <frankh@marvell.com>, Kiran Divekar <dkiran@marvell.com>,
- <ruanjinjie@huawei.com>
+In-Reply-To: <20231019070750.17911-1-dmantipov@yandex.ru>
+References: <20231019070750.17911-1-dmantipov@yandex.ru>
+To: Dmitry Antipov <dmantipov@yandex.ru>
+Cc: Stanislaw Gruszka <stf_xl@wp.pl>,
+ Helmut Schaa <helmut.schaa@googlemail.com>, linux-wireless@vger.kernel.org,
+ lvc-project@linuxtesting.org, Dmitry Antipov <dmantipov@yandex.ru>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170558320955.2924528.12751516138860022016.kvalo@kernel.org>
-Date: Thu, 18 Jan 2024 13:06:51 +0000 (UTC)
+Message-ID: <170558324865.2924528.4635614423834135682.kvalo@kernel.org>
+Date: Thu, 18 Jan 2024 13:07:30 +0000 (UTC)
 
-Jinjie Ruan <ruanjinjie@huawei.com> wrote:
+Dmitry Antipov <dmantipov@yandex.ru> wrote:
 
-> debugfs_create_dir() returns ERR_PTR and never return NULL.
+> In 'rt2x00crypto_rx_insert_iv()', added alignment can't exceed 3
+> bytes and ICV size is either 4 or 8 bytes, so skb space adjustment
+> may be simplified. Compile tested only.
 > 
-> As Russell suggested, this patch removes the error checking for
-> debugfs_create_dir(). This is because the DebugFS kernel API is developed
-> in a way that the caller can safely ignore the errors that occur during
-> the creation of DebugFS nodes. The debugfs APIs have a IS_ERR() judge in
-> start_creating() which can handle it gracefully. So these checks are
-> unnecessary.
+> Found by Linux Verification Center (linuxtesting.org) with SVACE.
 > 
-> Fixes: 5e6e3a92b9a4 ("wireless: mwifiex: initial commit for Marvell mwifiex driver")
-> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-> Suggested-by: Russell King (Oracle) <linux@armlinux.org.uk>
+> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 
 Patch applied to wireless-next.git, thanks.
 
-50180c7f8e3d wifi: mwifiex: debugfs: Drop unnecessary error check for debugfs_create_dir()
+173b0fb47c3d wifi: rt2x00: simplify rt2x00crypto_rx_insert_iv()
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230903030216.1509013-3-ruanjinjie@huawei.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20231019070750.17911-1-dmantipov@yandex.ru/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
