@@ -1,133 +1,102 @@
-Return-Path: <linux-wireless+bounces-2140-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2141-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBDCB8314C4
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 09:36:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 670A38314D1
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 09:37:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99CC4283B82
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 08:36:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F08C3B265D7
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 08:37:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A69011173D;
-	Thu, 18 Jan 2024 08:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF3FA25760;
+	Thu, 18 Jan 2024 08:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hPOthjpz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DJZOZ+8e"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 165522032F;
-	Thu, 18 Jan 2024 08:25:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EDBF2576A;
+	Thu, 18 Jan 2024 08:29:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705566351; cv=none; b=OliqNNjH7M2XaysLlb7+maWkyP4QONQxUXUIQSMLrA2QuEqrYDSxCpZFBfK3OoXsxU8Qs2h3zHybso7SG9hwQbVFkxnfW3fznrjSK5+keURJkuMkdy7Zyc8ogmE3HDBCcf/m/A83gFeB31X+q2CcgbjSlDdC3dTsRnBcxJA1ixI=
+	t=1705566544; cv=none; b=RMhM0xF5/lzjEGPbmLn9ZwHPdlzSZMHGDxHoVhcrqr+10xnBiGiul1OIZWrPqOWfKoQnYykZgVeu8q+pX3yLt31x0exJjKnsVstddZYMT5pfwblbekItX+Et44W+RLZubr+s77yvq+P+hJmw0u6Lf2WurjjGZremCjo4L9eM7Ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705566351; c=relaxed/simple;
-	bh=rjcD1lGmw7xFLuU8IAfAb0NXO+BHQ4z6dDgtWOpRPfU=;
+	s=arc-20240116; t=1705566544; c=relaxed/simple;
+	bh=IogBl3L09kV2fz3jVnil+MefPIx4RdTr5CjD15YUYck=;
 	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:Received:From:
-	 To:Cc:Subject:Date:Message-Id:X-Mailer; b=GExvcawPMoFNw/iznX54mofk0+X/9kRfxSkLod4SiIWM36o0KMtjftjnf0UTHqTvuoZMm47WRIntS6qo8ieCwz2GluGC1Xd7YBwqBYdp64mnl1PKudUk400ddxynZuIrNqS1E3Wqi4vCHFbQKFOwGVFXkoBnTLR5INtymukwBI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hPOthjpz; arc=none smtp.client-ip=209.85.218.44
+	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:MIME-Version:
+	 References:In-Reply-To:From:Date:Message-ID:Subject:To:Cc:
+	 Content-Type; b=jDRJZOpWS9vNeJqOckvHs8J3jhVOp7AnWslXOOJKmS29p1zN0wv/KWGJZB5pOBcBzvKbR28RLt+xQWcKUwnDQ8spn/VHiYoQ6vjBVGDiVf/nBqEARcRbKycah60si8fqnQg4aILEmxKcfESzwnnMTsIXYsSkCUBKK3uMP9RkPRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DJZOZ+8e; arc=none smtp.client-ip=209.85.208.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a2c67be31edso823971766b.0;
-        Thu, 18 Jan 2024 00:25:49 -0800 (PST)
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-55a025bca6eso455023a12.1;
+        Thu, 18 Jan 2024 00:29:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705566348; x=1706171148; darn=vger.kernel.org;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ckg4aZXATh9bXDX8WnAIEQFE0u7PIBO0Zt6Knu3GQL0=;
-        b=hPOthjpzJ4+nLYZ02Flklkdfh7+2mh/7uxAgxU6+E4+2em3JHRUlRITXswCeSc3S8P
-         qtqtjLGGZJeTP7T3ofGK1sGrdhzNArtg7rphPijrp5Ea6qcvdjdujpJmyCWhUUE4lL7m
-         Rhp+RUIvo5XDtuJFvLdCBRpudNaS/hNW/bs/u179GvYL0P5ZAYX439u5xWQYiHJlYZum
-         m0+acibrrqwHrXBDHX6YI7tqWi4FXvnxVrqe3HHpSDfHkcuF6DPtFNXfDV89jFsRUR5n
-         rkowtQU9tfzQc5Wi92KPMt6/KzMAzsxyvHUukkI9rqEaeXq/mXOD4dZcScGMiNJe6WgS
-         fLGQ==
+        d=gmail.com; s=20230601; t=1705566542; x=1706171342; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=IogBl3L09kV2fz3jVnil+MefPIx4RdTr5CjD15YUYck=;
+        b=DJZOZ+8eZ6Sqp3scOWcO47rXXe4R3Ih1ga5yBTnp6Es0TW1BDn7qWEmEhLpwjGXqY/
+         1rKQtoyhFYJ7z9N1USPpTLBkn8MYDKB1CNnoOpmDdpQ3Bx+cYW1KPtYg4JtGgRj2p2xV
+         2hNFSCNfTYXq5tJOR/2XYtw4+j84/nN6vEhuWk/RB/Qsr0M1KLjLFMZr/tAHfP0bI6Qy
+         ZoNIeC8Zd96n4TsjPzTlmG1utI+EGfTmjmZ3/OUaOTj9P+ixZn5ZtaVR/DJ2WQ9JwVYI
+         l0D+nr3tDAoDFEwM02BP8f66O8NdpRmB+uOn/FXuy+oxA+f7x/+3a4WS3SZ1nwBarnMM
+         t3lA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705566348; x=1706171148;
-        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ckg4aZXATh9bXDX8WnAIEQFE0u7PIBO0Zt6Knu3GQL0=;
-        b=eBWFmIp4mekNoW4SOYBIDPfQg/3H0mgB0qrhPXB5uRnefywtQCwaG+RU/IEIaZc3uj
-         cUkB2xP9kWV0H2fvFNt3epaqzKn08PEK32FAtUR0fh0fHP7sKTgMM64pJXjHx7+k+tT/
-         CxoNBjYnWV8pKTeY52umlyfqqrKKqg84goOOB4DfTQhO9sm4UOjBbATPREOYz6zxwBdN
-         Q5N2iJ9c0+13kVegwjrpYFwmzab7GjP2oKqK+y8bxLCSI92qAj2Y1SmFgAjjWJiiEktO
-         7HMCUzT56DK4CHICTCn0Ta01J63DS2p6nTtc+PxmNWBViAjQTlRI5ZfcgIp41HpMxHAE
-         +3+g==
-X-Gm-Message-State: AOJu0Yy6ntuxYVZlsH2zelmtF51dXMRkpiddoLDIZCZq5l7gJfNGfP4/
-	22YKherGvkxDu8vFZS9aRMUw4pdJVObc+nSuaczBrSeBbzU6UKXj
-X-Google-Smtp-Source: AGHT+IH+yOi+2MEEHX62qfjwVkyt0comH1cbZHZP2TCk86e1/kvaMgtABMxehv4m6VtSPGcbVR1GBA==
-X-Received: by 2002:a17:906:30db:b0:a2c:cda6:e73a with SMTP id b27-20020a17090630db00b00a2ccda6e73amr138931ejb.98.1705566348076;
-        Thu, 18 Jan 2024 00:25:48 -0800 (PST)
-Received: from felia.fritz.box ([2a02:810d:7e40:14b0:1513:e9cf:521b:ef2a])
-        by smtp.gmail.com with ESMTPSA id v8-20020a170906488800b00a27aabff0dcsm8957644ejq.179.2024.01.18.00.25.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Jan 2024 00:25:47 -0800 (PST)
-From: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To: Johannes Berg <johannes.berg@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	linux-wireless@vger.kernel.org
-Cc: Kalle Valo <kvalo@kernel.org>,
-	kernel-janitors@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] wifi: clean up needless dependency on non-existing option KERNEL_6_2
-Date: Thu, 18 Jan 2024 09:25:45 +0100
-Message-Id: <20240118082545.22262-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        d=1e100.net; s=20230601; t=1705566542; x=1706171342;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=IogBl3L09kV2fz3jVnil+MefPIx4RdTr5CjD15YUYck=;
+        b=EBVnAotQ3a3DrVjow3aIZFGsn3bLJzk6WUiqVRq6e5HXXoVmTaZ6gz2Gpw1xbgg5Rw
+         cQb/Z+/dx60jWN4ZX+OVOXxC1vApdWf8EqCBotTZ1ZBu7ZQcmCpibfJZtrw6lEyrM9xf
+         BDESPOXLobtVTzbLInqzMsXvJB5t06E6r9YHJKjxgm1by9YAOt1uh924QxTwSwyno9xg
+         QdF/gEsn1ejd2NjH2q7y6iQsfPe1Wz0t3YpBvHFq4G66n+8VGYDed5T4fcHi3nYHPfDU
+         N0q+BIFNEK5rKRLdaLuSgEdwl2NXFgnogbMO86qLNtxz1aFWtgI16oc8SAN0t1sIDULw
+         D0vw==
+X-Gm-Message-State: AOJu0YzuPgzN0EWoAnrrfReq4o+758lJkGEd3QOpnGUhILeumooM4q0T
+	fVxPmpGOwALHOQjr9mB0htmWJC6GLMHEVITteJcHAaiHwqRwsg2JbgW7HaTWp7LSR/PgQ7P1mnu
+	mmcmFf/mL2FzhZGq7qgw+KwE7sYA=
+X-Google-Smtp-Source: AGHT+IH9H2p6KTwKfxddPgYFPrIjTM6GZ6+Ya8C01JucEeRqcSSBPduY4qRR3h3RXngKFE9O2rkCRdUM/HhtijbDDKA=
+X-Received: by 2002:a17:906:ae8c:b0:a28:a67f:c7aa with SMTP id
+ md12-20020a170906ae8c00b00a28a67fc7aamr126289ejb.187.1705566541569; Thu, 18
+ Jan 2024 00:29:01 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <CAKXUXMyfrM6amOR7Ysim3WNQ-Ckf9HJDqRhAoYmLXujo1UV+yA@mail.gmail.com>
+ <8cce0dee8588b9f3cd0c1a3f073466b01905a703.camel@sipsolutions.net>
+In-Reply-To: <8cce0dee8588b9f3cd0c1a3f073466b01905a703.camel@sipsolutions.net>
+From: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Date: Thu, 18 Jan 2024 09:28:49 +0100
+Message-ID: <CAKXUXMzbQwupfy2JGxx2a0qY372Wr3KMkL4zq25xF6g_b+ooxQ@mail.gmail.com>
+Subject: Re: Question about reference to config KERNEL_6_2
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless <linux-wireless@vger.kernel.org>, Kalle Valo <kvalo@kernel.org>, 
+	kernel-janitors <kernel-janitors@vger.kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Commit ffbd0c8c1e7f ("wifi: mac80211: add an element parsing unit test")
-and commit 730eeb17bbdd ("wifi: cfg80211: add first kunit tests, for
-element defrag") add new configs that depend on !KERNEL_6_2, but the config
-option KERNEL_6_2 does not exist in the tree. This dependency is used for
-handling backporting to restrict the option to certain kernels but this
-really should not be carried around the mainline kernel tree.
+>
+> > Can we just delete this dependency in these two config options?
+>
+> Yes, we should.
+>
 
-Clean up this needless dependency on the non-existing option KERNEL_6_2.
+Johannes,
 
-Question about this config option was raised and answered in the Link
-below.
+In case, you did not fix it up yourself yet, here is a quick patch for
+you to pick up:
 
-Link: https://lore.kernel.org/lkml/CAKXUXMyfrM6amOR7Ysim3WNQ-Ckf9HJDqRhAoYmLXujo1UV+yA@mail.gmail.com/
+https://lore.kernel.org/lkml/20240118082545.22262-1-lukas.bulwahn@gmail.com/
 
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
----
- net/mac80211/Kconfig | 1 -
- net/wireless/Kconfig | 1 -
- 2 files changed, 2 deletions(-)
 
-diff --git a/net/mac80211/Kconfig b/net/mac80211/Kconfig
-index cb0291decf2e..13438cc0a6b1 100644
---- a/net/mac80211/Kconfig
-+++ b/net/mac80211/Kconfig
-@@ -62,7 +62,6 @@ config MAC80211_KUNIT_TEST
- 	depends on KUNIT
- 	depends on MAC80211
- 	default KUNIT_ALL_TESTS
--	depends on !KERNEL_6_2
- 	help
- 	  Enable this option to test mac80211 internals with kunit.
- 
-diff --git a/net/wireless/Kconfig b/net/wireless/Kconfig
-index a9ac85e09af3..10345388ad13 100644
---- a/net/wireless/Kconfig
-+++ b/net/wireless/Kconfig
-@@ -206,7 +206,6 @@ config CFG80211_KUNIT_TEST
- 	depends on KUNIT
- 	depends on CFG80211
- 	default KUNIT_ALL_TESTS
--	depends on !KERNEL_6_2
- 	help
- 	  Enable this option to test cfg80211 functions with kunit.
- 
--- 
-2.17.1
-
+Lukas
 
