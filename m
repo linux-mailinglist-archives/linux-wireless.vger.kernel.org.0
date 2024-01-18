@@ -1,47 +1,47 @@
-Return-Path: <linux-wireless+bounces-2154-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2155-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00B888315EA
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 10:33:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDE8B8315EC
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 10:34:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E40B1F26DB2
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 09:33:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 71F95B21049
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 09:34:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1926D1F92D;
-	Thu, 18 Jan 2024 09:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A54D1F92D;
+	Thu, 18 Jan 2024 09:34:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eqTEF3tt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="inG1HcLk"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA1351F922
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 09:33:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46FE61F922
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 09:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705570419; cv=none; b=uPns7jbF618bW8T8OQtc3o06+WUuedzaf4UWpSLTJS9PzBZhdQWUlZi+5TOE94MJGOr1ErJN1Oyi+XgitThayWyoMdJk1pj2Psp4OorexDon7ViY0pMS53Xm8a55el+Mu8+JvuhMUeFoHCaHs0ekahvtlmHBA4oPJsGTIkstLug=
+	t=1705570465; cv=none; b=anC/1CO2MXK+nzj4bO+RvAGfuSbTDxaoPWPSUDNgZ32xpzVX1UPFFIxgm6He2s9yLOS0gKkxvqnrexYPfajxLYbKuGmD3b2Ixj4uBi6yY1LhioAj+Fktzjyc4qfqN/vhWRXprB0WHvm9AIAQv8ksh9TT6XL/Sn5QJWJtiR4JjMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705570419; c=relaxed/simple;
-	bh=OVLNJN8zZ5+S4cRu8IxCqNEZeVP9+AN5CdN0kcl7xlU=;
+	s=arc-20240116; t=1705570465; c=relaxed/simple;
+	bh=K4hmYrfSigh/OFW30dHl4j/Rtx9uXeEgQzc98b/tYuw=;
 	h=Received:DKIM-Signature:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:
-	 Cc:User-Agent:Message-ID:Date; b=cX4/mODAT86+c42gQkoo8WjLgYgfR8Lxnp8bqeTnsjmEOc9gUEcHTkqwnG+eRmN2adALYsw0EOJinQL8lVxLpjwkNm78WbByRF3/dFf2QXTaSiQxqMjX4ECBzhCMiqaJO16H/3Ca025zVN6dE83JMzt7OdozTwdoinuQlYP3His=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eqTEF3tt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37640C433F1;
-	Thu, 18 Jan 2024 09:33:38 +0000 (UTC)
+	 Cc:User-Agent:Message-ID:Date; b=NuRmI+LWAPhSB2ET7vpx9E1Ah9g5mQiMbb7R7cxf6F0RAKkPRODot9DKUfBCTgpiXCUjNq3jjmCYwPra5rwC7vh0ovQF+GMpkqwKMgQoVEI/yoJb21K0+YoPBMkggaQQqG1XfAvMKdj4q4QGCa2ijgAFb34i6/EA/gS6nIkzqT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=inG1HcLk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F637C433C7;
+	Thu, 18 Jan 2024 09:34:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705570418;
-	bh=OVLNJN8zZ5+S4cRu8IxCqNEZeVP9+AN5CdN0kcl7xlU=;
+	s=k20201202; t=1705570464;
+	bh=K4hmYrfSigh/OFW30dHl4j/Rtx9uXeEgQzc98b/tYuw=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=eqTEF3ttkygMrnFrxsDYRfndtbjZq7A7CdiatD054jgXOckugHUlmU+e36jNVFsAp
-	 Y9+pIcKHgEP+U3ySi+e8mP2Fb6lKGKo43J9n1qj2rBuaT6IS1FbmDNmobtMQCtCxK4
-	 vgp6K3EJBBayZVWqqzQb5O14MqvPhaB7PNt/nDhJEoXEveFPI9Eq6SuZfRdjRsEXdH
-	 Z2z+jfiJNYZYgrZCyJxllJewJGvBvnjGYVktNS7q9fhE3m6ci+UvwvYcbKhYJowZU+
-	 SrH4cmkOH5F8UA8+adiob78GT8OeXP/RGFHUZWysvKOgTE+YHHSr6kH3H5ZeezluMF
-	 WL6UQdfQ0LAqg==
+	b=inG1HcLkAGoRGeJ6sXAVEGfSTKDGthcrgo1dOLX2qewYPDmg2APA92M2fI6xIoQoQ
+	 sX0sOIEkLg40g3yofc0eoGHlPoUtibdFKaUsBemvnSUNVyaLqUI3S2oJHwRpqawmsr
+	 KSAFSmn7RrGXy7Q3pDIgLSMWkSERGrCZ7gch3bPPAdNX+GJceL+y2ZbHGGgYHyz+bZ
+	 KTQCVvt5ySdTJd+MLlxKYAy1MZyDA42KgARLoyu4khRqCYZFOFkI+SgCPjQjUsqWs+
+	 BmBznHn8UItIGQrC9vX6KstN6YuDMKIJzCGz5gYm4k+2KZfx/ziwQM+iSSva8uSqVk
+	 /L8tbkrCIDEcg==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -50,35 +50,39 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/4] wifi: rtw89: adjust init_he_cap() to add EHT cap into
- iftype_data
+Subject: Re: [PATCH 1/8] wifi: rtw89: fw: add H2C command to update security
+ CAM
+ v2
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240112062640.36922-2-pkshih@realtek.com>
-References: <20240112062640.36922-2-pkshih@realtek.com>
+In-Reply-To: <20240115033742.16372-2-pkshih@realtek.com>
+References: <20240115033742.16372-2-pkshih@realtek.com>
 To: Ping-Ke Shih <pkshih@realtek.com>
 Cc: <linux-wireless@vger.kernel.org>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170557041616.2797779.7684670904630840965.kvalo@kernel.org>
-Date: Thu, 18 Jan 2024 09:33:38 +0000 (UTC)
+Message-ID: <170557046229.2797779.3889096428567748954.kvalo@kernel.org>
+Date: Thu, 18 Jan 2024 09:34:23 +0000 (UTC)
 
 Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-> EHT capabilities are also stored in struct ieee80211_sband_iftype_data, so
-> adjust allocation of iftype_data as common part named init_he_eht_cap(),
-> and then init_eht_cap() can be added later. Don't change logic at all
-> by this patch.
+> To have secure connection, set key information into security CAM including
+> key index, entry index and valid map. This new introduced H2C command can
+> support MLO, but currently not implement yet.
 > 
 > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-4 patches applied to wireless-next.git, thanks.
+8 patches applied to wireless-next.git, thanks.
 
-c19443700370 wifi: rtw89: adjust init_he_cap() to add EHT cap into iftype_data
-c5bdcddaa32c wifi: rtw89: change supported bandwidths of chip_info to bit mask
-9156181f6274 wifi: rtw89: add EHT capabilities for WiFi 7 chips
-4f47e0cf1a84 wifi: rtw89: declare EXT NSS BW of VHT capability
+8d666e575455 wifi: rtw89: fw: add H2C command to update security CAM v2
+799261930656 wifi: rtw89: fw: fill CMAC table to associated station for WiFi 7 chips
+7e24cc86c9c9 wifi: rtw89: fw: add chip_ops to update CMAC table to associated station
+999db6f48b28 wifi: rtw89: fw: update TX AMPDU parameter to CMAC table
+3d49ed071582 wifi: rtw89: fw: add H2C command to reset CMAC table for WiFi 7
+011e276865d3 wifi: rtw89: fw: add H2C command to reset DMAC table for WiFi 7
+85eacdcabd0f wifi: rtw89: fw: use struct to fill JOIN H2C command
+3832a9c40b35 wifi: rtw89: fw: extend JOIN H2C command to support WiFi 7 chips
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240112062640.36922-2-pkshih@realtek.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20240115033742.16372-2-pkshih@realtek.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
