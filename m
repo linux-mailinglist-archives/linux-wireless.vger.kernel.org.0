@@ -1,72 +1,73 @@
-Return-Path: <linux-wireless+bounces-2187-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2188-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA338831AD9
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 14:53:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9928831B0A
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 15:03:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF1871C226AE
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 13:53:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 605E028A05A
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 14:03:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7000625620;
-	Thu, 18 Jan 2024 13:53:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E65628DA1;
+	Thu, 18 Jan 2024 14:03:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="cv6gQBwl"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="IuVuIccI"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D92E525618
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 13:53:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB11F25549
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 14:03:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705586014; cv=none; b=qr4rujx2lgqnu70P61pAe4ldt+02cUTBgKSq/B2ot2gAIzpDwlBPFlI+yhhH4ypy5Rb0jQJ0fsnPCJe/VO2eTQ5fVKW1VLPK+KG+eF8hc7dKXErAAbRM2OlP8uX5mkFa3NJrVIlonaXDJP/YD10FWH6sR6XTU4bKneFavKwkjAg=
+	t=1705586586; cv=none; b=g/xUb7l0z1fPqeE676qLUmHPRkw0YPlg12VgJxiAqoYpWmvtFaz2a9Ry0myuwAByM33CB+jMjyq3kXROPgCtCdO0BHjnVkaAvoXm7xG3WoQgSV5YMQcarhpmc8NR5nDssBtolms46+FLYwEVlPyw+l4SXDEUgDsbfdSARbUM2XI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705586014; c=relaxed/simple;
-	bh=I6TEjpu95HrnbiqYmhuGO++vNdGH4gOGmKvVUPUIiHY=;
+	s=arc-20240116; t=1705586586; c=relaxed/simple;
+	bh=bQ+u9GrnUzOQ9E3vxlMJii1ISzOQtYDt1EjWjU57rGg=;
 	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:Received:
 	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 From:Autocrypt:In-Reply-To:Content-Type; b=q26YFI38dMjooeD9p+2pXm+ABNRGmzyW5DPbiRsT2IsWhBv98dew5Yj1eNjDcdrqCJ3tkBgJ4jGtKqGAAWgZWqxpjymLeWHZZp0Z4jS+/p/75JFPiSQQsrvObaTxqZeNhjrfiNGAFYHs+ze3YUfCDeiTC5JlQ4VM/kN172uOh1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=cv6gQBwl; arc=none smtp.client-ip=209.85.219.176
+	 From:Autocrypt:In-Reply-To:Content-Type; b=V8ezFIiQ9Tp3kU0PcWxJ7U5sxhYQshFxXnzW83aDyBd4af/CqbzICgvoIz5BIXQDOZA0U3I5Q/XQ/A35hS9qmHpbZtKlvNOVRDKbxI/OQhNeZwS9lY4PYmsiJiMhA1Z4sW+MB7dAApkR4GEj/cXlbACuCl9OgIGZBWdpJPQ0oxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=IuVuIccI; arc=none smtp.client-ip=209.85.128.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-dc239f84ba4so1997965276.3
-        for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 05:53:32 -0800 (PST)
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-40e884ac5c8so21480755e9.2
+        for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 06:03:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1705586012; x=1706190812; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1705586583; x=1706191383; darn=vger.kernel.org;
         h=in-reply-to:autocrypt:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=2VnnOJMDivNUrtw9WgAD8+c4nl7F8Zvky4CVrNWnQkM=;
-        b=cv6gQBwl+nCkCCsT93+SQiBEHBNr/7bl1KrM0Cr+wi0mh5w1SMjy50XFU6ByUxf0v5
-         cCN7BQUpp+ix5sYeDHiScHJcwRx1VFzTkztZQ09Sw1CRjRhwJ/9Vm9Ny2rBFJ+zP++pL
-         UktL1nqMdfo8fNvfAx9MCMJC40BcRQJ3GJixs=
+        bh=kKFETMvilyFMl6nNsRn24r0j2cMug7IUuyEP+UVgxIw=;
+        b=IuVuIccIl1so177pCTy0aqUZNuKd7TkQOVbH6zivyQqh+Q100K7iLAyA3H6TO2cEmG
+         hr0f1zhu7H+tqK9uUII9dQZCrU7a8Ql1R0o3Ml5oP+eTV7XkUXXqZTvROcfTpTGVkR4q
+         DdLf0TPo64yMIE1c1ejJ0OohGoMdtJ1Cic39M=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705586012; x=1706190812;
+        d=1e100.net; s=20230601; t=1705586583; x=1706191383;
         h=in-reply-to:autocrypt:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=2VnnOJMDivNUrtw9WgAD8+c4nl7F8Zvky4CVrNWnQkM=;
-        b=C4MmqYatT51E/O4839mffRckZrjzRu86rYXtmK+3vN7PZjubxsBbJcdY4V4JJKbcQQ
-         CoAbLjn4fKAUJPnCR0u//XFZXF1QIrmDdS0byRxuoCa5zYJY5u1WqSbBHJovI9shtlFZ
-         s1yiZ/Tn1WVD1jjwtJkcp45GCEJtOw2TT1niUfv5yNOsCeviSMD8lNiziN3hO67mKqOP
-         eCnHBUkNIeGUOYEJz00jzsl544z/tCQsEIafm/F000tgrDDiHyAxFQ22EXOynccVV6Sp
-         XUICnH8DY/3lyByW71rXFX+2az2V0LxQcM6MoxKOM0k9e9p5zduDH073FhKWdv7j+gDG
-         zPUw==
-X-Gm-Message-State: AOJu0Yz+UDoeqTMCXt+khtX3HgzuaDTMBivw3eVx7R5m5OHVaXsjqxiU
-	0iGhlsFkyziFMgBtlsk68EYkuMQPRRbYFdZoc3xwwuVWraDkjuDI+Dwj6fviig==
-X-Google-Smtp-Source: AGHT+IGLcur2+uQG6Axp/4DOuC7P5qn2jmyn2/2oBB7nhH1X1gDMqxtBfYDAm89lyyKD7rFbpHS+qQ==
-X-Received: by 2002:a05:6902:1b07:b0:dc2:39ec:470d with SMTP id eh7-20020a0569021b0700b00dc239ec470dmr812520ybb.117.1705586011821;
-        Thu, 18 Jan 2024 05:53:31 -0800 (PST)
+        bh=kKFETMvilyFMl6nNsRn24r0j2cMug7IUuyEP+UVgxIw=;
+        b=kgyDL6VBr1PeLAbZq2LKCCer0oxmTQAsqIovIz6pThuT848BQ2hZKLyURNhXRc6UKc
+         Nf/YhKpfsowDFOJx1kh6vaVuqdJ4aGr56NGXDGMU6clEhYxo5tr/k4conTtm79iAk2od
+         apvdPtVeVqjhYFJMRxZJtG4oCAf+t8mj3E0sQuoKPjCsNcRICzlano+3Wgsy9aGb4IKA
+         8VYNzcYnEzQLeHhOTEz7VaKryOvj9JnH5Vdz5GjIah8jWbFSDW0WjKluWTs4OUWo3YqM
+         q61fgS2ogFsGzNauGu9FqNCr4Fm5HCFCgJiiWoBJmzkZdUnHUVLYWe2epg1dL9/5wi8I
+         Ruaw==
+X-Gm-Message-State: AOJu0YwjnVzKGpN6Pel4kKxRfGINqlADW69fnIrUPXIBio5JoS6cOG8c
+	EDAZA2qOfA+B2QtYgsOQOgcTEK8qS2lNBlHjTN8ijwBHpHJjByxvzmog3TnYOAm8jwnGmMOEoWB
+	HekeW
+X-Google-Smtp-Source: AGHT+IGvdY5nOHLvge0muW6ocrHk73UAx+yHmv5e7nrV1frv4e4HrrpSUFIav7kiv1M4yrfRq6gyzA==
+X-Received: by 2002:a1c:7415:0:b0:40d:6293:fc69 with SMTP id p21-20020a1c7415000000b0040d6293fc69mr287430wmc.28.1705586582991;
+        Thu, 18 Jan 2024 06:03:02 -0800 (PST)
 Received: from [10.176.68.61] ([192.19.148.250])
-        by smtp.gmail.com with ESMTPSA id v10-20020a05620a122a00b0078321b70b05sm5299233qkj.101.2024.01.18.05.53.29
+        by smtp.gmail.com with ESMTPSA id ek15-20020a05600c3ecf00b0040e8e358f82sm3079621wmb.19.2024.01.18.06.03.02
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 18 Jan 2024 05:53:31 -0800 (PST)
-Message-ID: <f739cc15-dade-4f69-a17a-30242026c099@broadcom.com>
-Date: Thu, 18 Jan 2024 14:53:28 +0100
+        Thu, 18 Jan 2024 06:03:02 -0800 (PST)
+Message-ID: <922391dd-370d-4303-8341-f70a3f8ce264@broadcom.com>
+Date: Thu, 18 Jan 2024 15:03:01 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -74,15 +75,13 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] brcmfmac: replace one-element array with
- flexible-array member
-To: Atul Raut <rauji.raut@gmail.com>, aspriel@gmail.com,
- Kees Cook <keescook@chromium.org>
-Cc: franky.lin@broadcom.com, kvalo@kernel.org,
- linux-wireless@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
- linux-kernel-mentees@lists.linuxfoundation.org
-References: <20230803052238.12147-1-rauji.raut@gmail.com>
- <20230803052238.12147-2-rauji.raut@gmail.com>
+Subject: Re: [PATCH V2 4/4] wifi: brcmfmac: cfg80211: Use WSEC to set SAE
+ password
+To: Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org, Hector Martin <marcan@marcan.st>,
+ Neal Gompa <neal@gompa.dev>
+References: <20240103095704.135651-5-arend.vanspriel@broadcom.com>
+ <170558367920.2924528.10360491365838061583.kvalo@kernel.org>
 From: Arend van Spriel <arend.vanspriel@broadcom.com>
 Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
  xsFNBGP96SABEACfErEjSRi7TA1ttHYaUM3GuirbgqrNvQ41UJs1ag1T0TeyINqG+s6aFuO8
@@ -127,48 +126,55 @@ Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
  NKowQLrlMBGXT4NnRNV0+yHmusXPOPIqQCKEtbWSx9s2slQxmXukPYvLnuRJqkPkvrTgjn5d
  eSE0Dkhni4292/Nn/TnZf5mxCNWH1p3dz/vrT6EIYk2GSJgCLoTkCcqaM6+5E4IwgYOq3UYu
  AAgeEbPV1QeTVAPrntrLb0t0U5vdwG7Xl40baV9OydTv7ghjYZU349w1d5mdxg==
-In-Reply-To: <20230803052238.12147-2-rauji.raut@gmail.com>
+In-Reply-To: <170558367920.2924528.10360491365838061583.kvalo@kernel.org>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="00000000000062dd50060f38b004"
+	boundary="0000000000006e6d38060f38d28d"
 
---00000000000062dd50060f38b004
+--0000000000006e6d38060f38d28d
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-+ Kees
-
-On 8/3/2023 7:22 AM, Atul Raut wrote:
-> One-element arrays are obsolete, and flexible
-> array members have taken their place. So, in
-> struct cca_stats_n_flags, replace the one-element
-> array with a flexible-array member.
+On 1/18/2024 2:14 PM, Kalle Valo wrote:
+> Arend van Spriel <arend.vanspriel@broadcom.com> wrote:
 > 
-> This fixes warnings such as:
-> ./drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:119:6-9: WARNING use flexible-array member instead (https://www.kernel.org/doc/html/latest/process/deprecated.html#zero-length-and-one-element-arrays)
+>> From: Hector Martin <marcan@marcan.st>
+>>
+>> Using the WSEC command instead of sae_password seems to be the supported
+>> mechanism on newer firmware, and also how the brcmdhd driver does it.
+>>
+>> According to user reports [1], the sae_password codepath doesn't actually
+>> work on machines with Cypress chips anyway, so no harm in removing it.
 
-I think this correct, but maybe Kees can give definitive answer here.
+Replace above paragraph with:
 
-> Signed-off-by: Atul Raut <rauji.raut@gmail.com>
-> ---
->   drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+The existing firmware mechanism intended for (some) Cypress chips has 
+been separated from the new firmware mechanism using the multi-vendor 
+framework. Depending on the device it will select the appropriate 
+firmware mechanism.
+
+Regards,
+Arend
+
+>> This makes WPA3 work with iwd, or with wpa_supplicant pending a support
+>> patchset [2].
+>>
+>> [1] https://rachelbythebay.com/w/2023/11/06/wpa3/
+>> [2] http://lists.infradead.org/pipermail/hostap/2023-July/041653.html
+>>
+>> Signed-off-by: Hector Martin <marcan@marcan.st>
+>> Reviewed-by: Neal Gompa <neal@gompa.dev>
+>> [arend.vanspriel@broadcom.com: use multi-vendor framework]
+>> Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 > 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> index de8a2e27f49c..fff32e54833d 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> @@ -116,7 +116,7 @@ struct brcmf_dump_survey {
->   struct cca_stats_n_flags {
->   	u32 msrmnt_time; /* Time for Measurement (msec) */
->   	u32 msrmnt_done; /* flag set when measurement complete */
-> -	char buf[1];
-> +	char buf[];
->   };
->   
->   struct cca_msrmnt_query {
+> Should we also update the commit message to match the code? We are not removing
+> the Cypress codepath anymore, right?
+> 
+> I can do the update, just let me know what to add. Preferably something I can
+> just copy&paste.
+> 
 
---00000000000062dd50060f38b004
+--0000000000006e6d38060f38d28d
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -239,15 +245,15 @@ BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
 N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
 p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCvXa+xqCtNaplARjiG
-LxNQFxZctbFWOzbf3Jx7rKl3uzAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yNDAxMTgxMzUzMzJaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCDMgbZT0NK0Zumivp20
+DsCSL0bhRwfrOOLne9xyGMaQ+jAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yNDAxMTgxNDAzMDNaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEASthCZfm9tHoMotvS0V5iP5G2yLhoexOWlxzs
-YKPne2kD1aDgNN1SDR/7LZjV9K+uiVJk9PmV70H9kwtfbQjka2Kuq/0eBj3J2Ji9Q6TzX8dRGN/y
-xPX6dUlFf4Hx6NRS52jQ1+XciSzQVbZowGoEDSEZgYfEjyLCeJWT6MnNWV3ayMVHS8AlYGmDHR4z
-7BYHEz+hNse8eo1AQHgk36XJYgBRi+l5DZ1t6TmEARgxkx8KQrDawj/EzR/52Nq0aE/yoiFQxl2O
-P0Ha0Z3ooJmeNfYY18zqow0SlYBb9LkjTqjkpOe8tEPGpxc3oQiBAa2rmCmfUeSmRPTEX7nw4RZ5
-XA==
---00000000000062dd50060f38b004--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAXGPvJf1Vd+VkGJ8s72Fk/WFOe39of7/LIAsW
+oPuh5YCeQfRztUmkD0dosy361BHCSpQxjfSXkvxlnfo8aJP47cdad99OHjwq5BRQPi1qrLA+AZ7R
+YFsDSiiZE/12Gb33U7c8iL3b6TzXGHDDHp9Ybldj6e4jJgxY0iZEXYfCR3YSNUFQjqOOC6n1daMa
+oZNYmet9lGodPxjzKNMLLx1uV3DIRf5ctz3jfH8gmxDYYn4WegM8cxg8/GKeSJPtm0tBsJpiP9lX
+cnXNqwJAcj/HJ+IcclRjW8GleNDApx906o5HR0zY8z4c/Xq0gPGA2cMJXq9WeRhpaLgzIQbfnDc2
+9A==
+--0000000000006e6d38060f38d28d--
 
