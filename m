@@ -1,72 +1,72 @@
-Return-Path: <linux-wireless+bounces-2176-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2177-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CCD083192B
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 13:31:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB438831953
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 13:42:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9260B2242C
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 12:31:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFE151C203B3
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 12:42:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A29633FA;
-	Thu, 18 Jan 2024 12:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAA48241F6;
+	Thu, 18 Jan 2024 12:42:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Zzmyd0ZH"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="DM+cIMmP"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BAE624B3A
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 12:31:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 450C3125A7
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 12:42:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705581095; cv=none; b=IviNvkr7PBu3CKCcF7c0MOTX3N2qQV0YzDwvS6a4PgZcY/1Bz139mFWhnoRHu4fKbCF97WDq6fiED64RGM2ow27dYRq3QhcMej6UP8ZTTxFdG4o4mmhqALdb3+r5Ax4IgXFtkBuLrdDF2+wvqoiV9nN+eZPvv+CUOTbtOAU7krM=
+	t=1705581740; cv=none; b=cv6xClos1CUZicdHhVz9w6Uyj/IkWRO8LfHnp34u1nM2XQR16HvCzh9YlIokK0mccElzn9wBoaD3FfrxPnFkuqRvzoV9xyxOWtgMLiFbqmKvzvrfGPveJhp+BhXc6QFYfQjoHGECO3CrEC/etuz9FKrkoNvs22ufeGgTn11O09o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705581095; c=relaxed/simple;
-	bh=pRyc5fTZCIwvuVMaAQKTAIgy9iF8esdeTXgVyEJlwKI=;
+	s=arc-20240116; t=1705581740; c=relaxed/simple;
+	bh=Q1pV6G8d+xcBm8/j8XZ13cP2CXnU6Qif+pO+CJSJ6wM=;
 	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:From:To:Cc:
-	 References:Autocrypt:In-Reply-To:Content-Type; b=Itwws+QJ6MqPuDwehzfmfr+eWM9PYIi1GIfxE53Oi20qrxihUcOv6RU8VA0iemdzaLuzXBJrVbhl66nu8IshG8NSkwE6XE8CRW/XzlHbHc5gn2ci5FqoE/Jrf+554FUkUyPpGGVSW66j9j0pZOHpmrrbxP59C+xJfVI3/4wtPLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Zzmyd0ZH; arc=none smtp.client-ip=209.85.128.44
+	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
+	 From:Autocrypt:In-Reply-To:Content-Type; b=qGMOTiCWtY61FJyAnNLICHjb+T0YhRv04nytiQCjX+piZif3pcBVrlF5oGiai9a+F/XqQnSOSq5LD3sr9yeCNi3AF/HIsqFHmkx4JgjjWKcTt/vTkxzzovyJjfotpbS0L3mrgrCTaYhur/ToZAsF0zwwq7UAZNHc3LKxoNyffww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=DM+cIMmP; arc=none smtp.client-ip=209.85.221.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-40e959b1867so2561825e9.1
-        for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 04:31:33 -0800 (PST)
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-337d32cd9c1so396537f8f.2
+        for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 04:42:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1705581091; x=1706185891; darn=vger.kernel.org;
-        h=in-reply-to:autocrypt:references:cc:to:from:subject:user-agent
+        d=broadcom.com; s=google; t=1705581737; x=1706186537; darn=vger.kernel.org;
+        h=in-reply-to:autocrypt:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=koCKRVUl3rVZJPCvnpSTy4iSYuI0i6oVEhAa1oj/tF4=;
-        b=Zzmyd0ZHNA6Kpda6ZhQRO/4OIOA6526JZPdlXcUN1g9X19Jre5d3DAi+cDBXckPTV4
-         rrPoq/CzHi/sguhxlCE+p5pAVn7KB/E6OUj96LrcGzA9oTRwYnZj6qNmMnK/JEruxsAf
-         tRQ4smj8GmU9hXZd1Axxq7mC5uJmLwttGZqMI=
+        bh=U5tVtpUWzYp7DHGO47Y8QD52NBEPDs5RvBq7RHfbD7A=;
+        b=DM+cIMmPiv/SNuTdKxP0fGv7ymP0zUhAxCosvqd93Wc1hcwWSwLAZ6Ye3AblTRrSS+
+         v8tDDOd6F5Bh3Fw7owR1e28NQmiu6LElgO1qxKBqxQBDOQhpIXNZF+OCO+N45wEhhU1C
+         GvI62mZxAecMgRnqgk9hvglMpfYxFDKxMjgCk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705581091; x=1706185891;
-        h=in-reply-to:autocrypt:references:cc:to:from:subject:user-agent
+        d=1e100.net; s=20230601; t=1705581737; x=1706186537;
+        h=in-reply-to:autocrypt:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=koCKRVUl3rVZJPCvnpSTy4iSYuI0i6oVEhAa1oj/tF4=;
-        b=qrqToyrQFFp1gQ4LFzMMd86bpLLvwuXYrHBOdyIhS+2QdB2nJGH0hU62PHBdnKJ30x
-         IBm50bEsJue8r5J8JoPZsbBWT69N0TqlCUPordHzqXEHnTtR8rKHw/UOp5shCffvpjBS
-         FetFd8GQ7XrnaRPeWxNaiFndNZuNWpW7ACxGeqdG9b0LcKuqdB+N7fxixZlcMdArIR3h
-         YHK/GcIxtv0ioFXTF5kzNPOym7l2RKf6QWSyqrpLoYNjNe2MBC7K69TkSRa1+Tib/OOF
-         m8VuPppdx5nz2DQoTsrYazkTqQaAglIw0756bfp3kekZTjhxRrqanCsf3ljBUGgcQh7/
-         hfIg==
-X-Gm-Message-State: AOJu0YwKohGIU3W88JmNdn9D4HBIbEboNR8CjvKIoeKrLgUMu52Heh5U
-	EfELlWPMy/DsSJpw5KEOYmI3e5PbINuyD1zd/Lavo982+8w1YKL7Zjdky1P3Zw==
-X-Google-Smtp-Source: AGHT+IG6zbfSfMtz1BEvDORugtJlAh41me4JhjpJGap7exAU3pwmgkrdoxnUOMosMLKtsWUw+7lulA==
-X-Received: by 2002:a1c:770d:0:b0:40e:482c:c7e9 with SMTP id t13-20020a1c770d000000b0040e482cc7e9mr463315wmi.104.1705581091618;
-        Thu, 18 Jan 2024 04:31:31 -0800 (PST)
+        bh=U5tVtpUWzYp7DHGO47Y8QD52NBEPDs5RvBq7RHfbD7A=;
+        b=Gvwx2Aa9ZTsfWNPcX4R/DeCIXY7YSW3IdhffZshKg6jWj3X2a9A+xjUUQSmNzT5en3
+         ISEctNIO1tgCtH0NoMhVyjDispom1s3q56VGmIPlbsBbHW5FLcGvOW4RvmflbKcktd+T
+         JX8ERgTS9WGF4sOjloS436LG5ia9FzeAmod3pUQmXsIhMSmrB5FoNHeFjwUznLiWXn53
+         JPpEuFdi13BnguFf6gA1O5y/Q2/mzYvSzIJejbdxva641waa6hhX2SnBMhOYplBv6da6
+         bb9TXjgLXaeGUwCm4f5UgZJbQLA95mLdeSlA64W3wQKhllw0SpBiItsEUtZXuhLnOjBA
+         DI1A==
+X-Gm-Message-State: AOJu0Yy1da8DRQwnqNSfCIPnIYfecWnxHcf+CsjUhnvf2MZYLZ3JR2br
+	JuxC5z95CJnvLg628z++ZPvpf/6hmpl2/RUz5mMxbPfRFXlolGa8nziWs4jZCw==
+X-Google-Smtp-Source: AGHT+IH5syPTEbqpjEivSUfING5UPUxYEDwy2QrWxR/OUVqq8e6YwwZop5kL2SzQEtzfO2mXJoiqag==
+X-Received: by 2002:a05:600c:2149:b0:40e:877f:3d25 with SMTP id v9-20020a05600c214900b0040e877f3d25mr498027wml.177.1705581737442;
+        Thu, 18 Jan 2024 04:42:17 -0800 (PST)
 Received: from [10.176.68.61] ([192.19.148.250])
-        by smtp.gmail.com with ESMTPSA id w18-20020a05600c475200b0040d2d33312csm25901815wmo.2.2024.01.18.04.31.30
+        by smtp.gmail.com with ESMTPSA id s15-20020a5d510f000000b00336aa190139sm3975322wrt.5.2024.01.18.04.42.16
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 18 Jan 2024 04:31:31 -0800 (PST)
-Message-ID: <0cb9bf2c-4440-4cae-ad02-ef0a3a8d6156@broadcom.com>
-Date: Thu, 18 Jan 2024 13:31:30 +0100
+        Thu, 18 Jan 2024 04:42:16 -0800 (PST)
+Message-ID: <8ef66849-c180-4938-a1e0-7cb09c225d6c@broadcom.com>
+Date: Thu, 18 Jan 2024 13:42:16 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -74,17 +74,12 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] [v2] wifi: brcmfmac: handle possible MSI enabling
- error
+Subject: Re: [PATCH] [v2] wifi: brcmsmac: use generic lists to manage timers
+To: Dmitry Antipov <dmantipov@yandex.ru>, Arend van Spriel <aspriel@gmail.com>
+Cc: Johannes Berg <johannes.berg@intel.com>, linux-wireless@vger.kernel.org,
+ Kalle Valo <kvalo@kernel.org>
+References: <20230703162128.154451-1-dmantipov@yandex.ru>
 From: Arend van Spriel <arend.vanspriel@broadcom.com>
-To: Dmitry Antipov <dmantipov@yandex.ru>,
- Hante Meuleman <hante.meuleman@broadcom.com>,
- Bjorn Helgaas <bhelgaas@google.com>
-Cc: brcm80211-dev-list.pdl@broadcom.com, linux-wireless@vger.kernel.org,
- Kalle Valo <kvalo@kernel.org>, lvc-project@linuxtesting.org
-References: <20230614075848.80536-1-dmantipov@yandex.ru>
- <20230614075848.80536-2-dmantipov@yandex.ru>
- <bd0aa2ea-fcde-4df7-bcfb-a6e8c962255d@broadcom.com>
 Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
  xsFNBGP96SABEACfErEjSRi7TA1ttHYaUM3GuirbgqrNvQ41UJs1ag1T0TeyINqG+s6aFuO8
  evRHRnyAqTjMQoo4tkfy21XQX/OsBlgvMeNzfs6jnVwlCVrhqPkX5g5GaXJnO3c4AvXHyWik
@@ -128,73 +123,32 @@ Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
  NKowQLrlMBGXT4NnRNV0+yHmusXPOPIqQCKEtbWSx9s2slQxmXukPYvLnuRJqkPkvrTgjn5d
  eSE0Dkhni4292/Nn/TnZf5mxCNWH1p3dz/vrT6EIYk2GSJgCLoTkCcqaM6+5E4IwgYOq3UYu
  AAgeEbPV1QeTVAPrntrLb0t0U5vdwG7Xl40baV9OydTv7ghjYZU349w1d5mdxg==
-In-Reply-To: <bd0aa2ea-fcde-4df7-bcfb-a6e8c962255d@broadcom.com>
+In-Reply-To: <20230703162128.154451-1-dmantipov@yandex.ru>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="0000000000001f4139060f378b83"
+	boundary="0000000000009d44a2060f37b136"
 
---0000000000001f4139060f378b83
+--0000000000009d44a2060f37b136
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-+ Bjorn
+On 7/3/2023 6:21 PM, Dmitry Antipov wrote:
+> Prefer generic lists over ad-hoc quirks to manage
+> timers, adjust related code.
 
-On 1/18/2024 1:26 PM, Arend van Spriel wrote:
-> On 6/14/2023 9:58 AM, Dmitry Antipov wrote:
->> Handle possible 'pci_enable_msi()' error in
->> 'brcmf_pcie_request_irq()', adjust related code.
->>
->> Found by Linux Verification Center (linuxtesting.org) with SVACE.
-> 
-> Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
->> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
->> ---
->> v2: rebase against wireless-next tree
->> ---
->>   .../net/wireless/broadcom/brcm80211/brcmfmac/pcie.c  | 12 ++++++++----
->>   1 file changed, 8 insertions(+), 4 deletions(-)
->>
->> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c 
->> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
->> index 80220685f5e4..f7d9f2cbd60b 100644
->> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
->> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
->> @@ -965,6 +965,7 @@ static irqreturn_t brcmf_pcie_isr_thread(int irq, 
->> void *arg)
->>   static int brcmf_pcie_request_irq(struct brcmf_pciedev_info *devinfo)
->>   {
->> +    int ret;
->>       struct pci_dev *pdev = devinfo->pdev;
->>       struct brcmf_bus *bus = dev_get_drvdata(&pdev->dev);
->> @@ -972,16 +973,19 @@ static int brcmf_pcie_request_irq(struct 
->> brcmf_pciedev_info *devinfo)
->>       brcmf_dbg(PCIE, "Enter\n");
->> -    pci_enable_msi(pdev);
->> +    ret = pci_enable_msi(pdev);
->> +    if (ret)
->> +        return ret;
-> 
-> The above is sufficient. Further adjustments not needed.
+The change looks good to me.
 
-Actually I am not sure about this. I think there is no harm in silently 
-ignoring the failure.
+Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+> ---
+> v2: add missing list_del() in removal loop within brcms_free()
+> ---
+>   .../broadcom/brcm80211/brcmsmac/mac80211_if.c | 36 +++++--------------
+>   .../broadcom/brcm80211/brcmsmac/mac80211_if.h |  4 +--
+>   2 files changed, 10 insertions(+), 30 deletions(-)
 
->>       if (request_threaded_irq(pdev->irq, brcmf_pcie_quick_check_isr,
->>                    brcmf_pcie_isr_thread, IRQF_SHARED,
->>                    "brcmf_pcie_intr", devinfo)) {
->>           pci_disable_msi(pdev);
->>           brcmf_err(bus, "Failed to request IRQ %d\n", pdev->irq);
->> -        return -EIO;
->> +        ret = -EIO;
->> +    } else {
->> +        devinfo->irq_allocated = true;
->>       }
->> -    devinfo->irq_allocated = true;
->> -    return 0;
->> +    return ret;
->>   }
 
---0000000000001f4139060f378b83
+--0000000000009d44a2060f37b136
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -265,15 +219,15 @@ BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
 N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
 p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCD7T3birkzzC1eD5TLc
-l999lDFQIo/wOFEaE6+tcxl26DAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yNDAxMTgxMjMxMzFaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCtf4ngELSO2BECptLD
+yFBjGM2KJj7E1T/jLfhHZQqWGjAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yNDAxMTgxMjQyMTdaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAuiVoE+hWETdWpVWKIYyfh6B1wDu8NzR+f3gw
-MSDSlZmX1fUi+Mg/rq0wiZE2fGC1eRYto0GtZoHO87rzvg9ruDJLEaoGqMakZGZQ86XF83yYc6RI
-v0b0o3OTzPOYr3yC4PTW8H+ydT4ISf+YCWjmXwFoMOBfU2nNip1C989Yf6bvMw9ZpPCREH9mO2oh
-uuQ+0dVjEuB2JUnRqFYYLw4jSd3DzMM2FiFF3zN6hhjD6xJcMHthxvhIZ9DOWfxYVYpMdtSmpWD7
-nG8LQq+vUOzu9emnqOJ9+O8L6nwfXplZQJxjd090zI+rHxIfnkNo4eBc5USzx8XmbO0ce2+7rOXe
-+Q==
---0000000000001f4139060f378b83--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEA8O7kjbvRRg/nXxU3K925bNVtdvJdc7bCcWPV
+S1GbUgkJ/+e9zvFWqgwDmN71qkrdnc2uiCKpnqBXyQXfG5LoIZjFZXKhrbexPEmLpP0J1uA8n0dv
+C++z+Mv7lEjTfGR2f//YFMfYNCIHtCOIy9A1SRj91091f7f/sLLdqKvbpezQcO65pU+bVQzaZ5OP
+/M9Ook1xgMvan5FIRVnDkLrC7zjZhsbA7xj0srUC6QN7LmArB0IQYNxDEJ+a7wAjSDM5Jtbr5U+O
+2pNdkCqEiGyaXjlQoj0w5TeOgWJrkaP3iYbxnu5lRi5ohNtikPrSoELRYSNEhY8tz4LZ51bpcqVM
+Fg==
+--0000000000009d44a2060f37b136--
 
