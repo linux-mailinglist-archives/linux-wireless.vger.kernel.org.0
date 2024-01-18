@@ -1,137 +1,123 @@
-Return-Path: <linux-wireless+bounces-2189-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2190-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04446831B58
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 15:29:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A6EC831BF3
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 16:06:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 377E91C22DD2
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 14:29:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADDA71C23173
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 15:06:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0414D286B4;
-	Thu, 18 Jan 2024 14:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB1224B40;
+	Thu, 18 Jan 2024 15:05:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VsdvZXqg"
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="nHXYz2pl"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from forward200b.mail.yandex.net (forward200b.mail.yandex.net [178.154.239.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFFA52C9D;
-	Thu, 18 Jan 2024 14:29:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 749E224B32
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 15:05:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705588175; cv=none; b=u70VFdKdP4AofmIcGxfRPgoo4XFQzWjIAeKl4xbuQlONN9HYNZBnJ5SytTMa2PazJtvlFsqTUlPfgx4ZW2Zb7qKi2Z/Sg8UpwRVHvBVHgvQNx9LLTP8I6Np6qqtwoW6/TDYiQl5iXjh1QqFBvmaw3wH5jtPLwHmUEV6hIHDeWSk=
+	t=1705590358; cv=none; b=tpz7Fv9RXYDzfjN3Vgd+NkesC4Or25F3xzTV10+053iRf2UsBhoAHZYhrCBTs0YbWhdbJriKjwQJmtmo4ZmvFA8IVX2B7wnpgRXmweleKksleeQMIzwHnCOFjvgV0QwEDIJ8vFprP/NaSEMSW8vvHv9PDiNx05fDSRrHVhLKYXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705588175; c=relaxed/simple;
-	bh=iPGPVXXwyd5DFSfC8msMPU1CSz0Q7jm4kMOswDCGfn4=;
-	h=Received:DKIM-Signature:Received:X-Gm-Message-State:
-	 X-Google-Smtp-Source:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gmail-Original-Message-ID:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding; b=ip9Lb9o5+v/xopGfYyqJRx92WpEtbAG+CrCRt1RuFghv+Dgep6PKtKedvtyfUJyKifPt/25VlEbnfDlnlNiZuH/mP8/OP1NSc3wB9gdGVYW7EFeYtcs+ihvgPN8TtvTtactFfPYCk8w3+B3f/v9/yNK0BPGY76IEF9nW20RmQjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VsdvZXqg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52F12C433F1;
-	Thu, 18 Jan 2024 14:29:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705588175;
-	bh=iPGPVXXwyd5DFSfC8msMPU1CSz0Q7jm4kMOswDCGfn4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=VsdvZXqg71HEfgsj0TMAnjwKaNJMB8YfV6RHoZIdngwczm2R9BalAiS5dSBxF/NrL
-	 erLZWbXItZ4BJ6n81aA/hPD0PYCZm6fEu12ayLT9FZfGysL7vb2J3y09rJV1X4911/
-	 MBEXc9UdwGEo5F/NM5qneMKqNPWFdbpUWfna3Q/ATOmcFlFSvJ2ZCnK33394PoGWWK
-	 0amzGNrDh/+luAUELiD7dijo+uyMJYTqc79GJ+76E/xh/UgqUBpv1lRLL3oqgVICPv
-	 asLg/+x7hG0hL+vbHXy42so1VIPsEp6KBRMfkbqOXFA/Jh9AV/Vi2eFCKuWmkZUqoH
-	 m8Kn5sBfqvM/Q==
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a28f66dc7ffso150582166b.0;
-        Thu, 18 Jan 2024 06:29:35 -0800 (PST)
-X-Gm-Message-State: AOJu0Yx7lQmVM/2uB32FZsOLjE6ponPfM/bNQEmtmqIkOCd2+SmISR63
-	6RSy8Zea6NCZMIW1YPi39cIitzfw1Q4F9wadORGJWte8rkb9J4aX2EVxDFYWrC8/a957ZoHOYAY
-	pJZJImWuYEM5jALqfFzTTmpBxIQ==
-X-Google-Smtp-Source: AGHT+IFh30Wa29ABtnduwX0kE65ZA9bKjWTFtwY7A2f10u3apUDt/6uU2eD5vEaD6OSynYOp5n7MROLZi+0BQu7ZbM0=
-X-Received: by 2002:a19:644a:0:b0:50e:e1c3:f97b with SMTP id
- b10-20020a19644a000000b0050ee1c3f97bmr1677678lfj.3.1705588153618; Thu, 18 Jan
- 2024 06:29:13 -0800 (PST)
+	s=arc-20240116; t=1705590358; c=relaxed/simple;
+	bh=wlg+32wkP/mxkl2TgNvs3eOPyg85YtOlXAs+J1AfJqU=;
+	h=Received:Received:Received:X-Yandex-Fwd:DKIM-Signature:From:To:Cc:
+	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding; b=Ll+3AJXLwnNmI+FjG3EpFNbJx6t84lzGNrXaXdZBaDe9lvhBYTZL0RwWbzXOfWjn5ITAg+EEQOXwYqbMNVQilwwknWfLwnPrAcXWZP1pzyrDsN5YGLsbHDQhKe6673ZMGorDHe+wK/hMl0egeI2TmBoDMai10O7QI5Oa8OUl7yM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=nHXYz2pl; arc=none smtp.client-ip=178.154.239.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
+Received: from forward101b.mail.yandex.net (forward101b.mail.yandex.net [IPv6:2a02:6b8:c02:900:1:45:d181:d101])
+	by forward200b.mail.yandex.net (Yandex) with ESMTPS id BDBA7647BB
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 17:59:02 +0300 (MSK)
+Received: from mail-nwsmtp-smtp-production-main-90.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-90.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:1f91:0:640:de02:0])
+	by forward101b.mail.yandex.net (Yandex) with ESMTP id EE23660AE9;
+	Thu, 18 Jan 2024 17:58:54 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-90.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id rwOuU2f7a0U0-oSPw3MUa;
+	Thu, 18 Jan 2024 17:58:54 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+	t=1705589934; bh=JHYltYrNm0LSrPtFLfYTp9VB0V+HBMgt8p9V+fPk66o=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=nHXYz2pl9qtT7hePXTvgIUn1s4bApxjR3nV6BWY2RTa96/oWmtzBg3trFzfp59p9+
+	 XTCRDs5rUo8uIvXjNzCrSWaHWTFd1FJe9aBpTUvlAR19o/n4wbsFJCWZcJDarZHMNN
+	 efWX3VurzCMQjB9kkPoUYX7zYXNcPdrrwxd5WXdI=
+Authentication-Results: mail-nwsmtp-smtp-production-main-90.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From: Dmitry Antipov <dmantipov@yandex.ru>
+To: Brian Norris <briannorris@chromium.org>
+Cc: David Lin <yu-hao.lin@nxp.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	linux-wireless@vger.kernel.org,
+	Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH] wifi: mwifiex: cleanup SSID-related data types
+Date: Thu, 18 Jan 2024 17:57:12 +0300
+Message-ID: <20240118145715.475513-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240117160748.37682-1-brgl@bgdev.pl>
-In-Reply-To: <20240117160748.37682-1-brgl@bgdev.pl>
-From: Rob Herring <robh+dt@kernel.org>
-Date: Thu, 18 Jan 2024 08:29:01 -0600
-X-Gmail-Original-Message-ID: <CAL_Jsq+0xb-otvjkbLqB8gNKadVqnigwGB_k+VGrj740Y6wxjg@mail.gmail.com>
-Message-ID: <CAL_Jsq+0xb-otvjkbLqB8gNKadVqnigwGB_k+VGrj740Y6wxjg@mail.gmail.com>
-Subject: Re: [PATCH 0/9] PCI: introduce the concept of power sequencing of
- PCIe devices
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Kalle Valo <kvalo@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Heiko Stuebner <heiko@sntech.de>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Chris Morgan <macromorgan@hotmail.com>, 
-	Linus Walleij <linus.walleij@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Arnd Bergmann <arnd@arndb.de>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	=?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= <nfraprado@collabora.com>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Peng Fan <peng.fan@nxp.com>, 
-	Robert Richter <rrichter@amd.com>, Dan Williams <dan.j.williams@intel.com>, 
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>, Terry Bowman <terry.bowman@amd.com>, 
-	Lukas Wunner <lukas@wunner.de>, Huacai Chen <chenhuacai@kernel.org>, Alex Elder <elder@linaro.org>, 
-	Srini Kandagatla <srinivas.kandagatla@linaro.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Abel Vesa <abel.vesa@linaro.org>, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-pci@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jan 17, 2024 at 10:08=E2=80=AFAM Bartosz Golaszewski <brgl@bgdev.pl=
-> wrote:
->
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->
-> The responses to the RFC were rather positive so here's a proper series.
+Drop unused 'struct mwifiex_ssid_bssid' and replace custom
+'struct mwifiex_802_11_ssid' with generic 'struct cfg80211_ssid'
+as a member of 'struct mwifiex_uap_bss_param'. Compile tested only.
 
-Thanks for tackling this.
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+---
+ drivers/net/wireless/marvell/mwifiex/decl.h  | 5 -----
+ drivers/net/wireless/marvell/mwifiex/ioctl.h | 7 +------
+ 2 files changed, 1 insertion(+), 11 deletions(-)
 
-> During last year's Linux Plumbers we had several discussions centered
-> around the need to power-on PCI devices before they can be detected on
-> the bus.
->
-> The consensus during the conference was that we need to introduce a
-> class of "PCI slot drivers" that would handle the power-sequencing.
->
-> After some additional brain-storming with Manivannan and the realization
-> that DT maintainers won't like adding any "fake" nodes not representing
-> actual devices, we decided to reuse existing PCI infrastructure.
+diff --git a/drivers/net/wireless/marvell/mwifiex/decl.h b/drivers/net/wireless/marvell/mwifiex/decl.h
+index 326ffb05d791..ac23fa0ae0e7 100644
+--- a/drivers/net/wireless/marvell/mwifiex/decl.h
++++ b/drivers/net/wireless/marvell/mwifiex/decl.h
+@@ -161,11 +161,6 @@ struct mwifiex_fw_image {
+ 	u32 fw_len;
+ };
+ 
+-struct mwifiex_802_11_ssid {
+-	u32 ssid_len;
+-	u8 ssid[IEEE80211_MAX_SSID_LEN];
+-};
+-
+ struct mwifiex_wait_queue {
+ 	wait_queue_head_t wait;
+ 	int status;
+diff --git a/drivers/net/wireless/marvell/mwifiex/ioctl.h b/drivers/net/wireless/marvell/mwifiex/ioctl.h
+index e8825f302de8..3ce41dafd515 100644
+--- a/drivers/net/wireless/marvell/mwifiex/ioctl.h
++++ b/drivers/net/wireless/marvell/mwifiex/ioctl.h
+@@ -37,11 +37,6 @@ struct mwifiex_chan_freq {
+ 	u32 freq;
+ };
+ 
+-struct mwifiex_ssid_bssid {
+-	struct cfg80211_ssid ssid;
+-	u8 bssid[ETH_ALEN];
+-};
+-
+ enum {
+ 	BAND_B = 1,
+ 	BAND_G = 2,
+@@ -88,7 +83,7 @@ struct mwifiex_uap_bss_param {
+ 	u16 rts_threshold;
+ 	u16 frag_threshold;
+ 	u8 retry_limit;
+-	struct mwifiex_802_11_ssid ssid;
++	struct cfg80211_ssid ssid;
+ 	u8 bcast_ssid_ctl;
+ 	u8 radio_ctl;
+ 	u8 dtim_period;
+-- 
+2.43.0
 
-Thank you. :)
-
-> The general idea is to instantiate platform devices for child nodes of
-> the PCIe port DT node. For those nodes for which a power-sequencing
-> driver exists, we bind it and let it probe. The driver then triggers a
-> rescan of the PCI bus with the aim of detecting the now powered-on
-> device. The device will consume the same DT node as the platform,
-> power-sequencing device. We use device links to make the latter become
-> the parent of the former.
->
-> The main advantage of this approach is not modifying the existing DT in
-> any way and especially not adding any "fake" platform devices.
-
-Suspend/resume has been brought up already, but I disagree we can
-worry about that later unless there is and always will be no power
-sequencing during suspend/resume for all devices ever. Given the
-supplies aren't standard, it wouldn't surprise me if standard PCI
-power management isn't either. The primary issue I see with this
-design is we will end up with 2 drivers doing the same power
-sequencing: the platform driver for initial power on and the device's
-PCI driver for suspend/resume.
-
-Rob
 
