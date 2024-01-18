@@ -1,90 +1,93 @@
-Return-Path: <linux-wireless+bounces-2150-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2151-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45AEF831598
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 10:16:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C4528315B2
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 10:26:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 787921C22886
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 09:16:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E6901C22984
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 09:26:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C8EB13AF8;
-	Thu, 18 Jan 2024 09:16:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E7761BC33;
+	Thu, 18 Jan 2024 09:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c2eKbhW8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lh/mI/ja"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FDB21CFA4;
-	Thu, 18 Jan 2024 09:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F9C200A4;
+	Thu, 18 Jan 2024 09:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705569412; cv=none; b=fhK3sZuVl4EmC7Lg9aYxQmagg8mHq+hIN98dtYoQ15Jzd6Qc79LbYawgxltmjBBrac6RLibnrKUudtyoQE1j3mkBXmX/+3W50ZuOijQTcokpWL4WuF+94FGHB2YTOPq96r5CaDI/fiGxwO1jzoXWbFMpm2FxCPZH5NLACb2SVCw=
+	t=1705569977; cv=none; b=MdEY5L/ki3W8yT4QtJF0c1ErlXybkg+4I0Qee5uLWnvWmV7kevrcJAyNkW1dypOgJUQbFb/p7MVQ1OunLxeu1ii/QDN839g7WX/0fB2s4Rrfqsbo+j3EtuSlgRVaLP8oVptjOWpNMGTFaw8si3ggcnc/vBn2WICshsLFgtaeUhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705569412; c=relaxed/simple;
-	bh=hkSwAwQRpBVseHgROkd3gsrJJPpKcp0eBJDtMHc3a+E=;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:References:Date:
-	 In-Reply-To:Message-ID:User-Agent:MIME-Version:Content-Type; b=iLgoCSD3KXY2zfjnGCI6zYkpbwrUBBRmuUq7jICQTMPV+cHG8l1Q8Lc99H+q51ivFsQIyT9Y1Rc+Ozrl89KgF1V8d8X8hiCHjz7lE+Ja8Fq4LjZd+XoLLYOASEDTOWzqBWs5AO0051UYkK6l5296OxLbCKuTndgLtSBDto6ka/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c2eKbhW8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EC78C433F1;
-	Thu, 18 Jan 2024 09:16:49 +0000 (UTC)
+	s=arc-20240116; t=1705569977; c=relaxed/simple;
+	bh=UijfICR2oGzBlSmNjvhFnSRNLSCWlEItBErTLdJJITM=;
+	h=Received:DKIM-Signature:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:
+	 Cc:User-Agent:Message-ID:Date; b=q/VScoFjtAr5qkGoa0+B5mhbCH+vOGqJvImZ5UtqYV6SXVq+IxjsXXJ7TjIXlAYYVtYrL4DnJRIyaQnSXlaJV7lNch1/sdC/ei/RWxtHVw9s5kmIwTgXGxiY6mgCNJex74yNXj0AffUpHx2dm4PpbZTBcom8mAZRrLQ1Lv9xNo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lh/mI/ja; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58F0FC433F1;
+	Thu, 18 Jan 2024 09:26:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705569411;
-	bh=hkSwAwQRpBVseHgROkd3gsrJJPpKcp0eBJDtMHc3a+E=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=c2eKbhW8+VELAfIZkBmxFmTtcVYAYHVxudUEoUa8C6BT7UDa7CrtEx0hOzD7ynmy6
-	 PEAJS2VtbXTXLbbHR967Pwj18CzcqAuJynlG5N1Q4aPpDmz/6Cgs5zFfzjw3kuyqEH
-	 AKJoyVXLr6iRk+TL7r1uJ6wQ6eFNLZyF+i+XQQhkZh816wzUMLJeS+liBDirGxIsXg
-	 qIUcstuK9WjTxY3oLcZHNBS5R4i59Ry9EVGzTnWotr1/9S8OjMSXG9dWTIzxgzyJB9
-	 Srj9nY8LweUGWVY0hVRO1xLGbGsT5x1i6RW1piRzz2e1LLT4XCWLHJDbNjYWLIA76B
-	 N+g+PN+BZlD1w==
-From: Kalle Valo <kvalo@kernel.org>
-To: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>,  "David S . Miller"
- <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,  Jakub
- Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>,  "open
- list:MAC80211" <linux-wireless@vger.kernel.org>,  "open list:NETWORKING
- [GENERAL]" <netdev@vger.kernel.org>,  open list
- <linux-kernel@vger.kernel.org>,  Jun Ma <Jun.Ma2@amd.com>
-Subject: Re: [PATCH] wifi: mac80211: Drop WBRF debugging statements
-References: <20240117030525.539-1-mario.limonciello@amd.com>
-Date: Thu, 18 Jan 2024 11:16:47 +0200
-In-Reply-To: <20240117030525.539-1-mario.limonciello@amd.com> (Mario
-	Limonciello's message of "Tue, 16 Jan 2024 21:05:25 -0600")
-Message-ID: <87il3r3ssg.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=k20201202; t=1705569976;
+	bh=UijfICR2oGzBlSmNjvhFnSRNLSCWlEItBErTLdJJITM=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=lh/mI/javOWw2CHp1uKcI2xFSIr52T9fq2RoncNl7lX18dV7Q6DwYsXpt/0YynG7y
+	 xYJ32FOb/I/wMzF80FZJX6+HbqHG2ylB/AIt0/6zr2h1Fsxx+znpgh72lW/AvDWvsg
+	 8r+i09SXhUD1mGHBf2S0ddo0/F9PU4gRtlKTFmUn2plqG1T3zHzaXBgSTLeWrjsxzc
+	 MoP++Rb/iMapj9TTKDZrC0EQBSq7bbSkbRWFLsK+VGoPtrhthlDEOR9gjYIMYnuFoC
+	 8/EZI960/8tftwh8EHRTqvWl0wBoXAkr4+Fj83Wn0YMxQtdrULaOtAx+mNmoZpKIC+
+	 R1vt8BGmyxgPw==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH 30/33] wifi: libertas: Follow renaming of SPI "master" to
+ "controller"
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: 
+ <ff935c49902f3961b602ae3b47bfe6dd2ceb8405.1705348270.git.u.kleine-koenig@pengutronix.de>
+References: 
+ <ff935c49902f3961b602ae3b47bfe6dd2ceb8405.1705348270.git.u.kleine-koenig@pengutronix.de>
+To: =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: Mark Brown <broonie@kernel.org>,
+ Geert Uytterhoeven <geert+renesas@glider.be>, linux-spi@vger.kernel.org,
+ kernel@pengutronix.de, Dmitry Antipov <dmantipov@yandex.ru>,
+ Michal Simek <michal.simek@amd.com>,
+ Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>,
+ libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <170556997211.2797779.229676741330518699.kvalo@kernel.org>
+Date: Thu, 18 Jan 2024 09:26:14 +0000 (UTC)
 
-Mario Limonciello <mario.limonciello@amd.com> writes:
+Uwe Kleine-König <u.kleine-koenig@pengutronix.de> wrote:
 
-> Due to the way that debugging is used in the mac80211 subsystem
-> this message ends up being noisier than it needs to be.
->
-> As the statement is only useful at a first stage of triage for
-> BIOS bugs, just drop it.
->
-> Cc: Jun Ma <Jun.Ma2@amd.com>
-> Suggested-by: Kalle Valo <kvalo@kernel.org>
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> In commit 8caab75fd2c2 ("spi: Generalize SPI "master" to "controller"")
+> some functions and struct members were renamed. To not break all drivers
+> compatibility macros were provided.
+> 
+> To be able to remove these compatibility macros push the renaming into
+> this driver.
+> 
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-Thanks for the patch.
+Please take this via spi tree:
 
-Tested-by: Kalle Valo <kvalo@kernel.org>
+Acked-by: Kalle Valo <kvalo@kernel.org>
 
-It would be good to get this to v6.8 but we cannot take this to wireless
-tree yet, only after we have fast forwarded the tree.
+Patch set to Not Applicable.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+https://patchwork.kernel.org/project/linux-wireless/patch/ff935c49902f3961b602ae3b47bfe6dd2ceb8405.1705348270.git.u.kleine-koenig@pengutronix.de/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
 
