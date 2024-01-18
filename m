@@ -1,161 +1,97 @@
-Return-Path: <linux-wireless+bounces-2182-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2183-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07EDE831A24
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 14:11:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EE96831A33
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 14:14:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D364B21668
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 13:11:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 589B628A7BB
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 13:14:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1F892511D;
-	Thu, 18 Jan 2024 13:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4717250E6;
+	Thu, 18 Jan 2024 13:14:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="qRGqsq+1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kjS/6FVo"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com [209.85.221.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59168250F5
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 13:11:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C185524B55
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 13:14:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705583504; cv=none; b=RoKK6HfuSKBMKdghRg/wxMc36BIJgSKM1cqS3siQoKfJz6uyCJ3y8w8nIeWJ8rgpzlpWkdFsx0IIw//QgnG+65aKZOIOK5v8Re8z9TcqoIefAn4GRlpok+bmQClIoV1IHGF049fk8+YCzwmOv3GzMJ4360kHI54g8M3tBEmKbwE=
+	t=1705583682; cv=none; b=WEQSI1OByAoAzBnZVwSWuUldjWCqVXVlxJt7CbJxb9d5l/Fqb5znGfgkOp1VPlUj9W0gTa1gb7N3w+vWEDbepQXpi4KdPjTUuvPEt6FPUVsTBjtmWaoVfiLHdXvFDXrSA1gXDH6bV+z7Hqx8fjytZuu1EIm3gOaSX6oqCUNnsCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705583504; c=relaxed/simple;
-	bh=n++XuhRB4EVG1dnVu6UFfzLPoEhlNslsnkhQrRbhM9k=;
-	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:MIME-Version:
-	 References:In-Reply-To:From:Date:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding; b=qbLmTcCZYttCGKolplVqxWfFwvDBT+guJZTs36LdpstnwubQnSXZ8eQjpx5PITSA3Ham6rwY2SSA7e6R99c4d2LukdtZGIaddB1E921D9mKvPYjvkWHUc2+8qyqt9l2jgiIIa2nVDFC86dGLtRDxUWdP/I6yifQcwiXjZX48RQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=qRGqsq+1; arc=none smtp.client-ip=209.85.221.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-vk1-f178.google.com with SMTP id 71dfb90a1353d-4b72e63821eso417917e0c.1
-        for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 05:11:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1705583501; x=1706188301; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MHW8mrwPYeD3SY8y17cH7gnw3XovI7cNYSvj0nnf3+8=;
-        b=qRGqsq+1bJuMzygpcPUnex5SggsPvLRZYTJseFdBGyl4S/GAZKSuc7bdKJ4EjIdPmO
-         hdJbXf83QFKgssHvoAAGG1ZyqA9VDp1iB5g/O1pI+5UQvDmBCffzWB9C4FkEJyXknb98
-         Ez0ibwxLiYz6GZ0QwMFqKfE0SPZlmRIKIZifWQ2sQrJ6buPgp1eHUrtQiUxRrKE0LXLf
-         zHVOuqd704GbXXI28ckuPnx5KtXwNCjiGA+Xo3bonHuN+rwkj+srZUVeG31S8zky+GxE
-         8OsymlU/9SdFKfojInsqMLnOYxQvE8J2YHnaNHmTl7QbL5IOG5UfKpFP2uT9RyllV1Ke
-         ilMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705583501; x=1706188301;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MHW8mrwPYeD3SY8y17cH7gnw3XovI7cNYSvj0nnf3+8=;
-        b=FlbZSm1oS8vv5VyPBc473rMm/2RDj5W3LXNJ4lTL12RJZ3STQryd6QEandWS2vUHR/
-         NlwVMgSXEBShcomivk+qz9NMLybhANJtZlJY7miMvzyoctj7SOteUk78T01GBRlPGknW
-         4fyg59n8Cgy7Uo+khtxca47jRrtO4ycl7LnQ13yUjAdgwBBf0jxIC8bJgDZ44oRDXJoc
-         LFUCz5pDHkSJLZBC0LqRSSvahIfleh1FVboos+DBLrcHmoRn/5qeWKMW/6JjXtuWLXy9
-         J86PsYKieiJx8Wr2gSbRYkJK/f3drPiLzPZH6iGKMCIAMAx5vk1m3wpBw7oPC/RbjV19
-         CXNQ==
-X-Gm-Message-State: AOJu0YyvsyPYTB2FRhhVHbgZMBAuUq92lnY86lB7n8zCHiqIOniUkrfz
-	8W3zPNUP2WIFseywfZfMjT9NL+J7fBZ2WjM1dvsKVeXYbN86kMBSHMM+W5x3znk9Pd7zqR76ebb
-	SXX2oL9vVnlUY66jTjKc+zFUYuHwNXKUdKweluQ==
-X-Google-Smtp-Source: AGHT+IGTGw8HnvT5D8+nH/KgquXG/RE7XEsMEneP3Lg56sqfViwsfnFVV4sR0gvqRyQwQNymy/UlduMSCG1+S/3he4Q=
-X-Received: by 2002:a05:6122:128b:b0:4b7:2c46:32bb with SMTP id
- i11-20020a056122128b00b004b72c4632bbmr1337533vkp.13.1705583501195; Thu, 18
- Jan 2024 05:11:41 -0800 (PST)
+	s=arc-20240116; t=1705583682; c=relaxed/simple;
+	bh=rXQUHQX6uok/PuDqAF7PNVEnCwmEvZdb5z67tfs6B8M=;
+	h=Received:DKIM-Signature:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:
+	 Cc:User-Agent:Message-ID:Date; b=BPLBTNFrny+hR+DUfVuVRawh6ViaY3Isp/DAM6TmBgQjLAraY78ZRvI0bW38lDrk+8XpJv4UDft/4m3mHk9PrM2vJH9jAOTwDqFgIJGwBPBWGUTGPc84NSgitUAG/hs0JcooYsPg7HT59qga+MguCa8TEw9bhg1czCWfhxCsVww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kjS/6FVo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E1A6C433F1;
+	Thu, 18 Jan 2024 13:14:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705583682;
+	bh=rXQUHQX6uok/PuDqAF7PNVEnCwmEvZdb5z67tfs6B8M=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=kjS/6FVoAxm42UjWlIeoVu96k3U5Cmr9m4iocDp926NvHkxidFGQ01H3sP8S318B9
+	 MG8Y5J6mWHvehKP8/hR8HPM8LIi6m+FvRiSUoQSJ/c0Bxwo9SsH9lJDdM3CIbIchQu
+	 ipkXWdKyan1+9GY5tXqc+coTrUBL45zjod/CMxGYDBFVdlbEhH4jxhtzDfyccbS1Pn
+	 +uUioYLOaGavPzDOMrGYumkAjD/P+HJ+NbYqa2RFrzHIlfxWj51IxyFc1GnFSf+hLQ
+	 1SDAglbXO1Fck9aoklQVSUCwnswFe00hCLnWqJo50z22T5vo8SCTz4hAs5eVyiZugj
+	 OKPFEgUzQuEAA==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240117160748.37682-1-brgl@bgdev.pl> <20240117160748.37682-5-brgl@bgdev.pl>
- <65a7feb3ea48f_3b8e294bf@dwillia2-xfh.jf.intel.com.notmuch>
-In-Reply-To: <65a7feb3ea48f_3b8e294bf@dwillia2-xfh.jf.intel.com.notmuch>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Thu, 18 Jan 2024 14:11:30 +0100
-Message-ID: <CAMRc=McUdR5oVEpbwXF+Sc1OaEtYH-UCv0ScFwrbGyWtyh8W0A@mail.gmail.com>
-Subject: Re: [PATCH 4/9] PCI: create platform devices for child OF nodes of
- the port node
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: Kalle Valo <kvalo@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Heiko Stuebner <heiko@sntech.de>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Chris Morgan <macromorgan@hotmail.com>, 
-	Linus Walleij <linus.walleij@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Arnd Bergmann <arnd@arndb.de>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	=?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= <nfraprado@collabora.com>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Peng Fan <peng.fan@nxp.com>, 
-	Robert Richter <rrichter@amd.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
-	Terry Bowman <terry.bowman@amd.com>, Lukas Wunner <lukas@wunner.de>, 
-	Huacai Chen <chenhuacai@kernel.org>, Alex Elder <elder@linaro.org>, 
-	Srini Kandagatla <srinivas.kandagatla@linaro.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Abel Vesa <abel.vesa@linaro.org>, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-pci@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH V2 4/4] wifi: brcmfmac: cfg80211: Use WSEC to set SAE
+ password
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20240103095704.135651-5-arend.vanspriel@broadcom.com>
+References: <20240103095704.135651-5-arend.vanspriel@broadcom.com>
+To: Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc: linux-wireless@vger.kernel.org, Hector Martin <marcan@marcan.st>,
+ Neal Gompa <neal@gompa.dev>, Arend van Spriel <arend.vanspriel@broadcom.com>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <170558367920.2924528.10360491365838061583.kvalo@kernel.org>
+Date: Thu, 18 Jan 2024 13:14:40 +0000 (UTC)
 
-On Wed, Jan 17, 2024 at 5:22=E2=80=AFPM Dan Williams <dan.j.williams@intel.=
-com> wrote:
->
-> Bartosz Golaszewski wrote:
-> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> >
-> > In order to introduce PCI power-sequencing, we need to create platform
-> > devices for child nodes of the port node. They will get matched against
-> > the pwrseq drivers (if one exists) and then the actual PCI device will
-> > reuse the node once it's detected on the bus.
-> >
-> > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> [..]
-> > diff --git a/drivers/pci/remove.c b/drivers/pci/remove.c
-> > index d749ea8250d6..77be0630b7b3 100644
-> > --- a/drivers/pci/remove.c
-> > +++ b/drivers/pci/remove.c
-> > @@ -1,6 +1,7 @@
-> >  // SPDX-License-Identifier: GPL-2.0
-> >  #include <linux/pci.h>
-> >  #include <linux/module.h>
-> > +#include <linux/of_platform.h>
-> >  #include "pci.h"
-> >
-> >  static void pci_free_resources(struct pci_dev *dev)
-> > @@ -18,11 +19,11 @@ static void pci_stop_dev(struct pci_dev *dev)
-> >       pci_pme_active(dev, false);
-> >
-> >       if (pci_dev_is_added(dev)) {
-> > -
-> >               device_release_driver(&dev->dev);
-> >               pci_proc_detach_device(dev);
-> >               pci_remove_sysfs_dev_files(dev);
-> >               of_pci_remove_node(dev);
-> > +             of_platform_depopulate(&dev->dev);
-> >
-> >               pci_dev_assign_added(dev, false);
->
-> Why is pci_stop_dev() not in strict reverse order of
-> pci_bus_add_device()? I see that pci_dev_assign_added() was already not
-> in reverse "add" order before your change, but I otherwise would have
-> expected of_platform_depopulate() before of_pci_remove_node() (assumed
-> paired with of_pci_make_dev_node()).
+Arend van Spriel <arend.vanspriel@broadcom.com> wrote:
 
-The naming here is confusing but the two have nothing in common. One
-is used by CONFIG_PCI_DYNAMIC_OF_NODES to *create* new DT nodes for
-detected PCI devices. The one I'm adding, creates power sequencing
-*devices* (no nodes) for *existing* DT nodes.
+> From: Hector Martin <marcan@marcan.st>
+> 
+> Using the WSEC command instead of sae_password seems to be the supported
+> mechanism on newer firmware, and also how the brcmdhd driver does it.
+> 
+> According to user reports [1], the sae_password codepath doesn't actually
+> work on machines with Cypress chips anyway, so no harm in removing it.
+> 
+> This makes WPA3 work with iwd, or with wpa_supplicant pending a support
+> patchset [2].
+> 
+> [1] https://rachelbythebay.com/w/2023/11/06/wpa3/
+> [2] http://lists.infradead.org/pipermail/hostap/2023-July/041653.html
+> 
+> Signed-off-by: Hector Martin <marcan@marcan.st>
+> Reviewed-by: Neal Gompa <neal@gompa.dev>
+> [arend.vanspriel@broadcom.com: use multi-vendor framework]
+> Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 
-So the order is not really relevant here but I can change in v2.
+Should we also update the commit message to match the code? We are not removing
+the Cypress codepath anymore, right?
 
-Bartosz
+I can do the update, just let me know what to add. Preferably something I can
+just copy&paste.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20240103095704.135651-5-arend.vanspriel@broadcom.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
 
