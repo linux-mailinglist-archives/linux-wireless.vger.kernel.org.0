@@ -1,47 +1,47 @@
-Return-Path: <linux-wireless+bounces-2169-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2170-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1A1683186C
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 12:24:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6A7B83186D
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 12:25:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE7782845A1
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 11:24:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E736F1C223FD
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 11:25:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A24F323776;
-	Thu, 18 Jan 2024 11:24:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FC4A23776;
+	Thu, 18 Jan 2024 11:25:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jcchM8YL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bOvplN3P"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F0D62376E
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 11:24:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB952376E
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 11:25:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705577062; cv=none; b=E5rBz+m8X8x3IoZAptR2drVTzVQRiZVUL53vSr2WYbLgpfm8136tyV9eyy9Nh7++TnrwICp+UNFdOc+T66cFaTCd77+6gODzn8GAog6YuwuQVR8/RYcoMLGi8jb5PMdILF4y/ypXnKWrOMiO07+YHOpW7tEExBvv28M3GyqQyyU=
+	t=1705577147; cv=none; b=ouRZnToZ1K38U2VNsefFg9PGJEMYpXsDmVdhO7heLY/j2yUeVCPd9H8pWa/M/Apn5Od0D4VN/KCMjG7/hQsvkx3TajbJzWMope1rmGL2vilcmsHJKMq5bJK87GHFPmmqvxQjEkWsoizbkAW43Fckl/5rsrBfv1FG/WtBprSURD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705577062; c=relaxed/simple;
-	bh=bakl2yj1LvxQ/NlafqYNXGw4+EOr47EwgGliZDDL6KE=;
+	s=arc-20240116; t=1705577147; c=relaxed/simple;
+	bh=ltIlsHyncYZh9G6ou6FL9jWCun5Sv/NuVBeGOU5SsbI=;
 	h=Received:DKIM-Signature:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:
-	 Cc:User-Agent:Message-ID:Date; b=la7ZxyVpXfNKwZkTiQ3uboj4Q9gVjFBXFzJRH8b9G93Oxz89gbQO1OVR/IjiUuyAVaEysghLx3vGv8vV2NuwNhhVp8tR9vdY0lDaj9tJMofqshfNPJdRydDc0T4d3JUzuWhQjP4nKeUegjcd9Kz/CBJqQevnxTlH7N6Iv4gaz90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jcchM8YL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0B0AC433F1;
-	Thu, 18 Jan 2024 11:24:20 +0000 (UTC)
+	 Cc:User-Agent:Message-ID:Date; b=Qp8iE2JNmkAyXDUA56InkQCpmTva00tMK0Epxlwfru86tEmYbyyBtpk4Ko8jqvrDGC0Sof+7RMGPQTmqD+VCFr2qomJ16g0Gli2+U9n7Tx/7USEjT0Ovd77fsmZNg1pW55ptJZoTaMXL0Pj9JQqEy8WxEF3z4Qf3rN4magiQsE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bOvplN3P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBAAFC433F1;
+	Thu, 18 Jan 2024 11:25:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705577062;
-	bh=bakl2yj1LvxQ/NlafqYNXGw4+EOr47EwgGliZDDL6KE=;
+	s=k20201202; t=1705577147;
+	bh=ltIlsHyncYZh9G6ou6FL9jWCun5Sv/NuVBeGOU5SsbI=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=jcchM8YLEhgiDZZMpOyQGfWXyeOAxtNMbo/MKi6nulmxYasg+bLx9Nl+6PDcVWpMI
-	 AEHMw/TM29lHE+z/Tjp+x3/lwPk8jUUzX7cmFYKnF3a9DwvlHGTgWr4JKGuIWnWmlg
-	 uAJ1e8K9zFwCA8R7+YLRWnCPtirD0JGlZBSkg2R2sE1Eukr8m6ZX7zq/+vvagMQb3d
-	 Jdps49e+GD924uOfCT9Y1boaHXGStGB5lxO/EzBrTch2xfRjvKsvOYMTUBW28ZEyQZ
-	 GvNFUyL0DAvTmKBGohIbkYyhBl+VTiNLD84a0T8bSlZm+UEu63CouXPMnfqi/adbiJ
-	 H463szvngiZUw==
+	b=bOvplN3PatCoGmZfileyGx+SvtMipMO+1obhheXJw9QAyD0dZ7ziZudPy3ptBC8r5
+	 lvRm4jniE9H6QPHF8K0PlLKBpkI9vh8WRtODBMJWf6aJAbo2TLYdoF+raKAPA+zers
+	 GKZUqY53vlk3XHZngqCcaqVkmsai31nTkUN898KV3xOfDsxHHyQvAcKfqduATF5I9K
+	 HdGcnGJexDEyOdN9cAW1Vd/IumfdGJCTqC/OPHjuMi+dpXUR5Dk3MFYp6hHo9dZ5SE
+	 7A/ncDDG7An0HviDsbQqXkHm3K2qpFLviYmmM1w+jqvayLUcLbCbW6uWqc46NveUnx
+	 HSvCMupCtRXSQ==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -50,31 +50,36 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: brcmfmac: use generic lists to manage TDLS entries
+Subject: Re: [PATCH v2] brcmfmac: replace one-element array with
+ flexible-array
+ member
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230703162458.155942-1-dmantipov@yandex.ru>
-References: <20230703162458.155942-1-dmantipov@yandex.ru>
-To: Dmitry Antipov <dmantipov@yandex.ru>
-Cc: Arend van Spriel <aspriel@gmail.com>,
- Franky Lin <franky.lin@broadcom.com>, linux-wireless@vger.kernel.org,
- Dmitry Antipov <dmantipov@yandex.ru>
+In-Reply-To: <20230803052238.12147-2-rauji.raut@gmail.com>
+References: <20230803052238.12147-2-rauji.raut@gmail.com>
+To: Atul Raut <rauji.raut@gmail.com>
+Cc: aspriel@gmail.com, franky.lin@broadcom.com,
+ linux-wireless@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
+ linux-kernel-mentees@lists.linuxfoundation.org
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170557705899.2924528.6474456189708090209.kvalo@kernel.org>
-Date: Thu, 18 Jan 2024 11:24:20 +0000 (UTC)
+Message-ID: <170557714390.2924528.17502971662803875744.kvalo@kernel.org>
+Date: Thu, 18 Jan 2024 11:25:45 +0000 (UTC)
 
-Dmitry Antipov <dmantipov@yandex.ru> wrote:
+Atul Raut <rauji.raut@gmail.com> wrote:
 
-> Prefer generic lists over ad-hoc quirks to manage TDLS
-> entries, adjust related code.
+> One-element arrays are obsolete, and flexible
+> array members have taken their place. So, in
+> struct cca_stats_n_flags, replace the one-element
+> array with a flexible-array member.
 > 
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+> This fixes warnings such as:
+> ./drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:119:6-9: WARNING use flexible-array member instead (https://www.kernel.org/doc/html/latest/process/deprecated.html#zero-length-and-one-element-arrays)
+> 
+> Signed-off-by: Atul Raut <rauji.raut@gmail.com>
 
-This should be tested on a real device.
-
-Patch set to Changes Requested.
+Arend, what do you think? Link to the patch after "--" line.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230703162458.155942-1-dmantipov@yandex.ru/
+https://patchwork.kernel.org/project/linux-wireless/patch/20230803052238.12147-2-rauji.raut@gmail.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
