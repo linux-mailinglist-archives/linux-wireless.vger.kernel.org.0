@@ -1,186 +1,237 @@
-Return-Path: <linux-wireless+bounces-2203-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2204-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4D1D831DC7
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 17:48:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA6D8831DE2
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 17:52:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 472DAB25C5B
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 16:48:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9998A289615
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 16:52:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40F0C2C1AA;
-	Thu, 18 Jan 2024 16:48:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AA5D2D02F;
+	Thu, 18 Jan 2024 16:52:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="An2VdQ+n"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="ifUJ7YaR";
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="mmVaHb8V"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F0FE2C6A2
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 16:48:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705596494; cv=none; b=gxaGLC96DgVp/l9pSeR8lKpLYGx05o3NAAqLBCZ8+fQkXtYFp9hy91cd/FriTirK6+oYh+pggvBWifkReFoBsyiqCpWogGBwcYiV4W1DLtTyNq/Q7Hug6rudwUG8rI2p/eUWN9hwaC6MSrcYbLddxPt/w2YrHNpRP/vG3loT3XE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705596494; c=relaxed/simple;
-	bh=miTJdZ7SCOy6yS2ppoUcXHEWRpKJlB39AmULp4lJO4I=;
-	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:Received:Date:
-	 From:To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To; b=oqrM3/r/b2ybY3I143VCjpBT8ZhMRk7JgljVWdtBTdnub4TBqXEsh4IzyA3BP5p+hWqKGzGRz+XwAOo6w9kWpUn4y+N8OcjWHg+oW798ufjcGqdRsDWrzN2cXQ3T9hFp1EuTJmoSiiEaD7nqWsvcUo6WLmbjocxFDnnwpyzjyDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=An2VdQ+n; arc=none smtp.client-ip=209.85.219.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-68185ec3b7cso8348336d6.2
-        for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 08:48:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1705596491; x=1706201291; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=2qY+DeL2xbbKxeJ6vpnH6GuksIvi/CNqlOEIOB0QmgY=;
-        b=An2VdQ+nOf1HadjrWZBagZXgdp5zAoj+cBNA4DXhFkvmek0bavGeU4mLRRHAWOdeHj
-         NU6nXVFVjkFq9yOAG0AkhBzYgqkqop2CxPK+68cmDquw+2uTzPkQFVmsjAYeI3XfT//D
-         4jw2J17X5YIoiFhDXP3HzRpHst+QRrEzXtsJf/y28w0GzoPGzTehf1Yn/IkheUVSJvio
-         BUCrW1BQT95ZFg2FlWEcCS9fF3a44ZYu8S27sZero2LiuNwfQbELHkJxfrErB6VFk5Os
-         hB8F/PufwCSf3497CYoISNGD0xUmf3o5P2jokGnbdKj+vNaA3Rc9YkKcVfEX2vO/0y+4
-         b5oA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705596491; x=1706201291;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2qY+DeL2xbbKxeJ6vpnH6GuksIvi/CNqlOEIOB0QmgY=;
-        b=HMqrx79Y8a3w/XBVydOJqjRFbWROCI1yrsrq0jmzr4s/h1w/FqbL2FIBiCxS4s4SIR
-         biLJPa+Kp6zQ1UBFFQMy/AyPTvJBak22cxk13VY/lfes997HVDmKd9HWOcH2G9V5goro
-         9v06FPOLHoY45lzr4aTHYHCYBmMx2OA+w+j0TeF4Sxy7No9SwVogoR6WwRgu4VbbpNgW
-         hwZHf4OeqgRbYjDu0/jGGFFAh8soOx0L/3wuS0c4RtLGfLEDuQk3kmvP9bltWAV48RZp
-         XhR8T1Sz4KuLBPSnUgI3XjqNg6Gzc/+DUMAkY6x2xlL4E+X9L5FK4rPUWSOESi4aNlvg
-         D8AA==
-X-Gm-Message-State: AOJu0Yy5igskQ3TUUPQyhFr7QaLvNzUiLM5ZNOONE20Iu+6CBFQ2x1Tl
-	cGe9hXUfdSb0ldKeO7Qp6b40tinyMAGQaWoTcV9MQmPHB9eCL1pCOtxSOAYRwg==
-X-Google-Smtp-Source: AGHT+IEn43mNc0pGFNA/e9xCmni7wt126V5hRFFctPG+8HTvDg2gAj0BH30hir6ngmcHfGctOmNHdA==
-X-Received: by 2002:ad4:5de3:0:b0:681:77d8:bafe with SMTP id jn3-20020ad45de3000000b0068177d8bafemr1096558qvb.30.1705596491547;
-        Thu, 18 Jan 2024 08:48:11 -0800 (PST)
-Received: from thinkpad ([117.248.2.56])
-        by smtp.gmail.com with ESMTPSA id lb25-20020a056214319900b006819aeb62d6sm108106qvb.136.2024.01.18.08.47.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Jan 2024 08:48:11 -0800 (PST)
-Date: Thu, 18 Jan 2024 22:17:55 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Rob Herring <robh+dt@kernel.org>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>, Kalle Valo <kvalo@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Chris Morgan <macromorgan@hotmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	=?iso-8859-1?Q?N=EDcolas_F_=2E_R_=2E_A_=2E?= Prado <nfraprado@collabora.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Peng Fan <peng.fan@nxp.com>, Robert Richter <rrichter@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Terry Bowman <terry.bowman@amd.com>, Lukas Wunner <lukas@wunner.de>,
-	Huacai Chen <chenhuacai@kernel.org>, Alex Elder <elder@linaro.org>,
-	Srini Kandagatla <srinivas.kandagatla@linaro.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Abel Vesa <abel.vesa@linaro.org>, linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: [PATCH 0/9] PCI: introduce the concept of power sequencing of
- PCIe devices
-Message-ID: <20240118164755.GA3253@thinkpad>
-References: <20240117160748.37682-1-brgl@bgdev.pl>
- <CAL_Jsq+0xb-otvjkbLqB8gNKadVqnigwGB_k+VGrj740Y6wxjg@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A61382D021;
+	Thu, 18 Jan 2024 16:52:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=68.232.153.233
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1705596766; cv=fail; b=rc3a9vZxS8/aGFNbWSlXYUwR2nqFVmHyAm9PvQkUVOxCmQp9v0X1rSOPGMlN/3nVtcIPH0hvLV+/YOmCVkdeXzodQSuccLtkb68+TilplchwyvYv3M7/BS/nxaKk9KaFXhNoncwNl4bI41Z8I9PEZaXvyfzg9kYg5T72xJfVLoo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1705596766; c=relaxed/simple;
+	bh=v0v8b6pfmLu/wSWQ94+qbWtvcv7IDkkiUEkm4KIcdvE=;
+	h=DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:X-IronPort-AV:
+	 X-Amp-Result:Received:Received:Received:ARC-Message-Signature:
+	 ARC-Authentication-Results:DKIM-Signature:Received:Received:From:
+	 To:CC:Subject:Thread-Topic:Thread-Index:Date:Message-ID:References:
+	 In-Reply-To:Accept-Language:Content-Language:X-MS-Has-Attach:
+	 X-MS-TNEF-Correlator:user-agent:x-ms-publictraffictype:
+	 x-ms-traffictypediagnostic:x-ms-office365-filtering-correlation-id:
+	 x-ms-exchange-senderadcheck:x-ms-exchange-antispam-relay:
+	 x-microsoft-antispam:x-microsoft-antispam-message-info:
+	 x-forefront-antispam-report:
+	 x-ms-exchange-antispam-messagedata-chunkcount:
+	 x-ms-exchange-antispam-messagedata-0:Content-Type:Content-ID:
+	 Content-Transfer-Encoding:MIME-Version:
+	 X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-AuthSource:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-originalarrivaltime:
+	 X-MS-Exchange-CrossTenant-fromentityheader:
+	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
+	 X-MS-Exchange-CrossTenant-userprincipalname:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped; b=lWKlrM2Kx0exBoJz9+wcmMfvF/qTNVbPi36ICOmXoalyoh7ONKIHOJO5wrB1lYssAU5q7vr5UhcisGTscZ29NTi4dXCVU+N7DJEcY88ip2TaijeHwRBuQngPVwZ3gX5A2uauwFW2x2kh8MGNzxjjdl9yXbYAVq6lhRKuRRQbjlw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=ifUJ7YaR; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=mmVaHb8V; arc=fail smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1705596764; x=1737132764;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=v0v8b6pfmLu/wSWQ94+qbWtvcv7IDkkiUEkm4KIcdvE=;
+  b=ifUJ7YaRxmEyM4+YP6eoq7XFoyex+buuBzQmCOgkV2zM9TmU2FZimW8h
+   xrzWjbGRg/8SqbuD0/4arilB8N79tLEV+lg0bnrLU2dh27P+ihvjQ/YIW
+   KzbU0fbh9O4rSn9JdYuRA9Rf/LhmHoWDi/5A5GoCZNYW9QC1DDIAJEsHm
+   Kh3POYyFVqk1VGwqJ+K/B/C9qhq880THVIgC001huALmUrLlKKF67C45v
+   t32JV6lew9zvmj4Teu3UahioScdvuPKIP8uMJjM3HQILefxRVqAFf96di
+   ITm6KqR+YyurO25jocc8JVqla3ZW2y9vs6kwYNNECm5G5gpkSedOigfl7
+   A==;
+X-CSE-ConnectionGUID: W/je30oIQ1K7uUjGsJxhoQ==
+X-CSE-MsgGUID: CIOR7edVTjuc56Jy0jFq7A==
+X-IronPort-AV: E=Sophos;i="6.05,203,1701154800"; 
+   d="scan'208";a="16157512"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 18 Jan 2024 09:52:43 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Thu, 18 Jan 2024 09:52:08 -0700
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (10.10.215.250)
+ by email.microchip.com (10.10.87.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Thu, 18 Jan 2024 09:52:07 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=HSD0fQGDW4BF+uwDc4BUYN3jwLadEchmGK0fm8SdvzQb06ejCPGSCn3QC+NU6PmxUF4wKEYtwHCZMzmxccHXwtnVD+af9GN4yX66BPkRyLcZvJRVANTQySYi4MvWrWoTEBb6MOfewLWoObrSd775Kq5J4+htetrDPB0nQpbfQwRr9QMG8xDn4Bo7u8a6wZYKFqyhGoqjBpzsR/GyWTmAFg6dmId+h0CH03nUsNtmK3864Ryfa+AhnMZnuX5GXmIhaSi9Gcs8iz+U78NKWs/dcEyNdPr9nO3TIVH8F6nWaN1gX7t14l3XUTpac/W0XqFeCJxANbMHFuR403oE4imMiw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=v0v8b6pfmLu/wSWQ94+qbWtvcv7IDkkiUEkm4KIcdvE=;
+ b=jlAbbPT1OmSJwFFW6bF4/wMWS/Y3Ylo54jtO+4Yj6B7RaA6NgwxgUlntolbHXhAzNsiIDyNZOfuxglVErWIcQBwYdxI2deoJepXetRWfNdWVIISdHHCEqd3eIJoRw/0GqJ27OnZQmx7C9d/wI/xT0ayFxrngH6rEI04FiXXNZtpolw0DI9oOkBffbhjSw7j5H+AgYUIjzkRJ9l4V9wPu3U8YTL+LOm+Wie0i7je4latayMfi+p4R2Go2fnsyL3WYs26xCPkWdLN3syjnSoTWOFoh/lsMO6bb0H07NDcJuxpRj0+O7eg44SGLRjAmH16olOo/RcmY/bCrPqm5gndb+A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microchip.com; dmarc=pass action=none
+ header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microchip.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=v0v8b6pfmLu/wSWQ94+qbWtvcv7IDkkiUEkm4KIcdvE=;
+ b=mmVaHb8V6GPu5bbQtUBJZEIkc0hE/Alul5PIrlw2CvppSDMmOuhUfGTb28W/qNqPTuRSYO6IUonAxUTrvabKGb10hUtvOSYaWZH57rVxCk22sO8xI7gj0wLaHhNb1DujepQjkSJdSJh0KlBCToZ2y9xDC6d7pO4s3AHRVo3PsE3iYhZ/QYohPmlCnyVV+YFeCtbLaXA+1p8Nvs0wTH1u6jUAsA2LUtRXWe+4o7lzfXtZhixorNE8E/mn3Ieoiy7SJh5/Uoj85bTxly809d+U/Jk9TGx/rw4CETMkHTsYeiLOUXfm2RHf0XaFO2JXDl7otXl1k7ToLYsnSMgq0HSbeA==
+Received: from PH0PR11MB5176.namprd11.prod.outlook.com (2603:10b6:510:3f::5)
+ by DS0PR11MB7925.namprd11.prod.outlook.com (2603:10b6:8:f8::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7181.19; Thu, 18 Jan
+ 2024 16:52:05 +0000
+Received: from PH0PR11MB5176.namprd11.prod.outlook.com
+ ([fe80::613:fb5:737:dae8]) by PH0PR11MB5176.namprd11.prod.outlook.com
+ ([fe80::613:fb5:737:dae8%7]) with mapi id 15.20.7202.024; Thu, 18 Jan 2024
+ 16:52:05 +0000
+From: <Ajay.Kathat@microchip.com>
+To: <alexis.lothore@bootlin.com>, <kvalo@kernel.org>
+CC: <linux-wireless@vger.kernel.org>, <claudiu.beznea@tuxon.dev>,
+	<davidm@egauge.net>, <thomas.petazzoni@bootlin.com>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/5] wifi: wilc1000: set preamble size to auto as default
+ in wilc_init_fw_config()
+Thread-Topic: [PATCH 1/5] wifi: wilc1000: set preamble size to auto as default
+ in wilc_init_fw_config()
+Thread-Index: AQHaR8N1F/E9+Yo0nE2y0lDjNrL3d7DfUqEAgABeLICAABz/AA==
+Date: Thu, 18 Jan 2024 16:52:05 +0000
+Message-ID: <5c5e1332-39de-4d6b-9646-661c78cee900@microchip.com>
+References: <20240115-wilc_1000_fixes-v1-1-54d29463a738@bootlin.com>
+ <170557027237.2797779.2354857290141885659.kvalo@kernel.org>
+ <000e823e-ede1-408b-b8e1-fd9c1c73fd6e@bootlin.com>
+In-Reply-To: <000e823e-ede1-408b-b8e1-fd9c1c73fd6e@bootlin.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Mozilla Thunderbird
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microchip.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH0PR11MB5176:EE_|DS0PR11MB7925:EE_
+x-ms-office365-filtering-correlation-id: 569cdac9-7c4c-4e53-1b6c-08dc1845cd69
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: /h+hGxCVgBHFPUIz6Ny5LmoAbsLRGV00bHc8FZknQOS2yHyO7Hu8Qwcc7+4Pab+dS8oQ1w5RmbmUSUEwq73ALmHGelcKJrEF/U8PPfuZP7Ykbf0dxX7D32IoQ1B9JT7pFL9dg80vdUt32UKA3JK6RKaC2UPnzOq60g+YIeYRjV1ddPBuUHHQ5Rp6h4/2Pzu6GS+3jjYDd34mLq2Z0gUiHkq+UEwYHX6OwU3g5S4R+FQakTwQCm5/+xz0ZalqNPkF1m3AtrRdOlFvUgspXUu99IXW2u+jI1ip7vN7+bF2v1JJ7vBhT0RacpZM1z9bOeO1KFu4g3gL/1eA3bm6aQmV5hbxt4AaLLIWAYGwrtoG46cWe4OsdbrfH2OlYx7quhqSTARrc8S0cEPQxXJOlorCUZW3Qfv7847RAJkJpQuj13VC+Ea5WDhbcYGHEbwW9RzcDBOPbfn1fnfen/VhPDU+mUaSQy5O1Wyge+cBNU1DZl0s8vevBfVMfDPu4IWTGCB9vIyD9IZze+cVhAkUT0v0B5IsGmW9EM6X0MFhXAaukhs2ZkHzW4ivKyvYM/oaMSZuJN+C5aOXI/gpmpcQg6lQsemhrrX8IxUy81iDF+zMqRvRLu0NsjIz4/l7mVL1GZ52j18Nua1LIeh1KdLYFUtpCQuGNkRPD7B+Fj+3lVp/dZdt8RIozG7Hsno5Sx8EUWYOIFho9RXJsddZ6br0LxHEKfClZbfvwYVJiUH9b12bQiw=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB5176.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(366004)(396003)(346002)(376002)(136003)(230273577357003)(230173577357003)(230922051799003)(451199024)(186009)(64100799003)(1800799012)(86362001)(31696002)(83380400001)(38100700002)(54906003)(26005)(66946007)(41300700001)(122000001)(76116006)(8936002)(5660300002)(71200400001)(53546011)(8676002)(4326008)(6506007)(6486002)(2906002)(478600001)(66476007)(6512007)(66446008)(316002)(64756008)(66556008)(110136005)(91956017)(36756003)(38070700009)(2616005)(31686004)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?NXZiSzJlMmFRR2tyeEJrQWdOaGJubXlWOTZUMFRPTmtTV2p1aVRMMU1tcDQr?=
+ =?utf-8?B?YlhIb01lMmNqNXM5aGFVSjNiTGFQZlF0ekpTSlFxTlYxY0JkNzFqdGtUUHF0?=
+ =?utf-8?B?WFZHWVBnd1E3SytaNE1GWnp3ejNCc1Y5VFdBdFk5MW5rNldjYTZYcThMT1pp?=
+ =?utf-8?B?ZlhsWGwybU1tWWh0THZEUHAyQzd1Wm9wTklnTzlCN3IwclQrQmlkcHczNU9C?=
+ =?utf-8?B?U3FoWk91c0JOWmEwVEtRUThLdEhaSXFva2ZEamd1a2xmbUFJSnRFT1JNSFBx?=
+ =?utf-8?B?R0thWm1zK0VUNVIwMTdyVjcydmdIcG52MjJtMTAyQmVlMVhuTVhUU0N4b1py?=
+ =?utf-8?B?VXhMQ0prTE1UaStvSHFCVE9VWUx1UkRTSDV1SGhSREZVOGZ2V0xHWU13L0Ns?=
+ =?utf-8?B?Vjg5OGhWb20wQThyVGNDbDVxR1dTUUF0amYwNkJrc3ZLb3dNbEFkejVyVGZy?=
+ =?utf-8?B?SHRwbXdTQWRMeFJuMEVyWHdDcTczV2JEZ1ZQQ3ppdVVqTk9TQTB2VyswSy9Z?=
+ =?utf-8?B?Rkd6QWNUaERCVzQvRlFTSlJYLzFJN0dWUHk2MUgyRjFzNE94RjNjTTBlWTQv?=
+ =?utf-8?B?Z3hRc0l4QnF2azhKcm9GYklwM3dmTkE1VDV0ZmZhSXhxUk50L3Z0NFF2NkJT?=
+ =?utf-8?B?QU51bFhiUWNjNEozQjdJUXVFWHhtWEhmYTEyNTNCeG5QTjI5S0NLazQ2blM2?=
+ =?utf-8?B?b3Y0cjZNUXRtRkVFWFVmQmVVbFQwKzdGTDZkWnRZMXVBL2MvSERWZm1LellB?=
+ =?utf-8?B?alczTy9yTGlUQnRYajJwRXBhVnR5a0pYbVhsWm5SUGhacC9sM1ZYV00yUFEy?=
+ =?utf-8?B?ZmpaYXgzOHBZdUlsUEM2a21WZ2svellRQ213RjdROHdRUjVRcVlaSkRCNmJN?=
+ =?utf-8?B?N0F2dWZzdFFtTG9WaGo2c041a2pZMlRqbDQvNTk2WitMend4dVkzMFFkSEVF?=
+ =?utf-8?B?K0pIK3docVpjbEwzZitqVXBBaGpaV0tqNWJURkJjN2xES2pHb3RvSmg3T0w3?=
+ =?utf-8?B?RzlYSEJXVlhmaVFaem9DRWV2L3d0dGVHR2JRWE9YbDFtSnN2b3BuVmFwZU5Q?=
+ =?utf-8?B?RUtMeWVTSVBGQms5UXFkUm0wZXVHMytDM1NBVHc1eEt4ZVcxY1lXc0s1MDlR?=
+ =?utf-8?B?VmdqR1RYcjJBYmxCeDBkalo1aUdWNmw0TlB6WStqSnV3RWNlRVZWeHRKQnVh?=
+ =?utf-8?B?QnF4MXYrcGhmWUxiNTZyTkh3bGk2ci85V3VhOTZialdMeENad1ZlQ3g4N2VM?=
+ =?utf-8?B?YXlaWmRFa3E0NEtONW5vNXgzRk94OHdsSWR1YlE2dEFiMi9TR044emgvNWdS?=
+ =?utf-8?B?K0RTbUNiRTUvK1B3Q09mNnBtekNtZ3RscjQ5MTUxcDE2WU9uNWc0eCtrQlI1?=
+ =?utf-8?B?RXhxN2pRRTNxc2lBbGpGQStmcXBGU3VZTFFta0ZpOTFsMkQ5c2J6U2sydzBo?=
+ =?utf-8?B?V1hkSkordGFMODd0ZjllUXN3aFBGRENlcFZicE9EbDNncWwzNnVWQlNxQXY2?=
+ =?utf-8?B?dnhFcmZqQmFQS1V5ZFJSdmNhTEloT0pNYzdLU3B6T3FiNzNKYVRZd1h5WVVs?=
+ =?utf-8?B?SzdhdjJWNy9GZUpLM0g4TEdDRHVCOUNJalh5aXcvUjh3SzhsVFB3QWo5bzV4?=
+ =?utf-8?B?UEllNXdZY0cvQW5MUll6ZDNJaS9zaUNFWjBpTU5rMENRNmllSXlRQVpmR3Nm?=
+ =?utf-8?B?em90OGxUYnlQcjdXRnlLaFlNQ1JNM3dxV29KcVk2YmhGSU94WG1JVHQvNGJ6?=
+ =?utf-8?B?V200MWx0SWM1ejFJWjZ2YXpxYnFRTGFTMGs3a3ExaUlVZDBhUy9HWmV4Mll4?=
+ =?utf-8?B?U3JnYWJQbVNjY0g2bk9hdnpEdVR5TnNBdWVUa3gwRytWbkFZNCtDQTFES3V5?=
+ =?utf-8?B?d2NoeE1WMmEzTnI1YVFmSDB3cTM3UEk1TmpYUHA2bnJRa21XM3lWRW5OWTlE?=
+ =?utf-8?B?RmIvTFQ2SHdKQmVPZ1NRdHV3elBneDVYc2RLUkNqL1ZZOG01L2tzTGdBKzlv?=
+ =?utf-8?B?L1hReXFWc0drdkNXUStxQXJtcDIvck5PVC9Ca1BTMDNZWThHSHczZ1p3ekVO?=
+ =?utf-8?B?a1hTK3BNQVU1cS80WjlyM24wYkI2bnpaMzc5SURvaTZlUmVxV1ZwRXZIZmhh?=
+ =?utf-8?Q?WhGfTsp7Qj35YNOOraa+IY8xf?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <89A66133807E2A409C8B0D286DBB7D05@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAL_Jsq+0xb-otvjkbLqB8gNKadVqnigwGB_k+VGrj740Y6wxjg@mail.gmail.com>
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5176.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 569cdac9-7c4c-4e53-1b6c-08dc1845cd69
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Jan 2024 16:52:05.7378
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Om0rF72jPezIjGABCjMSpXUIxCPEVztUTSIslznbMrc0wQQRZwQnCjHa/lE4XhMFRa0mL2iINTDOrbefMhrJmE1UFXtIjE05l5cUCLThCu8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB7925
 
-On Thu, Jan 18, 2024 at 08:29:01AM -0600, Rob Herring wrote:
-> On Wed, Jan 17, 2024 at 10:08 AM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
-> >
-> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> >
-> > The responses to the RFC were rather positive so here's a proper series.
-> 
-> Thanks for tackling this.
-> 
-> > During last year's Linux Plumbers we had several discussions centered
-> > around the need to power-on PCI devices before they can be detected on
-> > the bus.
-> >
-> > The consensus during the conference was that we need to introduce a
-> > class of "PCI slot drivers" that would handle the power-sequencing.
-> >
-> > After some additional brain-storming with Manivannan and the realization
-> > that DT maintainers won't like adding any "fake" nodes not representing
-> > actual devices, we decided to reuse existing PCI infrastructure.
-> 
-> Thank you. :)
-> 
-> > The general idea is to instantiate platform devices for child nodes of
-> > the PCIe port DT node. For those nodes for which a power-sequencing
-> > driver exists, we bind it and let it probe. The driver then triggers a
-> > rescan of the PCI bus with the aim of detecting the now powered-on
-> > device. The device will consume the same DT node as the platform,
-> > power-sequencing device. We use device links to make the latter become
-> > the parent of the former.
-> >
-> > The main advantage of this approach is not modifying the existing DT in
-> > any way and especially not adding any "fake" platform devices.
-> 
-> Suspend/resume has been brought up already, but I disagree we can
-> worry about that later unless there is and always will be no power
-> sequencing during suspend/resume for all devices ever. Given the
-> supplies aren't standard, it wouldn't surprise me if standard PCI
-> power management isn't either. The primary issue I see with this
-> design is we will end up with 2 drivers doing the same power
-> sequencing: the platform driver for initial power on and the device's
-> PCI driver for suspend/resume.
-> 
-
-There are actually 3 drivers need to do their own power management operations:
-
-1. PCIe device driver - Handle the PM of the device itself (shutdown, low power)
-2. PCIe pwrseq driver (this one) - Control resources of the PCIe devices
-3. PCIe controller driver - Control resources of PCIe controller and Link
-
-And all of them has different responsibilities, so I do not see an issue with
-that. But what is really important is that all 3 has to work in sync and that's
-quite involved. That's why I thought of dealing with that later.
-
-Moreover, even if driver (2) doesn't do any PM operations now, it won't break
-anything on the currently supported platforms (Qcom). It will be a problem once
-people start adding pwrseq drivers for platforms whose controller drivers are
-already handling the job which is now offloaded by this driver.
-
-- Mani
-
-> Rob
-> 
-
--- 
-மணிவண்ணன் சதாசிவம்
+T24gMS8xOC8yNCAwODowOCwgQWxleGlzIExvdGhvcsOpIHdyb3RlOg0KPiBFWFRFUk5BTCBFTUFJ
+TDogRG8gbm90IGNsaWNrIGxpbmtzIG9yIG9wZW4gYXR0YWNobWVudHMgdW5sZXNzIHlvdSBrbm93
+IHRoZSBjb250ZW50IGlzIHNhZmUNCj4gDQo+IEhpIEthbGxlLA0KPiANCj4gT24gMS8xOC8yNCAx
+MDozMSwgS2FsbGUgVmFsbyB3cm90ZToNCj4+IEFsZXhpcyBMb3Rob3LDqSA8YWxleGlzLmxvdGhv
+cmVAYm9vdGxpbi5jb20+IHdyb3RlOg0KPj4NCj4+PiBGcm9tOiBBamF5IFNpbmdoIDxhamF5Lmth
+dGhhdEBtaWNyb2NoaXAuY29tPg0KPj4+DQo+Pj4gQ2hhbmdlZCB0aGUgZGVmYXVsdCB2YWx1ZSBw
+cmVhbWJsZSB0byBXSUxDX0ZXX1BSRUFNQkxFX0FVVE8gaW4NCj4+PiB3aWxjX2luaXRfZndfY29u
+ZmlnKCkuDQo+Pj4NCj4+PiBTaWduZWQtb2ZmLWJ5OiBBamF5IFNpbmdoIDxhamF5LmthdGhhdEBt
+aWNyb2NoaXAuY29tPg0KPj4+IFNpZ25lZC1vZmYtYnk6IEFsZXhpcyBMb3Rob3LDqSA8YWxleGlz
+LmxvdGhvcmVAYm9vdGxpbi5jb20+DQo+Pg0KPj4gVGhlIGNvbW1pdCBtZXNzYWdlIHNob3VsZCBh
+bHdheXMgYW5zd2VyIHRvIHRoZSBxdWVzdGlvbiAiV2h5PyIuIEkgY2FuIGFkZCB0aGF0DQo+PiBp
+ZiB5b3UgdGVsbCBtZSB3aGF0IHRvIGFkZC4NCj4gDQo+IFllYWgsIHNvcnJ5IGZvciB0aGUgbGFj
+ayBvZiBkZXNjcmlwdGlvbiwgSSBtYXkgaGF2ZSBmb3Jnb3R0ZW4gdG8gdXBkYXRlIHRoaXMNCj4g
+b25lLiBJIHN1Z2dlc3QgdG8gdXBkYXRlIGl0IHdpdGggdGhlIGZvbGxvd2luZyBtZXNzYWdlOg0K
+PiANCj4gIldJTEMgZHJpdmVyIGN1cnJlbnRseSBhcHBsaWVzIHNvbWUgZGVmYXVsdCBjb25maWd1
+cmF0aW9uIHdoZW5ldmVyIHRoZSBmaXJtd2FyZQ0KPiBpcyBpbml0aWFsaXplZCwgYW5kIHNldHMg
+dGhlIGRlZmF1bHQgcHJlYW1ibGUgc2l6ZSB0byBzaG9ydC4gSG93ZXZlciwgZGVzcGl0ZQ0KPiB0
+aGlzIHBhc3NlZCBvcHRpb24sIGZpcm13YXJlIGlzIGFsc28gYWJsZSB0byBzdWNjZXNzZnVsbHkg
+Y29ubmVjdCB0byBhY2Nlc3MNCj4gcG9pbnRzIG9ubHkgdXNpbmcgbG9uZyBwcmVhbWJsZSwgc28g
+dGhpcyBzZXR0aW5nIGRvZXMgbm90IHJlYWxseSBlbmZvcmNlIHNob3J0DQo+IHByZWFtYmxlcyBh
+bmQgaXMgbWlzbGVhZGluZyByZWdhcmRpbmcgYXBwbGllZCBjb25maWd1cmF0aW9uLg0KPiANCj4g
+VXBkYXRlIGRlZmF1bHQgY29uZmlndXJhdGlvbiBhbmQgbWFrZSBpdCBtYXRjaCB0aGUgZmlybXdh
+cmUgYmVoYXZpb3IgYnkgcGFzc2luZw0KPiB0aGUgZXhpc3RpbmcgV0lMQ19GV19QUkVBTUJMRV9B
+VVRPIHZhbHVlICgyIGluc3RlYWQgb2YgMCkuIFRoZSB1cGRhdGVkIHNldHRpbmcNCj4gZG9lcyBu
+b3QgcmVhbGx5IGFsdGVyIGZpcm13YXJlIGJlaGF2aW9yIHNpbmNlIGl0IGlzIHN0aWxsIGNhcGFi
+bGUgdG8gY29ubmVjdCB0bw0KPiBib3RoIHNob3J0IHByZWFtYmxlIGFuZCBsb25nIHByZWFtYmxl
+IGFjY2VzcyBwb2ludHMsIGJ1dCBhdCBsaXN0IHRoZSBzZXR0aW5nIG5vdw0KPiBleHByZXNzZXMg
+Zm9yIHJlYWwgdGhlIGNvcnJlc3BvbmRpbmcgZmlybXdhcmUgYmVoYXZpb3IiDQo+IA0KPiBUbyBn
+aXZlIGEgYml0IG9mIGNvbnRleHQgYXJvdW5kIHRoaXMgb25lOiBJIGRvIG5vdCBoYXZlIGFjY2Vz
+cyB0byB0aGUgZmlybXdhcmUNCj4gaW50ZXJuYWxzLCBJIGp1c3QgdG9vayB0aGUgcGF0Y2ggZnJv
+bSBBamF5IGFuZCBJIG1lcmVseSBkaWQgc29tZSB0ZXN0cyBhcm91bmQgaXQNCj4gd2l0aCBtdWx0
+aXBsZSBBUHMgKGJhc2ljYWxseSwgbWFraW5nIGEgV0lMQyBTVEEgY29ubmVjdCBhbmQgcGluZyB0
+aGUgQVApLCBhbmQNCj4gZW5zdXJlZCB3aXRoIHdpcmVzaGFyayB0byBnZXQgYXQgbGVhc3Qgb25l
+IEFQIGJlIHJlYWxseSAibG9ja2VkIiB3aXRoIGxvbmcNCj4gcHJlYW1ibGUsIHdpdGggV0lMQyBt
+YW5hZ2luZyB0byBjb25uZWN0IHRvIGl0Lg0KPiANCg0KSGVyZSBhcmUgc29tZSBtb3JlIGRldGFp
+bHMgYWJvdXQgdGhpcyBjaGFuZ2UuIEl0IGhhdmUgYmVlbiBpbXBsZW1lbnRlZA0KdG8gYWRkcmVz
+cyB0aGUgdHJhbnNtaXNzaW9uKFR4KSBibGFja291dCBpc3N1ZSBvYnNlcnZlZCBpbiB0aGUgODAy
+LjExYg0KbW9kZS4gVGhlIG1vZGlmaWNhdGlvbiBoYXMgbm8gaW1wYWN0IG9uIHRoZSBvdGhlciBt
+b2Rlcywgd2hpY2ggd2lsbA0KY29udGludWUgdG8gd29yayBhcyB0aGV5IGRpZCBpbiB0aGUgcHJl
+dmlvdXMgaW1wbGVtZW50YXRpb24uIFRoaXMgY2hhbmdlDQp3aWxsIGFsbG93IHRoZSA4MDIuMTFi
+IHRyYW5zbWlzc2lvbigyLCA1LjUsIDExTWJwcykgdG8gdXNlIGxvbmcgcHJlYW1ibGUuDQoNCg0K
+UmVnYXJkcywNCkFqYXkNCg0K
 
