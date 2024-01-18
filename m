@@ -1,53 +1,73 @@
-Return-Path: <linux-wireless+bounces-2209-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2210-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 051D4831E49
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 18:20:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47206831EC3
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 18:51:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32CCB1C24482
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 17:20:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3D2F28780D
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 17:51:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 652652C6BF;
-	Thu, 18 Jan 2024 17:20:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 679592D628;
+	Thu, 18 Jan 2024 17:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Abr4ElsV"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="LbJgbhEn"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1939F2C6BD;
-	Thu, 18 Jan 2024 17:20:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1FB62D605
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 17:50:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705598428; cv=none; b=K488MWr/dV+K0k8aR8PV4qwq1aycQH44INuRDZLoPkWkii9/rv71XQI6c86PBc4Inln5VudMcPF44ZjsEeuy/i+hUtf2ZSg5xt1wVAwQGdzbbGEPliDgtSYb58boARm0+Ns6EnxMKnZjsBHxJFm3tk6SpVhCP3r0fBus8BBUu3g=
+	t=1705600250; cv=none; b=XHqZ4saKrrtsCy+UxdvzUOPsgIJ7y47GwIZXuuTu4uhaDz+rNqC0YEPYKecD20nMZyPB5IMnKsuCQ0UUyJgp4PBXC0FhOmwyoIQncGsc23ZUCeOW92dDKTmqaHatuzp5q9LPObcAJk83ZNonKd8r1o44yI2lOgCWE4I9desJJdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705598428; c=relaxed/simple;
-	bh=AhBxUMiPWi0pJ79e4Muw8Q5X3mcmykTHVQCaSXf4MLk=;
-	h=DKIM-Signature:Received:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:Content-Language:To:Cc:References:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding; b=giMCDOtVVvxy/ie8zdik/kXVvzK9+3O1FSiz1wzRYkUdsvAfs97GuN7fg5IeBdG3zStqicKaJmdzs496hKWJKJkfDiE5ZKpOZC3si9riJUfaxkJDisL3Uh8WB7fshGPlRSRO+l7dtxccDcLuwum0Jmd1muHQhfA1QfwMe4EM85E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Abr4ElsV; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=utuWuDjXoRldKpL3sc8RaeRaG0cDdvSyns5k11OdnWo=; b=Abr4ElsV3qXeLBD8ICokyBRqNc
-	BuPGZij70p5LIRy0gnvgxvLEmiRzhdzYUuoYOAOS0GTfYxU7Bjx80rr0g2ljM1Hkya6ox3p7yRJbn
-	ywD0gppxzfFAVWZC31shhlQQNa+1SXp2nenTjtuYFD4i/VWd7JxPDU3mRG+QipA9DU9Ygq5ir7vhd
-	TSf5IBELm1FMeWstsQITYvc1xF2WQW9j2cVdjL4+4zdRuZTRZYjXQAPIfi0ey03cWkda6IzhfIcz/
-	XOSgjpEaigt0v7OBNcCq2bzhNw3xBvypvDfpFyEQfSJeJ3BhOFDvXzqlD5WUO3W6eji2KPCij4n2c
-	9tB5I5tQ==;
-Received: from [50.53.46.231] (helo=[192.168.254.15])
-	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-	id 1rQW40-003NJm-0m;
-	Thu, 18 Jan 2024 17:20:24 +0000
-Message-ID: <663ad3f4-f877-4817-8f31-dce1ff12ff40@infradead.org>
-Date: Thu, 18 Jan 2024 09:20:24 -0800
+	s=arc-20240116; t=1705600250; c=relaxed/simple;
+	bh=R83s/PyF4fXUdK67JiE75Dz9JrojGyAfOWEwxObSVV8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MPeNGteVZ5Exq0Y/rYwNRkNcRAxy6K8qjVAMEVXAGH+1Shy/iKm31FPa84aoqudA//i2SzSgJAD19TTmHiXlzQXoszZv/9+n5ivfeEDeffRFODr3W/x5ZGeHx39TQCe+p5DY8B+uO/ZIpfWM6Y62iDDfBuAo8J/3TSz5tLt4fpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=LbJgbhEn; arc=none smtp.client-ip=209.85.167.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-50e759ece35so14780981e87.3
+        for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 09:50:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1705600246; x=1706205046; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=BeOfVhu/YQjuPaBL7HLOFJxylUSZb5ghXwEj0tH+VbM=;
+        b=LbJgbhEneDdeNqOEmRiGt3riWuUBUuVlABZyUdAdZ8O0LkDxG+pAu7QNo5YAWMjpL3
+         eY6u86tWGvrLmk19X0D60CGMwpgspuFzxDdL+RbFND0sd11IavHXilYeBR1n/BWmS7QA
+         0obftDJl+9tRy7H2hcPydoykwQqlWTulXDus5CGoG3164YX20SfYCCS8VGrVFKeRega8
+         t4pXISDeLwMhi63Etq20aBuLQx+muYiJLWGJtutwJKIjANPa6R/YcMBqZ8PSCKs2nK8s
+         hc/mnuhYw9ADWkRf9LojrWc9shl2HeeJfJ+HaJY5D7AEri+CrT1SdGVGusGEMv+o/LY6
+         oxKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705600246; x=1706205046;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=BeOfVhu/YQjuPaBL7HLOFJxylUSZb5ghXwEj0tH+VbM=;
+        b=BaKFbfOKNt01LOxLtYoI4q1L/kT1n+e2KkIN9pUuNBTWkElpDZk0/CHHcmi01G9V3d
+         EjbMpLhYTyWmXCIAkjqKShxnr2fKXe5neGodN5EfHd1p5THlvCT3WUmiwIxXnTU9Xrt+
+         aciUrmoBj1GSzNASjOyikmDiTtQR44bAmn8XIekVWpQzGBfzKlc1C3l2zEQNW4eypGsT
+         7J/JObg7hFcQR2nGxbIlM/7/TPAj23Fzf7ibwc7Sdj9mj62M/CJaG+oz3BRZuGmsNDo9
+         mKVIBsrQn2OXro8fCExGgSl6strqWPATptzWJUjnQgEyff4LJa+x8BiOL4DrnrGnze+m
+         UhcA==
+X-Gm-Message-State: AOJu0YxvXSp2DBf7YkmpW9BM/pGM9dK/EZBo+nDeZ0NhYzuUEwNGYWR7
+	46D/+rKaFb0RoGfuyeXhRgtJoiQUq6PVU2jIuySHArTeNUKIcLmq/84UUpx8Jto=
+X-Google-Smtp-Source: AGHT+IHqhtxBqUtdwqkS5/LYHeL/ekXGtb2Jn3Eqr4OlemBLU7YUpfw9MOxkxxvtVnMVoEQW1MZhFA==
+X-Received: by 2002:a05:6512:31ca:b0:50e:6c1d:5dee with SMTP id j10-20020a05651231ca00b0050e6c1d5deemr7487lfe.33.1705600245837;
+        Thu, 18 Jan 2024 09:50:45 -0800 (PST)
+Received: from [172.30.205.26] (UNUSED.212-182-62-129.lubman.net.pl. [212.182.62.129])
+        by smtp.gmail.com with ESMTPSA id h23-20020a19ca57000000b0050ee3e540e4sm718900lfj.65.2024.01.18.09.50.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 18 Jan 2024 09:50:45 -0800 (PST)
+Message-ID: <ed2dddc6-6461-4a2b-8491-13955cbd80fd@linaro.org>
+Date: Thu, 18 Jan 2024 18:50:37 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -55,71 +75,65 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/5] wifi: ath10k: Fix enum ath10k_fw_crash_dump_type
- kernel-doc
+Subject: Re: [PATCH 9/9] PCI/pwrseq: add a pwrseq driver for QCA6390
 Content-Language: en-US
-To: Jeff Johnson <quic_jjohnson@quicinc.com>, Kalle Valo <kvalo@kernel.org>
-Cc: ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240118-ath10k-kerneldoc-v1-0-99c7e8d95aad@quicinc.com>
- <20240118-ath10k-kerneldoc-v1-5-99c7e8d95aad@quicinc.com>
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20240118-ath10k-kerneldoc-v1-5-99c7e8d95aad@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
+To: Bartosz Golaszewski <brgl@bgdev.pl>, Kalle Valo <kvalo@kernel.org>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Bjorn Helgaas <bhelgaas@google.com>, Heiko Stuebner <heiko@sntech.de>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Chris Morgan <macromorgan@hotmail.com>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Geert Uytterhoeven <geert+renesas@glider.be>, Arnd Bergmann <arnd@arndb.de>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ =?UTF-8?Q?N=C3=ADcolas_F_=2E_R_=2E_A_=2E_Prado?= <nfraprado@collabora.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, Peng Fan <peng.fan@nxp.com>,
+ Robert Richter <rrichter@amd.com>, Dan Williams <dan.j.williams@intel.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Terry Bowman <terry.bowman@amd.com>, Lukas Wunner <lukas@wunner.de>,
+ Huacai Chen <chenhuacai@kernel.org>, Alex Elder <elder@linaro.org>,
+ Srini Kandagatla <srinivas.kandagatla@linaro.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Abel Vesa <abel.vesa@linaro.org>
+Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-pci@vger.kernel.org,
+ Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+References: <20240117160748.37682-1-brgl@bgdev.pl>
+ <20240117160748.37682-10-brgl@bgdev.pl>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <20240117160748.37682-10-brgl@bgdev.pl>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 
 
-On 1/18/24 08:12, Jeff Johnson wrote:
-> The kernel-doc script currently reports:
-> drivers/net/wireless/ath/ath10k/coredump.h:27: warning: Enum value 'ATH10K_FW_CRASH_DUMP_REGISTERS' not described in enum 'ath10k_fw_crash_dump_type'
-> drivers/net/wireless/ath/ath10k/coredump.h:27: warning: Enum value 'ATH10K_FW_CRASH_DUMP_CE_DATA' not described in enum 'ath10k_fw_crash_dump_type'
-> drivers/net/wireless/ath/ath10k/coredump.h:27: warning: Enum value 'ATH10K_FW_CRASH_DUMP_RAM_DATA' not described in enum 'ath10k_fw_crash_dump_type'
-> drivers/net/wireless/ath/ath10k/coredump.h:27: warning: Enum value 'ATH10K_FW_CRASH_DUMP_MAX' not described in enum 'ath10k_fw_crash_dump_type'
-> drivers/net/wireless/ath/ath10k/coredump.h:27: warning: Excess enum value 'ATH10K_FW_CRASH_DUMP_REGDUMP' description in 'ath10k_fw_crash_dump_type'
+On 1/17/24 17:07, Bartosz Golaszewski wrote:
+> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 > 
-> Fix these issues with the enum ath10k_fw_crash_dump_type kernel-doc.
+> Add a PCI power sequencing driver that's capable of correctly powering
+> up the ath11k module on QCA6390 and WCN7850 using the PCI pwrseq
+> functionality.
 > 
-> No functional changes, compile tested only.
-> 
-> Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-
-Thanks.
-
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> [Neil: add support for WCN7850]
+> Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
 > ---
->  drivers/net/wireless/ath/ath10k/coredump.h | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath10k/coredump.h b/drivers/net/wireless/ath/ath10k/coredump.h
-> index e5ef0352e319..8d274e0f374b 100644
-> --- a/drivers/net/wireless/ath/ath10k/coredump.h
-> +++ b/drivers/net/wireless/ath/ath10k/coredump.h
-> @@ -1,7 +1,7 @@
->  /* SPDX-License-Identifier: ISC */
->  /*
->   * Copyright (c) 2011-2017 Qualcomm Atheros, Inc.
-> - * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
-> + * Copyright (c) 2022, 2024 Qualcomm Innovation Center, Inc. All rights reserved.
->   */
->  
->  #ifndef _COREDUMP_H_
-> @@ -13,7 +13,11 @@
->  
->  /**
->   * enum ath10k_fw_crash_dump_type - types of data in the dump file
-> - * @ATH10K_FW_CRASH_DUMP_REGDUMP: Register crash dump in binary format
-> + * @ATH10K_FW_CRASH_DUMP_REGISTERS: Register crash dump in binary format
-> + * @ATH10K_FW_CRASH_DUMP_CE_DATA: Copy Engine crash dump data
-> + * @ATH10K_FW_CRASH_DUMP_RAM_DATA: RAM crash dump data, contains multiple
-> + *				   struct ath10k_dump_ram_data_hdr
-> + * @ATH10K_FW_CRASH_DUMP_MAX: Maximum enumeration
->   */
->  enum ath10k_fw_crash_dump_type {
->  	ATH10K_FW_CRASH_DUMP_REGISTERS = 0,
-> 
 
--- 
-#Randy
+[...]
+
+> +static struct pci_pwrseq_qca6390_vreg pci_pwrseq_wcn7850_vregs[] = {
+> +	{
+> +		.name = "vdd",
+> +	},
+
+Weird there's no .load here.. On Qualcomm they're used for asking
+the regluators to enter the high power mode, so it'd be useful.
+
+Konrad
 
