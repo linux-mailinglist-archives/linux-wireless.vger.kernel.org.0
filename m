@@ -1,47 +1,47 @@
-Return-Path: <linux-wireless+bounces-2178-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2179-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA8238319EF
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 14:05:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10CE88319F5
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 14:05:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 089D11C230FD
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 13:05:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9BA00B2618E
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 13:05:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF310250E1;
-	Thu, 18 Jan 2024 13:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7168F250E1;
+	Thu, 18 Jan 2024 13:05:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L5Varki2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="te0grm6G"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6C3624B57;
-	Thu, 18 Jan 2024 13:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE1D24B57
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 13:05:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705583104; cv=none; b=stcRkhqB1+emP6oAEcYbHqKo9Ml3Zsn2sP6G6JR8bHzGZ9SknAB9/4iP0GTs+a8GdoQQLb3xLYohC5UpsKElA4yILCA2TCX0KN0rQBk83wnSqDkolPOU9lBtmQdRrDJQC1pfen9wbHMF9qJMK/HTSLdE+YPkaEz4G4APVCDAI2U=
+	t=1705583139; cv=none; b=cfAPA2EI5xoD7JR0FllDkJJbNzDbmLV49bT9wF2YBDEtRHYTO5XtKZniYlEunJRiRaPinajA/LFRDhKcsHM1TauBp8v96ldcgwUdtU9ZWkQJzhlbiqlh5me6ISSi9qJuTZwficJ7AfwldzNXPtstfqPGMnsjl5zHC4o6z/4T8Zk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705583104; c=relaxed/simple;
-	bh=N0E3M1FXEk/M8+abhwlanetMGkMmya/Ds9xC17DAntA=;
+	s=arc-20240116; t=1705583139; c=relaxed/simple;
+	bh=24zmHdIg4pzOYnnPg0yrJnVfSU5c4j7B1lDcVadahuQ=;
 	h=Received:DKIM-Signature:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:
-	 Cc:User-Agent:Message-ID:Date; b=MsrLJWQ1V6Pr5WletODLwnWYXhE42d3IqmRERWhTq1HuKkxBK2SeU0od4f7tY6f/9nr/FFDnQ2d9TXzZNEn/8DbXedIEODCi+7z8ayNheK89lk+xcYxsoS/9lg0E5WkC+1XKvXBrGIs4PQe2PB+aiSKnKxHTihr8G+OHUGGNKi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L5Varki2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE060C433C7;
-	Thu, 18 Jan 2024 13:05:01 +0000 (UTC)
+	 Cc:User-Agent:Message-ID:Date; b=ZaJfzJ5WDMs9TL+aSJmfvRP8uQ+JnGxeNEPV2l/ltYlXtABB/yqfeA4qftI71POirfHbbvA85KwhwIaSX+uTE83EQv4VGhw3xxgoBw1A25yVYs++4gSNY3ZSBY4ZQO1T3HOqN9jcZKw/ESDApH4VzghPCJe5rUPp/r5Che56Umw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=te0grm6G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 609F4C433C7;
+	Thu, 18 Jan 2024 13:05:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705583104;
-	bh=N0E3M1FXEk/M8+abhwlanetMGkMmya/Ds9xC17DAntA=;
+	s=k20201202; t=1705583138;
+	bh=24zmHdIg4pzOYnnPg0yrJnVfSU5c4j7B1lDcVadahuQ=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=L5Varki2auyKh0ktZANIc+BPFQQa6dIJxVFhDdUzUz+Q2cuL5Bpmm0cEH/Fw0a/Y1
-	 IN6wGdjYP/lP4X4/k8Uf6QsMBTy/fepkRMhtWSGTMWO+bARq0P2KrMUgRlR/VIOhWH
-	 FWP/1DdUWENTxIkwYdaOboWhtrZ45/IFLdnhHOLFkmVMoTbwjDbAeKuvwHRLTSssYl
-	 vcqBgWPUQmH6P1j6fxWcZWamtEU3L8ieSPPd9txwy4+3G//7FVTgyLebh1G9uTOvaJ
-	 +TMsVnOjqodbeRVuduuo3Ot6uH76h6weEcMU7SZ105ulBNYEEHGtvGzUDg7URsMxsp
-	 9f205sagdwHiQ==
+	b=te0grm6G4iIP/jjvtvLNeX9MEcPZdrNRy8M/98OlGrSEbOR9pYrokDSicEIohjJ0e
+	 Ak+3mUauK5hva1NU47zgW9UaPZ+pvlFN3IvUtb6yYXWqCWufcJxMf+bEtpSGs7A0AL
+	 b1SgGB9uNxpzgHQatsV02U3coVi4cyhVdyD8mQ+5KvaKDpaIyMJPznkbwO5UNFrWym
+	 UDlAFvZNmnPCDb0zdRmi9CXjHhn7jHWWQl8KQosXdN3zwV/f9HwvsLPZDaKHW+yHmV
+	 W95ofBRXuKz8G+dLaf33OxhZsCnmH4oYXTW+8fvgztrFWRdI4qihP6YsT+MBzoARCm
+	 ZnvMoAEJLluIQ==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -50,40 +50,34 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [v2] wifi: brcmsmac: phy: Remove unreachable code
+Subject: Re: [PATCH net-next 2/2] wifi: mwifiex: Use helpers to check
+ multicast
+ addresses
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230814093621.289754-1-artem.chernyshev@red-soft.ru>
-References: <20230814093621.289754-1-artem.chernyshev@red-soft.ru>
-To: Artem Chernyshev <artem.chernyshev@red-soft.ru>
-Cc: Jonas Gorski <jonas.gorski@gmail.com>,
- Franky Lin <franky.lin@broadcom.com>,
- Artem Chernyshev <artem.chernyshev@red-soft.ru>,
- Hante Meuleman <hante.meuleman@broadcom.com>,
- Arend van Spriel <aspriel@gmail.com>, linux-wireless@vger.kernel.org,
- brcm80211-dev-list.pdl@broadcom.com, SHA-cyfmac-dev-list@infineon.com,
- linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org
+In-Reply-To: <20230814124212.302738-3-ruanjinjie@huawei.com>
+References: <20230814124212.302738-3-ruanjinjie@huawei.com>
+To: Ruan Jinjie <ruanjinjie@huawei.com>
+Cc: <briannorris@chromium.org>, <johannes.berg@intel.com>, <Jason@zx2c4.com>,
+ <toke@toke.dk>, <tj@kernel.org>, <mukesh.sisodiya@intel.com>,
+ <quic_vjakkam@quicinc.com>, <johannes.wiesboeck@aisec.fraunhofer.de>,
+ <linux-wireless@vger.kernel.org>, <ruanjinjie@huawei.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170558309941.2924528.648376255659040623.kvalo@kernel.org>
-Date: Thu, 18 Jan 2024 13:05:01 +0000 (UTC)
+Message-ID: <170558313447.2924528.4655629471937055553.kvalo@kernel.org>
+Date: Thu, 18 Jan 2024 13:05:36 +0000 (UTC)
 
-Artem Chernyshev <artem.chernyshev@red-soft.ru> wrote:
+Ruan Jinjie <ruanjinjie@huawei.com> wrote:
 
-> wlc_phy_txpwr_srom_read_nphy() in wlc_phy_attach_nphy() can not 
-> return false, so it's impossible to get true value in this
-> if-statement. Also change those functions return types to void
-> since no one using it.
+> Use is_multicast_ether_addr() and is_unicast_ether_addr()
+> to check the addresses.
 > 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
-> 
-> Signed-off-by: Artem Chernyshev <artem.chernyshev@red-soft.ru>
-> Reviewed-by: Jonas Gorski <jonas.gorski@gmail.com>
+> Signed-off-by: Ruan Jinjie <ruanjinjie@huawei.com>
 
 Patch applied to wireless-next.git, thanks.
 
-47f0e32ffe4e wifi: brcmsmac: phy: Remove unreachable code
+899c0e8a2219 wifi: mwifiex: Use helpers to check multicast addresses
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230814093621.289754-1-artem.chernyshev@red-soft.ru/
+https://patchwork.kernel.org/project/linux-wireless/patch/20230814124212.302738-3-ruanjinjie@huawei.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
