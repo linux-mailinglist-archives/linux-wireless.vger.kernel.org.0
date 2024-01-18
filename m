@@ -1,72 +1,72 @@
-Return-Path: <linux-wireless+bounces-2175-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2176-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7962B83191D
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 13:26:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CCD083192B
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 13:31:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E088C1F226C9
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 12:26:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9260B2242C
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 12:31:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F16AB24A0B;
-	Thu, 18 Jan 2024 12:26:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A29633FA;
+	Thu, 18 Jan 2024 12:31:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="JTXaZDKW"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Zzmyd0ZH"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C97A249E9
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 12:26:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BAE624B3A
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 12:31:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705580773; cv=none; b=Q027BtUQuIdRVuwAqG/0Khr1unN2oh/sGnknXuaA/LdYiRqO8uEPyUiNqkM5musKN/x4seE9f1WVkUMuaPSo/01qgDkJWOJLnVR9C12kgUX1dbYeRyPZWoa4gXE633U95aLWUHP3vtS7MV2HO7Qa9801KaGOWpfFwFFlO0PHEWw=
+	t=1705581095; cv=none; b=IviNvkr7PBu3CKCcF7c0MOTX3N2qQV0YzDwvS6a4PgZcY/1Bz139mFWhnoRHu4fKbCF97WDq6fiED64RGM2ow27dYRq3QhcMej6UP8ZTTxFdG4o4mmhqALdb3+r5Ax4IgXFtkBuLrdDF2+wvqoiV9nN+eZPvv+CUOTbtOAU7krM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705580773; c=relaxed/simple;
-	bh=cZKnoKheHGveMhYJM8WTu+Q2GY01VZb/b52Mx18Er/4=;
+	s=arc-20240116; t=1705581095; c=relaxed/simple;
+	bh=pRyc5fTZCIwvuVMaAQKTAIgy9iF8esdeTXgVyEJlwKI=;
 	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 From:Autocrypt:In-Reply-To:Content-Type; b=afI0jRXP/6PquZM21vW5dKe8+zwWl8udAyHbv3211K9zgwI8hBYiu4hQviw3g72VVYX+TtWT8Cdol5eQrS9g21/pnORoIcQuE+rhMawZ++WC2hHWgHALjTuRQ9zin1BCiFoyBWCpQ6L8t1KL3fL7m2byEkWbt1uOUxukpEwQQfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=JTXaZDKW; arc=none smtp.client-ip=209.85.128.52
+	 Message-ID:Date:MIME-Version:User-Agent:Subject:From:To:Cc:
+	 References:Autocrypt:In-Reply-To:Content-Type; b=Itwws+QJ6MqPuDwehzfmfr+eWM9PYIi1GIfxE53Oi20qrxihUcOv6RU8VA0iemdzaLuzXBJrVbhl66nu8IshG8NSkwE6XE8CRW/XzlHbHc5gn2ci5FqoE/Jrf+554FUkUyPpGGVSW66j9j0pZOHpmrrbxP59C+xJfVI3/4wtPLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Zzmyd0ZH; arc=none smtp.client-ip=209.85.128.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-40e72a567eeso46594245e9.0
-        for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 04:26:11 -0800 (PST)
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-40e959b1867so2561825e9.1
+        for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 04:31:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1705580770; x=1706185570; darn=vger.kernel.org;
-        h=in-reply-to:autocrypt:from:references:cc:to:subject:user-agent
+        d=broadcom.com; s=google; t=1705581091; x=1706185891; darn=vger.kernel.org;
+        h=in-reply-to:autocrypt:references:cc:to:from:subject:user-agent
          :mime-version:date:message-id:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=N0HMl8w2U4mmTJBUaSGFcEHPNzFFLp5ZsFEahTi7ALE=;
-        b=JTXaZDKWSN+M43SVLGcxTjPxx/t4ApQGu2nRzZL86EmwG6rGxHQeyS+IcCpIhSoiSQ
-         BkJrR+ksnp2RAbmHDRJq7tam7kEA119MODEv3GpijHXU/xSdkRy1XQ5OE9OaVyk0y2RK
-         fwOx6ipV29uOA1WPZuNWfq8YeqTxLDj0q3KMs=
+        bh=koCKRVUl3rVZJPCvnpSTy4iSYuI0i6oVEhAa1oj/tF4=;
+        b=Zzmyd0ZHNA6Kpda6ZhQRO/4OIOA6526JZPdlXcUN1g9X19Jre5d3DAi+cDBXckPTV4
+         rrPoq/CzHi/sguhxlCE+p5pAVn7KB/E6OUj96LrcGzA9oTRwYnZj6qNmMnK/JEruxsAf
+         tRQ4smj8GmU9hXZd1Axxq7mC5uJmLwttGZqMI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705580770; x=1706185570;
-        h=in-reply-to:autocrypt:from:references:cc:to:subject:user-agent
+        d=1e100.net; s=20230601; t=1705581091; x=1706185891;
+        h=in-reply-to:autocrypt:references:cc:to:from:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=N0HMl8w2U4mmTJBUaSGFcEHPNzFFLp5ZsFEahTi7ALE=;
-        b=JEjx8puo6Dp/U0Z1h1NoZU8rHgh2h/A+zgdv2Qh55tYRTF0bGUdEDLu5EqmrgFnQrN
-         XxSfFHCzgMDWHk8dAdAS8aGPEF2hVqYOKCCUk1fTPxwjIMz7k8enAQ+2Ev3HmxL1r8sX
-         VfrLZUkoNfA0BUosCmUwKTaH4WjOElbGxVQS+XhjVzxg1rqaDddhZSMmKkJmBdx1hi24
-         wTw/VoG4o/zV2Sk4Av8VakdhT3D8B4jDOEOCzDlBbncHw0YuBR9nnUsuPqiBHmo2OccM
-         zpfcra7azHqSlXJoeIwSijlb2RNRR0PX7ckFfXM4o7sTQzENXt6rvrp5k1NMUzBNpl4/
-         LkLg==
-X-Gm-Message-State: AOJu0YzISAig92xuX+wLcj+dI19okHLW4Tz0Dd+XzlOXlKrvp7Cf400w
-	vwHjcD5kGxr7XSinWduPCMrh8WqoP877AfFpx0ENxl5PImFKWzTQGCr/UatWfA==
-X-Google-Smtp-Source: AGHT+IHJSuOX/IC2oeRwJHDtl/DsQnWjWdpnlm2/YXMMvSsmZUOpyy2oP7SNEYIN+QfOn60uEMbIDw==
-X-Received: by 2002:a05:600c:3084:b0:40c:6eda:93a6 with SMTP id g4-20020a05600c308400b0040c6eda93a6mr231573wmn.43.1705580770402;
-        Thu, 18 Jan 2024 04:26:10 -0800 (PST)
+        bh=koCKRVUl3rVZJPCvnpSTy4iSYuI0i6oVEhAa1oj/tF4=;
+        b=qrqToyrQFFp1gQ4LFzMMd86bpLLvwuXYrHBOdyIhS+2QdB2nJGH0hU62PHBdnKJ30x
+         IBm50bEsJue8r5J8JoPZsbBWT69N0TqlCUPordHzqXEHnTtR8rKHw/UOp5shCffvpjBS
+         FetFd8GQ7XrnaRPeWxNaiFndNZuNWpW7ACxGeqdG9b0LcKuqdB+N7fxixZlcMdArIR3h
+         YHK/GcIxtv0ioFXTF5kzNPOym7l2RKf6QWSyqrpLoYNjNe2MBC7K69TkSRa1+Tib/OOF
+         m8VuPppdx5nz2DQoTsrYazkTqQaAglIw0756bfp3kekZTjhxRrqanCsf3ljBUGgcQh7/
+         hfIg==
+X-Gm-Message-State: AOJu0YwKohGIU3W88JmNdn9D4HBIbEboNR8CjvKIoeKrLgUMu52Heh5U
+	EfELlWPMy/DsSJpw5KEOYmI3e5PbINuyD1zd/Lavo982+8w1YKL7Zjdky1P3Zw==
+X-Google-Smtp-Source: AGHT+IG6zbfSfMtz1BEvDORugtJlAh41me4JhjpJGap7exAU3pwmgkrdoxnUOMosMLKtsWUw+7lulA==
+X-Received: by 2002:a1c:770d:0:b0:40e:482c:c7e9 with SMTP id t13-20020a1c770d000000b0040e482cc7e9mr463315wmi.104.1705581091618;
+        Thu, 18 Jan 2024 04:31:31 -0800 (PST)
 Received: from [10.176.68.61] ([192.19.148.250])
-        by smtp.gmail.com with ESMTPSA id h6-20020a05600c350600b0040c6d559490sm25729252wmq.3.2024.01.18.04.26.09
+        by smtp.gmail.com with ESMTPSA id w18-20020a05600c475200b0040d2d33312csm25901815wmo.2.2024.01.18.04.31.30
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 18 Jan 2024 04:26:09 -0800 (PST)
-Message-ID: <bd0aa2ea-fcde-4df7-bcfb-a6e8c962255d@broadcom.com>
-Date: Thu, 18 Jan 2024 13:26:09 +0100
+        Thu, 18 Jan 2024 04:31:31 -0800 (PST)
+Message-ID: <0cb9bf2c-4440-4cae-ad02-ef0a3a8d6156@broadcom.com>
+Date: Thu, 18 Jan 2024 13:31:30 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -76,13 +76,15 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 2/2] [v2] wifi: brcmfmac: handle possible MSI enabling
  error
+From: Arend van Spriel <arend.vanspriel@broadcom.com>
 To: Dmitry Antipov <dmantipov@yandex.ru>,
- Hante Meuleman <hante.meuleman@broadcom.com>
+ Hante Meuleman <hante.meuleman@broadcom.com>,
+ Bjorn Helgaas <bhelgaas@google.com>
 Cc: brcm80211-dev-list.pdl@broadcom.com, linux-wireless@vger.kernel.org,
  Kalle Valo <kvalo@kernel.org>, lvc-project@linuxtesting.org
 References: <20230614075848.80536-1-dmantipov@yandex.ru>
  <20230614075848.80536-2-dmantipov@yandex.ru>
-From: Arend van Spriel <arend.vanspriel@broadcom.com>
+ <bd0aa2ea-fcde-4df7-bcfb-a6e8c962255d@broadcom.com>
 Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
  xsFNBGP96SABEACfErEjSRi7TA1ttHYaUM3GuirbgqrNvQ41UJs1ag1T0TeyINqG+s6aFuO8
  evRHRnyAqTjMQoo4tkfy21XQX/OsBlgvMeNzfs6jnVwlCVrhqPkX5g5GaXJnO3c4AvXHyWik
@@ -126,70 +128,73 @@ Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
  NKowQLrlMBGXT4NnRNV0+yHmusXPOPIqQCKEtbWSx9s2slQxmXukPYvLnuRJqkPkvrTgjn5d
  eSE0Dkhni4292/Nn/TnZf5mxCNWH1p3dz/vrT6EIYk2GSJgCLoTkCcqaM6+5E4IwgYOq3UYu
  AAgeEbPV1QeTVAPrntrLb0t0U5vdwG7Xl40baV9OydTv7ghjYZU349w1d5mdxg==
-In-Reply-To: <20230614075848.80536-2-dmantipov@yandex.ru>
+In-Reply-To: <bd0aa2ea-fcde-4df7-bcfb-a6e8c962255d@broadcom.com>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="000000000000f9ce9c060f377748"
+	boundary="0000000000001f4139060f378b83"
 
---000000000000f9ce9c060f377748
+--0000000000001f4139060f378b83
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 6/14/2023 9:58 AM, Dmitry Antipov wrote:
-> Handle possible 'pci_enable_msi()' error in
-> 'brcmf_pcie_request_irq()', adjust related code.
++ Bjorn
+
+On 1/18/2024 1:26 PM, Arend van Spriel wrote:
+> On 6/14/2023 9:58 AM, Dmitry Antipov wrote:
+>> Handle possible 'pci_enable_msi()' error in
+>> 'brcmf_pcie_request_irq()', adjust related code.
+>>
+>> Found by Linux Verification Center (linuxtesting.org) with SVACE.
 > 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-> ---
-> v2: rebase against wireless-next tree
-> ---
->   .../net/wireless/broadcom/brcm80211/brcmfmac/pcie.c  | 12 ++++++++----
->   1 file changed, 8 insertions(+), 4 deletions(-)
+> Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+>> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+>> ---
+>> v2: rebase against wireless-next tree
+>> ---
+>>   .../net/wireless/broadcom/brcm80211/brcmfmac/pcie.c  | 12 ++++++++----
+>>   1 file changed, 8 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c 
+>> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+>> index 80220685f5e4..f7d9f2cbd60b 100644
+>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+>> @@ -965,6 +965,7 @@ static irqreturn_t brcmf_pcie_isr_thread(int irq, 
+>> void *arg)
+>>   static int brcmf_pcie_request_irq(struct brcmf_pciedev_info *devinfo)
+>>   {
+>> +    int ret;
+>>       struct pci_dev *pdev = devinfo->pdev;
+>>       struct brcmf_bus *bus = dev_get_drvdata(&pdev->dev);
+>> @@ -972,16 +973,19 @@ static int brcmf_pcie_request_irq(struct 
+>> brcmf_pciedev_info *devinfo)
+>>       brcmf_dbg(PCIE, "Enter\n");
+>> -    pci_enable_msi(pdev);
+>> +    ret = pci_enable_msi(pdev);
+>> +    if (ret)
+>> +        return ret;
 > 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-> index 80220685f5e4..f7d9f2cbd60b 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-> @@ -965,6 +965,7 @@ static irqreturn_t brcmf_pcie_isr_thread(int irq, void *arg)
->   
->   static int brcmf_pcie_request_irq(struct brcmf_pciedev_info *devinfo)
->   {
-> +	int ret;
->   	struct pci_dev *pdev = devinfo->pdev;
->   	struct brcmf_bus *bus = dev_get_drvdata(&pdev->dev);
->   
-> @@ -972,16 +973,19 @@ static int brcmf_pcie_request_irq(struct brcmf_pciedev_info *devinfo)
->   
->   	brcmf_dbg(PCIE, "Enter\n");
->   
-> -	pci_enable_msi(pdev);
-> +	ret = pci_enable_msi(pdev);
-> +	if (ret)
-> +		return ret;
+> The above is sufficient. Further adjustments not needed.
 
-The above is sufficient. Further adjustments not needed.
+Actually I am not sure about this. I think there is no harm in silently 
+ignoring the failure.
 
->   	if (request_threaded_irq(pdev->irq, brcmf_pcie_quick_check_isr,
->   				 brcmf_pcie_isr_thread, IRQF_SHARED,
->   				 "brcmf_pcie_intr", devinfo)) {
->   		pci_disable_msi(pdev);
->   		brcmf_err(bus, "Failed to request IRQ %d\n", pdev->irq);
-> -		return -EIO;
-> +		ret = -EIO;
-> +	} else {
-> +		devinfo->irq_allocated = true;
->   	}
-> -	devinfo->irq_allocated = true;
-> -	return 0;
-> +	return ret;
->   }
->   
->   
+>>       if (request_threaded_irq(pdev->irq, brcmf_pcie_quick_check_isr,
+>>                    brcmf_pcie_isr_thread, IRQF_SHARED,
+>>                    "brcmf_pcie_intr", devinfo)) {
+>>           pci_disable_msi(pdev);
+>>           brcmf_err(bus, "Failed to request IRQ %d\n", pdev->irq);
+>> -        return -EIO;
+>> +        ret = -EIO;
+>> +    } else {
+>> +        devinfo->irq_allocated = true;
+>>       }
+>> -    devinfo->irq_allocated = true;
+>> -    return 0;
+>> +    return ret;
+>>   }
 
---000000000000f9ce9c060f377748
+--0000000000001f4139060f378b83
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -260,15 +265,15 @@ BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
 N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
 p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCBmt2k+ALug3ZEsKwu6
-GZEHPaBwLJzpEKHThAV2d6o6NjAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yNDAxMTgxMjI2MTBaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCD7T3birkzzC1eD5TLc
+l999lDFQIo/wOFEaE6+tcxl26DAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yNDAxMTgxMjMxMzFaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAgqEw+NSP7KqJXZf6Gx/qYacDqyecYD+wiNvc
-4KCTi6Sd0aPCd2aSINC2z8yQ2wYfR9yUhOwvSyy1xyc0oSH3PnfpJgCX2Ws9XeG0uPXgIwXY7V9q
-omuMgnjUKXV3tiJ2PySi6LsKXgJguDr3XSpDSrVUwBX+1FXzL1WjQ9vzaH8B8ANdgyp2kirwELY5
-GNFpiHP46qpxhBDU/ogUYEtRNcpOUOq8tzfOK+kscfr9xbSE9o4DzUui0x4KBEE1pZpEE9A4hXSx
-wBMNOpWzNOZi4dTTYPoaER8uP+t4PerTfCYW/UFhjHoKgw6Akvx6OpGhFVyN2LXcu8T95R9pifwE
-cA==
---000000000000f9ce9c060f377748--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAuiVoE+hWETdWpVWKIYyfh6B1wDu8NzR+f3gw
+MSDSlZmX1fUi+Mg/rq0wiZE2fGC1eRYto0GtZoHO87rzvg9ruDJLEaoGqMakZGZQ86XF83yYc6RI
+v0b0o3OTzPOYr3yC4PTW8H+ydT4ISf+YCWjmXwFoMOBfU2nNip1C989Yf6bvMw9ZpPCREH9mO2oh
+uuQ+0dVjEuB2JUnRqFYYLw4jSd3DzMM2FiFF3zN6hhjD6xJcMHthxvhIZ9DOWfxYVYpMdtSmpWD7
+nG8LQq+vUOzu9emnqOJ9+O8L6nwfXplZQJxjd090zI+rHxIfnkNo4eBc5USzx8XmbO0ce2+7rOXe
++Q==
+--0000000000001f4139060f378b83--
 
