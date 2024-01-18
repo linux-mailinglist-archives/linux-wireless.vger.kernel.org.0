@@ -1,102 +1,103 @@
-Return-Path: <linux-wireless+bounces-2141-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2142-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 670A38314D1
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 09:37:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E736D83156D
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 10:05:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F08C3B265D7
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 08:37:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D67A7B21C8F
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jan 2024 09:05:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF3FA25760;
-	Thu, 18 Jan 2024 08:29:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DJZOZ+8e"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0804F208AD;
+	Thu, 18 Jan 2024 09:04:50 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EDBF2576A;
-	Thu, 18 Jan 2024 08:29:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D2882031B
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Jan 2024 09:04:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705566544; cv=none; b=RMhM0xF5/lzjEGPbmLn9ZwHPdlzSZMHGDxHoVhcrqr+10xnBiGiul1OIZWrPqOWfKoQnYykZgVeu8q+pX3yLt31x0exJjKnsVstddZYMT5pfwblbekItX+Et44W+RLZubr+s77yvq+P+hJmw0u6Lf2WurjjGZremCjo4L9eM7Ps=
+	t=1705568689; cv=none; b=bH4/FdlnssKB5CvyNz0a+hxkLTvWasFfZi+F0QYGbLMUnGqw/tzIwZn6e8FpGtFcM7IZhePJy52Cdjo/pJ9hX0uEl8fXBeF/EijCY3rsWbRPeSLIWfmAK/EfAM2wUXIsrFdV5eeiSrzoUtHkJquFUwybTCDEMhTyJo3YQsk8LG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705566544; c=relaxed/simple;
-	bh=IogBl3L09kV2fz3jVnil+MefPIx4RdTr5CjD15YUYck=;
-	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:MIME-Version:
-	 References:In-Reply-To:From:Date:Message-ID:Subject:To:Cc:
-	 Content-Type; b=jDRJZOpWS9vNeJqOckvHs8J3jhVOp7AnWslXOOJKmS29p1zN0wv/KWGJZB5pOBcBzvKbR28RLt+xQWcKUwnDQ8spn/VHiYoQ6vjBVGDiVf/nBqEARcRbKycah60si8fqnQg4aILEmxKcfESzwnnMTsIXYsSkCUBKK3uMP9RkPRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DJZOZ+8e; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-55a025bca6eso455023a12.1;
-        Thu, 18 Jan 2024 00:29:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705566542; x=1706171342; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=IogBl3L09kV2fz3jVnil+MefPIx4RdTr5CjD15YUYck=;
-        b=DJZOZ+8eZ6Sqp3scOWcO47rXXe4R3Ih1ga5yBTnp6Es0TW1BDn7qWEmEhLpwjGXqY/
-         1rKQtoyhFYJ7z9N1USPpTLBkn8MYDKB1CNnoOpmDdpQ3Bx+cYW1KPtYg4JtGgRj2p2xV
-         2hNFSCNfTYXq5tJOR/2XYtw4+j84/nN6vEhuWk/RB/Qsr0M1KLjLFMZr/tAHfP0bI6Qy
-         ZoNIeC8Zd96n4TsjPzTlmG1utI+EGfTmjmZ3/OUaOTj9P+ixZn5ZtaVR/DJ2WQ9JwVYI
-         l0D+nr3tDAoDFEwM02BP8f66O8NdpRmB+uOn/FXuy+oxA+f7x/+3a4WS3SZ1nwBarnMM
-         t3lA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705566542; x=1706171342;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IogBl3L09kV2fz3jVnil+MefPIx4RdTr5CjD15YUYck=;
-        b=EBVnAotQ3a3DrVjow3aIZFGsn3bLJzk6WUiqVRq6e5HXXoVmTaZ6gz2Gpw1xbgg5Rw
-         cQb/Z+/dx60jWN4ZX+OVOXxC1vApdWf8EqCBotTZ1ZBu7ZQcmCpibfJZtrw6lEyrM9xf
-         BDESPOXLobtVTzbLInqzMsXvJB5t06E6r9YHJKjxgm1by9YAOt1uh924QxTwSwyno9xg
-         QdF/gEsn1ejd2NjH2q7y6iQsfPe1Wz0t3YpBvHFq4G66n+8VGYDed5T4fcHi3nYHPfDU
-         N0q+BIFNEK5rKRLdaLuSgEdwl2NXFgnogbMO86qLNtxz1aFWtgI16oc8SAN0t1sIDULw
-         D0vw==
-X-Gm-Message-State: AOJu0YzuPgzN0EWoAnrrfReq4o+758lJkGEd3QOpnGUhILeumooM4q0T
-	fVxPmpGOwALHOQjr9mB0htmWJC6GLMHEVITteJcHAaiHwqRwsg2JbgW7HaTWp7LSR/PgQ7P1mnu
-	mmcmFf/mL2FzhZGq7qgw+KwE7sYA=
-X-Google-Smtp-Source: AGHT+IH9H2p6KTwKfxddPgYFPrIjTM6GZ6+Ya8C01JucEeRqcSSBPduY4qRR3h3RXngKFE9O2rkCRdUM/HhtijbDDKA=
-X-Received: by 2002:a17:906:ae8c:b0:a28:a67f:c7aa with SMTP id
- md12-20020a170906ae8c00b00a28a67fc7aamr126289ejb.187.1705566541569; Thu, 18
- Jan 2024 00:29:01 -0800 (PST)
+	s=arc-20240116; t=1705568689; c=relaxed/simple;
+	bh=KNr1WUWW46BOgYh6JqDh7Cqz+Zz5npB+b8lq3hhoQCI=;
+	h=X-SpamFilter-By:Received:Received:Received:From:To:CC:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 Content-Type:X-Originating-IP:X-ClientProxiedBy; b=khbrq2Ub9Y659o0CLtlguMmMJ+b31tWe4ntf3oAU4eaQIYO5Z6Yaq0vTCmdRAKVFVtmiqeiKcqGGGKq5JWO2PXBfjBCB0YTo/CADl2rpeVNV3ZhcFoDKdlL4tEZvOPgXK0tTM8NzPGT7e0DboJ2K4XWoll3NWtspNVDkM+xWSlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 40I94ZMn81580059, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 40I94ZMn81580059
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 18 Jan 2024 17:04:35 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.17; Thu, 18 Jan 2024 17:04:36 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 18 Jan
+ 2024 17:04:35 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: <kvalo@kernel.org>
+CC: <hsuan8331@realtek.com>, <linux-wireless@vger.kernel.org>
+Subject: [PATCH v2 0/6] wifi: rtw89: 8922a: implement more chip_ops for 8922A
+Date: Thu, 18 Jan 2024 17:04:07 +0800
+Message-ID: <20240118090413.130989-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAKXUXMyfrM6amOR7Ysim3WNQ-Ckf9HJDqRhAoYmLXujo1UV+yA@mail.gmail.com>
- <8cce0dee8588b9f3cd0c1a3f073466b01905a703.camel@sipsolutions.net>
-In-Reply-To: <8cce0dee8588b9f3cd0c1a3f073466b01905a703.camel@sipsolutions.net>
-From: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Date: Thu, 18 Jan 2024 09:28:49 +0100
-Message-ID: <CAKXUXMzbQwupfy2JGxx2a0qY372Wr3KMkL4zq25xF6g_b+ooxQ@mail.gmail.com>
-Subject: Re: Question about reference to config KERNEL_6_2
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless <linux-wireless@vger.kernel.org>, Kalle Valo <kvalo@kernel.org>, 
-	kernel-janitors <kernel-janitors@vger.kernel.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
->
-> > Can we just delete this dependency in these two config options?
->
-> Yes, we should.
->
+Introduce MLO/DBCC mode variable that is used to configure PHY mode for
+various application. The later implementation of chip_ops will reference
+the mode to set registers. Though we have not really enabled MLO.
 
-Johannes,
+Other patches are chips_ops to enable BB/RF, set TX power and BT
+coexistence helpers. Also, define chip specified registers that are used
+by common logic flow.
 
-In case, you did not fix it up yourself yet, here is a quick patch for
-you to pick up:
+v2:
+ - modify patches 3/6 and 5/6 because we found some problems during
+   verification.
 
-https://lore.kernel.org/lkml/20240118082545.22262-1-lukas.bulwahn@gmail.com/
+Chung-Hsuan Hung (1):
+  wifi: rtw89: 8922a: add BTG functions to assist BT coexistence to
+    control TX/RX
 
+Ping-Ke Shih (5):
+  wifi: rtw89: add mlo_dbcc_mode for WiFi 7 chips
+  wifi: rtw89: 8922a: add chip_ops::{enable,disable}_bb_rf
+  wifi: rtw89: 8922a: add chip_ops related to BB init
+  wifi: rtw89: 8922a: add register definitions of H2C, C2H, page, RRSR
+    and EDCCA
+  wifi: rtw89: 8922a: add TX power related ops
 
-Lukas
+ drivers/net/wireless/realtek/rtw89/core.c     |   3 +
+ drivers/net/wireless/realtek/rtw89/core.h     |  42 ++
+ drivers/net/wireless/realtek/rtw89/phy.c      |   1 +
+ drivers/net/wireless/realtek/rtw89/phy.h      |  10 +
+ drivers/net/wireless/realtek/rtw89/reg.h      | 199 +++++++-
+ drivers/net/wireless/realtek/rtw89/rtw8851b.c |   1 +
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |   1 +
+ drivers/net/wireless/realtek/rtw89/rtw8852b.c |   1 +
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c |   1 +
+ drivers/net/wireless/realtek/rtw89/rtw8922a.c | 482 ++++++++++++++++++
+ 10 files changed, 740 insertions(+), 1 deletion(-)
+
+-- 
+2.25.1
+
 
