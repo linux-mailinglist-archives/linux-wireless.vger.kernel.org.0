@@ -1,129 +1,163 @@
-Return-Path: <linux-wireless+bounces-2262-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2263-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65B6F832DFC
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jan 2024 18:18:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 303F1832E08
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jan 2024 18:20:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 991FE1C216C5
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jan 2024 17:18:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D220B22689
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jan 2024 17:20:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1569952F84;
-	Fri, 19 Jan 2024 17:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D662752F84;
+	Fri, 19 Jan 2024 17:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.com header.i=erick.archer@gmx.com header.b="UKfaXVK0"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="qDu8JHas"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06FF55781;
-	Fri, 19 Jan 2024 17:17:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA66D5644A
+	for <linux-wireless@vger.kernel.org>; Fri, 19 Jan 2024 17:19:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705684640; cv=none; b=kQRkUqadi88NCywnP0yDuBG6GxuSja9kYyEWJdd4c7kGdp6BG+/8eCyyVE2kwROyx7tQ8scwqwlY5qjkfD1ezDUPzp6rJtKLqEFwqQaVhlfQ5PjnGpYHgWOci5/2lscYAmbh254Jf1jvG3dt0gto1WaLXV8UrzORYbcJ2h1hNWI=
+	t=1705684799; cv=none; b=nJW5uNaS20dhDIGHhkoMxV1rZBTGWC5tYODS7QPA3pQYc7XEZlbSslvtsihK1X56aXkKHhSdU2PvTjtv7/xC1mlVIC64Tl2OfyIt/NdAoeE2Dw2MkY/sqImbgE4nVxp9dD6UVQupK2E8O1SajArfuzMRW8PolqiirEZjxH1Tq4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705684640; c=relaxed/simple;
-	bh=8hiSUreshi5d9psrrh8W9DNsM46O1ShucEmMReRAuG4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=d9qoOuiBKrNnLtJ0EiZV2ff5hpUh8p/vYlUar2a/qzTQO3YSvCOKWbV2zSl+ub7lzcAINJCnPU9OWGPYF3XFjwSvWtLwfpWrGZ8vvnnHO7j8Tlky5Jyz/+WThMG+XsANi0BH0Ew4w/bLJEbq30Xxu0rueNsRcTjogWSNfkwfFQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.com; spf=pass smtp.mailfrom=gmx.com; dkim=pass (2048-bit key) header.d=gmx.com header.i=erick.archer@gmx.com header.b=UKfaXVK0; arc=none smtp.client-ip=212.227.15.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.com;
-	s=s31663417; t=1705684631; x=1706289431; i=erick.archer@gmx.com;
-	bh=8hiSUreshi5d9psrrh8W9DNsM46O1ShucEmMReRAuG4=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
-	b=UKfaXVK0thOteFjJZQls4pBPGHzgD5OFqcdD7o23K1kpt/+aFLsxMAC6Chel4CZf
-	 3UJawWop6sT2QcBPqQ9PYsd/UeZy2tM0Qqb9o/8bglktnxre+/dp2ogCGuOjlnzKo
-	 K4sPOyoFzqkSO/oghuvQOySFTcuFaD75+Ml3W4fxE8eYqdWQA881ChLqIX15sxtZ5
-	 Ri+82psijb2WdxYmhiIkG1YUarem07F2Xc9Ex85vN4OMJZL+FlIaFaUo5X+XjO9l2
-	 mV1DoEzhDKWyu1xyxTTL4RJdlm0dDtbtdJnyYDB0wiLrifedy6MZMrl0qmyJDIijC
-	 JR6cMm4XAk/1IFugFA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from localhost.localdomain ([79.157.194.183]) by mail.gmx.net
- (mrgmx005 [212.227.17.184]) with ESMTPSA (Nemesis) id
- 1N7iCW-1r4F0P09S6-014msM; Fri, 19 Jan 2024 18:17:11 +0100
-From: Erick Archer <erick.archer@gmx.com>
-To: Stanislaw Gruszka <stf_xl@wp.pl>,
-	Kalle Valo <kvalo@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc: Erick Archer <erick.archer@gmx.com>,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org
-Subject: [PATCH] wifi: iwlegacy: Use kcalloc() instead of kzalloc()
-Date: Fri, 19 Jan 2024 18:16:55 +0100
-Message-Id: <20240119171655.7740-1-erick.archer@gmx.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1705684799; c=relaxed/simple;
+	bh=5kjuuZZAgbh5qG1AhU6Ww91wS6SIXnE7H7WRcAlw2uw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=kxoht5L1IaTbKY+XVzzDhBbxBOWldD4XJ2V98wCj3VjWhk0zmU/+uJFNBA1oxUgLkPx+BoE2k5sWeVTwlS+/ucJicQZi1Mf2tG0HsCH8rk4lvAb1SGNCNygkQaGEuSaoPMbUoVbqRtkB1UWgu9/zv3dMxoSxkAMQl98VqZVUJMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=qDu8JHas; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=bDdP51rF0wsqIyog0a3Uo+oqh39UFupDUGditTXtf5E=;
+	t=1705684797; x=1706894397; b=qDu8JHass7fglUsONx1oY5/+MRAWNMh3O2LOVFwgiuqiqQ8
+	5ap7pmMXZWSlk0QccoA4naB/8h3yUso3hsasVn54blRPcUjw9DK2RVUiE0hBgbNxUSQXuI41JbBz1
+	SvQdN5AYUP2TA2VYcUru6oSWCtOtx7WCXxCUQ5+zs8oH69dlAUAlHJv22aZLH5fkwVvujgKAvAolD
+	5/dBv4/J0dpo/y3PF2ZjvNb/bQpAmpjo20nHIOJv4k9o/gIAi5EGtD2sFDPP7ndoJ9wcSjMkxxvnZ
+	Y/Ke53tH6jkUsZ12vQ3aimd2UV7UKC6xu8XRNelZrp2evwg/7tzzCpb035Zt1DJg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rQsX4-00000009fMD-1hMt;
+	Fri, 19 Jan 2024 18:19:54 +0100
+Message-ID: <58970b94a314414402a932576ec54188c0675016.camel@sipsolutions.net>
+Subject: Re: [PATCH] wifi: mac80211: don't ask rate control with zero rate
+ mask if scanning
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Dmitry Antipov <dmantipov@yandex.ru>
+Cc: Felix Fietkau <nbd@nbd.name>, Kalle Valo <kvalo@kernel.org>, 
+	linux-wireless@vger.kernel.org, lvc-project@linuxtesting.org, 
+	syzbot+fdc5123366fb9c3fdc6d@syzkaller.appspotmail.com
+Date: Fri, 19 Jan 2024 18:19:53 +0100
+In-Reply-To: <b938cafa-0cb0-4832-9883-c6c47e93fa2b@yandex.ru>
+References: <20240117124848.120438-1-dmantipov@yandex.ru>
+	 <9433d29b643e4cce3a9354282405288c75c45e02.camel@sipsolutions.net>
+	 <b938cafa-0cb0-4832-9883-c6c47e93fa2b@yandex.ru>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:8yvcfA5it6REFYntjlNTl0iEzf/Y/4OhBvXBhpuP//rBvluFqQ5
- NSaWiDFtGrxYpLtNk/SOpEwcpXpRH0aYZ81GxgpwlgioaJ8HRaH2ER0SUuSi0HUSq5hAwSL
- l3IV2DBZqiwDJl5VMpvFsB2dXCbPOA0/clOAmUH8sUciXNWpodeghc7IvIzFZMWjhXwFIOj
- UiyhJI68X+SNWaLmV3vhg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:2tEhQomloAs=;xFOFmVFKajcsN2YfYY0lIFqFpPa
- wDTwfVxs5uMCUUud5TFtNaaU6YMdrsLCveR5n5MmroN2Lj/0p65wSQf8OlZ5yo2AdBGs2eNk1
- 4CiPTEcq0eI19pjkNfTU4YNWZGXOtfS4APx7LJF1eBHs0Fbu+1tuQLBCRe/El0AW25a10jxWX
- LexCal7YaNjHm3gqXgDJlkYbA4hsXgbqTHY+OUysasI7VmDzGJ482vgsWveDPcAXUSBf0KeN/
- QmHNicMjqBAO+7sNIb2PIpOAtAyeXAEaRT//VqZElZCyFLdHUlM3ngLe5H0/JnTrrYrSXPm9d
- 5wmkJJpyn1LdmJyhexHKERqN3G1jTp6CdGcsAPxFvi0PWzWmiVOs8W3EhTlBHwvHMTxFxiNDu
- MCXbyWne/tm3b2NjyNa40Ef1T1k+kEegjsvVhPz+3nxef9x3/R7Pn/VmGQiocFwpS2wx6QhqB
- w/waCgdHlRDuCWgjpOWouJsw8+/xILY68ep/C3qp9XcWXo7wB/7hMnHHCRz2S9flXMkldGoUs
- PauYL8Vay/v4ApxOybf/UKyR773TgIpFLi3K3FYTT0v1bp2qNuypmMTRGeO2yZKjjKbHVVUVP
- MmdyDxTqqNKuv5eQuMi9Gkc8fjndanEGoq//QCLNLHOiQPVcLnMHQWgBhbxL4plciuMXd6TxN
- yrENgozk/F/m9yjZ2scW36F2jflNCn/JWtHK5iqofHn/ZL6s6u0wCN3iIBNuLP3Sr14YdP1BY
- SjVs/fTMXaVh4kUkXTYoiCGz5Ix+oNoUS0cOvsULveWnmlRwjzx/lsMvAx64Ej0R/Z/46QtdV
- CbX+vpbppurHhVslgHcFNckbCd5o3B0y5fRs54mcj6OG88ol+QogNgLunzC7LwTUnhZwbeVNM
- bOr9rlAXLoJupv7+mJaEeOEWPBhM83ZKfoFo8/aqtAVkJph7rZe3l5TYpFzKMOpR5eWRYtzUh
- sl9Ts8RzSC9GDrRcQ37QmZ6iZ3A=
+X-malware-bazaar: not-scanned
 
-As noted in the "Deprecated Interfaces, Language Features, Attributes,
-and Conventions" documentation [1], size calculations (especially
-multiplication) should not be performed in memory allocator (or similar)
-function arguments due to the risk of them overflowing. This could lead
-to values wrapping around and a smaller allocation being made than the
-caller was expecting. Using those allocations could lead to linear
-overflows of heap memory and other misbehaviors.
+On Fri, 2024-01-19 at 11:07 +0300, Dmitry Antipov wrote:
+> Hm. It seems that I'm still missing something important, but I don't
+> realize why ieee80211_scan_state_set_channel() advances to the (next)
+> channel even after ieee80211_set_bitrate_mask() resets this channel's
+> rate mask to 0. Note that the comment in ieee80211_set_bitrate_mask()
+> explicitly states that there should be at least one usable rate for
+> the band we're currently operating on. Why this is not applicable to
+> other band(s) we might probe next?
 
-So, use the purpose specific kcalloc() function instead of the argument
-size * count in the kzalloc() function.
+I guess it depends on the definition of 'operating'? Scanning isn't
+really 'operating' in this context, I'd argue.
 
-Also, it is preferred to use sizeof(*pointer) instead of sizeof(type)
-due to the type of the variable can change and one needs not change the
-former (unlike the latter).
+>=20
+> > The most common use case for this is probably P2P-style things where yo=
+u
+> > just don't want to use CCK, but for scanning we have
+> > NL80211_ATTR_TX_NO_CCK_RATE for this, so there's really no need to appl=
+y
+> > the rate mask?
+>=20
+> Does NL80211_ATTR_TX_NO_CCK_RATE makes an effect on bands other than
+> 2.4GHz?=C2=A0
 
-Link: https://www.kernel.org/doc/html/next/process/deprecated.html#open-co=
-ded-arithmetic-in-allocator-arguments [1]
-Link: https://github.com/KSPP/linux/issues/162
-Signed-off-by: Erick Archer <erick.archer@gmx.com>
-=2D--
- drivers/net/wireless/intel/iwlegacy/common.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+No.
 
-diff --git a/drivers/net/wireless/intel/iwlegacy/common.c b/drivers/net/wi=
-reless/intel/iwlegacy/common.c
-index 17570d62c896..9d33a66a49b5 100644
-=2D-- a/drivers/net/wireless/intel/iwlegacy/common.c
-+++ b/drivers/net/wireless/intel/iwlegacy/common.c
-@@ -3438,9 +3438,7 @@ il_init_geos(struct il_priv *il)
- 	if (!channels)
- 		return -ENOMEM;
+> Note original reproducer triggers WARN_ONCE() after switching
+> to 5GHz.
 
--	rates =3D
--	    kzalloc((sizeof(struct ieee80211_rate) * RATE_COUNT_LEGACY),
--		    GFP_KERNEL);
-+	rates =3D kcalloc(RATE_COUNT_LEGACY, sizeof(*rates), GFP_KERNEL);
- 	if (!rates) {
- 		kfree(channels);
- 		return -ENOMEM;
-=2D-
-2.25.1
+Sure, that's unrelated. I'm guessing the reproducer sets up a (limited)
+rate set only for 2.4 GHz and that's OK because that's where it's
+connected, or so, but then (software) scanning interferes.
 
+My reason for mentioning was just that NL80211_ATTR_TX_NO_CCK_RATE is
+meant to aid restricting rates while scanning, so I'm saying that we
+should probably not even _use_ the bitrate mask for scanning at all.
+
+I was trying to let you come up with a patch for learning, but I think
+at this point just making one illustrates better what I'm thinking ...
+Here's one, but I haven't even compiled this:
+
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -932,6 +932,8 @@ enum mac80211_tx_info_flags {
+  *	of their QoS TID or other priority field values.
+  * @IEEE80211_TX_CTRL_MCAST_MLO_FIRST_TX: first MLO TX, used mostly intern=
+ally
+  *	for sequence number assignment
++ * @IEEE80211_TX_CTRL_SCAN_TX: Indicates that this frame is transmitted
++ *	due to scanning, not in normal operation on the interface.
+  * @IEEE80211_TX_CTRL_MLO_LINK: If not @IEEE80211_LINK_UNSPECIFIED, this
+  *	frame should be transmitted on the specific link. This really is
+  *	only relevant for frames that do not have data present, and is
+@@ -952,6 +954,7 @@ enum mac80211_tx_control_flags {
+ 	IEEE80211_TX_CTRL_NO_SEQNO		=3D BIT(7),
+ 	IEEE80211_TX_CTRL_DONT_REORDER		=3D BIT(8),
+ 	IEEE80211_TX_CTRL_MCAST_MLO_FIRST_TX	=3D BIT(9),
++	IEEE80211_TX_CTRL_SCAN_TX		=3D BIT(10),
+ 	IEEE80211_TX_CTRL_MLO_LINK		=3D 0xf0000000,
+ };
+=20
+--- a/net/mac80211/scan.c
++++ b/net/mac80211/scan.c
+@@ -632,6 +632,8 @@ static void ieee80211_send_scan_probe_req(struct ieee80=
+211_sub_if_data *sdata,
+ 				cpu_to_le16(IEEE80211_SN_TO_SEQ(sn));
+ 		}
+ 		IEEE80211_SKB_CB(skb)->flags |=3D tx_flags;
++		IEEE80211_SKB_CB(skb)->control.flags |=3D
++			IEEE80211_TX_CTRL_SCAN_TX;
+ 		ieee80211_tx_skb_tid_band(sdata, skb, 7, channel->band);
+ 	}
+ }
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -701,7 +701,9 @@ ieee80211_tx_h_rate_ctrl(struct ieee80211_tx_data *tx)
+ 	txrc.bss_conf =3D &tx->sdata->vif.bss_conf;
+ 	txrc.skb =3D tx->skb;
+ 	txrc.reported_rate.idx =3D -1;
+-	txrc.rate_idx_mask =3D tx->sdata->rc_rateidx_mask[info->band];
++
++	if (!(info->control.flags & IEEE80211_TX_CTRL_SCAN_TX))
++		txrc.rate_idx_mask =3D tx->sdata->rc_rateidx_mask[info->band];
+=20
+ 	if (tx->sdata->rc_has_mcs_mask[info->band])
+ 		txrc.rate_idx_mcs_mask =3D
+
+
+What do you think?
+
+johannes
 
