@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-2248-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2249-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6542B832937
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jan 2024 12:52:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EBA283298C
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jan 2024 13:32:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D28D71F23985
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jan 2024 11:52:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 38F85B22329
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jan 2024 12:32:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC3874F1E2;
-	Fri, 19 Jan 2024 11:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9D7B36AE1;
+	Fri, 19 Jan 2024 12:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="afNvk1oU"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="V1/LYnTw"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com [209.85.222.54])
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC034C3D2
-	for <linux-wireless@vger.kernel.org>; Fri, 19 Jan 2024 11:52:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7924D58F
+	for <linux-wireless@vger.kernel.org>; Fri, 19 Jan 2024 12:32:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705665134; cv=none; b=rK2fdgBALvbK8mscR68HsH+sLBLODwUqQ6mroeSZPMvGz7zffqEql/3N92a8QdFw8YwZVqmV4bjSWbG86+BntMVaQoDRSGV1FWbujMW1NODH2+jJ1vUzfTcyumnRF3f/pWB1SZwdTeiFDaFwe7Oob+2S47tfL4hSGfudQWTxfQA=
+	t=1705667527; cv=none; b=CyJKIK6AoaQoRAGisq9t5ozNht86Rix7HpNKf8SssrC42S5Uo6QGzd4qNMgp7m93Qs0inlhqsMHlZHUi2qHRaEZeRPiXOqx+XKWfEYf83Ymcsl4tyoFITagWso06rWvqstX9h7JQIauYuLIp92VSe29YCWsE53ONYVnz/6Guu7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705665134; c=relaxed/simple;
-	bh=L/Fc06LLs/rGZJoI3sRZIJrlufKv5PaKYitAV+6n9QY=;
+	s=arc-20240116; t=1705667527; c=relaxed/simple;
+	bh=I0UZfjlfi2E6U7pmjX/HhVBMtbSsDUbWol5BCeCBZhs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JhciuOKORMPC9lvwUaxBEWX5dPx0Mu1r2RJHLSMDWARMgHpB3HqnlZKv71KFDycEcWA92ImBfphHrgOyoXAcofDc1CZYV+Ltf/7Vegxg+Kg3s3WFTNfsJnjMSTH9OqDcfyCXzIbSF7iurTG1SlcPnIc40DeHzMun7dNjvRu5mn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=afNvk1oU; arc=none smtp.client-ip=209.85.222.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-7d2e15193bbso67958241.0
-        for <linux-wireless@vger.kernel.org>; Fri, 19 Jan 2024 03:52:13 -0800 (PST)
+	 To:Cc:Content-Type; b=V2fFBzwHpEIri1joP76j2yCzMgm1h3MBXzrh5XjElHpwQwAEJm0fmEINLBM0jQ55xWeF6wsKuQ6co7g7y5KGAbZcOl0d5VRgIM7nwLybEdYapWPclu9OQ6DMlm/f7l2tjhEYf/SXMvth1BVjhvVFORir5k5Tj8aS89Fnu3/M0jc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=V1/LYnTw; arc=none smtp.client-ip=209.85.128.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-5f254d1a6daso7748117b3.2
+        for <linux-wireless@vger.kernel.org>; Fri, 19 Jan 2024 04:32:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1705665132; x=1706269932; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1705667525; x=1706272325; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=scQQNQ5xR79QdIxgg95WyhVE0qz02vfpeEac+jED8n0=;
-        b=afNvk1oUnQ19qYmNfiBN0essEgUXat59gy72RjkVeS20wdU1gBqWOrEffQNMb2kswW
-         cMwBoAps3H3BLxBX0r/zfrw6sdlVAkn1ps6YTUpz0hP4VVfXJUyc5mahKpA1BRm9nYyY
-         7Mx9Rhe/cxicQ4YsF6KI10G1Ezcd+EajAHZBEa/ufPqgbqz/xv1lv4PNdVghiGkjHupm
-         aoIPlV3td+icGePMWUtXF4dj+UjP1icTn+1amOYEfjuDWqaa4vu9yTOTzmsa7AtG5mQ2
-         9oKvl2+QmQzD6rY0a5ZrU3wmVz/D4Ulctb07VURqpvZZRHr8Lhm3WWEmyS//g9PjQ1CH
-         1JzA==
+        bh=Ffjuk5UUhf2ajhXazA1TZbNijQJTawfOkhzxR9sRdg0=;
+        b=V1/LYnTw529sx6xKDy+lxEaAzYcL+//TVJyrgv7aPGLAWtHTUx6SJzRmdjZJtH9DMG
+         K3tvZ7h5ggUhiWgn+V9ZsPkSmkAr1letpe0WpJbQM0fCeQ8Prs4Pn1KW2qLaipIIofLo
+         HZhpP5olkRUApDUpCQhig6SKYI45CLJJrR9lwbcRcV8Us7sisZBM+bTRomNJeL/fSSqK
+         3ATJtzS/wVsj32xzxEjaWEDn37cIUSKLUorLEX8vl2GjB1gd/wKVwrt0ns5tsWYQfi2a
+         NuQXgw+unAPNG7UrUS8MnL7Jtnmmzn/+EVBaJX/mtI9hhXSzhLHpwNKkAfXLE9ASjYVM
+         rzKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705665132; x=1706269932;
+        d=1e100.net; s=20230601; t=1705667525; x=1706272325;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=scQQNQ5xR79QdIxgg95WyhVE0qz02vfpeEac+jED8n0=;
-        b=RxWwQTOa5qH+JlnrNZmS8bOTqCHLFpKDo4RbOs7uCVZQF8zZE+A5yX35gwpd2ZQyAr
-         tW5BVT9w4t2/cn/8dqONfzjKk7WjUs0Gp8F0YeOeYav7K75aWp1b0mLRejPNCuBrwugU
-         aeslWmyCPsrOlctBDm4RXtZgd5OAbVx9azOtu4tPzc8TKYPnih5OCceCPl6F6GEHcdb0
-         dkKFvxdnZkKzPO1h9cxfIO+OZnvhl9dAl4WMya1EdK3awyhVTLY3p9VYIJEo7wwD+eUU
-         b4Qj1Z4XMuOtJ45Spfz+KLprkwsIeU9jdRNEO39mrH2AynGOga9L67OTNp9RPwxJurWT
-         Cz5Q==
-X-Gm-Message-State: AOJu0YzeHnIippLSqGKl6v8Ri2fLCg4z8wqtX0fhGZ0S4ODUazil4IOj
-	Eci95xaclWCNzsj6EMaK3UMk9BvT/F6AwGyHjaI64psWiMjBMWmyQB/lnssuj8E/5vhHgBt7yke
-	88EEDGTgSjSi4LIGjZy2SAqiorovaxzv4HFC5Tw==
-X-Google-Smtp-Source: AGHT+IFiXIk+YOAa2fYWVkFEFaJXqh/QhAez3rJdhcrCmsvPK+NsvJEO/O+MaokryJjfgFi1QEfe5UKWEheWp/KRPaY=
-X-Received: by 2002:a67:f945:0:b0:468:90e:2c8e with SMTP id
- u5-20020a67f945000000b00468090e2c8emr1903776vsq.35.1705665132098; Fri, 19 Jan
- 2024 03:52:12 -0800 (PST)
+        bh=Ffjuk5UUhf2ajhXazA1TZbNijQJTawfOkhzxR9sRdg0=;
+        b=VafoST8VUj9OEdmnfY8CBE96EKnwskLw1R4JlscEIqa3z2tYuFtL6FxNpPSW4IPAFx
+         bo0kcHN8WUNsGuwBBnKAwQQp6Ea8eAC+8eZrN9Qaxk1XL9cAZ2iL8D3SPcp9g3xOq/PG
+         eplvMykCt6i/dkVHYvUrA3UD1Zr/x9e/PCIVa+56WK6DUYmOeG+zbMlcRh3Svf3P4cWE
+         D/pys2SAAAF8aUaeka1hT6ALb6ICsm7uE4C5KhYVoCwm+X8DsLs+yGwBBIB4tMW+2//k
+         7sgV9ElpsrqPMFcwCi5cIi2Av4zut0jHPJIonA/qHCe+mCussfV4RT7DsJ35uokkjCGv
+         2fJQ==
+X-Gm-Message-State: AOJu0YzbMpe9H2P+voZjA29wHi/42Ihe6Z3rjsiOSdhiL3jLlpJCWE3+
+	FjN92MicxTRljTt5vZh/zzGzMUFSzjpHWP7jAMfp4s6RRPb5LNEJinVj/GixZLXodAPJF/qU4mI
+	sGD4XTuW3BiemjoUpU5K05At9tOS7zxEp1Vq0lw==
+X-Google-Smtp-Source: AGHT+IHzWY0Jg7Cbw032GIQItsk8GMJ1egjxjW1I4qO2drEBWMBFSWUWUH+O4Oj0Le9R6bky8UA9z26DkZt+clJZEBE=
+X-Received: by 2002:a81:4a83:0:b0:5fc:b5d4:f1cf with SMTP id
+ x125-20020a814a83000000b005fcb5d4f1cfmr2465344ywa.35.1705667525159; Fri, 19
+ Jan 2024 04:32:05 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -71,14 +71,14 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20240117160748.37682-1-brgl@bgdev.pl> <CAA8EJpoQfPqoMVyTmUjPs4c1Uc-p4n7zNcG+USNjXX0Svp362w@mail.gmail.com>
- <CAA8EJpqyK=pkjEofWV595tp29vjkCeWKYr-KOJh_hBiBbkVBew@mail.gmail.com>
-In-Reply-To: <CAA8EJpqyK=pkjEofWV595tp29vjkCeWKYr-KOJh_hBiBbkVBew@mail.gmail.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Fri, 19 Jan 2024 12:52:00 +0100
-Message-ID: <CAMRc=McUZh0jhjMW7H6aVKbw29WMCQ3wdkVAz=yOZVK5wc45OA@mail.gmail.com>
+ <CAA8EJpqyK=pkjEofWV595tp29vjkCeWKYr-KOJh_hBiBbkVBew@mail.gmail.com> <CAMRc=McUZh0jhjMW7H6aVKbw29WMCQ3wdkVAz=yOZVK5wc45OA@mail.gmail.com>
+In-Reply-To: <CAMRc=McUZh0jhjMW7H6aVKbw29WMCQ3wdkVAz=yOZVK5wc45OA@mail.gmail.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date: Fri, 19 Jan 2024 14:31:53 +0200
+Message-ID: <CAA8EJprFV6SS_dGF8tOHcBG+y8j74vO0B40Y=e7Kj1-ZThNqPA@mail.gmail.com>
 Subject: Re: [PATCH 0/9] PCI: introduce the concept of power sequencing of
  PCIe devices
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
 Cc: Kalle Valo <kvalo@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
 	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
 	Rob Herring <robh+dt@kernel.org>, 
@@ -104,98 +104,135 @@ Cc: Kalle Valo <kvalo@kernel.org>, "David S . Miller" <davem@davemloft.net>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 18, 2024 at 7:53=E2=80=AFPM Dmitry Baryshkov
-<dmitry.baryshkov@linaro.org> wrote:
+On Fri, 19 Jan 2024 at 13:52, Bartosz Golaszewski <brgl@bgdev.pl> wrote:
 >
-
-[snip]
-
+> On Thu, Jan 18, 2024 at 7:53=E2=80=AFPM Dmitry Baryshkov
+> <dmitry.baryshkov@linaro.org> wrote:
 > >
-> > I'd still like to see how this can be extended to handle BT power up,
-> > having a single entity driving both of the BT and WiFI.
+>
+> [snip]
+>
+> > >
+> > > I'd still like to see how this can be extended to handle BT power up,
+> > > having a single entity driving both of the BT and WiFI.
+> > >
+> > > The device tree changes behave in exactly the opposite way: they
+> > > define regulators for the WiFi device, while the WiFi is not being
+> > > powered by these regulators. Both WiFi and BT are powered by the PMU,
+> > > which in turn consumes all specified regulators.
 > >
-> > The device tree changes behave in exactly the opposite way: they
-> > define regulators for the WiFi device, while the WiFi is not being
-> > powered by these regulators. Both WiFi and BT are powered by the PMU,
-> > which in turn consumes all specified regulators.
+> > Some additional justification, why I think that this should be
+> > modelled as a single instance instead of two different items.
+> >
+> > This is from msm-5.10 kernel:
+> >
+> >
+> > =3D=3D=3D=3D=3D CUT HERE =3D=3D=3D=3D=3D
+> > /**
+> >  * cnss_select_pinctrl_enable - select WLAN_GPIO for Active pinctrl sta=
+tus
+> >  * @plat_priv: Platform private data structure pointer
+> >  *
+> >  * For QCA6490, PMU requires minimum 100ms delay between BT_EN_GPIO off=
+ and
+> >  * WLAN_EN_GPIO on. This is done to avoid power up issues.
+> >  *
+> >  * Return: Status of pinctrl select operation. 0 - Success.
+> >  */
+> > static int cnss_select_pinctrl_enable(struct cnss_plat_data *plat_priv)
+> > =3D=3D=3D=3D=3D CUT HERE =3D=3D=3D=3D=3D
+> >
+> >
+> > Also see the bt_configure_gpios() function in the same kernel.
+> >
 >
-> Some additional justification, why I think that this should be
-> modelled as a single instance instead of two different items.
+> You are talking about a different problem. Unfortunately we're using
+> similar naming here but I don't have a better alternative in mind.
 >
-> This is from msm-5.10 kernel:
+> We have two separate issues: one is powering-up a PCI device so that
+> it can be detected and the second is dealing with a device that has
+> multiple modules in it which share a power sequence. The two are
+> independent and this series isn't trying to solve the latter.
+
+I see it from a different angle: a power up of the WiFi+BT chips. This
+includes devices like wcn3990 (which have platform + serial parts) and
+qca6390 / qca6490 / wcn6750 / etc. (which have PCI and serial parts).
+
+From my point of view, the PCIe-only part was nice for an RFC, but for
+v1 I have expected to see a final solution that we can reuse for
+wcn3990.
+
 >
+> But I am aware of this and so I actually have an idea for a
+> generalized power sequencing framework. Let's call it pwrseq as
+> opposed to pci_pwrseq.
 >
-> =3D=3D=3D=3D=3D CUT HERE =3D=3D=3D=3D=3D
-> /**
->  * cnss_select_pinctrl_enable - select WLAN_GPIO for Active pinctrl statu=
-s
->  * @plat_priv: Platform private data structure pointer
->  *
->  * For QCA6490, PMU requires minimum 100ms delay between BT_EN_GPIO off a=
-nd
->  * WLAN_EN_GPIO on. This is done to avoid power up issues.
->  *
->  * Return: Status of pinctrl select operation. 0 - Success.
->  */
-> static int cnss_select_pinctrl_enable(struct cnss_plat_data *plat_priv)
-> =3D=3D=3D=3D=3D CUT HERE =3D=3D=3D=3D=3D
+> Krzysztof is telling me that there cannot be any power sequencing
+> information contained in DT. Also: modelling the PMU in DT would just
+> over complicate stuff for now reason. We'd end up having the PMU node
+> consuming the regulators but it too would need to expose regulators
+> for WLAN and BT or be otherwise referenced by their nodes.
+
+Yes. And it is a correct representation of the device. The WiFi and BT
+parts are powered up by the outputs from PMU. We happen to have three
+different pieces (WiFi, BT and PMU) squashed on a single physical
+device.
+
 >
+> So I'm thinking that the DT representation should remain as it is:
+> with separate WLAN and BT nodes consuming resources relevant to their
+> functionality (BT does not need to enable PCIe regulators).
+
+Is it so? The QCA6390 docs clearly say that all regulators should be
+enabled before asserting BT_EN / WLAN_EN. See the powerup timing
+diagram and the t2 note to that diagram.
+
+> Now how to
+> handle the QCA6490 model you brought up? How about pwrseq drivers that
+> would handle the sequence based on compatibles?
+
+The QCA6490 is also known as WCN6855. So this problem applies to
+Qualcomm sm8350 / sm8450 platforms.
+
+And strictly speaking I don't see any significant difference between
+QCA6390 and WCN6855. The regulators might be different, but the
+implementation should be the same.
+
 >
-> Also see the bt_configure_gpios() function in the same kernel.
+> We'd add a new subsystem at drivers/pwrseq/. Inside there would be:
+> drivers/pwrseq/pwrseq-qca6490.c. The pwrseq framework would expose an
+> API to "sub-drivers" (in this case: BT serdev driver and the qca6490
+> power sequencing driver). Now the latter goes:
 >
+> struct pwrseq_desc *pwrseq =3D pwrseq_get(dev);
+>
+> And the pwrseq subsystem matches the device's compatible against the
+> correct, *shared* sequence. The BT driver can do the same at any time.
+> The pwrseq driver then gets regulators, GPIOs, clocks etc. and will be
+> responsible for dealing with them.
+>
+> In sub-drivers we now do:
+>
+> ret =3D pwrseq_power_on(pwrseq);
+>
+> or
+>
+> ret =3D pwrseq_power_off(pwrseq);
+>
+> in the sub-device drivers and no longer interact with each regulator
+> on our own. The pwrseq subsystem is now in charge of adding delays
+> etc.
+>
+> That's only an idea and I haven't done any real work yet but I'm
+> throwing it out there for discussion.
 
-You are talking about a different problem. Unfortunately we're using
-similar naming here but I don't have a better alternative in mind.
+I've been there and I had implemented it in the same way, but rather
+having the pwrseq as a primary device in DT and parsing end-devices
+only as a fallback / compatibility case.
 
-We have two separate issues: one is powering-up a PCI device so that
-it can be detected and the second is dealing with a device that has
-multiple modules in it which share a power sequence. The two are
-independent and this series isn't trying to solve the latter.
 
-But I am aware of this and so I actually have an idea for a
-generalized power sequencing framework. Let's call it pwrseq as
-opposed to pci_pwrseq.
 
-Krzysztof is telling me that there cannot be any power sequencing
-information contained in DT. Also: modelling the PMU in DT would just
-over complicate stuff for now reason. We'd end up having the PMU node
-consuming the regulators but it too would need to expose regulators
-for WLAN and BT or be otherwise referenced by their nodes.
-
-So I'm thinking that the DT representation should remain as it is:
-with separate WLAN and BT nodes consuming resources relevant to their
-functionality (BT does not need to enable PCIe regulators). Now how to
-handle the QCA6490 model you brought up? How about pwrseq drivers that
-would handle the sequence based on compatibles?
-
-We'd add a new subsystem at drivers/pwrseq/. Inside there would be:
-drivers/pwrseq/pwrseq-qca6490.c. The pwrseq framework would expose an
-API to "sub-drivers" (in this case: BT serdev driver and the qca6490
-power sequencing driver). Now the latter goes:
-
-struct pwrseq_desc *pwrseq =3D pwrseq_get(dev);
-
-And the pwrseq subsystem matches the device's compatible against the
-correct, *shared* sequence. The BT driver can do the same at any time.
-The pwrseq driver then gets regulators, GPIOs, clocks etc. and will be
-responsible for dealing with them.
-
-In sub-drivers we now do:
-
-ret =3D pwrseq_power_on(pwrseq);
-
-or
-
-ret =3D pwrseq_power_off(pwrseq);
-
-in the sub-device drivers and no longer interact with each regulator
-on our own. The pwrseq subsystem is now in charge of adding delays
-etc.
-
-That's only an idea and I haven't done any real work yet but I'm
-throwing it out there for discussion.
-
-Bartosz
-
-[snip]
+--=20
+With best wishes
+Dmitry
 
