@@ -1,78 +1,113 @@
-Return-Path: <linux-wireless+bounces-2256-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2257-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97F27832C1D
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jan 2024 16:10:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0259B832C26
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jan 2024 16:12:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6363DB2278C
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jan 2024 15:10:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 984331F235FD
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jan 2024 15:12:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD2D95466E;
-	Fri, 19 Jan 2024 15:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D6A75467B;
+	Fri, 19 Jan 2024 15:12:34 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from zju.edu.cn (spam.zju.edu.cn [61.164.42.155])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C667D54667;
-	Fri, 19 Jan 2024 15:10:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=61.164.42.155
+Received: from zg8tmty3ljk5ljewns4xndka.icoremail.net (zg8tmty3ljk5ljewns4xndka.icoremail.net [167.99.105.149])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13DEC54667;
+	Fri, 19 Jan 2024 15:12:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=167.99.105.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705677005; cv=none; b=vEZvtgZM0Y/qrEnN4kZXUeTyWUjSenCpjzMRamA90EM47JcxznCi46tGe2AC3nBBmRaNoqsumqQ0XS3q+8nUViab21X3xNCMEZUh2gqeerZdN612n7rcpVvjyiK8oXcVKCVkQntcGlIV8WJjBcNDWyKDDVMG87rCpEVVJR7R26w=
+	t=1705677154; cv=none; b=q5Vg/I0PWRVjeVBU9vqvbzaf+/jGSxxtaki5n4mnpdr0gfU5Wr0Xld+Ys66nIDMlvQZagHmvtAYaxrAu+gsjXdiUWTCF3VixJlikBYB9J3dFStBz2lBA6scWeIMxeHmkMAUwxFJP1wqqQ3NCi3HfFK9JfFESr1iv5C0L/gWg7iQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705677005; c=relaxed/simple;
-	bh=ba5iFZrEZbK7GW0T551/0XRnIqmHqQJuldW3vSrTCjw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=itCyZPYyixEtNC/1inNFPpswPQ6usZEWH11AF0hmw/Di5aCUS/xqeeAUJRlnXtURJeEhL6hw2f2v7qPV+EzER1m0PlvAIN9iFx084umPOJoeOaKlDOp06lmvZtBEJD5ALM6BlIoQibDI/vIvHgoYsT4W5pcpF589hHodVrnfr1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=61.164.42.155
+	s=arc-20240116; t=1705677154; c=relaxed/simple;
+	bh=ZpHwMNKONZyX/hLikKcxxkbOYJIh65C3dQXqbsmkVjI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=VvEZXRTeChrI1JAuTcNkJe5UmoH6zUN0X9aQq4ZJvkAnQNKyLAo4DsP+6b5g1eIxoUVsyWkjJYntPWs4cRhldNzhGRd0KSIr2frdXbRRpUtdYCiGH538237EVNPDL7PTiNsrGN/7Vw7kOsls4ATyZXwP5Uwr8VyGIhlML0czUcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=167.99.105.149
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
-Received: from linma$zju.edu.cn ( [10.181.209.189] ) by
- ajax-webmail-mail-app2 (Coremail) ; Fri, 19 Jan 2024 23:09:39 +0800
- (GMT+08:00)
-Date: Fri, 19 Jan 2024 23:09:39 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From: "Lin Ma" <linma@zju.edu.cn>
-To: "Kalle Valo" <kvalo@kernel.org>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v1] nl80211/cfg80211: add nla_policy for S1G
- band
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2023.4-cmXT5 build
- 20231205(37e20f0e) Copyright (c) 2002-2024 www.mailtech.cn
- mispb-4df6dc2c-e274-4d1c-b502-72c5c3dfa9ce-zj.edu.cn
-In-Reply-To: <87v87pe5hu.fsf@kernel.org>
-References: <20240119093724.7852-1-linma@zju.edu.cn>
- <6acb79fc.79d3.18d211a170c.Coremail.linma@zju.edu.cn>
- <87v87pe5hu.fsf@kernel.org>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+Received: from cmd.. (unknown [183.159.169.110])
+	by mail-app3 (Coremail) with SMTP id cC_KCgAnLjlNkaplpfZOAA--.43165S2;
+	Fri, 19 Jan 2024 23:12:14 +0800 (CST)
+From: Lin Ma <linma@zju.edu.cn>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kvalo@kernel.org
+Cc: Lin Ma <linma@zju.edu.cn>
+Subject: [PATCH wireless v2] nl80211/cfg80211: add nla_policy for S1G band
+Date: Fri, 19 Jan 2024 23:12:01 +0800
+Message-Id: <20240119151201.8670-1-linma@zju.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <7d20b254.7e26.18d22453bd2.Coremail.linma@zju.edu.cn>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:by_KCgA356WzkKplHXlmAA--.7489W
-X-CM-SenderInfo: qtrwiiyqvtljo62m3hxhgxhubq/1tbiAwQFEmWpc04QogACsR
-X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWUCw
-	CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
-	daVFxhVjvjDU=
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:cC_KCgAnLjlNkaplpfZOAA--.43165S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Cw18tF1xZr4Utw1xCrykZrb_yoW8WFWkpr
+	WkJrWqyr17tw47JFWrCa1xXasrXa1DG34rur4YyFyxZ3Z09w1FqF1Y9a43tr1furs5t34r
+	XF4Dtw15t3ZI9a7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkC14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
+	Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67
+	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIY
+	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14
+	v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8
+	JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUonmRUU
+	UUU
+X-CM-SenderInfo: qtrwiiyqvtljo62m3hxhgxhubq/
 
-SGVsbG8gS2FsbGUsCgo+IAo+ICJMaW4gTWEiIDxsaW5tYUB6anUuZWR1LmNuPiB3cml0ZXM6Cj4g
-Cj4gPiBIZWxsbyB0aGVyZSwKPiA+Cj4gPj4gT3VyIGRldGVjdG9yIGhhcyBpZGVudGlmaWVkIGFu
-b3RoZXIgY2FzZSBvZiBhbiBpbmNvbXBsZXRlIHBvbGljeS4KPiA+PiAuLi4KPiA+Cj4gPiBJIG1h
-cmsgdGhlIG5ldC1uZXh0IHRhZyBmb3IgdGhpcyBvbmUgYW5kIGEgcHJldmlvdXMgc2VudCBvbmUg
-aW4gdGhpcwo+ID4gbW9ybmluZyAoW1BBVENIIG5ldC1uZXh0IHYxXSBuZWlnaGJvdXI6IGNvbXBs
-ZW1lbnQgbmxfbnRibF9wYXJtX3BvbGljeSkuCj4gPgo+ID4gUGxlYXNlIGxldCBtZSBrbm93IGlm
-IHN1Y2ggbmxhX3BvbGljeSBjb21wbGVtZW50aW5nIHNob3VsZCBnbyBuZXQgaW5zdGVhZC4KPiAK
-PiBubDgwMjExIHBhdGNoZXMgZ28gdG8gd2lyZWxlc3Mgb3Igd2lyZWxlc3MtbmV4dC4KPiAKPiAt
-LSAKPiBodHRwczovL3BhdGNod29yay5rZXJuZWwub3JnL3Byb2plY3QvbGludXgtd2lyZWxlc3Mv
-bGlzdC8KPiAKPiBodHRwczovL3dpcmVsZXNzLndpa2kua2VybmVsLm9yZy9lbi9kZXZlbG9wZXJz
-L2RvY3VtZW50YXRpb24vc3VibWl0dGluZ3BhdGNoZXMKCk9LIEkgd2lsbCByZXNlbmQgYSB2ZXJz
-aW9uIHdpdGggY29ycmVjdCBvbmUuCgpUaGFua3MKTGlu
+Our detector has identified another case of an incomplete policy.
+Specifically, the commit df78a0c0b67d ("nl80211: S1G band and channel
+definitions") introduced the NL80211_BAND_S1GHZ attribute to
+nl80211_band, but it neglected to update the
+nl80211_match_band_rssi_policy accordingly.
+
+Similar commits that add new band types, such as the initial
+commit 1e1b11b6a111 ("nl80211/cfg80211: Specify band specific min RSSI
+thresholds with sched scan"), the commit e548a1c36b11 ("cfg80211: add 6GHz
+in code handling array with NUM_NL80211_BANDS entries"), and the
+commit 63fa04266629 ("nl80211: Add LC placeholder band definition to
+nl80211_band"), all require updates to the policy.
+Failure to do so could result in accessing an attribute of unexpected
+length in the function nl80211_parse_sched_scan_per_band_rssi.
+
+To resolve this issue, this commit adds the policy for the
+NL80211_BAND_S1GHZ attribute.
+
+Fixes: df78a0c0b67d ("nl80211: S1G band and channel definitions")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+---
+V1 -> V2: change net-next to wireless as suggested
+
+ net/wireless/nl80211.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 60877b532993..980300621a60 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -911,6 +911,7 @@ nl80211_match_band_rssi_policy[NUM_NL80211_BANDS] = {
+ 	[NL80211_BAND_5GHZ] = { .type = NLA_S32 },
+ 	[NL80211_BAND_6GHZ] = { .type = NLA_S32 },
+ 	[NL80211_BAND_60GHZ] = { .type = NLA_S32 },
++	[NL80211_BAND_S1GHZ] = { .type = NLA_S32 },
+ 	[NL80211_BAND_LC]    = { .type = NLA_S32 },
+ };
+ 
+-- 
+2.34.1
+
 
