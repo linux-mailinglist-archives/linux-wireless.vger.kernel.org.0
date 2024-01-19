@@ -1,113 +1,80 @@
-Return-Path: <linux-wireless+bounces-2257-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2258-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0259B832C26
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jan 2024 16:12:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C073832C39
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jan 2024 16:22:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 984331F235FD
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jan 2024 15:12:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5BE21F24F4E
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jan 2024 15:22:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D6A75467B;
-	Fri, 19 Jan 2024 15:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B296354770;
+	Fri, 19 Jan 2024 15:22:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="V3tKoVeC"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from zg8tmty3ljk5ljewns4xndka.icoremail.net (zg8tmty3ljk5ljewns4xndka.icoremail.net [167.99.105.149])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13DEC54667;
-	Fri, 19 Jan 2024 15:12:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=167.99.105.149
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FDC754656;
+	Fri, 19 Jan 2024 15:22:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705677154; cv=none; b=q5Vg/I0PWRVjeVBU9vqvbzaf+/jGSxxtaki5n4mnpdr0gfU5Wr0Xld+Ys66nIDMlvQZagHmvtAYaxrAu+gsjXdiUWTCF3VixJlikBYB9J3dFStBz2lBA6scWeIMxeHmkMAUwxFJP1wqqQ3NCi3HfFK9JfFESr1iv5C0L/gWg7iQ=
+	t=1705677726; cv=none; b=DX6RhIPYtpbHUdxYnkTsKlUPq6jJf6QEM+5R4XFX+SPDcyXQ69LSIwSTWB3vn+JUCO7SlMBuwIkG4dYiUDa5Z2upd/uZ8CHvbyECqViAlRqx1U2IO7ITcMGG4ppxXtGY02yU5Ztog4vn7THgJNCTUtaERMt21EQ6OZK3Y0QGarE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705677154; c=relaxed/simple;
-	bh=ZpHwMNKONZyX/hLikKcxxkbOYJIh65C3dQXqbsmkVjI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=VvEZXRTeChrI1JAuTcNkJe5UmoH6zUN0X9aQq4ZJvkAnQNKyLAo4DsP+6b5g1eIxoUVsyWkjJYntPWs4cRhldNzhGRd0KSIr2frdXbRRpUtdYCiGH538237EVNPDL7PTiNsrGN/7Vw7kOsls4ATyZXwP5Uwr8VyGIhlML0czUcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=167.99.105.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
-Received: from cmd.. (unknown [183.159.169.110])
-	by mail-app3 (Coremail) with SMTP id cC_KCgAnLjlNkaplpfZOAA--.43165S2;
-	Fri, 19 Jan 2024 23:12:14 +0800 (CST)
-From: Lin Ma <linma@zju.edu.cn>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	kvalo@kernel.org
-Cc: Lin Ma <linma@zju.edu.cn>
-Subject: [PATCH wireless v2] nl80211/cfg80211: add nla_policy for S1G band
-Date: Fri, 19 Jan 2024 23:12:01 +0800
-Message-Id: <20240119151201.8670-1-linma@zju.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1705677726; c=relaxed/simple;
+	bh=sduG7CFjqy3qYfN3S6tvF21Xyjo4P0HqDDxfA1GLwto=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=cdcNPsXEg6mZV7BKq5o2jhHzQOnvL0pZYxNxLuVeaxljLmeaRqtPy4ibVQ+vxrGIsLtSnS5snObJvpTNy3VsnqI43WowU1AW+5JUbn8TlIxRIAlpIkjAHu/eRV+Hc+7VE7hSUk8F9RMUnOEbPZv0khEkHuNoHnL0cEhswCc0ccY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=V3tKoVeC; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=sduG7CFjqy3qYfN3S6tvF21Xyjo4P0HqDDxfA1GLwto=;
+	t=1705677724; x=1706887324; b=V3tKoVeCuEDlUbNcmg/LJUi0WA66Erv7HQNRIHdyLK8UDL1
+	ofsXZRuVeRHbPWpqJKKweKyM5KO4oLDtxh2cQ1zBTchkKyJs5zmzoYGIXHAhaTYcFGNMppulSfyDs
+	6gZ8Qkx4ohDcZYMFHsTRWq6pUWQ5xL3AVXMerUYZSHc0dioYF00XBq+b1D1YpphrFbkZRpwuYeqHm
+	v8MZjMZ8J+yeL6AjTtYxGaSByb93CU+TE5bEhgOqjn1UXcgf2kLaUoT42sxhMXTvvvVHV74FIjpzn
+	fAN4ipsGLuLUQ9c8DmkDSNjw2rx7r0QUT1ehqsy80UsYT5K/MeIoVS72kN8JpECg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rQqgq-00000009b8H-0fHe;
+	Fri, 19 Jan 2024 16:21:52 +0100
+Message-ID: <f5bbc81ac152bf8484faf0047ad8d4130b997ef0.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless v2] nl80211/cfg80211: add nla_policy for S1G
+ band
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Lin Ma <linma@zju.edu.cn>, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kvalo@kernel.org
+Date: Fri, 19 Jan 2024 16:21:51 +0100
+In-Reply-To: <20240119151201.8670-1-linma@zju.edu.cn>
+References: <20240119151201.8670-1-linma@zju.edu.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:cC_KCgAnLjlNkaplpfZOAA--.43165S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Cw18tF1xZr4Utw1xCrykZrb_yoW8WFWkpr
-	WkJrWqyr17tw47JFWrCa1xXasrXa1DG34rur4YyFyxZ3Z09w1FqF1Y9a43tr1furs5t34r
-	XF4Dtw15t3ZI9a7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkC14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
-	Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67
-	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIY
-	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14
-	v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8
-	JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUonmRUU
-	UUU
-X-CM-SenderInfo: qtrwiiyqvtljo62m3hxhgxhubq/
+X-malware-bazaar: not-scanned
 
-Our detector has identified another case of an incomplete policy.
-Specifically, the commit df78a0c0b67d ("nl80211: S1G band and channel
-definitions") introduced the NL80211_BAND_S1GHZ attribute to
-nl80211_band, but it neglected to update the
-nl80211_match_band_rssi_policy accordingly.
+On Fri, 2024-01-19 at 23:12 +0800, Lin Ma wrote:
+>=20
+> V1 -> V2: change net-next to wireless as suggested
 
-Similar commits that add new band types, such as the initial
-commit 1e1b11b6a111 ("nl80211/cfg80211: Specify band specific min RSSI
-thresholds with sched scan"), the commit e548a1c36b11 ("cfg80211: add 6GHz
-in code handling array with NUM_NL80211_BANDS entries"), and the
-commit 63fa04266629 ("nl80211: Add LC placeholder band definition to
-nl80211_band"), all require updates to the policy.
-Failure to do so could result in accessing an attribute of unexpected
-length in the function nl80211_parse_sched_scan_per_band_rssi.
+For the record, I don't think anyone is using scheduled scan with S1G or
+even _could_ be doing that (is there even a driver other than hwsim?),
+so I don't think I'll apply this for wireless. No need to resend (again)
+though :)
 
-To resolve this issue, this commit adds the policy for the
-NL80211_BAND_S1GHZ attribute.
-
-Fixes: df78a0c0b67d ("nl80211: S1G band and channel definitions")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
----
-V1 -> V2: change net-next to wireless as suggested
-
- net/wireless/nl80211.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 60877b532993..980300621a60 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -911,6 +911,7 @@ nl80211_match_band_rssi_policy[NUM_NL80211_BANDS] = {
- 	[NL80211_BAND_5GHZ] = { .type = NLA_S32 },
- 	[NL80211_BAND_6GHZ] = { .type = NLA_S32 },
- 	[NL80211_BAND_60GHZ] = { .type = NLA_S32 },
-+	[NL80211_BAND_S1GHZ] = { .type = NLA_S32 },
- 	[NL80211_BAND_LC]    = { .type = NLA_S32 },
- };
- 
--- 
-2.34.1
-
+johannes
 
