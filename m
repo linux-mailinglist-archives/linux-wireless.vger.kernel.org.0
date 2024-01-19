@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-2253-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2254-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46296832B06
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jan 2024 15:11:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5685F832B94
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jan 2024 15:48:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECF5528288A
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jan 2024 14:11:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F34A1C2386E
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jan 2024 14:48:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A0AE54279;
-	Fri, 19 Jan 2024 14:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B559F53E22;
+	Fri, 19 Jan 2024 14:48:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="vZcfMALE"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="kjAr4a+T"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
+Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com [209.85.221.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95BF53E1B
-	for <linux-wireless@vger.kernel.org>; Fri, 19 Jan 2024 14:11:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 629A64EB5B
+	for <linux-wireless@vger.kernel.org>; Fri, 19 Jan 2024 14:48:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705673490; cv=none; b=YQ2r0nCEgl5z9BJnU9p2/AXcTG31gP8LFfR/w9ovvECNBKpiE4P1ZYqoV+6haIQMtmsmOvHNYDXf1LkjzHug5kou+wuGqC899xU+vSOblEzV70y4+Pz9LUrY3OnjZfCCoU3gFBDWP+9H8iw1atrRUopD4RaKqwEoSUKTSaRpu6E=
+	t=1705675717; cv=none; b=AmqmAXPtwhcBSYUld6Qmohc1NlNtaZqjZXRubOBB1Hbg+pGeZxxLjKRvN5BLcldUr7ahDLkYRbJacsKC3Z7ECMRaokFBo/5uKg0uV10qFaoaQxpG4LE6cJ85/eqo2SAhYtd8zFKNuUVIrzhO8Z7CcfaDEA2W+7cUv5CSCSyAaQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705673490; c=relaxed/simple;
-	bh=TqPHp6thk907FTTvm3tboLNknd3v+aqQVcopEpXBIu8=;
+	s=arc-20240116; t=1705675717; c=relaxed/simple;
+	bh=mcasdrK9tsgv64zuh5ad3tAh8I6lDw0EnAs5pD7vPtk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uZLreJBVk3fRXoooleNgNG3xvoKld8JeWH9YNgfyjaxwWCh3oivIwUVbPG1f0AOA9M5FsNYaf5naeKrgcvZV3TpB6HSIV3ZKrxO76HyDp6n3cl6Fly+6P8wpH368XTl/vMWBoSNBBCan1WE0QtrYIrwtQm4hfbIdtvBVrTfiFic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=vZcfMALE; arc=none smtp.client-ip=209.85.210.54
+	 To:Cc:Content-Type; b=bd4EkYTOjidt9jkIvkbqK1epoimmDSDiJN7S5DKqMOKNGGM7JDZGZSYDkdPyoLug0JxgwwoPDmcbyh8WXUrPhnoPhggIVvDk2IjTbfnRDuG4IU0bjAOgFX0zy2H1aIS5Lk3Oso7Ce1UWM2+BH8UXnMrmlHG/O+0BAtDyj083lgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=kjAr4a+T; arc=none smtp.client-ip=209.85.221.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-6ddf2353a9cso395830a34.3
-        for <linux-wireless@vger.kernel.org>; Fri, 19 Jan 2024 06:11:28 -0800 (PST)
+Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-4b739b29686so564967e0c.0
+        for <linux-wireless@vger.kernel.org>; Fri, 19 Jan 2024 06:48:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1705673488; x=1706278288; darn=vger.kernel.org;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1705675715; x=1706280515; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Yve1j093zhPAT03KqE6u8/WuOBcMWVIgTCIkj2nZNFY=;
-        b=vZcfMALEiskUtPprj7p5P4EcBDWlLP3gVBs2HaeH1PzrhMuVWYf0jccfRpjlgrxzfJ
-         edC+w5lLW/B9yohTi5nklamyrZ5Auhq6RmboTNN+hi3COglPggs0JsdM7TqaX0ngZ821
-         VAm2Ue41HJB7YeEWJUGJxRF+rv2pKIMA2ffrPJeMDoGkB1qLPMrEgNRzeZ0Nh6cCKH41
-         UWpH/yMzHRlforjcjL2NFunLWFKap6JoIe8EouBGNdBw7Am8wdKmDudp74wCOiGyzw/Q
-         m03Pp7nM3sUTchSfg6zqlRcSHxwMg4DgyUvVX2YxW2qUklqjXTC9fJzaeXeXk4Sbn6L7
-         Xc7g==
+        bh=PT8Ncx8OtnbiClPBAKlN7utHv1YM0P6Lld/QOdOjhZo=;
+        b=kjAr4a+TNkom7z+wvvf0AkTXKB7onWYxHdsOZbEJuRxnkXa0xOsctLFm05bXl3y+YK
+         me6k+7D1rrRmJeI1T98Wc+4FjHnvGceH9MxagV/FgnZLGZkmHxB2iaoNxnrsUBuR5ZJU
+         BU8sEcAChS7aefUKBn5cQlAafaX+ryiq3go+SWesG7B2DD9Ggaxcl8s3Zezy/WpU1tjq
+         p9Qzh66zjzb4HJMrPBL3jZbWnO/u8U4GD/qymIJo9cal6ikESZqgS0vpc/Oh2/8UD6AL
+         s3NIlj8oEw9mR8LAFSBHvjg/N1dscISyt1heEESpsL084F0i/1Jl+EUbA1EhAF1Aq1b3
+         jJJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705673488; x=1706278288;
+        d=1e100.net; s=20230601; t=1705675715; x=1706280515;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Yve1j093zhPAT03KqE6u8/WuOBcMWVIgTCIkj2nZNFY=;
-        b=J7rqpanu54s/3bN5tAna+OaqX5s5gi2E1HhhwhuVuqNRrkHw4VMBAHHtKxGMyZJj2r
-         fY0LU3cUADjdLaO4Kwub1ZLl+E2OPqT+ysxNPKmeNFZJ3zAgBmZTX23Djdku+i/Q2KEZ
-         ett9RBqVhID4kztc2U1BkVHzJYu3XOG5gA6dNi/T0hWFm6L75vQgxFW1AliV97FDEqD0
-         lbswUhYpv1po8eMlGan0uVZJGoVHWJRspxFWVthOqGCzsy8vT9+tYX3N1hH0LkZW2dLI
-         cmSq01lCVh1IeWimt5MiZ2/8qnN8XUUqbfgHkcljHqCHlk+EmT+pkrO7xvSO77cr9F0S
-         gK3Q==
-X-Gm-Message-State: AOJu0YydHlYEolapRvt1iv8652cQB/bqVFcbvKfkQS1rMoDNRSdcD42w
-	Ja1EhWTXWUTmObJmPkL2q5ELqOhfySfJ1xzG0THbgQUL9UqpHKPnI19CUL5FHR+xIlMEyX4MUz2
-	8xRDtL7wsX+bdTd+jRpPkv9FzPlyCx+lpDiYEzg==
-X-Google-Smtp-Source: AGHT+IEzKXt1iaQ6NmzAsJq/01qfzT3pF8iI8eJNn96nqR6Ib5KEm8Td2wQBXRzywiLI+5x36vj8wMIivUvhBtXqPv4=
-X-Received: by 2002:a05:6870:548c:b0:20e:364b:eba9 with SMTP id
- f12-20020a056870548c00b0020e364beba9mr2008699oan.9.1705673488006; Fri, 19 Jan
- 2024 06:11:28 -0800 (PST)
+        bh=PT8Ncx8OtnbiClPBAKlN7utHv1YM0P6Lld/QOdOjhZo=;
+        b=hWwnxy4l7aZMl4QLU/qjNssUFp1WeraX2mB2UfpRSpyhgD8wUh+glSZ11FdR//+ADU
+         t6hSzyvYyJcdX1d2KLhJrVmRtpuN+SZ7PSMi6Lz3pATmfeg3/eedFNbpEzqYP5jRgOwW
+         e0m1TYnyg8AGa+RuqWlnIjfUCwh01qZNc6klQo+hj9+mey9mFximEnf1W0bJ/5MqIdaa
+         RLie32z7viIJrvOhZTu/URpmGrHNvSz3TU1d/BgoqEWWwVUDY0ph9e83vDydCALekkwv
+         5DKRWAfFY0VBQct9qgIp64g1TpseNJpWzou7PiUfSn23a75ERggsAtxLjZVr7G2mC+p4
+         I2Zw==
+X-Gm-Message-State: AOJu0Yx2i3owwDFzx6fwD7uU/tNZmoG8Lom+f4ekJ1jcoNBnENanInrk
+	ae7bLDtGZ9pfk1pepPEaT8rlrUmsJRKu3SSKZQXb4w1d7yHAkJ8RQVx4wyoqNn7hrAJbEWC7PTR
+	tvV+ma0XHaUUAoJp9GDomoWk9mscl5qkXgMLgpQ==
+X-Google-Smtp-Source: AGHT+IH148GvFKhyvnpCBTcw5sd5a4Uf8p3RqnETOxUeuPL4kpb132tH+JeiNaZaa8YtTlrHdfJUvfTNHdTZygq7GEk=
+X-Received: by 2002:a05:6122:2224:b0:4bb:3b8:afbd with SMTP id
+ bb36-20020a056122222400b004bb03b8afbdmr5000vkb.0.1705675715289; Fri, 19 Jan
+ 2024 06:48:35 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -74,11 +74,12 @@ References: <20240117160748.37682-1-brgl@bgdev.pl> <CAA8EJpoQfPqoMVyTmUjPs4c1Uc-
  <CAA8EJpqyK=pkjEofWV595tp29vjkCeWKYr-KOJh_hBiBbkVBew@mail.gmail.com>
  <CAMRc=McUZh0jhjMW7H6aVKbw29WMCQ3wdkVAz=yOZVK5wc45OA@mail.gmail.com>
  <CAA8EJprFV6SS_dGF8tOHcBG+y8j74vO0B40Y=e7Kj1-ZThNqPA@mail.gmail.com>
- <CAMRc=MdOALzkDtpnbqF16suShvP5apGYy4LTQ4dTc3r9Rbb1kg@mail.gmail.com> <CAA8EJpr=PMdOWzp8fahL9e9QC-qgS=hSaTqT1XdUs8Dvvsxqgg@mail.gmail.com>
-In-Reply-To: <CAA8EJpr=PMdOWzp8fahL9e9QC-qgS=hSaTqT1XdUs8Dvvsxqgg@mail.gmail.com>
+ <CAMRc=MdOALzkDtpnbqF16suShvP5apGYy4LTQ4dTc3r9Rbb1kg@mail.gmail.com>
+ <CAA8EJpr=PMdOWzp8fahL9e9QC-qgS=hSaTqT1XdUs8Dvvsxqgg@mail.gmail.com> <CAMRc=McdXC8zP4_+a3hBijVLXmLFakfjdXjzPOwaNsPCwPT36w@mail.gmail.com>
+In-Reply-To: <CAMRc=McdXC8zP4_+a3hBijVLXmLFakfjdXjzPOwaNsPCwPT36w@mail.gmail.com>
 From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Fri, 19 Jan 2024 15:11:16 +0100
-Message-ID: <CAMRc=McdXC8zP4_+a3hBijVLXmLFakfjdXjzPOwaNsPCwPT36w@mail.gmail.com>
+Date: Fri, 19 Jan 2024 15:48:24 +0100
+Message-ID: <CAMRc=Mfi=R9ogkdiKGuCO_rf__shA7B7VOpLxAHEFzL5Y-N_KQ@mail.gmail.com>
 Subject: Re: [PATCH 0/9] PCI: introduce the concept of power sequencing of
  PCIe devices
 To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
@@ -107,61 +108,70 @@ Cc: Kalle Valo <kvalo@kernel.org>, "David S . Miller" <davem@davemloft.net>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jan 19, 2024 at 3:07=E2=80=AFPM Dmitry Baryshkov
-<dmitry.baryshkov@linaro.org> wrote:
+On Fri, Jan 19, 2024 at 3:11=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.pl>=
+ wrote:
 >
-
-[snip]
-
+> On Fri, Jan 19, 2024 at 3:07=E2=80=AFPM Dmitry Baryshkov
+> <dmitry.baryshkov@linaro.org> wrote:
+> >
+>
+> [snip]
+>
+> > > >
 > > >
+> > > Alright, so let's imagine we do model the PMU on the device tree. It =
+would
+> > > look something like this:
+> > >
+> > > qca6390_pmu: pmic@0 {
+> > >         compatible =3D "qcom,qca6390-pmu";
+> > >
+> > >         bt-gpios =3D <...>;
+> > >         wlan-gpios =3D <...>;
+> > >
+> > >         vdd-supply =3D <&vreg...>;
+> > >         ...
+> > >
+> > >         regulators-0 {
+> > >                 vreg_x: foo {
+> > >                         ...
+> > >                 };
+> > >
+> > >                 ...
+> > >         };
+> > > };
+> > >
+> > > Then the WLAN and BT consume the regulators from &qca6390_pmu. Obviou=
+sly we
+> > > cannot go:
+> > >
+> > > wlan {
+> > >         pwrseq =3D &qca6390_pmu;
+> > > };
+> > >
+> > > But it's enough to:
+> > >
+> > > wlan {
+> > >         vdd-supply =3D <&vreg_x>;
+> > > };
 > >
-> > Alright, so let's imagine we do model the PMU on the device tree. It wo=
-uld
-> > look something like this:
+> > I'm not sure this will fly. This means expecting that regulator
+> > framework is reentrant, which I think is not the case.
 > >
-> > qca6390_pmu: pmic@0 {
-> >         compatible =3D "qcom,qca6390-pmu";
-> >
-> >         bt-gpios =3D <...>;
-> >         wlan-gpios =3D <...>;
-> >
-> >         vdd-supply =3D <&vreg...>;
-> >         ...
-> >
-> >         regulators-0 {
-> >                 vreg_x: foo {
-> >                         ...
-> >                 };
-> >
-> >                 ...
-> >         };
-> > };
-> >
-> > Then the WLAN and BT consume the regulators from &qca6390_pmu. Obviousl=
-y we
-> > cannot go:
-> >
-> > wlan {
-> >         pwrseq =3D &qca6390_pmu;
-> > };
-> >
-> > But it's enough to:
-> >
-> > wlan {
-> >         vdd-supply =3D <&vreg_x>;
-> > };
 >
-> I'm not sure this will fly. This means expecting that regulator
-> framework is reentrant, which I think is not the case.
+> Oh maybe I didn't make myself clear. That's the DT representation of
+> HW. With pwrseq, the BT or ATH11K drivers wouldn't use the regulator
+> framework. They would use the pwrseq framework and it could use the
+> phandle of the regulator to get into the correct pwrseq device without
+> making Rob and Krzysztof angry.
 >
+> Bart
+>
+> [snip]
 
-Oh maybe I didn't make myself clear. That's the DT representation of
-HW. With pwrseq, the BT or ATH11K drivers wouldn't use the regulator
-framework. They would use the pwrseq framework and it could use the
-phandle of the regulator to get into the correct pwrseq device without
-making Rob and Krzysztof angry.
+I'm working on a PoC of the generic pwrseq framework but without the
+explicit pwrseq modelling in DT. Should have an RFC ready early next
+week.
 
 Bart
-
-[snip]
 
