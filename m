@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-2264-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2265-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F3B1832E2D
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jan 2024 18:30:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45C59832E30
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jan 2024 18:30:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10DF52883CE
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jan 2024 17:30:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC3D41F22C6F
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jan 2024 17:30:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0775A55E74;
-	Fri, 19 Jan 2024 17:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D681655C05;
+	Fri, 19 Jan 2024 17:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ALSyXIJ1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i3llRGYJ"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F5955E70
-	for <linux-wireless@vger.kernel.org>; Fri, 19 Jan 2024 17:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB4C55E67;
+	Fri, 19 Jan 2024 17:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705685393; cv=none; b=FKv1m648cFSBQrhclAvYvfXENltVM67PBFvBnDLerVh47xDLTq/SqO8DH09FzZ0nx+XWyMN9zDjnoXejlfBPURti2lCYe8v7gMt2MEabpzG7PCGY8cbo6AJ0vf+d92E5qvPiL83ihiB9SmhQ0BKasHXb2A6PiMlH0J2Byz8+nYs=
+	t=1705685433; cv=none; b=ThVWP92/AIgSlag66lzJcSaZQnSQvBTcJvsRf2TbyTI4tNFiOQcX9E5e3Y8vDmcGX3ypXoHP+Zj3aurqSLXMpXXvMofGU3MKJ/3NbUJgOHCsAjlpueXj1wHEFOKnDnqndiUYn4/Be93JhpE2WhFLA+jmFpQqwVjK9vSXRHMmJ2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705685393; c=relaxed/simple;
-	bh=FIEcrVqXgas66Xebc9DoCRhg0T9HmvplLARPN4iseQo=;
+	s=arc-20240116; t=1705685433; c=relaxed/simple;
+	bh=VgqbnLFz5iPiKxaAMDABGlr1WINNQw1Q6ApgWHjIOnw=;
 	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=XWypNpF6Xk5scf8tnbBdB2oy8zFlxfqtAvxzsaYkZS1F0hDGvFpkmsTeRReh215N1bvlJJlitk7rVAjXolM8U5m7O8g6Gi/M3odNPt8lmZQyiCHc5tx0EZ5mDThq20K3w9fKqAytRtnqY6iWM7WF2HkUHVYJFnHSrWB47wCciBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ALSyXIJ1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2E74C43390;
-	Fri, 19 Jan 2024 17:29:52 +0000 (UTC)
+	 Cc:Message-ID:Date; b=BFL+0kF9inT7UdgEOOWQf4JkUnlxSRKj1kUH5LOsQ7HYhHg93x6mjxu+7n76i19RIN5ITd874vxRGCNDi9BG/xVpY2YHmt2jRYGAiDhLyOQ0slyxye38eSv5Q9vkXs0rIP+xIsh4efUt5NhqvMigEhJJyMY73UQMj3KIeF36olw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i3llRGYJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59CE6C433F1;
+	Fri, 19 Jan 2024 17:30:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705685393;
-	bh=FIEcrVqXgas66Xebc9DoCRhg0T9HmvplLARPN4iseQo=;
+	s=k20201202; t=1705685433;
+	bh=VgqbnLFz5iPiKxaAMDABGlr1WINNQw1Q6ApgWHjIOnw=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=ALSyXIJ1k2ctx616N6s0DIclhoWqo2esJ8WxMzYwi6/ves7MpcCLPxKHgGpyBJA+K
-	 ZvXXLPO7ghGRIcOnnnnRpNxs3HfhBqk32M7USME555d+LGngu2xc/jmkVRE+c13KtW
-	 /CWmLEUf4g+2pzRcWxRVS3ExJS8pzPrVhxB34SsKlwygoE+bu7s39q2pQbsPwBG5SE
-	 3TMENLlizdQ11fhzPfKV56zqW9mvCbvGxM3WV1eCFXZn2te6aGshgBR9ApjNSURlKW
-	 l3eqKIPv0yBZ84bNiu35Azeg9U2t5aFCBDRcuQyPUrqpu7DLI/Lp4ud+lxn/dn8EES
-	 Fsy+hxc1JETGA==
+	b=i3llRGYJe0u6tJJ+J7c1Bn0zqMZ6hlqSEMGwd6Lyvveb4nXfXEwLMY9+g051NSkBc
+	 DUWI5Kcb0d54FWLGfMO9pbwKxV30PLjPjvx2bGUcwANpBIlrUuof3J/kFtdigIVGxt
+	 iDNZkw4xiVPZ/fX2AgljZ24z/JcrEBqQdTUGHPsMsmra1frZYYJwjcqEsL0NCsKeHW
+	 pmmlpr+Y6Uxh9apbbZUnsQSbsmhsoVhwV/viZHN4yXie+U8eMJCnG1qoYtCyA5BWd1
+	 L/veHJg2UwBoTX3A7SNI9CjOb2nPTFQ6wg03ihUs5w+57R1TWXlie0AZGsDDEpLr9L
+	 mBkbdC5fmGa/Q==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -49,35 +49,40 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH V2 1/4] wifi: brcmfmac: export firmware interface
- functions
+Subject: Re: [PATCH V2 1/3] wifi: brcmfmac: Demote vendor-specific
+ attach/detach
+ messages to info
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240103095704.135651-2-arend.vanspriel@broadcom.com>
-References: <20240103095704.135651-2-arend.vanspriel@broadcom.com>
+In-Reply-To: <20240106103835.269149-2-arend.vanspriel@broadcom.com>
+References: <20240106103835.269149-2-arend.vanspriel@broadcom.com>
 To: Arend van Spriel <arend.vanspriel@broadcom.com>
-Cc: linux-wireless@vger.kernel.org,
- Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc: linux-wireless@vger.kernel.org, Hector Martin <marcan@marcan.st>,
+ stable@vger.kernel.org, Arend van Spriel <arend.vanspriel@broadcom.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170568539074.3153793.14376973552595278912.kvalo@kernel.org>
-Date: Fri, 19 Jan 2024 17:29:52 +0000 (UTC)
+Message-ID: <170568543007.3153793.3392867392129428991.kvalo@kernel.org>
+Date: Fri, 19 Jan 2024 17:30:32 +0000 (UTC)
 
 Arend van Spriel <arend.vanspriel@broadcom.com> wrote:
 
-> With multi-vendor support the vendor-specific module may need to use
-> the firmware interface functions so export them using the macro
-> BRCMF_EXPORT_SYMBOL_GPL() which exports them to driver namespace.
+> From: Hector Martin <marcan@marcan.st>
 > 
+> People are getting spooked by brcmfmac errors on their boot console.
+> There's no reason for these messages to be errors.
+> 
+> Cc: stable@vger.kernel.org # 6.2.x
+> Fixes: d6a5c562214f ("wifi: brcmfmac: add support for vendor-specific firmware api")
+> Signed-off-by: Hector Martin <marcan@marcan.st>
+> [arend.vanspriel@broadcom.com: remove attach/detach vendor callbacks]
 > Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 
-4 patches applied to wireless-next.git, thanks.
+3 patches applied to wireless-next.git, thanks.
 
-31343230abb1 wifi: brcmfmac: export firmware interface functions
-14e1391b7102 wifi: brcmfmac: add per-vendor feature detection callback
-ba4d4726335c wifi: brcmfmac: move feature overrides before feature_disable
-9f7861c56b51 wifi: brcmfmac: cfg80211: Use WSEC to set SAE password
+85da8f71aaa7 wifi: brcmfmac: Demote vendor-specific attach/detach messages to info
+b822015a1f57 wifi: brcmfmac: avoid invalid list operation when vendor attach fails
+edec42821911 wifi: brcmfmac: allow per-vendor event handling
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240103095704.135651-2-arend.vanspriel@broadcom.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20240106103835.269149-2-arend.vanspriel@broadcom.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
