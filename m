@@ -1,154 +1,142 @@
-Return-Path: <linux-wireless+bounces-2279-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2280-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27C7F8330D0
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jan 2024 23:43:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21C3F8331AC
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 Jan 2024 00:48:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE7231F20F49
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jan 2024 22:43:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 431C11C2107F
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jan 2024 23:48:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4F1356475;
-	Fri, 19 Jan 2024 22:43:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED36E59162;
+	Fri, 19 Jan 2024 23:48:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XvEGXHsc"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="FVdItDo9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBF911E48B
-	for <linux-wireless@vger.kernel.org>; Fri, 19 Jan 2024 22:43:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=134.134.136.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F34551C4B;
+	Fri, 19 Jan 2024 23:48:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705704201; cv=none; b=srTesZwFvFoD2kCcXgazr9demIvqVxhlKXnj1mJELX7rN3vnG3WCjnXR+KUtact+aQFgG6Lhx2sKO8Jo+TM+bxY/+LWz4me10PcnvKIXtIhUF1DUU7ULZQo2S2pbOlSqOh6uAZPBuUE9jqcnwrUJodp1uU4/0UdLvbvVHAXPoNQ=
+	t=1705708088; cv=none; b=LBVW/DmE0YQQDRiPmJZlWps41KHz19lfjE4G9jEykTa6ut6X3I14oiNR+s8uzv98waetlaAs2634vcLCM4r3OHVIgd0N4aGEcUFbQ1ux39eTnlniHk8FmKB0OMII+3bZyTuHrn0RBI0S0x577u+eeRWSbiKgaKFPHB8i2cJ1284=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705704201; c=relaxed/simple;
-	bh=3MQIlYTLfWCCZEfbnbqC0083N8ztRtoAxrDplvsA0+8=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=P7pnObtoDmrfDfM6feRwSFU1t6yPjacbwdD+2uz58cZxdRFeDHF4Wq+VM3u33H9TznnOid1djlK/IhVAv1lbNYqASASSp3LaTB1pgxDhkNomYgQ/yOwpRCh5tokeh/rreefOq9+QsrN/dgLQzsZXazsuMzQPBUCwACS5AgGi5XU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XvEGXHsc; arc=none smtp.client-ip=134.134.136.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1705704199; x=1737240199;
-  h=date:from:to:cc:subject:message-id;
-  bh=3MQIlYTLfWCCZEfbnbqC0083N8ztRtoAxrDplvsA0+8=;
-  b=XvEGXHscgRbcO/PjLvswreNxFhejB1ocKsyiCmwygjPbFXeMYBo2sNhm
-   4msSBbwvjQzejH67Pz210OakX4/BmbTqhRZKIyM0IFIpMXsXkHAF0JitH
-   9Qhv5LtzQjU2HTrcfGNDBr/FbdG431BACBBSOkYZjv0WvdkYhczZGUrXk
-   o48E08QgW0GtY1IB6qYJtqC31ZdMjO6HKWHSh+ApP1aYilRK2eEILZZ2H
-   nTGBmwl5SIrB3pmATt3L6mP/fND3aRjjx39DE8awGy6nkkqIEtdpH6+y9
-   HsmX5nUp/V2lmEMpEbncYxVWqlSxxjZhkS247znrgFpp+I9oCXwBW4FTY
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10957"; a="391298097"
-X-IronPort-AV: E=Sophos;i="6.05,206,1701158400"; 
-   d="scan'208";a="391298097"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2024 14:43:18 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,206,1701158400"; 
-   d="scan'208";a="19503477"
-Received: from lkp-server01.sh.intel.com (HELO 961aaaa5b03c) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 19 Jan 2024 14:43:16 -0800
-Received: from kbuild by 961aaaa5b03c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rQxZy-0004To-2S;
-	Fri, 19 Jan 2024 22:43:14 +0000
-Date: Sat, 20 Jan 2024 06:42:28 +0800
-From: kernel test robot <lkp@intel.com>
-To: Johannes Berg <johannes.berg@intel.com>
-Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
-Subject: [wireless:for-next] BUILD SUCCESS
- bcbc84af1183c8cf3d1ca9b78540c2185cd85e7f
-Message-ID: <202401200625.Jun3FRzP-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1705708088; c=relaxed/simple;
+	bh=PmzDnE+QmOepAVj/EtZNKea8NQzM9a3BI1a1+JJjs6w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=Q+MkeLa3X26UJBGQ1F1//6MuzyfcEZ/ixyAwdmm14fL/zS9+GtzTWfSBfgNT/gsJ2SfKPPLSs1XGMfbQkjYGY2u3mAZOJu4TFcj7BKB2ni+qqupf1XKwulwBC8A3uGtIuGmib+Mg2DIhf5OZIGIEzAhmM8QsCzX4cD81nd5Ztq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=FVdItDo9; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40JNNKdA010923;
+	Fri, 19 Jan 2024 23:47:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=7OdlWbHAsWvuCUbuBHpHnDwMbx/eAJa3USyKbg8pm/Q=; b=FV
+	dItDo9EZ0RF5YXn2USHbafvh0oBa15QMHVYRyClmGznf6XKicP/cGvhh9hvcSCWK
+	hAv0QB0S//GNSjTpVRoODReehFcpeD7qlqSWT13MQvKAWw9sNqpv+GmmeleAWfc7
+	2Y2DtIl16k9nDmcvxGQQlesvqYi4BJGLktTZkDxTlcfYMhABXmFUweXyoo4xBS0m
+	K5+qQSrbcTHom24OCUtjBd+fLDG4Shtq4Xz31P5kwXkVaX9p4jZ8qLSivK+X5jWY
+	ZoVpABF7cQ2090smRa0ASN3AR7hKj93y2JdAJPPyP9mFic0h7848IZ6aB6rT5Txm
+	SeA11dP67rJnt1+y/YMw==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vqn89hr21-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 19 Jan 2024 23:47:55 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40JNlsRq019760
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 19 Jan 2024 23:47:54 GMT
+Received: from [10.110.26.199] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Fri, 19 Jan
+ 2024 15:47:53 -0800
+Message-ID: <9e1db7f3-fd18-4b3b-a912-3cf6efd96fed@quicinc.com>
+Date: Fri, 19 Jan 2024 15:47:53 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH wireless v2] nl80211/cfg80211: add nla_policy for S1G band
+Content-Language: en-US
+To: Lin Ma <linma@zju.edu.cn>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>,
+        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <kvalo@kernel.org>
+References: <20240119151201.8670-1-linma@zju.edu.cn>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20240119151201.8670-1-linma@zju.edu.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: sucXXr2AirEFxqH5hm5BGeFfrzOShU7o
+X-Proofpoint-ORIG-GUID: sucXXr2AirEFxqH5hm5BGeFfrzOShU7o
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-19_12,2024-01-19_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 clxscore=1011
+ suspectscore=0 phishscore=0 priorityscore=1501 lowpriorityscore=0
+ mlxscore=0 malwarescore=0 impostorscore=0 adultscore=0 bulkscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2311290000 definitions=main-2401190147
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
-branch HEAD: bcbc84af1183c8cf3d1ca9b78540c2185cd85e7f  wifi: mac80211: fix race condition on enabling fast-xmit
+On 1/19/2024 7:12 AM, Lin Ma wrote:
+> Our detector has identified another case of an incomplete policy.
+> Specifically, the commit df78a0c0b67d ("nl80211: S1G band and channel
+> definitions") introduced the NL80211_BAND_S1GHZ attribute to
+> nl80211_band, but it neglected to update the
+> nl80211_match_band_rssi_policy accordingly.
+> 
+> Similar commits that add new band types, such as the initial
+> commit 1e1b11b6a111 ("nl80211/cfg80211: Specify band specific min RSSI
+> thresholds with sched scan"), the commit e548a1c36b11 ("cfg80211: add 6GHz
+> in code handling array with NUM_NL80211_BANDS entries"), and the
+> commit 63fa04266629 ("nl80211: Add LC placeholder band definition to
+> nl80211_band"), all require updates to the policy.
+> Failure to do so could result in accessing an attribute of unexpected
+> length in the function nl80211_parse_sched_scan_per_band_rssi.
+> 
+> To resolve this issue, this commit adds the policy for the
+> NL80211_BAND_S1GHZ attribute.
+> 
+> Fixes: df78a0c0b67d ("nl80211: S1G band and channel definitions")
+> Signed-off-by: Lin Ma <linma@zju.edu.cn>
+> ---
+> V1 -> V2: change net-next to wireless as suggested
+> 
+>  net/wireless/nl80211.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+> index 60877b532993..980300621a60 100644
+> --- a/net/wireless/nl80211.c
+> +++ b/net/wireless/nl80211.c
+> @@ -911,6 +911,7 @@ nl80211_match_band_rssi_policy[NUM_NL80211_BANDS] = {
+>  	[NL80211_BAND_5GHZ] = { .type = NLA_S32 },
+>  	[NL80211_BAND_6GHZ] = { .type = NLA_S32 },
+>  	[NL80211_BAND_60GHZ] = { .type = NLA_S32 },
+> +	[NL80211_BAND_S1GHZ] = { .type = NLA_S32 },
+>  	[NL80211_BAND_LC]    = { .type = NLA_S32 },
+>  };
+>  
+something is really suspicious since the NL80211_BAND_* enums are
+*value* enums, not attribute ID enums, and hence they should never be
+used in an nla_policy.
 
-elapsed time: 1895m
+what is actually using these as attribute IDs, noting that
+NL80211_BAND_2GHZ == 0 and hence cannot be used as an attribute ID
 
-configs tested: 65
-configs skipped: 0
+seems the logic that introduced this policy needs to be revisited.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-arc                   randconfig-001-20240120   gcc  
-arc                   randconfig-002-20240120   gcc  
-arm                   randconfig-001-20240120   clang
-arm                   randconfig-002-20240120   clang
-arm                   randconfig-003-20240120   clang
-arm                   randconfig-004-20240120   clang
-arm64                 randconfig-001-20240120   clang
-arm64                 randconfig-002-20240120   clang
-arm64                 randconfig-003-20240120   clang
-arm64                 randconfig-004-20240120   clang
-csky                  randconfig-001-20240120   gcc  
-csky                  randconfig-002-20240120   gcc  
-hexagon               randconfig-001-20240120   clang
-hexagon               randconfig-002-20240120   clang
-i386         buildonly-randconfig-001-20240119   gcc  
-i386         buildonly-randconfig-002-20240119   gcc  
-i386         buildonly-randconfig-003-20240119   gcc  
-i386         buildonly-randconfig-004-20240119   gcc  
-i386         buildonly-randconfig-005-20240119   gcc  
-i386         buildonly-randconfig-006-20240119   gcc  
-i386                  randconfig-001-20240119   gcc  
-i386                  randconfig-002-20240119   gcc  
-i386                  randconfig-003-20240119   gcc  
-i386                  randconfig-004-20240119   gcc  
-i386                  randconfig-005-20240119   gcc  
-i386                  randconfig-006-20240119   gcc  
-i386                  randconfig-011-20240119   clang
-i386                  randconfig-012-20240119   clang
-i386                  randconfig-013-20240119   clang
-i386                  randconfig-014-20240119   clang
-i386                  randconfig-015-20240119   clang
-i386                  randconfig-016-20240119   clang
-loongarch             randconfig-001-20240120   gcc  
-loongarch             randconfig-002-20240120   gcc  
-nios2                 randconfig-001-20240120   gcc  
-nios2                 randconfig-002-20240120   gcc  
-parisc                randconfig-001-20240120   gcc  
-parisc                randconfig-002-20240120   gcc  
-powerpc               randconfig-001-20240120   clang
-powerpc               randconfig-002-20240120   clang
-powerpc               randconfig-003-20240120   clang
-x86_64       buildonly-randconfig-001-20240120   clang
-x86_64       buildonly-randconfig-002-20240120   clang
-x86_64       buildonly-randconfig-003-20240120   clang
-x86_64       buildonly-randconfig-004-20240120   clang
-x86_64       buildonly-randconfig-005-20240120   clang
-x86_64       buildonly-randconfig-006-20240120   clang
-x86_64                randconfig-001-20240120   gcc  
-x86_64                randconfig-002-20240120   gcc  
-x86_64                randconfig-003-20240120   gcc  
-x86_64                randconfig-004-20240120   gcc  
-x86_64                randconfig-005-20240120   gcc  
-x86_64                randconfig-006-20240120   gcc  
-x86_64                randconfig-011-20240120   clang
-x86_64                randconfig-012-20240120   clang
-x86_64                randconfig-013-20240120   clang
-x86_64                randconfig-014-20240120   clang
-x86_64                randconfig-015-20240120   clang
-x86_64                randconfig-016-20240120   clang
-x86_64                randconfig-071-20240120   clang
-x86_64                randconfig-072-20240120   clang
-x86_64                randconfig-073-20240120   clang
-x86_64                randconfig-074-20240120   clang
-x86_64                randconfig-075-20240120   clang
-x86_64                randconfig-076-20240120   clang
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
