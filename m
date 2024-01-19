@@ -1,102 +1,87 @@
-Return-Path: <linux-wireless+bounces-2218-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2219-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 655F883229D
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jan 2024 01:23:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66DCC8324B1
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jan 2024 07:34:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97CE61C22DD8
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jan 2024 00:23:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99CDB1C2315B
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jan 2024 06:34:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79135389;
-	Fri, 19 Jan 2024 00:23:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 901C28F61;
+	Fri, 19 Jan 2024 06:34:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PGAzh/4Y"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A8FB383
-	for <linux-wireless@vger.kernel.org>; Fri, 19 Jan 2024 00:23:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD9B8F4E;
+	Fri, 19 Jan 2024 06:34:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705623811; cv=none; b=VDpB0qclcAaRWxsfP3PIamzpGHtDllMUSU7Lfd8bXNpXNhEZjA/BnrIpvQB/YS9l6Ap9pKSbbipvAOR5fK7RgHiHZDrniPz2mntk2TwoMg+Qc9NO3hePmctIUnCChsiprG0a0IWUDS6mi1WciTNpcUHaSu3pWopDgyeiAWWF5Yc=
+	t=1705646079; cv=none; b=kX5pPMRU+rCm2iXBBZRH5Rk6tb4Jf9jr6N0fDerBgyRV9eek6DFL8vyJ/9nM8dLP9LQvsZjJaHi5Y6uvf8aJ8Fy/rzpgcZDwvvrdCNA6uHcE7oE8cvXTBg/27IxvHyVYHkRyo4vk1CXmyXF4JFtqATvz06vJToBZHKR0yWu51Fg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705623811; c=relaxed/simple;
-	bh=/No3arMse3wpnRSirRDEw6OYQskvcnagaiJHfi8yyGI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Ya/vnSiaqBw7XYLhsFq2bqQI41m8aC8YhzJeRSGTzMc6G57pIV/RCqZQxVtFWjcf5VGAo/GTOXSdStsmtvoyOyqM4dnY9P9xVGOkA34g03Vbgp24tMRwTYkNfZVTKZb0y3dTKtFTKLUgcZPoZca9HfuYCs4Nrv8e8SYKrX8NeKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 40J0NDpvC1960110, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 40J0NDpvC1960110
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 19 Jan 2024 08:23:13 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.17; Fri, 19 Jan 2024 08:23:13 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Fri, 19 Jan 2024 08:23:13 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::e4c4:c4f:4e4c:d23c]) by
- RTEXMBS04.realtek.com.tw ([fe80::e4c4:c4f:4e4c:d23c%5]) with mapi id
- 15.01.2507.035; Fri, 19 Jan 2024 08:23:13 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC: Larry Finger <Larry.Finger@lwfinger.net>
-Subject: RE: [PATCH v2] wifi: rtlwifi: Speed up firmware loading for USB
-Thread-Topic: [PATCH v2] wifi: rtlwifi: Speed up firmware loading for USB
-Thread-Index: AQHaSYFrQa8WDirFr0+YumezfZVwHrDeuEZAgAB8YoCAARLVAA==
-Date: Fri, 19 Jan 2024 00:23:13 +0000
-Message-ID: <531c906cc1d949ab959f28225605b6e7@realtek.com>
-References: <d9bd4949-6e92-4f35-8b60-3b45f9ad74ab@gmail.com>
- <69d5e71d354b48ef839fb3d3c47f09c7@realtek.com>
- <1314347a-a7a7-4021-bcd5-58ff7cfa0fba@gmail.com>
-In-Reply-To: <1314347a-a7a7-4021-bcd5-58ff7cfa0fba@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1705646079; c=relaxed/simple;
+	bh=ybA7Oc8IdtrO7eV7Gbv0lepTuXv8HmJ31IowmvsVq8w=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=m63WZ2ZSNyJ1Wd9vmeXrMbVBvwe9zLkWPTVNQkdtGBI2A/dofbxUb7/VRluV9m4lQUMnKo2bwjj48FGyPR3W5G/fNTBlr+8zWLK/t3OrvxmHBLthMUKZuhF1RPVNqFaITEwcUz3M6UDOVXw7fo6C8h9pNfgJH3WwYqHOqD2pKI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PGAzh/4Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAFE6C433F1;
+	Fri, 19 Jan 2024 06:34:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705646078;
+	bh=ybA7Oc8IdtrO7eV7Gbv0lepTuXv8HmJ31IowmvsVq8w=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=PGAzh/4YmVT5S4OS9eQk1mS4lN+09SjCWQE/JyAgmagMRQz0wNuhoSlnMlF/0FY5x
+	 /Ij/Gt1u0ioX1CjhSasQTC5mSgkYcKOtyMJgptXWkUM/RpVpgYHku/cyC2m9Q6mVJ5
+	 RkE2DP+0ODENZESZATD8M6uMMXYhuSEQVGtc9LP1soaBY8Oh7HE5YY9qoy2aaRk/am
+	 UgyZgUKGC4Uwg2QFHNsL7QVId0nBxXu3O2TJhHkiBsMYTEyHPLTlq45GgLNr/9mb4i
+	 u743CyBKjfqm+It734T8hi4T7yWXmPlI8rolnK2IksV6rBscxQ+B1wNrYR8vblXK7S
+	 AyqlpJGW1p8vw==
+From: Kalle Valo <kvalo@kernel.org>
+To: ath11k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org,  regressions@lists.linux.dev,
+  linux-kernel@vger.kernel.org
+Subject: Re: [regression] ath11k broken in v6.7
+References: <874jfjiolh.fsf@kernel.org>
+Date: Fri, 19 Jan 2024 08:34:35 +0200
+In-Reply-To: <874jfjiolh.fsf@kernel.org> (Kalle Valo's message of "Thu, 11 Jan
+	2024 22:47:54 +0200")
+Message-ID: <87frytg7b8.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQml0dGVyYmx1ZSBTbWl0
-aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+DQo+IFNlbnQ6IFRodXJzZGF5LCBKYW51YXJ5IDE4
-LCAyMDI0IDExOjU2IFBNDQo+IFRvOiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT47
-IGxpbnV4LXdpcmVsZXNzQHZnZXIua2VybmVsLm9yZw0KPiBDYzogTGFycnkgRmluZ2VyIDxMYXJy
-eS5GaW5nZXJAbHdmaW5nZXIubmV0Pg0KPiBTdWJqZWN0OiBSZTogW1BBVENIIHYyXSB3aWZpOiBy
-dGx3aWZpOiBTcGVlZCB1cCBmaXJtd2FyZSBsb2FkaW5nIGZvciBVU0INCj4gDQo+IA0KPiBPbiAx
-OC8wMS8yMDI0IDAyOjM3LCBQaW5nLUtlIFNoaWggd3JvdGU6DQo+ID4NCj4gPg0KPiA+PiAtLS0t
-LU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiA+PiBGcm9tOiBCaXR0ZXJibHVlIFNtaXRoIDxydGw4
-ODIxY2VyZmUyQGdtYWlsLmNvbT4NCj4gPj4gU2VudDogVGh1cnNkYXksIEphbnVhcnkgMTgsIDIw
-MjQgNDoxMiBBTQ0KPiA+PiBUbzogbGludXgtd2lyZWxlc3NAdmdlci5rZXJuZWwub3JnDQo+ID4+
-IENjOiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT47IExhcnJ5IEZpbmdlciA8TGFy
-cnkuRmluZ2VyQGx3ZmluZ2VyLm5ldD4NCj4gPj4gU3ViamVjdDogW1BBVENIIHYyXSB3aWZpOiBy
-dGx3aWZpOiBTcGVlZCB1cCBmaXJtd2FyZSBsb2FkaW5nIGZvciBVU0INCj4gPj4NCj4gPj4gK3N0
-YXRpYyB2b2lkIF91c2Jfd3JpdGVfY2h1bmtfc3luYyhzdHJ1Y3QgcnRsX3ByaXYgKnJ0bHByaXYs
-IHUzMiBhZGRyLA0KPiA+PiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdTMyIGxl
-bmd0aCwgdTggKmRhdGEpDQo+ID4+ICt7DQo+ID4+ICsgICAgICAgc3RydWN0IHVzYl9kZXZpY2Ug
-KnVkZXYgPSB0b191c2JfZGV2aWNlKHJ0bHByaXYtPmlvLmRldik7DQo+ID4+ICsNCj4gPj4gKyAg
-ICAgICBfdXNiY3RybF92ZW5kb3JyZXFfc3luYyh1ZGV2LCBSRUFMVEVLX1VTQl9WRU5RVF9XUklU
-RSwgYWRkciwgZGF0YSwgbGVuZ3RoKTsNCj4gPg0KPiA+IEp1c3QgY3VyaW91cy4gT3JpZ2luYWxs
-eSwgaXQgdXNlcyAxLzIvNCBhcyBsZW5ndGggZm9yIHdyaXRlOC8xNi8zMiwgYW5kIHRoaXMNCj4g
-PiBwYXRjaCBhZGRpdGlvbmFsbHkgdXNlcyA4LzY0IGFzIGxlbmd0aC4gQW55IGxpbWl0YXRpb24g
-b2YgYXJndW1lbnQgJ2xlbmd0aCcgb2YNCj4gPiB0aGlzIGZ1bmN0aW9uPyBJcyBhcmJpdHJhcnkg
-bnVtYmVyIGRpc2FsbG93ZWQ/DQo+ID4NCj4gDQo+IEkgZGlkbid0IGZpbmQgYW55dGhpbmcgaW4g
-dGhlIHVzYl9jb250cm9sX21zZygpIGRvY3VtZW50YXRpb24uDQo+IEkgb25seSBmb3VuZCB0aGlz
-IGlzc3VlLCB3aGVyZSBzb21lIHBlb3BsZSBzYXkgMHhmZmZmIGlzIGZpbmUsDQo+IGJ1dCBvbGRl
-ciBoYXJkd2FyZSBtYXkgaGF2ZSBhIGxpbWl0IG9mIDQwOTY6DQo+IGh0dHBzOi8vZ2l0aHViLmNv
-bS9saWJ1c2IvbGlidXNiL2lzc3Vlcy8xMjUNCj4gDQo+IHJ0bDh4eHh1IHVzZXMgbGVuZ3RocyBv
-ZiAzMiwgOTQsIDEyNCwgMTI2LCAxMjgsIDE1NiwgMjU0IGJ5dGVzLg0KPiBTb21lIG90aGVyIFJl
-YWx0ZWsgd2lmaSBkcml2ZXJzIHVzZSAxOTYgYnl0ZXMuDQoNCkdvdCBpdC4gVGhhbmtzIGZvciB0
-aGUgaW5mb3JtYXRpb24uIA0KDQo=
+Kalle Valo <kvalo@kernel.org> writes:
+
+> Just trying to make everyone aware because I suspect this will affect
+> quite a few people: ath11k is crashing during suspend on v6.7 due to a
+> mac80211 patch, more info:
+>
+> https://bugzilla.kernel.org/show_bug.cgi?id=218364
+>
+> Proposed fix:
+>
+> https://patchwork.kernel.org/project/linux-wireless/patch/20240111170629.1257217-1-benjamin@sipsolutions.net/
+
+The fix is now applied:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git/commit/?id=556857aa1d0855aba02b1c63bc52b91ec63fc2cc
+
+I'll try to use regzbot for the first time, let's see how it goes:
+
+#regzbot introduced: 0a3d898ee9a8 ^
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
