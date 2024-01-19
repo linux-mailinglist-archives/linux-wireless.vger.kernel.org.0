@@ -1,68 +1,73 @@
-Return-Path: <linux-wireless+bounces-2272-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2273-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C9E5832E50
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jan 2024 18:44:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2196F832E61
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jan 2024 18:52:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 533EE1C20F41
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jan 2024 17:44:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 358AE1C241D1
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jan 2024 17:52:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB13655E4A;
-	Fri, 19 Jan 2024 17:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E7F154BE2;
+	Fri, 19 Jan 2024 17:52:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="ip6EW7jQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cc6d1e3Y"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f54.google.com (mail-io1-f54.google.com [209.85.166.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6A7E54F9D
-	for <linux-wireless@vger.kernel.org>; Fri, 19 Jan 2024 17:44:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3091F1E87C
+	for <linux-wireless@vger.kernel.org>; Fri, 19 Jan 2024 17:52:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705686273; cv=none; b=lPzz51uufVfNc/nD67YsvHIwlOXRe1xBqbWp1USIoZDWvQ4enwfVaEmIHgycjm3KrxbRZgCuH/eUtxmcRbk6oMQh9/qHWMJcxd2r/FDsejmAZw0l5JDCmyiqxNs0rLEA50VgZ3xJo80fZV6n/x3tjJ/dCoAZG3xXtjycy/wHoyY=
+	t=1705686744; cv=none; b=TgJ4A/QGf0mryIJwbVMsKuwNRltqqpBsB3WrTxBlyiH5COXybjNINGfjZsbvby8hTl7+NMqcF14Uv62Spu4jGEvbqxWt4jwJS1eeEl0tLUG1tsa72vFIQ5w89iAvYieWuqZdgFM2R/1Ah29WHdpfVtbSWGVaGmfr8U8P78w9xOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705686273; c=relaxed/simple;
-	bh=zooS2opXWEn98q8GsmPdsk0l9I1ao/MeLC4cGyQuAZ8=;
+	s=arc-20240116; t=1705686744; c=relaxed/simple;
+	bh=xAz598ahmniymYjBSqo/OHOLGvdMfrCdpHhX0q8oMeA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eKJ0jvhML9iBkcNzQDZOgAnE2ijXUsQQ9FYychGUpCuq19bCg547uyaIGEQd7rvvB9TjFU0g7Md9DdWABNmdzJaBqU86yAVnSqxs6vomIwdKXDEIqHgocYFCEaS8NqvHnInP6BetOSrqhkdP7N/ceSs35hyUzMp8f+UhN3uxit0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=ip6EW7jQ; arc=none smtp.client-ip=44.202.169.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
-Received: from eig-obgw-6004a.ext.cloudfilter.net ([10.0.30.197])
-	by cmsmtp with ESMTPS
-	id QrHqrNinW8uLRQsusr4b5V; Fri, 19 Jan 2024 17:44:30 +0000
-Received: from gator4166.hostgator.com ([108.167.133.22])
-	by cmsmtp with ESMTPS
-	id QsurrSPYl55BJQsurrS7YN; Fri, 19 Jan 2024 17:44:29 +0000
-X-Authority-Analysis: v=2.4 cv=QcR1A+Xv c=1 sm=1 tr=0 ts=65aab4fd
- a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=WzbPXH4gqzPVN0x6HrNMNA==:17
- a=IkcTkHD0fZMA:10 a=dEuoMetlWLkA:10 a=wYkD_t78qR0A:10 a=VwQbUJbxAAAA:8
- a=NEAV23lmAAAA:8 a=7YfXLusrAAAA:8 a=EIiQeHuflohXdkK9GqgA:9 a=QEXdDO2ut3YA:10
- a=9cHFzqQdt-sA:10 a=PUnBvhIW4WwA:10 a=AjGcO6oz07-iQ99wixmX:22
- a=SLz71HocmBbuEhFRYD3r:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=2PP2Bc7kZyIT7D76puyC5J8empfAZst1KA6YPM0TFhA=; b=ip6EW7jQoVWo1JVahbPug93giA
-	oXDj0+2Xcrws/g2DsqoURyJcjpm7hceD9W5NxSxXXE7aw4l2LYBAcyBpR5e2ZiIhQDIUITL1WVo5l
-	PEH9XK2YJMlAhdxsEZsgf/M2m8Ey7PWlSdh6md1RU920rt4uOOnCPrBfDNZiMXVF/UOmkQxhcIAr5
-	wVonvmISl/mmqB1c/Fp+LFi+fn0GQBUvtCIkKry9QygRt+HgKA2HGMYjCYQd+5eUVHHmIvi7N4zqG
-	QwK8f/5+Kn5tznLpJn/Vu7V8DFsHEfsMZvzOj+Zgv8xF3Fm+X7jti5Gvuh7vpKs24yaM2SkdZhUQg
-	c0S9Jq9A==;
-Received: from 187-162-21-192.static.axtel.net ([187.162.21.192]:53848 helo=[192.168.15.10])
-	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <gustavo@embeddedor.com>)
-	id 1rQsuq-001CoF-2A;
-	Fri, 19 Jan 2024 11:44:28 -0600
-Message-ID: <9294bb03-8c80-47d3-a2d7-8108392ec5d9@embeddedor.com>
-Date: Fri, 19 Jan 2024 11:44:22 -0600
+	 In-Reply-To:Content-Type; b=ES0gpxAZk6WVJsEGrLNtZE3c+l07ZB6p0gnF1kdgX9bTRzaEbm8EBKNoW9nxFgXn2dh9OcuVVbmC/hhgQAQL5J4Kbju/b4ssYrq5P+vwtanlGH/Ai/zeF6pYaMCgr9qXnm04WI9TAuuc5grJbHE9mEi9f1lVEBtjKSkHAqtYw18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Cc6d1e3Y; arc=none smtp.client-ip=209.85.166.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-io1-f54.google.com with SMTP id ca18e2360f4ac-7bed9c7d33fso35386839f.1
+        for <linux-wireless@vger.kernel.org>; Fri, 19 Jan 2024 09:52:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1705686742; x=1706291542; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=x3T3+O1LvQHPEPgo9aRY8T8pOACNC7+ZPEmXJOsVZh0=;
+        b=Cc6d1e3YOZvQLk8z8/Og5QqE2E6iW9ZBx97RqBXOsj7nJq36Tu3xIpSBaHYhDnGVis
+         xIr3c0VDixK3mWDiJppIfPaK2CqWgekx/fLd7F/l2P2h6iqcXt2rzjrKTyi+7BmPcnvK
+         9H6V77bGKf7uoPyRsh2/It/l1K8Sz9PAXj16OKATZzzzLAdDgI/SHArD0yj/Wic0nHxL
+         Au3mmsAHJAxtEbgfo0GocJULi01sibTnFyoLFU0ofmPCahl52b15yhuf/znkusxAeXcX
+         /x4MfdOyaDBFnc7IcbpVFgbS5Yp5j/CpCblsJFcMLutTfoiEVV7hdrohGKRhAbmx4ixH
+         PN3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705686742; x=1706291542;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=x3T3+O1LvQHPEPgo9aRY8T8pOACNC7+ZPEmXJOsVZh0=;
+        b=qV7QEoEK5B3+CnhCTHxSvgx3HVXcJ6GO9wszjMuV064RgPSS/GkGwy1xjT4uMytwyY
+         74WNdnNHDcGlc5+pwBiF42onGl8OlVGP8OSxGKxvYf9oYilvG6DVauHotxjKOLUCuvxW
+         XLimej4gGjM0M2s7nYKhEsaJfugnqVZkBQd4yOdU1sG0ihk1JZzcodNN/6jSz7LlLtP9
+         7Z5+DsCpYJu4aKMSBOW9gHeTQKJAPSaLo7yntXjK0P0lJShSSJj604SFl5fX+TM6eJ1s
+         S01rwdu3Tm9ZPTNTiHzVsV+kPLZPTXaexBREGOpEuLZAZRoTcdxHDmNT0LyOKLZUh1ry
+         eQYg==
+X-Gm-Message-State: AOJu0YyKwBDPGeZzEOW5kexc7Sen2pMLHfXKfWfFpKekeMl3GLBPSltK
+	3yKTBUqV7OEw3eXEuC0tu+pPDr0ez6c4wIeGiLuvpB7ce0iAWTwiSPtIPr38
+X-Google-Smtp-Source: AGHT+IGOhMCobqctkgdGWTXLSsnhLGhqieknIPS+0vBoKAFbYHvrT2iXfa/ApO1FOfuknRRdQ4F96A==
+X-Received: by 2002:a05:6602:258b:b0:7bf:31bc:50a5 with SMTP id p11-20020a056602258b00b007bf31bc50a5mr61469ioo.22.1705686742182;
+        Fri, 19 Jan 2024 09:52:22 -0800 (PST)
+Received: from [10.100.20.9] ([50.225.159.98])
+        by smtp.gmail.com with ESMTPSA id u19-20020a02aa93000000b0046ec7716dd9sm376690jai.119.2024.01.19.09.52.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 19 Jan 2024 09:52:21 -0800 (PST)
+Message-ID: <08457e37-49f4-4c51-998b-e577731c8022@gmail.com>
+Date: Fri, 19 Jan 2024 09:52:19 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -70,87 +75,46 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: iwlegacy: Use kcalloc() instead of kzalloc()
-To: Erick Archer <erick.archer@gmx.com>, Stanislaw Gruszka <stf_xl@wp.pl>,
- Kalle Valo <kvalo@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-hardening@vger.kernel.org
-References: <20240119171655.7740-1-erick.archer@gmx.com>
+Subject: Re: ath11k and vfio-pci support
 Content-Language: en-US
-From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-In-Reply-To: <20240119171655.7740-1-erick.archer@gmx.com>
+To: Baochen Qiang <quic_bqiang@quicinc.com>, Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
+References: <adcb785e-4dc7-4c4a-b341-d53b72e13467@gmail.com>
+ <8734v5zhol.fsf@kernel.org> <87fa5220-6fd9-433d-879b-c55ac67a0748@gmail.com>
+ <87r0ipcn7j.fsf@kernel.org> <356e0b05-f396-4ad7-9b29-c492b54af834@gmail.com>
+ <26119c3f-9012-47bb-948e-7e976d4773a7@quicinc.com>
+ <87mstccmk6.fsf@kernel.org> <df9fd970-5af3-468c-b1f1-18f91215cf44@gmail.com>
+ <8734v4auc4.fsf@kernel.org> <e8878979-1f3f-4635-a716-9ac381c617d9@gmail.com>
+ <285b84d0-229c-4c83-a7d6-4c3c23139597@quicinc.com>
+ <4607fb37-8227-49a3-9e8c-10c9b117ec7b@gmail.com>
+ <3d22a730-aee5-4f2a-9ddc-b4b5bd4d62fe@quicinc.com>
+ <ee0280fd-032c-4f45-a3f9-50d96d8bed6d@gmail.com>
+ <16cfd010-b62d-4385-92d1-002820a8db38@quicinc.com>
+ <cdec259a-b779-4856-8585-f285179e3671@gmail.com>
+ <21e925bc-ee3e-4421-949b-b3839d2abdef@quicinc.com>
+From: James Prestwood <prestwoj@gmail.com>
+In-Reply-To: <21e925bc-ee3e-4421-949b-b3839d2abdef@quicinc.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 187.162.21.192
-X-Source-L: No
-X-Exim-ID: 1rQsuq-001CoF-2A
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: 187-162-21-192.static.axtel.net ([192.168.15.10]) [187.162.21.192]:53848
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 3
-X-Org: HG=hgshared;ORG=hostgator;
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfGU7FRaYN2bK5FdJyXFyDXdzBsy69EIqgbUUfWkgf7j6jBcG70Vhhc0Wlc1CCzw50wbiHBZJ6RhNCK/yP8Gld3tW+WHYWIDSvyF+ic+j9mnjvzOsGHRg
- y7h4lrj/vJQUM9tvNy+gpx4iU9kbO8VG+RMaDWtWLZGwJIc85EbQG2VAeGZhZUlmcuV0wZLgjkyfjUQ+r/czYsL1Wq5VGDxfqvoBrn/9lWeBad40/tvlQ3my
 
+Hi Baochen,
 
+I guess you got this output when qemu/ath11k is not running, either qemu 
+not started or ath11k module not loaded, right? Since MSI is not enabled 
+in this output.
+>
+> Sorry I should have made it clear:
+> step1: start qemu and load ath11k without changing anything, then you 
+> get those errors;
+> step2: keep qemu running and ath11k there, don't unload it. Then check 
+> lspci output in host to get the MSI vector.
+> step3: Back in qemu, hard code MSI vector to the one you get in step2, 
+> then rebuild and reload ath11k.
+>
+Thank you for the clarification, this worked like a charm!
 
-On 1/19/24 11:16, Erick Archer wrote:
-> As noted in the "Deprecated Interfaces, Language Features, Attributes,
-> and Conventions" documentation [1], size calculations (especially
-> multiplication) should not be performed in memory allocator (or similar)
-> function arguments due to the risk of them overflowing. This could lead
-> to values wrapping around and a smaller allocation being made than the
-> caller was expecting. Using those allocations could lead to linear
-> overflows of heap memory and other misbehaviors.
-> 
-> So, use the purpose specific kcalloc() function instead of the argument
-> size * count in the kzalloc() function.
-> 
-> Also, it is preferred to use sizeof(*pointer) instead of sizeof(type)
-> due to the type of the variable can change and one needs not change the
-> former (unlike the latter).
-> 
-> Link: https://www.kernel.org/doc/html/next/process/deprecated.html#open-coded-arithmetic-in-allocator-arguments [1]
-> Link: https://github.com/KSPP/linux/issues/162
-> Signed-off-by: Erick Archer <erick.archer@gmx.com>
+Thanks,
 
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+James
 
-Thanks!
--- 
-Gustavo
-
-> ---
->   drivers/net/wireless/intel/iwlegacy/common.c | 4 +---
->   1 file changed, 1 insertion(+), 3 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/intel/iwlegacy/common.c b/drivers/net/wireless/intel/iwlegacy/common.c
-> index 17570d62c896..9d33a66a49b5 100644
-> --- a/drivers/net/wireless/intel/iwlegacy/common.c
-> +++ b/drivers/net/wireless/intel/iwlegacy/common.c
-> @@ -3438,9 +3438,7 @@ il_init_geos(struct il_priv *il)
->   	if (!channels)
->   		return -ENOMEM;
-> 
-> -	rates =
-> -	    kzalloc((sizeof(struct ieee80211_rate) * RATE_COUNT_LEGACY),
-> -		    GFP_KERNEL);
-> +	rates = kcalloc(RATE_COUNT_LEGACY, sizeof(*rates), GFP_KERNEL);
->   	if (!rates) {
->   		kfree(channels);
->   		return -ENOMEM;
-> --
-> 2.25.1
-> 
-> 
 
