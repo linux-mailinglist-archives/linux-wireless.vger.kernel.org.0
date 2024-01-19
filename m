@@ -1,83 +1,78 @@
-Return-Path: <linux-wireless+bounces-2255-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2256-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CBE6832BFB
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jan 2024 15:57:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97F27832C1D
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jan 2024 16:10:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2C8D0B22EAA
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jan 2024 14:57:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6363DB2278C
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jan 2024 15:10:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 990EC5465D;
-	Fri, 19 Jan 2024 14:56:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UZchzV3S"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD2D95466E;
+	Fri, 19 Jan 2024 15:10:05 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB0C54BCC;
-	Fri, 19 Jan 2024 14:56:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from zju.edu.cn (spam.zju.edu.cn [61.164.42.155])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C667D54667;
+	Fri, 19 Jan 2024 15:10:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=61.164.42.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705676209; cv=none; b=MPb/Qd9K1vHdfKY8ssNtHzkZ61PTQC6AsLiRsMWv+Ch0gckcUdiL4LgXfa3s4KG6HzkL/DQ3uSdRWLtpZY30zIEW3TEAXwdJyrlZ6HCidBOXsLmR+Mn+bSiuDqDyfkAWy3obVWeeksqoV4yLfo6fw6wNqjeDuukVgT62jkXilm8=
+	t=1705677005; cv=none; b=vEZvtgZM0Y/qrEnN4kZXUeTyWUjSenCpjzMRamA90EM47JcxznCi46tGe2AC3nBBmRaNoqsumqQ0XS3q+8nUViab21X3xNCMEZUh2gqeerZdN612n7rcpVvjyiK8oXcVKCVkQntcGlIV8WJjBcNDWyKDDVMG87rCpEVVJR7R26w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705676209; c=relaxed/simple;
-	bh=UE5O8R1jO06bM6GSbAt01cR2dBDr021Of8rOmzjLEsg=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=ECJOtl/s+i2RNeenP0xHX2ttE5M8Yycyv7vej3oyftSbL1OhgYvdTWRXWeShzc2gw06lkvrHEsPYaDMm8fMQhX5mLqqQ0VBbI8SJsZP2azJViF2FLQpLVGpu9/iW5O2HNr4h4fAQKatfTqfMX1EU8JvgGxeo9GoP9w9VygtRsts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UZchzV3S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ECE9C433C7;
-	Fri, 19 Jan 2024 14:56:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705676208;
-	bh=UE5O8R1jO06bM6GSbAt01cR2dBDr021Of8rOmzjLEsg=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=UZchzV3Slr+eunRu1UgOANDTlgDiMbVXze2Mpd+vgt8Fcxt6R3NpmXgDMkfEOl4bY
-	 FZ1GRu2s0chC0JmvRuPo/NGzvy5F8XZZpm+T/DcYRHHenFv0eNq7RDjbOts0e3DnFJ
-	 vhhV8lVdqso52aUxVgg2YoZdM78/cNTfCrKwK9Q+F8v9z1+I+1PfrTqa9/dlQzzQ8D
-	 yZvVLPBzJzgBRkBcFnxJTJLBTXk49QJLIOJvNKvKuOqYCsw9sJ4RnheWGmU+m2Zu0u
-	 8w2BVd6dT9OfQY5+u7LYb4hvi3/YNb9QKSOX+0qPN4FqgbyyYs8OUCbuEwdMSy76Gf
-	 8wBEXC8fLeXUw==
-From: Kalle Valo <kvalo@kernel.org>
-To: "Lin Ma" <linma@zju.edu.cn>
-Cc: djohannes@sipsolutions.net,  davem@davemloft.net,  edumazet@google.com,
-  kuba@kernel.org,  pabeni@redhat.com,  linux-wireless@vger.kernel.org,
-  netdev@vger.kernel.org,  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v1] nl80211/cfg80211: add nla_policy for S1G band
+	s=arc-20240116; t=1705677005; c=relaxed/simple;
+	bh=ba5iFZrEZbK7GW0T551/0XRnIqmHqQJuldW3vSrTCjw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID; b=itCyZPYyixEtNC/1inNFPpswPQ6usZEWH11AF0hmw/Di5aCUS/xqeeAUJRlnXtURJeEhL6hw2f2v7qPV+EzER1m0PlvAIN9iFx084umPOJoeOaKlDOp06lmvZtBEJD5ALM6BlIoQibDI/vIvHgoYsT4W5pcpF589hHodVrnfr1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=61.164.42.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
+Received: from linma$zju.edu.cn ( [10.181.209.189] ) by
+ ajax-webmail-mail-app2 (Coremail) ; Fri, 19 Jan 2024 23:09:39 +0800
+ (GMT+08:00)
+Date: Fri, 19 Jan 2024 23:09:39 +0800 (GMT+08:00)
+X-CM-HeaderCharset: UTF-8
+From: "Lin Ma" <linma@zju.edu.cn>
+To: "Kalle Valo" <kvalo@kernel.org>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v1] nl80211/cfg80211: add nla_policy for S1G
+ band
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2023.4-cmXT5 build
+ 20231205(37e20f0e) Copyright (c) 2002-2024 www.mailtech.cn
+ mispb-4df6dc2c-e274-4d1c-b502-72c5c3dfa9ce-zj.edu.cn
+In-Reply-To: <87v87pe5hu.fsf@kernel.org>
 References: <20240119093724.7852-1-linma@zju.edu.cn>
-	<6acb79fc.79d3.18d211a170c.Coremail.linma@zju.edu.cn>
-Date: Fri, 19 Jan 2024 16:56:45 +0200
-In-Reply-To: <6acb79fc.79d3.18d211a170c.Coremail.linma@zju.edu.cn> (Lin Ma's
-	message of "Fri, 19 Jan 2024 17:42:54 +0800 (GMT+08:00)")
-Message-ID: <87v87pe5hu.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ <6acb79fc.79d3.18d211a170c.Coremail.linma@zju.edu.cn>
+ <87v87pe5hu.fsf@kernel.org>
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=UTF-8
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Message-ID: <7d20b254.7e26.18d22453bd2.Coremail.linma@zju.edu.cn>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:by_KCgA356WzkKplHXlmAA--.7489W
+X-CM-SenderInfo: qtrwiiyqvtljo62m3hxhgxhubq/1tbiAwQFEmWpc04QogACsR
+X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWUCw
+	CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
+	daVFxhVjvjDU=
 
-"Lin Ma" <linma@zju.edu.cn> writes:
-
-> Hello there,
->
->> Our detector has identified another case of an incomplete policy.
->> ...
->
-> I mark the net-next tag for this one and a previous sent one in this
-> morning ([PATCH net-next v1] neighbour: complement nl_ntbl_parm_policy).
->
-> Please let me know if such nla_policy complementing should go net instead.
-
-nl80211 patches go to wireless or wireless-next.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+SGVsbG8gS2FsbGUsCgo+IAo+ICJMaW4gTWEiIDxsaW5tYUB6anUuZWR1LmNuPiB3cml0ZXM6Cj4g
+Cj4gPiBIZWxsbyB0aGVyZSwKPiA+Cj4gPj4gT3VyIGRldGVjdG9yIGhhcyBpZGVudGlmaWVkIGFu
+b3RoZXIgY2FzZSBvZiBhbiBpbmNvbXBsZXRlIHBvbGljeS4KPiA+PiAuLi4KPiA+Cj4gPiBJIG1h
+cmsgdGhlIG5ldC1uZXh0IHRhZyBmb3IgdGhpcyBvbmUgYW5kIGEgcHJldmlvdXMgc2VudCBvbmUg
+aW4gdGhpcwo+ID4gbW9ybmluZyAoW1BBVENIIG5ldC1uZXh0IHYxXSBuZWlnaGJvdXI6IGNvbXBs
+ZW1lbnQgbmxfbnRibF9wYXJtX3BvbGljeSkuCj4gPgo+ID4gUGxlYXNlIGxldCBtZSBrbm93IGlm
+IHN1Y2ggbmxhX3BvbGljeSBjb21wbGVtZW50aW5nIHNob3VsZCBnbyBuZXQgaW5zdGVhZC4KPiAK
+PiBubDgwMjExIHBhdGNoZXMgZ28gdG8gd2lyZWxlc3Mgb3Igd2lyZWxlc3MtbmV4dC4KPiAKPiAt
+LSAKPiBodHRwczovL3BhdGNod29yay5rZXJuZWwub3JnL3Byb2plY3QvbGludXgtd2lyZWxlc3Mv
+bGlzdC8KPiAKPiBodHRwczovL3dpcmVsZXNzLndpa2kua2VybmVsLm9yZy9lbi9kZXZlbG9wZXJz
+L2RvY3VtZW50YXRpb24vc3VibWl0dGluZ3BhdGNoZXMKCk9LIEkgd2lsbCByZXNlbmQgYSB2ZXJz
+aW9uIHdpdGggY29ycmVjdCBvbmUuCgpUaGFua3MKTGlu
 
