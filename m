@@ -1,85 +1,117 @@
-Return-Path: <linux-wireless+bounces-2289-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2290-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D41383351F
-	for <lists+linux-wireless@lfdr.de>; Sat, 20 Jan 2024 15:56:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2312833612
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 Jan 2024 21:27:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD1E4B219BF
-	for <lists+linux-wireless@lfdr.de>; Sat, 20 Jan 2024 14:56:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 527C61F21A5C
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 Jan 2024 20:27:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB4113D76;
-	Sat, 20 Jan 2024 14:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E6E1125DA;
+	Sat, 20 Jan 2024 20:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J5ZDxaUk"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="YRd4tKq2"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 750C9815
-	for <linux-wireless@vger.kernel.org>; Sat, 20 Jan 2024 14:56:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FDF6396;
+	Sat, 20 Jan 2024 20:27:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705762565; cv=none; b=dKJOnYaRY6vb0FivKnftkz5skYmSagJ3Tn41kJuusCUmkm/iEhD5bSpHKwkXPiEdHb8WNaZNxsIjs3jfclcMJpReCBN1BT9F/g7lq7O28K+5ETAkY1MTY+bqLpMctJ+WbV7m5L02aafKnMnfFZAuuzmHpEVpAlOa2O/USXSEnjs=
+	t=1705782459; cv=none; b=andHK7L2BKjJWhxOCv/Bd/gComNF/vJZqey5M3IAv2C/8LrKEMSgVD+kudPXeoddSo2+Mqgg5xKy7Hks98izDZz72rUpeywtxctvPC+JgkSj7obndmGVeFgqiTODG/CaXOiNTMPW90bozIps5QCcHgkQfwjNwRWUbYBfw2pTiVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705762565; c=relaxed/simple;
-	bh=myPyhS20wHykePfbq4byRX4pB57loG+G4GrtyP9qRY4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nuvIqvpLKaDHrNoGi7UbQKeGGUYBDNKorlixus1Jyl34c+ZtfUvhSH+bhnD92B7QO2hwWOjynpyjncCdbt/vbuzVLuxhmaXnnbFRnVAyWlZNVqgYA7Zp6BNlOhkrIcA+AngrpXbpH4nM0DPPvO6ZyWgRNpWX0dQY/5GDAF8Vn98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J5ZDxaUk; arc=none smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-556c3f0d6c5so2281295a12.2
-        for <linux-wireless@vger.kernel.org>; Sat, 20 Jan 2024 06:56:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705762563; x=1706367363; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=myPyhS20wHykePfbq4byRX4pB57loG+G4GrtyP9qRY4=;
-        b=J5ZDxaUkzJ7WPBQ3Gr0DJwa9bbAfpAG8Sd1pQG83WvxCpVmF9uZ6bIfOHLj4FBGEE3
-         S7+ufrsAbgT9VKjyvSiEc51aNUyMZ6AOQ1u4s4s1XKZ1qrSLSQaQVLSL7daBxGuXtgf6
-         iN0sUIEZY70Koy44HLNXmCazuofqRJGwhEY78zB2hnRNXS11b6AqEgvqM/HNgqKJbqh8
-         5DCbomrW35hOHI7W0ovGLOpc7zgJJd81yHXOyp+vGuD27OV44jtPnhd2+leue/y8MGXx
-         Pu9rNL0uwJx9UOm5+JTttAr/l7Z9Vi7Y2eyhPauDGmZL66HMkqoDRGPZ1UBhBU30neqV
-         tv2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705762563; x=1706367363;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=myPyhS20wHykePfbq4byRX4pB57loG+G4GrtyP9qRY4=;
-        b=siVosB6QENCUGbmg5bEiu8R6QwWydC9h8qp7/rbNmsSanVYFtoMXXqF57RjH9iQX6l
-         tX6yAKYGfXjHPy6N7vfoE3xrzx1VzOuT7ouRdaRKqFXBZ7/UkJ/pk4v3rOWCt9kFGKK9
-         VIu10hzLAOsAtm8Bq5hKJrkSjc5we7PdUpUGlQSOy0QeSjceYC5CmlmtcF1WgpSyMkrv
-         tpsjsf3YKu+JJ9FEhK3M00Holn8xfKLlgvwP0/li81IyM8Ke67ryDSQpgJOhaH0bylvE
-         Jf3S6RNRsyPgYm1xIHReOoN90PwxUC+bhVRaQIwKNg1jR9m70SdPK89PX/IsRs64/K0F
-         CRSg==
-X-Gm-Message-State: AOJu0YzEy/U2xgdCP0olylDDrXZVMg8EzAJQQ0Ku+1cmdIWMCcq+jK7Q
-	hFELyrQfv953N2jeRZDwHAjEXmIh4sycp4J0uBl1nsK7MJMPyBbu8xRLYFV5voMCX3pbQKSXOE2
-	hMh/sDYO3hPnfx4Sckd9aaHrh4n8Oy3bnXAE=
-X-Google-Smtp-Source: AGHT+IFMeQQkCng8qpkFs7hz1bCUKrcXceV2rxl2Irdhc8xICD/cloIDMmtcHc4Uh8vHS+7vOYHK5I3upd9nJ7pJFIM=
-X-Received: by 2002:a17:906:9ca:b0:a2f:c879:c388 with SMTP id
- r10-20020a17090609ca00b00a2fc879c388mr334310eje.168.1705762562584; Sat, 20
- Jan 2024 06:56:02 -0800 (PST)
+	s=arc-20240116; t=1705782459; c=relaxed/simple;
+	bh=lF/66FvKXAzZ7V3dWtaNTfnZNtgIynhOFGZ/MUB9phw=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=lHtEc99+jqSAHE0dHtVZ7LcZSIu/bcJ2WDj9cr0kClnAVCyKKvN53SoeIoxDgJUQCIlWFzAGsLuTpNnBgAfohI64ba2eoSM1paqfM8v/Z58Qa8fNBvSWerb2sr5zqbnS+7xI6mtgM2UaSvmmvZUWW2H1CrJSeY9ix4XrtZeyePY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=YRd4tKq2; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=rkjhyoAITJExRooUi1ksbqNbsSRsxv+GppPIU6XBsUs=;
+	t=1705782456; x=1706992056; b=YRd4tKq2EkpUFXUi6TALLEg4tlmBSl3jNmf7TrUDhbPlwav
+	UPEc26C+4d45zwsmiJ6lhhFK15IZad2jCIB2t7RZNaJAZNdZBRfk/3HwvgDiZi29HRJq42Jk8Rxwf
+	HKlYVWK6RygIgUMx2yV1w0w4zQ9CIuGfvWwDDEuNxCrSiahiVdIJ6Fn9mzTZhwelS1XtTnVR0BgmZ
+	228MUV9CZ3CNu6WlPN5gGahTCVaqx/iDzWv7oYlvw4S3EkT9R06RINO6mR7q+gOcT2g0Mdq1/DGe0
+	SF5o9O3A3GrHZ9Lmlm3yNuERe9cEWAHw4PInOHrqwQfZqC+vcNUckaCe2iwY3/Uw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rRHw0-0000000BEZ7-23ve;
+	Sat, 20 Jan 2024 21:27:20 +0100
+Message-ID: <590fe2823d934af997c515640733eb8889b0560f.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless v2] nl80211/cfg80211: add nla_policy for S1G
+ band
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Jeff Johnson <quic_jjohnson@quicinc.com>, Lin Ma <linma@zju.edu.cn>, 
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com,  linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+  linux-kernel@vger.kernel.org, kvalo@kernel.org
+Date: Sat, 20 Jan 2024 21:27:19 +0100
+In-Reply-To: <9e1db7f3-fd18-4b3b-a912-3cf6efd96fed@quicinc.com>
+References: <20240119151201.8670-1-linma@zju.edu.cn>
+	 <9e1db7f3-fd18-4b3b-a912-3cf6efd96fed@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240118111941.549593-4-johannes@sipsolutions.net>
-In-Reply-To: <20240118111941.549593-4-johannes@sipsolutions.net>
-From: coldolt <andypalmadi@gmail.com>
-Date: Sat, 20 Jan 2024 16:56:03 +0200
-Message-ID: <CAJvGw+BM=kRwSRPM9QjgUXNFFSnzq49FztOgO6MoOc29wdkTZA@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/2] wifi: detect stuck ECSA
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-malware-bazaar: not-scanned
 
-The AP is an Asus RT-AC53, firmware 3.0.0.4.380_10760-g21a5898
+On Fri, 2024-01-19 at 15:47 -0800, Jeff Johnson wrote:
+> > --- a/net/wireless/nl80211.c
+> > +++ b/net/wireless/nl80211.c
+> > @@ -911,6 +911,7 @@ nl80211_match_band_rssi_policy[NUM_NL80211_BANDS] =
+=3D {
+> >  	[NL80211_BAND_5GHZ] =3D { .type =3D NLA_S32 },
+> >  	[NL80211_BAND_6GHZ] =3D { .type =3D NLA_S32 },
+> >  	[NL80211_BAND_60GHZ] =3D { .type =3D NLA_S32 },
+> > +	[NL80211_BAND_S1GHZ] =3D { .type =3D NLA_S32 },
+> >  	[NL80211_BAND_LC]    =3D { .type =3D NLA_S32 },
+> >  };
+> > =20
+> something is really suspicious since the NL80211_BAND_* enums are
+> *value* enums, not attribute ID enums, and hence they should never be
+> used in an nla_policy.
 
-I tried those patches on 6.7.0, with them it works and connects fine to the AP.
+Yeah, that's what it looks like first, but then they do get used
+anyway...
+
+> what is actually using these as attribute IDs, noting that
+> NL80211_BAND_2GHZ =3D=3D 0 and hence cannot be used as an attribute ID
+
+Ohh. Good catch!
+
+> seems the logic that introduced this policy needs to be revisited.
+>=20
+
+Let's just remove it?
+
+commit 1e1b11b6a1111cd9e8af1fd6ccda270a9fa3eacf
+Author: vamsi krishna <vamsin@codeaurora.org>
+Date:   Fri Feb 1 18:34:51 2019 +0530
+
+    nl80211/cfg80211: Specify band specific min RSSI thresholds with sched =
+scan
+
+
+As far as I can tell nothing is using that in the first place ...
+Certainly not in the kernel, nor wpa_s, nor anything else I could find
+really ...
+
+We can't completely revert it since we need the attribute number to stay
+allocated, but that's all we cannot remove.
+
+johannes
 
