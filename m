@@ -1,192 +1,207 @@
-Return-Path: <linux-wireless+bounces-2310-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2311-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9BC6835D6E
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 09:57:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B5F1835E2F
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 10:30:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C753B28306
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 08:57:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 048FA28105B
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 09:30:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDAC33B18E;
-	Mon, 22 Jan 2024 08:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 261E933CF8;
+	Mon, 22 Jan 2024 09:30:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="X4WnLI46"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="GgBVG+rw";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WHy4QR2t"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 496A43A1D0
-	for <linux-wireless@vger.kernel.org>; Mon, 22 Jan 2024 08:54:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A7233CF4
+	for <linux-wireless@vger.kernel.org>; Mon, 22 Jan 2024 09:30:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705913658; cv=none; b=F9TfhLUcwBbvuTmsnBP7GDk4P4oVyb3x2AF+yCOWTcbR9fLyU1MTIRljOB/2zoxUz5W2CXFdnQ8+iMen6ESMv4qPBUKHvsY4GQhZQEAty3HJJiC9TzgBtDqQ5SoRMeJMBedxEe79uMCWmTycZIoWUVyMRmlLY0zt5WGMjVPXW8Q=
+	t=1705915826; cv=none; b=hwV7RPeZVmPyMClEDvFDo5Lw+7/mwtZELEA2eyR1iZktxdu1TgYXOYmSGcNWsnEZmJzBxJ7AGAPz1zY6HTYudb7XuL12ZBxnd2ufMR7sK1Jhv3NCKxEShsnLASPU6f1VP2y2FRmI1lDfHqYBMmtzp3X+7bh57te/CcdMP0Miz0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705913658; c=relaxed/simple;
-	bh=T0Zdv3boN0RRkSJVFRVJzbt+KLDeUmTK68+CEoS0LAU=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UPi62eeimo3uVuYRw11UbvDOKxEzohWUjACE+w0KKI4oBFmjZxQBfAfZUBNUe1cV3N6f1G+4jqqAEAcny29eH5HVyNBwcCYm/L62U6YwnuezkVP/t7KN2cVKIEEy90CkL5jQn7OgDy7VWuhHimQ50DT55MQAsP8NAzOGakUPI/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=X4WnLI46; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40M4x6fQ020004;
-	Mon, 22 Jan 2024 08:54:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-transfer-encoding:content-type; s=
-	qcppdkim1; bh=EwBrK9z4RbSk+oCwSWmJmRVPXHOrn8B/Aq6x7lYtMfE=; b=X4
-	WnLI46GPltAbdse0OWfhl2AKO1MCXMroxSGtIf52jOYkR0ymO7j+kA0sI+Rt4yL+
-	/WDD57MN2+DWTvJYx5yOEtMttRjRJyQs9ZU2JCYLdbpnFUwPti9/dMR8SJ0FKWgj
-	ZTwA2mh5s8GOfBH01W1VaY06YqbFH0fJpSk7fiJxiGmyqgqk2RgnnHk8YEVYUj6W
-	fAapmvjk4FqQyx7m04Dbnwd09WRglUid12PX5SSQSx+JJIECiw23OWg4sTYZrj9U
-	s0PFH8iEPJ397DisKI2jq4pl0Hz7ncaNX5FgV4QaPZULhfI06H5Rz13a41iTBriN
-	NFLUNDpugouoQWvYL2CQ==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vr54wuf6v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 22 Jan 2024 08:54:12 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40M8sBwY023489
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 22 Jan 2024 08:54:11 GMT
-Received: from lingbok-Latitude-E5440.qca.qualcomm.com (10.80.80.8) by
- nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Mon, 22 Jan 2024 00:54:09 -0800
-From: Lingbo Kong <quic_lingbok@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, <quic_lingbok@quicinc.com>
-Subject: [PATCH v2 2/2] wifi: ath12k: add processing for TWT disable event
-Date: Mon, 22 Jan 2024 03:53:36 -0500
-Message-ID: <20240122085336.3985-3-quic_lingbok@quicinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240122085336.3985-1-quic_lingbok@quicinc.com>
-References: <20240122085336.3985-1-quic_lingbok@quicinc.com>
+	s=arc-20240116; t=1705915826; c=relaxed/simple;
+	bh=qcy8U6Iaqjeh+WCsJ6AV+gMk6WkLxc7wSvFlvxk+0dU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XrXtcP/f6g+x1UydKXEgaosvkW092SqffthHkGjzQsUiNn/yTkHlN5r/QnMJrU+qJuIQs0e9rTGKTvkg24n82bSP0PlfMSoxYYp3Ri7n67jvseSiNo0eiGN1f+XAyETw1wWjnuWfOoGI1fhgIDVpqXc78RoIH/eunwayboBbn7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=GgBVG+rw; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WHy4QR2t; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Message-ID: <9aadc704-48ec-4417-82fa-c5f7b19801ff@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1705915821;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JAtwDoFDYba16sV4a5VfCkXzC5gXTdhAVWmoJkQBpTw=;
+	b=GgBVG+rwJuG8HTMlBoholMdyUA2LYnLjdIkhWpfkSIWa+cH3vud3q2OrY1LBS2dsLpE56d
+	bm6P0xgfZWg40D5l/cWGIlubQTyL/x9sk5pAaOmQ5uzJPAjOgyUD7zYRAN3rlLrl0nDo9x
+	5qRE1qo4UaGLSVNCqu8YKGRilvGc/TrVHCIA+Akex7aEoLrcNgelNLZ0sNIVHIJz0h3NaP
+	8tLmv8O24XmHM6J1Pxg5TVKfTaOdr0rq96aTi9f3ebKgd6YxCGFrFncDIvoYMG69vQAwRv
+	kxLfvTiQYNmeKRZrzzWaXlB1n8qe5MxzgDJJ6/XJGXKBLW62K6DkRQAw4xNkyw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1705915821;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JAtwDoFDYba16sV4a5VfCkXzC5gXTdhAVWmoJkQBpTw=;
+	b=WHy4QR2tiWSq74NQlcW8jMNPpnT5taoLd+sz0PFsN80L16hz+HwFGUtISY586Jdif/AlzE
+	uw5BqrZ3YX1QkxDw==
+Date: Mon, 22 Jan 2024 10:30:21 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: Pyg44WRuSS9GbVky_VbOxIxANsCorE8E
-X-Proofpoint-GUID: Pyg44WRuSS9GbVky_VbOxIxANsCorE8E
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-21_04,2024-01-22_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- impostorscore=0 mlxlogscore=827 clxscore=1015 suspectscore=0 mlxscore=0
- adultscore=0 lowpriorityscore=0 bulkscore=0 phishscore=0 malwarescore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2311290000 definitions=main-2401220063
+Subject: Re: [PATCH] wifi: rtl8xxxu: update rate mask per sta
+Content-Language: de-DE
+To: Ping-Ke Shih <pkshih@realtek.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Jes Sorensen <Jes.Sorensen@gmail.com>, Kalle Valo <kvalo@kernel.org>,
+ Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+References: <20240117145516.497966-1-martin.kaistra@linutronix.de>
+ <4d5f06f2407042f2862af7559ed66eac@realtek.com>
+From: Martin Kaistra <martin.kaistra@linutronix.de>
+In-Reply-To: <4d5f06f2407042f2862af7559ed66eac@realtek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-When ath12k send TWT disable command to firmware, firmware will return a
-TWT disable event to ath12k. Through the analysis of TWT disable event
-status, we can easily obtain the status of TWT disable command. It can be
-more convenient to debug TWT.
+Am 18.01.24 um 02:37 schrieb Ping-Ke Shih:
+> 
+> 
+>> -----Original Message-----
+>> From: Martin Kaistra <martin.kaistra@linutronix.de>
+>> Sent: Wednesday, January 17, 2024 10:55 PM
+>> To: linux-wireless@vger.kernel.org
+>> Cc: Jes Sorensen <Jes.Sorensen@gmail.com>; Kalle Valo <kvalo@kernel.org>; Ping-Ke Shih
+>> <pkshih@realtek.com>; Bitterblue Smith <rtl8821cerfe2@gmail.com>; Sebastian Andrzej Siewior
+>> <bigeasy@linutronix.de>
+>> Subject: [PATCH] wifi: rtl8xxxu: update rate mask per sta
+>>
+>> Until now, rtl8xxxu_watchdog_callback() only fetches RSSI and updates
+>> the rate mask in station mode. This means, in AP mode only the default
+>> rate mask is used.
+>>
+>> In order to have the rate mask reflect the actual connection quality,
+>> extend rtl8xxxu_watchdog_callback() to iterate over every sta. Like in
+>> the rtw88 driver, add a function to collect all currently present stas
+>> and then iterate over a list of copies to ensure no RCU lock problems
+>> for register access via USB. Remove the existing RCU lock in
+>> rtl8xxxu_refresh_rate_mask().
+>>
+>> Since the currently used ieee80211_ave_rssi() is only for 'vif', add
+>> driver-level tracking of RSSI per sta.
+>>
+>> Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
+> 
+> [...]
+> 
+>> @@ -6317,6 +6318,76 @@ static void rtl8188e_c2hcmd_callback(struct work_struct *work)
+>>          }
+>>   }
+>>
+>> +#define rtl8xxxu_iterate_vifs_atomic(priv, iterator, data)                     \
+>> +       ieee80211_iterate_active_interfaces_atomic((priv)->hw,                  \
+>> +                       IEEE80211_IFACE_ITER_NORMAL, iterator, data)
+>> +
+>> +struct rtl8xxxu_rx_addr_match_data {
+>> +       struct rtl8xxxu_priv *priv;
+>> +       struct ieee80211_hdr *hdr;
+>> +       struct ieee80211_rx_status *rx_status;
+>> +       u8 *bssid;
+>> +};
+>> +
+>> +static void rtl8xxxu_rx_addr_match_iter(void *data, u8 *mac,
+>> +                                       struct ieee80211_vif *vif)
+>> +{
+>> +       struct rtl8xxxu_rx_addr_match_data *iter_data = data;
+>> +       struct ieee80211_sta *sta;
+>> +       struct ieee80211_hdr *hdr = iter_data->hdr;
+>> +       struct rtl8xxxu_priv *priv = iter_data->priv;
+>> +       struct rtl8xxxu_sta_info *sta_info;
+>> +       struct ieee80211_rx_status *rx_status = iter_data->rx_status;
+>> +       u8 *bssid = iter_data->bssid;
+>> +
+>> +       if (!ether_addr_equal(vif->bss_conf.bssid, bssid))
+>> +               return;
+>> +
+>> +       if (!(ether_addr_equal(vif->addr, hdr->addr1) ||
+>> +             ieee80211_is_beacon(hdr->frame_control)))
+>> +               return;
+>> +
+>> +       sta = ieee80211_find_sta_by_ifaddr(priv->hw, hdr->addr2,
+>> +                                          vif->addr);
+> 
+> Can't we search for 'sta' by rx_desc->mac_id? Then, you don't need a lot of
+> code to check address.
 
-This patch works with WCN7850 and QCN9274.
+I assume, you mean rx_desc->macid? When I try to test this, it looks to me as if 
+the assignment of macid to sta in rx does not match the assignment in the driver.
+For example, I expect the first connected station to be macid 2, which is also 
+sent to the firmware by report_connect, but in rxdesc it is macid 1. Can this 
+even be influenced by the driver?
 
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
 
-Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
----
-v2:
-1.Change the call way of ath12k_wmi_tlv_parse_alloc() based on
-wifi: ath12k: refactor ath12k_wmi_tlv_parse_alloc()
+> 
+>> +       if (!sta)
+>> +               return;
+>> +
+>> +       sta_info = (struct rtl8xxxu_sta_info *)sta->drv_priv;
+>> +       ewma_rssi_add(&sta_info->avg_rssi, -rx_status->signal);
+>> +}
+>> +
+> 
+> [...]
+> 
+>> @@ -7119,7 +7203,7 @@ static void rtl8xxxu_refresh_rate_mask(struct rtl8xxxu_priv *priv,
+>>          u8 go_up_gap = 5;
+>>          u8 macid = rtl8xxxu_get_macid(priv, sta);
+>>
+>> -       rssi_level = priv->rssi_level;
+>> +       rssi_level = priv->rssi_level[macid];
+> 
+> Is it possible to move 'rssi_level' into struct rtl8xxxu_sta_info?
+> 
+>>          snr = rtl8xxxu_signal_to_snr(signal);
+>>          snr_thresh_high = RTL8XXXU_SNR_THRESH_HIGH;
+>>          snr_thresh_low = RTL8XXXU_SNR_THRESH_LOW;
+> 
+> [...]
+> 
+>> @@ -7329,40 +7411,60 @@ static void rtl8xxxu_track_cfo(struct rtl8xxxu_priv *priv)
+>>          rtl8xxxu_set_atc_status(priv, abs(cfo_average) >= CFO_TH_ATC);
+>>   }
+>>
+>> -static void rtl8xxxu_watchdog_callback(struct work_struct *work)
+>> +static void rtl8xxxu_ra_iter(void *data, struct ieee80211_sta *sta)
+>>   {
+>> -       struct ieee80211_vif *vif;
+>> -       struct rtl8xxxu_priv *priv;
+>> -       int i;
+>> +       struct rtl8xxxu_sta_info *sta_info = (struct rtl8xxxu_sta_info *)sta->drv_priv;
+>> +       struct rtl8xxxu_priv *priv = data;
+>> +       int signal = -ewma_rssi_read(&sta_info->avg_rssi);
+> 
+> The unit conversion of signal is a little complicated --
+> from physt to rx_status->signal to sta_info->avg_rssi.
+> 
+> I think you did it well. Just want to confirm have you checked the final result
+> is equal to before at runtime?
 
- drivers/net/wireless/ath/ath12k/wmi.c | 35 ++++++++++++++++++++++++++-
- drivers/net/wireless/ath/ath12k/wmi.h |  5 ++++
- 2 files changed, 39 insertions(+), 1 deletion(-)
+Yes, I did a comparison in station mode and the values before and after look 
+similar.
 
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index e6276d92ea73..0ed1eaee1a75 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -164,6 +164,8 @@ static const struct ath12k_wmi_tlv_policy ath12k_wmi_tlv_policies[] = {
- 		.min_len = sizeof(struct wmi_vdev_delete_resp_event) },
- 	[WMI_TAG_TWT_ENABLE_COMPLETE_EVENT] = {
- 		.min_len = sizeof(struct wmi_twt_enable_event) },
-+	[WMI_TAG_TWT_DISABLE_COMPLETE_EVENT] = {
-+		.min_len = sizeof(struct wmi_twt_disable_event) },
- };
- 
- static __le32 ath12k_wmi_tlv_hdr(u32 cmd, u32 len)
-@@ -6701,6 +6703,35 @@ static void ath12k_wmi_twt_enable_event(struct ath12k_base *ab,
- 	kfree(tb);
- }
- 
-+static void ath12k_wmi_twt_disable_event(struct ath12k_base *ab,
-+					 struct sk_buff *skb)
-+{
-+	const void **tb;
-+	const struct wmi_twt_disable_event *ev;
-+	int ret;
-+
-+	tb = ath12k_wmi_tlv_parse_alloc(ab, skb, GFP_ATOMIC);
-+	if (IS_ERR(tb)) {
-+		ret = PTR_ERR(tb);
-+		ath12k_warn(ab, "failed to parse wmi twt disable status event tlv: %d\n",
-+			    ret);
-+		return;
-+	}
-+
-+	ev = tb[WMI_TAG_TWT_DISABLE_COMPLETE_EVENT];
-+	if (!ev) {
-+		ath12k_warn(ab, "failed to fetch twt disable wmi event\n");
-+		goto exit;
-+	}
-+
-+	ath12k_dbg(ab, ATH12K_DBG_MAC, "wmi twt disable event pdev id %d status %u\n",
-+		   le32_to_cpu(ev->pdev_id),
-+		   le32_to_cpu(ev->status));
-+
-+exit:
-+	kfree(tb);
-+}
-+
- static void ath12k_wmi_op_rx(struct ath12k_base *ab, struct sk_buff *skb)
- {
- 	struct wmi_cmd_hdr *cmd_hdr;
-@@ -6799,10 +6830,12 @@ static void ath12k_wmi_op_rx(struct ath12k_base *ab, struct sk_buff *skb)
- 	case WMI_TWT_ENABLE_EVENTID:
- 		ath12k_wmi_twt_enable_event(ab, skb);
- 		break;
-+	case WMI_TWT_DISABLE_EVENTID:
-+		ath12k_wmi_twt_disable_event(ab, skb);
-+		break;
- 	/* add Unsupported events here */
- 	case WMI_TBTTOFFSET_EXT_UPDATE_EVENTID:
- 	case WMI_PEER_OPER_MODE_CHANGE_EVENTID:
--	case WMI_TWT_DISABLE_EVENTID:
- 	case WMI_PDEV_DMA_RING_CFG_RSP_EVENTID:
- 		ath12k_dbg(ab, ATH12K_DBG_WMI,
- 			   "ignoring unsupported event 0x%x\n", id);
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
-index 7570ef7be38d..d9e8b10a3c3c 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.h
-+++ b/drivers/net/wireless/ath/ath12k/wmi.h
-@@ -4802,6 +4802,11 @@ struct wmi_twt_enable_event {
- 	__le32 status;
- } __packed;
- 
-+struct wmi_twt_disable_event {
-+	__le32 pdev_id;
-+	__le32 status;
-+} __packed;
-+
- void ath12k_wmi_init_qcn9274(struct ath12k_base *ab,
- 			     struct ath12k_wmi_resource_config_arg *config);
- void ath12k_wmi_init_wcn7850(struct ath12k_base *ab,
--- 
-2.34.1
+> 
+> [...]
+> 
 
 
