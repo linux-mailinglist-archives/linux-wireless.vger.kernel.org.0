@@ -1,48 +1,51 @@
-Return-Path: <linux-wireless+bounces-2324-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2325-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 524A68362BB
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 12:59:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF2AB8362BC
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 12:59:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85C251C234DD
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 11:59:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A86AB2995CD
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 11:59:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE0D13A8F9;
-	Mon, 22 Jan 2024 11:59:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22FDA3B198;
+	Mon, 22 Jan 2024 11:59:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="FGEijjOx"
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="cznQeIYe"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from forward102b.mail.yandex.net (forward102b.mail.yandex.net [178.154.239.149])
+Received: from forward203b.mail.yandex.net (forward203b.mail.yandex.net [178.154.239.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA1183A8F5
-	for <linux-wireless@vger.kernel.org>; Mon, 22 Jan 2024 11:59:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.149
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6EE43A8F5
+	for <linux-wireless@vger.kernel.org>; Mon, 22 Jan 2024 11:59:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705924751; cv=none; b=HNJIQaGsxUE+UrqmCRLcw/Jarttit9ARbM8RMOw3aga/jhyimuZDhq2cTfERG9q6udmBVaxEFXdyugRVml/pLQdjOdKKEw5g7QOZxQDzy2fYVK4XfcgbEJ9vyGMIdKZa5SNPbyE7dY6RZT7/MTSSO+DHUWtpPlIZ/5zYHozV38U=
+	t=1705924760; cv=none; b=YCPBzoekw5YXO/2jcsQq0IXBrLKKULwukVNsioSohdtcivEqmFyTIoTi9XFbND005isMkmiN7awlu8s3yjaG5/WBRqIWLAzLp//iEHWITFczftX3vSc318kE+UEaqK4fXnn25iZIhKgTBe+xc1e2u9FRJAEFZ1PzFSPfnAX/Icc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705924751; c=relaxed/simple;
-	bh=otPeA/GCwhNW6ZNFeugpra1/LWH0JekN+gek8heo7Kk=;
+	s=arc-20240116; t=1705924760; c=relaxed/simple;
+	bh=Huv2kCm8YDja61KX9wU5fTjWn3aG2BpUVHQWy+Gc8AA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X3HmNM9d/uX8QfHwU89g8qZ6kYVtlOZCsZsvSzeB0EpWkHInihi+BULtWNA252RZsZmpBLjb0w3u55LA7ezQcg9D8Tq0nj+/S4VoROvgWxtsc8AxjQrFD3ZqffsguOdSggnYpTbzHG9uChYf32WxZfjatu43diiqGsLNKLYWz5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=FGEijjOx; arc=none smtp.client-ip=178.154.239.149
+	 MIME-Version; b=NU/EtTSBWptpxBz3Bf6QvtGLnwI8s5ZZEoAKvgCUdcPEyLFUy34AH4BDkjqV4Z3b1GlkZSsq5aTEYOWgChNdjgx/QkQvwpb5smp3xOJFPVCvM+ZXiqXs5OJlOgm+woHvGcJjEKUo/p4834VaCJ2N6dVbM9YlfCkN+kdPEaZJO1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=cznQeIYe; arc=none smtp.client-ip=178.154.239.154
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
+Received: from forward100c.mail.yandex.net (forward100c.mail.yandex.net [IPv6:2a02:6b8:c03:500:1:45:d181:d100])
+	by forward203b.mail.yandex.net (Yandex) with ESMTPS id 9A5016649C
+	for <linux-wireless@vger.kernel.org>; Mon, 22 Jan 2024 14:59:09 +0300 (MSK)
 Received: from mail-nwsmtp-smtp-production-main-25.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-25.sas.yp-c.yandex.net [IPv6:2a02:6b8:c08:2e14:0:640:2cd1:0])
-	by forward102b.mail.yandex.net (Yandex) with ESMTPS id 654936098A;
-	Mon, 22 Jan 2024 14:58:59 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-25.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id wwPajqcAWKo0-okYju9jh;
-	Mon, 22 Jan 2024 14:58:58 +0300
+	by forward100c.mail.yandex.net (Yandex) with ESMTPS id 26C2460911;
+	Mon, 22 Jan 2024 14:59:02 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-25.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id wwPajqcAWKo0-CRuNCKaG;
+	Mon, 22 Jan 2024 14:59:01 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1705924738; bh=Ovcz7Fw3FNU/m4f1SdnjVR2d3gKU2wh9K/KWXos5QK8=;
+	t=1705924741; bh=+1PWKl1LsQy1CAMxKEL8TW08Qy7sKzfy7KiVAJUQK8Y=;
 	h=In-Reply-To:Cc:References:To:Message-ID:Date:Subject:From;
-	b=FGEijjOx8tsxVaeYdbTB8+uyvBCZRevxpfvPppCTm56z1kOLvc+vQLwV/WOujpK/y
-	 isKPJP3wzUotO6Lijd3my9I5PFxnA5uqoSSZO8SxpBNHXS+WftsuFQWY62Cl2EQMRm
-	 /M9/gTl4in1IXztwWasGV2Its5VGfCR2oflH/ZGg=
+	b=cznQeIYe/57cY1hTBdto5HR6LtIz7xAOfWGr1HYlpVsH8v5ey5owAEE3J+o9UTvEI
+	 fcgyxDEwlOYxwQY7jD46Ezn3Uov6YMo+arckAhN5Au9I1Lf2kxKy4aek4amtNdhKdA
+	 s3V2DdfgW960f6LQD8iKDte6Cr5eBQmr7Y2Ia880=
 Authentication-Results: mail-nwsmtp-smtp-production-main-25.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
 From: Dmitry Antipov <dmantipov@yandex.ru>
 To: Arend van Spriel <arend.vanspriel@broadcom.com>
@@ -51,12 +54,13 @@ Cc: Bjorn Helgaas <helgaas@kernel.org>,
 	linux-wireless@vger.kernel.org,
 	lvc-project@linuxtesting.org,
 	Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH 1/2] [v3] wifi: brcmfmac: handle possible completion timeouts
-Date: Mon, 22 Jan 2024 14:57:24 +0300
-Message-ID: <20240122115749.67682-1-dmantipov@yandex.ru>
+Subject: [PATCH 2/2] [v3] wifi: brcmfmac: handle possible PCIE irq handling errors
+Date: Mon, 22 Jan 2024 14:57:25 +0300
+Message-ID: <20240122115749.67682-2-dmantipov@yandex.ru>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <4cc44b07-13bd-49d0-b10f-b88875380f8c@broadcom.com>
+In-Reply-To: <20240122115749.67682-1-dmantipov@yandex.ru>
 References: <4cc44b07-13bd-49d0-b10f-b88875380f8c@broadcom.com>
+ <20240122115749.67682-1-dmantipov@yandex.ru>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,114 +69,58 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Handle possible 'wait_for_completion_timeout()' errors in
-'brcmf_p2p_af_searching_channel()' and 'brcmf_p2p_del_vif()',
-fix spelling and add comments where appropriate. Compile
-tested only.
+Switch to newer 'pci_{alloc,feee}_irq_vectors()' API and handle
+possible errors in 'brcmf_pcie_request_irq()'. Compile tested only.
 
 Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
+Suggested-by: Bjorn Helgaas <helgaas@kernel.org>
 Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 ---
-v3: adjust per Arend's review
+v3: switch to 'pci_{alloc,feee}_irq_vectors()' per Bjorn's review
 v2: rebase against wireless-next tree
 ---
- .../broadcom/brcm80211/brcmfmac/p2p.c         | 36 +++++++++++--------
- 1 file changed, 22 insertions(+), 14 deletions(-)
+ .../net/wireless/broadcom/brcm80211/brcmfmac/pcie.c    | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
-index 6e0c90f4718b..a346c5a6e602 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
-@@ -1151,6 +1151,7 @@ static s32 brcmf_p2p_af_searching_channel(struct brcmf_p2p_info *p2p)
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+index 80220685f5e4..0f77d94f34a3 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+@@ -965,6 +965,7 @@ static irqreturn_t brcmf_pcie_isr_thread(int irq, void *arg)
+ 
+ static int brcmf_pcie_request_irq(struct brcmf_pciedev_info *devinfo)
  {
- 	struct afx_hdl *afx_hdl = &p2p->afx_hdl;
- 	struct brcmf_cfg80211_vif *pri_vif;
-+	bool timeout = false;
- 	s32 retry;
++	int ret;
+ 	struct pci_dev *pdev = devinfo->pdev;
+ 	struct brcmf_bus *bus = dev_get_drvdata(&pdev->dev);
  
- 	brcmf_dbg(TRACE, "Enter\n");
-@@ -1173,8 +1174,10 @@ static s32 brcmf_p2p_af_searching_channel(struct brcmf_p2p_info *p2p)
- 			  retry);
- 		/* search peer on peer's listen channel */
- 		schedule_work(&afx_hdl->afx_work);
--		wait_for_completion_timeout(&afx_hdl->act_frm_scan,
--					    P2P_AF_FRM_SCAN_MAX_WAIT);
-+		timeout = !wait_for_completion_timeout
-+			(&afx_hdl->act_frm_scan, P2P_AF_FRM_SCAN_MAX_WAIT);
-+		if (timeout)
-+			break;
- 		if ((afx_hdl->peer_chan != P2P_INVALID_CHANNEL) ||
- 		    (!test_bit(BRCMF_P2P_STATUS_FINDING_COMMON_CHANNEL,
- 			       &p2p->status)))
-@@ -1186,8 +1189,11 @@ static s32 brcmf_p2p_af_searching_channel(struct brcmf_p2p_info *p2p)
- 			/* listen on my listen channel */
- 			afx_hdl->is_listen = true;
- 			schedule_work(&afx_hdl->afx_work);
--			wait_for_completion_timeout(&afx_hdl->act_frm_scan,
--						    P2P_AF_FRM_SCAN_MAX_WAIT);
-+			timeout = !wait_for_completion_timeout
-+				(&afx_hdl->act_frm_scan,
-+				 P2P_AF_FRM_SCAN_MAX_WAIT);
-+			if (timeout)
-+				break;
- 		}
- 		if ((afx_hdl->peer_chan != P2P_INVALID_CHANNEL) ||
- 		    (!test_bit(BRCMF_P2P_STATUS_FINDING_COMMON_CHANNEL,
-@@ -1209,7 +1215,7 @@ static s32 brcmf_p2p_af_searching_channel(struct brcmf_p2p_info *p2p)
+@@ -972,11 +973,14 @@ static int brcmf_pcie_request_irq(struct brcmf_pciedev_info *devinfo)
  
- 	clear_bit(BRCMF_P2P_STATUS_FINDING_COMMON_CHANNEL, &p2p->status);
+ 	brcmf_dbg(PCIE, "Enter\n");
  
--	return afx_hdl->peer_chan;
-+	return timeout ? P2P_INVALID_CHANNEL : afx_hdl->peer_chan;
- }
- 
- 
-@@ -1580,10 +1586,11 @@ static s32 brcmf_p2p_tx_action_frame(struct brcmf_p2p_info *p2p,
- 		  (p2p->wait_for_offchan_complete) ?
- 		   "off-channel" : "on-channel");
- 
-+	/* timeout would cause the code to proceed in the else branch below */
- 	wait_for_completion_timeout(&p2p->send_af_done, P2P_AF_MAX_WAIT_TIME);
- 
- 	if (test_bit(BRCMF_P2P_STATUS_ACTION_TX_COMPLETED, &p2p->status)) {
--		brcmf_dbg(TRACE, "TX action frame operation is success\n");
-+		brcmf_dbg(TRACE, "TX action frame operation has succeeded\n");
- 	} else {
- 		err = -EIO;
- 		brcmf_dbg(TRACE, "TX action frame operation has failed\n");
-@@ -2371,7 +2378,7 @@ int brcmf_p2p_del_vif(struct wiphy *wiphy, struct wireless_dev *wdev)
- 	struct brcmf_cfg80211_vif *vif;
- 	enum nl80211_iftype iftype;
- 	bool wait_for_disable = false;
--	int err;
-+	int err = 0;
- 
- 	brcmf_dbg(TRACE, "delete P2P vif\n");
- 	vif = container_of(wdev, struct brcmf_cfg80211_vif, wdev);
-@@ -2403,14 +2410,15 @@ int brcmf_p2p_del_vif(struct wiphy *wiphy, struct wireless_dev *wdev)
- 	clear_bit(BRCMF_P2P_STATUS_GO_NEG_PHASE, &p2p->status);
- 	brcmf_dbg(INFO, "P2P: GO_NEG_PHASE status cleared\n");
- 
--	if (wait_for_disable)
--		wait_for_completion_timeout(&cfg->vif_disabled,
--					    BRCMF_P2P_DISABLE_TIMEOUT);
--
--	err = 0;
- 	if (iftype != NL80211_IFTYPE_P2P_DEVICE) {
--		brcmf_vif_clear_mgmt_ies(vif);
--		err = brcmf_p2p_release_p2p_if(vif);
-+		if (wait_for_disable)
-+			err = (wait_for_completion_timeout
-+			       (&cfg->vif_disabled,
-+				BRCMF_P2P_DISABLE_TIMEOUT) ? 0 : -ETIMEDOUT);
-+		if (!err) {
-+			brcmf_vif_clear_mgmt_ies(vif);
-+			err = brcmf_p2p_release_p2p_if(vif);
-+		}
+-	pci_enable_msi(pdev);
++	ret = pci_alloc_irq_vectors(pdev, 1, 1, PCI_IRQ_ALL_TYPES);
++	if (ret < 0)
++		return ret;
++
+ 	if (request_threaded_irq(pdev->irq, brcmf_pcie_quick_check_isr,
+ 				 brcmf_pcie_isr_thread, IRQF_SHARED,
+ 				 "brcmf_pcie_intr", devinfo)) {
+-		pci_disable_msi(pdev);
++		pci_free_irq_vectors(pdev);
+ 		brcmf_err(bus, "Failed to request IRQ %d\n", pdev->irq);
+ 		return -EIO;
  	}
- 	if (!err) {
- 		/* wait for firmware event */
+@@ -997,7 +1001,7 @@ static void brcmf_pcie_release_irq(struct brcmf_pciedev_info *devinfo)
+ 
+ 	brcmf_pcie_intr_disable(devinfo);
+ 	free_irq(pdev->irq, devinfo);
+-	pci_disable_msi(pdev);
++	pci_free_irq_vectors(pdev);
+ 
+ 	msleep(50);
+ 	count = 0;
 -- 
 2.43.0
 
