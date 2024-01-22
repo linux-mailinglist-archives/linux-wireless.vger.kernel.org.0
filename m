@@ -1,98 +1,108 @@
-Return-Path: <linux-wireless+bounces-2304-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2305-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 164D3835BBA
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 08:36:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87C92835C3B
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 09:03:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD08F28524A
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 07:36:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16E071F22FF4
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 08:03:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1774E12E4B;
-	Mon, 22 Jan 2024 07:36:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VcOR1R2y"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CFB218AFA;
+	Mon, 22 Jan 2024 08:03:37 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDBDD10A16;
-	Mon, 22 Jan 2024 07:36:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53CBD18640;
+	Mon, 22 Jan 2024 08:03:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705908973; cv=none; b=IdT0o5/4gLR6rGrhEE6MJkHg9gycOXzAQd8EdVeBmbzJU6vuHdRPlePz0d47Ldyc6zbEihLzNnmWo/+ajLXlekQyTx2CDIWsyVrMKZSV7g8iIo18WLCsr4ueHTjdXX5OXrddFdXu9DC+bf7s6ewGerLoMLFAj0eHGz6gaWC0+6Q=
+	t=1705910617; cv=none; b=myeZw4ZpRRO2uPq0i99cHKZasiWth1F14d6RC6Hcxn5zQPaH0Bd8SOZCL7B2aCI6jDWYvPs7KP3FI/w/+CdJMo4Dt9gMk5+sqP0KviAmEXbhIZW9U1zx7BQ6LwQoluieMEtNiS+Cr9/5YxGFTxpscTrvEz/iXBpFq70kKVtpOhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705908973; c=relaxed/simple;
-	bh=SrTp3PRpdblpdcnQdNS+rwPFtdOvVuJC8W/HbbUn+nk=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=Whv9S2UGL+yhG5U9VESnuRdEx5hD0/pQ2Rrj8oA2AEO6TQ5CB0HFIU7qYAiv9K+7Bmg8vdW39yLO9b4y8q4dHiTRosUUskIIyN/KQE1E+SkAkw96MTFaBaGFgB7u4y5YBBW/QMtY/zZC9LOgdSMIW/J3VZ57zFaM2UeLarIbWpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VcOR1R2y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AA07C433C7;
-	Mon, 22 Jan 2024 07:36:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705908972;
-	bh=SrTp3PRpdblpdcnQdNS+rwPFtdOvVuJC8W/HbbUn+nk=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=VcOR1R2y6rJWJCNmM6ZDa6R8IR9TayybDUsbDEdtDackdY0aDMnEZWvm7Znu621To
-	 7RNBVFztI8H93etVqGE7lUzCBERKj8ZeOMJSmhHPGkZ+kcDUpHbTxYfVa7aaHYOcor
-	 4ybqqi6S5shb0D8pchutI6dDi/A6jvtjPtEvs4JV4pYWST1y+1JmuZzShnOEg3C65g
-	 ER2sZi7xIF9O+GXc/hAJ4wpluVIw3+UvhzlEFSbblGSNWsyjb7ML3YJ0bx8+9v2lfb
-	 IaDmPalmLKHe782zFgjR3aHG0eG0Bh++VbRHcvemFyfTN9M/Yo2vB1YHqet5Gja9lH
-	 22Kgyo1EGsieA==
-From: Kalle Valo <kvalo@kernel.org>
-To: ath11k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org,  regressions@lists.linux.dev,
-  linux-kernel@vger.kernel.org
-Subject: Re: [regression] ath11k broken in v6.7
-References: <874jfjiolh.fsf@kernel.org> <87frytg7b8.fsf@kernel.org>
-	<878r4lg3t8.fsf@kernel.org>
-Date: Mon, 22 Jan 2024 09:36:08 +0200
-In-Reply-To: <878r4lg3t8.fsf@kernel.org> (Kalle Valo's message of "Fri, 19 Jan
-	2024 09:50:11 +0200")
-Message-ID: <87jzo13jmf.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1705910617; c=relaxed/simple;
+	bh=3ojb/BkssJXnY53bJxstuYoB/xCo93EEKG5tDFtlPRM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bWTgBr8rtEuRkDbLZaIFbzqGNd37sC5/NqPWahJMsczBvJEppGk8YJTFE0YRg0iJtY+iNQ1oF4ywoeVzl2+KrtmY/kLkWLMxUuc4cWRLBSX6xDqgxCSEuxvIRZadZwmGE5v7kW2pieOKJPmo2xjLEGXAs3iMwx4vcBXMf+mzgDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1rRpHD-00034m-MQ; Mon, 22 Jan 2024 09:03:27 +0100
+Message-ID: <94150b26-bdd9-49c2-82a1-26ff46c9d32a@leemhuis.info>
+Date: Mon, 22 Jan 2024 09:03:27 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [regression] ath11k broken in v6.7
+Content-Language: en-US, de-DE
+To: Kalle Valo <kvalo@kernel.org>, ath11k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org, regressions@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+References: <874jfjiolh.fsf@kernel.org> <87frytg7b8.fsf@kernel.org>
+ <878r4lg3t8.fsf@kernel.org> <87jzo13jmf.fsf@kernel.org>
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <87jzo13jmf.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1705910615;7459a376;
+X-HE-SMSGID: 1rRpHD-00034m-MQ
 
-Kalle Valo <kvalo@kernel.org> writes:
-
+On 22.01.24 08:36, Kalle Valo wrote:
 > Kalle Valo <kvalo@kernel.org> writes:
->
 >> Kalle Valo <kvalo@kernel.org> writes:
->>
->>> Just trying to make everyone aware because I suspect this will affect
->>> quite a few people: ath11k is crashing during suspend on v6.7 due to a
->>> mac80211 patch, more info:
+>>> Kalle Valo <kvalo@kernel.org> writes:
 >>>
->>> https://bugzilla.kernel.org/show_bug.cgi?id=218364
+>>>> Just trying to make everyone aware because I suspect this will affect
+>>>> quite a few people: ath11k is crashing during suspend on v6.7 due to a
+>>>> mac80211 patch, more info:
+>>>> https://bugzilla.kernel.org/show_bug.cgi?id=218364
+
+Many thx for the heads up, much appreciated. Sorry, forgot to add it to
+the tracking myself: during the merge window thing are sometimes a bit
+chaotic for myself as well. And I was head-down in rewriting some parts
+of regzbot (see below).
+
+>>>> Proposed fix:
+>>>> https://patchwork.kernel.org/project/linux-wireless/patch/20240111170629.1257217-1-benjamin@sipsolutions.net/
 >>>
->>> Proposed fix:
+>>> The fix is now applied:
 >>>
->>> https://patchwork.kernel.org/project/linux-wireless/patch/20240111170629.1257217-1-benjamin@sipsolutions.net/
+>>> https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git/commit/?id=556857aa1d0855aba02b1c63bc52b91ec63fc2cc
+>>>
+>>> I'll try to use regzbot for the first time, let's see how it goes:
+>>>
+>>> #regzbot introduced: 0a3d898ee9a8 ^
 >>
->> The fix is now applied:
+>> Forgot to include the bug report:
 >>
->> https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git/commit/?id=556857aa1d0855aba02b1c63bc52b91ec63fc2cc
->>
->> I'll try to use regzbot for the first time, let's see how it goes:
->>
->> #regzbot introduced: 0a3d898ee9a8 ^
->
-> Forgot to include the bug report:
->
-> #regzbot link: https://bugzilla.kernel.org/show_bug.cgi?id=218364
+>> #regzbot link: https://bugzilla.kernel.org/show_bug.cgi?id=218364
 
-#regzbot fix: 556857aa1d0855aba02b1c63bc52b91ec63fc2cc
+FWIW, that usage was slightly off and not how it's supposed to be done.
+But whatever, let's ignore that. I'm reworking things currently
+slightly, as you are not the first one that slightly got mislead -- and
+the newer commands will hopefully be mire intuitive.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+> #regzbot fix: 556857aa1d0855aba02b1c63bc52b91ec63fc2cc
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Great, thx. Hope it reached mainline soon. Maybe once it's there you or
+I should tell Greg to pick this up quickly for stable given that it
+apparently "might affect quite a few people".
+
+Thx again!
+
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
 
