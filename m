@@ -1,123 +1,110 @@
-Return-Path: <linux-wireless+bounces-2307-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2308-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0266835C81
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 09:24:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C8C0835D6C
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 09:57:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8835E2862F4
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 08:24:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2F8F1F2470F
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 08:57:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C46E20DE2;
-	Mon, 22 Jan 2024 08:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D71FC3A1CA;
+	Mon, 22 Jan 2024 08:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U9yVUA7u"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="InQ7zlst"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D03F20DE0;
-	Mon, 22 Jan 2024 08:24:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 345C63A1C8
+	for <linux-wireless@vger.kernel.org>; Mon, 22 Jan 2024 08:54:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705911867; cv=none; b=m6aLmHchn7mQGPt70F+5k4Enyonl6Z9tkCQgkbE6eWx8Tiy4kZhLI/m71MAcBSAWvLU1p0n+NR6JBtP2uPTjwlXtKk8SAKKP2MZS5odonj45jDKcZqsLBwMbdIHrnZb4K8BBhhR5Kbw3FNmCuDRRoxdzMYKZQs/F7oialhK9EYc=
+	t=1705913657; cv=none; b=XJ3gA5ukhsrRdnYtu87bxXY7AtUE2HRiPXtDoQmfjNE2udCtL8z+xdTXI8kLSIF+QfQNxZUOfGQfS2f/yM0CKmyVBkTNYrKjn/pc9u96UxKxfir32DysocJD+SjY7kqy+AIhordfrsnFVlYK5zw08EXh0GK0r7eocoYJ51jlylA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705911867; c=relaxed/simple;
-	bh=+DIt2XHxR6GWd87F4zF71KKoFdrIBtRWA2j/kw1c0rI=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=R3LTN5cUd/+JPyTklE7v3XiZOoiFoTK0P5IFbqDOoY2WOVa1WN9k77U2bV4YPk/Z3JLgMI4YtM53uiNic7CjjnSSeCPQT1llfmXkiPkzV+D27zhg0E1bis2RjRiJ5YPWlljglJrqsIQTG7uOA0npJ9iGJBNiu5eZjB6jLgvjCw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U9yVUA7u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3693C433C7;
-	Mon, 22 Jan 2024 08:24:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705911867;
-	bh=+DIt2XHxR6GWd87F4zF71KKoFdrIBtRWA2j/kw1c0rI=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=U9yVUA7ussq3zLhB7QYCuHHjo7VA6uSyWsUtucbdkKJqLtHrXHCZlLTlb7AkP7x9p
-	 KAnO6b7eHzgEZnbaVH84M6vxblFJiBQjCV3Md/2QS6ehAAok6VfACKisSOq9lDiEFO
-	 LGPWTuyQ8KMbIYxXIAjwuODbhXn4lnGCm+1nScMmpYtqove6hSuQA4eJDdKLAbwlrJ
-	 cLrE1P4eTzV5lr9tMUupqCbfR9NoomokJcdW9L5xBqXvaOHjb+wPYw6t1Jsswb7lXd
-	 d7jqBa0Nz547WYXOZCzIp48mgmFtbuCNPKkDVT92lXDKZxrQQeXZ4ReZSKt5rpzN+s
-	 zo/NZkZfZBsvg==
-From: Kalle Valo <kvalo@kernel.org>
-To: "Linux regression tracking (Thorsten Leemhuis)" <regressions@leemhuis.info>
-Cc: ath11k@lists.infradead.org,  Linux regressions mailing list
- <regressions@lists.linux.dev>,  linux-wireless@vger.kernel.org,
-  linux-kernel@vger.kernel.org
-Subject: Re: [regression] ath11k broken in v6.7
-References: <874jfjiolh.fsf@kernel.org> <87frytg7b8.fsf@kernel.org>
-	<878r4lg3t8.fsf@kernel.org> <87jzo13jmf.fsf@kernel.org>
-	<94150b26-bdd9-49c2-82a1-26ff46c9d32a@leemhuis.info>
-Date: Mon, 22 Jan 2024 10:24:23 +0200
-In-Reply-To: <94150b26-bdd9-49c2-82a1-26ff46c9d32a@leemhuis.info> (Linux
-	regression tracking's message of "Mon, 22 Jan 2024 09:03:27 +0100")
-Message-ID: <87fryp3he0.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1705913657; c=relaxed/simple;
+	bh=iBs8DPxIvX8pcgOUGoUEviFGy25Dvsu7w1g1J7VeWKk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ggqpl68MtODRvrsQYCoBJp2STxkUeSyV0L/M5r9c8l4L1u1cZamri8FZx5FNz9gQadgzqjw59ZkTIn4AcF42JchQtQThW/ujMFb5E+lTF8/Zc+yPOcZDL3KJD7Zfg564nsXzxKPeu4vOS/+R5fQ12Mn818Cr5j+i36M2iwTCxT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=InQ7zlst; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40M8QC23022007;
+	Mon, 22 Jan 2024 08:54:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=qcppdkim1; bh=QHi93Vm
+	VVIBnqsqe+B/ofcwI5xBCxvtR69nYUIfnCQs=; b=InQ7zlst45hgojJzmd98yrO
+	uxdeuyvPgkPI+6M8b0KQ4A/f55MYqLiywNYl7Qo7e+MGGjF9XTmz6EdZzf0ywOng
+	99YfkfKGCu6jwES/ZDU4BppfbSe87zONiuL1A8aLDF2sPuaMbSw9GcFwuwx/Tvhv
+	wa7pirnHIgx8sPnN2aCASwLRKaR2t0tCKG7U0b59gMnlcH6F3sHgigh5hg2uiOlW
+	laOeajy8aYJDO8dJPbiLWpjqDC8xHYPzBDnUioICch0B+LYCmc8AlYE6ziX7OEl/
+	aBGiXawH6wtaqs76s/cpnGXYsYFsTEj5QJer5ow9/VN3alZkhXHSbyJxlQMVHQQ=
+	=
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vsmuag1pk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 22 Jan 2024 08:54:08 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40M8s7bO022526
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 22 Jan 2024 08:54:07 GMT
+Received: from lingbok-Latitude-E5440.qca.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Mon, 22 Jan 2024 00:54:06 -0800
+From: Lingbo Kong <quic_lingbok@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, <quic_lingbok@quicinc.com>
+Subject: [PATCH v2 0/2] wifi: ath12k: add processing for TWT enable/disable event
+Date: Mon, 22 Jan 2024 03:53:34 -0500
+Message-ID: <20240122085336.3985-1-quic_lingbok@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: iHbBweQraIZHumy2M9fa0sQf88zCLLxo
+X-Proofpoint-ORIG-GUID: iHbBweQraIZHumy2M9fa0sQf88zCLLxo
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-21_04,2024-01-19_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=439 mlxscore=0
+ clxscore=1011 impostorscore=0 suspectscore=0 spamscore=0
+ lowpriorityscore=0 priorityscore=1501 adultscore=0 bulkscore=0
+ phishscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2311290000 definitions=main-2401220062
 
-"Linux regression tracking (Thorsten Leemhuis)"
-<regressions@leemhuis.info> writes:
+This patch set is used for processing TWT enable/disable event. It can be
+more convenient to debug TWT.
 
-> On 22.01.24 08:36, Kalle Valo wrote:
->> Kalle Valo <kvalo@kernel.org> writes:
->>> Kalle Valo <kvalo@kernel.org> writes:
->>>> Kalle Valo <kvalo@kernel.org> writes:
->>>>
->>>>> Just trying to make everyone aware because I suspect this will affect
->>>>> quite a few people: ath11k is crashing during suspend on v6.7 due to a
->>>>> mac80211 patch, more info:
->>>>> https://bugzilla.kernel.org/show_bug.cgi?id=218364
->
-> Many thx for the heads up, much appreciated. Sorry, forgot to add it to
-> the tracking myself: during the merge window thing are sometimes a bit
-> chaotic for myself as well. And I was head-down in rewriting some parts
-> of regzbot (see below).
+The patches work with WCN7850 and QCN9274.
 
-No worries, this was a good time to learn all this myself.
+v2:
+1.Change the call way of ath12k_wmi_tlv_parse_alloc() based on 
+wifi: ath12k: refactor ath12k_wmi_tlv_parse_alloc()
 
->>>>> Proposed fix:
->>>>> https://patchwork.kernel.org/project/linux-wireless/patch/20240111170629.1257217-1-benjamin@sipsolutions.net/
->>>>
->>>> The fix is now applied:
->>>>
->>>> https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git/commit/?id=556857aa1d0855aba02b1c63bc52b91ec63fc2cc
->>>>
->>>> I'll try to use regzbot for the first time, let's see how it goes:
->>>>
->>>> #regzbot introduced: 0a3d898ee9a8 ^
->>>
->>> Forgot to include the bug report:
->>>
->>> #regzbot link: https://bugzilla.kernel.org/show_bug.cgi?id=218364
->
-> FWIW, that usage was slightly off and not how it's supposed to be done.
-> But whatever, let's ignore that. I'm reworking things currently
-> slightly, as you are not the first one that slightly got mislead -- and
-> the newer commands will hopefully be mire intuitive.
+Lingbo Kong (2):
+  wifi: ath12k: add processing for TWT enable event
+  wifi: ath12k: add processing for TWT disable event
 
-Just to educate myself, how should I have done it? (But feel free to
-skip the question if you are busy)
+ drivers/net/wireless/ath/ath12k/wmi.c | 70 ++++++++++++++++++++++++++-
+ drivers/net/wireless/ath/ath12k/wmi.h | 10 ++++
+ 2 files changed, 78 insertions(+), 2 deletions(-)
 
->> #regzbot fix: 556857aa1d0855aba02b1c63bc52b91ec63fc2cc
->
-> Great, thx. Hope it reached mainline soon. Maybe once it's there you or
-> I should tell Greg to pick this up quickly for stable given that it
-> apparently "might affect quite a few people".
 
-I'll try to remember that but the thing is that I don't really follow
-stable releases. I wish there would be a person who could follow stable
-releases from wireless perspective and make sure everything is ok there.
-
+base-commit: 8ff464a183f92836d7fd99edceef50a89d8ea797
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.34.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
