@@ -1,61 +1,61 @@
-Return-Path: <linux-wireless+bounces-2350-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2351-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57080837512
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 22:14:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88F0C8375C8
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 23:02:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB147B245F7
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 21:13:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADB761C2206C
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 22:02:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B04BF47F57;
-	Mon, 22 Jan 2024 21:13:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 684EC482F1;
+	Mon, 22 Jan 2024 22:01:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=egauge.net header.i=@egauge.net header.b="qzBx1Mi8"
+	dkim=pass (2048-bit key) header.d=egauge.net header.i=@egauge.net header.b="M/elnQB7"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from o1.ptr2625.egauge.net (o1.ptr2625.egauge.net [167.89.112.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A9E947F58
-	for <linux-wireless@vger.kernel.org>; Mon, 22 Jan 2024 21:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BDBE482EF
+	for <linux-wireless@vger.kernel.org>; Mon, 22 Jan 2024 22:01:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=167.89.112.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705958031; cv=none; b=OdBMgN9uQXz0wqFipPk6DTeJuNko3SfKpZixBjRckPcXEn6fDEWyqeF5bLRdyw5ikPHOpwJlLpdgbx3oMnTcJ7ZyP9Xwt+67/tSJV0MEayQ+AmugtDbQuGU7i4TKKJucbvrGc27qDERv4gNSwAoyYgM4V5cWZxGKs8NtaVa8BkI=
+	t=1705960911; cv=none; b=q6b3vXftgV+7eoLZOuW6QNAlHtteRvkau7+AdtIfsWoSYgLfchFNBq1nd88yVtDA8j+XzkfGQGlHPgR6/AYwhhCehzMRYDY9gYMSNzIFF2Y5Ei7JT46Vc3M+tgX1CH2U0qIuXr9LH4bDhHAjKPhI4APSOBGFP8a9RiCehR2/Ib4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705958031; c=relaxed/simple;
-	bh=rbglHXund1Ar9jLXOPI1xQPaUoiYO2tcWM+B0LarcDM=;
+	s=arc-20240116; t=1705960911; c=relaxed/simple;
+	bh=/dVl64iKYQ54+b07XG15WG2le/SASutKdSehbvjQSxQ=;
 	h=From:Subject:Date:Message-Id:In-Reply-To:References:MIME-Version:
-	 To:Cc:Content-Type; b=l5gUtJNAin99O4T73dZkkjiMHMpTxEW9+gfLdV2qUwmtLhFaBFM8ac/AjcFzkkqnetZKRPC7c/zMz+qrj7n4t8s/Ptm7iMf9Htotl4NJ67vEUDZKTjJj17g85TDy1/jDXz/hjzr/QG0ukhOssvbEr7N64fy9ASvArpUfdU44x6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=egauge.net; spf=pass smtp.mailfrom=em1190.egauge.net; dkim=pass (2048-bit key) header.d=egauge.net header.i=@egauge.net header.b=qzBx1Mi8; arc=none smtp.client-ip=167.89.112.53
+	 To:Cc:Content-Type; b=opnV0yyHNlH4MCL9tA4h9O4o6kLhKVvmtLkJjmJCKE9K8lhSKRj2n0cAMsHzIEGp/LheDvJNHUcQfK7gg7rw5/9PaODkPbBi9kd/BRgQplEDLL2Rn3uD+EMHC2/1KJqP/bWH07CP0zjW7X2eLeN+QaUnNdxErNhXNArvyVU0Qi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=egauge.net; spf=pass smtp.mailfrom=em1190.egauge.net; dkim=pass (2048-bit key) header.d=egauge.net header.i=@egauge.net header.b=M/elnQB7; arc=none smtp.client-ip=167.89.112.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=egauge.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em1190.egauge.net
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=egauge.net;
 	h=from:subject:in-reply-to:references:mime-version:to:cc:
 	content-transfer-encoding:content-type:cc:content-type:from:subject:to;
-	s=sgd; bh=vKmX4/ijLxSzmf8xw3HCMtg3WSXUJx54qwQBNOAVrWA=;
-	b=qzBx1Mi8c77SUATTwLU4w3UBZxP6J67v6kWZMV9Uz47eKN3OxkWGTPVPWXNWlxG3nKQ7
-	zoaWMXEPU+yIEmElDM2TTp8SMP3CUA6nLhx2DSihocg31Sd9+YN6Kx51UJd/JXyYO2zJ2N
-	k6l3dT0O1tJ2c8wneQwH9B5qXBl5FVATUG1qVgzKslQGqBCCx25RbJnU8aHr7Sr8Rxbnca
-	w0HAIM1MFfliCNTEySVM0BrzSPkNTCb/RFlvkw8jQcyzuylwcq/B6TsrRqIyAZyS1qfOeA
-	uex961WFpbUzfo92pKViZQxJIwVJf7hahlr2xCfyqe5bXCHTBHYp9jg4qQGXdxaw==
-Received: by filterdrecv-6b68c9f446-z5j6g with SMTP id filterdrecv-6b68c9f446-z5j6g-1-65AEDA8C-22
-        2024-01-22 21:13:48.749038018 +0000 UTC m=+8389969.483860544
+	s=sgd; bh=u+XXGbzEn6hrw4MnO5y+i7ufxwDA2vbM+qF0F9qd17A=;
+	b=M/elnQB7+K6SBHRFDMc9IuOb93yIHlx1bSw3gsV+b2TDFitzyXIwaEUwJ1SG94Obuoir
+	HJPGK3e1o8Elnwq+F6FQ6GyefomJZkqAVPjdBlr+6v8BsOO5As7ZzSRmk8Wm3uR9zaod9J
+	vlJA7MGsGeBeOz9Hjxrk23F8Qq5XQhLYCQkk6GrEbz/hRuim+f65aRdA+F7QQrNvE1Qc9U
+	RFSmieyW77NtvFcnO63C8g5qpywGVDfJBEZW5BNT24wrPaBrk7cTOPnEhJZxGOrZ0fENCH
+	oO6XYU4pKf/Jx6XVuHxe4LcqX1vf9j+ZJQuB+iqY395m02mvvyTWDliiRtDNtrfw==
+Received: by filterdrecv-5bbdbb56cd-khxc7 with SMTP id filterdrecv-5bbdbb56cd-khxc7-1-65AEE5CB-30
+        2024-01-22 22:01:47.997340678 +0000 UTC m=+981894.856206069
 Received: from pearl.egauge.net (unknown)
-	by geopod-ismtpd-6 (SG) with ESMTP
-	id mW_ynwy3QWGoeACOaJhGiw
-	Mon, 22 Jan 2024 21:13:48.609 +0000 (UTC)
+	by geopod-ismtpd-canary-0 (SG)
+	with ESMTP
+	id jj3dpCKiSLWOxZu_SIZmvQ
+	Mon, 22 Jan 2024 22:01:47.825 +0000 (UTC)
 Received: by pearl.egauge.net (Postfix, from userid 1000)
-	id EC536700494; Mon, 22 Jan 2024 14:13:47 -0700 (MST)
+	id 2E2D3700494; Mon, 22 Jan 2024 15:01:47 -0700 (MST)
 From: David Mosberger-Tang <davidm@egauge.net>
 Subject: [PATCH] wifi: wilc1000: validate chip id during bus probe
-Date: Mon, 22 Jan 2024 21:13:48 +0000 (UTC)
-Message-Id: <20240122211315.1444880-2-davidm@egauge.net>
+Date: Mon, 22 Jan 2024 22:01:48 +0000 (UTC)
+Message-Id: <20240122220137.1448644-1-davidm@egauge.net>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240122211315.1444880-1-davidm@egauge.net>
-References: <5ff15ae65ccb7c144ba8e0f07dc2ac25bd8b2b42.camel@egauge.net>
- <20240122211315.1444880-1-davidm@egauge.net>
+In-Reply-To: <20240122211315.1444880-2-davidm@egauge.net>
+References: <20240122211315.1444880-2-davidm@egauge.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -64,12 +64,12 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-SG-EID: 
  =?us-ascii?Q?+kMxBqj35EdRUKoy8diX1j4AXmPtd302oan+iXZuF8m2Nw4HRW2irNspffT=2Fkh?=
- =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvOGE0VifltSKXzJH3?=
- =?us-ascii?Q?piq7GZImp5MfS7MrbAOvUk9sdjpHRASWw7Deo3h?=
- =?us-ascii?Q?14=2FGiozgCZEJ45A9x6qb8kKoQt6CI5FKGwWdgAJ?=
- =?us-ascii?Q?P87SwjL0kA5HCf5gh+9KDwIp5tZknbURb+evUSv?=
- =?us-ascii?Q?j0DFJN+T1tpjHQ57ynDqAfTdqm+RByOUP6GKy0d?=
- =?us-ascii?Q?8mzPOufPm3WCa=2F3ZIUWjg=3D=3D?=
+ =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvIJT5aWrlcwUuIWn4?=
+ =?us-ascii?Q?ryjBpQINwf5U+Zjf7htBmZwMrK6LqAC43SZ1DoW?=
+ =?us-ascii?Q?NIqeiUi523GSc0GQcboTaEw4W0N63NACQGFYeKH?=
+ =?us-ascii?Q?SbimsrvsZd9YYOklAJsdlyvUpMjiQ+ci07DLeJY?=
+ =?us-ascii?Q?ZEuFFJR=2F7LdVjJHWUSQBvyQaOQOCirA2g642Hdk?=
+ =?us-ascii?Q?oiMs6U6ADBMVMZqb9QtSw=3D=3D?=
 To: linux-wireless@vger.kernel.org
 Cc: Ajay.Kathat@microchip.com, alexis.lothore@bootlin.com, kvalo@kernel.org,
 	David Mosberger-Tang <davidm@egauge.net>
@@ -84,6 +84,8 @@ probing detects a supported chip.
 
 Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
 ---
+V1 -> V2: Add missing forward declarations.
+
  drivers/net/wireless/microchip/wilc1000/spi.c | 131 ++++++++++++------
  .../net/wireless/microchip/wilc1000/wlan.h    |   1 +
  2 files changed, 88 insertions(+), 44 deletions(-)
