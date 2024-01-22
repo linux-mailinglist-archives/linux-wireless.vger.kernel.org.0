@@ -1,114 +1,98 @@
-Return-Path: <linux-wireless+bounces-2303-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2304-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B20E5835AEC
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 07:24:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 164D3835BBA
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 08:36:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3316B22D58
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 06:24:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD08F28524A
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 07:36:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF977610D;
-	Mon, 22 Jan 2024 06:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1774E12E4B;
+	Mon, 22 Jan 2024 07:36:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CY1ZkjTD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VcOR1R2y"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 976F063A0;
-	Mon, 22 Jan 2024 06:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDBDD10A16;
+	Mon, 22 Jan 2024 07:36:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705904665; cv=none; b=kTo05GcrwnNRuAX34de6Y6hZhC4aZc6Bru7Y+NzM8k6IsXizdOtmGTmuRyJFWAxAmT87BQWai5TX/nw93L+dBAnlTo2oRnb6kAW4MZe5y05nNfOWr9GEdcU/Vy10DzFq1e/UEMiJ0qMvxHjF+SHTky+MsnjNwWfbBJu2DGuZtE8=
+	t=1705908973; cv=none; b=IdT0o5/4gLR6rGrhEE6MJkHg9gycOXzAQd8EdVeBmbzJU6vuHdRPlePz0d47Ldyc6zbEihLzNnmWo/+ajLXlekQyTx2CDIWsyVrMKZSV7g8iIo18WLCsr4ueHTjdXX5OXrddFdXu9DC+bf7s6ewGerLoMLFAj0eHGz6gaWC0+6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705904665; c=relaxed/simple;
-	bh=ytQ70xzw9VFq0ngIprfNmliPx9LBkAoh27nHd5RHzYE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i9Bqk1HLbd3SpDC0f0tQObs1fWsDM1lW1owFyNcgFX1sCG1W29mj8IYK19adCRKU5GQt0KppWRiK4sHzODpXALMuFUy9VVm2VUctoZezBSOHI2tSP6tWYyc+n6OxzJuJ53t0cp+H6DdxJQ7ukfcwfkdE1CSB/gehjosLnymhEoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CY1ZkjTD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0572C433C7;
-	Mon, 22 Jan 2024 06:24:21 +0000 (UTC)
+	s=arc-20240116; t=1705908973; c=relaxed/simple;
+	bh=SrTp3PRpdblpdcnQdNS+rwPFtdOvVuJC8W/HbbUn+nk=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=Whv9S2UGL+yhG5U9VESnuRdEx5hD0/pQ2Rrj8oA2AEO6TQ5CB0HFIU7qYAiv9K+7Bmg8vdW39yLO9b4y8q4dHiTRosUUskIIyN/KQE1E+SkAkw96MTFaBaGFgB7u4y5YBBW/QMtY/zZC9LOgdSMIW/J3VZ57zFaM2UeLarIbWpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VcOR1R2y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AA07C433C7;
+	Mon, 22 Jan 2024 07:36:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705904665;
-	bh=ytQ70xzw9VFq0ngIprfNmliPx9LBkAoh27nHd5RHzYE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CY1ZkjTDYIl7+UJ1dyUpfirvwdoVAMRbMoqr9lWpPih1UFj+oYhgembV47LZcvka3
-	 ExmL9/w3jSOjXOu3sQ0hG9Sf0Wbmh5NvsZan+IxhCKH5c1c/dgYYV7fZ4aUkfWQ/ns
-	 lV05TA9OP5gb+AY2XqshCbLZkEEjz+gO1nbmwIEOLc4qHzeBvNjl7CryfR/YPoShfD
-	 Rn/yOP6PuRwBdNlvSkNkCno2V3Bs2xmxXq2LoAKI34rAoNH0Vcdsus0/IKMY9qvvGQ
-	 GDd37K0EOtunAA/DH5lQE8Lj7IbOa5AbjU0aUEe4DYmUu/2JjkjGFnOp6ba5/zEvhs
-	 Zq3Up7LuKcwPA==
-Date: Mon, 22 Jan 2024 11:54:11 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Manivannan Sadhasivam <mani@kernel.org>
-Cc: Baochen Qiang <quic_bqiang@quicinc.com>, Kalle Valo <kvalo@kernel.org>,
-	mhi@lists.linux.dev, ath11k@lists.infradead.org,
-	linux-wireless@vger.kernel.org, quic_cang@quicinc.com,
-	quic_qianyu@quicinc.com
-Subject: Re: [PATCH RFC v2 1/8] bus: mhi: host: add
- mhi_power_down_no_destroy()
-Message-ID: <20240122062411.GA3176@thinkpad>
-References: <20231127162022.518834-1-kvalo@kernel.org>
- <20231127162022.518834-2-kvalo@kernel.org>
- <20231130054250.GC3043@thinkpad>
- <87v89cq1ci.fsf@kernel.org>
- <20231220163209.GJ3544@thinkpad>
- <20231220165113.GK3544@thinkpad>
- <7a31696b-cf2b-48c0-bad3-327e9ce47172@quicinc.com>
- <20240104060904.GB3031@thinkpad>
+	s=k20201202; t=1705908972;
+	bh=SrTp3PRpdblpdcnQdNS+rwPFtdOvVuJC8W/HbbUn+nk=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=VcOR1R2y6rJWJCNmM6ZDa6R8IR9TayybDUsbDEdtDackdY0aDMnEZWvm7Znu621To
+	 7RNBVFztI8H93etVqGE7lUzCBERKj8ZeOMJSmhHPGkZ+kcDUpHbTxYfVa7aaHYOcor
+	 4ybqqi6S5shb0D8pchutI6dDi/A6jvtjPtEvs4JV4pYWST1y+1JmuZzShnOEg3C65g
+	 ER2sZi7xIF9O+GXc/hAJ4wpluVIw3+UvhzlEFSbblGSNWsyjb7ML3YJ0bx8+9v2lfb
+	 IaDmPalmLKHe782zFgjR3aHG0eG0Bh++VbRHcvemFyfTN9M/Yo2vB1YHqet5Gja9lH
+	 22Kgyo1EGsieA==
+From: Kalle Valo <kvalo@kernel.org>
+To: ath11k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org,  regressions@lists.linux.dev,
+  linux-kernel@vger.kernel.org
+Subject: Re: [regression] ath11k broken in v6.7
+References: <874jfjiolh.fsf@kernel.org> <87frytg7b8.fsf@kernel.org>
+	<878r4lg3t8.fsf@kernel.org>
+Date: Mon, 22 Jan 2024 09:36:08 +0200
+In-Reply-To: <878r4lg3t8.fsf@kernel.org> (Kalle Valo's message of "Fri, 19 Jan
+	2024 09:50:11 +0200")
+Message-ID: <87jzo13jmf.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240104060904.GB3031@thinkpad>
+Content-Type: text/plain
 
-On Thu, Jan 04, 2024 at 11:39:12AM +0530, Manivannan Sadhasivam wrote:
+Kalle Valo <kvalo@kernel.org> writes:
 
-+ Can, Qiang
+> Kalle Valo <kvalo@kernel.org> writes:
+>
+>> Kalle Valo <kvalo@kernel.org> writes:
+>>
+>>> Just trying to make everyone aware because I suspect this will affect
+>>> quite a few people: ath11k is crashing during suspend on v6.7 due to a
+>>> mac80211 patch, more info:
+>>>
+>>> https://bugzilla.kernel.org/show_bug.cgi?id=218364
+>>>
+>>> Proposed fix:
+>>>
+>>> https://patchwork.kernel.org/project/linux-wireless/patch/20240111170629.1257217-1-benjamin@sipsolutions.net/
+>>
+>> The fix is now applied:
+>>
+>> https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git/commit/?id=556857aa1d0855aba02b1c63bc52b91ec63fc2cc
+>>
+>> I'll try to use regzbot for the first time, let's see how it goes:
+>>
+>> #regzbot introduced: 0a3d898ee9a8 ^
+>
+> Forgot to include the bug report:
+>
+> #regzbot link: https://bugzilla.kernel.org/show_bug.cgi?id=218364
 
-[...]
-
-> > > To me it all sounds like the probe deferral is not handled properly in mac80211
-> > > stack. As you mentioned in the commit message that the dpm_prepare() blocks
-> > > probing of devices. It gets unblocked and trigerred in dpm_complete():
-> > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/base/power/main.c#n1131
-> > > 
-> > > So if mac80211/ath11k cannot probe the devices at the dpm_complete() stage, then
-> > > it is definitely an issue that needs to be fixed properly.
-> > To clarify, ath11k CAN probe the devices at dpm_complete() stage. The
-> > problem is kernel does not wait for all probes to finish, and in that way we
-> > will face the issue that user space applications are likely to fail because
-> > they get thawed BEFORE WLAN is ready.
-> > 
-> 
-> Hmm. Please give me some time to reproduce this issue locally. I will get back
-> to this thread with my analysis.
-> 
-
-We reproduced the issue with the help of PCIe team (thanks Can). What we found
-out was, during the resume from hibernation the faliure happens in
-ath11k_core_resume(). Precisely here:
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/tree/drivers/net/wireless/ath/ath11k/core.c?h=ath11k-hibernation-support#n850
-
-This code waits for the QMI messages to arrive and eventually timesout. But the
-impression I got from the start was that the mhi_power_up() always fails during
-resume. In our investigation, we confirmed that the failure is not happening at
-the MHI level.
-
-I'm not pointing fingers here, but trying to understand why can't you fix
-ath11k_core_resume() to not timeout? IMO this timeout should be handled as a
-deferral case.
-
-- Mani
+#regzbot fix: 556857aa1d0855aba02b1c63bc52b91ec63fc2cc
 
 -- 
-மணிவண்ணன் சதாசிவம்
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
