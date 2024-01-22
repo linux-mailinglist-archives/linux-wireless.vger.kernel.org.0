@@ -1,207 +1,137 @@
-Return-Path: <linux-wireless+bounces-2311-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2312-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B5F1835E2F
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 10:30:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19881835F9C
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 11:27:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 048FA28105B
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 09:30:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CD531C25B13
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 10:27:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 261E933CF8;
-	Mon, 22 Jan 2024 09:30:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="GgBVG+rw";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WHy4QR2t"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2F3B3D38F;
+	Mon, 22 Jan 2024 10:24:12 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A7233CF4
-	for <linux-wireless@vger.kernel.org>; Mon, 22 Jan 2024 09:30:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07413D0D8;
+	Mon, 22 Jan 2024 10:24:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705915826; cv=none; b=hwV7RPeZVmPyMClEDvFDo5Lw+7/mwtZELEA2eyR1iZktxdu1TgYXOYmSGcNWsnEZmJzBxJ7AGAPz1zY6HTYudb7XuL12ZBxnd2ufMR7sK1Jhv3NCKxEShsnLASPU6f1VP2y2FRmI1lDfHqYBMmtzp3X+7bh57te/CcdMP0Miz0o=
+	t=1705919052; cv=none; b=hEPLmzpGWpCa39ZOykzMwpe43y+ZpFSbBGlsJqdZJpbuAAPwZig3jfaMXU5rIwRFb5x9gbxCT8Ap5Y4D/IrhWkViGlP7qYn47gg/CL3dKVFThBQIE/MeagNsp4bMtvt8kEHlYDa46qrDAYwYoyqxO9c+/cSyEb44m7mG/MhNVx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705915826; c=relaxed/simple;
-	bh=qcy8U6Iaqjeh+WCsJ6AV+gMk6WkLxc7wSvFlvxk+0dU=;
+	s=arc-20240116; t=1705919052; c=relaxed/simple;
+	bh=Rr2AQ7zd4vwMdcv471OHCjd5FyGE0fpWiiEpedaYODQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XrXtcP/f6g+x1UydKXEgaosvkW092SqffthHkGjzQsUiNn/yTkHlN5r/QnMJrU+qJuIQs0e9rTGKTvkg24n82bSP0PlfMSoxYYp3Ri7n67jvseSiNo0eiGN1f+XAyETw1wWjnuWfOoGI1fhgIDVpqXc78RoIH/eunwayboBbn7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=GgBVG+rw; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WHy4QR2t; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Message-ID: <9aadc704-48ec-4417-82fa-c5f7b19801ff@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1705915821;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JAtwDoFDYba16sV4a5VfCkXzC5gXTdhAVWmoJkQBpTw=;
-	b=GgBVG+rwJuG8HTMlBoholMdyUA2LYnLjdIkhWpfkSIWa+cH3vud3q2OrY1LBS2dsLpE56d
-	bm6P0xgfZWg40D5l/cWGIlubQTyL/x9sk5pAaOmQ5uzJPAjOgyUD7zYRAN3rlLrl0nDo9x
-	5qRE1qo4UaGLSVNCqu8YKGRilvGc/TrVHCIA+Akex7aEoLrcNgelNLZ0sNIVHIJz0h3NaP
-	8tLmv8O24XmHM6J1Pxg5TVKfTaOdr0rq96aTi9f3ebKgd6YxCGFrFncDIvoYMG69vQAwRv
-	kxLfvTiQYNmeKRZrzzWaXlB1n8qe5MxzgDJJ6/XJGXKBLW62K6DkRQAw4xNkyw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1705915821;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JAtwDoFDYba16sV4a5VfCkXzC5gXTdhAVWmoJkQBpTw=;
-	b=WHy4QR2tiWSq74NQlcW8jMNPpnT5taoLd+sz0PFsN80L16hz+HwFGUtISY586Jdif/AlzE
-	uw5BqrZ3YX1QkxDw==
-Date: Mon, 22 Jan 2024 10:30:21 +0100
+	 In-Reply-To:Content-Type; b=A3JQ7OjI7iEJ0bxHUxrc5Mmf0vxXokueJHVrDQ2qIPbhpNZzhrbUmsaglsfIgbulCkifGVo1ox7qwpgS5Yal2mEIejyg0jQH0/unWpBJBq0VIsD7GWWA+3WYKu+DFdJACeuf8BoxF9ToNqMuSkj40xszE3X3Vipb4tJFWm2Muo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1rRrTM-0008R4-F5; Mon, 22 Jan 2024 11:24:08 +0100
+Message-ID: <0253854a-e5f9-4316-bec3-61aaf3ebfd1a@leemhuis.info>
+Date: Mon, 22 Jan 2024 11:24:06 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] wifi: rtl8xxxu: update rate mask per sta
-Content-Language: de-DE
-To: Ping-Ke Shih <pkshih@realtek.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Jes Sorensen <Jes.Sorensen@gmail.com>, Kalle Valo <kvalo@kernel.org>,
- Bitterblue Smith <rtl8821cerfe2@gmail.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-References: <20240117145516.497966-1-martin.kaistra@linutronix.de>
- <4d5f06f2407042f2862af7559ed66eac@realtek.com>
-From: Martin Kaistra <martin.kaistra@linutronix.de>
-In-Reply-To: <4d5f06f2407042f2862af7559ed66eac@realtek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+User-Agent: Mozilla Thunderbird
+Subject: Re: [regression] ath11k broken in v6.7
+Content-Language: en-US, de-DE
+To: Kalle Valo <kvalo@kernel.org>
+Cc: ath11k@lists.infradead.org,
+ Linux regressions mailing list <regressions@lists.linux.dev>,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <874jfjiolh.fsf@kernel.org> <87frytg7b8.fsf@kernel.org>
+ <878r4lg3t8.fsf@kernel.org> <87jzo13jmf.fsf@kernel.org>
+ <94150b26-bdd9-49c2-82a1-26ff46c9d32a@leemhuis.info>
+ <87fryp3he0.fsf@kernel.org>
+From: Thorsten Leemhuis <regressions@leemhuis.info>
+In-Reply-To: <87fryp3he0.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1705919050;08e9ea00;
+X-HE-SMSGID: 1rRrTM-0008R4-F5
 
-Am 18.01.24 um 02:37 schrieb Ping-Ke Shih:
-> 
-> 
->> -----Original Message-----
->> From: Martin Kaistra <martin.kaistra@linutronix.de>
->> Sent: Wednesday, January 17, 2024 10:55 PM
->> To: linux-wireless@vger.kernel.org
->> Cc: Jes Sorensen <Jes.Sorensen@gmail.com>; Kalle Valo <kvalo@kernel.org>; Ping-Ke Shih
->> <pkshih@realtek.com>; Bitterblue Smith <rtl8821cerfe2@gmail.com>; Sebastian Andrzej Siewior
->> <bigeasy@linutronix.de>
->> Subject: [PATCH] wifi: rtl8xxxu: update rate mask per sta
+On 22.01.24 09:24, Kalle Valo wrote:
+> "Linux regression tracking (Thorsten Leemhuis)"
+> <regressions@leemhuis.info> writes:
+>> On 22.01.24 08:36, Kalle Valo wrote:
+>>> Kalle Valo <kvalo@kernel.org> writes:
+>>>> Kalle Valo <kvalo@kernel.org> writes:
+>>>>> Kalle Valo <kvalo@kernel.org> writes:
+>>>>>>
+>>>>>> Proposed fix:
+>>>>>> https://patchwork.kernel.org/project/linux-wireless/patch/20240111170629.1257217-1-benjamin@sipsolutions.net/
+>>>>> The fix is now applied:
+>>>>> https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git/commit/?id=556857aa1d0855aba02b1c63bc52b91ec63fc2cc
+>>>>> I'll try to use regzbot for the first time, let's see how it goes:
+>>>>> #regzbot introduced: 0a3d898ee9a8 ^
+>>>> Forgot to include the bug report:
+>>>>
+>>>> #regzbot link: https://bugzilla.kernel.org/show_bug.cgi?id=218364
 >>
->> Until now, rtl8xxxu_watchdog_callback() only fetches RSSI and updates
->> the rate mask in station mode. This means, in AP mode only the default
->> rate mask is used.
->>
->> In order to have the rate mask reflect the actual connection quality,
->> extend rtl8xxxu_watchdog_callback() to iterate over every sta. Like in
->> the rtw88 driver, add a function to collect all currently present stas
->> and then iterate over a list of copies to ensure no RCU lock problems
->> for register access via USB. Remove the existing RCU lock in
->> rtl8xxxu_refresh_rate_mask().
->>
->> Since the currently used ieee80211_ave_rssi() is only for 'vif', add
->> driver-level tracking of RSSI per sta.
->>
->> Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
+>> FWIW, that usage was slightly off and not how it's supposed to be done.
+>> But whatever, let's ignore that. I'm reworking things currently
+>> slightly, as you are not the first one that slightly got mislead -- and
+>> the newer commands will hopefully be mire intuitive.
 > 
-> [...]
-> 
->> @@ -6317,6 +6318,76 @@ static void rtl8188e_c2hcmd_callback(struct work_struct *work)
->>          }
->>   }
->>
->> +#define rtl8xxxu_iterate_vifs_atomic(priv, iterator, data)                     \
->> +       ieee80211_iterate_active_interfaces_atomic((priv)->hw,                  \
->> +                       IEEE80211_IFACE_ITER_NORMAL, iterator, data)
->> +
->> +struct rtl8xxxu_rx_addr_match_data {
->> +       struct rtl8xxxu_priv *priv;
->> +       struct ieee80211_hdr *hdr;
->> +       struct ieee80211_rx_status *rx_status;
->> +       u8 *bssid;
->> +};
->> +
->> +static void rtl8xxxu_rx_addr_match_iter(void *data, u8 *mac,
->> +                                       struct ieee80211_vif *vif)
->> +{
->> +       struct rtl8xxxu_rx_addr_match_data *iter_data = data;
->> +       struct ieee80211_sta *sta;
->> +       struct ieee80211_hdr *hdr = iter_data->hdr;
->> +       struct rtl8xxxu_priv *priv = iter_data->priv;
->> +       struct rtl8xxxu_sta_info *sta_info;
->> +       struct ieee80211_rx_status *rx_status = iter_data->rx_status;
->> +       u8 *bssid = iter_data->bssid;
->> +
->> +       if (!ether_addr_equal(vif->bss_conf.bssid, bssid))
->> +               return;
->> +
->> +       if (!(ether_addr_equal(vif->addr, hdr->addr1) ||
->> +             ieee80211_is_beacon(hdr->frame_control)))
->> +               return;
->> +
->> +       sta = ieee80211_find_sta_by_ifaddr(priv->hw, hdr->addr2,
->> +                                          vif->addr);
-> 
-> Can't we search for 'sta' by rx_desc->mac_id? Then, you don't need a lot of
-> code to check address.
+> Just to educate myself, how should I have done it? (But feel free to
+> skip the question if you are busy)
 
-I assume, you mean rx_desc->macid? When I try to test this, it looks to me as if 
-the assignment of macid to sta in rx does not match the assignment in the driver.
-For example, I expect the first connected station to be macid 2, which is also 
-sent to the firmware by report_connect, but in rxdesc it is macid 1. Can this 
-even be influenced by the driver?
+I think that's not worth it, as I hope to introduce the new commands in
+the near future (but you know how it is with the last 5 to 10
+percent...). But let me show you how it's then supposed to be done in
+this situation, that way you can give early feedback:
 
+  #regzbot report: https://bugzilla.kernel.org/show_bug.cgi?id=218364
+  #regzbot introduced: 0a3d898ee9a8
 
-> 
->> +       if (!sta)
->> +               return;
->> +
->> +       sta_info = (struct rtl8xxxu_sta_info *)sta->drv_priv;
->> +       ewma_rssi_add(&sta_info->avg_rssi, -rx_status->signal);
->> +}
->> +
-> 
-> [...]
-> 
->> @@ -7119,7 +7203,7 @@ static void rtl8xxxu_refresh_rate_mask(struct rtl8xxxu_priv *priv,
->>          u8 go_up_gap = 5;
->>          u8 macid = rtl8xxxu_get_macid(priv, sta);
->>
->> -       rssi_level = priv->rssi_level;
->> +       rssi_level = priv->rssi_level[macid];
-> 
-> Is it possible to move 'rssi_level' into struct rtl8xxxu_sta_info?
-> 
->>          snr = rtl8xxxu_signal_to_snr(signal);
->>          snr_thresh_high = RTL8XXXU_SNR_THRESH_HIGH;
->>          snr_thresh_low = RTL8XXXU_SNR_THRESH_LOW;
-> 
-> [...]
-> 
->> @@ -7329,40 +7411,60 @@ static void rtl8xxxu_track_cfo(struct rtl8xxxu_priv *priv)
->>          rtl8xxxu_set_atc_status(priv, abs(cfo_average) >= CFO_TH_ATC);
->>   }
->>
->> -static void rtl8xxxu_watchdog_callback(struct work_struct *work)
->> +static void rtl8xxxu_ra_iter(void *data, struct ieee80211_sta *sta)
->>   {
->> -       struct ieee80211_vif *vif;
->> -       struct rtl8xxxu_priv *priv;
->> -       int i;
->> +       struct rtl8xxxu_sta_info *sta_info = (struct rtl8xxxu_sta_info *)sta->drv_priv;
->> +       struct rtl8xxxu_priv *priv = data;
->> +       int signal = -ewma_rssi_read(&sta_info->avg_rssi);
-> 
-> The unit conversion of signal is a little complicated --
-> from physt to rx_status->signal to sta_info->avg_rssi.
-> 
-> I think you did it well. Just want to confirm have you checked the final result
-> is equal to before at runtime?
+That "#regzbot report" will be new and make it more obvious to users
+what regzbot should consider to be the report (e.g. what Link:/Closes:
+tags later in commits fixing the issue will link to). You used "#regzbot
+introduced: 0a3d898ee9a8 ^" and due to the "^" it assumed the start of
+this thread would be the report (side note: mixing that aspect into the
+"introduced" command was a stupid idea anyway.).
 
-Yes, I did a comparison in station mode and the values before and after look 
-similar.
+That "#regzbot link:" will vanish as well (at least from the docs, it
+will remain to be supported), as people use it wrong in various
+different ways: for duplicates, reports (like your did), patch
+submissions fixing the issue (then 'regzbot monitor' should have been
+used) among others. Which is totally understandable now that I look at
+it. That's why it will be replaced by "#regzbot related: <url>" to avoid
+any connection with the Link: tag used in commits; for duplicates
+"#regzbot dup:" will stay around.
 
-> 
-> [...]
-> 
+>> Great, thx. Hope it reached mainline soon. Maybe once it's there you or
+>> I should tell Greg to pick this up quickly for stable given that it
+>> apparently "might affect quite a few people".
+> I'll try to remember that but the thing is that I don't really follow
+> stable releases.
 
+Let me do it, it's easy for me. And FWIW, I don't even follow the stable
+releases for that, I just drop Greg a mail when I notice the patch
+reached mainline through the weekly net merge. He'll take care of the rest.
+
+> I wish there would be a person who could follow stable
+> releases from wireless perspective and make sure everything is ok there.
+
+Maybe at some point regression tracking can help somewhat with that. But
+I still have to fix a few things to make people use it and scale it up.
+
+Side note: some people seem to have gotten the impression that I care a
+lot about *all* stable/longterm kernels. Let me use this opportunity to
+say that it's not really the case. I fully understand and respect that
+those series are a somewhat separate thing some developers don't want to
+be involved in (especially the older trees). But the thing is: the
+latest stable tree is what we tell users to use -- and something quite a
+few important distros ship as their regular kernel these days. That's
+why I take special care of regression that found there.
+
+Ciao, Thorsten
 
