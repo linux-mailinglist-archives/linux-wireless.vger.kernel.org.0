@@ -1,51 +1,51 @@
-Return-Path: <linux-wireless+bounces-2327-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2328-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3B7883640E
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 14:10:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAF6183650F
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 15:07:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 310421C24ECB
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 13:10:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83660289951
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 14:07:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 970743CF47;
-	Mon, 22 Jan 2024 13:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 494943D38D;
+	Mon, 22 Jan 2024 14:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KYFOdbuy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CzEHrh1l"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 702D63C6B3;
-	Mon, 22 Jan 2024 13:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 202DD3D388;
+	Mon, 22 Jan 2024 14:03:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705929006; cv=none; b=S7FpSoehodqe7qf+/CtmNGiCVzQYzvP4SW2KIBl7WqQnPSaPz5ziLQcyFahb1TQspWu+1e9sEQuF1jaxdpTHQHhWdfrYgSHw33lCogTsHnbM/1Lf4JIXwaik7JK1T/OdYGf3r3WJXfru9gMi3gaQbgqjyTv18FRqOZJ42JaLCxY=
+	t=1705932240; cv=none; b=nZtjgkxnRMqcsfLeBOsv+54B+RcZ5vaYO+PhxnuecdCD51PU/yh/sCwQ7/94YfTCW1GzEQwQqgIs55dbrXwsI9jGIP+MTIU9VNKgs6L4xvNRz7PtfZzj/vyPrLDMppF1Fa1SqwvhX2WMJSEOQBzMbqhBTqnvdpNESDuPzo7PBzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705929006; c=relaxed/simple;
-	bh=Ol96TTNYfOJdyv4nPvv9/24t5Z86jPnPqKam2MbKhfo=;
+	s=arc-20240116; t=1705932240; c=relaxed/simple;
+	bh=uB+xAUnhOKylzIpbYFxEwD5Rje9Cwg6aWG5W9GJI7Cs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pQeY64b5hUHrxxbdpFg2r/ORw2Oe0bT6RMB3wsz/MgJYHfWYG0kfz2S7Ua6yXaVbIcMVeXa05if8dMZ9auufE/6xTR1Wb0NEmIE8O7qD7eR+6mQcWBGjOb0Zr3c1lQ98hPBX/fXbUVi9ctOjZ3z5IMc+60fXtcvmchGjRPcVVaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KYFOdbuy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED2BCC433C7;
-	Mon, 22 Jan 2024 13:10:05 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=irxmVM/1IGY1lHemNmiesYhhfm/1XjBzQZfWO3gdr47LTq8MzrgB5w2IS0NsXmJoVxywI1VR/G2Md+R/vDNarhz6gdt6owkosCIoGCpZhA3nay1eQIDZz69NhoyFBkA9DZuS8Cu/izaO9scs0jCPzhuFcVsv4nN/P5izMXC0jmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CzEHrh1l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ADDCC433F1;
+	Mon, 22 Jan 2024 14:03:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705929006;
-	bh=Ol96TTNYfOJdyv4nPvv9/24t5Z86jPnPqKam2MbKhfo=;
+	s=k20201202; t=1705932239;
+	bh=uB+xAUnhOKylzIpbYFxEwD5Rje9Cwg6aWG5W9GJI7Cs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KYFOdbuyilxaaHOh5qzgYaJE+e7iG2+JYBD9R7IOieiz9dmxiaJLOmHrKgWnhcsTU
-	 PkTsXJR437gYgDDHnKeH1bqpl34GUjexQmzCyB018vp68IzEfpYmaWz6t20LrGbtZ1
-	 qPQyRsY7sSaPRYgBKY1c1O9DVrSLwhxWlHmxvDafWYd0WhDsn0o4XlQ/LIXNes3zWa
-	 i5M5yEtOQTostafqOftsVA0iFEZMzj1CsacfJPur8aLwNAqCUTXHVObSSMM1zgL7xX
-	 buKaYThBY/YM8gdm4JJ/+tSRRrQF3TNh4YJdxYtlq8qGzX3nTQoRAwjHIREOlyMj2m
-	 TOnGwYy5RHApg==
+	b=CzEHrh1lPdFqtVb9l+WgSxQUnjB7Aw6g1D1N9dKatukMp6j8UbcCiZDJsth8RLU/u
+	 G73PtI+HjAQsBN7eW9AjxM+QyiGiD35Ny449HnyBltZc6FV4QIZcVS5KH6vWWl3W6x
+	 gyAIh8znB+E3vF6UJlPPFq0gaaITQd7E8zmf40EjDv3RVrYoCpgnj5hewia4Huh/t7
+	 9U34BJhmnQsdGnAfs3p6MAycc/3hGrbTpInJ6fMxHf8qGTAD15XtYqdBQmBi1Pu+9d
+	 106XbGZ4nC7sxWHW8XeBmfVSIkVspsAlJzztUKOUJR71KjL5GWu21GeR0yF7xL78U1
+	 MgwwAVdSWfBwg==
 Received: from johan by xi.lan with local (Exim 4.97.1)
 	(envelope-from <johan@kernel.org>)
-	id 1rRu48-0000000083I-261d;
-	Mon, 22 Jan 2024 14:10:17 +0100
-Date: Mon, 22 Jan 2024 14:10:16 +0100
+	id 1rRuuJ-000000008K2-1TOS;
+	Mon, 22 Jan 2024 15:04:11 +0100
+Date: Mon, 22 Jan 2024 15:04:11 +0100
 From: Johan Hovold <johan@kernel.org>
 To: Kalle Valo <kvalo@kernel.org>
 Cc: Johan Hovold <johan+linaro@kernel.org>,
@@ -53,11 +53,12 @@ Cc: Johan Hovold <johan+linaro@kernel.org>,
 	ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Subject: Re: ath11k: checking RCU usage
-Message-ID: <Za5pOIkQ0SN2XzHr@hovoldconsulting.com>
+Message-ID: <Za5124pntbOOtURc@hovoldconsulting.com>
 References: <20231019153115.26401-1-johan+linaro@kernel.org>
  <87o7goxget.fsf@kernel.org>
  <ZTfgJCBxsNv3bVjv@hovoldconsulting.com>
  <87zfx98r6a.fsf_-_@kernel.org>
+ <Za5pOIkQ0SN2XzHr@hovoldconsulting.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -66,42 +67,23 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87zfx98r6a.fsf_-_@kernel.org>
+In-Reply-To: <Za5pOIkQ0SN2XzHr@hovoldconsulting.com>
 
-Hi Kalle,
+On Mon, Jan 22, 2024 at 02:10:17PM +0100, Johan Hovold wrote:
+> On Sat, Jan 13, 2024 at 12:26:53PM +0200, Kalle Valo wrote:
 
-On Sat, Jan 13, 2024 at 12:26:53PM +0200, Kalle Valo wrote:
-> (old discussion, changing title)
+> > I just found out that sparse has __must_hold():
+> > 
+> > https://lore.kernel.org/linux-wireless/87sf31hhfp.fsf@kernel.org/
+> > 
+> > That looks promising, should we start using that in ath11k and ath12k to
+> > check our RCU usage?
 > 
-> Johan Hovold <johan@kernel.org> writes:
+> I see that Johannes already commented on this in the thread above.
 > 
-> > On Tue, Oct 24, 2023 at 05:07:38PM +0300, Kalle Valo wrote:
+> I'm pretty sure smatch can't be used for this.
 
-> >> Thanks for the fixes. I really like using lockdep_assert_held() to
-> >> document if a function requires some lock held, is there anything
-> >> similar for RCU?
-> >
-> > Not really, but the checking is instead built into the primitives like
-> > rcu_dereference() and enabled whenever CONFIG_PROVE_RCU is set.
-> >
-> > For some special cases, we have open-coded checks like:
-> >
-> > 	RCU_LOCKDEP_WARN(!rcu_read_lock_held());
-> >
-> > which similarly depend on CONFIG_PROVE_RCU or simply
-> >
-> > 	WARN_ON_ONCE(!rcu_read_lock_held());
-> 
-> I just found out that sparse has __must_hold():
-> 
-> https://lore.kernel.org/linux-wireless/87sf31hhfp.fsf@kernel.org/
-> 
-> That looks promising, should we start using that in ath11k and ath12k to
-> check our RCU usage?
-
-I see that Johannes already commented on this in the thread above.
-
-I'm pretty sure smatch can't be used for this.
+I meant "sparse"...
 
 Johan
 
