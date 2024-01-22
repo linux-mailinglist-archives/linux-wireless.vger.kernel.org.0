@@ -1,137 +1,124 @@
-Return-Path: <linux-wireless+bounces-2312-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2313-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19881835F9C
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 11:27:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43DCF83623E
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 12:43:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CD531C25B13
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 10:27:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 750AD1C26AE5
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 11:43:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2F3B3D38F;
-	Mon, 22 Jan 2024 10:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BDBC3D540;
+	Mon, 22 Jan 2024 11:39:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="EGV94tXG"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07413D0D8;
-	Mon, 22 Jan 2024 10:24:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA9EC3D3A4
+	for <linux-wireless@vger.kernel.org>; Mon, 22 Jan 2024 11:39:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705919052; cv=none; b=hEPLmzpGWpCa39ZOykzMwpe43y+ZpFSbBGlsJqdZJpbuAAPwZig3jfaMXU5rIwRFb5x9gbxCT8Ap5Y4D/IrhWkViGlP7qYn47gg/CL3dKVFThBQIE/MeagNsp4bMtvt8kEHlYDa46qrDAYwYoyqxO9c+/cSyEb44m7mG/MhNVx8=
+	t=1705923575; cv=none; b=CjrhGH5100fmOeht5h2wNvpgQ4EXJGAkdIlMGfZ1FWgAYIeyEXiZax7dMwEjbJcsfRhJsxG7KqsTyFFeNQkVph+4R2Gf25bXRNpcvVHDH0/4/dToKwsTfWOvSQTVQgprakf5zMrHsqDy4xNh8wpRqWVo+6N4IGnLb8uu78b9sgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705919052; c=relaxed/simple;
-	bh=Rr2AQ7zd4vwMdcv471OHCjd5FyGE0fpWiiEpedaYODQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=A3JQ7OjI7iEJ0bxHUxrc5Mmf0vxXokueJHVrDQ2qIPbhpNZzhrbUmsaglsfIgbulCkifGVo1ox7qwpgS5Yal2mEIejyg0jQH0/unWpBJBq0VIsD7GWWA+3WYKu+DFdJACeuf8BoxF9ToNqMuSkj40xszE3X3Vipb4tJFWm2Muo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1rRrTM-0008R4-F5; Mon, 22 Jan 2024 11:24:08 +0100
-Message-ID: <0253854a-e5f9-4316-bec3-61aaf3ebfd1a@leemhuis.info>
-Date: Mon, 22 Jan 2024 11:24:06 +0100
+	s=arc-20240116; t=1705923575; c=relaxed/simple;
+	bh=GFXonr+/jS2YTpcYgYcvDM/UIxpDOyRetYofxhQyI0k=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pwBATGnSOfrLHltC7lZN4ZuB9NWc9tzeqlVZw1fYo33yd1brKzo0v1MsATFkkebkSZEaueVqqiZ36MK/f/FDNMEQYYkGwNYV8Ghj4s+jKd7bK8/81o+HiJbqwxmQGif3XhhmD9CEqurwmO6LmhDj8t2gzkMDplGabvXtsTHsvFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=EGV94tXG; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40M6PtbJ000456;
+	Mon, 22 Jan 2024 11:39:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=qcppdkim1; bh=V723YD4
+	qbVagPFZAJQDu8zyYPrOzOdoSz18+InMO7j8=; b=EGV94tXGnufXUY4LGnXbMVH
+	qa9aCdQDhLrsLiyD6zHql/fGwVJsAW5ERtGXIX1eSBOa+byiTSXTSn6rhLN6VO9p
+	f05IEtFMG3AJpV1eRRDODFZGOqVTV4odlonCgwtIdq3glzOFB2fOshNKvTpRUeEu
+	NSQXxMMrRbgvRg7mxRZRFaASH/Qvuh/MW6xy1NoCEooX+FeH3WMeW8YPj6CY1L1m
+	ctNPdvlO1JCqNWJLxhc5txTIEOrWi7Lnc6hcplX8SUbZGyBZQdFydhra7QnE7mnj
+	pGu8QE5gsCSWCluA5s28+G0EcMyjQsHLWLYJCie0gXs4bI8JQOh9AMv3LiW03Xw=
+	=
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vr6xn3p3r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 22 Jan 2024 11:39:24 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40MBdOKg022322
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 22 Jan 2024 11:39:24 GMT
+Received: from yk-E5440.qca.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Mon, 22 Jan 2024 03:39:22 -0800
+From: Kang Yang <quic_kangyang@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, <quic_kangyang@quicinc.com>
+Subject: [PATCH v3 00/10] wifi: ath12k: P2P support for WCN7850
+Date: Mon, 22 Jan 2024 19:38:54 +0800
+Message-ID: <20240122113904.8938-1-quic_kangyang@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [regression] ath11k broken in v6.7
-Content-Language: en-US, de-DE
-To: Kalle Valo <kvalo@kernel.org>
-Cc: ath11k@lists.infradead.org,
- Linux regressions mailing list <regressions@lists.linux.dev>,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <874jfjiolh.fsf@kernel.org> <87frytg7b8.fsf@kernel.org>
- <878r4lg3t8.fsf@kernel.org> <87jzo13jmf.fsf@kernel.org>
- <94150b26-bdd9-49c2-82a1-26ff46c9d32a@leemhuis.info>
- <87fryp3he0.fsf@kernel.org>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-In-Reply-To: <87fryp3he0.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1705919050;08e9ea00;
-X-HE-SMSGID: 1rRrTM-0008R4-F5
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: U03aRMfcicEJT8PX9n3CgHO_1ZdpZZwv
+X-Proofpoint-ORIG-GUID: U03aRMfcicEJT8PX9n3CgHO_1ZdpZZwv
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-22_02,2024-01-22_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ clxscore=1015 mlxscore=0 impostorscore=0 spamscore=0 lowpriorityscore=0
+ phishscore=0 malwarescore=0 suspectscore=0 bulkscore=0 mlxlogscore=788
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2311290000 definitions=main-2401220083
 
-On 22.01.24 09:24, Kalle Valo wrote:
-> "Linux regression tracking (Thorsten Leemhuis)"
-> <regressions@leemhuis.info> writes:
->> On 22.01.24 08:36, Kalle Valo wrote:
->>> Kalle Valo <kvalo@kernel.org> writes:
->>>> Kalle Valo <kvalo@kernel.org> writes:
->>>>> Kalle Valo <kvalo@kernel.org> writes:
->>>>>>
->>>>>> Proposed fix:
->>>>>> https://patchwork.kernel.org/project/linux-wireless/patch/20240111170629.1257217-1-benjamin@sipsolutions.net/
->>>>> The fix is now applied:
->>>>> https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git/commit/?id=556857aa1d0855aba02b1c63bc52b91ec63fc2cc
->>>>> I'll try to use regzbot for the first time, let's see how it goes:
->>>>> #regzbot introduced: 0a3d898ee9a8 ^
->>>> Forgot to include the bug report:
->>>>
->>>> #regzbot link: https://bugzilla.kernel.org/show_bug.cgi?id=218364
->>
->> FWIW, that usage was slightly off and not how it's supposed to be done.
->> But whatever, let's ignore that. I'm reworking things currently
->> slightly, as you are not the first one that slightly got mislead -- and
->> the newer commands will hopefully be mire intuitive.
-> 
-> Just to educate myself, how should I have done it? (But feel free to
-> skip the question if you are busy)
+Add P2P support for WCN7850.
 
-I think that's not worth it, as I hope to introduce the new commands in
-the near future (but you know how it is with the last 5 to 10
-percent...). But let me show you how it's then supposed to be done in
-this situation, that way you can give early feedback:
+Kang Yang (10):
+  wifi: ath12k: change interface combination for P2P mode
+  wifi: ath12k: add P2P IE in beacon template
+  wifi: ath12k: implement handling of P2P NoA event
+  wifi: ath12k: implement remain on channel for P2P mode
+  wifi: ath12k: change WLAN_SCAN_PARAMS_MAX_IE_LEN from 256 to 512
+  wifi: ath12k: allow specific mgmt frame tx while vdev is not up
+  wifi: ath12k: fix broken structure wmi_vdev_create_cmd
+  wifi: ath12k: move peer delete after vdev stop of station for WCN7850
+  wifi: ath12k: designating channel frequency for ROC scan
+  wifi: ath12k: advertise P2P dev support for WCN7850
 
-  #regzbot report: https://bugzilla.kernel.org/show_bug.cgi?id=218364
-  #regzbot introduced: 0a3d898ee9a8
+v3: rebase on new ath-tag, use ath12k_ah_to_ar() get ar(Karthikeyan).
+v2:
+    1. add Tested-on tag of QCN9274.
+    2. update copyright in patch #1, #2, #4 and #10.
 
-That "#regzbot report" will be new and make it more obvious to users
-what regzbot should consider to be the report (e.g. what Link:/Closes:
-tags later in commits fixing the issue will link to). You used "#regzbot
-introduced: 0a3d898ee9a8 ^" and due to the "^" it assumed the start of
-this thread would be the report (side note: mixing that aspect into the
-"introduced" command was a stupid idea anyway.).
+ drivers/net/wireless/ath/ath12k/Makefile |   3 +-
+ drivers/net/wireless/ath/ath12k/core.c   |   1 +
+ drivers/net/wireless/ath/ath12k/hw.c     |   7 +-
+ drivers/net/wireless/ath/ath12k/mac.c    | 366 +++++++++++++++++++----
+ drivers/net/wireless/ath/ath12k/p2p.c    | 142 +++++++++
+ drivers/net/wireless/ath/ath12k/p2p.h    |  23 ++
+ drivers/net/wireless/ath/ath12k/wmi.c    | 116 ++++++-
+ drivers/net/wireless/ath/ath12k/wmi.h    |  50 +++-
+ 8 files changed, 643 insertions(+), 65 deletions(-)
+ create mode 100644 drivers/net/wireless/ath/ath12k/p2p.c
+ create mode 100644 drivers/net/wireless/ath/ath12k/p2p.h
 
-That "#regzbot link:" will vanish as well (at least from the docs, it
-will remain to be supported), as people use it wrong in various
-different ways: for duplicates, reports (like your did), patch
-submissions fixing the issue (then 'regzbot monitor' should have been
-used) among others. Which is totally understandable now that I look at
-it. That's why it will be replaced by "#regzbot related: <url>" to avoid
-any connection with the Link: tag used in commits; for duplicates
-"#regzbot dup:" will stay around.
 
->> Great, thx. Hope it reached mainline soon. Maybe once it's there you or
->> I should tell Greg to pick this up quickly for stable given that it
->> apparently "might affect quite a few people".
-> I'll try to remember that but the thing is that I don't really follow
-> stable releases.
+base-commit: 8ff464a183f92836d7fd99edceef50a89d8ea797
+-- 
+2.34.1
 
-Let me do it, it's easy for me. And FWIW, I don't even follow the stable
-releases for that, I just drop Greg a mail when I notice the patch
-reached mainline through the weekly net merge. He'll take care of the rest.
-
-> I wish there would be a person who could follow stable
-> releases from wireless perspective and make sure everything is ok there.
-
-Maybe at some point regression tracking can help somewhat with that. But
-I still have to fix a few things to make people use it and scale it up.
-
-Side note: some people seem to have gotten the impression that I care a
-lot about *all* stable/longterm kernels. Let me use this opportunity to
-say that it's not really the case. I fully understand and respect that
-those series are a somewhat separate thing some developers don't want to
-be involved in (especially the older trees). But the thing is: the
-latest stable tree is what we tell users to use -- and something quite a
-few important distros ship as their regular kernel these days. That's
-why I take special care of regression that found there.
-
-Ciao, Thorsten
 
