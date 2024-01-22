@@ -1,70 +1,62 @@
-Return-Path: <linux-wireless+bounces-2323-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2324-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42CE2836248
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 12:44:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 524A68362BB
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 12:59:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3CF128848F
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 11:43:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85C251C234DD
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 11:59:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAADB3D964;
-	Mon, 22 Jan 2024 11:39:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE0D13A8F9;
+	Mon, 22 Jan 2024 11:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="RhLuhiY/"
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="FGEijjOx"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from forward102b.mail.yandex.net (forward102b.mail.yandex.net [178.154.239.149])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E263D99C
-	for <linux-wireless@vger.kernel.org>; Mon, 22 Jan 2024 11:39:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA1183A8F5
+	for <linux-wireless@vger.kernel.org>; Mon, 22 Jan 2024 11:59:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705923584; cv=none; b=iF3fyKkZjJeaYCm5wMry8PqvlmpZxcDdhQLxdxl4rzh4tC1I30+KkWbjWlXK3pBy03dd547CajAtmmvaQb3ovwX+oUVr1JJJX5e0ZXOlprAI68NYnb+oku24JmZVqynLY2pIDZxx5jC4fUou+5NrfqOOKJ3elw1LH1ywErubtDc=
+	t=1705924751; cv=none; b=HNJIQaGsxUE+UrqmCRLcw/Jarttit9ARbM8RMOw3aga/jhyimuZDhq2cTfERG9q6udmBVaxEFXdyugRVml/pLQdjOdKKEw5g7QOZxQDzy2fYVK4XfcgbEJ9vyGMIdKZa5SNPbyE7dY6RZT7/MTSSO+DHUWtpPlIZ/5zYHozV38U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705923584; c=relaxed/simple;
-	bh=p01vPnjBgxRaRUNVbhjGNJeZ2KUEX75bgVvpjKJBP1c=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r1caMGdL+x1a0f+UcF64AGP4sfNnx3HvTFewsr5tuAIzUZQ7HDezdc3w/hJdHdCBa8eqwKiZdwvTaMFzXEGiiujLn5yJh2vw+2lC1NwcbJH7Z1D2j2XFFfCFNYBN5anTMmsCNNoxvQ4k78Hn344rO4imm4nt3JtdoKcGOivJhgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=RhLuhiY/; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40M8c3nM015705;
-	Mon, 22 Jan 2024 11:39:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-transfer-encoding:content-type; s=
-	qcppdkim1; bh=HBALOrUIoJncMSgE9LOut+h5W/C0H94IHwomEhjIkQk=; b=Rh
-	LuhiY/cN0bdDfvriG6k/KIfeDU187zKKukic7gOZNdYriDRpA9CUaBeo7QOe1bZX
-	sNlLsXBDUcrYgi3cZ35Xs1/BeeMmHqpUR/y4q0nhocoFyo0vrbU90gjnVsI+f4Hd
-	Pk/p/8GDbnmpYfAy+qWVG/xPrvXoMQxg200o9vKNF75/L3KxumERmpLK6DjFEFwI
-	FwFRvVjp/VagIA6shYBm6QzH5kwtOivCTvM6Nm4bIfqIGZS5CgmXJ/YjG7/IKAhT
-	lDf74+SR8HIogzThrH1EASYWSC2CcYa5F3q4Omx8FP6Ruum2RmBC+KDwn7cLHCIT
-	NwNXvygFSdJUfcTAQrPA==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vsn0wrcd2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 22 Jan 2024 11:39:40 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40MBddd4014953
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 22 Jan 2024 11:39:39 GMT
-Received: from yk-E5440.qca.qualcomm.com (10.80.80.8) by
- nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Mon, 22 Jan 2024 03:39:37 -0800
-From: Kang Yang <quic_kangyang@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, <quic_kangyang@quicinc.com>
-Subject: [PATCH v3 10/10] wifi: ath12k: advertise P2P dev support for WCN7850
-Date: Mon, 22 Jan 2024 19:39:04 +0800
-Message-ID: <20240122113904.8938-11-quic_kangyang@quicinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240122113904.8938-1-quic_kangyang@quicinc.com>
-References: <20240122113904.8938-1-quic_kangyang@quicinc.com>
+	s=arc-20240116; t=1705924751; c=relaxed/simple;
+	bh=otPeA/GCwhNW6ZNFeugpra1/LWH0JekN+gek8heo7Kk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=X3HmNM9d/uX8QfHwU89g8qZ6kYVtlOZCsZsvSzeB0EpWkHInihi+BULtWNA252RZsZmpBLjb0w3u55LA7ezQcg9D8Tq0nj+/S4VoROvgWxtsc8AxjQrFD3ZqffsguOdSggnYpTbzHG9uChYf32WxZfjatu43diiqGsLNKLYWz5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=FGEijjOx; arc=none smtp.client-ip=178.154.239.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
+Received: from mail-nwsmtp-smtp-production-main-25.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-25.sas.yp-c.yandex.net [IPv6:2a02:6b8:c08:2e14:0:640:2cd1:0])
+	by forward102b.mail.yandex.net (Yandex) with ESMTPS id 654936098A;
+	Mon, 22 Jan 2024 14:58:59 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-25.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id wwPajqcAWKo0-okYju9jh;
+	Mon, 22 Jan 2024 14:58:58 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+	t=1705924738; bh=Ovcz7Fw3FNU/m4f1SdnjVR2d3gKU2wh9K/KWXos5QK8=;
+	h=In-Reply-To:Cc:References:To:Message-ID:Date:Subject:From;
+	b=FGEijjOx8tsxVaeYdbTB8+uyvBCZRevxpfvPppCTm56z1kOLvc+vQLwV/WOujpK/y
+	 isKPJP3wzUotO6Lijd3my9I5PFxnA5uqoSSZO8SxpBNHXS+WftsuFQWY62Cl2EQMRm
+	 /M9/gTl4in1IXztwWasGV2Its5VGfCR2oflH/ZGg=
+Authentication-Results: mail-nwsmtp-smtp-production-main-25.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From: Dmitry Antipov <dmantipov@yandex.ru>
+To: Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc: Bjorn Helgaas <helgaas@kernel.org>,
+	Kalle Valo <kvalo@kernel.org>,
+	linux-wireless@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH 1/2] [v3] wifi: brcmfmac: handle possible completion timeouts
+Date: Mon, 22 Jan 2024 14:57:24 +0300
+Message-ID: <20240122115749.67682-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <4cc44b07-13bd-49d0-b10f-b88875380f8c@broadcom.com>
+References: <4cc44b07-13bd-49d0-b10f-b88875380f8c@broadcom.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -72,97 +64,116 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: _dh7kINkx6QRe7hB1WDz6BLs45qoEEru
-X-Proofpoint-GUID: _dh7kINkx6QRe7hB1WDz6BLs45qoEEru
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-22_02,2024-01-22_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- impostorscore=0 phishscore=0 mlxscore=0 lowpriorityscore=0 spamscore=0
- mlxlogscore=606 bulkscore=0 clxscore=1015 suspectscore=0 malwarescore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2311290000 definitions=main-2401220083
 
-Now that all the necessary pieces are implemented we can enable P2P
-support for WCN7850.
+Handle possible 'wait_for_completion_timeout()' errors in
+'brcmf_p2p_af_searching_channel()' and 'brcmf_p2p_del_vif()',
+fix spelling and add comments where appropriate. Compile
+tested only.
 
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 ---
-
-v3: no change.
-v2:
-    1. add Tested-on tag of QCN9274.
-    2. update copyright.
-
+v3: adjust per Arend's review
+v2: rebase against wireless-next tree
 ---
- drivers/net/wireless/ath/ath12k/hw.c  | 7 +++++--
- drivers/net/wireless/ath/ath12k/mac.c | 8 ++++++++
- 2 files changed, 13 insertions(+), 2 deletions(-)
+ .../broadcom/brcm80211/brcmfmac/p2p.c         | 36 +++++++++++--------
+ 1 file changed, 22 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/hw.c b/drivers/net/wireless/ath/ath12k/hw.c
-index cbb6e2b6d826..b804d9f88a1b 100644
---- a/drivers/net/wireless/ath/ath12k/hw.c
-+++ b/drivers/net/wireless/ath/ath12k/hw.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: BSD-3-Clause-Clear
- /*
-  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2023 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
+index 6e0c90f4718b..a346c5a6e602 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
+@@ -1151,6 +1151,7 @@ static s32 brcmf_p2p_af_searching_channel(struct brcmf_p2p_info *p2p)
+ {
+ 	struct afx_hdl *afx_hdl = &p2p->afx_hdl;
+ 	struct brcmf_cfg80211_vif *pri_vif;
++	bool timeout = false;
+ 	s32 retry;
  
- #include <linux/types.h>
-@@ -953,7 +953,10 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
- 		.vdev_start_delay = true,
+ 	brcmf_dbg(TRACE, "Enter\n");
+@@ -1173,8 +1174,10 @@ static s32 brcmf_p2p_af_searching_channel(struct brcmf_p2p_info *p2p)
+ 			  retry);
+ 		/* search peer on peer's listen channel */
+ 		schedule_work(&afx_hdl->afx_work);
+-		wait_for_completion_timeout(&afx_hdl->act_frm_scan,
+-					    P2P_AF_FRM_SCAN_MAX_WAIT);
++		timeout = !wait_for_completion_timeout
++			(&afx_hdl->act_frm_scan, P2P_AF_FRM_SCAN_MAX_WAIT);
++		if (timeout)
++			break;
+ 		if ((afx_hdl->peer_chan != P2P_INVALID_CHANNEL) ||
+ 		    (!test_bit(BRCMF_P2P_STATUS_FINDING_COMMON_CHANNEL,
+ 			       &p2p->status)))
+@@ -1186,8 +1189,11 @@ static s32 brcmf_p2p_af_searching_channel(struct brcmf_p2p_info *p2p)
+ 			/* listen on my listen channel */
+ 			afx_hdl->is_listen = true;
+ 			schedule_work(&afx_hdl->afx_work);
+-			wait_for_completion_timeout(&afx_hdl->act_frm_scan,
+-						    P2P_AF_FRM_SCAN_MAX_WAIT);
++			timeout = !wait_for_completion_timeout
++				(&afx_hdl->act_frm_scan,
++				 P2P_AF_FRM_SCAN_MAX_WAIT);
++			if (timeout)
++				break;
+ 		}
+ 		if ((afx_hdl->peer_chan != P2P_INVALID_CHANNEL) ||
+ 		    (!test_bit(BRCMF_P2P_STATUS_FINDING_COMMON_CHANNEL,
+@@ -1209,7 +1215,7 @@ static s32 brcmf_p2p_af_searching_channel(struct brcmf_p2p_info *p2p)
  
- 		.interface_modes = BIT(NL80211_IFTYPE_STATION) |
--				   BIT(NL80211_IFTYPE_AP),
-+				   BIT(NL80211_IFTYPE_AP) |
-+				   BIT(NL80211_IFTYPE_P2P_DEVICE) |
-+				   BIT(NL80211_IFTYPE_P2P_CLIENT) |
-+				   BIT(NL80211_IFTYPE_P2P_GO),
- 		.supports_monitor = false,
+ 	clear_bit(BRCMF_P2P_STATUS_FINDING_COMMON_CHANNEL, &p2p->status);
  
- 		.idle_ps = true,
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 10aa8b20ef7a..d811bcc01456 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -5745,17 +5745,25 @@ static int ath12k_mac_op_add_interface(struct ieee80211_hw *hw,
- 	case NL80211_IFTYPE_UNSPECIFIED:
- 	case NL80211_IFTYPE_STATION:
- 		arvif->vdev_type = WMI_VDEV_TYPE_STA;
-+		if (vif->p2p)
-+			arvif->vdev_subtype = WMI_VDEV_SUBTYPE_P2P_CLIENT;
- 		break;
- 	case NL80211_IFTYPE_MESH_POINT:
- 		arvif->vdev_subtype = WMI_VDEV_SUBTYPE_MESH_11S;
- 		fallthrough;
- 	case NL80211_IFTYPE_AP:
- 		arvif->vdev_type = WMI_VDEV_TYPE_AP;
-+		if (vif->p2p)
-+			arvif->vdev_subtype = WMI_VDEV_SUBTYPE_P2P_GO;
- 		break;
- 	case NL80211_IFTYPE_MONITOR:
- 		arvif->vdev_type = WMI_VDEV_TYPE_MONITOR;
- 		ar->monitor_vdev_id = bit;
- 		break;
-+	case NL80211_IFTYPE_P2P_DEVICE:
-+		arvif->vdev_type = WMI_VDEV_TYPE_STA;
-+		arvif->vdev_subtype = WMI_VDEV_SUBTYPE_P2P_DEVICE;
-+		break;
- 	default:
- 		WARN_ON(1);
- 		break;
+-	return afx_hdl->peer_chan;
++	return timeout ? P2P_INVALID_CHANNEL : afx_hdl->peer_chan;
+ }
+ 
+ 
+@@ -1580,10 +1586,11 @@ static s32 brcmf_p2p_tx_action_frame(struct brcmf_p2p_info *p2p,
+ 		  (p2p->wait_for_offchan_complete) ?
+ 		   "off-channel" : "on-channel");
+ 
++	/* timeout would cause the code to proceed in the else branch below */
+ 	wait_for_completion_timeout(&p2p->send_af_done, P2P_AF_MAX_WAIT_TIME);
+ 
+ 	if (test_bit(BRCMF_P2P_STATUS_ACTION_TX_COMPLETED, &p2p->status)) {
+-		brcmf_dbg(TRACE, "TX action frame operation is success\n");
++		brcmf_dbg(TRACE, "TX action frame operation has succeeded\n");
+ 	} else {
+ 		err = -EIO;
+ 		brcmf_dbg(TRACE, "TX action frame operation has failed\n");
+@@ -2371,7 +2378,7 @@ int brcmf_p2p_del_vif(struct wiphy *wiphy, struct wireless_dev *wdev)
+ 	struct brcmf_cfg80211_vif *vif;
+ 	enum nl80211_iftype iftype;
+ 	bool wait_for_disable = false;
+-	int err;
++	int err = 0;
+ 
+ 	brcmf_dbg(TRACE, "delete P2P vif\n");
+ 	vif = container_of(wdev, struct brcmf_cfg80211_vif, wdev);
+@@ -2403,14 +2410,15 @@ int brcmf_p2p_del_vif(struct wiphy *wiphy, struct wireless_dev *wdev)
+ 	clear_bit(BRCMF_P2P_STATUS_GO_NEG_PHASE, &p2p->status);
+ 	brcmf_dbg(INFO, "P2P: GO_NEG_PHASE status cleared\n");
+ 
+-	if (wait_for_disable)
+-		wait_for_completion_timeout(&cfg->vif_disabled,
+-					    BRCMF_P2P_DISABLE_TIMEOUT);
+-
+-	err = 0;
+ 	if (iftype != NL80211_IFTYPE_P2P_DEVICE) {
+-		brcmf_vif_clear_mgmt_ies(vif);
+-		err = brcmf_p2p_release_p2p_if(vif);
++		if (wait_for_disable)
++			err = (wait_for_completion_timeout
++			       (&cfg->vif_disabled,
++				BRCMF_P2P_DISABLE_TIMEOUT) ? 0 : -ETIMEDOUT);
++		if (!err) {
++			brcmf_vif_clear_mgmt_ies(vif);
++			err = brcmf_p2p_release_p2p_if(vif);
++		}
+ 	}
+ 	if (!err) {
+ 		/* wait for firmware event */
 -- 
-2.34.1
+2.43.0
 
 
