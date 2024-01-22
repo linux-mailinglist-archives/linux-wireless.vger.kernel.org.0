@@ -1,58 +1,58 @@
-Return-Path: <linux-wireless+bounces-2351-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2352-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88F0C8375C8
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 23:02:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4F6D8375CC
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 23:04:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADB761C2206C
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 22:02:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7564F28CFBB
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 22:04:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 684EC482F1;
-	Mon, 22 Jan 2024 22:01:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71FCB482EA;
+	Mon, 22 Jan 2024 22:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=egauge.net header.i=@egauge.net header.b="M/elnQB7"
+	dkim=pass (2048-bit key) header.d=egauge.net header.i=@egauge.net header.b="fvkOB2qE"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from o1.ptr2625.egauge.net (o1.ptr2625.egauge.net [167.89.112.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BDBE482EF
-	for <linux-wireless@vger.kernel.org>; Mon, 22 Jan 2024 22:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFE8A482E3
+	for <linux-wireless@vger.kernel.org>; Mon, 22 Jan 2024 22:03:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=167.89.112.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705960911; cv=none; b=q6b3vXftgV+7eoLZOuW6QNAlHtteRvkau7+AdtIfsWoSYgLfchFNBq1nd88yVtDA8j+XzkfGQGlHPgR6/AYwhhCehzMRYDY9gYMSNzIFF2Y5Ei7JT46Vc3M+tgX1CH2U0qIuXr9LH4bDhHAjKPhI4APSOBGFP8a9RiCehR2/Ib4=
+	t=1705961036; cv=none; b=j7TwwLwO3YvLMLc/oLeHGOLw7AgDzhzK4DjELp+VHkveCzdqcZSinzaLG0cSJWHvgPOqXxl3wbpAUSK5jgxcambq0PkWhl38t/Nn7eu7+HOUI/Sdhw/QkYIMzuuA5zd9YDyqjcH0WVPA+oTNe/CQc0XAvICfQutEajLX9tBIJnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705960911; c=relaxed/simple;
-	bh=/dVl64iKYQ54+b07XG15WG2le/SASutKdSehbvjQSxQ=;
+	s=arc-20240116; t=1705961036; c=relaxed/simple;
+	bh=yAaxoI7arsvmoYxX7FZUPKm4d+oHrqitY/tDi+WemFU=;
 	h=From:Subject:Date:Message-Id:In-Reply-To:References:MIME-Version:
-	 To:Cc:Content-Type; b=opnV0yyHNlH4MCL9tA4h9O4o6kLhKVvmtLkJjmJCKE9K8lhSKRj2n0cAMsHzIEGp/LheDvJNHUcQfK7gg7rw5/9PaODkPbBi9kd/BRgQplEDLL2Rn3uD+EMHC2/1KJqP/bWH07CP0zjW7X2eLeN+QaUnNdxErNhXNArvyVU0Qi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=egauge.net; spf=pass smtp.mailfrom=em1190.egauge.net; dkim=pass (2048-bit key) header.d=egauge.net header.i=@egauge.net header.b=M/elnQB7; arc=none smtp.client-ip=167.89.112.53
+	 To:Cc:Content-Type; b=Xkw3SeA9dmmga0OsRUj9KLupHKo6oeltX6824IKYvNMrsAPjy2CXTPBF31kLnvxP4vlfG7TOJE9QcyT8iIXFGhHLNXNGJGkmSF6hH3SxSIVbSrWQFjflWIhzdyclDT7nt2Ps4Ph2sp01Synqz+aFtxH6EnjOE98O17c+qveVFew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=egauge.net; spf=pass smtp.mailfrom=em1190.egauge.net; dkim=pass (2048-bit key) header.d=egauge.net header.i=@egauge.net header.b=fvkOB2qE; arc=none smtp.client-ip=167.89.112.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=egauge.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em1190.egauge.net
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=egauge.net;
 	h=from:subject:in-reply-to:references:mime-version:to:cc:
 	content-transfer-encoding:content-type:cc:content-type:from:subject:to;
-	s=sgd; bh=u+XXGbzEn6hrw4MnO5y+i7ufxwDA2vbM+qF0F9qd17A=;
-	b=M/elnQB7+K6SBHRFDMc9IuOb93yIHlx1bSw3gsV+b2TDFitzyXIwaEUwJ1SG94Obuoir
-	HJPGK3e1o8Elnwq+F6FQ6GyefomJZkqAVPjdBlr+6v8BsOO5As7ZzSRmk8Wm3uR9zaod9J
-	vlJA7MGsGeBeOz9Hjxrk23F8Qq5XQhLYCQkk6GrEbz/hRuim+f65aRdA+F7QQrNvE1Qc9U
-	RFSmieyW77NtvFcnO63C8g5qpywGVDfJBEZW5BNT24wrPaBrk7cTOPnEhJZxGOrZ0fENCH
-	oO6XYU4pKf/Jx6XVuHxe4LcqX1vf9j+ZJQuB+iqY395m02mvvyTWDliiRtDNtrfw==
-Received: by filterdrecv-5bbdbb56cd-khxc7 with SMTP id filterdrecv-5bbdbb56cd-khxc7-1-65AEE5CB-30
-        2024-01-22 22:01:47.997340678 +0000 UTC m=+981894.856206069
+	s=sgd; bh=138kXtYMlUrpZ1+NS22RdxTzVLj+tUe7swtkbk4iWPI=;
+	b=fvkOB2qENiHePM2I1WAP0gzUyrcEgznnRQua0Q+mSPleaA3j4NfpeC0iifi0d86TXenO
+	UELb6iyjPba4DyGcWXWc1FBFM85JLqCKQTA8Od437KL+2NsH2DgSbvB+0ocI8a6SN32oYA
+	Fyxoi0shJNKtZL3VS+y8n1Z3I9ofZjiWfdpOqCsm8DFmUYs+/RNk1ZJhZgkfeH4hGxK2YF
+	k4rtrScdrHKp6G1m4Jo0nC30Gk2ewZOQhjaTSHicPB5YUwe65aMrQzkBzyAggNqhYcyA8Y
+	M8Q9vKjUbwG4VOiyLI7upcQBNL/NXVmkpXTuVhZpHC3AKPOjvq9mFQ6vQP31x50w==
+Received: by filterdrecv-6b68c9f446-kzvqf with SMTP id filterdrecv-6b68c9f446-kzvqf-1-65AEE649-34
+        2024-01-22 22:03:53.612028101 +0000 UTC m=+2202618.150716766
 Received: from pearl.egauge.net (unknown)
-	by geopod-ismtpd-canary-0 (SG)
+	by geopod-ismtpd-11 (SG)
 	with ESMTP
-	id jj3dpCKiSLWOxZu_SIZmvQ
-	Mon, 22 Jan 2024 22:01:47.825 +0000 (UTC)
+	id yvd9hQ-SQdGyxzO45YyFAw
+	Mon, 22 Jan 2024 22:03:53.365 +0000 (UTC)
 Received: by pearl.egauge.net (Postfix, from userid 1000)
-	id 2E2D3700494; Mon, 22 Jan 2024 15:01:47 -0700 (MST)
+	id A885A700494; Mon, 22 Jan 2024 15:03:52 -0700 (MST)
 From: David Mosberger-Tang <davidm@egauge.net>
 Subject: [PATCH] wifi: wilc1000: validate chip id during bus probe
-Date: Mon, 22 Jan 2024 22:01:48 +0000 (UTC)
-Message-Id: <20240122220137.1448644-1-davidm@egauge.net>
+Date: Mon, 22 Jan 2024 22:03:53 +0000 (UTC)
+Message-Id: <20240122220350.1449413-1-davidm@egauge.net>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240122211315.1444880-2-davidm@egauge.net>
 References: <20240122211315.1444880-2-davidm@egauge.net>
@@ -64,12 +64,12 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-SG-EID: 
  =?us-ascii?Q?+kMxBqj35EdRUKoy8diX1j4AXmPtd302oan+iXZuF8m2Nw4HRW2irNspffT=2Fkh?=
- =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvIJT5aWrlcwUuIWn4?=
- =?us-ascii?Q?ryjBpQINwf5U+Zjf7htBmZwMrK6LqAC43SZ1DoW?=
- =?us-ascii?Q?NIqeiUi523GSc0GQcboTaEw4W0N63NACQGFYeKH?=
- =?us-ascii?Q?SbimsrvsZd9YYOklAJsdlyvUpMjiQ+ci07DLeJY?=
- =?us-ascii?Q?ZEuFFJR=2F7LdVjJHWUSQBvyQaOQOCirA2g642Hdk?=
- =?us-ascii?Q?oiMs6U6ADBMVMZqb9QtSw=3D=3D?=
+ =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvNPyAZtdLu1SCtYuC?=
+ =?us-ascii?Q?GnjVW0FzcJGJyBb0zDEeHAYVnyIOt+7SWA2NDo+?=
+ =?us-ascii?Q?ugKBwP+tsULB90zVz=2FeZu6IxBK3NAPX56K1Sl3V?=
+ =?us-ascii?Q?i9yZ4X5Yxnps1STonbY46cdO+H8u6vZxkZ9mvNZ?=
+ =?us-ascii?Q?OBNltGvZuDAiTFL81TAbh9pXZqCc8d5vieKb0Qo?=
+ =?us-ascii?Q?NDQVqylOZU4Ujuh81vBog=3D=3D?=
 To: linux-wireless@vger.kernel.org
 Cc: Ajay.Kathat@microchip.com, alexis.lothore@bootlin.com, kvalo@kernel.org,
 	David Mosberger-Tang <davidm@egauge.net>
@@ -84,14 +84,14 @@ probing detects a supported chip.
 
 Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
 ---
-V1 -> V2: Add missing forward declarations.
+V2 -> V3: Add missing forward declarations, actually :-(
 
- drivers/net/wireless/microchip/wilc1000/spi.c | 131 ++++++++++++------
+ drivers/net/wireless/microchip/wilc1000/spi.c | 133 ++++++++++++------
  .../net/wireless/microchip/wilc1000/wlan.h    |   1 +
- 2 files changed, 88 insertions(+), 44 deletions(-)
+ 2 files changed, 90 insertions(+), 44 deletions(-)
 
 diff --git a/drivers/net/wireless/microchip/wilc1000/spi.c b/drivers/net/wireless/microchip/wilc1000/spi.c
-index 77b4cdff73c3..263ca8b2c764 100644
+index 77b4cdff73c3..dd6935dc1bc9 100644
 --- a/drivers/net/wireless/microchip/wilc1000/spi.c
 +++ b/drivers/net/wireless/microchip/wilc1000/spi.c
 @@ -42,7 +42,7 @@ MODULE_PARM_DESC(enable_crc16,
@@ -103,7 +103,16 @@ index 77b4cdff73c3..263ca8b2c764 100644
  	bool probing_crc;	/* true if we're probing chip's CRC config */
  	bool crc7_enabled;	/* true if crc7 is currently enabled */
  	bool crc16_enabled;	/* true if crc16 is currently enabled */
-@@ -232,6 +232,22 @@ static int wilc_bus_probe(struct spi_device *spi)
+@@ -55,6 +55,8 @@ struct wilc_spi {
+ static const struct wilc_hif_func wilc_hif_spi;
+ 
+ static int wilc_spi_reset(struct wilc *wilc);
++static int wilc_spi_configure_bus_protocol(struct wilc *wilc);
++static int wilc_validate_chipid(struct wilc *wilc);
+ 
+ /********************************************
+  *
+@@ -232,6 +234,22 @@ static int wilc_bus_probe(struct spi_device *spi)
  	}
  	clk_prepare_enable(wilc->rtc_clk);
  
@@ -126,7 +135,7 @@ index 77b4cdff73c3..263ca8b2c764 100644
  	return 0;
  
  netdev_cleanup:
-@@ -1074,58 +1090,43 @@ static int wilc_spi_write(struct wilc *wilc, u32 addr, u8 *buf, u32 size)
+@@ -1074,58 +1092,43 @@ static int wilc_spi_write(struct wilc *wilc, u32 addr, u8 *buf, u32 size)
   *
   ********************************************/
  
@@ -208,7 +217,7 @@ index 77b4cdff73c3..263ca8b2c764 100644
  	/*
  	 * Infer the CRC settings that are currently in effect.  This
  	 * is necessary because we can't be sure that the chip has
-@@ -1176,12 +1177,54 @@ static int wilc_spi_init(struct wilc *wilc, bool resume)
+@@ -1176,12 +1179,54 @@ static int wilc_spi_init(struct wilc *wilc, bool resume)
  
  	spi_priv->probing_crc = false;
  
