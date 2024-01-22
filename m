@@ -1,71 +1,142 @@
-Return-Path: <linux-wireless+bounces-2339-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2340-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B75783712D
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 19:56:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD06483717D
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 20:00:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DA48288104
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 18:55:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B5481C2A14F
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jan 2024 19:00:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D9FE3EA97;
-	Mon, 22 Jan 2024 18:20:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 268B751016;
+	Mon, 22 Jan 2024 18:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IvjPwQdS"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="L+07vhj+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A2EE3D553
-	for <linux-wireless@vger.kernel.org>; Mon, 22 Jan 2024 18:20:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B168750A9E;
+	Mon, 22 Jan 2024 18:33:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705947633; cv=none; b=jDgjx4x7lL9ZTRScgIGEbYUjA3p4DvxuXAqBCgas3eISb0VnEQ7IS9APC3OpJZZAglIQOE6aSqF9HYQQKg8YU0vRv9CL4/7aUM8dbdNFqHZrYS8f9k9GmZY1WgImO4C9ZpCrWmDOERPk8ZNjDKDrFEmOLNFa5FQxNyAa5d6QfmU=
+	t=1705948430; cv=none; b=apaUxJs8yTzjkLvVtWQ2EiE5lDwnUXwHueQ9+4etdsz38bOjpp+bLFj3jfplhkE7a2hlx7EOKypOj1IlW3aR8q4dX7RehrdFwakM5Ru6WNo9t+DmuCt1tLh43GV0LLHdmX1u2HmCExrBgDNt+Yklq4fFqPPXhfUgRKfqsc9pYN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705947633; c=relaxed/simple;
-	bh=5k2MDoKDwONfs42iRlncAiKTmYSEyHYrJZ4dS2XGnPo=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=Vo+aVKtaS/L2gDXlCDnUf/t8DES5DKhJJT9zKRuYeqGKUV/Lq8xmHCw6526mXEseT/o2v0YkZZBy1UJbrQcotbntosrDtpDJnmP5Ur2NjmK65zdc/z6IA1Jn4VCuCxeM9S0ZB98CFs33GdTTcD+rlci+GU8k2uURqRsHawsEOkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IvjPwQdS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA52FC43390;
-	Mon, 22 Jan 2024 18:20:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705947633;
-	bh=5k2MDoKDwONfs42iRlncAiKTmYSEyHYrJZ4dS2XGnPo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=IvjPwQdSK6GnFxrWgSOz3/RUu9adS4p/B82V483dx8ujCKz4l4Zzxpczz8flFC8a1
-	 t02UgUSVYLirOhp54H7QowAs+1KkkCxEuSPhXZdt+LxJ9dOaxjiHDDCrgDj22TgWYL
-	 RvAGvYNJP4GmTMsHJJbVHWlZ+gx/YknHicwVXXiYFdII63kEGm9U+kAaTV9362sEY+
-	 IQOHC/hBMyF1lvTqU64nERcySKpr3Mt0XR/DbA+eyhuoKhaCb/DMPyptNACWZDJUvt
-	 mOGzmzHEm7Dz9a64HXKxdMb8Dm0ulbfVYpf/sr5vqh5AJUBCPeD2YwUsn1ZRzmOKM8
-	 P0fzyf4mhbBWw==
-Date: Mon, 22 Jan 2024 12:20:31 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Dmitry Antipov <dmantipov@yandex.ru>
-Cc: Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-	lvc-project@linuxtesting.org
-Subject: Re: [PATCH 2/2] [v3] wifi: brcmfmac: handle possible PCIE irq
- handling errors
-Message-ID: <20240122182031.GA276974@bhelgaas>
+	s=arc-20240116; t=1705948430; c=relaxed/simple;
+	bh=zLoxhO1/k4AtBY/I4JrebYuKqycpixTXGsVOVS4/gBA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=dWalReB3mZQ+jOp6i5F0lIwx/bYnXlZc8A4uPTQ4yB5pwmXPrnI0DuO++1gsarBWmynWM7vtIGqnB1LHTmnPdhBSBJiDxmgx3CYEXWts5D0/JX4J0lOZUh6OKKIGuzIADDCAkm2K4ozlXRmnYydT12H8hWrOjTP3FKf40BOxIq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=L+07vhj+; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40MIKinF021689;
+	Mon, 22 Jan 2024 18:33:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=GB0o6GF3v4B74TnutKUaWjeNsUhfFJCRGR/moEVEhGo=; b=L+
+	07vhj+ZaFp15Lvd6vMBhHyFT0cimsOo/0tGss+AP3uUqoQts6piJfD40ntpsnoDj
+	GeXti1v72FyNv+9agmlsQwRU9PMoCnk3awGdDhz83ehdFi0/2V8lr7ar/xVwkUmk
+	plHVK748pw5se2Y3f0LNVz4Lao5UIm+gW41Ybvq6J0hfeLKubhVm8fCyNh2v6avE
+	+ePmvbFzyIGlgVQLJ7pnDmSuecRxQn2VzdLPjFZGB5AXm9m492FedSGshkXmganw
+	xm5t9d+WmiONuA/fR5SX9soamDDH74ToHgSAOn5ji8Tnx5beg63dbX/h44IK0SDU
+	FWsZEwHG9TilO778qEOQ==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vst8w8jud-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 22 Jan 2024 18:33:31 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40MIXUs1014880
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 22 Jan 2024 18:33:30 GMT
+Received: from [10.110.26.199] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Mon, 22 Jan
+ 2024 10:33:29 -0800
+Message-ID: <d80ae6ae-e1f2-48ef-b18a-29b5ca62e64c@quicinc.com>
+Date: Mon, 22 Jan 2024 10:33:28 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240122115749.67682-2-dmantipov@yandex.ru>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH wireless v2] nl80211/cfg80211: add nla_policy for S1G band
+Content-Language: en-US
+To: Johannes Berg <johannes@sipsolutions.net>, Lin Ma <linma@zju.edu.cn>,
+        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kvalo@kernel.org>
+References: <20240119151201.8670-1-linma@zju.edu.cn>
+ <9e1db7f3-fd18-4b3b-a912-3cf6efd96fed@quicinc.com>
+ <590fe2823d934af997c515640733eb8889b0560f.camel@sipsolutions.net>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <590fe2823d934af997c515640733eb8889b0560f.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: Yae4dbBKdj0cZ4XrGHH4egyT1fEyNCYT
+X-Proofpoint-ORIG-GUID: Yae4dbBKdj0cZ4XrGHH4egyT1fEyNCYT
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-22_07,2024-01-22_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 bulkscore=0
+ impostorscore=0 phishscore=0 mlxlogscore=999 malwarescore=0
+ lowpriorityscore=0 priorityscore=1501 adultscore=0 suspectscore=0
+ spamscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2311290000 definitions=main-2401220130
 
-On Mon, Jan 22, 2024 at 02:57:25PM +0300, Dmitry Antipov wrote:
-> Switch to newer 'pci_{alloc,feee}_irq_vectors()' API and handle
-> possible errors in 'brcmf_pcie_request_irq()'. Compile tested only.
+On 1/20/2024 12:27 PM, Johannes Berg wrote:
+> On Fri, 2024-01-19 at 15:47 -0800, Jeff Johnson wrote:
+>>> --- a/net/wireless/nl80211.c
+>>> +++ b/net/wireless/nl80211.c
+>>> @@ -911,6 +911,7 @@ nl80211_match_band_rssi_policy[NUM_NL80211_BANDS] = {
+>>>  	[NL80211_BAND_5GHZ] = { .type = NLA_S32 },
+>>>  	[NL80211_BAND_6GHZ] = { .type = NLA_S32 },
+>>>  	[NL80211_BAND_60GHZ] = { .type = NLA_S32 },
+>>> +	[NL80211_BAND_S1GHZ] = { .type = NLA_S32 },
+>>>  	[NL80211_BAND_LC]    = { .type = NLA_S32 },
+>>>  };
+>>>  
+>> something is really suspicious since the NL80211_BAND_* enums are
+>> *value* enums, not attribute ID enums, and hence they should never be
+>> used in an nla_policy.
+> 
+> Yeah, that's what it looks like first, but then they do get used
+> anyway...
+> 
+>> what is actually using these as attribute IDs, noting that
+>> NL80211_BAND_2GHZ == 0 and hence cannot be used as an attribute ID
+> 
+> Ohh. Good catch!
+> 
+>> seems the logic that introduced this policy needs to be revisited.
+>>
+> 
+> Let's just remove it?
+> 
+> commit 1e1b11b6a1111cd9e8af1fd6ccda270a9fa3eacf
+> Author: vamsi krishna <vamsin@codeaurora.org>
+> Date:   Fri Feb 1 18:34:51 2019 +0530
+> 
+>     nl80211/cfg80211: Specify band specific min RSSI thresholds with sched scan
+> 
+> 
+> As far as I can tell nothing is using that in the first place ...
+> Certainly not in the kernel, nor wpa_s, nor anything else I could find
+> really ...
+> 
+> We can't completely revert it since we need the attribute number to stay
+> allocated, but that's all we cannot remove.
 
-If you have occasion to update this, possibly s/PCIE/PCI/ in the
-subject, since this is generic to PCI and PCIe.
+I'm investigating this and will report back.
 
-Bjorn
 
