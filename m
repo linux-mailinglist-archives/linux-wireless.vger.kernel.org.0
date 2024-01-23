@@ -1,67 +1,67 @@
-Return-Path: <linux-wireless+bounces-2401-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2402-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86FE583974C
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 19:09:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 237C683974D
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 19:09:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2935B1F2CB71
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 18:09:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 906EB1F2CC68
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 18:09:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D882381AC7;
-	Tue, 23 Jan 2024 18:09:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC16F81AD2;
+	Tue, 23 Jan 2024 18:09:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fQpyFk3f"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WGWbSbSO"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3988661674
-	for <linux-wireless@vger.kernel.org>; Tue, 23 Jan 2024 18:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3407081AD4
+	for <linux-wireless@vger.kernel.org>; Tue, 23 Jan 2024 18:09:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706033340; cv=none; b=CbGBxiFOF8WCtn/WdUu1zVY+NsJMjms1l7wl950rAG9InHPlNgeFXrUIXdsSblO0yadizXLA8FoSAlDs2irIvCPLb1ZlQPUrtL7jj+puJ77Z89K9K9DO2TNBDDP2WLGMT+56P1aFLvOfiURwVNTKxdv5bl3s2FH9+4WdxisF32U=
+	t=1706033343; cv=none; b=utJOX7us6s3U8JfrYjVa063PNaA1oxz1vhiimd78nzuJ29aH6ua4i9I3wyCGliw4b17OGW/FPPLID34pcyFXgZ5bsiiFX07Nd7cMmJofGYAF6n4OfEW0uDyJ5q3cxdOciZtaGQQW+jUKZJYi/rZdGJYsJO1lbhkVe/WDJnKfFPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706033340; c=relaxed/simple;
-	bh=YOed2LS5Dvtgn5FV/bP2TztOlDu+WRV1nWaE/Eb3NgU=;
+	s=arc-20240116; t=1706033343; c=relaxed/simple;
+	bh=R6pUuOybH9sZksa3eFP7egraef6Fsygz7d0+lTyTL2s=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=g7GGuYl7A+uItIJaKlUGPk2fjnmSnJnWA5Kab8ljpIcLa6iaZPctxUzNrRws66644GmXomKWgdlkt3KyK3SyEr8a6HRkllik1a6Y15O+KhFLbvcQoSrNwcuupJZ+pUgwlR1Wi32htDwizdLpTVC+oCBXR1UnV23a6REUPi8yhGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fQpyFk3f; arc=none smtp.client-ip=192.198.163.13
+	 MIME-Version; b=RnLHWyXd3/SdaLCEahvefQW/K8KfpRyo0NqVZeFN6BkX0dKvoj/SaGGrsHYrT1b1/isdXhl2gJE6NtYmVQUP4XCOeDwWI/jEQzIQ/VlmUVwSIF9A35b/20aff+ZLCTvO0/AGjvvP4LV8o7c1DvQLxwAKp9sdiQhSlJyFGE9G3Vc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WGWbSbSO; arc=none smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706033339; x=1737569339;
+  t=1706033342; x=1737569342;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=YOed2LS5Dvtgn5FV/bP2TztOlDu+WRV1nWaE/Eb3NgU=;
-  b=fQpyFk3fQt+iZW1CDuUeoJnTR1ItPhVXU22Jl1h5vFwich6SWtY4Baq7
-   VYJgl+kRq4BLBCRzI7QEvlwGzIL3qZUhLWH9iqTQS5olD4sebm3eleBE+
-   TdMK0Ayiod+/mQkEQfmzNUwrT8r2u+TUCgNEGc4J9VzpjsvqS+J/Fq6kv
-   fm6fqVOz5do7ywNjhBpB+m0fDhPhQ9RR2Nii+iu0pQmcpHEmr4zdEF+IG
-   epNsQekclrWkarOFgNWpvGLswwzk0kKxOw37+AUh4Io3oFBaTs7ZI91Z4
-   cNP920QGnSYwMxJkJvLVdaCCjlkIOvhvcdG0rJjWbzHGm92ILgZwIDvZj
+  bh=R6pUuOybH9sZksa3eFP7egraef6Fsygz7d0+lTyTL2s=;
+  b=WGWbSbSO4ITBA/Ue7RESJBhfaMN4a6VQwDy2+TPVdsce36kPevEgo63S
+   M08jd4DvBoHUOOQO50bbNNMyRq0eSFhUIsnP8Tb16qgCuPVM9U1Whng3U
+   99Fa9H6WMbbOJVBN5yifSvT77bAMCqtVL+0lRDufXN9qg096exldl3d+B
+   shaxulbEftWLqQA3r1MBvL2RhOxi8VlqHR7wAAH7uKbOTCikkWNvMPYu0
+   YfVtlJWu7TuVKjhE2fGSOsjJf6XAVXthbT66tJ9yskleBtEywnp0ayV4d
+   GIr3v1iqS+tcV9kD/o65JVevWNwTloAM2k1egX77g+tu/QDH/j4zDTXOx
    A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="501791"
+X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="501814"
 X-IronPort-AV: E=Sophos;i="6.05,215,1701158400"; 
-   d="scan'208";a="501791"
+   d="scan'208";a="501814"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2024 10:08:59 -0800
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2024 10:09:02 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,215,1701158400"; 
-   d="scan'208";a="1666526"
+   d="scan'208";a="1666535"
 Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2024 10:08:57 -0800
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2024 10:09:00 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	Johannes Berg <johannes.berg@intel.com>,
 	Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 06/15] wifi: iwlwifi: mvm: limit EHT 320 MHz MCS for STEP URM
-Date: Tue, 23 Jan 2024 20:08:14 +0200
-Message-Id: <20240123200528.02bae683b7fc.Id5efbb71d45da02c8c4e211d20396637ddd44da8@changeid>
+Subject: [PATCH 07/15] wifi: iwlwifi: remove retry loops in start
+Date: Tue, 23 Jan 2024 20:08:15 +0200
+Message-Id: <20240123200528.f80a88a18799.I48f21eda090f4cc675f40e99eef69a986d21b500@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240123180823.2441162-1-miriam.rachel.korenblit@intel.com>
 References: <20240123180823.2441162-1-miriam.rachel.korenblit@intel.com>
@@ -76,90 +76,118 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-If the STEP (the interface between MAC and PHY) is in URM
-(a lower speed mode) then we cannot use 320 MHz MCS > 9.
-Therefore, limit the MCS in our capabilities in this case.
-Note that this also limits the TX/rate scaling since that
-takes both TX and RX capabilities into account.
+There's either the pldr_sync case, in which case we didn't want
+or do the retry loops anyway, or things will just continue to
+fail. Remove the retry loop that was added in a previous attempt
+to address the issue that was later (though still a bit broken)
+addressed by the pldr_sync case.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c | 5 +++++
- drivers/net/wireless/intel/iwlwifi/iwl-prph.h      | 3 +++
- drivers/net/wireless/intel/iwlwifi/iwl-trans.h     | 4 +++-
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c        | 5 +++++
- 4 files changed, 16 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c  | 28 ++++++-------------
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.h  |  3 --
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 10 +------
+ 3 files changed, 10 insertions(+), 31 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-index 67c7cda073e8..8e6ce484db87 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-@@ -1061,6 +1061,11 @@ iwl_nvm_fixup_sband_iftd(struct iwl_trans *trans,
- 			~IEEE80211_HE_PHY_CAP7_STBC_RX_ABOVE_80MHZ;
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+index abf8001bdac1..91e974de0ade 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+@@ -1424,35 +1424,25 @@ _iwl_op_mode_start(struct iwl_drv *drv, struct iwlwifi_opmode_table *op)
+ 	const struct iwl_op_mode_ops *ops = op->ops;
+ 	struct dentry *dbgfs_dir = NULL;
+ 	struct iwl_op_mode *op_mode = NULL;
+-	int retry, max_retry = !!iwlwifi_mod_params.fw_restart * IWL_MAX_INIT_RETRY;
+ 
+ 	/* also protects start/stop from racing against each other */
+ 	lockdep_assert_held(&iwlwifi_opmode_table_mtx);
+ 
+-	for (retry = 0; retry <= max_retry; retry++) {
+-
+ #ifdef CONFIG_IWLWIFI_DEBUGFS
+-		drv->dbgfs_op_mode = debugfs_create_dir(op->name,
+-							drv->dbgfs_drv);
+-		dbgfs_dir = drv->dbgfs_op_mode;
++	drv->dbgfs_op_mode = debugfs_create_dir(op->name,
++						drv->dbgfs_drv);
++	dbgfs_dir = drv->dbgfs_op_mode;
+ #endif
+ 
+-		op_mode = ops->start(drv->trans, drv->trans->cfg,
+-				     &drv->fw, dbgfs_dir);
+-
+-		if (op_mode)
+-			return op_mode;
+-
+-		if (test_bit(STATUS_TRANS_DEAD, &drv->trans->status))
+-			break;
+-
+-		IWL_ERR(drv, "retry init count %d\n", retry);
++	op_mode = ops->start(drv->trans, drv->trans->cfg,
++			     &drv->fw, dbgfs_dir);
++	if (op_mode)
++		return op_mode;
+ 
+ #ifdef CONFIG_IWLWIFI_DEBUGFS
+-		debugfs_remove_recursive(drv->dbgfs_op_mode);
+-		drv->dbgfs_op_mode = NULL;
++	debugfs_remove_recursive(drv->dbgfs_op_mode);
++	drv->dbgfs_op_mode = NULL;
+ #endif
+-	}
+ 
+ 	return NULL;
+ }
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.h b/drivers/net/wireless/intel/iwlwifi/iwl-drv.h
+index 6a1d31892417..1549ff429549 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.h
+@@ -98,9 +98,6 @@ void iwl_drv_stop(struct iwl_drv *drv);
+ #define VISIBLE_IF_IWLWIFI_KUNIT static
+ #endif
+ 
+-/* max retry for init flow */
+-#define IWL_MAX_INIT_RETRY 2
+-
+ #define FW_NAME_PRE_BUFSIZE	64
+ struct iwl_trans;
+ const char *iwl_drv_get_fwname_pre(struct iwl_trans *trans, char *buf);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 7f13dff04b26..6bbcf4092f52 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -1195,14 +1195,12 @@ int iwl_mvm_mac_start(struct ieee80211_hw *hw)
+ {
+ 	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
+ 	int ret;
+-	int retry, max_retry = 0;
+ 
+ 	mutex_lock(&mvm->mutex);
+ 
+ 	/* we are starting the mac not in error flow, and restart is enabled */
+ 	if (!test_bit(IWL_MVM_STATUS_HW_RESTART_REQUESTED, &mvm->status) &&
+ 	    iwlwifi_mod_params.fw_restart) {
+-		max_retry = IWL_MAX_INIT_RETRY;
+ 		/*
+ 		 * This will prevent mac80211 recovery flows to trigger during
+ 		 * init failures
+@@ -1210,13 +1208,7 @@ int iwl_mvm_mac_start(struct ieee80211_hw *hw)
+ 		set_bit(IWL_MVM_STATUS_STARTING, &mvm->status);
  	}
  
-+	if (trans->step_urm) {
-+		iftype_data->eht_cap.eht_mcs_nss_supp.bw._320.rx_tx_mcs11_max_nss = 0;
-+		iftype_data->eht_cap.eht_mcs_nss_supp.bw._320.rx_tx_mcs13_max_nss = 0;
-+	}
-+
- 	if (trans->no_160)
- 		iftype_data->he_cap.he_cap_elem.phy_cap_info[0] &=
- 			~IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_160MHZ_IN_5G;
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-prph.h b/drivers/net/wireless/intel/iwlwifi/iwl-prph.h
-index dd32c287b983..c1c7d44f421b 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-prph.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-prph.h
-@@ -374,6 +374,9 @@ enum {
- #define CNVR_SCU_SD_REGS_SD_REG_ACTIVE_VDIG_MIRROR	0xA29938
- #define CNVI_SCU_SEQ_DATA_DW9				0xA27488
+-	for (retry = 0; retry <= max_retry; retry++) {
+-		ret = __iwl_mvm_mac_start(mvm);
+-		if (!ret || mvm->pldr_sync)
+-			break;
+-
+-		IWL_ERR(mvm, "mac start retry %d\n", retry);
+-	}
++	ret = __iwl_mvm_mac_start(mvm);
+ 	clear_bit(IWL_MVM_STATUS_STARTING, &mvm->status);
  
-+#define CNVI_PMU_STEP_FLOW				0xA2D588
-+#define CNVI_PMU_STEP_FLOW_FORCE_URM			BIT(2)
-+
- #define PREG_AUX_BUS_WPROT_0		0xA04CC0
- 
- /* device family 9000 WPROT register */
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-index 9867e29a56ff..fccd05b46df5 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-@@ -1070,6 +1070,7 @@ struct iwl_trans_txqs {
-  * @invalid_tx_cmd: invalid TX command buffer
-  * @reduced_cap_sku: reduced capability supported SKU
-  * @no_160: device not supporting 160Mhz
-+ * @step_urm: STEP is in URM, no support for MCS>9 in 320 MHz
-  */
- struct iwl_trans {
- 	bool csme_own;
-@@ -1093,7 +1094,8 @@ struct iwl_trans {
- 	char hw_id_str[52];
- 	u32 sku_id[3];
- 	bool reduced_cap_sku;
--	u8 no_160;
-+	u8 no_160:1, step_urm:1;
-+
- 	u8 rx_mpdu_cmd, rx_mpdu_cmd_hdr_size;
- 
- 	bool pm_support;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index 1252084662c6..b6acf4ade552 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -677,6 +677,11 @@ static int iwl_run_unified_mvm_ucode(struct iwl_mvm *mvm)
- 	iwl_dbg_tlv_time_point(&mvm->fwrt, IWL_FW_INI_TIME_POINT_AFTER_ALIVE,
- 			       NULL);
- 
-+	if (mvm->trans->trans_cfg->device_family == IWL_DEVICE_FAMILY_BZ)
-+		mvm->trans->step_urm = !!(iwl_read_umac_prph(mvm->trans,
-+							     CNVI_PMU_STEP_FLOW) &
-+						CNVI_PMU_STEP_FLOW_FORCE_URM);
-+
- 	/* Send init config command to mark that we are sending NVM access
- 	 * commands
- 	 */
+ 	mutex_unlock(&mvm->mutex);
 -- 
 2.34.1
 
