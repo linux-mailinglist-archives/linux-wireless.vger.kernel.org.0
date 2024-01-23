@@ -1,133 +1,171 @@
-Return-Path: <linux-wireless+bounces-2385-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2386-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 641448391B5
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 15:48:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BA17839368
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 16:45:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E56D91F2700C
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 14:48:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34CB028C3AD
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 15:45:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0392B5FDBE;
-	Tue, 23 Jan 2024 14:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6876560BBD;
+	Tue, 23 Jan 2024 15:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="p8BRlP8D"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nHFqnV9x"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from nbd.name (nbd.name [46.4.11.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED5A5FBA5
-	for <linux-wireless@vger.kernel.org>; Tue, 23 Jan 2024 14:47:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE0C60B8F;
+	Tue, 23 Jan 2024 15:37:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706021281; cv=none; b=pcnKEg7uy3aydNyz6z+Y8BM1nOV2/svBToDZw6wOWhzCxlp3O2Q4SnqMO525WsMiGj5z7TDZ3gT+dbZ2qlFjHLGXZZW4C5yvXAGDmOoF3nmFTiuulwqNWBUXp7XfwXHcUtd6ZkLJYik4837EU1v0eKTTlX+xZuHYkZ01u1Sj/NI=
+	t=1706024232; cv=none; b=n56/SCoZCM6S0zJ0eLxJRXnEwoAYOWLSr+k97vF+gFuv6wpS/63BpNAQKPK0U25WfspJdXEH4FWvRYghGtGR6nH1M6L4MEdlHWP4NQ4S6ROaGpOtZM9PDlyQ6Tcr7pc9lXIR06PrEXvmubNQ3jEpj1cc8Ws5s84AOa6/UOSiBY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706021281; c=relaxed/simple;
-	bh=OWloRHl0nTd+imWHp64/4Rx7A/YvRz7VptTqWTOWwno=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ob7pnAzmdD5Ix8Neze1KYu/o3zGkYM49v0UheJWzB3djVfFbXxxXQ+dm1QHLHWjf2hk9cVXmuWkRJk7VK2q2gsIs86i/LKJsbiUYn3N7sUHrjj/7zdEqcGV7JVJpnqD+T4pd+KyKXUPp+6MOjCKmeVZtSLr6VdA+xV73HSESV0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=p8BRlP8D; arc=none smtp.client-ip=46.4.11.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-	s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=p/vrTIATTETfVtNOd6Yf41Pg1P9s4Q+pGlLvTCYwlHw=; b=p8BRlP8DnzMienEyivUaE/3KEc
-	F5ReVi9rovNbvXyy+eeSe27zhUNerHx1nxIIR1iLKebX/9YyQlAok8qiAEZUC9bGRWYInmbR05CLB
-	1XStNffrOu6c38WuWcj1BpEr9W58D7NNemorwX5pozbOEYcWyCPM3na1abwQO6s93jPo=;
-Received: from p54ae9e7b.dip0.t-ipconnect.de ([84.174.158.123] helo=nf.local)
-	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.94.2)
-	(envelope-from <nbd@nbd.name>)
-	id 1rSI46-006F8j-AE; Tue, 23 Jan 2024 15:47:50 +0100
-Message-ID: <a4a9d2db-626d-4630-acfc-ded018b95561@nbd.name>
-Date: Tue, 23 Jan 2024 15:47:49 +0100
+	s=arc-20240116; t=1706024232; c=relaxed/simple;
+	bh=Pm03VHDmHtSJkHOaeiQJeVfiHk9aHqqUuL1m+gjmPjU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PiLFvn7hA/mA6kkgLn8+ewi0frtHT39YjuGuRX8SHMUikR9OZc6dAZaSSTe/yKu+Y8N9su4zM7sWH9rWRaaGU8xnqQzQ/zD+Ne8owP5WBPjW19EkpiWSIEgxpgLGwjutxUoT56x8PxoOiIF39p2Jg76HkbKMuwwAmaBGB7b4sGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nHFqnV9x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 945BCC433F1;
+	Tue, 23 Jan 2024 15:37:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706024231;
+	bh=Pm03VHDmHtSJkHOaeiQJeVfiHk9aHqqUuL1m+gjmPjU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nHFqnV9xpdgXVK2tgy93spV9Wnr4dIsT0rONdKku1vtxiZlKanV9d4j++3xxawUEw
+	 Aq8XtPHTwLtmRNF/TjBEwOxnzxBTCzu3naSYAgwSXMRsXySZHU80zMDP9j3Re298mJ
+	 SI+1MZp/nOaLJRPayv/j6zpANHzf5CsrBczeMgOCgWBDTa6aPK00BD8m7JrfaqPedT
+	 NyiK5Yl0FGWltpq/h7V3raxTklgIY9IYE68qj8BNSITNjqnQ1e3IB265yGp87S87gf
+	 /TdiXoCFNVt3qvHEVaqaJO30kVuFio0TmGuslqrSgb8AmM9Q94egmmBfYZDkPSiBwS
+	 vC6y8rqc48INg==
+Date: Tue, 23 Jan 2024 21:06:58 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Baochen Qiang <quic_bqiang@quicinc.com>
+Cc: Manivannan Sadhasivam <mani@kernel.org>, Kalle Valo <kvalo@kernel.org>,
+	mhi@lists.linux.dev, ath11k@lists.infradead.org,
+	linux-wireless@vger.kernel.org, quic_cang@quicinc.com,
+	quic_qianyu@quicinc.com
+Subject: Re: [PATCH RFC v2 1/8] bus: mhi: host: add
+ mhi_power_down_no_destroy()
+Message-ID: <20240123153658.GF19029@thinkpad>
+References: <20231130054250.GC3043@thinkpad>
+ <87v89cq1ci.fsf@kernel.org>
+ <20231220163209.GJ3544@thinkpad>
+ <20231220165113.GK3544@thinkpad>
+ <7a31696b-cf2b-48c0-bad3-327e9ce47172@quicinc.com>
+ <20240104060904.GB3031@thinkpad>
+ <20240122062411.GA3176@thinkpad>
+ <9ac258d7-8a57-4071-af8d-5b07d776135b@quicinc.com>
+ <20240122130947.GD3176@thinkpad>
+ <1d9b8bc6-b1ef-4568-a265-b4e69bf90aa9@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 04/12] wifi: mt76: mt7996: fix incorrect interpretation of
- EHT MCS caps
-Content-Language: en-US
-To: Kalle Valo <kvalo@kernel.org>, Shayne Chen <shayne.chen@mediatek.com>
-Cc: linux-wireless <linux-wireless@vger.kernel.org>,
- Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>,
- Evelyn Tsai <evelyn.tsai@mediatek.com>, Bo Jiao <Bo.Jiao@mediatek.com>,
- linux-mediatek <linux-mediatek@lists.infradead.org>,
- Benjamin Lin <benjamin-jw.lin@mediatek.com>
-References: <20240119085708.23592-1-shayne.chen@mediatek.com>
- <20240119085708.23592-4-shayne.chen@mediatek.com> <87v87kcnb7.fsf@kernel.org>
-From: Felix Fietkau <nbd@nbd.name>
-Autocrypt: addr=nbd@nbd.name; keydata=
- xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
- ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
- Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
- AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
- vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
- wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
- TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
- l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
- dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
- HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
- VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
- CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
- VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
- Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
- DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
- wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
- f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
- aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
- FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
- TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
- GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
- cL98efvrjdstUfTCP2pfetyN
-In-Reply-To: <87v87kcnb7.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1d9b8bc6-b1ef-4568-a265-b4e69bf90aa9@quicinc.com>
 
-On 23.01.24 12:16, Kalle Valo wrote:
-> Shayne Chen <shayne.chen@mediatek.com> writes:
+On Tue, Jan 23, 2024 at 09:44:11AM +0800, Baochen Qiang wrote:
 > 
->> From: Benjamin Lin <benjamin-jw.lin@mediatek.com>
->>
->> The EHT MCS map subfield of 20 MHz-Only is not present in the EHT
->> capability of AP, so STA does not need to parse the subfield.
->> Moreover, AP should parse the subfield only if STA is 20 MHz-Only, which
->> can be confirmed by checking supported channel width in HE capability.
->>
->> Fixes: 92aa2da9fa49 ("wifi: mt76: mt7996: enable EHT support in firmware")
->> Co-developed-by: Shayne Chen <shayne.chen@mediatek.com>
->> Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
->> Signed-off-by: Benjamin Lin <benjamin-jw.lin@mediatek.com>
->> ---
->>  drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 16 ++++++++++++++--
->>  1 file changed, 14 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
->> index 3c729b563edc..02d858fdc9fe 100644
->> --- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
->> +++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
->> @@ -1240,6 +1240,9 @@ mt7996_mcu_sta_he_6g_tlv(struct sk_buff *skb, struct ieee80211_sta *sta)
->>  static void
->>  mt7996_mcu_sta_eht_tlv(struct sk_buff *skb, struct ieee80211_sta *sta)
->>  {
->> +	struct mt7996_sta *msta = (struct mt7996_sta *)sta->drv_priv;
->> +	struct ieee80211_vif *vif = container_of((void *)msta->vif,
->> +						 struct ieee80211_vif, drv_priv);
 > 
-> The void pointer cast looks to be unnecessary. This is nitpicking but I
-> really hate casts.
+> On 1/22/2024 9:09 PM, Manivannan Sadhasivam wrote:
+> > On Mon, Jan 22, 2024 at 04:09:53PM +0800, Baochen Qiang wrote:
+> > > 
+> > > 
+> > > On 1/22/2024 2:24 PM, Manivannan Sadhasivam wrote:
+> > > > On Thu, Jan 04, 2024 at 11:39:12AM +0530, Manivannan Sadhasivam wrote:
+> > > > 
+> > > > + Can, Qiang
+> > > > 
+> > > > [...]
+> > > > 
+> > > > > > > To me it all sounds like the probe deferral is not handled properly in mac80211
+> > > > > > > stack. As you mentioned in the commit message that the dpm_prepare() blocks
+> > > > > > > probing of devices. It gets unblocked and trigerred in dpm_complete():
+> > > > > > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/base/power/main.c#n1131
+> > > > > > > 
+> > > > > > > So if mac80211/ath11k cannot probe the devices at the dpm_complete() stage, then
+> > > > > > > it is definitely an issue that needs to be fixed properly.
+> > > > > > To clarify, ath11k CAN probe the devices at dpm_complete() stage. The
+> > > > > > problem is kernel does not wait for all probes to finish, and in that way we
+> > > > > > will face the issue that user space applications are likely to fail because
+> > > > > > they get thawed BEFORE WLAN is ready.
+> > > > > > 
+> > > > > 
+> > > > > Hmm. Please give me some time to reproduce this issue locally. I will get back
+> > > > > to this thread with my analysis.
+> > > > > 
+> > > > 
+> > > > We reproduced the issue with the help of PCIe team (thanks Can). What we found
+> > > > out was, during the resume from hibernation the faliure happens in
+> > > > ath11k_core_resume(). Precisely here:
+> > > > https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/tree/drivers/net/wireless/ath/ath11k/core.c?h=ath11k-hibernation-support#n850
+> > > > 
+> > > > This code waits for the QMI messages to arrive and eventually timesout. But the
+> > > > impression I got from the start was that the mhi_power_up() always fails during
+> > > > resume. In our investigation, we confirmed that the failure is not happening at
+> > > > the MHI level.No, mhi_power_up() never fails as it only downloads PBL,
+> > > > SBL and waits
+> > > for mission mode, no MHI device created hence not affected by the deferred
+> > > probe. However in addition to PBL/SBL, ath11k also needs to download m3.bin,
+> > > borad.bin and regdb.bin. Those files are part of WLAN firmware and are
+> > > downloaded via QMI messages. After mhi_power_up() succeeds
+> > > ath11k_core_resume() waits for QMI downloading those files. As you know QMI
+> > > relies on MHI channels, these channels are managed by qcom_mhi_qrtr_driver.
+> > > Since device probing is deferred, qcom_mhi_qrtr_driver has no chance to run
+> > > at this stage. As a result ath11k_core_resume() times out.
+> > > 
+> > 
+> > Thanks for the info, this clarifies the issue in detail.
+> > 
+> > > > 
+> > > > I'm not pointing fingers here, but trying to understand why can't you fix
+> > > > ath11k_core_resume() to not timeout? IMO this timeout should be handled as a
+> > > > deferral case.
+> > > Let's see what happens if we do it in a deferral way:
+> > > 1. In ath11k_core_resume() we returns success directly without waiting for
+> > > QMI downloading other firmware files.
+> > > 2. Kernel unblocks device probe and schedules a work item to trigger all
+> > > deferred probing. As a result MHI devices are probed by qcom_mhi_qrtr_driver
+> > > and finally QMI is online.
+> > > 3. kernel continues to resume and wake up userspace applications.
+> > > 4. ath11k gets the message, either by kernel PM notification or something
+> > > else, that QMI is ready and then downloads other firmware files.
+> > > 
+> > > What happens if userspace applications or network stack immediately initiate
+> > > some WLAN request after resume back? Can ath11k handle such request? The
+> > > answer is, most likely, no. Because there is no guarantee that QMI finishes
+> > > downloading before those request.
+> > > 
+> > 
+> > What will happen to userspace if ath11k returns an error like -EBUSY or
+> > something? Will the netdev completely go away?
+> It depends, and varies from application to application, we can't make the
+> assumption.
+> 
+> Besides, it doesn't make sense to return -EBUSY or something like that, if
+> ath11k returns success during resume. A WLAN driver is supposed to finish
+> everything, at least get back to the state before suspend, in the resume
+> callback. If it couldn't, report the error.
+> 
 
-It is not unnecessary - removing it results in a compile error.
+Ok. So I am getting the feeling that we need to talk to the PM people to get a
+proper solution. Clearly fixing the MHI code is not the right thing to do. We
+might need a separate callback that gets registered by the drivers like ath11k
+to wait for the dependency drivers to get probed.
 
-- Felix
+Can you initiate such a discussion? You can write to linux-pm@vger.kernel.org,
+"Rafael J. Wysocki" <rafael@kernel.org> and Pavel Machek <pavel@ucw.cz>.
 
+- Mani
+
+-- 
+மணிவண்ணன் சதாசிவம்
 
