@@ -1,64 +1,64 @@
-Return-Path: <linux-wireless+bounces-2394-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2395-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55A36839726
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 19:02:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1785C839746
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 19:08:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 785352894FF
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 18:02:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C369028D1E5
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 18:08:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A2C68005D;
-	Tue, 23 Jan 2024 18:02:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6389681ACD;
+	Tue, 23 Jan 2024 18:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ceyl8orb"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="V0jrgYYf"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F3F81200
-	for <linux-wireless@vger.kernel.org>; Tue, 23 Jan 2024 18:02:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A930A81AC1
+	for <linux-wireless@vger.kernel.org>; Tue, 23 Jan 2024 18:08:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706032924; cv=none; b=JMXhc2PwqCRlbHO+f9i9hW1NvHoPVk1zCd2F+yX7J+G4jZq1cHIqSlSEWVlIQTJMWEIxoA7EDyDyrdrCB0k1JUji5J9J2+d/0lie2vAe8YzWbr2wb8unVOijwKu+YtEqA4E7CbzEFlRQ4LYf6NGfnfSwMHx7tWfvI2Gzuv9z6rY=
+	t=1706033319; cv=none; b=SzfQY6QuXB6uLy0XSN6/f7lYCTiBoW7tnQYcjY8dmkbJFMy0KtpSCKOLwJ9OateVk3rjpLT2GHK/P4iBjthMVyZSyVsgkbGiaLEJVjJqeS2pVJQuRgMpi0xQSnqbMGzSZHEpADzfqZV8pRE37XjsK29QKiMjACQrT3eCrlAWPPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706032924; c=relaxed/simple;
-	bh=B7UdzmMhGjXxkoeXPqTzkqBhREHl8rtGXqWt4Dr/OlA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=csAHiQoKywubcx8+XDY3YIaKUM7rRQ7c2WFLsg+eoLpPLjg1Ncvv7sQ/086oMWwigVRnlw0vL2IAToyKA6fIeZmsslB0z8Z0C7MrU8j6PyHbSwMt0U9wuo9rBpeQze4n2Bty8ZIdidVw2vox3UzI0IKtVJ9MGiuX3Dc4S6YzQz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ceyl8orb; arc=none smtp.client-ip=192.198.163.13
+	s=arc-20240116; t=1706033319; c=relaxed/simple;
+	bh=Ve+nak7rQTyE7MVRNIfZ+X2EJbhYgJVclObF6oWLRf8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=mygPMQUy6XX4Us5XE9syEOObptVSdxVVMxo3jouktA99/0iz5yoCz59zVuniQVD1jDl3mt00tGVje73cZy6U9YiLo4YBYkW50cUWoLww4tgIVZ1WQM9NPH/Zad8EXJDtVztwJGp1QunEM8ViPerej0iHc6pAfSjDu0NX+1YIIgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=V0jrgYYf; arc=none smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706032923; x=1737568923;
+  t=1706033318; x=1737569318;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=B7UdzmMhGjXxkoeXPqTzkqBhREHl8rtGXqWt4Dr/OlA=;
-  b=ceyl8orbpkHJQ/7Xt3b3O7gKdUG428Z/lz0pRQn7vrnwMuPzUU7Ryfzq
-   OmfdES36pWkUMDRa4rCLrrdyAGSesv+VbbTKKqpLUobj30peHDoz+adcx
-   IyoB31BOfAJlxwsC3zZ2Xfbap2NpfeMtCUgDjfVID4u/vDsAuIhM6pPJd
-   pimA120DbdNh9gk9tduTdyzuXbKPp24fSuyiuW4e2xJvDseOTUTnYZJ7t
-   RAv65pfuk2wlJOFf9BTN/G/x3Dt59uTU16vw8tAf6W+7rlIdmdrBDJjSp
-   dmlKafr1/i6EB2EYdQuJRxqhT3pg8MFiXNnqt0d4hV9A7yPN3ndVOACVp
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="498091"
-X-IronPort-AV: E=Sophos;i="6.05,214,1701158400"; 
-   d="scan'208";a="498091"
+  bh=Ve+nak7rQTyE7MVRNIfZ+X2EJbhYgJVclObF6oWLRf8=;
+  b=V0jrgYYfWp61hMlLClwNNtDBeGFowZZlyNTsGv3d1hxC4rDegqQU4Lt2
+   vhMJHot7od71Fr/01EC4yWXsfO7GAAbjSsKTLowbFqOaeq4I81rIup0/L
+   hL5RaiuCJbv5sxRbwJe7HDwemXaQI9q19Fn6E+kL4rx0wdhCCMdYVQmXy
+   nDPYnbut9reePlBTcdxmGBhfSNuUhWMQ8JanYcB8x52NYHLPkZqGZtfV2
+   Yq8HM+rAyXS+Scj/e8lPqnm8u9evuXmzBHRqFLRIkjBGRFSUGST57nX5m
+   ut78fYjonueTwlP9S2R6EpMNCfdZAgW7iyINgJaoHjFMJy95LTmtupOGF
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="501632"
+X-IronPort-AV: E=Sophos;i="6.05,215,1701158400"; 
+   d="scan'208";a="501632"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2024 10:02:00 -0800
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2024 10:08:36 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,214,1701158400"; 
-   d="scan'208";a="1663759"
+X-IronPort-AV: E=Sophos;i="6.05,215,1701158400"; 
+   d="scan'208";a="1666415"
 Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2024 10:01:58 -0800
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2024 10:08:34 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH 00/15] wifi: iwlwifi: updates - 2024-01-23
-Date: Tue, 23 Jan 2024 20:01:28 +0200
-Message-Id: <20240123180143.2434614-1-miriam.rachel.korenblit@intel.com>
+Subject: [PATCH 00/15] wifi: iwlwifi: updates - 2022-01-23
+Date: Tue, 23 Jan 2024 20:08:08 +0200
+Message-Id: <20240123180823.2441162-1-miriam.rachel.korenblit@intel.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -70,9 +70,7 @@ Content-Type: text/plain; charset=UTF-8
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-Hi,
-
-This patch set includes iwlwifi patches intended for v6.9. It contains a
+This patch set includes iwlwifi patches intended for v6.9 It contains a
 few features, bugfixes and cleanups.
 
 Thanks,
