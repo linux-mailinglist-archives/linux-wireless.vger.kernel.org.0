@@ -1,118 +1,125 @@
-Return-Path: <linux-wireless+bounces-2415-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2416-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A06DF839A2A
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 21:19:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3BDE839AFA
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 22:22:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D359B1C225ED
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 20:19:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E49801C26F9A
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 21:22:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7719685C44;
-	Tue, 23 Jan 2024 20:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E04373B2A4;
+	Tue, 23 Jan 2024 21:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="SKoPL+HQ"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="qMky1VZ/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C980B82D99
-	for <linux-wireless@vger.kernel.org>; Tue, 23 Jan 2024 20:19:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 482FC381A5
+	for <linux-wireless@vger.kernel.org>; Tue, 23 Jan 2024 21:22:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706041155; cv=none; b=oSZbX3vrTaRp2kZJuuJn5gYvJAy36oA+tzLzlaC24PCZrILKumQCQti7CjOj1MqjeBOGDrs51VrWI5XBXKUURu7JYfnq3oKOlOJb52u+67oJ4/Xvah4/ESK5Ryg7fqbruF61v2yvoEtToy4JUqNI9F0FiX1GdDq0PbqMrSX3pGc=
+	t=1706044925; cv=none; b=mRuTXWBwHimfW2vX/a60+TT5GzUB8pa2H9uu4SDyA5egVRbKOKhnOq6wHjdkXPTVis/CBAySMVh7r1tqjCqBp3oQQhBvcGhdvw0LYi9r4icLc7uooRCun/XnBz3sZJtp6LdjiaD0RFTzh4N/qnEVIHJMWdJ3aaqgWLTlfFqnevU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706041155; c=relaxed/simple;
-	bh=Th8BPBOHrHd9oHrQANI9dqTLm1xtw9017eWbEBScLxU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=qomTZvrx7F7OMkHHVlHCxd/buF33uwHVgyNG9wKzIKgd0nGHP4fXWknxlx8OXYiwwKgKnc2QG+kkLEqyUea4L3tihJzlGmBZA/nUOoa4T5RCsi8VdFhRB2RydeUcsXFvDRkEIDHKuQJ2Jp3GTCX48MxzF4sBGnH5Z2KG1fP7ols=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=SKoPL+HQ; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40NBVJjc020636;
-	Tue, 23 Jan 2024 20:19:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=FDjvyq2X40QjLJM/imXK1JmbkZyYpv8h7cnfj1OyjLM=; b=SK
-	oPL+HQ+umMCq/gDGD2+E79qZxqMfIaKLgs3SGVNpD7hC4tHnsICfE4gZOAFgdGNK
-	waMzEjfuCKuOJ2E2F7ZqHd7Himv94j7UK5xLzz3dK0Ei5wdYkDCr+D28/843OeY9
-	6mgCddgsraSm6BCfPYmjf4L5JpOJLQwQC30cn4XeggE5xowejMd7msgEKIGVmxuR
-	bk/U0lm5vZYHEzSe3q7emGhV5mvRnfO6kKAQowK0REGb+SVPHT8fZHsDJu/FTzaF
-	sRpfE+2IAD/BWDbvehKW2/OTVEs8TSOzTqwuL68/RsAhwQWP8LCZRScDGUCfk5mZ
-	pYs+8Gbzov7j8z8SSMFg==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vt3kuakqa-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 23 Jan 2024 20:19:07 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40NKJ6ZI027138
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 23 Jan 2024 20:19:06 GMT
-Received: from [10.110.18.75] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Tue, 23 Jan
- 2024 12:19:05 -0800
-Message-ID: <9e41b70c-8db0-47d2-b3ec-76b596eab368@quicinc.com>
-Date: Tue, 23 Jan 2024 12:19:05 -0800
+	s=arc-20240116; t=1706044925; c=relaxed/simple;
+	bh=4w+/pKmo//04pEsJ98iuq7+niZPX58YxkMoakHI3Mgg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=M/rCmeq7oWLNuLg5SgEMsKdXXWzOWkPMrL+igZe4IZYyRlh+Zu7mrXZdli8V/GwXMZrTYYhhSkAPhBJzy8YeEZFPr2C6voKoNY8Lv4bWi3jp3b1bBTpVT3NYgxcypFW05aKX8/+9D2jGf7mkxDFdosVhdtcC1N9SclYzIghEFeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=qMky1VZ/; arc=none smtp.client-ip=209.85.210.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-6e0eb1cf1f5so1362967a34.3
+        for <linux-wireless@vger.kernel.org>; Tue, 23 Jan 2024 13:22:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1706044921; x=1706649721; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9d9zCcWnDzg+o0QU+7nE0r1DZt5AAGROvQWBifNc6IE=;
+        b=qMky1VZ/wS+OIMB2+6kVXyeTdpJt6fjtGnulY6SObS4xan03z2+dOmqNIrBHRkL5/G
+         QfA7XzvCChNbCWOlOkX/eb6qSqc17xrDOrRGzE4pszGL8PCh8oEH3E+758hGGGMmuZUK
+         GJW00gIBXJ8Az9zpqYowUTBLr7PKUXBv+0k4fpRmqbehnXEzt8D3T1DlwcS39iCFBYgw
+         /QLuuAuA0UEsOnCGtBYt7vQoCc0GfuW9BaNfj5Qoa4JnF+wOq8D4zrkrVUX4EXWI5D9t
+         /cJBT91xx18jixZnoUTlWdTxmtNHetOexuAeopqoaOArsEiZ3BbbpB1EFrPGm+GNRnbm
+         dI8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706044921; x=1706649721;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9d9zCcWnDzg+o0QU+7nE0r1DZt5AAGROvQWBifNc6IE=;
+        b=Z638BBqXqZwW6X4FWBvC9bLM8nbe7a7UjWLgcphTPcV7xYYGsQFu6HjL/WgWs7s1km
+         fV4f7+08w1B+n6I3EPGWMZ9MzkExJowNnNozal9vTfCIyMXa3EfKCzLJLh+bgiWr0YRw
+         b8DqLE34Ad1aPNGRAnU//Fpi/rqS0VfaGW7+nP9WcE7WjnKgndwu5sQYJ2snq23iXwzz
+         LLCyg5odJR7kaNb8yfF2wHV51WY3LyCow/30nsW7kQ3ZTVjLP9Mfx8VgIuEZTvBUeWJg
+         4RXEFrCmutjYtKhOpfhRxVCthyM1s6JpL25/01onrO8vbjK94h7+eAuSkpS3+c+7X47p
+         bS1w==
+X-Gm-Message-State: AOJu0YwmoZlGNBZs4kLoPtEv2COg2cjkrE870RewOTsc20DbpbbUUcKN
+	OFZxbr5eXZfl+qgKUG6pM1mILTCJCxFUYeN59/6KaVFj+urg/9gvwXcztJZQnIo=
+X-Google-Smtp-Source: AGHT+IHC0ijnMStdFYRpd2dBzE9obNwvpQZcPF3lkXpNlgZgm6R9xZQkhPLh4gOMl6loHiQWcSUgZQ==
+X-Received: by 2002:a05:6830:116:b0:6dd:f01a:b27a with SMTP id i22-20020a056830011600b006ddf01ab27amr592514otp.31.1706044921266;
+        Tue, 23 Jan 2024 13:22:01 -0800 (PST)
+Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id bn11-20020a0568300c8b00b006ce28044207sm2293497otb.58.2024.01.23.13.22.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Jan 2024 13:22:00 -0800 (PST)
+From: David Lechner <dlechner@baylibre.com>
+To: Kalle Valo <kvalo@kernel.org>
+Cc: David Lechner <dlechner@baylibre.com>,
+	Ajay Singh <ajay.kathat@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] wifi: wilc1000: remove setting msg.spi
+Date: Tue, 23 Jan 2024 15:21:29 -0600
+Message-ID: <20240123212135.2607178-1-dlechner@baylibre.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] wifi: ath12k: add firmware-2.bin support
-Content-Language: en-US
-To: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>, <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20240123122812.3811251-1-quic_rajkbhag@quicinc.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20240123122812.3811251-1-quic_rajkbhag@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: Ps1CrgqfGww8qAyAacdhj7r7JObeIZt9
-X-Proofpoint-GUID: Ps1CrgqfGww8qAyAacdhj7r7JObeIZt9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-23_12,2024-01-23_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 mlxlogscore=999
- suspectscore=0 priorityscore=1501 phishscore=0 clxscore=1015 adultscore=0
- impostorscore=0 spamscore=0 lowpriorityscore=0 bulkscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2311290000
- definitions=main-2401230150
+Content-Transfer-Encoding: 8bit
 
-On 1/23/2024 4:28 AM, Raj Kumar Bhagat wrote:
-> Firmware IE containers can dynamically provide various information
-> what firmware supports. Also it can embed more than one image so
-> updating firmware is easy, user just needs to update one file in
-> /lib/firmware/.
-> 
-> The firmware API 2 or higher will use the IE container format, the
-> current API 1 will not use the new format but it still is supported
-> for some time. Firmware API 2 files are named as firmware-2.bin
-> (which contains both amss.bin and m3.bin images) and API 1 files are
-> amss.bin and m3.bin.
-> 
-> Currently ath12k PCI driver provides firmware binary (amss.bin) path to
-> MHI driver, MHI driver reads firmware from filesystem and boots it. Add
-> provision to read firmware files from ath12k driver and provide the amss.bin
-> firmware data and size to MHI using a pointer.
-> 
-> Currently enum ath12k_fw_features is empty, the patches adding features will
-> add the flags.
-> 
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-> 
-> Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+(spi_message_add_tail() does not access this field.)
 
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+---
+ drivers/net/wireless/microchip/wilc1000/spi.c | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/drivers/net/wireless/microchip/wilc1000/spi.c b/drivers/net/wireless/microchip/wilc1000/spi.c
+index 77b4cdff73c3..7eb0f8a421a3 100644
+--- a/drivers/net/wireless/microchip/wilc1000/spi.c
++++ b/drivers/net/wireless/microchip/wilc1000/spi.c
+@@ -300,7 +300,6 @@ static int wilc_spi_tx(struct wilc *wilc, u8 *b, u32 len)
+ 
+ 		memset(&msg, 0, sizeof(msg));
+ 		spi_message_init(&msg);
+-		msg.spi = spi;
+ 		spi_message_add_tail(&tr, &msg);
+ 
+ 		ret = spi_sync(spi, &msg);
+@@ -343,7 +342,6 @@ static int wilc_spi_rx(struct wilc *wilc, u8 *rb, u32 rlen)
+ 
+ 		memset(&msg, 0, sizeof(msg));
+ 		spi_message_init(&msg);
+-		msg.spi = spi;
+ 		spi_message_add_tail(&tr, &msg);
+ 
+ 		ret = spi_sync(spi, &msg);
+@@ -381,8 +379,6 @@ static int wilc_spi_tx_rx(struct wilc *wilc, u8 *wb, u8 *rb, u32 rlen)
+ 
+ 		memset(&msg, 0, sizeof(msg));
+ 		spi_message_init(&msg);
+-		msg.spi = spi;
+-
+ 		spi_message_add_tail(&tr, &msg);
+ 		ret = spi_sync(spi, &msg);
+ 		if (ret < 0)
+-- 
+2.43.0
 
 
