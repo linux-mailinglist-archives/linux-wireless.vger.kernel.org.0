@@ -1,52 +1,52 @@
-Return-Path: <linux-wireless+bounces-2384-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2385-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60DEF839037
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 14:33:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 641448391B5
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 15:48:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9457F1C220A5
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 13:33:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E56D91F2700C
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 14:48:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F9565EE8E;
-	Tue, 23 Jan 2024 13:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0392B5FDBE;
+	Tue, 23 Jan 2024 14:48:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="dbpF5Prp"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="p8BRlP8D"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+Received: from nbd.name (nbd.name [46.4.11.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CBB65EE7A
-	for <linux-wireless@vger.kernel.org>; Tue, 23 Jan 2024 13:29:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED5A5FBA5
+	for <linux-wireless@vger.kernel.org>; Tue, 23 Jan 2024 14:47:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706016549; cv=none; b=ptqIyk6N6j1D8cFxjDMYud5baa4nQ977E7YYlRG8ohV7nG0gyHSZKzMT64WrLZO01fzdGplNDMfRae0TixKqM4I7MLQVXja7to1xqREk0n6c8P1qgqAZY7Q7C0N/o8xIupmRxs031KCLJH1RZAstHkI3fKr/cff72IlDBN5p3Ro=
+	t=1706021281; cv=none; b=pcnKEg7uy3aydNyz6z+Y8BM1nOV2/svBToDZw6wOWhzCxlp3O2Q4SnqMO525WsMiGj5z7TDZ3gT+dbZ2qlFjHLGXZZW4C5yvXAGDmOoF3nmFTiuulwqNWBUXp7XfwXHcUtd6ZkLJYik4837EU1v0eKTTlX+xZuHYkZ01u1Sj/NI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706016549; c=relaxed/simple;
-	bh=aRprRsaKm+6bL4cHA5AVgIDHtgJcw4rhweyfdYHwWnY=;
+	s=arc-20240116; t=1706021281; c=relaxed/simple;
+	bh=OWloRHl0nTd+imWHp64/4Rx7A/YvRz7VptTqWTOWwno=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uiJPuY0cqRaGAgKQlKfrC2TlkyoGu5Rh8TQLvspCx8jfAPK2DKfiHRS49nPKL+SuYTKw+OsJV1wUutGr6eispIk7/A6pAsWAVFAguuIgi8Dc+1SwgBjW+ZbZvqoVEjbCRzw6nK4zNDHC2voC3vmRpBb0qngTHBtZxxaElR49EW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=dbpF5Prp; arc=none smtp.client-ip=217.70.183.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id C66652001E;
-	Tue, 23 Jan 2024 13:29:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1706016544;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=m+uv+WVM/vyfO+RdLduP5YofATgf2JXS3q7MdQs9b/I=;
-	b=dbpF5PrpEcqfz26ls7JAmoo0IcXUEkaDHUfbdNn5Eml618cYxfUpGe2h/K7cdKamGfwH+b
-	0HbmoKgFQWmNfpoNDZVfpl5jno4KsTgi2MxTxZ/0FjYxERm+ZL8A/3daiEzDQ6DjrnrDyk
-	LebkdUPl4yhFgZ6FIDp1/DiRxJ7msLLkbtB/faAzIrBeTXemkJ8wQsYu3ZkkNB5Abscbrv
-	cRccgkz2OZTS+8cCPlZJxpnFmfQK9GpU+nHIFBAtxjVHVOGj9uQXacPjDgGjWDgoSQgByV
-	3aDAF5PTYspG4Fd++4OZpu5KgEH2J8ATUyF1sDn+b2T28uvxTo84REunKN4VUg==
-Message-ID: <8146bec7-55dd-45ec-8439-068cb8426045@bootlin.com>
-Date: Tue, 23 Jan 2024 14:29:03 +0100
+	 In-Reply-To:Content-Type; b=ob7pnAzmdD5Ix8Neze1KYu/o3zGkYM49v0UheJWzB3djVfFbXxxXQ+dm1QHLHWjf2hk9cVXmuWkRJk7VK2q2gsIs86i/LKJsbiUYn3N7sUHrjj/7zdEqcGV7JVJpnqD+T4pd+KyKXUPp+6MOjCKmeVZtSLr6VdA+xV73HSESV0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=p8BRlP8D; arc=none smtp.client-ip=46.4.11.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+	s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=p/vrTIATTETfVtNOd6Yf41Pg1P9s4Q+pGlLvTCYwlHw=; b=p8BRlP8DnzMienEyivUaE/3KEc
+	F5ReVi9rovNbvXyy+eeSe27zhUNerHx1nxIIR1iLKebX/9YyQlAok8qiAEZUC9bGRWYInmbR05CLB
+	1XStNffrOu6c38WuWcj1BpEr9W58D7NNemorwX5pozbOEYcWyCPM3na1abwQO6s93jPo=;
+Received: from p54ae9e7b.dip0.t-ipconnect.de ([84.174.158.123] helo=nf.local)
+	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.94.2)
+	(envelope-from <nbd@nbd.name>)
+	id 1rSI46-006F8j-AE; Tue, 23 Jan 2024 15:47:50 +0100
+Message-ID: <a4a9d2db-626d-4630-acfc-ded018b95561@nbd.name>
+Date: Tue, 23 Jan 2024 15:47:49 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -54,70 +54,80 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: wilc1000: validate chip id during bus probe
+Subject: Re: [PATCH 04/12] wifi: mt76: mt7996: fix incorrect interpretation of
+ EHT MCS caps
 Content-Language: en-US
-To: Kalle Valo <kvalo@kernel.org>
-Cc: David Mosberger-Tang <davidm@egauge.net>, linux-wireless@vger.kernel.org,
- Ajay.Kathat@microchip.com
-References: <20240122211315.1444880-2-davidm@egauge.net>
- <20240122220350.1449413-1-davidm@egauge.net>
- <751bf8e4-c81c-495b-9166-9f91f9c4b2d5@bootlin.com>
- <8734uo2ts1.fsf@kernel.org>
- <94d08fd2-ce43-4085-a6f6-d91981853393@bootlin.com>
- <87y1cg19z7.fsf@kernel.org>
-From: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-In-Reply-To: <87y1cg19z7.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: alexis.lothore@bootlin.com
+To: Kalle Valo <kvalo@kernel.org>, Shayne Chen <shayne.chen@mediatek.com>
+Cc: linux-wireless <linux-wireless@vger.kernel.org>,
+ Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>,
+ Evelyn Tsai <evelyn.tsai@mediatek.com>, Bo Jiao <Bo.Jiao@mediatek.com>,
+ linux-mediatek <linux-mediatek@lists.infradead.org>,
+ Benjamin Lin <benjamin-jw.lin@mediatek.com>
+References: <20240119085708.23592-1-shayne.chen@mediatek.com>
+ <20240119085708.23592-4-shayne.chen@mediatek.com> <87v87kcnb7.fsf@kernel.org>
+From: Felix Fietkau <nbd@nbd.name>
+Autocrypt: addr=nbd@nbd.name; keydata=
+ xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
+ ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
+ Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
+ AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
+ vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
+ wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
+ TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
+ l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
+ dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
+ HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
+ VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
+ CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
+ VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
+ Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
+ DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
+ wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
+ f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
+ aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
+ FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
+ TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
+ GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
+ cL98efvrjdstUfTCP2pfetyN
+In-Reply-To: <87v87kcnb7.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 1/23/24 13:59, Kalle Valo wrote:
-> Alexis Lothoré <alexis.lothore@bootlin.com> writes:
+On 23.01.24 12:16, Kalle Valo wrote:
+> Shayne Chen <shayne.chen@mediatek.com> writes:
 > 
->> On 1/23/24 12:06, Kalle Valo wrote:
->>> Alexis Lothoré <alexis.lothore@bootlin.com> writes:
->>>
->>>> On 1/22/24 23:03, David Mosberger-Tang wrote:
->>>>> Previously, the driver created a net device (typically wlan0) as soon
->>>>> as the module was loaded.  This commit changes the driver to follow
->>>>> normal Linux convention of creating the net device only when bus
->>>>> probing detects a supported chip.
->>>>
->>>> I would gladly help review/test the patch, but please give us some time between
->>>> versions to take a look (even if you can mention if you found issues yourself).
->>>> Also, each version should be a separate thread, bearing the new version in the
->>>> "Subject" line.
->>>> Additionally (to answer your cover letter), the patches must target the wireless
->>>> branches (likely wireless-testing), not linux-next
->>>> (https://wireless.wiki.kernel.org/en/developers/documentation/git-guide)
->>>
->>> Actually wireless-next is preferred for the baseline (unless it's a fix
->>> going to -rc releases):
->>>
->>> https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git/
+>> From: Benjamin Lin <benjamin-jw.lin@mediatek.com>
 >>
->> Oh, ok, thanks for the correction, I may have misinterpreted the wiki then
+>> The EHT MCS map subfield of 20 MHz-Only is not present in the EHT
+>> capability of AP, so STA does not need to parse the subfield.
+>> Moreover, AP should parse the subfield only if STA is 20 MHz-Only, which
+>> can be confirmed by checking supported channel width in HE capability.
+>>
+>> Fixes: 92aa2da9fa49 ("wifi: mt76: mt7996: enable EHT support in firmware")
+>> Co-developed-by: Shayne Chen <shayne.chen@mediatek.com>
+>> Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+>> Signed-off-by: Benjamin Lin <benjamin-jw.lin@mediatek.com>
+>> ---
+>>  drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 16 ++++++++++++++--
+>>  1 file changed, 14 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+>> index 3c729b563edc..02d858fdc9fe 100644
+>> --- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+>> +++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+>> @@ -1240,6 +1240,9 @@ mt7996_mcu_sta_he_6g_tlv(struct sk_buff *skb, struct ieee80211_sta *sta)
+>>  static void
+>>  mt7996_mcu_sta_eht_tlv(struct sk_buff *skb, struct ieee80211_sta *sta)
+>>  {
+>> +	struct mt7996_sta *msta = (struct mt7996_sta *)sta->drv_priv;
+>> +	struct ieee80211_vif *vif = container_of((void *)msta->vif,
+>> +						 struct ieee80211_vif, drv_priv);
 > 
-> Ah, we should update that page. That page was written before we had
-> common wireless and wireless-next trees.
-> 
-> I don't know Johannes thoughts on this but my recommendation for
-> baseline:
-> 
-> * use wireless tree for important fixes going to -rc releases
-> 
-> * for other patches use either driver specific tree (eg. iwlwifi, mt76,
->   ath) or wireless-next (if no driver specific tree available)
-> 
-> * for automated testing etc. use wireless-testing as it's a merge of
->   wireless and wireless-next and contains all latest code
+> The void pointer cast looks to be unnecessary. This is nitpicking but I
+> really hate casts.
 
-Thanks for the details. I'll wait a bit in case Johannes or anyone else wants to
-add anything, then I can take care of updating the corresponding page
+It is not unnecessary - removing it results in a compile error.
 
--- 
-Alexis Lothoré, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+- Felix
 
 
