@@ -1,62 +1,63 @@
-Return-Path: <linux-wireless+bounces-2365-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2366-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07D2B83878A
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 07:36:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D23583878E
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 07:38:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9993DB24516
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 06:36:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A609A1C20980
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 06:38:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4DBB5025F;
-	Tue, 23 Jan 2024 06:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C01B50265;
+	Tue, 23 Jan 2024 06:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Djj/RH3b"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pcNXm8Y7"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8553E51C2A;
-	Tue, 23 Jan 2024 06:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7330150261;
+	Tue, 23 Jan 2024 06:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705991805; cv=none; b=ki6aUgMs80k6179pmYmNJGIsuzM8E3X4A+Y74FDZvD9/+UG0AGFLscQMBbHVZfEHWF0zjgknay4Jkr0N/8T0Jt1EGOXalYSCfiROgGT0bJAUhQnN0kuZWQUkiJs/MFQC9eXE014zrAXneSl9e3Y0WfS7gDTa+T7nMn98+Hj/njo=
+	t=1705991914; cv=none; b=DyMaq/J59oe5vTeWWwY0SlzWqhRhWz2giod5aJTKiBeSjwmFxfzRfv+RjZlKGZQd6PqFv81QsPqACo8MC5cKUa+FGtHb20sFig/S316TKQST9HZqmIZkONvFpL9IROEVTiF0qAB/ixeOIZJseixpkRlH7Aw24aE9sKBo1j0EatU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705991805; c=relaxed/simple;
-	bh=3zQmCmznrHx2SqlPuePLfPAeGr3HxXLwdcMosqQt1Jc=;
+	s=arc-20240116; t=1705991914; c=relaxed/simple;
+	bh=N4WnIJh6bc8rJ/bQ3UvGO2EO8A+M8+YdgxuTN4SYook=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=MAN5ZmOmBarI/+FDt+qtnoX/Yc0Qy6LgEpUXEYOeolGp3/w4x8EpJpGlvodQS7AHP7+kUT+iVwIamdBP2pPOSd6nF0CNtL6t0FGsBCNsweiAunNrOZUoTcf6QIjjyR7l4+K2QaWp60ImfkcxxRhcns6Zr8NFlsH/TEW+n5bqU+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Djj/RH3b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7498C433C7;
-	Tue, 23 Jan 2024 06:36:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=q11Ro2i2ruj70tUn0OKLGZDPI6yFl3RjhU+CkNCeibxi5oPX11jQV4FZYnyMmVoT9ywsth/vEfDMEGYhKlBKsWu5Yf+9euz5GuNjjGNIkvTrOYCJgJkcpCFSRxDjo8WUMmjbak5F2xp9TkZU2h0DgGo/wW57lKk7lCNIShrcpt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pcNXm8Y7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EB45C433C7;
+	Tue, 23 Jan 2024 06:38:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705991805;
-	bh=3zQmCmznrHx2SqlPuePLfPAeGr3HxXLwdcMosqQt1Jc=;
+	s=k20201202; t=1705991913;
+	bh=N4WnIJh6bc8rJ/bQ3UvGO2EO8A+M8+YdgxuTN4SYook=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=Djj/RH3bDVaHN3WtezrR+0gh1hIFdsf+LuUmh8LCNkNPz/9vKujzP2WWInL9JENvy
-	 ha9US7Nl4ZKBzrjRuIcF0FM2pL2Wy7Jgo7tesiBZH6T0Q7ZnltGyHhWE4AI2UoQeHs
-	 zS5NuWZ4H1QS3BbuxJ8J55s5nf/1f+lMw6vLqLP2bi803pWAfu5S+dFGvs4jAAYRXL
-	 47ocinELJvcIXu2MXjbLB/ZzqxkuOhzX+jVScJQQKgVRzWUa/v/Q3WXsDjUwvgoY99
-	 w+ndnEkwk8GwyDi30VwTOfT9SPe+0PyvOBmT+YwVcgkoRsOfdBXMyB2NqujMdQ0MXs
-	 v4srBtPyOBBBQ==
+	b=pcNXm8Y7Qd/7ow9BvzhuEt9tWbOxfKqdgM4llKfmdRaGfcAH9Xf9LpwYgNbWwqCGD
+	 1M6TyMTWrFBic4HEttNUptLuWxjGdFEUhZnY0ZOHdx5aUh6mFPq5WFneAudtNw4PEe
+	 i01BPYJNvDbaGQ9FeMZEfEHaQddmvdX74nL0UfSYK7QFyc4mir2pWYHUXVs7SjSb3j
+	 4jEwAspdy7vWre3XB+o9CpdMaojdYANz5DlYCRG8yeaIxBuzuwjog3cIrLS+qIDl+M
+	 Qp6yMGz6dEK21I7B0mdgHIeW4f9y/LJ0VI6b5cAfIWQWVirB835CI8uvGVnZvy4cu6
+	 f13OIBF2KyyeQ==
 From: Kalle Valo <kvalo@kernel.org>
-To: Kees Cook <keescook@chromium.org>
-Cc: linux-hardening@vger.kernel.org,  Brian Norris
- <briannorris@chromium.org>,  Jonas =?utf-8?Q?Dre=C3=9Fler?=
- <verdre@v0yd.nl>,  Dmitry
- Antipov <dmantipov@yandex.ru>,  Tsuchiya Yuto <kitakar@gmail.com>,
-  linux-wireless@vger.kernel.org,  "Gustavo A. R. Silva"
- <gustavoars@kernel.org>,  Bill Wendling <morbo@google.com>,  Justin Stitt
- <justinstitt@google.com>,  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 62/82] mwifiex: pcie: Refactor intentional wrap-around test
-References: <20240122235208.work.748-kees@kernel.org>
-	<20240123002814.1396804-62-keescook@chromium.org>
-Date: Tue, 23 Jan 2024 08:36:38 +0200
-In-Reply-To: <20240123002814.1396804-62-keescook@chromium.org> (Kees Cook's
-	message of "Mon, 22 Jan 2024 16:27:37 -0800")
-Message-ID: <87bk9ceetl.fsf@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: kuba@kernel.org,  davem@davemloft.net,  abeni@redhat.com,
+  edumazet@google.com,  Arend van Spriel <aspriel@gmail.com>,  Franky Lin
+ <franky.lin@broadcom.com>,  Hante Meuleman <hante.meuleman@broadcom.com>,
+  dsahern@kernel.org,  weiwan@google.com,  linux-wireless@vger.kernel.org
+ (open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER),
+  brcm80211-dev-list.pdl@broadcom.com (open list:BROADCOM BRCM80211
+ IEEE802.11n WIRELESS DRIVER),  linux-kernel@vger.kernel.org (open list)
+Subject: Re: [PATCH net-next 17/22] net: fill in MODULE_DESCRIPTION()s for
+ Broadcom WLAN
+References: <20240122184543.2501493-1-leitao@debian.org>
+	<20240122184543.2501493-18-leitao@debian.org>
+Date: Tue, 23 Jan 2024 08:38:29 +0200
+In-Reply-To: <20240122184543.2501493-18-leitao@debian.org> (Breno Leitao's
+	message of "Mon, 22 Jan 2024 10:45:38 -0800")
+Message-ID: <877ck0eeqi.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -64,48 +65,44 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-Kees Cook <keescook@chromium.org> writes:
+Breno Leitao <leitao@debian.org> writes:
 
-> In an effort to separate intentional arithmetic wrap-around from
-> unexpected wrap-around, we need to refactor places that depend on this
-> kind of math. One of the most common code patterns of this is:
+> W=1 builds now warn if module is built without a MODULE_DESCRIPTION().
+> Add descriptions to the Broadcom FullMac WLAN drivers.
 >
-> 	VAR + value < VAR
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> ---
+>  drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/module.c | 1 +
+>  drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/module.c | 1 +
+>  drivers/net/wireless/broadcom/brcm80211/brcmfmac/wcc/module.c | 1 +
+>  3 files changed, 3 insertions(+)
 >
-> Notably, this is considered "undefined behavior" for signed and pointer
-> types, which the kernel works around by using the -fno-strict-overflow
-> option in the build[1] (which used to just be -fwrapv). Regardless, we
-> want to get the kernel source to the position where we can meaningfully
-> instrument arithmetic wrap-around conditions and catch them when they
-> are unexpected, regardless of whether they are signed[2], unsigned[3],
-> or pointer[4] types.
->
-> Refactor open-coded wrap-around addition test to use add_would_overflow().
-> This paves the way to enabling the wrap-around sanitizers in the future.
->
-> Link: https://git.kernel.org/linus/68df3755e383e6fecf2354a67b08f92f185365=
-94 [1]
-> Link: https://github.com/KSPP/linux/issues/26 [2]
-> Link: https://github.com/KSPP/linux/issues/27 [3]
-> Link: https://github.com/KSPP/linux/issues/344 [4]
-> Cc: Brian Norris <briannorris@chromium.org>
-> Cc: Kalle Valo <kvalo@kernel.org>
-> Cc: "Jonas Dre=C3=9Fler" <verdre@v0yd.nl>
-> Cc: Dmitry Antipov <dmantipov@yandex.ru>
-> Cc: Tsuchiya Yuto <kitakar@gmail.com>
-> Cc: linux-wireless@vger.kernel.org
-> Signed-off-by: Kees Cook <keescook@chromium.org>
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/module.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/module.c
+> index d55f3271d619..c1f91dc151c2 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/module.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/module.c
+> @@ -20,6 +20,7 @@ static void __exit brcmf_bca_exit(void)
+>  	brcmf_fwvid_unregister_vendor(BRCMF_FWVENDOR_BCA, THIS_MODULE);
+>  }
+>  
+> +MODULE_DESCRIPTION("Broadcom FullMAC WLAN BCA driver");
 
-I assume this goes via some other tree than wireless-next so:
+It would be good to spell out BCA. I don't even know what it means :)
 
-Acked-by: Kalle Valo <kvalo@kernel.org>
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/module.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/module.c
+> @@ -20,6 +20,7 @@ static void __exit brcmf_cyw_exit(void)
+>  	brcmf_fwvid_unregister_vendor(BRCMF_FWVENDOR_CYW, THIS_MODULE);
+>  }
+>  
+> +MODULE_DESCRIPTION("Broadcom FullMAC WLAN CYW driver");
 
---=20
+Same for CYW.
+
+-- 
 https://patchwork.kernel.org/project/linux-wireless/list/
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
