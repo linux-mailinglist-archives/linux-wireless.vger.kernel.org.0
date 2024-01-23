@@ -1,174 +1,191 @@
-Return-Path: <linux-wireless+bounces-2354-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2355-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9BDC837CE4
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 02:20:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF2FC83824B
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 03:19:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6599E1F28481
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 01:20:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3C351C27C29
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 02:19:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B38915B2E6;
-	Tue, 23 Jan 2024 00:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A66C5A7AC;
+	Tue, 23 Jan 2024 01:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Z7EUVBVk"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="EoJaf8Q8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEDC615B0F2
-	for <linux-wireless@vger.kernel.org>; Tue, 23 Jan 2024 00:29:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B514F8BD;
+	Tue, 23 Jan 2024 01:44:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969753; cv=none; b=k0zZZDzYfWv0QeTt710KbSk0LzTNgXWNTjnIAwCYNkTrlDxyZjWkrHT5XyD5BLULHRdwrc5XjxkafxQH8fqdZ117dN4bXAz9+YJRjRAMXkv4D7LFWtlPAmaPdlOUXAocg2NcACUMEZVswSEQ2QByVHIS/N1fDiJOzcNaHGMesd0=
+	t=1705974267; cv=none; b=RWBwVJGGwLz2d/32GuOpCqZCg84OpFFKFg89uOnylD2I5VGBmfzyvaorjWIgJiiqlJxZ+oPA+texsi8Gl6Rt5mQbWvsWr4mfTQvfsEs/9t/Z8RVWrJniNbTSai0Hds94pN7YgVMjLs3T9b1bDjfiDsu/gVqK1w7av4X0eN3vePM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969753; c=relaxed/simple;
-	bh=7JUW6Se3ttck3u03IUn6h22SlYY5f4wzvv59fMMlk7U=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GiifuBRsaLIFfomUfNQMwVIfBOte2w7fZrlLalDdjyJPgt//lxB6eEVzNMji4EN+BoiVD0JaK39R4ADKwqANk0wmn+AUV554AVv0dJ/uHgyRrkqJLb3CPF9pRkGWAOUftHaoqEH3LD5DqRFFXtIhZ0hSJZFEPqb9fWpFLEMFNbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Z7EUVBVk; arc=none smtp.client-ip=209.85.161.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-58e256505f7so1916395eaf.3
-        for <linux-wireless@vger.kernel.org>; Mon, 22 Jan 2024 16:29:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1705969751; x=1706574551; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ie3OTr5sznD5HalHa+6zn+LnARRkCye1/EzAPt6ehMc=;
-        b=Z7EUVBVkONDMsQtdqm0Q343HbVNgU8Ys/Z1cwQJbcFaj/ZUQG6Oz2Ld0TAwsIhtuU0
-         foBw3rYg05H3K9uYPSn7jWhi6AlCFucQAR1dmLqUUITT1cCGz0/sPecGal2vu62vlSge
-         EZHiPWRMVfxkD1BgS1wGMVtLzX16pAcvvYxDw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705969751; x=1706574551;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ie3OTr5sznD5HalHa+6zn+LnARRkCye1/EzAPt6ehMc=;
-        b=mg7sLBK7bFkZrluf1U2+r7u2SnkEHpgyTEo0gFiVM4XrQ27YiAOnsiIynayS1WcHcG
-         3B+fmJnwe58dyisVBJ4jQnidx0F9i8e1/2M1/PSRuyMRAlKhDVnrgoqy+nY/t5FXNGCd
-         pwPaeO39Q4xst+tXB0IFgnQ6TR9l+AAqx2qs1FT2Rf4+wV9yz+akJPTEDhyULMqp1rQf
-         Esm+zOrFZdsULZC1T4zPO2vvvHlz/d24rs2Vs5Imanir1XCcKb7uB6ri1OVPxWQhKGxm
-         stx1Ccn5B1NKhoo3X754iJqcRqn2EChlFm1mBweeLZ0N+3Pg/ALTJVFm1msflR3aEh8A
-         5YpA==
-X-Gm-Message-State: AOJu0Yy8y/mDYb6zivFjq55smH60h5Sg7e9G4i9hcoWtPKD3YyhMvS4/
-	lY6hEvmXuAOheVJOUl5BA0jge2bALIE6q8z8cMPLMoFYUcwYRS60fg76EZPRRg==
-X-Google-Smtp-Source: AGHT+IFu1VaQEw9sFXv+HjTUE3GiTFvw/CXFMuGTa+QFdqe8mKXPpftBjYBhP/mp26Aucx61/cVbWQ==
-X-Received: by 2002:a05:6358:1804:b0:176:5d73:3778 with SMTP id u4-20020a056358180400b001765d733778mr1791008rwm.36.1705969750988;
-        Mon, 22 Jan 2024 16:29:10 -0800 (PST)
-Received: from www.outflux.net ([198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id v6-20020aa78086000000b006dbda1b19f7sm3156587pff.159.2024.01.22.16.28.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Jan 2024 16:29:06 -0800 (PST)
-From: Kees Cook <keescook@chromium.org>
-To: linux-hardening@vger.kernel.org
-Cc: Kees Cook <keescook@chromium.org>,
-	Brian Norris <briannorris@chromium.org>,
-	Kalle Valo <kvalo@kernel.org>,
-	=?UTF-8?q?Jonas=20Dre=C3=9Fler?= <verdre@v0yd.nl>,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Tsuchiya Yuto <kitakar@gmail.com>,
-	linux-wireless@vger.kernel.org,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 62/82] mwifiex: pcie: Refactor intentional wrap-around test
-Date: Mon, 22 Jan 2024 16:27:37 -0800
-Message-Id: <20240123002814.1396804-62-keescook@chromium.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240122235208.work.748-kees@kernel.org>
-References: <20240122235208.work.748-kees@kernel.org>
+	s=arc-20240116; t=1705974267; c=relaxed/simple;
+	bh=og706r1FsnGlB796mygT8zhj00DaHSasowxgkcZSZbs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=ZDV+W5hio/hh2f7DkNIuFgX0sHXeSOydJL+b2eWlABf7knjLis9mWRpp+ajfh2Je8YhZhUlE+MyJsdVhEW4iArBwDm/g5+21rvI0ih2Ba7+/gxTEG4BbT6v5RP9gqKsLDyezLtEUcMQNrr59W/52TBvWLCWLSLBxhDGtC3nGMv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=EoJaf8Q8; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40N0U0Mm025463;
+	Tue, 23 Jan 2024 01:44:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=E8NE1TmX+ioeZyaO34Ntgp9d1wYhUAkwAUHsAbAtjmI=; b=Eo
+	Jaf8Q8Rj0bxcln7xflOZo2QPBprDWSLY0hi7a1qHZECDjFSugWN/IT0XZyzESizb
+	F/kd7tyzsV6g5adyaGzl0fYtmKDsAxBmvxVr4kE57pcad/Cvz+x5C85PGuWxa+a8
+	YeRsV45QFfDqU4wrJ1h0FQJd06IqTP+RcBE3uz65vuwW7x1XLAj5enYnvTt0rp/r
+	1dIzdTUM5ZwKtm5V7T6oZ4Ebft/LcKJEFts686lZjlwXmv/o8zOZQZNt3YrLPq0A
+	wrnQz5hglKsP8M8GUgSoalNfS4ykIuuMa5lMnvyj3DU1MbP9PoohCu6S1xk/xqAn
+	NN60/Bz/mnri75wyGLjQ==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vssw9hdj5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 23 Jan 2024 01:44:17 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40N1iGuv012712
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 23 Jan 2024 01:44:16 GMT
+Received: from [10.231.195.68] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Mon, 22 Jan
+ 2024 17:44:14 -0800
+Message-ID: <1d9b8bc6-b1ef-4568-a265-b4e69bf90aa9@quicinc.com>
+Date: Tue, 23 Jan 2024 09:44:11 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2776; i=keescook@chromium.org;
- h=from:subject; bh=7JUW6Se3ttck3u03IUn6h22SlYY5f4wzvv59fMMlk7U=;
- b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBlrwgKEfuOUm8gdUPZ8vO/KuClWsfQ2f3pzbTem
- aIxnbAM+fGJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCZa8ICgAKCRCJcvTf3G3A
- JonQD/9WVyaa9kGcf/DTeFmgfzqdX7xnM18yRtPWxEh32TPyVUA9IygNLB2Mzz7Mzf/1z1oLx5q
- y6Uf/vyz4gMUfg0RBu4V8FJXTNaL+fZtfonFGhqdJJClaBBDFVd+vTLW4YjC2SBU3KoLfkXXOq2
- 7bkrtOFIv7f20UQSh0t9WqD3TpID+zmHpIZvvP9d1x9ZqTkzcibWw0o5ZMuGl0KUOlFccvvXP+o
- t5jfiwQoOn9vESyzTRCcdLFh+EvH3+0EqK2qvNuTBuuHD2rKuFauD7WFvMSJHXrvqzrig23cJRh
- 2zz4ePXncay641mG9MIX2AghTvd0BXeUoNdMT2XoIc/G4FPNL62a0r04JF25hoDFE9uYhE7HOUr
- py+wlbBwWORaTtcW5nC4dkTB8JgNhmBvm17GrHAPIu6mqlZHRb7dzU/INOEZaMNSwDAhXjjrRjO
- NSmZSSPrUmkcJLxcAk3hFfbiT62Ad8EBnkaTXnMfLammAc/mmAlnOtABI64GIfFYBXc359RDmbq
- T/ikhjpd19tZo9mFB6ePKrrqeXpNz6UJO8M1WUi7y+9calE0yGanCbvnXGPAgnq51BkvTXMU44k
- iFtizJzAsxk+HlRrziOXDHeWih6lFTrScEFVxBGE/7wFBi4xSw5Te7dWdKwU8Olt009JASnOl+g iafvZ3vYcSNfmBw==
-X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v2 1/8] bus: mhi: host: add
+ mhi_power_down_no_destroy()
+Content-Language: en-US
+To: Manivannan Sadhasivam <mani@kernel.org>
+CC: Kalle Valo <kvalo@kernel.org>, <mhi@lists.linux.dev>,
+        <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <quic_cang@quicinc.com>, <quic_qianyu@quicinc.com>
+References: <20231127162022.518834-1-kvalo@kernel.org>
+ <20231127162022.518834-2-kvalo@kernel.org> <20231130054250.GC3043@thinkpad>
+ <87v89cq1ci.fsf@kernel.org> <20231220163209.GJ3544@thinkpad>
+ <20231220165113.GK3544@thinkpad>
+ <7a31696b-cf2b-48c0-bad3-327e9ce47172@quicinc.com>
+ <20240104060904.GB3031@thinkpad> <20240122062411.GA3176@thinkpad>
+ <9ac258d7-8a57-4071-af8d-5b07d776135b@quicinc.com>
+ <20240122130947.GD3176@thinkpad>
+From: Baochen Qiang <quic_bqiang@quicinc.com>
+In-Reply-To: <20240122130947.GD3176@thinkpad>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: BoJykfzKi6HQNpSO-pwKpx0mXEqcdyk-
+X-Proofpoint-ORIG-GUID: BoJykfzKi6HQNpSO-pwKpx0mXEqcdyk-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-22_12,2024-01-22_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501 mlxscore=0
+ phishscore=0 lowpriorityscore=0 bulkscore=0 adultscore=0 spamscore=0
+ malwarescore=0 clxscore=1015 impostorscore=0 suspectscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2311290000 definitions=main-2401230010
 
-In an effort to separate intentional arithmetic wrap-around from
-unexpected wrap-around, we need to refactor places that depend on this
-kind of math. One of the most common code patterns of this is:
 
-	VAR + value < VAR
 
-Notably, this is considered "undefined behavior" for signed and pointer
-types, which the kernel works around by using the -fno-strict-overflow
-option in the build[1] (which used to just be -fwrapv). Regardless, we
-want to get the kernel source to the position where we can meaningfully
-instrument arithmetic wrap-around conditions and catch them when they
-are unexpected, regardless of whether they are signed[2], unsigned[3],
-or pointer[4] types.
+On 1/22/2024 9:09 PM, Manivannan Sadhasivam wrote:
+> On Mon, Jan 22, 2024 at 04:09:53PM +0800, Baochen Qiang wrote:
+>>
+>>
+>> On 1/22/2024 2:24 PM, Manivannan Sadhasivam wrote:
+>>> On Thu, Jan 04, 2024 at 11:39:12AM +0530, Manivannan Sadhasivam wrote:
+>>>
+>>> + Can, Qiang
+>>>
+>>> [...]
+>>>
+>>>>>> To me it all sounds like the probe deferral is not handled properly in mac80211
+>>>>>> stack. As you mentioned in the commit message that the dpm_prepare() blocks
+>>>>>> probing of devices. It gets unblocked and trigerred in dpm_complete():
+>>>>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/base/power/main.c#n1131
+>>>>>>
+>>>>>> So if mac80211/ath11k cannot probe the devices at the dpm_complete() stage, then
+>>>>>> it is definitely an issue that needs to be fixed properly.
+>>>>> To clarify, ath11k CAN probe the devices at dpm_complete() stage. The
+>>>>> problem is kernel does not wait for all probes to finish, and in that way we
+>>>>> will face the issue that user space applications are likely to fail because
+>>>>> they get thawed BEFORE WLAN is ready.
+>>>>>
+>>>>
+>>>> Hmm. Please give me some time to reproduce this issue locally. I will get back
+>>>> to this thread with my analysis.
+>>>>
+>>>
+>>> We reproduced the issue with the help of PCIe team (thanks Can). What we found
+>>> out was, during the resume from hibernation the faliure happens in
+>>> ath11k_core_resume(). Precisely here:
+>>> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/tree/drivers/net/wireless/ath/ath11k/core.c?h=ath11k-hibernation-support#n850
+>>>
+>>> This code waits for the QMI messages to arrive and eventually timesout. But the
+>>> impression I got from the start was that the mhi_power_up() always fails during
+>>> resume. In our investigation, we confirmed that the failure is not happening at
+>>> the MHI level.No, mhi_power_up() never fails as it only downloads PBL,
+>>> SBL and waits
+>> for mission mode, no MHI device created hence not affected by the deferred
+>> probe. However in addition to PBL/SBL, ath11k also needs to download m3.bin,
+>> borad.bin and regdb.bin. Those files are part of WLAN firmware and are
+>> downloaded via QMI messages. After mhi_power_up() succeeds
+>> ath11k_core_resume() waits for QMI downloading those files. As you know QMI
+>> relies on MHI channels, these channels are managed by qcom_mhi_qrtr_driver.
+>> Since device probing is deferred, qcom_mhi_qrtr_driver has no chance to run
+>> at this stage. As a result ath11k_core_resume() times out.
+>>
+> 
+> Thanks for the info, this clarifies the issue in detail.
+> 
+>>>
+>>> I'm not pointing fingers here, but trying to understand why can't you fix
+>>> ath11k_core_resume() to not timeout? IMO this timeout should be handled as a
+>>> deferral case.
+>> Let's see what happens if we do it in a deferral way:
+>> 1. In ath11k_core_resume() we returns success directly without waiting for
+>> QMI downloading other firmware files.
+>> 2. Kernel unblocks device probe and schedules a work item to trigger all
+>> deferred probing. As a result MHI devices are probed by qcom_mhi_qrtr_driver
+>> and finally QMI is online.
+>> 3. kernel continues to resume and wake up userspace applications.
+>> 4. ath11k gets the message, either by kernel PM notification or something
+>> else, that QMI is ready and then downloads other firmware files.
+>>
+>> What happens if userspace applications or network stack immediately initiate
+>> some WLAN request after resume back? Can ath11k handle such request? The
+>> answer is, most likely, no. Because there is no guarantee that QMI finishes
+>> downloading before those request.
+>>
+> 
+> What will happen to userspace if ath11k returns an error like -EBUSY or
+> something? Will the netdev completely go away?
+It depends, and varies from application to application, we can't make 
+the assumption.
 
-Refactor open-coded wrap-around addition test to use add_would_overflow().
-This paves the way to enabling the wrap-around sanitizers in the future.
+Besides, it doesn't make sense to return -EBUSY or something like that, 
+if ath11k returns success during resume. A WLAN driver is supposed to 
+finish everything, at least get back to the state before suspend, in the 
+resume callback. If it couldn't, report the error.
 
-Link: https://git.kernel.org/linus/68df3755e383e6fecf2354a67b08f92f18536594 [1]
-Link: https://github.com/KSPP/linux/issues/26 [2]
-Link: https://github.com/KSPP/linux/issues/27 [3]
-Link: https://github.com/KSPP/linux/issues/344 [4]
-Cc: Brian Norris <briannorris@chromium.org>
-Cc: Kalle Valo <kvalo@kernel.org>
-Cc: "Jonas Dreßler" <verdre@v0yd.nl>
-Cc: Dmitry Antipov <dmantipov@yandex.ru>
-Cc: Tsuchiya Yuto <kitakar@gmail.com>
-Cc: linux-wireless@vger.kernel.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
----
- drivers/net/wireless/marvell/mwifiex/pcie.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/wireless/marvell/mwifiex/pcie.c b/drivers/net/wireless/marvell/mwifiex/pcie.c
-index 5f997becdbaa..e69347e65f0e 100644
---- a/drivers/net/wireless/marvell/mwifiex/pcie.c
-+++ b/drivers/net/wireless/marvell/mwifiex/pcie.c
-@@ -2086,7 +2086,7 @@ static int mwifiex_extract_wifi_fw(struct mwifiex_adapter *adapter,
- 
- 		switch (dnld_cmd) {
- 		case MWIFIEX_FW_DNLD_CMD_1:
--			if (offset + data_len < data_len) {
-+			if (add_would_overflow(data_len, offset)) {
- 				mwifiex_dbg(adapter, ERROR, "bad FW parse\n");
- 				ret = -1;
- 				goto done;
-@@ -2110,7 +2110,7 @@ static int mwifiex_extract_wifi_fw(struct mwifiex_adapter *adapter,
- 		case MWIFIEX_FW_DNLD_CMD_5:
- 			first_cmd = true;
- 			/* Check for integer overflow */
--			if (offset + data_len < data_len) {
-+			if (add_would_overflow(data_len, offset)) {
- 				mwifiex_dbg(adapter, ERROR, "bad FW parse\n");
- 				ret = -1;
- 				goto done;
-@@ -2120,7 +2120,7 @@ static int mwifiex_extract_wifi_fw(struct mwifiex_adapter *adapter,
- 		case MWIFIEX_FW_DNLD_CMD_6:
- 			first_cmd = true;
- 			/* Check for integer overflow */
--			if (offset + data_len < data_len) {
-+			if (add_would_overflow(data_len, offset)) {
- 				mwifiex_dbg(adapter, ERROR, "bad FW parse\n");
- 				ret = -1;
- 				goto done;
--- 
-2.34.1
-
+> 
+> - Mani
+> 
+>>>
+>>> - Mani
+>>>
+> 
 
