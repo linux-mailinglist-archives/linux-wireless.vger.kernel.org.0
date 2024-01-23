@@ -1,105 +1,92 @@
-Return-Path: <linux-wireless+bounces-2373-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2374-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA6D0838D2B
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 12:16:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFDF5838D8A
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 12:35:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8022B284E10
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 11:16:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F226C1C20F1B
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 11:35:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F5965DF2C;
-	Tue, 23 Jan 2024 11:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 344155EE78;
+	Tue, 23 Jan 2024 11:35:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mms7Mx/x"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I5B/Tg7Y"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB3D5DF29
-	for <linux-wireless@vger.kernel.org>; Tue, 23 Jan 2024 11:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10FCB5EE7A
+	for <linux-wireless@vger.kernel.org>; Tue, 23 Jan 2024 11:35:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706008576; cv=none; b=ai+HubOPsnO3VtFIoUW6WIjOD8T8S9PRYFTDvooBFlPWllZTueVU5SXIYskBUegU9pZSStHCb+KWO/aaIq7bNtrJ22ZDtkE9l9NaLoIaS2cXIHD58ZWT+NbkttkI9e9JqFl+ob1WKn7Lvrpwys6cWQl9/FdYT9kkwrmnnUaeRRo=
+	t=1706009717; cv=none; b=Wm2SOPMKr36lW/lSuBVv665eTVX4oNG9ReXBqajwl9M7rwPyl0KXQLlJ22MW/DnAGyOGPk2VRTrRA+j74dL/7EZdgT/VHnWkfCcZFZ/c5LLVTj8qUu4WEtey75l1YmGyKW/nj6fnYwiuGxjZaQxJ3MupTWTv/DxdNFVAHFJRxN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706008576; c=relaxed/simple;
-	bh=N0PTVL4fzc2fc/gANIXJx4GzQxydfHxxGy/6qDhdsGQ=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=ttLE8i65Q6zsLILGYJ44VHopLg6YgABgAAzbTCBb50ZHzoZW85j9XjX+hLcZchJzy4P4Og1Usr5OboZ9BPm9/vDFLglqy1gd61wEkSimuFxIS2v1SZgqxej7CFBGv1YeSsjVg/JAhdkxAPlTElmXVlteuutw6x8nlTkqGnGHzVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mms7Mx/x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CA8DC433C7;
-	Tue, 23 Jan 2024 11:16:13 +0000 (UTC)
+	s=arc-20240116; t=1706009717; c=relaxed/simple;
+	bh=PhVTS/dzd6AM1QWS4bHfdnPpmGfOkcMoGnK/wPXJ6AU=;
+	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
+	 Cc:Message-ID:Date; b=FUaZcgKn5y/dz060luaz2niy/JoSOuq+/KUgZipgFOIHBqDSD57xwAawu+lhqaCu16QprnYtDsz0oc8T3gZX4mA7xGXVZbdeJb7vlx2e8Xj/HxZRKz57Eqy3AazsbO25SahqFN7FcOma+PLRA3VphfVpj2CU+r/NaNc8HdNHLRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I5B/Tg7Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFACCC433C7;
+	Tue, 23 Jan 2024 11:35:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706008576;
-	bh=N0PTVL4fzc2fc/gANIXJx4GzQxydfHxxGy/6qDhdsGQ=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=Mms7Mx/xwoGkELZcascvJnqmwS2Euw+S50aiglr9vVeFDJVoHZkkKJt7WbBiBtlwh
-	 /P8tIdk9hiSaOZmCS+c7cHcVnV7YMvpblJecAU1zz98c8gbRWq70e5GV02jCZKojVR
-	 mmV6LgYG60CxqorR5eHRMwMZhdv91j5LWqhBlfCMVxbzLVawEpyuP3yHk1DbswrTur
-	 hT/vXKYKhWpKXFRIBsDNaJ9ONPFKAXHpwoTrvWXWq+s3X18Yj0orHAPNXOxNG2DHlS
-	 yUIx5kdXG7nWWa83F/fdo6sqtJHoNTIFcml6/3j8lbMyXrAC1fw8XZz42sFAQ4ZjuR
-	 fb/9S13Cf2O8w==
-From: Kalle Valo <kvalo@kernel.org>
-To: Shayne Chen <shayne.chen@mediatek.com>
-Cc: Felix Fietkau <nbd@nbd.name>,  linux-wireless
- <linux-wireless@vger.kernel.org>,  Lorenzo Bianconi <lorenzo@kernel.org>,
-  Ryder Lee <ryder.lee@mediatek.com>,  Evelyn Tsai
- <evelyn.tsai@mediatek.com>,  Bo Jiao <Bo.Jiao@mediatek.com>,
-  linux-mediatek <linux-mediatek@lists.infradead.org>,  Benjamin Lin
- <benjamin-jw.lin@mediatek.com>
-Subject: Re: [PATCH 04/12] wifi: mt76: mt7996: fix incorrect interpretation
- of EHT MCS caps
-References: <20240119085708.23592-1-shayne.chen@mediatek.com>
-	<20240119085708.23592-4-shayne.chen@mediatek.com>
-Date: Tue, 23 Jan 2024 13:16:12 +0200
-In-Reply-To: <20240119085708.23592-4-shayne.chen@mediatek.com> (Shayne Chen's
-	message of "Fri, 19 Jan 2024 16:57:00 +0800")
-Message-ID: <87v87kcnb7.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=k20201202; t=1706009716;
+	bh=PhVTS/dzd6AM1QWS4bHfdnPpmGfOkcMoGnK/wPXJ6AU=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=I5B/Tg7Y69JeH8ok2d7DymqtNBIk1F3R4RcqGJV+Vsp7+3RPXOdUMvRIWv0KNGpfA
+	 XYtE++aV3dBgVt/mtCs36HSf7biJgXtV8c82Qol3OTGTZkHW5IF+oGTf//rbnZNXHK
+	 8VUtx0FsZLbACM7GCml2BVxj0Kwr1GEx+n9yfKq/yf8lKy+k0V1o9xp/6qjJziT6DL
+	 zVuhZEdjDhLLffTuLn+w7h3vsGHCySiwyhUWfPWQ8NlpDJTch+SD9+KVj4UGWGVlsW
+	 94d745BuREVqP5LMgnm6ZvlVgOYrIehp70osIpWdUYaurQ1B7zsOxL/hqeNy0yNwrL
+	 1ZEmjyY6KhKhA==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v3 1/6] wifi: rtw89: add mlo_dbcc_mode for WiFi 7 chips
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20240120003831.7014-2-pkshih@realtek.com>
+References: <20240120003831.7014-2-pkshih@realtek.com>
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: <hsuan8331@realtek.com>, <linux-wireless@vger.kernel.org>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <170600971361.3962299.12990604657841234148.kvalo@kernel.org>
+Date: Tue, 23 Jan 2024 11:35:15 +0000 (UTC)
 
-Shayne Chen <shayne.chen@mediatek.com> writes:
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-> From: Benjamin Lin <benjamin-jw.lin@mediatek.com>
->
-> The EHT MCS map subfield of 20 MHz-Only is not present in the EHT
-> capability of AP, so STA does not need to parse the subfield.
-> Moreover, AP should parse the subfield only if STA is 20 MHz-Only, which
-> can be confirmed by checking supported channel width in HE capability.
->
-> Fixes: 92aa2da9fa49 ("wifi: mt76: mt7996: enable EHT support in firmware")
-> Co-developed-by: Shayne Chen <shayne.chen@mediatek.com>
-> Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-> Signed-off-by: Benjamin Lin <benjamin-jw.lin@mediatek.com>
-> ---
->  drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 16 ++++++++++++++--
->  1 file changed, 14 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-> index 3c729b563edc..02d858fdc9fe 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-> @@ -1240,6 +1240,9 @@ mt7996_mcu_sta_he_6g_tlv(struct sk_buff *skb, struct ieee80211_sta *sta)
->  static void
->  mt7996_mcu_sta_eht_tlv(struct sk_buff *skb, struct ieee80211_sta *sta)
->  {
-> +	struct mt7996_sta *msta = (struct mt7996_sta *)sta->drv_priv;
-> +	struct ieee80211_vif *vif = container_of((void *)msta->vif,
-> +						 struct ieee80211_vif, drv_priv);
+> WiFi 7 chips can operate in various MLO applications, such as 1 link (2SS)
+> and 2 links (1SS + 1SS), and we should configure different PHY mode for
+> each of them.
+> 
+> For example,
+>  - MLO_2_PLUS_0_1RF is 1 link with 2SS rate, and enable one RF component.
+>  - MLO_1_PLUS_1_1RF is 2 links with 1SS rate for each, and enable one RF
+>    component that can support two paths.
+> 
+> By default, we set the mode to legacy MLO_DBCC_NOT_SUPPORT (don't support
+> MLO and DBCC yet), and later we will introduce logic to change the mode.
+> 
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-The void pointer cast looks to be unnecessary. This is nitpicking but I
-really hate casts.
+6 patches applied to wireless-next.git, thanks.
+
+aacb84adf1a2 wifi: rtw89: add mlo_dbcc_mode for WiFi 7 chips
+5c682bcb2ced wifi: rtw89: 8922a: add chip_ops::{enable,disable}_bb_rf
+10af16279a9a wifi: rtw89: 8922a: add chip_ops related to BB init
+d2ff221579e5 wifi: rtw89: 8922a: add register definitions of H2C, C2H, page, RRSR and EDCCA
+295304040d9f wifi: rtw89: 8922a: add TX power related ops
+a4374cbd6b2e wifi: rtw89: 8922a: add BTG functions to assist BT coexistence to control TX/RX
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+https://patchwork.kernel.org/project/linux-wireless/patch/20240120003831.7014-2-pkshih@realtek.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
 
