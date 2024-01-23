@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-2376-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2377-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F75E838DB6
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 12:44:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F19F838DD0
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 12:47:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DE4F5B2140F
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 11:44:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14DB71F232C2
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 11:47:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86F6D50268;
-	Tue, 23 Jan 2024 11:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFA135D907;
+	Tue, 23 Jan 2024 11:47:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I24y5Ieh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HrEemFLR"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 640054BAA8
-	for <linux-wireless@vger.kernel.org>; Tue, 23 Jan 2024 11:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEE2E5D906;
+	Tue, 23 Jan 2024 11:47:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706010237; cv=none; b=KhUnozSg9fQn6GlInkCuv1cY/cGjHP67ktKNFRkPSUdFz1bqV5DPKIF6QI3yO2IZKLS5SZrdXYFZ+NIFw+k+hSDV/7ThCj3ubUr4ATqWOQp+f3YUYjsTvlQglwGMaX/3Ksz9S1BhWLE/KxRToAcUfYrkwgCGNvNq4IBNTlscJSc=
+	t=1706010426; cv=none; b=MJwawKsDYIp7k8wRD5iU2UVc0uMnDH5C6pMO+0okaXNYTdBpNKHm9aJ9t2TclgR9pB3OunXO2HxsW6NDQ3glolMoiXsrtFb6MTvUjYK5VWu9Bs7IWK9fnutRdhCmDfsbLcn135BeTvx55i9bsnxa129aCxUbphZWHgF5mPpw1oM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706010237; c=relaxed/simple;
-	bh=s0V7GHpf63yU5Ahp+XUdiMpFDwH86KbmA1WqyxH7ONk=;
+	s=arc-20240116; t=1706010426; c=relaxed/simple;
+	bh=yyc0UBjK4EUFBLtUwuO/rwe82t1uGPWprWflRUnPq0c=;
 	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=Y4syEaxmdKDLr5Bl640yF5p92AlC3umrmockR+MQh+xSS62zj2keAFBkIDqUEQOgjG5AIszraje5/Vk29Scnrc5i3JzB2yilpCFezjuWxbkH9aZcOAvN18NZgOApQCrWNWxb4PEXDlTVhU16ksv6pqSCmXigTxoXvLukrJPzP8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I24y5Ieh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA311C433F1;
-	Tue, 23 Jan 2024 11:43:55 +0000 (UTC)
+	 Cc:Message-ID:Date; b=BBvEqDpSiVc5gh9+2eyJVL+aoBjbsNkSrXcajQUB0LpwTo1mwVcxyl9Ov9U4itZ/MsrvyMVXJ5PgpxTAy8RkZmOoRRcYoxIJv8ubWqdY5YYBK5yqkRkFyIO9kWqjPdwAZj9G5MqtJYh3f0EQOhlIOaFmWqSSENY2E3gS8cn36Gw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HrEemFLR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48E8CC433C7;
+	Tue, 23 Jan 2024 11:47:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706010236;
-	bh=s0V7GHpf63yU5Ahp+XUdiMpFDwH86KbmA1WqyxH7ONk=;
+	s=k20201202; t=1706010426;
+	bh=yyc0UBjK4EUFBLtUwuO/rwe82t1uGPWprWflRUnPq0c=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=I24y5IehZV2AjLdoAoHeOnK6JG2SfhN/Pr6t4JWr9KgsJFfmOCPR2Hyn0VsJ7mDmo
-	 hKhZ1uYyV51iX3Xd6dpkYtWx08wGLhNAk/f/oPzcm3wHbCmznG3zOV4jpF83J26Ye3
-	 gkByebHt/oUOFVyPSFfvOefIlp3uFRDHlLxRQ2QZVSNcjJE6SeVE2YfqMiCeidIWSi
-	 1T1As7FA1VTxm4fDC4z5tm+U9F51eTBUvY41vhJdfjaqGJE2BBe0Yq44eDtotkylVv
-	 GV97vDQzH5WxW0fHMwHh4FWbzghZmr0O452GJCGCWjWBqmJfuzwPqeVpQlBmYTS5ss
-	 C1fercHecGPtQ==
+	b=HrEemFLRdXJWrzxmiy4hCQ4vp4pjIEjDTdRiPg4G8J/VQAYw8AcIHTPAqtNtu2O3w
+	 yryVtlSEgRdHixuUkauNr+x6f/x0FBW+o04qdcqMBAGKqU7x3K1JD7U5vbb2CGxNIX
+	 e6rIZ2cOrmfAybhhCg0TkSfjX8mQ75lJ5b/uZy0qCm0v+aWmTCPvyDhjYPYGGt82+i
+	 4nJvzjqXdH0ppTI7VRzE3RCZ3mVp33Bxfo1gy4upZBdQ5rhOStyg6D1BnL5gkrwKd4
+	 NMx2akrupbsOXNg8NcfAQKrW5e3KotnyIKoOS5uXw58J93dEyAEwQdpQJ2l3+d6WyS
+	 LhHUaEMSiRiQQ==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -49,34 +49,46 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: mwifiex: cleanup SSID-related data types
+Subject: Re: [PATCH net-next 17/22] net: fill in MODULE_DESCRIPTION()s for
+ Broadcom WLAN
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240118145715.475513-1-dmantipov@yandex.ru>
-References: <20240118145715.475513-1-dmantipov@yandex.ru>
-To: Dmitry Antipov <dmantipov@yandex.ru>
-Cc: Brian Norris <briannorris@chromium.org>, David Lin <yu-hao.lin@nxp.com>,
- linux-wireless@vger.kernel.org, Dmitry Antipov <dmantipov@yandex.ru>
+In-Reply-To: <20240122184543.2501493-18-leitao@debian.org>
+References: <20240122184543.2501493-18-leitao@debian.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: kuba@kernel.org, davem@davemloft.net, abeni@redhat.com,
+ edumazet@google.com, Arend van Spriel <aspriel@gmail.com>,
+ Franky Lin <franky.lin@broadcom.com>,
+ Hante Meuleman <hante.meuleman@broadcom.com>, dsahern@kernel.org,
+ weiwan@google.com,
+ linux-wireless@vger.kernel.org (open list:BROADCOM BRCM80211 IEEE802.11n
+ WIRELESS DRIVER),
+ brcm80211-dev-list.pdl@broadcom.com (open list:BROADCOM BRCM80211 IEEE802.11n
+ WIRELESS DRIVER), linux-kernel@vger.kernel.org (open list)
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170601023387.3962299.2804573379810764117.kvalo@kernel.org>
-Date: Tue, 23 Jan 2024 11:43:55 +0000 (UTC)
+Message-ID: <170601042141.3962299.17995367561123702242.kvalo@kernel.org>
+Date: Tue, 23 Jan 2024 11:47:03 +0000 (UTC)
 
-Dmitry Antipov <dmantipov@yandex.ru> wrote:
+Breno Leitao <leitao@debian.org> wrote:
 
-> Drop unused 'struct mwifiex_ssid_bssid' and replace custom
-> 'struct mwifiex_802_11_ssid' with generic 'struct cfg80211_ssid'
-> as a member of 'struct mwifiex_uap_bss_param'. Compile tested only.
+> W=1 builds now warn if module is built without a MODULE_DESCRIPTION().
+> Add descriptions to the Broadcom FullMac WLAN drivers.
 > 
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+> Signed-off-by: Breno Leitao <leitao@debian.org>
 
-The commit message should also explain _why_ this change is safe. I have
-no idea if you just randomly changed this or there was a proper
-analysis. For example, there are changes in length field and if the
-firmware uses this struct there will be problems.
+Wireless patches should use "wifi: " prefix:
 
-Patch set to Changes Requested.
+ERROR: 'wifi:' prefix missing: '[PATCH net-next 17/22] net: fill in MODULE_DESCRIPTION()s for Broadcom WLAN'
+ERROR: 'wifi:' prefix missing: '[PATCH net-next 18/22] net: fill in MODULE_DESCRIPTION()s for wlcore'
+ERROR: 'wifi:' prefix missing: '[PATCH net-next 19/22] net: fill in MODULE_DESCRIPTION()s for wl1251 and wl12xx'
+
+3 patches set to Changes Requested.
+
+13526063 [net-next,17/22] net: fill in MODULE_DESCRIPTION()s for Broadcom WLAN
+13526064 [net-next,18/22] net: fill in MODULE_DESCRIPTION()s for wlcore
+13526065 [net-next,19/22] net: fill in MODULE_DESCRIPTION()s for wl1251 and wl12xx
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240118145715.475513-1-dmantipov@yandex.ru/
+https://patchwork.kernel.org/project/linux-wireless/patch/20240122184543.2501493-18-leitao@debian.org/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
