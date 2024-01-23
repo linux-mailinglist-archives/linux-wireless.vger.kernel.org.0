@@ -1,73 +1,57 @@
-Return-Path: <linux-wireless+bounces-2362-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2363-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 154388386FF
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 06:50:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08F9183877F
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 07:34:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C23D028647F
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 05:49:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CC0C1C21B3B
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 06:34:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94D1146AB;
-	Tue, 23 Jan 2024 05:48:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A4DD56466;
+	Tue, 23 Jan 2024 06:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="KTgVAgRm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aNH9ksjP"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 711D24EB20
-	for <linux-wireless@vger.kernel.org>; Tue, 23 Jan 2024 05:48:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EABDE56450
+	for <linux-wireless@vger.kernel.org>; Tue, 23 Jan 2024 06:31:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705988898; cv=none; b=rGOH9vm8MXqthGFBdvgywOSuGA+OiKjw3iEqP2uzMlYdWt7BO4n2Kgahom98flNt93rdWI2CWWHHlxEAANgV0UpDqvb0EjAdmYL3DdR5/+7R/eG/P5FQ6zvzYdMRH6Bm30h9Sq7ZIZr74m9XC/oBWdBrlRCWlmfhUMQfeqdHVlM=
+	t=1705991483; cv=none; b=pwjbSRiK9GN09JGSryj6EOBlqN9y583HbkgqW/wJsDODo7NaCbAFQiENWw+hfLvJj9cRj0ojDzAleV4AF0fCrZy3zMNeneY+kjDQJ7jv1BP2S+/1BsvKJdRPGXAQBlIf0wVFEoyKz5AI4CsNAFj31Ed4Y61JvUggG7/70BGfhPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705988898; c=relaxed/simple;
-	bh=J26b4Ntt1d0Gl6BKM0xylllItSX8RHfySLX2YE4eZ2A=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=PrnuUbeb7rLrMPzPfbvfS9t0eIrEmQc/1wao3CjLaOddIz05e6KqkY87g1YqHEReLClK6j5hlkq4PpNEkPlJl0hjv2NlDSjePbdk9zZNavDZcqot2/MEW3zFrNiDMkBMa3tDfEUoc/eo5oudYi8R6tNpey125Epxm0Xtt8RCM5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=KTgVAgRm; arc=none smtp.client-ip=210.61.82.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: fdfd6d80b9b211eea2298b7352fd921d-20240123
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=bPxRxUZ+oqA+o7sYWwaUKD66vQMoVKVjNA4iAjZv5pg=;
-	b=KTgVAgRmF3u7YEMbp3b1YKxcH9rKqCThWDfQCic+dJDPUKQMTe6Sduz88kXLSFHxhFbVxIamaE7YwEyXw1bVIy9C+9xEwCc6G/IloA2sGmTWju/ySgLdoi852AVXJq4jgpnrlr3Abm8ndD9xrtlMSJbL09BO7C8jJosi1OSO6yk=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.36,REQID:5d12bdb6-bfe5-4e97-93b5-bb49ac78c022,IP:0,U
-	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:-5
-X-CID-META: VersionHash:6e16cf4,CLOUDID:94268d8e-e2c0-40b0-a8fe-7c7e47299109,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-	RL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,
-	SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: fdfd6d80b9b211eea2298b7352fd921d-20240123
-Received: from mtkmbs14n1.mediatek.inc [(172.21.101.75)] by mailgw02.mediatek.com
-	(envelope-from <michael-cy.lee@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 188397378; Tue, 23 Jan 2024 13:48:11 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Tue, 23 Jan 2024 13:48:09 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Tue, 23 Jan 2024 13:48:09 +0800
-From: Michael-CY Lee <michael-cy.lee@mediatek.com>
-To: linux-wireless <linux-wireless@vger.kernel.org>
-CC: Johannes Berg <johannes@sipsolutions.net>, Felix Fietkau <nbd@nbd.name>,
-	Lorenzo Bianconi <lorenzo@kernel.org>, Evelyn Tsai
-	<evelyn.tsai@mediatek.com>, Money Wang <money.wang@mediatek.com>,
-	linux-mediatek <linux-mediatek@lists.infradead.org>, Michael-CY Lee
-	<michael-cy.lee@mediatek.com>
-Subject: [PATCH] wifi: mac80211: apply duration for SW scan
-Date: Tue, 23 Jan 2024 13:47:52 +0800
-Message-ID: <20240123054752.22833-1-michael-cy.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+	s=arc-20240116; t=1705991483; c=relaxed/simple;
+	bh=S+4Mqb0dYvMpyjrxXpBv1kJJpgn3/DCcekoEbYp+P+A=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=aNziD7kx7NWQ/Wc89iagwdAgN5NiR6PohDmg6xBuCN/U+Vq4SnuE6y4BlosK7EqqJ+cQpUKy7FsI6B0F2tqGMuf3y6S/PreSyJgNP01B0aI1vyGmZVLQmJzFjKbE8JRS8u1TV1i8TsmqJCOz5AIpKjUauZEXnpP3pxEhcmLgpNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aNH9ksjP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94C6FC433C7;
+	Tue, 23 Jan 2024 06:31:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705991482;
+	bh=S+4Mqb0dYvMpyjrxXpBv1kJJpgn3/DCcekoEbYp+P+A=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=aNH9ksjPXsZo0WnUC/dLfPFujbe66tMgiGmQ/3EsYyeaMUxq+ptJtrbc2w64lW/EC
+	 qDr2Pjom5y724Ets41ll7rhrTZhkmJWmiHxXAkR+4QseYKqO1ZzH/1GzIkwl3Ij8GU
+	 mnFD8C9USvww0w5DNSPaXzF855/ypFft/BskrSRPhZ89P55H/pQAuN1gnR76V+wE5y
+	 PQehoBSkNK1nYbO/2GemzCsWi1DhqFPeQlNYEv8SWPHKDY4nQDfvudnHRA4eTYmgU+
+	 9uPKK6k0N8/7p0AMB+rXOsI59fEsbpbj184zA1gRPV8t7aZAQ+u53DbvTtSZ6TowNZ
+	 mDT8/UVtSwxZw==
+From: Kalle Valo <kvalo@kernel.org>
+To: <Ajay.Kathat@microchip.com>
+Cc: <davidm@egauge.net>,  <linux-wireless@vger.kernel.org>
+Subject: Re: RFQ: wifi: wilc1000: make wilc1000-spi bus-probe useful
+References: <90fb762e5840f9d5a6ae46f81692fb947a7796a4.camel@egauge.net>
+	<1776feff-0886-4db8-896c-c542d3e626b0@microchip.com>
+Date: Tue, 23 Jan 2024 08:31:19 +0200
+In-Reply-To: <1776feff-0886-4db8-896c-c542d3e626b0@microchip.com> (Ajay
+	Kathat's message of "Mon, 22 Jan 2024 16:57:10 +0000")
+Message-ID: <87jzo0ef2g.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -76,47 +60,34 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-This patch makes duration in scan request be applicable when using
-SW scan, but only accepts durations greater than the default value for
-the following reasons:
-1. Most APs have a beacoon interval of 100ms.
-2. Sending and receiving probe require some delay.
-3. Setting channel to HW also requires some delays
+<Ajay.Kathat@microchip.com> writes:
 
-Signed-off-by: Michael-CY Lee <michael-cy.lee@mediatek.com>
----
- net/mac80211/scan.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+> On 1/19/24 14:51, David Mosberger-Tang wrote:
+>> EXTERNAL EMAIL: Do not click links or open attachments unless you know the content is safe
+>> 
+>> The current version of the wilc1000 driver has a probe function that simply
+>> assumes the chip is present. It is only later, in wilc_spi_init(), that the
+>> driver verifies that it can actually communicate with the chip. The result of
+>> this is that the net device (typically wlan0) is created and remains in place as
+>> long as the wilc1000-spi driver is loaded, even if the WILC1000 chip is not
+>> present or not working.
+>> 
+>> Is there any reason not to detect the chip's present in wilc_bus_probe()? The
+>> patch below (relative to 5.15.147) works for me, but perhaps I'm missing
+>> something? Would it make sense to merge something along these lines into
+>> mainline?
+>> 
+>
+> I think it is the WILC driver design that the firmware/chip operations
+> are executed only when the netdev interface(wlan0) is up.
 
-diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
-index 645355e5f1bc..8adcb23262f5 100644
---- a/net/mac80211/scan.c
-+++ b/net/mac80211/scan.c
-@@ -671,7 +671,10 @@ static void ieee80211_scan_state_send_probe(struct ieee80211_local *local,
- 	 * After sending probe requests, wait for probe responses
- 	 * on the channel.
- 	 */
--	*next_delay = IEEE80211_CHANNEL_TIME;
-+	*next_delay = msecs_to_jiffies(scan_req->duration) >
-+		      IEEE80211_PROBE_DELAY + IEEE80211_CHANNEL_TIME ?
-+		      msecs_to_jiffies(scan_req->duration) - IEEE80211_PROBE_DELAY :
-+		      IEEE80211_CHANNEL_TIME;
- 	local->next_scan_state = SCAN_DECISION;
- }
- 
-@@ -994,7 +997,10 @@ static void ieee80211_scan_state_set_channel(struct ieee80211_local *local,
- 	 */
- 	if ((chan->flags & (IEEE80211_CHAN_NO_IR | IEEE80211_CHAN_RADAR)) ||
- 	    !scan_req->n_ssids) {
--		*next_delay = IEEE80211_PASSIVE_CHANNEL_TIME;
-+		*next_delay = msecs_to_jiffies(scan_req->duration) >
-+			      IEEE80211_PASSIVE_CHANNEL_TIME ?
-+			      msecs_to_jiffies(scan_req->duration) :
-+			      IEEE80211_PASSIVE_CHANNEL_TIME;
- 		local->next_scan_state = SCAN_DECISION;
- 		if (scan_req->n_ssids)
- 			set_bit(SCAN_BEACON_WAIT, &local->scanning);
+Yeah, that's good design. I think that wlan0 is down wireless drivers
+should turn off the hardware to reduce power consumption as much as
+possible. Many drivers do start the firmware during probe() to query the
+capabilities and then turn it off immediately.
+
 -- 
-2.25.1
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
