@@ -1,144 +1,108 @@
-Return-Path: <linux-wireless+bounces-2420-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2421-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28774839C94
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 23:53:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E91B5839E7B
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jan 2024 02:56:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF2591F27577
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jan 2024 22:53:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B9261C2324B
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jan 2024 01:56:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 894FB54674;
-	Tue, 23 Jan 2024 22:52:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="C0NzgG/D"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7E1D17CB;
+	Wed, 24 Jan 2024 01:56:31 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7D096AAB
-	for <linux-wireless@vger.kernel.org>; Tue, 23 Jan 2024 22:52:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB4E015D2
+	for <linux-wireless@vger.kernel.org>; Wed, 24 Jan 2024 01:56:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706050356; cv=none; b=NpxCD655TjITNRnK5DPJjZQC42RyOiI//INTjyw68/xvjtz+HQIAADakvmJ+TmQqRTFzT7g1fz7lTg/+tfYqvq70/RuElr9MTSLYxvMKcoiyeW3G7c8D86b6zZFC4/chwViJ5O3SsxegEfBg6QXI1RB6CXWd3WC3FaRn6bwG+Ag=
+	t=1706061391; cv=none; b=pzIpuNF6pdrQuRF9T1pIa7gKoQZHfmFMQ9vFUZRPYWjNmbOCCrawEDfmr3fTDYd3YEL12wXhkBaiRz/EHAR21Y+PrrbajjBuBWeMHUcQxRsWlSTXsJ/z/plGvkftWAIwMbJ7fWYCiTI0MPHaWeckXdjPbfPMdwnMbw29j0qZXE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706050356; c=relaxed/simple;
-	bh=cM1u6TyGETJjhtJrO6J7JSwAWml7G37TEKeViMrmnfg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OJN1Tylbm/xV2sT/JpAk3jhppBjOed+taYcsGATwRSXKONi+Zq4TPDLuQSi9YPcZcbI8072nYUkYDt3xuYE1Eey1vEtN4F9G2kDTqiNS2p/pIHJdrcWzVhASzJuekS6j9SVMecRMImJG/6RlmFmBrSkInsEeVvI/FCynZgBghyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=C0NzgG/D; arc=none smtp.client-ip=209.85.161.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-59998b4db25so1116721eaf.0
-        for <linux-wireless@vger.kernel.org>; Tue, 23 Jan 2024 14:52:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1706050353; x=1706655153; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+8OzyRNimHg6MWBPPPferJ7a6OpiMFAs+H+g4XMLgls=;
-        b=C0NzgG/Dtgm+JZP1sZbWdF2MiEiKlGVX+chQ+apBliQQPqDWONqY4GsZUHsOZ/l4Tn
-         VefDp4FH0thNeBBWbqtlKuOcCaOLGBwYxYIk+IpCz8DDHVTD3a2GUMX7ciLC3Uo+Wj7K
-         h3otUX+cogjgJNcr3/aviv5gOGCdMxmi2JtKI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706050353; x=1706655153;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+8OzyRNimHg6MWBPPPferJ7a6OpiMFAs+H+g4XMLgls=;
-        b=OKZrSE6Uxp/zVflh4kGTa+oWbWBSYYVJQgj1vCQg62jTFlriyUwkkKoMIQMDiqj6r1
-         yIdNViCmLuzHkyHy6utvCGIIrxpDZus5gPTTMiIUswOkFqKqAmgVYdpQn9o+p1dQ7pSR
-         vRuFeU1XFhJE2bDXQ7dtGZ7v0PcGjq/C8Gc5QpbWamdYiGykdB/+n3KZ40kzhZWzPTua
-         MxQjW2icZ6vX03Jg7zkRaTPi6d5y+6lXVKaNHfnXYUo0FE6QL7tufbFSAl0TJ2N0XIdH
-         t99uIBu4nfLFrgP6YZKP79KtZlTSpx34Uf65xd6JIkuqB/gqcS7P80dlsdwgT/BJ6vpX
-         7qcg==
-X-Gm-Message-State: AOJu0YzGcACpZWN2zWlwGfuOGVYl6VRBLqIo1FPTqAz4NeYki7eorP6t
-	KzvIdDQYvQxrBXU0HULIab9UfWffAaBCyC5ED6tSffLv9W0NfDtyzq459DAclw==
-X-Google-Smtp-Source: AGHT+IHDl/6I1rG7FFOH5TLpxkcvik0AXWrRwPOVODwTcq5RC8mUYxoyhnLKMEDwXanwWecFPslILA==
-X-Received: by 2002:a05:6358:7e49:b0:176:3715:3c32 with SMTP id p9-20020a0563587e4900b0017637153c32mr3147609rwm.3.1706050353056;
-        Tue, 23 Jan 2024 14:52:33 -0800 (PST)
-Received: from www.outflux.net ([198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id e33-20020a631e21000000b005d0796e779bsm2079685pge.12.2024.01.23.14.52.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Jan 2024 14:52:32 -0800 (PST)
-Date: Tue, 23 Jan 2024 14:52:31 -0800
-From: Kees Cook <keescook@chromium.org>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: linux-hardening@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>,
-	Max Chen <mxchen@codeaurora.org>, Yang Shen <shenyang39@huawei.com>,
-	linux-wireless@vger.kernel.org,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 41/82] wil6210: Refactor intentional wrap-around test
-Message-ID: <202401231452.2A37D157C@keescook>
-References: <20240123002814.1396804-41-keescook@chromium.org>
- <170601063238.3962299.12030024839048269322.kvalo@kernel.org>
+	s=arc-20240116; t=1706061391; c=relaxed/simple;
+	bh=Mo04dEGGJV/wvN6fxHnrUO/qOzo0F0fQGBcJ9NgusqE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=E9fnAW31MP4jgKbP8ZVvZ+n1qcxjrksJCyoNiIsjExkciu8AsTTBIqrIrzHgBdu1tYbSs665TwBJmruz8olqBrfCfZ6aylUcvyudMzGfKzE2Z5ll+0m5+N23lkvI5XCFrb2F4gQa7Zx3eRFq0232CHhhSQcUe5tc+XV8eGeVH9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 40O1ttrjF634491, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 40O1ttrjF634491
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 24 Jan 2024 09:55:55 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.17; Wed, 24 Jan 2024 09:55:56 +0800
+Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
+ RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Wed, 24 Jan 2024 09:55:56 +0800
+Received: from RTEXDAG02.realtek.com.tw ([fe80::5d58:7838:d352:d6b8]) by
+ RTEXDAG02.realtek.com.tw ([fe80::5d58:7838:d352:d6b8%5]) with mapi id
+ 15.01.2375.007; Wed, 24 Jan 2024 09:55:56 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Martin Kaistra <martin.kaistra@linutronix.de>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC: Jes Sorensen <Jes.Sorensen@gmail.com>, Kalle Valo <kvalo@kernel.org>,
+        Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        Sebastian Andrzej Siewior
+	<bigeasy@linutronix.de>
+Subject: RE: [PATCH] wifi: rtl8xxxu: update rate mask per sta
+Thread-Topic: [PATCH] wifi: rtl8xxxu: update rate mask per sta
+Thread-Index: AQHaSVU1/kXlkXq/OEm3ZacX5mGlCLDevu1wgAZTiYCAAxgwQA==
+Date: Wed, 24 Jan 2024 01:55:56 +0000
+Message-ID: <46aea2f4feea4f00aba0e2335f30bf76@realtek.com>
+References: <20240117145516.497966-1-martin.kaistra@linutronix.de>
+ <4d5f06f2407042f2862af7559ed66eac@realtek.com>
+ <9aadc704-48ec-4417-82fa-c5f7b19801ff@linutronix.de>
+In-Reply-To: <9aadc704-48ec-4417-82fa-c5f7b19801ff@linutronix.de>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <170601063238.3962299.12030024839048269322.kvalo@kernel.org>
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-On Tue, Jan 23, 2024 at 11:50:34AM +0000, Kalle Valo wrote:
-> Kees Cook <keescook@chromium.org> wrote:
-> 
-> > In an effort to separate intentional arithmetic wrap-around from
-> > unexpected wrap-around, we need to refactor places that depend on this
-> > kind of math. One of the most common code patterns of this is:
-> > 
-> > 	VAR + value < VAR
-> > 
-> > Notably, this is considered "undefined behavior" for signed and pointer
-> > types, which the kernel works around by using the -fno-strict-overflow
-> > option in the build[1] (which used to just be -fwrapv). Regardless, we
-> > want to get the kernel source to the position where we can meaningfully
-> > instrument arithmetic wrap-around conditions and catch them when they
-> > are unexpected, regardless of whether they are signed[2], unsigned[3],
-> > or pointer[4] types.
-> > 
-> > Refactor open-coded wrap-around addition test to use add_would_overflow().
-> > This paves the way to enabling the wrap-around sanitizers in the future.
-> > 
-> > Link: https://git.kernel.org/linus/68df3755e383e6fecf2354a67b08f92f18536594 [1]
-> > Link: https://github.com/KSPP/linux/issues/26 [2]
-> > Link: https://github.com/KSPP/linux/issues/27 [3]
-> > Link: https://github.com/KSPP/linux/issues/344 [4]
-> > Cc: Kalle Valo <kvalo@kernel.org>
-> > Cc: Johannes Berg <johannes.berg@intel.com>
-> > Cc: Max Chen <mxchen@codeaurora.org>
-> > Cc: Yang Shen <shenyang39@huawei.com>
-> > Cc: linux-wireless@vger.kernel.org
-> > Signed-off-by: Kees Cook <keescook@chromium.org>
-> > Acked-by: Kalle Valo <kvalo@kernel.org>
-> 
-> If you can edit before commit please add "wifi:" prefix to the wireless patches:
-> 
-> ERROR: 'wifi:' prefix missing: '[PATCH 41/82] wil6210: Refactor intentional wrap-around test'
-> ERROR: 'wifi:' prefix missing: '[PATCH 62/82] mwifiex: pcie: Refactor intentional wrap-around test'
-
-Ah yes, thank you! I will adjust them.
-
--Kees
-
-> 
-> 2 patches set to Not Applicable.
-> 
-> 13526631 [41/82] wil6210: Refactor intentional wrap-around test
-> 13526632 [62/82] mwifiex: pcie: Refactor intentional wrap-around test
-> 
-> -- 
-> https://patchwork.kernel.org/project/linux-wireless/patch/20240123002814.1396804-41-keescook@chromium.org/
-> 
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-> 
-
--- 
-Kees Cook
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogTWFydGluIEthaXN0cmEg
+PG1hcnRpbi5rYWlzdHJhQGxpbnV0cm9uaXguZGU+DQo+IFNlbnQ6IE1vbmRheSwgSmFudWFyeSAy
+MiwgMjAyNCA1OjMwIFBNDQo+IFRvOiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT47
+IGxpbnV4LXdpcmVsZXNzQHZnZXIua2VybmVsLm9yZw0KPiBDYzogSmVzIFNvcmVuc2VuIDxKZXMu
+U29yZW5zZW5AZ21haWwuY29tPjsgS2FsbGUgVmFsbyA8a3ZhbG9Aa2VybmVsLm9yZz47IEJpdHRl
+cmJsdWUgU21pdGgNCj4gPHJ0bDg4MjFjZXJmZTJAZ21haWwuY29tPjsgU2ViYXN0aWFuIEFuZHJ6
+ZWogU2lld2lvciA8YmlnZWFzeUBsaW51dHJvbml4LmRlPg0KPiBTdWJqZWN0OiBSZTogW1BBVENI
+XSB3aWZpOiBydGw4eHh4dTogdXBkYXRlIHJhdGUgbWFzayBwZXIgc3RhDQo+IA0KPiBBbSAxOC4w
+MS4yNCB1bSAwMjozNyBzY2hyaWViIFBpbmctS2UgU2hpaDoNCj4gPg0KPiA+DQo+ID4+IC0tLS0t
+T3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+ID4+IEZyb206IE1hcnRpbiBLYWlzdHJhIDxtYXJ0aW4u
+a2Fpc3RyYUBsaW51dHJvbml4LmRlPg0KPiA+PiBTZW50OiBXZWRuZXNkYXksIEphbnVhcnkgMTcs
+IDIwMjQgMTA6NTUgUE0NCj4gPj4gVG86IGxpbnV4LXdpcmVsZXNzQHZnZXIua2VybmVsLm9yZw0K
+PiA+PiBDYzogSmVzIFNvcmVuc2VuIDxKZXMuU29yZW5zZW5AZ21haWwuY29tPjsgS2FsbGUgVmFs
+byA8a3ZhbG9Aa2VybmVsLm9yZz47IFBpbmctS2UgU2hpaA0KPiA+PiA8cGtzaGloQHJlYWx0ZWsu
+Y29tPjsgQml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+OyBTZWJhc3Rp
+YW4gQW5kcnplaiBTaWV3aW9yDQo+ID4+IDxiaWdlYXN5QGxpbnV0cm9uaXguZGU+DQo+ID4+ICsN
+Cj4gPj4gKyAgICAgICBzdGEgPSBpZWVlODAyMTFfZmluZF9zdGFfYnlfaWZhZGRyKHByaXYtPmh3
+LCBoZHItPmFkZHIyLA0KPiA+PiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgdmlmLT5hZGRyKTsNCj4gPg0KPiA+IENhbid0IHdlIHNlYXJjaCBmb3IgJ3N0YScgYnkg
+cnhfZGVzYy0+bWFjX2lkPyBUaGVuLCB5b3UgZG9uJ3QgbmVlZCBhIGxvdCBvZg0KPiA+IGNvZGUg
+dG8gY2hlY2sgYWRkcmVzcy4NCj4gDQo+IEkgYXNzdW1lLCB5b3UgbWVhbiByeF9kZXNjLT5tYWNp
+ZD8gV2hlbiBJIHRyeSB0byB0ZXN0IHRoaXMsIGl0IGxvb2tzIHRvIG1lIGFzIGlmDQo+IHRoZSBh
+c3NpZ25tZW50IG9mIG1hY2lkIHRvIHN0YSBpbiByeCBkb2VzIG5vdCBtYXRjaCB0aGUgYXNzaWdu
+bWVudCBpbiB0aGUgZHJpdmVyLg0KPiBGb3IgZXhhbXBsZSwgSSBleHBlY3QgdGhlIGZpcnN0IGNv
+bm5lY3RlZCBzdGF0aW9uIHRvIGJlIG1hY2lkIDIsIHdoaWNoIGlzIGFsc28NCj4gc2VudCB0byB0
+aGUgZmlybXdhcmUgYnkgcmVwb3J0X2Nvbm5lY3QsIGJ1dCBpbiByeGRlc2MgaXQgaXMgbWFjaWQg
+MS4gQ2FuIHRoaXMNCj4gZXZlbiBiZSBpbmZsdWVuY2VkIGJ5IHRoZSBkcml2ZXI/DQoNClRoZSBy
+eF9kZXNjLT5tYWNpZCBpcyBub3QgYWx3YXlzIHVzYWJsZSBmb3IgdGhpcyBnZW5lcmF0aW9uIGNo
+aXBzLCBzbyBqdXN0IHlvdXINCm9yaWdpbmFsIGxvZ2ljLiANCg0KDQo=
 
