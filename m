@@ -1,103 +1,153 @@
-Return-Path: <linux-wireless+bounces-2450-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2451-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0924683AE27
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jan 2024 17:16:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7CDF83AF5A
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jan 2024 18:14:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B9601C21909
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jan 2024 16:15:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA3F01C221B5
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jan 2024 17:14:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D09D97E580;
-	Wed, 24 Jan 2024 16:15:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9DA67E79E;
+	Wed, 24 Jan 2024 17:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=egauge.net header.i=@egauge.net header.b="onBf5WlQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v2pVfufL"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from o1.ptr2625.egauge.net (o1.ptr2625.egauge.net [167.89.112.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A5FE7E562
-	for <linux-wireless@vger.kernel.org>; Wed, 24 Jan 2024 16:15:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=167.89.112.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68C897E762;
+	Wed, 24 Jan 2024 17:13:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706112919; cv=none; b=lxZg0PM8WLesj3J8CDKJ2G8wL0vix+4NN92okVCT9dkWP8vOe9cDLKpP0pWQfPS4UE9WT0otKTJzvwuaS4q2wCbG7pBemKLCi/drKGdDpGx1l6I/Pl4Y0WoTt76LwdSgHcNUK/ThXfH8v2gfyp1so+RfeHbwAgNvGVSVYiUt2J0=
+	t=1706116431; cv=none; b=ldVV+G7fdPUxCIS4fpEOMS+Fv6XwlVWrEIAYgJIv9QDfxbyV58XpDgsZnnXBxngYztY/PUz4IRj10hnSZRew86hTNjtcgs+A9zv8uobOEjPc+frQ7U4PHivmRGrr1+nrgrFpqCT1uaW0B5CkQ1VHK+TRaw6Waz95WjNIrtDGgFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706112919; c=relaxed/simple;
-	bh=dKiAv/uivPzoiGhxG2IKUFAnOQNxuPlFeWhprbt8OQU=;
-	h=Message-ID:Subject:From:Date:In-Reply-To:References:Content-Type:
-	 MIME-Version:To:Cc; b=E3iEhLLPxnjJvTmcFKAuacNHtyS7uxr0OIoR1ZhgmOWD0JMWZ45sBw+k/mX1sUIDelTbTqpEqcFH0xUuXb/M5l+e0eEJ46c2f+qf6g1ZrUFf6myfLxHTgtumD1jSJGIg6n54zxvFomNgLVTo9OPPgsRQkyjj0eVnKSYTO4DRNEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=egauge.net; spf=pass smtp.mailfrom=em1190.egauge.net; dkim=pass (2048-bit key) header.d=egauge.net header.i=@egauge.net header.b=onBf5WlQ; arc=none smtp.client-ip=167.89.112.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=egauge.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em1190.egauge.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=egauge.net;
-	h=subject:from:in-reply-to:references:content-type:
-	content-transfer-encoding:mime-version:to:cc:cc:content-type:from:subject:to;
-	s=sgd; bh=P0h+Q+0tLepJtPjIopUI7mcyX5TnBT5b8Kc9+K+8eTs=;
-	b=onBf5WlQ/ng/2mXXy1np12+40ULiSgBIAeKReFvomqILI+FeCp5ObhSi+v4RR7IdCm7Y
-	iSTWdB07BMzHZV2GM2NABPwGn/eowpUf8Oz3J2atlbEjUTkb4em35lMxt2B4AGMS+qrqJR
-	iwzNemRn2JzfCDeMpxh1vZB4Vxvl8TeiYA+2GmzwCJMv5yvFuE9Cyk5BX9duQJwbXhPlwh
-	lSwspR/QmDMAQpefhF4ZBUdtY5gm6eQ26/G6JeERLWWYcZBm2juCLIU5+CAU9TOfz0Dcas
-	wdXXR4X/+r7tLQZUYky+ns74LO6LJLAZHyBnqwFMSBcV1RmTP1sSD4GlI7JoBm+Q==
-Received: by filterdrecv-5bbdbb56cd-fdw6s with SMTP id filterdrecv-5bbdbb56cd-fdw6s-1-65B13794-5A
-        2024-01-24 16:15:16.708559711 +0000 UTC m=+1133900.830562834
-Received: from bixby.lan (unknown)
-	by geopod-ismtpd-26 (SG) with ESMTP
-	id Bg1IXzs3RB-5Mjk55BGNwg
-	Wed, 24 Jan 2024 16:15:16.486 +0000 (UTC)
-Message-ID: <8892ba59b6307e82eb203b60042e605443bf91e2.camel@egauge.net>
-Subject: Re: [PATCH] wifi: wilc1000: validate chip id during bus probe
-From: David Mosberger-Tang <davidm@egauge.net>
-Date: Wed, 24 Jan 2024 16:15:16 +0000 (UTC)
-In-Reply-To: <0d77d857-35ce-43bc-aaf3-2b46c01a44ec@bootlin.com>
-References: <20240122211315.1444880-2-davidm@egauge.net>
-	 <20240122220350.1449413-1-davidm@egauge.net>
-	 <751bf8e4-c81c-495b-9166-9f91f9c4b2d5@bootlin.com>
-	 <b8e8a3f82fe240506e82322a10be7b4e9f218eca.camel@egauge.net>
-	 <0d77d857-35ce-43bc-aaf3-2b46c01a44ec@bootlin.com>
-Organization: eGauge Systems LLC
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2 
+	s=arc-20240116; t=1706116431; c=relaxed/simple;
+	bh=jvo5IXYlQYdIU6VCmACeGNP4xo23ZIbLfeE2jvqqluI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fVWsi+KevSWn+BcFviAfQvoVjSaUypMoub+WfWbIRbf9bcZDKr9RZD2lZhBD0I5ikc5Nb6eGoQTJxEbLuHu50ZkmGEUuj600qr79/331zMu57eOlgI3CH80shvpNyCg5bwpPZnfXy2MWJvQ/Iy59YFpDindHDu2AwQFT0sgA3qA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v2pVfufL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B096C43390;
+	Wed, 24 Jan 2024 17:13:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1706116430;
+	bh=jvo5IXYlQYdIU6VCmACeGNP4xo23ZIbLfeE2jvqqluI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=v2pVfufLGd3lCfp0CeG2fpxzUUsvpwbElgNFofM1ZPehhJ3gSyI8DyqjujjS7qB28
+	 HIx8X5ThDTkPR0Ay0PzOQVdIcq5n2pTAL/fkyg4/FCf2V3zKeABMVcc+DS8MIJ/Ztv
+	 A8j4KVPuFkJX9pHjYFH5A/rDYDM6TICeR0rlV7yw=
+Date: Wed, 24 Jan 2024 09:13:49 -0800
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: Mark Brown <broonie@kernel.org>, kernel@pengutronix.de,
+	Moritz Fischer <mdf@kernel.org>, Wu Hao <hao.wu@intel.com>,
+	Xu Yilun <yilun.xu@intel.com>, Tom Rix <trix@redhat.com>,
+	linux-fpga@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Alexander Aring <alex.aring@gmail.com>,
+	Stefan Schmidt <stefan@datenfreihafen.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-wpan@vger.kernel.org, netdev@vger.kernel.org,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	linux-input@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
+	Rayyan Ansari <rayyan@ansari.sh>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Martin Tuma <martin.tuma@digiteqautomotive.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	linux-media@vger.kernel.org, Sergey Kozlov <serjk@netup.ru>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Yang Yingliang <yangyingliang@huawei.com>,
+	linux-mmc@vger.kernel.org, Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Rob Herring <robh@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
+	Michal Simek <michal.simek@amd.com>,
+	Amit Kumar Mahapatra via Alsa-devel <alsa-devel@alsa-project.org>,
+	linux-mtd@lists.infradead.org,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Ronald Wahl <ronald.wahl@raritan.com>,
+	Benson Leung <bleung@chromium.org>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Guenter Roeck <groeck@chromium.org>,
+	chrome-platform@lists.linux.dev, Max Filippov <jcmvbkbc@gmail.com>,
+	linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	linux-arm-msm@vger.kernel.org,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	linux-mediatek@lists.infradead.org,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>,
+	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+	linux-staging@lists.linux.dev, Viresh Kumar <vireshk@kernel.org>,
+	Rui Miguel Silva <rmfrfs@gmail.com>,
+	Johan Hovold <johan@kernel.org>, Alex Elder <elder@kernel.org>,
+	greybus-dev@lists.linaro.org, Peter Huewe <peterhuewe@gmx.de>,
+	Jarkko Sakkinen <jarkko@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+	linux-integrity@vger.kernel.org,
+	Herve Codina <herve.codina@bootlin.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	linux-usb@vger.kernel.org, Helge Deller <deller@gmx.de>,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Kalle Valo <kvalo@kernel.org>, Dmitry Antipov <dmantipov@yandex.ru>,
+	libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
+	Jonathan Corbet <corbet@lwn.net>, James Clark <james.clark@arm.com>,
+	Bjorn Helgaas <bhelgaas@google.com>, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v2 00/33] spi: get rid of some legacy macros
+Message-ID: <2024012417-prissy-sworn-bc55@gregkh>
+References: <cover.1705944943.git.u.kleine-koenig@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SG-EID: 
- =?us-ascii?Q?+kMxBqj35EdRUKoy8diX1j4AXmPtd302oan+iXZuF8m2Nw4HRW2irNspffT=2Fkh?=
- =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvG91yd+1zkhLPuO8B?=
- =?us-ascii?Q?bsb2o55qZdxG26=2FghdW5nDLDPvFkYp8ciozUc6q?=
- =?us-ascii?Q?BUz=2FmVWd59RwJ4uf1Hun=2F5lgIPKyP5xXCHg6baP?=
- =?us-ascii?Q?3fElVzPcfdu4gfyyci2lTO9mycyVu4lnJl7JPhY?=
- =?us-ascii?Q?WvaKC9Z3lHP9WWlv0+r7PeAeJSkIxGyHw=2F+7yJz?=
- =?us-ascii?Q?wlDTH6TBnSvndWi9REL2w=3D=3D?=
-To: Alexis =?iso-8859-1?q?Lothor=E9?= <alexis.lothore@bootlin.com>,
-	linux-wireless@vger.kernel.org
-Cc: Ajay.Kathat@microchip.com, kvalo@kernel.org
-X-Entity-ID: Xg4JGAcGrJFIz2kDG9eoaQ==
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <cover.1705944943.git.u.kleine-koenig@pengutronix.de>
 
-On Wed, 2024-01-24 at 10:01 +0100, Alexis Lothor=E9 wrote:
-> On 1/23/24 18:39, David Mosberger-Tang wrote:
->=20
-> >=20
-> > > What does KASAN actually complain about?  A double free or something =
-else?
->=20
-> I see that the kasan dump from my last email is truncated, but the first =
-line
-> clearly mentions a use-after-free:
->=20
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> BUG: KASAN: slab-use-after-free in wilc_netdev_cleanup+0x294/0x2c0
+On Mon, Jan 22, 2024 at 07:06:55PM +0100, Uwe Kleine-König wrote:
+> Hello,
+> 
+> this is v2 of this patch set.
+> 
+> Changes since (implicit) v1, sent with Message-Id:
+> cover.1705348269.git.u.kleine-koenig@pengutronix.de:
+> 
+>  - Rebase to v6.8-rc1
+>  - Fix a build failure on sh
+>  - Added the tags received in (implicit) v1.
+> 
+> The slave-mt27xx driver needs some more work. The patch presented here
+> is enough however to get rid of the defines handled in patch 32.
+> Cleaning that up is out-of-scope for this series, so I'll delay that
+> until later.
+> 
+> Note that Jonathan Cameron has already applied patch 3 to his tree, it
+> didn't appear in a public tree though yet. I still included it here to
+> make the kernel build bots happy.
 
-Ah, that's helpful, thanks!  Can you map wilc_netdev_cleanup+0x294 to the
-corresponding source line?  Are you on ARM64 or something else?
+Are we supposed to take the individual changes in our different
+subsystem trees, or do you want them all to go through the spi tree?
 
-  --david
+Either is fine with me, just need to know.
 
+thanks,
+
+greg k-h
 
