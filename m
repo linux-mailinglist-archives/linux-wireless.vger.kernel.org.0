@@ -1,128 +1,68 @@
-Return-Path: <linux-wireless+bounces-2447-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2448-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1951583AAEF
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jan 2024 14:29:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD3CE83AAF4
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jan 2024 14:33:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0779B2913C
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jan 2024 13:29:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7649A280A88
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jan 2024 13:33:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B72A77622;
-	Wed, 24 Jan 2024 13:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9C987764D;
+	Wed, 24 Jan 2024 13:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="SfB7Dsf4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dMFdXy/K"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8199477F0E
-	for <linux-wireless@vger.kernel.org>; Wed, 24 Jan 2024 13:28:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6BAA8BE1
+	for <linux-wireless@vger.kernel.org>; Wed, 24 Jan 2024 13:33:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706102930; cv=none; b=iriLxU155lIyyRJtRsXNEZoJlWdvA4lUTWY741/JSkYzSEh/4O3T0m+uJuuhz/SWarKMWxmu35tWSTvWnD5bqF3LLLZfGD5Zip5efGsyxXGBKfVVp0ihbQ8TXfME+SYXL2AN8G1pg7eC3p7J6rLhp3rK97oz5u4cRaoxLLvO9Z0=
+	t=1706103213; cv=none; b=bOS7BHYMYzT10gpQOLZgtISrAuB+MMuy8Z/uQk/tGqSrc5n7OgnLEIypa5apE7uJb1RwJImvFCqUA6UETBFdr3dI6p8kD7Aotdr/r6TkoAr883U7F7JvcyGyA3s+6Iy9rF3MBF56u3XBds4J/ui32wK2MgLnk2HpNG0rE60SkQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706102930; c=relaxed/simple;
-	bh=fveO+5H+lk3A8NyX42BprP3X6Ea6DGTHOvOCQQlrhu0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RMbN0ByECHaViYRQhpFjfIldkHE4zaSjru+iAlyQ3tSMXyaMdva5U2S+guJmPIP/4IlaBsjTMdEeDCcxtcr8odAEkedWW1lGyAQjAislzCFA4A3kupeGHOfPYqruqIQ2ns7c6QgtepPoGPjNIXtrTalmGb6kHm/9BPgYVSU2cQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=SfB7Dsf4; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40OCaOYu016693;
-	Wed, 24 Jan 2024 13:28:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-transfer-encoding:content-type; s=
-	qcppdkim1; bh=zDRhT/J+FtOUydChngJeg+g/jsUa70xFEFEH5O2dOfs=; b=Sf
-	B7Dsf4wlbf+iroMBj7gYdIzYvVJuNM6f3LPp+o4neHvZzq8cmVVKyQodIa/wd7jv
-	YCElWglqgV7HC5CtDp7QfqUOYQ/Mg14NQLFxRjoZ8ORyEhkNxcIbsKRYrMi2lUKb
-	0kmFBctfz1DBmI2vl1kwoNdXaz6HTCRAZMjdJQhmBYou0N9K2C4RJNpylTUSi35m
-	VZgDczOkcfnPWmIKuurOdljPAPp4JrgPi8XrZT9N9G7QB6gdaUNSDf26h0FHAbLt
-	Wk7MMvjsvsLtEDmagx6Fs4fZ8/e/9MrJEWVCOrsPakLOOKHoNv8RL14HpqA/8DWR
-	MmbCy1LACUxycWt7mZMQ==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vtyf78h0m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 24 Jan 2024 13:28:45 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40ODSixM010099
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 24 Jan 2024 13:28:44 GMT
-Received: from cdcwlex322514-lin.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Wed, 24 Jan 2024 05:28:42 -0800
-From: Aditya Kumar Singh <quic_adisi@quicinc.com>
-To: <johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>,
-        Aditya Kumar Singh
-	<quic_adisi@quicinc.com>
-Subject: [PATCH 3/3] wifi: mac80211: remove only own link stations during stop_ap
-Date: Wed, 24 Jan 2024 18:58:14 +0530
-Message-ID: <20240124132814.802018-4-quic_adisi@quicinc.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240124132814.802018-1-quic_adisi@quicinc.com>
-References: <20240124132814.802018-1-quic_adisi@quicinc.com>
+	s=arc-20240116; t=1706103213; c=relaxed/simple;
+	bh=DoomOp94MYQjW4P+ev9yS1HbxtHacZaSTyqA77i+0VY=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=GmithXOKzDo4Fb/YW9Skf63qdOZS/eR3zd9M7yag1kr348iDb1MwfIH5rvLWzHTNQh2WjUYcR2NhQQGx6Fi3bykud59ycSxLdQeqoQrKC9v0H6fSgP+zdOTAR3x1P81S/W5D7Cb3bUWq3XQ8O3UsIkRjWD7V6iIp9Wx/OUa0LRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dMFdXy/K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEB09C433C7;
+	Wed, 24 Jan 2024 13:33:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706103213;
+	bh=DoomOp94MYQjW4P+ev9yS1HbxtHacZaSTyqA77i+0VY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=dMFdXy/K92NyzIXFNOBbKatNXgrlDuz4+VQD0n3yS5F422XwymqKCF9C/Q9MfgScB
+	 5qnxPODz/x0buym/VACF7Qa13PLN59yo/uBZyDJheM+oktXc9uS6ZqlZHHdCLzy5Ct
+	 PdKGa+v8ooK9GmFCzF6g3YqX1ljDpCPpU+NHWNiNETqE9WYr57k1Mcdc5J5ryh6GE3
+	 rMdAJgP9OqAxFC1noDa9RcJP4MnXPoql13b/fYq4Uhyu1MCierdTLthF113qtxkVzG
+	 bRnUWrmiYKVpZ2dnANZwfh6kDyI0MpDQxwsaUCaYqCxhdzB4aKd8lsyTB0W6JeeplT
+	 Zy2NwFn7jBNxw==
+Date: Wed, 24 Jan 2024 07:33:31 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Dmitry Antipov <dmantipov@yandex.ru>
+Cc: Arend Van Spriel <arend.vanspriel@broadcom.com>,
+	Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+	lvc-project@linuxtesting.org
+Subject: Re: [PATCH 2/2] [v4] wifi: brcmfmac: handle possible PCI irq
+ handling errors
+Message-ID: <20240124133331.GA351271@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: WnzqrPPuo5BvMk3ArbC-qHZGYrtkFSWs
-X-Proofpoint-ORIG-GUID: WnzqrPPuo5BvMk3ArbC-qHZGYrtkFSWs
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-24_06,2024-01-24_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- bulkscore=0 adultscore=0 priorityscore=1501 malwarescore=0 suspectscore=0
- impostorscore=0 phishscore=0 clxscore=1015 mlxscore=0 mlxlogscore=856
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2401190000 definitions=main-2401240097
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240124092738.186493-2-dmantipov@yandex.ru>
 
-Currently, whenever AP link is brought down via ieee80211_stop_ap()
-function, all stations connected to the sdata are flushed. However, in case
-of MLO there is a requirement to flush only stations connected to that link
-and not all.
+On Wed, Jan 24, 2024 at 12:27:10PM +0300, Dmitry Antipov wrote:
+> Switch to newer 'pci_{alloc,feee}_irq_vectors()' API and handle
+> possible errors in 'brcmf_pcie_request_irq()'. Compile tested only.
 
-For instance - Consider 2 GHz and 5 GHz are AP MLD. Now due to some reason
-5 GHz link of this AP is going down (link removal or any other case). All
-stations connected, even legacy stations connected to 2 GHz link AP would
-also be flushed. Flushing of other link stations is wrong.
-
-Fix this issue by passing self link ID to sta_flush() function. This would
-then only remove the stations which are still using the passed link
-ID as their link sta. Other stations will not be affected.
-
-Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
----
- net/mac80211/cfg.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 26a8ea553401..968ceadd88a7 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1618,7 +1618,7 @@ static int ieee80211_stop_ap(struct wiphy *wiphy, struct net_device *dev,
- 	link_conf->ema_ap = false;
- 	link_conf->bssid_indicator = 0;
- 
--	__sta_info_flush(sdata, true, -1);
-+	__sta_info_flush(sdata, true, link_id);
- 	ieee80211_free_keys(sdata, true);
- 
- 	link_conf->enable_beacon = false;
--- 
-2.25.1
-
+s/feee/free/
 
