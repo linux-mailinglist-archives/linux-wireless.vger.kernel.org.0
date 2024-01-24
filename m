@@ -1,253 +1,131 @@
-Return-Path: <linux-wireless+bounces-2443-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2444-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7484E83AAC1
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jan 2024 14:15:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D134C83AAEB
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jan 2024 14:28:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BE211F2C107
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jan 2024 13:15:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC19E1C20CDE
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jan 2024 13:28:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3DE777F0F;
-	Wed, 24 Jan 2024 13:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35A2077F04;
+	Wed, 24 Jan 2024 13:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="D/9AqKm2"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="M2E8M/7F"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17DDC77F01
-	for <linux-wireless@vger.kernel.org>; Wed, 24 Jan 2024 13:15:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7132077622
+	for <linux-wireless@vger.kernel.org>; Wed, 24 Jan 2024 13:28:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706102106; cv=none; b=K4yAqRF6IlVOdZFNvzRNbR/CScXj6hoGCfdqC4oy9Efmk2JpNVZ14+emZ6xf/Z/QTpHxHcp6iFrf9koZ6BWNeAmukQ5187XssQZwzNv98gysZMGqa9Y0pVErZ8riDb/8Ox0vj+zDeYd/TAeYY9dzVLyqOnCn54XyGYvF8nPKip0=
+	t=1706102925; cv=none; b=YwhYkQ4g0/KPfgmsIA1uukyxt9TMd6l7s8wCBSP5dfqEbuiyZACwLnEaeXPEhGC7fIURN6X7SNr1lII95EtHVee7Ssxuej9gMmQqfamrTrZDG6MAY41lGpaHRuoUBmbuuSJsHF+jSUpZN5BBjgiDx795bALGN1umgap3Iik4Mic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706102106; c=relaxed/simple;
-	bh=84nsoUvax163ol7ShlQDar/r6+6w/xyoG46jKft87pI=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=Q03c+7jexp+E7D8LMVRIMKLszVjk02jY6TivBcjSQSkMX+AjPngla1a/e5z1Jw/ho4Pffny+1lIZJSfuWtEJr8DfsNw7GJGcgpErXZlTE7S2kwfmZ+F3Okz7TyqgnL+2UGkps/yfVzSlY4P+pdnyOQqln3SNmSl9La/Hb9bK354=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=D/9AqKm2; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706102105; x=1737638105;
-  h=date:from:to:cc:subject:message-id;
-  bh=84nsoUvax163ol7ShlQDar/r6+6w/xyoG46jKft87pI=;
-  b=D/9AqKm2oF/M5F5PFraJ5bp07gv8eU/qsV2DN3fdtrApwiJh+9cqQWZo
-   Fp8wveeyp+90BN6nxPu6gB+Rx756vDVG7tXn4Eai1V3Q2rgy9zKhTyF5D
-   rxxBpe3hoHgQXXIeykrcSb2fCEqTk4yBs+bRDMw52N+NUokk1KFA2uXDD
-   3AqVjlLOARECOV2OT4k467r179WFMyNOTv//G5TdaddZ6SJ6G3hLbmIZg
-   cHYGGKPIWPDbQ3XV2N7QUmVw0bqwgSRszIKYzffj9XU6Dk7Qh1Vv1YOBV
-   69tX2/yjjVNDId6kmG01M0rDefYvwVAWwNGNvK+C4hXk3pytd+H6xQnVD
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="1680428"
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="1680428"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2024 05:15:03 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="1117615347"
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="1117615347"
-Received: from lkp-server01.sh.intel.com (HELO 961aaaa5b03c) ([10.239.97.150])
-  by fmsmga005.fm.intel.com with ESMTP; 24 Jan 2024 05:15:00 -0800
-Received: from kbuild by 961aaaa5b03c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rSd5n-000879-1E;
-	Wed, 24 Jan 2024 13:14:59 +0000
-Date: Wed, 24 Jan 2024 21:14:51 +0800
-From: kernel test robot <lkp@intel.com>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
- linux-wireless@vger.kernel.org
-Subject: [wireless-next:main] BUILD SUCCESS
- acf868ff60b1cd1f2e597f0b15aee2ff43f9fcd3
-Message-ID: <202401242149.tDIqv1jt-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1706102925; c=relaxed/simple;
+	bh=pFgxJjJbnp0YLKAjOwfUw5bHtK1ARZCYwZVAIifnTzk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mQRVNuDl3NOKjmiHkWXiENwB7jAz8FKRV6iE1Yn5xoXvF/TDUf6P7n2bYcMA0rQ3X2qtKvd8/+WQMqLT/ZR9H4UpOWS6pL4zaEMS0JufZMNhhrunGysDKFw1ge/E+H7vEcREvfvmbRLLPxP32fIhn3sOz3i99Py+zE3h/qhN2oY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=M2E8M/7F; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40OCYklL002320;
+	Wed, 24 Jan 2024 13:28:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=qcppdkim1; bh=j5R7vvd
+	coSYowHa6GzIzCCZR6J/O1SdEfcFvAMYL6ck=; b=M2E8M/7F8YrMd+5cqtVNReM
+	ZxYAZw85V6pCKYXa5wY89inLFtr3hGtoWrrK5Ie3aPYzUBklyYZ95TY3P6BADCjj
+	ceaeGqHt94DjoS6gNt6fRVWFISJewPMHBdxDfoQFlnCYwei+66PlO74LoGUnWYNS
+	xRqJk8wvakgeNDtR1Z/jjf5UBHkZ6BQ3diORGHkRrTdeesmdLnnKWKhZXDUc9STc
+	paB5aBqhbg0m2rYhd+wl/lBgLPTiguDChhKM1P48bQ3eCMXSZPxX69YfMKaQeqFg
+	RV0AAxv2/tRPISUcrVQ0vsr+302xaCtbZXhyArMeyvPxyO1gaeZx15cysLcsTYg=
+	=
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vu1ccg964-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 24 Jan 2024 13:28:39 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40ODScBt032712
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 24 Jan 2024 13:28:38 GMT
+Received: from cdcwlex322514-lin.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Wed, 24 Jan 2024 05:28:36 -0800
+From: Aditya Kumar Singh <quic_adisi@quicinc.com>
+To: <johannes@sipsolutions.net>
+CC: <linux-wireless@vger.kernel.org>,
+        Aditya Kumar Singh
+	<quic_adisi@quicinc.com>
+Subject: [PATCH 0/3] wifi: cfg80211/mac80211: add support to flush stations based on link ID
+Date: Wed, 24 Jan 2024 18:58:11 +0530
+Message-ID: <20240124132814.802018-1-quic_adisi@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: oPcA5RaAdX3Dtn54TjybE4fciYtB2V06
+X-Proofpoint-GUID: oPcA5RaAdX3Dtn54TjybE4fciYtB2V06
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-24_06,2024-01-24_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxlogscore=242
+ clxscore=1011 malwarescore=0 adultscore=0 suspectscore=0
+ priorityscore=1501 mlxscore=0 lowpriorityscore=0 impostorscore=0
+ spamscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2401190000 definitions=main-2401240097
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: acf868ff60b1cd1f2e597f0b15aee2ff43f9fcd3  wifi: iwlegacy: Use kcalloc() instead of kzalloc()
+Currently whenever sta_flush() function is called, it flushes all stations
+connected to the given interface. However in case of MLO, all the links
+would be using the same interface and hence at certain cases flushing all
+stations is not desireable.
 
-elapsed time: 1498m
+There is a need to flush the stations based on link ID. This series aims
+to add support for the same.
 
-configs tested: 162
-configs skipped: 2
+Currently two cases are handled - 
+1. During NL80211_CMD_DEL_STATION command handling. If this is called
+   without any mac address, all stations present on that interfaces are
+   flushed. More details in the patch [1/3]
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+2. During stopping link AP via ieee80211_stop_ap(). Again here, all
+   stations are flushed. More details in the patch [3/3]
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                   randconfig-001-20240124   gcc  
-arc                   randconfig-002-20240124   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   clang
-arm                   randconfig-001-20240124   clang
-arm                   randconfig-002-20240124   clang
-arm                   randconfig-003-20240124   clang
-arm                   randconfig-004-20240124   clang
-arm64                            allmodconfig   clang
-arm64                             allnoconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                 randconfig-001-20240124   clang
-arm64                 randconfig-002-20240124   clang
-arm64                 randconfig-003-20240124   clang
-arm64                 randconfig-004-20240124   clang
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-csky                  randconfig-001-20240124   gcc  
-csky                  randconfig-002-20240124   gcc  
-hexagon                          allmodconfig   clang
-hexagon                           allnoconfig   clang
-hexagon                          allyesconfig   clang
-hexagon                             defconfig   clang
-hexagon               randconfig-001-20240124   clang
-hexagon               randconfig-002-20240124   clang
-i386                             allmodconfig   clang
-i386                              allnoconfig   clang
-i386                             allyesconfig   clang
-i386         buildonly-randconfig-001-20240123   gcc  
-i386         buildonly-randconfig-002-20240123   gcc  
-i386         buildonly-randconfig-003-20240123   gcc  
-i386         buildonly-randconfig-004-20240123   gcc  
-i386         buildonly-randconfig-005-20240123   gcc  
-i386         buildonly-randconfig-006-20240123   gcc  
-i386                                defconfig   gcc  
-i386                  randconfig-001-20240123   gcc  
-i386                  randconfig-002-20240123   gcc  
-i386                  randconfig-003-20240123   gcc  
-i386                  randconfig-004-20240123   gcc  
-i386                  randconfig-005-20240123   gcc  
-i386                  randconfig-006-20240123   gcc  
-i386                  randconfig-011-20240123   clang
-i386                  randconfig-012-20240123   clang
-i386                  randconfig-013-20240123   clang
-i386                  randconfig-014-20240123   clang
-i386                  randconfig-015-20240123   clang
-i386                  randconfig-016-20240123   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20240124   gcc  
-loongarch             randconfig-002-20240124   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                              allnoconfig   clang
-mips                             allyesconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                 randconfig-001-20240124   gcc  
-nios2                 randconfig-002-20240124   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc                randconfig-001-20240124   gcc  
-parisc                randconfig-002-20240124   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   clang
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   clang
-powerpc               randconfig-001-20240124   clang
-powerpc               randconfig-002-20240124   clang
-powerpc               randconfig-003-20240124   clang
-powerpc64             randconfig-001-20240124   clang
-powerpc64             randconfig-002-20240124   clang
-powerpc64             randconfig-003-20240124   clang
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   clang
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                 randconfig-001-20240124   clang
-riscv                 randconfig-002-20240124   clang
-riscv                          rv32_defconfig   clang
-s390                             allmodconfig   gcc  
-s390                              allnoconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                  randconfig-001-20240124   gcc  
-s390                  randconfig-002-20240124   gcc  
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sh                    randconfig-001-20240124   gcc  
-sh                    randconfig-002-20240124   gcc  
-sparc                            allmodconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-sparc64               randconfig-001-20240124   gcc  
-sparc64               randconfig-002-20240124   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                    randconfig-001-20240124   clang
-um                    randconfig-002-20240124   clang
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   clang
-x86_64       buildonly-randconfig-001-20240124   clang
-x86_64       buildonly-randconfig-002-20240124   clang
-x86_64       buildonly-randconfig-003-20240124   clang
-x86_64       buildonly-randconfig-004-20240124   clang
-x86_64       buildonly-randconfig-005-20240124   clang
-x86_64       buildonly-randconfig-006-20240124   clang
-x86_64                              defconfig   gcc  
-x86_64                randconfig-001-20240124   gcc  
-x86_64                randconfig-002-20240124   gcc  
-x86_64                randconfig-003-20240124   gcc  
-x86_64                randconfig-004-20240124   gcc  
-x86_64                randconfig-005-20240124   gcc  
-x86_64                randconfig-006-20240124   gcc  
-x86_64                randconfig-011-20240124   clang
-x86_64                randconfig-012-20240124   clang
-x86_64                randconfig-013-20240124   clang
-x86_64                randconfig-014-20240124   clang
-x86_64                randconfig-015-20240124   clang
-x86_64                randconfig-016-20240124   clang
-x86_64                randconfig-071-20240124   clang
-x86_64                randconfig-072-20240124   clang
-x86_64                randconfig-073-20240124   clang
-x86_64                randconfig-074-20240124   clang
-x86_64                randconfig-075-20240124   clang
-x86_64                randconfig-076-20240124   clang
-x86_64                          rhel-8.3-rust   clang
-xtensa                            allnoconfig   gcc  
-xtensa                randconfig-001-20240124   gcc  
-xtensa                randconfig-002-20240124   gcc  
+Aditya Kumar Singh (3):
+  wifi: cfg80211: add support for link id attribute in
+    NL80211_CMD_DEL_STATION
+  wifi: mac80211: add link id argument for sta_flush() function
+  wifi: mac80211: remove only own link stations during stop_ap
+---
+ include/net/cfg80211.h       |  3 +++
+ include/uapi/linux/nl80211.h |  3 ++-
+ net/mac80211/cfg.c           |  4 ++--
+ net/mac80211/ibss.c          |  4 ++--
+ net/mac80211/iface.c         |  2 +-
+ net/mac80211/mesh.c          |  2 +-
+ net/mac80211/mlme.c          |  2 +-
+ net/mac80211/ocb.c           |  2 +-
+ net/mac80211/sta_info.c      | 20 +++++++++++++-------
+ net/mac80211/sta_info.h      | 14 +++++++++++---
+ net/wireless/nl80211.c       | 18 +++++++++++++++++-
+ net/wireless/trace.h         |  7 +++++--
+ 12 files changed, 59 insertions(+), 22 deletions(-)
 
+
+base-commit: acf868ff60b1cd1f2e597f0b15aee2ff43f9fcd3
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.25.1
+
 
