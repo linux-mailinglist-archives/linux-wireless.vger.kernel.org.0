@@ -1,53 +1,56 @@
-Return-Path: <linux-wireless+bounces-2427-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2428-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2B6D83A026
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jan 2024 04:37:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7EF283A027
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jan 2024 04:37:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 015FE1C217E3
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jan 2024 03:37:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EBC261C2287F
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jan 2024 03:37:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A12E5C98;
-	Wed, 24 Jan 2024 03:37:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 927298465;
+	Wed, 24 Jan 2024 03:37:15 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E4C95C85
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E48F1381
 	for <linux-wireless@vger.kernel.org>; Wed, 24 Jan 2024 03:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706067434; cv=none; b=VOoRk+krk19ZNr+LgXHTmEfWBACKrsr9MglJVpnObLKKREeJAExmmSBh6dEdm4ijaBuicVCpnf2ktXRw7ZQTn7MhDyESl3zOX6GisKFBuWzKugVJWBpJcP4xi1vkF2qnbtxvdcSmAgnY7bhCZV7h+nrISFjEOrPTAEb5vObwXsE=
+	t=1706067435; cv=none; b=JBOZ53ZOtHprFwITvLWGt5DfjXmLPnjQscDKpXYuggJSb0Xt6twChAuswuh+hGDiEo6a6mwSIsPVjW4XTJzFdzZuX2jIz9X9Fa5oohBuCRP32REpWJilCJZYRYTGZy/Ddkf4w5qWPNq4LJNyZIEPJruHjeoKDXBociF10uoDy/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706067434; c=relaxed/simple;
-	bh=9oC8g9AoSv3IT4A2+hTjjSTEpn03C/KJV1c2vQbyjs0=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=CBkTWHXSYfirnGdC5i4yta55x9dtjg0N1yxR5Uus09CKsG0fd1yUumYTTJdmzXCj3XhGTQyRRHsyGiUU47CsDZ+LI2emtpPIK04vQBR9QHrlQ7WpdY4/cmW3+J8dMEopqD1eo6JpSJOnrP9OvtlYQGg/ItA6HRx2oWvW8VP9YWk=
+	s=arc-20240116; t=1706067435; c=relaxed/simple;
+	bh=Oxc0cUtJEsuiPzsODHxmVBfKhPNQXkU48F6X3OXVHPQ=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ie+ppICVIYcUr6XmupRGBDfT0k75GvyAwaJ8cQzIzRoUq6UFqqItJ8b+1SKlsK/NXuv5Y8JsKd7SYzcDV+znqJCUl0bDAeon8LCrM44UMRcw/vn2HNJy17mZrz6FFD7qIXlbToOJP+s2dgHmZP1wivfW+PM5lD75j8x3Ztztgn4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 40O3b2uqD723691, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 40O3b6cG5723697, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 40O3b2uqD723691
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 40O3b6cG5723697
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 24 Jan 2024 11:37:02 +0800
+	Wed, 24 Jan 2024 11:37:06 +0800
 Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
  RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Wed, 24 Jan 2024 11:37:02 +0800
+ 15.1.2507.17; Wed, 24 Jan 2024 11:37:06 +0800
 Received: from [127.0.1.1] (172.21.69.94) by RTEXDAG02.realtek.com.tw
  (172.21.6.101) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Wed, 24 Jan
- 2024 11:37:02 +0800
+ 2024 11:37:06 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <kvalo@kernel.org>
 CC: <linux-wireless@vger.kernel.org>
-Subject: [PATCH 0/6] wifi: rtw89: 8922a: add chip_ops related to TX/RX, RF access and thermal
-Date: Wed, 24 Jan 2024 11:36:31 +0800
-Message-ID: <20240124033637.12330-1-pkshih@realtek.com>
+Subject: [PATCH 1/6] wifi: rtw89: 8922a: hook handlers of TX/RX descriptors to chip_ops
+Date: Wed, 24 Jan 2024 11:36:32 +0800
+Message-ID: <20240124033637.12330-2-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240124033637.12330-1-pkshih@realtek.com>
+References: <20240124033637.12330-1-pkshih@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -63,38 +66,73 @@ X-KSE-AntiSpam-Interceptor-Info: fallback
 X-KSE-Antivirus-Interceptor-Info: fallback
 X-KSE-AntiSpam-Interceptor-Info: fallback
 
-Add more chip_ops for 8922A. First is handlers of TX/RX descriptors to
-fill/read descriptors. During switching channel, it needs to stop hardware
-TX scheduler introduced by second patch. Patch 3/6 is to configure TX path,
-which it can TX 1SS rate data via one or two paths, and normally 2-path TX
-is adopted by default.
+Hook implemented handlers to chip_ops, and fill packet frequency and signal
+strength to RX status from RX PPDU status packet.
 
-Then, add patch 4/6 to access RF registers via an indirect interface.
-Normally, use thermal value to decide whether we trigger certain RF
-calibration again, and it also helps to debug CFO because temperature can
-affect the result too. The last patch is just to fill two ops that are NULL.
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw89/rtw8922a.c | 37 +++++++++++++++++++
+ 1 file changed, 37 insertions(+)
 
-Ping-Ke Shih (6):
-  wifi: rtw89: 8922a: hook handlers of TX/RX descriptors to chip_ops
-  wifi: rtw89: 8922a: implement {stop,resume}_sch_tx and cfg_ppdu
-  wifi: rtw89: 8922a: add chip_ops::cfg_txrx_path
-  wifi: rtw89: 8922a: add RF read/write v2
-  wifi: rtw89: 8922a: add chip_ops to get thermal value
-  wifi: rtw89: 8922a: set chip_ops FEM and GPIO to NULL
-
- drivers/net/wireless/realtek/rtw89/mac.c      |   5 +-
- drivers/net/wireless/realtek/rtw89/mac.h      |  14 +-
- drivers/net/wireless/realtek/rtw89/mac_be.c   |  96 +++++
- drivers/net/wireless/realtek/rtw89/phy.c      | 125 +++++++
- drivers/net/wireless/realtek/rtw89/phy.h      |   4 +
- drivers/net/wireless/realtek/rtw89/reg.h      |  84 +++++
- drivers/net/wireless/realtek/rtw89/rtw8922a.c | 344 ++++++++++++++++++
- .../net/wireless/realtek/rtw89/rtw8922a_rfk.c |  33 ++
- .../net/wireless/realtek/rtw89/rtw8922a_rfk.h |  12 +
- 9 files changed, 714 insertions(+), 3 deletions(-)
- create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8922a_rfk.c
- create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8922a_rfk.h
-
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922a.c b/drivers/net/wireless/realtek/rtw89/rtw8922a.c
+index f34e2a8bff07..9c7465d0715b 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8922a.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8922a.c
+@@ -1250,6 +1250,39 @@ static void rtw8922a_ctrl_nbtg_bt_tx(struct rtw89_dev *rtwdev, bool en,
+ 	}
+ }
+ 
++static void rtw8922a_fill_freq_with_ppdu(struct rtw89_dev *rtwdev,
++					 struct rtw89_rx_phy_ppdu *phy_ppdu,
++					 struct ieee80211_rx_status *status)
++{
++	u8 chan_idx = phy_ppdu->chan_idx;
++	enum nl80211_band band;
++	u8 ch;
++
++	if (chan_idx == 0)
++		return;
++
++	rtw89_decode_chan_idx(rtwdev, chan_idx, &ch, &band);
++	status->freq = ieee80211_channel_to_frequency(ch, band);
++	status->band = band;
++}
++
++static void rtw8922a_query_ppdu(struct rtw89_dev *rtwdev,
++				struct rtw89_rx_phy_ppdu *phy_ppdu,
++				struct ieee80211_rx_status *status)
++{
++	u8 path;
++	u8 *rx_power = phy_ppdu->rssi;
++
++	status->signal =
++		RTW89_RSSI_RAW_TO_DBM(max(rx_power[RF_PATH_A], rx_power[RF_PATH_B]));
++	for (path = 0; path < rtwdev->chip->rf_path_num; path++) {
++		status->chains |= BIT(path);
++		status->chain_signal[path] = RTW89_RSSI_RAW_TO_DBM(rx_power[path]);
++	}
++	if (phy_ppdu->valid)
++		rtw8922a_fill_freq_with_ppdu(rtwdev, phy_ppdu, status);
++}
++
+ static int rtw8922a_mac_enable_bb_rf(struct rtw89_dev *rtwdev)
+ {
+ 	rtw89_write8_set(rtwdev, R_BE_FEN_RST_ENABLE,
+@@ -1291,10 +1324,14 @@ static const struct rtw89_chip_ops rtw8922a_chip_ops = {
+ 	.set_txpwr_ctrl		= rtw8922a_set_txpwr_ctrl,
+ 	.init_txpwr_unit	= NULL,
+ 	.ctrl_btg_bt_rx		= rtw8922a_ctrl_btg_bt_rx,
++	.query_ppdu		= rtw8922a_query_ppdu,
+ 	.ctrl_nbtg_bt_tx	= rtw8922a_ctrl_nbtg_bt_tx,
+ 	.set_txpwr_ul_tb_offset	= NULL,
+ 	.pwr_on_func		= rtw8922a_pwr_on_func,
+ 	.pwr_off_func		= rtw8922a_pwr_off_func,
++	.query_rxdesc		= rtw89_core_query_rxdesc_v2,
++	.fill_txdesc		= rtw89_core_fill_txdesc_v2,
++	.fill_txdesc_fwcmd	= rtw89_core_fill_txdesc_fwcmd_v2,
+ 	.h2c_dctl_sec_cam	= rtw89_fw_h2c_dctl_sec_cam_v2,
+ 	.h2c_default_cmac_tbl	= rtw89_fw_h2c_default_cmac_tbl_g7,
+ 	.h2c_assoc_cmac_tbl	= rtw89_fw_h2c_assoc_cmac_tbl_g7,
 -- 
 2.25.1
 
