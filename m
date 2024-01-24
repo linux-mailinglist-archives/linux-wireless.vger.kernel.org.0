@@ -1,487 +1,218 @@
-Return-Path: <linux-wireless+bounces-2437-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2438-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5DEA83A421
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jan 2024 09:27:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0CB383A4D5
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jan 2024 10:01:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FDC31F23221
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jan 2024 08:27:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3AC971F2258F
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jan 2024 09:01:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BA3317585;
-	Wed, 24 Jan 2024 08:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF4BC17BA4;
+	Wed, 24 Jan 2024 09:01:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="oSNJEHiA";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="7icn8vYI"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="TUFwoV2d"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB53D1758C
-	for <linux-wireless@vger.kernel.org>; Wed, 24 Jan 2024 08:27:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A21F519
+	for <linux-wireless@vger.kernel.org>; Wed, 24 Jan 2024 09:01:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706084833; cv=none; b=l+vdNF2FTEfewCM34dSbJ73TG3BVIXcChbwPHWFL82+wSz6KU3VDKtqFP3xoVdy5yjf98mLJm4vXmbG6R7/kn9Lj2tQaz6zbB9MnGv84h/7+X7usE17lv4IgdD4VpjSCa9P4Op8vOGMUmr9TLwxHZN9iSNKiVZxaMBRIAUzTsj4=
+	t=1706086904; cv=none; b=imo1c78IYBC2xx19sJo0UFBZZGfpCcpMg8roLW7JkvgABgMvZ9TK4LkJptLh3M7cuprgvXkIVsfRocYDr39D0x3eYmcHX8K+6LoO33uahHviVHw1RLadj6Z3ogdwfIWWYzTjnD0ekTlcPvQxkygLYwZ4b/RJWbwsAANkhKHe0VA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706084833; c=relaxed/simple;
-	bh=/k/PR7v6U1O4y+FsW0lNVAQICAbPPffLM7arYqdDi14=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ASzc8PR6hylrtXZPcrFag0eeq3NtLt2CwN5C6ko5PNKrYEux95pCq/BxbmrsXlkT53uVx4SyfvbfF88iYOw1UJwPcRdDyoIOjcvLyAzIbOwz1N1g53DaJOM4oRuMZ+3YnQhRdl4wkLAX87hAxSKM5k/m5EzR4ipPQRKrpUDcfyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=oSNJEHiA; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=7icn8vYI; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Martin Kaistra <martin.kaistra@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1706084829;
+	s=arc-20240116; t=1706086904; c=relaxed/simple;
+	bh=nzeUvXvKw3g3KCUnFHIO160tbyy44bmwsoZXck2MAhk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ViAv+2RenRJWngeJUPyzotIGZDfk6Z/k7Az3sbYn2Z2ppeK1L0gcvFB/kIqMD90l+RBxG74rMONN3gbb+W1wd14hI4meUlQZwb3fnv2zArpstOBu1ievG2eyJU7xMefDN3VokN6rvW8Q0pH6yGZiem+z7MnhK/s2nvqSd65ADWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=TUFwoV2d; arc=none smtp.client-ip=217.70.183.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 4823EFF815;
+	Wed, 24 Jan 2024 09:01:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1706086894;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=3ZE6vSjKNJEIkykAa8DptE1tqbkwB3zP1SKxVBzkByk=;
-	b=oSNJEHiAT8Xq3iZkn0pXZBwkszedJr6KUv9wcUD2FezfZiqqltITaRyiiFQP95N1JOSWgI
-	m75rNJ68I5Z3XPgT+hkcURdgdcC8CTYknRC9Me0aNjMFhsC1zf6ORcnrq7sxxcXmW+E8i6
-	9wbWwgmiXE4uOkep6VC7R2q4Njwxv002YOeSLtLBPT5ocF93yhMDQv1ohgql0WGALpG/hD
-	HnHaCbfHMsH/r3eK9E7b1N1bjtrT8qqjzRcbtbKtpaWh1EgJgjpvLMAkre9umEkdS937O2
-	6OfxB3oMUkUwm+j/WUcQ6BsvGYKagoJTbqc7iZe8R/ndGs5j2TfQVhqD8sEXrg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1706084829;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=3ZE6vSjKNJEIkykAa8DptE1tqbkwB3zP1SKxVBzkByk=;
-	b=7icn8vYItaNQUsQpmtMzuMq/1JSuMiM60YgBf/00DQtZO8RpWFtMGipxhH9sQLzPu7WlZI
-	4y4bwISx5Q2gPPAg==
-To: linux-wireless@vger.kernel.org
-Cc: Jes Sorensen <Jes.Sorensen@gmail.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: [PATCH v2] wifi: rtl8xxxu: update rate mask per sta
-Date: Wed, 24 Jan 2024 09:27:05 +0100
-Message-Id: <20240124082705.1098960-1-martin.kaistra@linutronix.de>
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DiXZ21uLRaE1J+4zVPH+lMJdKUmM2MWQFYtJjaiokYc=;
+	b=TUFwoV2d5JkK3lNTR7zsflSS6qE6xx4fcldQBGzkM8sMd6ldUnxAW6pSmSZqErwWy95jGj
+	MDwzuluvuaNYpePV3puIfcdZYKoUSL5h3kG78apMirdOD32nnTQ+sFIaMa9ih4dv1l8YRD
+	ufXUvhfIeQW/aGvQ7Ou77TdyyzfklqKS3lUOAuxn/27LsTleQCL1AMqqwvfKrFv5qHrffd
+	ZCyj9gb1BZWMdMQ/4VWxhAho+uPzzMdr04BINk1CqP+EPlCIaVvNCSnYloTMh2CsqGomqE
+	gzZp7P6P8s/TqL26YDHCuQUyPAJvtIEmVkc1ieo+vxUVUgUygGTaQTHsSv6J5A==
+Message-ID: <0d77d857-35ce-43bc-aaf3-2b46c01a44ec@bootlin.com>
+Date: Wed, 24 Jan 2024 10:01:33 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: wilc1000: validate chip id during bus probe
+To: David Mosberger-Tang <davidm@egauge.net>, linux-wireless@vger.kernel.org
+Cc: Ajay.Kathat@microchip.com, kvalo@kernel.org
+References: <20240122211315.1444880-2-davidm@egauge.net>
+ <20240122220350.1449413-1-davidm@egauge.net>
+ <751bf8e4-c81c-495b-9166-9f91f9c4b2d5@bootlin.com>
+ <b8e8a3f82fe240506e82322a10be7b4e9f218eca.camel@egauge.net>
+Content-Language: en-US
+From: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+In-Reply-To: <b8e8a3f82fe240506e82322a10be7b4e9f218eca.camel@egauge.net>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-GND-Sasl: alexis.lothore@bootlin.com
 
-Until now, rtl8xxxu_watchdog_callback() only fetches RSSI and updates
-the rate mask in station mode. This means, in AP mode only the default
-rate mask is used.
+On 1/23/24 18:39, David Mosberger-Tang wrote:
+> On Tue, 2024-01-23 at 11:18 +0100, Alexis Lothoré wrote:
+>> On 1/22/24 23:03, David Mosberger-Tang wrote:
 
-In order to have the rate mask reflect the actual connection quality,
-extend rtl8xxxu_watchdog_callback() to iterate over every sta. Like in
-the rtw88 driver, add a function to collect all currently present stas
-and then iterate over a list of copies to ensure no RCU lock problems
-for register access via USB. Remove the existing RCU lock in
-rtl8xxxu_refresh_rate_mask().
+[...]
 
-Since the currently used ieee80211_ave_rssi() is only for 'vif', add
-driver-level tracking of RSSI per sta.
+>> I have a working wilc-over-spi setup with which I can easily unplug the module,
+>> so I gave a try to your series, and while the lack of chip detect indeed makes
+>> the netdevice registration not executed, I've got a nasty kasan warning:
+>>
+>>  driver_probe_device from __driver_attach+0x1a0/0x29c
+>>
+>>
+>>
+>>                                                  [141/1863]
+>>  __driver_attach from bus_for_each_dev+0xf0/0x14c
+>>  bus_for_each_dev from bus_add_driver+0x130/0x288
+>>  bus_add_driver from driver_register+0xd4/0x1c0
+>>  driver_register from do_one_initcall+0xfc/0x204
+>>  do_one_initcall from kernel_init_freeable+0x240/0x2a0
+>>  kernel_init_freeable from kernel_init+0x20/0x144
+>>  kernel_init from ret_from_fork+0x14/0x28
+>> Exception stack(0xc3163fb0 to 0xc3163ff8)
+>> 3fa0:                                     00000000 00000000 00000000 00000000
+>> 3fc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+>> 3fe0: 00000000 00000000 00000000 00000000 00000013 00000000
+>>
+>> Allocated by task 1:
+>>  kasan_set_track+0x3c/0x5c
+>>  __kasan_kmalloc+0x8c/0x94
+>>  __kmalloc_node+0x64/0x184
+>>  kvmalloc_node+0x48/0x114
+>>  alloc_netdev_mqs+0x68/0x664
+>>  alloc_etherdev_mqs+0x28/0x34
+>>  wilc_netdev_ifc_init+0x34/0x37c
+>>  wilc_cfg80211_init+0x278/0x330
+>>  wilc_bus_probe+0xb4/0x398
+>>  spi_probe+0xb8/0xdc
+>>  really_probe+0x134/0x588
+>>  __driver_probe_device+0xe0/0x288
+>>  driver_probe_device+0x60/0x118
+>>  __driver_attach+0x1a0/0x29c
+>>  bus_for_each_dev+0xf0/0x14c
+>>  bus_add_driver+0x130/0x288
+>>  driver_register+0xd4/0x1c0
+>>  do_one_initcall+0xfc/0x204
+>>  kernel_init_freeable+0x240/0x2a0
+>>  kernel_init+0x20/0x144
+>>  ret_from_fork+0x14/0x28
+>>
+>> Freed by task 1:
+>>  kasan_set_track+0x3c/0x5c
+>>  kasan_save_free_info+0x30/0x3c
+>>  __kasan_slab_free+0xe4/0x12c
+>>  __kmem_cache_free+0x94/0x1cc
+>>  device_release+0x54/0xf8
+>>  kobject_put+0xf4/0x238
+>>  netdev_run_todo+0x414/0x7dc
+>>  wilc_netdev_cleanup+0xe4/0x244
+>>  wilc_bus_probe+0x2b8/0x398
+>>  spi_probe+0xb8/0xdc
+>>  really_probe+0x134/0x588
+>>  __driver_probe_device+0xe0/0x288
+>>  driver_probe_device+0x60/0x118
+>>  __driver_attach+0x1a0/0x29c
+>>  bus_for_each_dev+0xf0/0x14c
+>>  bus_add_driver+0x130/0x288
+>>  driver_register+0xd4/0x1c0
+>>  do_one_initcall+0xfc/0x204
+>>  kernel_init_freeable+0x240/0x2a0
+>>  kernel_init+0x20/0x144
+>>  ret_from_fork+0x14/0x28
+>>
+>> It looks like an already existing/dormant issue in the error-managing path of
+>> spi probe of the driver (looks like we are trying to unregister a netdevice
+>> which has never been registered ?), but since your series triggers it, it should
+>> be handled too.
+> 
+> I need help interpreting this.  What does KASAN actually complain about?  A
+> double free or something else?
 
-Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
----
-changes v1->v2: move 'rssi_level' into struct rtl8xxxu_sta_info
-v1: https://lore.kernel.org/linux-wireless/20240117145516.497966-1-martin.kaistra@linutronix.de/
- .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  |   8 +-
- .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 187 ++++++++++++++----
- 2 files changed, 157 insertions(+), 38 deletions(-)
+I see that the kasan dump from my last email is truncated, but the first line
+clearly mentions a use-after-free:
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-index 03307da67c2c3..fd92d23c43d91 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-@@ -6,6 +6,7 @@
-  */
- 
- #include <asm/byteorder.h>
-+#include <linux/average.h>
- 
- #define RTL8XXXU_DEBUG_REG_WRITE	0x01
- #define RTL8XXXU_DEBUG_REG_READ		0x02
-@@ -1858,6 +1859,8 @@ struct rtl8xxxu_priv {
- 	int next_mbox;
- 	int nr_out_eps;
- 
-+	/* Ensure no added or deleted stas while iterating */
-+	struct mutex sta_mutex;
- 	struct mutex h2c_mutex;
- 	/* Protect the indirect register accesses of RTL8710BU. */
- 	struct mutex syson_indirect_access_mutex;
-@@ -1892,7 +1895,6 @@ struct rtl8xxxu_priv {
- 	u8 pi_enabled:1;
- 	u8 no_pape:1;
- 	u8 int_buf[USB_INTR_CONTENT_LENGTH];
--	u8 rssi_level;
- 	DECLARE_BITMAP(tx_aggr_started, IEEE80211_NUM_TIDS);
- 	DECLARE_BITMAP(tid_tx_operational, IEEE80211_NUM_TIDS);
- 
-@@ -1913,11 +1915,15 @@ struct rtl8xxxu_priv {
- 	DECLARE_BITMAP(cam_map, RTL8XXXU_MAX_SEC_CAM_NUM);
- };
- 
-+DECLARE_EWMA(rssi, 10, 16);
-+
- struct rtl8xxxu_sta_info {
- 	struct ieee80211_sta *sta;
- 	struct ieee80211_vif *vif;
- 
- 	u8 macid;
-+	struct ewma_rssi avg_rssi;
-+	u8 rssi_level;
- };
- 
- struct rtl8xxxu_vif {
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index 3b954c2fe448f..3820d3c308759 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -4993,8 +4993,8 @@ rtl8xxxu_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	struct device *dev = &priv->udev->dev;
- 	struct ieee80211_sta *sta;
- 	struct rtl8xxxu_ra_report *rarpt;
-+	u8 val8, macid;
- 	u32 val32;
--	u8 val8;
- 
- 	rarpt = &priv->ra_report;
- 
-@@ -5004,6 +5004,7 @@ rtl8xxxu_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 		rtl8xxxu_set_linktype(priv, vif->type, rtlvif->port_num);
- 
- 		if (vif->cfg.assoc) {
-+			struct rtl8xxxu_sta_info *sta_info;
- 			u32 ramask;
- 			int sgi = 0;
- 			u8 highest_rate;
-@@ -5017,6 +5018,7 @@ rtl8xxxu_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 				rcu_read_unlock();
- 				goto error;
- 			}
-+			macid = rtl8xxxu_get_macid(priv, sta);
- 
- 			if (sta->deflink.ht_cap.ht_supported)
- 				dev_info(dev, "%s: HT supported\n", __func__);
-@@ -5037,14 +5039,15 @@ rtl8xxxu_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 				bw = RATE_INFO_BW_40;
- 			else
- 				bw = RATE_INFO_BW_20;
-+
-+			sta_info = (struct rtl8xxxu_sta_info *)sta->drv_priv;
-+			sta_info->rssi_level = RTL8XXXU_RATR_STA_INIT;
- 			rcu_read_unlock();
- 
- 			rtl8xxxu_update_ra_report(rarpt, highest_rate, sgi, bw);
- 
--			priv->rssi_level = RTL8XXXU_RATR_STA_INIT;
--
- 			priv->fops->update_rate_mask(priv, ramask, 0, sgi,
--						     bw == RATE_INFO_BW_40, 0);
-+						     bw == RATE_INFO_BW_40, macid);
- 
- 			rtl8xxxu_write8(priv, REG_BCN_MAX_ERR, 0xff);
- 
-@@ -6317,6 +6320,76 @@ static void rtl8188e_c2hcmd_callback(struct work_struct *work)
- 	}
- }
- 
-+#define rtl8xxxu_iterate_vifs_atomic(priv, iterator, data)			\
-+	ieee80211_iterate_active_interfaces_atomic((priv)->hw,			\
-+			IEEE80211_IFACE_ITER_NORMAL, iterator, data)
-+
-+struct rtl8xxxu_rx_addr_match_data {
-+	struct rtl8xxxu_priv *priv;
-+	struct ieee80211_hdr *hdr;
-+	struct ieee80211_rx_status *rx_status;
-+	u8 *bssid;
-+};
-+
-+static void rtl8xxxu_rx_addr_match_iter(void *data, u8 *mac,
-+					struct ieee80211_vif *vif)
-+{
-+	struct rtl8xxxu_rx_addr_match_data *iter_data = data;
-+	struct ieee80211_sta *sta;
-+	struct ieee80211_hdr *hdr = iter_data->hdr;
-+	struct rtl8xxxu_priv *priv = iter_data->priv;
-+	struct rtl8xxxu_sta_info *sta_info;
-+	struct ieee80211_rx_status *rx_status = iter_data->rx_status;
-+	u8 *bssid = iter_data->bssid;
-+
-+	if (!ether_addr_equal(vif->bss_conf.bssid, bssid))
-+		return;
-+
-+	if (!(ether_addr_equal(vif->addr, hdr->addr1) ||
-+	      ieee80211_is_beacon(hdr->frame_control)))
-+		return;
-+
-+	sta = ieee80211_find_sta_by_ifaddr(priv->hw, hdr->addr2,
-+					   vif->addr);
-+	if (!sta)
-+		return;
-+
-+	sta_info = (struct rtl8xxxu_sta_info *)sta->drv_priv;
-+	ewma_rssi_add(&sta_info->avg_rssi, -rx_status->signal);
-+}
-+
-+static inline u8 *get_hdr_bssid(struct ieee80211_hdr *hdr)
-+{
-+	__le16 fc = hdr->frame_control;
-+	u8 *bssid;
-+
-+	if (ieee80211_has_tods(fc))
-+		bssid = hdr->addr1;
-+	else if (ieee80211_has_fromds(fc))
-+		bssid = hdr->addr2;
-+	else
-+		bssid = hdr->addr3;
-+
-+	return bssid;
-+}
-+
-+static void rtl8xxxu_rx_addr_match(struct rtl8xxxu_priv *priv,
-+				   struct ieee80211_rx_status *rx_status,
-+				   struct ieee80211_hdr *hdr)
-+{
-+	struct rtl8xxxu_rx_addr_match_data data = {};
-+
-+	if (ieee80211_is_ctl(hdr->frame_control))
-+		return;
-+
-+	data.priv = priv;
-+	data.hdr = hdr;
-+	data.rx_status = rx_status;
-+	data.bssid = get_hdr_bssid(hdr);
-+
-+	rtl8xxxu_iterate_vifs_atomic(priv, rtl8xxxu_rx_addr_match_iter, &data);
-+}
-+
- int rtl8xxxu_parse_rxdesc16(struct rtl8xxxu_priv *priv, struct sk_buff *skb)
- {
- 	struct ieee80211_hw *hw = priv->hw;
-@@ -6376,18 +6449,26 @@ int rtl8xxxu_parse_rxdesc16(struct rtl8xxxu_priv *priv, struct sk_buff *skb)
- 			skb_queue_tail(&priv->c2hcmd_queue, skb);
- 			schedule_work(&priv->c2hcmd_work);
- 		} else {
-+			struct ieee80211_hdr *hdr;
-+
- 			phy_stats = (struct rtl8723au_phy_stats *)skb->data;
- 
- 			skb_pull(skb, drvinfo_sz + desc_shift);
- 
- 			skb_trim(skb, pkt_len);
- 
--			if (rx_desc->phy_stats)
-+			hdr = (struct ieee80211_hdr *)skb->data;
-+			if (rx_desc->phy_stats) {
- 				priv->fops->parse_phystats(
- 					priv, rx_status, phy_stats,
- 					rx_desc->rxmcs,
--					(struct ieee80211_hdr *)skb->data,
-+					hdr,
- 					rx_desc->crc32 || rx_desc->icverr);
-+				if (!rx_desc->crc32 && !rx_desc->icverr)
-+					rtl8xxxu_rx_addr_match(priv,
-+							       rx_status,
-+							       hdr);
-+			}
- 
- 			rx_status->mactime = rx_desc->tsfl;
- 			rx_status->flag |= RX_FLAG_MACTIME_START;
-@@ -6484,10 +6565,15 @@ int rtl8xxxu_parse_rxdesc24(struct rtl8xxxu_priv *priv, struct sk_buff *skb)
- 		} else {
- 			struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
- 
--			if (rx_desc->phy_stats)
-+			if (rx_desc->phy_stats) {
- 				priv->fops->parse_phystats(priv, rx_status, phy_stats,
- 							   rx_desc->rxmcs, hdr,
- 							   rx_desc->crc32 || rx_desc->icverr);
-+				if (!rx_desc->crc32 && !rx_desc->icverr)
-+					rtl8xxxu_rx_addr_match(priv,
-+							       rx_status,
-+							       hdr);
-+			}
- 
- 			rx_status->mactime = rx_desc->tsfl;
- 			rx_status->flag |= RX_FLAG_MACTIME_START;
-@@ -7111,6 +7197,7 @@ static void rtl8xxxu_refresh_rate_mask(struct rtl8xxxu_priv *priv,
- 				       int signal, struct ieee80211_sta *sta,
- 				       bool force)
- {
-+	struct rtl8xxxu_sta_info *sta_info = (struct rtl8xxxu_sta_info *)sta->drv_priv;
- 	struct ieee80211_hw *hw = priv->hw;
- 	u16 wireless_mode;
- 	u8 rssi_level, ratr_idx;
-@@ -7119,7 +7206,7 @@ static void rtl8xxxu_refresh_rate_mask(struct rtl8xxxu_priv *priv,
- 	u8 go_up_gap = 5;
- 	u8 macid = rtl8xxxu_get_macid(priv, sta);
- 
--	rssi_level = priv->rssi_level;
-+	rssi_level = sta_info->rssi_level;
- 	snr = rtl8xxxu_signal_to_snr(signal);
- 	snr_thresh_high = RTL8XXXU_SNR_THRESH_HIGH;
- 	snr_thresh_low = RTL8XXXU_SNR_THRESH_LOW;
-@@ -7144,18 +7231,16 @@ static void rtl8xxxu_refresh_rate_mask(struct rtl8xxxu_priv *priv,
- 	else
- 		rssi_level = RTL8XXXU_RATR_STA_LOW;
- 
--	if (rssi_level != priv->rssi_level || force) {
-+	if (rssi_level != sta_info->rssi_level || force) {
- 		int sgi = 0;
- 		u32 rate_bitmap = 0;
- 
--		rcu_read_lock();
- 		rate_bitmap = (sta->deflink.supp_rates[0] & 0xfff) |
- 				(sta->deflink.ht_cap.mcs.rx_mask[0] << 12) |
- 				(sta->deflink.ht_cap.mcs.rx_mask[1] << 20);
- 		if (sta->deflink.ht_cap.cap &
- 		    (IEEE80211_HT_CAP_SGI_40 | IEEE80211_HT_CAP_SGI_20))
- 			sgi = 1;
--		rcu_read_unlock();
- 
- 		wireless_mode = rtl8xxxu_wireless_mode(hw, sta);
- 		switch (wireless_mode) {
-@@ -7236,7 +7321,7 @@ static void rtl8xxxu_refresh_rate_mask(struct rtl8xxxu_priv *priv,
- 			break;
- 		}
- 
--		priv->rssi_level = rssi_level;
-+		sta_info->rssi_level = rssi_level;
- 		priv->fops->update_rate_mask(priv, rate_bitmap, ratr_idx, sgi, txbw_40mhz, macid);
- 	}
- }
-@@ -7329,40 +7414,60 @@ static void rtl8xxxu_track_cfo(struct rtl8xxxu_priv *priv)
- 	rtl8xxxu_set_atc_status(priv, abs(cfo_average) >= CFO_TH_ATC);
- }
- 
--static void rtl8xxxu_watchdog_callback(struct work_struct *work)
-+static void rtl8xxxu_ra_iter(void *data, struct ieee80211_sta *sta)
- {
--	struct ieee80211_vif *vif;
--	struct rtl8xxxu_priv *priv;
--	int i;
-+	struct rtl8xxxu_sta_info *sta_info = (struct rtl8xxxu_sta_info *)sta->drv_priv;
-+	struct rtl8xxxu_priv *priv = data;
-+	int signal = -ewma_rssi_read(&sta_info->avg_rssi);
- 
--	priv = container_of(work, struct rtl8xxxu_priv, ra_watchdog.work);
--	for (i = 0; i < ARRAY_SIZE(priv->vifs); i++) {
--		vif = priv->vifs[i];
-+	priv->fops->report_rssi(priv, rtl8xxxu_get_macid(priv, sta),
-+				rtl8xxxu_signal_to_snr(signal));
-+	rtl8xxxu_refresh_rate_mask(priv, signal, sta, false);
-+}
- 
--		if (!vif || vif->type != NL80211_IFTYPE_STATION)
--			continue;
-+struct rtl8xxxu_stas_entry {
-+	struct list_head list;
-+	struct ieee80211_sta *sta;
-+};
- 
--		int signal;
--		struct ieee80211_sta *sta;
-+struct rtl8xxxu_iter_stas_data {
-+	struct rtl8xxxu_priv *priv;
-+	struct list_head list;
-+};
- 
--		rcu_read_lock();
--		sta = ieee80211_find_sta(vif, vif->bss_conf.bssid);
--		if (!sta) {
--			struct device *dev = &priv->udev->dev;
-+static void rtl8xxxu_collect_sta_iter(void *data, struct ieee80211_sta *sta)
-+{
-+	struct rtl8xxxu_iter_stas_data *iter_stas = data;
-+	struct rtl8xxxu_stas_entry *stas_entry;
- 
--			dev_dbg(dev, "%s: no sta found\n", __func__);
--			rcu_read_unlock();
--			continue;
--		}
--		rcu_read_unlock();
-+	stas_entry = kmalloc(sizeof(*stas_entry), GFP_ATOMIC);
-+	if (!stas_entry)
-+		return;
- 
--		signal = ieee80211_ave_rssi(vif);
-+	stas_entry->sta = sta;
-+	list_add_tail(&stas_entry->list, &iter_stas->list);
-+}
-+
-+static void rtl8xxxu_watchdog_callback(struct work_struct *work)
-+{
- 
--		priv->fops->report_rssi(priv, rtl8xxxu_get_macid(priv, sta),
--					rtl8xxxu_signal_to_snr(signal));
-+	struct rtl8xxxu_iter_stas_data iter_data;
-+	struct rtl8xxxu_stas_entry *sta_entry, *tmp;
-+	struct rtl8xxxu_priv *priv;
-+
-+	priv = container_of(work, struct rtl8xxxu_priv, ra_watchdog.work);
-+	iter_data.priv = priv;
-+	INIT_LIST_HEAD(&iter_data.list);
- 
--		rtl8xxxu_refresh_rate_mask(priv, signal, sta, false);
-+	mutex_lock(&priv->sta_mutex);
-+	ieee80211_iterate_stations_atomic(priv->hw, rtl8xxxu_collect_sta_iter,
-+					  &iter_data);
-+	list_for_each_entry_safe(sta_entry, tmp, &iter_data.list, list) {
-+		list_del_init(&sta_entry->list);
-+		rtl8xxxu_ra_iter(priv, sta_entry->sta);
-+		kfree(sta_entry);
- 	}
-+	mutex_unlock(&priv->sta_mutex);
- 
- 	if (priv->fops->set_crystal_cap)
- 		rtl8xxxu_track_cfo(priv);
-@@ -7504,10 +7609,14 @@ static int rtl8xxxu_sta_add(struct ieee80211_hw *hw,
- 	struct rtl8xxxu_vif *rtlvif = (struct rtl8xxxu_vif *)vif->drv_priv;
- 	struct rtl8xxxu_priv *priv = hw->priv;
- 
-+	mutex_lock(&priv->sta_mutex);
-+	ewma_rssi_init(&sta_info->avg_rssi);
- 	if (vif->type == NL80211_IFTYPE_AP) {
- 		sta_info->macid = rtl8xxxu_acquire_macid(priv);
--		if (sta_info->macid >= RTL8XXXU_MAX_MAC_ID_NUM)
-+		if (sta_info->macid >= RTL8XXXU_MAX_MAC_ID_NUM) {
-+			mutex_unlock(&priv->sta_mutex);
- 			return -ENOSPC;
-+		}
- 
- 		rtl8xxxu_refresh_rate_mask(priv, 0, sta, true);
- 		priv->fops->report_connect(priv, sta_info->macid, H2C_MACID_ROLE_STA, true);
-@@ -7523,6 +7632,7 @@ static int rtl8xxxu_sta_add(struct ieee80211_hw *hw,
- 			break;
- 		}
- 	}
-+	mutex_unlock(&priv->sta_mutex);
- 
- 	return 0;
- }
-@@ -7534,8 +7644,10 @@ static int rtl8xxxu_sta_remove(struct ieee80211_hw *hw,
- 	struct rtl8xxxu_sta_info *sta_info = (struct rtl8xxxu_sta_info *)sta->drv_priv;
- 	struct rtl8xxxu_priv *priv = hw->priv;
- 
-+	mutex_lock(&priv->sta_mutex);
- 	if (vif->type == NL80211_IFTYPE_AP)
- 		rtl8xxxu_release_macid(priv, sta_info->macid);
-+	mutex_unlock(&priv->sta_mutex);
- 
- 	return 0;
- }
-@@ -7767,6 +7879,7 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
- 	mutex_init(&priv->usb_buf_mutex);
- 	mutex_init(&priv->syson_indirect_access_mutex);
- 	mutex_init(&priv->h2c_mutex);
-+	mutex_init(&priv->sta_mutex);
- 	INIT_LIST_HEAD(&priv->tx_urb_free_list);
- 	spin_lock_init(&priv->tx_urb_lock);
- 	INIT_LIST_HEAD(&priv->rx_urb_pending_list);
+==================================================================
+BUG: KASAN: slab-use-after-free in wilc_netdev_cleanup+0x294/0x2c0
+Read of size 4 at addr c3c91ce8 by task swapper/1
+
+CPU: 0 PID: 1 Comm: swapper Not tainted 6.7.0-wt+ #843
+Hardware name: Atmel SAMA5
+ unwind_backtrace from show_stack+0x18/0x1c
+ show_stack from dump_stack_lvl+0x34/0x48
+ dump_stack_lvl from print_report+0x154/0x500
+ print_report from kasan_report+0xd8/0x100
+ kasan_report from wilc_netdev_cleanup+0x294/0x2c0
+ wilc_netdev_cleanup from wilc_bus_probe+0x2b8/0x398
+ wilc_bus_probe from spi_probe+0xb8/0xdc
+ spi_probe from really_probe+0x134/0x588
+ really_probe from __driver_probe_device+0xe0/0x288
+ __driver_probe_device from driver_probe_device+0x60/0x118
+ driver_probe_device from __driver_attach+0x1a0/0x29c
+ __driver_attach from bus_for_each_dev+0xf0/0x14c
+ bus_for_each_dev from bus_add_driver+0x130/0x288
+ bus_add_driver from driver_register+0xd4/0x1c0
+ driver_register from do_one_initcall+0xfc/0x204
+ do_one_initcall from kernel_init_freeable+0x240/0x2a0
+ kernel_init_freeable from kernel_init+0x20/0x144
+ kernel_init from ret_from_fork+0x14/0x28
+
+Not sure though what's wrong without digging further.
+
+> register_netdev() does get called (through wilc_cfg80211_init()) and then when
+> the chip detect fails, unregister_netdev() gets called (from
+> wilc_netdev_cleanup()), so I don't see any obvious issues, but there is a lot of
+> other stuff going on there that I'm not familiar with.
+
+My bad, your statement made me realize I overlooked things here: aside from the
+kasan warning, your patch makes the probe function do the following steps:
+- create and register (wiphy and) netdevice
+- check if chip is detected on bus
+- unregister/clean up everything if chip does not respond
+
+There's no point in pre-registering the netdevice so early if we add an error
+path due to chip being absent, I would even say that the whole point of your
+series is to prevent registering the device if chip can not be accessed. So IMHO
+chip detection should be done before trying to register the netdevice. It will
+prevent all the complications due to the whole reverse unregistration (and all
+weird issues that can occur because of device being registered while not being
+fully ready)
+
+>>> +	if (base_id != WILC_1000_BASE_ID && base_id != WILC_3000_BASE_ID) {
+>>
+>> - WILC3000 is currently not supported (yet) by the upstream driver, so there is
+>> no reason to validate its presence if we can not handle it later. Any mention of
+>> it should then be removed from this series
+> 
+> Oh, I didn't realize that.  I was just going off of this web page:
+> 
+>  https://www.microchip.com/en-us/software-library/wilc1000_3000_linux_driver
+
+Understood, but again, your patch must be based on upstream trees :)
+
 -- 
-2.39.2
+Alexis Lothoré, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
