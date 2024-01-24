@@ -1,198 +1,487 @@
-Return-Path: <linux-wireless+bounces-2436-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2437-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74BB283A28D
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jan 2024 08:03:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5DEA83A421
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jan 2024 09:27:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8814F1C21802
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jan 2024 07:03:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FDC31F23221
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jan 2024 08:27:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA34012E70;
-	Wed, 24 Jan 2024 07:03:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BA3317585;
+	Wed, 24 Jan 2024 08:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="ZbLT1vqO"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="oSNJEHiA";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="7icn8vYI"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFE4610795
-	for <linux-wireless@vger.kernel.org>; Wed, 24 Jan 2024 07:03:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB53D1758C
+	for <linux-wireless@vger.kernel.org>; Wed, 24 Jan 2024 08:27:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706079803; cv=none; b=LuoOBnSZPX/CpgGXLLaRagwCV1DRARB2VifYPRRWRhJSmNxjTH4e5+h489Uj+QndhvHjc0y5L4d1W/qhMw51ipPY5109V4qkrqgXaTcDO+WGdsQ+QSDzkOgNbPy+pHThk/PwnTFz3ZEIj7p2gNTBctQFKxpnINFsF7XG+ZVHesc=
+	t=1706084833; cv=none; b=l+vdNF2FTEfewCM34dSbJ73TG3BVIXcChbwPHWFL82+wSz6KU3VDKtqFP3xoVdy5yjf98mLJm4vXmbG6R7/kn9Lj2tQaz6zbB9MnGv84h/7+X7usE17lv4IgdD4VpjSCa9P4Op8vOGMUmr9TLwxHZN9iSNKiVZxaMBRIAUzTsj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706079803; c=relaxed/simple;
-	bh=T9bcbF1aGyvUEpk0mJrNutVKlwNImb+qcj+K0/zB+vo=;
-	h=From:To:CC:Date:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=RAsOSZv1lFM5gE0gitIrkc1VnEDM84m5ySccQMgMeDPdVmz8/AvfejQjCu13LXM7efAy//1MrQRpbHHcudEsHCPt4oAslnb6hk2xnadneQK5u/Uap2nYpmJmvgzon8LV9Zj4fjIwIYv+8qeu7ACh3cP6nUadz/wi2qzK9ZmZNfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=ZbLT1vqO; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-337d58942c9so5380650f8f.0
-        for <linux-wireless@vger.kernel.org>; Tue, 23 Jan 2024 23:03:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1706079800; x=1706684600; darn=vger.kernel.org;
-        h=mime-version:subject:user-agent:references:in-reply-to:message-id
-         :date:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+UYNwK5c09jLmGLT4eAVSwOEUX+yD3lHXp3GFplH71I=;
-        b=ZbLT1vqOZI8DkN3+PDZMPx+lmDU317Koqd1F9qatyZZ/4U/f8OPUmuN6RFSbLP+DaK
-         myKGzTaN4p2AWqY2hIFOejb0N+2MrifDjXim3apzWww9Zkv4hcy354qT3lxxWTNg9wON
-         sWCJNDY3UAMk6u9NLo67Qlw0cwceAmV285ank=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706079800; x=1706684600;
-        h=mime-version:subject:user-agent:references:in-reply-to:message-id
-         :date:cc:to:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+UYNwK5c09jLmGLT4eAVSwOEUX+yD3lHXp3GFplH71I=;
-        b=u73HNlLhv0CxsoFaqVu9fZYnggU1JlN77ZGREU2Vr4oM5UFOyrD7cLwdnvo6nZ0hbI
-         fWo8K6+ULvMmQxdaMZ2Z0zAnD9Swru1g1TlqoSu8hvby+2KykL78KHQ9qtGxzPZQKbum
-         okQO/nvHDPMMgYoLVp3bbKoYRmcg+T4zlCqV7u9IyfSr56gNDwvUurDq4CWGQidcHX+n
-         JXOt1XKpiCNT+1BFsEmsRrbXZLFRw6/nhWUF14CMHahpz0vXgKZ43yoMkdFA+j5yGAx5
-         BT9X/gsaM01S1sPeFzgYJq6ZooKVLycApskMrymuzPCqP4wiM2ReDWWBkR5YqZYy4uI9
-         kubQ==
-X-Gm-Message-State: AOJu0Yy5W1qsytbRaFWeQPy5QpDDZXo/bm6fcPW6O3XeDRTKPy+miJqh
-	wIKIAzdOM/ld7hO/5kmVt/33xD71xLFm2Mn9nE09ph5U4BE1OGW2QsqhbCajnrwUSq+mu7Dsqtl
-	SUCbC
-X-Google-Smtp-Source: AGHT+IHNclDqiTvSF8BpLGeiWfeOPZ/ocWiV83UUPEBmcifG8jT/cDAMvFS8SrjZ188BVSBP3unQYw==
-X-Received: by 2002:a05:6000:154d:b0:337:aa92:5e6f with SMTP id 13-20020a056000154d00b00337aa925e6fmr286950wry.7.1706079800022;
-        Tue, 23 Jan 2024 23:03:20 -0800 (PST)
-Received: from [10.230.35.166] ([192.19.148.250])
-        by smtp.gmail.com with ESMTPSA id n17-20020a5d67d1000000b003392f229b60sm8290247wrw.40.2024.01.23.23.03.18
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 23 Jan 2024 23:03:19 -0800 (PST)
-From: Arend Van Spriel <arend.vanspriel@broadcom.com>
-To: Dmitry Antipov <dmantipov@yandex.ru>, Bjorn Helgaas <helgaas@kernel.org>
-CC: Kalle Valo <kvalo@kernel.org>, <linux-wireless@vger.kernel.org>, <lvc-project@linuxtesting.org>
-Date: Wed, 24 Jan 2024 08:03:17 +0100
-Message-ID: <18d3a47bb20.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <15dff48a-730e-4771-a84d-64624ab8d34c@yandex.ru>
-References: <20240122182031.GA276974@bhelgaas>
- <15dff48a-730e-4771-a84d-64624ab8d34c@yandex.ru>
-User-Agent: AquaMail/1.49.2 (build: 104902408)
-Subject: Re: [PATCH 2/2] [v3] wifi: brcmfmac: handle possible PCIE irq handling errors
+	s=arc-20240116; t=1706084833; c=relaxed/simple;
+	bh=/k/PR7v6U1O4y+FsW0lNVAQICAbPPffLM7arYqdDi14=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ASzc8PR6hylrtXZPcrFag0eeq3NtLt2CwN5C6ko5PNKrYEux95pCq/BxbmrsXlkT53uVx4SyfvbfF88iYOw1UJwPcRdDyoIOjcvLyAzIbOwz1N1g53DaJOM4oRuMZ+3YnQhRdl4wkLAX87hAxSKM5k/m5EzR4ipPQRKrpUDcfyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=oSNJEHiA; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=7icn8vYI; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Martin Kaistra <martin.kaistra@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1706084829;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=3ZE6vSjKNJEIkykAa8DptE1tqbkwB3zP1SKxVBzkByk=;
+	b=oSNJEHiAT8Xq3iZkn0pXZBwkszedJr6KUv9wcUD2FezfZiqqltITaRyiiFQP95N1JOSWgI
+	m75rNJ68I5Z3XPgT+hkcURdgdcC8CTYknRC9Me0aNjMFhsC1zf6ORcnrq7sxxcXmW+E8i6
+	9wbWwgmiXE4uOkep6VC7R2q4Njwxv002YOeSLtLBPT5ocF93yhMDQv1ohgql0WGALpG/hD
+	HnHaCbfHMsH/r3eK9E7b1N1bjtrT8qqjzRcbtbKtpaWh1EgJgjpvLMAkre9umEkdS937O2
+	6OfxB3oMUkUwm+j/WUcQ6BsvGYKagoJTbqc7iZe8R/ndGs5j2TfQVhqD8sEXrg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1706084829;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=3ZE6vSjKNJEIkykAa8DptE1tqbkwB3zP1SKxVBzkByk=;
+	b=7icn8vYItaNQUsQpmtMzuMq/1JSuMiM60YgBf/00DQtZO8RpWFtMGipxhH9sQLzPu7WlZI
+	4y4bwISx5Q2gPPAg==
+To: linux-wireless@vger.kernel.org
+Cc: Jes Sorensen <Jes.Sorensen@gmail.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: [PATCH v2] wifi: rtl8xxxu: update rate mask per sta
+Date: Wed, 24 Jan 2024 09:27:05 +0100
+Message-Id: <20240124082705.1098960-1-martin.kaistra@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="00000000000075ec73060faba87d"
-
---00000000000075ec73060faba87d
-Content-Type: text/plain; format=flowed; charset="us-ascii"
 Content-Transfer-Encoding: 8bit
 
-On January 24, 2024 7:22:58 AM Dmitry Antipov <dmantipov@yandex.ru> wrote:
+Until now, rtl8xxxu_watchdog_callback() only fetches RSSI and updates
+the rate mask in station mode. This means, in AP mode only the default
+rate mask is used.
 
-> On 1/22/24 21:20, Bjorn Helgaas wrote:
->
->> If you have occasion to update this, possibly s/PCIE/PCI/ in the
->> subject, since this is generic to PCI and PCIe.
->
-> OK. BTW if we're touching this anyway, shouldn't we hook into the generic 
-> device
-> framework and switch to devm_request_threaded_irq()/devm_free_irq() as well?
+In order to have the rate mask reflect the actual connection quality,
+extend rtl8xxxu_watchdog_callback() to iterate over every sta. Like in
+the rtw88 driver, add a function to collect all currently present stas
+and then iterate over a list of copies to ensure no RCU lock problems
+for register access via USB. Remove the existing RCU lock in
+rtl8xxxu_refresh_rate_mask().
 
-Hi Dmitry,
+Since the currently used ieee80211_ave_rssi() is only for 'vif', add
+driver-level tracking of RSSI per sta.
 
-Those are not generic device functions. They create device managed resource 
-so devm_free_irq() is implicitly invoked upon device detach. So replacing 
-free_irq() with devm_free_irq() is not very meaningful. There are some 
-devm_*() usages in the driver, but it's not used commonly. However, feel 
-free to add it.
+Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
+---
+changes v1->v2: move 'rssi_level' into struct rtl8xxxu_sta_info
+v1: https://lore.kernel.org/linux-wireless/20240117145516.497966-1-martin.kaistra@linutronix.de/
+ .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  |   8 +-
+ .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 187 ++++++++++++++----
+ 2 files changed, 157 insertions(+), 38 deletions(-)
 
-Regards,
-Arend
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+index 03307da67c2c3..fd92d23c43d91 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+@@ -6,6 +6,7 @@
+  */
+ 
+ #include <asm/byteorder.h>
++#include <linux/average.h>
+ 
+ #define RTL8XXXU_DEBUG_REG_WRITE	0x01
+ #define RTL8XXXU_DEBUG_REG_READ		0x02
+@@ -1858,6 +1859,8 @@ struct rtl8xxxu_priv {
+ 	int next_mbox;
+ 	int nr_out_eps;
+ 
++	/* Ensure no added or deleted stas while iterating */
++	struct mutex sta_mutex;
+ 	struct mutex h2c_mutex;
+ 	/* Protect the indirect register accesses of RTL8710BU. */
+ 	struct mutex syson_indirect_access_mutex;
+@@ -1892,7 +1895,6 @@ struct rtl8xxxu_priv {
+ 	u8 pi_enabled:1;
+ 	u8 no_pape:1;
+ 	u8 int_buf[USB_INTR_CONTENT_LENGTH];
+-	u8 rssi_level;
+ 	DECLARE_BITMAP(tx_aggr_started, IEEE80211_NUM_TIDS);
+ 	DECLARE_BITMAP(tid_tx_operational, IEEE80211_NUM_TIDS);
+ 
+@@ -1913,11 +1915,15 @@ struct rtl8xxxu_priv {
+ 	DECLARE_BITMAP(cam_map, RTL8XXXU_MAX_SEC_CAM_NUM);
+ };
+ 
++DECLARE_EWMA(rssi, 10, 16);
++
+ struct rtl8xxxu_sta_info {
+ 	struct ieee80211_sta *sta;
+ 	struct ieee80211_vif *vif;
+ 
+ 	u8 macid;
++	struct ewma_rssi avg_rssi;
++	u8 rssi_level;
+ };
+ 
+ struct rtl8xxxu_vif {
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+index 3b954c2fe448f..3820d3c308759 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+@@ -4993,8 +4993,8 @@ rtl8xxxu_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	struct device *dev = &priv->udev->dev;
+ 	struct ieee80211_sta *sta;
+ 	struct rtl8xxxu_ra_report *rarpt;
++	u8 val8, macid;
+ 	u32 val32;
+-	u8 val8;
+ 
+ 	rarpt = &priv->ra_report;
+ 
+@@ -5004,6 +5004,7 @@ rtl8xxxu_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 		rtl8xxxu_set_linktype(priv, vif->type, rtlvif->port_num);
+ 
+ 		if (vif->cfg.assoc) {
++			struct rtl8xxxu_sta_info *sta_info;
+ 			u32 ramask;
+ 			int sgi = 0;
+ 			u8 highest_rate;
+@@ -5017,6 +5018,7 @@ rtl8xxxu_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 				rcu_read_unlock();
+ 				goto error;
+ 			}
++			macid = rtl8xxxu_get_macid(priv, sta);
+ 
+ 			if (sta->deflink.ht_cap.ht_supported)
+ 				dev_info(dev, "%s: HT supported\n", __func__);
+@@ -5037,14 +5039,15 @@ rtl8xxxu_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 				bw = RATE_INFO_BW_40;
+ 			else
+ 				bw = RATE_INFO_BW_20;
++
++			sta_info = (struct rtl8xxxu_sta_info *)sta->drv_priv;
++			sta_info->rssi_level = RTL8XXXU_RATR_STA_INIT;
+ 			rcu_read_unlock();
+ 
+ 			rtl8xxxu_update_ra_report(rarpt, highest_rate, sgi, bw);
+ 
+-			priv->rssi_level = RTL8XXXU_RATR_STA_INIT;
+-
+ 			priv->fops->update_rate_mask(priv, ramask, 0, sgi,
+-						     bw == RATE_INFO_BW_40, 0);
++						     bw == RATE_INFO_BW_40, macid);
+ 
+ 			rtl8xxxu_write8(priv, REG_BCN_MAX_ERR, 0xff);
+ 
+@@ -6317,6 +6320,76 @@ static void rtl8188e_c2hcmd_callback(struct work_struct *work)
+ 	}
+ }
+ 
++#define rtl8xxxu_iterate_vifs_atomic(priv, iterator, data)			\
++	ieee80211_iterate_active_interfaces_atomic((priv)->hw,			\
++			IEEE80211_IFACE_ITER_NORMAL, iterator, data)
++
++struct rtl8xxxu_rx_addr_match_data {
++	struct rtl8xxxu_priv *priv;
++	struct ieee80211_hdr *hdr;
++	struct ieee80211_rx_status *rx_status;
++	u8 *bssid;
++};
++
++static void rtl8xxxu_rx_addr_match_iter(void *data, u8 *mac,
++					struct ieee80211_vif *vif)
++{
++	struct rtl8xxxu_rx_addr_match_data *iter_data = data;
++	struct ieee80211_sta *sta;
++	struct ieee80211_hdr *hdr = iter_data->hdr;
++	struct rtl8xxxu_priv *priv = iter_data->priv;
++	struct rtl8xxxu_sta_info *sta_info;
++	struct ieee80211_rx_status *rx_status = iter_data->rx_status;
++	u8 *bssid = iter_data->bssid;
++
++	if (!ether_addr_equal(vif->bss_conf.bssid, bssid))
++		return;
++
++	if (!(ether_addr_equal(vif->addr, hdr->addr1) ||
++	      ieee80211_is_beacon(hdr->frame_control)))
++		return;
++
++	sta = ieee80211_find_sta_by_ifaddr(priv->hw, hdr->addr2,
++					   vif->addr);
++	if (!sta)
++		return;
++
++	sta_info = (struct rtl8xxxu_sta_info *)sta->drv_priv;
++	ewma_rssi_add(&sta_info->avg_rssi, -rx_status->signal);
++}
++
++static inline u8 *get_hdr_bssid(struct ieee80211_hdr *hdr)
++{
++	__le16 fc = hdr->frame_control;
++	u8 *bssid;
++
++	if (ieee80211_has_tods(fc))
++		bssid = hdr->addr1;
++	else if (ieee80211_has_fromds(fc))
++		bssid = hdr->addr2;
++	else
++		bssid = hdr->addr3;
++
++	return bssid;
++}
++
++static void rtl8xxxu_rx_addr_match(struct rtl8xxxu_priv *priv,
++				   struct ieee80211_rx_status *rx_status,
++				   struct ieee80211_hdr *hdr)
++{
++	struct rtl8xxxu_rx_addr_match_data data = {};
++
++	if (ieee80211_is_ctl(hdr->frame_control))
++		return;
++
++	data.priv = priv;
++	data.hdr = hdr;
++	data.rx_status = rx_status;
++	data.bssid = get_hdr_bssid(hdr);
++
++	rtl8xxxu_iterate_vifs_atomic(priv, rtl8xxxu_rx_addr_match_iter, &data);
++}
++
+ int rtl8xxxu_parse_rxdesc16(struct rtl8xxxu_priv *priv, struct sk_buff *skb)
+ {
+ 	struct ieee80211_hw *hw = priv->hw;
+@@ -6376,18 +6449,26 @@ int rtl8xxxu_parse_rxdesc16(struct rtl8xxxu_priv *priv, struct sk_buff *skb)
+ 			skb_queue_tail(&priv->c2hcmd_queue, skb);
+ 			schedule_work(&priv->c2hcmd_work);
+ 		} else {
++			struct ieee80211_hdr *hdr;
++
+ 			phy_stats = (struct rtl8723au_phy_stats *)skb->data;
+ 
+ 			skb_pull(skb, drvinfo_sz + desc_shift);
+ 
+ 			skb_trim(skb, pkt_len);
+ 
+-			if (rx_desc->phy_stats)
++			hdr = (struct ieee80211_hdr *)skb->data;
++			if (rx_desc->phy_stats) {
+ 				priv->fops->parse_phystats(
+ 					priv, rx_status, phy_stats,
+ 					rx_desc->rxmcs,
+-					(struct ieee80211_hdr *)skb->data,
++					hdr,
+ 					rx_desc->crc32 || rx_desc->icverr);
++				if (!rx_desc->crc32 && !rx_desc->icverr)
++					rtl8xxxu_rx_addr_match(priv,
++							       rx_status,
++							       hdr);
++			}
+ 
+ 			rx_status->mactime = rx_desc->tsfl;
+ 			rx_status->flag |= RX_FLAG_MACTIME_START;
+@@ -6484,10 +6565,15 @@ int rtl8xxxu_parse_rxdesc24(struct rtl8xxxu_priv *priv, struct sk_buff *skb)
+ 		} else {
+ 			struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
+ 
+-			if (rx_desc->phy_stats)
++			if (rx_desc->phy_stats) {
+ 				priv->fops->parse_phystats(priv, rx_status, phy_stats,
+ 							   rx_desc->rxmcs, hdr,
+ 							   rx_desc->crc32 || rx_desc->icverr);
++				if (!rx_desc->crc32 && !rx_desc->icverr)
++					rtl8xxxu_rx_addr_match(priv,
++							       rx_status,
++							       hdr);
++			}
+ 
+ 			rx_status->mactime = rx_desc->tsfl;
+ 			rx_status->flag |= RX_FLAG_MACTIME_START;
+@@ -7111,6 +7197,7 @@ static void rtl8xxxu_refresh_rate_mask(struct rtl8xxxu_priv *priv,
+ 				       int signal, struct ieee80211_sta *sta,
+ 				       bool force)
+ {
++	struct rtl8xxxu_sta_info *sta_info = (struct rtl8xxxu_sta_info *)sta->drv_priv;
+ 	struct ieee80211_hw *hw = priv->hw;
+ 	u16 wireless_mode;
+ 	u8 rssi_level, ratr_idx;
+@@ -7119,7 +7206,7 @@ static void rtl8xxxu_refresh_rate_mask(struct rtl8xxxu_priv *priv,
+ 	u8 go_up_gap = 5;
+ 	u8 macid = rtl8xxxu_get_macid(priv, sta);
+ 
+-	rssi_level = priv->rssi_level;
++	rssi_level = sta_info->rssi_level;
+ 	snr = rtl8xxxu_signal_to_snr(signal);
+ 	snr_thresh_high = RTL8XXXU_SNR_THRESH_HIGH;
+ 	snr_thresh_low = RTL8XXXU_SNR_THRESH_LOW;
+@@ -7144,18 +7231,16 @@ static void rtl8xxxu_refresh_rate_mask(struct rtl8xxxu_priv *priv,
+ 	else
+ 		rssi_level = RTL8XXXU_RATR_STA_LOW;
+ 
+-	if (rssi_level != priv->rssi_level || force) {
++	if (rssi_level != sta_info->rssi_level || force) {
+ 		int sgi = 0;
+ 		u32 rate_bitmap = 0;
+ 
+-		rcu_read_lock();
+ 		rate_bitmap = (sta->deflink.supp_rates[0] & 0xfff) |
+ 				(sta->deflink.ht_cap.mcs.rx_mask[0] << 12) |
+ 				(sta->deflink.ht_cap.mcs.rx_mask[1] << 20);
+ 		if (sta->deflink.ht_cap.cap &
+ 		    (IEEE80211_HT_CAP_SGI_40 | IEEE80211_HT_CAP_SGI_20))
+ 			sgi = 1;
+-		rcu_read_unlock();
+ 
+ 		wireless_mode = rtl8xxxu_wireless_mode(hw, sta);
+ 		switch (wireless_mode) {
+@@ -7236,7 +7321,7 @@ static void rtl8xxxu_refresh_rate_mask(struct rtl8xxxu_priv *priv,
+ 			break;
+ 		}
+ 
+-		priv->rssi_level = rssi_level;
++		sta_info->rssi_level = rssi_level;
+ 		priv->fops->update_rate_mask(priv, rate_bitmap, ratr_idx, sgi, txbw_40mhz, macid);
+ 	}
+ }
+@@ -7329,40 +7414,60 @@ static void rtl8xxxu_track_cfo(struct rtl8xxxu_priv *priv)
+ 	rtl8xxxu_set_atc_status(priv, abs(cfo_average) >= CFO_TH_ATC);
+ }
+ 
+-static void rtl8xxxu_watchdog_callback(struct work_struct *work)
++static void rtl8xxxu_ra_iter(void *data, struct ieee80211_sta *sta)
+ {
+-	struct ieee80211_vif *vif;
+-	struct rtl8xxxu_priv *priv;
+-	int i;
++	struct rtl8xxxu_sta_info *sta_info = (struct rtl8xxxu_sta_info *)sta->drv_priv;
++	struct rtl8xxxu_priv *priv = data;
++	int signal = -ewma_rssi_read(&sta_info->avg_rssi);
+ 
+-	priv = container_of(work, struct rtl8xxxu_priv, ra_watchdog.work);
+-	for (i = 0; i < ARRAY_SIZE(priv->vifs); i++) {
+-		vif = priv->vifs[i];
++	priv->fops->report_rssi(priv, rtl8xxxu_get_macid(priv, sta),
++				rtl8xxxu_signal_to_snr(signal));
++	rtl8xxxu_refresh_rate_mask(priv, signal, sta, false);
++}
+ 
+-		if (!vif || vif->type != NL80211_IFTYPE_STATION)
+-			continue;
++struct rtl8xxxu_stas_entry {
++	struct list_head list;
++	struct ieee80211_sta *sta;
++};
+ 
+-		int signal;
+-		struct ieee80211_sta *sta;
++struct rtl8xxxu_iter_stas_data {
++	struct rtl8xxxu_priv *priv;
++	struct list_head list;
++};
+ 
+-		rcu_read_lock();
+-		sta = ieee80211_find_sta(vif, vif->bss_conf.bssid);
+-		if (!sta) {
+-			struct device *dev = &priv->udev->dev;
++static void rtl8xxxu_collect_sta_iter(void *data, struct ieee80211_sta *sta)
++{
++	struct rtl8xxxu_iter_stas_data *iter_stas = data;
++	struct rtl8xxxu_stas_entry *stas_entry;
+ 
+-			dev_dbg(dev, "%s: no sta found\n", __func__);
+-			rcu_read_unlock();
+-			continue;
+-		}
+-		rcu_read_unlock();
++	stas_entry = kmalloc(sizeof(*stas_entry), GFP_ATOMIC);
++	if (!stas_entry)
++		return;
+ 
+-		signal = ieee80211_ave_rssi(vif);
++	stas_entry->sta = sta;
++	list_add_tail(&stas_entry->list, &iter_stas->list);
++}
++
++static void rtl8xxxu_watchdog_callback(struct work_struct *work)
++{
+ 
+-		priv->fops->report_rssi(priv, rtl8xxxu_get_macid(priv, sta),
+-					rtl8xxxu_signal_to_snr(signal));
++	struct rtl8xxxu_iter_stas_data iter_data;
++	struct rtl8xxxu_stas_entry *sta_entry, *tmp;
++	struct rtl8xxxu_priv *priv;
++
++	priv = container_of(work, struct rtl8xxxu_priv, ra_watchdog.work);
++	iter_data.priv = priv;
++	INIT_LIST_HEAD(&iter_data.list);
+ 
+-		rtl8xxxu_refresh_rate_mask(priv, signal, sta, false);
++	mutex_lock(&priv->sta_mutex);
++	ieee80211_iterate_stations_atomic(priv->hw, rtl8xxxu_collect_sta_iter,
++					  &iter_data);
++	list_for_each_entry_safe(sta_entry, tmp, &iter_data.list, list) {
++		list_del_init(&sta_entry->list);
++		rtl8xxxu_ra_iter(priv, sta_entry->sta);
++		kfree(sta_entry);
+ 	}
++	mutex_unlock(&priv->sta_mutex);
+ 
+ 	if (priv->fops->set_crystal_cap)
+ 		rtl8xxxu_track_cfo(priv);
+@@ -7504,10 +7609,14 @@ static int rtl8xxxu_sta_add(struct ieee80211_hw *hw,
+ 	struct rtl8xxxu_vif *rtlvif = (struct rtl8xxxu_vif *)vif->drv_priv;
+ 	struct rtl8xxxu_priv *priv = hw->priv;
+ 
++	mutex_lock(&priv->sta_mutex);
++	ewma_rssi_init(&sta_info->avg_rssi);
+ 	if (vif->type == NL80211_IFTYPE_AP) {
+ 		sta_info->macid = rtl8xxxu_acquire_macid(priv);
+-		if (sta_info->macid >= RTL8XXXU_MAX_MAC_ID_NUM)
++		if (sta_info->macid >= RTL8XXXU_MAX_MAC_ID_NUM) {
++			mutex_unlock(&priv->sta_mutex);
+ 			return -ENOSPC;
++		}
+ 
+ 		rtl8xxxu_refresh_rate_mask(priv, 0, sta, true);
+ 		priv->fops->report_connect(priv, sta_info->macid, H2C_MACID_ROLE_STA, true);
+@@ -7523,6 +7632,7 @@ static int rtl8xxxu_sta_add(struct ieee80211_hw *hw,
+ 			break;
+ 		}
+ 	}
++	mutex_unlock(&priv->sta_mutex);
+ 
+ 	return 0;
+ }
+@@ -7534,8 +7644,10 @@ static int rtl8xxxu_sta_remove(struct ieee80211_hw *hw,
+ 	struct rtl8xxxu_sta_info *sta_info = (struct rtl8xxxu_sta_info *)sta->drv_priv;
+ 	struct rtl8xxxu_priv *priv = hw->priv;
+ 
++	mutex_lock(&priv->sta_mutex);
+ 	if (vif->type == NL80211_IFTYPE_AP)
+ 		rtl8xxxu_release_macid(priv, sta_info->macid);
++	mutex_unlock(&priv->sta_mutex);
+ 
+ 	return 0;
+ }
+@@ -7767,6 +7879,7 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
+ 	mutex_init(&priv->usb_buf_mutex);
+ 	mutex_init(&priv->syson_indirect_access_mutex);
+ 	mutex_init(&priv->h2c_mutex);
++	mutex_init(&priv->sta_mutex);
+ 	INIT_LIST_HEAD(&priv->tx_urb_free_list);
+ 	spin_lock_init(&priv->tx_urb_lock);
+ 	INIT_LIST_HEAD(&priv->rx_urb_pending_list);
+-- 
+2.39.2
 
-> Dmitry
-
-
-
-
---00000000000075ec73060faba87d
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-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
-2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
-Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
-HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
-Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
-KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
-Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
-dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
-OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
-MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
-BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
-ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
-zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
-sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
-BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
-N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
-p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
-YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCIfuh6eG5gz08nMjt9
-cd+AfrqWt+tY9/YhLTwzwkQbzzAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yNDAxMjQwNzAzMjBaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
-AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAjK9YllS6WC95/7WHRJHTZ9CbO2qpHy4tWxOR
-wpYjn3r/wfdBWboU/eVNhwd5jaSvfkBjnakVcAsS06BQxPhEIlu4sm+2WvIsbNy4f3ixpGqt5zti
-093s3+9Dl4fBiC9NwuYr4+o0Kkb/d5uKHzDWDmhg9RsA3HMX7ppn3l8Y6bMJmo9YT37Nc897JdSb
-l5KWn6Pao/+37Dc9Gk/fyCJHA5navp3lt1/fODYzm7e62P0ArWbdxiODOiV23kGq4QQLNSdkrd6b
-ZEqBhFcQoD41PFyryk+mkdK7aMIu2wmO7P/Jpq6hFHyWCr0619/K00AK6DKJHbi2rOhVAWiKSLDq
-Xw==
---00000000000075ec73060faba87d--
 
