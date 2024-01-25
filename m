@@ -1,95 +1,82 @@
-Return-Path: <linux-wireless+bounces-2497-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2498-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AA6B83C89C
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jan 2024 17:50:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE2F483C9B4
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jan 2024 18:17:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 80336B22F5A
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jan 2024 16:50:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0E681C245FE
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jan 2024 17:17:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91925134721;
-	Thu, 25 Jan 2024 16:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 424DD13A256;
+	Thu, 25 Jan 2024 17:15:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uaRJQtQI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MddihEG5"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6FD13D4E2
-	for <linux-wireless@vger.kernel.org>; Thu, 25 Jan 2024 16:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F08113A255
+	for <linux-wireless@vger.kernel.org>; Thu, 25 Jan 2024 17:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706201057; cv=none; b=pmI1tiH5ONBBwm8GF0jIk7IpPAwzLi0FIzbEXFLTTeWGEzEdhcdhIbmVbv8oQXpOm9BpDWfP8Dhn2UqA6b6FAFJ8qSDjG8lTIxzPWBB0oXKicShteCTBtfIoDQNpTlcJ55C7fAuVCSuXZf2BpyelSsD4tfj+E/Klil/74MUBPyM=
+	t=1706202905; cv=none; b=dJ0XNztDEq0G0Lt0U/95SSVXZyumbu1Jmul4Lp51K4V6VWEcv2VhRnjbBtuuA5Ezilm6l2DtLIepZd6NTYxWgfXBdndEAGNLkt7kQ+SBUdrZvNmw7M3HC8GScCOzzBriPkJkiFXrr6K/lxcXpYbdjyNoJuvCvnGFv9z971efPh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706201057; c=relaxed/simple;
-	bh=wcCNop60hgk2j5yhVDqKEmLRVykIVtyvwQqWxiqbSlk=;
-	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=NNUAtqEriffpuMuuwG4FMtb0PZw73KzBU89Cc5CeyKQxYQJ7LEEc54GMSlS1qfjOs4MoccdlNHU6ShY6sEcg8nmskDiTXqUqlkG5C8AwyRuVagWUVStuXQGEfov/xzAD0e17ittuWtIYlcdEbvcgcb5ilzynUak/v0Kg1T3Ql80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uaRJQtQI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1E26C433F1;
-	Thu, 25 Jan 2024 16:44:15 +0000 (UTC)
+	s=arc-20240116; t=1706202905; c=relaxed/simple;
+	bh=Jpm406mDAglsgv8x0fhpn+KCsopS61DCPsvmQivwvAo=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=saA2P3JPhVUy0TFBkdlddLw46aKoG5imyEvVkB/aH+s9px3okRjIGBXWD21p7vmJ5n4r2NVPOVnPFqfYwG6JZLQGV2VohKoNzdwJozLY7rjIYiAAmgOneCADA46ZHjSZn371YhyL0iWRPZMi/epkUmhVv9NyiUdwEW4TXxcYIIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MddihEG5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 659C8C43390;
+	Thu, 25 Jan 2024 17:15:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706201056;
-	bh=wcCNop60hgk2j5yhVDqKEmLRVykIVtyvwQqWxiqbSlk=;
-	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=uaRJQtQIAbei8YJM7J6brVdZNuT0jxerVh/3uNw7N0uebStc/lyeNYQKps69RRsiI
-	 0lpVfXpYU332k+xo1VdYftU7/78fzbF2Vz7jFnUVAJHfp2kF2UGKdTXikdpFSxmBAg
-	 lGjgKaV6oDxAbIACztxpf3VHHXdc22cGwDb+d+bgohXYGE38x4mUs1tTlaecgcSkRr
-	 GIsoTzaOK45RzrXWkKHX4TB/zCGrAfaSeYmP9I9SrQWG+zaZv7bTvgYgi0ELXe9C9p
-	 5UPU3EYL1JfacgKtMxFJOS7HIWIZvLNDhu54+dEYqFptsHoCIxGyk1ZWOYqbTGLhE+
-	 KQ8liHRZpCJHg==
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1706202904;
+	bh=Jpm406mDAglsgv8x0fhpn+KCsopS61DCPsvmQivwvAo=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=MddihEG537vaUectpv7FwIOgb9bNQMXLintQCsuno8Ffd+gvmXIKgCJ78OQEHtsyX
+	 FFe/XdWxu9ji3vi4bW7BuyNu7SG1zgpFhyxfEYGLaH0rb1p4qtsIukUP54Y0Fhr1wB
+	 oMCmGHDXw/0HzlknFk5fhIgxV4t/zzXXUc/CK790nEr8DfxUb2iyOhyU8wRoGJxPzC
+	 Az1taExiVCkjBuRi/E2cEAOyq4iWtbZz88KQlxRxRXSijuGIZux89D3tbqtIKdQ03P
+	 iv/LIWPx3fKqLyZIlxIsjcig91c/sNqsdIFK5hHvGbP6allSr7KktLG7usmF+biHTM
+	 zIwOUUqWVHwiA==
+From: Kalle Valo <kvalo@kernel.org>
+To: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Cc: johannes@sipsolutions.net,  linux-wireless@vger.kernel.org,  Mukesh
+ Sisodiya <mukesh.sisodiya@intel.com>,  Mordechay Goodstein
+ <mordechay.goodstein@intel.com>
+Subject: Re: [PATCH v3] wifi: iwlwifi: disable 160 MHz based on SSID
+References: <20240125163103.578d2d3a617f.I558e8d0cf19dc862b1c4124df78a4cb690095bb2@changeid>
+Date: Thu, 25 Jan 2024 19:15:01 +0200
+In-Reply-To: <20240125163103.578d2d3a617f.I558e8d0cf19dc862b1c4124df78a4cb690095bb2@changeid>
+	(Miri Korenblit's message of "Thu, 25 Jan 2024 16:31:15 +0200")
+Message-ID: <87o7d9cp2i.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/4] wifi: ath11k: remove invalid peer create logic
-From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240123025700.2929-2-quic_bqiang@quicinc.com>
-References: <20240123025700.2929-2-quic_bqiang@quicinc.com>
-To: Baochen Qiang <quic_bqiang@quicinc.com>
-Cc: <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
- <quic_bqiang@quicinc.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170620105373.504797.9989085853141323864.kvalo@kernel.org>
-Date: Thu, 25 Jan 2024 16:44:15 +0000 (UTC)
+Content-Type: text/plain
 
-Baochen Qiang <quic_bqiang@quicinc.com> wrote:
+Miri Korenblit <miriam.rachel.korenblit@intel.com> writes:
 
-> In ath11k_mac_op_assign_vif_chanctx(), there is a logic to
-> create peer using ar->mac_addr for a STA vdev. This is invalid
-> because a STA vdev should have a peer created using AP's
-> MAC address. Besides, if we run into that logic, it means a peer
-> has already been created earlier, we should not create it again.
-> So remove it.
-> 
-> This is found during code review.
-> 
-> Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1
-> Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
-> Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
-> Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
-> 
-> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+> From: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
+>
+> The driver should not send 160 MHz BW support for 5 GHz
+> band in HE if PCI Subsystem read indicates no 160 MHz support.
+>
+> Signed-off-by: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
+> Reviewed-by: Mordechay Goodstein <mordechay.goodstein@intel.com>
+> Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-4 patches applied to ath-next branch of ath.git, thanks.
-
-171203f0c409 wifi: ath11k: remove invalid peer create logic
-629642fa8b25 wifi: ath11k: rename ath11k_start_vdev_delay()
-ce59902e56ea wifi: ath11k: avoid forward declaration of ath11k_mac_start_vdev_delay()
-9d5f28c1366f wifi: ath11k: fix connection failure due to unexpected peer delete
+Stupid question: how this is based on SSID (Service Set Identifier)? I
+just can't figure it out, I guess I'm missing something.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240123025700.2929-2-quic_bqiang@quicinc.com/
+https://patchwork.kernel.org/project/linux-wireless/list/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
 
