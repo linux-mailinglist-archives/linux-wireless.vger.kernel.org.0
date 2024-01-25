@@ -1,60 +1,61 @@
-Return-Path: <linux-wireless+bounces-2466-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2467-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EF9A83BC54
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jan 2024 09:52:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CE5E83BCE5
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jan 2024 10:10:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A20441F2A24F
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jan 2024 08:51:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7C151F2FAF2
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jan 2024 09:10:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 816F818638;
-	Thu, 25 Jan 2024 08:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 789211C69C;
+	Thu, 25 Jan 2024 09:07:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="TzrJfaTZ"
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="tLg120tP"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from forward103a.mail.yandex.net (forward103a.mail.yandex.net [178.154.239.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BDC61B943;
-	Thu, 25 Jan 2024 08:51:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC8A41C696
+	for <linux-wireless@vger.kernel.org>; Thu, 25 Jan 2024 09:07:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706172714; cv=none; b=OIYrkwtuTJmsZ3eCoisU3vxhBRwdAObLjH3H/rX+7fj3bx5lHkCCO/69R+nKMd60NM0X8WldVMqYtTm7mhrjM0z3o1vvvrrMfQbB5hANb3A0+/IOkcfGQ7k2sIvMwGlBJvCZUAL9AidqJKSz2bu98jAIZ5i1vCynrqEj3qv5H58=
+	t=1706173670; cv=none; b=QM9Bne/IqTCk+mFZQnLsCOZCRT9CHvd66cmpvI+bljfTCnT5PN+OKGiqwjmyq/d+BHz9umkFl4Jlbe6Gu804PUj8R7z/Uo3IzkdhX8n87QCWpnSG8K2Awey8hZFgr4mQk5Gi6lwvpklCtDaKEkTEbM98WOzhLfuZekBEBt2OVRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706172714; c=relaxed/simple;
-	bh=7PCQSSn9qQi0UDs0EZ6lPNb92aGeRUr/+gsVqO3dGHg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MWSQ3isRpHFRjOpjSvS09Z+WNHyNZc4S/V+k80l1e8khw4OdThMLse21Q0fZHej3A9eHz1DDfVIzWE96UWzX/30mqJ4e2jfIQedhF7WxCb3Em0XIAxl+jk3RT+RUW8d/vUnRSS2AVuJ25aWpFVu6oRZlgJxrUHQWWwLfZh8v/wI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=TzrJfaTZ; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=JD9SLA41zLmXEitLPQ1L3S0RBoSKdOW+bAptf63pn0c=; t=1706172711; x=1707382311; 
-	b=TzrJfaTZwI/NwJopZCcMTtn3xcTbWpafCr23X/v2Ng07G5ypcnZAUF9dRE7bofi4c9GQY+Y00cC
-	68JrFqG4pbmWelzfU1PewJEKw+hPDHYgfKxMxNc2cex+P43FiI1uc3Ewy3O44lZpIIcKji0RR6ZWf
-	Ag07DpQz+rffRCttKL2nSOwJ5542cwhUadCWskqJn1PbkrMkLsSsu4P0iggxkvH7jnTAyWhku9j+u
-	aootUI1GVOkjP/JPCg6tapYL+5+GwtkXjAd1cBnzHMduJEyO0YLK2+4Dzwjx1PJ7DdalVc/Gsz1yV
-	Z/9QnQfwJjGFvBzcKC6su14JSdoPVTIPC3Bg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1rSvSY-0000000HKuJ-0xOq;
-	Thu, 25 Jan 2024 09:51:42 +0100
-From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	Jouni Malinen <j@w1.fi>,
-	stable@vger.kernel.org
-Subject: [PATCH] wifi: cfg80211: fix wiphy delayed work queueing
-Date: Thu, 25 Jan 2024 09:51:09 +0100
-Message-ID: <20240125095108.2feb0eaaa446.I4617f3210ed0e7f252290d5970dac6a876aa595b@changeid>
+	s=arc-20240116; t=1706173670; c=relaxed/simple;
+	bh=BThvc5xSu32X/VDOii6cEUag6BbVgdRUPoTRDsazIQY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=DDEUzuWxQl/HCpbZ3vXI9aa7aWBK8uYxEXx9dq9yD+5a0BEwvCOjB2Vur5NjjIybM9qQodSKmHsT4rfRIkcPbJeTH8GnsaVF3AUsyzqTl6mRFHfFbkVKz0rpegHbFmjrA1eF+fT89wTKktWFh1RDJrmaQSpMwaxG4jcxkeASiUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=tLg120tP; arc=none smtp.client-ip=178.154.239.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
+Received: from mail-nwsmtp-smtp-production-main-55.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-55.vla.yp-c.yandex.net [IPv6:2a02:6b8:c0d:230c:0:640:f8e:0])
+	by forward103a.mail.yandex.net (Yandex) with ESMTPS id 0733B60A6A;
+	Thu, 25 Jan 2024 12:07:44 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-55.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id h7QI3JPOhCg0-5p6804Fy;
+	Thu, 25 Jan 2024 12:07:43 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+	t=1706173663; bh=FHtQcuqL71TX53rbsLykIZ/SkDjty+djBuKKiyVtmWk=;
+	h=In-Reply-To:Cc:References:To:Message-ID:Date:Subject:From;
+	b=tLg120tP0r0DFyG9HFx2d45MJv7Qk4SCcBUzn2E+pI6RV97KwF7QTOeqE71lwKlN/
+	 vvRHQFDP4pS4n8mTHygt93mX47JE39YPxR3gq6XvHz/tX/5dprayW5DjW9Rdaw+ryW
+	 pF7ArnUgXwnx6t5AvqBAHP8QpO52peHJWG9jjx34=
+Authentication-Results: mail-nwsmtp-smtp-production-main-55.vla.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From: Dmitry Antipov <dmantipov@yandex.ru>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Kalle Valo <kvalo@kernel.org>,
+	linux-wireless@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH 0/1] Re: wifi: mac80211: don't ask rate control with zero rate mask if scanning
+Date: Thu, 25 Jan 2024 12:07:34 +0300
+Message-ID: <20240125090737.49673-1-dmantipov@yandex.ru>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <58970b94a314414402a932576ec54188c0675016.camel@sipsolutions.net>
+References: <58970b94a314414402a932576ec54188c0675016.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -63,46 +64,19 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+Well, the literal approach to "not even use the bitrate mask for scanning"
+may look like the following. It fixes an original WARN_ONCE() as reported
+by syzkaller, but I'm definitely interesting on how to check whether it
+doesn't break something else.
 
-When a wiphy work is queued with timer, and then again
-without a delay, it's started immediately but *also*
-started again after the timer expires. This can lead,
-for example, to warnings in mac80211's offchannel code
-as reported by Jouni. Running the same work twice isn't
-expected, of course. Fix this by deleting the timer at
-this point, when queuing immediately due to delay=0.
+Dmitry Antipov (1):
+  wifi: mac80211: ignore the bitrate mask when scanning
 
-Reported-by: Jouni Malinen <j@w1.fi>
-Cc: stable@vger.kernel.org
-Fixes: a3ee4dc84c4e ("wifi: cfg80211: add a work abstraction with special semantics")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/wireless/core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/net/mac80211.h | 3 +++
+ net/mac80211/rate.c    | 4 +++-
+ net/mac80211/scan.c    | 2 ++
+ 3 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/net/wireless/core.c b/net/wireless/core.c
-index 409d74c57ca0..3fb1b637352a 100644
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -5,7 +5,7 @@
-  * Copyright 2006-2010		Johannes Berg <johannes@sipsolutions.net>
-  * Copyright 2013-2014  Intel Mobile Communications GmbH
-  * Copyright 2015-2017	Intel Deutschland GmbH
-- * Copyright (C) 2018-2023 Intel Corporation
-+ * Copyright (C) 2018-2024 Intel Corporation
-  */
- 
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-@@ -1661,6 +1661,7 @@ void wiphy_delayed_work_queue(struct wiphy *wiphy,
- 			      unsigned long delay)
- {
- 	if (!delay) {
-+		del_timer(&dwork->timer);
- 		wiphy_work_queue(wiphy, &dwork->work);
- 		return;
- 	}
 -- 
 2.43.0
-
 
