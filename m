@@ -1,156 +1,88 @@
-Return-Path: <linux-wireless+bounces-2503-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2504-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D253883CB36
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jan 2024 19:35:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A908A83CB49
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jan 2024 19:40:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72E4C1F22991
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jan 2024 18:35:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC52B1C25DA1
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jan 2024 18:40:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 718D622093;
-	Thu, 25 Jan 2024 18:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9963E13399E;
+	Thu, 25 Jan 2024 18:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="j3Za+b+q"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="hfPIS3KF"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63CAE8472;
-	Thu, 25 Jan 2024 18:33:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453F11BDD6;
+	Thu, 25 Jan 2024 18:40:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706207590; cv=none; b=fXsroKz+GO8iQwclJDIszhf4NaHsJdnNXfmZ9edhgijPU99iwM3MUucX39pKQ/eCtvCEZYqljkZK++12jRYSwtbZpuQhCuaBAQhcyn9i3/h04lkmD3k6poJ301DeTdhmz6/9c7ia70Diuab8t7eGU9XsXPfz3d9KFzBa+mr4HkQ=
+	t=1706208012; cv=none; b=fdohhGciMGH/iFwPkFA+NUIf7erkVjLhTn6OMnOdxD0Mo8+R6iEil7NbEGt5oSG/lWjeP4lEiYkusegYGE5qUpSKEMZvRi1kQpAzK+hA4Qc4bMUdoxvJNtAGQeZxF+u0/kCxWyZBQLgBe6ojN4zyyjmMPJ6RHe2gp76nVFaLiw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706207590; c=relaxed/simple;
-	bh=X9g2XA4NppT+YGuEazcfPB3e27C9le9+RqHSEyar0lo=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
-	 In-Reply-To:Content-Type; b=YeC+c9wP8jjhQ/XDfTrOgMdGh9i2Jz70H5Qk73YxC/kwZ7QUnY/K3N9y/Iq3ZVgwoQlntuDPBU/QVFgVCri2BfV1K47Q0BFTjvtIZVjHdqbYIhoyW/1rApJuJmCyUQIwmv6LffniRxsQZFSAoskd1Vh5pRaCa/r6H26ZOext/ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=j3Za+b+q; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40PHDXfO023662;
-	Thu, 25 Jan 2024 18:32:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:from:to:references
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=rtduzouzzoSoD527t39zRPaWPzfaEpx6N6wuAqAgPs8=; b=j3
-	Za+b+q8t4456lifVUBASJdEz3iCCtBR8P5ySUzru52NhLQgIFR/zOL9MXJXNAwX3
-	o+hOUapPxlliV82lrh3J55o6fTzxIZ7hJ+bdbI+F7cXjuX/M8y4AlSP3lPi39698
-	HaGI/+UnZJM4HEI7YcUyXLYSWTn3lfhCik3209GgKlPGcuqLRpeXYkxVAxvrr5aD
-	tuYCOspsj6jMJrfJ5ZIBdDUS5T93RGVXaVKu9sLuc2scNnvoRXqZJ8FzTli0WWCh
-	OhMvAySAOQvgzv9ZzmoRUBDb8COWI1S+g/epRyagkW03Cm1i18LdMpxPJFYd1bcC
-	QQF2W80F82Cn0ZhAUqZA==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vuqra0wfw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 25 Jan 2024 18:32:55 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40PIWsCq006259
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 25 Jan 2024 18:32:54 GMT
-Received: from [10.110.0.209] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Thu, 25 Jan
- 2024 10:32:53 -0800
-Message-ID: <d49f69f4-7f5c-498f-bb17-a636256d3245@quicinc.com>
-Date: Thu, 25 Jan 2024 10:32:53 -0800
+	s=arc-20240116; t=1706208012; c=relaxed/simple;
+	bh=gPo85dRXsQng8Kc2yz5uMF26Tfq8l5cUAj+CcLKGQZM=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=QCnBBxoHI6wTyCHRsUsLNeIUcL9t8s3f4wW1ygskiLpks78Au9oR8icUptf2zyyuuU1FO/T2CjYoRPTqgPpHLMM5zc/HtcxCkMVhBCnJBMAk5tKm3H6plEGVf9QH9E+x1kE4HN8qPIUU+aARJPJjBcBHUSwHLsdHDG/vHW7/Tpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=hfPIS3KF; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=gPo85dRXsQng8Kc2yz5uMF26Tfq8l5cUAj+CcLKGQZM=;
+	t=1706208010; x=1707417610; b=hfPIS3KFkiZUT6fwHEAiuWt+vuojHboyy34m3+TCnngS5qF
+	NqjFxky9pnTXnj1XLt2QYhr7akZZEKhsY/PPgqLHZiIj4C6ijqt4WgQmA+voWsww4fNUc8/ajkUvH
+	QOHdfKGeHyUntUHTKiCuIuKIqGdeUhsEWWccErN5gcn2azkUgxeh9wHjQFue/7x5J1sTD3037cBBm
+	idCU8VUuhT9Mb4lAePC1yc9Ogx/gXW3FTZ+Jb6E8Bo/BrcVlBD2QhwaZKCzXSCAlTilVyn1nARude
+	uZQEvFEap7Ul3XmhZ32fLV/UNUMcF7GiRQSo8QmrBL2iu04uGf1kQJPwxN6i9uVQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rT4dr-0000000028p-3cQ3;
+	Thu, 25 Jan 2024 19:40:00 +0100
+Message-ID: <008b0c43d963276453f4913da0fb95fb29e5d4ff.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless v2] nl80211/cfg80211: add nla_policy for S1G
+ band
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Jeff Johnson <quic_jjohnson@quicinc.com>, Lin Ma <linma@zju.edu.cn>, 
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com,  linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+  linux-kernel@vger.kernel.org, kvalo@kernel.org
+Date: Thu, 25 Jan 2024 19:39:58 +0100
+In-Reply-To: <d49f69f4-7f5c-498f-bb17-a636256d3245@quicinc.com>
+References: <20240119151201.8670-1-linma@zju.edu.cn>
+	 <9e1db7f3-fd18-4b3b-a912-3cf6efd96fed@quicinc.com>
+	 <590fe2823d934af997c515640733eb8889b0560f.camel@sipsolutions.net>
+	 <d80ae6ae-e1f2-48ef-b18a-29b5ca62e64c@quicinc.com>
+	 <d49f69f4-7f5c-498f-bb17-a636256d3245@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH wireless v2] nl80211/cfg80211: add nla_policy for S1G band
-Content-Language: en-US
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-To: Johannes Berg <johannes@sipsolutions.net>, Lin Ma <linma@zju.edu.cn>,
-        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-        <pabeni@redhat.com>, <linux-wireless@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <kvalo@kernel.org>
-References: <20240119151201.8670-1-linma@zju.edu.cn>
- <9e1db7f3-fd18-4b3b-a912-3cf6efd96fed@quicinc.com>
- <590fe2823d934af997c515640733eb8889b0560f.camel@sipsolutions.net>
- <d80ae6ae-e1f2-48ef-b18a-29b5ca62e64c@quicinc.com>
-In-Reply-To: <d80ae6ae-e1f2-48ef-b18a-29b5ca62e64c@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: IyX4pDl-EWRg6uBFMjQ3k44OVVGgWude
-X-Proofpoint-ORIG-GUID: IyX4pDl-EWRg6uBFMjQ3k44OVVGgWude
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-25_11,2024-01-25_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- adultscore=0 mlxlogscore=999 phishscore=0 lowpriorityscore=0 bulkscore=0
- spamscore=0 malwarescore=0 mlxscore=0 impostorscore=0 suspectscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2401190000 definitions=main-2401250133
+X-malware-bazaar: not-scanned
 
-On 1/22/2024 10:33 AM, Jeff Johnson wrote:
-> On 1/20/2024 12:27 PM, Johannes Berg wrote:
->> On Fri, 2024-01-19 at 15:47 -0800, Jeff Johnson wrote:
->>>> --- a/net/wireless/nl80211.c
->>>> +++ b/net/wireless/nl80211.c
->>>> @@ -911,6 +911,7 @@ nl80211_match_band_rssi_policy[NUM_NL80211_BANDS] = {
->>>>  	[NL80211_BAND_5GHZ] = { .type = NLA_S32 },
->>>>  	[NL80211_BAND_6GHZ] = { .type = NLA_S32 },
->>>>  	[NL80211_BAND_60GHZ] = { .type = NLA_S32 },
->>>> +	[NL80211_BAND_S1GHZ] = { .type = NLA_S32 },
->>>>  	[NL80211_BAND_LC]    = { .type = NLA_S32 },
->>>>  };
->>>>  
->>> something is really suspicious since the NL80211_BAND_* enums are
->>> *value* enums, not attribute ID enums, and hence they should never be
->>> used in an nla_policy.
->>
->> Yeah, that's what it looks like first, but then they do get used
->> anyway...
->>
->>> what is actually using these as attribute IDs, noting that
->>> NL80211_BAND_2GHZ == 0 and hence cannot be used as an attribute ID
->>
->> Ohh. Good catch!
->>
->>> seems the logic that introduced this policy needs to be revisited.
->>>
->>
->> Let's just remove it?
->>
->> commit 1e1b11b6a1111cd9e8af1fd6ccda270a9fa3eacf
->> Author: vamsi krishna <vamsin@codeaurora.org>
->> Date:   Fri Feb 1 18:34:51 2019 +0530
->>
->>     nl80211/cfg80211: Specify band specific min RSSI thresholds with sched scan
->>
->>
->> As far as I can tell nothing is using that in the first place ...
->> Certainly not in the kernel, nor wpa_s, nor anything else I could find
->> really ...
->>
->> We can't completely revert it since we need the attribute number to stay
->> allocated, but that's all we cannot remove.
-> 
-> I'm investigating this and will report back.
+On Thu, 2024-01-25 at 10:32 -0800, Jeff Johnson wrote:
+>=20
+> OK, I have investigated this and based upon the investigation this can
+> be removed (except for keeping the now obsolete uapi bits). This was
+> done in preparation for supporting a new Android interface in the
+> out-of-tree Android driver, but that interface was subsequently
+> withdrawn by Google.
+>=20
+> Johannes, do you want to handle this? Or should I?
 
-OK, I have investigated this and based upon the investigation this can
-be removed (except for keeping the now obsolete uapi bits). This was
-done in preparation for supporting a new Android interface in the
-out-of-tree Android driver, but that interface was subsequently
-withdrawn by Google.
+Would be great if you could send a patch, thanks!
 
-Johannes, do you want to handle this? Or should I?
-
-/jeff
-
-
-
+johannes
 
