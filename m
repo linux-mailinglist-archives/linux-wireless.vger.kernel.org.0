@@ -1,213 +1,179 @@
-Return-Path: <linux-wireless+bounces-2487-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2488-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DBFF83C328
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jan 2024 14:06:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD01083C3F9
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jan 2024 14:45:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F4DA1F2242B
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jan 2024 13:06:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E1CA31C247D3
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jan 2024 13:45:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E616A5914E;
-	Thu, 25 Jan 2024 13:04:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4BE45787E;
+	Thu, 25 Jan 2024 13:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Y2OGx8CP"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SrYilLh/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69A585914C
-	for <linux-wireless@vger.kernel.org>; Thu, 25 Jan 2024 13:04:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AFC956B72
+	for <linux-wireless@vger.kernel.org>; Thu, 25 Jan 2024 13:44:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.55.52.120
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706187878; cv=none; b=LO8P4XqmyzVpjBlukOxnI774jeY0NQPsXpqZUn1RUAvLMaLCzHhm+n64ta6Cw1R04kOgfurd9IPlwSEUMo3w3++xomgu3/eD2lJv2NssankO96uqduXK3tUiGDA+srIPam4KA6EUb2aH1d7bjoe05AekW0JQ64L3+qCpYrSPD+w=
+	t=1706190295; cv=none; b=XCKsWESWWLQEWx9BBee0Zzdqp9DhD1I8M+sP+OQc5vp9bv4ZlO8cnS5WPTZWFfJNsnyuwTh91KQRnVYmpKI5i7xGVApkyTjzITSQR3Z6+y1AYXOYdi5wSZvPxCDFZLppEJkVH/kRGENebuxypqlAPovuI7mOYbtfsW8TgyBUfbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706187878; c=relaxed/simple;
-	bh=PKN/ScPN+W7G/axnFSV5hDvyykhSqYcdI1+p3x6hFk8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=F6g9TwlWjvPJavO96RuLZdBKkPMenUIc/lLJMqlVIG3LxS5QHZf0mjDD8EYOeuZzbXzu0bHWTH+gK0iwDRROZuM+ZIFJRRjyWeejQzqmlIf5IPGdSQH/eJl47oCIjDhHIEbAZts1xmKXWz1/0QYhq6/67AXzeNauivFL4fei2HA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Y2OGx8CP; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40PCXCp5008603;
-	Thu, 25 Jan 2024 13:04:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-transfer-encoding:content-type; s=
-	qcppdkim1; bh=yBCQo6aK3u2uPjVBe+biCRlvr4Vc/MLTAiuWKWglpAc=; b=Y2
-	OGx8CPULZeo1BekjDBUgtWV7Je68o5OGqNzqgQOcUUMkTMAxRieJcTfJ5i+/3CF5
-	aDPWLNNGMfDoxkkdo75qs57Rb23ODX855uA7DwYmgerqGv56HVurPqeWmPdUnO2Z
-	TSKvS8yPHm1TcWACMgW/xw4A/gBcbephAysiJlTIU4A+d4hFv6GWqFxY+MP/VhDv
-	oyzzJTF3MNjapmJffKuR4Df/X0d10rt4ysA0HiyrfiDDobiXPQuxGU4aLeaATbJr
-	GzQfu0NYQOYOqjSSsk6V8pwMbcZClSJ19tsmUxQdzBMkaqX3CLN9bv8v+0ivgy9g
-	LtSiXadlYsLr6ib0Z57w==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vuqra03mw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 25 Jan 2024 13:04:33 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40PD4X6Z020457
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 25 Jan 2024 13:04:33 GMT
-Received: from cdcwlex322514-lin.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Thu, 25 Jan 2024 05:04:31 -0800
-From: Aditya Kumar Singh <quic_adisi@quicinc.com>
-To: <johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>,
-        Aditya Kumar Singh
-	<quic_adisi@quicinc.com>
-Subject: [PATCH v5 3/3] wifi: mac80211: update beacon counters per link basis
-Date: Thu, 25 Jan 2024 18:34:10 +0530
-Message-ID: <20240125130410.827701-4-quic_adisi@quicinc.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240125130410.827701-1-quic_adisi@quicinc.com>
-References: <20240125130410.827701-1-quic_adisi@quicinc.com>
+	s=arc-20240116; t=1706190295; c=relaxed/simple;
+	bh=1IH/66F2o5ZOle40wUE+C0tzRP4hiUvga1BAI9N3Phw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=om62e75f1G/g7nYrF0I3t7uGiGZeUpe7bIdEGOt5ZxthNJRhyojPdda97/LpkR+KbJaRePM8AwJ0IJH3CDBxhbaeg3Xm4jHoF3C5r5/K4msJvM4oMUOfNHGb8hQ2Jt1n1H7q3WIaCdDaukKiggVv7JifDmsdqz/YjyA6b2Y0mLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SrYilLh/; arc=none smtp.client-ip=192.55.52.120
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1706190292; x=1737726292;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=1IH/66F2o5ZOle40wUE+C0tzRP4hiUvga1BAI9N3Phw=;
+  b=SrYilLh/UphHThOp4hxv2EysMGxBlgxBlL0K/hK379QMGMTHt5P9LJ27
+   tKwhmoifUP21sGMTec5oTKnBiT5Q9xM0Fo7aprAhU/Q0Ht+iACsjKP0MC
+   hLpH0o/vI+f2V1+9cZoF90pp88m0achgxUjQOkL0igNavoDi7y2sEkvnW
+   MIWVlWcHtBXYzzowyu0XRcvUDAicr2F78ZQOQoT61M8Bvml+P0nhqI3Sc
+   R+HxB/zwtcl8iZEN8wGSAwhQHOYeuVb2kBqvrSqJkgCmIkPi/6jxpdTRz
+   9u8Fisa/GXsB251XYu3Yxc6Rar7PiDwBa5L0DQnTHDGHchA0jnkulSYFW
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="401014829"
+X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
+   d="scan'208";a="401014829"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jan 2024 05:44:51 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
+   d="scan'208";a="2249625"
+Received: from lkp-server01.sh.intel.com (HELO 370188f8dc87) ([10.239.97.150])
+  by fmviesa005.fm.intel.com with ESMTP; 25 Jan 2024 05:44:50 -0800
+Received: from kbuild by 370188f8dc87 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rT02C-00001f-0d;
+	Thu, 25 Jan 2024 13:44:48 +0000
+Date: Thu, 25 Jan 2024 21:44:47 +0800
+From: kernel test robot <lkp@intel.com>
+To: Aditya Kumar Singh <quic_adisi@quicinc.com>, johannes@sipsolutions.net
+Cc: oe-kbuild-all@lists.linux.dev, linux-wireless@vger.kernel.org,
+	Aditya Kumar Singh <quic_adisi@quicinc.com>
+Subject: Re: [PATCH v4 2/3] wifi: mac80211: add support for AP channel switch
+ with MLO
+Message-ID: <202401252118.VhbB1Yqf-lkp@intel.com>
+References: <20240125055039.826200-3-quic_adisi@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: x38iAiLDIxh3XH4HRBpGluQbAwKAs3Ug
-X-Proofpoint-ORIG-GUID: x38iAiLDIxh3XH4HRBpGluQbAwKAs3Ug
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-25_08,2024-01-25_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- adultscore=0 mlxlogscore=738 phishscore=0 lowpriorityscore=0 bulkscore=0
- spamscore=0 malwarescore=0 mlxscore=0 impostorscore=0 suspectscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2401190000 definitions=main-2401250091
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240125055039.826200-3-quic_adisi@quicinc.com>
 
-Currently, function to update beacon counter uses deflink to fetch
-the beacon and then update the counter. However, with MLO, there is
-a need to update the counter for the beacon in a particular link.
+Hi Aditya,
 
-Add support to use link_id in order to fetch the beacon from a particular
-link data during beacon update counter.
+kernel test robot noticed the following build errors:
 
-Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
----
- drivers/net/wireless/ath/ath10k/mac.c             |  2 +-
- drivers/net/wireless/ath/ath11k/mac.c             |  2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c |  2 +-
- include/net/mac80211.h                            |  4 +++-
- net/mac80211/tx.c                                 | 14 +++++++++++---
- 5 files changed, 17 insertions(+), 7 deletions(-)
+[auto build test ERROR on acf868ff60b1cd1f2e597f0b15aee2ff43f9fcd3]
 
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index 07c5c51ff7b2..8847cfc6030e 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -2035,7 +2035,7 @@ static void ath10k_mac_vif_ap_csa_count_down(struct ath10k_vif *arvif)
- 		return;
- 
- 	if (!ieee80211_beacon_cntdwn_is_complete(vif)) {
--		ieee80211_beacon_update_cntdwn(vif);
-+		ieee80211_beacon_update_cntdwn(vif, 0);
- 
- 		ret = ath10k_mac_setup_bcn_tmpl(arvif);
- 		if (ret)
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index db241589424d..74e114140343 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -1589,7 +1589,7 @@ void ath11k_mac_bcn_tx_event(struct ath11k_vif *arvif)
- 	arvif->bcca_zero_sent = false;
- 
- 	if (vif->bss_conf.color_change_active)
--		ieee80211_beacon_update_cntdwn(vif);
-+		ieee80211_beacon_update_cntdwn(vif, 0);
- 	ath11k_mac_setup_bcn_tmpl(arvif);
- }
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-index 3b6819f75430..57a94ffb12d7 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-@@ -1467,7 +1467,7 @@ static void iwl_mvm_csa_count_down(struct iwl_mvm *mvm,
- 	mvmvif->csa_countdown = true;
- 
- 	if (!ieee80211_beacon_cntdwn_is_complete(csa_vif)) {
--		int c = ieee80211_beacon_update_cntdwn(csa_vif);
-+		int c = ieee80211_beacon_update_cntdwn(csa_vif, 0);
- 
- 		iwl_mvm_mac_ctxt_beacon_changed(mvm, csa_vif,
- 						&csa_vif->bss_conf);
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 850053ed2366..d8e2b5efbba9 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -5455,6 +5455,7 @@ static inline struct sk_buff *ieee80211_beacon_get(struct ieee80211_hw *hw,
- /**
-  * ieee80211_beacon_update_cntdwn - request mac80211 to decrement the beacon countdown
-  * @vif: &struct ieee80211_vif pointer from the add_interface callback.
-+ * @link_id: valid link_id during MLO or 0 for non-MLO
-  *
-  * The beacon counter should be updated after each beacon transmission.
-  * This function is called implicitly when
-@@ -5464,7 +5465,8 @@ static inline struct sk_buff *ieee80211_beacon_get(struct ieee80211_hw *hw,
-  *
-  * Return: new countdown value
-  */
--u8 ieee80211_beacon_update_cntdwn(struct ieee80211_vif *vif);
-+u8 ieee80211_beacon_update_cntdwn(struct ieee80211_vif *vif,
-+				  unsigned int link_id);
- 
- /**
-  * ieee80211_beacon_set_cntdwn - request mac80211 to set beacon countdown
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 314998fdb1a5..aab3fd9895fe 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -5030,16 +5030,24 @@ static u8 __ieee80211_beacon_update_cntdwn(struct beacon_data *beacon)
- 	return beacon->cntdwn_current_counter;
- }
- 
--u8 ieee80211_beacon_update_cntdwn(struct ieee80211_vif *vif)
-+u8 ieee80211_beacon_update_cntdwn(struct ieee80211_vif *vif, unsigned int link_id)
- {
- 	struct ieee80211_sub_if_data *sdata = vif_to_sdata(vif);
-+	struct ieee80211_link_data *link;
- 	struct beacon_data *beacon = NULL;
- 	u8 count = 0;
- 
-+	if (WARN_ON(link_id > IEEE80211_MLD_MAX_NUM_LINKS))
-+		return 0;
-+
- 	rcu_read_lock();
- 
-+	link = rcu_dereference(sdata->link[link_id]);
-+	if (!link)
-+		goto unlock;
-+
- 	if (sdata->vif.type == NL80211_IFTYPE_AP)
--		beacon = rcu_dereference(sdata->deflink.u.ap.beacon);
-+		beacon = rcu_dereference(link->u.ap.beacon);
- 	else if (sdata->vif.type == NL80211_IFTYPE_ADHOC)
- 		beacon = rcu_dereference(sdata->u.ibss.presp);
- 	else if (ieee80211_vif_is_mesh(&sdata->vif))
-@@ -5280,7 +5288,7 @@ ieee80211_beacon_get_ap(struct ieee80211_hw *hw,
- 
- 	if (beacon->cntdwn_counter_offsets[0]) {
- 		if (!is_template)
--			ieee80211_beacon_update_cntdwn(vif);
-+			ieee80211_beacon_update_cntdwn(vif, link->link_id);
- 
- 		ieee80211_set_beacon_cntdwn(sdata, beacon, link);
- 	}
+url:    https://github.com/intel-lab-lkp/linux/commits/Aditya-Kumar-Singh/wifi-cfg80211-send-link-id-in-channel_switch-ops/20240125-135353
+base:   acf868ff60b1cd1f2e597f0b15aee2ff43f9fcd3
+patch link:    https://lore.kernel.org/r/20240125055039.826200-3-quic_adisi%40quicinc.com
+patch subject: [PATCH v4 2/3] wifi: mac80211: add support for AP channel switch with MLO
+config: alpha-allyesconfig (https://download.01.org/0day-ci/archive/20240125/202401252118.VhbB1Yqf-lkp@intel.com/config)
+compiler: alpha-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240125/202401252118.VhbB1Yqf-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202401252118.VhbB1Yqf-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/net/wireless/marvell/mwifiex/cfg80211.c:4260:27: error: initialization of 'int (*)(struct wiphy *, struct net_device *, struct cfg80211_csa_settings *)' from incompatible pointer type 'int (*)(struct wiphy *, struct net_device *, struct cfg80211_csa_settings *, unsigned int)' [-Werror=incompatible-pointer-types]
+    4260 |         .channel_switch = mwifiex_cfg80211_channel_switch,
+         |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/net/wireless/marvell/mwifiex/cfg80211.c:4260:27: note: (near initialization for 'mwifiex_cfg80211_ops.channel_switch')
+   cc1: some warnings being treated as errors
+--
+   drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c: In function 'rtl8xxxu_update_beacon_work_callback':
+>> drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c:5740:25: error: too few arguments to function 'ieee80211_csa_finish'
+    5740 |                         ieee80211_csa_finish(vif);
+         |                         ^~~~~~~~~~~~~~~~~~~~
+   In file included from drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c:31:
+   include/net/mac80211.h:5491:6: note: declared here
+    5491 | void ieee80211_csa_finish(struct ieee80211_vif *vif, unsigned int link_id);
+         |      ^~~~~~~~~~~~~~~~~~~~
+
+
+vim +4260 drivers/net/wireless/marvell/mwifiex/cfg80211.c
+
+1f4dfd8a1e911c drivers/net/wireless/mwifiex/cfg80211.c         Avinash Patil            2014-02-07  4207  
+5e6e3a92b9a4c9 drivers/net/wireless/mwifiex/cfg80211.c         Bing Zhao                2011-03-21  4208  /* station cfg80211 operations */
+5e6e3a92b9a4c9 drivers/net/wireless/mwifiex/cfg80211.c         Bing Zhao                2011-03-21  4209  static struct cfg80211_ops mwifiex_cfg80211_ops = {
+93a1df48d22429 drivers/net/wireless/mwifiex/cfg80211.c         Yogesh Ashok Powar       2011-09-26  4210  	.add_virtual_intf = mwifiex_add_virtual_intf,
+93a1df48d22429 drivers/net/wireless/mwifiex/cfg80211.c         Yogesh Ashok Powar       2011-09-26  4211  	.del_virtual_intf = mwifiex_del_virtual_intf,
+5e6e3a92b9a4c9 drivers/net/wireless/mwifiex/cfg80211.c         Bing Zhao                2011-03-21  4212  	.change_virtual_intf = mwifiex_cfg80211_change_virtual_intf,
+5e6e3a92b9a4c9 drivers/net/wireless/mwifiex/cfg80211.c         Bing Zhao                2011-03-21  4213  	.scan = mwifiex_cfg80211_scan,
+5e6e3a92b9a4c9 drivers/net/wireless/mwifiex/cfg80211.c         Bing Zhao                2011-03-21  4214  	.connect = mwifiex_cfg80211_connect,
+5e6e3a92b9a4c9 drivers/net/wireless/mwifiex/cfg80211.c         Bing Zhao                2011-03-21  4215  	.disconnect = mwifiex_cfg80211_disconnect,
+5e6e3a92b9a4c9 drivers/net/wireless/mwifiex/cfg80211.c         Bing Zhao                2011-03-21  4216  	.get_station = mwifiex_cfg80211_get_station,
+f85aae6bec6707 drivers/net/wireless/mwifiex/cfg80211.c         Amitkumar Karwar         2012-03-15  4217  	.dump_station = mwifiex_cfg80211_dump_station,
+6bc6c49f1e2f3a drivers/net/wireless/mwifiex/cfg80211.c         Xinming Hu               2014-10-31  4218  	.dump_survey = mwifiex_cfg80211_dump_survey,
+5e6e3a92b9a4c9 drivers/net/wireless/mwifiex/cfg80211.c         Bing Zhao                2011-03-21  4219  	.set_wiphy_params = mwifiex_cfg80211_set_wiphy_params,
+5e6e3a92b9a4c9 drivers/net/wireless/mwifiex/cfg80211.c         Bing Zhao                2011-03-21  4220  	.join_ibss = mwifiex_cfg80211_join_ibss,
+5e6e3a92b9a4c9 drivers/net/wireless/mwifiex/cfg80211.c         Bing Zhao                2011-03-21  4221  	.leave_ibss = mwifiex_cfg80211_leave_ibss,
+5e6e3a92b9a4c9 drivers/net/wireless/mwifiex/cfg80211.c         Bing Zhao                2011-03-21  4222  	.add_key = mwifiex_cfg80211_add_key,
+5e6e3a92b9a4c9 drivers/net/wireless/mwifiex/cfg80211.c         Bing Zhao                2011-03-21  4223  	.del_key = mwifiex_cfg80211_del_key,
+89951db2be5310 drivers/net/wireless/marvell/mwifiex/cfg80211.c Ganapathi Bhat           2016-09-20  4224  	.set_default_mgmt_key = mwifiex_cfg80211_set_default_mgmt_key,
+e39faa73ef14f6 drivers/net/wireless/mwifiex/cfg80211.c         Stone Piao               2012-09-25  4225  	.mgmt_tx = mwifiex_cfg80211_mgmt_tx,
+6cd536fe62ef58 drivers/net/wireless/marvell/mwifiex/cfg80211.c Johannes Berg            2020-04-17  4226  	.update_mgmt_frame_registrations =
+6cd536fe62ef58 drivers/net/wireless/marvell/mwifiex/cfg80211.c Johannes Berg            2020-04-17  4227  		mwifiex_cfg80211_update_mgmt_frame_registrations,
+7feb4c48313d58 drivers/net/wireless/mwifiex/cfg80211.c         Stone Piao               2012-09-25  4228  	.remain_on_channel = mwifiex_cfg80211_remain_on_channel,
+7feb4c48313d58 drivers/net/wireless/mwifiex/cfg80211.c         Stone Piao               2012-09-25  4229  	.cancel_remain_on_channel = mwifiex_cfg80211_cancel_remain_on_channel,
+5e6e3a92b9a4c9 drivers/net/wireless/mwifiex/cfg80211.c         Bing Zhao                2011-03-21  4230  	.set_default_key = mwifiex_cfg80211_set_default_key,
+5e6e3a92b9a4c9 drivers/net/wireless/mwifiex/cfg80211.c         Bing Zhao                2011-03-21  4231  	.set_power_mgmt = mwifiex_cfg80211_set_power_mgmt,
+5e6e3a92b9a4c9 drivers/net/wireless/mwifiex/cfg80211.c         Bing Zhao                2011-03-21  4232  	.set_tx_power = mwifiex_cfg80211_set_tx_power,
+7d54bacadce17f drivers/net/wireless/marvell/mwifiex/cfg80211.c Javier Martinez Canillas 2016-06-06  4233  	.get_tx_power = mwifiex_cfg80211_get_tx_power,
+5d82c53a380ca9 drivers/net/wireless/mwifiex/cfg80211.c         Yogesh Ashok Powar       2011-07-11  4234  	.set_bitrate_mask = mwifiex_cfg80211_set_bitrate_mask,
+12190c5d80bd3c drivers/net/wireless/mwifiex/cfg80211.c         Avinash Patil            2012-05-08  4235  	.start_ap = mwifiex_cfg80211_start_ap,
+12190c5d80bd3c drivers/net/wireless/mwifiex/cfg80211.c         Avinash Patil            2012-05-08  4236  	.stop_ap = mwifiex_cfg80211_stop_ap,
+5370c83684d9e7 drivers/net/wireless/mwifiex/cfg80211.c         Avinash Patil            2012-06-28  4237  	.change_beacon = mwifiex_cfg80211_change_beacon,
+fa444bf88ce2ba drivers/net/wireless/mwifiex/cfg80211.c         Amitkumar Karwar         2012-03-15  4238  	.set_cqm_rssi_config = mwifiex_cfg80211_set_cqm_rssi_config,
+8a279d5b4dc128 drivers/net/wireless/mwifiex/cfg80211.c         Amitkumar Karwar         2012-07-02  4239  	.set_antenna = mwifiex_cfg80211_set_antenna,
+3ee712857958c2 drivers/net/wireless/marvell/mwifiex/cfg80211.c Shengzhen Li             2016-06-06  4240  	.get_antenna = mwifiex_cfg80211_get_antenna,
+0f9e9b8ba72bc7 drivers/net/wireless/mwifiex/cfg80211.c         Avinash Patil            2013-05-17  4241  	.del_station = mwifiex_cfg80211_del_station,
+0c9b7f22e8e1f3 drivers/net/wireless/marvell/mwifiex/cfg80211.c Xinming Hu               2016-01-13  4242  	.sched_scan_start = mwifiex_cfg80211_sched_scan_start,
+0c9b7f22e8e1f3 drivers/net/wireless/marvell/mwifiex/cfg80211.c Xinming Hu               2016-01-13  4243  	.sched_scan_stop = mwifiex_cfg80211_sched_scan_stop,
+7da060c1c01b10 drivers/net/wireless/mwifiex/cfg80211.c         Amitkumar Karwar         2013-03-04  4244  #ifdef CONFIG_PM
+7da060c1c01b10 drivers/net/wireless/mwifiex/cfg80211.c         Amitkumar Karwar         2013-03-04  4245  	.suspend = mwifiex_cfg80211_suspend,
+7da060c1c01b10 drivers/net/wireless/mwifiex/cfg80211.c         Amitkumar Karwar         2013-03-04  4246  	.resume = mwifiex_cfg80211_resume,
+7da060c1c01b10 drivers/net/wireless/mwifiex/cfg80211.c         Amitkumar Karwar         2013-03-04  4247  	.set_wakeup = mwifiex_cfg80211_set_wakeup,
+f6b1cbe029f682 drivers/net/wireless/marvell/mwifiex/cfg80211.c Ganapathi Bhat           2016-04-05  4248  	.set_rekey_data = mwifiex_set_rekey_data,
+7da060c1c01b10 drivers/net/wireless/mwifiex/cfg80211.c         Amitkumar Karwar         2013-03-04  4249  #endif
+d1e2586f484dfc drivers/net/wireless/mwifiex/cfg80211.c         Bing Zhao                2013-08-09  4250  	.set_coalesce = mwifiex_cfg80211_set_coalesce,
+b23bce29656801 drivers/net/wireless/mwifiex/cfg80211.c         Avinash Patil            2014-02-07  4251  	.tdls_mgmt = mwifiex_cfg80211_tdls_mgmt,
+429d90d2212b56 drivers/net/wireless/mwifiex/cfg80211.c         Avinash Patil            2014-02-07  4252  	.tdls_oper = mwifiex_cfg80211_tdls_oper,
+b04975970676d7 drivers/net/wireless/mwifiex/cfg80211.c         Xinming Hu               2015-06-22  4253  	.tdls_channel_switch = mwifiex_cfg80211_tdls_chan_switch,
+b04975970676d7 drivers/net/wireless/mwifiex/cfg80211.c         Xinming Hu               2015-06-22  4254  	.tdls_cancel_channel_switch = mwifiex_cfg80211_tdls_cancel_chan_switch,
+e48e0de0053f07 drivers/net/wireless/mwifiex/cfg80211.c         Avinash Patil            2014-02-07  4255  	.add_station = mwifiex_cfg80211_add_station,
+1f4dfd8a1e911c drivers/net/wireless/mwifiex/cfg80211.c         Avinash Patil            2014-02-07  4256  	.change_station = mwifiex_cfg80211_change_station,
+3935ccc14d2c68 drivers/net/wireless/marvell/mwifiex/cfg80211.c Xinming Hu               2016-09-02  4257  	CFG80211_TESTMODE_CMD(mwifiex_tm_cmd)
+7ee38bf4edeac8 drivers/net/wireless/mwifiex/cfg80211.c         Xinming Hu               2015-06-03  4258  	.get_channel = mwifiex_cfg80211_get_channel,
+85afb18621be39 drivers/net/wireless/mwifiex/cfg80211.c         Avinash Patil            2015-01-28  4259  	.start_radar_detection = mwifiex_cfg80211_start_radar_detection,
+7d652034d1a08b drivers/net/wireless/mwifiex/cfg80211.c         Avinash Patil            2015-01-28 @4260  	.channel_switch = mwifiex_cfg80211_channel_switch,
+5e6e3a92b9a4c9 drivers/net/wireless/mwifiex/cfg80211.c         Bing Zhao                2011-03-21  4261  };
+5e6e3a92b9a4c9 drivers/net/wireless/mwifiex/cfg80211.c         Bing Zhao                2011-03-21  4262  
+
 -- 
-2.25.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
