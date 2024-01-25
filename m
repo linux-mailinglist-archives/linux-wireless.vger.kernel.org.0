@@ -1,149 +1,148 @@
-Return-Path: <linux-wireless+bounces-2492-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2493-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA6E383C50E
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jan 2024 15:44:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35C9F83C723
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jan 2024 16:46:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 091B11C222B5
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jan 2024 14:44:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB831B230CC
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jan 2024 15:46:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DA6663413;
-	Thu, 25 Jan 2024 14:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64309745E3;
+	Thu, 25 Jan 2024 15:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FeYDH+SK"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="O1k3K4k0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A5605DF32
-	for <linux-wireless@vger.kernel.org>; Thu, 25 Jan 2024 14:44:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7B173172
+	for <linux-wireless@vger.kernel.org>; Thu, 25 Jan 2024 15:46:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706193890; cv=none; b=hoSyUGzSUGSMr56SRqTl9zcnvVaoFhHBFa1qJP8NQXO7phALiUXoY+G1HaIkaZDlrcq+c8PA+BlQqphuH7LhfYEY5UDaKM0xkHfjW1nEsc4FnwN6zSjR98UzoAqt14SZFttZ8JK5NAD3yRqKDpK2qZjbEQ1m/UtDkJpCY4kcbKA=
+	t=1706197577; cv=none; b=DZFEA2lryb9xYve3arq0mhNGTbk+xXTQ3ztjQWa1s20wRjAz+jrX0Pw0I8Q+mGJCjcEKNd/OjPmJIT8WFTE4Th5KSs95RmBRLjVk7tZyFOIKfB8axIgiDMQkTn0rI75iTLzz6Pyr3qPp+nPkppH2H+xo4hvtuzqEvI2di5O+4kE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706193890; c=relaxed/simple;
-	bh=BL3lUnsRqGCbUnIu/uOKwxG8uQe+l2907he7WcNy65Q=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=lARmh+XCdDiwJoGrGXcG0onsme4R5aG/DH5K62ezP8H2vTM4o06TKejNJUM8cD+6yaoOqTOKeJnX1K/Rxr6aBhknp+MuWbrf+WNr04oRw/kA6SH8uck4jqfa7ixBvpxhucPSqxr5bAg5wGtxBwhlknJprgC+SC+6skevhb0KT3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FeYDH+SK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2C5CC433F1;
-	Thu, 25 Jan 2024 14:44:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706193889;
-	bh=BL3lUnsRqGCbUnIu/uOKwxG8uQe+l2907he7WcNy65Q=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=FeYDH+SKaC9jBPyQELTIBCbfyPETkmzHRmX+zqQjRRILV6i0NeoCrJoz+2kKouE96
-	 wM9OIa2YKBzpd8UnQHcftwFJEDuIWVyRzU3i8tfReuFMBJgFubznbqHEm2vWU7hucK
-	 Ioo2GjiOZIwtSWmAo8gxPrWvSb2oKub4Zlr3doeGq9ThwCj17Vd2FgxaM2gmi4t4Tr
-	 wRjBGjgyyDtRu6Qls24OxUzR3svZ72s4ak0ZICFYFzBHUwDojyk/b2DxT6Fc6BUmua
-	 mCNZnWxMHMwpsjtS4a8AdZkmU0yvvIdoXW7yl37v9lZ1XoMTZKkZfuMeJAH/vjsYB1
-	 Ep/NXEVEjJFpw==
-From: Kalle Valo <kvalo@kernel.org>
-To: Kang Yang <quic_kangyang@quicinc.com>
-Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v3 00/10] wifi: ath12k: P2P support for WCN7850
-References: <20240122113904.8938-1-quic_kangyang@quicinc.com>
-Date: Thu, 25 Jan 2024 16:44:46 +0200
-In-Reply-To: <20240122113904.8938-1-quic_kangyang@quicinc.com> (Kang Yang's
-	message of "Mon, 22 Jan 2024 19:38:54 +0800")
-Message-ID: <87cytp1nhd.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1706197577; c=relaxed/simple;
+	bh=tzr1XAVkWoFo3oMkLGDpPFVojpVl4rRw4OIzMbOKWco=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=N1akZ3D37XsmyLC0p+FVKtqsfdxhIYFmPb3k0xroNv3S+WU7oY/u+dg/nX9joVqA5zk9NZzCZcZaop1gvYFPLzYQdgvCjTNxDhtrZyInS9tOQanyPBFkzqeD7yWzWRjmN/Sf9f3kSqT3ORsFH8HBY35Bb+P16YIQ98JlVH3M6HM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=O1k3K4k0; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40PFMQ1c012220;
+	Thu, 25 Jan 2024 15:46:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=qcppdkim1; bh=Ks6Iax1
+	tA8eDScykeIVZcNkgq/56DU0tTG3QuDRsi3I=; b=O1k3K4k0i7Sa91909fRuJwn
+	pVBJ/nhSRzbmz4YdegDE8bnD978U/i0WMPmZVeu7+xZP0pcm/rWWKoyKScXY9vmI
+	rDEKtHVJZ8dLcicKy1kNwbWrTlKJogCWE8NqNKCPYWJb7HD+pR5xmJ8H27g4kiox
+	DbE7kpW0UIraHWgHUhgkZbdpIupRPXu3XO1U9emZIUGiGqDqjPIncfmUXInPVBT7
+	kS/maMccBRjmoD+7GDFjRSCvUhJcfpeFdYt1RR8FnW1ks1kYp8JcJaJOGowX7+Gu
+	xIIAYDQbrwrrSXZliu/8MN/9E9FFRveW8GfpMfXBw7P//iOubsDvpaBg5jaUBww=
+	=
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vufwx9qse-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 25 Jan 2024 15:46:10 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40PFkAFN027323
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 25 Jan 2024 15:46:10 GMT
+Received: from hu-periyasa-blr.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Thu, 25 Jan 2024 07:46:08 -0800
+From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Karthikeyan Periyasamy
+	<quic_periyasa@quicinc.com>
+Subject: [PATCH] wifi: ath12k: refactor the rfkill worker
+Date: Thu, 25 Jan 2024 21:15:55 +0530
+Message-ID: <20240125154555.3169706-1-quic_periyasa@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: mR6nFt28bMaJvQANtX2zVh10--HCA8py
+X-Proofpoint-ORIG-GUID: mR6nFt28bMaJvQANtX2zVh10--HCA8py
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-25_09,2024-01-25_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
+ priorityscore=1501 suspectscore=0 adultscore=0 spamscore=0 clxscore=1015
+ mlxlogscore=782 impostorscore=0 lowpriorityscore=0 mlxscore=0
+ malwarescore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2401190000 definitions=main-2401250111
 
-Kang Yang <quic_kangyang@quicinc.com> writes:
+Currently, the rfkill worker handler access mac80211 HW from the radio/link
+structure. This is will be incorrect for single wiphy model, as they will
+hold multiple link/radio structures. To fix this, access mac80211 HW based
+on the number of hardware in the SoC/chip. This approach makes the rfkill
+worker handler compatible with both multi wiphy and single wiphy models.
 
-> Add P2P support for WCN7850.
->
-> Kang Yang (10):
->   wifi: ath12k: change interface combination for P2P mode
->   wifi: ath12k: add P2P IE in beacon template
->   wifi: ath12k: implement handling of P2P NoA event
->   wifi: ath12k: implement remain on channel for P2P mode
->   wifi: ath12k: change WLAN_SCAN_PARAMS_MAX_IE_LEN from 256 to 512
->   wifi: ath12k: allow specific mgmt frame tx while vdev is not up
->   wifi: ath12k: fix broken structure wmi_vdev_create_cmd
->   wifi: ath12k: move peer delete after vdev stop of station for WCN7850
->   wifi: ath12k: designating channel frequency for ROC scan
->   wifi: ath12k: advertise P2P dev support for WCN7850
->
-> v3: rebase on new ath-tag, use ath12k_ah_to_ar() get ar(Karthikeyan).
-> v2:
->     1. add Tested-on tag of QCN9274.
->     2. update copyright in patch #1, #2, #4 and #10.
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
 
-I have not been able to run any p2p tests yet but during rmmod with
-WCN7850 I now see:
+Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+---
+ drivers/net/wireless/ath/ath12k/core.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-[  136.260660] ------------[ cut here ]------------
-[  136.260909] UBSAN: shift-out-of-bounds in drivers/net/wireless/ath/ath12k/mac.c:6005:38
-[  136.261008] shift exponent 255 is too large for 64-bit type 'long long int'
-[  136.261096] CPU: 1 PID: 1993 Comm: rmmod Not tainted 6.8.0-rc1-wt-ath+ #1262
-[  136.261180] Hardware name: Intel(R) Client Systems NUC8i7HVK/NUC8i7HVB, BIOS HNKBLi70.86A.0067.2021.0528.1339 05/28/2021
-[  136.261261] Call Trace:
-[  136.261343]  <TASK>
-[  136.261427]  dump_stack_lvl+0x82/0xc0
-[  136.261513]  dump_stack+0x10/0x20
-[  136.261597]  __ubsan_handle_shift_out_of_bounds+0x13f/0x300
-[  136.261711]  ath12k_mac_op_remove_interface.cold+0x17/0x86 [ath12k]
-[  136.261941]  drv_remove_interface+0x215/0x4a0 [mac80211]
-[  136.262102]  ieee80211_do_stop+0xfe4/0x2390 [mac80211]
-[  136.262258]  ? trace_contention_end+0xe2/0x110
-[  136.262359]  ? ieee80211_del_virtual_monitor+0x60/0x60 [mac80211]
-[  136.262507]  ? mutex_lock_io_nested+0x1260/0x1260
-[  136.262610]  ? debug_smp_processor_id+0x17/0x20
-[  136.262702]  ? trace_contention_end+0xe2/0x110
-[  136.262792]  ieee80211_sdata_stop+0x4d/0x70 [mac80211]
-[  136.262961]  ieee80211_stop_p2p_device+0xd/0x10 [mac80211]
-[  136.263127]  cfg80211_stop_p2p_device+0x18e/0x580 [cfg80211]
-[  136.263282]  cfg80211_shutdown_all_interfaces+0x10c/0x190 [cfg80211]
-[  136.263434]  ieee80211_remove_interfaces+0xc7/0x8f0 [mac80211]
-[  136.263611]  ? __wait_for_common+0x42f/0x6d0
-[  136.263702]  ? ieee80211_sdata_stop+0x70/0x70 [mac80211]
-[  136.263881]  ieee80211_unregister_hw+0x4f/0x380 [mac80211]
-[  136.264045]  ath12k_mac_hw_unregister+0x7a/0x250 [ath12k]
-[  136.264155]  ath12k_mac_unregister+0x7f/0xc0 [ath12k]
-[  136.264265]  ath12k_core_deinit+0x2e/0x130 [ath12k]
-[  136.264372]  ath12k_pci_remove+0xad/0x1a0 [ath12k]
-[  136.264478]  pci_device_remove+0x93/0x1b0
-[  136.264567]  device_remove+0xbf/0x150
-[  136.264662]  device_release_driver_internal+0x3c3/0x580
-[  136.264746]  ? __kasan_check_read+0x11/0x20
-[  136.264836]  driver_detach+0xc4/0x190
-[  136.264924]  bus_remove_driver+0x130/0x2a0
-[  136.265012]  driver_unregister+0x68/0x90
-[  136.265095]  pci_unregister_driver+0x24/0x240
-[  136.265177]  ? find_module_all+0x13e/0x1c0
-[  136.265267]  ath12k_pci_exit+0x10/0x20 [ath12k]
-[  136.265372]  __do_sys_delete_module+0x32d/0x540
-[  136.265454]  ? module_flags+0x300/0x300
-[  136.265708]  ? kmem_cache_free+0xea/0x3a0
-[  136.265795]  ? __fput+0x404/0xa50
-[  136.265887]  ? debug_smp_processor_id+0x17/0x20
-[  136.265983]  __x64_sys_delete_module+0x4f/0x70
-[  136.266064]  do_syscall_64+0x66/0x130
-[  136.266149]  entry_SYSCALL_64_after_hwframe+0x46/0x4e
-[  136.266256] RIP: 0033:0x7efe74591c8b
-[  136.266347] Code: 73 01 c3 48 8b 0d 05 c2 0c 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa b8 b0 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d d5 c1 0c 00 f7 d8 64 89 01 48
-[  136.266435] RSP: 002b:00007ffea9c34cb8 EFLAGS: 00000206 ORIG_RAX: 00000000000000b0
-[  136.266550] RAX: ffffffffffffffda RBX: 000055db95b4c7e0 RCX: 00007efe74591c8b
-[  136.266679] RDX: 000000000000000a RSI: 0000000000000800 RDI: 000055db95b4c848
-[  136.266808] RBP: 00007ffea9c34d18 R08: 0000000000000000 R09: 0000000000000000
-[  136.266934] R10: 00007efe7460dac0 R11: 0000000000000206 R12: 00007ffea9c34ef0
-[  136.267062] R13: 00007ffea9c36ebf R14: 000055db95b4b2a0 R15: 000055db95b4c7e0
-[  136.267221]  </TASK>
-[  136.267390] ---[ end trace ]---
+diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
+index 1baad3302157..f27a6ec3a394 100644
+--- a/drivers/net/wireless/ath/ath12k/core.c
++++ b/drivers/net/wireless/ath/ath12k/core.c
+@@ -879,21 +879,29 @@ static void ath12k_rfkill_work(struct work_struct *work)
+ {
+ 	struct ath12k_base *ab = container_of(work, struct ath12k_base, rfkill_work);
+ 	struct ath12k *ar;
++	struct ath12k_hw *ah;
+ 	struct ieee80211_hw *hw;
+ 	bool rfkill_radio_on;
+-	int i;
++	int i, j;
+ 
+ 	spin_lock_bh(&ab->base_lock);
+ 	rfkill_radio_on = ab->rfkill_radio_on;
+ 	spin_unlock_bh(&ab->base_lock);
+ 
+-	for (i = 0; i < ab->num_radios; i++) {
+-		ar = ab->pdevs[i].ar;
+-		if (!ar)
++	for (i = 0; i < ab->num_hw; i++) {
++		ah = ab->ah[i];
++		if (!ah)
+ 			continue;
+ 
+-		hw = ath12k_ar_to_hw(ar);
+-		ath12k_mac_rfkill_enable_radio(ar, rfkill_radio_on);
++		for (j = 0; j < ah->num_radio; j++) {
++			ar = &ah->radio[j];
++			if (!ar)
++				continue;
++
++			ath12k_mac_rfkill_enable_radio(ar, rfkill_radio_on);
++		}
++
++		hw = ah->hw;
+ 		wiphy_rfkill_set_hw_state(hw->wiphy, !rfkill_radio_on);
+ 	}
+ }
 
+base-commit: 64d1dfa649b8d8f2980f95dbded4bcb6210ad073
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.34.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
