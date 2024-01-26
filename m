@@ -1,54 +1,54 @@
-Return-Path: <linux-wireless+bounces-2518-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2519-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9DC983D4C9
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jan 2024 09:41:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 524CC83D488
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jan 2024 08:54:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3C131F23BE5
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jan 2024 08:41:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09AA7285202
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jan 2024 07:54:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8222B1CF9C;
-	Fri, 26 Jan 2024 06:34:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 516661CFB4;
+	Fri, 26 Jan 2024 06:34:52 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4B091CF8D
-	for <linux-wireless@vger.kernel.org>; Fri, 26 Jan 2024 06:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEBB81CF8D
+	for <linux-wireless@vger.kernel.org>; Fri, 26 Jan 2024 06:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706250887; cv=none; b=jDwwVDHwZugowMfLgceLLYoUEDziuDcpgiBekUsROy+q+FSHneDhVx9sJxtivyglZvC/Ad5jONBcM3nVmqz9TpIR11vlCXlK/oINCO4VLPsWKYIkUGdqNieCL6k9cSS8Mwxp0qhpX4gwBcW1XYtXjTatVSSTo4E5rKWpV6AubvM=
+	t=1706250892; cv=none; b=iZVFUQ0qvXRjM9THLue5kb2dfDJI1bs+/IUgUN50+sYbgk6EjEUa3qYti+egLH66L/DV2VNMJo1eyV0keQZLi/GsiPwLb1hjXRWu05rJAX0XwFk4b36TsRL0m/upXvyMz+e9wvOticGvPJbl7yuwVmDR6TEKzfkPHGOGC0E4aZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706250887; c=relaxed/simple;
-	bh=QQz8rPyxhKzIuAc5iUTeVfbx+huK5RVB9mubD0SovCo=;
+	s=arc-20240116; t=1706250892; c=relaxed/simple;
+	bh=X1qUYcaN/gsALpVhKWZEt8wF1moOD57JbntodFey4KY=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nYTpBdYaGvO0epK7nmbc8ijNVlhgcyAQjGEq3l0oy+Qw4d34Py6L7/ry/1TOM3N+Ssa7XaMvpJy8Jm/0ZWQIAi7L3wHxlH+BgoV9P3Lw31XHeoTk8P64ScsiT9GqQ370jZH841qPisFb6Bnt3XFSElopFNU0R2To9bCGv5mipNk=
+	 MIME-Version:Content-Type; b=m+SsHB24VzOR8+oROYjzY14uKoDZ2fpXvKvz2Q5BM+JUyBTB+p2/yCk7omtdJ8t0v+nXrOQVkrJ8Sdcw6dZwRcjko+peUXZ/Ql0tRDOtvSr94q/17fqo1HhoFBMx9k4fzgXJB40RT7nEJySag2mOKoz7QGp9OoNnMSw/fcdqftA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 40Q6YcfjE2085608, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 40Q6YcfjE2085608
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 40Q6Yh4B22085611, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 40Q6Yh4B22085611
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 26 Jan 2024 14:34:38 +0800
+	Fri, 26 Jan 2024 14:34:43 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2375.32; Fri, 26 Jan 2024 14:34:39 +0800
+ 15.1.2507.17; Fri, 26 Jan 2024 14:34:43 +0800
 Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 26 Jan
- 2024 14:34:38 +0800
+ 2024 14:34:42 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <kvalo@kernel.org>
 CC: <timlee@realtek.com>, <phhuang@realtek.com>,
         <linux-wireless@vger.kernel.org>
-Subject: [PATCH 3/7] wifi: rtw89: prepare scan leaf functions for wifi 7 ICs
-Date: Fri, 26 Jan 2024 14:33:52 +0800
-Message-ID: <20240126063356.17857-4-pkshih@realtek.com>
+Subject: [PATCH 4/7] wifi: rtw89: 8922a: add ieee80211_ops::hw_scan
+Date: Fri, 26 Jan 2024 14:33:53 +0800
+Message-ID: <20240126063356.17857-5-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240126063356.17857-1-pkshih@realtek.com>
 References: <20240126063356.17857-1-pkshih@realtek.com>
@@ -62,331 +62,350 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
 
 From: Po-Hao Huang <phhuang@realtek.com>
 
-The channel field slightly differs between WiFi 6 and WiFi 7.
-So we prepare some required functions in advance, this doesn't change
-existing wifi 6 ICs behavior. This H2C prepares the channel list
-to be scanned for. With layout as the following:
-
-+--------+--------------------+-------------------+-----------------------+
-| header | number of channels | channel info size | channel_info * number |
-+--------+--------------------+-------------------+-----------------------+
+This adds support for hardware scan after FW version 0.34.35. Currently
+we only support scanning on single hardware band and support of dual band
+scan will be added in the future. Adjust the current flow to make driver
+compatible with different generation ICs.
 
 Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/fw.c     | 220 +++++++++++++++++++-
- drivers/net/wireless/realtek/rtw89/fw.h     |  79 ++++++-
- drivers/net/wireless/realtek/rtw89/mac.c    |   2 +
+ drivers/net/wireless/realtek/rtw89/core.h   |  39 +++++
+ drivers/net/wireless/realtek/rtw89/fw.c     | 178 +++++++++++++++++++-
+ drivers/net/wireless/realtek/rtw89/fw.h     |  86 +++++++++-
+ drivers/net/wireless/realtek/rtw89/mac.c    |  15 +-
  drivers/net/wireless/realtek/rtw89/mac.h    |   3 +
- drivers/net/wireless/realtek/rtw89/mac_be.c |   2 +
- 5 files changed, 302 insertions(+), 4 deletions(-)
+ drivers/net/wireless/realtek/rtw89/mac_be.c |   1 +
+ 6 files changed, 314 insertions(+), 8 deletions(-)
 
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index c86b46e7964f..30cc77ac78c5 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -3258,6 +3258,45 @@ enum rtw89_mlo_dbcc_mode {
+ 	DBCC_LEGACY = 0xffffffff,
+ };
+ 
++enum rtw89_scan_be_operation {
++	RTW89_SCAN_OP_STOP,
++	RTW89_SCAN_OP_START,
++	RTW89_SCAN_OP_SETPARM,
++	RTW89_SCAN_OP_GETRPT,
++	RTW89_SCAN_OP_NUM
++};
++
++enum rtw89_scan_be_mode {
++	RTW89_SCAN_MODE_SA,
++	RTW89_SCAN_MODE_MACC,
++	RTW89_SCAN_MODE_NUM
++};
++
++enum rtw89_scan_be_opmode {
++	RTW89_SCAN_OPMODE_NONE,
++	RTW89_SCAN_OPMODE_TBTT,
++	RTW89_SCAN_OPMODE_INTV,
++	RTW89_SCAN_OPMODE_CNT,
++	RTW89_SCAN_OPMODE_NUM,
++};
++
++struct rtw89_scan_option {
++	bool enable;
++	bool target_ch_mode;
++	u8 num_macc_role;
++	u8 num_opch;
++	u8 repeat;
++	u16 norm_pd;
++	u16 slow_pd;
++	u16 norm_cy;
++	u8 opch_end;
++	u64 prohib_chan;
++	enum rtw89_phy_idx band;
++	enum rtw89_scan_be_operation operation;
++	enum rtw89_scan_be_mode scan_mode;
++	enum rtw89_mlo_dbcc_mode mlo_mode;
++};
++
+ enum rtw89_qta_mode {
+ 	RTW89_QTA_SCC,
+ 	RTW89_QTA_DLFW,
 diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 43fe9333d3e7..ea308244b303 100644
+index ea308244b303..7a0671e4ef2c 100644
 --- a/drivers/net/wireless/realtek/rtw89/fw.c
 +++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -4078,6 +4078,102 @@ int rtw89_fw_h2c_scan_list_offload(struct rtw89_dev *rtwdev, int ch_num,
+@@ -459,6 +459,7 @@ static const struct __fw_feat_cfg fw_feat_tbl[] = {
+ 	__CFG_FW_FEAT(RTL8852C, ge, 0, 27, 56, 10, BEACON_FILTER),
+ 	__CFG_FW_FEAT(RTL8922A, ge, 0, 34, 30, 0, CRASH_TRIGGER),
+ 	__CFG_FW_FEAT(RTL8922A, ge, 0, 34, 11, 0, MACID_PAUSE_SLEEP),
++	__CFG_FW_FEAT(RTL8922A, ge, 0, 34, 35, 0, SCAN_OFFLOAD),
+ };
+ 
+ static void rtw89_fw_iterate_feature_cfg(struct rtw89_fw_info *fw,
+@@ -4236,6 +4237,169 @@ int rtw89_fw_h2c_scan_offload(struct rtw89_dev *rtwdev,
  	return 0;
  }
  
-+int rtw89_fw_h2c_scan_list_offload_be(struct rtw89_dev *rtwdev, int ch_num,
-+				      struct list_head *chan_list)
++static void rtw89_scan_get_6g_disabled_chan(struct rtw89_dev *rtwdev,
++					    struct rtw89_scan_option *option)
 +{
++	struct ieee80211_supported_band *sband;
++	struct ieee80211_channel *chan;
++	u8 i, idx;
++
++	sband = rtwdev->hw->wiphy->bands[NL80211_BAND_6GHZ];
++
++	for (i = 0; i < sband->n_channels; i++) {
++		chan = &sband->channels[i];
++		if (chan->flags & IEEE80211_CHAN_DISABLED) {
++			idx = (chan->hw_value - 1) / 4;
++			option->prohib_chan |= BIT(idx);
++		}
++	}
++}
++
++int rtw89_fw_h2c_scan_offload_be(struct rtw89_dev *rtwdev,
++				 struct rtw89_scan_option *option,
++				 struct rtw89_vif *rtwvif)
++{
++	struct rtw89_hw_scan_info *scan_info = &rtwdev->scan_info;
 +	struct rtw89_wait_info *wait = &rtwdev->mac.fw_ofld_wait;
-+	struct rtw89_h2c_chinfo_elem_be *elem;
-+	struct rtw89_mac_chinfo_be *ch_info;
-+	struct rtw89_h2c_chinfo *h2c;
++	struct rtw89_h2c_scanofld_be_macc_role *macc_role;
++	struct rtw89_chan *op = &scan_info->op_chan;
++	struct rtw89_h2c_scanofld_be_opch *opch;
++	struct rtw89_h2c_scanofld_be *h2c;
 +	struct sk_buff *skb;
++	u8 macc_role_size = sizeof(*macc_role) * option->num_macc_role;
++	u8 opch_size = sizeof(*opch) * option->num_opch;
++	u8 probe_id[NUM_NL80211_BANDS];
 +	unsigned int cond;
-+	int skb_len;
++	void *ptr;
 +	int ret;
++	u32 len;
++	u8 i;
 +
-+	static_assert(sizeof(*elem) == RTW89_MAC_CHINFO_SIZE);
++	rtw89_scan_get_6g_disabled_chan(rtwdev, option);
 +
-+	skb_len = struct_size(h2c, elem, ch_num);
-+	skb = rtw89_fw_h2c_alloc_skb_with_hdr(rtwdev, skb_len);
++	len = sizeof(*h2c) + macc_role_size + opch_size;
++	skb = rtw89_fw_h2c_alloc_skb_with_hdr(rtwdev, len);
 +	if (!skb) {
-+		rtw89_err(rtwdev, "failed to alloc skb for h2c scan list\n");
++		rtw89_err(rtwdev, "failed to alloc skb for h2c scan offload\n");
 +		return -ENOMEM;
 +	}
 +
-+	skb_put(skb, sizeof(*h2c));
-+	h2c = (struct rtw89_h2c_chinfo *)skb->data;
++	skb_put(skb, len);
++	h2c = (struct rtw89_h2c_scanofld_be *)skb->data;
++	ptr = skb->data;
 +
-+	h2c->ch_num = ch_num;
-+	h2c->elem_size = sizeof(*elem) / 4; /* in unit of 4 bytes */
-+	h2c->arg = u8_encode_bits(RTW89_PHY_0, RTW89_H2C_CHINFO_ARG_MAC_IDX_MASK);
++	h2c->w0 = le32_encode_bits(option->operation, RTW89_H2C_SCANOFLD_BE_W0_OP) |
++		  le32_encode_bits(option->scan_mode,
++				   RTW89_H2C_SCANOFLD_BE_W0_SCAN_MODE) |
++		  le32_encode_bits(option->repeat, RTW89_H2C_SCANOFLD_BE_W0_REPEAT) |
++		  le32_encode_bits(true, RTW89_H2C_SCANOFLD_BE_W0_NOTIFY_END) |
++		  le32_encode_bits(true, RTW89_H2C_SCANOFLD_BE_W0_LEARN_CH) |
++		  le32_encode_bits(rtwvif->mac_id, RTW89_H2C_SCANOFLD_BE_W0_MACID) |
++		  le32_encode_bits(rtwvif->port, RTW89_H2C_SCANOFLD_BE_W0_PORT) |
++		  le32_encode_bits(option->band, RTW89_H2C_SCANOFLD_BE_W0_BAND);
 +
-+	list_for_each_entry(ch_info, chan_list, list) {
-+		elem = (struct rtw89_h2c_chinfo_elem_be *)skb_put(skb, sizeof(*elem));
++	h2c->w1 = le32_encode_bits(option->num_macc_role, RTW89_H2C_SCANOFLD_BE_W1_NUM_MACC_ROLE) |
++		  le32_encode_bits(option->num_opch, RTW89_H2C_SCANOFLD_BE_W1_NUM_OP) |
++		  le32_encode_bits(option->norm_pd, RTW89_H2C_SCANOFLD_BE_W1_NORM_PD);
 +
-+		elem->w0 = le32_encode_bits(ch_info->period, RTW89_H2C_CHINFO_BE_W0_PERIOD) |
-+			   le32_encode_bits(ch_info->dwell_time, RTW89_H2C_CHINFO_BE_W0_DWELL) |
-+			   le32_encode_bits(ch_info->central_ch,
-+					    RTW89_H2C_CHINFO_BE_W0_CENTER_CH) |
-+			   le32_encode_bits(ch_info->pri_ch, RTW89_H2C_CHINFO_BE_W0_PRI_CH);
++	h2c->w2 = le32_encode_bits(option->slow_pd, RTW89_H2C_SCANOFLD_BE_W2_SLOW_PD) |
++		  le32_encode_bits(option->norm_cy, RTW89_H2C_SCANOFLD_BE_W2_NORM_CY) |
++		  le32_encode_bits(option->opch_end, RTW89_H2C_SCANOFLD_BE_W2_OPCH_END);
 +
-+		elem->w1 = le32_encode_bits(ch_info->bw, RTW89_H2C_CHINFO_BE_W1_BW) |
-+			   le32_encode_bits(ch_info->ch_band, RTW89_H2C_CHINFO_BE_W1_CH_BAND) |
-+			   le32_encode_bits(ch_info->dfs_ch, RTW89_H2C_CHINFO_BE_W1_DFS) |
-+			   le32_encode_bits(ch_info->pause_data,
-+					    RTW89_H2C_CHINFO_BE_W1_PAUSE_DATA) |
-+			   le32_encode_bits(ch_info->tx_null, RTW89_H2C_CHINFO_BE_W1_TX_NULL) |
-+			   le32_encode_bits(ch_info->rand_seq_num,
-+					    RTW89_H2C_CHINFO_BE_W1_RANDOM) |
-+			   le32_encode_bits(ch_info->notify_action,
-+					    RTW89_H2C_CHINFO_BE_W1_NOTIFY) |
-+			   le32_encode_bits(ch_info->probe_id != 0xff ? 1 : 0,
-+					    RTW89_H2C_CHINFO_BE_W1_PROBE) |
-+			   le32_encode_bits(ch_info->leave_crit,
-+					    RTW89_H2C_CHINFO_BE_W1_EARLY_LEAVE_CRIT) |
-+			   le32_encode_bits(ch_info->chkpt_timer,
-+					    RTW89_H2C_CHINFO_BE_W1_CHKPT_TIMER);
++	h2c->w3 = le32_encode_bits(0, RTW89_H2C_SCANOFLD_BE_W3_NUM_SSID) |
++		  le32_encode_bits(0, RTW89_H2C_SCANOFLD_BE_W3_NUM_SHORT_SSID) |
++		  le32_encode_bits(0, RTW89_H2C_SCANOFLD_BE_W3_NUM_BSSID) |
++		  le32_encode_bits(probe_id[NL80211_BAND_2GHZ], RTW89_H2C_SCANOFLD_BE_W3_PROBEID);
 +
-+		elem->w2 = le32_encode_bits(ch_info->leave_time,
-+					    RTW89_H2C_CHINFO_BE_W2_EARLY_LEAVE_TIME) |
-+			   le32_encode_bits(ch_info->leave_th,
-+					    RTW89_H2C_CHINFO_BE_W2_EARLY_LEAVE_TH) |
-+			   le32_encode_bits(ch_info->tx_pkt_ctrl,
-+					    RTW89_H2C_CHINFO_BE_W2_TX_PKT_CTRL);
++	h2c->w4 = le32_encode_bits(probe_id[NL80211_BAND_5GHZ],
++				   RTW89_H2C_SCANOFLD_BE_W4_PROBE_5G) |
++		  le32_encode_bits(probe_id[NL80211_BAND_6GHZ],
++				   RTW89_H2C_SCANOFLD_BE_W4_PROBE_6G) |
++		  le32_encode_bits(0, RTW89_H2C_SCANOFLD_BE_W4_DELAY_START);
 +
-+		elem->w3 = le32_encode_bits(ch_info->pkt_id[0], RTW89_H2C_CHINFO_BE_W3_PKT0) |
-+			   le32_encode_bits(ch_info->pkt_id[1], RTW89_H2C_CHINFO_BE_W3_PKT1) |
-+			   le32_encode_bits(ch_info->pkt_id[2], RTW89_H2C_CHINFO_BE_W3_PKT2) |
-+			   le32_encode_bits(ch_info->pkt_id[3], RTW89_H2C_CHINFO_BE_W3_PKT3);
++	h2c->w5 = le32_encode_bits(option->mlo_mode, RTW89_H2C_SCANOFLD_BE_W5_MLO_MODE);
 +
-+		elem->w4 = le32_encode_bits(ch_info->pkt_id[4], RTW89_H2C_CHINFO_BE_W4_PKT4) |
-+			   le32_encode_bits(ch_info->pkt_id[5], RTW89_H2C_CHINFO_BE_W4_PKT5) |
-+			   le32_encode_bits(ch_info->pkt_id[6], RTW89_H2C_CHINFO_BE_W4_PKT6) |
-+			   le32_encode_bits(ch_info->pkt_id[7], RTW89_H2C_CHINFO_BE_W4_PKT7);
++	h2c->w6 = le32_encode_bits(option->prohib_chan,
++				   RTW89_H2C_SCANOFLD_BE_W6_CHAN_PROHIB_LOW);
++	h2c->w7 = le32_encode_bits(option->prohib_chan >> 32,
++				   RTW89_H2C_SCANOFLD_BE_W7_CHAN_PROHIB_HIGH);
++	ptr += sizeof(*h2c);
 +
-+		elem->w5 = le32_encode_bits(ch_info->sw_def, RTW89_H2C_CHINFO_BE_W5_SW_DEF) |
-+			   le32_encode_bits(ch_info->fw_probe0_ssids,
-+					    RTW89_H2C_CHINFO_BE_W5_FW_PROBE0_SSIDS);
++	for (i = 0; i < option->num_macc_role; i++) {
++		macc_role = (struct rtw89_h2c_scanofld_be_macc_role *)&h2c->role[i];
++		macc_role->w0 =
++			le32_encode_bits(0, RTW89_H2C_SCANOFLD_BE_MACC_ROLE_W0_BAND) |
++			le32_encode_bits(0, RTW89_H2C_SCANOFLD_BE_MACC_ROLE_W0_PORT) |
++			le32_encode_bits(0, RTW89_H2C_SCANOFLD_BE_MACC_ROLE_W0_MACID) |
++			le32_encode_bits(0, RTW89_H2C_SCANOFLD_BE_MACC_ROLE_W0_OPCH_END);
++		ptr += sizeof(*macc_role);
++	}
 +
-+		elem->w6 = le32_encode_bits(ch_info->fw_probe0_shortssids,
-+					    RTW89_H2C_CHINFO_BE_W6_FW_PROBE0_SHORTSSIDS) |
-+			   le32_encode_bits(ch_info->fw_probe0_bssids,
-+					    RTW89_H2C_CHINFO_BE_W6_FW_PROBE0_BSSIDS);
++	for (i = 0; i < option->num_opch; i++) {
++		opch = ptr;
++		opch->w0 = le32_encode_bits(rtwvif->mac_id,
++					    RTW89_H2C_SCANOFLD_BE_OPCH_W0_MACID) |
++			   le32_encode_bits(option->band,
++					    RTW89_H2C_SCANOFLD_BE_OPCH_W0_BAND) |
++			   le32_encode_bits(rtwvif->port,
++					    RTW89_H2C_SCANOFLD_BE_OPCH_W0_PORT) |
++			   le32_encode_bits(RTW89_SCAN_OPMODE_INTV,
++					    RTW89_H2C_SCANOFLD_BE_OPCH_W0_POLICY) |
++			   le32_encode_bits(true,
++					    RTW89_H2C_SCANOFLD_BE_OPCH_W0_TXNULL) |
++			   le32_encode_bits(RTW89_OFF_CHAN_TIME / 10,
++					    RTW89_H2C_SCANOFLD_BE_OPCH_W0_POLICY_VAL);
++
++		opch->w1 = le32_encode_bits(RTW89_CHANNEL_TIME,
++					    RTW89_H2C_SCANOFLD_BE_OPCH_W1_DURATION) |
++			   le32_encode_bits(op->band_type,
++					    RTW89_H2C_SCANOFLD_BE_OPCH_W1_CH_BAND) |
++			   le32_encode_bits(op->band_width,
++					    RTW89_H2C_SCANOFLD_BE_OPCH_W1_BW) |
++			   le32_encode_bits(0x3,
++					    RTW89_H2C_SCANOFLD_BE_OPCH_W1_NOTIFY) |
++			   le32_encode_bits(op->primary_channel,
++					    RTW89_H2C_SCANOFLD_BE_OPCH_W1_PRI_CH) |
++			   le32_encode_bits(op->channel,
++					    RTW89_H2C_SCANOFLD_BE_OPCH_W1_CENTRAL_CH);
++
++		opch->w2 = le32_encode_bits(0,
++					    RTW89_H2C_SCANOFLD_BE_OPCH_W2_PKTS_CTRL) |
++			   le32_encode_bits(0,
++					    RTW89_H2C_SCANOFLD_BE_OPCH_W2_SW_DEF) |
++			   le32_encode_bits(2,
++					    RTW89_H2C_SCANOFLD_BE_OPCH_W2_SS);
++
++		opch->w3 = le32_encode_bits(RTW89_SCANOFLD_PKT_NONE,
++					    RTW89_H2C_SCANOFLD_BE_OPCH_W3_PKT0) |
++			   le32_encode_bits(RTW89_SCANOFLD_PKT_NONE,
++					    RTW89_H2C_SCANOFLD_BE_OPCH_W3_PKT1) |
++			   le32_encode_bits(RTW89_SCANOFLD_PKT_NONE,
++					    RTW89_H2C_SCANOFLD_BE_OPCH_W3_PKT2) |
++			   le32_encode_bits(RTW89_SCANOFLD_PKT_NONE,
++					    RTW89_H2C_SCANOFLD_BE_OPCH_W3_PKT3);
++		ptr += sizeof(*opch);
 +	}
 +
 +	rtw89_h2c_pkt_set_hdr(rtwdev, skb, FWCMD_TYPE_H2C,
 +			      H2C_CAT_MAC, H2C_CL_MAC_FW_OFLD,
-+			      H2C_FUNC_ADD_SCANOFLD_CH, 1, 1, skb_len);
++			      H2C_FUNC_SCANOFLD_BE, 1, 1,
++			      len);
 +
-+	cond = RTW89_SCANOFLD_WAIT_COND_ADD_CH;
++	if (option->enable)
++		cond = RTW89_SCANOFLD_BE_WAIT_COND_START;
++	else
++		cond = RTW89_SCANOFLD_BE_WAIT_COND_STOP;
 +
 +	ret = rtw89_h2c_tx_and_wait(rtwdev, skb, wait, cond);
 +	if (ret) {
-+		rtw89_debug(rtwdev, RTW89_DBG_FW, "failed to add scan ofld ch\n");
++		rtw89_debug(rtwdev, RTW89_DBG_FW, "failed to scan be ofld\n");
 +		return ret;
 +	}
 +
 +	return 0;
 +}
 +
- int rtw89_fw_h2c_scan_offload(struct rtw89_dev *rtwdev,
- 			      struct rtw89_scan_option *option,
- 			      struct rtw89_vif *rtwvif)
-@@ -4769,8 +4865,66 @@ static void rtw89_hw_scan_add_chan(struct rtw89_dev *rtwdev, int chan_type,
- 	}
- }
- 
--static int rtw89_hw_scan_add_chan_list(struct rtw89_dev *rtwdev,
--				       struct rtw89_vif *rtwvif, bool connected)
-+static void rtw89_hw_scan_add_chan_be(struct rtw89_dev *rtwdev, int chan_type,
-+				      int ssid_num,
-+				      struct rtw89_mac_chinfo_be *ch_info)
-+{
-+	struct rtw89_hw_scan_info *scan_info = &rtwdev->scan_info;
-+	struct ieee80211_vif *vif = rtwdev->scan_info.scanning_vif;
-+	struct rtw89_vif *rtwvif = (struct rtw89_vif *)vif->drv_priv;
-+	struct cfg80211_scan_request *req = rtwvif->scan_req;
-+	struct rtw89_pktofld_info *info;
-+	u8 band, probe_count = 0, i;
-+
-+	ch_info->notify_action = RTW89_SCANOFLD_DEBUG_MASK;
-+	ch_info->dfs_ch = chan_type == RTW89_CHAN_DFS;
-+	ch_info->bw = RTW89_SCAN_WIDTH;
-+	ch_info->tx_null = false;
-+	ch_info->pause_data = false;
-+	ch_info->probe_id = RTW89_SCANOFLD_PKT_NONE;
-+
-+	if (ssid_num) {
-+		band = rtw89_hw_to_nl80211_band(ch_info->ch_band);
-+
-+		list_for_each_entry(info, &scan_info->pkt_list[band], list) {
-+			if (info->channel_6ghz &&
-+			    ch_info->pri_ch != info->channel_6ghz)
-+				continue;
-+			ch_info->pkt_id[probe_count++] = info->id;
-+			if (probe_count >= RTW89_SCANOFLD_MAX_SSID)
-+				break;
-+		}
-+	}
-+
-+	if (ch_info->ch_band == RTW89_BAND_6G) {
-+		if ((ssid_num == 1 && req->ssids[0].ssid_len == 0) ||
-+		    !ch_info->is_psc) {
-+			ch_info->probe_id = RTW89_SCANOFLD_PKT_NONE;
-+			if (!req->duration_mandatory)
-+				ch_info->period -= RTW89_DWELL_TIME_6G;
-+		}
-+	}
-+
-+	for (i = probe_count; i < RTW89_SCANOFLD_MAX_SSID; i++)
-+		ch_info->pkt_id[i] = RTW89_SCANOFLD_PKT_NONE;
-+
-+	switch (chan_type) {
-+	case RTW89_CHAN_DFS:
-+		if (ch_info->ch_band != RTW89_BAND_6G)
-+			ch_info->period =
-+				max_t(u8, ch_info->period, RTW89_DFS_CHAN_TIME);
-+		ch_info->dwell_time = RTW89_DWELL_TIME;
-+		break;
-+	case RTW89_CHAN_ACTIVE:
-+		break;
-+	default:
-+		rtw89_warn(rtwdev, "Channel type out of bound\n");
-+		break;
-+	}
-+}
-+
-+int rtw89_hw_scan_add_chan_list(struct rtw89_dev *rtwdev,
-+				struct rtw89_vif *rtwvif, bool connected)
- {
- 	struct cfg80211_scan_request *req = rtwvif->scan_req;
- 	struct rtw89_mac_chinfo	*ch_info, *tmp;
-@@ -4846,9 +5000,69 @@ static int rtw89_hw_scan_add_chan_list(struct rtw89_dev *rtwdev,
- 	return ret;
- }
- 
-+int rtw89_hw_scan_add_chan_list_be(struct rtw89_dev *rtwdev,
-+				   struct rtw89_vif *rtwvif, bool connected)
-+{
-+	struct cfg80211_scan_request *req = rtwvif->scan_req;
-+	struct rtw89_mac_chinfo_be *ch_info, *tmp;
-+	struct ieee80211_channel *channel;
-+	struct list_head chan_list;
-+	enum rtw89_chan_type type;
-+	int list_len, ret;
-+	bool random_seq;
-+	u32 idx;
-+
-+	random_seq = !!(req->flags & NL80211_SCAN_FLAG_RANDOM_SN);
-+	INIT_LIST_HEAD(&chan_list);
-+
-+	for (idx = rtwdev->scan_info.last_chan_idx, list_len = 0;
-+	     idx < req->n_channels && list_len < RTW89_SCAN_LIST_LIMIT;
-+	     idx++, list_len++) {
-+		channel = req->channels[idx];
-+		ch_info = kzalloc(sizeof(*ch_info), GFP_KERNEL);
-+		if (!ch_info) {
-+			ret = -ENOMEM;
-+			goto out;
-+		}
-+
-+		if (req->duration_mandatory)
-+			ch_info->period = req->duration;
-+		else if (channel->band == NL80211_BAND_6GHZ)
-+			ch_info->period = RTW89_CHANNEL_TIME_6G + RTW89_DWELL_TIME_6G;
-+		else
-+			ch_info->period = RTW89_CHANNEL_TIME;
-+
-+		ch_info->ch_band = rtw89_nl80211_to_hw_band(channel->band);
-+		ch_info->central_ch = channel->hw_value;
-+		ch_info->pri_ch = channel->hw_value;
-+		ch_info->rand_seq_num = random_seq;
-+		ch_info->is_psc = cfg80211_channel_is_psc(channel);
-+
-+		if (channel->flags & (IEEE80211_CHAN_RADAR | IEEE80211_CHAN_NO_IR))
-+			type = RTW89_CHAN_DFS;
-+		else
-+			type = RTW89_CHAN_ACTIVE;
-+		rtw89_hw_scan_add_chan_be(rtwdev, type, req->n_ssids, ch_info);
-+
-+		list_add_tail(&ch_info->list, &chan_list);
-+	}
-+
-+	rtwdev->scan_info.last_chan_idx = idx;
-+	ret = rtw89_fw_h2c_scan_list_offload_be(rtwdev, list_len, &chan_list);
-+
-+out:
-+	list_for_each_entry_safe(ch_info, tmp, &chan_list, list) {
-+		list_del(&ch_info->list);
-+		kfree(ch_info);
-+	}
-+
-+	return ret;
-+}
-+
- static int rtw89_hw_scan_prehandle(struct rtw89_dev *rtwdev,
- 				   struct rtw89_vif *rtwvif, bool connected)
+ int rtw89_fw_h2c_rf_reg(struct rtw89_dev *rtwdev,
+ 			struct rtw89_fw_h2c_rf_reg_info *info,
+ 			u16 len, u8 page)
+@@ -5173,6 +5337,7 @@ static bool rtw89_is_any_vif_connected_or_connecting(struct rtw89_dev *rtwdev)
+ int rtw89_hw_scan_offload(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif,
+ 			  bool enable)
  {
 +	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
- 	int ret;
- 
- 	ret = rtw89_hw_scan_update_probe_req(rtwdev, rtwvif);
-@@ -4856,7 +5070,7 @@ static int rtw89_hw_scan_prehandle(struct rtw89_dev *rtwdev,
- 		rtw89_err(rtwdev, "Update probe request failed\n");
- 		goto out;
+ 	struct rtw89_scan_option opt = {0};
+ 	struct rtw89_vif *rtwvif;
+ 	bool connected;
+@@ -5190,7 +5355,18 @@ int rtw89_hw_scan_offload(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif,
+ 		if (ret)
+ 			goto out;
  	}
--	ret = rtw89_hw_scan_add_chan_list(rtwdev, rtwvif, connected);
-+	ret = mac->add_chan_list(rtwdev, rtwvif, connected);
+-	ret = rtw89_fw_h2c_scan_offload(rtwdev, &opt, rtwvif);
++
++	if (rtwdev->chip->chip_gen == RTW89_CHIP_BE) {
++		opt.operation = enable ? RTW89_SCAN_OP_START : RTW89_SCAN_OP_STOP;
++		opt.scan_mode = RTW89_SCAN_MODE_SA;
++		opt.band = RTW89_PHY_0;
++		opt.num_macc_role = 0;
++		opt.mlo_mode = rtwdev->mlo_dbcc_mode;
++		opt.num_opch = connected ? 1 : 0;
++		opt.opch_end = connected ? 0 : RTW89_CHAN_INVALID;
++	}
++
++	ret = mac->scan_offload(rtwdev, &opt, rtwvif);
  out:
  	return ret;
  }
 diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
-index cb5b7bf88177..132809ea05bf 100644
+index 132809ea05bf..08b8f6d75065 100644
 --- a/drivers/net/wireless/realtek/rtw89/fw.h
 +++ b/drivers/net/wireless/realtek/rtw89/fw.h
-@@ -297,6 +297,34 @@ struct rtw89_mac_chinfo {
+@@ -266,6 +266,7 @@ struct rtw89_fw_macid_pause_sleep_grp {
+ #define RTW89_SCANOFLD_MAX_IE_LEN 512
+ #define RTW89_SCANOFLD_PKT_NONE 0xFF
+ #define RTW89_SCANOFLD_DEBUG_MASK 0x1F
++#define RTW89_CHAN_INVALID 0xFF
+ #define RTW89_MAC_CHINFO_SIZE 28
+ #define RTW89_SCAN_LIST_GUARD 4
+ #define RTW89_SCAN_LIST_LIMIT \
+@@ -325,11 +326,6 @@ struct rtw89_mac_chinfo_be {
  	bool is_psc;
  };
  
-+struct rtw89_mac_chinfo_be {
-+	u8 period;
-+	u8 dwell_time;
-+	u8 central_ch;
-+	u8 pri_ch;
-+	u8 bw:3;
-+	u8 ch_band:2;
-+	u8 dfs_ch:1;
-+	u8 pause_data:1;
-+	u8 tx_null:1;
-+	u8 rand_seq_num:1;
-+	u8 notify_action:5;
-+	u8 probe_id;
-+	u8 leave_crit;
-+	u8 chkpt_timer;
-+	u8 leave_time;
-+	u8 leave_th;
-+	u16 tx_pkt_ctrl;
-+	u8 pkt_id[RTW89_SCANOFLD_MAX_SSID];
-+	u8 sw_def;
-+	u16 fw_probe0_ssids;
-+	u16 fw_probe0_shortssids;
-+	u16 fw_probe0_bssids;
-+
-+	struct list_head list;
-+	bool is_psc;
-+};
-+
- struct rtw89_scan_option {
- 	bool enable;
- 	bool target_ch_mode;
-@@ -2708,14 +2736,57 @@ struct rtw89_h2c_chinfo_elem {
- #define RTW89_H2C_CHINFO_W3_PKT7 GENMASK(31, 24)
- #define RTW89_H2C_CHINFO_W4_POWER_IDX GENMASK(15, 0)
+-struct rtw89_scan_option {
+-	bool enable;
+-	bool target_ch_mode;
+-};
+-
+ struct rtw89_pktofld_info {
+ 	struct list_head list;
+ 	u8 id;
+@@ -2814,6 +2810,79 @@ struct rtw89_h2c_scanofld {
+ #define RTW89_H2C_SCANOFLD_W2_NORM_PD GENMASK(15, 0)
+ #define RTW89_H2C_SCANOFLD_W2_SLOW_PD GENMASK(23, 16)
  
-+struct rtw89_h2c_chinfo_elem_be {
++struct rtw89_h2c_scanofld_be_macc_role {
++	__le32 w0;
++} __packed;
++
++#define RTW89_H2C_SCANOFLD_BE_MACC_ROLE_W0_BAND GENMASK(1, 0)
++#define RTW89_H2C_SCANOFLD_BE_MACC_ROLE_W0_PORT GENMASK(4, 2)
++#define RTW89_H2C_SCANOFLD_BE_MACC_ROLE_W0_MACID GENMASK(23, 8)
++#define RTW89_H2C_SCANOFLD_BE_MACC_ROLE_W0_OPCH_END GENMASK(31, 24)
++
++struct rtw89_h2c_scanofld_be_opch {
++	__le32 w0;
++	__le32 w1;
++	__le32 w2;
++	__le32 w3;
++} __packed;
++
++#define RTW89_H2C_SCANOFLD_BE_OPCH_W0_MACID GENMASK(15, 0)
++#define RTW89_H2C_SCANOFLD_BE_OPCH_W0_BAND GENMASK(17, 16)
++#define RTW89_H2C_SCANOFLD_BE_OPCH_W0_PORT GENMASK(20, 18)
++#define RTW89_H2C_SCANOFLD_BE_OPCH_W0_POLICY GENMASK(22, 21)
++#define RTW89_H2C_SCANOFLD_BE_OPCH_W0_TXNULL BIT(23)
++#define RTW89_H2C_SCANOFLD_BE_OPCH_W0_POLICY_VAL GENMASK(31, 24)
++#define RTW89_H2C_SCANOFLD_BE_OPCH_W1_DURATION GENMASK(7, 0)
++#define RTW89_H2C_SCANOFLD_BE_OPCH_W1_CH_BAND GENMASK(9, 8)
++#define RTW89_H2C_SCANOFLD_BE_OPCH_W1_BW GENMASK(12, 10)
++#define RTW89_H2C_SCANOFLD_BE_OPCH_W1_NOTIFY GENMASK(14, 13)
++#define RTW89_H2C_SCANOFLD_BE_OPCH_W1_PRI_CH GENMASK(23, 16)
++#define RTW89_H2C_SCANOFLD_BE_OPCH_W1_CENTRAL_CH GENMASK(31, 24)
++#define RTW89_H2C_SCANOFLD_BE_OPCH_W2_PKTS_CTRL GENMASK(7, 0)
++#define RTW89_H2C_SCANOFLD_BE_OPCH_W2_SW_DEF GENMASK(15, 8)
++#define RTW89_H2C_SCANOFLD_BE_OPCH_W2_SS GENMASK(18, 16)
++#define RTW89_H2C_SCANOFLD_BE_OPCH_W3_PKT0 GENMASK(7, 0)
++#define RTW89_H2C_SCANOFLD_BE_OPCH_W3_PKT1 GENMASK(15, 8)
++#define RTW89_H2C_SCANOFLD_BE_OPCH_W3_PKT2 GENMASK(23, 16)
++#define RTW89_H2C_SCANOFLD_BE_OPCH_W3_PKT3 GENMASK(31, 24)
++
++struct rtw89_h2c_scanofld_be {
 +	__le32 w0;
 +	__le32 w1;
 +	__le32 w2;
@@ -394,109 +413,134 @@ index cb5b7bf88177..132809ea05bf 100644
 +	__le32 w4;
 +	__le32 w5;
 +	__le32 w6;
++	__le32 w7;
++	struct rtw89_h2c_scanofld_be_macc_role role[];
 +} __packed;
 +
-+#define RTW89_H2C_CHINFO_BE_W0_PERIOD GENMASK(7, 0)
-+#define RTW89_H2C_CHINFO_BE_W0_DWELL GENMASK(15, 8)
-+#define RTW89_H2C_CHINFO_BE_W0_CENTER_CH GENMASK(23, 16)
-+#define RTW89_H2C_CHINFO_BE_W0_PRI_CH GENMASK(31, 24)
-+#define RTW89_H2C_CHINFO_BE_W1_BW GENMASK(2, 0)
-+#define RTW89_H2C_CHINFO_BE_W1_CH_BAND GENMASK(4, 3)
-+#define RTW89_H2C_CHINFO_BE_W1_DFS BIT(5)
-+#define RTW89_H2C_CHINFO_BE_W1_PAUSE_DATA BIT(6)
-+#define RTW89_H2C_CHINFO_BE_W1_TX_NULL BIT(7)
-+#define RTW89_H2C_CHINFO_BE_W1_RANDOM BIT(8)
-+#define RTW89_H2C_CHINFO_BE_W1_NOTIFY GENMASK(13, 9)
-+#define RTW89_H2C_CHINFO_BE_W1_PROBE BIT(14)
-+#define RTW89_H2C_CHINFO_BE_W1_EARLY_LEAVE_CRIT GENMASK(17, 15)
-+#define RTW89_H2C_CHINFO_BE_W1_CHKPT_TIMER GENMASK(31, 24)
-+#define RTW89_H2C_CHINFO_BE_W2_EARLY_LEAVE_TIME GENMASK(7, 0)
-+#define RTW89_H2C_CHINFO_BE_W2_EARLY_LEAVE_TH GENMASK(15, 8)
-+#define RTW89_H2C_CHINFO_BE_W2_TX_PKT_CTRL GENMASK(31, 16)
-+#define RTW89_H2C_CHINFO_BE_W3_PKT0 GENMASK(7, 0)
-+#define RTW89_H2C_CHINFO_BE_W3_PKT1 GENMASK(15, 8)
-+#define RTW89_H2C_CHINFO_BE_W3_PKT2 GENMASK(23, 16)
-+#define RTW89_H2C_CHINFO_BE_W3_PKT3 GENMASK(31, 24)
-+#define RTW89_H2C_CHINFO_BE_W4_PKT4 GENMASK(7, 0)
-+#define RTW89_H2C_CHINFO_BE_W4_PKT5 GENMASK(15, 8)
-+#define RTW89_H2C_CHINFO_BE_W4_PKT6 GENMASK(23, 16)
-+#define RTW89_H2C_CHINFO_BE_W4_PKT7 GENMASK(31, 24)
-+#define RTW89_H2C_CHINFO_BE_W5_SW_DEF GENMASK(7, 0)
-+#define RTW89_H2C_CHINFO_BE_W5_FW_PROBE0_SSIDS GENMASK(31, 16)
-+#define RTW89_H2C_CHINFO_BE_W6_FW_PROBE0_SHORTSSIDS GENMASK(15, 0)
-+#define RTW89_H2C_CHINFO_BE_W6_FW_PROBE0_BSSIDS GENMASK(31, 16)
++#define RTW89_H2C_SCANOFLD_BE_W0_OP GENMASK(1, 0)
++#define RTW89_H2C_SCANOFLD_BE_W0_SCAN_MODE GENMASK(3, 2)
++#define RTW89_H2C_SCANOFLD_BE_W0_REPEAT GENMASK(5, 4)
++#define RTW89_H2C_SCANOFLD_BE_W0_NOTIFY_END BIT(6)
++#define RTW89_H2C_SCANOFLD_BE_W0_LEARN_CH BIT(7)
++#define RTW89_H2C_SCANOFLD_BE_W0_MACID GENMASK(23, 8)
++#define RTW89_H2C_SCANOFLD_BE_W0_PORT GENMASK(26, 24)
++#define RTW89_H2C_SCANOFLD_BE_W0_BAND GENMASK(28, 27)
++#define RTW89_H2C_SCANOFLD_BE_W1_NUM_MACC_ROLE GENMASK(7, 0)
++#define RTW89_H2C_SCANOFLD_BE_W1_NUM_OP GENMASK(15, 8)
++#define RTW89_H2C_SCANOFLD_BE_W1_NORM_PD GENMASK(31, 16)
++#define RTW89_H2C_SCANOFLD_BE_W2_SLOW_PD GENMASK(15, 0)
++#define RTW89_H2C_SCANOFLD_BE_W2_NORM_CY GENMASK(23, 16)
++#define RTW89_H2C_SCANOFLD_BE_W2_OPCH_END GENMASK(31, 24)
++#define RTW89_H2C_SCANOFLD_BE_W3_NUM_SSID GENMASK(7, 0)
++#define RTW89_H2C_SCANOFLD_BE_W3_NUM_SHORT_SSID GENMASK(15, 8)
++#define RTW89_H2C_SCANOFLD_BE_W3_NUM_BSSID GENMASK(23, 16)
++#define RTW89_H2C_SCANOFLD_BE_W3_PROBEID GENMASK(31, 24)
++#define RTW89_H2C_SCANOFLD_BE_W4_PROBE_5G GENMASK(7, 0)
++#define RTW89_H2C_SCANOFLD_BE_W4_PROBE_6G GENMASK(15, 8)
++#define RTW89_H2C_SCANOFLD_BE_W4_DELAY_START GENMASK(31, 16)
++#define RTW89_H2C_SCANOFLD_BE_W5_MLO_MODE GENMASK(31, 0)
++#define RTW89_H2C_SCANOFLD_BE_W6_CHAN_PROHIB_LOW GENMASK(31, 0)
++#define RTW89_H2C_SCANOFLD_BE_W7_CHAN_PROHIB_HIGH GENMASK(31, 0)
 +
- struct rtw89_h2c_chinfo {
- 	u8 ch_num;
- 	u8 elem_size;
-+	u8 arg;
- 	u8 rsvd0;
--	u8 rsvd1;
- 	struct rtw89_h2c_chinfo_elem elem[] __counted_by(ch_num);
- } __packed;
+ static inline void RTW89_SET_FWCMD_P2P_MACID(void *cmd, u32 val)
+ {
+ 	le32p_replace_bits((__le32 *)cmd, val, GENMASK(7, 0));
+@@ -3773,6 +3842,7 @@ enum rtw89_fw_ofld_h2c_func {
+ 	H2C_FUNC_OFLD_RSSI		= 0x1f,
+ 	H2C_FUNC_OFLD_TP		= 0x20,
+ 	H2C_FUNC_MAC_MACID_PAUSE_SLEEP	= 0x28,
++	H2C_FUNC_SCANOFLD_BE		= 0x2c,
  
-+#define RTW89_H2C_CHINFO_ARG_MAC_IDX_MASK BIT(0)
-+#define RTW89_H2C_CHINFO_ARG_APPEND_MASK BIT(1)
+ 	NUM_OF_RTW89_FW_OFLD_H2C_FUNC,
+ };
+@@ -3788,6 +3858,9 @@ enum rtw89_fw_ofld_h2c_func {
+ 
+ #define RTW89_SCANOFLD_WAIT_COND_START RTW89_FW_OFLD_WAIT_COND(0, H2C_FUNC_SCANOFLD)
+ #define RTW89_SCANOFLD_WAIT_COND_STOP RTW89_FW_OFLD_WAIT_COND(1, H2C_FUNC_SCANOFLD)
++#define RTW89_SCANOFLD_BE_WAIT_COND_START RTW89_FW_OFLD_WAIT_COND(0, H2C_FUNC_SCANOFLD_BE)
++#define RTW89_SCANOFLD_BE_WAIT_COND_STOP RTW89_FW_OFLD_WAIT_COND(1, H2C_FUNC_SCANOFLD_BE)
 +
- struct rtw89_h2c_scanofld {
- 	__le32 w0;
- 	__le32 w1;
-@@ -3933,6 +4004,8 @@ int rtw89_fw_h2c_add_pkt_offload(struct rtw89_dev *rtwdev, u8 *id,
- 				 struct sk_buff *skb_ofld);
- int rtw89_fw_h2c_scan_list_offload(struct rtw89_dev *rtwdev, int ch_num,
- 				   struct list_head *chan_list);
-+int rtw89_fw_h2c_scan_list_offload_be(struct rtw89_dev *rtwdev, int ch_num,
-+				      struct list_head *chan_list);
+ 
+ /* CLASS 10 - Security CAM */
+ #define H2C_CL_MAC_SEC_CAM		0xa
+@@ -4009,6 +4082,9 @@ int rtw89_fw_h2c_scan_list_offload_be(struct rtw89_dev *rtwdev, int ch_num,
  int rtw89_fw_h2c_scan_offload(struct rtw89_dev *rtwdev,
  			      struct rtw89_scan_option *opt,
  			      struct rtw89_vif *vif);
-@@ -3975,6 +4048,10 @@ void rtw89_hw_scan_complete(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif,
- int rtw89_hw_scan_offload(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif,
- 			  bool enable);
- void rtw89_hw_scan_abort(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif);
-+int rtw89_hw_scan_add_chan_list(struct rtw89_dev *rtwdev,
-+				struct rtw89_vif *rtwvif, bool connected);
-+int rtw89_hw_scan_add_chan_list_be(struct rtw89_dev *rtwdev,
-+				   struct rtw89_vif *rtwvif, bool connected);
- int rtw89_fw_h2c_trigger_cpu_exception(struct rtw89_dev *rtwdev);
- int rtw89_fw_h2c_pkt_drop(struct rtw89_dev *rtwdev,
- 			  const struct rtw89_pkt_drop_params *params);
++int rtw89_fw_h2c_scan_offload_be(struct rtw89_dev *rtwdev,
++				 struct rtw89_scan_option *opt,
++				 struct rtw89_vif *vif);
+ int rtw89_fw_h2c_rf_reg(struct rtw89_dev *rtwdev,
+ 			struct rtw89_fw_h2c_rf_reg_info *info,
+ 			u16 len, u8 page);
 diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index 6d29a1d7b85f..ba2157bdd1d1 100644
+index ba2157bdd1d1..ec6acd52f3b2 100644
 --- a/drivers/net/wireless/realtek/rtw89/mac.c
 +++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -6224,5 +6224,7 @@ const struct rtw89_mac_gen_def rtw89_mac_gen_ax = {
- 	.dump_err_status = rtw89_mac_dump_err_status_ax,
+@@ -4867,6 +4867,9 @@ rtw89_mac_c2h_done_ack(struct rtw89_dev *rtwdev, struct sk_buff *skb_c2h, u32 le
+ 		case H2C_FUNC_SCANOFLD:
+ 			cond = RTW89_SCANOFLD_WAIT_COND_START;
+ 			break;
++		case H2C_FUNC_SCANOFLD_BE:
++			cond = RTW89_SCANOFLD_BE_WAIT_COND_START;
++			break;
+ 		}
  
- 	.is_txq_empty = mac_is_txq_empty_ax,
+ 		data.err = !!h2c_return;
+@@ -5116,14 +5119,21 @@ static void rtw89_mac_c2h_scanofld_rsp_atomic(struct rtw89_dev *rtwdev,
+ 		(const struct rtw89_c2h_scanofld *)skb->data;
+ 	struct rtw89_wait_info *fw_ofld_wait = &rtwdev->mac.fw_ofld_wait;
+ 	struct rtw89_completion_data data = {};
++	unsigned int cond;
+ 	u8 status, reason;
+ 
+ 	status = le32_get_bits(c2h->w2, RTW89_C2H_SCANOFLD_W2_STATUS);
+ 	reason = le32_get_bits(c2h->w2, RTW89_C2H_SCANOFLD_W2_RSN);
+ 	data.err = status != RTW89_SCAN_STATUS_SUCCESS;
+ 
+-	if (reason == RTW89_SCAN_END_SCAN_NOTIFY)
+-		rtw89_complete_cond(fw_ofld_wait, RTW89_SCANOFLD_WAIT_COND_STOP, &data);
++	if (reason == RTW89_SCAN_END_SCAN_NOTIFY) {
++		if (rtwdev->chip->chip_gen == RTW89_CHIP_BE)
++			cond = RTW89_SCANOFLD_BE_WAIT_COND_STOP;
++		else
++			cond = RTW89_SCANOFLD_WAIT_COND_STOP;
 +
-+	.add_chan_list = rtw89_hw_scan_add_chan_list,
++		rtw89_complete_cond(fw_ofld_wait, cond, &data);
++	}
+ }
+ 
+ bool rtw89_mac_c2h_chk_atomic(struct rtw89_dev *rtwdev, struct sk_buff *c2h,
+@@ -6226,5 +6236,6 @@ const struct rtw89_mac_gen_def rtw89_mac_gen_ax = {
+ 	.is_txq_empty = mac_is_txq_empty_ax,
+ 
+ 	.add_chan_list = rtw89_hw_scan_add_chan_list,
++	.scan_offload = rtw89_fw_h2c_scan_offload,
  };
  EXPORT_SYMBOL(rtw89_mac_gen_ax);
 diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
-index 181d03d1f78a..8948ea4422b4 100644
+index 8948ea4422b4..8056c85c8dba 100644
 --- a/drivers/net/wireless/realtek/rtw89/mac.h
 +++ b/drivers/net/wireless/realtek/rtw89/mac.h
-@@ -952,6 +952,9 @@ struct rtw89_mac_gen_def {
- 				enum mac_ax_err_info err);
+@@ -955,6 +955,9 @@ struct rtw89_mac_gen_def {
  
- 	bool (*is_txq_empty)(struct rtw89_dev *rtwdev);
-+
-+	int (*add_chan_list)(struct rtw89_dev *rtwdev,
-+			     struct rtw89_vif *rtwvif, bool connected);
+ 	int (*add_chan_list)(struct rtw89_dev *rtwdev,
+ 			     struct rtw89_vif *rtwvif, bool connected);
++	int (*scan_offload)(struct rtw89_dev *rtwdev,
++			    struct rtw89_scan_option *option,
++			    struct rtw89_vif *rtwvif);
  };
  
  extern const struct rtw89_mac_gen_def rtw89_mac_gen_ax;
 diff --git a/drivers/net/wireless/realtek/rtw89/mac_be.c b/drivers/net/wireless/realtek/rtw89/mac_be.c
-index 4befbe06cd15..177d87c998df 100644
+index 177d87c998df..c67cdff14abd 100644
 --- a/drivers/net/wireless/realtek/rtw89/mac_be.c
 +++ b/drivers/net/wireless/realtek/rtw89/mac_be.c
-@@ -2268,5 +2268,7 @@ const struct rtw89_mac_gen_def rtw89_mac_gen_be = {
- 	.dump_err_status = rtw89_mac_dump_err_status_be,
- 
+@@ -2270,5 +2270,6 @@ const struct rtw89_mac_gen_def rtw89_mac_gen_be = {
  	.is_txq_empty = mac_is_txq_empty_be,
-+
-+	.add_chan_list = rtw89_hw_scan_add_chan_list_be,
+ 
+ 	.add_chan_list = rtw89_hw_scan_add_chan_list_be,
++	.scan_offload = rtw89_fw_h2c_scan_offload_be,
  };
  EXPORT_SYMBOL(rtw89_mac_gen_be);
 -- 
