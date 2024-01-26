@@ -1,108 +1,104 @@
-Return-Path: <linux-wireless+bounces-2564-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2567-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A4BA83DA35
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jan 2024 13:31:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18B2383DAA7
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jan 2024 14:21:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17B881F26F4D
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jan 2024 12:31:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D9A31C2237B
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jan 2024 13:21:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EADC14AA7;
-	Fri, 26 Jan 2024 12:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A08411BDC0;
+	Fri, 26 Jan 2024 13:21:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s1SrQnER"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cl9ASqzS"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA07212E72;
-	Fri, 26 Jan 2024 12:31:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29BB71BDC5
+	for <linux-wireless@vger.kernel.org>; Fri, 26 Jan 2024 13:21:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706272305; cv=none; b=KbYZNYG3xr3fSzhyelDpRqJogxjsjLVTp/U4sfg2oGH5BXlieRvNAwNj/gfWQWaZhT+N7EefdF9FkHm3+CpvGzDu7wgX7jbhD7RzqMyR3E/KZ1GhWKMSDD6Xp79Iuy9PkS9fniGkQ7MpatLHowaU2BcCLv1wG1LnnKsyNavDiZA=
+	t=1706275307; cv=none; b=mCMP/2mOwirgkqxTo5PuY7O3/esYTLvQqXg52NfsAREw0mt7IJpt7MLdlK8kBMRuis4exo7JwBswdyikC9l1ouD5JGq1U4lfHtyuoWAZj+MZlDEPs5KJVj4f/I8PtkkgeZUIZKrbvcKK2QgW8/jLTLeBN4U/8HbnnR0Hxyc2bkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706272305; c=relaxed/simple;
-	bh=ipCUSjnM/+mHuCmrIoG3yByfeAdeaGi0eaCJY0n0870=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=rWKfPlVn2KHcAo/1vIRDjdUwbqJOfP3Ears574HVfT1ul3T1dWMDfKSc6eramB9aCCvn/eWzUsXxWpxpaGCQdJNTcGMpwoUSh/bEozWn309RziOSRkcTTkTMV5GxbDAtmHhWjfpVS6j58hLX8WtZeowp9x+EXIOObrnco7BP4Pw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s1SrQnER; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79932C433C7;
-	Fri, 26 Jan 2024 12:31:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706272304;
-	bh=ipCUSjnM/+mHuCmrIoG3yByfeAdeaGi0eaCJY0n0870=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=s1SrQnERVeIjv7orjXvCqdSU+t8tO4oWl68uokNWhWLpXR6qbtmqKWGLu9PXEabOs
-	 RRLfO3BzY8c5fTeSwu8A0NriuDTFLSCg7ea5cTLquqlHRvKHcCmSqOADWTFbPBueiP
-	 wZBDuBmrxXqMG/DUR3Znu09RJjrEqyd9q1BsYpVpQzPC1I9K+B0N987ulKpQO0QLz+
-	 u9HHxiTLYCBflSNNyu/nJSNk6MvLmK9R77Dt+vSkZL17xv57ElW5BqMmT6NiTqKixh
-	 jozUZSTzx23BfuX36XN8fLNovAOEQnHtyNDjqI8gCJ2JBKZaAQ8LOLiacUfQREuIyt
-	 eQO+KlNqJM9zg==
-From: Kalle Valo <kvalo@kernel.org>
-To: Arend van Spriel <arend.vanspriel@broadcom.com>
-Cc: linux-wireless@vger.kernel.org,  brcm80211@lists.linux.dev
-Subject: Re: [PATCH v3] wifi: cleanup brcm80211 drivers maintainer entry
-References: <20240126105724.384063-1-arend.vanspriel@broadcom.com>
-Date: Fri, 26 Jan 2024 14:31:41 +0200
-In-Reply-To: <20240126105724.384063-1-arend.vanspriel@broadcom.com> (Arend van
-	Spriel's message of "Fri, 26 Jan 2024 11:57:24 +0100")
-Message-ID: <8734ukz36a.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1706275307; c=relaxed/simple;
+	bh=E318jbBI3Sfmaas3eq3UTLrKlPS3jJTstVGnWt2qb/w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Jd6DArtAFhadyGB1k78ShKQpRvuJp48axmb/aEwOeTxlIWW9poNyonvlU0HBPP+eatRSH5cIBwb90KHUYSpJUGqXpJLe6ZjwacqzHapUtaIcYDTuHkOYuI2xbz0tCnQ7/J//+vXMIlas2VPTNSx+yVTqkJdai2zA7cQhoTMXJ+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cl9ASqzS; arc=none smtp.client-ip=209.85.160.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-42a4516ec46so2806541cf.0
+        for <linux-wireless@vger.kernel.org>; Fri, 26 Jan 2024 05:21:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1706275305; x=1706880105; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=E318jbBI3Sfmaas3eq3UTLrKlPS3jJTstVGnWt2qb/w=;
+        b=cl9ASqzSooX3KQ4evUNW17b7iUsjjhqSRNVgn6kBxudeNiZqit5WfUWAhSnTs+thEr
+         pKfGV22ZKjgDu4UQ/BoqdrDijO4tCWsbjf+PKkAK5nk4+GE/S9Bk3ZDsjFvd2lBSqHxl
+         s/VDn86Wh3+10oN23c+Gwb0THPi/I4xKe7GpDJrxZZdq6Sbih1TeUDLjQ0EvYSsN4meq
+         fT6XI2bTkeScoikGPUTdmFvfV1R4evhZcTOA320XblXFFWoDpDzSqXh4Czp01IACkbPn
+         X33Qq6CDhX7EJWTa/uVk8+sa6tQYV9/olxn+uBAqhwNVgMz401PYkVJHnNfzjhn+w3fu
+         G8lw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706275305; x=1706880105;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=E318jbBI3Sfmaas3eq3UTLrKlPS3jJTstVGnWt2qb/w=;
+        b=VOz5DkQw2uTZlVU2/HYuctoN41lJ5E/HsOtPyoUIqCpdIvC+hB73YSwwKRXYToSSKl
+         B1ehtfDvHLL37vD9jJXpfb07bpDDNZ7tUx3E+MvqGMV9R65gQxtdpi5lATFOFwuqLdOw
+         XzqnULubh++Wpj+pjlt46gl7xsiyfyIsV+biHc+cszyBEEO5+79AGfWEmP+gY8HJw2GA
+         D1mjPLqySKl1/HMu00B9J5PYCPBA45RKAkPventP0ZUU/sULTqTV4wmrVaDDnPTK/yvI
+         GRg8vUZR9IYDUNiSuarEsjxSfeTkbfpcFNmNjCwYswpOkRcOuMrPMj2SElTHbtl6F7Nu
+         3XGw==
+X-Gm-Message-State: AOJu0YxJfAYv5vq0E5Ga90SzDOxRBYrQOramtFEaKOxnkI0XpJgFI2O4
+	exIOp2drhfGegvtai5uUs6mB5sVYb2I9oiEsQFFY6lsF/OWb6VyySHk6B0FCjU4FPMkKvGfu6up
+	yZx4D99HuUiWqtOHdDA0NjYMTpZ8=
+X-Google-Smtp-Source: AGHT+IH77LyfjdWdccbMaJlyxoI/kras+Q5L77PhaerHh21iJq5Nc/R3Kl9i6aKWv57a2uEW6hfoNKP6DNG1TJc+yX0=
+X-Received: by 2002:a05:622a:6dc5:b0:42a:7e25:d938 with SMTP id
+ ir5-20020a05622a6dc500b0042a7e25d938mr743333qtb.0.1706275304961; Fri, 26 Jan
+ 2024 05:21:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <CAGb2v66xVLqr+tUSD_6uzguGXtj04WfbpT0z9M28r8z-g62Z=A@mail.gmail.com>
+ <CAPuHQ=GSuKW5=T0GXXCq7Pf9jw=zcEnms-fEJey68QUWH1ishQ@mail.gmail.com>
+ <a5123274d5a8d80d554ffb786e25bef72d45f69b.camel@sipsolutions.net> <CAPuHQ=HSJNXx_ukS4G=+AsM=qp2yMA4mKD=NHDpq+BoMMLSv+Q@mail.gmail.com>
+In-Reply-To: <CAPuHQ=HSJNXx_ukS4G=+AsM=qp2yMA4mKD=NHDpq+BoMMLSv+Q@mail.gmail.com>
+From: Petko Bordjukov <bordjukov@gmail.com>
+Date: Fri, 26 Jan 2024 15:21:33 +0200
+Message-ID: <CAAgmp6t_emZ1GSnh56JuO9Cp=dJcf13rOCN=KdGMXG10nxBoEA@mail.gmail.com>
+Subject: Re: WiF Transmit Power Control (TPC) Regulatory Requirements?
+To: b.K.il.h.u+tigbuh@gmail.com
+Cc: wireless-regdb <wireless-regdb@lists.infradead.org>, 
+	linux-wireless <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Arend van Spriel <arend.vanspriel@broadcom.com> writes:
-
-> There has been some discussion about what is expected from
-> a maintainer and so a cleanup seems to be in order. A dedicated
-> mailing list has been created to discuss brcm80211 specific
-> development issues. Keeping the status as Supported although
-> help in maintaining this driver is welcomed.
+On Thu, Jan 4, 2024 at 12:02=E2=80=AFPM <b.K.il.h.u+tigbuh@gmail.com> wrote=
+:
 >
-> Cc: brcm80211@lists.linux.dev
-> Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> ---
-> changelog:
->   V2: let's not orphan the drivers for now
->   V3: switch to my Broadcom email
->
-> The discussion around the SAE password patch [1] was a lively one
-> and at some point I wanted to drop the ball and be done with it.
-> However, when the emotions subsided and people offered to help out
-> with maintaining the brcm80211 drivers I decided to stay on for the
-> job. The discussion had some valid points specifically on my actual
-> involvement. Hopefully I can improve in that aspect. I sharpened my
-> email filters to keep better eye on brcm80211 related queryies,
-> patches and what not.
->
-> Another step taken is the creation of a specific mailing list for
-> brcm80211 development topics:
->
-> <brcm80211@lists.linux.dev>
+> Ideally, TPC should be a fully automatic mechanism that reduces
+> transmit power between the two points to as low of a level as possible
+> while delivering the same quality of service. The purpose is to reduce
+> the excess headroom in each link. I.e., if you could still link with
+> 65Mb/s towards a given direction using 14dBmW, you should not transmit
+> with 20dBmW.
 
-Arend, thanks for creating the list. Apparently to subscribe to the list
-send email to:
-
-brcm80211+subscribe@lists.linux.dev
-
-Though I didn't get any reply yet, hopefully it's just slow.
-
-> This patch was based on the wireless tree, but it probably applies
-> to wireless-next as well. I am fine either way.
-
-We usually take patches to MAINTAINERS file to wireless, less conflicts
-that way. So I'll queue this to wireless.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Just to add to that, that for most if not all of the EU it must also
+'provide on average, a mitigation factor of at least 3 dB on the
+maximum permitted output power of the systems'. I read this (not a
+lawyer or radio engineer, so please correct me if I'm wrong) as the
+average e.i.r.p. of the entire BSS must at any point in time not
+exceed the maximum allowed - 3db. This would include AP->STA, STA->AP,
+and STA->STA transmissions.
 
