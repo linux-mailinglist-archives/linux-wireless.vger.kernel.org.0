@@ -1,90 +1,64 @@
-Return-Path: <linux-wireless+bounces-2509-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2510-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 911DF83D1E5
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jan 2024 02:10:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8354683D1ED
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jan 2024 02:15:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4586B28B393
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jan 2024 01:10:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 377141F2602E
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jan 2024 01:15:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91003629;
-	Fri, 26 Jan 2024 01:10:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jRVwij46"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA7EE399;
+	Fri, 26 Jan 2024 01:15:03 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out28-146.mail.aliyun.com (out28-146.mail.aliyun.com [115.124.28.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67C60399;
-	Fri, 26 Jan 2024 01:10:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F51C4683;
+	Fri, 26 Jan 2024 01:14:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706231436; cv=none; b=TdOnoY39ALTKIwWVua4DeVSAthq0rUCyEsKg1iQ3rZYEvvE0rhLBKoTa+aON4e6cRsIu/E12GjOe2Uib/OVYMCTsQ9Y+LvWhl6IHnzfzY4LxJnfkfFhQo0nsUbeCcKnCI5IzFncuYpVb7JXPyvMNEKD1VoUZz8fBiiMhO5abBTs=
+	t=1706231703; cv=none; b=S/opoBdYZY6J92x/rRQuqyrqFUGIBtZGWSKFPAfGNQpKEs8a8xPEPOLFS4o8OgsxZeatbQPHzENr44BJpg8ePvig6Qm+WQCx8F1y5KAdgFquHKl87AWN7iwQTHgociQm0Vu4z6WxGUNRECTDnkf6DJ+HpLolVv3FDLc6NP3HA/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706231436; c=relaxed/simple;
-	bh=UtZZQvws/MkjPDhMY+kb4qtn6ATaFigrvNJEFylyc9E=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=pN+nsyuJfI91HpgsOoAW0xLJLeTYw05g6Wrj1O7qw9VB5JGYwfkyw4QbpddyI65oq4kDDhZ+LE3BDA6QRDPe12U23mGPELBXH0uGX0/1SCEMpNNLiyh0zDbiypJalY6S0nXPdtq5q7yA/LYTJcXtxvrtIgy065ZcPPW/Io+AXzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jRVwij46; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id F2452C433C7;
-	Fri, 26 Jan 2024 01:10:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706231436;
-	bh=UtZZQvws/MkjPDhMY+kb4qtn6ATaFigrvNJEFylyc9E=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=jRVwij46wStyHoJrDxVZT+euZcXTa/UG5IeDJwPrt8Dydub4XBTfhiEC0hqvawsgD
-	 eAhaXTCj/OwxMbmMdStUwy9FN7fOa/+q0DHTJ9CsWlV23iMAlGpRjJN4VgE/U6WGUF
-	 tu0QXCW7IXrSMyhraHVcdDif9BOybT1P8joqcm31ELns8hflk2TjIi8K+z0n8wvBTm
-	 KOx1X/HqI+Woe8ZWAmZnVKq/fZuk27ODysT68rJE3tQzC4C7BPd2LL92XCMYYvTcRp
-	 Fxl9jnZRM+t8Tu8Tjsio2JBjxubwiNqrDteQOFueqTTTw6s+L+ImHwYJYc5CoAyDNJ
-	 4ksUXHdpsTngg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id DC228DFF767;
-	Fri, 26 Jan 2024 01:10:35 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1706231703; c=relaxed/simple;
+	bh=FMwtVHTmxAGlaBDsl/6/3KrW1fighMyMZHNpy1DBJxI=;
+	h=Date:From:To:Cc:Message-ID:Subject:MIME-Version:References:
+	 In-Reply-To:Content-Type; b=NQE7NNOAt8fBeNJ69C8FWNEpkSipTvo054KCItmiWIXkRtI52VSMMAoiauKoVBPgaJN/M4zo58HB6cW0YoPBdVylAh/BXOLqBOreAMqLcFFQ9ryGZRQpuDj4JW92AJvNB5nEqiEpLhYXjov1i0vXfuLMComyRHWfKZiSzvunJJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ubisectech.com; spf=pass smtp.mailfrom=ubisectech.com; arc=none smtp.client-ip=115.124.28.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ubisectech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ubisectech.com
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.3014811|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_news_journal|0.062876-0.00401077-0.933113;FP=0|0|0|0|0|-1|-1|-1;HT=ay29a033018047190;MF=bugreport@ubisectech.com;NM=1;PH=DW;RN=6;RT=6;SR=0;TI=W4_0.2.3_v5_21282248_1706230868553_o7001c77u;
+Received: from WS-web (bugreport@ubisectech.com[W4_0.2.3_v5_21282248_1706230868553_o7001c77u]) at Fri, 26 Jan 2024 09:14:48 +0800
+Date: Fri, 26 Jan 2024 09:14:48 +0800
+From: "Ubisectech Sirius" <bugreport@ubisectech.com>
+To: "=?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?=" <toke@toke.dk>,
+  "linux-trace-kernel" <linux-trace-kernel@vger.kernel.org>,
+  "linux-kernel" <linux-kernel@vger.kernel.org>
+Cc: "johannes" <johannes@sipsolutions.net>,
+  "kvalo" <kvalo@kernel.org>,
+  "linux-wireless" <linux-wireless@vger.kernel.org>
+Reply-To: "Ubisectech Sirius" <bugreport@ubisectech.com>
+Message-ID: <42e06f48-a2cf-40ef-8a43-eb1bf3b946c0.bugreport@ubisectech.com>
+Subject: =?UTF-8?B?5Zue5aSN77ya5Zue5aSN77yaZ2VuZXJhbCBwcm90ZWN0aW9uIGZhdWx0IGluIGF0aDlrX3dt?=
+  =?UTF-8?B?aV9ldmVudF90YXNrbGV0?=
+X-Mailer: [Alimail-Mailagent revision 79][W4_0.2.3][v5][Chrome]
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: pull-request: wireless-next-2024-01-25
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <170623143589.29940.9604146187451622617.git-patchwork-notify@kernel.org>
-Date: Fri, 26 Jan 2024 01:10:35 +0000
-References: <20240125104030.B6CA6C433C7@smtp.kernel.org>
-In-Reply-To: <20240125104030.B6CA6C433C7@smtp.kernel.org>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+References: <ed1d2c66-1193-4c81-9542-d514c29ba8b8.bugreport@ubisectech.com> <878r4e4q69.fsf@toke.dk> <fb3ea26f-f9b6-4107-bb03-ca4893f0495f.bugreport@ubisectech.com>,<0320fac8-68dd-40a6-bb38-1da0d71d0dbd.>
+x-aliyun-mail-creator: W4_0.2.3_v5_M3LTW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEyMC4wLjAuMCBTYWZhcmkvNTM3LjM2vN
+In-Reply-To: <0320fac8-68dd-40a6-bb38-1da0d71d0dbd.>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
 
-Hello:
-
-This pull request was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Thu, 25 Jan 2024 10:40:30 +0000 (UTC) you wrote:
-> Hi,
-> 
-> here's a pull request to net-next tree, more info below. Please let me know if
-> there are any problems.
-> 
-> Kalle
-> 
-> [...]
-
-Here is the summary with links:
-  - pull-request: wireless-next-2024-01-25
-    https://git.kernel.org/netdev/net-next/c/b54846da4594
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+PkdyZWF0LCB0aGFuayB5b3UgZm9yIHRlc3RpbmchIEknbGwgc2VuZCBhIHByb3BlciBwYXRjaC4g
+SG93IHdvdWxkIHlvdQo+bGlrZSB0byBiZSBjcmVkaXRlZCB3aXRoIHJlcG9ydGluZz8gSnVzdCBh
+cyAnVWJpc2VjdGVjaCBTaXJpdXMKPjxidWdyZXBvcnRAdWJpc2VjdGVjaC5jb20+JyA/CgpIZWxs
+by4KICAgIFBsZWFzZSB1c2UgJ1ViaXNlY3RlY2ggU2lyaXVzPGJ1Z3JlcG9ydEB1YmlzZWN0ZWNo
+LmNvbT4nIHRvIGNyZWRpdCB0aGUgcmVwb3J0LiBUaGFua3MuCg==
 
