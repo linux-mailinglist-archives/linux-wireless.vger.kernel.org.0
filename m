@@ -1,205 +1,178 @@
-Return-Path: <linux-wireless+bounces-2576-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2577-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F70183E25A
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jan 2024 20:19:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D24F983E2F7
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jan 2024 20:55:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A08591C21491
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jan 2024 19:19:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02C771C2318B
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jan 2024 19:55:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DEBE2233B;
-	Fri, 26 Jan 2024 19:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 349B222EFB;
+	Fri, 26 Jan 2024 19:55:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=locusrobotics.com header.i=@locusrobotics.com header.b="Dbxdoh/S"
+	dkim=pass (2048-bit key) header.d=nabijaczleweli.xyz header.i=@nabijaczleweli.xyz header.b="P7o5HwKN"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2114.outbound.protection.outlook.com [40.107.92.114])
+Received: from tarta.nabijaczleweli.xyz (tarta.nabijaczleweli.xyz [139.28.40.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD58E1DDEA
-	for <linux-wireless@vger.kernel.org>; Fri, 26 Jan 2024 19:19:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.114
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706296744; cv=fail; b=EOlqcYOVq6Hsq3izzYTZW9JPD3FmTScB1LQiampjDTrvB4+KqYRcoJFjPX1P6Es9oW5BmJM6eatSkUziTa9thSgodBIfEM9oKnJBLLJNXzwjLs6uzVggKaG1YmvnrtXFfXnSkmOlFVVevryjmquth7QSWt6+2Yt0IzQyZY1/O6A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706296744; c=relaxed/simple;
-	bh=PkwX7HHGU4ld0OPnv5EYQ4EK0t+6V5jHqSw9PhgYKYo=;
-	h=Message-ID:Date:Subject:From:To:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=e89QDv+RryftBXYgGSYNvga7V6Kb5UECvFTGBd0DpKAD1mCd6WZ7Ti8I+dBJAev1kp4yCoLBelcRKpygjoAgYtioXylk1NeRGefHah5yNb56SjZ0Ia5diQ4xtoagbhFaWCP5rA6QGwhKm5SOORNOqo2vuIgbH2kxSV+XCap7pB4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=locusrobotics.com; spf=pass smtp.mailfrom=locusrobotics.com; dkim=pass (1024-bit key) header.d=locusrobotics.com header.i=@locusrobotics.com header.b=Dbxdoh/S; arc=fail smtp.client-ip=40.107.92.114
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=locusrobotics.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=locusrobotics.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=W4r8ZrdPVEaUhuNXMj2QwFMxLNWLW5HBd8jPR0joV/R6tPExi1F7MsVvG3uGB4rnkQJr3Sj28tW1hc20NqtwuHJmKYAbqBH1uZ/31mlWOMmm2r3IJ4TdqGo4HYXVtph/wuDQwNPxsPf0w1LiC4v4ocyJXSmu1vhaKPO/GnqrFWi50OsTDdSPPmLhuzByhNq8MCf1ZcM3WPNfUHLX1wqVSmQ3Yz4OywcURcpazZJc6volB/Po4gOKvfIHCaWDnKoJuxxCHE7obBYmtC+t2oZti4pfMCYe9tKBJglkGYvTgRIEpNIJPXCSt8Bt3iA5QBznetOlSCKycRVoMNFhqAQZOw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XJWRUGQeST4pCM3fwqmNX3iZ0tBjcVbua4D8tBWZI6U=;
- b=M4iWuxua7F2EKCTBKsCQ/mg+/dM1yth3ducW07NxmA/n4JMktMbMii7E6FbfyLcbOESe7BSOVR2vqFsqGbhlkZmGzAzXfyT24VD8/OErpfQsU133zfmFxymBk4lfRFAOOHtS0js6DBETcCm71XZBhtJk2MvANxATwWFmItpRlLby41KMaXaeIJxW4MbEWxe97M/BGBc50g+qLV8Gca+nFdakn3h0UB0ZHNrMUOvY3FT6Gx7K0w9oX3MP+ZQZvv7ohyFcqw25YeKe/PSCJ+L0Qc0Fg3GaSa8CxqwPpqXxEGUN2U5vICf1feT88bFiY1Fs/K0dGrM+f3HbhtIH6M6ZAw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=locusrobotics.com; dmarc=pass action=none
- header.from=locusrobotics.com; dkim=pass header.d=locusrobotics.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=locusrobotics.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XJWRUGQeST4pCM3fwqmNX3iZ0tBjcVbua4D8tBWZI6U=;
- b=Dbxdoh/SpPkG1MwGmThvlH6O6zUL8caN4b+809v5YRHn9dYonbQYPIT/JHasVvfTkF7hK23AdliCXf9FIqm5n/OiI4GdEzYWmBpUkfX8Ej97n8MYleIAA7cz7NnckhvueSqoX/REghO7md6rvSGi+vKUWruenK2yff0eUnfqy+Y=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=locusrobotics.com;
-Received: from BL3PR10MB6163.namprd10.prod.outlook.com (2603:10b6:208:3be::9)
- by BN0PR10MB5384.namprd10.prod.outlook.com (2603:10b6:408:12e::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.27; Fri, 26 Jan
- 2024 19:19:00 +0000
-Received: from BL3PR10MB6163.namprd10.prod.outlook.com
- ([fe80::fa77:414c:bd6f:3bac]) by BL3PR10MB6163.namprd10.prod.outlook.com
- ([fe80::fa77:414c:bd6f:3bac%4]) with mapi id 15.20.7228.027; Fri, 26 Jan 2024
- 19:19:00 +0000
-Message-ID: <642b61a6-e3c0-4831-887f-f25314bf166d@locusrobotics.com>
-Date: Fri, 26 Jan 2024 11:18:57 -0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: ath11k multicast action frame RX
-From: James Prestwood <jprestwood@locusrobotics.com>
-To: "open list:MEDIATEK MT76 WIRELESS LAN DRIVER"
- <linux-wireless@vger.kernel.org>, ath11k@lists.infradead.org
-References: <dcdbd757-ad6e-4fe0-a0c1-fe328431b73b@locusrobotics.com>
-Content-Language: en-US
-In-Reply-To: <dcdbd757-ad6e-4fe0-a0c1-fe328431b73b@locusrobotics.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BL0PR0102CA0061.prod.exchangelabs.com
- (2603:10b6:208:25::38) To BL3PR10MB6163.namprd10.prod.outlook.com
- (2603:10b6:208:3be::9)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F2922EF8;
+	Fri, 26 Jan 2024 19:55:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.28.40.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1706298939; cv=none; b=aHSVSolgwO5SViNc80vlY7IR6BFXhkFNvUg/raA6KeGt2V5NRNUSfc9vGdzKZ1PxnGipQM7bWnbUXQ3x7NA3s2BBwu/Q8hbwlA3Zg3/kgVii0O6B1MqUwgQJb1QcPL/h8qU3bV4UlAonIuxsXAtUW4CI4a/LkekQiNa3+891Le4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1706298939; c=relaxed/simple;
+	bh=+npbQHZuZBd0gTA1lLyMDwpNWnMD0l2Ea23p7bvYMBU=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=CNH0/V7BHSOFWiLicixWjqEBXNGWnBL0DCszttVn5Le7Dm5VRHIscgAk3sI4e51p8NqMb4D/LFv/3axIl332Ikf8pmKykjIUXZGweFuj/BLL9t7cJxY8EZlQymMIqFhUWOdMPlFS2k1rXmv5qnUY5piMKbcxjxzpJA0KfmTuTok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nabijaczleweli.xyz; spf=pass smtp.mailfrom=nabijaczleweli.xyz; dkim=pass (2048-bit key) header.d=nabijaczleweli.xyz header.i=@nabijaczleweli.xyz header.b=P7o5HwKN; arc=none smtp.client-ip=139.28.40.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nabijaczleweli.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabijaczleweli.xyz
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nabijaczleweli.xyz;
+	s=202305; t=1706298452;
+	bh=+npbQHZuZBd0gTA1lLyMDwpNWnMD0l2Ea23p7bvYMBU=;
+	h=Date:From:To:Subject:From;
+	b=P7o5HwKNFO+kfvsL1sw4+yniPUjmqIu2HTGQ6gIAjOfpXdtsgEiGdWl8Vr1R0aV7d
+	 7lmOAli/Rt3X99FdYa0x12uH1hf708rq00vR8sOa9I+Mdl89EkiNwUgaQdKGrAUXuy
+	 dgDTRsvoD13EXaROiEqreobxlCS2iUTDJ9gcwdLB2N32yQ9WQ1Ap95+tQ2gBokvI/A
+	 KlciJ8Zmh33fSDaiH558EduyMoq1gq8sStg31sFpePefAhGdgUM4506dWgmaSe2g/w
+	 5n/E5C0HgxG64rgIIFcDxbxnxSNQ4/Nc9VQ8K9UzEsTgpZ7SvWvNiufvbwFPq4E2SO
+	 r7G4eQL6oBtXw==
+Received: from tarta.nabijaczleweli.xyz (unknown [192.168.1.250])
+	by tarta.nabijaczleweli.xyz (Postfix) with ESMTPSA id AB97C34A;
+	Fri, 26 Jan 2024 20:47:32 +0100 (CET)
+Date: Fri, 26 Jan 2024 20:47:32 +0100
+From: 
+	Ahelenia =?utf-8?Q?Ziemia=C5=84ska?= <nabijaczleweli@nabijaczleweli.xyz>
+To: Brian Norris <briannorris@chromium.org>, Kalle Valo <kvalo@kernel.org>, 
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: memcpy: detected field-spanning write (size 101) of single field
+ "ext_scan->tlv_buffer" at drivers/net/wireless/marvell/mwifiex/scan.c:2251
+ (size 1)
+Message-ID: <xebnh5c5rnfequ6khyhieugefrtt5mdftr6rsw522ocpg3yvln@tarta.nabijaczleweli.xyz>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL3PR10MB6163:EE_|BN0PR10MB5384:EE_
-X-MS-Office365-Filtering-Correlation-Id: 837dac87-00fe-44a3-795f-08dc1ea3a657
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	NBWh9tqaQa8Ho+mCrVo+uZtk4kyICyOa/C0wCjhMc1Us0A9RgnMa2RLSJUtKcUiymImcgdmNeRhNWXtnirDpAK0j7Ofcu8XSv0Tl+iYt3NdikySIfIJdB6l2zUs6dCtP0zvxGuMbRrGgNpwlOdS2j4/DU+H4mevX9ACpvQi1flLR50Ukt5iN/idAN440aIhj1hzckQHzmcTgtfEjGewJuEoJpUADdDtIM1B3EKeNsMPV+wIaULeoFzK0sZv0CHV95E+AcB27xWwO2EUmtK1gtx7LZo2kr/2BHsV7+h09NkjfbHghFOyMtO70RtieHe6DkAFupJ4ZsGyiNIbXck2G/cuH2Mro5jAZQWajBI29Liln02xvzPOOm8omOLsrRlBXH5brVAYujl26jDGGgK65jSA+z6jqRR+tKj6sh1gRaOX2plvi5oFLCQtDByFVruEZ7WvvUQSCDAtH1etIPvjy+NABIoteE9x20mUxmfrL87erh2Fz9ssOJxUIxtKrIhBemuQInKZd1sGljjB7xj7X6PgPtax90D7jzZjlAmm9T2LxJa+m5z9RBed/KAyHds7C6R/BaIbLdiO1mnj5HXE4fc/xodDFYHacQpG4QMTdIcL/wLcXFqh0WS/0M3b/cmZVfopboK5AI7FQDR6MhVgVwtFbyt8XKWkCF7Kyf51hS71Bclt9VsAW5eLCSlQTxS3a
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR10MB6163.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(136003)(39850400004)(396003)(366004)(376002)(230922051799003)(186009)(1800799012)(451199024)(64100799003)(31686004)(6486002)(6666004)(5660300002)(83380400001)(8676002)(53546011)(66946007)(316002)(66476007)(8936002)(66556008)(6512007)(2616005)(26005)(6506007)(478600001)(38100700002)(2906002)(86362001)(36756003)(31696002)(41300700001)(83323001)(43740500002)(45980500001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cjU3bDZDOFdhQVZuSmQ3Z2dvbStXcVE4OGFVR0RFdERkMERaVHk4VkMrTTdx?=
- =?utf-8?B?RVNZS1FqL2dZN3NYTE9JU010REFxVXRDRFpWMnNSMkNxMzR0RmRodjNyMmY3?=
- =?utf-8?B?NDFlTHBZQXN5SEVHREE5dENrL0FCSXBRb0VsaVVydSttalRKNmhaNjdlU21x?=
- =?utf-8?B?cEY0eVZUMDI1eUtrY1QrQ2VnbjBHeWFvdnFFcTloVUNYSjVTaVpWMXppMjdW?=
- =?utf-8?B?S1hIdFNGWjZSTWtGaS9tMFRDOUhBSHlaNm9iejByUUI1VHJUK1pJZlRkR0N3?=
- =?utf-8?B?RCtySm0zNjJSQjZod3ZHd0VsSTFtRHVJc1BqT2Z2MWR0eDJuN3ZBTkx6Q0VZ?=
- =?utf-8?B?NTFkMFZDaDBpRHA4ckpOQkZzUnBFVDJVL09wRk50WjREaXFsVTlHdFd4ZzRm?=
- =?utf-8?B?TXZ1VHowOGpuWFpuaWRGYWFhK1hBenFDZlBQc2Z5MEg3WHlpZlprM2tMSkRz?=
- =?utf-8?B?MFRXVVNEaWV3dUJxTFZoejlJS1JHVUdpTERYWXV0OGtZZTdjbDZCUVQ5bzFh?=
- =?utf-8?B?Qk1FcDFrNFEzU0tPZ3ljN0tkRXRUL2R3bU0xanpSUDV2ZGdpL29Qak1nNE9Z?=
- =?utf-8?B?bGR0L0hiM044cG03RjJmTHE5cFQwV1ZNbWR5SUQvTXFXNzFUN2F1RnJSM0xt?=
- =?utf-8?B?K0hvd29yZElKYThSRjhpa2lqNDkrQmVTVVZPS3M4RXN3V1hnbVdjWEFqMzRx?=
- =?utf-8?B?K2oyWGt6Z1oxelU2NkdVTEVGZ0lKVzltQTIxR2V0L25RbVgxVVIwc09yN3JJ?=
- =?utf-8?B?Vkt0SE50Y0NxY05zUHRpRzJLYXhSNkVDWWMrU0pkakpleEtPYUpXckIvZ0hN?=
- =?utf-8?B?YWorMWFKcnlmR2JmNzI5Y3VQblNFSjBBNTVtc1hDOXFXVGwyQ3VKd0MrOG9r?=
- =?utf-8?B?aW1OaUE3MktSY3Ryb1FnNnQ1Z25RSVdoeFFFUGp6VFVTM2sxaklmVC9jaFdF?=
- =?utf-8?B?Tjd4OGUyWVJQRENzQUNMc2tIYVAzQW5jUkZITWRYS1ZTQzUwdjRCUFJKejBJ?=
- =?utf-8?B?M2lRcm9kOGYwYml4ODY5SWFTTWlhR1M3aEd3WkVYSjdHazhRYWhTRDFQNVNu?=
- =?utf-8?B?QmMvbGFZM2VzdjhmOE5wZEx6MTJFV1BmV3FFcmtrNzlOUk9ERkkveWN6Y1JC?=
- =?utf-8?B?b3ZVSFNXSWlzaDh1Vy8xajl5eTU0TjQ0ZlNDc0lQTm1kRWhNMWNLYjRGWllq?=
- =?utf-8?B?Z1A5MjJPWjI2dWE0eEx2VitnR0xBSTI1blZmZHhhUWs5WnU2TnF6aEwzeE81?=
- =?utf-8?B?MmtXRkZJSVYvUERyRDlCdkV2MTRPazJpa1VBclNXK3gvWDNPL2dQeHlkRjZx?=
- =?utf-8?B?a3dkVnkrWm10VjdJdEtZOWdvL0QwY2pFaUYxdXBGaWFGVjR4ZmRxVURxQnNl?=
- =?utf-8?B?NEY0cWVKYUJmaG9US0QyYnY2KzRzOFh4UGJBamJQZ21vYzMzc3oyR2dOQldV?=
- =?utf-8?B?dWdGdzU5T3ROZU10VmtnUHFhVkN4bXRrRDBWTFRnRUlmenVGWFN3dlJsalFO?=
- =?utf-8?B?ckR0L0I4TkFrSXpnSVlKTkU0cUQzNTBVRkFaaW5OaytoQm40QW1XczF5V1hK?=
- =?utf-8?B?cjlsRmdwZ0d3REdGaEdSUEFwSXVTSWxRcHltOGM4djVDSURvNE84SVpDMTM4?=
- =?utf-8?B?bnlQUE9FWUZIOE1hUXBlcFEySWplclJ4a3lVTEt0eE56UGVXWThBVTRTRDRE?=
- =?utf-8?B?U0x1TmZwZ1dXZFhKdE1KdStFanF1REUwNFpKSWFXVldWbGJJNVcvcFFPb294?=
- =?utf-8?B?bStIK3VEcG5iMktaOVhhZWFLdXRiMUhXdTFMVk1Udi90eWxZR3RSbUNMSkNk?=
- =?utf-8?B?bStTelR0bmNuZXhSZDNDa2YyL3BRSXR2SEVoSno5S1pMM3J6TUMxeXVXL3RG?=
- =?utf-8?B?eG15NkNES09FV3VJSThpMER2dGZERkhhVk45eWUrckZJbHdPMDVscWxsSytE?=
- =?utf-8?B?OUNCVTd5N0Uyei9xVm9zelc3UmxOUzlhVzZEb29FVTBXWC9NY3plTWxqMitx?=
- =?utf-8?B?R1NsM2hWWjE0d0l3V2lWMmZPRmdpMmF4bm5wdzJuRUhxWmQ1dm1zZHNxdTdL?=
- =?utf-8?B?b2g3YVFvK21KYUY2cEc2YUlTWjh6ZzZRZTZGMzl4eC9pcUpFQTV1a1U0ODVp?=
- =?utf-8?B?T1dza3ZFMzA2Vm42RkZzdzc2cUs2SFNIZW11R2xoVW5PU0FSMEdJQWE1c2c2?=
- =?utf-8?B?WkE9PQ==?=
-X-OriginatorOrg: locusrobotics.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 837dac87-00fe-44a3-795f-08dc1ea3a657
-X-MS-Exchange-CrossTenant-AuthSource: BL3PR10MB6163.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jan 2024 19:19:00.0576
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 068f275f-67fa-4977-a33b-80fe854a9590
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jwwXM40su8QaybZEPmp9cJqmIiiyTG7pAOX47c2dd765/XwNkAuQlwSbOVIqfBmTJDG11m1goNG7RQPyWJ03AbOpVATpeMpokmGpA1/J/u8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN0PR10MB5384
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="mluzsztmpjhpplhn"
+Content-Disposition: inline
+User-Agent: NeoMutt/20231221-2-4202cf-dirty
 
-On 1/24/24 5:06 AM, James Prestwood wrote:
 
-> Hi,
->
-> I recently added support to ath10k, for the QCA6174, to receive 
-> multicast action frames in order to support DPP. I'm trying to do this 
-> for the ath11k QCNFA765/WCN6855. I took the same approach as ath10k 
-> which was actually quite simple but I'm unable to see any multicast 
-> frames coming over even when I enable RX/DATA debugging.
->
-> What I've done so far is:
->
->  - Add FIF_MCAST_ACTION to the supported filters list
->
->  - Created/started a monitor vdev from within 
-> ath11k_mac_op_configure_filter()
->
->     ath11k_mac_monitor_vdev_create(ar);
->
->     ath11k_mac_monitor_start(ar);
->
-> - Also tried adding
->
->     ath11k_mac_config_mon_status_default(ar, true);
->
-> I can successfully create/start the monitor vdev. I see now as I'm 
-> writing this email that my specific hardware does not support monitor 
-> mode outright... Is this a dead end or is there hope with purely 
-> driver changes? or is it some filtering at the firmware level 
-> preventing this?
+--mluzsztmpjhpplhn
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I was able to finally see my broadcast frame after some additional 
-testing. It seems the driver/firmware/something gets a bit hung up when 
-I attempt to put it in monitor mode. It will start printing these 
-messages for about a minute:
+Hi!
 
-[   51.093034] ath11k_pci 0000:00:06.0: data dest_rx: new ppdu_id a1a2 
-!= status ppdu_id a1a1 dest_mon_not_reaped = 650 dest_mon_stuck = 12
-[   51.094461] ath11k_pci 0000:00:06.0: data dest_rx: new ppdu_id a1a3 
-!= status ppdu_id a1a2 dest_mon_not_reaped = 651 dest_mon_stuck = 12
-[   51.096281] ath11k_pci 0000:00:06.0: data dest_rx: new ppdu_id a1a5 
-!= status ppdu_id a1a3 dest_mon_not_reaped = 652 dest_mon_stuck = 12
+I have a Google Hana (mt8173-elm-hana.dts) laptop with Wi-Fi provided by
+the mmc@11260000/mwifiex@1 device ("marvell,sd8897").
 
-In most cases these ppdu ID's are a one-off from the expected ID which 
-seemed weird to me. But if I let it sit long enough I all of a sudden 
-get a ton of "data rx" messages, which is what I would expect if I 
-enabled a monitor vdev. Once this flurry starts I see the action frame 
-from my other client, sometimes at least. The firmware generally crashes 
-after a while so I've still got a ways to go but it seems within the 
-realm of possibility that this device could receive broadcast action frames?
+On 6.6.11 in the dmesg I see
+[   41.314595] ------------[ cut here ]------------
+[   41.314634] memcpy: detected field-spanning write (size 101) of single f=
+ield "ext_scan->tlv_buffer" at drivers/net/wireless/marvell/mwifiex/scan.c:=
+2251 (size 1)
+[   41.314739] WARNING: CPU: 1 PID: 298 at drivers/net/wireless/marvell/mwi=
+fiex/scan.c:2251 mwifiex_cmd_802_11_scan_ext+0xa8/0xb8 [mwifiex]
+[   41.314802] Modules linked in: uvcvideo uvc videobuf2_vmalloc xhci_mtk_h=
+cd xhci_hcd hid_multitouch joydev sbs_battery snd_soc_hdmi_codec btmrvl_sdi=
+o evdev btmrvl crct10dif_ce bluetooth polyval_ce mwifiex_sdio polyval_gener=
+ic sha2_ce sha256_arm64 mwifiex sha1_ce arm_smc_wdt mt8173_rt5650 ecdh_gene=
+ric mt8173_afe_pcm snd_soc_rt5645 snd_soc_mtk_common snd_soc_rl6231 snd_soc=
+_core snd_pcm_dmaengine snd_pcm snd_timer mtu3 snd ofpart udc_core spi_nor =
+i2c_hid_of soundcore i2c_hid elan_i2c elants_i2c melfas_mip4 da9211_regulat=
+or mt6577_auxadc spi_mt65xx gpio_keys ghash_generic ghash_ce gf128mul gcm a=
+es_ce_ccm algif_aead crypto_null des_generic libdes ecb algif_skcipher aes_=
+neon_blk aes_ce_blk aes_ce_cipher md4 cfg80211 algif_hash af_alg rfkill bin=
+fmt_misc pkcs8_key_parser dm_mod loop efi_pstore dax configfs nfnetlink ip_=
+tables x_tables autofs4
+[   41.315059] CPU: 1 PID: 298 Comm: iwd Not tainted 6.6.11 #75=20
+[   41.315072] Hardware name: Google Hana (DT)
+[   41.315082] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=
+=3D--)
+[   41.315096] pc : mwifiex_cmd_802_11_scan_ext+0xa8/0xb8 [mwifiex]
+[   41.315132] lr : mwifiex_cmd_802_11_scan_ext+0xa4/0xb8 [mwifiex]
+[   41.315169] sp : ffff800082e43620
+[   41.315177] x29: ffff800082e43620 x28: 0000000000000000 x27: 00000000000=
+00000
+[   41.315196] x26: 0000000000000107 x25: 0000000000000001 x24: 00000000000=
+00000
+[   41.315213] x23: ffff0000cb4d3400 x22: ffff0000cb694000 x21: 00000000000=
+00065
+[   41.315230] x20: ffff0000cbc6e3c0 x19: ffff0000cb4d3400 x18: ffff8000815=
+4d871
+[   41.315248] x17: 0000000000000001 x16: ffffffffffffffff x15: 00000000000=
+00004
+[   41.315265] x14: ffff800081f1eee8 x13: 0000000000000003 x12: 00000000000=
+00003
+[   41.315283] x11: 0000000000000000 x10: 0000000000000027 x9 : bd143d0859b=
+fb200
+[   41.315300] x8 : bd143d0859bfb200 x7 : 205d343336343133 x6 : 332e3134202=
+0205b
+[   41.315318] x5 : ffff80008215d2ff x4 : ffff800082e431d7 x3 : 00000000000=
+00000
+[   41.315335] x2 : 0000000000000065 x1 : ffff800082e433d0 x0 : 00000000000=
+00094
+[   41.315353] Call trace:
+[   41.315362]  mwifiex_cmd_802_11_scan_ext+0xa8/0xb8 [mwifiex]
+[   41.315399]  mwifiex_sta_prepare_cmd+0x774/0x848 [mwifiex]
+[   41.315435]  mwifiex_send_cmd+0x28c/0x300 [mwifiex]
+[   41.315470]  mwifiex_scan_channel_list+0x294/0x348 [mwifiex]
+[   41.315506]  mwifiex_scan_networks+0x1a4/0x3b8 [mwifiex]
+[   41.315541]  mwifiex_cfg80211_scan+0x37c/0x850 [mwifiex]
+[   41.315577]  cfg80211_scan+0x48/0x2d0 [cfg80211]
+[   41.315734]  nl80211_trigger_scan+0x728/0x788 [cfg80211]
+[   41.315836]  genl_family_rcv_msg_doit+0xc4/0x128
+[   41.315855]  genl_rcv_msg+0x214/0x228
+[   41.315868]  netlink_rcv_skb+0x128/0x148
+[   41.315881]  genl_rcv+0x40/0x60
+[   41.315893]  netlink_unicast+0x24c/0x400
+[   41.315905]  netlink_sendmsg+0x2d8/0x3d8
+[   41.315917]  __sys_sendto+0x16c/0x1f8
+[   41.315931]  __arm64_sys_sendto+0x34/0x50
+[   41.315944]  invoke_syscall+0x78/0x108
+[   41.315959]  el0_svc_common+0x8c/0xf0
+[   41.315972]  do_el0_svc+0x28/0x40
+[   41.315984]  el0_svc+0x40/0xc8
+[   41.315997]  el0t_64_sync_handler+0x90/0x100
+[   41.316009]  el0t_64_sync+0x190/0x198
+[   41.316021] ---[ end trace 0000000000000000 ]---
 
-Hoping for some breadcrumbs to follow here...
+(With the line unchanged in ecb1b8288dc7ccbdcb3b9df005fa1c0e0c0388a7.)
 
-Thanks,
+I don't really know what the relevancy or meaning of this is,
+but one has to assume a WARNING with a backtrace is never good,
+so forwarding.
 
-James
+Best,
 
->
-> Thanks,
->
-> James
->
->
+--mluzsztmpjhpplhn
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEfWlHToQCjFzAxEFjvP0LAY0mWPEFAmW0DFEACgkQvP0LAY0m
+WPFGHw//XnD9pn4PLO9yHjKSz8FVAkpgWOPK9NUe8dKdSvjoAF0cyzrhYcy04f6T
+pTUeNGjxQss9yMKsJMMGAWaA8jo9u8CAeXocbOSdyN7BeYGwi2Ya7TJfH8xz8Y03
+IsxXaiJJsKD/53Vkv5GGicT40Uv1tcI78j6dhpEpIjkWYZPLb8LZbBxmMkR2V9+j
+5h2Muixny8ZJFE9Cr+xWh7xabVwYJrOYh7MroGQINEaDurXOB74cYiItM5OwGwTk
+5L8VhO9MtUkz7wFgWwC1cl0SP0ZCuwVHIwzBZTzcJaFxGvMore1CoOQv939im7FR
+16dD9P/SHgPT5/Lxm4UA9WX97YBAs2GXe7OARIwzMAHazpTfmfAXIQob0YInST4N
+B0bvimBGFY/tBbd1FSZszwRAw7Qwxj7/7//pGmiS5At+i8l7Gza7tvAavjsb4HCQ
+azpg5fnK9LFcoJQxS70vURlgRpnN505gqYbpK36GCMUuNtBzlFFmR7iXPWWi0OI/
+vjhZZVDPG9Nsw9SctZlmhc5BtJN3HGVP78jbxiGnyDvFQx/QVmVICFg6DQ2UrarT
+K7f2snMhA6YNhB+ttSyd5h9IrK6sL9SrwM5EBSDKNHsK1jt24AsrFy50NK8IJiN1
+oAxiLFR0zTmLpjR552EkDbQx/3iTZb5O5kR5MnzQWLDtagTUapM=
+=feCv
+-----END PGP SIGNATURE-----
+
+--mluzsztmpjhpplhn--
 
