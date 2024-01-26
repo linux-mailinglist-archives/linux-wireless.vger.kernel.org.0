@@ -1,172 +1,242 @@
-Return-Path: <linux-wireless+bounces-2569-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2570-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1257E83DB6A
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jan 2024 15:02:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01A1E83DF4F
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jan 2024 17:56:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B167C295290
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jan 2024 14:02:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 265961C21F6B
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jan 2024 16:56:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29A5214299;
-	Fri, 26 Jan 2024 14:02:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D25D91D545;
+	Fri, 26 Jan 2024 16:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b="S3Oq71DW"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="aTEiAmgP"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 680761BDC6
-	for <linux-wireless@vger.kernel.org>; Fri, 26 Jan 2024 14:02:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.95.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E07720312
+	for <linux-wireless@vger.kernel.org>; Fri, 26 Jan 2024 16:56:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706277751; cv=none; b=F7jPbdg+DriaxoWyTtoAUr/65jxr6BGZ/uYt26yZr8lxBaySmx9COxDPJVuwkJac07SsgzGboIQZHNtBFQiUOkoaSsX3cTSlJI8soJloIUyoWyJUqcF3htYQw9RsihAQMA5jBvniIoSwaMj8VfCcxN4MXxuNZT4wgaXRR47Dytg=
+	t=1706288171; cv=none; b=jVinJlyVHDE2lydFWCUHksQz7jsYGqc4rXtjkvW84UwI26aECjdva2+0eDsOvaLfHStBdjbhacEsZX7KEnRJufouNM5jQbulRjpRjcv0KVe38XMwmKBFoNkXd8h/KtICf7r5/51YDi82qZ+MlIVMZrihirmebR8PVXKMiLQoMXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706277751; c=relaxed/simple;
-	bh=OEcyCXol0pnTAEwXWrZ8YP4TiY9sNFuZGDpT84oPOlw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=b1u4Ct+/PJv0O24jm+zG47bw/jsZuDRsZaI5WjGKbpi627Svg21rW0LeMHCLwJYOAvkmJ+cUaVCr+d6AkRKTQIthx2SXpKzq0vYgg2wBwmCTRJJYNA2UxTi5iy48NV+D03+Ko8C/kduO2GUBEBJD4j3K0WSvhFWp+3Bd2MroTmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk; spf=pass smtp.mailfrom=toke.dk; dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b=S3Oq71DW; arc=none smtp.client-ip=45.145.95.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
-From: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-	t=1706277745; bh=OEcyCXol0pnTAEwXWrZ8YP4TiY9sNFuZGDpT84oPOlw=;
-	h=From:To:Cc:Subject:Date:From;
-	b=S3Oq71DWiTqORFK8m1zTTZmsHDEpfdjyByOFhxc0rLWuv0jkU5I/03lwmKoi4pSYZ
-	 UAkAdxB8zCDhYLu+iYfb9QAzpwHZ4toZ5EA3JB3DzF7Fo79otE8nU8jh8MFThZ8y9c
-	 S/Rr9JHHfpyBl6DOeht4A0VMKderjRMwQP6U4eXliDhy0SbSJKV9/hK3luuuEXFZLf
-	 Ms7MZE0Snpy0w8BCjGba2Dtr2Iz8+JhU+pBTaxHMn9gx/mhfXjhdvC0/CKbWqWsKwV
-	 IfT4NRdO5CpNdonSd8rIQRONL5Nk4vUf0xFREW1CPkwR40+dJaee60W7TsY7Lc046b
-	 M5g9KhPnOtoQw==
-To: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
-	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-Cc: linux-wireless@vger.kernel.org,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Ubisectech Sirius <bugreport@ubisectech.com>
-Subject: [PATCH] wifi: ath9k: delay all of ath9k_wmi_event_tasklet() until init is complete
-Date: Fri, 26 Jan 2024 15:02:17 +0100
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <20240126140218.1033443-1-toke@toke.dk>
+	s=arc-20240116; t=1706288171; c=relaxed/simple;
+	bh=GQpbr7+hBIX+AC9RRy14jQa7gPnhctmjBPYB0e+rZTU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=ouB6c7f8x0B1ELhm9QjiAxTuJR4abEJDWBiZ1SbzIsY+VDEX+yMz2WAI9Fxg5Y90pWBQRcUjrSfDJW0EcKobSk23t87xsWIpl6f/0NHAFp49uL75OsQ9wXiZYLgpLhuToB90G5CV4MhTDPexyWNoLlRXZ8ZV0ERmDVne1yVxD1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=aTEiAmgP; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40QEbXJM022238;
+	Fri, 26 Jan 2024 16:56:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=r2Ia3moUYey/x0UkjmfimIJWyvghpcTAYwOCQViLM2E=; b=aT
+	EiAmgPeFStU7Yrep5+b4dM+b4GGkNkSujzzFAgLrD1J79m8Wrew5bynCm9jzkXzg
+	faKpkzUGWu3qnxL1EpVHlaUVAxjXWk3im3qVBM2RP+AqURL4qNj6GJ4kVaOepR4E
+	jTN9CcjitQS4zRsfbex8vCu02kba1DGZv3yJaUBDS8kYKl6ZUnBR6AF/Hjw5Lg+C
+	D+9ryc4ojkZIsrhorEwWiUiB4up8BSmFMJOnmL247y1ZqsO/6LJcf23oPSiXFDvh
+	XoMvPOOqSpil0cALJGO5Wo6HvTFoqgrDsbY8Yz6Y+nh0VYHlZLmEGBrlZgJ7eaSS
+	tzlI/A8qPttTzBhDlCZA==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vv4casnbw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 26 Jan 2024 16:56:06 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40QGu5rm004348
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 26 Jan 2024 16:56:05 GMT
+Received: from [10.110.0.209] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Fri, 26 Jan
+ 2024 08:56:05 -0800
+Message-ID: <0dd4948b-e967-4562-b98e-2f4643205ca4@quicinc.com>
+Date: Fri, 26 Jan 2024 08:56:04 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 10/11] wifi: ath12k: fix incorrect logic of calculating
+ vdev_stats_id
+Content-Language: en-US
+To: Kang Yang <quic_kangyang@quicinc.com>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240126115231.356658-1-quic_kangyang@quicinc.com>
+ <20240126115231.356658-11-quic_kangyang@quicinc.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20240126115231.356658-11-quic_kangyang@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: kUI0LojrLdh6Nev53lxvaDV7edxRorVJ
+X-Proofpoint-GUID: kUI0LojrLdh6Nev53lxvaDV7edxRorVJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-25_14,2024-01-25_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 clxscore=1015
+ bulkscore=0 impostorscore=0 priorityscore=1501 spamscore=0 suspectscore=0
+ mlxlogscore=999 phishscore=0 lowpriorityscore=0 adultscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2401190000 definitions=main-2401260125
 
-From: Toke Høiland-Jørgensen <toke@redhat.com>
+On 1/26/2024 3:52 AM, Kang Yang wrote:
+> During calculate vdev_stats_id, will copmare vdev_stats_id with
 
-The ath9k_wmi_event_tasklet() used in ath9k_htc assumes that all the data
-structures have been fully initialised by the time it runs. However, because of
-the order in which things are initialised, this is not guaranteed to be the
-case, because the device is exposed to the USB subsystem before the ath9k driver
-initialisation is completed.
+s/copmare /compare /
 
-We already committed a partial fix for this in commit:
-8b3046abc99e ("ath9k_htc: fix NULL pointer dereference at ath9k_htc_tx_get_packet()")
+> ATH12K_INVAL_VDEV_STATS_ID. If vdev_stats_id is relatively small, then
+> assign ATH12K_INVAL_VDEV_STATS_ID to vdev_stats_id.
+> 
+> Obviously, this logic is incorrect. ATH12K_INVAL_VDEV_STATS_ID is 0xff,
+> and the data type of this variable is u8. Which means this judgement
+> will always be true. So will get 0xff for every vdev except the first
+> one.
+> 
+> Correct this logic and replace it with the maximum value
+> ATH12K_MAX_VDEV_STATS_ID.
+> 
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+> Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
 
-However, that commit only aborted the WMI_TXSTATUS_EVENTID command in the event
-tasklet, pairing it with an "initialisation complete" bit in the TX struct. It
-seems syzbot managed to trigger the race for one of the other commands as well,
-so let's just move the existing synchronisation bit to cover the whole
-tasklet (setting it at the end of ath9k_htc_probe_device() instead of inside
-ath9k_tx_init()).
+Fixes is an upstream tag so it should be grouped with the SOB
 
-Link: https://lore.kernel.org/r/ed1d2c66-1193-4c81-9542-d514c29ba8b8.bugreport@ubisectech.com
-Fixes: 8b3046abc99e ("ath9k_htc: fix NULL pointer dereference at ath9k_htc_tx_get_packet()")
-Reported-by: Ubisectech Sirius <bugreport@ubisectech.com>
-Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
----
- drivers/net/wireless/ath/ath9k/htc.h          |  2 +-
- drivers/net/wireless/ath/ath9k/htc_drv_init.c |  4 ++++
- drivers/net/wireless/ath/ath9k/htc_drv_txrx.c |  4 ----
- drivers/net/wireless/ath/ath9k/wmi.c          | 10 ++++++----
- 4 files changed, 11 insertions(+), 9 deletions(-)
+Since this is a preexisting issue that is unrelated to P2P I'm thinking
+you should remove it from the P2P series and send it separately?
 
-diff --git a/drivers/net/wireless/ath/ath9k/htc.h b/drivers/net/wireless/ath/ath9k/htc.h
-index 237f4ec2cffd..6c33e898b300 100644
---- a/drivers/net/wireless/ath/ath9k/htc.h
-+++ b/drivers/net/wireless/ath/ath9k/htc.h
-@@ -306,7 +306,6 @@ struct ath9k_htc_tx {
- 	DECLARE_BITMAP(tx_slot, MAX_TX_BUF_NUM);
- 	struct timer_list cleanup_timer;
- 	spinlock_t tx_lock;
--	bool initialized;
- };
- 
- struct ath9k_htc_tx_ctl {
-@@ -515,6 +514,7 @@ struct ath9k_htc_priv {
- 	unsigned long ps_usecount;
- 	bool ps_enabled;
- 	bool ps_idle;
-+	bool initialized;
- 
- #ifdef CONFIG_MAC80211_LEDS
- 	enum led_brightness brightness;
-diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_init.c b/drivers/net/wireless/ath/ath9k/htc_drv_init.c
-index 0aa5bdeb44a1..3633f9eb2c55 100644
---- a/drivers/net/wireless/ath/ath9k/htc_drv_init.c
-+++ b/drivers/net/wireless/ath/ath9k/htc_drv_init.c
-@@ -966,6 +966,10 @@ int ath9k_htc_probe_device(struct htc_target *htc_handle, struct device *dev,
- 
- 	htc_handle->drv_priv = priv;
- 
-+	/* Allow ath9k_wmi_event_tasklet() to operate. */
-+	smp_wmb();
-+	priv->initialized = true;
-+
- 	return 0;
- 
- err_init:
-diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c b/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
-index efcaeccb055a..ce9c04e418b8 100644
---- a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
-+++ b/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
-@@ -815,10 +815,6 @@ int ath9k_tx_init(struct ath9k_htc_priv *priv)
- 	skb_queue_head_init(&priv->tx.data_vo_queue);
- 	skb_queue_head_init(&priv->tx.tx_failed);
- 
--	/* Allow ath9k_wmi_event_tasklet(WMI_TXSTATUS_EVENTID) to operate. */
--	smp_wmb();
--	priv->tx.initialized = true;
--
- 	return 0;
- }
- 
-diff --git a/drivers/net/wireless/ath/ath9k/wmi.c b/drivers/net/wireless/ath/ath9k/wmi.c
-index 1476b42b52a9..805ad31edba2 100644
---- a/drivers/net/wireless/ath/ath9k/wmi.c
-+++ b/drivers/net/wireless/ath/ath9k/wmi.c
-@@ -155,6 +155,12 @@ void ath9k_wmi_event_tasklet(struct tasklet_struct *t)
- 		}
- 		spin_unlock_irqrestore(&wmi->wmi_lock, flags);
- 
-+		/* Check if ath9k_htc_probe_device() completed. */
-+		if (!data_race(priv->initialized)) {
-+			kfree_skb(skb);
-+			continue;
-+		}
-+
- 		hdr = (struct wmi_cmd_hdr *) skb->data;
- 		cmd_id = be16_to_cpu(hdr->command_id);
- 		wmi_event = skb_pull(skb, sizeof(struct wmi_cmd_hdr));
-@@ -169,10 +175,6 @@ void ath9k_wmi_event_tasklet(struct tasklet_struct *t)
- 					     &wmi->drv_priv->fatal_work);
- 			break;
- 		case WMI_TXSTATUS_EVENTID:
--			/* Check if ath9k_tx_init() completed. */
--			if (!data_race(priv->tx.initialized))
--				break;
--
- 			spin_lock_bh(&priv->tx.tx_lock);
- 			if (priv->tx.flags & ATH9K_HTC_OP_TX_DRAIN) {
- 				spin_unlock_bh(&priv->tx.tx_lock);
--- 
-2.43.0
+> 
+> Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
+> ---
+> 
+> v4: new patch.
+> 
+> ---
+>  drivers/net/wireless/ath/ath12k/mac.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+> index d8c8bd420aa2..6b8b92d22553 100644
+> --- a/drivers/net/wireless/ath/ath12k/mac.c
+> +++ b/drivers/net/wireless/ath/ath12k/mac.c
+> @@ -5520,7 +5520,7 @@ ath12k_mac_get_vdev_stats_id(struct ath12k_vif *arvif)
+>  	do {
+>  		if (ab->free_vdev_stats_id_map & (1LL << vdev_stats_id)) {
+>  			vdev_stats_id++;
+> -			if (vdev_stats_id <= ATH12K_INVAL_VDEV_STATS_ID) {
+> +			if (vdev_stats_id >= ATH12K_MAX_VDEV_STATS_ID) {
+
+as you already noted it can't be > so just make this ==
+
+but why isn't this instead using ATH12K_MAX_VDEV_STATS_ID (which is
+currently unused)
+
+But even the current value for that seems wrong based upon the firmware
+documentation:
+    /**
+     * vdev_stats_id indicates the ID for the REO Rx stats collection
+     * For Beryllium: 0-47 is the valid range and >=48 is invalid
+     * This vdev_stats_id field should be ignored unless the
+     * vdev_stats_id_valid field is non-zero.
+     */
+
+And it seems there is another bigger issue here since, as the firmware
+document indicates, the vdev_stats_id field should be ignored unless the
+vdev_stats_id_valid field is non-zero, but in ath12k_wmi_vdev_create()
+we don't set vdev_stats_id_valid -- and we cannot set it since it isn't
+even present in the ath12k struct wmi_vdev_create_cmd! And comparing our
+struct to the firmware definition shows we have missing fields!!!
+Everything is correct up to pdev_id, but then there is divergence:
+
+our struct
+struct wmi_vdev_create_cmd {
+	__le32 tlv_header;
+	__le32 vdev_id;
+	__le32 vdev_type;
+	__le32 vdev_subtype;
+	struct ath12k_wmi_mac_addr_params vdev_macaddr;
+	__le32 num_cfg_txrx_streams;
+	__le32 pdev_id;
+	__le32 vdev_stats_id;
+} __packed;
+
+firmware definition
+typedef struct {
+    A_UINT32 tlv_header; /** TLV tag and len; tag equals
+WMITLV_TAG_STRUC_wmi_vdev_create_cmd_fixed_param */
+    /** unique id identifying the VDEV, generated by the caller */
+    A_UINT32 vdev_id;
+    /** VDEV type (AP,STA,IBSS,MONITOR) */
+    A_UINT32 vdev_type;
+    /** VDEV subtype (P2PDEV, P2PCLI, P2PGO, BT3.0, BRIDGE) */
+    A_UINT32 vdev_subtype;
+    /** VDEV MAC address */
+    wmi_mac_addr vdev_macaddr;
+    /** Number of configured txrx streams */
+    A_UINT32 num_cfg_txrx_streams;
+    /**
+     * pdev_id for identifying the MAC,
+     * See macros starting with WMI_PDEV_ID_ for values.
+     */
+    A_UINT32 pdev_id;
+    /** control flags for this vdev (DEPRECATED)
+     * Use @mbss_capability_flags in vdev start instead.
+     */
+    A_UINT32 flags;
+    /**  vdevid of transmitted AP (mbssid case) (DEPRECATED)
+     * Use @vdevid_trans in vdev start instead.
+     */
+    A_UINT32 vdevid_trans;
+    /* vdev_stats_id_valid indicates whether vdev_stats_id is valid */
+    A_UINT32 vdev_stats_id_valid;
+    /**
+     * vdev_stats_id indicates the ID for the REO Rx stats collection
+     * For Beryllium: 0-47 is the valid range and >=48 is invalid
+     * This vdev_stats_id field should be ignored unless the
+     * vdev_stats_id_valid field is non-zero.
+     */
+    A_UINT32 vdev_stats_id;
+/* This TLV is followed by another TLV of array of structures
+ *   wmi_vdev_txrx_streams cfg_txrx_streams[];
+ *   wmi_vdev_create_mlo_params mlo_params[0,1];
+ *       optional TLV, only present for MLO vdev;
+ *       if the vdev is not MLO the array length should be 0.
+ */
+} wmi_vdev_create_cmd_fixed_param;
+
+(note the deprecated fields must still have their space allocated in the
+data structure)
+
+So currently when host is writing to vdev_stats_id firmware will
+interpret this as the deprecated flags
+
+So it seems like we also need to fix the WMI struct to:
+struct wmi_vdev_create_cmd {
+	__le32 tlv_header;
+	__le32 vdev_id;
+	__le32 vdev_type;
+	__le32 vdev_subtype;
+	struct ath12k_wmi_mac_addr_params vdev_macaddr;
+	__le32 num_cfg_txrx_streams;
+	__le32 pdev_id;
+	__le32 flags; /* deprecated */
+	__le32 vdevid_trans; /* deprecated */
+	__le32 vdev_stats_id_valid;
+	__le32 vdev_stats_id;
+} __packed;
+
+>  				vdev_stats_id = ATH12K_INVAL_VDEV_STATS_ID;
+>  				break;
+>  			}
 
 
