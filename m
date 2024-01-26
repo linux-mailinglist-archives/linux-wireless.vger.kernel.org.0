@@ -1,163 +1,191 @@
-Return-Path: <linux-wireless+bounces-2578-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2579-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E10A83E588
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jan 2024 23:36:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5BF183E62D
+	for <lists+linux-wireless@lfdr.de>; Sat, 27 Jan 2024 00:05:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF39A28379B
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jan 2024 22:36:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41772B23572
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jan 2024 23:05:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9013425636;
-	Fri, 26 Jan 2024 22:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85FF255E5A;
+	Fri, 26 Jan 2024 23:05:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="SNuR4lcU"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="BqAc79VX"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E473E6026C
-	for <linux-wireless@vger.kernel.org>; Fri, 26 Jan 2024 22:31:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C70DC55E57
+	for <linux-wireless@vger.kernel.org>; Fri, 26 Jan 2024 23:05:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706308318; cv=none; b=SrxztaRaOPSQOrBvR7+JvytQwgkAhg7ny6iL7cc9D3/Xi0AMQZMHGXN5YGUutWHfQ1anIGwD3eXuskc9n0DGfc+b+8MQqiLAw9tnJ3nM17KBqE6uzv2856+/JMeDaTTzlZAdEtbW1A4V6BlFIbXJND2UI6L4YW2DJjpP7d9hfP0=
+	t=1706310330; cv=none; b=NodO77yrXvA8htTFmeCV3vXoHOQNy/w/GVI5UDe2uHzpz7uI+0tdjNp04MWW8xBwt3MCQw+GQZpbaLlAGZ5espUi4WKbvKzBRTpEt0B+PtNdtuoLHhohXfRd0Gm6cTJaGE/d/ueGw728/MAZCz1Gfg7Z1vPe6wOBIP1RtcTvnM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706308318; c=relaxed/simple;
-	bh=rPkXTYFkEXl5V+Jd/DTvLkzH6fCDzYI0Hu4sIr2JZLw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Db69mjQNJL+6+LFbSe0Mswxs45Irv7209LTeE4BzAOTnEmrqGNj2HjybRWNy0T9o3uO1WRZDUONJnc++jZ7Wt3dBHTcIf0G4yTLzLN2R9dbiKBR33W3Gu7onTrLbtj26Zut+9M0lvbVN50p9OPp6ptRxCXTXeXlXd485D8ZBfuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=SNuR4lcU; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-1d89518d3b1so5733685ad.0
-        for <linux-wireless@vger.kernel.org>; Fri, 26 Jan 2024 14:31:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1706308316; x=1706913116; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=iU2Wtc2AukuXqcfYq4BIdUdSO+0wlIbEGbfXdoUnxgE=;
-        b=SNuR4lcUHxREP2CV2muFhaSVui06s5ZPzFVFFRln/mT5bdaryCL8VQFVErrO1ozimD
-         U7FDwXE6xtYpFe6N+MYEqcYBKqk0xCFO1+fCA11PeZGKnoBwkBoyN9uKxCFzHv83h3+Q
-         UANKgTx+CppOGeqAWJyjwj/kSA0bRGYRcZz6A=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706308316; x=1706913116;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=iU2Wtc2AukuXqcfYq4BIdUdSO+0wlIbEGbfXdoUnxgE=;
-        b=VZhP4p7CHyJKZXrpLqYovMbUjAFjP/I06PoaGnp/cNGfwUSTlAAKiVzTI8NWeOUlGO
-         8EzqBNUq9Qp/+4kpyPCiyhfSeOS658XpYOS9QyeQj6FM7IQjW0tErGaRErkud7/F41ax
-         2rYMjukqEgO5vzqEPVNhCK/W60WOHbnoUltcJYpozLWkjCKJdXhI5ynvshUP4v6nHi5O
-         GE2Fho426FoIM/JozmpOBAkXRemFxjWbyTe5ttH6YIHI3NWo0CT1fp6G74OSIS4tFlMc
-         os3oliaSKrCjGQvA/c9ROhFRLFQipRggpNDYzJM4cfSQwzUSNLRhz0gdI3YECXtGlwV0
-         1Y5Q==
-X-Gm-Message-State: AOJu0YzX5SKlDB2++XhrVgnHrdf52rGqSFpny0Yn3Emmb+PN46paXRmG
-	ht60EzYZmlswi5w8YTjjbBsIggAYcRdQxAT1h9wXw1U5XxZVZQm7/2vqd0hDmA==
-X-Google-Smtp-Source: AGHT+IEdcjuVt71xGs4RaBAcyX//r1TrZHWYWdyRc/uuLuFjWBS2APfbkQb4tv5rh/eFxdoFKxohow==
-X-Received: by 2002:a17:903:24e:b0:1d7:1a90:65ba with SMTP id j14-20020a170903024e00b001d71a9065bamr524703plh.25.1706308316193;
-        Fri, 26 Jan 2024 14:31:56 -0800 (PST)
-Received: from www.outflux.net ([198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id n2-20020a170902d2c200b001d72f71e83bsm1393843plc.73.2024.01.26.14.31.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jan 2024 14:31:55 -0800 (PST)
-From: Kees Cook <keescook@chromium.org>
-To: Arend van Spriel <aspriel@gmail.com>
-Cc: Kees Cook <keescook@chromium.org>,
-	Franky Lin <franky.lin@broadcom.com>,
-	Hante Meuleman <hante.meuleman@broadcom.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-	Ian Lin <ian.lin@infineon.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Wright Feng <wright.feng@cypress.com>,
-	Hector Martin <marcan@marcan.st>,
-	linux-wireless@vger.kernel.org,
-	brcm80211-dev-list.pdl@broadcom.com,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Jisoo Jang <jisoo.jang@yonsei.ac.kr>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Aloka Dixit <quic_alokad@quicinc.com>,
-	John Keeping <john@keeping.me.uk>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	linux-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org
-Subject: [PATCH] wifi: brcmfmac: Adjust n_channels usage for __counted_by
-Date: Fri, 26 Jan 2024 14:31:53 -0800
-Message-Id: <20240126223150.work.548-kees@kernel.org>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1706310330; c=relaxed/simple;
+	bh=kqf1PS25O3yZUv9TgxtONuPp6/sf9wCGt9bjjrG4k88=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
+	 In-Reply-To:Content-Type; b=L3do/2IaDOoZX5eOud8YJWDVvz0o0NWViSFSMIoPUz6tuAGD5+1e06mCPXfKyvkBvGVttcLMtBwJF/aEsFam1bOnI6x4PD0zuv3Oz9+zpnkHztKMRqFUbAeMvwhkDpBHSUUmW6pf5+cGoK4iIQKU4pCgKPPeh1Nch2u71J07t4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=BqAc79VX; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40QMlOL0010839;
+	Fri, 26 Jan 2024 23:05:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:from:to:cc:references
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=CERkHsU70nO+wGZCCWbleHhRn0h1zZWsX6mSTCTy/dk=; b=Bq
+	Ac79VX1NzGCdkYswGDBxv/HopboIcgR4cyE9ob/Mmdq3+pztdOWEihI1wE8mE7Ss
+	biPrucQEqpEGV9zP6d+RICqXW3AyOxiPePmO2J6Z4ZbcxC3hDgcqE8fO09g3cXeN
+	H0vjSHGIxHLaG7nk0kuLOvyEU0ULVCZSAfXGdhjI5CMDoEE7ZY37IB2iU5UJWXdD
+	ejNYDs542QotsFNYzF784FHWv0+kw4xeKdUu708xdBM55Fhql2SlxxlQ7Cnasqgg
+	kL8vIHscBVcp48jpXqdH6+2qhigqiuoEdqjuGTDeQlcVpCeArdSbnRjd2W1iPQe1
+	akwrZnhyREr1XvnbD2uA==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vv8e89sg6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 26 Jan 2024 23:05:25 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40QN5Prl006555
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 26 Jan 2024 23:05:25 GMT
+Received: from [10.110.0.209] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Fri, 26 Jan
+ 2024 15:05:24 -0800
+Message-ID: <0b39cf96-3ed4-45b7-9254-2604716afe14@quicinc.com>
+Date: Fri, 26 Jan 2024 15:05:24 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2264; i=keescook@chromium.org;
- h=from:subject:message-id; bh=rPkXTYFkEXl5V+Jd/DTvLkzH6fCDzYI0Hu4sIr2JZLw=;
- b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBltDLZh4vPxZxe6NQZX8zlgNerfj/phD+H1Ha2N
- cQmUuitlgOJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCZbQy2QAKCRCJcvTf3G3A
- JtEVEACrslEiVziNzo1uYwZtisz+U3jKRB4W/CDxbqJsoXwjo/mvP1b0zYQdr81jwPkfRwJn+vf
- MWandtFqacMULVgDY6wwKWOPMW8a3QBMa4RnnWkjJaR9ZA5I7jSWN2AP/sDci2NeA2RgfwBnP9c
- 6UM7UQBPAX10TMBCKcW9Pqui2xwEyDyOlMBCjNhOSmwumyU1ddU04+HPMw79bOqVIpzq52Y9nda
- 04btQl7VIHWXaMqR3hfjzdtrFk6AG+VvqdRXHxWSh8CQ02WoMFx+x5UuWGNgE7ofBXIuQefTkeY
- pGuVyaKTk7nKGrPQF+434Sj3nm41C+8CcZWw6VaSxW7W5FgZD5G0Xrts/oxOSkibaPKAojlqg2v
- 2lyvkcLm5uGKUP1pWijmeEbA3+zqL8j2+Ok4TurGi9NgTu2dF339TQh0q4vQey1Ofx7mCdXuOnD
- Rl2F6dEMABMXGrijocbNXbzGyYL++Hb3rpaZYWKveVFLrOgdsbDiY73WCvFsfUCAgf6PSZ6WUQy
- VSO5msytsN3qpfu/4PFc11nTR5FslBUGjLFaLkVHugDRrRx43e6Ela9bBK6YULN7sAJl4F+hRac
- jMhYLmvXsBtCh2lR1ckf/Bef7vr8KVgqW4JWIbFgOA9KpvOaE5DrBn220v1kPmW42GyZv/LKdHq
- nkKsHXV i3vN9orA==
-X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 10/11] wifi: ath12k: fix incorrect logic of calculating
+ vdev_stats_id
+Content-Language: en-US
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+To: Kang Yang <quic_kangyang@quicinc.com>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240126115231.356658-1-quic_kangyang@quicinc.com>
+ <20240126115231.356658-11-quic_kangyang@quicinc.com>
+ <0dd4948b-e967-4562-b98e-2f4643205ca4@quicinc.com>
+In-Reply-To: <0dd4948b-e967-4562-b98e-2f4643205ca4@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: ckL5O4yvz069kGwa3YCzDUuroDFRat3n
+X-Proofpoint-ORIG-GUID: ckL5O4yvz069kGwa3YCzDUuroDFRat3n
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-25_14,2024-01-25_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 phishscore=0
+ spamscore=0 malwarescore=0 priorityscore=1501 mlxlogscore=999
+ impostorscore=0 lowpriorityscore=0 suspectscore=0 bulkscore=0
+ clxscore=1015 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2401190000 definitions=main-2401260170
 
-After commit e3eac9f32ec0 ("wifi: cfg80211: Annotate struct
-cfg80211_scan_request with __counted_by"), the compiler may enforce
-dynamic array indexing of req->channels to stay below n_channels. As a
-result, n_channels needs to be increased _before_ accessing the newly
-added array index. Increment it first, then use "i" for the prior index.
-Solves this warning in the coming GCC that has __counted_by support:
+On 1/26/2024 8:56 AM, Jeff Johnson wrote:
+> And it seems there is another bigger issue here since, as the firmware
+> document indicates, the vdev_stats_id field should be ignored unless the
+> vdev_stats_id_valid field is non-zero, but in ath12k_wmi_vdev_create()
+> we don't set vdev_stats_id_valid -- and we cannot set it since it isn't
+> even present in the ath12k struct wmi_vdev_create_cmd! And comparing our
+> struct to the firmware definition shows we have missing fields!!!
+> Everything is correct up to pdev_id, but then there is divergence:
+> 
+> our struct
+> struct wmi_vdev_create_cmd {
+> 	__le32 tlv_header;
+> 	__le32 vdev_id;
+> 	__le32 vdev_type;
+> 	__le32 vdev_subtype;
+> 	struct ath12k_wmi_mac_addr_params vdev_macaddr;
+> 	__le32 num_cfg_txrx_streams;
+> 	__le32 pdev_id;
+> 	__le32 vdev_stats_id;
+> } __packed;
+> 
+> firmware definition
+> typedef struct {
+>     A_UINT32 tlv_header; /** TLV tag and len; tag equals
+> WMITLV_TAG_STRUC_wmi_vdev_create_cmd_fixed_param */
+>     /** unique id identifying the VDEV, generated by the caller */
+>     A_UINT32 vdev_id;
+>     /** VDEV type (AP,STA,IBSS,MONITOR) */
+>     A_UINT32 vdev_type;
+>     /** VDEV subtype (P2PDEV, P2PCLI, P2PGO, BT3.0, BRIDGE) */
+>     A_UINT32 vdev_subtype;
+>     /** VDEV MAC address */
+>     wmi_mac_addr vdev_macaddr;
+>     /** Number of configured txrx streams */
+>     A_UINT32 num_cfg_txrx_streams;
+>     /**
+>      * pdev_id for identifying the MAC,
+>      * See macros starting with WMI_PDEV_ID_ for values.
+>      */
+>     A_UINT32 pdev_id;
+>     /** control flags for this vdev (DEPRECATED)
+>      * Use @mbss_capability_flags in vdev start instead.
+>      */
+>     A_UINT32 flags;
+>     /**  vdevid of transmitted AP (mbssid case) (DEPRECATED)
+>      * Use @vdevid_trans in vdev start instead.
+>      */
+>     A_UINT32 vdevid_trans;
+>     /* vdev_stats_id_valid indicates whether vdev_stats_id is valid */
+>     A_UINT32 vdev_stats_id_valid;
+>     /**
+>      * vdev_stats_id indicates the ID for the REO Rx stats collection
+>      * For Beryllium: 0-47 is the valid range and >=48 is invalid
+>      * This vdev_stats_id field should be ignored unless the
+>      * vdev_stats_id_valid field is non-zero.
+>      */
+>     A_UINT32 vdev_stats_id;
+> /* This TLV is followed by another TLV of array of structures
+>  *   wmi_vdev_txrx_streams cfg_txrx_streams[];
+>  *   wmi_vdev_create_mlo_params mlo_params[0,1];
+>  *       optional TLV, only present for MLO vdev;
+>  *       if the vdev is not MLO the array length should be 0.
+>  */
+> } wmi_vdev_create_cmd_fixed_param;
+> 
+> (note the deprecated fields must still have their space allocated in the
+> data structure)
+> 
+> So currently when host is writing to vdev_stats_id firmware will
+> interpret this as the deprecated flags
+> 
+> So it seems like we also need to fix the WMI struct to:
+> struct wmi_vdev_create_cmd {
+> 	__le32 tlv_header;
+> 	__le32 vdev_id;
+> 	__le32 vdev_type;
+> 	__le32 vdev_subtype;
+> 	struct ath12k_wmi_mac_addr_params vdev_macaddr;
+> 	__le32 num_cfg_txrx_streams;
+> 	__le32 pdev_id;
+> 	__le32 flags; /* deprecated */
+> 	__le32 vdevid_trans; /* deprecated */
+> 	__le32 vdev_stats_id_valid;
+> 	__le32 vdev_stats_id;
+> } __packed;
 
-../drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c: In function 'brcmf_internal_escan_add_info':
-../drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:3783:46: warning: operation on 'req->
-n_channels' may be undefined [-Wsequence-point]
- 3783 |                 req->channels[req->n_channels++] = chan;
-      |                               ~~~~~~~~~~~~~~~^~
+Sigh. I now realize that patch 7/11 in the series fixes this, and hence
+why this 10/11 patch needs to be part of the series (or the 7/11 and
+10/11 patches should be separated from the P2P feature).
 
-Fixes: e3eac9f32ec0 ("wifi: cfg80211: Annotate struct cfg80211_scan_request with __counted_by")
-Cc: Arend van Spriel <aspriel@gmail.com>
-Cc: Franky Lin <franky.lin@broadcom.com>
-Cc: Hante Meuleman <hante.meuleman@broadcom.com>
-Cc: Kalle Valo <kvalo@kernel.org>
-Cc: Chi-hsien Lin <chi-hsien.lin@infineon.com>
-Cc: Ian Lin <ian.lin@infineon.com>
-Cc: Johannes Berg <johannes.berg@intel.com>
-Cc: Wright Feng <wright.feng@cypress.com>
-Cc: Hector Martin <marcan@marcan.st>
-Cc: linux-wireless@vger.kernel.org
-Cc: brcm80211-dev-list.pdl@broadcom.com
-Signed-off-by: Kees Cook <keescook@chromium.org>
----
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Let me re-review the entire series instead of just reviewing the 7/11
+patch without the associated context.
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-index 133c5ea6429c..28d6a30cc010 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-@@ -3779,8 +3779,10 @@ static int brcmf_internal_escan_add_info(struct cfg80211_scan_request *req,
- 		if (req->channels[i] == chan)
- 			break;
- 	}
--	if (i == req->n_channels)
--		req->channels[req->n_channels++] = chan;
-+	if (i == req->n_channels) {
-+		req->n_channels++;
-+		req->channels[i] = chan;
-+	}
- 
- 	for (i = 0; i < req->n_ssids; i++) {
- 		if (req->ssids[i].ssid_len == ssid_len &&
--- 
-2.34.1
+Must be Friday.
 
+/jeff
 
