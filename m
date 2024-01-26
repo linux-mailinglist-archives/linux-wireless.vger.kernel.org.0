@@ -1,164 +1,139 @@
-Return-Path: <linux-wireless+bounces-2529-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2538-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9B8A83D710
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jan 2024 10:58:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7976583D71A
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jan 2024 10:59:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47A4D29A696
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jan 2024 09:56:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FA541F262C9
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jan 2024 09:59:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20FE260869;
-	Fri, 26 Jan 2024 09:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54D3D6341B;
+	Fri, 26 Jan 2024 09:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="bBc/RW6v"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="NUxXM2yK"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 831F46086C
-	for <linux-wireless@vger.kernel.org>; Fri, 26 Jan 2024 09:06:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8B66311F
+	for <linux-wireless@vger.kernel.org>; Fri, 26 Jan 2024 09:10:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706259976; cv=none; b=dboD+iSYrh5Zb6Wq/p7dnbUk5nshWvPU1kFRBVRFEtwg4QZL3LC4cLFC0+xy+sBLjkR4beaJIV5/fpi9YtMDByjng4ybVsci5Q95L1kmh6Pp7U4FpZYKtyWGMXMzLcK4KiNiVw165C70aUNY8P0mxCMbAqo4U90VUl9FbyjPLvA=
+	t=1706260207; cv=none; b=kVJyG09B6iEIdAIrQvQF2BnPFmI8QUsDGOG3vrZO5oHEBu0VPW28bbN+C86epn4IjHxH5v6z87vHb2pmL0f93tfUyzpfGbwGbXezFfXiKXjpfX+acTCMsvpa7wNktX5aHLQozEa/1lUL54uy8wCU3xW7MxHX/6laGvUGshG3uWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706259976; c=relaxed/simple;
-	bh=h/YPOiAF2UDbeP+qd6XAkZ1ycM5AQyRs1nOreguUqzM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=LHE3xewz2LlO30HVl/bfDRlai+f0DZ9yZD2kJN/rmqHnQuNKvBhqrEt8voNGKfpAVV6kZN4GuhxMRIfljQ1SnOBdGMxHENuKeRqYzAeQoO0mcXCMPw/0TC9OoDP0+footII9A0tdXsAWRW4nR7PngZoLQzGOBKiczDmtsGlGsB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=bBc/RW6v; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=DvH42WRPA5TSQmY+MuaNkQLBEhe1kPIlJiiKLZNJbzA=;
-	t=1706259972; x=1707469572; b=bBc/RW6v/aK9ZPuC0fkymMHpdqT8+Iod795WHoveFpIZU/i
-	MZzznKI+eqxv1FdpUWiryDWYWJh77QffbzUNtAieGyRJm7ovRUkp6Ef7Uer7AnsxBPyzpBGXuuVB5
-	Q1ufZ9PS0RwerP4YIuTA2hWn+2nPYb4igPcUvWxQpWC4+HVdo5I9si7c9GyXqYXsI2iwr3tlbNzrK
-	nV0Sw1IeGh7CWRhe7loCmBdll42V2F7eRgOyr0IvdDdgd86BGNtb7L5TOZ3qdn92LYN1yxOusCLEV
-	TZAnSO6esGgKLK8LqCwQkqA/+T7mGa1l/1jmUv+1WBagCofLKDhUZzDbJo3rh3pA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1rTI9y-0000000142U-3Lj0;
-	Fri, 26 Jan 2024 10:06:03 +0100
-Message-ID: <61ad9e10e42c9f114c2a7de534690f8c0133bf58.camel@sipsolutions.net>
-Subject: Re: [PATCH 1/3] wifi: cfg80211: add support for link id attribute
- in NL80211_CMD_DEL_STATION
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Aditya Kumar Singh <quic_adisi@quicinc.com>
-Cc: linux-wireless@vger.kernel.org
-Date: Fri, 26 Jan 2024 10:06:01 +0100
-In-Reply-To: <20240125125855.827619-2-quic_adisi@quicinc.com>
-References: <20240125125855.827619-1-quic_adisi@quicinc.com>
-	 <20240125125855.827619-2-quic_adisi@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
+	s=arc-20240116; t=1706260207; c=relaxed/simple;
+	bh=zWlc/S6DZ/fUTn9LwVH+0v5+9nwdAYr32erZ91OEyXM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=EVLBMNFKNueP4LsM2WJVxr3xDoU8Wci2wZ9eq4MEUG7A8gtRYubRarQx/B74d7+hRvVEutqbusQNR6v4xbcYzcbLhsz0ziSEmO1HbL7IgfMKGQUw5cftqoCScE+ORb9fHzISchp8UjpX2n+KNhOSXPGxyPP8VzxGbXQ2dLRkszs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=NUxXM2yK; arc=none smtp.client-ip=210.61.82.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: a8dc3456bc2a11eea2298b7352fd921d-20240126
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=QfBJh/G27e2/TM1jxbBhY/qC7WJr1g5LZzWtbcjgAfw=;
+	b=NUxXM2yKTIGA1dOxb+VVxoWpGltN8T0TXqBlW58phT4LrlMzqVvflIP4gyyi9OYv1n8o1Ta8BRLyf0Bz4ml7kbHm60A0ttu3sYARoPHSwOEXwOEF+gNm9V/KDSDYDmT5+CjpDBOsIoFxrkrEtsPeVGPmdhgl72O8p/CYbTzEaXI=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.36,REQID:afecda2d-57c2-4e0a-a4e3-df5e3f75a11a,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:6e16cf4,CLOUDID:f96e2efe-c16b-4159-a099-3b9d0558e447,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+	RL:11|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
+	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
+X-UUID: a8dc3456bc2a11eea2298b7352fd921d-20240126
+Received: from mtkmbs14n2.mediatek.inc [(172.21.101.76)] by mailgw02.mediatek.com
+	(envelope-from <shayne.chen@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 260006910; Fri, 26 Jan 2024 17:09:50 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Fri, 26 Jan 2024 17:09:49 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Fri, 26 Jan 2024 17:09:49 +0800
+From: Shayne Chen <shayne.chen@mediatek.com>
+To: Felix Fietkau <nbd@nbd.name>
+CC: linux-wireless <linux-wireless@vger.kernel.org>, Lorenzo Bianconi
+	<lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, Evelyn Tsai
+	<evelyn.tsai@mediatek.com>, Bo Jiao <Bo.Jiao@mediatek.com>, linux-mediatek
+	<linux-mediatek@lists.infradead.org>, Peter Chiu
+	<chui-hao.chiu@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>
+Subject: [PATCH v2 01/12] wifi: mt76: mt7996: check txs format before getting skb by pid
+Date: Fri, 26 Jan 2024 17:09:12 +0800
+Message-ID: <20240126090923.6357-1-shayne.chen@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain
+X-MTK: N
 
-On Thu, 2024-01-25 at 18:28 +0530, Aditya Kumar Singh wrote:
-> Currently whenever NL80211_CMD_DEL_STATION command is called without any
-> MAC address, all stations present on that interface are flushed.
+From: Peter Chiu <chui-hao.chiu@mediatek.com>
 
-True.
+The PPDU TXS does not include the error bit so it cannot use to report
+status to mac80211. This patch fixes issue that STA wrongly detects if AP
+is still alive.
 
-> However with MLO there is a need to flush the stations from a particular
-> link in the interface, and not from all the links associated with the MLD
-> interface.
+Fixes: 2569ea5326e2 ("wifi: mt76: mt7996: enable PPDU-TxS to host")
+Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+---
+ .../net/wireless/mediatek/mt76/mt7996/mac.c   | 23 +++++++++++--------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
-Fair enough, I can get behind that.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+index 53258488d49f..a8414fbb07c8 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -1188,25 +1188,28 @@ mt7996_mac_add_txs_skb(struct mt7996_dev *dev, struct mt76_wcid *wcid,
+ 	struct ieee80211_tx_info *info;
+ 	struct sk_buff_head list;
+ 	struct rate_info rate = {};
+-	struct sk_buff *skb;
++	struct sk_buff *skb = NULL;
+ 	bool cck = false;
+ 	u32 txrate, txs, mode, stbc;
+ 
+ 	txs = le32_to_cpu(txs_data[0]);
+ 
+ 	mt76_tx_status_lock(mdev, &list);
+-	skb = mt76_tx_status_skb_get(mdev, wcid, pid, &list);
+ 
+-	if (skb) {
+-		info = IEEE80211_SKB_CB(skb);
+-		if (!(txs & MT_TXS0_ACK_ERROR_MASK))
+-			info->flags |= IEEE80211_TX_STAT_ACK;
++	/* only report MPDU TXS */
++	if (le32_get_bits(txs_data[0], MT_TXS0_TXS_FORMAT) == 0) {
++		skb = mt76_tx_status_skb_get(mdev, wcid, pid, &list);
++		if (skb) {
++			info = IEEE80211_SKB_CB(skb);
++			if (!(txs & MT_TXS0_ACK_ERROR_MASK))
++				info->flags |= IEEE80211_TX_STAT_ACK;
+ 
+-		info->status.ampdu_len = 1;
+-		info->status.ampdu_ack_len =
+-			!!(info->flags & IEEE80211_TX_STAT_ACK);
++			info->status.ampdu_len = 1;
++			info->status.ampdu_ack_len =
++				!!(info->flags & IEEE80211_TX_STAT_ACK);
+ 
+-		info->status.rates[0].idx = -1;
++			info->status.rates[0].idx = -1;
++		}
+ 	}
+ 
+ 	if (mtk_wed_device_active(&dev->mt76.mmio.wed) && wcid->sta) {
+-- 
+2.39.2
 
-Edit: reading the code - I think I misunderstand that ... you're
-actually trying to remove all MLDs ("STATION") that have an active link
-on this link? So then maybe disregard all the below, and just write a
-better commit message?
-But I'll leave the below because I'm not really sure what you're trying
-to do here.
-
-
-> For example - 2 GHz and 5 GHz are part of an AP MLD. When 2 GHz BSS is
-> brought up, it sends flush command on the interface (MLD). Then eventuall=
-y
-> 5 GHZ links comes up and that also sends the command on the same interfac=
-e.
-> Now by the time 5 GHz link comes up, if any station gets connected to 2 G=
-Hz
-> link, it would be flushed while 5 GHz link is started which is wrong.
-
-Right. Though in this case - after bringup - you wouldn't really have to
-flush anyway, so it could just not do that, I guess? Feels a bit like a
-broken flow which is a bad justification, but I do understand there's
-justification for this.
-
-> Hence, add an option to pass link ID as well in the command so that if li=
-nk
-> ID is passed, station using that passed link ID alone would be deleted
-> and others will not be removed.
-
-So first: Do you want some feature flag that indicates this? Or will we
-just eat the cost of kicking out everyone (without even sending deauth
-though, I think?) when running on older kernels?
-
-
-Secondly: why is this part of NL80211_CMD_DEL_STATION? I'm not convinced
-that makes sense. I actually kind of get why you're doing that - it's
-easier to retrofit into the existing hostapd, but I don't necessarily
-think that the hostap design (problems?) should influence this too much.
-
-IOW, it would feel much more appropriate to have this as part of
-NL80211_CMD_REMOVE_LINK_STA? After all, when going to MLD then "STATION"
-now represents a "peer MLD", and "LINK_STA" now represents an affiliated
-STA. And flushing all affiliated STAs is what you want.
-
-So I think it should be NL80211_CMD_REMOVE_LINK_STA without a
-NL80211_ATTR_MLD_ADDR.
-
-> A subsequent patch would add logic to delete only the station using the
-> passed link ID.
-
-Not sure I'd say that here - I mean, (1) yeah obviously, otherwise we
-won't apply this patch? and (2) it's not related to cfg80211.
-
->  	case NL80211_IFTYPE_MESH_POINT:
-> @@ -7675,6 +7677,17 @@ static int nl80211_del_station(struct sk_buff *skb=
-, struct genl_info *info)
->  		params.reason_code =3D WLAN_REASON_PREV_AUTH_NOT_VALID;
->  	}
-> =20
-> +	/* Link ID not expected in case of non-ML operation */
-> +	if (!wdev->valid_links && link_id !=3D -1)
-> +		return -EINVAL;
-> +
-> +	/* If given, a valid link ID should be passed during MLO */
-> +	if (wdev->valid_links && link_id >=3D 0 &&
-> +	    !(wdev->valid_links & BIT(link_id)))
-> +		return -EINVAL;
-
-Maybe refactor this with the NL80211_FLAG_MLO_VALID_LINK_ID checks?
-
-> @@ -16827,6 +16840,9 @@ static const struct genl_small_ops nl80211_small_=
-ops[] =3D {
->  		.validate =3D GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
->  		.doit =3D nl80211_del_station,
->  		.flags =3D GENL_UNS_ADMIN_PERM,
-> +		/* cannot use NL80211_FLAG_MLO_VALID_LINK_ID, depends on
-> +		 * MAC address
-> +		 */
->  		.internal_flags =3D IFLAGS(NL80211_FLAG_NEED_NETDEV_UP),
-
-Hmm? How does NL80211_FLAG_MLO_VALID_LINK_ID depend on the MAC address?!
-It ... doesn't?
-
-johannes
 
