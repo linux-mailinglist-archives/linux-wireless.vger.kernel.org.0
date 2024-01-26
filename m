@@ -1,241 +1,123 @@
-Return-Path: <linux-wireless+bounces-2552-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2541-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C98E83D8BB
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jan 2024 11:57:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39E9083D904
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jan 2024 12:08:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 847B51F26B44
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jan 2024 10:57:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B80E7B33648
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jan 2024 10:00:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE2FD8C1B;
-	Fri, 26 Jan 2024 10:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E11063513;
+	Fri, 26 Jan 2024 09:10:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="A2pzblQ3"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="gGAKENn8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1702612B87
-	for <linux-wireless@vger.kernel.org>; Fri, 26 Jan 2024 10:57:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C561634ED
+	for <linux-wireless@vger.kernel.org>; Fri, 26 Jan 2024 09:10:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706266656; cv=none; b=GW2eFGuF1P3tL3zxE4mf4WRuTIPcEbeTAHraXm0RAs8TfWiyTChOkW21GcGhJwrx56hPDpz3GhxqGCdI3RArqkKesR6vPSdblhzyMQvxv3BCE4vNmHj3YYF73xOI2ZS6cgCuH/J9fRJmjl5At/+xiqitE7MUzwo6A2oYC6bpU7w=
+	t=1706260209; cv=none; b=jdTprVQ7fJhCWpCl8FGn3xY1hqoJiKJ68TGGYXIg+1/T7FTHpKWkCceDhoghVG1pUZT8c1ditVllAAm0e7O1B6wjvXyhE3BCeMkAduux5zq2NBef96T+b/h1Ry9vLLwxltszIYWLXI6cAl+2pq7ky4sbnkwLOpvTwDTvTMjc0uQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706266656; c=relaxed/simple;
-	bh=f1H45KdF8qRJKnb6RgfhGjYcMH7LGsf7GeJmsqsEGj4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=psVCL3+xxhEYjOFAiTODKEeTnb79kesxF7ck36IK/L5VO7BkCow1SODT1IpSarvdC5oqXN7ySVZUZz2q9d/cW71E8yPttIwOCCwK+MuTuh0Ud456ORJ6VtHj8iCkiLqD8sxUZ501/cMBQAXgrtwOVcw2SWLJOmW/b3wXIZBqkLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=A2pzblQ3; arc=none smtp.client-ip=209.85.222.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-783d84ecb13so18187585a.0
-        for <linux-wireless@vger.kernel.org>; Fri, 26 Jan 2024 02:57:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1706266654; x=1706871454; darn=vger.kernel.org;
-        h=mime-version:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=reC8sxXXhDMYBlkNruc8Oj//BRaG8Kkd0MY+Vxvdvv0=;
-        b=A2pzblQ38uOty4ooBycUch4iYrcaL+N52F3aKThSVq4BfVmMJzcIcHTQy06N/D2zwD
-         ZHKb2242p4+5Aepr4j2pM1Yaf4ysVqzc+qHSkkCjD/B/R4dY/9cWL1V5R088KRWFQh1e
-         HRUE4IKdBdM9hUzzzN/oeIFQiP/pOF0MbYKaM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706266654; x=1706871454;
-        h=mime-version:message-id:date:subject:cc:to:from:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=reC8sxXXhDMYBlkNruc8Oj//BRaG8Kkd0MY+Vxvdvv0=;
-        b=DhTM4onl5MM6GTFqTWGQF7XHjsZElnfMJciGb7K3OeTSk+hTf26crt1qCF/PnGMeCW
-         CHOQ73b8fb/J7vgIMphvt7TL6Sw4vOnVHG7P6pCXdct8f863En6ZoULr0Wq4uv0oiHGG
-         EoxQd6tMmajgR8Yb5Wk+Tj234EFSJ50latlUF6FWK85INZ2GFi/hVNCTtd+CecaX7ASh
-         W6rTuxmf9y0/HMjUqFkJmZxfYpdYb9fXiRmuCFG4fnM6nrsskN/hkwtVVVdKXKTIM3EK
-         CAG6IhjU9cTPMpRiClPXfYoHSnzqrzqv5dWlQXc+l93mcOefu/NSDSzYtvy1set/mNh4
-         BiXQ==
-X-Gm-Message-State: AOJu0YxjpzbUsMSyhWHFGSojz4STXgT7yQb1Nu1KA7LnT5dDuTnw1xyE
-	P6R+VnB+D7zbFIHu4Dv5CULkO411J0WTBrHuGe6Aib/K9Q2RO8c3SQ7WPM9DiqYyG5YLHlBaOpz
-	wtwvJ
-X-Google-Smtp-Source: AGHT+IHzmS9PhKG18fZso1CwKrOi6gaCkUIkx5gpT7apIb4wgPyEf6dzXKW5zGTKtiJNeeOVfG93XQ==
-X-Received: by 2002:a05:620a:388f:b0:783:9d9a:3d6a with SMTP id qp15-20020a05620a388f00b007839d9a3d6amr1077889qkn.16.1706266653810;
-        Fri, 26 Jan 2024 02:57:33 -0800 (PST)
-Received: from bld-bun-02.bun.broadcom.net ([192.19.148.250])
-        by smtp.gmail.com with ESMTPSA id w21-20020a05620a445500b007831cca1e84sm471338qkp.10.2024.01.26.02.57.32
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 26 Jan 2024 02:57:33 -0800 (PST)
-From: Arend van Spriel <arend.vanspriel@broadcom.com>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: linux-wireless@vger.kernel.org,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	brcm80211@lists.linux.dev
-Subject: [PATCH v3] wifi: cleanup brcm80211 drivers maintainer entry
-Date: Fri, 26 Jan 2024 11:57:24 +0100
-Message-Id: <20240126105724.384063-1-arend.vanspriel@broadcom.com>
-X-Mailer: git-send-email 2.32.0
+	s=arc-20240116; t=1706260209; c=relaxed/simple;
+	bh=RiHfs2t8eC9XHLYWhG/Gz1tK/tPTRMAgu2qCucUaZvI=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Ze2d0GKqF7TX5AbXYlQfeOEf+JmgYNM588UxHYH+VnoQQh1GFoYWarlLPtQrX3JMnknTO7oqkxR4nJrYnk/TbS5EDRCaFNBhlLZ9wO6F7a4ln1Bq3dBklv3rk4pUz9YEqdqxGLL1DJVhfE2AAr8PlsSt9ZJXNt8HUQzoyGatxk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=gGAKENn8; arc=none smtp.client-ip=210.61.82.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: a9945d24bc2a11eea2298b7352fd921d-20240126
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=i0tTUYG/l096SaouHUHaEj3UA6G711wmON0ZnJcg88U=;
+	b=gGAKENn8kbN0UDhHBsMRcZdp5Nq6dXdiWSIzvOj9iEuLgOPx4jyp0G2p5+B+mwl2CABzFpmCO2maFcFO1TPiA8o3usY8grRFKlBpobAnID+2OyFSfVVjYC+Yp/sdpGzEQ0P2mAEpU2CkgFJWDl2E6BnLUH3zFGP2azRsoLk3hIQ=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.36,REQID:e50229b9-0c76-436b-b88d-d1be022ccc37,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:6e16cf4,CLOUDID:ba74c97f-4f93-4875-95e7-8c66ea833d57,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+	RL:11|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
+	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
+X-UUID: a9945d24bc2a11eea2298b7352fd921d-20240126
+Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw02.mediatek.com
+	(envelope-from <shayne.chen@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 1491577793; Fri, 26 Jan 2024 17:09:51 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Fri, 26 Jan 2024 17:09:50 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Fri, 26 Jan 2024 17:09:50 +0800
+From: Shayne Chen <shayne.chen@mediatek.com>
+To: Felix Fietkau <nbd@nbd.name>
+CC: linux-wireless <linux-wireless@vger.kernel.org>, Lorenzo Bianconi
+	<lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, Evelyn Tsai
+	<evelyn.tsai@mediatek.com>, Bo Jiao <Bo.Jiao@mediatek.com>, linux-mediatek
+	<linux-mediatek@lists.infradead.org>, StanleyYP Wang
+	<StanleyYP.Wang@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>
+Subject: [PATCH v2 08/12] wifi: mt76: mt7996: fix efuse reading issue
+Date: Fri, 26 Jan 2024 17:09:19 +0800
+Message-ID: <20240126090923.6357-8-shayne.chen@mediatek.com>
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20240126090923.6357-1-shayne.chen@mediatek.com>
+References: <20240126090923.6357-1-shayne.chen@mediatek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="000000000000cf83c7060fd7292c"
+Content-Type: text/plain
+X-TM-AS-Product-Ver: SMEX-14.0.0.3152-9.1.1006-23728.005
+X-TM-AS-Result: No-10--4.043400-8.000000
+X-TMASE-MatchedRID: x6uIgBUWMExSNowC8HfcvawxbZnudyr7sf4f4CxxueRcKZwALwMGs/6g
+	KWYq1ITooTxdbGQ8kfwC3W6W/V0xYnEjLiYgp5vhA9lly13c/gFFYhJJXmHGLzedlpL1W1muo8W
+	MkQWv6iXBcIE78YqRWo6HM5rqDwqtmmHg2AUelbqxO8JSOpBiNh+lFc9A/GtbyzXVRC64Z28IAx
+	97KXaIZVBSxT21jAwKg2fNerP8R4UrO1calJcwRGtVO+1/nsrzwZBgUyJVEbl6Fw8/PpTMRaVvm
+	iAyeA2kc5MSfkiJFI5p3LlElBHTlw==
+X-TM-AS-User-Approved-Sender: No
+X-TM-AS-User-Blocked-Sender: No
+X-TMASE-Result: 10--4.043400-8.000000
+X-TMASE-Version: SMEX-14.0.0.3152-9.1.1006-23728.005
+X-TM-SNTS-SMTP: BFF3DCCF9A4B2133C0AB3B8D74946D1C3A571E0511A9D01D6C574CE17A26189F2000:8
+X-MTK: N
 
---000000000000cf83c7060fd7292c
-Content-Transfer-Encoding: 8bit
+From: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
 
-There has been some discussion about what is expected from
-a maintainer and so a cleanup seems to be in order. A dedicated
-mailing list has been created to discuss brcm80211 specific
-development issues. Keeping the status as Supported although
-help in maintaining this driver is welcomed.
+The efuse data starts from the 48th bytes instead of 64th bytes in the
+returned event skb.
 
-Cc: brcm80211@lists.linux.dev
-Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
+Signed-off-by: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
 ---
-changelog:
-  V2: let's not orphan the drivers for now
-  V3: switch to my Broadcom email
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-The discussion around the SAE password patch [1] was a lively one
-and at some point I wanted to drop the ball and be done with it.
-However, when the emotions subsided and people offered to help out
-with maintaining the brcm80211 drivers I decided to stay on for the
-job. The discussion had some valid points specifically on my actual
-involvement. Hopefully I can improve in that aspect. I sharpened my
-email filters to keep better eye on brcm80211 related queryies,
-patches and what not.
-
-Another step taken is the creation of a specific mailing list for
-brcm80211 development topics:
-
-<brcm80211@lists.linux.dev>
-
-The driver wireless wiki can also use a cleanup. Probably will add
-a list of people who volunteer to perform regression testing with
-the chipsets they have available.
-
-Hope we can move on in a relatively fresh new year and leave the
-frustration behind us.
-
-This patch was based on the wireless tree, but it probably applies
-to wireless-next as well. I am fine either way.
-
-Regards,
-Arend
-
-[1] https://lore.kernel.org/linux-wireless/20231107-brcmfmac-wpa3-v1-1-4c7db8636680@marcan.st/
----
- MAINTAINERS | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index d8ca0e10c8d1..25d530ab90d7 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4169,14 +4169,14 @@ F:	drivers/firmware/broadcom/tee_bnxt_fw.c
- F:	drivers/net/ethernet/broadcom/bnxt/
- F:	include/linux/firmware/broadcom/tee_bnxt_fw.h
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index 55512e62f98b..140123a42110 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -3547,7 +3547,7 @@ int mt7996_mcu_get_eeprom(struct mt7996_dev *dev, u32 offset)
+ 		u32 addr = le32_to_cpu(*(__le32 *)(skb->data + 12));
+ 		u8 *buf = (u8 *)dev->mt76.eeprom.data + addr;
  
--BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER
--M:	Arend van Spriel <aspriel@gmail.com>
--M:	Franky Lin <franky.lin@broadcom.com>
--M:	Hante Meuleman <hante.meuleman@broadcom.com>
-+BROADCOM BRCM80211 IEEE802.11 WIRELESS DRIVERS
-+M:	Arend van Spriel <arend.vanspriel@broadcom.com>
- L:	linux-wireless@vger.kernel.org
-+L:	brcm80211@lists.linux.dev
- L:	brcm80211-dev-list.pdl@broadcom.com
- S:	Supported
- F:	drivers/net/wireless/broadcom/brcm80211/
-+F:	include/linux/platform_data/brcmfmac.h
+-		skb_pull(skb, 64);
++		skb_pull(skb, 48);
+ 		memcpy(buf, skb->data, MT7996_EEPROM_BLOCK_SIZE);
+ 	}
  
- BROADCOM BRCMSTB GPIO DRIVER
- M:	Doug Berger <opendmb@gmail.com>
-
-base-commit: 1b023d475ae928f3036cefee9ea0a499af1d8900
 -- 
-2.32.0
+2.39.2
 
-
---000000000000cf83c7060fd7292c
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-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
-2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
-Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
-HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
-Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
-KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
-Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
-dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
-OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
-MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
-BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
-ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
-zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
-sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
-BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
-N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
-p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
-YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCAGR1MYZ31o1P5Ta9+B
-P3oN7q6M+OGbLArZuJR8WsfHwTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yNDAxMjYxMDU3MzRaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
-AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAu3rM+BZQJUFrVqbUf+vE4UMISJGUtAKCXq9V
-Rp/lXaav9Bl0eZFWoFHf+dI0hsrRK9voxP+6Ahs+6NMzsDBRkjTenPi2fictpDifIWdYKppnROaU
-bHvWBtON1Kpt0QApTEHyh9+6LcLrVPozGhSODuJ9NRWqbApYpdu1C7hbTeEdyROZduTWAr1ckUB3
-i2/afwx7RI41rC2JB4WmCRcD9us5lhysllhpPuuCBjR6GJ1RiQeIesPS5/NVz1TEh+9YGA1X2eCm
-heRsnukYJcZJsXRm9rArimz5wbf60FIG6x/Zm+m8IPqg3z8lo3OPSD5pdH39VtXKr0m72cJPuXYd
-gg==
---000000000000cf83c7060fd7292c--
 
