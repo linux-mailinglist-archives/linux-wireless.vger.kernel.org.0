@@ -1,278 +1,145 @@
-Return-Path: <linux-wireless+bounces-2590-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2591-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CA0E83E8AA
-	for <lists+linux-wireless@lfdr.de>; Sat, 27 Jan 2024 01:44:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CA3183EB02
+	for <lists+linux-wireless@lfdr.de>; Sat, 27 Jan 2024 05:32:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB6EAB251FA
-	for <lists+linux-wireless@lfdr.de>; Sat, 27 Jan 2024 00:44:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDDC11F243DD
+	for <lists+linux-wireless@lfdr.de>; Sat, 27 Jan 2024 04:32:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AC694422;
-	Sat, 27 Jan 2024 00:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35AFA3D6C;
+	Sat, 27 Jan 2024 04:32:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=egauge.net header.i=@egauge.net header.b="tohBj06J"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="PQgj2EF0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from o1.ptr2625.egauge.net (o1.ptr2625.egauge.net [167.89.112.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78BEA23D8
-	for <linux-wireless@vger.kernel.org>; Sat, 27 Jan 2024 00:43:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=167.89.112.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F1B617FD
+	for <linux-wireless@vger.kernel.org>; Sat, 27 Jan 2024 04:32:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706316240; cv=none; b=KkLZwsrm2LZDoXH6j2yVCvg+1dbqlr+WGh5ys3v7I5LcNLgOomPS3HbKVlUNCofCIvp5/7i4XsDoW9bl2aYhMuBvT2/EQqrnDytM8EF0poVRzFnJnCKaoq68S6CdSFPm68at9n2u19lqNiZpUaXotgDaBSS/iCwK1N47EMe8xg0=
+	t=1706329934; cv=none; b=F95j+Bywg92tT2Em2sVRlyqANn23agCNkgYq07jRFw9RxxJhxAFbsGhR2/zvl8LHXUAZYx88RPvo/4JruYMbzhYG4jYLWPd8B21A2/YAFcO5Q3eKfKRzzx8j1BkThkvd+aN/1qXOp4Fw2oMEm3moF5H/rFTI9roBTuk1x5JVkM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706316240; c=relaxed/simple;
-	bh=RSoyG1EVcOsSXM1YteCFUpIpQ0RfBRBD2WLcj3FheHs=;
-	h=From:Subject:Date:Message-Id:MIME-Version:To:Cc:Content-Type; b=lnkO8oJHb3nUPShCUqKq5F2P8lUH9HOkCk5FH9ssOKc834t102cQkoPMvljSTV31s/ExC4ARh1CWMPi+ZbSbWKn6mBd9j4geXvOU+kUIdGJd7H+/jMNJ39lDxGUji/lI6UNYIcB+w7lcU5ATTurUKR615OzQ3lwrqFMm8UYfUK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=egauge.net; spf=pass smtp.mailfrom=em1190.egauge.net; dkim=pass (2048-bit key) header.d=egauge.net header.i=@egauge.net header.b=tohBj06J; arc=none smtp.client-ip=167.89.112.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=egauge.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em1190.egauge.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=egauge.net;
-	h=from:subject:mime-version:to:cc:content-transfer-encoding:
-	content-type:cc:content-type:from:subject:to;
-	s=sgd; bh=9knJHSUsebqv2yNUSZUAf8+qncEpNf5bOSzZiOLEYh8=;
-	b=tohBj06JFr9Q2lbE6zTAWmJd1+Q/4QCErge+JcI2YJBvNXZZOQu2O6jINRNmklKwXPN8
-	6OFESHLqhJcjr4HPxth5VsdTY9durqtV4U4FxZtt2eW6VVNMabYTFEwabAOlWgHTnhgUwO
-	Z2EqZfa8amfvepQUFKTgIJSYryQ9SMjY0Mn5chdr988qe+xVIh4MzesR1htYaGIyB3qFvI
-	LA5ncTuSwg2L7kNGcFJGr9AfWcmyCYEcEFgrMAOrXDBfHvQvz8PIIM9eH4a7R26IIl5pxT
-	jN3Hp1itOIy9709I7fR1OkuQRY6LiXTKzlkXlUDjuvwY6FZPJjs4//pwaZ5CUj0g==
-Received: by recvd-6c4f9c464b-9kmf2 with SMTP id recvd-6c4f9c464b-9kmf2-1-65B451CD-1
-	2024-01-27 00:43:57.069160927 +0000 UTC m=+98191.035494384
-Received: from pearl.egauge.net (unknown)
-	by geopod-ismtpd-13 (SG)
-	with ESMTP
-	id WmKzDRFNSpqleuM-GwnPeA
-	Sat, 27 Jan 2024 00:43:56.962 +0000 (UTC)
-Received: by pearl.egauge.net (Postfix, from userid 1000)
-	id 2353270074C; Fri, 26 Jan 2024 17:43:56 -0700 (MST)
-From: David Mosberger-Tang <davidm@egauge.net>
-Subject: [PATCH] [v4] wifi: wilc1000: validate chip id during bus probe
-Date: Sat, 27 Jan 2024 00:43:57 +0000 (UTC)
-Message-Id: <20240127004331.1334804-1-davidm@egauge.net>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1706329934; c=relaxed/simple;
+	bh=5aX+TnzkTZOyBOQgaT9VCG7IpEWAouSUfbIPtbOB3lo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=ZnkpKPRJM2JxypSTqsv7ZO3GY/ZgWpncRZDOyK4r5P8aorCLbBggzmqUX6CHB2ICJPXbgvl5DbMTvqWfIy1buSz8yH/ax+Ur1SOxMK47GjzO4Utd2cc+8U8nOQfedT1I8ldYUxj7/9zv40tBHSNOPU4GF7kZYA3cVv1ltn3jeH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=PQgj2EF0; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40R4VlQx021059;
+	Sat, 27 Jan 2024 04:31:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=6utVVzv24TMuHaOi9DUlqOdQ2/Jgg9eUs8xBXPgvhmY=; b=PQ
+	gj2EF0qLiD64H9OZrxKwr91K/tHoN5Jt2AIXMUN/OJMKbacIPKMrXgwnXjeIR0mk
+	H2hURs/7LDInCnLBZb6bhDK8H6mFySN94fpA79GKueQ7/4+yjS7db/9SP/Osb1op
+	QrrTajve997WY2pzIIS1oSJgg7iOuu/SpJ1UkdMH05JNe2pzbo+pcgxzPDdS3int
+	AwFR2PEIZ/hBv9U1sZZfh7XTIq26Ba6jd6jNzDStiVXkQWttEgJifjAQGjLZGijP
+	G0ljcvQPYVf+A5siujg+BzKns0gXSydRskIDEmWxXqIQGH8pLcgHlZ/qQ79DtFA/
+	KpWIgD8yi9vH0ZnZeKHQ==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vvqhmr7ua-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 27 Jan 2024 04:31:46 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40R4Vjls016414
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 27 Jan 2024 04:31:45 GMT
+Received: from [10.253.76.87] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Fri, 26 Jan
+ 2024 20:31:44 -0800
+Message-ID: <fc6bd06f-d52b-4dee-ab1b-4bb845cc0b95@quicinc.com>
+Date: Sat, 27 Jan 2024 12:31:41 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SG-EID: 
- =?us-ascii?Q?+kMxBqj35EdRUKoy8diX1j4AXmPtd302oan+iXZuF8m2Nw4HRW2irNspffT=2Fkh?=
- =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvCrwgtcdLxuEPSo6H?=
- =?us-ascii?Q?0nWG=2FdtJ3WuVUqI8AhaBBwdV+4sv617LlFeHK4P?=
- =?us-ascii?Q?rnOhHOp0YWaLB7YZJJpOrNuAjf765648d3kR7IU?=
- =?us-ascii?Q?76M6vq80vpTpn9OktKXOZASp85leHb4Yua5+7H9?=
- =?us-ascii?Q?JT=2FG07hi3hcd3tZQWs0Q24dCtbETxnI=2FQGez05=2F?=
- =?us-ascii?Q?YXTF4WmY1yh5yWabkZxPw=3D=3D?=
-To: linux-wireless@vger.kernel.org
-Cc: Ajay.Kathat@microchip.com, alexis.lothore@bootlin.com, kvalo@kernel.org,
-	David Mosberger-Tang <davidm@egauge.net>
-X-Entity-ID: Xg4JGAcGrJFIz2kDG9eoaQ==
+User-Agent: Mozilla Thunderbird
+Subject: Re: ath11k and vfio-pci support
+Content-Language: en-US
+To: James Prestwood <prestwoj@gmail.com>, Kalle Valo <kvalo@kernel.org>
+CC: <linux-wireless@vger.kernel.org>, <ath11k@lists.infradead.org>
+References: <adcb785e-4dc7-4c4a-b341-d53b72e13467@gmail.com>
+ <8734v5zhol.fsf@kernel.org> <87fa5220-6fd9-433d-879b-c55ac67a0748@gmail.com>
+ <87r0ipcn7j.fsf@kernel.org> <356e0b05-f396-4ad7-9b29-c492b54af834@gmail.com>
+ <26119c3f-9012-47bb-948e-7e976d4773a7@quicinc.com>
+ <87mstccmk6.fsf@kernel.org> <df9fd970-5af3-468c-b1f1-18f91215cf44@gmail.com>
+ <8734v4auc4.fsf@kernel.org> <e8878979-1f3f-4635-a716-9ac381c617d9@gmail.com>
+ <285b84d0-229c-4c83-a7d6-4c3c23139597@quicinc.com>
+ <4607fb37-8227-49a3-9e8c-10c9b117ec7b@gmail.com>
+ <3d22a730-aee5-4f2a-9ddc-b4b5bd4d62fe@quicinc.com>
+ <ee0280fd-032c-4f45-a3f9-50d96d8bed6d@gmail.com>
+ <16cfd010-b62d-4385-92d1-002820a8db38@quicinc.com>
+ <cdec259a-b779-4856-8585-f285179e3671@gmail.com>
+ <21e925bc-ee3e-4421-949b-b3839d2abdef@quicinc.com>
+ <08457e37-49f4-4c51-998b-e577731c8022@gmail.com> <87o7dh2oky.fsf@kernel.org>
+ <8b938c5f-a8c1-4fc5-aaf5-501f097a1db0@gmail.com>
+From: Baochen Qiang <quic_bqiang@quicinc.com>
+In-Reply-To: <8b938c5f-a8c1-4fc5-aaf5-501f097a1db0@gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset=us-ascii
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: Ebk55hykM7StFfMozH85KxV78O9czg1o
+X-Proofpoint-ORIG-GUID: Ebk55hykM7StFfMozH85KxV78O9czg1o
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-25_14,2024-01-25_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 malwarescore=0
+ adultscore=0 priorityscore=1501 lowpriorityscore=0 mlxlogscore=630
+ spamscore=0 impostorscore=0 clxscore=1015 mlxscore=0 bulkscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2401190000 definitions=main-2401270031
 
-Previously, the driver created a net device (typically wlan0) as soon
-as the module was loaded.  This commit changes the driver to follow
-normal Linux convention of creating the net device only when bus
-probing detects a supported chip.
 
-Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
----
-changelog:
-V1: original version
-V2: Add missing forward declarations
-V3: Add missing forward declarations, actually :-(
-V4: - rearranged function order to improve readability
-    - now relative to wireless-next repository
-    - avoid change error return value and have lower-level functions
-      directly return -ENODEV instead
-    - removed any mention of WILC3000
-    - export and use existing is_wilc1000() for chipid validation
-    - replaced strbool() function with open code
 
- drivers/net/wireless/microchip/wilc1000/spi.c | 74 ++++++++++++++-----
- .../net/wireless/microchip/wilc1000/wlan.c    |  3 +-
- .../net/wireless/microchip/wilc1000/wlan.h    |  1 +
- 3 files changed, 59 insertions(+), 19 deletions(-)
+On 1/27/2024 2:20 AM, James Prestwood wrote:
+> Hi Kalle/Baochen,
+> 
+> On 1/19/24 9:57 AM, Kalle Valo wrote:
+>> James Prestwood <prestwoj@gmail.com> writes:
+>>
+>>>> Sorry I should have made it clear:
+>>>> step1: start qemu and load ath11k without changing anything, then
+>>>> you get those errors;
+>>>> step2: keep qemu running and ath11k there, don't unload it. Then
+>>>> check lspci output in host to get the MSI vector.
+>>>> step3: Back in qemu, hard code MSI vector to the one you get in
+>>>> step2, then rebuild and reload ath11k.
+>>> Thank you for the clarification, this worked like a charm!
+>> Very nice, huge thanks to Baochen for finding the workaround! James, let
+>> us know how it works for you in the long run. This would definitely help
+>> automating ath11k testing so I'm very interested about this.
+> 
+> It appears this hack isn't a reliable solution long term. It did survive 
+> several reboots but then I was back to the same behavior. Looked at the 
+> MSI vector and it had changed:
+> 
+> It went from fee00558 to feee00538
+> 
+Yes, the MSI vector allocation is up to the kernel, and several factors 
+are considered when doing this. Among them, the most important are the 
+IRQ load balance and available vectors on a specific CPU. As a result, 
+the vector changes, not only when you request it (as you already see), 
+but also in run time.
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/spi.c b/drivers/net/wireless/microchip/wilc1000/spi.c
-index 77b4cdff73c3..6496a19a337e 100644
---- a/drivers/net/wireless/microchip/wilc1000/spi.c
-+++ b/drivers/net/wireless/microchip/wilc1000/spi.c
-@@ -42,7 +42,7 @@ MODULE_PARM_DESC(enable_crc16,
- #define WILC_SPI_RSP_HDR_EXTRA_DATA	8
- 
- struct wilc_spi {
--	bool isinit;		/* true if SPI protocol has been configured */
-+	bool isinit;		/* true if wilc_spi_init was successful */
- 	bool probing_crc;	/* true if we're probing chip's CRC config */
- 	bool crc7_enabled;	/* true if crc7 is currently enabled */
- 	bool crc16_enabled;	/* true if crc16 is currently enabled */
-@@ -55,6 +55,8 @@ struct wilc_spi {
- static const struct wilc_hif_func wilc_hif_spi;
- 
- static int wilc_spi_reset(struct wilc *wilc);
-+static int wilc_spi_configure_bus_protocol(struct wilc *wilc);
-+static int wilc_validate_chipid(struct wilc *wilc);
- 
- /********************************************
-  *
-@@ -232,8 +234,26 @@ static int wilc_bus_probe(struct spi_device *spi)
- 	}
- 	clk_prepare_enable(wilc->rtc_clk);
- 
-+	dev_info(&spi->dev, "Selected CRC config: crc7=%s, crc16=%s\n",
-+		 enable_crc7 ? "on" : "off", enable_crc16 ? "on" : "off");
-+
-+	/* we need power to configure the bus protocol and to read the chip id: */
-+
-+	wilc_wlan_power(wilc, true);
-+
-+	ret = wilc_spi_configure_bus_protocol(wilc);
-+	if (ret)
-+		goto power_down;
-+
-+	ret = wilc_validate_chipid(wilc);
-+	if (ret)
-+		goto power_down;
-+
-+	wilc_wlan_power(wilc, false);
- 	return 0;
- 
-+power_down:
-+	wilc_wlan_power(wilc, false);
- netdev_cleanup:
- 	wilc_netdev_cleanup(wilc);
- free:
-@@ -1105,26 +1125,34 @@ static int wilc_spi_deinit(struct wilc *wilc)
- 
- static int wilc_spi_init(struct wilc *wilc, bool resume)
- {
--	struct spi_device *spi = to_spi_device(wilc->dev);
- 	struct wilc_spi *spi_priv = wilc->bus_data;
--	u32 reg;
--	u32 chipid;
--	int ret, i;
-+	int ret;
- 
- 	if (spi_priv->isinit) {
- 		/* Confirm we can read chipid register without error: */
--		ret = wilc_spi_read_reg(wilc, WILC_CHIPID, &chipid);
--		if (ret == 0)
-+		if (wilc_validate_chipid(wilc) == 0)
- 			return 0;
--
--		dev_err(&spi->dev, "Fail cmd read chip id...\n");
- 	}
- 
- 	wilc_wlan_power(wilc, true);
- 
--	/*
--	 * configure protocol
--	 */
-+	ret = wilc_spi_configure_bus_protocol(wilc);
-+	if (ret) {
-+		wilc_wlan_power(wilc, false);
-+		return ret;
-+	}
-+
-+	spi_priv->isinit = true;
-+
-+	return 0;
-+}
-+
-+static int wilc_spi_configure_bus_protocol(struct wilc *wilc)
-+{
-+	struct spi_device *spi = to_spi_device(wilc->dev);
-+	struct wilc_spi *spi_priv = wilc->bus_data;
-+	u32 reg;
-+	int ret, i;
- 
- 	/*
- 	 * Infer the CRC settings that are currently in effect.  This
-@@ -1142,7 +1170,7 @@ static int wilc_spi_init(struct wilc *wilc, bool resume)
- 	}
- 	if (ret) {
- 		dev_err(&spi->dev, "Failed with CRC7 on and off.\n");
--		return ret;
-+		return -ENODEV;
- 	}
- 
- 	/* set up the desired CRC configuration: */
-@@ -1165,7 +1193,7 @@ static int wilc_spi_init(struct wilc *wilc, bool resume)
- 		dev_err(&spi->dev,
- 			"[wilc spi %d]: Failed internal write reg\n",
- 			__LINE__);
--		return ret;
-+		return -ENODEV;
- 	}
- 	/* update our state to match new protocol settings: */
- 	spi_priv->crc7_enabled = enable_crc7;
-@@ -1176,17 +1204,27 @@ static int wilc_spi_init(struct wilc *wilc, bool resume)
- 
- 	spi_priv->probing_crc = false;
- 
-+	return 0;
-+}
-+
-+static int wilc_validate_chipid(struct wilc *wilc)
-+{
-+	struct spi_device *spi = to_spi_device(wilc->dev);
-+	u32 chipid;
-+	int ret;
-+
- 	/*
- 	 * make sure can read chip id without protocol error
- 	 */
- 	ret = wilc_spi_read_reg(wilc, WILC_CHIPID, &chipid);
- 	if (ret) {
- 		dev_err(&spi->dev, "Fail cmd read chip id...\n");
--		return ret;
-+		return -ENODEV;
-+	}
-+	if (!is_wilc1000(chipid)) {
-+		dev_err(&spi->dev, "Unknown chip id 0x%x\n", chipid);
-+		return -ENODEV;
- 	}
--
--	spi_priv->isinit = true;
--
- 	return 0;
- }
- 
-diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
-index 6b2f2269ddf8..3130a3ea8d71 100644
---- a/drivers/net/wireless/microchip/wilc1000/wlan.c
-+++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
-@@ -12,10 +12,11 @@
- 
- #define WAKE_UP_TRIAL_RETRY		10000
- 
--static inline bool is_wilc1000(u32 id)
-+bool is_wilc1000(u32 id)
- {
- 	return (id & (~WILC_CHIP_REV_FIELD)) == WILC_1000_BASE_ID;
- }
-+EXPORT_SYMBOL_GPL(is_wilc1000);
- 
- static inline void acquire_bus(struct wilc *wilc, enum bus_acquire acquire)
- {
-diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.h b/drivers/net/wireless/microchip/wilc1000/wlan.h
-index f02775f7e41f..ebdfb0afaf71 100644
---- a/drivers/net/wireless/microchip/wilc1000/wlan.h
-+++ b/drivers/net/wireless/microchip/wilc1000/wlan.h
-@@ -409,6 +409,7 @@ struct wilc_cfg_rsp {
- 
- struct wilc_vif;
- 
-+bool is_wilc1000(u32 id);
- int wilc_wlan_firmware_download(struct wilc *wilc, const u8 *buffer,
- 				u32 buffer_size);
- int wilc_wlan_start(struct wilc *wilc);
--- 
-2.34.1
-
+> But at least I can just modify this and get it working again.
+> 
+> Thanks,
+> 
+> James
+> 
+>>
 
