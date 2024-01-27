@@ -1,127 +1,148 @@
-Return-Path: <linux-wireless+bounces-2597-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2598-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BAA983EB58
-	for <lists+linux-wireless@lfdr.de>; Sat, 27 Jan 2024 06:47:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A57683EC04
+	for <lists+linux-wireless@lfdr.de>; Sat, 27 Jan 2024 09:26:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39DB01F24295
-	for <lists+linux-wireless@lfdr.de>; Sat, 27 Jan 2024 05:47:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9D0E283849
+	for <lists+linux-wireless@lfdr.de>; Sat, 27 Jan 2024 08:26:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B041014274;
-	Sat, 27 Jan 2024 05:46:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B0E81B812;
+	Sat, 27 Jan 2024 08:26:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="YlhbxCQu"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LmWoSaSk"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8657F
-	for <linux-wireless@vger.kernel.org>; Sat, 27 Jan 2024 05:46:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB87712E6F;
+	Sat, 27 Jan 2024 08:26:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706334418; cv=none; b=vFS3vh5q3XHCQOSS1/NNW6HmymJWWKdISvmNpKxtauvM+aHkAIZTvULYSuXtBP89APEO+q15hjUzhiy9PXMgfHPn/hepL1imAzFDKY/PQ/Xo9aj8pz6OJtPlCnnxoGfWRFCX7Iz/ESdAoEWmtD3oHuFYj3RwchAQsdgYf06mh9o=
+	t=1706344003; cv=none; b=iiH5SfT8Q7HtXrajSHJUdE2j4vLJ2kUWtQXosstY8RhAWPoOYCQBAdtiSnXBMRmQwApWyWGVRgue9VDg2GPwTqPT/SaUoO3ZScfxy0nkQWyPFTOiiiT83JrdqqrW3FiH/VShnmBDF7pXV3aBIfIedoz1PpEwx4Cw03Mu4mDJ3Vg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706334418; c=relaxed/simple;
-	bh=XA6vmW8i+/PD1fv/Kmmacuycq+M29uwljcq3/DGYo10=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=QY5GuXMvQaR88bh6bUyR2LmuroXGf7s3/7ux9I9/zEYpeEvfP3tgCyajJhis4YBDSIh9jB5Qe7itsguycEMrWnFhF9zfn5ASWoYa7Ee1jNZAHYOptt/Q9AAeUNTKMpwGxMPke7nhvt61eFb0yaL0xnB1TUPiBT/qxjTeFydMMu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=YlhbxCQu; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40R4eXC6030899;
-	Sat, 27 Jan 2024 05:46:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=b8LqddyNZIutMabBlK6oa5hjo085FyGn9so3nMbVHIk=; b=Yl
-	hbxCQu0b1/URJXQl5Qj2dS0qlh+NLX3+yphTF9Oor4I7fy2aQHZcFMrlqFYx21UJ
-	J+Fe6gonPcU74jDprvXE4MOEY0sdqsFeT/HgMLjcHhQaDSsa1A99fPB/ecazWaYH
-	qJCWDYgY1BivLqqIvbGkncKokc0qKZT5DiAaZHcLGP3ca2pifNOb8Y2qkcarwaGW
-	7AzLATsbJ+kgA+W+vdKMSn+Ulps0JQSSX2xOTgd0IYkGNoIAIz0QQz9iA6FuGQBT
-	NJA9w00IojAXPGCjdXqBCrIj0i4+Mf8SEiTm7sCFtgJTOdTNAwMsziG56OcoV/GB
-	NYCna4luccI7xvcyNm2g==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vvs5p061v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 27 Jan 2024 05:46:53 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40R5kq1O028309
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 27 Jan 2024 05:46:52 GMT
-Received: from [10.216.58.0] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Fri, 26 Jan
- 2024 21:46:50 -0800
-Message-ID: <9e03fd16-4109-4304-9539-2967c93e5e93@quicinc.com>
-Date: Sat, 27 Jan 2024 11:16:47 +0530
+	s=arc-20240116; t=1706344003; c=relaxed/simple;
+	bh=nR/U/k3Pzl0L5NvuvVWzu+aT2s+bUvPO8sbYJZr9EOI=;
+	h=From:To:CC:Date:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=h4ezkOU5Y08wEM5eA+6ohYAZ/5A/Y72F4o8nArgloBdbuL6cROLf9QIGPvf8DmsDmEkZwE+dLjW+Nk7j440TppqVUruhMBZ25388em2y9IiMupHxvVgImokbkeNFK1MNZf3KcvM15lm1KEfe61YzQmwR1RHFNDXFoosG1Vl4Sss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LmWoSaSk; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-33ae4eb360aso218733f8f.0;
+        Sat, 27 Jan 2024 00:26:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1706344000; x=1706948800; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:user-agent
+         :references:in-reply-to:message-id:date:cc:to:from:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uehh41qNYPhg24j3C7un0JNB0v5MTT7KbCmBRQzEZgo=;
+        b=LmWoSaSkZWjBOnFKbas6x4Rvq5VN5lZZqQZVAlqdFS6wss3YKW0uzp+bRxdYvW6VuI
+         GCzNa5Gy4H5wDRDGBOmsYtyIF15EK4L0dcalti2Aw9N3PluxaYxtbKDMD0Ug3nmDuqF4
+         KQKIc5lX9APGF2jOjRpJgGw7M86/5EwJ72wuG5c+RGcUPTmhzrTx7JBQPf5NRAoDSQSB
+         tBnbue2R2NP/W68tcvhWKmzXTgIJrdvqK1y05bnCdodsUc/bOfH/Zr+KwLJ1vJUZvvZG
+         QF+mw0qGjgJ2m2NG0K87zQcPTtYJi6SwL+2R+o7de7dodjjcFV7AeM6TewKLol8RFb5c
+         QhPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706344000; x=1706948800;
+        h=content-transfer-encoding:mime-version:subject:user-agent
+         :references:in-reply-to:message-id:date:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=uehh41qNYPhg24j3C7un0JNB0v5MTT7KbCmBRQzEZgo=;
+        b=w0wxuynWZy2QRDWJdQzkdz1/T1kyrh5zQI3MC+ps0G9jgoPYedz5cwcpopl1+R1cvG
+         iY0CbhdRvcew1ZABy64xahtJ86BQuFl3ghhUFMzSbBHaywpFyM2QVPCGdIgxYumpTV94
+         6vcXPTxneCoXqppMxQ/A1ICLuFyeUslfDwmxAwjbrvQzuIKk3wGpJFnTu2Wqb0yhEAV1
+         hqx7FFtlwwtZ1Z44zDvvX+M9wkSYD+6SBy4oxGSK//QY0EoUF7xjCCl9jQ+qMAiz0Nsf
+         krin6sVgIw0WU2V+785/B62e9SToLRuojojDf6o4XqUGEqSEcUzIES7Es66jvgVU5mgS
+         r/UQ==
+X-Gm-Message-State: AOJu0YzoqAhmG6HAPzDqW2rIzKHe5a90xbWE5VFyVOWJKabZrNEOCvdG
+	1jBlmTZpXBDsE+9qiFwAeTSa/E+dWPn0oayBs/00xWx3Cz3W917l
+X-Google-Smtp-Source: AGHT+IFLnqJ4y4jF1jFD1J4ZWolGZmabt02XyiJXOp+6lWppDcEgPmSZ8V7cc2rl7n0WbYWdgtX/ZQ==
+X-Received: by 2002:a05:6000:1446:b0:337:b38d:6075 with SMTP id v6-20020a056000144600b00337b38d6075mr644009wrx.4.1706343999766;
+        Sat, 27 Jan 2024 00:26:39 -0800 (PST)
+Received: from [10.230.100.199] ([192.19.152.250])
+        by smtp.gmail.com with ESMTPSA id az10-20020adfe18a000000b0033ade368c29sm2136573wrb.3.2024.01.27.00.26.38
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 27 Jan 2024 00:26:39 -0800 (PST)
+From: Arend van Spriel <aspriel@gmail.com>
+To: Kalle Valo <kvalo@kernel.org>, Breno Leitao <leitao@debian.org>
+CC: <kuba@kernel.org>, <davem@davemloft.net>, <abeni@redhat.com>, <edumazet@google.com>, Franky Lin <franky.lin@broadcom.com>, Hante Meuleman <hante.meuleman@broadcom.com>, <dsahern@kernel.org>, <weiwan@google.com>, <linux-wireless@vger.kernel.org>, <brcm80211-dev-list.pdl@broadcom.com>, <linux-kernel@vger.kernel.org>
+Date: Sat, 27 Jan 2024 09:26:35 +0100
+Message-ID: <18d4a071678.279b.9696ff82abe5fb6502268bdc3b0467d4@gmail.com>
+In-Reply-To: <877ck0eeqi.fsf@kernel.org>
+References: <20240122184543.2501493-1-leitao@debian.org>
+ <20240122184543.2501493-18-leitao@debian.org>
+ <877ck0eeqi.fsf@kernel.org>
+User-Agent: AquaMail/1.49.2 (build: 104902408)
+Subject: Re: [PATCH net-next 17/22] net: fill in MODULE_DESCRIPTION()s for Broadcom WLAN
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] wifi: mac80211: add link id argument for sta_flush()
- function
-Content-Language: en-US
-To: Johannes Berg <johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>
-References: <20240125125855.827619-1-quic_adisi@quicinc.com>
- <20240125125855.827619-3-quic_adisi@quicinc.com>
- <3a56c591a03a17e4ad1332b88bcd5790346cdc7c.camel@sipsolutions.net>
-From: Aditya Kumar Singh <quic_adisi@quicinc.com>
-In-Reply-To: <3a56c591a03a17e4ad1332b88bcd5790346cdc7c.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: EflqqglJRMxOhmfTDe0A6xOKIkqCzoGl
-X-Proofpoint-ORIG-GUID: EflqqglJRMxOhmfTDe0A6xOKIkqCzoGl
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-25_14,2024-01-25_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- impostorscore=0 mlxscore=0 phishscore=0 lowpriorityscore=0 adultscore=0
- bulkscore=0 suspectscore=0 mlxlogscore=854 malwarescore=0 spamscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2401190000 definitions=main-2401270041
+Content-Type: text/plain; format=flowed; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
 
-On 1/26/24 14:41, Johannes Berg wrote:
-> On Thu, 2024-01-25 at 18:28 +0530, Aditya Kumar Singh wrote:
->> Whenever sta_flush() function is invoked, all sta present in that interface
-> 
-> STAs
-> 
->> is flushed. However, there is a requirement in case of MLO that only flush
-> 
-> are flushed; The sentence starting here could be reworded.
-> 
->> those sta who are using a given link id.
-> 
-> who -> which/that? They're not people :)
-> 
->>   This is not possible currently.
-> 
-> reorder the words a bit here?
-> 
->> Hence add the support for the same.
-> 
-> I think (and hope :) ) you can improve the commit messages ... Maybe say
-> "Add support for this by implementing the new cfg80211 API ..."
-> 
->> Passing link id is done currently via cfg80211 op - del_station.
-> 
-> The mechanics of this aren't really all _that_ interesting unless
-> they're really complicated - we can all read the code if we care about
-> that part.
-> 
-> johannes
+On January 23, 2024 7:38:36 AM Kalle Valo <kvalo@kernel.org> wrote:
 
-Sure got it. Thanks for all suggestion. Will address them in next version.
+> Breno Leitao <leitao@debian.org> writes:
+>
+>> W=1 builds now warn if module is built without a MODULE_DESCRIPTION().
+>> Add descriptions to the Broadcom FullMac WLAN drivers.
+>>
+>> Signed-off-by: Breno Leitao <leitao@debian.org>
+>> ---
+>> drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/module.c | 1 +
+>> drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/module.c | 1 +
+>> drivers/net/wireless/broadcom/brcm80211/brcmfmac/wcc/module.c | 1 +
+>> 3 files changed, 3 insertions(+)
+>>
+>> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/module.c 
+>> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/module.c
+>> index d55f3271d619..c1f91dc151c2 100644
+>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/module.c
+>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/module.c
+>> @@ -20,6 +20,7 @@ static void __exit brcmf_bca_exit(void)
+>> brcmf_fwvid_unregister_vendor(BRCMF_FWVENDOR_BCA, THIS_MODULE);
+>> }
+>>
+>> +MODULE_DESCRIPTION("Broadcom FullMAC WLAN BCA driver");
+>
+> It would be good to spell out BCA. I don't even know what it means :)
+
+If my memory don't fail me it is Broadband Carrier Access. Basically it's 
+the AP side of the Broadcom wifi business.
+
+>
+>
+>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/module.c
+>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/module.c
+>> @@ -20,6 +20,7 @@ static void __exit brcmf_cyw_exit(void)
+>> brcmf_fwvid_unregister_vendor(BRCMF_FWVENDOR_CYW, THIS_MODULE);
+>> }
+>>
+>> +MODULE_DESCRIPTION("Broadcom FullMAC WLAN CYW driver");
+>
+> Same for CYW.
+
+A bit easier: Cypress Wifi.
+
+Kalle does apparently knows what WCC stands for ;-p To be honest I am not 
+sure but it is the mobility business.
+
+So these modules a not standalone modules hence I didn't bother adding a 
+description. My bad. These are plugin modules so to speak so if I can make 
+a suggestion here please rephrase to something like:
+
+BCA: "Broadcom FullMAC WLAN driver plugin for Broadcom AP chipsets" and
+WCC: "... for Broadcom mobility chipsets" and
+CYW: "... for Cypress/Infineon chipsets".
+
+Regards,
+Arend
+
+
 
