@@ -1,148 +1,98 @@
-Return-Path: <linux-wireless+bounces-2598-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2599-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A57683EC04
-	for <lists+linux-wireless@lfdr.de>; Sat, 27 Jan 2024 09:26:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87F6A83ECA2
+	for <lists+linux-wireless@lfdr.de>; Sat, 27 Jan 2024 11:09:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9D0E283849
-	for <lists+linux-wireless@lfdr.de>; Sat, 27 Jan 2024 08:26:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 274D21F237E4
+	for <lists+linux-wireless@lfdr.de>; Sat, 27 Jan 2024 10:09:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B0E81B812;
-	Sat, 27 Jan 2024 08:26:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBC4E1EA72;
+	Sat, 27 Jan 2024 10:09:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LmWoSaSk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I7DpGUGb"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB87712E6F;
-	Sat, 27 Jan 2024 08:26:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A529021118;
+	Sat, 27 Jan 2024 10:09:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706344003; cv=none; b=iiH5SfT8Q7HtXrajSHJUdE2j4vLJ2kUWtQXosstY8RhAWPoOYCQBAdtiSnXBMRmQwApWyWGVRgue9VDg2GPwTqPT/SaUoO3ZScfxy0nkQWyPFTOiiiT83JrdqqrW3FiH/VShnmBDF7pXV3aBIfIedoz1PpEwx4Cw03Mu4mDJ3Vg=
+	t=1706350142; cv=none; b=KEjVoXeUAMpqpJTixGm6ODb8caSYuPRZ1Y/JGuxwLYB+NbMw7GyUezXMumkWXVkYIpLwCHXB6Pn7/qkp0095tVr5e8MuHh46PNOgcNzHW/VeHVRd6J2sZ1rukFYtnJLE/IqSYtWC62OXyfgLk3kjpbQHgzI4cu6VWTzBI+HWhqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706344003; c=relaxed/simple;
-	bh=nR/U/k3Pzl0L5NvuvVWzu+aT2s+bUvPO8sbYJZr9EOI=;
-	h=From:To:CC:Date:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=h4ezkOU5Y08wEM5eA+6ohYAZ/5A/Y72F4o8nArgloBdbuL6cROLf9QIGPvf8DmsDmEkZwE+dLjW+Nk7j440TppqVUruhMBZ25388em2y9IiMupHxvVgImokbkeNFK1MNZf3KcvM15lm1KEfe61YzQmwR1RHFNDXFoosG1Vl4Sss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LmWoSaSk; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-33ae4eb360aso218733f8f.0;
-        Sat, 27 Jan 2024 00:26:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706344000; x=1706948800; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:user-agent
-         :references:in-reply-to:message-id:date:cc:to:from:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uehh41qNYPhg24j3C7un0JNB0v5MTT7KbCmBRQzEZgo=;
-        b=LmWoSaSkZWjBOnFKbas6x4Rvq5VN5lZZqQZVAlqdFS6wss3YKW0uzp+bRxdYvW6VuI
-         GCzNa5Gy4H5wDRDGBOmsYtyIF15EK4L0dcalti2Aw9N3PluxaYxtbKDMD0Ug3nmDuqF4
-         KQKIc5lX9APGF2jOjRpJgGw7M86/5EwJ72wuG5c+RGcUPTmhzrTx7JBQPf5NRAoDSQSB
-         tBnbue2R2NP/W68tcvhWKmzXTgIJrdvqK1y05bnCdodsUc/bOfH/Zr+KwLJ1vJUZvvZG
-         QF+mw0qGjgJ2m2NG0K87zQcPTtYJi6SwL+2R+o7de7dodjjcFV7AeM6TewKLol8RFb5c
-         QhPg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706344000; x=1706948800;
-        h=content-transfer-encoding:mime-version:subject:user-agent
-         :references:in-reply-to:message-id:date:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uehh41qNYPhg24j3C7un0JNB0v5MTT7KbCmBRQzEZgo=;
-        b=w0wxuynWZy2QRDWJdQzkdz1/T1kyrh5zQI3MC+ps0G9jgoPYedz5cwcpopl1+R1cvG
-         iY0CbhdRvcew1ZABy64xahtJ86BQuFl3ghhUFMzSbBHaywpFyM2QVPCGdIgxYumpTV94
-         6vcXPTxneCoXqppMxQ/A1ICLuFyeUslfDwmxAwjbrvQzuIKk3wGpJFnTu2Wqb0yhEAV1
-         hqx7FFtlwwtZ1Z44zDvvX+M9wkSYD+6SBy4oxGSK//QY0EoUF7xjCCl9jQ+qMAiz0Nsf
-         krin6sVgIw0WU2V+785/B62e9SToLRuojojDf6o4XqUGEqSEcUzIES7Es66jvgVU5mgS
-         r/UQ==
-X-Gm-Message-State: AOJu0YzoqAhmG6HAPzDqW2rIzKHe5a90xbWE5VFyVOWJKabZrNEOCvdG
-	1jBlmTZpXBDsE+9qiFwAeTSa/E+dWPn0oayBs/00xWx3Cz3W917l
-X-Google-Smtp-Source: AGHT+IFLnqJ4y4jF1jFD1J4ZWolGZmabt02XyiJXOp+6lWppDcEgPmSZ8V7cc2rl7n0WbYWdgtX/ZQ==
-X-Received: by 2002:a05:6000:1446:b0:337:b38d:6075 with SMTP id v6-20020a056000144600b00337b38d6075mr644009wrx.4.1706343999766;
-        Sat, 27 Jan 2024 00:26:39 -0800 (PST)
-Received: from [10.230.100.199] ([192.19.152.250])
-        by smtp.gmail.com with ESMTPSA id az10-20020adfe18a000000b0033ade368c29sm2136573wrb.3.2024.01.27.00.26.38
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 27 Jan 2024 00:26:39 -0800 (PST)
-From: Arend van Spriel <aspriel@gmail.com>
-To: Kalle Valo <kvalo@kernel.org>, Breno Leitao <leitao@debian.org>
-CC: <kuba@kernel.org>, <davem@davemloft.net>, <abeni@redhat.com>, <edumazet@google.com>, Franky Lin <franky.lin@broadcom.com>, Hante Meuleman <hante.meuleman@broadcom.com>, <dsahern@kernel.org>, <weiwan@google.com>, <linux-wireless@vger.kernel.org>, <brcm80211-dev-list.pdl@broadcom.com>, <linux-kernel@vger.kernel.org>
-Date: Sat, 27 Jan 2024 09:26:35 +0100
-Message-ID: <18d4a071678.279b.9696ff82abe5fb6502268bdc3b0467d4@gmail.com>
-In-Reply-To: <877ck0eeqi.fsf@kernel.org>
-References: <20240122184543.2501493-1-leitao@debian.org>
- <20240122184543.2501493-18-leitao@debian.org>
- <877ck0eeqi.fsf@kernel.org>
-User-Agent: AquaMail/1.49.2 (build: 104902408)
-Subject: Re: [PATCH net-next 17/22] net: fill in MODULE_DESCRIPTION()s for Broadcom WLAN
+	s=arc-20240116; t=1706350142; c=relaxed/simple;
+	bh=S9BS/+g4oILp6iKIv7aziRZFylhE+ko3fNGK/iHil3A=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=K78T4+NkSwRhnLaWmwD9h4Jl8aUGaNIWSS4G4xD54KbVhDFFr8Erwu4SsqeSSHAMyvgo8UMCmz47qq70X6e6n7Vk7g57HVj9RnO9o4tf8uuvxnMVVDuTX3Fogj/zhSWA5A1zshz00Ps0HEtA6p2lA98TzJlwEGOu8dIOFMWWRHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I7DpGUGb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 456EDC433F1;
+	Sat, 27 Jan 2024 10:09:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706350142;
+	bh=S9BS/+g4oILp6iKIv7aziRZFylhE+ko3fNGK/iHil3A=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=I7DpGUGbXy/Ew4Ayg88bMJmE9NwJWHrj10GEYlkob4pWPc4BShVQAsvNkjC4XLhlG
+	 getqNTNPIQWBA3qs5Nd94J6bjwB9TCyCbdJeIHf7kPfzOHjrY6viBmDgRkuukWUyBK
+	 0qlL9kry9TzTrqFgW/ZXY1P08f6IaIyLpd+ABhprYKPSuh5JheJDZK7cXHxg5zD0nz
+	 PBw8e71kpmaH1rsKZeGiAstGV1PQ1DOP/MrJySycPuFDpRuz6oXimkYKYa40YpfhMj
+	 iRCmCA51PGQZNjmF8WFq9bRkgOHVUORFtbNBpXNiC0hitahjawoj4IvQTXTc+o78vV
+	 pRldn+w4HkMYQ==
+From: Kalle Valo <kvalo@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Arend Van Spriel <arend.vanspriel@broadcom.com>,
+  <netdev@vger.kernel.org>,  <linux-wireless@vger.kernel.org>
+Subject: Re: pull-request: wireless-next-2024-01-25
+References: <20240125104030.B6CA6C433C7@smtp.kernel.org>
+	<20240125165128.7e43a1f3@kernel.org> <87r0i4zl92.fsf@kernel.org>
+	<18d447cc0b8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+	<877cjwz9ya.fsf@kernel.org> <20240126105255.5476cf85@kernel.org>
+Date: Sat, 27 Jan 2024 12:08:59 +0200
+In-Reply-To: <20240126105255.5476cf85@kernel.org> (Jakub Kicinski's message of
+	"Fri, 26 Jan 2024 10:52:55 -0800")
+Message-ID: <87mssrxf44.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; format=flowed; charset="us-ascii"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-On January 23, 2024 7:38:36 AM Kalle Valo <kvalo@kernel.org> wrote:
+Jakub Kicinski <kuba@kernel.org> writes:
 
-> Breno Leitao <leitao@debian.org> writes:
+> On Fri, 26 Jan 2024 12:05:17 +0200 Kalle Valo wrote:
+>> > I thought checkpatch would signal that or is it a sparse warning.  
+>> 
+>> I don't run checkpatch except for ath10k/ath11k/ath12k, too much noise.
+>> I ended up adding this to my script:
 >
->> W=1 builds now warn if module is built without a MODULE_DESCRIPTION().
->> Add descriptions to the Broadcom FullMac WLAN drivers.
->>
->> Signed-off-by: Breno Leitao <leitao@debian.org>
->> ---
->> drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/module.c | 1 +
->> drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/module.c | 1 +
->> drivers/net/wireless/broadcom/brcm80211/brcmfmac/wcc/module.c | 1 +
->> 3 files changed, 3 insertions(+)
->>
->> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/module.c 
->> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/module.c
->> index d55f3271d619..c1f91dc151c2 100644
->> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/module.c
->> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/module.c
->> @@ -20,6 +20,7 @@ static void __exit brcmf_bca_exit(void)
->> brcmf_fwvid_unregister_vendor(BRCMF_FWVENDOR_BCA, THIS_MODULE);
->> }
->>
->> +MODULE_DESCRIPTION("Broadcom FullMAC WLAN BCA driver");
->
-> It would be good to spell out BCA. I don't even know what it means :)
+> We run build with sparse and W=1 and then diff the number of warnings 
+> to weed out the pre-existing ones, FWIW. 
 
-If my memory don't fail me it is Broadband Carrier Access. Basically it's 
-the AP side of the Broadcom wifi business.
+So for wireless and wireless-next I now check W=1 warnings every time I
+push. We are mostly warning free now but I'm not checking the linker
+warnings, for example the current MODULE_DESCRIPTION() warnings.
 
->
->
->> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/module.c
->> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/module.c
->> @@ -20,6 +20,7 @@ static void __exit brcmf_cyw_exit(void)
->> brcmf_fwvid_unregister_vendor(BRCMF_FWVENDOR_CYW, THIS_MODULE);
->> }
->>
->> +MODULE_DESCRIPTION("Broadcom FullMAC WLAN CYW driver");
->
-> Same for CYW.
+It's really annoying, and extra work, that people enable new W=1
+warnings before fixing them. Could we somehow push back on those and
+require that warnings are fixed before enabling with W=1 level?
 
-A bit easier: Cypress Wifi.
+In wireless there is a significant number of sparse warnings. I have
+tried the cleanup people to fix them but it seems there's no interest,
+instead we get to receive pointless cleanups wasting our time. <loud sigh>
 
-Kalle does apparently knows what WCC stands for ;-p To be honest I am not 
-sure but it is the mobility business.
+BTW the 'no new line at end of file' warning is indeed from sparse, like
+Arend suspected:
 
-So these modules a not standalone modules hence I didn't bother adding a 
-description. My bad. These are plugin modules so to speak so if I can make 
-a suggestion here please rephrase to something like:
+drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.c:432:49: warning: no newline at end of file
 
-BCA: "Broadcom FullMAC WLAN driver plugin for Broadcom AP chipsets" and
-WCC: "... for Broadcom mobility chipsets" and
-CYW: "... for Cypress/Infineon chipsets".
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-Regards,
-Arend
-
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
