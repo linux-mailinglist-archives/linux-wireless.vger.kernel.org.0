@@ -1,63 +1,63 @@
-Return-Path: <linux-wireless+bounces-2582-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2583-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C247483E81A
-	for <lists+linux-wireless@lfdr.de>; Sat, 27 Jan 2024 01:16:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB5DD83E81B
+	for <lists+linux-wireless@lfdr.de>; Sat, 27 Jan 2024 01:16:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E7DE287372
-	for <lists+linux-wireless@lfdr.de>; Sat, 27 Jan 2024 00:16:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C38B1F222DC
+	for <lists+linux-wireless@lfdr.de>; Sat, 27 Jan 2024 00:16:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7637F39B;
-	Sat, 27 Jan 2024 00:15:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21666199;
+	Sat, 27 Jan 2024 00:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="axmV5CDn"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ax4b/ItX"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14F91211C
-	for <linux-wireless@vger.kernel.org>; Sat, 27 Jan 2024 00:15:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB5FD18E
+	for <linux-wireless@vger.kernel.org>; Sat, 27 Jan 2024 00:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706314559; cv=none; b=KZfBhzhhll+mxg3GCfgyKj+wChGHObcoLdmS5HLaIMVscch4Cz6S9re6pSBqjGz/RO0gfZvFXs3CJqkCOYkDsZu15Zg1euEq+8PVVaAIRhLw9LY0RHOaxExDAdpP6/cuOF+7GXLsL7nhg6LKQUIfZkAqNL47nCHwJUjy1y8SXQE=
+	t=1706314587; cv=none; b=AFBGQVpfGcVpI4MWKLTBkyAr54GYc3/A542knBO+xBY+2uAS1QcZfj/wyyQyN+1WmLmUVxnfjvpYh4XRcwfDX5o5Z6VBS0e2eaxY+OfMgRFc8Q8mJnDyjQMN89o8V5uWnKO+V6S0zfSBMtfg9JDmwcfjLbxg7NB2n4FozT83Zdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706314559; c=relaxed/simple;
-	bh=C7j3qaGh5DGYLWVWJnrVrfDaJxJ5KqmRVhnMqUD76V0=;
+	s=arc-20240116; t=1706314587; c=relaxed/simple;
+	bh=CMu+JSF+RzaBuy53lA7FAZiWCYVU6rrd0cnsKk60Yf0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=oZ4JhpsDSyLGDwU+T6Vw1mak4OpidQkd1zj0HW3u16g4VNnAz54/XQaN0+QL58RUdq7KsH2xtC90tlShCSoDcT+edcJ32jDxTz4mInNU6OumAiLd2qpPdlPSaNG3RmnR1jmlvNQGVlFbpX9QSlKrVO0chUE0i3KwLV4xuRV5mDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=axmV5CDn; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:Content-Type; b=b8uz0cGALxrwl/N3p4xt7NU+Bx1KwJ14JuUX+jrnG7aA6pASWJHo6kVxXiAJxHZ+Pb4Ve+1Vls6AVk+GdPlCchRovbW5GFf4CNtx5EpLZ/LCVqrZ9OlI5K7Yh9Ke+qyXIXs5/gx1X0az79fzVV0sws0oU2CXv/h8CfwKB+LoMyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ax4b/ItX; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40QNlQvw020504;
-	Sat, 27 Jan 2024 00:15:48 GMT
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40R0GDvC016155;
+	Sat, 27 Jan 2024 00:16:23 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	message-id:date:mime-version:subject:to:cc:references:from
 	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=rYur9xkFCmYRmaU4FpqIP8DfeohBckDNX0BUh4WUOSg=; b=ax
-	mV5CDnMzpNxMZFc5vQ2eEU18/Jv7FhI+jelUorTOi2OY+n6QudyHcAVodmcofzcV
-	GHnMvJCZ/IbnOdDIswM8qRX02q7C314gPPCqUVhP2GgONijw/Q97FW6W6IPX5b2p
-	dH2hn7/EnjrvOeEGx9cplpj/0IBlK8VYPFPBmbZUBhCbiPRUxMmw5qVVlOPFy7PC
-	IfOE+PcoO8cJGf55ivgpIXlypbFZhKgs+xnvkVlbs4LL2bFzwRMQfSRdRlWfVcfg
-	5bydIXezCTp06yZAYPX+WaBKAkDQgdXkmrIIx04FpanKh9EbHy0lODZRU46D6tgF
-	3MUm+X7yOtTeZP+jAi9Q==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vvjbg8h88-1
+	qcppdkim1; bh=9suEDjCH3ZRAErXkdvtjYTA9UALQ6PNZVwXSW/0tN7I=; b=ax
+	4b/ItXxCZiN/MrPueqDMp3xn2x8uK67YXOR8su+QZOrSC0wUjwLJSytyXIgcB8Y/
+	ADtHNTuft/Xafo37WKIjRP9bWd4FbMynA39mwV2gZn88sJNPrDKeQhZIFSBO/woH
+	/oZUVLSgepRfIJ2r7KcacIQCdONpaG43Qnj/mOGNE9CiVOXCrbjmw1wfdztCVLr4
+	6OBN2hEQXCdhiUjCgMcImFlC1Rjzrl9kxPbUaoWzIgfwY+WR0G7Kk1f/pTFxZRBX
+	OsFhNGudRO3Li5+D6lrsoNdR2F+MY7TP1uhW0nVnapE8fQ8HJDLea+qDY3rz9wnj
+	qzduOR1B6UIbhOjSP9nQ==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vv4f9je8r-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 27 Jan 2024 00:15:48 +0000 (GMT)
+	Sat, 27 Jan 2024 00:16:23 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40R0FlcT011009
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40R0GNga003366
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 27 Jan 2024 00:15:47 GMT
+	Sat, 27 Jan 2024 00:16:23 GMT
 Received: from [10.110.0.209] (10.80.80.8) by nalasex01a.na.qualcomm.com
  (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Fri, 26 Jan
- 2024 16:15:47 -0800
-Message-ID: <da617b34-a575-4056-a92b-f25c485510d1@quicinc.com>
-Date: Fri, 26 Jan 2024 16:15:47 -0800
+ 2024 16:16:22 -0800
+Message-ID: <b36f7ea1-0e2c-4076-829c-faa71baa21c5@quicinc.com>
+Date: Fri, 26 Jan 2024 16:16:22 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,46 +65,39 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 03/11] wifi: ath12k: implement handling of P2P NoA
- event
+Subject: Re: [PATCH v4 04/11] wifi: ath12k: implement remain on channel for
+ P2P mode
 Content-Language: en-US
 To: Kang Yang <quic_kangyang@quicinc.com>, <ath12k@lists.infradead.org>
 CC: <linux-wireless@vger.kernel.org>
 References: <20240126115231.356658-1-quic_kangyang@quicinc.com>
- <20240126115231.356658-4-quic_kangyang@quicinc.com>
+ <20240126115231.356658-5-quic_kangyang@quicinc.com>
 From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20240126115231.356658-4-quic_kangyang@quicinc.com>
+In-Reply-To: <20240126115231.356658-5-quic_kangyang@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: Z7-1uS__IhCZcEOERlAsfUlK-r2u2pxD
-X-Proofpoint-ORIG-GUID: Z7-1uS__IhCZcEOERlAsfUlK-r2u2pxD
+X-Proofpoint-ORIG-GUID: JFkBqe_zCNCj0x7tYPkPCzeYsUaP6OfL
+X-Proofpoint-GUID: JFkBqe_zCNCj0x7tYPkPCzeYsUaP6OfL
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-01-25_14,2024-01-25_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 spamscore=0
- priorityscore=1501 mlxlogscore=698 phishscore=0 impostorscore=0
- malwarescore=0 bulkscore=0 lowpriorityscore=0 adultscore=0 mlxscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2401190000 definitions=main-2401270000
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 clxscore=1015
+ priorityscore=1501 impostorscore=0 mlxscore=0 suspectscore=0
+ mlxlogscore=597 spamscore=0 bulkscore=0 lowpriorityscore=0 phishscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2401190000 definitions=main-2401260178
 
 On 1/26/2024 3:52 AM, Kang Yang wrote:
-> The NoA(Notice of Absence) attribute is used by the P2P Group Owner to
-> signal its absence due to power save timing, concurrent operation, or
-> off-channel scanning. It is also used in the P2P Presence Request-Response
-> mechanism.
+> Implement remain on channel for p2p mode in ath12k_ops:
+>         ath12k_mac_op_remain_on_channel
+>         ath12k_mac_op_cancel_remain_on_channel
 > 
-> The NoA attribute shall be present in the P2P IE in the beacon frames
-> transmitted by a P2P Group Owner when a NoA schedule is being advertised,
-> or when the CTWindow is non-zero.
-> 
-> So add support to update P2P information after P2P GO is up through
-> event WMI_P2P_NOA_EVENTID, and always put it in probe resp.
-> 
-> Create p2p.c and p2p.h for P2P related functions and definitions.
+> P2P device can trigger ROC scan. Then keep listening or sending management
+> frames on particular channels.
 > 
 > Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 > Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
