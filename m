@@ -1,66 +1,66 @@
-Return-Path: <linux-wireless+bounces-2619-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2620-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D63CC83F476
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jan 2024 07:55:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCE1E83F477
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jan 2024 07:55:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 500BE1F22CAD
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jan 2024 06:55:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92CF9284721
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jan 2024 06:55:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFEB38F68;
-	Sun, 28 Jan 2024 06:55:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5CD2CA4E;
+	Sun, 28 Jan 2024 06:55:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m/0TVe9B"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Nzn2SkQQ"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 269BB6117
-	for <linux-wireless@vger.kernel.org>; Sun, 28 Jan 2024 06:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC71C129
+	for <linux-wireless@vger.kernel.org>; Sun, 28 Jan 2024 06:55:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706424908; cv=none; b=Rt4Vkoi4B8XLOO0tPlk+TPEfejmVYuO45c+eGT6FbZzo3g4mzT6Jb+1cb9tggi0pBuzTp1TA7b9B/sOW9iejpBkGbHL2dGQaahGkyNasPA3KwJYBujMePy+OtJ3qbfqk8mcADdXBBV6xL43YWbL0B1M7ZiBTcQvSyYed84oCU0M=
+	t=1706424910; cv=none; b=SMzsZwnMKH8oXrAoH+uIaO5YiW/BC7zSNvH+1W+65sBZ0RxYY4JXBtis2PXQnThxAqYpwlP9ysywHp8K9+r7ATl6/ZfUs0Gj1jve24YInlFUPVQvRWS7FIN/Fe8dMFc+R9ouoIqNkUFSn8ls0lwRf9q3RYZmO/G5gwE4W8vgkVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706424908; c=relaxed/simple;
-	bh=VKaKRttL+jYdNTSm0AEVNuR8TUVRuMeynjujA9ebhws=;
+	s=arc-20240116; t=1706424910; c=relaxed/simple;
+	bh=9nBb8n87j1zivUmJziGspHsDrxZC+svUYU7tsi1Y2JE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=h+wyK4nTGueQAZKz8fqbv2vhNPp6XisCbiPf8RfnG1NKUmFgR1f5/jdU9aEDYVR1XTgDwidk2JyfVjXR+eUOTqZqcqsBOTSDvp/q1mZd9liG6jWCoa/NL/KQ1eExVeMvZ+F2Xq25KepUf+NUvVzbSqZ6Yz91ZmkEsmy14XTo7ds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m/0TVe9B; arc=none smtp.client-ip=192.198.163.7
+	 MIME-Version; b=G6VTVHRaJOTmmexZMbBfuUcm4ciO+TPVeAKR0f2HMgBTNl5m8580fbfdRfSh/VCic2pHCADd4giEQ88hzhZr13UpsA3eKHsnvs0a4ECTMgCN2+Eo3aHbTNg3sCzB1c31NXRtGztOD3X/cPS1G9Oi2qCgOtMIoaBNjyUsgQIzrEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Nzn2SkQQ; arc=none smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706424907; x=1737960907;
+  t=1706424909; x=1737960909;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=VKaKRttL+jYdNTSm0AEVNuR8TUVRuMeynjujA9ebhws=;
-  b=m/0TVe9BvUS5ATJ8sMtYfbrr+yUfvaHtLprv4YoXkEJjtZpGclxxwd7F
-   02ifxNOP+2f10A77cBV+04kkm7/ekaEm0SlJyajQ4k18tLPfmzVSaLLxo
-   VXFNF9v8Eirf9DSI7+QecAjILpzpuCNySyyWoCnSUrns+tD6hzSCbgWbw
-   ntlm3H9iEWtttrTD9AEv6wFYZFzZg8qrNhoZYvZHG05864ec+2y3L0pn+
-   16wSD23nMgZVDfJKnVrnfaIWV7c+jmwa9NscKyIm6w8DUW52pnEc5LNrE
-   a1NbFuWZIzxU/WYnx5LObkm8fYV8EFcK01IIVzBbFIsWPYIH5nrmVcejO
+  bh=9nBb8n87j1zivUmJziGspHsDrxZC+svUYU7tsi1Y2JE=;
+  b=Nzn2SkQQVlea/tBvL+bV8Tz0Z8SKixURONAvtucj6j4WXZzB4l4InyEu
+   kv1I+VxBjoXoF2GNmQZXtBWY7afI8UPsUaqtG8Dgdjp8z4j/ml9hNJO1P
+   V9spkSfWXh33ahaxSXptAm+WaV3wpxW0TxvuC6CaINmP798i+W9vtWVlt
+   p4TDFqN1wOEqireu0dNl6IraeAT7AcqjaKfvHRXHQxaRXiaLuwxdl2aIS
+   IQgPI08gaEAu5LUjlkdtRKimKWsCNhp+cXMsFYPZpDHBrNP9xdEIIPVyz
+   nCErlktKKgXNMyBfluFC+/HpeXMJTjU4uPqY/lzUSnA60xrzpn3P1r4+t
    w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10966"; a="24217695"
+X-IronPort-AV: E=McAfee;i="6600,9927,10966"; a="24217700"
 X-IronPort-AV: E=Sophos;i="6.05,220,1701158400"; 
-   d="scan'208";a="24217695"
+   d="scan'208";a="24217700"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2024 22:55:07 -0800
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2024 22:55:09 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,220,1701158400"; 
-   d="scan'208";a="35833385"
+   d="scan'208";a="35833392"
 Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2024 22:55:05 -0800
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2024 22:55:07 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 13/14] wifi: iwlwifi: implement GLAI ACPI table loading
-Date: Sun, 28 Jan 2024 08:53:59 +0200
-Message-Id: <20240128084842.53994809fbdd.I1bd10aafc387bc04f375e386861ee2bcb82f0a61@changeid>
+Subject: [PATCH 14/14] wifi: iwlwifi: cleanup uefi variables loading
+Date: Sun, 28 Jan 2024 08:54:00 +0200
+Message-Id: <20240128084842.454f32c4bcfe.I4835fe657475ac28ef6aef4d292fac63c6ce9a34@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240128065400.2550604-1-miriam.rachel.korenblit@intel.com>
 References: <20240128065400.2550604-1-miriam.rachel.korenblit@intel.com>
@@ -73,149 +73,197 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-All the regulatory tables from BIOS are going to be loaded
-(preferably) from the UEFI instead of the ACPI.
-There is a security issue with the fact that anyone can
-add these UEFI variables.
-The solution for that is to have a lock for all WIFI GUID UEFI
-variables, and only if the UEFI variables are locked then we can
-read it.
-The status of the lock (unlocked, locked, test mode) is indicated
-in a ACPI table: Guid Lock ACPI Indicator.
-Load this table so the driver knows whether to read from UEFI or
-not
+Extract the logic that is common to all variables loading
+to a function.
 
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/acpi.c  | 35 +++++++++++++++++++
- drivers/net/wireless/intel/iwlwifi/fw/acpi.h  | 13 ++++++-
- .../net/wireless/intel/iwlwifi/fw/runtime.h   |  4 +++
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |  2 ++
- 4 files changed, 53 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/fw/uefi.c | 128 ++++++++-----------
+ 1 file changed, 51 insertions(+), 77 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-index 72a0a9565371..dd68d382d7de 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-@@ -1318,3 +1318,38 @@ void iwl_acpi_get_phy_filters(struct iwl_fw_runtime *fwrt,
- 	kfree(data);
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/uefi.c b/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
+index 2964c5fb11e9..9c432d7b3674 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
+@@ -76,6 +76,42 @@ void *iwl_uefi_get_pnvm(struct iwl_trans *trans, size_t *len)
+ 	return data;
  }
- IWL_EXPORT_SYMBOL(iwl_acpi_get_phy_filters);
-+
-+void iwl_acpi_get_guid_lock_status(struct iwl_fw_runtime *fwrt)
+ 
++static
++void *iwl_uefi_get_verified_variable(struct iwl_trans *trans,
++				     efi_char16_t *uefi_var_name,
++				     char *var_name,
++				     unsigned int expected_size,
++				     unsigned long *size)
 +{
-+	union acpi_object *wifi_pkg, *data;
-+	int tbl_rev;
++	void *var;
++	unsigned long var_size;
 +
-+	data = iwl_acpi_get_object(fwrt->dev, ACPI_GLAI_METHOD);
-+	if (IS_ERR(data))
-+		return;
++	var = iwl_uefi_get_variable(uefi_var_name, &IWL_EFI_VAR_GUID,
++				    &var_size);
 +
-+	wifi_pkg = iwl_acpi_get_wifi_pkg(fwrt->dev, data,
-+					 ACPI_GLAI_WIFI_DATA_SIZE,
-+					 &tbl_rev);
-+	if (IS_ERR(wifi_pkg))
-+		goto out_free;
-+
-+	if (tbl_rev != 0) {
-+		IWL_DEBUG_RADIO(fwrt, "Invalid GLAI revision: %d\n", tbl_rev);
-+		goto out_free;
++	if (IS_ERR(var)) {
++		IWL_DEBUG_RADIO(trans,
++				"%s UEFI variable not found 0x%lx\n", var_name,
++				PTR_ERR(var));
++		return var;
 +	}
 +
-+	if (wifi_pkg->package.elements[1].type != ACPI_TYPE_INTEGER ||
-+	    wifi_pkg->package.elements[1].integer.value > ACPI_GLAI_MAX_STATUS)
-+		goto out_free;
++	if (var_size < expected_size) {
++		IWL_DEBUG_RADIO(trans,
++				"Invalid %s UEFI variable len (%lu)\n",
++				var_name, var_size);
++		kfree(var);
++		return ERR_PTR(-EINVAL);
++	}
 +
-+	fwrt->uefi_tables_lock_status =
-+		wifi_pkg->package.elements[1].integer.value;
++	IWL_DEBUG_RADIO(trans, "%s from UEFI with size %lu\n", var_name,
++			var_size);
 +
-+	IWL_DEBUG_RADIO(fwrt,
-+			"Loaded UEFI WIFI GUID lock status: %d from ACPI\n",
-+			fwrt->uefi_tables_lock_status);
-+out_free:
-+	kfree(data);
++	if (size)
++		*size = var_size;
++	return var;
 +}
-+IWL_EXPORT_SYMBOL(iwl_acpi_get_guid_lock_status);
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.h b/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
-index 39106ccb4b9b..7b3c6fca7591 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
-@@ -25,6 +25,7 @@
- #define ACPI_PPAG_METHOD	"PPAG"
- #define ACPI_WTAS_METHOD	"WTAS"
- #define ACPI_WPFC_METHOD	"WPFC"
-+#define ACPI_GLAI_METHOD	"GLAI"
++
+ int iwl_uefi_handle_tlv_mem_desc(struct iwl_trans *trans, const u8 *data,
+ 				 u32 tlv_len, struct iwl_pnvm_image *pnvm_data)
+ {
+@@ -230,26 +266,13 @@ u8 *iwl_uefi_get_reduced_power(struct iwl_trans *trans, size_t *len)
+ 	unsigned long package_size;
+ 	u8 *data;
  
- #define ACPI_WIFI_DOMAIN	(0x07)
- 
-@@ -66,7 +67,12 @@
- #define ACPI_WRDD_WIFI_DATA_SIZE	2
- #define ACPI_SPLC_WIFI_DATA_SIZE	2
- #define ACPI_ECKV_WIFI_DATA_SIZE	2
+-	package = iwl_uefi_get_variable(IWL_UEFI_REDUCED_POWER_NAME,
+-					&IWL_EFI_VAR_GUID, &package_size);
 -
-+/*
-+ * One element for domain type,
-+ * and one for the status
-+ */
-+#define ACPI_GLAI_WIFI_DATA_SIZE	2
-+#define ACPI_GLAI_MAX_STATUS		2
- /*
-  * TAS size: 1 elelment for type,
-  *	     1 element for enabled field,
-@@ -237,6 +243,8 @@ bool iwl_acpi_is_ppag_approved(struct iwl_fw_runtime *fwrt);
- void iwl_acpi_get_phy_filters(struct iwl_fw_runtime *fwrt,
- 			      struct iwl_phy_specific_cfg *filters);
+-	if (IS_ERR(package)) {
+-		IWL_DEBUG_FW(trans,
+-			     "Reduced Power UEFI variable not found 0x%lx (len %lu)\n",
+-			     PTR_ERR(package), package_size);
++	package = iwl_uefi_get_verified_variable(trans,
++						 IWL_UEFI_REDUCED_POWER_NAME,
++						 "Reduced Power",
++						 sizeof(*package),
++						 &package_size);
++	if (IS_ERR(package))
+ 		return ERR_CAST(package);
+-	}
+-
+-	if (package_size < sizeof(*package)) {
+-		IWL_DEBUG_FW(trans,
+-			     "Invalid Reduced Power UEFI variable len (%lu)\n",
+-			     package_size);
+-		kfree(package);
+-		return ERR_PTR(-EINVAL);
+-	}
+-
+-	IWL_DEBUG_FW(trans, "Read reduced power from UEFI with size %lu\n",
+-		     package_size);
  
-+void iwl_acpi_get_guid_lock_status(struct iwl_fw_runtime *fwrt);
-+
- #else /* CONFIG_ACPI */
- 
- static inline void *iwl_acpi_get_dsm_object(struct device *dev, int rev,
-@@ -331,6 +339,9 @@ static inline void iwl_acpi_get_phy_filters(struct iwl_fw_runtime *fwrt,
+ 	IWL_DEBUG_FW(trans, "rev %d, total_size %d, n_skus %d\n",
+ 		     package->rev, package->total_size, package->n_skus);
+@@ -283,32 +306,15 @@ static int iwl_uefi_step_parse(struct uefi_cnv_common_step_data *common_step_dat
+ void iwl_uefi_get_step_table(struct iwl_trans *trans)
  {
- }
- 
-+static inline void iwl_acpi_get_guid_lock_status(struct iwl_fw_runtime *fwrt)
-+{
-+}
- #endif /* CONFIG_ACPI */
- 
- #endif /* __iwl_fw_acpi__ */
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/runtime.h b/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
-index 357727774db9..1ec2bcdf92b8 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
-@@ -100,6 +100,9 @@ struct iwl_txf_iter_data {
-  * @dump: debug dump data
-  * @uats_enabled: VLP or AFC AP is enabled
-  * @uats_table: AP type table
-+ * @uefi_tables_lock_status: The status of the WIFI GUID UEFI variables lock:
-+ *	0: Unlocked, 1 and 2: Locked.
-+ *	Only read the UEFI variables if locked.
-  */
- struct iwl_fw_runtime {
- 	struct iwl_trans *trans;
-@@ -175,6 +178,7 @@ struct iwl_fw_runtime {
- 	u8 reduced_power_flags;
- 	bool uats_enabled;
- 	struct iwl_uats_table_cmd uats_table;
-+	u8 uefi_tables_lock_status;
- #endif
- };
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index 175024170357..a6db290923cd 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -1402,6 +1402,8 @@ void iwl_mvm_get_acpi_tables(struct iwl_mvm *mvm)
- {
+ 	struct uefi_cnv_common_step_data *data;
+-	unsigned long package_size;
  	int ret;
  
-+	iwl_acpi_get_guid_lock_status(&mvm->fwrt);
-+
- 	/* read PPAG table */
- 	ret = iwl_acpi_get_ppag_table(&mvm->fwrt);
+ 	if (trans->trans_cfg->device_family < IWL_DEVICE_FAMILY_AX210)
+ 		return;
+ 
+-	data = iwl_uefi_get_variable(IWL_UEFI_STEP_NAME, &IWL_EFI_VAR_GUID,
+-				     &package_size);
+-
+-	if (IS_ERR(data)) {
+-		IWL_DEBUG_FW(trans,
+-			     "STEP UEFI variable not found 0x%lx\n",
+-			     PTR_ERR(data));
+-		return;
+-	}
+-
+-	if (package_size < sizeof(*data)) {
+-		IWL_DEBUG_FW(trans,
+-			     "Invalid STEP table UEFI variable len (%lu)\n",
+-			     package_size);
+-		kfree(data);
++	data = iwl_uefi_get_verified_variable(trans, IWL_UEFI_STEP_NAME,
++					      "STEP", sizeof(*data), NULL);
++	if (IS_ERR(data))
+ 		return;
+-	}
+-
+-	IWL_DEBUG_FW(trans, "Read STEP from UEFI with size %lu\n",
+-		     package_size);
+ 
+ 	ret = iwl_uefi_step_parse(data, trans);
+ 	if (ret < 0)
+@@ -355,31 +361,15 @@ void iwl_uefi_get_sgom_table(struct iwl_trans *trans,
+ 			     struct iwl_fw_runtime *fwrt)
+ {
+ 	struct uefi_cnv_wlan_sgom_data *data;
+-	unsigned long package_size;
+ 	int ret;
+ 
+ 	if (!fwrt->geo_enabled)
+ 		return;
+ 
+-	data = iwl_uefi_get_variable(IWL_UEFI_SGOM_NAME, &IWL_EFI_VAR_GUID,
+-				     &package_size);
+-	if (IS_ERR(data)) {
+-		IWL_DEBUG_FW(trans,
+-			     "SGOM UEFI variable not found 0x%lx\n",
+-			     PTR_ERR(data));
++	data = iwl_uefi_get_verified_variable(trans, IWL_UEFI_SGOM_NAME,
++					      "SGOM", sizeof(*data), NULL);
++	if (IS_ERR(data))
+ 		return;
+-	}
+-
+-	if (package_size < sizeof(*data)) {
+-		IWL_DEBUG_FW(trans,
+-			     "Invalid SGOM table UEFI variable len (%lu)\n",
+-			     package_size);
+-		kfree(data);
+-		return;
+-	}
+-
+-	IWL_DEBUG_FW(trans, "Read SGOM from UEFI with size %lu\n",
+-		     package_size);
+ 
+ 	ret = iwl_uefi_sgom_parse(data, fwrt);
+ 	if (ret < 0)
+@@ -404,28 +394,12 @@ int iwl_uefi_get_uats_table(struct iwl_trans *trans,
+ 			    struct iwl_fw_runtime *fwrt)
+ {
+ 	struct uefi_cnv_wlan_uats_data *data;
+-	unsigned long package_size;
+ 	int ret;
+ 
+-	data = iwl_uefi_get_variable(IWL_UEFI_UATS_NAME, &IWL_EFI_VAR_GUID,
+-				     &package_size);
+-	if (IS_ERR(data)) {
+-		IWL_DEBUG_FW(trans,
+-			     "UATS UEFI variable not found 0x%lx\n",
+-			     PTR_ERR(data));
++	data = iwl_uefi_get_verified_variable(trans, IWL_UEFI_UATS_NAME,
++					      "UATS", sizeof(*data), NULL);
++	if (IS_ERR(data))
+ 		return -EINVAL;
+-	}
+-
+-	if (package_size < sizeof(*data)) {
+-		IWL_DEBUG_FW(trans,
+-			     "Invalid UATS table UEFI variable len (%lu)\n",
+-			     package_size);
+-		kfree(data);
+-		return -EINVAL;
+-	}
+-
+-	IWL_DEBUG_FW(trans, "Read UATS from UEFI with size %lu\n",
+-		     package_size);
+ 
+ 	ret = iwl_uefi_uats_parse(data, fwrt);
  	if (ret < 0) {
 -- 
 2.34.1
