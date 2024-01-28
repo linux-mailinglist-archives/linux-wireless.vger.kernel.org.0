@@ -1,106 +1,184 @@
-Return-Path: <linux-wireless+bounces-2621-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2622-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96D8683F494
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jan 2024 09:23:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AC3283F4D3
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jan 2024 10:31:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA2861C210CC
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jan 2024 08:23:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 123342832D7
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jan 2024 09:31:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31A82D52A;
-	Sun, 28 Jan 2024 08:23:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 542DDDF5C;
+	Sun, 28 Jan 2024 09:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OQKxB4nw"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="iGSzgU+k"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 486FBD520
-	for <linux-wireless@vger.kernel.org>; Sun, 28 Jan 2024 08:23:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69175DF5B
+	for <linux-wireless@vger.kernel.org>; Sun, 28 Jan 2024 09:31:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706430208; cv=none; b=mceyaclF1kZQ0HDuG4GSuqRdUQRbAqdprT7ykoA0vT/Jyd3S3VnCR+W8vvixj5gJ3/irW8GgELQ84b8Ug/9cRkJ1yN8GPyHf0UXcA5rcWciMtUv9DEsTOr9hrNQxCDQ9zlODKiarYecmLNMZAJKjyTWi0ulOFt5d1GfrTIc6KgM=
+	t=1706434287; cv=none; b=scZsEQzzG/MAY2H6Q9nSJ99Y5rJ39v1vSgvgZWAD0AkYyzswsn+o66g4B/9XkCSQPnrSQJdCJwnOiro6PtJ5rc4uQBhr7SnPI/hamiywjKY0jEs3ae/cEHe1zS4XldqkTyyI0s6c1VAErGyox1ib2Lmfh+zUWagIkeCxICt0xvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706430208; c=relaxed/simple;
-	bh=hIrJKSNpYb4J6LmmBdTuR6sUK+GLx4HLsfkDwgd8VhY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WgLASRyzGCxinEOWjDCYz3Rs0+J+o4nc/bVs6b9sOwDAebn0x1w8YJuC7CPgEsMUuM6bM67wqHEJfex3dZbj8bxlkldCoO+kxayqBX+HlRDLAUXV6PeYFIeoRYfGNS1ae6bjrsEE4FJM3oGvRaWamAIVMLDDR2zCa2tTZyAvGv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OQKxB4nw; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706430206; x=1737966206;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=hIrJKSNpYb4J6LmmBdTuR6sUK+GLx4HLsfkDwgd8VhY=;
-  b=OQKxB4nw4Jqs0etqiRP8uIKn1AOvUC6YsINOFzb0CLIOYE0EvCUO488X
-   rXzof1IkEYi1xQhVMCAyJArKzBhUX/l2UgCBF/IdRi/azG5aY59uPfDMc
-   GgfdEGCAlCwSC/7cpKh7mVN4HQAdE+nd8qlVveDFj+k4mw/36SpI2e1F6
-   WHJGR7DA1f6Fb2hYGmudNAJasg4QlsHQXK3Vqum26EhSLq/MyJ4aflI9L
-   tzTUvGFhQj4iTcH8fGt33aVJm9ys1Splsjpe3ua4cQh5rD0r+cC9V8NR5
-   OVERwofZ9RoFZsU98yvFlrAruDIxl+65o5BdYP+3l1EGbYAAOogevnMTk
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10966"; a="1687263"
-X-IronPort-AV: E=Sophos;i="6.05,220,1701158400"; 
-   d="scan'208";a="1687263"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2024 00:23:25 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,220,1701158400"; 
-   d="scan'208";a="3062384"
-Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2024 00:23:18 -0800
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: johannes@sipsolutions.net
+	s=arc-20240116; t=1706434287; c=relaxed/simple;
+	bh=za1MGjNuJWnmi50zwzMfnOVH4pqRIvBOR9WXDG85NnM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=GLTRxqXv7CI/hfhKEoKP9cjWNQfMce6Lq/vv1A3YmNezxtaAlW/YMyZ0eTs1nVnt7fYSx+SjHOh0q9aY73OY/0vaP+sFZKWvmnDoD84OYDT4PegGqhJQXQbeEJEzlHzP1kUnwnb0p+jwkVTj1cTmpX0D2gTRbRtYqhDXNTMJ5wc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=iGSzgU+k; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-33921b8988fso1738199f8f.3
+        for <linux-wireless@vger.kernel.org>; Sun, 28 Jan 2024 01:31:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1706434283; x=1707039083; darn=vger.kernel.org;
+        h=mime-version:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=6AR4lxOvMxG5JGVVm9P3yjh97HxLovAvry8msrlsJs0=;
+        b=iGSzgU+kSaIv69dsReJjwGZOIGpOe3RPM6bgQMLOWfu0EBTnPq7dQXS6U2la0zfVn9
+         ZGXC9SUkoqueBbFLohc9iKfvWIsV28tGInhTLRG+jeHW/KrppHxzx48vZ896aG6gy4Qb
+         MJoc0l9QyuuqmRIeWeD2rM+RBqMxyYsRncybA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706434283; x=1707039083;
+        h=mime-version:message-id:date:subject:cc:to:from:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6AR4lxOvMxG5JGVVm9P3yjh97HxLovAvry8msrlsJs0=;
+        b=DuFY3bcKcbnAp/q4OlkF/l604n51Hr1ukoy6I0BIKAYWbtTjCky0uMexSiIIvPMLJ4
+         X/uzpjZtRUpL6dtItvD0tiLopANs6xvaRPV81q0Cn2/rbOtw2rzS6SIKNn/eCiusRK9A
+         jRO3vohTWBIuNiwhuzl5C4i4ULOBhT0NN+2m6mJJXbI4Qit1/JmNiptvpMAIo3/l8Qko
+         EZQ2R7OfLXQ3Agfsi89fAYB1rwMdgk4rXsLIrbUQwOfcIqrGpGXlmLigPOnqEGOCi4Qf
+         uitr08mCyBgoXkBecku25xX6EmtBaRW1GkpWT7aDbeiGs4c61d79uC+GUWJF0XwCfalq
+         SJXg==
+X-Gm-Message-State: AOJu0Yx8mTdyGP2Ftj4nDkJ0QHHtTNfz79XBQ9oT5YxxeeM3bX9BhLzn
+	uXaNYCXi3Qa4P2vmQRH1DOGBrjqd4KrwwNVWcFFHVXzTab3UVsvMr4jI0/znaQ==
+X-Google-Smtp-Source: AGHT+IHxpeZYZVWuNxQIHuGUtF5zUoGb2pIFpDNayeTGv3cLNfB8e/q3pwMiVOda3d6PuXbAZ+ugIA==
+X-Received: by 2002:a5d:40c5:0:b0:337:70ad:b37c with SMTP id b5-20020a5d40c5000000b0033770adb37cmr2076224wrq.34.1706434283502;
+        Sun, 28 Jan 2024 01:31:23 -0800 (PST)
+Received: from bld-bun-02.bun.broadcom.net ([192.19.148.250])
+        by smtp.gmail.com with ESMTPSA id v1-20020a5d59c1000000b0033aeab6f75fsm838449wry.79.2024.01.28.01.31.22
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 28 Jan 2024 01:31:22 -0800 (PST)
+From: Arend van Spriel <arend.vanspriel@broadcom.com>
+To: Kalle Valo <kvalo@kernel.org>
 Cc: linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH] wifi: iwlwifi: remove extra kernel-doc
-Date: Sun, 28 Jan 2024 10:23:09 +0200
-Message-Id: <20240128102209.d2192d79bc09.Id9551728d618248dd471382a5283503a8976237a@changeid>
-X-Mailer: git-send-email 2.34.1
+	brcm80211@lists.linux.dev,
+	Arend van Spriel <arend.vanspriel@broadcom.com>
+Subject: [PATCH 0/2] wifi: brcmfmac: minor cleanup fixes
+Date: Sun, 28 Jan 2024 10:30:55 +0100
+Message-Id: <20240128093057.164791-1-arend.vanspriel@broadcom.com>
+X-Mailer: git-send-email 2.32.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="00000000000052f963060ffe3180"
+
+--00000000000052f963060ffe3180
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+Two non-functional fixes that came up. Straightforward stuff.
 
-This no longer exists, remove the kernel-doc.
+These apply to the main branch of the wireless-next repository.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Arend van Spriel (2):
+  wifi: brcmfmac: add linefeed at end of file
+  wifi: brcmfmac: fix copyright year mentioned in platform_data header
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-index b877a2cd4005..e7ff043f9f0a 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-- * Copyright (C) 2005-2014, 2018-2023 Intel Corporation
-+ * Copyright (C) 2005-2014, 2018-2024 Intel Corporation
-  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
-  * Copyright (C) 2015-2017 Intel Deutschland GmbH
-  */
-@@ -19,7 +19,6 @@
-  * @fwrt_ptr: pointer to the buffer coming from fwrt
-  * @trans_ptr: pointer to struct %iwl_trans_dump_data which contains the
-  *	transport's data.
-- * @trans_len: length of the valid data in trans_ptr
-  * @fwrt_len: length of the valid data in fwrt_ptr
-  */
- struct iwl_fw_dump_ptrs {
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.c | 2 +-
+ include/linux/platform_data/brcmfmac.h                  | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+
+base-commit: 28b3df1fe6ba2cb439ba109f095aa841fef3a54f
 -- 
-2.34.1
+2.32.0
 
+
+--00000000000052f963060ffe3180
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+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
+2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
+Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
+HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
+Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
+KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
+Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
+dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
+OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
+MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
+BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
+ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
+zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
+sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
+BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
+N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
+p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
+YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCBG9IBkiC1RkEnyw2YN
+Q/F7JYXaE95gzWJq3gJdbx3xYzAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yNDAxMjgwOTMxMjNaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAF+abxxmN5CE6rrcq4rK948R9bZRNWeHUK5Sj
+2PkvvjLFekBW/HDUpWSCAe1eRRX/6CCYkG5O3QKE4thtM+DkG858dYNmozkPRU88Q+j1IQzghn4q
+xWR1R/xbtxzG26nxqmRU0lK2pWyvGgMgOVt6zrjm9xUOdD4JOiyUibu1toG4BrUE6DL7eE2v+juy
+oh2C12c8kCiEU2MX5dlVu5/MMvbEHfW7VeEqTdsjth73SU9Kb8+Hmxp1CDuECH0YTovyhivobPSz
+sUToeQWii/24hVWBTIQJogv9hDFOuZ1PidpOfTpAgb9XS7uhBkue7pAGcpJFZTKwF7qd0iPDNsFj
+xg==
+--00000000000052f963060ffe3180--
 
