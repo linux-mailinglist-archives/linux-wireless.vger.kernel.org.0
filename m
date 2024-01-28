@@ -1,69 +1,66 @@
-Return-Path: <linux-wireless+bounces-2620-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2621-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCE1E83F477
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jan 2024 07:55:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96D8683F494
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jan 2024 09:23:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92CF9284721
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jan 2024 06:55:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA2861C210CC
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jan 2024 08:23:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5CD2CA4E;
-	Sun, 28 Jan 2024 06:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31A82D52A;
+	Sun, 28 Jan 2024 08:23:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Nzn2SkQQ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OQKxB4nw"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC71C129
-	for <linux-wireless@vger.kernel.org>; Sun, 28 Jan 2024 06:55:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 486FBD520
+	for <linux-wireless@vger.kernel.org>; Sun, 28 Jan 2024 08:23:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706424910; cv=none; b=SMzsZwnMKH8oXrAoH+uIaO5YiW/BC7zSNvH+1W+65sBZ0RxYY4JXBtis2PXQnThxAqYpwlP9ysywHp8K9+r7ATl6/ZfUs0Gj1jve24YInlFUPVQvRWS7FIN/Fe8dMFc+R9ouoIqNkUFSn8ls0lwRf9q3RYZmO/G5gwE4W8vgkVQ=
+	t=1706430208; cv=none; b=mceyaclF1kZQ0HDuG4GSuqRdUQRbAqdprT7ykoA0vT/Jyd3S3VnCR+W8vvixj5gJ3/irW8GgELQ84b8Ug/9cRkJ1yN8GPyHf0UXcA5rcWciMtUv9DEsTOr9hrNQxCDQ9zlODKiarYecmLNMZAJKjyTWi0ulOFt5d1GfrTIc6KgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706424910; c=relaxed/simple;
-	bh=9nBb8n87j1zivUmJziGspHsDrxZC+svUYU7tsi1Y2JE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=G6VTVHRaJOTmmexZMbBfuUcm4ciO+TPVeAKR0f2HMgBTNl5m8580fbfdRfSh/VCic2pHCADd4giEQ88hzhZr13UpsA3eKHsnvs0a4ECTMgCN2+Eo3aHbTNg3sCzB1c31NXRtGztOD3X/cPS1G9Oi2qCgOtMIoaBNjyUsgQIzrEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Nzn2SkQQ; arc=none smtp.client-ip=192.198.163.7
+	s=arc-20240116; t=1706430208; c=relaxed/simple;
+	bh=hIrJKSNpYb4J6LmmBdTuR6sUK+GLx4HLsfkDwgd8VhY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WgLASRyzGCxinEOWjDCYz3Rs0+J+o4nc/bVs6b9sOwDAebn0x1w8YJuC7CPgEsMUuM6bM67wqHEJfex3dZbj8bxlkldCoO+kxayqBX+HlRDLAUXV6PeYFIeoRYfGNS1ae6bjrsEE4FJM3oGvRaWamAIVMLDDR2zCa2tTZyAvGv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OQKxB4nw; arc=none smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706424909; x=1737960909;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=9nBb8n87j1zivUmJziGspHsDrxZC+svUYU7tsi1Y2JE=;
-  b=Nzn2SkQQVlea/tBvL+bV8Tz0Z8SKixURONAvtucj6j4WXZzB4l4InyEu
-   kv1I+VxBjoXoF2GNmQZXtBWY7afI8UPsUaqtG8Dgdjp8z4j/ml9hNJO1P
-   V9spkSfWXh33ahaxSXptAm+WaV3wpxW0TxvuC6CaINmP798i+W9vtWVlt
-   p4TDFqN1wOEqireu0dNl6IraeAT7AcqjaKfvHRXHQxaRXiaLuwxdl2aIS
-   IQgPI08gaEAu5LUjlkdtRKimKWsCNhp+cXMsFYPZpDHBrNP9xdEIIPVyz
-   nCErlktKKgXNMyBfluFC+/HpeXMJTjU4uPqY/lzUSnA60xrzpn3P1r4+t
+  t=1706430206; x=1737966206;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=hIrJKSNpYb4J6LmmBdTuR6sUK+GLx4HLsfkDwgd8VhY=;
+  b=OQKxB4nw4Jqs0etqiRP8uIKn1AOvUC6YsINOFzb0CLIOYE0EvCUO488X
+   rXzof1IkEYi1xQhVMCAyJArKzBhUX/l2UgCBF/IdRi/azG5aY59uPfDMc
+   GgfdEGCAlCwSC/7cpKh7mVN4HQAdE+nd8qlVveDFj+k4mw/36SpI2e1F6
+   WHJGR7DA1f6Fb2hYGmudNAJasg4QlsHQXK3Vqum26EhSLq/MyJ4aflI9L
+   tzTUvGFhQj4iTcH8fGt33aVJm9ys1Splsjpe3ua4cQh5rD0r+cC9V8NR5
+   OVERwofZ9RoFZsU98yvFlrAruDIxl+65o5BdYP+3l1EGbYAAOogevnMTk
    w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10966"; a="24217700"
+X-IronPort-AV: E=McAfee;i="6600,9927,10966"; a="1687263"
 X-IronPort-AV: E=Sophos;i="6.05,220,1701158400"; 
-   d="scan'208";a="24217700"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2024 22:55:09 -0800
+   d="scan'208";a="1687263"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2024 00:23:25 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,220,1701158400"; 
-   d="scan'208";a="35833392"
+   d="scan'208";a="3062384"
 Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2024 22:55:07 -0800
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2024 00:23:18 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 14/14] wifi: iwlwifi: cleanup uefi variables loading
-Date: Sun, 28 Jan 2024 08:54:00 +0200
-Message-Id: <20240128084842.454f32c4bcfe.I4835fe657475ac28ef6aef4d292fac63c6ce9a34@changeid>
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH] wifi: iwlwifi: remove extra kernel-doc
+Date: Sun, 28 Jan 2024 10:23:09 +0200
+Message-Id: <20240128102209.d2192d79bc09.Id9551728d618248dd471382a5283503a8976237a@changeid>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240128065400.2550604-1-miriam.rachel.korenblit@intel.com>
-References: <20240128065400.2550604-1-miriam.rachel.korenblit@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -73,198 +70,36 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-Extract the logic that is common to all variables loading
-to a function.
+From: Johannes Berg <johannes.berg@intel.com>
 
+This no longer exists, remove the kernel-doc.
+
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/uefi.c | 128 ++++++++-----------
- 1 file changed, 51 insertions(+), 77 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/uefi.c b/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
-index 2964c5fb11e9..9c432d7b3674 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
-@@ -76,6 +76,42 @@ void *iwl_uefi_get_pnvm(struct iwl_trans *trans, size_t *len)
- 	return data;
- }
- 
-+static
-+void *iwl_uefi_get_verified_variable(struct iwl_trans *trans,
-+				     efi_char16_t *uefi_var_name,
-+				     char *var_name,
-+				     unsigned int expected_size,
-+				     unsigned long *size)
-+{
-+	void *var;
-+	unsigned long var_size;
-+
-+	var = iwl_uefi_get_variable(uefi_var_name, &IWL_EFI_VAR_GUID,
-+				    &var_size);
-+
-+	if (IS_ERR(var)) {
-+		IWL_DEBUG_RADIO(trans,
-+				"%s UEFI variable not found 0x%lx\n", var_name,
-+				PTR_ERR(var));
-+		return var;
-+	}
-+
-+	if (var_size < expected_size) {
-+		IWL_DEBUG_RADIO(trans,
-+				"Invalid %s UEFI variable len (%lu)\n",
-+				var_name, var_size);
-+		kfree(var);
-+		return ERR_PTR(-EINVAL);
-+	}
-+
-+	IWL_DEBUG_RADIO(trans, "%s from UEFI with size %lu\n", var_name,
-+			var_size);
-+
-+	if (size)
-+		*size = var_size;
-+	return var;
-+}
-+
- int iwl_uefi_handle_tlv_mem_desc(struct iwl_trans *trans, const u8 *data,
- 				 u32 tlv_len, struct iwl_pnvm_image *pnvm_data)
- {
-@@ -230,26 +266,13 @@ u8 *iwl_uefi_get_reduced_power(struct iwl_trans *trans, size_t *len)
- 	unsigned long package_size;
- 	u8 *data;
- 
--	package = iwl_uefi_get_variable(IWL_UEFI_REDUCED_POWER_NAME,
--					&IWL_EFI_VAR_GUID, &package_size);
--
--	if (IS_ERR(package)) {
--		IWL_DEBUG_FW(trans,
--			     "Reduced Power UEFI variable not found 0x%lx (len %lu)\n",
--			     PTR_ERR(package), package_size);
-+	package = iwl_uefi_get_verified_variable(trans,
-+						 IWL_UEFI_REDUCED_POWER_NAME,
-+						 "Reduced Power",
-+						 sizeof(*package),
-+						 &package_size);
-+	if (IS_ERR(package))
- 		return ERR_CAST(package);
--	}
--
--	if (package_size < sizeof(*package)) {
--		IWL_DEBUG_FW(trans,
--			     "Invalid Reduced Power UEFI variable len (%lu)\n",
--			     package_size);
--		kfree(package);
--		return ERR_PTR(-EINVAL);
--	}
--
--	IWL_DEBUG_FW(trans, "Read reduced power from UEFI with size %lu\n",
--		     package_size);
- 
- 	IWL_DEBUG_FW(trans, "rev %d, total_size %d, n_skus %d\n",
- 		     package->rev, package->total_size, package->n_skus);
-@@ -283,32 +306,15 @@ static int iwl_uefi_step_parse(struct uefi_cnv_common_step_data *common_step_dat
- void iwl_uefi_get_step_table(struct iwl_trans *trans)
- {
- 	struct uefi_cnv_common_step_data *data;
--	unsigned long package_size;
- 	int ret;
- 
- 	if (trans->trans_cfg->device_family < IWL_DEVICE_FAMILY_AX210)
- 		return;
- 
--	data = iwl_uefi_get_variable(IWL_UEFI_STEP_NAME, &IWL_EFI_VAR_GUID,
--				     &package_size);
--
--	if (IS_ERR(data)) {
--		IWL_DEBUG_FW(trans,
--			     "STEP UEFI variable not found 0x%lx\n",
--			     PTR_ERR(data));
--		return;
--	}
--
--	if (package_size < sizeof(*data)) {
--		IWL_DEBUG_FW(trans,
--			     "Invalid STEP table UEFI variable len (%lu)\n",
--			     package_size);
--		kfree(data);
-+	data = iwl_uefi_get_verified_variable(trans, IWL_UEFI_STEP_NAME,
-+					      "STEP", sizeof(*data), NULL);
-+	if (IS_ERR(data))
- 		return;
--	}
--
--	IWL_DEBUG_FW(trans, "Read STEP from UEFI with size %lu\n",
--		     package_size);
- 
- 	ret = iwl_uefi_step_parse(data, trans);
- 	if (ret < 0)
-@@ -355,31 +361,15 @@ void iwl_uefi_get_sgom_table(struct iwl_trans *trans,
- 			     struct iwl_fw_runtime *fwrt)
- {
- 	struct uefi_cnv_wlan_sgom_data *data;
--	unsigned long package_size;
- 	int ret;
- 
- 	if (!fwrt->geo_enabled)
- 		return;
- 
--	data = iwl_uefi_get_variable(IWL_UEFI_SGOM_NAME, &IWL_EFI_VAR_GUID,
--				     &package_size);
--	if (IS_ERR(data)) {
--		IWL_DEBUG_FW(trans,
--			     "SGOM UEFI variable not found 0x%lx\n",
--			     PTR_ERR(data));
-+	data = iwl_uefi_get_verified_variable(trans, IWL_UEFI_SGOM_NAME,
-+					      "SGOM", sizeof(*data), NULL);
-+	if (IS_ERR(data))
- 		return;
--	}
--
--	if (package_size < sizeof(*data)) {
--		IWL_DEBUG_FW(trans,
--			     "Invalid SGOM table UEFI variable len (%lu)\n",
--			     package_size);
--		kfree(data);
--		return;
--	}
--
--	IWL_DEBUG_FW(trans, "Read SGOM from UEFI with size %lu\n",
--		     package_size);
- 
- 	ret = iwl_uefi_sgom_parse(data, fwrt);
- 	if (ret < 0)
-@@ -404,28 +394,12 @@ int iwl_uefi_get_uats_table(struct iwl_trans *trans,
- 			    struct iwl_fw_runtime *fwrt)
- {
- 	struct uefi_cnv_wlan_uats_data *data;
--	unsigned long package_size;
- 	int ret;
- 
--	data = iwl_uefi_get_variable(IWL_UEFI_UATS_NAME, &IWL_EFI_VAR_GUID,
--				     &package_size);
--	if (IS_ERR(data)) {
--		IWL_DEBUG_FW(trans,
--			     "UATS UEFI variable not found 0x%lx\n",
--			     PTR_ERR(data));
-+	data = iwl_uefi_get_verified_variable(trans, IWL_UEFI_UATS_NAME,
-+					      "UATS", sizeof(*data), NULL);
-+	if (IS_ERR(data))
- 		return -EINVAL;
--	}
--
--	if (package_size < sizeof(*data)) {
--		IWL_DEBUG_FW(trans,
--			     "Invalid UATS table UEFI variable len (%lu)\n",
--			     package_size);
--		kfree(data);
--		return -EINVAL;
--	}
--
--	IWL_DEBUG_FW(trans, "Read UATS from UEFI with size %lu\n",
--		     package_size);
- 
- 	ret = iwl_uefi_uats_parse(data, fwrt);
- 	if (ret < 0) {
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+index b877a2cd4005..e7ff043f9f0a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /*
+- * Copyright (C) 2005-2014, 2018-2023 Intel Corporation
++ * Copyright (C) 2005-2014, 2018-2024 Intel Corporation
+  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
+  * Copyright (C) 2015-2017 Intel Deutschland GmbH
+  */
+@@ -19,7 +19,6 @@
+  * @fwrt_ptr: pointer to the buffer coming from fwrt
+  * @trans_ptr: pointer to struct %iwl_trans_dump_data which contains the
+  *	transport's data.
+- * @trans_len: length of the valid data in trans_ptr
+  * @fwrt_len: length of the valid data in fwrt_ptr
+  */
+ struct iwl_fw_dump_ptrs {
 -- 
 2.34.1
 
