@@ -1,139 +1,127 @@
-Return-Path: <linux-wireless+bounces-2605-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2606-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC4B083F45B
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jan 2024 07:36:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72D7F83F469
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jan 2024 07:54:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 593A2283763
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jan 2024 06:36:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 264ED284085
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jan 2024 06:54:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B029D7484;
-	Sun, 28 Jan 2024 06:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CD9A8F6F;
+	Sun, 28 Jan 2024 06:54:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TOtsd0zq"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jX56C7Jf"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADA956FB8
-	for <linux-wireless@vger.kernel.org>; Sun, 28 Jan 2024 06:36:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=134.134.136.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 449B28F6E
+	for <linux-wireless@vger.kernel.org>; Sun, 28 Jan 2024 06:54:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706423780; cv=none; b=mcCD6/+Ip8avCaVzOnyi7HYmiReTsHaAZ0rWLamDvwr52x4F1efy+LKLjyZglWNmXgayNDYoyEEqntbGqgeIZjy3yJaPzouxa2njpPJGDKHIotFfpSykKFlLqR3ch3Bb01bY60jVB772/4mOgPi7uUteylDElcYLJl0BYlqFhgM=
+	t=1706424861; cv=none; b=rGO6ulUsT9I6u+NMZsrB+tkjx+kDtgUxza27C2cJDvnbHVKJRfIKppQJMt97amE8/YLlhFc7tSICOCXKwmSxMtnMosR73FGtOyED/4ULIMTvsmrU6ws+2Oq40l/dHrJPOwkWyVVvL9IKoM9xbqDwMPd/cp+ysdJoACoALZ4nfCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706423780; c=relaxed/simple;
-	bh=IkKswsgufv9d9v1e0P+Y3b7KYq7ic3X/OHmHF0ze/88=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=P2JPbvr2EpoROrbDfedwnoDVWdbTvGkam0bfMHMdoGpGUFLa5wvocYE24O8CYJGP9JRzRlgSy+gVRtq8Oh+i1dT4JqlQlYKkyLhyVRveGAK9xMABsqTys+E8IuCqdMApFfgdKNX2vgTif7BjRzG11uNYfyytBreV8fQBxNyWxNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TOtsd0zq; arc=none smtp.client-ip=134.134.136.65
+	s=arc-20240116; t=1706424861; c=relaxed/simple;
+	bh=hHRHiKT/X2IzHNwbWYk7KvRzljXA8pXB+hLNohK5C9c=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=m5bTiTHKwI0eB2aGVqLT/A+1d2TfXrdVvPpRdcGTjpcjYmPXlCWDexiU1a4WVoSWRw/u0IhMzNKGEdvpn3mOu4XODTXUjg+M38Gf9so3qFxFXCC5fwfiuofPT6Od0e9itYpAcuoaG4mKE5UzD2D7kZfp4X7dJncDYUF+Xa5+WY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jX56C7Jf; arc=none smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706423778; x=1737959778;
-  h=date:from:to:cc:subject:message-id;
-  bh=IkKswsgufv9d9v1e0P+Y3b7KYq7ic3X/OHmHF0ze/88=;
-  b=TOtsd0zqoxCPgImn4PIsFMP3TimJsA3ECr1gF/0RTu3NMjhxIXczM7TK
-   xCC0ycSq+e8zDDiSyaPjmr3M3CYVkhzhXLepl/0QeqqwlcuG2sgbiVjlr
-   ZOkWln3WO6Z5fzLdOyf7ccy4RPxpxprq6dOncowUx1Bs8/nuke+PGXy/P
-   F+29lIL0bsUZcIav8LQs6Q1OczubbRuoXJn23qv8lR12BimhO5XIPU4nj
-   3/rEwH4dSVHkMF5s/SS8I1ZrjBC/P04DqkkHyka3jl/+l75gySdDJf5s8
-   GMmugTmm8bBqlu9DgEaeBkf/e+BQs8tOJlGyTAdlvYeszB2lJUpV5PY5+
+  t=1706424859; x=1737960859;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=hHRHiKT/X2IzHNwbWYk7KvRzljXA8pXB+hLNohK5C9c=;
+  b=jX56C7Jft9/+F6L0EAVJ+zt3aIBOKOT7np6lm4alWwN68NfLdFrPfSb+
+   GzdJzhnCkpsEHiD+ot+q9xqq4FBE/e/O23YPiYLxDPH3BgV1wBYYrzkwY
+   ZUoYxhBX0KOEN41kvDtNmdQJtwpk2K7m5ZnYqOm7MWGI3xpxPDjF5bCKV
+   is7422vJRNWTRob0tRT+CAE+K5KDlZ3tqxpmMEFGG5pesqpfRXZX5XMr0
+   tmFHlZa9EIMWr4AhBlOb4NuR7HkI28dVklCdCFVHM/pY+9XFS0fPOgMo4
+   P+e2DINik4wzgfDbvDPEyebyRhbYxIFp/53MaqRD+7A7UNc0Yxkh6EE7K
    Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10966"; a="406467987"
+X-IronPort-AV: E=McAfee;i="6600,9927,10966"; a="24217611"
 X-IronPort-AV: E=Sophos;i="6.05,220,1701158400"; 
-   d="scan'208";a="406467987"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2024 22:36:18 -0800
+   d="scan'208";a="24217611"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2024 22:54:18 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10966"; a="960596297"
 X-IronPort-AV: E=Sophos;i="6.05,220,1701158400"; 
-   d="scan'208";a="960596297"
-Received: from lkp-server01.sh.intel.com (HELO 370188f8dc87) ([10.239.97.150])
-  by orsmga005.jf.intel.com with ESMTP; 27 Jan 2024 22:36:16 -0800
-Received: from kbuild by 370188f8dc87 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rTym6-0003AK-1V;
-	Sun, 28 Jan 2024 06:36:14 +0000
-Date: Sun, 28 Jan 2024 14:35:19 +0800
-From: kernel test robot <lkp@intel.com>
-To: Johannes Berg <johannes.berg@intel.com>
-Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
-Subject: [wireless-next:main] BUILD SUCCESS
- 28b3df1fe6ba2cb439ba109f095aa841fef3a54f
-Message-ID: <202401281416.Pla73RUm-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+   d="scan'208";a="35833282"
+Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2024 22:54:17 -0800
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org
+Subject: [PATCH 00/14] wifi: iwlwifi: updates - 2024-01-28
+Date: Sun, 28 Jan 2024 08:53:46 +0200
+Message-Id: <20240128065400.2550604-1-miriam.rachel.korenblit@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Organization: Intel Israel (74) Limited
+Content-Transfer-Encoding: 8bit
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: 28b3df1fe6ba2cb439ba109f095aa841fef3a54f  kunit: add wireless unit tests
+Hi,
 
-elapsed time: 2628m
+This patch set includes iwlwifi patches intended for v6.9. It contains a
+few features, bugfixes and cleanups.
 
-configs tested: 49
-configs skipped: 1
+Thanks,
+Miri
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
 
-tested configs:
-i386         buildonly-randconfig-001-20240127   gcc  
-i386         buildonly-randconfig-002-20240127   gcc  
-i386         buildonly-randconfig-003-20240127   gcc  
-i386         buildonly-randconfig-004-20240127   gcc  
-i386         buildonly-randconfig-005-20240127   gcc  
-i386         buildonly-randconfig-006-20240127   gcc  
-i386                  randconfig-001-20240127   gcc  
-i386                  randconfig-002-20240127   gcc  
-i386                  randconfig-003-20240127   gcc  
-i386                  randconfig-004-20240127   gcc  
-i386                  randconfig-005-20240127   gcc  
-i386                  randconfig-006-20240127   gcc  
-i386                  randconfig-011-20240127   clang
-i386                  randconfig-012-20240127   clang
-i386                  randconfig-013-20240127   clang
-i386                  randconfig-014-20240127   clang
-i386                  randconfig-015-20240127   clang
-i386                  randconfig-016-20240127   clang
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   clang
-powerpc                           allnoconfig   gcc  
-riscv                             allnoconfig   clang
-riscv                               defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                              allnoconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                               defconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-um                                allnoconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-xtensa                            allnoconfig   gcc  
+Emmanuel Grumbach (2):
+  wifi: iwlwifi: mvm: disconnect station vifs if recovery failed
+  wifi: iwlwifi: mvm: fix a battery life regression
+
+Johannes Berg (9):
+  wifi: iwlwifi: mvm: report beacon protection failures
+  wifi: iwlwifi: mvm: d3: disconnect on GTK rekey failure
+  wifi: iwlwifi: fix some kernel-doc issues
+  wifi: iwlwifi: dbg-tlv: avoid extra allocation/copy
+  wifi: iwlwifi: dbg-tlv: use struct_size() for allocation
+  wifi: iwlwifi: dbg-tlv: ensure NUL termination
+  wifi: iwlwifi: fw: dbg: ensure correct config name sizes
+  wifi: iwlwifi: acpi: fix WPFC reading
+  wifi: iwlwifi: mvm: initialize rates in FW earlier
+
+Miri Korenblit (3):
+  wifi: iwlwifi: disable eSR when BT is active
+  wifi: iwlwifi: implement GLAI ACPI table loading
+  wifi: iwlwifi: cleanup uefi variables loading
+
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c  |  45 +++++-
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.h  |  15 +-
+ .../net/wireless/intel/iwlwifi/fw/api/coex.h  |  14 +-
+ .../net/wireless/intel/iwlwifi/fw/api/debug.h |   2 +-
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c   |  20 ++-
+ .../net/wireless/intel/iwlwifi/fw/runtime.h   |   4 +
+ drivers/net/wireless/intel/iwlwifi/fw/uefi.c  | 128 +++++++-----------
+ .../net/wireless/intel/iwlwifi/iwl-dbg-tlv.c  |  57 ++++----
+ .../wireless/intel/iwlwifi/iwl-eeprom-parse.c |   2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/coex.c | 124 +++++++++++++++++
+ .../wireless/intel/iwlwifi/mvm/constants.h    |   3 +
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c   |   3 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |  16 ++-
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  13 ++
+ .../wireless/intel/iwlwifi/mvm/mld-mac80211.c | 107 ++++++++++++++-
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  21 ++-
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |   9 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/rs.c   |   2 +
+ drivers/net/wireless/intel/iwlwifi/mvm/rx.c   |  13 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c |  26 ++--
+ .../net/wireless/intel/iwlwifi/mvm/utils.c    |   2 +
+ 21 files changed, 483 insertions(+), 143 deletions(-)
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.34.1
+
 
