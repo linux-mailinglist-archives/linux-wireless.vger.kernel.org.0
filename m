@@ -1,65 +1,69 @@
-Return-Path: <linux-wireless+bounces-2606-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2607-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72D7F83F469
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jan 2024 07:54:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BB0083F46A
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jan 2024 07:54:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 264ED284085
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jan 2024 06:54:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 701AA1C21514
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jan 2024 06:54:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CD9A8F6F;
-	Sun, 28 Jan 2024 06:54:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC14FD518;
+	Sun, 28 Jan 2024 06:54:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jX56C7Jf"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nyoo5eQw"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 449B28F6E
-	for <linux-wireless@vger.kernel.org>; Sun, 28 Jan 2024 06:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E46E8D2E0
+	for <linux-wireless@vger.kernel.org>; Sun, 28 Jan 2024 06:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706424861; cv=none; b=rGO6ulUsT9I6u+NMZsrB+tkjx+kDtgUxza27C2cJDvnbHVKJRfIKppQJMt97amE8/YLlhFc7tSICOCXKwmSxMtnMosR73FGtOyED/4ULIMTvsmrU6ws+2Oq40l/dHrJPOwkWyVVvL9IKoM9xbqDwMPd/cp+ysdJoACoALZ4nfCM=
+	t=1706424872; cv=none; b=BRPY5z81tpEXiuhnDjDAVDt43xtNwgqHkjlIff9iGfVSJsasRFfbVqrEQWXwgaptywipNwmz2k47C9sxzQUdB6AVsCR5zAVxx0Xb4e+1/48ulQSKgZ1qSgEObKFPJI8nbqpAKSmfxGez577cLou0rsbp9tu4ArhO/KAcbQIpHq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706424861; c=relaxed/simple;
-	bh=hHRHiKT/X2IzHNwbWYk7KvRzljXA8pXB+hLNohK5C9c=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=m5bTiTHKwI0eB2aGVqLT/A+1d2TfXrdVvPpRdcGTjpcjYmPXlCWDexiU1a4WVoSWRw/u0IhMzNKGEdvpn3mOu4XODTXUjg+M38Gf9so3qFxFXCC5fwfiuofPT6Od0e9itYpAcuoaG4mKE5UzD2D7kZfp4X7dJncDYUF+Xa5+WY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jX56C7Jf; arc=none smtp.client-ip=192.198.163.7
+	s=arc-20240116; t=1706424872; c=relaxed/simple;
+	bh=JmSBuBkXJlZVE1JAca/yiuGu9O9rF0U+DlKpaD+8M50=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=RnQ/5r6yOLeztQHfzEKJS47zWd86G/Y/+sBut8/FD6r9esvetAdDEBKvbNXTGSqpTwyZOPop7DLxQnzsNtUPAftARYalLsCrJoklWmD9SA1tADESo0oCA/eNe34sIUe35bCo4POrdAZ8oLCyE1VeYZ3/8m1X3+2boIKaXki7/3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nyoo5eQw; arc=none smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706424859; x=1737960859;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=hHRHiKT/X2IzHNwbWYk7KvRzljXA8pXB+hLNohK5C9c=;
-  b=jX56C7Jft9/+F6L0EAVJ+zt3aIBOKOT7np6lm4alWwN68NfLdFrPfSb+
-   GzdJzhnCkpsEHiD+ot+q9xqq4FBE/e/O23YPiYLxDPH3BgV1wBYYrzkwY
-   ZUoYxhBX0KOEN41kvDtNmdQJtwpk2K7m5ZnYqOm7MWGI3xpxPDjF5bCKV
-   is7422vJRNWTRob0tRT+CAE+K5KDlZ3tqxpmMEFGG5pesqpfRXZX5XMr0
-   tmFHlZa9EIMWr4AhBlOb4NuR7HkI28dVklCdCFVHM/pY+9XFS0fPOgMo4
-   P+e2DINik4wzgfDbvDPEyebyRhbYxIFp/53MaqRD+7A7UNc0Yxkh6EE7K
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10966"; a="24217611"
+  t=1706424870; x=1737960870;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=JmSBuBkXJlZVE1JAca/yiuGu9O9rF0U+DlKpaD+8M50=;
+  b=nyoo5eQwKA62y6vY8opcerbMGagJHX7RmtzLM6mpHZMtia6WluRT9jwt
+   uGumfluSIauO39dpNVtkgkUZ7kh/9+gVAN6l4ssJeeD0qkfKtbBfyP5Yk
+   3IoWaF7r0yYvQpg08QYKu0kUXPtYOCiDEAp7vZDG0Y1DU1BUvF8jPr2aa
+   B6O+7vD38VNS7//HwwbKyGppMX2GjdyrsS1xq//uPGKIIgoONAoY1YW19
+   kmxFwSOrDFrf0KQNCvrJQAOVNsLIqVlntPKwGm8RyX2bV5veQwlK6Dsbc
+   YH6UzfDLnV95+KtduqQz4lNFklzRfdKXpWPLLCHqqfh/NK5D1vVIF1jk3
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10966"; a="24217623"
 X-IronPort-AV: E=Sophos;i="6.05,220,1701158400"; 
-   d="scan'208";a="24217611"
+   d="scan'208";a="24217623"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2024 22:54:18 -0800
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2024 22:54:29 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,220,1701158400"; 
-   d="scan'208";a="35833282"
+   d="scan'208";a="35833314"
 Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2024 22:54:17 -0800
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2024 22:54:27 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH 00/14] wifi: iwlwifi: updates - 2024-01-28
-Date: Sun, 28 Jan 2024 08:53:46 +0200
-Message-Id: <20240128065400.2550604-1-miriam.rachel.korenblit@intel.com>
+Cc: linux-wireless@vger.kernel.org,
+	Gregory Greenman <gregory.greenman@intel.com>
+Subject: [PATCH 01/14] wifi: iwlwifi: disable eSR when BT is active
+Date: Sun, 28 Jan 2024 08:53:47 +0200
+Message-Id: <20240128084842.ec8efe325660.I7d808ce535a7372aca9cb85c045755e6788a4904@changeid>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240128065400.2550604-1-miriam.rachel.korenblit@intel.com>
+References: <20240128065400.2550604-1-miriam.rachel.korenblit@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -69,58 +73,494 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-Hi,
+eSR should be disabled when BT Coex is active and:
+- LB link is the primary link.
+- LB link is the secondary link and the predicted BT penalty
+  (the wifi loss rate caused by BT interference) is higher
+  than a given threshold.
+If one of the conditions above is no longer true then re-enable eSR.
 
-This patch set includes iwlwifi patches intended for v6.9. It contains a
-few features, bugfixes and cleanups.
+In order to implement this, add support for version 5 of
+BT_PROFILE_NOTIFICATION, in which the bt penalty is provided
+by FW.
 
-Thanks,
-Miri
-
-
-Emmanuel Grumbach (2):
-  wifi: iwlwifi: mvm: disconnect station vifs if recovery failed
-  wifi: iwlwifi: mvm: fix a battery life regression
-
-Johannes Berg (9):
-  wifi: iwlwifi: mvm: report beacon protection failures
-  wifi: iwlwifi: mvm: d3: disconnect on GTK rekey failure
-  wifi: iwlwifi: fix some kernel-doc issues
-  wifi: iwlwifi: dbg-tlv: avoid extra allocation/copy
-  wifi: iwlwifi: dbg-tlv: use struct_size() for allocation
-  wifi: iwlwifi: dbg-tlv: ensure NUL termination
-  wifi: iwlwifi: fw: dbg: ensure correct config name sizes
-  wifi: iwlwifi: acpi: fix WPFC reading
-  wifi: iwlwifi: mvm: initialize rates in FW earlier
-
-Miri Korenblit (3):
-  wifi: iwlwifi: disable eSR when BT is active
-  wifi: iwlwifi: implement GLAI ACPI table loading
-  wifi: iwlwifi: cleanup uefi variables loading
-
- drivers/net/wireless/intel/iwlwifi/fw/acpi.c  |  45 +++++-
- drivers/net/wireless/intel/iwlwifi/fw/acpi.h  |  15 +-
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
+---
  .../net/wireless/intel/iwlwifi/fw/api/coex.h  |  14 +-
- .../net/wireless/intel/iwlwifi/fw/api/debug.h |   2 +-
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c   |  20 ++-
- .../net/wireless/intel/iwlwifi/fw/runtime.h   |   4 +
- drivers/net/wireless/intel/iwlwifi/fw/uefi.c  | 128 +++++++-----------
- .../net/wireless/intel/iwlwifi/iwl-dbg-tlv.c  |  57 ++++----
- .../wireless/intel/iwlwifi/iwl-eeprom-parse.c |   2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/coex.c | 124 +++++++++++++++++
+ drivers/net/wireless/intel/iwlwifi/mvm/coex.c | 124 ++++++++++++++++++
  .../wireless/intel/iwlwifi/mvm/constants.h    |   3 +
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c   |   3 +-
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |  16 ++-
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  13 ++
  .../wireless/intel/iwlwifi/mvm/mld-mac80211.c | 107 ++++++++++++++-
  drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  21 ++-
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |   9 +-
- drivers/net/wireless/intel/iwlwifi/mvm/rs.c   |   2 +
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |   5 +-
  drivers/net/wireless/intel/iwlwifi/mvm/rx.c   |  13 +-
- drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c |  26 ++--
- .../net/wireless/intel/iwlwifi/mvm/utils.c    |   2 +
- 21 files changed, 483 insertions(+), 143 deletions(-)
+ 7 files changed, 275 insertions(+), 12 deletions(-)
 
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/coex.h b/drivers/net/wireless/intel/iwlwifi/fw/api/coex.h
+index 3e81e9369224..bc27e15488f5 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/coex.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/coex.h
+@@ -1,5 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
+ /*
++ * Copyright (C) 2023 Intel Corporation
+  * Copyright (C) 2013-2014, 2018-2019 Intel Corporation
+  * Copyright (C) 2013-2014 Intel Mobile Communications GmbH
+  * Copyright (C) 2017 Intel Deutschland GmbH
+@@ -170,7 +171,11 @@ enum iwl_bt_ci_compliance {
+  * @bt_activity_grading: the activity of BT &enum iwl_bt_activity_grading
+  * @ttc_status: is TTC enabled - one bit per PHY
+  * @rrc_status: is RRC enabled - one bit per PHY
+- * @reserved: reserved
++ * The following fields are only for version 5, and are reserved in version 4:
++ * @wifi_loss_low_rssi: The predicted lost WiFi rate (% of air time that BT is
++ *	utilizing) when the RSSI is low (<= -65 dBm)
++ * @wifi_loss_mid_high_rssi: The predicted lost WiFi rate (% of air time that
++ *	BT is utilizing) when the RSSI is mid/high (>= -65 dBm)
+  */
+ struct iwl_bt_coex_profile_notif {
+ 	__le32 mbox_msg[4];
+@@ -182,7 +187,10 @@ struct iwl_bt_coex_profile_notif {
+ 	__le32 bt_activity_grading;
+ 	u8 ttc_status;
+ 	u8 rrc_status;
+-	__le16 reserved;
+-} __packed; /* BT_COEX_PROFILE_NTFY_API_S_VER_4 */
++	u8 wifi_loss_low_rssi;
++	u8 wifi_loss_mid_high_rssi;
++} __packed; /* BT_COEX_PROFILE_NTFY_API_S_VER_4
++	     * BT_COEX_PROFILE_NTFY_API_S_VER_5
++	     */
+ 
+ #endif /* __iwl_fw_api_coex_h__ */
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/coex.c b/drivers/net/wireless/intel/iwlwifi/mvm/coex.c
+index 9fe1761691ec..d26075e3e6ad 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/coex.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/coex.c
+@@ -252,6 +252,124 @@ static void iwl_mvm_bt_coex_tcm_based_ci(struct iwl_mvm *mvm,
+ 	swap(data->primary, data->secondary);
+ }
+ 
++static void iwl_mvm_bt_coex_enable_esr(struct iwl_mvm *mvm,
++				       struct ieee80211_vif *vif, bool enable)
++{
++	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
++	int link_id;
++
++	lockdep_assert_held(&mvm->mutex);
++
++	if (!vif->cfg.assoc || !ieee80211_vif_is_mld(vif))
++		return;
++
++	/* Done already */
++	if (mvmvif->bt_coex_esr_disabled == !enable)
++		return;
++
++	mvmvif->bt_coex_esr_disabled = !enable;
++
++	/* Nothing to do */
++	if (mvmvif->esr_active == enable)
++		return;
++
++	if (enable) {
++		/* Try to re-enable eSR*/
++		iwl_mvm_mld_select_links(mvm, vif, false);
++		return;
++	}
++
++	/*
++	 * Find the primary link, as we want to switch to it and drop the
++	 * secondary one.
++	 */
++	link_id = iwl_mvm_mld_get_primary_link(mvm, vif, vif->active_links);
++	WARN_ON(link_id < 0);
++
++	ieee80211_set_active_links_async(vif,
++					 vif->active_links & BIT(link_id));
++}
++
++/*
++ * This function receives the LB link id and checks if eSR should be
++ * enabled or disabled (due to BT coex)
++ */
++bool
++iwl_mvm_bt_coex_calculate_esr_mode(struct iwl_mvm *mvm,
++				   struct ieee80211_vif *vif,
++				   int link_id, int primary_link)
++{
++	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
++	struct iwl_mvm_vif_link_info *link_info = mvmvif->link[link_id];
++	bool have_wifi_loss_rate =
++		iwl_fw_lookup_notif_ver(mvm->fw, LEGACY_GROUP,
++					BT_PROFILE_NOTIFICATION, 0) > 4;
++	s8 link_rssi = 0;
++	u8 wifi_loss_rate;
++
++	lockdep_assert_held(&mvm->mutex);
++
++	if (mvm->last_bt_notif.wifi_loss_low_rssi == BT_OFF)
++		return true;
++
++	 /* If LB link is the primary one we should always disable eSR */
++	if (link_id == primary_link)
++		return false;
++
++	/* The feature is not supported */
++	if (!have_wifi_loss_rate)
++		return true;
++
++	/*
++	 * We might not have a link_info when checking whether we can
++	 * (re)enable eSR - the LB link might not exist yet
++	 */
++	if (link_info)
++		link_rssi = (s8)link_info->beacon_stats.avg_signal;
++
++	/*
++	 * In case we don't know the RSSI - take the lower wifi loss,
++	 * so we will more likely enter eSR, and if RSSI is low -
++	 * we will get an update on this and exit eSR.
++	 */
++	if (!link_rssi)
++		wifi_loss_rate = mvm->last_bt_notif.wifi_loss_mid_high_rssi;
++
++	else if (!mvmvif->bt_coex_esr_disabled)
++		 /* RSSI needs to get really low to disable eSR... */
++		wifi_loss_rate =
++			link_rssi <= -IWL_MVM_BT_COEX_DISABLE_ESR_THRESH ?
++				mvm->last_bt_notif.wifi_loss_low_rssi :
++				mvm->last_bt_notif.wifi_loss_mid_high_rssi;
++	else
++		/* ...And really high before we enable it back */
++		wifi_loss_rate =
++			link_rssi <= -IWL_MVM_BT_COEX_ENABLE_ESR_THRESH ?
++				mvm->last_bt_notif.wifi_loss_low_rssi :
++				mvm->last_bt_notif.wifi_loss_mid_high_rssi;
++
++	return wifi_loss_rate <= IWL_MVM_BT_COEX_WIFI_LOSS_THRESH;
++}
++
++void iwl_mvm_bt_coex_update_vif_esr(struct iwl_mvm *mvm,
++				    struct ieee80211_vif *vif,
++				    int link_id)
++{
++	unsigned long usable_links = ieee80211_vif_usable_links(vif);
++	int primary_link = iwl_mvm_mld_get_primary_link(mvm, vif,
++							usable_links);
++	bool enable;
++
++	/* Not assoc, not MLD vif or only one usable link */
++	if (primary_link < 0)
++		return;
++
++	enable = iwl_mvm_bt_coex_calculate_esr_mode(mvm, vif, link_id,
++						    primary_link);
++
++	iwl_mvm_bt_coex_enable_esr(mvm, vif, enable);
++}
++
+ static void iwl_mvm_bt_notif_per_link(struct iwl_mvm *mvm,
+ 				      struct ieee80211_vif *vif,
+ 				      struct iwl_bt_iterator_data *data,
+@@ -297,6 +415,8 @@ static void iwl_mvm_bt_notif_per_link(struct iwl_mvm *mvm,
+ 		return;
+ 	}
+ 
++	iwl_mvm_bt_coex_update_vif_esr(mvm, vif, link_id);
++
+ 	if (fw_has_capa(&mvm->fw->ucode_capa, IWL_UCODE_TLV_CAPA_COEX_SCHEMA_2))
+ 		min_ag_for_static_smps = BT_VERY_HIGH_TRAFFIC;
+ 	else
+@@ -432,6 +552,10 @@ static void iwl_mvm_bt_notif_iterator(void *_data, u8 *mac,
+ 		return;
+ 	}
+ 
++	/* When BT is off this will be 0 */
++	if (data->notif->wifi_loss_low_rssi == BT_OFF)
++		iwl_mvm_bt_coex_enable_esr(mvm, vif, true);
++
+ 	for (link_id = 0; link_id < IEEE80211_MLD_MAX_NUM_LINKS; link_id++)
+ 		iwl_mvm_bt_notif_per_link(mvm, vif, data, link_id);
+ }
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/constants.h b/drivers/net/wireless/intel/iwlwifi/mvm/constants.h
+index c832068b5718..f5122c4678a1 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/constants.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/constants.h
+@@ -11,6 +11,9 @@
+ #include "fw-api.h"
+ 
+ #define IWL_MVM_UAPSD_NOAGG_BSSIDS_NUM		20
++#define IWL_MVM_BT_COEX_DISABLE_ESR_THRESH	69
++#define IWL_MVM_BT_COEX_ENABLE_ESR_THRESH	63
++#define IWL_MVM_BT_COEX_WIFI_LOSS_THRESH	0
+ 
+ #define IWL_MVM_DEFAULT_PS_TX_DATA_TIMEOUT	(100 * USEC_PER_MSEC)
+ #define IWL_MVM_DEFAULT_PS_RX_DATA_TIMEOUT	(100 * USEC_PER_MSEC)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+index b1caf5163121..770e4c4e909a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+@@ -604,6 +604,7 @@ static int iwl_mvm_mld_mac_sta_state(struct ieee80211_hw *hw,
+ struct iwl_mvm_link_sel_data {
+ 	u8 link_id;
+ 	enum nl80211_band band;
++	enum nl80211_chan_width width;
+ 	bool active;
+ };
+ 
+@@ -656,6 +657,7 @@ void iwl_mvm_mld_select_links(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+ 
+ 		data[n_data].link_id = link_id;
+ 		data[n_data].band = link_conf->chandef.chan->band;
++		data[n_data].width = link_conf->chandef.width;
+ 		data[n_data].active = vif->active_links & BIT(link_id);
+ 		n_data++;
+ 	}
+@@ -1216,13 +1218,116 @@ iwl_mvm_mld_change_sta_links(struct ieee80211_hw *hw,
+ 	return ret;
+ }
+ 
++/*
++ * This function receives a subset of the usable links bitmap and
++ * returns the primary link id, and -1 if such link doesn't exist
++ * (e.g. non-MLO connection) or wasn't found.
++ */
++int iwl_mvm_mld_get_primary_link(struct iwl_mvm *mvm,
++				 struct ieee80211_vif *vif,
++				 unsigned long usable_links)
++{
++	struct iwl_mvm_link_sel_data data[IEEE80211_MLD_MAX_NUM_LINKS];
++	u8 link_id, n_data = 0;
++
++	if (!ieee80211_vif_is_mld(vif) || !vif->cfg.assoc)
++		return -1;
++
++	for_each_set_bit(link_id, &usable_links, IEEE80211_MLD_MAX_NUM_LINKS) {
++		struct ieee80211_bss_conf *link_conf =
++			link_conf_dereference_protected(vif, link_id);
++
++		if (WARN_ON_ONCE(!link_conf))
++			continue;
++
++		data[n_data].link_id = link_id;
++		data[n_data].band = link_conf->chandef.chan->band;
++		data[n_data].width = link_conf->chandef.width;
++		data[n_data].active = true;
++		n_data++;
++	}
++
++	if (n_data <= 1)
++		return -1;
++
++	/* The logic should be modified to handle more than 2 links */
++	WARN_ON_ONCE(n_data > 2);
++
++	/* Primary link is the link with the wider bandwidth or higher band */
++	if (data[0].width > data[1].width)
++		return data[0].link_id;
++	if (data[0].width < data[1].width)
++		return data[1].link_id;
++	if (data[0].band >= data[1].band)
++		return data[0].link_id;
++
++	return data[1].link_id;
++}
++
++/*
++ * This function receives a bitmap of usable links and check if we can enter
++ * eSR on those links.
++ */
++static bool iwl_mvm_can_enter_esr(struct iwl_mvm *mvm,
++				  struct ieee80211_vif *vif,
++				  unsigned long desired_links)
++{
++	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
++	int primary_link = iwl_mvm_mld_get_primary_link(mvm, vif,
++							desired_links);
++	bool ret = true;
++	int link_id;
++
++	if (primary_link < 0)
++		return false;
++
++	for_each_set_bit(link_id, &desired_links, IEEE80211_MLD_MAX_NUM_LINKS) {
++		struct ieee80211_bss_conf *link_conf =
++			link_conf_dereference_protected(vif, link_id);
++
++		if (WARN_ON_ONCE(!link_conf))
++			continue;
++
++		/* BT Coex effects eSR mode only if one of the link is on LB */
++		if (link_conf->chandef.chan->band != NL80211_BAND_2GHZ)
++			continue;
++
++		ret = iwl_mvm_bt_coex_calculate_esr_mode(mvm, vif, link_id,
++							 primary_link);
++		// Mark eSR as disabled for the next time
++		if (!ret)
++			mvmvif->bt_coex_esr_disabled = true;
++		break;
++	}
++
++	return ret;
++}
++
+ static bool iwl_mvm_mld_can_activate_links(struct ieee80211_hw *hw,
+ 					   struct ieee80211_vif *vif,
+ 					   u16 desired_links)
+ {
+ 	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
++	int n_links = hweight16(desired_links);
++	bool ret = true;
++
++	if (n_links <= 1)
++		return true;
+ 
+-	return hweight16(desired_links) <= iwl_mvm_max_active_links(mvm, vif);
++	mutex_lock(&mvm->mutex);
++
++	/* Check if HW supports the wanted number of links */
++	if (n_links > iwl_mvm_max_active_links(mvm, vif)) {
++		ret = false;
++		goto unlock;
++	}
++
++	/* If it is an eSR device, check that we can enter eSR */
++	if (iwl_mvm_is_esr_supported(mvm->fwrt.trans))
++		ret = iwl_mvm_can_enter_esr(mvm, vif, desired_links);
++unlock:
++	mutex_unlock(&mvm->mutex);
++	return ret;
+ }
+ 
+ const struct ieee80211_ops iwl_mvm_mld_hw_ops = {
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+index af5c8b4bb5a6..9a89b91519db 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+@@ -359,6 +359,7 @@ struct iwl_mvm_vif_link_info {
+  * @pm_enabled - indicate if MAC power management is allowed
+  * @monitor_active: indicates that monitor context is configured, and that the
+  *	interface should get quota etc.
++ * @bt_coex_esr_disabled: indicates if esr is disabled due to bt coex
+  * @low_latency: bit flags for low latency
+  *	see enum &iwl_mvm_low_latency_cause for causes.
+  * @low_latency_actual: boolean, indicates low latency is set,
+@@ -389,6 +390,7 @@ struct iwl_mvm_vif {
+ 	bool pm_enabled;
+ 	bool monitor_active;
+ 	bool esr_active;
++	bool bt_coex_esr_disabled;
+ 
+ 	u8 low_latency: 6;
+ 	u8 low_latency_actual: 1;
+@@ -1570,13 +1572,17 @@ static inline int iwl_mvm_max_active_links(struct iwl_mvm *mvm,
+ 					   struct ieee80211_vif *vif)
+ {
+ 	struct iwl_trans *trans = mvm->fwrt.trans;
++	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
++
++	lockdep_assert_held(&mvm->mutex);
+ 
+ 	if (vif->type == NL80211_IFTYPE_AP)
+ 		return mvm->fw->ucode_capa.num_beacons;
+ 
+-	if (iwl_mvm_is_esr_supported(trans) ||
+-	    (CSR_HW_RFID_TYPE(trans->hw_rf_id) == IWL_CFG_RF_TYPE_FM &&
+-	     CSR_HW_RFID_IS_CDB(trans->hw_rf_id)))
++	if ((iwl_mvm_is_esr_supported(trans) &&
++	     !mvmvif->bt_coex_esr_disabled) ||
++	    ((CSR_HW_RFID_TYPE(trans->hw_rf_id) == IWL_CFG_RF_TYPE_FM &&
++	     CSR_HW_RFID_IS_CDB(trans->hw_rf_id))))
+ 		return IWL_MVM_FW_MAX_ACTIVE_LINKS_NUM;
+ 
+ 	return 1;
+@@ -2119,6 +2125,12 @@ bool iwl_mvm_bt_coex_is_tpc_allowed(struct iwl_mvm *mvm,
+ u8 iwl_mvm_bt_coex_get_single_ant_msk(struct iwl_mvm *mvm, u8 enabled_ants);
+ u8 iwl_mvm_bt_coex_tx_prio(struct iwl_mvm *mvm, struct ieee80211_hdr *hdr,
+ 			   struct ieee80211_tx_info *info, u8 ac);
++bool iwl_mvm_bt_coex_calculate_esr_mode(struct iwl_mvm *mvm,
++					struct ieee80211_vif *vif,
++					int link_id, int primary_link);
++void iwl_mvm_bt_coex_update_vif_esr(struct iwl_mvm *mvm,
++				    struct ieee80211_vif *vif,
++				    int link_id);
+ 
+ /* beacon filtering */
+ #ifdef CONFIG_IWLWIFI_DEBUGFS
+@@ -2733,4 +2745,7 @@ bool iwl_mvm_enable_fils(struct iwl_mvm *mvm,
+ 			 struct ieee80211_chanctx_conf *ctx);
+ void iwl_mvm_mld_select_links(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+ 			      bool valid_links_changed);
++int iwl_mvm_mld_get_primary_link(struct iwl_mvm *mvm,
++				 struct ieee80211_vif *vif,
++				 unsigned long usable_links);
+ #endif /* __IWL_MVM_H__ */
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+index 38a84a54ff78..871274eea26f 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+@@ -320,7 +320,8 @@ static const struct iwl_rx_handlers iwl_mvm_rx_handlers[] = {
+ 		       struct iwl_tlc_update_notif),
+ 
+ 	RX_HANDLER(BT_PROFILE_NOTIFICATION, iwl_mvm_rx_bt_coex_notif,
+-		   RX_HANDLER_ASYNC_LOCKED, struct iwl_bt_coex_profile_notif),
++		   RX_HANDLER_ASYNC_LOCKED_WIPHY,
++		   struct iwl_bt_coex_profile_notif),
+ 	RX_HANDLER_NO_SIZE(BEACON_NOTIFICATION, iwl_mvm_rx_beacon_notif,
+ 			   RX_HANDLER_ASYNC_LOCKED),
+ 	RX_HANDLER_NO_SIZE(STATISTICS_NOTIFICATION, iwl_mvm_rx_statistics,
+@@ -328,7 +329,7 @@ static const struct iwl_rx_handlers iwl_mvm_rx_handlers[] = {
+ 
+ 	RX_HANDLER_GRP(STATISTICS_GROUP, STATISTICS_OPER_NOTIF,
+ 		       iwl_mvm_handle_rx_system_oper_stats,
+-		       RX_HANDLER_ASYNC_LOCKED,
++		       RX_HANDLER_ASYNC_LOCKED_WIPHY,
+ 		       struct iwl_system_statistics_notif_oper),
+ 	RX_HANDLER_GRP(STATISTICS_GROUP, STATISTICS_OPER_PART1_NOTIF,
+ 		       iwl_mvm_handle_rx_system_oper_part1_stats,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rx.c b/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
+index 8caa971770c6..e37984247642 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
+@@ -841,6 +841,7 @@ iwl_mvm_stat_iterator_all_links(struct iwl_mvm *mvm,
+ 		struct iwl_stats_ntfy_per_link *link_stats;
+ 		struct ieee80211_bss_conf *bss_conf;
+ 		struct iwl_mvm_vif *mvmvif;
++		struct iwl_mvm_vif_link_info *link_info;
+ 		int link_id;
+ 		int sig;
+ 
+@@ -857,20 +858,26 @@ iwl_mvm_stat_iterator_all_links(struct iwl_mvm *mvm,
+ 			continue;
+ 
+ 		mvmvif = iwl_mvm_vif_from_mac80211(bss_conf->vif);
+-		if (!mvmvif || !mvmvif->link[link_id])
++		link_info = mvmvif->link[link_id];
++		if (!mvmvif || link_info)
+ 			continue;
+ 
+ 		link_stats = &per_link[fw_link_id];
+ 
+-		mvmvif->link[link_id]->beacon_stats.num_beacons =
++		link_info->beacon_stats.num_beacons =
+ 			le32_to_cpu(link_stats->beacon_counter);
+ 
+ 		/* we basically just use the u8 to store 8 bits and then treat
+ 		 * it as a s8 whenever we take it out to a different type.
+ 		 */
+-		mvmvif->link[link_id]->beacon_stats.avg_signal =
++		link_info->beacon_stats.avg_signal =
+ 			-le32_to_cpu(link_stats->beacon_average_energy);
+ 
++		if (link_info->phy_ctxt &&
++		    link_info->phy_ctxt->channel->band == NL80211_BAND_2GHZ)
++			iwl_mvm_bt_coex_update_vif_esr(mvm, bss_conf->vif,
++						       link_id);
++
+ 		/* make sure that beacon statistics don't go backwards with TCM
+ 		 * request to clear statistics
+ 		 */
 -- 
 2.34.1
 
