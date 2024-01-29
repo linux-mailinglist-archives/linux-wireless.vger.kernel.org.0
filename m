@@ -1,110 +1,205 @@
-Return-Path: <linux-wireless+bounces-2625-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2626-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A39F83F94A
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jan 2024 20:19:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD21F83FC2D
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 03:25:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 963A51C214CA
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jan 2024 19:19:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51C111F2329E
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 02:25:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 771CE31A6B;
-	Sun, 28 Jan 2024 19:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81EB2EADD;
+	Mon, 29 Jan 2024 02:25:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=swsnr.de header.i=@swsnr.de header.b="RJGlLmWP"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="YLfXs0Kq"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3324426AE8
-	for <linux-wireless@vger.kernel.org>; Sun, 28 Jan 2024 19:19:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70D43EADC
+	for <linux-wireless@vger.kernel.org>; Mon, 29 Jan 2024 02:25:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706469555; cv=none; b=rATQe1LEFRPLaeHfdqw5akKmagM2izKWgNzFZP1qlQXeMf1KMbhpXBSuwN0E56iov9k/3Matse+gVCs5eRgh45ZYUw1jP3B+b7K8Ky91P9l//qpnsALFYdfm48zWFws3+zWSQOzDZTTVMdrJ6l+Z2jWMWyG+mH4aI8ylOPUqQ28=
+	t=1706495127; cv=none; b=JWUclv+bJIn11lt8xn6ctl7EAlx1WxoS3pK+gJMFlMhnPMFR5vaYVofDyDZwQL0CwfsYeopGYJ/x1sIidWYz91iZEVm2Oam3VH2ohsLYhcoMAlUVrUHxa8KbtfLR7X20fo802A13V/XQwZA/yedPTg41j3Bf5lUUXSn7NZgyOUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706469555; c=relaxed/simple;
-	bh=ExDQIZZlKvg5fSE+pSjje3Z+6mDPpumn6NFwqkAAu8g=;
-	h=Message-ID:Subject:From:To:Cc:Date:Content-Type:MIME-Version; b=Uf6vcmW3hjLab46ezHtwReD3XtpOeN1PsBJnwua3i8W2u5MSnTE1/fKtIpXPpNlyvVa1FTDsQhGmRoZwA1xLcJTrBAZxJXOzs5ChnYRFLycL62ni2yNaPHeFonQtpA/fi5LVgSuYGlDY69RnOgPym+X9pqW6j6pU6Ny7jO6mx9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=swsnr.de; spf=pass smtp.mailfrom=swsnr.de; dkim=pass (2048-bit key) header.d=swsnr.de header.i=@swsnr.de header.b=RJGlLmWP; arc=none smtp.client-ip=80.241.56.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=swsnr.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swsnr.de
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4TNLb60hpHz9sRf;
-	Sun, 28 Jan 2024 20:09:38 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swsnr.de; s=MBO0001;
-	t=1706468978;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
-	bh=Kg9PZtH911coTjQfk6yKUtfKbwW13qcKcAPkD2ur8WU=;
-	b=RJGlLmWPTgPtl44Civf3sPu4Y2OGWE27IMgNvN1jWM3I7RePR6NSRZwe7TAz4eIoXxx0cU
-	zvVKesPgzihqCzvwnz9FIX4G5PdlHirPU0JtaUuvKgwYlCjWMbR7oIEW8b872AF1yPQMB9
-	Hh3w2yXkQ1nhUQSjA/P9voM1u6EEeGnAjLBg26oxsSRTXRTP33GHeejelPB+JTFIO2K7Gl
-	WJsXvPgRYzOp9YiN47dfwFaO39Wwv5ufXetx5Gu65WdHN/t0+zubXqWEi4Bk4DKMUutvdj
-	3yMhrJyofdROkEOthcu0QhgD0mDWcXyyC2JyoUjNjBaBx4sth843UBY6ZvQNIw==
-Message-ID: <3146ecbcfffeb1ca05c05f7d1f141711c15651a2.camel@swsnr.de>
-Subject: Missing firmware dependencies in iwlwifi module?
-From: Sebastian Wiesner <sebastian@swsnr.de>
-To: linux-wireless@vger.kernel.org
-Cc: daan.j.demeyer@gmail.com
-Date: Sun, 28 Jan 2024 20:09:35 +0100
-Autocrypt: addr=sebastian@swsnr.de; prefer-encrypt=mutual;
- keydata=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
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1706495127; c=relaxed/simple;
+	bh=d1Ztlf1Iwv+vYYA4/UwWL3tVHL87c5BkAAugKpmiiR4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=lZqFQ7dXFdt7xMW8klcsPPnjzpO4tl28lcmhDNkDUzhMlrwIdIMmWic+elQjqMved3yIKIu+Wm1JhFtAnoxqc7l74ELE3zl7SU9j/hslKvTaMo0mKrjPxIq1sllLQjrTFiylFuckHObHaciUH0vCef087jwD7TfOomy2E/18FbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=YLfXs0Kq; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40T2PGkR020743;
+	Mon, 29 Jan 2024 02:25:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=7ITM5XD3gnYa/UxZzddqaowsseIQSCKu+Rpf3SZiR9Q=; b=YL
+	fXs0KqH7PQczxo/UwKiKgO43YtcUAsxVmv3U7w+4uiUdbrsRJ1R2VZyq2OjFtmqf
+	Y8i4W53mM6ueaqY6dMN1FffvnwOYH8F2XGj2fCKBZ09rUFiGuX1a+zIjEBdORXl7
+	U0SaTtvS+wwt4Rr6ECtexFhdFr8b4mrwdH8EaEwz0+3V/x1bPmB7zLoZ0DtpVBMG
+	5enA+v6uFEzJszeGepJVT6UB0GZGWVzqO4tMAKjg87OPwBtlV5F2+PY0DmCzkdQ0
+	BrNMh0eCisBPe5HhkyDOsu4fbE2112f6sVgP1vMaNrgkFTondYZkKTSycTjuR25X
+	FvE+lAcRET/KvgG+ie3g==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vvtkmahjw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 29 Jan 2024 02:25:15 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40T2PF2b005899
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 29 Jan 2024 02:25:15 GMT
+Received: from [10.253.12.70] (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Sun, 28 Jan
+ 2024 18:25:13 -0800
+Message-ID: <ef7b72b2-3a34-4e94-8552-834f24e4bddc@quicinc.com>
+Date: Mon, 29 Jan 2024 10:25:11 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 10/11] wifi: ath12k: fix incorrect logic of calculating
+ vdev_stats_id
+Content-Language: en-US
+To: Jeff Johnson <quic_jjohnson@quicinc.com>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240126115231.356658-1-quic_kangyang@quicinc.com>
+ <20240126115231.356658-11-quic_kangyang@quicinc.com>
+ <0dd4948b-e967-4562-b98e-2f4643205ca4@quicinc.com>
+ <0b39cf96-3ed4-45b7-9254-2604716afe14@quicinc.com>
+From: Kang Yang <quic_kangyang@quicinc.com>
+In-Reply-To: <0b39cf96-3ed4-45b7-9254-2604716afe14@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: WIoNBWvwndpWf-hOAWHMb4fjWpBOyCFR
+X-Proofpoint-GUID: WIoNBWvwndpWf-hOAWHMb4fjWpBOyCFR
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-25_14,2024-01-25_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
+ lowpriorityscore=0 mlxlogscore=961 malwarescore=0 suspectscore=0
+ priorityscore=1501 impostorscore=0 spamscore=0 adultscore=0 phishscore=0
+ bulkscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2401190000 definitions=main-2401290016
 
-Hello,
 
-the iwlwifi module seems to be missing firmware dependencies on some
-"pnvm" files.  At least, the module crashes at boot of the pnvm file
-corresponding to the ucode file isn't present, but "modinfo -F firmware
-iwlwifi" does not list the pnvm files:
 
-$ uname -r
-6.7.1-arch1-1
-$ ls /usr/lib/firmware/iwlwifi-*.pnvm.zst
-/usr/lib/firmware/iwlwifi-gl-c0-fm-c0.pnvm.zst =20
-/usr/lib/firmware/iwlwifi-so-a0-gf4-a0.pnvm.zst
-/usr/lib/firmware/iwlwifi-ma-b0-gf4-a0.pnvm.zst=20
-/usr/lib/firmware/iwlwifi-so-a0-gf-a0.pnvm.zst
-/usr/lib/firmware/iwlwifi-ma-b0-gf-a0.pnvm.zst =20
-/usr/lib/firmware/iwlwifi-ty-a0-gf-a0.pnvm.zst
-$ modinfo -F firmware iwlwifi | rg pnvm
+On 1/27/2024 7:05 AM, Jeff Johnson wrote:
+> On 1/26/2024 8:56 AM, Jeff Johnson wrote:
+>> And it seems there is another bigger issue here since, as the firmware
+>> document indicates, the vdev_stats_id field should be ignored unless the
+>> vdev_stats_id_valid field is non-zero, but in ath12k_wmi_vdev_create()
+>> we don't set vdev_stats_id_valid -- and we cannot set it since it isn't
+>> even present in the ath12k struct wmi_vdev_create_cmd! And comparing our
+>> struct to the firmware definition shows we have missing fields!!!
+>> Everything is correct up to pdev_id, but then there is divergence:
+>>
+>> our struct
+>> struct wmi_vdev_create_cmd {
+>> 	__le32 tlv_header;
+>> 	__le32 vdev_id;
+>> 	__le32 vdev_type;
+>> 	__le32 vdev_subtype;
+>> 	struct ath12k_wmi_mac_addr_params vdev_macaddr;
+>> 	__le32 num_cfg_txrx_streams;
+>> 	__le32 pdev_id;
+>> 	__le32 vdev_stats_id;
+>> } __packed;
+>>
+>> firmware definition
+>> typedef struct {
+>>      A_UINT32 tlv_header; /** TLV tag and len; tag equals
+>> WMITLV_TAG_STRUC_wmi_vdev_create_cmd_fixed_param */
+>>      /** unique id identifying the VDEV, generated by the caller */
+>>      A_UINT32 vdev_id;
+>>      /** VDEV type (AP,STA,IBSS,MONITOR) */
+>>      A_UINT32 vdev_type;
+>>      /** VDEV subtype (P2PDEV, P2PCLI, P2PGO, BT3.0, BRIDGE) */
+>>      A_UINT32 vdev_subtype;
+>>      /** VDEV MAC address */
+>>      wmi_mac_addr vdev_macaddr;
+>>      /** Number of configured txrx streams */
+>>      A_UINT32 num_cfg_txrx_streams;
+>>      /**
+>>       * pdev_id for identifying the MAC,
+>>       * See macros starting with WMI_PDEV_ID_ for values.
+>>       */
+>>      A_UINT32 pdev_id;
+>>      /** control flags for this vdev (DEPRECATED)
+>>       * Use @mbss_capability_flags in vdev start instead.
+>>       */
+>>      A_UINT32 flags;
+>>      /**  vdevid of transmitted AP (mbssid case) (DEPRECATED)
+>>       * Use @vdevid_trans in vdev start instead.
+>>       */
+>>      A_UINT32 vdevid_trans;
+>>      /* vdev_stats_id_valid indicates whether vdev_stats_id is valid */
+>>      A_UINT32 vdev_stats_id_valid;
+>>      /**
+>>       * vdev_stats_id indicates the ID for the REO Rx stats collection
+>>       * For Beryllium: 0-47 is the valid range and >=48 is invalid
+>>       * This vdev_stats_id field should be ignored unless the
+>>       * vdev_stats_id_valid field is non-zero.
+>>       */
+>>      A_UINT32 vdev_stats_id;
+>> /* This TLV is followed by another TLV of array of structures
+>>   *   wmi_vdev_txrx_streams cfg_txrx_streams[];
+>>   *   wmi_vdev_create_mlo_params mlo_params[0,1];
+>>   *       optional TLV, only present for MLO vdev;
+>>   *       if the vdev is not MLO the array length should be 0.
+>>   */
+>> } wmi_vdev_create_cmd_fixed_param;
+>>
+>> (note the deprecated fields must still have their space allocated in the
+>> data structure)
+>>
+>> So currently when host is writing to vdev_stats_id firmware will
+>> interpret this as the deprecated flags
+>>
+>> So it seems like we also need to fix the WMI struct to:
+>> struct wmi_vdev_create_cmd {
+>> 	__le32 tlv_header;
+>> 	__le32 vdev_id;
+>> 	__le32 vdev_type;
+>> 	__le32 vdev_subtype;
+>> 	struct ath12k_wmi_mac_addr_params vdev_macaddr;
+>> 	__le32 num_cfg_txrx_streams;
+>> 	__le32 pdev_id;
+>> 	__le32 flags; /* deprecated */
+>> 	__le32 vdevid_trans; /* deprecated */
+>> 	__le32 vdev_stats_id_valid;
+>> 	__le32 vdev_stats_id;
+>> } __packed;
+> 
+> Sigh. I now realize that patch 7/11 in the series fixes this, and hence
+> why this 10/11 patch needs to be part of the series (or the 7/11 and
+> 10/11 patches should be separated from the P2P feature).
+> 
 
-I stumbled over this while building a system image with mkosi.  To
-minimze image size I was removing unneeded modules from the image, and
-mkosi automatically removed firmware files no longer needed according
-to "modinfo". =20
+They cannot be separated from the P2P feature.
+Without patch 7/11, P2P won't run properly due to firmware crash.
 
-The image failed to boot, with iwlwifi complaining about a missing pnvm
-file (I'm sorry but I don't have the actual error message at hand
-anymore).  After manually adding the pnvm file to the image, it booted
-successfully.
 
-See https://github.com/systemd/mkosi/issues/2334 for the mkosi bug
-report.
 
-This is my first mail to this list, and to any kernel mailing list
-really, so I'm sorry if it's missing information or is somehow
-inappropriate.
+> Let me re-review the entire series instead of just reviewing the 7/11
+> patch without the associated context.
 
-I'm not subscribed to this list, so please keep me CC'ed if you need
-further information.
+Maybe i need to move patch 10/11 to 8/11, make them closer?
 
-Cheers,
-Sebastian Wiesner
+
+> 
+> Must be Friday.
+> 
+> /jeff
 
