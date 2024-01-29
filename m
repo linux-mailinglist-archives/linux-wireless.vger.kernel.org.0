@@ -1,50 +1,69 @@
-Return-Path: <linux-wireless+bounces-2633-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2634-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46B7483FDC5
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 06:38:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC41D83FEB7
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 07:57:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA289283CEB
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 05:38:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 145711C20B33
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 06:57:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3AAD446CA;
-	Mon, 29 Jan 2024 05:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1CB94D135;
+	Mon, 29 Jan 2024 06:57:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="byG0LpU+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.cock.li (mail.cock.li [37.120.193.123])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3455C2421D
-	for <linux-wireless@vger.kernel.org>; Mon, 29 Jan 2024 05:37:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.120.193.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1488B4D11A
+	for <linux-wireless@vger.kernel.org>; Mon, 29 Jan 2024 06:57:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706506683; cv=none; b=YwMQAmyHMlWT/eE7/zUWXj4A7BHMv/0/isFN/VPN1hht20trXmFMmo06iwV7U5gfMDe4M7Cx8FLg4v6MNiwMIs3ltOv7Dwpkf/9W1Thks0NpzffPw5Ox76VzkAPYkl0+OqAnF0kNkti6G9c8WjRWIpOLHmIeXK6eoLTKYxkfx7Y=
+	t=1706511475; cv=none; b=ra7buhoAvK5K/5ArzvN4qUvAVXgWJNveOvSMoOQ9jkX1RlqRC7ANokPOytDSqLvSP1eLmWVZHyYVa3hhxnCrJTy9CpBR4XVb32ayu+omv4B7w/aGiW8rv1Vf6cT9HCXBtyOYg+jrPXHlzt0KfmdwSYDiND6xgZwaHALFj/6uyUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706506683; c=relaxed/simple;
-	bh=QELAz2JHlv+qdvzqzALEefysogz4KAlqZ3Y/8kYPxcw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bX33nziuf5kvj5N+/8iwJevkK6Jo5KzQICeQUt7gUorJr67/AQRjIsH5/xh0JulsfGhvFfJ/vOvwBgTMGg7ngEDaBYaAS3ohm8/YCbPecpt8jWRyIP9jM0o8SqsTZNnEYLr9suK38xs8vXhFVw1rs7Nd1rs4OeuQfY8QCtBSUpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cock.lu; spf=pass smtp.mailfrom=cock.lu; dkim=pass (2048-bit key) header.d=cock.lu header.i=@cock.lu header.b=LN3LT6vf; arc=none smtp.client-ip=37.120.193.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cock.lu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cock.lu
-From: Chun Qiu <cqca@cock.lu>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=cock.lu; s=mail;
-	t=1706506211; bh=QELAz2JHlv+qdvzqzALEefysogz4KAlqZ3Y/8kYPxcw=;
-	h=From:To:Cc:Subject:Date:From;
-	b=LN3LT6vfgQbXqx3a8rEFnye19LX5mTala7MVR4GuTBkJ5C2Xdxk0FRcWwsYdJDrkc
-	 lgzTvYm9bhIVJr2AtWJKdsAwWRnW8Wz3oYfB/XyE7v2ghEdXCpZPLtxVICJvf4gu9y
-	 /CToxgI0xwpHo5q+lT1Sy+d03BkIe7I1vYkGwCc8NiWBGNApiTXav1yKqbJObJgBG7
-	 Ch9zUg1iwxU4flFIMLd/rByTcq//qZW6KT+Z++M8q/64gXHYTrt6BbxCgROo7xE8fN
-	 UchKIsA3drPw6t0GEk7Gr50GQZyAeU0ZAOVvzxjRdOJ4Z00ACmMV8CL6K5y8VbmjSN
-	 aqkumSPUQLRxA==
-To: linux-wireless@vger.kernel.org
-Cc: Jes Sorensen <Jes.Sorensen@redhat.com>,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: [PATCH] wifi: rtl8xxxu: Add TP-Link TL-WN823N V2 to the USB ID list
-Date: Mon, 29 Jan 2024 13:30:30 +0800
-Message-ID: <20240129053030.16369-1-cqca@cock.lu>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1706511475; c=relaxed/simple;
+	bh=ty0k2+KZWUBgdZBflt3WzMt0IFe4hGPnRh/hBBSsuSo=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=uCzbBLXDsOU8IP74IIpgFnwa5RMUrfWILi0ZKulq1J368U4u7B/Dvcx49DDO6aqB8B68arPfIBKxIokoVEigL0g+iQjxp92lWLtgYzEooTB/2epZrXjdSsnHnG3rhs0P8ydiPzyDi7omjhfEgprEC6wgq44GOAR8xwwX4PaPLm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=byG0LpU+; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40T2rAPX012429;
+	Mon, 29 Jan 2024 06:57:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=qcppdkim1; bh=q0oP/Bu
+	YWmMlQ5a/ZTYSjQgCe2azgZBrDPKTDSLQ/3s=; b=byG0LpU+IP4LhgVPik0Gvrd
+	p5u9EWKwWYRtVGk5K5xcEVTE2Zkhx46hqp8yg+JU8GdfK6CjsZO9ReW8Ftoq/d9q
+	L6Ndd2fgKRQPD7MqPyeiAEbKK6eXvSBxulGBd66very35qw8JpwraTBUBHzuMTLw
+	y5MNYAiyeGb0vnT9ehsmPCeem5s5oKmkO5XSwqA8raF2bRrEYYp+uccTn9PKFxMz
+	axsghznzNfjlcVIoH1u/b52w6+t59AbcHsnZWj23qaGhEQ17yymUUbd+9+rbdCV/
+	kwTTiOnzjhjY4O+1Iig5ygUyxqHRYfiofeLS5mYiGvHtmePXrMPXGucr4mp7R2g=
+	=
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vvrubb0q8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 29 Jan 2024 06:57:47 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40T6vk9w008606
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 29 Jan 2024 06:57:46 GMT
+Received: from hu-rajkbhag-blr.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Sun, 28 Jan 2024 22:57:45 -0800
+From: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Raj Kumar Bhagat
+	<quic_rajkbhag@quicinc.com>
+Subject: [PATCH v3 00/13] wifi: ath12k: QCN9274 dualmac bring up
+Date: Mon, 29 Jan 2024 12:27:11 +0530
+Message-ID: <20240129065724.2310207-1-quic_rajkbhag@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -52,39 +71,101 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: LONjyhXPD62ayd5TBWugAQKRTha_8657
+X-Proofpoint-GUID: LONjyhXPD62ayd5TBWugAQKRTha_8657
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-29_03,2024-01-25_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ bulkscore=0 mlxlogscore=306 spamscore=0 mlxscore=0 malwarescore=0
+ priorityscore=1501 adultscore=0 suspectscore=0 impostorscore=0
+ phishscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2401190000 definitions=main-2401290049
 
-TP-Link TL-WN823N V2 (2357:0135) is based on rtl8192fu and has been
-tested to work with the rtl8xxxu driver.
+QCN9274 Ath12k chipset can support single-mac or dualmac architecture.
+Currently, Ath12k driver supports only the single-mac QCN9274
+architecture.
 
-Signed-off-by: Chun Qiu <cqca@cock.lu>
+Hence, add support for dualmac QCN9274 chipset.
+
+Depends-On: [v2] wifi: ath12k: add firmware-2.bin support
+
+Aaradhana Sahu (1):
+  wifi: ath12k: fix firmware assert during insmod in memory segment mode
+
+Ganesh Babu Jothiram (1):
+  wifi: ath12k: Read board id to support split-PHY QCN9274
+
+Harshitha Prem (1):
+  wifi: ath12k: add support for peer meta data version
+
+Karthikeyan Kathirvel (1):
+  wifi: ath12k: subscribe required word mask from rx tlv
+
+Karthikeyan Periyasamy (1):
+  wifi: ath12k: add MAC id support in WBM error path
+
+P Praneesh (2):
+  wifi: ath12k: Add logic to write QRTR node id to scratch
+  wifi: ath12k: fix PCI read and write
+
+Raj Kumar Bhagat (4):
+  wifi: ath12k: fix fetching MCBC flag for QCN9274
+  wifi: ath12k: split hal_ops to support RX TLVs word mask compaction
+  wifi: ath12k: remove hal_desc_sz from hw params
+  wifi: ath12k: disable QMI PHY capability learn in split-phy QCN9274
+
+Sowmiya Sree Elavalagan (1):
+  wifi: ath12k: fetch correct pdev id from WMI_SERVICE_READY_EXT_EVENTID
+
+Sriram R (1):
+  wifi: ath12k: indicate NON MBSSID vdev by default during vdev start
+
 ---
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+v3:
+- Added patch "wifi: ath12k: disable QMI PHY capability learn in
+  split-phy QCN9274" to avoid firmware crash.
+- Tested on WCN7850
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index 180907319e8c..ea099a90b1a4 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -7522,7 +7522,7 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
- 			untested = 0;
- 		break;
- 	case 0x2357:
--		if (id->idProduct == 0x0109)
-+		if (id->idProduct == 0x0109 || id->idProduct == 0x0135)
- 			untested = 0;
- 		break;
- 	case 0x0b05:
-@@ -7806,6 +7806,9 @@ static const struct usb_device_id dev_table[] = {
- 	.driver_info = (unsigned long)&rtl8192fu_fops},
- {USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0x318b, 0xff, 0xff, 0xff),
- 	.driver_info = (unsigned long)&rtl8192fu_fops},
-+/* TP-Link TL-WN823N V2 */
-+{USB_DEVICE_AND_INTERFACE_INFO(0x2357, 0x0135, 0xff, 0xff, 0xff),
-+	.driver_info = (unsigned long)&rtl8192fu_fops},
- #ifdef CONFIG_RTL8XXXU_UNTESTED
- /* Still supported by rtlwifi */
- {USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0x8176, 0xff, 0xff, 0xff),
+v2:
+- dropped patch [1/13] - wifi: ath12k: Update enum wmi_direct_buffer_module
+  not required with FW version being used.
+- defined enum wmi_vdev_mbssid_flags at proper place.
+- implemented hal_ops to retrieve the corresponding compact ops.
+---
+ drivers/net/wireless/ath/ath12k/core.c    |  30 ++
+ drivers/net/wireless/ath/ath12k/core.h    |  12 +
+ drivers/net/wireless/ath/ath12k/dp.c      |  25 +-
+ drivers/net/wireless/ath/ath12k/dp.h      |  17 +-
+ drivers/net/wireless/ath/ath12k/dp_mon.c  |   5 +-
+ drivers/net/wireless/ath/ath12k/dp_rx.c   | 158 ++++----
+ drivers/net/wireless/ath/ath12k/dp_tx.c   |  20 ++
+ drivers/net/wireless/ath/ath12k/fw.c      |   7 +
+ drivers/net/wireless/ath/ath12k/fw.h      |   6 +
+ drivers/net/wireless/ath/ath12k/hal.c     | 415 +++++++++++++++++++++-
+ drivers/net/wireless/ath/ath12k/hal.h     |  20 +-
+ drivers/net/wireless/ath/ath12k/hw.c      |  13 +-
+ drivers/net/wireless/ath/ath12k/hw.h      |  30 +-
+ drivers/net/wireless/ath/ath12k/mac.c     |  12 +-
+ drivers/net/wireless/ath/ath12k/mhi.c     |  50 ++-
+ drivers/net/wireless/ath/ath12k/pci.c     |  84 +++--
+ drivers/net/wireless/ath/ath12k/pci.h     |   6 +-
+ drivers/net/wireless/ath/ath12k/qmi.c     |   3 +
+ drivers/net/wireless/ath/ath12k/qmi.h     |   1 -
+ drivers/net/wireless/ath/ath12k/rx_desc.h | 116 +++++-
+ drivers/net/wireless/ath/ath12k/wmi.c     |  31 +-
+ drivers/net/wireless/ath/ath12k/wmi.h     |  58 ++-
+ 22 files changed, 949 insertions(+), 170 deletions(-)
+
+
+base-commit: 17f4b952f067b1f87d14e6df4c8c216fe7a245d1
+prerequisite-patch-id: 20d8782c4835d0a1e32c8cbc6ffca53a71603ed3
 -- 
-2.43.0
+2.34.1
 
 
