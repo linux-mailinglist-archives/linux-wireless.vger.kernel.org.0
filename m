@@ -1,60 +1,62 @@
-Return-Path: <linux-wireless+bounces-2664-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2665-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B084B8404BC
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 13:14:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A45D08404BD
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 13:14:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68CAB2837D6
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 12:14:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C95731C21E29
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 12:14:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 200C36024C;
-	Mon, 29 Jan 2024 12:14:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F4C560265;
+	Mon, 29 Jan 2024 12:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Cz6hdaJv"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="bF5vvmaB"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3623860241
-	for <linux-wireless@vger.kernel.org>; Mon, 29 Jan 2024 12:14:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF4FC60242
+	for <linux-wireless@vger.kernel.org>; Mon, 29 Jan 2024 12:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706530470; cv=none; b=mtJ3TY+zvdhZS3Pfw90E1japLlhLx8xTzWeH3Z8pRbk9SRjpCtZ+buw0k7Ca07QhRwIhRNUDqlyXl7uNKRAjCwEBPASJPyMG5FVbMlf65k8sVqSoxaXHTN/hsAUdT4fZGC6E2Q/j1IBraGTSUENI+Dq51BP4ekHphL6m3BAHaPQ=
+	t=1706530471; cv=none; b=C7d5sEGjdk1yxcstOAG9mi3C/tq0mkDIh7PjosArXoRJJvmmdURLq0HoIhBUu8OeRfZMyGEBJ6O8nwB4UkRHPNUbFvFRqWtY0ALfQUx0XQ7eyK1vTPNEUl/Gn9raiHe8KYZTeJ57d67ai9pXGdsrk6bsn8U1qEflLEk6S4BNM4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706530470; c=relaxed/simple;
-	bh=o990qUxfTiRCokUXP29ryWUG0sxVFt5iLLWx7Kx/g4Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=t1WhGw/0dpNWeBgEbezj5F7KSzDiRhV/5GOdt49cEx3kLaHAMmnN9VZ8zsjzqLTgEORyGSu7zusdtDLLunKv+XoX96hReF/jjIAPpArQblc7/adjut6YddHCac14m1RnqvQ/R2E2uCAaLLqkg3YGxl5B9EvEwg3cz9BJbQYyQGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Cz6hdaJv; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1706530471; c=relaxed/simple;
+	bh=Gs89PZed4BgdDQEDFKrvKcQJydk759cHZNZLQpXl5nk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Fa9aojGnVWyWCyD+LoGnuZ4Xu+TiUY6kAXwoAKhI7vaDNdgnnD7+bSrVAORvnr7ahp5Moh/cHSF+4NHSZSKKHwxTZceiRAPnlQyu3LI9m/Iz+euPS7Vds17RHgPiGrLlgmA9RH5rJjWsCTlmC7I78yEleUUrkvSvRJ1gB8PJANA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=bF5vvmaB; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=UZVOyeiOQpa9atwmk+wqK79IMjLJnBkLc6u9fJVYwlw=; t=1706530466; x=1707740066; 
-	b=Cz6hdaJvraaEBIMnIv4qiRQpalgVP2YTsBTusg6zmXnVPudJ99TDH5KZr/vOewaTj10gEVDS1Dq
-	JVuOYej+YJMsxSxWNMcQBBGJGECcq9QWnl+Jqpufyyt8LkkLMTF6l40+GQLqWXRkUq6imvGkoN9DP
-	CPS1YG8p5ueIhuQxoEfTzoufY/u4m+dU4qR1r8L4oxID0rP8XqryulwJUwg4XRHW4MonJglb3q33i
-	QuBU3c0uZBp+qZnd05kwdvK+FC2n1Up4RTbZI6wuTCpBkH591GPCN+YaCKf72lVG0KZH7nyHdI2Qa
-	F5IfwIJsK+9vMkk0PWiEGXT1rZ/eVgCTrEuw==;
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=iT9Y/uDSI26VhSJPF0hg9eTl2O2jJRFsT4qMaN/I1hQ=;
+	t=1706530466; x=1707740066; b=bF5vvmaBZqn4JDM7H9eGszpQYbjPzglBpARlleP/NaB8Xes
+	yLib3YgK5J9kKHQTVzG9kNFKAWa+farlwipuRl1ZYzQ392bj78mfc8z2VcEyFBP27dhgQTRgALKo2
+	Qt3vgzd4f8O+lm79pBdPocme7G2Uf2PegdtHPLAUbUjGc6iX8p6qiviMByYTvlEc75vTf7U1YtDye
+	+pJ89QEqvuz6huso4upMkBASwpO69AHhr3xsced02cRu6WXFzIHBQkRSd6L2ixMkS35Hbj9cYdlKr
+	u3ZTnrqsAvDlj7Ywlj/o51+vUm+7lmDHcv0rbAcyGK4V8SRGgt3OjJrvSwd0577A==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.97)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1rUQWl-00000004p5l-3ZhV;
-	Mon, 29 Jan 2024 13:14:16 +0100
+	id 1rUQWm-00000004p5l-2cHn;
+	Mon, 29 Jan 2024 13:14:17 +0100
 From: Johannes Berg <johannes@sipsolutions.net>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>,
 	coldolt <andypalmadi@gmail.com>,
 	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Subject: [PATCH 1/2] wifi: cfg80211: detect stuck ECSA element in probe resp
-Date: Mon, 29 Jan 2024 13:14:13 +0100
-Message-ID: <20240129131413.246972c8775e.Ibf834d7f52f9951a353b6872383da710a7358338@changeid>
+Subject: [PATCH 2/2] wifi: mac80211: improve CSA/ECSA connection refusal
+Date: Mon, 29 Jan 2024 13:14:14 +0100
+Message-ID: <20240129131413.cc2d0a26226e.I682c016af76e35b6c47007db50e8554c5a426910@changeid>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240129131413.246972c8775e.Ibf834d7f52f9951a353b6872383da710a7358338@changeid>
+References: <20240129131413.246972c8775e.Ibf834d7f52f9951a353b6872383da710a7358338@changeid>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,23 +67,20 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-We recently added some validation that we don't try to
-connect to an AP that is currently in a channel switch
-process, since that might want the channel to be quiet
-or we might not be able to connect in time to hear the
-switching in a beacon. This was in commit c09c4f31998b
-("wifi: mac80211: don't connect to an AP while it's in
-a CSA process").
+As mentioned in the previous commit, we pretty quickly found
+that some APs have ECSA elements stuck in their probe response,
+so using that to not attempt to connect while CSA is happening
+we never connect to such an AP.
 
-However, we promptly got a report that this caused new
-connection failures, and it turns out that the AP that
-we now cannot connect to is permanently advertising an
-extended channel switch announcement, even with quiet.
-The AP in question was an Asus RT-AC53, with firmware
-3.0.0.4.380_10760-g21a5898.
+Improve this situation by checking more carefully and ignoring
+the ECSA if cfg80211 has previously detected the ECSA element
+being stuck in the probe response.
 
-As a first step, attempt to detect that we're dealing
-with such a situation, so mac80211 can use this later.
+Additionally, allow connecting to an AP that's switching to a
+channel it's already using, unless it's using quiet mode. In
+this case, we may just have to adjust bandwidth later. If it's
+actually switching channels, it's better not to try to connect
+in the middle of that.
 
 Reported-by: coldolt <andypalmadi@gmail.com>
 Closes: https://lore.kernel.org/linux-wireless/CAJvGw+DQhBk_mHXeu6RTOds5iramMW2FbMB01VbKRA4YbHHDTA@mail.gmail.com/
@@ -89,110 +88,163 @@ Fixes: c09c4f31998b ("wifi: mac80211: don't connect to an AP while it's in a CSA
 Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- include/net/cfg80211.h |  4 +++
- net/wireless/scan.c    | 59 +++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 62 insertions(+), 1 deletion(-)
+ net/mac80211/mlme.c | 105 ++++++++++++++++++++++++++++++++------------
+ 1 file changed, 77 insertions(+), 28 deletions(-)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index cf79656ce09c..2b54fdd8ca15 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -2910,6 +2910,8 @@ struct cfg80211_bss_ies {
-  *	own the beacon_ies, but they're just pointers to the ones from the
-  *	@hidden_beacon_bss struct)
-  * @proberesp_ies: the information elements from the last Probe Response frame
-+ * @proberesp_ecsa_stuck: ECSA element is stuck in the Probe Response frame,
-+ *	cannot rely on it having valid data
-  * @hidden_beacon_bss: in case this BSS struct represents a probe response from
-  *	a BSS that hides the SSID in its beacon, this points to the BSS struct
-  *	that holds the beacon data. @beacon_ies is still valid, of course, and
-@@ -2950,6 +2952,8 @@ struct cfg80211_bss {
- 	u8 chains;
- 	s8 chain_signal[IEEE80211_MAX_CHAINS];
- 
-+	u8 proberesp_ecsa_stuck:1;
-+
- 	u8 bssid_index;
- 	u8 max_bssid_indicator;
- 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 2249b1a89d1c..389a52c29bfc 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -1731,6 +1731,61 @@ static void cfg80211_update_hidden_bsses(struct cfg80211_internal_bss *known,
- 	}
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 073105deb424..c62c7c6ce91f 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -7309,6 +7309,75 @@ static int ieee80211_prep_connection(struct ieee80211_sub_if_data *sdata,
+ 	return err;
  }
  
-+static void cfg80211_check_stuck_ecsa(struct cfg80211_registered_device *rdev,
-+				      struct cfg80211_internal_bss *known,
-+				      const struct cfg80211_bss_ies *old)
++static bool ieee80211_mgd_csa_present(struct ieee80211_sub_if_data *sdata,
++				      const struct cfg80211_bss_ies *ies,
++				      u8 cur_channel, bool ignore_ecsa)
 +{
-+	const struct ieee80211_ext_chansw_ie *ecsa;
-+	const struct element *elem_new, *elem_old;
-+	const struct cfg80211_bss_ies *new, *bcn;
++	const struct element *csa_elem, *ecsa_elem;
++	struct ieee80211_channel_sw_ie *csa = NULL;
++	struct ieee80211_ext_chansw_ie *ecsa = NULL;
 +
-+	if (known->pub.proberesp_ecsa_stuck)
-+		return;
++	if (!ies)
++		return false;
 +
-+	new = rcu_dereference_protected(known->pub.proberesp_ies,
-+					lockdep_is_held(&rdev->bss_lock));
-+	if (WARN_ON(!new))
-+		return;
++	csa_elem = cfg80211_find_elem(WLAN_EID_CHANNEL_SWITCH,
++				      ies->data, ies->len);
++	if (csa_elem && csa_elem->datalen == sizeof(*csa))
++		csa = (void *)csa_elem->data;
 +
-+	if (new->tsf - old->tsf < USEC_PER_SEC)
-+		return;
++	ecsa_elem = cfg80211_find_elem(WLAN_EID_EXT_CHANSWITCH_ANN,
++				       ies->data, ies->len);
++	if (ecsa_elem && ecsa_elem->datalen == sizeof(*ecsa))
++		ecsa = (void *)ecsa_elem->data;
 +
-+	elem_old = cfg80211_find_elem(WLAN_EID_EXT_CHANSWITCH_ANN,
-+				      old->data, old->len);
-+	if (!elem_old)
-+		return;
++	if (csa && csa->count == 0)
++		csa = NULL;
++	if (csa && !csa->mode && csa->new_ch_num == cur_channel)
++		csa = NULL;
 +
-+	elem_new = cfg80211_find_elem(WLAN_EID_EXT_CHANSWITCH_ANN,
-+				      new->data, new->len);
-+	if (!elem_new)
-+		return;
++	if (ecsa && ecsa->count == 0)
++		ecsa = NULL;
++	if (ecsa && !ecsa->mode && ecsa->new_ch_num == cur_channel)
++		ecsa = NULL;
 +
-+	bcn = rcu_dereference_protected(known->pub.beacon_ies,
-+					lockdep_is_held(&rdev->bss_lock));
-+	if (bcn &&
-+	    cfg80211_find_elem(WLAN_EID_EXT_CHANSWITCH_ANN,
-+			       bcn->data, bcn->len))
-+		return;
++	if (ignore_ecsa && ecsa) {
++		sdata_info(sdata,
++			   "Ignoring ECSA in probe response - was considered stuck!\n");
++		return csa;
++	}
 +
-+	if (elem_new->datalen != elem_old->datalen)
-+		return;
-+	if (elem_new->datalen < sizeof(struct ieee80211_ext_chansw_ie))
-+		return;
-+	if (memcmp(elem_new->data, elem_old->data, elem_new->datalen))
-+		return;
-+
-+	ecsa = (void *)elem_new->data;
-+
-+	if (!ecsa->mode)
-+		return;
-+
-+	if (ecsa->new_ch_num !=
-+	    ieee80211_frequency_to_channel(known->pub.channel->center_freq))
-+		return;
-+
-+	known->pub.proberesp_ecsa_stuck = 1;
++	return csa || ecsa;
 +}
 +
- static bool
- cfg80211_update_known_bss(struct cfg80211_registered_device *rdev,
- 			  struct cfg80211_internal_bss *known,
-@@ -1750,8 +1805,10 @@ cfg80211_update_known_bss(struct cfg80211_registered_device *rdev,
- 		/* Override possible earlier Beacon frame IEs */
- 		rcu_assign_pointer(known->pub.ies,
- 				   new->pub.proberesp_ies);
--		if (old)
-+		if (old) {
-+			cfg80211_check_stuck_ecsa(rdev, known, old);
- 			kfree_rcu((struct cfg80211_bss_ies *)old, rcu_head);
-+		}
++static bool ieee80211_mgd_csa_in_process(struct ieee80211_sub_if_data *sdata,
++					 struct cfg80211_bss *bss)
++{
++	u8 cur_channel;
++	bool ret;
++
++	cur_channel = ieee80211_frequency_to_channel(bss->channel->center_freq);
++
++	rcu_read_lock();
++	if (ieee80211_mgd_csa_present(sdata,
++				      rcu_dereference(bss->beacon_ies),
++				      cur_channel, false)) {
++		ret = true;
++		goto out;
++	}
++
++	if (ieee80211_mgd_csa_present(sdata,
++				      rcu_dereference(bss->proberesp_ies),
++				      cur_channel, bss->proberesp_ecsa_stuck)) {
++		ret = true;
++		goto out;
++	}
++
++	ret = false;
++out:
++	rcu_read_unlock();
++	return ret;
++}
++
+ /* config hooks */
+ int ieee80211_mgd_auth(struct ieee80211_sub_if_data *sdata,
+ 		       struct cfg80211_auth_request *req)
+@@ -7317,7 +7386,6 @@ int ieee80211_mgd_auth(struct ieee80211_sub_if_data *sdata,
+ 	struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
+ 	struct ieee80211_mgd_auth_data *auth_data;
+ 	struct ieee80211_link_data *link;
+-	const struct element *csa_elem, *ecsa_elem;
+ 	u16 auth_alg;
+ 	int err;
+ 	bool cont_auth;
+@@ -7360,21 +7428,10 @@ int ieee80211_mgd_auth(struct ieee80211_sub_if_data *sdata,
+ 	if (ifmgd->assoc_data)
+ 		return -EBUSY;
+ 
+-	rcu_read_lock();
+-	csa_elem = ieee80211_bss_get_elem(req->bss, WLAN_EID_CHANNEL_SWITCH);
+-	ecsa_elem = ieee80211_bss_get_elem(req->bss,
+-					   WLAN_EID_EXT_CHANSWITCH_ANN);
+-	if ((csa_elem &&
+-	     csa_elem->datalen == sizeof(struct ieee80211_channel_sw_ie) &&
+-	     ((struct ieee80211_channel_sw_ie *)csa_elem->data)->count != 0) ||
+-	    (ecsa_elem &&
+-	     ecsa_elem->datalen == sizeof(struct ieee80211_ext_chansw_ie) &&
+-	     ((struct ieee80211_ext_chansw_ie *)ecsa_elem->data)->count != 0)) {
+-		rcu_read_unlock();
++	if (ieee80211_mgd_csa_in_process(sdata, req->bss)) {
+ 		sdata_info(sdata, "AP is in CSA process, reject auth\n");
+ 		return -EINVAL;
+ 	}
+-	rcu_read_unlock();
+ 
+ 	auth_data = kzalloc(sizeof(*auth_data) + req->auth_data_len +
+ 			    req->ie_len, GFP_KERNEL);
+@@ -7684,7 +7741,7 @@ int ieee80211_mgd_assoc(struct ieee80211_sub_if_data *sdata,
+ 	struct ieee80211_local *local = sdata->local;
+ 	struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
+ 	struct ieee80211_mgd_assoc_data *assoc_data;
+-	const struct element *ssid_elem, *csa_elem, *ecsa_elem;
++	const struct element *ssid_elem;
+ 	struct ieee80211_vif_cfg *vif_cfg = &sdata->vif.cfg;
+ 	ieee80211_conn_flags_t conn_flags = 0;
+ 	struct ieee80211_link_data *link;
+@@ -7707,6 +7764,12 @@ int ieee80211_mgd_assoc(struct ieee80211_sub_if_data *sdata,
+ 
+ 	cbss = req->link_id < 0 ? req->bss : req->links[req->link_id].bss;
+ 
++	if (ieee80211_mgd_csa_in_process(sdata, cbss)) {
++		sdata_info(sdata, "AP is in CSA process, reject assoc\n");
++		kfree(assoc_data);
++		return -EINVAL;
++	}
++
+ 	rcu_read_lock();
+ 	ssid_elem = ieee80211_bss_get_elem(cbss, WLAN_EID_SSID);
+ 	if (!ssid_elem || ssid_elem->datalen > sizeof(assoc_data->ssid)) {
+@@ -7715,20 +7778,6 @@ int ieee80211_mgd_assoc(struct ieee80211_sub_if_data *sdata,
+ 		return -EINVAL;
  	}
  
- 	if (rcu_access_pointer(new->pub.beacon_ies)) {
+-	csa_elem = ieee80211_bss_get_elem(cbss, WLAN_EID_CHANNEL_SWITCH);
+-	ecsa_elem = ieee80211_bss_get_elem(cbss, WLAN_EID_EXT_CHANSWITCH_ANN);
+-	if ((csa_elem &&
+-	     csa_elem->datalen == sizeof(struct ieee80211_channel_sw_ie) &&
+-	     ((struct ieee80211_channel_sw_ie *)csa_elem->data)->count != 0) ||
+-	    (ecsa_elem &&
+-	     ecsa_elem->datalen == sizeof(struct ieee80211_ext_chansw_ie) &&
+-	     ((struct ieee80211_ext_chansw_ie *)ecsa_elem->data)->count != 0)) {
+-		sdata_info(sdata, "AP is in CSA process, reject assoc\n");
+-		rcu_read_unlock();
+-		kfree(assoc_data);
+-		return -EINVAL;
+-	}
+-
+ 	memcpy(assoc_data->ssid, ssid_elem->data, ssid_elem->datalen);
+ 	assoc_data->ssid_len = ssid_elem->datalen;
+ 	memcpy(vif_cfg->ssid, assoc_data->ssid, assoc_data->ssid_len);
 -- 
 2.43.0
 
