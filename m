@@ -1,68 +1,67 @@
-Return-Path: <linux-wireless+bounces-2723-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2724-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AB8784133F
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 20:22:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CAF9841340
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 20:22:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50FC81F21F37
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 19:22:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29D84287DDC
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 19:22:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1C4E60ECF;
-	Mon, 29 Jan 2024 19:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AC094C637;
+	Mon, 29 Jan 2024 19:22:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DkFDRmpb"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jb1hN88i"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A2A11C85
-	for <linux-wireless@vger.kernel.org>; Mon, 29 Jan 2024 19:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B17048790
+	for <linux-wireless@vger.kernel.org>; Mon, 29 Jan 2024 19:22:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706556142; cv=none; b=tL015eTDsZ4Rlx2WVespPuO56o3nJo9HIyCECdhxwUK2Iwo3ARxybRkCCBodDmggLhTZ5Q/P58aMxzAHW5pLKlyOphKmv9+RXSRyO2hV6TY24H7XKA92tMS/vGmNxM/vu+RN/eXjlVGxQgiGMs76Kh4If6I+OO8BbNSUb2VOwtk=
+	t=1706556146; cv=none; b=Td0VVwSGrNtXCleLRpYeNQez599vww5awtf3jirNWa9TtFEiPUorZwIYkQF2B+qEWQJpPuZJ3Ra1fokDkoIDDbK9whJeUwKzFjnE9Q9lI8uKEFHpW7O4CkPZxcrsdKiHKEvdkhpFDANhHuo1FozEA21K6z+/+vQECOmoDjx+F2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706556142; c=relaxed/simple;
-	bh=tA3WjDpQfQkCnpitqsZ8A3Z5rbYOMmTMx3Y2jJlnqwY=;
+	s=arc-20240116; t=1706556146; c=relaxed/simple;
+	bh=ejLnDNNdfVtGVvRUyZvvbi0tx+hNy9zTWm5AkPVZRYs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=MuDAax5XRy6iSzXh6R5XuPuW8n5zejbxdYxHDeKsoZdKk4kC5HQItkX+ILrPcQCXXC8fodkbc6WzP6oBIcF2kWG/0pi2uGON9s5KJ0ouKF8/TrY9fXVHLsoe+Cm5vJgS6IA6e4LozJJ/Ji4xCzNCdrY8u/YDlVtDuO+wMmEaPAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DkFDRmpb; arc=none smtp.client-ip=198.175.65.14
+	 MIME-Version; b=TDQ3dnW8A9YQZndyPVlfNW1BPzjNcPZ0i7LWLFPl3QYYLONn5QCUUBaGHzf0HC3dSHeySeAVU8GHZDLoB56U9P4Fa3i1dXGd1kB+l5QLOl8IhREIxGBygkvEqAISvH2hWLpZzMzEEQGrr+G4YdG7IIgveYozid/KTwZ7I+G10qU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jb1hN88i; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706556141; x=1738092141;
+  t=1706556145; x=1738092145;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=tA3WjDpQfQkCnpitqsZ8A3Z5rbYOMmTMx3Y2jJlnqwY=;
-  b=DkFDRmpbfigfNAC/eHOXj6gJFjXU424BHu9DvQOeHEYHlaCtWRW+vJPk
-   PQ50VrNyrx5zThSL/CJbfxM1Kihr4lvMs1Udd6vljzdDQdVurYgmkeSNv
-   odULmOB3U+3TTjq2Sx5TDH7CP7OhF6wWW+UxbuPO1WaTBZ8VTbh0zjA8I
-   N4z5N2/QZDZ50ljH3C1Re8cNMw8tpK5ASg/ZF556+Pvu6XFeW8++uMc9d
-   XBge6poqwvUOYgDeWCYXoNqYY4MBtl4p7jFzUh8y0BA5NtOkrncVB4Gzj
-   mTv9i4Jbz79PkSYlWwtDAbeecgry+eywq+yoR6xHy8OZphGoJCr76AAZq
+  bh=ejLnDNNdfVtGVvRUyZvvbi0tx+hNy9zTWm5AkPVZRYs=;
+  b=jb1hN88iP/eaGvUJYHGA6LSwzOpIe/oSqOxi3yedh9K+myXyjOvcbwYq
+   qhCd4ajTYVRuJDrrnMA9K1uA5hzcgMu3h3vYZd5zoJ3It9r4ObLQCHrLS
+   2xfKQJXYRLUdwopdmjB/vslE1sgTL2yVEqEUWUMrr2VCW1TucyQUXeuTQ
+   X2wjNYZBPT5URhzSvxLSaJP5x25aCkDQ0DNe0zJXuafh8P/hO3H2W0KQE
+   h04wpsnw2sKC5faMWHO57KPqmONMBismOtpkIKfxA1JQpidngbMrxPeAf
+   rBDF09/JhcV7uDxb7yfYkTjBaZKS6TpKPOlLi8KttOIRJFozhV0h9wefJ
    Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="2942953"
+X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="2942964"
 X-IronPort-AV: E=Sophos;i="6.05,227,1701158400"; 
-   d="scan'208";a="2942953"
+   d="scan'208";a="2942964"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2024 11:22:21 -0800
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2024 11:22:24 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,227,1701158400"; 
-   d="scan'208";a="3459058"
+   d="scan'208";a="3459068"
 Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2024 11:22:19 -0800
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2024 11:22:22 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Ayala Beker <ayala.beker@intel.com>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 02/15] wifi: iwlwifi: mvm: add support for TID to link mapping neg request
-Date: Mon, 29 Jan 2024 21:21:50 +0200
-Message-Id: <20240129211905.aab9819c378d.Icf6b79a362763e2e8b85959471f303b586617242@changeid>
+Subject: [PATCH 03/15] wifi: iwlwifi: mvm: d3: fix IPN byte order
+Date: Mon, 29 Jan 2024 21:21:51 +0200
+Message-Id: <20240129211905.138ed8a698e3.I1b66c386e45b5392696424ec636474bff86fd5ef@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240129192203.4189915-1-miriam.rachel.korenblit@intel.com>
 References: <20240129192203.4189915-1-miriam.rachel.korenblit@intel.com>
@@ -75,87 +74,50 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Ayala Beker <ayala.beker@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-Add support for handling TID to link mapping negotiation
-request and decide whether to accept it or not.
-Accept the request if all TIDs are mapped to the same link set,
-otherwise reject it.
+The IPN is reported by the firmware in 6 bytes little endian,
+but mac80211 expects big endian so it can do memcmp() on it.
+We used to store this as a u64 which was filled in the right
+way, but never used. When implementing that it's used, we
+changed it to just be 6 bytes, but lost the conversion. Add
+it back.
 
-Signed-off-by: Ayala Beker <ayala.beker@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 04f78e242fff ("wifi: iwlwifi: mvm: Add support for IGTK in D3 resume flow")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  5 +++++
- .../wireless/intel/iwlwifi/mvm/mld-mac80211.c | 19 +++++++++++++++++++
- 2 files changed, 24 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index c82af4ac27ec..d19e478f382b 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -263,6 +263,9 @@ static const u8 tm_if_types_ext_capa_sta[] = {
- 					__bf_shf(IEEE80211_EML_CAP_EMLSR_PADDING_DELAY) | \
- 				 IEEE80211_EML_CAP_EMLSR_TRANSITION_DELAY_64US << \
- 					__bf_shf(IEEE80211_EML_CAP_EMLSR_TRANSITION_DELAY))
-+#define IWL_MVM_MLD_CAPA_OPS FIELD_PREP_CONST( \
-+			IEEE80211_MLD_CAP_OP_TID_TO_LINK_MAP_NEG_SUPP, \
-+			IEEE80211_MLD_CAP_OP_TID_TO_LINK_MAP_NEG_SUPP_SAME)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+index 61aeb7f6604b..6ab9def2c670 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+@@ -2194,7 +2194,10 @@ static void iwl_mvm_convert_gtk_v3(struct iwl_wowlan_status_data *status,
+ static void iwl_mvm_convert_igtk(struct iwl_wowlan_status_data *status,
+ 				 struct iwl_wowlan_igtk_status *data)
+ {
++	int i;
++
+ 	BUILD_BUG_ON(sizeof(status->igtk.key) < sizeof(data->key));
++	BUILD_BUG_ON(sizeof(status->igtk.ipn) != sizeof(data->ipn));
  
- static const struct wiphy_iftype_ext_capab add_iftypes_ext_capa[] = {
- 	{
-@@ -272,6 +275,7 @@ static const struct wiphy_iftype_ext_capab add_iftypes_ext_capa[] = {
- 		.extended_capabilities_len = sizeof(he_if_types_ext_capa_sta),
- 		/* relevant only if EHT is supported */
- 		.eml_capabilities = IWL_MVM_EMLSR_CAPA,
-+		.mld_capa_and_ops = IWL_MVM_MLD_CAPA_OPS,
- 	},
- 	{
- 		.iftype = NL80211_IFTYPE_STATION,
-@@ -280,6 +284,7 @@ static const struct wiphy_iftype_ext_capab add_iftypes_ext_capa[] = {
- 		.extended_capabilities_len = sizeof(tm_if_types_ext_capa_sta),
- 		/* relevant only if EHT is supported */
- 		.eml_capabilities = IWL_MVM_EMLSR_CAPA,
-+		.mld_capa_and_ops = IWL_MVM_MLD_CAPA_OPS,
- 	},
- };
+ 	if (!data->key_len)
+ 		return;
+@@ -2206,7 +2209,10 @@ static void iwl_mvm_convert_igtk(struct iwl_wowlan_status_data *status,
+ 		+ WOWLAN_IGTK_MIN_INDEX;
  
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-index 770e4c4e909a..9653d335d573 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-@@ -1330,6 +1330,24 @@ static bool iwl_mvm_mld_can_activate_links(struct ieee80211_hw *hw,
- 	return ret;
+ 	memcpy(status->igtk.key, data->key, sizeof(data->key));
+-	memcpy(status->igtk.ipn, data->ipn, sizeof(data->ipn));
++
++	/* mac80211 expects big endian for memcmp() to work, convert */
++	for (i = 0; i < sizeof(data->ipn); i++)
++		status->igtk.ipn[i] = data->ipn[sizeof(data->ipn) - i - 1];
  }
  
-+static enum ieee80211_neg_ttlm_res
-+iwl_mvm_mld_can_neg_ttlm(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
-+			 struct ieee80211_neg_ttlm *neg_ttlm)
-+{
-+	u16 map;
-+	u8 i;
-+
-+	/* Verify all TIDs are mapped to the same links set */
-+	map = neg_ttlm->downlink[0];
-+	for (i = 0; i < IEEE80211_TTLM_NUM_TIDS; i++) {
-+		if (neg_ttlm->downlink[i] != neg_ttlm->uplink[i] ||
-+		    neg_ttlm->uplink[i] != map)
-+			return NEG_TTLM_RES_REJECT;
-+	}
-+
-+	return NEG_TTLM_RES_ACCEPT;
-+}
-+
- const struct ieee80211_ops iwl_mvm_mld_hw_ops = {
- 	.tx = iwl_mvm_mac_tx,
- 	.wake_tx_queue = iwl_mvm_mac_wake_tx_queue,
-@@ -1425,4 +1443,5 @@ const struct ieee80211_ops iwl_mvm_mld_hw_ops = {
- 	.change_vif_links = iwl_mvm_mld_change_vif_links,
- 	.change_sta_links = iwl_mvm_mld_change_sta_links,
- 	.can_activate_links = iwl_mvm_mld_can_activate_links,
-+	.can_neg_ttlm = iwl_mvm_mld_can_neg_ttlm,
- };
+ static void iwl_mvm_convert_bigtk(struct iwl_wowlan_status_data *status,
 -- 
 2.34.1
 
