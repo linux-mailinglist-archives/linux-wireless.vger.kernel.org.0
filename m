@@ -1,155 +1,199 @@
-Return-Path: <linux-wireless+bounces-2663-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2664-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EB6D8403E4
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 12:33:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B084B8404BC
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 13:14:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 938841C22C3F
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 11:33:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68CAB2837D6
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 12:14:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF4E25D747;
-	Mon, 29 Jan 2024 11:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 200C36024C;
+	Mon, 29 Jan 2024 12:14:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UW5N78mj"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Cz6hdaJv"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BBCE5C5E0;
-	Mon, 29 Jan 2024 11:33:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3623860241
+	for <linux-wireless@vger.kernel.org>; Mon, 29 Jan 2024 12:14:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706528029; cv=none; b=tz4k1GTxRRxF0IkYf/84Rxn3KkhkqDyFdS6oxr4DWCJBlHQX5y7LzQnHkWuzUjtF9liIfzSKtfif85NK99oYxe9U0AFNgMTgBwk7MioA8DOSMfdTFKvCfHnjtc91WNpjPSqgjGH0FkNmLe76haQBoH5JTKKrlh7Dq4grtcFtePQ=
+	t=1706530470; cv=none; b=mtJ3TY+zvdhZS3Pfw90E1japLlhLx8xTzWeH3Z8pRbk9SRjpCtZ+buw0k7Ca07QhRwIhRNUDqlyXl7uNKRAjCwEBPASJPyMG5FVbMlf65k8sVqSoxaXHTN/hsAUdT4fZGC6E2Q/j1IBraGTSUENI+Dq51BP4ekHphL6m3BAHaPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706528029; c=relaxed/simple;
-	bh=9Im3//+edoEovvD3z3/DbAAPUqCpZJ6xFDEEDLE/cAc=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=tdXdCg5IFu5TzwysYNolx2LWw+LiZhBr522Z8C+HbK4Dg+g+MU7Vz8LId5u8l3FHsjF8XaCW2rlvi8wscJHCMXmQqCV+DAObeu/Mr0m0W4RdMz8aJctHWlanKgWENilEmH8Y9+VlLlX6tGCPQWx/pU4VNZ7bsbUiqT2xIgCgkOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UW5N78mj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92439C433C7;
-	Mon, 29 Jan 2024 11:33:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706528028;
-	bh=9Im3//+edoEovvD3z3/DbAAPUqCpZJ6xFDEEDLE/cAc=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=UW5N78mjfQDgW+vaQbyiiO6D8tkCP8cRM7tAqn84SoSFF5x1fAdF8D4B+gIFK4vDO
-	 VYl1odPjW8p1bXYpB7W9oZuUgfpjL07elXav6uAhpSje5ZTYrtOINTjFi1d+ELUtUd
-	 iWswgaclE6f2MmGV7VVNxhxVN/QT59vkYhENAdJ+VFWx+Sq5QyPYNSh1Lbddg3eV8x
-	 96/MKtnee1NQB4Pd/KFwJ+1QSc+k6RnOQxYc0G/3wGL3q1PhW9YLTJ/oMxS1/TrkJW
-	 oEyt73bIvsGO6jgNjiywmBVm2sW1+rhCc0YsrDQ7FSWGokeXVSMyRLTopm6blQXUkw
-	 MsyaAf+fxBKhw==
-From: Kalle Valo <kvalo@kernel.org>
-To: Thorsten Leemhuis <regressions@leemhuis.info>
-Cc: ath11k@lists.infradead.org,  Linux regressions mailing list
- <regressions@lists.linux.dev>,  linux-wireless@vger.kernel.org,
-  linux-kernel@vger.kernel.org
-Subject: Re: [regression] ath11k broken in v6.7
-References: <874jfjiolh.fsf@kernel.org> <87frytg7b8.fsf@kernel.org>
-	<878r4lg3t8.fsf@kernel.org> <87jzo13jmf.fsf@kernel.org>
-	<94150b26-bdd9-49c2-82a1-26ff46c9d32a@leemhuis.info>
-	<87fryp3he0.fsf@kernel.org>
-	<0253854a-e5f9-4316-bec3-61aaf3ebfd1a@leemhuis.info>
-Date: Mon, 29 Jan 2024 13:33:45 +0200
-In-Reply-To: <0253854a-e5f9-4316-bec3-61aaf3ebfd1a@leemhuis.info> (Thorsten
-	Leemhuis's message of "Mon, 22 Jan 2024 11:24:06 +0100")
-Message-ID: <871qa0xtk6.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1706530470; c=relaxed/simple;
+	bh=o990qUxfTiRCokUXP29ryWUG0sxVFt5iLLWx7Kx/g4Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=t1WhGw/0dpNWeBgEbezj5F7KSzDiRhV/5GOdt49cEx3kLaHAMmnN9VZ8zsjzqLTgEORyGSu7zusdtDLLunKv+XoX96hReF/jjIAPpArQblc7/adjut6YddHCac14m1RnqvQ/R2E2uCAaLLqkg3YGxl5B9EvEwg3cz9BJbQYyQGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Cz6hdaJv; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=UZVOyeiOQpa9atwmk+wqK79IMjLJnBkLc6u9fJVYwlw=; t=1706530466; x=1707740066; 
+	b=Cz6hdaJvraaEBIMnIv4qiRQpalgVP2YTsBTusg6zmXnVPudJ99TDH5KZr/vOewaTj10gEVDS1Dq
+	JVuOYej+YJMsxSxWNMcQBBGJGECcq9QWnl+Jqpufyyt8LkkLMTF6l40+GQLqWXRkUq6imvGkoN9DP
+	CPS1YG8p5ueIhuQxoEfTzoufY/u4m+dU4qR1r8L4oxID0rP8XqryulwJUwg4XRHW4MonJglb3q33i
+	QuBU3c0uZBp+qZnd05kwdvK+FC2n1Up4RTbZI6wuTCpBkH591GPCN+YaCKf72lVG0KZH7nyHdI2Qa
+	F5IfwIJsK+9vMkk0PWiEGXT1rZ/eVgCTrEuw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rUQWl-00000004p5l-3ZhV;
+	Mon, 29 Jan 2024 13:14:16 +0100
+From: Johannes Berg <johannes@sipsolutions.net>
+To: linux-wireless@vger.kernel.org
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	coldolt <andypalmadi@gmail.com>,
+	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Subject: [PATCH 1/2] wifi: cfg80211: detect stuck ECSA element in probe resp
+Date: Mon, 29 Jan 2024 13:14:13 +0100
+Message-ID: <20240129131413.246972c8775e.Ibf834d7f52f9951a353b6872383da710a7358338@changeid>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-Thorsten Leemhuis <regressions@leemhuis.info> writes:
+From: Johannes Berg <johannes.berg@intel.com>
 
-> On 22.01.24 09:24, Kalle Valo wrote:
->> "Linux regression tracking (Thorsten Leemhuis)"
->> <regressions@leemhuis.info> writes:
->>
->>> FWIW, that usage was slightly off and not how it's supposed to be done.
->>> But whatever, let's ignore that. I'm reworking things currently
->>> slightly, as you are not the first one that slightly got mislead -- and
->>> the newer commands will hopefully be mire intuitive.
->> 
->> Just to educate myself, how should I have done it? (But feel free to
->> skip the question if you are busy)
->
-> I think that's not worth it, as I hope to introduce the new commands in
-> the near future (but you know how it is with the last 5 to 10
-> percent...).
+We recently added some validation that we don't try to
+connect to an AP that is currently in a channel switch
+process, since that might want the channel to be quiet
+or we might not be able to connect in time to hear the
+switching in a beacon. This was in commit c09c4f31998b
+("wifi: mac80211: don't connect to an AP while it's in
+a CSA process").
 
-I sure do know :) I assume you will announce in the regressions list
-once the new interface is available, I'll then take a look at it in
-detail and update my notes.
+However, we promptly got a report that this caused new
+connection failures, and it turns out that the AP that
+we now cannot connect to is permanently advertising an
+extended channel switch announcement, even with quiet.
+The AP in question was an Asus RT-AC53, with firmware
+3.0.0.4.380_10760-g21a5898.
 
-> But let me show you how it's then supposed to be done in this
-> situation, that way you can give early feedback:
->
->   #regzbot report: https://bugzilla.kernel.org/show_bug.cgi?id=218364
->   #regzbot introduced: 0a3d898ee9a8
->
-> That "#regzbot report" will be new and make it more obvious to users
-> what regzbot should consider to be the report (e.g. what Link:/Closes:
-> tags later in commits fixing the issue will link to).
+As a first step, attempt to detect that we're dealing
+with such a situation, so mac80211 can use this later.
 
-Thanks, this looks very intuitive to me.
+Reported-by: coldolt <andypalmadi@gmail.com>
+Closes: https://lore.kernel.org/linux-wireless/CAJvGw+DQhBk_mHXeu6RTOds5iramMW2FbMB01VbKRA4YbHHDTA@mail.gmail.com/
+Fixes: c09c4f31998b ("wifi: mac80211: don't connect to an AP while it's in a CSA process")
+Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ include/net/cfg80211.h |  4 +++
+ net/wireless/scan.c    | 59 +++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 62 insertions(+), 1 deletion(-)
 
-> You used "#regzbot introduced: 0a3d898ee9a8 ^" and due to the "^" it
-> assumed the start of this thread would be the report
-
-Actually I did that on purpose as I wanted to test how including a mail
-to a regression report works :)
-
-> (side note: mixing that aspect into the "introduced" command was a
-> stupid idea anyway.).
->
-> That "#regzbot link:" will vanish as well (at least from the docs, it
-> will remain to be supported), as people use it wrong in various
-> different ways: for duplicates, reports (like your did), patch
-> submissions fixing the issue (then 'regzbot monitor' should have been
-> used) among others. Which is totally understandable now that I look at
-> it. That's why it will be replaced by "#regzbot related: <url>" to avoid
-> any connection with the Link: tag used in commits; for duplicates
-> "#regzbot dup:" will stay around.
-
-So, in the new interface, how should I handle a situation that a
-regression is first reported on the mailing list, added to regzbot and
-later there's also a bug report opened for the issue?
-
->> I wish there would be a person who could follow stable
->> releases from wireless perspective and make sure everything is ok there.
->
-> Maybe at some point regression tracking can help somewhat with that. But
-> I still have to fix a few things to make people use it and scale it up.
-
-I just feel it should be more than that, I'm worried that randomly
-taking wireless commits to stable releases is risky. There really should
-be someone looking after wireless (read: reviewing patches) in stable
-releases. This would be a good role for someone who is interested to
-learn how kernel.org development works and helping the community. Do we
-have a way to announce these kind volunteer vacancies somewhere? :)
-
-> Side note: some people seem to have gotten the impression that I care a
-> lot about *all* stable/longterm kernels. Let me use this opportunity to
-> say that it's not really the case. I fully understand and respect that
-> those series are a somewhat separate thing some developers don't want to
-> be involved in (especially the older trees). But the thing is: the
-> latest stable tree is what we tell users to use -- and something quite a
-> few important distros ship as their regular kernel these days. That's
-> why I take special care of regression that found there.
-
-Yeah, I understand that a lot of users use stable kernel releases. But
-the reality is that we in wireless really don't have the bandwidth to
-manage stable kernels, it is enough of a challenge to manage Linus'
-releases. So help here is very much needed.
-
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index cf79656ce09c..2b54fdd8ca15 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -2910,6 +2910,8 @@ struct cfg80211_bss_ies {
+  *	own the beacon_ies, but they're just pointers to the ones from the
+  *	@hidden_beacon_bss struct)
+  * @proberesp_ies: the information elements from the last Probe Response frame
++ * @proberesp_ecsa_stuck: ECSA element is stuck in the Probe Response frame,
++ *	cannot rely on it having valid data
+  * @hidden_beacon_bss: in case this BSS struct represents a probe response from
+  *	a BSS that hides the SSID in its beacon, this points to the BSS struct
+  *	that holds the beacon data. @beacon_ies is still valid, of course, and
+@@ -2950,6 +2952,8 @@ struct cfg80211_bss {
+ 	u8 chains;
+ 	s8 chain_signal[IEEE80211_MAX_CHAINS];
+ 
++	u8 proberesp_ecsa_stuck:1;
++
+ 	u8 bssid_index;
+ 	u8 max_bssid_indicator;
+ 
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index 2249b1a89d1c..389a52c29bfc 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -1731,6 +1731,61 @@ static void cfg80211_update_hidden_bsses(struct cfg80211_internal_bss *known,
+ 	}
+ }
+ 
++static void cfg80211_check_stuck_ecsa(struct cfg80211_registered_device *rdev,
++				      struct cfg80211_internal_bss *known,
++				      const struct cfg80211_bss_ies *old)
++{
++	const struct ieee80211_ext_chansw_ie *ecsa;
++	const struct element *elem_new, *elem_old;
++	const struct cfg80211_bss_ies *new, *bcn;
++
++	if (known->pub.proberesp_ecsa_stuck)
++		return;
++
++	new = rcu_dereference_protected(known->pub.proberesp_ies,
++					lockdep_is_held(&rdev->bss_lock));
++	if (WARN_ON(!new))
++		return;
++
++	if (new->tsf - old->tsf < USEC_PER_SEC)
++		return;
++
++	elem_old = cfg80211_find_elem(WLAN_EID_EXT_CHANSWITCH_ANN,
++				      old->data, old->len);
++	if (!elem_old)
++		return;
++
++	elem_new = cfg80211_find_elem(WLAN_EID_EXT_CHANSWITCH_ANN,
++				      new->data, new->len);
++	if (!elem_new)
++		return;
++
++	bcn = rcu_dereference_protected(known->pub.beacon_ies,
++					lockdep_is_held(&rdev->bss_lock));
++	if (bcn &&
++	    cfg80211_find_elem(WLAN_EID_EXT_CHANSWITCH_ANN,
++			       bcn->data, bcn->len))
++		return;
++
++	if (elem_new->datalen != elem_old->datalen)
++		return;
++	if (elem_new->datalen < sizeof(struct ieee80211_ext_chansw_ie))
++		return;
++	if (memcmp(elem_new->data, elem_old->data, elem_new->datalen))
++		return;
++
++	ecsa = (void *)elem_new->data;
++
++	if (!ecsa->mode)
++		return;
++
++	if (ecsa->new_ch_num !=
++	    ieee80211_frequency_to_channel(known->pub.channel->center_freq))
++		return;
++
++	known->pub.proberesp_ecsa_stuck = 1;
++}
++
+ static bool
+ cfg80211_update_known_bss(struct cfg80211_registered_device *rdev,
+ 			  struct cfg80211_internal_bss *known,
+@@ -1750,8 +1805,10 @@ cfg80211_update_known_bss(struct cfg80211_registered_device *rdev,
+ 		/* Override possible earlier Beacon frame IEs */
+ 		rcu_assign_pointer(known->pub.ies,
+ 				   new->pub.proberesp_ies);
+-		if (old)
++		if (old) {
++			cfg80211_check_stuck_ecsa(rdev, known, old);
+ 			kfree_rcu((struct cfg80211_bss_ies *)old, rcu_head);
++		}
+ 	}
+ 
+ 	if (rcu_access_pointer(new->pub.beacon_ies)) {
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.43.0
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
