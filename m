@@ -1,57 +1,57 @@
-Return-Path: <linux-wireless+bounces-2695-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2696-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 600C68412C8
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 19:54:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A15AC8412C9
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 19:54:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 10F371F274B9
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 18:54:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E05B8B227AC
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 18:54:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9344614AAA;
-	Mon, 29 Jan 2024 18:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2F1D179AB;
+	Mon, 29 Jan 2024 18:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="KuZijSO9"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="cQXteq3a"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 069EB4CB28
-	for <linux-wireless@vger.kernel.org>; Mon, 29 Jan 2024 18:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B3361D687
+	for <linux-wireless@vger.kernel.org>; Mon, 29 Jan 2024 18:54:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706554452; cv=none; b=S6Isas8Y0k5EN/z+cAjlbRD0w716q2a5TX49l9+8FFfxXk59+LAWnoQ6NFuus7zX9vXNkIrmFfvNIHZ8V+stiD+FGh7GEBCuXQwJHbwwvQxzynIZwQ8asBTXKAkoB7IJ6mo7EzRNbigSoc2Q7rr+zeOl8SDk6KIsoFyb2f2YlWE=
+	t=1706554467; cv=none; b=RKG5ORqLKaFbLwATc6jnVnOhwEuOcWdpIFjKN0DN7y/8MamjPBzMKyu0RD8/RexE336QRzlGE9zsWcLNBbvqYuDPl7dgVLXiUm96k3x9BWH4d75V6c8lKdne6KxCI+cY61KMymHvDAr7+uve33ZJqMpOF/EO+vrPsj2QOdGARDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706554452; c=relaxed/simple;
-	bh=PVFdaj5VUQh/lAUtTz4P4kLyn/mjINRKxu+X6+evylw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=c3fN02Ru8vQZec0H5re2xrY5YeZ8prcfY1qXO83CDQYhKpG4jycu+8E28NRBdQ0VFtbzCxbIskPOgyAqDGQ5xPM4THzb2lES4lCTJQdbphcnhSw9qbQnFJPv4Y8D4JDbEGTYreRSPVfiY5MMx8282CwXCFZTsHMlkMK2szcuTP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=KuZijSO9; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1706554467; c=relaxed/simple;
+	bh=lHkKYaIgPWjMSaVmy6oPj/bOVxkU+/43rv42Bo9i1+I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Pkz4z3e/LpOzUOoBMGdmnlHoxrJrWIQhId08g1+VwE7SJw+oqFeFxqCxiLfqQyeTlR56qjVx7jp/9zfvD/n0o8AXQeIUb4W06fhI2GFXAkNF6LKIzY5qT7ZzPZn5lqBc+XG5YbbMOAb0rBvDKZ5pISKvoY5gMZ2IsMtTR5t3Hlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=cQXteq3a; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:Content-Type:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
 	Resent-Message-ID:In-Reply-To:References;
-	bh=PIPAqo4rCv2Njc94WT+NN6BB0BdBKrBVdyRRZgq83Vw=; t=1706554451; x=1707764051; 
-	b=KuZijSO962o+3P55JOTQ9aqc0LiglSQgD4QJnvT6exkYDEMJs0RxAFb66kePyckvQ/sds1sDmmh
-	ap4HNimKVpMOG7VmtKDvVW5lsh7B9jgMxX+o8IJ+3YjwungX63fry//o2PwwGSoAU/R1dVrKtBFwt
-	ALaX+ZTZ8v4HlZuYv4fvVOubKtt5jVLHukNqgYbpEBWyyLMuA31bwp0aT4yRvqtyMWLjAgvOkHcTO
-	MwRz6MvMMBCqLKLV/ARaWzz3OlNQ1b8w8CoSwBuyPPXhK92K1Q+MproMBohiCL7C3tZf/Eygc55Xk
-	psM8xAK1/S/Sn8CAEqV5hiHpPACyJlkAfoJA==;
+	bh=wVVLQBzzoWKJBCyUS2/thIvBapzi0ktmox5YgF5AgSA=; t=1706554466; x=1707764066; 
+	b=cQXteq3ah4tXrK6+OcZao3esgvgcWiXRP8aYpeA0lQy9rGHf8urs1/RKw8tEBJ3yZGTliiSSNDi
+	Db0qq8BTrZjEZVHf6xYFBx9eSRjhRwV0sdaqcPOB+3Gh4BFTztnwmZgSqIKSUYn7xSCtaKN9s23uG
+	q81fJLvFxR+7K7b7WJzY8CFB0Ph8F79M9O26kMAv2YKL/v7Z7a6TiBWsYPzcDdj3BovoWKVMqk8FW
+	nZa/apsDEQiaOero+m/GFcqDH+m56GSho+7jPr4QKZ+mk/iiGdtTd5v/gaQG84H5j6BOJR2Wgciwh
+	SfDw//xMtS5gWzSJtR7BiLTJTOVaF6ujR2XA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.97)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1rUWlj-00000004zhu-1Xu9;
-	Mon, 29 Jan 2024 19:54:07 +0100
+	id 1rUWlz-00000004ziA-12WU;
+	Mon, 29 Jan 2024 19:54:23 +0100
 From: Johannes Berg <johannes@sipsolutions.net>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH] wifi: mac80211: initialize SMPS mode correctly
-Date: Mon, 29 Jan 2024 19:54:05 +0100
-Message-ID: <20240129195405.d6d74508be18.I0a7303b1ce4d8e5436011951ab624372a445c069@changeid>
+Subject: [PATCH] wifi: nl80211: move WPA version validation to policy
+Date: Mon, 29 Jan 2024 19:54:21 +0100
+Message-ID: <20240129195421.e8cae9866ccb.I2539b395e3476307d702c6867e51a937e52e57a0@changeid>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -59,59 +59,76 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-The SMPS mode is currently re-initialized too late, since
-ieee80211_prep_channel() can be called again after we've
-already done ieee80211_setup_assoc_link(), in case there's
-some override of the channel configuration. Fix this.
+For a contiguous mask (starting with bit 0) of allowed values
+in a bitmap, it's equivalent to check "!(val & ~mask)" and
+"val ∈ [0, mask]". Use that to move the WPA versions check to
+the policy, for better error reporting.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/mac80211/mlme.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ net/wireless/nl80211.c | 20 +++++++-------------
+ 1 file changed, 7 insertions(+), 13 deletions(-)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index c62c7c6ce91f..f1cdd2df323e 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -8,7 +8,7 @@
-  * Copyright 2007, Michael Wu <flamingice@sourmilk.net>
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 1331e39da0e6..b533412ad1e0 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -5,7 +5,7 @@
+  * Copyright 2006-2010	Johannes Berg <johannes@sipsolutions.net>
   * Copyright 2013-2014  Intel Mobile Communications GmbH
-  * Copyright (C) 2015 - 2017 Intel Deutschland GmbH
-- * Copyright (C) 2018 - 2023 Intel Corporation
-+ * Copyright (C) 2018 - 2024 Intel Corporation
+  * Copyright 2015-2017	Intel Deutschland GmbH
+- * Copyright (C) 2018-2023 Intel Corporation
++ * Copyright (C) 2018-2024 Intel Corporation
   */
  
- #include <linux/delay.h>
-@@ -2918,6 +2918,7 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
+ #include <linux/if.h>
+@@ -581,7 +581,11 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
+ 	[NL80211_ATTR_PRIVACY] = { .type = NLA_FLAG },
+ 	[NL80211_ATTR_STATUS_CODE] = { .type = NLA_U16 },
+ 	[NL80211_ATTR_CIPHER_SUITE_GROUP] = { .type = NLA_U32 },
+-	[NL80211_ATTR_WPA_VERSIONS] = { .type = NLA_U32 },
++	[NL80211_ATTR_WPA_VERSIONS] =
++		NLA_POLICY_RANGE(NLA_U32, 0,
++				 NL80211_WPA_VERSION_1 |
++				 NL80211_WPA_VERSION_2 |
++				 NL80211_WPA_VERSION_3),
+ 	[NL80211_ATTR_PID] = { .type = NLA_U32 },
+ 	[NL80211_ATTR_4ADDR] = { .type = NLA_U8 },
+ 	[NL80211_ATTR_PMKID] = NLA_POLICY_EXACT_LEN_WARN(WLAN_PMKID_LEN),
+@@ -10590,13 +10594,6 @@ static int nl80211_dump_survey(struct sk_buff *skb, struct netlink_callback *cb)
+ 	return res;
+ }
  
- 	/* other links will be destroyed */
- 	sdata->deflink.u.mgd.bss = NULL;
-+	sdata->deflink.smps_mode = IEEE80211_SMPS_OFF;
- 
- 	netif_carrier_off(sdata->dev);
- 
-@@ -5045,9 +5046,6 @@ static int ieee80211_prep_channel(struct ieee80211_sub_if_data *sdata,
- 	if (!link)
- 		return 0;
- 
--	/* will change later if needed */
--	link->smps_mode = IEEE80211_SMPS_OFF;
+-static bool nl80211_valid_wpa_versions(u32 wpa_versions)
+-{
+-	return !(wpa_versions & ~(NL80211_WPA_VERSION_1 |
+-				  NL80211_WPA_VERSION_2 |
+-				  NL80211_WPA_VERSION_3));
+-}
 -
- 	/*
- 	 * If this fails (possibly due to channel context sharing
- 	 * on incompatible channels, e.g. 80+80 and 160 sharing the
-@@ -7096,6 +7094,7 @@ void ieee80211_mgd_setup_link(struct ieee80211_link_data *link)
- 	link->u.mgd.p2p_noa_index = -1;
- 	link->u.mgd.conn_flags = 0;
- 	link->conf->bssid = link->u.mgd.bssid;
-+	link->smps_mode = IEEE80211_SMPS_OFF;
+ static int nl80211_authenticate(struct sk_buff *skb, struct genl_info *info)
+ {
+ 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
+@@ -10822,12 +10819,9 @@ static int nl80211_crypto_settings(struct cfg80211_registered_device *rdev,
+ 			return -EINVAL;
+ 	}
  
- 	wiphy_work_init(&link->u.mgd.request_smps_work,
- 			ieee80211_request_smps_mgd_work);
+-	if (info->attrs[NL80211_ATTR_WPA_VERSIONS]) {
++	if (info->attrs[NL80211_ATTR_WPA_VERSIONS])
+ 		settings->wpa_versions =
+ 			nla_get_u32(info->attrs[NL80211_ATTR_WPA_VERSIONS]);
+-		if (!nl80211_valid_wpa_versions(settings->wpa_versions))
+-			return -EINVAL;
+-	}
+ 
+ 	if (info->attrs[NL80211_ATTR_AKM_SUITES]) {
+ 		void *data;
 -- 
 2.43.0
 
