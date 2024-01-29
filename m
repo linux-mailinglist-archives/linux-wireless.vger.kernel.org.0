@@ -1,152 +1,136 @@
-Return-Path: <linux-wireless+bounces-2708-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2709-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70E12841311
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 20:09:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65B4E841329
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 20:20:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A25941C20AF5
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 19:09:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 08428B23FF2
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 19:20:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8258F76C85;
-	Mon, 29 Jan 2024 19:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71FF0335B5;
+	Mon, 29 Jan 2024 19:20:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Sokao2ad"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lZlfkaI/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC8C2E85E
-	for <linux-wireless@vger.kernel.org>; Mon, 29 Jan 2024 19:09:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14DD64C619
+	for <linux-wireless@vger.kernel.org>; Mon, 29 Jan 2024 19:20:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706555353; cv=none; b=g3g1+Blx/iMQQ3vmeM3+sJLeXdGyEA7bkufdNtwc2++B+V4aA9whQ7jJ5k6Ir5cqt6QOedt/64iomtczeRFOB9UVhh8MpkwCG37ESkyiwjUveuTTA4qJxaPajUctDo5BqmK2r0y45VNbm6ikMIlt4/9nX2sAVzacnJTtOjIGbGk=
+	t=1706556008; cv=none; b=p7yYlDSPHRAmkr7XoR6pseyqL5oXEk51z99zkv89Nmtkqh2swHWhWSmetDKGvy8F6XnpLTdnWaG0k05vYke4V0rkFoCJOj5LKUc11nnWAIyHcUNOnLjOkTrA+B7q15+uYyOyGOgw9QOBMt+q++QB3d1FR2fWXdKjuMb5rAtOVI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706555353; c=relaxed/simple;
-	bh=g2YFWJy0F/HWEKhA/D4xF03WqzUAxCYsJMcOCDa0TC0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=U1LvRbEIHnNK/TtWiJg++8GAu5pbOcPJ47koMEF2yma5YKB8DLM8oPh1bY0ghUVTqnRpr7BJHTqjpUrYxmNaMNO5twFJTkABVyq2+OY1JwLBKsc9daw59MF0+rk2Zujd7vvgSBdxjAXNLN3xKftgzUow0y1ZCDRvdYwu2TbFCWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Sokao2ad; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=VmBnKlxSE1grhGs4+weDEjEfahkvqQF9Ye1eYlXBETo=; t=1706555352; x=1707764952; 
-	b=Sokao2adLR8KLVpNs403ZTzMVcE9R2BUWTDdGPyIYU2OLMroLk3ItwiIZMR+zlgPns/FxyUu8i5
-	cIoREQzOefywKqBkdrwiPTYTO4tUrc0bC7CO+qOCLcdK2WfI4UrkJGUlKcF1iObcCY+LgLfPqMBvh
-	ftyj/b+DDWKjvSzxSnT6RXBeXOYksyE8yn6h95VJQnIxTvkTZIPvLR/hCNTxTnM8Ntnt128csxpB4
-	6f+RWmfCFWgyKlgX47+gGiljxunpVhwSuwNLgHSwt5NwoKGDwm7E9ye1QEg69hIahoxQuGrTLlPxm
-	qWMvtggA9U4Ny4buRrad64G32uuKzrQeoIvQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1rUX0H-000000050Gb-0TKt;
-	Mon, 29 Jan 2024 20:09:09 +0100
-From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH] wifi: mac80211: accept broadcast probe responses on 6 GHz
-Date: Mon, 29 Jan 2024 20:09:07 +0100
-Message-ID: <20240129200907.5a89c2821897.I92e9dfa0f9b350bc7f37dd4bb38031d156d78d8a@changeid>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1706556008; c=relaxed/simple;
+	bh=2GeXEVCOVNK5VvSmla+35MEJjD2KwCQ8NVUCL1gekF8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ruJDfoFo2mLXXQZv81qvo9dfK4E51XMkeZ1fYbzpsOSyY4LC4uU/z/z2LL7GHNAcS94yg38TwD5/ITA4sFPJVETeQULFA6lPJ7ZSk6Z7c5UpKSrLsbQcwtzNpNfIwIItqqtE1dBt9NdIA3KJ1tnP3d8Pfiq+j54p9KMspk7vrtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lZlfkaI/; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1706556006; x=1738092006;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=2GeXEVCOVNK5VvSmla+35MEJjD2KwCQ8NVUCL1gekF8=;
+  b=lZlfkaI/yA2j2WpMir0Yw7/J2oxDgFJxshoHVaJZJmv0tQY2x6pw1+3i
+   u4K/KFayncn5SKqzzPg8GtgShK9EPH9gOefYVdtLcUw6MZhv8+aHbKDWL
+   AArn4dOv6T7l3Q7pcjPIzrLlTy1YXyMDgC07JcEZrbs9qR5EbzmF8zMeL
+   gKZUtqoXFatkKJa2/hF+uEWNiI802/vn6ZqxhW2B4rqJe04TboCFqgSY5
+   NzplCmfZ5xZqYm3gqzIp0EVYTT0EZbPGrdHvtZyHXHHtxaqjoJOowirXt
+   KrRpx/vWuYksG3BWaVp63/iPsmzcQ7xTWPEBhjmE7RRHAZdYdmLSbjkoE
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="2890206"
+X-IronPort-AV: E=Sophos;i="6.05,227,1701158400"; 
+   d="scan'208";a="2890206"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2024 11:14:13 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="821945637"
+X-IronPort-AV: E=Sophos;i="6.05,227,1701158400"; 
+   d="scan'208";a="821945637"
+Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2024 11:14:11 -0800
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org
+Subject: [PATCH 00/15] wifi: iwlwifi: updates - 2024-01-29
+Date: Mon, 29 Jan 2024 21:13:48 +0200
+Message-Id: <20240129191403.4183255-1-miriam.rachel.korenblit@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+Hi,
 
-On the 6 GHz band, probe responses are sent as broadcast to
-optimise medium usage. However, without OCE configuration
-we weren't accepting them, which is wrong, even if wpa_s is
-by default enabling OCE. Accept them without the OCE config
-as well.
+This patch set includes iwlwifi patches intended for v6.9. It contains a
+few features, bugfixes and cleanups.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/mac80211/scan.c | 30 ++++++++++++++++++------------
- 1 file changed, 18 insertions(+), 12 deletions(-)
+Thanks,
+Miri
 
-diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
-index 645355e5f1bc..f9d5842601fa 100644
---- a/net/mac80211/scan.c
-+++ b/net/mac80211/scan.c
-@@ -9,7 +9,7 @@
-  * Copyright 2007, Michael Wu <flamingice@sourmilk.net>
-  * Copyright 2013-2015  Intel Mobile Communications GmbH
-  * Copyright 2016-2017  Intel Deutschland GmbH
-- * Copyright (C) 2018-2023 Intel Corporation
-+ * Copyright (C) 2018-2024 Intel Corporation
-  */
- 
- #include <linux/if_arp.h>
-@@ -237,14 +237,18 @@ ieee80211_bss_info_update(struct ieee80211_local *local,
- }
- 
- static bool ieee80211_scan_accept_presp(struct ieee80211_sub_if_data *sdata,
-+					struct ieee80211_channel *channel,
- 					u32 scan_flags, const u8 *da)
- {
- 	if (!sdata)
- 		return false;
--	/* accept broadcast for OCE */
--	if (scan_flags & NL80211_SCAN_FLAG_ACCEPT_BCAST_PROBE_RESP &&
--	    is_broadcast_ether_addr(da))
-+
-+	/* accept broadcast on 6 GHz and for OCE */
-+	if (is_broadcast_ether_addr(da) &&
-+	    (channel->band == NL80211_BAND_6GHZ ||
-+	     scan_flags & NL80211_SCAN_FLAG_ACCEPT_BCAST_PROBE_RESP))
- 		return true;
-+
- 	if (scan_flags & NL80211_SCAN_FLAG_RANDOM_ADDR)
- 		return true;
- 	return ether_addr_equal(da, sdata->vif.addr);
-@@ -293,6 +297,12 @@ void ieee80211_scan_rx(struct ieee80211_local *local, struct sk_buff *skb)
- 		wiphy_delayed_work_queue(local->hw.wiphy, &local->scan_work, 0);
- 	}
- 
-+	channel = ieee80211_get_channel_khz(local->hw.wiphy,
-+					    ieee80211_rx_status_to_khz(rx_status));
-+
-+	if (!channel || channel->flags & IEEE80211_CHAN_DISABLED)
-+		return;
-+
- 	if (ieee80211_is_probe_resp(mgmt->frame_control)) {
- 		struct cfg80211_scan_request *scan_req;
- 		struct cfg80211_sched_scan_request *sched_scan_req;
-@@ -310,19 +320,15 @@ void ieee80211_scan_rx(struct ieee80211_local *local, struct sk_buff *skb)
- 		/* ignore ProbeResp to foreign address or non-bcast (OCE)
- 		 * unless scanning with randomised address
- 		 */
--		if (!ieee80211_scan_accept_presp(sdata1, scan_req_flags,
-+		if (!ieee80211_scan_accept_presp(sdata1, channel,
-+						 scan_req_flags,
- 						 mgmt->da) &&
--		    !ieee80211_scan_accept_presp(sdata2, sched_scan_req_flags,
-+		    !ieee80211_scan_accept_presp(sdata2, channel,
-+						 sched_scan_req_flags,
- 						 mgmt->da))
- 			return;
- 	}
- 
--	channel = ieee80211_get_channel_khz(local->hw.wiphy,
--					ieee80211_rx_status_to_khz(rx_status));
--
--	if (!channel || channel->flags & IEEE80211_CHAN_DISABLED)
--		return;
--
- 	bss = ieee80211_bss_info_update(local, rx_status,
- 					mgmt, skb->len,
- 					channel);
+Ayala Beker (1):
+  wifi: iwlwifi: mvm: add support for TID to link mapping neg request
+
+Colin Ian King (1):
+  wifi: iwlwifi: Fix spelling mistake "SESION" -> "SESSION"
+
+Daniel Gabay (1):
+  wifi: iwlwifi: mvm: log dropped packets due to MIC error
+
+Emmanuel Grumbach (1):
+  wifi: iwlwifi: mvm: fix the TLC command after ADD_STA
+
+Ilan Peer (2):
+  wifi: iwlwifi: mvm: Fix FTM initiator flags
+  wifi: iwlwifi: mvm: Add support for removing responder TKs
+
+Johannes Berg (7):
+  wifi: iwlwifi: mvm: d3: fix IPN byte order
+  wifi: iwlwifi: mvm: don't set trigger frame padding in AP mode
+  wifi: iwlwifi: always have 'uats_enabled'
+  wifi: iwlwifi: remove Gl A-step remnants
+  wifi: iwlwifi: mvm: use FW rate for non-data only on new devices
+  wifi: iwlwifi: mvm: support SPP A-MSDUs
+  wifi: iwlwifi: mvm: refactor duplicate chanctx condition
+
+Miri Korenblit (1):
+  wifi: iwlwifi: fix EWRD table validity check
+
+Mukesh Sisodiya (1):
+  wifi: iwlwifi: pcie: Add new PCI device id for new hardware
+
+ drivers/net/wireless/intel/iwlwifi/cfg/bz.c   |  4 ---
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c  |  2 +-
+ .../net/wireless/intel/iwlwifi/fw/api/sta.h   |  4 ++-
+ drivers/net/wireless/intel/iwlwifi/fw/file.h  |  3 ++
+ .../net/wireless/intel/iwlwifi/fw/runtime.h   |  2 +-
+ .../wireless/intel/iwlwifi/iwl-nvm-parse.c    |  1 -
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c   |  8 ++++-
+ .../intel/iwlwifi/mvm/ftm-initiator.c         |  9 ++---
+ .../intel/iwlwifi/mvm/ftm-responder.c         |  7 +++-
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 34 ++++++++++++-------
+ .../net/wireless/intel/iwlwifi/mvm/mld-key.c  | 18 ++++++++++
+ .../wireless/intel/iwlwifi/mvm/mld-mac80211.c | 19 +++++++++++
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  | 17 ++++++++++
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c |  5 ++-
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c  | 18 ++++------
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.h  |  3 +-
+ .../wireless/intel/iwlwifi/mvm/time-event.c   |  2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c   | 33 +++++++++++++++---
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c |  1 +
+ 19 files changed, 146 insertions(+), 44 deletions(-)
+
 -- 
-2.43.0
+2.34.1
 
 
