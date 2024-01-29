@@ -1,57 +1,57 @@
-Return-Path: <linux-wireless+bounces-2681-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2685-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A05F8412A0
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 19:48:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4A7C8412A4
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 19:49:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A343B285EA1
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 18:48:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CDD2282D07
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 18:49:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42E04159562;
-	Mon, 29 Jan 2024 18:41:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A338C15959D;
+	Mon, 29 Jan 2024 18:41:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="R145/60Z"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="btwiC+X5"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11017158D71
-	for <linux-wireless@vger.kernel.org>; Mon, 29 Jan 2024 18:41:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E9B1586D9
+	for <linux-wireless@vger.kernel.org>; Mon, 29 Jan 2024 18:41:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706553682; cv=none; b=Y7JYwK6ICfKswPKUgurqnbIT/uOcGkJW+uNPkVP2jCChEBizwMIP9wsJztmdrN5SqUBUthjWLVJVq/UIQL5qM8SiY/K0ISTRt3GsT1NdvlMFZh6hUrBMj8D4znp/K33HZTZnJh9az/yvYqCRKdlRCKRi48nybOwxcyR1kXy2R8M=
+	t=1706553684; cv=none; b=pA5VR1qQ68BwIAn/0N++Xv01msOScpgwAS0fcoSFRhXFNjF/5Nb0qoRYczrcEiPmMxc0dVTN88ndyHnGGZxUtcE+UCvb/0Kug+/JwjdM3oenUp7fUNLivuTIWdlDqqgJCKKu6eNR+Y1LiUpwRkoDVvA9GVWDULvsrhpiZwOpta8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706553682; c=relaxed/simple;
-	bh=Cpy7rTg0y2841ylg5IxiyzAPHRF20MN6MMa5KFfOQJU=;
+	s=arc-20240116; t=1706553684; c=relaxed/simple;
+	bh=pflidbhd26mBovyF3Z1yk1BYRIU3599JSSFMo5tO3Zw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gbDUmYHXh4zLl3Rv37ApEKGlDKSO30jWTu+RCoxNi1todLbCmeimc694O392IBeQ2c+he8i3Qp6lplIlgkPXQgspKI4KPHQJMpMeJfLs9WdeVMC7w90Lc9uU6JWpKco1bQi393umnaNpj5YU0TFvvjUK7ES2ZnOxVjxWSq55KBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=R145/60Z; arc=none smtp.client-ip=168.119.38.16
+	 MIME-Version; b=Wtu6t0/xdZdzQGATCtWeiLFdO75dfKd9dUOeKfIV8whGDpQzIh803P2huD59uYFyOgfHaM+tRzJMwmQpUj73/GybzFixlDWIihlqBfcA/1/ooqxragrZOgHTzpQ4foCGaQakTuRSXzFwNxKBe13OCLvcKDBYmiy0+NeleZC15Oc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=btwiC+X5; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=1eOzMZJxO6atKQDRDaQ09jzEGVrQTod8+bLsV56fcDI=;
-	t=1706553679; x=1707763279; b=R145/60Z5tLvL0jsjXkQxiwvkoUYY4PDG3b2RiSoPAEDbXy
-	yPhFNzZpStSoyo0jkjz5yc8qsfbU7zrU0sTLRqSdhd6LI/KR4ZDQ5oNrfhfA2yq2oCuVzoKybHF8X
-	fgwVdO/WbEDs5eBpTwvIQBpbPgTIQ9WlL1KbZ3ANGYMl/ZUz5DN1xaRalFaYYen5lqdJHrPsWDVvb
-	3p4AAtkhjTGvQipQJvyTD7ozSwAVRyw1ik2vpEb69VC1heKw8bKKJMcuG4iHVGd70U8jnqg+IhYwq
-	FAnR8BMSa4tIP6jbktTcKM4HqEaIyx15NIqTCqJgGZ7s5n0DlVSCzdD5oJzW6cpg==;
+	Resent-Cc:Resent-Message-ID; bh=czPTCgxVR13O1Z+o2Ja66WCHc9MZArtsUQuvD87j4Dk=;
+	t=1706553680; x=1707763280; b=btwiC+X5O02K5bQdC9f0hFhaHzqo8wcRIjKhNjbDS9PXlAv
+	YeHz4kTbPxJPyBqRM0kFiGgfE12Xhn4lgZ9S2CYHtmDzM+9kShG8aAuxhw2enHIpbXWBXX4uXuQto
+	BAfeANXLf7TcNIqrnqT6imZzDG1V/sxJulRAlIOZysql4UopLOogtelB/p45kJEQvA3T2Zywxk+BN
+	g7wfefx4aRRNUORCvGCOoQsLfy+VbBODDQEFLxcSNgPcd8DxSOimXAhuR5BLR37biOhrZLQpCds+8
+	99jOaaTuVbnXgyg7kI5nnHlQGcyVH3uujnjDYwP37vwT2diJPSM8pEeiDc6XOhIg==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.97)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1rUWZI-00000004z9N-376s;
-	Mon, 29 Jan 2024 19:41:16 +0100
+	id 1rUWZJ-00000004z9N-288M;
+	Mon, 29 Jan 2024 19:41:17 +0100
 From: Johannes Berg <johannes@sipsolutions.net>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 07/15] wifi: mac80211: add and use a link iteration macro
-Date: Mon, 29 Jan 2024 19:34:41 +0100
-Message-ID: <20240129194108.7240829bd96d.I5ccbb8dd019cbcb5326c85d76121359225d6541a@changeid>
+Subject: [PATCH 08/15] wifi: mac80211: support wider bandwidth OFDMA config
+Date: Mon, 29 Jan 2024 19:34:42 +0100
+Message-ID: <20240129194108.d3d5b35dd783.I939d04674f4ff06f39934b1591c8d36a30ce74c2@changeid>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240129184108.49639-17-johannes@sipsolutions.net>
 References: <20240129184108.49639-17-johannes@sipsolutions.net>
@@ -65,478 +65,735 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-In the channel context code we have quite a few instances
-of nested loops iterating the interfaces and then links.
-Add a new for_each_sdata_link() macro and use it. Also,
-since it's easier, convert all the loops and a few other
-places away from RCU as we now hold the wiphy mutex
-everywhere anyway.
+EHT requires that stations are able to participate in
+wider bandwidth OFDMA, i.e. parse downlink OFDMA and
+uplink OFDMA triggers when they're not capable of (or
+not connected at) the (wider) bandwidth that the AP
+is using. This requires hardware configuration, since
+the entity responsible for parsing (possibly hardware)
+needs to know the AP bandwidth.
 
-This does cause a little bit more work (such as checking
-interface types for each link of an interface rather than
-not iterating links in some cases), but that's not a huge
-issue and seems like an acceptable trade-off, readability
-is important too.
+To support this, change the channel request to have
+the AP's bandwidth for clients, and track that in the
+channel context in mac80211. This means that the same
+chandef might need to be split up into two different
+contexts, if the APs are different. Interfaces other
+than client are not participating in OFDMA the same
+way, so they don't request any AP setting.
+
+Note that this doesn't introduce any API to split a
+channel context, so that there are cases where this
+might lead to a disconnect, e.g. if there are two
+client interfaces using the same channel context, e.g.
+both 160 MHz connected to different 320 MHz APs, and
+one of the APs switches to 160 MHz.
+
+Note also there are possible cases where this can be
+optimised, e.g. when using the upper or lower 160 Mhz,
+but I haven't been able to really fully understand the
+spec and/or hardware limitations.
+
+If, for some reason, there are no hardware limits on
+this because the OFDMA (downlink/trigger) parsing is
+done in firmware and can take the transmitter into
+account, then drivers can set the new flag
+IEEE80211_VIF_IGNORE_OFDMA_WIDER_BW on interfaces to
+not have them request any AP bandwidth in the channel
+context and ignore this issue entirely. The bss_conf
+still contains the AP configuration (if any, i.e. EHT)
+in the chanreq.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/mac80211/chan.c        | 246 ++++++++++++-------------------------
- net/mac80211/ieee80211_i.h |  13 ++
- 2 files changed, 89 insertions(+), 170 deletions(-)
+ include/net/mac80211.h     |  14 ++++
+ net/mac80211/chan.c        | 164 ++++++++++++++++++++++++++++---------
+ net/mac80211/ieee80211_i.h |  13 +++
+ net/mac80211/mlme.c        |  60 ++++++++------
+ net/mac80211/trace.h       |  31 ++++++-
+ 5 files changed, 215 insertions(+), 67 deletions(-)
 
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index dd8a66e9afd9..ab6bc89d3394 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -214,6 +214,8 @@ struct ieee80211_low_level_stats {
+  * @IEEE80211_CHANCTX_CHANGE_CHANNEL: switched to another operating channel,
+  *	this is used only with channel switching with CSA
+  * @IEEE80211_CHANCTX_CHANGE_MIN_WIDTH: The min required channel width changed
++ * @IEEE80211_CHANCTX_CHANGE_AP: The AP channel definition changed, so (wider
++ *	bandwidth) OFDMA settings need to be changed
+  */
+ enum ieee80211_chanctx_change {
+ 	IEEE80211_CHANCTX_CHANGE_WIDTH		= BIT(0),
+@@ -221,14 +223,18 @@ enum ieee80211_chanctx_change {
+ 	IEEE80211_CHANCTX_CHANGE_RADAR		= BIT(2),
+ 	IEEE80211_CHANCTX_CHANGE_CHANNEL	= BIT(3),
+ 	IEEE80211_CHANCTX_CHANGE_MIN_WIDTH	= BIT(4),
++	IEEE80211_CHANCTX_CHANGE_AP		= BIT(5),
+ };
+ 
+ /**
+  * struct ieee80211_chan_req - A channel "request"
+  * @oper: channel definition to use for operation
++ * @ap: the channel definition of the AP, if any
++ *	(otherwise the chan member is %NULL)
+  */
+ struct ieee80211_chan_req {
+ 	struct cfg80211_chan_def oper;
++	struct cfg80211_chan_def ap;
+ };
+ 
+ /**
+@@ -239,6 +245,8 @@ struct ieee80211_chan_req {
+  *
+  * @def: the channel definition
+  * @min_def: the minimum channel definition currently required.
++ * @ap: the channel definition the AP actually is operating as,
++ *	for use with (wider bandwidth) OFDMA
+  * @rx_chains_static: The number of RX chains that must always be
+  *	active on the channel to receive MIMO transmissions
+  * @rx_chains_dynamic: The number of RX chains that must be enabled
+@@ -251,6 +259,7 @@ struct ieee80211_chan_req {
+ struct ieee80211_chanctx_conf {
+ 	struct cfg80211_chan_def def;
+ 	struct cfg80211_chan_def min_def;
++	struct cfg80211_chan_def ap;
+ 
+ 	u8 rx_chains_static, rx_chains_dynamic;
+ 
+@@ -1782,6 +1791,10 @@ struct ieee80211_channel_switch {
+  *	this is not pure P2P vif.
+  * @IEEE80211_VIF_EML_ACTIVE: The driver indicates that EML operation is
+  *      enabled for the interface.
++ * @IEEE80211_VIF_IGNORE_OFDMA_WIDER_BW: Ignore wider bandwidth OFDMA
++ *	operation on this interface and request a channel context without
++ *	the AP definition. Use this e.g. because the device is able to
++ *	handle OFDMA (downlink and trigger for uplink) on a per-AP basis.
+  */
+ enum ieee80211_vif_flags {
+ 	IEEE80211_VIF_BEACON_FILTER		= BIT(0),
+@@ -1789,6 +1802,7 @@ enum ieee80211_vif_flags {
+ 	IEEE80211_VIF_SUPPORTS_UAPSD		= BIT(2),
+ 	IEEE80211_VIF_GET_NOA_UPDATE		= BIT(3),
+ 	IEEE80211_VIF_EML_ACTIVE	        = BIT(4),
++	IEEE80211_VIF_IGNORE_OFDMA_WIDER_BW	= BIT(5),
+ };
+ 
+ 
 diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
-index f1cef332e4db..c84449bdc928 100644
+index c84449bdc928..0d7944a9d3a6 100644
 --- a/net/mac80211/chan.c
 +++ b/net/mac80211/chan.c
-@@ -211,7 +211,7 @@ static enum nl80211_chan_width ieee80211_get_sta_bw(struct sta_info *sta,
- 	enum ieee80211_sta_rx_bandwidth width;
- 	struct link_sta_info *link_sta;
- 
--	link_sta = rcu_dereference(sta->link[link_id]);
-+	link_sta = wiphy_dereference(sta->local->hw.wiphy, sta->link[link_id]);
- 
- 	/* no effect if this STA has no presence on this link */
- 	if (!link_sta)
-@@ -249,9 +249,10 @@ static enum nl80211_chan_width ieee80211_get_sta_bw(struct sta_info *sta,
+@@ -81,22 +81,35 @@ ieee80211_link_get_chanctx(struct ieee80211_link_data *link)
+ 	return container_of(conf, struct ieee80211_chanctx, conf);
  }
  
- static enum nl80211_chan_width
--ieee80211_get_max_required_bw(struct ieee80211_sub_if_data *sdata,
--			      unsigned int link_id)
-+ieee80211_get_max_required_bw(struct ieee80211_link_data *link)
++bool ieee80211_chanreq_identical(const struct ieee80211_chan_req *a,
++				 const struct ieee80211_chan_req *b)
++{
++	if (!cfg80211_chandef_identical(&a->oper, &b->oper))
++		return false;
++	if (!a->ap.chan && !b->ap.chan)
++		return true;
++	return cfg80211_chandef_identical(&a->ap, &b->ap);
++}
++
+ static const struct ieee80211_chan_req *
+ ieee80211_chanreq_compatible(const struct ieee80211_chan_req *a,
+-			     const struct ieee80211_chan_req *b)
++			     const struct ieee80211_chan_req *b,
++			     struct ieee80211_chan_req *tmp)
  {
-+	struct ieee80211_sub_if_data *sdata = link->sdata;
-+	unsigned int link_id = link->link_id;
- 	enum nl80211_chan_width max_bw = NL80211_CHAN_WIDTH_20_NOHT;
- 	struct sta_info *sta;
+ 	const struct cfg80211_chan_def *compat;
  
-@@ -267,31 +268,25 @@ ieee80211_get_max_required_bw(struct ieee80211_sub_if_data *sdata,
- }
++	if (a->ap.chan && b->ap.chan &&
++	    !cfg80211_chandef_identical(&a->ap, &b->ap))
++		return NULL;
++
+ 	compat = cfg80211_chandef_compatible(&a->oper, &b->oper);
++	if (!compat)
++		return NULL;
  
- static enum nl80211_chan_width
--ieee80211_get_chanctx_vif_max_required_bw(struct ieee80211_sub_if_data *sdata,
--					  struct ieee80211_chanctx *ctx,
--					  struct ieee80211_link_data *rsvd_for)
-+ieee80211_get_chanctx_max_required_bw(struct ieee80211_local *local,
-+				      struct ieee80211_chanctx *ctx,
-+				      struct ieee80211_link_data *rsvd_for)
- {
-+	struct ieee80211_sub_if_data *sdata;
-+	struct ieee80211_link_data *link;
- 	enum nl80211_chan_width max_bw = NL80211_CHAN_WIDTH_20_NOHT;
--	struct ieee80211_vif *vif = &sdata->vif;
--	int link_id;
- 
--	rcu_read_lock();
--	for (link_id = 0; link_id < ARRAY_SIZE(sdata->link); link_id++) {
-+	for_each_sdata_link(local, link) {
- 		enum nl80211_chan_width width = NL80211_CHAN_WIDTH_20_NOHT;
--		struct ieee80211_link_data *link =
--			rcu_dereference(sdata->link[link_id]);
+-	if (compat == &a->oper)
+-		return a;
 -
--		if (!link)
--			continue;
+-	if (compat == &b->oper)
+-		return b;
+-
+-	WARN_ON(compat);
+-	return NULL;
++	/* Note: later code assumes this always fills & returns tmp if compat */
++	tmp->oper = *compat;
++	tmp->ap = a->ap.chan ? a->ap : b->ap;
++	return tmp;
+ }
  
- 		if (link != rsvd_for &&
- 		    rcu_access_pointer(link->conf->chanctx_conf) != &ctx->conf)
+ static const struct ieee80211_chan_req *
+@@ -104,17 +117,26 @@ ieee80211_chanctx_compatible(struct ieee80211_chanctx *ctx,
+ 			     const struct ieee80211_chan_req *req,
+ 			     struct ieee80211_chan_req *tmp)
+ {
++	const struct ieee80211_chan_req *ret;
++	struct ieee80211_chan_req tmp2;
++
+ 	*tmp = (struct ieee80211_chan_req){
+ 		.oper = ctx->conf.def,
++		.ap = ctx->conf.ap,
+ 	};
+ 
+-	return ieee80211_chanreq_compatible(tmp, req);
++	ret = ieee80211_chanreq_compatible(tmp, req, &tmp2);
++	if (!ret)
++		return NULL;
++	*tmp = *ret;
++	return tmp;
+ }
+ 
+ static const struct ieee80211_chan_req *
+ ieee80211_chanctx_reserved_chanreq(struct ieee80211_local *local,
+ 				   struct ieee80211_chanctx *ctx,
+-				   const struct ieee80211_chan_req *req)
++				   const struct ieee80211_chan_req *req,
++				   struct ieee80211_chan_req *tmp)
+ {
+ 	struct ieee80211_link_data *link;
+ 
+@@ -124,7 +146,7 @@ ieee80211_chanctx_reserved_chanreq(struct ieee80211_local *local,
+ 		return NULL;
+ 
+ 	list_for_each_entry(link, &ctx->reserved_links, reserved_chanctx_list) {
+-		req = ieee80211_chanreq_compatible(&link->reserved, req);
++		req = ieee80211_chanreq_compatible(&link->reserved, req, tmp);
+ 		if (!req)
+ 			break;
+ 	}
+@@ -135,7 +157,8 @@ ieee80211_chanctx_reserved_chanreq(struct ieee80211_local *local,
+ static const struct ieee80211_chan_req *
+ ieee80211_chanctx_non_reserved_chandef(struct ieee80211_local *local,
+ 				       struct ieee80211_chanctx *ctx,
+-				       const struct ieee80211_chan_req *compat)
++				       const struct ieee80211_chan_req *compat,
++				       struct ieee80211_chan_req *tmp)
+ {
+ 	struct ieee80211_link_data *link;
+ 	const struct ieee80211_chan_req *comp_def = compat;
+@@ -149,7 +172,7 @@ ieee80211_chanctx_non_reserved_chandef(struct ieee80211_local *local,
  			continue;
  
--		switch (vif->type) {
-+		switch (link->sdata->vif.type) {
- 		case NL80211_IFTYPE_AP:
- 		case NL80211_IFTYPE_AP_VLAN:
--			width = ieee80211_get_max_required_bw(sdata, link_id);
-+			width = ieee80211_get_max_required_bw(link);
+ 		comp_def = ieee80211_chanreq_compatible(&link_conf->chanreq,
+-							comp_def);
++							comp_def, tmp);
+ 		if (!comp_def)
  			break;
- 		case NL80211_IFTYPE_STATION:
- 			/*
-@@ -300,7 +295,7 @@ ieee80211_get_chanctx_vif_max_required_bw(struct ieee80211_sub_if_data *sdata,
- 			 * account also for TDLS peers
- 			 */
- 			width = max(link->conf->chanreq.oper.width,
--				    ieee80211_get_max_required_bw(sdata, link_id));
-+				    ieee80211_get_max_required_bw(link));
- 			break;
- 		case NL80211_IFTYPE_P2P_DEVICE:
- 		case NL80211_IFTYPE_NAN:
-@@ -321,40 +316,13 @@ ieee80211_get_chanctx_vif_max_required_bw(struct ieee80211_sub_if_data *sdata,
- 
- 		max_bw = max(max_bw, width);
  	}
--	rcu_read_unlock();
--
--	return max_bw;
--}
--
--static enum nl80211_chan_width
--ieee80211_get_chanctx_max_required_bw(struct ieee80211_local *local,
--				      struct ieee80211_chanctx *ctx,
--				      struct ieee80211_link_data *rsvd_for)
--{
--	struct ieee80211_sub_if_data *sdata;
--	enum nl80211_chan_width max_bw = NL80211_CHAN_WIDTH_20_NOHT;
--
--	rcu_read_lock();
--	list_for_each_entry_rcu(sdata, &local->interfaces, list) {
--		enum nl80211_chan_width width;
--
--		if (!ieee80211_sdata_running(sdata))
--			continue;
--
--		width = ieee80211_get_chanctx_vif_max_required_bw(sdata, ctx,
--								  rsvd_for);
--
--		max_bw = max(max_bw, width);
--	}
- 
- 	/* use the configured bandwidth in case of monitor interface */
--	sdata = rcu_dereference(local->monitor_sdata);
-+	sdata = wiphy_dereference(local->hw.wiphy, local->monitor_sdata);
- 	if (sdata &&
- 	    rcu_access_pointer(sdata->vif.bss_conf.chanctx_conf) == &ctx->conf)
- 		max_bw = max(max_bw, ctx->conf.def.width);
- 
--	rcu_read_unlock();
--
- 	return max_bw;
- }
- 
-@@ -582,26 +550,14 @@ ieee80211_find_chanctx(struct ieee80211_local *local,
- 
- bool ieee80211_is_radar_required(struct ieee80211_local *local)
+@@ -162,16 +185,18 @@ ieee80211_chanctx_can_reserve(struct ieee80211_local *local,
+ 			      struct ieee80211_chanctx *ctx,
+ 			      const struct ieee80211_chan_req *req)
  {
--	struct ieee80211_sub_if_data *sdata;
-+	struct ieee80211_link_data *link;
- 
++	struct ieee80211_chan_req tmp;
++
  	lockdep_assert_wiphy(local->hw.wiphy);
  
--	rcu_read_lock();
--	list_for_each_entry_rcu(sdata, &local->interfaces, list) {
--		unsigned int link_id;
--
--		for (link_id = 0; link_id < ARRAY_SIZE(sdata->link); link_id++) {
--			struct ieee80211_link_data *link;
--
--			link = rcu_dereference(sdata->link[link_id]);
--
--			if (link && link->radar_required) {
--				rcu_read_unlock();
--				return true;
--			}
--		}
-+	for_each_sdata_link(local, link) {
-+		if (link->radar_required)
-+			return true;
- 	}
--	rcu_read_unlock();
+-	if (!ieee80211_chanctx_reserved_chanreq(local, ctx, req))
++	if (!ieee80211_chanctx_reserved_chanreq(local, ctx, req, &tmp))
+ 		return false;
+ 
+-	if (!ieee80211_chanctx_non_reserved_chandef(local, ctx, req))
++	if (!ieee80211_chanctx_non_reserved_chandef(local, ctx, req, &tmp))
+ 		return false;
+ 
+ 	if (!list_empty(&ctx->reserved_links) &&
+-	    ieee80211_chanctx_reserved_chanreq(local, ctx, req))
++	    ieee80211_chanctx_reserved_chanreq(local, ctx, req, &tmp))
+ 		return true;
  
  	return false;
- }
-@@ -611,38 +567,19 @@ ieee80211_chanctx_radar_required(struct ieee80211_local *local,
- 				 struct ieee80211_chanctx *ctx)
+@@ -456,7 +481,11 @@ static void _ieee80211_change_chanctx(struct ieee80211_local *local,
+ 				      struct ieee80211_link_data *rsvd_for)
  {
- 	struct ieee80211_chanctx_conf *conf = &ctx->conf;
--	struct ieee80211_sub_if_data *sdata;
--	bool required = false;
-+	struct ieee80211_link_data *link;
+ 	const struct cfg80211_chan_def *chandef = &chanreq->oper;
+-	u32 changed;
++	struct ieee80211_chan_req ctx_req = {
++		.oper = ctx->conf.def,
++		.ap = ctx->conf.ap,
++	};
++	u32 changed = 0;
  
- 	lockdep_assert_wiphy(local->hw.wiphy);
+ 	/* expected to handle only 20/40/80/160/320 channel widths */
+ 	switch (chandef->width) {
+@@ -478,26 +507,31 @@ static void _ieee80211_change_chanctx(struct ieee80211_local *local,
+ 	 */
+ 	ieee80211_chan_bw_change(local, old_ctx, true);
  
--	rcu_read_lock();
--	list_for_each_entry_rcu(sdata, &local->interfaces, list) {
--		unsigned int link_id;
--
--		if (!ieee80211_sdata_running(sdata))
-+	for_each_sdata_link(local, link) {
-+		if (rcu_access_pointer(link->conf->chanctx_conf) != conf)
- 			continue;
--		for (link_id = 0; link_id < ARRAY_SIZE(sdata->link); link_id++) {
--			struct ieee80211_link_data *link;
--
--			link = rcu_dereference(sdata->link[link_id]);
--			if (!link)
--				continue;
--
--			if (rcu_access_pointer(link->conf->chanctx_conf) != conf)
--				continue;
--			if (!link->radar_required)
--				continue;
--			required = true;
--			break;
--		}
--
--		if (required)
--			break;
-+		if (!link->radar_required)
-+			continue;
-+		return true;
+-	if (cfg80211_chandef_identical(&ctx->conf.def, chandef)) {
++	if (ieee80211_chanreq_identical(&ctx_req, chanreq)) {
+ 		ieee80211_recalc_chanctx_min_def(local, ctx, rsvd_for);
+ 		return;
  	}
--	rcu_read_unlock();
  
--	return required;
-+	return false;
+-	WARN_ON(!cfg80211_chandef_compatible(&ctx->conf.def, chandef));
++	WARN_ON(ieee80211_chanctx_refcount(local, ctx) > 1 &&
++		!cfg80211_chandef_compatible(&ctx->conf.def, &chanreq->oper));
+ 
+ 	ieee80211_remove_wbrf(local, &ctx->conf.def);
+ 
++	if (!cfg80211_chandef_identical(&ctx->conf.def, &chanreq->oper))
++		changed |= IEEE80211_CHANCTX_CHANGE_WIDTH;
++	if (!cfg80211_chandef_identical(&ctx->conf.ap, &chanreq->ap))
++		changed |= IEEE80211_CHANCTX_CHANGE_AP;
+ 	ctx->conf.def = *chandef;
++	ctx->conf.ap = chanreq->ap;
+ 
+ 	/* check if min chanctx also changed */
+-	changed = IEEE80211_CHANCTX_CHANGE_WIDTH |
+-		  _ieee80211_recalc_chanctx_min_def(local, ctx, rsvd_for);
++	changed |= _ieee80211_recalc_chanctx_min_def(local, ctx, rsvd_for);
+ 
+ 	ieee80211_add_wbrf(local, &ctx->conf.def);
+ 
+ 	drv_change_chanctx(local, ctx, changed);
+ 
+-	/* check is BW wider */
++	/* check if BW is wider */
+ 	ieee80211_chan_bw_change(local, old_ctx, false);
  }
  
- static struct ieee80211_chanctx *
-@@ -746,50 +683,38 @@ void ieee80211_recalc_chanctx_chantype(struct ieee80211_local *local,
+@@ -536,7 +570,7 @@ ieee80211_find_chanctx(struct ieee80211_local *local,
+ 			continue;
+ 
+ 		compat = ieee80211_chanctx_reserved_chanreq(local, ctx,
+-							    compat);
++							    compat, &tmp);
+ 		if (!compat)
+ 			continue;
+ 
+@@ -598,6 +632,7 @@ ieee80211_alloc_chanctx(struct ieee80211_local *local,
+ 	INIT_LIST_HEAD(&ctx->assigned_links);
+ 	INIT_LIST_HEAD(&ctx->reserved_links);
+ 	ctx->conf.def = chanreq->oper;
++	ctx->conf.ap = chanreq->ap;
+ 	ctx->conf.rx_chains_static = 1;
+ 	ctx->conf.rx_chains_dynamic = 1;
+ 	ctx->mode = mode;
+@@ -683,9 +718,9 @@ void ieee80211_recalc_chanctx_chantype(struct ieee80211_local *local,
  				       struct ieee80211_chanctx *ctx)
  {
  	struct ieee80211_chanctx_conf *conf = &ctx->conf;
--	struct ieee80211_sub_if_data *sdata;
- 	const struct cfg80211_chan_def *compat = NULL;
-+	struct ieee80211_link_data *link;
- 	struct ieee80211_chan_req chanreq = {};
+-	const struct cfg80211_chan_def *compat = NULL;
++	const struct ieee80211_chan_req *compat = NULL;
+ 	struct ieee80211_link_data *link;
+-	struct ieee80211_chan_req chanreq = {};
++	struct ieee80211_chan_req tmp;
  	struct sta_info *sta;
  
  	lockdep_assert_wiphy(local->hw.wiphy);
- 
--	rcu_read_lock();
--	list_for_each_entry_rcu(sdata, &local->interfaces, list) {
--		int link_id;
-+	for_each_sdata_link(local, link) {
-+		struct ieee80211_bss_conf *link_conf;
- 
--		if (!ieee80211_sdata_running(sdata))
-+		if (link->sdata->vif.type == NL80211_IFTYPE_AP_VLAN)
+@@ -702,10 +737,10 @@ void ieee80211_recalc_chanctx_chantype(struct ieee80211_local *local,
  			continue;
  
--		if (sdata->vif.type == NL80211_IFTYPE_AP_VLAN)
--			continue;
--
--		for (link_id = 0; link_id < ARRAY_SIZE(sdata->link); link_id++) {
--			struct ieee80211_bss_conf *link_conf =
--				rcu_dereference(sdata->vif.link_conf[link_id]);
-+		link_conf = link->conf;
+ 		if (!compat)
+-			compat = &link_conf->chanreq.oper;
++			compat = &link_conf->chanreq;
  
--			if (!link_conf)
--				continue;
--
--			if (rcu_access_pointer(link_conf->chanctx_conf) != conf)
--				continue;
-+		if (rcu_access_pointer(link_conf->chanctx_conf) != conf)
-+			continue;
- 
--			if (!compat)
--				compat = &link_conf->chanreq.oper;
-+		if (!compat)
-+			compat = &link_conf->chanreq.oper;
- 
--			compat = cfg80211_chandef_compatible(&link_conf->chanreq.oper,
--							     compat);
--			if (WARN_ON_ONCE(!compat))
--				break;
--		}
-+		compat = cfg80211_chandef_compatible(&link_conf->chanreq.oper,
-+						     compat);
-+		if (WARN_ON_ONCE(!compat))
-+			return;
+-		compat = cfg80211_chandef_compatible(&link_conf->chanreq.oper,
+-						     compat);
++		compat = ieee80211_chanreq_compatible(&link_conf->chanreq,
++						      compat, &tmp);
+ 		if (WARN_ON_ONCE(!compat))
+ 			return;
  	}
- 
--	if (WARN_ON_ONCE(!compat)) {
--		rcu_read_unlock();
-+	if (WARN_ON_ONCE(!compat))
- 		return;
--	}
+@@ -715,14 +750,18 @@ void ieee80211_recalc_chanctx_chantype(struct ieee80211_local *local,
  
  	/* TDLS peers can sometimes affect the chandef width */
--	list_for_each_entry_rcu(sta, &local->sta_list, list) {
-+	list_for_each_entry(sta, &local->sta_list, list) {
+ 	list_for_each_entry(sta, &local->sta_list, list) {
++		struct ieee80211_chan_req tdls_chanreq = {};
  		if (!sta->uploaded ||
  		    !test_sta_flag(sta, WLAN_STA_TDLS_WIDER_BW) ||
  		    !test_sta_flag(sta, WLAN_STA_AUTHORIZED) ||
-@@ -799,9 +724,8 @@ void ieee80211_recalc_chanctx_chantype(struct ieee80211_local *local,
- 		compat = cfg80211_chandef_compatible(&sta->tdls_chandef,
- 						     compat);
- 		if (WARN_ON_ONCE(!compat))
--			break;
-+			return;
- 	}
--	rcu_read_unlock();
+ 		    !sta->tdls_chandef.chan)
+ 			continue;
  
+-		compat = cfg80211_chandef_compatible(&sta->tdls_chandef,
+-						     compat);
++		tdls_chanreq.oper = sta->tdls_chandef;
++
++		/* note this always fills and returns &tmp if compat */
++		compat = ieee80211_chanreq_compatible(&tdls_chanreq,
++						      compat, &tmp);
+ 		if (WARN_ON_ONCE(!compat))
+ 			return;
+ 	}
+@@ -730,9 +769,7 @@ void ieee80211_recalc_chanctx_chantype(struct ieee80211_local *local,
  	if (!compat)
  		return;
-@@ -895,23 +819,19 @@ void ieee80211_recalc_smps_chanctx(struct ieee80211_local *local,
- {
- 	struct ieee80211_sub_if_data *sdata;
- 	u8 rx_chains_static, rx_chains_dynamic;
+ 
+-	chanreq.oper = *compat;
+-
+-	ieee80211_change_chanctx(local, ctx, ctx, &chanreq);
++	ieee80211_change_chanctx(local, ctx, ctx, compat);
+ }
+ 
+ static void ieee80211_recalc_radar_chanctx(struct ieee80211_local *local,
+@@ -1133,6 +1170,7 @@ ieee80211_link_use_reserved_reassign(struct ieee80211_link_data *link)
+ 	struct ieee80211_vif_chanctx_switch vif_chsw[1] = {};
+ 	struct ieee80211_chanctx *old_ctx, *new_ctx;
+ 	const struct ieee80211_chan_req *chanreq;
++	struct ieee80211_chan_req tmp;
+ 	u64 changed = 0;
+ 	int err;
+ 
+@@ -1155,7 +1193,8 @@ ieee80211_link_use_reserved_reassign(struct ieee80211_link_data *link)
+ 		return -EINVAL;
+ 
+ 	chanreq = ieee80211_chanctx_non_reserved_chandef(local, new_ctx,
+-							 &link->reserved);
++							 &link->reserved,
++							 &tmp);
+ 	if (WARN_ON(!chanreq))
+ 		return -EINVAL;
+ 
+@@ -1213,6 +1252,7 @@ ieee80211_link_use_reserved_assign(struct ieee80211_link_data *link)
+ 	struct ieee80211_local *local = sdata->local;
+ 	struct ieee80211_chanctx *old_ctx, *new_ctx;
+ 	const struct ieee80211_chan_req *chanreq;
++	struct ieee80211_chan_req tmp;
+ 	int err;
+ 
+ 	old_ctx = ieee80211_link_get_chanctx(link);
+@@ -1232,7 +1272,8 @@ ieee80211_link_use_reserved_assign(struct ieee80211_link_data *link)
+ 		return -EINVAL;
+ 
+ 	chanreq = ieee80211_chanctx_non_reserved_chandef(local, new_ctx,
+-							 &link->reserved);
++							 &link->reserved,
++							 &tmp);
+ 	if (WARN_ON(!chanreq))
+ 		return -EINVAL;
+ 
+@@ -1770,6 +1811,52 @@ int ieee80211_link_use_reserved_context(struct ieee80211_link_data *link)
+ 	return 0;
+ }
+ 
++/*
++ * This is similar to ieee80211_chanctx_compatible(), but rechecks
++ * against all the links actually using it (except the one that's
++ * passed, since that one is changing).
++ * This is done in order to allow changes to the AP's bandwidth for
++ * wider bandwidth OFDMA purposes, which wouldn't be treated as
++ * compatible by ieee80211_chanctx_recheck() but is OK if the link
++ * requesting the update is the only one using it.
++ */
++static const struct ieee80211_chan_req *
++ieee80211_chanctx_recheck(struct ieee80211_local *local,
++			  struct ieee80211_link_data *skip_link,
++			  struct ieee80211_chanctx *ctx,
++			  const struct ieee80211_chan_req *req,
++			  struct ieee80211_chan_req *tmp)
++{
++	const struct ieee80211_chan_req *ret = req;
 +	struct ieee80211_link_data *link;
- 
- 	lockdep_assert_wiphy(local->hw.wiphy);
- 
- 	rx_chains_static = 1;
- 	rx_chains_dynamic = 1;
- 
--	rcu_read_lock();
--	list_for_each_entry_rcu(sdata, &local->interfaces, list) {
-+	for_each_sdata_link(local, link) {
- 		u8 needed_static, needed_dynamic;
--		unsigned int link_id;
- 
--		if (!ieee80211_sdata_running(sdata))
--			continue;
--
--		switch (sdata->vif.type) {
-+		switch (link->sdata->vif.type) {
- 		case NL80211_IFTYPE_STATION:
--			if (!sdata->u.mgd.associated)
-+			if (!link->sdata->u.mgd.associated)
- 				continue;
- 			break;
- 		case NL80211_IFTYPE_AP:
-@@ -923,49 +843,38 @@ void ieee80211_recalc_smps_chanctx(struct ieee80211_local *local,
- 			continue;
- 		}
- 
--		for (link_id = 0; link_id < ARRAY_SIZE(sdata->link); link_id++) {
--			struct ieee80211_link_data *link;
-+		if (rcu_access_pointer(link->conf->chanctx_conf) != &chanctx->conf)
-+			continue;
- 
--			link = rcu_dereference(sdata->link[link_id]);
--
--			if (!link)
--				continue;
--
--			if (rcu_access_pointer(link->conf->chanctx_conf) != &chanctx->conf)
--				continue;
--
--			switch (link->smps_mode) {
--			default:
--				WARN_ONCE(1, "Invalid SMPS mode %d\n",
--					  link->smps_mode);
--				fallthrough;
--			case IEEE80211_SMPS_OFF:
--				needed_static = link->needed_rx_chains;
--				needed_dynamic = link->needed_rx_chains;
--				break;
--			case IEEE80211_SMPS_DYNAMIC:
--				needed_static = 1;
--				needed_dynamic = link->needed_rx_chains;
--				break;
--			case IEEE80211_SMPS_STATIC:
--				needed_static = 1;
--				needed_dynamic = 1;
--				break;
--			}
--
--			rx_chains_static = max(rx_chains_static, needed_static);
--			rx_chains_dynamic = max(rx_chains_dynamic, needed_dynamic);
-+		switch (link->smps_mode) {
-+		default:
-+			WARN_ONCE(1, "Invalid SMPS mode %d\n",
-+				  link->smps_mode);
-+			fallthrough;
-+		case IEEE80211_SMPS_OFF:
-+			needed_static = link->needed_rx_chains;
-+			needed_dynamic = link->needed_rx_chains;
-+			break;
-+		case IEEE80211_SMPS_DYNAMIC:
-+			needed_static = 1;
-+			needed_dynamic = link->needed_rx_chains;
-+			break;
-+		case IEEE80211_SMPS_STATIC:
-+			needed_static = 1;
-+			needed_dynamic = 1;
-+			break;
- 		}
 +
-+		rx_chains_static = max(rx_chains_static, needed_static);
-+		rx_chains_dynamic = max(rx_chains_dynamic, needed_dynamic);
- 	}
++	lockdep_assert_wiphy(local->hw.wiphy);
++
++	for_each_sdata_link(local, link) {
++		if (link == skip_link)
++			continue;
++
++		if (rcu_access_pointer(link->conf->chanctx_conf) == &ctx->conf) {
++			ret = ieee80211_chanreq_compatible(ret,
++							   &link->conf->chanreq,
++							   tmp);
++			if (!ret)
++				return NULL;
++		}
++
++		if (link->reserved_chanctx == ctx) {
++			ret = ieee80211_chanreq_compatible(ret,
++							   &link->reserved,
++							   tmp);
++			if (!ret)
++				return NULL;
++		}
++	}
++
++	*tmp = *ret;
++	return tmp;
++}
++
+ int ieee80211_link_change_chanreq(struct ieee80211_link_data *link,
+ 				  const struct ieee80211_chan_req *chanreq,
+ 				  u64 *changed)
+@@ -1806,13 +1893,14 @@ int ieee80211_link_change_chanreq(struct ieee80211_link_data *link,
  
- 	/* Disable SMPS for the monitor interface */
--	sdata = rcu_dereference(local->monitor_sdata);
-+	sdata = wiphy_dereference(local->hw.wiphy, local->monitor_sdata);
- 	if (sdata &&
- 	    rcu_access_pointer(sdata->vif.bss_conf.chanctx_conf) == &chanctx->conf)
- 		rx_chains_dynamic = rx_chains_static = local->rx_chains;
+ 	ctx = container_of(conf, struct ieee80211_chanctx, conf);
  
--	rcu_read_unlock();
--
- 	if (rx_chains_static == chanctx->conf.rx_chains_static &&
- 	    rx_chains_dynamic == chanctx->conf.rx_chains_dynamic)
- 		return;
-@@ -1004,17 +913,16 @@ __ieee80211_link_copy_chanctx_to_vlans(struct ieee80211_link_data *link,
- 	if (clear)
- 		conf = NULL;
+-	compat = ieee80211_chanctx_compatible(ctx, chanreq, &tmp);
++	compat = ieee80211_chanctx_recheck(local, link, ctx, chanreq, &tmp);
+ 	if (!compat)
+ 		return -EINVAL;
  
--	rcu_read_lock();
- 	list_for_each_entry(vlan, &sdata->u.ap.vlans, u.vlan.list) {
- 		struct ieee80211_bss_conf *vlan_conf;
- 
--		vlan_conf = rcu_dereference(vlan->vif.link_conf[link_id]);
-+		vlan_conf = wiphy_dereference(local->hw.wiphy,
-+					      vlan->vif.link_conf[link_id]);
- 		if (WARN_ON(!vlan_conf))
- 			continue;
- 
- 		rcu_assign_pointer(vlan_conf->chanctx_conf, conf);
- 	}
--	rcu_read_unlock();
- }
- 
- void ieee80211_link_copy_chanctx_to_vlans(struct ieee80211_link_data *link,
-@@ -1204,17 +1112,16 @@ ieee80211_link_update_chanreq(struct ieee80211_link_data *link,
- 	if (sdata->vif.type != NL80211_IFTYPE_AP)
- 		return;
- 
--	rcu_read_lock();
- 	list_for_each_entry(vlan, &sdata->u.ap.vlans, u.vlan.list) {
- 		struct ieee80211_bss_conf *vlan_conf;
- 
--		vlan_conf = rcu_dereference(vlan->vif.link_conf[link_id]);
-+		vlan_conf = wiphy_dereference(sdata->local->hw.wiphy,
-+					      vlan->vif.link_conf[link_id]);
- 		if (WARN_ON(!vlan_conf))
- 			continue;
- 
- 		vlan_conf->chanreq = *chanreq;
- 	}
--	rcu_read_unlock();
- }
- 
- static int
-@@ -1955,12 +1862,11 @@ void ieee80211_link_vlan_copy_chanctx(struct ieee80211_link_data *link)
- 
- 	ap = container_of(sdata->bss, struct ieee80211_sub_if_data, u.ap);
- 
--	rcu_read_lock();
--	ap_conf = rcu_dereference(ap->vif.link_conf[link_id]);
--	conf = rcu_dereference_protected(ap_conf->chanctx_conf,
--					 lockdep_is_held(&local->hw.wiphy->mtx));
-+	ap_conf = wiphy_dereference(local->hw.wiphy,
-+				    ap->vif.link_conf[link_id]);
-+	conf = wiphy_dereference(local->hw.wiphy,
-+				 ap_conf->chanctx_conf);
- 	rcu_assign_pointer(link_conf->chanctx_conf, conf);
--	rcu_read_unlock();
- }
- 
- void ieee80211_iter_chan_contexts_atomic(
+ 	switch (ctx->replace_state) {
+ 	case IEEE80211_CHANCTX_REPLACE_NONE:
+-		if (!ieee80211_chanctx_reserved_chanreq(local, ctx, compat))
++		if (!ieee80211_chanctx_reserved_chanreq(local, ctx, compat,
++							&tmp))
+ 			return -EBUSY;
+ 		break;
+ 	case IEEE80211_CHANCTX_WILL_BE_REPLACED:
 diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 70c48cad180a..601b889b6237 100644
+index 601b889b6237..534cac3fc8df 100644
 --- a/net/mac80211/ieee80211_i.h
 +++ b/net/mac80211/ieee80211_i.h
-@@ -1181,6 +1181,19 @@ struct ieee80211_sub_if_data *vif_to_sdata(struct ieee80211_vif *p)
- #define sdata_dereference(p, sdata) \
- 	wiphy_dereference(sdata->local->hw.wiphy, p)
- 
-+#define for_each_sdata_link(_local, _link)				\
-+	/* outer loop just to define the variables ... */		\
-+	for (struct ieee80211_sub_if_data *___sdata = NULL;		\
-+	     !___sdata;							\
-+	     ___sdata = (void *)~0 /* always stop */)			\
-+	list_for_each_entry(___sdata, &(_local)->interfaces, list)	\
-+	if (ieee80211_sdata_running(___sdata))				\
-+	for (int ___link_id = 0;					\
-+	     ___link_id < ARRAY_SIZE(___sdata->link);			\
-+	     ___link_id++)						\
-+	if ((_link = wiphy_dereference((local)->hw.wiphy,		\
-+				       ___sdata->link[___link_id])))
+@@ -2536,6 +2536,19 @@ bool ieee80211_chandef_s1g_oper(const struct ieee80211_s1g_oper_ie *oper,
+ 				struct cfg80211_chan_def *chandef);
+ void ieee80211_chandef_downgrade(struct cfg80211_chan_def *chandef,
+ 				 struct ieee80211_conn_settings *conn);
++static inline void
++ieee80211_chanreq_downgrade(struct ieee80211_chan_req *chanreq,
++			    struct ieee80211_conn_settings *conn)
++{
++	ieee80211_chandef_downgrade(&chanreq->oper, conn);
++	if (WARN_ON(!conn))
++		return;
++	if (conn->mode < IEEE80211_CONN_MODE_EHT)
++		chanreq->ap.chan = NULL;
++}
 +
- static inline int
- ieee80211_get_mbssid_beacon_len(struct cfg80211_mbssid_elems *elems,
- 				struct cfg80211_rnr_elems *rnr_elems,
++bool ieee80211_chanreq_identical(const struct ieee80211_chan_req *a,
++				 const struct ieee80211_chan_req *b);
+ 
+ int __must_check
+ ieee80211_link_use_channel(struct ieee80211_link_data *link,
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index def6f1caa58c..08f9348fba36 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -665,7 +665,7 @@ static struct ieee802_11_elems *
+ ieee80211_determine_chan_mode(struct ieee80211_sub_if_data *sdata,
+ 			      struct ieee80211_conn_settings *conn,
+ 			      struct cfg80211_bss *cbss, int link_id,
+-			      struct cfg80211_chan_def *chandef)
++			      struct ieee80211_chan_req *chanreq)
+ {
+ 	struct ieee80211_local *local = sdata->local;
+ 	const struct cfg80211_bss_ies *ies = rcu_dereference(cbss->ies);
+@@ -752,20 +752,27 @@ ieee80211_determine_chan_mode(struct ieee80211_sub_if_data *sdata,
+ 	}
+ 
+ 	conn->mode = ap_mode;
+-	*chandef = ap_chandef;
++	chanreq->oper = ap_chandef;
+ 
+-	while (!cfg80211_chandef_usable(sdata->local->hw.wiphy, chandef,
++	/* wider-bandwidth OFDMA is only done in EHT */
++	if (conn->mode >= IEEE80211_CONN_MODE_EHT &&
++	    !(sdata->vif.driver_flags & IEEE80211_VIF_IGNORE_OFDMA_WIDER_BW))
++		chanreq->ap = ap_chandef;
++	else
++		chanreq->ap.chan = NULL;
++
++	while (!cfg80211_chandef_usable(sdata->local->hw.wiphy, &chanreq->oper,
+ 					IEEE80211_CHAN_DISABLED)) {
+-		if (WARN_ON(chandef->width == NL80211_CHAN_WIDTH_20_NOHT)) {
++		if (WARN_ON(chanreq->oper.width == NL80211_CHAN_WIDTH_20_NOHT)) {
+ 			ret = -EINVAL;
+ 			goto free;
+ 		}
+ 
+-		ieee80211_chandef_downgrade(chandef, conn);
++		ieee80211_chanreq_downgrade(chanreq, conn);
+ 	}
+ 
+ 	if (conn->mode >= IEEE80211_CONN_MODE_HE &&
+-	    !cfg80211_chandef_usable(sdata->wdev.wiphy, chandef,
++	    !cfg80211_chandef_usable(sdata->wdev.wiphy, &chanreq->oper,
+ 				     IEEE80211_CHAN_NO_HE)) {
+ 		conn->mode = IEEE80211_CONN_MODE_VHT;
+ 		conn->bw_limit = min_t(enum ieee80211_conn_bw_limit,
+@@ -774,7 +781,7 @@ ieee80211_determine_chan_mode(struct ieee80211_sub_if_data *sdata,
+ 	}
+ 
+ 	if (conn->mode >= IEEE80211_CONN_MODE_EHT &&
+-	    !cfg80211_chandef_usable(sdata->wdev.wiphy, chandef,
++	    !cfg80211_chandef_usable(sdata->wdev.wiphy, &chanreq->oper,
+ 				     IEEE80211_CHAN_NO_EHT)) {
+ 		conn->mode = IEEE80211_CONN_MODE_HE;
+ 		conn->bw_limit = min_t(enum ieee80211_conn_bw_limit,
+@@ -782,7 +789,7 @@ ieee80211_determine_chan_mode(struct ieee80211_sub_if_data *sdata,
+ 				       IEEE80211_CONN_BW_LIMIT_160);
+ 	}
+ 
+-	if (chandef->width != ap_chandef.width || ap_mode != conn->mode)
++	if (chanreq->oper.width != ap_chandef.width || ap_mode != conn->mode)
+ 		sdata_info(sdata,
+ 			   "regulatory prevented using AP config, downgraded\n");
+ 
+@@ -847,7 +854,7 @@ ieee80211_determine_chan_mode(struct ieee80211_sub_if_data *sdata,
+ 			 ieee80211_conn_mode_str(conn->mode),
+ 			 20 * (1 << conn->bw_limit));
+ 
+-	if (WARN_ON_ONCE(!cfg80211_chandef_valid(chandef))) {
++	if (WARN_ON_ONCE(!cfg80211_chandef_valid(&chanreq->oper))) {
+ 		ret = -EINVAL;
+ 		goto free;
+ 	}
+@@ -865,7 +872,6 @@ static int ieee80211_config_bw(struct ieee80211_link_data *link,
+ 	struct ieee80211_channel *channel = link->conf->chanreq.oper.chan;
+ 	struct ieee80211_sub_if_data *sdata = link->sdata;
+ 	struct ieee80211_chan_req chanreq = {};
+-	struct cfg80211_chan_def ap_chandef;
+ 	enum ieee80211_conn_mode ap_mode;
+ 	u32 vht_cap_info = 0;
+ 	u16 ht_opmode;
+@@ -881,7 +887,7 @@ static int ieee80211_config_bw(struct ieee80211_link_data *link,
+ 
+ 	ap_mode = ieee80211_determine_ap_chan(sdata, channel, vht_cap_info,
+ 					      elems, true, &link->u.mgd.conn,
+-					      &ap_chandef);
++					      &chanreq.ap);
+ 
+ 	if (ap_mode != link->u.mgd.conn.mode) {
+ 		link_info(link,
+@@ -891,6 +897,11 @@ static int ieee80211_config_bw(struct ieee80211_link_data *link,
+ 		return -EINVAL;
+ 	}
+ 
++	chanreq.oper = chanreq.ap;
++	if (link->u.mgd.conn.mode < IEEE80211_CONN_MODE_EHT ||
++	    sdata->vif.driver_flags & IEEE80211_VIF_IGNORE_OFDMA_WIDER_BW)
++		chanreq.ap.chan = NULL;
++
+ 	/*
+ 	 * if HT operation mode changed store the new one -
+ 	 * this may be applicable even if channel is identical
+@@ -911,20 +922,20 @@ static int ieee80211_config_bw(struct ieee80211_link_data *link,
+ 	 * won't do us any good -- we couldn't use it with the AP.
+ 	 */
+ 	while (link->u.mgd.conn.bw_limit <
+-			ieee80211_min_bw_limit_from_chandef(&ap_chandef))
+-		ieee80211_chandef_downgrade(&ap_chandef, NULL);
++			ieee80211_min_bw_limit_from_chandef(&chanreq.oper))
++		ieee80211_chandef_downgrade(&chanreq.oper, NULL);
+ 
+-	if (cfg80211_chandef_identical(&ap_chandef, &link->conf->chanreq.oper))
++	if (ieee80211_chanreq_identical(&chanreq, &link->conf->chanreq))
+ 		return 0;
+ 
+ 	link_info(link,
+-		  "AP %pM changed bandwidth, new config is %d.%03d MHz, width %d (%d.%03d/%d MHz)\n",
+-		  link->u.mgd.bssid, ap_chandef.chan->center_freq,
+-		  ap_chandef.chan->freq_offset, ap_chandef.width,
+-		  ap_chandef.center_freq1, ap_chandef.freq1_offset,
+-		  ap_chandef.center_freq2);
++		  "AP %pM changed bandwidth, new used config is %d.%03d MHz, width %d (%d.%03d/%d MHz)\n",
++		  link->u.mgd.bssid, chanreq.oper.chan->center_freq,
++		  chanreq.oper.chan->freq_offset, chanreq.oper.width,
++		  chanreq.oper.center_freq1, chanreq.oper.freq1_offset,
++		  chanreq.oper.center_freq2);
+ 
+-	if (!cfg80211_chandef_valid(&ap_chandef)) {
++	if (!cfg80211_chandef_valid(&chanreq.oper)) {
+ 		sdata_info(sdata,
+ 			   "AP %pM changed caps/bw in a way we can't support - disconnect\n",
+ 			   link->u.mgd.bssid);
+@@ -947,7 +958,6 @@ static int ieee80211_config_bw(struct ieee80211_link_data *link,
+ 	 * bandwidth changes where a this could happen, but those cases are
+ 	 * less common and wouldn't completely prevent using the AP.
+ 	 */
+-	chanreq.oper = ap_chandef;
+ 
+ 	ret = ieee80211_link_change_chanreq(link, &chanreq, changed);
+ 	if (ret) {
+@@ -2071,8 +2081,8 @@ static void ieee80211_chswitch_work(struct wiphy *wiphy,
+ 		return;
+ 	}
+ 
+-	if (!cfg80211_chandef_identical(&link->conf->chanreq.oper,
+-					&link->csa_chanreq.oper)) {
++	if (!ieee80211_chanreq_identical(&link->conf->chanreq,
++					 &link->csa_chanreq)) {
+ 		sdata_info(sdata,
+ 			   "failed to finalize channel switch, disconnecting\n");
+ 		wiphy_work_queue(sdata->local->hw.wiphy,
+@@ -5145,7 +5155,7 @@ static int ieee80211_prep_channel(struct ieee80211_sub_if_data *sdata,
+ 
+ 	rcu_read_lock();
+ 	elems = ieee80211_determine_chan_mode(sdata, conn, cbss, link_id,
+-					      &chanreq.oper);
++					      &chanreq);
+ 
+ 	if (IS_ERR(elems)) {
+ 		rcu_read_unlock();
+@@ -5211,7 +5221,7 @@ static int ieee80211_prep_channel(struct ieee80211_sub_if_data *sdata,
+ 		return ret;
+ 
+ 	while (ret && chanreq.oper.width != NL80211_CHAN_WIDTH_20_NOHT) {
+-		ieee80211_chandef_downgrade(&chanreq.oper, conn);
++		ieee80211_chanreq_downgrade(&chanreq, conn);
+ 
+ 		ret = ieee80211_link_use_channel(link, &chanreq,
+ 						 IEEE80211_CHANCTX_SHARED);
+diff --git a/net/mac80211/trace.h b/net/mac80211/trace.h
+index ddf0aebd52a7..2d0d969f0c3d 100644
+--- a/net/mac80211/trace.h
++++ b/net/mac80211/trace.h
+@@ -50,7 +50,7 @@
+ 			__entry->center_freq1 = (c) ? (c)->center_freq1 : 0;		\
+ 			__entry->freq1_offset = (c) ? (c)->freq1_offset : 0;		\
+ 			__entry->center_freq2 = (c) ? (c)->center_freq2 : 0;
+-#define CHANDEF_PR_FMT	" control:%d.%03d MHz width:%d center: %d.%03d/%d MHz"
++#define CHANDEF_PR_FMT	" chandef(%d.%03d MHz,width:%d,center: %d.%03d/%d MHz)"
+ #define CHANDEF_PR_ARG	__entry->control_freq, __entry->freq_offset, __entry->chan_width, \
+ 			__entry->center_freq1, __entry->freq1_offset, __entry->center_freq2
+ 
+@@ -69,22 +69,45 @@
+ 			__entry->min_center_freq1 = (c)->center_freq1;			\
+ 			__entry->min_freq1_offset = (c)->freq1_offset;			\
+ 			__entry->min_center_freq2 = (c)->center_freq2;
+-#define MIN_CHANDEF_PR_FMT	" min_control:%d.%03d MHz min_width:%d min_center: %d.%03d/%d MHz"
++#define MIN_CHANDEF_PR_FMT	" mindef(%d.%03d MHz,width:%d,center: %d.%03d/%d MHz)"
+ #define MIN_CHANDEF_PR_ARG	__entry->min_control_freq, __entry->min_freq_offset,	\
+ 			__entry->min_chan_width,					\
+ 			__entry->min_center_freq1, __entry->min_freq1_offset,		\
+ 			__entry->min_center_freq2
+ 
++#define AP_CHANDEF_ENTRY								\
++			__field(u32, ap_control_freq)					\
++			__field(u32, ap_freq_offset)					\
++			__field(u32, ap_chan_width)					\
++			__field(u32, ap_center_freq1)					\
++			__field(u32, ap_freq1_offset)					\
++			__field(u32, ap_center_freq2)
++
++#define AP_CHANDEF_ASSIGN(c)								\
++			__entry->ap_control_freq = (c)->chan ? (c)->chan->center_freq : 0;\
++			__entry->ap_freq_offset = (c)->chan ? (c)->chan->freq_offset : 0;\
++			__entry->ap_chan_width = (c)->chan ? (c)->width : 0;		\
++			__entry->ap_center_freq1 = (c)->chan ? (c)->center_freq1 : 0;	\
++			__entry->ap_freq1_offset = (c)->chan ? (c)->freq1_offset : 0;	\
++			__entry->ap_center_freq2 = (c)->chan ? (c)->center_freq2 : 0;
++#define AP_CHANDEF_PR_FMT	" ap(%d.%03d MHz,width:%d,center: %d.%03d/%d MHz)"
++#define AP_CHANDEF_PR_ARG	__entry->ap_control_freq, __entry->ap_freq_offset,	\
++			__entry->ap_chan_width,						\
++			__entry->ap_center_freq1, __entry->ap_freq1_offset,		\
++			__entry->ap_center_freq2
++
+ #define CHANCTX_ENTRY	CHANDEF_ENTRY							\
+ 			MIN_CHANDEF_ENTRY						\
++			AP_CHANDEF_ENTRY						\
+ 			__field(u8, rx_chains_static)					\
+ 			__field(u8, rx_chains_dynamic)
+ #define CHANCTX_ASSIGN	CHANDEF_ASSIGN(&ctx->conf.def)					\
+ 			MIN_CHANDEF_ASSIGN(&ctx->conf.min_def)				\
++			AP_CHANDEF_ASSIGN(&ctx->conf.ap)				\
+ 			__entry->rx_chains_static = ctx->conf.rx_chains_static;		\
+ 			__entry->rx_chains_dynamic = ctx->conf.rx_chains_dynamic
+-#define CHANCTX_PR_FMT	CHANDEF_PR_FMT MIN_CHANDEF_PR_FMT " chains:%d/%d"
+-#define CHANCTX_PR_ARG	CHANDEF_PR_ARG,	MIN_CHANDEF_PR_ARG,				\
++#define CHANCTX_PR_FMT	CHANDEF_PR_FMT MIN_CHANDEF_PR_FMT AP_CHANDEF_PR_FMT " chains:%d/%d"
++#define CHANCTX_PR_ARG	CHANDEF_PR_ARG,	MIN_CHANDEF_PR_ARG, AP_CHANDEF_PR_ARG,		\
+ 			__entry->rx_chains_static, __entry->rx_chains_dynamic
+ 
+ #define KEY_ENTRY	__field(u32, cipher)						\
 -- 
 2.43.0
 
