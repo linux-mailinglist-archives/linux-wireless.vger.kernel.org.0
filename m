@@ -1,33 +1,33 @@
-Return-Path: <linux-wireless+bounces-2674-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2675-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E36B84090F
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 15:54:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E4E8840910
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 15:54:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FE1D1C22848
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 14:54:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D15B31C21714
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 14:54:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3B9C1534E6;
-	Mon, 29 Jan 2024 14:54:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B481152E0F;
+	Mon, 29 Jan 2024 14:54:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="oXsbplN+"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="C8q/pmMZ"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A391C152DFE
-	for <linux-wireless@vger.kernel.org>; Mon, 29 Jan 2024 14:53:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6342E152DFE
+	for <linux-wireless@vger.kernel.org>; Mon, 29 Jan 2024 14:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706540041; cv=none; b=F1m3BXKaQT9/0ChUZGn64drEmS5nllth7tVWi5i0nQRn9cjP+Qbo0DWmfsjl0rizQKSsiSaBwwkL+9VoddVpu/Md4ofNRMOImwXc23ZIL61vLoyDfkl6m+7cNKgQoSSaQ7sRykdEuHE6Mu0V6xrIWVXmPo7KL7KqQ44IHPNZ+sk=
+	t=1706540050; cv=none; b=TUBTnU8hJvVdyFgmhtbliBEz6Dmr+7hNcjaEEFACmPjFdjeo//6g54W/+EcajRqmR9ZdewVBhyloFLGLmfwit4O0lhLpjfOKMuEIxYrtiwgfywut/9UxLnS4aricEuL7Ka1YrkHXK+SYVfh4L7UoNSQ/ItRvQz4n1Bw+pkw+htU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706540041; c=relaxed/simple;
-	bh=d5c1VRniPh4A9jfhAwhGkNcMlX1FllSlEWfc7NsDhaw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bWRlMmIMbzXXfpftqeRHL6pWluHUr0Wy73H0ucz/fVfwIygx53j9ANnanzPaw5rEtfnD5G+3G474zXAF7A5OLiESCM2qmQvjJyUwlb479ENY0337ZX0qq+2dg7sBy6jF0Ucj7qyv6MT2DaPutq5mhr+tE7oGtKTRkHhr1J1KHIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=oXsbplN+; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1706540050; c=relaxed/simple;
+	bh=TCOjIhCZ+EKfpk8ywioP7Uho+Pf8OFvys0J8lXO9xhw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AjrwJYFfu9nv43vbccYyFqsn2ps5V4YTZ1QqUobFiWIWHPZjCFxzftkshxdZZ4B/a0et+YLnuSvddG4ydfltC9+ClQyfyrydS0UAgWI42X3f8MhAKl9oPzUtjNMF/XO17s2OgtbmqzHoajqQ2qUgpddudT19ODJ95ZKpP8OWSRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=C8q/pmMZ; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -35,23 +35,23 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
 	Resent-Message-ID:In-Reply-To:References;
-	bh=mqz9hLBz81iSEMqEuKPudljkR2rtEieZcHN3QJALTMw=; t=1706540039; x=1707749639; 
-	b=oXsbplN+c/nmvvSsVljXCL/9Xs5BM6WRC1FCNuayx+I5nw0nb510CNN4K19UoPZp8Yi/wxnh3OA
-	zaG2a56VaO4BRHBtkZd6EFpaCtrekVYdGrGhpuvQipZ+BaXOtB+urv17q1KN51mcgSaC73WGIPvx6
-	7gUtDT7kwjndcj9Ca3/UOXqLvLYsME4TfF3QInpH1Pc8KadOtb8ENarVcGPZc7rUnjjDV/jL5+N8f
-	v/5IQcxqlsjW5261gik5vnZBq+WDClxf3LoeyDgeuLBOVI71h96jHzBTvocZsmDtshH0fDOKXezaL
-	dSjUx6jVJtuW79MQRxzBHfnnGn7d/Rr3qaqA==;
+	bh=8XL8jkUO+vnlYnABb9sAmsqhoLg/QQh+QfwYGm1J6NI=; t=1706540047; x=1707749647; 
+	b=C8q/pmMZJppNcgu0qk1LJeA0AVL5yN7NULkIZ/pkPKxi3X9KnDBsAKbqF8s0HDM008lPjAsblYl
+	0vU/g2h2dtKSaSRvqwyhlgJwOWMW5Uyf3oUADaRbUP1Y+bO8SseOlM0xWQyQjkJ9ygLBDTFwFnCbE
+	eCEw7rRcCtNmtXDTzu5N9QxEdB5uxuM20jlrxaMULqNTFo4uuRJi0TL/qFWmpiP2THgLeawbRaBkX
+	uZFG+ypcYDoaKXGDgAS3Xv2zNt++F8gImCAzb6VMD4GFsLVufs65OqoLqiZcUGB84LS2x5IpdAe7z
+	hjjNlP8pcgUNS3gQhXZ1WHdNhdy7fj7elZVw==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.97)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1rUT1I-00000004tM2-2aF3;
-	Mon, 29 Jan 2024 15:53:56 +0100
+	id 1rUT1Q-00000004tMO-0gZL;
+	Mon, 29 Jan 2024 15:54:04 +0100
 From: Johannes Berg <johannes@sipsolutions.net>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH] wifi: mac80211: set station RX-NSS on reconfig
-Date: Mon, 29 Jan 2024 15:53:55 +0100
-Message-ID: <20240129155354.98f148a3d654.I193a02155f557ea54dc9d0232da66cf96734119a@changeid>
+Subject: [PATCH] wifi: mac80211: fix driver debugfs for vif type change
+Date: Mon, 29 Jan 2024 15:54:02 +0100
+Message-ID: <20240129155402.7311a36ffeeb.I18df02bbeb685d4250911de5ffbaf090f60c3803@changeid>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -63,28 +63,71 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-When a station is added/reconfigured by userspace, e.g. a TDLS
-peer or a SoftAP client STA, rx_nss is currently not always set,
-so that it might be left zero. Set it up properly.
+If a driver implements the change_interface() method, we switch
+interface type without taking the interface down, but still will
+recreate the debugfs for it since it's a new type. As such, we
+should use the ieee80211_debugfs_recreate_netdev() function here
+to also recreate the driver's files, if it is indeed from a type
+change while up.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/mac80211/cfg.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/mac80211/debugfs_netdev.c | 4 ++--
+ net/mac80211/debugfs_netdev.h | 5 -----
+ net/mac80211/iface.c          | 2 +-
+ 3 files changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 489dd97f5172..321698012e12 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1869,6 +1869,8 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
- 					      sband->band);
+diff --git a/net/mac80211/debugfs_netdev.c b/net/mac80211/debugfs_netdev.c
+index dce5606ed66d..68596ef78b15 100644
+--- a/net/mac80211/debugfs_netdev.c
++++ b/net/mac80211/debugfs_netdev.c
+@@ -997,8 +997,8 @@ static void add_link_files(struct ieee80211_link_data *link,
  	}
- 
-+	ieee80211_sta_set_rx_nss(link_sta);
-+
- 	return ret;
  }
  
+-void ieee80211_debugfs_add_netdev(struct ieee80211_sub_if_data *sdata,
+-				  bool mld_vif)
++static void ieee80211_debugfs_add_netdev(struct ieee80211_sub_if_data *sdata,
++					 bool mld_vif)
+ {
+ 	char buf[10+IFNAMSIZ];
+ 
+diff --git a/net/mac80211/debugfs_netdev.h b/net/mac80211/debugfs_netdev.h
+index b226b1aae88a..a02ec0a413f6 100644
+--- a/net/mac80211/debugfs_netdev.h
++++ b/net/mac80211/debugfs_netdev.h
+@@ -11,8 +11,6 @@
+ #include "ieee80211_i.h"
+ 
+ #ifdef CONFIG_MAC80211_DEBUGFS
+-void ieee80211_debugfs_add_netdev(struct ieee80211_sub_if_data *sdata,
+-				  bool mld_vif);
+ void ieee80211_debugfs_remove_netdev(struct ieee80211_sub_if_data *sdata);
+ void ieee80211_debugfs_rename_netdev(struct ieee80211_sub_if_data *sdata);
+ void ieee80211_debugfs_recreate_netdev(struct ieee80211_sub_if_data *sdata,
+@@ -24,9 +22,6 @@ void ieee80211_link_debugfs_remove(struct ieee80211_link_data *link);
+ void ieee80211_link_debugfs_drv_add(struct ieee80211_link_data *link);
+ void ieee80211_link_debugfs_drv_remove(struct ieee80211_link_data *link);
+ #else
+-static inline void ieee80211_debugfs_add_netdev(
+-	struct ieee80211_sub_if_data *sdata, bool mld_vif)
+-{}
+ static inline void ieee80211_debugfs_remove_netdev(
+ 	struct ieee80211_sub_if_data *sdata)
+ {}
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index e4e7c0b38cb6..11c4caa4748e 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -1783,7 +1783,7 @@ static void ieee80211_setup_sdata(struct ieee80211_sub_if_data *sdata,
+ 	/* need to do this after the switch so vif.type is correct */
+ 	ieee80211_link_setup(&sdata->deflink);
+ 
+-	ieee80211_debugfs_add_netdev(sdata, false);
++	ieee80211_debugfs_recreate_netdev(sdata, false);
+ }
+ 
+ static int ieee80211_runtime_change_iftype(struct ieee80211_sub_if_data *sdata,
 -- 
 2.43.0
 
