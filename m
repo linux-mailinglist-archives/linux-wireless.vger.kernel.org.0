@@ -1,124 +1,97 @@
-Return-Path: <linux-wireless+bounces-2672-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2673-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88F898407C3
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 15:02:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CB8184090E
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 15:54:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2ECD1F26ED7
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 14:02:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5291A1F21441
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 14:54:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D440657C3;
-	Mon, 29 Jan 2024 14:02:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A14EF152E11;
+	Mon, 29 Jan 2024 14:53:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="kd9we4ei"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="qq2F45qQ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from forward502c.mail.yandex.net (forward502c.mail.yandex.net [178.154.239.210])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 552C8657BD;
-	Mon, 29 Jan 2024 14:02:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.210
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538945B5C1
+	for <linux-wireless@vger.kernel.org>; Mon, 29 Jan 2024 14:53:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706536935; cv=none; b=brwcNFxN2hC+Fssp5ewyBwc8fOfM7k3W6LbJlA89htQTxw9dDfvoe5K6i+Y7Dy6PuXJJUmDa7xcj+ZC2nFrCb10NGHs/MU0kptvsZONnPlVvi0Tv7XdhJKbSKjnzk/t5QaqL0/Fh8G+GqETNlh96Lnj74BhlqiJlVeP+70Snoew=
+	t=1706540037; cv=none; b=ala4usXmPPZEmS0pZJhgxOPeCFgOatznavQsjUYkJqpwiwamF5N/sASbe1ZSkOSL3TX3u6U7kNeFxJtdT+1h/WKEJ4x+syLejuvRuannonc+e3gDGaCHTxPxm0aD6FznhV59E0r0W2wI4pdEUqP5PV/QttSXB7dyYiTysJJ13Sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706536935; c=relaxed/simple;
-	bh=+VoVBN2iZqimRDp8AEtjDqCiyh8Yx8XdDbWDp0n2jVE=;
-	h=Message-ID:Date:MIME-Version:To:References:From:Cc:Subject:
-	 In-Reply-To:Content-Type; b=tjqic8G0nzRhFEnVzO25xr1wwrm3E5w168K16Sd0ZDIK8z6/yEXpEXXFp+Lo+Bodotk0M9EmefA9byrWLBdCugw0t6sjOlN+kJ383Op/hStcivUSJK7n2QtHygeA4iNb1DOTJE8Q2ecEmGmXsaAiOna+HylBwOhC+6ZhOUIUP2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=kd9we4ei; arc=none smtp.client-ip=178.154.239.210
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
-Received: from mail-nwsmtp-smtp-production-main-45.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-45.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:129d:0:640:2432:0])
-	by forward502c.mail.yandex.net (Yandex) with ESMTP id 2585260FCB;
-	Mon, 29 Jan 2024 16:55:28 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-45.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id QtYC59BOqSw0-34llu7cb;
-	Mon, 29 Jan 2024 16:55:27 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1706536527; bh=+VoVBN2iZqimRDp8AEtjDqCiyh8Yx8XdDbWDp0n2jVE=;
-	h=In-Reply-To:Cc:To:References:From:Subject:Date:Message-ID;
-	b=kd9we4eiJPi8VQTaK4wys6z5O+WS/jmzOGlufs6QuWtjF2CHYYsl7+3q/kEP9yIsX
-	 Ty0X6XvoGGKyhFLPN6AsuvpLJLEpaDnS0t7jL6JcGZw/9vzvtE+85hKZjuqOSdk1f9
-	 RkQGTGekSWU8GxSRPbc26zBqXJfB84qef62yqKk0=
-Authentication-Results: mail-nwsmtp-smtp-production-main-45.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-Message-ID: <59378600-8d36-4958-8882-fa693fcad4d6@yandex.ru>
-Date: Mon, 29 Jan 2024 16:55:26 +0300
+	s=arc-20240116; t=1706540037; c=relaxed/simple;
+	bh=k22XOvcDReIa0xvF18gIGGIHGY7/s9wqDxWvobbUZeM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TZ3V0G1EP6S3ySIA0LfYAzN1zVVTYmDcAKKKd299USaRYuxFNNmt/8OQPyKmk7xnwhL9aAy71qMLbV4LVigHZz6Y90JhzE+cyeOYM5QjrdvRj2qH4v/K0PP5rYB4Vju45Hk6++8k+f2NGELALsOLm6Usjp1RQLj7BWPafQsQSF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=qq2F45qQ; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=1xc7kEElmq2lH6BilhyWFZy2Gf07+UlqKuqFPd/00Ss=; t=1706540034; x=1707749634; 
+	b=qq2F45qQ3cukoHvjZit26RqaYex9Y3UBJIWIItYC4t7SaH20QdVdZ68CXnihQpMGsZTiT0fxwwn
+	Ls1Z3tW3s0p1X5lGEyCEdgSKMLuyUdGFbCP4RUnKO22U37HRUS0Zb/w/seT7Blfvw8KyerdTOVqmt
+	NxbVkaC45DVOgNtgr5ViHw1DHR+VQu75VGhy7r+7MsdAo4CeX3ZAvEqRNfCDs9ZMBx15/POdwk+aV
+	yy8qWP1Fo2EzwtlJVqAx35GjbKCn88gdeg7183kHesA/23bT5KLC+C7HcqL/nx3RKE38o5jkfLTVZ
+	F3E67OB872o0kq4LViQ6sWKbLYTMDlspbfHg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rUT1C-00000004tLt-3Ar4;
+	Mon, 29 Jan 2024 15:53:50 +0100
+From: Johannes Berg <johannes@sipsolutions.net>
+To: linux-wireless@vger.kernel.org
+Cc: Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH] wifi: mac80211: fix RCU use in TDLS fast-xmit
+Date: Mon, 29 Jan 2024 15:53:48 +0100
+Message-ID: <20240129155348.8a9c0b1e1d89.I553f96ce953bb41b0b877d592056164dec20d01c@changeid>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: =?UTF-8?Q?Ahelenia_Ziemia=C5=84ska?= <nabijaczleweli@nabijaczleweli.xyz>
-References: <xebnh5c5rnfequ6khyhieugefrtt5mdftr6rsw522ocpg3yvln@tarta.nabijaczleweli.xyz>
-From: Dmitry Antipov <dmantipov@yandex.ru>
-Autocrypt: addr=dmantipov@yandex.ru; keydata=
- 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
- tx98MCutXbJWn55RtnVKbpIiMfBrcB8=
-Cc: Brian Norris <briannorris@chromium.org>, Kalle Valo <kvalo@kernel.org>,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: memcpy: detected field-spanning write (size 101) of single field
- "ext_scan->tlv_buffer" at drivers/net/wireless/marvell/mwifiex/scan.c:2251
- (size 1)
-In-Reply-To: <xebnh5c5rnfequ6khyhieugefrtt5mdftr6rsw522ocpg3yvln@tarta.nabijaczleweli.xyz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 8bit
 
-T24gMS8yNi8yNCAyMjo0NywgQWhlbGVuaWEgWmllbWlhxYRza2Egd3JvdGU6DQoNCj4gWyAg
-IDQxLjMxNDYzNF0gbWVtY3B5OiBkZXRlY3RlZCBmaWVsZC1zcGFubmluZyB3cml0ZSAoc2l6
-ZSAxMDEpIG9mIHNpbmdsZSBmaWVsZCAiZXh0X3NjYW4tPnRsdl9idWZmZXIiIGF0IGRyaXZl
-cnMvbmV0L3dpcmVsZXNzL21hcnZlbGwvbXdpZmlleC9zY2FuLmM6MjI1MSAoc2l6ZSAxKQ0K
-DQpTaG9ydCBhbnN3ZXI6IGlmIHlvdXIgZGV2aWNlIHdvcmtzIGFzIGV4cGVjdGVkLCBtb3N0
-IGxpa2VseSB5b3UgY2FuIGlnbm9yZSB0aGlzLg0KDQpMb25nIGFuc3dlcjogdGhpcyBpcyBj
-YXVzZWQgYnkgdXNpbmcgQ09ORklHX0ZPUlRJRllfU09VUkNFIHdpdGggb2xkIHN0eWxlIG9u
-ZS1lbGVtZW50DQooaW4gdGhpcyBwYXJ0aWN1bGFyIGNhc2UpIG9yIHplcm8tbGVuZ3RoIGFy
-cmF5IG1lbWJlcnMuIFNlZSAiWmVyby1sZW5ndGggYW5kIG9uZS1lbGVtZW50DQphcnJheXMi
-IGF0IGh0dHBzOi8vd3d3Lmtlcm5lbC5vcmcvZG9jL2h0bWwvbGF0ZXN0L3Byb2Nlc3MvZGVw
-cmVjYXRlZC5odG1sLiBVbmZvcnR1bmF0ZWx5DQptd2lmaWV4IGlzIG5vdCBjb21wbGV0ZWx5
-IG1pZ3JhdGVkIHRvIEM5OS1zdHlsZSBmbGV4aWJsZSBhcnJheSBtZW1iZXJzOyBpZiB5b3Un
-cmUgYnJhdmUNCmVub3VnaCwgeW91IGNhbiBoZWxwIHRoZSBtYWludGFpbmVycyBieSB0cnlp
-bmcgdGhpczoNCg0KLS0tIGxpbnV4LTYuNi4xMS9kcml2ZXJzL25ldC93aXJlbGVzcy9tYXJ2
-ZWxsL213aWZpZXgvZncuaAkyMDI0LTAxLTEwIDE5OjE3OjAyLjAwMDAwMDAwMCArMDMwMA0K
-KysrIGxpbnV4LTYuNi4xMS9kcml2ZXJzL25ldC93aXJlbGVzcy9tYXJ2ZWxsL213aWZpZXgv
-ZncuaAkyMDI0LTAxLTI5IDE0OjIxOjU1LjU3NDI4MDcxOSArMDMwMA0KQEAgLTE1ODYsNyAr
-MTU4Niw3IEBADQoNCiAgc3RydWN0IGhvc3RfY21kX2RzXzgwMl8xMV9zY2FuX2V4dCB7DQog
-IAl1MzIgICByZXNlcnZlZDsNCi0JdTggICAgdGx2X2J1ZmZlclsxXTsNCisJdTggICAgdGx2
-X2J1ZmZlcltdOw0KICB9IF9fcGFja2VkOw0KDQogIHN0cnVjdCBtd2lmaWV4X2llX3R5cGVz
-X2Jzc19tb2RlIHsNCg0KRG1pdHJ5DQoNCg==
+From: Johannes Berg <johannes.berg@intel.com>
+
+This looks up the link under RCU protection, but isn't
+guaranteed to actually have protection. Fix that.
+
+Fixes: 8cc07265b691 ("wifi: mac80211: handle TDLS data frames with MLO")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ net/mac80211/tx.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 68a48abc7287..e448ab338448 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -3100,10 +3100,11 @@ void ieee80211_check_fast_xmit(struct sta_info *sta)
+ 			/* DA SA BSSID */
+ 			build.da_offs = offsetof(struct ieee80211_hdr, addr1);
+ 			build.sa_offs = offsetof(struct ieee80211_hdr, addr2);
++			rcu_read_lock();
+ 			link = rcu_dereference(sdata->link[tdls_link_id]);
+-			if (WARN_ON_ONCE(!link))
+-				break;
+-			memcpy(hdr->addr3, link->u.mgd.bssid, ETH_ALEN);
++			if (!WARN_ON_ONCE(!link))
++				memcpy(hdr->addr3, link->u.mgd.bssid, ETH_ALEN);
++			rcu_read_unlock();
+ 			build.hdr_len = 24;
+ 			break;
+ 		}
+-- 
+2.43.0
+
 
