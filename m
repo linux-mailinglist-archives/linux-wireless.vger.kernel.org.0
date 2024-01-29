@@ -1,154 +1,137 @@
-Return-Path: <linux-wireless+bounces-2698-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2699-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC4A68412CE
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 19:55:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EF3C8412DE
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 19:57:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0867E1C232C0
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 18:55:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C4B22892F2
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 18:57:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1305C179AB;
-	Mon, 29 Jan 2024 18:55:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F6DD4205B;
+	Mon, 29 Jan 2024 18:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pq4arfD+"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="KYAOVvMP"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5507712E47
-	for <linux-wireless@vger.kernel.org>; Mon, 29 Jan 2024 18:54:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 781742E858
+	for <linux-wireless@vger.kernel.org>; Mon, 29 Jan 2024 18:57:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706554500; cv=none; b=Uu20iCg7z/1kQuTrRFNitixEhTy7PYW0pvNkYYiZqRAN/rfihAgpPQile+oPipDNeZF5grdIDmDFXkbUywW22DGnBd4qrS+DxibkWVPro5R0/hQUtXMCrvIzW0w8WMPkRaqiQ2OTt17JAplAJA62/1cgBxZC8Xl99kuP88MrHFE=
+	t=1706554657; cv=none; b=W2DSaB0opBzIZsXIWZcS9jheIda7VAzkFf1o2gn15GTO46k2EbKRxxlB/7VZB5JOKcqMHzuxfoCDCyuCbaNnoZcIJkX9RLCqoHMnORDi7aLsDOjxf4AxmLU8Mo1VcCEey8c/ER1SlIkGyjqyoP7u3CesHkNlQKN7Z6mWD4xB4Lo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706554500; c=relaxed/simple;
-	bh=okNTDaAi1oU24Wv25v/AWVdvvAQwPsSE8NKB4bJHl8o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WhoFO8Vtzlhd4o5Y8eHpkfIMSdNDBKPaZ9BNtAJAjHwyaoiXPdnLx7wDmw/y17HAQqHFC6SiwEX/nEe1ZZDQarmi5BGp9kzPYf85icrdLbl16w0+EKyfy+LcSBqsASe6HQ1kyDbJnB4371hP82FTWBVqIjRX0enlJq2h+UNC1n0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Pq4arfD+; arc=none smtp.client-ip=209.85.219.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-68009cb4669so24936446d6.1
-        for <linux-wireless@vger.kernel.org>; Mon, 29 Jan 2024 10:54:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706554497; x=1707159297; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ouOLO2+L3N6DbaX5OPZoh5ZOu4yXD4sALxVz9wwuB+k=;
-        b=Pq4arfD+RYcGc9rZvdEiFuV3A2j0QuagN9/wqKwtYTQARQS3szEX3WcGNs9atlJSNH
-         mNvgsA4v31rrdr2hPCaAtFv10sKx8XkVSiqzDy7DngGEFv1u5qaQd8WHeGEBRj4BzxWX
-         I+u5943lR+dlHQSv4oMaI+caIekL8kvCHgVI1SXZoJHHwzX4jlp51+3F6hABedAlZ/+8
-         xmrWO2wFHZKxfAw2fOHJe7MbiBBwdiE3eVAhgtFSdMUl9hEwTham9CcDbi6YBN3x2JJw
-         HyJo0mj/sRzTOonhL4O2lYaSX5yS82NobqI24dfG5rSL9/KETvY0tBeZKaAo9XC7ZtRd
-         2Zaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706554497; x=1707159297;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ouOLO2+L3N6DbaX5OPZoh5ZOu4yXD4sALxVz9wwuB+k=;
-        b=qVyx01Bs4RErwBsC2JxrbU6ESkbQMiISjUbPkCVx5X9tNdGNKuu3Y4OPSmX3tPc0Mm
-         ekj0SfYAd15t0khBO8nXaPYyAAnndc1SG316YxgumhWTVn91ptbvply2xnLNVC4tjyvV
-         Mfh5KjGvllpvLTKjnvZxx/E9dnraUPvLYZl7zy1xY9PW14PpWNZt4cNjyAYkn4DfHHiJ
-         riM/PuWf1N3DfqSp5eQ8LDHqGZiBm73lzb2tKjxmDIatD56lHxC5BQMTnqkCvrhlw5HG
-         4cktpCFcExHdLrCN4bonyHUQwAErCj5iF4Yq1eFwwJlz4lKkM+Ss+nHrHN+6gFkeW4Wd
-         YuDw==
-X-Gm-Message-State: AOJu0YysS4tjHNE234XHqquLB6LGx2TPYs5XIGadwlkRTTzvgzAYUvfb
-	MTW6gQY5izSUeE9/XWDHzSwyIn3NXrmFSlzaarw/bIbXCg377cam
-X-Google-Smtp-Source: AGHT+IGypV+j40jEGbX3D7XA9TgFIvXIwEY4QXQ0QT/in/TAjD25yASmOFL9S5pwa4okMF02tOb9wA==
-X-Received: by 2002:a05:6214:d6a:b0:685:7e91:b423 with SMTP id 10-20020a0562140d6a00b006857e91b423mr7672345qvs.11.1706554497041;
-        Mon, 29 Jan 2024 10:54:57 -0800 (PST)
-Received: from [10.102.4.159] ([208.195.13.130])
-        by smtp.gmail.com with ESMTPSA id nc7-20020a0562142dc700b00686ad7daabesm3678323qvb.28.2024.01.29.10.54.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Jan 2024 10:54:56 -0800 (PST)
-Message-ID: <415dd799-d824-4b0d-8c9a-60f67ff3f0b8@gmail.com>
-Date: Mon, 29 Jan 2024 10:54:54 -0800
+	s=arc-20240116; t=1706554657; c=relaxed/simple;
+	bh=mAyj1AnNstZWlAxNnE5am/IrIUiVpnWniUBuAWVylsg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qBrfUxe0VTs12+TiHPJJ0HiBddAsNoz0SloUim+2GcpytP8uYalr6hBWR8W7fqLhZmvF/a2aMfxFrHvLgzFZMV04Soz/1+wgzwSr5qgXujRSARQ58v36jOHjvAuJ57u5iDahirMW7NuE2FVf0J68EU5MkSNJnG6kbqTHH/Y0M3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=KYAOVvMP; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=gHmm+L/NtYoI6llvdohEa2VSDLteuz/GJ6OK5SJXHro=; t=1706554655; x=1707764255; 
+	b=KYAOVvMP9mWQd8Va5Zg4Z0OBFnErlkXG3SyM8AjFkbiGs6rsfleNvn5ZOVFs1/XLTlfN29fJ6yP
+	84BTBWN5CVjHxDTY3z7/nGqTB1Y4PlIqc82X4KnEkF3/At87tM1CF7WW/diuUeGdEHS20f7hWvEen
+	cP16HXyIUC1t+KOcxFSfLruX80n1/hs2RDOHcNPDG7Q+YY/euc4kpdMq/UamEVzfVS7pTnuxmYiR/
+	1+wN8w2BA1Nv8EHvG0kywqnLS+aXU+jpxRS77XZVsOzdWv1juRnZFhRd6kq5AW8/ckp1V+eGcQcsM
+	9+bKbaxy8TRgKFjhYpVdJc1Knh4x3r2GVhig==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rUWp2-00000004zqv-0QWR;
+	Mon, 29 Jan 2024 19:57:32 +0100
+From: Johannes Berg <johannes@sipsolutions.net>
+To: linux-wireless@vger.kernel.org
+Cc: Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH] wifi: mac80211: fix unsolicited broadcast probe config
+Date: Mon, 29 Jan 2024 19:57:30 +0100
+Message-ID: <20240129195729.965b0740bf80.I6bc6f5236863f686c17d689be541b1dd2633c417@changeid>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] wifi: ath11k: fix connection failure due to
- unexpected peer delete
-Content-Language: en-US
-To: Baochen Qiang <quic_bqiang@quicinc.com>, ath11k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-References: <20240123025700.2929-1-quic_bqiang@quicinc.com>
-From: James Prestwood <prestwoj@gmail.com>
-In-Reply-To: <20240123025700.2929-1-quic_bqiang@quicinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi Baochen,
+From: Johannes Berg <johannes.berg@intel.com>
 
-On 1/22/24 6:56 PM, Baochen Qiang wrote:
-> Currently ath11k_mac_op_unassign_vif_chanctx() deletes peer but
-> ath11k_mac_op_assign_vif_chanctx() doesn't create it. This results in
-> connection failure if MAC80211 calls drv_unassign_vif_chanctx() and
-> drv_assign_vif_chanctx() during AUTH and ASSOC, see below log:
->
-> [  102.372431] wlan0: authenticated
-> [  102.372585] ath11k_pci 0000:01:00.0: wlan0: disabling HT/VHT/HE as WMM/QoS is not supported by the AP
-> [  102.372593] ath11k_pci 0000:01:00.0: mac chanctx unassign ptr ffff895084638598 vdev_id 0
-> [  102.372808] ath11k_pci 0000:01:00.0: WMI vdev stop id 0x0
-> [  102.383114] ath11k_pci 0000:01:00.0: vdev stopped for vdev id 0
-> [  102.384689] ath11k_pci 0000:01:00.0: WMI peer delete vdev_id 0 peer_addr 20:e5:2a:21:c4:51
-> [  102.396676] ath11k_pci 0000:01:00.0: htt peer unmap vdev 0 peer 20:e5:2a:21:c4:51 id 3
-> [  102.396711] ath11k_pci 0000:01:00.0: peer delete resp for vdev id 0 addr 20:e5:2a:21:c4:51
-> [  102.396722] ath11k_pci 0000:01:00.0: mac removed peer 20:e5:2a:21:c4:51  vdev 0 after vdev stop
-> [  102.396780] ath11k_pci 0000:01:00.0: mac chanctx assign ptr ffff895084639c18 vdev_id 0
-> [  102.400628] wlan0: associate with 20:e5:2a:21:c4:51 (try 1/3)
-> [  102.508864] wlan0: associate with 20:e5:2a:21:c4:51 (try 2/3)
-> [  102.612815] wlan0: associate with 20:e5:2a:21:c4:51 (try 3/3)
-> [  102.720846] wlan0: association with 20:e5:2a:21:c4:51 timed out
->
-> The peer delete logic in ath11k_mac_op_unassign_vif_chanctx() is
-> introduced by commit b4a0f54156ac ("ath11k: move peer delete after
-> vdev stop of station for QCA6390 and WCN6855") to fix firmware
-> crash issue caused by unexpected vdev stop/peer delete sequence.
->
-> Actually for a STA interface peer should be deleted in
-> ath11k_mac_op_sta_state() when STA's state changes from
-> IEEE80211_STA_NONE to IEEE80211_STA_NOTEXIST, which also coincides
-> with current peer creation design that peer is created during
-> IEEE80211_STA_NOTEXIST -> IEEE80211_STA_NONE transition. So move
-> peer delete back to ath11k_mac_op_sta_state(), also stop vdev before
-> deleting peer to fix the firmware crash issue mentioned there. In
-> this way the connection failure mentioned here is also fixed.
->
-> Also do some cleanups in patch "wifi: ath11k: remove invalid peer
-> create logic", and refactor in patches "wifi: ath11k: rename
-> ath11k_start_vdev_delay()" and "wifi: ath11k: avoid forward declaration
-> of ath11k_mac_start_vdev_delay()".
->
-> Tested this patch set using QCA6390 and WCN6855 on both STA and SAP
-> interfaces. Basic connection and ping work well.
+There's a bug in ieee80211_set_unsol_bcast_probe_resp(), it tries
+to return BSS_CHANGED_UNSOL_BCAST_PROBE_RESP (which has the value
+1<<31) in an int, which makes it negative and considered an error.
+Fix this by passing the changed flags to set separately.
 
-I wanted to let you know I'm seeing similar behavior in my own testing, 
-with these patches applied. Granted I've hacked things up quite a bit 
-but it appears to happen after a firmware crash. It may be related to my 
-own changes of course, but I've connected and created/started a monitor 
-vdev, then wait. At some point the firmware crashes likely due to my 
-botched patches, but once it starts up again I see this same timeout 
-behavior before a retry which connects successfully.
+Fixes: 3b1c256eb4ae ("wifi: mac80211: fixes in FILS discovery updates")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ net/mac80211/cfg.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-> Baochen Qiang (4):
->    wifi: ath11k: remove invalid peer create logic
->    wifi: ath11k: rename ath11k_start_vdev_delay()
->    wifi: ath11k: avoid forward declaration of
->      ath11k_mac_start_vdev_delay()
->    wifi: ath11k: fix connection failure due to unexpected peer delete
->
->   drivers/net/wireless/ath/ath11k/mac.c | 564 +++++++++++++-------------
->   1 file changed, 288 insertions(+), 276 deletions(-)
->
->
-> base-commit: 8ff464a183f92836d7fd99edceef50a89d8ea797
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 321698012e12..327682995c92 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -5,7 +5,7 @@
+  * Copyright 2006-2010	Johannes Berg <johannes@sipsolutions.net>
+  * Copyright 2013-2015  Intel Mobile Communications GmbH
+  * Copyright (C) 2015-2017 Intel Deutschland GmbH
+- * Copyright (C) 2018-2022 Intel Corporation
++ * Copyright (C) 2018-2024 Intel Corporation
+  */
+ 
+ #include <linux/ieee80211.h>
+@@ -987,7 +987,8 @@ static int
+ ieee80211_set_unsol_bcast_probe_resp(struct ieee80211_sub_if_data *sdata,
+ 				     struct cfg80211_unsol_bcast_probe_resp *params,
+ 				     struct ieee80211_link_data *link,
+-				     struct ieee80211_bss_conf *link_conf)
++				     struct ieee80211_bss_conf *link_conf,
++				     u64 *changed)
+ {
+ 	struct unsol_bcast_probe_resp_data *new, *old = NULL;
+ 
+@@ -1011,7 +1012,8 @@ ieee80211_set_unsol_bcast_probe_resp(struct ieee80211_sub_if_data *sdata,
+ 		RCU_INIT_POINTER(link->u.ap.unsol_bcast_probe_resp, NULL);
+ 	}
+ 
+-	return BSS_CHANGED_UNSOL_BCAST_PROBE_RESP;
++	*changed |= BSS_CHANGED_UNSOL_BCAST_PROBE_RESP;
++	return 0;
+ }
+ 
+ static int ieee80211_set_ftm_responder_params(
+@@ -1450,10 +1452,9 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
+ 
+ 	err = ieee80211_set_unsol_bcast_probe_resp(sdata,
+ 						   &params->unsol_bcast_probe_resp,
+-						   link, link_conf);
++						   link, link_conf, &changed);
+ 	if (err < 0)
+ 		goto error;
+-	changed |= err;
+ 
+ 	err = drv_start_ap(sdata->local, sdata, link_conf);
+ 	if (err) {
+@@ -1525,10 +1526,9 @@ static int ieee80211_change_beacon(struct wiphy *wiphy, struct net_device *dev,
+ 
+ 	err = ieee80211_set_unsol_bcast_probe_resp(sdata,
+ 						   &params->unsol_bcast_probe_resp,
+-						   link, link_conf);
++						   link, link_conf, &changed);
+ 	if (err < 0)
+ 		return err;
+-	changed |= err;
+ 
+ 	if (beacon->he_bss_color_valid &&
+ 	    beacon->he_bss_color.enabled != link_conf->he_bss_color.enabled) {
+-- 
+2.43.0
+
 
