@@ -1,82 +1,144 @@
-Return-Path: <linux-wireless+bounces-2856-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2857-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAB46842F62
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 23:09:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8C1884318B
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jan 2024 00:47:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97091284A12
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 22:09:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 761C8282877
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 23:47:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2A0A7D3FE;
-	Tue, 30 Jan 2024 22:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DE58762D6;
+	Tue, 30 Jan 2024 23:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hauke-m.de header.i=@hauke-m.de header.b="AZfKl1Cl"
+	dkim=pass (2048-bit key) header.d=nabijaczleweli.xyz header.i=@nabijaczleweli.xyz header.b="lT1YBQ/U"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+Received: from tarta.nabijaczleweli.xyz (tarta.nabijaczleweli.xyz [139.28.40.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B14F17D3F2;
-	Tue, 30 Jan 2024 22:09:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A1087EEE4;
+	Tue, 30 Jan 2024 23:47:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.28.40.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706652574; cv=none; b=QNP/sC7QSRlNdjJ0kxhLJxGm0wJWFNdJQx3DDEtCEqFNWkud+TsOjh7gnDtMLJYqHm5beR3DOxl31JCuAeaf+GDbUQJRD3W2QQOzurJlWPVaL7rrT7okWWJFXj9zONmC/Jz0JqCyK4qbuVAWzgNiB2ChpuNHGYASJfjTcD4JSQo=
+	t=1706658432; cv=none; b=tMtpNrLUIUtwrt0DCGp3MglmRA9p+XuDtGT4PWN8BF+7IVORb0ZY1gq4Pyj5zKQl1Q1wIi+p3CcaJ4Ygyba0Yey2lstNfZ3xnp0iD2s0jVS2l7L2uiS28nSNWZqCr5CCZb1jMa4/4iolYP2/eE4ic+XR1QofLmLu/pEslJj6ViA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706652574; c=relaxed/simple;
-	bh=FiA3NZiRrJyeN92CXtbS7FCHmwseVMJK5GqHs0nMFpw=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=bOBVyUGpWG9+8JaDDLTVN1qj8uUtqufuTOpA3P8Gfh5YuYLOYl33RX6xS6rcUcNji2HWHkpcuk37+nC8TQ+WL+RZI+FO4oPwODIcH/TvM+6VI9ED3gGibmkbFbqHoItfy6ujdQsXVBWjQDznp/F3iSteWsHxDP92L+gedwzqg2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hauke-m.de; spf=pass smtp.mailfrom=hauke-m.de; dkim=pass (2048-bit key) header.d=hauke-m.de header.i=@hauke-m.de header.b=AZfKl1Cl; arc=none smtp.client-ip=80.241.56.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hauke-m.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hauke-m.de
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4TPfTZ6Cl8z9sV0;
-	Tue, 30 Jan 2024 23:09:22 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hauke-m.de; s=MBO0001;
-	t=1706652562;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=jEtN4ve+vVsn7PlNJhk+nSDskhUqzXKbr5NjxzzGEc4=;
-	b=AZfKl1ClCnekmU3l+oaZxCuTc0EzgKq4LgKAwGI/ulfAB3tonJhU5V1+/A558LrfKtmK5T
-	PYSTImhUkAtgdDz8Pjp4jCLG4QxRPqnHYtBBpdbQ3zcwmh5qSoWfzO/oVUxYTVFz7ChE+/
-	9wwYglTweER2XKAWieLOdvM7zV/L/aUXDhZ0Db9tkAg34hQMu8tZ08a3EHCUA+aVpQ9LXq
-	tR6CZZ21VR5GQBRADHhSmhhLKOIDIJczeMwcgX3s9/h+Cv0cGUevFZaJJqgz1jYijGcJ5J
-	NDGfh0rhG5xRsePUtl8dyB+gvIiymBHRLMbEKRWWXE3Mk1seM/6jqcS9fF7IHQ==
-Message-ID: <14959b08-35e3-4a86-acb8-04ee0a218271@hauke-m.de>
-Date: Tue, 30 Jan 2024 23:09:22 +0100
+	s=arc-20240116; t=1706658432; c=relaxed/simple;
+	bh=TtJKe7IslZBATrq1R2hfwR9T+PMEE1xQur0Wd4Vxjso=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Aij52mYZ2qcqKF2L1nqhLO2hqqtxKC6O/bPPhf/PnhuVRJZZ3SBYf89EKVRyLg/NAwDgso2ebLzKEfs9iu3QJ0KIUzgICKLt1pq2nZ8I+BGrZjrvNg4E3cl7zoH2NSZC6pzEjtbM0CxY4BJS2AscCLuSkzT7aKgOH21jYYqlkTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nabijaczleweli.xyz; spf=pass smtp.mailfrom=nabijaczleweli.xyz; dkim=pass (2048-bit key) header.d=nabijaczleweli.xyz header.i=@nabijaczleweli.xyz header.b=lT1YBQ/U; arc=none smtp.client-ip=139.28.40.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nabijaczleweli.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabijaczleweli.xyz
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nabijaczleweli.xyz;
+	s=202305; t=1706658418;
+	bh=TtJKe7IslZBATrq1R2hfwR9T+PMEE1xQur0Wd4Vxjso=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lT1YBQ/UMZxqWaO2caLxmgbMU/tKeQaNZQ2Tknv2LQkv5C6lUK18YcoF6PVG7Qahj
+	 rqyUBJoPnMyPyYS3sgjXCi2DoO+shUvWDlkDdfJzvp3DVHe2iUoTRjBJAyYhq/VPjn
+	 Qxf3HUazGiUtniv5JkZZ1Cn1+DTdbKZnrA3b9tySJbwIvOUfITzfXRzpbagz0J2Ia0
+	 hNqgMcji/X4GXOvncwj53Q1nO3V0AK2txx8NaO2z4eDAXZaai7XkJmBNn01eLHEcIG
+	 erItKSyjGikq5y1zU+i1WAFdKl+9b+JMDultk7HLdjDVp5ePBBXjh0t7eGuzfEEs9j
+	 fLPXYS0SonjrQ==
+Received: from tarta.nabijaczleweli.xyz (unknown [192.168.1.250])
+	by tarta.nabijaczleweli.xyz (Postfix) with ESMTPSA id 3762E1390;
+	Wed, 31 Jan 2024 00:46:58 +0100 (CET)
+Date: Wed, 31 Jan 2024 00:46:58 +0100
+From: 
+	Ahelenia =?utf-8?Q?Ziemia=C5=84ska?= <nabijaczleweli@nabijaczleweli.xyz>
+To: Dmitry Antipov <dmantipov@yandex.ru>
+Cc: Brian Norris <briannorris@chromium.org>, Kalle Valo <kvalo@kernel.org>, 
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: memcpy: detected field-spanning write (size 101) of single field
+ "ext_scan->tlv_buffer" at drivers/net/wireless/marvell/mwifiex/scan.c:2251
+ (size 1)
+Message-ID: <dygt52o6wj4u7a2b4k7uew2g2hym7j5bxyavkafjk4vue6b2ue@tarta.nabijaczleweli.xyz>
+References: <xebnh5c5rnfequ6khyhieugefrtt5mdftr6rsw522ocpg3yvln@tarta.nabijaczleweli.xyz>
+ <59378600-8d36-4958-8882-fa693fcad4d6@yandex.ru>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Language: en-US
-To: backports@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org
-From: Hauke Mehrtens <hauke@hauke-m.de>
-Subject: wireless backports 5.15.148-1 released
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="beew2a2gwphvoerz"
+Content-Disposition: inline
+In-Reply-To: <59378600-8d36-4958-8882-fa693fcad4d6@yandex.ru>
+User-Agent: NeoMutt/20231103
 
-Hi
 
-backports-5.15.148-1 was released. This is based on Linux 5.15.148.
-https://cdn.kernel.org/pub/linux/kernel/projects/backports/stable/v5.15.148/backports-5.15.148-1.tar.xz
+--beew2a2gwphvoerz
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-There is now a updated wiki page with the releases:
-https://backports.wiki.kernel.org/index.php/Releases
+On Mon, Jan 29, 2024 at 04:55:26PM +0300, Dmitry Antipov wrote:
+> On 1/26/24 22:47, Ahelenia Ziemia=C5=84ska wrote:
+> > [   41.314634] memcpy: detected field-spanning write (size 101) of sing=
+le field "ext_scan->tlv_buffer" at drivers/net/wireless/marvell/mwifiex/sca=
+n.c:2251 (size 1)
+> Short answer: if your device works as expected, most likely you can ignor=
+e this.
+It does.
 
-The source code can be found here:
-https://git.kernel.org/cgit/linux/kernel/git/backports/backports.git/
+> if you're brave
+> enough, you can help the maintainers by trying this:
+> --- linux-6.6.11/drivers/net/wireless/marvell/mwifiex/fw.h	2024-01-10 19:=
+17:02.000000000 +0300
+> +++ linux-6.6.11/drivers/net/wireless/marvell/mwifiex/fw.h	2024-01-29 14:=
+21:55.574280719 +0300
+> @@ -1586,7 +1586,7 @@
+>=20
+>  struct host_cmd_ds_802_11_scan_ext {
+>  	u32   reserved;
+> -	u8    tlv_buffer[1];
+> +	u8    tlv_buffer[];
+>  } __packed;
+>=20
+>  struct mwifiex_ie_types_bss_mode {
 
-I am planning to work on backprots based on kernel 6.1 and 6.6. In this 
-process I am planning to drop support for kernel < 4.19 from backports 
-based on kernel 6.1 and later.
+Tested-by: Ahelenia Ziemia=C5=84ska <nabijaczleweli@nabijaczleweli.xyz>
 
-Hauke
+That works and makes the warning go away for me on 6.6.11 =E2=80=92
+now all mwifiex-related log is confined to
+  mwifiex_sdio mmc2:0001:1: firmware: direct-loading firmware mrvl/sd8897_u=
+apsta.bin
+  mwifiex_sdio mmc2:0001:1: WLAN is not the winner! Skip FW dnld
+  mwifiex_sdio mmc2:0001:1: WLAN FW is active
+  mwifiex_sdio mmc2:0001:1: Bad HW revision detected, disabling deep sleep
+  mwifiex_sdio mmc2:0001:1: info: MWIFIEX VERSION: mwifiex 1.0 (15.68.19.p5=
+4)=20
+  mwifiex_sdio mmc2:0001:1: driver_version =3D mwifiex 1.0 (15.68.19.p54)=
+=20
+  mwifiex_sdio mmc2:0001:1: info: trying to associate to bssid de:0d:17:ad:=
+84:d9
+  mwifiex_sdio mmc2:0001:1: info: associated to bssid de:0d:17:ad:84:d9 suc=
+cessfully
+  mwifiex_sdio mmc2:0001:1: event: unknown event id: 0x79
+
+Thanks!
+
+--beew2a2gwphvoerz
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEfWlHToQCjFzAxEFjvP0LAY0mWPEFAmW5im4ACgkQvP0LAY0m
+WPE2FhAAmuiZssrpyDGpJhDcFCPtMSd1BFfcAG9mw9/fEkMZYwlMqfcw5I4gV942
+uLVLOaYHkbwLOXg3l2g5YatSlcHUNUL4TWB34lkMOQEeNzfYJBwItMEmRkW0XmNK
+2+dh3MmzasAXhWLBeVPfRDlPAvRE0EAoCSfJZP9tRNlm0EWLkiWqdNUp+xJoKz/E
+HfF5bFJWsklYFnTqLGZ6/nFGSIdQbhRcfZPzwFXx4WxiFu3RhG6qqDm2YmsFg/Td
+Qst3ACHLJa4AEOksSLLBLVMAqBBOSG2jccQAo0iRkBrM1E0j1V6coaiov2fi+I0e
+mCRo2nlUyfy9Bd/fIB1Rq5Ba9ihHbo/KxUtEOrWENdD4i6w0raX4520uTEYxwxBn
+yRLheY3ASALDLJR7e5jT3wQhWFCJ2oVcwmocELw7MWiKphyuRpxqTHaeCqgtKdJA
+ulaG1CC+dHGGRHZrJNziZvU6l1MXnS8//mXmS7eJk7mR8bgnMTGgMLtfBwK8udPM
+eeTJ6dcLecxg3U5cL89N39mDJkEHwaRnWNfdNWU74uFA41IaSofDwD08NPuPgkPY
+LVuAj6rHHU0qUxan9540V3Ygh4GhRIWup6bgUbPEEDvEFiFVauc7yHCjXZH7HPDy
+cpX9X2PK4TPvX5H8YbyZp4PED69ovoOd3vpsC93R0Lfz/sZiI/4=
+=WoY8
+-----END PGP SIGNATURE-----
+
+--beew2a2gwphvoerz--
 
