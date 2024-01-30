@@ -1,52 +1,52 @@
-Return-Path: <linux-wireless+bounces-2829-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2830-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7273C8427C9
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 16:16:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7996A8427CA
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 16:16:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C94728C755
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 15:16:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D4E21F2715A
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 15:16:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A704781AB6;
-	Tue, 30 Jan 2024 15:16:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E4D182D78;
+	Tue, 30 Jan 2024 15:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TVxwOnV9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JCLAN1BI"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81ECC7F7F8
-	for <linux-wireless@vger.kernel.org>; Tue, 30 Jan 2024 15:16:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B08F82D74
+	for <linux-wireless@vger.kernel.org>; Tue, 30 Jan 2024 15:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706627762; cv=none; b=j5q2aUAKXtaxWW35eElpeC3gofzYq3ndRnob1CS6W/NmWL/B7goMrM0zRDrWDX4fEUaO0f9hFaLYk65tdV8JwT+WJRzf/eGHJLWz4V+pZJuQ2+PD2h6XUctkTLDsDyJM3E7r9SFiRwvPMj9CVBHmULrb63Nz25aBuTTA+b6mYgc=
+	t=1706627763; cv=none; b=KjaJcf28epCVMsr3nLw2dAtzyvRNnb2jn/S88m5HYbt5FvZ50i5H26aUhnY0YAKtoVSauGArWOFPSHx8jvI0s4CfegkICYPNvkFgGZOYJwzqqvQdGe3MbAhk+pjb5LyifAplLlMR5/1qHIUGx9ILLr9Gf2x8JRbLLRlf074S710=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706627762; c=relaxed/simple;
-	bh=661G/XNd/XpaNMgjXRXDDVUfCFyZa8CkM+1nZ+Jeon8=;
+	s=arc-20240116; t=1706627763; c=relaxed/simple;
+	bh=dLtn+d92qFT0cX+Rq4JpFNoJDaDmwf6jvb8ASjLVIf8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=S7vZFrOOc8Vx5aa/lrzJawG2RUfvWD2q8xYhxMd4ikpo/dUGtNcLkaYmKKrqOVOzz56Jr00OMCvY2LShjOv7HhQWd6wkNm6dMBTjqWBkvCnv9WKHWxgCv8yI09dclqOJlHUpL1GFOahFFGa5u+pHpRljkhFRBIcR5mOJfu20Fxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TVxwOnV9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A4DBC43142;
-	Tue, 30 Jan 2024 15:16:01 +0000 (UTC)
+	 MIME-Version; b=APbi4auRSx3wCTY/4ANNr0xNy4QGp+sL5kp7mNtl0Opfjam2128nAJKjP4oE7rjgWQJus3ELV683TKej82N3NQkp+AcSoL1znMB7lJjjxDCSwTuhL15ThRKC5MKI/jDESx6P1eXDvO43fXao+9J2CphwkaacHKLdqi0plQhbqbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JCLAN1BI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AAEDC43609;
+	Tue, 30 Jan 2024 15:16:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706627762;
-	bh=661G/XNd/XpaNMgjXRXDDVUfCFyZa8CkM+1nZ+Jeon8=;
+	s=k20201202; t=1706627763;
+	bh=dLtn+d92qFT0cX+Rq4JpFNoJDaDmwf6jvb8ASjLVIf8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TVxwOnV9cVfGDeRVXgWohtCvXjM44gsm84TqVaKoygtd5Ea5PPAEKNk4LEuFm/7n7
-	 5J90lb90zWBjl6fMEu88YVagQ3hjy3QX+vAygMIlD1gFlhTBm9UYxzUBPdpL1l0DFm
-	 8YgJWEC9yokz2mFam4OUa+ITm8F7gqf9s/cdsB7ha3ouggKrXbfgeYVRG3QOj2CDQH
-	 ubhKOkgxpdg/6GI44Ve7Sosn6inmQWbWBsUtOuVOnIjD+bakI+US+WDWwUZ6f8r6gd
-	 Vy9LcHBGD+c6mr9pdih6LKKYNxZ6zm9qaKwvl1bZBbPWYnno1iaZrf9fyF18FzLLu3
-	 yz95S70D6AhNQ==
+	b=JCLAN1BIRn5o2+x+Xjo1PWUeB+NGOa7WAVRees7WNT3Qb3lJi5fBwwbuxxOhE/W1B
+	 s8PLBzy4Gcxr2ksmU8HYxbsMJopJ7yfIQrxonWz66pq52jEqh43OM19yGLV+tQEtlo
+	 uZ2MsCJ+5E9UNN/cmiyfCNQWazVw8YvroVHgF1zW7rjwb/jsCCJJ7UjJ2Al1VXgjzp
+	 4crJyvdfC8xwJPmNhv2v/OsqaiH6uw9IrkQV4P7YnEzy6FRkbf+DLWroAA2o8ydQ1A
+	 68eaK9g3mhhTHudlWGyaEKl4fOJIdmCTCHIln+Lg0xNL3pUmyMnyz3lyJ6gc+f8s/1
+	 OxWN5pTlIUiKg==
 From: Kalle Valo <kvalo@kernel.org>
 To: linux-wireless@vger.kernel.org
 Cc: xl@wp.pl
-Subject: [PATCH 3/4] wifi: cw1200: fix __le16 sparse warnings
-Date: Tue, 30 Jan 2024 17:15:55 +0200
-Message-Id: <20240130151556.2315951-4-kvalo@kernel.org>
+Subject: [PATCH 4/4] wifi: rt2x00: fix __le32 sparse warnings
+Date: Tue, 30 Jan 2024 17:15:56 +0200
+Message-Id: <20240130151556.2315951-5-kvalo@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240130151556.2315951-1-kvalo@kernel.org>
 References: <20240130151556.2315951-1-kvalo@kernel.org>
@@ -60,46 +60,58 @@ Content-Transfer-Encoding: 8bit
 
 Sparse warns:
 
-drivers/net/wireless/st/cw1200/cw1200_spi.c:83:17:    got restricted __le16 [usertype]
-drivers/net/wireless/st/cw1200/cw1200_spi.c:148:17: warning: incorrect type in assignment (different base types)
-drivers/net/wireless/st/cw1200/cw1200_spi.c:148:17:    expected unsigned short [addressable] [assigned] [usertype] regaddr
-drivers/net/wireless/st/cw1200/cw1200_spi.c:148:17:    got restricted __le16 [usertype]
+drivers/net/wireless/ralink/rt2x00/rt2800lib.c:10949:39: warning: incorrect type in assignment (different base types)
+drivers/net/wireless/ralink/rt2x00/rt2800lib.c:10949:39:    expected unsigned int [usertype]
+drivers/net/wireless/ralink/rt2x00/rt2800lib.c:10949:39:    got restricted __le32 [usertype]
+drivers/net/wireless/ralink/rt2x00/rt2800lib.c:10951:43: warning: incorrect type in assignment (different base types)
+drivers/net/wireless/ralink/rt2x00/rt2800lib.c:10951:43:    expected unsigned int [usertype]
+drivers/net/wireless/ralink/rt2x00/rt2800lib.c:10951:43:    got restricted __le32 [usertype]
+drivers/net/wireless/ralink/rt2x00/rt2800lib.c:10953:43: warning: incorrect type in assignment (different base types)
+drivers/net/wireless/ralink/rt2x00/rt2800lib.c:10953:43:    expected unsigned int [usertype]
+drivers/net/wireless/ralink/rt2x00/rt2800lib.c:10953:43:    got restricted __le32 [usertype]
+drivers/net/wireless/ralink/rt2x00/rt2800lib.c:10955:43: warning: incorrect type in assignment (different base types)
+drivers/net/wireless/ralink/rt2x00/rt2800lib.c:10955:43:    expected unsigned int [usertype]
+drivers/net/wireless/ralink/rt2x00/rt2800lib.c:10955:43:    got restricted __le32 [usertype]
 
-These cpu_to_le16() calls are not really making any sense to me. On a big
-endian system we first convert regaddr from big to little using cpu_to_le16()
-but immediately after we convert them back to big endian? So just remove them.
+rt2x00 does some wicked casting here so no wonder sparse warns. Clean that up
+and use cpu_to_le16() to avoid any warnings.
 
 Compile tested only.
 
 Signed-off-by: Kalle Valo <kvalo@kernel.org>
 ---
- drivers/net/wireless/st/cw1200/cw1200_spi.c | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/net/wireless/ralink/rt2x00/rt2800lib.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/st/cw1200/cw1200_spi.c b/drivers/net/wireless/st/cw1200/cw1200_spi.c
-index c82c0688b549..b27b57fc25bc 100644
---- a/drivers/net/wireless/st/cw1200/cw1200_spi.c
-+++ b/drivers/net/wireless/st/cw1200/cw1200_spi.c
-@@ -79,9 +79,6 @@ static int cw1200_spi_memcpy_fromio(struct hwbus_priv *self,
- 	pr_info("READ : %04d from 0x%02x (%04x)\n", count, addr, regaddr);
- #endif
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
+index aaf31857ae1e..8e8fab88fb2b 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
+@@ -10946,13 +10946,20 @@ static void rt2800_efuse_read(struct rt2x00_dev *rt2x00dev, unsigned int i)
+ 	/* Apparently the data is read from end to start */
+ 	reg = rt2800_register_read_lock(rt2x00dev, efuse_data3_reg);
+ 	/* The returned value is in CPU order, but eeprom is le */
+-	*(u32 *)&rt2x00dev->eeprom[i] = cpu_to_le32(reg);
++	rt2x00dev->eeprom[i] = cpu_to_le16(reg);
++	rt2x00dev->eeprom[i + 1] = cpu_to_le16(upper_16_bits(reg));
++
+ 	reg = rt2800_register_read_lock(rt2x00dev, efuse_data2_reg);
+-	*(u32 *)&rt2x00dev->eeprom[i + 2] = cpu_to_le32(reg);
++	rt2x00dev->eeprom[i + 2] = cpu_to_le16(reg);
++	rt2x00dev->eeprom[i + 3] = cpu_to_le16(upper_16_bits(reg));
++
+ 	reg = rt2800_register_read_lock(rt2x00dev, efuse_data1_reg);
+-	*(u32 *)&rt2x00dev->eeprom[i + 4] = cpu_to_le32(reg);
++	rt2x00dev->eeprom[i + 4] = cpu_to_le16(reg);
++	rt2x00dev->eeprom[i + 5] = cpu_to_le16(upper_16_bits(reg));
++
+ 	reg = rt2800_register_read_lock(rt2x00dev, efuse_data0_reg);
+-	*(u32 *)&rt2x00dev->eeprom[i + 6] = cpu_to_le32(reg);
++	rt2x00dev->eeprom[i + 6] = cpu_to_le16(reg);
++	rt2x00dev->eeprom[i + 7] = cpu_to_le16(upper_16_bits(reg));
  
--	/* Header is LE16 */
--	regaddr = cpu_to_le16(regaddr);
--
- 	/* We have to byteswap if the SPI bus is limited to 8b operation
- 	   or we are running on a Big Endian system
- 	*/
-@@ -144,9 +141,6 @@ static int cw1200_spi_memcpy_toio(struct hwbus_priv *self,
- 	pr_info("WRITE: %04d  to  0x%02x (%04x)\n", count, addr, regaddr);
- #endif
- 
--	/* Header is LE16 */
--	regaddr = cpu_to_le16(regaddr);
--
- 	/* We have to byteswap if the SPI bus is limited to 8b operation
- 	   or we are running on a Big Endian system
- 	*/
+ 	mutex_unlock(&rt2x00dev->csr_mutex);
+ }
 -- 
 2.39.2
 
