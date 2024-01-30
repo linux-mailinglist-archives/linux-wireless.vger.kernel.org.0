@@ -1,133 +1,113 @@
-Return-Path: <linux-wireless+bounces-2835-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2836-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DC1F8429A3
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 17:40:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBA9F8429E7
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 17:49:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C11C01C23C86
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 16:40:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A6251C21390
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 16:49:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00B4D1272B0;
-	Tue, 30 Jan 2024 16:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C03C486ADC;
+	Tue, 30 Jan 2024 16:48:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xwIoWSVR"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="mqpO7oYE"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7681128368
-	for <linux-wireless@vger.kernel.org>; Tue, 30 Jan 2024 16:38:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E34BA1292C2
+	for <linux-wireless@vger.kernel.org>; Tue, 30 Jan 2024 16:48:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706632726; cv=none; b=Dz6xo8/9LZDYYvTQYXCDkBB5k2zRZoIBgMXAjXFcA+cpUut+oYYUQoPVO7rlHAk7euZEnP9bKg6bEkOjmqUh6eHziJEYEM3nIqYmPP7sgU/XZJfxJ5x12hrHEbyltXdovKE53zJn5hflZ4aRP4TTHU6/10QWn7uiL4x7tEq6tLw=
+	t=1706633331; cv=none; b=tdXpbsXyG7vL1nnghGr+cGUT6hBh7zEir6RrFT0QCPa5kCg6LXF+6pkMvXMHds8HoYOyyAUl0A6p6SwGKA4Tp1SPiag7zqoNhhOeWbs8DZbQJfPK2SCrfNBPA+4Mp5xZiv2/rksglfprQmR9dR84r7QX1JpsoIr4I/gaYvupFGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706632726; c=relaxed/simple;
-	bh=f6I51MDLQiOqeJhfgmaztAzDHCND04cZOAhmoNK2kAw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ftV6+Wdcf9zs4RY1bq/xdv0SwXSqExZgsuHg5TQzUuukPQKItwyknIQO46H5KjOp8m9dutKnJQE57BK8XKKeG5j/3vBIyK+NfhOSysQStQOk3G9po3YVjO+j9LxqZRcH+dGMCKvZmN4bHpSBuol5gPUE+Tn+AwZpToYAT787/YU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xwIoWSVR; arc=none smtp.client-ip=209.85.208.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2d05b06b5f9so11064351fa.3
-        for <linux-wireless@vger.kernel.org>; Tue, 30 Jan 2024 08:38:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1706632723; x=1707237523; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=sf6cX1kNwC+ZyH+vJIqU22NKTlhKvVMieai2ykB+P1c=;
-        b=xwIoWSVR1PHDjeUd0RVbshXGFjxJkeCNfU48Lxdn7sHw8S3bRNGHsT6qS7jqc80ToS
-         uf8fzUs/4xXsz8dh7QiJQT4txjXvWDMUUJW6lcbM1Adhx7MTwUCPKKgm8Fx4P3VUaFsD
-         zVgpnTcblO5m0/jabo6ol/tdx+6fhVRr3peI7lxYdD2J7ccmwv5URCcUOhy/NVamefZN
-         D3A+ODeXGaNeh+E9qAXW3PPVEaF6460AmC6Lk0d9tYVv0Ef00r+aEqmaEuiIhGT1WZ5F
-         v+SzGUNBwba82aYbuCx1Jst46xVSDLNfOh/sIBrf9kaExVWIF6puZImgU5IAHwnTjI6d
-         ElBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706632723; x=1707237523;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sf6cX1kNwC+ZyH+vJIqU22NKTlhKvVMieai2ykB+P1c=;
-        b=QJ6nyXbmLYAkApVJmOcqWtoIVJEJPWavzV5ax2uOjUEJ453TMJsUzaOyW5G0vpoODY
-         YoAg9+P6MU8BCgiilgBpYeJwiR34IrHlgi34sly4naDiBIIybSJYlfvSCR+PqyA3j/st
-         v6ISgioqnlX1aYDHaO5YZ2RkxakI0qnE/CbBKd2/E9cgxVwzTXjU82T25ruidzfNyBxj
-         RCb7Tp10SG2otSOUc+4DTxsNq5uQDpJC0dEJrBe6FR8tDC201Lq3iz16zaxNnhduAv3v
-         8NRZBWBeAA1XO80XQnM4va3/ZM4JQW3aZnlSitX4CTelFpNkFEMvbkoPU4HusoPnjqB0
-         o9+g==
-X-Gm-Message-State: AOJu0YwWnvKdRFtyepC0GNdbA/3bOswojy2MlMaLNSij8exRzi3l/wac
-	mXNdjO3y9X3UD4R2ct6YwLfi6DyYJFzMsLCPe65SVL1Bs2aYW49KaJmIVGvHg5Y=
-X-Google-Smtp-Source: AGHT+IGL7MOYOgKKeouag0S4EDPx+mRu3y6AV3aycea0KqrniBsk79ojRA8e357wUj+RsWbwyzeeWg==
-X-Received: by 2002:a2e:8e73:0:b0:2cd:9503:f91 with SMTP id t19-20020a2e8e73000000b002cd95030f91mr5481005ljk.15.1706632722898;
-        Tue, 30 Jan 2024 08:38:42 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCUNhW/hrthqpie8kW0dbHKqPY6B82R4tTMoLB2y1WsE5JPMqK3mmTWPxOOP9355w9KJ/I0gGpYEjmmo00xhswTF9vt+uxB/nI1ZP3aqTDeD/fxkpqBuSRnUh4OqvUkMX7paQSkoR32TcHZDi5U4aRdeBEyIg6z1EI2WXVldCMtvR69Md9t8o4knnfZV0nFy2zWjzW7NdIEw7nOGDj5RFXG6M+ujn34sjJiAwxlCO61ufAaabkJ3d6MKCH6wJBRD0N1EB3C76uzoglzeU4+cf8GirwjD7mlNHGp8o52jL7oFjJ/so7mvPKdvfvRZMg5GUco9He/E5cidXxnuufth8PySPzcrYGCAYYT9N+3mGaxNJKDywBxzIJqZXVmrzlake2VW6QF72TNLnDtLXf3i5QQnPTayz0fsdED2QvNe59zaB1JygvE1gR1rok16ynxApeokd6RtBFa14JyM/4tzBxtBJ3trtsUGvw02WHnDGDHz6ysAOzRPVpn5TWPEtZ2/J1NM5Xx7DpE=
-Received: from umbar.lan ([192.130.178.91])
-        by smtp.gmail.com with ESMTPSA id y8-20020a2e9788000000b002d05e8bd84fsm219639lji.31.2024.01.30.08.38.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jan 2024 08:38:42 -0800 (PST)
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Tue, 30 Jan 2024 18:38:40 +0200
-Subject: [PATCH RFC 4/4] arm64: dts: qcom: qrb4210-rb1: add firmware-name
- qualifier to WiFi node
+	s=arc-20240116; t=1706633331; c=relaxed/simple;
+	bh=7WT6PII5+05uPP7MCAQKbCOP2E7sF1jnD0CySRwgXTA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=U7BsLfOBOkYjtKCilr7BYcXTy8eLafXT/xLY09Cc/DG49/JaEHZRxZ47rqvF55IqosFY5WOE85BGOMZCWz8ntQSCE99lLxIjAS+4/yrgCYDYh7zlt/HFBZlIswT2YDMk/MPXZpxLnLdvlNKEqmgW+RS80fDVMOOAcpCLODUe+1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=mqpO7oYE; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40U9fgmB002419;
+	Tue, 30 Jan 2024 16:48:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=6lcFIP57dwO2cmUlaJhC/Or/CCyRCQyFFe8KBceXjIU=; b=mq
+	pO7oYEafFUvNIEEARhtMSe6YyOQQxt0TNzxL68KDtEa+ZERjQ8FKibr3TPrFOFwk
+	/BUimB1aPKgQNs+JEJBMXd7/7pTW4Y8KC8npO76A3wuAkJOmUuBGaQ1MNYfLMksh
+	m51AQR5ObbazRYkb4Wt7d+QKM5azupAKKuwHFbmANIhB52mz0+9LIO3jiAKW3Dnn
+	sh0w0tpBtRRjCzp3LpWP9/uKugurczI0EALB6JHlcAzUOdYKMwW+JxZYzMwGhKVU
+	TwQXSXZj1U5SiIuV3ahZAwXmLoF4S72ZW7bjU/DIJJZ9Q8DU0VVwCRRlnugk1Deg
+	K+aRaTI5fkgPHaFVYAsw==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vxvwqs87p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 30 Jan 2024 16:48:39 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40UGmcUg029055
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 30 Jan 2024 16:48:38 GMT
+Received: from [10.110.47.232] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Tue, 30 Jan
+ 2024 08:48:38 -0800
+Message-ID: <6e302c5f-0bb4-4c24-b2a6-708db8118cd9@quicinc.com>
+Date: Tue, 30 Jan 2024 08:48:37 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 01/11] wifi: ath12k: fix broken structure
+ wmi_vdev_create_cmd
+Content-Language: en-US
+To: Kang Yang <quic_kangyang@quicinc.com>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240130040303.370590-1-quic_kangyang@quicinc.com>
+ <20240130040303.370590-2-quic_kangyang@quicinc.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20240130040303.370590-2-quic_kangyang@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240130-wcn3990-firmware-path-v1-4-826b93202964@linaro.org>
-References: <20240130-wcn3990-firmware-path-v1-0-826b93202964@linaro.org>
-In-Reply-To: <20240130-wcn3990-firmware-path-v1-0-826b93202964@linaro.org>
-To: Kalle Valo <kvalo@kernel.org>, Jeff Johnson <quic_jjohnson@quicinc.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Rob Herring <robh+dt@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc: ath10k@lists.infradead.org, linux-wireless@vger.kernel.org, 
- netdev@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org
-X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=openpgp-sha256; l=733;
- i=dmitry.baryshkov@linaro.org; h=from:subject:message-id;
- bh=f6I51MDLQiOqeJhfgmaztAzDHCND04cZOAhmoNK2kAw=;
- b=owGbwMvMwMXYbdNlx6SpcZXxtFoSQ+pONf7+oBu7cj5b/Px+y3syj15dV21DWHCZgmzclrfb7
- Finhrl3MhqzMDByMciKKbL4FLRMjdmUHPZhx9R6mEGsTCBTGLg4BWAifIvY/0cEubKXi9/gm8od
- sbbh3FFrGea938T3d+1ivO7RyMwh8bPo589T/4PXan+/n8vCa5zdprtqp9d2r/iK2s0NrhkCs7x
- +3/kn4cMit86+8ZCEx3GFwDMTGUw78tzP5zHWOBtt6hOMSLl0Ji2jVN5N7FfbNNvnH1mvBNzu/M
- rFqfZ5Hv/jjexzJdSdus86LSwO6NolO/vlhltBc4xFLzF27JfiyNnJf9x8ifmD7Pi+U/mZZx6nx
- QUGfgjI+/aMa/+N6OuSHwNa2dReN8o6z3dI3CzrWNPBIH1hxcNr096s8uxYaFLxmOtsau6aZT9v
- XGA7YPOnxVvhn5Jnx3xdy0jOm/uvmIWWdxz1VQm5y2AKAA==
-X-Developer-Key: i=dmitry.baryshkov@linaro.org; a=openpgp;
- fpr=8F88381DD5C873E4AE487DA5199BF1243632046A
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: 8Ro3g2NzOTFYhGiI48C4elO0v3Q1hTHX
+X-Proofpoint-GUID: 8Ro3g2NzOTFYhGiI48C4elO0v3Q1hTHX
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-30_07,2024-01-30_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 mlxlogscore=612
+ spamscore=0 priorityscore=1501 impostorscore=0 clxscore=1015 adultscore=0
+ malwarescore=0 suspectscore=0 bulkscore=0 phishscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2401190000
+ definitions=main-2401300124
 
-Add firmware-name property to the WiFi device tree node to specify
-board-specific lookup directory.
+On 1/29/2024 8:02 PM, Kang Yang wrote:
+> Current structure wmi_vdev_create_cmd is not matched to the firmware
+> definition. So update it.
+> 
+> And update vdev_stats_id_valid for vdev_stats_id.
+> 
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+> 
+> Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
----
- arch/arm64/boot/dts/qcom/qrb4210-rb2.dts | 1 +
- 1 file changed, 1 insertion(+)
+Note that if you respin a series, and if a given patch has not been
+substantially modified, you should add any previously given tags to the
+new patch since they are not automatically carried forward in patchwork.
+That saves the reviewers the overhead of revisiting patches they've
+already approved.
 
-diff --git a/arch/arm64/boot/dts/qcom/qrb4210-rb2.dts b/arch/arm64/boot/dts/qcom/qrb4210-rb2.dts
-index 7c19f874fa71..cf1d8d6f1546 100644
---- a/arch/arm64/boot/dts/qcom/qrb4210-rb2.dts
-+++ b/arch/arm64/boot/dts/qcom/qrb4210-rb2.dts
-@@ -632,6 +632,7 @@ &wifi {
- 	vdd-1.3-rfa-supply = <&vreg_l17a_1p3>;
- 	vdd-3.3-ch0-supply = <&vreg_l23a_3p3>;
- 	qcom,ath10k-calibration-variant = "Thundercomm_RB2";
-+	firmware-name = "qrb4210";
- 
- 	status = "okay";
- };
-
--- 
-2.39.2
 
 
