@@ -1,143 +1,82 @@
-Return-Path: <linux-wireless+bounces-2855-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2856-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A14BC842F32
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 22:54:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAB46842F62
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 23:09:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A17D1F25E33
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 21:54:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97091284A12
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 22:09:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6872F7D3EA;
-	Tue, 30 Jan 2024 21:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2A0A7D3FE;
+	Tue, 30 Jan 2024 22:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d9uVnBa8"
+	dkim=pass (2048-bit key) header.d=hauke-m.de header.i=@hauke-m.de header.b="AZfKl1Cl"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 278457D3E3;
-	Tue, 30 Jan 2024 21:54:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B14F17D3F2;
+	Tue, 30 Jan 2024 22:09:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706651656; cv=none; b=MSLRyESbpHNIekqzJ5IvSWjRxsruUR4iZl1wd/yB4d5k/aGuohLAIbraLWvLHnVCoBat/KLsWzSq0QtFoGYu1K7INRH0oi0RHzjKffhINu9vXTPmZ+zgA6u5d620Qa9+mpxwdEi4ctQy82Cd5ZdlTrmK5+DvwtR6DBJrJePZVW4=
+	t=1706652574; cv=none; b=QNP/sC7QSRlNdjJ0kxhLJxGm0wJWFNdJQx3DDEtCEqFNWkud+TsOjh7gnDtMLJYqHm5beR3DOxl31JCuAeaf+GDbUQJRD3W2QQOzurJlWPVaL7rrT7okWWJFXj9zONmC/Jz0JqCyK4qbuVAWzgNiB2ChpuNHGYASJfjTcD4JSQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706651656; c=relaxed/simple;
-	bh=LTMVYrnQ0Ac5UrUfHkqd52vj2qm9n46fuacsL4mVVR8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CT5c683JYJ/sloXDikQCsJ9kI1N9+q+5z6aaLXVtoSsjJWHN6I5WOEHfTWdTjBIYci3CM40L5d4kSMOEKp7Lhfyif39km5fwc23zSqUztDWdVvQknPw+93o2jpSTsA85G0lIXDhtrfGwxe6yM/XdBWvMEPcbOgxqzBDqtxs0uJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d9uVnBa8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B482CC433F1;
-	Tue, 30 Jan 2024 21:54:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706651655;
-	bh=LTMVYrnQ0Ac5UrUfHkqd52vj2qm9n46fuacsL4mVVR8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=d9uVnBa8V4EX3P0L1wK1PVj+miY4+RIkfPIpH2K9TfKIAIQN9ZgpI+Ru+O9K0+Cde
-	 YKHMlEpMJ3tf1RwQ90YWtoBLJvxkS5uP5vAO914uS1bErG4AX1gB3ja33Nnpb8obPw
-	 vvomTc7HUQSZ3vqbhEm7l3Jq0JrL5ZmjRchPK+b+pRY1DLx2gnBBjVc+9hgleG3odt
-	 JXOwZu8e7iPvzuvHTQZV9CTGrBAIVR0aNv6qwPnyfu3foshVlhkE6Hrh4Q7dgbloL8
-	 cBFVhghTwNmG/tvmyoVAbKAXhwG1H9IdWkfbUz/WvPYTgDCqUybPNsVpRTzqeQLBfL
-	 7Eh52wD8vn8hQ==
-Date: Tue, 30 Jan 2024 15:54:10 -0600
-From: Bjorn Andersson <andersson@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>, Kalle Valo <kvalo@kernel.org>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Heiko Stuebner <heiko@sntech.de>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Chris Morgan <macromorgan@hotmail.com>, 
-	Linus Walleij <linus.walleij@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Arnd Bergmann <arnd@arndb.de>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	=?utf-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4=?= Prado <nfraprado@collabora.com>, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Peng Fan <peng.fan@nxp.com>, Robert Richter <rrichter@amd.com>, 
-	Dan Williams <dan.j.williams@intel.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
-	Terry Bowman <terry.bowman@amd.com>, Lukas Wunner <lukas@wunner.de>, 
-	Huacai Chen <chenhuacai@kernel.org>, Alex Elder <elder@linaro.org>, 
-	Srini Kandagatla <srinivas.kandagatla@linaro.org>, Abel Vesa <abel.vesa@linaro.org>, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: Re: [PATCH 4/9] PCI: create platform devices for child OF nodes
- of the port node
-Message-ID: <d2he3ufg6m46zos4swww4t3peyq55blxhirsx37ou37rwqxmz2@5khumvic62je>
-References: <20240117160748.37682-1-brgl@bgdev.pl>
- <20240117160748.37682-5-brgl@bgdev.pl>
- <2024011707-alibi-pregnancy-a64b@gregkh>
- <CAMRc=Mef7wxRccnfQ=EDLckpb1YN4DNLoC=AYL8v1LLJ=uFH2Q@mail.gmail.com>
- <2024011836-wok-treadmill-c517@gregkh>
+	s=arc-20240116; t=1706652574; c=relaxed/simple;
+	bh=FiA3NZiRrJyeN92CXtbS7FCHmwseVMJK5GqHs0nMFpw=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=bOBVyUGpWG9+8JaDDLTVN1qj8uUtqufuTOpA3P8Gfh5YuYLOYl33RX6xS6rcUcNji2HWHkpcuk37+nC8TQ+WL+RZI+FO4oPwODIcH/TvM+6VI9ED3gGibmkbFbqHoItfy6ujdQsXVBWjQDznp/F3iSteWsHxDP92L+gedwzqg2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hauke-m.de; spf=pass smtp.mailfrom=hauke-m.de; dkim=pass (2048-bit key) header.d=hauke-m.de header.i=@hauke-m.de header.b=AZfKl1Cl; arc=none smtp.client-ip=80.241.56.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hauke-m.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hauke-m.de
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4TPfTZ6Cl8z9sV0;
+	Tue, 30 Jan 2024 23:09:22 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hauke-m.de; s=MBO0001;
+	t=1706652562;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=jEtN4ve+vVsn7PlNJhk+nSDskhUqzXKbr5NjxzzGEc4=;
+	b=AZfKl1ClCnekmU3l+oaZxCuTc0EzgKq4LgKAwGI/ulfAB3tonJhU5V1+/A558LrfKtmK5T
+	PYSTImhUkAtgdDz8Pjp4jCLG4QxRPqnHYtBBpdbQ3zcwmh5qSoWfzO/oVUxYTVFz7ChE+/
+	9wwYglTweER2XKAWieLOdvM7zV/L/aUXDhZ0Db9tkAg34hQMu8tZ08a3EHCUA+aVpQ9LXq
+	tR6CZZ21VR5GQBRADHhSmhhLKOIDIJczeMwcgX3s9/h+Cv0cGUevFZaJJqgz1jYijGcJ5J
+	NDGfh0rhG5xRsePUtl8dyB+gvIiymBHRLMbEKRWWXE3Mk1seM/6jqcS9fF7IHQ==
+Message-ID: <14959b08-35e3-4a86-acb8-04ee0a218271@hauke-m.de>
+Date: Tue, 30 Jan 2024 23:09:22 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2024011836-wok-treadmill-c517@gregkh>
+Content-Language: en-US
+To: backports@vger.kernel.org
+Cc: linux-wireless@vger.kernel.org
+From: Hauke Mehrtens <hauke@hauke-m.de>
+Subject: wireless backports 5.15.148-1 released
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jan 18, 2024 at 12:15:27PM +0100, Greg Kroah-Hartman wrote:
-> On Thu, Jan 18, 2024 at 11:58:50AM +0100, Bartosz Golaszewski wrote:
-> > On Wed, Jan 17, 2024 at 5:45 PM Greg Kroah-Hartman
-> > <gregkh@linuxfoundation.org> wrote:
-> > >
-> > > On Wed, Jan 17, 2024 at 05:07:43PM +0100, Bartosz Golaszewski wrote:
-> > > > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> > > >
-> > > > In order to introduce PCI power-sequencing, we need to create platform
-> > > > devices for child nodes of the port node.
-> > >
-> > > Ick, why a platform device?  What is the parent of this device, a PCI
-> > > device?  If so, then this can't be a platform device, as that's not what
-> > > it is, it's something else so make it a device of that type,.
-> > >
-> > 
-> > Greg,
-> > 
-> > This is literally what we agreed on at LPC. In fact: during one of the
-> > hall track discussions I said that you typically NAK any attempts at
-> > using the platform bus for "fake" devices but you responded that this
-> > is what the USB on-board HUB does and while it's not pretty, this is
-> > what we need to do.
-> 
-> Ah, you need to remind me of these things, this changelog was pretty
-> sparse :)
-> 
+Hi
 
-I believe I missed this part of the discussion, why does this need to be
-a platform_device? What does the platform_bus bring that can't be
-provided by some other bus?
+backports-5.15.148-1 was released. This is based on Linux 5.15.148.
+https://cdn.kernel.org/pub/linux/kernel/projects/backports/stable/v5.15.148/backports-5.15.148-1.tar.xz
 
-(I'm not questioning the need for having a bus, creating devices, and
-matching/binding them to a set of drivers)
+There is now a updated wiki page with the releases:
+https://backports.wiki.kernel.org/index.php/Releases
 
-Regards,
-Bjorn
+The source code can be found here:
+https://git.kernel.org/cgit/linux/kernel/git/backports/backports.git/
 
-> > Now as for the implementation, the way I see it we have two solutions:
-> > either we introduce a fake, top-level PCI slot platform device device
-> > that will reference the PCI host controller by phandle or we will live
-> > with a secondary, "virtual" platform device for power sequencing that
-> > is tied to the actual PCI device. The former requires us to add DT
-> > bindings, add a totally fake DT node representing the "slot" which
-> > doesn't really exist (and Krzysztof already expressed his negative
-> > opinion of that) and then have code that will be more complex than it
-> > needs to be. The latter allows us to not change DT at all (other than
-> > adding regulators, clocks and GPIOs to already existing WLAN nodes),
-> > reuse the existing parent-child relationship between the port node and
-> > the instantiated platform device as well as result in simpler code.
-> > 
-> > Given that DT needs to be stable while the underlying C code can
-> > freely change if we find a better solution, I think that the second
-> > option is a no-brainer here.
-> 
-> Ok, I remove my objections, sorry about that, my confusion.
-> 
-> greg k-h
+I am planning to work on backprots based on kernel 6.1 and 6.6. In this 
+process I am planning to drop support for kernel < 4.19 from backports 
+based on kernel 6.1 and later.
+
+Hauke
 
