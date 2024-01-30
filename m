@@ -1,171 +1,167 @@
-Return-Path: <linux-wireless+bounces-2782-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2783-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 865B9841C27
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 07:47:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0965841C42
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 08:00:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BEBCFB217EC
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 06:47:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 594181F21534
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 07:00:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E90405466D;
-	Tue, 30 Jan 2024 06:47:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33C703F9E3;
+	Tue, 30 Jan 2024 07:00:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GqOIcAA8"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Hc/wwrmf"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0703652F93
-	for <linux-wireless@vger.kernel.org>; Tue, 30 Jan 2024 06:47:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BCE03CF66
+	for <linux-wireless@vger.kernel.org>; Tue, 30 Jan 2024 07:00:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706597233; cv=none; b=A7bbSYkLsaPqnhudA6SuWq/xP9/iJzBxJq+oyiYmt+8WtgpqvS+3tcrVo6STeot6pQ28OcFvOg1EohTd7jcjNAmTDkqkJtH/ElTjd6UmGqOQNAkXeoMEJEPHqtxoB1ZMvnIwqYUQ8jgjdLdiqjI9VE/PjiYCiOGhf9V/vDxnFzs=
+	t=1706598015; cv=none; b=sa5Ag3oFyGj5MriqQeIGrWWo/IUwXTqTMGCReiXWs9DsbvUT/pancuzai+k7xW9YDEd0a0Pdb8d0IFeTdHrNn55ePoBk7h4OpkNVQuKG123yzRWi4lZrVF8KNQVkNIfEae29MoWM1yaYBnmfWdzXYWWk0SgJBf2rXNk2naNQYlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706597233; c=relaxed/simple;
-	bh=Yr9q5taAxzx5jxxmv1tRyH2+HoyzMTNzkhBu27q+7l0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=G8tKvXUjOOCDbn1N6sU8gNDvvr2MoX8HlhlhINpLQlEi2ILhY8SC2+mFlbpFChrnnt0QgVwBi3x9zApjfPDlrQqj26D5/7qiR1CoSvUBL7kWj4ENdF1S+SD2RGStnzsQahckvO+/OfrJ2R+WnM+DQmWcP0+Co7kJE+3CZznBuK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=GqOIcAA8; arc=none smtp.client-ip=209.85.208.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2d05e5f62bbso1365261fa.0
-        for <linux-wireless@vger.kernel.org>; Mon, 29 Jan 2024 22:47:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1706597230; x=1707202030; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TIZlNpio2xRbKCelL+jH7Jv0TEbudBZ5ilP6roQWReA=;
-        b=GqOIcAA8Kd1xDgsDSkQ2CwwosZ8/V+9zTblaAHSdMvPUHvyiTnJrPPhm/LLTFiDzED
-         QXOVc7H4irr7sbVbNxWev/zYBORrWf57Nd7GSQzSXK3d1+EUBWDIdDW+C3s/BOcElFVi
-         DyhMbcUGbpsKxkmiIJ20jGter4DkLp0d6Pu42mMAwQDwc4uvqlIIXSK3Y5zb2cyMKMYw
-         lV1Fb2HbfV0UVx4rMsZfH5bdj1kpQm3llo3OejTxnAOevWn6SMAvtdfCifIRfxpOgRw3
-         kjEo6CGQ9nMnqQJX5OhylGUGFKmwGqGus8P5ZHgmx+tx5enj7ndcGPVErUAacja9iJoF
-         aseQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706597230; x=1707202030;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TIZlNpio2xRbKCelL+jH7Jv0TEbudBZ5ilP6roQWReA=;
-        b=rmXaPlwQQrMgFkBwZwkV46JD/TL1HciRDo76XXv+OYObhbB5CbJrGWE0QAHIUabs+D
-         YpUyzB0EphaHWqAXPQ39toIPCRLARbyYMAO46smJKvw5RGXadmtewnGF21C+oaPpprpa
-         4p+vaN4jwwU8bhaU36hjCy40DI7v4PWj7ueo7vD9RT2zjk+HDpUxj3Z2l/o4cEcu9KBh
-         GhYof+ZrNno7lMNKCnozZEwYCJF/0lTgfhq1hee2q/m3Evax4LMJUbB8JEcU1eLg6enf
-         tm2Xhovzh6JqoanvxDbZ+69VGW3kDZnETeFvyXDCZMOA0sXmjHrGPpxHa28BlH6YOawI
-         OsZw==
-X-Gm-Message-State: AOJu0YxbZxNhhXFzdUC9SR3cCJP+4hMJniPzWXyQo8YrCRCdSvkMwyd9
-	g1eDB6IvzYh8VRVv6CTY7wlnpFZ1lxOMiKFc+OJvnSZ1/6U9wCrCpXnKDMXNGYH1OUm4q22uUCx
-	k
-X-Google-Smtp-Source: AGHT+IGIJ+oFaSjayPTR7DspAKUxRE/rmpexVTQ5OvG66TcD07PnSzDDWMlJxJOFbC1rISlDii7GYA==
-X-Received: by 2002:a05:6512:234e:b0:511:1775:5a1b with SMTP id p14-20020a056512234e00b0051117755a1bmr1802509lfu.38.1706597229926;
-        Mon, 29 Jan 2024 22:47:09 -0800 (PST)
-Received: from umbar.lan ([192.130.178.91])
-        by smtp.gmail.com with ESMTPSA id d18-20020a056512369200b005101e1870aasm1367068lfs.162.2024.01.29.22.47.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Jan 2024 22:47:09 -0800 (PST)
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Tue, 30 Jan 2024 08:47:08 +0200
-Subject: [PATCH 3/3] wifi: ath10k: drop fw.eboard file name
+	s=arc-20240116; t=1706598015; c=relaxed/simple;
+	bh=51qyQRKJjvk/DNq4pjs5sGMGthX2+JiDTwMkgFl+ioU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=fhZfdeVG8A5mpDpQ5s8axszD04UmcMayUFmPKF6O3YO2tA7STWOqVAcl4FCiuCoc74UT2u0E6ZUsC68e74hI5n0uJKNtbCZ0w3x0gtBykF9uYeoo86C/K14Wu7686LiGIvyAsQmPnLZ0MWhdIMjChufnFy6l6buVN5wtHr3x/Pg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Hc/wwrmf; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40U6Sa1X022746;
+	Tue, 30 Jan 2024 07:00:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=mIqgUfcXfNItkGKdsceAlheC0PfPnmZTRSdcvfF55+U=; b=Hc
+	/wwrmfdaaw8E+wcubJ1n/zNSfW8xhAO0s08IVmOtLp8BOPN9Hf9dCNPm5huhwV2u
+	wDz+lqaddZj97YRxYgqPbwnRX6VIixJ0kbxHls3/9qtynD5tvhKJhR0d5elv/7Km
+	XV1DQefcNTDW7SMCuiJeN9YZQQqu5q8LOGcMi+LIF/LqNQNKtw8iLsNDb5zO0PvN
+	Uw1I1g+DKiym+zrja3u+NblzQU5SvsnwN9LI079585gBSOk4Q6r/yDO6CblpOrlE
+	CGHblNGL1CB4L70vvkgHXzPWkRrI8slmq3mpHzBDf3LOrJaSMBNHKVCizldbGFBV
+	rwEKV/bwYMBoemKhQyrg==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vxdwf9rv0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 30 Jan 2024 07:00:07 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40U7062d032608
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 30 Jan 2024 07:00:06 GMT
+Received: from [10.231.195.68] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Mon, 29 Jan
+ 2024 23:00:05 -0800
+Message-ID: <90ac3bdc-8797-4d57-8bc9-48e0ad406674@quicinc.com>
+Date: Tue, 30 Jan 2024 15:00:02 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240130-wcn3990-board-fw-v1-3-738f7c19a8c8@linaro.org>
-References: <20240130-wcn3990-board-fw-v1-0-738f7c19a8c8@linaro.org>
-In-Reply-To: <20240130-wcn3990-board-fw-v1-0-738f7c19a8c8@linaro.org>
-To: Kalle Valo <kvalo@kernel.org>, Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc: ath10k@lists.infradead.org, linux-wireless@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org
-X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2741;
- i=dmitry.baryshkov@linaro.org; h=from:subject:message-id;
- bh=Yr9q5taAxzx5jxxmv1tRyH2+HoyzMTNzkhBu27q+7l0=;
- b=owEBbQGS/pANAwAKAYs8ij4CKSjVAcsmYgBluJtrbsu2CTKAvl9H5XQ/cJRM6VTif6qlSydVi
- EzPhKX+Iu6JATMEAAEKAB0WIQRMcISVXLJjVvC4lX+LPIo+Aiko1QUCZbibawAKCRCLPIo+Aiko
- 1dH9B/0XaL30eMhfCcqfeZI5LYlwAC+ZdjQF02vG8KUQRjqGCvf6K/1fb3mac/phOkoXYpalOT/
- 4FOnBv+qHbylchHd8eBnw3S20LnMj59pxRHl7totV1aiIsepBEcLu0L85drAlNNr6bWeK8K7GQD
- R8mzON5WfYOt1SZqpcqxuzksL4TWk2Qow4r6QHvE75uLHkvlK42zmRmrIIDHKjbmadntQ+QL2dZ
- 2K2vC+sOiFDjZclIpkLAxI4A0+7300tH3nuaPRtHu/O4Guj4FCvjR9TSaKkz8+oMaubr+ZBlquK
- XYrQVXhA9OkwcViNDMs4TnznjwWh3iy2OW8xrT8sQQknnBqf
-X-Developer-Key: i=dmitry.baryshkov@linaro.org; a=openpgp;
- fpr=8F88381DD5C873E4AE487DA5199BF1243632046A
+User-Agent: Mozilla Thunderbird
+Subject: Re: ath11k multicast action frame RX
+Content-Language: en-US
+To: James Prestwood <jprestwood@locusrobotics.com>,
+        "open list:MEDIATEK MT76
+ WIRELESS LAN DRIVER" <linux-wireless@vger.kernel.org>,
+        <ath11k@lists.infradead.org>
+References: <dcdbd757-ad6e-4fe0-a0c1-fe328431b73b@locusrobotics.com>
+ <642b61a6-e3c0-4831-887f-f25314bf166d@locusrobotics.com>
+From: Baochen Qiang <quic_bqiang@quicinc.com>
+In-Reply-To: <642b61a6-e3c0-4831-887f-f25314bf166d@locusrobotics.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: uCGgT4tfipFSIAFlorCMTxFm2VQaVI65
+X-Proofpoint-ORIG-GUID: uCGgT4tfipFSIAFlorCMTxFm2VQaVI65
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-30_02,2024-01-29_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0 mlxscore=0
+ bulkscore=0 malwarescore=0 clxscore=1011 spamscore=0 impostorscore=0
+ phishscore=0 mlxlogscore=999 priorityscore=1501 adultscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2401190000 definitions=main-2401300049
 
-Follow the example set up by previous commit and drop .fw.eboard
-setting. Instead always use "eboard.bin" in this case. QCA9984 already
-uses that file name, any (im)possible future users will just have to use
-the same file name.
 
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
----
- drivers/net/wireless/ath/ath10k/core.c | 8 +-------
- drivers/net/wireless/ath/ath10k/hw.h   | 3 +--
- 2 files changed, 2 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
-index e01a7b196b99..71ca1c1a528f 100644
---- a/drivers/net/wireless/ath/ath10k/core.c
-+++ b/drivers/net/wireless/ath/ath10k/core.c
-@@ -448,7 +448,6 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
- 		.cal_data_len = 12064,
- 		.fw = {
- 			.dir = QCA9984_HW_1_0_FW_DIR,
--			.eboard = QCA9984_HW_1_0_EBOARD_DATA_FILE,
- 			.board_size = QCA99X0_BOARD_DATA_SZ,
- 			.board_ext_size = QCA99X0_BOARD_EXT_DATA_SZ,
- 			.ext_board_size = QCA99X0_EXT_BOARD_DATA_SZ,
-@@ -1294,13 +1293,8 @@ static int ath10k_core_fetch_board_data_api_1(struct ath10k *ar, int bd_ie_type)
- 		ar->normal_mode_fw.board_data = ar->normal_mode_fw.board->data;
- 		ar->normal_mode_fw.board_len = ar->normal_mode_fw.board->size;
- 	} else if (bd_ie_type == ATH10K_BD_IE_BOARD_EXT) {
--		if (!ar->hw_params.fw.eboard) {
--			ath10k_err(ar, "failed to find eboard file fw entry\n");
--			return -EINVAL;
--		}
--
- 		fw = ath10k_fetch_fw_file(ar, ar->hw_params.fw.dir,
--					  ar->hw_params.fw.eboard);
-+					  ATH10K_EBOARD_DATA_FILE);
- 		ar->normal_mode_fw.ext_board = fw;
- 		if (IS_ERR(ar->normal_mode_fw.ext_board))
- 			return PTR_ERR(ar->normal_mode_fw.ext_board);
-diff --git a/drivers/net/wireless/ath/ath10k/hw.h b/drivers/net/wireless/ath/ath10k/hw.h
-index 12e8aebab1e9..48897e5eca06 100644
---- a/drivers/net/wireless/ath/ath10k/hw.h
-+++ b/drivers/net/wireless/ath/ath10k/hw.h
-@@ -102,7 +102,6 @@ enum qca9377_chip_id_rev {
- #define QCA9984_HW_DEV_TYPE		0xa
- #define QCA9984_HW_1_0_CHIP_ID_REV	0x0
- #define QCA9984_HW_1_0_FW_DIR		ATH10K_FW_DIR "/QCA9984/hw1.0"
--#define QCA9984_HW_1_0_EBOARD_DATA_FILE "eboard.bin"
- #define QCA9984_HW_1_0_PATCH_LOAD_ADDR	0x1234
- 
- /* QCA9888 2.0 defines */
-@@ -152,6 +151,7 @@ enum qca9377_chip_id_rev {
- 
- #define ATH10K_BOARD_DATA_FILE         "board.bin"
- #define ATH10K_BOARD_API2_FILE         "board-2.bin"
-+#define ATH10K_EBOARD_DATA_FILE        "eboard.bin"
- 
- #define REG_DUMP_COUNT_QCA988X 60
- 
-@@ -546,7 +546,6 @@ struct ath10k_hw_params {
- 	struct ath10k_hw_params_fw {
- 		const char *dir;
- 		size_t board_size;
--		const char *eboard;
- 		size_t ext_board_size;
- 		size_t board_ext_size;
- 	} fw;
+On 1/27/2024 3:18 AM, James Prestwood wrote:
+> On 1/24/24 5:06 AM, James Prestwood wrote:
+> 
+>> Hi,
+>>
+>> I recently added support to ath10k, for the QCA6174, to receive 
+>> multicast action frames in order to support DPP. I'm trying to do this 
+>> for the ath11k QCNFA765/WCN6855. I took the same approach as ath10k 
+>> which was actually quite simple but I'm unable to see any multicast 
+>> frames coming over even when I enable RX/DATA debugging.
+>>
+>> What I've done so far is:
+>>
+>>  - Add FIF_MCAST_ACTION to the supported filters list
+>>
+>>  - Created/started a monitor vdev from within 
+>> ath11k_mac_op_configure_filter()
+>>
+>>     ath11k_mac_monitor_vdev_create(ar);
+>>
+>>     ath11k_mac_monitor_start(ar);
+>>
+>> - Also tried adding
+>>
+>>     ath11k_mac_config_mon_status_default(ar, true);
+>>
+>> I can successfully create/start the monitor vdev. I see now as I'm 
+>> writing this email that my specific hardware does not support monitor 
+>> mode outright... Is this a dead end or is there hope with purely 
+>> driver changes? or is it some filtering at the firmware level 
+>> preventing this?
+> 
+> I was able to finally see my broadcast frame after some additional 
+> testing. It seems the driver/firmware/something gets a bit hung up when 
+> I attempt to put it in monitor mode. It will start printing these 
+> messages for about a minute:
+> 
+> [   51.093034] ath11k_pci 0000:00:06.0: data dest_rx: new ppdu_id a1a2 
+> != status ppdu_id a1a1 dest_mon_not_reaped = 650 dest_mon_stuck = 12
+> [   51.094461] ath11k_pci 0000:00:06.0: data dest_rx: new ppdu_id a1a3 
+> != status ppdu_id a1a2 dest_mon_not_reaped = 651 dest_mon_stuck = 12
+> [   51.096281] ath11k_pci 0000:00:06.0: data dest_rx: new ppdu_id a1a5 
+> != status ppdu_id a1a3 dest_mon_not_reaped = 652 dest_mon_stuck = 12
+> 
+> In most cases these ppdu ID's are a one-off from the expected ID which 
+> seemed weird to me. But if I let it sit long enough I all of a sudden 
+> get a ton of "data rx" messages, which is what I would expect if I 
+> enabled a monitor vdev. Once this flurry starts I see the action frame 
+> from my other client, sometimes at least. The firmware generally crashes 
+> after a while so I've still got a ways to go but it seems within the 
+> realm of possibility that this device could receive broadcast action 
+> frames?
+> 
+> Hoping for some breadcrumbs to follow here...
+> 
+Hi James, as you already mentioned, ath11k/WCN6855 doesn't support 
+monitor mode yet. I don't know why you are testing multicast action 
+frame with monitor mode. So if monitor mode is not a must, could you 
+test this with STATION mode? We would look into this if any issue found.
 
--- 
-2.39.2
-
+> Thanks,
+> 
+> James
+> 
+>>
+>> Thanks,
+>>
+>> James
+>>
+>>
 
