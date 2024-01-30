@@ -1,196 +1,410 @@
-Return-Path: <linux-wireless+bounces-2787-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2788-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E71A2841ECA
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 10:08:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B157841FE9
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 10:43:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60D2C1F2C486
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 09:08:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81D001F2B170
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 09:43:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EF455823F;
-	Tue, 30 Jan 2024 09:06:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 673BB605B1;
+	Tue, 30 Jan 2024 09:42:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="XEUBELhB"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ELDfbzM7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A4C5820C
-	for <linux-wireless@vger.kernel.org>; Tue, 30 Jan 2024 09:06:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE5565916B
+	for <linux-wireless@vger.kernel.org>; Tue, 30 Jan 2024 09:42:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706605609; cv=none; b=GFuOaZav92x2aXbmWJ+ir7j6APJpSROq6cqQKIlD562r8h3DIhlL2MnFaUH6387jDF2tQxl7a7Xs7xTYMvtp8p3suA6ktum1UoIIlDU+43o7co1aNs+dgf/0zZgrgvbKewZQBvMexVH0rziNWdA5TCHW9B4B3HivKzExCM9GArc=
+	t=1706607754; cv=none; b=KlZbkpGY9jMrZ5U+Ltz7BLM0TU7G0C/TVnx8URvTVN/Qximzm/rRGBDisMdJ+/qT4V0ABABAkVeRH8t2cIS7LlmzQSA4JiF7spyTEc2zTZgW7/28824ZwSbrzOfIDbzyg8XF56Cgsuc89irlZpHAH6PvmISQ0AwFrPNKuTCkF9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706605609; c=relaxed/simple;
-	bh=oiHeglD96XnI8YyGxD3iQfNOk+R1owt0Ba2TjHCjnr8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Lj9HXUkj49SEXNy3bRPyrEV31NCxyjhjVCM8egOg8sQXb3Vw3mUvZ0FKa7tqrVnKcyFxO7tU2YoisR716CWFouGY5KKtg5F3GYFwM4YofqwF8FsWYngFz+qhLgvwC5vE2ZnBrNv3blILygELPTT4mW9AWZJrRMY1B3H3ViL2uWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=XEUBELhB; arc=none smtp.client-ip=217.70.183.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 9D501FF806;
-	Tue, 30 Jan 2024 09:06:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1706605604;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8Md/QRckFQ8XEEzr6TWNIE9oaitb92qEoNgYzbqlzsU=;
-	b=XEUBELhBf/qcCEJdZ7GGkMoeKE83LkGN/tqsC9MuPwv8HL232n48djsEnLrVmRxk+PqmIE
-	KSelQZXotX/vTbPH6GSK9op86oLppKPdDZXPdBnbWVQ1d8LhPZWz0yPboKq8mdR1ci2DKR
-	vou9E1plRADJG851EAilVmIsTRCQ7Ao6u0qWwIbS/PP+wN6zTYbE9kTMIzqAsnfxolXTS4
-	FhxPBqTZx46sPYaFuYGK4Jc8b4OKoa4ez+jslfedaKH//bEWNXkMlqkk0F0M6J6SzBHn/b
-	mycX81uDHUJFYsm//BZ0ymJV2aAj9cqt+6rZtRs0g2XMxIyl4iyJzZmxvbE6bg==
-Message-ID: <415a0e6e-5824-44a2-af2a-a75115d5a62e@bootlin.com>
-Date: Tue, 30 Jan 2024 10:06:44 +0100
+	s=arc-20240116; t=1706607754; c=relaxed/simple;
+	bh=KKoErkqOIhX/yInrfj1zANZAFMRyZiQ+1fBxnojyons=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jWcCO7Dxb7hDZ/Ec9YIeSoZrWVihztoPCogk8FgMP6Eg30PlW2u8Zc9JvTbcGTkmm0V+v1nvI/Eq7PVEO+p8w+JTXX62gAr3cS+4ERYpBhpqhvvZr3KovgzGZakAowFiR5QOwFXwfGt/e6J4ptUuGC+pDXTgAdfyar3m3qqZBLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ELDfbzM7; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1706607752; x=1738143752;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=KKoErkqOIhX/yInrfj1zANZAFMRyZiQ+1fBxnojyons=;
+  b=ELDfbzM7CwS4S+IueFp4ug9QCtbdxhurwakUv7PX5xkp/tnxN+DxGmtX
+   jgK7y1PpqmC3rrKCiXVqF6p4p1FSaZQ5Hnhwwy4vPUKV/TkKPK4CBScgh
+   1yyh8zewP/KLkakubuetx7cVisqUsMUb5/Lnn5o+reFBN9FW1sSNFsdQY
+   TMDb9+5+jEmRlJURzTmqjYusFlpk40recseOVCLMzKnK4uaUZwFVaen20
+   2QTKTnBQbWsahFZZITpEuxgfw1hRjv53eEM72oWOdipgVgu5T2u8JyzT8
+   LwNPa5LkQ+L7BWbAqELxzS/k+Zo6n6aX+pw/wWfSGUCzcdlK+GDRLqkdc
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="9864774"
+X-IronPort-AV: E=Sophos;i="6.05,707,1701158400"; 
+   d="scan'208";a="9864774"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2024 01:42:31 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="788149151"
+X-IronPort-AV: E=Sophos;i="6.05,707,1701158400"; 
+   d="scan'208";a="788149151"
+Received: from lkp-server02.sh.intel.com (HELO 59f4f4cd5935) ([10.239.97.151])
+  by orsmga002.jf.intel.com with ESMTP; 30 Jan 2024 01:42:29 -0800
+Received: from kbuild by 59f4f4cd5935 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rUkd6-0000AK-2y;
+	Tue, 30 Jan 2024 09:42:22 +0000
+Date: Tue, 30 Jan 2024 17:40:54 +0800
+From: kernel test robot <lkp@intel.com>
+To: Johannes Berg <johannes@sipsolutions.net>,
+	linux-wireless@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>
+Subject: Re: [PATCH 15/15] wifi: cfg80211/mac80211: move puncturing into
+ chandef
+Message-ID: <202401301758.FyMQrGkP-lkp@intel.com>
+References: <20240129194108.307183a5d2e5.I4d7fe2f126b2366c1312010e2900dfb2abffa0f6@changeid>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] [v4] wifi: wilc1000: validate chip id during bus probe
-To: David Mosberger-Tang <davidm@egauge.net>, linux-wireless@vger.kernel.org
-Cc: Ajay.Kathat@microchip.com, kvalo@kernel.org
-References: <20240127004331.1334804-1-davidm@egauge.net>
-Content-Language: en-US
-From: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-In-Reply-To: <20240127004331.1334804-1-davidm@egauge.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: alexis.lothore@bootlin.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240129194108.307183a5d2e5.I4d7fe2f126b2366c1312010e2900dfb2abffa0f6@changeid>
 
-On 1/27/24 01:43, David Mosberger-Tang wrote:
-> Previously, the driver created a net device (typically wlan0) as soon
-> as the module was loaded.  This commit changes the driver to follow
-> normal Linux convention of creating the net device only when bus
-> probing detects a supported chip.
+Hi Johannes,
 
-As already mentioned multiple times, I am skeptical about the validity of
-keeping netdev registration before chip presence check, but I am not the
-maintainer, so I let Ajay and Kalle decide for this. Aside from that, and from
-the kasan warning which is not especially related to the series (and not
-observed in nominal case), I still have a few minor comments below
+kernel test robot noticed the following build errors:
 
-> Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
-> ---
-> changelog:
-> V1: original version
-> V2: Add missing forward declarations
-> V3: Add missing forward declarations, actually :-(
-> V4: - rearranged function order to improve readability
->     - now relative to wireless-next repository
->     - avoid change error return value and have lower-level functions
->       directly return -ENODEV instead
->     - removed any mention of WILC3000
->     - export and use existing is_wilc1000() for chipid validation
->     - replaced strbool() function with open code
-> 
->  drivers/net/wireless/microchip/wilc1000/spi.c | 74 ++++++++++++++-----
->  .../net/wireless/microchip/wilc1000/wlan.c    |  3 +-
->  .../net/wireless/microchip/wilc1000/wlan.h    |  1 +
->  3 files changed, 59 insertions(+), 19 deletions(-)
+[auto build test ERROR on wireless-next/main]
+[cannot apply to wireless/main staging/staging-testing staging/staging-next staging/staging-linus linus/master v6.8-rc2 next-20240130]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-[...]
+url:    https://github.com/intel-lab-lkp/linux/commits/Johannes-Berg/wifi-mac80211-clean-up-band-switch-in-duration/20240130-025313
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+patch link:    https://lore.kernel.org/r/20240129194108.307183a5d2e5.I4d7fe2f126b2366c1312010e2900dfb2abffa0f6%40changeid
+patch subject: [PATCH 15/15] wifi: cfg80211/mac80211: move puncturing into chandef
+config: loongarch-allmodconfig (https://download.01.org/0day-ci/archive/20240130/202401301758.FyMQrGkP-lkp@intel.com/config)
+compiler: loongarch64-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240130/202401301758.FyMQrGkP-lkp@intel.com/reproduce)
 
-> @@ -1142,7 +1170,7 @@ static int wilc_spi_init(struct wilc *wilc, bool resume)
->  	}
->  	if (ret) {
->  		dev_err(&spi->dev, "Failed with CRC7 on and off.\n");
-> -		return ret;
-> +		return -ENODEV;
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202401301758.FyMQrGkP-lkp@intel.com/
 
-You are still rewriting error codes here. At a lower level, sure, but still...
-When I suggested setting -ENODEV at lower level, I was thinking about places
-where no explicit error code was already in use, but
-spi_internal_read/spi_internal_write already generate proper error codes. Or am
-I missing a constraint, like the probe chain really needing -ENODEV ?
+All errors (new ones prefixed by >>):
 
->  	}
->  
->  	/* set up the desired CRC configuration: */
-> @@ -1165,7 +1193,7 @@ static int wilc_spi_init(struct wilc *wilc, bool resume)
->  		dev_err(&spi->dev,
->  			"[wilc spi %d]: Failed internal write reg\n",
->  			__LINE__);
-> -		return ret;
-> +		return -ENODEV;
->  	}
->  	/* update our state to match new protocol settings: */
->  	spi_priv->crc7_enabled = enable_crc7;
-> @@ -1176,17 +1204,27 @@ static int wilc_spi_init(struct wilc *wilc, bool resume)
->  
->  	spi_priv->probing_crc = false;
->  
-> +	return 0;
-> +}
-> +
-> +static int wilc_validate_chipid(struct wilc *wilc)
-> +{
-> +	struct spi_device *spi = to_spi_device(wilc->dev);
-> +	u32 chipid;
-> +	int ret;
-> +
->  	/*
->  	 * make sure can read chip id without protocol error
->  	 */
->  	ret = wilc_spi_read_reg(wilc, WILC_CHIPID, &chipid);
->  	if (ret) {
->  		dev_err(&spi->dev, "Fail cmd read chip id...\n");
-> -		return ret;
-> +		return -ENODEV;
-> +	}
-> +	if (!is_wilc1000(chipid)) {
-> +		dev_err(&spi->dev, "Unknown chip id 0x%x\n", chipid);
-> +		return -ENODEV;
->  	}
-> -
-> -	spi_priv->isinit = true;
-> -
->  	return 0;
->  }
->  
-> diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
-> index 6b2f2269ddf8..3130a3ea8d71 100644
-> --- a/drivers/net/wireless/microchip/wilc1000/wlan.c
-> +++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
-> @@ -12,10 +12,11 @@
->  
->  #define WAKE_UP_TRIAL_RETRY		10000
->  
-> -static inline bool is_wilc1000(u32 id)
-> +bool is_wilc1000(u32 id)
->  {
->  	return (id & (~WILC_CHIP_REV_FIELD)) == WILC_1000_BASE_ID;
->  }
-> +EXPORT_SYMBOL_GPL(is_wilc1000);
+   drivers/net/wireless/ath/ath12k/mac.c: In function 'ath12k_mac_op_bss_info_changed':
+>> drivers/net/wireless/ath/ath12k/mac.c:2771:23: error: 'BSS_CHANGED_EHT_PUNCTURING' undeclared (first use in this function)
+    2771 |         if (changed & BSS_CHANGED_EHT_PUNCTURING)
+         |                       ^~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/net/wireless/ath/ath12k/mac.c:2771:23: note: each undeclared identifier is reported only once for each function it appears in
+>> drivers/net/wireless/ath/ath12k/mac.c:2772:43: error: 'struct ieee80211_bss_conf' has no member named 'eht_puncturing'
+    2772 |                 arvif->punct_bitmap = info->eht_puncturing;
+         |                                           ^~
+   drivers/net/wireless/ath/ath12k/mac.c: In function 'ath12k_mac_op_assign_vif_chanctx':
+   drivers/net/wireless/ath/ath12k/mac.c:6374:40: error: 'struct ieee80211_bss_conf' has no member named 'eht_puncturing'
+    6374 |         arvif->punct_bitmap = link_conf->eht_puncturing;
+         |                                        ^~
 
-nit: Since the function is not static anymore, it would have been nice to move
-it with the other exported functions to maintain the existing functions ordering
 
->  static inline void acquire_bus(struct wilc *wilc, enum bus_acquire acquire)
->  {
-> diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.h b/drivers/net/wireless/microchip/wilc1000/wlan.h
-> index f02775f7e41f..ebdfb0afaf71 100644
-> --- a/drivers/net/wireless/microchip/wilc1000/wlan.h
-> +++ b/drivers/net/wireless/microchip/wilc1000/wlan.h
-> @@ -409,6 +409,7 @@ struct wilc_cfg_rsp {
->  
->  struct wilc_vif;
->  
-> +bool is_wilc1000(u32 id);
->  int wilc_wlan_firmware_download(struct wilc *wilc, const u8 *buffer,
->  				u32 buffer_size);
->  int wilc_wlan_start(struct wilc *wilc);
+vim +/BSS_CHANGED_EHT_PUNCTURING +2771 drivers/net/wireless/ath/ath12k/mac.c
+
+d889913205cf7e Kalle Valo    2022-11-28  2493  
+d889913205cf7e Kalle Valo    2022-11-28  2494  static void ath12k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
+d889913205cf7e Kalle Valo    2022-11-28  2495  					   struct ieee80211_vif *vif,
+d889913205cf7e Kalle Valo    2022-11-28  2496  					   struct ieee80211_bss_conf *info,
+d889913205cf7e Kalle Valo    2022-11-28  2497  					   u64 changed)
+d889913205cf7e Kalle Valo    2022-11-28  2498  {
+d889913205cf7e Kalle Valo    2022-11-28  2499  	struct ath12k *ar = hw->priv;
+d889913205cf7e Kalle Valo    2022-11-28  2500  	struct ath12k_vif *arvif = ath12k_vif_to_arvif(vif);
+d889913205cf7e Kalle Valo    2022-11-28  2501  	struct cfg80211_chan_def def;
+d889913205cf7e Kalle Valo    2022-11-28  2502  	u32 param_id, param_value;
+d889913205cf7e Kalle Valo    2022-11-28  2503  	enum nl80211_band band;
+d889913205cf7e Kalle Valo    2022-11-28  2504  	u32 vdev_param;
+d889913205cf7e Kalle Valo    2022-11-28  2505  	int mcast_rate;
+d889913205cf7e Kalle Valo    2022-11-28  2506  	u32 preamble;
+d889913205cf7e Kalle Valo    2022-11-28  2507  	u16 hw_value;
+d889913205cf7e Kalle Valo    2022-11-28  2508  	u16 bitrate;
+d889913205cf7e Kalle Valo    2022-11-28  2509  	int ret;
+d889913205cf7e Kalle Valo    2022-11-28  2510  	u8 rateidx;
+d889913205cf7e Kalle Valo    2022-11-28  2511  	u32 rate;
+d889913205cf7e Kalle Valo    2022-11-28  2512  
+d889913205cf7e Kalle Valo    2022-11-28  2513  	mutex_lock(&ar->conf_mutex);
+d889913205cf7e Kalle Valo    2022-11-28  2514  
+d889913205cf7e Kalle Valo    2022-11-28  2515  	if (changed & BSS_CHANGED_BEACON_INT) {
+d889913205cf7e Kalle Valo    2022-11-28  2516  		arvif->beacon_interval = info->beacon_int;
+d889913205cf7e Kalle Valo    2022-11-28  2517  
+d889913205cf7e Kalle Valo    2022-11-28  2518  		param_id = WMI_VDEV_PARAM_BEACON_INTERVAL;
+d889913205cf7e Kalle Valo    2022-11-28  2519  		ret = ath12k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
+d889913205cf7e Kalle Valo    2022-11-28  2520  						    param_id,
+d889913205cf7e Kalle Valo    2022-11-28  2521  						    arvif->beacon_interval);
+d889913205cf7e Kalle Valo    2022-11-28  2522  		if (ret)
+d889913205cf7e Kalle Valo    2022-11-28  2523  			ath12k_warn(ar->ab, "Failed to set beacon interval for VDEV: %d\n",
+d889913205cf7e Kalle Valo    2022-11-28  2524  				    arvif->vdev_id);
+d889913205cf7e Kalle Valo    2022-11-28  2525  		else
+d889913205cf7e Kalle Valo    2022-11-28  2526  			ath12k_dbg(ar->ab, ATH12K_DBG_MAC,
+d889913205cf7e Kalle Valo    2022-11-28  2527  				   "Beacon interval: %d set for VDEV: %d\n",
+d889913205cf7e Kalle Valo    2022-11-28  2528  				   arvif->beacon_interval, arvif->vdev_id);
+d889913205cf7e Kalle Valo    2022-11-28  2529  	}
+d889913205cf7e Kalle Valo    2022-11-28  2530  
+d889913205cf7e Kalle Valo    2022-11-28  2531  	if (changed & BSS_CHANGED_BEACON) {
+d889913205cf7e Kalle Valo    2022-11-28  2532  		param_id = WMI_PDEV_PARAM_BEACON_TX_MODE;
+c4cb46dfb291e1 Sidhanta Sahu 2023-09-05  2533  		param_value = WMI_BEACON_BURST_MODE;
+d889913205cf7e Kalle Valo    2022-11-28  2534  		ret = ath12k_wmi_pdev_set_param(ar, param_id,
+d889913205cf7e Kalle Valo    2022-11-28  2535  						param_value, ar->pdev->pdev_id);
+d889913205cf7e Kalle Valo    2022-11-28  2536  		if (ret)
+d889913205cf7e Kalle Valo    2022-11-28  2537  			ath12k_warn(ar->ab, "Failed to set beacon mode for VDEV: %d\n",
+d889913205cf7e Kalle Valo    2022-11-28  2538  				    arvif->vdev_id);
+d889913205cf7e Kalle Valo    2022-11-28  2539  		else
+d889913205cf7e Kalle Valo    2022-11-28  2540  			ath12k_dbg(ar->ab, ATH12K_DBG_MAC,
+c4cb46dfb291e1 Sidhanta Sahu 2023-09-05  2541  				   "Set burst beacon mode for VDEV: %d\n",
+d889913205cf7e Kalle Valo    2022-11-28  2542  				   arvif->vdev_id);
+d889913205cf7e Kalle Valo    2022-11-28  2543  
+d889913205cf7e Kalle Valo    2022-11-28  2544  		ret = ath12k_mac_setup_bcn_tmpl(arvif);
+d889913205cf7e Kalle Valo    2022-11-28  2545  		if (ret)
+d889913205cf7e Kalle Valo    2022-11-28  2546  			ath12k_warn(ar->ab, "failed to update bcn template: %d\n",
+d889913205cf7e Kalle Valo    2022-11-28  2547  				    ret);
+d889913205cf7e Kalle Valo    2022-11-28  2548  	}
+d889913205cf7e Kalle Valo    2022-11-28  2549  
+d889913205cf7e Kalle Valo    2022-11-28  2550  	if (changed & (BSS_CHANGED_BEACON_INFO | BSS_CHANGED_BEACON)) {
+d889913205cf7e Kalle Valo    2022-11-28  2551  		arvif->dtim_period = info->dtim_period;
+d889913205cf7e Kalle Valo    2022-11-28  2552  
+d889913205cf7e Kalle Valo    2022-11-28  2553  		param_id = WMI_VDEV_PARAM_DTIM_PERIOD;
+d889913205cf7e Kalle Valo    2022-11-28  2554  		ret = ath12k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
+d889913205cf7e Kalle Valo    2022-11-28  2555  						    param_id,
+d889913205cf7e Kalle Valo    2022-11-28  2556  						    arvif->dtim_period);
+d889913205cf7e Kalle Valo    2022-11-28  2557  
+d889913205cf7e Kalle Valo    2022-11-28  2558  		if (ret)
+d889913205cf7e Kalle Valo    2022-11-28  2559  			ath12k_warn(ar->ab, "Failed to set dtim period for VDEV %d: %i\n",
+d889913205cf7e Kalle Valo    2022-11-28  2560  				    arvif->vdev_id, ret);
+d889913205cf7e Kalle Valo    2022-11-28  2561  		else
+d889913205cf7e Kalle Valo    2022-11-28  2562  			ath12k_dbg(ar->ab, ATH12K_DBG_MAC,
+d889913205cf7e Kalle Valo    2022-11-28  2563  				   "DTIM period: %d set for VDEV: %d\n",
+d889913205cf7e Kalle Valo    2022-11-28  2564  				   arvif->dtim_period, arvif->vdev_id);
+d889913205cf7e Kalle Valo    2022-11-28  2565  	}
+d889913205cf7e Kalle Valo    2022-11-28  2566  
+d889913205cf7e Kalle Valo    2022-11-28  2567  	if (changed & BSS_CHANGED_SSID &&
+d889913205cf7e Kalle Valo    2022-11-28  2568  	    vif->type == NL80211_IFTYPE_AP) {
+d889913205cf7e Kalle Valo    2022-11-28  2569  		arvif->u.ap.ssid_len = vif->cfg.ssid_len;
+d889913205cf7e Kalle Valo    2022-11-28  2570  		if (vif->cfg.ssid_len)
+d889913205cf7e Kalle Valo    2022-11-28  2571  			memcpy(arvif->u.ap.ssid, vif->cfg.ssid, vif->cfg.ssid_len);
+d889913205cf7e Kalle Valo    2022-11-28  2572  		arvif->u.ap.hidden_ssid = info->hidden_ssid;
+d889913205cf7e Kalle Valo    2022-11-28  2573  	}
+d889913205cf7e Kalle Valo    2022-11-28  2574  
+d889913205cf7e Kalle Valo    2022-11-28  2575  	if (changed & BSS_CHANGED_BSSID && !is_zero_ether_addr(info->bssid))
+d889913205cf7e Kalle Valo    2022-11-28  2576  		ether_addr_copy(arvif->bssid, info->bssid);
+d889913205cf7e Kalle Valo    2022-11-28  2577  
+d889913205cf7e Kalle Valo    2022-11-28  2578  	if (changed & BSS_CHANGED_BEACON_ENABLED) {
+d889913205cf7e Kalle Valo    2022-11-28  2579  		ath12k_control_beaconing(arvif, info);
+d889913205cf7e Kalle Valo    2022-11-28  2580  
+d889913205cf7e Kalle Valo    2022-11-28  2581  		if (arvif->is_up && vif->bss_conf.he_support &&
+d889913205cf7e Kalle Valo    2022-11-28  2582  		    vif->bss_conf.he_oper.params) {
+d889913205cf7e Kalle Valo    2022-11-28  2583  			/* TODO: Extend to support 1024 BA Bitmap size */
+d889913205cf7e Kalle Valo    2022-11-28  2584  			ret = ath12k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
+d889913205cf7e Kalle Valo    2022-11-28  2585  							    WMI_VDEV_PARAM_BA_MODE,
+d889913205cf7e Kalle Valo    2022-11-28  2586  							    WMI_BA_MODE_BUFFER_SIZE_256);
+d889913205cf7e Kalle Valo    2022-11-28  2587  			if (ret)
+d889913205cf7e Kalle Valo    2022-11-28  2588  				ath12k_warn(ar->ab,
+d889913205cf7e Kalle Valo    2022-11-28  2589  					    "failed to set BA BUFFER SIZE 256 for vdev: %d\n",
+d889913205cf7e Kalle Valo    2022-11-28  2590  					    arvif->vdev_id);
+d889913205cf7e Kalle Valo    2022-11-28  2591  
+d889913205cf7e Kalle Valo    2022-11-28  2592  			param_id = WMI_VDEV_PARAM_HEOPS_0_31;
+d889913205cf7e Kalle Valo    2022-11-28  2593  			param_value = vif->bss_conf.he_oper.params;
+d889913205cf7e Kalle Valo    2022-11-28  2594  			ret = ath12k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
+d889913205cf7e Kalle Valo    2022-11-28  2595  							    param_id, param_value);
+d889913205cf7e Kalle Valo    2022-11-28  2596  			ath12k_dbg(ar->ab, ATH12K_DBG_MAC,
+d889913205cf7e Kalle Valo    2022-11-28  2597  				   "he oper param: %x set for VDEV: %d\n",
+d889913205cf7e Kalle Valo    2022-11-28  2598  				   param_value, arvif->vdev_id);
+d889913205cf7e Kalle Valo    2022-11-28  2599  
+d889913205cf7e Kalle Valo    2022-11-28  2600  			if (ret)
+d889913205cf7e Kalle Valo    2022-11-28  2601  				ath12k_warn(ar->ab, "Failed to set he oper params %x for VDEV %d: %i\n",
+d889913205cf7e Kalle Valo    2022-11-28  2602  					    param_value, arvif->vdev_id, ret);
+d889913205cf7e Kalle Valo    2022-11-28  2603  		}
+d889913205cf7e Kalle Valo    2022-11-28  2604  	}
+d889913205cf7e Kalle Valo    2022-11-28  2605  
+d889913205cf7e Kalle Valo    2022-11-28  2606  	if (changed & BSS_CHANGED_ERP_CTS_PROT) {
+d889913205cf7e Kalle Valo    2022-11-28  2607  		u32 cts_prot;
+d889913205cf7e Kalle Valo    2022-11-28  2608  
+d889913205cf7e Kalle Valo    2022-11-28  2609  		cts_prot = !!(info->use_cts_prot);
+d889913205cf7e Kalle Valo    2022-11-28  2610  		param_id = WMI_VDEV_PARAM_PROTECTION_MODE;
+d889913205cf7e Kalle Valo    2022-11-28  2611  
+d889913205cf7e Kalle Valo    2022-11-28  2612  		if (arvif->is_started) {
+d889913205cf7e Kalle Valo    2022-11-28  2613  			ret = ath12k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
+d889913205cf7e Kalle Valo    2022-11-28  2614  							    param_id, cts_prot);
+d889913205cf7e Kalle Valo    2022-11-28  2615  			if (ret)
+d889913205cf7e Kalle Valo    2022-11-28  2616  				ath12k_warn(ar->ab, "Failed to set CTS prot for VDEV: %d\n",
+d889913205cf7e Kalle Valo    2022-11-28  2617  					    arvif->vdev_id);
+d889913205cf7e Kalle Valo    2022-11-28  2618  			else
+d889913205cf7e Kalle Valo    2022-11-28  2619  				ath12k_dbg(ar->ab, ATH12K_DBG_MAC, "Set CTS prot: %d for VDEV: %d\n",
+d889913205cf7e Kalle Valo    2022-11-28  2620  					   cts_prot, arvif->vdev_id);
+d889913205cf7e Kalle Valo    2022-11-28  2621  		} else {
+d889913205cf7e Kalle Valo    2022-11-28  2622  			ath12k_dbg(ar->ab, ATH12K_DBG_MAC, "defer protection mode setup, vdev is not ready yet\n");
+d889913205cf7e Kalle Valo    2022-11-28  2623  		}
+d889913205cf7e Kalle Valo    2022-11-28  2624  	}
+d889913205cf7e Kalle Valo    2022-11-28  2625  
+d889913205cf7e Kalle Valo    2022-11-28  2626  	if (changed & BSS_CHANGED_ERP_SLOT) {
+d889913205cf7e Kalle Valo    2022-11-28  2627  		u32 slottime;
+d889913205cf7e Kalle Valo    2022-11-28  2628  
+d889913205cf7e Kalle Valo    2022-11-28  2629  		if (info->use_short_slot)
+d889913205cf7e Kalle Valo    2022-11-28  2630  			slottime = WMI_VDEV_SLOT_TIME_SHORT; /* 9us */
+d889913205cf7e Kalle Valo    2022-11-28  2631  
+d889913205cf7e Kalle Valo    2022-11-28  2632  		else
+d889913205cf7e Kalle Valo    2022-11-28  2633  			slottime = WMI_VDEV_SLOT_TIME_LONG; /* 20us */
+d889913205cf7e Kalle Valo    2022-11-28  2634  
+d889913205cf7e Kalle Valo    2022-11-28  2635  		param_id = WMI_VDEV_PARAM_SLOT_TIME;
+d889913205cf7e Kalle Valo    2022-11-28  2636  		ret = ath12k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
+d889913205cf7e Kalle Valo    2022-11-28  2637  						    param_id, slottime);
+d889913205cf7e Kalle Valo    2022-11-28  2638  		if (ret)
+d889913205cf7e Kalle Valo    2022-11-28  2639  			ath12k_warn(ar->ab, "Failed to set erp slot for VDEV: %d\n",
+d889913205cf7e Kalle Valo    2022-11-28  2640  				    arvif->vdev_id);
+d889913205cf7e Kalle Valo    2022-11-28  2641  		else
+d889913205cf7e Kalle Valo    2022-11-28  2642  			ath12k_dbg(ar->ab, ATH12K_DBG_MAC,
+d889913205cf7e Kalle Valo    2022-11-28  2643  				   "Set slottime: %d for VDEV: %d\n",
+d889913205cf7e Kalle Valo    2022-11-28  2644  				   slottime, arvif->vdev_id);
+d889913205cf7e Kalle Valo    2022-11-28  2645  	}
+d889913205cf7e Kalle Valo    2022-11-28  2646  
+d889913205cf7e Kalle Valo    2022-11-28  2647  	if (changed & BSS_CHANGED_ERP_PREAMBLE) {
+d889913205cf7e Kalle Valo    2022-11-28  2648  		u32 preamble;
+d889913205cf7e Kalle Valo    2022-11-28  2649  
+d889913205cf7e Kalle Valo    2022-11-28  2650  		if (info->use_short_preamble)
+d889913205cf7e Kalle Valo    2022-11-28  2651  			preamble = WMI_VDEV_PREAMBLE_SHORT;
+d889913205cf7e Kalle Valo    2022-11-28  2652  		else
+d889913205cf7e Kalle Valo    2022-11-28  2653  			preamble = WMI_VDEV_PREAMBLE_LONG;
+d889913205cf7e Kalle Valo    2022-11-28  2654  
+d889913205cf7e Kalle Valo    2022-11-28  2655  		param_id = WMI_VDEV_PARAM_PREAMBLE;
+d889913205cf7e Kalle Valo    2022-11-28  2656  		ret = ath12k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
+d889913205cf7e Kalle Valo    2022-11-28  2657  						    param_id, preamble);
+d889913205cf7e Kalle Valo    2022-11-28  2658  		if (ret)
+d889913205cf7e Kalle Valo    2022-11-28  2659  			ath12k_warn(ar->ab, "Failed to set preamble for VDEV: %d\n",
+d889913205cf7e Kalle Valo    2022-11-28  2660  				    arvif->vdev_id);
+d889913205cf7e Kalle Valo    2022-11-28  2661  		else
+d889913205cf7e Kalle Valo    2022-11-28  2662  			ath12k_dbg(ar->ab, ATH12K_DBG_MAC,
+d889913205cf7e Kalle Valo    2022-11-28  2663  				   "Set preamble: %d for VDEV: %d\n",
+d889913205cf7e Kalle Valo    2022-11-28  2664  				   preamble, arvif->vdev_id);
+d889913205cf7e Kalle Valo    2022-11-28  2665  	}
+d889913205cf7e Kalle Valo    2022-11-28  2666  
+d889913205cf7e Kalle Valo    2022-11-28  2667  	if (changed & BSS_CHANGED_ASSOC) {
+d889913205cf7e Kalle Valo    2022-11-28  2668  		if (vif->cfg.assoc)
+d889913205cf7e Kalle Valo    2022-11-28  2669  			ath12k_bss_assoc(hw, vif, info);
+d889913205cf7e Kalle Valo    2022-11-28  2670  		else
+d889913205cf7e Kalle Valo    2022-11-28  2671  			ath12k_bss_disassoc(hw, vif);
+d889913205cf7e Kalle Valo    2022-11-28  2672  	}
+d889913205cf7e Kalle Valo    2022-11-28  2673  
+d889913205cf7e Kalle Valo    2022-11-28  2674  	if (changed & BSS_CHANGED_TXPOWER) {
+d889913205cf7e Kalle Valo    2022-11-28  2675  		ath12k_dbg(ar->ab, ATH12K_DBG_MAC, "mac vdev_id %i txpower %d\n",
+d889913205cf7e Kalle Valo    2022-11-28  2676  			   arvif->vdev_id, info->txpower);
+d889913205cf7e Kalle Valo    2022-11-28  2677  
+d889913205cf7e Kalle Valo    2022-11-28  2678  		arvif->txpower = info->txpower;
+d889913205cf7e Kalle Valo    2022-11-28  2679  		ath12k_mac_txpower_recalc(ar);
+d889913205cf7e Kalle Valo    2022-11-28  2680  	}
+d889913205cf7e Kalle Valo    2022-11-28  2681  
+d889913205cf7e Kalle Valo    2022-11-28  2682  	if (changed & BSS_CHANGED_MCAST_RATE &&
+d889913205cf7e Kalle Valo    2022-11-28  2683  	    !ath12k_mac_vif_chan(arvif->vif, &def)) {
+d889913205cf7e Kalle Valo    2022-11-28  2684  		band = def.chan->band;
+d889913205cf7e Kalle Valo    2022-11-28  2685  		mcast_rate = vif->bss_conf.mcast_rate[band];
+d889913205cf7e Kalle Valo    2022-11-28  2686  
+d889913205cf7e Kalle Valo    2022-11-28  2687  		if (mcast_rate > 0)
+d889913205cf7e Kalle Valo    2022-11-28  2688  			rateidx = mcast_rate - 1;
+d889913205cf7e Kalle Valo    2022-11-28  2689  		else
+d889913205cf7e Kalle Valo    2022-11-28  2690  			rateidx = ffs(vif->bss_conf.basic_rates) - 1;
+d889913205cf7e Kalle Valo    2022-11-28  2691  
+d889913205cf7e Kalle Valo    2022-11-28  2692  		if (ar->pdev->cap.supported_bands & WMI_HOST_WLAN_5G_CAP)
+d889913205cf7e Kalle Valo    2022-11-28  2693  			rateidx += ATH12K_MAC_FIRST_OFDM_RATE_IDX;
+d889913205cf7e Kalle Valo    2022-11-28  2694  
+d889913205cf7e Kalle Valo    2022-11-28  2695  		bitrate = ath12k_legacy_rates[rateidx].bitrate;
+d889913205cf7e Kalle Valo    2022-11-28  2696  		hw_value = ath12k_legacy_rates[rateidx].hw_value;
+d889913205cf7e Kalle Valo    2022-11-28  2697  
+d889913205cf7e Kalle Valo    2022-11-28  2698  		if (ath12k_mac_bitrate_is_cck(bitrate))
+d889913205cf7e Kalle Valo    2022-11-28  2699  			preamble = WMI_RATE_PREAMBLE_CCK;
+d889913205cf7e Kalle Valo    2022-11-28  2700  		else
+d889913205cf7e Kalle Valo    2022-11-28  2701  			preamble = WMI_RATE_PREAMBLE_OFDM;
+d889913205cf7e Kalle Valo    2022-11-28  2702  
+d889913205cf7e Kalle Valo    2022-11-28  2703  		rate = ATH12K_HW_RATE_CODE(hw_value, 0, preamble);
+d889913205cf7e Kalle Valo    2022-11-28  2704  
+d889913205cf7e Kalle Valo    2022-11-28  2705  		ath12k_dbg(ar->ab, ATH12K_DBG_MAC,
+d889913205cf7e Kalle Valo    2022-11-28  2706  			   "mac vdev %d mcast_rate %x\n",
+d889913205cf7e Kalle Valo    2022-11-28  2707  			   arvif->vdev_id, rate);
+d889913205cf7e Kalle Valo    2022-11-28  2708  
+d889913205cf7e Kalle Valo    2022-11-28  2709  		vdev_param = WMI_VDEV_PARAM_MCAST_DATA_RATE;
+d889913205cf7e Kalle Valo    2022-11-28  2710  		ret = ath12k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
+d889913205cf7e Kalle Valo    2022-11-28  2711  						    vdev_param, rate);
+d889913205cf7e Kalle Valo    2022-11-28  2712  		if (ret)
+d889913205cf7e Kalle Valo    2022-11-28  2713  			ath12k_warn(ar->ab,
+d889913205cf7e Kalle Valo    2022-11-28  2714  				    "failed to set mcast rate on vdev %i: %d\n",
+d889913205cf7e Kalle Valo    2022-11-28  2715  				    arvif->vdev_id,  ret);
+d889913205cf7e Kalle Valo    2022-11-28  2716  
+d889913205cf7e Kalle Valo    2022-11-28  2717  		vdev_param = WMI_VDEV_PARAM_BCAST_DATA_RATE;
+d889913205cf7e Kalle Valo    2022-11-28  2718  		ret = ath12k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
+d889913205cf7e Kalle Valo    2022-11-28  2719  						    vdev_param, rate);
+d889913205cf7e Kalle Valo    2022-11-28  2720  		if (ret)
+d889913205cf7e Kalle Valo    2022-11-28  2721  			ath12k_warn(ar->ab,
+d889913205cf7e Kalle Valo    2022-11-28  2722  				    "failed to set bcast rate on vdev %i: %d\n",
+d889913205cf7e Kalle Valo    2022-11-28  2723  				    arvif->vdev_id,  ret);
+d889913205cf7e Kalle Valo    2022-11-28  2724  	}
+d889913205cf7e Kalle Valo    2022-11-28  2725  
+d889913205cf7e Kalle Valo    2022-11-28  2726  	if (changed & BSS_CHANGED_BASIC_RATES &&
+d889913205cf7e Kalle Valo    2022-11-28  2727  	    !ath12k_mac_vif_chan(arvif->vif, &def))
+d889913205cf7e Kalle Valo    2022-11-28  2728  		ath12k_recalculate_mgmt_rate(ar, vif, &def);
+d889913205cf7e Kalle Valo    2022-11-28  2729  
+d889913205cf7e Kalle Valo    2022-11-28  2730  	if (changed & BSS_CHANGED_TWT) {
+d889913205cf7e Kalle Valo    2022-11-28  2731  		if (info->twt_requester || info->twt_responder)
+d889913205cf7e Kalle Valo    2022-11-28  2732  			ath12k_wmi_send_twt_enable_cmd(ar, ar->pdev->pdev_id);
+d889913205cf7e Kalle Valo    2022-11-28  2733  		else
+d889913205cf7e Kalle Valo    2022-11-28  2734  			ath12k_wmi_send_twt_disable_cmd(ar, ar->pdev->pdev_id);
+d889913205cf7e Kalle Valo    2022-11-28  2735  	}
+d889913205cf7e Kalle Valo    2022-11-28  2736  
+d889913205cf7e Kalle Valo    2022-11-28  2737  	if (changed & BSS_CHANGED_HE_OBSS_PD)
+d889913205cf7e Kalle Valo    2022-11-28  2738  		ath12k_wmi_send_obss_spr_cmd(ar, arvif->vdev_id,
+d889913205cf7e Kalle Valo    2022-11-28  2739  					     &info->he_obss_pd);
+d889913205cf7e Kalle Valo    2022-11-28  2740  
+d889913205cf7e Kalle Valo    2022-11-28  2741  	if (changed & BSS_CHANGED_HE_BSS_COLOR) {
+d889913205cf7e Kalle Valo    2022-11-28  2742  		if (vif->type == NL80211_IFTYPE_AP) {
+d889913205cf7e Kalle Valo    2022-11-28  2743  			ret = ath12k_wmi_obss_color_cfg_cmd(ar,
+d889913205cf7e Kalle Valo    2022-11-28  2744  							    arvif->vdev_id,
+d889913205cf7e Kalle Valo    2022-11-28  2745  							    info->he_bss_color.color,
+d889913205cf7e Kalle Valo    2022-11-28  2746  							    ATH12K_BSS_COLOR_AP_PERIODS,
+d889913205cf7e Kalle Valo    2022-11-28  2747  							    info->he_bss_color.enabled);
+d889913205cf7e Kalle Valo    2022-11-28  2748  			if (ret)
+d889913205cf7e Kalle Valo    2022-11-28  2749  				ath12k_warn(ar->ab, "failed to set bss color collision on vdev %i: %d\n",
+d889913205cf7e Kalle Valo    2022-11-28  2750  					    arvif->vdev_id,  ret);
+d889913205cf7e Kalle Valo    2022-11-28  2751  		} else if (vif->type == NL80211_IFTYPE_STATION) {
+d889913205cf7e Kalle Valo    2022-11-28  2752  			ret = ath12k_wmi_send_bss_color_change_enable_cmd(ar,
+d889913205cf7e Kalle Valo    2022-11-28  2753  									  arvif->vdev_id,
+d889913205cf7e Kalle Valo    2022-11-28  2754  									  1);
+d889913205cf7e Kalle Valo    2022-11-28  2755  			if (ret)
+d889913205cf7e Kalle Valo    2022-11-28  2756  				ath12k_warn(ar->ab, "failed to enable bss color change on vdev %i: %d\n",
+d889913205cf7e Kalle Valo    2022-11-28  2757  					    arvif->vdev_id,  ret);
+d889913205cf7e Kalle Valo    2022-11-28  2758  			ret = ath12k_wmi_obss_color_cfg_cmd(ar,
+d889913205cf7e Kalle Valo    2022-11-28  2759  							    arvif->vdev_id,
+d889913205cf7e Kalle Valo    2022-11-28  2760  							    0,
+d889913205cf7e Kalle Valo    2022-11-28  2761  							    ATH12K_BSS_COLOR_STA_PERIODS,
+d889913205cf7e Kalle Valo    2022-11-28  2762  							    1);
+d889913205cf7e Kalle Valo    2022-11-28  2763  			if (ret)
+d889913205cf7e Kalle Valo    2022-11-28  2764  				ath12k_warn(ar->ab, "failed to set bss color collision on vdev %i: %d\n",
+d889913205cf7e Kalle Valo    2022-11-28  2765  					    arvif->vdev_id,  ret);
+d889913205cf7e Kalle Valo    2022-11-28  2766  		}
+d889913205cf7e Kalle Valo    2022-11-28  2767  	}
+d889913205cf7e Kalle Valo    2022-11-28  2768  
+d889913205cf7e Kalle Valo    2022-11-28  2769  	ath12k_mac_fils_discovery(arvif, info);
+d889913205cf7e Kalle Valo    2022-11-28  2770  
+07c01b86f21dd4 Aloka Dixit   2023-08-02 @2771  	if (changed & BSS_CHANGED_EHT_PUNCTURING)
+07c01b86f21dd4 Aloka Dixit   2023-08-02 @2772  		arvif->punct_bitmap = info->eht_puncturing;
+07c01b86f21dd4 Aloka Dixit   2023-08-02  2773  
+d889913205cf7e Kalle Valo    2022-11-28  2774  	mutex_unlock(&ar->conf_mutex);
+d889913205cf7e Kalle Valo    2022-11-28  2775  }
+d889913205cf7e Kalle Valo    2022-11-28  2776  
 
 -- 
-Alexis Lothoré, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
