@@ -1,127 +1,158 @@
-Return-Path: <linux-wireless+bounces-2822-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2823-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D40F38426D2
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 15:23:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCADE84271A
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 15:45:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 773B828C5B6
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 14:23:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2BA21C262D4
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 14:45:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45A576EB4B;
-	Tue, 30 Jan 2024 14:22:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C52987CF1A;
+	Tue, 30 Jan 2024 14:45:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="KxOug5Gs"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ilGYFTWd"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C362F6DCE8
-	for <linux-wireless@vger.kernel.org>; Tue, 30 Jan 2024 14:22:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA26D6BB20
+	for <linux-wireless@vger.kernel.org>; Tue, 30 Jan 2024 14:44:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706624564; cv=none; b=bNUbWIEVWZJaJn5ipZOhGZtj5UprX2pmF9cMpvzPpInNOvy9Nx3dIQPbCStK9D3mBE0opt2VUaM6CVRAHtbkEaTGnzIWPA2qiIbvbLESWGvTBzYV/L2PCCkosEoCvcJ/xz8Y1Dtl00tgG9f/XElQCMXYep7IX0xUUNuk0edhPko=
+	t=1706625901; cv=none; b=KvbhesAU6gAivPl3q2lbNQOCk0WjSCNHl80CvT8ZBeIH0lh3Gw4TZ+qx4RTcbp+s2RYsy8VMgpjjtM2RrAG+G83M2IlcOyTIrD3YuRcUexsloX1kgFzPK8epZOlhQMqtlUTuvlHEXQTLio/ug1tEB0AwPzT4ex8ay8gDTT/Gats=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706624564; c=relaxed/simple;
-	bh=jovUfV7P3Q8/DZ0aChzXvcwNX7L3Hayh3q3WEUitm8g=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=bmnPPSoDxxDNRlrk+rcUj+WeWZhQR3azYC3GCh3PJoHtYw7312f6tjjlhD6lG1Cx9eEwB8wCY77Gqgk52wdYM7KJGMtP6SEEjTX8u2PzF2ecm6nh5IK/NOw2Fa4R0n4eHdZUnFGNivEtwK5KxBS0q0F5Ja5r8c9Whonxqz17acw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=KxOug5Gs; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=v5eStm1dkrWRN26gj+rHtivEKZr1p45PZ4ddqjju9Z8=;
-	t=1706624561; x=1707834161; b=KxOug5Gs/Ol06WGrJgS5cg4vWrp9bnms3bSYVQeC4xpHImH
-	2pZDZbiRR+do3eb84/IiyX3jpeCMzOoxBZBFE2sf7lYGrgxNsKJdOv91TSJVWzIu4D4wjdniIPwTj
-	h1AryFT9OQlyLYZNxY3pF85vjn1Bx6Y/Z1THoSiVUe/Ri40EK2eFqbDwqmZf1Uglew2GwB6EM0eVJ
-	5KmiPNu7JOaIWUr2MNHpS6eo1yoGOq8P1n8k2dshMiX19D3FBWOMLqDFMER2kTV4Y2DpxNaj2PPLq
-	y7oV+4vTEymoJHn1k9VYGWCyv9Ui79RslsMIwsHaLYmI1K9HN4FlF4qsmnoyX8eQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1rUp0Y-000000065zr-0J1e;
-	Tue, 30 Jan 2024 15:22:38 +0100
-Message-ID: <119d60053afa6f5eb9af6597d895f1da1065d7c5.camel@sipsolutions.net>
-Subject: Re: [PATCH 15/15] wifi: cfg80211/mac80211: move puncturing into
- chandef
-From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org
-Cc: Jeff Johnson <quic_jjohnson@quicinc.com>
-Date: Tue, 30 Jan 2024 15:22:37 +0100
-In-Reply-To: <20240129194108.307183a5d2e5.I4d7fe2f126b2366c1312010e2900dfb2abffa0f6@changeid>
-References: <20240129184108.49639-17-johannes@sipsolutions.net>
-	 <20240129194108.307183a5d2e5.I4d7fe2f126b2366c1312010e2900dfb2abffa0f6@changeid>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
+	s=arc-20240116; t=1706625901; c=relaxed/simple;
+	bh=aOKbTAiEVLZYwjda2V6PdNtP3dqeoXBLLxAbQ4ovJKo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=MVMY34xm0x22AhCaAMmuc5g3GenLVeMakmLwJLaywX9SdmFL57SOGSbIiI3Chcpwo4w8LOwuRcCEoxcEl5kC8HQRSlUGuQ9K5V/vTypxHxpJ/NX3LM0hTunMGnyaPab6VmFs4DbtPaNLebVcFChZeingeY0oTjIHveICN293jow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ilGYFTWd; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40UChheJ021458;
+	Tue, 30 Jan 2024 14:44:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=m4dzeXwvqDH/4GlLmU63t3fp4FmaFzMtstw9GUe8/vs=; b=il
+	GYFTWdKAl8M9ALT1prADvESNVobb6IRpk/bR/JLCndfeNgzzC56SaM+o/s0lVUMI
+	dS2ktmrMP6hEdWQ+rt6gKpCFd70AK4AK236zFXT9QlwUPcwYeAskFfrbrtRE5jCC
+	5snFnIPEuBXrW9enV6evC0goiNKmAXa3G0dfWWSWezIo1HFS6oh4cdXHUPRALaJ7
+	1Rd6+YiQi/lthBe4tCplbUlx/+chS1E+ob4wY8dgZ3KHKxr7a/DmP6LJLwexObdm
+	UymtdbBFZEG/5LgPZJqiiqyAyPlIg7v8YQiFzUoHf71c65NA8sOCBfYkMzHzVLFA
+	aCp6NeLRqs4mbKb5isqQ==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vxwyngs9r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 30 Jan 2024 14:44:54 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40UEir3w002863
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 30 Jan 2024 14:44:53 GMT
+Received: from [10.216.2.197] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Tue, 30 Jan
+ 2024 06:44:52 -0800
+Message-ID: <f4501322-c9e4-449b-9c81-f64a6d2172fc@quicinc.com>
+Date: Tue, 30 Jan 2024 20:14:47 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: mac80211: allow CSA to same channel
+Content-Language: en-US
+To: Johannes Berg <johannes@sipsolutions.net>,
+        <linux-wireless@vger.kernel.org>
+CC: Johannes Berg <johannes.berg@intel.com>
+References: <20240129203544.ef7258d5790d.Idafe22e41621757458d4960659b9621853f7104d@changeid>
+From: Aditya Kumar Singh <quic_adisi@quicinc.com>
+In-Reply-To: <20240129203544.ef7258d5790d.Idafe22e41621757458d4960659b9621853f7104d@changeid>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: wQEwNJkTcgaIQd6e4B7Yhf_4WZI0gvVQ
+X-Proofpoint-GUID: wQEwNJkTcgaIQd6e4B7Yhf_4WZI0gvVQ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-30_07,2024-01-30_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
+ priorityscore=1501 mlxscore=0 bulkscore=0 mlxlogscore=999 malwarescore=0
+ suspectscore=0 clxscore=1011 impostorscore=0 lowpriorityscore=0
+ spamscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2401190000 definitions=main-2401300108
 
->=20
-> Move puncturing into the chandef, and adjust all the code
-> accordingly.
+On 1/30/24 01:05, Johannes Berg wrote:
+> From: Johannes Berg <johannes.berg@intel.com>
+> 
+> This could be used e.g. for temporarily sending quiet
+> (mode=1 in CSA/ECSA), or updating bandwidth. This is
 
-So I clearly forgot ath12k in "all the code" ;-)
+I know the intent here (from the other thread), but using the phrase _or 
+updating bandwidth_ is probably not correct since currently without this 
+change also, just changing the bandwidth is possible, isn't it?
 
-Looking at the code, this seems to be an appropriate update for ath12k:
+In the chandef identical check we have -
 
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -2767,10 +2767,6 @@ static void ath12k_mac_op_bss_info_changed(struct ie=
-ee80211_hw *hw,
- 	}
-=20
- 	ath12k_mac_fils_discovery(arvif, info);
--
--	if (changed & BSS_CHANGED_EHT_PUNCTURING)
--		arvif->punct_bitmap =3D info->eht_puncturing;
--
- 	mutex_unlock(&ar->conf_mutex);
- }
-=20
-@@ -6215,6 +6211,8 @@ ath12k_mac_update_vif_chan(struct ath12k *ar,
- 		if (WARN_ON(!arvif->is_started))
- 			continue;
-=20
-+		arvif->punct_bitmap =3D vifs[i].new_ctx->def.punctured;
-+
- 		/* Firmware expect vdev_restart only if vdev is up.
- 		 * If vdev is down then it expect vdev_stop->vdev_start.
- 		 */
-@@ -6311,7 +6309,8 @@ static void ath12k_mac_op_change_chanctx(struct ieee8=
-0211_hw *hw,
- 		goto unlock;
-=20
- 	if (changed & IEEE80211_CHANCTX_CHANGE_WIDTH ||
--	    changed & IEEE80211_CHANCTX_CHANGE_RADAR)
-+	    changed & IEEE80211_CHANCTX_CHANGE_RADAR ||
-+	    changed & IEEE80211_CHANCTX_CHANGE_PUNCTURING)
- 		ath12k_mac_update_active_vif_chan(ar, ctx);
-=20
- 	/* TODO: Recalc radar detection */
-@@ -6371,7 +6370,7 @@ ath12k_mac_op_assign_vif_chanctx(struct ieee80211_hw =
-*hw,
- 		   "mac chanctx assign ptr %pK vdev_id %i\n",
- 		   ctx, arvif->vdev_id);
-=20
--	arvif->punct_bitmap =3D link_conf->eht_puncturing;
-+	arvif->punct_bitmap =3D ctx->def.punctured;
-=20
- 	/* for some targets bss peer must be created before vdev_start */
- 	if (ab->hw_params->vdev_start_delay &&
+return (chandef1->chan == chandef2->chan &&
+	chandef1->width == chandef2->width && ....
+	``````````````````````````````````
+So the width would not match hence false would be returned.
 
+Also, bringing a part of the discussion we had in the other thread -
 
-Any thoughts?
+ >>> I'm thinking about removing that identical() check entirely - you
+ >>> might want to switch to the same channel with quiet=1. At least for
+ >>> testing that'd be really useful, and I don't think it really serves
+ >>> any purpose to forbid it.
+ >
+ >> Yeah, we can do. But is there any actual use case? Also, what if some
+ >> notorious user space application simply sends NL command without even
+ >> quiet=1? There should be some check I guess?
+ >
+ > I'm not sure we care much about a broken userspace application running
+ > with root privileges breaking something here? :-)
+ >
+ > And at least for testing it's very useful to be able to do that. Agree
+ > that identical channel and quiet==0 doesn't make _sense_, but even
+ > then I'm not sure there's a lot of value in not permitting it. With
+ > quiet==1 at least it does make some sense still though, and we're
+ > currently not allowing it, hence my patch (to be able to test
+ > scenarios like that we saw elsewhere.)
 
-johannes
+Agreed to your point. So in that case, should we skip the identical 
+check only when quiet=1?
+
+> also useful for testing, since it's something that an
+> AP may do and the client needs to be prepared. Simply
+> allow it.
+> 
+> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> ---
+>   net/mac80211/cfg.c | 4 ----
+>   1 file changed, 4 deletions(-)
+> 
+> diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+> index 8f647e28e354..c92acbf7b002 100644
+> --- a/net/mac80211/cfg.c
+> +++ b/net/mac80211/cfg.c
+> @@ -3874,10 +3874,6 @@ __ieee80211_channel_switch(struct wiphy *wiphy, struct net_device *dev,
+>   	if (sdata->wdev.cac_started)
+>   		return -EBUSY;
+>   
+> -	if (cfg80211_chandef_identical(&chanreq.oper,
+> -				       &sdata->vif.bss_conf.chanreq.oper))
+> -		return -EINVAL;
+> -
+>   	if (chanreq.oper.punctured && !sdata->vif.bss_conf.eht_support)
+>   		return -EINVAL;
+>   
 
