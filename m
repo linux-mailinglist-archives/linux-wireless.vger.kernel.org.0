@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-2768-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2769-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30F44841B01
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 05:33:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1C8F841B02
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 05:33:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6424A1C24488
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 04:33:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12F121C24CE5
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 04:33:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5328E381AF;
-	Tue, 30 Jan 2024 04:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9F21381BD;
+	Tue, 30 Jan 2024 04:33:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Tefvlebk"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="RPfyM+5D"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3A237716
-	for <linux-wireless@vger.kernel.org>; Tue, 30 Jan 2024 04:32:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31DAC381AC
+	for <linux-wireless@vger.kernel.org>; Tue, 30 Jan 2024 04:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706589180; cv=none; b=e+JRuKAIAZWfknnrYITwSxDtmxu6AGP6DXCS3ejck99l8yQyD1CbXs5qo0TpgNNze/Lluotyhf/Dw8qs2MAbnNCMKvr3Jdpt+u8z45f6+e6NFJ2nN8HmGj+SS3C1MYYzVjTpmz23RRRyj8MuHB8CPE4mFKEOm27VLUvJG2j8fYg=
+	t=1706589181; cv=none; b=QeuOXE8t//S4VAjiFQqLVpEF8D1BGevIjDEdTAPJGvK+G8GBew8qImW9FSQksh9TmffsBDPFgDU8pJv/aOcxlvb9Lg5qI/qhAdrOuG1BRzA1gVRR8866WLZ2MLh195sGg1Tw0aZIKQvVzcqkEz1fkf/ngdcJsRXpJpBdYSgIZmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706589180; c=relaxed/simple;
-	bh=51ivPvwfa5C2OnCX83VOkhhKKv3LemxuVdhkzftYfIk=;
+	s=arc-20240116; t=1706589181; c=relaxed/simple;
+	bh=NAYhnN1QdxPtYoAR1fkTpKKUnvEbQGfy/NUmYjYGzIE=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WL20de4bGQA6xLV2XJPuIfLm28SBscoIiwHo6pFcYvS8PMvf8mtLTadAkMoK8vX3ZwOQe2VJZu/hMpBT5qZAwZnyat04f47az+9Jt02hYdVIqMR9OS4DIoBCdPd4jOWqYfTPpOJR79XyhxRQ7Kw5nGjIOP2M3fC4ldBGEa3a9No=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Tefvlebk; arc=none smtp.client-ip=205.220.180.131
+	 MIME-Version:Content-Type; b=EGK0K0GatwiNDAu5lGtF4QYoTFpH91A/6v96aGnJEGx8uyr/9zzihPhhXX5YrMX519kt7Hhu/mXrPoUeBSgRCm8CEnLyDAcEIPO+oK4ounlBPYa8z1AdPxoYWDA2Oxu8fFzLD24+ZZFSd3CEufLop5y9x7Fk0i9aSmYBvDbjkxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=RPfyM+5D; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40U1Vr8W021812;
-	Tue, 30 Jan 2024 04:32:54 GMT
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40U4MRqC011215;
+	Tue, 30 Jan 2024 04:32:56 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	from:to:cc:subject:date:message-id:in-reply-to:references
 	:mime-version:content-transfer-encoding:content-type; s=
-	qcppdkim1; bh=q0fDwV1bCDcLyrnVAKtlbEjbiiyfaQQvFP3jUNS8HGQ=; b=Te
-	fvlebkV+Cf3s4L9PX9dJ7OnAPAu/8XYsywvIth9J6rr1Zldg8pyxecAqisz1Ezhn
-	0E9tj5l4cSAkXFkqvvRFbPDReaJPO37rLA5UOaYMo6OFR31dvljxeqZBfXBgNd7q
-	PbLEBQ3ufOv8V7WFkYXBbqH/WRDzXlx9C8q0HlRb3K6aH0ZxEJFPjJwVEtHEWxQM
-	BJHhbDDgJFvPxoMNjUqd359+au4Gxd6hn9Akt+WQTCBsJmbJHmUvAnxwPJFPhdKq
-	Uc6dVTqMcxQn0vrTklQ08bXjCJ6jv7xEsN0nAIBKwNU4ElyijN1gIJ/cWRCzNjUK
-	LY60YYsj1xjUibX4IVpA==
+	qcppdkim1; bh=RFUu2Lf8ug+0Fc1G04IcAO7dAIkADV+f0+6z+rRW/VE=; b=RP
+	fyM+5Dt2xr5/0wD70od1fId/yVqLxswER0QETqzOZ6toVnLFLMN4Rb+q5OvJBE0t
+	nfZf/DtlM+FPbDwd9Hx9VEpjX6F4VfRBtKh3naqeSl9iTCcJ4xBXG5Vx+LbEs3cC
+	hEJ+eSIn318WLRzCLeZK78bX4Eajw2NoNDVqz0iKsiJZLANolqkQ31r7Umy8wLJJ
+	L25X9BkTw6I7VpGKbi4QkBeqC1yWbTIuACgqGKRN34BTjSTbpg950z9LP1lEHwJX
+	hC95ArzC4FZf5pVRo18EhuoQCAby1IXakK5JYZNwChktwTZ0t4Le5/7iK8tHXbGd
+	ZUiXR8oLoTd2Tgcb16lQ==
 Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vx86htmqc-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vxrq085ge-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Jan 2024 04:32:53 +0000 (GMT)
+	Tue, 30 Jan 2024 04:32:55 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40U4WrVV008814
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40U4WsJt008825
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Jan 2024 04:32:53 GMT
+	Tue, 30 Jan 2024 04:32:54 GMT
 Received: from cdcwlex322514-lin.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Mon, 29 Jan 2024 20:32:51 -0800
+ 15.2.1118.40; Mon, 29 Jan 2024 20:32:53 -0800
 From: Aditya Kumar Singh <quic_adisi@quicinc.com>
 To: <johannes@sipsolutions.net>
 CC: <linux-wireless@vger.kernel.org>,
         Aditya Kumar Singh
 	<quic_adisi@quicinc.com>
-Subject: [PATCH v7 1/5] wifi: cfg80211: send link id in channel_switch ops
-Date: Tue, 30 Jan 2024 10:02:21 +0530
-Message-ID: <20240130043225.942202-2-quic_adisi@quicinc.com>
+Subject: [PATCH v7 2/5] wifi: mac80211: update beacon counters per link basis
+Date: Tue, 30 Jan 2024 10:02:22 +0530
+Message-ID: <20240130043225.942202-3-quic_adisi@quicinc.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240130043225.942202-1-quic_adisi@quicinc.com>
 References: <20240130043225.942202-1-quic_adisi@quicinc.com>
@@ -79,91 +79,134 @@ X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: EBtfvO8Gt6cLx9sysXwvSH9IyzZMApLE
-X-Proofpoint-GUID: EBtfvO8Gt6cLx9sysXwvSH9IyzZMApLE
+X-Proofpoint-ORIG-GUID: eCu1xjMrx03l-gBSSaf0175m0Ety9D63
+X-Proofpoint-GUID: eCu1xjMrx03l-gBSSaf0175m0Ety9D63
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-01-30_01,2024-01-29_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
- mlxscore=0 bulkscore=0 lowpriorityscore=0 malwarescore=0 spamscore=0
- impostorscore=0 adultscore=0 clxscore=1015 mlxlogscore=938
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ impostorscore=0 mlxscore=0 clxscore=1015 priorityscore=1501 bulkscore=0
+ adultscore=0 spamscore=0 suspectscore=0 malwarescore=0 phishscore=0
+ mlxlogscore=735 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2401190000 definitions=main-2401300029
 
-Currently, during channel switch, no link id information is passed down.
-In order to support channel switch during Multi Link Operation, it is
-required to pass link id as well.
+Currently, function to update beacon counter uses deflink to fetch
+the beacon and then update the counter. However, with MLO, there is
+a need to update the counter for the beacon in a particular link.
 
-Add changes to pass link id in the channel_switch cfg80211_ops.
+Add support to use link_id in order to fetch the beacon from a particular
+link data during beacon update counter.
 
 Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
 ---
- include/net/cfg80211.h | 3 +++
- net/wireless/nl80211.c | 1 +
- net/wireless/trace.h   | 7 +++++--
- 3 files changed, 9 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath10k/mac.c             |  2 +-
+ drivers/net/wireless/ath/ath11k/mac.c             |  2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c |  2 +-
+ include/net/mac80211.h                            |  4 +++-
+ net/mac80211/tx.c                                 | 14 +++++++++++---
+ 5 files changed, 17 insertions(+), 7 deletions(-)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 51b9e6fa12f8..2d6ff5ba5c03 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -1531,6 +1531,8 @@ struct cfg80211_ap_update {
-  * @punct_bitmap: Preamble puncturing bitmap. Each bit represents
-  *	a 20 MHz channel, lowest bit corresponding to the lowest channel.
-  *	Bit set to 1 indicates that the channel is punctured.
-+ * @link_id: defines the link on which channel switch is expected during
-+ *	     MLO. 0 in case of non-MLO.
+diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
+index 090bcf148d0c..e32e8c70986d 100644
+--- a/drivers/net/wireless/ath/ath10k/mac.c
++++ b/drivers/net/wireless/ath/ath10k/mac.c
+@@ -2035,7 +2035,7 @@ static void ath10k_mac_vif_ap_csa_count_down(struct ath10k_vif *arvif)
+ 		return;
+ 
+ 	if (!ieee80211_beacon_cntdwn_is_complete(vif)) {
+-		ieee80211_beacon_update_cntdwn(vif);
++		ieee80211_beacon_update_cntdwn(vif, 0);
+ 
+ 		ret = ath10k_mac_setup_bcn_tmpl(arvif);
+ 		if (ret)
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index b13525bbbb80..0ea2ae40f2ad 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -1589,7 +1589,7 @@ void ath11k_mac_bcn_tx_event(struct ath11k_vif *arvif)
+ 	arvif->bcca_zero_sent = false;
+ 
+ 	if (vif->bss_conf.color_change_active)
+-		ieee80211_beacon_update_cntdwn(vif);
++		ieee80211_beacon_update_cntdwn(vif, 0);
+ 	ath11k_mac_setup_bcn_tmpl(arvif);
+ }
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+index c4f96125cf33..581c2d3fc534 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+@@ -1467,7 +1467,7 @@ static void iwl_mvm_csa_count_down(struct iwl_mvm *mvm,
+ 	mvmvif->csa_countdown = true;
+ 
+ 	if (!ieee80211_beacon_cntdwn_is_complete(csa_vif)) {
+-		int c = ieee80211_beacon_update_cntdwn(csa_vif);
++		int c = ieee80211_beacon_update_cntdwn(csa_vif, 0);
+ 
+ 		iwl_mvm_mac_ctxt_beacon_changed(mvm, csa_vif,
+ 						&csa_vif->bss_conf);
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index 8d6ae22c09bf..ad70dea96a46 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -5507,6 +5507,7 @@ static inline struct sk_buff *ieee80211_beacon_get(struct ieee80211_hw *hw,
+ /**
+  * ieee80211_beacon_update_cntdwn - request mac80211 to decrement the beacon countdown
+  * @vif: &struct ieee80211_vif pointer from the add_interface callback.
++ * @link_id: valid link_id during MLO or 0 for non-MLO
+  *
+  * The beacon counter should be updated after each beacon transmission.
+  * This function is called implicitly when
+@@ -5516,7 +5517,8 @@ static inline struct sk_buff *ieee80211_beacon_get(struct ieee80211_hw *hw,
+  *
+  * Return: new countdown value
   */
- struct cfg80211_csa_settings {
- 	struct cfg80211_chan_def chandef;
-@@ -1544,6 +1546,7 @@ struct cfg80211_csa_settings {
- 	bool block_tx;
- 	u8 count;
- 	u16 punct_bitmap;
-+	u8 link_id;
- };
+-u8 ieee80211_beacon_update_cntdwn(struct ieee80211_vif *vif);
++u8 ieee80211_beacon_update_cntdwn(struct ieee80211_vif *vif,
++				  unsigned int link_id);
  
  /**
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index e4f41f86e295..7f58e11eba58 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -10232,6 +10232,7 @@ static int nl80211_channel_switch(struct sk_buff *skb, struct genl_info *info)
- 			goto free;
+  * ieee80211_beacon_set_cntdwn - request mac80211 to set beacon countdown
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 68a48abc7287..ac5bdacf4b8c 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -5030,16 +5030,24 @@ static u8 __ieee80211_beacon_update_cntdwn(struct beacon_data *beacon)
+ 	return beacon->cntdwn_current_counter;
+ }
+ 
+-u8 ieee80211_beacon_update_cntdwn(struct ieee80211_vif *vif)
++u8 ieee80211_beacon_update_cntdwn(struct ieee80211_vif *vif, unsigned int link_id)
+ {
+ 	struct ieee80211_sub_if_data *sdata = vif_to_sdata(vif);
++	struct ieee80211_link_data *link;
+ 	struct beacon_data *beacon = NULL;
+ 	u8 count = 0;
+ 
++	if (WARN_ON(link_id >= IEEE80211_MLD_MAX_NUM_LINKS))
++		return 0;
++
+ 	rcu_read_lock();
+ 
++	link = rcu_dereference(sdata->link[link_id]);
++	if (!link)
++		goto unlock;
++
+ 	if (sdata->vif.type == NL80211_IFTYPE_AP)
+-		beacon = rcu_dereference(sdata->deflink.u.ap.beacon);
++		beacon = rcu_dereference(link->u.ap.beacon);
+ 	else if (sdata->vif.type == NL80211_IFTYPE_ADHOC)
+ 		beacon = rcu_dereference(sdata->u.ibss.presp);
+ 	else if (ieee80211_vif_is_mesh(&sdata->vif))
+@@ -5280,7 +5288,7 @@ ieee80211_beacon_get_ap(struct ieee80211_hw *hw,
+ 
+ 	if (beacon->cntdwn_counter_offsets[0]) {
+ 		if (!is_template)
+-			ieee80211_beacon_update_cntdwn(vif);
++			ieee80211_beacon_update_cntdwn(vif, link->link_id);
+ 
+ 		ieee80211_set_beacon_cntdwn(sdata, beacon, link);
  	}
- 
-+	params.link_id = link_id;
- 	err = rdev_channel_switch(rdev, dev, &params);
- 
- free:
-diff --git a/net/wireless/trace.h b/net/wireless/trace.h
-index 1f374c8a17a5..77972f7b774f 100644
---- a/net/wireless/trace.h
-+++ b/net/wireless/trace.h
-@@ -2324,6 +2324,7 @@ TRACE_EVENT(rdev_channel_switch,
- 		__field(u8, count)
- 		__dynamic_array(u16, bcn_ofs, params->n_counter_offsets_beacon)
- 		__dynamic_array(u16, pres_ofs, params->n_counter_offsets_presp)
-+		__field(u8, link_id)
- 	),
- 	TP_fast_assign(
- 		WIPHY_ASSIGN;
-@@ -2341,11 +2342,13 @@ TRACE_EVENT(rdev_channel_switch,
- 			memcpy(__get_dynamic_array(pres_ofs),
- 			       params->counter_offsets_presp,
- 			       params->n_counter_offsets_presp * sizeof(u16));
-+		__entry->link_id = params->link_id;
- 	),
- 	TP_printk(WIPHY_PR_FMT ", " NETDEV_PR_FMT ", " CHAN_DEF_PR_FMT
--		  ", block_tx: %d, count: %u, radar_required: %d",
-+		  ", block_tx: %d, count: %u, radar_required: %d, link_id: %d",
- 		  WIPHY_PR_ARG, NETDEV_PR_ARG, CHAN_DEF_PR_ARG,
--		  __entry->block_tx, __entry->count, __entry->radar_required)
-+		  __entry->block_tx, __entry->count, __entry->radar_required,
-+		  __entry->link_id)
- );
- 
- TRACE_EVENT(rdev_set_qos_map,
 -- 
 2.25.1
 
