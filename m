@@ -1,138 +1,185 @@
-Return-Path: <linux-wireless+bounces-2753-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2754-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 226AF8419B5
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 03:57:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B8908419D5
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 04:04:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A20ADB24CAD
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 02:57:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98ED41F2429B
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 03:04:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E594536AFD;
-	Tue, 30 Jan 2024 02:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F9DD37145;
+	Tue, 30 Jan 2024 03:04:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="g0wq+vjn"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="VgZyaM1o"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6282936AE9
-	for <linux-wireless@vger.kernel.org>; Tue, 30 Jan 2024 02:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D812336B1D
+	for <linux-wireless@vger.kernel.org>; Tue, 30 Jan 2024 03:04:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706583444; cv=none; b=nVcE4wCfiGV37qtbQu1PWbOg5+NxKMd66FPXJdP5AbBKnHZ7dcGxkFfCWY5OJWxM5V0qzJH5SYY8QpUA341nBf6PRPhH/j3strMRC/xqzFimfkOxTetv2Bkgp/HXHGl7f0CfW2VtAu7NcPLV19nmzcjPQXEhCYGUHE+rYx6iHdY=
+	t=1706583879; cv=none; b=DdGFcd1KYt3XReub6nKljrTZqx5dtmLfgUYilOlNA9a6raE+iiwpSN/gL1ymd1uQZB0tWH46ORZ3RT8vfqCKGfzyOUDAikp9TIhSeEb4LXH5slOdmXuwEDdSj78io/JL/OS5q/uLqgu1FZBwWrqiK0iL6SzanQhHaIomHrpojqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706583444; c=relaxed/simple;
-	bh=7JReeC0bPiFDOd7+qnpuR+kBa9imTY0cdcx/u3X0t3A=;
+	s=arc-20240116; t=1706583879; c=relaxed/simple;
+	bh=te39o2CHwuoAanLibkMtAfYd5IjEwxT9bpLlprgaBWY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=VaUQGKxTGyIbnThOSabVK0mFp/pu9+9b1a6I2bzDHKS6Kiyq5QAxgDuPJoLlZNiuNZqEcrTjC/NZzXV8fUXEbfbo0yShPLjy7be9immRay4uHhT/WVVWSEWtrFlgw8kOmgH9TT5tt4dw57pgGQwvpXcK3a2agfNjd6YEgC7LEfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=g0wq+vjn; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:Content-Type; b=r4PROecbYOu1zTeG34rfL65VrmP1otIekg79DwwI5bChs0WHzU+NvBlGhQuUwmSsoOkOZ2j9vZY6hFMI9YjIlRTO8GqhpFsGAdb9Mp5uBx1ipbnqjleSlmsV5i26nnqLkL+sPx2u1ff0muyNbrKyDf/4GBd6VLntFPFUKdKr4iY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=VgZyaM1o; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40U1NP3k007692;
-	Tue, 30 Jan 2024 02:57:19 GMT
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40U2dHgh032201;
+	Tue, 30 Jan 2024 03:04:35 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	message-id:date:mime-version:subject:to:cc:references:from
 	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=RAw8B6jVf2iGsoPqiGaHEJHyjCd9av1iF+By0ej4D3w=; b=g0
-	wq+vjnGU0siQV+0wNxBJd9JJ61il5FQ5uLjM0wrWXaJA+ko01Yw+PbEgmZzYnPTo
-	+ZzO0T55tkne6+lEXh8Ptckf0jm8DPoECEfwRT1pSBnj/fgCKRBwbxt52HZTD1Bk
-	0czl39TS8jyKUWlQKPypIwXZ2Cf6BoNLwv+zzXQ7HRpE0CgPurQj8fc0PsNGzp3D
-	qSCQAld8VqwFb1ZKV6w8zDKQsr9aIHuHPdnMGssX4LoQfep6gSp9bSdJEqWqCAPP
-	rRpUw9z1R2pffX0uvbU+YCbHcbzDVudwz0XTbcWHLVPe3tSb0tRYMnu5zs2sGws4
-	kEPiIKugGRugM8hK2dRw==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vxexr97nm-1
+	qcppdkim1; bh=hy1mojofQb2fgXLqaeUshtro03/8n9EMuA4i5ga1TQA=; b=Vg
+	ZyaM1oij7RbH+D9jcT+FU49zgz/im3u52A0DykFxsOYWVR0uO4xZYvne4KFWa4B/
+	wvBMv56quFgWEkwD/em+/nUxYBEPtojRhE/1wKnejCIqHa3IwyuTDaj85fpgHvJF
+	2GQBZaJCe1soaeClan4I+SzxEPACnGdZtRwdczmojpxT3h52EAVIu9GwZA3abIJu
+	+HaM3a665pM3Wi9H67/aUth2qNdI4LLARRc6JBk/2iLgEGDnQUsu7EbT0YLWQj79
+	tGpHjHLj92aeR2SIo/DBk5WIDOFQnAJ61KwtVWvNSbIolJC1Q5q9eon/13fwiZb9
+	G7z0H7u6b7RgZ/QKrjqA==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vxevds8tg-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Jan 2024 02:57:19 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40U2vJEx006112
+	Tue, 30 Jan 2024 03:04:34 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40U34YFr021842
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Jan 2024 02:57:19 GMT
-Received: from [10.201.207.136] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+	Tue, 30 Jan 2024 03:04:34 GMT
+Received: from [10.216.39.255] (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Mon, 29 Jan
- 2024 18:57:17 -0800
-Message-ID: <2fde6ec0-7149-4a31-b9c1-cba9121ceea3@quicinc.com>
-Date: Tue, 30 Jan 2024 08:27:17 +0530
+ 2024 19:04:32 -0800
+Message-ID: <6a06c68d-0202-1b3e-8c9f-beee25856d56@quicinc.com>
+Date: Tue, 30 Jan 2024 08:34:07 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 5/5] wifi: mac80211: add support to call csa_finish on
- a link
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v3 13/13] wifi: ath12k: disable QMI PHY capability learn
+ in split-phy QCN9274
 Content-Language: en-US
-To: Jeff Johnson <quic_jjohnson@quicinc.com>, <johannes@sipsolutions.net>
+To: Jeff Johnson <quic_jjohnson@quicinc.com>, <ath12k@lists.infradead.org>
 CC: <linux-wireless@vger.kernel.org>
-References: <20240129052832.905113-1-quic_adisi@quicinc.com>
- <20240129052832.905113-6-quic_adisi@quicinc.com>
- <a20310f8-bf6a-4823-8302-e45944f06f74@quicinc.com>
- <f03b0e3d-c4fe-442d-a8b6-d84deeed4337@quicinc.com>
-From: Aditya Kumar Singh <quic_adisi@quicinc.com>
-In-Reply-To: <f03b0e3d-c4fe-442d-a8b6-d84deeed4337@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+References: <20240129065724.2310207-1-quic_rajkbhag@quicinc.com>
+ <20240129065724.2310207-14-quic_rajkbhag@quicinc.com>
+ <5f5a1a5f-cb04-4157-9464-ecd3d8611c8b@quicinc.com>
+From: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+In-Reply-To: <5f5a1a5f-cb04-4157-9464-ecd3d8611c8b@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
+ nalasex01b.na.qualcomm.com (10.47.209.197)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 2-Em8zlaRykj9l7uppsbPLRNgciUQ2MS
-X-Proofpoint-ORIG-GUID: 2-Em8zlaRykj9l7uppsbPLRNgciUQ2MS
+X-Proofpoint-GUID: crpjD41bEL5JVc-IOcNApQqhCJ245WiL
+X-Proofpoint-ORIG-GUID: crpjD41bEL5JVc-IOcNApQqhCJ245WiL
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-01-29_15,2024-01-29_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- lowpriorityscore=0 phishscore=0 adultscore=0 spamscore=0 malwarescore=0
- clxscore=1015 mlxlogscore=999 bulkscore=0 impostorscore=0 mlxscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2401190000 definitions=main-2401300020
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 suspectscore=0
+ clxscore=1015 mlxscore=0 malwarescore=0 mlxlogscore=999 lowpriorityscore=0
+ priorityscore=1501 adultscore=0 impostorscore=0 phishscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2401190000
+ definitions=main-2401300019
 
-On 1/30/24 07:24, Jeff Johnson wrote:
-> On 1/29/2024 5:31 PM, Jeff Johnson wrote:
->> On 1/28/2024 9:28 PM, Aditya Kumar Singh wrote:
->>> diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
->>> index 4427259154e2..a1a4f100d128 100644
->>> --- a/net/mac80211/cfg.c
->>> +++ b/net/mac80211/cfg.c
->>> @@ -3543,13 +3543,24 @@ cfg80211_beacon_dup(struct cfg80211_beacon_data *beacon)
->>>   	return new_beacon;
->>>   }
->>>   
->>> -void ieee80211_csa_finish(struct ieee80211_vif *vif)
->>> +void ieee80211_csa_finish(struct ieee80211_vif *vif, unsigned int link_id)
->>>   {
->>>   	struct ieee80211_sub_if_data *sdata = vif_to_sdata(vif);
->>>   	struct ieee80211_local *local = sdata->local;
->>> +	struct ieee80211_link_data *link_data;
->>> +
->>> +	if (WARN_ON(link_id > IEEE80211_MLD_MAX_NUM_LINKS))
+On 1/30/2024 7:22 AM, Jeff Johnson wrote:
+> On 1/28/2024 10:57 PM, Raj Kumar Bhagat wrote:
+>> QMI PHY capability learn is used to get PHY count information to
+>> support single/multi link operation (SLO/MLO) configuration. The
+>> QCN9274 dualmac firmware currently do not support SLO/MLO, if two
+>> PHYs are within the same chip. Due to this firmware crashes in
+>> split-phy QCN9274, while bringing up AP with MLO parameter enabled
+>> in QMI host capability request message.
 > 
-> let's try that again, shouldn't the test be > = ??
+> Does this patch need a Fixes: tag?
 > 
 
-Yes it should be. I will fix this in next version.
+I do not think Fixes: tag is required, because Single-phy QCN9274 and
+WCN7850 works fine. The issue is only with Split-phy QCN9274, and it not
+yet part of upstream ath.git.
 
->>> +		return;
->>>   
->>>   	rcu_read_lock();
->>>   
->>> +	link_data = rcu_dereference(sdata->link[link_id]);
->>> +	if (WARN_ON(!link_data)) {
->>> +		rcu_read_unlock();
->>> +		return;
->>> +	}
->>> +
->>> +	/* TODO: MBSSID with MLO changes */
->>>   	if (vif->mbssid_tx_vif == vif) {
->>>   		/* Trigger ieee80211_csa_finish() on the non-transmitting
->>>   		 * interfaces when channel switch is received on
 >>
+>> The QMI PHY capability learn is not required for split-phy QCN9274,
+>> if SLO/MLO is not supported within the same chip. Hence, disable QMI
+>> PHY capability learn support in split-phy QCN9274.
 >>
+>> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+>> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00188-QCAHKSWPL_SILICONZ-1
+>> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+>>
+>> Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+>> ---
+>>  drivers/net/wireless/ath/ath12k/core.c | 1 +
+>>  drivers/net/wireless/ath/ath12k/core.h | 5 +++++
+>>  drivers/net/wireless/ath/ath12k/mhi.c  | 1 +
+>>  drivers/net/wireless/ath/ath12k/qmi.c  | 3 +++
+>>  4 files changed, 10 insertions(+)
+>>
+>> diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
+>> index ca3777c684b3..0d4640ff8d6f 100644
+>> --- a/drivers/net/wireless/ath/ath12k/core.c
+>> +++ b/drivers/net/wireless/ath/ath12k/core.c
+>> @@ -1218,6 +1218,7 @@ struct ath12k_base *ath12k_core_alloc(struct device *dev, size_t priv_size,
+>>  	ab->dev = dev;
+>>  	ab->hif.bus = bus;
+>>  	ab->qmi.num_radios = U8_MAX;
+>> +	ab->slo_capable = true;
+>>  
+>>  	return ab;
+>>  
+>> diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
+>> index f0a319ea57c1..a984171e4a08 100644
+>> --- a/drivers/net/wireless/ath/ath12k/core.h
+>> +++ b/drivers/net/wireless/ath/ath12k/core.h
+>> @@ -842,6 +842,11 @@ struct ath12k_base {
+>>  
+>>  	const struct hal_rx_ops *hal_rx_ops;
+>>  
+>> +	/* slo_capable denotes if the single/multi link operation
+>> +	 * is supported within the same chip (SoC).
+>> +	 */
+>> +	bool slo_capable;
+>> +
+>>  	/* must be last */
+>>  	u8 drv_priv[] __aligned(sizeof(void *));
+>>  };
+>> diff --git a/drivers/net/wireless/ath/ath12k/mhi.c b/drivers/net/wireless/ath/ath12k/mhi.c
+>> index 50b9e44504f7..adb8c3ec1950 100644
+>> --- a/drivers/net/wireless/ath/ath12k/mhi.c
+>> +++ b/drivers/net/wireless/ath/ath12k/mhi.c
+>> @@ -385,6 +385,7 @@ int ath12k_mhi_register(struct ath12k_pci *ab_pci)
+>>  				   "failed to read board id\n");
+>>  		} else if (board_id & OTP_VALID_DUALMAC_BOARD_ID_MASK) {
+>>  			dualmac = true;
+>> +			ab->slo_capable = false;
+>>  			ath12k_dbg(ab, ATH12K_DBG_BOOT,
+>>  				   "dualmac fw selected for board id: %x\n", board_id);
+>>  		}
+>> diff --git a/drivers/net/wireless/ath/ath12k/qmi.c b/drivers/net/wireless/ath/ath12k/qmi.c
+>> index 0f0eaadc8418..92845ffff44a 100644
+>> --- a/drivers/net/wireless/ath/ath12k/qmi.c
+>> +++ b/drivers/net/wireless/ath/ath12k/qmi.c
+>> @@ -2124,6 +2124,9 @@ static void ath12k_qmi_phy_cap_send(struct ath12k_base *ab)
+>>  	struct qmi_txn txn;
+>>  	int ret;
+>>  
+>> +	if (!ab->slo_capable)
+>> +		goto out;
+>> +
+>>  	ret = qmi_txn_init(&ab->qmi.handle, &txn,
+>>  			   qmi_wlanfw_phy_cap_resp_msg_v01_ei, &resp);
+>>  	if (ret < 0)
 > 
+
 
