@@ -1,224 +1,188 @@
-Return-Path: <linux-wireless+bounces-2740-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2741-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE90F8414F7
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 22:10:10 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 355868417D1
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 01:48:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4744289D18
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jan 2024 21:10:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B86DB22828
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 00:48:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9115159586;
-	Mon, 29 Jan 2024 21:09:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="j4e4zGbE"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8294422075;
+	Tue, 30 Jan 2024 00:47:50 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 847F9159568
-	for <linux-wireless@vger.kernel.org>; Mon, 29 Jan 2024 21:09:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C942C857
+	for <linux-wireless@vger.kernel.org>; Tue, 30 Jan 2024 00:47:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706562567; cv=none; b=J4DfYKkW6TYmg3JXEFz/eYiHHuKeVkLEFbc90WHifGNCvrifFGpdZQY3O3UF9apiSJFuLziflQiBBiMqmZBn4xjwGqnteni6z9OUolo5bsWYoxxfT4QCzAlaTkMWdnLwjBxEaJCcuUcLHG4NI03W+CVkO/ufe3uWj1dU4WMCTD4=
+	t=1706575670; cv=none; b=eNJs881G+sNRfadOEU+4At6M8DJg8z7uusq8RV9GxiblSzwBYpCbxt/bsNiZIo/lgls3Rewahd3Ua2Dj65GP2RwDCBfFtryREc0iTOOAnjd4F4HJ4gy3YQJE6BAFrVTLx2XTHk1d2PVrsNDYILKq5kjcfTdrVcZIyTejLQchJ1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706562567; c=relaxed/simple;
-	bh=baD8kuusKxsgsGrB5q68kfHwge9skytTEJXbQMMtTFc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rqMk7Wzw2l4xSwz4KfH/oLbSzPFdYlITTr0sBv1zgORvp+bDKPpPl1neOcu+Vo3DV26T1E47/SrqgOcIPSqp+k2FSrxGvg4YJ8IaeZzRjs0OUAw+ry9PzumriVn/xcPyRLfKFwiS/XYuCOPMEonLftZ8NiC2y8Xo22AiY2m9/o0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=j4e4zGbE; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=bduEHGCJ0ws+OwxYuwIXruEHFXZao1AdmQdt4m63hBE=;
-	t=1706562564; x=1707772164; b=j4e4zGbEDIzz0vzL98dTqjo8vEXXgn73PxIeSz62bdypttG
-	gBteTuattgT7RBHmHfKaXwYMHnuVXndA8tGgT6X6q7NSi8jK1TFAxnJYX9Sx151dvYgnwc6BiP1gC
-	+H9pkc9Ijqfhom7B9PsrGMhxzPZyWBW9b86OVbE7dm9ZGHwfkT0txLjKUhENy4dGnPf3yFcIvhPWw
-	4BaTExvdtmxwUKK8YV/qCCSNfB63ak43makcVCLO+6HPSHUc+qctrW88I1BdyzZMIZE+VlDVO6m2D
-	uJZ70FOvovSmKulQq1Hu7MLwa02B4tvRXjwWQfCIJsFyIO9wQOYkrvMZMWbqDOgw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1rUYsb-000000053VO-22Ns;
-	Mon, 29 Jan 2024 22:09:21 +0100
-From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org
-Cc: Benjamin Berg <benjamin.berg@intel.com>
-Subject: [PATCH 2/2] wifi: cfg80211: tests: verify BSS use flags of NSTR links
-Date: Mon, 29 Jan 2024 22:09:20 +0100
-Message-ID: <20240129220918.b00aee4c4c9f.I942fddf51cabaab761de3865b4e06cce831a46ef@changeid>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129220918.079dc50ab43b.Ide898d9f1d4c26d7e774d6fd0ec57766967d6572@changeid>
-References: <20240129220918.079dc50ab43b.Ide898d9f1d4c26d7e774d6fd0ec57766967d6572@changeid>
+	s=arc-20240116; t=1706575670; c=relaxed/simple;
+	bh=XPDQtzcpRkUa5d69xniNhuVu7qsOB8WKhoOHbx5vzlQ=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=XiVsIxdfqmaDroZ/6L5A8kRqAJT7nU++loY39dpZ/jSG7jkL2V5E/d/2/2Rwk9KsmpRwLNX6FKrNDQ9g24JlYvm/rAaMar/t/D+W3Mkxgs62XBSRectyt355Ptp0r2lBnhRalWTlLZVNcXPfAFl8PCAieo9Xfo7qfSHl/v+zU7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 40U0lFppD3913308, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 40U0lFppD3913308
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 30 Jan 2024 08:47:15 +0800
+Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.17; Tue, 30 Jan 2024 08:47:16 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Tue, 30 Jan 2024 08:47:15 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::c9b7:82a9:7e98:fa7f]) by
+ RTEXMBS04.realtek.com.tw ([fe80::c9b7:82a9:7e98:fa7f%7]) with mapi id
+ 15.01.2507.035; Tue, 30 Jan 2024 08:47:15 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Martin Kaistra <martin.kaistra@linutronix.de>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC: Jes Sorensen <Jes.Sorensen@gmail.com>, Kalle Valo <kvalo@kernel.org>,
+        Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        Sebastian Andrzej Siewior
+	<bigeasy@linutronix.de>
+Subject: RE: [PATCH v2] wifi: rtl8xxxu: update rate mask per sta
+Thread-Topic: [PATCH v2] wifi: rtl8xxxu: update rate mask per sta
+Thread-Index: AQHaTp8i41NhHRLX9kC7eSZNdMn/nrDrV10QgAT0nICAAT5akA==
+Date: Tue, 30 Jan 2024 00:47:15 +0000
+Message-ID: <104aee8bab0b4092b6f355e6890955b4@realtek.com>
+References: <20240124082705.1098960-1-martin.kaistra@linutronix.de>
+ <e6011da5e0144d7ea3556d0ec99aa1a0@realtek.com>
+ <fe3303ff-da29-4f64-a1cf-451535fd58bc@linutronix.de>
+In-Reply-To: <fe3303ff-da29-4f64-a1cf-451535fd58bc@linutronix.de>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXDAG01.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-From: Benjamin Berg <benjamin.berg@intel.com>
-
-Extend the test to pass an RNR appropriate for an NSTR and verify that
-use_for as well as cannot_use_reasons are set correctly.
-
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/wireless/tests/scan.c | 68 ++++++++++++++++++++++++++++++++-------
- 1 file changed, 56 insertions(+), 12 deletions(-)
-
-diff --git a/net/wireless/tests/scan.c b/net/wireless/tests/scan.c
-index b40a0c06a6bb..9f458be71659 100644
---- a/net/wireless/tests/scan.c
-+++ b/net/wireless/tests/scan.c
-@@ -407,6 +407,7 @@ static struct inform_bss_ml_sta_case {
- 	int mld_id;
- 	bool sta_prof_vendor_elems;
- 	bool include_oper_class;
-+	bool nstr;
- } inform_bss_ml_sta_cases[] = {
- 	{
- 		.desc = "zero_mld_id",
-@@ -426,6 +427,10 @@ static struct inform_bss_ml_sta_case {
- 		.mld_id = 1,
- 		.sta_prof_vendor_elems = true,
- 		.include_oper_class = true,
-+	}, {
-+		.desc = "nstr",
-+		.mld_id = 0,
-+		.nstr = true,
- 	},
- };
- KUNIT_ARRAY_PARAM_DESC(inform_bss_ml_sta, inform_bss_ml_sta_cases, desc)
-@@ -458,7 +463,7 @@ static void test_inform_bss_ml_sta(struct kunit *test)
- 	struct {
- 		struct ieee80211_neighbor_ap_info info;
- 		struct ieee80211_tbtt_info_ge_11 ap;
--	} __packed rnr = {
-+	} __packed rnr_normal = {
- 		.info = {
- 			.tbtt_info_hdr = u8_encode_bits(0, IEEE80211_AP_INFO_TBTT_HDR_COUNT),
- 			.tbtt_info_len = sizeof(struct ieee80211_tbtt_info_ge_11),
-@@ -477,6 +482,28 @@ static void test_inform_bss_ml_sta(struct kunit *test)
- 						 IEEE80211_RNR_MLD_PARAMS_LINK_ID),
- 		}
- 	};
-+	struct {
-+		struct ieee80211_neighbor_ap_info info;
-+		struct ieee80211_rnr_mld_params mld_params;
-+	} __packed rnr_nstr = {
-+		.info = {
-+			.tbtt_info_hdr =
-+				u8_encode_bits(0, IEEE80211_AP_INFO_TBTT_HDR_COUNT) |
-+				u8_encode_bits(IEEE80211_TBTT_INFO_TYPE_MLD,
-+					       IEEE80211_AP_INFO_TBTT_HDR_TYPE),
-+			.tbtt_info_len = sizeof(struct ieee80211_rnr_mld_params),
-+			.op_class = 81,
-+			.channel = 11,
-+		},
-+		.mld_params = {
-+			.mld_id = params->mld_id,
-+			.params =
-+				le16_encode_bits(link_id,
-+						 IEEE80211_RNR_MLD_PARAMS_LINK_ID),
-+		}
-+	};
-+	size_t rnr_len = params->nstr ? sizeof(rnr_nstr) : sizeof(rnr_normal);
-+	void *rnr = params->nstr ? (void *)&rnr_nstr : (void *)&rnr_normal;
- 	struct {
- 		__le16 control;
- 		u8 var_len;
-@@ -516,7 +543,7 @@ static void test_inform_bss_ml_sta(struct kunit *test)
- 				    u16_encode_bits(link_id,
- 						    IEEE80211_MLE_STA_CONTROL_LINK_ID)),
- 		.var_len = sizeof(sta_prof) - 2 - 2,
--		.bssid = { *rnr.ap.bssid },
-+		.bssid = { *rnr_normal.ap.bssid },
- 		.beacon_int = cpu_to_le16(101),
- 		.tsf_offset = cpu_to_le64(-123ll),
- 		.capabilities = cpu_to_le16(0xdead),
-@@ -540,8 +567,8 @@ static void test_inform_bss_ml_sta(struct kunit *test)
- 	}
- 
- 	skb_put_u8(input, WLAN_EID_REDUCED_NEIGHBOR_REPORT);
--	skb_put_u8(input, sizeof(rnr));
--	skb_put_data(input, &rnr, sizeof(rnr));
-+	skb_put_u8(input, rnr_len);
-+	skb_put_data(input, rnr, rnr_len);
- 
- 	/* build a multi-link element */
- 	skb_put_u8(input, WLAN_EID_EXTENSION);
-@@ -587,9 +614,10 @@ static void test_inform_bss_ml_sta(struct kunit *test)
- 	KUNIT_EXPECT_EQ(test, ctx.inform_bss_count, 2);
- 
- 	/* Check link_bss *****************************************************/
--	link_bss = cfg80211_get_bss(wiphy, NULL, sta_prof.bssid, NULL, 0,
--				    IEEE80211_BSS_TYPE_ANY,
--				    IEEE80211_PRIVACY_ANY);
-+	link_bss = __cfg80211_get_bss(wiphy, NULL, sta_prof.bssid, NULL, 0,
-+				      IEEE80211_BSS_TYPE_ANY,
-+				      IEEE80211_PRIVACY_ANY,
-+				      0);
- 	KUNIT_ASSERT_NOT_NULL(test, link_bss);
- 	KUNIT_EXPECT_EQ(test, link_bss->signal, 0);
- 	KUNIT_EXPECT_EQ(test, link_bss->beacon_interval,
-@@ -600,6 +628,22 @@ static void test_inform_bss_ml_sta(struct kunit *test)
- 	KUNIT_EXPECT_PTR_EQ(test, link_bss->channel,
- 			    ieee80211_get_channel_khz(wiphy, MHZ_TO_KHZ(2462)));
- 
-+	/* Test wiphy does not set WIPHY_FLAG_SUPPORTS_NSTR_NONPRIMARY */
-+	if (params->nstr) {
-+		KUNIT_EXPECT_EQ(test, link_bss->use_for, 0);
-+		KUNIT_EXPECT_EQ(test, link_bss->cannot_use_reasons,
-+				NL80211_BSS_CANNOT_USE_NSTR_NONPRIMARY);
-+		KUNIT_EXPECT_NULL(test,
-+				  cfg80211_get_bss(wiphy, NULL, sta_prof.bssid,
-+						   NULL, 0,
-+						   IEEE80211_BSS_TYPE_ANY,
-+						   IEEE80211_PRIVACY_ANY));
-+	} else {
-+		KUNIT_EXPECT_EQ(test, link_bss->use_for,
-+				NL80211_BSS_USE_FOR_ALL);
-+		KUNIT_EXPECT_EQ(test, link_bss->cannot_use_reasons, 0);
-+	}
-+
- 	rcu_read_lock();
- 	ies = rcu_dereference(link_bss->ies);
- 	KUNIT_EXPECT_NOT_NULL(test, ies);
-@@ -607,20 +651,20 @@ static void test_inform_bss_ml_sta(struct kunit *test)
- 	/* Resulting length should be:
- 	 * SSID (inherited) + RNR (inherited) + vendor element(s) +
- 	 * operating class (if requested) +
--	 * generated RNR (if MLD ID == 0) +
-+	 * generated RNR (if MLD ID == 0 and not NSTR) +
- 	 * MLE common info + MLE header and control
- 	 */
- 	if (params->sta_prof_vendor_elems)
- 		KUNIT_EXPECT_EQ(test, ies->len,
--				6 + 2 + sizeof(rnr) + 2 + 160 + 2 + 165 +
-+				6 + 2 + rnr_len + 2 + 160 + 2 + 165 +
- 				(params->include_oper_class ? 3 : 0) +
--				(!params->mld_id ? 22 : 0) +
-+				(!params->mld_id && !params->nstr ? 22 : 0) +
- 				mle_basic_common_info.var_len + 5);
- 	else
- 		KUNIT_EXPECT_EQ(test, ies->len,
--				6 + 2 + sizeof(rnr) + 2 + 155 +
-+				6 + 2 + rnr_len + 2 + 155 +
- 				(params->include_oper_class ? 3 : 0) +
--				(!params->mld_id ? 22 : 0) +
-+				(!params->mld_id && !params->nstr ? 22 : 0) +
- 				mle_basic_common_info.var_len + 5);
- 	rcu_read_unlock();
- 
--- 
-2.43.0
-
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogTWFydGluIEthaXN0cmEg
+PG1hcnRpbi5rYWlzdHJhQGxpbnV0cm9uaXguZGU+DQo+IFNlbnQ6IE1vbmRheSwgSmFudWFyeSAy
+OSwgMjAyNCA5OjMzIFBNDQo+IFRvOiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT47
+IGxpbnV4LXdpcmVsZXNzQHZnZXIua2VybmVsLm9yZw0KPiBDYzogSmVzIFNvcmVuc2VuIDxKZXMu
+U29yZW5zZW5AZ21haWwuY29tPjsgS2FsbGUgVmFsbyA8a3ZhbG9Aa2VybmVsLm9yZz47IEJpdHRl
+cmJsdWUgU21pdGgNCj4gPHJ0bDg4MjFjZXJmZTJAZ21haWwuY29tPjsgU2ViYXN0aWFuIEFuZHJ6
+ZWogU2lld2lvciA8YmlnZWFzeUBsaW51dHJvbml4LmRlPg0KPiBTdWJqZWN0OiBSZTogW1BBVENI
+IHYyXSB3aWZpOiBydGw4eHh4dTogdXBkYXRlIHJhdGUgbWFzayBwZXIgc3RhDQo+IA0KPiBBbSAy
+Ni4wMS4yNCB1bSAwMzo0MSBzY2hyaWViIFBpbmctS2UgU2hpaDoNCj4gPg0KPiA+DQo+ID4+IC0t
+LS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+ID4+IEZyb206IE1hcnRpbiBLYWlzdHJhIDxtYXJ0
+aW4ua2Fpc3RyYUBsaW51dHJvbml4LmRlPg0KPiA+PiBTZW50OiBXZWRuZXNkYXksIEphbnVhcnkg
+MjQsIDIwMjQgNDoyNyBQTQ0KPiA+PiBUbzogbGludXgtd2lyZWxlc3NAdmdlci5rZXJuZWwub3Jn
+DQo+ID4+IENjOiBKZXMgU29yZW5zZW4gPEplcy5Tb3JlbnNlbkBnbWFpbC5jb20+OyBLYWxsZSBW
+YWxvIDxrdmFsb0BrZXJuZWwub3JnPjsgUGluZy1LZSBTaGloDQo+ID4+IDxwa3NoaWhAcmVhbHRl
+ay5jb20+OyBCaXR0ZXJibHVlIFNtaXRoIDxydGw4ODIxY2VyZmUyQGdtYWlsLmNvbT47IFNlYmFz
+dGlhbiBBbmRyemVqIFNpZXdpb3INCj4gPj4gPGJpZ2Vhc3lAbGludXRyb25peC5kZT4NCj4gPj4g
+U3ViamVjdDogW1BBVENIIHYyXSB3aWZpOiBydGw4eHh4dTogdXBkYXRlIHJhdGUgbWFzayBwZXIg
+c3RhDQo+ID4+DQo+ID4+IFVudGlsIG5vdywgcnRsOHh4eHVfd2F0Y2hkb2dfY2FsbGJhY2soKSBv
+bmx5IGZldGNoZXMgUlNTSSBhbmQgdXBkYXRlcw0KPiA+PiB0aGUgcmF0ZSBtYXNrIGluIHN0YXRp
+b24gbW9kZS4gVGhpcyBtZWFucywgaW4gQVAgbW9kZSBvbmx5IHRoZSBkZWZhdWx0DQo+ID4+IHJh
+dGUgbWFzayBpcyB1c2VkLg0KPiA+Pg0KPiA+PiBJbiBvcmRlciB0byBoYXZlIHRoZSByYXRlIG1h
+c2sgcmVmbGVjdCB0aGUgYWN0dWFsIGNvbm5lY3Rpb24gcXVhbGl0eSwNCj4gPj4gZXh0ZW5kIHJ0
+bDh4eHh1X3dhdGNoZG9nX2NhbGxiYWNrKCkgdG8gaXRlcmF0ZSBvdmVyIGV2ZXJ5IHN0YS4gTGlr
+ZSBpbg0KPiA+PiB0aGUgcnR3ODggZHJpdmVyLCBhZGQgYSBmdW5jdGlvbiB0byBjb2xsZWN0IGFs
+bCBjdXJyZW50bHkgcHJlc2VudCBzdGFzDQo+ID4+IGFuZCB0aGVuIGl0ZXJhdGUgb3ZlciBhIGxp
+c3Qgb2YgY29waWVzIHRvIGVuc3VyZSBubyBSQ1UgbG9jayBwcm9ibGVtcw0KPiA+PiBmb3IgcmVn
+aXN0ZXIgYWNjZXNzIHZpYSBVU0IuIFJlbW92ZSB0aGUgZXhpc3RpbmcgUkNVIGxvY2sgaW4NCj4g
+Pj4gcnRsOHh4eHVfcmVmcmVzaF9yYXRlX21hc2soKS4NCj4gPj4NCj4gPj4gU2luY2UgdGhlIGN1
+cnJlbnRseSB1c2VkIGllZWU4MDIxMV9hdmVfcnNzaSgpIGlzIG9ubHkgZm9yICd2aWYnLCBhZGQN
+Cj4gPj4gZHJpdmVyLWxldmVsIHRyYWNraW5nIG9mIFJTU0kgcGVyIHN0YS4NCj4gPj4NCj4gPj4g
+U2lnbmVkLW9mZi1ieTogTWFydGluIEthaXN0cmEgPG1hcnRpbi5rYWlzdHJhQGxpbnV0cm9uaXgu
+ZGU+DQo+ID4+IC0tLQ0KPiA+PiBjaGFuZ2VzIHYxLT52MjogbW92ZSAncnNzaV9sZXZlbCcgaW50
+byBzdHJ1Y3QgcnRsOHh4eHVfc3RhX2luZm8NCj4gPj4gdjE6IGh0dHBzOi8vbG9yZS5rZXJuZWwu
+b3JnL2xpbnV4LXdpcmVsZXNzLzIwMjQwMTE3MTQ1NTE2LjQ5Nzk2Ni0xLW1hcnRpbi5rYWlzdHJh
+QGxpbnV0cm9uaXguZGUvDQo+ID4NCj4gPiBbLi4uXQ0KPiA+DQo+ID4+IGRpZmYgLS1naXQgYS9k
+cml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bDh4eHh1L3J0bDh4eHh1X2NvcmUuYw0KPiA+
+PiBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsOHh4eHUvcnRsOHh4eHVfY29yZS5j
+DQo+ID4+IGluZGV4IDNiOTU0YzJmZTQ0OGYuLjM4MjBkM2MzMDg3NTkgMTAwNjQ0DQo+ID4+IC0t
+LSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsOHh4eHUvcnRsOHh4eHVfY29yZS5j
+DQo+ID4+ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsOHh4eHUvcnRsOHh4
+eHVfY29yZS5jDQo+ID4+IEBAIC00OTkzLDggKzQ5OTMsOCBAQCBydGw4eHh4dV9ic3NfaW5mb19j
+aGFuZ2VkKHN0cnVjdCBpZWVlODAyMTFfaHcgKmh3LCBzdHJ1Y3QgaWVlZTgwMjExX3ZpZiAqdmlm
+LA0KPiA+PiAgICAgICAgICBzdHJ1Y3QgZGV2aWNlICpkZXYgPSAmcHJpdi0+dWRldi0+ZGV2Ow0K
+PiA+PiAgICAgICAgICBzdHJ1Y3QgaWVlZTgwMjExX3N0YSAqc3RhOw0KPiA+PiAgICAgICAgICBz
+dHJ1Y3QgcnRsOHh4eHVfcmFfcmVwb3J0ICpyYXJwdDsNCj4gPj4gKyAgICAgICB1OCB2YWw4LCBt
+YWNpZDsNCj4gPj4gICAgICAgICAgdTMyIHZhbDMyOw0KPiA+PiAtICAgICAgIHU4IHZhbDg7DQo+
+ID4+DQo+ID4+ICAgICAgICAgIHJhcnB0ID0gJnByaXYtPnJhX3JlcG9ydDsNCj4gPj4NCj4gPj4g
+QEAgLTUwMDQsNiArNTAwNCw3IEBAIHJ0bDh4eHh1X2Jzc19pbmZvX2NoYW5nZWQoc3RydWN0IGll
+ZWU4MDIxMV9odyAqaHcsIHN0cnVjdCBpZWVlODAyMTFfdmlmICp2aWYsDQo+ID4+ICAgICAgICAg
+ICAgICAgICAgcnRsOHh4eHVfc2V0X2xpbmt0eXBlKHByaXYsIHZpZi0+dHlwZSwgcnRsdmlmLT5w
+b3J0X251bSk7DQo+ID4+DQo+ID4+ICAgICAgICAgICAgICAgICAgaWYgKHZpZi0+Y2ZnLmFzc29j
+KSB7DQo+ID4+ICsgICAgICAgICAgICAgICAgICAgICAgIHN0cnVjdCBydGw4eHh4dV9zdGFfaW5m
+byAqc3RhX2luZm87DQo+ID4NCj4gPiBuaXQ6IEkgcmVtZW1iZXIgdGhhdCBkZWNsYXJhdGlvbiBh
+dCBiZWdpbm5pbmcgb2YgZnVuY3Rpb24gaXMgcHJlZmVycmVkLg0KPiANCj4gSSB3aWxsIG1vdmUg
+aXQgdG8gdGhlIGJlZ2lubmluZyBvZiB0aGUgZnVuY3Rpb24uDQo+IA0KPiA+DQo+ID4+ICAgICAg
+ICAgICAgICAgICAgICAgICAgICB1MzIgcmFtYXNrOw0KPiA+PiAgICAgICAgICAgICAgICAgICAg
+ICAgICAgaW50IHNnaSA9IDA7DQo+ID4+ICAgICAgICAgICAgICAgICAgICAgICAgICB1OCBoaWdo
+ZXN0X3JhdGU7DQo+ID4+IEBAIC01MDE3LDYgKzUwMTgsNyBAQCBydGw4eHh4dV9ic3NfaW5mb19j
+aGFuZ2VkKHN0cnVjdCBpZWVlODAyMTFfaHcgKmh3LCBzdHJ1Y3QgaWVlZTgwMjExX3ZpZiAqdmlm
+LA0KPiA+PiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICByY3VfcmVhZF91bmxvY2so
+KTsNCj4gPj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZ290byBlcnJvcjsNCj4g
+Pj4gICAgICAgICAgICAgICAgICAgICAgICAgIH0NCj4gPj4gKyAgICAgICAgICAgICAgICAgICAg
+ICAgbWFjaWQgPSBydGw4eHh4dV9nZXRfbWFjaWQocHJpdiwgc3RhKTsNCj4gPj4NCj4gPj4gICAg
+ICAgICAgICAgICAgICAgICAgICAgIGlmIChzdGEtPmRlZmxpbmsuaHRfY2FwLmh0X3N1cHBvcnRl
+ZCkNCj4gPj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGV2X2luZm8oZGV2LCAi
+JXM6IEhUIHN1cHBvcnRlZFxuIiwgX19mdW5jX18pOw0KPiA+PiBAQCAtNTAzNywxNCArNTAzOSwx
+NSBAQCBydGw4eHh4dV9ic3NfaW5mb19jaGFuZ2VkKHN0cnVjdCBpZWVlODAyMTFfaHcgKmh3LCBz
+dHJ1Y3QgaWVlZTgwMjExX3ZpZiAqdmlmLA0KPiA+PiAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICBidyA9IFJBVEVfSU5GT19CV180MDsNCj4gPj4gICAgICAgICAgICAgICAgICAgICAg
+ICAgIGVsc2UNCj4gPj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYncgPSBSQVRF
+X0lORk9fQldfMjA7DQo+ID4+ICsNCj4gPj4gKyAgICAgICAgICAgICAgICAgICAgICAgc3RhX2lu
+Zm8gPSAoc3RydWN0IHJ0bDh4eHh1X3N0YV9pbmZvICopc3RhLT5kcnZfcHJpdjsNCj4gPj4gKyAg
+ICAgICAgICAgICAgICAgICAgICAgc3RhX2luZm8tPnJzc2lfbGV2ZWwgPSBSVEw4WFhYVV9SQVRS
+X1NUQV9JTklUOw0KPiA+DQo+ID4gRm9yIEFQIG1vZGUsIHdlIHNob3VsZCBkbyB0aGlzIGFzIHdl
+bGwgYXQgcnRsOHh4eHVfc3RhX2FkZCgpIGJlZm9yZSBjYWxsaW5nDQo+ID4gcnRsOHh4eHVfcmVm
+cmVzaF9yYXRlX21hc2soKT8NCj4gDQo+IHJlZnJlc2hfcmF0ZV9tYXNrIGlzIGNhbGxlZCBmcm9t
+IHN0YV9hZGQgd2l0aCBmb3JjZSA9PSB0cnVlLCBzbyBhIG5ldyB2YWx1ZSBpcw0KPiBzZXQgdGhl
+cmUgdG8gc3RhX2luZm8tPnJzc2lfbGV2ZWwgcmVnYXJkbGVzcyBvZiB0aGUgcHJldmlvdXMgdmFs
+dWUsIGJ1dCBpdCBjYW4ndA0KPiBodXJ0IHRvIGhhdmUgYSBwcm9wZXIgaW5pdGlhbGlzYXRpb24u
+DQoNCnJ0bDh4eHh1X3JlZnJlc2hfcmF0ZV9tYXNrKCkgdXNlcyBzdGFfaW5mby0+cnNzaV9sZXZl
+bCB0byBjaG9vc2UgdGhyZXNob2xkIHRvDQp0cmFuc2l0aW9uIHJzc2lfbGV2ZWwgdGhhdCBjYW4g
+YWZmZWN0IHJhdGVfYml0bWFwLCBzbyBpdCB3b3VsZCBiZSBzYWZlciB0bw0KZ2l2ZSBpdCBhbiBp
+bml0aWFsIHZhbHVlLiBMdWNraWx5LCBSVEw4WFhYVV9SQVRSX1NUQV9JTklUIGlzIDAsIHNvIG5v
+dGhpbmcNCmlzIGNoYW5nZWQuIA0KDQoNCj4gPg0KPiA+PiArDQo+ID4+ICsgICAgICAgc3RhID0g
+aWVlZTgwMjExX2ZpbmRfc3RhX2J5X2lmYWRkcihwcml2LT5odywgaGRyLT5hZGRyMiwNCj4gPj4g
+KyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHZpZi0+YWRkcik7DQo+
+ID4+ICsgICAgICAgaWYgKCFzdGEpDQo+ID4+ICsgICAgICAgICAgICAgICByZXR1cm47DQo+ID4+
+ICsNCj4gPj4gKyAgICAgICBzdGFfaW5mbyA9IChzdHJ1Y3QgcnRsOHh4eHVfc3RhX2luZm8gKilz
+dGEtPmRydl9wcml2Ow0KPiA+PiArICAgICAgIGV3bWFfcnNzaV9hZGQoJnN0YV9pbmZvLT5hdmdf
+cnNzaSwgLXJ4X3N0YXR1cy0+c2lnbmFsKTsNCj4gPj4gK30NCj4gPj4gKw0KPiA+PiArc3RhdGlj
+IGlubGluZSB1OCAqZ2V0X2hkcl9ic3NpZChzdHJ1Y3QgaWVlZTgwMjExX2hkciAqaGRyKQ0KPiA+
+DQo+ID4gV291bGQgeW91IGxpa2UgdG8gYWRkIGEgaWVlZTgwMjExX2dldF9CU1NJRCgpIHRvIGll
+ZWU4MDIxMS5oIGluIHNlcGFyYXRlZA0KPiA+IHBhdGNoPyBCdXQgSSB3b25kZXIgaWYgaXQgaXMg
+ZW5vdWdoIHRvIGNoZWNrIGFkZHIxIG9ubHk/DQo+IA0KPiBJIGp1c3Qgc2F3IHRoYXQgdGhlcmUg
+YWxyZWFkeSBpcyBhIGllZWU4MDIxMV9nZXRfYnNzaWQoKSBpbiBuZXQvbWFjODAyMTEvdXRpbC5j
+Lg0KPiBPbmx5IHByb2JsZW0gaXMgdGhhdCBpdCBuZWVkcyBlbnVtIG5sODAyMTFfaWZ0eXBlIHR5
+cGUgYXMgcGFyYW1ldGVyIGFuZCBJDQo+IGN1cnJlbnRseSBkbyBub3QgaGF2ZSB0aGF0IGF2YWls
+YWJsZSBpbiBydGw4eHh4dV9wYXJzZV9yeGRlc2MxNigpLi4NCg0KTWF5YmUsIGllZWU4MDIxMV9n
+ZXRfYnNzaWRfb2ZfaGRyKCksIG9yIGp1c3Qga2VlcCBpdCBhcyBpdCB3YXMuIE5vIGdvb2QgaWRl
+YS4gDQoNCj4gPj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBpZiAoIXJ4X2Rlc2Mt
+PmNyYzMyICYmICFyeF9kZXNjLT5pY3ZlcnIpDQo+ID4+ICsgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICBydGw4eHh4dV9yeF9hZGRyX21hdGNoKHByaXYsDQo+ID4+ICsgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+IHJ4X3N0YXR1cywNCj4gPj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgaGRyKTsNCj4gPg0KPiA+IFRoaXMgZnVuY3Rpb24gbmFt
+ZSBpc24ndCBjbGVhciwgYmVjYXVzZSBpdCBkb2Vzbid0IGp1c3QgbWF0Y2ggcnggYWRkciwNCj4g
+PiBidXQgaXQgaXMgdG8gdXBkYXRlIFJTU0kgYnkgcnhfc3RhdHVzIGZvciBjb3JyZXNwb25kaW5n
+IHN0YXRpb24uDQo+IA0KPiBEb2VzIHJ0bDh4eHh1X3J4X3VwZGF0ZV9yc3NpKCkgc291bmQgYmV0
+dGVyIHRvIHlvdT8NCg0KVGhhdCBpcyBiZXR0ZXIuIA0KDQoNCg==
 
