@@ -1,149 +1,307 @@
-Return-Path: <linux-wireless+bounces-2794-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2804-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1A768421AC
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 11:43:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37FC48421DA
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 11:48:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56AFA1F239C1
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 10:43:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C85E1C2366D
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 10:48:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB671627F0;
-	Tue, 30 Jan 2024 10:43:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2840D664C1;
+	Tue, 30 Jan 2024 10:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="BHu39B9/"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="q/XqVzA6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B4AD57874
-	for <linux-wireless@vger.kernel.org>; Tue, 30 Jan 2024 10:43:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3683F657BF
+	for <linux-wireless@vger.kernel.org>; Tue, 30 Jan 2024 10:46:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706611408; cv=none; b=oCeii5Cy3x/RlE9QOBMNI1dH9rCORQLBZoZusH5IytfAB2OwuBV/FNQ+lvfuOYoe4wHYov++rA2Jr68etL+BG41hsTrF8KdCPfvx+U6w3WdbUzmiDfMaUakpl4pxeLi66Ss+/r3ed3kG0WhxgjIaHSG6zog/bEtSWRLTy0xX39Q=
+	t=1706611610; cv=none; b=qsU1wSlmTfwRIq5qTtOZ03jJJEfB9YiVXDaZKcO+vHioZwMX97cPe7sjvNpwvOYzjQYBh75lU37FwYr4qDvFGr1IcSnsx9hxbuKaz/w+0Gc61W6//tQKqUChj4oo1XjhqizdfDp5JC1jx5QaZZ2D+9vgm3bL6YuS5Wod8qgCL9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706611408; c=relaxed/simple;
-	bh=DWyobt2SWb3rFgiWQXaxn5ff9jN+AV2YKknl7iEoNFE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Q8sOhU30+uUuMsECfX18eW4Wia/yYQPPHslncpFcwfbut3Snmn0YeMNsowWcfv1U6eepp7RnjBFqcfPXZgMTVToGh8tLQqW3ewNL1YF3eDq84hF3I5bgaScJBPaoYHYHKbXo5qQ3Vm7VraOJQykyERQNXvdCPCvBVxn19d+0meY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=BHu39B9/; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40UAUDp2006137;
-	Tue, 30 Jan 2024 10:43:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=ZcLHVWWt1jUm9GZyPCv2SZPVscI0UUeHdptB7axJaO4=; b=BH
-	u39B9/9DRaWlxLw+k7xFtIpTZ0Jxy37NQUKoif9Me+qxxH7Mjk1pXHsRp+vdOsGW
-	E67G1Go2yyAp9IOq42ivnidC8nQJI6TirltQl4V87AO5BKs2UM6xOhAA85oxMqe5
-	n+23IiYD8Q4IC4cIGGd3o/73hue4rDM3zt34TbuA+wy11Vn2HD4RkUGUesai/6hB
-	r5JUPSML6h/1NphfU9Yzy3AfXALq5VMwYb3lRW8dGJ6nd7pLv6vYHPzDxG3GFx+y
-	QEO+MPXY/HO2q50U5/Lsv7O9JTIxWQW32gnDKPyQNGrqePFMabEPeW36KXJu4wrW
-	Angfk+mlA6uEB2JOG2Rg==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vxydh00x2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Jan 2024 10:43:22 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40UAhLZ3030145
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Jan 2024 10:43:21 GMT
-Received: from [10.201.207.136] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Tue, 30 Jan
- 2024 02:43:19 -0800
-Message-ID: <55d1aea6-8721-4774-9f09-549245461ba8@quicinc.com>
-Date: Tue, 30 Jan 2024 16:13:16 +0530
+	s=arc-20240116; t=1706611610; c=relaxed/simple;
+	bh=JhUuu/Yg9LUVFMzymfszOs0XLJug4O8wY3eURtQbDso=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=oww3NbKYc1vs4cYTNoT55NvxcnQGumP+8OZZBT3t8+Qh+moHIcdqhYjQ6KXGVw3Jc+q2FyFDvH2elguDID86RfRK45L2DNbKRpm/0UbznEfsaWMopmftsg2ee5wkjr9VDsW2Plhf3RmBDrbPNA7mxwTvbdR0GhjpWAIR04zfrMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=q/XqVzA6; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=YSKPC4FElUpbwkgS9pekTOtQSr+FIY4IZymZn7nPurM=;
+	t=1706611608; x=1707821208; b=q/XqVzA6YN6wq/kNZMQT/j3yg0s5zqsfZkSzfwVOdSZEe5t
+	0tYnBB4pR4VdmJJlBgYDm6JycMxsbpOeLX38J8nnQjy34Ji5i0oL13Ifq/Smjuoydj8fdFmAEAsaN
+	gQCo9TjIFN7tIoDK2CnRWDSGxokrG11HRkIPYBOrN0jJO2megW0eLPK+uV1rz3+z5MsF9cNAvISrQ
+	STQ8KwCUPsS0OmW1c2IeBt5kUt/WWPc/MEpuPmEDW5lOrxM21n3meGHk50UIuEiO9uOxLaaWxrywE
+	4/fV4UAuf2L/KQQ7lU2i/Ocv2KRs5hAmIJEA8wIiPyLzhFgI2umtOlgQ/j0LRHFQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rUldc-00000005znI-2Rtu;
+	Tue, 30 Jan 2024 11:46:44 +0100
+Message-ID: <52287b3162cf6632e7999216cf1ad97b2280b584.camel@sipsolutions.net>
+Subject: Re: [PATCH 1/3] wifi: cfg80211: add support for link id attribute
+ in NL80211_CMD_DEL_STATION
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Aditya Kumar Singh <quic_adisi@quicinc.com>
+Cc: linux-wireless@vger.kernel.org
+Date: Tue, 30 Jan 2024 11:46:43 +0100
+In-Reply-To: <307eaecc-fd88-4fd8-8857-dd3910257d34@quicinc.com>
+References: <20240125125855.827619-1-quic_adisi@quicinc.com>
+	 <20240125125855.827619-2-quic_adisi@quicinc.com>
+	 <61ad9e10e42c9f114c2a7de534690f8c0133bf58.camel@sipsolutions.net>
+	 <307eaecc-fd88-4fd8-8857-dd3910257d34@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 3/5] wifi: mac80211: handle set csa/after_csa beacon on
- per link basis
-Content-Language: en-US
-To: Johannes Berg <johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>
-References: <20240130043225.942202-1-quic_adisi@quicinc.com>
- <20240130043225.942202-4-quic_adisi@quicinc.com>
- <1e73c061653abf8e5f1671ae026e0905b2fb4ded.camel@sipsolutions.net>
-From: Aditya Kumar Singh <quic_adisi@quicinc.com>
-In-Reply-To: <1e73c061653abf8e5f1671ae026e0905b2fb4ded.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: B2Zd6OREZ-FEjMIfYkwN5auKd4uEzXU1
-X-Proofpoint-GUID: B2Zd6OREZ-FEjMIfYkwN5auKd4uEzXU1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-30_05,2024-01-30_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
- mlxscore=0 malwarescore=0 clxscore=1015 spamscore=0 impostorscore=0
- lowpriorityscore=0 suspectscore=0 priorityscore=1501 mlxlogscore=747
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2401190000 definitions=main-2401300078
+X-malware-bazaar: not-scanned
 
-On 1/30/24 15:47, Johannes Berg wrote:
-> On Tue, 2024-01-30 at 10:02 +0530, Aditya Kumar Singh wrote:
->> In order to support CSA with MLO, there is a need to handle the functions
->> ieee80211_set_csa_beacon() and ieee80211_set_after_csa_beacon() on per
->> link basis.
-> 
-> nit: "on a per link"
+On Sat, 2024-01-27 at 11:14 +0530, Aditya Kumar Singh wrote:
+> On 1/26/24 14:36, Johannes Berg wrote:
+> > On Thu, 2024-01-25 at 18:28 +0530, Aditya Kumar Singh wrote:
+> > > Currently whenever NL80211_CMD_DEL_STATION command is called without =
+any
+> > > MAC address, all stations present on that interface are flushed.
+> >=20
+> > True.
+> >=20
+> > > However with MLO there is a need to flush the stations from a particu=
+lar
+> > > link in the interface, and not from all the links associated with the=
+ MLD
+> > > interface.
+> >=20
+> > Fair enough, I can get behind that.
+> >=20
+> > Edit: reading the code - I think I misunderstand that ... you're
+> > actually trying to remove all MLDs ("STATION") that have an active link
+> > on this link?=20
+>=20
+> Yes correct. The station might not be MLD station. It could be a legacy=
+=20
+> station (non EHT) as well.
 
-Will address in next version. Thanks.
+We pretty much treat that the same though as an MLD station with a
+single link, with some caveats of translations, no?
 
-> 
->> Add changes for the same.
-> 
-> Is that some cultural thing?
-> 
-> I always find this phrasing with "for the same" very odd, and would
-> rather say something useful such as "Implement this by passing the
-> correct link data"... but I see this a lot, hence the question.
-> 
+> Correct, for the first bring up not required but one use case I see is -=
+=20
+> the hostapd interface was disabled for some reason. While going down, it=
+=20
+> would have cleared the stations on the kernel but what if for some=20
+> reason kernel did not clear the station entries and there are some stale=
+=20
+> entries present? So at next bring up (during enable) it would send the=
+=20
+> command without any MAC address to flush all stale entries (probably as=
+=20
+> a safety so that kernel and hostapd would now be on par).
 
-No idea :). Even I have seen these quite a few times and thought that 
-may be it is fine to use it that way. But I do agree that instead we 
-could put something useful instead. Thanks for pointing it out, I will 
-address this in next version.
+I don't think this really makes much sense. The kernel can't keep track
+of those stations properly if they're there, and anyway that'd be a
+(pretty massive!) kernel bug?
+
+Anyway, I think there probably _is_ justification for this (link
+removal?), I'm just not sure this bringup flow really is a good
+justification.
+
+> > > Hence, add an option to pass link ID as well in the command so that i=
+f link
+> > > ID is passed, station using that passed link ID alone would be delete=
+d
+> > > and others will not be removed.
+> >=20
+> > So first: Do you want some feature flag that indicates this? Or will we
+> > just eat the cost of kicking out everyone (without even sending deauth
+> > though, I think?) when running on older kernels?
+> >=20
+>=20
+> If what I said above was the actual intention, then kicking out everyone=
+=20
+> without even sending deauth makes sense? Yes? If yes then we don't need=
+=20
+> a feature flag.
+
+Does it though? Even if you're talking about init, you could have init
+of one link much delayed for CSA, for example, with stations already
+connected on the other(s).
+
+> > Secondly: why is this part of NL80211_CMD_DEL_STATION? I'm not convince=
+d
+> > that makes sense. I actually kind of get why you're doing that - it's
+> > easier to retrofit into the existing hostapd, but I don't necessarily
+> > think that the hostap design (problems?) should influence this too much=
+.
+> >=20
+> > IOW, it would feel much more appropriate to have this as part of
+> > NL80211_CMD_REMOVE_LINK_STA? After all, when going to MLD then "STATION=
+"
+> > now represents a "peer MLD", and "LINK_STA" now represents an affiliate=
+d
+> > STA. And flushing all affiliated STAs is what you want.
+> >=20
+> > So I think it should be NL80211_CMD_REMOVE_LINK_STA without a
+> > NL80211_ATTR_MLD_ADDR.
+> >=20
+>=20
+> At least as per the current way of NL80211_CMD_REMOVE_LINK_STA=20
+> implementation, it did not made any sense to delete all link STAs if=20
+> MLD_ADDR is not passed. So probably the command should be called as many=
+=20
+> times as there are active links in the STA?
+
+Not sure I understand this, we're doing a kind of flush here, so you
+could (conceptually) say "flush all link STAs on link 5", no? And
+obviously stations that have no link left after this need to be removed
+completely.
+
+Note this raises an interesting point in mac80211, in that there's one
+link ('deflink', the link the STA used to assoc) that cannot be removed
+from an MLD station even.
+
+But again this comes down to what you actually _want_, I think, so I'll
+keep reading for now.
+
+> Still I feel that NL80211_CMD_DEL_STATION is the proper place to put=20
+> this? Without the current change also, it used to flush all STAs=20
+> whenever MAC address is not passed. With MLO, now we need to flush STAs=
+=20
+> only if it is using the given link ID. So that link STAs from other=20
+> affiliated links of AP would not be flushed.
 
 
->> @@ -3658,7 +3659,7 @@ static int __ieee80211_csa_finalize(struct ieee80211_link_data *link_data)
->>   
->>   	sdata->vif.bss_conf.csa_active = false;
->>   
->> -	err = ieee80211_set_after_csa_beacon(sdata, &changed);
->> +	err = ieee80211_set_after_csa_beacon(&sdata->deflink, &changed);
-> 
-> weren't you just saying deflink shouldn't be used?
-> 
+Right so this is coming to the point where I wasn't sure earlier what
+you actually meant, and I'm still not entirely positive I've understood
+it. Let me read on ...
 
-Correct. This patch's aim is to form the base - basically modify the 
-helper function to accept the link data argument. But at this point, CSA 
-is not started on per link basis hence in order to keep CSA working 
-still as it is before this patch, have used deflink here. Functionality 
-wise, this patch is not bringing any change yet.
+> Scenario I'm targeting is this -
+>=20
+> Pre-MLO
+> ----------------------------
+>=20
+> sdata -> 2 GHz AP interface
+> sta_lists ->
+> 	1. sta -> connected 2 GHz AP sdata
+> 	2. sta -> connected 2 GHz AP sdata
+>=20
+> After NL80211_CMD_DEL_STATION is given without any MAC address,
+>=20
+> sta_lists ->
+> 	No entry(ies)
 
+Right.
 
->> @@ -3928,7 +3930,7 @@ __ieee80211_channel_switch(struct wiphy *wiphy, struct net_device *dev,
->>   	if (sdata->vif.bss_conf.color_change_active)
->>   		ieee80211_color_change_abort(sdata);
->>   
->> -	err = ieee80211_set_csa_beacon(sdata, params, &changed);
->> +	err = ieee80211_set_csa_beacon(&sdata->deflink, params, &changed);
-> 
-> dito
-> 
+> With MLO
+> -----------------------------
+> sdata ->
+> 	link_data -> 2 GHz AP link (link ID 0)
+> 	link_data -> 5 GHz AP link (link ID 1)
+> 	link_data -> 6 GHz AP link (link ID 2)
+> sta_lists ->
+> 	1. sta -> connected AP MLD sdata
+> 		link_sta 0 -> connected to 2 GHz link
+> 	2. sta -> connected AP MLD sdata
+> 		link_sta 1 -> connected to 5 GHz link
+> 	3. sta -> connected AP MLD sdata
+> 		link_sta 2 -> connected to 6 GHz link
+> 	4. sta -> connected AP MLD sdata
+> 		link_sta 0 -> connected to 2 GHz link
+> 		link_sta 1 -> connected to 5 GHz link
+> 		link_sta 2 -> connected to 6 GHz link
+>=20
+> Assume 5 GHz goes down and it gives NL80211_CMD_DEL_STATION without any=
+=20
+> MAC address,
+>=20
+> sta_lists ->
+> 	No entry(ies)
+>=20
+> This is not desirable since 5 GHz link went down, why 2/6 GHz STA also=
+=20
+> got flushed.
+>=20
+> Hence with the proposed change, only sta #2 and #4 would be flushed=20
+> since only these two are using passed link ID (which would be 1).
+> Hence after the command,
+>=20
+> sta_lists ->
+> 	1. sta -> connected AP MLD sdata
+> 		link_sta 0 -> connected to 2 GHz link
+> 	3. sta -> connected AP MLD sdata
+> 		link_sta 2 -> connected to 6 GHz link
 
-Addressed above.
+Right, OK.
+
+So you _are_ indeed wanting to remove all MLDs *entirely*, if they use a
+specific link.
+
+Agree that in this case, NL80211_CMD_DEL_STATION with link ID makes
+sense as implemented, but probably need to clarify a little bit overall
+that this is the operation, seeing how I was confused about whether you
+want to remove only the link STAs on on those links, or the entire MLD
+stations.
+
+(and yeah, our terminology here is confusing and doesn't help either,
+but that's because we didn't rename STATION to MLD or something
+everywhere)
+
+> Now, if ML re-config support is present, then hostapd (or the user space=
+=20
+> controller for that matters), could first issue=20
+> NL80211_CMD_REMOVE_LINK_STA for the MLD STA (#4) and remove link sta=20
+> with ID 1 from it. So that when NL80211_CMD_DEL_STATION comes, it would=
+=20
+> not remove the 2/6 GHz link STA as well from the MLD STA and hence flush=
+=20
+> the whole entry.
+
+Right, OK!
+But see above - that NL80211_CMD_REMOVE_LINK_STA as described here may
+or may not be possible today in mac80211.
+
+> The above change is not there yet in hostapd, so for the time being,=20
+> whole MLD STA would be flushed.
+
+OK.
+
+> > > @@ -16827,6 +16840,9 @@ static const struct genl_small_ops nl80211_sm=
+all_ops[] =3D {
+> > >   		.validate =3D GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP=
+,
+> > >   		.doit =3D nl80211_del_station,
+> > >   		.flags =3D GENL_UNS_ADMIN_PERM,
+> > > +		/* cannot use NL80211_FLAG_MLO_VALID_LINK_ID, depends on
+> > > +		 * MAC address
+> > > +		 */
+> > >   		.internal_flags =3D IFLAGS(NL80211_FLAG_NEED_NETDEV_UP),
+> >=20
+> > Hmm? How does NL80211_FLAG_MLO_VALID_LINK_ID depend on the MAC address?=
+!
+> > It ... doesn't?
+> >=20
+> I mean intention was that if MAC addresses is passed then no need of=20
+> link ID. That is why did not add the valid link flag since it would=20
+> expect the link ID even when MAC address is passed.
+>=20
+
+Ah, OK, that makes sense.
+
+Maybe rephrase that comment? I was also thinking of just refactoring the
+logic into a helper function, but that may be difficult, not sure. It
+just looked similar.
+
+johannes
 
