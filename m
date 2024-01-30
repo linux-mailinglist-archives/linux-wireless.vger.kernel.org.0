@@ -1,89 +1,142 @@
-Return-Path: <linux-wireless+bounces-2793-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2795-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1D91842166
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 11:36:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 472968421B3
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 11:44:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 005901C228F3
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 10:36:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02F892917C7
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 10:44:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE98C60DCB;
-	Tue, 30 Jan 2024 10:36:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="CoAQR3PM"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4689D62A07;
+	Tue, 30 Jan 2024 10:43:40 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9625605B4
-	for <linux-wireless@vger.kernel.org>; Tue, 30 Jan 2024 10:36:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7937D66B3E;
+	Tue, 30 Jan 2024 10:43:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706610990; cv=none; b=Umb6BzZwiRAk/SJMHXmJudai1PPoBX5p3AOUfjxDwnMq1bWVuE+Ui/6MtgihY0DQpRGyXzwEizb5AxaWX6uNFMVD9wy717Am24mh/E9iWk+kgzdWZ6tpzWUw1bxWs3A7JGf2/qMpiV6PRF/JOVuYKx6BI+X0a/ZqRHk0tMZ04dU=
+	t=1706611420; cv=none; b=kel82Oe+glVYJqz6/rJCPBVXE+jJtovlAJxEUMm0P0dyfXK61NT9BGhKXtVTew2MAi/1xMUWT/rQ8NeB6mnxyvqtlOjtaGWZ45x3Xyehe6/TaDmt3KUs8mePmKAGiqYRcf7i7XSJZhM5UTT5ROrtCzdroQpRezwU2RvLfRBQhAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706610990; c=relaxed/simple;
-	bh=di8flAIpp6g5RQPtIYYFHbOug+3sjnYFWDW0lnLYJy4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=SvLaeFldi42w53PwommqHmJ9KOy8ECk/lPyfjU1B/8pdFc7c/tk/859vDeFAW1ypcUwBJY/JlvUQqsvqow25qT7z8+ZeWksuY13qosa4sVw9xGUbLAFdIv38ulb51+ohGQ9xtolvzTccN+73sMECYXRVup0a/W1PK/9bu59ChFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=CoAQR3PM; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=xikjPEi5orQMPMNjub+vz7NVquJX6hiu+CpvamtZ9Og=;
-	t=1706610988; x=1707820588; b=CoAQR3PMvyPrA/QeP3hJGDcnPOZbU1ne6xIwThVLHqXv+Qt
-	CrOMwjhU9KkMOLpLr8SvXFyZs5+ay6wrppEOClGvR+wbsX4JZ8JNfOpSVefuvBFKYHQa7/12ttd6j
-	w3QAQqApbq/cjuyaDWaPb9wYV/cz/NQr/wfJqwCgotYgPa8jnVEqBOXr0svOphV7cE6+x4VXl7/I5
-	lj2gwKlfFNpdCTiBtXvpQwvO3esqikvZOhxPjMHUX9NOWI/rNGYVzibcl8e5EZ8yrJqLl+/IcEvLJ
-	wLPmHf7ro3wKG3pfEQUHdaU9Av6JoCf5ECvC+Csip8s7rc74TzSoGgQEK9cPR6MA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1rUlTd-00000005zNA-1pQZ;
-	Tue, 30 Jan 2024 11:36:25 +0100
-Message-ID: <7de5124fb9e8590f76a426d47e88ac6661c500c7.camel@sipsolutions.net>
-Subject: Re: [PATCH v7 1/5] wifi: cfg80211: send link id in channel_switch
- ops
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Aditya Kumar Singh <quic_adisi@quicinc.com>
-Cc: linux-wireless@vger.kernel.org
-Date: Tue, 30 Jan 2024 11:36:24 +0100
-In-Reply-To: <c3ce6010-5cd2-4693-a43c-c89947cdb047@quicinc.com>
-References: <20240130043225.942202-1-quic_adisi@quicinc.com>
-	 <20240130043225.942202-2-quic_adisi@quicinc.com>
-	 <184a2907d637cd924160681b40f1caffa2fa1e92.camel@sipsolutions.net>
-	 <c3ce6010-5cd2-4693-a43c-c89947cdb047@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
+	s=arc-20240116; t=1706611420; c=relaxed/simple;
+	bh=nywrLQlGPh6nEooDV682/+69XpU75liacZCCI7YZP70=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=fChWC8TSuggx0v2XPSoLrHEjnBTgClaMC9+gZnQaEwk8lgxyG0aKFfMOK9PRVQgWyWaZnHd51Vfix3manMcgSgNayXDGi5WuYoijkEP9iLYZCBnTmheMJ7KA4mqYd4Xv3Hzzm9rIk6qJi7cG4fHe1GmuvZ/T325GaWo3ZeyRDbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a359446b57dso279079166b.3;
+        Tue, 30 Jan 2024 02:43:38 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706611416; x=1707216216;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LZWPklz4V2or93x77kLaamHTv28BvI0mJJK9voflkyM=;
+        b=MqG5fsFfrcQ1GVfhShfDUps/OJbvyMJ+KekSz0a7qKMQNlQhXXIFT4qjAVyvjoIjYS
+         FLdsxOo/WlaCauIVLdAuNv7qGroyK8GzT7rgaiHIXmMJZ3/6CyzxFdb8AhkI9JYU2sF0
+         PG9LTQW77PjPKIdr+v3PMoNMmzs1qBKPg5PT/b20TelZLleIfZSUhIsB85qV3dW04nMG
+         kgfFU7LK/vJ+SEFgnMS0wwClwBpUiSFI4F8q+0+MlQIO+IfhfBR2H10eat1Ex6h/xWZu
+         EG2FstWENheMvtu+rsmc2DFTEZ5ngQw7PVw7P/XHP+V5miIJVGGA+q0AjQQ8jvt78y9N
+         bgvQ==
+X-Gm-Message-State: AOJu0YzxskUqF+qdkSblDMOGEkeKeG6SPnQQE7cNXC6E0ob821fVByvA
+	xrUL/Hxv1VbUIdbHYTKG5eP9WQHXHotz5VLikW9VRsyI6UsjDozo
+X-Google-Smtp-Source: AGHT+IGcsGqljo2YtFpelsspLrQjRVqs37quG0lsqbxu+t1X1Q/w2i8kAdLPafIB9ZA1vZa4yLyE2g==
+X-Received: by 2002:a17:906:2e95:b0:a35:8bbd:5ba9 with SMTP id o21-20020a1709062e9500b00a358bbd5ba9mr5011759eji.27.1706611416472;
+        Tue, 30 Jan 2024 02:43:36 -0800 (PST)
+Received: from localhost (fwdproxy-lla-119.fbsv.net. [2a03:2880:30ff:77::face:b00c])
+        by smtp.gmail.com with ESMTPSA id vi4-20020a170907d40400b00a35981e30desm2660552ejc.106.2024.01.30.02.43.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Jan 2024 02:43:36 -0800 (PST)
+From: Breno Leitao <leitao@debian.org>
+To: kuba@kernel.org,
+	davem@davemloft.net,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	Kalle Valo <kvalo@kernel.org>
+Cc: dsahern@kernel.org,
+	weiwan@google.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	horms@kernel.org,
+	andrew@lunn.ch,
+	leit@fb.com,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Kees Cook <keescook@chromium.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Li Zetao <lizetao1@huawei.com>,
+	Francois Romieu <romieu@fr.zoreil.com>,
+	Rob Herring <robh@kernel.org>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Ruan Jinjie <ruanjinjie@huawei.com>,
+	linux-wireless@vger.kernel.org (open list:TI WILINK WIRELESS DRIVERS)
+Subject: [PATCH net 1/9] wifi: fill in MODULE_DESCRIPTION()s for wlcore
+Date: Tue, 30 Jan 2024 02:42:35 -0800
+Message-Id: <20240130104243.3025393-2-leitao@debian.org>
+X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20240130104243.3025393-1-leitao@debian.org>
+References: <20240130104243.3025393-1-leitao@debian.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 
-On Tue, 2024-01-30 at 16:05 +0530, Aditya Kumar Singh wrote:
-> On 1/30/24 15:43, Johannes Berg wrote:
-> > On Tue, 2024-01-30 at 10:02 +0530, Aditya Kumar Singh wrote:
-> > >=20
-> > > + * @link_id: defines the link on which channel switch is expected du=
-ring
-> > > + *	     MLO. 0 in case of non-MLO.
-> >=20
-> > please still use a tab (only) :)
-> >=20
-> Now I get your point. I was using tab as much as possible and then=20
-> spaces to align it to ':'. You are suggesting to just use tabs alone righ=
-t?
+W=1 builds now warn if module is built without a MODULE_DESCRIPTION().
+Add descriptions to the TI WLAN wlcore drivers.
 
-Ohh.. Yeah, we don't really try to align that.
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+ drivers/net/wireless/ti/wlcore/main.c | 1 +
+ drivers/net/wireless/ti/wlcore/sdio.c | 1 +
+ drivers/net/wireless/ti/wlcore/spi.c  | 1 +
+ 3 files changed, 3 insertions(+)
 
-johannes
+diff --git a/drivers/net/wireless/ti/wlcore/main.c b/drivers/net/wireless/ti/wlcore/main.c
+index fb9ed97774c7..5736acb4d206 100644
+--- a/drivers/net/wireless/ti/wlcore/main.c
++++ b/drivers/net/wireless/ti/wlcore/main.c
+@@ -6793,6 +6793,7 @@ MODULE_PARM_DESC(bug_on_recovery, "BUG() on fw recovery");
+ module_param(no_recovery, int, 0600);
+ MODULE_PARM_DESC(no_recovery, "Prevent HW recovery. FW will remain stuck.");
+ 
++MODULE_DESCRIPTION("TI WLAN core driver");
+ MODULE_LICENSE("GPL");
+ MODULE_AUTHOR("Luciano Coelho <coelho@ti.com>");
+ MODULE_AUTHOR("Juuso Oikarinen <juuso.oikarinen@nokia.com>");
+diff --git a/drivers/net/wireless/ti/wlcore/sdio.c b/drivers/net/wireless/ti/wlcore/sdio.c
+index f0686635db46..eb5482ed76ae 100644
+--- a/drivers/net/wireless/ti/wlcore/sdio.c
++++ b/drivers/net/wireless/ti/wlcore/sdio.c
+@@ -447,6 +447,7 @@ module_sdio_driver(wl1271_sdio_driver);
+ module_param(dump, bool, 0600);
+ MODULE_PARM_DESC(dump, "Enable sdio read/write dumps.");
+ 
++MODULE_DESCRIPTION("TI WLAN SDIO helpers");
+ MODULE_LICENSE("GPL");
+ MODULE_AUTHOR("Luciano Coelho <coelho@ti.com>");
+ MODULE_AUTHOR("Juuso Oikarinen <juuso.oikarinen@nokia.com>");
+diff --git a/drivers/net/wireless/ti/wlcore/spi.c b/drivers/net/wireless/ti/wlcore/spi.c
+index 7d9a139db59e..0aa2b2f3c5c9 100644
+--- a/drivers/net/wireless/ti/wlcore/spi.c
++++ b/drivers/net/wireless/ti/wlcore/spi.c
+@@ -562,6 +562,7 @@ static struct spi_driver wl1271_spi_driver = {
+ };
+ 
+ module_spi_driver(wl1271_spi_driver);
++MODULE_DESCRIPTION("TI WLAN SPI helpers");
+ MODULE_LICENSE("GPL");
+ MODULE_AUTHOR("Luciano Coelho <coelho@ti.com>");
+ MODULE_AUTHOR("Juuso Oikarinen <juuso.oikarinen@nokia.com>");
+-- 
+2.39.3
+
 
