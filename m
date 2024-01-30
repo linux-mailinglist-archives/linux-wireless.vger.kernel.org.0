@@ -1,61 +1,61 @@
-Return-Path: <linux-wireless+bounces-2790-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2791-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96F1E8420FC
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 11:17:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D589B842120
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 11:22:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B34B1F21C53
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 10:17:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 855941F23631
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 10:22:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14A235BAD8;
-	Tue, 30 Jan 2024 10:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4E89627F0;
+	Tue, 30 Jan 2024 10:21:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="wvm5Kv6S"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Nfq7Zszz"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B04B605AD
-	for <linux-wireless@vger.kernel.org>; Tue, 30 Jan 2024 10:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 903FB60ED9
+	for <linux-wireless@vger.kernel.org>; Tue, 30 Jan 2024 10:21:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706609859; cv=none; b=BZ4VrUkBCHrdqjCWTwYas5W3k18czF+yewT2LOtpcitETF0VvTkIDOtoWpJ874XkDwZb2qz4waU/fZGymj9fzV9DTUGCzNDZ7ByL/BgMVILXU2CzLJNG8hnt9QvTHc1vhlOJoW7oBdeJpnq62FPhDAxsPdnVWSR4cQ0DiS+XoQg=
+	t=1706610100; cv=none; b=qC3dQPZWAjw5EYIObT2etC1AQ46tvqjxc3SUqpkMEzMxcf7KNerfPAsYw0i6V7nP9JT794SCwR9NSJiXSHhv74pIfn8dpsMXywVCFyXDFS6XMyxoYAr7PJWV+e6fvZKYQ5IF736ia9NImATAaX16a4Wb9DJvCdN1YIcEtOSDq/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706609859; c=relaxed/simple;
-	bh=toH3+1YZykHJLfJV2UH7BPWRN1hJ+R/6H9ZYYF1JgM8=;
+	s=arc-20240116; t=1706610100; c=relaxed/simple;
+	bh=SUZuQPUjLyJezRMb/heNz1LrRavuHe7d8mQTivid20k=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=dCVC1u13mR2Q3byUx5WhjMviwoYa3fNgXRN3w7rpZg/v/eR3SolRm3xsPggJ1v+dIi2XUTSxy341+7s+CqWr7EHIscedkYHKrpL0fNcpz+1XUIVBO2eKTaNnM7UCbsEz2SW+Gpb8aSywA2y4B9Kj8O5Z1x6Ykvap4wIAbS28nfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=wvm5Kv6S; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=g3RcqQHZRzrJnf+PG4Lx3m9K0u0Jrnn6BL3It+2SPveILoUH9vvOB0uzin7+036lofPpn+/mEvSr5l9vhAJMTQFvaSf7xI+8hwL8vgHb4N1VgGYiBGYj0w5XPd2ukHZ+6yMMIIQelXf0I9mXvP9snZWDzH+m6x0NDBoDLQbuYm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Nfq7Zszz; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=R58WjFyvD4feLQKU+9qOOB7Fzl8JJEv13qjx4szFxwY=;
-	t=1706609857; x=1707819457; b=wvm5Kv6SMJqBOJWUyyt4gqf5meBK7iXVXKDubFdQmBjOl/R
-	Qng8qtY/94hQn36EDIQoqblk6+LL+ymSt3ZY4T97Q8O0FJVjYlMZabSXpqP1a0o5ND+fcwEnuuO6C
-	rDbeAmTTQg4ySXtLy8wdnGBKcK9xnMNyyM2HC3F40+twXrtwAzeztXKMYeqrTLhVUTa+6gPE15611
-	ZylD+xyWBfDbLeWSfIk38IaAepuBTvJ5XG6vrFVoYI5WmFV7vm/SgnL6cC2QHlXfK8dRD01uNOCRc
-	ooyyeplXM2Hq/foB0q3AtA9BoTWbuyMssdd56afSB8c7gWwpL/ETeW2/tcozK9eg==;
+	Resent-Cc:Resent-Message-ID; bh=PPT/OmzLPGq9urvanssuHslmeHqmRcHgPsC0hpe7M48=;
+	t=1706610098; x=1707819698; b=Nfq7ZszzCVxke7Kht/FuXJ3tsVvqxD0P6u9St5z2ySN65ir
+	VgfnEJnH9BfYtIKOvmIpiF/9vPO0M9pdnsIJcODPN5ey6Y6B35v5sXbyUkCfoXBcGLzDfXJG+gyeM
+	LibuHbbfJMow7fqwYhLE6U3ULpoXJ3ESFgaINvemMVNeeaG3YodXQYaaplHtxsSuc7DLMvPrkAfYk
+	EsHAxoeR+2pi0moh9OI0kN/FLyQzKxkMpcXvsrKQqsdG5fKALU79+WD9vkm9HNFJ5GqLYwYwaPCjy
+	MFHM0HosRZOrx1jK1pz6FSsQkfXY6/qKRq/SDa+HzxhW5iNZ2TxINYIyXQtoDclg==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.97)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1rUlBO-00000005ypb-1Kk8;
-	Tue, 30 Jan 2024 11:17:34 +0100
-Message-ID: <1e73c061653abf8e5f1671ae026e0905b2fb4ded.camel@sipsolutions.net>
-Subject: Re: [PATCH v7 3/5] wifi: mac80211: handle set csa/after_csa beacon
- on per link basis
+	id 1rUlFH-00000005yxa-0WMJ;
+	Tue, 30 Jan 2024 11:21:35 +0100
+Message-ID: <e19c796c9ffe3170e34543c95c6d74ced5b1429f.camel@sipsolutions.net>
+Subject: Re: [PATCH v7 5/5] wifi: mac80211: add support to call csa_finish
+ on a link
 From: Johannes Berg <johannes@sipsolutions.net>
 To: Aditya Kumar Singh <quic_adisi@quicinc.com>
 Cc: linux-wireless@vger.kernel.org
-Date: Tue, 30 Jan 2024 11:17:33 +0100
-In-Reply-To: <20240130043225.942202-4-quic_adisi@quicinc.com>
+Date: Tue, 30 Jan 2024 11:21:33 +0100
+In-Reply-To: <20240130043225.942202-6-quic_adisi@quicinc.com>
 References: <20240130043225.942202-1-quic_adisi@quicinc.com>
-	 <20240130043225.942202-4-quic_adisi@quicinc.com>
+	 <20240130043225.942202-6-quic_adisi@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
@@ -68,39 +68,37 @@ MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
 On Tue, 2024-01-30 at 10:02 +0530, Aditya Kumar Singh wrote:
-> In order to support CSA with MLO, there is a need to handle the functions
-> ieee80211_set_csa_beacon() and ieee80211_set_after_csa_beacon() on per
-> link basis.
+> Currently ieee80211_csa_finish() function finalizes CSA by scheduling a
+> finalizing worker using the deflink. With MLO, there is a need to do it
+> on a given link basis.
+>=20
+> Add changes to pass link ID of the link on which CSA needs to be finalize=
+d.
 
-nit: "on a per link"
+Why not just directly say
 
-> Add changes for the same.
+"Pass the link ID of ..."
 
-Is that some cultural thing?
+To me at least it seems obvious that a commit makes changes :)
 
-I always find this phrasing with "for the same" very odd, and would
-rather say something useful such as "Implement this by passing the
-correct link data"... but I see this a lot, hence the question.
+Anyway .. I'll stop nit-picking too much about your commit messages I
+guess, and worst case just rephrase them later.
 
-> @@ -3658,7 +3659,7 @@ static int __ieee80211_csa_finalize(struct ieee8021=
-1_link_data *link_data)
-> =20
->  	sdata->vif.bss_conf.csa_active =3D false;
-> =20
-> -	err =3D ieee80211_set_after_csa_beacon(sdata, &changed);
-> +	err =3D ieee80211_set_after_csa_beacon(&sdata->deflink, &changed);
+(I'm kind of working on this area of CSA too right now, though with a
+focus on client.)
 
-weren't you just saying deflink shouldn't be used?
+> +	/* TODO: MBSSID with MLO changes */
+>  	if (vif->mbssid_tx_vif =3D=3D vif) {
 
-> @@ -3928,7 +3930,7 @@ __ieee80211_channel_switch(struct wiphy *wiphy, str=
-uct net_device *dev,
->  	if (sdata->vif.bss_conf.color_change_active)
->  		ieee80211_color_change_abort(sdata);
-> =20
-> -	err =3D ieee80211_set_csa_beacon(sdata, params, &changed);
-> +	err =3D ieee80211_set_csa_beacon(&sdata->deflink, params, &changed);
+Could you say (even here) more precisely what'd be needed?
 
-dito
+>  		/* Trigger ieee80211_csa_finish() on the non-transmitting
+>  		 * interfaces when channel switch is received on
+> @@ -3568,7 +3579,7 @@ void ieee80211_csa_finish(struct ieee80211_vif *vif=
+)
+>  					 &iter->deflink.csa_finalize_work);
+
+that still seems to use deflink there, for sure.
 
 johannes
 
