@@ -1,150 +1,94 @@
-Return-Path: <linux-wireless+bounces-2784-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2785-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86449841C46
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 08:02:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F3F7841C61
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 08:13:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7A191C2428D
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 07:02:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E553B23908
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 07:13:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D24EB524CC;
-	Tue, 30 Jan 2024 07:02:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 558EE44377;
+	Tue, 30 Jan 2024 07:13:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="FHILCMzG"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="qCrmUfDj"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6059C524AC
-	for <linux-wireless@vger.kernel.org>; Tue, 30 Jan 2024 07:02:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A00F853E05;
+	Tue, 30 Jan 2024 07:13:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706598152; cv=none; b=gbWfj5kpLmj08/x7ggxlL661RPZP7VRViuaGBie0hYaTqpbIN4+ETozKbGUEN4fIzjdHpd6PQe1HS4e8JdPyeFm3v1ApfC92FTFyl4a1J0U/CKhKAPzy7dGtztax6E97864Nl1A92A8plnNq4GjN265sKO1tUrSw4udVQfyLAzY=
+	t=1706598827; cv=none; b=befWVA4IwjUPbZ9GxWFQMELJUq7KHaFQpUzrBXychtjd/9EVMnN2okK7YAGsROWoRUqlO+yJRyi10chbF2z0mMRikdVRmrfGSWYZj7tX1v5AdNMo1XfxDRSkmFaocdQk5R+R7dBrj3B4mX9QZaIetyzNitFlEIiDocycorjhaRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706598152; c=relaxed/simple;
-	bh=iptHtuGHuZZsqWnf01yYm5FjFYAVJ9MO5CTfbvC4n9Q=;
-	h=Message-ID:Date:MIME-Version:From:To:Subject:References:
-	 In-Reply-To:Content-Type; b=YRJYNiMcuthCM0/4cqon7DXM6GLDjmgaG2bZlkjBO9S4WUXa1e3KK7AZU/BJ/EQl5M5dvh/1Eq7piY8333FdPEjTM5RUH/Wm4wBO7rbi95KbqweXHLpA8FFoOIGY+a8Sn60u5RVSDeYJrRI5BLHDNxC97OWR2QhjfBvUBXjD/WY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=FHILCMzG; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40U3eLwo008188;
-	Tue, 30 Jan 2024 07:02:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:from:to:subject:references
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=BaQi+uffQx+bcT8OByEnpa5PdA/yCPnBVInhhhMRdt4=; b=FH
-	ILCMzGtUtogTK7smXJtzeCVJL0JDWJ+hVrBwvUUyV1Z4vcSrm5R613jtbQmopDXE
-	SC0/2FMp6biD9EDpkL7y0HuTCkC36B6Y2t+Zatvt8l9uMwSMPnal60qhjMQoiUBz
-	5zbnKYR8zwtItn8k/FbrhbMpZ0Mj+WaNoCjZPIBLEtYbO6P7N2pDlz6DV14HCrdS
-	4Y3S2L1TJWwedSlcieAHzXfaoOJedAFNeQhAW28NgGuAZOzmlXRLv/m6K4BmYR/C
-	LlU0AMjrvI1n59oOyC+4igR8B/TRZthA083ToRYXtlStYC6QOGaVvZIKPy4XiNKK
-	xn7wkG7QLD2qMxvXe0rg==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vxevdsn56-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Jan 2024 07:02:27 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40U72Q6r003672
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Jan 2024 07:02:26 GMT
-Received: from [10.253.12.70] (10.80.80.8) by nalasex01b.na.qualcomm.com
- (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Mon, 29 Jan
- 2024 23:02:25 -0800
-Message-ID: <67810e6a-331e-49f1-b50e-d4b398ef9eae@quicinc.com>
-Date: Tue, 30 Jan 2024 15:02:22 +0800
+	s=arc-20240116; t=1706598827; c=relaxed/simple;
+	bh=16lxKNqIr7pmqD88HsCEfd8ADT6yVniQoxBbtMWESYU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=hM0I1f0cQkSlec4+sc4OFt6QeRLHP4BsjAEBSeOvrofdHvLKtxXEmsv+sU5DgAmvaB6jABOXUHuTlteImIk0EaMtMvqpMTdwvkNYAIbovG2ver/etdr+qUZo8CK/eyZEYkZMaPXsrgFmgDEz8Ygywouu5L9NLIes3gtJg6sNI94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=qCrmUfDj; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=QxOKgSrQIwaxWzl51HsbjSfzRpY/WG0SpR5AK2CGItU=;
+	t=1706598823; x=1707808423; b=qCrmUfDj8IRBNZpN0jKU6OuwsAtC7rDLVj/1r1s4xUSOQxD
+	/fgxLWfnXjzGgKJovFsoPqNeiaQF1FmujfjUTn3eoWhBVQfYphkUVBotSDsok+VT1zesaxYSgL2qC
+	RDKmHAUFiFNuXFjjPeY+wOk/L1bZpgc9QDrb9bc+6SoItEZHwwlCv5TVSDHebLHI1EOEAn6TPXqTJ
+	8sSVxiVfeGEK0AGmosxfWPsX5ZeuBopQQMydenzWTU5uEJOlpFk3GBVNzNV8C4kAwbHmr3iRDb5HS
+	1IG3pwDyAQklLPZ3s/AIecgKFHDQ7dZNZfahN/i+sdJjkGurhE/9sVnHSD9UNe7g==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rUiJO-00000005uED-0Vr5;
+	Tue, 30 Jan 2024 08:13:38 +0100
+Message-ID: <933555b38708daa673a88953a196914424de611a.camel@sipsolutions.net>
+Subject: Re: [PATCH 15/15] wifi: cfg80211/mac80211: move puncturing into
+ chandef
+From: Johannes Berg <johannes@sipsolutions.net>
+To: kernel test robot <lkp@intel.com>, linux-wireless@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev
+Date: Tue, 30 Jan 2024 08:13:37 +0100
+In-Reply-To: <202401301417.rknKsCyo-lkp@intel.com>
+References: 
+	<20240129194108.307183a5d2e5.I4d7fe2f126b2366c1312010e2900dfb2abffa0f6@changeid>
+	 <202401301417.rknKsCyo-lkp@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: <quic_kangyang@quicinc.com>
-To: Kalle Valo <kvalo@kernel.org>, <ath12k@lists.infradead.org>,
-        <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v3 00/10] wifi: ath12k: P2P support for WCN7850
-References: <20240122113904.8938-1-quic_kangyang@quicinc.com>
- <87cytp1nhd.fsf@kernel.org>
- <9a90fab6-18f1-4664-96f4-6795174d636f@quicinc.com>
- <87sf2gwaw9.fsf@kernel.org>
-In-Reply-To: <87sf2gwaw9.fsf@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: RDTKN1XWgKdz9KcD9231qcul85oe6foM
-X-Proofpoint-ORIG-GUID: RDTKN1XWgKdz9KcD9231qcul85oe6foM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-30_02,2024-01-29_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 suspectscore=0
- clxscore=1015 mlxscore=0 malwarescore=0 mlxlogscore=999 lowpriorityscore=0
- priorityscore=1501 adultscore=0 impostorscore=0 phishscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2401190000
- definitions=main-2401300049
+X-malware-bazaar: not-scanned
 
+On Tue, 2024-01-30 at 14:45 +0800, kernel test robot wrote:
+>=20
+> All errors (new ones prefixed by >>):
+>=20
+> > > drivers/net/wireless/ath/ath12k/mac.c:2771:16: error: use of undeclar=
+ed identifier 'BSS_CHANGED_EHT_PUNCTURING'
+>     2771 |         if (changed & BSS_CHANGED_EHT_PUNCTURING)
+>          |                       ^
+> > > drivers/net/wireless/ath/ath12k/mac.c:2772:31: error: no member named=
+ 'eht_puncturing' in 'struct ieee80211_bss_conf'
+>     2772 |                 arvif->punct_bitmap =3D info->eht_puncturing;
+>          |                                       ~~~~  ^
+>    drivers/net/wireless/ath/ath12k/mac.c:6374:35: error: no member named =
+'eht_puncturing' in 'struct ieee80211_bss_conf'
+>     6374 |         arvif->punct_bitmap =3D link_conf->eht_puncturing;
+>          |                               ~~~~~~~~~  ^
+>    3 errors generated.
+>=20
 
+Not sure why my build test didn't catch that (probably .config issues),
+but yes ... I clearly forgot that. Will fix.
 
-On 1/29/24 9:02 PM, Kalle Valo <kvalo@kernel.org> wrote:
-> Kang Yang <quic_kangyang@quicinc.com> writes:
-> 
-> > On 1/25/2024 10:44 PM, Kalle Valo wrote:
-> >> Kang Yang <quic_kangyang@quicinc.com> writes:
-> >>
-> >>> Add P2P support for WCN7850.
-> >>>
-> >>> Kang Yang (10):
-> >>>     wifi: ath12k: change interface combination for P2P mode
-> >>>     wifi: ath12k: add P2P IE in beacon template
-> >>>     wifi: ath12k: implement handling of P2P NoA event
-> >>>     wifi: ath12k: implement remain on channel for P2P mode
-> >>>     wifi: ath12k: change WLAN_SCAN_PARAMS_MAX_IE_LEN from 256 to 512
-> >>>     wifi: ath12k: allow specific mgmt frame tx while vdev is not up
-> >>>     wifi: ath12k: fix broken structure wmi_vdev_create_cmd
-> >>>     wifi: ath12k: move peer delete after vdev stop of station for WCN7850
-> >>>     wifi: ath12k: designating channel frequency for ROC scan
-> >>>     wifi: ath12k: advertise P2P dev support for WCN7850
-> >>>
-> >>> v3: rebase on new ath-tag, use ath12k_ah_to_ar() get ar(Karthikeyan).
-> >>> v2:
-> >>>       1. add Tested-on tag of QCN9274.
-> >>>       2. update copyright in patch #1, #2, #4 and #10.
-> >> I have not been able to run any p2p tests yet but during rmmod with
-> >> WCN7850 I now see:
-> >> [  136.260660] ------------[ cut here ]------------
-> >> [ 136.260909] UBSAN: shift-out-of-bounds in
-> >> drivers/net/wireless/ath/ath12k/mac.c:6005:38
-> >> [  136.261008] shift exponent 255 is too large for 64-bit type 'long long int'
-> >
-> >
-> > It seems you enable CONFIG_UBSAN, CONFIG_UBSAN_SANITIZE_ALL and other
-> > CONFIG_UBSAN_XXX.
-> 
-> Yes, I try to enable debug facilities as much as possible. They are
-> really good at finding issues in the code.
-> 
-> > I will add them to my config file and debug this warning.
-> 
-> Thanks.
-> 
-
-Now, i fix this warning with new patch '[PATCH v6 02/11] wifi: ath12k: fix incorrect logic of calculating vdev_stats_id'.
-
-Please ignore this version.
-
-
-> > It's been a long time since the last update of kernel config. Can you
-> > share the new one if convenient?
-> 
-> Yeah, it is. I updated it now.
-> 
-> 
+johannes
 
