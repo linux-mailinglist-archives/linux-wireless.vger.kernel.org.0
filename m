@@ -1,63 +1,63 @@
-Return-Path: <linux-wireless+bounces-2751-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2752-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 773A58419AE
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 03:55:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1CBE8419B3
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 03:56:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33281281E89
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 02:55:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00A5C1C234BB
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 02:56:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76256107A0;
-	Tue, 30 Jan 2024 02:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 414BA3717D;
+	Tue, 30 Jan 2024 02:56:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="UaOJERW0"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="YSOe1eID"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C0536AFD
-	for <linux-wireless@vger.kernel.org>; Tue, 30 Jan 2024 02:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD60336AFD
+	for <linux-wireless@vger.kernel.org>; Tue, 30 Jan 2024 02:56:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706583355; cv=none; b=SvFMO5QmADgU0bnEbbEWEppKjQFZW3Um4h5kowroh7/r8XKpqkSxOvLcsXTjb8U5d7RNxAHEZVvjRdt4pKTRtMdF1EKy4KROow75bmm32NvJMjnIh7Yo6Lqgf5xmGxy4SqbD7J9PNYvaLHFi/QIRUIWpZBPUPjWqAZcZ6qr36eY=
+	t=1706583410; cv=none; b=EF3yYiYfKQac1XtdXOeT+HjRrbaXCHvyi0aOqOfpT2qBoF9QwhZrh5/lX7Ca/cURSZBDIjbZjYukiFBkATJ68WnamVYPYMc0/79XAfx4kuFX9Rp3KmPb8ugxVhiH2b69mxMI/jVumdxr31gjfBepRyz6pJV6FIhsQdxjH9i+fps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706583355; c=relaxed/simple;
-	bh=Ugbmfj/8YEPI7/5Y5qkaaqfbg0DGG2/r3hpspWNqDvg=;
+	s=arc-20240116; t=1706583410; c=relaxed/simple;
+	bh=7RDfuRX8bEvqrK7033paXnK7a9Z5pUsEOW8QOfHnPyI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=JSODlI711nhDxCD1ikWyJTT4p3EA/sTdE9uKm5+y4YSVs8SgstS8Cejf7dNHdDWgFkPv9Q5klOKn+OrrttO6dif1r4RzMUNI0t1+7oPl1uEuMVHaWEn+RdbQ1+tVfznMKsEbagPMNKAWWdNiyswdBrTpD/ZMGOjhEAtGnQIAbws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=UaOJERW0; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:Content-Type; b=EdPS74l+nhmZmrIAl8s/a0F+SCB53vq1qGWfoiURn5igW6bWRJtKrMVikTMWhCutEdrAUD6tMWH7fzx/iJdPWE0DlQ15XSseSYz94FtGbOOXi1B0kRqRVYjhn+tnS16ff1+vn8sLoH5hIgdv9gdcVGX+vI8AmCTAfUEzRB73nHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=YSOe1eID; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40U0piZr007114;
-	Tue, 30 Jan 2024 02:55:49 GMT
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40TNbOto008002;
+	Tue, 30 Jan 2024 02:56:41 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	message-id:date:mime-version:subject:to:cc:references:from
 	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=234l4OnW0/PTyBygl5xLPoJLoDfwCT9daSxZ9koa7Pw=; b=Ua
-	OJERW03F9hU8Jj+6FWsHX6L1IzpW1MdRJhsGLJG0TdDSA8JyPAXdvAvnEPOb5xMH
-	CuXz5VEc7YVqb4IoddK2xC4iMDnkPKqLaUEHgO8RWKGzCIHQqSehFFYoSRw3GUNt
-	WIJUHjcgAXNqRtHSMMnxFQlDFtoGLrQsOJ8vTHMW2DRAq4Z+/Hc3NfY+GR7pYOCT
-	oSknNxbmWKieHovg2JnlT509fN1/H1XtCGUHR9u2FT0J4F9FNDlp+fLkrAv9DHgC
-	sPwW3uQu+31ryruIpakjgL+tTQKm39iVPCq9+Au4kfdb4Mx4A3d0BZsWPW98lvcj
-	hXTcH/VzdXWbs52i41aw==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vxa42j54p-1
+	qcppdkim1; bh=nTBFwx/BG1qh8E5cdTVAv2YDcoMUtFTBE6RTzzC/Dz8=; b=YS
+	Oe1eIDDHGDGw/wDEM9B1dRXAMsI9VL4jeqkLaBzbHbHmrD4HSGS/aFPNnvUSdp07
+	y7yhyALn2C0E1mCf3MsZf9z3Ov5KGqh3iRuu3URJGo25bOXlUtmTcx58x9U6U1lS
+	Sj8xd3u5qA00RRP13vYUY/G+ML0zZ6yIiYUBVvZ2nw0lpbqJL03OTaPWwMGAvPLz
+	bg3otnn7V5dEcawPPLiy5LD/2mR0l75pxuAnABOfDAVo+qfWjYnUxC6BGKdSAWqy
+	NZ2AMmh7cIFhn/M4ZBNh4B3CowYj+ZwtkdQXZhbjzkN0QQRkdNiIiNTzESybWC1n
+	Kxmq1B0fmgXxUTNLN2jA==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vx23kay64-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Jan 2024 02:55:48 +0000 (GMT)
+	Tue, 30 Jan 2024 02:56:40 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40U2tmhm004738
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40U2ueQQ023731
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Jan 2024 02:55:48 GMT
+	Tue, 30 Jan 2024 02:56:40 GMT
 Received: from [10.201.207.136] (10.80.80.8) by nalasex01a.na.qualcomm.com
  (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Mon, 29 Jan
- 2024 18:55:46 -0800
-Message-ID: <6ca7d562-faeb-456b-a189-1f508ad99453@quicinc.com>
-Date: Tue, 30 Jan 2024 08:25:43 +0530
+ 2024 18:56:38 -0800
+Message-ID: <6194c8a6-89c5-4c14-aaa9-b20a7b8a7d99@quicinc.com>
+Date: Tue, 30 Jan 2024 08:26:38 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,59 +65,75 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 1/5] wifi: cfg80211: send link id in channel_switch ops
+Subject: Re: [PATCH v6 2/5] wifi: mac80211: update beacon counters per link
+ basis
+Content-Language: en-US
 To: Jeff Johnson <quic_jjohnson@quicinc.com>, <johannes@sipsolutions.net>
 CC: <linux-wireless@vger.kernel.org>
 References: <20240129052832.905113-1-quic_adisi@quicinc.com>
- <20240129052832.905113-2-quic_adisi@quicinc.com>
- <153c2f4f-8caa-4d76-9d05-a0ee443fb274@quicinc.com>
-Content-Language: en-US
+ <20240129052832.905113-3-quic_adisi@quicinc.com>
+ <44350e13-7903-47ee-bae9-11b2072146be@quicinc.com>
 From: Aditya Kumar Singh <quic_adisi@quicinc.com>
-In-Reply-To: <153c2f4f-8caa-4d76-9d05-a0ee443fb274@quicinc.com>
+In-Reply-To: <44350e13-7903-47ee-bae9-11b2072146be@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: tBwR5jw89rrtjx_DI-K9prCSjRo7x8qD
-X-Proofpoint-ORIG-GUID: tBwR5jw89rrtjx_DI-K9prCSjRo7x8qD
+X-Proofpoint-ORIG-GUID: qPbmwv-7t86Oy62sC4LnT96vUyB8v1uj
+X-Proofpoint-GUID: qPbmwv-7t86Oy62sC4LnT96vUyB8v1uj
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-01-29_15,2024-01-29_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=870 phishscore=0
- malwarescore=0 mlxscore=0 clxscore=1015 spamscore=0 priorityscore=1501
- adultscore=0 lowpriorityscore=0 suspectscore=0 bulkscore=0 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2401190000
- definitions=main-2401300019
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ impostorscore=0 suspectscore=0 spamscore=0 malwarescore=0 mlxlogscore=919
+ mlxscore=0 lowpriorityscore=0 adultscore=0 clxscore=1015 phishscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2401190000 definitions=main-2401300019
 
-On 1/30/24 06:44, Jeff Johnson wrote:
+On 1/30/24 06:53, Jeff Johnson wrote:
 > On 1/28/2024 9:28 PM, Aditya Kumar Singh wrote:
->> --- a/net/wireless/trace.h
->> +++ b/net/wireless/trace.h
->> @@ -2341,11 +2342,13 @@ TRACE_EVENT(rdev_channel_switch,
->>   			memcpy(__get_dynamic_array(pres_ofs),
->>   			       params->counter_offsets_presp,
->>   			       params->n_counter_offsets_presp * sizeof(u16));
->> +		__entry->link_id = params->link_id;
->>   	),
->>   	TP_printk(WIPHY_PR_FMT ", " NETDEV_PR_FMT ", " CHAN_DEF_PR_FMT
->> -		  ", block_tx: %d, count: %u, radar_required: %d",
->> +		  ", block_tx: %d, count: %u, radar_required: %d link_id: %d",
-> 
-> nit s/%d link_id/%d, link_id/
-> 
-
-Sure will add comma in next version.
-
->>   		  WIPHY_PR_ARG, NETDEV_PR_ARG, CHAN_DEF_PR_ARG,
->> -		  __entry->block_tx, __entry->count, __entry->radar_required)
->> +		  __entry->block_tx, __entry->count, __entry->radar_required,
->> +		  __entry->link_id)
->>   );
+>> diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+>> index 68a48abc7287..504db497df06 100644
+>> --- a/net/mac80211/tx.c
+>> +++ b/net/mac80211/tx.c
+>> @@ -5030,16 +5030,24 @@ static u8 __ieee80211_beacon_update_cntdwn(struct beacon_data *beacon)
+>>   	return beacon->cntdwn_current_counter;
+>>   }
 >>   
->>   TRACE_EVENT(rdev_set_qos_map,
+>> -u8 ieee80211_beacon_update_cntdwn(struct ieee80211_vif *vif)
+>> +u8 ieee80211_beacon_update_cntdwn(struct ieee80211_vif *vif, unsigned int link_id)
+>>   {
+>>   	struct ieee80211_sub_if_data *sdata = vif_to_sdata(vif);
+>> +	struct ieee80211_link_data *link;
+>>   	struct beacon_data *beacon = NULL;
+>>   	u8 count = 0;
+>>   
+>> +	if (WARN_ON(link_id > IEEE80211_MLD_MAX_NUM_LINKS))
 > 
+> shouldn't this be >= ?
+> 
+> aren't the arrays size [IEEE80211_MLD_MAX_NUM_LINKS] and hence indexes
+> must be 0..IEEE80211_MLD_MAX_NUM_LINKS-1?
 
+Yes correct it should be >=. My bad. Will rectify in net version. Thanks 
+for pointing it out.
+
+> 
+>> +		return 0;
+>> +
+>>   	rcu_read_lock();
+>>   
+>> +	link = rcu_dereference(sdata->link[link_id]);
+>> +	if (!link)
+>> +		goto unlock;
+>> +
+>>   	if (sdata->vif.type == NL80211_IFTYPE_AP)
+>> -		beacon = rcu_dereference(sdata->deflink.u.ap.beacon);
+>> +		beacon = rcu_dereference(link->u.ap.beacon);
+>>   	else if (sdata->vif.type == NL80211_IFTYPE_ADHOC)
+>>   		beacon = rcu_dereference(sdata->u.ibss.presp);
+>>   	else if (ieee80211_vif_is_mesh(&sdata->vif))
 
 
