@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-2894-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2895-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4DD9844494
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jan 2024 17:33:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A64358444C1
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jan 2024 17:47:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FE3329074F
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jan 2024 16:33:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59AE21F213F8
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jan 2024 16:47:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 561156AB6;
-	Wed, 31 Jan 2024 16:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 143BA15AF;
+	Wed, 31 Jan 2024 16:47:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ngSgmMxJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cs6MHL7E"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C5F12BF28;
-	Wed, 31 Jan 2024 16:33:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E31087BAEC
+	for <linux-wireless@vger.kernel.org>; Wed, 31 Jan 2024 16:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706718810; cv=none; b=JOb2Ce3vdYOAgwe6A/yXdSV4L7YxCS2lcxUK2jlQdYSEzKJ51Bg7lAJtvF45/fAjw+rR9G8J+VOpMaEFCbcYd58K6H6v1c0Xm1KBGSkRDLNtERyNxwse5aVw62f42Se4ZIoEw1D7wXY2LlemAqCdeFcUEab9uj6PwpbYr6AFH9c=
+	t=1706719635; cv=none; b=TyHZEJ3ZVZhk/cpXfNiVDInjxaiv6PG5KqGURCX1jCmADzTcFZaTbBn+soSBouO9F4kwJyzAiZykf40NemNlH+itZx3B6OG3tv1sV2PKL855hz4KOKPqnebMoo7X1LbfHiN01REvlnXtctWT1bbVC3quUz0OGvwFDDZpHTRCrek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706718810; c=relaxed/simple;
-	bh=dT+mfhflriLyZXo/Fge7zTtcbn+ruYw0y1jDB+v52hU=;
+	s=arc-20240116; t=1706719635; c=relaxed/simple;
+	bh=n4J5e0trCTDGle1PSUsR+5t6O+Jx8VRlH+ldwH3yaDo=;
 	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=gu2S52VFY7CRIdo0llK599m8VpaNOuJsPUWZKVpcXCQU4D64Oot1tUMs6Iaxu077ZFDL/e+aL4v/CimgHsflykmFX9b8R1/emqFPbv3VQFoDEQxEmWdqzp3ZpbqAyMA2KUMT51wO/H8TzpHl3cdFUYFaL7xpfkXJh0PxDmZB6Vs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ngSgmMxJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4899C433C7;
-	Wed, 31 Jan 2024 16:33:24 +0000 (UTC)
+	 Cc:Message-ID:Date; b=QKm1SeegbSr3jZlNhXDCdH5sMmSRNUPw34N+qHE2MJNhlpJl/z3i5yJjUWfrEVPVRLFKMJrwN5ozAThL1sJHsaVg1pQTnTd/IyLWM1LVpi3jyjwPjE9nY/RJJrivTyS9QTlAJCphVeMhdGnctd15V3OXUl5mHYEjtoyMAbZUZ3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cs6MHL7E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 204E2C433C7;
+	Wed, 31 Jan 2024 16:47:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706718809;
-	bh=dT+mfhflriLyZXo/Fge7zTtcbn+ruYw0y1jDB+v52hU=;
+	s=k20201202; t=1706719634;
+	bh=n4J5e0trCTDGle1PSUsR+5t6O+Jx8VRlH+ldwH3yaDo=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=ngSgmMxJJn/FMt37UwcrRl0lCvk//DhDoy0iNvodvSaoyTqUi+fepm3L9d0/hHA21
-	 CkbD0zLiteuEIrGqAYMmXaSXMSJRXg+L360aj+ZgzK5Si9EEEQDpg5ndcJedHFFrlY
-	 B5Ld9jwOB/AAApJZCvbLMAhJ2fMAE9X2aU/KDLXI4IjbN8R71bzCPtnsEBEVLfzQp3
-	 Yikq7thw/gZX+5nZa/QM000mBQARdjoT3cRdDBs19CU3sFS8c8ixxBnind8nPuwMrD
-	 5dTz+yCEnJKAWUKBgicNnIOKwVF8Wu2p7uWoUgHEdVc8vA8iFaHEYApJ7oFMMzoT7T
-	 zDHYJMuxSocrQ==
+	b=cs6MHL7ED2+/8SyaqbLJzKm8xhfoeCSuCVDoaKMKF/15AEkQUODTr9o0+NTn0GHTB
+	 NB3o64hPMTy2Dz63AHHf49B4txBPbgp71IDyzEx0YjJOkrZGHX/1bq0l1SQPjO/hSh
+	 57InP/lh6CiTKdeDdf5i/R1Ol8G5wJOwW0CbtgCVYc6R9psyfvWiNwosIflcpihVsh
+	 Ip7T43Vn6chbPalDmgQS5LPr/K/V/EAAGBniHXvcYZIys126dBKcqrqPj/oUVGFOap
+	 HxsC/tCe7UQD4h5W7I6NbNOlZON2ETSSLDwbWydTfQNdjotsXGzbU9hlKDdqcwEtYY
+	 9+LFpLJ4e6hVg==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -48,48 +48,43 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH net 1/9] wifi: fill in MODULE_DESCRIPTION()s for wlcore
+Content-Transfer-Encoding: 8bit
+Subject: Re: pull-request: ath-next-20240130
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240130104243.3025393-2-leitao@debian.org>
-References: <20240130104243.3025393-2-leitao@debian.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: kuba@kernel.org, davem@davemloft.net, pabeni@redhat.com,
- edumazet@google.com, dsahern@kernel.org, weiwan@google.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, horms@kernel.org,
- andrew@lunn.ch, leit@fb.com,
- =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
- Kees Cook <keescook@chromium.org>, Johannes Berg <johannes.berg@intel.com>,
- Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
- Justin Stitt <justinstitt@google.com>, Li Zetao <lizetao1@huawei.com>,
- Francois Romieu <romieu@fr.zoreil.com>, Rob Herring <robh@kernel.org>,
- Marc Kleine-Budde <mkl@pengutronix.de>, Ruan Jinjie <ruanjinjie@huawei.com>,
- linux-wireless@vger.kernel.org (open list:TI WILINK WIRELESS DRIVERS)
+In-Reply-To: <87bk93vtxf.fsf@kernel.org>
+References: <87bk93vtxf.fsf@kernel.org>
+To: Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+ ath11k@lists.infradead.org, ath12k@lists.infradead.org,
+ quic_jjohnson@quicinc.com
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170671880271.2431956.66127348872072392.kvalo@kernel.org>
-Date: Wed, 31 Jan 2024 16:33:24 +0000 (UTC)
+Message-ID: <170671963103.2518225.1246004749714311904.kvalo@kernel.org>
+Date: Wed, 31 Jan 2024 16:47:12 +0000 (UTC)
 
-Breno Leitao <leitao@debian.org> wrote:
+Kalle Valo <kvalo@kernel.org> wrote:
 
-> W=1 builds now warn if module is built without a MODULE_DESCRIPTION().
-> Add descriptions to the TI WLAN wlcore drivers.
+> Hi,
 > 
-> Signed-off-by: Breno Leitao <leitao@debian.org>
+> Our ath-next pull request for wireless-next.
+> 
+> Kalle
+> 
+> The following changes since commit c5a3f56fcdb0a48a20772e4c9b8adc6c7256a461:
+> 
+>   Merge tag 'ath-next-20231215' of git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath (2023-12-17 13:20:18 +0200)
+> 
+> are available in the Git repository at:
+> 
+>   git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git tags/ath-next-20240130
+> 
+> for you to fetch changes up to 9d5f28c1366f48efae7b1df0f622285519e74dce:
+> 
+>   wifi: ath11k: fix connection failure due to unexpected peer delete (2024-01-25 18:44:02 +0200)
 
-9 patches applied to wireless.git, thanks.
-
-5b778e1c2e97 wifi: fill in MODULE_DESCRIPTION()s for wlcore
-2f2b503ea770 wifi: fill in MODULE_DESCRIPTION()s for wl1251 and wl12xx
-257ca10c7317 wifi: fill in MODULE_DESCRIPTION()s for Broadcom WLAN
-f8782ea450ad wifi: fill in MODULE_DESCRIPTION()s for ar5523
-e063d2a05d71 wifi: fill in MODULE_DESCRIPTION()s for wcn36xx
-714ea2f109d9 wifi: fill in MODULE_DESCRIPTION()s for p54spi
-35337ac47260 wifi: fill in MODULE_DESCRIPTION()s for wl18xx
-c9013880284d wifi: fill in MODULE_DESCRIPTION()s for wilc1000
-f3f8f0503168 wifi: fill in MODULE_DESCRIPTION()s for mt76 drivers
+Pulled manually as there was a simple conflict in ath11k/core.h.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240130104243.3025393-2-leitao@debian.org/
+https://patchwork.kernel.org/project/linux-wireless/patch/87bk93vtxf.fsf@kernel.org/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
