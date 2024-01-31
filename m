@@ -1,33 +1,33 @@
-Return-Path: <linux-wireless+bounces-2890-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2891-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DDDB844360
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jan 2024 16:49:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 347BB844362
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jan 2024 16:49:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 228B91F25871
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jan 2024 15:49:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E16E9287FA0
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jan 2024 15:49:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42FA384A57;
-	Wed, 31 Jan 2024 15:49:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DBC412A14C;
+	Wed, 31 Jan 2024 15:49:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="sGOTRKzI"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="FSlRn3kz"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5E212A14C
-	for <linux-wireless@vger.kernel.org>; Wed, 31 Jan 2024 15:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA9B12AAFA
+	for <linux-wireless@vger.kernel.org>; Wed, 31 Jan 2024 15:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706716150; cv=none; b=JicGCxm9syoT/23m10nHlwxitDhqtbFQHPPNrb9pq/krwOLWW6HbNNiTi2YOZdwFfGcedIp99pxCDfNMkfuPJSx6gOk0Nhw1jNJ1oy5ymKLced4eykGLGbEqUHgCYKrUb+7RH+VrlKed+pUmwBlukcYZjtVdfcPPqw9GJdLo6Go=
+	t=1706716154; cv=none; b=dTqRPVqRWTLos+v//jFGZ0sp+9rENWgnFw9ONa8gLVWzV4rFRASBU/Ivn/aqE2cE2KzLxQepnRdYFr1oeD33d+bNIRCwS1slPZs5yz2oWxUS3zJI8mRkMPPdNm2ojR0ym3uDdC+bhttmKfHz0ooGADY0RZuU99YJRdDtXmB3NvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706716150; c=relaxed/simple;
-	bh=yREoDjsqh6dtmJrdQJLG/aS3aa72KKX++9ckY/7sRhQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aUoSJjtpLeW1CA2tGjgTjcCGBVwj8gf+XnSpKM3toNAYbR+DctnmdjukhMsWkqJU49e2odlQUWPeLyhOGRGIbCbpXjn8V9mbigP1du+zQgh/7wf2qSALffGckuHajjLp9QW3Fpx7AXmMJY+iCrfjwdfec3pcibOYIe7vqMxjI1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=sGOTRKzI; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1706716154; c=relaxed/simple;
+	bh=krfzuACLKn/lGUPHSbQT92gX9GV8xJdwc6ZIjW03dlw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pQz1bb4tNVPLisF4cxBuvy3iPfPzjopBTwHTiDpLzlhPLMRB4kDHj50xdYxWhaldeWSCG3vYDGfk4ENm6S4+DVm6loF9St2Fa4UpEju2Ivdl93RO+lr64UxdIdMd42ULd8uwuyZbKzOII1AUM6oiYYbCw2ayusW3WN/JXfSsVzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=FSlRn3kz; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -35,23 +35,23 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
 	Resent-Message-ID:In-Reply-To:References;
-	bh=Tr3Ud1W06RjTFYmGRDbdXScNEdgPp2NzrHiPUv56EQE=; t=1706716148; x=1707925748; 
-	b=sGOTRKzIiSgcIBDA4arS/TpMOYdklrr6CJCz10UbTzW8+rGGDynu8WoIeeOShn36bGVHfW7Tk8j
-	mwFX920Cq4chPQoFlj/sK7w0TVvcAG2nRWdl0aI0Yg7gXBhZieRwoKWsv6+iU3qR6F8+wCW8sdpoe
-	h9q/jRq6sBZVghL4Yr67siihZouo5/xxOE1cN2qnqaQl/A6zZKnQ5UCm4ReT9Cp7iX1Oo4mlwyf+C
-	19BgjC5G3ylAv7EM3afF2HStjBpPG1eVBvl7Mat8i6ja78w4lwSwVe7hw+5Y3bNM7DxM/FWQlBj0Z
-	E8WM1DCcHaqxLajQrfxbcs+JF/DqEtUEwmwA==;
+	bh=NAiZaiQuX4trHkagYsYq5DnsvFXQVYz3x+051IIS0d8=; t=1706716152; x=1707925752; 
+	b=FSlRn3kz1OpT3+7t+QS6iSnLjjtO2t81Z1K6usJtSqYGJvjU9Dd7VMZpZTpHFBnOu+Cl8z/ptQg
+	3yQrnQfhAWmVKp+oBw4yJ6A0cIvmUW2OCcKYeXmZjtUjcdbk5FoVsDmBbkiSQfqoRqM1N19i8nu3T
+	gqK6EfHm5RzR3NYctmP4LgWPN5J5M7Q5SuA9yZcpHKAWP4SyutCTbE/42WiV+Q2hJtcJfqzhIyHmn
+	Z1I5xz73X/o86Y75Ae6dtGr3IpmaHx1F/Zv3WZlNZkZmTcOOLycGcR1iYlGqXfC5+FP+w6u/7ec+V
+	LEviCZwt+h/UPsA0AOoMylHdPT7jx3cdz1RQ==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.97)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1rVCpl-00000007JBz-2KHQ;
-	Wed, 31 Jan 2024 16:49:05 +0100
+	id 1rVCpp-00000007JC6-0e54;
+	Wed, 31 Jan 2024 16:49:09 +0100
 From: Johannes Berg <johannes@sipsolutions.net>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH] wifi: mac80211: remove extra shadowing variable
-Date: Wed, 31 Jan 2024 16:49:04 +0100
-Message-ID: <20240131164903.e9746a5cfe0e.I30348fe77593057ac3fe8e2afa3d7a97de6d04d0@changeid>
+Subject: [PATCH] wifi: mac80211: remove unused MAX_MSG_LEN define
+Date: Wed, 31 Jan 2024 16:49:07 +0100
+Message-ID: <20240131164907.ea5b740a190e.I6fec386e937610ec7867edcae23729ad1996c8b5@changeid>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -63,28 +63,27 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-Not sure how this happened or how nothing complained, but
-this variable already exists in the outer function scope
-with the same value (and the SKB isn't changed either.)
-Remove the extra one.
+This got unused when the tracing was converted to dynamic
+strings, so the define can be removed.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/mac80211/rx.c | 1 -
- 1 file changed, 1 deletion(-)
+ net/mac80211/trace_msg.h | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 1ee00547c0a4..9902ea69af0a 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -5231,7 +5231,6 @@ static void __ieee80211_rx_handle_packet(struct ieee80211_hw *hw,
- 			 */
+diff --git a/net/mac80211/trace_msg.h b/net/mac80211/trace_msg.h
+index c9dbe9aab7bd..aea4ce55c5ac 100644
+--- a/net/mac80211/trace_msg.h
++++ b/net/mac80211/trace_msg.h
+@@ -16,8 +16,6 @@
+ #undef TRACE_SYSTEM
+ #define TRACE_SYSTEM mac80211_msg
  
- 			if (!status->link_valid && pubsta->mlo) {
--				struct ieee80211_hdr *hdr = (void *)skb->data;
- 				struct link_sta_info *link_sta;
+-#define MAX_MSG_LEN	120
+-
+ DECLARE_EVENT_CLASS(mac80211_msg_event,
+ 	TP_PROTO(struct va_format *vaf),
  
- 				link_sta = link_sta_info_get_bss(rx.sdata,
 -- 
 2.43.0
 
