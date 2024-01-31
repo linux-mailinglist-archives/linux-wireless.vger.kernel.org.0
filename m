@@ -1,144 +1,209 @@
-Return-Path: <linux-wireless+bounces-2857-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2858-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8C1884318B
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jan 2024 00:47:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12B7C843318
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jan 2024 03:01:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 761C8282877
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jan 2024 23:47:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A8D24B25130
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jan 2024 02:01:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DE58762D6;
-	Tue, 30 Jan 2024 23:47:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A2DD4C9B;
+	Wed, 31 Jan 2024 02:01:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabijaczleweli.xyz header.i=@nabijaczleweli.xyz header.b="lT1YBQ/U"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="TF59mXLP"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from tarta.nabijaczleweli.xyz (tarta.nabijaczleweli.xyz [139.28.40.42])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A1087EEE4;
-	Tue, 30 Jan 2024 23:47:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.28.40.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7AA04C98
+	for <linux-wireless@vger.kernel.org>; Wed, 31 Jan 2024 02:01:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706658432; cv=none; b=tMtpNrLUIUtwrt0DCGp3MglmRA9p+XuDtGT4PWN8BF+7IVORb0ZY1gq4Pyj5zKQl1Q1wIi+p3CcaJ4Ygyba0Yey2lstNfZ3xnp0iD2s0jVS2l7L2uiS28nSNWZqCr5CCZb1jMa4/4iolYP2/eE4ic+XR1QofLmLu/pEslJj6ViA=
+	t=1706666511; cv=none; b=D0tH1yARqlI2emrusF07FZQNP8MGzbLP55PKZCgS2JGH871uXk3udOPQgPpEFTMIZ/rRj1sikApK0ueO/BsonQAFU6hAqXeoowwc3rZWGC9BkEGT//9Q7z4lwn/znkgi5McLVdWbCEa7CGW+zlhr2KcFCSwIMaYs/a10gEVb6oc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706658432; c=relaxed/simple;
-	bh=TtJKe7IslZBATrq1R2hfwR9T+PMEE1xQur0Wd4Vxjso=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Aij52mYZ2qcqKF2L1nqhLO2hqqtxKC6O/bPPhf/PnhuVRJZZ3SBYf89EKVRyLg/NAwDgso2ebLzKEfs9iu3QJ0KIUzgICKLt1pq2nZ8I+BGrZjrvNg4E3cl7zoH2NSZC6pzEjtbM0CxY4BJS2AscCLuSkzT7aKgOH21jYYqlkTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nabijaczleweli.xyz; spf=pass smtp.mailfrom=nabijaczleweli.xyz; dkim=pass (2048-bit key) header.d=nabijaczleweli.xyz header.i=@nabijaczleweli.xyz header.b=lT1YBQ/U; arc=none smtp.client-ip=139.28.40.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nabijaczleweli.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabijaczleweli.xyz
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nabijaczleweli.xyz;
-	s=202305; t=1706658418;
-	bh=TtJKe7IslZBATrq1R2hfwR9T+PMEE1xQur0Wd4Vxjso=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lT1YBQ/UMZxqWaO2caLxmgbMU/tKeQaNZQ2Tknv2LQkv5C6lUK18YcoF6PVG7Qahj
-	 rqyUBJoPnMyPyYS3sgjXCi2DoO+shUvWDlkDdfJzvp3DVHe2iUoTRjBJAyYhq/VPjn
-	 Qxf3HUazGiUtniv5JkZZ1Cn1+DTdbKZnrA3b9tySJbwIvOUfITzfXRzpbagz0J2Ia0
-	 hNqgMcji/X4GXOvncwj53Q1nO3V0AK2txx8NaO2z4eDAXZaai7XkJmBNn01eLHEcIG
-	 erItKSyjGikq5y1zU+i1WAFdKl+9b+JMDultk7HLdjDVp5ePBBXjh0t7eGuzfEEs9j
-	 fLPXYS0SonjrQ==
-Received: from tarta.nabijaczleweli.xyz (unknown [192.168.1.250])
-	by tarta.nabijaczleweli.xyz (Postfix) with ESMTPSA id 3762E1390;
-	Wed, 31 Jan 2024 00:46:58 +0100 (CET)
-Date: Wed, 31 Jan 2024 00:46:58 +0100
-From: 
-	Ahelenia =?utf-8?Q?Ziemia=C5=84ska?= <nabijaczleweli@nabijaczleweli.xyz>
-To: Dmitry Antipov <dmantipov@yandex.ru>
-Cc: Brian Norris <briannorris@chromium.org>, Kalle Valo <kvalo@kernel.org>, 
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: memcpy: detected field-spanning write (size 101) of single field
- "ext_scan->tlv_buffer" at drivers/net/wireless/marvell/mwifiex/scan.c:2251
- (size 1)
-Message-ID: <dygt52o6wj4u7a2b4k7uew2g2hym7j5bxyavkafjk4vue6b2ue@tarta.nabijaczleweli.xyz>
-References: <xebnh5c5rnfequ6khyhieugefrtt5mdftr6rsw522ocpg3yvln@tarta.nabijaczleweli.xyz>
- <59378600-8d36-4958-8882-fa693fcad4d6@yandex.ru>
+	s=arc-20240116; t=1706666511; c=relaxed/simple;
+	bh=bVW6lzunZ2jJx81/ImQBi0Xwnl4k7RS7zRdXcZZsHJM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=V+KNn3d3/tcQfZR1XrunOtLRDoT8+53aUk5tzUB+x8PwqhS0xPkZe3bGMyPhK6MmK73ExA1+r59WaqGCG9ioyKZW5BH8qFEhi61USbxz0IAh8sHttBcA+lOaSONwER3boel9qgDWbiGZJdoOXxHqiCP6zjWiCmXgxW3f3sNTAXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=TF59mXLP; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40V0GEGE027971;
+	Wed, 31 Jan 2024 02:01:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=qF+f0yshJR8OgFlSQedsqYf6Yd5XbhAAHOGR2TIpWt0=; b=TF
+	59mXLPKuktH5OgBnX+EQ64tOnV5XVhHq7vFv5a9ubHqaAl8w5X768Hlq1DYqUCin
+	eSQpudAVmvn+DMDt+j66TpZZ9f5T8sSLK0fVwwd48pn7KmiuqEyOoRyzlS4l3HzP
+	ucaDpbbZVWQ/KrrALXvwQ7LIvwIxREkyk6IFrIbXba3+VvEtrAcrRk+CVBd1RCZi
+	NK2rXOiHkMOj+iqk751BuOU1MhDbQlLQtj0CxIbc8jHV7Wl5AhywXvQzModd+Deu
+	Ux2gOhFz1Vnu9SvvhzfZdHyiXRLHrDsREQ47lWcOH0yE327o2ivhfxHSJE0TfkNy
+	3MyvHbEHZMfyfy6hOdFw==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vxtp32kgd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 31 Jan 2024 02:01:44 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40V21hPg016669
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 31 Jan 2024 02:01:43 GMT
+Received: from [10.231.195.68] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Tue, 30 Jan
+ 2024 18:01:42 -0800
+Message-ID: <ed8eeb92-e1eb-445e-989d-2340c26faf44@quicinc.com>
+Date: Wed, 31 Jan 2024 10:01:40 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="beew2a2gwphvoerz"
-Content-Disposition: inline
-In-Reply-To: <59378600-8d36-4958-8882-fa693fcad4d6@yandex.ru>
-User-Agent: NeoMutt/20231103
+User-Agent: Mozilla Thunderbird
+Subject: Re: ath11k multicast action frame RX
+Content-Language: en-US
+To: James Prestwood <prestwoj@gmail.com>,
+        "open list:MEDIATEK MT76 WIRELESS
+ LAN DRIVER" <linux-wireless@vger.kernel.org>,
+        <ath11k@lists.infradead.org>
+References: <dcdbd757-ad6e-4fe0-a0c1-fe328431b73b@locusrobotics.com>
+ <642b61a6-e3c0-4831-887f-f25314bf166d@locusrobotics.com>
+ <90ac3bdc-8797-4d57-8bc9-48e0ad406674@quicinc.com>
+ <1dafe0e5-292b-4764-86c7-cc1757aeb3b6@gmail.com>
+From: Baochen Qiang <quic_bqiang@quicinc.com>
+In-Reply-To: <1dafe0e5-292b-4764-86c7-cc1757aeb3b6@gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: TeBJLYeySVUdj1h-f2j50wODxp2z1FAb
+X-Proofpoint-GUID: TeBJLYeySVUdj1h-f2j50wODxp2z1FAb
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-30_14,2024-01-30_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
+ spamscore=0 clxscore=1015 lowpriorityscore=0 adultscore=0 bulkscore=0
+ mlxlogscore=999 malwarescore=0 mlxscore=0 impostorscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2401190000 definitions=main-2401310014
 
 
---beew2a2gwphvoerz
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 29, 2024 at 04:55:26PM +0300, Dmitry Antipov wrote:
-> On 1/26/24 22:47, Ahelenia Ziemia=C5=84ska wrote:
-> > [   41.314634] memcpy: detected field-spanning write (size 101) of sing=
-le field "ext_scan->tlv_buffer" at drivers/net/wireless/marvell/mwifiex/sca=
-n.c:2251 (size 1)
-> Short answer: if your device works as expected, most likely you can ignor=
-e this.
-It does.
+On 1/30/2024 8:47 PM, James Prestwood wrote:
+> Hi Baochen,
+> 
+> On 1/29/24 11:00 PM, Baochen Qiang wrote:
+>>
+>>
+>> On 1/27/2024 3:18 AM, James Prestwood wrote:
+>>> On 1/24/24 5:06 AM, James Prestwood wrote:
+>>>
+>>>> Hi,
+>>>>
+>>>> I recently added support to ath10k, for the QCA6174, to receive 
+>>>> multicast action frames in order to support DPP. I'm trying to do 
+>>>> this for the ath11k QCNFA765/WCN6855. I took the same approach as 
+>>>> ath10k which was actually quite simple but I'm unable to see any 
+>>>> multicast frames coming over even when I enable RX/DATA debugging.
+>>>>
+>>>> What I've done so far is:
+>>>>
+>>>>  - Add FIF_MCAST_ACTION to the supported filters list
+>>>>
+>>>>  - Created/started a monitor vdev from within 
+>>>> ath11k_mac_op_configure_filter()
+>>>>
+>>>>     ath11k_mac_monitor_vdev_create(ar);
+>>>>
+>>>>     ath11k_mac_monitor_start(ar);
+>>>>
+>>>> - Also tried adding
+>>>>
+>>>>     ath11k_mac_config_mon_status_default(ar, true);
+>>>>
+>>>> I can successfully create/start the monitor vdev. I see now as I'm 
+>>>> writing this email that my specific hardware does not support 
+>>>> monitor mode outright... Is this a dead end or is there hope with 
+>>>> purely driver changes? or is it some filtering at the firmware level 
+>>>> preventing this?
+>>>
+>>> I was able to finally see my broadcast frame after some additional 
+>>> testing. It seems the driver/firmware/something gets a bit hung up 
+>>> when I attempt to put it in monitor mode. It will start printing 
+>>> these messages for about a minute:
+>>>
+>>> [   51.093034] ath11k_pci 0000:00:06.0: data dest_rx: new ppdu_id 
+>>> a1a2 != status ppdu_id a1a1 dest_mon_not_reaped = 650 dest_mon_stuck 
+>>> = 12
+>>> [   51.094461] ath11k_pci 0000:00:06.0: data dest_rx: new ppdu_id 
+>>> a1a3 != status ppdu_id a1a2 dest_mon_not_reaped = 651 dest_mon_stuck 
+>>> = 12
+>>> [   51.096281] ath11k_pci 0000:00:06.0: data dest_rx: new ppdu_id 
+>>> a1a5 != status ppdu_id a1a3 dest_mon_not_reaped = 652 dest_mon_stuck 
+>>> = 12
+>>>
+>>> In most cases these ppdu ID's are a one-off from the expected ID 
+>>> which seemed weird to me. But if I let it sit long enough I all of a 
+>>> sudden get a ton of "data rx" messages, which is what I would expect 
+>>> if I enabled a monitor vdev. Once this flurry starts I see the action 
+>>> frame from my other client, sometimes at least. The firmware 
+>>> generally crashes after a while so I've still got a ways to go but it 
+>>> seems within the realm of possibility that this device could receive 
+>>> broadcast action frames?
+>>>
+>>> Hoping for some breadcrumbs to follow here...
+>>>
+>> Hi James, as you already mentioned, ath11k/WCN6855 doesn't support 
+>> monitor mode yet. I don't know why you are testing multicast action 
+>> frame with monitor mode. So if monitor mode is not a must, could you 
+>> test this with STATION mode? We would look into this if any issue found.
+> 
+> As you may have guessed I don't _really_ know what I'm doing. When I got 
+> this working with ath10k I saw monitor device was being used in order to 
+> receive probes, and did the same for multicast action frames and it 
+> "just worked". The frames themselves were still being received on the 
+> station device. I attempted to mimic the changes with ath11k.
+> 
+> The end goal here is just that, be able to receive multicast action 
+> frames on the station device which currently does not work. I'm only 
+> seeing unicast frames when i enable RX debugging. The driver support for 
+> multicast action RX in the kernel for this is basically zero. An 
+> extended feature flag was added by Jouni when he added support to ath9k, 
+> I added limited ath10k support for a variant I tested, and I'd like to 
+> do the same for ath11k as we are transitioning to the WCN6855.
+OK, so you are testing this with latest ath.git, without any private 
+changes, and it doesn't work, right? Could you share your test steps? 
+Basically how are you sending multicast action frames from AP/peer, and 
+how to check if that frame received or not (I am assuming by checking RX 
+logs)?
 
-> if you're brave
-> enough, you can help the maintainers by trying this:
-> --- linux-6.6.11/drivers/net/wireless/marvell/mwifiex/fw.h	2024-01-10 19:=
-17:02.000000000 +0300
-> +++ linux-6.6.11/drivers/net/wireless/marvell/mwifiex/fw.h	2024-01-29 14:=
-21:55.574280719 +0300
-> @@ -1586,7 +1586,7 @@
->=20
->  struct host_cmd_ds_802_11_scan_ext {
->  	u32   reserved;
-> -	u8    tlv_buffer[1];
-> +	u8    tlv_buffer[];
->  } __packed;
->=20
->  struct mwifiex_ie_types_bss_mode {
-
-Tested-by: Ahelenia Ziemia=C5=84ska <nabijaczleweli@nabijaczleweli.xyz>
-
-That works and makes the warning go away for me on 6.6.11 =E2=80=92
-now all mwifiex-related log is confined to
-  mwifiex_sdio mmc2:0001:1: firmware: direct-loading firmware mrvl/sd8897_u=
-apsta.bin
-  mwifiex_sdio mmc2:0001:1: WLAN is not the winner! Skip FW dnld
-  mwifiex_sdio mmc2:0001:1: WLAN FW is active
-  mwifiex_sdio mmc2:0001:1: Bad HW revision detected, disabling deep sleep
-  mwifiex_sdio mmc2:0001:1: info: MWIFIEX VERSION: mwifiex 1.0 (15.68.19.p5=
-4)=20
-  mwifiex_sdio mmc2:0001:1: driver_version =3D mwifiex 1.0 (15.68.19.p54)=
-=20
-  mwifiex_sdio mmc2:0001:1: info: trying to associate to bssid de:0d:17:ad:=
-84:d9
-  mwifiex_sdio mmc2:0001:1: info: associated to bssid de:0d:17:ad:84:d9 suc=
-cessfully
-  mwifiex_sdio mmc2:0001:1: event: unknown event id: 0x79
-
-Thanks!
-
---beew2a2gwphvoerz
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEfWlHToQCjFzAxEFjvP0LAY0mWPEFAmW5im4ACgkQvP0LAY0m
-WPE2FhAAmuiZssrpyDGpJhDcFCPtMSd1BFfcAG9mw9/fEkMZYwlMqfcw5I4gV942
-uLVLOaYHkbwLOXg3l2g5YatSlcHUNUL4TWB34lkMOQEeNzfYJBwItMEmRkW0XmNK
-2+dh3MmzasAXhWLBeVPfRDlPAvRE0EAoCSfJZP9tRNlm0EWLkiWqdNUp+xJoKz/E
-HfF5bFJWsklYFnTqLGZ6/nFGSIdQbhRcfZPzwFXx4WxiFu3RhG6qqDm2YmsFg/Td
-Qst3ACHLJa4AEOksSLLBLVMAqBBOSG2jccQAo0iRkBrM1E0j1V6coaiov2fi+I0e
-mCRo2nlUyfy9Bd/fIB1Rq5Ba9ihHbo/KxUtEOrWENdD4i6w0raX4520uTEYxwxBn
-yRLheY3ASALDLJR7e5jT3wQhWFCJ2oVcwmocELw7MWiKphyuRpxqTHaeCqgtKdJA
-ulaG1CC+dHGGRHZrJNziZvU6l1MXnS8//mXmS7eJk7mR8bgnMTGgMLtfBwK8udPM
-eeTJ6dcLecxg3U5cL89N39mDJkEHwaRnWNfdNWU74uFA41IaSofDwD08NPuPgkPY
-LVuAj6rHHU0qUxan9540V3Ygh4GhRIWup6bgUbPEEDvEFiFVauc7yHCjXZH7HPDy
-cpX9X2PK4TPvX5H8YbyZp4PED69ovoOd3vpsC93R0Lfz/sZiI/4=
-=WoY8
------END PGP SIGNATURE-----
-
---beew2a2gwphvoerz--
+> 
+> And help is much appreciated, and I'm happy to put in the work its just 
+> a steep learning curve coupled with the fact that any FW level 
+> communication is proprietary. I really just need a nudge in the right 
+> direction.
+> 
+> Thanks,
+> 
+> James
+> 
+>>
+>>> Thanks,
+>>>
+>>> James
+>>>
+>>>>
+>>>> Thanks,
+>>>>
+>>>> James
+>>>>
+>>>>
+>>
 
