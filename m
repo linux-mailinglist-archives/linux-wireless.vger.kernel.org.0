@@ -1,238 +1,120 @@
-Return-Path: <linux-wireless+bounces-2913-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2914-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 255CD844971
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jan 2024 22:08:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C3E1844972
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jan 2024 22:08:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CECE5289331
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jan 2024 21:08:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 441A8B2854C
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jan 2024 21:08:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 175C7208C1;
-	Wed, 31 Jan 2024 21:08:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E41C38DE4;
+	Wed, 31 Jan 2024 21:08:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OtAqAqVU"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="gKnpzvZP"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0773238F97
-	for <linux-wireless@vger.kernel.org>; Wed, 31 Jan 2024 21:08:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=134.134.136.31
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D0BD38DDB
+	for <linux-wireless@vger.kernel.org>; Wed, 31 Jan 2024 21:08:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706735311; cv=none; b=P+sZPeYQQHNsLDOQwWrLWBib4O982cCne5TIesNWZKa/8ghSElroTc79Y5ZqH6MxaPxUu1vT6jxas2DC1IfjkCVdedth3Ho0B7aWf1Qg8EWSiGdvybVe4UopegpS3EAqIFpRqRdJ0mTxbOYQUYvPbqUNTGoJFpbmEGslvKA9yZY=
+	t=1706735317; cv=none; b=g9fqvkQr69dHrll07cRuvttdfBpddWH/S3ucvII/biETmPdDFABk7D4gDXbuAuNu6q2PQZ920tR7DOtgAqp1sCfbPl+0fTdLeE9EuXOv3Yll0Bh8EG4TAHY90xACnkxdR601O8Z4UbqXtHjRNB/shYAIE1Z76doUFYcnJx+FP4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706735311; c=relaxed/simple;
-	bh=2eEoEcIq7XhxDUUuPs2RvmEfaRwkAE9TyA89Kbkcc5Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TlzjH/YRxGF3lQGwdgHAPE1uFyPGyBx4Wmld+le4pc3B790/L4I4w6DPrhBnkqPEhyvWNIkclbvR83DkM++oT3wTbuImnFWHG/6DY358qmEHGZRRHQFptWt/QZlTnwoBW1LOjJ3G6SAaf3kX+bpL7rn6BJSE0InGM8DQqTCMlqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OtAqAqVU; arc=none smtp.client-ip=134.134.136.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706735309; x=1738271309;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=2eEoEcIq7XhxDUUuPs2RvmEfaRwkAE9TyA89Kbkcc5Q=;
-  b=OtAqAqVUI+PL+mHvm1nfY0EXvSSATjCY/XZfFEBWZfSOeAb/HEwC5QHr
-   3RABTqon5ThVDhtfxBscZDwOImjEM9PWh21yu2mkm1ItPUQyLzTBX6+rw
-   95QpCoNi7l+EYxkUwT7QY5OlGSAnb+Ew62qfQXamnm22rCFL0c4eoI6NR
-   Pftr4dxY9ECMkFH8Tbfy82NifPsBvQZGvRvJFkJQlW/0yJ1vATRXCXk6E
-   rnSzhwPOccnhsd+zTPyzksWK6YIPzhWq5VHVIwrnbjZ3s7UG/TGicb7oy
-   pPLVYPAunfXyOwf0xnkIbuBPBjo5iX/oGU5ZN45plZxSnELx7JzfssyXs
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="467961346"
-X-IronPort-AV: E=Sophos;i="6.05,233,1701158400"; 
-   d="scan'208";a="467961346"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2024 13:08:26 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,233,1701158400"; 
-   d="scan'208";a="4205904"
-Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2024 13:08:25 -0800
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	Ilan Peer <ilan.peer@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH v2] wifi: iwlwifi: mvm: Add support for removing responder TKs
-Date: Wed, 31 Jan 2024 23:08:16 +0200
-Message-Id: <20240131230734.3e6364730c04.Ia76dc4a9d399f1f68ac6b157d844b63f74d5159f@changeid>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1706735317; c=relaxed/simple;
+	bh=/d7H94SMRrmDjHy4EqbORCVRE06RS+wuolJFOIjdK00=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=D98S9/sFTmDjIBNVfzAFIApR5Xqtee6KZsOjqkqKxg+i/ous5JCZGJXTt6MH3hVkwa+qDyfZQjzekKUr3q/DtYJxI62omzp3KQFZf4DmHjXRNZoQc827BWr3P2REczizcyLDw9FhYl10B66jySe3GWd+Et1CEYS4vK9WQUnrR+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=gKnpzvZP; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40VCp5pi021169;
+	Wed, 31 Jan 2024 21:08:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=y27dmeX92JcYJpz51a2V8WGnwnIinCCwMSgv2cesEVM=; b=gK
+	npzvZPm/gHDicjzLCg5YKzkqabZ5tEpXe+t/QbjaoUuAfvh2/CFGTdE5/0oCE0wr
+	HhTiYN1dr5eQFzpsAZOmj+253awqkyX+kt7xmxs2LKnBwOhEYtSQGsRxrcuId/uo
+	tEGx2Yd9rM2ZvaENhOGrGTIJRU2xLWO4CzqlEHtMKZSXkprFhS4NwA6tdQ1zO7fa
+	cWoP8namjBN19UNqrw2MG6nZWPpB1giu5LpF5ajvoTeOpnRSbPGsLwO/AbpjRqYZ
+	ywaWlT9Zi5Is5WLLNVZqfWcJ3QqZvXAZbg/2hHaZYbaXPw1wvSvn3spyqQZAmwiN
+	FK3kqpe6wZNxZmHTpfIQ==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vyjas1v0b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 31 Jan 2024 21:08:34 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40VL8XuN004168
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 31 Jan 2024 21:08:33 GMT
+Received: from [10.110.47.232] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Wed, 31 Jan
+ 2024 13:08:32 -0800
+Message-ID: <667978c4-9b5a-499f-9e39-7bb7d3be4d78@quicinc.com>
+Date: Wed, 31 Jan 2024 13:08:32 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 11/13] wifi: ath12k: fix PCI read and write
+Content-Language: en-US
+To: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, P Praneesh <quic_ppranees@quicinc.com>,
+        Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+References: <20240129065724.2310207-1-quic_rajkbhag@quicinc.com>
+ <20240129065724.2310207-12-quic_rajkbhag@quicinc.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20240129065724.2310207-12-quic_rajkbhag@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 4Gc2kFh8aE5mu6MyYmEv56pjma8RbHUJ
+X-Proofpoint-ORIG-GUID: 4Gc2kFh8aE5mu6MyYmEv56pjma8RbHUJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-31_10,2024-01-31_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ priorityscore=1501 lowpriorityscore=0 phishscore=0 mlxscore=0
+ mlxlogscore=714 suspectscore=0 adultscore=0 bulkscore=0 impostorscore=0
+ clxscore=1015 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2401190000 definitions=main-2401310164
 
-From: Ilan Peer <ilan.peer@intel.com>
-
-When removing a PASN station, the TK must be removed before
-the station is removed as otherwise the FW would assert.
-
-To handle this, store the key configuration, and use it to remove
-the key when the station is removed.
-
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
----
-v2: fix the allocation size.
-
- .../wireless/intel/iwlwifi/mvm/ftm-responder.c    | 11 +++++++++--
- drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c  | 15 +++++++++++++++
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h      |  4 ++++
- drivers/net/wireless/intel/iwlwifi/mvm/sta.c      | 15 ++++-----------
- drivers/net/wireless/intel/iwlwifi/mvm/sta.h      |  3 ++-
- 5 files changed, 34 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-responder.c b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-responder.c
-index 8f10590f9cdd..f72ca38d7c0e 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-responder.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-responder.c
-@@ -12,6 +12,9 @@ struct iwl_mvm_pasn_sta {
- 	struct list_head list;
- 	struct iwl_mvm_int_sta int_sta;
- 	u8 addr[ETH_ALEN];
-+
-+	/* must be last as it followed by buffer holding the key */
-+	struct ieee80211_key_conf keyconf;
- };
- 
- struct iwl_mvm_pasn_hltk_data {
-@@ -303,6 +306,10 @@ static void iwl_mvm_resp_del_pasn_sta(struct iwl_mvm *mvm,
- {
- 	list_del(&sta->list);
- 
-+	if (sta->keyconf.keylen)
-+		iwl_mvm_sec_key_del_pasn(mvm, vif, BIT(sta->int_sta.sta_id),
-+					 &sta->keyconf);
-+
- 	if (iwl_mvm_has_mld_api(mvm->fw))
- 		iwl_mvm_mld_rm_sta_id(mvm, sta->int_sta.sta_id);
- 	else
-@@ -352,12 +359,12 @@ int iwl_mvm_ftm_respoder_add_pasn_sta(struct iwl_mvm *mvm,
- 	}
- 
- 	if (tk && tk_len) {
--		sta = kzalloc(sizeof(*sta), GFP_KERNEL);
-+		sta = kzalloc(sizeof(*sta) + tk_len, GFP_KERNEL);
- 		if (!sta)
- 			return -ENOBUFS;
- 
- 		ret = iwl_mvm_add_pasn_sta(mvm, vif, &sta->int_sta, addr,
--					   cipher, tk, tk_len);
-+					   cipher, tk, tk_len, &sta->keyconf);
- 		if (ret) {
- 			kfree(sta);
- 			return ret;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c
-index ea3e9e9c6e26..a1ce08a5527c 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c
-@@ -335,6 +335,21 @@ static int _iwl_mvm_sec_key_del(struct iwl_mvm *mvm,
- 	return ret;
- }
- 
-+int iwl_mvm_sec_key_del_pasn(struct iwl_mvm *mvm,
-+			     struct ieee80211_vif *vif,
-+			     u32 sta_mask,
-+			     struct ieee80211_key_conf *keyconf)
-+{
-+	u32 key_flags = iwl_mvm_get_sec_flags(mvm, vif, NULL, keyconf) |
-+		IWL_SEC_KEY_FLAG_MFP;
-+
-+	if (WARN_ON(!sta_mask))
-+		return -EINVAL;
-+
-+	return  __iwl_mvm_sec_key_del(mvm, sta_mask, key_flags, keyconf->keyidx,
-+				      0);
-+}
-+
- int iwl_mvm_sec_key_del(struct iwl_mvm *mvm,
- 			struct ieee80211_vif *vif,
- 			struct ieee80211_sta *sta,
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-index 9a89b91519db..e148ef02ff73 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-@@ -2402,6 +2402,10 @@ int iwl_mvm_sec_key_del(struct iwl_mvm *mvm,
- 			struct ieee80211_vif *vif,
- 			struct ieee80211_sta *sta,
- 			struct ieee80211_key_conf *keyconf);
-+int iwl_mvm_sec_key_del_pasn(struct iwl_mvm *mvm,
-+			     struct ieee80211_vif *vif,
-+			     u32 sta_mask,
-+			     struct ieee80211_key_conf *keyconf);
- void iwl_mvm_sec_key_remove_ap(struct iwl_mvm *mvm,
- 			       struct ieee80211_vif *vif,
- 			       struct iwl_mvm_vif_link_info *link,
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-index 2a3ca9785974..d57fcbe4f8ac 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-@@ -4298,12 +4298,12 @@ u16 iwl_mvm_tid_queued(struct iwl_mvm *mvm, struct iwl_mvm_tid_data *tid_data)
- 
- int iwl_mvm_add_pasn_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- 			 struct iwl_mvm_int_sta *sta, u8 *addr, u32 cipher,
--			 u8 *key, u32 key_len)
-+			 u8 *key, u32 key_len,
-+			 struct ieee80211_key_conf *keyconf)
- {
- 	int ret;
- 	u16 queue;
- 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
--	struct ieee80211_key_conf *keyconf;
- 	unsigned int wdg_timeout =
- 		iwl_mvm_get_wd_timeout(mvm, vif, false, false);
- 	bool mld = iwl_mvm_has_mld_api(mvm->fw);
-@@ -4328,12 +4328,6 @@ int iwl_mvm_add_pasn_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- 	if (ret)
- 		goto out;
- 
--	keyconf = kzalloc(sizeof(*keyconf) + key_len, GFP_KERNEL);
--	if (!keyconf) {
--		ret = -ENOBUFS;
--		goto out;
--	}
--
- 	keyconf->cipher = cipher;
- 	memcpy(keyconf->key, key, key_len);
- 	keyconf->keylen = key_len;
-@@ -4354,10 +4348,9 @@ int iwl_mvm_add_pasn_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- 					   0, NULL, 0, 0, true);
- 	}
- 
--	kfree(keyconf);
--	return 0;
- out:
--	iwl_mvm_dealloc_int_sta(mvm, sta);
-+	if (ret)
-+		iwl_mvm_dealloc_int_sta(mvm, sta);
- 	return ret;
- }
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.h b/drivers/net/wireless/intel/iwlwifi/mvm/sta.h
-index b33a0ce096d4..4668f413abd3 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.h
-@@ -574,7 +574,8 @@ void iwl_mvm_csa_client_absent(struct iwl_mvm *mvm, struct ieee80211_vif *vif);
- void iwl_mvm_add_new_dqa_stream_wk(struct work_struct *wk);
- int iwl_mvm_add_pasn_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- 			 struct iwl_mvm_int_sta *sta, u8 *addr, u32 cipher,
--			 u8 *key, u32 key_len);
-+			 u8 *key, u32 key_len,
-+			 struct ieee80211_key_conf *key_conf_out);
- void iwl_mvm_cancel_channel_switch(struct iwl_mvm *mvm,
- 				   struct ieee80211_vif *vif,
- 				   u32 id);
--- 
-2.34.1
+On 1/28/2024 10:57 PM, Raj Kumar Bhagat wrote:
+> From: P Praneesh <quic_ppranees@quicinc.com>
+> 
+> Currently, PCI read is failing for the registers belonging to
+> SECURITY_CONTROL_WLAN registers. These registers read is required
+> to read the board-id to identify the dual-mac QCN9274 hardware.
+> 
+> The failure is because, for these registers (SECURITY_CONTROL_WLAN)
+> offset, ath12k_pci_get_window_start() returns window_start as 0. Due
+> to this PCI read is done without PCI select window and with
+> window_start offset as 0.
+> 
+> Hence, fix PCI read and write by doing PCI select window and by using
+> the correct window_start offset - WINDOW_START for
+> SECURITY_CONTROL_WLAN registers.
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00188-QCAHKSWPL_SILICONZ-1
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+> 
+> Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
+> Co-developed-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+> Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+> Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
 
