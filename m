@@ -1,102 +1,111 @@
-Return-Path: <linux-wireless+bounces-2901-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2902-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59C6D844952
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jan 2024 22:02:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC47E84495A
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jan 2024 22:04:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BAC11C2227D
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jan 2024 21:02:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B7127B23B8A
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jan 2024 21:04:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4638538DE4;
-	Wed, 31 Jan 2024 21:02:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79C8238DF1;
+	Wed, 31 Jan 2024 21:04:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="nbmFrQB1"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="FovGJSHJ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06F638DDB
-	for <linux-wireless@vger.kernel.org>; Wed, 31 Jan 2024 21:02:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6920738DDA
+	for <linux-wireless@vger.kernel.org>; Wed, 31 Jan 2024 21:04:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706734955; cv=none; b=okiABm490AaWAlG8BC1I3STbCST2F6ID2xDR2mM55teSGOypfI7PsakRcYV04WdoRyCQ4H7u9zKH5mvAgcwFpOFMN4KBgkieK+oEeUZ+lnPKs+VZhz68Hncs5p8o8UqZLJiQDmCS7nRnV0PAzSUzT1uVC8BnVH6Lga3+tbDzEpc=
+	t=1706735081; cv=none; b=GSTFNaNt+GV8SK0khxcMljpqq5e5d3ZEqVx7GgwK7eT11fpcL4gy6TJdsKhX3eix2dn0NuJR/e8Iw8Fh+pqpZXjAvvJ8+2N/YZczCSI5Z3KR0tD5xQqrh928n986Nd/l0pC8qQfl3yMqere8mBMCoNJHI3GDDziibjZuTmh9j6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706734955; c=relaxed/simple;
-	bh=ZDh86Uv67Z6uQ3ysh7aa9tK5jPSIFJ7Lj1hL+HvBAp0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ObZkmFJkHNlkNS3wqSoqpNXrbzo1c0YSFsHKg3HuH+wUif9Bs97pC8DHtHEk6m5qiH1fB07gKtTpMwwohOUMHkjT8I2XCI56/SfaKCMqL1BotlQSSvMsVXJQwWUdEks+LV4G6Uq5w5Znz6KkJt9kdHR/sdQbtrui1y94iqXPOvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=nbmFrQB1; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=mMSU3H20KzjUl0X6XA0sgPYHH//9UEzlT4aIYFRLtg8=; t=1706734953; x=1707944553; 
-	b=nbmFrQB1imytiPGjEwTMbYpHxLVAH//7dAUvpVnqeO0be7jeX/Hy0UYk9PVwBJVYN54EVkqE7cw
-	KaQjH1Sq6ZAVB08zqFRxrKzHszmkHvEp+oaRVPc7bIv3dYLc6klOZidS03GDPEGSj060stq131Zwv
-	v4xmCaCDPNOQQI+xKBqDWM/lT7lAk5RdaYFlvCXyehJ3uaLEeRv+d3hcwRMrxKXWrBOiePcEqfKPY
-	48eCB/JC13x71ydvkacI4o1u0yL8y9EXgpSNrgSX7A8dtnkZ/ovIKxXI7qpMG+RFENIEfRLESK7Gj
-	7rb+iT2944830mGm/D6alXyLgqm/rWB4Mb2A==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1rVHj4-00000007QkF-3pRF;
-	Wed, 31 Jan 2024 22:02:31 +0100
-From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org
-Cc: miriam.rachel.korenblit@intel.com,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH] wifi: iwlwifi: api: clean up some kernel-doc/typos
-Date: Wed, 31 Jan 2024 22:02:27 +0100
-Message-ID: <20240131220227.7fd507f09bb1.I278edc9a3d5de7fddcd84009a93c494c42686b68@changeid>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1706735081; c=relaxed/simple;
+	bh=6ulep5EsGpf+z1oiWhEah56SzGfL6H+c3lXikdiz4RA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=a+vJ9/VULft6hXzf9JYGYjtsWRSpsDVwhShEHu+CBvL+WAgCQoM6AxTHem7WMrLVQt5YALoTr3CsnCnurgA10QxqzgSzI36mRE8n6/6iTGIb0nnja/HT69xU9w2DyZMm935MR2RUKLzzfRSO59bZZqNfpD6sTW4WPcPUkR0ZQoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=FovGJSHJ; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40VKIWTu002947;
+	Wed, 31 Jan 2024 21:04:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=VSmWxBVvc2xkcIX+gkx/UVrUWEErF1uF9lLFMiteliw=; b=Fo
+	vGJSHJR9BSy1xHAsRlsvM+Z5hTi1Q5hOkqvl0ClYGRdTVk44QxEaU+nCOrHc45HL
+	x8cfljH2bfWHCeB6jmW57F2tfzg1mh9lxiJkHGYqMNHFmIH1xelBiHoqdMyeGSaN
+	OKTG+BxyDJ8WFmM/ApiekunRiSuJXDfe09uT9Wi7XNHL1FIQKx0FKbejN5lUWzNL
+	h3kjvO99SeuF+WWovhwXujcExQQs589ndh6TujIs/9kko8yFQfSJXUT9eOvnujj2
+	xwvsQw697GAkgApBXe0eRaIT15bsx0MNyhj0XC1W2oP1XB/krDUyZr9Wipj2W5f0
+	Vd4DHWQU5ECMsPxDQm0w==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vym2m9jbs-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 31 Jan 2024 21:04:35 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40VL4Yj3019901
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 31 Jan 2024 21:04:34 GMT
+Received: from [10.110.47.232] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Wed, 31 Jan
+ 2024 13:04:33 -0800
+Message-ID: <8d804e28-603a-4f3e-b9ed-cbccfb16af50@quicinc.com>
+Date: Wed, 31 Jan 2024 13:04:33 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 01/13] wifi: ath12k: indicate NON MBSSID vdev by
+ default during vdev start
+Content-Language: en-US
+To: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, Sriram R <quic_srirrama@quicinc.com>
+References: <20240129065724.2310207-1-quic_rajkbhag@quicinc.com>
+ <20240129065724.2310207-2-quic_rajkbhag@quicinc.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20240129065724.2310207-2-quic_rajkbhag@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: gqSmUAxzGsR-2jPMg8DACjeEKjoQXEIi
+X-Proofpoint-ORIG-GUID: gqSmUAxzGsR-2jPMg8DACjeEKjoQXEIi
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-31_10,2024-01-31_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 mlxlogscore=574
+ malwarescore=0 clxscore=1015 adultscore=0 mlxscore=0 priorityscore=1501
+ suspectscore=0 lowpriorityscore=0 phishscore=0 impostorscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2401190000
+ definitions=main-2401310163
 
-From: Johannes Berg <johannes.berg@intel.com>
-
-Add some kernel-doc for a union, and fix a couple of typos
-I noticed looking through this.
-
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h b/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
-index f15e6d64c298..362161369884 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
-@@ -242,9 +242,9 @@ struct iwl_mac_low_latency_cmd {
-  * @esr_transition_timeout: the timeout required by the AP for the
-  *	eSR transition.
-  *	Available only from version 2 of the command.
-- *	This values comes from the EMLSR transition delay in the EML
-+ *	This value comes from the EMLSR transition delay in the EML
-  *	Capabilities subfield.
-- * @medium_sync_delay: the value as it appeasr in P802.11be_D2.2 Figure 9-1002j.
-+ * @medium_sync_delay: the value as it appears in P802.11be_D2.2 Figure 9-1002j.
-  * @assoc_id: unique ID assigned by the AP during association
-  * @reserved1: alignment
-  * @data_policy: see &enum iwl_mac_data_policy
-@@ -317,7 +317,6 @@ enum iwl_mac_config_filter_flags {
-  *	If the NIC is not ACK_ENABLED it may use the EOF-bit in first non-0
-  *	len delim to determine if AGG or single.
-  * @client: client mac data
-- * @go_ibss: mac data for go or ibss
-  * @p2p_dev: mac data for p2p device
-  */
- struct iwl_mac_config_cmd {
--- 
-2.43.0
+On 1/28/2024 10:57 PM, Raj Kumar Bhagat wrote:
+> From: Sriram R <quic_srirrama@quicinc.com>
+> 
+> When any VDEV is started, MBSSID flags are passed to firmware to
+> indicate if its a MBSSID/EMA AP vdev. If the interface is not an AP
+> or if the AP doesn't support MBSSID, the vdev needs to be brought up
+> as a non MBSSID vdev. Set these flags as a non MBSSID AP by default
+> which can be updated as and when MBSSID support is added in ath12k.
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00188-QCAHKSWPL_SILICONZ-1
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+> 
+> Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
+> Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
 
