@@ -1,79 +1,63 @@
-Return-Path: <linux-wireless+bounces-2965-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2966-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CBB2845AAB
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Feb 2024 15:54:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF919845C19
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Feb 2024 16:50:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B32FBB20F6E
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Feb 2024 14:54:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 174C829AC9D
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Feb 2024 15:50:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D5E55D486;
-	Thu,  1 Feb 2024 14:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDF816215A;
+	Thu,  1 Feb 2024 15:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P66iXILR"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="F5Bv4Gym"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83A4B5F46A;
-	Thu,  1 Feb 2024 14:54:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C29BF5F48F
+	for <linux-wireless@vger.kernel.org>; Thu,  1 Feb 2024 15:50:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706799258; cv=none; b=BT594DbhJ6r8tjsXctv3Pdr/FchNpC50u96kl8LKAk5qX/XA+zT9miYRAiHAUE15lo2hdPz6vJMwBpDlebr7GuiKqpCCoLMgZB8+XaB63q5Pv3lvZHIVIo2mlj+mWanpWjm6vLGcstebrr53BlShEdfir+4MX/nuvWC6br/AtNo=
+	t=1706802613; cv=none; b=Dxw8R5rIVhZkCLoXrcFhU2YewqxTTM5wRbdI/CzJC+Ve58RnYWfPgVKh2uT4BLMKn2HzrJGOXa6mAeW1+mpVMxBECNLaLELFH1opdVpMpvZm3+gSmUqB1ugz02V2v2DY6z/W7xIOUb+CXAhZlorx2xOFZ3jg2Ct/x987bX2NiiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706799258; c=relaxed/simple;
-	bh=p/b6hnnkmVbqYjPV4zfBIYg62+5N2H+iQIk2/GjHndM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=N/b2T3McRc0l49ovND8HCQISCVVgLv7WGrQ+/BiAXYkchdvnK2deALbWEKBUNtTCjhFy9jEtuWVeGh+hyUKv1MarfzIT1VKQ/9zWjKPAwecImUUbJg+pnkZe5ZP8NkDn1ldA/n4fKglQfQkb80Pq8NsSbUkSsJDBNGZiLkD6lrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P66iXILR; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-55f279dca99so1421587a12.3;
-        Thu, 01 Feb 2024 06:54:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706799255; x=1707404055; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=nMywRXmrmzqtM14OLjyYgWiqPrrFs6p+ZGoaxrmNKtw=;
-        b=P66iXILRNBk2jfitWA39ZvjdSDu8x5xj0btCXy+eynM/Tm56dyZAX7dyW/KphBxg1s
-         aj45JtQ2TyJEi8ckmRAD6KqoDgT8jjf4SGKHicMXvEyF4rWXePpZm7Lv7KY0Ib7UNDIZ
-         DKt7shIyLGzmGK1+eemaLVTuDqgxhbz7b6F0DG8XnzT5csODajNCIzvla1emjUqKq+wy
-         r5NXXW7N7EdneeyvpLqcD2UdWAIaaUgq92uVcr8y4tAzOr8ViehjtlWh4aK3BPFHjs7T
-         OQaUZr3vLta7edCgsvoVizpvIce9uw2Ned35WusrcUN/EG6ZOGnEptEiFTFAfWWlh+/Z
-         JHjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706799255; x=1707404055;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nMywRXmrmzqtM14OLjyYgWiqPrrFs6p+ZGoaxrmNKtw=;
-        b=kh04SFx0ou7ULI4KOSeivny9MvfBFPdSJy1yrkME+FAdnUudh9WDh4vyPseTnBPb/K
-         Uj89RFJnPfxTk2jDJ9daMUsyxBpQ+lVqyvlz1UcUEG0XwSfrVWN5IumTQKmH+t6R1+ra
-         P9zryNsHw3NIFpWpYF7O6PJ/Og+Ebb1K9AUt9JsJXaZGIixKIBfOPUKsdly977TSqIod
-         7nAwr6h5bmL2Q4ZUvCwxf+Ma1evSDIa5kgqJE30ihaAMuVmVp1bkCKse1ZOPkVKCeimv
-         VH6ftEUy+hde+1IrO14L9aQZwx6jD8K61UdatYSN/mhDHZMoAuCA+wb1GxxujeN+PEQ1
-         NLXg==
-X-Gm-Message-State: AOJu0Yzo6x7DhHLp5gyuyusSaxNYDg6YmLLfiC++9f0JI0f31RstuYuD
-	2cDI8D7txXOj1EgYKPxkaXyB4pGLfL5Fy1sSvofn6v1SjNKbv1gr
-X-Google-Smtp-Source: AGHT+IE+wfFLQKMiqxH2g0rO4B6Uzrf9CNTT9m490pfZ6eJPCnC8ehw/M9egRgGS7x5pACMhE65Prw==
-X-Received: by 2002:a17:906:4f0a:b0:a35:de06:23f1 with SMTP id t10-20020a1709064f0a00b00a35de0623f1mr3427175eju.0.1706799254445;
-        Thu, 01 Feb 2024 06:54:14 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCUN8MNFjIYlikHUtEEhB9lWlSRHg7TC66e8kCR2HL9cwl3bGm7dRG012iTPoqqyp45K4tZZdINkuQg4m8c+TPzz6F6/ds8kvbIV8LtAC1zQ71hTFLqP70TaQR6Y4GXRbz3sRoJmq4Jg5tzZW2bJbmvnAFv2vTmezCYB2ps5Eyx6rrhps/I/6k5pCTyuRX9rhhFrq6gZ4iM88Z9QmLOzxXu8yrddnmEA6KDVUOAvOsvcH81N2D1wCdB0FVsIUdPU/YRIhptnpihZmmYrYJrgPKbOS0Wqv44xs8zTtN1gaDS8xdHLExvRKFF8zxkHMxw+kDmezPwqjtMwkdgSTYhC4ONu+Atfl2LtcdZaqF0HbLnj2DEmEJXCITcjsOCjt8EllPFUZ+SrYYk=
-Received: from shift.daheim (p200300d5ff0f3300aaa159fffeeb01f1.dip0.t-ipconnect.de. [2003:d5:ff0f:3300:aaa1:59ff:feeb:1f1])
-        by smtp.gmail.com with ESMTPSA id hw20-20020a170907a0d400b00a2b1a20e662sm7265531ejc.34.2024.02.01.06.54.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Feb 2024 06:54:14 -0800 (PST)
-Received: from localhost.daheim ([127.0.0.1])
-	by shift.daheim with esmtp (Exim 4.97)
-	(envelope-from <chunkeey@gmail.com>)
-	id 1rVYSD-00000001VyN-3Tdf;
-	Thu, 01 Feb 2024 15:54:13 +0100
-Message-ID: <69cd3865-1af0-4ad4-8a5e-0bd5d51cb059@gmail.com>
-Date: Thu, 1 Feb 2024 15:54:13 +0100
+	s=arc-20240116; t=1706802613; c=relaxed/simple;
+	bh=jTSBj9jLKNKdi0y3iM/C7gIWXZXoGI4kcvR3ImuT2Jg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=SBkpbG+wNkrDNYVy8p884tW6SRs+XAwMoVBe0j3w/M7HSTobdwiqmrjqR6LiqMVolVFqJyRMxMb1m2XYKSetRNasCMJAW1jZ3AcBUgM44ZhSesOQC7PkN5aY7MOYCLSYnWlAn+4sUmNe4f9uYMqboBf/TZViFQAFzfVIagxiQaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=F5Bv4Gym; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 411C8KTD011165;
+	Thu, 1 Feb 2024 15:50:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=YE5DgA3kYqy7egRBGYJ0PPp5ECW0xBYESXgrdcxB00w=; b=F5
+	Bv4GymmqaatmbDfaPuSM5N+LZGtO/NnJYyHGDQ3ae3/yf77DHW4Np3khSnQdK14/
+	fqqYkznHYVWhXQMl6wWIj18MgqAIiB7Myg2BwJA7ISOuzwtUuIEvTd71Ki3Qk2LF
+	z87OAe0D7w7vI/Xkjwhqgz0knez92OVqvEaJOxIH3HoLwT1wWkfK8RD9wzLM3HEC
+	cQ6SQvT96yMP4f29zZyMm386NhjM6bUYafwkD8nz7u5Wl+UiB2indZ+xqdh4SVLD
+	kSNmix9Yn45xZF2dp/AW2arzo6amdAzNfeVv0NThp4S6b8ORcXZzIiJ81s8MAx3Y
+	EUJUm43zWf7EkgqVal2w==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3w0b1qrgtq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 01 Feb 2024 15:50:07 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 411Fo6h1010237
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 1 Feb 2024 15:50:07 GMT
+Received: from [10.110.16.197] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Thu, 1 Feb
+ 2024 07:50:06 -0800
+Message-ID: <1818e068-4075-4510-8985-f05e124d1246@quicinc.com>
+Date: Thu, 1 Feb 2024 07:50:05 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -81,28 +65,85 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 6/9] wifi: fill in MODULE_DESCRIPTION()s for p54spi
-Content-Language: de-DE
-To: Breno Leitao <leitao@debian.org>, kuba@kernel.org, davem@davemloft.net,
- pabeni@redhat.com, edumazet@google.com, Kalle Valo <kvalo@kernel.org>
-Cc: dsahern@kernel.org, weiwan@google.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, horms@kernel.org, andrew@lunn.ch, leit@fb.com,
- "open list:P54 WIRELESS DRIVER" <linux-wireless@vger.kernel.org>
-References: <20240130104243.3025393-1-leitao@debian.org>
- <20240130104243.3025393-7-leitao@debian.org>
-From: Christian Lamparter <chunkeey@gmail.com>
-In-Reply-To: <20240130104243.3025393-7-leitao@debian.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH 15/15] wifi: cfg80211/mac80211: move puncturing into
+ chandef
+Content-Language: en-US
+To: Johannes Berg <johannes@sipsolutions.net>,
+        <linux-wireless@vger.kernel.org>
+References: <20240129184108.49639-17-johannes@sipsolutions.net>
+ <20240129194108.307183a5d2e5.I4d7fe2f126b2366c1312010e2900dfb2abffa0f6@changeid>
+ <119d60053afa6f5eb9af6597d895f1da1065d7c5.camel@sipsolutions.net>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <119d60053afa6f5eb9af6597d895f1da1065d7c5.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: PgVUv0zUEf9hxfhMnPvV0pEe5TU5uXJD
+X-Proofpoint-GUID: PgVUv0zUEf9hxfhMnPvV0pEe5TU5uXJD
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-01_03,2024-01-31_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 phishscore=0
+ mlxscore=0 mlxlogscore=966 priorityscore=1501 adultscore=0 suspectscore=0
+ malwarescore=0 lowpriorityscore=0 clxscore=1015 bulkscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2401190000 definitions=main-2402010123
 
-On 1/30/24 11:42, Breno Leitao wrote:
-> W=1 builds now warn if module is built without a MODULE_DESCRIPTION().
-> Add descriptions to the Prism54 SPI wireless driver.
+On 1/30/2024 6:22 AM, Johannes Berg wrote:
+>>
+>> Move puncturing into the chandef, and adjust all the code
+>> accordingly.
 > 
-> Signed-off-by: Breno Leitao <leitao@debian.org>
-
-Sure.
-
-Acked-By: Christian Lamparter <chunkeey@gmail.com>
-
+> So I clearly forgot ath12k in "all the code" ;-)
+> 
+> Looking at the code, this seems to be an appropriate update for ath12k:
+> 
+> --- a/drivers/net/wireless/ath/ath12k/mac.c
+> +++ b/drivers/net/wireless/ath/ath12k/mac.c
+> @@ -2767,10 +2767,6 @@ static void ath12k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
+>  	}
+>  
+>  	ath12k_mac_fils_discovery(arvif, info);
+> -
+> -	if (changed & BSS_CHANGED_EHT_PUNCTURING)
+> -		arvif->punct_bitmap = info->eht_puncturing;
+> -
+>  	mutex_unlock(&ar->conf_mutex);
+>  }
+>  
+> @@ -6215,6 +6211,8 @@ ath12k_mac_update_vif_chan(struct ath12k *ar,
+>  		if (WARN_ON(!arvif->is_started))
+>  			continue;
+>  
+> +		arvif->punct_bitmap = vifs[i].new_ctx->def.punctured;
+> +
+>  		/* Firmware expect vdev_restart only if vdev is up.
+>  		 * If vdev is down then it expect vdev_stop->vdev_start.
+>  		 */
+> @@ -6311,7 +6309,8 @@ static void ath12k_mac_op_change_chanctx(struct ieee80211_hw *hw,
+>  		goto unlock;
+>  
+>  	if (changed & IEEE80211_CHANCTX_CHANGE_WIDTH ||
+> -	    changed & IEEE80211_CHANCTX_CHANGE_RADAR)
+> +	    changed & IEEE80211_CHANCTX_CHANGE_RADAR ||
+> +	    changed & IEEE80211_CHANCTX_CHANGE_PUNCTURING)
+>  		ath12k_mac_update_active_vif_chan(ar, ctx);
+>  
+>  	/* TODO: Recalc radar detection */
+> @@ -6371,7 +6370,7 @@ ath12k_mac_op_assign_vif_chanctx(struct ieee80211_hw *hw,
+>  		   "mac chanctx assign ptr %pK vdev_id %i\n",
+>  		   ctx, arvif->vdev_id);
+>  
+> -	arvif->punct_bitmap = link_conf->eht_puncturing;
+> +	arvif->punct_bitmap = ctx->def.punctured;
+>  
+>  	/* for some targets bss peer must be created before vdev_start */
+>  	if (ab->hw_params->vdev_start_delay &&
+> 
+> 
+> Any thoughts?
+Looks good
 
