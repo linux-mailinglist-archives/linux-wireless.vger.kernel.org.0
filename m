@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-2936-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2937-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93755845521
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Feb 2024 11:21:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9463845522
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Feb 2024 11:21:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F3DA2838E7
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Feb 2024 10:21:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64B7228307F
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Feb 2024 10:21:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2012F4D9F9;
-	Thu,  1 Feb 2024 10:20:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 519FF15B96B;
+	Thu,  1 Feb 2024 10:21:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P4hEaYBQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lwq0jZUI"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0DBD15B97E
-	for <linux-wireless@vger.kernel.org>; Thu,  1 Feb 2024 10:20:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2419A4DA06;
+	Thu,  1 Feb 2024 10:21:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706782849; cv=none; b=sJsKzgJ476JRqfW215DL7HschDXK1BElWK/yTb6+DCDZRlDKriMwrZkSBZt8EfyIPSssQsuaXElvxvSPEFTDhcGH8XP71db7+zLQSaPZtivWqkMLy0Ue6Lt5+USU/7SQQYYyPDgLqlK+vbEW1Dk4nS9z8z7LzZlX6fHsaURfJRA=
+	t=1706782876; cv=none; b=MNQ79MMmxh8WyHRpnBYRPdDIUPN2mQ03gGreHCl3a9tO7D45H/N4l3EcWs3B2CMMNSfCFrfRRWa46/VB8sV1KfNECQ7jawnfPluUtt9n8rCUaaTuNB4Fz6d+803HuRXOCARJA9wfCQzOMGdV8XHMBRztc1CLcWxbRCYbMP7MCbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706782849; c=relaxed/simple;
-	bh=xxOF2c/N04i0qAo+M8Ix4mhlJ94c5+Bh23ikYisghgs=;
+	s=arc-20240116; t=1706782876; c=relaxed/simple;
+	bh=p7kLDUFLd7rjovPMsYMtGm/nnUJKbjK4ZofGZ628x0I=;
 	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=rc7MR52IrwUQkzfqGAvyqF0QKO2MhUuBX/12ONY/EnYwETV0P4nyp0b3dXu5UH8W7nbDpfKp3FIM8AIxYPsdgAhBPuWD87LJk7IHO5JMTUC/MtDI3QpI2tmZ930mpW6KNg42VBg76ED8T+h1Fv7GSP3dEuqZrGpLisB0FVoC8ek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P4hEaYBQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DCE0C433A6;
-	Thu,  1 Feb 2024 10:20:47 +0000 (UTC)
+	 Cc:Message-ID:Date; b=MQbJNXTJtzCSPJ0ICGT6PfBzZV8sCf/FX4ydWvZ7C0zt3ZZ5QW6hnt1Q4UJ+SwU0UbEg2N5p97q7QyN+nWgnItV3+BwmdObrr3J+ExuNJYyMsyBmNP+b9iEhGcc4oZbeNHvqvIJxn6g6NN0o4okqK3dQB0m06Yuc+BjUq7uabW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lwq0jZUI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 706CAC433F1;
+	Thu,  1 Feb 2024 10:21:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706782848;
-	bh=xxOF2c/N04i0qAo+M8Ix4mhlJ94c5+Bh23ikYisghgs=;
+	s=k20201202; t=1706782876;
+	bh=p7kLDUFLd7rjovPMsYMtGm/nnUJKbjK4ZofGZ628x0I=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=P4hEaYBQ1MBBi7CX7UazJfJGaxKpilbsPZwuZMpMbWYZhl6hEvMdsAyNmLh92nEyn
-	 RALPwAarEUg00hENo5CYIJ35sLPliqEFJsv89CcqO+95DHCzyOrA48S98Fk/cnfchg
-	 hRThjrF1J7H8PjqPwcj+fZCL3zy/xrgQD7r+EvWSJcf3mXMxE8+6YOlk3eVXdCTwqe
-	 VQxow1wDJk9e6QQEWtSgXkyEC4aT1oIyhlnhiiwswYSccZPPhbdf/z4vj8icTEz4+a
-	 rRaGordR8KGYhSRU/8XG3CLUAUXANfcH17GlrFyOgAx6M7pzDx1gqiHTO/M/IsC0UZ
-	 HwINIggmIt6Pg==
+	b=Lwq0jZUI+6qSM0K9t6B8VaFbzBEYKAf0CywnG68NDwn/9EZFB+Xa3pCdh54PhW3dd
+	 rofkx03iV1nGm++sTu6iazQGTtQ7npoh15RYzhkEzEnx63FSA7pp0XoROeAef74ggx
+	 nxRatuZgZWcy76gncBOF56OxJKTNd57vqiN6fsE7Bdb6dC67UX+hgMUNpOLZAs9K2i
+	 0D/c0U2gszkQ4U3nYAl/+kJjPVA1XisknsRx7AdtVrk/PEKoZjQfb9bdLnyw6T8WfQ
+	 fXxFrjEb68ZosiRNILjvnjKvN37oR6qz3LRdW1zE7zMmTFDY/PwHKOxE+4WDE67+XI
+	 bf2EX0rXdtjQg==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -49,40 +49,34 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/7] wifi: rtw89: update scan C2H messages for wifi 7 IC
+Subject: Re: [PATCH] wifi: rtl8xxxu: fix error messages
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240126063356.17857-2-pkshih@realtek.com>
-References: <20240126063356.17857-2-pkshih@realtek.com>
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: <timlee@realtek.com>, <phhuang@realtek.com>,
- <linux-wireless@vger.kernel.org>
+In-Reply-To: <7b144531-a8da-4725-8911-9b614a525a35@moroto.mountain>
+References: <7b144531-a8da-4725-8911-9b614a525a35@moroto.mountain>
+To: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Martin Kaistra <martin.kaistra@linutronix.de>,
+ Jes Sorensen <Jes.Sorensen@gmail.com>, Ping-Ke Shih <pkshih@realtek.com>,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kernel-janitors@vger.kernel.org
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170678284565.2736043.7655177779775075011.kvalo@kernel.org>
-Date: Thu,  1 Feb 2024 10:20:47 +0000 (UTC)
+Message-ID: <170678287278.2736043.14378506532887522258.kvalo@kernel.org>
+Date: Thu,  1 Feb 2024 10:21:14 +0000 (UTC)
 
-Ping-Ke Shih <pkshih@realtek.com> wrote:
+Dan Carpenter <dan.carpenter@linaro.org> wrote:
 
-> From: Po-Hao Huang <phhuang@realtek.com>
+> The first parameter of WARN_ONCE() is a condition so this code will end
+> up printing the function name instead of the proper message.
 > 
-> Add definition and parsing for wifi 7 extended fields. These fields
-> include hardware index which is current reporting, timestamp and self
-> defined sequences for debug purposes.
-> 
-> Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> Fixes: 3ff7a05996f9 ("wifi: rtl8xxxu: support setting bssid register for multiple interfaces")
+> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+> Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
 
-7 patches applied to wireless-next.git, thanks.
+Patch applied to wireless-next.git, thanks.
 
-b5d7020134d9 wifi: rtw89: update scan C2H messages for wifi 7 IC
-ac54faf507e5 wifi: rtw89: debug: add FW log component for scan
-a412920b7019 wifi: rtw89: prepare scan leaf functions for wifi 7 ICs
-4ba24331c973 wifi: rtw89: 8922a: add ieee80211_ops::hw_scan
-e58e3117019c wifi: rtw89: add new H2C for PS mode in 802.11be chip
-f651300cd884 wifi: rtw89: update ps_state register for chips with different generation
-f1abee76dba8 wifi: rtw89: 8922a: add more fields to beacon H2C command to support multi-links
+17903a283593 wifi: rtl8xxxu: fix error messages
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240126063356.17857-2-pkshih@realtek.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/7b144531-a8da-4725-8911-9b614a525a35@moroto.mountain/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
