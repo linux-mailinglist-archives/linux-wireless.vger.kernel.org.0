@@ -1,98 +1,117 @@
-Return-Path: <linux-wireless+bounces-2938-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2940-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D07E78455D9
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Feb 2024 11:57:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 093AA8456C4
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Feb 2024 13:03:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F3591F22F2A
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Feb 2024 10:57:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B724E28D204
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Feb 2024 12:03:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72020158D9A;
-	Thu,  1 Feb 2024 10:57:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C08315DBAE;
+	Thu,  1 Feb 2024 12:03:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b="eShVOcAM"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="I0YbJhqW"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5965A15B973;
-	Thu,  1 Feb 2024 10:57:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.95.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D8E615DBA4;
+	Thu,  1 Feb 2024 12:03:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706785045; cv=none; b=abr3rwNokHf8Xaf/+gDHLhAOgXuHAHE1lbiJbaKhmS+yHvRJmSecf6G5XVIEQzVaDlTl6Zlmyszq9tr1S/b6JZoWQWZdcP1y6rFA4v6E0RzF/pYmM5YqRCZiQnoO9bIWl+6pRNvQ2G8Hy7J1XDjBQ1MS8gWiN5CAfD5XAfh91qM=
+	t=1706789007; cv=none; b=OTuILp/heI/dLRbZJEl8E85ksHnzHfJLl2ATgZwk8OvpaY5XX+i2Mj5tbqSV7asKbsvgXgAQKswqQJXXzFjOfhVRsVMPtLmqLSQDJB6iPX6EwbsZYpYdk9E2TXE8G6iSx+vCMrZywZRJgetXrYF1TScAIqJtLpe4OWXpzSGG/lc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706785045; c=relaxed/simple;
-	bh=TobCazIkkY/DGv6KVites0C1Weh4sD9kwXNvynrufss=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=eIE1tD3khz7n8+YRyDw79zundERn0eMY6vLYbrmohcSxYB9HjmwT6aWDsnCovJrHxhO7ps6dKFMPyph6PkGoNZzFdzbUa1tOq7qrxYI9zNq+69Jou7mMBDKB9iR+ccLc7QwXSFX2BtAfiEf70/glCnRbpnfV8E+9MiRrGzLsra0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk; spf=pass smtp.mailfrom=toke.dk; dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b=eShVOcAM; arc=none smtp.client-ip=45.145.95.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-	t=1706785029; bh=TobCazIkkY/DGv6KVites0C1Weh4sD9kwXNvynrufss=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=eShVOcAMm+cB+X0RWgH5IO3/4QM6fJlOkepkyv9YFeLf9Ubga5dDB0QYXpoKJIYWD
-	 zTXLuhWsmkSJv1OJd+fZUH9O3184GgJ97cZCPTDO4GEtQyOLZ61hjV9KNHlfkdGZrt
-	 sqy496ZNlUE9OaYrNn126NvH86DetjmwS0NO+BjMN2wbhFyZfHzKkAn6fQeCDmTuiN
-	 ucFXyauK26qHskcEJgfY/rAbaeBHTQsyEh5x0o+sWJyypkOvrdeqV4J1RmzNGWV1MG
-	 U6rIdftsYYAsUSiCaIvDkMGxKiWXT/l4L/L9bLTgHSqESniazOnDVhW/oJWjuogy1C
-	 D35hkn76NvQyA==
-To: Linus Walleij <linus.walleij@linaro.org>, Kalle Valo <kvalo@kernel.org>,
- Arend van Spriel <aspriel@gmail.com>, Franky Lin
- <franky.lin@broadcom.com>, Hante Meuleman <hante.meuleman@broadcom.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Arnd Bergmann
- <arnd@arndb.de>, Lee Jones <lee@kernel.org>, Brian Norris
- <briannorris@chromium.org>, Srinivasan Raju <srini.raju@purelifi.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- brcm80211-dev-list.pdl@broadcom.com, Linus Walleij
- <linus.walleij@linaro.org>
+	s=arc-20240116; t=1706789007; c=relaxed/simple;
+	bh=2m5DaL/Ch9nYB4JV5SYoG6jFp7mOyve/+2De+UkHY00=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=C5eNbAjZqSKVK7r3j/kAKeWXAbTE7fnpJkkc0T85kOB/EKFGM7BZy5oPVtKmRi0wKSa06beiPyXFdcxcPJ3Q3huv/j+DT5GmEERDwJ/hCqx4bGXwS1tBSnUllYT3guMcUqn1Fw8HcVCZNDXDA+W82WlryAX+u2NRsSOK3ryAd8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=I0YbJhqW; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1706789006; x=1738325006;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=2m5DaL/Ch9nYB4JV5SYoG6jFp7mOyve/+2De+UkHY00=;
+  b=I0YbJhqW7o7xl+zj7QWmxBJmx14wI/YUttwLE85QQuPbnF10qGm0c50a
+   Cwu3UtM8noiEP4+s4TJio0gXRFr7z09nKwGFcGy9zgXyFtFBGjJCxPQ0W
+   Dxku6Rkkc88FOeDa/pFxZBy9PrcEot1EfVvf2HEcMGwotCXQAbmkvdpRW
+   2hLw9HTdg/38mB1JRmWXHbPEK2xPRcN/FAUIj5cAsT9rPd/465lzraDy4
+   RKapI/amu+TsAsmB+De26N2SinsBIf8w97juHkAiaeUxGc/JJcm6AFIOf
+   smKpmtCRhLGIIxmmTTcVLqvVBGksWpJ4egNp2aAr0XniQAzIAVH2U647I
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="10531559"
+X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
+   d="scan'208";a="10531559"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2024 04:03:24 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="738410604"
+X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
+   d="scan'208";a="738410604"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2024 04:03:20 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rVVQO-00000000ovk-02ld;
+	Thu, 01 Feb 2024 13:40:08 +0200
+Date: Thu, 1 Feb 2024 13:40:07 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Linus Walleij <linus.walleij@linaro.org>
+Cc: Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@toke.dk>,
+	Kalle Valo <kvalo@kernel.org>, Arend van Spriel <aspriel@gmail.com>,
+	Franky Lin <franky.lin@broadcom.com>,
+	Hante Meuleman <hante.meuleman@broadcom.com>,
+	Arnd Bergmann <arnd@arndb.de>, Lee Jones <lee@kernel.org>,
+	Brian Norris <briannorris@chromium.org>,
+	Srinivasan Raju <srini.raju@purelifi.com>,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	brcm80211-dev-list.pdl@broadcom.com
 Subject: Re: [PATCH 1/6] wifi: ath9k: Obtain system GPIOS from descriptors
-In-Reply-To: <20240131-descriptors-wireless-v1-1-e1c7c5d68746@linaro.org>
+Message-ID: <ZbuDF2-m8oJofpyl@smile.fi.intel.com>
 References: <20240131-descriptors-wireless-v1-0-e1c7c5d68746@linaro.org>
  <20240131-descriptors-wireless-v1-1-e1c7c5d68746@linaro.org>
-Date: Thu, 01 Feb 2024 11:57:09 +0100
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <874jeszc3e.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240131-descriptors-wireless-v1-1-e1c7c5d68746@linaro.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-Linus Walleij <linus.walleij@linaro.org> writes:
-
+On Wed, Jan 31, 2024 at 11:37:20PM +0100, Linus Walleij wrote:
 > The ath9k has an odd use of system-wide GPIOs: if the chip
 > does not have internal GPIO capability, it will try to obtain a
 > GPIO line from the system GPIO controller:
->
+> 
 >   if (BIT(gpio) & ah->caps.gpio_mask)
 >         ath9k_hw_gpio_cfg_wmac(...);
 >   else if (AR_SREV_SOC(ah))
 >         ath9k_hw_gpio_cfg_soc(ah, gpio, out, label);
->
+> 
 > Where ath9k_hw_gpio_cfg_soc() will attempt to issue
 > gpio_request_one() passing the local GPIO number of the controller
 > (0..31) to gpio_request_one().
->
+> 
 > This is somewhat peculiar and possibly even dangerous: there is
 > nowadays no guarantee of the numbering of these system-wide
 > GPIOs, and assuming that GPIO 0..31 as used by ath9k would
 > correspond to GPIOs 0..31 on the system as a whole seems a bit
 > wild.
->
+> 
 > My best guess is that everyone actually using this driver has
 > support for the local (custom) GPIO API and the bit in
 > h->caps.gpio_mask is always set for any GPIO the driver may
 > try to obtain, so this facility to use system-wide GPIOs is
 > actually unused and could be deleted.
->
+> 
 > Anyway: I cannot know if this is really the case, so implement
 > a fallback handling using GPIO descriptors obtained from the
 > ah->dev device indexed 0..31. These can for example be passed
@@ -100,10 +119,26 @@ Linus Walleij <linus.walleij@linaro.org> writes:
 > anyone will use them, but this makes it possible to obtain a
 > system-wide GPIO for any of the 0..31 GPIOs potentially
 > requested by the driver.
->
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 
-This seems reasonable, thanks!
+...
 
-Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
+> +	/* Obtains a system specific GPIO descriptor from another GPIO controller */
+> +	gpiod = devm_gpiod_get_index(ah->dev, NULL, gpio, flags);
+
+> +
+
+Unnecessary blank line, please don't add it.
+
+> +	if (IS_ERR(gpiod)) {
+> +		err = PTR_ERR(gpiod);
+>  		ath_err(ath9k_hw_common(ah), "request GPIO%d failed:%d\n",
+>  			gpio, err);
+>  		return;
+>  	}
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
