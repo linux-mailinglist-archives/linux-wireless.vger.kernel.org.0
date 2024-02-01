@@ -1,66 +1,66 @@
-Return-Path: <linux-wireless+bounces-2963-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2964-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4329F845A03
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Feb 2024 15:21:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55B47845A04
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Feb 2024 15:21:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D65FF1F25AAF
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Feb 2024 14:21:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D09C28E069
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Feb 2024 14:21:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25DE15D492;
-	Thu,  1 Feb 2024 14:20:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CA885D499;
+	Thu,  1 Feb 2024 14:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SpIJfB2g"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="edl2oorJ"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 932675F493
-	for <linux-wireless@vger.kernel.org>; Thu,  1 Feb 2024 14:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699E65F483
+	for <linux-wireless@vger.kernel.org>; Thu,  1 Feb 2024 14:20:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.55.52.88
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706797224; cv=none; b=G38ZR1cq8dabw6qFyK9/5VR9YyveMnU0iOhs3TLgz+NDn6DGME2IwKAC/4sOdiPQuohlDKmNOXSt4K0YnzeCIW98qWqi0umr3J1sV6G81MG0WhUJR/+7akpcCIwsoiSDhQjuh8pQkUfOEbGMJOkHQar0yP7twfHjy6QLA+c1ds8=
+	t=1706797230; cv=none; b=r0EtAMhSyKd1prVjcvSkHnh1Elv0KGxVyNmQgkGLPNei5uy8kmx55wcm8gwuNi0Ha7v0y+fGSWfcrCfKsxhMCr4YhRe7DjqiXbTc3ryOjPa2c4wDEBAuGRGVDkT6QG7kDM0c103VHmBbheuMqNNx01k3vomCq/038DAqc10gGOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706797224; c=relaxed/simple;
-	bh=LEkdljdWXlOHSEJmeR2FiUAoE/LseeiCg8C7a4LTC/Y=;
+	s=arc-20240116; t=1706797230; c=relaxed/simple;
+	bh=i//aRA4/VuLwALd/zm5LXaw7HG/QK9RymDaPuuvKP4Q=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=u+rSAcP84nXUJlInCsHYv5H7883+RqBVUYYz2nNFf2o3Lt0i8sRodxqFLaWP6gXtGrAmXPtG/rOuY2uObFaMsxjJ9Isz5izBKBFULv4UKVQc/4LPdITWUJFxxQoFTp9QmZQZK0zUlIvY0yLJZBT/jo5zGcvW19RUAKd+fpo2/do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SpIJfB2g; arc=none smtp.client-ip=192.55.52.88
+	 MIME-Version; b=fpKEKzuKJCqveWRPb8vxmXQGtUdhX+6JNSIOKjZe7v+8rz9mMiYdnCaBOmJcfyr5pcz7dIPO8BSMTvAYP9XRnIDNmmvNt2dSPiuk7uf8Yum+DSb5NjABAtrwnwztWfT+xX6ll2vD9YJzMZlKd25Kb0GDp7nyBk2+TRhc7ZpuddQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=edl2oorJ; arc=none smtp.client-ip=192.55.52.88
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706797222; x=1738333222;
+  t=1706797228; x=1738333228;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=LEkdljdWXlOHSEJmeR2FiUAoE/LseeiCg8C7a4LTC/Y=;
-  b=SpIJfB2grLPK6ThRLAlhlUWmRlf2aUNJw+CKt9WCZfea3VUOH4OElbq8
-   HvyMVJALiNzr/X5pJR8Pnb1U+ueP/3bMPbliiu4NDi8W1sEHMwsanFNiM
-   bdBqmzdYYZRA9c2riNC6qE3X8CbsunPN9bhlKwDvY8uwO9P71ohlcZYmK
-   CZ7N2yZM38FZeBr3C3DPIaQOKr8X/eFfCz2OW5sK8APweIZnaXdY4nogS
-   kBkt8l+cMEbY/t4PU3WPpCo56FVO9CASAKmWvrhHWPrZA8kB3w7e+GZC2
-   du0HmvCHAxmKt3V/X/74K+XUMz9Lo+t1XuZs69HHpazqVadZgQHc4Io8v
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="435063003"
+  bh=i//aRA4/VuLwALd/zm5LXaw7HG/QK9RymDaPuuvKP4Q=;
+  b=edl2oorJJR/UPYYbSzwn9iZtL0g8t96VX7EV0cqmU/VEmlthubudXYdL
+   FcA4560iS5/V5DD1J8FCb5KMBe+NxDg5IVz2H9fcHM0GX6fk+9MW2OnfC
+   khWndLu1rvMvJ7cTcZL10QguZSYq6R5ChLD9Qsu5ki1gjJwHERecfvhmx
+   X6cpMqhXmHTEFVCUDORu/dDY61pRwtUi2syklfgjImZYSt4Sd94DKazp7
+   S3XGKLec7S9s+MNuQsS3FcQXUn56Qt+QJ1wcmkVQlNLMcdI0I3UM/murP
+   OFPETJFNHCC6YhILlcYDLSlcTfbyIMBjk4PukljZHGT1W1bv73E5oit6V
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="435063036"
 X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
-   d="scan'208";a="435063003"
+   d="scan'208";a="435063036"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2024 06:20:22 -0800
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2024 06:20:28 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
-   d="scan'208";a="94548"
+   d="scan'208";a="94593"
 Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2024 06:20:21 -0800
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2024 06:20:27 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 16/17] wifi: iwlwifi: bump FW API to 88 for AX/BZ/SC devices
-Date: Thu,  1 Feb 2024 16:17:40 +0200
-Message-Id: <20240201155157.e35556d3f956.I6543857041a33e2b35e67eecf648c9cc6972e60a@changeid>
+	Shaul Triebitz <shaul.triebitz@intel.com>
+Subject: [PATCH 17/17] wifi: iwlwifi: mvm: make functions public
+Date: Thu,  1 Feb 2024 16:17:41 +0200
+Message-Id: <20240201155157.3edafc4d59aa.Ic68e90758bcad9ae00e0aa602101842dac60e1a1@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240201141741.2569180-1-miriam.rachel.korenblit@intel.com>
 References: <20240201141741.2569180-1-miriam.rachel.korenblit@intel.com>
@@ -73,55 +73,227 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-Start supporting API version 88 for new devices.
+From: Shaul Triebitz <shaul.triebitz@intel.com>
 
+In the following patch, iwl_mvm_roc_duration_and_delay and
+iwl_mvm_roc_add_cmd will be called also from time-event.c.
+Move then there (where they more belong) and make then
+public.
+
+Signed-off-by: Shaul Triebitz <shaul.triebitz@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/cfg/ax210.c | 2 +-
- drivers/net/wireless/intel/iwlwifi/cfg/bz.c    | 2 +-
- drivers/net/wireless/intel/iwlwifi/cfg/sc.c    | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 80 -------------------
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  8 ++
+ .../wireless/intel/iwlwifi/mvm/time-event.c   | 80 +++++++++++++++++++
+ 3 files changed, 88 insertions(+), 80 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/ax210.c b/drivers/net/wireless/intel/iwlwifi/cfg/ax210.c
-index 02b727687fb8..456c7fff60a0 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/ax210.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/ax210.c
-@@ -10,7 +10,7 @@
- #include "fw/api/txq.h"
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index dbad30e61451..93baec9bb3fc 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -4429,44 +4429,6 @@ static bool iwl_mvm_rx_aux_roc(struct iwl_notif_wait_data *notif_wait,
+ 	return true;
+ }
  
- /* Highest firmware API version supported */
--#define IWL_AX210_UCODE_API_MAX	87
-+#define IWL_AX210_UCODE_API_MAX	88
+-#define AUX_ROC_MIN_DURATION MSEC_TO_TU(100)
+-#define AUX_ROC_MIN_DELAY MSEC_TO_TU(200)
+-#define AUX_ROC_MAX_DELAY MSEC_TO_TU(600)
+-#define AUX_ROC_SAFETY_BUFFER MSEC_TO_TU(20)
+-#define AUX_ROC_MIN_SAFETY_BUFFER MSEC_TO_TU(10)
+-
+-static void iwl_mvm_roc_duration_and_delay(struct ieee80211_vif *vif,
+-					   u32 duration_ms,
+-					   u32 *duration_tu,
+-					   u32 *delay)
+-{
+-	u32 dtim_interval = vif->bss_conf.dtim_period *
+-		vif->bss_conf.beacon_int;
+-
+-	*delay = AUX_ROC_MIN_DELAY;
+-	*duration_tu = MSEC_TO_TU(duration_ms);
+-
+-	/*
+-	 * If we are associated we want the delay time to be at least one
+-	 * dtim interval so that the FW can wait until after the DTIM and
+-	 * then start the time event, this will potentially allow us to
+-	 * remain off-channel for the max duration.
+-	 * Since we want to use almost a whole dtim interval we would also
+-	 * like the delay to be for 2-3 dtim intervals, in case there are
+-	 * other time events with higher priority.
+-	 */
+-	if (vif->cfg.assoc) {
+-		*delay = min_t(u32, dtim_interval * 3, AUX_ROC_MAX_DELAY);
+-		/* We cannot remain off-channel longer than the DTIM interval */
+-		if (dtim_interval <= *duration_tu) {
+-			*duration_tu = dtim_interval - AUX_ROC_SAFETY_BUFFER;
+-			if (*duration_tu <= AUX_ROC_MIN_DURATION)
+-				*duration_tu = dtim_interval -
+-					AUX_ROC_MIN_SAFETY_BUFFER;
+-		}
+-	}
+-}
+-
+ static int iwl_mvm_send_aux_roc_cmd(struct iwl_mvm *mvm,
+ 				    struct ieee80211_channel *channel,
+ 				    struct ieee80211_vif *vif,
+@@ -4564,48 +4526,6 @@ static int iwl_mvm_send_aux_roc_cmd(struct iwl_mvm *mvm,
+ 	return res;
+ }
  
- /* Lowest firmware API version supported */
- #define IWL_AX210_UCODE_API_MIN	59
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/bz.c b/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
-index b0b003a6a46e..c858f355701e 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
-@@ -10,7 +10,7 @@
- #include "fw/api/txq.h"
+-static int iwl_mvm_roc_add_cmd(struct iwl_mvm *mvm,
+-			       struct ieee80211_channel *channel,
+-			       struct ieee80211_vif *vif,
+-			       int duration, u32 activity)
+-{
+-	int res;
+-	u32 duration_tu, delay;
+-	struct iwl_roc_req roc_req = {
+-		.action = cpu_to_le32(FW_CTXT_ACTION_ADD),
+-		.activity = cpu_to_le32(activity),
+-		.sta_id = cpu_to_le32(mvm->aux_sta.sta_id),
+-	};
+-
+-	lockdep_assert_held(&mvm->mutex);
+-
+-	/* Set the channel info data */
+-	iwl_mvm_set_chan_info(mvm, &roc_req.channel_info,
+-			      channel->hw_value,
+-			      iwl_mvm_phy_band_from_nl80211(channel->band),
+-			      IWL_PHY_CHANNEL_MODE20, 0);
+-
+-	iwl_mvm_roc_duration_and_delay(vif, duration, &duration_tu,
+-				       &delay);
+-	roc_req.duration = cpu_to_le32(duration_tu);
+-	roc_req.max_delay = cpu_to_le32(delay);
+-
+-	IWL_DEBUG_TE(mvm,
+-		     "\t(requested = %ums, max_delay = %ums)\n",
+-		     duration, delay);
+-	IWL_DEBUG_TE(mvm,
+-		     "Requesting to remain on channel %u for %utu\n",
+-		     channel->hw_value, duration_tu);
+-
+-	/* Set the node address */
+-	memcpy(roc_req.node_addr, vif->addr, ETH_ALEN);
+-
+-	res = iwl_mvm_send_cmd_pdu(mvm, WIDE_ID(MAC_CONF_GROUP, ROC_CMD),
+-				   0, sizeof(roc_req), &roc_req);
+-
+-	return res;
+-}
+-
+ static int iwl_mvm_add_aux_sta_for_hs20(struct iwl_mvm *mvm, u32 lmac_id)
+ {
+ 	int ret = 0;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+index c76ce6b1fa72..eb30c299a71e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+@@ -2764,4 +2764,12 @@ iwl_mvm_chanctx_def(struct iwl_mvm *mvm, struct ieee80211_chanctx_conf *ctx)
+ 	return use_def ? &ctx->def : &ctx->min_def;
+ }
  
- /* Highest firmware API version supported */
--#define IWL_BZ_UCODE_API_MAX	87
-+#define IWL_BZ_UCODE_API_MAX	88
++void iwl_mvm_roc_duration_and_delay(struct ieee80211_vif *vif,
++				    u32 duration_ms,
++				    u32 *duration_tu,
++				    u32 *delay);
++int iwl_mvm_roc_add_cmd(struct iwl_mvm *mvm,
++			struct ieee80211_channel *channel,
++			struct ieee80211_vif *vif,
++			int duration, u32 activity);
+ #endif /* __IWL_MVM_H__ */
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c b/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
+index 703ccdd4d967..60ec5ca6927c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
+@@ -986,6 +986,86 @@ void iwl_mvm_rx_session_protect_notif(struct iwl_mvm *mvm,
+ 	rcu_read_unlock();
+ }
  
- /* Lowest firmware API version supported */
- #define IWL_BZ_UCODE_API_MIN	80
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/sc.c b/drivers/net/wireless/intel/iwlwifi/cfg/sc.c
-index 51b8f50d8795..e0679093ed8e 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/sc.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/sc.c
-@@ -10,7 +10,7 @@
- #include "fw/api/txq.h"
- 
- /* Highest firmware API version supported */
--#define IWL_SC_UCODE_API_MAX	87
-+#define IWL_SC_UCODE_API_MAX	88
- 
- /* Lowest firmware API version supported */
- #define IWL_SC_UCODE_API_MIN	82
++#define AUX_ROC_MIN_DURATION MSEC_TO_TU(100)
++#define AUX_ROC_MIN_DELAY MSEC_TO_TU(200)
++#define AUX_ROC_MAX_DELAY MSEC_TO_TU(600)
++#define AUX_ROC_SAFETY_BUFFER MSEC_TO_TU(20)
++#define AUX_ROC_MIN_SAFETY_BUFFER MSEC_TO_TU(10)
++
++void iwl_mvm_roc_duration_and_delay(struct ieee80211_vif *vif,
++				    u32 duration_ms,
++				    u32 *duration_tu,
++				    u32 *delay)
++{
++	u32 dtim_interval = vif->bss_conf.dtim_period *
++		vif->bss_conf.beacon_int;
++
++	*delay = AUX_ROC_MIN_DELAY;
++	*duration_tu = MSEC_TO_TU(duration_ms);
++
++	/*
++	 * If we are associated we want the delay time to be at least one
++	 * dtim interval so that the FW can wait until after the DTIM and
++	 * then start the time event, this will potentially allow us to
++	 * remain off-channel for the max duration.
++	 * Since we want to use almost a whole dtim interval we would also
++	 * like the delay to be for 2-3 dtim intervals, in case there are
++	 * other time events with higher priority.
++	 */
++	if (vif->cfg.assoc) {
++		*delay = min_t(u32, dtim_interval * 3, AUX_ROC_MAX_DELAY);
++		/* We cannot remain off-channel longer than the DTIM interval */
++		if (dtim_interval <= *duration_tu) {
++			*duration_tu = dtim_interval - AUX_ROC_SAFETY_BUFFER;
++			if (*duration_tu <= AUX_ROC_MIN_DURATION)
++				*duration_tu = dtim_interval -
++					AUX_ROC_MIN_SAFETY_BUFFER;
++		}
++	}
++}
++
++int iwl_mvm_roc_add_cmd(struct iwl_mvm *mvm,
++			struct ieee80211_channel *channel,
++			struct ieee80211_vif *vif,
++			int duration, u32 activity)
++{
++	int res;
++	u32 duration_tu, delay;
++	struct iwl_roc_req roc_req = {
++		.action = cpu_to_le32(FW_CTXT_ACTION_ADD),
++		.activity = cpu_to_le32(activity),
++		.sta_id = cpu_to_le32(mvm->aux_sta.sta_id),
++	};
++
++	lockdep_assert_held(&mvm->mutex);
++
++	/* Set the channel info data */
++	iwl_mvm_set_chan_info(mvm, &roc_req.channel_info,
++			      channel->hw_value,
++			      iwl_mvm_phy_band_from_nl80211(channel->band),
++			      IWL_PHY_CHANNEL_MODE20, 0);
++
++	iwl_mvm_roc_duration_and_delay(vif, duration, &duration_tu,
++				       &delay);
++	roc_req.duration = cpu_to_le32(duration_tu);
++	roc_req.max_delay = cpu_to_le32(delay);
++
++	IWL_DEBUG_TE(mvm,
++		     "\t(requested = %ums, max_delay = %ums)\n",
++		     duration, delay);
++	IWL_DEBUG_TE(mvm,
++		     "Requesting to remain on channel %u for %utu\n",
++		     channel->hw_value, duration_tu);
++
++	/* Set the node address */
++	memcpy(roc_req.node_addr, vif->addr, ETH_ALEN);
++
++	res = iwl_mvm_send_cmd_pdu(mvm, WIDE_ID(MAC_CONF_GROUP, ROC_CMD),
++				   0, sizeof(roc_req), &roc_req);
++
++	return res;
++}
++
+ static int
+ iwl_mvm_start_p2p_roc_session_protection(struct iwl_mvm *mvm,
+ 					 struct ieee80211_vif *vif,
 -- 
 2.34.1
 
