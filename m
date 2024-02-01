@@ -1,63 +1,63 @@
-Return-Path: <linux-wireless+bounces-2971-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2972-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DD31845FBA
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Feb 2024 19:21:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE180845FE1
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Feb 2024 19:29:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 339BA291F16
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Feb 2024 18:21:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FC1C1F23836
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Feb 2024 18:29:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFF9B12FB1B;
-	Thu,  1 Feb 2024 18:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A46F612FB29;
+	Thu,  1 Feb 2024 18:28:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="UKj1+9Lv"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="OP0HNziF"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA97A7428A
-	for <linux-wireless@vger.kernel.org>; Thu,  1 Feb 2024 18:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0DD17C6D0
+	for <linux-wireless@vger.kernel.org>; Thu,  1 Feb 2024 18:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706811699; cv=none; b=aPMi5lfeAvnwkNE3Gfga1rawOYVdB5dDZXvMvOgW8fKy6B2Aq6u45kLqsybMfUeBjktCzqHZ/Io/KRcY12mmjyeM0GCWKnmRNca2i7C1JWmFWKsX/5CSefuSWlgomthdp2LXSu2ZqrM5ZlhbXZE0paki//O6TP00BWgie7XY5/E=
+	t=1706812137; cv=none; b=FTOIoHW0rNUfrF/DAkHRLAHLGq5mv9+QTr+vEreXT9hNju+hJl5f3nPsHrazYXTpYUz6hndAwuKq96ZfY70Zke2IkoEqCTFxpddPTzBv5ZC0x/voG1XIEhc8lJNOPum7S/YXOvYwy+8KGsKtJaEIYPCMZY/2bvP8L4airYQQD5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706811699; c=relaxed/simple;
-	bh=NGI/ELzng3jIIkGxNs4kwcQn99TRMHrTqHnI3dE6Tbk=;
+	s=arc-20240116; t=1706812137; c=relaxed/simple;
+	bh=QANjAiAoVt9IhYISZuxDeZeTodKH0j8t8wHAP5jA620=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=IanYVehKv1z7xjNxlWHGg8eK/08RHKeQzYaLN6CxIOLD7+Qv2Q8u0eMuPFU+Svv+mHJVUMI3JK+W1e+bwTEx0Fepbv3OqziaBlnC82Hli+lYh5EhemSd5zbr156vZfpV969LjLDX2taJr46Y0YWl3g0Lha/8wAmosVj6k+jgnek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=UKj1+9Lv; arc=none smtp.client-ip=205.220.180.131
+	 In-Reply-To:Content-Type; b=ulBZslGnwheToD90PqylR8+AbZIK47GsK4ZoEQcjMlkGt+zMYVP2n3dWeIOgZttdN0W3ztUscb6OZiYsgSOJeOcjHUI5CnYNrbRdXzQxR2nHxfeJS2OFpnGwvP3h0mLdTFfM2My64UI/uAYRwrgpRoad1J2FVkQ/y/0Mf6ydIFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=OP0HNziF; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 4116Q2SP017218;
-	Thu, 1 Feb 2024 18:21:31 GMT
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 411Af26V029719;
+	Thu, 1 Feb 2024 18:28:50 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	message-id:date:mime-version:subject:to:cc:references:from
 	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=9QbPK55qOwnCFgat/5tt4TIiRg6DuX327D3VZLO3Ze8=; b=UK
-	j1+9LvHUF1nCkFv/HY2h8D+fKBIbrkcqMSMmdlfQwnfaO5biuCnVWzRx5o6uByIw
-	LXeq7vUVnVxBEfxhs9ClWbrisIUk4t9ORHNhALEy+wBF5lTunhjP77jo88W8lKyJ
-	AT9F5wC+9jTaRDZYp8VpFt5kmgC23HG9mt3XQLTnuCoYk01K1Zf5hzJ7qAXyOssb
-	MNedHvep/5phh1f0hUZlUTl+HxqYR8RY6R3fm04lnlGBpR3n/xKtWWqDaYRcoqwr
-	kvPi4U2Pnzlyb1LHXhRk/sQirtKqEpEvHCDiYECIBrApV5Rx7AaTp+lvA9lnIm81
-	6aA3j7l4bz4VX/7/qGBA==
+	qcppdkim1; bh=jpV/wJjP2ulgbk3dO9M8ZtNEeMsESVfaPjl1w/A+aX4=; b=OP
+	0HNziFQRKAgC+41TUAkRHQb5tluP2e4TuRm6Vrpz8+XvoCyhx9xZz3RbIl4KnioC
+	Ta1vgsvqJunq/4mpvOKkkc+YaDi+LTp24RAnz/BPipwyFuxq+8fCpwxFSZNVdzux
+	MRQ+ZX+6FCUoF25UT0OYL0qfXOTH+9g5N6VPJr565LXf6IihoRGXyVaVpaqLjtWW
+	tsEc6cyYjd4W8JajMPKm5xc56x9dfZB8yoxSRnxYxFT+XWo1+wAkeJEWxYozEyHd
+	qMdZEDDurP7pgzStp8vlqeO9ZcATDXiPwaEj+fgo7daKXyszaPEOtbK+o4TJOvrG
+	52DoDsfBOmcYAu4MxMLQ==
 Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3w0619hu11-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3w06mnsr4x-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 01 Feb 2024 18:21:31 +0000 (GMT)
+	Thu, 01 Feb 2024 18:28:49 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 411ILU1h024482
+	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 411ISAjM001719
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 1 Feb 2024 18:21:30 GMT
+	Thu, 1 Feb 2024 18:28:10 GMT
 Received: from [10.110.16.197] (10.80.80.8) by nalasex01a.na.qualcomm.com
  (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Thu, 1 Feb
- 2024 10:21:29 -0800
-Message-ID: <acffd9a8-062a-4deb-a996-03fd71d3e357@quicinc.com>
-Date: Thu, 1 Feb 2024 10:21:29 -0800
+ 2024 10:28:09 -0800
+Message-ID: <39db19fd-c75b-4467-ad74-ce52a039a159@quicinc.com>
+Date: Thu, 1 Feb 2024 10:28:08 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,122 +65,106 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: mac80211: trace SMPS requests from driver
+Subject: Re: [PATCH] wifi: mac80211: fix unsolicited broadcast probe config
 Content-Language: en-US
 To: Johannes Berg <johannes@sipsolutions.net>,
         <linux-wireless@vger.kernel.org>
-CC: Johannes Berg <johannes.berg@intel.com>
-References: <20240129195435.b20d2ead2013.I8213e65c274451d523a3397519ac578c3ed2df4d@changeid>
+CC: Johannes Berg <johannes.berg@intel.com>,
+        Aloka Dixit
+	<quic_alokad@quicinc.com>
+References: <20240129195729.965b0740bf80.I6bc6f5236863f686c17d689be541b1dd2633c417@changeid>
 From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20240129195435.b20d2ead2013.I8213e65c274451d523a3397519ac578c3ed2df4d@changeid>
+In-Reply-To: <20240129195729.965b0740bf80.I6bc6f5236863f686c17d689be541b1dd2633c417@changeid>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: i2PxTZG38B6-TQBLwpV0Xph7tsSosUEf
-X-Proofpoint-ORIG-GUID: i2PxTZG38B6-TQBLwpV0Xph7tsSosUEf
+X-Proofpoint-GUID: PKXVkY1nFXW5g5GTCcVyvf_j7CM-KHud
+X-Proofpoint-ORIG-GUID: PKXVkY1nFXW5g5GTCcVyvf_j7CM-KHud
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-01_04,2024-01-31_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- suspectscore=0 clxscore=1015 priorityscore=1501 phishscore=0
- impostorscore=0 bulkscore=0 mlxlogscore=725 malwarescore=0 spamscore=0
- adultscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2401190000 definitions=main-2402010141
+ definitions=2024-02-01_05,2024-01-31_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 priorityscore=1501
+ impostorscore=0 phishscore=0 suspectscore=0 adultscore=0
+ lowpriorityscore=0 mlxlogscore=947 clxscore=1015 malwarescore=0
+ spamscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2401190000 definitions=main-2402010142
 
-On 1/29/2024 10:54 AM, Johannes Berg wrote:
+On 1/29/2024 10:57 AM, Johannes Berg wrote:
 > From: Johannes Berg <johannes.berg@intel.com>
 > 
-> Even if there are a lot of possible ways drivers might
-> call this, at least knowing when they do and with what
-> settings can be useful. Add tracing for it.
+> There's a bug in ieee80211_set_unsol_bcast_probe_resp(), it tries
+> to return BSS_CHANGED_UNSOL_BCAST_PROBE_RESP (which has the value
+> 1<<31) in an int, which makes it negative and considered an error.
+> Fix this by passing the changed flags to set separately.
 > 
+> Fixes: 3b1c256eb4ae ("wifi: mac80211: fixes in FILS discovery updates")
 > Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+
+Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+
 > ---
->  net/mac80211/ht.c    |  4 +++-
->  net/mac80211/trace.h | 31 ++++++++++++++++++++++++++++++-
->  2 files changed, 33 insertions(+), 2 deletions(-)
+>  net/mac80211/cfg.c | 14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
 > 
-> diff --git a/net/mac80211/ht.c b/net/mac80211/ht.c
-> index cfe2653ed47f..c3330aea4da3 100644
-> --- a/net/mac80211/ht.c
-> +++ b/net/mac80211/ht.c
-> @@ -9,7 +9,7 @@
->   * Copyright 2007, Michael Wu <flamingice@sourmilk.net>
->   * Copyright 2007-2010, Intel Corporation
->   * Copyright 2017	Intel Deutschland GmbH
-> - * Copyright(c) 2020-2023 Intel Corporation
-> + * Copyright(c) 2020-2024 Intel Corporation
+> diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+> index 321698012e12..327682995c92 100644
+> --- a/net/mac80211/cfg.c
+> +++ b/net/mac80211/cfg.c
+> @@ -5,7 +5,7 @@
+>   * Copyright 2006-2010	Johannes Berg <johannes@sipsolutions.net>
+>   * Copyright 2013-2015  Intel Mobile Communications GmbH
+>   * Copyright (C) 2015-2017 Intel Deutschland GmbH
+> - * Copyright (C) 2018-2022 Intel Corporation
+> + * Copyright (C) 2018-2024 Intel Corporation
 >   */
 >  
 >  #include <linux/ieee80211.h>
-> @@ -603,6 +603,8 @@ void ieee80211_request_smps(struct ieee80211_vif *vif, unsigned int link_id,
->  	if (WARN_ON(!link))
->  		goto out;
+> @@ -987,7 +987,8 @@ static int
+>  ieee80211_set_unsol_bcast_probe_resp(struct ieee80211_sub_if_data *sdata,
+>  				     struct cfg80211_unsol_bcast_probe_resp *params,
+>  				     struct ieee80211_link_data *link,
+> -				     struct ieee80211_bss_conf *link_conf)
+> +				     struct ieee80211_bss_conf *link_conf,
+> +				     u64 *changed)
+>  {
+>  	struct unsol_bcast_probe_resp_data *new, *old = NULL;
 >  
-> +	trace_api_request_smps(sdata->local, sdata, link, smps_mode);
-> +
->  	if (link->u.mgd.driver_smps_mode == smps_mode)
->  		goto out;
+> @@ -1011,7 +1012,8 @@ ieee80211_set_unsol_bcast_probe_resp(struct ieee80211_sub_if_data *sdata,
+>  		RCU_INIT_POINTER(link->u.ap.unsol_bcast_probe_resp, NULL);
+>  	}
 >  
-> diff --git a/net/mac80211/trace.h b/net/mac80211/trace.h
-> index 2d0d969f0c3d..806e762aa546 100644
-> --- a/net/mac80211/trace.h
-> +++ b/net/mac80211/trace.h
-> @@ -2,7 +2,7 @@
->  /*
->   * Portions of this file
->   * Copyright(c) 2016-2017 Intel Deutschland GmbH
-> - * Copyright (C) 2018 - 2023 Intel Corporation
-> + * Copyright (C) 2018 - 2024 Intel Corporation
->   */
+> -	return BSS_CHANGED_UNSOL_BCAST_PROBE_RESP;
+> +	*changed |= BSS_CHANGED_UNSOL_BCAST_PROBE_RESP;
+> +	return 0;
+>  }
 >  
->  #if !defined(__MAC80211_DRIVER_TRACE) || defined(TRACE_HEADER_MULTI_READ)
-> @@ -3058,6 +3058,35 @@ TRACE_EVENT(api_radar_detected,
->  	)
->  );
+>  static int ieee80211_set_ftm_responder_params(
+> @@ -1450,10 +1452,9 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
 >  
-> +TRACE_EVENT(api_request_smps,
-> +	TP_PROTO(struct ieee80211_local *local,
-> +		 struct ieee80211_sub_if_data *sdata,
-> +		 struct ieee80211_link_data *link,
-> +		 enum ieee80211_smps_mode smps_mode),
-> +
-> +	TP_ARGS(local, sdata, link, smps_mode),
-> +
-> +	TP_STRUCT__entry(
-> +		LOCAL_ENTRY
-> +		VIF_ENTRY
-> +		__field(int, link_id)
-> +		__field(u32, smps_mode)
-> +	),
-> +
-> +	TP_fast_assign(
-> +		LOCAL_ASSIGN;
-> +		VIF_ASSIGN;
-> +		__entry->link_id =
-> +			ieee80211_vif_is_mld(&sdata->vif) ? link->link_id : -1;
-
-why go to this trouble?
-why not just print the link_id that was passed into
-ieee80211_request_smps()? just so non-MLD will give -1 instead of 0?
-seems all of the other existing trace functions just print the link_id
-that was provided
-
-
-> +		__entry->smps_mode = smps_mode;
-> +	),
-> +
-> +	TP_printk(
-> +		LOCAL_PR_FMT " " VIF_PR_FMT " link:%d, smps_mode:%d",
-> +		LOCAL_PR_ARG, VIF_PR_ARG, __entry->link_id, __entry->smps_mode
-> +	)
-> +);
-> +
->  /*
->   * Tracing for internal functions
->   * (which may also be called in response to driver calls)
+>  	err = ieee80211_set_unsol_bcast_probe_resp(sdata,
+>  						   &params->unsol_bcast_probe_resp,
+> -						   link, link_conf);
+> +						   link, link_conf, &changed);
+>  	if (err < 0)
+>  		goto error;
+> -	changed |= err;
+>  
+>  	err = drv_start_ap(sdata->local, sdata, link_conf);
+>  	if (err) {
+> @@ -1525,10 +1526,9 @@ static int ieee80211_change_beacon(struct wiphy *wiphy, struct net_device *dev,
+>  
+>  	err = ieee80211_set_unsol_bcast_probe_resp(sdata,
+>  						   &params->unsol_bcast_probe_resp,
+> -						   link, link_conf);
+> +						   link, link_conf, &changed);
+>  	if (err < 0)
+>  		return err;
+> -	changed |= err;
+>  
+>  	if (beacon->he_bss_color_valid &&
+>  	    beacon->he_bss_color.enabled != link_conf->he_bss_color.enabled) {
 
 
