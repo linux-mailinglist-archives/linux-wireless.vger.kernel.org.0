@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-2942-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2943-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEA52845820
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Feb 2024 13:51:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E53184583C
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Feb 2024 13:54:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC5D11C23E52
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Feb 2024 12:51:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF4A8293187
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Feb 2024 12:54:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14ACC8664F;
-	Thu,  1 Feb 2024 12:51:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ACDC5336C;
+	Thu,  1 Feb 2024 12:53:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S5mIdJ2D"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oXcpROzp"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E103A86645;
-	Thu,  1 Feb 2024 12:51:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A2D3A8D2;
+	Thu,  1 Feb 2024 12:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706791888; cv=none; b=YaJnhVeZAG2OydCyxKYXGZR/q0D9f2vpSFdzYmb4OsM4FnfwDS8F9EeWPc/hRt0WdFKHVBe2lhgc4RF5aeB899/ap+qMefO5ZglGLBr/Ynt8z0qD0nhlrLegx/QWzxNQFUIkcHLa+GkR+lI5nZoxw7zoKDBEMbeABIcNSOjdxk8=
+	t=1706792003; cv=none; b=ZTAOjsNGs5bhoLWplAS78msKqgq2i8WZIVFoBz6WvozEGTA3DwyuJtQ7ada6czTuJpWxeyW9r/K+/+Z/pyauqnjkVGiZhZRN6tOTrNxc/guSw0S38QM6WgTfICLdHxb/hxEHkAoy2aQ788/bcdbuS+M7i7izrbgqEwNb+ntc7EY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706791888; c=relaxed/simple;
-	bh=b3tY4mt/lB4gO7ArhC4Qq2/scszVusvI4m/x+JRTHtc=;
+	s=arc-20240116; t=1706792003; c=relaxed/simple;
+	bh=m24lBTyUtO514F3RlBvmhK0NobQndwRBoeE3EG8UpAI=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=UnbKGh/Y6Np5xfFQwi3LjbyJwHSjnWPCqM72jK5C93TsthxNQHDWdHaSblcMCnKDeVNfAchk3zkDXCVtmzGL/CABOi3I6S28FNsSTQYEZj5THxwSRQC0afXgv71n2zsAXSUg3m/sHnsDHkwKsW/ZgQIP/IWfRIUHtyQjkZjvBzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S5mIdJ2D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6465C433C7;
-	Thu,  1 Feb 2024 12:51:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Evo8K/uvs2HUuzFpPQs9lAqHUiuSgf4wa7jWU4J57nRBhpfOb0dl+1Isacgtex35WwRqsunbw4BNPfrkQ5MbxHlhcj5GPBGPWUl2trmpvu91biLqOLMTXLaO5DmQEpN66bo3YTelBdxxOxUXi+dlX/ccPBC7dKGQMxA6i9oqDjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oXcpROzp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01802C43394;
+	Thu,  1 Feb 2024 12:53:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706791887;
-	bh=b3tY4mt/lB4gO7ArhC4Qq2/scszVusvI4m/x+JRTHtc=;
+	s=k20201202; t=1706792002;
+	bh=m24lBTyUtO514F3RlBvmhK0NobQndwRBoeE3EG8UpAI=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=S5mIdJ2DTmRcdefesWcvtN0+XhsW1YFimKKjIJJ6As9JxWh3H0PlhU35SQlnfASvW
-	 b5EOGpLIxpy5YHO0k+gcNFM3rwzV5LFO/YFsm2arMPtcBzC4KGYE35Gvolv7sDUlFG
-	 lCGAk3XH+llnyzNpopP8O2gCcXk60ABFvZ5ZkR5suoui7872r1f9pts3iPJDlAzl36
-	 E8zVGIiqEJCoXwAjJOAgJDMD6qvIO78Bnx8+m2B5N2O8AKptsEeo9Fd1dW4afQq4yY
-	 RnCxGt0wQzYFSY7AWK5DHv8YaGeaWiN3jLo2UBv52abGp8BUo7SYY93RSIqGdwttPn
-	 5gOExDJchKS0A==
+	b=oXcpROzpeZwNLawLFjNcX4K1LX3lPVn2h9Bmf5PEjkMkD22FPlvIjzw/4wE1eiav1
+	 ZmVXv3Ke/tOPplUo2O45LVx3DkU2t+UO+gHm4RDFweFA85wAXFN188vMD0f3dLi5VP
+	 gcFMPdq6ox7zG+jJRdOT3ewMDMDXARVaNSMb/vchaQX29FohZfxodALjj7FSPQhKrK
+	 tRKyTvpISHebqRPxBSq1sKYSpas1oEf1UilaUj0/EO8biGNJoH9SIsUCx68fFFhp97
+	 qU1Nhx3wyq/lqUfh7YbNIhGFV+njscM4wHssk0mrQfvhrltcTAAQvFy9CSYzfMPuR1
+	 3M0Ht50nCP5gA==
 From: Kalle Valo <kvalo@kernel.org>
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: Linus Walleij <linus.walleij@linaro.org>,  Toke =?utf-8?Q?H=C3=B8iland?=
@@ -51,14 +51,13 @@ Cc: Linus Walleij <linus.walleij@linaro.org>,  Toke =?utf-8?Q?H=C3=B8iland?=
  <briannorris@chromium.org>,  Srinivasan Raju <srini.raju@purelifi.com>,
   linux-wireless@vger.kernel.org,  linux-kernel@vger.kernel.org,
   brcm80211-dev-list.pdl@broadcom.com
-Subject: Re: [PATCH 1/6] wifi: ath9k: Obtain system GPIOS from descriptors
+Subject: Re: [PATCH 0/6] Convert some wireless drivers to use GPIO descriptors
 References: <20240131-descriptors-wireless-v1-0-e1c7c5d68746@linaro.org>
-	<20240131-descriptors-wireless-v1-1-e1c7c5d68746@linaro.org>
-	<ZbuDF2-m8oJofpyl@smile.fi.intel.com>
-Date: Thu, 01 Feb 2024 14:51:23 +0200
-In-Reply-To: <ZbuDF2-m8oJofpyl@smile.fi.intel.com> (Andy Shevchenko's message
-	of "Thu, 1 Feb 2024 13:40:07 +0200")
-Message-ID: <878r44uz3o.fsf@kernel.org>
+	<ZbuDqwDUaSIaOI2w@smile.fi.intel.com>
+Date: Thu, 01 Feb 2024 14:53:18 +0200
+In-Reply-To: <ZbuDqwDUaSIaOI2w@smile.fi.intel.com> (Andy Shevchenko's message
+	of "Thu, 1 Feb 2024 13:42:35 +0200")
+Message-ID: <874jesuz0h.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -70,51 +69,18 @@ Content-Type: text/plain
 
 Andy Shevchenko <andriy.shevchenko@linux.intel.com> writes:
 
-> On Wed, Jan 31, 2024 at 11:37:20PM +0100, Linus Walleij wrote:
->
->> The ath9k has an odd use of system-wide GPIOs: if the chip
->> does not have internal GPIO capability, it will try to obtain a
->> GPIO line from the system GPIO controller:
+> On Wed, Jan 31, 2024 at 11:37:19PM +0100, Linus Walleij wrote:
+>> This converts some Wireless network drivers to use GPIO descriptors,
+>> and some just have unused header inclusions.
 >> 
->>   if (BIT(gpio) & ah->caps.gpio_mask)
->>         ath9k_hw_gpio_cfg_wmac(...);
->>   else if (AR_SREV_SOC(ah))
->>         ath9k_hw_gpio_cfg_soc(ah, gpio, out, label);
->> 
->> Where ath9k_hw_gpio_cfg_soc() will attempt to issue
->> gpio_request_one() passing the local GPIO number of the controller
->> (0..31) to gpio_request_one().
->> 
->> This is somewhat peculiar and possibly even dangerous: there is
->> nowadays no guarantee of the numbering of these system-wide
->> GPIOs, and assuming that GPIO 0..31 as used by ath9k would
->> correspond to GPIOs 0..31 on the system as a whole seems a bit
->> wild.
->> 
->> My best guess is that everyone actually using this driver has
->> support for the local (custom) GPIO API and the bit in
->> h->caps.gpio_mask is always set for any GPIO the driver may
->> try to obtain, so this facility to use system-wide GPIOs is
->> actually unused and could be deleted.
->> 
->> Anyway: I cannot know if this is really the case, so implement
->> a fallback handling using GPIO descriptors obtained from the
->> ah->dev device indexed 0..31. These can for example be passed
->> in the device tree, ACPI or through board files. I doubt that
->> anyone will use them, but this makes it possible to obtain a
->> system-wide GPIO for any of the 0..31 GPIOs potentially
->> requested by the driver.
+>> The Intersil PL54 driver is intentionally untouched because Arnd
+>> is cleaning it up fully.
 >
-> ...
->
->> +	/* Obtains a system specific GPIO descriptor from another GPIO controller */
->> +	gpiod = devm_gpiod_get_index(ah->dev, NULL, gpio, flags);
->
->> +
->
-> Unnecessary blank line, please don't add it.
+> Thanks for doing this! We pretty much want to get rid of gpio.h along with
+> of_gpio.h ASAP, that's why I expect this series to be applied in a fastest
+> possible manner.
 
-I can fix that in the pending branch, no need to resend because of this.
+This is for -next, right?
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
