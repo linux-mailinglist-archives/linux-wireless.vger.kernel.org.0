@@ -1,66 +1,66 @@
-Return-Path: <linux-wireless+bounces-2954-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2955-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F6BB8459F7
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Feb 2024 15:20:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 301338459F9
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Feb 2024 15:20:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA69D286B77
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Feb 2024 14:20:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B02CE1F24192
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Feb 2024 14:20:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC8F75D481;
-	Thu,  1 Feb 2024 14:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BA3A8665E;
+	Thu,  1 Feb 2024 14:19:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BX7aU6d8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ay7MPGLL"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D511D5F463
-	for <linux-wireless@vger.kernel.org>; Thu,  1 Feb 2024 14:19:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B32D15D479
+	for <linux-wireless@vger.kernel.org>; Thu,  1 Feb 2024 14:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.55.52.88
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706797195; cv=none; b=IoKE3ZXaaICqLD585zJOpB4YKywiUpMvkjeo9B3K7m5umdjyk/GSyc7Xze/a36mtb2ZYqo9+JblwIF4Twewd7IuAAVIfpaNWAbNDdxpVsZ9rVIakcom9G2+KTdjXssMt0NG544OFoSklJmovFvIfCA+E6r53eyJObEI25X+Z5zc=
+	t=1706797198; cv=none; b=XcHpGAA+vPPlxkCRkl2R7Q0KxFNr/4lI0kh/DosmUA6YEl2rRYucIXlIMWbzmUIr0Y8yU1ZXWds1bZ9zeHIk93W0qN6Al+vXll2xX5WctBVakF0IrOWsUFJeJlewN0sGKWcZ5RIthWZwbwAWZadh8QtLy4rEAwTU5W1u6vouy3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706797195; c=relaxed/simple;
-	bh=hicIJphwWq5Mdn0DSugeCKTrHiqU6dJvLBVAlsIxQVY=;
+	s=arc-20240116; t=1706797198; c=relaxed/simple;
+	bh=FGonfyFoWoWCVR8FchMKklRuBLOCvkgJsxiEq1Irx0M=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RKz7rKghatXKo1C6cTXttqIBb7B5cmszuM/tYfbL1UdKUC72BNBfb1yjyPA4p2t/4pFFIswwZ8meDzQ05gTq8C1dDLNJHSk8EJkxCiAozx+DkPpQKWWOpSiuRUROwpoJMKxtuYSYjV3QCBwH1Yjgnyn8k/+jWUKj0xSC64m45Kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BX7aU6d8; arc=none smtp.client-ip=192.55.52.88
+	 MIME-Version; b=Fq67o1E/3bhuV89eVZJdGQ86GvamB6zKag4CzBwnMe6N34SlZ3Dhw7FFsK4nroMMF7u03s6d2R+8ZH+qkK8aVwxIeYnBsptv5uotYIn4G0Skoal4kmrIDIkBlanlwhBh61R3kP+ykptqbhehBx29/aWOu9Q6hanJDJNiVX5Zi80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ay7MPGLL; arc=none smtp.client-ip=192.55.52.88
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706797193; x=1738333193;
+  t=1706797195; x=1738333195;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=hicIJphwWq5Mdn0DSugeCKTrHiqU6dJvLBVAlsIxQVY=;
-  b=BX7aU6d8PK7OXR2e3y80tNZ/aZ3aOJCD/+KBH/FTkPOQmBQwq7WkdvrS
-   ZHxdaTNSQpbps3/b7HAGP+nYUs1w9Ty1qrh47CIcxJEp2kSItR2HMALLW
-   71TGM+P9OPOzg/mJrsw1yBKnQeFBUsKzd0AmudIMYAFLspl6x5FLlu3bd
-   6Ri3LLAPwDNEGyoVmyb7kh7VoY9GWjYQbcYlnV1n4/GzgxJd7Uvs+R1Rz
-   1AUSYE8LuVhqejwRCerB+wsloCCUigF2Ci07y8exXvLWkhG1IXGVKXGbG
-   FpT5lcI58D/IxPREpSuBgTz+8BF0/9Wsg6u7c1egpOWvIzFqjewJrvpK7
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="435062897"
+  bh=FGonfyFoWoWCVR8FchMKklRuBLOCvkgJsxiEq1Irx0M=;
+  b=Ay7MPGLL5KhNdNr47rYwqoHrSeT0kZjd3fvfpBEZ1baUx7Wb38qVv3Xq
+   pBllwLaFFKKboPTC0zRkiumHxvaWQGajqLitb/HX9H+xhQTNAO2uvToOh
+   Lp0uajt9QcARc4/XqjPIDRX1EnRaJ545nxDIuznZ4qxcGicW3xn8kPit+
+   gVsMjtIhRLSnqPam7WvtfeLr7MoEXU24UKrSOJyLgrtVUMOKQGPnTnyYA
+   3Qw1l6THPxW2x46aRtUIl5tusgD6fgjVuFMJPGI7oXJujCgh2mHOu+sgU
+   KlUaqE2+DfnmtucfptPySqxwXlsVkUu4g69yb9IwOv9fq3/I/CzfORMh1
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="435062908"
 X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
-   d="scan'208";a="435062897"
+   d="scan'208";a="435062908"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2024 06:19:53 -0800
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2024 06:19:55 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
-   d="scan'208";a="94147"
+   d="scan'208";a="94160"
 Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2024 06:19:52 -0800
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2024 06:19:54 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 07/17] wifi: iwlwifi: read WRDD table from UEFI
-Date: Thu,  1 Feb 2024 16:17:31 +0200
-Message-Id: <20240201155157.5d52eeb109f7.I4d81700a7ae7fe2dfee14e363de358be59de7823@changeid>
+Subject: [PATCH 08/17] wifi: iwlwifi: read ECKV table from UEFI
+Date: Thu,  1 Feb 2024 16:17:32 +0200
+Message-Id: <20240201155157.d4937cc00727.I36e5fc7f7850229b9b377c80b5203aa47137c97c@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240201141741.2569180-1-miriam.rachel.korenblit@intel.com>
 References: <20240201141741.2569180-1-miriam.rachel.korenblit@intel.com>
@@ -73,221 +73,223 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-Try to read the WRDD table from UEFI first,
+Try to read the ECKV table from UEFI first,
 and if the WIFI UEFI tables are unlocked or the
 table doesn't exist - try to read it from ACPI.
 
-Change iwl_acpi_get_mcc() to receive fwrt as argument so
+Change iwl_acpi_get_eckv() to receive fwrt as argument so
 it will be the same as all iwl_acpi_get_x() functions,
-so it could be generated by the macro.
+so it could  be generated by the macro.
+
+While at it - move the reading of ECKV to INIT stage. There is no
+reason to read it each time we load the FW.
 
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/acpi.c  |  8 ++---
- drivers/net/wireless/intel/iwlwifi/fw/acpi.h  |  6 ++--
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c  |  8 +++----
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.h  |  6 ++---
  .../wireless/intel/iwlwifi/fw/regulatory.c    |  1 +
- .../wireless/intel/iwlwifi/fw/regulatory.h    |  2 ++
- drivers/net/wireless/intel/iwlwifi/fw/uefi.c  | 31 +++++++++++++++++++
- drivers/net/wireless/intel/iwlwifi/fw/uefi.h  | 19 ++++++++++++
- drivers/net/wireless/intel/iwlwifi/mvm/nvm.c  |  2 +-
- 7 files changed, 61 insertions(+), 8 deletions(-)
+ .../wireless/intel/iwlwifi/fw/regulatory.h    |  1 +
+ drivers/net/wireless/intel/iwlwifi/fw/uefi.c  | 22 +++++++++++++++++++
+ drivers/net/wireless/intel/iwlwifi/fw/uefi.h  | 17 ++++++++++++++
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |  6 ++---
+ 7 files changed, 51 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-index e74745f939ae..ad04d0ebf081 100644
+index ad04d0ebf081..7b422ebe2241 100644
 --- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
 +++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-@@ -326,17 +326,18 @@ int iwl_acpi_get_tas_table(struct iwl_fw_runtime *fwrt,
+@@ -386,16 +386,17 @@ int iwl_acpi_get_pwr_limit(struct iwl_fw_runtime *fwrt, u64 *dflt_pwr_limit)
  	return ret;
  }
  
--int iwl_acpi_get_mcc(struct device *dev, char *mcc)
-+int iwl_acpi_get_mcc(struct iwl_fw_runtime *fwrt, char *mcc)
+-int iwl_acpi_get_eckv(struct device *dev, u32 *extl_clk)
++int iwl_acpi_get_eckv(struct iwl_fw_runtime *fwrt, u32 *extl_clk)
  {
  	union acpi_object *wifi_pkg, *data;
- 	u32 mcc_val;
  	int ret, tbl_rev;
  
--	data = iwl_acpi_get_object(dev, ACPI_WRDD_METHOD);
-+	data = iwl_acpi_get_object(fwrt->dev, ACPI_WRDD_METHOD);
+-	data = iwl_acpi_get_object(dev, ACPI_ECKV_METHOD);
++	data = iwl_acpi_get_object(fwrt->dev, ACPI_ECKV_METHOD);
  	if (IS_ERR(data))
  		return PTR_ERR(data);
  
--	wifi_pkg = iwl_acpi_get_wifi_pkg(dev, data, ACPI_WRDD_WIFI_DATA_SIZE,
+-	wifi_pkg = iwl_acpi_get_wifi_pkg(dev, data, ACPI_ECKV_WIFI_DATA_SIZE,
 +	wifi_pkg = iwl_acpi_get_wifi_pkg(fwrt->dev, data,
-+					 ACPI_WRDD_WIFI_DATA_SIZE,
++					 ACPI_ECKV_WIFI_DATA_SIZE,
  					 &tbl_rev);
  	if (IS_ERR(wifi_pkg)) {
  		ret = PTR_ERR(wifi_pkg);
-@@ -360,7 +361,6 @@ int iwl_acpi_get_mcc(struct device *dev, char *mcc)
+@@ -416,7 +417,6 @@ int iwl_acpi_get_eckv(struct device *dev, u32 *extl_clk)
  	kfree(data);
  	return ret;
  }
--IWL_EXPORT_SYMBOL(iwl_acpi_get_mcc);
+-IWL_EXPORT_SYMBOL(iwl_acpi_get_eckv);
  
- int iwl_acpi_get_pwr_limit(struct iwl_fw_runtime *fwrt, u64 *dflt_pwr_limit)
- {
+ static int iwl_acpi_sar_set_profile(union acpi_object *table,
+ 				    struct iwl_sar_profile *profile,
 diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.h b/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
-index f0ed7174a951..1cb9271158e7 100644
+index 1cb9271158e7..ac6655c1f777 100644
 --- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
 +++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
-@@ -149,12 +149,12 @@ int iwl_acpi_get_dsm_u32(struct device *dev, int rev, int func,
- /**
-  * iwl_acpi_get_mcc - read MCC from ACPI, if available
+@@ -161,13 +161,13 @@ int iwl_acpi_get_pwr_limit(struct iwl_fw_runtime *fwrt, u64 *dflt_pwr_limit);
+ /*
+  * iwl_acpi_get_eckv - read external clock validation from ACPI, if available
   *
 - * @dev: the struct device
 + * @fwrt: the fw runtime struct
-  * @mcc: output buffer (3 bytes) that will get the MCC
+  * @extl_clk: output var (2 bytes) that will get the clk indication.
   *
-  * This function tries to read the current MCC from ACPI if available.
+  * This function tries to read the external clock indication
+  * from ACPI if available.
   */
--int iwl_acpi_get_mcc(struct device *dev, char *mcc);
-+int iwl_acpi_get_mcc(struct iwl_fw_runtime *fwrt, char *mcc);
+-int iwl_acpi_get_eckv(struct device *dev, u32 *extl_clk);
++int iwl_acpi_get_eckv(struct iwl_fw_runtime *fwrt, u32 *extl_clk);
  
- int iwl_acpi_get_pwr_limit(struct iwl_fw_runtime *fwrt, u64 *dflt_pwr_limit);
+ int iwl_acpi_get_wrds_table(struct iwl_fw_runtime *fwrt);
  
-@@ -207,7 +207,7 @@ static inline int iwl_acpi_get_dsm_u32(struct device *dev, int rev, int func,
- 	return -ENOENT;
+@@ -219,7 +219,7 @@ static inline int iwl_acpi_get_pwr_limit(struct iwl_fw_runtime *fwrt,
+ 	return 0;
  }
  
--static inline int iwl_acpi_get_mcc(struct device *dev, char *mcc)
-+static inline int iwl_acpi_get_mcc(struct iwl_fw_runtime *fwrt, char *mcc)
+-static inline int iwl_acpi_get_eckv(struct device *dev, u32 *extl_clk)
++static inline int iwl_acpi_get_eckv(struct iwl_fw_runtime *fwrt, u32 *extl_clk)
  {
  	return -ENOENT;
  }
 diff --git a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c
-index 452c7cc49c27..65022b1c1511 100644
+index 65022b1c1511..bb07fbfd81eb 100644
 --- a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c
 +++ b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c
-@@ -36,6 +36,7 @@ IWL_BIOS_TABLE_LOADER(wgds_table);
- IWL_BIOS_TABLE_LOADER(ppag_table);
+@@ -37,6 +37,7 @@ IWL_BIOS_TABLE_LOADER(ppag_table);
  IWL_BIOS_TABLE_LOADER_DATA(tas_table, struct iwl_tas_data);
  IWL_BIOS_TABLE_LOADER_DATA(pwr_limit, u64);
-+IWL_BIOS_TABLE_LOADER_DATA(mcc, char);
+ IWL_BIOS_TABLE_LOADER_DATA(mcc, char);
++IWL_BIOS_TABLE_LOADER_DATA(eckv, u32);
  
  
  static const struct dmi_system_id dmi_ppag_approved_list[] = {
 diff --git a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h
-index b391c6fc3bcc..f75ca5f7faaf 100644
+index f75ca5f7faaf..ec408c06235d 100644
 --- a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h
 +++ b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h
-@@ -139,4 +139,6 @@ int iwl_bios_get_tas_table(struct iwl_fw_runtime *fwrt,
- 
- int iwl_bios_get_pwr_limit(struct iwl_fw_runtime *fwrt,
+@@ -141,4 +141,5 @@ int iwl_bios_get_pwr_limit(struct iwl_fw_runtime *fwrt,
  			   u64 *dflt_pwr_limit);
-+
-+int iwl_bios_get_mcc(struct iwl_fw_runtime *fwrt, char *mcc);
+ 
+ int iwl_bios_get_mcc(struct iwl_fw_runtime *fwrt, char *mcc);
++int iwl_bios_get_eckv(struct iwl_fw_runtime *fwrt, u32 *ext_clk);
  #endif /* __fw_regulatory_h__ */
 diff --git a/drivers/net/wireless/intel/iwlwifi/fw/uefi.c b/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
-index 5ec82205be12..cd897ad504d6 100644
+index cd897ad504d6..4454fae84d1f 100644
 --- a/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
 +++ b/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
-@@ -621,3 +621,34 @@ int iwl_uefi_get_pwr_limit(struct iwl_fw_runtime *fwrt,
+@@ -652,3 +652,25 @@ int iwl_uefi_get_mcc(struct iwl_fw_runtime *fwrt, char *mcc)
  	kfree(data);
  	return ret;
  }
 +
-+int iwl_uefi_get_mcc(struct iwl_fw_runtime *fwrt, char *mcc)
++int iwl_uefi_get_eckv(struct iwl_fw_runtime *fwrt, u32 *extl_clk)
 +{
-+	struct uefi_cnv_var_wrdd *data;
++	struct uefi_cnv_var_eckv *data;
 +	int ret = 0;
 +
-+	data = iwl_uefi_get_verified_variable(fwrt->trans, IWL_UEFI_WRDD_NAME,
-+					      "WRDD", sizeof(*data), NULL);
++	data = iwl_uefi_get_verified_variable(fwrt->trans, IWL_UEFI_ECKV_NAME,
++					      "ECKV", sizeof(*data), NULL);
 +	if (IS_ERR(data))
 +		return -EINVAL;
 +
-+	if (data->revision != IWL_UEFI_WRDD_REVISION) {
++	if (data->revision != IWL_UEFI_ECKV_REVISION) {
 +		ret = -EINVAL;
 +		IWL_DEBUG_RADIO(fwrt, "Unsupported UEFI WRDD revision:%d\n",
 +				data->revision);
 +		goto out;
 +	}
-+
-+	if (data->mcc != UEFI_MCC_CHINA) {
-+		ret = -EINVAL;
-+		IWL_DEBUG_RADIO(fwrt, "UEFI WRDD is supported only for CN\n");
-+		goto out;
-+	}
-+
-+	mcc[0] = (data->mcc >> 8) & 0xff;
-+	mcc[1] = data->mcc & 0xff;
-+	mcc[2] = '\0';
++	*extl_clk = data->ext_clock_valid;
 +out:
 +	kfree(data);
 +	return ret;
 +}
 diff --git a/drivers/net/wireless/intel/iwlwifi/fw/uefi.h b/drivers/net/wireless/intel/iwlwifi/fw/uefi.h
-index 4cf3af576920..62bbd5c992b9 100644
+index 62bbd5c992b9..723933b0b2f1 100644
 --- a/drivers/net/wireless/intel/iwlwifi/fw/uefi.h
 +++ b/drivers/net/wireless/intel/iwlwifi/fw/uefi.h
-@@ -18,6 +18,7 @@
- #define IWL_UEFI_PPAG_NAME		L"UefiCnvWlanPPAG"
+@@ -19,6 +19,7 @@
  #define IWL_UEFI_WTAS_NAME		L"UefiCnvWlanWTAS"
  #define IWL_UEFI_SPLC_NAME		L"UefiCnvWlanSPLC"
-+#define IWL_UEFI_WRDD_NAME		L"UefiCnvWlanWRDD"
+ #define IWL_UEFI_WRDD_NAME		L"UefiCnvWlanWRDD"
++#define IWL_UEFI_ECKV_NAME		L"UefiCnvWlanECKV"
  
  
  #define IWL_SGOM_MAP_SIZE		339
-@@ -30,6 +31,7 @@
- #define IWL_UEFI_MAX_PPAG_REV		3
+@@ -32,6 +33,7 @@
  #define IWL_UEFI_WTAS_REVISION		1
  #define IWL_UEFI_SPLC_REVISION		0
-+#define IWL_UEFI_WRDD_REVISION		0
+ #define IWL_UEFI_WRDD_REVISION		0
++#define IWL_UEFI_ECKV_REVISION		0
  
  struct pnvm_sku_package {
  	u8 rev;
-@@ -142,6 +144,17 @@ struct uefi_cnv_var_splc {
- 	u32 default_pwr_limit;
+@@ -155,6 +157,15 @@ struct uefi_cnv_var_wrdd {
+ 	u32 mcc;
  } __packed;
  
-+#define UEFI_MCC_CHINA 0x434e
-+
-+/* struct uefi_cnv_var_wrdd - WRDD table as defined in UEFI
++/* struct uefi_cnv_var_eckv - ECKV table as defined in UEFI
 + * @revision: the revision of the table
-+ * @mcc: country identifier as defined in ISO/IEC 3166-1 Alpha 2 code
++ * @ext_clock_valid: indicates if external 32KHz clock is valid
 + */
-+struct uefi_cnv_var_wrdd {
++struct uefi_cnv_var_eckv {
 +	u8 revision;
-+	u32 mcc;
++	u32 ext_clock_valid;
 +} __packed;
 +
  /*
   * This is known to be broken on v4.19 and to work on v5.4.  Until we
   * figure out why this is the case and how to make it work, simply
-@@ -164,6 +177,7 @@ int iwl_uefi_get_tas_table(struct iwl_fw_runtime *fwrt,
- 			   struct iwl_tas_data *data);
+@@ -178,6 +189,7 @@ int iwl_uefi_get_tas_table(struct iwl_fw_runtime *fwrt,
  int iwl_uefi_get_pwr_limit(struct iwl_fw_runtime *fwrt,
  			   u64 *dflt_pwr_limit);
-+int iwl_uefi_get_mcc(struct iwl_fw_runtime *fwrt, char *mcc);
+ int iwl_uefi_get_mcc(struct iwl_fw_runtime *fwrt, char *mcc);
++int iwl_uefi_get_eckv(struct iwl_fw_runtime *fwrt, u32 *extl_clk);
  #else /* CONFIG_EFI */
  static inline void *iwl_uefi_get_pnvm(struct iwl_trans *trans, size_t *len)
  {
-@@ -227,6 +241,11 @@ static inline int iwl_uefi_get_pwr_limit(struct iwl_fw_runtime *fwrt,
- 	*dflt_pwr_limit = 0;
- 	return 0;
+@@ -246,6 +258,11 @@ static inline int iwl_uefi_get_mcc(struct iwl_fw_runtime *fwrt, char *mcc)
+ {
+ 	return -ENOENT;
  }
 +
-+static inline int iwl_uefi_get_mcc(struct iwl_fw_runtime *fwrt, char *mcc)
++static inline int iwl_uefi_get_eckv(struct iwl_fw_runtime *fwrt, u32 *extl_clk)
 +{
 +	return -ENOENT;
 +}
  #endif /* CONFIG_EFI */
  
  #if defined(CONFIG_EFI) && defined(CONFIG_ACPI)
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c b/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
-index c0dd441e800e..ae8177222881 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
-@@ -590,7 +590,7 @@ int iwl_mvm_init_mcc(struct iwl_mvm *mvm)
- 		return -EIO;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+index 72f8a6cf20c7..fea2e8a5102d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+@@ -1409,6 +1409,9 @@ void iwl_mvm_get_bios_tables(struct iwl_mvm *mvm)
+ 	}
  
- 	if (iwl_mvm_is_wifi_mcc_supported(mvm) &&
--	    !iwl_acpi_get_mcc(mvm->dev, mcc)) {
-+	    !iwl_bios_get_mcc(&mvm->fwrt, mcc)) {
- 		kfree(regd);
- 		regd = iwl_mvm_get_regdomain(mvm->hw->wiphy, mcc,
- 					     MCC_SOURCE_BIOS, NULL);
+ 	iwl_acpi_get_phy_filters(&mvm->fwrt, &mvm->phy_filters);
++
++	if (iwl_bios_get_eckv(&mvm->fwrt, &mvm->ext_clock_valid))
++		IWL_DEBUG_RADIO(mvm, "ECKV table doesn't exist in BIOS\n");
+ }
+ 
+ static void iwl_mvm_disconnect_iterator(void *data, u8 *mac,
+@@ -1705,9 +1708,6 @@ int iwl_mvm_up(struct iwl_mvm *mvm)
+ 	if (!mvm->ptp_data.ptp_clock)
+ 		iwl_mvm_ptp_init(mvm);
+ 
+-	if (iwl_acpi_get_eckv(mvm->dev, &mvm->ext_clock_valid))
+-		IWL_DEBUG_INFO(mvm, "ECKV table doesn't exist in BIOS\n");
+-
+ 	ret = iwl_mvm_ppag_init(mvm);
+ 	if (ret)
+ 		goto error;
 -- 
 2.34.1
 
