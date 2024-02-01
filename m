@@ -1,83 +1,109 @@
-Return-Path: <linux-wireless+bounces-2937-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2938-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9463845522
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Feb 2024 11:21:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D07E78455D9
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Feb 2024 11:57:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64B7228307F
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Feb 2024 10:21:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F3591F22F2A
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Feb 2024 10:57:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 519FF15B96B;
-	Thu,  1 Feb 2024 10:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72020158D9A;
+	Thu,  1 Feb 2024 10:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lwq0jZUI"
+	dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b="eShVOcAM"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2419A4DA06;
-	Thu,  1 Feb 2024 10:21:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5965A15B973;
+	Thu,  1 Feb 2024 10:57:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.95.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706782876; cv=none; b=MNQ79MMmxh8WyHRpnBYRPdDIUPN2mQ03gGreHCl3a9tO7D45H/N4l3EcWs3B2CMMNSfCFrfRRWa46/VB8sV1KfNECQ7jawnfPluUtt9n8rCUaaTuNB4Fz6d+803HuRXOCARJA9wfCQzOMGdV8XHMBRztc1CLcWxbRCYbMP7MCbk=
+	t=1706785045; cv=none; b=abr3rwNokHf8Xaf/+gDHLhAOgXuHAHE1lbiJbaKhmS+yHvRJmSecf6G5XVIEQzVaDlTl6Zlmyszq9tr1S/b6JZoWQWZdcP1y6rFA4v6E0RzF/pYmM5YqRCZiQnoO9bIWl+6pRNvQ2G8Hy7J1XDjBQ1MS8gWiN5CAfD5XAfh91qM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706782876; c=relaxed/simple;
-	bh=p7kLDUFLd7rjovPMsYMtGm/nnUJKbjK4ZofGZ628x0I=;
-	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=MQbJNXTJtzCSPJ0ICGT6PfBzZV8sCf/FX4ydWvZ7C0zt3ZZ5QW6hnt1Q4UJ+SwU0UbEg2N5p97q7QyN+nWgnItV3+BwmdObrr3J+ExuNJYyMsyBmNP+b9iEhGcc4oZbeNHvqvIJxn6g6NN0o4okqK3dQB0m06Yuc+BjUq7uabW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lwq0jZUI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 706CAC433F1;
-	Thu,  1 Feb 2024 10:21:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706782876;
-	bh=p7kLDUFLd7rjovPMsYMtGm/nnUJKbjK4ZofGZ628x0I=;
-	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=Lwq0jZUI+6qSM0K9t6B8VaFbzBEYKAf0CywnG68NDwn/9EZFB+Xa3pCdh54PhW3dd
-	 rofkx03iV1nGm++sTu6iazQGTtQ7npoh15RYzhkEzEnx63FSA7pp0XoROeAef74ggx
-	 nxRatuZgZWcy76gncBOF56OxJKTNd57vqiN6fsE7Bdb6dC67UX+hgMUNpOLZAs9K2i
-	 0D/c0U2gszkQ4U3nYAl/+kJjPVA1XisknsRx7AdtVrk/PEKoZjQfb9bdLnyw6T8WfQ
-	 fXxFrjEb68ZosiRNILjvnjKvN37oR6qz3LRdW1zE7zMmTFDY/PwHKOxE+4WDE67+XI
-	 bf2EX0rXdtjQg==
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1706785045; c=relaxed/simple;
+	bh=TobCazIkkY/DGv6KVites0C1Weh4sD9kwXNvynrufss=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=eIE1tD3khz7n8+YRyDw79zundERn0eMY6vLYbrmohcSxYB9HjmwT6aWDsnCovJrHxhO7ps6dKFMPyph6PkGoNZzFdzbUa1tOq7qrxYI9zNq+69Jou7mMBDKB9iR+ccLc7QwXSFX2BtAfiEf70/glCnRbpnfV8E+9MiRrGzLsra0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk; spf=pass smtp.mailfrom=toke.dk; dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b=eShVOcAM; arc=none smtp.client-ip=45.145.95.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
+From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
+	t=1706785029; bh=TobCazIkkY/DGv6KVites0C1Weh4sD9kwXNvynrufss=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=eShVOcAMm+cB+X0RWgH5IO3/4QM6fJlOkepkyv9YFeLf9Ubga5dDB0QYXpoKJIYWD
+	 zTXLuhWsmkSJv1OJd+fZUH9O3184GgJ97cZCPTDO4GEtQyOLZ61hjV9KNHlfkdGZrt
+	 sqy496ZNlUE9OaYrNn126NvH86DetjmwS0NO+BjMN2wbhFyZfHzKkAn6fQeCDmTuiN
+	 ucFXyauK26qHskcEJgfY/rAbaeBHTQsyEh5x0o+sWJyypkOvrdeqV4J1RmzNGWV1MG
+	 U6rIdftsYYAsUSiCaIvDkMGxKiWXT/l4L/L9bLTgHSqESniazOnDVhW/oJWjuogy1C
+	 D35hkn76NvQyA==
+To: Linus Walleij <linus.walleij@linaro.org>, Kalle Valo <kvalo@kernel.org>,
+ Arend van Spriel <aspriel@gmail.com>, Franky Lin
+ <franky.lin@broadcom.com>, Hante Meuleman <hante.meuleman@broadcom.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Arnd Bergmann
+ <arnd@arndb.de>, Lee Jones <lee@kernel.org>, Brian Norris
+ <briannorris@chromium.org>, Srinivasan Raju <srini.raju@purelifi.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ brcm80211-dev-list.pdl@broadcom.com, Linus Walleij
+ <linus.walleij@linaro.org>
+Subject: Re: [PATCH 1/6] wifi: ath9k: Obtain system GPIOS from descriptors
+In-Reply-To: <20240131-descriptors-wireless-v1-1-e1c7c5d68746@linaro.org>
+References: <20240131-descriptors-wireless-v1-0-e1c7c5d68746@linaro.org>
+ <20240131-descriptors-wireless-v1-1-e1c7c5d68746@linaro.org>
+Date: Thu, 01 Feb 2024 11:57:09 +0100
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <874jeszc3e.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: rtl8xxxu: fix error messages
-From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <7b144531-a8da-4725-8911-9b614a525a35@moroto.mountain>
-References: <7b144531-a8da-4725-8911-9b614a525a35@moroto.mountain>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Martin Kaistra <martin.kaistra@linutronix.de>,
- Jes Sorensen <Jes.Sorensen@gmail.com>, Ping-Ke Shih <pkshih@realtek.com>,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- kernel-janitors@vger.kernel.org
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170678287278.2736043.14378506532887522258.kvalo@kernel.org>
-Date: Thu,  1 Feb 2024 10:21:14 +0000 (UTC)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Dan Carpenter <dan.carpenter@linaro.org> wrote:
+Linus Walleij <linus.walleij@linaro.org> writes:
 
-> The first parameter of WARN_ONCE() is a condition so this code will end
-> up printing the function name instead of the proper message.
-> 
-> Fixes: 3ff7a05996f9 ("wifi: rtl8xxxu: support setting bssid register for multiple interfaces")
-> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-> Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+> The ath9k has an odd use of system-wide GPIOs: if the chip
+> does not have internal GPIO capability, it will try to obtain a
+> GPIO line from the system GPIO controller:
+>
+>   if (BIT(gpio) & ah->caps.gpio_mask)
+>         ath9k_hw_gpio_cfg_wmac(...);
+>   else if (AR_SREV_SOC(ah))
+>         ath9k_hw_gpio_cfg_soc(ah, gpio, out, label);
+>
+> Where ath9k_hw_gpio_cfg_soc() will attempt to issue
+> gpio_request_one() passing the local GPIO number of the controller
+> (0..31) to gpio_request_one().
+>
+> This is somewhat peculiar and possibly even dangerous: there is
+> nowadays no guarantee of the numbering of these system-wide
+> GPIOs, and assuming that GPIO 0..31 as used by ath9k would
+> correspond to GPIOs 0..31 on the system as a whole seems a bit
+> wild.
+>
+> My best guess is that everyone actually using this driver has
+> support for the local (custom) GPIO API and the bit in
+> h->caps.gpio_mask is always set for any GPIO the driver may
+> try to obtain, so this facility to use system-wide GPIOs is
+> actually unused and could be deleted.
+>
+> Anyway: I cannot know if this is really the case, so implement
+> a fallback handling using GPIO descriptors obtained from the
+> ah->dev device indexed 0..31. These can for example be passed
+> in the device tree, ACPI or through board files. I doubt that
+> anyone will use them, but this makes it possible to obtain a
+> system-wide GPIO for any of the 0..31 GPIOs potentially
+> requested by the driver.
+>
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 
-Patch applied to wireless-next.git, thanks.
+This seems reasonable, thanks!
 
-17903a283593 wifi: rtl8xxxu: fix error messages
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/7b144531-a8da-4725-8911-9b614a525a35@moroto.mountain/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
 
