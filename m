@@ -1,66 +1,67 @@
-Return-Path: <linux-wireless+bounces-2955-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2956-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 301338459F9
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Feb 2024 15:20:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 216A88459FC
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Feb 2024 15:20:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B02CE1F24192
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Feb 2024 14:20:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8AF301F268E5
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Feb 2024 14:20:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BA3A8665E;
-	Thu,  1 Feb 2024 14:19:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05E0C5CDF5;
+	Thu,  1 Feb 2024 14:20:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ay7MPGLL"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MNvzgqXa"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B32D15D479
-	for <linux-wireless@vger.kernel.org>; Thu,  1 Feb 2024 14:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58755F47A
+	for <linux-wireless@vger.kernel.org>; Thu,  1 Feb 2024 14:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.55.52.88
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706797198; cv=none; b=XcHpGAA+vPPlxkCRkl2R7Q0KxFNr/4lI0kh/DosmUA6YEl2rRYucIXlIMWbzmUIr0Y8yU1ZXWds1bZ9zeHIk93W0qN6Al+vXll2xX5WctBVakF0IrOWsUFJeJlewN0sGKWcZ5RIthWZwbwAWZadh8QtLy4rEAwTU5W1u6vouy3A=
+	t=1706797202; cv=none; b=EPbUQKbRZPLJs4dJdrO/QBjISzZso1SBUjk5TVJ601/GNQDrikdFJCCYNNq8s8F1I26sd2y1qs+jXNiuu0tPMkqzxhmOWfGwJsB3L1G12WcNTO5n8x9k4jPp/OzTg9q67jL2TX8dYiLp0in9wqEdNJqtNFmQcgXXDn6037nLNZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706797198; c=relaxed/simple;
-	bh=FGonfyFoWoWCVR8FchMKklRuBLOCvkgJsxiEq1Irx0M=;
+	s=arc-20240116; t=1706797202; c=relaxed/simple;
+	bh=kgCKBcAGwKX6EvvAxh6TN7JpKR5r0GckmmVua3jY3EE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Fq67o1E/3bhuV89eVZJdGQ86GvamB6zKag4CzBwnMe6N34SlZ3Dhw7FFsK4nroMMF7u03s6d2R+8ZH+qkK8aVwxIeYnBsptv5uotYIn4G0Skoal4kmrIDIkBlanlwhBh61R3kP+ykptqbhehBx29/aWOu9Q6hanJDJNiVX5Zi80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ay7MPGLL; arc=none smtp.client-ip=192.55.52.88
+	 MIME-Version; b=TcJEyECFuEa7z7nQfSbYnAk3II+vellRICYoXI8UNHXGBmMxYXrNikHLwBOiDOpkSeReau7Z65m1mnFTCGjd0qimU1k2LqzFwQ8jHGaV/sl6WydpD1VxRbQcxMbXRW+WwaMm48Z9w+40TX9awbIo9KNlOZKWWV7zycQKnhYZybk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MNvzgqXa; arc=none smtp.client-ip=192.55.52.88
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706797195; x=1738333195;
+  t=1706797201; x=1738333201;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=FGonfyFoWoWCVR8FchMKklRuBLOCvkgJsxiEq1Irx0M=;
-  b=Ay7MPGLL5KhNdNr47rYwqoHrSeT0kZjd3fvfpBEZ1baUx7Wb38qVv3Xq
-   pBllwLaFFKKboPTC0zRkiumHxvaWQGajqLitb/HX9H+xhQTNAO2uvToOh
-   Lp0uajt9QcARc4/XqjPIDRX1EnRaJ545nxDIuznZ4qxcGicW3xn8kPit+
-   gVsMjtIhRLSnqPam7WvtfeLr7MoEXU24UKrSOJyLgrtVUMOKQGPnTnyYA
-   3Qw1l6THPxW2x46aRtUIl5tusgD6fgjVuFMJPGI7oXJujCgh2mHOu+sgU
-   KlUaqE2+DfnmtucfptPySqxwXlsVkUu4g69yb9IwOv9fq3/I/CzfORMh1
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="435062908"
+  bh=kgCKBcAGwKX6EvvAxh6TN7JpKR5r0GckmmVua3jY3EE=;
+  b=MNvzgqXaE4x+pPZ/l+244k7dJx/ENRQvqD+kLcek2XwfnnSgvEFLNBEh
+   sBhQ0KxCAAAiW4qAVkC0OhV7hZHe22kfUjgX6NET6HfZ1/B7GJw4CutQL
+   a2ePV5AtoULomyFCKApJz13y0OWKJU2j0XBIZj5Zi6W/FJih/0QN259uk
+   HxyMNhjsMLsAASw7lCWiJ9wd6dj4n19/gIog+2DtzXcBDc7F9rOQPM7ry
+   iRQTKA8T1Hi20l4j8Edr42zx8LzRppaRM7VArhAOklkoGp6xxbb8ZrNHE
+   QmfQ4xcIeJqJBpxfgKMLkV2zvnZK7bL/wGMmsvoIrTl7yc8jJxn24H9x0
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="435062922"
 X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
-   d="scan'208";a="435062908"
+   d="scan'208";a="435062922"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2024 06:19:55 -0800
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2024 06:19:58 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
-   d="scan'208";a="94160"
+   d="scan'208";a="94178"
 Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2024 06:19:54 -0800
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2024 06:19:57 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
+	Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
 	Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 08/17] wifi: iwlwifi: read ECKV table from UEFI
-Date: Thu,  1 Feb 2024 16:17:32 +0200
-Message-Id: <20240201155157.d4937cc00727.I36e5fc7f7850229b9b377c80b5203aa47137c97c@changeid>
+Subject: [PATCH 09/17] wifi: iwlwifi: rfi: use a single DSM function for all RFI configurations
+Date: Thu,  1 Feb 2024 16:17:33 +0200
+Message-Id: <20240201155157.f4e62435310d.I4f9b6860dd8e3c7ae1f816be5ff8b5967eee266f@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240201141741.2569180-1-miriam.rachel.korenblit@intel.com>
 References: <20240201141741.2569180-1-miriam.rachel.korenblit@intel.com>
@@ -73,223 +74,153 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-Try to read the ECKV table from UEFI first,
-and if the WIFI UEFI tables are unlocked or the
-table doesn't exist - try to read it from ACPI.
+RFI configuration moved from internal guid to the wifi guid, DSM
+function 11. Update reading RFI configuration from BIOS.
 
-Change iwl_acpi_get_eckv() to receive fwrt as argument so
-it will be the same as all iwl_acpi_get_x() functions,
-so it could  be generated by the macro.
-
-While at it - move the reading of ECKV to INIT stage. There is no
-reason to read it each time we load the FW.
-
+Signed-off-by: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/acpi.c  |  8 +++----
- drivers/net/wireless/intel/iwlwifi/fw/acpi.h  |  6 ++---
- .../wireless/intel/iwlwifi/fw/regulatory.c    |  1 +
- .../wireless/intel/iwlwifi/fw/regulatory.h    |  1 +
- drivers/net/wireless/intel/iwlwifi/fw/uefi.c  | 22 +++++++++++++++++++
- drivers/net/wireless/intel/iwlwifi/fw/uefi.h  | 17 ++++++++++++++
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |  6 ++---
- 7 files changed, 51 insertions(+), 10 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c |  5 ---
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.h | 14 +++----
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c  | 43 ++++++++++++--------
+ 3 files changed, 32 insertions(+), 30 deletions(-)
 
 diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-index ad04d0ebf081..7b422ebe2241 100644
+index 7b422ebe2241..6f9ead79978a 100644
 --- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
 +++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-@@ -386,16 +386,17 @@ int iwl_acpi_get_pwr_limit(struct iwl_fw_runtime *fwrt, u64 *dflt_pwr_limit)
- 	return ret;
- }
+@@ -14,11 +14,6 @@ const guid_t iwl_guid = GUID_INIT(0xF21202BF, 0x8F78, 0x4DC6,
+ 				  0x8E, 0x28, 0x5A, 0xDE);
+ IWL_EXPORT_SYMBOL(iwl_guid);
  
--int iwl_acpi_get_eckv(struct device *dev, u32 *extl_clk)
-+int iwl_acpi_get_eckv(struct iwl_fw_runtime *fwrt, u32 *extl_clk)
+-const guid_t iwl_rfi_guid = GUID_INIT(0x7266172C, 0x220B, 0x4B29,
+-				      0x81, 0x4F, 0x75, 0xE4,
+-				      0xDD, 0x26, 0xB5, 0xFD);
+-IWL_EXPORT_SYMBOL(iwl_rfi_guid);
+-
+ static int iwl_acpi_get_handle(struct device *dev, acpi_string method,
+ 			       acpi_handle *ret_handle)
  {
- 	union acpi_object *wifi_pkg, *data;
- 	int ret, tbl_rev;
- 
--	data = iwl_acpi_get_object(dev, ACPI_ECKV_METHOD);
-+	data = iwl_acpi_get_object(fwrt->dev, ACPI_ECKV_METHOD);
- 	if (IS_ERR(data))
- 		return PTR_ERR(data);
- 
--	wifi_pkg = iwl_acpi_get_wifi_pkg(dev, data, ACPI_ECKV_WIFI_DATA_SIZE,
-+	wifi_pkg = iwl_acpi_get_wifi_pkg(fwrt->dev, data,
-+					 ACPI_ECKV_WIFI_DATA_SIZE,
- 					 &tbl_rev);
- 	if (IS_ERR(wifi_pkg)) {
- 		ret = PTR_ERR(wifi_pkg);
-@@ -416,7 +417,6 @@ int iwl_acpi_get_eckv(struct device *dev, u32 *extl_clk)
- 	kfree(data);
- 	return ret;
- }
--IWL_EXPORT_SYMBOL(iwl_acpi_get_eckv);
- 
- static int iwl_acpi_sar_set_profile(union acpi_object *table,
- 				    struct iwl_sar_profile *profile,
 diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.h b/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
-index 1cb9271158e7..ac6655c1f777 100644
+index ac6655c1f777..e6d68ab83ba9 100644
 --- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
 +++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
-@@ -161,13 +161,13 @@ int iwl_acpi_get_pwr_limit(struct iwl_fw_runtime *fwrt, u64 *dflt_pwr_limit);
- /*
-  * iwl_acpi_get_eckv - read external clock validation from ACPI, if available
-  *
-- * @dev: the struct device
-+ * @fwrt: the fw runtime struct
-  * @extl_clk: output var (2 bytes) that will get the clk indication.
-  *
-  * This function tries to read the external clock indication
-  * from ACPI if available.
-  */
--int iwl_acpi_get_eckv(struct device *dev, u32 *extl_clk);
-+int iwl_acpi_get_eckv(struct iwl_fw_runtime *fwrt, u32 *extl_clk);
+@@ -103,6 +103,7 @@ enum iwl_dsm_funcs_rev_0 {
+ 	DSM_FUNC_ACTIVATE_CHANNEL = 8,
+ 	DSM_FUNC_FORCE_DISABLE_CHANNELS = 9,
+ 	DSM_FUNC_ENERGY_DETECTION_THRESHOLD = 10,
++	DSM_FUNC_RFI_CONFIG = 11
+ };
  
- int iwl_acpi_get_wrds_table(struct iwl_fw_runtime *fwrt);
+ enum iwl_dsm_values_srd {
+@@ -119,16 +120,14 @@ enum iwl_dsm_values_indonesia {
+ 	DSM_VALUE_INDONESIA_MAX
+ };
  
-@@ -219,7 +219,7 @@ static inline int iwl_acpi_get_pwr_limit(struct iwl_fw_runtime *fwrt,
- 	return 0;
- }
+-/* DSM RFI uses a different GUID, so need separate definitions */
+-
+-#define DSM_RFI_FUNC_ENABLE 3
+-
+ enum iwl_dsm_values_rfi {
+-	DSM_VALUE_RFI_ENABLE,
+-	DSM_VALUE_RFI_DISABLE,
+-	DSM_VALUE_RFI_MAX
++	DSM_VALUE_RFI_DLVR_DISABLE	= BIT(0),
++	DSM_VALUE_RFI_DDR_DISABLE	= BIT(1),
+ };
  
--static inline int iwl_acpi_get_eckv(struct device *dev, u32 *extl_clk)
-+static inline int iwl_acpi_get_eckv(struct iwl_fw_runtime *fwrt, u32 *extl_clk)
- {
- 	return -ENOENT;
- }
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c
-index 65022b1c1511..bb07fbfd81eb 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c
-@@ -37,6 +37,7 @@ IWL_BIOS_TABLE_LOADER(ppag_table);
- IWL_BIOS_TABLE_LOADER_DATA(tas_table, struct iwl_tas_data);
- IWL_BIOS_TABLE_LOADER_DATA(pwr_limit, u64);
- IWL_BIOS_TABLE_LOADER_DATA(mcc, char);
-+IWL_BIOS_TABLE_LOADER_DATA(eckv, u32);
- 
- 
- static const struct dmi_system_id dmi_ppag_approved_list[] = {
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h
-index f75ca5f7faaf..ec408c06235d 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h
-@@ -141,4 +141,5 @@ int iwl_bios_get_pwr_limit(struct iwl_fw_runtime *fwrt,
- 			   u64 *dflt_pwr_limit);
- 
- int iwl_bios_get_mcc(struct iwl_fw_runtime *fwrt, char *mcc);
-+int iwl_bios_get_eckv(struct iwl_fw_runtime *fwrt, u32 *ext_clk);
- #endif /* __fw_regulatory_h__ */
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/uefi.c b/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
-index cd897ad504d6..4454fae84d1f 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
-@@ -652,3 +652,25 @@ int iwl_uefi_get_mcc(struct iwl_fw_runtime *fwrt, char *mcc)
- 	kfree(data);
- 	return ret;
- }
++#define DSM_VALUE_RFI_DISABLE	(DSM_VALUE_RFI_DLVR_DISABLE |\
++				 DSM_VALUE_RFI_DDR_DISABLE)
 +
-+int iwl_uefi_get_eckv(struct iwl_fw_runtime *fwrt, u32 *extl_clk)
-+{
-+	struct uefi_cnv_var_eckv *data;
-+	int ret = 0;
-+
-+	data = iwl_uefi_get_verified_variable(fwrt->trans, IWL_UEFI_ECKV_NAME,
-+					      "ECKV", sizeof(*data), NULL);
-+	if (IS_ERR(data))
-+		return -EINVAL;
-+
-+	if (data->revision != IWL_UEFI_ECKV_REVISION) {
-+		ret = -EINVAL;
-+		IWL_DEBUG_RADIO(fwrt, "Unsupported UEFI WRDD revision:%d\n",
-+				data->revision);
-+		goto out;
-+	}
-+	*extl_clk = data->ext_clock_valid;
-+out:
-+	kfree(data);
-+	return ret;
-+}
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/uefi.h b/drivers/net/wireless/intel/iwlwifi/fw/uefi.h
-index 62bbd5c992b9..723933b0b2f1 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/uefi.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/uefi.h
-@@ -19,6 +19,7 @@
- #define IWL_UEFI_WTAS_NAME		L"UefiCnvWlanWTAS"
- #define IWL_UEFI_SPLC_NAME		L"UefiCnvWlanSPLC"
- #define IWL_UEFI_WRDD_NAME		L"UefiCnvWlanWRDD"
-+#define IWL_UEFI_ECKV_NAME		L"UefiCnvWlanECKV"
+ enum iwl_dsm_masks_reg {
+ 	DSM_MASK_CHINA_22_REG = BIT(2)
+ };
+@@ -138,7 +137,6 @@ enum iwl_dsm_masks_reg {
+ struct iwl_fw_runtime;
  
+ extern const guid_t iwl_guid;
+-extern const guid_t iwl_rfi_guid;
  
- #define IWL_SGOM_MAP_SIZE		339
-@@ -32,6 +33,7 @@
- #define IWL_UEFI_WTAS_REVISION		1
- #define IWL_UEFI_SPLC_REVISION		0
- #define IWL_UEFI_WRDD_REVISION		0
-+#define IWL_UEFI_ECKV_REVISION		0
- 
- struct pnvm_sku_package {
- 	u8 rev;
-@@ -155,6 +157,15 @@ struct uefi_cnv_var_wrdd {
- 	u32 mcc;
- } __packed;
- 
-+/* struct uefi_cnv_var_eckv - ECKV table as defined in UEFI
-+ * @revision: the revision of the table
-+ * @ext_clock_valid: indicates if external 32KHz clock is valid
-+ */
-+struct uefi_cnv_var_eckv {
-+	u8 revision;
-+	u32 ext_clock_valid;
-+} __packed;
-+
- /*
-  * This is known to be broken on v4.19 and to work on v5.4.  Until we
-  * figure out why this is the case and how to make it work, simply
-@@ -178,6 +189,7 @@ int iwl_uefi_get_tas_table(struct iwl_fw_runtime *fwrt,
- int iwl_uefi_get_pwr_limit(struct iwl_fw_runtime *fwrt,
- 			   u64 *dflt_pwr_limit);
- int iwl_uefi_get_mcc(struct iwl_fw_runtime *fwrt, char *mcc);
-+int iwl_uefi_get_eckv(struct iwl_fw_runtime *fwrt, u32 *extl_clk);
- #else /* CONFIG_EFI */
- static inline void *iwl_uefi_get_pnvm(struct iwl_trans *trans, size_t *len)
- {
-@@ -246,6 +258,11 @@ static inline int iwl_uefi_get_mcc(struct iwl_fw_runtime *fwrt, char *mcc)
- {
- 	return -ENOENT;
- }
-+
-+static inline int iwl_uefi_get_eckv(struct iwl_fw_runtime *fwrt, u32 *extl_clk)
-+{
-+	return -ENOENT;
-+}
- #endif /* CONFIG_EFI */
- 
- #if defined(CONFIG_EFI) && defined(CONFIG_ACPI)
+ int iwl_acpi_get_dsm_u8(struct device *dev, int rev, int func,
+ 			const guid_t *guid, u8 *value);
 diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index 72f8a6cf20c7..fea2e8a5102d 100644
+index fea2e8a5102d..e9b5dc7ee8c7 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -1409,6 +1409,9 @@ void iwl_mvm_get_bios_tables(struct iwl_mvm *mvm)
+@@ -1203,28 +1203,37 @@ static void iwl_mvm_tas_init(struct iwl_mvm *mvm)
+ 
+ #ifdef CONFIG_ACPI
+ 
+-static u8 iwl_mvm_eval_dsm_rfi(struct iwl_mvm *mvm)
++static bool iwl_mvm_eval_dsm_rfi(struct iwl_mvm *mvm)
+ {
+-	u8 value;
+-	int ret = iwl_acpi_get_dsm_u8(mvm->fwrt.dev, 0, DSM_RFI_FUNC_ENABLE,
+-				      &iwl_rfi_guid, &value);
++	u8 value = 0;
++	/* default behaviour is disabled */
++	bool bios_enable_rfi = false;
++	int ret  = iwl_acpi_get_dsm_u8(mvm->fwrt.dev, 0,
++				       DSM_FUNC_RFI_CONFIG, &iwl_guid,
++				       &value);
+ 
+ 	if (ret < 0) {
+ 		IWL_DEBUG_RADIO(mvm, "Failed to get DSM RFI, ret=%d\n", ret);
++		return bios_enable_rfi;
++	}
+ 
+-	} else if (value >= DSM_VALUE_RFI_MAX) {
+-		IWL_DEBUG_RADIO(mvm, "DSM RFI got invalid value, ret=%d\n",
+-				value);
+-
+-	} else if (value == DSM_VALUE_RFI_ENABLE) {
++	value &= DSM_VALUE_RFI_DISABLE;
++	/* RFI BIOS CONFIG value can be 0 or 3 only.
++	 * i.e 0 means DDR and DLVR enabled. 3 means DDR and DLVR disabled.
++	 * 1 and 2 are invalid BIOS configurations, So, it's not possible to
++	 * disable ddr/dlvr separately.
++	 */
++	if (!value) {
+ 		IWL_DEBUG_RADIO(mvm, "DSM RFI is evaluated to enable\n");
+-		return DSM_VALUE_RFI_ENABLE;
++		bios_enable_rfi = true;
++	} else if (value == DSM_VALUE_RFI_DISABLE) {
++		IWL_DEBUG_RADIO(mvm, "DSM RFI is evaluated to disable\n");
++	} else {
++		IWL_DEBUG_RADIO(mvm,
++				"DSM RFI got invalid value, value=%d\n", value);
  	}
  
- 	iwl_acpi_get_phy_filters(&mvm->fwrt, &mvm->phy_filters);
-+
-+	if (iwl_bios_get_eckv(&mvm->fwrt, &mvm->ext_clock_valid))
-+		IWL_DEBUG_RADIO(mvm, "ECKV table doesn't exist in BIOS\n");
+-	IWL_DEBUG_RADIO(mvm, "DSM RFI is disabled\n");
+-
+-	/* default behaviour is disabled */
+-	return DSM_VALUE_RFI_DISABLE;
++	return bios_enable_rfi;
  }
  
- static void iwl_mvm_disconnect_iterator(void *data, u8 *mac,
-@@ -1705,9 +1708,6 @@ int iwl_mvm_up(struct iwl_mvm *mvm)
- 	if (!mvm->ptp_data.ptp_clock)
- 		iwl_mvm_ptp_init(mvm);
+ static void iwl_mvm_lari_cfg(struct iwl_mvm *mvm)
+@@ -1347,9 +1356,9 @@ static void iwl_mvm_lari_cfg(struct iwl_mvm *mvm)
+ {
+ }
  
--	if (iwl_acpi_get_eckv(mvm->dev, &mvm->ext_clock_valid))
--		IWL_DEBUG_INFO(mvm, "ECKV table doesn't exist in BIOS\n");
--
- 	ret = iwl_mvm_ppag_init(mvm);
- 	if (ret)
- 		goto error;
+-static u8 iwl_mvm_eval_dsm_rfi(struct iwl_mvm *mvm)
++static bool iwl_mvm_eval_dsm_rfi(struct iwl_mvm *mvm)
+ {
+-	return DSM_VALUE_RFI_DISABLE;
++	return false;
+ }
+ 
+ #endif /* CONFIG_ACPI */
+@@ -1727,7 +1736,7 @@ int iwl_mvm_up(struct iwl_mvm *mvm)
+ 	iwl_mvm_uats_init(mvm);
+ 
+ 	if (iwl_rfi_supported(mvm)) {
+-		if (iwl_mvm_eval_dsm_rfi(mvm) == DSM_VALUE_RFI_ENABLE)
++		if (iwl_mvm_eval_dsm_rfi(mvm))
+ 			iwl_rfi_send_config_cmd(mvm, NULL);
+ 	}
+ 
 -- 
 2.34.1
 
