@@ -1,122 +1,98 @@
-Return-Path: <linux-wireless+bounces-3062-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3063-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 247B784790D
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 20:06:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0949A847A67
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 21:19:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD261B2ECAC
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 19:02:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B235C1F255DB
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 20:19:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F08C115CB78;
-	Fri,  2 Feb 2024 18:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 893108063B;
+	Fri,  2 Feb 2024 20:19:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IaNETuLQ"
+	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="OfamJUth"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5DE315CB74;
-	Fri,  2 Feb 2024 18:42:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33B5F8060F;
+	Fri,  2 Feb 2024 20:19:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706899353; cv=none; b=jvlQRk/gN6dUwOTTdCho3pDK2am4GbAeiMjmP+gm/J3TucARolmXRXGVoYWvDCTUCbsPo96HvZEBHLwrbbjov9q5AP4zflSys3EZqxicLa+iwnKqcndW6bzP4yV22bQ7CVlEKMAn86dkuq0jwgP3CwrQsrGWVlAA7Tq5F/RczJQ=
+	t=1706905163; cv=none; b=Df0OCN0SSSLHsbCgWQe6vM1lhioHedeBL7U3Wo+ey0tN7OXHWcjwFuvylqXQrKq3471k5+jzPx6nh1Rurk5YHGPnwIRNfCV8tm98o3IG3rC4uxXqEjROxy1W9rPED2W6runhdlQNV6T5ex97/Fc/QXCYHM4/AcMxGb6gCTQpw2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706899353; c=relaxed/simple;
-	bh=jEiw8BhY0l8FEObtYsQOR2XZcG4iTyOyOqSzcE2pnBI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LEdUY+pVnqyHjjEXqOu749I1tOmCck9C6I7OMYZbn8pALezPoOYbubSlyE1KfGcg9RbUincEPGbsGZpSijDhHvHcfRr/pS+M6/7wsQXQUF7rjglhTDILh0tiJ5pVbUuhPOGyAM7ywyZiUBwddl22GfwvcC+A/+05MJF2lT7km6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IaNETuLQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59F1DC433C7;
-	Fri,  2 Feb 2024 18:42:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706899353;
-	bh=jEiw8BhY0l8FEObtYsQOR2XZcG4iTyOyOqSzcE2pnBI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IaNETuLQu0bRt4kkcw4ArSvMoe5jK/wGInlrzP74hvYlueqO8Wj1JvuLF9l9Rze2b
-	 KxzuOZ9jrTEJnCE1j0bhNt+G3lVkFFRHZ6xWPT/Z9KCfM9XVxDCy7Mw9Z53GrDe15P
-	 USBtw9ucHKQAAUoDn2P8oiSgy4xPT8fMH7is6AGoxruZ0gL2wKXe/Fykhb9snU06+e
-	 O8/f/PVEA8ER+LjZWOAHVoMevWQ74webQm5A5iOPDURprOsD0GUWZk9Q4qOnDq/Iyc
-	 Sdkg2R6RzFC3G1PEBFAc85hyHkQ+BYbXtJtF2SQK/Gx0WRw4gwZTmGCjezVy1TsXrS
-	 bLDqH/LJz4nWw==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Felix Fietkau <nbd@nbd.name>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 2/5] wifi: mac80211: fix race condition on enabling fast-xmit
-Date: Fri,  2 Feb 2024 13:42:23 -0500
-Message-ID: <20240202184229.542298-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240202184229.542298-1-sashal@kernel.org>
-References: <20240202184229.542298-1-sashal@kernel.org>
+	s=arc-20240116; t=1706905163; c=relaxed/simple;
+	bh=mtAAaAHQ87GRvCt/f/HNdb37dmDNHvRqrP8yLpZjFGA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=q6zF052r9OncgOXf82VrZsZsIcnALRVg9ozUim7+GiP4dm0WiDmYrJ5E6D4zaMzpyWVdweC6bmBmxjcV4PHWR8Is1FhlFhoT7exK00V+9Ep4S1fPPEI9w6Hwvv6jusrYFtIOusK3aNwGnWuhfBTiWwShZ5N1auimDnvl2BM8vzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz; spf=pass smtp.mailfrom=ucw.cz; dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b=OfamJUth; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id 1665A1C0075; Fri,  2 Feb 2024 21:19:18 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
+	t=1706905158;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=d3lPDfgTxbpaYP0omT2u05b/N3MVIBURyfQsTSMQ0PA=;
+	b=OfamJUthX0zK9T2frDVo3f279qZ36xmkUbrOCKBxV6wDAccp9qLbZlNp4pF3fuHgjp4cc3
+	nNkpbLXG+GITkXy17jtPBBl6V0P6AfGZpkhcA6HHRtkjOYTahi9ezID8atTcDzYY3y4b4l
+	zXe+mSILYKn5SAQxkXC1vG0fhOldFvA=
+Date: Fri, 2 Feb 2024 21:19:16 +0100
+From: Pavel Machek <pavel@ucw.cz>
+To: Fiona Klute <fiona.klute@gmx.de>
+Cc: linux-wireless@vger.kernel.org, Ping-Ke Shih <pkshih@realtek.com>,
+	Kalle Valo <kvalo@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>,
+	linux-mmc@vger.kernel.org,
+	=?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>
+Subject: Re: [PATCH 0/9] rtw88: Add support for RTL8723CS/RTL8703B
+Message-ID: <Zb1ORD_Lzd4O4gu-@mobian>
+References: <20240202121050.977223-1-fiona.klute@gmx.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.19.306
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20240202121050.977223-1-fiona.klute@gmx.de>
 
-From: Felix Fietkau <nbd@nbd.name>
+Hi!
 
-[ Upstream commit bcbc84af1183c8cf3d1ca9b78540c2185cd85e7f ]
+> Ping-Ke Shih kindly offered to add the required s-o-b for the firmware
+> and help get it into linux-firmware when it's time, for testing now
+> please see the code I used to extract firmware from the out-of-tree
+> driver [1].
 
-fast-xmit must only be enabled after the sta has been uploaded to the driver,
-otherwise it could end up passing the not-yet-uploaded sta via drv_tx calls
-to the driver, leading to potential crashes because of uninitialized drv_priv
-data.
-Add a missing sta->uploaded check and re-check fast xmit after inserting a sta.
+Can I get you to apply this?
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Link: https://msgid.link/20240104181059.84032-1-nbd@nbd.name
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- net/mac80211/sta_info.c | 2 ++
- net/mac80211/tx.c       | 2 +-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+So far I got driver to insert, but I did not have firmware
+installed. That should be ok on next reboot.
 
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index 5c209f72de70..714d0b01ea62 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -629,6 +629,8 @@ static int sta_info_insert_finish(struct sta_info *sta) __acquires(RCU)
- 	if (ieee80211_vif_is_mesh(&sdata->vif))
- 		mesh_accept_plinks_update(sdata);
- 
-+	ieee80211_check_fast_xmit(sta);
+Best regards,
+								Pavel
+
+diff --git a/Makefile b/Makefile
+index 1f8e8b6..fbc1f14 100644
+--- a/Makefile
++++ b/Makefile
+@@ -7,6 +7,10 @@ firmware_files =3D rtw8703b_ap_fw.bin \
+=20
+ all: $(firmware_files)
+=20
++install: $(firmware_files)
++	sudo mkdir /lib/firmware/rtw88/
++	sudo cp $(firmware_files) /lib/firmware/rtw88/
 +
- 	return 0;
-  out_remove:
- 	sta_info_hash_del(local, sta);
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 3a0aadf881fc..89500b1fe301 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -2868,7 +2868,7 @@ void ieee80211_check_fast_xmit(struct sta_info *sta)
- 	    sdata->vif.type == NL80211_IFTYPE_STATION)
- 		goto out;
- 
--	if (!test_sta_flag(sta, WLAN_STA_AUTHORIZED))
-+	if (!test_sta_flag(sta, WLAN_STA_AUTHORIZED) || !sta->uploaded)
- 		goto out;
- 
- 	if (test_sta_flag(sta, WLAN_STA_PS_STA) ||
--- 
-2.43.0
+ %.o: %.c
+ 	gcc -fPIC -DCONFIG_RTL8703B -c -o $@ $<
+=20
 
 
