@@ -1,478 +1,207 @@
-Return-Path: <linux-wireless+bounces-2992-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2993-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAEC8846666
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 04:08:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B31FE84671C
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 05:52:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4671B1F27DB2
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 03:08:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 343421F267E8
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 04:52:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8159012E63;
-	Fri,  2 Feb 2024 03:08:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28404F51E;
+	Fri,  2 Feb 2024 04:51:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="CTzz14Q+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70D10125A9
-	for <linux-wireless@vger.kernel.org>; Fri,  2 Feb 2024 03:08:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AE8AF513;
+	Fri,  2 Feb 2024 04:51:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706843290; cv=none; b=r260TuSGWoxHAN+kdjTmw25MyDzdirDsxRTN/jkwfK6gzAVViBwTuOddZsPADUdJ6YwITMKXbzFxWPQfG3VIascdrY3tK41sVVp1QswwyQa09Ow4R0zXcIXUGZ0hnVVu9yo4ok0CnutRkaYNTmkLmZEp20DgvM30iXC6ckKR1us=
+	t=1706849517; cv=none; b=L9vP0whoB7r5Sn3ZoTctwfJWYmzOwrxpEn0s2CotvXg/o9lojzoKACHcTniM2VE/eqqFisEY/Mk4vaJjB8HRv1EMvw7AGALRHFBvyWFHp89NSGiZbnZDZR7JfmuMVHDJwqFtepXQGetWXhY8bmR72xoSgbYWGdMIiYdL6GwUpcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706843290; c=relaxed/simple;
-	bh=1WtpECXvQtCLrfaONn7+pCNw7P4wp3OjGGMKvz1DQIo=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ahjhIS1UNwp08jbGDYsS2sZXEQ63LH4xheOtklA6Y9IGHJ/KzYAhbF6/KmE8893BwoPwZsKiChWCob9bv6vC0+hkN2YuYWDvRcO55SVFRdBVMjAv8leA+hxyiNLN3aZ6oFI2Jyp/rbyml3OkyknbGhxyi+tBix8LErWH44zXnt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 412382Vo81863197, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 412382Vo81863197
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 2 Feb 2024 11:08:02 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2375.32; Fri, 2 Feb 2024 11:08:03 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 2 Feb
- 2024 11:08:02 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <kvalo@kernel.org>
-CC: <linux-wireless@vger.kernel.org>
-Subject: [PATCH 11/11] wifi: rtw89: 8922a: add chip_ops::rfk_hw_init
-Date: Fri, 2 Feb 2024 11:06:42 +0800
-Message-ID: <20240202030642.108385-12-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240202030642.108385-1-pkshih@realtek.com>
-References: <20240202030642.108385-1-pkshih@realtek.com>
+	s=arc-20240116; t=1706849517; c=relaxed/simple;
+	bh=MbeoFB9DxXuqtKa3HpPQkLWrTH55Z9XH6TqSAg7KCo4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=RNal+VaMaWuUDCyZY4n27ZE6LjZfmcBTJfGNcEkl9EberK92Gj6jb5g1ww19nFaInikw/ok1gYswdN+/Xk8PAJtHQIQsFDXDa4wXQ55iFlgS/FRNH/6lXnrBZST74XAEh5ag7oQ4IglYKjj+87KWBsfQDR8oGmQ4tue+HHbF+hM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=CTzz14Q+; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 4123mJnQ012457;
+	Fri, 2 Feb 2024 04:51:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=Kr40Gu7ZnkwDYNF2wB6/kUvqE4WqqMaeLDAq4SXbIiY=; b=CT
+	zz14Q+FsuEExXaXXl6pAjGMcYGU6ghZfwZWctR/EzKog6HJUfL6ZbSmpMLEtHiY6
+	ne/l//pIfsWgxRtEf8cv5dBxaJUcaSGRiLwBMBRXzWbAs9FhqCYX9CfJ0pER0yEh
+	sw3FD9bWifV3RyqUl+nf4Vwnh6Bx+1CNX0sVBr6yyN7UPWUUVSVF5TNX7qQUgydV
+	mAU3qHypyjbOYpz2a5qvij6/pUqLO+6imVQRN1/Jgyi7byFDl5Ub5+t0CsDXtASC
+	VG1IxTIMV86pJ319Hz81cjXQREGWDRcUWwWk4pOOILO5SKY/G469XpaD/Wucr37Q
+	urXXP0pBWX0AanFGQ8eA==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3w0ptvgd4a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 02 Feb 2024 04:51:03 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 4124p2Yf007983
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 2 Feb 2024 04:51:02 GMT
+Received: from [10.110.16.197] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Thu, 1 Feb
+ 2024 20:51:00 -0800
+Message-ID: <39779388-9aad-43fd-9ede-271ead40cbf7@quicinc.com>
+Date: Thu, 1 Feb 2024 20:50:59 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/9] PCI: create platform devices for child OF nodes of
+ the port node
+Content-Language: en-US
+To: Bjorn Andersson <andersson@kernel.org>,
+        Bartosz Golaszewski
+	<brgl@bgdev.pl>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Kalle Valo
+	<kvalo@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni
+	<pabeni@redhat.com>, Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski
+	<krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Catalin Marinas
+	<catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Bjorn Helgaas
+	<bhelgaas@google.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Jernej Skrabec
+	<jernej.skrabec@gmail.com>,
+        Chris Morgan <macromorgan@hotmail.com>,
+        Linus
+ Walleij <linus.walleij@linaro.org>,
+        Geert Uytterhoeven
+	<geert+renesas@glider.be>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Neil Armstrong
+	<neil.armstrong@linaro.org>,
+        =?UTF-8?Q?N=C3=ADcolas_F_=2E_R_=2E_A_=2E_Prado?=
+	<nfraprado@collabora.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Peng
+ Fan <peng.fan@nxp.com>, Robert Richter <rrichter@amd.com>,
+        Dan Williams
+	<dan.j.williams@intel.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Terry Bowman <terry.bowman@amd.com>, Lukas Wunner <lukas@wunner.de>,
+        Huacai
+ Chen <chenhuacai@kernel.org>, Alex Elder <elder@linaro.org>,
+        Srini Kandagatla
+	<srinivas.kandagatla@linaro.org>,
+        Abel Vesa <abel.vesa@linaro.org>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-pci@vger.kernel.org>,
+        Bartosz Golaszewski
+	<bartosz.golaszewski@linaro.org>
+References: <20240117160748.37682-1-brgl@bgdev.pl>
+ <20240117160748.37682-5-brgl@bgdev.pl>
+ <2024011707-alibi-pregnancy-a64b@gregkh>
+ <CAMRc=Mef7wxRccnfQ=EDLckpb1YN4DNLoC=AYL8v1LLJ=uFH2Q@mail.gmail.com>
+ <2024011836-wok-treadmill-c517@gregkh>
+ <d2he3ufg6m46zos4swww4t3peyq55blxhirsx37ou37rwqxmz2@5khumvic62je>
+ <CAMRc=MeXJjpJhDjyn_P-SGo4rDnEuT9kGN5jAbRcuM_c7_aDzQ@mail.gmail.com>
+ <oiwvcvu6wdmpvhss3t7uaqkl5q73mki5pz6liuv66bap4dr2mp@jtjjwzlvt6za>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <oiwvcvu6wdmpvhss3t7uaqkl5q73mki5pz6liuv66bap4dr2mp@jtjjwzlvt6za>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: lTFaTi9YnTkmqQ4bQa9bhYouASZn-t3K
+X-Proofpoint-ORIG-GUID: lTFaTi9YnTkmqQ4bQa9bhYouASZn-t3K
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-01_10,2024-01-31_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ adultscore=0 mlxlogscore=999 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 impostorscore=0
+ mlxscore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2401310000 definitions=main-2402020032
 
-Add a chip_ops for WiFi 7 chips to set additional RF configurations
-including MLO and PLL settings.
+On 2/1/2024 4:03 PM, Bjorn Andersson wrote:
+> On Wed, Jan 31, 2024 at 12:04:14PM +0100, Bartosz Golaszewski wrote:
+>> On Tue, Jan 30, 2024 at 10:54 PM Bjorn Andersson <andersson@kernel.org> wrote:
+>>>
+>>> On Thu, Jan 18, 2024 at 12:15:27PM +0100, Greg Kroah-Hartman wrote:
+>>>> On Thu, Jan 18, 2024 at 11:58:50AM +0100, Bartosz Golaszewski wrote:
+>>>>> On Wed, Jan 17, 2024 at 5:45 PM Greg Kroah-Hartman
+>>>>> <gregkh@linuxfoundation.org> wrote:
+>>>>>>
+>>>>>> On Wed, Jan 17, 2024 at 05:07:43PM +0100, Bartosz Golaszewski wrote:
+>>>>>>> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+>>>>>>>
+>>>>>>> In order to introduce PCI power-sequencing, we need to create platform
+>>>>>>> devices for child nodes of the port node.
+>>>>>>
+>>>>>> Ick, why a platform device?  What is the parent of this device, a PCI
+>>>>>> device?  If so, then this can't be a platform device, as that's not what
+>>>>>> it is, it's something else so make it a device of that type,.
+>>>>>>
+>>>>>
+>>>>> Greg,
+>>>>>
+>>>>> This is literally what we agreed on at LPC. In fact: during one of the
+>>>>> hall track discussions I said that you typically NAK any attempts at
+>>>>> using the platform bus for "fake" devices but you responded that this
+>>>>> is what the USB on-board HUB does and while it's not pretty, this is
+>>>>> what we need to do.
+>>>>
+>>>> Ah, you need to remind me of these things, this changelog was pretty
+>>>> sparse :)
+>>>>
+>>>
+>>> I believe I missed this part of the discussion, why does this need to be
+>>> a platform_device? What does the platform_bus bring that can't be
+>>> provided by some other bus?
+>>>
+>>
+>> Does it need to be a platform_device? No, of course not. Does it make
+>> sense for it to be one? Yes, for two reasons:
+>>
+>> 1. The ATH11K WLAN module is represented on the device tree like a
+>> platform device, we know it's always there and it consumes regulators
+>> from another platform device. The fact it uses PCIe doesn't change the
+>> fact that it is logically a platform device.
+> 
+> Are you referring to the ath11k SNOC (firmware running on co-processor
+> in the SoC) variant?
+> 
+> Afaict the PCIe-attached ath11k is not represented as a platform_device
+> in DeviceTree.
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/core.h     |   9 +
- drivers/net/wireless/realtek/rtw89/mac.h      |   2 +
- drivers/net/wireless/realtek/rtw89/phy.c      |   1 +
- drivers/net/wireless/realtek/rtw89/reg.h      |   6 +
- drivers/net/wireless/realtek/rtw89/rtw8851b.c |   1 +
- drivers/net/wireless/realtek/rtw89/rtw8852a.c |   1 +
- drivers/net/wireless/realtek/rtw89/rtw8852b.c |   1 +
- drivers/net/wireless/realtek/rtw89/rtw8852c.c |   1 +
- drivers/net/wireless/realtek/rtw89/rtw8922a.c |   1 +
- .../net/wireless/realtek/rtw89/rtw8922a_rfk.c | 202 ++++++++++++++++++
- .../net/wireless/realtek/rtw89/rtw8922a_rfk.h |   1 +
- 11 files changed, 226 insertions(+)
+Are you considering out-of-tree drivers? My understanding is that there
+are different PCIe modules, ones that don't have GPIO-control for x86
+and ones that do have GPIO-control for ARM. The out-of-tree cnss
+platform driver used for Android has a large amount of DT control
+<https://git.codelinaro.org/clo/la/platform/vendor/qcom-opensource/wlan/platform/-/blob/wlan-platform.lnx.1.0.r1-rel/cnss2/power.c?ref_type=heads>
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 270403f6c3d5..22255e98ab6b 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -3156,6 +3156,7 @@ struct rtw89_chip_ops {
- 	int (*read_phycap)(struct rtw89_dev *rtwdev, u8 *phycap_map);
- 	void (*fem_setup)(struct rtw89_dev *rtwdev);
- 	void (*rfe_gpio)(struct rtw89_dev *rtwdev);
-+	void (*rfk_hw_init)(struct rtw89_dev *rtwdev);
- 	void (*rfk_init)(struct rtw89_dev *rtwdev);
- 	void (*rfk_init_late)(struct rtw89_dev *rtwdev);
- 	void (*rfk_channel)(struct rtw89_dev *rtwdev);
-@@ -5604,6 +5605,14 @@ static inline void rtw89_chip_rfe_gpio(struct rtw89_dev *rtwdev)
- 		chip->ops->rfe_gpio(rtwdev);
- }
- 
-+static inline void rtw89_chip_rfk_hw_init(struct rtw89_dev *rtwdev)
-+{
-+	const struct rtw89_chip_info *chip = rtwdev->chip;
-+
-+	if (chip->ops->rfk_hw_init)
-+		chip->ops->rfk_hw_init(rtwdev);
-+}
-+
- static inline
- void rtw89_chip_bb_preinit(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx)
- {
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
-index b3fe4cab6d3a..7aea57804e93 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.h
-+++ b/drivers/net/wireless/realtek/rtw89/mac.h
-@@ -1328,6 +1328,7 @@ enum rtw89_mac_xtal_si_offset {
- #define XTAL_SI_BIG_PWR_CUT	BIT(1)
- 	XTAL_SI_XTAL_DRV = 0x15,
- #define XTAL_SI_DRV_LATCH	BIT(4)
-+	XTAL_SI_XTAL_PLL = 0x16,
- 	XTAL_SI_XTAL_XMD_2 = 0x24,
- #define XTAL_SI_LDO_LPS		GENMASK(6, 4)
- 	XTAL_SI_XTAL_XMD_4 = 0x26,
-@@ -1361,6 +1362,7 @@ enum rtw89_mac_xtal_si_offset {
- 	XTAL_SI_SRAM_CTRL = 0xA1,
- #define XTAL_SI_SRAM_DIS	BIT(1)
- #define FULL_BIT_MASK		GENMASK(7, 0)
-+	XTAL_SI_APBT = 0xD1,
- 	XTAL_SI_PLL = 0xE0,
- 	XTAL_SI_PLL_1 = 0xE1,
- };
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-index f02b365b0cec..9a8f5b764617 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.c
-+++ b/drivers/net/wireless/realtek/rtw89/phy.c
-@@ -5874,6 +5874,7 @@ void rtw89_phy_dm_init(struct rtw89_dev *rtwdev)
- 	rtw89_chip_rfe_gpio(rtwdev);
- 	rtw89_phy_antdiv_set_ant(rtwdev);
- 
-+	rtw89_chip_rfk_hw_init(rtwdev);
- 	rtw89_phy_init_rf_nctl(rtwdev);
- 	rtw89_chip_rfk_init(rtwdev);
- 	rtw89_chip_set_txpwr_ctrl(rtwdev);
-diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
-index 9f209f068679..6368b2b32c0c 100644
---- a/drivers/net/wireless/realtek/rtw89/reg.h
-+++ b/drivers/net/wireless/realtek/rtw89/reg.h
-@@ -7402,6 +7402,7 @@
- #define RR_MOD_M_RXBB GENMASK(9, 5)
- #define RR_MOD_LO_SEL BIT(1)
- #define RR_MODOPT 0x01
-+#define RR_TXG_SEL GENMASK(19, 17)
- #define RR_MODOPT_M_TXPWR GENMASK(5, 0)
- #define RR_WLSEL 0x02
- #define RR_WLSEL_AG GENMASK(18, 16)
-@@ -7594,6 +7595,7 @@
- #define RR_MIXER_GN GENMASK(4, 3)
- #define RR_POW 0xa0
- #define RR_POW_SYN GENMASK(3, 2)
-+#define RR_POW_SYN_V1 GENMASK(3, 0)
- #define RR_LOGEN 0xa3
- #define RR_LOGEN_RPT GENMASK(19, 16)
- #define RR_SX 0xaf
-@@ -8734,6 +8736,8 @@
- #define B_COEF_SEL_IQC BIT(0)
- #define B_COEF_SEL_IQC_V1 GENMASK(1, 0)
- #define B_COEF_SEL_MDPD BIT(8)
-+#define B_COEF_SEL_MDPD_V1 GENMASK(9, 8)
-+#define B_COEF_SEL_EN BIT(31)
- #define R_CFIR_SYS 0x8120
- #define R_IQK_RES 0x8124
- #define B_IQK_RES_K BIT(28)
-@@ -8755,8 +8759,10 @@
- #define B_RFGAIN_BND GENMASK(4, 0)
- #define R_CFIR_MAP 0x8150
- #define R_CFIR_LUT 0x8154
-+#define R_CFIR_LUT_C1 0x8254
- #define B_CFIR_LUT_SEL BIT(8)
- #define B_CFIR_LUT_SET BIT(4)
-+#define B_CFIR_LUT_G5 BIT(5)
- #define B_CFIR_LUT_G3 BIT(3)
- #define B_CFIR_LUT_G2 BIT(2)
- #define B_CFIR_LUT_GP_V1 GENMASK(2, 0)
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851b.c b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
-index 09e38713bca7..83db0a686ee2 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8851b.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
-@@ -2310,6 +2310,7 @@ static const struct rtw89_chip_ops rtw8851b_chip_ops = {
- 	.read_phycap		= rtw8851b_read_phycap,
- 	.fem_setup		= NULL,
- 	.rfe_gpio		= rtw8851b_rfe_gpio,
-+	.rfk_hw_init		= NULL,
- 	.rfk_init		= rtw8851b_rfk_init,
- 	.rfk_init_late		= NULL,
- 	.rfk_channel		= rtw8851b_rfk_channel,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.c b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-index 01c249dddfb8..8e808ded5d52 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-@@ -2054,6 +2054,7 @@ static const struct rtw89_chip_ops rtw8852a_chip_ops = {
- 	.read_phycap		= rtw8852a_read_phycap,
- 	.fem_setup		= rtw8852a_fem_setup,
- 	.rfe_gpio		= NULL,
-+	.rfk_hw_init		= NULL,
- 	.rfk_init		= rtw8852a_rfk_init,
- 	.rfk_init_late		= NULL,
- 	.rfk_channel		= rtw8852a_rfk_channel,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b.c b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-index fb6ad335a37a..19454766f3de 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-@@ -2479,6 +2479,7 @@ static const struct rtw89_chip_ops rtw8852b_chip_ops = {
- 	.read_phycap		= rtw8852b_read_phycap,
- 	.fem_setup		= NULL,
- 	.rfe_gpio		= NULL,
-+	.rfk_hw_init		= NULL,
- 	.rfk_init		= rtw8852b_rfk_init,
- 	.rfk_init_late		= NULL,
- 	.rfk_channel		= rtw8852b_rfk_channel,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-index 00861c328ca0..ca8547fbd70e 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-@@ -2824,6 +2824,7 @@ static const struct rtw89_chip_ops rtw8852c_chip_ops = {
- 	.read_phycap		= rtw8852c_read_phycap,
- 	.fem_setup		= NULL,
- 	.rfe_gpio		= NULL,
-+	.rfk_hw_init		= NULL,
- 	.rfk_init		= rtw8852c_rfk_init,
- 	.rfk_init_late		= NULL,
- 	.rfk_channel		= rtw8852c_rfk_channel,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922a.c b/drivers/net/wireless/realtek/rtw89/rtw8922a.c
-index 0cbe4780eb69..6dc051934b0f 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8922a.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8922a.c
-@@ -1694,6 +1694,7 @@ static const struct rtw89_chip_ops rtw8922a_chip_ops = {
- 	.read_phycap		= rtw8922a_read_phycap,
- 	.fem_setup		= NULL,
- 	.rfe_gpio		= NULL,
-+	.rfk_hw_init		= rtw8922a_rfk_hw_init,
- 	.rfk_init		= rtw8922a_rfk_init,
- 	.rfk_init_late		= rtw8922a_rfk_init_late,
- 	.rfk_channel		= rtw8922a_rfk_channel,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922a_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8922a_rfk.c
-index e0e8048db739..d8ef986e7877 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8922a_rfk.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8922a_rfk.c
-@@ -2,7 +2,9 @@
- /* Copyright(c) 2023  Realtek Corporation
-  */
- 
-+#include "chan.h"
- #include "debug.h"
-+#include "mac.h"
- #include "phy.h"
- #include "reg.h"
- #include "rtw8922a.h"
-@@ -31,3 +33,203 @@ void rtw8922a_tssi_cont_en_phyidx(struct rtw89_dev *rtwdev, bool en, u8 phy_idx)
- 		rtw8922a_tssi_cont_en(rtwdev, en, RF_PATH_B);
- 	}
- }
-+
-+enum _rf_syn_pow {
-+	RF_SYN_ON_OFF,
-+	RF_SYN_OFF_ON,
-+	RF_SYN_ALLON,
-+	RF_SYN_ALLOFF,
-+};
-+
-+static void rtw8922a_set_syn01_cav(struct rtw89_dev *rtwdev, enum _rf_syn_pow syn)
-+{
-+	if (syn == RF_SYN_ALLON) {
-+		rtw89_write_rf(rtwdev, RF_PATH_A, RR_POW, RR_POW_SYN, 0x3);
-+		rtw89_write_rf(rtwdev, RF_PATH_A, RR_POW, RR_POW_SYN, 0x2);
-+		rtw89_write_rf(rtwdev, RF_PATH_A, RR_POW, RR_POW_SYN, 0x3);
-+
-+		rtw89_write_rf(rtwdev, RF_PATH_B, RR_POW, RR_POW_SYN, 0x3);
-+		rtw89_write_rf(rtwdev, RF_PATH_B, RR_POW, RR_POW_SYN, 0x2);
-+		rtw89_write_rf(rtwdev, RF_PATH_B, RR_POW, RR_POW_SYN, 0x3);
-+	} else if (syn == RF_SYN_ON_OFF) {
-+		rtw89_write_rf(rtwdev, RF_PATH_A, RR_POW, RR_POW_SYN, 0x3);
-+		rtw89_write_rf(rtwdev, RF_PATH_A, RR_POW, RR_POW_SYN, 0x2);
-+		rtw89_write_rf(rtwdev, RF_PATH_A, RR_POW, RR_POW_SYN, 0x3);
-+
-+		rtw89_write_rf(rtwdev, RF_PATH_B, RR_POW, RR_POW_SYN, 0x0);
-+	} else if (syn == RF_SYN_OFF_ON) {
-+		rtw89_write_rf(rtwdev, RF_PATH_A, RR_POW, RR_POW_SYN, 0x0);
-+
-+		rtw89_write_rf(rtwdev, RF_PATH_B, RR_POW, RR_POW_SYN, 0x3);
-+		rtw89_write_rf(rtwdev, RF_PATH_B, RR_POW, RR_POW_SYN, 0x2);
-+		rtw89_write_rf(rtwdev, RF_PATH_B, RR_POW, RR_POW_SYN, 0x3);
-+	} else if (syn == RF_SYN_ALLOFF) {
-+		rtw89_write_rf(rtwdev, RF_PATH_A, RR_POW, RR_POW_SYN, 0x0);
-+		rtw89_write_rf(rtwdev, RF_PATH_B, RR_POW, RR_POW_SYN, 0x0);
-+	}
-+}
-+
-+static void rtw8922a_set_syn01_cbv(struct rtw89_dev *rtwdev, enum _rf_syn_pow syn)
-+{
-+	if (syn == RF_SYN_ALLON) {
-+		rtw89_write_rf(rtwdev, RF_PATH_A, RR_POW, RR_POW_SYN_V1, 0xf);
-+		rtw89_write_rf(rtwdev, RF_PATH_B, RR_POW, RR_POW_SYN_V1, 0xf);
-+	} else if (syn == RF_SYN_ON_OFF) {
-+		rtw89_write_rf(rtwdev, RF_PATH_A, RR_POW, RR_POW_SYN_V1, 0xf);
-+		rtw89_write_rf(rtwdev, RF_PATH_B, RR_POW, RR_POW_SYN_V1, 0x0);
-+	} else if (syn == RF_SYN_OFF_ON) {
-+		rtw89_write_rf(rtwdev, RF_PATH_A, RR_POW, RR_POW_SYN_V1, 0x0);
-+		rtw89_write_rf(rtwdev, RF_PATH_B, RR_POW, RR_POW_SYN_V1, 0xf);
-+	} else if (syn == RF_SYN_ALLOFF) {
-+		rtw89_write_rf(rtwdev, RF_PATH_A, RR_POW, RR_POW_SYN_V1, 0x0);
-+		rtw89_write_rf(rtwdev, RF_PATH_B, RR_POW, RR_POW_SYN_V1, 0x0);
-+	}
-+}
-+
-+static void rtw8922a_set_syn01(struct rtw89_dev *rtwdev, enum _rf_syn_pow syn)
-+{
-+	struct rtw89_hal *hal = &rtwdev->hal;
-+
-+	rtw89_debug(rtwdev, RTW89_DBG_RFK, "SYN config=%d\n", syn);
-+
-+	if (hal->cv == CHIP_CAV)
-+		rtw8922a_set_syn01_cav(rtwdev, syn);
-+	else
-+		rtw8922a_set_syn01_cbv(rtwdev, syn);
-+}
-+
-+static void rtw8922a_chlk_ktbl_sel(struct rtw89_dev *rtwdev, u8 kpath, u8 idx)
-+{
-+	u32 tmp;
-+
-+	if (idx > 2) {
-+		rtw89_warn(rtwdev, "[DBCC][ERROR]indx is out of limit!! index(%d)", idx);
-+		return;
-+	}
-+
-+	if (kpath & RF_A) {
-+		rtw89_phy_write32_mask(rtwdev, R_COEF_SEL, B_COEF_SEL_EN, 0x1);
-+		rtw89_phy_write32_mask(rtwdev, R_COEF_SEL, B_COEF_SEL_IQC_V1, idx);
-+		rtw89_phy_write32_mask(rtwdev, R_COEF_SEL, B_COEF_SEL_MDPD_V1, idx);
-+		rtw89_write_rf(rtwdev, RF_PATH_A, RR_MODOPT, RR_TXG_SEL, 0x4 | idx);
-+
-+		tmp = rtw89_phy_read32_mask(rtwdev, R_COEF_SEL, BIT(0));
-+		rtw89_phy_write32_mask(rtwdev, R_CFIR_LUT, B_CFIR_LUT_G3, tmp);
-+		tmp = rtw89_phy_read32_mask(rtwdev, R_COEF_SEL, BIT(1));
-+		rtw89_phy_write32_mask(rtwdev, R_CFIR_LUT, B_CFIR_LUT_G5, tmp);
-+	}
-+
-+	if (kpath & RF_B) {
-+		rtw89_phy_write32_mask(rtwdev, R_COEF_SEL_C1, B_COEF_SEL_EN, 0x1);
-+		rtw89_phy_write32_mask(rtwdev, R_COEF_SEL_C1, B_COEF_SEL_IQC_V1, idx);
-+		rtw89_phy_write32_mask(rtwdev, R_COEF_SEL_C1, B_COEF_SEL_MDPD_V1, idx);
-+		rtw89_write_rf(rtwdev, RF_PATH_B, RR_MODOPT, RR_TXG_SEL, 0x4 | idx);
-+
-+		tmp = rtw89_phy_read32_mask(rtwdev, R_COEF_SEL_C1, BIT(0));
-+		rtw89_phy_write32_mask(rtwdev, R_CFIR_LUT_C1, B_CFIR_LUT_G3, tmp);
-+		tmp = rtw89_phy_read32_mask(rtwdev, R_COEF_SEL_C1, BIT(1));
-+		rtw89_phy_write32_mask(rtwdev, R_CFIR_LUT_C1, B_CFIR_LUT_G5, tmp);
-+	}
-+}
-+
-+static void rtw8922a_chlk_reload(struct rtw89_dev *rtwdev)
-+{
-+	struct rtw89_rfk_mcc_info *rfk_mcc = &rtwdev->rfk_mcc;
-+	enum rtw89_sub_entity_idx sub_entity_idx;
-+	const struct rtw89_chan *chan;
-+	enum rtw89_entity_mode mode;
-+	u8 s0_tbl, s1_tbl;
-+	u8 tbl_sel;
-+
-+	mode = rtw89_get_entity_mode(rtwdev);
-+	switch (mode) {
-+	case RTW89_ENTITY_MODE_MCC_PREPARE:
-+		sub_entity_idx = RTW89_SUB_ENTITY_1;
-+		tbl_sel = 1;
-+		break;
-+	default:
-+		sub_entity_idx = RTW89_SUB_ENTITY_0;
-+		tbl_sel = 0;
-+		break;
-+	}
-+
-+	chan = rtw89_chan_get(rtwdev, sub_entity_idx);
-+
-+	rfk_mcc->ch[tbl_sel] = chan->channel;
-+	rfk_mcc->band[tbl_sel] = chan->band_type;
-+	rfk_mcc->bw[tbl_sel] = chan->band_width;
-+	rfk_mcc->table_idx = tbl_sel;
-+
-+	s0_tbl = tbl_sel;
-+	s1_tbl = tbl_sel;
-+
-+	rtw8922a_chlk_ktbl_sel(rtwdev, RF_A, s0_tbl);
-+	rtw8922a_chlk_ktbl_sel(rtwdev, RF_B, s1_tbl);
-+}
-+
-+static void rtw8922a_rfk_mlo_ctrl(struct rtw89_dev *rtwdev)
-+{
-+	enum _rf_syn_pow syn_pow;
-+
-+	if (!rtwdev->dbcc_en)
-+		goto set_rfk_reload;
-+
-+	switch (rtwdev->mlo_dbcc_mode) {
-+	case MLO_0_PLUS_2_1RF:
-+		syn_pow = RF_SYN_OFF_ON;
-+		break;
-+	case MLO_0_PLUS_2_2RF:
-+	case MLO_1_PLUS_1_2RF:
-+	case MLO_2_PLUS_0_1RF:
-+	case MLO_2_PLUS_0_2RF:
-+	case MLO_2_PLUS_2_2RF:
-+	case MLO_DBCC_NOT_SUPPORT:
-+	default:
-+		syn_pow = RF_SYN_ON_OFF;
-+		break;
-+	case MLO_1_PLUS_1_1RF:
-+	case DBCC_LEGACY:
-+		syn_pow = RF_SYN_ALLON;
-+		break;
-+	}
-+
-+	rtw8922a_set_syn01(rtwdev, syn_pow);
-+
-+set_rfk_reload:
-+	rtw8922a_chlk_reload(rtwdev);
-+}
-+
-+static void rtw8922a_rfk_pll_init(struct rtw89_dev *rtwdev)
-+{
-+	int ret;
-+	u8 tmp;
-+
-+	ret = rtw89_mac_read_xtal_si(rtwdev, XTAL_SI_PLL_1, &tmp);
-+	if (ret)
-+		return;
-+	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_PLL_1, tmp | 0xf8, 0xFF);
-+	if (ret)
-+		return;
-+
-+	ret = rtw89_mac_read_xtal_si(rtwdev, XTAL_SI_APBT, &tmp);
-+	if (ret)
-+		return;
-+	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_APBT, tmp & ~0x60, 0xFF);
-+	if (ret)
-+		return;
-+
-+	ret = rtw89_mac_read_xtal_si(rtwdev, XTAL_SI_XTAL_PLL, &tmp);
-+	if (ret)
-+		return;
-+	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_XTAL_PLL, tmp | 0x38, 0xFF);
-+	if (ret)
-+		return;
-+}
-+
-+void rtw8922a_rfk_hw_init(struct rtw89_dev *rtwdev)
-+{
-+	if (rtwdev->dbcc_en)
-+		rtw8922a_rfk_mlo_ctrl(rtwdev);
-+
-+	rtw8922a_rfk_pll_init(rtwdev);
-+}
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922a_rfk.h b/drivers/net/wireless/realtek/rtw89/rtw8922a_rfk.h
-index fbd22de269e2..de5fa6c74530 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8922a_rfk.h
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8922a_rfk.h
-@@ -8,5 +8,6 @@
- #include "core.h"
- 
- void rtw8922a_tssi_cont_en_phyidx(struct rtw89_dev *rtwdev, bool en, u8 phy_idx);
-+void rtw8922a_rfk_hw_init(struct rtw89_dev *rtwdev);
- 
- #endif
--- 
-2.25.1
+(not sure off hand where the DT files themselves are)
 
+/jeff
 
