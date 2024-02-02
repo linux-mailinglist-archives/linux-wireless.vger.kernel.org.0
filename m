@@ -1,167 +1,148 @@
-Return-Path: <linux-wireless+bounces-2978-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2979-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A9C08464BF
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 01:03:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C5D88465ED
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 03:36:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDF491F25892
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 00:03:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A26A628357A
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 02:36:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E5AA17CF;
-	Fri,  2 Feb 2024 00:03:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94F81BE59;
+	Fri,  2 Feb 2024 02:36:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o1O0LXPh"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="m9DnQpUg"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56BA4C71;
-	Fri,  2 Feb 2024 00:03:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 934EDBE5C
+	for <linux-wireless@vger.kernel.org>; Fri,  2 Feb 2024 02:36:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706832198; cv=none; b=ZvLvFtPL76f50iY77iGChNyC9cKG45fNQwXHxLxcWlsj6EOOgB94RfBl8mWN4hT78f3ag10v5y0cKGil4zS6KAbqap3VUTB1pT8aafExvAqFNt+5RAvJE0h2PUDAEIA+ETz1pCu80QSp9lIEq1Mi/GLTWedUv6bbafd5d6xeStc=
+	t=1706841381; cv=none; b=DBu4Mc3kuHJMMBimbo9fhGxuJQQjaUeTsIAIS+xOwfj7bV/1BR/zWSmBN9GDZgJ0MKC2rKhB1Fy158no3V/5uwFhm3s1BXio3pjXef2wyT+YiSGNPNs8qMykMb/oYct3WNBXF9vZhs4HFc6k9ID8SmPGZGOyj46ysvHq118X0ME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706832198; c=relaxed/simple;
-	bh=S77eR3+aBnUK3p2BE5Am64ezv1OvD+YOIoEHYe29IuI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fRVTNj4KTS3xbmMJH1e9f2z8BKzdN8lEulStru61NTFKWNs53piWBTQo0K+kOlRT4ygVFLr3kLh4E72UQ4UKOjN0H+HdsTHDfvVec+NDnVaOcOK3FmMuoaVWVdoM2gKIhXues1JmogqOQPJkfLvmv8yshpaSAG7qpZixOupOF6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o1O0LXPh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F322C433F1;
-	Fri,  2 Feb 2024 00:03:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706832197;
-	bh=S77eR3+aBnUK3p2BE5Am64ezv1OvD+YOIoEHYe29IuI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=o1O0LXPhHzpi1Rs6bzSdUB3LcjO1MINeMXN+1VP+sLsOBbB1lmcWYZuIO4+mnQAL7
-	 MpNreOS7S3fgAQVhYTOwYixsFgyWORbDq1gNT16Srdh7+9QduAlF2WLSh7ATYq9A/m
-	 Y0Lm0CB7nQpLHDTRuIF6IujMeKqllKNE//q8Nn3cMmddLrW3fdHEFrHNrIdxf9+VMQ
-	 1T/iRH19Hl/og9XJiEqS8kUbH26YuegOXXgC2QmD8Clxt3tze7TsIaPCE17/GfHVgz
-	 xNSreoCPH085OxjKknjT/WMdY6EMheAbPZNwG25VNnB9eCHX5WAsJbaqJNBaD471hM
-	 CnqXZHJo7xVJg==
-Date: Thu, 1 Feb 2024 18:03:12 -0600
-From: Bjorn Andersson <andersson@kernel.org>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Kalle Valo <kvalo@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Konrad Dybcio <konrad.dybcio@linaro.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Heiko Stuebner <heiko@sntech.de>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Chris Morgan <macromorgan@hotmail.com>, Linus Walleij <linus.walleij@linaro.org>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Arnd Bergmann <arnd@arndb.de>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, 
-	=?utf-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4=?= Prado <nfraprado@collabora.com>, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Peng Fan <peng.fan@nxp.com>, Robert Richter <rrichter@amd.com>, 
-	Dan Williams <dan.j.williams@intel.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
-	Terry Bowman <terry.bowman@amd.com>, Lukas Wunner <lukas@wunner.de>, 
-	Huacai Chen <chenhuacai@kernel.org>, Alex Elder <elder@linaro.org>, 
-	Srini Kandagatla <srinivas.kandagatla@linaro.org>, Abel Vesa <abel.vesa@linaro.org>, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: Re: Re: [PATCH 4/9] PCI: create platform devices for child OF
- nodes of the port node
-Message-ID: <oiwvcvu6wdmpvhss3t7uaqkl5q73mki5pz6liuv66bap4dr2mp@jtjjwzlvt6za>
-References: <20240117160748.37682-1-brgl@bgdev.pl>
- <20240117160748.37682-5-brgl@bgdev.pl>
- <2024011707-alibi-pregnancy-a64b@gregkh>
- <CAMRc=Mef7wxRccnfQ=EDLckpb1YN4DNLoC=AYL8v1LLJ=uFH2Q@mail.gmail.com>
- <2024011836-wok-treadmill-c517@gregkh>
- <d2he3ufg6m46zos4swww4t3peyq55blxhirsx37ou37rwqxmz2@5khumvic62je>
- <CAMRc=MeXJjpJhDjyn_P-SGo4rDnEuT9kGN5jAbRcuM_c7_aDzQ@mail.gmail.com>
+	s=arc-20240116; t=1706841381; c=relaxed/simple;
+	bh=ZwDnTA+yALwLJdCTOYRgr354U16FcTT1KB1S6bvJqXs=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kfzsxeaet1Wv+SirR8D5g/70auYoX0M8kkLTqHBnmb7p+PCvdKv4oP6kmPtpyYXgi+FEE3FZoFK1VfjmphRuyL6mOOMBZ63+g+HegLKsLHnVtkzBhLa6JKqrLnyxPurlcRJms2TpfxS6hy01+my1wVQYoYVaN8LvG1V42qtcEx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=m9DnQpUg; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 4122IJB2027530;
+	Fri, 2 Feb 2024 02:36:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=qcppdkim1; bh=ALH7s/K
+	Pki3oSi9AzApjxN2Bp7leFa3xByFm5jAbAxw=; b=m9DnQpUg86QJFUCRWaF1A7J
+	kpvzewCoOk3XL1ViUnysLato6zlFhSVB/kNCF6gLBf5etg46V40DFH2iX4E7SKOv
+	0m/XDSoC8ZqTYnoMXviOrhFVixblHJTH+xm6DOQEzakp7vR0VvsXBvk4iK74x9SF
+	XakB4t3BBJl8QJTGa9yctpjOLLAqXatbi32lZfsEyTS7k7Ejh6lyrXaJuGEZn7VJ
+	ATzj7UECWq9p8pyKj+oFmQHI6MjbJ+wjCf0OL1VZboQKmTCBTi8Ow9abjvXPtXVg
+	EhxxygWwfwt81A7R87kMFUQc2KVE8/nozu17PkCzVD63Cm8n8PQ6WCN9zW0UBEA=
+	=
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3w0pu4g32c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 02 Feb 2024 02:36:15 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 4122aEdE002431
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 2 Feb 2024 02:36:14 GMT
+Received: from bqiang-SFF.qca.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Thu, 1 Feb 2024 18:36:12 -0800
+From: Baochen Qiang <quic_bqiang@quicinc.com>
+To: <ath11k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, <quic_bqiang@quicinc.com>
+Subject: [PATCH] wifi: ath11k: initialize rx_mcs_80 and rx_mcs_160 before use
+Date: Fri, 2 Feb 2024 10:35:47 +0800
+Message-ID: <20240202023547.11141-1-quic_bqiang@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMRc=MeXJjpJhDjyn_P-SGo4rDnEuT9kGN5jAbRcuM_c7_aDzQ@mail.gmail.com>
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: AyjsI91anBgS2Z4B_6rNeInZbOz41g7v
+X-Proofpoint-ORIG-GUID: AyjsI91anBgS2Z4B_6rNeInZbOz41g7v
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-01_10,2024-01-31_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ impostorscore=0 mlxscore=0 malwarescore=0 phishscore=0 lowpriorityscore=0
+ mlxlogscore=680 clxscore=1015 bulkscore=0 spamscore=0 adultscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2401310000 definitions=main-2402020016
 
-On Wed, Jan 31, 2024 at 12:04:14PM +0100, Bartosz Golaszewski wrote:
-> On Tue, Jan 30, 2024 at 10:54 PM Bjorn Andersson <andersson@kernel.org> wrote:
-> >
-> > On Thu, Jan 18, 2024 at 12:15:27PM +0100, Greg Kroah-Hartman wrote:
-> > > On Thu, Jan 18, 2024 at 11:58:50AM +0100, Bartosz Golaszewski wrote:
-> > > > On Wed, Jan 17, 2024 at 5:45 PM Greg Kroah-Hartman
-> > > > <gregkh@linuxfoundation.org> wrote:
-> > > > >
-> > > > > On Wed, Jan 17, 2024 at 05:07:43PM +0100, Bartosz Golaszewski wrote:
-> > > > > > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> > > > > >
-> > > > > > In order to introduce PCI power-sequencing, we need to create platform
-> > > > > > devices for child nodes of the port node.
-> > > > >
-> > > > > Ick, why a platform device?  What is the parent of this device, a PCI
-> > > > > device?  If so, then this can't be a platform device, as that's not what
-> > > > > it is, it's something else so make it a device of that type,.
-> > > > >
-> > > >
-> > > > Greg,
-> > > >
-> > > > This is literally what we agreed on at LPC. In fact: during one of the
-> > > > hall track discussions I said that you typically NAK any attempts at
-> > > > using the platform bus for "fake" devices but you responded that this
-> > > > is what the USB on-board HUB does and while it's not pretty, this is
-> > > > what we need to do.
-> > >
-> > > Ah, you need to remind me of these things, this changelog was pretty
-> > > sparse :)
-> > >
-> >
-> > I believe I missed this part of the discussion, why does this need to be
-> > a platform_device? What does the platform_bus bring that can't be
-> > provided by some other bus?
-> >
-> 
-> Does it need to be a platform_device? No, of course not. Does it make
-> sense for it to be one? Yes, for two reasons:
-> 
-> 1. The ATH11K WLAN module is represented on the device tree like a
-> platform device, we know it's always there and it consumes regulators
-> from another platform device. The fact it uses PCIe doesn't change the
-> fact that it is logically a platform device.
+Currently in ath11k_peer_assoc_h_he() rx_mcs_80 and rx_mcs_160
+are used to calculate max_nss, see
+	if (support_160)
+		max_nss = min(rx_mcs_80, rx_mcs_160);
+	else
+		max_nss = rx_mcs_80;
 
-Are you referring to the ath11k SNOC (firmware running on co-processor
-in the SoC) variant?
+Kernel test robot complains on uninitialized symbols:
+drivers/net/wireless/ath/ath11k/mac.c:2321 ath11k_peer_assoc_h_he() error: uninitialized symbol 'rx_mcs_80'.
+drivers/net/wireless/ath/ath11k/mac.c:2321 ath11k_peer_assoc_h_he() error: uninitialized symbol 'rx_mcs_160'.
+drivers/net/wireless/ath/ath11k/mac.c:2323 ath11k_peer_assoc_h_he() error: uninitialized symbol 'rx_mcs_80'.
 
-Afaict the PCIe-attached ath11k is not represented as a platform_device
-in DeviceTree.
+This is because there are some code paths that never set them, so
+the assignment of max_nss can come from uninitialized variables.
+This could result in some unknown issues since a wrong peer_nss
+might be passed to firmware.
 
-Said platform_device is also not a child under the PCIe bus, so this
-would be a different platform_device...
+Change to initialize them to an invalid value at the beginning. This
+makes sense because even max_nss gets an invalid value, due to either
+or both of them being invalid, we can get an valid peer_nss with
+following guard:
+	arg->peer_nss = min(sta->deflink.rx_nss, max_nss)
 
-> 2. The platform bus already provides us with the entire infrastructure
-> that we'd now need to duplicate (possibly adding bugs) in order to
-> introduce a "power sequencing bus".
-> 
+Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
 
-This is a perfectly reasonable desire. Look at our PMICs, they are full
-of platform_devices. But through the years it's been said many times,
-that this is not a valid or good reason for using platform_devices, and
-as a result we have e.g. auxiliary bus.
+Fixes: 3db26ecf7114 ("ath11k: calculate the correct NSS of peer for HE capabilities")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202401311243.NyXwWZxP-lkp@intel.com/
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+---
+ drivers/net/wireless/ath/ath11k/mac.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Anyway, (please) don't claim that "we need to", when it actually is "we
-want to use platform_device because that's more convenient"!
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index bbf4d1f4d310..299f4f3d7659 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -2294,6 +2294,8 @@ static void ath11k_peer_assoc_h_he(struct ath11k *ar,
+ 	mcs_160_map = le16_to_cpu(he_cap->he_mcs_nss_supp.rx_mcs_160);
+ 	mcs_80_map = le16_to_cpu(he_cap->he_mcs_nss_supp.rx_mcs_80);
+ 
++	/* Initialize rx_mcs_160 to 9 which is an invalid value */
++	rx_mcs_160 = 9;
+ 	if (support_160) {
+ 		for (i = 7; i >= 0; i--) {
+ 			u8 mcs_160 = (mcs_160_map >> (2 * i)) & 3;
+@@ -2305,6 +2307,8 @@ static void ath11k_peer_assoc_h_he(struct ath11k *ar,
+ 		}
+ 	}
+ 
++	/* Initialize rx_mcs_80 to 9 which is an invalid value */
++	rx_mcs_80 = 9;
+ 	for (i = 7; i >= 0; i--) {
+ 		u8 mcs_80 = (mcs_80_map >> (2 * i)) & 3;
+ 
 
-Regards,
-Bjorn
+base-commit: d4d13947306ab3c98c84389d9397563b550b71b8
+-- 
+2.25.1
 
-> Bart
-> 
-> > (I'm not questioning the need for having a bus, creating devices, and
-> > matching/binding them to a set of drivers)
-> >
-> > Regards,
-> > Bjorn
-> >
-> 
-> [snip]
 
