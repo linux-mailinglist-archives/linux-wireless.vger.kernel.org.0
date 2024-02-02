@@ -1,50 +1,50 @@
-Return-Path: <linux-wireless+bounces-3018-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3017-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 821B8846FD7
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 13:11:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88E26846FD6
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 13:11:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5E541C25A4C
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 12:11:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38BB429AF69
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 12:11:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E22913DBA7;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B00E13EFF3;
 	Fri,  2 Feb 2024 12:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=fiona.klute@gmx.de header.b="bPpVhLV7"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=fiona.klute@gmx.de header.b="lNGb1WVg"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6095513E23F;
-	Fri,  2 Feb 2024 12:11:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 352D113E233;
+	Fri,  2 Feb 2024 12:11:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706875889; cv=none; b=mJdakgWPzA6NpGLTnCeeXTMhNWE866IhaFbcOyKeRHL67gs+jMjbdR4uvteUd/Vna0oHkCGK8/RF1NdZwH27t9uFKowjPOtkA/QFwZ36u+CSdrw5PjP0zF6UdEz5kW595JvyuOlljbVIk8H0dyCDvrmCGFbiKFN9IG1qp/Xgn1E=
+	t=1706875889; cv=none; b=fYctKhDj4Tc7xnqZ5vcwgpkRBzGOwAK4oB9eQtL3tmf32ReMM2j9pBNduPdzqM2tlaxOlk8pwLehlIKKc5yqiYni+96dmIFtPLhIkEpkHVpwh++P2kvW6TZCtiuWFnP2oSsDj6/7xt3riFPrdmNKEluhCdNvYQPjboj9NyCbbUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1706875889; c=relaxed/simple;
-	bh=mE8SzbL6wMrUFQ39voA3RuYy6EiGmDq5pJOdRFgVfJU=;
+	bh=QtGV7AvFbjaiTQJvn+BibswCju4yQS011kbuxVxcpNM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jjTR+hcQhqNZpOgpBXj/Jt9nQ7QfodpOn2ef1chzMTOyb97T+LRrbiBazJqc/VaW9uuRK/NgV0ISQnSh+j7rP3+ekF3i7qKcJMQaG/BfDMX4FHheUV7AQYAxM6YXAdKiBfYyizeT7djDb5L9QdNfaRI1ZvMo8pZ1hwFWdehewOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=fiona.klute@gmx.de header.b=bPpVhLV7; arc=none smtp.client-ip=212.227.15.19
+	 MIME-Version; b=Dt3E0S6UYD2FHyVtMgo95vZERxysmojKuWbgL5ubfsdxpZ/6LvVlDCmWDwx9DVbk6u5OmaRg6+CNYvPTqWOMY5JTrx0kXyiwdoGS/NUdDtiro1hNDPmWCeXgvqvUrqjQ+4vNbn1JWyIAyOh6g6dhCMYKY5Goybq0T54DISUoTds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=fiona.klute@gmx.de header.b=lNGb1WVg; arc=none smtp.client-ip=212.227.15.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
 	t=1706875875; x=1707480675; i=fiona.klute@gmx.de;
-	bh=mE8SzbL6wMrUFQ39voA3RuYy6EiGmDq5pJOdRFgVfJU=;
+	bh=QtGV7AvFbjaiTQJvn+BibswCju4yQS011kbuxVxcpNM=;
 	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:
 	 References;
-	b=bPpVhLV7MzjZUldtVY+x6XSNevb3JQFEg7TckbP4k7MZ1si807bUOjnWXjKmLZ4A
-	 qS7QvCTr910hxjSY9QCuMeZZoiuJmLWbaBhjrJ3G7f4lTtF581JpaXM5VnSbbDB16
-	 oC3QAuQ84qxfGNoPaDGnfeL9necufauePGhuAT+lodSGLBxbWeFBNuo8wCwWQLBdh
-	 8hWp7p3syMIh4dMlRg7jvCKSBOc9Tm0V+8gB73LJVUrlGyl1vMTu0B5AYTLtvwMNC
-	 s5Opt5DQLuIl9PAIf9RjIQ+XlT8wozVqUkZGM69woK+A26I1Yd4mAndwo952RBWY/
-	 7OzjkBwoEQU1VkyEHA==
+	b=lNGb1WVga/DLNHoDoUmISINRjFgPGJNU5Sim6dMzm3W97QXCbINwQ5zIMSIgFDV4
+	 FrapEWczxgxQsugomhS831/pF91PuvDDSNrEdBhrsuTQfCAzY+jaQFh3Lx+rOm2up
+	 UB3PooiSu4Dg2NRbOpJ/oTcU2ld2dRWCHLulWDFPxtTgRxiar3dKzKpr1Xe8AccJa
+	 Z39ffM50Ogaj1XOFBdl7Ke1jUIzlSICU3f+Vk4GO8HOGviOHoWdwVXsGv7GUPfy6x
+	 gtDUBTeQ1S2K+Sazi3D2bYG9EI1bHQ6k1n+K6PPhOf7UXoLXJUJg+zFVcJixpHhCj
+	 wrKEFW08vzRSOKMbGQ==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from haruka.lan ([85.22.17.32]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MgeoI-1qoosI48lw-00h8ah; Fri, 02
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MnaoZ-1qmxBG23m9-00jbYg; Fri, 02
  Feb 2024 13:11:15 +0100
 From: Fiona Klute <fiona.klute@gmx.de>
 To: linux-wireless@vger.kernel.org,
@@ -55,9 +55,9 @@ Cc: Kalle Valo <kvalo@kernel.org>,
 	Pavel Machek <pavel@ucw.cz>,
 	=?UTF-8?q?Ond=C5=99ej=20Jirman?= <megi@xff.cz>,
 	Fiona Klute <fiona.klute@gmx.de>
-Subject: [PATCH 2/9] wifi: rtw88: Debug output for rtw8723x EFUSE
-Date: Fri,  2 Feb 2024 13:10:41 +0100
-Message-ID: <20240202121050.977223-3-fiona.klute@gmx.de>
+Subject: [PATCH 3/9] wifi: rtw88: Add definitions for 8703b chip
+Date: Fri,  2 Feb 2024 13:10:42 +0100
+Message-ID: <20240202121050.977223-4-fiona.klute@gmx.de>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240202121050.977223-1-fiona.klute@gmx.de>
 References: <20240202121050.977223-1-fiona.klute@gmx.de>
@@ -68,254 +68,112 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Hhim8u6S1K4cztHDTdh6Tqj/cqxRJoAOdCMHmgKQalmkAZL8z9f
- rrIHBVpBukOIZc3h3aghefH8O17/kluPHlLyT45zd1Fgw5clKzVca2BoFdkGcHcd4JvXVS0
- Fz3K0MRlJMb/kUikYr/ZLDxiNtixl+fyWrNQ7UVGCs9mIBKuyT6IiOhJIzs38AuCni7war4
- Pyv6G4l4LKUM8gjdAFVng==
+X-Provags-ID: V03:K1:kkl71RbyD6rqZrKBn0d4svAObi3JSxWxzAHX7DhZ1oXosgUsaYS
+ vVHLcTBC+unWqqMrLo9zOYocRsG/0WvsEJ/TWVaTDgiCA2lZ7sd6dd2nAY1bCtQaiSeg3DE
+ raBnjjjICoXSs+oIkK5ziYhHjsBIN9lCUvWC79EdrplhJnFfm5Yk+403A5t5xIOGu+rDzKL
+ /V0eEkOCeDtFxs+UZ8/5Q==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:Au8e50DKBQw=;Sj2iVWfk/UxMb55TIkeab/Szsa5
- nzniYCwhCszLppVZpuV6h5ubH4tYlGKPtGoiTD3eJp+WSQZq0BviW39r2uV27eVmZY+bB8EN5
- yssjbQjcDKAK2aHsrpG0sod5olIFM5BHxJ9JWDEUYdzvddHW8ZSdmhk48MKP+pvoZ6olsPCIU
- a0R60KkEO8abe+A6xd6CYIy6ra99FY7YeU7YdjyL0VuWNM0u5MCEd4IhkIuBLJohXUG9TWAZh
- fWzEwAh2qVAtAEg9OSoT6WgVY3T9gD5fjA4O/xL5hRaWBsDxuFdF1txTd+HsgSAL8QtUzE8sn
- UzDugSarqGyUrXQTiHfWUo1iE/QH4vd38ZYxWXgDwymHOTRKabasocBefZcmQRWkMvP70JMgR
- YN/o5i8EUF+MzAWYWcxFc79ciQZlgs4j9SlEmq2HWADRRe9FTN9LJWHgeITgh1HWqxGviYdtf
- VAgz+i/Wbf5VCM6mKHHNxxrmHw8JP9l0NpQSF46g3QsdN64dP+PJnXu85ubvxiMVs2zKkcYFW
- IGB6QGddMZZJFUSPK3IylQaRspeGv+WEV7Dvkpn+EocSnyBOQqH2I7yebJZWKZKohRuHuJP1C
- YbxO/m9C+9vL1Tu8iQjM+K2rMa4JGO+4gbv/XlFGM0dwXL0Tq0l4WVBsX3th4bGwj3l55i9bE
- S7rucnRGzzIsQpQQCBBiRW+OBn7M0wDVy5EsaK0++QCOiTyOzai97kCa3adMoq1uVQJvFdb4Y
- R1aDfXXntx5NVHRy+Vq+wt1NeO3P4SihUlBsG+oR+RR5Hf+TtOJ3SewYToRimhtg9O6bjjOGT
- ULva5Xto3OSd0bXUz5sfl1S78X+xvbvrTUfw9OX9KaX2g=
+UI-OutboundReport: notjunk:1;M01:P0:CcYZLnfZPUk=;0z9D8jvttSBlMoDx9wK7zMfaoV/
+ ATO1RGAVPY/QZN3CTT5XGg1QcJbpSi2GRl1suWFr67ixiBie78y3IDibo9a/R+Ds6xhgYzJlU
+ HRMIcFIbfw/p3QlAVy++tGHG9FWQTmClp81Rf2sHtBpqjgpoId/V3oAJvpWcC+eEVPJo7i5j2
+ pox7xdjp5RoFqujQV3gi82y4NbvLY/K4S4M0aNYOUxvgYhj0kf0az4eX90HjXJ9rhY/dkD7Xs
+ QWwj3hImvlPSgd0NlLUJ4bjRwvs8NlVeZSjezPjpwaeAeNHmIF1UnpTeq5WequSmqlwufcNK/
+ CzneojjfglLU7QQpJmQteWTmeosjDWwX1eodLbjvnD7Pj/0NDjvfFfAJ3TDC7AyKLUcVremiz
+ NhxfKjhL9bQ9A7pEprVz1eDs4jtnaH/tdU0GZX7IU/nW3YHPHNzZ///y/y0FCqbWavhiCRe0L
+ Y/sJzuxA831mQv0ROF8w9aeRWX4z9H6eyLGCUPOb/HU722yatMZzvPyq8xpRpfKA0nrh677wZ
+ 2U0CtQWpcUCJMEiN7iwnNo33saqtw+1iofQpjva0wKCkaG5+ucs7ch+FQzHSfs7StFPWgO9AZ
+ pkoZoYji0d23kB+vgC9XcgAuP8mvF74h0jvaRmAzZsXCJNgBaDX3u2+d/jW3B+yYysbhqiELf
+ agAaNALyD4ADRcEdJreD4N3Y9+y8e1jhTLwyo6mgJy3WU8tLGbgdRqTvSfezJROEgJFJMLUFw
+ K7LFjKMVD85/uNQQAPhgQ4n9k0FUpjH0L0T3t/LTC9LWnhX+SK1bfiWwOlNG4gbLLFbu1fSFL
+ I7wU0GRYX9aGwR11072G8KcCE82ALO1218mcV8S/o3gC4=
 
-Some 8703b chips contain invalid EFUSE data, getting detailed
-information is critical when analyzing issues caused by that.
+default_cck_index is used in power track, the rx_cck_agc_report_type
+for RX PHY status.
 
 Signed-off-by: Fiona Klute <fiona.klute@gmx.de>
 =2D--
-The TX power table debug output function (rtw8723x_debug_txpwr_limit)
-isn't specific to the chip family. Should I move it to debug.c
-(e.g. as rtw_debug_txpwr_limit_2g)?
+ drivers/net/wireless/realtek/rtw88/main.h     |  3 +++
+ drivers/net/wireless/realtek/rtw88/rtw8723x.h | 11 +++++++++++
+ 2 files changed, 14 insertions(+)
 
- drivers/net/wireless/realtek/rtw88/rtw8723x.c | 159 ++++++++++++++++++
- drivers/net/wireless/realtek/rtw88/rtw8723x.h |  11 ++
- 2 files changed, 170 insertions(+)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723x.c b/drivers/net/w=
-ireless/realtek/rtw88/rtw8723x.c
-index 2b58064547..bca650c6bb 100644
-=2D-- a/drivers/net/wireless/realtek/rtw88/rtw8723x.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8723x.c
-@@ -63,6 +63,163 @@ static void __rtw8723x_lck(struct rtw_dev *rtwdev)
- 		rtw_write8(rtwdev, REG_TXPAUSE, 0x00);
- }
-
-+#define DBG_EFUSE_VAL(map, name)			 \
-+	rtw_dbg(rtwdev, RTW_DBG_EFUSE, # name "=3D0x%x\n", \
-+		(map)->name)
-+#define DBG_EFUSE_2BYTE(map, name)			   \
-+	rtw_dbg(rtwdev, RTW_DBG_EFUSE, # name "=3D0x%x%x\n", \
-+		(map)->name[0], (map)->name[1])
-+
-+static void rtw8723xe_efuse_debug(struct rtw_dev *rtwdev,
-+				  struct rtw8723x_efuse *map)
-+{
-+	rtw_dbg(rtwdev, RTW_DBG_EFUSE, "mac_addr=3D%pM\n", map->e.mac_addr);
-+	DBG_EFUSE_2BYTE(map, e.vendor_id);
-+	DBG_EFUSE_2BYTE(map, e.device_id);
-+	DBG_EFUSE_2BYTE(map, e.sub_vendor_id);
-+	DBG_EFUSE_2BYTE(map, e.sub_device_id);
-+}
-+
-+static void rtw8723xu_efuse_debug(struct rtw_dev *rtwdev,
-+				  struct rtw8723x_efuse *map)
-+{
-+	DBG_EFUSE_2BYTE(map, u.vendor_id);
-+	DBG_EFUSE_2BYTE(map, u.product_id);
-+	DBG_EFUSE_VAL(map, u.usb_option);
-+	rtw_dbg(rtwdev, RTW_DBG_EFUSE, "mac_addr=3D%pM\n", map->u.mac_addr);
-+}
-+
-+static void rtw8723xs_efuse_debug(struct rtw_dev *rtwdev,
-+				  struct rtw8723x_efuse *map)
-+{
-+	rtw_dbg(rtwdev, RTW_DBG_EFUSE, "mac_addr=3D%pM\n", map->s.mac_addr);
-+}
-+
-+static void __rtw8723x_debug_txpwr_limit(struct rtw_dev *rtwdev,
-+					 struct rtw_txpwr_idx *table,
-+					 int tx_path_count)
-+{
-+	if (!rtw_dbg_is_enabled(rtwdev, RTW_DBG_EFUSE))
-+		return;
-+
-+	rtw_dbg(rtwdev, RTW_DBG_EFUSE,
-+		"Power index table (2.4G):\n");
-+	/* CCK base */
-+	rtw_dbg(rtwdev, RTW_DBG_EFUSE, "CCK base\n");
-+	rtw_dbg(rtwdev, RTW_DBG_EFUSE, "RF    G0  G1  G2  G3  G4  G5\n");
-+	for (int i =3D 0; i < tx_path_count; i++)
-+		rtw_dbg(rtwdev, RTW_DBG_EFUSE,
-+			"[%c]: %3u %3u %3u %3u %3u %3u\n",
-+			'A' + i,
-+			table[i].pwr_idx_2g.cck_base[0],
-+			table[i].pwr_idx_2g.cck_base[1],
-+			table[i].pwr_idx_2g.cck_base[2],
-+			table[i].pwr_idx_2g.cck_base[3],
-+			table[i].pwr_idx_2g.cck_base[4],
-+			table[i].pwr_idx_2g.cck_base[5]);
-+	/* CCK diff */
-+	rtw_dbg(rtwdev, RTW_DBG_EFUSE, "CCK diff\n");
-+	rtw_dbg(rtwdev, RTW_DBG_EFUSE, "RF   1S 2S 3S 4S\n");
-+	for (int i =3D 0; i < tx_path_count; i++)
-+		rtw_dbg(rtwdev, RTW_DBG_EFUSE,
-+			"[%c]: %2d %2d %2d %2d\n",
-+			'A' + i, 0 /* no diff for 1S */,
-+			table[i].pwr_idx_2g.ht_2s_diff.cck,
-+			table[i].pwr_idx_2g.ht_3s_diff.cck,
-+			table[i].pwr_idx_2g.ht_4s_diff.cck);
-+	/* BW40-1S base */
-+	rtw_dbg(rtwdev, RTW_DBG_EFUSE, "BW40-1S base\n");
-+	rtw_dbg(rtwdev, RTW_DBG_EFUSE, "RF    G0  G1  G2  G3  G4\n");
-+	for (int i =3D 0; i < tx_path_count; i++)
-+		rtw_dbg(rtwdev, RTW_DBG_EFUSE,
-+			"[%c]: %3u %3u %3u %3u %3u\n",
-+			'A' + i,
-+			table[i].pwr_idx_2g.bw40_base[0],
-+			table[i].pwr_idx_2g.bw40_base[1],
-+			table[i].pwr_idx_2g.bw40_base[2],
-+			table[i].pwr_idx_2g.bw40_base[3],
-+			table[i].pwr_idx_2g.bw40_base[4]);
-+	/* OFDM diff */
-+	rtw_dbg(rtwdev, RTW_DBG_EFUSE, "OFDM diff\n");
-+	rtw_dbg(rtwdev, RTW_DBG_EFUSE, "RF   1S 2S 3S 4S\n");
-+	for (int i =3D 0; i < tx_path_count; i++)
-+		rtw_dbg(rtwdev, RTW_DBG_EFUSE,
-+			"[%c]: %2d %2d %2d %2d\n",
-+			'A' + i,
-+			table[i].pwr_idx_2g.ht_1s_diff.ofdm,
-+			table[i].pwr_idx_2g.ht_2s_diff.ofdm,
-+			table[i].pwr_idx_2g.ht_3s_diff.ofdm,
-+			table[i].pwr_idx_2g.ht_4s_diff.ofdm);
-+	/* BW20 diff */
-+	rtw_dbg(rtwdev, RTW_DBG_EFUSE, "BW20 diff\n");
-+	rtw_dbg(rtwdev, RTW_DBG_EFUSE, "RF   1S 2S 3S 4S\n");
-+	for (int i =3D 0; i < tx_path_count; i++)
-+		rtw_dbg(rtwdev, RTW_DBG_EFUSE,
-+			"[%c]: %2d %2d %2d %2d\n",
-+			'A' + i,
-+			table[i].pwr_idx_2g.ht_1s_diff.bw20,
-+			table[i].pwr_idx_2g.ht_2s_diff.bw20,
-+			table[i].pwr_idx_2g.ht_3s_diff.bw20,
-+			table[i].pwr_idx_2g.ht_4s_diff.bw20);
-+	/* BW40 diff */
-+	rtw_dbg(rtwdev, RTW_DBG_EFUSE, "BW40 diff\n");
-+	rtw_dbg(rtwdev, RTW_DBG_EFUSE, "RF   1S 2S 3S 4S\n");
-+	for (int i =3D 0; i < tx_path_count; i++)
-+		rtw_dbg(rtwdev, RTW_DBG_EFUSE,
-+			"[%c]: %2d %2d %2d %2d\n",
-+			'A' + i, 0 /* no diff for 1S */,
-+			table[i].pwr_idx_2g.ht_2s_diff.bw40,
-+			table[i].pwr_idx_2g.ht_3s_diff.bw40,
-+			table[i].pwr_idx_2g.ht_4s_diff.bw40);
-+}
-+
-+static void efuse_debug_dump(struct rtw_dev *rtwdev,
-+			     struct rtw8723x_efuse *map)
-+{
-+	if (!rtw_dbg_is_enabled(rtwdev, RTW_DBG_EFUSE))
-+		return;
-+
-+	rtw_dbg(rtwdev, RTW_DBG_EFUSE, "EFUSE raw logical map:\n");
-+	print_hex_dump(KERN_DEBUG, "", DUMP_PREFIX_OFFSET, 16, 1,
-+		       (u8 *)map, sizeof(struct rtw8723x_efuse), false);
-+	rtw_dbg(rtwdev, RTW_DBG_EFUSE, "Parsed rtw8723x EFUSE data:\n");
-+	DBG_EFUSE_VAL(map, rtl_id);
-+	DBG_EFUSE_VAL(map, afe);
-+	rtw8723x_debug_txpwr_limit(rtwdev, map->txpwr_idx_table, 4);
-+	DBG_EFUSE_VAL(map, channel_plan);
-+	DBG_EFUSE_VAL(map, xtal_k);
-+	DBG_EFUSE_VAL(map, thermal_meter);
-+	DBG_EFUSE_VAL(map, iqk_lck);
-+	DBG_EFUSE_VAL(map, pa_type);
-+	DBG_EFUSE_2BYTE(map, lna_type_2g);
-+	DBG_EFUSE_2BYTE(map, lna_type_5g);
-+	DBG_EFUSE_VAL(map, rf_board_option);
-+	DBG_EFUSE_VAL(map, rf_feature_option);
-+	DBG_EFUSE_VAL(map, rf_bt_setting);
-+	DBG_EFUSE_VAL(map, eeprom_version);
-+	DBG_EFUSE_VAL(map, eeprom_customer_id);
-+	DBG_EFUSE_VAL(map, tx_bb_swing_setting_2g);
-+	DBG_EFUSE_VAL(map, tx_pwr_calibrate_rate);
-+	DBG_EFUSE_VAL(map, rf_antenna_option);
-+	DBG_EFUSE_VAL(map, rfe_option);
-+	DBG_EFUSE_2BYTE(map, country_code);
-+
-+	switch (rtw_hci_type(rtwdev)) {
-+	case RTW_HCI_TYPE_PCIE:
-+		rtw8723xe_efuse_debug(rtwdev, map);
-+		break;
-+	case RTW_HCI_TYPE_USB:
-+		rtw8723xu_efuse_debug(rtwdev, map);
-+		break;
-+	case RTW_HCI_TYPE_SDIO:
-+		rtw8723xs_efuse_debug(rtwdev, map);
-+		break;
-+	default:
-+		/* unsupported now */
-+		break;
-+	}
-+}
-+
- static void rtw8723xe_efuse_parsing(struct rtw_efuse *efuse,
- 				    struct rtw8723x_efuse *map)
- {
-@@ -88,6 +245,7 @@ static int __rtw8723x_read_efuse(struct rtw_dev *rtwdev=
-, u8 *log_map)
- 	int i;
-
- 	map =3D (struct rtw8723x_efuse *)log_map;
-+	efuse_debug_dump(rtwdev, map);
-
- 	efuse->rfe_option =3D 0;
- 	efuse->rf_board_option =3D map->rf_board_option;
-@@ -553,6 +711,7 @@ const struct rtw8723x_common rtw8723x_common =3D {
- 	.pwrtrack_set_xtal =3D __rtw8723x_pwrtrack_set_xtal,
- 	.coex_cfg_init =3D __rtw8723x_coex_cfg_init,
- 	.fill_txdesc_checksum =3D __rtw8723x_fill_txdesc_checksum,
-+	.debug_txpwr_limit =3D __rtw8723x_debug_txpwr_limit,
+diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wirel=
+ess/realtek/rtw88/main.h
+index e14d1da439..49894331f7 100644
+=2D-- a/drivers/net/wireless/realtek/rtw88/main.h
++++ b/drivers/net/wireless/realtek/rtw88/main.h
+@@ -187,6 +187,7 @@ enum rtw_chip_type {
+ 	RTW_CHIP_TYPE_8822C,
+ 	RTW_CHIP_TYPE_8723D,
+ 	RTW_CHIP_TYPE_8821C,
++	RTW_CHIP_TYPE_8703B,
  };
- EXPORT_SYMBOL(rtw8723x_common);
 
+ enum rtw_tx_queue_type {
+@@ -1700,11 +1701,13 @@ struct rtw_dm_info {
+ 	s8 delta_power_index[RTW_RF_PATH_MAX];
+ 	s8 delta_power_index_last[RTW_RF_PATH_MAX];
+ 	u8 default_ofdm_index;
++	u8 default_cck_index;
+ 	bool pwr_trk_triggered;
+ 	bool pwr_trk_init_trigger;
+ 	struct ewma_thermal avg_thermal[RTW_RF_PATH_MAX];
+ 	s8 txagc_remnant_cck;
+ 	s8 txagc_remnant_ofdm;
++	u8 rx_cck_agc_report_type;
+
+ 	/* backup dack results for each path and I/Q */
+ 	u32 dack_adck[RTW_RF_PATH_MAX];
 diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723x.h b/drivers/net/w=
 ireless/realtek/rtw88/rtw8723x.h
-index d3930f1f2c..f5c46b714c 100644
+index f5c46b714c..13fec99a86 100644
 =2D-- a/drivers/net/wireless/realtek/rtw88/rtw8723x.h
 +++ b/drivers/net/wireless/realtek/rtw88/rtw8723x.h
-@@ -154,6 +154,9 @@ struct rtw8723x_common {
- 	void (*fill_txdesc_checksum)(struct rtw_dev *rtwdev,
- 				     struct rtw_tx_pkt_info *pkt_info,
- 				     u8 *txdesc);
-+	void (*debug_txpwr_limit)(struct rtw_dev *rtwdev,
-+				  struct rtw_txpwr_idx *table,
-+				  int tx_path_count);
- };
-
- extern const struct rtw8723x_common rtw8723x_common;
-@@ -346,6 +349,14 @@ static inline s32 iqk_mult(s32 x, s32 y, s32 *ext)
- 	return (t >> 8);	/* Q.16 --> Q.8 */
- }
-
-+static inline
-+void rtw8723x_debug_txpwr_limit(struct rtw_dev *rtwdev,
-+				struct rtw_txpwr_idx *table,
-+				int tx_path_count)
-+{
-+	rtw8723x_common.debug_txpwr_limit(rtwdev, table, tx_path_count);
-+}
-+
- static inline void rtw8723x_lck(struct rtw_dev *rtwdev)
- {
- 	rtw8723x_common.lck(rtwdev);
+@@ -165,6 +165,8 @@ extern const struct rtw8723x_common rtw8723x_common;
+ #define MAX_TOLERANCE	5
+ #define IQK_TX_X_ERR	0x142
+ #define IQK_TX_Y_ERR	0x42
++#define IQK_RX_X_ERR	0x132
++#define IQK_RX_Y_ERR	0x36
+ #define IQK_RX_X_UPPER	0x11a
+ #define IQK_RX_X_LOWER	0xe6
+ #define IQK_RX_Y_LMT	0x1a
+@@ -177,6 +179,10 @@ extern const struct rtw8723x_common rtw8723x_common;
+ #define DIS_3WIRE		0xccf000c0
+ #define EN_3WIRE		0xccc000c0
+ #define START_PSD		0x400000
++#define FREQ_CH5		0xfccd
++#define FREQ_CH6		0xfc4d
++#define FREQ_CH7		0xffcd
++#define FREQ_CH8		0xff4d
+ #define FREQ_CH13		0xfccd
+ #define FREQ_CH14		0xff9a
+ #define RFCFGCH_CHANNEL_MASK	GENMASK(7, 0)
+@@ -239,10 +245,13 @@ extern const struct rtw8723x_common rtw8723x_common;
+ #define BIT_MASK_OFDM0_EXT_C	BIT(29)
+ #define BIT_MASK_OFDM0_EXTS	(BIT(31) | BIT(29) | BIT(28))
+ #define BIT_SET_OFDM0_EXTS(a, c, d) (((a) << 31) | ((c) << 29) | ((d) << =
+28))
++#define BIT_MASK_OFDM0_EXTS_B	(BIT(27) | BIT(25) | BIT(24))
++#define BIT_SET_OFDM0_EXTS_B(a, c, d) (((a) << 27) | ((c) << 25) | ((d) <=
+< 24))
+ #define REG_OFDM0_XAAGC1	0x0c50
+ #define REG_OFDM0_XBAGC1	0x0c58
+ #define REG_AGCRSSI		0x0c78
+ #define REG_OFDM_0_XA_TX_IQ_IMBALANCE	0x0c80
++#define REG_OFDM_0_XB_TX_IQ_IMBALANCE	0x0c88
+ #define BIT_MASK_TXIQ_ELM_A	0x03ff
+ #define BIT_SET_TXIQ_ELM_ACD(a, c, d) (((d) << 22) | (((c) & 0x3F) << 16)=
+ |    \
+ 				       ((a) & 0x03ff))
+@@ -303,6 +312,8 @@ extern const struct rtw8723x_common rtw8723x_common;
+ #define REG_IQK_AGC_RSP_11N	0x0e4c
+ #define REG_TX_IQK_TONE_B	0x0e50
+ #define REG_RX_IQK_TONE_B	0x0e54
++#define REG_TXIQK_PI_B		0x0e58
++#define REG_RXIQK_PI_B		0x0e5c
+ #define REG_IQK_RES_TX		0x0e94
+ #define BIT_MASK_RES_TX		GENMASK(25, 16)
+ #define REG_IQK_RES_TY		0x0e9c
 =2D-
 2.43.0
 
