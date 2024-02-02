@@ -1,66 +1,52 @@
-Return-Path: <linux-wireless+bounces-2980-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2981-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D7B18465F3
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 03:40:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D634846655
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 04:07:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 748111C22764
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 02:40:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 05EE8B2130B
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 03:07:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27C07BE5C;
-	Fri,  2 Feb 2024 02:40:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="DTocWw13"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D88DCBE69;
+	Fri,  2 Feb 2024 03:07:32 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68415BE5A
-	for <linux-wireless@vger.kernel.org>; Fri,  2 Feb 2024 02:40:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D7C6BE5A
+	for <linux-wireless@vger.kernel.org>; Fri,  2 Feb 2024 03:07:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706841630; cv=none; b=BppYLejurqzstFR8O/2z3PiaRXrMPPcAdpPm2c07Zp/+yXPvYUiDtxL3XOpqSugPD5JJYf9GcY0dicOx7y9jaDLotUZ0+JjK5RCKYkTB8DLstRqVZXdZ94hYoBAq9X4eyPipDYi6s5Qg4b3qwUSqpgrMppXGDLvDox7YQ2+jp8Y=
+	t=1706843252; cv=none; b=ZdD/Rci14geVSfsqEW+2wBrMw0ZFfwdN4XMGlKubv83cjW+Vv30OTxbssduyqf+DgEwt/0e7FG8PQpzMRgel+7UDAmjHNO+U75ujRvAdbKxw+C0nea40dcPhjt66IrdmQXGj8X3WpPvKLJA1wGo/29+rgbRlqbkHYSQ8u3zkL9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706841630; c=relaxed/simple;
-	bh=qiQlMHgeBiAasLHqHxZ/uCOdErR81utE2jeo9Ok6uGQ=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dKw1P90CPpxZ5DTv4gUse3QxZruxoR0LGw5qo6QK1viMkdCf0JqDnuMV5MOH7gZfvolAxQAdzKDCZMScGXZvn/JtaycCOR866hJNpvm7QkJFXC42kI1ynnbyHCtCE4Vxuf3ON161KPP3a9pg4Eg/Flyn2KV75u+QFnKfNlU6rhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=DTocWw13; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 4121a5B5029120;
-	Fri, 2 Feb 2024 02:40:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:mime-version
-	:content-transfer-encoding:content-type; s=qcppdkim1; bh=x3B6yMo
-	NCPrcXyrT5pXAy2ib6QX9PgtK6OglhKLjstE=; b=DTocWw131xcgh7qfGprXsrV
-	wEp+tjy50TpKn8iKxgjp9CxroXLvZMzhSbvtiBWwmcqfYqQmPTeGfnpZW835AUUJ
-	mpOEXZjKWhlXPNOs60oLld/sVo8fI51/5AlJPfkjQeDo25oQOz/aKUvX6Gzx8dfB
-	W83uqId8hIsOQwpmCpLUCR3NLwdbQUAZGhCSPtbmfxR79K8CZh2wS8JGrfOWmrAI
-	Wt7pvDCvsr6paMeq7CiWRkzbCCMpcbiaAWjbWCT/aog0EgNmkaBdxx3tG4dpC33j
-	r7m2Z+0PzoOzzHrU2gtmLAU23HgkHG22moe0EzR5YL5MxiA8v3Q3k0T5xVKKL+A=
-	=
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3w0ptyg3gf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 02 Feb 2024 02:40:25 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 4122eO3k032520
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 2 Feb 2024 02:40:24 GMT
-Received: from bqiang-SFF.qca.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+	s=arc-20240116; t=1706843252; c=relaxed/simple;
+	bh=fptnPP62aGzf2Pri6IdvlIA8hKByIpFKmAWtId9v4Xk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VkU4PobXThyLobKs6MCp+fxLxeZ0evfN3MQ0QBGjkpt+EGgnvPZfIoSboQcn+t33b0g144y+1BqFQ6WMo9iY/TizqJ6U5PX0f4puKTK3OCU4royhq59duZKm8m1zLbte6FxjsKwjnXIF5sFMo8kN3UNPG92McqUHNMMUTuBZuMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 41237GjtC1862997, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 41237GjtC1862997
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 2 Feb 2024 11:07:16 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Thu, 1 Feb 2024 18:40:23 -0800
-From: Baochen Qiang <quic_bqiang@quicinc.com>
-To: <ath11k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, <quic_bqiang@quicinc.com>
-Subject: [PATCH] wifi: ath11k: initialize eirp_power before use
-Date: Fri, 2 Feb 2024 10:40:11 +0800
-Message-ID: <20240202024011.11341-1-quic_bqiang@quicinc.com>
+ 15.1.2507.17; Fri, 2 Feb 2024 11:07:17 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 2 Feb
+ 2024 11:07:17 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: <kvalo@kernel.org>
+CC: <linux-wireless@vger.kernel.org>
+Subject: [PATCH 00/11] wifi: rtw89: 8922a: add firmware RF calibrations
+Date: Fri, 2 Feb 2024 11:06:31 +0800
+Message-ID: <20240202030642.108385-1-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -70,63 +56,50 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: STSX0Rp9myUR-i7J5CeSil7NHcocYZNf
-X-Proofpoint-GUID: STSX0Rp9myUR-i7J5CeSil7NHcocYZNf
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-01_10,2024-01-31_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=2 malwarescore=0 spamscore=2
- impostorscore=0 bulkscore=0 priorityscore=1501 phishscore=0
- mlxlogscore=165 lowpriorityscore=0 mlxscore=2 suspectscore=0 clxscore=1015
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2401310000 definitions=main-2402020016
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-Currently, at the end of ath11k_mac_fill_reg_tpc_info(), the
-reg_tpc_info struct is populated, including the following:
-	reg_tpc_info->is_psd_power = is_psd_power;
-	reg_tpc_info->eirp_power = eirp_power;
+For WiFi 7 chips, we move RF calibrations from driver to firmware. Driver
+must trigger them one by one, so add H2C commands to trigger each of them,
+and add a C2H event to know the result.
 
-Kernel test robot complains on uninitialized symbol:
-drivers/net/wireless/ath/ath11k/mac.c:7949
-ath11k_mac_fill_reg_tpc_info() error: uninitialized symbol 'eirp_power'.
+Because H2C commands and C2H event go via PCI ring, we should trigger them
+after PCI enabled, so add a chip_ops::rfk_init_late for this purpose.
 
-This is because there are some code paths that never set eirp_power, so
-the assignment of reg_tpc_info->eirp_power can come from an
-uninitialized variable. Functionally this is OK since the eirp_power
-only has meaning when is_psd_power is true, and all code paths which set
-is_psd_power to true also set eirp_power. However, to keep the robot
-happy, always initialize eirp_power before use.
+Ping-Ke Shih (11):
+  wifi: rtw89: rfk: add a completion to wait RF calibration report from
+    C2H event
+  wifi: rtw89: rfk: send channel information to firmware for RF
+    calibrations
+  wifi: rtw89: rfk: add H2C command to trigger IQK
+  wifi: rtw89: rfk: add H2C command to trigger RX DCK
+  wifi: rtw89: rfk: add H2C command to trigger DPK
+  wifi: rtw89: rfk: add H2C command to trigger DACK
+  wifi: rtw89: rfk: add H2C command to trigger TXGAPK
+  wifi: rtw89: rfk: add H2C command to trigger TSSI
+  wifi: rtw89: 8922a: rfk: implement chip_ops to call RF calibrations
+  wifi: rtw89: 8922a: add chip_ops::rfk_init_late to do initial RF
+    calibrations later
+  wifi: rtw89: 8922a: add chip_ops::rfk_hw_init
 
-Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
+ drivers/net/wireless/realtek/rtw89/coex.h     |   1 +
+ drivers/net/wireless/realtek/rtw89/core.c     |   2 +
+ drivers/net/wireless/realtek/rtw89/core.h     |  51 +-
+ drivers/net/wireless/realtek/rtw89/fw.c       | 322 ++++++++
+ drivers/net/wireless/realtek/rtw89/fw.h       | 134 +++
+ drivers/net/wireless/realtek/rtw89/mac.h      |   2 +
+ drivers/net/wireless/realtek/rtw89/phy.c      | 775 ++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/phy.h      |  30 +
+ drivers/net/wireless/realtek/rtw89/reg.h      |   8 +
+ drivers/net/wireless/realtek/rtw89/rtw8851b.c |   2 +
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |   2 +
+ drivers/net/wireless/realtek/rtw89/rtw8852b.c |   2 +
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c |   2 +
+ drivers/net/wireless/realtek/rtw89/rtw8922a.c |  79 ++
+ .../net/wireless/realtek/rtw89/rtw8922a_rfk.c | 202 +++++
+ .../net/wireless/realtek/rtw89/rtw8922a_rfk.h |   1 +
+ 16 files changed, 1611 insertions(+), 4 deletions(-)
 
-Fixes: 92425f788fee ("wifi: ath11k: fill parameters for vdev set tpc power WMI command")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202401311243.NyXwWZxP-lkp@intel.com/
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
----
- drivers/net/wireless/ath/ath11k/mac.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index bbf4d1f4d310..310055843ee9 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -7592,7 +7592,8 @@ void ath11k_mac_fill_reg_tpc_info(struct ath11k *ar,
- 	u8 pwr_lvl_idx, num_pwr_levels, pwr_reduction;
- 	bool is_psd_power = false, is_tpe_present = false;
- 	s8 max_tx_power[IEEE80211_MAX_NUM_PWR_LEVEL],
--		psd_power, tx_power, eirp_power;
-+		psd_power, tx_power;
-+	s8 eirp_power = 0;
- 	u16 start_freq, center_freq;
- 
- 	chan = ctx->def.chan;
-
-base-commit: d4d13947306ab3c98c84389d9397563b550b71b8
 -- 
 2.25.1
 
