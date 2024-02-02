@@ -1,95 +1,90 @@
-Return-Path: <linux-wireless+bounces-3010-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3011-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DBA2846F08
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 12:35:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D9CB846F43
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 12:44:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B11EF1F229C2
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 11:35:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C6A4BB2C33F
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 11:41:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29E7E13E215;
-	Fri,  2 Feb 2024 11:34:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1015213D4F2;
+	Fri,  2 Feb 2024 11:39:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kNXEhKz9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WhIbFC28"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFAE68004D;
-	Fri,  2 Feb 2024 11:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D881C144609;
+	Fri,  2 Feb 2024 11:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706873681; cv=none; b=IoBgn7/0xXEyOpQVrIkwQbSeZxZ5SnesN4QruwSNnT5mXEIKUCpmdpJ2Z1aXFTVyOfE0PgjapTBf6X7swR07xAL07qpKVcxHd64QQpvOyjaR2Sjj2HqXsM+VyfX/MfwYX9SvxSLVwBl49vVz2TFwcR2+uRnTsRMreV2hr/sedPo=
+	t=1706873980; cv=none; b=S/oXL8mVKS24sVjeLsDBKU2kGnL0iUEGYM2oBjWExj8AhjGZ5gnSAMzomAZuEjx6ZACdqFPKDqzlKqcYyarcvSxETnaRtvsDV9i6LJ1jdPvKeBu/oe55BmJ40dzjvw93SV3knU27u4bLw9khHQNiwiMDaiUwwgeubTHhn8aVShc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706873681; c=relaxed/simple;
-	bh=Z36sUISol3n1H+J78EhfUyh0WQQhwLEyy3cNNNXjhiQ=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=V8dmq3gOvGKvzKAtY0QKbwZAiiM75mrXUL67sqCk/RvXewx/WKsKfSj5ove4NrUzdZDUWViRKeNO2t91HIJ3oiDpJtZuPfPu6XY9Vdorouhc+v4RFZ6v3OYl2/+Dwk2pEKx59iH03qzTOA4KR1idm9TIEBZIhk0pNtepLOMAqj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kNXEhKz9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A26CC433C7;
-	Fri,  2 Feb 2024 11:34:39 +0000 (UTC)
+	s=arc-20240116; t=1706873980; c=relaxed/simple;
+	bh=dRBobT+WpmPRhfZpKodvcWF3fz4dYA8o9bU+A200sUg=;
+	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
+	 Cc:Message-ID:Date; b=Dp8ZXWnhl6CVF0GCKkNCiDgKjuVi8N9t3InvYLVweczebz98qo8768cTl56+eG2rNYATX2xRcrncSASixS2MBW5dRS/S0QAZslT+cZFFxILtYfi0TIgbtgMn8TaRc9RXsCAktSzTPx8ad/actYrWDp5Ft1w0a4wsiJ9pQvuJeKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WhIbFC28; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56CBEC433F1;
+	Fri,  2 Feb 2024 11:39:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706873680;
-	bh=Z36sUISol3n1H+J78EhfUyh0WQQhwLEyy3cNNNXjhiQ=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=kNXEhKz9vpzYEYHotUm9jbF5xmG9z6zj5c6clJDRXC6WseHwGOl1onWD74n3wsU7o
-	 yfOJF1YaMVa/RZbTgWSN+xW7VEC6/+YI+YqoUf46ncZ2qTP2DOmqRemE2HxPmXLnSK
-	 xhNaQ7QVkXqE00lq+RnsFeu9QMYziVNhyPtNE2qX8dPPrtgWK9+PdloU0t8vwAKQHE
-	 9W0TRDBK7T0MgpZrmf3LE8znLgI6UYT/ZrtVt8I+T7L/srBU1xI8yuwacbwc1Lydg7
-	 1kA1MG9ymiI+aYy0HUeIXR6c8ilY22qGuKfUoCpkqqN1gKSHPyWWRcNeEMasEQ2vpn
-	 n1CSoM6oXBtmQ==
-From: Kalle Valo <kvalo@kernel.org>
-To: "Linux regression tracking (Thorsten Leemhuis)" <regressions@leemhuis.info>
-Cc: Linux regressions mailing list <regressions@lists.linux.dev>,
-  ath11k@lists.infradead.org,  linux-wireless@vger.kernel.org,
-  linux-kernel@vger.kernel.org
-Subject: Re: [regression] ath11k broken in v6.7
-References: <874jfjiolh.fsf@kernel.org> <87frytg7b8.fsf@kernel.org>
-	<878r4lg3t8.fsf@kernel.org> <87jzo13jmf.fsf@kernel.org>
-	<94150b26-bdd9-49c2-82a1-26ff46c9d32a@leemhuis.info>
-	<87fryp3he0.fsf@kernel.org>
-	<0253854a-e5f9-4316-bec3-61aaf3ebfd1a@leemhuis.info>
-	<871qa0xtk6.fsf@kernel.org>
-	<ccbb3aeb-daa1-49ba-b729-964bd97748bc@leemhuis.info>
-	<87r0hvta9a.fsf@kernel.org>
-	<0c8e379b-91fa-4e02-8758-aeee01024c93@leemhuis.info>
-Date: Fri, 02 Feb 2024 13:34:37 +0200
-In-Reply-To: <0c8e379b-91fa-4e02-8758-aeee01024c93@leemhuis.info> (Linux
-	regression tracking's message of "Fri, 2 Feb 2024 12:29:11 +0100")
-Message-ID: <87mssjt7zm.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=k20201202; t=1706873979;
+	bh=dRBobT+WpmPRhfZpKodvcWF3fz4dYA8o9bU+A200sUg=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=WhIbFC28dX/QlDe3zsQcauhfu/X/VglmFxp/cO+mN+Ek023qw6BBZ81JlxNTMFeHC
+	 pAFwtKEqVEdsCDvsxf5le/7s8Prexm8AEjlo0AkN/cyoNgYqxEU1AgLuSZegLqCwzk
+	 MmUhfMtp91iqPlGKd9HjpZdf4kPJv+ShgNKcdwtgnyhVyPccZ+9TYKphy2IMCJkOij
+	 IcftNHQfYzfDi+HMGIggGrIBOawfnQy2q3ShwCjASYKO1nKxyYr2mkB0iRgY3aPv9A
+	 iZZicaoz+lpmZ7WPXHxEw9Qb71tkm7X6nfAnshXB1r+q2Tpm7qOa9R/EN96hDKg0aj
+	 C6+klghILNm5Q==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH][next] wifi: ath9k:  remove redundant assignment to
+ variable
+ ret
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20240116155452.2315351-1-colin.i.king@gmail.com>
+References: <20240116155452.2315351-1-colin.i.king@gmail.com>
+To: Colin Ian King <colin.i.king@gmail.com>
+Cc: =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+ linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <170687397628.3200018.17782967291636533113.kvalo@kernel.org>
+Date: Fri,  2 Feb 2024 11:39:38 +0000 (UTC)
 
-"Linux regression tracking (Thorsten Leemhuis)"
-<regressions@leemhuis.info> writes:
->> One more question, I promise it's the last one :) When using the Closes
->> tag in patches does it matter which URL is used, either the original or
->> the duplicate? For example, do these both tags close the issue:
->> 
->> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=325423423423542
->> Closes: https://lore.kernel.org/not_relevant/msgid-423423423423423423/
->
-> Yes, you can use either or both of them together to make regzbot close a
-> issue and it's duplicates. But to make Linus happy I guess he'd prefer
-> to have both links in there, if those are reports from different people
-> that contain background information that might sooner or later be handy
-> to have at hand.
+Colin Ian King <colin.i.king@gmail.com> wrote:
 
-Good point, I didn't consider that. I think I have now a good grasp of
-regzbot and I'll try to use it actively from now on. Good luck for the
-rewrite, I hope you get it finished soon.
+> The variable ret is being assigned a value but it isn't being
+> read afterwards. The assignment is redundant and so ret can be
+> removed.
+> 
+> Cleans up clang scan build warning:
+> warning: Although the value stored to 'ret' is used in the
+> enclosing expression, the value is never actually read from
+> 'ret' [deadcode.DeadStores]
+> 
+> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+> Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+
+Patch applied to ath-next branch of ath.git, thanks.
+
+08d82175bfbb wifi: ath9k:  remove redundant assignment to variable ret
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+https://patchwork.kernel.org/project/linux-wireless/patch/20240116155452.2315351-1-colin.i.king@gmail.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
 
