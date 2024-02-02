@@ -1,115 +1,125 @@
-Return-Path: <linux-wireless+bounces-3045-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3046-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69A1A847539
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 17:45:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB6DF84763B
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 18:35:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 000FEB269AC
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 16:45:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 711E1284643
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 17:35:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 041C21487C1;
-	Fri,  2 Feb 2024 16:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7142A14A4F4;
+	Fri,  2 Feb 2024 17:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lF8+cc/3"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="nlxMLATV"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD991148314;
-	Fri,  2 Feb 2024 16:45:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4227D14C58B
+	for <linux-wireless@vger.kernel.org>; Fri,  2 Feb 2024 17:35:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706892348; cv=none; b=i66mOe4rKoLOJYpbVhurdAcUnmV/F0aEtUrk4WBEsc5EuiIjFPLzd4kzZ92E3llA4hvqJkf5uWzyhviLa24hyGWbHP2Y4xYoGOTs5HFkx55IOknGCJ7zJ/VC7OT7OKzukjrdvrqsC+2lU5pq6/Fw+sxZgSZEAoUrGpj+QHfX9+0=
+	t=1706895324; cv=none; b=fo8DX1H9ygsC3xiqTWrZ0isLJZWdmmxbX8WgIHwLsATG5huHpMN+WAId2UV4/IEoRx5gxDU+e9ezsNHjPi0Wbk7pbot8cs0SI5ryt3NVaYvwqWyAIDTnEXrjGIw9dn0jdgQ+xNDdhPErAtr0Ud6HzY6tIsE3/Cpy1V94t9iqRO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706892348; c=relaxed/simple;
-	bh=gCXtpaaFuGj/Sfv2J/qgI4C+ehnvqwEiWJQgGM4NB5E=;
-	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=Bhst7Re+cg5dwwwf/6ElmOeXdPp0gfzQbMYTawcl1gZa8gsHZDRx4DlSPk0U3FYrnYNkWDkauzDqBx/RuOLwVTjEQdUusl3hsdyD1S5m/SAPD1CWctYEA4pSk0BrxRRokEU3q4MCgjvDnR9RccMQEX9Mfuf5IvJfNLHjcoQEqP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lF8+cc/3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 691F3C433F1;
-	Fri,  2 Feb 2024 16:45:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706892348;
-	bh=gCXtpaaFuGj/Sfv2J/qgI4C+ehnvqwEiWJQgGM4NB5E=;
-	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=lF8+cc/3GjCeNb/K2Y2/jTpo6vZYOAxO4wsHdUXD731NoAlK5/WtgIHIDumR6KnTf
-	 CmJwcmBUkmP6BwcfHG8RxV2C0kzpVwirz4iTukokWbuasbdPt51Er5Q1gZ4w82E/7D
-	 5iYiZwhCoh9iwgWLzOhW5ki5siBeQzxVvX7dxev+zvOXdpGnrLPAVvye2FmeuWEm3Q
-	 9VzxEn+u561Z8heuvD0IwmWe2mi+r0FKED1GxpXx6BRRtasDbC8e7AGizIVvPEra8y
-	 rk0D98GTJm6RD0K1FFjPFzJPLFFAbNwOSlGeSZBJ1hQt0XmC0sLgyFnx5BOzbIccio
-	 i67hwtIH6pSAg==
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1706895324; c=relaxed/simple;
+	bh=/Dmg5Oass4Znr75cL/3jRW7o4BEB8ohPrEDNsT568rI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=YB4KenN51qLm1/YcgHSVDY6+mdaSU//Zld+urHyhnVEbU7wU8QWNUWFjVslLEe93DTPsef7RhoYpUXLHAOs6wbAvr5a+XNWMAatxPlz3I+ccDDpRQB9JhgXVCQmmMYQ+q0yRUA0VixVlNXyEkl+uLWFnxJj/LM5WTjIXFPJseUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=nlxMLATV; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 412FCDeK026775;
+	Fri, 2 Feb 2024 17:35:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=n6KP2mUsnd1Bgsgcfi/Gkn3F+8FvYp93hGgnFi5fB7w=; b=nl
+	xMLATVzYwwoh+EfbiUpLlLdsILUHcbx4HCYcixALDQaK3hf7u6WZ+N9d6/q6Qgzn
+	nkhPur/ykhKE5unWE8x6WbBMMEvGyOLs/uUBwe1AszRbgynNEgBPFj4AMLJrYGjl
+	aRmwPYbcIAi3UOH4Arc93Ia7wcAs71YbAJqBJ5OiJs9pc4I2he2TWcXkFfSae7B/
+	nDEkYYvXdbnSAG4ux7Rmprx4EJCLH9fMnA/ItnsSTd7gW88tktvU4jSF+trxTYgL
+	EhM6iwSgfDDSbVLyB/eEd0B2ktgwU5jNkAP/MpB9aQVNMoZJzYWem6IIcnjmD0//
+	QSKH5kfsMeOQlzVUFztg==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3w0pwm20eq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 02 Feb 2024 17:35:16 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 412HZFpw024085
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 2 Feb 2024 17:35:15 GMT
+Received: from [10.110.16.197] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Fri, 2 Feb
+ 2024 09:35:15 -0800
+Message-ID: <d9b3261a-549c-4db4-883c-75e17de3e1ee@quicinc.com>
+Date: Fri, 2 Feb 2024 09:35:14 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: ath11k: initialize rx_mcs_80 and rx_mcs_160 before
+ use
+Content-Language: en-US
+To: Baochen Qiang <quic_bqiang@quicinc.com>, <ath11k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240202023547.11141-1-quic_bqiang@quicinc.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20240202023547.11141-1-quic_bqiang@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: brcmfmac: Adjust n_channels usage for __counted_by
-From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240126223150.work.548-kees@kernel.org>
-References: <20240126223150.work.548-kees@kernel.org>
-To: Kees Cook <keescook@chromium.org>
-Cc: Arend van Spriel <aspriel@gmail.com>, Kees Cook <keescook@chromium.org>,
- Franky Lin <franky.lin@broadcom.com>,
- Hante Meuleman <hante.meuleman@broadcom.com>,
- Chi-hsien Lin <chi-hsien.lin@infineon.com>, Ian Lin <ian.lin@infineon.com>,
- Johannes Berg <johannes.berg@intel.com>,
- Wright Feng <wright.feng@cypress.com>, Hector Martin <marcan@marcan.st>,
- linux-wireless@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- Linus Walleij <linus.walleij@linaro.org>,
- Jisoo Jang <jisoo.jang@yonsei.ac.kr>, Hans de Goede <hdegoede@redhat.com>,
- Aloka Dixit <quic_alokad@quicinc.com>, John Keeping <john@keeping.me.uk>,
- Jeff Johnson <quic_jjohnson@quicinc.com>, linux-kernel@vger.kernel.org,
- linux-hardening@vger.kernel.org
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170689233342.3493863.10294472294618285046.kvalo@kernel.org>
-Date: Fri,  2 Feb 2024 16:45:37 +0000 (UTC)
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: DmnHWDkETyfSXKDDpLQquEEuXuVlXlB4
+X-Proofpoint-ORIG-GUID: DmnHWDkETyfSXKDDpLQquEEuXuVlXlB4
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-02_10,2024-01-31_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ suspectscore=0 phishscore=0 priorityscore=1501 malwarescore=0
+ clxscore=1015 bulkscore=0 adultscore=0 mlxscore=0 mlxlogscore=402
+ impostorscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2401310000 definitions=main-2402020125
 
-Kees Cook <keescook@chromium.org> wrote:
-
-> After commit e3eac9f32ec0 ("wifi: cfg80211: Annotate struct
-> cfg80211_scan_request with __counted_by"), the compiler may enforce
-> dynamic array indexing of req->channels to stay below n_channels. As a
-> result, n_channels needs to be increased _before_ accessing the newly
-> added array index. Increment it first, then use "i" for the prior index.
-> Solves this warning in the coming GCC that has __counted_by support:
+On 2/1/2024 6:35 PM, Baochen Qiang wrote:
+> Currently in ath11k_peer_assoc_h_he() rx_mcs_80 and rx_mcs_160
+> are used to calculate max_nss, see
+> 	if (support_160)
+> 		max_nss = min(rx_mcs_80, rx_mcs_160);
+> 	else
+> 		max_nss = rx_mcs_80;
 > 
-> ../drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c: In function 'brcmf_internal_escan_add_info':
-> ../drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:3783:46: warning: operation on 'req->
-> n_channels' may be undefined [-Wsequence-point]
->  3783 |                 req->channels[req->n_channels++] = chan;
->       |                               ~~~~~~~~~~~~~~~^~
+> Kernel test robot complains on uninitialized symbols:
+> drivers/net/wireless/ath/ath11k/mac.c:2321 ath11k_peer_assoc_h_he() error: uninitialized symbol 'rx_mcs_80'.
+> drivers/net/wireless/ath/ath11k/mac.c:2321 ath11k_peer_assoc_h_he() error: uninitialized symbol 'rx_mcs_160'.
+> drivers/net/wireless/ath/ath11k/mac.c:2323 ath11k_peer_assoc_h_he() error: uninitialized symbol 'rx_mcs_80'.
 > 
-> Fixes: e3eac9f32ec0 ("wifi: cfg80211: Annotate struct cfg80211_scan_request with __counted_by")
-> Cc: Arend van Spriel <aspriel@gmail.com>
-> Cc: Franky Lin <franky.lin@broadcom.com>
-> Cc: Hante Meuleman <hante.meuleman@broadcom.com>
-> Cc: Kalle Valo <kvalo@kernel.org>
-> Cc: Chi-hsien Lin <chi-hsien.lin@infineon.com>
-> Cc: Ian Lin <ian.lin@infineon.com>
-> Cc: Johannes Berg <johannes.berg@intel.com>
-> Cc: Wright Feng <wright.feng@cypress.com>
-> Cc: Hector Martin <marcan@marcan.st>
-> Cc: linux-wireless@vger.kernel.org
-> Cc: brcm80211-dev-list.pdl@broadcom.com
-> Signed-off-by: Kees Cook <keescook@chromium.org>
-> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-
-Patch applied to wireless.git, thanks.
-
-5bdda0048c8d wifi: brcmfmac: Adjust n_channels usage for __counted_by
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240126223150.work.548-kees@kernel.org/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+> This is because there are some code paths that never set them, so
+> the assignment of max_nss can come from uninitialized variables.
+> This could result in some unknown issues since a wrong peer_nss
+> might be passed to firmware.
+> 
+> Change to initialize them to an invalid value at the beginning. This
+> makes sense because even max_nss gets an invalid value, due to either
+> or both of them being invalid, we can get an valid peer_nss with
+> following guard:
+> 	arg->peer_nss = min(sta->deflink.rx_nss, max_nss)
+> 
+> Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
+> 
+> Fixes: 3db26ecf7114 ("ath11k: calculate the correct NSS of peer for HE capabilities")
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202401311243.NyXwWZxP-lkp@intel.com/
+> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
 
