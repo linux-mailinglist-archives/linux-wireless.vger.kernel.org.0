@@ -1,138 +1,103 @@
-Return-Path: <linux-wireless+bounces-2997-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2998-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EBFE8469A1
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 08:35:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F5C5846A88
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 09:21:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF5DC28CFC2
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 07:35:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFB9D28489D
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 08:20:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 621F048798;
-	Fri,  2 Feb 2024 07:32:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="L6H3UcOH";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Wkdrr8qr"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D509F495D6;
+	Fri,  2 Feb 2024 08:15:05 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2EC848793;
-	Fri,  2 Feb 2024 07:32:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.111.4.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D745B48CD2;
+	Fri,  2 Feb 2024 08:15:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706859124; cv=none; b=LxDPVpxr6xNk/CFMLQCvtbeDkkb5/2NiWOqkCYIdKKEJxyjkXreOJmZSKj7W4XmDQJCHUvioP2XQ0sXxf8QlD+w0L2+Rp34YdT9hkLKgGCyPaBvMWJriNSDNWtWwTu5z+PdItDJuHuQ4z19Zuwo6Rkolji49gHS/XZFValY83qo=
+	t=1706861705; cv=none; b=hI2nYd+FKw8mIv0/63v88Inz/wUYPzniE7jnMRi9yzm1qa1dkFKCebLl6ZvnUClQtdjZNow2BTKuhhNvauzqvcQ822UBUS1d1SlCRtijs/sV05aGFUKbY1Iuph6+G0pIjox+rKm3OQxmWZYwpuLQh2sZZkG5ldZPFhc/7YKXsWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706859124; c=relaxed/simple;
-	bh=NZE/u8OaAthafIr0Nr/PabOdBPPSuMqlKle4j1t38X8=;
-	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
-	 Subject:Content-Type; b=gHyc5X17Zj+V/n5vJ8s+T4ZoMwRJ/cfSlGF0P+RBYtFNdg7ueoD8vcIjna7IDePQwrhqAfXvmSWDgsMiGUE4eA7ZGnPBDjRanKP5sTay+6Q2KykaSIxqP+1pR0m1i+HnbfnbD54EY9v/0UFAkJt9h9EMhU44mOfLqRbOB/RVUrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=L6H3UcOH; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Wkdrr8qr; arc=none smtp.client-ip=66.111.4.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailout.nyi.internal (Postfix) with ESMTP id D7E515C00F9;
-	Fri,  2 Feb 2024 02:32:01 -0500 (EST)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Fri, 02 Feb 2024 02:32:01 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1706859121;
-	 x=1706945521; bh=SJmpIzuAKHZ+INEN1bWvQP5Z9QjNBtitHp12HPXsmf8=; b=
-	L6H3UcOHuAzD09WjbF5gleHBgnhcHfT2dE2otv+gR/eSYjiusep8d50cSyxI1UUA
-	5l1epKn5hwOUy+UGHare0DiL5m47DZBK/mQHUOuUBjTef/oDlX4hOSdlkl+Mop3U
-	eRKWXYDweFHjvjbJoGdiOAAVNfu+lTMGUzRp4yciNy0S1LQPedDms9dvxZxPISlD
-	OyPLG7iOZn77omSpuuGzdE8c86hYj5xWM9HbcNfxs9AlbDH8aV0Nme1KOoKdbcbW
-	aEILE7zyAckjkLhQVQerErVcCBpAFoajyDMa2hMd5yYc5IzNCMCdvuxOS+IrxTc+
-	Vk9nuSHweYjxSek3Ck4jPA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1706859121; x=
-	1706945521; bh=SJmpIzuAKHZ+INEN1bWvQP5Z9QjNBtitHp12HPXsmf8=; b=W
-	kdrr8qrhJaZ4sA91YWIJHn8sqPVtj85B1yf3thqqr8ze5R/cEUDicpj97TlNQZyi
-	wqX/E0vbjEzn/PX80Ao3G/GOh98Rxb/wLLuYY7YCORl2On/4S96Xgb5eSoAn4AH/
-	oNEV7JJsYrSJ+f/M3X2wZe0yX0HAnuZ6MU9FZqeY1os9QaRCzFL2UDwzjRdd3+1Y
-	RYFr+Curcd1t7R7UpxS1pEJ3cEncAhD1brExLv4R+I+pTJffTiuuBU7EYbImpb3K
-	Re86eEF9+rRSNjQWIDlujLNAvrZNu/Ct3oCYckq5a1ITcCmfg2dgQSkjVhtHDTOM
-	crOefo0GBp5vOSpLkUhzQ==
-X-ME-Sender: <xms:cZq8ZePh2OSDV5s8TTI0HXYunLcEyP4RGjYizsfvTp6ZbPt9fvNV3g>
-    <xme:cZq8Zc87hKrd8U1h7WKxmnYVU17kMhLkqSTlyz-XJdQsOx61mhRjsc7l2a-eQYZ5D
-    WMJ-ui9Nd1IweCWiEc>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrfedufedgvdekucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtgfesthhqredtreerjeenucfhrhhomhepfdet
-    rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
-    htthgvrhhnpeegfeejhedvledvffeijeeijeeivddvhfeliedvleevheejleetgedukedt
-    gfejveenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grrhhnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:cZq8ZVTJPQTHr6hbBCcF_BGfY0MCZouW46-_ClDHiDLmz_j-XTgUrg>
-    <xmx:cZq8ZeucgweTG8hifq4-EXMTTcnic2H-972VTjDpvVN-pCotHiDQdg>
-    <xmx:cZq8ZWe27CDq7gvqo0mBTD4S90mkg0JG61S_7MzchpRVtAS--J9ubQ>
-    <xmx:cZq8ZXWwmQzF9uQ5E_bmudYlNnHxr9rKDcyfKAQGrMzxkgCwV3m53A>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 26C8FB60098; Fri,  2 Feb 2024 02:32:01 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-144-ge5821d614e-fm-20240125.002-ge5821d61
+	s=arc-20240116; t=1706861705; c=relaxed/simple;
+	bh=i4db+4fXLLc4iBdxESAdEOMW07qa5OKHK6f1hxgRkck=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hW1k+nktr2iG5BGR8opwKXWGFWqRelyUcbD9vYs3g2j7MTailjtUHh0nqtu60HwE50m3yVHU96A8r37QYsZG1g+D603cYbYe8Uxh5R/CZ+IRFzn2tA+b7DI0lhLbMHMk2m/0HPhro8Tq+yEZE6gqBB53aLVwoS0dWjHyvYtcrtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1rVohL-0002ck-Sz; Fri, 02 Feb 2024 09:14:55 +0100
+Message-ID: <ccbb3aeb-daa1-49ba-b729-964bd97748bc@leemhuis.info>
+Date: Fri, 2 Feb 2024 09:14:55 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <d656a2af-6b74-465d-90a6-b79ba6c25088@app.fastmail.com>
-In-Reply-To: <871q9wz2r0.fsf@toke.dk>
-References: <20240131-descriptors-wireless-v1-0-e1c7c5d68746@linaro.org>
- <20240131-descriptors-wireless-v1-1-e1c7c5d68746@linaro.org>
- <613ae419-9a2c-477e-8b19-8a29d42a3164@app.fastmail.com>
- <ZbuZ_55a-qqDqkeN@smile.fi.intel.com>
- <789b7ca0-80c5-449a-99eb-8c05b5380245@app.fastmail.com>
- <871q9wz2r0.fsf@toke.dk>
-Date: Fri, 02 Feb 2024 08:31:38 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
- "Andy Shevchenko" <andriy.shevchenko@linux.intel.com>
-Cc: "Linus Walleij" <linus.walleij@linaro.org>,
- "Kalle Valo" <kvalo@kernel.org>, "Arend van Spriel" <aspriel@gmail.com>,
- "Franky Lin" <franky.lin@broadcom.com>,
- "Hante Meuleman" <hante.meuleman@broadcom.com>, "Lee Jones" <lee@kernel.org>,
- "Brian Norris" <briannorris@chromium.org>,
- "Srinivasan Raju" <srini.raju@purelifi.com>, linux-wireless@vger.kernel.org,
- linux-kernel@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com
-Subject: Re: [PATCH 1/6] wifi: ath9k: Obtain system GPIOS from descriptors
-Content-Type: text/plain;charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [regression] ath11k broken in v6.7
+Content-Language: en-US, de-DE
+To: Kalle Valo <kvalo@kernel.org>
+Cc: ath11k@lists.infradead.org,
+ Linux regressions mailing list <regressions@lists.linux.dev>,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <874jfjiolh.fsf@kernel.org> <87frytg7b8.fsf@kernel.org>
+ <878r4lg3t8.fsf@kernel.org> <87jzo13jmf.fsf@kernel.org>
+ <94150b26-bdd9-49c2-82a1-26ff46c9d32a@leemhuis.info>
+ <87fryp3he0.fsf@kernel.org>
+ <0253854a-e5f9-4316-bec3-61aaf3ebfd1a@leemhuis.info>
+ <871qa0xtk6.fsf@kernel.org>
+From: Thorsten Leemhuis <regressions@leemhuis.info>
+In-Reply-To: <871qa0xtk6.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1706861703;a1282543;
+X-HE-SMSGID: 1rVohL-0002ck-Sz
 
-On Thu, Feb 1, 2024, at 15:18, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
-> "Arnd Bergmann" <arnd@arndb.de> writes:
->
->> We could probably go a little further in the cleanup and
->> throw out the gpiolib path entirely, instead relying
->> on the existing leds-gpio driver. Since there are currently
->> no upstream users of the gpiolib path, that would likely
->> lead to cleaner code but require more changes to any
->> out-of-tree users that rely on the platform_data to
->> pass the GPIOs today.
->
-> There being exactly one such out of tree user (per your up-thread
-> email) in OpenWrt? Or are you aware of others?
+On 29.01.24 12:33, Kalle Valo wrote:
+> Thorsten Leemhuis <regressions@leemhuis.info> writes:
+>> On 22.01.24 09:24, Kalle Valo wrote:
+>>> "Linux regression tracking (Thorsten Leemhuis)"
+>>> <regressions@leemhuis.info> writes:
+>>
+>> That "#regzbot link:" will vanish as well (at least from the docs, it
+>> will remain to be supported), as people use it wrong in various
+>> different ways: for duplicates, reports (like your did), patch
+>> submissions fixing the issue (then 'regzbot monitor' should have been
+>> used) among others. Which is totally understandable now that I look at
+>> it. That's why it will be replaced by "#regzbot related: <url>" to avoid
+>> any connection with the Link: tag used in commits; for duplicates
+>> "#regzbot dup:" will stay around.
+> 
+> So, in the new interface, how should I handle a situation that a
+> regression is first reported on the mailing list, added to regzbot and
+> later there's also a bug report opened for the issue?
 
-Actually, on a closer look not even that: the ath9k LED support
-in openwrt is quite different from upstream, and it just uses
-gpio-led there, with a gpio provider in the driver for the
-internal gpios.
+You will have to options: reply to the first report with a "#regzbot
+duplicate https://bugzilla.kernel.org/show_bug.cgi?id=325423423423542"
+or add a comment to the bugzilla ticket pointing to a report already
+tracked by regzbot, e.g. "#regzbot duplicate
+https://lore.kernel.org/not_relevant/msgid-423423423423423423/"
 
-We can probably just remove the gpiolib consumer side from
-ath9k entirely then: it's not needed for the PCI devices
-at all, and the SoC devices no longer use it upstream or
-in openwrt.
+>>> I wish there would be a person who could follow stable
+>>> releases from wireless perspective and make sure everything is ok there.
+>> Maybe at some point regression tracking can help somewhat with that. But
+>> I still have to fix a few things to make people use it and scale it up.
+> I just feel it should be more than that, I'm worried that randomly
+> taking wireless commits to stable releases is risky. There really should
+> be someone looking after wireless (read: reviewing patches) in stable
+> releases. This would be a good role for someone who is interested to
+> learn how kernel.org development works and helping the community. Do we
+> have a way to announce these kind volunteer vacancies somewhere? :)
 
-     Arnd
+Not that I know of. Guess kernelnewbies might be the best place for that
+(and maybe they have something like that already...).
+
+Ciao, Thorsten
 
