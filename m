@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-3013-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3014-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB01D846F4A
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 12:45:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 718C4846F4C
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 12:45:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB17F1C246A4
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 11:44:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 713EF1C2568E
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 11:45:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4A42651A2;
-	Fri,  2 Feb 2024 11:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C50A779F1;
+	Fri,  2 Feb 2024 11:43:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KKiFdLxI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lOKjlCv7"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0B88608FD
-	for <linux-wireless@vger.kernel.org>; Fri,  2 Feb 2024 11:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 064035FDC3
+	for <linux-wireless@vger.kernel.org>; Fri,  2 Feb 2024 11:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706874117; cv=none; b=MnAwx7Pggca60mnvvydLoUykTvPZjAGLJ2KYNyfSwqVuvHFbQvcejKLjGiHaY827GDIYus7u703GGihOqIto7eTVVwwn9F7hyCm2gMd+e0tRBTjecGXEGlbrgsBNnN+HZSv2G2qdf5pmpnju14t566DKVHZMGYUgDnw0cor3BX0=
+	t=1706874188; cv=none; b=liPvaGLuMFjJMLUGQtmD6rqpEyGW1X2bOg9V5hyFasOkyNm0csPLHN2Pt/UO/XtnQsZaBVFXe0dBiw0NuyZpYcOyJ6DXO49PhS4JfTclGyihvBhPS7XrWeN9e8VGxRNowUd/BS9c5m4IMbQA/9RO7TzJc6+l9A968em5qNVR84w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706874117; c=relaxed/simple;
-	bh=z4gO3mQEqJNFiFdLOMUsqG+yj2/Gcf/2cOR4uqD60BM=;
+	s=arc-20240116; t=1706874188; c=relaxed/simple;
+	bh=XydI6xT5hhzbAD6CD+gBysVeg8PlHDgGQwcXTq31HfI=;
 	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=i+2lINcDRFPq8qZzOdylJPBUi/sivzsQ7xhEEkd0oOMBrh21dO7QXB5Q0nyHTsTWJ7T3EqOOgod7nF2J4anNd7EdsHWFA/JRkflymQi4K4tYJ7YAYENRWFKU6Liz4aiHJMLuqI/IKFFWC41ULLouNGBGyaHkYXxf9Q+GFYeeeeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KKiFdLxI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D29FC433F1;
-	Fri,  2 Feb 2024 11:41:56 +0000 (UTC)
+	 Cc:Message-ID:Date; b=rfgv+qHq/ek549M1EPhWEC3tQCw9ciVLJdDpdWIJhlrZgxP/t8nk8QwYfD9xbiNGSF0kC+bMpVb8z8+x+91vD+kJCMcWRMJt3BwswZWKpneR3ygovHCwHql+w/L0MQ9+t00zDOZhfhdp4a35dWDSnKhZQFVA/EWOU3oA1qXpRqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lOKjlCv7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 936C7C433F1;
+	Fri,  2 Feb 2024 11:43:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706874117;
-	bh=z4gO3mQEqJNFiFdLOMUsqG+yj2/Gcf/2cOR4uqD60BM=;
+	s=k20201202; t=1706874187;
+	bh=XydI6xT5hhzbAD6CD+gBysVeg8PlHDgGQwcXTq31HfI=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=KKiFdLxIqUk+F0Va0NnSfqzLthXkiQgrakd22NAqiKhx2ilEJ3Doef9hMk+UzLE3P
-	 mavVexPZpQ+deNy40zkcoSBFxcSUKO/QQU/HZKSpNVhwnaSfMcNCWBZUQFWsQ7eNQY
-	 qyByZt42B+FotnIep1uWMUB0w8BKMDtHOAwpmWmla+Uxtwy1cfunRE3CFClBeo1ovv
-	 /5k39+XCpxZ4XfQByc2KBrFfHmFRhasFOaihel4bahx4KaJ5vefAYcxZPJPmPXXlca
-	 IRud+uKWsczxjXlmBx4ywaw3ytuMfbnMqcwF+ZsuWTTncoGNOVFrnGJ5QdBpisXesA
-	 2lSFIfjLzK0cg==
+	b=lOKjlCv7rq2w8m+UOTFXL/XfRRUT6NlPNKc+2cUGHuGhRwVP98Z8xwq6omHyXF56/
+	 YfI4StYFfh27NqLf46IrnTRrxIkdiVi/EbSnrsxb9YDZQRCSHaGhnVlL+TpuGt1b5h
+	 GOfWXj90AiklO5xTLGrQDrB3zztJmimmIx+f0YrTMxKwVk4Z6YXNKcC9fhOaushG5v
+	 okDVuY8cWOrsAXCiQBVT0fPzGNMFrulfZjVcdqvlSNaeStF0GkuhB2MnHtTnoIRFTG
+	 uAcm7duw1ndSNqUDGDZZlM/hN3VjOxS2wuX4Qu4toLAFw0PW7gXMThPS/2ECU1lCgC
+	 URyL0IFmXf+7Q==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -49,74 +49,51 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: ath11k: change to move WMI_VDEV_PARAM_SET_HEMU_MODE
- before WMI_PEER_ASSOC_CMDID
+Subject: Re: [PATCH v2] wifi: ath12k: add firmware-2.bin support
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240131021832.17298-1-quic_bqiang@quicinc.com>
-References: <20240131021832.17298-1-quic_bqiang@quicinc.com>
-To: Baochen Qiang <quic_bqiang@quicinc.com>
-Cc: <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
- <quic_bqiang@quicinc.com>
+In-Reply-To: <20240123122812.3811251-1-quic_rajkbhag@quicinc.com>
+References: <20240123122812.3811251-1-quic_rajkbhag@quicinc.com>
+To: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+Cc: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+ Raj Kumar Bhagat
+	<quic_rajkbhag@quicinc.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170687411452.3200018.9505739166220430603.kvalo@kernel.org>
-Date: Fri,  2 Feb 2024 11:41:56 +0000 (UTC)
+Message-ID: <170687418485.3200018.10517939278018200198.kvalo@kernel.org>
+Date: Fri,  2 Feb 2024 11:43:06 +0000 (UTC)
 
-Baochen Qiang <quic_bqiang@quicinc.com> wrote:
+Raj Kumar Bhagat <quic_rajkbhag@quicinc.com> wrote:
 
-> Currently when connecting to an AP with 11AX-HE phy mode, host sends
-> WMI_VDEV_PARAM_SET_HEMU_MODE parameter to firmware after
-> WMI_PEER_ASSOC_CMDID command. This results in TXBF not working, because
-> firmware calculates TXBF values while handling WMI_PEER_ASSOC_CMDID,
-> however at that time WMI_VDEV_PARAM_SET_HEMU_MODE has not been sent yet.
-> See below log:
+> Firmware IE containers can dynamically provide various information
+> what firmware supports. Also it can embed more than one image so
+> updating firmware is easy, user just needs to update one file in
+> /lib/firmware/.
 > 
-> AP sends "VHT/HE/EHT NDP Announcement" to station, and station sends
-> "Action no Ack" of category code HE to AP, the "Nc Index" and
-> "Codebook Information" are wrong:
+> The firmware API 2 or higher will use the IE container format, the
+> current API 1 will not use the new format but it still is supported
+> for some time. Firmware API 2 files are named as firmware-2.bin
+> (which contains both amss.bin and m3.bin images) and API 1 files are
+> amss.bin and m3.bin.
 > 
-> Issued action:
-> IEEE 802.11 Action No Ack, Flags: ........
-> IEEE 802.11 wireless LAN
->     Fixed parameters
->         Category code: HE (30)
->         HE Action: HE Compressed Beamforming And CQI (0)
->             Total length: 152
->             HE MIMO Control: 0x0004008018
->                 .... .... .... .... .... .... .... .... .... .000 = Nc Index: 1 Column (0)
->                 .... .... .... .... .... .... .... ..0. .... .... = Codebook Information: 0
+> Currently ath12k PCI driver provides firmware binary (amss.bin) path to
+> MHI driver, MHI driver reads firmware from filesystem and boots it. Add
+> provision to read firmware files from ath12k driver and provide the amss.bin
+> firmware data and size to MHI using a pointer.
 > 
-> Change to send WMI_VDEV_PARAM_SET_HEMU_MODE before WMI_PEER_ASSOC_CMDID,
-> then firmware will calculate the TXBF values with valid parameters
-> instead of empty values. TXBF works well and throughput performance is
-> improved from 80 Mbps to 130 Mbps with this patch.
+> Currently enum ath12k_fw_features is empty, the patches adding features will
+> add the flags.
 > 
-> Good action after this patch:
-> IEEE 802.11 Action No Ack, Flags: ........
-> IEEE 802.11 wireless LAN
->     Fixed parameters
->         Category code: HE (30)
->         HE Action: HE Compressed Beamforming And CQI (0)
->             Total length: 409
->             HE MIMO Control: 0x0004008219
->                 .... .... .... .... .... .... .... .... .... .001 = Nc Index: 2 Columns (1)
->                 .... .... .... .... .... .... .... ..1. .... .... = Codebook Information: 1
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
 > 
-> This change applies to all chipsets.
-> 
-> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
-> 
-> Fixes: 38dfe775d0ab ("wifi: ath11k: push MU-MIMO params from hostapd to hardware")
-> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
-> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+> Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
 > Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-413e20e82ee7 wifi: ath11k: change to move WMI_VDEV_PARAM_SET_HEMU_MODE before WMI_PEER_ASSOC_CMDID
+12f491cd6d81 wifi: ath12k: add firmware-2.bin support
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240131021832.17298-1-quic_bqiang@quicinc.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20240123122812.3811251-1-quic_rajkbhag@quicinc.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
