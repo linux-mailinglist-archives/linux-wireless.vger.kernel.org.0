@@ -1,212 +1,190 @@
-Return-Path: <linux-wireless+bounces-3022-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3026-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DBE4846FE0
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 13:12:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB1C5846FF6
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 13:16:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9D2C29B373
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 12:11:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 729071F24DA8
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 12:16:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E575140788;
-	Fri,  2 Feb 2024 12:11:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09137140764;
+	Fri,  2 Feb 2024 12:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=fiona.klute@gmx.de header.b="TfDv/GKU"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gIrRIrOX"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD3F140784;
-	Fri,  2 Feb 2024 12:11:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656CC13F009
+	for <linux-wireless@vger.kernel.org>; Fri,  2 Feb 2024 12:16:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706875893; cv=none; b=IvAIaNRMu42riiZQW2lhXggSS2XYVkY3aesSdfO9DeLNIx+j2mPc4nVywnEA4cSnuO2xT7kbRr0Eq/KYtZvKScekuKVkco4Lgl3K0E3f2qoCwGURy7QzMPBd1tL8RTuIiD1wJbvxKecOLQTj8HYZMzSTt0PTmSYK/8LY8UP+TvU=
+	t=1706876196; cv=none; b=dkqoAuh7fBoqYUX8nACpMPrpTrK2OWabKOmMMqFrc55sCEub1K1/lQ/MVQVQVXkN1epTQhXzvoViPLo9yvncU/0qQ+RbUrLiYZlS9JbHP5u2euKrvCwn14aY3FaUhMFOk+2lgjiDg85hzeJAsLvVYy+aa8/dDe7XgN1l12WwFcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706875893; c=relaxed/simple;
-	bh=7FrTbG5u0MkX+aiNtAj7VC29Woe/ZAyajcrdvlmpeyQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OJHS38D/OwpRvrBLFJDdi00NGEwoJvcZprpoUj9lQsujvoRjgm7rVovy21RxKYnM//Lai9rHqARTSdPIxHpR2dTtwhxlLWRccv3pdJfvld1TJm+JsLi7pPom9EVC/RGNB6ULrzd2ACSnUZKH1vvnbmygDV/msVDC/oiv/gzeFIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=fiona.klute@gmx.de header.b=TfDv/GKU; arc=none smtp.client-ip=212.227.15.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-	t=1706875879; x=1707480679; i=fiona.klute@gmx.de;
-	bh=7FrTbG5u0MkX+aiNtAj7VC29Woe/ZAyajcrdvlmpeyQ=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:
-	 References;
-	b=TfDv/GKUybpkxFjB69nCvBVYt5yHqoCKoEFGUo52xhcBP7k4lGHQEh4kOadvqhfy
-	 8YLlHBrNKA4YttfDXQnO1Ol3r4p81c+OO4glDUHvQu7+PwdB2L8GN3nJwLQcQcunS
-	 pnrkJuqpJfseG2XdH8wJoacDm8KCjwwX0Eea+5jvcYkrlFzd2I/9gFJ2PRI3e2GHp
-	 la5gXXm9/56PFMPOOIhwkqNipE2/bskc2KRlThwijjAOGTtwebYay78bhf8tHhR30
-	 DrmVPrtPrPh3WERDVRSpkUXPnzbauZI38108Ua6ClUYIDz4Lvvny0qap4qJAK1I0G
-	 R39W6bWx3pviCzSC3w==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from haruka.lan ([85.22.17.32]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MPXd2-1rjXML1E0Y-00Mb6D; Fri, 02
- Feb 2024 13:11:19 +0100
-From: Fiona Klute <fiona.klute@gmx.de>
-To: linux-wireless@vger.kernel.org,
-	Ping-Ke Shih <pkshih@realtek.com>
-Cc: Kalle Valo <kvalo@kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	linux-mmc@vger.kernel.org,
-	Pavel Machek <pavel@ucw.cz>,
-	=?UTF-8?q?Ond=C5=99ej=20Jirman?= <megi@xff.cz>,
-	Fiona Klute <fiona.klute@gmx.de>
-Subject: [PATCH 9/9] wifi: rtw88: SDIO device driver for RTL8723CS
-Date: Fri,  2 Feb 2024 13:10:48 +0100
-Message-ID: <20240202121050.977223-10-fiona.klute@gmx.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240202121050.977223-1-fiona.klute@gmx.de>
-References: <20240202121050.977223-1-fiona.klute@gmx.de>
+	s=arc-20240116; t=1706876196; c=relaxed/simple;
+	bh=vsCTrypPgQBUy+UjcZZL2T6JpKJkNjDRlOAk0xfL4jg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GQPxzOq8//HWOBecb9QFTkNuaBNtEV40Ic5/y6spfAlUgpIANlyk1i+Zw/te00+ifgkhRcIiY5pYxWiqrd9u+dEy15llXAmZ84+mNFoVi7IpKdnX/BVxleCbYRGNHjHcNIh0qL6I9+YwNKw3yV0qj+VtqIq/OcakD1SwyZNWg0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=gIrRIrOX; arc=none smtp.client-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-5d8b519e438so1925326a12.1
+        for <linux-wireless@vger.kernel.org>; Fri, 02 Feb 2024 04:16:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1706876194; x=1707480994; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=3WrQlKWmTzgxXM9Xq7iWZ37ybL6PQV7GmW6fl32Nxz8=;
+        b=gIrRIrOXzN66tTmD0rsNEr6q38mTrpXW6jzRWQKe4xSdB3huy/YsBxqB8FVpFwBilv
+         uzmLF2uXjCHRBLHFGGsRDTNUMTcAMiA3wyhDX+yIYrr28xNgl8XkBAkfH7l/9kWI93rS
+         yMXJKY/5XCrlxXlzqnoICwYIwPtjHFas5ldAkS0G1HlDvPcGmEV9ix4EEzpp6ImuMfhU
+         X3ndRMuRlTGc3gEtfZu75yj6k1FwP/1VVrFaWN4Ydydw/C/gY26ViCxgFusrrvjp095V
+         Jhm2HcW7KxYhx6+4TBLna+X3tnSj5oeLZmnBfMb0Fb3Evi1l/s4vn+D+gIYZ/E0diwYj
+         8r0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706876194; x=1707480994;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3WrQlKWmTzgxXM9Xq7iWZ37ybL6PQV7GmW6fl32Nxz8=;
+        b=mNmK7Jad3WAUScb+iBHZJP+X3maA+u16sE0fggu2mK0WiM1zuNsG2tcNPVuT3lvgeN
+         ehCl4e4kXzTXCaG8Pd6j2ikTK37A1207J5AglhupJyDuxWjUZfrnuzcXXRCNuH44Z+uz
+         eDaIQrHKEnHkqYQMK9zUQ7rkvfIwCsktDKdd/8InsuBpFSLQcqHB4lMex+ms0tbWgoDL
+         xobEx0FmljXj3L7183CrNfYRgoLAQwPn9ZO+i/rwYkVRETXGfOU+D72zP5gZHG2Rf6kM
+         LfLFY6sN+VWHWCIkB61U3ZIDnZu3rMnsP/Y54YHqD3BcyGHDB/wlMNX/tpFRScqNkLjo
+         N7yg==
+X-Gm-Message-State: AOJu0Yx0LpaVDnvhAeABl9jOMMOOKKCbhrsh2hD1uVaDlSLhi2M3Yumo
+	H2DXppereTPj2K7be4ObuEGeFyTQoI3yhn3Ok3THVTO5DvSyPKAtbvuI8RZ5Aw==
+X-Google-Smtp-Source: AGHT+IFSwEV2m0Gdmgd6lEedpwK/MfSLND1vfenzThu++22xu2B5azEXkWVeQKf2qKJSz4JPkb0iug==
+X-Received: by 2002:a05:6a20:7d83:b0:19e:3c7f:cbbe with SMTP id v3-20020a056a207d8300b0019e3c7fcbbemr6479540pzj.9.1706876194527;
+        Fri, 02 Feb 2024 04:16:34 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCWIbd9h/zN8zW55YNPgvoxkUt0iVLXCIPcM/ljKjrL3w8GQ/vvoo5s6qZJFJUuatnCU7xjeeTWtjCJ/+6TQew2LXihhqmXW6rmhgxOtd54sMqN9Tu9sJayCep52VVQM/7WlK+NkLmBy9lcoYgWqkKefIxYDPRsDbZg72ZQiE6Cp
+Received: from thinkpad ([120.56.198.122])
+        by smtp.gmail.com with ESMTPSA id b19-20020a63eb53000000b005cda7a1d72dsm1439531pgk.74.2024.02.02.04.16.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 Feb 2024 04:16:34 -0800 (PST)
+Date: Fri, 2 Feb 2024 17:46:30 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Baochen Qiang <quic_bqiang@quicinc.com>
+Cc: Kalle Valo <kvalo@kernel.org>, mhi@lists.linux.dev,
+	ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH RFC v2 2/8] bus: mhi: host: add new interfaces to handle
+ MHI channels directly
+Message-ID: <20240202121630.GC8020@thinkpad>
+References: <20231127162022.518834-1-kvalo@kernel.org>
+ <20231127162022.518834-3-kvalo@kernel.org>
+ <20240130181938.GB4218@thinkpad>
+ <d002afe9-3c01-413c-82d2-353db0356802@quicinc.com>
+ <20240201100040.GB17027@thinkpad>
+ <07668be1-8366-43b5-83ca-bf66d0d8087b@quicinc.com>
+ <20240202071011.GA2961@thinkpad>
+ <34e80f19-8804-4505-b134-f099e087b53e@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:1QIHKnHPlXIUIEP0Hyg+Spka+5RU+m/NeS+BfRZrDIBbgnL8xkW
- yJ4n8zJMRK0+i76Y35DzwOJRj+Ywc8pj8myunb0x4+lavW5kR/GxAPoi6zUhdNq6qB+haoC
- DOlU2KtyzD5x7TVGoGL3h0a/HfPz/+YBrutxtZaaFjUMZpbkoy1QNvm2+SXP8qJIPUoleAJ
- uGjY+12VsiUcDPXQs8YIw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:aP9BKBAdQJQ=;KTfpmmyG0Bn2I4Jpk0PaFGUXAJy
- 2TBem/skad2DZ0c2ZLnHuR/tSCpRBKJ5hpKw43l3/1Y//TLJ0340vleUiMsRKZ5w4UhZeLNwN
- 7JU3vDqDb+8KMHfHSIEMmglyM5OjrGdK3maPQbpeOFl1exkduafuPIy3DFEiQrOAkWk44hg2e
- /H0Kew1bOUL08KX6bSW/8G0kFeyS0XcuL4m7OfD0+i9QRTtZJcwVZsbwz4zYW0BWk8iboRKcV
- KuGmzDeKgP4f2SCojmGTIn7VYhVc+gLS5dcNdyaguhlIcuknDAQJRy+aHcBDeUz3vbtZ+0p4R
- 1jYR3QeDCC2zkeomHYsiI0MQOUNTXfq9xwiuUmasgTWrzdjiwe+7f5BJp3QdL/XwUkhWGuR58
- kn8ak/H3CAVExpkrLeU7tXQXzhSabLObtFCnGtJd1eowfIt5GI0ZZwlpKgF2qj6ylQfvEoiSx
- SfW9KKbc0HFbi/RtTLpHhXDoHE/Rw0zotmXe17x8ANqHLNsdQVz3qzQUpfv1LJMN7pMvIPO1m
- SDd6zyAaoWIU9kyrFuWGP3jTskD/+RjQNMKyAIIC+8RAk1W8wfld4o4TnrQ7MvsTqEk6vUooi
- guil6v2tKOQ8iwr76q3jzbI281jiyBZnn0egGp8OtXVmd/zQKD5CPp4/wXDlYXd8B01JLCF0o
- dGZOR9XM7mL5z5YKCzLx9AxT5z41FRDl91vlhJl2myVhapHZl/j6TI5yi8aNJkAK3oCDulG8g
- 041Oh06AZCXCTScn7WlW8J1XrhVkNrk1dmOQRq2kVIlwWOCH4D5OHN5HNrbt2F96RYWNaJxzO
- LWbrYOJPP7wcFlQ0hPjKFsFyXFT3Vth0ItQTcmKlEQeTU=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <34e80f19-8804-4505-b134-f099e087b53e@quicinc.com>
 
-This driver uses the new rtw8703b chip driver code.
+On Fri, Feb 02, 2024 at 06:49:19PM +0800, Baochen Qiang wrote:
+> 
+> 
+> On 2/2/2024 3:10 PM, Manivannan Sadhasivam wrote:
+> > On Fri, Feb 02, 2024 at 02:42:58PM +0800, Baochen Qiang wrote:
+> > > 
+> > > 
+> > > On 2/1/2024 6:00 PM, Manivannan Sadhasivam wrote:
+> > > > On Wed, Jan 31, 2024 at 03:39:26PM +0800, Baochen Qiang wrote:
+> > > > > 
+> > > > > 
+> > > > > On 1/31/2024 2:19 AM, Manivannan Sadhasivam wrote:
+> > > > > > On Mon, Nov 27, 2023 at 06:20:16PM +0200, Kalle Valo wrote:
+> > > > > > > From: Baochen Qiang <quic_bqiang@quicinc.com>
+> > > > > > > 
+> > > > > > > When using mhi_power_down_no_destroy() MHI hosts need to unprepare MHI channels
+> > > > > > > by themselves.  Similarly, MHI stack will also not create new MHI device since
+> > > > > > > old devices were not destroyed, so MHI hosts need to prepare channels as well.
+> > > > > > > Hence add these two interfaces to make that possible.
+> > > > > > > 
+> > > > > > > Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
+> > > > > > > 
+> > > > > > > Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+> > > > > > > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+> > > > > > > ---
+> > > > > > >     drivers/bus/mhi/host/main.c | 107 ++++++++++++++++++++++++++++++++++++
+> > > > > > >     include/linux/mhi.h         |  20 ++++++-
+> > > > > > >     2 files changed, 126 insertions(+), 1 deletion(-)
+> > > > > > > 
+> > > > > > > diff --git a/drivers/bus/mhi/host/main.c b/drivers/bus/mhi/host/main.c
+> > > > > > > index d80975f4bba8..3f677fc628ad 100644
+> > > > > > > --- a/drivers/bus/mhi/host/main.c
+> > > > > > > +++ b/drivers/bus/mhi/host/main.c
+> > > > > > > @@ -1669,6 +1669,58 @@ int mhi_prepare_for_transfer_autoqueue(struct mhi_device *mhi_dev)
+> > > > > > >     }
+> > > > > > >     EXPORT_SYMBOL_GPL(mhi_prepare_for_transfer_autoqueue);
+> > > > > > > +static int ____mhi_prepare_for_transfer(struct device *dev, void *data)
+> > > > > > 
+> > > > > > "__mhi_prepare_all_for_transfer"
+> > > > > 
+> > > > > This is to prepare one single child device, I don't think a name like
+> > > > > __mhi_prepare_all_for_transfer (with 'all' inside) make sense, right?
+> > > > > How about changing to "mhi_prepare_dev_for_transfer" or
+> > > > > "mhi_prepare_single_for_transfer"?
+> > > > > 
+> > > > 
+> > > > I think most of the checks in this function can be moved inside
+> > > > mhi_prepare_for_transfer() API. With that you can just reuse the API without
+> > > > adding a new helper.
+> > > > 
+> > > > For autoqueue channels, you can add another API
+> > > > mhi_prepare_all_for_transfer_autoqueue() just like
+> > > > mhi_prepare_for_transfer_autoqueue() to maintain uniformity.
+> > > > 
+> > > > - Mani
+> > > If we do that, we need to call two APIs together, does it make sense? From
+> > > the view of an MHI user, what we want is an API to prepare all channels, no
+> > > matter whether a channel is configured as autoqueue or non-autoqueue, we
+> > > don't care about it.
+> > > 
+> > 
+> > You are calling this API from a wrong place first up.
+> > mhi_{prepare/unprepare}_transfer* APIs are meant to be used by the client
+> > drivers like QRTR. Controller drivers should not call them.
+> > 
+> > What you need here is the hibernation support for QRTR itself and call these
+> > APIs from there.
+> 
+> OK, I got your point. QRTR is the right place to manage MHI channels, not
+> ath11k it self.
+> And we even don't need these two APIs if change to do it in QRTR.
+> 
+> > 
+> > > And besides, I don't think there is a scenario where we need to use them
+> > > separately. So if we always need to use them together, why not merge them in
+> > > a single API?
+> > > 
+> > 
+> > A single controller driver may expose multiple channels and those will bind to
+> > multiple client drivers. So only the client drivers should manage the channels,
+> > not the controller drivers themselves.
+> Exactly.
+> 
+> Great thanks for the proposal, Mani. Will change accordingly in next
+> version.
+> 
 
-Signed-off-by: Fiona Klute <fiona.klute@gmx.de>
-=2D--
- drivers/net/wireless/realtek/rtw88/Kconfig    | 18 ++++++++++
- drivers/net/wireless/realtek/rtw88/Makefile   |  6 ++++
- .../net/wireless/realtek/rtw88/rtw8723cs.c    | 34 +++++++++++++++++++
- include/linux/mmc/sdio_ids.h                  |  1 +
- 4 files changed, 59 insertions(+)
- create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8723cs.c
+And you can drop the RFC tag in the version.
 
-diff --git a/drivers/net/wireless/realtek/rtw88/Kconfig b/drivers/net/wire=
-less/realtek/rtw88/Kconfig
-index 07b5b2f6ee..22838ede03 100644
-=2D-- a/drivers/net/wireless/realtek/rtw88/Kconfig
-+++ b/drivers/net/wireless/realtek/rtw88/Kconfig
-@@ -31,6 +31,10 @@ config RTW88_8822C
- config RTW88_8723X
- 	tristate
+- Mani
 
-+config RTW88_8703B
-+	tristate
-+	select RTW88_8723X
-+
- config RTW88_8723D
- 	tristate
- 	select RTW88_8723X
-@@ -126,6 +130,20 @@ config RTW88_8723DS
-
- 	  802.11n SDIO wireless network adapter
-
-+config RTW88_8723CS
-+	tristate "Realtek 8723CS SDIO wireless network adapter"
-+	depends on MMC
-+	select RTW88_CORE
-+	select RTW88_SDIO
-+	select RTW88_8703B
-+	help
-+	  Select this option to enable support for 8723CS chipset (EXPERIMENTAL)
-+
-+	  This module adds support for the 8723CS 802.11n SDIO
-+	  wireless network adapter.
-+
-+	  If you choose to build a module, it'll be called rtw88_8723cs.
-+
- config RTW88_8723DU
- 	tristate "Realtek 8723DU USB wireless network adapter"
- 	depends on USB
-diff --git a/drivers/net/wireless/realtek/rtw88/Makefile b/drivers/net/wir=
-eless/realtek/rtw88/Makefile
-index 22516c9846..8f47359b43 100644
-=2D-- a/drivers/net/wireless/realtek/rtw88/Makefile
-+++ b/drivers/net/wireless/realtek/rtw88/Makefile
-@@ -47,6 +47,12 @@ rtw88_8822cu-objs		:=3D rtw8822cu.o
- obj-$(CONFIG_RTW88_8723X)	+=3D rtw88_8723x.o
- rtw88_8723x-objs		:=3D rtw8723x.o
-
-+obj-$(CONFIG_RTW88_8703B)	+=3D rtw88_8703b.o
-+rtw88_8703b-objs		:=3D rtw8703b.o rtw8703b_tables.o
-+
-+obj-$(CONFIG_RTW88_8723CS)	+=3D rtw88_8723cs.o
-+rtw88_8723cs-objs		:=3D rtw8723cs.o
-+
- obj-$(CONFIG_RTW88_8723D)	+=3D rtw88_8723d.o
- rtw88_8723d-objs		:=3D rtw8723d.o rtw8723d_table.o
-
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723cs.c b/drivers/net/=
-wireless/realtek/rtw88/rtw8723cs.c
-new file mode 100644
-index 0000000000..8d38d36be8
-=2D-- /dev/null
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8723cs.c
-@@ -0,0 +1,34 @@
-+// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
-+/* Copyright Fiona Klute <fiona.klute@gmx.de> */
-+
-+#include <linux/mmc/sdio_func.h>
-+#include <linux/mmc/sdio_ids.h>
-+#include <linux/module.h>
-+#include "main.h"
-+#include "rtw8703b.h"
-+#include "sdio.h"
-+
-+static const struct sdio_device_id rtw_8723cs_id_table[] =3D {
-+	{
-+		SDIO_DEVICE(SDIO_VENDOR_ID_REALTEK,
-+			    SDIO_DEVICE_ID_REALTEK_RTW8723CS),
-+		.driver_data =3D (kernel_ulong_t)&rtw8703b_hw_spec,
-+	},
-+	{}
-+};
-+MODULE_DEVICE_TABLE(sdio, rtw_8723cs_id_table);
-+
-+static struct sdio_driver rtw_8723cs_driver =3D {
-+	.name =3D "rtw8723cs",
-+	.id_table =3D rtw_8723cs_id_table,
-+	.probe =3D rtw_sdio_probe,
-+	.remove =3D rtw_sdio_remove,
-+	.drv =3D {
-+		.pm =3D &rtw_sdio_pm_ops,
-+		.shutdown =3D rtw_sdio_shutdown
-+	}};
-+module_sdio_driver(rtw_8723cs_driver);
-+
-+MODULE_AUTHOR("Fiona Klute <fiona.klute@gmx.de>");
-+MODULE_DESCRIPTION("Realtek 802.11n wireless 8723cs driver");
-+MODULE_LICENSE("Dual BSD/GPL");
-diff --git a/include/linux/mmc/sdio_ids.h b/include/linux/mmc/sdio_ids.h
-index 7fada7a714..7cddfdac2f 100644
-=2D-- a/include/linux/mmc/sdio_ids.h
-+++ b/include/linux/mmc/sdio_ids.h
-@@ -124,6 +124,7 @@
- #define SDIO_DEVICE_ID_REALTEK_RTW8723DS_2ANT	0xd723
- #define SDIO_DEVICE_ID_REALTEK_RTW8723DS_1ANT	0xd724
- #define SDIO_DEVICE_ID_REALTEK_RTW8821DS	0xd821
-+#define SDIO_DEVICE_ID_REALTEK_RTW8723CS	0xb703
-
- #define SDIO_VENDOR_ID_SIANO			0x039a
- #define SDIO_DEVICE_ID_SIANO_NOVA_B0		0x0201
-=2D-
-2.43.0
-
+-- 
+மணிவண்ணன் சதாசிவம்
 
