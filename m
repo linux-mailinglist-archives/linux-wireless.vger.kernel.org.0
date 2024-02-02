@@ -1,207 +1,97 @@
-Return-Path: <linux-wireless+bounces-2993-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-2994-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B31FE84671C
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 05:52:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14E7584676C
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 06:14:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 343421F267E8
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 04:52:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41D811C24D5C
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 05:14:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28404F51E;
-	Fri,  2 Feb 2024 04:51:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="CTzz14Q+"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD1AB171BF;
+	Fri,  2 Feb 2024 05:14:16 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from us-smtp-delivery-195.mimecast.com (us-smtp-delivery-195.mimecast.com [170.10.133.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AE8AF513;
-	Fri,  2 Feb 2024 04:51:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80EB3171A0
+	for <linux-wireless@vger.kernel.org>; Fri,  2 Feb 2024 05:14:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706849517; cv=none; b=L9vP0whoB7r5Sn3ZoTctwfJWYmzOwrxpEn0s2CotvXg/o9lojzoKACHcTniM2VE/eqqFisEY/Mk4vaJjB8HRv1EMvw7AGALRHFBvyWFHp89NSGiZbnZDZR7JfmuMVHDJwqFtepXQGetWXhY8bmR72xoSgbYWGdMIiYdL6GwUpcg=
+	t=1706850856; cv=none; b=NJJJ+F+5AGiqwCXnmi3bq1jjHQ490l6pfaNaNitHp+FP2gNfYsCIBRydmh6N2KWfGuVOV/+Q6TQ9xEAZiSEVs1AOvgl93taZJ3DToRi/5Qcs+0+atgyuFSBoCQW1kHDarIbAPXeMFzD6VJYw9UFilNDlRRGJjKnmsiwRlh3IMY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706849517; c=relaxed/simple;
-	bh=MbeoFB9DxXuqtKa3HpPQkLWrTH55Z9XH6TqSAg7KCo4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=RNal+VaMaWuUDCyZY4n27ZE6LjZfmcBTJfGNcEkl9EberK92Gj6jb5g1ww19nFaInikw/ok1gYswdN+/Xk8PAJtHQIQsFDXDa4wXQ55iFlgS/FRNH/6lXnrBZST74XAEh5ag7oQ4IglYKjj+87KWBsfQDR8oGmQ4tue+HHbF+hM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=CTzz14Q+; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 4123mJnQ012457;
-	Fri, 2 Feb 2024 04:51:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=Kr40Gu7ZnkwDYNF2wB6/kUvqE4WqqMaeLDAq4SXbIiY=; b=CT
-	zz14Q+FsuEExXaXXl6pAjGMcYGU6ghZfwZWctR/EzKog6HJUfL6ZbSmpMLEtHiY6
-	ne/l//pIfsWgxRtEf8cv5dBxaJUcaSGRiLwBMBRXzWbAs9FhqCYX9CfJ0pER0yEh
-	sw3FD9bWifV3RyqUl+nf4Vwnh6Bx+1CNX0sVBr6yyN7UPWUUVSVF5TNX7qQUgydV
-	mAU3qHypyjbOYpz2a5qvij6/pUqLO+6imVQRN1/Jgyi7byFDl5Ub5+t0CsDXtASC
-	VG1IxTIMV86pJ319Hz81cjXQREGWDRcUWwWk4pOOILO5SKY/G469XpaD/Wucr37Q
-	urXXP0pBWX0AanFGQ8eA==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3w0ptvgd4a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 02 Feb 2024 04:51:03 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 4124p2Yf007983
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 2 Feb 2024 04:51:02 GMT
-Received: from [10.110.16.197] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Thu, 1 Feb
- 2024 20:51:00 -0800
-Message-ID: <39779388-9aad-43fd-9ede-271ead40cbf7@quicinc.com>
-Date: Thu, 1 Feb 2024 20:50:59 -0800
+	s=arc-20240116; t=1706850856; c=relaxed/simple;
+	bh=r/wmNrUxHCkH/vAn75d127Ad24I4g8B5z7mJhzsX7/8=;
+	h=From:Subject:To:Message-ID:Date:MIME-Version:Content-Type; b=cSKAY10J/OYCYdxX3H6kcAowlZPsSe0OChC1NcLTDHDYLFtBadzOLI7xZ6QHGoJGDMIj5W5a8P7nQMzRqU0t3QNazZ7g00FFryztEdEHvq8q8pEhU+WJ6upSRgl1w3FaaKNf8ia2xofjXCcHIbfdhaE9mnh5Wmi+0cDHQaObaGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mbari.org; spf=pass smtp.mailfrom=mbari.org; arc=none smtp.client-ip=170.10.133.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mbari.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mbari.org
+Received: from sleet.shore.mbari.org (sleet.shore.mbari.org [134.89.12.10])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-522-_mLI0zMCNbSK6cBi5JXG5w-1; Fri,
+ 02 Feb 2024 00:14:11 -0500
+X-MC-Unique: _mLI0zMCNbSK6cBi5JXG5w-1
+Received: from localhost (localhost [127.0.0.1])
+	by sleet.shore.mbari.org (Postfix) with ESMTP id AAA2F80A3F4F5
+	for <linux-wireless@vger.kernel.org>; Thu,  1 Feb 2024 21:14:10 -0800 (PST)
+X-Virus-Scanned: amavis at sleet.shore.mbari.org
+Received: from sleet.shore.mbari.org ([127.0.0.1])
+ by localhost (sleet.shore.mbari.org [127.0.0.1]) (amavis, port 10026)
+ with ESMTP id Hw1RBvsPCV_u for <linux-wireless@vger.kernel.org>;
+ Thu,  1 Feb 2024 21:14:10 -0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+	by sleet.shore.mbari.org (Postfix) with ESMTP id 7347281288C7C
+	for <linux-wireless@vger.kernel.org>; Thu,  1 Feb 2024 21:14:10 -0800 (PST)
+Received: from [192.168.6.194] (raven.shore.mbari.org [134.89.10.221])
+	by sleet.shore.mbari.org (Postfix) with ESMTPSA
+	for <linux-wireless@vger.kernel.org>; Thu,  1 Feb 2024 21:14:10 -0800 (PST)
+From: Brent Roman <brent@mbari.org>
+Subject: rtw88 driver support for rtl8723ds does not work on Radxa RockPi-S
+To: linux-wireless@vger.kernel.org
+Organization: MBARI
+Message-ID: <046a54c9-43ef-08e5-8d5a-f2751d955369@mbari.org>
+Date: Thu, 1 Feb 2024 21:14:09 -0800
+User-Agent: Mozilla/5.0 (X11; Linux i686; rv:46.0) Gecko/20100101 Firefox/46.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/9] PCI: create platform devices for child OF nodes of
- the port node
-Content-Language: en-US
-To: Bjorn Andersson <andersson@kernel.org>,
-        Bartosz Golaszewski
-	<brgl@bgdev.pl>
-CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kalle Valo
-	<kvalo@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni
-	<pabeni@redhat.com>, Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski
-	<krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Catalin Marinas
-	<catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Bjorn Helgaas
-	<bhelgaas@google.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Jernej Skrabec
-	<jernej.skrabec@gmail.com>,
-        Chris Morgan <macromorgan@hotmail.com>,
-        Linus
- Walleij <linus.walleij@linaro.org>,
-        Geert Uytterhoeven
-	<geert+renesas@glider.be>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Neil Armstrong
-	<neil.armstrong@linaro.org>,
-        =?UTF-8?Q?N=C3=ADcolas_F_=2E_R_=2E_A_=2E_Prado?=
-	<nfraprado@collabora.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Peng
- Fan <peng.fan@nxp.com>, Robert Richter <rrichter@amd.com>,
-        Dan Williams
-	<dan.j.williams@intel.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Terry Bowman <terry.bowman@amd.com>, Lukas Wunner <lukas@wunner.de>,
-        Huacai
- Chen <chenhuacai@kernel.org>, Alex Elder <elder@linaro.org>,
-        Srini Kandagatla
-	<srinivas.kandagatla@linaro.org>,
-        Abel Vesa <abel.vesa@linaro.org>, <linux-wireless@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-pci@vger.kernel.org>,
-        Bartosz Golaszewski
-	<bartosz.golaszewski@linaro.org>
-References: <20240117160748.37682-1-brgl@bgdev.pl>
- <20240117160748.37682-5-brgl@bgdev.pl>
- <2024011707-alibi-pregnancy-a64b@gregkh>
- <CAMRc=Mef7wxRccnfQ=EDLckpb1YN4DNLoC=AYL8v1LLJ=uFH2Q@mail.gmail.com>
- <2024011836-wok-treadmill-c517@gregkh>
- <d2he3ufg6m46zos4swww4t3peyq55blxhirsx37ou37rwqxmz2@5khumvic62je>
- <CAMRc=MeXJjpJhDjyn_P-SGo4rDnEuT9kGN5jAbRcuM_c7_aDzQ@mail.gmail.com>
- <oiwvcvu6wdmpvhss3t7uaqkl5q73mki5pz6liuv66bap4dr2mp@jtjjwzlvt6za>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <oiwvcvu6wdmpvhss3t7uaqkl5q73mki5pz6liuv66bap4dr2mp@jtjjwzlvt6za>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: lTFaTi9YnTkmqQ4bQa9bhYouASZn-t3K
-X-Proofpoint-ORIG-GUID: lTFaTi9YnTkmqQ4bQa9bhYouASZn-t3K
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-01_10,2024-01-31_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- adultscore=0 mlxlogscore=999 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 impostorscore=0
- mlxscore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2401310000 definitions=main-2402020032
+X-Clacks-Overhead: GNU Terry Pratchett
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: mbari.org
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
 
-On 2/1/2024 4:03 PM, Bjorn Andersson wrote:
-> On Wed, Jan 31, 2024 at 12:04:14PM +0100, Bartosz Golaszewski wrote:
->> On Tue, Jan 30, 2024 at 10:54 PM Bjorn Andersson <andersson@kernel.org> wrote:
->>>
->>> On Thu, Jan 18, 2024 at 12:15:27PM +0100, Greg Kroah-Hartman wrote:
->>>> On Thu, Jan 18, 2024 at 11:58:50AM +0100, Bartosz Golaszewski wrote:
->>>>> On Wed, Jan 17, 2024 at 5:45 PM Greg Kroah-Hartman
->>>>> <gregkh@linuxfoundation.org> wrote:
->>>>>>
->>>>>> On Wed, Jan 17, 2024 at 05:07:43PM +0100, Bartosz Golaszewski wrote:
->>>>>>> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->>>>>>>
->>>>>>> In order to introduce PCI power-sequencing, we need to create platform
->>>>>>> devices for child nodes of the port node.
->>>>>>
->>>>>> Ick, why a platform device?  What is the parent of this device, a PCI
->>>>>> device?  If so, then this can't be a platform device, as that's not what
->>>>>> it is, it's something else so make it a device of that type,.
->>>>>>
->>>>>
->>>>> Greg,
->>>>>
->>>>> This is literally what we agreed on at LPC. In fact: during one of the
->>>>> hall track discussions I said that you typically NAK any attempts at
->>>>> using the platform bus for "fake" devices but you responded that this
->>>>> is what the USB on-board HUB does and while it's not pretty, this is
->>>>> what we need to do.
->>>>
->>>> Ah, you need to remind me of these things, this changelog was pretty
->>>> sparse :)
->>>>
->>>
->>> I believe I missed this part of the discussion, why does this need to be
->>> a platform_device? What does the platform_bus bring that can't be
->>> provided by some other bus?
->>>
->>
->> Does it need to be a platform_device? No, of course not. Does it make
->> sense for it to be one? Yes, for two reasons:
->>
->> 1. The ATH11K WLAN module is represented on the device tree like a
->> platform device, we know it's always there and it consumes regulators
->> from another platform device. The fact it uses PCIe doesn't change the
->> fact that it is logically a platform device.
-> 
-> Are you referring to the ath11k SNOC (firmware running on co-processor
-> in the SoC) variant?
-> 
-> Afaict the PCIe-attached ath11k is not represented as a platform_device
-> in DeviceTree.
+The Radxa RockPi-S has a built-in RTL8723DS interfaced to a Rockchip=20
+RK3308 A35 ARM64 processor on one of its SDIO busses.
 
-Are you considering out-of-tree drivers? My understanding is that there
-are different PCIe modules, ones that don't have GPIO-control for x86
-and ones that do have GPIO-control for ARM. The out-of-tree cnss
-platform driver used for Android has a large amount of DT control
-<https://git.codelinaro.org/clo/la/platform/vendor/qcom-opensource/wlan/platform/-/blob/wlan-platform.lnx.1.0.r1-rel/cnss2/power.c?ref_type=heads>
+I maintain Armbian's support this board.
 
-(not sure off hand where the DT files themselves are)
+The built-in WiFi works perfectly with RTL's 8723ds.ko driver.
+Recently, the rtw88 driver got support for SDIO.
+https://lwn.net/Articles/925940/
 
-/jeff
+However, when we attempt to enable the rtw88_8723ds module, WiFi does=20
+not work.
+
+Specifically, the WiFi scan returns only the strongest AP while=20
+indicating that AP has a very weak signal.
+No connections can be made.
+
+Unloading the rtw88_8723ds modules to replace it with 8723ds immediately=20
+restores WiFi function without the need to reboot the system.
+
+Has anyone tested the SDIO variant of this driver?
+If so, on which board(s)?
+
+I'd very much like to get this working.
+Any tips for debugging, or just getting relevant info from the driver,=20
+would be appreciated.
+
+Thanks!
+
 
