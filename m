@@ -1,50 +1,49 @@
-Return-Path: <linux-wireless+bounces-3054-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3055-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADEB0847866
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 19:51:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0E42847893
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 19:55:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0EF81C20C5A
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 18:51:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C40128C6B4
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 18:55:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1FDE15445B;
-	Fri,  2 Feb 2024 18:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A66214F9D4;
+	Fri,  2 Feb 2024 18:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ntq6dsLz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pYa1MMCm"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95E9E154452;
-	Fri,  2 Feb 2024 18:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D434D14F9C4;
+	Fri,  2 Feb 2024 18:41:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706899262; cv=none; b=tS/m0wkLkQuaffJytuAR//fYJrbwnQ5SLECFgQIMiaDVnP2zzV9I7HmfRPcaatranjrv7FbG6tzpYGDwJw/7hd2PtsQsUrUE6HcOPS6vsA6GE42DicyZ0oiHGGzlH8sH1e3d+Rp6yH0JLfhwdtTViWAtItafuBoADb3lSe9s/xk=
+	t=1706899293; cv=none; b=PWpK0wkuOc07F0W13e5JX0fuonNoZb6Xes/4hVeUOwRZDPz5FIitjZO3sHfIqs+D1YQI+18Yt+Nj3dvRZsIQZJRGHXkpxAtVf9ROKhWNGx1cH/euIz8VjpO1sU4vvHaKKdZXdfFuvEhjZ59FGf3Ws7nUWXN2TckgvRqNXrDgnvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706899262; c=relaxed/simple;
-	bh=a3pj8sTNHKX+NfhRmjR1bXlXCMa5rRhYGMmjY++vbBs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K+iDPwQY2xkhznKId10CJ0KGb0muIf/NFNWGqJtifQuXVe8yWd7D7p0cLxS94BfSeaqsdpSenapMTLRo01W412Gqifvznfe6MqPaLkr6C38DDM0ZA+nBcWPTVp65+YK3b6T/NAdvNn0H0YMSvUhYhVIW40mG7PVJdUus3dovtdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ntq6dsLz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27EB0C433C7;
-	Fri,  2 Feb 2024 18:41:01 +0000 (UTC)
+	s=arc-20240116; t=1706899293; c=relaxed/simple;
+	bh=5ISynWo/uGDEb3bjigGlvVmcBKeLKm95vVx31dqdCDU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nb1usFbGgd15F7RLsmZar+W23iVTjD6ZbggFg7+NHuZfKIT50C/uQQ5s1K94H2yDNx5JKWxiSBtEroNHqiO/qMrnKHzifsrmtpkYcLM3+FqA+vtDwt6LTTzq/qdXC1NA2mBUF6vj6Rndi1gFR9Ih62zzML4y6VY5ynQxr7aJNJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pYa1MMCm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D1DDC433C7;
+	Fri,  2 Feb 2024 18:41:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706899262;
-	bh=a3pj8sTNHKX+NfhRmjR1bXlXCMa5rRhYGMmjY++vbBs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ntq6dsLzseZfxyAfT30tzpWIleu3Hg5eVydVx8140weND1H8d6R5UjFmxxOEwhxmw
-	 iW1kczQmFvow2fmpqhcI7IpePUzi8GTrHjd8dS5k8C4AkKNuaPKG9mBoTxOzksrucc
-	 lEZ3VqyePoMnxKUM+0yU6htdZ5+nqYtA9KZpYEYvCT11Z2A7lz6+u0Sfl2PclElpqY
-	 cul9W5I576N8e/cKdAzLxn74xDd+6BtJFjtDsKbsgbSiGOPVSdhCUv1qK0lPpLaWSa
-	 PF9I30YsCo7pjl7Qr4E2fKICyQ3+KODTyUgo3wKbOBSNgoRUr2nyYeWrjJNu++G6mz
-	 rBESA0rXWeRrw==
+	s=k20201202; t=1706899293;
+	bh=5ISynWo/uGDEb3bjigGlvVmcBKeLKm95vVx31dqdCDU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=pYa1MMCmV8fiAxLQMdDJyFLPX1LBaOJDfmPjtufTziy2yoiMrfOOW3C7KFV95zH+j
+	 gUjYrVG1L1UJZ3zYS0nUHw95vqSbhYBMxOSrTCCPkPXFQ9bFNq5zT7DsXA3Q+BK0Sn
+	 TPomByGarMYawSXfk2wcfFfny8wJCjk5sKv7jY1AhfhKmLUM4oUE6QICSeLg8mR2S3
+	 wav+VF0ndIVqj0f5Q4N/9mmdgEn/by6Vz6XFj7r5l4qT9G8eQ1/rGT9yzb5WS9JlTS
+	 sZ+wWUHcEI0S/lTuQW+n8+rVXJ94/2S0J36txzq/f1vSNcfo52gVPA9bR7/Z2GLZBz
+	 hvbc5NxaY+eqA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Felix Fietkau <nbd@nbd.name>,
+Cc: Michal Kazior <michal@plume.com>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	johannes@sipsolutions.net,
@@ -54,12 +53,10 @@ Cc: Felix Fietkau <nbd@nbd.name>,
 	pabeni@redhat.com,
 	linux-wireless@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 02/15] wifi: mac80211: fix race condition on enabling fast-xmit
-Date: Fri,  2 Feb 2024 13:40:39 -0500
-Message-ID: <20240202184057.541411-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 01/11] wifi: cfg80211: fix missing interfaces when dumping
+Date: Fri,  2 Feb 2024 13:41:15 -0500
+Message-ID: <20240202184130.541736-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240202184057.541411-1-sashal@kernel.org>
-References: <20240202184057.541411-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -68,54 +65,72 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.76
+X-stable-base: Linux 5.15.148
 Content-Transfer-Encoding: 8bit
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Michal Kazior <michal@plume.com>
 
-[ Upstream commit bcbc84af1183c8cf3d1ca9b78540c2185cd85e7f ]
+[ Upstream commit a6e4f85d3820d00694ed10f581f4c650445dbcda ]
 
-fast-xmit must only be enabled after the sta has been uploaded to the driver,
-otherwise it could end up passing the not-yet-uploaded sta via drv_tx calls
-to the driver, leading to potential crashes because of uninitialized drv_priv
-data.
-Add a missing sta->uploaded check and re-check fast xmit after inserting a sta.
+The nl80211_dump_interface() supports resumption
+in case nl80211_send_iface() doesn't have the
+resources to complete its work.
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Link: https://msgid.link/20240104181059.84032-1-nbd@nbd.name
+The logic would store the progress as iteration
+offsets for rdev and wdev loops.
+
+However the logic did not properly handle
+resumption for non-last rdev. Assuming a system
+with 2 rdevs, with 2 wdevs each, this could
+happen:
+
+ dump(cb=[0, 0]):
+  if_start=cb[1] (=0)
+  send rdev0.wdev0 -> ok
+  send rdev0.wdev1 -> yield
+  cb[1] = 1
+
+ dump(cb=[0, 1]):
+  if_start=cb[1] (=1)
+  send rdev0.wdev1 -> ok
+  // since if_start=1 the rdev0.wdev0 got skipped
+  // through if_idx < if_start
+  send rdev1.wdev1 -> ok
+
+The if_start needs to be reset back to 0 upon wdev
+loop end.
+
+The problem is actually hard to hit on a desktop,
+and even on most routers. The prerequisites for
+this manifesting was:
+ - more than 1 wiphy
+ - a few handful of interfaces
+ - dump without rdev or wdev filter
+
+I was seeing this with 4 wiphys 9 interfaces each.
+It'd miss 6 interfaces from the last wiphy
+reported to userspace.
+
+Signed-off-by: Michal Kazior <michal@plume.com>
+Link: https://msgid.link/20240116142340.89678-1-kazikcz@gmail.com
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/sta_info.c | 2 ++
- net/mac80211/tx.c       | 2 +-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ net/wireless/nl80211.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index 49b71453dec3..c2b1a5d7e367 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -888,6 +888,8 @@ static int sta_info_insert_finish(struct sta_info *sta) __acquires(RCU)
- 	if (ieee80211_vif_is_mesh(&sdata->vif))
- 		mesh_accept_plinks_update(sdata);
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 82b93380afec..4a8b701440eb 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -3737,6 +3737,7 @@ static int nl80211_dump_interface(struct sk_buff *skb, struct netlink_callback *
+ 			if_idx++;
+ 		}
  
-+	ieee80211_check_fast_xmit(sta);
-+
- 	return 0;
-  out_remove:
- 	if (sta->sta.valid_links)
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 2db103a56a28..884ee55c284a 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -3044,7 +3044,7 @@ void ieee80211_check_fast_xmit(struct sta_info *sta)
- 	    sdata->vif.type == NL80211_IFTYPE_STATION)
- 		goto out;
- 
--	if (!test_sta_flag(sta, WLAN_STA_AUTHORIZED))
-+	if (!test_sta_flag(sta, WLAN_STA_AUTHORIZED) || !sta->uploaded)
- 		goto out;
- 
- 	if (test_sta_flag(sta, WLAN_STA_PS_STA) ||
++		if_start = 0;
+ 		wp_idx++;
+ 	}
+  out:
 -- 
 2.43.0
 
