@@ -1,98 +1,88 @@
-Return-Path: <linux-wireless+bounces-3031-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3032-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A64C8847070
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 13:37:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD2C4847074
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 13:38:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48EBC1F24968
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 12:37:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81808288582
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 12:38:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB7AA1874;
-	Fri,  2 Feb 2024 12:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26DA517D2;
+	Fri,  2 Feb 2024 12:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M+cPTIm1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ET/V61Rp"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883C91872
-	for <linux-wireless@vger.kernel.org>; Fri,  2 Feb 2024 12:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 012FD17CF
+	for <linux-wireless@vger.kernel.org>; Fri,  2 Feb 2024 12:38:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706877418; cv=none; b=cyh/z4WJgvCOBVJhJltpi0Yw7DyBCmUHIoPjad9/os4SYTBLR8TPWQ4RrR8gByP96bcYF/FMeW3INOO/rh4fbelcNOKLUmSwBvHX/aYSbj5tLCPuT+A7RJXmnLEoGI4exhjJ8fgy2mpQ3SGUDobVbgTu4bSCDpd4TJrEzo8gjWE=
+	t=1706877503; cv=none; b=L7RwH+urzS7Ev+NRTIiLcJ/taJyc2kMCng8zqWMNAJScoEGgPzSasEoUEq7++voISXAQ49y19teSQJd4iEfb7IguEEBpUtCQonprBZOoXNaXJv1FCwKJuKFVHtOhN7pe0JDXoJmmuX/zHcYVDLuSdKk1+AJT7jj1WKYOGSldt+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706877418; c=relaxed/simple;
-	bh=S9kXI/nhnyCQ2E9xStS/KEOinhoWXOUkKo3t3H2M95c=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=JO44kbcrxzTkEg8oBZ9fEAucqXCSDMCL8Ch/SKCtnlHJlC8UVOtaWlgOTZTJWRZ1KHvUzybdi3HpQs5C6ZrOgVAXdyYljJUPWopzqt604NyXYmA60CDQxGZv8A51eZWrxJhxRPGn7MKntmQevM/15OyX9DHeUPFAaUymPYQsOyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M+cPTIm1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 251A2C433C7;
-	Fri,  2 Feb 2024 12:36:56 +0000 (UTC)
+	s=arc-20240116; t=1706877503; c=relaxed/simple;
+	bh=RfsTFe4NgUohvaiNqS8BwZubOvrLemzOg+tSA4xiw+Y=;
+	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
+	 Cc:Message-ID:Date; b=mn0tGJSiFfpCVHrLFWpAJ/PGRVrrlyqEv0IRiImTvJORTV+PChrO1KHc6yvwhMo5bESphAYVhvILflE9Ep43Iu9eMcKuJ7Q9l6Qbkd0xad4DCkaTgm0Q95fHmzsoST//LNPE+jQPhd1RHI/fvnm3bXJFgkardYUxQu9vaNYcuC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ET/V61Rp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97D52C433C7;
+	Fri,  2 Feb 2024 12:38:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706877418;
-	bh=S9kXI/nhnyCQ2E9xStS/KEOinhoWXOUkKo3t3H2M95c=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=M+cPTIm1DVO7RaQ+3OZ9bpbFIvU8ENiPcpbdd+OAUAoNw5zUwCrFYx4X+jyFbd3hV
-	 wZ3V+6CMBq94lD/UDRadU+sncEBqCPLLQ+g5QcRcoYBGjw8yuFu2YZNPcxfEQDgikp
-	 h0CaCe1TfGxWtLv3vyixtYJZmQDOeZhrMVSkCDhdifYkG1S5jgk/6GKEeAoD8/vU3n
-	 8jh0MP+Aq1Dn3p5oGUBQDpm3vKO/GG0AV/lxjLjxfWtCOrFYG+PSgu9CWBwf4Wfwi7
-	 8iuvZ7ljdjqIS6/y+MlEFGcNQYHqMr/wKLTGYOtqwkYzvVPouw/rjKZGnN63hGAub0
-	 mN6uNpXjrmk1Q==
-From: Kalle Valo <kvalo@kernel.org>
-To: Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc: Lingbo Kong <quic_lingbok@quicinc.com>,  <ath12k@lists.infradead.org>,
-  <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v2 1/2] wifi: ath12k: add processing for TWT enable event
-References: <20240122085336.3985-1-quic_lingbok@quicinc.com>
-	<20240122085336.3985-2-quic_lingbok@quicinc.com>
-	<ea2952a4-8343-407e-9a9c-3c93f4afd607@quicinc.com>
-Date: Fri, 02 Feb 2024 14:36:55 +0200
-In-Reply-To: <ea2952a4-8343-407e-9a9c-3c93f4afd607@quicinc.com> (Jeff
-	Johnson's message of "Mon, 22 Jan 2024 09:47:36 -0800")
-Message-ID: <87a5ojt53s.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=k20201202; t=1706877502;
+	bh=RfsTFe4NgUohvaiNqS8BwZubOvrLemzOg+tSA4xiw+Y=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=ET/V61RpCR7OpcbaOeFrZ49qbnC+BV0ITqtWKUk6qxjOCAFhZe68J96QL2OYltfXy
+	 9VXcZLyiuM3PNdgUJf+5+a1fTtiuCFYkuTZG3am/koyNlsBtt93PrO+P6ebza5QFNj
+	 kj9BLxe/WU4WqIewpARaYME/WbOGjv0hf/3jBCJK9RJAHFFJPLInb0HtSPGXEaCNot
+	 XrRg8XM74wMtsHrCdMGMVgyT+75HfCDDT1trk18YCFrEBdgphu/BK8YzDGbKt9GHwX
+	 rJEdn7QxSxiMwiW7PX8agIj4aY1+980lLpvboaDdu3j2Boe71ptsJdq17Y/JsISM7K
+	 TWXdgdlKbP5bg==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2 1/2] wifi: ath12k: add processing for TWT enable event
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20240122085336.3985-2-quic_lingbok@quicinc.com>
+References: <20240122085336.3985-2-quic_lingbok@quicinc.com>
+To: Lingbo Kong <quic_lingbok@quicinc.com>
+Cc: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+ <quic_lingbok@quicinc.com>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <170687749992.3221346.6741528529227043525.kvalo@kernel.org>
+Date: Fri,  2 Feb 2024 12:38:21 +0000 (UTC)
 
-Jeff Johnson <quic_jjohnson@quicinc.com> writes:
+Lingbo Kong <quic_lingbok@quicinc.com> wrote:
 
-> On 1/22/2024 12:53 AM, Lingbo Kong wrote:
->> When ath12k send TWT enable command to firmware, firmware will return a TWT
->> enable event to ath12k. Through the analysis of TWT enable event status, we
->> can easily obtain the status of TWT enable command. It can be more
->> convenient to debug TWT.
->> 
->> This patch works with WCN7850 and QCN9274.
->> 
->> Tested-on: WCN7850 hw2.0 PCI
->> WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
->> 
->> Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
->> ---
-> [...snip...]
->> diff --git a/drivers/net/wireless/ath/ath12k/wmi.h
->> b/drivers/net/wireless/ath/ath12k/wmi.h
->> index 06e5b9b4049b..7570ef7be38d 100644
->> --- a/drivers/net/wireless/ath/ath12k/wmi.h
->> +++ b/drivers/net/wireless/ath/ath12k/wmi.h
->
-> Qualcomm Innovation Center copyright missing 2024
->
-> Kalle can probably address this in "pending"
+> When ath12k send TWT enable command to firmware, firmware will return a TWT
+> enable event to ath12k. Through the analysis of TWT enable event status, we
+> can easily obtain the status of TWT enable command. It can be more
+> convenient to debug TWT.
+> 
+> This patch works with WCN7850 and QCN9274.
+> 
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+> 
+> Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
+> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-Actually the year 2024 was already there, most likely some other patch
-added that.
+2 patches applied to ath-next branch of ath.git, thanks.
+
+2f92b22beef7 wifi: ath12k: add processing for TWT enable event
+ad2b29ad94c3 wifi: ath12k: add processing for TWT disable event
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+https://patchwork.kernel.org/project/linux-wireless/patch/20240122085336.3985-2-quic_lingbok@quicinc.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
 
