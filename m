@@ -1,147 +1,171 @@
-Return-Path: <linux-wireless+bounces-3001-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3002-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCFCF846D33
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 11:01:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 592A3846D3B
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 11:02:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D4EF1F242A9
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 10:01:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D85F41F22158
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 10:02:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 053BA7C0A4;
-	Fri,  2 Feb 2024 10:00:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C90077F3E;
+	Fri,  2 Feb 2024 10:02:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nTb8mLHu"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="VWf9hxg7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com [209.85.217.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 548587C084;
-	Fri,  2 Feb 2024 10:00:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7E8969D39
+	for <linux-wireless@vger.kernel.org>; Fri,  2 Feb 2024 10:02:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706868057; cv=none; b=kgfiS/R6Oya0JsdS+hlp+9oTrFLQqRKl8usaugddDYFXuoHxS5mWAeLPR7n783xDWnYtc6xoaa8p/qVYC3KAT27yk+jikcQ85/MIp4M7mVZBAFdbUbL0gnEqkziI7O2hEUWMpnSRLd9yQC+fff4BgCoRyRJ8ugE7vbbVdxFJlcY=
+	t=1706868143; cv=none; b=T6yg4LRUfGNTpZINCb3H1V9O4IQlq0+6fu4S12nwbHVr7Gen783rmh+xKyGevxtqTIwotHurIaS5/jrS7NS4tUXh0IyqGbFBqjNyI5jkk6u/v2+gorjSPScf/ZlK+Z1/oK87TnXWc9iH8NoVVew3hVF343Vc+dfkIWNUjeQw8h0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706868057; c=relaxed/simple;
-	bh=9+Lj2EmpVoW3SexRfepzUDlGcwoDBetKy73F3EbDagA=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=TA265SMcboIkKQulHXK2G4aRVGz07fpH9VJfl/vrJSlz0EZva/I6r1E92/vDYjxjd29evn6v9maiz4cncCA2xjPda5IiVzwZ6/E55dDnfwTVIetEf8fNIWUJomfCygKE6McJa2cd2G4NsTUspeLcsgy6KjGOxqGIfPqjrcnQc64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nTb8mLHu; arc=none smtp.client-ip=209.85.160.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-42a0ba5098bso10546221cf.0;
-        Fri, 02 Feb 2024 02:00:56 -0800 (PST)
+	s=arc-20240116; t=1706868143; c=relaxed/simple;
+	bh=NtnCOabBizlH+j0rVkHlFrH9ORsi8hA0FEPEyh8lt8Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Dii+FF+O2ZDLJBGGM2t+u05jcMigM5H/xzQscHM/9ExneortXMHmfTd2jAPEgRdxx15YvTtG1D2WrYu1vLVjn5RryyM4ffOz/4YpfCEfccASpf/xyCfYDnYX0dkr6qbuNXr6ysf4bFRmrvP6JxYE0mxtfO8MJizQSgDNSwvf0f0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=VWf9hxg7; arc=none smtp.client-ip=209.85.217.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-vs1-f43.google.com with SMTP id ada2fe7eead31-46b1bfcbe89so737678137.2
+        for <linux-wireless@vger.kernel.org>; Fri, 02 Feb 2024 02:02:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706868055; x=1707472855; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=2PaTKCXkjzVrJJOZgvzI+IQZUbVjwGuyWO0oQJMYNm4=;
-        b=nTb8mLHu0FRIKDYHMNFeHf1vwgmGbVSymCJApweNYx4iWCzPa9t3rqKaOSGHToQd5o
-         DlO6QbuAEyQ8VsnP0FEFpS4NpRZcBMTx4KiMFwIcvipXw9UnxjN6LtLdaYTd3IAm1Ylf
-         jOUJ+Zf8OAgnIqP73z8wftcTeRlVQ5mOKsEyXiI1htauifLjVfbEaPKWjowPYaHSmoOm
-         iyY0yi14h/D6lTub/cuyyY/Js6Kfqcf6yMSS3BCUn3ws/kb1FG1FRCmYGu1knvuQTBMC
-         6pW1qGFjzf+C1CczA5w1egxF/5vnKkzQPrrptGqpcncYzZcWY7HmPXuCu6qKAXOJj70z
-         6Qfg==
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1706868140; x=1707472940; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NtnCOabBizlH+j0rVkHlFrH9ORsi8hA0FEPEyh8lt8Q=;
+        b=VWf9hxg725rKSp6K/x+5G2APFjXuzNFuO328oOy+4jq7wSUZPDcsN/WBO1xY/KucMR
+         h2B/FmMB8MHPsdAiHyeKqfo92dX5HvmXCOaSs7I+FWg6TdSh2s8Im0iFANyJa5FhJTJ7
+         IAvfDSEPKtMLaslzpvJ6fWtysky2I2h0SHaSJpMGvavViS1eJV84Frm9aj0f3HU3d83L
+         fCfSzWwVKVJ9ppS1cEq0b+/qAM1gZPMlHDzO2D98LMqnZfizmyhdfsv7HLuohKH80NV0
+         0E5tOXp97kQRUQUl3JnP8EuUSOpr3WF8kPZkZgoNlN9Q9PTEd2SIVTDrzqz4uH6FhIPc
+         GjFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706868055; x=1707472855;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2PaTKCXkjzVrJJOZgvzI+IQZUbVjwGuyWO0oQJMYNm4=;
-        b=KIm1APQBlY303uVtYIzy5HHoIeeD9xNTkJqfDfmjE5hw95WjLdr9HuNhLZUl3luNCf
-         S3Ogl2bh5+PxjaK2fF9Nox6JBmHUfYB1C7QLKtioYVCUNEaWIistwN9EQQSmhrReGno6
-         AxsP3uurnNqPVrEoaVdacgqSJ7dqWuB5/t0mzz3sqrVURg1+BwKlgRVxs0D27pcgccLN
-         nGAXzMLTcF/oGzxK60qqiaCEigGyX2vUgecJ5a7/+pDfKsxheA89Y8SxeQWpo4ejY+KM
-         jv4C6uNk+ir9XLyoJRIX3zGgZaCbrtnpodUbWeFX2aa/82sUrvUDP1ZmppFVokm4wuwq
-         u/0Q==
-X-Gm-Message-State: AOJu0YwwJYqIoq0+YdhjsunnJ2IFM4fj6q/OGG5uL+32LH51IVN5pWx6
-	ptSzuiQQAbi/U/KxZ3rfGsaJJTC/OjCvApx1s8KFpmzmgzMGxrlp
-X-Google-Smtp-Source: AGHT+IEYNlUKm7mfRnbGk6njjpfW3hEVDvBF0bF5R5gXazcJa4f5UU076+PpYeeK2iZVkEspOClYTw==
-X-Received: by 2002:a0c:e407:0:b0:68c:87c9:a02e with SMTP id o7-20020a0ce407000000b0068c87c9a02emr912598qvl.41.1706868055111;
-        Fri, 02 Feb 2024 02:00:55 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCWg4QkcdPzJeghdlk7cZ1IVtrhsVvsVst+74ZsRw612vN6XPb4nqpIT4v9cyrzZBGXLUFL49ZEIqcdQOaOBJN+YxAhcMY/MzJN/wgbMqG+FZVNX7V2vMR0sRzUWsSh9EXMTV9Bd7kwJA3aenUgmLdioIReUbMi2MRoUGNwc8JYuX7Wktp7zXlAkXxZLR9eT1i9UnApXfZ0pTOp6QJV5yLQDSvsPgcKI2SZaL/Cz30ChJVv0FZpTP1sFaWRBiLX+YTy9G+V2fD9w/4TcEr0qg3s7uOdjlKN6doIL+FlyvLyTgpElNRIuqdauYxqGTwRrR+J2mEAs4WIUrRcqHXUG9CN2MflWIDUzSRmQRGufeR51cH3V8ZlovM+wLTumpuXOiRqZBfEbYqq9CJ3AQTDBXCdkua9KhOrD/AHqc1nWJ43eC+mNQ0nelaU9Y21w7CcELM3I9k9Dm8kFMPnsNiWUFnVWrJDJAS9WOfB2wl+siJLc8ZsBDUPxB/W8q3po5cKPpjtmWmi7sGe/+qEBF8SBrIRKGOpxDX/Bto2CU+SYnzr6gYNYf1mMPbu39Y4EADS0dwHSprx7FGfbreJSoiZeQ2bqMckwOVFQge1ing6mAZ+k4Gi+clL3QUjqHxhcorXJ4DLbn9S4a3zzNYXR5l3D1gi6iucV7cZItkI6tQuFQicaLplTJQ==
-Received: from [192.168.178.55] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id dr10-20020a05621408ea00b00686ac3c9db4sm659095qvb.98.2024.02.02.02.00.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 02 Feb 2024 02:00:54 -0800 (PST)
-Message-ID: <d4855223-4323-43f1-9a29-e279e2cb128c@gmail.com>
-Date: Fri, 2 Feb 2024 11:00:51 +0100
+        d=1e100.net; s=20230601; t=1706868140; x=1707472940;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NtnCOabBizlH+j0rVkHlFrH9ORsi8hA0FEPEyh8lt8Q=;
+        b=Friwp7yXOCJ7blHnVo6lgezhvVoRMjcNl6XxDKgosGnxrgz15b4vumEd1HFds423xm
+         syAKErhAFbPe2Hu1UFnetSiLu6kBGGHeRsAaBU/AvobUGfEhcI1TnBrXz1Jzc9Vgz4iN
+         f/zc1ST5j1OMF/oaAA5BapfzqT5QECezfcKsamEJMCXu28mffiIgCNxVtbJ83E/Ah31P
+         6cpBAyt184CPlTryLqRYkm0v6yjMSOvxSU/qFbdKazUrWrU9/XoXPRlrz3GovSxLl4Wu
+         9/OXT84boOH2cdJIZREqlFenp2cNcd9eMTS+V/bWllfi25DQOLmATbYceu7F9yHAG0E3
+         EFXw==
+X-Gm-Message-State: AOJu0YwY3+6tYv+fydvEkKJQlwHxbrVSPaz1YWpfrhBqCxR384wGG/aM
+	petRqn1WDO9eynRisd7OxPwlq0aFJXp7PL1tzJTjp2DguxM9+60j5nN0SzDHfjwytRwoMTriuN7
+	r6ADVutfea+lFrM+fWVJIrjOWsM0bXTuFfmobFQ==
+X-Google-Smtp-Source: AGHT+IED6VmhmnR3HprrJEZF3z8i5PAWSPHx1dSrGyeGjOSLO6M2827ucqxCswBRLc2iIV8iv4KQz4ChfAHcSo5p4Vg=
+X-Received: by 2002:a05:6102:12c4:b0:46d:5d1:abc1 with SMTP id
+ jd4-20020a05610212c400b0046d05d1abc1mr480506vsb.26.1706868140600; Fri, 02 Feb
+ 2024 02:02:20 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: brcmfmac: Adjust n_channels usage for __counted_by
-Content-Language: en-US
-From: Arend Van Spriel <aspriel@gmail.com>
-To: Kalle Valo <kvalo@kernel.org>, Kees Cook <keescook@chromium.org>
-Cc: Franky Lin <franky.lin@broadcom.com>,
- Hante Meuleman <hante.meuleman@broadcom.com>,
- Chi-hsien Lin <chi-hsien.lin@infineon.com>, Ian Lin <ian.lin@infineon.com>,
- Johannes Berg <johannes.berg@intel.com>,
- Wright Feng <wright.feng@cypress.com>, Hector Martin <marcan@marcan.st>,
- linux-wireless@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- Linus Walleij <linus.walleij@linaro.org>,
- Jisoo Jang <jisoo.jang@yonsei.ac.kr>, Hans de Goede <hdegoede@redhat.com>,
- Aloka Dixit <quic_alokad@quicinc.com>, John Keeping <john@keeping.me.uk>,
- Jeff Johnson <quic_jjohnson@quicinc.com>, linux-kernel@vger.kernel.org,
- linux-hardening@vger.kernel.org
-References: <20240126223150.work.548-kees@kernel.org>
- <170678189299.2736043.11616312910656558919.kvalo@kernel.org>
- <a91c6a28-6762-41cf-bb85-09e79f3d29d4@gmail.com>
-In-Reply-To: <a91c6a28-6762-41cf-bb85-09e79f3d29d4@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20240117160748.37682-1-brgl@bgdev.pl> <20240117160748.37682-5-brgl@bgdev.pl>
+ <2024011707-alibi-pregnancy-a64b@gregkh> <CAMRc=Mef7wxRccnfQ=EDLckpb1YN4DNLoC=AYL8v1LLJ=uFH2Q@mail.gmail.com>
+ <2024011836-wok-treadmill-c517@gregkh> <d2he3ufg6m46zos4swww4t3peyq55blxhirsx37ou37rwqxmz2@5khumvic62je>
+ <CAMRc=MeXJjpJhDjyn_P-SGo4rDnEuT9kGN5jAbRcuM_c7_aDzQ@mail.gmail.com> <oiwvcvu6wdmpvhss3t7uaqkl5q73mki5pz6liuv66bap4dr2mp@jtjjwzlvt6za>
+In-Reply-To: <oiwvcvu6wdmpvhss3t7uaqkl5q73mki5pz6liuv66bap4dr2mp@jtjjwzlvt6za>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Fri, 2 Feb 2024 11:02:09 +0100
+Message-ID: <CAMRc=McT8wt6UbKtyofkJo3WcyJ-S4d2MPp8oZmjWbX6LGbETQ@mail.gmail.com>
+Subject: Re: Re: Re: [PATCH 4/9] PCI: create platform devices for child OF
+ nodes of the port node
+To: Bjorn Andersson <andersson@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Kalle Valo <kvalo@kernel.org>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh+dt@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Konrad Dybcio <konrad.dybcio@linaro.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Heiko Stuebner <heiko@sntech.de>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Chris Morgan <macromorgan@hotmail.com>, 
+	Linus Walleij <linus.walleij@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Arnd Bergmann <arnd@arndb.de>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	=?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= <nfraprado@collabora.com>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Peng Fan <peng.fan@nxp.com>, 
+	Robert Richter <rrichter@amd.com>, Dan Williams <dan.j.williams@intel.com>, 
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>, Terry Bowman <terry.bowman@amd.com>, 
+	Lukas Wunner <lukas@wunner.de>, Huacai Chen <chenhuacai@kernel.org>, Alex Elder <elder@linaro.org>, 
+	Srini Kandagatla <srinivas.kandagatla@linaro.org>, Abel Vesa <abel.vesa@linaro.org>, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-pci@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2/2/2024 10:58 AM, Arend Van Spriel wrote:
-> On 2/1/2024 11:04 AM, Kalle Valo wrote:
->> Kees Cook <keescook@chromium.org> wrote:
->>
->>> After commit e3eac9f32ec0 ("wifi: cfg80211: Annotate struct
->>> cfg80211_scan_request with __counted_by"), the compiler may enforce
->>> dynamic array indexing of req->channels to stay below n_channels. As a
->>> result, n_channels needs to be increased _before_ accessing the newly
->>> added array index. Increment it first, then use "i" for the prior index.
->>> Solves this warning in the coming GCC that has __counted_by support:
->>>
->>> ../drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c: In 
->>> function 'brcmf_internal_escan_add_info':
->>> ../drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:3783:46: warning: operation on 'req->
->>> n_channels' may be undefined [-Wsequence-point]
->>>   3783 |                 req->channels[req->n_channels++] = chan;
->>>        |                               ~~~~~~~~~~~~~~~^~
->>>
->>> Fixes: e3eac9f32ec0 ("wifi: cfg80211: Annotate struct 
->>> cfg80211_scan_request with __counted_by")
->>> Cc: Arend van Spriel <aspriel@gmail.com>
->>> Cc: Franky Lin <franky.lin@broadcom.com>
->>> Cc: Hante Meuleman <hante.meuleman@broadcom.com>
->>> Cc: Kalle Valo <kvalo@kernel.org>
->>> Cc: Chi-hsien Lin <chi-hsien.lin@infineon.com>
->>> Cc: Ian Lin <ian.lin@infineon.com>
->>> Cc: Johannes Berg <johannes.berg@intel.com>
->>> Cc: Wright Feng <wright.feng@cypress.com>
->>> Cc: Hector Martin <marcan@marcan.st>
->>> Cc: linux-wireless@vger.kernel.org
->>> Cc: brcm80211-dev-list.pdl@broadcom.com
->>> Signed-off-by: Kees Cook <keescook@chromium.org>
->>> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
->>> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
->>> Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
->>
->> I'm planning to queue this for wireless tree. Arend, ack?
-> 
-> This slipped past my broadcom email. As the Fixes commit is in 6.7 I 
-> would say ACK.
+On Fri, Feb 2, 2024 at 1:03=E2=80=AFAM Bjorn Andersson <andersson@kernel.or=
+g> wrote:
+>
 
-Cc: to stable?
+[snip]
 
-Gr. AvS
+> > >
+> > > I believe I missed this part of the discussion, why does this need to=
+ be
+> > > a platform_device? What does the platform_bus bring that can't be
+> > > provided by some other bus?
+> > >
+> >
+> > Does it need to be a platform_device? No, of course not. Does it make
+> > sense for it to be one? Yes, for two reasons:
+> >
+> > 1. The ATH11K WLAN module is represented on the device tree like a
+> > platform device, we know it's always there and it consumes regulators
+> > from another platform device. The fact it uses PCIe doesn't change the
+> > fact that it is logically a platform device.
+>
+> Are you referring to the ath11k SNOC (firmware running on co-processor
+> in the SoC) variant?
+>
+> Afaict the PCIe-attached ath11k is not represented as a platform_device
+> in DeviceTree.
+>
 
+My bad. In RB5 it isn't (yet - I want to add it in the power
+sequencing series). It is in X13s though[1].
+
+> Said platform_device is also not a child under the PCIe bus, so this
+> would be a different platform_device...
+>
+
+It's the child of the PCIe port node but there's a reason for it to
+have the `compatible` property. It's because it's an entity of whose
+existence we are aware before the system boots.
+
+> > 2. The platform bus already provides us with the entire infrastructure
+> > that we'd now need to duplicate (possibly adding bugs) in order to
+> > introduce a "power sequencing bus".
+> >
+>
+> This is a perfectly reasonable desire. Look at our PMICs, they are full
+> of platform_devices. But through the years it's been said many times,
+> that this is not a valid or good reason for using platform_devices, and
+> as a result we have e.g. auxiliary bus.
+>
+
+Ok, so I cannot find this information anywhere (nor any example). Do
+you happen to know if the auxiliary bus offers any software node
+integration so that the `compatible` property from DT can get
+seamlessly mapped to auxiliary device IDs?
+
+> Anyway, (please) don't claim that "we need to", when it actually is "we
+> want to use platform_device because that's more convenient"!
+
+Bart
+
+[snip]
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
+/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts#n744
 
