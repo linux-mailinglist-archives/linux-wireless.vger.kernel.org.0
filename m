@@ -1,66 +1,70 @@
-Return-Path: <linux-wireless+bounces-3003-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3004-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D7D3846DD2
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 11:23:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 740EB846E11
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 11:35:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 284D628C9C2
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 10:23:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 314F828CF91
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 10:35:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F08CF7765C;
-	Fri,  2 Feb 2024 10:23:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2F3913B7B4;
+	Fri,  2 Feb 2024 10:35:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b="AjIhSaVq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rrx9tZLd"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2879F7C084;
-	Fri,  2 Feb 2024 10:23:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.95.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3A4A82896;
+	Fri,  2 Feb 2024 10:35:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706869395; cv=none; b=FGssm4RzzZGaoYo/lhlecokqyew6jRO2si5FOCXU4yECLSes1py/Y0Fossm5giCjQ0o38J02FPdPUljxPQi9njt/cP25CvVqvSIFyoXaIxe4DAAzq4CHxSBl7EDKokTzTVF64NpaWKCWRmlFu8Idz3m0njQ0sSTPRVQOUfru/rg=
+	t=1706870101; cv=none; b=RKAbu7cNGbtTaKpZiP0ItLd4KUETUoSJ8f8uId8/sncjuAjWsYPy6/FqyeMHMbJtUU3eL34mTYVlfm+kqnh/OkjtCraXQzDqBDhFit27VeIVTkbb3vbGfoh8WX1sYJl3PCj5qIeAr5hpKbRwo+fivmjj2UmeqTIII3GsTvKq0xs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706869395; c=relaxed/simple;
-	bh=hiC1Ur9jHiRNpct6U6sroqQWDjCDaFKufzfpTuJBcjI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=rRDf9ApoczicXmoRyoIMnsTunPkXFoHrYRU1EDNd6rRWWHy/wWZ9nXf239ZBFAU2TV1O7DOumIhVWyQkOwcesDG8I09THEDcB/q3JxeZ8+5c3wZojfqw6+4puvzh4ni9MKcX42ztugdpSEc1EIDWFKrvUURE9Q/+NSJqiBu/tY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk; spf=pass smtp.mailfrom=toke.dk; dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b=AjIhSaVq; arc=none smtp.client-ip=45.145.95.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-	t=1706869386; bh=hiC1Ur9jHiRNpct6U6sroqQWDjCDaFKufzfpTuJBcjI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=AjIhSaVqGzzegmBVE/AmTUaQ3GuC2L/hctoxnIkMzphqtzLt64sn8wIhhN8ocVxSO
-	 hpMSRYRJWmjnZW+a8rVxi/OkfHWzckgI1AZbHKg3Ff2ER07SkjHQtmmg5QAN8VNVwA
-	 fCbT5rdqR9Q6zpk8FpWnzM6moPVOy2hlTiDBwFDkJCWJEcapfyuBmm6c8EMywO5I9t
-	 c30EYxmn0jN6Lx6g/YpgDwCmYNzIcX9B0QE0/qIRABVR3HKXX0iP33Yd1CVUL6L7YT
-	 O85i0lHptbH53bqmzn/bE0q5JTRZGgtL/4j9FC/4TtkRRb09Pw1FmxwKnErMJdxuLd
-	 WM/Om6VB6qTCA==
-To: Arnd Bergmann <arnd@arndb.de>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Kalle Valo <kvalo@kernel.org>,
- Arend van Spriel <aspriel@gmail.com>, Franky Lin
- <franky.lin@broadcom.com>, Hante Meuleman <hante.meuleman@broadcom.com>,
- Lee Jones <lee@kernel.org>, Brian Norris <briannorris@chromium.org>,
- Srinivasan Raju <srini.raju@purelifi.com>, linux-wireless@vger.kernel.org,
- linux-kernel@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com
-Subject: Re: [PATCH 1/6] wifi: ath9k: Obtain system GPIOS from descriptors
-In-Reply-To: <d656a2af-6b74-465d-90a6-b79ba6c25088@app.fastmail.com>
-References: <20240131-descriptors-wireless-v1-0-e1c7c5d68746@linaro.org>
- <20240131-descriptors-wireless-v1-1-e1c7c5d68746@linaro.org>
- <613ae419-9a2c-477e-8b19-8a29d42a3164@app.fastmail.com>
- <ZbuZ_55a-qqDqkeN@smile.fi.intel.com>
- <789b7ca0-80c5-449a-99eb-8c05b5380245@app.fastmail.com>
- <871q9wz2r0.fsf@toke.dk>
- <d656a2af-6b74-465d-90a6-b79ba6c25088@app.fastmail.com>
-Date: Fri, 02 Feb 2024 11:23:06 +0100
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87y1c3xj05.fsf@toke.dk>
+	s=arc-20240116; t=1706870101; c=relaxed/simple;
+	bh=uD/sPc7FMJ/uY13jycAiw319CMk1mhe2FbFR5UM4LCo=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=BM3R6+GG9XFfT8yDPv4rBlAdl1qf6z1+FCeKxmzyxKwDIRKupMmHB/5Zb9vL0gVpTAJYzYE2TujwPZxfUwK6VNouO9xn3bF2NHlYrVVTF6MQA+6hP+TnACVh62sD1pxYvHZ2XvZLdZAU66HhHnPPdIjypKgmG/BnkSshv7IhBH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rrx9tZLd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E41DC433C7;
+	Fri,  2 Feb 2024 10:34:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706870101;
+	bh=uD/sPc7FMJ/uY13jycAiw319CMk1mhe2FbFR5UM4LCo=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=Rrx9tZLdm0GUAzf3hhCrj99t2K7tE2YFipabCOhmLwfTwbP05vhk0npEfIycZWRQY
+	 LDXyp9K5JgESqlVT3Si1xDf0UlR+CePpjDYRZtQmonq5efdbNuyrMe7dvvOpRSIgkF
+	 AAu1NVzwj65B+bCxC+Pgf3ahfp96h7ZP4MV1O4iQ1WjhhROuzLY1RzlwYa+SEtHEfy
+	 +6EputEp7XjMrfLzfOPCsifhzBNQeyU/3xL9pB++tf0nhs1YWkSSp2luaoUDpPmSk0
+	 GQKUdjXcG8C6/LbXJdaqrs2W53Jl5C2wvDoCz6Q/gATd3c+APGY8keSSAAUWR79m1D
+	 bvBJChBiCeB6g==
+From: Kalle Valo <kvalo@kernel.org>
+To: Arend Van Spriel <aspriel@gmail.com>
+Cc: Kees Cook <keescook@chromium.org>,  Franky Lin
+ <franky.lin@broadcom.com>,  Hante Meuleman <hante.meuleman@broadcom.com>,
+  Chi-hsien Lin <chi-hsien.lin@infineon.com>,  Ian Lin
+ <ian.lin@infineon.com>,  Johannes Berg <johannes.berg@intel.com>,  Wright
+ Feng <wright.feng@cypress.com>,  Hector Martin <marcan@marcan.st>,
+  linux-wireless@vger.kernel.org,  brcm80211-dev-list.pdl@broadcom.com,
+  "Gustavo A. R. Silva" <gustavoars@kernel.org>,  Linus Walleij
+ <linus.walleij@linaro.org>,  Jisoo Jang <jisoo.jang@yonsei.ac.kr>,  Hans
+ de Goede <hdegoede@redhat.com>,  Aloka Dixit <quic_alokad@quicinc.com>,
+  John Keeping <john@keeping.me.uk>,  Jeff Johnson
+ <quic_jjohnson@quicinc.com>,  linux-kernel@vger.kernel.org,
+  linux-hardening@vger.kernel.org
+Subject: Re: [PATCH] wifi: brcmfmac: Adjust n_channels usage for __counted_by
+References: <20240126223150.work.548-kees@kernel.org>
+	<170678189299.2736043.11616312910656558919.kvalo@kernel.org>
+	<a91c6a28-6762-41cf-bb85-09e79f3d29d4@gmail.com>
+	<d4855223-4323-43f1-9a29-e279e2cb128c@gmail.com>
+Date: Fri, 02 Feb 2024 12:34:54 +0200
+In-Reply-To: <d4855223-4323-43f1-9a29-e279e2cb128c@gmail.com> (Arend Van
+	Spriel's message of "Fri, 2 Feb 2024 11:00:51 +0100")
+Message-ID: <87v877tar5.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -70,33 +74,67 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-"Arnd Bergmann" <arnd@arndb.de> writes:
+Arend Van Spriel <aspriel@gmail.com> writes:
 
-> On Thu, Feb 1, 2024, at 15:18, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->> "Arnd Bergmann" <arnd@arndb.de> writes:
->>
->>> We could probably go a little further in the cleanup and
->>> throw out the gpiolib path entirely, instead relying
->>> on the existing leds-gpio driver. Since there are currently
->>> no upstream users of the gpiolib path, that would likely
->>> lead to cleaner code but require more changes to any
->>> out-of-tree users that rely on the platform_data to
->>> pass the GPIOs today.
->>
->> There being exactly one such out of tree user (per your up-thread
->> email) in OpenWrt? Or are you aware of others?
+> On 2/2/2024 10:58 AM, Arend Van Spriel wrote:
 >
-> Actually, on a closer look not even that: the ath9k LED support
-> in openwrt is quite different from upstream, and it just uses
-> gpio-led there, with a gpio provider in the driver for the
-> internal gpios.
->
-> We can probably just remove the gpiolib consumer side from
-> ath9k entirely then: it's not needed for the PCI devices
-> at all, and the SoC devices no longer use it upstream or
-> in openwrt.
+>> On 2/1/2024 11:04 AM, Kalle Valo wrote:
+>>> Kees Cook <keescook@chromium.org> wrote:
+>>>
+>>>> After commit e3eac9f32ec0 ("wifi: cfg80211: Annotate struct
+>>>> cfg80211_scan_request with __counted_by"), the compiler may enforce
+>>>> dynamic array indexing of req->channels to stay below n_channels. As a
+>>>> result, n_channels needs to be increased _before_ accessing the newly
+>>>> added array index. Increment it first, then use "i" for the prior inde=
+x.
+>>>> Solves this warning in the coming GCC that has __counted_by support:
+>>>>
+>>>> ../drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c: In
+>>>> function 'brcmf_internal_escan_add_info':
+>>>> ../drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:3783:46=
+: warning: operation on 'req->
+>>>> n_channels' may be undefined [-Wsequence-point]
+>>>> =C2=A0 3783 |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 req->channels[req->n_channels++] =
+=3D chan;
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ ~~~~~~~~~~~~~~~^~
+>>>>
+>>>> Fixes: e3eac9f32ec0 ("wifi: cfg80211: Annotate struct
+>>>> cfg80211_scan_request with __counted_by")
+>>>> Cc: Arend van Spriel <aspriel@gmail.com>
+>>>> Cc: Franky Lin <franky.lin@broadcom.com>
+>>>> Cc: Hante Meuleman <hante.meuleman@broadcom.com>
+>>>> Cc: Kalle Valo <kvalo@kernel.org>
+>>>> Cc: Chi-hsien Lin <chi-hsien.lin@infineon.com>
+>>>> Cc: Ian Lin <ian.lin@infineon.com>
+>>>> Cc: Johannes Berg <johannes.berg@intel.com>
+>>>> Cc: Wright Feng <wright.feng@cypress.com>
+>>>> Cc: Hector Martin <marcan@marcan.st>
+>>>> Cc: linux-wireless@vger.kernel.org
+>>>> Cc: brcm80211-dev-list.pdl@broadcom.com
+>>>> Signed-off-by: Kees Cook <keescook@chromium.org>
+>>>> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+>>>> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+>>>> Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+>>>
+>>> I'm planning to queue this for wireless tree. Arend, ack?
+>> This slipped past my broadcom email. As the Fixes commit is in 6.7 I
+>> would say ACK.
 
-Alright cool, in that case I am OK with just ripping it out entirely :)
+Thanks.
 
--Toke
+> Cc: to stable?
+
+Is commit e3eac9f32ec0 in stable releases? (I don't follow stable and
+don't know what commits they take.) I propose that as we have Fixes tag
+let's not add cc but instead let stable maintainers to decide.
+
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
 
