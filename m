@@ -1,141 +1,135 @@
-Return-Path: <linux-wireless+bounces-3066-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3067-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95849847C1C
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 23:13:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 362A7847D68
+	for <lists+linux-wireless@lfdr.de>; Sat,  3 Feb 2024 00:55:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 01C33B21741
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 22:13:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 632D51C24076
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Feb 2024 23:55:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5785483A1D;
-	Fri,  2 Feb 2024 22:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8DD512C7FB;
+	Fri,  2 Feb 2024 23:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YgodMNrL"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="UzSf0zUS"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2FC883A07
-	for <linux-wireless@vger.kernel.org>; Fri,  2 Feb 2024 22:13:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE28412C7EF
+	for <linux-wireless@vger.kernel.org>; Fri,  2 Feb 2024 23:55:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706912016; cv=none; b=uOipS6n8g0tFBP9fv+WNDs4Wi/ZoR/JpIslPIznSBTkcxJ6wl3VC7NF/JeLF8nyXhS+HJxx225U1nlnSAjXtgjySqedzX7zWfkUxbCuyY0i0Lz4Kb/UYopz9dchAr7vs0J+GfV2999Sr7vRL6T+EdFGWFGTzZlj6eHZIcwrAHtk=
+	t=1706918140; cv=none; b=iD5lnD0vD3Y7sBRplNokUtrlqFlRPRM9PdOXUEqtislifAm6Ynb2ETB2JP5qgo+6Qfs9pM6490MNnSY+QBy+ahdcGkxrC3htzAWqohnNjII/H2/29uCdGG04NdGLNB3eEwtjmumw2r26kapQ36aG2ofIUUSipup+dUqaLCU5VaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706912016; c=relaxed/simple;
-	bh=DnwemEYa0bYIhnNeOAt+zcYgMIjBxVZYj5TuEh6aFZk=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=B7tIvYS+N+SzugXsD6ixnquSU8NhxEAK/sLe9NqMJnmdT8opWIh5RWb9eQuKPl8VaiQIQgoNyo54nDgWRuz9HyY8+z0tb9i8vcIIPxOkJAsKqeNj21eW2NoJ6KVaM5CvTAYrk3DA4dfGNf+9Hxj+u2O5SMMRngDhIKCNCWnD0SI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YgodMNrL; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706912014; x=1738448014;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=DnwemEYa0bYIhnNeOAt+zcYgMIjBxVZYj5TuEh6aFZk=;
-  b=YgodMNrLflvd4HG7kyh0ahZkM1xcx7FpAD+G0FpO/8+S9Q/GtApRBvmw
-   A9SM554vLKMLNElJWRCPaMS1kVYK5OAX82kpYxDkcbunNQypuphATDUKB
-   /6UvsukZ3XF6o24cB8KRLvDvdyO+Ci8FIrD5+MAjMv0rVfl8evhu2P2S0
-   BqHdpJRzO+C8Abg0yx5d/GcYo+j2nRKUioAR+Yf+0LW2tXJzj4CT4NO4I
-   IeRpKzA4Uh9LZ0dFg6cChe90fN/F7wukZZFWGBmuMuaiJFQM5KE0BUEZ8
-   zO9ecSK1mvlk/Z0yHaAIOFu/G6g8pQucukQ0d2VZalDzZKXvVh+7KnKxr
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10971"; a="11617342"
-X-IronPort-AV: E=Sophos;i="6.05,238,1701158400"; 
-   d="scan'208";a="11617342"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2024 14:13:33 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,238,1701158400"; 
-   d="scan'208";a="195163"
-Received: from lkp-server02.sh.intel.com (HELO 59f4f4cd5935) ([10.239.97.151])
-  by orviesa010.jf.intel.com with ESMTP; 02 Feb 2024 14:13:31 -0800
-Received: from kbuild by 59f4f4cd5935 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rW1mq-0004J6-39;
-	Fri, 02 Feb 2024 22:13:28 +0000
-Date: Sat, 3 Feb 2024 06:13:17 +0800
-From: kernel test robot <lkp@intel.com>
-To: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>
-Subject: [wireless-next:main 44/68]
- drivers/net/wireless/intel/iwlwifi/fw/regulatory.c:395:33: warning: '%s'
- directive argument is null
-Message-ID: <202402030641.zUTuACYV-lkp@intel.com>
+	s=arc-20240116; t=1706918140; c=relaxed/simple;
+	bh=bEIqyEqvWVJFpGggJaB54kaxt5/+46xyfVBUfLcdq1o=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Z0OCL+t2ydCPRXYmET0z3qn+PSAhpy1mCf1ehKhneLd7EKxxaRA0WBjYU1kPPKcB+vwNeGM72sve7yn9kLI9ah2LY8yVZzlfvLvUObMwNhk8sHtGGbG0yV6X+z25tNUxtxW/kmVZlVBvdkHMFp+95PAWrBBOsBEAQ2lvgovdOp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=UzSf0zUS; arc=none smtp.client-ip=60.244.123.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: 8c1655fcc22611ee9e680517dc993faa-20240203
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=zQJoHtr6kZX//paLsJxCwe6f5rGwtDs/Iq1f5k3UhHw=;
+	b=UzSf0zUSTQuNg+q/NdE1YuZ1mQ9P5HOG/ZPElKZiW3+xpn/3NltErVxWzuXnhvN5x1HlwURLl+j1ieFRo3Dj5tRyD4ZU3I2/irTe/DXmNgGHja/DaofakVSaKoSgW9QlKEU5yH5SGEeAHC5Y3yLrkx775IpT1R+SBevobiU5ycw=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.36,REQID:84a8c1c4-4eb1-4a84-b1d6-2dc04a900e78,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:6e16cf4,CLOUDID:94af9083-8d4f-477b-89d2-1e3bdbef96d1,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+	RL:11|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
+	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
+X-UUID: 8c1655fcc22611ee9e680517dc993faa-20240203
+Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw01.mediatek.com
+	(envelope-from <sean.wang@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 1465572004; Sat, 03 Feb 2024 07:55:30 +0800
+Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Sat, 3 Feb 2024 07:55:28 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by
+ mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Sat, 3 Feb 2024 07:55:28 +0800
+From: <sean.wang@mediatek.com>
+To: <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
+CC: <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
+	<Leon.Yen@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
+	<Deren.Wu@mediatek.com>, <km.lin@mediatek.com>, <robin.chiu@mediatek.com>,
+	<Eddie.Chen@mediatek.com>, <jsiuda@google.com>, <frankgor@google.com>,
+	<kuabhs@google.com>, <druth@google.com>, <abhishekpandit@google.com>,
+	<shawnku@google.com>, <linux-wireless@vger.kernel.org>,
+	<linux-mediatek@lists.infradead.org>
+Subject: [PATCH] Bluetooth: btusb: medaitek: fix double free of skb in coredump
+Date: Sat, 3 Feb 2024 07:55:27 +0800
+Message-ID: <ca2b3447d110874d90e93c6ddf972f4ad2bc70f9.1706917839.git.objelf@gmail.com>
+X-Mailer: git-send-email 1.7.9.5
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain
+X-TM-AS-Product-Ver: SMEX-14.0.0.3152-9.1.1006-23728.005
+X-TM-AS-Result: No-10--2.871400-8.000000
+X-TMASE-MatchedRID: h1RQRfN38kBBHBd/Q+ztB836paW7ZnFojzwigoyOACRsXGlmkQWwsGlF
+	7OhYLlctx2BEc3TqpBinpDsu3n08Ua6UR+fsf9oDt1AhvyEKdj7q0SQ1Mgx5CCow3ZvJGhxdo8W
+	MkQWv6iXBcIE78YqRWvcUt5lc1lLgjMejjvPkBr7CXNRjgnxEVmvGYDAk6g5raficDAY9/J+ie5
+	1PgmVSaHP9GvnbPYCDNvb1q9GK2gqwNIPqSKPc3GnBYxaf8hmnVv7SclLCXxZ5lSmbrC6fdtr/T
+	o2FgNrjDLMIOOVTHz2nbLeYgH6K31Zca9RSYo/b
+X-TM-AS-User-Approved-Sender: No
+X-TM-AS-User-Blocked-Sender: No
+X-TMASE-Result: 10--2.871400-8.000000
+X-TMASE-Version: SMEX-14.0.0.3152-9.1.1006-23728.005
+X-TM-SNTS-SMTP: 8881B210406C035746BB32A16C81758E08B15855A9DE5098F836813435D2C0DC2000:8
+X-MTK: N
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-head:   5932ad87828b267649d750869c89c0f1a3873477
-commit: 084e0452a42b1d4ccde601cc1873a4ee9d8a4cbb [44/68] wifi: iwlwifi: read WTAS table from UEFI
-config: mips-allyesconfig (https://download.01.org/0day-ci/archive/20240203/202402030641.zUTuACYV-lkp@intel.com/config)
-compiler: mips-linux-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240203/202402030641.zUTuACYV-lkp@intel.com/reproduce)
+From: Sean Wang <sean.wang@mediatek.com>
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202402030641.zUTuACYV-lkp@intel.com/
+hci_devcd_append() would free the skb on error so the caller don't
+have to free it again otherwise it would cause the double free of skb.
 
-All warnings (new ones prefixed by >>):
+Fixes: 0b7015132878 ("Bluetooth: btusb: mediatek: add MediaTek devcoredump support")
+Reported-by : Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+---
+ drivers/bluetooth/btmtk.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-   In file included from drivers/net/wireless/intel/iwlwifi/fw/regulatory.c:7:
-   drivers/net/wireless/intel/iwlwifi/fw/regulatory.c: In function 'iwl_is_ppag_approved':
->> drivers/net/wireless/intel/iwlwifi/fw/regulatory.c:395:33: warning: '%s' directive argument is null [-Wformat-overflow=]
-     395 |                                 "System vendor '%s' is not in the approved list, disabling PPAG.\n",
-         |                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/net/wireless/intel/iwlwifi/iwl-debug.h:91:56: note: in definition of macro '__IWL_DEBUG_DEV'
-      91 |                 __iwl_dbg(dev, level, limit, __func__, fmt, ##args);    \
-         |                                                        ^~~
-   drivers/net/wireless/intel/iwlwifi/iwl-debug.h:209:41: note: in expansion of macro 'IWL_DEBUG'
-     209 | #define IWL_DEBUG_RADIO(p, f, a...)     IWL_DEBUG(p, IWL_DL_RADIO, f, ## a)
-         |                                         ^~~~~~~~~
-   drivers/net/wireless/intel/iwlwifi/fw/regulatory.c:394:17: note: in expansion of macro 'IWL_DEBUG_RADIO'
-     394 |                 IWL_DEBUG_RADIO(fwrt,
-         |                 ^~~~~~~~~~~~~~~
-   drivers/net/wireless/intel/iwlwifi/fw/regulatory.c:395:49: note: format string is defined here
-     395 |                                 "System vendor '%s' is not in the approved list, disabling PPAG.\n",
-         |                                                 ^~
-
-
-vim +395 drivers/net/wireless/intel/iwlwifi/fw/regulatory.c
-
-09059c6764a887 Miri Korenblit 2024-01-31  390  
-09059c6764a887 Miri Korenblit 2024-01-31  391  bool iwl_is_ppag_approved(struct iwl_fw_runtime *fwrt)
-09059c6764a887 Miri Korenblit 2024-01-31  392  {
-09059c6764a887 Miri Korenblit 2024-01-31  393  	if (!dmi_check_system(dmi_ppag_approved_list)) {
-09059c6764a887 Miri Korenblit 2024-01-31  394  		IWL_DEBUG_RADIO(fwrt,
-09059c6764a887 Miri Korenblit 2024-01-31 @395  				"System vendor '%s' is not in the approved list, disabling PPAG.\n",
-09059c6764a887 Miri Korenblit 2024-01-31  396  				dmi_get_system_info(DMI_SYS_VENDOR));
-09059c6764a887 Miri Korenblit 2024-01-31  397  				fwrt->ppag_flags = 0;
-09059c6764a887 Miri Korenblit 2024-01-31  398  				return false;
-09059c6764a887 Miri Korenblit 2024-01-31  399  	}
-09059c6764a887 Miri Korenblit 2024-01-31  400  
-09059c6764a887 Miri Korenblit 2024-01-31  401  	return true;
-09059c6764a887 Miri Korenblit 2024-01-31  402  }
-09059c6764a887 Miri Korenblit 2024-01-31  403  IWL_EXPORT_SYMBOL(iwl_is_ppag_approved);
-ad5a85d8fdd346 Miri Korenblit 2024-01-31  404  
-
-:::::: The code at line 395 was first introduced by commit
-:::::: 09059c6764a8870ff7515c2d78ecbea7fbcffc23 wifi: iwlwifi: prepare for reading PPAG table from UEFI
-
-:::::: TO: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-:::::: CC: Johannes Berg <johannes.berg@intel.com>
-
+diff --git a/drivers/bluetooth/btmtk.c b/drivers/bluetooth/btmtk.c
+index aaabb732082c..e882613036a0 100644
+--- a/drivers/bluetooth/btmtk.c
++++ b/drivers/bluetooth/btmtk.c
+@@ -378,8 +378,10 @@ int btmtk_process_coredump(struct hci_dev *hdev, struct sk_buff *skb)
+ 	switch (data->cd_info.state) {
+ 	case HCI_DEVCOREDUMP_IDLE:
+ 		err = hci_devcd_init(hdev, MTK_COREDUMP_SIZE);
+-		if (err < 0)
++		if (err < 0) {
++			kfree_skb(skb);
+ 			break;
++		}
+ 		data->cd_info.cnt = 0;
+ 
+ 		/* It is supposed coredump can be done within 5 seconds */
+@@ -405,9 +407,6 @@ int btmtk_process_coredump(struct hci_dev *hdev, struct sk_buff *skb)
+ 		break;
+ 	}
+ 
+-	if (err < 0)
+-		kfree_skb(skb);
+-
+ 	return err;
+ }
+ EXPORT_SYMBOL_GPL(btmtk_process_coredump);
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.25.1
+
 
