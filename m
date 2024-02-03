@@ -1,284 +1,154 @@
-Return-Path: <linux-wireless+bounces-3072-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3073-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A418E847DE0
-	for <lists+linux-wireless@lfdr.de>; Sat,  3 Feb 2024 01:34:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91101847DE9
+	for <lists+linux-wireless@lfdr.de>; Sat,  3 Feb 2024 01:36:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05D69290FA6
-	for <lists+linux-wireless@lfdr.de>; Sat,  3 Feb 2024 00:33:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 130551F24213
+	for <lists+linux-wireless@lfdr.de>; Sat,  3 Feb 2024 00:36:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE0BB5C9A;
-	Sat,  3 Feb 2024 00:33:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 314EC622;
+	Sat,  3 Feb 2024 00:36:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=fiona.klute@gmx.de header.b="MuLNh+hO"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A1653A1
-	for <linux-wireless@vger.kernel.org>; Sat,  3 Feb 2024 00:33:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C31CC626;
+	Sat,  3 Feb 2024 00:36:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706920437; cv=none; b=XtkbQ2xOelEU0NjAruu1ZQMx5A5tY7VuQ8RKLFgwKzySEqxxbmVsaNHKd3Ofl5vRkXg5J+H0DlJ9fKVnljXh4leOByRV/vS13jrE5+ItjaEO8rl4wMCDVGavXJJ+THmU/OPwrZ2ySljxhlQC+MuLW7g4ijD6tBnbqQ8VIzF0hW8=
+	t=1706920592; cv=none; b=svgGS++5WPr/gazi0dK1dQir3FE1TCCC318nbZOLx9BFHdkghLV8J7pwjGqFEwMX6u4hCwrv4IaCHHUwPDYo+bJ2fGjE2EXr69lWkp5cB2R9OCJwm6XgK0ALC8+E+/gQ2REqLyOsWzHDhmYf1U78uI1T49hDy4gDkuJbmMrPnKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706920437; c=relaxed/simple;
-	bh=XGg5vaQSKlPc+mHn7axNEQqysRbjmc4Z8/nyssGLl2U=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=I6Wpbg/xtfMggRpgVea66sZb5E7UWJYMR+71NgZqa2Lf6uyOZ/fOi+ANog3UAXarE+1HyElEWGWrRfFSeu3bZXicw8ptHO3ZGaFI3TmFNKIeup0IqjdR9eFgNz9mLeXbDx7N9B0l37w+4tCpRXAY1PLWWGEaVPiVGVguSvkzlSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4130XnHtA2300759, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 4130XnHtA2300759
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 3 Feb 2024 08:33:49 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2375.32; Sat, 3 Feb 2024 08:33:50 +0800
-Received: from [127.0.1.1] (172.16.16.254) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Sat, 3 Feb
- 2024 08:33:49 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <kvalo@kernel.org>
-CC: <linux-wireless@vger.kernel.org>
-Subject: [PATCH 4/4] wifi: rtw89: fw: download firmware with key data for secure boot
-Date: Sat, 3 Feb 2024 08:32:51 +0800
-Message-ID: <20240203003251.10641-5-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240203003251.10641-1-pkshih@realtek.com>
-References: <20240203003251.10641-1-pkshih@realtek.com>
+	s=arc-20240116; t=1706920592; c=relaxed/simple;
+	bh=QDuR/5MyowayfZ0+odzOM6+rY7JqHHO9zLULvOpKSHs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JHa9QorcuVe1w6eo9nHw+PhN72UyycXLws7AVwbM9OTQJ1Fl6Dak+m4SmtHz/DuN2AR5m8MwaqBYJ+GZy//fHSokBJgfKsYDuNeethBhGDoYSgHna3/jpfse/XtAOhvDR0uhW7AZoPi6hC7KePO5wC9rQjAn64qzYCY3184dJPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=fiona.klute@gmx.de header.b=MuLNh+hO; arc=none smtp.client-ip=212.227.15.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+	t=1706920575; x=1707525375; i=fiona.klute@gmx.de;
+	bh=QDuR/5MyowayfZ0+odzOM6+rY7JqHHO9zLULvOpKSHs=;
+	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
+	 In-Reply-To;
+	b=MuLNh+hOxOtIOr225TvRTkzPh1DzXWIg5MnPHPt+N/gHcTkrh5WmuxDnEMbPdgil
+	 S3UTPC2ltwRUY3wrSh0lbiop0QkIgKcKydBGsnmptiBJa6qUx9Ngp65IrSaajnUrw
+	 3aQMvU4P6+A1s4+rmXhL2BbnBwO7AqFjQB7h/sBsrfPSeKhmYKuy1I/NcPXJCaq8x
+	 4gFH1jhY1Yz/FoVGNKx3ZjXeDmDyZmOXtEqAWHGtdQp3iZyrHDJ9EPAHVq4RybT01
+	 o5O4Catqyc+dpB1JW5hwg3C8HQRZLu6YlqVVx2aQM9P7wMjABn+wpK98Y5A0Lxx4e
+	 gOjwoh0DE5lzbCahAg==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.7.2] ([85.22.17.32]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MAfYw-1rL5eB1xY8-00B3eh; Sat, 03
+ Feb 2024 01:36:15 +0100
+Message-ID: <0f256235-9889-4bb2-93d4-3424c478c661@gmx.de>
+Date: Sat, 3 Feb 2024 01:36:14 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/9] rtw88: Add support for RTL8723CS/RTL8703B
+Content-Language: de-DE, en-US
+To: Pavel Machek <pavel@ucw.cz>
+Cc: linux-wireless@vger.kernel.org, Ping-Ke Shih <pkshih@realtek.com>,
+ Kalle Valo <kvalo@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>,
+ linux-mmc@vger.kernel.org, =?UTF-8?Q?Ond=C5=99ej_Jirman?= <megi@xff.cz>
+References: <20240202121050.977223-1-fiona.klute@gmx.de>
+ <Zb1ORD_Lzd4O4gu-@mobian>
+From: Fiona Klute <fiona.klute@gmx.de>
+Autocrypt: addr=fiona.klute@gmx.de; keydata=
+ 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
+In-Reply-To: <Zb1ORD_Lzd4O4gu-@mobian>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:zQzeANnUmlggm/tCpWMwaSqnUWkpxvJNFxF2RJhbCmfj1Rsp5pS
+ WCffs2ToSHMff8/ExOSPnkw2842X7cnCudZpDDoRYXtkQw/d6Kq0nIb0H1pO+IxRKRbzd7c
+ MGscFfhBUtus6LpZ3KSVG1qXFvEz3VsUg2jvQZiysepd2I1hdhajan/0+1I/D9XRBgOhmHx
+ 7U7c4XPSFsHee3ZCKT40Q==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:2S5kQz1pHgA=;8u89sUw+VNfj3oonJufUr4EiJxY
+ EhqCqu0EB6Owceh3tZUUr4YBmG2NQL3P7i8QR8wLmmxKbudYE1mYfxRQhsn9Nd9fsHykiBm1A
+ /4TCUtWDWvVJ04K6kMvvDe+3XHpcjcx41sMC9GHTY2yKknYiEfTlEr/nrbTVqluWeCZOfhbJ3
+ 9WG44w3ye7gORpofy2JFRfYuB8T03SS015DePGVwYdNhIB9+uqc2VsNg3RTIfAaPvtQhdTxdh
+ 109CnFC2hCVBMmkkyI478Z8KZXVDut5vqqnD7I76y8WeEVe+Mnu60B+Jpd6XVSsPWX7XstNvd
+ pgkHTcwHRcGNYsr49VtvGotOWo3a6O9YgKTqUm5dSfNm8ekgLv48nBvUvsrB45+/cKZAf7yUl
+ YhcRkJbzJzHwKpGpfGCC40LixlvlJXnuqmJKTRvMFUdglxEjxHlF1lgsen/RePGv846qZ44S2
+ 9Sw/NtH2icZ2M/b0orxpYtTY65Wa4zrQIZUdwTAHUk4c5gtxizZTaWir4JX3dQ9m1jKkFwlfr
+ BsogobXlag+7BVBE1cDcBaEvHRglSFiVDDjfcdy7fwRcVAho9cCYqFwjLtRAzh5LN3EqIQ/UT
+ HosCJd2CiMdWVWzhn4wG+jmpREY6pQes97oJUpX9t8K5yy0XkvJfxgCgeTVop3DmGb4+3S30D
+ 0FIP7ZKOSbzyfg5hKqPMDdfVWBQ0ejju4sp8BIpWIWUuwk/H5iQpBMMm0Ar80gOHtrNryCUq9
+ I3CK46Kl3t+PVRUPm7k++2Fm2TvGC44zKRzKq+igAYcuzD6wouh2r6LVfGmMhWSUCbQuNOuMS
+ qZSNypnnNSM23ZMKbl0/0U2cl2RwmBgzX3kLSCgyPCcv8=
 
-Since firmware header contains multiple secure sections, we need to trim
-ignored sections, and then download firmware header with single one secure
-section.
+Am 02.02.24 um 21:19 schrieb Pavel Machek:
+> Can I get you to apply this?
 
-For secure boot, when downloading secure section, copy security key data
-from MSS poll by key_idx read from efuse. If non-secure boot, no need this
-extra copy.
+Done, good idea!
 
-           +---------------------------+ -\
-           |      firmware header      |  |
-           |                           |  |
-           | +-----------------------+ |  | only preserve single one secure
-           | | section type/size * N | |  | section
-           | | ...                   | |  |
-           | +-----------------------+ |  |
-           +---------------------------+ -/
-           :                           :
-           +---------------------------+ -\
-           | secure section type (ID:9)|  |
-           |                           |  |
-      +----|-> [ security key data ]   |  |
-      |    +---------------------------+ -/
-      |    |MSS Pool for above section |
-      |    |  [ security key data 0 ]  |
-      +----|- [ security key data 1 ]  |
-by key_idx |  [ security key data 2 ]  |
-           |  ...                      |
-           +---------------------------+
-
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/fw.c | 95 +++++++++++++++++++++++--
- drivers/net/wireless/realtek/rtw89/fw.h |  7 +-
- 2 files changed, 91 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 4f648071a5be..61d6297475e5 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -1098,9 +1098,56 @@ static void rtw89_h2c_pkt_set_hdr_fwdl(struct rtw89_dev *rtwdev,
- 					   len + H2C_HEADER_LEN));
- }
- 
--static int __rtw89_fw_download_hdr(struct rtw89_dev *rtwdev, const u8 *fw, u32 len)
-+static u32 __rtw89_fw_download_tweak_hdr_v0(struct rtw89_dev *rtwdev,
-+					    struct rtw89_fw_bin_info *info,
-+					    struct rtw89_fw_hdr *fw_hdr)
- {
-+	le32p_replace_bits(&fw_hdr->w7, FWDL_SECTION_PER_PKT_LEN,
-+			   FW_HDR_W7_PART_SIZE);
-+
-+	return 0;
-+}
-+
-+static u32 __rtw89_fw_download_tweak_hdr_v1(struct rtw89_dev *rtwdev,
-+					    struct rtw89_fw_bin_info *info,
-+					    struct rtw89_fw_hdr_v1 *fw_hdr)
-+{
-+	struct rtw89_fw_hdr_section_info *section_info;
-+	struct rtw89_fw_hdr_section_v1 *section;
-+	u8 dst_sec_idx = 0;
-+	u8 sec_idx;
-+
-+	le32p_replace_bits(&fw_hdr->w7, FWDL_SECTION_PER_PKT_LEN,
-+			   FW_HDR_V1_W7_PART_SIZE);
-+
-+	for (sec_idx = 0; sec_idx < info->section_num; sec_idx++) {
-+		section_info = &info->section_info[sec_idx];
-+		section = &fw_hdr->sections[sec_idx];
-+
-+		if (section_info->ignore)
-+			continue;
-+
-+		if (dst_sec_idx != sec_idx)
-+			fw_hdr->sections[dst_sec_idx] = *section;
-+
-+		dst_sec_idx++;
-+	}
-+
-+	le32p_replace_bits(&fw_hdr->w6, dst_sec_idx, FW_HDR_V1_W6_SEC_NUM);
-+
-+	return (info->section_num - dst_sec_idx) * sizeof(*section);
-+}
-+
-+static int __rtw89_fw_download_hdr(struct rtw89_dev *rtwdev,
-+				   const struct rtw89_fw_suit *fw_suit,
-+				   struct rtw89_fw_bin_info *info)
-+{
-+	u32 len = info->hdr_len - info->dynamic_hdr_len;
-+	struct rtw89_fw_hdr_v1 *fw_hdr_v1;
-+	const u8 *fw = fw_suit->data;
-+	struct rtw89_fw_hdr *fw_hdr;
- 	struct sk_buff *skb;
-+	u32 truncated;
- 	u32 ret = 0;
- 
- 	skb = rtw89_fw_h2c_alloc_skb_with_hdr(rtwdev, len);
-@@ -1110,7 +1157,26 @@ static int __rtw89_fw_download_hdr(struct rtw89_dev *rtwdev, const u8 *fw, u32 l
- 	}
- 
- 	skb_put_data(skb, fw, len);
--	SET_FW_HDR_PART_SIZE(skb->data, FWDL_SECTION_PER_PKT_LEN);
-+
-+	switch (fw_suit->hdr_ver) {
-+	case 0:
-+		fw_hdr = (struct rtw89_fw_hdr *)skb->data;
-+		truncated = __rtw89_fw_download_tweak_hdr_v0(rtwdev, info, fw_hdr);
-+		break;
-+	case 1:
-+		fw_hdr_v1 = (struct rtw89_fw_hdr_v1 *)skb->data;
-+		truncated = __rtw89_fw_download_tweak_hdr_v1(rtwdev, info, fw_hdr_v1);
-+		break;
-+	default:
-+		ret = -EOPNOTSUPP;
-+		goto fail;
-+	}
-+
-+	if (truncated) {
-+		len -= truncated;
-+		skb_trim(skb, len);
-+	}
-+
- 	rtw89_h2c_pkt_set_hdr_fwdl(rtwdev, skb, FWCMD_TYPE_H2C,
- 				   H2C_CAT_MAC, H2C_CL_MAC_FWDL,
- 				   H2C_FUNC_MAC_FWHDR_DL, len);
-@@ -1129,12 +1195,14 @@ static int __rtw89_fw_download_hdr(struct rtw89_dev *rtwdev, const u8 *fw, u32 l
- 	return ret;
- }
- 
--static int rtw89_fw_download_hdr(struct rtw89_dev *rtwdev, const u8 *fw, u32 len)
-+static int rtw89_fw_download_hdr(struct rtw89_dev *rtwdev,
-+				 const struct rtw89_fw_suit *fw_suit,
-+				 struct rtw89_fw_bin_info *info)
- {
- 	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
- 	int ret;
- 
--	ret = __rtw89_fw_download_hdr(rtwdev, fw, len);
-+	ret = __rtw89_fw_download_hdr(rtwdev, fw_suit, info);
- 	if (ret) {
- 		rtw89_err(rtwdev, "[ERR]FW header download\n");
- 		return ret;
-@@ -1158,9 +1226,21 @@ static int __rtw89_fw_download_main(struct rtw89_dev *rtwdev,
- 	struct sk_buff *skb;
- 	const u8 *section = info->addr;
- 	u32 residue_len = info->len;
-+	bool copy_key = false;
- 	u32 pkt_len;
- 	int ret;
- 
-+	if (info->ignore)
-+		return 0;
-+
-+	if (info->key_addr && info->key_len) {
-+		if (info->len > FWDL_SECTION_PER_PKT_LEN || info->len < info->key_len)
-+			rtw89_warn(rtwdev, "ignore to copy key data because of len %d, %d, %d\n",
-+				   info->len, FWDL_SECTION_PER_PKT_LEN, info->key_len);
-+		else
-+			copy_key = true;
-+	}
-+
- 	while (residue_len) {
- 		if (residue_len >= FWDL_SECTION_PER_PKT_LEN)
- 			pkt_len = FWDL_SECTION_PER_PKT_LEN;
-@@ -1174,6 +1254,10 @@ static int __rtw89_fw_download_main(struct rtw89_dev *rtwdev,
- 		}
- 		skb_put_data(skb, section, pkt_len);
- 
-+		if (copy_key)
-+			memcpy(skb->data + pkt_len - info->key_len,
-+			       info->key_addr, info->key_len);
-+
- 		ret = rtw89_h2c_tx(rtwdev, skb, true);
- 		if (ret) {
- 			rtw89_err(rtwdev, "failed to send h2c\n");
-@@ -1299,8 +1383,7 @@ static int rtw89_fw_download_suit(struct rtw89_dev *rtwdev,
- 		return ret;
- 	}
- 
--	ret = rtw89_fw_download_hdr(rtwdev, fw_suit->data, info.hdr_len -
--							   info.dynamic_hdr_len);
-+	ret = rtw89_fw_download_hdr(rtwdev, fw_suit, &info);
- 	if (ret)
- 		return ret;
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
-index c05ddb0d5900..58e4802cb766 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.h
-+++ b/drivers/net/wireless/realtek/rtw89/fw.h
-@@ -526,6 +526,7 @@ struct rtw89_fw_hdr {
- #define FW_HDR_W4_MIN GENMASK(31, 24)
- #define FW_HDR_W5_YEAR GENMASK(31, 0)
- #define FW_HDR_W6_SEC_NUM GENMASK(15, 8)
-+#define FW_HDR_W7_PART_SIZE GENMASK(15, 0)
- #define FW_HDR_W7_DYN_HDR BIT(16)
- #define FW_HDR_W7_CMD_VERSERION GENMASK(31, 24)
- 
-@@ -577,13 +578,9 @@ struct rtw89_fw_hdr_v1 {
- #define FW_HDR_V1_W5_HDR_SIZE GENMASK(31, 16)
- #define FW_HDR_V1_W6_SEC_NUM GENMASK(15, 8)
- #define FW_HDR_V1_W6_DSP_CHKSUM BIT(24)
-+#define FW_HDR_V1_W7_PART_SIZE GENMASK(15, 0)
- #define FW_HDR_V1_W7_DYN_HDR BIT(16)
- 
--static inline void SET_FW_HDR_PART_SIZE(void *fwhdr, u32 val)
--{
--	le32p_replace_bits((__le32 *)fwhdr + 7, val, GENMASK(15, 0));
--}
--
- enum rtw89_fw_mss_pool_rmp_tbl_type {
- 	MSS_POOL_RMP_TBL_BITMASK = 0x0,
- 	MSS_POOL_RMP_TBL_RECORD = 0x1,
--- 
-2.25.1
+> diff --git a/Makefile b/Makefile
+> index 1f8e8b6..fbc1f14 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -7,6 +7,10 @@ firmware_files =3D rtw8703b_ap_fw.bin \
+>
+>   all: $(firmware_files)
+>
+> +install: $(firmware_files)
+> +	sudo mkdir /lib/firmware/rtw88/
+> +	sudo cp $(firmware_files) /lib/firmware/rtw88/
+> +
+>   %.o: %.c
+>   	gcc -fPIC -DCONFIG_RTL8703B -c -o $@ $<
+>
+>
 
 
