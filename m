@@ -1,171 +1,112 @@
-Return-Path: <linux-wireless+bounces-3076-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3077-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08A1C84840D
-	for <lists+linux-wireless@lfdr.de>; Sat,  3 Feb 2024 07:16:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 047D6848481
+	for <lists+linux-wireless@lfdr.de>; Sat,  3 Feb 2024 09:34:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 690C51F247EB
-	for <lists+linux-wireless@lfdr.de>; Sat,  3 Feb 2024 06:16:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B648E28A270
+	for <lists+linux-wireless@lfdr.de>; Sat,  3 Feb 2024 08:34:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6C3D134AE;
-	Sat,  3 Feb 2024 06:16:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="c7oW+Pkg"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B02885C90B;
+	Sat,  3 Feb 2024 08:34:40 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F201912E70
-	for <linux-wireless@vger.kernel.org>; Sat,  3 Feb 2024 06:16:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17BFE5C901
+	for <linux-wireless@vger.kernel.org>; Sat,  3 Feb 2024 08:34:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706940979; cv=none; b=NcTH3k52Q1n2TsXj9vc57vyGZA36rHOPtMutNbhLc0pDkYqE2cTG/Ryn1dDuLYdhVPmu679m8T5Gs1oAKeDCbd1wiQJnS3SgGT6SGAPPcKbHaypeT8fAqXCl7+JyxhEPqapyODfjDBpSq3ATD7gMDqqVYq5270s2CswRp7XssI0=
+	t=1706949280; cv=none; b=SONg8e6k1agFKDD2QkGy3caZuJDQyCH5575s+RIhT1Ql4F0GsjfNg0t1tWG2WBH2ZxEEUEzBl0wciTO05X23yJj1+vk04H3LdWLS8VTtGRiUwBy5lMImXVnJZVwJuehzhOi4xb90Ev68cDqhSa+VCtAvibaQZXjxht8ZnmGYhL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706940979; c=relaxed/simple;
-	bh=RidlOSqi2CYLEakxkwfxmPYFO7B/a8huV3f7gYbpYbE=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=guSj52LCxCwxdUv0ifvbzmZjrMVW7jUyH2iw7ro/d+KwSeAta8pq/8YX/pIhcvBhktc7sps934fm/8RGrwK9VU/hbeC8LIAjKXEVIIhRm+Xzf/mqCBU/xjt07NrY/QF8SLLxh/5m2el5i96qF1dwIbEeKBk1IN+NqWJ5tlnx4sM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=c7oW+Pkg; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706940978; x=1738476978;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=RidlOSqi2CYLEakxkwfxmPYFO7B/a8huV3f7gYbpYbE=;
-  b=c7oW+PkgNDWSjXggZ7Vwz1EM9X5mw3snEeTAtLUhwIzqtV/Za/KwipMc
-   zwuLjr8l17/5ohGThUPlNrteNZwCHZGMse+zPzAKpG67DBS1UEVXWZYJr
-   k6q+AxX3upsiR+dUGTtBHfzE7Mr6ZZPYjEcdCjQ2BMULq+5y05EUAfOQy
-   D5XyV33PPOMFWkMjGw0sOdUJfoXQjltG1naYOIVsB+5OyOnrQcztC1PwJ
-   nBaZt4VLKR2BSitYFEb0zHVx/Rr6bTQwapRU3CQ2LoAuDF8bjrF0cywoL
-   r82wdI3LHGobhii9F/Kba8WW7220Onucnr5mdHir0Aq3CyjHmGoHAkygx
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10971"; a="17817359"
-X-IronPort-AV: E=Sophos;i="6.05,238,1701158400"; 
-   d="scan'208";a="17817359"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2024 22:16:17 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,238,1701158400"; 
-   d="scan'208";a="266869"
-Received: from lkp-server02.sh.intel.com (HELO 59f4f4cd5935) ([10.239.97.151])
-  by fmviesa010.fm.intel.com with ESMTP; 02 Feb 2024 22:16:16 -0800
-Received: from kbuild by 59f4f4cd5935 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rW9Jz-0004hb-1C;
-	Sat, 03 Feb 2024 06:16:11 +0000
-Date: Sat, 3 Feb 2024 14:15:19 +0800
-From: kernel test robot <lkp@intel.com>
-To: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>
-Subject: [wireless-next:main 36/68]
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c:1476:50: error: 'struct iwl_mvm'
- has no member named 'phy_filters'
-Message-ID: <202402031454.syX4cSGN-lkp@intel.com>
+	s=arc-20240116; t=1706949280; c=relaxed/simple;
+	bh=dREloSxjsQd3Dm2TwTvLLgS4yjeB2A4QST2I21fOKPI=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=jwWGcWTIivBwkW1fCg/LaRjbkOZoxdrf0RuCYTJyAKm6oPKvP80ttqvYOq0dkiRk26u3jEExrLUZMvkMhdfWLn5AHV2m37JC8E3yTgrc1YQvK35Tdk219EerFlrL4rXIdrjSCIIp/NKBxjyYUWKrEjLnOJPE/kilwcTRPqKdDvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-363bc80467bso1782925ab.1
+        for <linux-wireless@vger.kernel.org>; Sat, 03 Feb 2024 00:34:38 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706949278; x=1707554078;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=fET0Mp30kk4vbeHTvxgVRyoa35Y2AW8JHcb4p/vnIZs=;
+        b=LjuRUR9U5zioDVJ4YRGrlSGMhq9UrhJ2Og9k10IAOdqH/iCSB7IZFKi1MBL72lO+zL
+         /2WefSCan1ed+K9wvEeOh9Ly+592QTDWISFORHMFvZKmj5e0d9gM66XtvB9FvKyvWU7+
+         OlvNb7wNLgwiLQxo5hVfgzLig0gSAF7+jT/SSXBpUhhDKqcxqyGvswvbuoRmYzoVau+1
+         kuFxkQb3FrWnhkmVWpEJVE4VXsfYXvpsvVHYcEyAogvi9EJaLqu7PjpAZ2JHEuk+LScO
+         KUUTcWhbR7KYMOgwyRZvPMiDjqdU/goMz3MD/gw27ZrICgaV49BUixyHjlBiE5tURAZC
+         L87A==
+X-Gm-Message-State: AOJu0YydbG6zjTQolFI93eYvdYCxRSeoPCD3L48nqf2zcyNo5OLjpcoD
+	aoWfvV4G2I5GRbZm6bmTzBso4vFYbbtYeXKQ91yh1aBDj+gkavEsGDZKMEXko7NHrwoJV3Jw17u
+	tN66arIXbTkXRd8E1wSl9qtiuuoMUSd21OWq++UPFZAWew/ydo/QjtUQ=
+X-Google-Smtp-Source: AGHT+IFCSqaViRTl7MXK4bNIJv6w5IfZz0CUOIsCDXUztj9Lhe7QGIjPGGhRjUSlcdy2uM0cIfvFU0WMYzqMXfwCCvFSZP34dMZv
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+X-Received: by 2002:a05:6e02:2166:b0:363:8b04:6df7 with SMTP id
+ s6-20020a056e02216600b003638b046df7mr68726ilv.0.1706949278191; Sat, 03 Feb
+ 2024 00:34:38 -0800 (PST)
+Date: Sat, 03 Feb 2024 00:34:38 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000006057050610761986@google.com>
+Subject: [syzbot] Monthly wireless report (Feb 2024)
+From: syzbot <syzbot+listce8d4b19585dfc84b816@syzkaller.appspotmail.com>
+To: linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-head:   5932ad87828b267649d750869c89c0f1a3873477
-commit: 427661e4c48887ea2a226cd972e574ae7686fb95 [36/68] wifi: iwlwifi: read SAR tables from UEFI
-config: mips-allyesconfig (https://download.01.org/0day-ci/archive/20240203/202402031454.syX4cSGN-lkp@intel.com/config)
-compiler: mips-linux-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240203/202402031454.syX4cSGN-lkp@intel.com/reproduce)
+Hello wireless maintainers/developers,
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202402031454.syX4cSGN-lkp@intel.com/
+This is a 31-day syzbot report for the wireless subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/wireless
 
-All errors (new ones prefixed by >>):
+During the period, 1 new issues were detected and 1 were fixed.
+In total, 28 issues are still open and 120 have been fixed so far.
 
-   drivers/net/wireless/intel/iwlwifi/mvm/fw.c: In function 'iwl_mvm_get_bios_tables':
->> drivers/net/wireless/intel/iwlwifi/mvm/fw.c:1476:50: error: 'struct iwl_mvm' has no member named 'phy_filters'
-    1476 |         iwl_acpi_get_phy_filters(&mvm->fwrt, &mvm->phy_filters);
-         |                                                  ^~
+Some of the still happening issues:
 
+Ref  Crashes Repro Title
+<1>  6696    Yes   WARNING in __ieee80211_beacon_get
+                   https://syzkaller.appspot.com/bug?extid=18c783c5cf6a781e3e2c
+<2>  4569    Yes   WARNING in ieee80211_link_info_change_notify (2)
+                   https://syzkaller.appspot.com/bug?extid=de87c09cc7b964ea2e23
+<3>  4395    Yes   WARNING in __cfg80211_ibss_joined (2)
+                   https://syzkaller.appspot.com/bug?extid=7f064ba1704c2466e36d
+<4>  2892    No    WARNING in ieee80211_ibss_csa_beacon (2)
+                   https://syzkaller.appspot.com/bug?extid=b10a54cb0355d83fd75c
+<5>  851     Yes   WARNING in ieee80211_bss_info_change_notify (2)
+                   https://syzkaller.appspot.com/bug?extid=dd4779978217b1973180
+<6>  844     Yes   WARNING in ar5523_submit_rx_cmd/usb_submit_urb
+                   https://syzkaller.appspot.com/bug?extid=6101b0c732dea13ea55b
+<7>  747     Yes   WARNING in ieee80211_start_next_roc
+                   https://syzkaller.appspot.com/bug?extid=c3a167b5615df4ccd7fb
+<8>  717     No    INFO: task hung in ath9k_hif_usb_firmware_cb (2)
+                   https://syzkaller.appspot.com/bug?extid=d5635158fb0281b27bff
+<9>  66      Yes   WARNING in ieee80211_free_ack_frame (2)
+                   https://syzkaller.appspot.com/bug?extid=ac648b0525be1feba506
+<10> 46      Yes   WARNING in carl9170_usb_submit_cmd_urb/usb_submit_urb
+                   https://syzkaller.appspot.com/bug?extid=9468df99cb63a4a4c4e1
 
-vim +1476 drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-427661e4c48887 Miri Korenblit 2024-01-31  1421  
-427661e4c48887 Miri Korenblit 2024-01-31  1422  void iwl_mvm_get_bios_tables(struct iwl_mvm *mvm)
-78a19d5285d93e Miri Korenblit 2021-08-05  1423  {
-78a19d5285d93e Miri Korenblit 2021-08-05  1424  	int ret;
-78a19d5285d93e Miri Korenblit 2021-08-05  1425  
-ebe8f41319fabe Miri Korenblit 2024-01-28  1426  	iwl_acpi_get_guid_lock_status(&mvm->fwrt);
-ebe8f41319fabe Miri Korenblit 2024-01-28  1427  
-78a19d5285d93e Miri Korenblit 2021-08-05  1428  	/* read PPAG table */
-e8e10a37c51c08 Matt Chen      2022-03-04  1429  	ret = iwl_acpi_get_ppag_table(&mvm->fwrt);
-78a19d5285d93e Miri Korenblit 2021-08-05  1430  	if (ret < 0) {
-78a19d5285d93e Miri Korenblit 2021-08-05  1431  		IWL_DEBUG_RADIO(mvm,
-78a19d5285d93e Miri Korenblit 2021-08-05  1432  				"PPAG BIOS table invalid or unavailable. (%d)\n",
-78a19d5285d93e Miri Korenblit 2021-08-05  1433  				ret);
-78a19d5285d93e Miri Korenblit 2021-08-05  1434  	}
-78a19d5285d93e Miri Korenblit 2021-08-05  1435  
-78a19d5285d93e Miri Korenblit 2021-08-05  1436  	/* read SAR tables */
-427661e4c48887 Miri Korenblit 2024-01-31  1437  	ret = iwl_bios_get_wrds_table(&mvm->fwrt);
-78a19d5285d93e Miri Korenblit 2021-08-05  1438  	if (ret < 0) {
-78a19d5285d93e Miri Korenblit 2021-08-05  1439  		IWL_DEBUG_RADIO(mvm,
-78a19d5285d93e Miri Korenblit 2021-08-05  1440  				"WRDS SAR BIOS table invalid or unavailable. (%d)\n",
-78a19d5285d93e Miri Korenblit 2021-08-05  1441  				ret);
-78a19d5285d93e Miri Korenblit 2021-08-05  1442  		/*
-78a19d5285d93e Miri Korenblit 2021-08-05  1443  		 * If not available, don't fail and don't bother with EWRD and
-78a19d5285d93e Miri Korenblit 2021-08-05  1444  		 * WGDS */
-78a19d5285d93e Miri Korenblit 2021-08-05  1445  
-427661e4c48887 Miri Korenblit 2024-01-31  1446  		if (!iwl_bios_get_wgds_table(&mvm->fwrt)) {
-78a19d5285d93e Miri Korenblit 2021-08-05  1447  			/*
-78a19d5285d93e Miri Korenblit 2021-08-05  1448  			 * If basic SAR is not available, we check for WGDS,
-78a19d5285d93e Miri Korenblit 2021-08-05  1449  			 * which should *not* be available either.  If it is
-78a19d5285d93e Miri Korenblit 2021-08-05  1450  			 * available, issue an error, because we can't use SAR
-78a19d5285d93e Miri Korenblit 2021-08-05  1451  			 * Geo without basic SAR.
-78a19d5285d93e Miri Korenblit 2021-08-05  1452  			 */
-78a19d5285d93e Miri Korenblit 2021-08-05  1453  			IWL_ERR(mvm, "BIOS contains WGDS but no WRDS\n");
-78a19d5285d93e Miri Korenblit 2021-08-05  1454  		}
-78a19d5285d93e Miri Korenblit 2021-08-05  1455  
-78a19d5285d93e Miri Korenblit 2021-08-05  1456  	} else {
-427661e4c48887 Miri Korenblit 2024-01-31  1457  		ret = iwl_bios_get_ewrd_table(&mvm->fwrt);
-78a19d5285d93e Miri Korenblit 2021-08-05  1458  		/* if EWRD is not available, we can still use
-78a19d5285d93e Miri Korenblit 2021-08-05  1459  		* WRDS, so don't fail */
-78a19d5285d93e Miri Korenblit 2021-08-05  1460  		if (ret < 0)
-78a19d5285d93e Miri Korenblit 2021-08-05  1461  			IWL_DEBUG_RADIO(mvm,
-78a19d5285d93e Miri Korenblit 2021-08-05  1462  					"EWRD SAR BIOS table invalid or unavailable. (%d)\n",
-78a19d5285d93e Miri Korenblit 2021-08-05  1463  					ret);
-78a19d5285d93e Miri Korenblit 2021-08-05  1464  
-78a19d5285d93e Miri Korenblit 2021-08-05  1465  		/* read geo SAR table */
-78a19d5285d93e Miri Korenblit 2021-08-05  1466  		if (iwl_sar_geo_support(&mvm->fwrt)) {
-427661e4c48887 Miri Korenblit 2024-01-31  1467  			ret = iwl_bios_get_wgds_table(&mvm->fwrt);
-78a19d5285d93e Miri Korenblit 2021-08-05  1468  			if (ret < 0)
-78a19d5285d93e Miri Korenblit 2021-08-05  1469  				IWL_DEBUG_RADIO(mvm,
-78a19d5285d93e Miri Korenblit 2021-08-05  1470  						"Geo SAR BIOS table invalid or unavailable. (%d)\n",
-78a19d5285d93e Miri Korenblit 2021-08-05  1471  						ret);
-78a19d5285d93e Miri Korenblit 2021-08-05  1472  				/* we don't fail if the table is not available */
-78a19d5285d93e Miri Korenblit 2021-08-05  1473  		}
-78a19d5285d93e Miri Korenblit 2021-08-05  1474  	}
-c4c95454775592 Johannes Berg  2023-06-14  1475  
-c4c95454775592 Johannes Berg  2023-06-14 @1476  	iwl_acpi_get_phy_filters(&mvm->fwrt, &mvm->phy_filters);
-78a19d5285d93e Miri Korenblit 2021-08-05  1477  }
-6996490501ed80 Luca Coelho    2017-01-12  1478  
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
 
-:::::: The code at line 1476 was first introduced by commit
-:::::: c4c954547755927807aaca981025847821dd2d0c wifi: iwlwifi: implement WPFC ACPI table loading
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
 
-:::::: TO: Johannes Berg <johannes.berg@intel.com>
-:::::: CC: Johannes Berg <johannes.berg@intel.com>
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+You may send multiple commands in a single email message.
 
