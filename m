@@ -1,71 +1,72 @@
-Return-Path: <linux-wireless+bounces-3085-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3086-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58E0884887E
-	for <lists+linux-wireless@lfdr.de>; Sat,  3 Feb 2024 20:23:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2BD68488FF
+	for <lists+linux-wireless@lfdr.de>; Sat,  3 Feb 2024 22:36:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 108A7284B31
-	for <lists+linux-wireless@lfdr.de>; Sat,  3 Feb 2024 19:23:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC9FFB24738
+	for <lists+linux-wireless@lfdr.de>; Sat,  3 Feb 2024 21:36:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FD805D752;
-	Sat,  3 Feb 2024 19:23:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44EC112E4A;
+	Sat,  3 Feb 2024 21:36:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OPnKdibd"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X9QBii8h"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 967A65EE83
-	for <linux-wireless@vger.kernel.org>; Sat,  3 Feb 2024 19:23:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40B9E12B70
+	for <linux-wireless@vger.kernel.org>; Sat,  3 Feb 2024 21:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706988205; cv=none; b=ByShCdQibc1KSvWJXtGPiRgbVAiXv84kp9u49tfDCVjbdNupVLco152ulJsGhlYi8NFQLoZqTM4/KaY81xCdJNiJLbW+hg11EadGq0OyG948IuCmQB8lscl8pP3E39CT2wcjXnZ+mLj4mZRYidHNnLr5hV125ZtRkTiHfDSUCBg=
+	t=1706996202; cv=none; b=ERLZu7eTgDjHRgJJwax8Gbv9d2yLJvQyKa8vLYUwKAkNSOb7nmndRVyfqmfYYZRIwx/CiaVm/Pco83d4mkUG/FZGqSiCY28ri+AP/EXWb5uQA5ZVvxtVKN1PIM63YTwMsNFn0OU+PAARpUQ+6xdL2GaqDBOcS2QJoshr1fO9QwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706988205; c=relaxed/simple;
-	bh=5EgyfyRfK+QZ19JXQQL2e7cwpGmmODjN5eYattX0DsA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NPcNZlmuqaNszf0E9ToMcoIcUFRqW0ONi41DcdcGL3ZZOYeM/tuAqNcCUBjrjzthrl5+Q6qFOWazqpw4/1Agr6c0Lm22eLyxbMo9e6xWrsbqOmIT0W/ufmiq9h5SojUu7K7FGuaRM8RkrwsDljdLncC7JJ4daaU6Jk4Wl5tfYNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OPnKdibd; arc=none smtp.client-ip=198.175.65.10
+	s=arc-20240116; t=1706996202; c=relaxed/simple;
+	bh=mMvsbHXkwbNG1h3c9nGCIyzvcy08Tz+nkS5oZhREnIs=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=DnkbejRg+oSEHJttmf1HWbmfYdBIdkEbOxh9lDqZvaPlyYfX+/q/hjzR08N4AdJy6XSwQdJ3PffLooYSZ+UgnkqJ3p6fp8dKZH+U4BSrKJ/MKTjbJRfAnW0PYb19HnacL9ptz9SIYhqhDkt0fTxvQFFi28y+a+3eGbXg+ZhLbxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X9QBii8h; arc=none smtp.client-ip=198.175.65.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706988203; x=1738524203;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=5EgyfyRfK+QZ19JXQQL2e7cwpGmmODjN5eYattX0DsA=;
-  b=OPnKdibdOzwwzVGU5fnE6h2HcY8fPA+mcclB4QALDTPP5MWbF5CZxvBo
-   c6saM5j5naWK4UNOJ3ZBe7JATBdEA6UbbXCiZVAewD44a4n71SyeOFWM5
-   +ptUiHXIPekbosF8N/eYA0k2eBPACl7kVHfCw4v4rBZIm961BYz4luyeI
-   OrXbZI6wr4B1Y9m9asJyqkTuIOmLygapfB8w30qJbgFDHrmblZPvHsL3z
-   wFCs5hEfMInjQZ/UhiHZ7dIFomlsP+QFPM0G5cbgFbJiSOmwJ4Bii1Gzb
-   LK7SZ90GjTnc/Y/undzgmeB4VkpcfNFKuqFFYYCgjdusSiszpA3C3445p
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10973"; a="17749262"
+  t=1706996200; x=1738532200;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=mMvsbHXkwbNG1h3c9nGCIyzvcy08Tz+nkS5oZhREnIs=;
+  b=X9QBii8hHK6xXJZqvuyw+4uhqc4tUaXrHbYf+aYpn/7pEBBk9j1FlVwl
+   bVYAPh4kLomlB89WSu0Ii2uEgyhoio6iQe/haz5Qm2q8SB3dpWOcVmKTF
+   +1pAyfSe43jikDJM1SFuCxi0aNmSvRAA8YfB3pFDHYVSduf8ZzqNesQ9I
+   df+vI5Zdptgy17rK4qXEoQPWV+qCOk8e/2E1rtO33b2GV9TZebwycdeY8
+   2roTe1AqLqxTvtl0OdF8KunVHmrr9QdMT2SaZVh2E5klzmfsNEvhROsb3
+   5eongagoLOPLteMbd+2Qt/8fBlWEKL1uJaEt13+pxjxM8OB0Px6vA4Ah4
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10973"; a="17755513"
 X-IronPort-AV: E=Sophos;i="6.05,241,1701158400"; 
-   d="scan'208";a="17749262"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2024 11:23:23 -0800
+   d="scan'208";a="17755513"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2024 13:36:40 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,241,1701158400"; 
-   d="scan'208";a="31150817"
+   d="scan'208";a="5128204"
 Received: from lkp-server02.sh.intel.com (HELO 59f4f4cd5935) ([10.239.97.151])
-  by orviesa002.jf.intel.com with ESMTP; 03 Feb 2024 11:23:22 -0800
+  by orviesa004.jf.intel.com with ESMTP; 03 Feb 2024 13:36:38 -0800
 Received: from kbuild by 59f4f4cd5935 with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1rWLbj-0005Vi-0I;
-	Sat, 03 Feb 2024 19:23:19 +0000
-Date: Sun, 4 Feb 2024 03:22:49 +0800
+	id 1rWNgg-0005dS-2q;
+	Sat, 03 Feb 2024 21:36:34 +0000
+Date: Sun, 4 Feb 2024 05:36:13 +0800
 From: kernel test robot <lkp@intel.com>
-To: Ping-Ke Shih <pkshih@realtek.com>, kvalo@kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 3/4] wifi: rtw89: fw: parse secure section from firmware
- file
-Message-ID: <202402040350.rRpOepoU-lkp@intel.com>
-References: <20240203003251.10641-4-pkshih@realtek.com>
+To: Benjamin Berg <benjamin.berg@intel.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [wireless-next:main 29/68] ERROR: modpost: net/wireless/cfg80211:
+ local symbol 'cfg80211_free_coloc_ap_list' was exported
+Message-ID: <202402040534.6AEKtZ7Y-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -74,149 +75,127 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240203003251.10641-4-pkshih@realtek.com>
 
-Hi Ping-Ke,
-
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on wireless-next/main]
-[also build test WARNING on wireless/main linus/master v6.8-rc2 next-20240202]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Ping-Ke-Shih/wifi-rtw89-fw-consider-checksum-length-of-security-data/20240203-085038
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-patch link:    https://lore.kernel.org/r/20240203003251.10641-4-pkshih%40realtek.com
-patch subject: [PATCH 3/4] wifi: rtw89: fw: parse secure section from firmware file
-config: parisc-allmodconfig (https://download.01.org/0day-ci/archive/20240204/202402040350.rRpOepoU-lkp@intel.com/config)
-compiler: hppa-linux-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240204/202402040350.rRpOepoU-lkp@intel.com/reproduce)
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+head:   5932ad87828b267649d750869c89c0f1a3873477
+commit: 45d43937a44c806b8649323b8f5d9f42ae838b0e [29/68] wifi: cfg80211: add a kunit test for 6 GHz colocated AP parsing
+config: x86_64-rhel-8.3-rust (https://download.01.org/0day-ci/archive/20240204/202402040534.6AEKtZ7Y-lkp@intel.com/config)
+compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240204/202402040534.6AEKtZ7Y-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202402040350.rRpOepoU-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202402040534.6AEKtZ7Y-lkp@intel.com/
 
-All warnings (new ones prefixed by >>):
+All errors (new ones prefixed by >>, old ones prefixed by <<):
 
-   drivers/net/wireless/realtek/rtw89/fw.c: In function 'rtw89_fw_hdr_parser_v1':
->> drivers/net/wireless/realtek/rtw89/fw.c:384:88: warning: format '%lx' expects argument of type 'long unsigned int', but argument 9 has type 'int' [-Wformat=]
-     384 |                             "section[%d] type=%d len=0x%-6x mssc=%d mssc_len=%d addr=%lx\n",
-         |                                                                                      ~~^
-         |                                                                                        |
-         |                                                                                        long unsigned int
-         |                                                                                      %x
-     385 |                             i, section_info->type, section_info->len,
-     386 |                             section_info->mssc, mssc_len, bin - fw);
-         |                                                           ~~~~~~~~                      
-         |                                                               |
-         |                                                               int
-   drivers/net/wireless/realtek/rtw89/fw.c:388:68: warning: format '%lx' expects argument of type 'long unsigned int', but argument 6 has type 'int' [-Wformat=]
-     388 |                             "           ignore=%d key_addr=%p (0x%lx) key_len=%d key_idx=%d\n",
-         |                                                                  ~~^
-         |                                                                    |
-         |                                                                    long unsigned int
-         |                                                                  %x
-     389 |                             section_info->ignore, section_info->key_addr,
-     390 |                             section_info->key_addr ?
-         |                             ~~~~~~~~~~~~~~~~~~~~~~~~                
-     391 |                             section_info->key_addr - section_info->addr : 0,
-         |                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-         |                                                                         |
-         |                                                                         int
-
-
-vim +384 drivers/net/wireless/realtek/rtw89/fw.c
-
-   322	
-   323	static int rtw89_fw_hdr_parser_v1(struct rtw89_dev *rtwdev, const u8 *fw, u32 len,
-   324					  struct rtw89_fw_bin_info *info)
-   325	{
-   326		const struct rtw89_fw_hdr_v1 *fw_hdr = (const struct rtw89_fw_hdr_v1 *)fw;
-   327		struct rtw89_fw_hdr_section_info *section_info;
-   328		const struct rtw89_fw_dynhdr_hdr *fwdynhdr;
-   329		const struct rtw89_fw_hdr_section_v1 *section;
-   330		const u8 *fw_end = fw + len;
-   331		const u8 *bin;
-   332		u32 base_hdr_len;
-   333		u32 mssc_len;
-   334		int ret;
-   335		u32 i;
-   336	
-   337		info->section_num = le32_get_bits(fw_hdr->w6, FW_HDR_V1_W6_SEC_NUM);
-   338		info->dsp_checksum = le32_get_bits(fw_hdr->w6, FW_HDR_V1_W6_DSP_CHKSUM);
-   339		base_hdr_len = struct_size(fw_hdr, sections, info->section_num);
-   340		info->dynamic_hdr_en = le32_get_bits(fw_hdr->w7, FW_HDR_V1_W7_DYN_HDR);
-   341	
-   342		if (info->dynamic_hdr_en) {
-   343			info->hdr_len = le32_get_bits(fw_hdr->w5, FW_HDR_V1_W5_HDR_SIZE);
-   344			info->dynamic_hdr_len = info->hdr_len - base_hdr_len;
-   345			fwdynhdr = (const struct rtw89_fw_dynhdr_hdr *)(fw + base_hdr_len);
-   346			if (le32_to_cpu(fwdynhdr->hdr_len) != info->dynamic_hdr_len) {
-   347				rtw89_err(rtwdev, "[ERR]invalid fw dynamic header len\n");
-   348				return -EINVAL;
-   349			}
-   350		} else {
-   351			info->hdr_len = base_hdr_len;
-   352			info->dynamic_hdr_len = 0;
-   353		}
-   354	
-   355		bin = fw + info->hdr_len;
-   356	
-   357		/* jump to section header */
-   358		section_info = info->section_info;
-   359		for (i = 0; i < info->section_num; i++) {
-   360			section = &fw_hdr->sections[i];
-   361	
-   362			section_info->type =
-   363				le32_get_bits(section->w1, FWSECTION_HDR_V1_W1_SECTIONTYPE);
-   364			section_info->len =
-   365				le32_get_bits(section->w1, FWSECTION_HDR_V1_W1_SEC_SIZE);
-   366			if (le32_get_bits(section->w1, FWSECTION_HDR_V1_W1_CHECKSUM))
-   367				section_info->len += FWDL_SECTION_CHKSUM_LEN;
-   368			section_info->redl = le32_get_bits(section->w1, FWSECTION_HDR_V1_W1_REDL);
-   369			section_info->dladdr =
-   370				le32_get_bits(section->w0, FWSECTION_HDR_V1_W0_DL_ADDR);
-   371			section_info->addr = bin;
-   372	
-   373			if (section_info->type == FWDL_SECURITY_SECTION_TYPE) {
-   374				ret = __parse_security_section(rtwdev, info, section_info,
-   375							       section, bin, &mssc_len);
-   376				if (ret)
-   377					return ret;
-   378			} else {
-   379				section_info->mssc = 0;
-   380				mssc_len = 0;
-   381			}
-   382	
-   383			rtw89_debug(rtwdev, RTW89_DBG_FW,
- > 384				    "section[%d] type=%d len=0x%-6x mssc=%d mssc_len=%d addr=%lx\n",
-   385				    i, section_info->type, section_info->len,
-   386				    section_info->mssc, mssc_len, bin - fw);
-   387			rtw89_debug(rtwdev, RTW89_DBG_FW,
-   388				    "           ignore=%d key_addr=%p (0x%lx) key_len=%d key_idx=%d\n",
-   389				    section_info->ignore, section_info->key_addr,
-   390				    section_info->key_addr ?
-   391				    section_info->key_addr - section_info->addr : 0,
-   392				    section_info->key_len, section_info->key_idx);
-   393	
-   394			bin += section_info->len + mssc_len;
-   395			section_info++;
-   396		}
-   397	
-   398		if (fw_end != bin) {
-   399			rtw89_err(rtwdev, "[ERR]fw bin size\n");
-   400			return -EINVAL;
-   401		}
-   402	
-   403		if (!info->secure_section_exist)
-   404			rtw89_warn(rtwdev, "no firmware secure section\n");
-   405	
-   406		return 0;
-   407	}
-   408	
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/nvme/target/nvme-loop.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/nvme/target/nvmet-fc.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/nvme/target/nvme-fcloop.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/cdrom/cdrom.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/usb/serial/usb_debug.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/media/tuners/tda9887.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/media/rc/rc-core.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/media/dvb-frontends/au8522_decoder.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/media/dvb-frontends/mb86a16.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/media/v4l2-core/v4l2-async.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/media/v4l2-core/v4l2-fwnode.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hwmon/asus_atk0110.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/thermal/intel/intel_soc_dts_iosf.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/thermal/intel/int340x_thermal/processor_thermal_rapl.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/thermal/intel/int340x_thermal/processor_thermal_rfim.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/thermal/intel/int340x_thermal/processor_thermal_mbox.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/thermal/intel/int340x_thermal/processor_thermal_wt_req.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/thermal/intel/int340x_thermal/processor_thermal_wt_hint.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/thermal/intel/int340x_thermal/processor_thermal_power_floor.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/mmc/core/mmc_core.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/mmc/core/sdio_uart.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-a4tech.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-apple.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-aureal.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-belkin.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-cherry.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-chicony.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-cypress.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-dr.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-elecom.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-ezkey.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-gyration.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-ite.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-kensington.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-keytouch.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-kye.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-lcpower.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-lenovo.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-logitech.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-lg-g15.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-logitech-dj.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-logitech-hidpp.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-microsoft.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-monterey.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-ortek.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-pl.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-petalynx.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-primax.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-saitek.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-samsung.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-sjoy.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-speedlink.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-steelseries.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-sunplus.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-gaff.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-tmff.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-tivo.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-topseed.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-twinhan.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-xinmo.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-zpff.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-zydacron.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-waltop.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/intel-ish-hid/intel-ishtp.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/platform/x86/intel/intel-hid.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/platform/x86/intel/intel-vbtn.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/platform/x86/intel/intel-rst.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/platform/x86/amilo-rfkill.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/platform/x86/classmate-laptop.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hwtracing/intel_th/intel_th_msu_sink.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/parport/parport.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/nvdimm/libnvdimm.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/nvdimm/nd_pmem.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/nvdimm/nd_btt.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/nvdimm/nd_e820.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/uio/uio.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/uio/uio_cif.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/uio/uio_aec.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/dca/dca.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in net/sched/em_cmp.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in net/sched/em_nbyte.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in net/sched/em_u32.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in net/sched/em_meta.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in net/sched/em_text.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in net/ipv4/ip_tunnel.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in net/ipv4/ipip.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in net/ipv4/ip_gre.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in net/ipv4/udp_tunnel.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in net/ipv4/ip_vti.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in net/ipv4/ah4.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in net/ipv4/esp4.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in net/ipv4/xfrm4_tunnel.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in net/ipv4/tunnel4.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in net/ipv6/ah6.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in net/ipv6/esp6.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in net/ipv6/xfrm6_tunnel.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in net/ipv6/tunnel6.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in net/ipv6/mip6.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in net/ipv6/sit.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in net/ipv6/ip6_udp_tunnel.o
+>> ERROR: modpost: net/wireless/cfg80211: local symbol 'cfg80211_free_coloc_ap_list' was exported
+>> ERROR: modpost: net/wireless/cfg80211: local symbol 'cfg80211_parse_colocated_ap' was exported
+WARNING: modpost: missing MODULE_DESCRIPTION() in net/key/af_key.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in net/6lowpan/6lowpan.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in net/ieee802154/6lowpan/ieee802154_6lowpan.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in net/ieee802154/ieee802154_socket.o
 
 -- 
 0-DAY CI Kernel Test Service
