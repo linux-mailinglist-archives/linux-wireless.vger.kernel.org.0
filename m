@@ -1,66 +1,66 @@
-Return-Path: <linux-wireless+bounces-3114-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3115-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B635849102
-	for <lists+linux-wireless@lfdr.de>; Sun,  4 Feb 2024 23:07:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 120C7849103
+	for <lists+linux-wireless@lfdr.de>; Sun,  4 Feb 2024 23:07:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE8061C21DAD
-	for <lists+linux-wireless@lfdr.de>; Sun,  4 Feb 2024 22:07:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD6C1B221DA
+	for <lists+linux-wireless@lfdr.de>; Sun,  4 Feb 2024 22:07:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A3FF41218;
-	Sun,  4 Feb 2024 22:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8F0D41C72;
+	Sun,  4 Feb 2024 22:07:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UzWk0OQg"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lo+p7G0d"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9EFE40C0C
-	for <linux-wireless@vger.kernel.org>; Sun,  4 Feb 2024 22:06:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AB2441C65
+	for <linux-wireless@vger.kernel.org>; Sun,  4 Feb 2024 22:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707084420; cv=none; b=e+VQH7AyEG1SEzWObS4urG0oSImtvP289yIiUfG4mcLfaO6/BdbmWQMZhY1loD+WXMI6uzysWsQii6bJQDWOVN1+RplZA+JjdXVUd/Mb/GSkN6tybS8E6MbOg8pAKfYPADPo1MDzaaxWfhLmjwZ7XXTq1vMMvDnasjHjOqCSYE0=
+	t=1707084422; cv=none; b=IGgNYxO30Qdsa5dcYASiceJPsAij2Qp0vsvry8+oJ+c5icEBmqbJtMQi0GDQxfx7/IpfLsHzCYh7lbPwbZTJwlBV24kxX7i9UYC+tARVv8Mk0An6nu/87CwsitLu5MVAfmYf/h2L7THi8WJ2SMo8DqIGRvhy18xSKLlunmd33pw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707084420; c=relaxed/simple;
-	bh=GhWSfxawwVD0dIKOsuDqFu4Rnwo4GbrthudeoUfFskE=;
+	s=arc-20240116; t=1707084422; c=relaxed/simple;
+	bh=Ki589CawWIJ7ko0US2P0pjudh7V65bHu/gWYZUBbYME=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=O717/em3KOb6HYSGwxaUWXqeErttPzQEzaZbUhBRQV+LgDnKn+YJzpbTX08UfDyKfZn12+SXXx0V2/oBFmk8yfXTFx/PzsGsnpdb2xkB6wlq3malTz6JnP1kkrmO00fNWF81KrNAey4iFc6pGVBV00+mKrONN/HUJsj6P4QBg/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UzWk0OQg; arc=none smtp.client-ip=192.198.163.7
+	 MIME-Version; b=aZAoSpIHv0a+O3n0SyySXqrCZAEginHVYnvMjojWOuQsrrpZlm4MZSIUgcTX/8986oMNsWY/oPt7f2NEh5UY/qWVQQdm9ly4kCLk0E98RRj+BT/JuYLh98CcFMZKETklxXo6QyEWWe/5UqzCK7QKOEWKUmUEW/w0tpQad7EQ8JY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lo+p7G0d; arc=none smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707084419; x=1738620419;
+  t=1707084421; x=1738620421;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=GhWSfxawwVD0dIKOsuDqFu4Rnwo4GbrthudeoUfFskE=;
-  b=UzWk0OQgwUbh+PsbFZGpwJHrf5rrbyhQRXgaj/24m1BOEVh8WSPaduFI
-   PsLBfuU024UAlEhpjq1X1yS9srd/cvoMmTds4OtqtyJgurjmcbmWFzPaW
-   KDMFfE4b/X8H309jh5k6Ps3PC2+Vgot1IqE1snHgx8Zq9lVUg8iFZUR+b
-   QKN6gPgPSa8Ik83PhFkF5Ntf1bnTOySVu9Rlje8xvbxmhi6+ntA0fVmzJ
-   J4YN38dZA0tUYQWybo2v1RyxxJkJq7jqA2i4+DoHitYtbZ5sq2WnDC6w8
-   0zZmAGmB0CyRnD/ybMg1YLHILKxo5C11k7TccgBZDEZVgjNQbUFOiEajf
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10973"; a="25869396"
+  bh=Ki589CawWIJ7ko0US2P0pjudh7V65bHu/gWYZUBbYME=;
+  b=lo+p7G0dVlK3hqYmh4yTJw5YmeE9iWHuczAu2UnRYiQDVMXslI6YbkX7
+   IJKDil9AQADOJ8Eg1ubwYyNXTf6rXo+qTruKDCAUzmY2ONiEutfIzzTB9
+   HhDZCOgW/Su7bBwo8hBqrJ0E9PkEe+hjaFzJK5xXUkMhVl67Oxo7Ym+J8
+   szbO1zNDO3ZuapUSgOh90kJ/wQ2Kjqx8xqIskGd5GrcNLIn+xFNcDUbc1
+   eVwcQk3Hc3+IB+P/aMoLzfQ02EaKqfzhvHz5RdhtxEjoIgxlvkirC1ltP
+   yAGzUxWwqPkswNCUQbejpa0LyWr43Anna/0LCVsHfxx3GMRIruZSro2Pv
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10973"; a="25869398"
 X-IronPort-AV: E=Sophos;i="6.05,242,1701158400"; 
-   d="scan'208";a="25869396"
+   d="scan'208";a="25869398"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2024 14:06:59 -0800
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2024 14:07:01 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,242,1701158400"; 
-   d="scan'208";a="23815915"
+   d="scan'208";a="23815923"
 Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2024 14:06:57 -0800
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2024 14:06:59 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	Ilan Peer <ilan.peer@intel.com>
-Subject: [PATCH 13/15] wifi: iwlwifi: mvm: Declare support for secure LTF measurement
-Date: Mon,  5 Feb 2024 00:06:15 +0200
-Message-Id: <20240204235836.f20d2437c06f.I479df8ab543db2d05c413119ad3eb3936cc86294@changeid>
+Cc: linux-wireless@vger.kernel.org, Berg@web.codeaurora.org,
+	Johannes <johannes.berg@intel.com>
+Subject: [PATCH 14/15] wifi: iwlwifi: clear link_id in time_event
+Date: Mon,  5 Feb 2024 00:06:16 +0200
+Message-Id: <20240204235836.c64a6b3606c2.I35cdc08e8a3be282563163690f8ca3edb51a3854@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240204220617.1456895-1-miriam.rachel.korenblit@intel.com>
 References: <20240204220617.1456895-1-miriam.rachel.korenblit@intel.com>
@@ -73,72 +73,39 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Ilan Peer <ilan.peer@intel.com>
+Before sending a SESSION PROTECTION cmd the driver checks if
+the link_id indicated in the time event (and for which the cmd will be
+sent) is valid and exists.
+Clear the te_data::link_id when FW notifies that a session protection
+ended, so the check will actually fail when it should.
 
-Declare support for secure LTF measurement if the FW supports it.
-
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Fixes: 135065837310 ("wifi: iwlwifi: support link_id in SESSION_PROTECTION cmd")
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Reviewed-by: Berg, Johannes <johannes.berg@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/file.h           | 3 ++-
- drivers/net/wireless/intel/iwlwifi/mvm/ftm-responder.c | 6 ++++++
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c      | 5 +++++
- 3 files changed, 13 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/time-event.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/file.h b/drivers/net/wireless/intel/iwlwifi/fw/file.h
-index b216da7d95fc..b7ef0882dbad 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/file.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/file.h
-@@ -385,6 +385,7 @@ typedef unsigned int __bitwise iwl_ucode_tlv_capa_t;
-  *	complete to FW.
-  * @IWL_UCODE_TLV_CAPA_SPP_AMSDU_SUPPORT: Support SPP (signaling and payload
-  *	protected) A-MSDU.
-+ * @IWL_UCODE_TLV_CAPA_SECURE_LTF_SUPPORT: Support secure LTF measurement.
-  *
-  * @NUM_IWL_UCODE_TLV_CAPA: number of bits used
-  */
-@@ -483,7 +484,7 @@ enum iwl_ucode_tlv_capa {
- 	IWL_UCODE_TLV_CAPA_STA_EXP_MFP_SUPPORT		= (__force iwl_ucode_tlv_capa_t)114,
- 	IWL_UCODE_TLV_CAPA_SNIFF_VALIDATE_SUPPORT	= (__force iwl_ucode_tlv_capa_t)116,
- 	IWL_UCODE_TLV_CAPA_CHINA_22_REG_SUPPORT		= (__force iwl_ucode_tlv_capa_t)117,
--
-+	IWL_UCODE_TLV_CAPA_SECURE_LTF_SUPPORT		= (__force iwl_ucode_tlv_capa_t)121,
- 	NUM_IWL_UCODE_TLV_CAPA
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c b/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
+index 60ec5ca6927c..be823c85c39d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
  /*
-  * This construction make both sparse (which cannot increment the previous
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-responder.c b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-responder.c
-index f72ca38d7c0e..dca36b0662c7 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-responder.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-responder.c
-@@ -349,6 +349,12 @@ int iwl_mvm_ftm_respoder_add_pasn_sta(struct iwl_mvm *mvm,
- 	}
- 
- 	if (hltk && hltk_len) {
-+		if (!fw_has_capa(&mvm->fw->ucode_capa,
-+				 IWL_UCODE_TLV_CAPA_SECURE_LTF_SUPPORT)) {
-+			IWL_ERR(mvm, "No support for secure LTF measurement\n");
-+			return -EINVAL;
-+		}
-+
- 		hltk_data.cipher = iwl_mvm_cipher_to_location_cipher(cipher);
- 		if (hltk_data.cipher == IWL_LOCATION_CIPHER_INVALID) {
- 			IWL_ERR(mvm, "invalid cipher: %u\n", cipher);
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index e62fcfd1a65f..4188957afdf4 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -710,6 +710,11 @@ int iwl_mvm_mac_setup_register(struct iwl_mvm *mvm)
- 				  IWL_FW_CMD_VER_UNKNOWN) >= 11) {
- 		wiphy_ext_feature_set(hw->wiphy,
- 				      NL80211_EXT_FEATURE_PROT_RANGE_NEGO_AND_MEASURE);
-+
-+		if (fw_has_capa(&mvm->fw->ucode_capa,
-+				IWL_UCODE_TLV_CAPA_SECURE_LTF_SUPPORT))
-+			wiphy_ext_feature_set(hw->wiphy,
-+					      NL80211_EXT_FEATURE_SECURE_LTF);
- 	}
- 
- 	mvm->rts_threshold = IEEE80211_MAX_RTS_THRESHOLD;
+- * Copyright (C) 2012-2014, 2018-2023 Intel Corporation
++ * Copyright (C) 2012-2014, 2018-2024 Intel Corporation
+  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
+  * Copyright (C) 2017 Intel Deutschland GmbH
+  */
+@@ -972,6 +972,7 @@ void iwl_mvm_rx_session_protect_notif(struct iwl_mvm *mvm,
+ 	if (!le32_to_cpu(notif->status) || !le32_to_cpu(notif->start)) {
+ 		/* End TE, notify mac80211 */
+ 		mvmvif->time_event_data.id = SESSION_PROTECT_CONF_MAX_ID;
++		mvmvif->time_event_data.link_id = -1;
+ 		iwl_mvm_p2p_roc_finished(mvm);
+ 		ieee80211_remain_on_channel_expired(mvm->hw);
+ 	} else if (le32_to_cpu(notif->start)) {
 -- 
 2.34.1
 
