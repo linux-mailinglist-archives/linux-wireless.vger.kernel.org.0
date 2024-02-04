@@ -1,103 +1,139 @@
-Return-Path: <linux-wireless+bounces-3100-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3101-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C285E849095
-	for <lists+linux-wireless@lfdr.de>; Sun,  4 Feb 2024 22:10:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D65F8490F5
+	for <lists+linux-wireless@lfdr.de>; Sun,  4 Feb 2024 23:06:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 24A07B21F99
-	for <lists+linux-wireless@lfdr.de>; Sun,  4 Feb 2024 21:10:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C93CE1F22740
+	for <lists+linux-wireless@lfdr.de>; Sun,  4 Feb 2024 22:06:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01116286BC;
-	Sun,  4 Feb 2024 21:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C83D2C695;
+	Sun,  4 Feb 2024 22:06:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GqIJGBsU"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from bues.ch (bues.ch [80.190.117.144])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 202A32562C;
-	Sun,  4 Feb 2024 21:10:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.190.117.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D6342C68E
+	for <linux-wireless@vger.kernel.org>; Sun,  4 Feb 2024 22:06:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707081034; cv=none; b=ObGouLrrYweYBv27Q/8zpaWjPyiMhyzfVRMuGhxfM5wTjnw7sWT9U9HJ9sXXE9VFHaZs4rugo4kRw2mQzX2WKgon235auMIBsJAS/BIgDuOAINH3uCe3IEIulXlgGltblSre4JYUQbQzSe/clh/06Fvmz8gO/eOEmyW/+G2aOyk=
+	t=1707084391; cv=none; b=tvMTpOjA9R8DqWfCINEnbtvIPI8O+uM4FrMQWnJHFqfz+4M4bV0tf3FwryUoI9RL3YaJ+tGMP8nZ14itHV7VINWMu3e/SNRivhxCUL/qNwkPvtFX+9JFr03luRik946YvUdnjfuX8qAP4jYPr7i8pvytkTGFRY0/sgOHD/PRMlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707081034; c=relaxed/simple;
-	bh=R359VuPtGYDwzodKzxeFeYgxtjqZxMYRp0uTv5n+eV8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pA2NOXLGKbosY77u79NTjJKkSf8g9Aobyz1MsyUK3MmtMe3ngC5AZ/7KwzsaCxaJ+ePwT83RjaD8SeuATwnrIYWG0ggNcNPXaPD0Lr/seQyuUjEHxPYJKJi+QU5kZ7jlqg2rOGYk9Ri5Py+KNsR7ZVGbdZA8ns9xnFBBRpUH0t0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bues.ch; spf=pass smtp.mailfrom=bues.ch; arc=none smtp.client-ip=80.190.117.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bues.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bues.ch
-Received: by bues.ch with esmtpsa (Exim 4.96)
-	(envelope-from <m@bues.ch>)
-	id 1rWjQ1-000LOK-22;
-	Sun, 04 Feb 2024 21:48:48 +0100
-Date: Sun, 4 Feb 2024 21:48:15 +0100
-From: Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
-To: "Ricardo B. Marliere" <ricardo@marliere.net>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH] ssb: make ssb_bustype const
-Message-ID: <20240204214815.7f5db722@barney>
-In-Reply-To: <20240204-bus_cleanup-ssb-v1-1-511026cd5f3c@marliere.net>
-References: <20240204-bus_cleanup-ssb-v1-1-511026cd5f3c@marliere.net>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1707084391; c=relaxed/simple;
+	bh=ywynNuzc+zkTLhxEIpdOYC08sdhsZQXngV4TURsgJRA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GX/aGbMNQ/T3ryiouAR1DYrTe2mWRy+bSUjxW5rEYPEVagDNo6aKBgDMsvTGai2xvSoNiq87zLr7s+Skjb05mCBcTEWu7BKcsHlIpPXp70/iVztIELv6bgGFMx7ru9CRB+X5tU8kAO6Jc9uWrOHj0OXwDitI2gee+2Y6BdRM678=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GqIJGBsU; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1707084389; x=1738620389;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ywynNuzc+zkTLhxEIpdOYC08sdhsZQXngV4TURsgJRA=;
+  b=GqIJGBsU1sQWAM/b3HsuJb3EVVf3l5oybhhyMIzPvtS2EQ2D+kacOG8S
+   e4/vyj3lDfuJAsENr5PkjlZPLtvqsdZSUCBiAsAxlR5DAi8T/bu87Kp/W
+   oLxvfevj1CDb3ffT7hasA17EkeaVj9+la0wvS0g+Qahy+b/Kr3R5oWlm6
+   Lq4onunT86iWupcdq+/psGzQQe2/PX4yte1x07lse08ndT8PHCIpdi3FX
+   o7uplEQQeWyQEV/HEkSFYfn8QS4Oca2IWUqsgpTTK3/pD+w1Ovqb9dsnY
+   hVRI6UdtlTgdkEw/mbwe8iFhwGJREd++5GJsXcQgPMR4XVKnLfeKtpLcS
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10973"; a="25869356"
+X-IronPort-AV: E=Sophos;i="6.05,242,1701158400"; 
+   d="scan'208";a="25869356"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2024 14:06:28 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,242,1701158400"; 
+   d="scan'208";a="23815833"
+Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2024 14:06:27 -0800
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org
+Subject: [PATCH 00/15] wifi: iwlwifi: updates - 2024-02-05
+Date: Mon,  5 Feb 2024 00:06:02 +0200
+Message-Id: <20240204220617.1456895-1-miriam.rachel.korenblit@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/PyNQNBTJ/s=KDhaIex8KrE9";
- protocol="application/pgp-signature"; micalg=pgp-sha512
+Organization: Intel Israel (74) Limited
+Content-Transfer-Encoding: 8bit
 
---Sig_/PyNQNBTJ/s=KDhaIex8KrE9
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Hi,
 
-On Sun, 04 Feb 2024 17:44:21 -0300
-"Ricardo B. Marliere" <ricardo@marliere.net> wrote:
+This patch set includes iwlwifi patches intended for v6.9. It contains a
+few features, bugfixes and cleanups.
 
-> --- a/drivers/ssb/main.c
-> +++ b/drivers/ssb/main.c
-> @@ -384,7 +384,7 @@ static struct attribute *ssb_device_attrs[] =3D {
->  };
->  ATTRIBUTE_GROUPS(ssb_device);
-> =20
-> -static struct bus_type ssb_bustype =3D {
-> +static const struct bus_type ssb_bustype =3D {
->  	.name		=3D "ssb",
->  	.match		=3D ssb_bus_match,
->  	.probe		=3D ssb_device_probe,
+Thanks,
 
-Acked-by: Michael B=C3=BCsch <m@bues.ch>
+Anjaneyulu (1):
+  wifi: iwlwifi: Add support for PPAG cmd v5 and PPAG revision 3
 
+Avraham Stern (1):
+  iwlwifi: mvm: advertise support for protected ranging negotiation
 
---=20
-Michael B=C3=BCsch
-https://bues.ch/
+Daniel Gabay (1):
+  wifi: iwlwifi: mvm: use correct address 3 in A-MSDU
 
---Sig_/PyNQNBTJ/s=KDhaIex8KrE9
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+Emmanuel Grumbach (1):
+  wifi: iwlwifi: mvm: don't support reduced tx power on ack for new
+    devices
 
------BEGIN PGP SIGNATURE-----
+Ilan Peer (1):
+  wifi: iwlwifi: mvm: Declare support for secure LTF measurement
 
-iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAmW/+A8ACgkQ9TK+HZCN
-iw7Ntg//aq3vS8BvSlIJjEbcPp7yFiBegZ+/XRFP+IelKMFMoNOzMZPhkuylZUBo
-0/kXQDIZOx5OmRGSOkMbGW5xfANRFWKoD7qmwDSv6nC/9psp7vhesaYqM2G3eDmL
-P1g6fjnmRWRsnCxxAY7Ic+hU55K5qN84CLUTbD+P9/rFvzd6XUBTQRlmIuzMFSq+
-wQfGPTdBjQfcCn45Ddwulfr0Tpn/CgHfAe9lg7KBVf+G7BzzcJ1KjqGg6eXLy/XJ
-nNa5y8MpiGAKhSMNoMUICVsBR6pbzI3C+W14zPEHI+ESr0e1pO/ThGPcVIKrWG/t
-MyofauMi0mnQUtKVVtC+1T6i0eAtN8dQFCfaosjlFLE0Zxz8JIptvwpE8Fv61RJp
-FJ1khoJjf8wOx3geSrv6tHSMXlaZ+pWWKwAirKPe1nVh6CCC5Epc//yOa4j+Ktvg
-m7tob+1/RB8bjLZ6xEVIItmcZk6zycqykfcSbTtI9pV2xq4xT2qpg5vVla8jaUx4
-Wqu/sP7Iss9zr/X55+Z97RMsQdUXx+Tw7ffbCJQglt8Yu2qtJGa+Ar4pgrU0GiOL
-hxo3J4BcX4EN4soL05FXVKXsFtPa7MtytTd4f2g7liLy3JyoQrpd38TzD6KYXy+c
-WUIacZJJ9dM8cnGTmhRCZNf72YUznwPNdue+1MD2aHWs8Natvys=
-=0btd
------END PGP SIGNATURE-----
+Johannes Berg (5):
+  wifi: iwlwifi: pcie: don't allow hw-rfkill to stop device on gen2
+  wifi: iwlwifi: mvm: const-ify chandef pointers
+  wifi: iwlwifi: mvm: remove EHT code from mac80211.c
+  wifi: iwlwifi: use system_unbound_wq for debug dump
+  wifi: iwlwifi: mvm: remove one queue sync on BA session stop
 
---Sig_/PyNQNBTJ/s=KDhaIex8KrE9--
+Miri Korenblit (5):
+  wifi: iwlwifi: add HONOR to PPAG approved list
+  wifi: iwlwifi: adjust rx_phyinfo debugfs to MLO
+  wifi: iwlwifi: read mac step from aux register
+  wifi: iwlwifi: support EHT for WH
+  wifi: iwlwifi: clear link_id in time_event
+
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c  |  9 +--
+ .../net/wireless/intel/iwlwifi/fw/api/power.h | 40 +++++++++--
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c   |  7 +-
+ drivers/net/wireless/intel/iwlwifi/fw/file.h  |  3 +-
+ .../wireless/intel/iwlwifi/fw/regulatory.c    | 25 +++++--
+ .../wireless/intel/iwlwifi/fw/regulatory.h    |  9 ++-
+ .../net/wireless/intel/iwlwifi/fw/runtime.h   |  2 +-
+ drivers/net/wireless/intel/iwlwifi/fw/uefi.c  |  3 +-
+ drivers/net/wireless/intel/iwlwifi/fw/uefi.h  |  3 +-
+ .../wireless/intel/iwlwifi/iwl-nvm-parse.c    |  2 +-
+ .../net/wireless/intel/iwlwifi/iwl-op-mode.h  |  4 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-prph.h |  6 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/coex.c |  3 +
+ .../wireless/intel/iwlwifi/mvm/debugfs-vif.c  | 44 +++++++-----
+ .../intel/iwlwifi/mvm/ftm-responder.c         |  6 ++
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 27 +++++---
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  | 10 +--
+ .../net/wireless/intel/iwlwifi/mvm/phy-ctxt.c | 14 ++--
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c  | 12 +---
+ .../wireless/intel/iwlwifi/mvm/time-event.c   |  3 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c   | 69 ++++++++++++++++---
+ .../intel/iwlwifi/pcie/ctxt-info-gen3.c       |  2 +-
+ .../wireless/intel/iwlwifi/pcie/ctxt-info.c   |  4 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 14 ++++
+ .../net/wireless/intel/iwlwifi/pcie/trans.c   |  9 +--
+ 25 files changed, 234 insertions(+), 96 deletions(-)
+
+-- 
+2.34.1
+
 
