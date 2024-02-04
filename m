@@ -1,67 +1,66 @@
-Return-Path: <linux-wireless+bounces-3102-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3103-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB1D18490F6
-	for <lists+linux-wireless@lfdr.de>; Sun,  4 Feb 2024 23:06:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14C188490F7
+	for <lists+linux-wireless@lfdr.de>; Sun,  4 Feb 2024 23:06:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 215281F22ACA
-	for <lists+linux-wireless@lfdr.de>; Sun,  4 Feb 2024 22:06:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8E761F228FD
+	for <lists+linux-wireless@lfdr.de>; Sun,  4 Feb 2024 22:06:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D7D42C69F;
-	Sun,  4 Feb 2024 22:06:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CD3B32C92;
+	Sun,  4 Feb 2024 22:06:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="De/c+08V"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nvM5Gj5d"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F4ED2C692
-	for <linux-wireless@vger.kernel.org>; Sun,  4 Feb 2024 22:06:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 921532208A
+	for <linux-wireless@vger.kernel.org>; Sun,  4 Feb 2024 22:06:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707084394; cv=none; b=usKVrS2BWcU/c+gNnEjvtKq22qLeASwhgHhBgEo8NtQAfHaPxAUa3uNvkA5ZoasIT/OJWxGIWCCde06Kgfdq24zkA3pUssYFqdTazBEyoJ9YzKPr2BAeaqIUvEORsK5NBrnkNbH8gjUs+mg/8qeYOIGWMQPhfEVDp1OnePJ6fiA=
+	t=1707084396; cv=none; b=AsnQf031ZKajNzlX2Bl+o7kJEvNm36SWzyLGWF4JNhJC11p3mLyA3Yj0jkx28WDbj04JQMz5xwQK5J8ILfWRdhNdvV5MUBtT0WtswZDixnOEBDZQPOvYYUJL3wJZrv+62gzHgaU5K0aGT1em8K9Z0RqJRoIm5YeVkXLdu40XIM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707084394; c=relaxed/simple;
-	bh=cjE3rAuyDfhuvcPznIewVqfUxdX3vk2LLRTwuuiZ5Vo=;
+	s=arc-20240116; t=1707084396; c=relaxed/simple;
+	bh=K2OcCDzA/7p8Jlw81Aq+XFUcY3rJShkvV5/zn3P9lbg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=E1eVXg6YW41d9Rr1NDuAQkEyRS8W26/h589ZNuipaJY62I6t9/st6T1VdaUMSC9J4yoo6nTEXT0b/1zD41+fF+9JK4is7XwmOf6a1Js6/veJMJtL7hCmiCMVTjyu62Dm1hJ6JnOJXZ5gHpFDdXuejTu0Wj2Fi6pwDSjwrcNgTzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=De/c+08V; arc=none smtp.client-ip=192.198.163.7
+	 MIME-Version; b=fXUxVfXuG8+ky+TeH/T2p1wWHfX9QwXnXXIlUciz4nY7chguJBbO+WchXcSW5etlwZJSg3gktvqfYnEA/MIpjTAtoTuKR0bsxWBu+p0VwRfeyVix2CRqXupes3WidrEt779WjiBk8sbzx9fIoaurorwpUZ3D7SFRfusBsiYSeJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nvM5Gj5d; arc=none smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707084392; x=1738620392;
+  t=1707084395; x=1738620395;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=cjE3rAuyDfhuvcPznIewVqfUxdX3vk2LLRTwuuiZ5Vo=;
-  b=De/c+08VDQd7dX0vMbEs6QwcYBphaqBm970ZhXAE1iVEVNc7Gs8nn86u
-   V+tMFvTPciz6Db7wA+HXjBkBvmn43RyKteazMLZDyLCZvZ03l1XOilPaI
-   vsMl2m2116n3wWasGh4Clr50U40YEN58EJlai48oS8z2MA8cUXsXjEtI3
-   DM8EeYsz1qnOJ6OsHOkKI9V15sg973WSKiMdbkkW/TuseFZnn0etGGT9N
-   upSMcxc4ICElDc3XHVcYtESdmt2NB7epu3tDj7kYbLcPjD0Tt4j+aVYSb
-   XcuPguPPei5MLcAkAT9OMEFZilFqoA5p+RlaYW0Nu9AL8xYUVHlC1bfRD
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10973"; a="25869361"
+  bh=K2OcCDzA/7p8Jlw81Aq+XFUcY3rJShkvV5/zn3P9lbg=;
+  b=nvM5Gj5daVr0yXmIs/2rXuuVd724Bv7KDsovsujGo66iTyoJ+IquBidY
+   hz36kVNRMXDcxr66oVvFdQLzTfPF5U820755LGrry+NfW+g7iYyZ3SPv0
+   ios/9bixdS6Me1Dxp11GvSOZR0G2D9mSXk+ZG3PbekQVzuRoMtpijYbr5
+   ZtXP7osUVvjIDPBQvPQjAup4DH5hJv1EsPC2RcZJ1uYDMQ4nvbBcrnz8J
+   vgr9OLE06FN/zLAtRQO0KmJ8E5I6yUwVVVAg9wQ5JdNEFkxvdm1UngdXU
+   2zW3oRcrJqUWPlF6TjyzzM39JHXr0LIf58fl9pE1vaoZwBoqGaTExJZ6G
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10973"; a="25869366"
 X-IronPort-AV: E=Sophos;i="6.05,242,1701158400"; 
-   d="scan'208";a="25869361"
+   d="scan'208";a="25869366"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2024 14:06:32 -0800
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2024 14:06:34 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,242,1701158400"; 
-   d="scan'208";a="23815842"
+   d="scan'208";a="23815849"
 Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2024 14:06:30 -0800
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2024 14:06:33 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Daniel Gabay <daniel.gabay@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 01/15] wifi: iwlwifi: mvm: use correct address 3 in A-MSDU
-Date: Mon,  5 Feb 2024 00:06:03 +0200
-Message-Id: <20240204235836.4583a1bf9188.I3f8e7892bdf8f86b4daa28453771a8c9817b2416@changeid>
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Subject: [PATCH 02/15] wifi: iwlwifi: add HONOR to PPAG approved list
+Date: Mon,  5 Feb 2024 00:06:04 +0200
+Message-Id: <20240204235836.3498abc62910.I156c34206c58ff26e73f705cbda6f1a49b88edda@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240204220617.1456895-1-miriam.rachel.korenblit@intel.com>
 References: <20240204220617.1456895-1-miriam.rachel.korenblit@intel.com>
@@ -74,198 +73,31 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Daniel Gabay <daniel.gabay@intel.com>
+Add HONOR to the list of the OEMs that are allowed to use
+the PPAG feature
 
-As described in IEEE sta 802.11-2020, table 9-30 (Address
-field contents), A-MSDU address 3 should contain the BSSID
-address.
-
-In TX_CMD we copy the MAC header from skb, and skb address 3
-holds the destination address, but it may not be identical to
-the BSSID.
-
-Using the wrong destination address appears to work with (most)
-receivers without MLO, but in MLO some devices are checking for
-it carefully, perhaps as a consequence of link to MLD address
-translation.
-
-Replace address 3 in the TX_CMD MAC header with the correct
-address while retaining the skb address 3 unchanged.
-This ensures that skb address 3 will be utilized later for
-constructing the A-MSDU subframes.
-
-Note that we fill in the MLD address, but the firmware will do the
-necessary translation to link address after encryption.
-
-Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c | 69 ++++++++++++++++++---
- 1 file changed, 59 insertions(+), 10 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/regulatory.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-index 79eb6394e5a7..ea1a4283f72b 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-@@ -545,13 +545,24 @@ static bool iwl_mvm_use_host_rate(struct iwl_mvm *mvm,
- 	return mvm->trans->trans_cfg->device_family < IWL_DEVICE_FAMILY_BZ;
- }
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c
+index 21b90278d1f2..597735a660a2 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c
+@@ -94,6 +94,11 @@ static const struct dmi_system_id dmi_ppag_approved_list[] = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Razer"),
+ 		},
+ 	},
++	{ .ident = "Honor",
++	  .matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "HONOR"),
++		},
++	},
+ 	{}
+ };
  
-+static void iwl_mvm_copy_hdr(void *cmd, const void *hdr, int hdrlen,
-+			     const u8 *addr3_override)
-+{
-+	struct ieee80211_hdr *out_hdr = cmd;
-+
-+	memcpy(cmd, hdr, hdrlen);
-+	if (addr3_override)
-+		memcpy(out_hdr->addr3, addr3_override, ETH_ALEN);
-+}
-+
- /*
-  * Allocates and sets the Tx cmd the driver data pointers in the skb
-  */
- static struct iwl_device_tx_cmd *
- iwl_mvm_set_tx_params(struct iwl_mvm *mvm, struct sk_buff *skb,
- 		      struct ieee80211_tx_info *info, int hdrlen,
--		      struct ieee80211_sta *sta, u8 sta_id)
-+		      struct ieee80211_sta *sta, u8 sta_id,
-+		      const u8 *addr3_override)
- {
- 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
- 	struct iwl_device_tx_cmd *dev_cmd;
-@@ -609,7 +620,7 @@ iwl_mvm_set_tx_params(struct iwl_mvm *mvm, struct sk_buff *skb,
- 			cmd->len = cpu_to_le16((u16)skb->len);
- 
- 			/* Copy MAC header from skb into command buffer */
--			memcpy(cmd->hdr, hdr, hdrlen);
-+			iwl_mvm_copy_hdr(cmd->hdr, hdr, hdrlen, addr3_override);
- 
- 			cmd->flags = cpu_to_le16(flags);
- 			cmd->rate_n_flags = cpu_to_le32(rate_n_flags);
-@@ -624,7 +635,7 @@ iwl_mvm_set_tx_params(struct iwl_mvm *mvm, struct sk_buff *skb,
- 			cmd->len = cpu_to_le16((u16)skb->len);
- 
- 			/* Copy MAC header from skb into command buffer */
--			memcpy(cmd->hdr, hdr, hdrlen);
-+			iwl_mvm_copy_hdr(cmd->hdr, hdr, hdrlen, addr3_override);
- 
- 			cmd->flags = cpu_to_le32(flags);
- 			cmd->rate_n_flags = cpu_to_le32(rate_n_flags);
-@@ -642,7 +653,7 @@ iwl_mvm_set_tx_params(struct iwl_mvm *mvm, struct sk_buff *skb,
- 	iwl_mvm_set_tx_cmd_rate(mvm, tx_cmd, info, sta, hdr->frame_control);
- 
- 	/* Copy MAC header from skb into command buffer */
--	memcpy(tx_cmd->hdr, hdr, hdrlen);
-+	iwl_mvm_copy_hdr(tx_cmd->hdr, hdr, hdrlen, addr3_override);
- 
- out:
- 	return dev_cmd;
-@@ -845,7 +856,8 @@ int iwl_mvm_tx_skb_non_sta(struct iwl_mvm *mvm, struct sk_buff *skb)
- 
- 	IWL_DEBUG_TX(mvm, "station Id %d, queue=%d\n", sta_id, queue);
- 
--	dev_cmd = iwl_mvm_set_tx_params(mvm, skb, &info, hdrlen, NULL, sta_id);
-+	dev_cmd = iwl_mvm_set_tx_params(mvm, skb, &info, hdrlen, NULL, sta_id,
-+					NULL);
- 	if (!dev_cmd)
- 		return -1;
- 
-@@ -1165,7 +1177,8 @@ static int iwl_mvm_tx_pkt_queued(struct iwl_mvm *mvm,
-  */
- static int iwl_mvm_tx_mpdu(struct iwl_mvm *mvm, struct sk_buff *skb,
- 			   struct ieee80211_tx_info *info,
--			   struct ieee80211_sta *sta)
-+			   struct ieee80211_sta *sta,
-+			   const u8 *addr3_override)
- {
- 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
- 	struct iwl_mvm_sta *mvmsta;
-@@ -1197,7 +1210,8 @@ static int iwl_mvm_tx_mpdu(struct iwl_mvm *mvm, struct sk_buff *skb,
- 		iwl_mvm_probe_resp_set_noa(mvm, skb);
- 
- 	dev_cmd = iwl_mvm_set_tx_params(mvm, skb, info, hdrlen,
--					sta, mvmsta->deflink.sta_id);
-+					sta, mvmsta->deflink.sta_id,
-+					addr3_override);
- 	if (!dev_cmd)
- 		goto drop;
- 
-@@ -1319,9 +1333,11 @@ int iwl_mvm_tx_skb_sta(struct iwl_mvm *mvm, struct sk_buff *skb,
- 	struct iwl_mvm_sta *mvmsta = iwl_mvm_sta_from_mac80211(sta);
- 	struct ieee80211_tx_info info;
- 	struct sk_buff_head mpdus_skbs;
-+	struct ieee80211_vif *vif;
- 	unsigned int payload_len;
- 	int ret;
- 	struct sk_buff *orig_skb = skb;
-+	const u8 *addr3;
- 
- 	if (WARN_ON_ONCE(!mvmsta))
- 		return -1;
-@@ -1332,26 +1348,59 @@ int iwl_mvm_tx_skb_sta(struct iwl_mvm *mvm, struct sk_buff *skb,
- 	memcpy(&info, skb->cb, sizeof(info));
- 
- 	if (!skb_is_gso(skb))
--		return iwl_mvm_tx_mpdu(mvm, skb, &info, sta);
-+		return iwl_mvm_tx_mpdu(mvm, skb, &info, sta, NULL);
- 
- 	payload_len = skb_tail_pointer(skb) - skb_transport_header(skb) -
- 		tcp_hdrlen(skb) + skb->data_len;
- 
- 	if (payload_len <= skb_shinfo(skb)->gso_size)
--		return iwl_mvm_tx_mpdu(mvm, skb, &info, sta);
-+		return iwl_mvm_tx_mpdu(mvm, skb, &info, sta, NULL);
- 
- 	__skb_queue_head_init(&mpdus_skbs);
- 
-+	vif = info.control.vif;
-+	if (!vif)
-+		return -1;
-+
- 	ret = iwl_mvm_tx_tso(mvm, skb, &info, sta, &mpdus_skbs);
- 	if (ret)
- 		return ret;
- 
- 	WARN_ON(skb_queue_empty(&mpdus_skbs));
- 
-+	/*
-+	 * As described in IEEE sta 802.11-2020, table 9-30 (Address
-+	 * field contents), A-MSDU address 3 should contain the BSSID
-+	 * address.
-+	 * Pass address 3 down to iwl_mvm_tx_mpdu() and further to set it
-+	 * in the command header. We need to preserve the original
-+	 * address 3 in the skb header to correctly create all the
-+	 * A-MSDU subframe headers from it.
-+	 */
-+	switch (vif->type) {
-+	case NL80211_IFTYPE_STATION:
-+		addr3 = vif->cfg.ap_addr;
-+		break;
-+	case NL80211_IFTYPE_AP:
-+		addr3 = vif->addr;
-+		break;
-+	default:
-+		addr3 = NULL;
-+		break;
-+	}
-+
- 	while (!skb_queue_empty(&mpdus_skbs)) {
-+		struct ieee80211_hdr *hdr;
-+		bool amsdu;
-+
- 		skb = __skb_dequeue(&mpdus_skbs);
-+		hdr = (void *)skb->data;
-+		amsdu = ieee80211_is_data_qos(hdr->frame_control) &&
-+			(*ieee80211_get_qos_ctl(hdr) &
-+			 IEEE80211_QOS_CTL_A_MSDU_PRESENT);
- 
--		ret = iwl_mvm_tx_mpdu(mvm, skb, &info, sta);
-+		ret = iwl_mvm_tx_mpdu(mvm, skb, &info, sta,
-+				      amsdu ? addr3 : NULL);
- 		if (ret) {
- 			/* Free skbs created as part of TSO logic that have not yet been dequeued */
- 			__skb_queue_purge(&mpdus_skbs);
 -- 
 2.34.1
 
