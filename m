@@ -1,53 +1,53 @@
-Return-Path: <linux-wireless+bounces-3093-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3094-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38F36848A2A
-	for <lists+linux-wireless@lfdr.de>; Sun,  4 Feb 2024 02:27:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD688848A2B
+	for <lists+linux-wireless@lfdr.de>; Sun,  4 Feb 2024 02:27:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C4861C2292B
-	for <lists+linux-wireless@lfdr.de>; Sun,  4 Feb 2024 01:27:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 835E1285AF0
+	for <lists+linux-wireless@lfdr.de>; Sun,  4 Feb 2024 01:27:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87A9EEBE;
-	Sun,  4 Feb 2024 01:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8E031864;
+	Sun,  4 Feb 2024 01:27:28 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CC1A79C2
-	for <linux-wireless@vger.kernel.org>; Sun,  4 Feb 2024 01:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E0A138E
+	for <linux-wireless@vger.kernel.org>; Sun,  4 Feb 2024 01:27:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707010044; cv=none; b=Y0VbQ/2RHx+L8zFKsMyo+ytmRkB3fk28gU+Bw651ta86XJ2kafwnRCx6Ezwy615Zt6u7l8URzPo3OSUegVKsbYQn2ELEPHxukhWocpdWevqvugI/D+opWgC4xctL2WgG6T9zX6gIwRU+ClPh3ycbaO+sC5IueDX2qrVDEv8x37A=
+	t=1707010048; cv=none; b=KuVZuO0nuGbBOZrOt45+yHLsIbDHlViQObhbb1/dw3y+FyRMwW4teh+lWvxDakfYnr4LkQ6PjzYqgMl+77CjSNsgGlnj89+3J+db9KBk5vWkFqYo0hfHjcSPwTEzcRdJlR2TO1S+N/O5QpjwoXCPRqwD9671onj1YRzUFjiWw0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707010044; c=relaxed/simple;
-	bh=sENaz1Lqwd/6IV5lgPVijNNGGgMvmX8lHZxL6JXES64=;
+	s=arc-20240116; t=1707010048; c=relaxed/simple;
+	bh=FwPiw4aHy/8BAMS2vI1eoihW7Q4BRxj9UOw3OnvZBPs=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WK2KofoLf3sVhDQktLORTb1jtVwCe/6KbfxxJMi5wGbuGc+xT4w2OSQiua6/vXmZd4ElvkQI7m5r7KU9vHk7NTR9ZNvY8vxIJ9itki4MfIqSKV/Sog09DJkU05RVWFs6QCB0vwhxTawCt0KzlWP/8gm3mIRv6ZcQIQxTRwmTLQ8=
+	 MIME-Version:Content-Type; b=mOMjMDuOtv3m1O19extXo8XJwPXKqeWWQzw1n9wd/CCpsV5TACuME+XjFuC2t7TCi0Aa9xfkixpP/+Y9hJ96wAUARLIDCpEOG8L77Qrp34XKSHtAe6TwgNMxaJ104gRGuhrhYJcceCwJdMnHfDSwxeMuYNnpW5tZ9BKWbySbstk=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4141RGTT02615020, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 4141RGTT02615020
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4141RKxeC2615024, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 4141RKxeC2615024
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 4 Feb 2024 09:27:16 +0800
+	Sun, 4 Feb 2024 09:27:20 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2375.32; Sun, 4 Feb 2024 09:27:16 +0800
+ 15.1.2507.17; Sun, 4 Feb 2024 09:27:20 +0800
 Received: from [127.0.1.1] (172.16.16.254) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Sun, 4 Feb
- 2024 09:27:16 +0800
+ 2024 09:27:20 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <kvalo@kernel.org>
 CC: <linux-wireless@vger.kernel.org>
-Subject: [PATCH v2 3/4] wifi: rtw89: fw: parse secure section from firmware file
-Date: Sun, 4 Feb 2024 09:26:26 +0800
-Message-ID: <20240204012627.9647-4-pkshih@realtek.com>
+Subject: [PATCH v2 4/4] wifi: rtw89: fw: download firmware with key data for secure boot
+Date: Sun, 4 Feb 2024 09:26:27 +0800
+Message-ID: <20240204012627.9647-5-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240204012627.9647-1-pkshih@realtek.com>
 References: <20240204012627.9647-1-pkshih@realtek.com>
@@ -61,378 +61,219 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
 
-A firmware file can contains more than one section with secure type, so
-use secure information from efuse to choose the one with matched
-cryptography method. Then choose key data from MSS poll (multiple security
-section pool; see below picture) according to key_index from efuse.
+Since firmware header contains multiple secure sections, we need to trim
+ignored sections, and then download firmware header with single one secure
+section.
 
-Note that the size of MSS pool isn't included in section size defined
-in firmware header, so we also need to parse header of MSS pool to get
-its size as shift to parse next section.
+For secure boot, when downloading secure section, copy security key data
+from MSS poll by key_idx read from efuse. If non-secure boot, no need this
+extra copy.
 
-If secure boot isn't supported by current hardware, the first secure
-section will be adopted, and no need additional process to key data.
-
-  +---------------------------+
-  |      firmware header      |
-  |                           |
-  | +-----------------------+ |
-  | | section type/size * N-|-|-------+
-  | | ...                   | |       |
-  | +-----------------------+ |       |
-  +---------------------------+       |
-  :                           :       |
-  +---------------------------+ -\    |
-  | secure section type (ID:9)|  |    |
-  |                           |  | <--+
-  |                           |  |
-  +---------------------------+ -/
-  |MSS Pool for above section |
-  |                           |
-  |                           |
-  +---------------------------+
+           +---------------------------+ -\
+           |      firmware header      |  |
+           |                           |  |
+           | +-----------------------+ |  | only preserve single one secure
+           | | section type/size * N | |  | section
+           | | ...                   | |  |
+           | +-----------------------+ |  |
+           +---------------------------+ -/
+           :                           :
+           +---------------------------+ -\
+           | secure section type (ID:9)|  |
+           |                           |  |
+      +----|-> [ security key data ]   |  |
+      |    +---------------------------+ -/
+      |    |MSS Pool for above section |
+      |    |  [ security key data 0 ]  |
+      +----|- [ security key data 1 ]  |
+by key_idx |  [ security key data 2 ]  |
+           |  ...                      |
+           +---------------------------+
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
-v2: use "%tx" to print out differences (subtraction) of two pointers
----
- drivers/net/wireless/realtek/rtw89/fw.c | 202 ++++++++++++++++++++++--
- drivers/net/wireless/realtek/rtw89/fw.h |  39 +++++
- 2 files changed, 227 insertions(+), 14 deletions(-)
+ drivers/net/wireless/realtek/rtw89/fw.c | 95 +++++++++++++++++++++++--
+ drivers/net/wireless/realtek/rtw89/fw.h |  7 +-
+ 2 files changed, 91 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 00417364ab22..1f31d539da1e 100644
+index 1f31d539da1e..9598fe79c771 100644
 --- a/drivers/net/wireless/realtek/rtw89/fw.c
 +++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -13,6 +13,8 @@
- #include "reg.h"
- #include "util.h"
- 
-+static const u8 mss_signature[] = {0x4D, 0x53, 0x53, 0x4B, 0x50, 0x4F, 0x4F, 0x4C};
-+
- union rtw89_fw_element_arg {
- 	size_t offset;
- 	enum rtw89_rf_path rf_path;
-@@ -163,6 +165,161 @@ static int rtw89_fw_hdr_parser_v0(struct rtw89_dev *rtwdev, const u8 *fw, u32 le
- 	return 0;
+@@ -1098,9 +1098,56 @@ static void rtw89_h2c_pkt_set_hdr_fwdl(struct rtw89_dev *rtwdev,
+ 					   len + H2C_HEADER_LEN));
  }
  
-+static int __get_mssc_key_idx(struct rtw89_dev *rtwdev,
-+			      const struct rtw89_fw_mss_pool_hdr *mss_hdr,
-+			      u32 rmp_tbl_size, u32 *key_idx)
-+{
-+	struct rtw89_fw_secure *sec = &rtwdev->fw.sec;
-+	u32 sel_byte_idx;
-+	u32 mss_sel_idx;
-+	u8 sel_bit_idx;
-+	int i;
-+
-+	if (sec->mss_dev_type == RTW89_FW_MSS_DEV_TYPE_FWSEC_DEF) {
-+		if (!mss_hdr->defen)
-+			return -ENOENT;
-+
-+		mss_sel_idx = sec->mss_cust_idx * le16_to_cpu(mss_hdr->msskey_num_max) +
-+			      sec->mss_key_num;
-+	} else {
-+		if (mss_hdr->defen)
-+			mss_sel_idx = FWDL_MSS_POOL_DEFKEYSETS_SIZE << 3;
-+		else
-+			mss_sel_idx = 0;
-+		mss_sel_idx += sec->mss_dev_type * le16_to_cpu(mss_hdr->msskey_num_max) *
-+						   le16_to_cpu(mss_hdr->msscust_max) +
-+			       sec->mss_cust_idx * le16_to_cpu(mss_hdr->msskey_num_max) +
-+			       sec->mss_key_num;
-+	}
-+
-+	sel_byte_idx = mss_sel_idx >> 3;
-+	sel_bit_idx = mss_sel_idx & 0x7;
-+
-+	if (sel_byte_idx >= rmp_tbl_size)
-+		return -EFAULT;
-+
-+	if (!(mss_hdr->rmp_tbl[sel_byte_idx] & BIT(sel_bit_idx)))
-+		return -ENOENT;
-+
-+	*key_idx = hweight8(mss_hdr->rmp_tbl[sel_byte_idx] & (BIT(sel_bit_idx) - 1));
-+
-+	for (i = 0; i < sel_byte_idx; i++)
-+		*key_idx += hweight8(mss_hdr->rmp_tbl[i]);
-+
-+	return 0;
-+}
-+
-+static int __parse_formatted_mssc(struct rtw89_dev *rtwdev,
-+				  struct rtw89_fw_bin_info *info,
-+				  struct rtw89_fw_hdr_section_info *section_info,
-+				  const struct rtw89_fw_hdr_section_v1 *section,
-+				  const void *content,
-+				  u32 *mssc_len)
-+{
-+	const struct rtw89_fw_mss_pool_hdr *mss_hdr = content + section_info->len;
-+	const union rtw89_fw_section_mssc_content *section_content = content;
-+	struct rtw89_fw_secure *sec = &rtwdev->fw.sec;
-+	u32 rmp_tbl_size;
-+	u32 key_sign_len;
-+	u32 real_key_idx;
-+	u32 sb_sel_ver;
-+	int ret;
-+
-+	if (memcmp(mss_signature, mss_hdr->signature, sizeof(mss_signature)) != 0) {
-+		rtw89_err(rtwdev, "[ERR] wrong MSS signature\n");
-+		return -ENOENT;
-+	}
-+
-+	if (mss_hdr->rmpfmt == MSS_POOL_RMP_TBL_BITMASK) {
-+		rmp_tbl_size = (le16_to_cpu(mss_hdr->msskey_num_max) *
-+				le16_to_cpu(mss_hdr->msscust_max) *
-+				mss_hdr->mssdev_max) >> 3;
-+		if (mss_hdr->defen)
-+			rmp_tbl_size += FWDL_MSS_POOL_DEFKEYSETS_SIZE;
-+	} else {
-+		rtw89_err(rtwdev, "[ERR] MSS Key Pool Remap Table Format Unsupport:%X\n",
-+			  mss_hdr->rmpfmt);
-+		return -EINVAL;
-+	}
-+
-+	if (rmp_tbl_size + sizeof(*mss_hdr) != le32_to_cpu(mss_hdr->key_raw_offset)) {
-+		rtw89_err(rtwdev, "[ERR] MSS Key Pool Format Error:0x%X + 0x%X != 0x%X\n",
-+			  rmp_tbl_size, (int)sizeof(*mss_hdr),
-+			  le32_to_cpu(mss_hdr->key_raw_offset));
-+		return -EINVAL;
-+	}
-+
-+	key_sign_len = le16_to_cpu(section_content->key_sign_len.v) >> 2;
-+	if (!key_sign_len)
-+		key_sign_len = 512;
-+
-+	if (info->dsp_checksum)
-+		key_sign_len += FWDL_SECURITY_CHKSUM_LEN;
-+
-+	*mssc_len = sizeof(*mss_hdr) + rmp_tbl_size +
-+		    le16_to_cpu(mss_hdr->keypair_num) * key_sign_len;
-+
-+	if (!sec->secure_boot)
-+		goto out;
-+
-+	sb_sel_ver = le32_to_cpu(section_content->sb_sel_ver.v);
-+	if (sb_sel_ver && sb_sel_ver != sec->sb_sel_mgn)
-+		goto ignore;
-+
-+	ret = __get_mssc_key_idx(rtwdev, mss_hdr, rmp_tbl_size, &real_key_idx);
-+	if (ret)
-+		goto ignore;
-+
-+	section_info->key_addr = content + section_info->len +
-+				le32_to_cpu(mss_hdr->key_raw_offset) +
-+				key_sign_len * real_key_idx;
-+	section_info->key_len = key_sign_len;
-+	section_info->key_idx = real_key_idx;
-+
-+out:
-+	if (info->secure_section_exist) {
-+		section_info->ignore = true;
-+		return 0;
-+	}
-+
-+	info->secure_section_exist = true;
-+
-+	return 0;
-+
-+ignore:
-+	section_info->ignore = true;
-+
-+	return 0;
-+}
-+
-+static int __parse_security_section(struct rtw89_dev *rtwdev,
-+				    struct rtw89_fw_bin_info *info,
-+				    struct rtw89_fw_hdr_section_info *section_info,
-+				    const struct rtw89_fw_hdr_section_v1 *section,
-+				    const void *content,
-+				    u32 *mssc_len)
-+{
-+	int ret;
-+
-+	section_info->mssc =
-+		le32_get_bits(section->w2, FWSECTION_HDR_V1_W2_MSSC);
-+
-+	if (section_info->mssc == FORMATTED_MSSC) {
-+		ret = __parse_formatted_mssc(rtwdev, info, section_info,
-+					     section, content, mssc_len);
-+		if (ret)
-+			return -EINVAL;
-+	} else {
-+		*mssc_len = section_info->mssc * FWDL_SECURITY_SIGLEN;
-+		if (info->dsp_checksum)
-+			*mssc_len += section_info->mssc * FWDL_SECURITY_CHKSUM_LEN;
-+
-+		info->secure_section_exist = true;
-+	}
-+
-+	return 0;
-+}
-+
- static int rtw89_fw_hdr_parser_v1(struct rtw89_dev *rtwdev, const u8 *fw, u32 len,
- 				  struct rtw89_fw_bin_info *info)
+-static int __rtw89_fw_download_hdr(struct rtw89_dev *rtwdev, const u8 *fw, u32 len)
++static u32 __rtw89_fw_download_tweak_hdr_v0(struct rtw89_dev *rtwdev,
++					    struct rtw89_fw_bin_info *info,
++					    struct rtw89_fw_hdr *fw_hdr)
  {
-@@ -173,7 +330,8 @@ static int rtw89_fw_hdr_parser_v1(struct rtw89_dev *rtwdev, const u8 *fw, u32 le
- 	const u8 *fw_end = fw + len;
- 	const u8 *bin;
- 	u32 base_hdr_len;
--	u32 mssc_len = 0;
-+	u32 mssc_len;
-+	int ret;
- 	u32 i;
++	le32p_replace_bits(&fw_hdr->w7, FWDL_SECTION_PER_PKT_LEN,
++			   FW_HDR_W7_PART_SIZE);
++
++	return 0;
++}
++
++static u32 __rtw89_fw_download_tweak_hdr_v1(struct rtw89_dev *rtwdev,
++					    struct rtw89_fw_bin_info *info,
++					    struct rtw89_fw_hdr_v1 *fw_hdr)
++{
++	struct rtw89_fw_hdr_section_info *section_info;
++	struct rtw89_fw_hdr_section_v1 *section;
++	u8 dst_sec_idx = 0;
++	u8 sec_idx;
++
++	le32p_replace_bits(&fw_hdr->w7, FWDL_SECTION_PER_PKT_LEN,
++			   FW_HDR_V1_W7_PART_SIZE);
++
++	for (sec_idx = 0; sec_idx < info->section_num; sec_idx++) {
++		section_info = &info->section_info[sec_idx];
++		section = &fw_hdr->sections[sec_idx];
++
++		if (section_info->ignore)
++			continue;
++
++		if (dst_sec_idx != sec_idx)
++			fw_hdr->sections[dst_sec_idx] = *section;
++
++		dst_sec_idx++;
++	}
++
++	le32p_replace_bits(&fw_hdr->w6, dst_sec_idx, FW_HDR_V1_W6_SEC_NUM);
++
++	return (info->section_num - dst_sec_idx) * sizeof(*section);
++}
++
++static int __rtw89_fw_download_hdr(struct rtw89_dev *rtwdev,
++				   const struct rtw89_fw_suit *fw_suit,
++				   struct rtw89_fw_bin_info *info)
++{
++	u32 len = info->hdr_len - info->dynamic_hdr_len;
++	struct rtw89_fw_hdr_v1 *fw_hdr_v1;
++	const u8 *fw = fw_suit->data;
++	struct rtw89_fw_hdr *fw_hdr;
+ 	struct sk_buff *skb;
++	u32 truncated;
+ 	u32 ret = 0;
  
- 	info->section_num = le32_get_bits(fw_hdr->w6, FW_HDR_V1_W6_SEC_NUM);
-@@ -200,18 +358,9 @@ static int rtw89_fw_hdr_parser_v1(struct rtw89_dev *rtwdev, const u8 *fw, u32 le
- 	section_info = info->section_info;
- 	for (i = 0; i < info->section_num; i++) {
- 		section = &fw_hdr->sections[i];
-+
- 		section_info->type =
- 			le32_get_bits(section->w1, FWSECTION_HDR_V1_W1_SECTIONTYPE);
--		if (section_info->type == FWDL_SECURITY_SECTION_TYPE) {
--			section_info->mssc =
--				le32_get_bits(section->w2, FWSECTION_HDR_V1_W2_MSSC);
--			mssc_len += section_info->mssc * FWDL_SECURITY_SIGLEN;
--			if (info->dsp_checksum)
--				mssc_len += section_info->mssc * FWDL_SECURITY_CHKSUM_LEN;
--		} else {
--			section_info->mssc = 0;
--		}
--
- 		section_info->len =
- 			le32_get_bits(section->w1, FWSECTION_HDR_V1_W1_SEC_SIZE);
- 		if (le32_get_bits(section->w1, FWSECTION_HDR_V1_W1_CHECKSUM))
-@@ -220,15 +369,40 @@ static int rtw89_fw_hdr_parser_v1(struct rtw89_dev *rtwdev, const u8 *fw, u32 le
- 		section_info->dladdr =
- 			le32_get_bits(section->w0, FWSECTION_HDR_V1_W0_DL_ADDR);
- 		section_info->addr = bin;
--		bin += section_info->len;
-+
-+		if (section_info->type == FWDL_SECURITY_SECTION_TYPE) {
-+			ret = __parse_security_section(rtwdev, info, section_info,
-+						       section, bin, &mssc_len);
-+			if (ret)
-+				return ret;
-+		} else {
-+			section_info->mssc = 0;
-+			mssc_len = 0;
-+		}
-+
-+		rtw89_debug(rtwdev, RTW89_DBG_FW,
-+			    "section[%d] type=%d len=0x%-6x mssc=%d mssc_len=%d addr=%tx\n",
-+			    i, section_info->type, section_info->len,
-+			    section_info->mssc, mssc_len, bin - fw);
-+		rtw89_debug(rtwdev, RTW89_DBG_FW,
-+			    "           ignore=%d key_addr=%p (0x%tx) key_len=%d key_idx=%d\n",
-+			    section_info->ignore, section_info->key_addr,
-+			    section_info->key_addr ?
-+			    section_info->key_addr - section_info->addr : 0,
-+			    section_info->key_len, section_info->key_idx);
-+
-+		bin += section_info->len + mssc_len;
- 		section_info++;
+ 	skb = rtw89_fw_h2c_alloc_skb_with_hdr(rtwdev, len);
+@@ -1110,7 +1157,26 @@ static int __rtw89_fw_download_hdr(struct rtw89_dev *rtwdev, const u8 *fw, u32 l
  	}
  
--	if (fw_end != bin + mssc_len) {
-+	if (fw_end != bin) {
- 		rtw89_err(rtwdev, "[ERR]fw bin size\n");
- 		return -EINVAL;
- 	}
- 
-+	if (!info->secure_section_exist)
-+		rtw89_warn(rtwdev, "no firmware secure section\n");
+ 	skb_put_data(skb, fw, len);
+-	SET_FW_HDR_PART_SIZE(skb->data, FWDL_SECTION_PER_PKT_LEN);
 +
- 	return 0;
++	switch (fw_suit->hdr_ver) {
++	case 0:
++		fw_hdr = (struct rtw89_fw_hdr *)skb->data;
++		truncated = __rtw89_fw_download_tweak_hdr_v0(rtwdev, info, fw_hdr);
++		break;
++	case 1:
++		fw_hdr_v1 = (struct rtw89_fw_hdr_v1 *)skb->data;
++		truncated = __rtw89_fw_download_tweak_hdr_v1(rtwdev, info, fw_hdr_v1);
++		break;
++	default:
++		ret = -EOPNOTSUPP;
++		goto fail;
++	}
++
++	if (truncated) {
++		len -= truncated;
++		skb_trim(skb, len);
++	}
++
+ 	rtw89_h2c_pkt_set_hdr_fwdl(rtwdev, skb, FWCMD_TYPE_H2C,
+ 				   H2C_CAT_MAC, H2C_CL_MAC_FWDL,
+ 				   H2C_FUNC_MAC_FWHDR_DL, len);
+@@ -1129,12 +1195,14 @@ static int __rtw89_fw_download_hdr(struct rtw89_dev *rtwdev, const u8 *fw, u32 l
+ 	return ret;
  }
  
-@@ -1106,7 +1280,7 @@ static int rtw89_fw_download_suit(struct rtw89_dev *rtwdev,
- 				  struct rtw89_fw_suit *fw_suit)
+-static int rtw89_fw_download_hdr(struct rtw89_dev *rtwdev, const u8 *fw, u32 len)
++static int rtw89_fw_download_hdr(struct rtw89_dev *rtwdev,
++				 const struct rtw89_fw_suit *fw_suit,
++				 struct rtw89_fw_bin_info *info)
  {
  	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
--	struct rtw89_fw_bin_info info;
-+	struct rtw89_fw_bin_info info = {};
  	int ret;
  
- 	ret = rtw89_fw_hdr_parser(rtwdev, fw_suit, &info);
+-	ret = __rtw89_fw_download_hdr(rtwdev, fw, len);
++	ret = __rtw89_fw_download_hdr(rtwdev, fw_suit, info);
+ 	if (ret) {
+ 		rtw89_err(rtwdev, "[ERR]FW header download\n");
+ 		return ret;
+@@ -1158,9 +1226,21 @@ static int __rtw89_fw_download_main(struct rtw89_dev *rtwdev,
+ 	struct sk_buff *skb;
+ 	const u8 *section = info->addr;
+ 	u32 residue_len = info->len;
++	bool copy_key = false;
+ 	u32 pkt_len;
+ 	int ret;
+ 
++	if (info->ignore)
++		return 0;
++
++	if (info->key_addr && info->key_len) {
++		if (info->len > FWDL_SECTION_PER_PKT_LEN || info->len < info->key_len)
++			rtw89_warn(rtwdev, "ignore to copy key data because of len %d, %d, %d\n",
++				   info->len, FWDL_SECTION_PER_PKT_LEN, info->key_len);
++		else
++			copy_key = true;
++	}
++
+ 	while (residue_len) {
+ 		if (residue_len >= FWDL_SECTION_PER_PKT_LEN)
+ 			pkt_len = FWDL_SECTION_PER_PKT_LEN;
+@@ -1174,6 +1254,10 @@ static int __rtw89_fw_download_main(struct rtw89_dev *rtwdev,
+ 		}
+ 		skb_put_data(skb, section, pkt_len);
+ 
++		if (copy_key)
++			memcpy(skb->data + pkt_len - info->key_len,
++			       info->key_addr, info->key_len);
++
+ 		ret = rtw89_h2c_tx(rtwdev, skb, true);
+ 		if (ret) {
+ 			rtw89_err(rtwdev, "failed to send h2c\n");
+@@ -1299,8 +1383,7 @@ static int rtw89_fw_download_suit(struct rtw89_dev *rtwdev,
+ 		return ret;
+ 	}
+ 
+-	ret = rtw89_fw_download_hdr(rtwdev, fw_suit->data, info.hdr_len -
+-							   info.dynamic_hdr_len);
++	ret = rtw89_fw_download_hdr(rtwdev, fw_suit, &info);
+ 	if (ret)
+ 		return ret;
+ 
 diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
-index 5b536c2e365d..c05ddb0d5900 100644
+index c05ddb0d5900..58e4802cb766 100644
 --- a/drivers/net/wireless/realtek/rtw89/fw.h
 +++ b/drivers/net/wireless/realtek/rtw89/fw.h
-@@ -230,6 +230,10 @@ struct rtw89_fw_hdr_section_info {
- 	u32 dladdr;
- 	u32 mssc;
- 	u8 type;
-+	bool ignore;
-+	const u8 *key_addr;
-+	u32 key_len;
-+	u32 key_idx;
- };
+@@ -526,6 +526,7 @@ struct rtw89_fw_hdr {
+ #define FW_HDR_W4_MIN GENMASK(31, 24)
+ #define FW_HDR_W5_YEAR GENMASK(31, 0)
+ #define FW_HDR_W6_SEC_NUM GENMASK(15, 8)
++#define FW_HDR_W7_PART_SIZE GENMASK(15, 0)
+ #define FW_HDR_W7_DYN_HDR BIT(16)
+ #define FW_HDR_W7_CMD_VERSERION GENMASK(31, 24)
  
- struct rtw89_fw_bin_info {
-@@ -238,6 +242,7 @@ struct rtw89_fw_bin_info {
- 	bool dynamic_hdr_en;
- 	u32 dynamic_hdr_len;
- 	bool dsp_checksum;
-+	bool secure_section_exist;
- 	struct rtw89_fw_hdr_section_info section_info[FWDL_SECTION_MAX_NUM];
- };
+@@ -577,13 +578,9 @@ struct rtw89_fw_hdr_v1 {
+ #define FW_HDR_V1_W5_HDR_SIZE GENMASK(31, 16)
+ #define FW_HDR_V1_W6_SEC_NUM GENMASK(15, 8)
+ #define FW_HDR_V1_W6_DSP_CHKSUM BIT(24)
++#define FW_HDR_V1_W7_PART_SIZE GENMASK(15, 0)
+ #define FW_HDR_V1_W7_DYN_HDR BIT(16)
  
-@@ -538,6 +543,7 @@ struct rtw89_fw_hdr_section_v1 {
- #define FWSECTION_HDR_V1_W1_CHECKSUM BIT(28)
- #define FWSECTION_HDR_V1_W1_REDL BIT(29)
- #define FWSECTION_HDR_V1_W2_MSSC GENMASK(7, 0)
-+#define FORMATTED_MSSC 0xFF
- #define FWSECTION_HDR_V1_W2_BBMCU_IDX GENMASK(27, 24)
- 
- struct rtw89_fw_hdr_v1 {
-@@ -578,6 +584,39 @@ static inline void SET_FW_HDR_PART_SIZE(void *fwhdr, u32 val)
- 	le32p_replace_bits((__le32 *)fwhdr + 7, val, GENMASK(15, 0));
- }
- 
-+enum rtw89_fw_mss_pool_rmp_tbl_type {
-+	MSS_POOL_RMP_TBL_BITMASK = 0x0,
-+	MSS_POOL_RMP_TBL_RECORD = 0x1,
-+};
-+
-+#define FWDL_MSS_POOL_DEFKEYSETS_SIZE 8
-+
-+struct rtw89_fw_mss_pool_hdr {
-+	u8 signature[8]; /* equal to mss_signature[] */
-+	__le32 rmp_tbl_offset;
-+	__le32 key_raw_offset;
-+	u8 defen;
-+	u8 rsvd[3];
-+	u8 rmpfmt; /* enum rtw89_fw_mss_pool_rmp_tbl_type */
-+	u8 mssdev_max;
-+	__le16 keypair_num;
-+	__le16 msscust_max;
-+	__le16 msskey_num_max;
-+	__le32 rsvd3;
-+	u8 rmp_tbl[];
-+} __packed;
-+
-+union rtw89_fw_section_mssc_content {
-+	struct {
-+		u8 pad[58];
-+		__le32 v;
-+	} __packed sb_sel_ver;
-+	struct {
-+		u8 pad[60];
-+		__le16 v;
-+	} __packed key_sign_len;
-+} __packed;
-+
- static inline void SET_CTRL_INFO_MACID(void *table, u32 val)
- {
- 	le32p_replace_bits((__le32 *)(table) + 0, val, GENMASK(6, 0));
+-static inline void SET_FW_HDR_PART_SIZE(void *fwhdr, u32 val)
+-{
+-	le32p_replace_bits((__le32 *)fwhdr + 7, val, GENMASK(15, 0));
+-}
+-
+ enum rtw89_fw_mss_pool_rmp_tbl_type {
+ 	MSS_POOL_RMP_TBL_BITMASK = 0x0,
+ 	MSS_POOL_RMP_TBL_RECORD = 0x1,
 -- 
 2.25.1
 
