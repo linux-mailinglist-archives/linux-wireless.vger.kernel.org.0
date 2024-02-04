@@ -1,186 +1,139 @@
-Return-Path: <linux-wireless+bounces-3097-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3098-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72F10848CF5
-	for <lists+linux-wireless@lfdr.de>; Sun,  4 Feb 2024 11:48:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33A4584906D
+	for <lists+linux-wireless@lfdr.de>; Sun,  4 Feb 2024 21:44:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF77D1F22063
-	for <lists+linux-wireless@lfdr.de>; Sun,  4 Feb 2024 10:48:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF75BB21099
+	for <lists+linux-wireless@lfdr.de>; Sun,  4 Feb 2024 20:43:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7134B219E0;
-	Sun,  4 Feb 2024 10:48:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 952A925567;
+	Sun,  4 Feb 2024 20:43:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="A5tLSkNI"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=marliere.net header.i=@marliere.net header.b="XSXWJJI4"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BBB92137A
-	for <linux-wireless@vger.kernel.org>; Sun,  4 Feb 2024 10:48:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=134.134.136.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA37B249EF;
+	Sun,  4 Feb 2024 20:43:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707043711; cv=none; b=VMHgrNxaBJWWbAZiHLrcanUpsP90c5VArPD4+JFsSGYHTD1u+afwGa135KPVz9Mj7NCAY56YotSt3ijhonPaGDgCTpeFkd4uwFhUkW0EjvQ66winsNEatsED0xr9e8WueHFEYVDzG7Wl2ft6O71ScGrGfVhe8ZYpt+Vrgdn1L8k=
+	t=1707079435; cv=none; b=hrsADmj/S78gMV8IMKn6crEjb7HcJRYxZVdZnMmWGuAFTXcBMaEAk/zYStLP2rDDmXE/eD6LqsOTco/4PT7oWdlVvdiuNz7R05skWVD6sIP5b9tLsM71T1pEVDQj0NEmVD1FICFxtwgCp1vXUW/2AGBTalIrGy3/nGmibE8+plk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707043711; c=relaxed/simple;
-	bh=m0UKWlOKYZcqm4JvgzpiFa8bLkFvDr+cxVmXwmtg/sY=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=mIJq2xzsTq3UXXZH990+lwQem1iE8iJ7a+g01FeX3IZ1wyYMgxbPh9zoNJw+CGzZNGV35WiRdcrGoiTSEuxVCNzbKKlb1uvdoYetT0lIgiPgFlIdbHhA6laopuVmLuUEvq3V//+vrMSmMsUTs/OEB4aUbWj090W1fBWfcJnx0p4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=A5tLSkNI; arc=none smtp.client-ip=134.134.136.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707043709; x=1738579709;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=m0UKWlOKYZcqm4JvgzpiFa8bLkFvDr+cxVmXwmtg/sY=;
-  b=A5tLSkNIm5/FiZQkCHV0BigfmbZX0rS/M1QnJkgX9sw0qhFd+urDot8F
-   dD6ts34ydvJEVsS91LikMBPpgux7vHRYfusJs/RSMTYeZcr50E4r2oFNr
-   fA+k+rMrhPSkPX6yCUjx2pCelUOpH5exMhLnsGJOoEYXIzg5pn7iMr7fq
-   ht773QTI6dr1k/jCquQc2fdWlnZHmAn8jGVmvzQNP5s1AGKwHPyvKxR2m
-   DdexCNBJR8XxQ/GhqkqIoEMJfsxk3rQO+ubAvsqqQZq0usyYxVq0y99n/
-   cuP+0cPjrRJHA8ySh+RUX845c0pA888bhq2vthiR2CKQyyR3sUxXK2KxU
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10973"; a="394807974"
-X-IronPort-AV: E=Sophos;i="6.05,242,1701158400"; 
-   d="scan'208";a="394807974"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2024 02:48:26 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,242,1701158400"; 
-   d="scan'208";a="5097347"
-Received: from lkp-server02.sh.intel.com (HELO 59f4f4cd5935) ([10.239.97.151])
-  by fmviesa003.fm.intel.com with ESMTP; 04 Feb 2024 02:48:24 -0800
-Received: from kbuild by 59f4f4cd5935 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rWa2v-0006GO-2z;
-	Sun, 04 Feb 2024 10:48:21 +0000
-Date: Sun, 4 Feb 2024 18:47:38 +0800
-From: kernel test robot <lkp@intel.com>
-To: Benjamin Berg <benjamin.berg@intel.com>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [wireless-next:main 29/68] ERROR: modpost: vmlinux: local symbol
- 'cfg80211_free_coloc_ap_list' was exported
-Message-ID: <202402041855.pihpkv00-lkp@intel.com>
+	s=arc-20240116; t=1707079435; c=relaxed/simple;
+	bh=+J2CwGJATVSTrkTar827B811DKBVEBvn5hOTkh8S6a4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ogq18lSsU0PStu81SpW3VYz/io+pHTyppKl2chOkdOeCoxoPocVPYZYX3v/+Fsj7f5UTBTvWASjDr49evd9iYi2kCgiWtgY+h7Ff/VdREaHzdjoh22T/N36g+5UdYhDRE65QyVJc29/2eCk5EjoBBxcAqdQaNG/qIWPTQtfEvqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=marliere.net; spf=pass smtp.mailfrom=gmail.com; dkim=fail (0-bit key) header.d=marliere.net header.i=@marliere.net header.b=XSXWJJI4 reason="key not found in DNS"; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=marliere.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-1d958e0d73dso19185805ad.1;
+        Sun, 04 Feb 2024 12:43:53 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707079433; x=1707684233;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:dkim-signature:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=r75W2kNreUlmx6m2oyR+QjbDy53Ws3L45/ED6d0a1BQ=;
+        b=XNH+uzOQgf1RUhEYNjB4nbw3HgZQUrLpDzs80O0PooU9iGtnF4twXElNMpNuCyPT7b
+         oEb0yKR6K+9nvfG8SRoDE9N024hof650lR+WWGDHUxu7FyQCDQoOkYDqypqe1MloAtWN
+         8Yl6BCC0C6Uhh4ElNYCm7TYNM0ZOPXuLpA0o6w0yjn7Riqh4d0UX1Lss0+xdYuh86lJV
+         f59I5A6A2Ji12LXEnZB4OcigJYXsioayUZldqsn5dvYF+LAOh2f5hU5oOGw5+vfUpu5Y
+         7QF2OhHSwrW40ljydjCTDS3BKK3dhKJxma6Itv+UjXVTKwNDvDhIy4/iyo84FP5au/tp
+         +QbQ==
+X-Gm-Message-State: AOJu0YzDiuVU7MerlqUX1n6BNAhoP/1hEFwdHJ6eznDV1zZqOi+KQpSc
+	//bWy0BAlUWuHiCaS3UfUTIvfo0JTht8NZf0jHE52tQADvUm8paoWwE8ys/GB27cwA==
+X-Google-Smtp-Source: AGHT+IHJJxIBfK4BeKJlqE9ezfM755xyffvp6qbG8CYhhNOz25hN3X4w/E46pWC4Sagyo0dI9QgQ3Q==
+X-Received: by 2002:a17:903:32c5:b0:1d3:f344:6b01 with SMTP id i5-20020a17090332c500b001d3f3446b01mr6463346plr.3.1707079433214;
+        Sun, 04 Feb 2024 12:43:53 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCWDKUIBa5raN42BsRh/DAMnRw+fqK5zk4pB8zKbARWdMRS+cwtSu9CJ41SA9F3b3s8g/I80KscBuJyEbw2APMZ/56eBhWc6V1z/drRut0Mqe/2aNgB0ug+FC3XIlVuKFY0Zjsg/U9qjcw==
+Received: from mail.marliere.net ([24.199.118.162])
+        by smtp.gmail.com with ESMTPSA id jc18-20020a17090325d200b001d9537cf238sm4911349plb.295.2024.02.04.12.43.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 04 Feb 2024 12:43:52 -0800 (PST)
+From: "Ricardo B. Marliere" <ricardo@marliere.net>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marliere.net;
+	s=2023; t=1707079430;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=r75W2kNreUlmx6m2oyR+QjbDy53Ws3L45/ED6d0a1BQ=;
+	b=XSXWJJI4qUCMZI2qweezFbcv0l7FuH5vxCTz18+MI0yrJf1NS70IXskuVrBRsOw5WlPbHl
+	cRIsuybjgyPNvVoJhRKRcYcr4+SodaOGbXjHIlQ3kaqHsg4/fotwhiPKY0J3CHrUEINuyY
+	bCj/Q7B0gySSvhClpfugYHu9/4BaMNKI54kDHDWxvP2wxS8SWD63bVWIeAo1VkgeXvOqnZ
+	yrD5okZI3ybto7HF7Abk9PuylMNvyvgHnhBYm8DJK0G4BvhhUeeAOTBD1xGObX7LAFZOjv
+	i4Y0yDK1hhNpJR+/IxZdpeMtoUnc6MUh0454B3a3/w4oM73pc/XUjbsJy+VkLQ==
+Authentication-Results: ORIGINATING;
+	auth=pass smtp.auth=ricardo@marliere.net smtp.mailfrom=ricardo@marliere.net
+Date: Sun, 04 Feb 2024 17:44:21 -0300
+Subject: [PATCH] ssb: make ssb_bustype const
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240204-bus_cleanup-ssb-v1-1-511026cd5f3c@marliere.net>
+X-B4-Tracking: v=1; b=H4sIACT3v2UC/x3MOwqAMBBF0a3I1AZiCBZuRUTyeeqARMkQEcS9G
+ yxPce9DgswQGpqHMi4WPlJF1zYUNpdWKI7VZLSx2mirfJE57HCpnErEq946LBbRGQ2q1Zmx8P0
+ fx+l9P1jFjdhhAAAA
+To: Michael Buesch <m@bues.ch>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Ricardo B. Marliere" <ricardo@marliere.net>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1071; i=ricardo@marliere.net;
+ h=from:subject:message-id; bh=+J2CwGJATVSTrkTar827B811DKBVEBvn5hOTkh8S6a4=;
+ b=owEBbQKS/ZANAwAKAckLinxjhlimAcsmYgBlv/cliSEkbwXjTFuKttXxHU9xmnboK86waA00r
+ RQxrQcdymiJAjMEAAEKAB0WIQQDCo6eQk7jwGVXh+HJC4p8Y4ZYpgUCZb/3JQAKCRDJC4p8Y4ZY
+ pkC4EACsdmCHPFIx1PuIV15g1OQZ4SKC0lSWJ/UvhmF7vqsdqKAPt+Rxt/nofPWm6yXmOx0qCu0
+ AVL3aM/B8xhS8Lyqz0ZqM/trelK9enFyD92QBtZHRtBRvJtwHKv/qVnccETEh7R12kiOk1lQTDv
+ XeyajF3zFd+6go++eUGHN1ufvyWcEH4Ev158+fBx1Z6DlXIkyP9Z3qgdbfzZIr1MohLZCoII5At
+ hyZNmzoHOvYGSQacfEZAHCO3Vk7xGfMzu2YFy5dcE9I3Z/iXR+Q4KKtpNDiN7jRtSvdt3Jq7TVw
+ WbuBu2U5u7Xn90XXwcLsV8KOMIZpHyqyXkRznijmpiU9d2Ho66cYfgti1HB+K6QLXtaRuDojt9h
+ cR0oMM0so/mEO/JqpBxPuRVfangED4esSZV5alsBLTvcP3O+gX9pJCZhe8WQ30k4URjO9IM1OCf
+ j03g6o+snspMg6E9orPhFdHzW6+3mxTYzcAZuLSz3Pv6VqZfZoHHiiKspZXvwcT+ftcZLQeY7Pa
+ 5JdjyZnIjME76ycuC8YXxFsI7l0aGB/+JqY+pLvtxytEhcHsF7WY5+ZGgH7M8+1IYK+1O0qdwNd
+ NNKbGFb0fMnUKr8YhanHOn1mJyEsSJeleROt7jRLiwjE/GPc/s3AkNZTpSMl3Sggx/nz95JP/U2
+ xmnUCEiPcJUrdxQ==
+X-Developer-Key: i=ricardo@marliere.net; a=openpgp;
+ fpr=030A8E9E424EE3C0655787E1C90B8A7C638658A6
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-head:   5932ad87828b267649d750869c89c0f1a3873477
-commit: 45d43937a44c806b8649323b8f5d9f42ae838b0e [29/68] wifi: cfg80211: add a kunit test for 6 GHz colocated AP parsing
-config: i386-randconfig-016-20240204 (https://download.01.org/0day-ci/archive/20240204/202402041855.pihpkv00-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240204/202402041855.pihpkv00-lkp@intel.com/reproduce)
+Now that the driver core can properly handle constant struct bus_type,
+move the ssb_bustype variable to be a constant structure as well,
+placing it into read-only memory which can not be modified at runtime.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202402041855.pihpkv00-lkp@intel.com/
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ricardo B. Marliere <ricardo@marliere.net>
+---
+ drivers/ssb/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-All errors (new ones prefixed by >>, old ones prefixed by <<):
+diff --git a/drivers/ssb/main.c b/drivers/ssb/main.c
+index b9934b9c2d70..9f30e0edadfe 100644
+--- a/drivers/ssb/main.c
++++ b/drivers/ssb/main.c
+@@ -384,7 +384,7 @@ static struct attribute *ssb_device_attrs[] = {
+ };
+ ATTRIBUTE_GROUPS(ssb_device);
+ 
+-static struct bus_type ssb_bustype = {
++static const struct bus_type ssb_bustype = {
+ 	.name		= "ssb",
+ 	.match		= ssb_bus_match,
+ 	.probe		= ssb_device_probe,
 
-WARNING: modpost: missing MODULE_DESCRIPTION() in vmlinux.o
->> ERROR: modpost: vmlinux: local symbol 'cfg80211_free_coloc_ap_list' was exported
->> ERROR: modpost: vmlinux: local symbol 'cfg80211_parse_colocated_ap' was exported
-WARNING: modpost: missing MODULE_DESCRIPTION() in arch/x86/crypto/crc32-pclmul.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in kernel/time/time_test.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/ext4/ext4-inode-test.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_cp864.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_cp869.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_cp874.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_cp936.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_cp950.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_iso8859-1.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_iso8859-4.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_iso8859-7.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_cp1255.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_iso8859-13.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_iso8859-15.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/mac-gaelic.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/mac-roman.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/minix/minix.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/fat/fat.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/fat/fat_test.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/ufs/ufs.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/qnx4/qnx4.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/btrfs/btrfs.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in security/apparmor/apparmor_policy_unpack_test.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in crypto/xor.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in lib/kunit/kunit.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in lib/kunit/kunit-example-test.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in lib/zlib_deflate/zlib_deflate.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/video/backlight/platform_lcd.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/video/fbdev/vfb.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/acpi/acpi_tad.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/acpi/custom_method.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/clk/clk_test.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/dma/qcom/hdma_mgmt.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/dma/qcom/hdma.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/regulator/max20411-regulator.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/char/lp.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/char/nvram.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/char/ppdev.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/char/tlclk.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/base/regmap/regmap-kunit.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/base/regmap/regmap-ram.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/base/regmap/regmap-raw-ram.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/base/regmap/regmap-w1.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/base/regmap/regmap-spi-avmm.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/mfd/pcf50633-gpio.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/mfd/rt4831.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/nvme/target/nvmet.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/nvme/target/nvme-loop.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/firewire/firewire-uapi-test.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/auxdisplay/line-display.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/usb/storage/uas.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/usb/serial/usb_debug.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/usb/serial/qcaux.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/usb/serial/symbolserial.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/usb/misc/isight_firmware.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/usb/gadget/libcomposite.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/usb/gadget/function/usb_f_acm.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/usb/gadget/function/usb_f_ss_lb.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/usb/gadget/function/u_serial.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/usb/gadget/function/usb_f_serial.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/usb/gadget/function/usb_f_obex.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/usb/gadget/function/u_ether.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/usb/gadget/function/usb_f_ecm.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/usb/gadget/function/usb_f_phonet.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/usb/gadget/function/usb_f_eem.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/usb/gadget/function/usb_f_ecm_subset.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/usb/gadget/function/usb_f_rndis.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/usb/gadget/function/usb_f_mass_storage.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/usb/gadget/function/usb_f_fs.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/usb/gadget/function/usb_f_hid.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/usb/gadget/function/usb_f_tcm.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/usb/gadget/legacy/g_zero.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/usb/gadget/legacy/g_dbgp.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/input/tests/input_test.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/media/tuners/tda9887.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hwmon/mr75203.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/watchdog/twl4030_wdt.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/platform/chrome/cros_kunit_proto_test.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hwtracing/intel_th/intel_th_msu_sink.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/siox/siox-bus-gpio.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/parport/parport.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/mtd/chips/cfi_util.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/mtd/chips/cfi_cmdset_0020.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/mtd/maps/map_funcs.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/uio/uio.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in arch/x86/video/fbdev.o
+---
+base-commit: 41b9fb381a486360b2daaec0c7480f8e3ff72bc7
+change-id: 20240204-bus_cleanup-ssb-64aef4eda20e
 
+Best regards,
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Ricardo B. Marliere <ricardo@marliere.net>
+
 
