@@ -1,60 +1,63 @@
-Return-Path: <linux-wireless+bounces-3123-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3124-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B80858493FB
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Feb 2024 07:47:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71425849574
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Feb 2024 09:37:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8E026B21770
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Feb 2024 06:47:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CA73286D14
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Feb 2024 08:37:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A39529470;
-	Mon,  5 Feb 2024 06:47:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ED961170A;
+	Mon,  5 Feb 2024 08:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YcirWRh0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m3Hbhpsx"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7364610A01;
-	Mon,  5 Feb 2024 06:47:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD7011709
+	for <linux-wireless@vger.kernel.org>; Mon,  5 Feb 2024 08:37:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707115628; cv=none; b=ZeQ6z6o6Lq093cqT9/l9j9L7rcUSopVTom1SAc8JZ6s3pJ5kk5LYqMsZZZe6DNj4ZTE/AgB/QaSkUD24kaOp4d9yryHt80se7sHiFuIsQVPGwajCHT3KbroMm8SjrLx4YKIdY3/ho6XTR4ptchIEEMI7j+Abzjj8/OPb35v7zPI=
+	t=1707122245; cv=none; b=OMUKvQQVzIke2vKvghWxHrNDFjDtzpzKnM1zYRhh9vN7M+8WqBBpYI6Z1ClX7n94sqkxW0/HpotNZG6JlZI5Grj3i9lkBMYkpIrUZcz+nBNfiqIngS/ODmvo6Uk6y/R0GJXFGE3wgsEun2qb8eIXhrk0ayVkkHjoL3sW21Qtb6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707115628; c=relaxed/simple;
-	bh=Mh6q3wecDnnNR+I+giA4evuf5uybfb/YiS5cInRPXrA=;
+	s=arc-20240116; t=1707122245; c=relaxed/simple;
+	bh=hK6G4oM70wwT1JwJR2gW0vwH7YkiLydC22reeLWHZuM=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=A4pk+yFVlBrgti3ApThTd8DnZIgsZ+QWRNhJDhPSM4kgLqDKwmEOInM7ktoy53vRIX7VDOWSldxKj2uxJll/PSt2+fYYRKAZjRFHMJpCaSPA8PTWQ/mciwq+LqGbF/uxK0KxZdY01No0H7z18og+tXyf/KgPEQ4e48sdvhrgAnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YcirWRh0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BF7BC433F1;
-	Mon,  5 Feb 2024 06:47:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JlTexDT8C84P576Gfa3AUnAQ3sfWnMJ3JqGpRjAo01EusM/ajpuf99AnGJ3blNAEa3d8gUFow8swIlvbPCPRouSDUKKN5D+eYYEbYn5KDbJqnfnexsE1JbnRcCXSurJ1sC/HxQridr+qlOxZxk1YbUHqfZ9ry/vWgY2VPdGf2Pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m3Hbhpsx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FFDDC433C7;
+	Mon,  5 Feb 2024 08:37:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707115628;
-	bh=Mh6q3wecDnnNR+I+giA4evuf5uybfb/YiS5cInRPXrA=;
+	s=k20201202; t=1707122244;
+	bh=hK6G4oM70wwT1JwJR2gW0vwH7YkiLydC22reeLWHZuM=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=YcirWRh0k+9sxyoaALUxlh53zP42tNLWMzeqN29bfhT1zuLr2SsV6n7PFTNoqhlsq
-	 5ZflQp8GF8Tn4mlYWO8Sacf8jrHYV7zGkr3nWygF1i+mCdUox74sb1qreH1bmDqzOU
-	 MiRoqZNnLsCFwJCgscfw9IkA7mhVhMymqdUleWFdhRwp71uAqzxYQexd6ardLRPzg1
-	 +PkoZHy6EE4PksMBK6d8Qdr4gScpwHYvqxaQQzmEDs5n88TWCllUclugQeFMxMpNQG
-	 4pP8iWmHyqi91HxB/rNKLwaJHCXymSJt04KRpd541jl6KlSDEwtyS7eMlWDPFWKWXI
-	 ZVAXqeFGnf9zw==
+	b=m3Hbhpsx6lWAIIskYed3JtA0efoq9FZuf6aWtayWu2B4Pst+3i1sCegxfHx4V9ktX
+	 9G2PsUG85ww6CNI4n9dEvNXs8dGdEJshjJecOy4dnZKyuivEEzh2Lg6rIcvO4uOESz
+	 qw49aq+5GXbOr+SZVIzsMo5JVBAq6WJcV8Ol2HodtCejHS6IU2lp0ZIugQM4YByC4D
+	 bd48Wwy2FSX2K3EQV6lsOUGNiQSlX7AbgYDloNaZxto0VeH4akupSYKjL9rOqo0e8c
+	 q8kH3dw/Ce8EYidgsGjHUiQFXG7Azs3s/0AdsdN6oX6YJpnCrwsSv34/c6ns12FrRc
+	 DqWWfdVEJNTbQ==
 From: Kalle Valo <kvalo@kernel.org>
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: "lkp@intel.com" <lkp@intel.com>,  "linux-wireless@vger.kernel.org"
- <linux-wireless@vger.kernel.org>,  "oe-kbuild-all@lists.linux.dev"
- <oe-kbuild-all@lists.linux.dev>
-Subject: Re: [PATCH 3/4] wifi: rtw89: fw: parse secure section from firmware
- file
-References: <20240203003251.10641-4-pkshih@realtek.com>
-	<202402040350.rRpOepoU-lkp@intel.com>
-	<e645b875c771216f688ae106abd5be86aff59b42.camel@realtek.com>
-Date: Mon, 05 Feb 2024 08:47:04 +0200
-In-Reply-To: <e645b875c771216f688ae106abd5be86aff59b42.camel@realtek.com>
-	(Ping-Ke Shih's message of "Sun, 4 Feb 2024 01:31:45 +0000")
-Message-ID: <87wmrjs907.fsf@kernel.org>
+To: <sean.wang@mediatek.com>
+Cc: <nbd@nbd.name>,  <lorenzo.bianconi@redhat.com>,
+  <Soul.Huang@mediatek.com>,  <Leon.Yen@mediatek.com>,
+  <Eric-SY.Chang@mediatek.com>,  <Deren.Wu@mediatek.com>,
+  <km.lin@mediatek.com>,  <robin.chiu@mediatek.com>,
+  <Eddie.Chen@mediatek.com>,  <jsiuda@google.com>,  <frankgor@google.com>,
+  <kuabhs@google.com>,  <druth@google.com>,  <abhishekpandit@google.com>,
+  <shawnku@google.com>,  <linux-wireless@vger.kernel.org>,
+  <linux-mediatek@lists.infradead.org>
+Subject: Re: [PATCH] Bluetooth: btusb: medaitek: fix double free of skb in
+ coredump
+References: <ca2b3447d110874d90e93c6ddf972f4ad2bc70f9.1706917839.git.objelf@gmail.com>
+Date: Mon, 05 Feb 2024 10:37:19 +0200
+In-Reply-To: <ca2b3447d110874d90e93c6ddf972f4ad2bc70f9.1706917839.git.objelf@gmail.com>
+	(sean wang's message of "Sat, 3 Feb 2024 07:55:27 +0800")
+Message-ID: <871q9rb934.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -64,35 +67,21 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Ping-Ke Shih <pkshih@realtek.com> writes:
+<sean.wang@mediatek.com> writes:
 
-> On Sun, 2024-02-04 at 03:22 +0800, kernel test robot wrote:
->> 
->>    drivers/net/wireless/realtek/rtw89/fw.c: In function 'rtw89_fw_hdr_parser_v1':
->> > > drivers/net/wireless/realtek/rtw89/fw.c:384:88: warning: format
->> > > '%lx' expects argument of type
->> > > 'long unsigned int', but argument 9 has type 'int' [-Wformat=]
->>      384 | "section[%d] type=%d len=0x%-6x mssc=%d mssc_len=%d
->> addr=%lx\n",
->>          |                                                                                      ~~
->> ^
->>          |
->> |
->>          |
->> long unsigned int
->>          |                                                                                      %x
->>      385 |                             i, section_info->type, section_info->len,
->>      386 |                             section_info->mssc, mssc_len, bin - fw);
->>          |                                                           ~~~~~~~~
->>          |                                                               |
->>          |                                                               int
+> From: Sean Wang <sean.wang@mediatek.com>
 >
-> I looked for how to print out differences (subtraction) of points, and
-> "%tx" is the desired format [1]. I corrected this by v2.
+> hci_devcd_append() would free the skb on error so the caller don't
+> have to free it again otherwise it would cause the double free of skb.
 >
-> [1] https://docs.kernel.org/core-api/printk-formats.html#pointer-differences
+> Fixes: 0b7015132878 ("Bluetooth: btusb: mediatek: add MediaTek devcoredump support")
+> Reported-by : Dan Carpenter <dan.carpenter@linaro.org>
+> Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+> ---
+>  drivers/bluetooth/btmtk.c | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
 
-Heh, never heard of %td and %tx before. Thanks for teaching us :)
+This should be sent to the bluetooth list.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
