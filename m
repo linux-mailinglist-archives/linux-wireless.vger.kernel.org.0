@@ -1,107 +1,101 @@
-Return-Path: <linux-wireless+bounces-3122-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3123-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B2FD8492AA
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Feb 2024 04:10:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B80858493FB
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Feb 2024 07:47:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35ADD28339F
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Feb 2024 03:10:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8E026B21770
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Feb 2024 06:47:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 074ED8F59;
-	Mon,  5 Feb 2024 03:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A39529470;
+	Mon,  5 Feb 2024 06:47:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YcirWRh0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D30478F47;
-	Mon,  5 Feb 2024 03:10:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7364610A01;
+	Mon,  5 Feb 2024 06:47:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707102647; cv=none; b=gPqbSI4HrUh27WPvbgkWpmQu2dkWDHZngTnACKHamyKKp7AboGhjaZRnHANajhJ6TgcgJ5bUjp75jAdG/tFZJN/mbOrOunRJ0Zr4kKAwNVh/toWnU/WHFi6OvXQWxsQhTAvUrwgmumtjLB6tNi8bM4Q6x9fY64yJs6gIzfREVgY=
+	t=1707115628; cv=none; b=ZeQ6z6o6Lq093cqT9/l9j9L7rcUSopVTom1SAc8JZ6s3pJ5kk5LYqMsZZZe6DNj4ZTE/AgB/QaSkUD24kaOp4d9yryHt80se7sHiFuIsQVPGwajCHT3KbroMm8SjrLx4YKIdY3/ho6XTR4ptchIEEMI7j+Abzjj8/OPb35v7zPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707102647; c=relaxed/simple;
-	bh=ICwP7+f1FRTE+g8A1InZdZUejk63/2kltHW+SgY4i1g=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=sCGoZnE7piS1FF0J68gjhX8Ei+YoW3o7UFLp6+fyFB98kpSc+bmsAY0gIrOrBVMeF8Yi/vKYyNZyBXPmpaZKBzxkJBn7c69e1eqUsc8xAqexRNTaOqZ8xCT1xNuxXwDIEnAIUaR+VeyD2s0dABwBEADRvY1ZEo6ozWDsI7VMGxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4153ATtO43034223, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 4153ATtO43034223
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 5 Feb 2024 11:10:29 +0800
-Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.17; Mon, 5 Feb 2024 11:10:29 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Mon, 5 Feb 2024 11:10:28 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::c9b7:82a9:7e98:fa7f]) by
- RTEXMBS04.realtek.com.tw ([fe80::c9b7:82a9:7e98:fa7f%7]) with mapi id
- 15.01.2507.035; Mon, 5 Feb 2024 11:10:28 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Fiona Klute <fiona.klute@gmx.de>,
-        "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>
-CC: Kalle Valo <kvalo@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Pavel Machek
-	<pavel@ucw.cz>,
-        =?iso-8859-2?Q?Ond=F8ej_Jirman?= <megi@xff.cz>
-Subject: RE: [PATCH 9/9] wifi: rtw88: SDIO device driver for RTL8723CS
-Thread-Topic: [PATCH 9/9] wifi: rtw88: SDIO device driver for RTL8723CS
-Thread-Index: AQHaVdEKV5hE9wEBeEeyi36pmJ9cvrD7FJnQ
-Date: Mon, 5 Feb 2024 03:10:28 +0000
-Message-ID: <b426d54fb44846ffb43a70e2806a064c@realtek.com>
-References: <20240202121050.977223-1-fiona.klute@gmx.de>
- <20240202121050.977223-10-fiona.klute@gmx.de>
-In-Reply-To: <20240202121050.977223-10-fiona.klute@gmx.de>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="iso-8859-2"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1707115628; c=relaxed/simple;
+	bh=Mh6q3wecDnnNR+I+giA4evuf5uybfb/YiS5cInRPXrA=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=A4pk+yFVlBrgti3ApThTd8DnZIgsZ+QWRNhJDhPSM4kgLqDKwmEOInM7ktoy53vRIX7VDOWSldxKj2uxJll/PSt2+fYYRKAZjRFHMJpCaSPA8PTWQ/mciwq+LqGbF/uxK0KxZdY01No0H7z18og+tXyf/KgPEQ4e48sdvhrgAnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YcirWRh0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BF7BC433F1;
+	Mon,  5 Feb 2024 06:47:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707115628;
+	bh=Mh6q3wecDnnNR+I+giA4evuf5uybfb/YiS5cInRPXrA=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=YcirWRh0k+9sxyoaALUxlh53zP42tNLWMzeqN29bfhT1zuLr2SsV6n7PFTNoqhlsq
+	 5ZflQp8GF8Tn4mlYWO8Sacf8jrHYV7zGkr3nWygF1i+mCdUox74sb1qreH1bmDqzOU
+	 MiRoqZNnLsCFwJCgscfw9IkA7mhVhMymqdUleWFdhRwp71uAqzxYQexd6ardLRPzg1
+	 +PkoZHy6EE4PksMBK6d8Qdr4gScpwHYvqxaQQzmEDs5n88TWCllUclugQeFMxMpNQG
+	 4pP8iWmHyqi91HxB/rNKLwaJHCXymSJt04KRpd541jl6KlSDEwtyS7eMlWDPFWKWXI
+	 ZVAXqeFGnf9zw==
+From: Kalle Valo <kvalo@kernel.org>
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: "lkp@intel.com" <lkp@intel.com>,  "linux-wireless@vger.kernel.org"
+ <linux-wireless@vger.kernel.org>,  "oe-kbuild-all@lists.linux.dev"
+ <oe-kbuild-all@lists.linux.dev>
+Subject: Re: [PATCH 3/4] wifi: rtw89: fw: parse secure section from firmware
+ file
+References: <20240203003251.10641-4-pkshih@realtek.com>
+	<202402040350.rRpOepoU-lkp@intel.com>
+	<e645b875c771216f688ae106abd5be86aff59b42.camel@realtek.com>
+Date: Mon, 05 Feb 2024 08:47:04 +0200
+In-Reply-To: <e645b875c771216f688ae106abd5be86aff59b42.camel@realtek.com>
+	(Ping-Ke Shih's message of "Sun, 4 Feb 2024 01:31:45 +0000")
+Message-ID: <87wmrjs907.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
+Content-Type: text/plain
 
+Ping-Ke Shih <pkshih@realtek.com> writes:
 
+> On Sun, 2024-02-04 at 03:22 +0800, kernel test robot wrote:
+>> 
+>>    drivers/net/wireless/realtek/rtw89/fw.c: In function 'rtw89_fw_hdr_parser_v1':
+>> > > drivers/net/wireless/realtek/rtw89/fw.c:384:88: warning: format
+>> > > '%lx' expects argument of type
+>> > > 'long unsigned int', but argument 9 has type 'int' [-Wformat=]
+>>      384 | "section[%d] type=%d len=0x%-6x mssc=%d mssc_len=%d
+>> addr=%lx\n",
+>>          |                                                                                      ~~
+>> ^
+>>          |
+>> |
+>>          |
+>> long unsigned int
+>>          |                                                                                      %x
+>>      385 |                             i, section_info->type, section_info->len,
+>>      386 |                             section_info->mssc, mssc_len, bin - fw);
+>>          |                                                           ~~~~~~~~
+>>          |                                                               |
+>>          |                                                               int
+>
+> I looked for how to print out differences (subtraction) of points, and
+> "%tx" is the desired format [1]. I corrected this by v2.
+>
+> [1] https://docs.kernel.org/core-api/printk-formats.html#pointer-differences
 
-> -----Original Message-----
-> From: Fiona Klute <fiona.klute@gmx.de>
-> Sent: Friday, February 2, 2024 8:11 PM
-> To: linux-wireless@vger.kernel.org; Ping-Ke Shih <pkshih@realtek.com>
-> Cc: Kalle Valo <kvalo@kernel.org>; Ulf Hansson <ulf.hansson@linaro.org>; =
-linux-mmc@vger.kernel.org; Pavel
-> Machek <pavel@ucw.cz>; Ond=F8ej Jirman <megi@xff.cz>; Fiona Klute <fiona.=
-klute@gmx.de>
-> Subject: [PATCH 9/9] wifi: rtw88: SDIO device driver for RTL8723CS
->=20
-> This driver uses the new rtw8703b chip driver code.
->=20
-> Signed-off-by: Fiona Klute <fiona.klute@gmx.de>
+Heh, never heard of %td and %tx before. Thanks for teaching us :)
 
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-I have reviewed this patchset and only need some small changes, so I think
-you can send firmware patch to me privately (please also tell me the vendor
-driver version you are taking), and then I can check and send out the firmw=
-are.
-
-Thanks for your work!=20
-Ping-Ke=20
-
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
