@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-3145-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3146-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB55584A1DA
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Feb 2024 19:13:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8EF084A1E4
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Feb 2024 19:15:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 47A20B21E0B
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Feb 2024 18:13:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB0821C236DF
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Feb 2024 18:15:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 444EC47F47;
-	Mon,  5 Feb 2024 18:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7326A481BF;
+	Mon,  5 Feb 2024 18:15:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZcED2MTl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rMApkbRZ"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1929D45957;
-	Mon,  5 Feb 2024 18:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BBD9481B1;
+	Mon,  5 Feb 2024 18:15:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707156809; cv=none; b=d0jyDuvOxrwy6c134t72dZphGNdB4j24bA46NJ4hT67TnWdPerkzD6A2XqJI1rTq8qZLdjVsLu8ZvW9Uqp1br3PZUMi82FhdO4JCeBnRhskhrozMqa53Vcb1zZ2Wc5YGLyUiLtQW/XVQujQpnMFZgplJO87fY+59kua+NTwoeFE=
+	t=1707156938; cv=none; b=TVL2TsvfBpcdM8b1ZXOzyAKFZaCsLFbuxq8JYNwQQeOGVjrw40PsTj7wTMtz4+EX6MyiTxccWk1g3//iBALisgnPRPhJ3NLs8yqdXIY3uQuVHJgzGK9gyDk5m/fcv8Zho7UOCt/AWd/Dfmam19lG+2+0xZi89x31EZLRxUbRqtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707156809; c=relaxed/simple;
-	bh=zwWd6kMUZL9LhGKU5H/sABkgezip0N01LItAnce207s=;
+	s=arc-20240116; t=1707156938; c=relaxed/simple;
+	bh=nmCN9F4V3Q87GixPq9VeXFDsHOAxfspOp7xM3WpI5IQ=;
 	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=CK/hJ7r/Dt4z+bbAXPiIsy1X7r7Ft+43bMEeJkUfBKb0VuoOLwhbIjDOl1yMLMG2eAEI/1t5mg2DYmyTUfl0+229R1kCsbu3bta+1eaaioq7ZkiY4LbPncj2fQAgLxGbWPlYEkEABQHGmo1iEqkhHpih6yVqtuQ+ecxxnXhUbAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZcED2MTl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97E68C433C7;
-	Mon,  5 Feb 2024 18:13:25 +0000 (UTC)
+	 Cc:Message-ID:Date; b=hKCYh8RgzF4+1c2FJv6cnTT/Mo98ZPigd/VWahYkiQICHIPsBE4r0DzZPe5psXcdmfzhTAGbr5DXpW5uV4LC1JJULeduYjzOrSdlSCJa2RbZCbBKjVNrDkAaJRkAAe1xvDFzD317tZb5vFZ7QYsEAnNjvPmrhXo4gvHc+u7mKOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rMApkbRZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFFBDC433C7;
+	Mon,  5 Feb 2024 18:15:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707156808;
-	bh=zwWd6kMUZL9LhGKU5H/sABkgezip0N01LItAnce207s=;
+	s=k20201202; t=1707156937;
+	bh=nmCN9F4V3Q87GixPq9VeXFDsHOAxfspOp7xM3WpI5IQ=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=ZcED2MTlyOPWREAeEJYA6ocQXSVuOqH3Z1ufADn5PUv8WNpcTUIGLlkXEv9kISzvh
-	 Hnsa1izkdRiA+RQaXzNjDR9xfuIw5pBbTVhrEK+YPwF53lDCiTDwTNInrJVlJd0Hh8
-	 Eaa1ffFWZ0unOSZ8m8dhv36PGkaOSD5zVC7W1iwWN6Dn4RflfMcLG0EBN1CsfD+gzq
-	 bA3bXkTvpb60DhxO7Hz1kwhsDWW9FyCTFa0QabniskTotpN/XcfbitW+EHoTqHczyV
-	 nr4BPeR4xKtW2b2sHgL0VuF5hQb0kOlvTjsifRaZsO+Up6GT9IwHAIrnI+t7D5jhW9
-	 Pq6SK++RWIg9Q==
+	b=rMApkbRZo9lmpWL/Qxvy5QmaNQYqmpn2SaxNZdNnfuUGi6cNODSgZq5sTAzvCjIKU
+	 Cb/4o60mh7raJRAARfluwqxWFI3eGEFpVDv6raxgArwMlYJbnyLUMaFCReHUE+gNGu
+	 UVYW5q8BOTWgv3k568vDZyCFpa6++J0rzy2joUWfk1x+uW7gy0WpVVZyVkmjIiUecJ
+	 sieU1FzAApe1khXLUh1h2jMtEwbWyPWHSg4JJt5eWofvXm4x7ioT/OpRDJkyGNN10n
+	 8IqaA/SwD/QuGt8kWuGqcTkyDzYJ9A9ROJcK9edrpGUvdrDPcRK/bff9QWQqft/39m
+	 31JggXZv8wnmA==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -48,70 +48,34 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH 1/6] wifi: ath9k: Obtain system GPIOS from descriptors
+Content-Transfer-Encoding: 7bit
+Subject: Re: wifi: libertas: fix some memleaks in lbs_allocate_cmd_buffer()
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240131-descriptors-wireless-v1-1-e1c7c5d68746@linaro.org>
-References: <20240131-descriptors-wireless-v1-1-e1c7c5d68746@linaro.org>
-To: Linus Walleij <linus.walleij@linaro.org>
-Cc: =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
- Arend van Spriel <aspriel@gmail.com>, Franky Lin <franky.lin@broadcom.com>,
- Hante Meuleman <hante.meuleman@broadcom.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Arnd Bergmann <arnd@arndb.de>, Lee Jones <lee@kernel.org>,
- Brian Norris <briannorris@chromium.org>,
- Srinivasan Raju <srini.raju@purelifi.com>, linux-wireless@vger.kernel.org,
- linux-kernel@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
- Linus Walleij <linus.walleij@linaro.org>
+In-Reply-To: <20240126075336.2825608-1-alexious@zju.edu.cn>
+References: <20240126075336.2825608-1-alexious@zju.edu.cn>
+To: Zhipeng Lu <alexious@zju.edu.cn>
+Cc: alexious@zju.edu.cn, "John W. Linville" <linville@tuxdriver.com>,
+ Marcelo Tosatti <marcelo@kvack.org>, libertas-dev@lists.infradead.org,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170715680359.1586694.14954330985835827619.kvalo@kernel.org>
-Date: Mon,  5 Feb 2024 18:13:25 +0000 (UTC)
+Message-ID: <170715693385.1586694.8942581336995921583.kvalo@kernel.org>
+Date: Mon,  5 Feb 2024 18:15:35 +0000 (UTC)
 
-Linus Walleij <linus.walleij@linaro.org> wrote:
+Zhipeng Lu <alexious@zju.edu.cn> wrote:
 
-> The ath9k has an odd use of system-wide GPIOs: if the chip
-> does not have internal GPIO capability, it will try to obtain a
-> GPIO line from the system GPIO controller:
+> In the for statement of lbs_allocate_cmd_buffer(), if the allocation of
+> cmdarray[i].cmdbuf fails, both cmdarray and cmdarray[i].cmdbuf needs to
+> be freed. Otherwise, there will be memleaks in lbs_allocate_cmd_buffer().
 > 
->   if (BIT(gpio) & ah->caps.gpio_mask)
->         ath9k_hw_gpio_cfg_wmac(...);
->   else if (AR_SREV_SOC(ah))
->         ath9k_hw_gpio_cfg_soc(ah, gpio, out, label);
-> 
-> Where ath9k_hw_gpio_cfg_soc() will attempt to issue
-> gpio_request_one() passing the local GPIO number of the controller
-> (0..31) to gpio_request_one().
-> 
-> This is somewhat peculiar and possibly even dangerous: there is
-> nowadays no guarantee of the numbering of these system-wide
-> GPIOs, and assuming that GPIO 0..31 as used by ath9k would
-> correspond to GPIOs 0..31 on the system as a whole seems a bit
-> wild.
-> 
-> My best guess is that everyone actually using this driver has
-> support for the local (custom) GPIO API and the bit in
-> h->caps.gpio_mask is always set for any GPIO the driver may
-> try to obtain, so this facility to use system-wide GPIOs is
-> actually unused and could be deleted.
-> 
-> Anyway: I cannot know if this is really the case, so implement
-> a fallback handling using GPIO descriptors obtained from the
-> ah->dev device indexed 0..31. These can for example be passed
-> in the device tree, ACPI or through board files. I doubt that
-> anyone will use them, but this makes it possible to obtain a
-> system-wide GPIO for any of the 0..31 GPIOs potentially
-> requested by the driver.
-> 
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+> Fixes: 876c9d3aeb98 ("[PATCH] Marvell Libertas 8388 802.11b/g USB driver")
+> Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
 
-I understood that there will be a new version for ath9k so dropping
-patch 1.
+Patch applied to wireless-next.git, thanks.
 
-Patch set to Changes Requested.
+5f0e4aede01c wifi: libertas: fix some memleaks in lbs_allocate_cmd_buffer()
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240131-descriptors-wireless-v1-1-e1c7c5d68746@linaro.org/
+https://patchwork.kernel.org/project/linux-wireless/patch/20240126075336.2825608-1-alexious@zju.edu.cn/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
