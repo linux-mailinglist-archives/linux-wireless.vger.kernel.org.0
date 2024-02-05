@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-3146-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3147-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8EF084A1E4
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Feb 2024 19:15:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4875584A1E9
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Feb 2024 19:16:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB0821C236DF
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Feb 2024 18:15:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 603011C2329D
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Feb 2024 18:16:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7326A481BF;
-	Mon,  5 Feb 2024 18:15:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 866E247F59;
+	Mon,  5 Feb 2024 18:16:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rMApkbRZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E/aHJBd2"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BBD9481B1;
-	Mon,  5 Feb 2024 18:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6364547F47
+	for <linux-wireless@vger.kernel.org>; Mon,  5 Feb 2024 18:16:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707156938; cv=none; b=TVL2TsvfBpcdM8b1ZXOzyAKFZaCsLFbuxq8JYNwQQeOGVjrw40PsTj7wTMtz4+EX6MyiTxccWk1g3//iBALisgnPRPhJ3NLs8yqdXIY3uQuVHJgzGK9gyDk5m/fcv8Zho7UOCt/AWd/Dfmam19lG+2+0xZi89x31EZLRxUbRqtw=
+	t=1707156961; cv=none; b=gEY/fIoLrvE57Qw/rlhpbqmh765bQwb6304UzqQ05rktMuKbb1xqFXPrHmLWsTCh7K47woA+mbrF5/09TXU9Eshl4ONsNwF4zvWYserSMPlaOMjB/mFIVkAYsLMSwWAPP/R6pPTyiNhyXdeG06AbUaD8HKstP3A+vitMHY/igU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707156938; c=relaxed/simple;
-	bh=nmCN9F4V3Q87GixPq9VeXFDsHOAxfspOp7xM3WpI5IQ=;
+	s=arc-20240116; t=1707156961; c=relaxed/simple;
+	bh=ZstH/pc0UVWv23nvloyYQcF4JlaLBDOuCYR49Fu933E=;
 	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=hKCYh8RgzF4+1c2FJv6cnTT/Mo98ZPigd/VWahYkiQICHIPsBE4r0DzZPe5psXcdmfzhTAGbr5DXpW5uV4LC1JJULeduYjzOrSdlSCJa2RbZCbBKjVNrDkAaJRkAAe1xvDFzD317tZb5vFZ7QYsEAnNjvPmrhXo4gvHc+u7mKOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rMApkbRZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFFBDC433C7;
-	Mon,  5 Feb 2024 18:15:35 +0000 (UTC)
+	 Cc:Message-ID:Date; b=SlxiP5PdWC/IifLMvMNnZDMP/Bn/Y5AsDyl8NSbs8DvEutqbuFCcfk5OExKAgvbHWjXp6Ngg/wRHR9OJqyQP6PxpTwxoAdVlPuXVsDuwJ5KdbKw/Pj6DUX/Sa0eYSnlHYdWas9EFwx2J2f7bk4JICs6zxsXWhqxOPdO//bj30Yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E/aHJBd2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01229C433C7;
+	Mon,  5 Feb 2024 18:15:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707156937;
-	bh=nmCN9F4V3Q87GixPq9VeXFDsHOAxfspOp7xM3WpI5IQ=;
+	s=k20201202; t=1707156960;
+	bh=ZstH/pc0UVWv23nvloyYQcF4JlaLBDOuCYR49Fu933E=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=rMApkbRZo9lmpWL/Qxvy5QmaNQYqmpn2SaxNZdNnfuUGi6cNODSgZq5sTAzvCjIKU
-	 Cb/4o60mh7raJRAARfluwqxWFI3eGEFpVDv6raxgArwMlYJbnyLUMaFCReHUE+gNGu
-	 UVYW5q8BOTWgv3k568vDZyCFpa6++J0rzy2joUWfk1x+uW7gy0WpVVZyVkmjIiUecJ
-	 sieU1FzAApe1khXLUh1h2jMtEwbWyPWHSg4JJt5eWofvXm4x7ioT/OpRDJkyGNN10n
-	 8IqaA/SwD/QuGt8kWuGqcTkyDzYJ9A9ROJcK9edrpGUvdrDPcRK/bff9QWQqft/39m
-	 31JggXZv8wnmA==
+	b=E/aHJBd2ZyBcgpFi/p/efsfL2Rm3mwswtPM2a8YW/g2yuPsmwNEpdV+VOcwRLVq5I
+	 SMujxluc9pXYmtk04dI3L4LYRSrUKOdyqnZaYaCSbONzx2w5ccSp9cl3QZvx2V1HBF
+	 Kwa1yeJeWQjjR7mnsvA7rIhtKrZOCd10CoymMqMT5dJq3zIQr4+lV+c63wH9TSYffH
+	 arLJ/eN7WZur4X6MFJ59i6S5lJbbik1qW0C28FK41UhAIwhoE/I/kmO15m7wYV0jq5
+	 K5UA1+9FRbpVQ0hgL+Iw7TTDbGH2pUX+J5M6c4JODyOKg5eicqZRC3ZWE4wtB9np4F
+	 iBsxngH0xOzTg==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -49,33 +49,30 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: wifi: libertas: fix some memleaks in lbs_allocate_cmd_buffer()
+Subject: Re: wifi: rtl8xxxu: Add TP-Link TL-WN823N V2
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240126075336.2825608-1-alexious@zju.edu.cn>
-References: <20240126075336.2825608-1-alexious@zju.edu.cn>
-To: Zhipeng Lu <alexious@zju.edu.cn>
-Cc: alexious@zju.edu.cn, "John W. Linville" <linville@tuxdriver.com>,
- Marcelo Tosatti <marcelo@kvack.org>, libertas-dev@lists.infradead.org,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240129053030.16369-1-cqca@cock.lu>
+References: <20240129053030.16369-1-cqca@cock.lu>
+To: Chun Qiu <cqca@cock.lu>
+Cc: linux-wireless@vger.kernel.org, Jes Sorensen <Jes.Sorensen@redhat.com>,
+ Bitterblue Smith <rtl8821cerfe2@gmail.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170715693385.1586694.8942581336995921583.kvalo@kernel.org>
-Date: Mon,  5 Feb 2024 18:15:35 +0000 (UTC)
+Message-ID: <170715695815.1586694.14794177610864215366.kvalo@kernel.org>
+Date: Mon,  5 Feb 2024 18:15:59 +0000 (UTC)
 
-Zhipeng Lu <alexious@zju.edu.cn> wrote:
+Chun Qiu <cqca@cock.lu> wrote:
 
-> In the for statement of lbs_allocate_cmd_buffer(), if the allocation of
-> cmdarray[i].cmdbuf fails, both cmdarray and cmdarray[i].cmdbuf needs to
-> be freed. Otherwise, there will be memleaks in lbs_allocate_cmd_buffer().
+> TP-Link TL-WN823N V2 (2357:0135) is based on rtl8192fu and has been
+> tested to work with the rtl8xxxu driver.
 > 
-> Fixes: 876c9d3aeb98 ("[PATCH] Marvell Libertas 8388 802.11b/g USB driver")
-> Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+> Signed-off-by: Chun Qiu <cqca@cock.lu>
 
 Patch applied to wireless-next.git, thanks.
 
-5f0e4aede01c wifi: libertas: fix some memleaks in lbs_allocate_cmd_buffer()
+1209f487d452 wifi: rtl8xxxu: Add TP-Link TL-WN823N V2
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240126075336.2825608-1-alexious@zju.edu.cn/
+https://patchwork.kernel.org/project/linux-wireless/patch/20240129053030.16369-1-cqca@cock.lu/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
