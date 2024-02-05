@@ -1,84 +1,69 @@
-Return-Path: <linux-wireless+bounces-3150-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3152-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 391B384A1F4
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Feb 2024 19:18:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E2EF84A30A
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Feb 2024 20:05:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF1AB1F23D31
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Feb 2024 18:18:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CED81287E26
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Feb 2024 19:05:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A3B047F76;
-	Mon,  5 Feb 2024 18:18:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FCB94F61A;
+	Mon,  5 Feb 2024 19:02:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UGkncM94"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZrZtegeB"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D391947F74;
-	Mon,  5 Feb 2024 18:18:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 376C14F618;
+	Mon,  5 Feb 2024 19:02:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707157080; cv=none; b=oDyXx3W/+dyUDIIbxufhyCwmaZktwy4p6wY+850RX6/481ED8AbJapZfJZ8Ax/08iPyvA95L1/G7oH/n039f0T/+pMgvZYEXCjzLIr9/ZX/3qjJYDJ31dW+YXA+jBm8qHXn8viqhVJokxSJUPUifM3+PSLz+/NaUNQnurnuwWKw=
+	t=1707159775; cv=none; b=ukfcxJtkQXaV0q5x30t2KPEQcHT709zoHVoZ9Be3QEM9H6IFFIl/JLm65ZHFV6qQCQxM73RrPwF5mXJ6dS0EEyohg4MSqpR36AtAwRg966PIiAyUJKh3cCqdLoJ6BHuOUKyWdUkSFZjqHkA6/eoq8ktDTR394gttZ3Dbi9cd3/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707157080; c=relaxed/simple;
-	bh=jBaSc/rZuPGxyWFE67ubtLD/M52bRorZOIf27k+rDxg=;
-	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=abmJTOAnz0v6eyDXjFALW9Z5ZW79iTlTPVfDNCaAaFTAXG9NUkqtQ8q1nYBXxNkjhgrk4xTOhzA+pDXWQE9OMwHKNwLwb+aaNY3k2gNsE3MiVVTSxZAJLq2sOHgzjyGaWRZrnCQVga+nwaWUmVYN5VJ3Rs4ITDgzaP/geSGzYJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UGkncM94; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06C16C433F1;
-	Mon,  5 Feb 2024 18:17:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707157080;
-	bh=jBaSc/rZuPGxyWFE67ubtLD/M52bRorZOIf27k+rDxg=;
-	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=UGkncM94uWbIHR/EExuF9CxPZXjvFUvxdScom08WpcdIyTvXe3oE6/7z4iB1LvRe3
-	 jGioopNprzwaBn0pgKSOLfcT1Eczw145F1bljN5tq6qlVzsTphiOAe2HWCHytAUMzb
-	 nOS8aO70J9NK/n9kbbKUDznJvOs7m+kxXkmxjvxWQnWpSRxA/BuSkXVe9IqR16aBY8
-	 Ml0xRd9yShEBr2L9X2nNLjnF2WgaXln2F24xHOJdQH5lfGV5dg1/NDmxz2oyX2sHdF
-	 IFIb/MJazZT0ZJwW+nHlKU6xTSikh6k3RXjDeGVs7Yy2HwCdDYChj7yCk9C1/UA+ZF
-	 BO0/cWD/HxXTQ==
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1707159775; c=relaxed/simple;
+	bh=ahF3cXBPBvE5YZU15bdesla+Jh6D/oIfrgvYM6Qeb0M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tZwS2BFdf479a40HuOl1Qa9dOJjGfsSfmqNQzSm9yEBt9KzvRqi54nF6091Ef66Q7od/IH2NC4NHW0ThCbDwE8TmkBXsL5G++y8Q1mzNqVj5ZiqqwTxFSoSLvOyCFYBiSmUbqmkK0Eeek/bO3wtBPtrJmL6W90+yoMsGlSlVgNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZrZtegeB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 891B6C43399;
+	Mon,  5 Feb 2024 19:02:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1707159774;
+	bh=ahF3cXBPBvE5YZU15bdesla+Jh6D/oIfrgvYM6Qeb0M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZrZtegeBayuKkF0bB0DxpdnHBuUK5zGgzGoIb6Mt3pBKch+121QLo9D7o4H5CPP/W
+	 VhAhLuX5WWtR5WOQ5kk2dJ2MgpY3oecsqYCNFeGOskL5kNO9U4F93yQ4gpZmSwYfn/
+	 dZj/3y0WcAmjMWGfDgCXwHGiPOQRCoi0BfcH5NaY=
+Date: Mon, 5 Feb 2024 04:45:59 -0800
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: "Ricardo B. Marliere" <ricardo@marliere.net>
+Cc: =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] bcma: make bcma_bus_type const
+Message-ID: <2024020554-caption-elite-ba36@gregkh>
+References: <20240204-bus_cleanup-bcma-v1-1-0d881c793190@marliere.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] wifi: wilc1000: remove setting msg.spi
-From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240201201248.2334798-2-dlechner@baylibre.com>
-References: <20240201201248.2334798-2-dlechner@baylibre.com>
-To: David Lechner <dlechner@baylibre.com>
-Cc: David Lechner <dlechner@baylibre.com>,
- Ajay Singh <ajay.kathat@microchip.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, linux-wireless@vger.kernel.org,
- linux-kernel@vger.kernel.org
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170715707711.1586694.10461660476143389491.kvalo@kernel.org>
-Date: Mon,  5 Feb 2024 18:17:58 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240204-bus_cleanup-bcma-v1-1-0d881c793190@marliere.net>
 
-David Lechner <dlechner@baylibre.com> wrote:
-
-> Calling spi_sync() unconditionally sets the spi field of struct
-> spi_message. Therefore setting msg.spi = spi before calling spi_sync()
-> has no effect and can be removed.
+On Sun, Feb 04, 2024 at 05:57:23PM -0300, Ricardo B. Marliere wrote:
+> Now that the driver core can properly handle constant struct bus_type,
+> move the bcma_bus_type variable to be a constant structure as well,
+> placing it into read-only memory which can not be modified at runtime.
 > 
-> (spi_message_add_tail() does not access this field.)
-> 
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Signed-off-by: Ricardo B. Marliere <ricardo@marliere.net>
 
-Patch applied to wireless-next.git, thanks.
-
-bed41a344426 wifi: wilc1000: remove setting msg.spi
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240201201248.2334798-2-dlechner@baylibre.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
