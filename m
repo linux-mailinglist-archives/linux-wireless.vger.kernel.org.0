@@ -1,490 +1,293 @@
-Return-Path: <linux-wireless+bounces-3125-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3126-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7A6984967B
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Feb 2024 10:30:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 266908497F0
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Feb 2024 11:42:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FAF6280F28
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Feb 2024 09:30:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 831DCB28342
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Feb 2024 10:42:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2F6112B71;
-	Mon,  5 Feb 2024 09:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 429A417575;
+	Mon,  5 Feb 2024 10:41:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ag47fb/n";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tnuHUtni"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dIQp31PU"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8630012B6F
-	for <linux-wireless@vger.kernel.org>; Mon,  5 Feb 2024 09:30:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 444C018C28
+	for <linux-wireless@vger.kernel.org>; Mon,  5 Feb 2024 10:41:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707125448; cv=none; b=eaoLaHdhp2zAjpgd+D01mgZjFRBd0ZppQlSZ2/z3GP0M2rJxrW8OxE3MFbHeC/fNZYlnd/RlccEco8wpYopjTDx07/UxOYHPt/hcxlTdkhbvtO3xfLiq5cxdxXOCO+MZYEWra8GchsVZXWpdLUesEI21hBY16s/ub5jcwc4x+iI=
+	t=1707129687; cv=none; b=keQCdM+gJM/3SYCVv0ABepwKJXDuiWSsvpK8h12l/f3+k+aaA/MvJEOZRsYrr3YH2eVQNVvC2zPbh6a6dpxOYWIqIEDMyZ1cODcu4F2Y9hyDboQ89tASAn02v3CCE4U42fKvsDCVwrTqjWpXztS2HF7+i9pOp/6psLHwzcG08fw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707125448; c=relaxed/simple;
-	bh=ycEbGoQA2V8cwg2jQLau781iZWAu76YAhkzJtdqUNzs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Wnkeas5hCAlgSyWfxiEzv/kwEoD+8NhVo3bxIo0dmQUcqQ5gPsLpRmyd8VtKiFtCLnP2+kRsgwvPslZKJQbJ00CKzBpEhyY/DpfzXdgEDP8jp4xWVf4qFPT9yYOfLPHdh8NBfqi9ILE4tVvFVhSNpiv4KMmNo9e5AiRzONrYaFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ag47fb/n; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tnuHUtni; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Martin Kaistra <martin.kaistra@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1707125444;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=U1mKin5H05YVN7L1JLBqKeBFufkpyK+wLVGlDzCTOP0=;
-	b=ag47fb/nw0CBQ39KOjXN9kAnH98lOC7yMgo6P/Zo00Wi3ZddYR1cwmB1saULig1DU3Aiw4
-	pCYnrgNr2oTw46JuqhhpS4Rm9EwVL5WGTFXQv/BvHCgdD48OqAPBNLjsiL7euXJYWL1QAh
-	i1Zua/qD/OzIpa9yMyTuX0orjwpei3rbdUe86OvmbtJ1sfwYLzG6WGzazGHxgzJauCP4tJ
-	HovBEPGDf2QCWf2t8uSWJMLNEmPvDfYftxTXSgJRrfk7Ic+bR46AJO5LwXkBQ1alqNx4Hl
-	agDMigAzZ04lQmGiPR0LWt5hviWlX05VXYihq7Y7Sq3FuodWUgAzlpJk0K52iA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1707125444;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=U1mKin5H05YVN7L1JLBqKeBFufkpyK+wLVGlDzCTOP0=;
-	b=tnuHUtniVoe886h2eCFqZRMC6kmrm7AgxfzVhhKmP4E6/JfdmLIy0+EW5orE8aExjv4jmG
-	j88/Vu/NLvG0tMAA==
-To: linux-wireless@vger.kernel.org
-Cc: Jes Sorensen <Jes.Sorensen@gmail.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: [PATCH v3] wifi: rtl8xxxu: update rate mask per sta
-Date: Mon,  5 Feb 2024 10:30:40 +0100
-Message-Id: <20240205093040.1941140-1-martin.kaistra@linutronix.de>
+	s=arc-20240116; t=1707129687; c=relaxed/simple;
+	bh=fnHk5HesSwZ3WU8kqzFEB962e+2upPMhuBcyWAtYOPk=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=VIUmvH0KGlID7CHiIb/jQhzz5vFjc4ODs34wLekL8QSwCB4F8OTmGCmER5fcXheMuM52kh4q0s6PaxEjd6eaTOEVyesjJSw8HK4EYVf38AmLFkdQykUMOYmnaHv4xKMfx6KE/kYsbOJ8Exi6z4ZjhI/g4MpavwtMVeArKkE73QY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dIQp31PU; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1707129685; x=1738665685;
+  h=date:from:to:cc:subject:message-id;
+  bh=fnHk5HesSwZ3WU8kqzFEB962e+2upPMhuBcyWAtYOPk=;
+  b=dIQp31PUrqpTVWcv4G86oazqV4SI+ZOn/87NHqX+GPp13HhTbqSj9xWV
+   ATo+HSBDhLkR6/2QAnIBQAjPH3r2FW24Tb0KIOO36KFcray6Vm+8tFHZ/
+   LdIbw7oOO7esibvhykCSxbbW2tZ6YtJpTHoywDtLlKsID4eZ1Yazu7uNo
+   kwrz9O0R6wlJtd29okVGhNXxR1DiXPAzSPfECzi05+GDUOGdzYaikwPbY
+   AtnWNTYIBP2S/imtjQsGUQ55H07Lenhr0PPzY7FjD6PxzXUUmNbDy61nx
+   ALoXezw0Ns9m92kDNFKPbwrRLijd8A7xL6031OYV+TlGe+Ev7Ij3buOAo
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10974"; a="4309790"
+X-IronPort-AV: E=Sophos;i="6.05,245,1701158400"; 
+   d="scan'208";a="4309790"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2024 02:41:24 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,245,1701158400"; 
+   d="scan'208";a="688645"
+Received: from lkp-server01.sh.intel.com (HELO 01f0647817ea) ([10.239.97.150])
+  by fmviesa010.fm.intel.com with ESMTP; 05 Feb 2024 02:41:23 -0800
+Received: from kbuild by 01f0647817ea with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rWwPg-0000OO-2J;
+	Mon, 05 Feb 2024 10:41:20 +0000
+Date: Mon, 05 Feb 2024 18:40:23 +0800
+From: kernel test robot <lkp@intel.com>
+To: Johannes Berg <johannes.berg@intel.com>
+Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
+Subject: [wireless-next:main] BUILD SUCCESS
+ 679dd27b4ef33d4f596cbf450a3b2742fc54962a
+Message-ID: <202402051819.1IRL0asv-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Until now, rtl8xxxu_watchdog_callback() only fetches RSSI and updates
-the rate mask in station mode. This means, in AP mode only the default
-rate mask is used.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: 679dd27b4ef33d4f596cbf450a3b2742fc54962a  wifi: cfg80211: fix kunit exports
 
-In order to have the rate mask reflect the actual connection quality,
-extend rtl8xxxu_watchdog_callback() to iterate over every sta. Like in
-the rtw88 driver, add a function to collect all currently present stas
-and then iterate over a list of copies to ensure no RCU lock problems
-for register access via USB. Remove the existing RCU lock in
-rtl8xxxu_refresh_rate_mask().
+elapsed time: 1450m
 
-Since the currently used ieee80211_ave_rssi() is only for 'vif', add
-driver-level tracking of RSSI per sta.
+configs tested: 204
+configs skipped: 4
 
-Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
----
-changes v1->v2:
-- move 'rssi_level' into struct rtl8xxxu_sta_info
-changes v2->v3:
-- put variable declaration for sta_info in rtl8xxxu_bss_info_changed()
-  to the beginning
-- rename rtl8xxxu_rx_addr_match to rtl8xxxu_rx_update_rssi
-- init sta_info->rssi_level in rtl8xxxu_sta_add() in AP mode
-v1: https://lore.kernel.org/linux-wireless/20240117145516.497966-1-martin.kaistra@linutronix.de/
-v2: https://lore.kernel.org/linux-wireless/20240124082705.1098960-1-martin.kaistra@linutronix.de/
- .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  |   8 +-
- .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 188 ++++++++++++++----
- 2 files changed, 158 insertions(+), 38 deletions(-)
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-index 03307da67c2c3..fd92d23c43d91 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-@@ -6,6 +6,7 @@
-  */
- 
- #include <asm/byteorder.h>
-+#include <linux/average.h>
- 
- #define RTL8XXXU_DEBUG_REG_WRITE	0x01
- #define RTL8XXXU_DEBUG_REG_READ		0x02
-@@ -1858,6 +1859,8 @@ struct rtl8xxxu_priv {
- 	int next_mbox;
- 	int nr_out_eps;
- 
-+	/* Ensure no added or deleted stas while iterating */
-+	struct mutex sta_mutex;
- 	struct mutex h2c_mutex;
- 	/* Protect the indirect register accesses of RTL8710BU. */
- 	struct mutex syson_indirect_access_mutex;
-@@ -1892,7 +1895,6 @@ struct rtl8xxxu_priv {
- 	u8 pi_enabled:1;
- 	u8 no_pape:1;
- 	u8 int_buf[USB_INTR_CONTENT_LENGTH];
--	u8 rssi_level;
- 	DECLARE_BITMAP(tx_aggr_started, IEEE80211_NUM_TIDS);
- 	DECLARE_BITMAP(tid_tx_operational, IEEE80211_NUM_TIDS);
- 
-@@ -1913,11 +1915,15 @@ struct rtl8xxxu_priv {
- 	DECLARE_BITMAP(cam_map, RTL8XXXU_MAX_SEC_CAM_NUM);
- };
- 
-+DECLARE_EWMA(rssi, 10, 16);
-+
- struct rtl8xxxu_sta_info {
- 	struct ieee80211_sta *sta;
- 	struct ieee80211_vif *vif;
- 
- 	u8 macid;
-+	struct ewma_rssi avg_rssi;
-+	u8 rssi_level;
- };
- 
- struct rtl8xxxu_vif {
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index 3b954c2fe448f..4c071bd9c0dec 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -4991,10 +4991,11 @@ rtl8xxxu_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	struct rtl8xxxu_vif *rtlvif = (struct rtl8xxxu_vif *)vif->drv_priv;
- 	struct rtl8xxxu_priv *priv = hw->priv;
- 	struct device *dev = &priv->udev->dev;
-+	struct rtl8xxxu_sta_info *sta_info;
- 	struct ieee80211_sta *sta;
- 	struct rtl8xxxu_ra_report *rarpt;
-+	u8 val8, macid;
- 	u32 val32;
--	u8 val8;
- 
- 	rarpt = &priv->ra_report;
- 
-@@ -5017,6 +5018,7 @@ rtl8xxxu_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 				rcu_read_unlock();
- 				goto error;
- 			}
-+			macid = rtl8xxxu_get_macid(priv, sta);
- 
- 			if (sta->deflink.ht_cap.ht_supported)
- 				dev_info(dev, "%s: HT supported\n", __func__);
-@@ -5037,14 +5039,15 @@ rtl8xxxu_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 				bw = RATE_INFO_BW_40;
- 			else
- 				bw = RATE_INFO_BW_20;
-+
-+			sta_info = (struct rtl8xxxu_sta_info *)sta->drv_priv;
-+			sta_info->rssi_level = RTL8XXXU_RATR_STA_INIT;
- 			rcu_read_unlock();
- 
- 			rtl8xxxu_update_ra_report(rarpt, highest_rate, sgi, bw);
- 
--			priv->rssi_level = RTL8XXXU_RATR_STA_INIT;
--
- 			priv->fops->update_rate_mask(priv, ramask, 0, sgi,
--						     bw == RATE_INFO_BW_40, 0);
-+						     bw == RATE_INFO_BW_40, macid);
- 
- 			rtl8xxxu_write8(priv, REG_BCN_MAX_ERR, 0xff);
- 
-@@ -6317,6 +6320,76 @@ static void rtl8188e_c2hcmd_callback(struct work_struct *work)
- 	}
- }
- 
-+#define rtl8xxxu_iterate_vifs_atomic(priv, iterator, data)			\
-+	ieee80211_iterate_active_interfaces_atomic((priv)->hw,			\
-+			IEEE80211_IFACE_ITER_NORMAL, iterator, data)
-+
-+struct rtl8xxxu_rx_update_rssi_data {
-+	struct rtl8xxxu_priv *priv;
-+	struct ieee80211_hdr *hdr;
-+	struct ieee80211_rx_status *rx_status;
-+	u8 *bssid;
-+};
-+
-+static void rtl8xxxu_rx_update_rssi_iter(void *data, u8 *mac,
-+					 struct ieee80211_vif *vif)
-+{
-+	struct rtl8xxxu_rx_update_rssi_data *iter_data = data;
-+	struct ieee80211_sta *sta;
-+	struct ieee80211_hdr *hdr = iter_data->hdr;
-+	struct rtl8xxxu_priv *priv = iter_data->priv;
-+	struct rtl8xxxu_sta_info *sta_info;
-+	struct ieee80211_rx_status *rx_status = iter_data->rx_status;
-+	u8 *bssid = iter_data->bssid;
-+
-+	if (!ether_addr_equal(vif->bss_conf.bssid, bssid))
-+		return;
-+
-+	if (!(ether_addr_equal(vif->addr, hdr->addr1) ||
-+	      ieee80211_is_beacon(hdr->frame_control)))
-+		return;
-+
-+	sta = ieee80211_find_sta_by_ifaddr(priv->hw, hdr->addr2,
-+					   vif->addr);
-+	if (!sta)
-+		return;
-+
-+	sta_info = (struct rtl8xxxu_sta_info *)sta->drv_priv;
-+	ewma_rssi_add(&sta_info->avg_rssi, -rx_status->signal);
-+}
-+
-+static inline u8 *get_hdr_bssid(struct ieee80211_hdr *hdr)
-+{
-+	__le16 fc = hdr->frame_control;
-+	u8 *bssid;
-+
-+	if (ieee80211_has_tods(fc))
-+		bssid = hdr->addr1;
-+	else if (ieee80211_has_fromds(fc))
-+		bssid = hdr->addr2;
-+	else
-+		bssid = hdr->addr3;
-+
-+	return bssid;
-+}
-+
-+static void rtl8xxxu_rx_update_rssi(struct rtl8xxxu_priv *priv,
-+				    struct ieee80211_rx_status *rx_status,
-+				    struct ieee80211_hdr *hdr)
-+{
-+	struct rtl8xxxu_rx_update_rssi_data data = {};
-+
-+	if (ieee80211_is_ctl(hdr->frame_control))
-+		return;
-+
-+	data.priv = priv;
-+	data.hdr = hdr;
-+	data.rx_status = rx_status;
-+	data.bssid = get_hdr_bssid(hdr);
-+
-+	rtl8xxxu_iterate_vifs_atomic(priv, rtl8xxxu_rx_update_rssi_iter, &data);
-+}
-+
- int rtl8xxxu_parse_rxdesc16(struct rtl8xxxu_priv *priv, struct sk_buff *skb)
- {
- 	struct ieee80211_hw *hw = priv->hw;
-@@ -6376,18 +6449,26 @@ int rtl8xxxu_parse_rxdesc16(struct rtl8xxxu_priv *priv, struct sk_buff *skb)
- 			skb_queue_tail(&priv->c2hcmd_queue, skb);
- 			schedule_work(&priv->c2hcmd_work);
- 		} else {
-+			struct ieee80211_hdr *hdr;
-+
- 			phy_stats = (struct rtl8723au_phy_stats *)skb->data;
- 
- 			skb_pull(skb, drvinfo_sz + desc_shift);
- 
- 			skb_trim(skb, pkt_len);
- 
--			if (rx_desc->phy_stats)
-+			hdr = (struct ieee80211_hdr *)skb->data;
-+			if (rx_desc->phy_stats) {
- 				priv->fops->parse_phystats(
- 					priv, rx_status, phy_stats,
- 					rx_desc->rxmcs,
--					(struct ieee80211_hdr *)skb->data,
-+					hdr,
- 					rx_desc->crc32 || rx_desc->icverr);
-+				if (!rx_desc->crc32 && !rx_desc->icverr)
-+					rtl8xxxu_rx_update_rssi(priv,
-+								rx_status,
-+								hdr);
-+			}
- 
- 			rx_status->mactime = rx_desc->tsfl;
- 			rx_status->flag |= RX_FLAG_MACTIME_START;
-@@ -6484,10 +6565,15 @@ int rtl8xxxu_parse_rxdesc24(struct rtl8xxxu_priv *priv, struct sk_buff *skb)
- 		} else {
- 			struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
- 
--			if (rx_desc->phy_stats)
-+			if (rx_desc->phy_stats) {
- 				priv->fops->parse_phystats(priv, rx_status, phy_stats,
- 							   rx_desc->rxmcs, hdr,
- 							   rx_desc->crc32 || rx_desc->icverr);
-+				if (!rx_desc->crc32 && !rx_desc->icverr)
-+					rtl8xxxu_rx_update_rssi(priv,
-+								rx_status,
-+								hdr);
-+			}
- 
- 			rx_status->mactime = rx_desc->tsfl;
- 			rx_status->flag |= RX_FLAG_MACTIME_START;
-@@ -7111,6 +7197,7 @@ static void rtl8xxxu_refresh_rate_mask(struct rtl8xxxu_priv *priv,
- 				       int signal, struct ieee80211_sta *sta,
- 				       bool force)
- {
-+	struct rtl8xxxu_sta_info *sta_info = (struct rtl8xxxu_sta_info *)sta->drv_priv;
- 	struct ieee80211_hw *hw = priv->hw;
- 	u16 wireless_mode;
- 	u8 rssi_level, ratr_idx;
-@@ -7119,7 +7206,7 @@ static void rtl8xxxu_refresh_rate_mask(struct rtl8xxxu_priv *priv,
- 	u8 go_up_gap = 5;
- 	u8 macid = rtl8xxxu_get_macid(priv, sta);
- 
--	rssi_level = priv->rssi_level;
-+	rssi_level = sta_info->rssi_level;
- 	snr = rtl8xxxu_signal_to_snr(signal);
- 	snr_thresh_high = RTL8XXXU_SNR_THRESH_HIGH;
- 	snr_thresh_low = RTL8XXXU_SNR_THRESH_LOW;
-@@ -7144,18 +7231,16 @@ static void rtl8xxxu_refresh_rate_mask(struct rtl8xxxu_priv *priv,
- 	else
- 		rssi_level = RTL8XXXU_RATR_STA_LOW;
- 
--	if (rssi_level != priv->rssi_level || force) {
-+	if (rssi_level != sta_info->rssi_level || force) {
- 		int sgi = 0;
- 		u32 rate_bitmap = 0;
- 
--		rcu_read_lock();
- 		rate_bitmap = (sta->deflink.supp_rates[0] & 0xfff) |
- 				(sta->deflink.ht_cap.mcs.rx_mask[0] << 12) |
- 				(sta->deflink.ht_cap.mcs.rx_mask[1] << 20);
- 		if (sta->deflink.ht_cap.cap &
- 		    (IEEE80211_HT_CAP_SGI_40 | IEEE80211_HT_CAP_SGI_20))
- 			sgi = 1;
--		rcu_read_unlock();
- 
- 		wireless_mode = rtl8xxxu_wireless_mode(hw, sta);
- 		switch (wireless_mode) {
-@@ -7236,7 +7321,7 @@ static void rtl8xxxu_refresh_rate_mask(struct rtl8xxxu_priv *priv,
- 			break;
- 		}
- 
--		priv->rssi_level = rssi_level;
-+		sta_info->rssi_level = rssi_level;
- 		priv->fops->update_rate_mask(priv, rate_bitmap, ratr_idx, sgi, txbw_40mhz, macid);
- 	}
- }
-@@ -7329,40 +7414,60 @@ static void rtl8xxxu_track_cfo(struct rtl8xxxu_priv *priv)
- 	rtl8xxxu_set_atc_status(priv, abs(cfo_average) >= CFO_TH_ATC);
- }
- 
--static void rtl8xxxu_watchdog_callback(struct work_struct *work)
-+static void rtl8xxxu_ra_iter(void *data, struct ieee80211_sta *sta)
- {
--	struct ieee80211_vif *vif;
--	struct rtl8xxxu_priv *priv;
--	int i;
-+	struct rtl8xxxu_sta_info *sta_info = (struct rtl8xxxu_sta_info *)sta->drv_priv;
-+	struct rtl8xxxu_priv *priv = data;
-+	int signal = -ewma_rssi_read(&sta_info->avg_rssi);
- 
--	priv = container_of(work, struct rtl8xxxu_priv, ra_watchdog.work);
--	for (i = 0; i < ARRAY_SIZE(priv->vifs); i++) {
--		vif = priv->vifs[i];
-+	priv->fops->report_rssi(priv, rtl8xxxu_get_macid(priv, sta),
-+				rtl8xxxu_signal_to_snr(signal));
-+	rtl8xxxu_refresh_rate_mask(priv, signal, sta, false);
-+}
- 
--		if (!vif || vif->type != NL80211_IFTYPE_STATION)
--			continue;
-+struct rtl8xxxu_stas_entry {
-+	struct list_head list;
-+	struct ieee80211_sta *sta;
-+};
- 
--		int signal;
--		struct ieee80211_sta *sta;
-+struct rtl8xxxu_iter_stas_data {
-+	struct rtl8xxxu_priv *priv;
-+	struct list_head list;
-+};
- 
--		rcu_read_lock();
--		sta = ieee80211_find_sta(vif, vif->bss_conf.bssid);
--		if (!sta) {
--			struct device *dev = &priv->udev->dev;
-+static void rtl8xxxu_collect_sta_iter(void *data, struct ieee80211_sta *sta)
-+{
-+	struct rtl8xxxu_iter_stas_data *iter_stas = data;
-+	struct rtl8xxxu_stas_entry *stas_entry;
- 
--			dev_dbg(dev, "%s: no sta found\n", __func__);
--			rcu_read_unlock();
--			continue;
--		}
--		rcu_read_unlock();
-+	stas_entry = kmalloc(sizeof(*stas_entry), GFP_ATOMIC);
-+	if (!stas_entry)
-+		return;
- 
--		signal = ieee80211_ave_rssi(vif);
-+	stas_entry->sta = sta;
-+	list_add_tail(&stas_entry->list, &iter_stas->list);
-+}
- 
--		priv->fops->report_rssi(priv, rtl8xxxu_get_macid(priv, sta),
--					rtl8xxxu_signal_to_snr(signal));
-+static void rtl8xxxu_watchdog_callback(struct work_struct *work)
-+{
- 
--		rtl8xxxu_refresh_rate_mask(priv, signal, sta, false);
-+	struct rtl8xxxu_iter_stas_data iter_data;
-+	struct rtl8xxxu_stas_entry *sta_entry, *tmp;
-+	struct rtl8xxxu_priv *priv;
-+
-+	priv = container_of(work, struct rtl8xxxu_priv, ra_watchdog.work);
-+	iter_data.priv = priv;
-+	INIT_LIST_HEAD(&iter_data.list);
-+
-+	mutex_lock(&priv->sta_mutex);
-+	ieee80211_iterate_stations_atomic(priv->hw, rtl8xxxu_collect_sta_iter,
-+					  &iter_data);
-+	list_for_each_entry_safe(sta_entry, tmp, &iter_data.list, list) {
-+		list_del_init(&sta_entry->list);
-+		rtl8xxxu_ra_iter(priv, sta_entry->sta);
-+		kfree(sta_entry);
- 	}
-+	mutex_unlock(&priv->sta_mutex);
- 
- 	if (priv->fops->set_crystal_cap)
- 		rtl8xxxu_track_cfo(priv);
-@@ -7504,10 +7609,15 @@ static int rtl8xxxu_sta_add(struct ieee80211_hw *hw,
- 	struct rtl8xxxu_vif *rtlvif = (struct rtl8xxxu_vif *)vif->drv_priv;
- 	struct rtl8xxxu_priv *priv = hw->priv;
- 
-+	mutex_lock(&priv->sta_mutex);
-+	ewma_rssi_init(&sta_info->avg_rssi);
- 	if (vif->type == NL80211_IFTYPE_AP) {
-+		sta_info->rssi_level = RTL8XXXU_RATR_STA_INIT;
- 		sta_info->macid = rtl8xxxu_acquire_macid(priv);
--		if (sta_info->macid >= RTL8XXXU_MAX_MAC_ID_NUM)
-+		if (sta_info->macid >= RTL8XXXU_MAX_MAC_ID_NUM) {
-+			mutex_unlock(&priv->sta_mutex);
- 			return -ENOSPC;
-+		}
- 
- 		rtl8xxxu_refresh_rate_mask(priv, 0, sta, true);
- 		priv->fops->report_connect(priv, sta_info->macid, H2C_MACID_ROLE_STA, true);
-@@ -7523,6 +7633,7 @@ static int rtl8xxxu_sta_add(struct ieee80211_hw *hw,
- 			break;
- 		}
- 	}
-+	mutex_unlock(&priv->sta_mutex);
- 
- 	return 0;
- }
-@@ -7534,8 +7645,10 @@ static int rtl8xxxu_sta_remove(struct ieee80211_hw *hw,
- 	struct rtl8xxxu_sta_info *sta_info = (struct rtl8xxxu_sta_info *)sta->drv_priv;
- 	struct rtl8xxxu_priv *priv = hw->priv;
- 
-+	mutex_lock(&priv->sta_mutex);
- 	if (vif->type == NL80211_IFTYPE_AP)
- 		rtl8xxxu_release_macid(priv, sta_info->macid);
-+	mutex_unlock(&priv->sta_mutex);
- 
- 	return 0;
- }
-@@ -7767,6 +7880,7 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
- 	mutex_init(&priv->usb_buf_mutex);
- 	mutex_init(&priv->syson_indirect_access_mutex);
- 	mutex_init(&priv->h2c_mutex);
-+	mutex_init(&priv->sta_mutex);
- 	INIT_LIST_HEAD(&priv->tx_urb_free_list);
- 	spin_lock_init(&priv->tx_urb_lock);
- 	INIT_LIST_HEAD(&priv->rx_urb_pending_list);
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                      axs103_smp_defconfig   gcc  
+arc                                 defconfig   gcc  
+arc                        nsimosci_defconfig   gcc  
+arc                   randconfig-001-20240204   gcc  
+arc                   randconfig-002-20240204   gcc  
+arc                           tb10x_defconfig   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   clang
+arm                              allyesconfig   gcc  
+arm                                 defconfig   clang
+arm                           imxrt_defconfig   clang
+arm                      integrator_defconfig   clang
+arm                            mmp2_defconfig   gcc  
+arm                          moxart_defconfig   gcc  
+arm                       netwinder_defconfig   gcc  
+arm                          pxa3xx_defconfig   clang
+arm                   randconfig-001-20240204   gcc  
+arm                   randconfig-002-20240204   clang
+arm                   randconfig-003-20240204   clang
+arm                   randconfig-004-20240204   gcc  
+arm                             rpc_defconfig   clang
+arm                         s5pv210_defconfig   gcc  
+arm                         socfpga_defconfig   gcc  
+arm                          sp7021_defconfig   gcc  
+arm64                            allmodconfig   clang
+arm64                             allnoconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                 randconfig-001-20240204   gcc  
+arm64                 randconfig-002-20240204   clang
+arm64                 randconfig-003-20240204   gcc  
+arm64                 randconfig-004-20240204   clang
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+csky                  randconfig-001-20240204   gcc  
+csky                  randconfig-002-20240204   gcc  
+hexagon                          allmodconfig   clang
+hexagon                           allnoconfig   clang
+hexagon                          allyesconfig   clang
+hexagon                             defconfig   clang
+hexagon               randconfig-001-20240204   clang
+hexagon               randconfig-002-20240204   clang
+i386                             alldefconfig   gcc  
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20240204   gcc  
+i386         buildonly-randconfig-002-20240204   gcc  
+i386         buildonly-randconfig-003-20240204   gcc  
+i386         buildonly-randconfig-004-20240204   gcc  
+i386         buildonly-randconfig-005-20240204   gcc  
+i386         buildonly-randconfig-006-20240204   gcc  
+i386                                defconfig   clang
+i386                  randconfig-001-20240204   clang
+i386                  randconfig-002-20240204   clang
+i386                  randconfig-003-20240204   clang
+i386                  randconfig-004-20240204   gcc  
+i386                  randconfig-005-20240204   clang
+i386                  randconfig-006-20240204   gcc  
+i386                  randconfig-011-20240204   clang
+i386                  randconfig-012-20240204   gcc  
+i386                  randconfig-013-20240204   clang
+i386                  randconfig-014-20240204   clang
+i386                  randconfig-015-20240204   clang
+i386                  randconfig-016-20240204   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20240204   gcc  
+loongarch             randconfig-002-20240204   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                        m5272c3_defconfig   gcc  
+m68k                       m5275evb_defconfig   gcc  
+m68k                          multi_defconfig   gcc  
+m68k                        stmark2_defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                       bmips_be_defconfig   gcc  
+mips                     cu1000-neo_defconfig   gcc  
+mips                       lemote2f_defconfig   gcc  
+mips                      loongson3_defconfig   gcc  
+mips                        qi_lb60_defconfig   clang
+nios2                         10m50_defconfig   gcc  
+nios2                         3c120_defconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                 randconfig-001-20240204   gcc  
+nios2                 randconfig-002-20240204   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc                randconfig-001-20240204   gcc  
+parisc                randconfig-002-20240204   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   clang
+powerpc                        fsp2_defconfig   gcc  
+powerpc                   microwatt_defconfig   gcc  
+powerpc                 mpc834x_itx_defconfig   clang
+powerpc               mpc834x_itxgp_defconfig   clang
+powerpc                     ppa8548_defconfig   gcc  
+powerpc                      ppc64e_defconfig   gcc  
+powerpc                         ps3_defconfig   gcc  
+powerpc               randconfig-001-20240204   gcc  
+powerpc               randconfig-002-20240204   gcc  
+powerpc               randconfig-003-20240204   gcc  
+powerpc                     redwood_defconfig   clang
+powerpc64             randconfig-001-20240204   gcc  
+powerpc64             randconfig-002-20240204   clang
+powerpc64             randconfig-003-20240204   gcc  
+riscv                            allmodconfig   clang
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   clang
+riscv                               defconfig   clang
+riscv                 randconfig-001-20240204   clang
+riscv                 randconfig-002-20240204   gcc  
+s390                             allmodconfig   clang
+s390                              allnoconfig   clang
+s390                             allyesconfig   gcc  
+s390                                defconfig   clang
+s390                  randconfig-001-20240204   clang
+s390                  randconfig-002-20240204   gcc  
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sh                        dreamcast_defconfig   gcc  
+sh                        edosk7705_defconfig   gcc  
+sh                            migor_defconfig   gcc  
+sh                          polaris_defconfig   gcc  
+sh                    randconfig-001-20240204   gcc  
+sh                    randconfig-002-20240204   gcc  
+sh                           se7619_defconfig   gcc  
+sh                     sh7710voipgw_defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                               defconfig   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+sparc64               randconfig-001-20240204   gcc  
+sparc64               randconfig-002-20240204   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   gcc  
+um                                  defconfig   clang
+um                    randconfig-001-20240204   gcc  
+um                    randconfig-002-20240204   gcc  
+um                           x86_64_defconfig   clang
+x86_64                            allnoconfig   clang
+x86_64                           allyesconfig   clang
+x86_64       buildonly-randconfig-001-20240204   clang
+x86_64       buildonly-randconfig-002-20240204   clang
+x86_64       buildonly-randconfig-003-20240204   gcc  
+x86_64       buildonly-randconfig-004-20240204   gcc  
+x86_64       buildonly-randconfig-005-20240204   clang
+x86_64       buildonly-randconfig-006-20240204   gcc  
+x86_64                              defconfig   gcc  
+x86_64                randconfig-001-20240204   gcc  
+x86_64                randconfig-002-20240204   gcc  
+x86_64                randconfig-003-20240204   clang
+x86_64                randconfig-004-20240204   clang
+x86_64                randconfig-005-20240204   gcc  
+x86_64                randconfig-006-20240204   gcc  
+x86_64                randconfig-011-20240204   gcc  
+x86_64                randconfig-012-20240204   gcc  
+x86_64                randconfig-013-20240204   gcc  
+x86_64                randconfig-014-20240204   gcc  
+x86_64                randconfig-015-20240204   clang
+x86_64                randconfig-016-20240204   clang
+x86_64                randconfig-071-20240204   gcc  
+x86_64                randconfig-072-20240204   gcc  
+x86_64                randconfig-073-20240204   gcc  
+x86_64                randconfig-074-20240204   clang
+x86_64                randconfig-075-20240204   clang
+x86_64                randconfig-076-20240204   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+xtensa                            allnoconfig   gcc  
+xtensa                  nommu_kc705_defconfig   gcc  
+xtensa                randconfig-001-20240204   gcc  
+xtensa                randconfig-002-20240204   gcc  
+xtensa                    smp_lx200_defconfig   gcc  
+
 -- 
-2.39.2
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
