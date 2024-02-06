@@ -1,88 +1,110 @@
-Return-Path: <linux-wireless+bounces-3217-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3218-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AEB484B432
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Feb 2024 13:03:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77D6A84B454
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Feb 2024 13:06:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD2C92889A0
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Feb 2024 12:03:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 322DF2815C7
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Feb 2024 12:06:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B975F134723;
-	Tue,  6 Feb 2024 11:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 897F81350C9;
+	Tue,  6 Feb 2024 11:57:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="LiISg9e4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J8H9F/Pu"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2C9513473B
-	for <linux-wireless@vger.kernel.org>; Tue,  6 Feb 2024 11:47:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFE96131749
+	for <linux-wireless@vger.kernel.org>; Tue,  6 Feb 2024 11:57:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707220068; cv=none; b=HJWklIg0DMYt5E4cPUZpryRSS0ry87Djk5lj+O6qpTWXmw51wF8TNef72u2Cw0YE2fZn94nCjqzjSIvsHMYAb4BfmbrZzNkWvgeIqHQW+sI+55ggMhnYuBzfPOW4VzUdGkGEkyFcvknqdx4xSbFuHpymCL0UmDWpkJzzGkDjM1w=
+	t=1707220635; cv=none; b=ZY0TtSxUcof1CcMVFvhaSdFy434AejT4p4jQ+T01b66hQkkoVPyJdJG96D+FayO4Quu1iseeRE+ytXzUbUwlKijlRA4Mh4Ru8GHN0JAiseDCk+HmL1twNDnPrZbUcpTZNOn5PgWhAzhHoAg7sOWKLp7t2jJJagh3APj7Eq8IqWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707220068; c=relaxed/simple;
-	bh=yBCsgwdzomymvd3uB6DYUfgN1bWrcCMAZ76Bg/r2gPE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=F1uKMhWd8DubH60bAur7KhahHBOsW/OBIGmb9Jl15FZvm47cHmzKfDmeJql9fJcE5uT93POGC2LyVdfHoXm4nenPjZkKkp6pmKWcAqoU04BbDnpmjskPUD3zyHGZ3tAjE4vpOZXAMwNFApILygc+UIV0AoSxKfOWP4NVG31+qKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=LiISg9e4; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=yBCsgwdzomymvd3uB6DYUfgN1bWrcCMAZ76Bg/r2gPE=;
-	t=1707220065; x=1708429665; b=LiISg9e4NZUlchRvlLznIG9ljeTV0S8voOLJ4122wIE8qUw
-	N8LJfAfnbRpnz/EV+EYPV327/igQ0DuPmqqtD/R2XFTZaGU24dfd75m+mHZ+eXD5yXBiRrTzGI4MJ
-	0sqUULFYGJGLGmEB0TBe3C8bJy5yp4YElH3lnzd1xnOfYPjkaUpBFlGB937EynUYr6GLauD+lhFpS
-	G35BZNGBXIUYxyKSYxe1FZDzDEnY1idzY05Ril48t2yShAifUxao5Y+lFGmFzkBwUwEIxci6pY+DC
-	u59jmIAmtRCxFxR2WzSwVDOUHzNsW/CHhE/vrsOtkyeVPpaIloMfUvakhYNVGdSw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1rXJvM-0000000EgLI-3nq3;
-	Tue, 06 Feb 2024 12:47:37 +0100
-Message-ID: <455bafff0d609eb182ba30a5fbf319888e0e961d.camel@sipsolutions.net>
-Subject: Re: wireless-regdb key change broke crda tests after 37dcea0e6e5
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Sergei Trofimovich <slyich@gmail.com>, linux-wireless@vger.kernel.org
-Cc: wireless-regdb@lists.infradead.org, Chen-Yu Tsai <wens@kernel.org>, Seth
-	Forshee <sforshee@kernel.org>
-Date: Tue, 06 Feb 2024 12:47:35 +0100
-In-Reply-To: <ZcIXGjzrZrXPCBcp@nz.home>
-References: <ZcIXGjzrZrXPCBcp@nz.home>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
+	s=arc-20240116; t=1707220635; c=relaxed/simple;
+	bh=47PcGrfYbMc2NDql49RIMTL0Rt6o/SqiQhQI5efcEr0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sB62mTWWjwS3uOd/T57z9m16JH+LvTbYchU16t5uwSVDVeCQLoelN78HFSRO/96OYBRlpiLANZz923HTWWvMU6upZOrfvg5F+OSJTCVnVxfv7FabY5/5U61UV1U9gWBCOygaLtGplpTc04XxJrFgUqMbkjL2XmitjCZzUMA0+yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J8H9F/Pu; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1707220634; x=1738756634;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=47PcGrfYbMc2NDql49RIMTL0Rt6o/SqiQhQI5efcEr0=;
+  b=J8H9F/PuGFRlq9AOqUxxuUpavbtNObhts7Qiq2abdNhIge0K020vuYJv
+   Mq1J+LemH0siu9kbmHHTwaSDHW4OUDz4YsKfdEHcwk54wKArZkXn9+2tx
+   oofV+Lq992hLT7CIEzhLi5DXtEv3KW2Z4Gifu4bT0I9kuWsUDAxc0AdVk
+   PqfnoQVDN10sz/k0ZFYvM3HRs+iHzTi98h5H7aazKWLJWJHc8+fs7V7iB
+   T8d3fUPBrXuoEkj2HZOAWfVxTeC3SNe/dMb7isdxx+AYS0StnDDWRy6if
+   JDyxb9ag3BqToMzLamV/A/5FjNBAwImmmM4xvsKvzmd9odlzM+xfBEI2Q
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10975"; a="625235"
+X-IronPort-AV: E=Sophos;i="6.05,247,1701158400"; 
+   d="scan'208";a="625235"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2024 03:57:13 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10975"; a="824168050"
+X-IronPort-AV: E=Sophos;i="6.05,247,1701158400"; 
+   d="scan'208";a="824168050"
+Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2024 03:57:11 -0800
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org,
+	Avraham Stern <avraham.stern@intel.com>,
+	Luciano Coelho <luciano.coelho@intel.com>
+Subject: [PATCH v2] wifi: iwlwifi: mvm: advertise support for protected ranging negotiation
+Date: Tue,  6 Feb 2024 13:57:03 +0200
+Message-Id: <20240206135637.9bb7e13ad18c.I578af1c9836e91069ce318b265bd221f42955992@changeid>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Organization: Intel Israel (74) Limited
+Content-Transfer-Encoding: 8bit
 
-Hi,
+From: Avraham Stern <avraham.stern@intel.com>
 
-> "wireless-regdb: Update keys and maintainer information".
->=20
-> Both `git` `master` version of `crda` and `wireless-regdb` still fail
-> `crda`'s `make verify`.
->=20
-> Should `crda` key the key update as well?
+Advertise support for protected ranging negotiation if the firmware
+supports it.
 
-Maybe?
+Signed-off-by: Avraham Stern <avraham.stern@intel.com>
+Reviewed-by: Luciano Coelho <luciano.coelho@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+---
+v2: added 'wifi' prefix
 
-But perhaps the real question is if you should still be shipping crda?
-It was last needed for kernel 4.15, and even the newest stable kernel
-based on or before it (4.14) is now EOL ...
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-After that, we had the regdb loaded like a firmware file including the
-signatures, so the whole crda isn't needed any more.
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index bc8d1760f36c..e62fcfd1a65f 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -705,6 +705,13 @@ int iwl_mvm_mac_setup_register(struct iwl_mvm *mvm)
+ 		}
+ 	}
+ 
++	if (iwl_fw_lookup_cmd_ver(mvm->fw, WIDE_ID(LOCATION_GROUP,
++						   TOF_RANGE_REQ_CMD),
++				  IWL_FW_CMD_VER_UNKNOWN) >= 11) {
++		wiphy_ext_feature_set(hw->wiphy,
++				      NL80211_EXT_FEATURE_PROT_RANGE_NEGO_AND_MEASURE);
++	}
++
+ 	mvm->rts_threshold = IEEE80211_MAX_RTS_THRESHOLD;
+ 
+ #ifdef CONFIG_PM_SLEEP
+-- 
+2.34.1
 
-johannes
 
