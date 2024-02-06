@@ -1,153 +1,186 @@
-Return-Path: <linux-wireless+bounces-3185-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3186-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 997EB84ABDD
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Feb 2024 03:02:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A280584AC25
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Feb 2024 03:22:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2B272856AB
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Feb 2024 02:02:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2479B1F244C1
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Feb 2024 02:22:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6A0956759;
-	Tue,  6 Feb 2024 02:02:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A0475811B;
+	Tue,  6 Feb 2024 02:21:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="DVZsd3Yp"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A36DE56755;
-	Tue,  6 Feb 2024 02:02:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55F0E58129
+	for <linux-wireless@vger.kernel.org>; Tue,  6 Feb 2024 02:21:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707184973; cv=none; b=CNQNbxcpqEwkagrqrNeizDeYdeCk1qJpiAVhfXigtPR1ullPoXa9JVQJuc3/4Mf2xGVzqgmFWjTSOwqcq5xxDz7sOgg40vjc+hCDy8ydZSkt5HxYTa9BBZUumxEdeL2FgxjrJhcDKx3q9tLCjPftrD2EMMGJPedhMmANHGGDgss=
+	t=1707186089; cv=none; b=dPS5ck2RmuTO/g37GQbF9snhTZAVAUA5Oc2uBw9nZPLtVn/kjUTGvAbTPl3/FdqQuU24kq3Lhb8T3D2SQ9xPXY4VZolefc/F9RKUlKZv4dGw/bJdfvJc9ZoSz1S6meM0DbRdjZfG0JN1NpJVhEsGq0w/x8oBzhpiGUlbSpQPJMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707184973; c=relaxed/simple;
-	bh=IT1fSmsBpetvl9lLGOXp9H1QuCKH6m1U+7Sq9GTU4C8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=hkuK20TWsrU7QEjQcUK+4jUzVs/w4ONlVTWWnPIy9EnC3/hh5/P1XscCEuhx6DodqgAukrgG0UYW/SDoPWr2pCBQY1wB9vnspLJSpPAjdd9mm5rwwx4V8aVrBPJ4+j7xIatLJhxS1WvgOPI+YSRYLLIGfIN3tVvQdUT/DApLtV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 41622F8903493350, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 41622F8903493350
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 6 Feb 2024 10:02:16 +0800
-Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.17; Tue, 6 Feb 2024 10:02:15 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 6 Feb 2024 10:02:15 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::c9b7:82a9:7e98:fa7f]) by
- RTEXMBS04.realtek.com.tw ([fe80::c9b7:82a9:7e98:fa7f%7]) with mapi id
- 15.01.2507.035; Tue, 6 Feb 2024 10:02:15 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Fiona Klute <fiona.klute@gmx.de>,
-        "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>
-CC: Kalle Valo <kvalo@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Pavel Machek
-	<pavel@ucw.cz>,
-        =?utf-8?B?T25kxZllaiBKaXJtYW4=?= <megi@xff.cz>
-Subject: RE: [PATCH 4/9] wifi: rtw88: Add rtw8703b.h
-Thread-Topic: [PATCH 4/9] wifi: rtw88: Add rtw8703b.h
-Thread-Index: AQHaVdEBnjIVXUjW50myYkvW9x3LeLD7B6VggAD4vYCAAI5ccA==
-Date: Tue, 6 Feb 2024 02:02:14 +0000
-Message-ID: <3424c26db8f24219bec0afd105b4864e@realtek.com>
-References: <20240202121050.977223-1-fiona.klute@gmx.de>
- <20240202121050.977223-5-fiona.klute@gmx.de>
- <64e338d9e0dd43e69fa2e6e1dd3ecb2c@realtek.com>
- <d122d08d-b364-449c-a959-3f40597b2e8e@gmx.de>
-In-Reply-To: <d122d08d-b364-449c-a959-3f40597b2e8e@gmx.de>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1707186089; c=relaxed/simple;
+	bh=CCH5twNm8uG4+yrKi05dS9/VLNJl2KHU82jZ9XTSMXw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=pVBoYnzu1Zo3+iETrCSGX/7/KmSdcI5owYeOJAeVLxe4VO5M3k5BSidtih5V4zcuPtoTVcUr5jSjLuEvc9kuf38PqHh2msSPgegtM/qqO49ViVIB5BNbKjHf/+7rYlILye+woEs+tUBZZoKws1AXtsPq0cOo3P6hVmvQT6E4Ys4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=DVZsd3Yp; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 4161eTD7008070;
+	Tue, 6 Feb 2024 02:21:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=N+Eea2bQciagdDZRBsqMHdL6LsAgVPGvqZZ6JAM01QQ=; b=DV
+	Zsd3Yp7YfK9cjq/EUXYTwXk70owXPdbWqe1SQWfKbjJZ+62l4A3F/Oci+SjA/tcC
+	ReFq/jHd1vBGz7A1s3+f8TsrxxhhyVAOWklc7bNwGVt/HAavobyF4pa4zRki9xVQ
+	OegJ6c7zKypv2SFrETi/FxSx8gDHu8DoO0y0Lj/X19K85HyrbM+4+qRaPufICeoN
+	rZHIzZ/4gfWR1+8C96oK2bHywzG+XLGEM4x9+hcyzpAKgov0YHDA9t4EHNc6xqNb
+	X+ODh5FGyuo1eYGMPptRdeEdwWXgu3NI3bIW7sfAcjN/wklfx0hVmwmjlocnVi+E
+	DPBJhjLXse/vV1o9GFpw==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3w2v72a8kw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 06 Feb 2024 02:21:18 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 4162LHjx029819
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 6 Feb 2024 02:21:17 GMT
+Received: from [10.253.73.189] (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Mon, 5 Feb
+ 2024 18:21:16 -0800
+Message-ID: <bc5baff6-83c9-44ec-9beb-a863045194da@quicinc.com>
+Date: Tue, 6 Feb 2024 10:21:13 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 05/11] wifi: ath12k: implement handling of P2P NoA
+ event
+To: Kalle Valo <kvalo@kernel.org>
+CC: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+References: <20240130040303.370590-1-quic_kangyang@quicinc.com>
+ <20240130040303.370590-6-quic_kangyang@quicinc.com>
+ <871q9vt1km.fsf@kernel.org>
+Content-Language: en-US
+From: Kang Yang <quic_kangyang@quicinc.com>
+In-Reply-To: <871q9vt1km.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: g6SwpuT334Y_qNTROufmFFQnEz6NRBiv
+X-Proofpoint-ORIG-GUID: g6SwpuT334Y_qNTROufmFFQnEz6NRBiv
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-05_18,2024-01-31_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ lowpriorityscore=0 impostorscore=0 phishscore=0 clxscore=1015 spamscore=0
+ mlxscore=0 priorityscore=1501 bulkscore=0 suspectscore=0 mlxlogscore=782
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2401310000 definitions=main-2402060015
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogRmlvbmEgS2x1dGUgPGZp
-b25hLmtsdXRlQGdteC5kZT4NCj4gU2VudDogVHVlc2RheSwgRmVicnVhcnkgNiwgMjAyNCA5OjA5
-IEFNDQo+IFRvOiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT47IGxpbnV4LXdpcmVs
-ZXNzQHZnZXIua2VybmVsLm9yZw0KPiBDYzogS2FsbGUgVmFsbyA8a3ZhbG9Aa2VybmVsLm9yZz47
-IFVsZiBIYW5zc29uIDx1bGYuaGFuc3NvbkBsaW5hcm8ub3JnPjsgbGludXgtbW1jQHZnZXIua2Vy
-bmVsLm9yZzsgUGF2ZWwNCj4gTWFjaGVrIDxwYXZlbEB1Y3cuY3o+OyBPbmTFmWVqIEppcm1hbiA8
-bWVnaUB4ZmYuY3o+DQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggNC85XSB3aWZpOiBydHc4ODogQWRk
-IHJ0dzg3MDNiLmgNCj4gDQo+IEFtIDA1LjAyLjI0IHVtIDAzOjI0IHNjaHJpZWIgUGluZy1LZSBT
-aGloOg0KPiA+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiA+PiBGcm9tOiBGaW9uYSBL
-bHV0ZSA8ZmlvbmEua2x1dGVAZ214LmRlPg0KPiA+PiBTZW50OiBGcmlkYXksIEZlYnJ1YXJ5IDIs
-IDIwMjQgODoxMSBQTQ0KPiA+PiBUbzogbGludXgtd2lyZWxlc3NAdmdlci5rZXJuZWwub3JnOyBQ
-aW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4NCj4gPj4gQ2M6IEthbGxlIFZhbG8gPGt2
-YWxvQGtlcm5lbC5vcmc+OyBVbGYgSGFuc3NvbiA8dWxmLmhhbnNzb25AbGluYXJvLm9yZz47IGxp
-bnV4LW1tY0B2Z2VyLmtlcm5lbC5vcmc7DQo+IFBhdmVsDQo+ID4+IE1hY2hlayA8cGF2ZWxAdWN3
-LmN6PjsgT25kxZllaiBKaXJtYW4gPG1lZ2lAeGZmLmN6PjsgRmlvbmEgS2x1dGUgPGZpb25hLmts
-dXRlQGdteC5kZT4NCj4gPj4gU3ViamVjdDogW1BBVENIIDQvOV0gd2lmaTogcnR3ODg6IEFkZCBy
-dHc4NzAzYi5oDQo+ID4+DQo+ID4+IFRoaXMgaXMgdGhlIG1haW4gaGVhZGVyIGZvciB0aGUgbmV3
-IHJ0dzg4Xzg3MDNiIGNoaXAgZHJpdmVyLg0KPiA+Pg0KPiA+PiBTaWduZWQtb2ZmLWJ5OiBGaW9u
-YSBLbHV0ZSA8ZmlvbmEua2x1dGVAZ214LmRlPg0KPiA+PiAtLS0NCj4gPj4gICBkcml2ZXJzL25l
-dC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3J0dzg3MDNiLmggfCA2MiArKysrKysrKysrKysrKysr
-KysrDQo+ID4+ICAgMSBmaWxlIGNoYW5nZWQsIDYyIGluc2VydGlvbnMoKykNCj4gPj4gICBjcmVh
-dGUgbW9kZSAxMDA2NDQgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9ydHc4NzAz
-Yi5oDQo+ID4+DQo+ID4+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVr
-L3J0dzg4L3J0dzg3MDNiLmgNCj4gPj4gYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0
-dzg4L3J0dzg3MDNiLmgNCj4gPj4gbmV3IGZpbGUgbW9kZSAxMDA2NDQNCj4gPj4gaW5kZXggMDAw
-MDAwMDAwMC4uZjVmZjIzZjJlZQ0KPiA+PiAtLS0gL2Rldi9udWxsDQo+ID4+ICsrKyBiL2RyaXZl
-cnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvcnR3ODcwM2IuaA0KPiA+PiBAQCAtMCwwICsx
-LDYyIEBADQo+ID4+ICsvKiBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMCBPUiBCU0Qt
-My1DbGF1c2UgKi8NCj4gPj4gKy8qIENvcHlyaWdodCBGaW9uYSBLbHV0ZSA8ZmlvbmEua2x1dGVA
-Z214LmRlPiAqLw0KPiA+PiArDQo+ID4+ICsjaWZuZGVmIF9fUlRXODcwM0JfSF9fDQo+ID4+ICsj
-ZGVmaW5lIF9fUlRXODcwM0JfSF9fDQo+ID4+ICsNCj4gPj4gK2V4dGVybiBjb25zdCBzdHJ1Y3Qg
-cnR3X2NoaXBfaW5mbyBydHc4NzAzYl9od19zcGVjOw0KPiA+PiArDQo+ID4+ICsvKiBwaHkgc3Rh
-dHVzIHBhcnNpbmcgKi8NCj4gPj4gKyNkZWZpbmUgR0VUX1BIWV9TVEFUX0FHQ19HQUlOX0EocGh5
-X3N0YXQpICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcDQo+ID4+ICsgICAgICAg
-KGxlMzJfZ2V0X2JpdHMoKigoX19sZTMyICopKHBoeV9zdGF0KSArIDB4MDApLCBHRU5NQVNLKDYs
-IDApKSkNCj4gPg0KPiA+IFdlIGFyZSBwbGFubmluZyB0byB1c2Ugc3RydWN0IGFuZCBsZTMyX2dl
-dF9iaXRzKCkgZGlyZWN0bHksIHNvIGRvbid0IGludHJvZHVjZQ0KPiA+IHRoaXMgb2xkIHN0eWxl
-IGFueW1vcmUuIEFuIGV4YW1wbGUgaXMNCj4gPg0KPiA+IHN0cnVjdCBydHc4NzAzYl9waHlfc3Rh
-dCB7DQo+ID4gICAgICAgX19sZTMyIHcwOw0KPiA+ICAgICAgIF9fbGUzMiB3MTsNCj4gPiAgICAg
-ICAuLi4NCj4gPiB9Ow0KPiA+DQo+ID4gI2RlZmluZSBSVFc4NzAzQl9QSFlfU1RBVF9XMF9BR0Nf
-R0FJTl9BIEdFTk1BU0soNiwgMCkNCj4gPg0KPiA+IHZhbF9zOCA9IGxlMzJfZ2V0X2JpdHMoc3Rh
-dC0+dzAsIFJUVzg3MDNCX1BIWV9TVEFUX1cwX0FHQ19HQUlOX0EpOw0KPiANCj4gU29ycnksIG9m
-IGFsbCB5b3VyIG1haWxzIHRoaXMgb25lIGdvdCBzdHVjayBpbiB0aGUgc3BhbSBmaWx0ZXIuIFRo
-aXMNCj4gYW5zd2VycyBteSBxdWVzdGlvbiBhYm91dCB3aGF0IHlvdSBtZWFudCBieSBzdHJ1Y3Qg
-c3R5bGUsIEkgaGFkbid0DQo+IHRob3VnaHQgb2YgdXNpbmcgX19sZSB0eXBlcy4gSSBhc3N1bWUg
-eW91J2Qgc3RpbGwgd2FudCB0byB1c2UNCj4gYXBwcm9wcmlhdGVseSBzaXplZCB0eXBlcy9hcnJh
-eXMgZm9yIGVsZW1lbnRzIHRoYXQgYXJlIG11bHRpcGxlcyBvZiBvbmUNCj4gYnl0ZT8NCg0KTm90
-IHN1cmUgIm11bHRpcGxlcyBvZiBvbmUgYnl0ZSIgbWVhbnMuIEkgZ3Vlc3MgeW91IHdhbnQgdG8g
-dXNlIHNvbWV0aGluZyBsaWtlDQp1OCBvciBfX2xlMTYgZm9yIHRoZSBlbGVtZW50cyB0aGF0IGFy
-ZW4ndCByZXF1aXJlZCBiaXQgYWNjZXNzLCByaWdodD8gDQpJJ2Qgc2F5IGl0IGlzIGhhcmQgdG8g
-ZGVmaW5lIHNpbmdsZSBvbmUgcnVsZSBmb3IgYWxsIGNhc2VzLiANCg0KRXhhbXBsZSAxLTEgKGZh
-a2UpOiANCnN0cnVjdCBydHc4NzAzYl9waHlfc3RhdCB7DQoJdTggbWFjX2lkOw0KCXU4IHJzc2k7
-DQoJdTggZXZtOw0KCXU4IGV2bV8yOw0KCS4uLg0KfSBfX3BhY2tlZDsNCg0KRXhhbXBsZSAxLTIg
-KGZha2UpOiANCnN0cnVjdCBydHc4NzAzYl9waHlfc3RhdCB7DQoJX19sZTMyIHcwOw0KCS4uLg0K
-fSBfX3BhY2tlZDsNCg0KI2RlZmluZSBQSFlfU1RBVF9XMF9NQUNJRCBHRU5NQVNLKDcsIDApDQoj
-ZGVmaW5lIFBIWV9TVEFUX1cwX1JTU0kgR0VOTUFTSygxNSwgOCkNCiNkZWZpbmUgUEhZX1NUQVRf
-VzBfRVZNIEdFTk1BU0soMjMsIDE2KQ0KI2RlZmluZSBQSFlfU1RBVF9XMF9FVk1fMiBHRU5NQVNL
-KDMxLDI0KQ0KDQpJdCBpcyBjbGVhciB0aGF0IGV4YW1wbGUgMS0xIGlzIGJldHRlciB0aGFuIDEt
-Mi4gDQoNCkV4YW1wbGUgMi0xIChmYWtlKTogDQpzdHJ1Y3QgcnR3ODcwM2JfcGh5X3N0YXQgew0K
-CXU4IG1hY19pZDsNCgl1OCByc3NpOw0KCV9fbGUxNiBwaHlfc3Q7CQkvLyBldm06IDcsIGV2bV8y
-OiA3LCByc3ZkIDoyDQoJLi4uDQp9IF9fcGFja2VkOw0KDQojZGVmaW5lIFBIWV9TVF9FVk0gR0VO
-TUFTSyg2LCAwKQ0KI2RlZmluZSBQSFlfU1RfRVZNXzIgR0VOTUFTSygxMywgNykNCg0KDQpFeGFt
-cGxlIDItMiAoZmFrZSk6IA0Kc3RydWN0IHJ0dzg3MDNiX3BoeV9zdGF0IHsNCglfX2xlMzIgdzA7
-DQoJLi4uDQp9IF9fcGFja2VkOw0KDQojZGVmaW5lIFBIWV9TVEFUX1cwX01BQ0lEIEdFTk1BU0so
-NywgMCkNCiNkZWZpbmUgUEhZX1NUQVRfVzBfUlNTSSBHRU5NQVNLKDE1LCA4KQ0KI2RlZmluZSBQ
-SFlfU1RBVF9XMF9FVk0gR0VOTUFTSygyMiwgMTYpDQojZGVmaW5lIFBIWV9TVEFUX1cwX0VWTV8y
-IEdFTk1BU0soMjksIDIzKQ0KDQoNCkNvbXBhcmUgMi0xIGFuZCAyLTIsIGl0IHdvdWxkIGJlIGhh
-cmQgdG8gc2F5IHdoaWNoIG9uZSBpcyBiZXR0ZXIsIGJlY2F1c2UgMi0xDQptaXhlcyB1OCBhbmQg
-Yml0IGZpZWxkLiBUaGlzIGlzIGp1c3QgYSBzaW1wbGUgZXhhbXBsZSwgZmllbGRzIG9mIHJlYWwg
-c3RydWN0DQphcmUgbXVjaCBtb3JlLCBzbyBub3JtYWxseSBJIHVzZSAxLTIgYW5kIDItMiBzdHls
-ZXMuIA0KDQo=
+
+
+On 2/2/2024 9:53 PM, Kalle Valo wrote:
+> Kang Yang <quic_kangyang@quicinc.com> writes:
+> 
+>> The NoA(Notice of Absence) attribute is used by the P2P Group Owner to
+>> signal its absence due to power save timing, concurrent operation, or
+>> off-channel scanning. It is also used in the P2P Presence Request-Response
+>> mechanism.
+>>
+>> The NoA attribute shall be present in the P2P IE in the beacon frames
+>> transmitted by a P2P Group Owner when a NoA schedule is being advertised,
+>> or when the CTWindow is non-zero.
+>>
+>> So add support to update P2P information after P2P GO is up through
+>> event WMI_P2P_NOA_EVENTID, and always put it in probe resp.
+>>
+>> Create p2p.c and p2p.h for P2P related functions and definitions.
+>>
+>> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+>> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+>>
+>> Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
+> 
+> This patch 5 had simple conflicts in wmi.c, please check:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=cbcb45c458a93d32a48b9280c13294e0853fa5dd
+> 
+
+Sorry for late reply, I am in Spring Festival holiday. It seems i have 
+conflict in adding WMI event, because you merge TWT patch-set before.
+
+
+conflict:
+root@Mayan:/home/yk/ath12k-upstream/drivers/net/wireless/ath/ath12k# cat 
+wmi.c.rej
+diff a/drivers/net/wireless/ath/ath12k/wmi.c 
+b/drivers/net/wireless/ath/ath12k/wmi.c    (rejected hunks)
+@@ -162,6 +163,10 @@ static const struct ath12k_wmi_tlv_policy 
+ath12k_wmi_tlv_policies[] = {
+                 .min_len = sizeof(struct wmi_probe_resp_tx_status_event) },
+         [WMI_TAG_VDEV_DELETE_RESP_EVENT] = {
+                 .min_len = sizeof(struct wmi_vdev_delete_resp_event) },
++       [WMI_TAG_P2P_NOA_INFO] = {
++               .min_len = sizeof(struct ath12k_wmi_p2p_noa_info) },
++       [WMI_TAG_P2P_NOA_EVENT] = {
++               .min_len = sizeof(struct wmi_p2p_noa_event) },
+  };
+
+  static __le32 ath12k_wmi_tlv_hdr(u32 cmd, u32 len)
+@@ -6807,6 +6853,9 @@ static void ath12k_wmi_op_rx(struct ath12k_base 
+*ab, struct sk_buff *skb)
+         case WMI_RFKILL_STATE_CHANGE_EVENTID:
+                 ath12k_rfkill_state_change_event(ab, skb);
+                 break;
++       case WMI_P2P_NOA_EVENTID:
++               ath12k_wmi_p2p_noa_event(ab, skb);
++               break;
+         /* add Unsupported events here */
+         case WMI_TBTTOFFSET_EXT_UPDATE_EVENTID:
+         case WMI_PEER_OPER_MODE_CHANGE_EVENTID:
+
+
+
+TWT patch change:
+
+@@ -164,6 +164,8 @@ static const struct ath12k_wmi_tlv_policy 
+ath12k_wmi_tlv_policies[] = {
+  		.min_len = sizeof(struct wmi_vdev_delete_resp_event) },
+  	[WMI_TAG_TWT_ENABLE_COMPLETE_EVENT] = {
+  		.min_len = sizeof(struct wmi_twt_enable_event) },
++	[WMI_TAG_TWT_DISABLE_COMPLETE_EVENT] = {
++		.min_len = sizeof(struct wmi_twt_disable_event) },
+  };
+
+@@ -6798,10 +6829,12 @@ static void ath12k_wmi_op_rx(struct ath12k_base 
+*ab, struct sk_buff *skb)
+  	case WMI_TWT_ENABLE_EVENTID:
+  		ath12k_wmi_twt_enable_event(ab, skb);
+  		break;
++	case WMI_TWT_DISABLE_EVENTID:
++		ath12k_wmi_twt_disable_event(ab, skb);
++		break;
+  	/* add Unsupported events here */
+
+
+
+
+Do i need to send a new version ?
+
+
 
