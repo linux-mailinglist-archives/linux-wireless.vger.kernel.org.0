@@ -1,112 +1,88 @@
-Return-Path: <linux-wireless+bounces-3216-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3217-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECCE584B36D
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Feb 2024 12:27:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AEB484B432
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Feb 2024 13:03:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2AE541C242DB
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Feb 2024 11:27:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD2C92889A0
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Feb 2024 12:03:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00C8312EBDB;
-	Tue,  6 Feb 2024 11:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B975F134723;
+	Tue,  6 Feb 2024 11:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L0fGj7FL"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="LiISg9e4"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2652412EBD6
-	for <linux-wireless@vger.kernel.org>; Tue,  6 Feb 2024 11:25:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2C9513473B
+	for <linux-wireless@vger.kernel.org>; Tue,  6 Feb 2024 11:47:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707218720; cv=none; b=LwwcA0WDXKfJ4COs6EmAjAifpdtTFlgHkltLSe5hCUnAQ5PD6BeKLeWFTAysrFIUbt/HdylNEVio3bvLRvDQX8PotfiVdk5dBOvvdMokiFGAgJwT7mFE0APbqv5w1DByiaRvlouJb5QvxMeRvYy/5wyaYIRgyzwAJiMyHgWH0/U=
+	t=1707220068; cv=none; b=HJWklIg0DMYt5E4cPUZpryRSS0ry87Djk5lj+O6qpTWXmw51wF8TNef72u2Cw0YE2fZn94nCjqzjSIvsHMYAb4BfmbrZzNkWvgeIqHQW+sI+55ggMhnYuBzfPOW4VzUdGkGEkyFcvknqdx4xSbFuHpymCL0UmDWpkJzzGkDjM1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707218720; c=relaxed/simple;
-	bh=0H3TQgcZdMBPZzlqjT3wZEG3aVWblR5qVmqL07uw5Vw=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=UC+m1/ASIB1ReG+cIRZ3qi37cTTKTxjWcv3Ep5lXJqqMISSX0ZFMuT02pQkKJWpZunIwzoV+UxkrMrDySwewmt/19txtflnKVggVcHIYu2jhX17TF+sncOC1KVo7brA+SCwuHGnnnpEhuw3QgtRg1E0uGhndfYs8JAi/00WMF4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L0fGj7FL; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-33b1d7f736bso3094363f8f.3
-        for <linux-wireless@vger.kernel.org>; Tue, 06 Feb 2024 03:25:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707218716; x=1707823516; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=XPnBkGvCsCJC8yqoqhPyYvVOlSawmi40m3VKxw8PS3s=;
-        b=L0fGj7FLmuDogNJqIfiUGOA6wzOkV2Gk/iz00JQ6ghZPIrW+7dMo49RhNMVii3jQW4
-         aOfzMPnirCVYOXoLzr11JcLQi4Vscb95Hdx3lTLSNrLSgHBL5b4WtC+SUQzK/IZ89Wsj
-         zZOWiaPIYb7fvGxpOklL17JM1ymSXEGZeN/Zux/qhRKuqLqKn+YIW5Z2YlmlhufP3t5O
-         X4Lus5raZm+i+BJeq0WKmy0coBFn6qkdWsnQNpwH0VNgbVjfkfMIkSKyL04zRsbjhoil
-         HVNoBO/THmYpg8cp1xe29j86sVSrAnde9Aby2VF9i65OLgfgE3jx+7PoaWUJgNRk4Laf
-         Vfiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707218716; x=1707823516;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XPnBkGvCsCJC8yqoqhPyYvVOlSawmi40m3VKxw8PS3s=;
-        b=HSEDdp+l9b3giXBv+qmy8oCZGBY2WHty4iWgIFMM37XSNl+bNOQralYwI4mBZT1qpV
-         dJkdBfT9+QqYolRAb96yc8TZRHCU1LAgUJFEqC9NaJR+mMJugXOB0uICOYa4biZbcN/w
-         2tm6edMub5OxDj0XdCTGX4rqYw9PZFeKW4igkz5dD5rm1MPQ655fhft2AitY5DNPuMXB
-         Yvr2vkYqMd55LMz2+i1/YqB3OP87RAfIGomzaJ6Y+IjpMs8f9y/rWMKsKIESoe32P2u0
-         9OgLBm3ONmBUxn/daQ1gSH87xUNDOn8bsjAIOt/s7SekLsB1QGOjRMc43ThIFji4I3Ls
-         rgJg==
-X-Gm-Message-State: AOJu0YzjyMCMM7N9wXbtfFOHN5y3Mm7Rz2aO3SIfbPhekfHSsVB59BiC
-	C8tNoUd+ukSpHZ4gqcq8l8QgbgM/7ptYdrvgYRN7JGZaQ6v8Ge9M
-X-Google-Smtp-Source: AGHT+IGIFjcwhNK5IblvTvhlzCTLbtEy3VCyCK2uI5SipzG1fkpQbBLRGs0IdtntYkQbIOYswvKB6Q==
-X-Received: by 2002:adf:ee43:0:b0:33a:fcb1:e1d with SMTP id w3-20020adfee43000000b0033afcb10e1dmr1116697wro.25.1707218715885;
-        Tue, 06 Feb 2024 03:25:15 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCV3iBCiBxuY9HCjBAVr0zhlnul6kvz7xRhh0zHD11YYVHlPMejYkCoE+oiMiIwDTxqV1HWdAv/mE1m4uhf/P875dNZbntZWZKY+PBVe9WyxyKHAHVi7VxQBNJEvnwk5stdSweocqhg=
-Received: from nz.home (host86-152-202-149.range86-152.btcentralplus.com. [86.152.202.149])
-        by smtp.gmail.com with ESMTPSA id l12-20020a5d4bcc000000b0033905a60689sm1875015wrt.45.2024.02.06.03.25.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Feb 2024 03:25:15 -0800 (PST)
-Received: by nz.home (Postfix, from userid 1000)
-	id D4DBA15F143E09; Tue,  6 Feb 2024 11:25:14 +0000 (GMT)
-Date: Tue, 6 Feb 2024 11:25:14 +0000
-From: Sergei Trofimovich <slyich@gmail.com>
-To: linux-wireless@vger.kernel.org
-Cc: wireless-regdb@lists.infradead.org, Chen-Yu Tsai <wens@kernel.org>,
-	Seth Forshee <sforshee@kernel.org>
-Subject: wireless-regdb key change broke crda tests after 37dcea0e6e5
-Message-ID: <ZcIXGjzrZrXPCBcp@nz.home>
+	s=arc-20240116; t=1707220068; c=relaxed/simple;
+	bh=yBCsgwdzomymvd3uB6DYUfgN1bWrcCMAZ76Bg/r2gPE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=F1uKMhWd8DubH60bAur7KhahHBOsW/OBIGmb9Jl15FZvm47cHmzKfDmeJql9fJcE5uT93POGC2LyVdfHoXm4nenPjZkKkp6pmKWcAqoU04BbDnpmjskPUD3zyHGZ3tAjE4vpOZXAMwNFApILygc+UIV0AoSxKfOWP4NVG31+qKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=LiISg9e4; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=yBCsgwdzomymvd3uB6DYUfgN1bWrcCMAZ76Bg/r2gPE=;
+	t=1707220065; x=1708429665; b=LiISg9e4NZUlchRvlLznIG9ljeTV0S8voOLJ4122wIE8qUw
+	N8LJfAfnbRpnz/EV+EYPV327/igQ0DuPmqqtD/R2XFTZaGU24dfd75m+mHZ+eXD5yXBiRrTzGI4MJ
+	0sqUULFYGJGLGmEB0TBe3C8bJy5yp4YElH3lnzd1xnOfYPjkaUpBFlGB937EynUYr6GLauD+lhFpS
+	G35BZNGBXIUYxyKSYxe1FZDzDEnY1idzY05Ril48t2yShAifUxao5Y+lFGmFzkBwUwEIxci6pY+DC
+	u59jmIAmtRCxFxR2WzSwVDOUHzNsW/CHhE/vrsOtkyeVPpaIloMfUvakhYNVGdSw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rXJvM-0000000EgLI-3nq3;
+	Tue, 06 Feb 2024 12:47:37 +0100
+Message-ID: <455bafff0d609eb182ba30a5fbf319888e0e961d.camel@sipsolutions.net>
+Subject: Re: wireless-regdb key change broke crda tests after 37dcea0e6e5
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Sergei Trofimovich <slyich@gmail.com>, linux-wireless@vger.kernel.org
+Cc: wireless-regdb@lists.infradead.org, Chen-Yu Tsai <wens@kernel.org>, Seth
+	Forshee <sforshee@kernel.org>
+Date: Tue, 06 Feb 2024 12:47:35 +0100
+In-Reply-To: <ZcIXGjzrZrXPCBcp@nz.home>
+References: <ZcIXGjzrZrXPCBcp@nz.home>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+X-malware-bazaar: not-scanned
 
-Hi `crda` and `wireless-regdb` maintainers!
+Hi,
 
-`nixpkgs` attempted to update to latest `wireless-regdb-2024.01.23` from
-`2024.01.23` and got `crda` verification failures at
-https://github.com/NixOS/nixpkgs/pull/286012:
+> "wireless-regdb: Update keys and maintainer information".
+>=20
+> Both `git` `master` version of `crda` and `wireless-regdb` still fail
+> `crda`'s `make verify`.
+>=20
+> Should `crda` key the key update as well?
 
-    crda> make verify
-    crda>   CHK  ...-wireless-regdb-2024.01.23/lib/crda/regulatory.bin
-    crda> Database signature verification failed.
-    crda> Invalid or empty regulatory file, note: a binary regulatory file should be used.
-    crda> make: *** [Makefile:161: verify] Error 234
+Maybe?
 
-Bisect says the suspect is key change at done by https://git.kernel.org/pub/scm/linux/kernel/git/wens/wireless-regdb.git/commit/?id=37dcea0e6e5effb4228fe385e906edba3cbee389
+But perhaps the real question is if you should still be shipping crda?
+It was last needed for kernel 4.15, and even the newest stable kernel
+based on or before it (4.14) is now EOL ...
 
-"wireless-regdb: Update keys and maintainer information".
+After that, we had the regdb loaded like a firmware file including the
+signatures, so the whole crda isn't needed any more.
 
-Both `git` `master` version of `crda` and `wireless-regdb` still fail
-`crda`'s `make verify`.
-
-Should `crda` key the key update as well?
-
-Thanks!
-
--- 
-
-  Sergei
+johannes
 
