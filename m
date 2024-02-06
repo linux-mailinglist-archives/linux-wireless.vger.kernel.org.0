@@ -1,66 +1,66 @@
-Return-Path: <linux-wireless+bounces-3241-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3242-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83EFE84BA8A
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Feb 2024 17:03:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D065B84BA8B
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Feb 2024 17:03:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E75B290728
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Feb 2024 16:03:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 531711F230BA
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Feb 2024 16:03:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25FF213341F;
-	Tue,  6 Feb 2024 16:02:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABD51134CE2;
+	Tue,  6 Feb 2024 16:02:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ejj+StHo"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bhS+m36U"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 700AB1350DD
-	for <linux-wireless@vger.kernel.org>; Tue,  6 Feb 2024 16:02:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F37134CE7
+	for <linux-wireless@vger.kernel.org>; Tue,  6 Feb 2024 16:02:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707235368; cv=none; b=Mcd3MSAj1REL/isVzPZHcZSd+bBfvyFTOJ+ameCi7LtEYGki0z6mfLY8Y5o+8CnAl3dwcgf+DZJCDrcYsIj0xkuKQbuGS9LFC/9bJA4TIb7VCrj9K6MkXpjwk8IscLy9vR9Z+b2D/xpsW/d0oS6rXOxxqledEKo76aaF2HtpU40=
+	t=1707235369; cv=none; b=smUvjpitRYwIY4rjgvqcXERKbcMkMViCbYtPjdCBpsjbVATi5FXrBGvM8PpLTQ+/WIuK88DCSpvkLWqTuq+ozBm717ZzNnVVSlNyb1o+IuXtblaD5fLJP3agMRvQl3yRYRkpbqEqF3YJ6CzI1LiImG1EiuMNiwcBo/JyV5CLum4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707235368; c=relaxed/simple;
-	bh=LMeMhIkMgXkQBtVEmGNQfegeXLBykgbRGHUsxKQPkqU=;
+	s=arc-20240116; t=1707235369; c=relaxed/simple;
+	bh=RJxEqNoxjX/0smzrIc4TqVPuqGW4OpdCk7bLL/ag0OE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=AK2CW4Z50aYEKl82k0M3ZWX4fJkpTisAOpG/zlZHze8jbTQyExJ7G9DXTokFIOM8GWIMgW9qL0YH1du0lGTsdCN9sfOU0mOmgvqQ+uira/Zaa+2NrSLznHQmm93k7d69RzeIxua78daO8Tr0RO8amafbkKvxakjsXIcjuySLRy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ejj+StHo; arc=none smtp.client-ip=198.175.65.9
+	 MIME-Version; b=bYaJ7R090sMc+2/5BzYLqY5oh709Hum53NVjwAgBQQfe9Fdm5HU5Uib+Jj/27lrtiFcKyU15SvbZUC15GR00rkJVLBLKtygQMqCrTWThlMdIajMWjOFpFF8thBXy0BlbCX6Glinwe6QfJY9TzqOHKojstyI3/YI4dVTGSNofchU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bhS+m36U; arc=none smtp.client-ip=198.175.65.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707235367; x=1738771367;
+  t=1707235368; x=1738771368;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=LMeMhIkMgXkQBtVEmGNQfegeXLBykgbRGHUsxKQPkqU=;
-  b=Ejj+StHoe/cNZqsziLd34zV93KtVJPxeWSHONhTepVXXP8deTUeKSZIX
-   B0QOLMZJ8ojaaFbdE6rb3JCgjdzWS0iIgkNniNGCp1aRfbuQxJGQDSBHb
-   q1buu7csQbvo9pTJ+9E83GwIxY7WROkbBFzVh5OT/yMAGoYIjhGGV9bTA
-   2l49oddM57Brabnb+C4alKvg+Ovac7Jo4UXjwhMVizeqtrVAfZ8OQqFQh
-   apdqP/47Gz+OLoaDI5Pxn6lu9lM76tauVlhR8j685ahHSkX0s9H1xDSqx
-   +T+xAKLSdjZEucmH44rsoxQXCLutoKDdmWfoFb4V/e4dF7WoVoq0hZCV4
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10976"; a="23252455"
+  bh=RJxEqNoxjX/0smzrIc4TqVPuqGW4OpdCk7bLL/ag0OE=;
+  b=bhS+m36UhLUjEvOt8/2mk/1ReqAn+GwdnX7mG5JUz39Fk1PUTYgKnSrX
+   Ycc7TdG1Kavxq6XBZHn5cro7jnTMxnkdHdBjyHGW3j/QNUsN7JeOKRzH/
+   j9y4a8CfE6GIyj+qYS34yvEhzmc592kL/BLUUrwNUMu0P6e4AYkA23VJk
+   MQgcDnTU6lXSPjRiArgdD5+8lV1gbZtnPd/rQe5UQPtjmK3CLl3LzsTAV
+   f/a5hHd+d2VURGVpl59stjqSfPmba1lTuXkLFFiapXxS1ctkrVp8Tm/ug
+   1SXryubIlxFOdC+xGkX/UaE7LH0yJ/sYhSF6HfRegMMx/Fx44wax+rIoJ
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10976"; a="23252464"
 X-IronPort-AV: E=Sophos;i="6.05,247,1701158400"; 
-   d="scan'208";a="23252455"
+   d="scan'208";a="23252464"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2024 08:02:46 -0800
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2024 08:02:48 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,247,1701158400"; 
-   d="scan'208";a="1349855"
+   d="scan'208";a="1349861"
 Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2024 08:02:44 -0800
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2024 08:02:46 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 10/11] wifi: iwlwifi: mvm: move BA notif messages before action
-Date: Tue,  6 Feb 2024 18:02:13 +0200
-Message-Id: <20240206175739.825245e0803f.Ic607c57f43eb7c7ff122ffee8f3994fd040d578f@changeid>
+Subject: [PATCH 11/11] wifi: iwlwifi: queue: improve warning for no skb in reclaim
+Date: Tue,  6 Feb 2024 18:02:14 +0200
+Message-Id: <20240206175739.581427dc81fc.I9a109d02b4349807dce521c693ecd3516ec58cc0@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240206160214.3260547-1-miriam.rachel.korenblit@intel.com>
 References: <20240206160214.3260547-1-miriam.rachel.korenblit@intel.com>
@@ -75,66 +75,51 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-This is always a bit confusing, the code first does all the
-reclaim (with its own debug messages), and _then_ prints it
-got a BA notification from firmware. Turn that around.
+We've seen this warning trigger, and while the reason is
+probably obvious, I haven't been able to see it yet. Add
+more information to the warning message to help identify
+the cause. Also print out both index and SSN for all the
+messages.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/queue/tx.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-index 3c887a8eebc0..dc3808e3c62e 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-@@ -2211,6 +2211,12 @@ void iwl_mvm_rx_ba_notif(struct iwl_mvm *mvm, struct iwl_rx_cmd_buffer *rxb)
- 				 tfd_cnt, pkt_len))
- 			return;
- 
-+		IWL_DEBUG_TX_REPLY(mvm,
-+				   "BA_NOTIFICATION Received from sta_id = %d, flags %x, sent:%d, acked:%d\n",
-+				   sta_id, le32_to_cpu(ba_res->flags),
-+				   le16_to_cpu(ba_res->txed),
-+				   le16_to_cpu(ba_res->done));
-+
- 		rcu_read_lock();
- 
- 		mvmsta = iwl_mvm_sta_from_staid_rcu(mvm, sta_id);
-@@ -2246,12 +2252,6 @@ void iwl_mvm_rx_ba_notif(struct iwl_mvm *mvm, struct iwl_rx_cmd_buffer *rxb)
- 			iwl_mvm_tx_airtime(mvm, mvmsta,
- 					   le32_to_cpu(ba_res->wireless_time));
- 		rcu_read_unlock();
--
--		IWL_DEBUG_TX_REPLY(mvm,
--				   "BA_NOTIFICATION Received from sta_id = %d, flags %x, sent:%d, acked:%d\n",
--				   sta_id, le32_to_cpu(ba_res->flags),
--				   le16_to_cpu(ba_res->txed),
--				   le16_to_cpu(ba_res->done));
- 		return;
- 	}
- 
-@@ -2283,9 +2283,6 @@ void iwl_mvm_rx_ba_notif(struct iwl_mvm *mvm, struct iwl_rx_cmd_buffer *rxb)
- 
- 	rcu_read_unlock();
- 
--	iwl_mvm_tx_reclaim(mvm, sta_id, tid, txq, index, &ba_info,
--			   tid_data->rate_n_flags, false);
--
- 	IWL_DEBUG_TX_REPLY(mvm,
- 			   "BA_NOTIFICATION Received from %pM, sta_id = %d\n",
- 			   ba_notif->sta_addr, ba_notif->sta_id);
-@@ -2298,6 +2295,9 @@ void iwl_mvm_rx_ba_notif(struct iwl_mvm *mvm, struct iwl_rx_cmd_buffer *rxb)
- 
- 	IWL_DEBUG_TX_REPLY(mvm, "reduced txp from ba notif %d\n",
- 			   ba_notif->reduced_txp);
-+
-+	iwl_mvm_tx_reclaim(mvm, sta_id, tid, txq, index, &ba_info,
-+			   tid_data->rate_n_flags, false);
- }
- 
+diff --git a/drivers/net/wireless/intel/iwlwifi/queue/tx.c b/drivers/net/wireless/intel/iwlwifi/queue/tx.c
+index ba0419bc1765..d3bde2d010b7 100644
+--- a/drivers/net/wireless/intel/iwlwifi/queue/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/queue/tx.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
  /*
+- * Copyright (C) 2020-2023 Intel Corporation
++ * Copyright (C) 2020-2024 Intel Corporation
+  */
+ #include <net/tso.h>
+ #include <linux/tcp.h>
+@@ -1602,8 +1602,8 @@ void iwl_txq_reclaim(struct iwl_trans *trans, int txq_id, int ssn,
+ 	if (read_ptr == tfd_num)
+ 		goto out;
+ 
+-	IWL_DEBUG_TX_REPLY(trans, "[Q %d] %d -> %d (%d)\n",
+-			   txq_id, txq->read_ptr, tfd_num, ssn);
++	IWL_DEBUG_TX_REPLY(trans, "[Q %d] %d (%d) -> %d (%d)\n",
++			   txq_id, read_ptr, txq->read_ptr, tfd_num, ssn);
+ 
+ 	/*Since we free until index _not_ inclusive, the one before index is
+ 	 * the last we will free. This one must be used */
+@@ -1631,7 +1631,8 @@ void iwl_txq_reclaim(struct iwl_trans *trans, int txq_id, int ssn,
+ 	     read_ptr = iwl_txq_get_cmd_index(txq, txq->read_ptr)) {
+ 		struct sk_buff *skb = txq->entries[read_ptr].skb;
+ 
+-		if (WARN_ON_ONCE(!skb))
++		if (WARN_ONCE(!skb, "no SKB at %d (%d) on queue %d\n",
++			      read_ptr, txq->read_ptr, txq_id))
+ 			continue;
+ 
+ 		iwl_txq_free_tso_page(trans, skb);
 -- 
 2.34.1
 
