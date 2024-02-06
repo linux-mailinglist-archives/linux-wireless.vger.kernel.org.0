@@ -1,126 +1,132 @@
-Return-Path: <linux-wireless+bounces-3242-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3243-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D065B84BA8B
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Feb 2024 17:03:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D99C584BAA4
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Feb 2024 17:11:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 531711F230BA
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Feb 2024 16:03:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95CDF281E48
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Feb 2024 16:11:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABD51134CE2;
-	Tue,  6 Feb 2024 16:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9189813474F;
+	Tue,  6 Feb 2024 16:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bhS+m36U"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NjKMHjPa"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F37134CE7
-	for <linux-wireless@vger.kernel.org>; Tue,  6 Feb 2024 16:02:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C7DB13474D
+	for <linux-wireless@vger.kernel.org>; Tue,  6 Feb 2024 16:11:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707235369; cv=none; b=smUvjpitRYwIY4rjgvqcXERKbcMkMViCbYtPjdCBpsjbVATi5FXrBGvM8PpLTQ+/WIuK88DCSpvkLWqTuq+ozBm717ZzNnVVSlNyb1o+IuXtblaD5fLJP3agMRvQl3yRYRkpbqEqF3YJ6CzI1LiImG1EiuMNiwcBo/JyV5CLum4=
+	t=1707235902; cv=none; b=BuZeIKuyz8bAtRwYe96CKE25Oi+hggHFAYC5zBUZ/u/m4v4M7X4fnGwjiLiBJICwZ4FtySJrzNc5Zzhh4SYRDWNDJwd8S/q6swHOvPrpn+oyTfbbkoerZ9dkTnNHIZ+MJ64Ta8+qYHjRSWQCcrvJSlS2fiN3WKW2ZxnjLrYvLdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707235369; c=relaxed/simple;
-	bh=RJxEqNoxjX/0smzrIc4TqVPuqGW4OpdCk7bLL/ag0OE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bYaJ7R090sMc+2/5BzYLqY5oh709Hum53NVjwAgBQQfe9Fdm5HU5Uib+Jj/27lrtiFcKyU15SvbZUC15GR00rkJVLBLKtygQMqCrTWThlMdIajMWjOFpFF8thBXy0BlbCX6Glinwe6QfJY9TzqOHKojstyI3/YI4dVTGSNofchU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bhS+m36U; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707235368; x=1738771368;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=RJxEqNoxjX/0smzrIc4TqVPuqGW4OpdCk7bLL/ag0OE=;
-  b=bhS+m36UhLUjEvOt8/2mk/1ReqAn+GwdnX7mG5JUz39Fk1PUTYgKnSrX
-   Ycc7TdG1Kavxq6XBZHn5cro7jnTMxnkdHdBjyHGW3j/QNUsN7JeOKRzH/
-   j9y4a8CfE6GIyj+qYS34yvEhzmc592kL/BLUUrwNUMu0P6e4AYkA23VJk
-   MQgcDnTU6lXSPjRiArgdD5+8lV1gbZtnPd/rQe5UQPtjmK3CLl3LzsTAV
-   f/a5hHd+d2VURGVpl59stjqSfPmba1lTuXkLFFiapXxS1ctkrVp8Tm/ug
-   1SXryubIlxFOdC+xGkX/UaE7LH0yJ/sYhSF6HfRegMMx/Fx44wax+rIoJ
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10976"; a="23252464"
-X-IronPort-AV: E=Sophos;i="6.05,247,1701158400"; 
-   d="scan'208";a="23252464"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2024 08:02:48 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,247,1701158400"; 
-   d="scan'208";a="1349861"
-Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2024 08:02:46 -0800
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 11/11] wifi: iwlwifi: queue: improve warning for no skb in reclaim
-Date: Tue,  6 Feb 2024 18:02:14 +0200
-Message-Id: <20240206175739.581427dc81fc.I9a109d02b4349807dce521c693ecd3516ec58cc0@changeid>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240206160214.3260547-1-miriam.rachel.korenblit@intel.com>
-References: <20240206160214.3260547-1-miriam.rachel.korenblit@intel.com>
+	s=arc-20240116; t=1707235902; c=relaxed/simple;
+	bh=dKQfTXfvG8cGa5lY/uzQknr/REsIGK2mbN9pDOH9C5U=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=SqmPsMSQ08PbiMgTN7VmxD75DzZuREKhLG1AkVvy5WCrAk3Gwq0EX86J3z5yFCI5KXC7ZXb+nMIUI59QLp4d8Sbn0a2JJ+SMJJl2IOxxluXO4ntGDOXmVkYxZ3NK+6blKVaqfn6Q39D7OCurCDNn5wgJKAz++8XOSQxpaS57WNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NjKMHjPa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15CB7C433C7;
+	Tue,  6 Feb 2024 16:11:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707235901;
+	bh=dKQfTXfvG8cGa5lY/uzQknr/REsIGK2mbN9pDOH9C5U=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=NjKMHjPaLssBXXJSFcRnztAM/ssE0iPsEMvPz69cHHWw1wNplvJY3q/F6cuMFl4gj
+	 Tai66IcvasuZP0b6Q8Alco2sOJzOPPTqFNklNlQuq7MXOtOf4KjHQ+/MZjSFfVy4CM
+	 wqBJ8MnO3kOLTXxLaAsg3NbWMzj67egu/bJPXeAMg7vKdfbsiOfUy9WclKJb9OLseB
+	 ny38hvMhHdJV+XxYMrxr+atxnP9XHp7MaszGB5NsgQFtufeNFxO+DzZRjaFhf8jbHk
+	 ozdC0L6e+cuRaGnsyHS3W8z0/bz1g8YgO92nsFXvOu7g/ovRuJOvO9h5wRufC32yKf
+	 J+loMTd690U9g==
+From: Kalle Valo <kvalo@kernel.org>
+To: Kang Yang <quic_kangyang@quicinc.com>
+Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH v6 05/11] wifi: ath12k: implement handling of P2P NoA event
+References: <20240130040303.370590-1-quic_kangyang@quicinc.com>
+	<20240130040303.370590-6-quic_kangyang@quicinc.com>
+Date: Tue, 06 Feb 2024 18:11:38 +0200
+In-Reply-To: <20240130040303.370590-6-quic_kangyang@quicinc.com> (Kang Yang's
+	message of "Tue, 30 Jan 2024 12:02:57 +0800")
+Message-ID: <87plx9r2rp.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-From: Johannes Berg <johannes.berg@intel.com>
+Kang Yang <quic_kangyang@quicinc.com> writes:
 
-We've seen this warning trigger, and while the reason is
-probably obvious, I haven't been able to see it yet. Add
-more information to the warning message to help identify
-the cause. Also print out both index and SSN for all the
-messages.
+> The NoA(Notice of Absence) attribute is used by the P2P Group Owner to
+> signal its absence due to power save timing, concurrent operation, or
+> off-channel scanning. It is also used in the P2P Presence Request-Response
+> mechanism.
+>
+> The NoA attribute shall be present in the P2P IE in the beacon frames
+> transmitted by a P2P Group Owner when a NoA schedule is being advertised,
+> or when the CTWindow is non-zero.
+>
+> So add support to update P2P information after P2P GO is up through
+> event WMI_P2P_NOA_EVENTID, and always put it in probe resp.
+>
+> Create p2p.c and p2p.h for P2P related functions and definitions.
+>
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+>
+> Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/queue/tx.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+[...]
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/queue/tx.c b/drivers/net/wireless/intel/iwlwifi/queue/tx.c
-index ba0419bc1765..d3bde2d010b7 100644
---- a/drivers/net/wireless/intel/iwlwifi/queue/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/queue/tx.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-- * Copyright (C) 2020-2023 Intel Corporation
-+ * Copyright (C) 2020-2024 Intel Corporation
-  */
- #include <net/tso.h>
- #include <linux/tcp.h>
-@@ -1602,8 +1602,8 @@ void iwl_txq_reclaim(struct iwl_trans *trans, int txq_id, int ssn,
- 	if (read_ptr == tfd_num)
- 		goto out;
- 
--	IWL_DEBUG_TX_REPLY(trans, "[Q %d] %d -> %d (%d)\n",
--			   txq_id, txq->read_ptr, tfd_num, ssn);
-+	IWL_DEBUG_TX_REPLY(trans, "[Q %d] %d (%d) -> %d (%d)\n",
-+			   txq_id, read_ptr, txq->read_ptr, tfd_num, ssn);
- 
- 	/*Since we free until index _not_ inclusive, the one before index is
- 	 * the last we will free. This one must be used */
-@@ -1631,7 +1631,8 @@ void iwl_txq_reclaim(struct iwl_trans *trans, int txq_id, int ssn,
- 	     read_ptr = iwl_txq_get_cmd_index(txq, txq->read_ptr)) {
- 		struct sk_buff *skb = txq->entries[read_ptr].skb;
- 
--		if (WARN_ON_ONCE(!skb))
-+		if (WARN_ONCE(!skb, "no SKB at %d (%d) on queue %d\n",
-+			      read_ptr, txq->read_ptr, txq_id))
- 			continue;
- 
- 		iwl_txq_free_tso_page(trans, skb);
+> +static int ath12k_wmi_p2p_noa_event(struct ath12k_base *ab,
+> +				    struct sk_buff *skb)
+> +{
+> +	const void **tb;
+> +	const struct wmi_p2p_noa_event *ev;
+> +	const struct ath12k_wmi_p2p_noa_info *noa;
+> +	struct ath12k *ar;
+> +	int ret, vdev_id;
+> +
+> +	tb = ath12k_wmi_tlv_parse_alloc(ab, skb, GFP_ATOMIC);
+> +	if (IS_ERR(tb)) {
+> +		ret = PTR_ERR(tb);
+> +		ath12k_warn(ab, "failed to parse tlv: %d\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	ev = tb[WMI_TAG_P2P_NOA_EVENT];
+> +	noa = tb[WMI_TAG_P2P_NOA_INFO];
+> +
+> +	if (!ev || !noa) {
+> +		kfree(tb);
+> +		return -EPROTO;
+> +	}
+> +
+> +	vdev_id = __le32_to_cpu(ev->vdev_id);
+> +
+> +	ath12k_dbg(ab, ATH12K_DBG_WMI,
+> +		   "wmi tlv p2p noa vdev_id %i descriptors %u\n",
+> +		   vdev_id, le32_get_bits(noa->noa_attr, WMI_P2P_NOA_INFO_DESC_NUM));
+> +	ar = ath12k_mac_get_ar_by_vdev_id(ab, vdev_id);
+> +	if (!ar) {
+> +		ath12k_warn(ab, "invalid vdev id %d in P2P NoA event\n",
+> +			    vdev_id);
+> +		return -EINVAL;
+> +	}
+
+Aren't we leaking tb here? In this function I revamped the error
+handling to use the out label to make sure we are freeing tb in every
+error. Please review:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=12e182b47078a48169e873c51d438d7417e7e0c8
+
 -- 
-2.34.1
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
