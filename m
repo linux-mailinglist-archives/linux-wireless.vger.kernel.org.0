@@ -1,67 +1,67 @@
-Return-Path: <linux-wireless+bounces-3225-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3226-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 886FD84B88E
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Feb 2024 15:56:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F38B84B88F
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Feb 2024 15:56:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F1D9287719
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Feb 2024 14:56:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09BB61F256DA
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Feb 2024 14:56:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3849113343E;
-	Tue,  6 Feb 2024 14:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 196581339A0;
+	Tue,  6 Feb 2024 14:54:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VkAxDUEr"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hflc+Ate"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86B0813398A
-	for <linux-wireless@vger.kernel.org>; Tue,  6 Feb 2024 14:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4CD13398A
+	for <linux-wireless@vger.kernel.org>; Tue,  6 Feb 2024 14:54:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707231273; cv=none; b=JvGewjuuKn1FMnPW9AS6NtcfdAHeFnEWh+yA3FiiIl2twiwGmyanfgCf0ZlagwjOMqR8Z0t1LQTctz6snC1uuBdFGyAGMoMbVUGWggtsu+n+Uh/SeFLczw/Ma9smkQN0OWnt9dzIvYNA6jugHSWQkuwmnrHc1DpB0v/VuAu0KKE=
+	t=1707231277; cv=none; b=oTt3pQDqLHmkIwp93/AHKsUe+Tluwpp4TdkT0x3W5bVXAKbE+ET5+vGphp/O6hkF1f2vEy5hhElyVeAWR3B1ESZivrB7ELbQaIZlRzaCih8unPFO+1cDBmetynxfbonoLfb5AdBBy869U9j6+ssVseoXwnyWCRSR6Jiyem/Y7JY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707231273; c=relaxed/simple;
-	bh=4zBNbH9i4EHXb1cicpYj7BDPwRPkMoTNhD6B4zrRAe4=;
+	s=arc-20240116; t=1707231277; c=relaxed/simple;
+	bh=zJWBTDzaEx8JJySRXW5+9wEbode44+aZ8DUhyjcktQ4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Y27rJWO1kSZ4I2wBsbdBlq1vDxdzKlj03y2Bf+vsT787ID5dxuFFCUyjSCAQ0uUOnU9/lns8txR+rxLOkdsoRfHvtmEvWfkDIcb1oOHn5WhvsC/vQrk0eOIGyQgFr9Zp1pTdeEXSDsd6L6Jhtijm5EbpJjFCE/3mph2tzRQLTwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VkAxDUEr; arc=none smtp.client-ip=192.198.163.14
+	 MIME-Version; b=aSqxWZRp1CuZPSLJ8YgaPZTxBV2zZ8QwNYGf1ClIjIAK4/RfCjjQVx1K8yXA2miMy2T+Jn+ThMNar9+DRbjrC5AXUEh9Q4yp6sq1Q2iBo1Y01l2eeILTeucew2CstRJNvCBhlF8nB1kMfx5Za0nD9r/UpjU/e1yDJ6As9irik+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hflc+Ate; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707231272; x=1738767272;
+  t=1707231275; x=1738767275;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=4zBNbH9i4EHXb1cicpYj7BDPwRPkMoTNhD6B4zrRAe4=;
-  b=VkAxDUErUkDW3N8Im0fgXOHKPbctafze8La3i10UvH9gipiN6UJNqVMK
-   4f/Lt8/pqhYIHVQjEKw3vbt1so6Hjeq+jUHvSeGcXMfP1eazwf3QOl94k
-   RzenAWhVy4mVoxR8Gk8cjiHiHw3N93hiMB+ytyuVAqhHRXoz8Us4HPeFd
-   ZXh6vkiQDsdMmrrXl6HkRAK8dPNdYAMV2whOeiJvI+/mlyFBj0Xu899LQ
-   nevNaqofC9pv1eRc88Ca+nnwoAkGmzH+ZoKu/Mfbbod/K6Je91h7NpvIY
-   oEkVWjLkLNjKvaYx0ULjEsqobr8b4658csvqJOa0T1aDoQ/B6QShnhhjl
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10975"; a="917795"
+  bh=zJWBTDzaEx8JJySRXW5+9wEbode44+aZ8DUhyjcktQ4=;
+  b=hflc+Aten/6WXD/KIYooIzbWthn5MefroJBN4n3h+ubGGIbtnVwVCrHe
+   n1B3krGv+0eKCeguTPNMMOGHoaY5nsnXOo7tOii/4bUGCbHucsFw3ZBZ2
+   LPA69xs49fkN0AsVrTuZEQmGWaA44exR4pbd0cnhzIDG8xiCSAxIqqew4
+   L0nzh29ofLscDdwn7SIk4xRtfDVt50SYMnnBfsDGKiw6QOT38wqySnUXD
+   3Wh4aUlEq9F62IYCs1eX8J+ZhMfEL85weOvPhUfaBWboIQoBz3V2HBS+a
+   G/GNwdePgb2N8Aep2NHekoiWA+CxUw7TPtwz5ITwVjNYN0ZaYb5G4mYjv
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10975"; a="917811"
 X-IronPort-AV: E=Sophos;i="6.05,247,1701158400"; 
-   d="scan'208";a="917795"
+   d="scan'208";a="917811"
 Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2024 06:54:31 -0800
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2024 06:54:34 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10975"; a="824197922"
+X-IronPort-AV: E=McAfee;i="6600,9927,10975"; a="824197930"
 X-IronPort-AV: E=Sophos;i="6.05,247,1701158400"; 
-   d="scan'208";a="824197922"
+   d="scan'208";a="824197930"
 Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2024 06:54:29 -0800
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2024 06:54:32 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 3/8] wifi: mac80211:  make associated BSS pointer visible to the driver
-Date: Tue,  6 Feb 2024 16:54:06 +0200
-Message-Id: <20240206164849.6fe9782b87b4.Ifbffef638f07ca7f5c2b27f40d2cf2942d21de0b@changeid>
+Subject: [PATCH 4/8] wifi: cfg80211: rename UHB to 6 GHz
+Date: Tue,  6 Feb 2024 16:54:07 +0200
+Message-Id: <20240206164849.c9cfb9400839.I153db3b951934a1d84409c17fbe1f1d1782543fa@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240206145411.3217588-1-miriam.rachel.korenblit@intel.com>
 References: <20240206145411.3217588-1-miriam.rachel.korenblit@intel.com>
@@ -74,115 +74,237 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-Some drivers need the data in it, so move it to the link conf,
-which is exposed to the driver.
+From: Johannes Berg <johannes.berg@intel.com>
 
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+UHB stands for "Ultra High Band", but this term doesn't really
+exist in the spec. Rename all occurrences to "6 GHz", but keep
+a few defines for userspace API compatibility.
+
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- include/net/mac80211.h |  3 +++
- net/mac80211/mlme.c    | 18 +++++++++---------
- 2 files changed, 12 insertions(+), 9 deletions(-)
+ include/net/cfg80211.h       | 10 +++++-----
+ include/uapi/linux/nl80211.h | 31 ++++++++++++++++++++-----------
+ net/wireless/nl80211.c       |  8 ++++----
+ net/wireless/reg.c           | 10 +++++-----
+ net/wireless/scan.c          |  8 ++++----
+ 5 files changed, 38 insertions(+), 29 deletions(-)
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 8d6ae22c09bf..9c6ffdc248f0 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -539,6 +539,8 @@ struct ieee80211_fils_discovery {
-  * to that BSS) that can change during the lifetime of the BSS.
-  *
-  * @vif: reference to owning VIF
-+ * @bss: the cfg80211 bss descriptor. Valid only for a station, and only
-+ *	when associated.
-  * @addr: (link) address used locally
-  * @link_id: link ID, or 0 for non-MLO
-  * @htc_trig_based_pkt_ext: default PE in 4us units, if BSS supports HE
-@@ -684,6 +686,7 @@ struct ieee80211_fils_discovery {
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 51b9e6fa12f8..bac3d75ccded 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -118,9 +118,9 @@ struct wiphy;
+  *	restrictions.
+  * @IEEE80211_CHAN_NO_EHT: EHT operation is not permitted on this channel.
+  * @IEEE80211_CHAN_DFS_CONCURRENT: See %NL80211_RRF_DFS_CONCURRENT
+- * @IEEE80211_CHAN_NO_UHB_VLP_CLIENT: Client connection with VLP AP
++ * @IEEE80211_CHAN_NO_6GHZ_VLP_CLIENT: Client connection with VLP AP
+  *	not permitted using this channel
+- * @IEEE80211_CHAN_NO_UHB_AFC_CLIENT: Client connection with AFC AP
++ * @IEEE80211_CHAN_NO_6GHZ_AFC_CLIENT: Client connection with AFC AP
+  *	not permitted using this channel
   */
- struct ieee80211_bss_conf {
- 	struct ieee80211_vif *vif;
-+	struct cfg80211_bss *bss;
+ enum ieee80211_channel_flags {
+@@ -146,8 +146,8 @@ enum ieee80211_channel_flags {
+ 	IEEE80211_CHAN_NO_320MHZ	= 1<<19,
+ 	IEEE80211_CHAN_NO_EHT		= 1<<20,
+ 	IEEE80211_CHAN_DFS_CONCURRENT	= 1<<21,
+-	IEEE80211_CHAN_NO_UHB_VLP_CLIENT= 1<<22,
+-	IEEE80211_CHAN_NO_UHB_AFC_CLIENT= 1<<23,
++	IEEE80211_CHAN_NO_6GHZ_VLP_CLIENT = 1<<22,
++	IEEE80211_CHAN_NO_6GHZ_AFC_CLIENT = 1<<23,
+ };
  
- 	const u8 *bssid;
- 	unsigned int link_id;
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index cc9a8eaffa6b..0a03b5bb2c5a 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -1857,7 +1857,7 @@ ieee80211_sta_process_chanswitch(struct ieee80211_link_data *link,
- 	struct ieee80211_sub_if_data *sdata = link->sdata;
- 	struct ieee80211_local *local = sdata->local;
- 	struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
--	struct cfg80211_bss *cbss = link->u.mgd.bss;
-+	struct cfg80211_bss *cbss = link->conf->bss;
- 	struct ieee80211_chanctx_conf *conf;
- 	struct ieee80211_chanctx *chanctx;
- 	enum nl80211_band current_band;
-@@ -2769,7 +2769,7 @@ static u64 ieee80211_link_set_associated(struct ieee80211_link_data *link,
+ #define IEEE80211_CHAN_NO_HT40 \
+@@ -4913,7 +4913,7 @@ struct cfg80211_ops {
+  * enum wiphy_flags - wiphy capability flags
+  *
+  * @WIPHY_FLAG_SPLIT_SCAN_6GHZ: if set to true, the scan request will be split
+- *	 into two, first for legacy bands and second for UHB.
++ *	 into two, first for legacy bands and second for 6 GHz.
+  * @WIPHY_FLAG_NETNS_OK: if not set, do not allow changing the netns of this
+  *	wiphy at all
+  * @WIPHY_FLAG_PS_ON_BY_DEFAULT: if set to true, powersave will be enabled
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index 853ac538a686..2af018dfef39 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -11,7 +11,7 @@
+  * Copyright 2008 Jouni Malinen <jouni.malinen@atheros.com>
+  * Copyright 2008 Colin McCabe <colin@cozybit.com>
+  * Copyright 2015-2017	Intel Deutschland GmbH
+- * Copyright (C) 2018-2023 Intel Corporation
++ * Copyright (C) 2018-2024 Intel Corporation
+  *
+  * Permission to use, copy, modify, and/or distribute this software for any
+  * purpose with or without fee is hereby granted, provided that the above
+@@ -4268,9 +4268,9 @@ enum nl80211_wmm_rule {
+  *	allowed for peer-to-peer or adhoc communication under the control
+  *	of a DFS master which operates on the same channel (FCC-594280 D01
+  *	Section B.3). Should be used together with %NL80211_RRF_DFS only.
+- * @NL80211_FREQUENCY_ATTR_NO_UHB_VLP_CLIENT: Client connection to VLP AP
++ * @NL80211_FREQUENCY_ATTR_NO_6GHZ_VLP_CLIENT: Client connection to VLP AP
+  *	not allowed using this channel
+- * @NL80211_FREQUENCY_ATTR_NO_UHB_AFC_CLIENT: Client connection to AFC AP
++ * @NL80211_FREQUENCY_ATTR_NO_6GHZ_AFC_CLIENT: Client connection to AFC AP
+  *	not allowed using this channel
+  * @NL80211_FREQUENCY_ATTR_MAX: highest frequency attribute number
+  *	currently defined
+@@ -4312,8 +4312,8 @@ enum nl80211_frequency_attr {
+ 	NL80211_FREQUENCY_ATTR_NO_EHT,
+ 	NL80211_FREQUENCY_ATTR_PSD,
+ 	NL80211_FREQUENCY_ATTR_DFS_CONCURRENT,
+-	NL80211_FREQUENCY_ATTR_NO_UHB_VLP_CLIENT,
+-	NL80211_FREQUENCY_ATTR_NO_UHB_AFC_CLIENT,
++	NL80211_FREQUENCY_ATTR_NO_6GHZ_VLP_CLIENT,
++	NL80211_FREQUENCY_ATTR_NO_6GHZ_AFC_CLIENT,
  
- 	ieee80211_check_rate_mask(link);
+ 	/* keep last */
+ 	__NL80211_FREQUENCY_ATTR_AFTER_LAST,
+@@ -4326,6 +4326,10 @@ enum nl80211_frequency_attr {
+ #define NL80211_FREQUENCY_ATTR_NO_IR		NL80211_FREQUENCY_ATTR_NO_IR
+ #define NL80211_FREQUENCY_ATTR_GO_CONCURRENT \
+ 					NL80211_FREQUENCY_ATTR_IR_CONCURRENT
++#define NL80211_FREQUENCY_ATTR_NO_UHB_VLP_CLIENT \
++	NL80211_FREQUENCY_ATTR_NO_6GHZ_VLP_CLIENT
++#define NL80211_FREQUENCY_ATTR_NO_UHB_AFC_CLIENT \
++	NL80211_FREQUENCY_ATTR_NO_6GHZ_AFC_CLIENT
  
--	link->u.mgd.bss = cbss;
-+	link->conf->bss = cbss;
- 	memcpy(link->u.mgd.bssid, cbss->bssid, ETH_ALEN);
+ /**
+  * enum nl80211_bitrate_attr - bitrate attributes
+@@ -4516,8 +4520,8 @@ enum nl80211_sched_scan_match_attr {
+ 	peer-to-peer or adhoc communication under the control of a DFS master
+ 	which operates on the same channel (FCC-594280 D01 Section B.3).
+ 	Should be used together with %NL80211_RRF_DFS only.
+- * @NL80211_RRF_NO_UHB_VLP_CLIENT: Client connection to VLP AP not allowed
+- * @NL80211_RRF_NO_UHB_AFC_CLIENT: Client connection to AFC AP not allowed
++ * @NL80211_RRF_NO_6GHZ_VLP_CLIENT: Client connection to VLP AP not allowed
++ * @NL80211_RRF_NO_6GHZ_AFC_CLIENT: Client connection to AFC AP not allowed
+  */
+ enum nl80211_reg_rule_flags {
+ 	NL80211_RRF_NO_OFDM		= 1<<0,
+@@ -4540,8 +4544,8 @@ enum nl80211_reg_rule_flags {
+ 	NL80211_RRF_NO_EHT		= 1<<19,
+ 	NL80211_RRF_PSD			= 1<<20,
+ 	NL80211_RRF_DFS_CONCURRENT	= 1<<21,
+-	NL80211_RRF_NO_UHB_VLP_CLIENT	= 1<<22,
+-	NL80211_RRF_NO_UHB_AFC_CLIENT	= 1<<23,
++	NL80211_RRF_NO_6GHZ_VLP_CLIENT	= 1<<22,
++	NL80211_RRF_NO_6GHZ_AFC_CLIENT	= 1<<23,
+ };
  
- 	if (sdata->vif.p2p ||
-@@ -2917,7 +2917,7 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
- 	ifmgd->associated = false;
+ #define NL80211_RRF_PASSIVE_SCAN	NL80211_RRF_NO_IR
+@@ -4550,6 +4554,8 @@ enum nl80211_reg_rule_flags {
+ #define NL80211_RRF_NO_HT40		(NL80211_RRF_NO_HT40MINUS |\
+ 					 NL80211_RRF_NO_HT40PLUS)
+ #define NL80211_RRF_GO_CONCURRENT	NL80211_RRF_IR_CONCURRENT
++#define NL80211_RRF_NO_UHB_VLP_CLIENT	NL80211_RRF_NO_6GHZ_VLP_CLIENT
++#define NL80211_RRF_NO_UHB_AFC_CLIENT	NL80211_RRF_NO_6GHZ_AFC_CLIENT
  
- 	/* other links will be destroyed */
--	sdata->deflink.u.mgd.bss = NULL;
-+	sdata->deflink.conf->bss = NULL;
+ /* For backport compatibility with older userspace */
+ #define NL80211_RRF_NO_IR_ALL		(NL80211_RRF_NO_IR | __NL80211_RRF_NO_IBSS)
+@@ -5097,14 +5103,17 @@ enum nl80211_bss_use_for {
+  *	BSS isn't possible
+  * @NL80211_BSS_CANNOT_USE_NSTR_NONPRIMARY: NSTR nonprimary links aren't
+  *	supported by the device, and this BSS entry represents one.
+- * @NL80211_BSS_CANNOT_USE_UHB_PWR_MISMATCH: STA is not supporting
++ * @NL80211_BSS_CANNOT_USE_6GHZ_PWR_MISMATCH: STA is not supporting
+  *	the AP power type (SP, VLP, AP) that the AP uses.
+  */
+ enum nl80211_bss_cannot_use_reasons {
+ 	NL80211_BSS_CANNOT_USE_NSTR_NONPRIMARY	= 1 << 0,
+-	NL80211_BSS_CANNOT_USE_UHB_PWR_MISMATCH	= 1 << 1,
++	NL80211_BSS_CANNOT_USE_6GHZ_PWR_MISMATCH	= 1 << 1,
+ };
  
- 	netif_carrier_off(sdata->dev);
- 
-@@ -3245,7 +3245,7 @@ static void ieee80211_mgd_probe_ap_send(struct ieee80211_sub_if_data *sdata)
- 		ieee80211_mlme_send_probe_req(sdata, sdata->vif.addr, dst,
- 					      sdata->vif.cfg.ssid,
- 					      sdata->vif.cfg.ssid_len,
--					      sdata->deflink.u.mgd.bss->channel);
-+					      sdata->deflink.conf->bss->channel);
++#define NL80211_BSS_CANNOT_USE_UHB_PWR_MISMATCH \
++	NL80211_BSS_CANNOT_USE_6GHZ_PWR_MISMATCH
++
+ /**
+  * enum nl80211_bss - netlink attributes for a BSS
+  *
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 68c20409eca6..24d3b01cd000 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -1198,11 +1198,11 @@ static int nl80211_msg_put_channel(struct sk_buff *msg, struct wiphy *wiphy,
+ 		if ((chan->flags & IEEE80211_CHAN_DFS_CONCURRENT) &&
+ 		    nla_put_flag(msg, NL80211_FREQUENCY_ATTR_DFS_CONCURRENT))
+ 			goto nla_put_failure;
+-		if ((chan->flags & IEEE80211_CHAN_NO_UHB_VLP_CLIENT) &&
+-		    nla_put_flag(msg, NL80211_FREQUENCY_ATTR_NO_UHB_VLP_CLIENT))
++		if ((chan->flags & IEEE80211_CHAN_NO_6GHZ_VLP_CLIENT) &&
++		    nla_put_flag(msg, NL80211_FREQUENCY_ATTR_NO_6GHZ_VLP_CLIENT))
+ 			goto nla_put_failure;
+-		if ((chan->flags & IEEE80211_CHAN_NO_UHB_AFC_CLIENT) &&
+-		    nla_put_flag(msg, NL80211_FREQUENCY_ATTR_NO_UHB_AFC_CLIENT))
++		if ((chan->flags & IEEE80211_CHAN_NO_6GHZ_AFC_CLIENT) &&
++		    nla_put_flag(msg, NL80211_FREQUENCY_ATTR_NO_6GHZ_AFC_CLIENT))
+ 			goto nla_put_failure;
  	}
  
- 	ifmgd->probe_timeout = jiffies + msecs_to_jiffies(probe_wait_ms);
-@@ -3328,7 +3328,7 @@ struct sk_buff *ieee80211_ap_probereq_get(struct ieee80211_hw *hw,
- 		return NULL;
- 
- 	if (ifmgd->associated)
--		cbss = sdata->deflink.u.mgd.bss;
-+		cbss = sdata->deflink.conf->bss;
- 	else if (ifmgd->auth_data)
- 		cbss = ifmgd->auth_data->bss;
- 	else if (ifmgd->assoc_data && ifmgd->assoc_data->link[0].bss)
-@@ -3407,8 +3407,8 @@ static void __ieee80211_disconnect(struct ieee80211_sub_if_data *sdata)
- 			link = sdata_dereference(sdata->link[link_id], sdata);
- 			if (!link)
- 				continue;
--			cfg80211_unlink_bss(local->hw.wiphy, link->u.mgd.bss);
--			link->u.mgd.bss = NULL;
-+			cfg80211_unlink_bss(local->hw.wiphy, link->conf->bss);
-+			link->conf->bss = NULL;
+diff --git a/net/wireless/reg.c b/net/wireless/reg.c
+index 2741b626919a..50cadbad485f 100644
+--- a/net/wireless/reg.c
++++ b/net/wireless/reg.c
+@@ -5,7 +5,7 @@
+  * Copyright 2008-2011	Luis R. Rodriguez <mcgrof@qca.qualcomm.com>
+  * Copyright 2013-2014  Intel Mobile Communications GmbH
+  * Copyright      2017  Intel Deutschland GmbH
+- * Copyright (C) 2018 - 2023 Intel Corporation
++ * Copyright (C) 2018 - 2024 Intel Corporation
+  *
+  * Permission to use, copy, modify, and/or distribute this software for any
+  * purpose with or without fee is hereby granted, provided that the above
+@@ -1595,10 +1595,10 @@ static u32 map_regdom_flags(u32 rd_flags)
+ 		channel_flags |= IEEE80211_CHAN_NO_EHT;
+ 	if (rd_flags & NL80211_RRF_DFS_CONCURRENT)
+ 		channel_flags |= IEEE80211_CHAN_DFS_CONCURRENT;
+-	if (rd_flags & NL80211_RRF_NO_UHB_VLP_CLIENT)
+-		channel_flags |= IEEE80211_CHAN_NO_UHB_VLP_CLIENT;
+-	if (rd_flags & NL80211_RRF_NO_UHB_AFC_CLIENT)
+-		channel_flags |= IEEE80211_CHAN_NO_UHB_AFC_CLIENT;
++	if (rd_flags & NL80211_RRF_NO_6GHZ_VLP_CLIENT)
++		channel_flags |= IEEE80211_CHAN_NO_6GHZ_VLP_CLIENT;
++	if (rd_flags & NL80211_RRF_NO_6GHZ_AFC_CLIENT)
++		channel_flags |= IEEE80211_CHAN_NO_6GHZ_AFC_CLIENT;
+ 	if (rd_flags & NL80211_RRF_PSD)
+ 		channel_flags |= IEEE80211_CHAN_PSD;
+ 	return channel_flags;
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index 6dd9df347771..663e19678d93 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -5,7 +5,7 @@
+  * Copyright 2008 Johannes Berg <johannes@sipsolutions.net>
+  * Copyright 2013-2014  Intel Mobile Communications GmbH
+  * Copyright 2016	Intel Deutschland GmbH
+- * Copyright (C) 2018-2023 Intel Corporation
++ * Copyright (C) 2018-2024 Intel Corporation
+  */
+ #include <linux/kernel.h>
+ #include <linux/slab.h>
+@@ -2984,9 +2984,9 @@ static bool cfg80211_uhb_power_type_valid(const u8 *ie,
+ 		case IEEE80211_6GHZ_CTRL_REG_LPI_AP:
+ 			return true;
+ 		case IEEE80211_6GHZ_CTRL_REG_SP_AP:
+-			return !(flags & IEEE80211_CHAN_NO_UHB_AFC_CLIENT);
++			return !(flags & IEEE80211_CHAN_NO_6GHZ_AFC_CLIENT);
+ 		case IEEE80211_6GHZ_CTRL_REG_VLP_AP:
+-			return !(flags & IEEE80211_CHAN_NO_UHB_VLP_CLIENT);
++			return !(flags & IEEE80211_CHAN_NO_6GHZ_VLP_CLIENT);
  		}
  	}
- 
-@@ -6246,7 +6246,7 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_link_data *link,
+ 	return false;
+@@ -3055,7 +3055,7 @@ cfg80211_inform_single_bss_frame_data(struct wiphy *wiphy,
+ 		data->restrict_use = 1;
+ 		data->use_for = 0;
+ 		data->cannot_use_reasons =
+-			NL80211_BSS_CANNOT_USE_UHB_PWR_MISMATCH;
++			NL80211_BSS_CANNOT_USE_6GHZ_PWR_MISMATCH;
  	}
  
- 	if (!ifmgd->associated ||
--	    !ieee80211_rx_our_beacon(bssid, link->u.mgd.bss))
-+	    !ieee80211_rx_our_beacon(bssid, link->conf->bss))
- 		return;
- 	bssid = link->u.mgd.bssid;
- 
-@@ -6273,7 +6273,7 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_link_data *link,
- 	 */
- 	if (!ieee80211_is_s1g_beacon(hdr->frame_control))
- 		ncrc = crc32_be(0, (void *)&mgmt->u.beacon.beacon_int, 4);
--	parse_params.bss = link->u.mgd.bss;
-+	parse_params.bss = link->conf->bss;
- 	parse_params.filter = care_about_ies;
- 	parse_params.crc = ncrc;
- 	elems = ieee802_11_parse_elems_full(&parse_params);
+ 	if (ext) {
 -- 
 2.34.1
 
