@@ -1,90 +1,177 @@
-Return-Path: <linux-wireless+bounces-3244-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3245-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFB1684BAD3
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Feb 2024 17:24:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D425C84BB15
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Feb 2024 17:35:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CA3C1F252F1
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Feb 2024 16:24:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 418D21F25DA8
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Feb 2024 16:35:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A11F3134CE7;
-	Tue,  6 Feb 2024 16:24:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3FBAD2F7;
+	Tue,  6 Feb 2024 16:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fGvelH+6"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="EeRA6zSb"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 795EB134CE6
-	for <linux-wireless@vger.kernel.org>; Tue,  6 Feb 2024 16:24:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FD1CC127
+	for <linux-wireless@vger.kernel.org>; Tue,  6 Feb 2024 16:35:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707236662; cv=none; b=KE0Kpg1nBFsoTsB5BPv9B0oktZAG0TuY3mrblABUs7Ki9C+6b+95Uy7A1ELlDMb+urHcgQb6ZcV2mXCB+va8ue/lKu/upmjQqDoKC2UJDpn6myBTKorBJtyqkoT12q7eUD9uK9iVbXWuSiP23CfxMLzeB5uOR01QaKcMgNFWXjM=
+	t=1707237309; cv=none; b=TlrJxL1OPaiqPg0DWTAzGPcLwOzMcQ0pLIbwdKPj5swej8qWdc9G/fnlNYoeauqSPIs+jzAQgoMCy6TndN3xxkUKgAAhdmo25xzTUxsmmtI2CSppiOfyju/4aQrjlvoZrAGsiSZZPu+hsL2WMSu6E2y53pTCE7AtKwf/WqsyX3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707236662; c=relaxed/simple;
-	bh=mRnyrMkY2nLwbDxUm7UrZ9ceTa8DXc5KnOeL2gxvfrk=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=CivJBtrAb8/0uI32EqXp7dwhEozmXMvYq/CRX/KXG+Lgsycvn8g8kMg0x12h5ReNOegu4UOh85HEFHt+IEXH2dgiK3wWqpiORiZGPQieWJmXy+BZZ9UafUIU8vp8kAeSNzz3wt7CNWb5QC7tq8OybN4562c60TBZg98crI87tCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fGvelH+6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30B7FC433F1;
-	Tue,  6 Feb 2024 16:24:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707236662;
-	bh=mRnyrMkY2nLwbDxUm7UrZ9ceTa8DXc5KnOeL2gxvfrk=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=fGvelH+6oeq9Ef1QlS5DtzCWQhQax7xFHfNWN1hkOsg0JGN1Re4JiuOGQCoeyVfst
-	 KNbsEda3Nua0ZfVSO9YteVNw3f2rcHMWWh3c+MqPZ2RXmjM9UiXjwaFGb4RIdlQ+QS
-	 oy6JN6qpbWQu7WvUbcAMwFEGfdwu/UT3IxlzATj7ZUBIIW/01k+sLcwmT/u0W2pLh2
-	 0jXT5Gd94DUxibYtyh2KJFZW6pxMxLG2J7wI8zBzVL77MEGswgIp88Fb5HJ++rRTNw
-	 0UyFOWSH83S7WnleZUpEN59QD2OerTbTAXA1wRAR1i4kXxv7sKy5anBN1jBhi+JKi0
-	 3Z5S7AfS8yseA==
-From: Kalle Valo <kvalo@kernel.org>
-To: Kang Yang <quic_kangyang@quicinc.com>
-Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v6 08/11] wifi: ath12k: allow specific mgmt frame tx
- while vdev is not up
-References: <20240130040303.370590-1-quic_kangyang@quicinc.com>
-	<20240130040303.370590-9-quic_kangyang@quicinc.com>
-Date: Tue, 06 Feb 2024 18:24:19 +0200
-In-Reply-To: <20240130040303.370590-9-quic_kangyang@quicinc.com> (Kang Yang's
-	message of "Tue, 30 Jan 2024 12:03:00 +0800")
-Message-ID: <87il31r26k.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1707237309; c=relaxed/simple;
+	bh=I1MfE6AhaDeVgzj4aA9PyyPGYZWM6AIX3a3/cMVgTaw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nmLofkN+9z3FHeXdeTKH0IDxYvhMuHcd5A8AIh+gmFIo6SoK5HoPovlAPu38FbgZvWpuvmuZhEJdHabQvjRswBJYCTMir3FlznDXBDc6pNHSE//kU+4PpC6hlMCevwQYeWvl3i7LC+AfumOSLuTz5Tyn9AvBldZ/kAe4Wy/f32Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=EeRA6zSb; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-1d8da50bffaso27366015ad.2
+        for <linux-wireless@vger.kernel.org>; Tue, 06 Feb 2024 08:35:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1707237307; x=1707842107; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=l9k8qmh5FtuqJT0VlM3e5bdRxi2TqKIV+Oi2Qsz4LGI=;
+        b=EeRA6zSbxkQuNXdyLY3C5+++uJrEXJzDiD2Hs/eQ3woDOTwVKsUYtmr1uQ+jPoV9TI
+         RRpQNkocwFMaxUBrCzDU8bvsMdnhqmPEe8qu8hbWjtEWwk9J9BiwQ967+opu/L9PMTsD
+         6odQiI2HQtfsqdMilID04vqiQoC98SYtAbbCM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707237307; x=1707842107;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=l9k8qmh5FtuqJT0VlM3e5bdRxi2TqKIV+Oi2Qsz4LGI=;
+        b=PiAewew/iATavMU6PSUK3jhM+YWQKxcu1Jwt7tpPUSbXUqr9WX4AsxWh2d3k0fWXi+
+         XNH4CcsWUb+jI1k+CQmweXGcNR3yYk/z8K0RCjEQ+P2+eCVX+YdoHGkv+sYb2LMyPzLg
+         yGVKDBYkYzSFtXl2y2qccjLNRZq+3nInzxMV2zREfxRuELLrpDgLP36i79S0/H8UyXap
+         51rg6MMWS5kPtuk6by9o+ybWhYO8unKmgxRzf9eFO43qqVXOxm1Zx3E4GSVkvmnpkC1z
+         SrLDXjYGVpku7rjjVKWZnADVRE5HJLl9Uv7m31xPVyLld1EKavqoS8trh/W5QI4E3+Wu
+         g+Eg==
+X-Gm-Message-State: AOJu0YwFFjLOD9UKeJcQsqCPGZ6JwoUfUV+iZJ5DAC5lzkyi2LGIrJA+
+	lEDnADdqUxoSJ+tVY0JOAALXT41InMj6zWa66xEszWb4vbqOiAHEYtEn49LJ/w==
+X-Google-Smtp-Source: AGHT+IG8UBzgoFf0n/CYjiadrh9Keq0fKG2KclHIN6IbzHjapSkd7T5jS0c/GDpxVFGoQoKnhSVs/A==
+X-Received: by 2002:a17:902:7842:b0:1d9:c01a:dee6 with SMTP id e2-20020a170902784200b001d9c01adee6mr2028518pln.44.1707237307417;
+        Tue, 06 Feb 2024 08:35:07 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCW5fumqxc1sH0MT/vwOXV2DI8bT3uU6YjbFErJAbqcnzXatDTQZA8UvmAQpn3MsO5TYa8t2ydZ5E7QAyfKaKjRBHmqs2qx9tGgj5OeJ6pRk9/CfUWTJ9wVbRwywVPp08C2Nz0lDEjiYP29tR+I7FErOnCh5DdrkGRO8T/i1YNI5HrjiZRCg6wzD3Zi1oJLZY4Xbp49ngh+pUWLvyE9zWQOZbhKlbTr+4+L1klJ74sj2y9Dwhvy2qgPQNFZbWyY/lFJrhXmB+MQd1JpFN2xgNuTGMHaHatWPrIeSTMNAGr02qkgjzZWaR3qIXHW59DlFoIV6jqLavP4FVl+QjkX9kzcjwWKyvD7M48MBHWCbOYvzH9jk7psJuuedBjanbpGG/hSC02PvBXGI2rlZfx8hsGFuVGz9ZcH5e+iJOzwWIx4zKflXlg==
+Received: from www.outflux.net ([198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id k196-20020a6284cd000000b006e02f222c2esm2224188pfd.30.2024.02.06.08.35.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Feb 2024 08:35:06 -0800 (PST)
+From: Kees Cook <keescook@chromium.org>
+To: Brian Norris <briannorris@chromium.org>
+Cc: Kees Cook <keescook@chromium.org>,
+	Kalle Valo <kvalo@kernel.org>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Johannes Berg <johannes.berg@intel.com>,
+	zuoqilin <zuoqilin@yulong.com>,
+	Ruan Jinjie <ruanjinjie@huawei.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org
+Subject: [PATCH] wifi: mwifiex: Refactor 1-element array into flexible array in struct mwifiex_ie_types_chan_list_param_set
+Date: Tue,  6 Feb 2024 08:35:04 -0800
+Message-Id: <20240206163501.work.158-kees@kernel.org>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2956; i=keescook@chromium.org;
+ h=from:subject:message-id; bh=I1MfE6AhaDeVgzj4aA9PyyPGYZWM6AIX3a3/cMVgTaw=;
+ b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBlwl+4Lx4aPOoiEcILogqM539VTMsu2tv0D/daM
+ eRXD6FTw+aJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCZcJfuAAKCRCJcvTf3G3A
+ JolcD/4yGn/OpLY/UrZ49y0DuN14RPalUzJvqINjBVH38HNl0YSWy2Rfpj9047GXuyUUMFFLHHx
+ QfEAYxSwu8rRhq3w1YjGVVOEOv0/QAMDghDgUwT2q8SRD/XsU/WS3jgjBcz8XZnyv050u2m3Gr8
+ a+8E+X9y7Mzf7XSetpEbknoE+CeWCfyMc/6wWHYOCbzhXXW8EY0AyJe6JgqAPEAaUw+XehXUSLD
+ EwFdq3dC0zKmBCzLrXC+zbIJvlG7z/CQIbYTodjvcAFGNBXlrjC8S3kqB74Fu2E1JobMDuPgX9O
+ dFKHJ6bPPNKVueX/dovLXiM7ESte1OMN1s0U/pOQz9feafcPSg6E8aEulB54RMsMbTfcXxFgWiP
+ dnmVDjQ9Dpv3NkwUZlY1zYB3BEciX9O4PwhwObEcF8gmY4LLaXSI6HP/mrr6tf/jKZ5S/4ksfuM
+ c2oouHiKEXQunEXv3nloSvYIN6cOycT1uyO997pesTbC8Z7TwGLZVEmJo+rW1McKlPe23Y6V92b
+ tywErVOd+98zGQPNz2v+AjwObBw79yyikxe4DzMj//96A1EPgSOPtnZHWaHFsl6fKp2xTHm0A55
+ 3KU2wEnoVlVgcP2tcnWD42CrVBPR62sT9IISncwlDrZ2b4kwRx38I1zw1aObyIBYt0QgcPStKtG
+ M+Hd05+ LE24MRPQ==
+X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
+Content-Transfer-Encoding: 8bit
 
-Kang Yang <quic_kangyang@quicinc.com> writes:
+struct mwifiex_ie_types_chan_list_param_set::chan_scan_param is treated
+as a flexible array, so convert it into one so that it doesn't trip the
+array bounds sanitizer[1]. The code was already calculating sizes by not
+including the trailing single element, so no sizeof() change are needed.
 
-> In current code, the management frames must be sent after vdev is started.
-> But for P2P device, vdev won't start until P2P negotiation is done. So
-> this logic doesn't make sense for P2P device.
->
-> Also use ar->conf_mutex to synchronize ar to avoid potential conflicts.
+Link: https://github.com/KSPP/linux/issues/51 [1]
+Cc: Brian Norris <briannorris@chromium.org>
+Cc: Kalle Valo <kvalo@kernel.org>
+Cc: Dmitry Antipov <dmantipov@yandex.ru>
+Cc: Johannes Berg <johannes.berg@intel.com>
+Cc: zuoqilin <zuoqilin@yulong.com>
+Cc: Ruan Jinjie <ruanjinjie@huawei.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: Gustavo A. R. Silva <gustavoars@kernel.org>
+Cc: linux-wireless@vger.kernel.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
+---
+ drivers/net/wireless/marvell/mwifiex/scan.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-Please do locking changes in a separate followup patch, I removed this
-in the pending branch:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=d357dcb3cd0cd3bf57064dc673b5477d884454b3
-
-I assume you are referring to ar->allocated_vdev_map and access to that
-indeed doesn't look consistent. Most of the places take conf->mutex but
-I see some places which it's accessed without the mutex, for example
-ath12k_mac_get_arvif_by_vdev_id() and ath12k_mac_get_ar_by_vdev_id().
-
-I recommend in the followup patch checking all the access to
-ar->allocated_vdev_map, fixing that if needed and adding documentation
-to struct ath12k::allocated_vdev_map how it's supposed to be protected.
-
+diff --git a/drivers/net/wireless/marvell/mwifiex/scan.c b/drivers/net/wireless/marvell/mwifiex/scan.c
+index a2ddac363b10..0326b121747c 100644
+--- a/drivers/net/wireless/marvell/mwifiex/scan.c
++++ b/drivers/net/wireless/marvell/mwifiex/scan.c
+@@ -664,15 +664,14 @@ mwifiex_scan_channel_list(struct mwifiex_private *priv,
+ 
+ 			/* Copy the current channel TLV to the command being
+ 			   prepared */
+-			memcpy(chan_tlv_out->chan_scan_param + tlv_idx,
++			memcpy(&chan_tlv_out->chan_scan_param[tlv_idx],
+ 			       tmp_chan_list,
+-			       sizeof(chan_tlv_out->chan_scan_param));
++			       sizeof(*chan_tlv_out->chan_scan_param));
+ 
+ 			/* Increment the TLV header length by the size
+ 			   appended */
+ 			le16_unaligned_add_cpu(&chan_tlv_out->header.len,
+-					       sizeof(
+-						chan_tlv_out->chan_scan_param));
++					       sizeof(*chan_tlv_out->chan_scan_param));
+ 
+ 			/*
+ 			 * The tlv buffer length is set to the number of bytes
+@@ -2369,12 +2368,11 @@ int mwifiex_cmd_802_11_bg_scan_config(struct mwifiex_private *priv,
+ 		     chan_idx < MWIFIEX_BG_SCAN_CHAN_MAX &&
+ 		     bgscan_cfg_in->chan_list[chan_idx].chan_number;
+ 		     chan_idx++) {
+-			temp_chan = chan_list_tlv->chan_scan_param + chan_idx;
++			temp_chan = &chan_list_tlv->chan_scan_param[chan_idx];
+ 
+ 			/* Increment the TLV header length by size appended */
+ 			le16_unaligned_add_cpu(&chan_list_tlv->header.len,
+-					       sizeof(
+-					       chan_list_tlv->chan_scan_param));
++					       sizeof(*chan_list_tlv->chan_scan_param));
+ 
+ 			temp_chan->chan_number =
+ 				bgscan_cfg_in->chan_list[chan_idx].chan_number;
+@@ -2413,7 +2411,7 @@ int mwifiex_cmd_802_11_bg_scan_config(struct mwifiex_private *priv,
+ 							   chan_scan_param);
+ 		le16_unaligned_add_cpu(&chan_list_tlv->header.len,
+ 				       chan_num *
+-			     sizeof(chan_list_tlv->chan_scan_param[0]));
++			     sizeof(*chan_list_tlv->chan_scan_param));
+ 	}
+ 
+ 	tlv_pos += (sizeof(chan_list_tlv->header)
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.34.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
