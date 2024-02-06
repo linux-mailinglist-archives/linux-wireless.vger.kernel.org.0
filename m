@@ -1,70 +1,66 @@
-Return-Path: <linux-wireless+bounces-3230-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3222-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A620584B899
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Feb 2024 15:57:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73BF984B8E9
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Feb 2024 16:10:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CA025B30038
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Feb 2024 14:56:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 142EEB2F9B0
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Feb 2024 14:55:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E5961339B1;
-	Tue,  6 Feb 2024 14:54:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96209133422;
+	Tue,  6 Feb 2024 14:54:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RQf5SZOH"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Gap/Ia+g"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8431013474B
-	for <linux-wireless@vger.kernel.org>; Tue,  6 Feb 2024 14:54:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B3EB133420
+	for <linux-wireless@vger.kernel.org>; Tue,  6 Feb 2024 14:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707231285; cv=none; b=T6ZO8scrdITtDZHwutnveNNMSHvNW3S/AUEJ17QSn44yckbc4DAsNQ6p9dxbCcMcHnD50YY8mdNMnEjENDCuRs/W2foj8C9h40v+MBfuuM/tWJZym3tDE61SAkajRkgTB+RwlxqHNNjBCWND0pSJMjcpIOVEwiKp5yaka0PJ/wM=
+	t=1707231266; cv=none; b=d/vLz7GeCMNRDQWMTU/u9QMeFOi1pZn8y64ov+Lq2R7yz69DFxa1aQX4WBq9WImBk4ZCcEtaNPWmw+exv3hQFYHgem/9a8ziW4eqquXnVaUBVnsP1/A8Qo7sGibXnHNH5HukFZW2axcDRRr9dz8eFif3rH5RMgQHTXK13poESbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707231285; c=relaxed/simple;
-	bh=6O1y6Qmi/IMLrZ21sKCvCQMcOzC2jHDEHub++mAi2xc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=llNyTEjouhgmJbqyzaeEMhUujydJPk3p4gWjP/l6sTwyf5RbM5zqQ9+sReNoKmKoKgqLZBmM452Ru+Mli+Js6oG1gmZyx89URA4XqDaZHbLTGRl+qFb2sdes2bAFx2T97Wdq/NsB1Z7Pw9Y5BjZK9BqSEDHLYp7qZQ2HaNvKTKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RQf5SZOH; arc=none smtp.client-ip=192.198.163.14
+	s=arc-20240116; t=1707231266; c=relaxed/simple;
+	bh=6BrtTIYLDqoYtvrEKhlZ/7B82WT3RiJLX0W7lhqR14A=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=L0iWerc5+2EiAJpKghTmo5s8LoF6ENp3a8etSPh1u/pAGuRm0mcflST7RFyCuxcA+YNNI9EceM1z3NKePJ+qD9wkdY629vjOSEKjMP0rjugTQ2/cCSDKOB+q0o/KNfuHu/SdYW6mMKxkDnue4rgPLeyilDqdpntJLGA8YBc0fJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Gap/Ia+g; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707231284; x=1738767284;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=6O1y6Qmi/IMLrZ21sKCvCQMcOzC2jHDEHub++mAi2xc=;
-  b=RQf5SZOHkj3AGoWn2YDl0YRcnpi3y17zKzgpigBPBeUXheEbpzt6GTpp
-   CYgU05xhPWq3r2a609GfuIbD8Rcy8DZZjBCNM4rjrTNFOBM2ldZnhrwBp
-   j5CBWJTGFA3l6fZApfu+zABHEWb5bgTGJNAzXp4uwhcmZI6j1fteM7yJN
-   CjdcSr4bpJXw0HWxieB1ZxEU5AFI2RGPiDUnK2v66UEGCbIrwGo0BPJC2
-   68auhmykRkpXJO8LaSuMg/K0oQN9eM/p2iKzbv0Y2WtYF1AWVEEsAM/Ii
-   N3r1dJ/+hsuc415Uh7XvphGW2dUu+igRvLMM2/eLSDWxaKYVN3XyIrILF
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10975"; a="917836"
+  t=1707231264; x=1738767264;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=6BrtTIYLDqoYtvrEKhlZ/7B82WT3RiJLX0W7lhqR14A=;
+  b=Gap/Ia+gqKA6UmXzy2Yg0RiOh9ZxjDc1auPKzhj9ZhUqKvIEMRtf2JXA
+   XE6bx2FpXK1IcooaSwcBoYkaC8qmYDbHGIJvEFg70zbWH31mX/Raa25sH
+   RKFR5NrAz1NKOpXwu/jEwvkHrf1IbpAVc2syWcRBHKQl/xq1H2QDrgrkt
+   tJDehU31bD6fXsxl2chadSKGj4dH4UfqCpevj1nkcovijk2TNFZWo/G1H
+   g6QkCf3OzQ8WGLVzW8ua2cLVgKxxSMVEyEBME5SrPJoiuNOWqnmoUbSSY
+   /d6sJH44kcY7S+4Gm+dBHuTfEJHHwvQ8fl4nl6X5ppHeJH869VS6Li6pj
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10975"; a="917775"
 X-IronPort-AV: E=Sophos;i="6.05,247,1701158400"; 
-   d="scan'208";a="917836"
+   d="scan'208";a="917775"
 Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2024 06:54:43 -0800
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2024 06:54:23 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10975"; a="824197967"
+X-IronPort-AV: E=McAfee;i="6600,9927,10975"; a="824197882"
 X-IronPort-AV: E=Sophos;i="6.05,247,1701158400"; 
-   d="scan'208";a="824197967"
+   d="scan'208";a="824197882"
 Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2024 06:54:41 -0800
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2024 06:54:20 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	Shaul Triebitz <shaul.triebitz@intel.com>
-Subject: [PATCH 8/8] wifi: cfg80211: report unprotected deauth/disassoc in wowlan
-Date: Tue,  6 Feb 2024 16:54:11 +0200
-Message-Id: <20240206164849.a3d739850d03.I8f52a21c4f36d1af1f8068bed79e2f9cbf8289ef@changeid>
+Cc: linux-wireless@vger.kernel.org
+Subject: [PATCH 0/8] cfg80211/mac80211 patches from our internal tree 2024-02-06
+Date: Tue,  6 Feb 2024 16:54:03 +0200
+Message-Id: <20240206145411.3217588-1-miriam.rachel.korenblit@intel.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240206145411.3217588-1-miriam.rachel.korenblit@intel.com>
-References: <20240206145411.3217588-1-miriam.rachel.korenblit@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -74,58 +70,47 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Shaul Triebitz <shaul.triebitz@intel.com>
+Hi,
 
-Add to cfg80211_wowlan_wakeup another wakeup reason -
-unprot_deauth_disassoc.
-To be set to true if the woke up was due to an
-unprotected deauth or disassoc frame in MFP.
-In that case, propegate WOWLAN_TRIG_UNPROTECTED_DEAUTH_DISASSOC.
+A bunch of patches from our internal tree with mac80211 and
+cfg80211 changes. It's the usual developement, adding a few small
+features.
 
-Signed-off-by: Shaul Triebitz <shaul.triebitz@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
----
- include/net/cfg80211.h | 5 ++++-
- net/wireless/nl80211.c | 5 +++++
- 2 files changed, 9 insertions(+), 1 deletion(-)
+Thanks,
+Miri
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 69e50bc2aa43..e154218ebc39 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -3590,12 +3590,15 @@ struct cfg80211_wowlan_nd_info {
-  * @tcp_connlost: TCP connection lost or failed to establish
-  * @tcp_nomoretokens: TCP data ran out of tokens
-  * @net_detect: if not %NULL, woke up because of net detect
-+ * @unprot_deauth_disassoc: woke up due to unprotected deauth or
-+ *	disassoc frame (in MFP).
-  */
- struct cfg80211_wowlan_wakeup {
- 	bool disconnect, magic_pkt, gtk_rekey_failure,
- 	     eap_identity_req, four_way_handshake,
- 	     rfkill_release, packet_80211,
--	     tcp_match, tcp_connlost, tcp_nomoretokens;
-+	     tcp_match, tcp_connlost, tcp_nomoretokens,
-+	     unprot_deauth_disassoc;
- 	s32 pattern_idx;
- 	u32 packet_present_len, packet_len;
- 	const void *packet;
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 40b4405d15bd..358dae67924d 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -19852,6 +19852,11 @@ void cfg80211_report_wowlan_wakeup(struct wireless_dev *wdev,
- 				 NL80211_WOWLAN_TRIG_WAKEUP_TCP_NOMORETOKENS))
- 			goto free_msg;
- 
-+		if (wakeup->unprot_deauth_disassoc &&
-+		    nla_put_flag(msg,
-+				 NL80211_WOWLAN_TRIG_UNPROTECTED_DEAUTH_DISASSOC))
-+			goto free_msg;
-+
- 		if (wakeup->packet) {
- 			u32 pkt_attr = NL80211_WOWLAN_TRIG_WAKEUP_PKT_80211;
- 			u32 len_attr = NL80211_WOWLAN_TRIG_WAKEUP_PKT_80211_LEN;
+Andrei Otcheretianski (1):
+  wifi: mac80211_hwsim: Add 160MHz bw range to regdom_custom_04
+
+Daniel Amosi (1):
+  wifi: mac80211: remove unnecessary chanreq compat check
+
+Johannes Berg (3):
+  wifi: cfg80211: rename UHB to 6 GHz
+  wifi: cfg80211: optionally support monitor on disabled channels
+  wifi: mac80211: drop injection on disabled-chan monitor
+
+Miri Korenblit (1):
+  wifi: mac80211:  make associated BSS pointer visible to the driver
+
+Shaul Triebitz (2):
+  wifi: nl80211: add WOWLAN_TRIG_UNPROTECTED_DEAUTH_DISASSOC
+  wifi: cfg80211: report unprotected deauth/disassoc in wowlan
+
+ drivers/net/wireless/virtual/mac80211_hwsim.c |  6 ++-
+ include/net/cfg80211.h                        | 19 ++++++---
+ include/net/mac80211.h                        |  3 ++
+ include/uapi/linux/nl80211.h                  | 38 +++++++++++++-----
+ net/mac80211/chan.c                           |  3 --
+ net/mac80211/mlme.c                           | 18 ++++-----
+ net/mac80211/tx.c                             | 10 ++++-
+ net/wireless/chan.c                           | 26 ++++++++----
+ net/wireless/core.h                           |  5 ++-
+ net/wireless/nl80211.c                        | 40 +++++++++++++------
+ net/wireless/reg.c                            | 10 ++---
+ net/wireless/scan.c                           |  8 ++--
+ 12 files changed, 124 insertions(+), 62 deletions(-)
+
 -- 
 2.34.1
 
