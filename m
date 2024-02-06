@@ -1,177 +1,97 @@
-Return-Path: <linux-wireless+bounces-3245-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3246-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D425C84BB15
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Feb 2024 17:35:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF7C884BCA9
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Feb 2024 19:06:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 418D21F25DA8
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Feb 2024 16:35:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E57A1C23000
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Feb 2024 18:06:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3FBAD2F7;
-	Tue,  6 Feb 2024 16:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B1A3DF5C;
+	Tue,  6 Feb 2024 18:05:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="EeRA6zSb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lAdi+PgT"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FD1CC127
-	for <linux-wireless@vger.kernel.org>; Tue,  6 Feb 2024 16:35:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47916DF43
+	for <linux-wireless@vger.kernel.org>; Tue,  6 Feb 2024 18:05:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707237309; cv=none; b=TlrJxL1OPaiqPg0DWTAzGPcLwOzMcQ0pLIbwdKPj5swej8qWdc9G/fnlNYoeauqSPIs+jzAQgoMCy6TndN3xxkUKgAAhdmo25xzTUxsmmtI2CSppiOfyju/4aQrjlvoZrAGsiSZZPu+hsL2WMSu6E2y53pTCE7AtKwf/WqsyX3Y=
+	t=1707242758; cv=none; b=so+hQn2oK+Kl8UH/rd0x4Si8mSySCpNEIqW6L6ZQPyfy6QRpJxe2fxl8XNitVLaS1e79ympP/rhssNFXgXFsbSGxcjUPfEU7CQEjMMeerjdpp3+K49oK41LR+2TsyVcKGQQos1y/6gnKBk7RnQcBS+P0vIYXeYnBihZ4UMUOJbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707237309; c=relaxed/simple;
-	bh=I1MfE6AhaDeVgzj4aA9PyyPGYZWM6AIX3a3/cMVgTaw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nmLofkN+9z3FHeXdeTKH0IDxYvhMuHcd5A8AIh+gmFIo6SoK5HoPovlAPu38FbgZvWpuvmuZhEJdHabQvjRswBJYCTMir3FlznDXBDc6pNHSE//kU+4PpC6hlMCevwQYeWvl3i7LC+AfumOSLuTz5Tyn9AvBldZ/kAe4Wy/f32Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=EeRA6zSb; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-1d8da50bffaso27366015ad.2
-        for <linux-wireless@vger.kernel.org>; Tue, 06 Feb 2024 08:35:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1707237307; x=1707842107; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=l9k8qmh5FtuqJT0VlM3e5bdRxi2TqKIV+Oi2Qsz4LGI=;
-        b=EeRA6zSbxkQuNXdyLY3C5+++uJrEXJzDiD2Hs/eQ3woDOTwVKsUYtmr1uQ+jPoV9TI
-         RRpQNkocwFMaxUBrCzDU8bvsMdnhqmPEe8qu8hbWjtEWwk9J9BiwQ967+opu/L9PMTsD
-         6odQiI2HQtfsqdMilID04vqiQoC98SYtAbbCM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707237307; x=1707842107;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=l9k8qmh5FtuqJT0VlM3e5bdRxi2TqKIV+Oi2Qsz4LGI=;
-        b=PiAewew/iATavMU6PSUK3jhM+YWQKxcu1Jwt7tpPUSbXUqr9WX4AsxWh2d3k0fWXi+
-         XNH4CcsWUb+jI1k+CQmweXGcNR3yYk/z8K0RCjEQ+P2+eCVX+YdoHGkv+sYb2LMyPzLg
-         yGVKDBYkYzSFtXl2y2qccjLNRZq+3nInzxMV2zREfxRuELLrpDgLP36i79S0/H8UyXap
-         51rg6MMWS5kPtuk6by9o+ybWhYO8unKmgxRzf9eFO43qqVXOxm1Zx3E4GSVkvmnpkC1z
-         SrLDXjYGVpku7rjjVKWZnADVRE5HJLl9Uv7m31xPVyLld1EKavqoS8trh/W5QI4E3+Wu
-         g+Eg==
-X-Gm-Message-State: AOJu0YwFFjLOD9UKeJcQsqCPGZ6JwoUfUV+iZJ5DAC5lzkyi2LGIrJA+
-	lEDnADdqUxoSJ+tVY0JOAALXT41InMj6zWa66xEszWb4vbqOiAHEYtEn49LJ/w==
-X-Google-Smtp-Source: AGHT+IG8UBzgoFf0n/CYjiadrh9Keq0fKG2KclHIN6IbzHjapSkd7T5jS0c/GDpxVFGoQoKnhSVs/A==
-X-Received: by 2002:a17:902:7842:b0:1d9:c01a:dee6 with SMTP id e2-20020a170902784200b001d9c01adee6mr2028518pln.44.1707237307417;
-        Tue, 06 Feb 2024 08:35:07 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCW5fumqxc1sH0MT/vwOXV2DI8bT3uU6YjbFErJAbqcnzXatDTQZA8UvmAQpn3MsO5TYa8t2ydZ5E7QAyfKaKjRBHmqs2qx9tGgj5OeJ6pRk9/CfUWTJ9wVbRwywVPp08C2Nz0lDEjiYP29tR+I7FErOnCh5DdrkGRO8T/i1YNI5HrjiZRCg6wzD3Zi1oJLZY4Xbp49ngh+pUWLvyE9zWQOZbhKlbTr+4+L1klJ74sj2y9Dwhvy2qgPQNFZbWyY/lFJrhXmB+MQd1JpFN2xgNuTGMHaHatWPrIeSTMNAGr02qkgjzZWaR3qIXHW59DlFoIV6jqLavP4FVl+QjkX9kzcjwWKyvD7M48MBHWCbOYvzH9jk7psJuuedBjanbpGG/hSC02PvBXGI2rlZfx8hsGFuVGz9ZcH5e+iJOzwWIx4zKflXlg==
-Received: from www.outflux.net ([198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id k196-20020a6284cd000000b006e02f222c2esm2224188pfd.30.2024.02.06.08.35.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Feb 2024 08:35:06 -0800 (PST)
-From: Kees Cook <keescook@chromium.org>
-To: Brian Norris <briannorris@chromium.org>
-Cc: Kees Cook <keescook@chromium.org>,
-	Kalle Valo <kvalo@kernel.org>,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Johannes Berg <johannes.berg@intel.com>,
-	zuoqilin <zuoqilin@yulong.com>,
-	Ruan Jinjie <ruanjinjie@huawei.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org
-Subject: [PATCH] wifi: mwifiex: Refactor 1-element array into flexible array in struct mwifiex_ie_types_chan_list_param_set
-Date: Tue,  6 Feb 2024 08:35:04 -0800
-Message-Id: <20240206163501.work.158-kees@kernel.org>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1707242758; c=relaxed/simple;
+	bh=EqrTtYcwu2dr3vRT3cx3p2ooIu+Mb0J9bFPgpzlZTOc=;
+	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
+	 Cc:Message-ID:Date; b=gHTCGNvZ3P5v/vlYLlz7cDdiiuB7gbnhZdgK3jOPiJo42sl4V4jxWMaoqqsfJUSxR1RN/SQR4iO0Xr0KvEdCQzYnKrlR69Io/VxBVXM3K1AT1172eN74pQK6zyJld4luwHvoKP+jMlIJlOEqyRIMm3JAzxFQ3Irj0+aajwTVvfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lAdi+PgT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5019AC433F1;
+	Tue,  6 Feb 2024 18:05:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707242757;
+	bh=EqrTtYcwu2dr3vRT3cx3p2ooIu+Mb0J9bFPgpzlZTOc=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=lAdi+PgT5ztSlY6Zc/l5M2l/GsLXPcDy+iH1oZTYVl7A7UfFdH3wopY4x7dCz2tDZ
+	 bJsw0XHB2AGZwplaW2hCRo5X7lh7Flyn2oRbl5AKDwLkPNrO+AE+ooqO8+SyhRFel6
+	 90MlFGALkkNRzvtS0R0UPYsU6v5f/YxuPE4qoqGlaL8Ic3udoVAKgk/CoNdzL6InNw
+	 w9ZlhbqC/RMCMvIz8fhctGQCn2DrljmkjuElD7V+45Jpi6KXmoxfAAZY9C+jaLVX6Q
+	 Qz5w8HfqSXVRIKygJmaZR3KvJm7pf/jszKpmPBeSAy9cJyaegdjcgB+JXD7Zijb9rw
+	 9jjwZbmSD7gyw==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2956; i=keescook@chromium.org;
- h=from:subject:message-id; bh=I1MfE6AhaDeVgzj4aA9PyyPGYZWM6AIX3a3/cMVgTaw=;
- b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBlwl+4Lx4aPOoiEcILogqM539VTMsu2tv0D/daM
- eRXD6FTw+aJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCZcJfuAAKCRCJcvTf3G3A
- JolcD/4yGn/OpLY/UrZ49y0DuN14RPalUzJvqINjBVH38HNl0YSWy2Rfpj9047GXuyUUMFFLHHx
- QfEAYxSwu8rRhq3w1YjGVVOEOv0/QAMDghDgUwT2q8SRD/XsU/WS3jgjBcz8XZnyv050u2m3Gr8
- a+8E+X9y7Mzf7XSetpEbknoE+CeWCfyMc/6wWHYOCbzhXXW8EY0AyJe6JgqAPEAaUw+XehXUSLD
- EwFdq3dC0zKmBCzLrXC+zbIJvlG7z/CQIbYTodjvcAFGNBXlrjC8S3kqB74Fu2E1JobMDuPgX9O
- dFKHJ6bPPNKVueX/dovLXiM7ESte1OMN1s0U/pOQz9feafcPSg6E8aEulB54RMsMbTfcXxFgWiP
- dnmVDjQ9Dpv3NkwUZlY1zYB3BEciX9O4PwhwObEcF8gmY4LLaXSI6HP/mrr6tf/jKZ5S/4ksfuM
- c2oouHiKEXQunEXv3nloSvYIN6cOycT1uyO997pesTbC8Z7TwGLZVEmJo+rW1McKlPe23Y6V92b
- tywErVOd+98zGQPNz2v+AjwObBw79yyikxe4DzMj//96A1EPgSOPtnZHWaHFsl6fKp2xTHm0A55
- 3KU2wEnoVlVgcP2tcnWD42CrVBPR62sT9IISncwlDrZ2b4kwRx38I1zw1aObyIBYt0QgcPStKtG
- M+Hd05+ LE24MRPQ==
-X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 01/11] wifi: rtw89: rfk: add a completion to wait RF
+ calibration report from C2H event
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20240202030642.108385-2-pkshih@realtek.com>
+References: <20240202030642.108385-2-pkshih@realtek.com>
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: <linux-wireless@vger.kernel.org>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <170724275520.1979906.333537049933941766.kvalo@kernel.org>
+Date: Tue,  6 Feb 2024 18:05:57 +0000 (UTC)
 
-struct mwifiex_ie_types_chan_list_param_set::chan_scan_param is treated
-as a flexible array, so convert it into one so that it doesn't trip the
-array bounds sanitizer[1]. The code was already calculating sizes by not
-including the trailing single element, so no sizeof() change are needed.
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-Link: https://github.com/KSPP/linux/issues/51 [1]
-Cc: Brian Norris <briannorris@chromium.org>
-Cc: Kalle Valo <kvalo@kernel.org>
-Cc: Dmitry Antipov <dmantipov@yandex.ru>
-Cc: Johannes Berg <johannes.berg@intel.com>
-Cc: zuoqilin <zuoqilin@yulong.com>
-Cc: Ruan Jinjie <ruanjinjie@huawei.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: Gustavo A. R. Silva <gustavoars@kernel.org>
-Cc: linux-wireless@vger.kernel.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
----
- drivers/net/wireless/marvell/mwifiex/scan.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+> The RF calibrations should be executed one by one, so add a completion
+> to ensure one is finish before next. The report from C2H event contains
+> state and optional version, and we only check the state for now. We also
+> care about the time a RF calibration takes, so record start time before
+> asking firmware to do calibration and get the delta time when receiving
+> report.
+> 
+> Consider SER recovery, we can't receive C2H event, use half of argument
+> 'ms' as fixed delay that is 2 times of measured maximum time of
+> calibrations.
+> 
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/scan.c b/drivers/net/wireless/marvell/mwifiex/scan.c
-index a2ddac363b10..0326b121747c 100644
---- a/drivers/net/wireless/marvell/mwifiex/scan.c
-+++ b/drivers/net/wireless/marvell/mwifiex/scan.c
-@@ -664,15 +664,14 @@ mwifiex_scan_channel_list(struct mwifiex_private *priv,
- 
- 			/* Copy the current channel TLV to the command being
- 			   prepared */
--			memcpy(chan_tlv_out->chan_scan_param + tlv_idx,
-+			memcpy(&chan_tlv_out->chan_scan_param[tlv_idx],
- 			       tmp_chan_list,
--			       sizeof(chan_tlv_out->chan_scan_param));
-+			       sizeof(*chan_tlv_out->chan_scan_param));
- 
- 			/* Increment the TLV header length by the size
- 			   appended */
- 			le16_unaligned_add_cpu(&chan_tlv_out->header.len,
--					       sizeof(
--						chan_tlv_out->chan_scan_param));
-+					       sizeof(*chan_tlv_out->chan_scan_param));
- 
- 			/*
- 			 * The tlv buffer length is set to the number of bytes
-@@ -2369,12 +2368,11 @@ int mwifiex_cmd_802_11_bg_scan_config(struct mwifiex_private *priv,
- 		     chan_idx < MWIFIEX_BG_SCAN_CHAN_MAX &&
- 		     bgscan_cfg_in->chan_list[chan_idx].chan_number;
- 		     chan_idx++) {
--			temp_chan = chan_list_tlv->chan_scan_param + chan_idx;
-+			temp_chan = &chan_list_tlv->chan_scan_param[chan_idx];
- 
- 			/* Increment the TLV header length by size appended */
- 			le16_unaligned_add_cpu(&chan_list_tlv->header.len,
--					       sizeof(
--					       chan_list_tlv->chan_scan_param));
-+					       sizeof(*chan_list_tlv->chan_scan_param));
- 
- 			temp_chan->chan_number =
- 				bgscan_cfg_in->chan_list[chan_idx].chan_number;
-@@ -2413,7 +2411,7 @@ int mwifiex_cmd_802_11_bg_scan_config(struct mwifiex_private *priv,
- 							   chan_scan_param);
- 		le16_unaligned_add_cpu(&chan_list_tlv->header.len,
- 				       chan_num *
--			     sizeof(chan_list_tlv->chan_scan_param[0]));
-+			     sizeof(*chan_list_tlv->chan_scan_param));
- 	}
- 
- 	tlv_pos += (sizeof(chan_list_tlv->header)
+11 patches applied to wireless-next.git, thanks.
+
+ad1c86e92698 wifi: rtw89: rfk: add a completion to wait RF calibration report from C2H event
+80f47f82f319 wifi: rtw89: rfk: send channel information to firmware for RF calibrations
+9c66da3b19b5 wifi: rtw89: rfk: add H2C command to trigger IQK
+32919a043894 wifi: rtw89: rfk: add H2C command to trigger RX DCK
+b835141be5a9 wifi: rtw89: rfk: add H2C command to trigger DPK
+1a0cba5dc983 wifi: rtw89: rfk: add H2C command to trigger DACK
+af41e89ea323 wifi: rtw89: rfk: add H2C command to trigger TXGAPK
+bd6f5f27cb2c wifi: rtw89: rfk: add H2C command to trigger TSSI
+ff146ec22d5f wifi: rtw89: 8922a: rfk: implement chip_ops to call RF calibrations
+7e2629dc843f wifi: rtw89: 8922a: add chip_ops::rfk_init_late to do initial RF calibrations later
+4dbd964f33aa wifi: rtw89: 8922a: add chip_ops::rfk_hw_init
+
 -- 
-2.34.1
+https://patchwork.kernel.org/project/linux-wireless/patch/20240202030642.108385-2-pkshih@realtek.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
 
