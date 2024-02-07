@@ -1,267 +1,124 @@
-Return-Path: <linux-wireless+bounces-3265-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3266-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6BDB84C430
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Feb 2024 05:54:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBD0984C432
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Feb 2024 05:54:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FA4A28C31C
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Feb 2024 04:54:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7273C281E06
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Feb 2024 04:54:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BF001CD19;
-	Wed,  7 Feb 2024 04:49:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1B391CD2B;
+	Wed,  7 Feb 2024 04:52:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=egauge.net header.i=@egauge.net header.b="jYfAad14"
+	dkim=pass (2048-bit key) header.d=egauge.net header.i=@egauge.net header.b="hry8gfQq"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from o1.ptr2625.egauge.net (o1.ptr2625.egauge.net [167.89.112.53])
+Received: from mail-io1-f41.google.com (mail-io1-f41.google.com [209.85.166.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565541CD2B
-	for <linux-wireless@vger.kernel.org>; Wed,  7 Feb 2024 04:49:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=167.89.112.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC331CD2C
+	for <linux-wireless@vger.kernel.org>; Wed,  7 Feb 2024 04:52:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707281374; cv=none; b=RSFk75t/qeh7DPf+Pf+CYlIsSilQKLBi4vSPQV+A1228ya2D749V0F4eBGLJKdQAMxLKhwp8o42E93WX+Vlup10I6dxDWHAbrGkNe+IG+jvDXI6SOh4lVhD8lCNfT8z5VN3HqmCiZeuKa5LGbtfxVR2NbASeS2TDkbsxypHz0MU=
+	t=1707281567; cv=none; b=EQ2xXnQNhG7U4M4GVBGW2mNRe8ZN05hAgteqlSMopMRT52QHCyCfanq/EZ4CEoUn6o9Bh6hBY7YTtHR43myXRE1WUQFfSYSIwCJmv7FDBakjGtpJbQtdEj3gRW3GPoSJXmeGl0WUic/2UZafIUwQtIqSpyKQXSiyRywuYGOCkPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707281374; c=relaxed/simple;
-	bh=EsUzYfZvuYNGoGV/bwUpDJPRGQQ0Flomdmxmq++U+eQ=;
-	h=From:Subject:Date:Message-Id:MIME-Version:To:Cc:Content-Type; b=bDi4ISI8mjNkgqIygONtZ+IL55mny3Is7lxyJ62zaKdYr2FEeZmMQUWQqW+AyAFNavB5daCiCVH1twHJHgDIWvyVvMIf20O6cc2Mzyl5nRggHPXiJ8e4An8RhuJxWCi69kzEncVSkpihwM2Vx5WG21vKaKZs95mdYCmffbzFRO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=egauge.net; spf=pass smtp.mailfrom=em1190.egauge.net; dkim=pass (2048-bit key) header.d=egauge.net header.i=@egauge.net header.b=jYfAad14; arc=none smtp.client-ip=167.89.112.53
+	s=arc-20240116; t=1707281567; c=relaxed/simple;
+	bh=dPVcO29uYZKD/zur9DiMOfgfvVbNaW/1uwhqNEf0QNA=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=CxcTgEM5D9Y2oCNba4Y6OFRYI5mSEh+gilkXSOAWWDX0WOm4lNCnkA602oWw3pDJq+54wzFDIw6TTHaGTYYqmg4OFCWQLNNBvA7thOw78RGT1rTAQt5b9O/4EKl91oV8N7c7uTVz7EkW/ysybmL6pL504wcAlJ0Lr4f+Jswj+Vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=egauge.net; spf=pass smtp.mailfrom=egauge.net; dkim=pass (2048-bit key) header.d=egauge.net header.i=@egauge.net header.b=hry8gfQq; arc=none smtp.client-ip=209.85.166.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=egauge.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em1190.egauge.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=egauge.net;
-	h=from:subject:mime-version:to:cc:content-transfer-encoding:
-	content-type:cc:content-type:from:subject:to;
-	s=sgd; bh=WCW5ZY870loXovr8nVzsoWZsaP+qBNPKXQxv9TQfPjU=;
-	b=jYfAad14GZqkWxq2/cmggJT/tXD7CsXrl1kUzGtEU71bv2TOpCGsIi1nxyDbg9TqUc8B
-	4G5Ng0YD71Uzz2sqBF92tWIbWSK/+gJGkVI9oqaTJ3dXL96Ufsp+koUgHsgUdGLV2F9zxk
-	EGopvwiXglBbpzcM0cwm9Wyd+cCTTJMz+tCrSGZMEjmmYpC7VpVmoiYQZJLbs8jMROnpqg
-	CusUPrAT9mhs7f9FbmdpWxx2o5xIZw1tmy8ddj83kgBVlSVl/N2uZw3UO7TJG0w6bpOd27
-	cnWf7Csz2wEDpY/s+MSopH+hX2JNdt2hzzX0uRDL/hYA7tCYPZFljkgup9iFdz4g==
-Received: by filterdrecv-5bbdbb56cd-n2nhf with SMTP id filterdrecv-5bbdbb56cd-n2nhf-1-65C30BD8-14
-        2024-02-07 04:49:29.025754919 +0000 UTC m=+2302353.555471446
-Received: from pearl.egauge.net (unknown)
-	by geopod-ismtpd-11 (SG)
-	with ESMTP
-	id idqDJ146RUul8xKL34ylTQ
-	Wed, 07 Feb 2024 04:49:28.837 +0000 (UTC)
-Received: by pearl.egauge.net (Postfix, from userid 1000)
-	id DB9C57008B0; Tue,  6 Feb 2024 21:49:27 -0700 (MST)
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=egauge.net
+Received: by mail-io1-f41.google.com with SMTP id ca18e2360f4ac-7bffface817so8451839f.3
+        for <linux-wireless@vger.kernel.org>; Tue, 06 Feb 2024 20:52:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=egauge.net; s=google; t=1707281565; x=1707886365; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:organization
+         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=/JetO1HFHnrLv72KbwhYU2aX+lCBNNJLOsgakWCN0RA=;
+        b=hry8gfQq9pmpXDaYo7U/mg+ZEi5SItcrq33gJ16/2CWgndhjlashhkER8lc2DJXeM+
+         H3FWXzXA63JL5qfT0TiqMy/E3nA7KZ2uVolWofXH4Vy4px5KxmGN/1OiAXtrlDj+yiVo
+         zvbr+WRnT13DWr8MjYaLG1yzMX21AJSC9Dz55w8VVKxywglNfpPr0Ppk3tyUQiVX70TN
+         8hzObiYzK50yAxzf70Wjwiv9HOQYDuLUpbMleVFjwTDdzl60CFM/ok5vY/7Y1buIbDwb
+         GhvoQbapFYoy1T0EDdJKAirecxFYrAKx+clslBIqzpezsL3I4z7xhqB3MqP/frt9ssxD
+         3OXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707281565; x=1707886365;
+        h=mime-version:user-agent:content-transfer-encoding:organization
+         :references:in-reply-to:date:cc:to:from:subject:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/JetO1HFHnrLv72KbwhYU2aX+lCBNNJLOsgakWCN0RA=;
+        b=u8DxyDRtJj1brlWWij5ii36OYxVJKSsxjVDb+c9/3P2JyTRIf6oQCZU7PKU3lrBCNw
+         x40zYjUdCwaXWP5TQckVBHDMDUOPBepAogFs2imQIhwFOTdNb8lCKE98TAW/YyaWgw7j
+         rYKvvBlNh3iMljqB8vUP9PR7hAPRvNSN7BrKp3gmbTY+Jdv5hwFFHCZLpP7rjoQKG0Fu
+         nAoV9K91ZiYEKIEDMugsyh+sAApL4YMe8Sh1PTKIU/QZrr6hXDYgfR/IA+tl5htgajwq
+         2vTNU5JLvUWyDXbT50RtALfWJtcUu4O3K9aN8+Q+S9n5lcwnAZp7KThCRoTAokxtbu2P
+         /vcA==
+X-Gm-Message-State: AOJu0YzYaQvt5EGDHMD6Rfaro8aBaTXSqU1P6kgiT+HSgsDijNQ23iLn
+	24C6GkdZjn85teix2Xj2UBWiYUSThUCU8hVQ90P3x+2VDnZTF85J1shFuw30Og==
+X-Google-Smtp-Source: AGHT+IH8R2i9HTXKFR3MT+BYrhMX4y2/CnOcb+7LboR+cN/dOXveWdlDK0cgZAZBaB5D3LvU24t1NQ==
+X-Received: by 2002:a5d:9b82:0:b0:7c3:e993:d6e3 with SMTP id r2-20020a5d9b82000000b007c3e993d6e3mr5327188iom.6.1707281565127;
+        Tue, 06 Feb 2024 20:52:45 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCURALL8d8CBEfmTOVcKjxZuM+5/YnCCYJyajcgoPacNPK9JZ5hbONbVguI6gKbDID+XxLlwlINDQNJxizaVpicLYH9kgywD/CNBYmNpLYiUHjiTSAdAPj1KL6mFdN7rx24=
+Received: from ?IPv6:2601:281:8300:a1:5d8a:622a:58d5:54e0? ([2601:281:8300:a1:5d8a:622a:58d5:54e0])
+        by smtp.gmail.com with ESMTPSA id z3-20020a5e9243000000b007c3fbe781f2sm100361iop.5.2024.02.06.20.52.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Feb 2024 20:52:44 -0800 (PST)
+Message-ID: <706d5fde96f90078f80c7fb4fc88503d1791426f.camel@egauge.net>
+Subject: Re: [PATCH] [v4] wifi: wilc1000: validate chip id during bus probe
 From: David Mosberger-Tang <davidm@egauge.net>
-Subject: [PATCH v5] wifi: wilc1000: validate chip id during bus probe
-Date: Wed, 07 Feb 2024 04:49:29 +0000 (UTC)
-Message-Id: <20240207044559.2717200-1-davidm@egauge.net>
-X-Mailer: git-send-email 2.34.1
+To: Alexis =?ISO-8859-1?Q?Lothor=E9?= <alexis.lothore@bootlin.com>, 
+	linux-wireless@vger.kernel.org
+Cc: Ajay.Kathat@microchip.com, kvalo@kernel.org
+Date: Tue, 06 Feb 2024 21:52:42 -0700
+In-Reply-To: <415a0e6e-5824-44a2-af2a-a75115d5a62e@bootlin.com>
+References: <20240127004331.1334804-1-davidm@egauge.net>
+	 <415a0e6e-5824-44a2-af2a-a75115d5a62e@bootlin.com>
+Organization: eGauge Systems LLC
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4-0ubuntu2 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SG-EID: 
- =?us-ascii?Q?+kMxBqj35EdRUKoy8diX1j4AXmPtd302oan+iXZuF8m2Nw4HRW2irNspffT=2Fkh?=
- =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvCX1o7o2ib3iMxjb2?=
- =?us-ascii?Q?IjR2W5MdB1wKbJagxR3es2pR0kJFXqkTqAOZ=2F7C?=
- =?us-ascii?Q?jjxSb=2F3CSJvXunXAzmJ4luPFiDGnj0oxW4NzjTX?=
- =?us-ascii?Q?+r7HfZgrB64NOtHaxyOXz3H+ESTfUCTju9zPWUd?=
- =?us-ascii?Q?Gw9J0zBKn72c6y6eYgzNF9TUt4DXjqp5WNZwH3B?=
- =?us-ascii?Q?GeQ63T2QulDMh2MrXxlDg=3D=3D?=
-To: linux-wireless@vger.kernel.org
-Cc: Ajay.Kathat@microchip.com, alexis.lothore@bootlin.com, kvalo@kernel.org,
-	David Mosberger-Tang <davidm@egauge.net>
-X-Entity-ID: Xg4JGAcGrJFIz2kDG9eoaQ==
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset=us-ascii
 
-Previously, the driver created a net device (typically wlan0) as soon
-as the module was loaded.  This commit changes the driver to follow
-normal Linux convention of creating the net device only when bus
-probing detects a supported chip.
+On Tue, 2024-01-30 at 10:06 +0100, Alexis Lothor=C3=A9 wrote:
+> On 1/27/24 01:43, David Mosberger-Tang wrote:
+>=20
+>=20
+> > @@ -1142,7 +1170,7 @@ static int wilc_spi_init(struct wilc *wilc, bool =
+resume)
+> >  	}
+> >  	if (ret) {
+> >  		dev_err(&spi->dev, "Failed with CRC7 on and off.\n");
+> > -		return ret;
+> > +		return -ENODEV;
+>=20
+> You are still rewriting error codes here. At a lower level, sure, but sti=
+ll...
+> When I suggested setting -ENODEV at lower level, I was thinking about pla=
+ces
+> where no explicit error code was already in use, but
+> spi_internal_read/spi_internal_write already generate proper error codes.=
+ Or am
+> I missing a constraint, like the probe chain really needing -ENODEV ?
 
-Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
----
- drivers/net/wireless/microchip/wilc1000/spi.c | 69 +++++++++++++++----
- .../net/wireless/microchip/wilc1000/wlan.c    |  3 +-
- .../net/wireless/microchip/wilc1000/wlan.h    |  1 +
- 3 files changed, 57 insertions(+), 16 deletions(-)
+Lower-level errors are often not meaningful at the higher level.  For
+example, attempting to read a register over SPI may cause a CRC error
+if the device doesn't exist.  That would result in -EINVAL, even though
+there was nothing invalid about the read, it's just that the device
+wasn't there.
 
----
-changelog:
-V1: original version
-V2: Add missing forward declarations
-V3: Add missing forward declarations, actually :-(
-V4: - rearranged function order to improve readability
-    - now relative to wireless-next repository
-    - avoid change error return value and have lower-level functions
-      directly return -ENODEV instead
-    - removed any mention of WILC3000
-    - export and use existing is_wilc1000() for chipid validation
-    - replaced strbool() function with open code
-V5: - add clk_disable_unprepare() to power_down path as suggested by Ajay
-    - don't re-write error codes as suggested by Alexi
+But I don't feel strongly about it.  v5 of the patch does what you
+want.
 
- drivers/net/wireless/microchip/wilc1000/spi.c | 74 ++++++++++++++-----
- .../net/wireless/microchip/wilc1000/wlan.c    |  3 +-
- .../net/wireless/microchip/wilc1000/wlan.h    |  1 +
- 3 files changed, 59 insertions(+), 19 deletions(-)
+  --david
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/spi.c b/drivers/net/wireless/microchip/wilc1000/spi.c
-index 7eb0f8a421a3..fdbd46b882b9 100644
---- a/drivers/net/wireless/microchip/wilc1000/spi.c
-+++ b/drivers/net/wireless/microchip/wilc1000/spi.c
-@@ -42,7 +42,7 @@ MODULE_PARM_DESC(enable_crc16,
- #define WILC_SPI_RSP_HDR_EXTRA_DATA	8
- 
- struct wilc_spi {
--	bool isinit;		/* true if SPI protocol has been configured */
-+	bool isinit;		/* true if wilc_spi_init was successful */
- 	bool probing_crc;	/* true if we're probing chip's CRC config */
- 	bool crc7_enabled;	/* true if crc7 is currently enabled */
- 	bool crc16_enabled;	/* true if crc16 is currently enabled */
-@@ -55,6 +55,8 @@ struct wilc_spi {
- static const struct wilc_hif_func wilc_hif_spi;
- 
- static int wilc_spi_reset(struct wilc *wilc);
-+static int wilc_spi_configure_bus_protocol(struct wilc *wilc);
-+static int wilc_validate_chipid(struct wilc *wilc);
- 
- /********************************************
-  *
-@@ -232,8 +234,27 @@ static int wilc_bus_probe(struct spi_device *spi)
- 	}
- 	clk_prepare_enable(wilc->rtc_clk);
- 
-+	dev_info(&spi->dev, "Selected CRC config: crc7=%s, crc16=%s\n",
-+		 enable_crc7 ? "on" : "off", enable_crc16 ? "on" : "off");
-+
-+	/* we need power to configure the bus protocol and to read the chip id: */
-+
-+	wilc_wlan_power(wilc, true);
-+
-+	ret = wilc_spi_configure_bus_protocol(wilc);
-+	if (ret)
-+		goto power_down;
-+
-+	ret = wilc_validate_chipid(wilc);
-+	if (ret)
-+		goto power_down;
-+
-+	wilc_wlan_power(wilc, false);
- 	return 0;
- 
-+power_down:
-+	clk_disable_unprepare(wilc->rtc_clk);
-+	wilc_wlan_power(wilc, false);
- netdev_cleanup:
- 	wilc_netdev_cleanup(wilc);
- free:
-@@ -1101,26 +1122,34 @@ static int wilc_spi_deinit(struct wilc *wilc)
- 
- static int wilc_spi_init(struct wilc *wilc, bool resume)
- {
--	struct spi_device *spi = to_spi_device(wilc->dev);
- 	struct wilc_spi *spi_priv = wilc->bus_data;
--	u32 reg;
--	u32 chipid;
--	int ret, i;
-+	int ret;
- 
- 	if (spi_priv->isinit) {
- 		/* Confirm we can read chipid register without error: */
--		ret = wilc_spi_read_reg(wilc, WILC_CHIPID, &chipid);
--		if (ret == 0)
-+		if (wilc_validate_chipid(wilc) == 0)
- 			return 0;
--
--		dev_err(&spi->dev, "Fail cmd read chip id...\n");
- 	}
- 
- 	wilc_wlan_power(wilc, true);
- 
--	/*
--	 * configure protocol
--	 */
-+	ret = wilc_spi_configure_bus_protocol(wilc);
-+	if (ret) {
-+		wilc_wlan_power(wilc, false);
-+		return ret;
-+	}
-+
-+	spi_priv->isinit = true;
-+
-+	return 0;
-+}
-+
-+static int wilc_spi_configure_bus_protocol(struct wilc *wilc)
-+{
-+	struct spi_device *spi = to_spi_device(wilc->dev);
-+	struct wilc_spi *spi_priv = wilc->bus_data;
-+	u32 reg;
-+	int ret, i;
- 
- 	/*
- 	 * Infer the CRC settings that are currently in effect.  This
-@@ -1172,6 +1201,15 @@ static int wilc_spi_init(struct wilc *wilc, bool resume)
- 
- 	spi_priv->probing_crc = false;
- 
-+	return 0;
-+}
-+
-+static int wilc_validate_chipid(struct wilc *wilc)
-+{
-+	struct spi_device *spi = to_spi_device(wilc->dev);
-+	u32 chipid;
-+	int ret;
-+
- 	/*
- 	 * make sure can read chip id without protocol error
- 	 */
-@@ -1180,9 +1218,10 @@ static int wilc_spi_init(struct wilc *wilc, bool resume)
- 		dev_err(&spi->dev, "Fail cmd read chip id...\n");
- 		return ret;
- 	}
--
--	spi_priv->isinit = true;
--
-+	if (!is_wilc1000(chipid)) {
-+		dev_err(&spi->dev, "Unknown chip id 0x%x\n", chipid);
-+		return -ENODEV;
-+	}
- 	return 0;
- }
- 
-diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
-index 6b2f2269ddf8..3130a3ea8d71 100644
---- a/drivers/net/wireless/microchip/wilc1000/wlan.c
-+++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
-@@ -12,10 +12,11 @@
- 
- #define WAKE_UP_TRIAL_RETRY		10000
- 
--static inline bool is_wilc1000(u32 id)
-+bool is_wilc1000(u32 id)
- {
- 	return (id & (~WILC_CHIP_REV_FIELD)) == WILC_1000_BASE_ID;
- }
-+EXPORT_SYMBOL_GPL(is_wilc1000);
- 
- static inline void acquire_bus(struct wilc *wilc, enum bus_acquire acquire)
- {
-diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.h b/drivers/net/wireless/microchip/wilc1000/wlan.h
-index f02775f7e41f..ebdfb0afaf71 100644
---- a/drivers/net/wireless/microchip/wilc1000/wlan.h
-+++ b/drivers/net/wireless/microchip/wilc1000/wlan.h
-@@ -409,6 +409,7 @@ struct wilc_cfg_rsp {
- 
- struct wilc_vif;
- 
-+bool is_wilc1000(u32 id);
- int wilc_wlan_firmware_download(struct wilc *wilc, const u8 *buffer,
- 				u32 buffer_size);
- int wilc_wlan_start(struct wilc *wilc);
--- 
-2.34.1
 
 
