@@ -1,104 +1,101 @@
-Return-Path: <linux-wireless+bounces-3285-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3286-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F19B484C9C2
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Feb 2024 12:41:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C892C84CA94
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Feb 2024 13:18:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F6FE1C25D9F
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Feb 2024 11:41:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F7BE28B4AB
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Feb 2024 12:17:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4EA01DA52;
-	Wed,  7 Feb 2024 11:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D692199B8;
+	Wed,  7 Feb 2024 12:17:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WXElr00N"
+	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="yZuTQunY"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B099C1DA4F
-	for <linux-wireless@vger.kernel.org>; Wed,  7 Feb 2024 11:41:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9521A59B60
+	for <linux-wireless@vger.kernel.org>; Wed,  7 Feb 2024 12:17:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707306065; cv=none; b=XJzFKfdKG7KkCm4XeaBTpeGcvK7tCQ9HtXo2Mdw3PBuOf+VWAB/gbieZysP2c8MuKOesxSg0W7/yVOva7IXMSnhQPpxhUGB0hN72zb6Krm0W9q3qZM2B3PSkyLkMQt1tG5YyqqD3xKNq7re54g2juJGL/EhCfgcw49/aTRScLcA=
+	t=1707308277; cv=none; b=Ko/LrCEzW40IKTVW9GZbF98mwK/fHIGuOZHwgeGtGCrmVnVTThGuKSyeIFhtlzHWX2KnhnxMwSusfqVatPtx/9GBEQXOSDGq8Tjav/HGsBWDIjUdMU8o4a2euTLx/jxSoA2TkKUk92LEE98HFrrjzMcGNLCi9188GvdZjUR7AdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707306065; c=relaxed/simple;
-	bh=xYeCdgZeKyL4Gxp96ZmynfABHTZ9se0hNpcVF5+NoN4=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=kvh9QG35gvNGCcGPJPsNgUa7bYJ9lAQ05r0CUy3ehKemelX0IBKnijXteIX6HCEtPIT5+yiNTdrg/xN9gMkQ3IaEZc3Lxp1QMGCiK9sU/jXdHCuslHxHUZuUb59RB2wM6V/I5oIolLqSCKiPNJ4VVXNFsYKXTJjvDYu+TDkcqgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WXElr00N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36AE0C433F1;
-	Wed,  7 Feb 2024 11:41:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707306065;
-	bh=xYeCdgZeKyL4Gxp96ZmynfABHTZ9se0hNpcVF5+NoN4=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=WXElr00NT3daGCg0tPC217herM/ZwxlhJr/ltBUV2vc/sKyesDEoD1SUNmH+fGdxT
-	 NA2bwjX57XRfw8HCOiISoKSzfceNwram/ukXvgkWrF3CtEsXFy3Y/RGPjAVFiLdurE
-	 3MwzXd8DdvBr7tBowwQLwBPYeZ9+pbjuY7Lq/RrLJLruplfC4Zv+aUPz72fbvZ7pMg
-	 lt5jUKPI6KFJwp9xTQG3b2K3dd6HCidSWqMUMOzmy1c4BZ3Mb6cYnXg+mkXZYQSBLX
-	 zNd7c0LDzQCS04IkG18m8+2lqemVhOTOwO1soUhECU8za2NdlfTAhtMFnOqXadn8tu
-	 IuLvghzSympBg==
-From: Kalle Valo <kvalo@kernel.org>
-To: David Mosberger-Tang <davidm@egauge.net>
-Cc: Alexis =?utf-8?Q?Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
-  linux-wireless@vger.kernel.org,  Ajay.Kathat@microchip.com
-Subject: Re: [PATCH] [v4] wifi: wilc1000: validate chip id during bus probe
-References: <20240127004331.1334804-1-davidm@egauge.net>
-	<415a0e6e-5824-44a2-af2a-a75115d5a62e@bootlin.com>
-	<706d5fde96f90078f80c7fb4fc88503d1791426f.camel@egauge.net>
-Date: Wed, 07 Feb 2024 13:41:01 +0200
-In-Reply-To: <706d5fde96f90078f80c7fb4fc88503d1791426f.camel@egauge.net>
-	(David Mosberger-Tang's message of "Tue, 06 Feb 2024 21:52:42 -0700")
-Message-ID: <871q9oqz76.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1707308277; c=relaxed/simple;
+	bh=TmRmyMzLdp2YmskWP/aR9FpT708Rv7UXoqw3qvUX1yY=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=AlAjA0Uf31cPbfZt6GdGn8cevfsie/NfnKHOVTjYqhnU1vs1BTEZuP15iUUPx2S3yjtR57KloFw4eEqQ3j9UKi4iyGBTWMu2HWgnzfnZqtbljDKTiPH9/ob7XlXVPqB9s3K83HfDAjPYQN37PDADTDqQARibSjSsAmHumoBrZRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=yZuTQunY; arc=none smtp.client-ip=209.85.219.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-dc6d54def6fso403906276.3
+        for <linux-wireless@vger.kernel.org>; Wed, 07 Feb 2024 04:17:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1707308274; x=1707913074; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=pSdkh+ng7Yeu68weliCQGWed6e78g0TdpBEq9N2FNbY=;
+        b=yZuTQunYT5/6WPgHY4U/knbiWGap1c4W6lYM3+kgqzn3zCSlD9H4UmoghBHqKiCMO4
+         kFqZ2O0kprzX6LLBxJCYb6IoXw0OPdsYaI7ojHeXK+2MMSCiiS+zDw62XxtWvD5QJqi9
+         Ud4mFY7wPRIMSwpO9DdPfE65vtbRYyzZRPC2xBcJzeHpjNGLghluZHhyyL3gBzbAPijB
+         NZwInr6U2JgVT3OwvsWZ+V8ugQZMFoppfV5l0jRsjpGK5nOGp+xGLr+mXPx4u+WmUJJG
+         pXBdhvE9+ZVovy7/LaOP5dQuBpuwNIy7Ib1pvjfEEc1qc4XYgWRmH5Asb9rClnT4KKkL
+         UUhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707308274; x=1707913074;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=pSdkh+ng7Yeu68weliCQGWed6e78g0TdpBEq9N2FNbY=;
+        b=C5P9bxHftN9QZVaaSVs3Awl7Rl5maD5kWKgabEiAnFQF/ShZHcb/QUdo3MTrpN9T1Z
+         YoKqMxJEC0oZNPE7vt8pW9Ke7dBYxy25KAeDKccpCNqs1WQsIV0A+OSwyK46cYoZa3nc
+         Cl0s2J84rR2AkeoCF3xmxR/BsltzZ7oCzUy09Nx0pbbEfyyK2hMTXtK0Q/mrIpD+pQhs
+         JS96+LnGAf4aDWzqVnDQGt9lS0E7A5yld91odpMqy+7uglw7f2vI7qU2tVn4w3gXzujG
+         KApA1qrtb9QjEBGDQePaVBHRuddzcdSfIJeKb1Rt3LLjMWlGskM4E8IaZC2XCURMxST7
+         OLgA==
+X-Gm-Message-State: AOJu0YzknFcYHIrsrZEWMs/tpURh75RqigM5GhmbiRAfGIHo6FVLRkR+
+	IKSGJCYBo6e71cFX3SW8Blv/kzBcY8f4KQAMQyvcDOoBwgX1Ldgbg//BSPbHuQDL/jRZRQ0Ra9H
+	frJEfJrs0Fcg9BPkYsVpeU0aPl2H6hTtitB0p
+X-Google-Smtp-Source: AGHT+IGomE1piNDlMKWQLJkfkkV5OEDncqJpPADNjfGpeZGIhrHl1O7OlVsG3bzGMYGNK6X5gYHVKU+jDi4MJ6VDMt8=
+X-Received: by 2002:a5b:646:0:b0:dbd:987d:2491 with SMTP id
+ o6-20020a5b0646000000b00dbd987d2491mr4044248ybq.58.1707308274470; Wed, 07 Feb
+ 2024 04:17:54 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Wed, 7 Feb 2024 07:17:43 -0500
+Message-ID: <CAM0EoMmZSB6CyA0ghz8QL6iGrrAi5FFDLMU8uzPPSW3U8n=Yfg@mail.gmail.com>
+Subject: 0x18: Dates And Location for upcoming conference
+To: people <people@netdevconf.info>
+Cc: Linux Kernel Network Developers <netdev@vger.kernel.org>, Christie Geldart <christie@ambedia.com>, 
+	Kimberley Jeffries <kimberleyjeffries@gmail.com>, lwn@lwn.net, 
+	Lael Santos <lael.santos@expertisesolutions.com.br>, 
+	Felipe Magno de Almeida <felipe@expertise.dev>, linux-wireless <linux-wireless@vger.kernel.org>, 
+	"board@netdevconf.org" <board@netdevconf.info>, netfilter-devel@vger.kernel.org, 
+	lartc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-David Mosberger-Tang <davidm@egauge.net> writes:
+This is a pre-announcement on behalf of the NetDev Society so folks
+can plan travel etc.
 
-> On Tue, 2024-01-30 at 10:06 +0100, Alexis Lothor=C3=A9 wrote:
->> On 1/27/24 01:43, David Mosberger-Tang wrote:
->>=20
->>=20
->> > @@ -1142,7 +1170,7 @@ static int wilc_spi_init(struct wilc *wilc, bool=
- resume)
->> >  	}
->> >  	if (ret) {
->> >  		dev_err(&spi->dev, "Failed with CRC7 on and off.\n");
->> > -		return ret;
->> > +		return -ENODEV;
->>=20
->> You are still rewriting error codes here. At a lower level, sure, but st=
-ill...
->> When I suggested setting -ENODEV at lower level, I was thinking about pl=
-aces
->> where no explicit error code was already in use, but
->> spi_internal_read/spi_internal_write already generate proper error codes=
-. Or am
->> I missing a constraint, like the probe chain really needing -ENODEV ?
->
-> Lower-level errors are often not meaningful at the higher level.  For
-> example, attempting to read a register over SPI may cause a CRC error
-> if the device doesn't exist.  That would result in -EINVAL, even though
-> there was nothing invalid about the read, it's just that the device
-> wasn't there.
+Netdev conf 0x18 is going to be a hybrid conference.  We will be
+updating you with more details in the near future on the exact
+coordinates. Either watch https://netdevconf.info/0x18/ or join
+people@ mailing list[1] for more frequent updates.
 
-Changing the error values makes debugging harder so please avoid doing
-it unless absolutely necessary (and then explain the reason in a code
-comment).
+Date : July 15, 2024
+Location : Silicon Valley, .ca.us
 
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
+Be ready to share your work with the community. CFS coming soon.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+sincerely,
+Netdev Society Board:
+Roopa Prabhu, Shrijeet Mukherjee, Tom Herbert, Jamal Hadi Salim
+
+[1] https://lists.netdevconf.info/postorius/lists/people.netdevconf.info/
 
