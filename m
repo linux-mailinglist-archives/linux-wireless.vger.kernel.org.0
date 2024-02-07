@@ -1,107 +1,97 @@
-Return-Path: <linux-wireless+bounces-3291-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3292-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E8E884CD88
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Feb 2024 16:01:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C70684CDA8
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Feb 2024 16:07:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5DF8293093
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Feb 2024 15:01:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 334811F238D6
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Feb 2024 15:07:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6F3E7F49D;
-	Wed,  7 Feb 2024 15:00:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63DED7E77F;
+	Wed,  7 Feb 2024 15:07:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="ox5b70PW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ryM9v1pm"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91FEF76C6F;
-	Wed,  7 Feb 2024 15:00:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404DE76C6F
+	for <linux-wireless@vger.kernel.org>; Wed,  7 Feb 2024 15:07:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707318057; cv=none; b=BjREINhizClBC27ZNpb6bpoXgkoDrJMZzk0hhrdnCyUrRQYoX9qymFXTJQA+aoEhbOS48dbx8lUx/U3FZP/QEBcn7Siojsd3vD1R+pdy0TsC5TjzfvFqd4dNd8P9nDkS0xVhXGm9O0oSR9e5ZlKBfD9G0sW1Xin+d8wB+NZEiAg=
+	t=1707318448; cv=none; b=ojiGNfAug+J+op0UP+QIRa6xgO7IeubS4QY/bBQB+MNhbQ4L9cawrcPpcaVMT4dwP59I1kHvXiw8ggOw7jSuabG7BcRwFWPcPkga5rVTMDE8qJGZ79gr2Q5Hqw/HFNkxadvDqxP/20D8Gx1Yd0TnCOC/itcVKoCJjUZnKJiZqqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707318057; c=relaxed/simple;
-	bh=XXFDvBkeGOfbwZKGPocdQlFeqLv49I9NlaKKBdpBvqY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=i8eWGQlrShymc0N5OjWdRX5tge0rgivLxdYGrLcoY9XZEdD0jrPZgRceqCwp3obFyMqx/qKpV6uan+ufwgJcOus86VbtXQeuj/zhNyI9W02tc1dWSULtpVyV7sn7IyPdxfwgXxcUF7HV9bXvrIpIsaw/UOS6AfVXt9uurd1q+pY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=ox5b70PW; arc=none smtp.client-ip=46.235.227.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1707318053;
-	bh=XXFDvBkeGOfbwZKGPocdQlFeqLv49I9NlaKKBdpBvqY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ox5b70PWQW1WjQ+6JuWbrICh02r2vS3PgbKIo6AknU+m1Z5Wpqdwr5BRPssr5ff+Q
-	 aDnC/vkmoztrwKefMm9rM240l9btCIzLDT5Bo2xunfeNemN/2WrImCHHnMlXe3li2L
-	 UvtK69YeUVcP0Pw77JSKFOEanmDPPjne/xoTVhw7k2e+koUe9qTVdB+RLFnfhYvsXH
-	 Qq7TqQ0vx32nN/y0Qhj+Z7gHd/2RC5VC6TtyZZ4o6ceIZonPBvmw71I1HV0wLiPpVB
-	 w7Ys3QiryqlGKrsoThwDskrrakbB4xpznlGcBs6bODS8FzpceySMfyaalFXGKRPTQF
-	 umMZ/cafheGYw==
-Received: from [100.113.186.2] (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: kholk11)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id E0A1A3782072;
-	Wed,  7 Feb 2024 15:00:52 +0000 (UTC)
-Message-ID: <2b91bd5e-9e66-402e-87fe-c2894e5a1d5a@collabora.com>
-Date: Wed, 7 Feb 2024 16:00:52 +0100
+	s=arc-20240116; t=1707318448; c=relaxed/simple;
+	bh=Uan/Q0Q/Kd3LAVTiDWGEOTgNM9yrcvXDA8uVoN+txvs=;
+	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
+	 Cc:Message-ID:Date; b=Tj6CdbNE2U7R4ySaTVfweJNIOPWzMdhiwjFfoXzeCTwGZ8K0gkWq8spqfyVsSBd2qk6fU8lcyEz2U4HpL+lEuQ3Vpj6iN0iuIACvw0X75G8If12DarmFA6j/jotyiVR+bmG8R/Wo/ua3ySVyDdbiimpNw3blEpLOIFlPWk27Avo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ryM9v1pm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C404CC433C7;
+	Wed,  7 Feb 2024 15:07:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707318447;
+	bh=Uan/Q0Q/Kd3LAVTiDWGEOTgNM9yrcvXDA8uVoN+txvs=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=ryM9v1pmg05T+lGq3uWagDc6CPJIPOSNi6YpyOlZErZ3WQ/nm+zM4sdBouNbnsL14
+	 iFrKkQlPSkfZ3R27P7crodhPfE0U/JLSxFnBHYC5Yq8N64ALCuxG++9Xig3p3994rt
+	 TgQzQRtsWs9AGHIHsufaX0mvhz8U3GuvcQoNeIxzaGGyb1AvET79yjB6u4s973YqQ7
+	 G+tWyc567A4+J+duliNfrQj5gqvNPoxtSpaylI8cv95jxvOsNML09JTbUs9CbYYV5w
+	 HcBdLnWPtUdMtznlw1S5vq+Bw4lL+pxjm4U3LcXsS5LRIWdrkX8Ly2eBUejjvgWi06
+	 hkz3BphPc5v2Q==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH][next] mt76: Remove redundant assignment to variable tidno
-Content-Language: en-US
-To: Colin Ian King <colin.i.king@gmail.com>, Felix Fietkau <nbd@nbd.name>,
- Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>,
- Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>,
- Kalle Valo <kvalo@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
- linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
-Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
-References: <20240207131113.2450297-1-colin.i.king@gmail.com>
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <20240207131113.2450297-1-colin.i.king@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v6 01/11] wifi: ath12k: fix broken structure
+ wmi_vdev_create_cmd
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20240130040303.370590-2-quic_kangyang@quicinc.com>
+References: <20240130040303.370590-2-quic_kangyang@quicinc.com>
+To: Kang Yang <quic_kangyang@quicinc.com>
+Cc: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+ <quic_kangyang@quicinc.com>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <170731844476.2220494.14154220146045485839.kvalo@kernel.org>
+Date: Wed,  7 Feb 2024 15:07:26 +0000 (UTC)
 
-Il 07/02/24 14:11, Colin Ian King ha scritto:
-> The variable tidno is being assigned a value that is not being read
-> and is being re-assigned a new value a few statements later.
-> The assignment is redundant and can be removed.
+Kang Yang <quic_kangyang@quicinc.com> wrote:
+
+> Current structure wmi_vdev_create_cmd is not matched to the firmware
+> definition. So update it.
 > 
-> Cleans up clang scan warning:
-> drivers/net/wireless/mediatek/mt76/agg-rx.c:125:5: warning: Value stored
-> to 'tidno' during its initialization is never read [deadcode.DeadStores]
+> And update vdev_stats_id_valid for vdev_stats_id.
 > 
-> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-
-> ---
->   drivers/net/wireless/mediatek/mt76/agg-rx.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
 > 
-> diff --git a/drivers/net/wireless/mediatek/mt76/agg-rx.c b/drivers/net/wireless/mediatek/mt76/agg-rx.c
-> index 10cbd9e560e7..07c386c7b4d0 100644
-> --- a/drivers/net/wireless/mediatek/mt76/agg-rx.c
-> +++ b/drivers/net/wireless/mediatek/mt76/agg-rx.c
-> @@ -122,7 +122,7 @@ mt76_rx_aggr_check_ctl(struct sk_buff *skb, struct sk_buff_head *frames)
->   	struct ieee80211_bar *bar = mt76_skb_get_hdr(skb);
->   	struct mt76_wcid *wcid = status->wcid;
->   	struct mt76_rx_tid *tid;
-> -	u8 tidno = status->qos_ctl & IEEE80211_QOS_CTL_TID_MASK;
-> +	u8 tidno;
->   	u16 seqno;
->   
->   	if (!ieee80211_is_ctl(bar->frame_control))
+> Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
+> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
+11 patches applied to ath-next branch of ath.git, thanks.
+
+4f684533afe2 wifi: ath12k: fix broken structure wmi_vdev_create_cmd
+019b58dcb6ed wifi: ath12k: fix incorrect logic of calculating vdev_stats_id
+ef860c6a3adf wifi: ath12k: change interface combination for P2P mode
+575ec73cb880 wifi: ath12k: add P2P IE in beacon template
+9411eecb60cb wifi: ath12k: implement handling of P2P NoA event
+2830bc9e784f wifi: ath12k: implement remain on channel for P2P mode
+28035a88f8b3 wifi: ath12k: change WLAN_SCAN_PARAMS_MAX_IE_LEN from 256 to 512
+32e7b12e2611 wifi: ath12k: allow specific mgmt frame tx while vdev is not up
+c9e4e41e71ff wifi: ath12k: move peer delete after vdev stop of station for WCN7850
+cf0425eead75 wifi: ath12k: designating channel frequency for ROC scan
+e65a63986575 wifi: ath12k: advertise P2P dev support for WCN7850
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20240130040303.370590-2-quic_kangyang@quicinc.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
 
