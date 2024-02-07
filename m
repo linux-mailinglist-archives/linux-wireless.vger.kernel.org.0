@@ -1,84 +1,69 @@
-Return-Path: <linux-wireless+bounces-3299-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3300-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5475A84D0FC
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Feb 2024 19:16:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E1C684D145
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Feb 2024 19:36:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DB341C217FA
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Feb 2024 18:16:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 514BC1C226B4
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Feb 2024 18:36:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27F5E83CCB;
-	Wed,  7 Feb 2024 18:14:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C2B67CF05;
+	Wed,  7 Feb 2024 18:36:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vNIk7sJY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VCGoVibD"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED12D1B7F0;
-	Wed,  7 Feb 2024 18:14:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D849131A6B;
+	Wed,  7 Feb 2024 18:36:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707329654; cv=none; b=dARabMFGsWk/mcq0nTnASGLyC7VBjQcvtfh2pa6IbVns7WgaZmd4xMHqgwjagX30B07n1R9kFXjVdP7/8hO61TaSAy5qDe3danrDhe8LxtqUEl52SoSeBsPvqsHn7EoS5KS7IorD1hv3HA+hmMJEzjazhE1ZyK16JND+HDm9xIA=
+	t=1707330983; cv=none; b=MLrUaW6wRbAcdKeW6fPrJKANGEREXbHl7dWo0+dccYdBecJ6+XyNcfA//mxPcfl6DakOIRD4zsYEHbgGf05JZCVBtQGpIL+UGnyrWTDWjPoszznk7oIvV48Bk6FSVUE6QFS71Nib58yFl7aIG9CUKIJMvFGHHW4HJcke6tlfeeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707329654; c=relaxed/simple;
-	bh=eP/zI19SPSRRm5KxM8isKzsQV4/zUTMHBunc8dphjiQ=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=RM5ndtjjln+t7inZ8g+zX6G3FjPZEv5cgw3tXfZwQdsdez39+z0i134fCFbG2I3CSJWlAUPiBasgmlslf7YbKW+Ra+725IFIhmEQF5SJSVxtcn1yDkskww9rTHjy8x9JFNSqYzzgRSHk3y5Ldi8N/EaH1/jOAdXF+OdRYFtR1eE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vNIk7sJY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EE4AC433C7;
-	Wed,  7 Feb 2024 18:14:12 +0000 (UTC)
+	s=arc-20240116; t=1707330983; c=relaxed/simple;
+	bh=gXm5WVFNtj5VnIEEhQdrT3BhRsWV9gkvhypeG0+0z9w=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=sznOPrfSiAWZ+w3m2o4hvsFj80hul1o/Zc3lWSyP59lrooog90ZUIt3HgdbZXIM/7vthEBYdKbmE0LrXpPf3LoLGCFapFvsEp+ALSp74jKJA5ury+UgWbZ08gzxvJCyPi/pgUgDXn/Rbqb6inHyveHUBXk8uwianZuC6ebKc2lw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VCGoVibD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EE73C433F1;
+	Wed,  7 Feb 2024 18:36:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707329653;
-	bh=eP/zI19SPSRRm5KxM8isKzsQV4/zUTMHBunc8dphjiQ=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=vNIk7sJY8Qm62mFrkb9lpQ2YkFwH1W4nUltIhZOtUc89p+x8O5FSy/PKtcc5BW9m5
-	 PyRVmOcpwKB0kPded1Vy4YMwNAcgkr3mBQ0nnI2446aEW9E/ei3yX1dJs0Pc7/dT0v
-	 vJAqPmHIGtxul7dJmmxFFuEtwCgwINP0YPmNJgFXSjHnrMV8DIK9KmqUC77ukMLM2K
-	 Q9mFSYpTbJLARpyPrQ1svxG1lNFt9a5QWMGTxs4NjTNffdv9L77DBsV7tg9Sxu8o1o
-	 hZu++QLeWmOkMP1Dt0bIefJNlAS4CB2PDwujEIPAGTe1tVqBMBvpTph7Dv/CjC19bH
-	 qK2rWKyjMZlDA==
-From: Kalle Valo <kvalo@kernel.org>
-To: Colin Ian King <colin.i.king@gmail.com>
-Cc: Christian Lamparter <chunkeey@googlemail.com>,
-  linux-wireless@vger.kernel.org,  kernel-janitors@vger.kernel.org,
-  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] carl9170: Remove redundant assignment to pointer
- super
-References: <20240207171524.2458418-1-colin.i.king@gmail.com>
-Date: Wed, 07 Feb 2024 20:12:00 +0200
-In-Reply-To: <20240207171524.2458418-1-colin.i.king@gmail.com> (Colin Ian
-	King's message of "Wed, 7 Feb 2024 17:15:24 +0000")
-Message-ID: <87a5ocgn4f.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=k20201202; t=1707330983;
+	bh=gXm5WVFNtj5VnIEEhQdrT3BhRsWV9gkvhypeG0+0z9w=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=VCGoVibDcuEzr/EEiFBFG2/hrGl7ZLB+ipGTiIyl9eHUCsRNAYOvzf/bcBuojcc2U
+	 6UK45gWBChxeLkC6g8bMJHH0Bus5ESTV6kenzzxMV7lKUgt7nNF+0cr4Z04dqKfitq
+	 4v5UqmyJOw5nLcI4UqlXk/IPW9GioRHrs+OJs1W1xXto2DVO43GxDBRZKhP/XLwOB7
+	 KfTIvbOl3ZaTCeG8dEeOCfOM4chhKqmRANSFbyh3uS/iQvRL94Y86FkNcHhJ/JqGgw
+	 oGfShwPxlZGSWDJJGQcyV1U4r7dzeeamS+sqBkZP1uul0y5p0vBejT8xvKlaVHbGOk
+	 dSuf3UVErXyZg==
+Date: Wed, 7 Feb 2024 10:36:22 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Kalle Valo <kvalo@kernel.org>
+Cc: netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+Subject: Re: pull-request: wireless-2024-02-06
+Message-ID: <20240207103622.6d9d4697@kernel.org>
+In-Reply-To: <20240206095722.CD9D2C433F1@smtp.kernel.org>
+References: <20240206095722.CD9D2C433F1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Colin Ian King <colin.i.king@gmail.com> writes:
+On Tue,  6 Feb 2024 09:57:22 +0000 (UTC) Kalle Valo wrote:
+> This time we have unusually large wireless pull request. Several
+> functionality fixes to both stack and iwlwifi. Lots of fixes to
+> warnings, especially to MODULE_DESCRIPTION().
 
-> The pointer super is being assigned a value that is not being read, it
-> is being re-assigned later. The assignment is redundant and can be
-> removed.
->
-> Cleans up clang scan warning:
-> drivers/net/wireless/ath/carl9170/tx.c:192:34: warning: Value stored to
-> 'super' during its initialization is never read [deadcode.DeadStores]
->
-> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+ 	Errors and warnings before: 1105 after this patch: 1059
 
-Same here, "wifi:" missing. I can add it, no need to resend because of
-this.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Yay! :)
 
