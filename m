@@ -1,84 +1,84 @@
-Return-Path: <linux-wireless+bounces-3267-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3268-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B020984C433
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Feb 2024 05:54:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 812FC84C441
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Feb 2024 06:00:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65D331F274B7
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Feb 2024 04:54:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B47231C25568
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Feb 2024 05:00:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 434BD1CF83;
-	Wed,  7 Feb 2024 04:53:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C69121CD19;
+	Wed,  7 Feb 2024 04:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=egauge.net header.i=@egauge.net header.b="W2FZGhzI"
+	dkim=pass (2048-bit key) header.d=egauge.net header.i=@egauge.net header.b="TogU+6Yx"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-io1-f53.google.com (mail-io1-f53.google.com [209.85.166.53])
+Received: from mail-io1-f42.google.com (mail-io1-f42.google.com [209.85.166.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A145F1CF8A
-	for <linux-wireless@vger.kernel.org>; Wed,  7 Feb 2024 04:53:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 249A91CD1F
+	for <linux-wireless@vger.kernel.org>; Wed,  7 Feb 2024 04:59:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707281636; cv=none; b=J4594IGcXGFroRG1p/zT9aFiv1LseaLCV7UKwSHWAMyKMlUszbuF4amlvvBzxhVrwncK7v6oEkWU5Gl6MePmvAAA1N6YxILZsmpT5e/zQjNX5LXAGjybi003pPBQe6U1jNxgMcbRPvtmHy5hr0HxsRTYtGYikylSwVXAJ5Xiwyg=
+	t=1707281998; cv=none; b=pWiwQCmb0c0SatpzoDHsyreBFNMvxVrRE75rF4FyjWX3SKXcPUn7HhaRqU3Q3PWI3kEzQXzUKWg8eYRU/Qs6i8jBotd0BXBcZpMte+gTrusiqsWuITvQQ67k3OXDiwf6I/BgC6rz50zKrVAT0lGWmJ3E0GB1t21eks5bgWY6k9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707281636; c=relaxed/simple;
-	bh=mR3bASqsk3wOCJm3bvW3W5qEn4YqW5eN8NhG0Sxpw8g=;
+	s=arc-20240116; t=1707281998; c=relaxed/simple;
+	bh=fF1XrFVEhMyD+k3GYMNnjvNQOnQz8MRSGXawhTk/hR4=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=hNEjC0GOJg34oHL9Uy5dZbLqDte/ptJxdX7JmBrdNOyv87Wys/DyTKl64Q5Jr4srvrmJNtDzu5F6OiXTCApD2j5NTEszT4FPM8KvXU7SgVfVPgn0vnFc9K6D7ZY8J+wBYzZ3OVLaP3m9KRkIQTHNKSBsEUSilwb2LHpxGzcGKhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=egauge.net; spf=pass smtp.mailfrom=egauge.net; dkim=pass (2048-bit key) header.d=egauge.net header.i=@egauge.net header.b=W2FZGhzI; arc=none smtp.client-ip=209.85.166.53
+	 Content-Type:MIME-Version; b=Wrw9XbWJ+ODzUpbWSi6kaT1Ex1oSmROFlHyXp80E5jqxqa0je4NkMFA0l4BnH5gglL+OfNg04/NMxbnc9iQqpVG+A8md7I24ELmSMSWxpsuJyrXAfDLcU4DXBtthoOM5AsUJwVhdEdDhGKktocsLoYdeE0T+Jh7ABMp030/A/Xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=egauge.net; spf=pass smtp.mailfrom=egauge.net; dkim=pass (2048-bit key) header.d=egauge.net header.i=@egauge.net header.b=TogU+6Yx; arc=none smtp.client-ip=209.85.166.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=egauge.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=egauge.net
-Received: by mail-io1-f53.google.com with SMTP id ca18e2360f4ac-7bee8858a8aso10272139f.0
-        for <linux-wireless@vger.kernel.org>; Tue, 06 Feb 2024 20:53:54 -0800 (PST)
+Received: by mail-io1-f42.google.com with SMTP id ca18e2360f4ac-7bed9c7d33fso9979239f.1
+        for <linux-wireless@vger.kernel.org>; Tue, 06 Feb 2024 20:59:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=egauge.net; s=google; t=1707281633; x=1707886433; darn=vger.kernel.org;
+        d=egauge.net; s=google; t=1707281996; x=1707886796; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:organization
          :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=c6h4+v262V8ihef7Up08xN0yVYCn5dc/xxNyPP5+lTM=;
-        b=W2FZGhzIBHwqDrZN/m8/Q5J5JjSG/WUCZZe5enpSUXQTuwaaiYUqELjNSn0Hp2QX1n
-         4ER41GlA/O7xMxBQ9jggharMFvrVUt3rodUrHkHEd1kCfprYNadHfYcaKN5MOGWcJi1+
-         qEeKzsSJ+Mvbyu0RstX6x2/zQh4fzadbT/ckHOaYHsXstXpKP3DCU/9DlzH2sj/lT3In
-         RAQME0C+t8SVzeBLunnxwzYLsprlFVQyJXgSM3V8H/JSUu7NwPATNjJNb9qZrD4Wwt1f
-         5qHPa1CCmSYT66vKf/akLaqSQf4afMZuoTDp/R16EFnJFTdCYIVWSz1Wj6qkPNoSDq5r
-         D/Rw==
+        bh=L8oDoF0RtiYuawM9qKNCm5v3ts9j6hSGWKbVhHFndIE=;
+        b=TogU+6Yx3jXr13VywVDnwyKimiX3ChPY0UBc51FQ0jxnGKyAkj+d+COzlKOmcvoE9q
+         Yh0uWD+2B39clxK6BEQSpznIhz1ijo/sqIsiDbxGGjzni+NvcO2xrUCK8Kef/twjY7i0
+         FO/xPRLA+mcV6UsLt4XX8WRSvQZ6ZdIxemdHmm1DrxKq3dkpJssBpHgFS7GYf83atENn
+         cDxK3qvwGmykxCcSA/q6jN3Nbev5Y9WnX157/sy2YVQJk6IlwAOp+x4dJjd1IfBubbp5
+         xzIJMsPrQ+ejDovQPpcbLkYWuDf1fGPD15RLcFg9qb/X20/Sx0kkN1w3hOu7MsjbgVgx
+         6ydw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707281633; x=1707886433;
+        d=1e100.net; s=20230601; t=1707281996; x=1707886796;
         h=mime-version:user-agent:content-transfer-encoding:organization
          :references:in-reply-to:date:cc:to:from:subject:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=c6h4+v262V8ihef7Up08xN0yVYCn5dc/xxNyPP5+lTM=;
-        b=sEKQMiZlJ/C6G9p2zuIx0RHZkCUtk1J1ktHXW1hEoSzWM6F9nWfIvny//fpSjrXtgW
-         P2RXXIEZ6HpZE2tiN7ONTNojmllkE2zDI2LBCvy3i8PQKfTinI41LhVYtmc26QQhw/IU
-         M7ywahLaYu/dyWXYRCXEL2gH87AlOyNwcjkjKcoibaULnRfrPHAgC8UKKB3s1IK3JZaY
-         8Am/5es2F5vvQSxaobP8++pi6MKVtDkC0HySK6nNV1NCvvwe57W7J0ounne+rKEcs5Fi
-         1b+ETuIyUQSUI0E5hPEbHOz/m9LDl0MxgCSifW/Wm+ezS6K1NPyOLTV0ebjOG1H+AG0L
-         0Igg==
-X-Forwarded-Encrypted: i=1; AJvYcCXQzFSGKTPquj3tJ4O0PiNZtFJQ2ocP99xbeIUbvA0dEj5cIXADYAMWTz5SC8NI2MmVeZbBim9fxUqKU7hRb2nWt9qL/guaLAi4VDPSei0=
-X-Gm-Message-State: AOJu0YwtKsRikTqvI+K7BeNRKgxGOuUopNWg28zPA8TP1W+l1lN79sap
-	McmlYNHZS7b87xtGJHd2obBbtMW4yLOtCn+linDYxxsoYGWnYfP3mDwxcnpc3Q==
-X-Google-Smtp-Source: AGHT+IHduJnWdWEw/B6KoAl8OsD5I8AM8beJ4nu1vPGbA/QYw57gBZJ3UWmYjZODSzoefNqylcBZnQ==
-X-Received: by 2002:a05:6e02:f43:b0:363:c288:f8d1 with SMTP id y3-20020a056e020f4300b00363c288f8d1mr3546378ilj.2.1707281633672;
-        Tue, 06 Feb 2024 20:53:53 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXFQDGGg6U689Jz/ocg90IVJLjrEeUbkYv+YuCTsK47yofgsMA+FOb/+zTxDKGtdSp2E88FXJV8I/g9HDtKon57quApmLvJgpbBL17b8mLshIoiRaeWUyIj0q+C6Qxwdzu/Ev+8GLJa7r6z
+        bh=L8oDoF0RtiYuawM9qKNCm5v3ts9j6hSGWKbVhHFndIE=;
+        b=N4UvPhibJviKJa9wO1g6u3Cnvxa3ta1xljpcCNRmIKqLCKbSJM4JxyflrM6e4hlQHk
+         0zuZgbLY9684XlOQEI07rmPiz6k09rZu6+UO8B/0N0LjqZCwMlnHeV9j+n6J2Sw0Nv5E
+         34+OR442SgeV3kTrr/QqvCwnNz7RUqYQFcy+mN4JjgpbSdT5nMXltQLqybM6jar2FBu0
+         KxgJGU0D/4cWHgxWfnaTNqFjrpEa9yEA2ZEQ5ZRaA6RG89qJivKDVfHzqfNuHNzpMnnr
+         IAY5C1g4yYnRGlonYx99T9GL9rh7fFvimiNaf+GcPNB2HOx0XW6RGGlGmN5ivE2Sy0FV
+         Wctw==
+X-Gm-Message-State: AOJu0Yx4VxExGVahIEzc5sfCNyy9smx1qrav8EJHS5QEE6qzgG3KemvS
+	8jKrBs6hTTxbUNkvfG2H0sivDSgBV2X9v2KXxxLLnmF9gDAuPCCdNTAX9IfE4lbmWXrx8P2HwTw
+	=
+X-Google-Smtp-Source: AGHT+IGkF0lQfYkskdLJcJR/kvd/YiUjapbsNHWBrl8wgz5XV70xi0qvUo+++i3n6Z7iD50rp8kx6w==
+X-Received: by 2002:a05:6602:256d:b0:7c3:e8ea:cb2b with SMTP id dj13-20020a056602256d00b007c3e8eacb2bmr5258973iob.8.1707281996140;
+        Tue, 06 Feb 2024 20:59:56 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCU6x9tJznwjNO2uO3YELHeuU+zDJREwtceEm/oL4zDx+tMU73Psw38lfYjlKqrpkW7M6yiEnkNXLztoxPblVyuC7gX0m0g3KCc0AqDKZbdmdFCQmNvowrlwtNly4086dEAgIKp9fQ==
 Received: from ?IPv6:2601:281:8300:a1:5d8a:622a:58d5:54e0? ([2601:281:8300:a1:5d8a:622a:58d5:54e0])
-        by smtp.gmail.com with ESMTPSA id e14-20020a056e020b2e00b00363d8ee8cf7sm121937ilu.48.2024.02.06.20.53.53
+        by smtp.gmail.com with ESMTPSA id f22-20020a6b5116000000b007c0126a5a38sm92975iob.46.2024.02.06.20.59.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Feb 2024 20:53:53 -0800 (PST)
-Message-ID: <3a11bcc8deabbf06cf344cd8709f11b114cb801d.camel@egauge.net>
+        Tue, 06 Feb 2024 20:59:55 -0800 (PST)
+Message-ID: <e8aa38252c0700df16c0023b0cde81594259a5b5.camel@egauge.net>
 Subject: Re: [PATCH] [v4] wifi: wilc1000: validate chip id during bus probe
 From: David Mosberger-Tang <davidm@egauge.net>
-To: Ajay.Kathat@microchip.com, alexis.lothore@bootlin.com, 
-	linux-wireless@vger.kernel.org
-Cc: kvalo@kernel.org
-Date: Tue, 06 Feb 2024 21:53:52 -0700
-In-Reply-To: <e33b2e57-729e-45ac-b14b-bde58313bfb0@microchip.com>
+To: Kalle Valo <kvalo@kernel.org>, Alexis =?ISO-8859-1?Q?Lothor=E9?=
+	 <alexis.lothore@bootlin.com>
+Cc: linux-wireless@vger.kernel.org, Ajay.Kathat@microchip.com
+Date: Tue, 06 Feb 2024 21:59:55 -0700
+In-Reply-To: <87cytgv6nt.fsf@kernel.org>
 References: <20240127004331.1334804-1-davidm@egauge.net>
 	 <415a0e6e-5824-44a2-af2a-a75115d5a62e@bootlin.com>
-	 <e33b2e57-729e-45ac-b14b-bde58313bfb0@microchip.com>
+	 <87cytgv6nt.fsf@kernel.org>
 Organization: eGauge Systems LLC
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -90,25 +90,38 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Thu, 2024-02-01 at 02:55 +0000, Ajay.Kathat@microchip.com wrote:
+On Thu, 2024-02-01 at 12:08 +0200, Kalle Valo wrote:
+> Alexis Lothor=C3=A9 <alexis.lothore@bootlin.com> writes:
 >=20
-> However, in the patch, please take care of disabling 'wilc->rtc_clk' in
-> wilc_bus_probe() for the failure condition.
+> > On 1/27/24 01:43, David Mosberger-Tang wrote:
+> > > Previously, the driver created a net device (typically wlan0) as soon
+> > > as the module was loaded.  This commit changes the driver to follow
+> > > normal Linux convention of creating the net device only when bus
+> > > probing detects a supported chip.
+> >=20
+> > As already mentioned multiple times, I am skeptical about the validity =
+of
+> > keeping netdev registration before chip presence check, but I am not th=
+e
+> > maintainer, so I let Ajay and Kalle decide for this.
 >=20
-> static int wilc_bus_probe(struct spi_device *spi) {
-> ...
-> +power_down:
-> +       clk_disable_unprepare(wilc->rtc_clk);
-> +       wilc_wlan_power(wilc, false);
->  netdev_cleanup:
->         wilc_netdev_cleanup(wilc);
+> I haven't checked the code but as a general comment I agree with Alexis,
+> registering netdev before the hardware is ready sounds odd to me.
 
-Good catch - I fixed that in v5.
+I agree, but it's orthogonal to what my patch does.
 
-> I hope this patch is tested for failure scenario(when WILC1000 SPI
-> device is not connected) as well.
+I did a quick scan and it looks like the cleanest thing to do would be
+to change all the code below "Spi Internal Read/Write Function"  and
+"Spi interfaces" to take a spi_device pointer instead of the wilc
+pointer.  The probe code could then safely call these lower-level
+functions without having to worry that they might inadvertently access
+a part of the wilc structure that hasn't been initialized yet.
 
-Yep.
+From the looks of it, that would probably also shorten the code, since
+many calls to to_spi_device(wilc->dev) would go away.
+
+However, it'd be a major rewrite of spi.c so it better had the buy in
+of the maintainer(s).
 
   --david
 
