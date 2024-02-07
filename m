@@ -1,33 +1,33 @@
-Return-Path: <linux-wireless+bounces-3283-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3284-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2086F84C90D
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Feb 2024 11:57:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AC7A84C915
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Feb 2024 11:59:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 536C81C210D4
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Feb 2024 10:57:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08C0F1F226E8
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Feb 2024 10:59:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E70B01772D;
-	Wed,  7 Feb 2024 10:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B6D51B7EE;
+	Wed,  7 Feb 2024 10:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="n1f95JX1"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="DyvGAdWu"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4131817582
-	for <linux-wireless@vger.kernel.org>; Wed,  7 Feb 2024 10:57:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE6E21B7E3
+	for <linux-wireless@vger.kernel.org>; Wed,  7 Feb 2024 10:59:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707303469; cv=none; b=LVbOasNgobXXnK6sofdKEZLuiLLIZc55ReBJ7/3viSeXavNaYZyHWLGDhf6BbujS3NaVP1a1B/Ruz1FBtDDpcmHA85ymTaG5MEVLe7uAWzYn11GFc0LC1tj2+tLjnU8GRvab9vrSRdKgp8jmBunSBeK6V+9L8Szu5hn1Vigh464=
+	t=1707303568; cv=none; b=iSrs5TeXXymg3MVaPh2z2XDdK3s93jKKlh+Yzw8Wa3xElfZHWl8eRdXmcKzVadmbH/E/yYHnECUonRW0WZptBbolpDkxpPKR/s9Haiq8eGVCXjzPaQo+5gIBIYuNqx3gNsJMIhKVNwOWBGMMIgTLUTNJe+0YT7Lo2VBBjlvweWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707303469; c=relaxed/simple;
-	bh=gnQef2GfgeajkURF05xx51kQPZzG7/t9nbLcRIcUc4o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=q1gJ1zRuMaWvxw63uqnv/3ZJsmQRU3Yq35HorVv8slEweOvnYPEnxwrjoHrMTKIsAJqC7I/flkhPQyJ9qM/iKtCfVSQUmeRI84xDxw6pDTuayG6/soLUoDGxXkY+hMNEGKGYNQnMniD06U7T3nKPjTsxO6X3UB2zfRTc33KQQeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=n1f95JX1; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1707303568; c=relaxed/simple;
+	bh=R9tvgDQShFmKNZFYmFfKi5x/0uH3yQJ75zeuuumB4u4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jcFAtKq8HvieZuDN6WQyOlOA2eU/95Sc/hrRFvfI/y6Dyz/7gF226WX+J2Eo9S2cyBtw+w9YRT60KD2dC5URczN27UuFU9XkC/rRGALJYfjZfim+FRzzSSYsry0r105CEZ9Qr/O0/giadiwM2MoPkN7BFLkt0i3/spCxP94goXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=DyvGAdWu; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -35,17 +35,17 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
 	Resent-Message-ID:In-Reply-To:References;
-	bh=sQ9KBukDEXxdA8FL6Z8rE16NKKBTeBv6n+A+xSuVKXs=; t=1707303467; x=1708513067; 
-	b=n1f95JX1+TUA93/N+PL207ckwRSFFIARFiJQTKinlatZGNJ3AgzMUkfmgRrMjPyEZdtazMVkmw+
-	OisvuP5WMUhwI9kwi07lnv7U3nxZHreCK+5NuBcRYyJUyiTAf9OK359FKTqABnYBYoslT0aqWW54l
-	kSyjeTEsqDNaqUFu5w2irY6L4LY20KJP8mApJDSgFzIv87H+QVsqF1tTpDw6g5ktMd/1jqZWMR6aF
-	7b2althdf8OlzhsFos3IxvbGYpaStInzILLs1rHr2RuvIf87SM1ACwTJr2GXg5mqw0Sv+9vs0TnXK
-	JRt368G33oPwDWiour8C0/3gW3v+y2xd1rqQ==;
+	bh=vuehioarIzzvAMhoNza60aWgCWeeRAMsn65lO9qWKp4=; t=1707303566; x=1708513166; 
+	b=DyvGAdWuK7YzUNRdN6s4kptPDzhmbbKb53C2O49aSn6p1SwqMAKnDb5u0pXw3jwOvJr+pThuID7
+	BRvAXaamjH28TkuaCTeB5eJlzavBJp75XwNkIaiVr9piSKLIdwyJ3Uwo3ob7NkKsFXNrLPVkSntbU
+	xpineLhGnZqsE1Rvk+BozPt+pJwosYRuVxe8FDif+Dzssk5L0b12G19FG1/1m/kfqWC+Cx4+gJUlb
+	GC239Updw78hnNbvTovbizQq8UtPFFS9WcmSkIv0O3DDM+p4JzmEBkhwrsPOef4KQXg2YLuUoJ39+
+	TKS5ntabF2LIQYjEaFg1ABb8ktJ0qBk/ErkA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.97)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1rXfcd-0000000FsQS-2TKT;
-	Wed, 07 Feb 2024 11:57:43 +0100
+	id 1rXfeE-0000000FsSv-3UJr;
+	Wed, 07 Feb 2024 11:59:23 +0100
 From: Johannes Berg <johannes@sipsolutions.net>
 To: linux-wireless@vger.kernel.org
 Cc: Bert Karwatzki <spasswolf@web.de>,
@@ -53,9 +53,9 @@ Cc: Bert Karwatzki <spasswolf@web.de>,
 	Felix Fietkau <nbd@nbd.name>,
 	Ryder Lee <ryder.lee@mediatek.com>,
 	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH] wifi: mac80211: don't use sband->band early
-Date: Wed,  7 Feb 2024 11:57:37 +0100
-Message-ID: <20240207115739.7ce0dfde367b.I4968e12275a3f95926e3f3ccae81e50f23fe4d4d@changeid>
+Subject: [PATCH v2] wifi: mac80211: don't use sband->band early
+Date: Wed,  7 Feb 2024 11:59:20 +0100
+Message-ID: <20240207115920.43cbedffb5c3.I4968e12275a3f95926e3f3ccae81e50f23fe4d4d@changeid>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -76,7 +76,12 @@ of bands, and has the 'band' variable available.  Fix it to
 not require the sband->band to be initialized already.
 
 Fixes: f04d2c247e04 ("wifi: mac80211: disallow drivers with HT wider than HE")
+Reported-by: Bert Karwatzki <spasswolf@web.de>
+Debugged-by: Bert Karwatzki <spasswolf@web.de>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218466
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+v2: add the right tags
 ---
  net/mac80211/main.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
