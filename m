@@ -1,96 +1,107 @@
-Return-Path: <linux-wireless+bounces-3290-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3291-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB06584CD6D
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Feb 2024 15:56:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E8E884CD88
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Feb 2024 16:01:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 156621C24963
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Feb 2024 14:56:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5DF8293093
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Feb 2024 15:01:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B17FE7E77C;
-	Wed,  7 Feb 2024 14:56:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6F3E7F49D;
+	Wed,  7 Feb 2024 15:00:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EfZIOFsb"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="ox5b70PW"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 850C776C8D;
-	Wed,  7 Feb 2024 14:56:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91FEF76C6F;
+	Wed,  7 Feb 2024 15:00:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707317785; cv=none; b=PTfr2pngVnP/WopzmjGKS+ZETKR/fNJqFl53x2/y7myqip6SgaOalyPLX+kxs2ae+hRimt6l50cUv5fOPJphE7nSw22WzqBYHnOi+V14OFG1XnMR6yOEXygJia3bNKa/3QzzSz4m1WRwm1dLJWC1IkZYGWzI8zjZaBY+XoFBjZQ=
+	t=1707318057; cv=none; b=BjREINhizClBC27ZNpb6bpoXgkoDrJMZzk0hhrdnCyUrRQYoX9qymFXTJQA+aoEhbOS48dbx8lUx/U3FZP/QEBcn7Siojsd3vD1R+pdy0TsC5TjzfvFqd4dNd8P9nDkS0xVhXGm9O0oSR9e5ZlKBfD9G0sW1Xin+d8wB+NZEiAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707317785; c=relaxed/simple;
-	bh=nCxQ8fGvuEcmb7qfNQBjMnRhra6lyUgdE8qqI+GeNOE=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=XxaG9KRu7idb+5wKqwtPHlcKMh6j47OA8IPhL3dGcc3NGHi+j9PKlJgj05cHiAu2Waks9OLlSa1uS36lkiAzZm2S70F79ty1Ch++5XSIwxmx6Ii3Is2Uey4q74gslf57c7aOPpTZ9HL0j5XRlq2+E47WN8FqUyHvV8Z8/OeKtkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EfZIOFsb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2521EC433C7;
-	Wed,  7 Feb 2024 14:56:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707317784;
-	bh=nCxQ8fGvuEcmb7qfNQBjMnRhra6lyUgdE8qqI+GeNOE=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=EfZIOFsbNQM3dkm04/Qj0EZ243NsK9ajRBm2H+sB5OzsyUN3vEQGbDwa9uZSqeTEE
-	 5lcSSmrbC1fbtfZPkKSWg/wBOGX6FpSUT8bQuVjHFV504oi1/pOInXJgvi1r6CxC2+
-	 pyMsS4DAJ6599icKOl/tyHmpN3d1F0hHFSinMRK1oSoXzhg6KZB3YyjfnQC3oxqCWk
-	 oRD2sL03j4bxIvU1rtzlXwbY2Vpw523rOqsLdVCICdyyKlfSVk4tNp80EvfqlAOtNp
-	 d7tZMtmpWdgAGmHo+jo+2G//1pnIfsHzLQdUjIynAJOYoB7aavvW3fi4GQsPcqPez1
-	 WiL4bNo+KjxaQ==
-From: Kalle Valo <kvalo@kernel.org>
-To: "Colin King (gmail)" <colin.i.king@gmail.com>
-Cc: Felix Fietkau <nbd@nbd.name>,  Lorenzo Bianconi <lorenzo@kernel.org>,
-  Ryder Lee <ryder.lee@mediatek.com>,  Shayne Chen
- <shayne.chen@mediatek.com>,  Sean Wang <sean.wang@mediatek.com>,  Matthias
- Brugger <matthias.bgg@gmail.com>,  AngeloGioacchino Del Regno
- <angelogioacchino.delregno@collabora.com>,
-  linux-wireless@vger.kernel.org,  linux-mediatek@lists.infradead.org,
-  kernel-janitors@vger.kernel.org,  linux-kernel@vger.kernel.org,
-  linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH][next] mt76: Remove redundant assignment to variable tidno
-References: <20240207131113.2450297-1-colin.i.king@gmail.com>
-	<87il30h03n.fsf@kernel.org>
-	<13e2f96c-2434-4266-8a5e-25b267d1fb0e@gmail.com>
-Date: Wed, 07 Feb 2024 16:56:20 +0200
-In-Reply-To: <13e2f96c-2434-4266-8a5e-25b267d1fb0e@gmail.com> (Colin King's
-	message of "Wed, 7 Feb 2024 14:53:51 +0000")
-Message-ID: <87wmrgpbl7.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1707318057; c=relaxed/simple;
+	bh=XXFDvBkeGOfbwZKGPocdQlFeqLv49I9NlaKKBdpBvqY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=i8eWGQlrShymc0N5OjWdRX5tge0rgivLxdYGrLcoY9XZEdD0jrPZgRceqCwp3obFyMqx/qKpV6uan+ufwgJcOus86VbtXQeuj/zhNyI9W02tc1dWSULtpVyV7sn7IyPdxfwgXxcUF7HV9bXvrIpIsaw/UOS6AfVXt9uurd1q+pY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=ox5b70PW; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1707318053;
+	bh=XXFDvBkeGOfbwZKGPocdQlFeqLv49I9NlaKKBdpBvqY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ox5b70PWQW1WjQ+6JuWbrICh02r2vS3PgbKIo6AknU+m1Z5Wpqdwr5BRPssr5ff+Q
+	 aDnC/vkmoztrwKefMm9rM240l9btCIzLDT5Bo2xunfeNemN/2WrImCHHnMlXe3li2L
+	 UvtK69YeUVcP0Pw77JSKFOEanmDPPjne/xoTVhw7k2e+koUe9qTVdB+RLFnfhYvsXH
+	 Qq7TqQ0vx32nN/y0Qhj+Z7gHd/2RC5VC6TtyZZ4o6ceIZonPBvmw71I1HV0wLiPpVB
+	 w7Ys3QiryqlGKrsoThwDskrrakbB4xpznlGcBs6bODS8FzpceySMfyaalFXGKRPTQF
+	 umMZ/cafheGYw==
+Received: from [100.113.186.2] (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: kholk11)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id E0A1A3782072;
+	Wed,  7 Feb 2024 15:00:52 +0000 (UTC)
+Message-ID: <2b91bd5e-9e66-402e-87fe-c2894e5a1d5a@collabora.com>
+Date: Wed, 7 Feb 2024 16:00:52 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH][next] mt76: Remove redundant assignment to variable tidno
+Content-Language: en-US
+To: Colin Ian King <colin.i.king@gmail.com>, Felix Fietkau <nbd@nbd.name>,
+ Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>,
+ Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>,
+ Kalle Valo <kvalo@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
+ linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
+Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+References: <20240207131113.2450297-1-colin.i.king@gmail.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+In-Reply-To: <20240207131113.2450297-1-colin.i.king@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-"Colin King (gmail)" <colin.i.king@gmail.com> writes:
+Il 07/02/24 14:11, Colin Ian King ha scritto:
+> The variable tidno is being assigned a value that is not being read
+> and is being re-assigned a new value a few statements later.
+> The assignment is redundant and can be removed.
+> 
+> Cleans up clang scan warning:
+> drivers/net/wireless/mediatek/mt76/agg-rx.c:125:5: warning: Value stored
+> to 'tidno' during its initialization is never read [deadcode.DeadStores]
+> 
+> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
 
-> On 07/02/2024 13:31, Kalle Valo wrote:
->> Colin Ian King <colin.i.king@gmail.com> writes:
->> 
->>> The variable tidno is being assigned a value that is not being read
->>> and is being re-assigned a new value a few statements later.
->>> The assignment is redundant and can be removed.
->>>
->>> Cleans up clang scan warning:
->>> drivers/net/wireless/mediatek/mt76/agg-rx.c:125:5: warning: Value stored
->>> to 'tidno' during its initialization is never read [deadcode.DeadStores]
->>>
->>> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
->> "wifi:" missing from title.
->> 
-> does this require a V2?
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-Up to Felix, my guess is that he can add it during commit.
+> ---
+>   drivers/net/wireless/mediatek/mt76/agg-rx.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/mediatek/mt76/agg-rx.c b/drivers/net/wireless/mediatek/mt76/agg-rx.c
+> index 10cbd9e560e7..07c386c7b4d0 100644
+> --- a/drivers/net/wireless/mediatek/mt76/agg-rx.c
+> +++ b/drivers/net/wireless/mediatek/mt76/agg-rx.c
+> @@ -122,7 +122,7 @@ mt76_rx_aggr_check_ctl(struct sk_buff *skb, struct sk_buff_head *frames)
+>   	struct ieee80211_bar *bar = mt76_skb_get_hdr(skb);
+>   	struct mt76_wcid *wcid = status->wcid;
+>   	struct mt76_rx_tid *tid;
+> -	u8 tidno = status->qos_ctl & IEEE80211_QOS_CTL_TID_MASK;
+> +	u8 tidno;
+>   	u16 seqno;
+>   
+>   	if (!ieee80211_is_ctl(bar->frame_control))
 
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
