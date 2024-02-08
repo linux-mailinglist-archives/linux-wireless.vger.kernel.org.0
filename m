@@ -1,90 +1,163 @@
-Return-Path: <linux-wireless+bounces-3327-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3328-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9314C84DCF1
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Feb 2024 10:30:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3616084DDED
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Feb 2024 11:17:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3480B251AC
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Feb 2024 09:30:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF73C28A53C
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Feb 2024 10:17:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C290E6F09F;
-	Thu,  8 Feb 2024 09:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BAD26D1BC;
+	Thu,  8 Feb 2024 10:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="S98ifgzx"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Ohd164C6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 317366F089;
-	Thu,  8 Feb 2024 09:28:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A136D1AD
+	for <linux-wireless@vger.kernel.org>; Thu,  8 Feb 2024 10:17:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707384504; cv=none; b=SvgtrgBMwZ+3X7Ko2aG3FbEVVlZhQ1nwjfnEHFhGMu/dn+q0jn2GRS4+YwH1ks2NwqX5DDxBiYDOR1VFYAJIib70WZEB88+u9UoB3/6zh89D2vKWU9p8Z/Xti3tt250Rl2l4Yvh77nO3WpVauL1VndB1fxwy9TYV8a7r2KKQ790=
+	t=1707387433; cv=none; b=j7T6iXUEkHgmp/wmmxUzsUtL2a9G9jYuxsrPZWqk1Gq4oV1+dTqF+ZnPTHMLKyvleWTKLg4HIQGSmS1kiCo3Cc4xGoOTATKGvNMmiHPpcAlMRjgnzwwQ4FtB6MWb6Gw1noVBhqkwFGvDidKurIExpOqLo/OZJlgUzcQ9SBq8MRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707384504; c=relaxed/simple;
-	bh=Wb4JGwKLfWWPG7DIhiiVPbRr/kNqSr22iA1W+mVC3bo=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=mGlMHU13YawMyS8fA1RKz908TfdJuOc1AhhnezZOn8022FoPFFLSqI47Mw7FvdoGYpuU6cAa2vDmBgl2Q4rSxlQYQXguSExwat+4HRQXivVcU2utyxetiuJWQDxLhyT4+l3lE5YHF5U7PDXI90cGB1D7aUumz7CPDr3mgfs+QeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=S98ifgzx; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=Wb4JGwKLfWWPG7DIhiiVPbRr/kNqSr22iA1W+mVC3bo=;
-	t=1707384501; x=1708594101; b=S98ifgzxISSGX11wlc3vXWCP9jT8sNW0qsgls8ui29E6ujy
-	ETlys9p03XXMnBkOkmiHSjNcz5vU8oKQ2EeB0H2pD6DdRjFv/t9U5KNK6lCq8uZ/ZrPV1dRJAblR8
-	4POQhZj44oJktDbAs40J+6OvUUr5Cf/SQW74J/pioONJdam/pTkclUu6wx+TCzmMjLn4dpR1/zIwJ
-	pFDKxFvuYq8NTDiSkfZviRWPv7PmtbfyHFYyetKi+DeEkRXAxDKkvnpO3VQRdW4ux+D3SemWZBTvP
-	5nkngHZFQlECXm1b3isU3VCTPLKpexEtjO3NtxUJJgOAO66PbLYHgLNhufUpveDw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1rY0hW-0000000HJC4-0f6e;
-	Thu, 08 Feb 2024 10:28:10 +0100
-Message-ID: <9e740b50d7798b5d01c0a3c9e328ccf90978d30c.camel@sipsolutions.net>
-Subject: Re: [PATCH v1 0/3] iwlwifi: mvm: Thermal management fixes
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Kalle Valo <kvalo@kernel.org>, "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: Linux PM <linux-pm@vger.kernel.org>, Miri Korenblit
- <miriam.rachel.korenblit@intel.com>, linux-wireless@vger.kernel.org, LKML
- <linux-kernel@vger.kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>,
-  Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-Date: Thu, 08 Feb 2024 10:28:09 +0100
-In-Reply-To: <875xyzh4ah.fsf@kernel.org>
-References: <1892445.tdWV9SEqCh@kreacher> <875xyzh4ah.fsf@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
+	s=arc-20240116; t=1707387433; c=relaxed/simple;
+	bh=84Kib6khEPlN8l9DaFkQuhMzge2xCeFF//MaGpJ0yqE=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=mB1F0OzuAtj/czdTEV15UOyZYhmoUX/g5yXGrZNzd+YeLJKNW77aOARYSW9ubHUK7XhRHNxXGZSYLBMOiey1dlEd45GiHbnQ2IOfCpPyWM+GwGy5AKMELcjSkYpBKmOZhpgWJ6k208VCh93LnTilFdXZZSngHwCy4KSnNNxHKWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Ohd164C6; arc=none smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a37721e42feso202430266b.2
+        for <linux-wireless@vger.kernel.org>; Thu, 08 Feb 2024 02:17:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1707387430; x=1707992230; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=dSCzA3TtajxFSnQT41yvEgUpa+RWk4jWwMsKck/Sxug=;
+        b=Ohd164C6BH8Uaj+0a5Y2EKVdnqMdDhih2l5mC7BszLEdGIdeGXZ9QTops3R3wgC843
+         vRYNMOOl4s9Be77sSjKNwEPuPCiXUkywsXGbjvFtLHlmdYDckUjDWKr4o/UkDMqwvpu9
+         1uTQCA9DURbM9OjxVw7ExhHjwPOwv4G21HzUNmp9qqDvy9U1dhwlzYi3FcXRBbth1T4w
+         8VXzP9HFSN6DBoejpp5IIiTnRLYYrmVB7Ti4kNLaSym8mqeoboyGHQKC0y0N7k2wtNXT
+         IW8v1ARIGZZwMLOSN0JCPWS6bTM36GJ9KuAUwnsYPyHfwSxizhbKC+fARSndcfk684Eq
+         xsfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707387430; x=1707992230;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dSCzA3TtajxFSnQT41yvEgUpa+RWk4jWwMsKck/Sxug=;
+        b=ajk9s+gmKCWbZAOdEDyCvmK18Fzzh2pvsP1fs9QtwRrLLFSajpjEBuUUg1yszoUYbq
+         QK72FjQh5NmCMCZcv8cu0CGPx71/2y1oQqpBepotjl1oMF3sGdGRzaJ4Hdhe8S4X99B9
+         wV7Ng5XtMcUkB/PSmy2mUlaW13+WhzfT+5KK6iixMcLO6dcLHeFzZCW5qWjccKh1xdLy
+         uf7V1pMhinn72/qQiqB0fRd1f2WOmFPWfhqFzfSzp6MU2peDfxNZFsUUJfqhIVTifaHd
+         tnc4fkDU1l+XHbMuuQ+FZ+MKMXJL9poAGsUkyUvIIkKN73mRKrmFMqjvyTFDnRj3xjCd
+         7tug==
+X-Gm-Message-State: AOJu0Yzgii5BDwgfQip+EmF4CKM7lCrI4gDgYyhR1qFGXACV7OSqBqLR
+	oxf5uOHJq7yFIxYIXC9WfrT4retSKXkUX4NvHeL/0rD3lkaE/PI0DNm5EuQQ2zA=
+X-Google-Smtp-Source: AGHT+IGoDK7SVa0dMNt4YRGN7S5DNOa0d7ywiVZeynjKlEfCY1x5p53xCugngv+0LbXeCiY5hquXdQ==
+X-Received: by 2002:a17:906:2111:b0:a38:406d:5dd4 with SMTP id 17-20020a170906211100b00a38406d5dd4mr4575288ejt.36.1707387429815;
+        Thu, 08 Feb 2024 02:17:09 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWqKVQGhK8sUJu0fES0yOgITDofk1UNiJVOH8Sce42i+S+Uy+ns0sufGciH3z7L+1Wi8Xtd4BcYg90PvaqaQ9XgN0K4DBOufSnPjP0uhvngcvJxwJhXWWAfBrouK3T7SwF3fH2ddn46GGMmXAPqJpkyJ7BBlo56i7pOu+fCawbVtltmcOVyEhcReg+dEYcZVwHqnj0YiJnBjqCKGYtLyb7BF0Z3rBGOTDe2DXu3ipoE2vUIMllvEluJXkBHivuCJFLYDV8RUNhtxO8JuooiGJftmo8p0NEkQ36ZYloZ5+VyIQle2yANRoMWWvmOPLPahmnddFAw1W+ZReF377+bC6ApoM7C1qqywfdKE9FfkFFEDu/w/5xaLeU1y9HRCNW9kgGiQvAyIPry7YhAKz/vrs5/LFnF4ApCZHd9JTzmwRc/qlA=
+Received: from localhost ([102.222.70.76])
+        by smtp.gmail.com with ESMTPSA id vo3-20020a170907a80300b00a381eea0e9csm1736957ejc.197.2024.02.08.02.17.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Feb 2024 02:17:09 -0800 (PST)
+Date: Thu, 8 Feb 2024 13:17:06 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Luca Coelho <luciano.coelho@intel.com>
+Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Alon Giladi <alon.giladi@intel.com>,
+	Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
+	Daniel Gabay <daniel.gabay@intel.com>,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org
+Subject: [PATCH 1/2] wifi: iwlwifi: Fix some error codes
+Message-ID: <9620bb77-2d7c-4d76-b255-ad824ebf8e35@moroto.mountain>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
 
-On Thu, 2024-02-08 at 08:13 +0200, Kalle Valo wrote:
-> >=20
-> > If possible, I'd like to route the $subject series through the thermal =
-tree,
-> > it is requisite for the above one.
->=20
-> iwlwifi is getting a lot of patches lately, though I don't know if any
-> of them touch the thermal stuff. But if this patchset goes to the
-> thermal I am a bit worried about conflicts.
+This saves the error as PTR_ERR(wifi_pkg).  The problem is that
+"wifi_pkg" is a valid pointer, not an error pointer.  Set the error code
+to -EINVAL instead.
 
-Should be OK, I checked now and apart from the trivial change in mvm.h
-this is contained in tt.c, which isn't touched (even in our internal
-feeder tree) after commit 0106cce5ad0c ("wifi: iwlwifi: mvm: drop NULL
-pointer check in iwl_mvm_tzone_set_trip_temp()").
+Fixes: 2a8084147bff ("iwlwifi: acpi: support reading and storing WRDS revision 1 and 2")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+---
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-But I'll let Miri send an Acked-by to go through your tree, since she's
-the maintainer :-)
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+index 9afb1b1d6aea..506279b95442 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+@@ -475,7 +475,7 @@ int iwl_acpi_get_wrds_table(struct iwl_fw_runtime *fwrt)
+ 					 &tbl_rev);
+ 	if (!IS_ERR(wifi_pkg)) {
+ 		if (tbl_rev != 2) {
+-			ret = PTR_ERR(wifi_pkg);
++			ret = -EINVAL;
+ 			goto out_free;
+ 		}
+ 
+@@ -491,7 +491,7 @@ int iwl_acpi_get_wrds_table(struct iwl_fw_runtime *fwrt)
+ 					 &tbl_rev);
+ 	if (!IS_ERR(wifi_pkg)) {
+ 		if (tbl_rev != 1) {
+-			ret = PTR_ERR(wifi_pkg);
++			ret = -EINVAL;
+ 			goto out_free;
+ 		}
+ 
+@@ -507,7 +507,7 @@ int iwl_acpi_get_wrds_table(struct iwl_fw_runtime *fwrt)
+ 					 &tbl_rev);
+ 	if (!IS_ERR(wifi_pkg)) {
+ 		if (tbl_rev != 0) {
+-			ret = PTR_ERR(wifi_pkg);
++			ret = -EINVAL;
+ 			goto out_free;
+ 		}
+ 
+@@ -563,7 +563,7 @@ int iwl_acpi_get_ewrd_table(struct iwl_fw_runtime *fwrt)
+ 					 &tbl_rev);
+ 	if (!IS_ERR(wifi_pkg)) {
+ 		if (tbl_rev != 2) {
+-			ret = PTR_ERR(wifi_pkg);
++			ret = -EINVAL;
+ 			goto out_free;
+ 		}
+ 
+@@ -579,7 +579,7 @@ int iwl_acpi_get_ewrd_table(struct iwl_fw_runtime *fwrt)
+ 					 &tbl_rev);
+ 	if (!IS_ERR(wifi_pkg)) {
+ 		if (tbl_rev != 1) {
+-			ret = PTR_ERR(wifi_pkg);
++			ret = -EINVAL;
+ 			goto out_free;
+ 		}
+ 
+@@ -595,7 +595,7 @@ int iwl_acpi_get_ewrd_table(struct iwl_fw_runtime *fwrt)
+ 					 &tbl_rev);
+ 	if (!IS_ERR(wifi_pkg)) {
+ 		if (tbl_rev != 0) {
+-			ret = PTR_ERR(wifi_pkg);
++			ret = -EINVAL;
+ 			goto out_free;
+ 		}
+ 
+-- 
+2.43.0
 
-johannes
 
