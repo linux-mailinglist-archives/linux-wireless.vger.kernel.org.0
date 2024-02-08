@@ -1,136 +1,91 @@
-Return-Path: <linux-wireless+bounces-3325-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3326-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 903C084DAAA
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Feb 2024 08:26:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B27A84DC0D
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Feb 2024 09:55:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0FF68B23416
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Feb 2024 07:25:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 857881C22828
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Feb 2024 08:55:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 339E5692EB;
-	Thu,  8 Feb 2024 07:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78D386A8B0;
+	Thu,  8 Feb 2024 08:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="lcNZ7+7W"
+	dkim=pass (1024-bit key) header.d=bayrepo.ru header.i=@bayrepo.ru header.b="fdIMWT2T"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward103c.mail.yandex.net (forward103c.mail.yandex.net [178.154.239.214])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25FA3692E6;
-	Thu,  8 Feb 2024 07:25:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1EA46931C
+	for <linux-wireless@vger.kernel.org>; Thu,  8 Feb 2024 08:51:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.214
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707377151; cv=none; b=DRAnvyPk2pkDLthuxvuwbgk+34nAobi3zmslo1MSdjK6Jhw0LppExceAi1F5kI1LY33b0N/idXBAA8Jcm+UHluF4coAar9qRLba2CGlNtQowDQfP1S7N0ZEIFna9pW1c51xkD4ipZb/Aoso///5Ytv+lJmHn4kS1DoalFN6rg9k=
+	t=1707382324; cv=none; b=M9FJ+Pj5FLc2XH1xTjW6Bs/tbINpf17F/wPaAxjBEST3YKo5M577TtJ2T8NnGiuhWzJ5cSb5bYZ4D0rWa0KcWladZit7l+/8m7KZF6FEm4WdhRPwH3hLJUyykrTfmDWx0V9RIC870AtbC1E50JrSgLgoHeLd8isVtZ8FhJTlJys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707377151; c=relaxed/simple;
-	bh=41KwG3vJADHMuHujGJyY2jjsxuWXKTjEMonTcvE50ZQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RLRj0zZ0v3aK8uz7rr1twtp1T2QsCTsAHyKshYJrKHfFC4QTmUtDDmSMG+czD1Vo8wAXeqvTf8vElWuwANrpXuRo61/ok6jooCadQeaYtpEQZX/8MGDfBswND/tr+PFEyhaQDEfHAWoygW7z9ZmLtnLB4cihxGYV1ZBjPsovaWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=lcNZ7+7W; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
-Received: from gaggiata.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 9666B22B38;
-	Thu,  8 Feb 2024 08:25:37 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1707377137;
-	bh=TNDCcfkk7812zjJTBuRizX3i5SwZAFC4qeTbhvgpvqU=;
-	h=Received:From:To:Subject;
-	b=lcNZ7+7W1Ah6LrSqZz7ISDobRfE5LIKYfi+pmjqeTkngTqVCCQkfyAc4SLqvqpfnb
-	 XukL50J/4tQtjL1w570FKj45x/BUUd26e3e8AQFLeJRLiZPWE05HEjdNyIiC/e038O
-	 pLvJozMXWbWpewjqcl220TCD9ZHz+mbWGk5pZa+pOOO3/qd0QuEwEfMktfAFHIktkK
-	 7SWtBqKt6KO4y4E8N+EpiSvCWKbrKcM2ZE7om/ed0z+Tsd4uE+m2fvG8patee+Ga0x
-	 EY/KS8jpgFKpHCgKL+H7r1s9JzIh1vL4yoJKe30GLJ5IW7uIzuetJhn+nNY81clnzu
-	 y1NW3L1cB5aLA==
-Received: by gaggiata.pivistrello.it (Postfix, from userid 1000)
-	id B4C527F9D7; Thu,  8 Feb 2024 08:25:19 +0100 (CET)
-Date: Thu, 8 Feb 2024 08:25:19 +0100
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Rafael Beims <rafael@beims.me>
-Cc: David Lin <yu-hao.lin@nxp.com>,
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"briannorris@chromium.org" <briannorris@chromium.org>,
-	"kvalo@kernel.org" <kvalo@kernel.org>,
-	"francesco@dolcini.it" <francesco@dolcini.it>,
-	Pete Hsieh <tsung-hsien.hsieh@nxp.com>
-Subject: Re: [EXT] Re: [PATCH v8 0/2] wifi: mwifiex: add code to support host
- mlme
-Message-ID: <ZcSB3_16C6JTgBJB@gaggiata.pivistrello.it>
-References: <20231222032123.1036277-1-yu-hao.lin@nxp.com>
- <97bb3869-3b82-4b64-87cd-9b63d4516649@beims.me>
- <PA4PR04MB96389A5DDB41DFF80CBB4738D17D2@PA4PR04MB9638.eurprd04.prod.outlook.com>
- <48364f66-99b4-40ca-b4b2-4adf1071960f@beims.me>
+	s=arc-20240116; t=1707382324; c=relaxed/simple;
+	bh=5hz4MSSmydqNYmWrxYCfPGy1EK1/KI70gO7b2v2//lE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GChDWo4TqI3bqKzVsHg+1Z+/YPrCp3Erot7GRfe10ohFmvpXDUMtiqUKkntYadAkV8CnVYlntQwD7lnb5Ml2q1yMtjmuaziQN9z4dz1EhcHDbiYBYuYW+Na0l6XOV9jluHM+JWwP4VCEatt+Xo0WpkW1Oqtoaye41xi5HR2wL8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bayrepo.ru; spf=pass smtp.mailfrom=bayrepo.ru; dkim=pass (1024-bit key) header.d=bayrepo.ru header.i=@bayrepo.ru header.b=fdIMWT2T; arc=none smtp.client-ip=178.154.239.214
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bayrepo.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bayrepo.ru
+Received: from mail-nwsmtp-smtp-production-main-60.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-60.sas.yp-c.yandex.net [IPv6:2a02:6b8:c08:a088:0:640:6c7c:0])
+	by forward103c.mail.yandex.net (Yandex) with ESMTPS id 910DC60B76;
+	Thu,  8 Feb 2024 11:51:50 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-60.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id mpdAMe78USw0-1jMFk9pX;
+	Thu, 08 Feb 2024 11:51:49 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bayrepo.ru; s=mail;
+	t=1707382309; bh=AtE5ReX7bgr57wrB0vLUqyJNoZixAxr1MSludCs8wtA=;
+	h=Message-Id:Date:Cc:Subject:To:From;
+	b=fdIMWT2TzUq+sB1fKtiSh0jA76Aa5rtl+Tdxm0+kngZVvO/ZyQGEJH+QmXP+ov8eD
+	 sy8am6K1yr69ZvnYhCdmJSZzHVgmbcoZZK0QkHrQXgv+4P5a1RkbL/dUZblFt4GEWm
+	 FUKh88JXLZw535o6HwtJ5ddoeF7u0s5x/C7TyXDw=
+Authentication-Results: mail-nwsmtp-smtp-production-main-60.sas.yp-c.yandex.net; dkim=pass header.i=@bayrepo.ru
+From: Alexey Berezhok <a@bayrepo.ru>
+To: Arend van Spriel <aspriel@gmail.com>
+Cc: Kalle Valo <kvalo@kernel.org>,
+	linux-wireless@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Alexey Berezhok <a@bayrepo.ru>
+Subject: [PATCH] wifi: brcmfmac: do not cast hidden SSID attribute value to boolean
+Date: Thu,  8 Feb 2024 11:51:21 +0300
+Message-Id: <20240208085121.2430-1-a@bayrepo.ru>
+X-Mailer: git-send-email 2.39.3
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <48364f66-99b4-40ca-b4b2-4adf1071960f@beims.me>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Feb 07, 2024 at 06:30:03PM -0300, Rafael Beims wrote:
-> On 30/01/2024 04:19, David Lin wrote:
-> > > From: Rafael Beims <rafael@beims.me>
-> > > On 22/12/2023 00:21, David Lin wrote:
-> > > > This series add host based MLME support to the mwifiex driver, this
-> > > > enables WPA3 support in both client and AP mode.
-> > > > To enable WPA3, a firmware with corresponding V2 Key API support is
-> > > > required.
-> > > > The feature is currently only enabled on NXP IW416 (SD8978), and it
-> > > > was internally validated by the NXP QA team. Other NXP Wi-Fi chips
-> > > > supported in current mwifiex are not affected by this change.
+In 'brcmf_cfg80211_start_ap()', not assume that
+NL80211_HIDDEN_SSID_NOT_IN_USE is zero but prefer
+an explicit check instead. Compile tested only.
 
-...
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-> > > > David Lin (2):
-> > > >     wifi: mwifiex: add host mlme for client mode
-> > > >     wifi: mwifiex: add host mlme for AP mode
+Signed-off-by: Alexey Berezhok <a@bayrepo.ru>
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-...
-
-> > > I applied the two commits of this series on top of v6.7 but unfortunately the AP
-> > > is failing to start with the patches. I get this output from "hostapd -d" (running
-> > > on a Verdin AM62 with IW416):
-> > > 
-> > > nl80211: kernel reports: Match already configured
-> > > nl80211: Register frame command failed (type=176): ret=-114 (Operation
-> > > already in progress)
-> > > nl80211: Register frame match - hexdump(len=0): [NULL]
-> > > 
-> > > If I run the same hostapd on v6.7 without the patches, the AP is started with no
-> > > issues.
-> > > 
-> > > Is there anything else that should be done in order to test this?
-> > > 
-> > > 
-> > I applied patch v8 (mbox from patch work) to Linux stable repository (tag v6.7.2).
-> > Both client and AP mode can work with and without WPA3.
-> > 
-> I went back and executed the tests again. I re-applied the pach on top of
-> tag v6.7.2 to make sure we're seeing exactly the same thing.
-> 
-> At first, the behavior I was seeing was exactly the same I reported before.
-> Upon starting hostapd with our basic example configuration, it would fail to
-> start the AP with the error:
-> 
-> nl80211: kernel reports: Match already configured
-> nl80211: Could not configure driver mode
-> 
-> After some investigation of what could cause this error, I found out that it
-> was connman that was interfering with this somehow. After killing the
-> connman service, the AP would start correctly.
-> 
-> I want to point out that this behavior is different from the unpatched
-> driver. With that one we don't need to kill connman in order to start the AP
-> with hostapd.
-
-Any idea what's going on in this regard? Is such a change in behavior expected?
-
-Francesco
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index 736b2ada6..63f6e9436 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -5272,7 +5272,7 @@ brcmf_cfg80211_start_ap(struct wiphy *wiphy, struct net_device *ndev,
+ 					      settings->hidden_ssid);
+ 		if (err) {
+ 			bphy_err(drvr, "%s closednet error (%d)\n",
+-				 settings->hidden_ssid ?
++				 (settings->hidden_ssid != NL80211_HIDDEN_SSID_NOT_IN_USE) ?
+ 				 "enabled" : "disabled",
+ 				 err);
+ 			goto exit;
+-- 
+2.39.3
 
 
