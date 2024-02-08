@@ -1,66 +1,66 @@
-Return-Path: <linux-wireless+bounces-3356-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3357-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C199F84E5C8
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Feb 2024 17:59:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFA0784E5C9
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Feb 2024 17:59:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F37951C25810
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Feb 2024 16:59:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5479EB22837
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Feb 2024 16:59:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0ABB77F33;
-	Thu,  8 Feb 2024 16:59:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B49382D65;
+	Thu,  8 Feb 2024 16:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="A6xF2kdp"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OCvhNiiv"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F017482895
-	for <linux-wireless@vger.kernel.org>; Thu,  8 Feb 2024 16:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21FB7823DE
+	for <linux-wireless@vger.kernel.org>; Thu,  8 Feb 2024 16:59:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707411560; cv=none; b=lFkXGOMJLpFgmhbZ6jLh4C9xNbIGuDJxwxriKVGGVU3PJT2B7N1XDbyPIKDPvFd+Bp72KtAijflvSZPf6oCr2PwypIQNI3DuiMhTnocJQv+sclZD3EGb8J5lq1E4hoe1fU448n7PkgwWEvPaHO1wCpfimTrcFUS/mCxj9q1DsJQ=
+	t=1707411562; cv=none; b=sg3YPnEV+1pe2X4Ws5efNKgJPZcxf3PgNmbTE/BGwKpMAwgl4X+D78k4wq6ttUx/3J88087JwktL+T5nl9DB+/qYPLz+pIggW3kW3SdbQc+lC/2IA/dtWogfU/pYfW5q6x5LMm+kjeDwakpDlXgzps7J0gbMqK9JWD/TyxM8n+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707411560; c=relaxed/simple;
-	bh=jABBgEkssKz0pXoh+uBZvMhxsVwcBwysa0pmID/XuKw=;
+	s=arc-20240116; t=1707411562; c=relaxed/simple;
+	bh=KktplIFUzvB4YaTIa7rTyLhMu4QYGU6v9+S4+xnKuMw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pc0MqP1nwoOkoIUq4CCfz8+ncnJIhCC5IGeFfRdxXrjxY4HftdOf4K6VjC9EYWjf+NiJOePL04AIIm4xEkKlVFyfOIXYgqgZN+BSZCp5uiJTZxvrSwvt2nNum9Gyn5/gMNhDFrNi9+1xX+ht9UBL1xlG4nYrRYZNhhp4dxvKb+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=A6xF2kdp; arc=none smtp.client-ip=192.198.163.15
+	 MIME-Version; b=kmN14snklNHxSki+pcTecPv/4rlj0aLpIPoE8tw7dvlAT4pAn3s4tlpg2CedOgdIZGEnueZYLOl44hq1lhEDrmLJj5rY5bN66Qp3Autz60UlWla9VNhL/Jq3gEx+Dm/C91kmtvIPOOt6XW8eM2Ema+2dxVuZmeX380UWLR5FOWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OCvhNiiv; arc=none smtp.client-ip=192.198.163.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707411559; x=1738947559;
+  t=1707411561; x=1738947561;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=jABBgEkssKz0pXoh+uBZvMhxsVwcBwysa0pmID/XuKw=;
-  b=A6xF2kdpZlDiVOAu2QxflMthBCvWhuCjuC7Mr8zqfAAYtH7SWlPD4yO8
-   fhnXTdnxd6wNv0IZF0jhyYRpuWTDzk8Emy2Qp4Pka6DFi82dQXqMP73km
-   FnoCUeOrta0SCBIGzU0t3lSXjucNoEhujHxmHbE+YRUTXGEW9HXKHHEJ0
-   jpKRaYGGQxh4eO7oAPGo1YBY1tIdGA8qX36k88vpyE2gsS9fJWuHiGx+F
-   sLYSaFcMyVJaw0qvjevkLSacaxUje9GcaeBurW5DXGylWj/3XR3KMS0/3
-   0EN3kNvNfyn42V24TUTbkNKFEikjB6zXIgX2KThti+A8u9phBT5R6iT1e
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10978"; a="1404018"
+  bh=KktplIFUzvB4YaTIa7rTyLhMu4QYGU6v9+S4+xnKuMw=;
+  b=OCvhNiivE1z/K+XU79SCxA+xh2z6A1vugfvaF6YOCWJ1aNSavYMt+6AL
+   We9iGdxBnf5LWR+ANIUN9Cr0rO0CFbYsa4L32zLjTaNLE8KSz8CWRm/Y5
+   lQVB87LtCROGYFCnQ4GyMnngDWQ3VKvco4hIQ2SBAyHOeePL3B6dq6rJJ
+   kdxHg3pxKv1fmuobOuePMeWmmNcEpO50iE5txOEGS5Ssxbjadixvxb6gA
+   CM+vhBN3FMhys/BTUSLFlgl9DpWwLYt25FDVxva1WH1z/8ncTBiSIBUJ6
+   BOa8sau2qiN6ntePghhky17ZPgP3hAy/6ooCeuekd+rOmzSXKP/ncb6mN
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10978"; a="1404022"
 X-IronPort-AV: E=Sophos;i="6.05,254,1701158400"; 
-   d="scan'208";a="1404018"
+   d="scan'208";a="1404022"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2024 08:59:19 -0800
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2024 08:59:21 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,254,1701158400"; 
-   d="scan'208";a="6318866"
+   d="scan'208";a="6318871"
 Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2024 08:59:17 -0800
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2024 08:59:19 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 10/13] wifi: iwlwifi: fw: file: clean up kernel-doc
-Date: Thu,  8 Feb 2024 18:58:44 +0200
-Message-Id: <20240208185302.c41fddd32c18.I1978ed9aa0484b37504f2bd4614ae0f620821f81@changeid>
+Subject: [PATCH 11/13] wifi: iwlwifi: iwl-trans.h: clean up kernel-doc
+Date: Thu,  8 Feb 2024 18:58:45 +0200
+Message-Id: <20240208185302.a66b5cad363b.I3ee4522ac34c3e5984fce5c1cb677fb3db7a965b@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240208165847.1190596-1-miriam.rachel.korenblit@intel.com>
 References: <20240208165847.1190596-1-miriam.rachel.korenblit@intel.com>
@@ -75,86 +75,202 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-Add missing kernel-doc and otherwise fix things.
+Add missing kernel-doc, fix annotations, etc.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/file.h | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ .../net/wireless/intel/iwlwifi/iwl-trans.h    | 64 +++++++++++++++----
+ 1 file changed, 51 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/file.h b/drivers/net/wireless/intel/iwlwifi/fw/file.h
-index 08d9aeaedd99..f69d29e531c8 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/file.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/file.h
-@@ -216,6 +216,7 @@ typedef unsigned int __bitwise iwl_ucode_tlv_api_t;
-  *	ADD_MODIFY_STA_KEY_API_S_VER_2.
-  * @IWL_UCODE_TLV_API_STA_TYPE: This ucode supports station type assignement.
-  * @IWL_UCODE_TLV_API_NAN2_VER2: This ucode supports NAN API version 2
-+ * @IWL_UCODE_TLV_API_ADAPTIVE_DWELL: support for adaptive dwell in scanning
-  * @IWL_UCODE_TLV_API_NEW_RX_STATS: should new RX STATISTICS API be used
-  * @IWL_UCODE_TLV_API_QUOTA_LOW_LATENCY: Quota command includes a field
-  *	indicating low latency direction.
-@@ -239,10 +240,15 @@ typedef unsigned int __bitwise iwl_ucode_tlv_api_t;
-  *	SCAN_OFFLOAD_PROFILES_QUERY_RSP_S.
-  * @IWL_UCODE_TLV_API_MBSSID_HE: This ucode supports v2 of
-  *	STA_CONTEXT_DOT11AX_API_S
-+ * @IWL_UCODE_TLV_API_FTM_RTT_ACCURACY: version 7 of the range response API
-+ *	is supported by FW, this indicates the RTT confidence value
-  * @IWL_UCODE_TLV_API_SAR_TABLE_VER: This ucode supports different sar
-  *	version tables.
-  * @IWL_UCODE_TLV_API_REDUCED_SCAN_CONFIG: This ucode supports v3 of
-- *  SCAN_CONFIG_DB_CMD_API_S.
-+ *	SCAN_CONFIG_DB_CMD_API_S.
-+ * @IWL_UCODE_TLV_API_ADWELL_HB_DEF_N_AP: support for setting adaptive dwell
-+ *	number of APs in the 5 GHz band
-+ * @IWL_UCODE_TLV_API_BAND_IN_RX_DATA: FW reports band number in RX notification
-  * @IWL_UCODE_TLV_API_NO_HOST_DISABLE_TX: Firmware offloaded the station disable tx
-  *	logic.
-  * @IWL_UCODE_TLV_API_INT_DBG_BUF_CLEAR: Firmware supports clearing the debug
-@@ -573,6 +579,7 @@ enum iwl_fw_dbg_reg_operator {
-  * struct iwl_fw_dbg_reg_op - an operation on a register
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
+index 3047ffc24415..b93cef7b2330 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
+@@ -519,6 +519,7 @@ struct iwl_pnvm_image {
+  *	Must be atomic
+  * @reclaim: free packet until ssn. Returns a list of freed packets.
+  *	Must be atomic
++ * @set_q_ptrs: set queue pointers internally, after D3 when HW state changed
+  * @txq_enable: setup a queue. To setup an AC queue, use the
+  *	iwl_trans_ac_txq_enable wrapper. fw_alive must have been called before
+  *	this one. The op_mode must not configure the HCMD queue. The scheduler
+@@ -528,6 +529,8 @@ struct iwl_pnvm_image {
+  *	hardware scheduler bug. May sleep.
+  * @txq_disable: de-configure a Tx queue to send AMPDUs
+  *	Must be atomic
++ * @txq_alloc: Allocate a new TX queue, may sleep.
++ * @txq_free: Free a previously allocated TX queue.
+  * @txq_set_shared_mode: change Tx queue shared/unshared marking
+  * @wait_tx_queues_empty: wait until tx queues are empty. May sleep.
+  * @wait_txq_empty: wait until specific tx queue is empty. May sleep.
+@@ -547,23 +550,27 @@ struct iwl_pnvm_image {
+  *	the op_mode. May be called several times before start_fw, can't be
+  *	called after that.
+  * @set_pmi: set the power pmi state
++ * @sw_reset: trigger software reset of the NIC
+  * @grab_nic_access: wake the NIC to be able to access non-HBUS regs.
+  *	Sleeping is not allowed between grab_nic_access and
+  *	release_nic_access.
+  * @release_nic_access: let the NIC go to sleep. The "flags" parameter
+  *	must be the same one that was sent before to the grab_nic_access.
+- * @set_bits_mask - set SRAM register according to value and mask.
++ * @set_bits_mask: set SRAM register according to value and mask.
+  * @dump_data: return a vmalloc'ed buffer with debug data, maybe containing last
+  *	TX'ed commands and similar. The buffer will be vfree'd by the caller.
+  *	Note that the transport must fill in the proper file headers.
+  * @debugfs_cleanup: used in the driver unload flow to make a proper cleanup
+  *	of the trans debugfs
++ * @sync_nmi: trigger a firmware NMI and wait for it to complete
+  * @load_pnvm: save the pnvm data in DRAM
+  * @set_pnvm: set the pnvm data in the prph scratch buffer, inside the
+  *	context info.
+  * @load_reduce_power: copy reduce power table to the corresponding DRAM memory
+  * @set_reduce_power: set reduce power table addresses in the sratch buffer
+  * @interrupts: disable/enable interrupts to transport
++ * @imr_dma_data: set up IMR DMA
++ * @rxq_dma_data: retrieve RX queue DMA data, see @struct iwl_trans_rxq_dma_data
+  */
+ struct iwl_trans_ops {
+ 
+@@ -775,7 +782,7 @@ struct iwl_self_init_dram {
+  * @imr_size: imr dram size received from fw
+  * @sram_addr: sram address from debug tlv
+  * @sram_size: sram size from debug tlv
+- * @imr2sram_remainbyte`: size remained after each dma transfer
++ * @imr2sram_remainbyte: size remained after each dma transfer
+  * @imr_curr_addr: current dst address used during dma transfer
+  * @imr_base_addr: imr address received from fw
+  */
+@@ -822,12 +829,16 @@ struct iwl_pc_data {
+  * @fw_mon: DRAM buffer for firmware monitor
+  * @hw_error: equals true if hw error interrupt was received from the FW
+  * @ini_dest: debug monitor destination uses &enum iwl_fw_ini_buffer_location
++ * @unsupported_region_msk: unsupported regions out of active_regions
+  * @active_regions: active regions
+  * @debug_info_tlv_list: list of debug info TLVs
+  * @time_point: array of debug time points
+  * @periodic_trig_list: periodic triggers list
+  * @domains_bitmap: bitmap of active domains other than &IWL_FW_INI_DOMAIN_ALWAYS_ON
+  * @ucode_preset: preset based on ucode
++ * @restart_required: indicates debug restart is required
++ * @last_tp_resetfw: last handling of reset during debug timepoint
++ * @imr_data: IMR debug data allocation
+  * @dump_file_name_ext: dump file name extension
+  * @dump_file_name_ext_valid: dump file name extension if valid or not
+  * @num_pc: number of program counter for cpu
+@@ -930,6 +941,7 @@ struct iwl_pcie_first_tb_buf {
+  * @wd_timeout: queue watchdog timeout (jiffies) - per queue
+  * @frozen: tx stuck queue timer is frozen
+  * @frozen_expiry_remainder: remember how long until the timer fires
++ * @block: queue is blocked
+  * @bc_tbl: byte count table of the queue (relevant only for gen2 transport)
+  * @write_ptr: 1-st empty entry (index) host_w
+  * @read_ptr: last used entry (index) host_r
+@@ -938,6 +950,8 @@ struct iwl_pcie_first_tb_buf {
+  * @id: queue id
+  * @low_mark: low watermark, resume queue if free space more than this
+  * @high_mark: high watermark, stop queue if free space less than this
++ * @overflow_q: overflow queue for handling frames that didn't fit on HW queue
++ * @overflow_tx: need to transmit from overflow
   *
-  * @op: &enum iwl_fw_dbg_reg_operator
-+ * @reserved: reserved
-  * @addr: offset of the register
-  * @val: value
+  * A Tx queue consists of circular buffer of BDs (a.k.a. TFDs, transmit frame
+  * descriptors) and required locking structures.
+@@ -990,10 +1004,19 @@ struct iwl_txq {
+  * @bc_table_dword: true if the BC table expects DWORD (as opposed to bytes)
+  * @page_offs: offset from skb->cb to mac header page pointer
+  * @dev_cmd_offs: offset from skb->cb to iwl_device_tx_cmd pointer
+- * @queue_used - bit mask of used queues
+- * @queue_stopped - bit mask of stopped queues
++ * @queue_used: bit mask of used queues
++ * @queue_stopped: bit mask of stopped queues
++ * @txq: array of TXQ data structures representing the TXQs
+  * @scd_bc_tbls: gen1 pointer to the byte count table of the scheduler
+  * @queue_alloc_cmd_ver: queue allocation command version
++ * @bc_pool: bytecount DMA allocations pool
++ * @bc_tbl_size: bytecount table size
++ * @tso_hdr_page: page allocated (per CPU) for A-MSDU headers when doing TSO
++ *	(and similar usage)
++ * @tfd: TFD data
++ * @tfd.max_tbs: max number of buffers per TFD
++ * @tfd.size: TFD size
++ * @tfd.addr_size: TFD/TB address size
   */
-@@ -619,6 +626,7 @@ struct iwl_fw_dbg_mem_seg_tlv {
-  * @version: version of the TLV - currently 0
-  * @monitor_mode: &enum iwl_fw_dbg_monitor_mode
-  * @size_power: buffer size will be 2^(size_power + 11)
-+ * @reserved: reserved
-  * @base_reg: addr of the base addr register (PRPH)
-  * @end_reg:  addr of the end addr register (PRPH)
-  * @write_ptr_reg: the addr of the reg of the write pointer
-@@ -729,6 +737,8 @@ enum iwl_fw_dbg_trigger_vif_type {
-  * @trig_dis_ms: the time, in milliseconds, after an occurrence of this
-  *	trigger in which another occurrence should be ignored.
-  * @flags: &enum iwl_fw_dbg_trigger_flags
-+ * @reserved: reserved (for alignment)
-+ * @data: trigger data
-  */
- struct iwl_fw_dbg_trigger_tlv {
- 	__le32 id;
-@@ -769,7 +779,7 @@ struct iwl_fw_dbg_trigger_missed_bcon {
- 
+ struct iwl_trans_txqs {
+ 	unsigned long queue_used[BITS_TO_LONGS(IWL_MAX_TVQM_QUEUES)];
+@@ -1026,27 +1049,35 @@ struct iwl_trans_txqs {
  /**
-  * struct iwl_fw_dbg_trigger_cmd - configures trigger for messages from FW.
-- * cmds: the list of commands to trigger the collection on
-+ * @cmds: the list of commands to trigger the collection on
+  * struct iwl_trans - transport common data
+  *
+- * @csme_own - true if we couldn't get ownership on the device
+- * @ops - pointer to iwl_trans_ops
+- * @op_mode - pointer to the op_mode
++ * @csme_own: true if we couldn't get ownership on the device
++ * @ops: pointer to iwl_trans_ops
++ * @op_mode: pointer to the op_mode
+  * @trans_cfg: the trans-specific configuration part
+- * @cfg - pointer to the configuration
+- * @drv - pointer to iwl_drv
++ * @cfg: pointer to the configuration
++ * @drv: pointer to iwl_drv
++ * @state: current device state
+  * @status: a bit-mask of transport status flags
+- * @dev - pointer to struct device * that represents the device
++ * @dev: pointer to struct device * that represents the device
+  * @max_skb_frags: maximum number of fragments an SKB can have when transmitted.
+  *	0 indicates that frag SKBs (NETIF_F_SG) aren't supported.
+- * @hw_rf_id a u32 with the device RF ID
+- * @hw_crf_id a u32 with the device CRF ID
+- * @hw_wfpm_id a u32 with the device wfpm ID
++ * @hw_rf_id: a u32 with the device RF ID
++ * @hw_cnv_id: a u32 with the device CNV ID
++ * @hw_crf_id: a u32 with the device CRF ID
++ * @hw_wfpm_id: a u32 with the device wfpm ID
+  * @hw_id: a u32 with the ID of the device / sub-device.
+  *	Set during transport allocation.
+  * @hw_id_str: a string with info about HW ID. Set during transport allocation.
++ * @sku_id: the SKU identifier (for PNVM matching)
++ * @pnvm_loaded: indicates PNVM was loaded
++ * @hw_rev: the revision data of the HW
+  * @hw_rev_step: The mac step of the HW
+  * @pm_support: set to true in start_hw if link pm is supported
+  * @ltr_enabled: set to true if the LTR is enabled
+  * @fail_to_parse_pnvm_image: set to true if pnvm parsing failed
++ * @reduce_power_loaded: indicates reduced power section was loaded
+  * @failed_to_load_reduce_power_image: set to true if pnvm loading failed
++ * @command_groups: pointer to command group name list array
++ * @command_groups_size: array size of @command_groups
+  * @wide_cmd_header: true when ucode supports wide command header format
+  * @wait_command_queue: wait queue for sync commands
+  * @num_rx_queues: number of RX queues allocated by the transport;
+@@ -1055,13 +1086,19 @@ struct iwl_trans_txqs {
+  * @iml: a pointer to the image loader itself
+  * @dev_cmd_pool: pool for Tx cmd allocation - for internal use only.
+  *	The user should use iwl_trans_{alloc,free}_tx_cmd.
++ * @dev_cmd_pool_name: name for the TX command allocation pool
++ * @dbgfs_dir: iwlwifi debugfs base dir for this device
++ * @sync_cmd_lockdep_map: lockdep map for checking sync commands
+  * @rx_mpdu_cmd: MPDU RX command ID, must be assigned by opmode before
+  *	starting the firmware, used for tracing
+  * @rx_mpdu_cmd_hdr_size: used for tracing, amount of data before the
+  *	start of the 802.11 header in the @rx_mpdu_cmd
++ * @dbg: additional debug data, see &struct iwl_trans_debug
++ * @init_dram: FW initialization DMA data
+  * @system_pm_mode: the system-wide power management mode in use.
+  *	This mode is set dynamically, depending on the WoWLAN values
+  *	configured from the userspace at runtime.
++ * @name: the device name
+  * @txqs: transport tx queues data.
+  * @mbx_addr_0_step: step address data 0
+  * @mbx_addr_1_step: step address data 1
+@@ -1071,6 +1108,7 @@ struct iwl_trans_txqs {
+  * @reduced_cap_sku: reduced capability supported SKU
+  * @no_160: device not supporting 160 MHz
+  * @step_urm: STEP is in URM, no support for MCS>9 in 320 MHz
++ * @trans_specific: data for the specific transport this is allocated for/with
   */
- struct iwl_fw_dbg_trigger_cmd {
- 	struct cmd {
-@@ -779,7 +789,7 @@ struct iwl_fw_dbg_trigger_cmd {
- } __packed;
- 
- /**
-- * iwl_fw_dbg_trigger_stats - configures trigger for statistics
-+ * struct iwl_fw_dbg_trigger_stats - configures trigger for statistics
-  * @stop_offset: the offset of the value to be monitored
-  * @stop_threshold: the threshold above which to collect
-  * @start_offset: the offset of the value to be monitored
+ struct iwl_trans {
+ 	bool csme_own;
 -- 
 2.34.1
 
