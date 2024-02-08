@@ -1,101 +1,136 @@
-Return-Path: <linux-wireless+bounces-3324-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3325-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2500284D9D4
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Feb 2024 07:13:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 903C084DAAA
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Feb 2024 08:26:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D559D285FEC
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Feb 2024 06:13:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0FF68B23416
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Feb 2024 07:25:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A341867C68;
-	Thu,  8 Feb 2024 06:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 339E5692EB;
+	Thu,  8 Feb 2024 07:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p+XQ4ddG"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="lcNZ7+7W"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77A8D1B7E4;
-	Thu,  8 Feb 2024 06:13:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25FA3692E6;
+	Thu,  8 Feb 2024 07:25:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707372811; cv=none; b=qgcjipoW2u5D8oWIIW4wrB1VOyZWLBr7qzPj2Q7iGqyFW5SyDTUxJCmrNCSp90O8n/7YMfEV3Vakqk4G5ziPWVbkRb8ZqoVZEopkArFGYc5sJv9a5Y0D/nCLrNF5izLrDmebKgdwX5N8OpHKMZjCyGjVjr+KdqezJBvkRzaoYFQ=
+	t=1707377151; cv=none; b=DRAnvyPk2pkDLthuxvuwbgk+34nAobi3zmslo1MSdjK6Jhw0LppExceAi1F5kI1LY33b0N/idXBAA8Jcm+UHluF4coAar9qRLba2CGlNtQowDQfP1S7N0ZEIFna9pW1c51xkD4ipZb/Aoso///5Ytv+lJmHn4kS1DoalFN6rg9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707372811; c=relaxed/simple;
-	bh=nsCkbUSpn4ND+bMVOeVBw6ofU7yKaK/RS9W+GLDO+A0=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=S3QCLYMPFHEskLB7iL81CFAW2fI/o00wK8hh5IxDb5M17qL2Xy6X/DOX9Ek8YwtVVch3V3g9nP9kZT+n285We0ZC6Xk19vDz+FZcPz8iMrnDATwKsJ/riSL6C4G1gnkuSvi2JqesKIxs1jGWRFNfOS1Vbr7+vhCVP9zxu++B32w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p+XQ4ddG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB152C433C7;
-	Thu,  8 Feb 2024 06:13:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707372810;
-	bh=nsCkbUSpn4ND+bMVOeVBw6ofU7yKaK/RS9W+GLDO+A0=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=p+XQ4ddGNkKzd/pkWukSVBmefz9cJUMcZHu94mL8HEGBafi6UHdqxTAKPzJMkKyfV
-	 lIwBHrVTH+HB+3cWxE8ppy0jFMDvmW2gC2wCB7r5iTTCDMmRZoF107Mbv6L2WoxHVg
-	 poYeWZcuvSGCvWQcODOtduX2TqME7Zp1kOyevLRRXWJ18f70kVFrPMYPKrfz7ivROQ
-	 yCGsDW9KusRqQLMhzD8fFEm2oeRXwCEz9vqtve3x6KxkmrRPf9CKjV0toT89vLAAf7
-	 E7V/mRtAhMloK5YX7b3uDnWDtOW0uqDWYr3zIC+sT9bdmu6as17z7KrkFtVPGrv/to
-	 pAH2gZZ/mcaiQ==
-From: Kalle Valo <kvalo@kernel.org>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: Linux PM <linux-pm@vger.kernel.org>,  Gregory Greenman
- <gregory.greenman@intel.com>,  Miri Korenblit
- <miriam.rachel.korenblit@intel.com>,  Johannes Berg
- <johannes.berg@intel.com>,  linux-wireless@vger.kernel.org,  LKML
- <linux-kernel@vger.kernel.org>,  Daniel Lezcano
- <daniel.lezcano@linaro.org>,  Stanislaw Gruszka
- <stanislaw.gruszka@linux.intel.com>
-Subject: Re: [PATCH v1 0/3] iwlwifi: mvm: Thermal management fixes
-References: <1892445.tdWV9SEqCh@kreacher>
-Date: Thu, 08 Feb 2024 08:13:26 +0200
-In-Reply-To: <1892445.tdWV9SEqCh@kreacher> (Rafael J. Wysocki's message of
-	"Wed, 07 Feb 2024 20:08:18 +0100")
-Message-ID: <875xyzh4ah.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1707377151; c=relaxed/simple;
+	bh=41KwG3vJADHMuHujGJyY2jjsxuWXKTjEMonTcvE50ZQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RLRj0zZ0v3aK8uz7rr1twtp1T2QsCTsAHyKshYJrKHfFC4QTmUtDDmSMG+czD1Vo8wAXeqvTf8vElWuwANrpXuRo61/ok6jooCadQeaYtpEQZX/8MGDfBswND/tr+PFEyhaQDEfHAWoygW7z9ZmLtnLB4cihxGYV1ZBjPsovaWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=lcNZ7+7W; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Received: from gaggiata.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 9666B22B38;
+	Thu,  8 Feb 2024 08:25:37 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1707377137;
+	bh=TNDCcfkk7812zjJTBuRizX3i5SwZAFC4qeTbhvgpvqU=;
+	h=Received:From:To:Subject;
+	b=lcNZ7+7W1Ah6LrSqZz7ISDobRfE5LIKYfi+pmjqeTkngTqVCCQkfyAc4SLqvqpfnb
+	 XukL50J/4tQtjL1w570FKj45x/BUUd26e3e8AQFLeJRLiZPWE05HEjdNyIiC/e038O
+	 pLvJozMXWbWpewjqcl220TCD9ZHz+mbWGk5pZa+pOOO3/qd0QuEwEfMktfAFHIktkK
+	 7SWtBqKt6KO4y4E8N+EpiSvCWKbrKcM2ZE7om/ed0z+Tsd4uE+m2fvG8patee+Ga0x
+	 EY/KS8jpgFKpHCgKL+H7r1s9JzIh1vL4yoJKe30GLJ5IW7uIzuetJhn+nNY81clnzu
+	 y1NW3L1cB5aLA==
+Received: by gaggiata.pivistrello.it (Postfix, from userid 1000)
+	id B4C527F9D7; Thu,  8 Feb 2024 08:25:19 +0100 (CET)
+Date: Thu, 8 Feb 2024 08:25:19 +0100
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Rafael Beims <rafael@beims.me>
+Cc: David Lin <yu-hao.lin@nxp.com>,
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"briannorris@chromium.org" <briannorris@chromium.org>,
+	"kvalo@kernel.org" <kvalo@kernel.org>,
+	"francesco@dolcini.it" <francesco@dolcini.it>,
+	Pete Hsieh <tsung-hsien.hsieh@nxp.com>
+Subject: Re: [EXT] Re: [PATCH v8 0/2] wifi: mwifiex: add code to support host
+ mlme
+Message-ID: <ZcSB3_16C6JTgBJB@gaggiata.pivistrello.it>
+References: <20231222032123.1036277-1-yu-hao.lin@nxp.com>
+ <97bb3869-3b82-4b64-87cd-9b63d4516649@beims.me>
+ <PA4PR04MB96389A5DDB41DFF80CBB4738D17D2@PA4PR04MB9638.eurprd04.prod.outlook.com>
+ <48364f66-99b4-40ca-b4b2-4adf1071960f@beims.me>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <48364f66-99b4-40ca-b4b2-4adf1071960f@beims.me>
 
-"Rafael J. Wysocki" <rjw@rjwysocki.net> writes:
+On Wed, Feb 07, 2024 at 06:30:03PM -0300, Rafael Beims wrote:
+> On 30/01/2024 04:19, David Lin wrote:
+> > > From: Rafael Beims <rafael@beims.me>
+> > > On 22/12/2023 00:21, David Lin wrote:
+> > > > This series add host based MLME support to the mwifiex driver, this
+> > > > enables WPA3 support in both client and AP mode.
+> > > > To enable WPA3, a firmware with corresponding V2 Key API support is
+> > > > required.
+> > > > The feature is currently only enabled on NXP IW416 (SD8978), and it
+> > > > was internally validated by the NXP QA team. Other NXP Wi-Fi chips
+> > > > supported in current mwifiex are not affected by this change.
 
-> There are a few thermal management shortcomings in the iwlwifi driver that are
-> addressed by this series.
->
-> First off, the fw_trips_index[] array field in struct iwl_mvm_thermal_device
-> is only populated and never read, and the code populating it has problems,
-> so patch [1/3] removes it.
->
-> Second, iwl_mvm_thermal_zone_register() populates the trip table after passing
-> it to thermal_zone_device_register_with_trips() which is too late, because it
-> can get used before it is populated.  It also may as well use THERMAL_TEMP_INVALID
-> as the "invalid temperature" value.  Both these issues are addressed by patch [2/3].
->
-> Finally, iwl_mvm_send_temp_report_ths_cmd() accesses the trip tables used during
-> thermal zone registration directly in order to obtain the current trip point
-> temperature values, which is not guaranteed to work in the future, because the
-> core will store the trips information in its own copy of the trip table - see
-> this patch series:
->
-> https://lore.kernel.org/linux-pm/2728491.mvXUDI8C0e@kreacher/
->
-> If possible, I'd like to route the $subject series through the thermal tree,
-> it is requisite for the above one.
+...
 
-iwlwifi is getting a lot of patches lately, though I don't know if any
-of them touch the thermal stuff. But if this patchset goes to the
-thermal I am a bit worried about conflicts.
+> > > > David Lin (2):
+> > > >     wifi: mwifiex: add host mlme for client mode
+> > > >     wifi: mwifiex: add host mlme for AP mode
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+...
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+> > > I applied the two commits of this series on top of v6.7 but unfortunately the AP
+> > > is failing to start with the patches. I get this output from "hostapd -d" (running
+> > > on a Verdin AM62 with IW416):
+> > > 
+> > > nl80211: kernel reports: Match already configured
+> > > nl80211: Register frame command failed (type=176): ret=-114 (Operation
+> > > already in progress)
+> > > nl80211: Register frame match - hexdump(len=0): [NULL]
+> > > 
+> > > If I run the same hostapd on v6.7 without the patches, the AP is started with no
+> > > issues.
+> > > 
+> > > Is there anything else that should be done in order to test this?
+> > > 
+> > > 
+> > I applied patch v8 (mbox from patch work) to Linux stable repository (tag v6.7.2).
+> > Both client and AP mode can work with and without WPA3.
+> > 
+> I went back and executed the tests again. I re-applied the pach on top of
+> tag v6.7.2 to make sure we're seeing exactly the same thing.
+> 
+> At first, the behavior I was seeing was exactly the same I reported before.
+> Upon starting hostapd with our basic example configuration, it would fail to
+> start the AP with the error:
+> 
+> nl80211: kernel reports: Match already configured
+> nl80211: Could not configure driver mode
+> 
+> After some investigation of what could cause this error, I found out that it
+> was connman that was interfering with this somehow. After killing the
+> connman service, the AP would start correctly.
+> 
+> I want to point out that this behavior is different from the unpatched
+> driver. With that one we don't need to kill connman in order to start the AP
+> with hostapd.
+
+Any idea what's going on in this regard? Is such a change in behavior expected?
+
+Francesco
+
 
