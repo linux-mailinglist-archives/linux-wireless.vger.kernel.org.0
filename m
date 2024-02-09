@@ -1,107 +1,90 @@
-Return-Path: <linux-wireless+bounces-3407-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3409-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BFFB84FC94
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Feb 2024 20:04:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9986A84FCE9
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Feb 2024 20:33:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F364B29672
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Feb 2024 19:01:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FF0828F751
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Feb 2024 19:32:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD7966BB22;
-	Fri,  9 Feb 2024 19:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FCE874E3A;
+	Fri,  9 Feb 2024 19:32:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="YOmsPfIm"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="EdjSMCDK"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E9222E3F7
-	for <linux-wireless@vger.kernel.org>; Fri,  9 Feb 2024 19:01:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0492882866
+	for <linux-wireless@vger.kernel.org>; Fri,  9 Feb 2024 19:32:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707505295; cv=none; b=UFpsVcbtz8jDarepf9OkEC3l2w7BjodpR+JLTfC8DGsdstdWprKzNhxQhBugoIrSf/BWgix6+slecXC0S5114egeFUj2yyF4WvAj487uNRfRCWqu++DsE3v5F6IMBAnuEk4zfYT3HjMSRMduQ9F6jSuEH6RfIFsVjRoidfdc7gk=
+	t=1707507175; cv=none; b=XJ0P5zvutp6v7wpZxQoeGscYaFITryX4wbhcUTzxL368eAPn3FaSkKzD6MIA72jMQYh+qkzT1v4G1zMDopUWHlIEwMQz6REBsqqX+2u5+oKTe5oEhg2Ms6SXu2hNe9kntK1RwkgVmnI7/mlAedF5d3BCumwPiKbN35jPxYcXTYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707505295; c=relaxed/simple;
-	bh=4I2JJLx/01cJfSD6aBhOhKeG3zj2UkHxm3kZAWgBHmc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=RvWOPITAGacbMJGLL2L0BPK4/f1WgxA7eG4b5udDJdvO/Xsj9htQhNTJ2WEvcKPAPPCtLW7gq52S8F88Pcdt1MmbgFVDrBN2R0IlFpR47EnnX8KqO44dI6cwgnSe5wIducb4jTa1tTAaWRgn5DX8MDpPp6kofe68QzNHs/zj660=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=YOmsPfIm; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 419Gkr3u005845;
-	Fri, 9 Feb 2024 19:01:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=VkXqMXdfoFxKguZc6tdH9CCpBWO+EkZ6DvrLzeen3Pc=; b=YO
-	msPfImJshsppdHSSGa6uIAyE+Xi55fzyMJgLcvoQb8LRoV6L9gqqiMyMgQGg9YW0
-	iqtjiR86UaXT7WU7nBMMI8Wvs4pncZXZjQkCsq+eFIlwOhIwy+UrLtdqelY9Md+J
-	HEGdIwBxx4Tdcbdsivq6ef/jPc0wNO03rc65+4U5sl9mPHrsFPlP0olqmYufEZVj
-	utte3L/ajistGcLkhQYwixUs58NLsrhBpvPsnY8UDOa/bSLfK/am7ZcWMyDH12hu
-	qCr9PtIB86lvEVxQlW3LaFWdTWOgKY/OZlcQYagm7cqg2aT6M3w8L9GK6THH2sLd
-	H00WHeg+F7zjqXqKbRRg==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3w5qvag8xt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 09 Feb 2024 19:01:28 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 419J1SHj012070
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 9 Feb 2024 19:01:28 GMT
-Received: from [10.110.97.178] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Fri, 9 Feb
- 2024 11:01:27 -0800
-Message-ID: <0cd0101f-7a76-411e-af1e-95b3017264cc@quicinc.com>
-Date: Fri, 9 Feb 2024 11:01:27 -0800
+	s=arc-20240116; t=1707507175; c=relaxed/simple;
+	bh=BXqFgpDauNuiWmnVG1m9eeAtSVwQFJXVDIzKMAUiwz0=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=L9JX86tM3J3Eeid5IT3TSolBLwE2pE0eRceA0jHfFYrwPXylE31c2pwfXM7JgOikiQOyJCyQKrX/kMKRGNBIWhXTmd5tXW8wmVIlWOC/6qV12gpjhexMD+/n+prOIQa5GGyM5yDWDLARN5+2Jn/7ngUT9H8OU4xWMRPRGiBm628=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=EdjSMCDK; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=L3r7jiMaFIQSUlzx3fyDZAoO1VpfT68htmj+rfkd5Ys=;
+	t=1707507172; x=1708716772; b=EdjSMCDKy05dsfQtomUESoLv8HormsUBuVr+yWFydcjOHDr
+	HB6p8JHQwSxj+B4ze/jlLKmsMV0qhyK6kIBeKmQla7yEWFywT1Cld1XMXdKtc0Nwylm3xe0+e6vYR
+	V4l2SE033KqeVcrWfQxh+83J86X0I36iADsEjVkexhwzU/pzVsW80odE8Dlp4lWqxvEshtdX9wBP0
+	LIn+bFrCzGsYlepb94h4MVfS/7nWKmSrrtoAxrp09R3wd4u6t24ayVab3aGXZIQeNhVh0U4Y6TBr7
+	QO2YhNY51JVbrYDQpOKg4e8lNqHEqBx3tN8giWztrLjdzwiWO1lVN3soVRoyupBw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rYWc7-00000001KO8-2wFj;
+	Fri, 09 Feb 2024 20:32:43 +0100
+Message-ID: <d3f6cdef5b05fba8eadedf67129c9c49471a08f0.camel@sipsolutions.net>
+Subject: Re: [RFC] mac80211: add AQL support for broadcast packets
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
+Date: Fri, 09 Feb 2024 20:32:42 +0100
+In-Reply-To: <20240209184730.69589-1-nbd@nbd.name>
+References: <20240209184730.69589-1-nbd@nbd.name>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] wifi: ath11k: Do not directly use scan_flags in
- struct scan_req_params
-Content-Language: en-US
-To: Nicolas Escande <nico.escande@gmail.com>, <ath11k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20240209113536.266822-1-nico.escande@gmail.com>
- <20240209113536.266822-2-nico.escande@gmail.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20240209113536.266822-2-nico.escande@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: aj0yCSsbzrjWZQ-uPBSjkdCURcOdYVc-
-X-Proofpoint-ORIG-GUID: aj0yCSsbzrjWZQ-uPBSjkdCURcOdYVc-
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-09_16,2024-02-08_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- lowpriorityscore=0 spamscore=0 clxscore=1015 priorityscore=1501 mlxscore=0
- bulkscore=0 phishscore=0 mlxlogscore=522 adultscore=0 suspectscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2401310000 definitions=main-2402090139
+X-malware-bazaar: not-scanned
 
-On 2/9/2024 3:35 AM, Nicolas Escande wrote:
-> As discussed in [1] lets not use WMI_SCAN_XXX defines in combination with
-> scan_flags directly when setting scan params in struct scan_req_params but use
-> the underlying bitfield. This bitfield is then converted to WMI_SCAN_XXX when
-> filling the WMI command to send to the firmware.
-> 
-> [1] https://lore.kernel.org/all/871qae51wx.fsf@kernel.org/
-> 
-> Tested-on: QCN9074 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
-> 
-> Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
+> -	if (sscanf(buf, "%u %u %u", &ac, &q_limit_low, &q_limit_high) !=3D 3)
+> +	n =3D sscanf(buf, "%u %u %u", &ac, &q_limit_low, &q_limit_high);
+> +	if (n < 2)
+>  		return -EINVAL;
+> =20
+> -	if (ac >=3D IEEE80211_NUM_ACS)
+> +	if (ac =3D=3D IEEE80211_NUM_ACS) {
+> +		local->aql_txq_limit_bc =3D q_limit_low;
+> +		return count;
+> +	}
+
+If we keep this, it should probably check n =3D=3D 2?
+
+But not sure I like it - in other places ac =3D=3D NUM_ACS means management
+rather than not multicast; could we just check something like
+
+	strncmp(buf, "mcast ", 6)
+
+instead? Or "BC/MC" matching the output? Though we don't match VO on
+input either.
+
+johannes
 
