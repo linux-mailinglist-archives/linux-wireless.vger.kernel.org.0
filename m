@@ -1,153 +1,251 @@
-Return-Path: <linux-wireless+bounces-3400-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3401-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B89A284F7E2
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Feb 2024 15:50:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDF1E84F7FF
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Feb 2024 15:58:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57AC8B21F0A
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Feb 2024 14:50:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36F6F1F26E6A
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Feb 2024 14:58:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 845196A028;
-	Fri,  9 Feb 2024 14:50:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D9A84D112;
+	Fri,  9 Feb 2024 14:58:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Xba1DbnX"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AczPNMHx"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F1037145;
-	Fri,  9 Feb 2024 14:50:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4460D6BB4A
+	for <linux-wireless@vger.kernel.org>; Fri,  9 Feb 2024 14:58:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707490202; cv=none; b=LHnWLG0r7aciOsNDoNY2M7GP07jyAomzz7VPke2WRAKSerE9Fi11RJ3HHcZdtMSFpE+y/ImwdGquFXIk3s84/fZs5fqZPfDugYvj2n2PeVpRFKJM0ZeVMvlDI6PTGwepj5FwmgjQEY4uTRbMetl0lnOBc1xGlvzF9hl34Yme4JA=
+	t=1707490711; cv=none; b=IjALzWcaj/zLUvmKC8peOcyK/SshvtTpYiXUkfxUcLqXHxkNRS0KLuCnwd0Fi9RJK3QqZvwyIMGn4qZBAYBG5H7e4IoMIjq2eGhL231I5C5FJ6NK4x47FS3DhefSVkZleKbKGTsiGl7ZTvkyV8vLAoxFbdY0vML5UvKNLkODXzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707490202; c=relaxed/simple;
-	bh=BKZ2mtO8cS0Ik5dmaQV6ifo7dNShLGEHdT1wapWSz8M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YlGOSgQt5h56j4DoVSPScfLQw7vplYpkaF8NLVi5tIyeuk3HZ7FBY3Q1/DOIII7kGgD9dVyUnbvvTJ3Pl/KFi40732xANnUFmJhElQfVp6Zpxu6zIxTCGQWJjSYJpzhJsYNXZRkly5y0Ncahtj2xImjfzNrAI6EZXNvqpVpAnQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Xba1DbnX; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1707490711; c=relaxed/simple;
+	bh=3Lu8aXMEaq8SBz6rCUiiM5eEN4Zx1GrULw/wnWnwOMo=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=VzqhBSNrLgDPr0X3ILxhlOdcaGibKhAnYWTYAyVLFIVQ4BeWmvSb6Wz3U1vnHP21kjcE4CXbkqzLu6KegqNKaPqcYAUHxVXaDe+y1gGKn01GA9ITQXAPslV4OZfrOgTFcqzX/xLEagMUfNAfHDOGp9X8YQZdbetsvNjbnShOprI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AczPNMHx; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707490201; x=1739026201;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=BKZ2mtO8cS0Ik5dmaQV6ifo7dNShLGEHdT1wapWSz8M=;
-  b=Xba1DbnXMnOwY7vxa+JxDvLFth77t3bFqcpyZcXR9znBRGEKkx9OTjrV
-   3Ubof3meJc3b37drBKBT0MMVuiPK5v5Q+WaVK1PS5gDGJNeU+PqGkC2mT
-   3sebE3uHJsSh7cIQbhSgb7+90/XAlPcOyfhQxEEDRkKmADRulK9pdp30i
-   9StDVcXuZOw/TIuLS8I85qS2dJlOnq/n5imAcMWI7fdbEDb/5qCxVjyUy
-   4pt7UM1ni2xiL/OlHOHpsF8Jxa6SaF9i0vHSipVb09hgK9Ze7OLXyE6L+
-   4mZfo4Vs7+bi8N4rhPLDRcJuGKw0p8OvbO0oLUWuh3ERt/XKHkVGMe9cB
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10979"; a="12810651"
+  t=1707490710; x=1739026710;
+  h=date:from:to:cc:subject:message-id;
+  bh=3Lu8aXMEaq8SBz6rCUiiM5eEN4Zx1GrULw/wnWnwOMo=;
+  b=AczPNMHxnHYbJ8C1rm5uu16FilfeVSVlzQFODsb6U1BzGr63FK3f+VGE
+   9NDpVn1g1KCohK7Inc3ydOBZRpyhZmXzCbO6pURtDQWzFy+BQ1OJlFxIT
+   lV3dwrutOQqbA//h7xarwuoj8GEeBZNT3QcB/CsrOPbfkiFWko1xF88Vy
+   hii0g/9DNDCi9bPQe70/zkWAYZyMriXl+T2lkKxxdK+NC8l83BRtd35ih
+   B9qqJ2QztrlfZ7f4K7Q7fCzRdUtyhKuP/RAR0/HtR7c+16KbUcLc1Tt7J
+   iWXLfRDA7LzCJqVyyNE38sxa66zeeL27Xw4ErOqFanGz8H//eu7Wu1cl6
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10979"; a="12174430"
 X-IronPort-AV: E=Sophos;i="6.05,257,1701158400"; 
-   d="scan'208";a="12810651"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2024 06:50:00 -0800
+   d="scan'208";a="12174430"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2024 06:58:29 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10979"; a="825157463"
 X-IronPort-AV: E=Sophos;i="6.05,257,1701158400"; 
-   d="scan'208";a="825157463"
-Received: from sgruszka-mobl.ger.corp.intel.com (HELO localhost) ([10.252.43.96])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2024 06:49:53 -0800
-Date: Fri, 9 Feb 2024 15:49:51 +0100
-From: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: Linux PM <linux-pm@vger.kernel.org>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	LKML <linux-kernel@vger.kernel.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Zhang Rui <rui.zhang@intel.com>, netdev@vger.kernel.org,
-	Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>,
-	linux-wireless@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Manaf Meethalavalappu Pallikunhi <quic_manafm@quicinc.com>
-Subject: Re: [PATCH v1 6/9] iwlwifi: mvm: Set THERMAL_TRIP_WRITABLE_TEMP
- directly
-Message-ID: <ZcY7jyyFJq1yfOCj@linux.intel.com>
-References: <3232442.5fSG56mABF@kreacher>
- <3757041.MHq7AAxBmi@kreacher>
+   d="scan'208";a="6605950"
+Received: from lkp-server01.sh.intel.com (HELO 01f0647817ea) ([10.239.97.150])
+  by fmviesa004.fm.intel.com with ESMTP; 09 Feb 2024 06:58:28 -0800
+Received: from kbuild by 01f0647817ea with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rYSKf-0004oA-2q;
+	Fri, 09 Feb 2024 14:58:25 +0000
+Date: Fri, 09 Feb 2024 22:58:09 +0800
+From: kernel test robot <lkp@intel.com>
+To: Johannes Berg <johannes.berg@intel.com>
+Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
+Subject: [wireless:for-next] BUILD SUCCESS
+ b7198383ef2debe748118996f627452281cf27d7
+Message-ID: <202402092206.l09HOxsY-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3757041.MHq7AAxBmi@kreacher>
 
-On Fri, Feb 09, 2024 at 03:10:24PM +0100, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> It is now possible to flag trip points with THERMAL_TRIP_WRITABLE_TEMP
-> to allow their temperature to be set from user space via sysfs instead
-> of using a nonzero writable trips mask during thermal zone registration,
-> so make the iwlwifi code do that.
-> 
-> No intentional functional impact.
-> 
-> Note that this change is requisite for dropping the mask argument from
-> thermal_zone_device_register_with_trips() going forward.
-> 
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> ---
-> 
-> This patch obviously depends on
-> 
-> https://patchwork.kernel.org/project/linux-pm/patch/8346768.T7Z3S40VBb@kreacher/
-> 
-> which has been queued up for 6.9 already.
-> 
-> ---
->  drivers/net/wireless/intel/iwlwifi/mvm/tt.c |    6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
-> 
-> Index: linux-pm/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
-> ===================================================================
-> --- linux-pm.orig/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
-> +++ linux-pm/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
-> @@ -667,9 +667,6 @@ static  struct thermal_zone_device_ops t
->  	.set_trip_temp = iwl_mvm_tzone_set_trip_temp,
->  };
->  
-> -/* make all trips writable */
-> -#define IWL_WRITABLE_TRIPS_MSK (BIT(IWL_MAX_DTS_TRIPS) - 1)
-> -
->  static void iwl_mvm_thermal_zone_register(struct iwl_mvm *mvm)
->  {
->  	int i, ret;
-> @@ -692,11 +689,12 @@ static void iwl_mvm_thermal_zone_registe
->  	for (i = 0 ; i < IWL_MAX_DTS_TRIPS; i++) {
->  		mvm->tz_device.trips[i].temperature = THERMAL_TEMP_INVALID;
->  		mvm->tz_device.trips[i].type = THERMAL_TRIP_PASSIVE;
-> +		mvm->tz_device.trips[i].type = THERMAL_TRIP_WRITABLE_TEMP;
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
+branch HEAD: b7198383ef2debe748118996f627452281cf27d7  wifi: iwlwifi: mvm: fix a crash when we run out of stations
 
-		mvm->tz_device.trips[i].flags = THERMAL_TRIP_WRITABLE_TEMP;
+elapsed time: 1461m
 
-Consider using diffrent prefix for constants to diffrenciate flags and types.
+configs tested: 162
+configs skipped: 4
 
-Regards
-Stanislaw
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
->  	}
->  	mvm->tz_device.tzone = thermal_zone_device_register_with_trips(name,
->  							mvm->tz_device.trips,
->  							IWL_MAX_DTS_TRIPS,
-> -							IWL_WRITABLE_TRIPS_MSK,
-> +							0,
->  							mvm, &tzone_ops,
->  							NULL, 0, 0);
->  	if (IS_ERR(mvm->tz_device.tzone)) {
-> 
-> 
-> 
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                   randconfig-001-20240209   gcc  
+arc                   randconfig-002-20240209   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   clang
+arm                              allyesconfig   gcc  
+arm                                 defconfig   clang
+arm                   randconfig-001-20240209   clang
+arm                   randconfig-002-20240209   gcc  
+arm                   randconfig-003-20240209   gcc  
+arm                   randconfig-004-20240209   gcc  
+arm64                            allmodconfig   clang
+arm64                             allnoconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                 randconfig-001-20240209   clang
+arm64                 randconfig-002-20240209   clang
+arm64                 randconfig-003-20240209   clang
+arm64                 randconfig-004-20240209   clang
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+csky                  randconfig-001-20240209   gcc  
+csky                  randconfig-002-20240209   gcc  
+hexagon                          allmodconfig   clang
+hexagon                           allnoconfig   clang
+hexagon                          allyesconfig   clang
+hexagon                             defconfig   clang
+hexagon               randconfig-001-20240209   clang
+hexagon               randconfig-002-20240209   clang
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20240209   clang
+i386         buildonly-randconfig-002-20240209   clang
+i386         buildonly-randconfig-003-20240209   gcc  
+i386         buildonly-randconfig-004-20240209   clang
+i386         buildonly-randconfig-005-20240209   clang
+i386         buildonly-randconfig-006-20240209   gcc  
+i386                                defconfig   clang
+i386                  randconfig-001-20240209   clang
+i386                  randconfig-002-20240209   gcc  
+i386                  randconfig-003-20240209   clang
+i386                  randconfig-004-20240209   clang
+i386                  randconfig-005-20240209   clang
+i386                  randconfig-006-20240209   gcc  
+i386                  randconfig-011-20240209   gcc  
+i386                  randconfig-012-20240209   gcc  
+i386                  randconfig-013-20240209   clang
+i386                  randconfig-014-20240209   gcc  
+i386                  randconfig-015-20240209   gcc  
+i386                  randconfig-016-20240209   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20240209   gcc  
+loongarch             randconfig-002-20240209   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                 randconfig-001-20240209   gcc  
+nios2                 randconfig-002-20240209   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc                randconfig-001-20240209   gcc  
+parisc                randconfig-002-20240209   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   clang
+powerpc               randconfig-001-20240209   clang
+powerpc               randconfig-002-20240209   clang
+powerpc               randconfig-003-20240209   gcc  
+powerpc64             randconfig-001-20240209   clang
+powerpc64             randconfig-002-20240209   clang
+powerpc64             randconfig-003-20240209   clang
+riscv                            allmodconfig   clang
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   clang
+riscv                               defconfig   clang
+riscv                 randconfig-001-20240209   clang
+riscv                 randconfig-002-20240209   clang
+s390                             allmodconfig   clang
+s390                              allnoconfig   clang
+s390                             allyesconfig   gcc  
+s390                                defconfig   clang
+s390                  randconfig-001-20240209   gcc  
+s390                  randconfig-002-20240209   gcc  
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sh                    randconfig-001-20240209   gcc  
+sh                    randconfig-002-20240209   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                               defconfig   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+sparc64               randconfig-001-20240209   gcc  
+sparc64               randconfig-002-20240209   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   gcc  
+um                                  defconfig   clang
+um                    randconfig-001-20240209   gcc  
+um                    randconfig-002-20240209   clang
+um                           x86_64_defconfig   clang
+x86_64                            allnoconfig   clang
+x86_64                           allyesconfig   clang
+x86_64       buildonly-randconfig-001-20240209   gcc  
+x86_64       buildonly-randconfig-002-20240209   gcc  
+x86_64       buildonly-randconfig-003-20240209   clang
+x86_64       buildonly-randconfig-004-20240209   gcc  
+x86_64       buildonly-randconfig-005-20240209   clang
+x86_64       buildonly-randconfig-006-20240209   gcc  
+x86_64                              defconfig   gcc  
+x86_64                randconfig-001-20240209   clang
+x86_64                randconfig-002-20240209   gcc  
+x86_64                randconfig-003-20240209   gcc  
+x86_64                randconfig-004-20240209   clang
+x86_64                randconfig-005-20240209   gcc  
+x86_64                randconfig-006-20240209   gcc  
+x86_64                randconfig-011-20240209   clang
+x86_64                randconfig-012-20240209   clang
+x86_64                randconfig-013-20240209   gcc  
+x86_64                randconfig-014-20240209   clang
+x86_64                randconfig-015-20240209   gcc  
+x86_64                randconfig-016-20240209   clang
+x86_64                randconfig-071-20240209   gcc  
+x86_64                randconfig-072-20240209   clang
+x86_64                randconfig-073-20240209   clang
+x86_64                randconfig-074-20240209   gcc  
+x86_64                randconfig-075-20240209   gcc  
+x86_64                randconfig-076-20240209   clang
+x86_64                          rhel-8.3-rust   clang
+xtensa                            allnoconfig   gcc  
+xtensa                randconfig-001-20240209   gcc  
+xtensa                randconfig-002-20240209   gcc  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
