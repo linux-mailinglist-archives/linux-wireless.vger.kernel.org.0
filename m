@@ -1,178 +1,279 @@
-Return-Path: <linux-wireless+bounces-3388-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3389-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3177884F4D9
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Feb 2024 12:54:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 778E084F623
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Feb 2024 14:45:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E07042832EF
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Feb 2024 11:54:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBC9C1F2471D
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Feb 2024 13:45:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 444B52E40D;
-	Fri,  9 Feb 2024 11:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBB023C471;
+	Fri,  9 Feb 2024 13:45:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="G3Yz7oRJ"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="TdU+ZSys"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D9F2D05B
-	for <linux-wireless@vger.kernel.org>; Fri,  9 Feb 2024 11:54:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF9B3C099
+	for <linux-wireless@vger.kernel.org>; Fri,  9 Feb 2024 13:45:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707479668; cv=none; b=KbcXLovOaq/zznG4547pnXF4y8cw/Fh2rdyI/RBEI9RbT5X7Dk6YiPTs59+WZz+uap8ajtVoarjMVSvwpN52OqWBZfP/SXiFTIhd1nmeeViBBZ2Tq7c8B7UDj1pOIi7dlF2FNL+nVGNJ291yXAsU79bxlC8+slGnQoi1vGRpppY=
+	t=1707486325; cv=none; b=aAWgY6Edql6ZUz7NKjPlxOhD0vR9W4EqlfGPSir2GlwEVnkfsNWsrusMWnCAt6nsbf+gh+HS3a+jC54cZbfbMkhpGdZK4MezrUkWf4CzZhf7RiZdsDktTr8Aa3xkv1joZYcNZ5KsuuGSjiXGCk8O5MBZKD5rgfzuxsnhoNnsTdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707479668; c=relaxed/simple;
-	bh=1tg2ZQsPNiTX9bLV9ejW+T1gcQKjTAmtU84wJculzqs=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=eVr5D7ekCNlKHFebXULcpQyNlhuMN03c/lIhk1C5RJ8UGmg5YVxowLuCoUxZwCTiNlTsSLzAcPK5dacm+q5y/rXzR2iCCOxvTcm/ZMka3bo4JQVfxTW4mvxtf/fnm0HOdJYzDY4vLGQeRINwa8O0t5bRp6pjskupQpwSxLmy2mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=G3Yz7oRJ; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707479666; x=1739015666;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=1tg2ZQsPNiTX9bLV9ejW+T1gcQKjTAmtU84wJculzqs=;
-  b=G3Yz7oRJ2AefHXd0JJRxbLdddVSlicVbfznS3fCCBVhxw16+5fpJUW8P
-   jFhRgI8qmKdiwhDwX84q/NKVDecxP5+7vyqUZZcQSvhDuGTmfKJ3WTA9c
-   xBEXkViqoJn2jFOm6CJpkSHoZCZAeb2d+Y8vV0WN37OfDnjSbQidkQgwj
-   ZPuvzfwVuTz1NQv9qFgeeHICyZvR4r2pCn3PU/fSByAiSjuoI2M0Vb/gj
-   l7u3hoYwkPjXv1HcEw518S/Qkm1SKFOXMjIrzg/AWS7PtpaoohyISe3RE
-   d9bjTn+zxFF/V+l76ZeTkh1ivjzonGC1fl2LD39uc42UsecITwMfP0++8
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10978"; a="1555290"
-X-IronPort-AV: E=Sophos;i="6.05,256,1701158400"; 
-   d="scan'208";a="1555290"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2024 03:54:25 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,256,1701158400"; 
-   d="scan'208";a="1906510"
-Received: from lkp-server01.sh.intel.com (HELO 01f0647817ea) ([10.239.97.150])
-  by fmviesa009.fm.intel.com with ESMTP; 09 Feb 2024 03:54:24 -0800
-Received: from kbuild by 01f0647817ea with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rYPSX-0004gM-2A;
-	Fri, 09 Feb 2024 11:54:21 +0000
-Date: Fri, 9 Feb 2024 19:53:44 +0800
-From: kernel test robot <lkp@intel.com>
-To: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [wireless-next:main 62/81]
- drivers/net/wireless/intel/iwlwifi/fw/uefi.c:359:6: error: redefinition of
- 'iwl_uefi_get_sgom_table'
-Message-ID: <202402091914.TvQ2OSQY-lkp@intel.com>
+	s=arc-20240116; t=1707486325; c=relaxed/simple;
+	bh=O7ExEhOfreOhKikgsOgxHOgUH/7a0r/6CmnFs2T6wEo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=SkcYQdDpa7WgZq4ef8dL3DGiXhfZcp47TPuoHBmoUJALyxSz2mJnTVon6LdYTywlSCIJha7rnpjeV1Gh45CfQ1Hm2osHjWU5s9zxTNirIwzLpThVfyJmTA7tskL5qYM6nhn7nCy2q3EJhwuN14oA1QaYcfkih5JOhoLM+1CnfTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=TdU+ZSys; arc=none smtp.client-ip=209.85.222.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-783f3d27bfbso41218085a.2
+        for <linux-wireless@vger.kernel.org>; Fri, 09 Feb 2024 05:45:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1707486323; x=1708091123; darn=vger.kernel.org;
+        h=mime-version:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=wjGCK4lgpy/0QQ/lFE2vHUo6oRVe9mteXFl8otNH7i8=;
+        b=TdU+ZSyspbfNMV75//vQfrKgyoNhqBxPOuyk/a18ZBEdobclHLXfD9x3JOVBacKS1x
+         QmH7TOVciqgEXKSYSHEM7pHrkxRcy0YdO77q+AUOgWeuUplqRz4mqc1Op+tc9skb9I2J
+         LFjgTIL8owXca4x4AbmbMv58I1m7sqHhHUlIQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707486323; x=1708091123;
+        h=mime-version:message-id:date:subject:cc:to:from:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=wjGCK4lgpy/0QQ/lFE2vHUo6oRVe9mteXFl8otNH7i8=;
+        b=EY2R428bmnbV5UeFMY4sgo69BPSMuUN+UTKB0amOQ4QLqu0gQSBQ3uete+rK8/nJpF
+         jDSb2qH9Pw6R9IIaP4lUHdLBV+w/54DR2YFDuHFnrpcHjlmZTODvovIF12v6bKARTsIJ
+         q9AYjjsdqHSJuBz8l9mkPkonik0+nXcHyGGnIqgxUWk/lEZYWVLfjsPuNgH7g7Yen9Ac
+         /8cCm+S9Hnoa33WmW1xg+G6TqQYZx74heVx4WmuuTVb2WYTXJYjxZkFaDsFqYWSf36cv
+         haUjbKLm6phtt9f+9JTHxy2AnOzE+WF5XojFaDTHzKkB8nxvWOB7u5cbMZ0heC1wONVH
+         /UEw==
+X-Gm-Message-State: AOJu0YylK69jtuAnWYFIDmxPbuaQCv0WrVlPQTIs+0mLIMbD0HMtO972
+	4D8XAGHaGen6gUJB/SPI3tloyZcaNCgNY3N2BeHcgviOr0W3ddczy2CjJK9D0w==
+X-Google-Smtp-Source: AGHT+IHvMs+FHIzq2AZspOOV3PVKPJ09r60srJMtnF2wYlmsJpEfxYPTLj5XGIjAkxyV18cHQjkGvA==
+X-Received: by 2002:a05:620a:2287:b0:785:74f5:62c6 with SMTP id o7-20020a05620a228700b0078574f562c6mr1436159qkh.75.1707486322816;
+        Fri, 09 Feb 2024 05:45:22 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVLWn7VXT2a4ntW4EW8XSZSiPaqHQBujPWVhlnU9JAS9wVDtazwNZgBADEwrKcPEoqlNunhhwO/SGGRg99IeskmjpzSgHng9ct7wEjEN1kcmNTMf4E5o39ODY/nFZkJiOMP4zVJhpQ=
+Received: from hnd.dhcp.broadcom.net ([192.19.234.250])
+        by smtp.gmail.com with ESMTPSA id bq42-20020a05620a46aa00b00783fed2e88fsm730598qkb.20.2024.02.09.05.45.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Feb 2024 05:45:22 -0800 (PST)
+From: Vinayak Yadawad <vinayak.yadawad@broadcom.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org,
+	jithu.jance@broadcom.com,
+	Vinayak Yadawad <vinayak.yadawad@broadcom.com>
+Subject: [PATCH 1/1] wifi: nl80211: Add support for plumbing SAE groups to driver
+Date: Fri,  9 Feb 2024 19:20:43 +0530
+Message-Id: <309965e8ef4d220053ca7e6bd34393f892ea1bb8.1707486287.git.vinayak.yadawad@broadcom.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="000000000000c0b6b80610f323d5"
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-head:   d4655db0a1e11eeacc55c44c81121c83b087982e
-commit: 74f4cd71070538bd9a8b6686fc53e7b77d510afa [62/81] wifi: iwlwifi: take SGOM and UATS code out of ACPI ifdef
-config: arm-allyesconfig (https://download.01.org/0day-ci/archive/20240209/202402091914.TvQ2OSQY-lkp@intel.com/config)
-compiler: arm-linux-gnueabi-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240209/202402091914.TvQ2OSQY-lkp@intel.com/reproduce)
+--000000000000c0b6b80610f323d5
+Content-Transfer-Encoding: 8bit
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202402091914.TvQ2OSQY-lkp@intel.com/
+In case of SAE authentication offload, the driver would need
+the info of SAE DH groups for both STA connection and soft AP.
+In the current change we update the SAE DH group support info
+to driver in the order/priority as provided by the supplicant/
+upper layer.
 
-All errors (new ones prefixed by >>):
+Signed-off-by: Vinayak Yadawad <vinayak.yadawad@broadcom.com>
+---
+ include/net/cfg80211.h       |  6 ++++++
+ include/uapi/linux/nl80211.h |  7 +++++++
+ net/wireless/nl80211.c       | 22 ++++++++++++++++++++++
+ 3 files changed, 35 insertions(+)
 
->> drivers/net/wireless/intel/iwlwifi/fw/uefi.c:359:6: error: redefinition of 'iwl_uefi_get_sgom_table'
-     359 | void iwl_uefi_get_sgom_table(struct iwl_trans *trans,
-         |      ^~~~~~~~~~~~~~~~~~~~~~~
-   In file included from drivers/net/wireless/intel/iwlwifi/fw/uefi.c:11:
-   drivers/net/wireless/intel/iwlwifi/fw/uefi.h:294:6: note: previous definition of 'iwl_uefi_get_sgom_table' with type 'void(struct iwl_trans *, struct iwl_fw_runtime *)'
-     294 | void iwl_uefi_get_sgom_table(struct iwl_trans *trans, struct iwl_fw_runtime *fwrt)
-         |      ^~~~~~~~~~~~~~~~~~~~~~~
->> drivers/net/wireless/intel/iwlwifi/fw/uefi.c:392:5: error: redefinition of 'iwl_uefi_get_uats_table'
-     392 | int iwl_uefi_get_uats_table(struct iwl_trans *trans,
-         |     ^~~~~~~~~~~~~~~~~~~~~~~
-   drivers/net/wireless/intel/iwlwifi/fw/uefi.h:299:5: note: previous definition of 'iwl_uefi_get_uats_table' with type 'int(struct iwl_trans *, struct iwl_fw_runtime *)'
-     299 | int iwl_uefi_get_uats_table(struct iwl_trans *trans,
-         |     ^~~~~~~~~~~~~~~~~~~~~~~
-
-
-vim +/iwl_uefi_get_sgom_table +359 drivers/net/wireless/intel/iwlwifi/fw/uefi.c
-
-c593d2fae592ae Ayala Barazani   2021-12-04  358  
-c593d2fae592ae Ayala Barazani   2021-12-04 @359  void iwl_uefi_get_sgom_table(struct iwl_trans *trans,
-c593d2fae592ae Ayala Barazani   2021-12-04  360  			     struct iwl_fw_runtime *fwrt)
-c593d2fae592ae Ayala Barazani   2021-12-04  361  {
-c593d2fae592ae Ayala Barazani   2021-12-04  362  	struct uefi_cnv_wlan_sgom_data *data;
-0c4bad7f47c4e5 Ard Biesheuvel   2022-06-17  363  	int ret;
-c593d2fae592ae Ayala Barazani   2021-12-04  364  
-8ae3e23195188a Gregory Greenman 2023-06-06  365  	if (!fwrt->geo_enabled)
-c593d2fae592ae Ayala Barazani   2021-12-04  366  		return;
-c593d2fae592ae Ayala Barazani   2021-12-04  367  
-a6dfe1e7440308 Miri Korenblit   2024-01-28  368  	data = iwl_uefi_get_verified_variable(trans, IWL_UEFI_SGOM_NAME,
-a6dfe1e7440308 Miri Korenblit   2024-01-28  369  					      "SGOM", sizeof(*data), NULL);
-a6dfe1e7440308 Miri Korenblit   2024-01-28  370  	if (IS_ERR(data))
-0c4bad7f47c4e5 Ard Biesheuvel   2022-06-17  371  		return;
-c593d2fae592ae Ayala Barazani   2021-12-04  372  
-c593d2fae592ae Ayala Barazani   2021-12-04  373  	ret = iwl_uefi_sgom_parse(data, fwrt);
-c593d2fae592ae Ayala Barazani   2021-12-04  374  	if (ret < 0)
-c593d2fae592ae Ayala Barazani   2021-12-04  375  		IWL_DEBUG_FW(trans, "Cannot read SGOM tables. rev is invalid\n");
-c593d2fae592ae Ayala Barazani   2021-12-04  376  
-c593d2fae592ae Ayala Barazani   2021-12-04  377  	kfree(data);
-c593d2fae592ae Ayala Barazani   2021-12-04  378  }
-c593d2fae592ae Ayala Barazani   2021-12-04  379  IWL_EXPORT_SYMBOL(iwl_uefi_get_sgom_table);
-4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  380  
-4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  381  static int iwl_uefi_uats_parse(struct uefi_cnv_wlan_uats_data *uats_data,
-4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  382  			       struct iwl_fw_runtime *fwrt)
-4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  383  {
-4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  384  	if (uats_data->revision != 1)
-4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  385  		return -EINVAL;
-4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  386  
-4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  387  	memcpy(fwrt->uats_table.offset_map, uats_data->offset_map,
-4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  388  	       sizeof(fwrt->uats_table.offset_map));
-4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  389  	return 0;
-4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  390  }
-4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  391  
-4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22 @392  int iwl_uefi_get_uats_table(struct iwl_trans *trans,
-4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  393  			    struct iwl_fw_runtime *fwrt)
-4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  394  {
-4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  395  	struct uefi_cnv_wlan_uats_data *data;
-4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  396  	int ret;
-4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  397  
-a6dfe1e7440308 Miri Korenblit   2024-01-28  398  	data = iwl_uefi_get_verified_variable(trans, IWL_UEFI_UATS_NAME,
-a6dfe1e7440308 Miri Korenblit   2024-01-28  399  					      "UATS", sizeof(*data), NULL);
-a6dfe1e7440308 Miri Korenblit   2024-01-28  400  	if (IS_ERR(data))
-4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  401  		return -EINVAL;
-4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  402  
-4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  403  	ret = iwl_uefi_uats_parse(data, fwrt);
-4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  404  	if (ret < 0) {
-4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  405  		IWL_DEBUG_FW(trans, "Cannot read UATS table. rev is invalid\n");
-4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  406  		kfree(data);
-4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  407  		return ret;
-4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  408  	}
-4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  409  
-4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  410  	kfree(data);
-4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  411  	return 0;
-4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  412  }
-4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  413  IWL_EXPORT_SYMBOL(iwl_uefi_get_uats_table);
-427661e4c48887 Miri Korenblit   2024-01-31  414  
-
-:::::: The code at line 359 was first introduced by commit
-:::::: c593d2fae592aefaec86f012e1354400b8ac4715 iwlwifi: support SAR GEO Offset Mapping override via BIOS
-
-:::::: TO: Ayala Barazani <ayala.barazani@intel.com>
-:::::: CC: Luca Coelho <luciano.coelho@intel.com>
-
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 5b42bfc..0b2db0d 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -1194,6 +1194,7 @@ struct survey_info {
+ };
+ 
+ #define CFG80211_MAX_NUM_AKM_SUITES	10
++#define CFG80211_MAX_NUM_SAE_DH_GROUPS 10
+ 
+ /**
+  * struct cfg80211_crypto_settings - Crypto settings
+@@ -1235,6 +1236,9 @@ struct survey_info {
+  *
+  *	NL80211_SAE_PWE_BOTH
+  *	  Allow either hunting-and-pecking loop or hash-to-element
++ *
++ * @sae_dh_groups: SAE DH groups in preference order.
++ * @n_sae_dhd_groups: No of SAE DH groups assigned.
+  */
+ struct cfg80211_crypto_settings {
+ 	u32 wpa_versions;
+@@ -1252,6 +1256,8 @@ struct cfg80211_crypto_settings {
+ 	const u8 *sae_pwd;
+ 	u8 sae_pwd_len;
+ 	enum nl80211_sae_pwe_mechanism sae_pwe;
++	u32 sae_dh_groups[CFG80211_MAX_NUM_SAE_DH_GROUPS];
++	u8 n_sae_dh_groups;
+ };
+ 
+ /**
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index 853ac53..7c1a7b4 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -2855,6 +2855,11 @@ enum nl80211_commands {
+  *	%NL80211_CMD_ASSOCIATE indicating the SPP A-MSDUs
+  *	are used on this connection
+  *
++ * @NL80211_ATTR_SAE_DH_GROUPS: Attribute to indicate the supported SAE DH
++ *	groups to driver. For STA role, the dh groups should be tried in the
++ *	indicated order. For AP role, the order does not have any specific
++ *	significance.
++ *
+  * @NUM_NL80211_ATTR: total number of nl80211_attrs available
+  * @NL80211_ATTR_MAX: highest attribute number currently defined
+  * @__NL80211_ATTR_AFTER_LAST: internal use
+@@ -3400,6 +3405,8 @@ enum nl80211_attrs {
+ 
+ 	NL80211_ATTR_ASSOC_SPP_AMSDU,
+ 
++	NL80211_ATTR_SAE_DH_GROUPS,
++
+ 	/* add attributes here, update the policy in nl80211.c */
+ 
+ 	__NL80211_ATTR_AFTER_LAST,
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 68c2040..555eb0f 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -826,6 +826,7 @@ static int validate_he_capa(const struct nlattr *attr,
+ 	[NL80211_ATTR_MLO_TTLM_DLINK] = NLA_POLICY_EXACT_LEN(sizeof(u16) * 8),
+ 	[NL80211_ATTR_MLO_TTLM_ULINK] = NLA_POLICY_EXACT_LEN(sizeof(u16) * 8),
+ 	[NL80211_ATTR_ASSOC_SPP_AMSDU] = { .type = NLA_FLAG },
++	[NL80211_ATTR_SAE_DH_GROUPS] = { .type = NLA_NESTED },
+ };
+ 
+ /* policy for the key attributes */
+@@ -10883,6 +10884,27 @@ static int nl80211_crypto_settings(struct cfg80211_registered_device *rdev,
+ 	else
+ 		settings->sae_pwe = NL80211_SAE_PWE_UNSPECIFIED;
+ 
++	if (info->attrs[NL80211_ATTR_SAE_DH_GROUPS]) {
++		struct nlattr *dh_group;
++		int tmp, i = 0;
++
++		if (!wiphy_ext_feature_isset(&rdev->wiphy,
++					     NL80211_EXT_FEATURE_SAE_OFFLOAD) &&
++		    !wiphy_ext_feature_isset(&rdev->wiphy,
++					     NL80211_EXT_FEATURE_SAE_OFFLOAD_AP))
++			return -EINVAL;
++
++		nla_for_each_nested(dh_group, info->attrs[NL80211_ATTR_SAE_DH_GROUPS],
++		    tmp) {
++			settings->sae_dh_groups[i] = nla_get_u32(dh_group);
++			i++;
++
++			if (i == CFG80211_MAX_NUM_SAE_DH_GROUPS)
++				break;
++		}
++		settings->n_sae_dh_groups = i;
++	}
++
+ 	return 0;
+ }
+ 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+1.8.3.1
+
+
+--000000000000c0b6b80610f323d5
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+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
+RY30ttFfLGgUxOvRzd7UPGXmjiRyV20Vv+kGag5aTueKGHUv49TWypHgJc4PX8L9y3VouEhbWmGb
+bwuQjKELfovabHM5PWUVRda3t72kGFVMkIZ65u6DCdyjPFCUGnMCAwEAAaOCAd0wggHZMA4GA1Ud
+DwEB/wQEAwIFoDCBowYIKwYBBQUHAQEEgZYwgZMwTgYIKwYBBQUHMAKGQmh0dHA6Ly9zZWN1cmUu
+Z2xvYmFsc2lnbi5jb20vY2FjZXJ0L2dzZ2NjcjNwZXJzb25hbHNpZ24yY2EyMDIwLmNydDBBBggr
+BgEFBQcwAYY1aHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJj
+YTIwMjAwTQYDVR0gBEYwRDBCBgorBgEEAaAyASgKMDQwMgYIKwYBBQUHAgEWJmh0dHBzOi8vd3d3
+Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAkGA1UdEwQCMAAwSQYDVR0fBEIwQDA+oDygOoY4
+aHR0cDovL2NybC5nbG9iYWxzaWduLmNvbS9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcmww
+JwYDVR0RBCAwHoEcdmluYXlhay55YWRhd2FkQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEF
+BQcDBDAfBgNVHSMEGDAWgBSWM9HmWBdbNHWKgVZk1b5I3qGPzzAdBgNVHQ4EFgQUS9fHYxc9qAJz
+gfBKun+P2LFASWAwDQYJKoZIhvcNAQELBQADggEBABiMQNJRdQCxXwqwqb49w0ZXCxsSrs3gS4NA
+G3H9oJuvzJ8ml5Z9l9p9PGPHcrmc/BdFjIIu/wQftGETAf1+W6AvxXqYmA2flaogebRueqCMQJiy
+xbJlOSry64AGOzHYULvI70tt9woEYgSx3I703b7c8o7eWCiU267y/WNzH+MpZ12h9q0Jwhw8uH9S
+BTl38q8FNdCLAiM1OD+blhu7LqMLVaAEEeoUGhRxdNkvMGss1Z7/ZefenAfm9IpiaGR0PQhBwI7c
+spqD/wIJUULcXiaj0eatDUjsrx3QN9OZOh3iubCt0uBoxCQUGuvxqd3Qz4FVKMSzEIzs8v/hwR+T
+nTkxggJtMIICaQIBATBrMFsxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNh
+MTEwLwYDVQQDEyhHbG9iYWxTaWduIEdDQyBSMyBQZXJzb25hbFNpZ24gMiBDQSAyMDIwAgxIxd7r
+XtHLz48aMtQwDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIDG0CtGs1L85bA4vBKHo
+HYBJEXKRSR48I8OOCDb9A38AMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkF
+MQ8XDTI0MDIwOTEzNDUyM1owaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJYIZIAWUD
+BAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQowCwYJKoZIhvcNAQEHMAsG
+CWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQCpNbSadD5tAoWw4CQjWDGi++KfoVsV7/e0e6mF
+1ugzv+Lt8OhOkoLVrcwq8FbA3YgrRrQeJJgaeJvYaIST9dh/BIXxHhX/kzGZlIBzHrTXqcRtnp12
+S2xAp6AW0AmNenoaMrYorUwXUw3wGf78Q2QqTmDFRekDl2AyS2aoX+MStRpVTaCZLDnOi/kL4jZL
+GFHOpyz8DPL8dOvT5m60wI9zldFrPbMWU3t8CQmMkVuRbgcGxLIKX5WqdlNipJqjbAVL+8+Grj3G
+aqWYv5Hc4MlA4C12JKmIFEgLyceS2QDO/ycjGZYSWIYE2aCJJ5aqaFgcCfJYSAc1h9KZSt5xx8A9
+--000000000000c0b6b80610f323d5--
 
