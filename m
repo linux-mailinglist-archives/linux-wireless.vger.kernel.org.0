@@ -1,168 +1,178 @@
-Return-Path: <linux-wireless+bounces-3387-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3388-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E978284F4BD
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Feb 2024 12:35:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3177884F4D9
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Feb 2024 12:54:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6AAC7B256EC
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Feb 2024 11:35:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E07042832EF
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Feb 2024 11:54:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF1622E651;
-	Fri,  9 Feb 2024 11:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 444B52E40D;
+	Fri,  9 Feb 2024 11:54:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O2/m8ACL"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="G3Yz7oRJ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33E942DF7D
-	for <linux-wireless@vger.kernel.org>; Fri,  9 Feb 2024 11:35:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D9F2D05B
+	for <linux-wireless@vger.kernel.org>; Fri,  9 Feb 2024 11:54:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707478541; cv=none; b=RdtKDFy3nAmAM5Kj1W2XDUeT+7NbfTmvWOmbIUxI/8lyrIBuPJSdpc/qBP8/8fRDoursk6EljHIAbRIqaDo8cY5Ns1x5fyaj5l5JEU8DlwX+mQe40DGXXQNHPyLTczkOXdKU+vLp63zHEY9LBjO7eiDNsDuhQH8KZOo6RgQe3jc=
+	t=1707479668; cv=none; b=KbcXLovOaq/zznG4547pnXF4y8cw/Fh2rdyI/RBEI9RbT5X7Dk6YiPTs59+WZz+uap8ajtVoarjMVSvwpN52OqWBZfP/SXiFTIhd1nmeeViBBZ2Tq7c8B7UDj1pOIi7dlF2FNL+nVGNJ291yXAsU79bxlC8+slGnQoi1vGRpppY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707478541; c=relaxed/simple;
-	bh=vnkX1URmV9lPk0B92oXHPV+zjITHUhdmL5AhRdIwvAw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lLhg75C8CfyvzyUwmxwU9BMGpgbt5440qwsTPyd7stp7knc61KEbWVFkYwouZP00OMuABYdgitfsWAZEF4y6pgEEWReROWcE8Nem/l/ZjpFC8ScJxP8NzpqlTY8eunCOwsOHioUJmAdMkKk6tGI80WweHzzwFfmhSOpwJLmTFRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O2/m8ACL; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-41059577f26so7805445e9.0
-        for <linux-wireless@vger.kernel.org>; Fri, 09 Feb 2024 03:35:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707478538; x=1708083338; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rtlqHllwjFZl2786B/ZnNk68ctdlZdYfKUj7z5b/g7E=;
-        b=O2/m8ACLZjsiCqXHqwd9OxnrCs/qvpKmyvoqG0JEhf7snpEuD32btgFoEyEXZ52Pzj
-         PbPZSN/W7MDTVH1nlpGM3c6MhAgkiYYFPPwb059a/oiycpVe7LcxZ/9eIJVCjRwhUtg6
-         3pi/klOtqavoL5CJW2XovHlP+KgvBtT19Dyu+/4V+pOlTImwP+utqU+ikPkntDnAqlGz
-         i90KNJPieeWOtsH7ZJGXPbRrKPH+GN8FOJin5ggY/7imewC0WyEJi5mDRQ+Ja5VkSBRg
-         wPa4n6qu8gTYn6FxNjlMRhu2lmeqp+wuBD7zI3HnqhuMSG9IEbsDHbcR/Llw7m2K1v8v
-         Avjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707478538; x=1708083338;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rtlqHllwjFZl2786B/ZnNk68ctdlZdYfKUj7z5b/g7E=;
-        b=Aabv4EBEphEJn8/O/3ZKdWhELvoiqKwTa4Xq9vj12j/NUMCeIQt+TXbjyHQKLdH6Kr
-         5cRq6wIXGHJi7bL6CxBuquOFK/VEWfg0snGu5U0vY+35oXYkg3RoScl1hfO1UDkxC5ZY
-         zXenoOQVX5dQbrduJz6rLtjsu4aHO5KuIEx4uoEHljm3F9tnTuFViCjJtmlg69BgrfHk
-         pg9YNNLgzCZvLmDVJiEcz+XA281pbJzt2u6mKsRsAAl0pmfqlnizt5DO6GTev4U4NXyY
-         Kv/EPWeiXHDMsrbyhDPcInHomJ4Z34KsCMvynrdSOJZDIijy2Fbov4736qmAeqGlXLwP
-         VP0w==
-X-Gm-Message-State: AOJu0YzAHG2IsFu8Z64eZCd8okQ0oPL/hicriUy1SjTVKn3gSj/TcGZI
-	MVMI9DiNUmPnc80vJzZumJWinmr/+QtFv5ZJbvqeZISB5Lxf+GyD
-X-Google-Smtp-Source: AGHT+IHA4KQZAMJuYwS55zu/hXNFYZN3e63pc3he17mm07yp14L6PPs7xrz3EhPSfP9uVJBH4AFn2Q==
-X-Received: by 2002:a05:600c:468e:b0:410:1d09:701f with SMTP id p14-20020a05600c468e00b004101d09701fmr856436wmo.14.1707478538264;
-        Fri, 09 Feb 2024 03:35:38 -0800 (PST)
-Received: from syracuse.iliad.local (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id y18-20020a1c4b12000000b00410723b14e4sm346251wma.19.2024.02.09.03.35.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Feb 2024 03:35:37 -0800 (PST)
-From: Nicolas Escande <nico.escande@gmail.com>
-To: ath11k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH v2 2/2] wifi: ath11k: Remove scan_flags union from struct scan_req_params
-Date: Fri,  9 Feb 2024 12:35:36 +0100
-Message-ID: <20240209113536.266822-3-nico.escande@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240209113536.266822-1-nico.escande@gmail.com>
-References: <20240209113536.266822-1-nico.escande@gmail.com>
+	s=arc-20240116; t=1707479668; c=relaxed/simple;
+	bh=1tg2ZQsPNiTX9bLV9ejW+T1gcQKjTAmtU84wJculzqs=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=eVr5D7ekCNlKHFebXULcpQyNlhuMN03c/lIhk1C5RJ8UGmg5YVxowLuCoUxZwCTiNlTsSLzAcPK5dacm+q5y/rXzR2iCCOxvTcm/ZMka3bo4JQVfxTW4mvxtf/fnm0HOdJYzDY4vLGQeRINwa8O0t5bRp6pjskupQpwSxLmy2mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=G3Yz7oRJ; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1707479666; x=1739015666;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=1tg2ZQsPNiTX9bLV9ejW+T1gcQKjTAmtU84wJculzqs=;
+  b=G3Yz7oRJ2AefHXd0JJRxbLdddVSlicVbfznS3fCCBVhxw16+5fpJUW8P
+   jFhRgI8qmKdiwhDwX84q/NKVDecxP5+7vyqUZZcQSvhDuGTmfKJ3WTA9c
+   xBEXkViqoJn2jFOm6CJpkSHoZCZAeb2d+Y8vV0WN37OfDnjSbQidkQgwj
+   ZPuvzfwVuTz1NQv9qFgeeHICyZvR4r2pCn3PU/fSByAiSjuoI2M0Vb/gj
+   l7u3hoYwkPjXv1HcEw518S/Qkm1SKFOXMjIrzg/AWS7PtpaoohyISe3RE
+   d9bjTn+zxFF/V+l76ZeTkh1ivjzonGC1fl2LD39uc42UsecITwMfP0++8
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10978"; a="1555290"
+X-IronPort-AV: E=Sophos;i="6.05,256,1701158400"; 
+   d="scan'208";a="1555290"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2024 03:54:25 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,256,1701158400"; 
+   d="scan'208";a="1906510"
+Received: from lkp-server01.sh.intel.com (HELO 01f0647817ea) ([10.239.97.150])
+  by fmviesa009.fm.intel.com with ESMTP; 09 Feb 2024 03:54:24 -0800
+Received: from kbuild by 01f0647817ea with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rYPSX-0004gM-2A;
+	Fri, 09 Feb 2024 11:54:21 +0000
+Date: Fri, 9 Feb 2024 19:53:44 +0800
+From: kernel test robot <lkp@intel.com>
+To: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [wireless-next:main 62/81]
+ drivers/net/wireless/intel/iwlwifi/fw/uefi.c:359:6: error: redefinition of
+ 'iwl_uefi_get_sgom_table'
+Message-ID: <202402091914.TvQ2OSQY-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Now that we do not use scan_flags directly with WMI_SCAN_XXX macros anymore but
-only the bitfield scan_f_xxx, lets remove the scan_flags & the underlying union.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+head:   d4655db0a1e11eeacc55c44c81121c83b087982e
+commit: 74f4cd71070538bd9a8b6686fc53e7b77d510afa [62/81] wifi: iwlwifi: take SGOM and UATS code out of ACPI ifdef
+config: arm-allyesconfig (https://download.01.org/0day-ci/archive/20240209/202402091914.TvQ2OSQY-lkp@intel.com/config)
+compiler: arm-linux-gnueabi-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240209/202402091914.TvQ2OSQY-lkp@intel.com/reproduce)
 
-This will prevent further problems as some entries in the scan_f_xxx bitfield
-don't match their corresponding WMI_SCAN_XXX flags as seen in [1]
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202402091914.TvQ2OSQY-lkp@intel.com/
 
-[1] https://lore.kernel.org/all/20231127180559.1696041-1-nico.escande@gmail.com/
+All errors (new ones prefixed by >>):
 
-Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
----
- drivers/net/wireless/ath/ath11k/wmi.h | 55 ++++++++++++---------------
- 1 file changed, 25 insertions(+), 30 deletions(-)
+>> drivers/net/wireless/intel/iwlwifi/fw/uefi.c:359:6: error: redefinition of 'iwl_uefi_get_sgom_table'
+     359 | void iwl_uefi_get_sgom_table(struct iwl_trans *trans,
+         |      ^~~~~~~~~~~~~~~~~~~~~~~
+   In file included from drivers/net/wireless/intel/iwlwifi/fw/uefi.c:11:
+   drivers/net/wireless/intel/iwlwifi/fw/uefi.h:294:6: note: previous definition of 'iwl_uefi_get_sgom_table' with type 'void(struct iwl_trans *, struct iwl_fw_runtime *)'
+     294 | void iwl_uefi_get_sgom_table(struct iwl_trans *trans, struct iwl_fw_runtime *fwrt)
+         |      ^~~~~~~~~~~~~~~~~~~~~~~
+>> drivers/net/wireless/intel/iwlwifi/fw/uefi.c:392:5: error: redefinition of 'iwl_uefi_get_uats_table'
+     392 | int iwl_uefi_get_uats_table(struct iwl_trans *trans,
+         |     ^~~~~~~~~~~~~~~~~~~~~~~
+   drivers/net/wireless/intel/iwlwifi/fw/uefi.h:299:5: note: previous definition of 'iwl_uefi_get_uats_table' with type 'int(struct iwl_trans *, struct iwl_fw_runtime *)'
+     299 | int iwl_uefi_get_uats_table(struct iwl_trans *trans,
+         |     ^~~~~~~~~~~~~~~~~~~~~~~
 
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
-index 6dcd14700570..bc7adf7f13fb 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.h
-+++ b/drivers/net/wireless/ath/ath11k/wmi.h
-@@ -3394,36 +3394,31 @@ struct scan_req_params {
- 	u32 idle_time;
- 	u32 max_scan_time;
- 	u32 probe_delay;
--	union {
--		struct {
--			u32 scan_f_passive:1,
--			    scan_f_bcast_probe:1,
--			    scan_f_cck_rates:1,
--			    scan_f_ofdm_rates:1,
--			    scan_f_chan_stat_evnt:1,
--			    scan_f_filter_prb_req:1,
--			    scan_f_bypass_dfs_chn:1,
--			    scan_f_continue_on_err:1,
--			    scan_f_offchan_mgmt_tx:1,
--			    scan_f_offchan_data_tx:1,
--			    scan_f_promisc_mode:1,
--			    scan_f_capture_phy_err:1,
--			    scan_f_strict_passive_pch:1,
--			    scan_f_half_rate:1,
--			    scan_f_quarter_rate:1,
--			    scan_f_force_active_dfs_chn:1,
--			    scan_f_add_tpc_ie_in_probe:1,
--			    scan_f_add_ds_ie_in_probe:1,
--			    scan_f_add_spoofed_mac_in_probe:1,
--			    scan_f_add_rand_seq_in_probe:1,
--			    scan_f_en_ie_whitelist_in_probe:1,
--			    scan_f_forced:1,
--			    scan_f_2ghz:1,
--			    scan_f_5ghz:1,
--			    scan_f_80mhz:1;
--		};
--		u32 scan_flags;
--	};
-+	u32 scan_f_passive:1,
-+	    scan_f_bcast_probe:1,
-+	    scan_f_cck_rates:1,
-+	    scan_f_ofdm_rates:1,
-+	    scan_f_chan_stat_evnt:1,
-+	    scan_f_filter_prb_req:1,
-+	    scan_f_bypass_dfs_chn:1,
-+	    scan_f_continue_on_err:1,
-+	    scan_f_offchan_mgmt_tx:1,
-+	    scan_f_offchan_data_tx:1,
-+	    scan_f_promisc_mode:1,
-+	    scan_f_capture_phy_err:1,
-+	    scan_f_strict_passive_pch:1,
-+	    scan_f_half_rate:1,
-+	    scan_f_quarter_rate:1,
-+	    scan_f_force_active_dfs_chn:1,
-+	    scan_f_add_tpc_ie_in_probe:1,
-+	    scan_f_add_ds_ie_in_probe:1,
-+	    scan_f_add_spoofed_mac_in_probe:1,
-+	    scan_f_add_rand_seq_in_probe:1,
-+	    scan_f_en_ie_whitelist_in_probe:1,
-+	    scan_f_forced:1,
-+	    scan_f_2ghz:1,
-+	    scan_f_5ghz:1,
-+	    scan_f_80mhz:1;
- 	enum scan_dwelltime_adaptive_mode adaptive_dwell_time_mode;
- 	u32 burst_duration;
- 	u32 num_chan;
+
+vim +/iwl_uefi_get_sgom_table +359 drivers/net/wireless/intel/iwlwifi/fw/uefi.c
+
+c593d2fae592ae Ayala Barazani   2021-12-04  358  
+c593d2fae592ae Ayala Barazani   2021-12-04 @359  void iwl_uefi_get_sgom_table(struct iwl_trans *trans,
+c593d2fae592ae Ayala Barazani   2021-12-04  360  			     struct iwl_fw_runtime *fwrt)
+c593d2fae592ae Ayala Barazani   2021-12-04  361  {
+c593d2fae592ae Ayala Barazani   2021-12-04  362  	struct uefi_cnv_wlan_sgom_data *data;
+0c4bad7f47c4e5 Ard Biesheuvel   2022-06-17  363  	int ret;
+c593d2fae592ae Ayala Barazani   2021-12-04  364  
+8ae3e23195188a Gregory Greenman 2023-06-06  365  	if (!fwrt->geo_enabled)
+c593d2fae592ae Ayala Barazani   2021-12-04  366  		return;
+c593d2fae592ae Ayala Barazani   2021-12-04  367  
+a6dfe1e7440308 Miri Korenblit   2024-01-28  368  	data = iwl_uefi_get_verified_variable(trans, IWL_UEFI_SGOM_NAME,
+a6dfe1e7440308 Miri Korenblit   2024-01-28  369  					      "SGOM", sizeof(*data), NULL);
+a6dfe1e7440308 Miri Korenblit   2024-01-28  370  	if (IS_ERR(data))
+0c4bad7f47c4e5 Ard Biesheuvel   2022-06-17  371  		return;
+c593d2fae592ae Ayala Barazani   2021-12-04  372  
+c593d2fae592ae Ayala Barazani   2021-12-04  373  	ret = iwl_uefi_sgom_parse(data, fwrt);
+c593d2fae592ae Ayala Barazani   2021-12-04  374  	if (ret < 0)
+c593d2fae592ae Ayala Barazani   2021-12-04  375  		IWL_DEBUG_FW(trans, "Cannot read SGOM tables. rev is invalid\n");
+c593d2fae592ae Ayala Barazani   2021-12-04  376  
+c593d2fae592ae Ayala Barazani   2021-12-04  377  	kfree(data);
+c593d2fae592ae Ayala Barazani   2021-12-04  378  }
+c593d2fae592ae Ayala Barazani   2021-12-04  379  IWL_EXPORT_SYMBOL(iwl_uefi_get_sgom_table);
+4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  380  
+4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  381  static int iwl_uefi_uats_parse(struct uefi_cnv_wlan_uats_data *uats_data,
+4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  382  			       struct iwl_fw_runtime *fwrt)
+4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  383  {
+4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  384  	if (uats_data->revision != 1)
+4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  385  		return -EINVAL;
+4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  386  
+4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  387  	memcpy(fwrt->uats_table.offset_map, uats_data->offset_map,
+4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  388  	       sizeof(fwrt->uats_table.offset_map));
+4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  389  	return 0;
+4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  390  }
+4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  391  
+4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22 @392  int iwl_uefi_get_uats_table(struct iwl_trans *trans,
+4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  393  			    struct iwl_fw_runtime *fwrt)
+4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  394  {
+4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  395  	struct uefi_cnv_wlan_uats_data *data;
+4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  396  	int ret;
+4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  397  
+a6dfe1e7440308 Miri Korenblit   2024-01-28  398  	data = iwl_uefi_get_verified_variable(trans, IWL_UEFI_UATS_NAME,
+a6dfe1e7440308 Miri Korenblit   2024-01-28  399  					      "UATS", sizeof(*data), NULL);
+a6dfe1e7440308 Miri Korenblit   2024-01-28  400  	if (IS_ERR(data))
+4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  401  		return -EINVAL;
+4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  402  
+4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  403  	ret = iwl_uefi_uats_parse(data, fwrt);
+4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  404  	if (ret < 0) {
+4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  405  		IWL_DEBUG_FW(trans, "Cannot read UATS table. rev is invalid\n");
+4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  406  		kfree(data);
+4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  407  		return ret;
+4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  408  	}
+4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  409  
+4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  410  	kfree(data);
+4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  411  	return 0;
+4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  412  }
+4a9bb5b4d94999 Mukesh Sisodiya  2023-10-22  413  IWL_EXPORT_SYMBOL(iwl_uefi_get_uats_table);
+427661e4c48887 Miri Korenblit   2024-01-31  414  
+
+:::::: The code at line 359 was first introduced by commit
+:::::: c593d2fae592aefaec86f012e1354400b8ac4715 iwlwifi: support SAR GEO Offset Mapping override via BIOS
+
+:::::: TO: Ayala Barazani <ayala.barazani@intel.com>
+:::::: CC: Luca Coelho <luciano.coelho@intel.com>
+
 -- 
-2.43.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
