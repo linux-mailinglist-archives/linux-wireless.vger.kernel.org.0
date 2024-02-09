@@ -1,150 +1,104 @@
-Return-Path: <linux-wireless+bounces-3366-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3367-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AAA684EE73
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Feb 2024 01:51:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1D8184EF65
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Feb 2024 04:30:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D974AB2874B
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Feb 2024 00:51:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4A081F22FAF
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Feb 2024 03:30:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B051015AF;
-	Fri,  9 Feb 2024 00:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C5F35258;
+	Fri,  9 Feb 2024 03:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DoJt1guy"
+	dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b="TLZK5XZC"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71EC31366
-	for <linux-wireless@vger.kernel.org>; Fri,  9 Feb 2024 00:51:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 004005221;
+	Fri,  9 Feb 2024 03:29:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707439872; cv=none; b=UpBqB65KdntXmyZ4stRyqLQ72k6gW0R7RoCaIysbFoeEAHGZuIwllY4B+jkenCI73DnG4CbugHgbqQjz549K+GZW90PqGSQcmitwO9roma3u3AJ7BfC//nFlWcZGWcLFbKvlYsVF4aEFvihFOI5ljHrZe+6o2FfoLm/eEzYIqzw=
+	t=1707449397; cv=none; b=A7tdijWRa5f5ZrG/mXfbkb81+QL5NOk7f7lKhAO8luEG78ZCK8bL6h19z3Qlm1k6w372K9a1rwNjpnxo8ex/xjEaj1g6mDK/OO756GmhxwuI0HKQf4yqO9Dz0zMa+zb3LkWPbKCQk7Ka2VKVVXHkb5ALphmf66DCu9eufK63CSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707439872; c=relaxed/simple;
-	bh=rMoBWoQ8IQGZqC9VrNz4ZerwsCRMosmLHiRyZB+esps=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=szryGTIJJbY+d4nhKG93FvszA+53nb53kwPyDJO41GiLRhA6LIZUlpu190sHaYfE5amo+GZSjNxt01BtwpoSP9yrYX5AvfWVj0RO+SLF1wWD5nkmRJPjGz433VwZCz9ZFZSe14Zf6kmlUo2PUTbFZSkh4bDV0Sy9mzx3Kc6YhcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DoJt1guy; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707439870; x=1738975870;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=rMoBWoQ8IQGZqC9VrNz4ZerwsCRMosmLHiRyZB+esps=;
-  b=DoJt1guyE/G8aKydTKzyd2Ds/NoBPYBuNoXmwBWT/gBnZQ273yjmm77E
-   vE7tEwrsuZ0ib34NX2aWEKOqQTffo8vGQY4+HEp//tgsXdBDnbKFeEDOp
-   DeUGTaobhBQUlnoBVGsBbOVm3RrqPIR9p6j8J7CDMaV1oSViJwAUAwIXZ
-   VRVYXCSwsQbTJ65j9YiNloqSCoLo1+MgZw/LgMF4UUDfr9yGHo0VEL2uo
-   TNfQ52780ZTfLD/7wY+VUSprpbeVz8zkntvNsnigcX5UOlBezf/zux1t7
-   cJuWFxj60iULAS0Rl8SWC/3uuHmvyoVLV5M5Gr0Ko0fSpgF7VjwUsJKom
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10978"; a="5202932"
-X-IronPort-AV: E=Sophos;i="6.05,255,1701158400"; 
-   d="scan'208";a="5202932"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2024 16:51:10 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,255,1701158400"; 
-   d="scan'208";a="2035502"
-Received: from lkp-server01.sh.intel.com (HELO 01f0647817ea) ([10.239.97.150])
-  by fmviesa008.fm.intel.com with ESMTP; 08 Feb 2024 16:51:07 -0800
-Received: from kbuild by 01f0647817ea with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rYF6e-0004FA-1I;
-	Fri, 09 Feb 2024 00:51:04 +0000
-Date: Fri, 9 Feb 2024 08:50:34 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ping-Ke Shih <pkshih@realtek.com>, kvalo@kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	gary.chang@realtek.com, phhuang@realtek.com, kevin_yang@realtek.com,
-	linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 02/11] wifi: rtw89: load BB parameters to PHY-1
-Message-ID: <202402090838.S5xcKIlg-lkp@intel.com>
-References: <20240208022857.14379-3-pkshih@realtek.com>
+	s=arc-20240116; t=1707449397; c=relaxed/simple;
+	bh=aEjuYK57JV00RgqKhkXxxSVib+YM+81Zs1wKu6j2OwU=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=amilKV+qmUCoGoaw6R8SEodh7Az02Q7/dPkvWzbMrglBGQT+n4tInRm4SOmtiCPx+ifK4VcDA+MzhhVOW8sJw8loTuVsCVGF/irTUbfCINqn14jl5n4f8aP3BKKsDdVfzp/wzKZGUndmNDSa2wP1VeFG3kiRVXkKHuEerZdJBjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; spf=pass smtp.mailfrom=canb.auug.org.au; dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b=TLZK5XZC; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canb.auug.org.au
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=201702; t=1707449393;
+	bh=hVlvcab28mm7oJHV3nyyIC1q5542oDiRfCk+alo0clY=;
+	h=Date:From:To:Cc:Subject:From;
+	b=TLZK5XZC+qM3gCrvcW5QaZNNqXvR7dRzbiwtnHEi52A1FbvUXqNdr+055IJhb/l5T
+	 RKgOiFzWox8CQvXNacNnDr1aJKybd0X71f3gnvICzenH8bAeayGikHJELb/1jk0eTe
+	 nBavEZXjTCPrth7yi5Ugwy9IQPglive5ewPK3MFkCLh86ge7dRR72z/DvhzbcV80sL
+	 T2jKSJjurl+Gsi326bVaZ5vmsMZ/IHc2Larrmnj5h3LhMCHEBBgo+/uSv/qzo1LSW2
+	 waXL2vBU2JfUIxUXWmzPPHIirUeujzLus7j1CKRNevjfnNpG45xOOMrh2TiiWTQ2+z
+	 W2hEzzEMIjj5Q==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4TWK9C6w2lz4wcn;
+	Fri,  9 Feb 2024 14:29:51 +1100 (AEDT)
+Date: Fri, 9 Feb 2024 14:29:50 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Kalle Valo <kvalo@kernel.org>, Johannes Berg <johannes@sipsolutions.net>
+Cc: Wireless <linux-wireless@vger.kernel.org>, Johannes Berg
+ <johannes.berg@intel.com>, Linux Kernel Mailing List
+ <linux-kernel@vger.kernel.org>, Linux Next Mailing List
+ <linux-next@vger.kernel.org>
+Subject: linux-next: build warning after merge of the wireless-next tree
+Message-ID: <20240209142950.703eca9b@canb.auug.org.au>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240208022857.14379-3-pkshih@realtek.com>
+Content-Type: multipart/signed; boundary="Sig_/hbmDQp./E6WiNTxV7WTGqWS";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 
-Hi Ping-Ke,
+--Sig_/hbmDQp./E6WiNTxV7WTGqWS
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-kernel test robot noticed the following build warnings:
+Hi all,
 
-[auto build test WARNING on wireless-next/main]
-[also build test WARNING on next-20240208]
-[cannot apply to wireless/main linus/master v6.8-rc3]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+After merging the wireless-next tree, today's linux-next build (htmldocs)
+produced this warning:
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Ping-Ke-Shih/wifi-rtw89-correct-PHY-register-offset-for-PHY-1/20240208-103413
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-patch link:    https://lore.kernel.org/r/20240208022857.14379-3-pkshih%40realtek.com
-patch subject: [PATCH 02/11] wifi: rtw89: load BB parameters to PHY-1
-config: powerpc-allyesconfig (https://download.01.org/0day-ci/archive/20240209/202402090838.S5xcKIlg-lkp@intel.com/config)
-compiler: clang version 19.0.0git (https://github.com/llvm/llvm-project 7dd790db8b77c4a833c06632e903dc4f13877a64)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240209/202402090838.S5xcKIlg-lkp@intel.com/reproduce)
+include/net/cfg80211.h:1067: warning: expecting prototype for cfg80211_chan=
+def_primary_freq(). Prototype was for cfg80211_chandef_primary() instead
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202402090838.S5xcKIlg-lkp@intel.com/
+Introduced by commit
 
-All warnings (new ones prefixed by >>):
+  b82730bf57b5 ("wifi: cfg80211/mac80211: move puncturing into chandef")
 
->> drivers/net/wireless/realtek/rtw89/phy.c:1047:7: warning: cast to smaller integer type 'enum rtw89_phy_idx' from 'void *' [-Wvoid-pointer-to-enum-cast]
-    1047 |                 if ((enum rtw89_phy_idx)extra_data == RTW89_PHY_1)
-         |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   1 warning generated.
+--=20
+Cheers,
+Stephen Rothwell
 
+--Sig_/hbmDQp./E6WiNTxV7WTGqWS
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
-vim +1047 drivers/net/wireless/realtek/rtw89/phy.c
+-----BEGIN PGP SIGNATURE-----
 
-  1022	
-  1023	static void rtw89_phy_config_bb_reg(struct rtw89_dev *rtwdev,
-  1024					    const struct rtw89_reg2_def *reg,
-  1025					    enum rtw89_rf_path rf_path,
-  1026					    void *extra_data)
-  1027	{
-  1028		u32 addr;
-  1029	
-  1030		if (reg->addr == 0xfe) {
-  1031			mdelay(50);
-  1032		} else if (reg->addr == 0xfd) {
-  1033			mdelay(5);
-  1034		} else if (reg->addr == 0xfc) {
-  1035			mdelay(1);
-  1036		} else if (reg->addr == 0xfb) {
-  1037			udelay(50);
-  1038		} else if (reg->addr == 0xfa) {
-  1039			udelay(5);
-  1040		} else if (reg->addr == 0xf9) {
-  1041			udelay(1);
-  1042		} else if (reg->data == BYPASS_CR_DATA) {
-  1043			rtw89_debug(rtwdev, RTW89_DBG_PHY_TRACK, "Bypass CR 0x%x\n", reg->addr);
-  1044		} else {
-  1045			addr = reg->addr;
-  1046	
-> 1047			if ((enum rtw89_phy_idx)extra_data == RTW89_PHY_1)
-  1048				addr += rtw89_phy0_phy1_offset(rtwdev, reg->addr);
-  1049	
-  1050			rtw89_phy_write32(rtwdev, addr, reg->data);
-  1051		}
-  1052	}
-  1053	
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmXFnC4ACgkQAVBC80lX
+0GxmkAf/aQ96UE4nadoI0OsRscNwIKzvY0qZgr/tFwoS/Io21ubjazcSbBg3TLff
+22tzNQGYnUHfL4kaKQgNlYktIPKmShHVO+nxGN4X2bCDU+VqVqRhPlMyK0veqirh
+rQ4UMj8FLNXgn6p0VnCFpA0DEpJ2XwsOEAE67JFIuTx1tEpi0EqixJoURMwKRIgh
+3h50otzW5uiQGDfOcKSK+iUhGsVnA553XgDoq4IO4xUQfekOQxWQ+egkgkMspENd
+rgPU2NfOzxnVphO2pCeRcPhcGMXQnm6sxz6xMINyBNNk/6eYkXAiwd9pyTZlZaS8
+UGGMYhndqKsVjH/kl3jtfa3EFjwygg==
+=/yHM
+-----END PGP SIGNATURE-----
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+--Sig_/hbmDQp./E6WiNTxV7WTGqWS--
 
