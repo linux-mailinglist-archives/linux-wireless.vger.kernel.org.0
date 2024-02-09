@@ -1,42 +1,43 @@
-Return-Path: <linux-wireless+bounces-3399-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3398-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 773E184F729
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Feb 2024 15:21:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 071E184F723
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Feb 2024 15:20:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CBE928B938
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Feb 2024 14:21:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 709881F2165E
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Feb 2024 14:20:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DB5D6A002;
-	Fri,  9 Feb 2024 14:14:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 901567BB1E;
+	Fri,  9 Feb 2024 14:14:53 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6967AE4A;
-	Fri,  9 Feb 2024 14:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5653B79941;
+	Fri,  9 Feb 2024 14:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.96.170.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707488094; cv=none; b=LgHLn2rTK/gkS/22ClL3IsXyKR4ekiDKK2nVjlRL9bSkseBFpPcxAag/wEonezkuVL+AA4+jsRHcYVOV+51euABvvrUhF2UWS4R4wwegfoU5AET1P8THerocx/P9zy1J5e/SorbYlHKZzBsPY7LaeL4wVDschJEXpQitH4Xzq8Q=
+	t=1707488093; cv=none; b=tzlA8DMQEwHP6OK3JhcXlheBXT522+P8n8kmysO4m027DaUZ24u39qLLod1kLjF6hR7J4qstabZnYwhA4/m2vsE9dXNCtkUTbqht38q4FkmldqUqNeVpDMZv21ZYgLLlRd3DIYqYc7dmX9QgO+Z2XECd7Nj3lv5QVDCdc8wDV/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707488094; c=relaxed/simple;
-	bh=Fdyr0vbCOxxml792JxhFekjDRwIaFLknFjO9gt91Sd0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=hAYGNcokSn3KVqZR4vovQg9xynfSn2/zVBBN+xunvX8vENhtyciQpyJG34OVcev5bHGNCDzAnD6gMm720RI3mf4I8AJ2EXXgRsryKQj7xRp3nZ9jKOkM/39RDLbmLI1VlsbsbKo1//wn0wEbY5xJbvvO/2qDBHBk+4hYSFYgeVc=
+	s=arc-20240116; t=1707488093; c=relaxed/simple;
+	bh=7P1hI9/Ao5J67cYY+F3SHkarvsguRNc1kwQUZSw4MpI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Aa8BDgQAVuhVnpG0D09r0kSWccrWTkyr/xqKKqdp7qxKZH4cHITFtAuN2wCCBYlAOd9GHRE1ZUxdvlwoQPFuU9MxnwlqQWTghv2r0kf6paNeN/F1Cs9B2c/Q3yY2n8L5KHUVw7j5CWWLKsouKQyobIOQOj2MN9qY9+U1XRjoBkQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; arc=none smtp.client-ip=79.96.170.134
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rjwysocki.net
 Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
  by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.4.0)
- id c430e78c73a3d589; Fri, 9 Feb 2024 15:14:49 +0100
+ id 4bb44e534049fc2e; Fri, 9 Feb 2024 15:14:48 +0100
 Received: from kreacher.localnet (unknown [195.136.19.94])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by cloudserver094114.home.pl (Postfix) with ESMTPSA id 04D75669C4D;
-	Fri,  9 Feb 2024 15:14:49 +0100 (CET)
+	by cloudserver094114.home.pl (Postfix) with ESMTPSA id DDFB6669C4D;
+	Fri,  9 Feb 2024 15:14:47 +0100 (CET)
 From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
 To: Linux PM <linux-pm@vger.kernel.org>
 Cc: Lukasz Luba <lukasz.luba@arm.com>, LKML <linux-kernel@vger.kernel.org>,
@@ -50,9 +51,11 @@ Cc: Lukasz Luba <lukasz.luba@arm.com>, LKML <linux-kernel@vger.kernel.org>,
  Sascha Hauer <s.hauer@pengutronix.de>,
  Pengutronix Kernel Team <kernel@pengutronix.de>,
  Manaf Meethalavalappu Pallikunhi <quic_manafm@quicinc.com>
-Subject: [PATCH v1 0/9] thermal: Writable trip points handling rework
-Date: Fri, 09 Feb 2024 15:02:23 +0100
-Message-ID: <3232442.5fSG56mABF@kreacher>
+Subject: [PATCH v1 1/9] thermal: Get rid of CONFIG_THERMAL_WRITABLE_TRIPS
+Date: Fri, 09 Feb 2024 15:05:25 +0100
+Message-ID: <1809389.VLH7GnMWUR@kreacher>
+In-Reply-To: <3232442.5fSG56mABF@kreacher>
+References: <3232442.5fSG56mABF@kreacher>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -64,68 +67,110 @@ Content-Type: text/plain; charset="UTF-8"
 X-CLIENT-IP: 195.136.19.94
 X-CLIENT-HOSTNAME: 195.136.19.94
 X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvledrtdeigdeitdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpeegfffhudejlefhtdegffekteduhfethffhieettefhkeevgfdvgfefieekiefgheenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppeduleehrddufeeirdduledrleegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepudelhedrudefiedrudelrdelgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepudeipdhrtghpthhtoheplhhinhhugidqphhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhukhgrshiirdhluhgsrgesrghrmhdrtghomhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghnihgvlhdrlhgviigtrghnoheslhhinhgr
- rhhordhorhhgpdhrtghpthhtohepshhtrghnihhslhgrfidrghhruhhsiihkrgeslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehsrhhinhhivhgrshdrphgrnhgurhhuvhgruggrsehlihhnuhigrdhinhhtvghlrdgtohhm
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvledrtdeigdeitdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkjghfggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpedvffeuiedtgfdvtddugeeujedtffetteegfeekffdvfedttddtuefhgeefvdejhfenucfkphepudelhedrudefiedrudelrdelgeenucevlhhushhtvghrufhiiigvpedvnecurfgrrhgrmhepihhnvghtpeduleehrddufeeirdduledrleegpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeduiedprhgtphhtthhopehlihhnuhigqdhpmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehluhhkrghsiidrlhhusggrsegrrhhmrdgtohhmpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrnhhivghlrdhlvgiitggrnhhosehlihhnrghrohdrohhrghdprhgtphhtthhopehsthgr
+ nhhishhlrgifrdhgrhhushiikhgrsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepshhrihhnihhvrghsrdhprghnughruhhvrggurgeslhhinhhugidrihhnthgvlhdrtghomh
 X-DCC--Metrics: v370.home.net.pl 1024; Body=16 Fuz1=16 Fuz2=16
 
-Hi Everyone,
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-The purpose of this patch series is to allow thermal zone creators
-to specify which properties (temperature or hysteresis) of which
-trip points can be set from user space via sysfs on a per-trip basis
-instead of passing writable trips masks to the thermal zone registration
-function which is both cumbersome and error prone and it doesn't even
-allow to request different treatment of different trip properties.
+The only difference made by CONFIG_THERMAL_WRITABLE_TRIPS is whether or
+not the writable trips mask passed during thermal zone registration
+will take any effect, but whoever passes a non-zero writable trips mask
+to thermal_zone_device_register_with_trips() can be forgiven thinking
+that it will always work.
 
-The writable trip masks used today only affect trip temperatures (that is, if
-a trip point is in a writable trips mask, its temperature can be set via
-sysfs) and they only take effect if the CONFIG_THERMAL_WRITABLE_TRIPS kernel
-configuration option is set, which appears to be assumed by at least some
-of the drivers using writable trips masks.  Some other drivers using them
-simply select CONFIG_THERMAL_WRITABLE_TRIPS which pretty much defeats its
-purpose (and imx even sets this option in its defconfig).
+Moreover, some thermal drivers expect user space to set trip temperature
+values, so they select CONFIG_THERMAL_WRITABLE_TRIPS, possibly overriding
+a manual choice to unset it and going against the design purportedly
+allowing system integrators to decide on the writability of trip points
+for the given kernel build.  It is also set in one platform's defconfig.
 
-For this reasons, patch [1/9] removes CONFIG_THERMAL_WRITABLE_TRIPS and makes
-the writable trips masks always work.
+Forthermore, CONFIG_THERMAL_WRITABLE_TRIPS only affects trip temperature,
+because trip hysteresis is writable as long as the thermal zone provides
+a callback to update it, regardless of the CONFIG_THERMAL_WRITABLE_TRIPS
+value.
 
-Moreover, trip hysteresis, which is not affected either by the writable trips
-masks or by CONFIG_THERMAL_WRITABLE_TRIPS, can only be set via sysfs if the
-.set_trip_hyst() operation is provided by the given thermal zone, but currently
-this thermal zone operation is used by no one, so effectively trip hysteresis
-cannot be set via sysfs at all.  This is not a problem for the majority of
-drivers that want trip temperatures to be set via sysfs, because they also
-don't want trip hysteresis to be changed for any trips (at least as far as I
-can say), but there are use cases in which it is desirable to be able to
-update trip hysteresis as well as trip temperature (for example see
-https://lore.kernel.org/linux-pm/20240106191502.29126-1-quic_manafm@quicinc.com/).
-Those use cases are not addressed here directly, but after this series
-addressing them should be relatively straightforward.
+The above means that the symbol in question is used inconsistently and
+its purpose is at least moot, so remove it and always take the writable
+trip mask passed to thermal_zone_device_register_with_trips() into
+account.
 
-Namely, patch [2/9] adds flags to struct thermal_trip and defines two of them
-to indicate whether or not setting the temperature or hysteresis of the given
-trip via sysfs is allowed.  If a writable trips mask is passed to
-thermal_zone_device_register_with_trips(), is it is used to set the
-"writable temperature" flag for the trips covered by it and that flag is
-then consulted by the thermal sysfs code.  The "writable hysteresis" trip
-flag is also taken into account by the thermal sysfs code, but it is not set
-automatically in any case.
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ arch/arm/configs/imx_v6_v7_defconfig |    1 -
+ drivers/thermal/Kconfig              |   11 -----------
+ drivers/thermal/intel/Kconfig        |    2 --
+ drivers/thermal/thermal_sysfs.c      |    8 +++-----
+ 4 files changed, 3 insertions(+), 19 deletions(-)
 
-Patch [3/9] is based on the observation that the .set_trip_hyst() thermal zone
-operation is never used - it simply drops that callback from struct
-thermal_zone_device_ops and adjusts the code checking its presence.
-
-Patches [4-8/9] update drivers using writable trips masks to set the new
-"writable temperature" flag directly instead and some of them are simplified
-a bit as a result.  After these patches, all of the callers of
-thermal_zone_device_register_with_trips() pass a zero writable trips mask
-to it, so patch [9/9] drops that mask from the functions argument list and
-adjusts all of its callers accordingly.
-
-After all of the changes in this series, allowing the hysteresis value to be
-set via sysfs for a given trip is a matter of setting its "writable
-hysteresis" flag (and analogously for trip temperature).
-
-Thanks!
+Index: linux-pm/drivers/thermal/Kconfig
+===================================================================
+--- linux-pm.orig/drivers/thermal/Kconfig
++++ linux-pm/drivers/thermal/Kconfig
+@@ -83,17 +83,6 @@ config THERMAL_OF
+ 	  Say 'Y' here if you need to build thermal infrastructure
+ 	  based on device tree.
+ 
+-config THERMAL_WRITABLE_TRIPS
+-	bool "Enable writable trip points"
+-	help
+-	  This option allows the system integrator to choose whether
+-	  trip temperatures can be changed from userspace. The
+-	  writable trips need to be specified when setting up the
+-	  thermal zone but the choice here takes precedence.
+-
+-	  Say 'Y' here if you would like to allow userspace tools to
+-	  change trip temperatures.
+-
+ choice
+ 	prompt "Default Thermal governor"
+ 	default THERMAL_DEFAULT_GOV_STEP_WISE
+Index: linux-pm/drivers/thermal/thermal_sysfs.c
+===================================================================
+--- linux-pm.orig/drivers/thermal/thermal_sysfs.c
++++ linux-pm/drivers/thermal/thermal_sysfs.c
+@@ -458,8 +458,7 @@ static int create_trip_attrs(struct ther
+ 						tz->trip_temp_attrs[indx].name;
+ 		tz->trip_temp_attrs[indx].attr.attr.mode = S_IRUGO;
+ 		tz->trip_temp_attrs[indx].attr.show = trip_point_temp_show;
+-		if (IS_ENABLED(CONFIG_THERMAL_WRITABLE_TRIPS) &&
+-		    mask & (1 << indx)) {
++		if (mask & (1 << indx)) {
+ 			tz->trip_temp_attrs[indx].attr.attr.mode |= S_IWUSR;
+ 			tz->trip_temp_attrs[indx].attr.store =
+ 							trip_point_temp_store;
+Index: linux-pm/drivers/thermal/intel/Kconfig
+===================================================================
+--- linux-pm.orig/drivers/thermal/intel/Kconfig
++++ linux-pm/drivers/thermal/intel/Kconfig
+@@ -23,7 +23,6 @@ config X86_PKG_TEMP_THERMAL
+ 	tristate "X86 package temperature thermal driver"
+ 	depends on X86_THERMAL_VECTOR
+ 	select THERMAL_GOV_USER_SPACE
+-	select THERMAL_WRITABLE_TRIPS
+ 	select INTEL_TCC
+ 	default m
+ 	help
+@@ -47,7 +46,6 @@ config INTEL_SOC_DTS_THERMAL
+ 	tristate "Intel SoCs DTS thermal driver"
+ 	depends on X86 && PCI && ACPI
+ 	select INTEL_SOC_DTS_IOSF_CORE
+-	select THERMAL_WRITABLE_TRIPS
+ 	help
+ 	  Enable this to register Intel SoCs (e.g. Bay Trail) platform digital
+ 	  temperature sensor (DTS). These SoCs have two additional DTSs in
+Index: linux-pm/arch/arm/configs/imx_v6_v7_defconfig
+===================================================================
+--- linux-pm.orig/arch/arm/configs/imx_v6_v7_defconfig
++++ linux-pm/arch/arm/configs/imx_v6_v7_defconfig
+@@ -228,7 +228,6 @@ CONFIG_SENSORS_IIO_HWMON=y
+ CONFIG_SENSORS_PWM_FAN=y
+ CONFIG_SENSORS_SY7636A=y
+ CONFIG_THERMAL_STATISTICS=y
+-CONFIG_THERMAL_WRITABLE_TRIPS=y
+ CONFIG_CPU_THERMAL=y
+ CONFIG_IMX_THERMAL=y
+ CONFIG_WATCHDOG=y
 
 
 
