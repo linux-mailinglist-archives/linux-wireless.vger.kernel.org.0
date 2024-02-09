@@ -1,130 +1,150 @@
-Return-Path: <linux-wireless+bounces-3365-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3366-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC06984EE6C
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Feb 2024 01:37:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AAA684EE73
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Feb 2024 01:51:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 149F61F272F0
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Feb 2024 00:37:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D974AB2874B
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Feb 2024 00:51:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DA34632;
-	Fri,  9 Feb 2024 00:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B051015AF;
+	Fri,  9 Feb 2024 00:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=egauge.net header.i=@egauge.net header.b="rMmQuBWx"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DoJt1guy"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-io1-f45.google.com (mail-io1-f45.google.com [209.85.166.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A03AB36E
-	for <linux-wireless@vger.kernel.org>; Fri,  9 Feb 2024 00:37:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71EC31366
+	for <linux-wireless@vger.kernel.org>; Fri,  9 Feb 2024 00:51:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707439053; cv=none; b=aNxkBM7552YxwyS8Dhsk1kmwILwzigMNbjdmWIFq6B0AWMEpAXpKJ6lJiZWVUDvX4GcQmzlPBWiKLWof0fq7FDsNAZNPxQ0rlaLiGuKPhTCQ4xwdqdDzlF+OFpwqeaBJHlyW/0+eHji30LLmEvUmNGvc/f1J4xWbULEtngFRFiQ=
+	t=1707439872; cv=none; b=UpBqB65KdntXmyZ4stRyqLQ72k6gW0R7RoCaIysbFoeEAHGZuIwllY4B+jkenCI73DnG4CbugHgbqQjz549K+GZW90PqGSQcmitwO9roma3u3AJ7BfC//nFlWcZGWcLFbKvlYsVF4aEFvihFOI5ljHrZe+6o2FfoLm/eEzYIqzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707439053; c=relaxed/simple;
-	bh=hmyOdNnUDL/YlmDjhd9yrgpkHtpj1CIQBse+05BEdFg=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=G5LEsS7fhIvE0mVcbA+NJ5RER0riiwnOSnA7jDhQHIv8vOsonMvfSRFhLp2Exjf2BivxM+WWMQliTUwZpB0ys+h9sMgs/81HzMnBv72yylzciMf4agsfEVUTdQqicwkXaEwHrQVyJkKUDwViXAK1r1iZOn1kRu+e01qqw6oOe6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=egauge.net; spf=pass smtp.mailfrom=egauge.net; dkim=pass (2048-bit key) header.d=egauge.net header.i=@egauge.net header.b=rMmQuBWx; arc=none smtp.client-ip=209.85.166.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=egauge.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=egauge.net
-Received: by mail-io1-f45.google.com with SMTP id ca18e2360f4ac-7c029beb8c9so14339839f.0
-        for <linux-wireless@vger.kernel.org>; Thu, 08 Feb 2024 16:37:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=egauge.net; s=google; t=1707439050; x=1708043850; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:organization
-         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Fk9kGSOJsvNx87l79TKVIJZQD8LP/JuhD3Yt3rSceMc=;
-        b=rMmQuBWx9tnP+44fDRkQKqEifKw76V6l9+itA5XUbHOMhTmjUfzye6+1fhuhXxImn/
-         vbbEabSfK9D9QWruPaVa71QoekwABqGFfYOEDAFwJi0gVTz9ncvX6cc6mzn9UPPOf/Hj
-         SVxgVc3xuQARDn+OtZ7339dCGmbKQBnyFOP4m0v49V9bVevuNTbJ/axv9Oe6Dnob3HZs
-         Kb5XGZvQLNp2gkUtK/e0//hh3y3E0uy9nkD9Se7BNRMzp3cxgVUOUdp3ozZ2LagfUBGX
-         LuwBZyA4kUKtI3ofuyG/jfqWGaq/Yenm7XJFDv2n47JofrX8wUhZGDXDMtru7AxfrQZA
-         lRrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707439050; x=1708043850;
-        h=mime-version:user-agent:content-transfer-encoding:organization
-         :references:in-reply-to:date:cc:to:from:subject:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Fk9kGSOJsvNx87l79TKVIJZQD8LP/JuhD3Yt3rSceMc=;
-        b=QdtXWv1wpw9I15Ld0s58pWKc4u6znWwTEY1VWo9T+YUbSvJU3Ia4nv5EfM/v6cH7BW
-         NaJH5naEwvAHT6I1IiTKEwIXQgQg/Rm1qxO4Q39vZHz4eD1WbwJfbwTXa76Hp/c+lKHF
-         oncuRtVeCNXRVITsbajy7juO9uBWasI0Kx6c2dKrI9/bT1W1+yJhRpGqT2Mgx6qwt5/R
-         HMCkf61KDc5qylyRS5jPrNFkH3446Z3vyhnxqFL/vLD0QnB0WK4go6Mb9PxOngKIhBTm
-         SIhv6Zaiuu/1uv2dE/ZeDICGsKsN2oBFZXkelxb/aUtbwzfl3sp+mJgl193xOozB55Xf
-         1Qdg==
-X-Gm-Message-State: AOJu0YyZzNQvWA23A4m4O+W3SVejqIQgB7UV8MfdIUT/UCZuLVCvVCt0
-	TxOYxeFanyfoZ9JKTZ/myijJGvJhCnurU9aLHfWA21WgY6nyATEPqdY2oqVeF9fYuyHE7kzOV+4
-	=
-X-Google-Smtp-Source: AGHT+IHuHlONEm5Y7qtxV1eRgOr1oxmzuLM+gxZ+qvUFrbLLesTiQrIgjC5Q50K1fcrExyXpZV9XPg==
-X-Received: by 2002:a6b:6f12:0:b0:7c3:f162:670f with SMTP id k18-20020a6b6f12000000b007c3f162670fmr278147ioc.15.1707439050631;
-        Thu, 08 Feb 2024 16:37:30 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXbbUSqSv5c6zifmEQWgMAr6ZgUd1BiIU3CK9liXuXDM9LobMAWSJ/PGnhoP89jbV8n8f9lgjNtnf7CQXmREUlmH7Sob+mL/hlWeMdwt2oFvOF+Dwn9kZ2R4VhAZlBh0ik=
-Received: from ?IPv6:2601:281:8300:a1:5d8a:622a:58d5:54e0? ([2601:281:8300:a1:5d8a:622a:58d5:54e0])
-        by smtp.gmail.com with ESMTPSA id f96-20020a0284e9000000b0047125936322sm140065jai.80.2024.02.08.16.37.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Feb 2024 16:37:30 -0800 (PST)
-Message-ID: <0eba8b05e38c5767caf291a77bd88f5306e8a89d.camel@egauge.net>
-Subject: Re: [PATCH] wifi: wilc1000: correct CRC7 calculation
-From: David Mosberger-Tang <davidm@egauge.net>
-To: Ajay.Kathat@microchip.com, linux-wireless@vger.kernel.org
-Cc: alexis.lothore@bootlin.com, kvalo@kernel.org
-Date: Thu, 08 Feb 2024 17:37:26 -0700
-In-Reply-To: <563535fa-964c-480d-8e6d-1678de5e057c@microchip.com>
-References: <20240207050736.2717641-1-davidm@egauge.net>
-	 <563535fa-964c-480d-8e6d-1678de5e057c@microchip.com>
-Organization: eGauge Systems LLC
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2 
+	s=arc-20240116; t=1707439872; c=relaxed/simple;
+	bh=rMoBWoQ8IQGZqC9VrNz4ZerwsCRMosmLHiRyZB+esps=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=szryGTIJJbY+d4nhKG93FvszA+53nb53kwPyDJO41GiLRhA6LIZUlpu190sHaYfE5amo+GZSjNxt01BtwpoSP9yrYX5AvfWVj0RO+SLF1wWD5nkmRJPjGz433VwZCz9ZFZSe14Zf6kmlUo2PUTbFZSkh4bDV0Sy9mzx3Kc6YhcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DoJt1guy; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1707439870; x=1738975870;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=rMoBWoQ8IQGZqC9VrNz4ZerwsCRMosmLHiRyZB+esps=;
+  b=DoJt1guyE/G8aKydTKzyd2Ds/NoBPYBuNoXmwBWT/gBnZQ273yjmm77E
+   vE7tEwrsuZ0ib34NX2aWEKOqQTffo8vGQY4+HEp//tgsXdBDnbKFeEDOp
+   DeUGTaobhBQUlnoBVGsBbOVm3RrqPIR9p6j8J7CDMaV1oSViJwAUAwIXZ
+   VRVYXCSwsQbTJ65j9YiNloqSCoLo1+MgZw/LgMF4UUDfr9yGHo0VEL2uo
+   TNfQ52780ZTfLD/7wY+VUSprpbeVz8zkntvNsnigcX5UOlBezf/zux1t7
+   cJuWFxj60iULAS0Rl8SWC/3uuHmvyoVLV5M5Gr0Ko0fSpgF7VjwUsJKom
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10978"; a="5202932"
+X-IronPort-AV: E=Sophos;i="6.05,255,1701158400"; 
+   d="scan'208";a="5202932"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2024 16:51:10 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,255,1701158400"; 
+   d="scan'208";a="2035502"
+Received: from lkp-server01.sh.intel.com (HELO 01f0647817ea) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 08 Feb 2024 16:51:07 -0800
+Received: from kbuild by 01f0647817ea with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rYF6e-0004FA-1I;
+	Fri, 09 Feb 2024 00:51:04 +0000
+Date: Fri, 9 Feb 2024 08:50:34 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ping-Ke Shih <pkshih@realtek.com>, kvalo@kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	gary.chang@realtek.com, phhuang@realtek.com, kevin_yang@realtek.com,
+	linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 02/11] wifi: rtw89: load BB parameters to PHY-1
+Message-ID: <202402090838.S5xcKIlg-lkp@intel.com>
+References: <20240208022857.14379-3-pkshih@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240208022857.14379-3-pkshih@realtek.com>
 
-Ajay,
+Hi Ping-Ke,
 
-On Thu, 2024-02-08 at 20:57 +0000, Ajay.Kathat@microchip.com wrote:
-> Hi David,
->=20
->=20
-> On 2/6/24 22:07, David Mosberger-Tang wrote:
-> > EXTERNAL EMAIL: Do not click links or open attachments unless you know =
-the content is safe
-> >=20
-> > Document
-> >=20
-> >     ATWILC1000/ATWILC3000
-> >     Baremetal Wi-Fi/BLE Link Controller Software Design Guide
-> >=20
-> >     https://tinyurl.com/yer2xhyc
-> >=20
-> > says that bit 0 of the CRC7 code must always be a 1.
-> >=20
-> > I confirmed that today with a logic analyzer: setting bit 0 causes
-> > wilc1000 to accept a command with CRC7 enabled, whereas clearing bit 0
-> > causes wilc1000 to reject the command with a CRC error.
-> >=20
->=20
-> The change looks okay to me. Just curious, if the command CRC7 failure
-> is observed during the wifi operation or it was created by explicitly
-> clear bit0 in the code. Often I have tested with enable_crc7 enabled but
-> didn't observe into any command failure.
+kernel test robot noticed the following build warnings:
 
-Yeah, the module doesn't seem to always reject CRC7 sums with bit 0
-cleared - otherwise I think we'd have noticed this error sooner.  I'm
-not sure what causes the WILC1000 to either ignore or pay attention to
-bit 0, but I have definitely traces captured where CRC7s with bit 0
-cleared resulted in status 0x03 (bad CRC) whereas it always seems to
-work with bit 0 set.  Since the documentation also says that it should
-b set, it's probably safer to go with that.
+[auto build test WARNING on wireless-next/main]
+[also build test WARNING on next-20240208]
+[cannot apply to wireless/main linus/master v6.8-rc3]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-  --david
+url:    https://github.com/intel-lab-lkp/linux/commits/Ping-Ke-Shih/wifi-rtw89-correct-PHY-register-offset-for-PHY-1/20240208-103413
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+patch link:    https://lore.kernel.org/r/20240208022857.14379-3-pkshih%40realtek.com
+patch subject: [PATCH 02/11] wifi: rtw89: load BB parameters to PHY-1
+config: powerpc-allyesconfig (https://download.01.org/0day-ci/archive/20240209/202402090838.S5xcKIlg-lkp@intel.com/config)
+compiler: clang version 19.0.0git (https://github.com/llvm/llvm-project 7dd790db8b77c4a833c06632e903dc4f13877a64)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240209/202402090838.S5xcKIlg-lkp@intel.com/reproduce)
 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202402090838.S5xcKIlg-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/net/wireless/realtek/rtw89/phy.c:1047:7: warning: cast to smaller integer type 'enum rtw89_phy_idx' from 'void *' [-Wvoid-pointer-to-enum-cast]
+    1047 |                 if ((enum rtw89_phy_idx)extra_data == RTW89_PHY_1)
+         |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   1 warning generated.
+
+
+vim +1047 drivers/net/wireless/realtek/rtw89/phy.c
+
+  1022	
+  1023	static void rtw89_phy_config_bb_reg(struct rtw89_dev *rtwdev,
+  1024					    const struct rtw89_reg2_def *reg,
+  1025					    enum rtw89_rf_path rf_path,
+  1026					    void *extra_data)
+  1027	{
+  1028		u32 addr;
+  1029	
+  1030		if (reg->addr == 0xfe) {
+  1031			mdelay(50);
+  1032		} else if (reg->addr == 0xfd) {
+  1033			mdelay(5);
+  1034		} else if (reg->addr == 0xfc) {
+  1035			mdelay(1);
+  1036		} else if (reg->addr == 0xfb) {
+  1037			udelay(50);
+  1038		} else if (reg->addr == 0xfa) {
+  1039			udelay(5);
+  1040		} else if (reg->addr == 0xf9) {
+  1041			udelay(1);
+  1042		} else if (reg->data == BYPASS_CR_DATA) {
+  1043			rtw89_debug(rtwdev, RTW89_DBG_PHY_TRACK, "Bypass CR 0x%x\n", reg->addr);
+  1044		} else {
+  1045			addr = reg->addr;
+  1046	
+> 1047			if ((enum rtw89_phy_idx)extra_data == RTW89_PHY_1)
+  1048				addr += rtw89_phy0_phy1_offset(rtwdev, reg->addr);
+  1049	
+  1050			rtw89_phy_write32(rtwdev, addr, reg->data);
+  1051		}
+  1052	}
+  1053	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
