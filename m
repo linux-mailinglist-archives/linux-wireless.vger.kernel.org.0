@@ -1,165 +1,104 @@
-Return-Path: <linux-wireless+bounces-3363-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3364-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D456E84EE15
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Feb 2024 00:56:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BECB84EE26
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Feb 2024 01:01:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7CF131F23FA9
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Feb 2024 23:56:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 622F6B20EAB
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Feb 2024 00:01:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DA5350A70;
-	Thu,  8 Feb 2024 23:56:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 079E3EDD;
+	Fri,  9 Feb 2024 00:01:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b="o5Z+jDJP"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ihOv7bOd"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E5784F1EE;
-	Thu,  8 Feb 2024 23:56:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DEC77FA
+	for <linux-wireless@vger.kernel.org>; Fri,  9 Feb 2024 00:01:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707436580; cv=none; b=F/QNElg5nG0c59wwj0eW8idV6BF8nQKxmHPjoZRkr0yS7KxNz0tYxZu09NOCasEepoTrqNKa9YPp60p/2ogjN3JwzYEOlBPne0atnlg5QeaoYpwwsksRwML5Nswkr4XnBzdhEpi8JYBU4I1HOKsSkxbRNUfzutaQHYUg2zSU5x4=
+	t=1707436880; cv=none; b=uMqV/Ritl1OmCawRZCKlz5x6l0RJdRV5IGLrziOCz3ctKvtft2rU+kzDLACTj0/H6aj+KM8AomEkfODxYAC1uT+rb6EEtdL41OJjePRIXsGM0NvPW4PWaOVdIOJja0/Jj3rPllKhd1atl45vm2sbz0RJmPb4U8iaa4FgPJhsCCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707436580; c=relaxed/simple;
-	bh=p0GgrDVddXy5cinEKXWSu6CMVmd6nvI+TEu518DlJKQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=X878rUIm9Jd4wunSqd9gLO9WXJ6uk5+kA6eCabzecJuLs/9brIBYBcKxJqVYFZee46/UCbVGbt0D4pJI/g3AcPUVmRwl8KjnrGR7yY8e3SiuJwiwF8TKTFLg0hh0nS0CkRCstR9sUQJEwOEKJioCprLapU8SciLYocvlmPK+Onc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; spf=pass smtp.mailfrom=canb.auug.org.au; dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b=o5Z+jDJP; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canb.auug.org.au
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-	s=201702; t=1707436568;
-	bh=JF9u5Fa1dVmcPt1ipcp/lcqbXM8SZnozmRqVtHfvw4U=;
-	h=Date:From:To:Cc:Subject:From;
-	b=o5Z+jDJPWJort99XiG8EnaY7WEPAiq3GppygibjGCjC6w3iumm8CTEf6uQqNbD3Gn
-	 ixlyp78qdAQDazg3mVQRV1k/5IJol+C4UO9znqOe1M9FNly3Zm1kCeMtU/v1rnnqkl
-	 tuT8gAIXo8wod4gfBd2Dimx0KWry39lrL9HFxzGRuQCkCufEH7u//qVEVpBW4T41gE
-	 8FfsrYhJoWfP21sJkosctKYd7DMhcBQ362q9wrSxEJIr1Of5N6xJcobUrLiC7ZfUz1
-	 oOQVDVGQ1X4kr9dg4dpgtTfJqx/HDCpb46Y1R356IVz15QEm1V8L1ssDkfbu5B4wCf
-	 5lgYh3PZpzHgA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4TWDQb0Qcgz4x04;
-	Fri,  9 Feb 2024 10:56:07 +1100 (AEDT)
-Date: Fri, 9 Feb 2024 10:56:06 +1100
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Kalle Valo <kvalo@kernel.org>, Johannes Berg <johannes@sipsolutions.net>
-Cc: Wireless <linux-wireless@vger.kernel.org>, Daniel Gabay
- <daniel.gabay@intel.com>, Johannes Berg <johannes.berg@intel.com>, Linux
- Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux Next Mailing List
- <linux-next@vger.kernel.org>, Miri Korenblit
- <miriam.rachel.korenblit@intel.com>
-Subject: linux-next: manual merge of the wireless-next tree with the
- wireless tree
-Message-ID: <20240209105606.66e7808b@canb.auug.org.au>
+	s=arc-20240116; t=1707436880; c=relaxed/simple;
+	bh=ZtCvR0ZrIr0Zbw37p441dS6OQbvhX2s9KzKiCYdUVDo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Shrx1VYLFz8UjXtW8oF0XTKqSSvPXxEolROztZYStgrOHRaAcU2+GSCDJf5CDs59kjN7MBSNnbYA8tR6NrstdKEztCPRDE2lPhtSMjNWm+3VNsITVJGrOF39Iaqi/QxZl3pezRXM9FKyJwi5egp1aXbEpRmqTeD9EfUfHc7oOQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ihOv7bOd; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 418Mhkqu026726;
+	Fri, 9 Feb 2024 00:01:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=DjHnlFwhfRg/+W+t0IhdhVIPwPmCY9RO9f2DiYCS50s=; b=ih
+	Ov7bOdI3d7CU5uYA1wsOaGX104z03vy7oc7KAhEcb7D190ZqwhcDHt6zJ29nzP0C
+	/6U8YvCzXSLbUiLDYpXO7vwjQwZaN/88Ck4F9hFthOvSTrGlJWB0yQzJ6WeWZ07g
+	XFKm+7GFWVK0rA59uR0VwxcWocx+cx18fuHZ4FdADYbZuLCD/behiuAd+GErnDeZ
+	OmBFPPnG82kroGEvxXX24d7fWC0icEAK36VxmIDoi6XENMudn1jk1IB2Ov9taSmp
+	nyRViNKqBNceu8XrkBeTZFdt1lCyOVYqg5coISNr03vdjQni09OPiUND1mWMslxk
+	uzkTrtvJ66YE8iv8XgpA==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3w4pavjv7u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 09 Feb 2024 00:01:04 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 419013Lb025433
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 9 Feb 2024 00:01:03 GMT
+Received: from [10.110.97.178] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Thu, 8 Feb
+ 2024 16:01:02 -0800
+Message-ID: <e8ecb4cb-bc84-4fe0-915a-cf6d7f1e241f@quicinc.com>
+Date: Thu, 8 Feb 2024 16:01:01 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/_NyQymrl.JNnwVrYyY.hUzv";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH wireless] wifi: mac80211: remove gfp parameter from
+ ieee80211_obss_color_collision_notify signature
+Content-Language: en-US
+To: Lorenzo Bianconi <lorenzo@kernel.org>, <linux-wireless@vger.kernel.org>
+CC: <dan.carpenter@linaro.org>, <ath11k@lists.infradead.org>,
+        <johannes@sipsolutions.net>, <lorenzo.bianconi@redhat.com>,
+        <kvalo@kernel.org>
+References: <f91e1c78896408ac556586ba8c99e4e389aeba02.1707389901.git.lorenzo@kernel.org>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <f91e1c78896408ac556586ba8c99e4e389aeba02.1707389901.git.lorenzo@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: GCoj5rKq2pAFuEpS7cT3sOUEQi1il6_L
+X-Proofpoint-GUID: GCoj5rKq2pAFuEpS7cT3sOUEQi1il6_L
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-08_12,2024-02-08_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
+ priorityscore=1501 mlxscore=0 lowpriorityscore=0 malwarescore=0
+ mlxlogscore=712 phishscore=0 bulkscore=0 adultscore=0 clxscore=1011
+ suspectscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2401310000 definitions=main-2402080137
 
---Sig_/_NyQymrl.JNnwVrYyY.hUzv
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On 2/8/2024 3:01 AM, Lorenzo Bianconi wrote:
+> Get rid of gfp parameter from ieee80211_obss_color_collision_notify
+> signature since it is no longer used.
+> 
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-Hi all,
 
-Today's linux-next merge of the wireless-next tree got a conflict in:
-
-  drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-
-between commit:
-
-  2e57b77583ca ("wifi: iwlwifi: mvm: use correct address 3 in A-MSDU")
-
-from the wireless tree and commit:
-
-  3d869feacb74 ("wifi: iwlwifi: mvm: use FW rate for non-data only on new d=
-evices")
-
-from the wireless-next tree.
-
-I fixed it up (see below) and can carry the fix as necessary. This
-is now fixed as far as linux-next is concerned, but any non trivial
-conflicts should be mentioned to your upstream maintainer when your tree
-is submitted for merging.  You may also want to consider cooperating
-with the maintainer of the conflicting tree to minimise any particularly
-complex conflicts.
-
---=20
-Cheers,
-Stephen Rothwell
-
-diff --cc drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-index 461f26d9214e,4981bb1f0251..000000000000
---- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-@@@ -520,16 -520,31 +520,41 @@@ static void iwl_mvm_set_tx_cmd_crypto(s
-  	}
-  }
- =20
- +static void iwl_mvm_copy_hdr(void *cmd, const void *hdr, int hdrlen,
- +			     const u8 *addr3_override)
- +{
- +	struct ieee80211_hdr *out_hdr =3D cmd;
- +
- +	memcpy(cmd, hdr, hdrlen);
- +	if (addr3_override)
- +		memcpy(out_hdr->addr3, addr3_override, ETH_ALEN);
- +}
- +
-+ static bool iwl_mvm_use_host_rate(struct iwl_mvm *mvm,
-+ 				  struct iwl_mvm_sta *mvmsta,
-+ 				  struct ieee80211_hdr *hdr,
-+ 				  struct ieee80211_tx_info *info)
-+ {
-+ 	if (unlikely(!mvmsta))
-+ 		return true;
-+=20
-+ 	if (unlikely(info->control.flags & IEEE80211_TX_CTRL_RATE_INJECT))
-+ 		return true;
-+=20
-+ 	if (likely(ieee80211_is_data(hdr->frame_control) &&
-+ 		   mvmsta->sta_state >=3D IEEE80211_STA_AUTHORIZED))
-+ 		return false;
-+=20
-+ 	/*
-+ 	 * Not a data frame, use host rate if on an old device that
-+ 	 * can't possibly be doing MLO (firmware may be selecting a
-+ 	 * bad rate), if we might be doing MLO we need to let FW pick
-+ 	 * (since we don't necesarily know the link), but FW rate
-+ 	 * selection was fixed.
-+ 	 */
-+ 	return mvm->trans->trans_cfg->device_family < IWL_DEVICE_FAMILY_BZ;
-+ }
-+=20
-  /*
-   * Allocates and sets the Tx cmd the driver data pointers in the skb
-   */
-
---Sig_/_NyQymrl.JNnwVrYyY.hUzv
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmXFahYACgkQAVBC80lX
-0GxqUQf9Gn+VS0VsOzqLDeD950s6TnUCH7fNBvRJ4gsxYgXFMeUb5Ztixn1QPJvL
-o1I7HQGueNStvqVlSMWyyhytUdbdxucoc/pUeYYKBWWbGxSVNLPiSQ2WvXO/2cbL
-Ru1/YmqcgIR/fRFS/qIrxHop0vrvXwv+3c3Ka0QCG/qi/zIoGrSxJUHH9rKRR+AV
-BXfjgJQlaL0HoJ+l0PlhxVl5RnKphgLPXmRLwsJDR+tNnn0VoKTW0YN07jJSeEad
-yZ2x7c9lFnZ2f2hmY6dXRKEQo1W3CHfisP3yVOckAfdIkasPK6ZK3tPV2IEhL3Te
-M885DZ3y6ea5dK6svCtdSvpr/A5gOA==
-=0bto
------END PGP SIGNATURE-----
-
---Sig_/_NyQymrl.JNnwVrYyY.hUzv--
 
