@@ -1,54 +1,54 @@
-Return-Path: <linux-wireless+bounces-3379-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3380-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4839384F076
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Feb 2024 07:54:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7842884F077
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Feb 2024 07:54:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AA661C22195
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Feb 2024 06:54:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06A4628AA4E
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Feb 2024 06:54:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E638657DD;
-	Fri,  9 Feb 2024 06:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7256F65BAA;
+	Fri,  9 Feb 2024 06:54:12 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3C9C657CA
-	for <linux-wireless@vger.kernel.org>; Fri,  9 Feb 2024 06:54:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE7BB65BA4
+	for <linux-wireless@vger.kernel.org>; Fri,  9 Feb 2024 06:54:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707461648; cv=none; b=L4p0jGNZIcdRTkXMREQNSZkXQmrccoYQc0YqePIoQiY4Cr5uvxcDN+CNdMquhTq9iJYefcArxlpmgP3Ws4WzRdnvhljZE4KttTsOU43/GwYEq7l8ab3w3TMa8VAqClef5+bgeZkRWAnOxsC0BQsZyliPY7GmRiB9OudSFulPtzQ=
+	t=1707461652; cv=none; b=Cs52iERZWZbBBQZdRGFZ4dvLvFEq1QNefgTSrIYJtC+hE4QjcflL0VzRDFd+URrtfcAq1NzJH3F9sPandvqjeT4jsyIGT44Ibu/Vv1hnW3TObn010KOTy7AWSVk9UKli95uVhDTZ2RBwrSgvaA5rBFdbSO+mIyCBdPlO32m+WFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707461648; c=relaxed/simple;
-	bh=/aLcYv5SaWRp5DwEd0pGRpAS1JIHIRTGJfEV4cA/Vno=;
+	s=arc-20240116; t=1707461652; c=relaxed/simple;
+	bh=O+lJDbTYGUhs81PtQRpku9zpreJ8PguTwvR27vnezxA=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WFerIhJ2QOvTezXwTNJUlak9DXea9LM83Fs+te6a8/SW69ANQaac1Mapii4+E2lu/A0fMX2WNJc4shthJIrK3+tvk1kmOanIvLCGagbjYz0XNEu3QpAssdhCny66qiG25vIoM5sAP8a6bZVJEXc9QNrMks8POuqc30IoZmRH1HE=
+	 MIME-Version:Content-Type; b=NgJY2zoK/3GcXByLvhxGCKIJZOwA5Ul3KXg1deBn96MPOHscgJflQjFH4wOmnCjSrhzDj/0APgWTdziSeuoeXOL/cwG1Dv7m9IvbjvdDhC6Kac4ll0FQJi4V71JINRs7pLQWe8gHDsBzdSoaPcOvEZ6KAr3GE8s05/QopV/uNIg=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4196s11R1548442, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 4196s11R1548442
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4196s5TJ1548446, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 4196s5TJ1548446
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 9 Feb 2024 14:54:01 +0800
+	Fri, 9 Feb 2024 14:54:05 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.17; Fri, 9 Feb 2024 14:54:02 +0800
+ 15.1.2375.32; Fri, 9 Feb 2024 14:54:06 +0800
 Received: from [127.0.1.1] (172.16.16.210) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 9 Feb
- 2024 14:54:01 +0800
+ 2024 14:54:05 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <kvalo@kernel.org>
 CC: <gary.chang@realtek.com>, <phhuang@realtek.com>, <kevin_yang@realtek.com>,
         <linux-wireless@vger.kernel.org>
-Subject: [PATCH v2 10/11] wifi: rtw89: reference quota mode when setting Tx power
-Date: Fri, 9 Feb 2024 14:52:28 +0800
-Message-ID: <20240209065229.34515-11-pkshih@realtek.com>
+Subject: [PATCH v2 11/11] wifi: rtw89: change qutoa to DBCC by default for WiFi 7 chips
+Date: Fri, 9 Feb 2024 14:52:29 +0800
+Message-ID: <20240209065229.34515-12-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240209065229.34515-1-pkshih@realtek.com>
 References: <20240209065229.34515-1-pkshih@realtek.com>
@@ -62,47 +62,120 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-From: Po-Hao Huang <phhuang@realtek.com>
+Since WiFi 7 is expected to support MLO, so we should enable MAC-0/1 and
+PHY-0/1. By default, set dbcc_en=true, change quota to DBCC mode, and set
+MLO mode to 2 + 0 that means we only use 2x2 connection on MAC/PHY-0
+for now.
 
-Reference the current quota mode to avoid misleading warnings.
-This patch is required after supporting DBCC quota mode.
-
-Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/mac.c    | 3 +--
- drivers/net/wireless/realtek/rtw89/mac_be.c | 3 +--
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ drivers/net/wireless/realtek/rtw89/core.c     | 8 +++++++-
+ drivers/net/wireless/realtek/rtw89/core.h     | 1 +
+ drivers/net/wireless/realtek/rtw89/mac.c      | 8 ++++----
+ drivers/net/wireless/realtek/rtw89/rtw8922a.c | 7 +++++++
+ 4 files changed, 19 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index 33cc2ce4bb74..917bbc482560 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -5221,8 +5221,7 @@ bool rtw89_mac_get_txpwr_cr_ax(struct rtw89_dev *rtwdev,
- 			       enum rtw89_phy_idx phy_idx,
- 			       u32 reg_base, u32 *cr)
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index 61a216464b6d..069b65c01719 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -4061,7 +4061,6 @@ int rtw89_core_start(struct rtw89_dev *rtwdev)
  {
--	const struct rtw89_dle_mem *dle_mem = rtwdev->chip->dle_mem;
--	enum rtw89_qta_mode mode = dle_mem->mode;
-+	enum rtw89_qta_mode mode = rtwdev->mac.qta_mode;
- 	u32 addr = rtw89_mac_reg_by_idx(rtwdev, reg_base, phy_idx);
- 
- 	if (addr < R_AX_PWR_RATE_CTRL || addr > CMAC1_END_ADDR_AX) {
-diff --git a/drivers/net/wireless/realtek/rtw89/mac_be.c b/drivers/net/wireless/realtek/rtw89/mac_be.c
-index 6447353d35d3..320e88229971 100644
---- a/drivers/net/wireless/realtek/rtw89/mac_be.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac_be.c
-@@ -1896,8 +1896,7 @@ static bool rtw89_mac_get_txpwr_cr_be(struct rtw89_dev *rtwdev,
- 				      enum rtw89_phy_idx phy_idx,
- 				      u32 reg_base, u32 *cr)
- {
--	const struct rtw89_dle_mem *dle_mem = rtwdev->chip->dle_mem;
--	enum rtw89_qta_mode mode = dle_mem->mode;
-+	enum rtw89_qta_mode mode = rtwdev->mac.qta_mode;
  	int ret;
  
- 	ret = rtw89_mac_check_mac_en(rtwdev, (enum rtw89_mac_idx)phy_idx,
+-	rtwdev->mac.qta_mode = RTW89_QTA_SCC;
+ 	ret = rtw89_mac_init(rtwdev);
+ 	if (ret) {
+ 		rtw89_err(rtwdev, "mac init fail, ret:%d\n", ret);
+@@ -4199,6 +4198,13 @@ int rtw89_core_init(struct rtw89_dev *rtwdev)
+ 	rtwdev->hal.rx_fltr = DEFAULT_AX_RX_FLTR;
+ 	rtwdev->dbcc_en = false;
+ 	rtwdev->mlo_dbcc_mode = MLO_DBCC_NOT_SUPPORT;
++	rtwdev->mac.qta_mode = RTW89_QTA_SCC;
++
++	if (rtwdev->chip->chip_gen == RTW89_CHIP_BE) {
++		rtwdev->dbcc_en = true;
++		rtwdev->mac.qta_mode = RTW89_QTA_DBCC;
++		rtwdev->mlo_dbcc_mode = MLO_2_PLUS_0_1RF;
++	}
+ 
+ 	INIT_WORK(&btc->eapol_notify_work, rtw89_btc_ntfy_eapol_packet_work);
+ 	INIT_WORK(&btc->arp_notify_work, rtw89_btc_ntfy_arp_packet_work);
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index 4411a7d117cf..1c6f0b46c11c 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -3305,6 +3305,7 @@ struct rtw89_scan_option {
+ 
+ enum rtw89_qta_mode {
+ 	RTW89_QTA_SCC,
++	RTW89_QTA_DBCC,
+ 	RTW89_QTA_DLFW,
+ 	RTW89_QTA_WOW,
+ 
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
+index 917bbc482560..9b78879bf34b 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.c
++++ b/drivers/net/wireless/realtek/rtw89/mac.c
+@@ -1625,7 +1625,7 @@ const struct rtw89_mac_size_set rtw89_mac_size = {
+ 	.wde_size19 = {RTW89_WDE_PG_64, 3328, 0,},
+ 	/* PCIE */
+ 	.ple_size0 = {RTW89_PLE_PG_128, 1520, 16,},
+-	.ple_size0_v1 = {RTW89_PLE_PG_128, 2672, 256, 212992,},
++	.ple_size0_v1 = {RTW89_PLE_PG_128, 2688, 240, 212992,},
+ 	.ple_size3_v1 = {RTW89_PLE_PG_128, 2928, 0, 212992,},
+ 	/* DLFW */
+ 	.ple_size4 = {RTW89_PLE_PG_128, 64, 1472,},
+@@ -1650,8 +1650,8 @@ const struct rtw89_mac_size_set rtw89_mac_size = {
+ 	.wde_qt17 = {0, 0, 0,  0,},
+ 	/* 8852C PCIE SCC */
+ 	.wde_qt18 = {3228, 60, 0, 40,},
+-	.ple_qt0 = {320, 0, 32, 16, 13, 13, 292, 0, 32, 18, 1, 4, 0,},
+-	.ple_qt1 = {320, 0, 32, 16, 1944, 1944, 2223, 0, 1963, 1949, 1, 1935, 0,},
++	.ple_qt0 = {320, 320, 32, 16, 13, 13, 292, 292, 64, 18, 1, 4, 0,},
++	.ple_qt1 = {320, 320, 32, 16, 1316, 1316, 1595, 1595, 1367, 1321, 1, 1307, 0,},
+ 	/* PCIE SCC */
+ 	.ple_qt4 = {264, 0, 16, 20, 26, 13, 356, 0, 32, 40, 8,},
+ 	/* PCIE SCC */
+@@ -1677,7 +1677,7 @@ const struct rtw89_mac_size_set rtw89_mac_size = {
+ 	.ple_qt_52b_wow = {147, 0, 16, 20, 157, 13, 133, 0, 172, 14, 24, 0,},
+ 	/* 8851B PCIE WOW */
+ 	.ple_qt_51b_wow = {147, 0, 16, 20, 157, 13, 133, 0, 172, 14, 24, 0,},
+-	.ple_rsvd_qt0 = {2, 112, 56, 6, 6, 6, 6, 0, 0, 62,},
++	.ple_rsvd_qt0 = {2, 107, 107, 6, 6, 6, 6, 0, 0, 0,},
+ 	.ple_rsvd_qt1 = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,},
+ 	.rsvd0_size0 = {212992, 0,},
+ 	.rsvd1_size0 = {587776, 2048,},
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922a.c b/drivers/net/wireless/realtek/rtw89/rtw8922a.c
+index f7b81daa0b03..a4b7d2e79638 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8922a.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8922a.c
+@@ -47,6 +47,8 @@ static const struct rtw89_hfc_pub_cfg rtw8922a_hfc_pubcfg_pcie = {
+ static const struct rtw89_hfc_param_ini rtw8922a_hfc_param_ini_pcie[] = {
+ 	[RTW89_QTA_SCC] = {rtw8922a_hfc_chcfg_pcie, &rtw8922a_hfc_pubcfg_pcie,
+ 			   &rtw89_mac_size.hfc_prec_cfg_c0, RTW89_HCIFC_POH},
++	[RTW89_QTA_DBCC] = {rtw8922a_hfc_chcfg_pcie, &rtw8922a_hfc_pubcfg_pcie,
++			   &rtw89_mac_size.hfc_prec_cfg_c0, RTW89_HCIFC_POH},
+ 	[RTW89_QTA_DLFW] = {NULL, NULL, &rtw89_mac_size.hfc_prec_cfg_c2,
+ 			    RTW89_HCIFC_POH},
+ 	[RTW89_QTA_INVALID] = {NULL},
+@@ -58,6 +60,11 @@ static const struct rtw89_dle_mem rtw8922a_dle_mem_pcie[] = {
+ 			   &rtw89_mac_size.wde_qt0_v1, &rtw89_mac_size.ple_qt0,
+ 			   &rtw89_mac_size.ple_qt1, &rtw89_mac_size.ple_rsvd_qt0,
+ 			   &rtw89_mac_size.rsvd0_size0, &rtw89_mac_size.rsvd1_size0},
++	[RTW89_QTA_DBCC] = {RTW89_QTA_DBCC, &rtw89_mac_size.wde_size0_v1,
++			   &rtw89_mac_size.ple_size0_v1, &rtw89_mac_size.wde_qt0_v1,
++			   &rtw89_mac_size.wde_qt0_v1, &rtw89_mac_size.ple_qt0,
++			   &rtw89_mac_size.ple_qt1, &rtw89_mac_size.ple_rsvd_qt0,
++			   &rtw89_mac_size.rsvd0_size0, &rtw89_mac_size.rsvd1_size0},
+ 	[RTW89_QTA_DLFW] = {RTW89_QTA_DLFW, &rtw89_mac_size.wde_size4_v1,
+ 			    &rtw89_mac_size.ple_size3_v1, &rtw89_mac_size.wde_qt4,
+ 			    &rtw89_mac_size.wde_qt4, &rtw89_mac_size.ple_qt9,
 -- 
 2.25.1
 
