@@ -1,262 +1,134 @@
-Return-Path: <linux-wireless+bounces-3425-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3426-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BF69850B20
-	for <lists+linux-wireless@lfdr.de>; Sun, 11 Feb 2024 20:26:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57517850B6E
+	for <lists+linux-wireless@lfdr.de>; Sun, 11 Feb 2024 21:19:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 761DC1F2117F
-	for <lists+linux-wireless@lfdr.de>; Sun, 11 Feb 2024 19:26:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C59D1F21921
+	for <lists+linux-wireless@lfdr.de>; Sun, 11 Feb 2024 20:19:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A707B5D74D;
-	Sun, 11 Feb 2024 19:26:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89A6D5EE74;
+	Sun, 11 Feb 2024 20:19:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="euX1fD8f"
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="OCC0SkVi"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF5545D754
-	for <linux-wireless@vger.kernel.org>; Sun, 11 Feb 2024 19:26:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D295E22B
+	for <linux-wireless@vger.kernel.org>; Sun, 11 Feb 2024 20:19:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707679607; cv=none; b=tyo7AKQ9MP5xVEbJsVXW2FC7pKQRUMOoJpuSRatTxDxCEuC8t+xWCMyXXfAE6qGuAOoffc1zmExSgXc+IZUjiTnMHesCwpmfYqxx/eOA17wjnv3I2RMhCZc2OomrFCpjzP2bE05SU8r2G8inpzEaphzD57mPGI/UVg3Kwp5YPns=
+	t=1707682773; cv=none; b=hdCPyEBBMXt7HgkvWZdWogDMIrHTH1DuL5c5F3V2GsbDYu0UaFZ+mNV7YkThOIxajglKZTMkMkkuCq1Zb6ddM/hSbSX3n+Zf10j+HFck7JhY4QClM+q3xjq0o39VG6a+lT9nquw+Z+94eJ2BpAOdzJ7s7iQ5KI2UaNBLrMBx2aI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707679607; c=relaxed/simple;
-	bh=F1xs8JNHKnrlumXxPVJbD115lYOZE7WgSCIHwaS8dD8=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=k8oXS2tFxSz9yEaDwS3NkLxTmzclKPq4+tENA5CMIXIRjhGJH8fbnJ+Ex+JFfj4yLIz9oKO8gHk84gsLoqxN7T6wCIPWkqcwl64NB6bZUr2d5HAQeav+ONltZh8+2wgkqLkKNgTbrbsNZZ7uYClwrHCHosYr+QSESOBu3rdBuyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=euX1fD8f; arc=none smtp.client-ip=209.85.222.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-783f553fdabso187555385a.0
-        for <linux-wireless@vger.kernel.org>; Sun, 11 Feb 2024 11:26:45 -0800 (PST)
+	s=arc-20240116; t=1707682773; c=relaxed/simple;
+	bh=nbDFD/TqWUYFdF7uxY/c2JRJpkeHNhciS5fxFdKpRgo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=THIkbJDRSaOsmcGKHaa/p9ji7Fda1w9+wkIu8kty8Hngr7dIziuAi+O3v6x/bprjMnztrvYMYc2rK5UN1QIcNSQaOmEYcFKXlAkejN1EwQQ+aZYNlqaMyXtKkLq24PeTsAm584htRYKzVYVsDqaC87kBsHWGcXNltZYS2mTqUPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=OCC0SkVi; arc=none smtp.client-ip=209.85.167.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5116588189aso4568024e87.1
+        for <linux-wireless@vger.kernel.org>; Sun, 11 Feb 2024 12:19:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1707679604; x=1708284404; darn=vger.kernel.org;
-        h=in-reply-to:autocrypt:references:cc:to:from:subject:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Iwrid7rpc7G5hqnMGTRbq0auagUVTnsWorQv2tKxbcc=;
-        b=euX1fD8fXvVsFaO5TTX16zAtCZ6kxnvKDqSur54knEB95V5PCBRNc19um5/0Zpinf5
-         ThMh/Q3x4ffW9cWbdqTTFfxzf8Yn2i/8KtnPmUl+qUduj7F8+/4XHyrf4d+t8HKtO5t/
-         8qhOXXNqYvyYzXkcyZUSvB5uof+AiHeYrCH6g=
+        d=ionos.com; s=google; t=1707682767; x=1708287567; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=7FMeMe+UFSzOu4x02i7+Ei2gevYK/Z24NmaoVH1ZdN4=;
+        b=OCC0SkVigvA6aBCxQwilkr2BPTgpL9p4baJABc7t6wVoRZ3kYQBkq1iLJO+thTJ8rt
+         qQIBSgaQYAhSatQhUcBGmJQdy02OPpRObf2vwddjAURZlnyQiZ02tSrycNMa9yqKQWYu
+         4FURW2qNaEplDEbIPzbanA3hL5wkwCSeQbYdoP4bMMKqE5EpVJw63+gBav3z4l4KtRzT
+         vzZUlk4GVXm9GWGmtgule8st0dHC4oVOSXJsHhxj65280MQATCgAtujaUUpK4E9prynH
+         U2OhqDPdlgTdzYH+M8XdnrN/0SaP6tXLA3UqopWHld1CEqN9PtU+HMbiFxJikQ3F66YJ
+         f1MA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707679604; x=1708284404;
-        h=in-reply-to:autocrypt:references:cc:to:from:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Iwrid7rpc7G5hqnMGTRbq0auagUVTnsWorQv2tKxbcc=;
-        b=pPE0HZaOR4GKd1St1NIkosGW3Rqm08zp/dtPlzV73EgTef/x2lSHUfmaX0L4wmxuU9
-         kNqHQ0QdsJzPSgDujTEwDVbqZDuh5mYac5KuRgYstggNvZ5bBxMDyefZiQmbPvs9pDRK
-         GOAZer1uSmBfY7IMni63/LSOlQDnlPWqTwO6DD9OkGfehnvQRKevlA0D1Kb7wgmtxb1n
-         v0FfCN2xLgQmsAOX39gEC+KI6KwTRxNhvddopSu55ImQI8GGZiKNOGxMwMU/Ph+RHjQO
-         RZXkjE0MB4CqR1ZAOjv5jbe3EBLOiO9YlqVqAmTGQPVNKVO27rno6+nhape0gzaSetnb
-         6oYg==
-X-Forwarded-Encrypted: i=1; AJvYcCUMygw7sgeRJWo94WHDH/3CIxxQ4jMP5YE4/elahFB5PVLywFGirSeMg3vhgdrOPkL7RB3t61gYxGt18hFIGWxXRnRrLzX2Ma22Yo7LL60=
-X-Gm-Message-State: AOJu0Yzk4GXjJaJytmT095OFMyXhW0SMHlSMFXP1ZEv//zXUcaIYp/J4
-	lt6HPxpcOOM+Xj88lXX+kCWfR7dgIMuYLGGffQ9PDawmo1j3t96ni5aQWiml9A==
-X-Google-Smtp-Source: AGHT+IFNMvA0nHuPdDSf1IfMy1vWE6SDKicE52sgcSGR25bj6Tfu48NHFCHqBW/MCrWhnmSmbK0YFA==
-X-Received: by 2002:a05:620a:229:b0:785:bf01:b90b with SMTP id u9-20020a05620a022900b00785bf01b90bmr9304235qkm.2.1707679604635;
-        Sun, 11 Feb 2024 11:26:44 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXLAS4icWzdcWlYzftqY3A+AQ8ONzfCyPop4pMynuKo8ofT6RSHwAbO9fKyb7/lu+Tq2J5xmGN42q+HQNgyPR8Aqa5sIZS4tZki5QhcukcDJndfnhpS/cU2IBbeTqLmCPrm0/3Nai7CEFMvpcGC/d0DP6Km+OBkrotMGOJ+bUYxZgG1Bb4CV6fB5p9lJTAqxoAREwJHF7U53P++gtndW2opCNexgeQUzEbUwLoguQP2MbN804pNgvWyDawqzeITseZGUjhlwNwmHfIkU+14k7gwaLCqhtltvGQp+y7PRsPEjbO2t0zBj7XN6QUefYkArYJi8dpJt6MeCZXYCtBdie1tWl090C1RHBcspt/4LyL4nlsRjekRYxhrgBJb8TC9MGsYlqq6+B22/XwTI+C0OK1q+HRpzbUeifaek+Qvkey0l/QiTYrEsKMN4fyRtGtj1vcxL0XtXerPYSIQxIbu7GKokv3aK1aAvBdrbA==
-Received: from [192.168.178.137] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id o2-20020a05620a110200b00785d6b12faesm186584qkk.98.2024.02.11.11.26.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 11 Feb 2024 11:26:44 -0800 (PST)
-Message-ID: <6afd3242-a691-4ad5-a849-ab1d02baa6d0@broadcom.com>
-Date: Sun, 11 Feb 2024 20:26:40 +0100
+        d=1e100.net; s=20230601; t=1707682767; x=1708287567;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7FMeMe+UFSzOu4x02i7+Ei2gevYK/Z24NmaoVH1ZdN4=;
+        b=nALpIytb1LSxlVLZRv5gxRiP8E+rG1yErRP3hFc62krX5Fm0gfu2F3V3+nbjI+SDGw
+         2vjUysoFhESiQogz20Z1USs4SaBp0cFkcpkeKy6GxBlZ8up0nIIe7bOspHGvo778dSie
+         athyzJoL9SmoaEbF7OvbO+xbMHkpRXmJkD3Ovl9RuNXWds1bUmJ/AfWJ85xi1Wb8Pjc4
+         /b71bSKPE8eLsTmS0mNS5yVRm3yEstmRmY9dj5+jZ/t5WfIEJYQ1Ku93DDBxzezSk2hV
+         0OuOENFiTeVHl1FHpKWsP3fds1CE20vDx9HgK7uVDaY7lcd9hcPdTM73S7ylAjgB9fre
+         29Rw==
+X-Forwarded-Encrypted: i=1; AJvYcCUK0SXCZen2fZvWff4GR0kycm1ewldGYfYnuCyCh6evwXkGF5RPVKnLs0sRKVIrUn8U4DbAO7+nHhzOvdFx7IkWi/lpHH2oQO2MXl9AErk=
+X-Gm-Message-State: AOJu0YwItfUCZ2+3FkyssTbJ6hGCqjyJFKbm7ig264+WN9CldkS5jixD
+	x/bWVN0pp0yDhVe3n9XVNP8iDMzyBYGShG86d4kLCYR0YihviyKKzObbL9mUerE=
+X-Google-Smtp-Source: AGHT+IHQQmg792AOqBaYpSyBlLcWoqqjQ7Q0vAoOPfmaWNxycd0p70GpLDpxxJuD6SOMGV77gIbPFg==
+X-Received: by 2002:ac2:5990:0:b0:511:7681:1853 with SMTP id w16-20020ac25990000000b0051176811853mr3113052lfn.16.1707682767663;
+        Sun, 11 Feb 2024 12:19:27 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWb5XZKpwgH9xx+A38BFP1sYW0fOK2x4MP8ZDj8dl80CVM9iCH5qFj4jBWu2j+WCHYe6CdZZ7EdAg0bspn0xWdzI7mavvJBS21jXsQf443GIO5L2nJ3fI6sdzW1ihXsIrkm5HQaY6po7MtuVai0Uq4zfxN+m/uQ9wEcVARBXWbNcR5zK2DIZ/kS7IdMx0ra0Vyh7cB9l4TPiQ==
+Received: from raven.intern.cm-ag (p200300dc6f267100023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f26:7100:230:64ff:fe74:809])
+        by smtp.gmail.com with ESMTPSA id vk3-20020a170907cbc300b00a3bff1d4465sm2720318ejc.165.2024.02.11.12.19.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 11 Feb 2024 12:19:27 -0800 (PST)
+From: Max Kellermann <max.kellermann@ionos.com>
+To: miriam.rachel.korenblit@intel.com,
+	kvalo@kernel.org,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	ayala.barazani@intel.com
+Cc: Max Kellermann <max.kellermann@ionos.com>
+Subject: [PATCH] iwlwifi/uefi: remove CONFIG_ACPI check
+Date: Sun, 11 Feb 2024 21:19:19 +0100
+Message-Id: <20240211201919.3751551-1-max.kellermann@ionos.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] brcmfmac: Remove unnecessary NULL-check.
-From: Arend van Spriel <arend.vanspriel@broadcom.com>
-To: Daniil Dulov <d.dulov@aladdin.ru>, Kalle Valo <kvalo@codeaurora.org>
-Cc: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski
- <kuba@kernel.org>, Pieter-Paul Giesberts <pieterpg@broadcom.com>,
- "Franky (Zhenhui) Lin" <frankyl@broadcom.com>,
- "John W. Linville" <linville@tuxdriver.com>, Kan Yan <kanyan@broadcom.com>,
- linux-wireless@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
- SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org
-References: <20240211150516.3475-1-d.dulov@aladdin.ru>
- <60a0a753-47ba-4f80-b93e-2878f214bc3c@broadcom.com>
-Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
- 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
-In-Reply-To: <60a0a753-47ba-4f80-b93e-2878f214bc3c@broadcom.com>
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="0000000000003daf8f06112024d5"
-
---0000000000003daf8f06112024d5
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 2/11/2024 8:25 PM, Arend van Spriel wrote:
-> On 2/11/2024 4:05 PM, Daniil Dulov wrote:
->> In this case req will never be NULL, so remove unnecessary check.
->>
->> Found by Linux Verification Center (linuxtesting.org) with SVACE.
-> 
-> Looks good to me, but when do we call things a "fix" and when is 
-> "improvement" more appropriate.
-> 
->> Fixes: 71bb244ba2fd ("brcm80211: fmac: add USB support for 
->> bcm43235/6/8 chipsets")
-> Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
->> Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
->> ---
->>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c | 3 +--
->>   1 file changed, 1 insertion(+), 2 deletions(-)
->>
->> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c 
->> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
->> index 9fb68c2dc7e3..38e4e4f32a39 100644
->> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
->> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
->> @@ -455,8 +455,7 @@ brcmf_usbdev_qinit(struct list_head *q, int qsize)
->>       brcmf_err("fail!\n");
->>       while (!list_empty(q)) {
->>           req = list_entry(q->next, struct brcmf_usbreq, list);
->> -        if (req)
->> -            usb_free_urb(req->urb);
->> +        usb_free_urb(req->urb);
->>           list_del(q->next);
->>       }
-> 
-> Ay you are already touching this code you could consider using 
-> list_for_each_entry_safe().
+This fixes a build failure on ARCH=arm when CONFIG_EFI is set but
+CONFIG_ACPI is not, because uefi.h declares iwl_uefi_get_sgom_table()
+and iwl_uefi_get_uats_table() as dummy inline function, but uefi.c
+contains the real (non-inline) implementation:
 
-That "Ay you are ..." should be "As you are ...".
+ drivers/net/wireless/intel/iwlwifi/fw/uefi.c:359:6: error: redefinition of 'iwl_uefi_get_sgom_table'
+   359 | void iwl_uefi_get_sgom_table(struct iwl_trans *trans,
+       |      ^~~~~~~~~~~~~~~~~~~~~~~
+ In file included from drivers/net/wireless/intel/iwlwifi/fw/uefi.c:11:
+ drivers/net/wireless/intel/iwlwifi/fw/uefi.h:294:6: note: previous definition of 'iwl_uefi_get_sgom_table' with type 'void(struct iwl_trans *, struct iwl_fw_runtime *)'
+   294 | void iwl_uefi_get_sgom_table(struct iwl_trans *trans, struct iwl_fw_runtime *fwrt)
+       |      ^~~~~~~~~~~~~~~~~~~~~~~
+ drivers/net/wireless/intel/iwlwifi/fw/uefi.c:392:5: error: redefinition of 'iwl_uefi_get_uats_table'
+   392 | int iwl_uefi_get_uats_table(struct iwl_trans *trans,
+       |     ^~~~~~~~~~~~~~~~~~~~~~~
+ drivers/net/wireless/intel/iwlwifi/fw/uefi.h:299:5: note: previous definition of 'iwl_uefi_get_uats_table' with type 'int(struct iwl_trans *, struct iwl_fw_runtime *)'
+   299 | int iwl_uefi_get_uats_table(struct iwl_trans *trans,
+       |     ^~~~~~~~~~~~~~~~~~~~~~~
 
->>       kfree(reqs);
+I don't know how the driver works, and I do not know why the
+CONFIG_ACPI check was added in the first place by commit c593d2fae592a
+("iwlwifi: support SAR GEO Offset Mapping override via BIOS"), but
+since it did not add the same #ifdef to uefi.c, my first guess is that
+this piece of code shall be used even if ACPI is disabled.
 
---0000000000003daf8f06112024d5
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+---
+ drivers/net/wireless/intel/iwlwifi/fw/uefi.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-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
-2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
-Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
-HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
-Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
-KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
-Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
-dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
-OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
-MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
-BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
-ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
-zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
-sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
-BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
-N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
-p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
-YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCBtWF2Ev2yIh/8UdPyz
-iLAejzoOnNRQzIq/Mfe/6hiuUDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yNDAyMTExOTI2NDRaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
-AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAVW+wafC2/AO+lSc0XrDaEUi1tncSmlWlz43/
-u/SzIgJpjFimBiYFiWz3775F4lJW+c3gafddFgCu4HYfbV0Jh1jHK+8Zfc5V2zg0GPxk709ltiDS
-zQ7zDGFrpc2SNH6mq/qiswaqZHXPD41ya6dQ6Ybk0HRa+S92wYqc9p48Nk2X4pL8bigO0DufEutA
-L3T3W6agGJrAdvcB6IWNzLMftgfrkl31gR8jNnJjfGWYP/xNPYDt20jSF6QRtYhBk+B9GmAX/qN/
-O4ejLUatg38/0Txfm0i8fCwJPHTTIZkpdMJew0LHz5xoKkfwzmFvKPJp196XyspzM3UWvYa0KxMb
-2g==
---0000000000003daf8f06112024d5--
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/uefi.h b/drivers/net/wireless/intel/iwlwifi/fw/uefi.h
+index 39053290bd59..8617fe8b65cd 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/uefi.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/uefi.h
+@@ -285,7 +285,7 @@ static inline int iwl_uefi_get_dsm(struct iwl_fw_runtime *fwrt,
+ }
+ #endif /* CONFIG_EFI */
+ 
+-#if defined(CONFIG_EFI) && defined(CONFIG_ACPI)
++#if defined(CONFIG_EFI)
+ void iwl_uefi_get_sgom_table(struct iwl_trans *trans, struct iwl_fw_runtime *fwrt);
+ int iwl_uefi_get_uats_table(struct iwl_trans *trans,
+ 			    struct iwl_fw_runtime *fwrt);
+-- 
+2.39.2
+
 
