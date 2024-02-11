@@ -1,76 +1,80 @@
-Return-Path: <linux-wireless+bounces-3416-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3417-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97D808509BF
-	for <lists+linux-wireless@lfdr.de>; Sun, 11 Feb 2024 15:56:15 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 895BF8509C0
+	for <lists+linux-wireless@lfdr.de>; Sun, 11 Feb 2024 15:56:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3655C1F21A22
-	for <lists+linux-wireless@lfdr.de>; Sun, 11 Feb 2024 14:56:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 12CCCB215AB
+	for <lists+linux-wireless@lfdr.de>; Sun, 11 Feb 2024 14:56:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 812105B20C;
-	Sun, 11 Feb 2024 14:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 402E05B5D1;
+	Sun, 11 Feb 2024 14:55:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aTBj51uI"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V/F0xsWT"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE0E15A786
-	for <linux-wireless@vger.kernel.org>; Sun, 11 Feb 2024 14:55:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 737D85B202
+	for <linux-wireless@vger.kernel.org>; Sun, 11 Feb 2024 14:55:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707663354; cv=none; b=iEaQWXUq9W8CI+tr9Ap8Ll6E5hqDlK0ps2kbArL+jgeCwj1xqgkN3T/BdqZNsim/7y9+xRWEnNctCeZltkna2eVADogujJPOfS1PZb0bwHKX58LCV4iPpsv1qVRTnUf5G9R3PooLBRCD5zTELzJNf5wsxvRTW4MGZKthgMk9X+c=
+	t=1707663355; cv=none; b=SmTtL96Grg7PR2jKuwihXPtgygd7PNYH1oLRTs6HQ/20FzV5oANhzzPuWxRBbXAGTZGdzygFwedmCHIzfzrcOUSc4XQXlDxCJkvrckEVN8/ACaW+8g9wnpxDJoGok9FN1MEOH7FgaKHN0i7KTjbLI7IqSr1RLkkH9SkNqXrwmPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707663354; c=relaxed/simple;
-	bh=J4m1OK+tYgdtWu7sG5YOE0xhk4pWV7NF+eI/it9xjCU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jMScD3hpFRp0h/wk6a6ze/JrGRLg+csLZeX9aJd3cr+ZDcqs98JozYcoR1WrdbRTx6YfiRmUpM0ydjE07ZpNBZBZvvuMeXPxXAwXRlQZ/2SO+cYgPPI5Fs+YGRJYm05jwFPXwVXPy/s2GduyttLc12b1Ee8TPq3iK3KZNmBp9l8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aTBj51uI; arc=none smtp.client-ip=209.85.128.47
+	s=arc-20240116; t=1707663355; c=relaxed/simple;
+	bh=6O1Y0kotZOZb3Knng6E6vF2YA6LpnjUkKsjE11qppPA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=XJdnp2Vj/nnDUXAg2O2TsP7K7T/wjkf/aolSser4QSQVFADytO12hAqHGe8SrN/Btl8oR24mqsLSnO+n89Wl4kwDS/DjdFVBWXnJXuNwuqShtFw2j7I9YJOJfd0htb+uj+y39teHEc9Ms0LcN1EZKchXc7Z1MLYGcbsQbWQH6hg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V/F0xsWT; arc=none smtp.client-ip=209.85.221.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-410cb93185dso1647525e9.3
-        for <linux-wireless@vger.kernel.org>; Sun, 11 Feb 2024 06:55:52 -0800 (PST)
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-33b815b182fso89383f8f.3
+        for <linux-wireless@vger.kernel.org>; Sun, 11 Feb 2024 06:55:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20230601; t=1707663351; x=1708268151; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=CLCtixCKrCF9DWrHtDqiQi9nNKYBgVJawTIFD8ZaWco=;
-        b=aTBj51uIaB1bNxB7ztM+ZeS+jJKsGKl5aBauIfPXu8BBAsY1C/VHjMaoAx2DruEK4y
-         qeYtfQVfwQMJ90pvD+D01sj1NSKh0wd8FiE51UhFPSOU7A3pz+KaB8PKMQsqLQoEJUPe
-         yBEcykkiY65vMrUV4L2e9VQxCen6O/BX7Ft0ed39O0anOTGHwPDZqQmgBRkSvMd3vOE4
-         ddJijlJ2sD87HraWvZV9NLNW4w8kiKhQ/JczqCCNgoWlzuYbr9qyxLiOHjNt3jbI9NmA
-         LzO4/g+QAkW4un4xQzCDtUL50AStYRza2hSNQrruRfGUc/Ikv6Ja/rVr/Mqqkqjd4D7J
-         VZ/A==
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oAn2AS+0LO75NkItpaZHGDtD144iwOC08hKoiH7RRq0=;
+        b=V/F0xsWTClJgUPSUQbzZvP7sClB9iAdkGajepg4t8INUvSrI/4nXVTQ18B9ixRHOHh
+         OViraujV5oteGXAU9q5s99O9wmfguS/FIlBi/YMjcDDEuhrsDH/Lc4kBhZYKc3RItzdU
+         Sk3RzwPABdxgXTZS/II6hTBH0O/4tp6sR0boSI3oeQo0pvbCH0F0nFg0u0UdQV6nv3CS
+         DPVof4p268u63tbzd2hmf9IAIS7cs4od8nBi7yvj2yix1nc9kVvThlaVjl7tNd6vlsz+
+         7MctWrzyI/mtAxz6DaPOW/hYhPKW+o5r3GsfdHFWRmw4AWUme8Wn2OV2Q36vpSW9Pztz
+         bwBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1707663351; x=1708268151;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CLCtixCKrCF9DWrHtDqiQi9nNKYBgVJawTIFD8ZaWco=;
-        b=uouQqJm0FgrGNpWzhFn1M0yGIxPsvfYxVYAbo8bTbCVkDz8XHb6bq5aomLecxwiqWH
-         tYw5yp2V9835j+9qIsgE5rJxFu3uRuAsiTTL+oUcb0Jw+ty9B5JazOyMTy4FBMp8EM5i
-         m6hqMOU7cxpTQJ0EzhUnWXus837RNCyaqQEEChFbNPvwJRNUArByKhT/AhzrDeEpBiOW
-         uW1ZSJNaN+UDebyzGIByWiMGSHgZ8y7kH4fp1aWYsRVywSMk+hvLyVjksZyT8exBK8bK
-         5RpIoy8lFVNkBZLN2wGj4NZCKEwOF6JWbLY/SK2hGehwn3/0dR0dmhLEFcke1ahukkMu
-         H55w==
-X-Gm-Message-State: AOJu0YzRY+2bc1noYk9zPf+ZN0D5Y+78t+tqqqaDUbyrUdxmn343crsW
-	JMO9euu7EhJEpQBBE0FVNDob5XVAurOXyC70Q6E6WuxV84dyQeUk
-X-Google-Smtp-Source: AGHT+IH5eGK62dyD65QQzY0/cVLkLg+3MRXkexDMrc3/fOEitnSW6BI9Z68fT7+uzJ60flw/CEzszg==
-X-Received: by 2002:a5d:6c63:0:b0:33b:3fc4:3ac9 with SMTP id r3-20020a5d6c63000000b0033b3fc43ac9mr4381386wrz.32.1707663350602;
-        Sun, 11 Feb 2024 06:55:50 -0800 (PST)
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oAn2AS+0LO75NkItpaZHGDtD144iwOC08hKoiH7RRq0=;
+        b=hl/o5EOEPuKusacxCuHjVAEYSr2jFHxMOwfnKfw3MqzFbsVqIexMSVVLy73Rslr9x1
+         cRJ/wF1wDgC4TwKjx2b7d2cvU/4+snArtiw32bW8f0F0tFF19a083QHhbvBKTdauZb7v
+         tExUk2Y+Jgk0MEYV1M6r6Ayo1BVeoBc2ToXR2rXuzTYjM7L3Oor1WAFA4BcOdIULIyTS
+         F8DB6QrcpWEXrAABI+AV3YGvZ4nExYf42V/Wm9193zg94vllL8SaxayFh3y54smzeEsC
+         EmH48HXDCpBxYN0i+bcCJgvm2hYZ05Jm9JLb3raJrdnlhoJ8GDpRWT+P4MbYzmlr8AKY
+         B7rw==
+X-Gm-Message-State: AOJu0YxI+UVVK3G/hH/3bBb8nX7VrfkTC18lYwamQPSi8YCtw6PBGn2q
+	MXOCFInywggWlah9mGUcyx4ziW1GufyVyhldx0TQMDfFzCVMeZ8M9iLJ0vlj
+X-Google-Smtp-Source: AGHT+IHFNpT7vRUPtRfvLinZI28Y8eMsTlQazNuTi7Et68dVRe4OyBj3BrFYUNN4gQMQ5P+bWcTa8g==
+X-Received: by 2002:a5d:628e:0:b0:33b:28:1084 with SMTP id k14-20020a5d628e000000b0033b00281084mr3363122wru.33.1707663351353;
+        Sun, 11 Feb 2024 06:55:51 -0800 (PST)
 Received: from syracuse.iliad.local (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id cf2-20020a5d5c82000000b0033b7263702csm3779424wrb.29.2024.02.11.06.55.49
+        by smtp.gmail.com with ESMTPSA id cf2-20020a5d5c82000000b0033b7263702csm3779424wrb.29.2024.02.11.06.55.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 11 Feb 2024 06:55:49 -0800 (PST)
+        Sun, 11 Feb 2024 06:55:50 -0800 (PST)
 From: Nicolas Escande <nico.escande@gmail.com>
 To: ath12k@lists.infradead.org
 Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH 0/2] CLeanup scan_flags from struct ath12k_wmi_scan_req_arg
-Date: Sun, 11 Feb 2024 15:55:46 +0100
-Message-ID: <20240211145548.1939610-1-nico.escande@gmail.com>
+Subject: [PATCH 1/2] wifi: ath12k: Do not use scan_flags from struct ath12k_wmi_scan_req_arg
+Date: Sun, 11 Feb 2024 15:55:47 +0100
+Message-ID: <20240211145548.1939610-2-nico.escande@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240211145548.1939610-1-nico.escande@gmail.com>
+References: <20240211145548.1939610-1-nico.escande@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -79,21 +83,56 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-As previously done for ath11k (see [1] lets fixup struct ath12k_wmi_scan_req_arg
-to remove the scan_flags member. This prevent future use of out of sync
-WMI_SCAN_XXX defines & their corresponding scan_f_xxx corresponding bitfields
+As discussed in [1] to fix the mismatch between the WMI_SCAN_XXX macros &
+their corresponding scan_f_xxx bitfield equivalent, lets stop using the
+scan_flags in the union altogether.
 
-[1] https://lore.kernel.org/all/20240209113536.266822-1-nico.escande@gmail.com/
+[1] https://lore.kernel.org/all/4be7d62e-cb59-462d-aac2-94e27efc22ff@quicinc.com/
 
-Nicolas Escande (2):
-  wifi: ath12k: do not use scan_flags from struct
-  wifi: ath12k: Remove unused scan_flags from struct
+Tested-on: QCN9274 hw2.0 PCI CI_WLAN.WBE.1.3-02907.1-QCAHKSWPL_SILICONZ-10
 
- drivers/net/wireless/ath/ath12k/mac.c |  4 +-
- drivers/net/wireless/ath/ath12k/wmi.c |  2 +-
- drivers/net/wireless/ath/ath12k/wmi.h | 55 ++++++++++++---------------
- 3 files changed, 28 insertions(+), 33 deletions(-)
+Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
 
+---
+ drivers/net/wireless/ath/ath12k/mac.c | 4 ++--
+ drivers/net/wireless/ath/ath12k/wmi.c | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index a737a09a0b9c..7d3f5321a36d 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -3201,7 +3201,7 @@ static int ath12k_mac_op_hw_scan(struct ieee80211_hw *hw,
+ 		for (i = 0; i < arg.num_ssids; i++)
+ 			arg.ssid[i] = req->ssids[i];
+ 	} else {
+-		arg.scan_flags |= WMI_SCAN_FLAG_PASSIVE;
++		arg.scan_f_passive = 1;
+ 	}
+ 
+ 	if (req->n_channels) {
+@@ -7555,7 +7555,7 @@ static int ath12k_mac_op_remain_on_channel(struct ieee80211_hw *hw,
+ 	arg.dwell_time_active = scan_time_msec;
+ 	arg.dwell_time_passive = scan_time_msec;
+ 	arg.max_scan_time = scan_time_msec;
+-	arg.scan_flags |= WMI_SCAN_FLAG_PASSIVE;
++	arg.scan_f_passive = 1;
+ 	arg.burst_duration = duration;
+ 
+ 	ret = ath12k_start_scan(ar, &arg);
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index 84d7d6584fba..2c2a010d88df 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -2194,7 +2194,7 @@ void ath12k_wmi_start_scan_init(struct ath12k *ar,
+ 				  WMI_SCAN_EVENT_BSS_CHANNEL |
+ 				  WMI_SCAN_EVENT_FOREIGN_CHAN |
+ 				  WMI_SCAN_EVENT_DEQUEUED;
+-	arg->scan_flags |= WMI_SCAN_CHAN_STAT_EVENT;
++	arg->scan_f_chan_stat_evnt = 1;
+ 	arg->num_bssid = 1;
+ 
+ 	/* fill bssid_list[0] with 0xff, otherwise bssid and RA will be
 -- 
 2.43.0
 
