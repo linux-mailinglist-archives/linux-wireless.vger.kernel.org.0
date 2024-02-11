@@ -1,136 +1,159 @@
-Return-Path: <linux-wireless+bounces-3421-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3422-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2A498509F4
-	for <lists+linux-wireless@lfdr.de>; Sun, 11 Feb 2024 16:12:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B048B8509F8
+	for <lists+linux-wireless@lfdr.de>; Sun, 11 Feb 2024 16:16:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C6AF6B20C05
-	for <lists+linux-wireless@lfdr.de>; Sun, 11 Feb 2024 15:12:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D423D1C20ED4
+	for <lists+linux-wireless@lfdr.de>; Sun, 11 Feb 2024 15:16:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 661DE1E507;
-	Sun, 11 Feb 2024 15:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 634B05B664;
+	Sun, 11 Feb 2024 15:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Fhe0IhPT"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Jz4eSga1"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2058.outbound.protection.outlook.com [40.107.94.58])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E9265A11C
-	for <linux-wireless@vger.kernel.org>; Sun, 11 Feb 2024 15:11:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707664269; cv=none; b=rcwAnyse2PSLWU6PwOXBnIbRf6A2fGvhdjyhjzSAf7qm/i1Al+I6xudkGs1vfTQxOrcJZjj4GgAne5VQsQB8otkYsBcvhsvK4nBsbjfyrd3f1Uv8eAKWqOO4iciuvIFIafO9O2CLQXhqO7OYc6Qcm2E2EmQNad84x7K3+d3cftU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707664269; c=relaxed/simple;
-	bh=wzUM8NwNNyIQtax7Poodq9Eft+NJ223T38x8M6UJUEk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KV0k29IbZDgYmpF9rwHv7MtKxxrxsHt+KCcGjLd7BOYTidow429lGS54/nPzVDhq916Nb0xI5gEHqvhwH+XDuteON0UDN1GaijL+pkcmMW+u8q3PGzUDbE65td0PR2TYUqxPGmIg5OfZRDVaGmbagB1jrV1+qKh+qMi97WBvArc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Fhe0IhPT; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-41097f9a9a4so7424415e9.2
-        for <linux-wireless@vger.kernel.org>; Sun, 11 Feb 2024 07:11:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707664266; x=1708269066; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ereKpYdLrSaaOEa5xs7M1T2/tfEfvgSZWOY7DvZi9OI=;
-        b=Fhe0IhPT0ZA0rtrKUYCWBNaiivaGwoujzrF86ImqEf87xz3uoDGWtTYM3NCWCNB5Zx
-         noSITAg3UzTvziwXWcj0DyIXE5V5qW2QiIf9p8U4ANJoTw97//qukZWiVXaEpdZbsUvd
-         xVQ3b093OR4agtE2fi3FFvthnRufPYs+prMdRv2xjx01LN6aRG4x+KNqPtey8NTlDEXZ
-         562CNA/LHiisUBarZtsmqDBGvTk8aZex5AQrI6xYIJpQNDZ44vtj5P0poAh13e3MN/eW
-         Oxj7VJhDYv5WpVsfIuiCP7fDU/C0j23J3GeHZT2fxc0AscFZd/e/QUgRRReLFIx9fgTP
-         81+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707664266; x=1708269066;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ereKpYdLrSaaOEa5xs7M1T2/tfEfvgSZWOY7DvZi9OI=;
-        b=oREZBg/TNoZiICOqVswrnWQHv4UKWJt2wRrAz193OLFWSd5f7MZWjihHmBh8GTX/Hy
-         TGR1YSu6T3R28H061gTak1KMgFA+v2BZ4CdZZoDdTwdEKY6JcBpFKGB5rNPAlj6P+Yu5
-         hy9sDoiG6Lqx0Mgnx2thH3VflShrO+PYGC6FI6YiwQH6EVcRcPPjos+Zehe/ZnkHvwIN
-         qPoqmYBY7vFKMezxi6/HTPaRn8s514gEJ3XDjW97qAn9LkX3zyze6wzalUhr1OjTUgZH
-         9ifxnzamX+dkKWiBiGe8AiLbks6uK9kwPSHeDVv2Y2/tsRWIGs1rFI9VCTiXiRfzDL2N
-         ZOeA==
-X-Gm-Message-State: AOJu0YyGyULeD0LdaMWu2v6jHOFNG+cBEYzeycuVN/S6Lt5OZrYmCCUO
-	bWbjPHPCtL3LF8t6nSx5YMulq//hkotrV/V7V0Ioppc8hSBJPR2W
-X-Google-Smtp-Source: AGHT+IG4ENqfTMl/QDlO2wMczjF5TosO6T+Na4EuQRiiRB1auNm5e64Gu/ZjATk92+xSlqaBztqibQ==
-X-Received: by 2002:a05:600c:4ed0:b0:410:c127:62fe with SMTP id g16-20020a05600c4ed000b00410c12762femr1176907wmq.1.1707664265701;
-        Sun, 11 Feb 2024 07:11:05 -0800 (PST)
-Received: from syracuse.iliad.local (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id bi11-20020a05600c3d8b00b00410d41f1d96sm384272wmb.34.2024.02.11.07.11.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 11 Feb 2024 07:11:04 -0800 (PST)
-From: Nicolas Escande <nico.escande@gmail.com>
-To: ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH] wifi: ath12k: remove the unused scan_events from ath12k_wmi_scan_req_arg
-Date: Sun, 11 Feb 2024 16:11:04 +0100
-Message-ID: <20240211151104.1951418-1-nico.escande@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15D6C5A102;
+	Sun, 11 Feb 2024 15:16:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.58
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1707664573; cv=fail; b=dvo8GGSbyb1tVQWRglUDuwnaYdK3zNdESGVUpDinip7AQFBWUaXjWmB32J3OsRO4gPs/+xvjWyiOqa535+UsYsryPBIb9SNjYqfIPw3Nf8PsXUHXGYzCCKxfPbA8qulh9du027YyeSM3NsZBrpFb/Yn4qjC+AK0OCBc0aXrf7NY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1707664573; c=relaxed/simple;
+	bh=asrln4JpnlgR8nA7cVBaLkQl0NS+krdUtNTtXifvRdI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=A/PY3aNpcrP08YunzLjtdxc46RTyztr1RsQaISBSF8lNXMj6uFp3FPWWTgtACjwB+wf9s4mooTjiEVyc5SpEjML/LACA8nwfuIV/Xa1UowmbFy48W9C69ekg1RB1VvvSpjVLKEv6xAIGb1Ww9h9o3YmedybDlNz5+kDM/8/tTFQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Jz4eSga1; arc=fail smtp.client-ip=40.107.94.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=XkKWv2tS3gpWo12R5hffKxyg094ELqFyx3LWw5ufBvscBikj0/3S7I4HJxh+Fv/XcpO/QjJa3G40psvGSGpTe83/9eOHOBfeCH4gujgej9UaSMS9Y6pztzZvQTw0UNrgyMylXEKoagZ/fI5Iq8RQDUJoecs3ITwmJv8LVKhlDzWuwVPqc8uyCf/pGhPGhAwtiuRhLEx1nH2BJ77BuzOXCuWKAhgEvloM/1LG4v+PpyzfgBwu2vv+d2TLqVytWAOBeOA2K8PNNAmAhBPqM+rhXNiLzvp4+DbFnyZM94w6plw8Kz02Q80tBFbUHoq1h3v73jJBjdaByDTfLX5qESWSOg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nVXpO3Ep+KeDx0QGFumYtd/+Xi94x/5NFG3md/xFPkY=;
+ b=eN4Bu8LE6PaPXy2bhZWPxNlrNjDFG6h8Ottiakve4fO66m9GfYroLMW+CqYRCw1o+sRI/n8b/2sOuFTrPeOu6bxK7w3ltpOvYGo7O3ggOUlFBAd1JDqQyxZQS/4CDTiPm3W4HCctF3wsuM9PZO1+95THf8aVYvyjot1EOUpN3cEMebzP/ltMcbeArrTLhr+i82/kj9sTjI6cR/Jj54d42xWcCxMfRqugjHL5AlmuENoQTt6JX+hrRVzfx5R5m9XPRbMgLs3CMSjchk+E6zf0coYzgNfz3c7djhddZr8EFhhw8nm0nZeOvQ4LrJkLmBy41zm65vLemhiSXTTLcKAe+w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nVXpO3Ep+KeDx0QGFumYtd/+Xi94x/5NFG3md/xFPkY=;
+ b=Jz4eSga1ITyhreg873TwKPRZIkq/NHIsc1yxMfvbs9sANUH2Qiv7TqzK7fc4zsn6h7DmWKuB2U9eiyzP0PrAZx6jBDwfMyMIntkW9PfaOHPXgNM2lY8Jn8E8to5tMTarz4DZ7NiwVKoFTQjbpqLZiuUXqIQXoL3D4hQLvpuWANcpyYZEIYGSn8TggIXwaqYP8P0LVr6FdEBBN/0+yK/uHgvlVFn3WHvwY1Ntoh2LbTma8/NXX0/PM0mAZNfUSc2bPhG/lgPyMaNxdLFQ0O2p+DIWQQsmaM99dEu90V9vBAEKCuAj/IJ7WXFuYTYK88/UYqY7ALF2tjCs1c8b6rV3Ow==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CY5PR12MB6179.namprd12.prod.outlook.com (2603:10b6:930:24::22)
+ by BL0PR12MB4993.namprd12.prod.outlook.com (2603:10b6:208:17e::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.18; Sun, 11 Feb
+ 2024 15:16:06 +0000
+Received: from CY5PR12MB6179.namprd12.prod.outlook.com
+ ([fe80::d2ef:be54:ae98:9b8a]) by CY5PR12MB6179.namprd12.prod.outlook.com
+ ([fe80::d2ef:be54:ae98:9b8a%7]) with mapi id 15.20.7292.012; Sun, 11 Feb 2024
+ 15:16:05 +0000
+Date: Sun, 11 Feb 2024 17:16:01 +0200
+From: Ido Schimmel <idosch@nvidia.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: Linux PM <linux-pm@vger.kernel.org>, Lukasz Luba <lukasz.luba@arm.com>,
+	LKML <linux-kernel@vger.kernel.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Zhang Rui <rui.zhang@intel.com>, netdev@vger.kernel.org,
+	Petr Machata <petrm@nvidia.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	linux-wireless@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Manaf Meethalavalappu Pallikunhi <quic_manafm@quicinc.com>
+Subject: Re: [PATCH v1 5/9] mlxsw: core_thermal: Set
+ THERMAL_TRIP_WRITABLE_TEMP directly
+Message-ID: <ZcjksY_r-5cC0blY@shredder>
+References: <3232442.5fSG56mABF@kreacher>
+ <2206820.Mh6RI2rZIc@kreacher>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2206820.Mh6RI2rZIc@kreacher>
+X-ClientProxiedBy: LO2P123CA0080.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:138::13) To CY5PR12MB6179.namprd12.prod.outlook.com
+ (2603:10b6:930:24::22)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY5PR12MB6179:EE_|BL0PR12MB4993:EE_
+X-MS-Office365-Filtering-Correlation-Id: 291265dc-4003-43a6-322c-08dc2b145df9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	L9sTilLfEp4Ls5pLW8OXs8x29FNfVj0025M2p+5+jXQy20y1Tm9l1kQN+dc2XBPCAwLjpozVepX+1cBRNAC+k2X294GfwoWPEJdTUI1Ez4/j4+j9KW4tQ3Fc3xCRFAAM00B3iydS4PucltAeLK5sIRB8szMAwmTfz/15BYyKQKAStg7sfjHQUEhClM2ww4StbqWk83iBYwA84zdCcsDZDJPIFO/wJo1BSNBOPvW4g6mePfGIxHd7ocG2lAnV5P7Pa8SM1u9H9G7zNP7T2EeEQdFbF+sFwfiRdVjjBeVHiPqd+12NSqfFtET/n/uvFPruQP7Gj3fvfTRjJ4ELAIRCCCPEfiC+gT7PnfIX2W6Ymo55p0QnoQjV4sbnPq5DOImdFcJVhwC+NWLHafCH72kSkdAVHqoEMQK5/UgATFSR6aVPmLfJPtB71rnvdTlTFHg5mbVf91WoyvQDCqjTrB0BMmqHjhfCYd/zp94W36h/k638Kn5c0/DIyVtNnUkh2wNRG5Ka4S7ZINkXsfkfbsBXBifoc5b0NOyA3SL1SjQ3WnsJA6krbf6cpZSFxCvWpVYk
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY5PR12MB6179.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(136003)(346002)(39850400004)(396003)(376002)(366004)(230922051799003)(1800799012)(186009)(64100799003)(451199024)(38100700002)(2906002)(4744005)(7416002)(5660300002)(33716001)(86362001)(26005)(6666004)(9686003)(6512007)(6506007)(66556008)(316002)(8676002)(54906003)(6916009)(66946007)(4326008)(66476007)(478600001)(8936002)(6486002)(41300700001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?98Qte6FGpvPz4OC6nFYRmldfsQq3vLTB0lhefHWhENlE9CZj5m2sfrarOaUT?=
+ =?us-ascii?Q?0mpfjT66dQ8jpi5f8cnrFuIouumvCvRktqDfAgavGv4jiWkMydkMnFd6y5Ru?=
+ =?us-ascii?Q?ocy9rj3Kyb+c4e94ezv1BF08MTq5kE+r7s+1vcEtaMKgP+oWz5iG7Cw63z4e?=
+ =?us-ascii?Q?2TJVs7bdXZmT+vg8OQZGHF8RytqIIIY7zrqc+7WKfHVN47eE/23yoeSzXfqY?=
+ =?us-ascii?Q?t7dto+yKXzMUSV+GE0jlb54hzm1zdOnRw9Tg5+KmHPMuLTFoQbszHJfblmmn?=
+ =?us-ascii?Q?WUNn8XuFO95YPwTo2Q7OMOnnqHc1qcPhU3la5KxEvoU5Fi1sle1/O2dGxg2b?=
+ =?us-ascii?Q?Ih2UJm/e5Xgj7itimUQzRa/CcwYgzUbtALfiWi/cGRkEqJXXec28elJ/dXF3?=
+ =?us-ascii?Q?ESonUrcy1kUVDmfwef0/d3hDAP2oP+zdzA6kJ+e3S9w4bgCgzzwr6rlyB6XW?=
+ =?us-ascii?Q?x+rq62h8T2xmUltrpKflHEk/ylzPz3KZTpr2QRgMnHfZtOqR0KRSQsudNrsa?=
+ =?us-ascii?Q?7+Gb/97vOs8AYbt5XxRZkzuU7YPS+YvSPs8xqaRVRa9fTebgQ59IQ5w+QoCO?=
+ =?us-ascii?Q?il9+QPB4hu8FPNg3xGEY4IR1K/36sw93ZIryzO+a2U/b4C4SI0EqkS/6ObFc?=
+ =?us-ascii?Q?8ABhvLNZWBpwbPQyAfM+T3M+dkdybyigYX1omyv6FaZX3CCZi3mhBW8eOL7u?=
+ =?us-ascii?Q?4DInja7IF8lNon9BS8CRgQkfdod6U/+EzxJCNBcC1oDkuZGCOXKZoRqeN1AO?=
+ =?us-ascii?Q?7B09utVjDCi8pYivnSzT5KMkz6zVj3+zVXBiE8Pb6LilCXDRqms4WLBMdiZq?=
+ =?us-ascii?Q?wO947trFnR2I1NYEYy05BOJuv8MOLFEFsnF8PE3ZfaV9zdtyAaiZeKkj0xLD?=
+ =?us-ascii?Q?9kHIR3UtZAFZJj69vOa17zGXr0ZoNUE/ym7ZxgM3w4Pbb9liL0mVVHo+UXx8?=
+ =?us-ascii?Q?0OvpiHUNnqNqZ4yFxTXBvC+VjJXd03zwyLjB7KVB0Raa5rOczUIeKxnqOmJd?=
+ =?us-ascii?Q?652QVi675ltLmHTyg/sM6a+7xSjlL69J8t0agjhKldAm5rC22Hg6B95+Nknc?=
+ =?us-ascii?Q?IqGHZMLpVnXF6mdonZpKATcF/2xiCBQj3Eu2yAdnw+XChb7cKeAK8HGzhgUD?=
+ =?us-ascii?Q?c8qW011g+01o+MInebEOx/3kFrukfP4cS3EAcuOjEDfaH/+t+zd7HLBcAJD1?=
+ =?us-ascii?Q?W3QbcMmlqKaze71xIgClJ9HWVDouIy65srA67MYZ2q81Jcej+GvbMCxfZ4C2?=
+ =?us-ascii?Q?xPy4C+hVlILKKqUep4OaghapmRn6oTUJai/IwfrggLZ6yTYCCzMeWMpgeYKg?=
+ =?us-ascii?Q?lwVh2vuF6oNaxyoqMXQDk16t5RtP9kR6AhNs9l1y5IW8n3IsWKsleSHn5s3n?=
+ =?us-ascii?Q?8nbnJYhKEEWAvIF1iOvuM1e2bVjluVk1uW/BPvezFVP842+hM7U9TOoXsdlL?=
+ =?us-ascii?Q?j6dfdb+BTYDJjarE/p4FFd9oIdDBpXXBjSoPsJfigAX6vzcA6/dT6HOENVXj?=
+ =?us-ascii?Q?h4ftV3RO6NNkC4c46iq/MDdeLSMi94nOayqyFF1+dlLCjrueFDl/tnfd99PE?=
+ =?us-ascii?Q?TUyt3t85AOkch4+q2Eu5LkWWvUenPOvSIC+NiqvY?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 291265dc-4003-43a6-322c-08dc2b145df9
+X-MS-Exchange-CrossTenant-AuthSource: CY5PR12MB6179.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Feb 2024 15:16:05.7072
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: i6eMQNHD41wPioXWInfh2vvtth3dSDdyYgAK6PkdyB+z0cxj7OBc2P9P4KyjpUST1uElI4RqcYWys5ILfGQvaw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL0PR12MB4993
 
-As done for ath11k, lets keep on cleaning up struct ath12k_wmi_scan_req_arg by
-removing the unused scan_events. Also remove the underlying union & struct
-construct as it isn't needed anymore. No functionnal changes.
+On Fri, Feb 09, 2024 at 03:08:43PM +0100, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> It is now possible to flag trip points with THERMAL_TRIP_WRITABLE_TEMP
+> to allow their temperature to be set from user space via sysfs instead
+> of using a nonzero writable trips mask during thermal zone registration,
+> so make the mlxsw code do that.
+> 
+> No intentional functional impact.
+> 
+> Note that this change is requisite for dropping the mask argument from
+> thermal_zone_device_register_with_trips() going forward.
+> 
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
----
- drivers/net/wireless/ath/ath12k/wmi.h | 31 +++++++++++----------------
- 1 file changed, 13 insertions(+), 18 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
-index 892f21f95ee5..103462feb935 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.h
-+++ b/drivers/net/wireless/ath/ath12k/wmi.h
-@@ -3281,24 +3281,19 @@ struct ath12k_wmi_scan_req_arg {
- 	u32 vdev_id;
- 	u32 pdev_id;
- 	enum wmi_scan_priority scan_priority;
--	union {
--		struct {
--			u32 scan_ev_started:1,
--			    scan_ev_completed:1,
--			    scan_ev_bss_chan:1,
--			    scan_ev_foreign_chan:1,
--			    scan_ev_dequeued:1,
--			    scan_ev_preempted:1,
--			    scan_ev_start_failed:1,
--			    scan_ev_restarted:1,
--			    scan_ev_foreign_chn_exit:1,
--			    scan_ev_invalid:1,
--			    scan_ev_gpio_timeout:1,
--			    scan_ev_suspended:1,
--			    scan_ev_resumed:1;
--		};
--		u32 scan_events;
--	};
-+	u32 scan_ev_started:1,
-+	    scan_ev_completed:1,
-+	    scan_ev_bss_chan:1,
-+	    scan_ev_foreign_chan:1,
-+	    scan_ev_dequeued:1,
-+	    scan_ev_preempted:1,
-+	    scan_ev_start_failed:1,
-+	    scan_ev_restarted:1,
-+	    scan_ev_foreign_chn_exit:1,
-+	    scan_ev_invalid:1,
-+	    scan_ev_gpio_timeout:1,
-+	    scan_ev_suspended:1,
-+	    scan_ev_resumed:1;
- 	u32 dwell_time_active;
- 	u32 dwell_time_active_2g;
- 	u32 dwell_time_passive;
--- 
-2.43.0
-
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
 
