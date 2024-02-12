@@ -1,134 +1,115 @@
-Return-Path: <linux-wireless+bounces-3426-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3427-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57517850B6E
-	for <lists+linux-wireless@lfdr.de>; Sun, 11 Feb 2024 21:19:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 325CD850D8D
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Feb 2024 07:40:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C59D1F21921
-	for <lists+linux-wireless@lfdr.de>; Sun, 11 Feb 2024 20:19:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8611FB21300
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Feb 2024 06:40:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89A6D5EE74;
-	Sun, 11 Feb 2024 20:19:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AE5B3C2F;
+	Mon, 12 Feb 2024 06:40:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="OCC0SkVi"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="mgEbFA1c"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D295E22B
-	for <linux-wireless@vger.kernel.org>; Sun, 11 Feb 2024 20:19:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E3CF3C15
+	for <linux-wireless@vger.kernel.org>; Mon, 12 Feb 2024 06:40:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707682773; cv=none; b=hdCPyEBBMXt7HgkvWZdWogDMIrHTH1DuL5c5F3V2GsbDYu0UaFZ+mNV7YkThOIxajglKZTMkMkkuCq1Zb6ddM/hSbSX3n+Zf10j+HFck7JhY4QClM+q3xjq0o39VG6a+lT9nquw+Z+94eJ2BpAOdzJ7s7iQ5KI2UaNBLrMBx2aI=
+	t=1707720044; cv=none; b=i0nFWOCd3yPcuhWzJtzQWpWHx8BP21EOzShF/1sBXmNTpkV1/5CFczjNR4eC0HdBnRCd1p1wNsnqDE0Wsud1Til5qCjZUEHfjSZRrPBVCA5RsZpXa1anT798z7GyWVysH88Fim+BsyJoy3XLTyZd5S6xCQzppTmgWK9U6OXtwRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707682773; c=relaxed/simple;
-	bh=nbDFD/TqWUYFdF7uxY/c2JRJpkeHNhciS5fxFdKpRgo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=THIkbJDRSaOsmcGKHaa/p9ji7Fda1w9+wkIu8kty8Hngr7dIziuAi+O3v6x/bprjMnztrvYMYc2rK5UN1QIcNSQaOmEYcFKXlAkejN1EwQQ+aZYNlqaMyXtKkLq24PeTsAm584htRYKzVYVsDqaC87kBsHWGcXNltZYS2mTqUPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=OCC0SkVi; arc=none smtp.client-ip=209.85.167.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5116588189aso4568024e87.1
-        for <linux-wireless@vger.kernel.org>; Sun, 11 Feb 2024 12:19:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1707682767; x=1708287567; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=7FMeMe+UFSzOu4x02i7+Ei2gevYK/Z24NmaoVH1ZdN4=;
-        b=OCC0SkVigvA6aBCxQwilkr2BPTgpL9p4baJABc7t6wVoRZ3kYQBkq1iLJO+thTJ8rt
-         qQIBSgaQYAhSatQhUcBGmJQdy02OPpRObf2vwddjAURZlnyQiZ02tSrycNMa9yqKQWYu
-         4FURW2qNaEplDEbIPzbanA3hL5wkwCSeQbYdoP4bMMKqE5EpVJw63+gBav3z4l4KtRzT
-         vzZUlk4GVXm9GWGmtgule8st0dHC4oVOSXJsHhxj65280MQATCgAtujaUUpK4E9prynH
-         U2OhqDPdlgTdzYH+M8XdnrN/0SaP6tXLA3UqopWHld1CEqN9PtU+HMbiFxJikQ3F66YJ
-         f1MA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707682767; x=1708287567;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7FMeMe+UFSzOu4x02i7+Ei2gevYK/Z24NmaoVH1ZdN4=;
-        b=nALpIytb1LSxlVLZRv5gxRiP8E+rG1yErRP3hFc62krX5Fm0gfu2F3V3+nbjI+SDGw
-         2vjUysoFhESiQogz20Z1USs4SaBp0cFkcpkeKy6GxBlZ8up0nIIe7bOspHGvo778dSie
-         athyzJoL9SmoaEbF7OvbO+xbMHkpRXmJkD3Ovl9RuNXWds1bUmJ/AfWJ85xi1Wb8Pjc4
-         /b71bSKPE8eLsTmS0mNS5yVRm3yEstmRmY9dj5+jZ/t5WfIEJYQ1Ku93DDBxzezSk2hV
-         0OuOENFiTeVHl1FHpKWsP3fds1CE20vDx9HgK7uVDaY7lcd9hcPdTM73S7ylAjgB9fre
-         29Rw==
-X-Forwarded-Encrypted: i=1; AJvYcCUK0SXCZen2fZvWff4GR0kycm1ewldGYfYnuCyCh6evwXkGF5RPVKnLs0sRKVIrUn8U4DbAO7+nHhzOvdFx7IkWi/lpHH2oQO2MXl9AErk=
-X-Gm-Message-State: AOJu0YwItfUCZ2+3FkyssTbJ6hGCqjyJFKbm7ig264+WN9CldkS5jixD
-	x/bWVN0pp0yDhVe3n9XVNP8iDMzyBYGShG86d4kLCYR0YihviyKKzObbL9mUerE=
-X-Google-Smtp-Source: AGHT+IHQQmg792AOqBaYpSyBlLcWoqqjQ7Q0vAoOPfmaWNxycd0p70GpLDpxxJuD6SOMGV77gIbPFg==
-X-Received: by 2002:ac2:5990:0:b0:511:7681:1853 with SMTP id w16-20020ac25990000000b0051176811853mr3113052lfn.16.1707682767663;
-        Sun, 11 Feb 2024 12:19:27 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWb5XZKpwgH9xx+A38BFP1sYW0fOK2x4MP8ZDj8dl80CVM9iCH5qFj4jBWu2j+WCHYe6CdZZ7EdAg0bspn0xWdzI7mavvJBS21jXsQf443GIO5L2nJ3fI6sdzW1ihXsIrkm5HQaY6po7MtuVai0Uq4zfxN+m/uQ9wEcVARBXWbNcR5zK2DIZ/kS7IdMx0ra0Vyh7cB9l4TPiQ==
-Received: from raven.intern.cm-ag (p200300dc6f267100023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f26:7100:230:64ff:fe74:809])
-        by smtp.gmail.com with ESMTPSA id vk3-20020a170907cbc300b00a3bff1d4465sm2720318ejc.165.2024.02.11.12.19.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 11 Feb 2024 12:19:27 -0800 (PST)
-From: Max Kellermann <max.kellermann@ionos.com>
-To: miriam.rachel.korenblit@intel.com,
-	kvalo@kernel.org,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	ayala.barazani@intel.com
-Cc: Max Kellermann <max.kellermann@ionos.com>
-Subject: [PATCH] iwlwifi/uefi: remove CONFIG_ACPI check
-Date: Sun, 11 Feb 2024 21:19:19 +0100
-Message-Id: <20240211201919.3751551-1-max.kellermann@ionos.com>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1707720044; c=relaxed/simple;
+	bh=CGHSt/bV/jixrl1jO24lPB3CYPoMRq8twHpIMMVC7QU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=DOOnQgbfWWSHzFQo4HhbillXovgPKnCyvA3ag7bvFzpshw4LRFPorGdTQQFbz8F/n7JPGn2T1R296kK0+5xw5n1mxpXw9hpRnZpQ+LAKik9XovYNMdXFb9zXH5Bj+G0cpEXtyILWVfKkCseCPKsUfvkPesS+8b8O7+Iy1DrPASs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=mgEbFA1c; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41C6KGBi007124;
+	Mon, 12 Feb 2024 06:40:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=bLZpEPDgrw+SzzGdOiOp+DkKaBEF7+S/rESHaZe7RW4=; b=mg
+	EbFA1cGMkwcxDwSbWZ12eCJ8i4tKlDcNxOsVb4/vx6V55/JCBut/YKENBF89RDzU
+	Df5v+9Ny7wD0ajDwTVLUgkdmx45fN8+mMEeJZWNwVSCI7WCxWZ7f0L+Q3Mj/zPYG
+	ngexoiqshqeQ6j6aQNK3cDb9aRQEAMZIK/g9/jM4OAfWp6f4YZwSu01KHSVcBEzU
+	GohD562wmEC8NBQNAlR5rO3vwxjDHFSxOIJflAnNpRBPjsBr/bBdD6tADJj9xcni
+	aoD+FYu1CpQhlYPwBYjSBKUC8MLP3IwAolwfr/lECAFijXMwEWr+GLkDw/ijI/Np
+	VCE6OmQ2M+Nqh0lRmAFQ==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3w62ps2kwd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 12 Feb 2024 06:40:38 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 41C6ebja029869
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 12 Feb 2024 06:40:37 GMT
+Received: from [10.216.20.82] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Sun, 11 Feb
+ 2024 22:40:36 -0800
+Message-ID: <26df9aa6-e497-4040-ad5c-c647454acca6@quicinc.com>
+Date: Mon, 12 Feb 2024 12:10:33 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 4/5] wifi: mac80211: start and finalize channel switch
+ on link basis
+Content-Language: en-US
+To: Johannes Berg <johannes@sipsolutions.net>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240130140918.1172387-1-quic_adisi@quicinc.com>
+ <20240130140918.1172387-5-quic_adisi@quicinc.com>
+ <b73dd1f9c23c164179c38e2109aa1550d87e87ed.camel@sipsolutions.net>
+ <646d1e3e404a437f4c99c80996eb4f194ac242b8.camel@sipsolutions.net>
+From: Aditya Kumar Singh <quic_adisi@quicinc.com>
+In-Reply-To: <646d1e3e404a437f4c99c80996eb4f194ac242b8.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: qEwC_3fW-ZNHANburtKi4W4oWW829wy4
+X-Proofpoint-GUID: qEwC_3fW-ZNHANburtKi4W4oWW829wy4
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-12_05,2024-02-08_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ malwarescore=0 bulkscore=0 spamscore=0 phishscore=0 suspectscore=0
+ mlxscore=0 priorityscore=1501 adultscore=0 clxscore=1015 mlxlogscore=997
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2401310000 definitions=main-2402120048
 
-This fixes a build failure on ARCH=arm when CONFIG_EFI is set but
-CONFIG_ACPI is not, because uefi.h declares iwl_uefi_get_sgom_table()
-and iwl_uefi_get_uats_table() as dummy inline function, but uefi.c
-contains the real (non-inline) implementation:
+On 2/8/24 19:35, Johannes Berg wrote:
+> On Thu, 2024-02-08 at 14:48 +0100, Johannes Berg wrote:
+>> On Tue, 2024-01-30 at 19:39 +0530, Aditya Kumar Singh wrote:
+>>> Add changes to start a channel switch as well as finalize it on link basis
+>>> in order to support CSA with MLO as well.
+>>>
+>>
+>> FYI, this had a number of conflicts with my other work - please check
+>> the tree now.
+>>
+> 
+> Also here btw, some hostap test with hwsim would be nice - though again
+> don't know how well hostapd supports all this yet.
+> 
+> johannes
 
- drivers/net/wireless/intel/iwlwifi/fw/uefi.c:359:6: error: redefinition of 'iwl_uefi_get_sgom_table'
-   359 | void iwl_uefi_get_sgom_table(struct iwl_trans *trans,
-       |      ^~~~~~~~~~~~~~~~~~~~~~~
- In file included from drivers/net/wireless/intel/iwlwifi/fw/uefi.c:11:
- drivers/net/wireless/intel/iwlwifi/fw/uefi.h:294:6: note: previous definition of 'iwl_uefi_get_sgom_table' with type 'void(struct iwl_trans *, struct iwl_fw_runtime *)'
-   294 | void iwl_uefi_get_sgom_table(struct iwl_trans *trans, struct iwl_fw_runtime *fwrt)
-       |      ^~~~~~~~~~~~~~~~~~~~~~~
- drivers/net/wireless/intel/iwlwifi/fw/uefi.c:392:5: error: redefinition of 'iwl_uefi_get_uats_table'
-   392 | int iwl_uefi_get_uats_table(struct iwl_trans *trans,
-       |     ^~~~~~~~~~~~~~~~~~~~~~~
- drivers/net/wireless/intel/iwlwifi/fw/uefi.h:299:5: note: previous definition of 'iwl_uefi_get_uats_table' with type 'int(struct iwl_trans *, struct iwl_fw_runtime *)'
-   299 | int iwl_uefi_get_uats_table(struct iwl_trans *trans,
-       |     ^~~~~~~~~~~~~~~~~~~~~~~
-
-I don't know how the driver works, and I do not know why the
-CONFIG_ACPI check was added in the first place by commit c593d2fae592a
-("iwlwifi: support SAR GEO Offset Mapping override via BIOS"), but
-since it did not add the same #ifdef to uefi.c, my first guess is that
-this piece of code shall be used even if ACPI is disabled.
-
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
----
- drivers/net/wireless/intel/iwlwifi/fw/uefi.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/uefi.h b/drivers/net/wireless/intel/iwlwifi/fw/uefi.h
-index 39053290bd59..8617fe8b65cd 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/uefi.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/uefi.h
-@@ -285,7 +285,7 @@ static inline int iwl_uefi_get_dsm(struct iwl_fw_runtime *fwrt,
- }
- #endif /* CONFIG_EFI */
- 
--#if defined(CONFIG_EFI) && defined(CONFIG_ACPI)
-+#if defined(CONFIG_EFI)
- void iwl_uefi_get_sgom_table(struct iwl_trans *trans, struct iwl_fw_runtime *fwrt);
- int iwl_uefi_get_uats_table(struct iwl_trans *trans,
- 			    struct iwl_fw_runtime *fwrt);
--- 
-2.39.2
+Sure, I will rebase on latest ToT and will add some hwsim test cases (if 
+supported well in hostapd) as well.
 
 
