@@ -1,73 +1,76 @@
-Return-Path: <linux-wireless+bounces-3447-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3448-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 488528512FF
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Feb 2024 13:07:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B707F85130D
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Feb 2024 13:09:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BA9F1C22576
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Feb 2024 12:07:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 430C9B23FED
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Feb 2024 12:09:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F07C3C08A;
-	Mon, 12 Feb 2024 12:02:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A653439AF8;
+	Mon, 12 Feb 2024 12:03:22 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
+Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 038823C68A;
-	Mon, 12 Feb 2024 12:02:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12D053D964;
+	Mon, 12 Feb 2024 12:03:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707739329; cv=none; b=pt7uDO+QXw+7qze7WCksetJmi1aqC1W9iYD8mQYmAxERIR/isoA5wHwvRmeJBT2RCPrtHwAvEaQ2QarFfCUw9O9r8IXWz4gwBFRzUBmBOgKo5/8BHXAGi8K9qyCa2WQqUT0Uv06oKp9FeaINAGikSYaSgSXgv0IqkKOEVoT029I=
+	t=1707739402; cv=none; b=cCR1OW/rJs0JBmc8wzVUIOHKQH14P1xyGp0LurSweP4lmj0Hj85idnXMrg63klJAOasvPJRSmI4gZRDrWlyGSrbGj1LPOrNE0vxIYD4e0H6IvaD61puHaVti8TiSVqeBtSEsVt6P03eC6gGwQ0m6xSA9kgPN9uIIeqm+NtaQCA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707739329; c=relaxed/simple;
-	bh=gDhbOtYCwuVqnz0HlPT9ocuZIvCTWklfNNaFpflz1y8=;
+	s=arc-20240116; t=1707739402; c=relaxed/simple;
+	bh=rfED2IXGqOBD+K1HnRdLQdhtHs14ZMAFcdInDfpTlXw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IqrDSCSkC8UOwO/anTp1ArHK/fals5b7Hqi9JT/NwZoz5pQ48WRRuSrk9DYAVLkDTF6HwUjYxrj6jtlE3vkmIuRr1ZsWYgjxoY4lYzrGicVy3+zCsG3LJWi0w6VKO6NAhPQnxQWyfaz0DqCqUWA3pKjqjRWzzjpuLkd7JEwsWM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.161.41
+	 To:Cc:Content-Type; b=gEmRuP4jJlvPE7P4cAM3fNZa+Jf6j+QNFL3nA0BM4h/VHA77MRZcw0+XQlzQaoLOKBidx10aXiIoLu8D89OBNFBO/Ky56O1HuEva7v0qq60nApgiK+jEHTQTl5awQ9Y0D6SwtVAWBs0D/TXAcSAJDRf+oOq873KIo8aBLvq8ZVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-59a134e29d2so560385eaf.0;
-        Mon, 12 Feb 2024 04:02:07 -0800 (PST)
+Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-218e7bb0034so752005fac.0;
+        Mon, 12 Feb 2024 04:03:20 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707739327; x=1708344127;
+        d=1e100.net; s=20230601; t=1707739400; x=1708344200;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=gDhbOtYCwuVqnz0HlPT9ocuZIvCTWklfNNaFpflz1y8=;
-        b=Jy64iNJDmr5RIUoIEDP1mP/Kwk8LKxssy/RKMhvJqwtaTwLPzTAOrzhSaFM6mRR8Wb
-         OWjPHLZ83mQ3bMbc9cGGq/F+QUc7UiaEWOx0eUVkt3J9YdKUWO8Z0aBqq2K2ROkJ+Pa1
-         +FGTXMf2YM+KZFhz1jRojQKIeevbllEZfVOC6/0GTaqWQPGfGBerFa0UCmTsSwqYbxqd
-         czw+I8zOjTHli55V6QAtxhMt9HhY3Bx5oA0SqCu3GPOa40wp3r2D4PP18haD+LwlVc7h
-         cVk2skVr7YLTGOPV9XTsRNjT9N+QmyqNCaaS7wn83zWTovaahWV3wjp0Kyoz+dpDrSp9
-         LNyA==
-X-Forwarded-Encrypted: i=1; AJvYcCWFebHSQL+Gd3fPPxLIXiQRicMEasmVc3Iaupl+xXsg3LkdkgidZgOvK45WMoTwzr6QpytBxZ+PcmgU81CVmVxYSZM7Mae0zgv4zE/oegehgsNLq1q4y/RhtKT/4hmkAhn9Mvqkc+XENb7eRTm4cCCftU0MOq0Fy1znMUaQIL1zlmr6cVgYREDXKnMuuGf+rqzJO1OfovXJXIydsPtyKA==
-X-Gm-Message-State: AOJu0YzCelyIft01jLPUopkPkq74pfki9sRWJZrb9zSeEQYpaFh2Sgok
-	29iB3RZxa7jutvTsMpjE3otxV5BJmoM95Ar5jKUvSo8SmALjA4iLDK5PGKEZBl5uTgVwqu3gTzq
-	nSXc4FIOYzV8f/u4oPLHYq5Q6hdE=
-X-Google-Smtp-Source: AGHT+IFUqiknTTQ/bURym6p400yNeTpv3paWbXVMkFub/nybeRaiaIiKtT8uKho0JRbPkk5ZcwqQnoRnG4G1oD5Fsr8=
-X-Received: by 2002:a05:6820:a8f:b0:59d:6ef2:7b01 with SMTP id
- de15-20020a0568200a8f00b0059d6ef27b01mr66460oob.1.1707739326755; Mon, 12 Feb
- 2024 04:02:06 -0800 (PST)
+        bh=UOYodCfh0GuqCNxZvnHyKyee8GZYuYBo58cLH6hYt/c=;
+        b=j8dsYKWC5SmOnPXgIteRWMuXUiK3Oa69EZdy3xxr+CaRv7HrsuU/+P2GL3a8Oq/4Pi
+         a1xxvCs0HceZQE9mENQPwOFLRC6YnVJ1lo8GbjZ8BukPzna5kN0Ms+SLBSNZ+5JXsLc8
+         O1TwyA3rEvSUFzfgmf7nBzxK6RFquIOZNra/0DREkdZRzm4j7STjUfNguxU+SMvEhls6
+         jwgt+Nal+8E1vazXC7Nosm8YSDbGNzO2OdnkrMQmgpfghcTdrPleSaoXGDNXQ3VXk2OK
+         SMW0rOdNeifn72DwxLxWFqacA6ptVy4uLW7LOzGaAj44yGAtnRN1IJhXR41Bbi8XU3sB
+         yzfw==
+X-Forwarded-Encrypted: i=1; AJvYcCXd9I5Wzwk+78IewwEkzmnfmWdoV9VEpUlH6FYMllkeI26FsVR+2qExolBhZ4WcX+sjQg2jvUro7QfcOWi2XfkOEnvoBNOuKnrmHACspPgLPWQbns+v1kN5GcTKbu0BtkFD46ABQXdRPShhukW+PPMAV33jGJptkcIh/G+XtxUZnaR57M+CH7eVEdvQbOBGEFPDxhFSSK58WK4M5OtiOw==
+X-Gm-Message-State: AOJu0YzKY1mQHkZwqDppSficfX9XqaCNdfHVh4KqMsb1n2ggp4b/L0EP
+	BGMAMZQ4pW0frPXlwMktMcVzw/Rade+u+IrGFbxp3k4jsMpBrgR3GTWx1CNVdov+pXSACxDf0Ie
+	O2Kj5v2k4bO8OgSkIUwpkGt4//xI=
+X-Google-Smtp-Source: AGHT+IFwlMsnEvSMtcwsucXokcWRI/75RN6SqVnxJGnEBRUDfA73uBY+jzDu02IY306Xvo9uMMkaNiqNntOeaLxWXAg=
+X-Received: by 2002:a4a:a6cd:0:b0:59c:d8cd:ecee with SMTP id
+ i13-20020a4aa6cd000000b0059cd8cdeceemr5262334oom.1.1707739399881; Mon, 12 Feb
+ 2024 04:03:19 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <3232442.5fSG56mABF@kreacher> <3757041.MHq7AAxBmi@kreacher> <87eddif8cc.fsf@kernel.org>
-In-Reply-To: <87eddif8cc.fsf@kernel.org>
+References: <3232442.5fSG56mABF@kreacher> <3757041.MHq7AAxBmi@kreacher>
+ <ZcY7jyyFJq1yfOCj@linux.intel.com> <CAJZ5v0gZ1tpNmdkvRLA6-ydnhKPKgsM_FCwrW+q1=5ZiD=vbWA@mail.gmail.com>
+ <35d4ae8f4c5157e3d0da39295a5b15eced367ab6.camel@sipsolutions.net>
+In-Reply-To: <35d4ae8f4c5157e3d0da39295a5b15eced367ab6.camel@sipsolutions.net>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 12 Feb 2024 13:01:54 +0100
-Message-ID: <CAJZ5v0gzyK5EhfS3DjL99RY8x41OHk+7qZi+qF7KWhcvEebLTw@mail.gmail.com>
+Date: Mon, 12 Feb 2024 13:03:08 +0100
+Message-ID: <CAJZ5v0jJzGR1LSDaXDCAeysCerT7A_OOyMKqJpLbxEBR4_HyqQ@mail.gmail.com>
 Subject: Re: [PATCH v1 6/9] iwlwifi: mvm: Set THERMAL_TRIP_WRITABLE_TEMP directly
-To: Kalle Valo <kvalo@kernel.org>
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>, Linux PM <linux-pm@vger.kernel.org>, 
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>, "Rafael J. Wysocki" <rjw@rjwysocki.net>, 
+	Linux PM <linux-pm@vger.kernel.org>, 
 	Miri Korenblit <miriam.rachel.korenblit@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, 
 	LKML <linux-kernel@vger.kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>, 
-	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>, 
 	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Zhang Rui <rui.zhang@intel.com>, 
 	netdev@vger.kernel.org, Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>, 
 	linux-wireless@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>, 
@@ -76,28 +79,41 @@ Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>, Linux PM <linux-pm@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Feb 12, 2024 at 8:30=E2=80=AFAM Kalle Valo <kvalo@kernel.org> wrote=
-:
+On Mon, Feb 12, 2024 at 11:31=E2=80=AFAM Johannes Berg
+<johannes@sipsolutions.net> wrote:
 >
-> "Rafael J. Wysocki" <rjw@rjwysocki.net> writes:
+> On Fri, 2024-02-09 at 17:15 +0100, Rafael J. Wysocki wrote:
+> > > >       for (i =3D 0 ; i < IWL_MAX_DTS_TRIPS; i++) {
+> > > >               mvm->tz_device.trips[i].temperature =3D THERMAL_TEMP_=
+INVALID;
+> > > >               mvm->tz_device.trips[i].type =3D THERMAL_TRIP_PASSIVE=
+;
+> > > > +             mvm->tz_device.trips[i].type =3D THERMAL_TRIP_WRITABL=
+E_TEMP;
+> > >
+> > >                 mvm->tz_device.trips[i].flags =3D THERMAL_TRIP_WRITAB=
+LE_TEMP;
+> > >
+> > > Consider using diffrent prefix for constants to diffrenciate flags an=
+d types.
+> >
+> > Well, I can use THERMAL_TRIP_FLAG_RW_TEMP or similar, but is it really
+> > so confusing?
+> >
+> > I'm wondering what others think.
+> >
 >
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >
-> > It is now possible to flag trip points with THERMAL_TRIP_WRITABLE_TEMP
-> > to allow their temperature to be set from user space via sysfs instead
-> > of using a nonzero writable trips mask during thermal zone registration=
-,
-> > so make the iwlwifi code do that.
-> >
-> > No intentional functional impact.
-> >
-> > Note that this change is requisite for dropping the mask argument from
-> > thermal_zone_device_register_with_trips() going forward.
-> >
-> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> I'd tend to agree with Stanislaw. I did (eventually) notice the double
+> assignment to .type above, but had that not been visible in the context,
+> or you'd have removed the first one by accident, I'd really not have
+> thought about it twice.
 >
-> For wireless patches we use "wifi:" prefix in the title, if you can
-> still change the patch please add that.
+> The bug also makes it look like you even confused yourself ;-)
 
-Sure, no problem.
+No, that's just a mistake.
+
+> So having a clearer indication that it's a flag would make sense, I'd say=
+.
+
+Sure, thanks!
 
