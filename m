@@ -1,236 +1,145 @@
-Return-Path: <linux-wireless+bounces-3454-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3455-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98FAF8513E3
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Feb 2024 13:58:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA2E9851519
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Feb 2024 14:29:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DDB41F22F61
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Feb 2024 12:58:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD12B1C2188D
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Feb 2024 13:29:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77B203A26E;
-	Mon, 12 Feb 2024 12:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A32F93C06A;
+	Mon, 12 Feb 2024 13:15:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="k9bx45/T"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pw92NdO3"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7376F3A262;
-	Mon, 12 Feb 2024 12:58:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EFCF3BB50
+	for <linux-wireless@vger.kernel.org>; Mon, 12 Feb 2024 13:15:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707742685; cv=none; b=kjFEOIDDE446yN75JMdM2LHixjJBa4M9wAuVgeQTN0BaDyV74KrDMWVc4wuMETJTwYoj+JjEMkHeuoEGcIkcT6ycOz0wCvw5Uy7xA2A0evs+ig4kehiVAr44Nogx3TnN7OW/RghlG+GWD8I7B4iCN41gW9yxqvauLTfVHPNHs9w=
+	t=1707743729; cv=none; b=NcVy5JS887dYTWnyKv7QJNlxB9W0wmzWngb0jOPsrLID/ZDUvC/x46AS9kCa1jp1f5cKX1YH3P2ueha/2w61s4+EnPSwPXuRRP09rPn0pFPmteRWJI3rQk6E62jl3awmyEnmr2/Erddr88DibRyT04eDV52gGNbw9ffSyTnlITQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707742685; c=relaxed/simple;
-	bh=Q6ISYfSKMe0JRvETZ/CD9+AQxsVIiWIjENVVuC0PpvI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Ba79MyMkFoGwvusebg/zDvtCTVkcx6RMoNXTMzdwtKkyhriQJ8RsHuBeigx1nLXk/rIc34NzgNrxp7lm6UkmSVBY8sDzsAk6b+cXqHHYBQbmcUPqpY3vUkgTlt0nyosrNX4zYj/FKCAuni2M7L1ToHCSJMIFG0c7205dyfsEZKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=k9bx45/T; arc=none smtp.client-ip=217.70.183.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 1823BFF806;
-	Mon, 12 Feb 2024 12:57:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1707742680;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=oHSB4EWfMf4xbLc27oNsm2iYLKxUgQDGZiBycNxHBzw=;
-	b=k9bx45/TM+03a5Y0cTOwzNo9Sk0AAozCjelhRPVmIXOyZNJbR5bzO4E36gORC/3ZMHgu2n
-	JZ3TAPqcE0nL9ep6RvKzYuW2O6AWBx9oDp9o3pr0kvgviZEAbT9CH4DjKwTP6IZxKvVt7W
-	gjqc5RWhbFTCBl8zOrfWlpAae/W9parP67lEDzqR7lz+OaVlhwbpFpFnrjKFL8OAsGaksq
-	yAS5QRApqlWVxeBEFUQd4e4kRCttcSmKkQbPhPtNzs34j1ljCDfJz/ivJoUHftmp6uU6/V
-	CoXE57b5qvdpe0br4UGlxkTDLA7vZvbxxOqYneSBjS4EJJFkWMKsqUetvINt0g==
-From: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-Date: Mon, 12 Feb 2024 13:57:37 +0100
-Subject: [PATCH] wifi: wilc1000: prevent use-after-free on vif when
- cleaning up all interfaces
+	s=arc-20240116; t=1707743729; c=relaxed/simple;
+	bh=24M0v7n939VC6aUYM1vxIxc/JhIgpm52zvlZjhM5u8I=;
+	h=From:To:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=c63STHmGDE6MxUbsOH06/PEoLUY/JE535ZorruwsFI6pJ7hi+rsQ8s2D45FaskKg4pRMFvFZ1Caul0+ea8qFEmcLF1k4s/1x11ZkZjfb6Zdtacnihe9hwmpMXVYYM40W+awLsEGNBi4rDU3GIP/LJD35oegPIjOCYdRb8e7JmXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pw92NdO3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7CCCC433F1;
+	Mon, 12 Feb 2024 13:15:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707743729;
+	bh=24M0v7n939VC6aUYM1vxIxc/JhIgpm52zvlZjhM5u8I=;
+	h=From:To:Subject:In-Reply-To:References:Date:From;
+	b=pw92NdO3cJS+I6y7yUW7giFEAS7NEEag10JIS5C40pl6ViGp8IlaOF+hk9YfUpAW6
+	 li+XGjAZMuQD7jWZVl5kJAQU4Qu2GfKuMJ/y+AjEmAu1LEU4oY7jN9EOWUjEsOF5rh
+	 g2XzsCGoyNOf+LvtcDwPvEm7MADQkd/VmiTNUScRYlpndLL//1o7vfgUX6Ppj4cvis
+	 unmy12wZBznsQX3R61bNomyRgxcNspGTWOodSn1jO07ZVAth8Bk0cst/5xxSMzTP/Z
+	 /ZT6/OI0kzrek8ZP+G98AE9YDfopjSYDi+vjHvrZk/m0UKLM7XpL0UIu7SfpUGfh2o
+	 xyOganaWaYKjQ==
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+	id 5747C10F5556; Mon, 12 Feb 2024 14:15:26 +0100 (CET)
+From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@kernel.org>
+To: Felix Fietkau <nbd@nbd.name>, Johannes Berg <johannes@sipsolutions.net>,
+ linux-wireless@vger.kernel.org
+Subject: Re: [RFC] mac80211: add AQL support for broadcast packets
+In-Reply-To: <9922ecf9-d243-40a1-809b-9739d3269177@nbd.name>
+References: <20240209184730.69589-1-nbd@nbd.name> <87plx4s71y.fsf@toke.dk>
+ <960efcac-0995-4a42-b90c-3e66c0f56762@nbd.name>
+ <66bddf2f6362c9f39f06e06c0c35b6900917b9bf.camel@sipsolutions.net>
+ <87sf1yymr2.fsf@toke.dk> <9922ecf9-d243-40a1-809b-9739d3269177@nbd.name>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date: Mon, 12 Feb 2024 14:15:26 +0100
+Message-ID: <87eddhzuvl.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20240212-wilc_rework_deinit-v1-1-9203ae56c27f@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIAMAVymUC/x3M0QpAMBSA4VfRubaaocWrSIvt4ESjM6GWd7dcf
- hf/HyEgEwZoswiMFwXafUKRZ2CXwc8oyCWDkqqSSjbips0axnvn1TgkT6cobV1W2k3NWGhI4cE
- 40fNPu/59P1tVoLhkAAAA
-To: linux-wireless@vger.kernel.org
-Cc: Ajay Singh <ajay.kathat@microchip.com>, 
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, Kalle Valo <kvalo@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- David Mosberger-Tang <davidm@egauge.net>, linux-kernel@vger.kernel.org, 
- =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-X-Mailer: b4 0.12.4
-X-GND-Sasl: alexis.lothore@bootlin.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-wilc_netdev_cleanup currently triggers a KASAN warning, which can be
-observed on interface registration error path, or simply by
-removing the module/unbinding device from driver:
+Felix Fietkau <nbd@nbd.name> writes:
 
-echo spi0.1 > /sys/bus/spi/drivers/wilc1000_spi/unbind
+> On 12.02.24 11:56, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
+>> Johannes Berg <johannes@sipsolutions.net> writes:
+>>=20
+>>> On Sat, 2024-02-10 at 17:18 +0100, Felix Fietkau wrote:
+>>>>=20
+>>>> > > +++ b/include/net/cfg80211.h
+>>>> > > @@ -3385,6 +3385,7 @@ enum wiphy_params_flags {
+>>>> > >  /* The per TXQ device queue limit in airtime */
+>>>> > >  #define IEEE80211_DEFAULT_AQL_TXQ_LIMIT_L	5000
+>>>> > >  #define IEEE80211_DEFAULT_AQL_TXQ_LIMIT_H	12000
+>>>> > > +#define IEEE80211_DEFAULT_AQL_TXQ_LIMIT_BC	50000
+>>>> >=20
+>>>> > How did you arrive at the 50 ms figure for the limit on broadcast
+>>>> > traffic? Seems like quite a lot? Did you experiment with different
+>>>> > values?
+>>>>=20
+>>>> Whenever a client is connected and in powersave mode, all multicast=20
+>>>> packets are buffered and sent after the beacon. Because of that I=20
+>>>> decided to use half of a default beacon interval.
+>>>
+>>> That makes some sense, I guess.
+>>=20
+>> This implies that we will allow enough data to be queued up in the
+>> hardware to spend half the next beacon interval just sending that
+>> broadcast data? Isn't that a bit much if the goal is to prevent
+>> broadcast from killing the network? What effect did you measure of this
+>> patch? :)
+>
+> I didn't do any real measurements with this patch yet. How much=20
+> broadcast data is actually sent after the beacon is still up to the=20
+> driver/hardware, so depending on that, the limit might even be less than=
+=20
+> 50ms. I also wanted to be conservative in limiting buffering in order to=
+=20
+> avoid potential regressions. While 50ms may seem like much, I believe it=
+=20
+> is still a significant improvement over the current state, which is=20
+> unlimited.
+>
+>> Also, as soon as something is actually transmitted, the kernel will
+>> start pushing more data into the HW from the queue in the host. So the
+>> HW queue limit shouldn't be set as "this is the maximum that should be
+>> transmitted in one go", but rather "this is the minimum time we need for
+>> the software stack to catch up and refill the queue before it runs
+>> empty". So from that perspective 50ms also seems a bit high?
+>
+> When broadcast buffering is enabled, the driver/hardware typically=20
+> prepares the set of packets to be transmitted before the beacon is sent.=
+=20
+> Any packet not ready by then will be sent in the next round.
+> I added the 50ms limit based on that assumption.
 
-==================================================================
-BUG: KASAN: slab-use-after-free in wilc_netdev_cleanup+0x508/0x5cc
-Read of size 4 at addr c54d1ce8 by task sh/86
+Ah, so even if this is being done in software it's happening in the
+driver, so post-TXQ dequeue? OK, in that case I guess it makes sense;
+would love to see some numbers, of course, but I guess the debugfs
+additions in this patch will make it possible to actually monitor the
+queue lengths seen in the wild :)
 
-CPU: 0 PID: 86 Comm: sh Not tainted 6.8.0-rc1+ #117
-Hardware name: Atmel SAMA5
- unwind_backtrace from show_stack+0x18/0x1c
- show_stack from dump_stack_lvl+0x34/0x58
- dump_stack_lvl from print_report+0x154/0x500
- print_report from kasan_report+0xac/0xd8
- kasan_report from wilc_netdev_cleanup+0x508/0x5cc
- wilc_netdev_cleanup from wilc_bus_remove+0xc8/0xec
- wilc_bus_remove from spi_remove+0x8c/0xac
- spi_remove from device_release_driver_internal+0x434/0x5f8
- device_release_driver_internal from unbind_store+0xbc/0x108
- unbind_store from kernfs_fop_write_iter+0x398/0x584
- kernfs_fop_write_iter from vfs_write+0x728/0xf88
- vfs_write from ksys_write+0x110/0x1e4
- ksys_write from ret_fast_syscall+0x0/0x1c
+>>> It does have me wondering though if we should also consider multicast
+>>> for airtime fairness in some way?
+>>=20
+>> Yeah, that would make sense. The virtual time-based scheduler that we
+>> ended up reverting actually included airtime accounting for the
+>> multicast queue as well. I don't recall if there was any problem with
+>> that particular part of the change, or if it's just incidental that we
+>> got rid of it as part of the revert. But it may be worth revisiting and
+>> adding a similar mechanism to the round-robin scheduler...
+>
+> The round-robin scheduler already has some consideration of multicast -=20
+> it always puts the multicast queues last in the active_txqs list.
 
-[...]
+Ah, right. Hmm, not quite clear to me how that works out in terms of
+fairness, but it should at least prevent the MC queue from blocking
+everything else...
 
-Allocated by task 1:
- kasan_save_track+0x30/0x5c
- __kasan_kmalloc+0x8c/0x94
- __kmalloc_node+0x1cc/0x3e4
- kvmalloc_node+0x48/0x180
- alloc_netdev_mqs+0x68/0x11dc
- alloc_etherdev_mqs+0x28/0x34
- wilc_netdev_ifc_init+0x34/0x8ec
- wilc_cfg80211_init+0x690/0x910
- wilc_bus_probe+0xe0/0x4a0
- spi_probe+0x158/0x1b0
- really_probe+0x270/0xdf4
- __driver_probe_device+0x1dc/0x580
- driver_probe_device+0x60/0x140
- __driver_attach+0x228/0x5d4
- bus_for_each_dev+0x13c/0x1a8
- bus_add_driver+0x2a0/0x608
- driver_register+0x24c/0x578
- do_one_initcall+0x180/0x310
- kernel_init_freeable+0x424/0x484
- kernel_init+0x20/0x148
- ret_from_fork+0x14/0x28
-
-Freed by task 86:
- kasan_save_track+0x30/0x5c
- kasan_save_free_info+0x38/0x58
- __kasan_slab_free+0xe4/0x140
- kfree+0xb0/0x238
- device_release+0xc0/0x2a8
- kobject_put+0x1d4/0x46c
- netdev_run_todo+0x8fc/0x11d0
- wilc_netdev_cleanup+0x1e4/0x5cc
- wilc_bus_remove+0xc8/0xec
- spi_remove+0x8c/0xac
- device_release_driver_internal+0x434/0x5f8
- unbind_store+0xbc/0x108
- kernfs_fop_write_iter+0x398/0x584
- vfs_write+0x728/0xf88
- ksys_write+0x110/0x1e4
- ret_fast_syscall+0x0/0x1c
- [...]
-
-David Mosberger-Tan initial investigation [1] showed that this
-use-after-free is due to netdevice unregistration during vif list
-traversal. When unregistering a net device, since the needs_free_netdev has
-been set to true during registration, the netdevice object is also freed,
-and as a consequence, the corresponding vif object too, since it is
-attached to it as private netdevice data. The next occurrence of the loop
-then tries to access freed vif pointer to the list to move forward in the
-list.
-
-Fix this use-after-free thanks to two mechanisms:
-- navigate in the list with list_for_each_entry_safe, which allows to
-  safely modify the list as we go through each element. For each element,
-  remove it from the list with list_del_rcu
-- make sure to wait for RCU grace period end after each vif removal to make
-  sure it is safe to free the corresponding vif too (through
-  unregister_netdev)
-
-Since we are in a RCU "modifier" path (not a "reader" path), and because
-such path is expected not to be concurrent to any other modifier (we are
-using the vif_mutex lock), we do not need to use RCU list API, that's why
-we can benefit from list_for_each_entry_safe.
-
-[1] https://lore.kernel.org/linux-wireless/ab077dbe58b1ea5de0a3b2ca21f275a07af967d2.camel@egauge.net/
-
-Fixes: 8399918f3056 ("staging: wilc1000: use RCU list to maintain vif interfaces list")
-Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
----
- drivers/net/wireless/microchip/wilc1000/netdev.c | 28 ++++++------------------
- 1 file changed, 7 insertions(+), 21 deletions(-)
-
-diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.c b/drivers/net/wireless/microchip/wilc1000/netdev.c
-index ef22bf6bf86a..8bae0f2485be 100644
---- a/drivers/net/wireless/microchip/wilc1000/netdev.c
-+++ b/drivers/net/wireless/microchip/wilc1000/netdev.c
-@@ -890,8 +890,7 @@ static const struct net_device_ops wilc_netdev_ops = {
- 
- void wilc_netdev_cleanup(struct wilc *wilc)
- {
--	struct wilc_vif *vif;
--	int srcu_idx, ifc_cnt = 0;
-+	struct wilc_vif *vif, *vif_tmp;
- 
- 	if (!wilc)
- 		return;
-@@ -901,32 +900,19 @@ void wilc_netdev_cleanup(struct wilc *wilc)
- 		wilc->firmware = NULL;
- 	}
- 
--	srcu_idx = srcu_read_lock(&wilc->srcu);
--	list_for_each_entry_rcu(vif, &wilc->vif_list, list) {
-+	list_for_each_entry_safe(vif, vif_tmp, &wilc->vif_list, list) {
-+		mutex_lock(&wilc->vif_mutex);
-+		list_del_rcu(&vif->list);
-+		wilc->vif_num--;
-+		mutex_unlock(&wilc->vif_mutex);
-+		synchronize_srcu(&wilc->srcu);
- 		if (vif->ndev)
- 			unregister_netdev(vif->ndev);
- 	}
--	srcu_read_unlock(&wilc->srcu, srcu_idx);
- 
- 	wilc_wfi_deinit_mon_interface(wilc, false);
- 	destroy_workqueue(wilc->hif_workqueue);
- 
--	while (ifc_cnt < WILC_NUM_CONCURRENT_IFC) {
--		mutex_lock(&wilc->vif_mutex);
--		if (wilc->vif_num <= 0) {
--			mutex_unlock(&wilc->vif_mutex);
--			break;
--		}
--		vif = wilc_get_wl_to_vif(wilc);
--		if (!IS_ERR(vif))
--			list_del_rcu(&vif->list);
--
--		wilc->vif_num--;
--		mutex_unlock(&wilc->vif_mutex);
--		synchronize_srcu(&wilc->srcu);
--		ifc_cnt++;
--	}
--
- 	wilc_wlan_cfg_deinit(wilc);
- 	wlan_deinit_locks(wilc);
- 	wiphy_unregister(wilc->wiphy);
-
----
-base-commit: d55b20fe9b6f0ec5552a3071ae63304978d70500
-change-id: 20240209-wilc_rework_deinit-3c5347df9b17
-
-Best regards,
--- 
-Alexis Lothoré, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+-Toke
 
