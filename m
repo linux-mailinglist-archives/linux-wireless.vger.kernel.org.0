@@ -1,43 +1,43 @@
-Return-Path: <linux-wireless+bounces-3472-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3473-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EAE0851D04
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Feb 2024 19:42:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5428A851D07
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Feb 2024 19:42:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 10D5E1F239C5
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Feb 2024 18:42:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB785B26CED
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Feb 2024 18:42:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E3341232;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7255045013;
 	Mon, 12 Feb 2024 18:42:34 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D238A3FE31;
-	Mon, 12 Feb 2024 18:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D23CF3FE36;
+	Mon, 12 Feb 2024 18:42:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.96.170.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707763354; cv=none; b=qYj7bscUMx7srOzWD/tgrLIz5UPFnSSIyKl7Ab1YtVj3ZiGzk+6utbFVZ7kiV9S6Y2YNRd2DR+K8ruiSPw0z9NgBMmpe+NaGGx3iQ7OYHlOjmDFzm2NdtWyYeeNkFw7/Mw907QJMVVk+PHE4kH/05MjbUHPat+2132xshNkGBtE=
+	t=1707763354; cv=none; b=c8ZZycxkYQ+g0ZOla0f+i8uiNngM8E4elzkdP1UMKwJDh+xrjQlxfIzbQ0KbBKz1QBlsK01KFeECRxmsCNWTKzws4EN0am3Tx/MkXP0W8D7P9zThemKQQHsB45MweeWNFBjY9E+NqW3iw/5UolNfqylCvK4zGRivSaJMGjPRPyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1707763354; c=relaxed/simple;
-	bh=zDdOBevHdsttYnr9NEysVoXU8Nd7W/xppLzV0OLgkD8=;
+	bh=L3NRX4YCC5wAmVuFoBGeSlDkUFlbjD5+xbxslNXvKy0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JNyPXQR7dpkMhPceZZIlpZLnr0ytDuv0+6Agq1YXnJxwaBQlJ5xs2AdBkbSA6dmiRhu4Z+qVZunQF+qqBjfxKmoqIJJe21sm5Qb0AzzgqrROJOmqTO3QgNCbP/VJMYEnP6Pa2KJXucN1rPyoNIMRhU3aFu96FoXsf3wX0emKsUI=
+	 MIME-Version:Content-Type; b=OJUkBZLxTH+lo/cDoOv3pgz0wnyWw2ycPO1VqOtY1LiwGwFrkzb0Z9bX9te75zH++AY0RQ4whXlJopHSM8fyy8LtcyqCwUZb+7ZwWIxoEeuac54owHBwQSQxbqXDEV6vJecfNjdcTJyJLMITNS/JjRreDRd5Li9IAogg/ektEMs=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; arc=none smtp.client-ip=79.96.170.134
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rjwysocki.net
 Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
  by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.4.0)
- id 3c1eefc7ffa6d519; Mon, 12 Feb 2024 19:42:30 +0100
+ id 0f78f23c5a53093c; Mon, 12 Feb 2024 19:42:29 +0100
 Received: from kreacher.localnet (unknown [195.136.19.94])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by cloudserver094114.home.pl (Postfix) with ESMTPSA id 5E279669CF2;
-	Mon, 12 Feb 2024 19:42:29 +0100 (CET)
+	by cloudserver094114.home.pl (Postfix) with ESMTPSA id 9385C669CF2;
+	Mon, 12 Feb 2024 19:42:28 +0100 (CET)
 From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
 To: Linux PM <linux-pm@vger.kernel.org>
 Cc: Lukasz Luba <lukasz.luba@arm.com>, LKML <linux-kernel@vger.kernel.org>,
@@ -51,9 +51,9 @@ Cc: Lukasz Luba <lukasz.luba@arm.com>, LKML <linux-kernel@vger.kernel.org>,
  Sascha Hauer <s.hauer@pengutronix.de>,
  Pengutronix Kernel Team <kernel@pengutronix.de>,
  Manaf Meethalavalappu Pallikunhi <quic_manafm@quicinc.com>
-Subject: [PATCH v2 7/9] thermal: imx: Set THERMAL_TRIP_FLAG_RW_TEMP directly
-Date: Mon, 12 Feb 2024 19:39:20 +0100
-Message-ID: <3790563.kQq0lBPeGt@kreacher>
+Subject: [PATCH v2 8/9] thermal: of: Set THERMAL_TRIP_FLAG_RW_TEMP directly
+Date: Mon, 12 Feb 2024 19:40:34 +0100
+Message-ID: <9235101.CDJkKcVGEf@kreacher>
 In-Reply-To: <6017196.lOV4Wx5bFT@kreacher>
 References: <6017196.lOV4Wx5bFT@kreacher>
 Precedence: bulk
@@ -76,7 +76,7 @@ From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 It is now possible to flag trip points with THERMAL_TRIP_FLAG_RW_TEMP
 to allow their temperature to be set from user space via sysfs instead
 of using a nonzero writable trips mask during thermal zone registration,
-so make the imx thermal code do that.
+so make the OF thermal code do that.
 
 No intentional functional impact.
 
@@ -89,32 +89,48 @@ Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 v1 -> v2: Rename trip flag (Stanislaw).
 
 ---
- drivers/thermal/imx_thermal.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/thermal/thermal_of.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Index: linux-pm/drivers/thermal/imx_thermal.c
+Index: linux-pm/drivers/thermal/thermal_of.c
 ===================================================================
---- linux-pm.orig/drivers/thermal/imx_thermal.c
-+++ linux-pm/drivers/thermal/imx_thermal.c
-@@ -115,7 +115,8 @@ struct thermal_soc_data {
- };
+--- linux-pm.orig/drivers/thermal/thermal_of.c
++++ linux-pm/drivers/thermal/thermal_of.c
+@@ -117,6 +117,8 @@ static int thermal_of_populate_trip(stru
+ 		return ret;
+ 	}
  
- static struct thermal_trip trips[] = {
--	[IMX_TRIP_PASSIVE]  = { .type = THERMAL_TRIP_PASSIVE  },
-+	[IMX_TRIP_PASSIVE]  = { .type = THERMAL_TRIP_PASSIVE,
-+				.flags = THERMAL_TRIP_FLAG_RW_TEMP },
- 	[IMX_TRIP_CRITICAL] = { .type = THERMAL_TRIP_CRITICAL },
- };
++	trip->flags = THERMAL_TRIP_FLAG_RW_TEMP;
++
+ 	return 0;
+ }
  
-@@ -699,7 +700,7 @@ static int imx_thermal_probe(struct plat
- 	data->tz = thermal_zone_device_register_with_trips("imx_thermal_zone",
- 							   trips,
- 							   ARRAY_SIZE(trips),
--							   BIT(IMX_TRIP_PASSIVE), data,
-+							   0, data,
- 							   &imx_tz_ops, NULL,
- 							   IMX_PASSIVE_DELAY,
- 							   IMX_POLLING_DELAY);
+@@ -477,7 +479,7 @@ static struct thermal_zone_device *therm
+ 	struct device_node *np;
+ 	const char *action;
+ 	int delay, pdelay;
+-	int ntrips, mask;
++	int ntrips;
+ 	int ret;
+ 
+ 	of_ops = kmemdup(ops, sizeof(*ops), GFP_KERNEL);
+@@ -510,15 +512,13 @@ static struct thermal_zone_device *therm
+ 	of_ops->bind = thermal_of_bind;
+ 	of_ops->unbind = thermal_of_unbind;
+ 
+-	mask = GENMASK_ULL((ntrips) - 1, 0);
+-
+ 	ret = of_property_read_string(np, "critical-action", &action);
+ 	if (!ret)
+ 		if (!of_ops->critical && !strcasecmp(action, "reboot"))
+ 			of_ops->critical = thermal_zone_device_critical_reboot;
+ 
+ 	tz = thermal_zone_device_register_with_trips(np->name, trips, ntrips,
+-						     mask, data, of_ops, &tzp,
++						     0, data, of_ops, &tzp,
+ 						     pdelay, delay);
+ 	if (IS_ERR(tz)) {
+ 		ret = PTR_ERR(tz);
 
 
 
