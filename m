@@ -1,145 +1,130 @@
-Return-Path: <linux-wireless+bounces-3455-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3456-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA2E9851519
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Feb 2024 14:29:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E72D7851549
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Feb 2024 14:34:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD12B1C2188D
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Feb 2024 13:29:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CD962831AA
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Feb 2024 13:34:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A32F93C06A;
-	Mon, 12 Feb 2024 13:15:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E471A3F9EA;
+	Mon, 12 Feb 2024 13:23:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pw92NdO3"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gtwvT075"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EFCF3BB50
-	for <linux-wireless@vger.kernel.org>; Mon, 12 Feb 2024 13:15:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D6313F9C6
+	for <linux-wireless@vger.kernel.org>; Mon, 12 Feb 2024 13:23:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707743729; cv=none; b=NcVy5JS887dYTWnyKv7QJNlxB9W0wmzWngb0jOPsrLID/ZDUvC/x46AS9kCa1jp1f5cKX1YH3P2ueha/2w61s4+EnPSwPXuRRP09rPn0pFPmteRWJI3rQk6E62jl3awmyEnmr2/Erddr88DibRyT04eDV52gGNbw9ffSyTnlITQ=
+	t=1707744229; cv=none; b=WZmqvqu7XvpEWTyugfJONcu2kDQY+bSpKND+/3QxcdQgXFtEJiMMKtmMcqHmx3qYjMFmGtr1aK/QxHKp+IFOy1WQFh64F4UevDZSTRdEi1tYCz5uLT0Ca0VPrNWuq7Wa/mK1CY9d/8uTFT9PxZJVf38We6SpmGg+Dkm/RIMA2nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707743729; c=relaxed/simple;
-	bh=24M0v7n939VC6aUYM1vxIxc/JhIgpm52zvlZjhM5u8I=;
-	h=From:To:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=c63STHmGDE6MxUbsOH06/PEoLUY/JE535ZorruwsFI6pJ7hi+rsQ8s2D45FaskKg4pRMFvFZ1Caul0+ea8qFEmcLF1k4s/1x11ZkZjfb6Zdtacnihe9hwmpMXVYYM40W+awLsEGNBi4rDU3GIP/LJD35oegPIjOCYdRb8e7JmXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pw92NdO3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7CCCC433F1;
-	Mon, 12 Feb 2024 13:15:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707743729;
-	bh=24M0v7n939VC6aUYM1vxIxc/JhIgpm52zvlZjhM5u8I=;
-	h=From:To:Subject:In-Reply-To:References:Date:From;
-	b=pw92NdO3cJS+I6y7yUW7giFEAS7NEEag10JIS5C40pl6ViGp8IlaOF+hk9YfUpAW6
-	 li+XGjAZMuQD7jWZVl5kJAQU4Qu2GfKuMJ/y+AjEmAu1LEU4oY7jN9EOWUjEsOF5rh
-	 g2XzsCGoyNOf+LvtcDwPvEm7MADQkd/VmiTNUScRYlpndLL//1o7vfgUX6Ppj4cvis
-	 unmy12wZBznsQX3R61bNomyRgxcNspGTWOodSn1jO07ZVAth8Bk0cst/5xxSMzTP/Z
-	 /ZT6/OI0kzrek8ZP+G98AE9YDfopjSYDi+vjHvrZk/m0UKLM7XpL0UIu7SfpUGfh2o
-	 xyOganaWaYKjQ==
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-	id 5747C10F5556; Mon, 12 Feb 2024 14:15:26 +0100 (CET)
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@kernel.org>
-To: Felix Fietkau <nbd@nbd.name>, Johannes Berg <johannes@sipsolutions.net>,
- linux-wireless@vger.kernel.org
-Subject: Re: [RFC] mac80211: add AQL support for broadcast packets
-In-Reply-To: <9922ecf9-d243-40a1-809b-9739d3269177@nbd.name>
-References: <20240209184730.69589-1-nbd@nbd.name> <87plx4s71y.fsf@toke.dk>
- <960efcac-0995-4a42-b90c-3e66c0f56762@nbd.name>
- <66bddf2f6362c9f39f06e06c0c35b6900917b9bf.camel@sipsolutions.net>
- <87sf1yymr2.fsf@toke.dk> <9922ecf9-d243-40a1-809b-9739d3269177@nbd.name>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date: Mon, 12 Feb 2024 14:15:26 +0100
-Message-ID: <87eddhzuvl.fsf@toke.dk>
+	s=arc-20240116; t=1707744229; c=relaxed/simple;
+	bh=ydSEgrw3vWH0wzxU4QWRY90lfDyvLwBVFaRZ31MUPio=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SXrzNVGi+9ES7i2tfH9NUMHZ4l+QphK6CEjlMscEMa8mCTY5MRgABj58VujNtSF0323aCM+MNmamg9bQHYMv1ZwTnbz3ZVmr34AxxZP/UbokV4asW/BD19GiSPlSB3qURV7b7xTu6vMoEhE5enj+S4VxBym8DiOLgaXl88xnRhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=gtwvT075; arc=none smtp.client-ip=209.85.219.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-dc6e080c1f0so2724035276.2
+        for <linux-wireless@vger.kernel.org>; Mon, 12 Feb 2024 05:23:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1707744227; x=1708349027; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=I/A7r9NP/0VziEIfxN1XbFV9hH5pFIDQbUZtjpYFKSQ=;
+        b=gtwvT075RsSFOrYLxrG8VHIo/BUCxR3Dz8B/3A+qZ3YZPe/FXIPXXy3b8AW3ekaXka
+         SBaN8TX0PMCqLPsg0VANzW94hR62fwOBFCFbrXsu/dN5w1yAFVAvwNFs9OGi4ZPhUT8T
+         0K79rQJjUkqcEL0NpyK878kUs/sGLusRYbr8C3DwNDXrxjXS/d9JMd+QExUVWSCW1XnF
+         hoFpPlhOhj5nUantFzwhTWaOILdgZACL4GK9vLJ7TOdBY4VWBtWq2/FSA4hkFkxIYM3n
+         u/ruC8Y9i+ymtH2wemeV3K1XK6nfivYZzUxIER03Xjphl4sbbinyOZCpnCDAP5wo77D6
+         TZoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707744227; x=1708349027;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=I/A7r9NP/0VziEIfxN1XbFV9hH5pFIDQbUZtjpYFKSQ=;
+        b=aKpZ5AkVkY93rEE7nSvWiC8zmA1XsE91qPGzNuv8J5aDTgksmXiM//radF99hiLsuL
+         D1UPl0PISguSeXuPzI57PI+suyqhy8X64YRUceexPVvkAp0Gb2c9s/7RoYkF9Ia1SdbZ
+         F9b051RnJ4FFoNi2o2OdVGW3Pow9/4T4f2VPblx/Ep2BvHloJ8lqLIj4WsNJ7WG9mqlx
+         hvc8PINpUNZSr4mvM6IFlwXbuViLZyZoen2W/eK92q9M8rVTBL/J3BdPr81LwqIWvbpi
+         M5XgSmr2RZLVNQCmItDqtInS9pSTrsot2I6g8VdqWbcvQ90k/02AHPJU8WL9HBFpvwAn
+         i8kw==
+X-Forwarded-Encrypted: i=1; AJvYcCWgVvquBJc/8XDXlSOv4tMCfiASgx/ZkWkt71PmKFby5c0h/RNKIWx0mb9wpxYP3yipU6F34X2+J4uUMCla6HMC3ovXb4a+MoF9IDo20lk=
+X-Gm-Message-State: AOJu0Yw9mOfm+pphdsQUkQJOCLOfpCTPVFDMWw1B8CZf88pQE748C4Jv
+	A08cWDdYKO3OUXrrmvsJvvFgDI4HovloUsL4LZ0CZRScWWCuZKojYlZkEsVEvXIiiNRKb7GoEah
+	WzRLLJxY45ch1bH4E7z27Emb420jPWytcsrLIpA==
+X-Google-Smtp-Source: AGHT+IFaHXNER64YVI2EmDGuarm5+vqB/KmhTYs8V+V8KJWqxbKjhPCsz8Bj5huKgdacRxl9V59XYT2x99P6pR1T7vY=
+X-Received: by 2002:a05:6902:2489:b0:dc6:421a:3024 with SMTP id
+ ds9-20020a056902248900b00dc6421a3024mr6213196ybb.43.1707744225689; Mon, 12
+ Feb 2024 05:23:45 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+References: <20240130-wcn3990-firmware-path-v1-0-826b93202964@linaro.org>
+ <20240130-wcn3990-firmware-path-v1-2-826b93202964@linaro.org> <03d5d556-9477-4f2e-a737-c2f6a96d97a4@linaro.org>
+In-Reply-To: <03d5d556-9477-4f2e-a737-c2f6a96d97a4@linaro.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date: Mon, 12 Feb 2024 15:23:35 +0200
+Message-ID: <CAA8EJpratQH5fS9mS8mnK=c9FwHn8n8g5dj+weoyzrobVMOvBQ@mail.gmail.com>
+Subject: Re: [PATCH RFC 2/4] wifi: ath10k: support board-specific firmware overrides
+To: Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc: Kalle Valo <kvalo@kernel.org>, Jeff Johnson <quic_jjohnson@quicinc.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh+dt@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Bjorn Andersson <andersson@kernel.org>, ath10k@lists.infradead.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Felix Fietkau <nbd@nbd.name> writes:
-
-> On 12.02.24 11:56, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->> Johannes Berg <johannes@sipsolutions.net> writes:
->>=20
->>> On Sat, 2024-02-10 at 17:18 +0100, Felix Fietkau wrote:
->>>>=20
->>>> > > +++ b/include/net/cfg80211.h
->>>> > > @@ -3385,6 +3385,7 @@ enum wiphy_params_flags {
->>>> > >  /* The per TXQ device queue limit in airtime */
->>>> > >  #define IEEE80211_DEFAULT_AQL_TXQ_LIMIT_L	5000
->>>> > >  #define IEEE80211_DEFAULT_AQL_TXQ_LIMIT_H	12000
->>>> > > +#define IEEE80211_DEFAULT_AQL_TXQ_LIMIT_BC	50000
->>>> >=20
->>>> > How did you arrive at the 50 ms figure for the limit on broadcast
->>>> > traffic? Seems like quite a lot? Did you experiment with different
->>>> > values?
->>>>=20
->>>> Whenever a client is connected and in powersave mode, all multicast=20
->>>> packets are buffered and sent after the beacon. Because of that I=20
->>>> decided to use half of a default beacon interval.
->>>
->>> That makes some sense, I guess.
->>=20
->> This implies that we will allow enough data to be queued up in the
->> hardware to spend half the next beacon interval just sending that
->> broadcast data? Isn't that a bit much if the goal is to prevent
->> broadcast from killing the network? What effect did you measure of this
->> patch? :)
+On Mon, 12 Feb 2024 at 13:12, Konrad Dybcio <konrad.dybcio@linaro.org> wrote:
 >
-> I didn't do any real measurements with this patch yet. How much=20
-> broadcast data is actually sent after the beacon is still up to the=20
-> driver/hardware, so depending on that, the limit might even be less than=
-=20
-> 50ms. I also wanted to be conservative in limiting buffering in order to=
-=20
-> avoid potential regressions. While 50ms may seem like much, I believe it=
-=20
-> is still a significant improvement over the current state, which is=20
-> unlimited.
+> On 30.01.2024 17:38, Dmitry Baryshkov wrote:
+> > Different Qualcomm platforms using WCN3990 WiFI chip use SoC-specific
+> > firmware versions with different features. For example firmware for
+> > SDM845 doesn't use single-chan-info-per-channel feature, while firmware
+> > for QRB2210 / QRB4210 requires that feature. Allow board DT files to
+> > override the subdir of the fw dir used to lookup the firmware-N.bin file
+> > decribing corresponding WiFi firmware.
+> >
+> > Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> > ---
+> >  drivers/net/wireless/ath/ath10k/core.c | 11 ++++++++++-
+> >  drivers/net/wireless/ath/ath10k/core.h |  2 ++
+> >  drivers/net/wireless/ath/ath10k/snoc.c |  3 +++
+> >  3 files changed, 15 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
+> > index 0032f8aa892f..ef7ce8b3f8fb 100644
+> > --- a/drivers/net/wireless/ath/ath10k/core.c
+> > +++ b/drivers/net/wireless/ath/ath10k/core.c
+> > @@ -942,11 +942,20 @@ static const struct firmware *ath10k_fetch_fw_file(struct ath10k *ar,
+> >       if (dir == NULL)
+> >               dir = ".";
+> >
+> > +     if (ar->board_name) {
+> > +             snprintf(filename, sizeof(filename), "%s/%s/%s",
+> > +                      dir, ar->board_name, file);
+> > +             ret = firmware_request_nowarn(&fw, filename, ar->dev);
+> > +             ath10k_dbg(ar, ATH10K_DBG_BOOT, "boot fw request '%s': %d\n",
+> > +                        filename, ret);
 >
->> Also, as soon as something is actually transmitted, the kernel will
->> start pushing more data into the HW from the queue in the host. So the
->> HW queue limit shouldn't be set as "this is the maximum that should be
->> transmitted in one go", but rather "this is the minimum time we need for
->> the software stack to catch up and refill the queue before it runs
->> empty". So from that perspective 50ms also seems a bit high?
->
-> When broadcast buffering is enabled, the driver/hardware typically=20
-> prepares the set of packets to be transmitted before the beacon is sent.=
-=20
-> Any packet not ready by then will be sent in the next round.
-> I added the 50ms limit based on that assumption.
+> Perhaps it'd be useful to move to a more noisy loglevel
 
-Ah, so even if this is being done in software it's happening in the
-driver, so post-TXQ dequeue? OK, in that case I guess it makes sense;
-would love to see some numbers, of course, but I guess the debugfs
-additions in this patch will make it possible to actually monitor the
-queue lengths seen in the wild :)
+No, these are details. If the firmware is in place, it is loaded properly.
 
->>> It does have me wondering though if we should also consider multicast
->>> for airtime fairness in some way?
->>=20
->> Yeah, that would make sense. The virtual time-based scheduler that we
->> ended up reverting actually included airtime accounting for the
->> multicast queue as well. I don't recall if there was any problem with
->> that particular part of the change, or if it's just incidental that we
->> got rid of it as part of the revert. But it may be worth revisiting and
->> adding a similar mechanism to the round-robin scheduler...
->
-> The round-robin scheduler already has some consideration of multicast -=20
-> it always puts the multicast queues last in the active_txqs list.
 
-Ah, right. Hmm, not quite clear to me how that works out in terms of
-fairness, but it should at least prevent the MC queue from blocking
-everything else...
-
--Toke
+-- 
+With best wishes
+Dmitry
 
