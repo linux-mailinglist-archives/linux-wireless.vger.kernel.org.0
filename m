@@ -1,42 +1,42 @@
-Return-Path: <linux-wireless+bounces-3476-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3475-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5CD8851D17
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Feb 2024 19:44:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18B94851D10
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Feb 2024 19:43:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D45641C21F3D
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Feb 2024 18:44:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9A5B1F23C21
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Feb 2024 18:43:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47B3D4C601;
-	Mon, 12 Feb 2024 18:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26AD547793;
+	Mon, 12 Feb 2024 18:42:35 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8804240BEE;
-	Mon, 12 Feb 2024 18:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC21B3FE44;
+	Mon, 12 Feb 2024 18:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.96.170.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707763356; cv=none; b=OwOGur65AS2LCue2FUemDaxLwkegZaSVg5XgCBTItDKPuNV6Kj6gh48h+nkck6w/o6sA/WG9ZlyDBfqjQr1Km47sSszaBCMN3rYWM53zctxFxlD4TZ6P0Qd8VgpgW7czm5rWYs0pi4jzopm9iG2uzXpvapD1gn4AYeQVQ9JDLIU=
+	t=1707763355; cv=none; b=kZj2N1GMp61RygJFLN6KheHfv5jwLd5Gu8LoouABzpFn9CsAg5pZ8cPaWL42zkIGzj9PxT1YFaXGfMw7Yg8Xg7OK0fKWWy4Jmu9zHy41UDZ/oJ79cTSqVR6ufya9FIAbNgeRQRdvsZzu3HX0wpNBU8q46XrdIfV0+HR0MIFO0XI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707763356; c=relaxed/simple;
-	bh=hOAifuosbac6a+ahRRhg5YVd6cXd/8T1Y8QRCjzuvWQ=;
+	s=arc-20240116; t=1707763355; c=relaxed/simple;
+	bh=0fjHyFCgQiCJ7Xf9wqWXnNvGeNJWsCVj3Z7wFx692qc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PF3P50Q5DEBljR1yTgvA7KFkIBEIY7kEhRTdp+30/V/rGRecaRmr3BrDoSNO97an7dZAQCVkIVJB0o1cHULmCt3eA2yjOu5tzMRHNwirlw5rb0zgq4Ch8s0jQELRDCDyXESXEZ+AqXPJIRpN0OWo8T6/CcNaSSbo0Ie1+eInPEY=
+	 MIME-Version:Content-Type; b=ogUnMkS7nCblb10QkqU3rySOZBGpWtZ4Rm9oiJlxmMwaIEvbTmac0py1hw4x0MiPz00D8dB/LAu+CGhV+OIdGu4oGLEFmL7qfD8M27e9eI5Q0XcTIEMdGq2xuIOGBmLKcEAnzO3tVhnLrPIT93owoBoKFozxmzPQxl3JTcKiFSw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; arc=none smtp.client-ip=79.96.170.134
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rjwysocki.net
 Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
  by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.4.0)
- id e215d587004f3844; Mon, 12 Feb 2024 19:42:31 +0100
+ id e1f8ca868e59d311; Mon, 12 Feb 2024 19:42:30 +0100
 Received: from kreacher.localnet (unknown [195.136.19.94])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by cloudserver094114.home.pl (Postfix) with ESMTPSA id DB91E669CF2;
+	by cloudserver094114.home.pl (Postfix) with ESMTPSA id 2107C669CF2;
 	Mon, 12 Feb 2024 19:42:30 +0100 (CET)
 From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
 To: Linux PM <linux-pm@vger.kernel.org>
@@ -52,9 +52,9 @@ Cc: Lukasz Luba <lukasz.luba@arm.com>, LKML <linux-kernel@vger.kernel.org>,
  Pengutronix Kernel Team <kernel@pengutronix.de>,
  Manaf Meethalavalappu Pallikunhi <quic_manafm@quicinc.com>
 Subject:
- [PATCH v2 5/9] mlxsw: core_thermal: Set THERMAL_TRIP_FLAG_RW_TEMP directly
-Date: Mon, 12 Feb 2024 19:35:56 +0100
-Message-ID: <10417137.nUPlyArG6x@kreacher>
+ [PATCH v2 6/9] wifi: iwlwifi: mvm: Set THERMAL_TRIP_FLAG_RW_TEMP directly
+Date: Mon, 12 Feb 2024 19:38:07 +0100
+Message-ID: <22182690.EfDdHjke4D@kreacher>
 In-Reply-To: <6017196.lOV4Wx5bFT@kreacher>
 References: <6017196.lOV4Wx5bFT@kreacher>
 Precedence: bulk
@@ -77,7 +77,7 @@ From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 It is now possible to flag trip points with THERMAL_TRIP_FLAG_RW_TEMP
 to allow their temperature to be set from user space via sysfs instead
 of using a nonzero writable trips mask during thermal zone registration,
-so make the mlxsw code do that.
+so make the iwlwifi code do that.
 
 No intentional functional impact.
 
@@ -85,98 +85,45 @@ Note that this change is requisite for dropping the mask argument from
 thermal_zone_device_register_with_trips() going forward.
 
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
 ---
 
 v1 -> v2:
    * Rename trip flag (Stanislaw).
-   * Add R-by from Ido.
+   * Fix coding mistake in iwl_mvm_thermal_zone_register().
+   * Add "wifi:" prefix to the subject (Kalle).
 
 ---
- drivers/net/ethernet/mellanox/mlxsw/core_thermal.c |   15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/tt.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-Index: linux-pm/drivers/net/ethernet/mellanox/mlxsw/core_thermal.c
+Index: linux-pm/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
 ===================================================================
---- linux-pm.orig/drivers/net/ethernet/mellanox/mlxsw/core_thermal.c
-+++ linux-pm/drivers/net/ethernet/mellanox/mlxsw/core_thermal.c
-@@ -44,16 +44,19 @@ static const struct thermal_trip default
- 		.type		= THERMAL_TRIP_ACTIVE,
- 		.temperature	= MLXSW_THERMAL_ASIC_TEMP_NORM,
- 		.hysteresis	= MLXSW_THERMAL_HYSTERESIS_TEMP,
-+		.flags		= THERMAL_TRIP_FLAG_RW_TEMP,
- 	},
- 	{
- 		/* In range - 40-100% PWM */
- 		.type		= THERMAL_TRIP_ACTIVE,
- 		.temperature	= MLXSW_THERMAL_ASIC_TEMP_HIGH,
- 		.hysteresis	= MLXSW_THERMAL_HYSTERESIS_TEMP,
-+		.flags		= THERMAL_TRIP_FLAG_RW_TEMP,
- 	},
- 	{	/* Warning */
- 		.type		= THERMAL_TRIP_HOT,
- 		.temperature	= MLXSW_THERMAL_ASIC_TEMP_HOT,
-+		.flags		= THERMAL_TRIP_FLAG_RW_TEMP,
- 	},
+--- linux-pm.orig/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
++++ linux-pm/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
+@@ -667,9 +667,6 @@ static  struct thermal_zone_device_ops t
+ 	.set_trip_temp = iwl_mvm_tzone_set_trip_temp,
  };
  
-@@ -62,16 +65,19 @@ static const struct thermal_trip default
- 		.type		= THERMAL_TRIP_ACTIVE,
- 		.temperature	= MLXSW_THERMAL_MODULE_TEMP_NORM,
- 		.hysteresis	= MLXSW_THERMAL_HYSTERESIS_TEMP,
-+		.flags		= THERMAL_TRIP_FLAG_RW_TEMP,
- 	},
- 	{
- 		/* In range - 40-100% PWM */
- 		.type		= THERMAL_TRIP_ACTIVE,
- 		.temperature	= MLXSW_THERMAL_MODULE_TEMP_HIGH,
- 		.hysteresis	= MLXSW_THERMAL_HYSTERESIS_TEMP,
-+		.flags		= THERMAL_TRIP_FLAG_RW_TEMP,
- 	},
- 	{	/* Warning */
- 		.type		= THERMAL_TRIP_HOT,
- 		.temperature	= MLXSW_THERMAL_MODULE_TEMP_HOT,
-+		.flags		= THERMAL_TRIP_FLAG_RW_TEMP,
- 	},
- };
- 
-@@ -92,9 +98,6 @@ static const struct mlxsw_cooling_states
- 
- #define MLXSW_THERMAL_NUM_TRIPS	ARRAY_SIZE(default_thermal_trips)
- 
--/* Make sure all trips are writable */
--#define MLXSW_THERMAL_TRIP_MASK	(BIT(MLXSW_THERMAL_NUM_TRIPS) - 1)
+-/* make all trips writable */
+-#define IWL_WRITABLE_TRIPS_MSK (BIT(IWL_MAX_DTS_TRIPS) - 1)
 -
- struct mlxsw_thermal;
- 
- struct mlxsw_thermal_module {
-@@ -420,7 +423,7 @@ mlxsw_thermal_module_tz_init(struct mlxs
- 	module_tz->tzdev = thermal_zone_device_register_with_trips(tz_name,
- 							module_tz->trips,
- 							MLXSW_THERMAL_NUM_TRIPS,
--							MLXSW_THERMAL_TRIP_MASK,
+ static void iwl_mvm_thermal_zone_register(struct iwl_mvm *mvm)
+ {
+ 	int i, ret;
+@@ -692,11 +689,12 @@ static void iwl_mvm_thermal_zone_registe
+ 	for (i = 0 ; i < IWL_MAX_DTS_TRIPS; i++) {
+ 		mvm->tz_device.trips[i].temperature = THERMAL_TEMP_INVALID;
+ 		mvm->tz_device.trips[i].type = THERMAL_TRIP_PASSIVE;
++		mvm->tz_device.trips[i].flags = THERMAL_TRIP_FLAG_RW_TEMP;
+ 	}
+ 	mvm->tz_device.tzone = thermal_zone_device_register_with_trips(name,
+ 							mvm->tz_device.trips,
+ 							IWL_MAX_DTS_TRIPS,
+-							IWL_WRITABLE_TRIPS_MSK,
 +							0,
- 							module_tz,
- 							&mlxsw_thermal_module_ops,
- 							&mlxsw_thermal_params,
-@@ -548,7 +551,7 @@ mlxsw_thermal_gearbox_tz_init(struct mlx
- 	gearbox_tz->tzdev = thermal_zone_device_register_with_trips(tz_name,
- 						gearbox_tz->trips,
- 						MLXSW_THERMAL_NUM_TRIPS,
--						MLXSW_THERMAL_TRIP_MASK,
-+						0,
- 						gearbox_tz,
- 						&mlxsw_thermal_gearbox_ops,
- 						&mlxsw_thermal_params, 0,
-@@ -773,7 +776,7 @@ int mlxsw_thermal_init(struct mlxsw_core
- 	thermal->tzdev = thermal_zone_device_register_with_trips("mlxsw",
- 						      thermal->trips,
- 						      MLXSW_THERMAL_NUM_TRIPS,
--						      MLXSW_THERMAL_TRIP_MASK,
-+						      0,
- 						      thermal,
- 						      &mlxsw_thermal_ops,
- 						      &mlxsw_thermal_params, 0,
+ 							mvm, &tzone_ops,
+ 							NULL, 0, 0);
+ 	if (IS_ERR(mvm->tz_device.tzone)) {
 
 
 
