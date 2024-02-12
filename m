@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-3465-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3466-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBB7E85183E
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Feb 2024 16:38:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3954851844
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Feb 2024 16:39:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E3081F219E0
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Feb 2024 15:38:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 021181C2061D
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Feb 2024 15:39:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E999C3C492;
-	Mon, 12 Feb 2024 15:38:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 856D33C689;
+	Mon, 12 Feb 2024 15:38:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bNSCUkXo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ioy+Xv8B"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD91A3C088;
-	Mon, 12 Feb 2024 15:38:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61A0A3C684
+	for <linux-wireless@vger.kernel.org>; Mon, 12 Feb 2024 15:38:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707752292; cv=none; b=iMBgRq4Zkfr+3XxYvMvjj0jDkqfYlOHWmq9jOXX+fWiJDGzMakgJvHDgdF2rs51VXS6tVUXc56VSL4t/UeBkxdM17/9wUwMfXSd3Cl+vltIatOAk4ivirEYZl+QgLAW8AZi3D0o6zPvcU3MTmIgf4SvNkOKsBR6+NnNc75kgku8=
+	t=1707752339; cv=none; b=a0GWJrPJFY4BeN8Aj5ZdEAmivZItcjyOfiZHvXYaBJf1nLGolM0UnK0W8COsbxLpXr5ufRjQNATyJQglmL05ZeNu1RZl3KnSy+uL6rV/hyUju+rQ6CfUFPCo/M0AB6PhUrrH9KI1vQ/tP5nZySR2EDN0C/2F2qWFfRq2T5xYPRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707752292; c=relaxed/simple;
-	bh=AKNvaHsgQo+M8zEEgaqhqkD3MZ727WnLytCZB7yGkVQ=;
+	s=arc-20240116; t=1707752339; c=relaxed/simple;
+	bh=ndLKKOOMqtN5vOXd9QLPhGAEsP4jQeOIdJyB8QETJtU=;
 	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=Ig86C40GDyjAvqd2eon8FmsSz0R8gz4G24lyVwKos6xGEh5wKFmyCFcXOUEDA3/CR8v1M/ol+APBw4ylb9v3iZt9y1ZQEI5Do2lcgLzVT9WM/I/r3s5YAJO6xaP7SuXZmxIm/Zhh93wB2JViB23dYSjTz/r6IU0UpHHGQdt6nL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bNSCUkXo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF16DC433C7;
-	Mon, 12 Feb 2024 15:38:08 +0000 (UTC)
+	 Cc:Message-ID:Date; b=nG7k8sewtlK80p8yWm+fYLOStyhpX1cfNfr66iWAs8geXugrOw+DP32+Sej7HLT4emcMilQL2QEdVMeauKTOoLF8+7eYW7DCUoO0KhgDSi9E0+HUrniAtjmOb0V1U8cbA5vkGz06gIPm5C3QfpavPgKqP0pbzpMbnnlGGAjtGkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ioy+Xv8B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12DAFC433C7;
+	Mon, 12 Feb 2024 15:38:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707752292;
-	bh=AKNvaHsgQo+M8zEEgaqhqkD3MZ727WnLytCZB7yGkVQ=;
+	s=k20201202; t=1707752339;
+	bh=ndLKKOOMqtN5vOXd9QLPhGAEsP4jQeOIdJyB8QETJtU=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=bNSCUkXodN4XgX1J8GbQcTLI7YMVUSQpLbE1+hebO5I/ARJX1bL0dZd8B504gyt2s
-	 k/zQ6KS9V176qtdXBd/B4hG1yz8REsROm16E+2IMxtEOqcLy/SSOjzSS4eeTTkA/F1
-	 l5CVw244A/3qoNPBxexMi5/chQqj6Xx8U97VM0hUctN2dybt8ZA/eXJ5qZ6524URyl
-	 anNkudA46LDlGiR1TJDHvns1Qtb5M93a2wuN1bXEMPBo37smf+fe7l2Q2GKHELmPEf
-	 T4/ZrjIMrovEBg/SFwvEJB3FnPWSVPzzDmxy6XsQ2rta0EvBEWdFeomlX+uv7Caq0/
-	 Nb0kC5/Z2i/Eg==
+	b=Ioy+Xv8BBVNCobErFTm9hZHCpqp8XFQDG5JNqUFkORwqxaH769F1h5f0NjEdzshcE
+	 WYaAx8mhH5/KsfsdP5+DWMGbjpq99czgoO5qZJE5iMDQtVtIEx/CH0UhfbbWLgH8o2
+	 sm0wCUQvFn7XLREjWt9ZsS0F5cx3FENkylzV41IStcQ1Uh3U3KIuDtt9WzJB16Zplk
+	 xSaLgPPPHhY9wm2qShAwopFUs/DsAy+1r+OfJE7OCkfMhY3mabAT5m08yt+oPDzkFn
+	 /jXLb29tvT8J581cGKuYRjmKHICujWjdlQyEi2P2K1CH8PURuY2hT4pXNCMpRR2JvZ
+	 hXlfTzEI+U5kg==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -49,59 +49,35 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3] wifi: mwifiex: Refactor 1-element array into flexible
- array in struct mwifiex_ie_types_chan_list_param_set
+Subject: Re: [PATCH] wifi: brcmfmac: do not cast hidden SSID attribute value
+ to
+ boolean
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240207103024.make.423-kees@kernel.org>
-References: <20240207103024.make.423-kees@kernel.org>
-To: Kees Cook <keescook@chromium.org>
-Cc: Brian Norris <briannorris@chromium.org>,
- Kees Cook <keescook@chromium.org>, Dmitry Antipov <dmantipov@yandex.ru>,
- Johannes Berg <johannes.berg@intel.com>, zuoqilin <zuoqilin@yulong.com>,
- Ruan Jinjie <ruanjinjie@huawei.com>, Thomas Gleixner <tglx@linutronix.de>,
- Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
- "Gustavo A . R . Silva" <gustavoars@kernel.org>,
- linux-wireless@vger.kernel.org, Dan Carpenter <error27@gmail.com>,
- Francesco Dolcini <francesco.dolcini@toradex.com>,
- David Lin <yu-hao.lin@nxp.com>, Lukas Wunner <lukas@wunner.de>,
- Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
- linux-hardening@vger.kernel.org
+In-Reply-To: <20240208085121.2430-1-a@bayrepo.ru>
+References: <20240208085121.2430-1-a@bayrepo.ru>
+To: Alexey Berezhok <a@bayrepo.ru>
+Cc: Arend van Spriel <aspriel@gmail.com>, linux-wireless@vger.kernel.org,
+ lvc-project@linuxtesting.org, Alexey Berezhok <a@bayrepo.ru>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170775228681.2851594.6070070242483330161.kvalo@kernel.org>
-Date: Mon, 12 Feb 2024 15:38:08 +0000 (UTC)
+Message-ID: <170775233602.2851594.8173116143852900695.kvalo@kernel.org>
+Date: Mon, 12 Feb 2024 15:38:57 +0000 (UTC)
 
-Kees Cook <keescook@chromium.org> wrote:
+Alexey Berezhok <a@bayrepo.ru> wrote:
 
-> struct mwifiex_ie_types_chan_list_param_set::chan_scan_param is treated
-> as a flexible array, so convert it into one so that it doesn't trip
-> the array bounds sanitizer[1]. Only a few places were using sizeof()
-> on the whole struct, so adjust those to follow the calculation pattern
-> to avoid including the trailing single element.
+> In 'brcmf_cfg80211_start_ap()', not assume that
+> NL80211_HIDDEN_SSID_NOT_IN_USE is zero but prefer
+> an explicit check instead. Compile tested only.
 > 
-> Examining binary output differences doesn't appear to show any literal
-> size values changing, though it is obfuscated a bit by the compiler
-> adjusting register usage and stack spill slots, etc.
+> Found by Linux Verification Center (linuxtesting.org) with SVACE.
 > 
-> Link: https://github.com/KSPP/linux/issues/51 [1]
-> Cc: Brian Norris <briannorris@chromium.org>
-> Cc: Kalle Valo <kvalo@kernel.org>
-> Cc: Dmitry Antipov <dmantipov@yandex.ru>
-> Cc: Johannes Berg <johannes.berg@intel.com>
-> Cc: zuoqilin <zuoqilin@yulong.com>
-> Cc: Ruan Jinjie <ruanjinjie@huawei.com>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> Cc: Gustavo A. R. Silva <gustavoars@kernel.org>
-> Cc: linux-wireless@vger.kernel.org
-> Signed-off-by: Kees Cook <keescook@chromium.org>
-> Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+> Signed-off-by: Alexey Berezhok <a@bayrepo.ru>
 
 Patch applied to wireless-next.git, thanks.
 
-14ddc470ba22 wifi: mwifiex: Refactor 1-element array into flexible array in struct mwifiex_ie_types_chan_list_param_set
+f20073f50dfd wifi: brcmfmac: do not cast hidden SSID attribute value to boolean
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240207103024.make.423-kees@kernel.org/
+https://patchwork.kernel.org/project/linux-wireless/patch/20240208085121.2430-1-a@bayrepo.ru/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
