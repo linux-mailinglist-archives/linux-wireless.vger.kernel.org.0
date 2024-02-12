@@ -1,105 +1,101 @@
-Return-Path: <linux-wireless+bounces-3430-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3431-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE1B1850DEF
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Feb 2024 08:21:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AD31850DFB
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Feb 2024 08:26:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0D421C213C2
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Feb 2024 07:21:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCBA9283E62
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Feb 2024 07:25:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B6B47469;
-	Mon, 12 Feb 2024 07:21:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58C2E7468;
+	Mon, 12 Feb 2024 07:25:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Bnzy/GQp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cs4VKluQ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5197B5C9A;
-	Mon, 12 Feb 2024 07:21:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3217462
+	for <linux-wireless@vger.kernel.org>; Mon, 12 Feb 2024 07:25:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707722462; cv=none; b=FzMssC1azvWAJ8z/NaLvZ9kh5W/PwYJ8GP1vP2TUjnEfB/s9h3yLWxNJaAnBd5la5UCH1+NP82Jk4JqJ+iB0JDdF3+FW1GhAFfEphyhScy9YGKxYcElYQ4O4Xlz7M0mL8cCt437u+VvY2iPtWkR6BM7FEfJVqn/xzE0jkGNEjKc=
+	t=1707722758; cv=none; b=lEevzYJMtO3sbqj0ssz/+J00wdA4FFfs35rzqR64HUb8aHgq3ZU90P2GpKf9/p93XZF3l3zNMEb4k5plXr0BOKj5QuUTgrBsFRlbHkU5nX0DQFXmozzb6f9RuoTAnquwNpo9JBF194RaWvvPD7Re39HmzivAYnBAtoG4/8+zOXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707722462; c=relaxed/simple;
-	bh=l0UtqZNPFjX5P1BaXNEatWC0qrVo/ZQak0ps1MZWojU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SfNLSAR/60y5Gl63jQ9Daclz6iKucKLgBbP6Qt23JnyJM9JvYCh4GfLSZWmAW7Px+2ZLYkXyJOvzn8jvW9xDKBU/So8L7z1kHAvYvEQTfX+rIEYv0efBb3R2pJPNxnrxljw8yNdJ7d8oQa5ZkMsi0j0akxqeb1U/S7bImA03gVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Bnzy/GQp; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-55c2cf644f3so3640785a12.1;
-        Sun, 11 Feb 2024 23:21:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707722459; x=1708327259; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=l0UtqZNPFjX5P1BaXNEatWC0qrVo/ZQak0ps1MZWojU=;
-        b=Bnzy/GQpAfEIfrtPMa4fceL79DsGAzqM0pnE2OOsa4RMkNVBFSh1MTpxOnIe39dxug
-         IPbNfrVGvQ2S9DfZjtk9AK/TcCMfLXCLNk5mQWr3uIGyK73L65zQ9kxU1Do60fOX8crA
-         avTVHdH0/Spyx9szwFKswuN8+5TCCzCUFM7qJ/V1p+camTIJ1nkKb8EpaMlchzRxcY4z
-         3juRYoUpNIug2j4C8kYluaQEqST7j4jngDH/vBTHqW7i7afyafwtVJGtWDDsuqbiKFBL
-         btMn8KTeit9pwh6CPoOSmUnIykaCn/8UGd7/9Hjg6zjBEU/d/GafCoBKdA7HGtDgUyxq
-         zRfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707722459; x=1708327259;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=l0UtqZNPFjX5P1BaXNEatWC0qrVo/ZQak0ps1MZWojU=;
-        b=BzXOdLhtErXedG77J/z7ux+ap9PsMfT4w+mEZRaGHGmGN9ntmuKFGo2l2MQZkHnCIk
-         yadnwrxfJhxCao4VRvDzLdk4iD5A9KzsM3QXxM152X/libct+aBub3wdOi9xbd63vAOD
-         ABiSFmVt7naXFvEcz+nF5r7+fMZOPZGCu9mI0x9X4+GMvNn8ubaMQ8v9fglbR1r7B4I8
-         hqQdOOtLuPESNb6LJlmLkpWhGRnq0pUGq1tw683VGtDjwX0xj6FeC79FdKsGiuY5xIl4
-         n3z5K5XxdFrAW+6MRYr1oYl/VGCayMMZe4LDpH+vnGbYr7FReoROlUDk2CrJAxt/+D4Q
-         Xiag==
-X-Forwarded-Encrypted: i=1; AJvYcCWFLixm5JJF7QlGMjBBZGqyTZE+Sesewk71uvQjHueFH69tQEV/Tq76jHeFU3MCQFw9K7OHhvEMrf45ePRXvcfRg1ggIphX5TKAfp/6BOSOzBBxWyTcUg3Fl7kVBSwdu+yBh/5llVDhNPXl0qrKF4Hc95bQpzt4rWFq453l/h/9MkvoPajEStKM
-X-Gm-Message-State: AOJu0Yz896NpX4d28RoaiNAa4SRs75OEc1kvTO6GPDqqQZuUkdbaifKY
-	LOOm8Pa+WFAmMAjTMm0mPvU3J+lXXpR3LoexM/0qfeTrbn0DLCaZ
-X-Google-Smtp-Source: AGHT+IHZ2P8Ih/13lnHFKre2syYlUhl7pM3xyfyn9OnVJVxfYD8qQglAWIaM3WtjgQcZRldk2Ek2Xw==
-X-Received: by 2002:a05:6402:517c:b0:55f:6a87:8033 with SMTP id d28-20020a056402517c00b0055f6a878033mr4566269ede.31.1707722459326;
-        Sun, 11 Feb 2024 23:20:59 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCU8th3Enm1hx/qACLL9nXDW24Ejs3sf0lfpr4B4v4p0dcY6z8HEfmx0h3WICip9cK8EWIP7PnkPhm7qzURtKvZxrKHUmKyYTrv+cFzzSIUQXVlQFAfjH5AxXk/Wl9oMVoxYd/lpwH3ODSgG6zxkG9OnNGZYdJG9nAS/Vn/yZc0MMQTttFxfRCPo3C2KT9YpGm6WXjQDQqx2GSSZCc0sao0BN4HEG7GmtkxmREOMDCDHvz6TrpF+JAxCV3dVGSFNHc8IIu0rlGVvk5sJZ5+5Q3UHgv9odyjpPehWXRPEnpd7qgn4dDgzugeRnBuDU55GnXat/PeNjoPOusTmMVzxoPtxj8vhZ4ppQ/yJpz+nJAiAYOmuyWgpbbVFWC2TwfxPneJ1IT4TS5vFSae4PzK3ZilD/xO4crGyoJyDJAuGuoKbI35wWhnQ8vo7jr6Jaq8+AXHgdkNWomUZsq376eZKsuUDYJLvTAdy2Wf0HA45GcCAbkeSnTLpF8dmgGaF1C9PkogSSsJK0KMkSWAdQb2bWLli1AZxtaMZqmmraKRz9syCnmRqRmmZFlpYNij1hAPiihX2zmpzTd0gKvZSgxSDkFYvbxk+JE2YTF8=
-Received: from [192.168.26.149] (031011218106.poznan.vectranet.pl. [31.11.218.106])
-        by smtp.googlemail.com with ESMTPSA id h9-20020a0564020e0900b0056058f2603asm2525290edh.3.2024.02.11.23.20.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 11 Feb 2024 23:20:58 -0800 (PST)
-Message-ID: <03d80cad-b72b-44d7-b726-cd8e3d4f81a9@gmail.com>
-Date: Mon, 12 Feb 2024 08:20:56 +0100
+	s=arc-20240116; t=1707722758; c=relaxed/simple;
+	bh=hOnROUj77Gg4Hp/kDGdJmg1vFWWdhF0uAEGfH7prDt8=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=aBBiYYR4YzclmwRjxl2FEoj+TWbzs7K8CfklENTkb7LLXpSblSNvG5tvhSNZW/lFVSfhfaSnQNjM0tW5p3RQuK5kUbUuuRsTGUMfRO1zh+xl+Zq8Cxz4QSp0ghFJVYkeejl/4jwxDQIjDzqwYUA7omiY8uSsazjHS0H156gdruM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cs4VKluQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1A34C433F1;
+	Mon, 12 Feb 2024 07:25:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707722757;
+	bh=hOnROUj77Gg4Hp/kDGdJmg1vFWWdhF0uAEGfH7prDt8=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=cs4VKluQv2VfmHJ2Nb1VWtyjTtf7ajETWLpEFLXBjbGPyFW9p78DyMLvnnKHsp8G8
+	 90gbHng9PR8a7rRksNBRhfKx1ylXt2yHY3sqlU1ahg3ORqUhgAAaRoH3SXMXVGlhEM
+	 qQtV6anJVn4La3XvuqEf1xKV/9YlT0eJkV6QmMGy1CDzVP9rIeWuJWG6A0nY8kjgIF
+	 FO3PdewzhzAeN9YgvnAtELHIacO6ADT/A6e5pUG1HP4xQkW+p08+A/imOeMGBQUYM7
+	 m3dP6gcpsumdTjjMnQFby5GwW87Tc2iv2AQ/2gRmpqKEA4coHjflr1DMmt1EWplESE
+	 hCfzH1Ac1r9lA==
+From: Kalle Valo <kvalo@kernel.org>
+To: Vinayak Yadawad <vinayak.yadawad@broadcom.com>
+Cc: johannes@sipsolutions.net,  linux-wireless@vger.kernel.org,
+  jithu.jance@broadcom.com
+Subject: Re: [PATCH 1/1] wifi: nl80211: Add support for plumbing SAE groups
+ to driver
+References: <309965e8ef4d220053ca7e6bd34393f892ea1bb8.1707486287.git.vinayak.yadawad@broadcom.com>
+Date: Mon, 12 Feb 2024 09:25:54 +0200
+In-Reply-To: <309965e8ef4d220053ca7e6bd34393f892ea1bb8.1707486287.git.vinayak.yadawad@broadcom.com>
+	(Vinayak Yadawad's message of "Fri, 9 Feb 2024 19:20:43 +0530")
+Message-ID: <87mss6f8jh.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] dt-bindings: net: wireless: mt76: add interrupts
- description for MT7986
-To: Peter Chiu <chui-hao.chiu@mediatek.com>, Felix Fietkau <nbd@nbd.name>,
- Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc: Conor Dooley <conor+dt@kernel.org>, Lorenzo Bianconi
- <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>,
- Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>,
- Kalle Valo <kvalo@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org
-References: <20231221032648.641-1-chui-hao.chiu@mediatek.com>
-Content-Language: en-US
-From: =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-In-Reply-To: <20231221032648.641-1-chui-hao.chiu@mediatek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On 21.12.2023 04:26, Peter Chiu wrote:
-> The mt7986 can support four interrupts to distribute the interrupts
-> to different CPUs.
+Vinayak Yadawad <vinayak.yadawad@broadcom.com> writes:
 
-Can we have this patch picked up, please? Felix? Kalle?
+> In case of SAE authentication offload, the driver would need
+> the info of SAE DH groups for both STA connection and soft AP.
+> In the current change we update the SAE DH group support info
+> to driver in the order/priority as provided by the supplicant/
+> upper layer.
+>
+> Signed-off-by: Vinayak Yadawad <vinayak.yadawad@broadcom.com>
+
+[...]
+
+> @@ -1235,6 +1236,9 @@ struct survey_info {
+>   *
+>   *	NL80211_SAE_PWE_BOTH
+>   *	  Allow either hunting-and-pecking loop or hash-to-element
+> + *
+> + * @sae_dh_groups: SAE DH groups in preference order.
+> + * @n_sae_dhd_groups: No of SAE DH groups assigned.
+>   */
+>  struct cfg80211_crypto_settings {
+>  	u32 wpa_versions;
+> @@ -1252,6 +1256,8 @@ struct cfg80211_crypto_settings {
+>  	const u8 *sae_pwd;
+>  	u8 sae_pwd_len;
+>  	enum nl80211_sae_pwe_mechanism sae_pwe;
+> +	u32 sae_dh_groups[CFG80211_MAX_NUM_SAE_DH_GROUPS];
+> +	u8 n_sae_dh_groups;
+>  };
+
+What driver is going to use these new crypto settings? Or is this for an
+out-of-tree driver?
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
