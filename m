@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-3464-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3465-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76BCF85183B
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Feb 2024 16:37:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBB7E85183E
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Feb 2024 16:38:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A89BD1C20A70
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Feb 2024 15:37:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E3081F219E0
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Feb 2024 15:38:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 060D63C68E;
-	Mon, 12 Feb 2024 15:37:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E999C3C492;
+	Mon, 12 Feb 2024 15:38:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U++PPMw1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bNSCUkXo"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D61573C68A
-	for <linux-wireless@vger.kernel.org>; Mon, 12 Feb 2024 15:37:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD91A3C088;
+	Mon, 12 Feb 2024 15:38:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707752268; cv=none; b=i7vnUysJIQBn2L9yCnJHKyxca+qOvBrAYn0OL6SV/a+ThVHgUTdRxCmnaml2N91Mgr5HN3EHi2VzIU0MH0eL44pkHXs3E7J1Y3Dh32QcQgu7h8UjYx7qzteCO+UIJYfABzmFGIyA1c8TVZB1KEglhnjppb0ejQLJP8i/PaxQxCg=
+	t=1707752292; cv=none; b=iMBgRq4Zkfr+3XxYvMvjj0jDkqfYlOHWmq9jOXX+fWiJDGzMakgJvHDgdF2rs51VXS6tVUXc56VSL4t/UeBkxdM17/9wUwMfXSd3Cl+vltIatOAk4ivirEYZl+QgLAW8AZi3D0o6zPvcU3MTmIgf4SvNkOKsBR6+NnNc75kgku8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707752268; c=relaxed/simple;
-	bh=igfkJTvjRNdI54+qIvnhJ0gZeN0TQlPRGirAI5EtB9A=;
+	s=arc-20240116; t=1707752292; c=relaxed/simple;
+	bh=AKNvaHsgQo+M8zEEgaqhqkD3MZ727WnLytCZB7yGkVQ=;
 	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=Fs3QrfvPfllNs86lqczzyL/C8eKqTUsa3wm4nFwT6wP65GvuXumebakwAeEyNer5qDTXRPTEB+BA2I4N2oPTWQ2ERyr/rmUTn/KbdMT6nRh9Pf7NVJVbdeen9nHFR9PF4SZRzICrxUG7fRmeMP/8aha7XWCc+h7ijXROiHTR7SM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U++PPMw1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B797C43390;
-	Mon, 12 Feb 2024 15:37:47 +0000 (UTC)
+	 Cc:Message-ID:Date; b=Ig86C40GDyjAvqd2eon8FmsSz0R8gz4G24lyVwKos6xGEh5wKFmyCFcXOUEDA3/CR8v1M/ol+APBw4ylb9v3iZt9y1ZQEI5Do2lcgLzVT9WM/I/r3s5YAJO6xaP7SuXZmxIm/Zhh93wB2JViB23dYSjTz/r6IU0UpHHGQdt6nL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bNSCUkXo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF16DC433C7;
+	Mon, 12 Feb 2024 15:38:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707752268;
-	bh=igfkJTvjRNdI54+qIvnhJ0gZeN0TQlPRGirAI5EtB9A=;
+	s=k20201202; t=1707752292;
+	bh=AKNvaHsgQo+M8zEEgaqhqkD3MZ727WnLytCZB7yGkVQ=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=U++PPMw1AeNEBIdAJWoxMtXjhr5z7GLyN2ZRG6a1Rl1TtJKrJ2qRq8ZRLIpEOfgs6
-	 HPYDvSd3DI5/xpKp/GkzStUT8rD9mqHXGa0s3Y10XFi5jeQv/fgkujv/9xE/A5zu3T
-	 GDw7zzAy+IPoEETn+WEoxt92xuOVA/CdqH4OG+jDP/wOekrD0kvBXD49hAoXekjeRH
-	 EyzE1OawLWd3J4rbCfY27xEj/k33+iIsQp2gbd03X7ZIv4W3HF+CJnns4+FevVC1Li
-	 GhrdYp9sS/VKF8O4HW/aAFRfRFiYVKc0xPVQSQQscd/KNWY5J0tyWcMnxurT1QsLn+
-	 EIAayGN/bwP6w==
+	b=bNSCUkXodN4XgX1J8GbQcTLI7YMVUSQpLbE1+hebO5I/ARJX1bL0dZd8B504gyt2s
+	 k/zQ6KS9V176qtdXBd/B4hG1yz8REsROm16E+2IMxtEOqcLy/SSOjzSS4eeTTkA/F1
+	 l5CVw244A/3qoNPBxexMi5/chQqj6Xx8U97VM0hUctN2dybt8ZA/eXJ5qZ6524URyl
+	 anNkudA46LDlGiR1TJDHvns1Qtb5M93a2wuN1bXEMPBo37smf+fe7l2Q2GKHELmPEf
+	 T4/ZrjIMrovEBg/SFwvEJB3FnPWSVPzzDmxy6XsQ2rta0EvBEWdFeomlX+uv7Caq0/
+	 Nb0kC5/Z2i/Eg==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -49,40 +49,59 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: wilc1000: correct CRC7 calculation
+Subject: Re: [PATCH v3] wifi: mwifiex: Refactor 1-element array into flexible
+ array in struct mwifiex_ie_types_chan_list_param_set
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240207050736.2717641-1-davidm@egauge.net>
-References: <20240207050736.2717641-1-davidm@egauge.net>
-To: David Mosberger-Tang <davidm@egauge.net>
-Cc: linux-wireless@vger.kernel.org, Ajay.Kathat@microchip.com,
- alexis.lothore@bootlin.com, David Mosberger-Tang <davidm@egauge.net>
+In-Reply-To: <20240207103024.make.423-kees@kernel.org>
+References: <20240207103024.make.423-kees@kernel.org>
+To: Kees Cook <keescook@chromium.org>
+Cc: Brian Norris <briannorris@chromium.org>,
+ Kees Cook <keescook@chromium.org>, Dmitry Antipov <dmantipov@yandex.ru>,
+ Johannes Berg <johannes.berg@intel.com>, zuoqilin <zuoqilin@yulong.com>,
+ Ruan Jinjie <ruanjinjie@huawei.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+ "Gustavo A . R . Silva" <gustavoars@kernel.org>,
+ linux-wireless@vger.kernel.org, Dan Carpenter <error27@gmail.com>,
+ Francesco Dolcini <francesco.dolcini@toradex.com>,
+ David Lin <yu-hao.lin@nxp.com>, Lukas Wunner <lukas@wunner.de>,
+ Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-hardening@vger.kernel.org
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170775226580.2851594.14123930588067888872.kvalo@kernel.org>
-Date: Mon, 12 Feb 2024 15:37:47 +0000 (UTC)
+Message-ID: <170775228681.2851594.6070070242483330161.kvalo@kernel.org>
+Date: Mon, 12 Feb 2024 15:38:08 +0000 (UTC)
 
-David Mosberger-Tang <davidm@egauge.net> wrote:
+Kees Cook <keescook@chromium.org> wrote:
 
-> Document
+> struct mwifiex_ie_types_chan_list_param_set::chan_scan_param is treated
+> as a flexible array, so convert it into one so that it doesn't trip
+> the array bounds sanitizer[1]. Only a few places were using sizeof()
+> on the whole struct, so adjust those to follow the calculation pattern
+> to avoid including the trailing single element.
 > 
->     ATWILC1000/ATWILC3000
->     Baremetal Wi-Fi/BLE Link Controller Software Design Guide
+> Examining binary output differences doesn't appear to show any literal
+> size values changing, though it is obfuscated a bit by the compiler
+> adjusting register usage and stack spill slots, etc.
 > 
->     https://tinyurl.com/yer2xhyc
-> 
-> says that bit 0 of the CRC7 code must always be a 1.
-> 
-> I confirmed that today with a logic analyzer: setting bit 0 causes
-> wilc1000 to accept a command with CRC7 enabled, whereas clearing bit 0
-> causes wilc1000 to reject the command with a CRC error.
-> 
-> Signed-off-by: David Mosberger-Tang <davidm@egauge.net>
+> Link: https://github.com/KSPP/linux/issues/51 [1]
+> Cc: Brian Norris <briannorris@chromium.org>
+> Cc: Kalle Valo <kvalo@kernel.org>
+> Cc: Dmitry Antipov <dmantipov@yandex.ru>
+> Cc: Johannes Berg <johannes.berg@intel.com>
+> Cc: zuoqilin <zuoqilin@yulong.com>
+> Cc: Ruan Jinjie <ruanjinjie@huawei.com>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> Cc: Gustavo A. R. Silva <gustavoars@kernel.org>
+> Cc: linux-wireless@vger.kernel.org
+> Signed-off-by: Kees Cook <keescook@chromium.org>
+> Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 
 Patch applied to wireless-next.git, thanks.
 
-c08a986344a5 wifi: wilc1000: correct CRC7 calculation
+14ddc470ba22 wifi: mwifiex: Refactor 1-element array into flexible array in struct mwifiex_ie_types_chan_list_param_set
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240207050736.2717641-1-davidm@egauge.net/
+https://patchwork.kernel.org/project/linux-wireless/patch/20240207103024.make.423-kees@kernel.org/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
