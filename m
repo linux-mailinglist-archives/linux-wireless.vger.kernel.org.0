@@ -1,56 +1,60 @@
-Return-Path: <linux-wireless+bounces-3537-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3538-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC3938530F9
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 13:54:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7E7A853206
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 14:34:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 34985B20A90
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 12:54:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 400B0B20BB2
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 13:34:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05CB942075;
-	Tue, 13 Feb 2024 12:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F105956449;
+	Tue, 13 Feb 2024 13:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q/inDF3/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hRN/dxdc"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44DA42074
-	for <linux-wireless@vger.kernel.org>; Tue, 13 Feb 2024 12:54:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD4EB56444
+	for <linux-wireless@vger.kernel.org>; Tue, 13 Feb 2024 13:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707828861; cv=none; b=U3eV29v23WUEr+A02tW4RxWBd80n5YVgkzjBMUYta8U2aEr2nNoo+ebt7EAsv+bp/9TfSguonP2HMIl1zGaMNzFKRuatgTk9Qqa1Sryge5gqd/YLFIZVpaXJeAWuMs5K5kmlfOvhmCqYcugDBLfIgWr87z3KF4iJh0wY2erD8To=
+	t=1707831269; cv=none; b=dwkxHWXlqhKx4aAn+GEbm+5C7mJkcD7sSN9BnFmKC3rZ3KDTUr0M1ihSiM8J24USSL+ggsdi3kR3ckWv4XhUc+6mPk1HI/u1mXCj96MmSNKOz4eJJRyNkKk6qyo4Qnr+LAliPqElyyK9wO0omLLVYoVRa4N8gs4A/VxdetwHlJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707828861; c=relaxed/simple;
-	bh=T4ZQ+AMx5YSea1DBWbVxIvUE2u72e2fGhWCsFqDTlXI=;
+	s=arc-20240116; t=1707831269; c=relaxed/simple;
+	bh=mzILAccp2oFxg0jhbYliXAZk3k9+AW1+PHMuTrO/z5Q=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=MZARf/bmP4jfDzOcs7ozDdxYjkEHzXBZT99Z5LKBW7+taGHeVO5aV3RelPKB+EPw1bIw6my4X7wF3pKFlHURSu/x5aACCC7QkwPJuH5RoSm69FSloWpf/cFX7b3YoiQkwVtBKCmyBk6n8Zu8QxWp8WI0lrQLsB/U8HAyBZF3Pjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q/inDF3/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 787B9C433F1;
-	Tue, 13 Feb 2024 12:54:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=A2kPQXHL2NS0mzTPoU1MxyYMV6KZMqPJ0Bwl0jSV0MmMkNGbqIbTtS4p3X5hL/1GIYIorVgkDMDIO2y0RD7AT0N4tEJFyGiLx4lMNmf+dg9O6J7OKG3XwYG1k89janspG24i5Wmh3rppOBXwWvNbGjhKK4eHpEGHl5kOEjCOim0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hRN/dxdc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2DDEC433C7;
+	Tue, 13 Feb 2024 13:34:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707828861;
-	bh=T4ZQ+AMx5YSea1DBWbVxIvUE2u72e2fGhWCsFqDTlXI=;
+	s=k20201202; t=1707831269;
+	bh=mzILAccp2oFxg0jhbYliXAZk3k9+AW1+PHMuTrO/z5Q=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=Q/inDF3/P7IGAF4lg9RHqT4x8t0c6+zrIbuh/fo/I35ih5Zl0Tr89LMqkR5TngMVn
-	 khKkPSKyrOi72CCJRQFg/kLlqp22S7oBdjEeY+Lbo5K56I5DRpe6TsJt/E1gdiVKZp
-	 KDNCaFtWvG8TWoEjGG/vCqSeS9Z/pNCyKIhfLZOxVpKgk3C1xUH81N/T3Zt8mr5pvW
-	 z6s6tkyGmKOy13vXP4QIyPcU9OdKf2gW2nTj1gS9nOsrdGPh3Ef1OF05Kxjult7zqG
-	 slaE9XDDYG20hLRy3qU06PBLmAxks7N7wc1NZMaZhKK/A7YGR/D6VnA2Z/22+go66+
-	 iHEmW8o96qO8Q==
+	b=hRN/dxdc9ylJqb8HRcC3b2XkgoU/ZIxwANbFDrvjKD8RhP919RjqxhUb349oMm++6
+	 KvOK4wccf9Ara3QmZXx74U654PkqorMP6aEU3zKI3FSVzZZ1dYuTpCYnDdDyNSza8w
+	 zsayA1uRzZkQ7eTlH7Sp2LTqrJjwOREL12BdxRs5I4Gk7vTsWiqw+Py3rGh8QaR8Ek
+	 O85/lhVoJJH5+Nu3Z1c1OlKhACJVqGLHTa9fMoSuuum1+Fh3uAAL7m6m5LXpKs28Hx
+	 rGSaLMmDpr3dW7hGMUCTWFFQzjxuBmkAB7QBHuMVuEh/ofCjqtHFzoTdaQGhJ2moyC
+	 ND0gjdjko4KPw==
 From: Kalle Valo <kvalo@kernel.org>
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: <johannes.berg@intel.com>,  <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH] wifi: rtw89: fw: remove unnecessary rcu_read_unlock()
- for punctured
-References: <20240213122556.9593-1-pkshih@realtek.com>
-Date: Tue, 13 Feb 2024 14:54:18 +0200
-In-Reply-To: <20240213122556.9593-1-pkshih@realtek.com> (Ping-Ke Shih's
-	message of "Tue, 13 Feb 2024 20:25:56 +0800")
-Message-ID: <87ttmced8l.fsf@kernel.org>
+To: Arend Van Spriel <arend.vanspriel@broadcom.com>
+Cc: <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH] wifi: brcmfmac: do not cast hidden SSID attribute value
+ to boolean
+References: <20240208085121.2430-1-a@bayrepo.ru>
+	<170775233602.2851594.8173116143852900695.kvalo@kernel.org>
+	<9667b492-d3d3-4b04-bef4-f507387a9261@broadcom.com>
+	<87cyt1pt4x.fsf@kernel.org>
+	<18d9e33a040.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+Date: Tue, 13 Feb 2024 15:34:26 +0200
+In-Reply-To: <18d9e33a040.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+	(Arend Van Spriel's message of "Mon, 12 Feb 2024 17:43:20 +0100")
+Message-ID: <878r3opjx9.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -60,24 +64,45 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Ping-Ke Shih <pkshih@realtek.com> writes:
+Arend Van Spriel <arend.vanspriel@broadcom.com> writes:
 
-> The rcu_read_unlock() is accidentally added, and sparse warn:
+> On February 12, 2024 5:03:14 PM Kalle Valo <kvalo@kernel.org> wrote:
 >
->   drivers/net/wireless/realtek/rtw89/fw.c:2807:17:
->     warning: context imbalance in 'rtw89_fw_h2c_assoc_cmac_tbl_g7' - unexpected unlock
+>> Arend van Spriel <arend.vanspriel@broadcom.com> writes:
+>>
+>>> On 2/12/2024 4:38 PM, Kalle Valo wrote:
+>>>> Alexey Berezhok <a@bayrepo.ru> wrote:
+>>>>
+>>>>> In 'brcmf_cfg80211_start_ap()', not assume that
+>>>>> NL80211_HIDDEN_SSID_NOT_IN_USE is zero but prefer
+>>>>> an explicit check instead. Compile tested only.
+>>>>>
+>>>>> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+>>>>>
+>>>>> Signed-off-by: Alexey Berezhok <a@bayrepo.ru>
+>>>> Patch applied to wireless-next.git, thanks.
+>>>> f20073f50dfd wifi: brcmfmac: do not cast hidden SSID attribute value
+>>>> to boolean
+>>>
+>>> Alexey,
+>>>
+>>> Can you do a follow-up patch addressing my comment? If not I will do
+>>> it myself.
+>>
+>> Sorry, was I not supposed to apply the patch? What did I miss?
 >
-> Fixes: b82730bf57b5 ("wifi: cfg80211/mac80211: move puncturing into chandef")
-> Cc: Johannes Berg <johannes.berg@intel.com>
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> Nothing serious. settings->hidden_ssid value is used as-is to
+> configure firmware. I wanted Alexey to address that in a v2.
 
-Commit b82730bf57b5 is in wireless-next so I'll queue this patch to
-wireless-next as well, right?
+My bad, I misunderstood your intentions. Luckily this time it wasn't
+serious.
 
-This again shows how important it is to fix all the remainging sparse
-warnings in wireless code so that we don't miss important warnings like
-this. If there just would be a way to get the cleanup patch submitters
-to fix the sparse warnings, sigh.
+BTW to make super clear to me I would prefer that you (Arend) use
+Acked-by. It shows up in my script like the number '1' here:
+
+*[  4] [next] wifi: carl9170: Remove redundant assignment t... 1 - - 2   5d Colin Ian Ki Under Review     
+
+So if I don't see your Acked-by then I will not even look at the patch :)
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
