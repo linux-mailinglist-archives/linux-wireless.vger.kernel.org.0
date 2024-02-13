@@ -1,43 +1,43 @@
-Return-Path: <linux-wireless+bounces-3562-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3560-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F019853870
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 18:37:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 905088537DC
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 18:30:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2D0D1C2615B
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 17:37:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4CEA128B55D
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 17:30:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A317B5FF17;
-	Tue, 13 Feb 2024 17:36:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73C2E5FF05;
+	Tue, 13 Feb 2024 17:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YXBv5nQ+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CQjQIywL"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79DE65F56B;
-	Tue, 13 Feb 2024 17:36:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A6CE5F54E;
+	Tue, 13 Feb 2024 17:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845793; cv=none; b=MHf4HE6asIjiG8dU2TQB1ry70/6AJxLDwcKyVhY3HZFwLpQ7ZFdWSFdrUdo9/IT88/mGQlZrUXQ3o3q8k8M0Pkg8OqGYQc1DUQp7YUeaUwWue7Z2zYZTCg1L9pp1C7YsfFS9r1FodcOyF5HnG8Sf9Lz9kpSPMLQnM9cSSapu9CI=
+	t=1707845429; cv=none; b=SOLCpIlC75g5jP1vtWAXJxuEd1ETWHUnRtbyGloaIQvSt27nLbVKA28VzgxjqEx2uLUm7twWaGKOzm6H6tCLhl6xL3KCz7CtcYAMigqshs4E6O1CUWPOVSByQgbBAEXWCYUUxOmuwLrT+qpehgxoZnAuBeoqHwqdQtkeEUIA25s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845793; c=relaxed/simple;
-	bh=dRYnGlZwBbQUU50vYG5nu0Z3/o+/WT6EJp0GaSzSIUQ=;
+	s=arc-20240116; t=1707845429; c=relaxed/simple;
+	bh=z8a7KXxzlJCy1KAGomN+QSyEvuuTq4eK+r2ZO0KkfOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YtBVCO/J9QHVreivKYJHLJKqCzMfq575vniK6VUIiynydLfE3HP4JVep12XSeZ8G3Aov1291C+Akj25tOg1cN9rfE1rRhgQoZP4E9xUYNdYyBSZZG5nsAN7P/vqfKNjpvBLAclAVEm6qRbAn3AN0A1gGnTjjHIs234AqLTZyBg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YXBv5nQ+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3AF2C433F1;
-	Tue, 13 Feb 2024 17:36:32 +0000 (UTC)
+	 MIME-Version; b=fPoIYP2Chkm5aWL2nKll+UJWmB6ghKXRtfJb4uRwlTQzmeuPlorzP44197+sKHlyEbvaNCvjONdu1TC7b6ebD1JF9mR1z/AyfvN/7g17lr64povsiwK4LquGFiCj5sL3QQ+Yzyz4j047eq/0SN3iSXuq5MtPITOLT5GApB7WOfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CQjQIywL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 702EAC433C7;
+	Tue, 13 Feb 2024 17:30:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845793;
-	bh=dRYnGlZwBbQUU50vYG5nu0Z3/o+/WT6EJp0GaSzSIUQ=;
+	s=korg; t=1707845429;
+	bh=z8a7KXxzlJCy1KAGomN+QSyEvuuTq4eK+r2ZO0KkfOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YXBv5nQ+AaCq+0UGiHzJlWI9jUGaRwYMP1A/KPnQPF/D24qWGiyCvmoPsdXE6Fwl0
-	 29x9xVlXxqHPT7ZBfyQ5kxXJXxxT3krZLuy7JY3qfAfspXFwnf6M3lWw2cr6rFp668
-	 ppaca09ni2pBh+fuGXVuAw3A5BfD9FUwpTEzTkEM=
+	b=CQjQIywLuq2CTMrLI+4RBE02BX7zz3Ded56ThVRt1T9LcMlIJji29Hddhlbs6PDZD
+	 EvYxCbN5/PZj2cYZCA8Sp76sGqoG0CRJgv8MpdqHnMNOwTDTtUtUvRgrvIuGBV0qdf
+	 AbweLs7C8EMpmtKPYo0ffEFaNz+j6Uj5tLLDK70Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -58,12 +58,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Linus Walleij <linus.walleij@linaro.org>,
 	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 030/124] wifi: brcmfmac: Adjust n_channels usage for __counted_by
-Date: Tue, 13 Feb 2024 18:20:52 +0100
-Message-ID: <20240213171854.611417368@linuxfoundation.org>
+Subject: [PATCH 6.6 047/121] wifi: brcmfmac: Adjust n_channels usage for __counted_by
+Date: Tue, 13 Feb 2024 18:20:56 +0100
+Message-ID: <20240213171854.370100539@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
-References: <20240213171853.722912593@linuxfoundation.org>
+In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
+References: <20240213171852.948844634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,7 +75,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -120,10 +120,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-index 667462369a32..44cea18dd20e 100644
+index 2a90bb24ba77..6049f9a761d9 100644
 --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
 +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-@@ -3779,8 +3779,10 @@ static int brcmf_internal_escan_add_info(struct cfg80211_scan_request *req,
+@@ -3780,8 +3780,10 @@ static int brcmf_internal_escan_add_info(struct cfg80211_scan_request *req,
  		if (req->channels[i] == chan)
  			break;
  	}
