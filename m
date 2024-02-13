@@ -1,67 +1,56 @@
-Return-Path: <linux-wireless+bounces-3536-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3537-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E43D28530EF
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 13:50:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC3938530F9
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 13:54:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2889B283002
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 12:50:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 34985B20A90
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 12:54:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9277340BFE;
-	Tue, 13 Feb 2024 12:50:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05CB942075;
+	Tue, 13 Feb 2024 12:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t9I7BxEG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q/inDF3/"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 691FF3FE47;
-	Tue, 13 Feb 2024 12:50:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44DA42074
+	for <linux-wireless@vger.kernel.org>; Tue, 13 Feb 2024 12:54:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707828634; cv=none; b=Dj93mBBSgtgmSOsXSgUmMjmVlpc2QE71MCwh3fKMAL2Is40dCM8vnewZpKhsifgBFSq693elFEG2gFwAvmUg9WtVon7n7iWOlAdfwDz0FKNtcERXOKZoOnDoL/8jCvb75QD/CVUybCnyT8q3bfdtDPLLUicv4YQYIJy7su98wmo=
+	t=1707828861; cv=none; b=U3eV29v23WUEr+A02tW4RxWBd80n5YVgkzjBMUYta8U2aEr2nNoo+ebt7EAsv+bp/9TfSguonP2HMIl1zGaMNzFKRuatgTk9Qqa1Sryge5gqd/YLFIZVpaXJeAWuMs5K5kmlfOvhmCqYcugDBLfIgWr87z3KF4iJh0wY2erD8To=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707828634; c=relaxed/simple;
-	bh=OW5tEdpRIbVny8tlbkMpyNRX41FPqyqm6ItiVEchB+M=;
+	s=arc-20240116; t=1707828861; c=relaxed/simple;
+	bh=T4ZQ+AMx5YSea1DBWbVxIvUE2u72e2fGhWCsFqDTlXI=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=Nh/8eIo4zz22xyfNLcLiW+oYxUc3mKAVtpn+pmQev8nPYxqFMrLTz5MWtcOlv+RWcjSPx7/1QA992wdlC2uDINo+AoHdAyZzrwS7Cl2ETn6HCnkbzXSBmu7tZod4mhUTM6anbs3oSJS0xjaHe3MVq2iwIltc/O4K+qhhlbkLwog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t9I7BxEG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7716BC433C7;
-	Tue, 13 Feb 2024 12:50:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MZARf/bmP4jfDzOcs7ozDdxYjkEHzXBZT99Z5LKBW7+taGHeVO5aV3RelPKB+EPw1bIw6my4X7wF3pKFlHURSu/x5aACCC7QkwPJuH5RoSm69FSloWpf/cFX7b3YoiQkwVtBKCmyBk6n8Zu8QxWp8WI0lrQLsB/U8HAyBZF3Pjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q/inDF3/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 787B9C433F1;
+	Tue, 13 Feb 2024 12:54:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707828633;
-	bh=OW5tEdpRIbVny8tlbkMpyNRX41FPqyqm6ItiVEchB+M=;
+	s=k20201202; t=1707828861;
+	bh=T4ZQ+AMx5YSea1DBWbVxIvUE2u72e2fGhWCsFqDTlXI=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=t9I7BxEGsmQ7vLJ/W5RIFRgC+StvhiKFQNbEcMa05WA+svOVRgaUZYmmFmXqC9ZWm
-	 kb3HBKaJtWo05t8ThRY+jHG9eg6EkK2jSBImEGq3baFWVuve9IMuBiP0ml7YFt5oQS
-	 gXM0riEa3iA3o/yBWWhbgITk5t07G7lH36YaUbhJACrDtG4ye3Fm2axA8t1G3lu1lu
-	 19k8Xjwywlm0NsrWMfV6qk74xIX5tvd3iubbTN7lj6VK04rv4nJMM9N6rCs2j/xSwZ
-	 Byv6IavrruV9L5u4gPxJJKt91YQmmvyuIv93OWrF58tvSt7/gvOttxQAf3cBvxsaUp
-	 NoO4TkMTqUjRA==
+	b=Q/inDF3/P7IGAF4lg9RHqT4x8t0c6+zrIbuh/fo/I35ih5Zl0Tr89LMqkR5TngMVn
+	 khKkPSKyrOi72CCJRQFg/kLlqp22S7oBdjEeY+Lbo5K56I5DRpe6TsJt/E1gdiVKZp
+	 KDNCaFtWvG8TWoEjGG/vCqSeS9Z/pNCyKIhfLZOxVpKgk3C1xUH81N/T3Zt8mr5pvW
+	 z6s6tkyGmKOy13vXP4QIyPcU9OdKf2gW2nTj1gS9nOsrdGPh3Ef1OF05Kxjult7zqG
+	 slaE9XDDYG20hLRy3qU06PBLmAxks7N7wc1NZMaZhKK/A7YGR/D6VnA2Z/22+go66+
+	 iHEmW8o96qO8Q==
 From: Kalle Valo <kvalo@kernel.org>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Arend van Spriel <arend.vanspriel@broadcom.com>,  Vinayak Yadawad
- <vinayak.yadawad@broadcom.com>,  linux-wireless@vger.kernel.org,
-  jithu.jance@broadcom.com,  netdev@vger.kernel.org,  Jakub Kicinski
- <kuba@kernel.org>
-Subject: Re: [PATCH 1/1] wifi: nl80211: Add support for plumbing SAE groups
- to driver
-References: <309965e8ef4d220053ca7e6bd34393f892ea1bb8.1707486287.git.vinayak.yadawad@broadcom.com>
-	<87mss6f8jh.fsf@kernel.org>
-	<2c38eaed47808a076b6986412f92bb955b0599c3.camel@sipsolutions.net>
-	<b4d44fb5-78e5-4408-a108-2c3d340b090e@broadcom.com>
-	<b00c3b53cd740e998163f84511ee05dc3051ce8b.camel@sipsolutions.net>
-	<df8f02b1-25b0-4dae-a935-cee9ba7f3dc4@broadcom.com>
-	<0cb1d7ef63ad1ea1ff4109d85a6bcdcaca16f1c8.camel@sipsolutions.net>
-	<6eaab8fa-f62e-4f78-9cbe-9b13e3d77ca7@broadcom.com>
-	<ca517fb19f78e3c507fd315e2f30e5efa4723eb8.camel@sipsolutions.net>
-Date: Tue, 13 Feb 2024 14:50:30 +0200
-In-Reply-To: <ca517fb19f78e3c507fd315e2f30e5efa4723eb8.camel@sipsolutions.net>
-	(Johannes Berg's message of "Tue, 13 Feb 2024 13:30:31 +0100")
-Message-ID: <87y1boedex.fsf@kernel.org>
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: <johannes.berg@intel.com>,  <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH] wifi: rtw89: fw: remove unnecessary rcu_read_unlock()
+ for punctured
+References: <20240213122556.9593-1-pkshih@realtek.com>
+Date: Tue, 13 Feb 2024 14:54:18 +0200
+In-Reply-To: <20240213122556.9593-1-pkshih@realtek.com> (Ping-Ke Shih's
+	message of "Tue, 13 Feb 2024 20:25:56 +0800")
+Message-ID: <87ttmced8l.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -71,47 +60,24 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Johannes Berg <johannes@sipsolutions.net> writes:
+Ping-Ke Shih <pkshih@realtek.com> writes:
 
-> On Tue, 2024-02-13 at 13:19 +0100, Arend van Spriel wrote:
+> The rcu_read_unlock() is accidentally added, and sparse warn:
 >
->> On 2/13/2024 12:45 PM, Johannes Berg wrote:
->> > On Tue, 2024-02-13 at 12:13 +0100, Arend van Spriel wrote:
->> > > 
->> > > I recall the rule was that nl80211 API changes
->> > > should also have at least one driver implementing it. Guess we let that
->> > > slip a couple of times. I fully agree enforcing this.
->> > 
->> > Well, enforcing it strictly never really worked all that well in
->> > practice, since you don't necessarily want to have a complex driver
->> > implementation while hashing out the API, and the API fundamentally has
->> > to come first.
->> > 
->> > So in a sense it comes down to trust, and that people will actually
->> > follow up with implementations. And yeah, plans can change and you end
->> > up not really supporting everything that was defined ... that's life, I
->> > guess.
->> > 
->> > But the mode here seems to be that there's not even any _intent_ to do
->> > that?
->> > 
->> > I guess we could hash out the API, review the patches, and then _not_
->> > apply them until a driver is ready? So the first round of reviews would
->> > still come with API only, but once that settles we don't actually merge
->> > it immediately, unlike normally where we merge a patch we've reviewed?
->> > And then if whoever did it lost interest, we already have a reviewed
->> > version for anyone else who might need it?
->> 
->> Sounds like a plan. Maybe they can get a separate state in patchwork and 
->> let them sit there for grabs.
+>   drivers/net/wireless/realtek/rtw89/fw.c:2807:17:
+>     warning: context imbalance in 'rtw89_fw_h2c_assoc_cmac_tbl_g7' - unexpected unlock
 >
-> I guess I can leave them open as 'under review' or something? Not sure
-> we can add other states.
+> Fixes: b82730bf57b5 ("wifi: cfg80211/mac80211: move puncturing into chandef")
+> Cc: Johannes Berg <johannes.berg@intel.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-I belong to the church of 'Clean Inbox' so I use 'Deferred' state for
-stuff I can't work on right now. Though I know a lot of people don't
-like it because deferred patches are not shown in the default patchwok
-view.
+Commit b82730bf57b5 is in wireless-next so I'll queue this patch to
+wireless-next as well, right?
+
+This again shows how important it is to fix all the remainging sparse
+warnings in wireless code so that we don't miss important warnings like
+this. If there just would be a way to get the cleanup patch submitters
+to fix the sparse warnings, sigh.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
