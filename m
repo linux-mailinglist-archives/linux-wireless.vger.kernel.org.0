@@ -1,130 +1,168 @@
-Return-Path: <linux-wireless+bounces-3542-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3543-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 065EA853295
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 15:05:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCE368532B5
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 15:10:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 833561F2469F
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 14:05:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94F1A2863C4
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 14:10:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B32025732B;
-	Tue, 13 Feb 2024 14:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 554C15810D;
+	Tue, 13 Feb 2024 14:10:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="qeiqwYs3"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D0F756B68
-	for <linux-wireless@vger.kernel.org>; Tue, 13 Feb 2024 14:05:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F9CA5810C
+	for <linux-wireless@vger.kernel.org>; Tue, 13 Feb 2024 14:10:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707833127; cv=none; b=JJXG7KGzXwF0MJyYt856DGCFTyDI40JA0FWYgKYifbyhfc7OI3cR1G12PtjKcvenT8eZK8RL5CO9abmB5j38waTKuRA17XQO41Rfk7NFyF6VU4niuOgJV15+/BvH0JZSc95NNWikNNUgJHWs01QmosgtonkfJFnnwf5y8c8jSLQ=
+	t=1707833403; cv=none; b=SDzDy4Q06zU3BT0CDvpqSDDh19dKOs//kxFI7BWLKs3YWO6cJ/GAQVPqE05DJI72hAvhdgf04l5lyEcUzEDtDatRRo+8lwdO0EEipM5y0pM7VmRVomL2iQ6HA8uW6npC/IX4gn/yjYqp2Q+p2Y+yRrkwDC9L0nuPpS6Hbru/WM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707833127; c=relaxed/simple;
-	bh=4+VoJb4u/Jra0qfn34qWXu4RA2x4KYekIg9dKnhdCEM=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=VpYmxT7A1Hy0pMiaFFnj2X1cb+x8H+iOoFtgFglj6wOjfazeVqJMa1blsBEfXJOlmb5rrOdxaXPiig1wXZ1bC/pVlRZlg8edtH2PkjMkKeR98GftaVxZAPZeVqxgXBdaYisldLN8VVbizokigvsV3cLI2x6nHgvMRqmMVU1eY24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 41DE5ECK01748652, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 41DE5ECK01748652
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 13 Feb 2024 22:05:14 +0800
-Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.17; Tue, 13 Feb 2024 22:05:14 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 13 Feb 2024 22:05:14 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::c9b7:82a9:7e98:fa7f]) by
- RTEXMBS04.realtek.com.tw ([fe80::c9b7:82a9:7e98:fa7f%7]) with mapi id
- 15.01.2507.035; Tue, 13 Feb 2024 22:05:14 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "johannes@sipsolutions.net" <johannes@sipsolutions.net>
-Subject: Re: [PATCH 15/15] wifi: cfg80211/mac80211: move puncturing into chandef
-Thread-Topic: [PATCH 15/15] wifi: cfg80211/mac80211: move puncturing into
+	s=arc-20240116; t=1707833403; c=relaxed/simple;
+	bh=4b93OmBFRGH45JwFvmddE7HU12/lMdg3AGrS8abWjiw=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=CAVvODfYAtFc+oty+buWJ7b8cN/oaafbYJ5nSslumttGfApklIyjL8DhnBLegoQVsAAm17KMIZRaLiNYkB5fVDLr9l5KCVw+8C7Sqc0hWTXZ8zgKLzzBNhJxAlGKSV9E3pR80KvK4tsZkaCh3R49944Xh24O3sanjMnAh0FcyCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=qeiqwYs3; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=4b93OmBFRGH45JwFvmddE7HU12/lMdg3AGrS8abWjiw=;
+	t=1707833401; x=1709043001; b=qeiqwYs3BUDFQLQctolMWtTO1DuVSG0PWjSbVYFafdPCbuT
+	axmf7g12FYRTM6kHJbYZ8LHsWE65gWPzWZF8tygoLEsk/cm4KrzOfIm3E54dF3wkqsXOLIX+P+7BH
+	TSCNJGrAg0SdIuXDfTUFJbgeXfarD02yvR3tisYPdp+pd96c2f/CpmfN/SrMw1FZKGDFhllKC/BVP
+	sOOwefozJKES+MV3rWao0O+AAQAYQNFs0WuWNIK4daV2csDNjzbsVGSTSHwmvAAon54OBctCchaCf
+	u/3bNpoj+nmkaob4ymUW3RNV11Ffl9Ngb3zksexc159aIPofxsrG9xmyqGAVM9wg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rZtTy-00000007k2T-1u8n;
+	Tue, 13 Feb 2024 15:09:58 +0100
+Message-ID: <4d9d10ce2866467ae545507a99662eba70c2ad6e.camel@sipsolutions.net>
+Subject: Re: [PATCH 15/15] wifi: cfg80211/mac80211: move puncturing into
  chandef
-Thread-Index: AQHaUuQAKtICccJuvkyOo86/O7KcarEHdDiAgAAVK4CAADaQAIAACDkAgAAXGwA=
-Date: Tue, 13 Feb 2024 14:05:13 +0000
-Message-ID: <d2b42434af3c81e467b0b2f24feb1b142686d35f.camel@realtek.com>
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Ping-Ke Shih <pkshih@realtek.com>, "linux-wireless@vger.kernel.org"
+	 <linux-wireless@vger.kernel.org>
+Date: Tue, 13 Feb 2024 15:09:57 +0100
+In-Reply-To: <d2b42434af3c81e467b0b2f24feb1b142686d35f.camel@realtek.com>
 References: <20240129184108.49639-17-johannes@sipsolutions.net>
 	 <20240129194108.307183a5d2e5.I4d7fe2f126b2366c1312010e2900dfb2abffa0f6@changeid>
 	 <f489a916f416cb37b527868c4be0c59547bdeb4d.camel@realtek.com>
 	 <94bd67a6f261d945917067334b633c78be665c6b.camel@sipsolutions.net>
 	 <a17862ae423422b636c76f116e712e7ebed51c09.camel@realtek.com>
 	 <e50e2336dd2717e7271e7e6f341437637192f717.camel@sipsolutions.net>
-In-Reply-To: <e50e2336dd2717e7271e7e6f341437637192f717.camel@sipsolutions.net>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-user-agent: Evolution 3.36.1-2 
-x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <C68195B3C78AD244891D5FC8C9B890EE@realtek.com>
-Content-Transfer-Encoding: base64
+	 <d2b42434af3c81e467b0b2f24feb1b142686d35f.camel@realtek.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
+X-malware-bazaar: not-scanned
 
-T24gVHVlLCAyMDI0LTAyLTEzIGF0IDEzOjQxICswMTAwLCBKb2hhbm5lcyBCZXJnIHdyb3RlOg0K
-PiANCj4gPiA+IFRoZSBvdGhlciB0aGluZyBoZXJlIGlzIHRoYXQgSSdtIG5vdCBlbnRpcmVseSBz
-dXJlIGhvdyB0aGUgZHJpdmVyIHdvcmtzLA0KPiA+ID4gY2hhbmNlcyBhcmUgdGhhdCB0aGlzIHdh
-cyBwcmV2aW91c2x5IGEgYnVnLCBhbmQgbm93IGlzIHN0aWxsIGEgYnVnLA0KPiA+ID4gdW5sZXNz
-IHRoZSBkcml2ZXIgZG9lc24ndCByZWFsbHkgc3VwcG9ydCBjaGFubmVsIGNvbnRleHRzLCBvciBh
-bnkgZm9ybQ0KPiA+ID4gb2YgY29uY3VycmVuY3kuDQo+ID4gDQo+ID4gVGhpcyBmdW5jdGlvbiBp
-cyB0byBpbml0aWFsaXplIGEgc3RhdGlvbiBpbnN0YW5jZSBpbiBmaXJtd2FyZSB3aGlsZQ0KPiA+
-IGFzc29jaWF0aW5nLCBhbmQgdGhlIGZpZWxkIG9mIGZpcm13YXJlIGNvbW1hbmQgaXMgdG8gdGVs
-bCBNQUMgaGFyZHdhcmUNCj4gPiB0aGUgc3ViLWNoYW5uZWxzIGl0IGNhbiB1c2UgdG8gdHJhbnNt
-aXQsIHdoaWNoIHNob3VsZCByZWx5IG9uDQo+ID4gYml0bWFwIG9mIHB1bmN0dXJpbmcuIEluaXRp
-YWxseSwgd2UganVzdCB3YW50ZWQgdGhlIGZpZWxkIHZhbHVlIHRvDQo+ID4gYmUgfjAgKDB4RkZG
-RikgdG8gcHJldmVudCBUWCBzdHVjaywgYnV0IG5vdCBmdWxseSBpbXBsZW1lbnRlZCBwdW5jdHVy
-aW5nDQo+ID4gZmVhdHVyZS4NCj4gPiANCj4gPiBJIHRoaW5rIHRoaXMgaXMgdGhlIHJlYXNvbiB5
-b3UgYXJlIGNvbmZ1c2VkLg0KPiANCj4gTm90IHN1cmUgdGhhdCBleHBsYW5hdGlvbnMgaGVscHMg
-Oy0pDQoNCk9vcHMuIEkgYXNzdW1lZCB5b3Ugd2FudCB0byBrbm93ICJob3cgZGlkIGl0IHdvcmsg
-dG8geW91PyIsIGFuZCBteSBhbnN3ZXINCndhcyB0aGF0IHdlIGp1c3Qgd2FudGVkIHRvIGZpeCBU
-WCBzdHVjayBwcm9ibGVtLiBCdXQgdGhpcyBzdG9yeSBpc24ndCANCmludGVyZXN0aW5nIGF0IGFs
-bC4gWEQNCg0KPiANCj4gSWYgeW91IGhhdmUgdGhpcyBwZXIgc3RhdGlvbiBob3cgZG8geW91IGhh
-bmRsZSBDQ0E/IFdoaWNoIHdhcyBraW5kIG9mDQo+IHRoZSByZWFzb24gSSBtb3ZlZCBpdCBhbGwg
-YmFjayB0byB0aGUgY2hhbmRlZj8gTm90IHRoYXQgdGhpcyBkaWRuJ3QgbWFrZQ0KPiB0aGUgY29k
-ZSBzaW1wbGVyIChpbiBtYWM4MDIxMSkgZWl0aGVyIGFzIGEgbmljZSBzaWRlIGVmZmVjdCA6LSkN
-Cg0KRG8geW91IG1lYW4gQ0NBIHNob3VsZCBjb25zaWRlciBwdW5jdHVyZWQgc3ViLWNoYW5uZWxz
-PyAoQ0NBIGRvZXNuJ3QNCm5lZWQgdG8gY29uc2lkZXIgZW5lcmd5IG9mIHB1bmN0dXJlZCBvbmVz
-KQ0KDQpUaGUgZmlybXdhcmUgY29tbWFuZCBtZW50aW9uZWQgaW4gdGhpcyBwYXRjaCBpcyB1c2Vk
-IHRvIGNvbnRyb2wNClRYIHN1Yi1jaGFubmVscyBmcm9tIE1BQyB0byBCQiBsYXllcnMsIGFuZCBJ
-IHRoaW5rIEJCIGxheWVyIGhhcyBhbm90aGVyDQpjb250cm9sIHJlZ2lzdGVycyByZWxhdGVkIEND
-QSBJIG1pc3NlZC4gVGhhbmtzIGZvciBwb2ludGluZyB0aGlzLCBJIA0Kd2lsbCBjaGVjayBvdXIg
-QkIgdGVhbS4NCg0KPiA+ID4gVGhvdWdoIGl0IF9sb29rc18gbGlrZSB5b3Ugb25seSBzdXBwb3J0
-IG9uZSBjaGFubmVsIGNvbnRleHQgdGhlcmUsIHNvDQo+ID4gPiBtYXliZSBhbHNvIG9ubHkgb25l
-IHZpZiwgYW5kIGl0IGRvZXNuJ3QgbWF0dGVyPyBJJ2QgcHJvYmFibHkgc3RpbGwgbW92ZQ0KPiA+
-ID4gaXQgb3ZlciB0byB0aGUgY2hhbi5jIGNvZGUgdGhvdWdoLCBpdCByZWFsbHkgZG9lcyBiZWxv
-bmcgdGhlcmUgbW9yZSBhcw0KPiA+ID4gZGlzY3Vzc2VkIGluIHRoZSBjb21taXQgbWVzc2FnZSBv
-ZiB0aGlzIGNoYW5nZS4NCj4gPiA+IA0KPiA+ID4gQnV0IEkgZGlkbid0IHdhbnQgdG8gbWFrZSB0
-aG9zZSBtb3JlIHNlbWFudGljIGNoYW5nZXMgYmVjYXVzZSBJIGRvbid0DQo+ID4gPiBrbm93IHdo
-YXQgbG9naWMgeW91ciBkZXZpY2UgYXBwbGllcyBoZXJlLg0KPiA+IA0KPiA+IFdlIGFyZSBnb2lu
-ZyB0byBzdXBwb3J0IE1DQyBhbmQgTUxPLCBzbyB3ZSB3aWxsL211c3QgY29uc2lkZXIgbW9yZSB0
-aGFuDQo+ID4gb25lIGNoYW5uZWwgY29udGV4dC4gQ3VycmVudGx5LCBydHc4OSBqdXN0IGNvbnNp
-ZGVyICdkZWZsaW5rJyBub3QgYWN0dWFsbHkNCj4gPiAnbGlua3MnIHRoYXQgaXMgdGhlIG5leHQg
-bWFpbiB3b3JrIHdlIGFyZSBkb2luZy4NCj4gDQo+IEZvciBNTE8geW91IGhhdmUganVzdCBvbmUg
-dmlmIHN0aWxsLCBzbyBpdCBkb2Vzbid0IG1hdHRlci4NCg0KSSBmZWVsIHRoZW9yZXRpY2FsbHkg
-b25lIE1MTyB2aWYgY2FuIGNvbnNpc3Qgb2YgdHdvIGxpbmtzIHRoYXQgdXNlDQp0d28gY2hhbm5l
-bCBjb250ZXh0cy4gUGxlYXNlIGNvcnJlY3QgbWUgaWYgdGhpcyBpcyB3cm9uZy4gDQoNCkJ1dCwg
-eWVzIGN1cnJlbnRseSB3ZSBqdXN0IGhhdmUgb25lIHZpZi4gV2Ugd2lsbCBoYXZlIHR3byBsYXRl
-ci4gDQoNCj4gDQo+IExvb2tzIGxpa2UgTUNDIGlzIHNvbWV0aGluZyB3aXRoIG11bHRpLXZpZiAo
-bG9va2luZyBhdCB5b3VyIG90aGVyDQo+IHBhdGNoc2V0KSBzbyB0aGVyZSB0aGF0IG1ha2VzIHNl
-bnNlLiBOb3QgdGhhdCBJIGtub3cgd2hhdCAiTUNDIiBtZWFucyA6KQ0KDQpNQ0MgaXMgc2hvcnQg
-Zm9yIG11bHRpLWNoYW5uZWwgY29uY3VycmVuY3kgdGhhdCBpcyBhIFRETUEgYmFzZWQgY29uY3Vy
-cmVuY3kNCm9mIFNUQSArIFAyUCB1c2luZyBzdGFuZGFyZCBpZWVlODAyLjExIHBvd2VyIHNhdmlu
-ZyBwcm90b2NvbCBhbmQgUDJQIEdPIE5vQS4NCg0KDQpQaW5nLUtlDQoNCg==
+On Tue, 2024-02-13 at 14:05 +0000, Ping-Ke Shih wrote:
+> On Tue, 2024-02-13 at 13:41 +0100, Johannes Berg wrote:
+> >=20
+> > > > The other thing here is that I'm not entirely sure how the driver w=
+orks,
+> > > > chances are that this was previously a bug, and now is still a bug,
+> > > > unless the driver doesn't really support channel contexts, or any f=
+orm
+> > > > of concurrency.
+> > >=20
+> > > This function is to initialize a station instance in firmware while
+> > > associating, and the field of firmware command is to tell MAC hardwar=
+e
+> > > the sub-channels it can use to transmit, which should rely on
+> > > bitmap of puncturing. Initially, we just wanted the field value to
+> > > be ~0 (0xFFFF) to prevent TX stuck, but not fully implemented punctur=
+ing
+> > > feature.
+> > >=20
+> > > I think this is the reason you are confused.
+> >=20
+> > Not sure that explanations helps ;-)
+>=20
+> Oops. I assumed you want to know "how did it work to you?", and my answer
+> was that we just wanted to fix TX stuck problem. But this story isn't=20
+> interesting at all. XD
+
+Ah, sorry! I thought you were talking about the HW/FW :)
+
+> > If you have this per station how do you handle CCA? Which was kind of
+> > the reason I moved it all back to the chandef? Not that this didn't mak=
+e
+> > the code simpler (in mac80211) either as a nice side effect :-)
+>=20
+> Do you mean CCA should consider punctured sub-channels? (CCA doesn't
+> need to consider energy of punctured ones)
+
+Yeah, I agree it _shouldn't_ consider energy of punctured sub-channels,
+but then you can't really do it per station or even per vif since you'd
+be listening without really knowing which peer/interface you're going to
+transmit to/from.
+
+Hence all the work of making it part of the channel context.
+
+> The firmware command mentioned in this patch is used to control
+> TX sub-channels from MAC to BB layers, and I think BB layer has another
+> control registers related CCA I missed. Thanks for pointing this, I=20
+> will check our BB team.
+
+Heh. I have no idea :)
+
+> > > > Though it _looks_ like you only support one channel context there, =
+so
+> > > > maybe also only one vif, and it doesn't matter? I'd probably still =
+move
+> > > > it over to the chan.c code though, it really does belong there more=
+ as
+> > > > discussed in the commit message of this change.
+> > > >=20
+> > > > But I didn't want to make those more semantic changes because I don=
+'t
+> > > > know what logic your device applies here.
+> > >=20
+> > > We are going to support MCC and MLO, so we will/must consider more th=
+an
+> > > one channel context. Currently, rtw89 just consider 'deflink' not act=
+ually
+> > > 'links' that is the next main work we are doing.
+> >=20
+> > For MLO you have just one vif still, so it doesn't matter.
+>=20
+> I feel theoretically one MLO vif can consist of two links that use
+> two channel contexts. Please correct me if this is wrong.=20
+
+Yes, but I wouldn't think they're on the same (control) channel, but
+usually two different bands? So you do get two chanctx indeed (sorry)
+but they're pretty separate, never would I expect two links on a single
+vif to share a chanctx, even though I guess technically it's not
+impossible.
+
+> But, yes currently we just have one vif. We will have two later.=20
+
+Right.
+
+> MCC is short for multi-channel concurrency that is a TDMA based concurren=
+cy
+> of STA + P2P using standard ieee802.11 power saving protocol and P2P GO N=
+oA.
+
+Aha! Sure, everyone implements things that way and has to, but the
+acronym was new to me :)
+
+johannes
 
