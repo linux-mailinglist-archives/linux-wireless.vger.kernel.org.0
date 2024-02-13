@@ -1,60 +1,62 @@
-Return-Path: <linux-wireless+bounces-3553-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3554-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04DA2853495
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 16:27:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E006085350A
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 16:46:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 884A9B241CE
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 15:27:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 192EE1C20DCC
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 15:46:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5284A58AB4;
-	Tue, 13 Feb 2024 15:27:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ED025EE60;
+	Tue, 13 Feb 2024 15:46:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YXaXDpWF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SxLMcrzM"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2282D5EE62;
-	Tue, 13 Feb 2024 15:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 687315DF26
+	for <linux-wireless@vger.kernel.org>; Tue, 13 Feb 2024 15:46:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707838043; cv=none; b=MwGC3WNgpvq/lvMMhU3PdZtwlJLWTsb43deX/CDX4DGCGU2oYyArTowAE50k3JJO7SzW6aOVDQWq7lwcseYKKiqeMkPRaS6FdvyqJ7vWyfTybZI02TE05erughUuVsGaNz8RnAyXQgkLZeP8v5JFxDJPc/EZsIoLFmOE+60jx0M=
+	t=1707839196; cv=none; b=RjNtMgVkOKLWguD4uw6zvVYM0RP6p1TSNvgYcAinTwV8C8f+f5vWbr+K2O3Qc5aW/sVD3EHtKoCd6VADtsQE9wvCwAYVgKgYeEtOrrBjO/IZmYzhvEk6dLChIq7StZdfegkQ4mcWYTJHhcSGn6BfqTCAQE2q2lX4K74K6KSgVK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707838043; c=relaxed/simple;
-	bh=JVjbwYoXdew3kvQWCrF/DJvgpzuG4RWJZp9j/k373W4=;
+	s=arc-20240116; t=1707839196; c=relaxed/simple;
+	bh=xUdwS92MD3/GfkK0phydV5JDfYZ1rSSFzUp70N76yGg=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=uRxuuKpcz5zf4ejRQFO9gdCp3c3Tqe3VOmYGtZQJej0KwW+qR5f2V4rQyUKUzqaTwL0odHUNurzM2BRPIabWm4hHZOU2tBTax5jbO4JCEZYMFCUQAwFsvGj3cP1nTlfKbkGJZ9NgV96QdgHNFJh3lHfVPfoAUdMGwUE3BUaQpeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YXaXDpWF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94979C433F1;
-	Tue, 13 Feb 2024 15:27:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ae2PCi5hNLrvZGAEjd+IT/jlRvF/eToSCKdAC0cmJSGT5B4NiPdQ5Y8UmL3AnEbJCbk8R2LD6lTsOwo+a9S+DeOVP6O1XP/zgLFlpinKH5p4vzJ37vYcyQzsIB9gJzYIPwDVQW8PIQmaPrJ1dLCVIaFdUqpZ8YWXnpwO4uPhdF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SxLMcrzM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E111C433F1;
+	Tue, 13 Feb 2024 15:46:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707838042;
-	bh=JVjbwYoXdew3kvQWCrF/DJvgpzuG4RWJZp9j/k373W4=;
+	s=k20201202; t=1707839195;
+	bh=xUdwS92MD3/GfkK0phydV5JDfYZ1rSSFzUp70N76yGg=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=YXaXDpWFRSuYK80xF7yQekFu6YFQwC+rlIV1Fpa57QEgd7f2IhSIWkVK1D1yqtgsF
-	 oxmL5WnczQ/imvN0nu1PI3CGYyfAnMVIYbJZxGJDoSEbihdY1TnmoUtYbP1Ex/E8wp
-	 rs8dl+K8qmb+NBmxxnT0lxv6ty7bNaWFpZJSPmNXFV0EIRygCrPbxBKXY4xIwOxNNP
-	 OYQscyZ/9E/EG2m7XHqJAZYOTh9ADJidvN+pXSZ7RH8HlXKQ00StJGzkZRKlMbxI7w
-	 G0vRm0cHbdJeiFHZAD8Pa3FeJpdsrnLEnLXHQMQ3ifOOmPLBh2FWJOgwFiI49Vztxz
-	 GtZsQizV9AOWQ==
+	b=SxLMcrzMrfUok8ULTAn+Cj/BCUMF6EpGteLFYU+l9tGFEOR/xcOZIs/uurW94Gdh8
+	 LnpVlL0TpqSOZSflhTfo+z6eJRoBKA6MpL5LuGdQ4cWqwd+8/hU9Jdz6Bd3jYmH/O0
+	 IjB6K0odPOV53/jTZW7NJhIIcdVwCX2F1sxaBZn9kNbxDP7D48bIgpMqQYdFlhsHP+
+	 qIXRxPrCmucg3f1maEyHaIuWI8za59cbEse5W43JYiYQn9GAeUv8OOaFuYAlaIp9T2
+	 LBAnl/S4h9QBjkrl+nTW5x1KJGpolgg4BOGz/G7pjXdCIDn4Vki2pOkVF4UqbQ1FJF
+	 tdxd7GEhFKu2Q==
 From: Kalle Valo <kvalo@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Arend Van Spriel <arend.vanspriel@broadcom.com>,
-  <netdev@vger.kernel.org>,  <linux-wireless@vger.kernel.org>
-Subject: Re: pull-request: wireless-next-2024-01-25
-References: <20240125104030.B6CA6C433C7@smtp.kernel.org>
-	<20240125165128.7e43a1f3@kernel.org> <87r0i4zl92.fsf@kernel.org>
-	<18d447cc0b8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-	<877cjwz9ya.fsf@kernel.org> <20240126105255.5476cf85@kernel.org>
-	<87mssrxf44.fsf@kernel.org> <20240129115505.76d35e31@kernel.org>
-Date: Tue, 13 Feb 2024 17:27:19 +0200
-In-Reply-To: <20240129115505.76d35e31@kernel.org> (Jakub Kicinski's message of
-	"Mon, 29 Jan 2024 11:55:05 -0800")
-Message-ID: <87zfw4o04o.fsf@kernel.org>
+To: Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc: linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] wifi: brcmfmac: do not cast hidden SSID attribute value
+ to boolean
+References: <20240208085121.2430-1-a@bayrepo.ru>
+	<170775233602.2851594.8173116143852900695.kvalo@kernel.org>
+	<9667b492-d3d3-4b04-bef4-f507387a9261@broadcom.com>
+	<87cyt1pt4x.fsf@kernel.org>
+	<18d9e33a040.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+	<878r3opjx9.fsf@kernel.org>
+	<bd282847-0408-45cc-a203-11e808ec5f39@broadcom.com>
+Date: Tue, 13 Feb 2024 17:46:33 +0200
+In-Reply-To: <bd282847-0408-45cc-a203-11e808ec5f39@broadcom.com> (Arend van
+	Spriel's message of "Tue, 13 Feb 2024 15:01:08 +0100")
+Message-ID: <87v86snz8m.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -64,50 +66,29 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Jakub Kicinski <kuba@kernel.org> writes:
+Arend van Spriel <arend.vanspriel@broadcom.com> writes:
 
-> On Sat, 27 Jan 2024 12:08:59 +0200 Kalle Valo wrote:
->> Jakub Kicinski <kuba@kernel.org> writes:
->> >> I don't run checkpatch except for ath10k/ath11k/ath12k, too much noise.
->> >> I ended up adding this to my script:  
->> >
->> > We run build with sparse and W=1 and then diff the number of warnings 
->> > to weed out the pre-existing ones, FWIW.   
->> 
->> So for wireless and wireless-next I now check W=1 warnings every time I
->> push. We are mostly warning free now but I'm not checking the linker
->> warnings, for example the current MODULE_DESCRIPTION() warnings.
->> 
->> It's really annoying, and extra work, that people enable new W=1
->> warnings before fixing them. Could we somehow push back on those and
->> require that warnings are fixed before enabling with W=1 level?
+>> My bad, I misunderstood your intentions. Luckily this time it wasn't
+>> serious.
+>> BTW to make super clear to me I would prefer that you (Arend) use
+>> Acked-by. It shows up in my script like the number '1' here:
+>> *[  4] [next] wifi: carl9170: Remove redundant assignment t... 1 - -
+>> 2   5d Colin Ian Ki Under Review
+>> So if I don't see your Acked-by then I will not even look at the
+>> patch :)
 >
-> My quite possibly incorrect understanding is that "giving people time
-> to fix" is the main point of W=1 :( W=2 is for stuff which may false
-> positive, W=1 is for stuff which does not false positive but we can't
-> enable it in formal builds because the tree is full of it.
+> Sure. I tend to use Acked-by if things look sane a quick glance. If I
+> need to dig further I prefer to use Reviewed-by. If I have comments to
+> revise the patch I will refrain using them. Is that ok or you really
+> want it to be Acked-by?
 
-Ok, so keeping the code clean from W=1 warnings will be hard :/
+Ah, now I understand better. My understanding is that the maintainer of
+the driver uses Acked-by and others use Reviewed-by. This says the same:
 
->> In wireless there is a significant number of sparse warnings. I have
->> tried the cleanup people to fix them but it seems there's no interest,
->> instead we get to receive pointless cleanups wasting our time. <loud sigh>
->
-> Tell me about it.. :)
->
->> BTW the 'no new line at end of file' warning is indeed from sparse, like
->> Arend suspected:
->> 
->> drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.c:432:49:
->> warning: no newline at end of file
->
-> BTW I'd happy to help you set up an instance of our build testing bot,
-> if you have a VM that can be used. It does take a bit of care and
-> feeding, but seeing the build failures in patchwork pays the time back.
+https://docs.kernel.org/process/submitting-patches.html#when-to-use-acked-by-cc-and-co-developed-by
 
-We have talked about setting up your build bot for linux-wireless
-patchwork project but never found the time to do anything. Also we don't
-have a VM for it right now.
+And yes, I would prefer if you could use Acked-by always. It's up to
+your judgement if you do just a peek or in-depth review :)
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
