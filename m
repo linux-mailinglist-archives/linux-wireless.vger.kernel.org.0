@@ -1,98 +1,144 @@
-Return-Path: <linux-wireless+bounces-3559-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3562-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7653F8536EF
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 18:14:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F019853870
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 18:37:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 314252866A0
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 17:14:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2D0D1C2615B
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 17:37:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 159F05FBBF;
-	Tue, 13 Feb 2024 17:14:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A317B5FF17;
+	Tue, 13 Feb 2024 17:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="miI7WoeS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YXBv5nQ+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E2055FB86;
-	Tue, 13 Feb 2024 17:14:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79DE65F56B;
+	Tue, 13 Feb 2024 17:36:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707844452; cv=none; b=bkPbiXFeK+yz/2L4T/vmsjH7xOxJFQNKxRb6leu19tKQ9b59xU/k8t4vcWZ5o5jvgsxNCCErQ6DLPnvdiTrNmhcq3Id1XuVrX5w5b/oRxJ960dYbb/AifyySP3E0DsT6cgM3esi+aVpez1YIBBERlHSOSSIexEm5aJ/B+ZDemBs=
+	t=1707845793; cv=none; b=MHf4HE6asIjiG8dU2TQB1ry70/6AJxLDwcKyVhY3HZFwLpQ7ZFdWSFdrUdo9/IT88/mGQlZrUXQ3o3q8k8M0Pkg8OqGYQc1DUQp7YUeaUwWue7Z2zYZTCg1L9pp1C7YsfFS9r1FodcOyF5HnG8Sf9Lz9kpSPMLQnM9cSSapu9CI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707844452; c=relaxed/simple;
-	bh=Gy7C4I6z7AT0zGaXz9VQounxugoEpPbmpJ5GMuEODFA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=dnPyevWoV9ni+B9Iw2t0KEGJS+++AHIsMH3KfMbeRXtQT/Ekl1QTIb1e5oj2/4SN0bOtej0MzSstJf86hTE8bQuHNu1ym3o9VIJj/u/Sa9jS6/cCrEtbsKLvJtrYL/rj2z3l39H9wbfIeftLFYy+ygVm6rJMxD0gVBgEjpX94SI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=miI7WoeS; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=Dmp6vyT5JrL+eTyZVDd+aIs2asoct4AJGRKHR/LXHLw=;
-	t=1707844448; x=1709054048; b=miI7WoeSDg0kwq9yVr1KicLooEkI4mH9llUQ0P8EAjQxMTw
-	nIv/hfn4UyiUkWEiak6B44A+l1nVSOq7hnEzznmRSg3JNZnAWQ19VCfsvFj26onwe5SvJAWhEzWFF
-	5G5mIrn8EScPYg/MyYZ5KTFfKdpEnfhdLhbtAqWtKas81D6W47MJHvnR9tJNEFNdi2Ew3e4065D65
-	lNc5AxAqjJmKPoT0z5Z6vNELiyOhUvv9RLf+VLc/O0Xe/mdQkt3TGKB4ee3iNpc0xg/jFdopdbE9M
-	id+ZIDAzJNgewK81062AEcIwis9dypwbzxrYVkj92is3FQOQFTSt6ivO2zB21k9Q==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1rZwM2-00000007rTN-1xmS;
-	Tue, 13 Feb 2024 18:13:58 +0100
-Message-ID: <82e78ebf5f84314e3fc1e6b8b1a76f948c9aeb22.camel@sipsolutions.net>
-Subject: Re: linux-next: manual merge of the wireless-next tree with the pm
- tree
-From: Johannes Berg <johannes@sipsolutions.net>
-To: "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>, Stephen Rothwell
-	 <sfr@canb.auug.org.au>, Kalle Valo <kvalo@kernel.org>, Wireless
-	 <linux-wireless@vger.kernel.org>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux Next
- Mailing List <linux-next@vger.kernel.org>, Miri Korenblit
- <miriam.rachel.korenblit@intel.com>, "Rafael J. Wysocki"
- <rjw@rjwysocki.net>, "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 13 Feb 2024 18:13:57 +0100
-In-Reply-To: <e15b25c2-2ced-4f79-b541-61980a31f947@intel.com>
-References: <20240213110852.51524899@canb.auug.org.au>
-	 <4044e07e87af766f643f89f839b332973819e048.camel@sipsolutions.net>
-	 <e15b25c2-2ced-4f79-b541-61980a31f947@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
+	s=arc-20240116; t=1707845793; c=relaxed/simple;
+	bh=dRYnGlZwBbQUU50vYG5nu0Z3/o+/WT6EJp0GaSzSIUQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=YtBVCO/J9QHVreivKYJHLJKqCzMfq575vniK6VUIiynydLfE3HP4JVep12XSeZ8G3Aov1291C+Akj25tOg1cN9rfE1rRhgQoZP4E9xUYNdYyBSZZG5nsAN7P/vqfKNjpvBLAclAVEm6qRbAn3AN0A1gGnTjjHIs234AqLTZyBg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YXBv5nQ+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3AF2C433F1;
+	Tue, 13 Feb 2024 17:36:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1707845793;
+	bh=dRYnGlZwBbQUU50vYG5nu0Z3/o+/WT6EJp0GaSzSIUQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=YXBv5nQ+AaCq+0UGiHzJlWI9jUGaRwYMP1A/KPnQPF/D24qWGiyCvmoPsdXE6Fwl0
+	 29x9xVlXxqHPT7ZBfyQ5kxXJXxxT3krZLuy7JY3qfAfspXFwnf6M3lWw2cr6rFp668
+	 ppaca09ni2pBh+fuGXVuAw3A5BfD9FUwpTEzTkEM=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Arend van Spriel <aspriel@gmail.com>,
+	Franky Lin <franky.lin@broadcom.com>,
+	Hante Meuleman <hante.meuleman@broadcom.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+	Ian Lin <ian.lin@infineon.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Wright Feng <wright.feng@cypress.com>,
+	Hector Martin <marcan@marcan.st>,
+	linux-wireless@vger.kernel.org,
+	brcm80211-dev-list.pdl@broadcom.com,
+	Kees Cook <keescook@chromium.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 030/124] wifi: brcmfmac: Adjust n_channels usage for __counted_by
+Date: Tue, 13 Feb 2024 18:20:52 +0100
+Message-ID: <20240213171854.611417368@linuxfoundation.org>
+X-Mailer: git-send-email 2.43.1
+In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
+References: <20240213171853.722912593@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 
-On Tue, 2024-02-13 at 18:03 +0100, Wysocki, Rafael J wrote:
-> > >=20
-> > >    2e171a57c312 ("iwlwifi: mvm: Drop unused fw_trips_index[] from iwl=
-_mvm_thermal_device")
-> > >=20
-> > > from the pm tree
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
-> > I guess we'll have to live with this conflict, unless Rafael you have a
-> > feature branch for this I could pull in and resolve?
->=20
-> Well, not yet, but I can add one if that helps.
->=20
+------------------
 
-Well if you have a branch that has the above commit and not too much
-else, then I could pull it into wireless ... but chances are the common
-base that we have is divergent enough that'd pull a whole bunch of other
-things into the tree so that'd not be great.
+From: Kees Cook <keescook@chromium.org>
 
-Pretty sure even if the conflict survives to the end Linus could figure
-it out? :)
+[ Upstream commit 5bdda0048c8d1bbe2019513b2d6200cc0d09c7bd ]
 
-johannes
+After commit e3eac9f32ec0 ("wifi: cfg80211: Annotate struct
+cfg80211_scan_request with __counted_by"), the compiler may enforce
+dynamic array indexing of req->channels to stay below n_channels. As a
+result, n_channels needs to be increased _before_ accessing the newly
+added array index. Increment it first, then use "i" for the prior index.
+Solves this warning in the coming GCC that has __counted_by support:
+
+../drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c: In function 'brcmf_internal_escan_add_info':
+../drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:3783:46: warning: operation on 'req->
+n_channels' may be undefined [-Wsequence-point]
+ 3783 |                 req->channels[req->n_channels++] = chan;
+      |                               ~~~~~~~~~~~~~~~^~
+
+Fixes: e3eac9f32ec0 ("wifi: cfg80211: Annotate struct cfg80211_scan_request with __counted_by")
+Cc: Arend van Spriel <aspriel@gmail.com>
+Cc: Franky Lin <franky.lin@broadcom.com>
+Cc: Hante Meuleman <hante.meuleman@broadcom.com>
+Cc: Kalle Valo <kvalo@kernel.org>
+Cc: Chi-hsien Lin <chi-hsien.lin@infineon.com>
+Cc: Ian Lin <ian.lin@infineon.com>
+Cc: Johannes Berg <johannes.berg@intel.com>
+Cc: Wright Feng <wright.feng@cypress.com>
+Cc: Hector Martin <marcan@marcan.st>
+Cc: linux-wireless@vger.kernel.org
+Cc: brcm80211-dev-list.pdl@broadcom.com
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20240126223150.work.548-kees@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index 667462369a32..44cea18dd20e 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -3779,8 +3779,10 @@ static int brcmf_internal_escan_add_info(struct cfg80211_scan_request *req,
+ 		if (req->channels[i] == chan)
+ 			break;
+ 	}
+-	if (i == req->n_channels)
+-		req->channels[req->n_channels++] = chan;
++	if (i == req->n_channels) {
++		req->n_channels++;
++		req->channels[i] = chan;
++	}
+ 
+ 	for (i = 0; i < req->n_ssids; i++) {
+ 		if (req->ssids[i].ssid_len == ssid_len &&
+-- 
+2.43.0
+
+
+
 
