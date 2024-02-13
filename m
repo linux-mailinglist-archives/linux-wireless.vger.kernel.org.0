@@ -1,114 +1,136 @@
-Return-Path: <linux-wireless+bounces-3490-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3491-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 078F1852269
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 00:27:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE2A48522E4
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 01:09:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FB7E1C220B6
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Feb 2024 23:27:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B4F9285A4F
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 00:09:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 256624F5EA;
-	Mon, 12 Feb 2024 23:27:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6794362;
+	Tue, 13 Feb 2024 00:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="M1KZI0CE"
+	dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b="rKD1zx+U"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.183])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 504DE47A53
-	for <linux-wireless@vger.kernel.org>; Mon, 12 Feb 2024 23:27:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C6EC621;
+	Tue, 13 Feb 2024 00:08:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707780437; cv=none; b=JQ7n5Lc8RDg0HQIaoeCKwuusJQSY+Um5wBnvVZmx//mwzO5/QoDaiIBqsezmh6xQMGQJklpI4UIOS1vUGAn+yVkY2GxAP/1QO50YANE+UlcITyvQfFV0oqcd2fPXRmSC2RSMFMze6m7pjCs8pVJNMobNiEpeqY+IDZJ+dmSO6SA=
+	t=1707782944; cv=none; b=M6C/89E4EzoAiUppw28JyH1Ng8q/OGXZG2eWgW+YVPsN53y5aeciCfDYzMcXUG2gZZUCfNvbVgWYMbkyGmWc69VnFP/qHeYouyosdZWDuppyspzuC9dfCRyrpOiwhAHidd9r4ElOqmY9L2eNFUkSw8k4rR1SepeNnOJjgymvhcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707780437; c=relaxed/simple;
-	bh=TxyCEuik1ztWi3prf2zOhMCf3maEHyPf/Khf5n1Gz8A=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
-	 In-Reply-To:Content-Type; b=tJB6wE4t0iJ5nZw04D2JaCyEaEtYIG8RR6f5NjXqpw1i2R7KGMriIAefCT2c8T0URPPlRVxCcdNTcklsK7bTPHeJOeXjnaUvrZiuBlda+XEl1Fp5VgLVAeveTAgHv4LFFB2EH4X5S6LYKccWEw3cFgzFe/8CrfslRctVay17vvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=M1KZI0CE; arc=none smtp.client-ip=67.231.154.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id F2F8894007F
-	for <linux-wireless@vger.kernel.org>; Mon, 12 Feb 2024 23:27:12 +0000 (UTC)
-Received: from [192.168.100.159] (unknown [50.251.239.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	s=arc-20240116; t=1707782944; c=relaxed/simple;
+	bh=RvflJdzl0Jc9vk19OoqP+WEbH4d8Gr0XXL8NXNFQ/K8=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=D6GiuSarat+MOoQcbyLtrJPOa2C/r+9vZIWCU3YgJROaqVMcupwcc4FfMZbo1+CABra7lLohFqJzsXFfnBW6rT7/vJgLxAypOl/nHQ6GhD/duuNcoM75UIiS2mJBDdczbBukaGvI6K8z94Q+vxKVRtuKll6HaH2tLmL5noOtyao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; spf=pass smtp.mailfrom=canb.auug.org.au; dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b=rKD1zx+U; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canb.auug.org.au
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=201702; t=1707782937;
+	bh=2nfZYxxE+1dxFM4SEfJqpgzynVkamsIwAnSU0lPVsxA=;
+	h=Date:From:To:Cc:Subject:From;
+	b=rKD1zx+UkYmZLwgLYJzKgJX8nSyoUSWu8e1drAjJeEOUNgi11aawinhW6EqKhFT4m
+	 xrpmEFOtQnhn0uR5m4NG/oBFTHKrX0HZzce2KU4oIDMgoIRV1SvvyggASWABf2NZDc
+	 3gAKsGyPTRbixP4ZL0BTJ1j3x0+Bw8tZuwM3Pw9jlu12MM533RGlx4uG+8a32WeqT6
+	 WB3TuMj+ZIP4zahJPaX1iBBcFEa2U9sTz+uASPlD2vPv4JjUS6ey0+SW9zSPTiE9HU
+	 jq+RNsGzZhhn4X26uPXS6CywO+k+wcby20VAzwGAV00sLYeAsxAbbqFjTNP1kYFZ7J
+	 7r6B9UkJ/SZpw==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id 574CF13C2B0
-	for <linux-wireless@vger.kernel.org>; Mon, 12 Feb 2024 15:27:12 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 574CF13C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1707780432;
-	bh=TxyCEuik1ztWi3prf2zOhMCf3maEHyPf/Khf5n1Gz8A=;
-	h=Date:Subject:From:To:References:In-Reply-To:From;
-	b=M1KZI0CESLy+UmlWCmywxUNtl3VCWubKaSmG2+Kc0PseHMmcpp63sY9bfoJDful+c
-	 mOibIWNnUYVA2VpE0Rl15Ol8nHUeGyYmozebFw3XpMUNNE5s5Fc+6yOoWoVw+1uqJg
-	 f5cviGh4sIWNz0CDKoFSrRkndJ7oK+/1bHjhcEuQ=
-Message-ID: <ad6ae6b9-2ce1-e354-a151-98c3b33fd139@candelatech.com>
-Date: Mon, 12 Feb 2024 15:27:12 -0800
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4TYhWW3hXWz4wcp;
+	Tue, 13 Feb 2024 11:08:54 +1100 (AEDT)
+Date: Tue, 13 Feb 2024 11:08:52 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Kalle Valo <kvalo@kernel.org>, Johannes Berg
+ <johannes@sipsolutions.net>, Wireless <linux-wireless@vger.kernel.org>,
+ "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: Johannes Berg <johannes.berg@intel.com>, Linux Kernel Mailing List
+ <linux-kernel@vger.kernel.org>, Linux Next Mailing List
+ <linux-next@vger.kernel.org>, Miri Korenblit
+ <miriam.rachel.korenblit@intel.com>, "Rafael J. Wysocki"
+ <rafael.j.wysocki@intel.com>
+Subject: linux-next: manual merge of the wireless-next tree with the pm tree
+Message-ID: <20240213110852.51524899@canb.auug.org.au>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: iwlwifi RFC related to iwl_mvm_tx_reclaim
-Content-Language: en-US
-From: Ben Greear <greearb@candelatech.com>
-To: linux-wireless <linux-wireless@vger.kernel.org>
-References: <c9b0c01e-acac-9f15-730f-a0ba991a68dc@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <c9b0c01e-acac-9f15-730f-a0ba991a68dc@candelatech.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-MDID: 1707780433-OpEaDhx5YZ6Z
-X-MDID-O:
- us5;at1;1707780433;OpEaDhx5YZ6Z;<greearb@candelatech.com>;f7146c1849a4b08a52804beb1c1cdf45
+Content-Type: multipart/signed; boundary="Sig_/xWx+rnaTt=Lmy3hfd=gt658";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 
-On 2/12/24 15:22, Ben Greear wrote:
-> Hello,
-> 
-> I'm seeing a crash due to accessing an 'sta' object in this method that is '-2' as integer.
-> 
-> It fails the initial check for null STA, but I'm thinking it might should check for IS_ERR(sta)
-> as well.
-> 
-> (I have my own patch that references sta before the IS_ERR check later in the code, and this
-> causes the crash I'm seeing.  I guess upstream will not crash in this situation.).
-> 
-> My question:  Is the patch below a preferred approach, or should I add special checks to where I
-> access sta and only exit the method lower where it already has the IS_ERR(sta) check?
-> 
-> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-> index 0567f4eefebc..bd3d2fe424cd 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-> @@ -2337,7 +2337,7 @@ static void iwl_mvm_tx_reclaim(struct iwl_mvm *mvm, int sta_id, int tid,
->          sta = rcu_dereference(mvm->fw_id_to_mac_id[sta_id]);
-> 
->          /* Reclaiming frames for a station that has been deleted ? */
-> -       if (WARN_ON_ONCE(!sta)) {
-> +       if (IS_ERR(sta) || !sta) {
->                  rcu_read_unlock();
->                  return;
->          }
+--Sig_/xWx+rnaTt=Lmy3hfd=gt658
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Or another idea came to mind:  Should this check above go away entirely, and check for null
-down where it currently checks IS_ERR()?  From the comment about the IS_ERR check, I am thinking
-that might be a better idea...
+Hi all,
 
-Thanks,
-Ben
+Today's linux-next merge of the wireless-next tree got a conflict in:
 
-> 
-> Thanks,
-> Ben
-> 
+  drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
 
+between commit:
+
+  2e171a57c312 ("iwlwifi: mvm: Drop unused fw_trips_index[] from iwl_mvm_th=
+ermal_device")
+
+from the pm tree and commit:
+
+  8cb3a308ceb1 ("wifi: iwlwifi: mvm: fix thermal kernel-doc")
+
+from the wireless-next tree.
+
+I fixed it up (see below) and can carry the fix as necessary. This
+is now fixed as far as linux-next is concerned, but any non trivial
+conflicts should be mentioned to your upstream maintainer when your tree
+is submitted for merging.  You may also want to consider cooperating
+with the maintainer of the conflicting tree to minimise any particularly
+complex conflicts.
+
+--=20
+Cheers,
+Stephen Rothwell
+
+diff --cc drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+index a618824f0b65,83263d510a45..000000000000
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+@@@ -537,8 -540,9 +540,8 @@@ struct iwl_mvm_tt_mgmt=20
+ =20
+  #ifdef CONFIG_THERMAL
+  /**
+-  *struct iwl_mvm_thermal_device - thermal zone related data
+-  * @temp_trips: temperature thresholds for report
++  * struct iwl_mvm_thermal_device - thermal zone related data
++  * @trips: temperature thresholds for report
+ - * @fw_trips_index: keep indexes to original array - temp_trips
+   * @tzone: thermal zone device data
+  */
+  struct iwl_mvm_thermal_device {
+
+--Sig_/xWx+rnaTt=Lmy3hfd=gt658
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmXKsxQACgkQAVBC80lX
+0GyuTwf/a8D7+UV9abG8o84U+eYLjKJH0aImG46vrcPW3w1LYfVMNtJ+b7GbnNgC
+fJCcFmFcdMHNZ9wxy06qQsbtp78fEsZB+WTwNXQwiZj1btxG6cZggm8w6NC8FnXP
+evkAT5DLzOvQPE0jWkURTX7zQWBeGMFeak9zScx2YJy8qTtV+8fbWoDagOt7GZbR
+IiIEQiXcyEBTe7cpEJ1iGecR3+ekZ4h+luiRigfm3zBc7NrUmO404/kBw2M1JpZ2
+tw7A7Yg1jzSFYQKkgLbb7rAeo9MY8Jz3gQvwiXcsRB4XNMxNLqoK7g5CDZk/SqDJ
+wC96Zsr/5E4OQ+ss8e30k3PtmdJWlg==
+=mK8G
+-----END PGP SIGNATURE-----
+
+--Sig_/xWx+rnaTt=Lmy3hfd=gt658--
 
