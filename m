@@ -1,61 +1,64 @@
-Return-Path: <linux-wireless+bounces-3497-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3498-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F6C885237D
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 01:27:08 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DD61852407
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 01:41:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C351281B83
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 00:27:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C315DB2266F
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 00:40:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 497224416;
-	Tue, 13 Feb 2024 00:19:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A85D560DDB;
+	Tue, 13 Feb 2024 00:21:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tMCxd4wG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U/fJToWj"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E62D52F92;
-	Tue, 13 Feb 2024 00:19:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CAE260DD5;
+	Tue, 13 Feb 2024 00:21:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707783559; cv=none; b=YrtiRKDsA9w8iUqnN1vVodApgrbieqkQTfAAfCzexEEvssf696MthYyC4gBclfwtYItJsdBYSNROF/nUkyarQs8T557XrMqqRK2sw+i8gYD//s5AlAEibHpMAPd0T9JxNv9vaYMfr4wG11msjo17IwDb8l89Pz0rPXItFqCS58Y=
+	t=1707783681; cv=none; b=j2UPdkzMrJ2Rya7ZlgRtRJ0qcBT58JxCZutF65G/FZBMoXGJNO4ngXSoJPHkJQVhW85LuadGJo613taoFA+Bxh6oa0aC9JJtkEUkuvMwT4QfaNeXpjHFiRDyBP9RUukJxedC9vquZ3qnjqwusEv21pvp1SWQqhqyOs2uG4Wi1QQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707783559; c=relaxed/simple;
-	bh=uVHzwgSKzY/3Tmm6JxcNU/AAvfLOdgaM57QwPSLF0bs=;
+	s=arc-20240116; t=1707783681; c=relaxed/simple;
+	bh=Yq3FIRMhID6Gx/PM4CNAAcsJgnWMwmC6c5SBZ1ryYKc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lv7Y4yWBFwc6TQ73Gqi7oOuVQz8lud903vGOCWdo7AMQg4iPH0M0xy8c93dhzUDDCyF1cKTUjTUQM4rjC5xpsMNu2rYzZxVCZsB8A0Y2QMZPhn5HhbiY6jfKhIwFlESMaq3UPrx1tXcrJKB20zna+nOD6DGOt10BVVMcTxT7EBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tMCxd4wG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95E84C43399;
-	Tue, 13 Feb 2024 00:19:17 +0000 (UTC)
+	 MIME-Version; b=Tr7aKxqz4nDne1B+FsFx4XeKEwnj6V6Z+3fGMakAIyUhMAkb74krSW12H3hTJjzdY9EGdhNv6xZAoB3p7jD/GwW9drzOxbb7S5cgdAFIGQa7+A3niajjhelsFKilZPcGtcmgsht3pzSwEiaT276HwMBnoO4AqrQyABm8O+tBV+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U/fJToWj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3FCDC433F1;
+	Tue, 13 Feb 2024 00:21:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707783558;
-	bh=uVHzwgSKzY/3Tmm6JxcNU/AAvfLOdgaM57QwPSLF0bs=;
+	s=k20201202; t=1707783681;
+	bh=Yq3FIRMhID6Gx/PM4CNAAcsJgnWMwmC6c5SBZ1ryYKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tMCxd4wGcwE1SILJX++2Wy+R4bMFuScR2st3jSen4EA1ayZDilEuvRtTHyr9leR87
-	 AX65FaoqivCDKUNUwdfYfwjB0L6rhuEGJRosX0WwOFHyjQh5GdK2cz6BiNZJq9Gfdh
-	 PGc5XQL+q50pqFMjjdnKcfq46gUr3C0PrGsPy2EbWOQ5RL4qnzZNgTCPVR389tNkEP
-	 +RDDQ72zC6aj2aoR6Kl9Ld2OUtCu6mlHuAv87VadTV02/GkDmdiPJ9T5hHzZm5UUr/
-	 h4WlDYyf7IW99rLS4lNciSHBLW7+2P3HvztOrFAXoZvwKWh4p2u+dRsls9NI0DTEz1
-	 ZLwK2nC4nPnsQ==
+	b=U/fJToWjV14pYAqPP8J0+lcnhhnJoRu7FqeWpAe1PKhxt1qqP0CmeXre/EoT+IiPZ
+	 TNfU3qaR0zCt7cOMHbL7VZV9nB2ymimphlvvQ7V+MQ9X1Dznj4gUBJqY9cO1MLDN/R
+	 MCaCx5aeD2C5Juf9rb9PwaUprku+kJAU2xMoQSvfUbFl2J7Z85LA4SeDXfMUVoSwNi
+	 0dRHcoQbX3v9R3fQ9rfnkh2EJLmDs/I9EddHQBuUQhwiwQSwdPpdleP0TvjZRtT1eu
+	 7cWLuBliMpzBUy7jtSQaeJl/WeQBmvQvJD0MvUIIxzqUjH+CR3xBPiS/xvfNjSeNi3
+	 3uAwFqIxVfTYw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Benjamin Berg <benjamin.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	kvalo@kernel.org,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.7 31/58] wifi: iwlwifi: do not announce EPCS support
-Date: Mon, 12 Feb 2024 19:17:37 -0500
-Message-ID: <20240213001837.668862-31-sashal@kernel.org>
+	johannes@sipsolutions.net,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 23/51] wifi: mac80211: set station RX-NSS on reconfig
+Date: Mon, 12 Feb 2024 19:20:00 -0500
+Message-ID: <20240213002052.670571-23-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240213001837.668862-1-sashal@kernel.org>
-References: <20240213001837.668862-1-sashal@kernel.org>
+In-Reply-To: <20240213002052.670571-1-sashal@kernel.org>
+References: <20240213002052.670571-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -64,57 +67,37 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.7.4
+X-stable-base: Linux 6.6.16
 Content-Transfer-Encoding: 8bit
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit a23c0af103e184bb1252dddddda040f6641bea7b ]
+[ Upstream commit dd6c064cfc3fc18d871107c6f5db8837e88572e4 ]
 
-mac80211 does not have proper support for EPCS currently as that would
-require changing the ECDA parameters if EPCS (Emergency Preparedness
-Communications Service) is in use. As such, do not announce support for
-it in the capabilities.
+When a station is added/reconfigured by userspace, e.g. a TDLS
+peer or a SoftAP client STA, rx_nss is currently not always set,
+so that it might be left zero. Set it up properly.
 
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240201155157.59d71656addc.Idde91b3018239c49fc6ed231b411d05354fb9fb1@changeid
+Link: https://msgid.link/20240129155354.98f148a3d654.I193a02155f557ea54dc9d0232da66cf96734119a@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ net/mac80211/cfg.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-index 480f8edbfd35..678c4a071869 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-@@ -668,7 +668,6 @@ static const struct ieee80211_sband_iftype_data iwl_he_eht_capa[] = {
- 			.has_eht = true,
- 			.eht_cap_elem = {
- 				.mac_cap_info[0] =
--					IEEE80211_EHT_MAC_CAP0_EPCS_PRIO_ACCESS |
- 					IEEE80211_EHT_MAC_CAP0_OM_CONTROL |
- 					IEEE80211_EHT_MAC_CAP0_TRIG_TXOP_SHARING_MODE1 |
- 					IEEE80211_EHT_MAC_CAP0_TRIG_TXOP_SHARING_MODE2 |
-@@ -793,7 +792,6 @@ static const struct ieee80211_sband_iftype_data iwl_he_eht_capa[] = {
- 			.has_eht = true,
- 			.eht_cap_elem = {
- 				.mac_cap_info[0] =
--					IEEE80211_EHT_MAC_CAP0_EPCS_PRIO_ACCESS |
- 					IEEE80211_EHT_MAC_CAP0_OM_CONTROL |
- 					IEEE80211_EHT_MAC_CAP0_TRIG_TXOP_SHARING_MODE1 |
- 					IEEE80211_EHT_MAC_CAP0_TRIG_TXOP_SHARING_MODE2,
-@@ -1020,8 +1018,7 @@ iwl_nvm_fixup_sband_iftd(struct iwl_trans *trans,
- 	if (CSR_HW_REV_TYPE(trans->hw_rev) == IWL_CFG_MAC_TYPE_GL &&
- 	    iftype_data->eht_cap.has_eht) {
- 		iftype_data->eht_cap.eht_cap_elem.mac_cap_info[0] &=
--			~(IEEE80211_EHT_MAC_CAP0_EPCS_PRIO_ACCESS |
--			  IEEE80211_EHT_MAC_CAP0_TRIG_TXOP_SHARING_MODE1 |
-+			~(IEEE80211_EHT_MAC_CAP0_TRIG_TXOP_SHARING_MODE1 |
- 			  IEEE80211_EHT_MAC_CAP0_TRIG_TXOP_SHARING_MODE2);
- 		iftype_data->eht_cap.eht_cap_elem.phy_cap_info[3] &=
- 			~(IEEE80211_EHT_PHY_CAP0_PARTIAL_BW_UL_MU_MIMO |
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index f7cb50b0dd4e..daf5212e283d 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -1887,6 +1887,8 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
+ 					      sband->band);
+ 	}
+ 
++	ieee80211_sta_set_rx_nss(link_sta);
++
+ 	return ret;
+ }
+ 
 -- 
 2.43.0
 
