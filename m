@@ -1,59 +1,60 @@
-Return-Path: <linux-wireless+bounces-3551-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3553-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37A70853479
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 16:23:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04DA2853495
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 16:27:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD4F1B23265
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 15:23:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 884A9B241CE
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 15:27:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 324305A7B7;
-	Tue, 13 Feb 2024 15:23:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5284A58AB4;
+	Tue, 13 Feb 2024 15:27:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="npXGlbWA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YXaXDpWF"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF5855C39
-	for <linux-wireless@vger.kernel.org>; Tue, 13 Feb 2024 15:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2282D5EE62;
+	Tue, 13 Feb 2024 15:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707837780; cv=none; b=snTY/QM2TmxiUJyIGyIbzIIEyFu6Y6ZEhlGXQRVFro4yG3PauQjT39JFtfblmDGtikCEnD07CvehiE/fyHXhhpS+SZqr+mJFUdKu3ERN9NNWKEWPutFuRPRHfnrv+4CHY9Wz1P9jSKJRDXy45F1GUGzSStQ7BuSDHFZZpcRsjlE=
+	t=1707838043; cv=none; b=MwGC3WNgpvq/lvMMhU3PdZtwlJLWTsb43deX/CDX4DGCGU2oYyArTowAE50k3JJO7SzW6aOVDQWq7lwcseYKKiqeMkPRaS6FdvyqJ7vWyfTybZI02TE05erughUuVsGaNz8RnAyXQgkLZeP8v5JFxDJPc/EZsIoLFmOE+60jx0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707837780; c=relaxed/simple;
-	bh=T3zWkYJB6TH8eWBtz/OZluFWQRVFkS3TMCW/3gKsuEk=;
+	s=arc-20240116; t=1707838043; c=relaxed/simple;
+	bh=JVjbwYoXdew3kvQWCrF/DJvgpzuG4RWJZp9j/k373W4=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=tyJlPphcVqwTTXiVwW9RCUG1IMRx3MF1MAbp017v6LVB/KiNF0ABrigJKFWJ8jDa1ZpqTK/5SGQktS5ObNuV0hRB9hLpdUHeBSY/MEbZuf9X8tdEVyLAiKyTFpCcvvYZ7i2Gh7FtQCuVzg83vM4VB1XlqhRjiGqla2uNEGVhW5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=npXGlbWA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0838C433F1;
-	Tue, 13 Feb 2024 15:22:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uRxuuKpcz5zf4ejRQFO9gdCp3c3Tqe3VOmYGtZQJej0KwW+qR5f2V4rQyUKUzqaTwL0odHUNurzM2BRPIabWm4hHZOU2tBTax5jbO4JCEZYMFCUQAwFsvGj3cP1nTlfKbkGJZ9NgV96QdgHNFJh3lHfVPfoAUdMGwUE3BUaQpeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YXaXDpWF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94979C433F1;
+	Tue, 13 Feb 2024 15:27:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707837779;
-	bh=T3zWkYJB6TH8eWBtz/OZluFWQRVFkS3TMCW/3gKsuEk=;
+	s=k20201202; t=1707838042;
+	bh=JVjbwYoXdew3kvQWCrF/DJvgpzuG4RWJZp9j/k373W4=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=npXGlbWA04duFep92GjgC8Eke/LaEHok4NuKuOwuVoAZth7+j0WRuW3zsDEEkBz61
-	 i1uI61CM57YVcRngVLZS3BMoq3HhFeQqK0CMeH/YAoaJ/9VEsdHqq51uKDPfsQa87o
-	 gczrjs5LrYP0FWKjivXcRaq+mGWSvwERfjm88FTpGDwyqJmsoGaElmaQ5ScSz4rKZZ
-	 LxnLa3YApHN5mwzOAdTIpgmU4VG8Wv9Gt2QR3qJpl7WVqja6SHI7LBbTCB7NjQZr7I
-	 eIZvAEYHfDmo86K/mQKqWT1h+ISWAymoF8FCJ4MEHvpcEnZXfqSgwQ50okFrFjoi3C
-	 dZcgS/7f60MpA==
+	b=YXaXDpWFRSuYK80xF7yQekFu6YFQwC+rlIV1Fpa57QEgd7f2IhSIWkVK1D1yqtgsF
+	 oxmL5WnczQ/imvN0nu1PI3CGYyfAnMVIYbJZxGJDoSEbihdY1TnmoUtYbP1Ex/E8wp
+	 rs8dl+K8qmb+NBmxxnT0lxv6ty7bNaWFpZJSPmNXFV0EIRygCrPbxBKXY4xIwOxNNP
+	 OYQscyZ/9E/EG2m7XHqJAZYOTh9ADJidvN+pXSZ7RH8HlXKQ00StJGzkZRKlMbxI7w
+	 G0vRm0cHbdJeiFHZAD8Pa3FeJpdsrnLEnLXHQMQ3ifOOmPLBh2FWJOgwFiI49Vztxz
+	 GtZsQizV9AOWQ==
 From: Kalle Valo <kvalo@kernel.org>
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-  "johannes.berg@intel.com" <johannes.berg@intel.com>
-Subject: Re: [PATCH] wifi: rtw89: fw: remove unnecessary rcu_read_unlock()
- for punctured
-References: <20240213122556.9593-1-pkshih@realtek.com>
-	<87ttmced8l.fsf@kernel.org>
-	<f8b28bf1f735432489c1674d62fc68a8cf475ee8.camel@realtek.com>
-Date: Tue, 13 Feb 2024 17:22:56 +0200
-In-Reply-To: <f8b28bf1f735432489c1674d62fc68a8cf475ee8.camel@realtek.com>
-	(Ping-Ke Shih's message of "Tue, 13 Feb 2024 13:43:46 +0000")
-Message-ID: <874jecpewf.fsf@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Arend Van Spriel <arend.vanspriel@broadcom.com>,
+  <netdev@vger.kernel.org>,  <linux-wireless@vger.kernel.org>
+Subject: Re: pull-request: wireless-next-2024-01-25
+References: <20240125104030.B6CA6C433C7@smtp.kernel.org>
+	<20240125165128.7e43a1f3@kernel.org> <87r0i4zl92.fsf@kernel.org>
+	<18d447cc0b8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+	<877cjwz9ya.fsf@kernel.org> <20240126105255.5476cf85@kernel.org>
+	<87mssrxf44.fsf@kernel.org> <20240129115505.76d35e31@kernel.org>
+Date: Tue, 13 Feb 2024 17:27:19 +0200
+In-Reply-To: <20240129115505.76d35e31@kernel.org> (Jakub Kicinski's message of
+	"Mon, 29 Jan 2024 11:55:05 -0800")
+Message-ID: <87zfw4o04o.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -63,24 +64,50 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Ping-Ke Shih <pkshih@realtek.com> writes:
+Jakub Kicinski <kuba@kernel.org> writes:
 
->> This again shows how important it is to fix all the remainging sparse
->> warnings in wireless code so that we don't miss important warnings like
->> this. If there just would be a way to get the cleanup patch submitters
->> to fix the sparse warnings, sigh.
+> On Sat, 27 Jan 2024 12:08:59 +0200 Kalle Valo wrote:
+>> Jakub Kicinski <kuba@kernel.org> writes:
+>> >> I don't run checkpatch except for ath10k/ath11k/ath12k, too much noise.
+>> >> I ended up adding this to my script:  
+>> >
+>> > We run build with sparse and W=1 and then diff the number of warnings 
+>> > to weed out the pre-existing ones, FWIW.   
+>> 
+>> So for wireless and wireless-next I now check W=1 warnings every time I
+>> push. We are mostly warning free now but I'm not checking the linker
+>> warnings, for example the current MODULE_DESCRIPTION() warnings.
+>> 
+>> It's really annoying, and extra work, that people enable new W=1
+>> warnings before fixing them. Could we somehow push back on those and
+>> require that warnings are fixed before enabling with W=1 level?
 >
-> In short term, can we record the count of warnings and ensure it
-> doesn't increase while new commits are getting merged? 
+> My quite possibly incorrect understanding is that "giving people time
+> to fix" is the main point of W=1 :( W=2 is for stuff which may false
+> positive, W=1 is for stuff which does not false positive but we can't
+> enable it in formal builds because the tree is full of it.
 
-Netdev has that kind of checks in checkpatch:
+Ok, so keeping the code clean from W=1 warnings will be hard :/
 
-netdev/build_allmodconfig_warn	success	Errors and warnings before: 993 this patch: 992
+>> In wireless there is a significant number of sparse warnings. I have
+>> tried the cleanup people to fix them but it seems there's no interest,
+>> instead we get to receive pointless cleanups wasting our time. <loud sigh>
+>
+> Tell me about it.. :)
+>
+>> BTW the 'no new line at end of file' warning is indeed from sparse, like
+>> Arend suspected:
+>> 
+>> drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.c:432:49:
+>> warning: no newline at end of file
+>
+> BTW I'd happy to help you set up an instance of our build testing bot,
+> if you have a VM that can be used. It does take a bit of care and
+> feeding, but seeing the build failures in patchwork pays the time back.
 
-https://patchwork.kernel.org/project/netdevbpf/patch/20240213112122.404045-2-leitao@debian.org/
-
-But in wireless project we have not set up that. That reminds me that I
-need to reply to Jakub's email related to this.
+We have talked about setting up your build bot for linux-wireless
+patchwork project but never found the time to do anything. Also we don't
+have a VM for it right now.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
