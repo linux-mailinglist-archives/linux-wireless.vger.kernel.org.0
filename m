@@ -1,168 +1,118 @@
-Return-Path: <linux-wireless+bounces-3543-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3544-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCE368532B5
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 15:10:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E7188532C5
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 15:13:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94F1A2863C4
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 14:10:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF19528564C
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 14:13:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 554C15810D;
-	Tue, 13 Feb 2024 14:10:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A5A85786C;
+	Tue, 13 Feb 2024 14:13:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="qeiqwYs3"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="DX8XQVkP"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.184])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F9CA5810C
-	for <linux-wireless@vger.kernel.org>; Tue, 13 Feb 2024 14:10:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DC5857866
+	for <linux-wireless@vger.kernel.org>; Tue, 13 Feb 2024 14:13:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707833403; cv=none; b=SDzDy4Q06zU3BT0CDvpqSDDh19dKOs//kxFI7BWLKs3YWO6cJ/GAQVPqE05DJI72hAvhdgf04l5lyEcUzEDtDatRRo+8lwdO0EEipM5y0pM7VmRVomL2iQ6HA8uW6npC/IX4gn/yjYqp2Q+p2Y+yRrkwDC9L0nuPpS6Hbru/WM8=
+	t=1707833627; cv=none; b=S9j9UdrZndCy+lgd83hE6dQxdzhRepQ7/ZgD3iq+39/5JtD8Vofx3jE+9EQVhXX0WiEjWBx0pZr+1Zle82dcv8LFa0FmilXcj3hYFS4Id3+7eRutcmBXIYwTo5KLXWPOrSyInpIiw6GyDTsKJ7cfV5e5H8H4Xs0y+eMAWN86EDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707833403; c=relaxed/simple;
-	bh=4b93OmBFRGH45JwFvmddE7HU12/lMdg3AGrS8abWjiw=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=CAVvODfYAtFc+oty+buWJ7b8cN/oaafbYJ5nSslumttGfApklIyjL8DhnBLegoQVsAAm17KMIZRaLiNYkB5fVDLr9l5KCVw+8C7Sqc0hWTXZ8zgKLzzBNhJxAlGKSV9E3pR80KvK4tsZkaCh3R49944Xh24O3sanjMnAh0FcyCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=qeiqwYs3; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=4b93OmBFRGH45JwFvmddE7HU12/lMdg3AGrS8abWjiw=;
-	t=1707833401; x=1709043001; b=qeiqwYs3BUDFQLQctolMWtTO1DuVSG0PWjSbVYFafdPCbuT
-	axmf7g12FYRTM6kHJbYZ8LHsWE65gWPzWZF8tygoLEsk/cm4KrzOfIm3E54dF3wkqsXOLIX+P+7BH
-	TSCNJGrAg0SdIuXDfTUFJbgeXfarD02yvR3tisYPdp+pd96c2f/CpmfN/SrMw1FZKGDFhllKC/BVP
-	sOOwefozJKES+MV3rWao0O+AAQAYQNFs0WuWNIK4daV2csDNjzbsVGSTSHwmvAAon54OBctCchaCf
-	u/3bNpoj+nmkaob4ymUW3RNV11Ffl9Ngb3zksexc159aIPofxsrG9xmyqGAVM9wg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1rZtTy-00000007k2T-1u8n;
-	Tue, 13 Feb 2024 15:09:58 +0100
-Message-ID: <4d9d10ce2866467ae545507a99662eba70c2ad6e.camel@sipsolutions.net>
-Subject: Re: [PATCH 15/15] wifi: cfg80211/mac80211: move puncturing into
- chandef
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Ping-Ke Shih <pkshih@realtek.com>, "linux-wireless@vger.kernel.org"
-	 <linux-wireless@vger.kernel.org>
-Date: Tue, 13 Feb 2024 15:09:57 +0100
-In-Reply-To: <d2b42434af3c81e467b0b2f24feb1b142686d35f.camel@realtek.com>
-References: <20240129184108.49639-17-johannes@sipsolutions.net>
-	 <20240129194108.307183a5d2e5.I4d7fe2f126b2366c1312010e2900dfb2abffa0f6@changeid>
-	 <f489a916f416cb37b527868c4be0c59547bdeb4d.camel@realtek.com>
-	 <94bd67a6f261d945917067334b633c78be665c6b.camel@sipsolutions.net>
-	 <a17862ae423422b636c76f116e712e7ebed51c09.camel@realtek.com>
-	 <e50e2336dd2717e7271e7e6f341437637192f717.camel@sipsolutions.net>
-	 <d2b42434af3c81e467b0b2f24feb1b142686d35f.camel@realtek.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
+	s=arc-20240116; t=1707833627; c=relaxed/simple;
+	bh=iZ1RYsiUccQ7lkkZjla8su2Ot/G1lA/mWZS2JHQmuC4=;
+	h=Subject:To:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=i3R0Cb+ItEMH60VgmCd1UqArhipwAOTeiRFy0duf1BitkyrKQK2Nade0fNfHS3B3fA+7nSiehxdldq40+gtcJGXXwPBEuoTKXP+7nE0lZCsnK8r9uCJP/ENipQgiVbLwk3wGMCVprBLNTt7w02fCTwsMRMBAFolG9DmmaPnfnb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=DX8XQVkP; arc=none smtp.client-ip=67.231.154.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 2D1CF8C0077;
+	Tue, 13 Feb 2024 14:13:41 +0000 (UTC)
+Received: from [192.168.1.115] (unknown [98.97.116.226])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by mail3.candelatech.com (Postfix) with ESMTPSA id 240E513C2B0;
+	Tue, 13 Feb 2024 06:13:40 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 240E513C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1707833620;
+	bh=iZ1RYsiUccQ7lkkZjla8su2Ot/G1lA/mWZS2JHQmuC4=;
+	h=Subject:To:References:From:Date:In-Reply-To:From;
+	b=DX8XQVkPN2yHcJmxa54pjBInXmglQJiCMPJ2cdFlOO2ziKpvHUX+173b60nf2e9a3
+	 1n/+qn7aFN4KaftdWzrGUrF8FfXYRxG1cA05+Om+V1yLXJbQH6zqAAJgcF/s4EDxWa
+	 tvadWigQ0UjgN10n6IGizSz64XJpPt8ATQ0KbELc=
+Subject: Re: iwlwifi RFC related to iwl_mvm_tx_reclaim
+To: Johannes Berg <johannes@sipsolutions.net>,
+ linux-wireless <linux-wireless@vger.kernel.org>
+References: <c9b0c01e-acac-9f15-730f-a0ba991a68dc@candelatech.com>
+ <9779efb62cec04926e3bb2575a8aecc8bbf0e7ff.camel@sipsolutions.net>
+From: Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+Message-ID: <2839f687-88af-ecd8-c6cb-7bdaf1808496@candelatech.com>
+Date: Tue, 13 Feb 2024 06:13:39 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+In-Reply-To: <9779efb62cec04926e3bb2575a8aecc8bbf0e7ff.camel@sipsolutions.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-MW
+Content-Transfer-Encoding: 7bit
+X-MDID: 1707833623-tbED2PLO3mbx
+X-MDID-O:
+ us5;at1;1707833623;tbED2PLO3mbx;<greearb@candelatech.com>;b42792dba290a1257c3f0aaf1c60b0ff
 
-On Tue, 2024-02-13 at 14:05 +0000, Ping-Ke Shih wrote:
-> On Tue, 2024-02-13 at 13:41 +0100, Johannes Berg wrote:
-> >=20
-> > > > The other thing here is that I'm not entirely sure how the driver w=
-orks,
-> > > > chances are that this was previously a bug, and now is still a bug,
-> > > > unless the driver doesn't really support channel contexts, or any f=
-orm
-> > > > of concurrency.
-> > >=20
-> > > This function is to initialize a station instance in firmware while
-> > > associating, and the field of firmware command is to tell MAC hardwar=
-e
-> > > the sub-channels it can use to transmit, which should rely on
-> > > bitmap of puncturing. Initially, we just wanted the field value to
-> > > be ~0 (0xFFFF) to prevent TX stuck, but not fully implemented punctur=
-ing
-> > > feature.
-> > >=20
-> > > I think this is the reason you are confused.
-> >=20
-> > Not sure that explanations helps ;-)
->=20
-> Oops. I assumed you want to know "how did it work to you?", and my answer
-> was that we just wanted to fix TX stuck problem. But this story isn't=20
-> interesting at all. XD
+On 2/13/24 1:37 AM, Johannes Berg wrote:
+> On Mon, 2024-02-12 at 15:22 -0800, Ben Greear wrote:
+>> I'm seeing a crash due to accessing an 'sta' object in this method that is '-2' as integer.
+>>
+>> It fails the initial check for null STA, but I'm thinking it might should check for IS_ERR(sta)
+>> as well.
+>>
+>> (I have my own patch that references sta before the IS_ERR check later in the code, and this
+>> causes the crash I'm seeing.  I guess upstream will not crash in this situation.).
+> 
+> Indeed.
+> 
+>> My question:  Is the patch below a preferred approach, or should I add special checks to where I
+>> access sta and only exit the method lower where it already has the IS_ERR(sta) check?
+> 
+> You can do whatever you want in your tree, but I guess generally I'd
+> advocate you assume that the code does what it should ;-)
+> 
+> In this case, ERR_PTR(-ENOENT) is used to indicate the station is being
+> deleted, but has not yet been fully removed, and so indeed we still want
+> to reclaim the frames here correctly, which the code does.
+> 
+> The comment below even kind of explains that?
 
-Ah, sorry! I thought you were talking about the HW/FW :)
+If sta is NULL, we should still reclaim the frames?  If so the check earlier in the code where
+it returns early if sta is NULL could be deleted, and add a null check down near the IS_ERR
+check?
 
-> > If you have this per station how do you handle CCA? Which was kind of
-> > the reason I moved it all back to the chandef? Not that this didn't mak=
-e
-> > the code simpler (in mac80211) either as a nice side effect :-)
->=20
-> Do you mean CCA should consider punctured sub-channels? (CCA doesn't
-> need to consider energy of punctured ones)
+I can (and have) fixed the bug in my code, I'm trying to understand if the driver
+itself needs improving here to cover an edge case.
 
-Yeah, I agree it _shouldn't_ consider energy of punctured sub-channels,
-but then you can't really do it per station or even per vif since you'd
-be listening without really knowing which peer/interface you're going to
-transmit to/from.
+Thanks,
+Ben
 
-Hence all the work of making it part of the channel context.
+> 
+> johannes
+> 
 
-> The firmware command mentioned in this patch is used to control
-> TX sub-channels from MAC to BB layers, and I think BB layer has another
-> control registers related CCA I missed. Thanks for pointing this, I=20
-> will check our BB team.
 
-Heh. I have no idea :)
-
-> > > > Though it _looks_ like you only support one channel context there, =
-so
-> > > > maybe also only one vif, and it doesn't matter? I'd probably still =
-move
-> > > > it over to the chan.c code though, it really does belong there more=
- as
-> > > > discussed in the commit message of this change.
-> > > >=20
-> > > > But I didn't want to make those more semantic changes because I don=
-'t
-> > > > know what logic your device applies here.
-> > >=20
-> > > We are going to support MCC and MLO, so we will/must consider more th=
-an
-> > > one channel context. Currently, rtw89 just consider 'deflink' not act=
-ually
-> > > 'links' that is the next main work we are doing.
-> >=20
-> > For MLO you have just one vif still, so it doesn't matter.
->=20
-> I feel theoretically one MLO vif can consist of two links that use
-> two channel contexts. Please correct me if this is wrong.=20
-
-Yes, but I wouldn't think they're on the same (control) channel, but
-usually two different bands? So you do get two chanctx indeed (sorry)
-but they're pretty separate, never would I expect two links on a single
-vif to share a chanctx, even though I guess technically it's not
-impossible.
-
-> But, yes currently we just have one vif. We will have two later.=20
-
-Right.
-
-> MCC is short for multi-channel concurrency that is a TDMA based concurren=
-cy
-> of STA + P2P using standard ieee802.11 power saving protocol and P2P GO N=
-oA.
-
-Aha! Sure, everyone implements things that way and has to, but the
-acronym was new to me :)
-
-johannes
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
 
