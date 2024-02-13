@@ -1,141 +1,89 @@
-Return-Path: <linux-wireless+bounces-3552-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3551-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1B7E853487
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 16:25:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37A70853479
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 16:23:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4612C281C86
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 15:24:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD4F1B23265
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 15:23:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2584B5DF02;
-	Tue, 13 Feb 2024 15:24:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 324305A7B7;
+	Tue, 13 Feb 2024 15:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="kfaq/68N"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="npXGlbWA"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25045D902;
-	Tue, 13 Feb 2024 15:24:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF5855C39
+	for <linux-wireless@vger.kernel.org>; Tue, 13 Feb 2024 15:22:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707837888; cv=none; b=f4TYqgQfFRuHcwvoFnEssnJ6jzpOmCQBj9M5qGovxCowOdgI3i8I5HlNlaF0BrddMd5bFzXySqFJRnR7os8Ox9WuDE53DTU8+FH6TYNG2bHyTYYEs5OH6ulrR3CVc2Z1zK6qGIYTV3/e2ouANOW8kLW+2r5FKc4s66egxPuQSA4=
+	t=1707837780; cv=none; b=snTY/QM2TmxiUJyIGyIbzIIEyFu6Y6ZEhlGXQRVFro4yG3PauQjT39JFtfblmDGtikCEnD07CvehiE/fyHXhhpS+SZqr+mJFUdKu3ERN9NNWKEWPutFuRPRHfnrv+4CHY9Wz1P9jSKJRDXy45F1GUGzSStQ7BuSDHFZZpcRsjlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707837888; c=relaxed/simple;
-	bh=ZRse6JczO8c8briiSuR06UnfYpScvqAmNKuKcNSxv4E=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=s+huxKBTuACenrk7I5H9LRQkclTGti4Kn72BePFoJ9jX92c4IINTp1hOO0S4RADMbnh72S7UaRidWAcqQkOU2mQH8bIq32ThdIGe5KwrZYWK3/pMm9WGJtqidqs83jF0di/rKtnpHg6VufadyI9+2aI6kP4y7nLy7qZJsJT7jxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=kfaq/68N; arc=none smtp.client-ip=217.70.183.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id C49012000B;
-	Tue, 13 Feb 2024 15:24:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1707837877;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=52cY2LUgFu15OCe72LM2FQu+S39du9WmCDQ8io2kZ8M=;
-	b=kfaq/68NzMwiXUkSTseCvfYIiL4b4bIu5M5IexBkVGXzeSEmz1ghDU6VPuKXiseIpxTfgm
-	OX6X86yQEKg3JgHyYBq5oDJ4OzDJM21V6yGD4BUOdbgbqSUHilpQAr/kgPe/uQzcXkmfMW
-	TWllHo+DBBJjAIskfwiu6GvrKkigwvYgeiBvPIsEijh2zu9NsyvORI/AAzZT/XG/iA6PVE
-	vXmzpmaPhgYjsUm7g7bqNz2syNx0S9Go4hlOJP6I+qL+iRR8NzQiNF1+grwWirAvm0+rxj
-	L/4iU5xiIcVO73t9ELMpD6XOGyZTzaH9pRnWZyUrGIkckJNM5+Bva5gD/vqg7g==
-From: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-Date: Tue, 13 Feb 2024 16:22:44 +0100
-Subject: [PATCH RFC] wifi: wilc1000: fix reset line assert/deassert
- polarity
+	s=arc-20240116; t=1707837780; c=relaxed/simple;
+	bh=T3zWkYJB6TH8eWBtz/OZluFWQRVFkS3TMCW/3gKsuEk=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=tyJlPphcVqwTTXiVwW9RCUG1IMRx3MF1MAbp017v6LVB/KiNF0ABrigJKFWJ8jDa1ZpqTK/5SGQktS5ObNuV0hRB9hLpdUHeBSY/MEbZuf9X8tdEVyLAiKyTFpCcvvYZ7i2Gh7FtQCuVzg83vM4VB1XlqhRjiGqla2uNEGVhW5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=npXGlbWA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0838C433F1;
+	Tue, 13 Feb 2024 15:22:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707837779;
+	bh=T3zWkYJB6TH8eWBtz/OZluFWQRVFkS3TMCW/3gKsuEk=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=npXGlbWA04duFep92GjgC8Eke/LaEHok4NuKuOwuVoAZth7+j0WRuW3zsDEEkBz61
+	 i1uI61CM57YVcRngVLZS3BMoq3HhFeQqK0CMeH/YAoaJ/9VEsdHqq51uKDPfsQa87o
+	 gczrjs5LrYP0FWKjivXcRaq+mGWSvwERfjm88FTpGDwyqJmsoGaElmaQ5ScSz4rKZZ
+	 LxnLa3YApHN5mwzOAdTIpgmU4VG8Wv9Gt2QR3qJpl7WVqja6SHI7LBbTCB7NjQZr7I
+	 eIZvAEYHfDmo86K/mQKqWT1h+ISWAymoF8FCJ4MEHvpcEnZXfqSgwQ50okFrFjoi3C
+	 dZcgS/7f60MpA==
+From: Kalle Valo <kvalo@kernel.org>
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+  "johannes.berg@intel.com" <johannes.berg@intel.com>
+Subject: Re: [PATCH] wifi: rtw89: fw: remove unnecessary rcu_read_unlock()
+ for punctured
+References: <20240213122556.9593-1-pkshih@realtek.com>
+	<87ttmced8l.fsf@kernel.org>
+	<f8b28bf1f735432489c1674d62fc68a8cf475ee8.camel@realtek.com>
+Date: Tue, 13 Feb 2024 17:22:56 +0200
+In-Reply-To: <f8b28bf1f735432489c1674d62fc68a8cf475ee8.camel@realtek.com>
+	(Ping-Ke Shih's message of "Tue, 13 Feb 2024 13:43:46 +0000")
+Message-ID: <874jecpewf.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20240213-wilc_1000_reset_line-v1-1-e01da2b23fed@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIAEOJy2UC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxMDQ0NL3fLMnOR4QwMDg/ii1OLUkviczLxUXWNLYyNzg7RkE3OTVCWg1oK
- i1LTMCrCx0UpBbs5KsbW1AK54SQtrAAAA
-To: linux-wireless@vger.kernel.org
-Cc: Ajay Singh <ajay.kathat@microchip.com>, 
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, Kalle Valo <kvalo@kernel.org>, 
- David Mosberger-Tang <davidm@egauge.net>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- linux-kernel@vger.kernel.org, 
- =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-X-Mailer: b4 0.12.4
-X-GND-Sasl: alexis.lothore@bootlin.com
+Content-Type: text/plain
 
-When using a wilc1000 chip over a spi bus, users can optionally define a
-reset gpio and a chip enable gpio. The reset line of wilc1000 is active
-low, so to hold the chip in reset, a low (physical) value must be applied.
+Ping-Ke Shih <pkshih@realtek.com> writes:
 
-The corresponding device tree binding documentation was introduced by
-commit f31ee3c0a555 ("wilc1000: Document enable-gpios and reset-gpios
-properties") and correctly indicates that the reset line is an active-low
-signal. However, the corresponding driver part, brought by commit
-ec031ac4792c ("wilc1000: Add reset/enable GPIO support to SPI driver"), is
-misusing the gpiod APIs and apply an inverted logic when powering up/down
-the chip (for example, setting the reset line to a logic "1" during power
-up, which in fact asserts the reset line when device tree describes the
-reset line as GPIO_ACTIVE_LOW). As a consequence, any platform currently
-using the driver in SPI mode must use a faulty reset line description in
-device tree, or else chip will be maintained in reset and will not even
-allow to bring up the chip.
+>> This again shows how important it is to fix all the remainging sparse
+>> warnings in wireless code so that we don't miss important warnings like
+>> this. If there just would be a way to get the cleanup patch submitters
+>> to fix the sparse warnings, sigh.
+>
+> In short term, can we record the count of warnings and ensure it
+> doesn't increase while new commits are getting merged? 
 
-Fix reset line usage by inverting back the gpiod APIs usage, setting the
-reset line to the logic value "0" when powering the chip, and the logic
-value "1" when powering off the chip.
+Netdev has that kind of checks in checkpatch:
 
-Fixes: ec031ac4792c ("wilc1000: Add reset/enable GPIO support to SPI driver")
-Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
----
-This issue was detected because I struggled a bit to setup a WILC-over-SPI
-setup, and eventually realized that it was due to chip being hold in reset.
+netdev/build_allmodconfig_warn	success	Errors and warnings before: 993 this patch: 992
 
-This patch, if accepted, will force any WILC-over-SPI user to update its
-device tree description: any platform currently working correctly in this
-setup likely have a wrong GPIO_ACTIVE_HIGH used on the reset line device
-tree description, contrary to what the documentation says. I am not sure
-whether this is tolerable ? If not, what would be the proper way to fix
-this ? Make the driver manually parse this flag and somehow make it able
-to deal with both versions (so basically: ignoring the setting) ? Just live
-with it, and possibly document the issue somewhere ?
----
- drivers/net/wireless/microchip/wilc1000/spi.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+https://patchwork.kernel.org/project/netdevbpf/patch/20240213112122.404045-2-leitao@debian.org/
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/spi.c b/drivers/net/wireless/microchip/wilc1000/spi.c
-index c92ee4b73a74..30eed2ea523d 100644
---- a/drivers/net/wireless/microchip/wilc1000/spi.c
-+++ b/drivers/net/wireless/microchip/wilc1000/spi.c
-@@ -192,11 +192,11 @@ static void wilc_wlan_power(struct wilc *wilc, bool on)
- 		/* assert ENABLE: */
- 		gpiod_set_value(gpios->enable, 1);
- 		mdelay(5);
--		/* assert RESET: */
--		gpiod_set_value(gpios->reset, 1);
--	} else {
- 		/* deassert RESET: */
- 		gpiod_set_value(gpios->reset, 0);
-+	} else {
-+		/* assert RESET: */
-+		gpiod_set_value(gpios->reset, 1);
- 		/* deassert ENABLE: */
- 		gpiod_set_value(gpios->enable, 0);
- 	}
+But in wireless project we have not set up that. That reminds me that I
+need to reply to Jakub's email related to this.
 
----
-base-commit: 246a8c611ace197f43ecc6ea4936c6ca363b8aaa
-change-id: 20240119-wilc_1000_reset_line-393270fc474e
-
-Best regards,
 -- 
-Alexis Lothoré, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
