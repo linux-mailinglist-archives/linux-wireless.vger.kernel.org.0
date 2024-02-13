@@ -1,96 +1,116 @@
-Return-Path: <linux-wireless+bounces-3555-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3556-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B60968535CA
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 17:17:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF858853658
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 17:42:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44D25B2971C
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 16:17:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D2221F21926
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 16:42:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6470E5F48A;
-	Tue, 13 Feb 2024 16:17:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E6865FBB7;
+	Tue, 13 Feb 2024 16:42:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fBDiVsLP"
+	dkim=pass (2048-bit key) header.d=egauge.net header.i=@egauge.net header.b="BWJHHRiv"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from o1.ptr2625.egauge.net (o1.ptr2625.egauge.net [167.89.112.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41CB15D91C
-	for <linux-wireless@vger.kernel.org>; Tue, 13 Feb 2024 16:17:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E38D5F856
+	for <linux-wireless@vger.kernel.org>; Tue, 13 Feb 2024 16:42:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=167.89.112.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707841024; cv=none; b=ffuf1R4vBvcoGVh5i3wqrsD2ujGnuuYTYHujTRtoD3PBnwMcTEHMbl9SXTKlxkFLe/KcTaUXdF+8CJXzRHNKj7vU6uDgVIpMDZdQwezJx6E23Up3YnbNnyFPqLOCPGM02ET1BcJUmINZ8ez2UDm2qFJW1NPkW8jDrYY9WLmBpAY=
+	t=1707842527; cv=none; b=cH/tq1oO58FFWXnHF0vypeacdO6DPr/AMqnd879SrCX6aamjTCIsnDDq8u2EcjAc7A48iFzL7ESjrvoCoHvGJ4vX2LELLa2DJvJcXHQX98Y8TP1y/yQIFbHzVZ4NpSnKMAuwhBy4+ehE7QDD74JCy2dDh6VLxKp3oMIreu8p2vA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707841024; c=relaxed/simple;
-	bh=U1hlxuuGM31EsFxR96p8z5hGYfThQsiQscHYRLeJkRM=;
-	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=CRkHOpEdX9tVXDWZNvoFd43cEOczIde1gf2QniFPVWnPkF9Or9sVQxFLajlnMiDsHGDrIAVuCCB0lKGX2LkVztKQ3YFu8uzmTtkhAu8dF7TSdG/+jiVM1j+d0Qa+NBK61+8iujcb5u6AsrcGRZp9zTLlBxGOqTr4r/1moVdNKfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fBDiVsLP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D32CC433F1;
-	Tue, 13 Feb 2024 16:17:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707841024;
-	bh=U1hlxuuGM31EsFxR96p8z5hGYfThQsiQscHYRLeJkRM=;
-	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=fBDiVsLPvXkglEu72avpNr59iWLOAb3NhQ2REWCeQGlyJdrfLppRy+PqYS3GMSrVL
-	 QTN4ULOuXcNhfC4qwTw0x6EvGkr45sTcreQ+fUBbUqypEaASXKeCsBAVphqXMplhmz
-	 3MXoopb2hJVPvWA9BRaaa7wIeWUkIHwWowvEhEqzqG3nXE6WJUGfeKJ2ccA6hhC0TW
-	 e+ZptPHuo/ob9iMi5E7uZE9YcCexyMZ5UgY5+sPOKdzyDFWkYOgTla2mv5xG/QQMe7
-	 /hilfIMXPbC2YZXRoUAWsmZTTBE+lnTGzqkDKN2YPVxj3it5RobKwmpsX056ye9rVj
-	 rttm8MJutH3cQ==
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1707842527; c=relaxed/simple;
+	bh=Y/UupydjZkCsKy+XYz3hkD5vQQH7kxYjO/3+h7Oq6c4=;
+	h=Message-ID:Subject:From:Date:In-Reply-To:References:Content-Type:
+	 MIME-Version:To:Cc; b=PmRYcRrR0TnYCfc2dT8B4BhkSR2+1eRYNleAPNM8PouMKp4+L61cvkBaZvn/k4sjt7+TKFfJ6HpU4ePO4acDBzydmKWYFNhgOyCeAjoDLKQFpJcUYE5yjQMa2MhLCM4b94Pa5em5mi0gCCNyjhFiMWgse+vt8kaIVx+q7/ZqpuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=egauge.net; spf=pass smtp.mailfrom=em1190.egauge.net; dkim=pass (2048-bit key) header.d=egauge.net header.i=@egauge.net header.b=BWJHHRiv; arc=none smtp.client-ip=167.89.112.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=egauge.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em1190.egauge.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=egauge.net;
+	h=subject:from:in-reply-to:references:content-type:
+	content-transfer-encoding:mime-version:to:cc:cc:content-type:from:subject:to;
+	s=sgd; bh=SbEx3+52qykIFgi4OiKNomUjhhjVPXlEFaoROoWvpCo=;
+	b=BWJHHRivKGKkid0AikM/VMRsm6Ph/g8zbO3tyvZKUBdN8NKquQHICMQbt78dHLwH/CFv
+	61NSj37LoiakN6Ffaz8uVmn/ofIqo+/DX6GlzNoKc/bKVmJ1XiYNZ87xmejOd3ipaTqYND
+	2cMCZ0qyCljeLwSpKcnBBRHHydEWAUVxU4nGOATpY3wQPBUZM5pQjADS+wuQFD1wMYfTyL
+	c/yPTQ6mOu8PNeASE6NgkTInEFxoF1l6053ibAffHXVXe4vC3Whe4ARWVDhP95Cs7quBpE
+	sYlO97j4K/Ij2lIkaIz0zrPbGpMpoWkdGsi8svrcltagJXjHcA3yUTlUH8XzD/kA==
+Received: by filterdrecv-58bfc74dd6-v8vxl with SMTP id filterdrecv-58bfc74dd6-v8vxl-1-65CB9BDC-D
+        2024-02-13 16:42:04.378922078 +0000 UTC m=+1650313.084825101
+Received: from bixby.lan (unknown)
+	by geopod-ismtpd-5 (SG) with ESMTP
+	id Cmn7aDI6Qu--YqIDC9LoWA
+	Tue, 13 Feb 2024 16:42:04.165 +0000 (UTC)
+Message-ID: <2ff1c701f3443e1c612a81f4077b0280850f57c6.camel@egauge.net>
+Subject: Re: [PATCH RFC] wifi: wilc1000: fix reset line assert/deassert
+ polarity
+From: David Mosberger-Tang <davidm@egauge.net>
+Date: Tue, 13 Feb 2024 16:42:04 +0000 (UTC)
+In-Reply-To: <20240213-wilc_1000_reset_line-v1-1-e01da2b23fed@bootlin.com>
+References: <20240213-wilc_1000_reset_line-v1-1-e01da2b23fed@bootlin.com>
+Organization: eGauge Systems LLC
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4-0ubuntu2 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/2] wifi: ath11k: supports 2 station interfaces
-From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230714023801.2621802-2-quic_cjhuang@quicinc.com>
-References: <20230714023801.2621802-2-quic_cjhuang@quicinc.com>
-To: Carl Huang <quic_cjhuang@quicinc.com>
-Cc: <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
- <quic_cjhuang@quicinc.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170784102087.3076911.1922636810071020971.kvalo@kernel.org>
-Date: Tue, 13 Feb 2024 16:17:02 +0000 (UTC)
+X-SG-EID: 
+ =?us-ascii?Q?+kMxBqj35EdRUKoy8diX1j4AXmPtd302oan+iXZuF8m2Nw4HRW2irNspffT=2Fkh?=
+ =?us-ascii?Q?ET6RJF6+Prbl0h=2FEtF1rRLvEYPI4g=2FHcYSL=2FUCt?=
+ =?us-ascii?Q?d1TpeB+0HHeUqLs7izP2tqeU+uw9UOPglVSAV3I?=
+ =?us-ascii?Q?T=2FK4mH1NKB=2Fwn2TqMHPCc0neITr6hId040nOvEY?=
+ =?us-ascii?Q?w6tKxc1lUAeD=2F2QlWMxLAX9HWds1z+F9mpKX0ln?=
+ =?us-ascii?Q?LF9O5dXSjB4jWCWFJ2yvkVTpexGXrmPNi+gLqQp?=
+ =?us-ascii?Q?7g6PeNl1SzRAhS1+HKP6A=3D=3D?=
+To: Alexis =?iso-8859-1?q?Lothor=E9?= <alexis.lothore@bootlin.com>,
+	linux-wireless@vger.kernel.org
+Cc: Ajay Singh <ajay.kathat@microchip.com>, Claudiu Beznea
+	<claudiu.beznea@tuxon.dev>, Kalle Valo <kvalo@kernel.org>, Thomas Petazzoni
+	<thomas.petazzoni@bootlin.com>, linux-kernel@vger.kernel.org
+X-Entity-ID: Xg4JGAcGrJFIz2kDG9eoaQ==
 
-Carl Huang <quic_cjhuang@quicinc.com> wrote:
+On Tue, 2024-02-13 at 16:22 +0100, Alexis Lothor=E9 wrote:
+> When using a wilc1000 chip over a spi bus, users can optionally define a
+> reset gpio and a chip enable gpio. The reset line of wilc1000 is active
+> low, so to hold the chip in reset, a low (physical) value must be applied=
+.
+>=20
+> The corresponding device tree binding documentation was introduced by
+> commit f31ee3c0a555 ("wilc1000: Document enable-gpios and reset-gpios
+> properties") and correctly indicates that the reset line is an active-low
+> signal. However, the corresponding driver part, brought by commit
+> ec031ac4792c ("wilc1000: Add reset/enable GPIO support to SPI driver"), i=
+s
+> misusing the gpiod APIs and apply an inverted logic when powering up/down
+> the chip (for example, setting the reset line to a logic "1" during power
+> up, which in fact asserts the reset line when device tree describes the
+> reset line as GPIO_ACTIVE_LOW).
 
-> Add hardware parameter support_dual_stations to indicate
-> whether 2 station interfaces are supported. For chips which
-> support this feature, limit total number of AP interface and
-> mesh point to 1. The max interfaces are 3 for such chips.
-> 
-> The chips affected are:
-> 
->  QCA6390 hw2.0
->  WCN6855 hw2.0
->  WCN6855 hw2.1
-> 
-> Other chips are not affected.
+Note that commit ec031ac4792c is doing the right thing in regards to an
+ACTIVE_LOW RESET pin and the binding documentation is consistent with that =
+code.
 
-Sorry for delay. I have now added this to the pending branch, there was some
-simply conflict which 'git am -3' was able to fix on it's own:
+It was later on that commit fcf690b0 flipped the RESET line polarity to tre=
+at it
+as GPIO_ACTIVE_HIGH.  I never understood why that was done and, as you note=
+d, it
+introduced in inconsistency with the binding documentation.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=43b8e99e19e8126e113eb9141621cf7e4b32d4f0
+On our platform, we never merged commit fcf690b0 and hence our DTS already
+defines the RESET pin as GPIO_ACTIVE_LOW.  So, I don't have any issues at a=
+ll
+with your patch! :-)
 
-> For affected chips, remove radar_detect_widths because now
-> num_different_channels is set to 2. radar_detect_widths can
-> be set only when num_different_channels is 1. See mac80211
-> function wiphy_verify_combinations for details.
-
-So removing radar_detect_widths means that DFS will not be supported on the
-affect chips, right? I think I should add that to the commit message.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230714023801.2621802-2-quic_cjhuang@quicinc.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+  --david
+                                                                           =
+   gi
 
