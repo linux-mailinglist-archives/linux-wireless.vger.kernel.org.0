@@ -1,65 +1,60 @@
-Return-Path: <linux-wireless+bounces-3520-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3521-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D340852D72
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 11:06:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3020B852D7F
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 11:09:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B63B81F2B907
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 10:06:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62CD91C20A43
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Feb 2024 10:09:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 553A2224E6;
-	Tue, 13 Feb 2024 10:05:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3057D224F9;
+	Tue, 13 Feb 2024 10:09:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ksr6Pj7t"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="avMTiGFZ"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2924A224DE;
-	Tue, 13 Feb 2024 10:05:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 062CB224E6;
+	Tue, 13 Feb 2024 10:09:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707818755; cv=none; b=pTV60BnPkbUSTmUSkgW0adtG3/LvoFLiGODKSrL8DI1OQvL5ajF23Xo+6+Si2LzexN/JwZgw4WNE3yNrJKDVht/xooBHgJ4HNTwxeA2ZgeQN4LKPGRNQZDIDD0JfFdU46qx3oWr3PFcPD7MGlB9d6SzWpQi9ZJfxJrdW6RpaO+U=
+	t=1707818958; cv=none; b=qWZHefZhXDXhtdnlJ9jxGYvwzYmKPBT5iZLxq7gcnXHKHeS0Oetixd4VR6+8xJbL+GlE8eas4Xum9sdk2AA+vtnnu9fGER40BxRZuTQ1jhgjVfKt4ZjP11WY5MqUj3cHcvpGqlkjANCyB0KgXGbKh/Mju2wSKddMsYpbDg+duS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707818755; c=relaxed/simple;
-	bh=WcxErgsyfFXrzhYEDf5rpkuxyuJrLmqXvy8MMKBGXI4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PrgnddatImdoC7SscqkedLcbI2ZvJVekZda0rTO98o6zaKWbpplmKqhxSo93lowF9wjgGKBZPwO/pfTSEsrpAnCuqTZWTb7Q2JWbGnN6hVJ0uaElM/6U6BMvJCRYDgKMqQ3JuFkrAudfMlRriUoeexXrwE3jWURhHX1xPVu2mXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ksr6Pj7t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2038C433C7;
-	Tue, 13 Feb 2024 10:05:51 +0000 (UTC)
+	s=arc-20240116; t=1707818958; c=relaxed/simple;
+	bh=HiQZbdRmzgTCB8ES0rsIWJhMeBxKcVI2EgJVFYK5Yf8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Vwpa1e2JML2XyuHmQIxCCMpvZRU+Uc76JZ3sZ8xD1B3LX/GISXW3hkz49LiqCoRvcxxvOQq+dui0yNEBE3D8N0Cv76KgB3bjH4Tf8sUP/j0vtkuEX73egngTXERSdS8Gy8qG56kINlClBtZ0rQBPdQ3h3hXiT34lGGPFontS/Co=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=avMTiGFZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C174C433C7;
+	Tue, 13 Feb 2024 10:09:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707818755;
-	bh=WcxErgsyfFXrzhYEDf5rpkuxyuJrLmqXvy8MMKBGXI4=;
+	s=k20201202; t=1707818957;
+	bh=HiQZbdRmzgTCB8ES0rsIWJhMeBxKcVI2EgJVFYK5Yf8=;
 	h=From:To:Cc:Subject:Date:From;
-	b=ksr6Pj7tO+yUgZ8iAlv3c/Pj1vMUt6E3wElItA3YLBnLiVNvXsKdoBKa+RgkE+IOS
-	 o4vtDL5C6Jlx3laUNxU2lS2rERHlAFAWUTn9LkVJGRUulO46zGXA8CHfQv2EoK4M+4
-	 Gr5JsMMN6xxcA1uPI8g3I4ZnaMYbyUrg1uYsGuVpTHzghcCl6a5zOXTCxVUfmkzp9a
-	 RLST521KRjwDe/6oimNzWc7ySZBwrg72nYL2Ira1q7HLpT4fcYznWRIgoTd30HiUxA
-	 BFw47WycdaE6G+iM0F6c7yeDCbaoeIKOuB1dEPjR7A0KgHcSIGuLZ9djvhbh1QDjkt
-	 rcAgl6U2d6PjA==
+	b=avMTiGFZmj1wjnBPK3XnQaqWfS/7+BbASpyxX5lpSUDuWS63seveFw96r/Qvfst+f
+	 bnU4gUmidsQcnjDMw1d/JdNBasC3KdDdQkfFd4wibVtwyOJAeaPoCWA3YFays2zQeZ
+	 ZVIYqXZ5XbjcI1Y2tHw+SPOB8C5PfQpLG89+i/DaGw4bx6XjZyXhIZlfhe5nAWXUrm
+	 iDnYF24eCvShjvczrifMxhg+rgAeQa0IMkbyX9DQs5EUPGZW6xabDNig4x3Ee6YVba
+	 doJeEel5bUec3/Q4lQctn51QyUSmvnYDOuquxep9qnEP5IQpyN7jAnby6eoaFfZCLO
+	 MyLifuYmoDJdw==
 From: Arnd Bergmann <arnd@kernel.org>
-To: Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Greg Kroah-Hartman <gregkh@suse.de>,
-	Pieter-Paul Giesberts <pieterpg@broadcom.com>
+To: Kalle Valo <kvalo@kernel.org>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
 Cc: Arnd Bergmann <arnd@arndb.de>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Artem Chernyshev <artem.chernyshev@red-soft.ru>,
-	Jonas Gorski <jonas.gorski@gmail.com>,
+	Aloka Dixit <quic_alokad@quicinc.com>,
+	Wen Gong <quic_wgong@quicinc.com>,
+	Muna Sinada <quic_msinada@quicinc.com>,
+	Aditya Kumar Singh <quic_adisi@quicinc.com>,
+	ath12k@lists.infradead.org,
 	linux-wireless@vger.kernel.org,
-	brcm80211@lists.linux.dev,
-	brcm80211-dev-list.pdl@broadcom.com,
-	linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: [PATCH] brcmsmac: avoid function pointer casts
-Date: Tue, 13 Feb 2024 11:05:37 +0100
-Message-Id: <20240213100548.457854-1-arnd@kernel.org>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] wifi: ath12k: sanitize ath12k_mac_allocate() return code
+Date: Tue, 13 Feb 2024 11:09:06 +0100
+Message-Id: <20240213100912.459018-1-arnd@kernel.org>
 X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -71,71 +66,39 @@ Content-Transfer-Encoding: 8bit
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-An old cleanup went a little too far and causes a warning with clang-16
-and higher as it breaks control flow integrity (KCFI) rules:
+The return code has no initializer:
 
-drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy_shim.c:64:34: error: cast from 'void (*)(struct brcms_phy *)' to 'void (*)(void *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
-   64 |                         brcms_init_timer(physhim->wl, (void (*)(void *))fn,
-      |                                                       ^~~~~~~~~~~~~~~~~~~~
+drivers/net/wireless/ath/ath12k/mac.c:8006:9: error: variable 'ret' is uninitialized when used here [-Werror,-Wuninitialized]
 
-Change this one instance back to passing a void pointer so it can be
-used with the timer callback interface.
+Make it return -ENOMEM for allocation failures and remove the unused
+variable instead.
 
-Fixes: d89a4c80601d ("staging: brcm80211: removed void * from softmac phy")
+Fixes: 6db6e70a17f6 ("wifi: ath12k: Introduce the container for mac80211 hw")
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- .../net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_cmn.c   | 3 ++-
- drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy_shim.c  | 5 ++---
- drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy_shim.h  | 2 +-
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/wireless/ath/ath12k/mac.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_cmn.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_cmn.c
-index 07f83ff5a54a..a27d6f0b8819 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_cmn.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_cmn.c
-@@ -383,8 +383,9 @@ struct shared_phy *wlc_phy_shared_attach(struct shared_phy_params *shp)
- 	return sh;
- }
- 
--static void wlc_phy_timercb_phycal(struct brcms_phy *pi)
-+static void wlc_phy_timercb_phycal(void *ptr)
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index f2f7b2a60261..e93475ae8d07 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -7965,7 +7965,7 @@ int ath12k_mac_allocate(struct ath12k_base *ab)
  {
-+	struct brcms_phy *pi = ptr;
- 	uint delay = 5;
+ 	struct ath12k_hw *ah;
+ 	struct ath12k_pdev_map pdev_map[MAX_RADIOS];
+-	int ret, i, j;
++	int i, j;
+ 	u8 radio_per_hw;
  
- 	if (PHY_PERICAL_MPHASE_PENDING(pi)) {
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy_shim.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy_shim.c
-index a0de5db0cd64..b72381791536 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy_shim.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy_shim.c
-@@ -57,12 +57,11 @@ void wlc_phy_shim_detach(struct phy_shim_info *physhim)
+ 	if (test_bit(ATH12K_FLAG_REGISTERED, &ab->dev_flags))
+@@ -8003,5 +8003,5 @@ int ath12k_mac_allocate(struct ath12k_base *ab)
+ 		ab->ah[i] = NULL;
+ 	}
+ 
+-	return ret;
++	return -ENOMEM;
  }
- 
- struct wlapi_timer *wlapi_init_timer(struct phy_shim_info *physhim,
--				     void (*fn)(struct brcms_phy *pi),
-+				     void (*fn)(void *pi),
- 				     void *arg, const char *name)
- {
- 	return (struct wlapi_timer *)
--			brcms_init_timer(physhim->wl, (void (*)(void *))fn,
--					 arg, name);
-+			brcms_init_timer(physhim->wl, fn, arg, name);
- }
- 
- void wlapi_free_timer(struct wlapi_timer *t)
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy_shim.h b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy_shim.h
-index dd8774717ade..27d0934e600e 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy_shim.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy_shim.h
-@@ -131,7 +131,7 @@ void wlc_phy_shim_detach(struct phy_shim_info *physhim);
- 
- /* PHY to WL utility functions */
- struct wlapi_timer *wlapi_init_timer(struct phy_shim_info *physhim,
--				     void (*fn)(struct brcms_phy *pi),
-+				     void (*fn)(void *pi),
- 				     void *arg, const char *name);
- void wlapi_free_timer(struct wlapi_timer *t);
- void wlapi_add_timer(struct wlapi_timer *t, uint ms, int periodic);
 -- 
 2.39.2
 
