@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-3573-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3574-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF99D854426
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Feb 2024 09:44:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0B8F854435
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Feb 2024 09:46:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6BC4CB20BE0
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Feb 2024 08:44:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2ED71C24525
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Feb 2024 08:46:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20D98BE4E;
-	Wed, 14 Feb 2024 08:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41C716FAD;
+	Wed, 14 Feb 2024 08:45:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WOJigtsT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eEjFvACH"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E535CBE48;
-	Wed, 14 Feb 2024 08:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7CF79C0;
+	Wed, 14 Feb 2024 08:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707900258; cv=none; b=mDASKbVsMb0Xw5itW1WDKgcIN/s76YAtIfKATkgGHy0PS0XnbJBrtZ5dthdJrrFayek1I2tQkm7kOGD824oO5s8IP4Z13wpgFXUERwDwYgcl5QNe46Rf+c4JaxtGLsuNQ/w8ll98M5S1qQqhePtFkRvVyuawIJALcmX+5n1gA8E=
+	t=1707900359; cv=none; b=UMCXG+EvKxUzdIUYAqWhJyPKLqkvO60TkQB1fP5BzRklrtPoKsz3HXEYReAIHZq+6ga/ge3/B0rAvoJZw5I/kyyJTwkwBxVAMvSW2sx1EBhHqQxsEeoEaSTPRtchtMO9iWdUd34mfDn05s2HU1ThxCU0dcCp7uJj7Nkm9gIvwRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707900258; c=relaxed/simple;
-	bh=u3CxopS384xy1pq8axVOiaOQ1FEfcHdIIJHwm89eKjk=;
+	s=arc-20240116; t=1707900359; c=relaxed/simple;
+	bh=80PMX4RRZXC/T1+Nh/TK7dabMmwW48VhI43ZD1PxROI=;
 	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=WKZcfTmWK5zU7TUOlHpxQllYSdpr6MoTGr962AbuqNFDrK60AhzElQoCf97OblpM80E/EiwbWG6kmOzQo8eg+0QOBCGmJgSPkgRczyP7VsRjsvo6cqsi+xdAikLzSaiXyTcwiw47r6AX4Tei+RHs4yBezBtkCRggJLNS2Nn5x4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WOJigtsT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F849C433C7;
-	Wed, 14 Feb 2024 08:44:14 +0000 (UTC)
+	 Cc:Message-ID:Date; b=W1gi4zroZ47OzHlhBbI8xzXZSAf9nsYFgI5E2qNyg3EOByHUiWSScsJM+pe0MnpimcK0DEWOuIcwW2dsKK+TfnkFrid0RpA9KpQkx7fhSYVrtHq8ZA1VW9yIzOvC1oMucm/mtdXV9chmkjhLlEjT0FaeaRBuJeyn7YMlQxSPKWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eEjFvACH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B443C433F1;
+	Wed, 14 Feb 2024 08:45:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707900257;
-	bh=u3CxopS384xy1pq8axVOiaOQ1FEfcHdIIJHwm89eKjk=;
+	s=k20201202; t=1707900358;
+	bh=80PMX4RRZXC/T1+Nh/TK7dabMmwW48VhI43ZD1PxROI=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=WOJigtsTcgI88bgbEoVvVOczkajq01e+kG6HeD6HlkMAYEUj9Wrrpef3REFn6wJDg
-	 g5aSAHOhpNq34cZDSOiBUGIwHLoW9USIpqSlMpaIIXcwbs4dQDHQHeYQqfkkvU0zNA
-	 ASiPhjwkFoAIHXAZOICEPdIPKISqmF63Wl/OLKAgsWWQzPtNk+8g1zuG9Zee9Q8hux
-	 v8TeXX2DSM0sWs8cP+LV03YKLZrMS1YcxT4hyaB+nvOzP5ybzmMTavrr4ex29w8lay
-	 PswgbU9vEcQaRGtcarXtl6eRViNjwdA3KBjJw0MqyOubI/CzyywG+CTwwIJGnx9wMF
-	 EbJv8vb3MfWGA==
+	b=eEjFvACHOyLYtBiWnd6/VT8fR7wf5ctAfkoEf5UPHRDFIa8aDerZZ97cKcPsCKLXC
+	 ih1N47S+tp5348Cq9IAt0NAboF7UAV+3fwRF7dZMnZvvRPvbZZMyOaIHy0an58Xvq0
+	 NJmqHMWI8KsznLVpVEYUI3fVijSVc07wBAJp1qXioZoWLpscEGVxhXfLhAnpn+ZQ5s
+	 H/5+3XI/30y5orQ9aL4BW9NNYyGoBDTS/B61bYyi7y42Dltozqrk/mfIo7NfES6v/e
+	 eIT1Qw5PqhNg4SBOVCFVv6oqycnj2Z2OgdQkEN8mM+y7Hcj0cbUOQUKkotWUzHUITT
+	 +bJ7QF9JYy+eQ==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -49,42 +49,45 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: ath12k: sanitize ath12k_mac_allocate() return code
+Subject: Re: [PATCH] brcmsmac: avoid function pointer casts
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240213100912.459018-1-arnd@kernel.org>
-References: <20240213100912.459018-1-arnd@kernel.org>
+In-Reply-To: <20240213100548.457854-1-arnd@kernel.org>
+References: <20240213100548.457854-1-arnd@kernel.org>
 To: Arnd Bergmann <arnd@kernel.org>
-Cc: Jeff Johnson <quic_jjohnson@quicinc.com>,
- Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
- Arnd Bergmann <arnd@arndb.de>, Aloka Dixit <quic_alokad@quicinc.com>,
- Wen Gong <quic_wgong@quicinc.com>, Muna Sinada <quic_msinada@quicinc.com>,
- Aditya Kumar Singh <quic_adisi@quicinc.com>, ath12k@lists.infradead.org,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Arend van Spriel <arend.vanspriel@broadcom.com>,
+ Nathan Chancellor <nathan@kernel.org>, Greg Kroah-Hartman <gregkh@suse.de>,
+ Pieter-Paul Giesberts <pieterpg@broadcom.com>, Arnd Bergmann <arnd@arndb.de>,
+ Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>,
+ Justin Stitt <justinstitt@google.com>,
+ Artem Chernyshev <artem.chernyshev@red-soft.ru>,
+ Jonas Gorski <jonas.gorski@gmail.com>, linux-wireless@vger.kernel.org,
+ brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
+ linux-kernel@vger.kernel.org, llvm@lists.linux.dev
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170790025305.3179441.138152315558305278.kvalo@kernel.org>
-Date: Wed, 14 Feb 2024 08:44:14 +0000 (UTC)
+Message-ID: <170790035300.3179441.9169506478575963188.kvalo@kernel.org>
+Date: Wed, 14 Feb 2024 08:45:55 +0000 (UTC)
 
 Arnd Bergmann <arnd@kernel.org> wrote:
 
-> The return code has no initializer:
+> From: Arnd Bergmann <arnd@arndb.de>
 > 
-> drivers/net/wireless/ath/ath12k/mac.c:8006:9: error: variable 'ret' is uninitialized when used here [-Werror,-Wuninitialized]
+> An old cleanup went a little too far and causes a warning with clang-16
+> and higher as it breaks control flow integrity (KCFI) rules:
 > 
-> Make it return -ENOMEM for allocation failures and remove the unused
-> variable instead.
+> drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy_shim.c:64:34: error: cast from 'void (*)(struct brcms_phy *)' to 'void (*)(void *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
+>    64 |                         brcms_init_timer(physhim->wl, (void (*)(void *))fn,
+>       |                                                       ^~~~~~~~~~~~~~~~~~~~
 > 
-> Fixes: 6db6e70a17f6 ("wifi: ath12k: Introduce the container for mac80211 hw")
+> Change this one instance back to passing a void pointer so it can be
+> used with the timer callback interface.
+> 
+> Fixes: d89a4c80601d ("staging: brcm80211: removed void * from softmac phy")
 > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-Nathan already fixed this:
-
-https://git.kernel.org/kvalo/ath/c/04edb5dc68f4
-
-Patch set to Rejected.
+I guess this should go to wireless tree?
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240213100912.459018-1-arnd@kernel.org/
+https://patchwork.kernel.org/project/linux-wireless/patch/20240213100548.457854-1-arnd@kernel.org/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
