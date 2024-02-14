@@ -1,224 +1,156 @@
-Return-Path: <linux-wireless+bounces-3581-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3582-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9B7C8547B2
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Feb 2024 12:03:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 286558547CB
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Feb 2024 12:10:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5CE01B208B7
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Feb 2024 11:03:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0AAB1F2375B
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Feb 2024 11:10:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCF1518E06;
-	Wed, 14 Feb 2024 11:03:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D77FF18E28;
+	Wed, 14 Feb 2024 11:10:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="K/XwVZ/f"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="OvRbOOSI"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDFAC1643A;
-	Wed, 14 Feb 2024 11:03:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95CA31AAD7;
+	Wed, 14 Feb 2024 11:10:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707908601; cv=none; b=kbs/3jlbdOUCKbRu/EcdvOGC+ISm1hzv0AH8JtMSUa3j/YCxN0/Y2yPv36dca343fpwTfByy337L1DQbUG5T8G8xM+8HYAkLDHcNyu8hzJxrjAuIwVc8t7b5U2W6wnb2qsGu7hbbOXD+uBuB3Q97x7hvvuvwymIX6HXFpscELow=
+	t=1707909046; cv=none; b=kF8KVfFAQXCMattsGi2E/vf6hAinJ6RkR769JtgwHdH1dEjwQTooKAUW8mgh1WTm9ppYIeYF2rgn/RZ/ovofbZT0Au2USR+xJM8/tTm7albKLRu6QF+vJA1IcGtdzqXw3CbBN/PsThu7sPRcK4NU6wzHGwK1OYhPyaUsbzfhILI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707908601; c=relaxed/simple;
-	bh=PtSNdfznwWbqhoQQFKH7/wNCSFcUYs/wTcLDeBDVllI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tZMgZf/R9Ibw6o3JXeRcpMTHmlp/XadqIYYUrftaVHh3SS3n3KCo47lRcbxCboXQYwDud+fF9ONqWQfrU3TYIL4JZLai5rfRd5EylLxldda+bhFXT4jaGVucowQaKBNFiXF2/xhwVmX/GcmkkTOieYZSVpfyr/9tgFeIG10Zgto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=K/XwVZ/f; arc=none smtp.client-ip=217.70.183.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 5B86DFF80B;
-	Wed, 14 Feb 2024 11:03:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1707908597;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JbA2a2kIur1xwjNXnDhSYrVB1/GrR0EMUnG/VimlxgE=;
-	b=K/XwVZ/fB4w4yax/6+s7vgiB6S4qHn0RubxBy/oW9XrM2CGyyhllgvgGkRshU3bL+UjvrU
-	Hd1BcPEOPEchireGDLgD7pCdrPN5VH8yopOav4qSn3pT00s+yIaoFkjJN+YZdSKcbJWayO
-	Z/JyRVg8klPka2AIsb/mrit5xkBihPAT9tl3v7cq7Z0+UvtqVK8bwNWDSPu+nmnrbRyWLu
-	2kxaSg1+aMIis6xWCNKufUi/C1T2IBMgsDFayKGwrxd2q69lwfJymy/+B/Wq0jDgfIOXnV
-	H7K1C+GV2A7zExwsO+PhlYMSyBsHYAEwR7zcxA/SndS/4USUzzKC0y9x2LMqKQ==
-Message-ID: <912f4e56-bd30-48c1-bf24-dd728188b1c5@bootlin.com>
-Date: Wed, 14 Feb 2024 12:03:15 +0100
+	s=arc-20240116; t=1707909046; c=relaxed/simple;
+	bh=9O5DIDFBAqx03xsK73U6jOiGef+NZ2P6kKYuXVsb18E=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ZcyFFSLX5Y7QjsS+8WKa/kYgIA3k3CSUYORFRZcOgw5VAKj9DUJY3opdViuIXfUezVUM5WDiga3bKzL8Vg2Lu7EXG9a8ElFuBWMlmYZwvQrmf3XkP6ZoYGvEA/4bHcGtbU1V8sA9AkP39sK/uqmlIbm2Adus05wvMkbDko2u+oI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=OvRbOOSI; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=QC2dNpeJICxTa3mVBoBS5p5m+HVNapWbR+e8emGMp/U=;
+	t=1707909044; x=1709118644; b=OvRbOOSI46axrMp3CIfDeJBctW/ffm8Fc4hZeiPJGtir95n
+	jsAc4Lw70T2KjHkTXdNux6eKrH9DCbtV+748ua1ZFSN/3eREeZAuQxAJiXf69Wp6En8OpzlWD+FkA
+	1P1CBA3MayWfSsSrSMlaJ5r3waQ7V9GYYfrTQNOGMleGbGqQaPmbieblySEtFHQ+yVC01bCZ9Ndg6
+	r/+F2UYb7HI0apWnl1aoZRMja2ed6CMQKUMpzC9aJTFobgajlKAB/jWSiOaDd9oCBt95zvITw/QzB
+	dUtt41MT9sIUWpzGp93Wk2TZKqFkkCN4yAdQKM5UJ7GTQ3E365MkXvtLwd7grFlA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1raCUR-0000000922G-31tB;
+	Wed, 14 Feb 2024 11:27:43 +0100
+Message-ID: <6641f3f90bdc1d24f3a7fd795be672ce02685630.camel@sipsolutions.net>
+Subject: Re: [PATCH 1/1] wifi: nl80211: Add support for plumbing SAE groups
+ to driver
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Kalle Valo <kvalo@kernel.org>, Vinayak Yadawad
+	 <vinayak.yadawad@broadcom.com>, linux-wireless@vger.kernel.org, 
+	jithu.jance@broadcom.com, Arend van Spriel <arend.vanspriel@broadcom.com>, 
+	netdev@vger.kernel.org
+Date: Wed, 14 Feb 2024 11:27:42 +0100
+In-Reply-To: <20240213174314.26982cd8@kernel.org>
+References: 
+	<309965e8ef4d220053ca7e6bd34393f892ea1bb8.1707486287.git.vinayak.yadawad@broadcom.com>
+	 <87mss6f8jh.fsf@kernel.org>
+	 <2c38eaed47808a076b6986412f92bb955b0599c3.camel@sipsolutions.net>
+	 <20240213174314.26982cd8@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: drivers/net/wireless/microchip/wilc1000/cfg80211.c:361:42:
- sparse: sparse: incorrect type in assignment (different base types)
-Content-Language: en-US
-To: Johannes Berg <johannes@sipsolutions.net>, Kalle Valo <kvalo@kernel.org>,
- kernel test robot <lkp@intel.com>
-Cc: Ajay Singh <ajay.kathat@microchip.com>, oe-kbuild-all@lists.linux.dev,
- linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org
-References: <202308290615.lUTIgqUl-lkp@intel.com> <877cpev0pn.fsf@kernel.org>
- <87a5uatfl1.fsf@kernel.org>
- <09eeb7d4-c922-45ee-a1ac-59942153dbce@bootlin.com>
- <e9501c13be127b8b9d0c769a27d8d38636875f0f.camel@sipsolutions.net>
-From: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-In-Reply-To: <e9501c13be127b8b9d0c769a27d8d38636875f0f.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: alexis.lothore@bootlin.com
+X-malware-bazaar: not-scanned
 
-On 2/14/24 10:29, Johannes Berg wrote:
-> Hi,
-> 
->>> For reference here's the old discussion:
->>>
->>> https://patchwork.kernel.org/project/linux-wireless/patch/20220720160302.231516-1-ajay.kathat@microchip.com/
->>>
->>> Any volunteers to help fix this? I would prefers fixes for issues like
->>> this compared to questionable random cleanups we always get.
->>
->> I'm bumping this old thread because it looks like the sparse warning is still
->> present in WILC driver, and I would gladly help getting rid of it, but since
->> there's already been a fair amount of discussions around it, I am not sure what
->> is expected/what should be done. Here is my understanding so far:
->> - Ajay has proposed a patch ([1]) which indeed fixes the warning but involves
->> many casts
->> - Johannes and Jouni then gave details about the original issue leading to those
->> casts ([2]): wpa_supplicant somehow forces the AKM suites values to be be32 at
->> some point, while it should be treated in host endianness
->> - as pointed by Ajay, the corresponding fix has been made since then by Jouni in
->> wpa_supplicant ([3]). The fix make sure to handle key_mgmt_suite in host
->> endianness AND to keep compatibility with current drivers having the be32 fix. -
-> 
-> Am I confused, or is the change [3] in the other direction?
-> 
-> From what I see, the code there (now changed again, btw) is about
-> reading the value *from the driver*.
+On Tue, 2024-02-13 at 17:43 -0800, Jakub Kicinski wrote:
+> I may be missing the point but is there any official way we can
+> designate level of vendor involvement? MAINTAINERS seems like=20
+> the most basic, and we have
+>=20
+> BROADCOM BRCM80211 IEEE802.11 WIRELESS DRIVERS
+> M:	Arend van Spriel <arend.vanspriel@broadcom.com>
+> L:	linux-wireless@vger.kernel.org
+> L:	brcm80211@lists.linux.dev
+> L:	brcm80211-dev-list.pdl@broadcom.com
+> S:	Supported
+> F:	drivers/net/wireless/broadcom/brcm80211/
+> F:	include/linux/platform_data/brcmfmac.h
+>=20
+> where (for the uninitiated):
+>=20
+>    Supported:	Someone is actually paid to look after this.
+>=20
+> It doesn't seem like Arend is afforded much paid time "to look after
+> this".
 
-Ah, you are right, so [3] is rather about supporting drivers sending values with
-host endianness, while interface historically expects big endian :/
-> 
-> The driver change is about getting the value *from the supplicant*.
-> 
-> And the _outgoing_ code (sending it to the driver) from the supplicant
-> has - as far as I can tell - been putting it into the attribute in host
-> byte order forever? See commit cfaab58007b4 ("nl80211: Connect API
-> support").
-> 
-> 
-> Aha! So, I'm not _completely_ confused, 
+I don't know if that's even the core of my complaint. I don't know if
+it's true, but let's assume Arend _does_ get sufficient time to take
+care of the driver.
 
-So I am the one confused :) Thanks for the clarification. I did not dig enough,
-and since the cast is done right at connect message reception, I assumed wrongly
-that the issue was on the supplicant->driver path.
+The core of the complaint here is that regardless of that, Broadcom is
+treating the driver as a dead end, a fork in the road they're no longer
+travelling. So "supporting" that driver may all be well, in the sense
+that it's there for the existing hardware/firmware that it supports.
 
-> however, the only use of this value in this driver is sending it back to the supplicant!> Which seems entirely wrong, since the supplicant assumes basically anything
-will be
-> handled?
+But! It's not getting new features nor support for new devices, I don't
+even know if it still supports newer firmware images for the devices it
+already supports. Some new driver support is coming in by way of the
+Apple-support folks, but you saw how that's going ...
 
-Not sure to fully understand why its wrong (supplicant seems to expect AKM
-suites to be provided) , but I may be lacking more general understanding about
-the external auth process.
-Or do you mean that AKM suites should be enforced to RSN_AUTH_KEY_MGMT_SAE only
-in this driver->supplicant call (and so, not forward any possible value ?)
+Yet at the same time Broadcom _are_ sending patches to the core wifi
+stack, in order to support new features/offloads for their new firmware
+builds etc. on some/other/new devices. New features for the stack where
+we cannot actually see the driver implementation, maintain it, etc. Not
+that in many cases the driver implementation would be all that
+interesting, but it's still pushing code and work into upstream that it
+will never benefit from.
 
-> (But - the firmware also has a parameter key_mgmt_suites [in struct
-> wilc_external_auth_param] which is never even set in
-> wilc_set_external_auth_param??)
-> 
-> 
-> Also note that the supplicant will *only* read RSN_AUTH_KEY_MGMT_SAE in
-> big endian, so you've already lost here pretty much?
+So this disconnect really is the complaint: Broadcom want us to maintain
+the stack for them, do things for them like in this patch in support of
+their latest firmware builds, but they definitely do _not_ want to do
+anything upstream that would actually support these new things they
+have.
 
-So we have to keep some big endian conversion on the driver/nl80211 ->
-supplicant path, IIUC
+At which point, yeah, I'm putting my foot down and saying this has to
+stop. I really don't (**) care about Broadcom doing their own vendor-
+specific APIs if there's zero chance the things they're needed for will
+ever land upstream anyway.
 
+(**) No longer. I used to think that being more open about this would
+encourage folks to start a journey of contributing more upstream, but
+clearly that hasn't worked out.
 
->>  - It could have allowed to simply get rid of the all casts on AKM suites in
->> wilc driver ([4]), but then new kernel/drivers would break with existing
->> userspace, so it is not an option
-> 
-> I am wondering if it works at all ...
-> 
->> Now, I see multiple options to fix the sparse warning:
->> - apply the same fix as for wpa_supplicant ([3]) in wilc driver (so basically,
->> become compatible with both endianness)
-> 
-> But this cannot be done! On input to the driver, the value is in host
-> byte order always. The question is on output - and there you cannot
-> detect it.
+Now this is why I used to be more open: I will also most definitely not
+accept all the vendor APIs upstream if someone later decides they do
+want an upstream driver, and then push all the vendor stuff on grounds
+that "it's used now and we have to support it" ... We don't, at least
+not upstream, what you sell to your customers really isn't our problem.
 
-Yeah, this suggestion is wrong because of the misunderstanding clarified above.
+(And to be honest, if customers cared, we'd not be in this position)
 
->> - apply the same fix as for wpa_supplicant ([3]), not in wilc but in nl80211
->> (may need to update not only wilc but any driver having trailing be32 cast on
->> AKM suites)
+> On the Ethernet side I have a nebulous hope to require vendors who want
+> the "Supported" status to run our in-tree tests against their HW daily.
+> As a way to trigger the loss of status. Otherwise it's hard to catch
+> people drifting away.
 
-So to fix my initial suggestion, it is not "doing the same fix" but rather "move
-the be conversion from the driver to nl80211 layer". Which matches in fact what
-you are suggesting below.
+Every day seems a bit excessive? OTOH, every day is a good way of saying
+"you really have to automate this", but then once you do that, maybe you
+don't need to pay anyone to really maintain it, beyond trying to keep
+the tests running?
 
-> That might even work? Well, not the same fix, since again input vs.
-> output, but something like this:
-> 
-> --- a/net/wireless/nl80211.c
-> +++ b/net/wireless/nl80211.c
-> @@ -20136,9 +20136,27 @@ int cfg80211_external_auth_request(struct net_device *dev,
->  	if (!hdr)
->  		goto nla_put_failure;
->  
-> +	/*
-> +	 * Some drivers and due to that userspace (wpa_supplicant) were
-> +	 * in the past interpreting this value as a big-endian value,
-> +	 * at a time where only WLAN_AKM_SUITE_SAE was used. This is now
-> +	 * fixed, but for the benefit of older wpa_supplicant versions,
-> +	 * send this particular value in big-endian. Note that newer
-> +	 * wpa_supplicant will also detect this particular value in big
-> +	 * endian still, so it all continues to work.
-> +	 */
-> +	if (params->key_mgmt_suite == WLAN_AKM_SUITE_SAE) {
-> +		if (nla_put_be32(msg, NL80211_ATTR_AKM_SUITES,
-> +				 cpu_to_be32(WLAN_AKM_SUITE_SAE))
-> +			goto nla_put_failure;
-> +	} else {
-> +		if (nla_put_u32(msg, NL80211_ATTR_AKM_SUITES,
-> +				params->key_mgmt_suite)))
-> +			goto nla_put_failure;
-> +	}
-> +
->  	if (nla_put_u32(msg, NL80211_ATTR_WIPHY, rdev->wiphy_idx) ||
->  	    nla_put_u32(msg, NL80211_ATTR_IFINDEX, dev->ifindex) ||
-> -	    nla_put_u32(msg, NL80211_ATTR_AKM_SUITES, params->key_mgmt_suite) ||
->  	    nla_put_u32(msg, NL80211_ATTR_EXTERNAL_AUTH_ACTION,
->  			params->action) ||
->  	    nla_put(msg, NL80211_ATTR_BSSID, ETH_ALEN, params->bssid)
-> ||
+Also not sure what that status really implies, I think Broadcom would be
+quite happy to just mark the driver as orphaned...
 
-If this kind of fix is ok in nl80211, I can do some tests with it, see how it
-would affect other drivers ( I think there's only Quantenna driver which would
-be affected)
-
-Thanks,
-
-Alexis
-
->> - take the initial quick but not-so-nice double cast fix and call it a day
-> 
-> but that doesn't actually work for anything other than
-> WLAN_AKM_SUITE_SAE...
-
-
-> 
-> johannes
-> 
-
--- 
-Alexis Lothoré, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+johannes
 
