@@ -1,147 +1,142 @@
-Return-Path: <linux-wireless+bounces-3587-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3588-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA3E1854B35
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Feb 2024 15:17:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E46AC854B7D
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Feb 2024 15:34:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32807B213F5
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Feb 2024 14:17:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F3B91C21566
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Feb 2024 14:34:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AFD1524CA;
-	Wed, 14 Feb 2024 14:17:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AFA458210;
+	Wed, 14 Feb 2024 14:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="sHSn/v46"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="aEwF6wr7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3A845C15
-	for <linux-wireless@vger.kernel.org>; Wed, 14 Feb 2024 14:17:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09A2D43157
+	for <linux-wireless@vger.kernel.org>; Wed, 14 Feb 2024 14:34:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707920249; cv=none; b=cYToW+tbyQH+Ca1MmOSiOWscbJG4h7j2zHrdAXDkn6BEKcUandYMgIKK9a7nSquYV+B/rKUQD3gn1AkazpHmatp6oIT9ark5I6wQSGv6V/sdhONq6eGJiMi73nZgn9tU18grx851lTc5xKigWQjCqdYTRGZ2vdunTqkNl1cOKrM=
+	t=1707921285; cv=none; b=Jv7CvJOMiviFTuaIlcASUYimU4CYtc+YwIARMvLrGLXH1D1NtB9yY3SwaH/ywFCVH5UyIZqRX3qWNT56W2Jw1Fn+JbwH7fGGdkr5DWu/F1PjhJ2/fmwCZh5n5TfAmAb61hUojmLWXajnWReA1qhwSnISN3str9zPeHoCZGpLDT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707920249; c=relaxed/simple;
-	bh=kKI5nDHznsvepT7WX3hKw0v1bt52p6U4Vm34fGClZtc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OJxpIOnJ5LTkQQYQAKEG7x28V+eQassEjVJxwndtObZ6e9CQ50mTSQqFj746HsG6dNO/HRFjr0EDYKOrqkE1dJYQWVxFC7hLxXbK7c0oHpoBQZ54KC7zUrJGNRn5DaiNldZFCE5ScN964TG5kDIr4JFTef1sIKWe8xcqqzwn6FE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=sHSn/v46; arc=none smtp.client-ip=213.160.73.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1707920239;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aUsO+IzRJ5+2bOn6TgFrFIgxHQIR2wb0vuBdLhpxUdI=;
-	b=sHSn/v46EYiEniftvRMf+ygjBfZUDonOOnp8yXl2pR0fghGLjRYP5BKSucLu16jkYFSeSy
-	7EInFSYSV7TntobV6/Eunz9vLjVR5aejY/+Q1B3FTSQI8lpx33h4lfmIbbZ8+zPSxBnQiC
-	p1g1jLJve1KtG6vfY7MuSj/RXL1NUas=
-From: Sven Eckelmann <sven@narfation.org>
-To: ath12k@lists.infradead.org, Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-Cc: linux-wireless@vger.kernel.org,
- Ganesh Babu Jothiram <quic_gjothira@quicinc.com>,
- Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-Subject:
- Re: [PATCH v3 12/13] wifi: ath12k: Read board id to support split-PHY QCN9274
-Date: Wed, 14 Feb 2024 15:17:11 +0100
-Message-ID: <23399810.6Emhk5qWAg@ripper>
-In-Reply-To: <20240129065724.2310207-13-quic_rajkbhag@quicinc.com>
-References:
- <20240129065724.2310207-1-quic_rajkbhag@quicinc.com>
- <20240129065724.2310207-13-quic_rajkbhag@quicinc.com>
+	s=arc-20240116; t=1707921285; c=relaxed/simple;
+	bh=tsYInJ51PUy2CmJYVm5/6JM1F+CAabp08OzRmn7ZP+g=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=HB0Cr3he1JEKOacO4fciW2NErgTMFXn5EGagkcQHUJNy0uYzY7A4MOxpMswbdiAm1sCl1PPnARsEU/gIo8gvDqsL4zpkafexMGSodg8W2jgTOvSisF9L5pF3LeDsZF4O8zDQ2uj+KzpbGQ0HPLxjfyGd9M0meoGCHC+a2KUFRJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=aEwF6wr7; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=y7D0ZCQM39P9yAtVSGieH7wkwCxdhwDLnwLqRoN3MC0=;
+	t=1707921283; x=1709130883; b=aEwF6wr7h6q1kIGAqigGYbUedKFxiJc5becN/Uj4lYvp8XY
+	uMLjCzF7Qoz2QjO76Lu9y3FMePmdoxa5RSfAgFznPbhuaH4pYeHL4SG5hNPV2Pov8tBY+1zO7av/0
+	VBj4PcMjjjhI3UyboA0UY/hRLXCo7EiVAKtk4EQywFZ4LDcMJF/y0P6Hjbr0d+i5tB04MvQUq8HFe
+	FxDBr8p62uvHirDPjbjFp8zr4mNQzLSvvPxZUQNMXW12BSxGoi/+BGitOa8Tn6a+54f4RZKND6lsP
+	QbMJhHjiN/cgpf5WVURmK+WQujYu7w8KXIplZCHvu2P51+Sni8i309gd2MWNOwRQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1raGLQ-00000009AEG-1Bc6;
+	Wed, 14 Feb 2024 15:34:40 +0100
+Message-ID: <311c594bddde32bacd45acbfa6f40fa7670e51c6.camel@sipsolutions.net>
+Subject: Re: brcmfmac AP mode
+From: Johannes Berg <johannes@sipsolutions.net>
+To: James Prestwood <prestwoj@gmail.com>, KeithG <ys3al35l@gmail.com>, 
+	linux-wireless@vger.kernel.org
+Date: Wed, 14 Feb 2024 15:34:39 +0100
+In-Reply-To: <e0825627-4652-4c5a-ae29-33c270a38bc0@gmail.com>
+References: 
+	<CAG17S_MOiC43F2wXMG-Y6nQgitZQJs18jESQJrX+aC6=MQb6ew@mail.gmail.com>
+	 <e0825627-4652-4c5a-ae29-33c270a38bc0@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart2595327.Lt9SDvczpP";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
+X-malware-bazaar: not-scanned
 
---nextPart2595327.Lt9SDvczpP
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
-From: Sven Eckelmann <sven@narfation.org>
-Date: Wed, 14 Feb 2024 15:17:11 +0100
-Message-ID: <23399810.6Emhk5qWAg@ripper>
-In-Reply-To: <20240129065724.2310207-13-quic_rajkbhag@quicinc.com>
-MIME-Version: 1.0
+I have no experience with brcmfmac, but ...
 
-On Monday, 29 January 2024 07:57:23 CET Raj Kumar Bhagat wrote:
-> diff --git a/drivers/net/wireless/ath/ath12k/fw.c b/drivers/net/wireless/ath/ath12k/fw.c
-> index fbcf40c97792..5be4b2d4a19d 100644
-> --- a/drivers/net/wireless/ath/ath12k/fw.c
-> +++ b/drivers/net/wireless/ath/ath12k/fw.c
-> @@ -119,6 +119,13 @@ static int ath12k_fw_request_firmware_api_n(struct ath12k_base *ab,
-[...]
-> +		case ATH12K_FW_IE_AMSS_DUALMAC_IMAGE:
-> +			ath12k_dbg(ab, ATH12K_DBG_BOOT,
-> +				   "found dualmac fw image ie (%zd B)\n",
-> +				   ie_len);
-> +			ab->fw.amss_dualmac_data = data;
-> +			ab->fw.amss_dualmac_len = ie_len;
-> +			break;
->  		default:
->  			ath12k_warn(ab, "Unknown FW IE: %u\n", ie_id);
->  			break;
+>=20
+> I was helping Keith out here and wanted to provide a bit more=20
+> information. I found there were a few differences between IWD and=20
+> wpa_supplicant related to scanning which may aid in figuring out why=20
+> brcmfmac is behaving this way:
+>=20
+>  =C2=A0- IWD scans using the wdev ID where wpa_supplicant uses ifindex. N=
+ot=20
+> sure if this has anything to do with the difference behavior.
 
-> @@ -371,16 +375,43 @@ int ath12k_mhi_register(struct ath12k_pci *ab_pci)
-[...]
-> +	if (dualmac) {
-> +		if (ab->fw.amss_dualmac_data && ab->fw.amss_dualmac_len > 0) {
-> +			/* use MHI firmware file from firmware-N.bin */
-> +			mhi_ctrl->fw_data = ab->fw.amss_dualmac_data;
-> +			mhi_ctrl->fw_sz = ab->fw.amss_dualmac_len;
-> +		} else {
-> +			ath12k_warn(ab, "dualmac firmware IE not present in firmware-N.bin\n");
-> +			ret = -ENOENT;
-> +			goto free_controller;
-> +		}
+This is not even visible to the driver, it's entirely resolved in
+nl80211, so no impact here.
 
-I saw this now already multiple times that the source code was referencing the 
-firmware-N.bin (like we had with ath10k). But they aren't published anywhere. 
-I can't find a single one at:
+>  =C2=A0- Passive scans (which IWD prefers) seem to exacerbate the behavio=
+r.=20
+> Simple testing using "wpa_cli scan" showed wpa_supplicant was only using=
+=20
+> active scans. I also tested with iw and saw repeatable disconnects when=
+=20
+> passive scanning. Disconnects while using active scans (using iw) were=
+=20
+> much less frequent.
 
-* https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/tree/ath11k
-* https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/tree/ath12k
-* https://github.com/kvalo/ath11k-firmware
-* https://github.com/quic/upstream-wifi-fw
+This makes sense, especially if it's __ap rather than __p2p_go type,
+since it *has* to be off the channel for some time -- especially for
+passive scans it has to be off-channel for more than a typical interval
+to even do scanning correctly.
 
-So I find it odd that the new code now seems to depend on it without actually 
-providing these files anywhere.
+>  =C2=A0- Scanning with IWD, wpa_supplicant, or iw, passive or active, alw=
+ays=20
+> resulted in beacon loss for clients connected to the AP. This was 100%=
+=20
+> guaranteed. The clients just could recover when active scans were used=
+=20
+> over passive. But either way this does not seem like normal behavior,=20
+> the AP interface should still be beaconing on its active channel during=
+=20
+> a scan right?
 
-Might be good to have these soon in linux-firmware.git.
+That's "normal" in the sense that you have to be off the channel for
+scanning, and if you're off the channel you can't transmit beacons on
+it?
 
-Kind regards,
-	Sven
---nextPart2595327.Lt9SDvczpP
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
+For P2P GO rather than AP it should publish NoA descriptors in the
+beacon to let clients know there won't be a beacon.
 
------BEGIN PGP SIGNATURE-----
+Now it's perhaps possible to time - especially active - scanning so you
+can still beacon somewhat and inbetween, but I suppose the firmware
+doesn't do that here.
 
-iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAmXMy2gACgkQXYcKB8Em
-e0b/fBAApivgxL1eB/xBoiFI5KRag3uRnne7oFJYEr/cWtmYKmTkQtGRMjymqbJY
-qH24K2itQRxTbZtuJmz0YMAKT1wGleuy4bKDVtDrprDsDesvuaFV81tt6fBllIbb
-9Kk0JlbVTcV9rvjciEHO6mvjuajTgh6dmXS1XgYwOER3wZijLOf+GEon7XmDUOaz
-tdAS6dtmVPo+uXsKNpEAImV91n45aTF01xY3pXOGEWWVIKPqi5eJgIG4w8zLJa1b
-Jao/ACKGRKGSxHKrJJWQ3YTim62eK595PLyj949U725oxClqg4N96uY3qElyNk1q
-iYrUtcsvOwMHSMVVRXQunznD3isXNprC7M0mX45spmUGXTAmxLP2y6CCiSQXEyXo
-wjczNbhHoFZlSKLi8/hY0zvFwn3Ep+0oegKNBhjZMgUj8yiwHvIKeGkR667c4PEb
-lUJ4FZA08gDHEp0r4li0LXcf7Sz1qa4QIo+brX+UVFXU67aMoI/wPY153gteQLmf
-xx8AHegi9P+SavuZ3Dc321/icQQdFugjF7L2msvRHmqaFvBSYFfqpxVxhbXz5kPX
-OcbT9TuT2Ne0GZcISxBp7uqYaW67dwY/EYwgmhfIgiJ6RXNgW935ROiBiHsu86ZD
-jo3JB5cxvSe0XL0XGhVOs8WZPkBMYlqusS9ZfwQEnZGxjqjTK+E=
-=Ic38
------END PGP SIGNATURE-----
+In fact even outside of the beaconing, APs aren't expected to be off-
+channel, clients can send data to them after all. Again P2P GO solves
+that with NoA, but the spec itself has no good way to solve this and I'm
+not even sure it would even want to.
 
---nextPart2595327.Lt9SDvczpP--
+In any case, you could argue that starting AP and client and then
+scanning is pretty much _asking_ for trouble.
 
+> If this isn't possible or can't be done reliably then=20
+> should the interface combinations be changed to disallow concurrent sta=
+=20
+> + AP mode interfaces?
 
+Maybe it could restrict it to P2P GO instead of AP? But then people will
+anyway just notice that they can use P2P GO and connect arbitrary
+clients to it (not just P2P client), then those clients won't honour the
+NoA because they're not P2P, and then you're back to the exact same
+situation...
 
+johannes
 
