@@ -1,180 +1,145 @@
-Return-Path: <linux-wireless+bounces-3591-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3592-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C3CD854CEF
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Feb 2024 16:34:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC45A854DB2
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Feb 2024 17:08:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6CDBCB25180
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Feb 2024 15:34:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69DE51F2AEF9
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Feb 2024 16:08:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC9ED5C913;
-	Wed, 14 Feb 2024 15:34:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C5705F845;
+	Wed, 14 Feb 2024 16:08:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="icQpm+WR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oD1VNGcg"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 677E95C911;
-	Wed, 14 Feb 2024 15:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 553395EE7E;
+	Wed, 14 Feb 2024 16:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707924861; cv=none; b=l5dbOGSG6VkEyU/Qlst8WBfMdlavVZeDDn8NpQ9VjTTX7r1inSoOEWST5NX9Kdlyy1jG6ZcHv2WjZPqBN8YRczvr9X7/eEJ9Hv/zA22aEwJpr5rYO98EbJFtMiZaUs//5S0Xhukt6kCRZW6EWJ0q1rKLf4MyMU8nwTGtAyeBloM=
+	t=1707926912; cv=none; b=LAosxdQ1O7Mp1zMTO3J8DLUQzg3DKYc96YEnrXv0dJ6ZRmtZIuyMPV6BC3aL8yl5B8Db5o0+tPnBh7iSTwZ6VEVZOFH6uoP/Og0FiweqjOjnLK2hoTD1tpEAnO4ATQt1vJAfJkEplA6XRU1Kf1DukHwb1e0ZyeXu4HlqPOeHjFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707924861; c=relaxed/simple;
-	bh=RKBYgy5uDM/vBCiN9tBiPR2VpHrXnY5fjxo9XKnCKHs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OPpBQIPzdhETCMZWjvAcYR/1GtygqJBmxmgMNPy5VjB8Sm5Q5pc6CGT6xiVr3pbgJr12y4gTL7tHVoeNeet6U6ukd0LZSlwreNDOyjAwxxHwjiMvWVArzlFmwOp6ZYrd8Rt2hudaYOTQfrAaoPArWQPVPFtigeVhP/ZrvNRMSkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=icQpm+WR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FB29C433C7;
-	Wed, 14 Feb 2024 15:34:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707924860;
-	bh=RKBYgy5uDM/vBCiN9tBiPR2VpHrXnY5fjxo9XKnCKHs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=icQpm+WRIBCwFmc6GMZyzD7hfrgvougrzlFkQQkENhX2hhFv4tKvrybec2LZPF0p2
-	 g4w+i5vJ2cylBctHyW7nrVqW6KPr/tAxRaWjizo57DBTGi3DOfHaFJKv8GA3osWQx5
-	 zkW+b+wjJITdz0ojCZY2Ccjx1teFWK8MymvaLyFA=
-Date: Wed, 14 Feb 2024 16:34:17 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Bjorn Andersson <andersson@kernel.org>, Kalle Valo <kvalo@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Chris Morgan <macromorgan@hotmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	=?iso-8859-1?Q?N=EDcolas_F_=2E_R_=2E_A_=2E?= Prado <nfraprado@collabora.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Peng Fan <peng.fan@nxp.com>, Robert Richter <rrichter@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Terry Bowman <terry.bowman@amd.com>, Lukas Wunner <lukas@wunner.de>,
-	Huacai Chen <chenhuacai@kernel.org>, Alex Elder <elder@linaro.org>,
-	Srini Kandagatla <srinivas.kandagatla@linaro.org>,
-	Abel Vesa <abel.vesa@linaro.org>, linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: Re: Re: [PATCH 4/9] PCI: create platform devices for child OF
- nodes of the port node
-Message-ID: <2024021413-grumbling-unlivable-c145@gregkh>
-References: <20240117160748.37682-1-brgl@bgdev.pl>
- <20240117160748.37682-5-brgl@bgdev.pl>
- <2024011707-alibi-pregnancy-a64b@gregkh>
- <CAMRc=Mef7wxRccnfQ=EDLckpb1YN4DNLoC=AYL8v1LLJ=uFH2Q@mail.gmail.com>
- <2024011836-wok-treadmill-c517@gregkh>
- <d2he3ufg6m46zos4swww4t3peyq55blxhirsx37ou37rwqxmz2@5khumvic62je>
- <CAMRc=MeXJjpJhDjyn_P-SGo4rDnEuT9kGN5jAbRcuM_c7_aDzQ@mail.gmail.com>
- <oiwvcvu6wdmpvhss3t7uaqkl5q73mki5pz6liuv66bap4dr2mp@jtjjwzlvt6za>
- <CAMRc=McT8wt6UbKtyofkJo3WcyJ-S4d2MPp8oZmjWbX6LGbETQ@mail.gmail.com>
- <CAMRc=MeWgp27YcS=-dbYdN1is1MEuZ2ar=pW_p9oY0Nf1EbFHA@mail.gmail.com>
+	s=arc-20240116; t=1707926912; c=relaxed/simple;
+	bh=Keqc0+cgPcB6PjYjiWxkVk/Y5Lw2I720GhazT5VZGrU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=X0wftpzV5vfZXRnGivHoiU5Gt+5FuFJfXEjvqnAj/nSjnybvp2hI5UEjl5u9EbtOvEn6Z3KRkNAbpbpgMZmTDrFMxMv/BeXdoHrUOP5P8KHr7yLD/0M+jetCBvaFvoAF0w7JX+GKkefhaxL9ce6CiWKDHMrgE8C7msg4VCe0hnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oD1VNGcg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73A43C433C7;
+	Wed, 14 Feb 2024 16:08:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707926911;
+	bh=Keqc0+cgPcB6PjYjiWxkVk/Y5Lw2I720GhazT5VZGrU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=oD1VNGcgZd2xVXjigkrAxO02r5CpaErkSiS0mgkG/iy3pbXiTaruTBolsBIFZpUSW
+	 jMQFYHEEAfGGMFT6kHIPKsLWC1zu4Jpi86pUX1gKzGMxrq26uJ/bNeD9WsmMjd7Izh
+	 wsloL+StkMG6x5N/U37yiM8h6t35uaM253zVoViSDWPRPtZD8GABst8oj3ANVsyka1
+	 5HBxPKnh3+LKwa8hWrU8BvCYPllaqXr71usYSe3BgMeUqZDAKiX8Md6vkE/+OLKh5B
+	 w0HHq3Ii8Pzh/dc/dMFYkJeVaMWDvQq9AHAwW+21GL/fG9Zx3AAKQAnAaGnpyhvJ/s
+	 THdGimyL1qGnA==
+Date: Wed, 14 Feb 2024 08:08:30 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Kalle Valo <kvalo@kernel.org>, Vinayak Yadawad 
+ <vinayak.yadawad@broadcom.com>, linux-wireless@vger.kernel.org,
+ jithu.jance@broadcom.com, Arend van Spriel <arend.vanspriel@broadcom.com>,
+ netdev@vger.kernel.org
+Subject: Re: [PATCH 1/1] wifi: nl80211: Add support for plumbing SAE groups
+ to driver
+Message-ID: <20240214080830.65f6d649@kernel.org>
+In-Reply-To: <6641f3f90bdc1d24f3a7fd795be672ce02685630.camel@sipsolutions.net>
+References: <309965e8ef4d220053ca7e6bd34393f892ea1bb8.1707486287.git.vinayak.yadawad@broadcom.com>
+	<87mss6f8jh.fsf@kernel.org>
+	<2c38eaed47808a076b6986412f92bb955b0599c3.camel@sipsolutions.net>
+	<20240213174314.26982cd8@kernel.org>
+	<6641f3f90bdc1d24f3a7fd795be672ce02685630.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMRc=MeWgp27YcS=-dbYdN1is1MEuZ2ar=pW_p9oY0Nf1EbFHA@mail.gmail.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, Feb 07, 2024 at 05:32:38PM +0100, Bartosz Golaszewski wrote:
-> On Fri, Feb 2, 2024 at 11:02 AM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
-> >
-> > On Fri, Feb 2, 2024 at 1:03 AM Bjorn Andersson <andersson@kernel.org> wrote:
-> > >
-> >
-> > [snip]
-> >
-> > > > >
-> > > > > I believe I missed this part of the discussion, why does this need to be
-> > > > > a platform_device? What does the platform_bus bring that can't be
-> > > > > provided by some other bus?
-> > > > >
-> > > >
-> > > > Does it need to be a platform_device? No, of course not. Does it make
-> > > > sense for it to be one? Yes, for two reasons:
-> > > >
-> > > > 1. The ATH11K WLAN module is represented on the device tree like a
-> > > > platform device, we know it's always there and it consumes regulators
-> > > > from another platform device. The fact it uses PCIe doesn't change the
-> > > > fact that it is logically a platform device.
-> > >
-> > > Are you referring to the ath11k SNOC (firmware running on co-processor
-> > > in the SoC) variant?
-> > >
-> > > Afaict the PCIe-attached ath11k is not represented as a platform_device
-> > > in DeviceTree.
-> > >
-> >
-> > My bad. In RB5 it isn't (yet - I want to add it in the power
-> > sequencing series). It is in X13s though[1].
-> >
-> > > Said platform_device is also not a child under the PCIe bus, so this
-> > > would be a different platform_device...
-> > >
-> >
-> > It's the child of the PCIe port node but there's a reason for it to
-> > have the `compatible` property. It's because it's an entity of whose
-> > existence we are aware before the system boots.
-> >
-> > > > 2. The platform bus already provides us with the entire infrastructure
-> > > > that we'd now need to duplicate (possibly adding bugs) in order to
-> > > > introduce a "power sequencing bus".
-> > > >
-> > >
-> > > This is a perfectly reasonable desire. Look at our PMICs, they are full
-> > > of platform_devices. But through the years it's been said many times,
-> > > that this is not a valid or good reason for using platform_devices, and
-> > > as a result we have e.g. auxiliary bus.
-> > >
-> >
-> > Ok, so I cannot find this information anywhere (nor any example). Do
-> > you happen to know if the auxiliary bus offers any software node
-> > integration so that the `compatible` property from DT can get
-> > seamlessly mapped to auxiliary device IDs?
-> >
+On Wed, 14 Feb 2024 11:27:42 +0100 Johannes Berg wrote:
+> > It doesn't seem like Arend is afforded much paid time "to look after
+> > this".  
 > 
-> So I was just trying to port this to using the auxiliary bus, only to
-> find myself literally reimplementing functions from
-> drivers/of/device.c. I have a feeling that this is simply wrong. If
-> we're instantiating devices well defined on the device-tree then IMO
-> we *should* make them platform devices. Anything else and we'll be
-> reimplementing drivers/of/ because we will need to parse the device
-> nodes, check the compatible, match it against drivers etc. Things that
-> are already implemented for the platform bus and of_* APIs.
+> I don't know if that's even the core of my complaint. I don't know if
+> it's true, but let's assume Arend _does_ get sufficient time to take
+> care of the driver.
+
+Right, right, I know that's not the core of your complaint. More of an
+adjacent question about somehow reflecting the "vendor engagement level"
+
+> The core of the complaint here is that regardless of that, Broadcom is
+> treating the driver as a dead end, a fork in the road they're no longer
+> travelling. So "supporting" that driver may all be well, in the sense
+> that it's there for the existing hardware/firmware that it supports.
 > 
-> Greg: Could you chime in and confirm that it's alright to use the
-> platform bus here? Or maybe there is some infrastructure to create
-> auxiliary devices from software nodes?
+> But! It's not getting new features nor support for new devices, I don't
+> even know if it still supports newer firmware images for the devices it
+> already supports. Some new driver support is coming in by way of the
+> Apple-support folks, but you saw how that's going ...
 
-Note, I HATE the use of the platform bus here, but I don't have a better
-suggestion.
+To a large extent I think it's on us to define what "paid to look after
+a driver" means. Any line we draw, no matter how arbitrary, can be used
+by the developers to justify the time spent working upstream to their
+management. Or so I hope.
 
-I'd love for the auxbus to work, and if you can create that from
-software nodes, all the better!  But I don't think that's possible just
-yet, and you would end up implementing all the same stuff that the
-platform bus has today for this functionality, so I doubt it would be
-worth it.
+Since Broadcom didn't abandon client WiFi chipsets, wouldn't it be
+reasonable to expect someone to work on the upstream driver at least
+half time?
 
-thanks,
+> Yet at the same time Broadcom _are_ sending patches to the core wifi
+> stack, in order to support new features/offloads for their new firmware
+> builds etc. on some/other/new devices. New features for the stack where
+> we cannot actually see the driver implementation, maintain it, etc. Not
+> that in many cases the driver implementation would be all that
+> interesting, but it's still pushing code and work into upstream that it
+> will never benefit from.
+> 
+> So this disconnect really is the complaint: Broadcom want us to maintain
+> the stack for them, do things for them like in this patch in support of
+> their latest firmware builds, but they definitely do _not_ want to do
+> anything upstream that would actually support these new things they
+> have.
+> 
+> At which point, yeah, I'm putting my foot down and saying this has to
+> stop. I really don't (**) care about Broadcom doing their own vendor-
+> specific APIs if there's zero chance the things they're needed for will
+> ever land upstream anyway.
+> 
+> (**) No longer. I used to think that being more open about this would
+> encourage folks to start a journey of contributing more upstream, but
+> clearly that hasn't worked out.
+> 
+> Now this is why I used to be more open: I will also most definitely not
+> accept all the vendor APIs upstream if someone later decides they do
+> want an upstream driver, and then push all the vendor stuff on grounds
+> that "it's used now and we have to support it" ... We don't, at least
+> not upstream, what you sell to your customers really isn't our problem.
+> 
+> (And to be honest, if customers cared, we'd not be in this position)
+> 
+> > On the Ethernet side I have a nebulous hope to require vendors who want
+> > the "Supported" status to run our in-tree tests against their HW daily.
+> > As a way to trigger the loss of status. Otherwise it's hard to catch
+> > people drifting away.  
+> 
+> Every day seems a bit excessive? OTOH, every day is a good way of saying
+> "you really have to automate this", but then once you do that, maybe you
+> don't need to pay anyone to really maintain it, beyond trying to keep
+> the tests running?
 
-greg k-h
+Ack, I'm curious what would end up happening. It's not the primary
+reason for working on a shared test pool just a potential side benefit.
+
+> Also not sure what that status really implies, I think Broadcom would be
+> quite happy to just mark the driver as orphaned...
 
