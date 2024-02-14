@@ -1,141 +1,100 @@
-Return-Path: <linux-wireless+bounces-3589-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3590-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70228854C29
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Feb 2024 16:07:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90DD0854CAC
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Feb 2024 16:27:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F70D28C638
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Feb 2024 15:07:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 20290B24802
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Feb 2024 15:27:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D350F5B671;
-	Wed, 14 Feb 2024 15:07:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B944A5A0FB;
+	Wed, 14 Feb 2024 15:27:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="vXbfXUMK";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="nC7KHPYT"
+	dkim=pass (1024-bit key) header.d=bayrepo.ru header.i=@bayrepo.ru header.b="gdWAULGP"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com [64.147.123.25])
+Received: from forward200a.mail.yandex.net (forward200a.mail.yandex.net [178.154.239.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35DAD5B5DB;
-	Wed, 14 Feb 2024 15:07:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E1D25C905
+	for <linux-wireless@vger.kernel.org>; Wed, 14 Feb 2024 15:27:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.93
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707923246; cv=none; b=LJ3979lJiJ4xwZ8JICAuJXSasnOVOm2N2Z7mRvTFWnb/xESvhnzuYnCDhL9/ajkDXyLSJrBM3hfcDYTuE2CIfUx1ikPTFTo33ZAOPs+RwnRJGsKDCrh7987xA1uf/a0YLRaapuoTt3PCr3GYmKlteujOD50xIQdlm4wqlS1yJjo=
+	t=1707924450; cv=none; b=N1m+U5hHCJTN3KF21TX7ABEYvMI0TrETmpdGxFk7Tkk3GzlZOmu/yDIMQ+mudWmq8HYdQ0yCr7JqupYF7s3uZGItAIH2EkJ9wbHbQnVptz/XFqUc6ha5EjLeHb2O9sSap/ACjqwtffs0fCbtJFtTRQj8SRrAs45TmIzEwgdIIF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707923246; c=relaxed/simple;
-	bh=EkvVOPPnCFk/hyssrPlfM7oBLOoM7URKkRX378IAYG4=;
-	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
-	 Subject:Content-Type; b=CxJM8iMDQiCnAYowIM2HdWkybbqCHo5FlNmo1brib3lUVzffto1YqTlqLJLzK63HesDzvl+udSmFtVKKxriuNS+dxzKxsK5ncqA2trwKe1K2JXNd2uXh17NS9n3riG8R5mzGCq/pRWXIvEYRhxYaiLczMGLGwNNrl533ertQJw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=vXbfXUMK; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=nC7KHPYT; arc=none smtp.client-ip=64.147.123.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailout.west.internal (Postfix) with ESMTP id 213113200406;
-	Wed, 14 Feb 2024 10:07:23 -0500 (EST)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Wed, 14 Feb 2024 10:07:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1707923242; x=1708009642; bh=k14qTSuVKV
-	AB2YnlzxbQcFVIAQUz1+6sVcwSBNJ+Dw8=; b=vXbfXUMKvGE5joKax4FsSA1TMd
-	JR8uldw6+ZUxoWU5Vqqp2jL6OkMV/tDtyS47HsUk3YiRMjHFjMLSGiNdhorPFgGO
-	RRy7xGSCP5QBlMWCPFHTEhRSGxJoruukbxpo5kEYnhEB5PQ7zxgnifWtnxcCC0L6
-	e1xFLZKlE2IkPwRdCiV38KXsGHFWXuvP60FqECB1matsjb2oTeSztyvQmshjE2IP
-	tGfvBjEk40OFqSdiqImYh48iFxaqQ4c9MDC6tH9DkgigCmVZuWK4vWy+mn16c0F9
-	3ubz5cvzYUNiI0AxSnEWjahmfE2fLSbYDI33wWa1XEZ0ihaM7HFNlVXLbPbA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm3; t=1707923242; x=1708009642; bh=k14qTSuVKVAB2YnlzxbQcFVIAQUz
-	1+6sVcwSBNJ+Dw8=; b=nC7KHPYThl+xCy2/bCpYs3ACWcqSE8AUyfBBeR9TjIgP
-	pboNZMEppHDh4WyStVYV7i1R/JdhdoyzmAKoLvxkLoTDkQskmZUzK0t7iecRASH/
-	ERM1R60KVdZ1pBu3rKjVgbnZ0VPYnxGaK1txGzckO8qyNCLNANk/JHvo8pVgiJX/
-	FeXA8EWghnY13KZO+MvOyo+xP2snoYGQSbDqUHBPPMT8Nfh1PxlijLYBB8+fPNeX
-	xiLdc9xE0Rp06XxjCsewG1QOl1JJ6bGjZPxBRivWC2/XmW3+fcHELppw3xS9PMeY
-	usyBfyE5oBKiB4UNhbqmw0bPr5Gsr9DZSTVeyJK+mg==
-X-ME-Sender: <xms:KdfMZazRfSPYKA-lIEWo-QU4HTXq6YFCuQyf9ckgMNvM45f0_vWpTA>
-    <xme:KdfMZWTqeOFNmEevtYYy2hKSM0M0aVxfAGkMQZ0qYj2mscC-Gq3Ac2DrzHdR46nUA
-    oYhQfjN76fHRdpEKds>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudejgdejfecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
-    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
-    gvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedtkeet
-    ffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrh
-    hnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:KdfMZcX8oWYDH5y0Bi0OFhKJNj-B3Z1FIOmgBxKbuY-AxrcGWWkw6Q>
-    <xmx:KdfMZQgKkVytMwY2klCuFD94I4wclrLpjOoUbYMVCjoXsbXugSY8bQ>
-    <xmx:KdfMZcA5aCSb163aEsKznyV0tczpRtMUrbqPiUWj-WMH0fq9JvP_lw>
-    <xmx:KtfMZUZSwBP8nUi7MPJLCo_x-0c39bB7cFnLfd78jejOz1HaEKnstA>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 759D8B6008D; Wed, 14 Feb 2024 10:07:21 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-144-ge5821d614e-fm-20240125.002-ge5821d61
+	s=arc-20240116; t=1707924450; c=relaxed/simple;
+	bh=jaNf69VJ1xvMbnXNDlHg5IpZScoVZJV3mA5NmsLo8Fk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tYJsPIS1uDWsLPtKny01YbJoDe1BrbjILzdkq0ZWz+NoDa84acCOGVyRTHGyzBH9/EUZ/NpJIdXQVaH3tDVRlG/t4WB8+spnIG4zwSdExHmgAdjYPfDn5sVbouW8qlKkRB+ibcKpAwaTTdpwTSF+GsVOTsKIRwxsE3IgmIv269c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bayrepo.ru; spf=pass smtp.mailfrom=bayrepo.ru; dkim=pass (1024-bit key) header.d=bayrepo.ru header.i=@bayrepo.ru header.b=gdWAULGP; arc=none smtp.client-ip=178.154.239.93
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bayrepo.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bayrepo.ru
+Received: from forward103a.mail.yandex.net (forward103a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d103])
+	by forward200a.mail.yandex.net (Yandex) with ESMTPS id 99A726312B
+	for <linux-wireless@vger.kernel.org>; Wed, 14 Feb 2024 18:21:27 +0300 (MSK)
+Received: from mail-nwsmtp-smtp-production-main-74.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-74.vla.yp-c.yandex.net [IPv6:2a02:6b8:c1d:47bd:0:640:2492:0])
+	by forward103a.mail.yandex.net (Yandex) with ESMTPS id 3461D608F4;
+	Wed, 14 Feb 2024 18:21:20 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-74.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id ILqFUkBkBCg0-Ot3ycx0W;
+	Wed, 14 Feb 2024 18:21:19 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bayrepo.ru; s=mail;
+	t=1707924079; bh=LwzN9+oiYr7+0J/NCO6NxY48BDUzAtBfj4NOxkTVMOY=;
+	h=Message-Id:Date:Cc:Subject:To:From;
+	b=gdWAULGPlZb83W3oNbnGQyjviAe3KTP5PRKfKrWYns6+5Y+04j/2L7s8Cm2TkM6A8
+	 xVLwmFe6CGp3eEo78v3g7nmf1Nv8bHlBKPSPC231jFltPDkLsqk5KvKmosHXFP43P1
+	 xC0cIZRg7CCYwgWVZAVjSqueu8Lktz9fonfLQf5M=
+Authentication-Results: mail-nwsmtp-smtp-production-main-74.vla.yp-c.yandex.net; dkim=pass header.i=@bayrepo.ru
+From: Alexey Berezhok <a@bayrepo.ru>
+To: Arend van Spriel <aspriel@gmail.com>
+Cc: Kalle Valo <kvalo@kernel.org>,
+	linux-wireless@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Alexey Berezhok <a@bayrepo.ru>
+Subject: [PATCH] wifi: brcmfmac: do not pass hidden SSID attribute as value directly
+Date: Wed, 14 Feb 2024 18:21:17 +0300
+Message-Id: <20240214152117.14467-1-a@bayrepo.ru>
+X-Mailer: git-send-email 2.39.3
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <3f1c2d5a-ba98-4ae5-a7a0-0328b7552113@app.fastmail.com>
-In-Reply-To: <fd36f032-3bf6-4cae-a0d0-213604cef024@broadcom.com>
-References: <20240213100548.457854-1-arnd@kernel.org>
- <170790035300.3179441.9169506478575963188.kvalo@kernel.org>
- <fd36f032-3bf6-4cae-a0d0-213604cef024@broadcom.com>
-Date: Wed, 14 Feb 2024 16:07:00 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Arend van Spriel" <arend.vanspriel@broadcom.com>,
- "Kalle Valo" <kvalo@kernel.org>, "Arnd Bergmann" <arnd@kernel.org>
-Cc: "Nathan Chancellor" <nathan@kernel.org>,
- "Greg Kroah-Hartman" <gregkh@suse.de>,
- "Pieter-Paul Giesberts" <pieterpg@broadcom.com>,
- "Nick Desaulniers" <ndesaulniers@google.com>,
- "Bill Wendling" <morbo@google.com>, "Justin Stitt" <justinstitt@google.com>,
- "Artem Chernyshev" <artem.chernyshev@red-soft.ru>,
- "Jonas Gorski" <jonas.gorski@gmail.com>, linux-wireless@vger.kernel.org,
- brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
- linux-kernel@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH] brcmsmac: avoid function pointer casts
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-On Wed, Feb 14, 2024, at 10:23, Arend van Spriel wrote:
-> On 2/14/2024 9:45 AM, Kalle Valo wrote:
->> Arnd Bergmann <arnd@kernel.org> wrote:
->> 
->>> From: Arnd Bergmann <arnd@arndb.de>
->>>
->>> An old cleanup went a little too far and causes a warning with clang-16
->>> and higher as it breaks control flow integrity (KCFI) rules:
->>>
->>> drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy_shim.c:64:34: error: cast from 'void (*)(struct brcms_phy *)' to 'void (*)(void *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
->>>     64 |                         brcms_init_timer(physhim->wl, (void (*)(void *))fn,
->>>        |                                                       ^~~~~~~~~~~~~~~~~~~~
->>>
->>> Change this one instance back to passing a void pointer so it can be
->>> used with the timer callback interface.
->>>
->>> Fixes: d89a4c80601d ("staging: brcm80211: removed void * from softmac phy")
->>> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
->> 
->> I guess this should go to wireless tree?
->
-> This has been like this forever looking at the "staging" part in the 
-> Fixes tag. Is it really so urgent now? On the other hand I have no real 
-> problem with moving this to the wireless tree. Just wondering out loud.
+In 'brcmf_cfg80211_start_ap()', not assume that
+NL80211_HIDDEN_SSID_NOT_IN_USE is zero but prefer
+an explicit check instead.  Use local
+variable 'closednet' to pass in function call and
+use for error message. Compile tested only.
 
-It's probably fine either way. Some maintainers like to backport
-the warning fixes to stable kernels, others don't. Since the
-warning is currently only enabled at W=1 level, it's probably fine
-to fix it for linux-next only, but if we want the fix backported,
-it should also go into 6.8.
+Addition for the following patch
 
-    Arnd
+    commit f20073f50dfd1 ("wifi: brcmfmac: do not cast hidden SSID
+                           attribute value to boolean")
+
+Signed-off-by: Alexey Berezhok <a@bayrepo.ru>
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index 63f6e9436..cd6e01f23 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -5269,7 +5269,8 @@ brcmf_cfg80211_start_ap(struct wiphy *wiphy, struct net_device *ndev,
+ 		}
+ 
+ 		err = brcmf_fil_iovar_int_set(ifp, "closednet",
+-					      settings->hidden_ssid);
++				(settings->hidden_ssid == NL80211_HIDDEN_SSID_NOT_IN_USE) ?
++				0 : 1);
+ 		if (err) {
+ 			bphy_err(drvr, "%s closednet error (%d)\n",
+ 				 (settings->hidden_ssid != NL80211_HIDDEN_SSID_NOT_IN_USE) ?
+-- 
+2.39.3
+
 
