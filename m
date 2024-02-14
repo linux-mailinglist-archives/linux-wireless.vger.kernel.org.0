@@ -1,197 +1,123 @@
-Return-Path: <linux-wireless+bounces-3576-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3577-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50BA8854539
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Feb 2024 10:30:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D7D3854721
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Feb 2024 11:28:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74E2F1C21E29
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Feb 2024 09:30:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 803091C20365
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Feb 2024 10:28:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6421F12B69;
-	Wed, 14 Feb 2024 09:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F032717580;
+	Wed, 14 Feb 2024 10:28:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="gePLS812"
+	dkim=pass (1024-bit key) header.d=bayrepo.ru header.i=@bayrepo.ru header.b="SIChlB2F"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from forward502b.mail.yandex.net (forward502b.mail.yandex.net [178.154.239.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 613CC14AA1;
-	Wed, 14 Feb 2024 09:29:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0893A1757A
+	for <linux-wireless@vger.kernel.org>; Wed, 14 Feb 2024 10:28:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707902969; cv=none; b=O3PmMVfW5yF0WH6VHXrCTHPwkcGrx/WMATPrhhvYVQalwkXEJr+bu2BLByWHnepsAA51FMdf7d5miBmrLGqtuMQ8rC7iw9CEMbFoo4tT+6axINzzYjtCSvldZAUgllO+VpaabTPyTZVDDt4Pv7hwc1Uqh7Nfnd5crJ9VSH46dWk=
+	t=1707906520; cv=none; b=VqPKsiZTyx0Q0Hxh/ZNSCqvG9rgILrnxXYBB7CAjVffEPnw1flsQxAowFOHttoUxq00s95D0wmepTp9SljXMZ4XQRZUdLJ5nS5VsAHyT0WQvtzNIiy8Xm5uSsF1Lxs/RUbnmCKxY29aqlRzecbe6GM4ftE6CSlyBbRrA3jXC5U0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707902969; c=relaxed/simple;
-	bh=0XiNv1KotziqYARAAWkFR/MQpfouLSDecrGXQaDA/QI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=k7ravIiNkblBZDSkadRJyw1eRvwk8ar/Ajy3vIpEhPp4XKzcNmnn6YxM6GVwPNa60XO7hV3cOASJupTMe4XIpCVhWaBcEej8QHEJs79bGxgqh511nrdvS37t8w6eLk4oXWb5l6iUkIQBTxZOpBcv2MUI2FW0NaPNEv2+sgu+twQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=gePLS812; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=DMsNNekkWJ/JjHoe0kWlBpHaMMDBXiGlZ3fjhE/cR8Q=;
-	t=1707902966; x=1709112566; b=gePLS812Z0KxvSLnzPSdX4U6mkZN1coznXNxRFqQhZfGntw
-	+EkSRn6b0DkNSv5ZJ6tiJBhX+JcPZYM+uafUUG7R4Oe3Lh4hWeHscOrASqYeEBgpBm7fITLM+z1f3
-	1LxgcD/RYqb72N/zha3lAwpiYI3ADQMtTPSCnX6YKbdTeHCUGYhT8GFQQKDawcbUoRbrvvI+M2LwS
-	M2a6zbLCOXnXjlnWvASri3/5O3GmNmCMRKQ0KejHvBzUiN+ZmsekJ2YSZ71KYrSDybrf/d4DJgEYo
-	u1DvP+RHoE6780HdeYb+wr+RmmU7i0MxDUgkqHZTa2i2NwM9PiQosAzS9pGwGS7g==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1raBZr-00000008zts-30gi;
-	Wed, 14 Feb 2024 10:29:15 +0100
-Message-ID: <e9501c13be127b8b9d0c769a27d8d38636875f0f.camel@sipsolutions.net>
-Subject: Re: drivers/net/wireless/microchip/wilc1000/cfg80211.c:361:42:
- sparse: sparse: incorrect type in assignment (different base types)
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Alexis =?ISO-8859-1?Q?Lothor=E9?= <alexis.lothore@bootlin.com>, Kalle
-	Valo <kvalo@kernel.org>, kernel test robot <lkp@intel.com>
-Cc: Ajay Singh <ajay.kathat@microchip.com>, oe-kbuild-all@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org
-Date: Wed, 14 Feb 2024 10:29:14 +0100
-In-Reply-To: <09eeb7d4-c922-45ee-a1ac-59942153dbce@bootlin.com>
-References: <202308290615.lUTIgqUl-lkp@intel.com>
-	 <877cpev0pn.fsf@kernel.org> <87a5uatfl1.fsf@kernel.org>
-	 <09eeb7d4-c922-45ee-a1ac-59942153dbce@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
+	s=arc-20240116; t=1707906520; c=relaxed/simple;
+	bh=PpcHfW/ZggwkH9WEwy5MJQ6P/5eC8Lg83LzSg790zy0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GpgXSoMgc1AD/90n43jhRTt/vOoeuGMp51OADOnbsCDOihgp5lqyRgloOjLA4+Ka8jdiC6vOw1kwK+idwHa6zkEC1ipZtEmrgNdkZvWAL3sq2p+I7akfS8acWXH7iHgIl+S6vTgL6i41hWueNv43XKQNn76gPUACMfUMRoc9Myk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bayrepo.ru; spf=pass smtp.mailfrom=bayrepo.ru; dkim=pass (1024-bit key) header.d=bayrepo.ru header.i=@bayrepo.ru header.b=SIChlB2F; arc=none smtp.client-ip=178.154.239.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bayrepo.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bayrepo.ru
+Received: from mail-nwsmtp-smtp-production-main-57.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-57.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:5d87:0:640:2b2e:0])
+	by forward502b.mail.yandex.net (Yandex) with ESMTPS id 4C7C95E68D;
+	Wed, 14 Feb 2024 13:28:27 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-57.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id PSlj0FxOemI0-MqU0VB50;
+	Wed, 14 Feb 2024 13:28:26 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bayrepo.ru; s=mail;
+	t=1707906506; bh=5uTlJyK9lU4Q+F6A5n46inWCGUwcq5aW3FTy6THqbuE=;
+	h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+	b=SIChlB2FZFTZLnTivoQfpGSWbJZAfYvmLPFf6+gU91nCJFjNBIl7tj2eZ5JmBFxox
+	 XjfsKH7yIxZ+OemzYMsdudysFeJ3hyGMs5NnFhl8xA3J7cyoPdVbeZq45nK1wFAIry
+	 TtCtrFDXpp8zoZ8z3q8J9n+S0CO9HxMJWxrDkHRA=
+Authentication-Results: mail-nwsmtp-smtp-production-main-57.myt.yp-c.yandex.net; dkim=pass header.i=@bayrepo.ru
+Message-ID: <9032fcc0-e2c4-1e97-1eec-02c3727d3b2e@bayrepo.ru>
+Date: Wed, 14 Feb 2024 13:28:24 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH] wifi: brcmfmac: do not cast hidden SSID attribute value
+ to boolean
+Content-Language: ru, en-US
+To: Arend van Spriel <arend.vanspriel@broadcom.com>,
+ Kalle Valo <kvalo@kernel.org>
+Cc: Arend van Spriel <aspriel@gmail.com>, linux-wireless@vger.kernel.org,
+ lvc-project@linuxtesting.org
+References: <20240208085121.2430-1-a@bayrepo.ru>
+ <170775233602.2851594.8173116143852900695.kvalo@kernel.org>
+ <9667b492-d3d3-4b04-bef4-f507387a9261@broadcom.com>
+From: Alexey Berezhok <a@bayrepo.ru>
+In-Reply-To: <9667b492-d3d3-4b04-bef4-f507387a9261@broadcom.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi,
+12.02.2024 19:00, Arend van Spriel wrote:
+> On 2/12/2024 4:38 PM, Kalle Valo wrote:
+>> Alexey Berezhok <a@bayrepo.ru> wrote:
+>>
+>>> In 'brcmf_cfg80211_start_ap()', not assume that
+>>> NL80211_HIDDEN_SSID_NOT_IN_USE is zero but prefer
+>>> an explicit check instead. Compile tested only.
+>>>
+>>> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+>>>
+>>> Signed-off-by: Alexey Berezhok <a@bayrepo.ru>
+>>
+>> Patch applied to wireless-next.git, thanks.
+>>
+>> f20073f50dfd wifi: brcmfmac: do not cast hidden SSID attribute value 
+>> to boolean
+> 
+> Alexey,
+> 
+> Can you do a follow-up patch addressing my comment? If not I will do it 
+> myself.
+> 
+> Regards,
+> Arend
+> -- 
+> https://patchwork.kernel.org/project/linux-wireless/patch/20240208085121.2430-1-a@bayrepo.ru/
 
-> > For reference here's the old discussion:
-> >=20
-> > https://patchwork.kernel.org/project/linux-wireless/patch/2022072016030=
-2.231516-1-ajay.kathat@microchip.com/
-> >=20
-> > Any volunteers to help fix this? I would prefers fixes for issues like
-> > this compared to questionable random cleanups we always get.
->=20
-> I'm bumping this old thread because it looks like the sparse warning is s=
-till
-> present in WILC driver, and I would gladly help getting rid of it, but si=
-nce
-> there's already been a fair amount of discussions around it, I am not sur=
-e what
-> is expected/what should be done. Here is my understanding so far:
-> - Ajay has proposed a patch ([1]) which indeed fixes the warning but invo=
-lves
-> many casts
-> - Johannes and Jouni then gave details about the original issue leading t=
-o those
-> casts ([2]): wpa_supplicant somehow forces the AKM suites values to be be=
-32 at
-> some point, while it should be treated in host endianness
-> - as pointed by Ajay, the corresponding fix has been made since then by J=
-ouni in
-> wpa_supplicant ([3]). The fix make sure to handle key_mgmt_suite in host
-> endianness AND to keep compatibility with current drivers having the be32=
- fix. -
+Hello, do you mean this kind of modification:
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c 
+b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index 63f6e9436..d8f7bd5ce 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -5269,7 +5269,7 @@ brcmf_cfg80211_start_ap(struct wiphy *wiphy, 
+struct net_device *ndev,
+                 }
 
-Am I confused, or is the change [3] in the other direction?
+                 err = brcmf_fil_iovar_int_set(ifp, "closednet",
+-                                             settings->hidden_ssid);
++                                             (settings->hidden_ssid == 
+NL80211_HIDDEN_SSID_NOT_IN_USE? 0 : 1));
+                 if (err) {
+                         bphy_err(drvr, "%s closednet error (%d)\n",
+                                  (settings->hidden_ssid != 
+NL80211_HIDDEN_SSID_NOT_IN_USE) ?
 
-From what I see, the code there (now changed again, btw) is about
-reading the value *from the driver*.
+If so, I will make additional patch.
 
-The driver change is about getting the value *from the supplicant*.
+Regards,
+Alexey
 
-And the _outgoing_ code (sending it to the driver) from the supplicant
-has - as far as I can tell - been putting it into the attribute in host
-byte order forever? See commit cfaab58007b4 ("nl80211: Connect API
-support").
-
-
-Aha! So, I'm not _completely_ confused, however, the only use of this
-value in this driver is sending it back to the supplicant! Which seems
-entirely wrong, since the supplicant assumes basically anything will be
-handled?
-
-(But - the firmware also has a parameter key_mgmt_suites [in struct
-wilc_external_auth_param] which is never even set in
-wilc_set_external_auth_param??)
-
-
-Also note that the supplicant will *only* read RSN_AUTH_KEY_MGMT_SAE in
-big endian, so you've already lost here pretty much?
-
->  - It could have allowed to simply get rid of the all casts on AKM suites=
- in
-> wilc driver ([4]), but then new kernel/drivers would break with existing
-> userspace, so it is not an option
-
-I am wondering if it works at all ...
-
-> Now, I see multiple options to fix the sparse warning:
-> - apply the same fix as for wpa_supplicant ([3]) in wilc driver (so basic=
-ally,
-> become compatible with both endianness)
-
-But this cannot be done! On input to the driver, the value is in host
-byte order always. The question is on output - and there you cannot
-detect it.
-
-> - apply the same fix as for wpa_supplicant ([3]), not in wilc but in nl80=
-211
-> (may need to update not only wilc but any driver having trailing be32 cas=
-t on
-> AKM suites)
-
-That might even work? Well, not the same fix, since again input vs.
-output, but something like this:
-
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -20136,9 +20136,27 @@ int cfg80211_external_auth_request(struct net_devi=
-ce *dev,
- 	if (!hdr)
- 		goto nla_put_failure;
-=20
-+	/*
-+	 * Some drivers and due to that userspace (wpa_supplicant) were
-+	 * in the past interpreting this value as a big-endian value,
-+	 * at a time where only WLAN_AKM_SUITE_SAE was used. This is now
-+	 * fixed, but for the benefit of older wpa_supplicant versions,
-+	 * send this particular value in big-endian. Note that newer
-+	 * wpa_supplicant will also detect this particular value in big
-+	 * endian still, so it all continues to work.
-+	 */
-+	if (params->key_mgmt_suite =3D=3D WLAN_AKM_SUITE_SAE) {
-+		if (nla_put_be32(msg, NL80211_ATTR_AKM_SUITES,
-+				 cpu_to_be32(WLAN_AKM_SUITE_SAE))
-+			goto nla_put_failure;
-+	} else {
-+		if (nla_put_u32(msg, NL80211_ATTR_AKM_SUITES,
-+				params->key_mgmt_suite)))
-+			goto nla_put_failure;
-+	}
-+
- 	if (nla_put_u32(msg, NL80211_ATTR_WIPHY, rdev->wiphy_idx) ||
- 	    nla_put_u32(msg, NL80211_ATTR_IFINDEX, dev->ifindex) ||
--	    nla_put_u32(msg, NL80211_ATTR_AKM_SUITES, params->key_mgmt_suite) ||
- 	    nla_put_u32(msg, NL80211_ATTR_EXTERNAL_AUTH_ACTION,
- 			params->action) ||
- 	    nla_put(msg, NL80211_ATTR_BSSID, ETH_ALEN, params->bssid)
-||
-
-
-> - take the initial quick but not-so-nice double cast fix and call it a da=
-y
-
-but that doesn't actually work for anything other than
-WLAN_AKM_SUITE_SAE...
-
-johannes
 
