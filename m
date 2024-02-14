@@ -1,134 +1,133 @@
-Return-Path: <linux-wireless+bounces-3595-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3596-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 878C48551BF
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Feb 2024 19:12:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD7A4855276
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Feb 2024 19:43:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3AE052992F5
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Feb 2024 18:12:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87B2C2834FB
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Feb 2024 18:43:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80A0512A142;
-	Wed, 14 Feb 2024 18:09:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B92912F594;
+	Wed, 14 Feb 2024 18:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="V2P9hVhx"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="G9GFoIf8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 531051272D7
-	for <linux-wireless@vger.kernel.org>; Wed, 14 Feb 2024 18:09:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFB5D1272CD;
+	Wed, 14 Feb 2024 18:43:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707934149; cv=none; b=UOoZYbhbO/QvW22gvYcF/jdXJxWC1dcP3Q3+B6KNRIq7xHH+GDp9VSMDTIUvIlYn3X2JQ4ZAJKmpWlB7Z0O2Gw9jTmpjGlpjRPp7ySzQF8LMR87kPfJK8o+eKWmK+LK4ACql8fDERGikXh70tF8eSnWbRpHVRKIJpcTs6JXgcfo=
+	t=1707936217; cv=none; b=fW3g2VazBBMDLREnc32zuLzDYMwtshyck0Aet4Ndef8OC3cnvt1JJkgRGGdwhoS6Idjj3A0z6KQhfhunqRjFZ/QiQah0Q4q+PTXyNGAsPKJ7UotKBDfawz4JnNjqthFMuvCUdFzHB8o9kneqFOd0CeLSTkrUk43OEzctm8EVYfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707934149; c=relaxed/simple;
-	bh=Slk+qe7+wd3UQjJPJZX28GS89SLvGOhwEQPTnKc8Too=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=qkuoti2mHPMuzzjdZB8+m08yARjz5BgQ62WGVLfN4WKFiBjHmHIEcUrXUz58XlXxGa158CSNHGHSBZG0UjGOKgRgiuns8249fGRfQdD7CFMFgC2MTiE//+1SJ+wxnQP9eTImmyctTwv9Ot5oxL5Z66D4PcQgryIlvfTYXgw4PBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=V2P9hVhx; arc=none smtp.client-ip=148.163.129.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 5756FB00082;
-	Wed, 14 Feb 2024 18:08:59 +0000 (UTC)
-Received: from [192.168.100.159] (unknown [50.251.239.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id 9648013C2B0;
-	Wed, 14 Feb 2024 10:08:58 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 9648013C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1707934138;
-	bh=Slk+qe7+wd3UQjJPJZX28GS89SLvGOhwEQPTnKc8Too=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=V2P9hVhxRj26JlYVXKdUpnY1AaH4t1fxnXZ+o3h34zMNIJobhlxWmn7xDdQa53d7A
-	 RYg3wJsHoN920ijSVd0wQr+3iP4AW8FfTPblmoyei2inhWbor7j43cBPPNsBIeOMW9
-	 U59BIznvHhgI4hUImBe3ZCO8hS9SKkNaBmRrG/Bc=
-Message-ID: <35f63154-eb24-c279-9ae3-096f3aec75bc@candelatech.com>
-Date: Wed, 14 Feb 2024 10:08:58 -0800
+	s=arc-20240116; t=1707936217; c=relaxed/simple;
+	bh=gYRWH27SOIfQq47zFoDGqcvTqlyASrUc5BQdsxHgnNw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qv8INb5BtlDWiWuAkF0RZTZCTUMajoo70B+SAnWDMsB0waPOhIIpOIQB+8zlUAhjreBRk8swDwgA/GRNV+vE4MKHaywflaoRNohAdKucV7Nn03aLeFUUNeXkM3Ysl32u7skOQoVE9nYNGRAZAMwN4htWimT+KVdAyF6EZQGih/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=G9GFoIf8; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=hXjonGfScZcWjqKJ0PXiEEiqv2qLn9WjZ5Zcp9ryGXA=; t=1707936213; x=1709145813; 
+	b=G9GFoIf87RNgbphsQbd+pzvwuwOz5uDNbHZZoNnIOjtc6TO4EE6RtTBoZyPoqDhaepjyWnI8fl6
+	KYM3qA8CleftXEjXJzyn51fWJ2oPW4+xB45rBftQwTp0ZYEBn5wuj/WQMY3JOnmuzuFdjbeF+UHLS
+	iysq/B9r2WMk+T6MS6GmmgkH4Ijob0TDL+TibTxLxxY2ZIPOF3oEO0Pceae2W6SVT1Nx9SBI/JG6q
+	Y4zfuWZHbowYV9oMuJiKZz7XDwa3zo/U7BN1i+X3AB5WrZhOLlWqepll0MxhflVUzTDUz2HisBap3
+	rZ2+j0f0xwkgZrZjsd1JVDxd/r3eCv897DhA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1raKEE-00000009JMH-2apM;
+	Wed, 14 Feb 2024 19:43:30 +0100
+From: Johannes Berg <johannes@sipsolutions.net>
+To: netdev@vger.kernel.org
+Cc: linux-wireless@vger.kernel.org
+Subject: pull-request: wireless-2024-02-14
+Date: Wed, 14 Feb 2024 19:41:42 +0100
+Message-ID: <20240214184326.132813-3-johannes@sipsolutions.net>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: iwlwifi RFC related to iwl_mvm_tx_reclaim
-Content-Language: en-US
-To: "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>,
- linux-wireless <linux-wireless@vger.kernel.org>
-References: <c9b0c01e-acac-9f15-730f-a0ba991a68dc@candelatech.com>
- <MW5PR11MB581035988083537C57286DADA34E2@MW5PR11MB5810.namprd11.prod.outlook.com>
-From: Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <MW5PR11MB581035988083537C57286DADA34E2@MW5PR11MB5810.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MDID: 1707934140-Q2_W04j051EM
-X-MDID-O:
- us5;ut7;1707934140;Q2_W04j051EM;<greearb@candelatech.com>;b05365583a7ac22983513582f8b41fd7
+Content-Transfer-Encoding: 8bit
 
-On 2/13/24 22:08, Korenblit, Miriam Rachel wrote:
-> : iwlwifi RFC related to iwl_mvm_tx_reclaim
->>
->> Hello,
->>
->> I'm seeing a crash due to accessing an 'sta' object in this method that is '-2' as
->> integer.
->>
->> It fails the initial check for null STA, but I'm thinking it might should check for
->> IS_ERR(sta) as well.
->>
->> (I have my own patch that references sta before the IS_ERR check later in the
->> code, and this causes the crash I'm seeing.  I guess upstream will not crash in this
->> situation.).
->>
->> My question:  Is the patch below a preferred approach, or should I add special
->> checks to where I access sta and only exit the method lower where it already has
->> the IS_ERR(sta) check?
->>
->> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
->> b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
->> index 0567f4eefebc..bd3d2fe424cd 100644
->> --- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
->> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
->> @@ -2337,7 +2337,7 @@ static void iwl_mvm_tx_reclaim(struct iwl_mvm
->> *mvm, int sta_id, int tid,
->>           sta = rcu_dereference(mvm->fw_id_to_mac_id[sta_id]);
->>
->>           /* Reclaiming frames for a station that has been deleted ? */
->> -       if (WARN_ON_ONCE(!sta)) {
->> +       if (IS_ERR(sta) || !sta) {
->>                   rcu_read_unlock();
->>                   return;
->>           }
->>
-> 
-> Hi,
-> 
-> Did you see this: 2b3eb122342c?
-> 
-> This can explain why the code is how it is.
-> And no, you should not access the sta pointer before checking if IS_ERR.
+Hi,
 
-Thanks for the pointer.  I think if I ever see the WARN_ON_ONCE(!sta) hit then
-I'd want to just try to remove that and let the reclaim code work, and check for null in the IS_ERR() logic
-added by the patch you referenced.
+So this came later than I wanted, I simply forgot earlier.
+Not much to say about it, just a handful of fixes, mostly
+in iwlwifi.
 
-But I have not seen sta be NULL, and Johannes is fine with current code, so for now
-I think it is fine as is.
+As reported by Stephen earlier, this has a conflict against
+-next material, but once pulled into net I plan on pulling
+it into wireless-next to resolve that.
+
+Please pull and let us know if there's any problem.
 
 Thanks,
-Ben
-
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+johannes
 
 
+
+The following changes since commit 0647903efbc84b772325b4d24d9487e24d6d1e03:
+
+  wifi: mt76: mt7996: fix fortify warning (2024-02-05 20:00:45 +0200)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2024-02-14
+
+for you to fetch changes up to b7198383ef2debe748118996f627452281cf27d7:
+
+  wifi: iwlwifi: mvm: fix a crash when we run out of stations (2024-02-08 14:55:39 +0100)
+
+----------------------------------------------------------------
+Valentine's day edition, with just few fixes because
+that's how we love it ;-)
+
+iwlwifi:
+ - correct A3 in A-MSDUs
+ - fix crash when operating as AP and running out of station
+   slots to use
+ - clear link ID to correct some later checks against it
+ - fix error codes in SAR table loading
+ - fix error path in PPAG table read
+
+mac80211:
+ - reload a pointer after SKB may have changed
+   (only in certain monitor inject mode scenarios)
+
+----------------------------------------------------------------
+Dan Carpenter (2):
+      wifi: iwlwifi: Fix some error codes
+      wifi: iwlwifi: uninitialized variable in iwl_acpi_get_ppag_table()
+
+Daniel Gabay (1):
+      wifi: iwlwifi: mvm: use correct address 3 in A-MSDU
+
+Emmanuel Grumbach (1):
+      wifi: iwlwifi: mvm: fix a crash when we run out of stations
+
+Johannes Berg (1):
+      wifi: mac80211: reload info pointer in ieee80211_tx_dequeue()
+
+Miri Korenblit (1):
+      wifi: iwlwifi: clear link_id in time_event
+
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c       | 15 +++--
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c  |  3 +
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c      |  4 ++
+ .../net/wireless/intel/iwlwifi/mvm/time-event.c    |  3 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c        | 69 ++++++++++++++++++----
+ net/mac80211/tx.c                                  |  5 +-
+ 6 files changed, 80 insertions(+), 19 deletions(-)
 
