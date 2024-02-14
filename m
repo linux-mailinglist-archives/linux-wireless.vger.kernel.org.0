@@ -1,250 +1,197 @@
-Return-Path: <linux-wireless+bounces-3575-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3576-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D348285450E
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Feb 2024 10:24:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50BA8854539
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Feb 2024 10:30:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4370F1F2C49B
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Feb 2024 09:24:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74E2F1C21E29
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Feb 2024 09:30:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1792F12E54;
-	Wed, 14 Feb 2024 09:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6421F12B69;
+	Wed, 14 Feb 2024 09:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="dqV25x78"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="gePLS812"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A0BE12E44
-	for <linux-wireless@vger.kernel.org>; Wed, 14 Feb 2024 09:24:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 613CC14AA1;
+	Wed, 14 Feb 2024 09:29:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707902646; cv=none; b=ieauzlqUSeDXy7sBJT90pyHM901nwHij783uh+7i9dlyhuD5lZFOQeuvCK/UU55f2O4s9Avr+v7hx8Z+RgkF4bySo/1j5ff2Pc8aXEtkqQYiy0BIzS7jauUNNSIrcJrWXZVHY7qUxpCG6/4cendnkuK29kglMSOqxAUFDALJZMU=
+	t=1707902969; cv=none; b=O3PmMVfW5yF0WH6VHXrCTHPwkcGrx/WMATPrhhvYVQalwkXEJr+bu2BLByWHnepsAA51FMdf7d5miBmrLGqtuMQ8rC7iw9CEMbFoo4tT+6axINzzYjtCSvldZAUgllO+VpaabTPyTZVDDt4Pv7hwc1Uqh7Nfnd5crJ9VSH46dWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707902646; c=relaxed/simple;
-	bh=PH4ZvkCSuMiuQFj6ciYO1Ll3RedJ5ZJdYpqR8bE9APc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bxe2gf7jbcSXAJubEYUncL0dRgMfwUAU8xq29Z8m/KK+FBipCjkeEqZZWU0ETLJix4OmJO70+JY2rQW9Y81gpSH/CD0jORGopoWjFYbtq/p8IW4JrYGUe8fDnhbmgFMZc80DC/dmGZLvQS/0H84m7s7Y7k49hoTBMWY09yEHAfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=dqV25x78; arc=none smtp.client-ip=209.85.167.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-511a45f6a57so752672e87.2
-        for <linux-wireless@vger.kernel.org>; Wed, 14 Feb 2024 01:24:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1707902642; x=1708507442; darn=vger.kernel.org;
-        h=in-reply-to:autocrypt:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bByP+WUZAdTOTAyQXtVs8usJLG8hXFRkjYSaBrb/S0Y=;
-        b=dqV25x78jK9f1ZbfJxAdrwuyQM9bDj8i/5Db1JWZUEowR2VzkFeM31CBKd5VGLroo+
-         ml3ZNEkSzmhMazfiDloYleRudQAfS6b+8Zl9umqUvhPGTMhfw4aWe7SHx9N761p5a5EU
-         kTXRGzUYdHSHSVbJ8WVXa3PUlSUhcYENVp+t0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707902642; x=1708507442;
-        h=in-reply-to:autocrypt:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=bByP+WUZAdTOTAyQXtVs8usJLG8hXFRkjYSaBrb/S0Y=;
-        b=Ddv6l3p9uhe7k1nRETKzJWTC1RwFyr+qLDP9mbzjIYA7M9eGgFeivHsnkpqCJ/Qy12
-         78Kh63gxH70vbtjgr3hwZalDqUOU091jBbJczHzlNRRZDzt9SgYePQ8SIzoITO32FJm+
-         NH2bG9ebeF03WvAtvsvc9gkzS2RGE0sy/q4A/eIVogY+sOjqiKu3QacsqRcCT97GtS+J
-         jCPSPMflYzMAO3z1AVFYcQX4ISxkLk/VPdGo4lC7n2rQGyE9HQCIaqZ+8HfpE5btd55H
-         gXhUPJfNMNnkNJpGm6MXFS72UsGKGY0iPGjrf3iJgGNtvL44ioJf6chT7yMb3B+dIzZP
-         RCag==
-X-Forwarded-Encrypted: i=1; AJvYcCVVDLr7ytqte0sJTvTHMzK4NPmhmlB1mMNxa5w+G8gCHWEHxeCGPfnbJQlWCJiLIlm/crYkrhab6z5DSPih2ZxMozgFHgpA3j0D/MYIi+w=
-X-Gm-Message-State: AOJu0YyZJ0fl4gglMPR2HRE7rp9y+8TCU/4pNY3mLr/8a01TEb/Dw9SX
-	08BiWI/UQk5iufQJ3yALUQBGxmZ+qFRSmmzuxmXEy839wcNytg9KlkgwV1Euxw==
-X-Google-Smtp-Source: AGHT+IGTIYw9uhaezKnGSR1QoM5NlBYZkUcXJF8V3Tpfkyu7Mbf4hgxTwWPY/is0I3jI7ecpXSRIIQ==
-X-Received: by 2002:a19:7702:0:b0:511:19bf:fa0c with SMTP id s2-20020a197702000000b0051119bffa0cmr1594098lfc.56.1707902642166;
-        Wed, 14 Feb 2024 01:24:02 -0800 (PST)
-Received: from [192.168.178.55] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id v13-20020a05600c214d00b0040fdc7f4fcdsm1371785wml.4.2024.02.14.01.24.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 14 Feb 2024 01:24:01 -0800 (PST)
-Message-ID: <fd36f032-3bf6-4cae-a0d0-213604cef024@broadcom.com>
-Date: Wed, 14 Feb 2024 10:23:59 +0100
+	s=arc-20240116; t=1707902969; c=relaxed/simple;
+	bh=0XiNv1KotziqYARAAWkFR/MQpfouLSDecrGXQaDA/QI=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=k7ravIiNkblBZDSkadRJyw1eRvwk8ar/Ajy3vIpEhPp4XKzcNmnn6YxM6GVwPNa60XO7hV3cOASJupTMe4XIpCVhWaBcEej8QHEJs79bGxgqh511nrdvS37t8w6eLk4oXWb5l6iUkIQBTxZOpBcv2MUI2FW0NaPNEv2+sgu+twQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=gePLS812; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=DMsNNekkWJ/JjHoe0kWlBpHaMMDBXiGlZ3fjhE/cR8Q=;
+	t=1707902966; x=1709112566; b=gePLS812Z0KxvSLnzPSdX4U6mkZN1coznXNxRFqQhZfGntw
+	+EkSRn6b0DkNSv5ZJ6tiJBhX+JcPZYM+uafUUG7R4Oe3Lh4hWeHscOrASqYeEBgpBm7fITLM+z1f3
+	1LxgcD/RYqb72N/zha3lAwpiYI3ADQMtTPSCnX6YKbdTeHCUGYhT8GFQQKDawcbUoRbrvvI+M2LwS
+	M2a6zbLCOXnXjlnWvASri3/5O3GmNmCMRKQ0KejHvBzUiN+ZmsekJ2YSZ71KYrSDybrf/d4DJgEYo
+	u1DvP+RHoE6780HdeYb+wr+RmmU7i0MxDUgkqHZTa2i2NwM9PiQosAzS9pGwGS7g==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1raBZr-00000008zts-30gi;
+	Wed, 14 Feb 2024 10:29:15 +0100
+Message-ID: <e9501c13be127b8b9d0c769a27d8d38636875f0f.camel@sipsolutions.net>
+Subject: Re: drivers/net/wireless/microchip/wilc1000/cfg80211.c:361:42:
+ sparse: sparse: incorrect type in assignment (different base types)
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Alexis =?ISO-8859-1?Q?Lothor=E9?= <alexis.lothore@bootlin.com>, Kalle
+	Valo <kvalo@kernel.org>, kernel test robot <lkp@intel.com>
+Cc: Ajay Singh <ajay.kathat@microchip.com>, oe-kbuild-all@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org
+Date: Wed, 14 Feb 2024 10:29:14 +0100
+In-Reply-To: <09eeb7d4-c922-45ee-a1ac-59942153dbce@bootlin.com>
+References: <202308290615.lUTIgqUl-lkp@intel.com>
+	 <877cpev0pn.fsf@kernel.org> <87a5uatfl1.fsf@kernel.org>
+	 <09eeb7d4-c922-45ee-a1ac-59942153dbce@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] brcmsmac: avoid function pointer casts
-To: Kalle Valo <kvalo@kernel.org>, Arnd Bergmann <arnd@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>, Greg Kroah-Hartman
- <gregkh@suse.de>, Pieter-Paul Giesberts <pieterpg@broadcom.com>,
- Arnd Bergmann <arnd@arndb.de>, Nick Desaulniers <ndesaulniers@google.com>,
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- Artem Chernyshev <artem.chernyshev@red-soft.ru>,
- Jonas Gorski <jonas.gorski@gmail.com>, linux-wireless@vger.kernel.org,
- brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
- linux-kernel@vger.kernel.org, llvm@lists.linux.dev
-References: <20240213100548.457854-1-arnd@kernel.org>
- <170790035300.3179441.9169506478575963188.kvalo@kernel.org>
-From: Arend van Spriel <arend.vanspriel@broadcom.com>
-Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
- 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
-In-Reply-To: <170790035300.3179441.9169506478575963188.kvalo@kernel.org>
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="000000000000526af70611541255"
+X-malware-bazaar: not-scanned
 
---000000000000526af70611541255
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Hi,
 
-On 2/14/2024 9:45 AM, Kalle Valo wrote:
-> Arnd Bergmann <arnd@kernel.org> wrote:
-> 
->> From: Arnd Bergmann <arnd@arndb.de>
->>
->> An old cleanup went a little too far and causes a warning with clang-16
->> and higher as it breaks control flow integrity (KCFI) rules:
->>
->> drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy_shim.c:64:34: error: cast from 'void (*)(struct brcms_phy *)' to 'void (*)(void *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
->>     64 |                         brcms_init_timer(physhim->wl, (void (*)(void *))fn,
->>        |                                                       ^~~~~~~~~~~~~~~~~~~~
->>
->> Change this one instance back to passing a void pointer so it can be
->> used with the timer callback interface.
->>
->> Fixes: d89a4c80601d ("staging: brcm80211: removed void * from softmac phy")
->> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> 
-> I guess this should go to wireless tree?
+> > For reference here's the old discussion:
+> >=20
+> > https://patchwork.kernel.org/project/linux-wireless/patch/2022072016030=
+2.231516-1-ajay.kathat@microchip.com/
+> >=20
+> > Any volunteers to help fix this? I would prefers fixes for issues like
+> > this compared to questionable random cleanups we always get.
+>=20
+> I'm bumping this old thread because it looks like the sparse warning is s=
+till
+> present in WILC driver, and I would gladly help getting rid of it, but si=
+nce
+> there's already been a fair amount of discussions around it, I am not sur=
+e what
+> is expected/what should be done. Here is my understanding so far:
+> - Ajay has proposed a patch ([1]) which indeed fixes the warning but invo=
+lves
+> many casts
+> - Johannes and Jouni then gave details about the original issue leading t=
+o those
+> casts ([2]): wpa_supplicant somehow forces the AKM suites values to be be=
+32 at
+> some point, while it should be treated in host endianness
+> - as pointed by Ajay, the corresponding fix has been made since then by J=
+ouni in
+> wpa_supplicant ([3]). The fix make sure to handle key_mgmt_suite in host
+> endianness AND to keep compatibility with current drivers having the be32=
+ fix. -
 
-This has been like this forever looking at the "staging" part in the 
-Fixes tag. Is it really so urgent now? On the other hand I have no real 
-problem with moving this to the wireless tree. Just wondering out loud.
+Am I confused, or is the change [3] in the other direction?
 
-Regards,
-Arend
+From what I see, the code there (now changed again, btw) is about
+reading the value *from the driver*.
 
---000000000000526af70611541255
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+The driver change is about getting the value *from the supplicant*.
 
-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
-2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
-Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
-HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
-Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
-KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
-Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
-dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
-OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
-MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
-BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
-ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
-zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
-sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
-BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
-N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
-p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
-YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCAI8T7vDkrsRYe5jZYW
-k00USgsccPKHCC2q7mYodozxkDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yNDAyMTQwOTI0MDJaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
-AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAzATRCGSIOITxtX1bGbrIVaEoe8dsv4+H4Ktl
-qB3bQweR7TqAUIh1/0ztKkqLTwbhRP8zBAsePxaWC12/WMOB51UjGy9ntfNveZj6Zpn8Og8E7ARs
-biLhOj24ZNQRMXY83zSy+mYgcv40fpCQHtpel03vQipEiedSE6idvEkKAMbbYq8jGvpVoQ1pLIwa
-K4CIWr78Gs6oMJufVUzZ2jYFxggBvh2Hz0d2vvXvLoOh41Ea7gWVP/3h9cWJAsAbK7iuV6ZQr6iL
-4V7dt0fwWxMFZ5UbMVl5wIoWa6YbiBBpuzP9hEzcr3n5yYSgg2578cuxMTtgXoA+g8GOsO6Bdl0c
-Sg==
---000000000000526af70611541255--
+And the _outgoing_ code (sending it to the driver) from the supplicant
+has - as far as I can tell - been putting it into the attribute in host
+byte order forever? See commit cfaab58007b4 ("nl80211: Connect API
+support").
+
+
+Aha! So, I'm not _completely_ confused, however, the only use of this
+value in this driver is sending it back to the supplicant! Which seems
+entirely wrong, since the supplicant assumes basically anything will be
+handled?
+
+(But - the firmware also has a parameter key_mgmt_suites [in struct
+wilc_external_auth_param] which is never even set in
+wilc_set_external_auth_param??)
+
+
+Also note that the supplicant will *only* read RSN_AUTH_KEY_MGMT_SAE in
+big endian, so you've already lost here pretty much?
+
+>  - It could have allowed to simply get rid of the all casts on AKM suites=
+ in
+> wilc driver ([4]), but then new kernel/drivers would break with existing
+> userspace, so it is not an option
+
+I am wondering if it works at all ...
+
+> Now, I see multiple options to fix the sparse warning:
+> - apply the same fix as for wpa_supplicant ([3]) in wilc driver (so basic=
+ally,
+> become compatible with both endianness)
+
+But this cannot be done! On input to the driver, the value is in host
+byte order always. The question is on output - and there you cannot
+detect it.
+
+> - apply the same fix as for wpa_supplicant ([3]), not in wilc but in nl80=
+211
+> (may need to update not only wilc but any driver having trailing be32 cas=
+t on
+> AKM suites)
+
+That might even work? Well, not the same fix, since again input vs.
+output, but something like this:
+
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -20136,9 +20136,27 @@ int cfg80211_external_auth_request(struct net_devi=
+ce *dev,
+ 	if (!hdr)
+ 		goto nla_put_failure;
+=20
++	/*
++	 * Some drivers and due to that userspace (wpa_supplicant) were
++	 * in the past interpreting this value as a big-endian value,
++	 * at a time where only WLAN_AKM_SUITE_SAE was used. This is now
++	 * fixed, but for the benefit of older wpa_supplicant versions,
++	 * send this particular value in big-endian. Note that newer
++	 * wpa_supplicant will also detect this particular value in big
++	 * endian still, so it all continues to work.
++	 */
++	if (params->key_mgmt_suite =3D=3D WLAN_AKM_SUITE_SAE) {
++		if (nla_put_be32(msg, NL80211_ATTR_AKM_SUITES,
++				 cpu_to_be32(WLAN_AKM_SUITE_SAE))
++			goto nla_put_failure;
++	} else {
++		if (nla_put_u32(msg, NL80211_ATTR_AKM_SUITES,
++				params->key_mgmt_suite)))
++			goto nla_put_failure;
++	}
++
+ 	if (nla_put_u32(msg, NL80211_ATTR_WIPHY, rdev->wiphy_idx) ||
+ 	    nla_put_u32(msg, NL80211_ATTR_IFINDEX, dev->ifindex) ||
+-	    nla_put_u32(msg, NL80211_ATTR_AKM_SUITES, params->key_mgmt_suite) ||
+ 	    nla_put_u32(msg, NL80211_ATTR_EXTERNAL_AUTH_ACTION,
+ 			params->action) ||
+ 	    nla_put(msg, NL80211_ATTR_BSSID, ETH_ALEN, params->bssid)
+||
+
+
+> - take the initial quick but not-so-nice double cast fix and call it a da=
+y
+
+but that doesn't actually work for anything other than
+WLAN_AKM_SUITE_SAE...
+
+johannes
 
