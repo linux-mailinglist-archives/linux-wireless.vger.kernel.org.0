@@ -1,123 +1,224 @@
-Return-Path: <linux-wireless+bounces-3580-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3581-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 624DB85478D
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Feb 2024 11:51:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9B7C8547B2
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Feb 2024 12:03:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1961D285FCE
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Feb 2024 10:51:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5CE01B208B7
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Feb 2024 11:03:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB7701946B;
-	Wed, 14 Feb 2024 10:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCF1518E06;
+	Wed, 14 Feb 2024 11:03:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="1COWNVYH";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="nsQklX3H"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="K/XwVZ/f"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from wfout5-smtp.messagingengine.com (wfout5-smtp.messagingengine.com [64.147.123.148])
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D3118EA5;
-	Wed, 14 Feb 2024 10:51:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDFAC1643A;
+	Wed, 14 Feb 2024 11:03:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707907896; cv=none; b=J4USBJyHlVbWJ23QtFKRbm2rN/gb9aZ3X23iZkynqNnK3l8g5TyIw8ySQxWQpBpQEdv/jHqk+cg97gMUMPRMoY54yifk8l6CCnKszseVU1XUnrwIjgpu/b7xk3xoRmNVBNdT5Yy0pl5xMPcGlhaVetKTTe0V8E89msXD/HA+EUA=
+	t=1707908601; cv=none; b=kbs/3jlbdOUCKbRu/EcdvOGC+ISm1hzv0AH8JtMSUa3j/YCxN0/Y2yPv36dca343fpwTfByy337L1DQbUG5T8G8xM+8HYAkLDHcNyu8hzJxrjAuIwVc8t7b5U2W6wnb2qsGu7hbbOXD+uBuB3Q97x7hvvuvwymIX6HXFpscELow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707907896; c=relaxed/simple;
-	bh=IKPjU6JepByQUbY4d+KvU9UgItGzStQnpzqm2BCTHvQ=;
-	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
-	 Subject:Content-Type; b=ued2m7SFCLnmEcrHAOZCxFzeQobAQAFUC44dTlQVkof+9P4zSm0jSnv4uuK3VwVgWNXY8k0CgODgF4CujOU4N0pHBeA+G1sk+lAKP7iSRm8yl1ZQnqTVYVc/uNLx69oEsxcOQRXtk6j9OchlrsxhoJ2MpVSJKrnDCg4CnQxjmlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=1COWNVYH; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=nsQklX3H; arc=none smtp.client-ip=64.147.123.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfout.west.internal (Postfix) with ESMTP id 9F5901C0007B;
-	Wed, 14 Feb 2024 05:51:33 -0500 (EST)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Wed, 14 Feb 2024 05:51:34 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1707907893; x=1707994293; bh=79/Qzm2vJk
-	0BAzjRMVt7ecM1kUIJeCMDLpwDD4uxJWo=; b=1COWNVYH87gWNKMltpLJTnWw29
-	E25ubIUcUwoHblWcT8XhX6017jq8mggn+2LzFzRLZizNfrUHM5fMdHu8tdqOUtbR
-	Rut6m5DVGdTIAhwrtJtiuEGiWiyL/Sn8YqBDXndFO1YVxtyVzwtduSf3+6Fmo8Pl
-	o5lCb5tnI5yfyyJMTUBjW4EJvcW9hwZeXVMifZy40bJDlrJxz5UGkSedmePUqTDD
-	/E8PDeBP6vWghx6RKjgf2T9ZIDD0lVy8SQIjlVI3Qfol8hDi8E21vfT450NPVdkV
-	q6qwj/uYa4tfVjt15cWHWMSFlXTaCdyjGXAwrYdUwq2sQCI9yHq46EHdHGJQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm3; t=1707907893; x=1707994293; bh=79/Qzm2vJk0BAzjRMVt7ecM1kUIJ
-	eCMDLpwDD4uxJWo=; b=nsQklX3H59Y1ufjMGSGzYWPK6jQicRXM1irJ7KW5dOEn
-	yrQqdBhVESERXan/LkmJC7udmsuLmsLbGKrWRj5lsghVKDce2g+jq6LpYSb83DTu
-	XvrY5b9vyAPAZxbNJZoadCu5OBx0RIyJth9xjpAwXPkzTHhK7IgopNm55Tw+Gd5l
-	JzLxf5kFU5aY1KLLVBAlwzz4myfew2tSsHFCgmi3nBri7c/bYSYlT8SzhmeWfO+w
-	+FqaPnAMbvODLnUyKD9LY3U+uT9xs4Qjc443xRytGv7ZwFLLZrsvTKdiVsFqZYYK
-	0hmutfFuGrnr43rBfyihzXpYE+WEzR5M4Tie+msl2A==
-X-ME-Sender: <xms:NJvMZYfsglnlEUxKurnhugeyEfdV54TEHGsGZkqh_shNIhg2nSGxLw>
-    <xme:NJvMZaMbqiNeRXCSSbQieaooADEKvUtW1QoASI6QwH5mkTFGzqA2_ExsCiZPnUdU2
-    96TSMRWpb2mcIZDezg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudejgddvtdcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
-    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
-    gvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedtkeet
-    ffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrh
-    hnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:NZvMZZiO5s_YjRzHQwE-h9yArVo-ZuFoSiP1JR6yGT4YOFzkCsaqqQ>
-    <xmx:NZvMZd-ySjK4kgFCrJNikAQ7HJXyrUmYA1-h4n6hTkBM-BKSn2RC5g>
-    <xmx:NZvMZUtHWgpkqZYz4Un54ZvXVuK4Ca_5VcICfU9iaGS2hJiHELoa6Q>
-    <xmx:NZvMZVlC3VMgFqiA2sblIvjIjZ66Lo2oqeswXAyrJvNbcXvRorc6nj8D8YA>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id D6FFBB6008D; Wed, 14 Feb 2024 05:51:32 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-144-ge5821d614e-fm-20240125.002-ge5821d61
+	s=arc-20240116; t=1707908601; c=relaxed/simple;
+	bh=PtSNdfznwWbqhoQQFKH7/wNCSFcUYs/wTcLDeBDVllI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tZMgZf/R9Ibw6o3JXeRcpMTHmlp/XadqIYYUrftaVHh3SS3n3KCo47lRcbxCboXQYwDud+fF9ONqWQfrU3TYIL4JZLai5rfRd5EylLxldda+bhFXT4jaGVucowQaKBNFiXF2/xhwVmX/GcmkkTOieYZSVpfyr/9tgFeIG10Zgto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=K/XwVZ/f; arc=none smtp.client-ip=217.70.183.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 5B86DFF80B;
+	Wed, 14 Feb 2024 11:03:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1707908597;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JbA2a2kIur1xwjNXnDhSYrVB1/GrR0EMUnG/VimlxgE=;
+	b=K/XwVZ/fB4w4yax/6+s7vgiB6S4qHn0RubxBy/oW9XrM2CGyyhllgvgGkRshU3bL+UjvrU
+	Hd1BcPEOPEchireGDLgD7pCdrPN5VH8yopOav4qSn3pT00s+yIaoFkjJN+YZdSKcbJWayO
+	Z/JyRVg8klPka2AIsb/mrit5xkBihPAT9tl3v7cq7Z0+UvtqVK8bwNWDSPu+nmnrbRyWLu
+	2kxaSg1+aMIis6xWCNKufUi/C1T2IBMgsDFayKGwrxd2q69lwfJymy/+B/Wq0jDgfIOXnV
+	H7K1C+GV2A7zExwsO+PhlYMSyBsHYAEwR7zcxA/SndS/4USUzzKC0y9x2LMqKQ==
+Message-ID: <912f4e56-bd30-48c1-bf24-dd728188b1c5@bootlin.com>
+Date: Wed, 14 Feb 2024 12:03:15 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <d9a7ad2f-c9a7-4886-8bbc-7a77771c0aec@app.fastmail.com>
-In-Reply-To: <87plwze34l.fsf@kernel.org>
-References: <20240213100912.459018-1-arnd@kernel.org>
- <170790025305.3179441.138152315558305278.kvalo@kernel.org>
- <08ac32ef-610d-479d-a3fd-a3c3b8c4c697@app.fastmail.com>
- <87plwze34l.fsf@kernel.org>
-Date: Wed, 14 Feb 2024 11:51:02 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Kalle Valo" <kvalo@kernel.org>
-Cc: "Arnd Bergmann" <arnd@kernel.org>,
- "Jeff Johnson" <quic_jjohnson@quicinc.com>,
- "Karthikeyan Periyasamy" <quic_periyasa@quicinc.com>,
- "Aloka Dixit" <quic_alokad@quicinc.com>, "Wen Gong" <quic_wgong@quicinc.com>,
- "Muna Sinada" <quic_msinada@quicinc.com>,
- "Aditya Kumar Singh" <quic_adisi@quicinc.com>, ath12k@lists.infradead.org,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] wifi: ath12k: sanitize ath12k_mac_allocate() return code
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: drivers/net/wireless/microchip/wilc1000/cfg80211.c:361:42:
+ sparse: sparse: incorrect type in assignment (different base types)
+Content-Language: en-US
+To: Johannes Berg <johannes@sipsolutions.net>, Kalle Valo <kvalo@kernel.org>,
+ kernel test robot <lkp@intel.com>
+Cc: Ajay Singh <ajay.kathat@microchip.com>, oe-kbuild-all@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org
+References: <202308290615.lUTIgqUl-lkp@intel.com> <877cpev0pn.fsf@kernel.org>
+ <87a5uatfl1.fsf@kernel.org>
+ <09eeb7d4-c922-45ee-a1ac-59942153dbce@bootlin.com>
+ <e9501c13be127b8b9d0c769a27d8d38636875f0f.camel@sipsolutions.net>
+From: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+In-Reply-To: <e9501c13be127b8b9d0c769a27d8d38636875f0f.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: alexis.lothore@bootlin.com
 
-On Wed, Feb 14, 2024, at 11:44, Kalle Valo wrote:
-> "Arnd Bergmann" <arnd@arndb.de> writes:
->> On Wed, Feb 14, 2024, at 09:44, Kalle Valo wrote:
->>> Arnd Bergmann <arnd@kernel.org> wrote:
->
->> but I see it's not in linux-next yet as of today.
->
-> Yeah, it's a problem that ath.git is not included linux-next builds. The
-> commits will be in linux-next only after ath-next is pulled to
-> wireless-next :/
+On 2/14/24 10:29, Johannes Berg wrote:
+> Hi,
+> 
+>>> For reference here's the old discussion:
+>>>
+>>> https://patchwork.kernel.org/project/linux-wireless/patch/20220720160302.231516-1-ajay.kathat@microchip.com/
+>>>
+>>> Any volunteers to help fix this? I would prefers fixes for issues like
+>>> this compared to questionable random cleanups we always get.
+>>
+>> I'm bumping this old thread because it looks like the sparse warning is still
+>> present in WILC driver, and I would gladly help getting rid of it, but since
+>> there's already been a fair amount of discussions around it, I am not sure what
+>> is expected/what should be done. Here is my understanding so far:
+>> - Ajay has proposed a patch ([1]) which indeed fixes the warning but involves
+>> many casts
+>> - Johannes and Jouni then gave details about the original issue leading to those
+>> casts ([2]): wpa_supplicant somehow forces the AKM suites values to be be32 at
+>> some point, while it should be treated in host endianness
+>> - as pointed by Ajay, the corresponding fix has been made since then by Jouni in
+>> wpa_supplicant ([3]). The fix make sure to handle key_mgmt_suite in host
+>> endianness AND to keep compatibility with current drivers having the be32 fix. -
+> 
+> Am I confused, or is the change [3] in the other direction?
+> 
+> From what I see, the code there (now changed again, btw) is about
+> reading the value *from the driver*.
 
-Not sure if that is intentional, but if you'd like to change
-that, you can just email Stephen Rothwell asking him to include
-ath-next into linux-next as well.
+Ah, you are right, so [3] is rather about supporting drivers sending values with
+host endianness, while interface historically expects big endian :/
+> 
+> The driver change is about getting the value *from the supplicant*.
+> 
+> And the _outgoing_ code (sending it to the driver) from the supplicant
+> has - as far as I can tell - been putting it into the attribute in host
+> byte order forever? See commit cfaab58007b4 ("nl80211: Connect API
+> support").
+> 
+> 
+> Aha! So, I'm not _completely_ confused, 
 
-      Arnd 
+So I am the one confused :) Thanks for the clarification. I did not dig enough,
+and since the cast is done right at connect message reception, I assumed wrongly
+that the issue was on the supplicant->driver path.
+
+> however, the only use of this value in this driver is sending it back to the supplicant!> Which seems entirely wrong, since the supplicant assumes basically anything
+will be
+> handled?
+
+Not sure to fully understand why its wrong (supplicant seems to expect AKM
+suites to be provided) , but I may be lacking more general understanding about
+the external auth process.
+Or do you mean that AKM suites should be enforced to RSN_AUTH_KEY_MGMT_SAE only
+in this driver->supplicant call (and so, not forward any possible value ?)
+
+> (But - the firmware also has a parameter key_mgmt_suites [in struct
+> wilc_external_auth_param] which is never even set in
+> wilc_set_external_auth_param??)
+> 
+> 
+> Also note that the supplicant will *only* read RSN_AUTH_KEY_MGMT_SAE in
+> big endian, so you've already lost here pretty much?
+
+So we have to keep some big endian conversion on the driver/nl80211 ->
+supplicant path, IIUC
+
+
+>>  - It could have allowed to simply get rid of the all casts on AKM suites in
+>> wilc driver ([4]), but then new kernel/drivers would break with existing
+>> userspace, so it is not an option
+> 
+> I am wondering if it works at all ...
+> 
+>> Now, I see multiple options to fix the sparse warning:
+>> - apply the same fix as for wpa_supplicant ([3]) in wilc driver (so basically,
+>> become compatible with both endianness)
+> 
+> But this cannot be done! On input to the driver, the value is in host
+> byte order always. The question is on output - and there you cannot
+> detect it.
+
+Yeah, this suggestion is wrong because of the misunderstanding clarified above.
+
+>> - apply the same fix as for wpa_supplicant ([3]), not in wilc but in nl80211
+>> (may need to update not only wilc but any driver having trailing be32 cast on
+>> AKM suites)
+
+So to fix my initial suggestion, it is not "doing the same fix" but rather "move
+the be conversion from the driver to nl80211 layer". Which matches in fact what
+you are suggesting below.
+
+> That might even work? Well, not the same fix, since again input vs.
+> output, but something like this:
+> 
+> --- a/net/wireless/nl80211.c
+> +++ b/net/wireless/nl80211.c
+> @@ -20136,9 +20136,27 @@ int cfg80211_external_auth_request(struct net_device *dev,
+>  	if (!hdr)
+>  		goto nla_put_failure;
+>  
+> +	/*
+> +	 * Some drivers and due to that userspace (wpa_supplicant) were
+> +	 * in the past interpreting this value as a big-endian value,
+> +	 * at a time where only WLAN_AKM_SUITE_SAE was used. This is now
+> +	 * fixed, but for the benefit of older wpa_supplicant versions,
+> +	 * send this particular value in big-endian. Note that newer
+> +	 * wpa_supplicant will also detect this particular value in big
+> +	 * endian still, so it all continues to work.
+> +	 */
+> +	if (params->key_mgmt_suite == WLAN_AKM_SUITE_SAE) {
+> +		if (nla_put_be32(msg, NL80211_ATTR_AKM_SUITES,
+> +				 cpu_to_be32(WLAN_AKM_SUITE_SAE))
+> +			goto nla_put_failure;
+> +	} else {
+> +		if (nla_put_u32(msg, NL80211_ATTR_AKM_SUITES,
+> +				params->key_mgmt_suite)))
+> +			goto nla_put_failure;
+> +	}
+> +
+>  	if (nla_put_u32(msg, NL80211_ATTR_WIPHY, rdev->wiphy_idx) ||
+>  	    nla_put_u32(msg, NL80211_ATTR_IFINDEX, dev->ifindex) ||
+> -	    nla_put_u32(msg, NL80211_ATTR_AKM_SUITES, params->key_mgmt_suite) ||
+>  	    nla_put_u32(msg, NL80211_ATTR_EXTERNAL_AUTH_ACTION,
+>  			params->action) ||
+>  	    nla_put(msg, NL80211_ATTR_BSSID, ETH_ALEN, params->bssid)
+> ||
+
+If this kind of fix is ok in nl80211, I can do some tests with it, see how it
+would affect other drivers ( I think there's only Quantenna driver which would
+be affected)
+
+Thanks,
+
+Alexis
+
+>> - take the initial quick but not-so-nice double cast fix and call it a day
+> 
+> but that doesn't actually work for anything other than
+> WLAN_AKM_SUITE_SAE...
+
+
+> 
+> johannes
+> 
+
+-- 
+Alexis Lothoré, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
 
