@@ -1,172 +1,147 @@
-Return-Path: <linux-wireless+bounces-3586-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3587-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63185854B30
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Feb 2024 15:13:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA3E1854B35
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Feb 2024 15:17:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B58BDB27AF6
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Feb 2024 14:13:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32807B213F5
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Feb 2024 14:17:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60F1F5810D;
-	Wed, 14 Feb 2024 14:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AFD1524CA;
+	Wed, 14 Feb 2024 14:17:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Uj3l4Btt"
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="sHSn/v46"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC3258105
-	for <linux-wireless@vger.kernel.org>; Wed, 14 Feb 2024 14:13:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3A845C15
+	for <linux-wireless@vger.kernel.org>; Wed, 14 Feb 2024 14:17:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707920025; cv=none; b=NUE0MP2PP/ip7MR1dK0NJrrAbX3xn+HO15IVxseL0e6WatTX0ewJVcsK8yuKDIRjj+gFfLI+y6Qy9Ud0ISl+VWLWzFEjKDkPH7cxsWmySTS/rhTXLQmHfrIQjNVY+wEeFOnB88v2LO8zHzawwHEYNkv3mqe77YMV/Vv0s7SMX0Y=
+	t=1707920249; cv=none; b=cYToW+tbyQH+Ca1MmOSiOWscbJG4h7j2zHrdAXDkn6BEKcUandYMgIKK9a7nSquYV+B/rKUQD3gn1AkazpHmatp6oIT9ark5I6wQSGv6V/sdhONq6eGJiMi73nZgn9tU18grx851lTc5xKigWQjCqdYTRGZ2vdunTqkNl1cOKrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707920025; c=relaxed/simple;
-	bh=LcH2sze3jID3d7nzNpoB0bcFD4BLDnB9nMn+kAJ/ogE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=b2emOfStwPj54cNRgvotG0oSKRA3lpR+E2K3zthegymIZIJKmqbtwBaVxgUkYPxozR6Z/md60iG2P+wtAIHinAW/u29Ny4JuM2ywxN+3j5PiJvlAh9DMwWJuXTaHRXW6IsIR/BU6ngnuAd5ecy+5I2mwj1G+5nTPKCC4RV0vIcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Uj3l4Btt; arc=none smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-6e0cc8d740cso2634570b3a.3
-        for <linux-wireless@vger.kernel.org>; Wed, 14 Feb 2024 06:13:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707920023; x=1708524823; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=uMCtCE62iOVfljVN+OsaY/ahYfF26KNLjMaqRimwwEM=;
-        b=Uj3l4BttLWkARW5qU+EBjV7+SNFrght2cHLhpUH+QT0wrqN56Z8yC5+xxQSqxEByEd
-         Pr/c40gOZeKVYsMKeknIKm+/YHRp00MffZQkHIlpe8J9u5uzsKJVVTwZxNYGTNhpFsjt
-         UVOm6dSTXK1S7GJalKzSB/uvYX1+RhaT5ICbIzqmqCvE0XGrRulVGceV/YtrVTdpng2p
-         JeGHZRYF9w8zvC5JBxFUq/nY28pgCGOxSyw+CNzLBFOiuXN8e6w2zWq5JDjEI/PMgJI9
-         UJFvsaAW4ibzK6cRAkWlJEeKDriYINwVMGU/PSD3g34EZfDKfEeWP88VrTV5Pe/xPzib
-         QQIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707920023; x=1708524823;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uMCtCE62iOVfljVN+OsaY/ahYfF26KNLjMaqRimwwEM=;
-        b=jBdSJuMkO1uZJbfh6WbzFSRzFnko1KWV/MrKYtjEuZOjYroG9XCTKZRVI74A09hmOA
-         8ZH8KRjKrhWJ5DV4VYo+BSf1qZjNsN8tPAWRjV7vd0vgtBo0+hWPSijd2ByDJRIgP15K
-         cUIrmVlopaPQzvw+aP9rFZTlsBkhMvFHb1psxPeMVcEeKiCff0s3srq/9JNY7SnVU2n2
-         Gg5R7do1DPLla2Q3EVlK0XZXGFXg8ha9qMh65VeMjOobCUXNl+T0pqriEijzADYzjwAS
-         TtVCOYslxTQ3E7o7kSQJHdJQnj3GuIPwuhY+zqPp4w9zNvZVVDaq5tgByLpT10xCEpuN
-         Mqjw==
-X-Forwarded-Encrypted: i=1; AJvYcCV/cfpvFD8w9C3EcF2u5d+Jim7wwptGJlcd6eB6KrGUVTXL3w4y9M8a8vt73WIoRSw1wq19Tp8+xqYOMFlvbbnkN6Ne/zfSLqZjMqZ2bVo=
-X-Gm-Message-State: AOJu0YzgKKAscP7tMKH2zti1kU3G7uRTpy+h7VnAK17eM6dE8kKM+zzC
-	AqbCsL5ljJ2v5zL5pyGH5qN13feQv8Pcdj7AksbKGkVx9d4lKBL9
-X-Google-Smtp-Source: AGHT+IF/h3pATTKmhdlIaxZHgKCInLL/NLsk1hkyt4mkL2VxWPz9trFSVK+KMoJ/KO1a3/DQZMsMHw==
-X-Received: by 2002:a05:6a21:31c7:b0:1a0:5841:673c with SMTP id zb7-20020a056a2131c700b001a05841673cmr3495511pzb.21.1707920022959;
-        Wed, 14 Feb 2024 06:13:42 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCV53BN01L7UdrtI+7ZglmHsUpv3tSfbG2jopX/F6GN7PO7JlxPrgGwx7uGOhY39uUssLpknZvjWiz79DNkvjp4sNslxbGOmipeY5VI5tfI=
-Received: from [10.102.4.159] ([208.195.13.130])
-        by smtp.gmail.com with ESMTPSA id l190-20020a6325c7000000b005dc120fa3b2sm4198285pgl.18.2024.02.14.06.13.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 14 Feb 2024 06:13:42 -0800 (PST)
-Message-ID: <e0825627-4652-4c5a-ae29-33c270a38bc0@gmail.com>
-Date: Wed, 14 Feb 2024 06:13:40 -0800
+	s=arc-20240116; t=1707920249; c=relaxed/simple;
+	bh=kKI5nDHznsvepT7WX3hKw0v1bt52p6U4Vm34fGClZtc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OJxpIOnJ5LTkQQYQAKEG7x28V+eQassEjVJxwndtObZ6e9CQ50mTSQqFj746HsG6dNO/HRFjr0EDYKOrqkE1dJYQWVxFC7hLxXbK7c0oHpoBQZ54KC7zUrJGNRn5DaiNldZFCE5ScN964TG5kDIr4JFTef1sIKWe8xcqqzwn6FE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=sHSn/v46; arc=none smtp.client-ip=213.160.73.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+	s=20121; t=1707920239;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aUsO+IzRJ5+2bOn6TgFrFIgxHQIR2wb0vuBdLhpxUdI=;
+	b=sHSn/v46EYiEniftvRMf+ygjBfZUDonOOnp8yXl2pR0fghGLjRYP5BKSucLu16jkYFSeSy
+	7EInFSYSV7TntobV6/Eunz9vLjVR5aejY/+Q1B3FTSQI8lpx33h4lfmIbbZ8+zPSxBnQiC
+	p1g1jLJve1KtG6vfY7MuSj/RXL1NUas=
+From: Sven Eckelmann <sven@narfation.org>
+To: ath12k@lists.infradead.org, Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+Cc: linux-wireless@vger.kernel.org,
+ Ganesh Babu Jothiram <quic_gjothira@quicinc.com>,
+ Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+Subject:
+ Re: [PATCH v3 12/13] wifi: ath12k: Read board id to support split-PHY QCN9274
+Date: Wed, 14 Feb 2024 15:17:11 +0100
+Message-ID: <23399810.6Emhk5qWAg@ripper>
+In-Reply-To: <20240129065724.2310207-13-quic_rajkbhag@quicinc.com>
+References:
+ <20240129065724.2310207-1-quic_rajkbhag@quicinc.com>
+ <20240129065724.2310207-13-quic_rajkbhag@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: brcmfmac AP mode
-Content-Language: en-US
-To: KeithG <ys3al35l@gmail.com>, linux-wireless@vger.kernel.org
-References: <CAG17S_MOiC43F2wXMG-Y6nQgitZQJs18jESQJrX+aC6=MQb6ew@mail.gmail.com>
-From: James Prestwood <prestwoj@gmail.com>
-In-Reply-To: <CAG17S_MOiC43F2wXMG-Y6nQgitZQJs18jESQJrX+aC6=MQb6ew@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; boundary="nextPart2595327.Lt9SDvczpP";
+ micalg="pgp-sha512"; protocol="application/pgp-signature"
 
-All,
+--nextPart2595327.Lt9SDvczpP
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
+From: Sven Eckelmann <sven@narfation.org>
+Date: Wed, 14 Feb 2024 15:17:11 +0100
+Message-ID: <23399810.6Emhk5qWAg@ripper>
+In-Reply-To: <20240129065724.2310207-13-quic_rajkbhag@quicinc.com>
+MIME-Version: 1.0
 
-On 2/12/24 5:36 PM, KeithG wrote:
-> I have been trying to use teh brcmfmac device on my RPi to run in AP
-> mode to allow device configuration of wifi and such when ethernet is
-> not available. I am using connman and iwd to manage my internet
-> connections and have noticed that when the AP is running, the AP will
-> reset when iwd scans.
->
-> I set it up to be an AP so I can configure the network on the RPi via
-> a web interface. I first set up a as a separate device as an AP for
-> wlan0:
->
-> iw dev wlan0 interface add ap0 type __ap
->
-> I then give it a MAC different from the wlan0 so iwd can keep track of
-> which is which and the ssids will show up on wlan0 when I run 'iwctl
-> station wlan0 scan'
->
-> ip link set dev ap0 address b8:27:eb:00:00:00
->
-> I then start an AP with either iwd or hostapd/dnsmasq.
->
-> iwctl device ap0 set-property Mode ap
-> iwctl ap ap0 start-profile testAP
->
-> It will start the AP and then I can connect to the Pi from my laptop.
-> I am using iwd on wlan0 to scan for available SSIDs. Whenever iwd
-> scans, either manually from cli or automatically, it will reset the AP
-> and kick everyone off. It does this even when I use hostapd/dnsmasq to
-> control the AP. When I disable iwd and use wpa_supplicant for
-> scanning, though, I can set up the AP with hostapd and scan many times
-> via connmanctl and it will not disconnect.
->
-> Why does it kick everyone off when iwd scans? Why is iot more stable
-> with wpa_supplicant? Is there something I could/should do to make this
-> more stable? When I try this on an intel card, it is rock steady and I
-> have not seen a disconnect. I have tried the latest brcmfmac
-> (cycmfmac) firmware and see the same result.
->
-> https://github.com/Infineon/ifx-linux-firmware/tree/master/firmware
->
-> I am running RPiOS Bookworm and am fully up to date though it uses an
-> older firmware
-> [   11.513277] brcmfmac: F1 signature read @0x18000000=0x1542a9a6
-> [   11.533628] brcmfmac: brcmf_fw_alloc_request: using
-> brcm/brcmfmac43430b0-sdio for chip BCM43430/2
-> [   11.740252] brcmfmac: brcmf_c_preinit_dcmds: Firmware: BCM43430/2
-> wl0: Mar 31 2022 17:24:51 version 9.88.4.77 (g58bc5cc) FWID
-> 01-3b307371
->
-> Is there any hope of stability when used like this?
->
-> Keith
->
-I was helping Keith out here and wanted to provide a bit more 
-information. I found there were a few differences between IWD and 
-wpa_supplicant related to scanning which may aid in figuring out why 
-brcmfmac is behaving this way:
+On Monday, 29 January 2024 07:57:23 CET Raj Kumar Bhagat wrote:
+> diff --git a/drivers/net/wireless/ath/ath12k/fw.c b/drivers/net/wireless/ath/ath12k/fw.c
+> index fbcf40c97792..5be4b2d4a19d 100644
+> --- a/drivers/net/wireless/ath/ath12k/fw.c
+> +++ b/drivers/net/wireless/ath/ath12k/fw.c
+> @@ -119,6 +119,13 @@ static int ath12k_fw_request_firmware_api_n(struct ath12k_base *ab,
+[...]
+> +		case ATH12K_FW_IE_AMSS_DUALMAC_IMAGE:
+> +			ath12k_dbg(ab, ATH12K_DBG_BOOT,
+> +				   "found dualmac fw image ie (%zd B)\n",
+> +				   ie_len);
+> +			ab->fw.amss_dualmac_data = data;
+> +			ab->fw.amss_dualmac_len = ie_len;
+> +			break;
+>  		default:
+>  			ath12k_warn(ab, "Unknown FW IE: %u\n", ie_id);
+>  			break;
 
-  - IWD scans using the wdev ID where wpa_supplicant uses ifindex. Not 
-sure if this has anything to do with the difference behavior.
+> @@ -371,16 +375,43 @@ int ath12k_mhi_register(struct ath12k_pci *ab_pci)
+[...]
+> +	if (dualmac) {
+> +		if (ab->fw.amss_dualmac_data && ab->fw.amss_dualmac_len > 0) {
+> +			/* use MHI firmware file from firmware-N.bin */
+> +			mhi_ctrl->fw_data = ab->fw.amss_dualmac_data;
+> +			mhi_ctrl->fw_sz = ab->fw.amss_dualmac_len;
+> +		} else {
+> +			ath12k_warn(ab, "dualmac firmware IE not present in firmware-N.bin\n");
+> +			ret = -ENOENT;
+> +			goto free_controller;
+> +		}
 
-  - Passive scans (which IWD prefers) seem to exacerbate the behavior. 
-Simple testing using "wpa_cli scan" showed wpa_supplicant was only using 
-active scans. I also tested with iw and saw repeatable disconnects when 
-passive scanning. Disconnects while using active scans (using iw) were 
-much less frequent.
+I saw this now already multiple times that the source code was referencing the 
+firmware-N.bin (like we had with ath10k). But they aren't published anywhere. 
+I can't find a single one at:
 
-  - Scanning with IWD, wpa_supplicant, or iw, passive or active, always 
-resulted in beacon loss for clients connected to the AP. This was 100% 
-guaranteed. The clients just could recover when active scans were used 
-over passive. But either way this does not seem like normal behavior, 
-the AP interface should still be beaconing on its active channel during 
-a scan right? If this isn't possible or can't be done reliably then 
-should the interface combinations be changed to disallow concurrent sta 
-+ AP mode interfaces?
+* https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/tree/ath11k
+* https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/tree/ath12k
+* https://github.com/kvalo/ath11k-firmware
+* https://github.com/quic/upstream-wifi-fw
 
-Thanks,
+So I find it odd that the new code now seems to depend on it without actually 
+providing these files anywhere.
 
-James
+Might be good to have these soon in linux-firmware.git.
+
+Kind regards,
+	Sven
+--nextPart2595327.Lt9SDvczpP
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAmXMy2gACgkQXYcKB8Em
+e0b/fBAApivgxL1eB/xBoiFI5KRag3uRnne7oFJYEr/cWtmYKmTkQtGRMjymqbJY
+qH24K2itQRxTbZtuJmz0YMAKT1wGleuy4bKDVtDrprDsDesvuaFV81tt6fBllIbb
+9Kk0JlbVTcV9rvjciEHO6mvjuajTgh6dmXS1XgYwOER3wZijLOf+GEon7XmDUOaz
+tdAS6dtmVPo+uXsKNpEAImV91n45aTF01xY3pXOGEWWVIKPqi5eJgIG4w8zLJa1b
+Jao/ACKGRKGSxHKrJJWQ3YTim62eK595PLyj949U725oxClqg4N96uY3qElyNk1q
+iYrUtcsvOwMHSMVVRXQunznD3isXNprC7M0mX45spmUGXTAmxLP2y6CCiSQXEyXo
+wjczNbhHoFZlSKLi8/hY0zvFwn3Ep+0oegKNBhjZMgUj8yiwHvIKeGkR667c4PEb
+lUJ4FZA08gDHEp0r4li0LXcf7Sz1qa4QIo+brX+UVFXU67aMoI/wPY153gteQLmf
+xx8AHegi9P+SavuZ3Dc321/icQQdFugjF7L2msvRHmqaFvBSYFfqpxVxhbXz5kPX
+OcbT9TuT2Ne0GZcISxBp7uqYaW67dwY/EYwgmhfIgiJ6RXNgW935ROiBiHsu86ZD
+jo3JB5cxvSe0XL0XGhVOs8WZPkBMYlqusS9ZfwQEnZGxjqjTK+E=
+=Ic38
+-----END PGP SIGNATURE-----
+
+--nextPart2595327.Lt9SDvczpP--
+
 
 
 
