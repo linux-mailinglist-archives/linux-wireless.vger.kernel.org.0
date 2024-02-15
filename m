@@ -1,102 +1,94 @@
-Return-Path: <linux-wireless+bounces-3613-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3614-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8332855DA2
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Feb 2024 10:17:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE59D855F95
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Feb 2024 11:40:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75FB228498C
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Feb 2024 09:17:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 637E11F22285
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Feb 2024 10:40:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6538A13FFF;
-	Thu, 15 Feb 2024 09:17:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58856132467;
+	Thu, 15 Feb 2024 10:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h/TXmp3G"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sra+8tV7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD11017584
-	for <linux-wireless@vger.kernel.org>; Thu, 15 Feb 2024 09:17:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18B2C12A14C;
+	Thu, 15 Feb 2024 10:33:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707988655; cv=none; b=nDag+ghOFe/OWsZ0eEv2qAOjF2IY66rxFcZwFCtEzrUiU6nS+SqsVCot8ymEjutBYurDCLsH8iTiTDkywLkiYXpMVq4zATMtmGQrkpcZGqPY6YvJB21v9hqVetE719X24XC3huIdy9hMO5GqE0OVmCj1s8DKL2EMrA+pWGrBcbE=
+	t=1707993209; cv=none; b=DgjJwoeyhZlDSTJFqL5df2JcqU7BtIdYwkqHejUQ1793pZaUAp9G7TAP4NU9x9mGO/1Z0KP3vMthJo0RxlvMz9ShDAuPz+jNofgoW+59NHEnSBU1J0vfY7AiLy7bRKFIcb2PjE5elrL5QXdoxVEjMuyubNShfxeGBrCbYIQgLzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707988655; c=relaxed/simple;
-	bh=tT3oLKhm5Bn4BEL6TakBOhyqzgbyYpIAqgtukyH6op0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:
-	 References:In-Reply-To; b=IGLjWRAzbfo4KOuiMQpa2OESkyt12tasM7AfE/NBmX15eXivjWdpeCcFmoZh3pKgNBQCkTrxUgZfmgbTX/ITIu4mXjF3PCMG3aedN88rHj50HRsEmezIyaMDGrBCp6Fec581mhRNoTGm7fwLwdrfnM+IvZMV/pMH+mJRGs6AsNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h/TXmp3G; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-40fd72f7125so5311195e9.1
-        for <linux-wireless@vger.kernel.org>; Thu, 15 Feb 2024 01:17:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707988652; x=1708593452; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tT3oLKhm5Bn4BEL6TakBOhyqzgbyYpIAqgtukyH6op0=;
-        b=h/TXmp3GdAd7Kbd9J+AohohbpkD+LnsMAIAoqju3PXOdcub0lNUCHYiyLr2fllhLEs
-         YE1+dl/V4YpMLmIUNWwqFBjDAGKm0rOO7ysHz+0BG48hm3RbQa6u408CvKMahPaxVU+b
-         SAJ4wQ/0ZTLlxx4rbszSt33F3QoIMWnWZDFWQqvCwO2l3cTog/Jsqo/J5c1lQbIuDsa9
-         yBi4wH4l2RO54mvNZUiImrBaguwkuTB1cEGIkKzT1sXE8ifTGpMwZAFNe5P0ya99j+50
-         vRaFMTju5REGZn7/h3FChGI7J9WXOjgKENIi5s3fIjEHawG55MGjfljOA6jFg9TQOI2J
-         v65Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707988652; x=1708593452;
-        h=in-reply-to:references:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=tT3oLKhm5Bn4BEL6TakBOhyqzgbyYpIAqgtukyH6op0=;
-        b=Cf+z4K42kVOqbvvHMNcrlVEf+7M+pNMQ8V8WEw3ygIH9urwXDraI4qhCZ80yoQg7FO
-         Fu0JdIrdCqpyXuupySiN6Y5kM52fZoI3SiXNAHKAfnJTV9vBI4WWt8YdGeBM7nrXzWv3
-         95NbvhkDGFjKiAsPpvJHY45lVa2PY2IZFYetpgRfb8PZC8trzJjM4mwcxYuDaA12uuGn
-         xB49Qx++dUT4CYGUQphQBMbPKlA8g9tSVmUfRuzHh4Ch4PM2IoY545QMt7MhATEiCJt3
-         JsvDtZ9TDGa4BK1R2J4pFpHqHTPMrSVn7PZCJ0fGfPny6qCAXvBy8W97bU4c0lwS/4/X
-         xRGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWD3oc5DfVLRiULRo8RlxSUP5PG7x5NRldWmRT4jpdz48H5cmyzEcVBV8QZdS+AYIlfAenBs2Xp1LhWGKja46ajOZmCfLk8kFMT9SIH3oQ=
-X-Gm-Message-State: AOJu0Yzm6GNQ3j5R8IwojMXxjOI21uHEp9P9dkGOfbofDOIdEaByQwLL
-	HIFCuEUha8UegdCFmxli+5KlGZ/VMu7fVPli5jCjK/NYFiyDBxA+
-X-Google-Smtp-Source: AGHT+IFvfePUjkXq9EK/I0Le9avVegh9x8GPz2ZP2dqiVxQigqMc1Tt9g+RfVNGcp0f4NB3GeKUp9Q==
-X-Received: by 2002:adf:a4cc:0:b0:33c:dd02:f652 with SMTP id h12-20020adfa4cc000000b0033cdd02f652mr128863wrb.10.1707988651716;
-        Thu, 15 Feb 2024 01:17:31 -0800 (PST)
-Received: from localhost (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id r15-20020a5d4e4f000000b0033cf2063052sm1136979wrt.111.2024.02.15.01.17.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 Feb 2024 01:17:31 -0800 (PST)
+	s=arc-20240116; t=1707993209; c=relaxed/simple;
+	bh=YMmvKWmJWQ8GBJaKmsMH0BhA/75UXDRgZSp4hIO813I=;
+	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
+	 Cc:Message-ID:Date; b=XG4BVZzHj8tVra63zPiJQDmCsOQs2Rb6qmWblR/458SkQ2ksMhUJTwdsdoDgnsDnAG2lYL+Pd5Ufoq0PKln63YbfENtu/vOCi441xRqSa+sYSlPLR0Al/eWnDNLuD+ZLOc2r59i1ZS4b6D6/T6zxYnPE1jahuNswXh+g1O/zsV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sra+8tV7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47017C43601;
+	Thu, 15 Feb 2024 10:33:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707993208;
+	bh=YMmvKWmJWQ8GBJaKmsMH0BhA/75UXDRgZSp4hIO813I=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=sra+8tV742RUlVmTCl6D0FHDj6mcBgZlGlhaG4uP2BZC/wkFEAVQVKxi3Nnru+WUb
+	 uTL5AXjtBjys+ilIcD9S1Vi9+MuNbFfQf46sYy5GIrPKloAeFqAmKaXyiYRKU0AoEF
+	 h2vqCATeeVolv90hCrNxIUBQxgPXtea//2gNahoY2LmtuWPGXwhBKMJ31svuRMKUOT
+	 JsFHxqIR6cQ6U4VBoGSJmuwX2dB72IjzJZQhEabIA70lWBGdEd3Niy9x44yLsyi0p3
+	 MW67ESTUB9lAtooxyuJaWCW4SQWqj1CrHs5VzA4zZS9tcY+wBk50MlFQxoom0Un7qK
+	 +hxv+vuRdCPMg==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 15 Feb 2024 10:17:30 +0100
-Message-Id: <CZ5JG26I3ZI9.25T3WOY4XM8WB@gmail.com>
-Subject: Re: brcmfmac AP mode
-From: "Nicolas Escande" <nico.escande@gmail.com>
-To: "James Prestwood" <prestwoj@gmail.com>, "Johannes Berg"
- <johannes@sipsolutions.net>, "KeithG" <ys3al35l@gmail.com>,
- <linux-wireless@vger.kernel.org>
-X-Mailer: aerc 0.15.2
-References: <CAG17S_MOiC43F2wXMG-Y6nQgitZQJs18jESQJrX+aC6=MQb6ew@mail.gmail.com> <e0825627-4652-4c5a-ae29-33c270a38bc0@gmail.com> <311c594bddde32bacd45acbfa6f40fa7670e51c6.camel@sipsolutions.net> <4eda39b4-3b16-4f01-a241-50409d34ce33@gmail.com>
-In-Reply-To: <4eda39b4-3b16-4f01-a241-50409d34ce33@gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] brcmsmac: avoid function pointer casts
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20240213100548.457854-1-arnd@kernel.org>
+References: <20240213100548.457854-1-arnd@kernel.org>
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: Arend van Spriel <arend.vanspriel@broadcom.com>,
+ Nathan Chancellor <nathan@kernel.org>, Greg Kroah-Hartman <gregkh@suse.de>,
+ Pieter-Paul Giesberts <pieterpg@broadcom.com>, Arnd Bergmann <arnd@arndb.de>,
+ Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>,
+ Justin Stitt <justinstitt@google.com>,
+ Artem Chernyshev <artem.chernyshev@red-soft.ru>,
+ Jonas Gorski <jonas.gorski@gmail.com>, linux-wireless@vger.kernel.org,
+ brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
+ linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <170799320307.3764215.10635499094580279814.kvalo@kernel.org>
+Date: Thu, 15 Feb 2024 10:33:25 +0000 (UTC)
 
-On Wed Feb 14, 2024 at 8:31 PM CET, James Prestwood wrote:
+Arnd Bergmann <arnd@kernel.org> wrote:
 
-[...]
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> An old cleanup went a little too far and causes a warning with clang-16
+> and higher as it breaks control flow integrity (KCFI) rules:
+> 
+> drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy_shim.c:64:34: error: cast from 'void (*)(struct brcms_phy *)' to 'void (*)(void *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
+>    64 |                         brcms_init_timer(physhim->wl, (void (*)(void *))fn,
+>       |                                                       ^~~~~~~~~~~~~~~~~~~~
+> 
+> Change this one instance back to passing a void pointer so it can be
+> used with the timer callback interface.
+> 
+> Fixes: d89a4c80601d ("staging: brcm80211: removed void * from softmac phy")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-> I guess I'll also ask, what _is_ the target use case for STA + AP=20
-> interfaces running concurrently? If scanning is unreliable then=20
-> connecting would also be most likely? so what can you actually do here?
+I can add 'wifi:' during commit. Arend, ack?
 
-One very common use case of AP + STA is the multi AP setup. EasyMesh works =
-that
-way from what I recall. In this setup, you connect first with the STA then
-create an AP on the same channel, so no scan involved when both AP & STA ar=
-e up.
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20240213100548.457854-1-arnd@kernel.org/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
 
