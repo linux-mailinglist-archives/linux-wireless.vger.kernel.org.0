@@ -1,69 +1,72 @@
-Return-Path: <linux-wireless+bounces-3637-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3638-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44DC1856991
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Feb 2024 17:28:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73F38856990
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Feb 2024 17:28:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8FA94B22BEB
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Feb 2024 16:28:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 73000B2591D
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Feb 2024 16:28:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 650B013173F;
-	Thu, 15 Feb 2024 16:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B03CC131731;
+	Thu, 15 Feb 2024 16:28:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="peeP86bS"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="VjRhoEYs"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F1F66B2D
-	for <linux-wireless@vger.kernel.org>; Thu, 15 Feb 2024 16:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D54A713474E
+	for <linux-wireless@vger.kernel.org>; Thu, 15 Feb 2024 16:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708014513; cv=none; b=qmoUN27oHGgIz7KnqQAmtYI/TSG+Cdme7XHSn1Ug8DMKCKKDeiGfGgX8plrldWJOQ8/3M3fzGeWFMNwHuoPlILXWnSl+5GNfKs64FK1qULAo8KBOqTiY6Cb8x9fDVXAA0/3u2SoPZPHJU8xKJkK1Bi7mT2fdDcDeLjIF/XGGGT4=
+	t=1708014515; cv=none; b=TCLr0UIp8P4nSTItqTLLyVY44Z3RSaWv2UDuCTQxqgP4zyKOot4pP1fAYuRmrh8LmByeiEywy+qHkRuEpoirjYyrjVntLgItkCZiRTl1txgcFT5aWz5xan6pWVYISBwrbVhJgd9yLbenqRvQ0L2Vsy1hOhyzwQf5N/RUtaXkwL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708014513; c=relaxed/simple;
-	bh=N9ObpoWnhpNHI0yUN3P7aDepjVLRHkTVsUFJkiOkliQ=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Za8cHFi0J5of6rjmyS9Dl2MImiit0rhkIcjJqXhgjORNnRgjAfHdgceTRRx05DvepSgcPYfsWC3HwBlntFOL+isrORuyGqDkIrubt87UbJV8+pcqGvHFrTeaGORhlZ9CS4Ys3it8Ue/SkKiXqx7Ema1arsBGVMa4WG+/b2Iqtwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=peeP86bS; arc=none smtp.client-ip=205.220.180.131
+	s=arc-20240116; t=1708014515; c=relaxed/simple;
+	bh=L3Frt1sAlvzP0+vXFGyxXcQP1BRTyDqVS44KT/ZhMu4=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DZaHjq4RZZR2NCq0lTCRnhehoGGbMcpQYzd1u3sXoPfaYFpsLgncmcr6iRjdZK5h4pE4iqssw8LPt7MGrO2gVxQ+RZf2ORhb9+OZ67H0/Bandi1ItFHGCzzP4k6D9Undd51KEEndVSiJSJy2qCm6nhqnTSUhYz8Ab5PlZIrxl34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=VjRhoEYs; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41FB9afO005039;
-	Thu, 15 Feb 2024 16:28:28 GMT
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41FBgbZM003987;
+	Thu, 15 Feb 2024 16:28:30 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:mime-version
-	:content-transfer-encoding:content-type; s=qcppdkim1; bh=/oB0OND
-	GvOqUc6roC5fA+j23KfttRLWpZTEKe/TNHXg=; b=peeP86bS0MJ4QzO/ye9cOWu
-	vWn7qj26E5mElcZ2vXuDGaO0Cl9pVhoSIwN+Fr4PYDaKCwCk8FhqHUE2LItOp78a
-	AHLDqAbpz20G6+kOyuhx3UKJRn5gJunB5QhAQKAIvKn4YIN4jJOuv4+bIEBTwOT/
-	hFqc+jzkt/lu0FMpRW2R+qspxzazGxk96b8E0XLVPyZi5FCdTIrS2MPrKtVXe+Mg
-	kHtP4RWxHt9IEj4mggPsG1tfEAyXRlcJoM5DLl6GwDAJOnyr1q1Rr6GyN5A2qQS7
-	6155vRP85nZcxbFOQ/DYUDtRIXCX17zK97CziD1Es2MN5U/sOSFqd2w6hX8zjdA=
-	=
+	from:to:cc:subject:date:message-id:in-reply-to:references
+	:mime-version:content-transfer-encoding:content-type; s=
+	qcppdkim1; bh=NkknhrwVhBJuRU/2AEnFLKIJ5eRHIeSAQqL6KeWWGlc=; b=Vj
+	RhoEYsBzB+sFi9wrKw+ZSWoNnd/M6vEH9AVjerivz1SULUIr0yDlc4ZuyzfKJnnZ
+	Fw/KCUibAnXBHISTm9GgDLHErcOSCKtzSbOjnNJuPTHURFkC/PWw6MJhaphs0Z/9
+	PBzIWSsg6EeYQR8TRpYRAqtCne/xQcfKQjVa2PuNmjkiHUJhWBC1vZhUKJafPd+U
+	PDWBVk56KHqnfTCdQrBKah8gfL7D7aR/Q1KWVpUFBGGqbSP2/4GiqLDPvvilKJr+
+	aMVI+ugzbx04LNnXQCbYcM5nmrakD/udTHvUQHBljE6jDj6DpcGHECd8FxQvuvZ3
+	0IkqgL6jKQ7SkABsMPBQ==
 Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3w9cd49gbq-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3w9bfs1mh6-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 15 Feb 2024 16:28:28 +0000 (GMT)
+	Thu, 15 Feb 2024 16:28:29 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 41FGSR4r026602
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 41FGSSVi026818
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 15 Feb 2024 16:28:27 GMT
+	Thu, 15 Feb 2024 16:28:28 GMT
 Received: from cdcwlex322514-lin.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Thu, 15 Feb 2024 08:28:25 -0800
+ 15.2.1118.40; Thu, 15 Feb 2024 08:28:27 -0800
 From: Aditya Kumar Singh <quic_adisi@quicinc.com>
 To: <johannes@sipsolutions.net>
 CC: <linux-wireless@vger.kernel.org>,
         Aditya Kumar Singh
 	<quic_adisi@quicinc.com>
-Subject: [PATCH 0/2] wifi: mac80211/mac80211_hwsim: support MLO CSA test case
-Date: Thu, 15 Feb 2024 21:58:09 +0530
-Message-ID: <20240215162811.506065-1-quic_adisi@quicinc.com>
+Subject: [PATCH 1/2] wifi: mac80211: check beacon countdown is complete on per link basis
+Date: Thu, 15 Feb 2024 21:58:10 +0530
+Message-ID: <20240215162811.506065-2-quic_adisi@quicinc.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240215162811.506065-1-quic_adisi@quicinc.com>
+References: <20240215162811.506065-1-quic_adisi@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -76,40 +79,233 @@ X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 6FV5HvdxY0sdZBB9Fz-87Bw_JSgWaUOU
-X-Proofpoint-ORIG-GUID: 6FV5HvdxY0sdZBB9Fz-87Bw_JSgWaUOU
+X-Proofpoint-ORIG-GUID: WqAUu0T9GwPs7WUYL2VGRzk2dhnb9JaR
+X-Proofpoint-GUID: WqAUu0T9GwPs7WUYL2VGRzk2dhnb9JaR
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-02-15_15,2024-02-14_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- impostorscore=0 spamscore=0 bulkscore=0 mlxlogscore=853 clxscore=1015
- malwarescore=0 mlxscore=0 adultscore=0 priorityscore=1501 phishscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ bulkscore=0 phishscore=0 suspectscore=0 priorityscore=1501 spamscore=0
+ clxscore=1015 adultscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2401310000 definitions=main-2402150133
 
-Recently MLO CSA is enabled on the stack. Add test infra support in
-mac80211_hwsim in order to support basic MLO CSA test case.
+Currently, function to check if beacon countdown is complete uses deflink
+to fetch the beacon and check the counter. However, with MLO, there is
+a need to check the counter for the beacon in a particular link.
 
-Aditya Kumar Singh (2):
-  wifi: mac80211: check beacon countdown is complete on per link basis
-  wifi: mac80211_hwsim: add support for switch_vif_chanctx callback
+Add support to use link_id in order to fetch the beacon from a particular
+link data.
+
+Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
 ---
- drivers/net/wireless/ath/ath10k/mac.c         |  2 +-
- drivers/net/wireless/ath/ath10k/wmi.c         |  2 +-
- drivers/net/wireless/ath/ath11k/mac.c         |  2 +-
- drivers/net/wireless/ath/ath9k/beacon.c       |  2 +-
- .../net/wireless/ath/ath9k/htc_drv_beacon.c   |  2 +-
- .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c |  2 +-
- .../wireless/intel/iwlwifi/mvm/time-event.c   |  2 +-
- drivers/net/wireless/mediatek/mt76/mac80211.c |  4 +--
- .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c |  2 +-
- drivers/net/wireless/virtual/mac80211_hwsim.c | 35 +++++++++++++++++--
- include/net/mac80211.h                        |  4 ++-
- net/mac80211/tx.c                             | 14 ++++++--
- 12 files changed, 58 insertions(+), 15 deletions(-)
+ drivers/net/wireless/ath/ath10k/mac.c              |  2 +-
+ drivers/net/wireless/ath/ath10k/wmi.c              |  2 +-
+ drivers/net/wireless/ath/ath11k/mac.c              |  2 +-
+ drivers/net/wireless/ath/ath9k/beacon.c            |  2 +-
+ drivers/net/wireless/ath/ath9k/htc_drv_beacon.c    |  2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c  |  2 +-
+ .../net/wireless/intel/iwlwifi/mvm/time-event.c    |  2 +-
+ drivers/net/wireless/mediatek/mt76/mac80211.c      |  4 ++--
+ .../net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c  |  2 +-
+ drivers/net/wireless/virtual/mac80211_hwsim.c      |  2 +-
+ include/net/mac80211.h                             |  4 +++-
+ net/mac80211/tx.c                                  | 14 ++++++++++++--
+ 12 files changed, 26 insertions(+), 14 deletions(-)
 
-
-base-commit: 42ffccd0a36e099dea3d3272c5d62a0454ded1f0
+diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
+index 41053219ee95..e322b528baaf 100644
+--- a/drivers/net/wireless/ath/ath10k/mac.c
++++ b/drivers/net/wireless/ath/ath10k/mac.c
+@@ -2034,7 +2034,7 @@ static void ath10k_mac_vif_ap_csa_count_down(struct ath10k_vif *arvif)
+ 	if (!arvif->is_up)
+ 		return;
+ 
+-	if (!ieee80211_beacon_cntdwn_is_complete(vif)) {
++	if (!ieee80211_beacon_cntdwn_is_complete(vif, 0)) {
+ 		ieee80211_beacon_update_cntdwn(vif, 0);
+ 
+ 		ret = ath10k_mac_setup_bcn_tmpl(arvif);
+diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
+index ddf15717d504..2e9661f4bea8 100644
+--- a/drivers/net/wireless/ath/ath10k/wmi.c
++++ b/drivers/net/wireless/ath/ath10k/wmi.c
+@@ -3884,7 +3884,7 @@ void ath10k_wmi_event_host_swba(struct ath10k *ar, struct sk_buff *skb)
+ 		 * actual channel switch is done
+ 		 */
+ 		if (arvif->vif->bss_conf.csa_active &&
+-		    ieee80211_beacon_cntdwn_is_complete(arvif->vif)) {
++		    ieee80211_beacon_cntdwn_is_complete(arvif->vif, 0)) {
+ 			ieee80211_csa_finish(arvif->vif, 0);
+ 			continue;
+ 		}
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index f7cab50bdfd1..a1e2729582e8 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -1577,7 +1577,7 @@ void ath11k_mac_bcn_tx_event(struct ath11k_vif *arvif)
+ 		return;
+ 
+ 	if (vif->bss_conf.color_change_active &&
+-	    ieee80211_beacon_cntdwn_is_complete(vif)) {
++	    ieee80211_beacon_cntdwn_is_complete(vif, 0)) {
+ 		arvif->bcca_zero_sent = true;
+ 		ieee80211_color_change_finish(vif);
+ 		return;
+diff --git a/drivers/net/wireless/ath/ath9k/beacon.c b/drivers/net/wireless/ath/ath9k/beacon.c
+index 4e48407138b2..b399a7926ef5 100644
+--- a/drivers/net/wireless/ath/ath9k/beacon.c
++++ b/drivers/net/wireless/ath/ath9k/beacon.c
+@@ -365,7 +365,7 @@ bool ath9k_csa_is_finished(struct ath_softc *sc, struct ieee80211_vif *vif)
+ 	if (!vif || !vif->bss_conf.csa_active)
+ 		return false;
+ 
+-	if (!ieee80211_beacon_cntdwn_is_complete(vif))
++	if (!ieee80211_beacon_cntdwn_is_complete(vif, 0))
+ 		return false;
+ 
+ 	ieee80211_csa_finish(vif, 0);
+diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_beacon.c b/drivers/net/wireless/ath/ath9k/htc_drv_beacon.c
+index 8179d35dc310..547634f82183 100644
+--- a/drivers/net/wireless/ath/ath9k/htc_drv_beacon.c
++++ b/drivers/net/wireless/ath/ath9k/htc_drv_beacon.c
+@@ -514,7 +514,7 @@ bool ath9k_htc_csa_is_finished(struct ath9k_htc_priv *priv)
+ 	if (!vif || !vif->bss_conf.csa_active)
+ 		return false;
+ 
+-	if (!ieee80211_beacon_cntdwn_is_complete(vif))
++	if (!ieee80211_beacon_cntdwn_is_complete(vif, 0))
+ 		return false;
+ 
+ 	ieee80211_csa_finish(vif, 0);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+index cc592e288188..123fe9bba982 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+@@ -1466,7 +1466,7 @@ static void iwl_mvm_csa_count_down(struct iwl_mvm *mvm,
+ 
+ 	mvmvif->csa_countdown = true;
+ 
+-	if (!ieee80211_beacon_cntdwn_is_complete(csa_vif)) {
++	if (!ieee80211_beacon_cntdwn_is_complete(csa_vif, 0)) {
+ 		int c = ieee80211_beacon_update_cntdwn(csa_vif, 0);
+ 
+ 		iwl_mvm_mac_ctxt_beacon_changed(mvm, csa_vif,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c b/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
+index 89b1c7a87660..a59d264a11c5 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
+@@ -156,7 +156,7 @@ static void iwl_mvm_csa_noa_start(struct iwl_mvm *mvm)
+ 	 * So we just do nothing here and the switch
+ 	 * will be performed on the last TBTT.
+ 	 */
+-	if (!ieee80211_beacon_cntdwn_is_complete(csa_vif)) {
++	if (!ieee80211_beacon_cntdwn_is_complete(csa_vif, 0)) {
+ 		IWL_WARN(mvm, "CSA NOA started too early\n");
+ 		goto out_unlock;
+ 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
+index 8bf82755ca4c..758e380fdf1d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -1613,7 +1613,7 @@ EXPORT_SYMBOL_GPL(mt76_get_sar_power);
+ static void
+ __mt76_csa_finish(void *priv, u8 *mac, struct ieee80211_vif *vif)
+ {
+-	if (vif->bss_conf.csa_active && ieee80211_beacon_cntdwn_is_complete(vif))
++	if (vif->bss_conf.csa_active && ieee80211_beacon_cntdwn_is_complete(vif, 0))
+ 		ieee80211_csa_finish(vif, 0);
+ }
+ 
+@@ -1638,7 +1638,7 @@ __mt76_csa_check(void *priv, u8 *mac, struct ieee80211_vif *vif)
+ 	if (!vif->bss_conf.csa_active)
+ 		return;
+ 
+-	dev->csa_complete |= ieee80211_beacon_cntdwn_is_complete(vif);
++	dev->csa_complete |= ieee80211_beacon_cntdwn_is_complete(vif, 0);
+ }
+ 
+ void mt76_csa_check(struct mt76_dev *dev)
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+index 66bf92c164c3..db5041d23938 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+@@ -5739,7 +5739,7 @@ static void rtl8xxxu_update_beacon_work_callback(struct work_struct *work)
+ 	}
+ 
+ 	if (vif->bss_conf.csa_active) {
+-		if (ieee80211_beacon_cntdwn_is_complete(vif)) {
++		if (ieee80211_beacon_cntdwn_is_complete(vif, 0)) {
+ 			ieee80211_csa_finish(vif, 0);
+ 			return;
+ 		}
+diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
+index 0554946ed30e..2ea11a86d920 100644
+--- a/drivers/net/wireless/virtual/mac80211_hwsim.c
++++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
+@@ -2305,7 +2305,7 @@ static void mac80211_hwsim_beacon_tx(void *arg, u8 *mac,
+ 			rcu_dereference(link_conf->chanctx_conf)->def.chan);
+ 	}
+ 
+-	if (link_conf->csa_active && ieee80211_beacon_cntdwn_is_complete(vif))
++	if (link_conf->csa_active && ieee80211_beacon_cntdwn_is_complete(vif, link_id))
+ 		ieee80211_csa_finish(vif, link_id);
+ }
+ 
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index fc223761e3af..25c892ea9eb3 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -5566,10 +5566,12 @@ void ieee80211_csa_finish(struct ieee80211_vif *vif, unsigned int link_id);
+ /**
+  * ieee80211_beacon_cntdwn_is_complete - find out if countdown reached 1
+  * @vif: &struct ieee80211_vif pointer from the add_interface callback.
++ * @link_id: valid link_id during MLO or 0 for non-MLO
+  *
+  * This function returns whether the countdown reached zero.
+  */
+-bool ieee80211_beacon_cntdwn_is_complete(struct ieee80211_vif *vif);
++bool ieee80211_beacon_cntdwn_is_complete(struct ieee80211_vif *vif,
++					 unsigned int link_id);
+ 
+ /**
+  * ieee80211_color_change_finish - notify mac80211 about color change
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index f4be4af568be..6bf223e6cd1a 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -5095,9 +5095,11 @@ void ieee80211_beacon_set_cntdwn(struct ieee80211_vif *vif, u8 counter)
+ }
+ EXPORT_SYMBOL(ieee80211_beacon_set_cntdwn);
+ 
+-bool ieee80211_beacon_cntdwn_is_complete(struct ieee80211_vif *vif)
++bool ieee80211_beacon_cntdwn_is_complete(struct ieee80211_vif *vif,
++					 unsigned int link_id)
+ {
+ 	struct ieee80211_sub_if_data *sdata = vif_to_sdata(vif);
++	struct ieee80211_link_data *link;
+ 	struct beacon_data *beacon = NULL;
+ 	u8 *beacon_data;
+ 	size_t beacon_data_len;
+@@ -5106,9 +5108,17 @@ bool ieee80211_beacon_cntdwn_is_complete(struct ieee80211_vif *vif)
+ 	if (!ieee80211_sdata_running(sdata))
+ 		return false;
+ 
++	if (WARN_ON(link_id >= IEEE80211_MLD_MAX_NUM_LINKS))
++		return 0;
++
+ 	rcu_read_lock();
++
++	link = rcu_dereference(sdata->link[link_id]);
++	if (!link)
++		goto out;
++
+ 	if (vif->type == NL80211_IFTYPE_AP) {
+-		beacon = rcu_dereference(sdata->deflink.u.ap.beacon);
++		beacon = rcu_dereference(link->u.ap.beacon);
+ 		if (WARN_ON(!beacon || !beacon->tail))
+ 			goto out;
+ 		beacon_data = beacon->tail;
 -- 
 2.25.1
 
