@@ -1,155 +1,104 @@
-Return-Path: <linux-wireless+bounces-3639-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3640-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F1B3856992
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Feb 2024 17:29:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F0B4856A57
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Feb 2024 17:59:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D9AADB2B186
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Feb 2024 16:28:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13D011F22487
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Feb 2024 16:59:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2464213474E;
-	Thu, 15 Feb 2024 16:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FAAB1369AB;
+	Thu, 15 Feb 2024 16:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="mBpAKRa5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rcXLgPJy"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE8C66B2D
-	for <linux-wireless@vger.kernel.org>; Thu, 15 Feb 2024 16:28:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBF15135A75;
+	Thu, 15 Feb 2024 16:58:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708014517; cv=none; b=pIKwmkW7C6AxP8C//vYeK4sE6wtizKxWdw1cOHVnGAyMsPgoE4GU0ZAF0ZT0nsPRw7EKQ2HYq22Z1NJwDsOW88xypLKnXzwmZax5nWfvxA3gRNtrQTJC1muXVgP8lHQ8k/CQJ/ZfchQQ24yEl59pZiKO+efRsIUzO3sS6aJHk6Q=
+	t=1708016300; cv=none; b=sTUhWYQWc6XBiU0KkdWqT6eb4UAs34QeXaJn2F5GkM/Z99jBpC4pA76fti4GySFHlnjvrzc1VL6pP8/+b6HrH2SbGmNogubcW1pK0LByssnJIsVNQB5sWMeALwJovJeam+fAPCPhQETMVCgid+tMqaT2ie0i5j5SUMx63ORl1ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708014517; c=relaxed/simple;
-	bh=/Y18czAarCmbkiaTwNIACeEC72nikeU89t62oafydQk=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Baj0Bi3rJBM8S8K//XrKMgPoA2xqv2uSsF+Ydqvf2wAMLp9P+UgD/by0I9uV75S5EggoLk3zmIysoUnP9uQX6/Dfq8lg0a9M+Zg2siJShscFxrZRaT59sSDzOOn8Rae/AGmvnAfayeU6PBlE27YVgZsfXvCsWUoBvqIn25K/wRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=mBpAKRa5; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41FDdsui001713;
-	Thu, 15 Feb 2024 16:28:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-transfer-encoding:content-type; s=
-	qcppdkim1; bh=7Yjn+VmYduAApuPzrdl2EiqaX3bAskbKBBr8DoP60vM=; b=mB
-	pAKRa5AoWqSN+aT7gfGn0e9gAxYDXuo7Q9vu+VLS/sXKrVZY9+Kf+Suzb834IvQs
-	Nd1QFVcSh1nU9syzPs4zBfk+RQrhKruKQcXNAIrmIUsvcon0SHvyAUDDNRDzl5r7
-	lB2kozsu7S0vJaczEQHPJqZ2BPju8v4Qlut2cIk/Cx0YjaUoFOXeahEjeuTv7KnD
-	0np/2CQLwxzVCnqG1Aid/ilqcrjCj2zwWKMd/4S4mkIRm3DrUYsfEgNZ+VApADIZ
-	KKiRvdjl6CSLdTAWiIh5oXV4sHswNb3pD1he4/jEJmcrKYex8Nq9xSjDlnLLy+vn
-	ARoXtTE6wJtW8t2EsfNQ==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3w9cd49gby-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 15 Feb 2024 16:28:31 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 41FGSUVd026928
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 15 Feb 2024 16:28:30 GMT
-Received: from cdcwlex322514-lin.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Thu, 15 Feb 2024 08:28:28 -0800
-From: Aditya Kumar Singh <quic_adisi@quicinc.com>
-To: <johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>,
-        Aditya Kumar Singh
-	<quic_adisi@quicinc.com>
-Subject: [PATCH 2/2] wifi: mac80211_hwsim: add support for switch_vif_chanctx callback
-Date: Thu, 15 Feb 2024 21:58:11 +0530
-Message-ID: <20240215162811.506065-3-quic_adisi@quicinc.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240215162811.506065-1-quic_adisi@quicinc.com>
-References: <20240215162811.506065-1-quic_adisi@quicinc.com>
+	s=arc-20240116; t=1708016300; c=relaxed/simple;
+	bh=tHaTc7mB5fC1U8nauAM8JVm9/GGEYLSsMESHBa5W6H0=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=up+iTjMdEZ21DxfLpe1g+bKsrs+C+0SEbltk2Q5uXtFoFjxdmW7jiRbxWST5T7Gq8/9eehl2wyw26/x701UuaC6Q+xki+6pLfHAO7Pu+oRsOxFA4ePDNP01kJAFeC49KeJdMKk24YFRxi8XRvafe616Roh2L9PPwxqjlX2q9pss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rcXLgPJy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD083C43390;
+	Thu, 15 Feb 2024 16:58:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708016299;
+	bh=tHaTc7mB5fC1U8nauAM8JVm9/GGEYLSsMESHBa5W6H0=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=rcXLgPJytbnbK9h2e3K1BhIMHqEsPeuPz3Uw/tCTPnw5uB6L/as07LFmlF7DtuiX5
+	 V2wiz9hTj3ZdJn0WpwSKK2Kt7r3CJnQBl7Vj5ujzxqEYQIsgkmjIFeTKe519DeUAai
+	 w3AOvzDQLyk5MD5AGEdJ5XdN+sBAtO6/L6WZHdlwsxLGubG325xbExt2QMVVUmHmj5
+	 1Sw3Fe07qnr26okcMNiw4XIs8z6wbmb3HRTA9a272iu3v2Ypp6DSDRmtGdDVj59dmg
+	 siUD50QoG1rlBitXXy6kxF20hJxpnChBAIsXKua8stjZvdJaNlMBucSYLr5pU6y1/o
+	 25RYruXj8gfEg==
+From: Kalle Valo <kvalo@kernel.org>
+To: Alexis =?utf-8?Q?Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>,  Ajay Singh
+ <ajay.kathat@microchip.com>,  Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>,  linux-wireless@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  Igor Mitsyanko <imitsyanko@quantenna.com>,
+  Sergey Matyukevich <geomatsi@gmail.com>
+Subject: Re: [PATCH 1/2] wifi: nl80211: force WLAN_AKM_SUITE_SAE in big
+ endian in NL80211_CMD_EXTERNAL_AUTH
+References: <20240215-nl80211_fix_akm_suites_endianness-v1-0-57e902632f9d@bootlin.com>
+	<20240215-nl80211_fix_akm_suites_endianness-v1-1-57e902632f9d@bootlin.com>
+Date: Thu, 15 Feb 2024 18:58:15 +0200
+In-Reply-To: <20240215-nl80211_fix_akm_suites_endianness-v1-1-57e902632f9d@bootlin.com>
+	("Alexis =?utf-8?Q?Lothor=C3=A9=22's?= message of "Thu, 15 Feb 2024
+ 15:13:52 +0100")
+Message-ID: <87cysxekbc.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: ctV7fEKFLuzRX2W-uaSwpJ1d_csoDLSm
-X-Proofpoint-ORIG-GUID: ctV7fEKFLuzRX2W-uaSwpJ1d_csoDLSm
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-15_15,2024-02-14_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- impostorscore=0 spamscore=0 bulkscore=0 mlxlogscore=833 clxscore=1015
- malwarescore=0 mlxscore=0 adultscore=0 priorityscore=1501 phishscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2401310000 definitions=main-2402150133
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Currently switch_vif_chanctx mac80211 callback is not supported for
-MLO. Add it.
+Alexis Lothor=C3=A9 <alexis.lothore@bootlin.com> writes:
 
-Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
----
- drivers/net/wireless/virtual/mac80211_hwsim.c | 33 ++++++++++++++++++-
- 1 file changed, 32 insertions(+), 1 deletion(-)
+> User-space supplicant (observed at least on wpa_supplicant) historically
+> parses the NL80211_ATTR_AKM_SUITES from the NL80211_CMD_EXTERNAL_AUTH
+> message as big endian _only_ when its value is WLAN_AKM_SUITE_SAE, while
+> processing anything else in host endian. This behavior makes any driver
+> relying on SAE external auth to switch AKM suite to big endian if it is
+> WLAN_AKM_SUITE_SAE. A fix bringing compatibility with both endianness
+> has been brought into wpa_supplicant, however we must keep compatibility
+> with older versions, while trying to reduce the occurences of this manual
+> conversion in wireless drivers.
+>
+> Add the be32 conversion specifically on WLAN_AKM_SUITE_SAE in nl80211 lay=
+er
+> to keep compatibility with older wpa_supplicant versions.
+>
+> Suggested-by: Johannes Berg <johannes@sipsolutions.net>
+> Signed-off-by: Alexis Lothor=C3=A9 <alexis.lothore@bootlin.com>
 
-diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
-index 2ea11a86d920..ccc321898d6f 100644
---- a/drivers/net/wireless/virtual/mac80211_hwsim.c
-+++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
-@@ -3215,6 +3215,36 @@ static void mac80211_hwsim_unassign_vif_chanctx(struct ieee80211_hw *hw,
- 	}
- }
- 
-+static int mac80211_hwsim_switch_vif_chanctx(struct ieee80211_hw *hw,
-+					     struct ieee80211_vif_chanctx_switch *vifs,
-+					     int n_vifs,
-+					     enum ieee80211_chanctx_switch_mode mode)
-+{
-+	int i;
-+
-+	if (n_vifs <= 0)
-+		return -EINVAL;
-+
-+	wiphy_dbg(hw->wiphy,
-+		  "switch vif channel context mode: %u\n", mode);
-+
-+	for (i = 0; i < n_vifs; i++) {
-+		hwsim_check_chanctx_magic(vifs[i].old_ctx);
-+		wiphy_dbg(hw->wiphy,
-+			  "switch vif channel context: %d MHz/width: %d/cfreqs:%d/%d MHz -> %d MHz/width: %d/cfreqs:%d/%d MHz\n",
-+			  vifs[i].old_ctx->def.chan->center_freq,
-+			  vifs[i].old_ctx->def.width,
-+			  vifs[i].old_ctx->def.center_freq1,
-+			  vifs[i].old_ctx->def.center_freq2,
-+			  vifs[i].new_ctx->def.chan->center_freq,
-+			  vifs[i].new_ctx->def.width,
-+			  vifs[i].new_ctx->def.center_freq1,
-+			  vifs[i].new_ctx->def.center_freq2);
-+		hwsim_set_chanctx_magic(vifs[i].new_ctx);
-+	}
-+	return 0;
-+}
-+
- static const char mac80211_hwsim_gstrings_stats[][ETH_GSTRING_LEN] = {
- 	"tx_pkts_nic",
- 	"tx_bytes_nic",
-@@ -3940,7 +3970,8 @@ static const struct ieee80211_ops mac80211_hwsim_ops = {
- 	.remove_chanctx = mac80211_hwsim_remove_chanctx,	\
- 	.change_chanctx = mac80211_hwsim_change_chanctx,	\
- 	.assign_vif_chanctx = mac80211_hwsim_assign_vif_chanctx,\
--	.unassign_vif_chanctx = mac80211_hwsim_unassign_vif_chanctx,
-+	.unassign_vif_chanctx = mac80211_hwsim_unassign_vif_chanctx, \
-+	.switch_vif_chanctx = mac80211_hwsim_switch_vif_chanctx,
- 
- static const struct ieee80211_ops mac80211_hwsim_mchan_ops = {
- 	HWSIM_COMMON_OPS
--- 
-2.25.1
+A pointer to the discussion would be nice to have:
 
+Link: https://lore.kernel.org/all/09eeb7d4-c922-45ee-a1ac-59942153dbce@boot=
+lin.com/
+
+I assume Johannes can add that.
+
+Alexis, thanks so much for working on this! This has been bugging me for
+long but never found the time to investigate it.
+
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
 
