@@ -1,149 +1,97 @@
-Return-Path: <linux-wireless+bounces-3635-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3636-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2851856821
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Feb 2024 16:41:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06933856881
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Feb 2024 16:51:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D84021C23775
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Feb 2024 15:41:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 969871F22106
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Feb 2024 15:51:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C84113343A;
-	Thu, 15 Feb 2024 15:41:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05583133417;
+	Thu, 15 Feb 2024 15:50:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VtlnUwjB"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="pBAzmmSJ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4563F12C548;
-	Thu, 15 Feb 2024 15:41:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF41C1754B;
+	Thu, 15 Feb 2024 15:50:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708011705; cv=none; b=S9Gxr1tQ3kSdtx88js+7zcHdu73Eu2GDu9tNxJzJysqtdV6iBdXxkRV+ZRs2lJ5FhupHygZIW/B5xusTmDdSMLhEKk7xpb7rMt/9Oj8u2wzOfrfQuPxnb5GxH3a2HNegRs4a+sG/qG7wzey2QJ7DDAmLiymAjTQrouGD2y4g+NE=
+	t=1708012250; cv=none; b=J/BR1BAl5/84D02As2Cc0IsvDo+qClaP31AG08PPIT4WJaD99sPcPRlrkukSNVR1LRfcqS6VFMU2Jn5fyLyZ9ljnL6dkxrkNLOi7itpuq8N9C9EBVCPW3e8B1x5IZU2aUzui2OEJQZHiTi1Yz0UXmjxdMFElXvPFjf2Zu48D0+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708011705; c=relaxed/simple;
-	bh=Pgd5J6Uby1Zyd/C1wyBnm9ePGiFzIsnkC58Bl/jyjRE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Q0Fg4Ww3BqvVSzCocNrvI6N8/iuCS0qDDFMxayNoSBw4M1OP6FXlAvti09RMbiO5aO4EDp1oCJM32uMewsw4maeKidYTRCD2Dmr+V+tCygZyuSImO1YYrlYK3ZcZr/iSOQLTKoGU2lMr9+5L3f4I/20oC7D4lTETCDCqTcNEhk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VtlnUwjB; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708011703; x=1739547703;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=Pgd5J6Uby1Zyd/C1wyBnm9ePGiFzIsnkC58Bl/jyjRE=;
-  b=VtlnUwjB9oH4wtbAK9eJ9lbg3AmBfsaYryM5f8oAsH8z6R4NtEW91Ssp
-   1cinY5rg96Km0fe17mqRO6mh5pkQd9rX+dZs1T3miXlNSTuVnGESqPoBe
-   riOXqhWDmbrfHkzGBaiuYgbp8muTtM1G6edSDGL0KMDomhxURAVnuLXKy
-   X0l8CWv5gLMQeyKvUMUwahZD5LvewgHDT5h+vqvMG55O1kN8fz6HZ4bWT
-   1LWqalsvQviAtPlqrcujah3tfNfqthsDc1GSrPtJlu39mIxSxeqIXjeSz
-   WoGGs51XPhU4EZj8uUtm7QnDLpHBXlfakemCQJgw0SSFbJyiC+Pk4V2dn
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10984"; a="5888083"
-X-IronPort-AV: E=Sophos;i="6.06,162,1705392000"; 
-   d="scan'208";a="5888083"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Feb 2024 07:41:42 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10984"; a="935682308"
-X-IronPort-AV: E=Sophos;i="6.06,162,1705392000"; 
-   d="scan'208";a="935682308"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 15 Feb 2024 07:41:39 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id B54E2204; Thu, 15 Feb 2024 17:41:38 +0200 (EET)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	linux-kernel@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: Johannes Berg <johannes@sipsolutions.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net-next v1 1/1] wireless: Add KHZ_PER_GHZ to units.h and reuse
-Date: Thu, 15 Feb 2024 17:41:36 +0200
-Message-ID: <20240215154136.630029-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.43.0.rc1.1.gbec44491f096
+	s=arc-20240116; t=1708012250; c=relaxed/simple;
+	bh=LggeN6h+WHY+0T/ae++CkDBWkvkomh6pdok7J2AYD5I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VjR243y+Okh91WdVHJOAVv3tNJI90HaPHT3uEf/r7vXi3ZzE2LI59BKF6z/a5/sTxTV7SG43JOCKMGqDH9brrEhPKxnEJvr8ktDozxS+f4pMK/UO82ZnV5Z04ZmML3rrbsX9lItdOFMobDb96Fjddv0bCJfEUzTi9b9K7XzSCf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=pBAzmmSJ; arc=none smtp.client-ip=217.70.183.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 1A11D60007;
+	Thu, 15 Feb 2024 15:50:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1708012241;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mtk48EznKmDX1rPnpNxOjf1ZSd+O3CpXHfHOgLG93Fs=;
+	b=pBAzmmSJkIrrpIJCmMkXFXnnZuhytoqQDfJaAm7OvCfh1ZOEySWkDW33bzn32d82aX+A25
+	8Y7cbAG6EqXMtDc53kf6t7tzT8ogGzFOuEqFH21ckm/vMOf6Cru83EWMYGYBtbkucF5+gX
+	zAtyq8DGJxi57xI2fyuAB6KF4Pv9wzlUvbSXKKW1jFxFm/ngLQs9bN8a/nJbsqSv0h/E6K
+	qKNQna6AHP+zyHtk1aAbmVIxrTazWmZ+9AUWf4eGoYt2ma3wtfxdOVLDHpUfEiipqdJqU8
+	1T4XqNDFx/K7KuaNQIr4RJsiRxDdwuYImgyPgmsaiakzeciMOnR+BuHzDzZa8A==
+Message-ID: <02c155ff-f880-4e88-b600-9d632019729f@bootlin.com>
+Date: Thu, 15 Feb 2024 16:50:39 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] wifi: nl80211/wilc1000: force WLAN_AKM_SUITE_SAE to
+ big endian in NL80211_CMD_EXTERNAL_AUTH
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Ajay Singh <ajay.kathat@microchip.com>, Kalle Valo <kvalo@kernel.org>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Igor Mitsyanko <imitsyanko@quantenna.com>,
+ Sergey Matyukevich <geomatsi@gmail.com>, kernel test robot <lkp@intel.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>
+References: <20240215-nl80211_fix_akm_suites_endianness-v1-0-57e902632f9d@bootlin.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+In-Reply-To: <20240215-nl80211_fix_akm_suites_endianness-v1-0-57e902632f9d@bootlin.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-GND-Sasl: alexis.lothore@bootlin.com
 
-The KHZ_PER_GHZ might be used by others (with the name aligned
-with similar constants). Define it in units.h and convert
-wireless to use it.
+On 2/15/24 15:13, Alexis Lothoré wrote:
+> This small series is the follow-up to discussions started around a sparse
+> warning in wilc1000 driver ([1]) and implements the solution suggested by
+> Johannes. It moves a historically needed conversion to be32 in nl80211 (in
+> NL80211_CMD_EXTERNAL_AUTH, specifically on NL80211_ATTR_AKM_SUITES property
+> _only_ when it is set to WLAN_AKM_SUITE_SAE) The user scenario affected by
+> this update is a connect process on a WPA3-protected access point with
+> authentication offloaded to user-space. Two drivers are affected by the
+> update: wilc1000 and qtnfmac. wilc1000 case is handled by a small
+> companion patch which also fixes the sparse warning.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- include/linux/units.h | 5 ++++-
- net/wireless/reg.c    | 7 +++----
- 2 files changed, 7 insertions(+), 5 deletions(-)
+Adding Claudio Beznea (co-maintainer for WILC), who got lost when I prepared the
+series, sorry.
 
-diff --git a/include/linux/units.h b/include/linux/units.h
-index 45110daaf8d3..00e15de33eca 100644
---- a/include/linux/units.h
-+++ b/include/linux/units.h
-@@ -24,10 +24,13 @@
- #define NANOHZ_PER_HZ		1000000000UL
- #define MICROHZ_PER_HZ		1000000UL
- #define MILLIHZ_PER_HZ		1000UL
-+
- #define HZ_PER_KHZ		1000UL
--#define KHZ_PER_MHZ		1000UL
- #define HZ_PER_MHZ		1000000UL
- 
-+#define KHZ_PER_MHZ		1000UL
-+#define KHZ_PER_GHZ		1000000UL
-+
- #define MILLIWATT_PER_WATT	1000UL
- #define MICROWATT_PER_MILLIWATT	1000UL
- #define MICROWATT_PER_WATT	1000000UL
-diff --git a/net/wireless/reg.c b/net/wireless/reg.c
-index 50cadbad485f..753f8e9aa4b1 100644
---- a/net/wireless/reg.c
-+++ b/net/wireless/reg.c
-@@ -57,6 +57,8 @@
- #include <linux/verification.h>
- #include <linux/moduleparam.h>
- #include <linux/firmware.h>
-+#include <linux/units.h>
-+
- #include <net/cfg80211.h>
- #include "core.h"
- #include "reg.h"
-@@ -1289,20 +1291,17 @@ static bool is_valid_rd(const struct ieee80211_regdomain *rd)
- static bool freq_in_rule_band(const struct ieee80211_freq_range *freq_range,
- 			      u32 freq_khz)
- {
--#define ONE_GHZ_IN_KHZ	1000000
- 	/*
- 	 * From 802.11ad: directional multi-gigabit (DMG):
- 	 * Pertaining to operation in a frequency band containing a channel
- 	 * with the Channel starting frequency above 45 GHz.
- 	 */
--	u32 limit = freq_khz > 45 * ONE_GHZ_IN_KHZ ?
--			20 * ONE_GHZ_IN_KHZ : 2 * ONE_GHZ_IN_KHZ;
-+	u32 limit = freq_khz > 45 * KHZ_PER_GHZ ? 20 * KHZ_PER_GHZ : 2 * KHZ_PER_GHZ;
- 	if (abs(freq_khz - freq_range->start_freq_khz) <= limit)
- 		return true;
- 	if (abs(freq_khz - freq_range->end_freq_khz) <= limit)
- 		return true;
- 	return false;
--#undef ONE_GHZ_IN_KHZ
- }
- 
- /*
+Also, my mail provider returns error 550 (No Such User Here) for quantenna
+driver maintainer (<imitsyanko@quantenna.com>, taken from MAINTAINERS). I've
+seen no recent activity from him on the ML, is he still around ?
+
 -- 
-2.43.0.rc1.1.gbec44491f096
+Alexis Lothoré, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
