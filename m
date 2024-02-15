@@ -1,212 +1,113 @@
-Return-Path: <linux-wireless+bounces-3647-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3648-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0018856D32
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Feb 2024 19:58:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC1E6856E02
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Feb 2024 20:48:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8681C288667
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Feb 2024 18:58:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D7AC1F2636F
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Feb 2024 19:48:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EE35131E54;
-	Thu, 15 Feb 2024 18:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E09C1386BC;
+	Thu, 15 Feb 2024 19:48:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JhNFmxGI"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="c2I7/qgB"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 397B83D6D
-	for <linux-wireless@vger.kernel.org>; Thu, 15 Feb 2024 18:58:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEF7C41A81
+	for <linux-wireless@vger.kernel.org>; Thu, 15 Feb 2024 19:48:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708023485; cv=none; b=LTlq78Omb1ARmpozarjV1l9bzebFUB2i8YfGQs0Th1lMEEPKHOiuz2nd0r5OHVSFMHfI3ZtXPyDpcECoPOmTJyL0HiqegJDOIBGSF9sW1m42HiFxIqHj58tnoxoLJ5iiYIg2EgtHDzRAGFwfghgJi+mXzF3dFqXRomJ1NpB/GkU=
+	t=1708026501; cv=none; b=NbksvQ8DlwKdwuiHLjTWbqVzx3VYA6vRE1QFE/OG8c9ERmJMYhWaWC3XG9AL+3+MsgX5GKtj1zNY4+rebvsNTJaArtwz0p6WvxKb7TlXpqQB1SqEE5hKj6IgTYqmtrMyp3Px5qCcpdBFB2iI0DKmWbAgTrhIHtW3/qIbtjFGl50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708023485; c=relaxed/simple;
-	bh=kR8TLk1lZIgR3pfrS9QaXCUMf1Oxk9StmrdxsuqIuDs=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=TSbiLu87KFBjab23n/RaMJ8e4VHYvghmQPtbHUSMS3EVEkR/AagGmgjRVgqv2zlyOopA7H1by6yZtJ9pgFaMO66Ygy57AhBcxnLD6si7aAQbLo/yNK+Cyfb1nBpIrlva/NOSXxFrNOvkvLpP/ijSCSFSZ8EJt8Xo6gtDiQDYcB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JhNFmxGI; arc=none smtp.client-ip=209.85.208.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2d0a4e8444dso13094061fa.2
-        for <linux-wireless@vger.kernel.org>; Thu, 15 Feb 2024 10:58:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708023481; x=1708628281; darn=vger.kernel.org;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8i4gTAYTSFH05Hf9ypVw0rIObhdj8+RHQzx0YazL0tQ=;
-        b=JhNFmxGISGgn391AmeFVyRqABRlZmFC/1dm37Qz1wsDIhmL6LmHUf5sv5nHvoCGDQP
-         rQL7WwdLaLONenahKcFcVn1XXGbJGX73dCOn5VxrmcjS3VVKeOQAemulNMNTSJjcsjjm
-         gLWwIRL2ZTC1SuPQIbVqhRcFUxNhLOs5U/vtuGaXs7nXDjBy1WqesCKFDnyE9MciT8nn
-         fgD3l+k2ul/sac9vQPe60rc8nsiTZQs3fJvhkO2Rb/plqk/PbdbuNshAQT6Gu3Wk1py+
-         +lEFzegozunF3VIxxLbqidOg2Suxjd2yvC53fQu+5LhRfLWPDgZkGL0p54GU0QMD3yej
-         /UVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708023481; x=1708628281;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=8i4gTAYTSFH05Hf9ypVw0rIObhdj8+RHQzx0YazL0tQ=;
-        b=Fxbzj9Ec9oLczS+1DVH/6MsFAdmR7XyINAbsYARyAnGW/xCS7mBR2CNHiLJ81Aubqo
-         Yk/L46I4bdur/TI2empXR7js2txkxZgBFz/C/rvYS6CCzN9BnxCoxyGouGj/fld5tcZO
-         nRhlNAdSlHib+DKQiSnzfzMqeisiLDgCwFyy08Lzwkp8OcSvbjV3Q73T8fu2cACeNTAU
-         QNfaDFeLrJ0rE4SujcWJH99anmi3zE0Hu6845JRjBDV3OjipcYrS23nEHhfjW08zMVcG
-         Fg0rfrSoBYXC07pNY7ujL7dGPKEcwJrrxrLazcxcJSgalr2xgVv1x0tvpfGiVOQC+PGN
-         k6sQ==
-X-Gm-Message-State: AOJu0Ywztvqpmot+eAlOZ7VI85GeFJuI5vxdPGJ5TtaFrfiTIWjRzEPU
-	rQ0OHFsB4wpxgFhsu2TxkGwqLIgfYbUF7T8UqXJlR0MyWUFbgQWKitIcpbVk
-X-Google-Smtp-Source: AGHT+IGERcLT0qhH0S+Z4YZDnqvVRyLeFF2q3ETSm6UELzOF9mKEfpJ38gx1M83DCRaMO+rvAt/yvw==
-X-Received: by 2002:a2e:bb96:0:b0:2d1:1c0d:7f63 with SMTP id y22-20020a2ebb96000000b002d11c0d7f63mr1771852lje.22.1708023480983;
-        Thu, 15 Feb 2024 10:58:00 -0800 (PST)
-Received: from [192.168.1.50] ([79.119.240.211])
-        by smtp.gmail.com with ESMTPSA id dn17-20020a05600c655100b00412156abf32sm2590489wmb.16.2024.02.15.10.58.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 Feb 2024 10:58:00 -0800 (PST)
-Message-ID: <4e936334-5f81-403f-a495-0628ebfb6903@gmail.com>
-Date: Thu, 15 Feb 2024 20:57:59 +0200
+	s=arc-20240116; t=1708026501; c=relaxed/simple;
+	bh=eLbnxbnJcgr8tLDJOMC5yB5Uur1Rhi4U1TD5e2fthDs=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=J8+4/hu5t0kF6kgsHPl5nMWbHIpd1qI1t8K+6MjkE4g+ksGyvkwOti/nR6mTZEzCXLZzXfruATQakvfdwc3EQE1yWi6tIUhIIhld6fqI2cyWHzPuyUGhuXFNCU/59lAWtxfvp73Ub6ceZpi5PT923YrZiE4eDAyyqDPO0Bwnml0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=c2I7/qgB; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=qTMIj5Xju7s3iPo1QndBgRckeUp0gN1roTcBCYI+bLk=;
+	t=1708026498; x=1709236098; b=c2I7/qgBTfgiEFsas2bs6z5cqbK8weOvmcwrX3IytYgewDb
+	KdNI8SW7ULNHVO7qfDadeM2GKPhX6xFijh7s84CPsHHLUsA97tkteCCx0zcmI7cTOamYngh//zaS/
+	Bdldjaa535OkfZpT3CECD7OCyjyaJMHF67mwGg9JI6Vl7gCd854ao/efujEtVmx1wPIC7pbM6r/xi
+	gHX4MyuujL378QRQQXJjUmY2k3k+p4+sdLG7Qz5kjcVEQJBiPatxSkA3+73UqX/jVqoHhcqPF2j9i
+	mdmPKf2RUp8Bd+mE4Eo4nc8R93+oGKXa2ET+bGt0OgsIq65Zyr9V+0dyv38U88AA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rahiK-0000000BCZa-3g2a;
+	Thu, 15 Feb 2024 20:48:09 +0100
+Message-ID: <189c5d80de6b640686030eef00a1c82f191e5cac.camel@sipsolutions.net>
+Subject: Re: [PATCH 1/2] wifi: mac80211: check beacon countdown is complete
+ on per link basis
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Aditya Kumar Singh <quic_adisi@quicinc.com>
+Cc: linux-wireless@vger.kernel.org
+Date: Thu, 15 Feb 2024 20:48:07 +0100
+In-Reply-To: <20240215162811.506065-2-quic_adisi@quicinc.com>
+References: <20240215162811.506065-1-quic_adisi@quicinc.com>
+	 <20240215162811.506065-2-quic_adisi@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Ping-Ke Shih <pkshih@realtek.com>,
- Larry Finger <Larry.Finger@lwfinger.net>
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: [PATCH v2] wifi: rtlwifi: rtl8192cu: Fix TX aggregation
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 
-rtl8192cu is checking rtl_mac.tids when deciding if it should enable
-aggregation. This is wrong because rtl_mac.tids is not initialised
-anywhere. Check rtl_sta_info.tids instead, which is initialised.
 
-Also, when enabling aggregation also enable RTS. The vendor driver does
-this, my router does this. It seems like the thing to do.
+> -bool ieee80211_beacon_cntdwn_is_complete(struct ieee80211_vif *vif)
+> +bool ieee80211_beacon_cntdwn_is_complete(struct ieee80211_vif *vif,
+> +					 unsigned int link_id)
+>  {
+>  	struct ieee80211_sub_if_data *sdata =3D vif_to_sdata(vif);
+> +	struct ieee80211_link_data *link;
+>  	struct beacon_data *beacon =3D NULL;
+>  	u8 *beacon_data;
+>  	size_t beacon_data_len;
+> @@ -5106,9 +5108,17 @@ bool ieee80211_beacon_cntdwn_is_complete(struct ie=
+ee80211_vif *vif)
+>  	if (!ieee80211_sdata_running(sdata))
+>  		return false;
+> =20
+> +	if (WARN_ON(link_id >=3D IEEE80211_MLD_MAX_NUM_LINKS))
+> +		return 0;
+> +
+>  	rcu_read_lock();
+> +
+> +	link =3D rcu_dereference(sdata->link[link_id]);
+> +	if (!link)
+> +		goto out;
+>=20
 
-Also also, it seems right to set the AMPDU density only when enabling
-aggregation.
+Maybe that should be a warning too? Not sure I see any case where the
+driver can/should call it with a link that's not even there?
 
-Also also also, delete the unused member rtl_mac.tids and the unused
-macros RTL_AGG_ON and RTL_AGG_OFF.
+Oh ... and maybe it should check if the link is active? We had the
+sdata_running() check before, but that doesn't mean much for MLO?
 
-Naturally, with working AMPDU the download/upload speeds are better.
-Before: 59/32 Mbps.
-After:  68/46 Mbps.
+Though then again we have the check below anyway:
 
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
----
-v2:
- - Add back the tid variable.
----
- .../wireless/realtek/rtlwifi/rtl8192cu/trx.c  | 29 +++++++++++--------
- .../wireless/realtek/rtlwifi/rtl8192cu/trx.h  |  2 --
- drivers/net/wireless/realtek/rtlwifi/wifi.h   |  3 --
- 3 files changed, 17 insertions(+), 17 deletions(-)
+>  	if (vif->type =3D=3D NL80211_IFTYPE_AP) {
+> -		beacon =3D rcu_dereference(sdata->deflink.u.ap.beacon);
+> +		beacon =3D rcu_dereference(link->u.ap.beacon);
+>  		if (WARN_ON(!beacon || !beacon->tail))
+>  			goto out;
+>=20
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c
-index 4856ed40005b..aa702ba7c9f5 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c
-@@ -482,8 +482,9 @@ void rtl92cu_tx_fill_desc(struct ieee80211_hw *hw,
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
- 	struct rtl_mac *mac = rtl_mac(rtl_priv(hw));
- 	struct rtl_ps_ctl *ppsc = rtl_psc(rtl_priv(hw));
--	u8 *qc = ieee80211_get_qos_ctl(hdr);
--	u8 tid = qc[0] & IEEE80211_QOS_CTL_TID_MASK;
-+	struct rtl_sta_info *sta_entry;
-+	u8 agg_state = RTL_AGG_STOP;
-+	u8 ampdu_density = 0;
- 	u16 seq_number;
- 	__le16 fc = hdr->frame_control;
- 	u8 rate_flag = info->control.rates[0].flags;
-@@ -492,6 +493,7 @@ void rtl92cu_tx_fill_desc(struct ieee80211_hw *hw,
- 						skb_get_queue_mapping(skb));
- 	u8 *txdesc8;
- 	__le32 *txdesc;
-+	u8 tid;
- 
- 	seq_number = (le16_to_cpu(hdr->seq_ctrl) & IEEE80211_SCTL_SEQ) >> 4;
- 	rtl_get_tcb_desc(hw, info, sta, skb, tcb_desc);
-@@ -505,10 +507,21 @@ void rtl92cu_tx_fill_desc(struct ieee80211_hw *hw,
- 	set_tx_desc_tx_rate(txdesc, tcb_desc->hw_rate);
- 	if (tcb_desc->use_shortgi || tcb_desc->use_shortpreamble)
- 		set_tx_desc_data_shortgi(txdesc, 1);
--	if (mac->tids[tid].agg.agg_state == RTL_AGG_ON &&
--		    info->flags & IEEE80211_TX_CTL_AMPDU) {
-+
-+	if (sta) {
-+		sta_entry = (struct rtl_sta_info *)sta->drv_priv;
-+		tid = ieee80211_get_tid(hdr);
-+		agg_state = sta_entry->tids[tid].agg.agg_state;
-+		ampdu_density = sta->deflink.ht_cap.ampdu_density;
-+	}
-+
-+	if (agg_state == RTL_AGG_OPERATIONAL &&
-+	    info->flags & IEEE80211_TX_CTL_AMPDU) {
- 		set_tx_desc_agg_enable(txdesc, 1);
- 		set_tx_desc_max_agg_num(txdesc, 0x14);
-+		set_tx_desc_ampdu_density(txdesc, ampdu_density);
-+		tcb_desc->rts_enable = 1;
-+		tcb_desc->rts_rate = DESC_RATE24M;
- 	} else {
- 		set_tx_desc_agg_break(txdesc, 1);
- 	}
-@@ -543,14 +556,6 @@ void rtl92cu_tx_fill_desc(struct ieee80211_hw *hw,
- 		set_tx_desc_data_bw(txdesc, 0);
- 		set_tx_desc_data_sc(txdesc, 0);
- 	}
--	rcu_read_lock();
--	sta = ieee80211_find_sta(mac->vif, mac->bssid);
--	if (sta) {
--		u8 ampdu_density = sta->deflink.ht_cap.ampdu_density;
--
--		set_tx_desc_ampdu_density(txdesc, ampdu_density);
--	}
--	rcu_read_unlock();
- 	if (info->control.hw_key) {
- 		struct ieee80211_key_conf *keyconf = info->control.hw_key;
- 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.h
-index 8678fa0043f4..09e61dc0f317 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.h
-@@ -10,8 +10,6 @@
- #define RTL92C_SIZE_MAX_RX_BUFFER		15360   /* 8192 */
- #define RX_DRV_INFO_SIZE_UNIT			8
- 
--#define RTL_AGG_ON				1
--
- enum usb_rx_agg_mode {
- 	USB_RX_AGG_DISABLE,
- 	USB_RX_AGG_DMA,
-diff --git a/drivers/net/wireless/realtek/rtlwifi/wifi.h b/drivers/net/wireless/realtek/rtlwifi/wifi.h
-index 01df00a43cdb..f388d13e2ba8 100644
---- a/drivers/net/wireless/realtek/rtlwifi/wifi.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/wifi.h
-@@ -1397,8 +1397,6 @@ struct rtl_phy {
- #define RTL_AGG_PROGRESS			1
- #define RTL_AGG_START				2
- #define RTL_AGG_OPERATIONAL			3
--#define RTL_AGG_OFF				0
--#define RTL_AGG_ON				1
- #define RTL_RX_AGG_START			1
- #define RTL_RX_AGG_STOP				0
- #define RTL_AGG_EMPTYING_HW_QUEUE_ADDBA		2
-@@ -1473,7 +1471,6 @@ struct rtl_mac {
- 	enum nl80211_iftype opmode;
- 
- 	/*Probe Beacon management */
--	struct rtl_tid_data tids[MAX_TID_COUNT];
- 	enum rtl_link_state link_state;
- 
- 	int n_channels;
--- 
-2.43.0
+So that will just be NULL if it's not active... so I guess that's fine.
+
+johannes
 
