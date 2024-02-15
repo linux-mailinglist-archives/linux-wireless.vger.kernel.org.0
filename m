@@ -1,307 +1,149 @@
-Return-Path: <linux-wireless+bounces-3633-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3635-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 518808567FF
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Feb 2024 16:37:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2851856821
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Feb 2024 16:41:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 763121C23693
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Feb 2024 15:37:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D84021C23775
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Feb 2024 15:41:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9333413472E;
-	Thu, 15 Feb 2024 15:36:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C84113343A;
+	Thu, 15 Feb 2024 15:41:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="PeIHrISH"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VtlnUwjB"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [217.70.178.240])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E711332B1;
-	Thu, 15 Feb 2024 15:36:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.240
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4563F12C548;
+	Thu, 15 Feb 2024 15:41:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708011409; cv=none; b=ec9I8P8Csj/AjvlBjy8D2He1HHbavPlg1CMUxyztMToZDqHzdsiPu21HGvPj4orr11mTasaOtrFNFvYN5xUWo37tgSiB4cc1vk0uzfCDtD5zEbMbwq9FBh5yf8eGZ17raMLq5k6QVOwxYZGvZNh/k/KPzletjmxuu0tZkD4wfX8=
+	t=1708011705; cv=none; b=S9Gxr1tQ3kSdtx88js+7zcHdu73Eu2GDu9tNxJzJysqtdV6iBdXxkRV+ZRs2lJ5FhupHygZIW/B5xusTmDdSMLhEKk7xpb7rMt/9Oj8u2wzOfrfQuPxnb5GxH3a2HNegRs4a+sG/qG7wzey2QJ7DDAmLiymAjTQrouGD2y4g+NE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708011409; c=relaxed/simple;
-	bh=ZQgdL3IC4nxkrcDN6Ec7D5CV9fMRJObe5XK8re/GRyw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ZxJQuDPx4FQ3McuSMYVqNi8hmJGBJnbt0R+JE3JZLywX02GfmydqavVSDfyV+avqDKcpZSx3nG8pJEXq8Wa7W1iADHl+b7TauyBkO64ywVq7iFt/KeguMuB+P9KqtIoGnfLcn4OCFhpRLMLUCW1LlvtCQf9hLLTXycObHX4upn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=PeIHrISH; arc=none smtp.client-ip=217.70.178.240
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from relay9-d.mail.gandi.net (unknown [IPv6:2001:4b98:dc4:8::229])
-	by mslow1.mail.gandi.net (Postfix) with ESMTP id 96B0CC876B;
-	Thu, 15 Feb 2024 15:36:39 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 290D3FF80E;
-	Thu, 15 Feb 2024 15:36:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1708011392;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TcD8+r7IbXbWMnW4VdFvkFJiY+m6SJ3b82KLtl6OoVg=;
-	b=PeIHrISHalbiiMxK5RaA6Ya6FbWR01j848eJLFAiXuNw/PsVPu4jNSPAdtwtjWAdN3vWTi
-	c+Ql98nuAwh9Dc90pVVsXjaUC6XtlcHY8zztlrMYQA/TcjtiBGDyHWCDGzDMfFtE7ebALw
-	p1crL/H0EKKRizLq1GM7Rto05EKwAcHMA4ILVMh3lFlhnFiPiUo110OBKbmq8BKR/gvpEJ
-	oayS9gbsubvfapCv5dyhryXJS12ebLJfyFdR/w1K9Scntm7hwQjJdOoNd19vpOsoU6OG2G
-	v98SeYn82RFns2I1qQ1mtZ5CKnVnLDjxwZgWnOUtPdm/G9nn3bh8+uUzpDkfaA==
-From: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-Date: Thu, 15 Feb 2024 16:36:21 +0100
-Subject: [PATCH 4/4] wifi: wilc1000: add missing read critical sections
- around vif list traversal
+	s=arc-20240116; t=1708011705; c=relaxed/simple;
+	bh=Pgd5J6Uby1Zyd/C1wyBnm9ePGiFzIsnkC58Bl/jyjRE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Q0Fg4Ww3BqvVSzCocNrvI6N8/iuCS0qDDFMxayNoSBw4M1OP6FXlAvti09RMbiO5aO4EDp1oCJM32uMewsw4maeKidYTRCD2Dmr+V+tCygZyuSImO1YYrlYK3ZcZr/iSOQLTKoGU2lMr9+5L3f4I/20oC7D4lTETCDCqTcNEhk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VtlnUwjB; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708011703; x=1739547703;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Pgd5J6Uby1Zyd/C1wyBnm9ePGiFzIsnkC58Bl/jyjRE=;
+  b=VtlnUwjB9oH4wtbAK9eJ9lbg3AmBfsaYryM5f8oAsH8z6R4NtEW91Ssp
+   1cinY5rg96Km0fe17mqRO6mh5pkQd9rX+dZs1T3miXlNSTuVnGESqPoBe
+   riOXqhWDmbrfHkzGBaiuYgbp8muTtM1G6edSDGL0KMDomhxURAVnuLXKy
+   X0l8CWv5gLMQeyKvUMUwahZD5LvewgHDT5h+vqvMG55O1kN8fz6HZ4bWT
+   1LWqalsvQviAtPlqrcujah3tfNfqthsDc1GSrPtJlu39mIxSxeqIXjeSz
+   WoGGs51XPhU4EZj8uUtm7QnDLpHBXlfakemCQJgw0SSFbJyiC+Pk4V2dn
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10984"; a="5888083"
+X-IronPort-AV: E=Sophos;i="6.06,162,1705392000"; 
+   d="scan'208";a="5888083"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Feb 2024 07:41:42 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10984"; a="935682308"
+X-IronPort-AV: E=Sophos;i="6.06,162,1705392000"; 
+   d="scan'208";a="935682308"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 15 Feb 2024 07:41:39 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id B54E2204; Thu, 15 Feb 2024 17:41:38 +0200 (EET)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	linux-kernel@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH net-next v1 1/1] wireless: Add KHZ_PER_GHZ to units.h and reuse
+Date: Thu, 15 Feb 2024 17:41:36 +0200
+Message-ID: <20240215154136.630029-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.43.0.rc1.1.gbec44491f096
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240215-wilc_fix_rcu_usage-v1-4-f610e46c6f82@bootlin.com>
-References: <20240215-wilc_fix_rcu_usage-v1-0-f610e46c6f82@bootlin.com>
-In-Reply-To: <20240215-wilc_fix_rcu_usage-v1-0-f610e46c6f82@bootlin.com>
-To: linux-wireless@vger.kernel.org
-Cc: Ajay Singh <ajay.kathat@microchip.com>, 
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, Kalle Valo <kvalo@kernel.org>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- linux-kernel@vger.kernel.org, 
- =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-X-Mailer: b4 0.12.4
-X-GND-Sasl: alexis.lothore@bootlin.com
 
-From: Ajay Singh <ajay.kathat@microchip.com>
+The KHZ_PER_GHZ might be used by others (with the name aligned
+with similar constants). Define it in units.h and convert
+wireless to use it.
 
-Some code manipulating the vif list is still missing some srcu_read_lock /
-srcu_read_unlock, and so can trigger RCU warnings:
-
-=============================
-WARNING: suspicious RCU usage
-6.8.0-rc1+ #37 Not tainted
------------------------------
-drivers/net/wireless/microchip/wilc1000/hif.c:110 RCU-list traversed without holding the required lock!!
-[...]
-stack backtrace:
-CPU: 0 PID: 6 Comm: kworker/0:0 Not tainted 6.8.0-rc1+ #37
-Hardware name: Atmel SAMA5
-Workqueue: events sdio_irq_work
- unwind_backtrace from show_stack+0x18/0x1c
- show_stack from dump_stack_lvl+0x34/0x58
- dump_stack_lvl from wilc_get_vif_from_idx+0x158/0x180
- wilc_get_vif_from_idx from wilc_network_info_received+0x80/0x48c
- wilc_network_info_received from wilc_handle_isr+0xa10/0xd30
- wilc_handle_isr from wilc_sdio_interrupt+0x44/0x58
- wilc_sdio_interrupt from process_sdio_pending_irqs+0x1c8/0x60c
- process_sdio_pending_irqs from sdio_irq_work+0x6c/0x14c
- sdio_irq_work from process_one_work+0x8d4/0x169c
- process_one_work from worker_thread+0x8cc/0x1340
- worker_thread from kthread+0x448/0x510
- kthread from ret_from_fork+0x14/0x28
-
-Fix those warnings by adding the needed lock around the corresponding
-critical sections
-
-Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
-Co-developed-by: Alexis Lothoré <alexis.lothore@bootlin.com>
-Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/net/wireless/microchip/wilc1000/hif.c    | 52 +++++++++++++-----------
- drivers/net/wireless/microchip/wilc1000/netdev.c |  8 +++-
- 2 files changed, 35 insertions(+), 25 deletions(-)
+ include/linux/units.h | 5 ++++-
+ net/wireless/reg.c    | 7 +++----
+ 2 files changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/hif.c b/drivers/net/wireless/microchip/wilc1000/hif.c
-index c42859a727c3..f1085ccb7eed 100644
---- a/drivers/net/wireless/microchip/wilc1000/hif.c
-+++ b/drivers/net/wireless/microchip/wilc1000/hif.c
-@@ -1570,23 +1570,25 @@ void wilc_network_info_received(struct wilc *wilc, u8 *buffer, u32 length)
- 	struct host_if_drv *hif_drv;
- 	struct host_if_msg *msg;
- 	struct wilc_vif *vif;
-+	int srcu_idx;
- 	int result;
- 	int id;
+diff --git a/include/linux/units.h b/include/linux/units.h
+index 45110daaf8d3..00e15de33eca 100644
+--- a/include/linux/units.h
++++ b/include/linux/units.h
+@@ -24,10 +24,13 @@
+ #define NANOHZ_PER_HZ		1000000000UL
+ #define MICROHZ_PER_HZ		1000000UL
+ #define MILLIHZ_PER_HZ		1000UL
++
+ #define HZ_PER_KHZ		1000UL
+-#define KHZ_PER_MHZ		1000UL
+ #define HZ_PER_MHZ		1000000UL
  
- 	id = get_unaligned_le32(&buffer[length - 4]);
-+	srcu_idx = srcu_read_lock(&wilc->srcu);
- 	vif = wilc_get_vif_from_idx(wilc, id);
- 	if (!vif)
--		return;
--	hif_drv = vif->hif_drv;
-+		goto out;
- 
-+	hif_drv = vif->hif_drv;
- 	if (!hif_drv) {
- 		netdev_err(vif->ndev, "driver not init[%p]\n", hif_drv);
--		return;
-+		goto out;
- 	}
- 
- 	msg = wilc_alloc_work(vif, handle_rcvd_ntwrk_info, false);
- 	if (IS_ERR(msg))
--		return;
-+		goto out;
- 
- 	msg->body.net_info.frame_len = get_unaligned_le16(&buffer[6]) - 1;
- 	msg->body.net_info.rssi = buffer[8];
-@@ -1595,7 +1597,7 @@ void wilc_network_info_received(struct wilc *wilc, u8 *buffer, u32 length)
- 					  GFP_KERNEL);
- 	if (!msg->body.net_info.mgmt) {
- 		kfree(msg);
--		return;
-+		goto out;
- 	}
- 
- 	result = wilc_enqueue_work(msg);
-@@ -1604,6 +1606,8 @@ void wilc_network_info_received(struct wilc *wilc, u8 *buffer, u32 length)
- 		kfree(msg->body.net_info.mgmt);
- 		kfree(msg);
- 	}
-+out:
-+	srcu_read_unlock(&wilc->srcu, srcu_idx);
- }
- 
- void wilc_gnrl_async_info_received(struct wilc *wilc, u8 *buffer, u32 length)
-@@ -1611,36 +1615,32 @@ void wilc_gnrl_async_info_received(struct wilc *wilc, u8 *buffer, u32 length)
- 	struct host_if_drv *hif_drv;
- 	struct host_if_msg *msg;
- 	struct wilc_vif *vif;
-+	int srcu_idx;
- 	int result;
- 	int id;
- 
- 	mutex_lock(&wilc->deinit_lock);
- 
- 	id = get_unaligned_le32(&buffer[length - 4]);
-+	srcu_idx = srcu_read_lock(&wilc->srcu);
- 	vif = wilc_get_vif_from_idx(wilc, id);
--	if (!vif) {
--		mutex_unlock(&wilc->deinit_lock);
--		return;
--	}
-+	if (!vif)
-+		goto out;
- 
- 	hif_drv = vif->hif_drv;
- 
- 	if (!hif_drv) {
--		mutex_unlock(&wilc->deinit_lock);
--		return;
-+		goto out;
- 	}
- 
- 	if (!hif_drv->conn_info.conn_result) {
- 		netdev_err(vif->ndev, "%s: conn_result is NULL\n", __func__);
--		mutex_unlock(&wilc->deinit_lock);
--		return;
-+		goto out;
- 	}
- 
- 	msg = wilc_alloc_work(vif, handle_rcvd_gnrl_async_info, false);
--	if (IS_ERR(msg)) {
--		mutex_unlock(&wilc->deinit_lock);
--		return;
--	}
-+	if (IS_ERR(msg))
-+		goto out;
- 
- 	msg->body.mac_info.status = buffer[7];
- 	result = wilc_enqueue_work(msg);
-@@ -1648,7 +1648,8 @@ void wilc_gnrl_async_info_received(struct wilc *wilc, u8 *buffer, u32 length)
- 		netdev_err(vif->ndev, "%s: enqueue work failed\n", __func__);
- 		kfree(msg);
- 	}
--
-+out:
-+	srcu_read_unlock(&wilc->srcu, srcu_idx);
- 	mutex_unlock(&wilc->deinit_lock);
- }
- 
-@@ -1656,24 +1657,27 @@ void wilc_scan_complete_received(struct wilc *wilc, u8 *buffer, u32 length)
++#define KHZ_PER_MHZ		1000UL
++#define KHZ_PER_GHZ		1000000UL
++
+ #define MILLIWATT_PER_WATT	1000UL
+ #define MICROWATT_PER_MILLIWATT	1000UL
+ #define MICROWATT_PER_WATT	1000000UL
+diff --git a/net/wireless/reg.c b/net/wireless/reg.c
+index 50cadbad485f..753f8e9aa4b1 100644
+--- a/net/wireless/reg.c
++++ b/net/wireless/reg.c
+@@ -57,6 +57,8 @@
+ #include <linux/verification.h>
+ #include <linux/moduleparam.h>
+ #include <linux/firmware.h>
++#include <linux/units.h>
++
+ #include <net/cfg80211.h>
+ #include "core.h"
+ #include "reg.h"
+@@ -1289,20 +1291,17 @@ static bool is_valid_rd(const struct ieee80211_regdomain *rd)
+ static bool freq_in_rule_band(const struct ieee80211_freq_range *freq_range,
+ 			      u32 freq_khz)
  {
- 	struct host_if_drv *hif_drv;
- 	struct wilc_vif *vif;
-+	int srcu_idx;
- 	int result;
- 	int id;
- 
- 	id = get_unaligned_le32(&buffer[length - 4]);
-+	srcu_idx = srcu_read_lock(&wilc->srcu);
- 	vif = wilc_get_vif_from_idx(wilc, id);
- 	if (!vif)
--		return;
--	hif_drv = vif->hif_drv;
-+		goto out;
- 
--	if (!hif_drv)
--		return;
-+	hif_drv = vif->hif_drv;
-+	if (!hif_drv) {
-+		goto out;
-+	}
- 
- 	if (hif_drv->usr_scan_req.scan_result) {
- 		struct host_if_msg *msg;
- 
- 		msg = wilc_alloc_work(vif, handle_scan_complete, false);
- 		if (IS_ERR(msg))
--			return;
-+			goto out;
- 
- 		result = wilc_enqueue_work(msg);
- 		if (result) {
-@@ -1682,6 +1686,8 @@ void wilc_scan_complete_received(struct wilc *wilc, u8 *buffer, u32 length)
- 			kfree(msg);
- 		}
- 	}
-+out:
-+	srcu_read_unlock(&wilc->srcu, srcu_idx);
+-#define ONE_GHZ_IN_KHZ	1000000
+ 	/*
+ 	 * From 802.11ad: directional multi-gigabit (DMG):
+ 	 * Pertaining to operation in a frequency band containing a channel
+ 	 * with the Channel starting frequency above 45 GHz.
+ 	 */
+-	u32 limit = freq_khz > 45 * ONE_GHZ_IN_KHZ ?
+-			20 * ONE_GHZ_IN_KHZ : 2 * ONE_GHZ_IN_KHZ;
++	u32 limit = freq_khz > 45 * KHZ_PER_GHZ ? 20 * KHZ_PER_GHZ : 2 * KHZ_PER_GHZ;
+ 	if (abs(freq_khz - freq_range->start_freq_khz) <= limit)
+ 		return true;
+ 	if (abs(freq_khz - freq_range->end_freq_khz) <= limit)
+ 		return true;
+ 	return false;
+-#undef ONE_GHZ_IN_KHZ
  }
  
- int wilc_remain_on_channel(struct wilc_vif *vif, u64 cookie, u16 chan,
-diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.c b/drivers/net/wireless/microchip/wilc1000/netdev.c
-index 092801d33915..710e29bea560 100644
---- a/drivers/net/wireless/microchip/wilc1000/netdev.c
-+++ b/drivers/net/wireless/microchip/wilc1000/netdev.c
-@@ -819,14 +819,16 @@ void wilc_frmw_to_host(struct wilc *wilc, u8 *buff, u32 size,
- 	unsigned int frame_len = 0;
- 	struct wilc_vif *vif;
- 	struct sk_buff *skb;
-+	int srcu_idx;
- 	int stats;
- 
- 	if (!wilc)
- 		return;
- 
-+	srcu_idx = srcu_read_lock(&wilc->srcu);
- 	wilc_netdev = get_if_handler(wilc, buff);
- 	if (!wilc_netdev)
--		return;
-+		goto out;
- 
- 	buff += pkt_offset;
- 	vif = netdev_priv(wilc_netdev);
-@@ -837,7 +839,7 @@ void wilc_frmw_to_host(struct wilc *wilc, u8 *buff, u32 size,
- 
- 		skb = dev_alloc_skb(frame_len);
- 		if (!skb)
--			return;
-+			goto out;
- 
- 		skb->dev = wilc_netdev;
- 
-@@ -850,6 +852,8 @@ void wilc_frmw_to_host(struct wilc *wilc, u8 *buff, u32 size,
- 		stats = netif_rx(skb);
- 		netdev_dbg(wilc_netdev, "netif_rx ret value is: %d\n", stats);
- 	}
-+out:
-+	srcu_read_unlock(&wilc->srcu, srcu_idx);
- }
- 
- void wilc_wfi_mgmt_rx(struct wilc *wilc, u8 *buff, u32 size, bool is_auth)
-
+ /*
 -- 
-2.43.0
+2.43.0.rc1.1.gbec44491f096
 
 
