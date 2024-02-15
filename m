@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-3617-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3618-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCF39856106
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Feb 2024 12:11:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07AC085610D
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Feb 2024 12:11:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6ADC01F20FDD
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Feb 2024 11:11:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8973F1F24761
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Feb 2024 11:11:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A927D127B6E;
-	Thu, 15 Feb 2024 11:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A48912AADB;
+	Thu, 15 Feb 2024 11:10:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gsTSiS1D"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C7Y6O0Ah"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 853B966B2D
-	for <linux-wireless@vger.kernel.org>; Thu, 15 Feb 2024 11:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4682712A158
+	for <linux-wireless@vger.kernel.org>; Thu, 15 Feb 2024 11:10:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707995408; cv=none; b=Tb+hCt33FwAoc7knUQeZTpr/dqpRlHeGpeHOxcO7VlrOkWPHoNJq8FdWAUw0761DnrcgrU/DkkKxYOJSNCW778SauRVL46dsrSSdt8VM/D/4SndAk0oGvKmhnansqYpobniW42GnVS2wrtiGSLD4ILcyayQijAVdgjDY7mDwmVg=
+	t=1707995434; cv=none; b=nOna1tJRGn9N1maZstPm7+/j1+NVHiaJBt4vRdLAqtJfohT9sWuq26H+I92vvmTBhJkwHcZ5rp3c6BMNWBFy8lFzy9XAvjrBQJfm1e8fj0k6XLPgZ19k/RKJ/S34bHSsvQj9AH3uhqe+RgQ2WwqdQJGdrt4OF4wd5qauAaV0Mg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707995408; c=relaxed/simple;
-	bh=8NWl4Oafgs0R4ZTIhB4FbvOqEXbs6mbDP30fqWaED38=;
+	s=arc-20240116; t=1707995434; c=relaxed/simple;
+	bh=WpMTDRqyEN7ru0+HIT2xx9gX3gThsd4h1IPUldL/5fc=;
 	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=IzU7QDk7GokFLISiB+l8EAYdEvL0GRwmdk0nobwYXm9E2Yg4unbRa0iHld5GaKF7FvLJ7Xc9Cyj/cpbAuaEl4qmicPUVGTz3vjQxKu0f6RgCBqMlwVW+RSzZTtARKtMB5D3Gx5p5COzXxAyGyp67tmTnCBNRUDYwaVsjky5Tg/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gsTSiS1D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F25FC433C7;
-	Thu, 15 Feb 2024 11:10:07 +0000 (UTC)
+	 Cc:Message-ID:Date; b=I9GTnXC8seWHTtmJiYbYE9ByQxF5cKmGgeHj0vXbl3+aH6UpK1+aQwAKHlldU21y3aKcIqpfMOHfqpDdEiGkEkFkTrVOw5zQvuXIvsEq39VIRpYswEAkzySqcM+MXdfYvVo2sQ1qshvSNx/lCvrO5+Iniwu41dkMJy3aKoIpadc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C7Y6O0Ah; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 139EDC433C7;
+	Thu, 15 Feb 2024 11:10:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707995408;
-	bh=8NWl4Oafgs0R4ZTIhB4FbvOqEXbs6mbDP30fqWaED38=;
+	s=k20201202; t=1707995433;
+	bh=WpMTDRqyEN7ru0+HIT2xx9gX3gThsd4h1IPUldL/5fc=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=gsTSiS1Dz5IWtYjFS6NCec/0KWG4/cxLuf7eakN7WSqXiIvy/cblwcBiJ1//NnzQC
-	 lqjHAL/eCxpA2S7V3xErquVRx0bjpGwBqEXHBGH61vaICeVPxowftPJkk9d3Gtk5S4
-	 vzPBqAAvv3SruMyWPkztWnBOlsVuYY1+RdGZoCmx0JECEubKbkZrexM4FYLU3hZ7Cb
-	 tEuW3W77ctAvlTViDIkiiDNyvwzZshYaw2+Vy6rVN72IRVcds5Mf3fRPjDcVn5LXhe
-	 NuqWG+zr+BkYzMetQnUw1Ivl1cpTWqQFSFxmtNkSRXNTrnyfIdHV4/Jyfj3h4VI8X6
-	 s0AXmIMemZWwA==
+	b=C7Y6O0AhdOMdy/ODIjS2FYJVaA03uo/EOJpcwFmOPJS+GQ/nbLag4a7MlKxrwfSoa
+	 bOyFmokURfw/peWVjhX/5Kmu8kPtgCHV/3KXihJUHro+1ASuO16g0JaZv/AoSMhlhg
+	 OaAkMOHJpz70gBwsMFIl+m1OUc1EFnOHfp/aWyGm2D75FQrFlQTNf0/K6sxqU1vLXu
+	 WQLln9MfcCBKaS5jmi5nxfSvPudPXZRtf8Sl+i3nDr76Mq3xyAGNQPIuf1+Fv7vKi4
+	 TLSRvzlV7XcP9f/D244ZLuQ5FzqtcvZwVRK0U6v3KWcZI8c5c/1RnevNDIEXNI00F1
+	 lRbnhMcNNDHXQ==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -49,45 +49,34 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/5] wifi: rtw89: fw: add definition of H2C command and
- C2H
- event for MRC series
+Subject: Re: [PATCH] wifi: rtw89: fw: remove unnecessary rcu_read_unlock() for
+ punctured
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240213073514.23796-2-pkshih@realtek.com>
-References: <20240213073514.23796-2-pkshih@realtek.com>
+In-Reply-To: <20240213122556.9593-1-pkshih@realtek.com>
+References: <20240213122556.9593-1-pkshih@realtek.com>
 To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
+Cc: <johannes.berg@intel.com>, <linux-wireless@vger.kernel.org>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170799540569.3764215.7868506365274223642.kvalo@kernel.org>
-Date: Thu, 15 Feb 2024 11:10:07 +0000 (UTC)
+Message-ID: <170799543107.3764215.12527136024611017239.kvalo@kernel.org>
+Date: Thu, 15 Feb 2024 11:10:32 +0000 (UTC)
 
 Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-> From: Zong-Zhe Yang <kevin_yang@realtek.com>
+> The rcu_read_unlock() is accidentally added, and sparse warn:
 > 
-> For Wi-Fi 7 chips, FW supports MRC (multi-role concurrent) functions
-> including H2C commands and C2H events. We can consider FW MRC functions
-> as a superset of FW MCC (multi-channel concurrent) functions. And, MRC
-> functions can take MLO things into account.
+>   drivers/net/wireless/realtek/rtw89/fw.c:2807:17:
+>     warning: context imbalance in 'rtw89_fw_h2c_assoc_cmac_tbl_g7' - unexpected unlock
 > 
-> Basically before MLO, SW can also manipulate FW MRC to work original
-> SW MCC flow. So, we add them first and implement the handling in the
-> following. And then, SW MCC will call different series of FW functions
-> according to chip later.
-> 
-> Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+> Fixes: b82730bf57b5 ("wifi: cfg80211/mac80211: move puncturing into chandef")
+> Cc: Johannes Berg <johannes.berg@intel.com>
 > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-5 patches applied to wireless-next.git, thanks.
+Patch applied to wireless-next.git, thanks.
 
-6ca3b88c320b wifi: rtw89: fw: add definition of H2C command and C2H event for MRC series
-b8e59e553458 wifi: rtw89: mac: implement MRC C2H event handling
-9de7829aa6fa wifi: rtw89: fw: implement MRC H2C command functions
-f931cce310e0 wifi: rtw89: chan: support MCC on Wi-Fi 7 chips
-441a6014d024 wifi: rtw89: 8922a: declare to support two chanctx
+63d94f749623 wifi: rtw89: fw: remove unnecessary rcu_read_unlock() for punctured
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240213073514.23796-2-pkshih@realtek.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20240213122556.9593-1-pkshih@realtek.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
