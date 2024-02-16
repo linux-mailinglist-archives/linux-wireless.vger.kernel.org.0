@@ -1,66 +1,65 @@
-Return-Path: <linux-wireless+bounces-3673-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3674-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90FA1857C27
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Feb 2024 12:55:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 284BA857C28
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Feb 2024 12:55:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0937BB21C1E
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Feb 2024 11:55:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B457C28641C
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Feb 2024 11:55:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE37F78671;
-	Fri, 16 Feb 2024 11:55:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 138FF77F3F;
+	Fri, 16 Feb 2024 11:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oG1ZBQyd"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ehtu8yGS"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A80477F3F
-	for <linux-wireless@vger.kernel.org>; Fri, 16 Feb 2024 11:55:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E5678677
+	for <linux-wireless@vger.kernel.org>; Fri, 16 Feb 2024 11:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708084501; cv=none; b=FDDY/4Tz1OgJnv7q9kSiIsEm2jOaWp6izOtUUMRmre46jYv9a5h0TVSghVgmv89MpwK/zgwISU+1fYcVyI6DQ09pPBhgnDZk4IVkQHvwqTae7Sv1UYV4T1VA262kCGF1SKVGZRbyrDu9YcAxmGjdgz8+J6qw1iL7LXWneQWo24M=
+	t=1708084504; cv=none; b=lq/Z9iYBEgx74+2HO/c9hm3IriGHfiynNtxrFHkwFYRe2zEEr/Hm60cCX4KbnCVNba5HloclHLUWA1gP209PSVQ171F1IHE7f3PvzknyvahyDDGbfsqTDfNOnppQVzFKg/NfmsrqQfBI0JPOXMtV4jbuu1kGzjbO7QVxvM6XW4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708084501; c=relaxed/simple;
-	bh=oU0kMhfMl708n20leEkeT9QNrTLv/EetNUIlektje2s=;
+	s=arc-20240116; t=1708084504; c=relaxed/simple;
+	bh=QAuuiswwm91RMzn9rmv9lhDLCjvf7228VRt8om8MfJg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SJqqzANYA9u/SU5/chgfGbQ0576r3jTgd/PILSBrtUFafLqiI5/PRRMYWMMnem5lsIYxWtvrPvT48HfdFzw3TvYqKs3eqylmZs+36W7qpAX+0/SVnyT3eIux+vtpVT17W6eZw9eC2BQF1PZ8tyRdjTggrIvdDAvXRvA4jJI+6p4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oG1ZBQyd; arc=none smtp.client-ip=198.175.65.18
+	 MIME-Version; b=kwzMCPRfDzODs9cZhOzmPeAHG5zRcR7IOBNGh0cQ4V5ZKD1EjyvO6SsgmdIO6ZpcCSw3IB3VisyYTnAedyPxWgP7BWMrAmZhxtln1lYkIA78lrgJe/20e7lXurjJDCGQG68zBLa1cHQNzffr+3a+iW1RR4kp22zrKk+dUGcFgQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ehtu8yGS; arc=none smtp.client-ip=198.175.65.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708084500; x=1739620500;
+  t=1708084502; x=1739620502;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=oU0kMhfMl708n20leEkeT9QNrTLv/EetNUIlektje2s=;
-  b=oG1ZBQydwX0XgaCGBMFaAv+zRnbnsA2qBwbumSCZnxhZd2nj4H+6OIrK
-   U9LxLFmdkT8kUreT/OP2iLANZinLt5sFNxJlnTqmjJVWIhwxs+wsvlea1
-   Gl3NrFRV7EPYTQUpZnYMANH8LuKF193KnZc0SUrJOYlW2OXiln655FC4J
-   ViEMMmefR3FiS/0yOjS47O+7mBC/cxGZQzfDD0P4u0Qwe70/5TK/97E50
-   e4SdsuvWWBAUxuWBr/2uNRlTm8CrmJBwPuF6JtlMDHgTd+KRcNhpJr1fK
-   pOS2UhQM85bxuzd0RXTzfGUMq5L8OyLR98pQU0vtr3ooEZmkaojV3q2Ba
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10985"; a="2321929"
+  bh=QAuuiswwm91RMzn9rmv9lhDLCjvf7228VRt8om8MfJg=;
+  b=ehtu8yGSl9IHLdS1uPgAx4xJ3AIzyexK2AGrLe77i8VktbkFZJcrn50I
+   b3gUzANOxXuCIsbr4oLRrJnEIrKUL8c6br1RfJc7w5Pf1SwaEPQ4Gj7z2
+   36tGxUMqpfz0QbAXovlAWYktJSd7BD+8khBi/01oVRIOB28QnC4hVXMeC
+   g0BAOxmRDxWnC/ROu2jwXlVVFWuSslUg4qFcTkbpcXbHVIxS9oM1HWX81
+   FAol9sbEli0P/OwFmLI6KQykvoKN86N0Ga4+tKZWH7YwetKk11d8BzdES
+   2JEpOOH8vXZ4bUz6QRk/swnSWnSa4sJYnC6EY/jcM5polkWMabYe3Xp3I
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10985"; a="2321933"
 X-IronPort-AV: E=Sophos;i="6.06,164,1705392000"; 
-   d="scan'208";a="2321929"
+   d="scan'208";a="2321933"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2024 03:55:00 -0800
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2024 03:55:02 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,164,1705392000"; 
-   d="scan'208";a="3795605"
+   d="scan'208";a="3795607"
 Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2024 03:54:58 -0800
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2024 03:55:01 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6/7] wifi: cfg80211: use ML element parsing helpers
-Date: Fri, 16 Feb 2024 13:54:32 +0200
-Message-Id: <20240216135047.4da47b1f035b.I437a5570ac456449facb0b147851ef24a1e473c2@changeid>
+Cc: linux-wireless@vger.kernel.org
+Subject: [PATCH 7/7] wifi: mac80211: parse the BSS Load element
+Date: Fri, 16 Feb 2024 13:54:33 +0200
+Message-Id: <20240216135047.b771830d9b12.If5885d651cb0114711ee1f6c1cb8fe31a69bf0a7@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240216115433.1044027-1-miriam.rachel.korenblit@intel.com>
 References: <20240216115433.1044027-1-miriam.rachel.korenblit@intel.com>
@@ -73,138 +72,140 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+Some drivers need this. Parse the element and save the
+channel utilization field in the link conf.
 
-Use the existing ML element parsing helpers and add a new
-one for this (ieee80211_mle_get_mld_id).
-
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- include/linux/ieee80211.h | 38 ++++++++++++++++++++++++++++++++++++
- net/wireless/scan.c       | 41 ++++++++-------------------------------
- 2 files changed, 46 insertions(+), 33 deletions(-)
+ include/linux/ieee80211.h  | 18 ++++++++++++++++++
+ include/net/mac80211.h     |  7 +++++++
+ net/mac80211/ieee80211_i.h |  1 +
+ net/mac80211/mlme.c        |  5 +++++
+ net/mac80211/parse.c       |  8 ++++++++
+ 5 files changed, 39 insertions(+)
 
 diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
-index 303c75459897..3385a2cc5b09 100644
+index 3385a2cc5b09..f23340654ecf 100644
 --- a/include/linux/ieee80211.h
 +++ b/include/linux/ieee80211.h
-@@ -5115,6 +5115,44 @@ static inline u16 ieee80211_mle_get_mld_capa_op(const u8 *data)
- 	return get_unaligned_le16(common);
- }
+@@ -1287,6 +1287,24 @@ struct ieee80211_ttlm_elem {
+ 	u8 optional[];
+ } __packed;
  
 +/**
-+ * ieee80211_mle_get_mld_id - returns the MLD ID
-+ * @data: pointer to the multi link element
++ * struct ieee80211_bss_load_elem - BSS Load elemen
 + *
-+ * The element is assumed to be of the correct type (BASIC) and big enough,
-+ * this must be checked using ieee80211_mle_type_ok().
++ * Defined in section 9.4.2.26 in IEEE 802.11-REVme D4.1
 + *
-+ * If the MLD ID is not present, 0 will be returned.
++ * @sta_count: total number of STAs currently associated with the AP.
++ * @channel_util: Percentage of time that the access point sensed the channel
++ *	was busy. This value is in range [0, 255], the highest value means
++ *	100% busy.
++ * @avail_admission_capa: remaining amount of medium time used for admission
++ *	control.
 + */
-+static inline u8 ieee80211_mle_get_mld_id(const u8 *data)
-+{
-+	const struct ieee80211_multi_link_elem *mle = (const void *)data;
-+	u16 control = le16_to_cpu(mle->control);
-+	const u8 *common = mle->variable;
++struct ieee80211_bss_load_elem {
++	__le16 sta_count;
++	u8 channel_util;
++	__le16 avail_admission_capa;
++} __packed;
 +
-+	/*
-+	 * common points now at the beginning of
-+	 * ieee80211_mle_basic_common_info
-+	 */
-+	common += sizeof(struct ieee80211_mle_basic_common_info);
+ struct ieee80211_mgmt {
+ 	__le16 frame_control;
+ 	__le16 duration;
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index fc223761e3af..0af80a2b6cfc 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -671,6 +671,11 @@ struct ieee80211_fils_discovery {
+  *	processed after it switches back to %NULL.
+  * @color_change_active: marks whether a color change is ongoing.
+  * @color_change_color: the bss color that will be used after the change.
++ * @channel_util: Channel utilization as published by the AP in the
++ *	WLAN_EID_QBSS_LOAD information element. An unsigned integer in the
++ *	range [0,255], when 255 means the 100% busy. Valid only for a
++ *	station, and only when associated. Will be -1 if AP didn't
++ *	send the element.
+  * @ht_ldpc: in AP mode, indicates interface has HT LDPC capability.
+  * @vht_ldpc: in AP mode, indicates interface has VHT LDPC capability.
+  * @he_ldpc: in AP mode, indicates interface has HE LDPC capability.
+@@ -774,6 +779,8 @@ struct ieee80211_bss_conf {
+ 	bool color_change_active;
+ 	u8 color_change_color;
+ 
++	s16 channel_util;
 +
-+	if (!(control & IEEE80211_MLC_BASIC_PRES_MLD_ID))
-+		return 0;
+ 	bool ht_ldpc;
+ 	bool vht_ldpc;
+ 	bool he_ldpc;
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index f3edb1a148a7..7bc1e55de358 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -1741,6 +1741,7 @@ struct ieee802_11_elems {
+ 	const struct ieee80211_multi_link_elem *ml_reconf;
+ 	const struct ieee80211_bandwidth_indication *bandwidth_indication;
+ 	const struct ieee80211_ttlm_elem *ttlm[IEEE80211_TTLM_MAX_CNT];
++	const struct ieee80211_bss_load_elem *bss_load;
+ 
+ 	/* length of them, respectively */
+ 	u8 ext_capab_len;
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 2f13451ba003..8a9c9188eb65 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -3078,6 +3078,7 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
+ 	/* other links will be destroyed */
+ 	sdata->deflink.u.mgd.bss = NULL;
+ 	sdata->deflink.smps_mode = IEEE80211_SMPS_OFF;
++	sdata->deflink.conf->channel_util = -1;
+ 
+ 	netif_carrier_off(sdata->dev);
+ 
+@@ -6359,6 +6360,9 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_link_data *link,
+ 		erp_valid = false;
+ 	}
+ 
++	bss_conf->channel_util =
++		elems->bss_load ? elems->bss_load->channel_util : -1;
 +
-+	if (control & IEEE80211_MLC_BASIC_PRES_LINK_ID)
-+		common += 1;
-+	if (control & IEEE80211_MLC_BASIC_PRES_BSS_PARAM_CH_CNT)
-+		common += 1;
-+	if (control & IEEE80211_MLC_BASIC_PRES_MED_SYNC_DELAY)
-+		common += 2;
-+	if (control & IEEE80211_MLC_BASIC_PRES_EML_CAPA)
-+		common += 2;
-+	if (control & IEEE80211_MLC_BASIC_PRES_MLD_CAPA_OP)
-+		common += 2;
-+
-+	return *common;
-+}
-+
- /**
-  * ieee80211_mle_size_ok - validate multi-link element size
-  * @data: pointer to the element data
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index e46dfc71c497..7cf36b8d3ae7 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -2833,17 +2833,16 @@ cfg80211_parse_ml_elem_sta_data(struct wiphy *wiphy,
- 	struct cfg80211_bss *bss;
- 	u8 mld_id, reporter_link_id, bss_change_count;
- 	u16 seen_links = 0;
--	const u8 *pos;
- 	u8 i;
+ 	if (!ieee80211_is_s1g_beacon(hdr->frame_control))
+ 		changed |= ieee80211_handle_bss_capability(link,
+ 				le16_to_cpu(mgmt->u.beacon.capab_info),
+@@ -7444,6 +7448,7 @@ void ieee80211_mgd_setup_link(struct ieee80211_link_data *link)
+ 	link->u.mgd.p2p_noa_index = -1;
+ 	link->conf->bssid = link->u.mgd.bssid;
+ 	link->smps_mode = IEEE80211_SMPS_OFF;
++	link->conf->channel_util = -1;
  
--	if (!ieee80211_mle_size_ok(elem->data + 1, elem->datalen - 1))
-+	if (!ieee80211_mle_type_ok(elem->data + 1,
-+				   IEEE80211_ML_CONTROL_TYPE_BASIC,
-+				   elem->datalen - 1))
- 		return;
- 
--	ml_elem = (void *)elem->data + 1;
-+	ml_elem = (void *)(elem->data + 1);
- 	control = le16_to_cpu(ml_elem->control);
--	if (u16_get_bits(control, IEEE80211_ML_CONTROL_TYPE) !=
--	    IEEE80211_ML_CONTROL_TYPE_BASIC)
--		return;
-+	ml_common_len = ml_elem->variable[0];
- 
- 	/* Must be present when transmitted by an AP (in a probe response) */
- 	if (!(control & IEEE80211_MLC_BASIC_PRES_BSS_PARAM_CH_CNT) ||
-@@ -2851,24 +2850,8 @@ cfg80211_parse_ml_elem_sta_data(struct wiphy *wiphy,
- 	    !(control & IEEE80211_MLC_BASIC_PRES_MLD_CAPA_OP))
- 		return;
- 
--	ml_common_len = ml_elem->variable[0];
--
--	/* length + MLD MAC address */
--	pos = ml_elem->variable + 1 + 6;
--
--	reporter_link_id = pos[0];
--	pos += 1;
--
--	bss_change_count = pos[0];
--	pos += 1;
--
--	if (u16_get_bits(control, IEEE80211_MLC_BASIC_PRES_MED_SYNC_DELAY))
--		pos += 2;
--	if (u16_get_bits(control, IEEE80211_MLC_BASIC_PRES_EML_CAPA))
--		pos += 2;
--
--	/* MLD capabilities and operations */
--	pos += 2;
-+	reporter_link_id = ieee80211_mle_get_link_id(elem->data + 1);
-+	bss_change_count = ieee80211_mle_get_bss_param_ch_cnt(elem->data + 1);
- 
- 	/*
- 	 * The MLD ID of the reporting AP is always zero. It is set if the AP
-@@ -2876,15 +2859,7 @@ cfg80211_parse_ml_elem_sta_data(struct wiphy *wiphy,
- 	 * relating to a nontransmitted BSS (matching the Multi-BSSID Index,
- 	 * Draft P802.11be_D3.2, 35.3.4.2)
- 	 */
--	if (u16_get_bits(control, IEEE80211_MLC_BASIC_PRES_MLD_ID)) {
--		mld_id = *pos;
--		pos += 1;
--	} else {
--		mld_id = 0;
--	}
--
--	/* Extended MLD capabilities and operations */
--	pos += 2;
-+	mld_id = ieee80211_mle_get_mld_id(elem->data + 1);
- 
- 	/* Fully defrag the ML element for sta information/profile iteration */
- 	mle = cfg80211_defrag_mle(elem, tx_data->ie, tx_data->ielen, gfp);
+ 	wiphy_work_init(&link->u.mgd.request_smps_work,
+ 			ieee80211_request_smps_mgd_work);
+diff --git a/net/mac80211/parse.c b/net/mac80211/parse.c
+index 196a882e4c19..07bb21a92360 100644
+--- a/net/mac80211/parse.c
++++ b/net/mac80211/parse.c
+@@ -203,6 +203,7 @@ _ieee802_11_parse_elems_full(struct ieee80211_elems_parse_params *params,
+ 		case WLAN_EID_CF_PARAMS:
+ 		case WLAN_EID_TIM:
+ 		case WLAN_EID_IBSS_PARAMS:
++		case WLAN_EID_QBSS_LOAD:
+ 		case WLAN_EID_CHALLENGE:
+ 		case WLAN_EID_RSN:
+ 		case WLAN_EID_ERP_INFO:
+@@ -297,6 +298,13 @@ _ieee802_11_parse_elems_full(struct ieee80211_elems_parse_params *params,
+ 				elem_parse_failed =
+ 					IEEE80211_PARSE_ERR_BAD_ELEM_SIZE;
+ 			break;
++		case WLAN_EID_QBSS_LOAD:
++			if (elen == sizeof(struct ieee80211_bss_load_elem))
++				elems->bss_load = (void *)pos;
++			else
++				elem_parse_failed =
++					IEEE80211_PARSE_ERR_BAD_ELEM_SIZE;
++			break;
+ 		case WLAN_EID_VENDOR_SPECIFIC:
+ 			if (elen >= 4 && pos[0] == 0x00 && pos[1] == 0x50 &&
+ 			    pos[2] == 0xf2) {
 -- 
 2.34.1
 
