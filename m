@@ -1,110 +1,119 @@
-Return-Path: <linux-wireless+bounces-3692-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3693-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5F958584E5
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Feb 2024 19:10:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AEE2858626
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Feb 2024 20:28:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 11652B27330
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Feb 2024 18:10:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D1F41F22633
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Feb 2024 19:28:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BF481350C0;
-	Fri, 16 Feb 2024 18:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9B89137C2B;
+	Fri, 16 Feb 2024 19:27:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ciwKum2e"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fSKUoWaD"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4228C134751;
-	Fri, 16 Feb 2024 18:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B96E41369B4;
+	Fri, 16 Feb 2024 19:27:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708106882; cv=none; b=O0xjz/BBB3eaLx55Dq1hd8OMgECFRGKj5NDOZaa5T9EqV2n0MlhUw2nWVT3CvO2rLQ+cJTSVprRL8bHEMLe7o/GaT050MDQ10NwffQF+0+EOLKoSooWbrzxh+cK2vgG3xSoA8MFdAfNjgN1yx0VznJG19urGtBoVi01uHdXjaNo=
+	t=1708111679; cv=none; b=KEXWLBGcIgOBv7BLdKwuIgozaQkvHO9PgdddlHD81zNBzVRczctbjnVbPXSNub6JrZDdlkmGUcg2jBokm+dsl3weoqGkLr2JNFGwixR4GlYYYN2l1qaEDtbH1yec7pbMU2V7NQe3UlbxljysE7jsBLvM+q02TZj0yWhvCa3AQ5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708106882; c=relaxed/simple;
-	bh=tV3fUptqP9RE0j5RgKLziKA6wSJoQPcah2pWJdG9ico=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=QzceuQseLKdMuxHOJ6UNBkCRb/c7hmVg34ujyJy4FnZ1tDdiOeWVhDZh1uleUDWshW7OKvExE9St402MbG/eTAMVOII8qpeBgmhSI1fT7AAXfaY6u/eC/gDc2CKUB9iDJ5f7uTiyHgoeTszUbNZwcwhkMCqleJhmip2yJpERvNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ciwKum2e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DB2BC433F1;
-	Fri, 16 Feb 2024 18:07:59 +0000 (UTC)
+	s=arc-20240116; t=1708111679; c=relaxed/simple;
+	bh=RQsL18uJ4AP9VuasXYeoSPuHa2JIzAuKp8EP2goIoE0=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=g8ifNsgUVUTIzpRHWO25+YXfAbhxzv7yUVSqM1QbBvOh65jQm6HrbYBgscImJLN58u26kEjc0/pKJ1+veNyGUgFucl5J/HDDDAhiDDPle/xC5KDZVzLcGnNti7uxRwrvqfgE8EA2gmbJumuo4vS3d9PqqVXpSINKxlJ0sq3r/V8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fSKUoWaD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C61F3C433F1;
+	Fri, 16 Feb 2024 19:27:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708106881;
-	bh=tV3fUptqP9RE0j5RgKLziKA6wSJoQPcah2pWJdG9ico=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=ciwKum2eDZJZfLFHWAD49YFnhnK/MAIdrvKaQVYozM80ogQJkncFm5iNkPgVjO2ZH
-	 +NDkG8srPW5uxC5oln1NpZXMkcH+Wp3l3pt0r7TYhylzFU/dHtnrhTvVSuvpzl+2bx
-	 Rh6YQKRmrbcJSpL/WVhsLUJ3X1z6lLKNpC9+GHffxKHze30/qxV6YYPBPZ4MVf6G+c
-	 ZDz5vMWES8XZE2r9oxuPNoja2unPWf0qimIvvZHG+IDKrTCacHf1/3xfYMl8rY3TOb
-	 fq7Q8HQ1APb7KwwQbjV7TMVOcLXXBlji6YcmwipRDwmO2JZQs73i07LbMIi1SvCVLj
-	 jq8SWhi+DLqAA==
-From: Kalle Valo <kvalo@kernel.org>
-To: Conor Dooley <conor@kernel.org>
-Cc: Ajay.Kathat@microchip.com,  alexis.lothore@bootlin.com,
-  davidm@egauge.net,  linux-wireless@vger.kernel.org,
-  claudiu.beznea@tuxon.dev,  thomas.petazzoni@bootlin.com,
-  linux-kernel@vger.kernel.org,  devicetree@vger.kernel.org
-Subject: Re: [PATCH RFC] wifi: wilc1000: fix reset line assert/deassert
- polarity
-References: <20240213-wilc_1000_reset_line-v1-1-e01da2b23fed@bootlin.com>
-	<2ff1c701f3443e1c612a81f4077b0280850f57c6.camel@egauge.net>
-	<081bce96-f485-414c-8051-e1c14271f8cc@bootlin.com>
-	<aac398e4-d870-4ba2-8877-b98afecb8d1b@microchip.com>
-	<877cj4o0sv.fsf@kernel.org>
-	<20240216-reckless-freedom-4768ce41e939@spud>
-	<20240216-spinster-decade-e136ac3e72d0@spud>
-Date: Fri, 16 Feb 2024 20:07:58 +0200
-In-Reply-To: <20240216-spinster-decade-e136ac3e72d0@spud> (Conor Dooley's
-	message of "Fri, 16 Feb 2024 16:55:16 +0000")
-Message-ID: <87h6i8cmf5.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=k20201202; t=1708111679;
+	bh=RQsL18uJ4AP9VuasXYeoSPuHa2JIzAuKp8EP2goIoE0=;
+	h=Date:From:To:Cc:Subject:From;
+	b=fSKUoWaDgkqN32vCFJgZgd1Uv+x9ET8jzDE+DbDfrOf6gppkiraJqnfgaXr8OVA+G
+	 3p0n8kaJngJidrg9OuNAbj4Og9pguNB0NcjVvoMA9GwGo/seNBEztBrhsXtQ3TpfsO
+	 W4++v+wiAYMK50a+c5Mi5ssh3Cvfcig75BTHHz4lKhoYKO+ksshfTheA/wAeWwFMQW
+	 lzoBQ3nXthaSq9S5DU+qK1AWL/66QJ8JLC1KLQvJms3a3Bf0JEtbPGSm35RK/LzupH
+	 0MvOlHctGkyNCyM5/TpCsWoWscqPwNVTIN2gSMOmolib/QS2gLygIdPOUzSqH5Pt3E
+	 IXANjOCWtTktA==
+Date: Fri, 16 Feb 2024 13:27:56 -0600
+From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+To: Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>
+Cc: linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com, linux-kernel@vger.kernel.org,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	linux-hardening@vger.kernel.org
+Subject: [PATCH][next] wifi: brcmfmac: fweh: Fix boot crash on Raspberry Pi 4
+Message-ID: <Zc+3PFCUvLoVlpg8@neat>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Conor Dooley <conor@kernel.org> writes:
+Fix boot crash on Raspberry Pi by moving the update to `event->datalen`
+before data is copied into flexible-array member `data` via `memcpy()`.
 
->> > So if I'm understanding the situation correctly Microchip's porting
->> > guide[1] doesn't match with kernel.org documentation[2]? I'm not the
->> > expert here but from my point of view the issue is clear: the code needs
->> > to follow kernel.org documentation[2], not external documentation.
->> 
->> My point of view would definitely be that drivers in the mainline kernel
->> absolutely should respect the ABI defined in the dt-binding. What a vendor
->> decides to do in their own tree I suppose is their problem, but I would
->> advocate that vendor kernels would also respect the ABI from mainline.
->> 
->> Looking a bit more closely at the porting guide, it contains other
->> properties that are not present in the dt-binding - undocumented
->> compatibles and a different enable gpio property for example.
->> I guess it (and the vendor version of the driver) never got updated when
->> wilc1000 supported landed in mainline?
->> 
->> > I'll add devicetree list so hopefully people there can comment also,
->> > full patch available in [3].
->> > 
->> > Alexis, if there are no more comments I'm in favor submitting the revert
->> > you mentioned.
->> 
->> From a dt-bindings point of view, the aforementioned revert seems
->> correct and would be
->> Acked-by: Conor Dooley <conor.dooley@microchip.com>
->
-> Maybe an R-b is more suitable here, too used to acking trivial patches
-> that are dt related..
+Flexible-array member `data` was annotated with `__counted_by(datalen)`
+in commit 62d19b358088 ("wifi: brcmfmac: fweh: Add __counted_by for
+struct brcmf_fweh_queue_item and use struct_size()"). The intention of
+this is to gain visibility into the size of `data` at run-time through
+its _counter_ (in this case `datalen`), and with this have its accesses
+bounds-checked at run-time via CONFIG_FORTIFY_SOURCE and
+CONFIG_UBSAN_BOUNDS.
 
-On the contrary, I think Acked-by is the right thing here and makes it
-easier for Alexis and me. Thanks!
+To effectively accomplish the above, we shall update the counter
+(`datalen`), before the first access to the flexible array (`data`),
+which was also done in the mentioned commit.
 
+However, commit edec42821911 ("wifi: brcmfmac: allow per-vendor event
+handling") inadvertently caused a buffer overflow, detected by
+FORTIFY_SOURCE. It moved the `event->datalen = datalen;` update to after
+the first `data` access, at which point `event->datalen` was not yet
+updated from zero (after calling `kzalloc()`), leading to the overflow
+issue.
+
+This fix repositions the `event->datalen = datalen;` update before
+accessing `data`, restoring the intended buffer overflow protection. :)
+
+Fixes: edec42821911 ("wifi: brcmfmac: allow per-vendor event handling")
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Closes: https://gist.github.com/nathanchance/e22f681f3bfc467f15cdf6605021aaa6
+Tested-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c
+index 0774f6c59226..f0b6a7607f16 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c
+@@ -497,12 +497,12 @@ void brcmf_fweh_process_event(struct brcmf_pub *drvr,
+ 		return;
+ 
+ 	event->code = fwevt_idx;
++	event->datalen = datalen;
+ 	event->ifidx = event_packet->msg.ifidx;
+ 
+ 	/* use memcpy to get aligned event message */
+ 	memcpy(&event->emsg, &event_packet->msg, sizeof(event->emsg));
+ 	memcpy(event->data, data, datalen);
+-	event->datalen = datalen;
+ 	memcpy(event->ifaddr, event_packet->eth.h_dest, ETH_ALEN);
+ 
+ 	brcmf_fweh_queue_event(fweh, event);
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.34.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
