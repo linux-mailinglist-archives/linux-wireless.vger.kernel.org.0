@@ -1,62 +1,58 @@
-Return-Path: <linux-wireless+bounces-3685-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3686-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE271858213
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Feb 2024 17:02:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DB248582AE
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Feb 2024 17:35:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA0E21C2328C
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Feb 2024 16:02:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D45BB24066
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Feb 2024 16:35:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57CF212F589;
-	Fri, 16 Feb 2024 16:01:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4231112FB20;
+	Fri, 16 Feb 2024 16:35:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="du12MZCc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YUpmOZ9I"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29AC012F39F;
-	Fri, 16 Feb 2024 16:01:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E73E12FB1E
+	for <linux-wireless@vger.kernel.org>; Fri, 16 Feb 2024 16:35:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708099317; cv=none; b=rnWc8Z4t3z6AOOO7xn4D8Bhs5VScp74O73VF9/q/wXZ/Zu2P4cOXz8MMTvZJtKdXl7ie7rUjJFwKoRge1jyg4xCOmeSs35To7kBm1xFfMPLMBTPzmKlg1L2yaJSh+5XhbvWZKbdHxV6AUisN6i5y1ZVo8k8f6c082cdfeUnBq6g=
+	t=1708101345; cv=none; b=N/h3fYfM1N5zynD157OXixHJuzH1wJQY6zoD89i3hVmCvCYCa9n0Cn07X7cmOJwGGg55iImFl1+MQ4+PV/1hZzesDH962yIkfF7eKbnHlD5d8HJwqbQknVh2uACxmxRlz1Y6mDvN2K++TlaEeBu6p5bTkUA/e0UHzaPYVGMPgOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708099317; c=relaxed/simple;
-	bh=ulmHmF5cD5oOk/vU3Fp+wOpcyv8389AhjaaESJZX2l0=;
+	s=arc-20240116; t=1708101345; c=relaxed/simple;
+	bh=Ln8SvTSKUBvAst/PdaGwGh7GdSDxPCTOFBToh/EUHKU=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=lC2c9g7ktLe+LzRiICMo+6enOZDUrC7SWWzYnQX2pZFRA/W5q3kvxCE/2brKkGNmQW5AAVi+vSzn2dxm9X/ZnUrk+gdxDThuCT1GgW3aGr2ImZhr66dghR3fBRmsglBCi91VUtyQRFLnOV+2bxySE4Sk7qfQrx/qM+cuFPxs3dQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=du12MZCc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D767DC433F1;
-	Fri, 16 Feb 2024 16:01:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NEj63gFKlwQrhHIjkty5fJRsuVeo+qLVwaoicp1uiCv06xvxWVbfeEXMgezExXajiv1q55Z+npWnAlM8rASkXwoWPVMmEiktbiJcvuq085pMFaacvVPClTg12/TaaEUIFitzjKuL38vxq4KdDGwL0eGu0T0KxJCCmf2e1tkZxOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YUpmOZ9I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C561C433C7;
+	Fri, 16 Feb 2024 16:35:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708099316;
-	bh=ulmHmF5cD5oOk/vU3Fp+wOpcyv8389AhjaaESJZX2l0=;
+	s=k20201202; t=1708101344;
+	bh=Ln8SvTSKUBvAst/PdaGwGh7GdSDxPCTOFBToh/EUHKU=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=du12MZCc+hUEhyruKbxOOkV1IAKJ99fa+Joqd30VDg3C0Hvg2zGtPEs8FwD7KmT37
-	 mDVzCxevKrO0YCGDiUD8Ko9h3TYilXw2APfKUUwHf8x5vu6y7LK7+5zrsHnjJgNpJR
-	 s/VWu1D9MCwInZ96KSukzv2RbhdtoUWxJhftaMPTrh1SJmKdsHmO9/1kaXd5NbkPhj
-	 v9I8PcMIgzzZ0x+YuRQ5Umg9T9Q3yKL4WAduVdV72SHmwnR7lm91acGvgpkpB9J4MU
-	 65dkEurZGOfB1uvUKh9cNUnIK9MtD8Zh2MjROMwlms/53pJj1u87M9lYhV9YEQY/Nt
-	 96ul2C7snomwg==
+	b=YUpmOZ9I0aLwJcrYutr+JPvg/qE+8Y+Msy6FvdjxUX133kIQQCavXVwJV4xuSYzSt
+	 OBahGWxivh0b3PVDpGHQ+abXaRDW71xGgqqZ5aAoixRVDsDgqssa4M5onDbQyyXxLm
+	 mXqGIrKvZJSSFJk/FNFZI/cl+HfqKj9vLxCjEijEVgxi9SCOb7oCHSqHWuSotNajJz
+	 gdiM49diHqL3sT6ChuBS+374wHeLFhteeEgeJR31RCoguDKLT6P6qAp5dpS3e8l/wB
+	 DPEqEVTcc57NIWAM8qigHg8Fd0KCKFJL0xBGgAJVuU0/N8Ijts3WOqeRsFyEYNqauz
+	 MWWkD9J8z7jwg==
 From: Kalle Valo <kvalo@kernel.org>
-To: <Ajay.Kathat@microchip.com>
-Cc: <alexis.lothore@bootlin.com>,  <davidm@egauge.net>,
-  <linux-wireless@vger.kernel.org>,  <claudiu.beznea@tuxon.dev>,
-  <thomas.petazzoni@bootlin.com>,  <linux-kernel@vger.kernel.org>,
- devicetree@vger.kernel.org
-Subject: Re: [PATCH RFC] wifi: wilc1000: fix reset line assert/deassert
- polarity
-References: <20240213-wilc_1000_reset_line-v1-1-e01da2b23fed@bootlin.com>
-	<2ff1c701f3443e1c612a81f4077b0280850f57c6.camel@egauge.net>
-	<081bce96-f485-414c-8051-e1c14271f8cc@bootlin.com>
-	<aac398e4-d870-4ba2-8877-b98afecb8d1b@microchip.com>
-Date: Fri, 16 Feb 2024 18:01:52 +0200
-In-Reply-To: <aac398e4-d870-4ba2-8877-b98afecb8d1b@microchip.com> (Ajay
-	Kathat's message of "Thu, 15 Feb 2024 04:35:46 +0000")
-Message-ID: <877cj4o0sv.fsf@kernel.org>
+To: Rameshkumar Sundaram <quic_ramess@quicinc.com>
+Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>,  Sriram
+ R <quic_srirrama@quicinc.com>
+Subject: Re: [PATCH v2 03/12] wifi: ath12k: modify ath12k mac start/stop ops
+ for single wiphy
+References: <20240206091954.4144454-1-quic_ramess@quicinc.com>
+	<20240206091954.4144454-4-quic_ramess@quicinc.com>
+Date: Fri, 16 Feb 2024 18:35:41 +0200
+In-Reply-To: <20240206091954.4144454-4-quic_ramess@quicinc.com> (Rameshkumar
+	Sundaram's message of "Tue, 6 Feb 2024 14:49:45 +0530")
+Message-ID: <8734tsnz8i.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -64,83 +60,49 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-(Adding devicetree list for comments)
+Rameshkumar Sundaram <quic_ramess@quicinc.com> writes:
 
-<Ajay.Kathat@microchip.com> writes:
-
-> On 2/13/24 09:58, Alexis Lothor=C3=A9 wrote:
->>=20
->> On 2/13/24 17:42, David Mosberger-Tang wrote:
->>> On Tue, 2024-02-13 at 16:22 +0100, Alexis Lothor=C3=A9 wrote:
->>>> When using a wilc1000 chip over a spi bus, users can optionally define=
- a
->>>> reset gpio and a chip enable gpio. The reset line of wilc1000 is active
->>>> low, so to hold the chip in reset, a low (physical) value must be appl=
-ied.
->>>>
->>>> The corresponding device tree binding documentation was introduced by
->>>> commit f31ee3c0a555 ("wilc1000: Document enable-gpios and reset-gpios
->>>> properties") and correctly indicates that the reset line is an active-=
-low
->>>> signal. However, the corresponding driver part, brought by commit
->>>> ec031ac4792c ("wilc1000: Add reset/enable GPIO support to SPI driver")=
-, is
->>>> misusing the gpiod APIs and apply an inverted logic when powering up/d=
-own
->>>> the chip (for example, setting the reset line to a logic "1" during po=
-wer
->>>> up, which in fact asserts the reset line when device tree describes the
->>>> reset line as GPIO_ACTIVE_LOW).
->>>
->>> Note that commit ec031ac4792c is doing the right thing in regards to an
->>> ACTIVE_LOW RESET pin and the binding documentation is consistent with t=
-hat code.
->>>
->>> It was later on that commit fcf690b0 flipped the RESET line polarity to=
- treat it
->>> as GPIO_ACTIVE_HIGH.  I never understood why that was done and, as you =
-noted, it
->>> introduced in inconsistency with the binding documentation.
->>=20
->> Ah, you are right, and I was wrong citing your GPIOs patch as faulty
->> (git-blaming too fast !), thanks for the clarification. I missed this pa=
-tch from
->> Ajay (fcf690b0) flipping the reset logic. Maybe he had issues while miss=
-ing
->> proper device tree configuration and then submitted this flip ?
+> From: Sriram R <quic_srirrama@quicinc.com>
 >
-> Indeed, it was done to align the code as per the DT entry suggested in
-> WILC1000/3000 porting guide[1 -page 18], which is already used by most
-> of the existing users. This change has impact on the users who are using
-> DT entry from porting guide. One approach is to retain the current code
-> and document this if needed.
+> When mac80211 does drv start/stop, apply the state change
+> for all the radios within the wiphy in ath12k.
+>
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+>
+> Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
+> Signed-off-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
 
-So if I'm understanding the situation correctly Microchip's porting
-guide[1] doesn't match with kernel.org documentation[2]? I'm not the
-expert here but from my point of view the issue is clear: the code needs
-to follow kernel.org documentation[2], not external documentation.
+I haven't reviewed the patchset fully yet, first quick impressions:
 
-I'll add devicetree list so hopefully people there can comment also,
-full patch available in [3].
+> +static void ath12k_drain_tx(struct ath12k_hw *ah)
+> +{
+> +	int i;
+> +	struct ath12k *ar;
 
-Alexis, if there are no more comments I'm in favor submitting the revert
-you mentioned.
+We usually try to have reverse xmas style, of course not always possible
+but here it is.
 
+> +	ar = ah->radio;
+> +
+> +	for (i = 0; i < ah->num_radio; i++) {
+> +		ath12k_mac_drain_tx(ar);
+> +		ar++;
+> +	}
+> +}
 
-[1] https://ww1.microchip.com/downloads/en/DeviceDoc/ATWILC1000-ATWILC3000-=
-ATWILC-Devices-Linux-Porting-Guide-User-Guide-DS70005329C.pdf
+Please avoid pointer arithmetic (in this case 'ar++') as much as
+possible, it's just so easy to shoot yourself in the foot. In patch 1
+you add ath12k_ah_to_ar(), why not use it?
 
-[2] Documentation/devicetree/bindings/net/wireless/microchip,wilc1000.yaml
+And I see this pattern quite a lot, should we have
+ath12k_for_each_radio() or something like that? Or did I see that macro
+in some patch already?
 
-[3] https://patchwork.kernel.org/project/linux-wireless/patch/20240213-wilc=
-_1000_reset_line-v1-1-e01da2b23fed@bootlin.com/
-
---=20
+-- 
 https://patchwork.kernel.org/project/linux-wireless/list/
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
