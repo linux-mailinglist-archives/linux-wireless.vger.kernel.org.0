@@ -1,98 +1,98 @@
-Return-Path: <linux-wireless+bounces-3651-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3652-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25B5085721C
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Feb 2024 00:56:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4483D857248
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Feb 2024 01:10:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B4EE0B24437
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Feb 2024 23:56:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D4251C235D1
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Feb 2024 00:10:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF9DA145B07;
-	Thu, 15 Feb 2024 23:55:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C34E0EC2;
+	Fri, 16 Feb 2024 00:10:12 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from us-smtp-delivery-195.mimecast.com (us-smtp-delivery-195.mimecast.com [170.10.129.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27D887AE5E
-	for <linux-wireless@vger.kernel.org>; Thu, 15 Feb 2024 23:55:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D671C647
+	for <linux-wireless@vger.kernel.org>; Fri, 16 Feb 2024 00:10:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708041316; cv=none; b=TBgW0WaBgbFzhDLCsaUXtIn3gDMMD4vlOOuQmjtUE/3o80EczP7yjtIui0QItxLPFHoL2iMxChHFRrD7bOIrolmUUMYwAQA8bkCY/XLqGEBdAk6qF6kSdET5iXMgUnbfgYNBu26ns251oWBJBO4/OMLK1iQdmH0J6J44xml5b7I=
+	t=1708042212; cv=none; b=K/uu3InnhrvTTlGJO7vHKPbyjLLuTkCN/MvFC+qyBWK8yyb2cHIyspgeHizHOqDsjd6XLE52Mx6UmcNx2qSMzPIerYXQOKQUdboMi813eAAc5+1UweeZlyJbdx3X0Qo4XX+USjUMAOQ877khr3/7zi03BJ/DTjDAcTeZfNs4nic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708041316; c=relaxed/simple;
-	bh=Ap6LTEeCsIJ7YInjFvp8nsHXxHIXWfsNlWeYNx04vjs=;
-	h=From:Subject:To:Message-ID:Date:MIME-Version:Content-Type; b=phFbdamdU7cm4JY7icqdJk717Q17haNTvcT0KYWWF+/7vRUU8ku84PRP5942z1iYciJRrxdBdJnAYq9S2d1vv2yF71oj5FGicXYTCn8Wq/7Soq7Z4F0BandgN3GIlw5M0fhJOkS6ZUco3iphR+fhOvsnKevZ4bB5Kw6dEybM7ns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mbari.org; spf=pass smtp.mailfrom=mbari.org; arc=none smtp.client-ip=170.10.129.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mbari.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mbari.org
-Received: from sleet.shore.mbari.org (sleet.shore.mbari.org [134.89.12.10])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-457-tLjirnq9Nh-os6xyqdT4jQ-1; Thu,
- 15 Feb 2024 18:55:11 -0500
-X-MC-Unique: tLjirnq9Nh-os6xyqdT4jQ-1
-Received: from localhost (localhost [127.0.0.1])
-	by sleet.shore.mbari.org (Postfix) with ESMTP id BE8C681289677;
-	Thu, 15 Feb 2024 15:55:10 -0800 (PST)
-X-Virus-Scanned: amavis at sleet.shore.mbari.org
-Received: from sleet.shore.mbari.org ([127.0.0.1])
- by localhost (sleet.shore.mbari.org [127.0.0.1]) (amavis, port 10026)
- with ESMTP id 05twqRBJsMKX; Thu, 15 Feb 2024 15:55:10 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-	by sleet.shore.mbari.org (Postfix) with ESMTP id A4EDC8128966C;
-	Thu, 15 Feb 2024 15:55:10 -0800 (PST)
-Received: from [192.168.6.194] (raven.shore.mbari.org [134.89.10.221])
-	by sleet.shore.mbari.org (Postfix) with ESMTPSA;
-	Thu, 15 Feb 2024 15:55:10 -0800 (PST)
-From: Brent Roman <brent@mbari.org>
-Subject: rtw88 driver support for rtl8723ds does not work on Radxa RockPi-S
-To: linux-wireless@vger.kernel.org, martin.blumenstingl@googlemail.com
-Organization: MBARI
-Message-ID: <9f47e65e-35f1-b090-cad1-4d8333293b00@mbari.org>
-Date: Thu, 15 Feb 2024 15:55:10 -0800
-User-Agent: Mozilla/5.0 (X11; Linux i686; rv:46.0) Gecko/20100101 Firefox/46.0
+	s=arc-20240116; t=1708042212; c=relaxed/simple;
+	bh=JOzQH+4uRZ3nL0UnH4qPEC7FAbNXkaLv/YQC/z3irBw=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=T+5Tj2CIRh3RG0WEjzs6KIt5AyZpAHACuPeS9Znm4Lg5h+Dnpx9tj1KyCid9ZLUJA6LgiLG68QmEMnFXIjmNN0j4stULT8m54SDpr6bsWQflKf3594skf0G9i0mPI2o4Q11oVNjyqRXSgQnqXiDhn2x4qtcfIz/6epD1atELrXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 41G09ufpE2664099, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 41G09ufpE2664099
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 16 Feb 2024 08:09:56 +0800
+Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2375.32; Fri, 16 Feb 2024 08:09:57 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Fri, 16 Feb 2024 08:09:57 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::c9b7:82a9:7e98:fa7f]) by
+ RTEXMBS04.realtek.com.tw ([fe80::c9b7:82a9:7e98:fa7f%7]) with mapi id
+ 15.01.2507.035; Fri, 16 Feb 2024 08:09:56 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC: Larry Finger <Larry.Finger@lwfinger.net>
+Subject: RE: [PATCH v2] wifi: rtlwifi: rtl8192cu: Fix TX aggregation
+Thread-Topic: [PATCH v2] wifi: rtlwifi: rtl8192cu: Fix TX aggregation
+Thread-Index: AQHaYEDqMJnMGkfvokKfO2w1fdR96LEMGEjQ
+Date: Fri, 16 Feb 2024 00:09:56 +0000
+Message-ID: <a471a6c2b56242bba6b8f593533b1224@realtek.com>
+References: <4e936334-5f81-403f-a495-0628ebfb6903@gmail.com>
+In-Reply-To: <4e936334-5f81-403f-a495-0628ebfb6903@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Clacks-Overhead: GNU Terry Pratchett
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: mbari.org
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-Originally sent to linux-wireless on Feb 1, 2024:
-
-The Radxa RockPi-S has a built-in RTL8723DS interfaced to a Rockchip=20
-RK3308 A35 ARM64 processor on one of its SDIO busses.
-
-I maintain Armbian's support this board.
-
-The built-in WiFi works perfectly with RTL's 8723ds.ko driver.
-Recently, the rtw88 driver got support for SDIO.
-https://lwn.net/Articles/925940/
-
-However, when we attempt to enable the rtw88_8723ds module, WiFi does=20
-not work.
-
-Specifically, the WiFi scan returns only the strongest AP while=20
-indicating that AP has a very weak signal.
-No connections can be made.
-
-Unloading the rtw88_8723ds modules to replace it with 8723ds immediately=20
-restores WiFi function without the need to reboot the system.
-
-Has anyone tested the SDIO variant of this driver?
-If so, on which board(s)?
-
-I'd very much like to get this working.
-Any tips for debugging, or just getting relevant info from the driver,=20
-would be appreciated.
-
-Thanks!
-
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQml0dGVyYmx1ZSBTbWl0
+aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+DQo+IFNlbnQ6IEZyaWRheSwgRmVicnVhcnkgMTYs
+IDIwMjQgMjo1OCBBTQ0KPiBUbzogbGludXgtd2lyZWxlc3NAdmdlci5rZXJuZWwub3JnDQo+IENj
+OiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT47IExhcnJ5IEZpbmdlciA8TGFycnku
+RmluZ2VyQGx3ZmluZ2VyLm5ldD4NCj4gU3ViamVjdDogW1BBVENIIHYyXSB3aWZpOiBydGx3aWZp
+OiBydGw4MTkyY3U6IEZpeCBUWCBhZ2dyZWdhdGlvbg0KPiANCj4gcnRsODE5MmN1IGlzIGNoZWNr
+aW5nIHJ0bF9tYWMudGlkcyB3aGVuIGRlY2lkaW5nIGlmIGl0IHNob3VsZCBlbmFibGUNCj4gYWdn
+cmVnYXRpb24uIFRoaXMgaXMgd3JvbmcgYmVjYXVzZSBydGxfbWFjLnRpZHMgaXMgbm90IGluaXRp
+YWxpc2VkDQo+IGFueXdoZXJlLiBDaGVjayBydGxfc3RhX2luZm8udGlkcyBpbnN0ZWFkLCB3aGlj
+aCBpcyBpbml0aWFsaXNlZC4NCj4gDQo+IEFsc28sIHdoZW4gZW5hYmxpbmcgYWdncmVnYXRpb24g
+YWxzbyBlbmFibGUgUlRTLiBUaGUgdmVuZG9yIGRyaXZlciBkb2VzDQo+IHRoaXMsIG15IHJvdXRl
+ciBkb2VzIHRoaXMuIEl0IHNlZW1zIGxpa2UgdGhlIHRoaW5nIHRvIGRvLg0KPiANCj4gQWxzbyBh
+bHNvLCBpdCBzZWVtcyByaWdodCB0byBzZXQgdGhlIEFNUERVIGRlbnNpdHkgb25seSB3aGVuIGVu
+YWJsaW5nDQo+IGFnZ3JlZ2F0aW9uLg0KPiANCj4gQWxzbyBhbHNvIGFsc28sIGRlbGV0ZSB0aGUg
+dW51c2VkIG1lbWJlciBydGxfbWFjLnRpZHMgYW5kIHRoZSB1bnVzZWQNCj4gbWFjcm9zIFJUTF9B
+R0dfT04gYW5kIFJUTF9BR0dfT0ZGLg0KPiANCj4gTmF0dXJhbGx5LCB3aXRoIHdvcmtpbmcgQU1Q
+RFUgdGhlIGRvd25sb2FkL3VwbG9hZCBzcGVlZHMgYXJlIGJldHRlci4NCj4gQmVmb3JlOiA1OS8z
+MiBNYnBzLg0KPiBBZnRlcjogIDY4LzQ2IE1icHMuDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBCaXR0
+ZXJibHVlIFNtaXRoIDxydGw4ODIxY2VyZmUyQGdtYWlsLmNvbT4NCg0KQWNrZWQtYnk6IFBpbmct
+S2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPg0KDQpUaGFua3MhIA0KDQo=
 
