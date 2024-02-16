@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-3665-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3666-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 034A5857A56
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Feb 2024 11:32:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81C1B857BCA
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Feb 2024 12:35:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6DEE3B2351D
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Feb 2024 10:32:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92F3F1C21F42
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Feb 2024 11:35:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C84CF4D13F;
-	Fri, 16 Feb 2024 10:32:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEC3274E3C;
+	Fri, 16 Feb 2024 11:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R+AUbZ5C"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ndGyEwfA"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64CE225774
-	for <linux-wireless@vger.kernel.org>; Fri, 16 Feb 2024 10:32:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A246177F2B
+	for <linux-wireless@vger.kernel.org>; Fri, 16 Feb 2024 11:34:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708079566; cv=none; b=Y9HenPrOlsLLuhoc8nA64ThS0fwrKlNHs75J4dcH30GuMhpsgD7g+l4BgHJacHKziIlYLb2wvx9aqgJ2vItpvBSppNiuIfkpGObUpLFZywEBfDPqs+vkrervTOzPNNIN5AWC+InV1R13US8GBl5gcqsWC/QMeSyYEc8BLIG3E+o=
+	t=1708083289; cv=none; b=sa1LK3y7cx2NpAqQ04sViROkyDw2Xv6JgHecHhakPGEorTIj91F/UX3v+RB0kaOQHkkWf52+bgu1aw2BxO5i3rgHXmh0QEmo4zVSy/prUV+QrmUhD0IE30wuQ2k2C6x+cZyeD2LkdKE+VLM+25nnKyBNs4XjZAeurgLkcP7KEPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708079566; c=relaxed/simple;
-	bh=uHp8JhjRYSwKP51yxCKt+6oqNt7GRnIkN+2YXfgj/AA=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=md//nCpI2Fq+OO/nrUfSnziGpk89WKnXokOe+KMGCeusK7sJC62U1DhQ9zBqQlb0tKEffrnHu4wcdP579jaLsdGJE6jZi3o5Hx1jXYfj6o3uO+tnPnqmFlPoDrTV46ZnoHfvaKHGWxNnrGbrJz2IRU80GtJ3+OmXPfwnRE8PUJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R+AUbZ5C; arc=none smtp.client-ip=198.175.65.20
+	s=arc-20240116; t=1708083289; c=relaxed/simple;
+	bh=emp24KpufKZLXzUiL4ldp45q0EU8KBP5LEjdDcGyyAQ=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=djrj5QOeas5sbqRtPSiwQiNim94rfyE7cmxmDRRMcsDaA9O1mgCzrNu0HDWsFR8dg7rcJ3+fVdf02HlWPSAmhV2/w+eUC7jOJ5oZOUPZfxaj6TP2A9b2Vz/91B9K2dC+zNvzr1tweYZoy89xy2Meb3ww3SyPmGPrtpK8Bk25wBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ndGyEwfA; arc=none smtp.client-ip=198.175.65.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708079565; x=1739615565;
+  t=1708083288; x=1739619288;
   h=date:from:to:cc:subject:message-id;
-  bh=uHp8JhjRYSwKP51yxCKt+6oqNt7GRnIkN+2YXfgj/AA=;
-  b=R+AUbZ5Cr7yxX2C6+0tBlHqQU+4htiFRBeEvY3r+RXHnSMIO7+X+wWP1
-   AOpT4CjSiDmnvNDbw5Wy2q13b0hegchXeKnfnDL5d8eq5oXxPCTT8F9eQ
-   kAleTdn/ihbHjBMMJ2JODDk6SboWJ+Yyqo2agDVrqZk8Xm9su2bAgQiL6
-   yF7wk9bRc87ADggi0GJVGGruJPDoGnudWyZdwpFenTKOGlWKcPVVT9xdF
-   lGPq7XSG5lbRL7iX3NYQtL163Iv5y/Gc58iqCwr3NiFOyDcs8wNr67cMs
-   jQD1aKREZb9LQSYZ1iBCjzIpY0okzOK7U3fpMLP3qKS3rtQVdmimWbxla
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10985"; a="2072793"
+  bh=emp24KpufKZLXzUiL4ldp45q0EU8KBP5LEjdDcGyyAQ=;
+  b=ndGyEwfAvAwMM4kAAqMpvmSK0JBWrwnOFlzLHWL1LZJNarBNPDlT/NKV
+   X71zBE5rdwOm4Hocou7ziwi+5IviMZyuL9aGE/53TyUg65HbpgCpp4qm2
+   AtGC48BPhI/lpSu5iDnr4sQmWC1WpPAgfaMkL5xbqLP8gTBweJObL3OeQ
+   KPV0IynCLWglM/I1T/f4WXIOLkpompXCqx/Z9tVVwpfzQrh33IR7Gt8V5
+   pVqYYnivQK5JaKFjCPggXOQLB0fDa74N9c2LOBAQjrRpzjKk9UuxCD2Bz
+   KjAg5tTwylm8qeufi9a7f5FUFxv0FXNkUwW2H/rMKT4v8PuOFq0irhamy
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10985"; a="2320564"
 X-IronPort-AV: E=Sophos;i="6.06,164,1705392000"; 
-   d="scan'208";a="2072793"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2024 02:32:44 -0800
+   d="scan'208";a="2320564"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2024 03:34:47 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10985"; a="912340858"
 X-IronPort-AV: E=Sophos;i="6.06,164,1705392000"; 
-   d="scan'208";a="912340858"
+   d="scan'208";a="8488896"
 Received: from lkp-server02.sh.intel.com (HELO 3c78fa4d504c) ([10.239.97.151])
-  by fmsmga002.fm.intel.com with ESMTP; 16 Feb 2024 02:32:42 -0800
+  by orviesa005.jf.intel.com with ESMTP; 16 Feb 2024 03:34:46 -0800
 Received: from kbuild by 3c78fa4d504c with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1ravWJ-0001Ao-2r;
-	Fri, 16 Feb 2024 10:32:39 +0000
-Date: Fri, 16 Feb 2024 18:31:24 +0800
+	id 1rawUN-0001DK-0T;
+	Fri, 16 Feb 2024 11:34:43 +0000
+Date: Fri, 16 Feb 2024 19:34:10 +0800
 From: kernel test robot <lkp@intel.com>
-To: Johannes Berg <johannes.berg@intel.com>
-Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
-Subject: [wireless:for-next] BUILD SUCCESS
- f78c1375339a291cba492a70eaf12ec501d28a8e
-Message-ID: <202402161821.SZUFNCqF-lkp@intel.com>
+To: Kalle Valo <kvalo@kernel.org>
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+ linux-wireless@vger.kernel.org
+Subject: [wireless-next:main] BUILD SUCCESS
+ 42ffccd0a36e099dea3d3272c5d62a0454ded1f0
+Message-ID: <202402161908.tk92y35Q-lkp@intel.com>
 User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -71,13 +71,13 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
-branch HEAD: f78c1375339a291cba492a70eaf12ec501d28a8e  wifi: nl80211: reject iftype change with mesh ID change
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: 42ffccd0a36e099dea3d3272c5d62a0454ded1f0  wifi: rtlwifi: rtl_usb: Store the endpoint addresses
 
-elapsed time: 1454m
+elapsed time: 1446m
 
-configs tested: 189
-configs skipped: 4
+configs tested: 148
+configs skipped: 3
 
 The following configs have been built successfully.
 More configs may be tested in the coming days.
@@ -97,22 +97,13 @@ arm                              alldefconfig   gcc
 arm                              allmodconfig   gcc  
 arm                               allnoconfig   clang
 arm                              allyesconfig   gcc  
-arm                          collie_defconfig   gcc  
 arm                                 defconfig   clang
-arm                            hisi_defconfig   gcc  
-arm                        keystone_defconfig   gcc  
-arm                          moxart_defconfig   gcc  
-arm                        neponset_defconfig   gcc  
-arm                   randconfig-001-20240216   clang
-arm                   randconfig-002-20240216   clang
 arm                   randconfig-003-20240216   gcc  
 arm                   randconfig-004-20240216   gcc  
 arm64                            allmodconfig   clang
 arm64                             allnoconfig   gcc  
 arm64                               defconfig   gcc  
-arm64                 randconfig-001-20240216   clang
 arm64                 randconfig-002-20240216   gcc  
-arm64                 randconfig-003-20240216   clang
 arm64                 randconfig-004-20240216   gcc  
 csky                             allmodconfig   gcc  
 csky                              allnoconfig   gcc  
@@ -124,39 +115,19 @@ hexagon                          allmodconfig   clang
 hexagon                           allnoconfig   clang
 hexagon                          allyesconfig   clang
 hexagon                             defconfig   clang
-hexagon               randconfig-001-20240216   clang
-hexagon               randconfig-002-20240216   clang
 i386                             allmodconfig   gcc  
 i386                              allnoconfig   gcc  
 i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20240215   clang
 i386         buildonly-randconfig-001-20240216   gcc  
-i386         buildonly-randconfig-002-20240215   clang
-i386         buildonly-randconfig-003-20240215   clang
-i386         buildonly-randconfig-004-20240215   clang
 i386         buildonly-randconfig-004-20240216   gcc  
-i386         buildonly-randconfig-005-20240215   clang
 i386         buildonly-randconfig-005-20240216   gcc  
-i386         buildonly-randconfig-006-20240215   clang
 i386                                defconfig   clang
-i386                  randconfig-001-20240215   gcc  
-i386                  randconfig-002-20240215   gcc  
-i386                  randconfig-003-20240215   clang
 i386                  randconfig-003-20240216   gcc  
-i386                  randconfig-004-20240215   gcc  
-i386                  randconfig-005-20240215   gcc  
 i386                  randconfig-005-20240216   gcc  
-i386                  randconfig-006-20240215   gcc  
-i386                  randconfig-011-20240215   clang
 i386                  randconfig-011-20240216   gcc  
-i386                  randconfig-012-20240215   clang
 i386                  randconfig-012-20240216   gcc  
-i386                  randconfig-013-20240215   gcc  
 i386                  randconfig-013-20240216   gcc  
-i386                  randconfig-014-20240215   gcc  
-i386                  randconfig-015-20240215   clang
 i386                  randconfig-015-20240216   gcc  
-i386                  randconfig-016-20240215   gcc  
 i386                  randconfig-016-20240216   gcc  
 loongarch                        allmodconfig   gcc  
 loongarch                         allnoconfig   gcc  
@@ -176,9 +147,7 @@ microblaze                          defconfig   gcc
 mips                             allmodconfig   gcc  
 mips                              allnoconfig   gcc  
 mips                             allyesconfig   gcc  
-mips                           ip28_defconfig   gcc  
 mips                      loongson3_defconfig   gcc  
-mips                      pic32mzda_defconfig   gcc  
 nios2                            allmodconfig   gcc  
 nios2                             allnoconfig   gcc  
 nios2                            allyesconfig   gcc  
@@ -193,28 +162,20 @@ parisc                           allmodconfig   gcc
 parisc                            allnoconfig   gcc  
 parisc                           allyesconfig   gcc  
 parisc                              defconfig   gcc  
-parisc                generic-32bit_defconfig   gcc  
 parisc                randconfig-001-20240216   gcc  
 parisc                randconfig-002-20240216   gcc  
 parisc64                            defconfig   gcc  
 powerpc                          allmodconfig   gcc  
 powerpc                           allnoconfig   gcc  
 powerpc                          allyesconfig   clang
-powerpc                    klondike_defconfig   gcc  
 powerpc                 mpc832x_rdb_defconfig   gcc  
-powerpc               randconfig-001-20240216   clang
-powerpc               randconfig-002-20240216   clang
-powerpc               randconfig-003-20240216   clang
 powerpc                     tqm5200_defconfig   gcc  
-powerpc64             randconfig-001-20240216   clang
-powerpc64             randconfig-002-20240216   clang
 powerpc64             randconfig-003-20240216   gcc  
 riscv                            allmodconfig   clang
 riscv                             allnoconfig   gcc  
 riscv                            allyesconfig   clang
 riscv                               defconfig   clang
 riscv                 randconfig-001-20240216   gcc  
-riscv                 randconfig-002-20240216   clang
 s390                             allmodconfig   clang
 s390                              allnoconfig   clang
 s390                             allyesconfig   gcc  
@@ -226,8 +187,6 @@ sh                                allnoconfig   gcc
 sh                               allyesconfig   gcc  
 sh                                  defconfig   gcc  
 sh                            hp6xx_defconfig   gcc  
-sh                          landisk_defconfig   gcc  
-sh                          lboxre2_defconfig   gcc  
 sh                          r7785rp_defconfig   gcc  
 sh                    randconfig-001-20240216   gcc  
 sh                    randconfig-002-20240216   gcc  
