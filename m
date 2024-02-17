@@ -1,128 +1,149 @@
-Return-Path: <linux-wireless+bounces-3720-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3721-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CBCB858D86
-	for <lists+linux-wireless@lfdr.de>; Sat, 17 Feb 2024 07:35:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BD3D858FAD
+	for <lists+linux-wireless@lfdr.de>; Sat, 17 Feb 2024 14:25:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7F9B1F2258D
-	for <lists+linux-wireless@lfdr.de>; Sat, 17 Feb 2024 06:35:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C0831C20E9F
+	for <lists+linux-wireless@lfdr.de>; Sat, 17 Feb 2024 13:24:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89C091C2AD;
-	Sat, 17 Feb 2024 06:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68F297A728;
+	Sat, 17 Feb 2024 13:24:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PUalBi4V"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Jkma2Nhz"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3974ADF44;
-	Sat, 17 Feb 2024 06:35:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5709522094;
+	Sat, 17 Feb 2024 13:24:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708151702; cv=none; b=KhS9/UYcTPgsyQsttcZeflvpZRfMTc7XhzqnTdsM4ud5G2DEKJYnjX6x2g+UCc5qfRGGZLaVHLqtiZqBoXY9Y6lKpsLqskKcKK/bFVMaMINdMJD7UEjfyjz/77uX6FRTXxg58RLqsM4W/odxt0eTl+rKwLz247lHJ5bWAyKdObQ=
+	t=1708176294; cv=none; b=eX+ixfcgqmF/DPE3RXBqKw7fI4nMHvigkRXhy3tZmvFoU8S6a86uOUk2PzG5u5kK7CCne0jMmjUNZJduulSKDnaaSuagrMnrxJqRUIaIbzaNA1I5dM2eDQd6uTM8mJY4pmULFfFx+/uD9Upa0x9jQ5E8U85UPis4CCbd6iVLeaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708151702; c=relaxed/simple;
-	bh=P9v5bwlS7CEx0RGF6l5RaEMQEbJkoeMSl0AVCOm8vZY=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=HLWqx8eysvc2DJCFXMh1MoLJeAm5dMzVZ2GkAzp4wFfPs5c9177WWC3khY2GDHtWZAYnKk6NpDNLcYDJEwE9SK9gpq3ZyFgczqC4yEHKMlLw1dkuDrcavW8nHdojWzNuqJD1p/KQLLcaM8icd+Scg85RvRSurzAXCbW+VcTesDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PUalBi4V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3882C433C7;
-	Sat, 17 Feb 2024 06:34:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708151701;
-	bh=P9v5bwlS7CEx0RGF6l5RaEMQEbJkoeMSl0AVCOm8vZY=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=PUalBi4VP+acTF5G4CtuSGC3cR8sQbK3vDeWzN46QQLixXZLxuyUXwthX0sl9EHUf
-	 LpsdqZzpsOwOxRH2yD+qTppUTUgQpSLvZFiQFDr+s/glNQTDza4ujEzNd4pCrodZnh
-	 yDMnaOJgndboanGlyO53uXPVLI/apL+vO6VZAnbNkF1rgdngRR9+5zYFltwnFPJQAr
-	 crS5pF1cQ52gePqMPhy9D5jtr4rXQGmB7vDXDyA3i8lj11G0eOdB1QkcvahmudtwA9
-	 eJwEXWM05Jxj6HaI3LZpt0woUQjXrhmDdLHa9fJ+XBHqCuiiBz2v5n4PeZbD9mpVXq
-	 F7OZs8l+23rhA==
-From: Kalle Valo <kvalo@kernel.org>
-To: Bartosz Golaszewski <brgl@bgdev.pl>,
-    Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc: Marcel Holtmann <marcel@holtmann.org>,  Luiz Augusto von Dentz
- <luiz.dentz@gmail.com>,  "David S . Miller" <davem@davemloft.net>,  Eric
- Dumazet <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,  Paolo
- Abeni <pabeni@redhat.com>,  Rob Herring <robh@kernel.org>,  Krzysztof
- Kozlowski <krzysztof.kozlowski+dt@linaro.org>,  Conor Dooley
- <conor+dt@kernel.org>,  Bjorn Andersson <andersson@kernel.org>,  Konrad
- Dybcio <konrad.dybcio@linaro.org>,  Liam Girdwood <lgirdwood@gmail.com>,
-  Mark Brown <broonie@kernel.org>,  Catalin Marinas
- <catalin.marinas@arm.com>,  Will Deacon <will@kernel.org>,  Bjorn Helgaas
- <bhelgaas@google.com>,  Saravana Kannan <saravanak@google.com>,  Geert
- Uytterhoeven <geert+renesas@glider.be>,  Arnd Bergmann <arnd@arndb.de>,
-  Neil Armstrong <neil.armstrong@linaro.org>,  Marek Szyprowski
- <m.szyprowski@samsung.com>,  Alex Elder <elder@linaro.org>,  Srini
- Kandagatla <srinivas.kandagatla@linaro.org>,  Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>,  Abel Vesa <abel.vesa@linaro.org>,
-  Manivannan Sadhasivam <mani@kernel.org>,  Lukas Wunner <lukas@wunner.de>,
-  Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-  linux-bluetooth@vger.kernel.org,  netdev@vger.kernel.org,
-  devicetree@vger.kernel.org,  linux-kernel@vger.kernel.org,
-  linux-wireless@vger.kernel.org,  linux-arm-msm@vger.kernel.org,
-  linux-arm-kernel@lists.infradead.org,  linux-pci@vger.kernel.org,
-  linux-pm@vger.kernel.org,  Bartosz Golaszewski
- <bartosz.golaszewski@linaro.org>
-Subject: Re: [PATCH v5 06/18] dt-bindings: new: wireless: describe the
- ath12k PCI module
-References: <20240216203215.40870-1-brgl@bgdev.pl>
-	<20240216203215.40870-7-brgl@bgdev.pl>
-Date: Sat, 17 Feb 2024 08:34:52 +0200
-In-Reply-To: <20240216203215.40870-7-brgl@bgdev.pl> (Bartosz Golaszewski's
-	message of "Fri, 16 Feb 2024 21:32:03 +0100")
-Message-ID: <87cysvd2er.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1708176294; c=relaxed/simple;
+	bh=isBp3wCJWjacai14z29P5KSp+Y5zlyt2wA75/ZkVWbk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=rWWga5PCqjnQeU07DfQi+ZQ5TPEWbTWRIfjEey+ut/PqwzhOftxQILdXJx3O1ah7YBmDePahObpWv1V/n9aTknciHGPvA+OUX0rUjygcEO5H/SpL4kLeJs1M9xCPqYv3pVguHUtN70ZO3s9yXYg2d3IiPHcZzlZhMCs7vSL1Dkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Jkma2Nhz; arc=none smtp.client-ip=217.70.183.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id BB7221C0006;
+	Sat, 17 Feb 2024 13:24:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1708176289;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=9E0Vj/D0tS+cRSQY32RPNCGqo1WJBFZbJL/1pXftLwM=;
+	b=Jkma2NhzcBHhs/HC7IzunPcSIVJQzpXUidSAWWQ4iXGxAoz1RSDVaRuXe4L1VelN0l8MgN
+	MA5FyxBS+kO1pONki5oLFnyS60iXHAAWq+jS+M83w5F53RQPv8wuCNLqmdRH2fClbzKiHH
+	2/SZRl6DgorTKGgh9+gj0PKA9Jjzrn42hhQnT5HnKyI1kVLxn8Sgc/HsGpYpbeWYWA3/LY
+	J9AM26ifhtYZLjldCjrf3bsFAvK2CjHNMi6RZ+hQ4cFvJ2HClqw3ExmL7d00KROygSrmyi
+	J/vt3OzD3UyaYhc8sbJKlXDZs7rEOKnlkncHtXBHGnkvbs53WVpJBVVu4+H5RQ==
+From: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+Date: Sat, 17 Feb 2024 14:22:41 +0100
+Subject: [PATCH v2] wifi: wilc1000: revert reset line logic flip
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20240217-wilc_1000_reset_line-v2-1-b216f433d7d5@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIACCz0GUC/22NwQqDMBBEf0X23JTdjSD21P8oIhrXumBNSURbx
+ H9vaq89vhnmzQZRgkqES7ZBkEWj+ikBnzJwQzPdxWiXGBg5R6LSrDq6mhCxDhJlrkedxNjScoG
+ 9y4tcIE2fQXp9HdpblXjQOPvwPl4W+qY/IZP9L1zIkBGkruGWbS/dtfV+TtXZ+QdU+75/AJi1V
+ +W6AAAA
+To: linux-wireless@vger.kernel.org
+Cc: Ajay Singh <ajay.kathat@microchip.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Kalle Valo <kvalo@kernel.org>, 
+ David Mosberger-Tang <davidm@egauge.net>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ linux-kernel@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>, 
+ =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+X-Mailer: b4 0.12.4
+X-GND-Sasl: alexis.lothore@bootlin.com
 
-Bartosz Golaszewski <brgl@bgdev.pl> writes:
+This reverts commit fcf690b0b47494df51d214db5c5a714a400b0257.
 
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->
-> Add device-tree bindings for the ATH12K module found in the WCN7850
-> package.
->
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> ---
->  .../net/wireless/qcom,ath12k-pci.yaml         | 103 ++++++++++++++++++
->  1 file changed, 103 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/net/wireless/qcom,ath12k-pci.yaml
->
-> diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath12k-pci.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath12k-pci.yaml
-> new file mode 100644
-> index 000000000000..063c576b99a0
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath12k-pci.yaml
-> @@ -0,0 +1,103 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +# Copyright (c) 2024 Linaro Limited
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/net/wireless/qcom,ath12k-pci.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Qualcomm Technologies ath12k wireless devices (PCIe)
-> +
-> +maintainers:
-> +  - Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+When using a wilc1000 chip over a spi bus, users can optionally define a
+reset gpio and a chip enable gpio. The reset line of wilc1000 is active
+low, so to hold the chip in reset, a low (physical) value must be applied.
 
-Jeff and me are the ath12k driver maintainers so shouldn't we listed
-here as well?
+The corresponding device tree binding documentation was introduced by
+commit f31ee3c0a555 ("wilc1000: Document enable-gpios and reset-gpios
+properties") and correctly indicates that the reset line is an active-low
+signal. The corresponding driver part, brought by commit ec031ac4792c
+("wilc1000: Add reset/enable GPIO support to SPI driver") was applying the
+correct logic. But commit fcf690b0b474 ("wifi: wilc1000: use correct
+sequence of RESET for chip Power-UP/Down") eventually flipped this logic
+and started misusing the gpiod APIs, applying an inverted logic when
+powering up/down the chip (for example, setting the reset line to a logic
+"1" during power up, which in fact asserts the reset line when device tree
+describes the reset line as GPIO_ACTIVE_LOW). As a consequence, any
+platform currently using the driver in SPI mode must use a faulty reset
+line description in device tree, or else chip will be maintained in reset
+and will not even allow to bring up the chip.
 
-Jeff, this reminds me that we should add you to qcom,ath10k.yaml,
-qcom,ath11k-pci.yaml and qcom,ath11k.yaml as maintainer.
+Fix reset line usage by inverting back the gpiod APIs usage, setting the
+reset line to the logic value "0" when powering the chip, and the logic
+value "1" when powering off the chip.
 
+Fixes: fcf690b0b474 ("wifi: wilc1000: use correct sequence of RESET for chip Power-UP/Down")
+Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Acked-by: Ajay Singh <ajay.kathat@microchip.com>
+---
+This issue was detected because I struggled a bit to setup a WILC-over-SPI
+setup, and eventually realized that it was due to chip being hold in reset.
+
+This patch may break any downstream user having a working wilc-over-spi
+setup (which then relies on a faulty device tree description). Discussions
+about this possible breakage (see v1 in link below) led to a consensus in
+favor of this patch.
+---
+Changes in v2:
+- Link to v1: https://lore.kernel.org/r/20240213-wilc_1000_reset_line-v1-1-e01da2b23fed@bootlin.com
+- Fix description by mentioning the real commit at the origin of the issue
+- Make Fixes tag point to relevant commit
+- Gather Acked-By from C. Dooley and A. Singh
+---
+ drivers/net/wireless/microchip/wilc1000/spi.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/microchip/wilc1000/spi.c b/drivers/net/wireless/microchip/wilc1000/spi.c
+index 3c4451535c8a..61c3572ce321 100644
+--- a/drivers/net/wireless/microchip/wilc1000/spi.c
++++ b/drivers/net/wireless/microchip/wilc1000/spi.c
+@@ -194,11 +194,11 @@ static void wilc_wlan_power(struct wilc *wilc, bool on)
+ 		/* assert ENABLE: */
+ 		gpiod_set_value(gpios->enable, 1);
+ 		mdelay(5);
+-		/* assert RESET: */
+-		gpiod_set_value(gpios->reset, 1);
+-	} else {
+ 		/* deassert RESET: */
+ 		gpiod_set_value(gpios->reset, 0);
++	} else {
++		/* assert RESET: */
++		gpiod_set_value(gpios->reset, 1);
+ 		/* deassert ENABLE: */
+ 		gpiod_set_value(gpios->enable, 0);
+ 	}
+
+---
+base-commit: 071235a89d35092c59574bf7aae3234649c97d12
+change-id: 20240119-wilc_1000_reset_line-393270fc474e
+
+Best regards,
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+Alexis Lothoré, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
