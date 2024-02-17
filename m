@@ -1,83 +1,83 @@
-Return-Path: <linux-wireless+bounces-3726-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3727-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C78378591E7
-	for <lists+linux-wireless@lfdr.de>; Sat, 17 Feb 2024 19:54:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F39A18591F5
+	for <lists+linux-wireless@lfdr.de>; Sat, 17 Feb 2024 20:09:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E7BF1F2348D
-	for <lists+linux-wireless@lfdr.de>; Sat, 17 Feb 2024 18:54:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 800FD283BA9
+	for <lists+linux-wireless@lfdr.de>; Sat, 17 Feb 2024 19:09:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 530777E57C;
-	Sat, 17 Feb 2024 18:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DB897E577;
+	Sat, 17 Feb 2024 19:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="sTwCheEp"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="t6aBFFOg"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ua1-f48.google.com (mail-ua1-f48.google.com [209.85.222.48])
+Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com [209.85.221.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59EB97E10B
-	for <linux-wireless@vger.kernel.org>; Sat, 17 Feb 2024 18:53:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7991F7E564
+	for <linux-wireless@vger.kernel.org>; Sat, 17 Feb 2024 19:09:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708196038; cv=none; b=NaFKowv6djon2y50d7GG9GRimAofCPJm7OVR6gEppTDQP2zfEicuejg8Uup+Vy/qgxp+b3ZPX2MkjgvGXq9aThjY5dfKgGJLp0TTQkY43e2oT54CgGGFo93HsuGgJuiiE7NRy5JgyN4BM6hQYIXH4tvHMJGm7ArLsB7Kc7WALhc=
+	t=1708196962; cv=none; b=G23p/1dqkraGW8Xx7HaO31sxR0RWVkpMLtY5jgbxFzPTTfBMJ0W5s+WjXmRql5hSQVBcoZh7ZLi0ykCaVEujBb1tDCBgPTIN+lSgiyi89F3ODTVXYJUpzZjJ5J8HlYHBRWBulRhJkC+3VWswIUOKOPDSGJ0jznu29M5f76WNgIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708196038; c=relaxed/simple;
-	bh=7FpDL5ycXyZNcpHLLovIdneYlyoyq5WC40Q8GBSv954=;
+	s=arc-20240116; t=1708196962; c=relaxed/simple;
+	bh=mHUrGkPYsyhxxlsBdHCbeAqoSBC0CP7Nshe0XTvKC8w=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gPXhWBihEuc0PBk7UphaLK5M14d5FaNDI1KBQgVj80VBM7/hEh5apVgpDF8PpF7YuLu5UXroti0hxxsjqB6J85Nn9ZtzAPfv5lJbgxE733UIHyFldLSubE8KpKyhJw75eLJK7OFzqcK1o5FkSEH6+55YYYhfC7CAZwCEWlmB8bU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=sTwCheEp; arc=none smtp.client-ip=209.85.222.48
+	 To:Cc:Content-Type; b=jgcK2289Xi59JrHTD0gMWK5My4+dMynEaXHTfAkd9c4eh+nNNUgvEmHCGmWN63waKmRQbmViixX7rKWkFYruk0ZYMBmzPdW9duqCZK2fSbSBMzEEfNhQPbDWEcCuwtK//nkdpr2K/OiEQSA3KFZDvsrnnydm2eSf2F6cUXqif20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=t6aBFFOg; arc=none smtp.client-ip=209.85.221.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-ua1-f48.google.com with SMTP id a1e0cc1a2514c-7cedcea89a0so1937890241.1
-        for <linux-wireless@vger.kernel.org>; Sat, 17 Feb 2024 10:53:56 -0800 (PST)
+Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-4c01c53efe5so1237418e0c.2
+        for <linux-wireless@vger.kernel.org>; Sat, 17 Feb 2024 11:09:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1708196035; x=1708800835; darn=vger.kernel.org;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1708196959; x=1708801759; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7FpDL5ycXyZNcpHLLovIdneYlyoyq5WC40Q8GBSv954=;
-        b=sTwCheEpbQRR7HWH0eNlv7J54SQ7krjGMWB3kuHNsh8rQMiSQuzRF5yIQonVu5y5jQ
-         Rr9VAeuWIbWgi32UaCG3MQHHycVu07+3bNQ10y79WVqpyzDgd9g1q5iHUKNaVWkrkcQN
-         vc04jsxeO1iFTLtXP1Lc7JrZXW+Tr7cL/fvSRmke5eYABOHoQWaBg6Nlh1Qx84YFbdo0
-         lJnCyyyPdnpN5JyGVWH2XzD2FZzH2unNy9TkCdavlsESSteVNNH+PaS5ruQal+U7ZZPS
-         7Rl6W7J14o7REhgABDgOC2EEfv84mp678KyrJ6TxIbvv9FEJCxvzonWapgcZIEk6s1S5
-         LGow==
+        bh=1Ez+Cdi6g3dY2Nbfzh/DEfLOxMJ0SyIO8GaFN/UW2ig=;
+        b=t6aBFFOgA66oyp+Hi6Uujb4ucrAPWFqrxWHw8ZSwIdCIjqhFbfgnY/o2jWOflxnfiV
+         qak9AeXEKYFNH8StbZSVM+p75mT3J4fUFNtuOIzTESlqVvCAm/s2Sxqev6cLm+XE4icd
+         VcZG/XqbawIPmwmMiCfwNaA+w6VO3o7ReTBuqFHhyWRHEkWg8PYhR1IqO75qKafCNKEa
+         N6OopR6nCwhKUgxBzTk2xgmihjHnLMGDzHNb6SXTZsL244FdPtmret7dzHQWvnCzqLQp
+         6+o7pnjZ2vmCcQlyjC6NqZXIjq2V+vQSvcKbB7u+Us604ONI44cN3ysM+M6wYO+pCtRB
+         l3Zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708196035; x=1708800835;
+        d=1e100.net; s=20230601; t=1708196959; x=1708801759;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=7FpDL5ycXyZNcpHLLovIdneYlyoyq5WC40Q8GBSv954=;
-        b=jLmue9jWUL1vAD7xqr3B4CkbWjZDVFHo/TiYf8et3FZuBmrDl63v4bCZ6u/KE2/Let
-         ptfJsxGQ/3a8Z6v9khHytIKbezEf8b4qReWx0UAmSGvhsvbWc4A3rmiVGm2n3zoxYV9y
-         5R3jgm7iYo8k9KyLRW0XDNfYVYkPM9FJ7XYHret7iZhyvRkM7G6AI/fGFzvp4oN+h3I5
-         vHP4wKU5EGgvJPaVR2YKlQnx0djblV07h+mgCEkTIQZX2eosTtAHDYaGMh0uLLMfbIO7
-         MpK3jkh32ttO1IhcSd1gzOUoDzn8Q9veXN2lUiT1qvLT+2LOxy8CsPxAjbGil6J/ehBy
-         MiiA==
-X-Forwarded-Encrypted: i=1; AJvYcCU9+liD8yYoYcWFX6GTzRWY5VRs83RURo/92GdQuhvyUb/LPSGXJDHooSBRhtDeC43Bp02XV6joIoSTAWprqmeNwAHwAyK2b08130N6hYk=
-X-Gm-Message-State: AOJu0YyWaIn+d+O3nLHcLWQqVZtuF2OeePVxEJWtjmgjseHz8ntSJAKL
-	4JgXNJM90NDnZ+HTeE3ktiFOy7JDB4LTSN8Fs9ff7Ds4qiqkjckqIN9KcFCZMhykiN09uE1iNbX
-	/gtktYilVVvpqeGBvbjBstG5970xlK1H+ZkAY2A==
-X-Google-Smtp-Source: AGHT+IGMlsUZR0OKxV5uoFysUN5BBaGIZC5M0kLSSCwt2sXagBefCJ/FHz7lU856rOvaMtqzE4+peSuOeyewP+QKatQ=
-X-Received: by 2002:a05:6102:548b:b0:470:47b2:78aa with SMTP id
- bk11-20020a056102548b00b0047047b278aamr713828vsb.35.1708196035432; Sat, 17
- Feb 2024 10:53:55 -0800 (PST)
+        bh=1Ez+Cdi6g3dY2Nbfzh/DEfLOxMJ0SyIO8GaFN/UW2ig=;
+        b=I9z87sMJZv63jvt0QH7mdGT0t0Yomfjw1DUMxdtnBaCB3M1C2Pfv5AZyOfiKY+cGPl
+         BF0IVghqcAA3RyT0Ej8ZbpDV/V4m/f8PowvDOdEHPdURvzKX1bENxcsq4IsNFNAwi03p
+         CwpFr1bc1c2WYde/de87Ummr5FC/p8EnTsfgPzx+6oVLUgWpalnl1TbtWRuX+hHy0Gne
+         dB05+b1ZraIb6B7jOZo4/tySZ8ydMFHeehkJaSfAuVyWeULqBRS4ymtdPjI+tKHux1Vs
+         KHdv/BiXx7/IiuteAzmm1Dl6XFI08Ko7DS6pN8awe8u/7PZ7LKEm6qTNWxdkeI9LZDYy
+         MtnQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWZ78ruh1n/DUOs3NVTAeMAJdRcDqilm2O+oPNKOeyXCGWf7ckdn+LdSglPRZIZ2/eY7BQFUGhR7RfkkJbEUhwYAfqWGimBxPP9CfGrXFE=
+X-Gm-Message-State: AOJu0YxtI2YHpTKcdYsLA0qVskNFkcWt3NweBeM0uaLOXNCwdpdgDZ4A
+	Ybyu3fRy8XGtSYkpt21kMKPFZ2/DJTLxNPI/xqihYO75LWtG2p78euKHiCjiQDZ53AEgq30WiTu
+	pmxIPvpLPhKBibly+D2CyxZsayGytAO9TvWU91g==
+X-Google-Smtp-Source: AGHT+IH3Shnpaid7W3lEIMwMHXlQC60MXaDAqAi1jiC4M9FRxflkXYH/2cjpGpJq/yL/ljPvWt26+2tM/6Tzhki2Rkc=
+X-Received: by 2002:a05:6122:45a0:b0:4c1:149b:fd18 with SMTP id
+ de32-20020a05612245a000b004c1149bfd18mr9363330vkb.7.1708196959474; Sat, 17
+ Feb 2024 11:09:19 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240216203215.40870-1-brgl@bgdev.pl> <20240216203215.40870-9-brgl@bgdev.pl>
- <CAA8EJpry2yiGXrtPqZ6RXnoTqQZr_hxA_gCPsUbmyFtEBuD4VA@mail.gmail.com>
-In-Reply-To: <CAA8EJpry2yiGXrtPqZ6RXnoTqQZr_hxA_gCPsUbmyFtEBuD4VA@mail.gmail.com>
+References: <20240216203215.40870-1-brgl@bgdev.pl> <20240216203215.40870-17-brgl@bgdev.pl>
+ <CAA8EJpo=LFcw8PbFRvGwd9nS5ECazOHiBMWRsqfEpY-v0iQLLA@mail.gmail.com>
+In-Reply-To: <CAA8EJpo=LFcw8PbFRvGwd9nS5ECazOHiBMWRsqfEpY-v0iQLLA@mail.gmail.com>
 From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Sat, 17 Feb 2024 19:53:44 +0100
-Message-ID: <CAMRc=MeEWvhHjKJsNgigF=Oja+b1=ejvtAjkK=ptKWK0Ojjo_Q@mail.gmail.com>
-Subject: Re: [PATCH v5 08/18] arm64: dts: qcom: sm8650-qrd: add the Wifi node
+Date: Sat, 17 Feb 2024 20:09:08 +0100
+Message-ID: <CAMRc=Mdsg5gDCKD-=ok=mfYJoFpUVpTGFUE+om+WPYvQOc0rzA@mail.gmail.com>
+Subject: Re: [PATCH v5 16/18] power: pwrseq: add a driver for the QCA6390 PMU module
 To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Cc: Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
 	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
@@ -101,25 +101,90 @@ Cc: Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gm
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Feb 17, 2024 at 12:10=E2=80=AFAM Dmitry Baryshkov
+On Sat, Feb 17, 2024 at 12:17=E2=80=AFAM Dmitry Baryshkov
 <dmitry.baryshkov@linaro.org> wrote:
 >
 > On Fri, 16 Feb 2024 at 22:33, Bartosz Golaszewski <brgl@bgdev.pl> wrote:
 > >
-> > From: Neil Armstrong <neil.armstrong@linaro.org>
+> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 > >
-> > Describe the ath12k WLAN on-board the WCN7850 module present on the
-> > board.
->
-> WCN7850 is the same combo WiFi + BT chip. Is there any reason for
-> describing its parts separately rather than using the same PMU
-> approach?
->
-
-Yes, I explained the rationale in the cover letter in detail in the
-section describing the DTS changes for the series.
-
-Bart
+> > This adds the power sequencing driver for the QCA6390's PMU module. It
+> > uses the pwrseq subsystem and knows how to match the sequencer to the
+> > consumer device by verifying the relevant properties and DT layout.
+> >
+> > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> > ---
 
 [snip]
+
+> > +
+> > +static const struct pwrseq_qca6390_vreg pwrseq_qca6390_vregs_common[] =
+=3D {
+> > +       {
+> > +               .name =3D "vddio",
+> > +               .load_uA =3D 20000,
+> > +       },
+> > +       {
+> > +               .name =3D "vddaon",
+> > +               .load_uA =3D 100000,
+> > +       },
+> > +       {
+> > +               .name =3D "vddpmu",
+> > +               .load_uA =3D 1250000,
+> > +       },
+> > +       {
+> > +               .name =3D "vddrfa0p95",
+> > +               .load_uA =3D 200000,
+> > +       },
+> > +       {
+> > +               .name =3D "vddrfa1p3",
+> > +               .load_uA =3D 400000,
+> > +       },
+> > +       {
+> > +               .name =3D "vddrfa1p9",
+> > +               .load_uA =3D 400000,
+> > +       },
+> > +};
+> > +
+> > +static const struct pwrseq_qca6390_vreg pwrseq_qca6390_vregs_wlan[] =
+=3D {
+> > +       {
+> > +               .name =3D "vddpcie1p3",
+> > +               .load_uA =3D 35000,
+> > +       },
+> > +       {
+> > +               .name =3D "vddpcie1p9",
+> > +               .load_uA =3D 15000,
+> > +       },
+> > +};
+>
+> I thought that we had discussed this already. According to the docs,
+> all PMU supplies should be powered on when the chip is being switched
+> on, no matter whether it is for the WiFi or for the BT.
+>
+
+I know, I mostly did it to make Bjorn happy because he was adamant we
+don't need the PCIe regulators for BT and when I checked, it does work
+in practice so I thought: whatever. But indeed, the docs say
+otherwise. Noted for v6.
+
+[snip]
+
+> > +
+> > +static const struct pwrseq_unit_data pwrseq_qca6390_bt_unit_data =3D {
+> > +       .name =3D "bluetooth-enable",
+> > +       .deps =3D pwrseq_qca6390_unit_deps,
+>
+> Can we call corresponding regulator_bulk functions from bt and wlan
+> enable/disable? This will save us from building the tree-like
+> structures (and possible loops inside that tree).
+>
+
+Can we? Sure, but the dependency graph (yeah, we should enforce it to
+be acyclic) is what makes this code future-proof and allows it to
+avoid repeating calls in different targets.
+
+[snip]
+
+Bart
 
