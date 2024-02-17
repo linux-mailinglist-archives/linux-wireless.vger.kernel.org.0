@@ -1,243 +1,164 @@
-Return-Path: <linux-wireless+bounces-3723-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3724-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BFD7859141
-	for <lists+linux-wireless@lfdr.de>; Sat, 17 Feb 2024 17:58:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 783798591B7
+	for <lists+linux-wireless@lfdr.de>; Sat, 17 Feb 2024 19:31:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0391F283050
-	for <lists+linux-wireless@lfdr.de>; Sat, 17 Feb 2024 16:58:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E6532828BE
+	for <lists+linux-wireless@lfdr.de>; Sat, 17 Feb 2024 18:31:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0272D7C6E9;
-	Sat, 17 Feb 2024 16:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AD607C098;
+	Sat, 17 Feb 2024 18:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BJO30rRz"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="q+ZTbwOW"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com [209.85.222.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34E787AE53
-	for <linux-wireless@vger.kernel.org>; Sat, 17 Feb 2024 16:58:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3773134BC
+	for <linux-wireless@vger.kernel.org>; Sat, 17 Feb 2024 18:30:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708189115; cv=none; b=Gj1klhBR3Lbp9vId1Gi0K+w0Wod5aBqwHvBThpDrGPeBcGUQNNHzFrVqNpXSFHb20jWWGnr8PnTEGagoT+F924WwBKN7fOrNC9N9alA31qzA6b94REkV2jCKGIV4Nzjg0b2T1eTH56WSUzgKYapPrl81LdzjSGoHPWZT9DkQ2Cs=
+	t=1708194659; cv=none; b=Ayc9z/Dx9rB2gLns/1MBG7f7Ei4jDQZ6nWafJUbCUg7TNNBwjla1qHpto15BNCJoTXcMjMa18EqigLImV9n+QHbWdME0iZ2OOy8SqUUzrhZcwJWM4HE2mfUxdgVfA8hx6KvvJ3LEQ2w7TXzo4LH34jFoIf2BhYAC87HZGcqlQuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708189115; c=relaxed/simple;
-	bh=u3XeRkp7eWBSPIiU9y9ALEYekWQtP45ogfrnTbf9eZM=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=L2Xxsjy6yKUfqKxHvIBYWq4+huxRjjLc4jX4Q+ARSOhYJZ57cpU2Hf3Gb0VObxGXJ05PtR5X228ZXmLJJn7FKmU5D5L23HOGhf2FlChvFBzemFAdLSd3qFw5HHx73IqKdG7u30wOGu4Th1LS2AvgAC7uKW7Wjh17KbkYP3yMMl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BJO30rRz; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708189114; x=1739725114;
-  h=date:from:to:cc:subject:message-id;
-  bh=u3XeRkp7eWBSPIiU9y9ALEYekWQtP45ogfrnTbf9eZM=;
-  b=BJO30rRze0JaUEGUjWbi7e2uInkKBOVGJ0wacl1DtTMQmrBKZ5LpAmSi
-   qXLy6qSS67DK1Z+PKBt/pj/bp8xXT+FqiFg/zNDnPHVmTZVTRhqIWP4h6
-   hcb5YYanpJh6M8baxi9ojKUNO/IHyYntO6el7NyKdWbHm2L3piglVOgUW
-   mLsFZ1I0n2H1/Yge/Kw0n0AuIAaZTqKIrGiUN2dZwXgMWvssBTbFUnqvj
-   hkQMmxYlXl5yQAIooaSEUir4pLWVcecCs17PUBA74Gqo89A8L431otHAo
-   kcHZPGb5umFlJq+JJHm+ED2OHnxViKab0PhVE1Agbp3ya6qz/HoELLAw0
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10987"; a="6111685"
-X-IronPort-AV: E=Sophos;i="6.06,166,1705392000"; 
-   d="scan'208";a="6111685"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2024 08:58:34 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,166,1705392000"; 
-   d="scan'208";a="4074157"
-Received: from lkp-server02.sh.intel.com (HELO 3c78fa4d504c) ([10.239.97.151])
-  by fmviesa009.fm.intel.com with ESMTP; 17 Feb 2024 08:58:32 -0800
-Received: from kbuild by 3c78fa4d504c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rbO1G-0002Il-0P;
-	Sat, 17 Feb 2024 16:58:30 +0000
-Date: Sun, 18 Feb 2024 00:57:55 +0800
-From: kernel test robot <lkp@intel.com>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
- linux-wireless@vger.kernel.org
-Subject: [wireless-next:main] BUILD SUCCESS
- e1ea6db35fc3ba5ff063f097385e9f7a88c25356
-Message-ID: <202402180053.g4Zy8kiR-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1708194659; c=relaxed/simple;
+	bh=xTu4CwC01bOUIpKw1wk4DHay8JL9daGjNYWi0BvJoFk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mxk++7TDYC7Jv3nydukh4foHehORTAMtleSVw+VObAVszHCQs2JrATiP4vuROW/eFB9hQayDqdjAZyY0c8Be6VUBDhwVHa/e8nM8PUr/pQuM7F/kVM1H5eMKHhGtStl3qi8oEOGfeS54rk45TxUjNsYy4j+7j2W+FNFRsV5lqXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=q+ZTbwOW; arc=none smtp.client-ip=209.85.222.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-7d2e1a0337bso1130990241.3
+        for <linux-wireless@vger.kernel.org>; Sat, 17 Feb 2024 10:30:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1708194655; x=1708799455; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JeWu4dlZldb0QpDIIyWPdxjS/RZoRXziwmFM0VAD7xY=;
+        b=q+ZTbwOWLrtB7LLK3P+2bWMpv7DfIvhgi/2egNQ4e52dlt56kAs4JbMUWCIypEPg3u
+         jaPViUylF4qtQbcTBTyT70G9+UdrSLhxKL21A/9s6yJsxSRyq8xTATGcF88R6HEN/kSI
+         FEcX1CQfyK4WEt+SUb+cFk+6mPzCSgU0ZIWA/kkH614YOW0bApp+lbnisuRUJID+UlaS
+         oOt0Z2o/J2lyYUVPrLC0B6EbShI40Z+7a/Fx8TFCEz+8kcxXF+2Zmg6PaMWL2HnIyTdI
+         P5Fq871GtTT8Z3hp9dz0flsuvXqyvv2rjvK5Pq1zsVljnHdz9MUClSO7sH1Y4x9CWtmk
+         ubmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708194655; x=1708799455;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JeWu4dlZldb0QpDIIyWPdxjS/RZoRXziwmFM0VAD7xY=;
+        b=fwtDG25yyuKQZz5K0yRzEsVnoOSHfO9p6AWQZQAdS36uqC+l1mNSMVxv9rP1lfuHDK
+         j1DHxXwc8GciFECPv4aUbPXLdQ3IRI9GV86jsJFqgNE4ECIe4L6qK2bCCXuiF/i7m1qL
+         rVOOR7mPx7a0esoXfTMGEQoE3ma52/BSp1JzJCgn1+uOVIvquxVry9ZZaRpk59PWrIfP
+         rGUd5KlzygJFdT5KB8XSmpdOBPW/THFEI50e7dGuVYzVMrwNJNMpyNEoLeVat5Kz3tIP
+         xjo+1fXWiWSwp/cu8sAJP+G596Ciu7PYlxtHa2hOP/zMPu6kJUq3KnyekS31D8DhrkOd
+         FytA==
+X-Forwarded-Encrypted: i=1; AJvYcCVynX1Tg5xihVtXe3j38+GvuyPNsix7CFGyH738XiUhuXca5DyR/GaeZzQ0uYmDJ8wTuzBXbJiddtdvaC9AsAHfDeA5b+Lhvn6j0ZjuwuQ=
+X-Gm-Message-State: AOJu0Yw7PT5EFtBAznMKPdClkBxEra9tQRpftMEaebeThF2VAdRECdzC
+	FWwHOG0QHxJMramgWfIrQxa6NPh0hOnhqYORbj+fzHhv05gVj57VWGIWJDzqiJDgT9e4DR8gPlx
+	NYqxGT6GH8I4IDFpFGsovNEZeyPnZy+UAWauIIg==
+X-Google-Smtp-Source: AGHT+IEGwogzVe3juwTbP5wzSPlB4FZp7n7jPtu9uTl+n1AS2iy9ckNua2af79j+lFRcSQmRv5yllrZrWuBKxrsF4JY=
+X-Received: by 2002:a05:6102:3a08:b0:46e:c752:16e7 with SMTP id
+ b8-20020a0561023a0800b0046ec75216e7mr8759486vsu.24.1708194655651; Sat, 17 Feb
+ 2024 10:30:55 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20240216203215.40870-1-brgl@bgdev.pl> <20240216203215.40870-7-brgl@bgdev.pl>
+ <87cysvd2er.fsf@kernel.org>
+In-Reply-To: <87cysvd2er.fsf@kernel.org>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Sat, 17 Feb 2024 19:30:44 +0100
+Message-ID: <CAMRc=Md10bNPswsLqdCmqzEmD+QmyZ+Eb4SUWknH-j5kK-speQ@mail.gmail.com>
+Subject: Re: [PATCH v5 06/18] dt-bindings: new: wireless: describe the ath12k
+ PCI module
+To: Kalle Valo <kvalo@kernel.org>
+Cc: Jeff Johnson <quic_jjohnson@quicinc.com>, Marcel Holtmann <marcel@holtmann.org>, 
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konrad.dybcio@linaro.org>, Liam Girdwood <lgirdwood@gmail.com>, 
+	Mark Brown <broonie@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Saravana Kannan <saravanak@google.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Arnd Bergmann <arnd@arndb.de>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Alex Elder <elder@linaro.org>, 
+	Srini Kandagatla <srinivas.kandagatla@linaro.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Abel Vesa <abel.vesa@linaro.org>, 
+	Manivannan Sadhasivam <mani@kernel.org>, Lukas Wunner <lukas@wunner.de>, 
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, linux-bluetooth@vger.kernel.org, 
+	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-pci@vger.kernel.org, linux-pm@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: e1ea6db35fc3ba5ff063f097385e9f7a88c25356  wifi: brcmsmac: avoid function pointer casts
+On Sat, Feb 17, 2024 at 7:35=E2=80=AFAM Kalle Valo <kvalo@kernel.org> wrote=
+:
+>
+> Bartosz Golaszewski <brgl@bgdev.pl> writes:
+>
+> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> >
+> > Add device-tree bindings for the ATH12K module found in the WCN7850
+> > package.
+> >
+> > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> > ---
+> >  .../net/wireless/qcom,ath12k-pci.yaml         | 103 ++++++++++++++++++
+> >  1 file changed, 103 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/net/wireless/qcom=
+,ath12k-pci.yaml
+> >
+> > diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath12k=
+-pci.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath12k-pci.=
+yaml
+> > new file mode 100644
+> > index 000000000000..063c576b99a0
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath12k-pci.ya=
+ml
+> > @@ -0,0 +1,103 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +# Copyright (c) 2024 Linaro Limited
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/net/wireless/qcom,ath12k-pci.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: Qualcomm Technologies ath12k wireless devices (PCIe)
+> > +
+> > +maintainers:
+> > +  - Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+>
+> Jeff and me are the ath12k driver maintainers so shouldn't we listed
+> here as well?
+>
 
-elapsed time: 1447m
+Sure will do. I also noticed the subject is wrong, should have been
+"net" not "new".
 
-configs tested: 153
-configs skipped: 3
+Also, Jeff is not showing up for ath12k bindings in get_maintainer.pl.
+You could consider adding an N: ath12k entry to MAINTAINERS.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Bartosz
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                      axs103_smp_defconfig   gcc  
-arc                                 defconfig   gcc  
-arc                     nsimosci_hs_defconfig   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   clang
-arm                              allyesconfig   gcc  
-arm                                 defconfig   clang
-arm                             pxa_defconfig   gcc  
-arm                         s5pv210_defconfig   gcc  
-arm                           stm32_defconfig   gcc  
-arm                           tegra_defconfig   gcc  
-arm                           u8500_defconfig   gcc  
-arm64                            allmodconfig   clang
-arm64                             allnoconfig   gcc  
-arm64                               defconfig   gcc  
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-hexagon                          allmodconfig   clang
-hexagon                           allnoconfig   clang
-hexagon                          allyesconfig   clang
-hexagon                             defconfig   clang
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20240217   gcc  
-i386         buildonly-randconfig-002-20240217   clang
-i386         buildonly-randconfig-003-20240217   gcc  
-i386         buildonly-randconfig-004-20240217   gcc  
-i386         buildonly-randconfig-005-20240217   gcc  
-i386         buildonly-randconfig-006-20240217   clang
-i386                                defconfig   clang
-i386                  randconfig-001-20240217   gcc  
-i386                  randconfig-002-20240217   gcc  
-i386                  randconfig-003-20240217   clang
-i386                  randconfig-004-20240217   gcc  
-i386                  randconfig-005-20240217   gcc  
-i386                  randconfig-006-20240217   clang
-i386                  randconfig-011-20240217   gcc  
-i386                  randconfig-012-20240217   gcc  
-i386                  randconfig-013-20240217   clang
-i386                  randconfig-014-20240217   clang
-i386                  randconfig-015-20240217   clang
-i386                  randconfig-016-20240217   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                        allyesconfig   gcc  
-loongarch                           defconfig   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                          amiga_defconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                       m5249evb_defconfig   gcc  
-m68k                       m5475evb_defconfig   gcc  
-m68k                           virt_defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                             allmodconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                       bmips_be_defconfig   gcc  
-mips                  decstation_64_defconfig   gcc  
-mips                           ip27_defconfig   gcc  
-mips                    maltaup_xpa_defconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-openrisc                         alldefconfig   gcc  
-openrisc                         allmodconfig   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-openrisc                    or1ksim_defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   clang
-powerpc                        fsp2_defconfig   gcc  
-powerpc                        icon_defconfig   gcc  
-powerpc                     kmeter1_defconfig   gcc  
-powerpc                     ppa8548_defconfig   gcc  
-powerpc                         ps3_defconfig   gcc  
-powerpc                     tqm5200_defconfig   gcc  
-riscv                            allmodconfig   clang
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   clang
-riscv                               defconfig   clang
-s390                             allmodconfig   clang
-s390                              allnoconfig   clang
-s390                             allyesconfig   gcc  
-s390                                defconfig   clang
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sh                         ecovec24_defconfig   gcc  
-sh                        edosk7705_defconfig   gcc  
-sh                            migor_defconfig   gcc  
-sh                          sdk7780_defconfig   gcc  
-sh                   sh7770_generic_defconfig   gcc  
-sh                            shmin_defconfig   gcc  
-sh                              ul2_defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   gcc  
-um                                  defconfig   clang
-um                           x86_64_defconfig   clang
-x86_64                            allnoconfig   clang
-x86_64                           allyesconfig   clang
-x86_64       buildonly-randconfig-001-20240217   gcc  
-x86_64       buildonly-randconfig-003-20240217   gcc  
-x86_64       buildonly-randconfig-004-20240217   gcc  
-x86_64       buildonly-randconfig-006-20240217   gcc  
-x86_64                              defconfig   gcc  
-x86_64                randconfig-001-20240217   gcc  
-x86_64                randconfig-011-20240217   gcc  
-x86_64                randconfig-012-20240217   gcc  
-x86_64                randconfig-014-20240217   gcc  
-x86_64                randconfig-015-20240217   gcc  
-x86_64                randconfig-071-20240217   gcc  
-x86_64                randconfig-072-20240217   gcc  
-x86_64                randconfig-073-20240217   gcc  
-x86_64                randconfig-075-20240217   gcc  
-x86_64                randconfig-076-20240217   gcc  
-x86_64                           rhel-8.3-bpf   gcc  
-x86_64                          rhel-8.3-func   gcc  
-x86_64                    rhel-8.3-kselftests   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa                            allnoconfig   gcc  
-xtensa                           allyesconfig   gcc  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> Jeff, this reminds me that we should add you to qcom,ath10k.yaml,
+> qcom,ath11k-pci.yaml and qcom,ath11k.yaml as maintainer.
+>
+> --
+> https://patchwork.kernel.org/project/linux-wireless/list/
+>
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
+tches
 
