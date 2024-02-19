@@ -1,83 +1,88 @@
-Return-Path: <linux-wireless+bounces-3781-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3782-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 341E085A825
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Feb 2024 17:05:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD07885A839
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Feb 2024 17:08:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE63E1F2158E
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Feb 2024 16:05:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 499A9B24AB0
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Feb 2024 16:08:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1FEF3D0A3;
-	Mon, 19 Feb 2024 16:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A20B3D0A6;
+	Mon, 19 Feb 2024 16:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tGb8TlHS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oraUqvh/"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B4C53CF77
-	for <linux-wireless@vger.kernel.org>; Mon, 19 Feb 2024 16:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694473B79D;
+	Mon, 19 Feb 2024 16:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708358727; cv=none; b=EbI1yvMB35nqikvvbbmvgQoINAFnUzqf7egVD8cAcFy5tn9IFstethxUbNQmQtHm/shPsCHH6dN1xbB+4D2xgs7s0Ov/ZgRdQzbg+asx+ZlpiGjuM7LHu0etHimuMK3PBBrqcvgnUueJNM60EPKJTUD23HC1xeZLh0uHddSDGDo=
+	t=1708358907; cv=none; b=qk8yHIxtG5IaF19z0ONN6Q6wAIcc6hxdssI0OLNElnoRocXT1oLX5y142XTkpqxjZMwods7K47CNhjNMmrzdrwbOufM+wj1PdFA6VQcduCQf2/OTql7M5PabCxzsJDlGbeZMgUuFbpfmh9FqlN9lCkFZYiB7usLxpEpEVCffqLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708358727; c=relaxed/simple;
-	bh=6Agzb6Z44o7P580xh6nn/qd3jkzQ0h5pyxtnuYKGtew=;
-	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=oo7w0g+jdadw+g/RHCQ5T0i6FK6OE0bxJyvT5igmGFFhDXZjZ/YEJ0RVsizidWjqdDxWn6Dw/HNY7Wlp2ACVkiNyhGgp7PezvoevmmdOrwTLS5jOxKv2VMcT4Luydrr6do4qAP6JVfMbbHyIlBHoCOnhdk9QaWVliGKvDQyPjck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tGb8TlHS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DAC2C43390;
-	Mon, 19 Feb 2024 16:05:26 +0000 (UTC)
+	s=arc-20240116; t=1708358907; c=relaxed/simple;
+	bh=w5zyWB0zCqUq5ura4kPaJjtdUevtDVevxgEmY/Ns0J4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=B+VxS0u9fh4dM6+CMdACsotEL/6nTLvau4MNRLFDLAjXbeaS0PVe8zmPWX5esau8yiD/UgRu3zrLxzBBb9amq9Uo25sokrWfBIanTk2S/2J1y1xzrQ78MkxQtE+JLkLBRI/dDYYO02x7Fbj9U/D43qbmAUPo7ShCTG2O/6tofPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oraUqvh/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5046C433B1;
+	Mon, 19 Feb 2024 16:08:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708358727;
-	bh=6Agzb6Z44o7P580xh6nn/qd3jkzQ0h5pyxtnuYKGtew=;
-	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=tGb8TlHSlYxjmvzEHIgskmwWhPy/GpOb5bH3MuWuYNO4NX0RdxclnR+JsUTZmdX4p
-	 K/nJpCtsZ7RYwLCWdux9AY+kM4vWwy8iFEu7/LhMcPjJdwNgVJAe4Wnca7t6zUPT9v
-	 lNlnviqwO1eWHZ72GtsMzXqLIAjckisxPCjuwvsJ7tLnHz792E2Z3GRplhNDqNVFSe
-	 KRsoQz+Kxz0I01k5JFaqAZsm8EpeJRB55Q2Dnf4Agy1KyRkJGThavBlRPf8EcVbiI+
-	 iervVDdIWb1a5WZ9ZrE/GEUQSrGYsVngPkzHNUKaMb6z/YTUy8KQJgyOO8M0H0ApLe
-	 nb4XYj0DfFGpw==
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1708358906;
+	bh=w5zyWB0zCqUq5ura4kPaJjtdUevtDVevxgEmY/Ns0J4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=oraUqvh//OrA+nxEoztgmnAS+4ohUmYxlaCY1rqD8oC8cBSOYiKU8RHTdk7Fz8zUH
+	 p2MCufGHuJ75baRx8RxloHqcobppPB9VCxs8V5DVo82t4iQL8k+MDizJp2cCicC6aL
+	 dIyEb0cpNBSpucJ9iJLcOqFwn/dX/ani86me9QQItwuEG6URVcyNqwqV3IvkSqY7G8
+	 llLd5YAwtkqb8EZ72SUn/Fgc5TrUx1vClozODBhUkFPqkMFwxBe/EBAAZ/55Yz5L6P
+	 /1+VRVVUkVap4fXEhq+21Qy82FclEEF+9w23gP1EsrQpdZ28sZyqalNxj/H7FOOHDU
+	 fK6W0vzJBMCgA==
+Date: Mon, 19 Feb 2024 16:08:22 +0000
+From: Simon Horman <horms@kernel.org>
+To: Colin Ian King <colin.i.king@gmail.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+	kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] wifi: mac80211: clean up assignments to pointer cache.
+Message-ID: <20240219160822.GF40273@kernel.org>
+References: <20240215232151.2075483-1-colin.i.king@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] [v2] wifi: wilc1000: simplify and cleanup TX paths
-From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230717084400.57882-1-dmantipov@yandex.ru>
-References: <20230717084400.57882-1-dmantipov@yandex.ru>
-To: Dmitry Antipov <dmantipov@yandex.ru>
-Cc: Ajay.Kathat@microchip.com, Amisha.Patel@microchip.com,
- linux-wireless@vger.kernel.org, Dmitry Antipov <dmantipov@yandex.ru>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170835872423.848163.11512257935917209592.kvalo@kernel.org>
-Date: Mon, 19 Feb 2024 16:05:26 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240215232151.2075483-1-colin.i.king@gmail.com>
 
-Dmitry Antipov <dmantipov@yandex.ru> wrote:
-
-> Redesign 'struct txq_entry_t' to avoid callback functions and
-> replace 'wilc_wfi_mgmt_tx_complete()/mgmt_tx_complete()' with
-> 'wilc_tx_complete()' which operates on 'struct txq_entry_t'
-> directly. Drop callback-specific 'struct wilc_p2p_mgmt_data',
-> 'struct tx_complete_mon_data' and 'struct tx_complete_data'
-> with related 'kmalloc()/kfree()' calls, adjust related code.
+On Thu, Feb 15, 2024 at 11:21:51PM +0000, Colin Ian King wrote:
+> From: Colin Ian King <colin.i.king@intel.com>
 > 
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+> The assignment to pointer cache in function mesh_fast_tx_gc can
+> be made at the declaration time rather than a later assignment.
+> There are also 3 functions where pointer cache is being initialized
+> at declaration time and later re-assigned again with the same
+> value, these are redundant and can be removed.
+> 
+> Cleans up code and three clang scan build warnings:
+> warning: Value stored to 'cache' during its initialization is never
+> read [deadcode.DeadStores]
+> 
+> Signed-off-by: Colin Ian King <colin.i.king@intel.com>
 
-This needs testing on real device before I would dare to take it.
+FWIIW, these changes look fine to me although I might have split the
+mesh_fast_tx_gc() and mesh_fast_tx_flush_sta() changes into different
+patches as they seem to address separate issues.
 
-Patch set to Changes Requested.
+That notwithstanding,
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230717084400.57882-1-dmantipov@yandex.ru/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+Reviewed-by: Simon Horman <horms@kernel.org>
 
