@@ -1,104 +1,223 @@
-Return-Path: <linux-wireless+bounces-3767-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3768-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 251E4859E3F
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Feb 2024 09:31:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 002AA859F95
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Feb 2024 10:22:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6138B1C20917
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Feb 2024 08:31:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5177284B86
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Feb 2024 09:22:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2E364C9D;
-	Mon, 19 Feb 2024 08:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DF852374C;
+	Mon, 19 Feb 2024 09:22:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OVYPHXv2"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from us-smtp-delivery-195.mimecast.com (us-smtp-delivery-195.mimecast.com [170.10.133.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A4B290F
-	for <linux-wireless@vger.kernel.org>; Mon, 19 Feb 2024 08:31:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B02522F11
+	for <linux-wireless@vger.kernel.org>; Mon, 19 Feb 2024 09:22:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708331496; cv=none; b=tYuq7EafCPu8U9GqrCWaCVioY0xu+6gi/xvpOZX/hECKoWnTnPlbhvOLUgSv7E0z2sij5ZugnsBLKPlUJalwgYhd6we0gAwMurGXPoguEhCNUIcMSKZK7f5HNYpyi3YkFJrGH2nc/ToT5ABHIHXncmOsoT4gVgVMG12JQAh040w=
+	t=1708334553; cv=none; b=gQXH3P/luiepXV2v5rfbfkZveUWgbVsYAckNMz+T84VEns/ekFBiPKDxinCKj6Cbqk01rjijO3ONv/WYeLhMu6qMmfGpJHCHg16Bq5BEIHW9lxORa8XtEhmLgvO5sB8zllL0PCljEVOaQexC19Z65FFK+EVW+HXIECri6XfqDHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708331496; c=relaxed/simple;
-	bh=6YJo3vY7sR9KVepC+/QzjuOXqZnI+ndLzNftPfZhc+k=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=hre0FRv93riFAYDOlYr2pfeNNROVQqj6q9zNCrSUHJY/5oDSE4vq+HDuI/eTN0tPdN/oOEpa63S3wVfjw4PQLKIfa8DHUG+7nOcitW7CsWqSgvXJddI/rFf9tQB5RuUavJXISa+i5n4rmGZWi2kehka4BBN60/IUdd9OTaOXynE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mbari.org; spf=pass smtp.mailfrom=mbari.org; arc=none smtp.client-ip=170.10.133.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mbari.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mbari.org
-Received: from sleet.shore.mbari.org (sleet.shore.mbari.org [134.89.12.10])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-136-TQ-N6wFWNjiohJYLmNCQTA-1; Mon,
- 19 Feb 2024 03:31:32 -0500
-X-MC-Unique: TQ-N6wFWNjiohJYLmNCQTA-1
-Received: from localhost (localhost [127.0.0.1])
-	by sleet.shore.mbari.org (Postfix) with ESMTP id DEAB781060209;
-	Mon, 19 Feb 2024 00:31:30 -0800 (PST)
-X-Virus-Scanned: amavis at sleet.shore.mbari.org
-Received: from sleet.shore.mbari.org ([127.0.0.1])
- by localhost (sleet.shore.mbari.org [127.0.0.1]) (amavis, port 10026)
- with ESMTP id 55yEjyZBTHiC; Mon, 19 Feb 2024 00:31:30 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-	by sleet.shore.mbari.org (Postfix) with ESMTP id BF8E881060208;
-	Mon, 19 Feb 2024 00:31:30 -0800 (PST)
-Received: from [192.168.6.194] (raven.shore.mbari.org [134.89.10.221])
-	by sleet.shore.mbari.org (Postfix) with ESMTPSA;
-	Mon, 19 Feb 2024 00:31:30 -0800 (PST)
-Subject: Re: rtw88 driver support for rtl8723ds does not work on Radxa
- RockPi-S
-To: Kalle Valo <kvalo@kernel.org>
-Cc: Larry Finger <Larry.Finger@lwfinger.net>, linux-wireless@vger.kernel.org,
- martin.blumenstingl@googlemail.com
-References: <9f47e65e-35f1-b090-cad1-4d8333293b00@mbari.org>
- <9f7c6005-e9c5-4691-87c2-fee8641f02a4@lwfinger.net>
- <f8d31d74-fdfe-8706-6748-273b8c3674ca@mbari.org>
- <b9a4df4e-4b1f-436f-ae4b-90fc0c68ae81@lwfinger.net>
- <878r3hc6hy.fsf@kernel.org> <42772df2-32b3-2b37-045d-b528a752bef7@mbari.org>
- <874je4dfoy.fsf@kernel.org>
-From: Brent Roman <brent@mbari.org>
-Organization: MBARI
-Message-ID: <7808bb52-3677-c5dd-3a4d-8664a6195d47@mbari.org>
-Date: Mon, 19 Feb 2024 00:31:30 -0800
-User-Agent: Mozilla/5.0 (X11; Linux i686; rv:46.0) Gecko/20100101 Firefox/46.0
+	s=arc-20240116; t=1708334553; c=relaxed/simple;
+	bh=jHvPNV9uRImzRG0O9mrSCOyCxKrfITzEMjQ0xEJ075c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ETmHX6SsoMbePGeolOa4EchjVrVbr1LDIMtAjCBJ5LJAFyx9b8Dfec6MzvYPGgy+gRvUqeLK4LqgowARFllDJm5367bXDg6Su3DbcT9LVpM0bZpSqnpjc3w73s3/n5KBgRSIn0wXBEZyFK3OMNgEhaq6ve8V96nSjYv3Am14HRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OVYPHXv2; arc=none smtp.client-ip=209.85.219.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yb1-f182.google.com with SMTP id 3f1490d57ef6-dcbd1d4904dso4446613276.3
+        for <linux-wireless@vger.kernel.org>; Mon, 19 Feb 2024 01:22:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1708334550; x=1708939350; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=qZYTlm/0sq1vUrT38iiUN2NletxitEq6HPMC2WegY44=;
+        b=OVYPHXv2DN1j6gS1Q8BWWCiBctMdiDqRo1MyTcpmRP0F43CEoCDb27ZJN5wjWcN1RU
+         I5Ry4vzaF6qdRIvj6bG+pyvi7ZeM39rpFHeoWDemBLKc+J4s3/rT59fIK0eHJOrF7LAL
+         iSp6lU2N9VbDSrxmIgk/Xh3dmyk2EPSFqTp0l154JUL6/2KdHJtdBAH0zQtstz+x2y+7
+         AlgLx0tv7fT0FSV8VBeoQWjOfwdPRBcb3rus0RfCmPOQZFSCXWSSie5bUXiexe+PEnFA
+         +2NbVm9lB0g5qBODaV1y134p8QQ2Rd7yGY4ePKOqJFzYUb5ptxNd1WOFVFFIIFk1XLhb
+         jn5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708334550; x=1708939350;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qZYTlm/0sq1vUrT38iiUN2NletxitEq6HPMC2WegY44=;
+        b=awqrumumEHSO0FHZerQ6LCQjFmJN1H+WO9rYehsVhfsgiHmlUJ/TOxS4rIYR+7NTqu
+         6jTdyFCW+AwSGx2rhVcvY8EkAyHgbxkX6F+uhEDiIeOtZcqYYGInF6VwucV4nsNHLRAu
+         sq59c+Z1U0Wv9S2iexnPv7Gjo0OgE7K7Tb0fpek+VapBrMRs/BaclcjWKRPrW6994SHz
+         PYAgiZrbCr7AUae68kCXBA0zNcWm7Qt1p3u6zZwzY622m/TQc4cUa+FilkBWsIOQAxKf
+         4KyFqLkcVN90r8mNieXcYkEhdaPw4oaLBL+I9Mtl0LG+f8Sf/AXjLC/twDFAHpB36g5l
+         eacg==
+X-Forwarded-Encrypted: i=1; AJvYcCWOaaE7WsjGzoA8ydBFtZY8rcerJbAS1qKDoFkVbjvzlBVLX6Up3Y/8H0nZLMGhNZjRNqYXMQlaDXS0wINMtjbb1kcAJqZwLqwn4feWcik=
+X-Gm-Message-State: AOJu0Yzwb3KW9tKzDtyqfIUNZgpryCpVEMllMhQthtHn2VJ6pkA4QPfo
+	MWwdt/w6K5YGXJvnzKAP3kChc0wS2YiN9UwxHhl5rcHFQEKSTFYho1KtzqJ+a/tS+qCp7vmF4ht
+	5ZmRUyW+hqf7WAqjaXUqFU0hqJXZFf1MiQVkLng==
+X-Google-Smtp-Source: AGHT+IF+LL/RccnNnrVPV95NB7kYrHT+EoXkoik0+2tgdiu93HUqpLdT6cgixvw0en9NUQfCx5Dc17RlNM2cOSkIlm0=
+X-Received: by 2002:a25:b048:0:b0:dc7:4859:6f1 with SMTP id
+ e8-20020a25b048000000b00dc7485906f1mr9761270ybj.33.1708334550133; Mon, 19 Feb
+ 2024 01:22:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <874je4dfoy.fsf@kernel.org>
-X-Clacks-Overhead: GNU Terry Pratchett
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: mbari.org
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
+References: <20240216203215.40870-1-brgl@bgdev.pl> <CAA8EJppt4-L1RyDeG=1SbbzkTDhLkGcmAbZQeY0S6wGnBbFbvw@mail.gmail.com>
+ <e4cddd9f-9d76-43b7-9091-413f923d27f2@linaro.org>
+In-Reply-To: <e4cddd9f-9d76-43b7-9091-413f923d27f2@linaro.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date: Mon, 19 Feb 2024 11:22:18 +0200
+Message-ID: <CAA8EJpp6+2w65o2Bfcr44tE_ircMoON6hvGgyWfvFuh3HamoSQ@mail.gmail.com>
+Subject: Re: [PATCH v5 00/18] power: sequencing: implement the subsystem and
+ add first users
+To: neil.armstrong@linaro.org
+Cc: Bartosz Golaszewski <brgl@bgdev.pl>, Marcel Holtmann <marcel@holtmann.org>, 
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Kalle Valo <kvalo@kernel.org>, 
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
+	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Saravana Kannan <saravanak@google.com>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Arnd Bergmann <arnd@arndb.de>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Alex Elder <elder@linaro.org>, 
+	Srini Kandagatla <srinivas.kandagatla@linaro.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Abel Vesa <abel.vesa@linaro.org>, 
+	Manivannan Sadhasivam <mani@kernel.org>, Lukas Wunner <lukas@wunner.de>, linux-bluetooth@vger.kernel.org, 
+	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-pci@vger.kernel.org, linux-pm@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 
+On Mon, 19 Feb 2024 at 10:14, Neil Armstrong <neil.armstrong@linaro.org> wrote:
+>
+> On 18/02/2024 13:53, Dmitry Baryshkov wrote:
+> > On Fri, 16 Feb 2024 at 22:33, Bartosz Golaszewski <brgl@bgdev.pl> wrote:
+> >>
+> >> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> >>
+> >> First, I'd like to apologize for the somewhat chaotic previous iterations
+> >> of this series and improper versioning which was rightfully pointed out
+> >> to me. I figured that the scope changed so much that it didn't make sense
+> >> to consider previous submissions part of the same series as the original
+> >> RFC but others thought otherwise so this one becomes v5 and I'll keep the
+> >> versioning going forward.
+> >>
+> >> This is the summary of the work so far:
+> >>
+> >> v1: Original RFC:
+> >>
+> >> https://lore.kernel.org/lkml/20240104130123.37115-1-brgl@bgdev.pl/T/
+> >>
+> >> v2: First real patch series (should have been PATCH v2) adding what I
+> >>      referred to back then as PCI power sequencing:
+> >>
+> >> https://lore.kernel.org/linux-arm-kernel/2024021413-grumbling-unlivable-c145@gregkh/T/
+> >>
+> >> v3: RFC for the DT representation of the PMU supplying the WLAN and BT
+> >>      modules inside the QCA6391 package (was largely separate from the
+> >>      series but probably should have been called PATCH or RFC v3):
+> >>
+> >> https://lore.kernel.org/all/CAMRc=Mc+GNoi57eTQg71DXkQKjdaoAmCpB=h2ndEpGnmdhVV-Q@mail.gmail.com/T/
+> >>
+> >> v4: Second attempt at the full series with changed scope (introduction of
+> >>      the pwrseq subsystem, should have been RFC v4)
+> >>
+> >> https://lore.kernel.org/lkml/20240201155532.49707-1-brgl@bgdev.pl/T/
+> >>
+> >> ===
+> >>
+> >> With that out of the way, I'd like to get down to explaining the two
+> >> problems I'm trying to solve.
+> >>
+> >> Problem statement #1: Dynamic bus chicken-and-egg problem.
+> >>
+> >> Certain on-board PCI devices need to be powered up before they are can be
+> >> detected but their PCI drivers won't get bound until the device is
+> >> powered-up so enabling the relevant resources in the PCI device driver
+> >> itself is impossible.
+> >>
+> >> Problem statement #2: Sharing inter-dependent resources between devices.
+> >>
+> >> Certain devices that use separate drivers (often on different busses)
+> >> share resources (regulators, clocks, etc.). Typically these resources
+> >> are reference-counted but in some cases there are additional interactions
+> >> between them to consider, for example specific power-up sequence timings.
+> >>
+> >> ===
+> >>
+> >> The reason for tackling both of these problems in a single series is the
+> >> fact the the platform I'm working on - Qualcomm RB5 - deals with both and
+> >> both need to be addressed in order to enable WLAN and Bluetooth support
+> >> upstream.
+> >>
+> >> The on-board WLAN/BT package - QCA6391 - has a Power Management Unit that
+> >> takes inputs from the host and exposes LDO outputs consumed by the BT and
+> >> WLAN modules which can be powered-up and down independently. However
+> >> a delay of 100ms must be respected between enabling the BT- and
+> >> WLAN-enable GPIOs[*].
+> >>
+> >> ===
+> >>
+> >> This series is logically split into several sections. I'll go
+> >> patch-by-patch and explain each step.
+> >>
+> >> Patch 1/18:
+> >>
+> >> This is a commit taken from the list by Jonathan Cameron that adds
+> >> a __free() helper for OF nodes. Not strictly related to the series but
+> >> until said commit ends in next, I need to carry it with this series.
+> >>
+> >> Patch 2/18:
+> >>
+> >> This enables the ath12k PCI module in arm64 defconfig as Qualcomm sm8650
+> >> and sm8550 reference platforms use it in the WCN7850 module.
+> >>
+> >> Patches 3/18-6/18:
+> >>
+> >> These contain all relevant DT bindings changes. We add new documents for
+> >> the QCA6390 PMU and ATH12K devices as well as extend the bindings for the
+> >> Qualcomm Bluetooth and ATH11K modules with regulators used by them in
+> >> QCA6390.
+> >>
+> >> Patches 7/18-9/18:
+> >>
+> >> These contain changes to device-tree sources for the three platforms we
+> >> work with in this series. As the WCN7850 module doesn't require any
+> >> specific timings introducing dependencies between the Bluetooth and WLAN
+> >> modules, while the QCA6390 does, we take two different approaches to how
+> >> me model them in DT.
+> >>
+> >> For WCN7850 we hide the existence of the PMU as modeling it is simply not
+> >> necessary. The BT and WLAN devices on the device-tree are represented as
+> >> consuming the inputs (relevant to the functionality of each) of the PMU
+> >> directly.
+> >
+> > We are describing the hardware. From the hardware point of view, there
+> > is a PMU. I think at some point we would really like to describe all
+> > Qualcomm/Atheros WiFI+BT units using this PMU approach, including the
+> > older ath10k units present on RB3 (WCN3990) and db820c (QCA6174).
+>
+> While I agree with older WiFi+BT units, I don't think it's needed for
+> WCN7850 since BT+WiFi are now designed to be fully independent and PMU is
+> transparent.
 
-Kalle Valo wrote:
-> Brent Roman <brent@mbari.org> writes:
->
->> Yes, that's all true.=C2=A0 However... Random MAC address assignment ten=
-ds
->> to cause devices to be assigned a different IP address on each reboot.
->> This often doesn't play nicely with port forwarding.
-> Sure, I wasn't claiming that using random addresses is the perfect
-> solution. But you could also set a fixed random address from user space
-> (hopefully that works with rtw88).
->
->> It's difficult to "prove" the RK3308 cpu serial numbers are unique,
->> but they should be and the few I've tested have been.
-> Please take into account that rtw88 driver can be used with all sort of
-> different CPUs, not just RK3308. This is why I pointed this out.
->
-> (please don't top post)
->
-The script that replaces the driver's random MAC is in Armbian's User Space=
-,
-which is unique for each supported board.=C2=A0 So, the CPU is known.
+I don't see any significant difference between WCN6750/WCN6855 and
+WCN7850 from the PMU / power up point of view. Could you please point
+me to the difference?
 
-- brent
-
+-- 
+With best wishes
+Dmitry
 
