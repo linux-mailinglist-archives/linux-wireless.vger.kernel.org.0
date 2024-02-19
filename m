@@ -1,62 +1,69 @@
-Return-Path: <linux-wireless+bounces-3771-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3772-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAB8C85A078
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Feb 2024 11:04:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 310E885A082
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Feb 2024 11:06:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96499281F36
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Feb 2024 10:04:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C57201F24513
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Feb 2024 10:06:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D50CD24B5B;
-	Mon, 19 Feb 2024 10:04:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC114210FA;
+	Mon, 19 Feb 2024 10:06:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="hU1NXGSC"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="izgw1X/k"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FF8B2556D
-	for <linux-wireless@vger.kernel.org>; Mon, 19 Feb 2024 10:04:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6F1C2556D
+	for <linux-wireless@vger.kernel.org>; Mon, 19 Feb 2024 10:06:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708337054; cv=none; b=dS1D7ExKgX5JRodEhV5I8zErDgvxQXrpRRIqfFdnXvcWeQePEwye7nz7R3WL6r6OIxuG1AqYQ+DWI3CysIteVXepK6dFn4y+8hz+WZ3165k2ZpU3p6rpaHFOJyPjivDp/aldncuWpwrwctnEMLhpLNxSwpEQABIBjkyXHB7dUuQ=
+	t=1708337173; cv=none; b=TiXfNMUJLXAe95IZ9Oqtkpi7PGskt3CGADvRuDERkCdH755uiFjS/PxMnyZURiAGXHbrlZWBEzgyZLtjqzEgIAFqRKdrpnyyZ15yRP6jXHFFvErxd1cutIM5y5rQoHS970fxpBR5ttaMSQUf1l2gmJd6TczNoCD6NBcJQHrDJJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708337054; c=relaxed/simple;
-	bh=1R0qBqkNubg1ErmgJa4n1LavkTOWaXmYxdVpJl1gkvw=;
+	s=arc-20240116; t=1708337173; c=relaxed/simple;
+	bh=HO2qG5bxXyBnRnELqPKXj8gGN33xRt+6fa/vSUPQR44=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=dktETRHTq8lv4H0I+8LNZCIuDYD/apjrgsdfv4+UI0IUzbDp3Uy6lr3PKV6t4jXtwgxsfiiSR0VYb/dqph1iw0J7RT4Xm4MB28E1KF5SaKaJnNjMVYZiguzLRVKgvc8gYerFRequdFevxGfPiyyOtjD2yTzfHoHD0l9Y6pshDKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=hU1NXGSC; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=XKZCwZXxzcZ1aaeybAbepM2PdDBrMiSa19zwmgwF49MjflP7K+PlCpYBas66fud38uxRneVNsHmQ9ty2+UCvP/0Mm3K278307ohk4eVSjS+p1i6+1r8gFqFZc4R7OoY2FWx0MB7yvZSUJ1NoHFisqLK5NMvFMqFe4JuZD1VxNnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=izgw1X/k; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=1R0qBqkNubg1ErmgJa4n1LavkTOWaXmYxdVpJl1gkvw=;
-	t=1708337051; x=1709546651; b=hU1NXGSCO+Hczke42spZcF/I+thALiP+UUfYK2lcIb42+Fd
-	ALXrlVgNBM4+iIdHBJM4YGh3zzrSLWhZo8BFiXEBQQisjEr5VhKSo6NGb9L7EXnHpwWWcs26+mOGS
-	bvGA423WTp8l/aFxA9QSV1HevbwHKdx8Ss0IW1pgJHY6aSvFEikFSuoEKSkZFC9Q2m+SyJn17qU/e
-	Mx3oQ8gb6Xt3rPPjmxuMYz+msOpn9rAVMdupM8Fdo4bNg1YrMBnt2hZJSyrP57W1tLzO8s005wVyp
-	ZVVMH5xE+iuZOzDc5x6LKZSSU+KpViU4DfYGc1aFEElkPUPf8lNgfaN4sssiYkbw==;
+	Resent-Cc:Resent-Message-ID; bh=HO2qG5bxXyBnRnELqPKXj8gGN33xRt+6fa/vSUPQR44=;
+	t=1708337171; x=1709546771; b=izgw1X/kzRjnscTj8gQP4/JzjHsBZpczLKukNuqxEN/mmKx
+	GHmXCMuh0z3o4njS187x6MNqFXKWa5unGSgS6KacJMBnUsjwF7qxHbG0/opT5RvhbLEnOjGDWW1wS
+	Q/ODX5Awein8KT/RCbTTN1zX04o2VYS3pSNlIV7i3Ctj22EKb2Zx8BieQJ26Ocb7bbZKxoFxyxOb1
+	gZkv7oCjxKsesu643FLI15fjOoFOVpoyvg1+DHEmgk+Ul54TqVoLFP44/sltDw5qsA3w3KLawNJ37
+	IKr/r5Usc67c+pimlOb+QnwtfjuE3FnUstxdVIK6SwJiiZJ92qfhcpaYiVGuFIug==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.97)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1rc0VF-0000000H1oq-0TB3;
-	Mon, 19 Feb 2024 11:04:01 +0100
-Message-ID: <f69f27acb8171cea5fdf6ceedb92efbced909300.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: rtlwifi: Fix setting the basic rates
+	id 1rc0XH-0000000H1u2-2Kmi;
+	Mon, 19 Feb 2024 11:06:07 +0100
+Message-ID: <3a6f90ceb86013782329ba0054995aef225a53b1.camel@sipsolutions.net>
+Subject: Re: [v4,2/2] wifi: mac80211: refactor STA CSA parsing flows
 From: Johannes Berg <johannes@sipsolutions.net>
-To: Ping-Ke Shih <pkshih@realtek.com>, Bitterblue Smith
-	 <rtl8821cerfe2@gmail.com>, "linux-wireless@vger.kernel.org"
+To: Michael-cy Lee =?UTF-8?Q?=28=E6=9D=8E=E5=B3=BB=E5=AE=87=29?=
+	 <Michael-cy.Lee@mediatek.com>, "linux-wireless@vger.kernel.org"
 	 <linux-wireless@vger.kernel.org>
-Cc: Larry Finger <Larry.Finger@lwfinger.net>
-Date: Mon, 19 Feb 2024 11:04:00 +0100
-In-Reply-To: <afded3d1768247cca613f55943a013aa@realtek.com>
-References: <35165caf-337c-4da0-b55c-c1a7081a1456@gmail.com>
-	 <afded3d1768247cca613f55943a013aa@realtek.com>
+Cc: "linux-mediatek@lists.infradead.org"
+ <linux-mediatek@lists.infradead.org>,  "nbd@nbd.name" <nbd@nbd.name>,
+ Evelyn Tsai =?UTF-8?Q?=28=E8=94=A1=E7=8F=8A=E9=88=BA=29?=
+ <Evelyn.Tsai@mediatek.com>, "lorenzo@kernel.org" <lorenzo@kernel.org>,
+ Money Wang =?UTF-8?Q?=28=E7=8E=8B=E4=BF=A1=E5=AE=89=29?=
+ <Money.Wang@mediatek.com>
+Date: Mon, 19 Feb 2024 11:06:06 +0100
+In-Reply-To: <765fb43a372825f6063894809f204150d87d4d18.camel@mediatek.com>
+References: <20231222010914.6521-1-michael-cy.lee@mediatek.com>
+	 <20231222010914.6521-3-michael-cy.lee@mediatek.com>
+	 <b74f21d22a41b2ca635e64f04c06d5db6d38d920.camel@sipsolutions.net>
+	 <765fb43a372825f6063894809f204150d87d4d18.camel@mediatek.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
@@ -68,32 +75,63 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
-On Mon, 2024-02-19 at 07:37 +0000, Ping-Ke Shih wrote:
+Hi,
+
+> The rebase seems good. We will conduct a full channel-switch test,
+> including hwsim tests in hostap. If there are any problems, we will
+> send another patch to fix them.
+
+OK, thanks for checking. The tests from hostap are passing, I make sure
+of that anyway, but ... who knows what they miss :)
+
+> > Shouldn't that have (had!) an 80 MHz handling case? Or maybe a loop a
+> > la
+> > the one in ieee80211_config_bw():
 > >=20
-> > I'm not sure if this is enough. Should we also handle
-> > BSS_CHANGED_BASIC_RATES? But bss_conf->basic_rates is only 0xf (CCK
-> > rates only) and the out-of-tree Realtek drivers want to use the 6, 12,
-> > and 24M rates as well. If ieee80211_find_sta() returns NULL, how can we
-> > know if OFDM rates are supported?
-
-This whole find_sta is a bit questionable - basic rates are from the BSS
-configuration anyway?
-
-> > I'm also not sure if it's okay to set the basic rates later than
-> > originally intended, but it's still better than never.
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/*
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0* Downgrade the n=
+ew channel if we associated with restricted
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0* bandwidth capab=
+ilities. For example, if we associated as a
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0* 20 MHz STA to a=
+ 40 MHz AP (due to regulatory, capabilities
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0* or config reaso=
+ns) then switching to a 40 MHz channel now
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0* won't do us any=
+ good -- we couldn't use it with the AP.
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0*/
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0while (link->u.mgd.conn=
+.bw_limit <
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ieee80211_min_bw_limit_from_chandef(&chanreq.
+> > oper))
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0ieee80211_chandef_downgrade(&chanreq.oper, NULL)=
+;
+> >=20
+> >=20
+> > Feels like this should be the same here.
 >=20
-> bss_conf->basic_rates is from AP beacon basically, and only the supported=
- rates
-> with 0x80 bit are basic rates, which is minimum rates requirement to the =
-AP.
-> Thus, I think it is not suitable to consider basic rates as RTS rate.=20
+> Yes, a loop to validate the operating bandwidth is necessary. We'll
+> send another patch that makes this change.
+
+Sounds good, thanks!
+
+> > Also note how this uses ieee80211_chandef_downgrade() - we really
+> > need
+> > to track the "chanreq.oper" vs. "chanreq.ap" in this code as well for
+> > puncturing - can I ask you to take a brief look at that? I'll anyway
+> > probably have to look at that soon though.
 >=20
+> Of course.
+> In fact, we have plans to study and implement puncturing on our MT76
+> driver. We're currently working on the AP side, and we expect to start
+> the STA side maybe three months later.
 
-But you have to consider them? Control response rates are very precisely
-defined in the spec, see 10.6.6.5.2 "Selection of a rate or MCS".
-
-I also have a bunch of explanations about that in the iwlmvm driver in
-drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c around line 360.
+OK, let's see. I probably have plans earlier than 3 months from now for
+this, but not sure yet. Let me know when/if you start working on it so
+we can sync up again then?
 
 johannes
 
