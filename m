@@ -1,102 +1,222 @@
-Return-Path: <linux-wireless+bounces-3795-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3796-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFC0585AD7D
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Feb 2024 21:55:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70CE485AD9E
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Feb 2024 22:23:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FBB21F251AB
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Feb 2024 20:55:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88A0A1C20C9E
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Feb 2024 21:23:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C87AA537E4;
-	Mon, 19 Feb 2024 20:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA6C453E1E;
+	Mon, 19 Feb 2024 21:23:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="wZQgpTdg"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="HwpWR2z6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A04951C2C
-	for <linux-wireless@vger.kernel.org>; Mon, 19 Feb 2024 20:55:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDF952D605
+	for <linux-wireless@vger.kernel.org>; Mon, 19 Feb 2024 21:23:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708376102; cv=none; b=N071HqOBriFF18wnH2gGcKarF/E+oVt4Vn+PMRlLEDtSRSSxQ4albdce4J2sYidWE+tOUbP45TAqQjgUOlQCtJwiI1P5knNCNphSb4dQqzH0Zqrc3SSeBcVwDEQN1A45P+czCAi6/7ZCjdWsGtsgHd7gLSCi5bDQ0ov43vv3wQ4=
+	t=1708377807; cv=none; b=hoFqXnY/ABDB4TqyUL5+UAafj+uTMILZGX+QNNSVHVeFNJBx3+xhJZpLXGs2eiMyDxZOmo8dmJWSr8x1Jc7cuzeuE6JxtldiUK0Ohcwfld2oxUrGgYCIRnHmGtFhNwq7bcDnCueM0YX4xTf8mHTYo5cWv40t5B4NfEjp3s7ENbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708376102; c=relaxed/simple;
-	bh=PRWFNSl5rdyh0LIam4lOCvZVzrH50yS0VHN/syfc6O0=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=QVaFOkKLFiYMIJ+Q/Tz6HyLWU6r06mBBotSaJXR8g62Qm+9qHJPhlXxzpvfKyziSq+PPjL/thK2cySPKOmSmpLJ089zipY+SNNyvJ5jn413eyzc6lEPbs/2WDdBhHuDjWdOaCwJPih/Dxv3T1I46d0i5svrUEw9U6m8LxF7kGW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=wZQgpTdg; arc=none smtp.client-ip=209.85.128.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-6079d44b02bso25337527b3.3
-        for <linux-wireless@vger.kernel.org>; Mon, 19 Feb 2024 12:55:00 -0800 (PST)
+	s=arc-20240116; t=1708377807; c=relaxed/simple;
+	bh=8xz+6XpDTd1vb3gFdfA/PynLF+pwhW660BuoCbdZBNQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Nr56zrUe2YV+v1jwWNmmH6D+EAvtqICSZmK/hVjYqcR72DxZzJbjpS+ATgZXW+pkaBJr8RpAhzOGlJwARX8ITJrb9xeT3i0//c2DKJ0hRx7rch8Elm0OjkAsGlUf+MIwr779/Xudfrt43EvrVSvIrkqznv3yC5aNhxOvapvIgpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=HwpWR2z6; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4126a159fa6so7076425e9.0
+        for <linux-wireless@vger.kernel.org>; Mon, 19 Feb 2024 13:23:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1708376100; x=1708980900; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=PRWFNSl5rdyh0LIam4lOCvZVzrH50yS0VHN/syfc6O0=;
-        b=wZQgpTdg1IXJW+3pJz2pDeRelZJStxFfeYZwj1TCN3I9wndQLgPucomWofYrPaG3ye
-         +/i5OWWAQwr8w3FVbI4IQli6X+Y9dQ3lgZPko67X+9SlAG5U0R0Fa3g3zS5yVTkgRHc/
-         Sxa6Wj6TkMok77tlYPsMR6ptSswjiWksNxA/Bx879L2xSJDBetC2k2JeEbdptMOjbmh+
-         C2pVGUpE6qYSeOKe8OjSjNHGTc2EFqEOU1fJACWhjaWcM+vqfFpwm42cqDTvBitgmnZz
-         Rwlpb8/XaRaWmpJj5UX8gewFS0sfKbZO2WjGobr9/dMI0eshFakhNB9rDyc35HJA28po
-         YXiA==
+        d=linaro.org; s=google; t=1708377804; x=1708982604; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=3Dp7g0ZZlHWDLtOm92Hg+KE1Fsd9aYHxUp8R+ILIVC8=;
+        b=HwpWR2z6YGeWngOoQfoVdNaKSRSqkzbRQtuFLlh9IJ8SV2N7gj/6vySmrcUuY1zGF3
+         eSvtvwnlf3y6F7FcDTXht/BVYsQ6BG3xdhG8Xw9pZzaAL+pWYBUB5DQ1q+jz0kbv3LKa
+         coiLo7Ai1jDDTSHLozFeWZFswKyFt3Zvih1N6t0yQxc/T5qiVbX0vYRjVcplMLmMQvHn
+         YngEjhzs2WSPiRCNC0feItvCGtPLIwolxGqZY77kBIv5m6xultIMXdqzeX64jEKrLr0r
+         ksGbYD4gKBbrfdLCB6/efrVZbWzvmG5tQe2E6LL1DOG+nEe7SKiDqTaHnxT+lNBeoz7B
+         QiNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708376100; x=1708980900;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=PRWFNSl5rdyh0LIam4lOCvZVzrH50yS0VHN/syfc6O0=;
-        b=bDWRN8VBAYmIF0u9SgWchULwvCV1llIZHff3vcE25vo8raLIhWpu2LQ4geHuDX3iT3
-         tH+FD0RWukZte8Z+zd8WTGmFbcOAe7rqUbnRFaxvWx6M4T8V+WjgKE8bbdcaNd3KbAi/
-         tsevgrXelaGt2mWg9u7L0OnDzZHFD+vGhOBgilbt0H6Aq+CpIBcK1pf/CkHq7aMcVzSJ
-         PBJJ4tGJyJ8XHp39hmMACqqVstEpWPz+4FxHGYUbgNFcRpGx/1Lfn0odpFKs1S1H2aXe
-         UKTkRElJoubHDH73voEC+0TnW1CxvT/Q6GEfLnf6Z/HY9ZSLGaYn7PqKe3ncblV5Ummb
-         /HeA==
-X-Forwarded-Encrypted: i=1; AJvYcCVofSzf9wPDHXEbW7qGaMeK8TZSfoaTFHLkKvE4EZwiAMA0LoNFw+UPYb4V3+i62pMNcTem3QV5UWqsMR9RZ8q+dpa4/nBx5EEfVvTR9vY=
-X-Gm-Message-State: AOJu0Yy8lvzysOYhl2wucviv9hiyXG5+gNL90D+9gsYBifGMaxAcGbg/
-	Kqu+8fWfUKjf0dKQcIbEiHBrZ8Hl9bSUCeGj87/uSITKUYqeeTuN0pTF0uwDjy/OLYM5k4yPwoo
-	DFhbRmIk59BzGmqM9liN8e1sSJMGYbjT8wFl+
-X-Google-Smtp-Source: AGHT+IEYs9O4Ab1yXvBQtfWhC5ZqPyatv9UEtkAwagoVjMYA+WQEKbhT/qSO3Lxx5Ueqx9uSy89tetRorYJ3R+zsRQo=
-X-Received: by 2002:a5b:18d:0:b0:dc6:e75d:d828 with SMTP id
- r13-20020a5b018d000000b00dc6e75dd828mr10375199ybl.18.1708376100043; Mon, 19
- Feb 2024 12:55:00 -0800 (PST)
+        d=1e100.net; s=20230601; t=1708377804; x=1708982604;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3Dp7g0ZZlHWDLtOm92Hg+KE1Fsd9aYHxUp8R+ILIVC8=;
+        b=uBXVY94ZjUrN1U2BrTSsJhYV1D8E41JO0cufo1eOycopzJ9b3FqSsiKtPI3aXjeKss
+         XQEHsn5FX79RnWoPb35SZfEEnPTAt+K4AEHsRyOORSGjykaU3v1FNRC0T7Mg66/UxVzH
+         Ey74J2BSQ3HTK+JQwA0kgaFQl8CWX4NG59k9O/KypLHzcbwSr2NDUKs72KH2oa46JyoE
+         PEs+Poe+PlDfU7JyE+1GKtHJjWcAtylE3enM/8APS2vFLeBqdj+5iC6XKrSS99iA2R1a
+         aH1g38Ec97ObR0CVGvKetvOF/IwU/S2tFnzdUnbqQNpe2MDFk5kWo9UigeJc4TS1fnOr
+         c5Eg==
+X-Forwarded-Encrypted: i=1; AJvYcCWUDGY+9QnblOa9qeWvDQhH7xmj5BN7yvQkzaEXzU0aGN4BClcrod6VMxxmuPjeiNJqE7Dfpz7FLDMbQn5e8TButzaJ0SZjhCu+BA//UAc=
+X-Gm-Message-State: AOJu0YxeXMLPd91ciaIO2mkhKRNN4bqD7Kp81HhQ+SHRAlbUUfi1WVfa
+	TPmuakqTog+Z/6DEUlrZnOMY1O8WbTuIpqfTrfbaGaILb6CcfHFG/43VKvCt23c=
+X-Google-Smtp-Source: AGHT+IGMDWyCqdrf3limUzCDQCeqBmV2qO6/3JtbpjNeO7lE8mmXkQsNbh5abKcT5FIEPx2wqRSzUw==
+X-Received: by 2002:a7b:c408:0:b0:40f:ddc2:7260 with SMTP id k8-20020a7bc408000000b0040fddc27260mr9610955wmi.36.1708377804375;
+        Mon, 19 Feb 2024 13:23:24 -0800 (PST)
+Received: from [192.168.1.20] ([178.197.222.116])
+        by smtp.gmail.com with ESMTPSA id je11-20020a05600c1f8b00b0040fdf5e6d40sm12549766wmb.20.2024.02.19.13.23.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 Feb 2024 13:23:23 -0800 (PST)
+Message-ID: <a9c34206-0068-4bd1-9fae-8963ad00eb36@linaro.org>
+Date: Mon, 19 Feb 2024 22:23:19 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Mon, 19 Feb 2024 15:54:49 -0500
-Message-ID: <CAM0EoMm1Vff3hLrLEySnL=bfa6vr3BRJd7L+TjiN5zsAY_As1g@mail.gmail.com>
-Subject: CFS for Netdev Conf 0x18 open!
-To: people <people@netdevconf.info>
-Cc: Linux Kernel Network Developers <netdev@vger.kernel.org>, Christie Geldart <christie@ambedia.com>, 
-	Kimberley Jeffries <kimberleyjeffries@gmail.com>, lwn@lwn.net, 
-	Lael Santos <lael.santos@expertisesolutions.com.br>, 
-	"board@netdevconf.org" <board@netdevconf.info>, linux-wireless <linux-wireless@vger.kernel.org>, 
-	netfilter-devel@vger.kernel.org, lartc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 03/18] dt-bindings: regulator: describe the PMU module
+ of the QCA6390 package
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Mark Brown <broonie@kernel.org>, Marcel Holtmann <marcel@holtmann.org>,
+ Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Kalle Valo <kvalo@kernel.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konrad.dybcio@linaro.org>, Liam Girdwood
+ <lgirdwood@gmail.com>, Catalin Marinas <catalin.marinas@arm.com>,
+ Will Deacon <will@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+ Saravana Kannan <saravanak@google.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>, Arnd Bergmann <arnd@arndb.de>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, Alex Elder <elder@linaro.org>,
+ Srini Kandagatla <srinivas.kandagatla@linaro.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Abel Vesa <abel.vesa@linaro.org>, Manivannan Sadhasivam <mani@kernel.org>,
+ Lukas Wunner <lukas@wunner.de>,
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+ linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-wireless@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
+ linux-pm@vger.kernel.org,
+ Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+References: <20240216203215.40870-1-brgl@bgdev.pl>
+ <20240216203215.40870-4-brgl@bgdev.pl>
+ <ZdDVNbjv60G9YUNy@finisterre.sirena.org.uk>
+ <CAMRc=Mf9Sro4kM_Jn8_v=cyO5PxCp6AnBdeS9XspqVDGKdA_Dg@mail.gmail.com>
+ <7c1327c0-d0ea-4797-a5fa-5844ba46bf53@linaro.org>
+ <CAMRc=Me=3HhGc_yZuaEo1TsLbF2R=g+072185_PAh5GmAQ-M7w@mail.gmail.com>
+Content-Language: en-US
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <CAMRc=Me=3HhGc_yZuaEo1TsLbF2R=g+072185_PAh5GmAQ-M7w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-We are pleased to announce the opening of Call For Submissions(CFS)
-for Netdev conf 0x18.
-Netdev conf 0x18 is going to be a hybrid conference with the physical
-component being in Silicon Valley, .ca.usa
+On 19/02/2024 13:53, Bartosz Golaszewski wrote:
+> On Mon, Feb 19, 2024 at 8:32 AM Krzysztof Kozlowski
+> <krzysztof.kozlowski@linaro.org> wrote:
+>>
+>> On 17/02/2024 19:32, Bartosz Golaszewski wrote:
+>>> On Sat, Feb 17, 2024 at 4:48 PM Mark Brown <broonie@kernel.org> wrote:
+>>>>
+>>>> On Fri, Feb 16, 2024 at 09:32:00PM +0100, Bartosz Golaszewski wrote:
+>>>>> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+>>>>>
+>>>>> The QCA6390 package contains discreet modules for WLAN and Bluetooth. They
+>>>>> are powered by the Power Management Unit (PMU) that takes inputs from the
+>>>>> host and provides LDO outputs. This document describes this module.
+>>>>
+>>>> Please submit patches using subject lines reflecting the style for the
+>>>> subsystem, this makes it easier for people to identify relevant patches.
+>>>> Look at what existing commits in the area you're changing are doing and
+>>>> make sure your subject lines visually resemble what they're doing.
+>>>> There's no need to resubmit to fix this alone.
+>>>
+>>> Mark,
+>>>
+>>> This is quite vague, could you elaborate? I have no idea what is wrong
+>>> with this patch.
+>>
+>> Use subject prefixes matching the subsystem. You can get them for
+>> example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
+>> your patch is touching.
+>>
+>> Best regards,
+>> Krzysztof
+>>
+> 
+> Yes, I always do. And for Documentation/devicetree/bindings/regulator/
+> the subjects are split 50:50 between "dt-bindings: regulator: ..." and
 
-For overview of topics, submissions and requirements please visit:
-https://netdevconf.info/0x18/pages/submit-proposal.html
-For all submitted sessions, we employ a blind review process carried
-out by the Program Committee.
+No, there are only ~54 "dt + regulator" ones and around 400 starting
+with "regulator" (Mark removes first prefix if it is not regulator:). So
+50 to 400 is not 50:50.
 
-Important dates:
-Closing of CFS: Mon, Apr 22nd, 2024.
-Notification by: Wed, May 1st, 2024.
-Conference dates: July 15th - 19th, 2024.
 
-Please take this opportunity to share your work and ideas with the community
+> "regulator: dt-bindings: ...". For Documentation/devicetree/bindings/
+> it's overwhelmingly "dt-bindings: <subsystem>: ...". It's the first
+> time someone wants me to send a DT bindings patch without
+> "dt-bindings" coming first in the subject.
+> 
+> I mean: I can do it alright but it's not stated anywhere explicitly.
 
-cheers,
-jamal (on behalf of the Netdev Society)
+Well, practice was kind of known and obvious, but it is also stated:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/Documentation/devicetree/bindings/submitting-patches.rst?h=next-20240219#n18
+
+
+
+Best regards,
+Krzysztof
+
 
