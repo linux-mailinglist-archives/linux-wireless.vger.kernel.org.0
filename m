@@ -1,269 +1,490 @@
-Return-Path: <linux-wireless+bounces-3769-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3770-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 311E885A009
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Feb 2024 10:43:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5DAE85A067
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Feb 2024 10:58:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51CC91C211FC
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Feb 2024 09:43:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C0331F22AEA
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Feb 2024 09:58:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 198092556D;
-	Mon, 19 Feb 2024 09:42:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC87E24A19;
+	Mon, 19 Feb 2024 09:58:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OAV6CbRe"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="T7wB8R6r"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF6BC25556
-	for <linux-wireless@vger.kernel.org>; Mon, 19 Feb 2024 09:42:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1D025114
+	for <linux-wireless@vger.kernel.org>; Mon, 19 Feb 2024 09:58:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708335765; cv=none; b=bcXfK5w29naa1lkI7KAEqgWRAFtsU7iDSvqQLNNp3Fh59uoOMzkpmIHyN/MxVO/T7uf0Cce3bDb952j+WVgx/vmUIysfK0rNDYdxlGIyRBcLtBbZaXVX1KSYuedFF1s+MYuYx7LmsBCNvgKE6qygvA1G6uLhkFSTBJiNUDzrpzQ=
+	t=1708336702; cv=none; b=ocljd+Uwl7DNMTsmw21lBk319NVYkwLMxSFr9H5FC3kEs210NrkZcgVevdUNrwJ58G3Ilf232kbPxc8x+zL4QlsWg+N+8nldy236YQkqj8xVeRhBWH/igoS9pY1teTK14/614OWlJ3PxPW3uqQQa8dJunQOIeumjL/+itBNsE+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708335765; c=relaxed/simple;
-	bh=X8w7qaPKtinHDZjF5H+rGNDsPK0DugLEiwZmVKW48OU=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=NVnnR4smlt3jeOqPzZ3gXheGBJoXAc6w4DQ2MDolmJQjS9aps90QHjb/7hrXCPq0dhLW49vNwG/8GsX7PUMyz92L4pwAejheLmq8L0+z2xUFFe15dMZMZYoJ1gjCVYynkRTReLKv6ekCu5ftejZE6PBOY0y0jPeHKHi5t6jcLDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OAV6CbRe; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-41242d2f73cso19433885e9.0
-        for <linux-wireless@vger.kernel.org>; Mon, 19 Feb 2024 01:42:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1708335761; x=1708940561; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :references:cc:to:content-language:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=vbycw2c2h8YYWAo75A5nc8ijiR5Amsqr6B7bz/qk71A=;
-        b=OAV6CbReOML3q2Ic9GEAz1c2Fe+Q8APdzyHNjq5uZ/7O2X48HsWMUOqR6JkihimdgK
-         1jYrME1GqHgglTLhG8myfIBvq/jKybFMxCVdTHrgSKalD3BJkXL9Qr1JizosWOMFcveM
-         cw6+M4Bl4LeWGkJkLt4RGnmmTasNYTGYJBRzTfjqeoBJg277NHiXBoGHA38eLfUoIC6z
-         MMsRcDOQKeqFKDyTOJZKgUZyTfnZfomEgT/VdEAYtJ0BBIjh1YQ8aObX4siNDKROPZve
-         9n8LVJF2VAuAn6uk5eRi3GjbQD9yB7z6Q9XIgZh2GD7a7wrQDWsX71Oqy0BpNGs7z/pM
-         qlmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708335761; x=1708940561;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :references:cc:to:content-language:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=vbycw2c2h8YYWAo75A5nc8ijiR5Amsqr6B7bz/qk71A=;
-        b=xIwYL0/9TitE0eeML2WnFzlC4XO93+k1a990Bslml/usHZsJcL0A0WACTAHBNx4W4v
-         +GgALUd4n3wehVP85LaNoXOQlBmsM4wIeh924FPZgJkXuLymylFIgrGgVorJxyxQycen
-         mqSA9x94gdtkFsPsDjTxSvMvfX4odH+Cd6khYe05QFR4prc4GPTnO/U4RwJmR7epT+28
-         h2KSZCuuw/TwJr8VgIeA7XCcvvS+9o/BJw4g8kjCe96zhwYaqqWf89GGBg+jBBhdQD37
-         kAno3HpSOozFAjCCQmFe5T9Yh7peoJzOG7J27nj33HmScBrWhAe6lLXoJVdzFvD7kyqa
-         vy1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCX9AUVq4wQGm8hcyrPF23lG0f95rSAHvg6dQw9mFwEM9Y4zOu70qq9FCn02pKkUWOCu8T/hPEPng7AR2ybGVj67DtE2IeQuOXXzumJDQfs=
-X-Gm-Message-State: AOJu0YxuJPTtP7TtT+BOwAk+M9Huupaea8nLa5dfl+wfUkPemy5cBctV
-	vu25csKo4jgB/P88wqmVZIePV01+hc2ZdcCxUe/e6E9fBG99u/7Mp8K4td55UQs=
-X-Google-Smtp-Source: AGHT+IEaDPCR8uUdx0sRdbD2siOvMIF/SdMjOkjwLxWoEY2uhR+PzppCD9xsvyNY3eTuCS0GeOwQIQ==
-X-Received: by 2002:a05:600c:a42:b0:411:50aa:110d with SMTP id c2-20020a05600c0a4200b0041150aa110dmr9142123wmq.21.1708335761107;
-        Mon, 19 Feb 2024 01:42:41 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:982:cbb0:9470:c6e0:c87a:fa9f? ([2a01:e0a:982:cbb0:9470:c6e0:c87a:fa9f])
-        by smtp.gmail.com with ESMTPSA id m20-20020a05600c281400b0041214ff06cesm10690182wmb.42.2024.02.19.01.42.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Feb 2024 01:42:40 -0800 (PST)
-Message-ID: <4d2a6f16-bb48-4d4e-b8fd-7e4b14563ffa@linaro.org>
-Date: Mon, 19 Feb 2024 10:42:39 +0100
+	s=arc-20240116; t=1708336702; c=relaxed/simple;
+	bh=BrQxI1uDPzcMmByUODoZm3NftWYNtx4sdrsQg9qk4cU=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pWNnC8iMrnHjplM5M0W3YucY7qBAG1rjtR30ENlygaj5OXInSgxL1olwbvq587cm1r34/K3zM+Ch24J/t05yk9RPZ5Os8a2mpcfkrTqKJuYVm1OtUI5rlBcSA5PUzSNWEcVtPppwac/DwMVG91TAYAkmh4RRsOhYyitP0M+W6UA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=T7wB8R6r; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41J9q655006724;
+	Mon, 19 Feb 2024 09:58:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=qcppdkim1; bh=2cTWEMR
+	7l7NcWxsfJJ3z0rN1U9rFbK2n346OeJVZLLg=; b=T7wB8R6r0Ag9X0acyNuyVy8
+	tOTQbT00/ucZKp0S6N8QGTnePRLTbM2OqaYlo38C5nFKoeGzYrUIZhiP8WAeZ/8k
+	c4OhCdTdNuMsYBjDy80i/zjkaRjvr+ZrDj9m8A3YVZYCn3aGBexu/7yQ6dtCxgZQ
+	pN5S4astA9UAlgq58dK8lbIbj8G6loF47SaHwAMkr6cE5yixFehDHF8h8ZCfmQEO
+	zLUjWILL2mV8msEwLUUN91f/kdhKId9iewcw9pXTvuo4X6bffUPP/lVwH+85ebNb
+	YAuXFQePVBPUeX/v0yPwuq7oHp0pQRcO3KqUPjkBg+Jc1f7GK0aPx7lngE5QJAA=
+	=
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wc4qx00fp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 19 Feb 2024 09:58:15 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 41J9wEQo025045
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 19 Feb 2024 09:58:14 GMT
+Received: from lingbok.ap.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Mon, 19 Feb 2024 01:58:12 -0800
+From: Lingbo Kong <quic_lingbok@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+Subject: [PATCH v4] wifi: ath12k: report tx bitrate for iw dev xxx station dump
+Date: Mon, 19 Feb 2024 17:58:02 +0800
+Message-ID: <20240219095802.1147-1-quic_lingbok@quicinc.com>
+X-Mailer: git-send-email 2.37.3.windows.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: neil.armstrong@linaro.org
-Reply-To: neil.armstrong@linaro.org
-Subject: Re: [PATCH v5 00/18] power: sequencing: implement the subsystem and
- add first users
-Content-Language: en-US, fr
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>, Marcel Holtmann
- <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Kalle Valo <kvalo@kernel.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>, Liam Girdwood
- <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Bjorn Helgaas <bhelgaas@google.com>, Saravana Kannan <saravanak@google.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>, Arnd Bergmann <arnd@arndb.de>,
- Marek Szyprowski <m.szyprowski@samsung.com>, Alex Elder <elder@linaro.org>,
- Srini Kandagatla <srinivas.kandagatla@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Abel Vesa <abel.vesa@linaro.org>, Manivannan Sadhasivam <mani@kernel.org>,
- Lukas Wunner <lukas@wunner.de>, linux-bluetooth@vger.kernel.org,
- netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-pci@vger.kernel.org, linux-pm@vger.kernel.org,
- Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-References: <20240216203215.40870-1-brgl@bgdev.pl>
- <CAA8EJppt4-L1RyDeG=1SbbzkTDhLkGcmAbZQeY0S6wGnBbFbvw@mail.gmail.com>
- <e4cddd9f-9d76-43b7-9091-413f923d27f2@linaro.org>
- <CAA8EJpp6+2w65o2Bfcr44tE_ircMoON6hvGgyWfvFuh3HamoSQ@mail.gmail.com>
-Autocrypt: addr=neil.armstrong@linaro.org; keydata=
- xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
- GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
- BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
- qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
- 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
- AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
- OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
- Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
- YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
- GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
- UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
- GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
- yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
- QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
- SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
- 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
- Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
- oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
- M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
- 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
- KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
- 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
- QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
-Organization: Linaro Developer Services
-In-Reply-To: <CAA8EJpp6+2w65o2Bfcr44tE_ircMoON6hvGgyWfvFuh3HamoSQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 3R4Cpy83EKW9-qGh53In34u56Ljzl7a5
+X-Proofpoint-ORIG-GUID: 3R4Cpy83EKW9-qGh53In34u56Ljzl7a5
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-19_06,2024-02-16_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ spamscore=0 suspectscore=0 adultscore=0 clxscore=1011 malwarescore=0
+ bulkscore=0 impostorscore=0 priorityscore=1501 mlxlogscore=999 mlxscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2401310000 definitions=main-2402190073
 
-On 19/02/2024 10:22, Dmitry Baryshkov wrote:
-> On Mon, 19 Feb 2024 at 10:14, Neil Armstrong <neil.armstrong@linaro.org> wrote:
->>
->> On 18/02/2024 13:53, Dmitry Baryshkov wrote:
->>> On Fri, 16 Feb 2024 at 22:33, Bartosz Golaszewski <brgl@bgdev.pl> wrote:
->>>>
->>>> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->>>>
->>>> First, I'd like to apologize for the somewhat chaotic previous iterations
->>>> of this series and improper versioning which was rightfully pointed out
->>>> to me. I figured that the scope changed so much that it didn't make sense
->>>> to consider previous submissions part of the same series as the original
->>>> RFC but others thought otherwise so this one becomes v5 and I'll keep the
->>>> versioning going forward.
->>>>
->>>> This is the summary of the work so far:
->>>>
->>>> v1: Original RFC:
->>>>
->>>> https://lore.kernel.org/lkml/20240104130123.37115-1-brgl@bgdev.pl/T/
->>>>
->>>> v2: First real patch series (should have been PATCH v2) adding what I
->>>>       referred to back then as PCI power sequencing:
->>>>
->>>> https://lore.kernel.org/linux-arm-kernel/2024021413-grumbling-unlivable-c145@gregkh/T/
->>>>
->>>> v3: RFC for the DT representation of the PMU supplying the WLAN and BT
->>>>       modules inside the QCA6391 package (was largely separate from the
->>>>       series but probably should have been called PATCH or RFC v3):
->>>>
->>>> https://lore.kernel.org/all/CAMRc=Mc+GNoi57eTQg71DXkQKjdaoAmCpB=h2ndEpGnmdhVV-Q@mail.gmail.com/T/
->>>>
->>>> v4: Second attempt at the full series with changed scope (introduction of
->>>>       the pwrseq subsystem, should have been RFC v4)
->>>>
->>>> https://lore.kernel.org/lkml/20240201155532.49707-1-brgl@bgdev.pl/T/
->>>>
->>>> ===
->>>>
->>>> With that out of the way, I'd like to get down to explaining the two
->>>> problems I'm trying to solve.
->>>>
->>>> Problem statement #1: Dynamic bus chicken-and-egg problem.
->>>>
->>>> Certain on-board PCI devices need to be powered up before they are can be
->>>> detected but their PCI drivers won't get bound until the device is
->>>> powered-up so enabling the relevant resources in the PCI device driver
->>>> itself is impossible.
->>>>
->>>> Problem statement #2: Sharing inter-dependent resources between devices.
->>>>
->>>> Certain devices that use separate drivers (often on different busses)
->>>> share resources (regulators, clocks, etc.). Typically these resources
->>>> are reference-counted but in some cases there are additional interactions
->>>> between them to consider, for example specific power-up sequence timings.
->>>>
->>>> ===
->>>>
->>>> The reason for tackling both of these problems in a single series is the
->>>> fact the the platform I'm working on - Qualcomm RB5 - deals with both and
->>>> both need to be addressed in order to enable WLAN and Bluetooth support
->>>> upstream.
->>>>
->>>> The on-board WLAN/BT package - QCA6391 - has a Power Management Unit that
->>>> takes inputs from the host and exposes LDO outputs consumed by the BT and
->>>> WLAN modules which can be powered-up and down independently. However
->>>> a delay of 100ms must be respected between enabling the BT- and
->>>> WLAN-enable GPIOs[*].
->>>>
->>>> ===
->>>>
->>>> This series is logically split into several sections. I'll go
->>>> patch-by-patch and explain each step.
->>>>
->>>> Patch 1/18:
->>>>
->>>> This is a commit taken from the list by Jonathan Cameron that adds
->>>> a __free() helper for OF nodes. Not strictly related to the series but
->>>> until said commit ends in next, I need to carry it with this series.
->>>>
->>>> Patch 2/18:
->>>>
->>>> This enables the ath12k PCI module in arm64 defconfig as Qualcomm sm8650
->>>> and sm8550 reference platforms use it in the WCN7850 module.
->>>>
->>>> Patches 3/18-6/18:
->>>>
->>>> These contain all relevant DT bindings changes. We add new documents for
->>>> the QCA6390 PMU and ATH12K devices as well as extend the bindings for the
->>>> Qualcomm Bluetooth and ATH11K modules with regulators used by them in
->>>> QCA6390.
->>>>
->>>> Patches 7/18-9/18:
->>>>
->>>> These contain changes to device-tree sources for the three platforms we
->>>> work with in this series. As the WCN7850 module doesn't require any
->>>> specific timings introducing dependencies between the Bluetooth and WLAN
->>>> modules, while the QCA6390 does, we take two different approaches to how
->>>> me model them in DT.
->>>>
->>>> For WCN7850 we hide the existence of the PMU as modeling it is simply not
->>>> necessary. The BT and WLAN devices on the device-tree are represented as
->>>> consuming the inputs (relevant to the functionality of each) of the PMU
->>>> directly.
->>>
->>> We are describing the hardware. From the hardware point of view, there
->>> is a PMU. I think at some point we would really like to describe all
->>> Qualcomm/Atheros WiFI+BT units using this PMU approach, including the
->>> older ath10k units present on RB3 (WCN3990) and db820c (QCA6174).
->>
->> While I agree with older WiFi+BT units, I don't think it's needed for
->> WCN7850 since BT+WiFi are now designed to be fully independent and PMU is
->> transparent.
-> 
-> I don't see any significant difference between WCN6750/WCN6855 and
-> WCN7850 from the PMU / power up point of view. Could you please point
-> me to the difference?
-> 
+The tx bitrate of "iw dev xxx station dump" always show an invalid value
+"tx bitrate: 6.0MBit/s".
 
-The WCN7850 datasheet clearly states there's not contraint on the WLAN_EN
-and BT_EN ordering and the only requirement is to have all input regulators
-up before pulling up WLAN_EN and/or BT_EN.
+To address this issue, parse the tx complete report from firmware and
+indicate the tx rate to mac80211.
 
-This makes the PMU transparent and BT and WLAN can be described as independent.
+After that, "iw dev xxx station dump" show the correct tx bitrate such as:
+tx bitrate: 104.0 MBit/s MCS 13
+tx bitrate: 144.4 MBit/s MCS 15 short GI
+tx bitrate: 626.9 MBit/s 80MHz HE-MCS 6 HE-NSS 2 HE-GI 0 HE-DCM 0
+tx bitrate: 1921.5 MBit/s 160MHz HE-MCS 9 HE-NSS 2 HE-GI 0 HE-DCM 0
 
-Neil
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+Tested-on: QCN9274 hw2.0 PCI QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
+---
+v4:
+1.delete single_pdev_only judgement
+2.update hal_tx.h copyright to include 2024
+3.remove extraneous code
+
+v3:
+1.update hal_tx.h copyright to include 2023
+
+v2:
+1.modify types
+
+
+ drivers/net/wireless/ath/ath12k/core.h   |   1 +
+ drivers/net/wireless/ath/ath12k/dp_mon.c |   2 +-
+ drivers/net/wireless/ath/ath12k/dp_rx.c  |   6 +-
+ drivers/net/wireless/ath/ath12k/dp_tx.c  | 121 ++++++++++++++++++++++-
+ drivers/net/wireless/ath/ath12k/hal_tx.h |   9 +-
+ drivers/net/wireless/ath/ath12k/mac.c    |  92 +++++++++++++++++
+ drivers/net/wireless/ath/ath12k/mac.h    |   3 +
+ 7 files changed, 224 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
+index 97e5a0ccd233..2c8e23ab894f 100644
+--- a/drivers/net/wireless/ath/ath12k/core.h
++++ b/drivers/net/wireless/ath/ath12k/core.h
+@@ -425,6 +425,7 @@ struct ath12k_sta {
+ 	struct ath12k_rx_peer_stats *rx_stats;
+ 	struct ath12k_wbm_tx_stats *wbm_tx_stats;
+ 	u32 bw_prev;
++	u32 peer_nss;
+ };
+ 
+ #define ATH12K_MIN_5G_FREQ 4150
+diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c b/drivers/net/wireless/ath/ath12k/dp_mon.c
+index 2d56913a75d0..c3466c493c5f 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_mon.c
++++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
+@@ -290,7 +290,7 @@ static void ath12k_dp_mon_parse_he_sig_b1_mu(u8 *tlv_data,
+ 
+ 	ru_tones = u32_get_bits(info0,
+ 				HAL_RX_HE_SIG_B1_MU_INFO_INFO0_RU_ALLOCATION);
+-	ppdu_info->ru_alloc = ath12k_he_ru_tones_to_nl80211_he_ru_alloc(ru_tones);
++	ppdu_info->ru_alloc = ath12k_mac_phy_he_ru_to_nl80211_he_ru_alloc(ru_tones);
+ 	ppdu_info->he_RU[0] = ru_tones;
+ 	ppdu_info->reception_type = HAL_RX_RECEPTION_TYPE_MU_MIMO;
+ }
+diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
+index ca76c018dd0c..345f14cfbc9e 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
+@@ -1422,10 +1422,10 @@ ath12k_update_per_peer_tx_stats(struct ath12k *ar,
+ 		arsta->txrate.mcs = mcs;
+ 		arsta->txrate.flags = RATE_INFO_FLAGS_HE_MCS;
+ 		arsta->txrate.he_dcm = dcm;
+-		arsta->txrate.he_gi = ath12k_he_gi_to_nl80211_he_gi(sgi);
++		arsta->txrate.he_gi = ath12k_mac_he_gi_to_nl80211_he_gi(sgi);
+ 		tones = le16_to_cpu(user_rate->ru_end) -
+ 			le16_to_cpu(user_rate->ru_start) + 1;
+-		v = ath12k_he_ru_tones_to_nl80211_he_ru_alloc(tones);
++		v = ath12k_mac_phy_he_ru_to_nl80211_he_ru_alloc(tones);
+ 		arsta->txrate.he_ru_alloc = v;
+ 		break;
+ 	}
+@@ -2334,7 +2334,7 @@ static void ath12k_dp_rx_h_rate(struct ath12k *ar, struct hal_rx_desc *rx_desc,
+ 		}
+ 		rx_status->encoding = RX_ENC_HE;
+ 		rx_status->nss = nss;
+-		rx_status->he_gi = ath12k_he_gi_to_nl80211_he_gi(sgi);
++		rx_status->he_gi = ath12k_mac_he_gi_to_nl80211_he_gi(sgi);
+ 		rx_status->bw = ath12k_mac_bw_to_mac80211_bw(bw);
+ 		break;
+ 	}
+diff --git a/drivers/net/wireless/ath/ath12k/dp_tx.c b/drivers/net/wireless/ath/ath12k/dp_tx.c
+index 572b87153647..3189ca66d9fc 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_tx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_tx.c
+@@ -8,6 +8,8 @@
+ #include "dp_tx.h"
+ #include "debug.h"
+ #include "hw.h"
++#include "peer.h"
++#include "mac.h"
+ 
+ static enum hal_tcl_encap_type
+ ath12k_dp_tx_get_encap_type(struct ath12k_vif *arvif, struct sk_buff *skb)
+@@ -443,6 +445,99 @@ ath12k_dp_tx_process_htt_tx_complete(struct ath12k_base *ab,
+ 	}
+ }
+ 
++static void ath12k_dp_tx_update_txcompl(struct ath12k *ar, struct hal_tx_status *ts)
++{
++	struct ath12k_base *ab = ar->ab;
++	struct ath12k_peer *peer;
++	struct ath12k_sta *arsta;
++	struct ieee80211_sta *sta;
++	u16 rate;
++	u8 rate_idx = 0;
++	int ret;
++
++	spin_lock_bh(&ab->base_lock);
++	peer = ath12k_peer_find_by_id(ab, ts->peer_id);
++	if (!peer || !peer->sta) {
++		ath12k_dbg(ab, ATH12K_DBG_DP_TX,
++			   "failed to find the peer by id %u\n", ts->peer_id);
++		goto err_out;
++	}
++
++	sta = peer->sta;
++	arsta = ath12k_sta_to_arsta(sta);
++
++	memset(&arsta->txrate, 0, sizeof(arsta->txrate));
++
++	/* This is to prefer choose the real NSS value arsta->last_txrate.nss,
++	 * if it is invalid, then choose the NSS value while assoc.
++	 */
++	if (arsta->last_txrate.nss)
++		arsta->txrate.nss = arsta->last_txrate.nss;
++	else
++		arsta->txrate.nss = arsta->peer_nss;
++
++	if (ts->pkt_type == HAL_TX_RATE_STATS_PKT_TYPE_11A ||
++	    ts->pkt_type == HAL_TX_RATE_STATS_PKT_TYPE_11B) {
++		ret = ath12k_mac_hw_ratecode_to_legacy_rate(ts->mcs,
++							    ts->pkt_type,
++							    &rate_idx,
++							    &rate);
++		if (ret < 0)
++			goto err_out;
++
++		arsta->txrate.legacy = rate;
++	} else if (ts->pkt_type == HAL_TX_RATE_STATS_PKT_TYPE_11N) {
++		if (ts->mcs > ATH12K_HT_MCS_MAX)
++			goto err_out;
++
++		if (arsta->txrate.nss != 0)
++			arsta->txrate.mcs = ts->mcs + 8 * (arsta->txrate.nss - 1);
++		arsta->txrate.flags = RATE_INFO_FLAGS_MCS;
++		if (ts->sgi)
++			arsta->txrate.flags |= RATE_INFO_FLAGS_SHORT_GI;
++	} else if (ts->pkt_type == HAL_TX_RATE_STATS_PKT_TYPE_11AC) {
++		if (ts->mcs > ATH12K_VHT_MCS_MAX)
++			goto err_out;
++
++		arsta->txrate.mcs = ts->mcs;
++		arsta->txrate.flags = RATE_INFO_FLAGS_VHT_MCS;
++		if (ts->sgi)
++			arsta->txrate.flags |= RATE_INFO_FLAGS_SHORT_GI;
++	} else if (ts->pkt_type == HAL_TX_RATE_STATS_PKT_TYPE_11AX) {
++		if (ts->mcs > ATH12K_HE_MCS_MAX)
++			goto err_out;
++
++		arsta->txrate.mcs = ts->mcs;
++		arsta->txrate.flags = RATE_INFO_FLAGS_HE_MCS;
++		arsta->txrate.he_gi = ath12k_mac_he_gi_to_nl80211_he_gi(ts->sgi);
++	}
++
++	arsta->txrate.bw = ath12k_mac_bw_to_mac80211_bw(ts->bw);
++	if (ts->ofdma && ts->pkt_type == HAL_TX_RATE_STATS_PKT_TYPE_11AX) {
++		arsta->txrate.bw = RATE_INFO_BW_HE_RU;
++		arsta->txrate.he_ru_alloc =
++			ath12k_mac_he_ru_tones_to_nl80211_he_ru_alloc(ts->ru_tones);
++	}
++
++err_out:
++	spin_unlock_bh(&ab->base_lock);
++}
++
++static void ath12k_dp_tx_update(struct ath12k *ar, struct hal_tx_status *ts)
++{
++	if (ar->last_ppdu_id == 0)
++		goto update_last_ppdu_id;
++
++	if (ar->last_ppdu_id == ts->ppdu_id ||
++	    ar->cached_ppdu_id == ar->last_ppdu_id)
++		ar->cached_ppdu_id = ar->last_ppdu_id;
++
++	ath12k_dp_tx_update_txcompl(ar, ts);
++
++update_last_ppdu_id:
++	ar->last_ppdu_id = ts->ppdu_id;
++}
++
+ static void ath12k_dp_tx_complete_msdu(struct ath12k *ar,
+ 				       struct sk_buff *msdu,
+ 				       struct hal_tx_status *ts)
+@@ -498,6 +593,8 @@ static void ath12k_dp_tx_complete_msdu(struct ath12k *ar,
+ 	 * Might end up reporting it out-of-band from HTT stats.
+ 	 */
+ 
++	ath12k_dp_tx_update(ar, ts);
++
+ 	ieee80211_tx_status_skb(ath12k_ar_to_hw(ar), msdu);
+ 
+ exit:
+@@ -522,10 +619,26 @@ static void ath12k_dp_tx_status_parse(struct ath12k_base *ab,
+ 
+ 	ts->ppdu_id = le32_get_bits(desc->info1,
+ 				    HAL_WBM_COMPL_TX_INFO1_TQM_STATUS_NUMBER);
+-	if (le32_to_cpu(desc->rate_stats.info0) & HAL_TX_RATE_STATS_INFO0_VALID)
+-		ts->rate_stats = le32_to_cpu(desc->rate_stats.info0);
+-	else
+-		ts->rate_stats = 0;
++
++	if (le32_to_cpu(desc->info2) & HAL_WBM_COMPL_TX_INFO2_FIRST_MSDU)
++		ts->flags |= HAL_TX_STATUS_FLAGS_FIRST_MSDU;
++
++	ts->peer_id = le32_get_bits(desc->info3, HAL_WBM_COMPL_TX_INFO3_PEER_ID);
++
++	if (le32_to_cpu(desc->rate_stats.info0) & HAL_TX_RATE_STATS_INFO0_VALID) {
++		ts->pkt_type = le32_get_bits(desc->rate_stats.info0,
++					     HAL_TX_RATE_STATS_INFO0_PKT_TYPE);
++		ts->mcs = le32_get_bits(desc->rate_stats.info0,
++					HAL_TX_RATE_STATS_INFO0_MCS);
++		ts->sgi = le32_get_bits(desc->rate_stats.info0,
++					HAL_TX_RATE_STATS_INFO0_SGI);
++		ts->bw = le32_get_bits(desc->rate_stats.info0,
++				       HAL_TX_RATE_STATS_INFO0_BW);
++		ts->ru_tones = le32_get_bits(desc->rate_stats.info0,
++					     HAL_TX_RATE_STATS_INFO0_TONES_IN_RU);
++		ts->ofdma = le32_get_bits(desc->rate_stats.info0,
++					  HAL_TX_RATE_STATS_INFO0_OFDMA_TX);
++	}
+ }
+ 
+ void ath12k_dp_tx_completion_handler(struct ath12k_base *ab, int ring_id)
+diff --git a/drivers/net/wireless/ath/ath12k/hal_tx.h b/drivers/net/wireless/ath/ath12k/hal_tx.h
+index 7c837094a6f7..7cfc584649ad 100644
+--- a/drivers/net/wireless/ath/ath12k/hal_tx.h
++++ b/drivers/net/wireless/ath/ath12k/hal_tx.h
+@@ -1,7 +1,7 @@
+ /* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /*
+  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
+- * Copyright (c) 2021-2022 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
+  */
+ 
+ #ifndef ATH12K_HAL_TX_H
+@@ -63,7 +63,12 @@ struct hal_tx_status {
+ 	u8 try_cnt;
+ 	u8 tid;
+ 	u16 peer_id;
+-	u32 rate_stats;
++	enum hal_tx_rate_stats_pkt_type pkt_type;
++	enum hal_tx_rate_stats_sgi sgi;
++	enum ath12k_supported_bw bw;
++	u8 mcs;
++	u16 ru_tones;
++	u8 ofdma;
+ };
+ 
+ #define HAL_TX_PHY_DESC_INFO0_BF_TYPE		GENMASK(17, 16)
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 52a5fb8b03e9..39fe845a6137 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -2365,8 +2365,12 @@ static void ath12k_peer_assoc_prepare(struct ath12k *ar,
+ 				      struct ath12k_wmi_peer_assoc_arg *arg,
+ 				      bool reassoc)
+ {
++	struct ath12k_sta *arsta;
++
+ 	lockdep_assert_held(&ar->conf_mutex);
+ 
++	arsta = ath12k_sta_to_arsta(sta);
++
+ 	memset(arg, 0, sizeof(*arg));
+ 
+ 	reinit_completion(&ar->peer_assoc_done);
+@@ -2383,6 +2387,7 @@ static void ath12k_peer_assoc_prepare(struct ath12k *ar,
+ 	ath12k_peer_assoc_h_phymode(ar, vif, sta, arg);
+ 	ath12k_peer_assoc_h_smps(sta, arg);
+ 
++	arsta->peer_nss = arg->peer_nss;
+ 	/* TODO: amsdu_disable req? */
+ }
+ 
+@@ -8324,3 +8329,90 @@ int ath12k_mac_allocate(struct ath12k_base *ab)
+ 
+ 	return ret;
+ }
++
++enum nl80211_he_ru_alloc ath12k_mac_phy_he_ru_to_nl80211_he_ru_alloc(u16 ru_phy)
++{
++	enum nl80211_he_ru_alloc ret;
++
++	switch (ru_phy) {
++	case RU_26:
++		ret = NL80211_RATE_INFO_HE_RU_ALLOC_26;
++		break;
++	case RU_52:
++		ret = NL80211_RATE_INFO_HE_RU_ALLOC_52;
++		break;
++	case RU_106:
++		ret = NL80211_RATE_INFO_HE_RU_ALLOC_106;
++		break;
++	case RU_242:
++		ret = NL80211_RATE_INFO_HE_RU_ALLOC_242;
++		break;
++	case RU_484:
++		ret = NL80211_RATE_INFO_HE_RU_ALLOC_484;
++		break;
++	case RU_996:
++		ret = NL80211_RATE_INFO_HE_RU_ALLOC_996;
++		break;
++	default:
++		ret = NL80211_RATE_INFO_HE_RU_ALLOC_26;
++		break;
++	}
++
++	return ret;
++}
++
++enum nl80211_he_ru_alloc ath12k_mac_he_ru_tones_to_nl80211_he_ru_alloc(u16 ru_tones)
++{
++	enum nl80211_he_ru_alloc ret;
++
++	switch (ru_tones) {
++	case 26:
++		ret = NL80211_RATE_INFO_HE_RU_ALLOC_26;
++		break;
++	case 52:
++		ret = NL80211_RATE_INFO_HE_RU_ALLOC_52;
++		break;
++	case 106:
++		ret = NL80211_RATE_INFO_HE_RU_ALLOC_106;
++		break;
++	case 242:
++		ret = NL80211_RATE_INFO_HE_RU_ALLOC_242;
++		break;
++	case 484:
++		ret = NL80211_RATE_INFO_HE_RU_ALLOC_484;
++		break;
++	case 996:
++		ret = NL80211_RATE_INFO_HE_RU_ALLOC_996;
++		break;
++	case (996 * 2):
++		ret = NL80211_RATE_INFO_HE_RU_ALLOC_2x996;
++		break;
++	default:
++		ret = NL80211_RATE_INFO_HE_RU_ALLOC_26;
++		break;
++	}
++
++	return ret;
++}
++
++enum nl80211_he_gi ath12k_mac_he_gi_to_nl80211_he_gi(u8 sgi)
++{
++	enum nl80211_he_gi ret;
++
++	switch (sgi) {
++	case RX_MSDU_START_SGI_0_8_US:
++		ret = NL80211_RATE_INFO_HE_GI_0_8;
++		break;
++	case RX_MSDU_START_SGI_1_6_US:
++		ret = NL80211_RATE_INFO_HE_GI_1_6;
++		break;
++	case RX_MSDU_START_SGI_3_2_US:
++		ret = NL80211_RATE_INFO_HE_GI_3_2;
++		break;
++	default:
++		ret = NL80211_RATE_INFO_HE_GI_0_8;
++		break;
++	}
++
++	return ret;
++}
+diff --git a/drivers/net/wireless/ath/ath12k/mac.h b/drivers/net/wireless/ath/ath12k/mac.h
+index 3f5e1be0dff9..c7c48d5efca4 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.h
++++ b/drivers/net/wireless/ath/ath12k/mac.h
+@@ -78,4 +78,7 @@ enum ath12k_supported_bw ath12k_mac_mac80211_bw_to_ath12k_bw(enum rate_info_bw b
+ enum hal_encrypt_type ath12k_dp_tx_get_encrypt_type(u32 cipher);
+ int ath12k_mac_rfkill_enable_radio(struct ath12k *ar, bool enable);
+ int ath12k_mac_rfkill_config(struct ath12k *ar);
++enum nl80211_he_gi ath12k_mac_he_gi_to_nl80211_he_gi(u8 sgi);
++enum nl80211_he_ru_alloc ath12k_mac_phy_he_ru_to_nl80211_he_ru_alloc(u16 ru_phy);
++enum nl80211_he_ru_alloc ath12k_mac_he_ru_tones_to_nl80211_he_ru_alloc(u16 ru_tones);
+ #endif
+
+base-commit: 707e306f3573fa321ae197d77366578e4566cff5
+-- 
+2.34.1
+
 
