@@ -1,87 +1,104 @@
-Return-Path: <linux-wireless+bounces-3785-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3786-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D7E685A8C2
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Feb 2024 17:22:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 423E985A8DC
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Feb 2024 17:25:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DF631C203B9
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Feb 2024 16:22:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F29D52826BD
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Feb 2024 16:25:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 980913C09F;
-	Mon, 19 Feb 2024 16:22:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F5F63BB3B;
+	Mon, 19 Feb 2024 16:25:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K3owxR2p"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="m7wAZCUy"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F6CE3399C;
-	Mon, 19 Feb 2024 16:22:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C22B3D553;
+	Mon, 19 Feb 2024 16:24:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708359720; cv=none; b=my+7OL6ZFZzL8y+wAPb/2qFCgX24+UpIO7dN9L4NmSRknxf0pVSzUkd3qxXzGcdjFboCeJtWdLkdDRDTfbisrwtLhl5U1BPhyqC4oOkMCLn+WaTa6cQ4yYbyR2oC1InPM2ECHl2W8+G+5Um2W1zGfMaz221ew9Ar0iyDcgj/jlQ=
+	t=1708359901; cv=none; b=Rmx25MFPwaukYwPoHkJ/KiOfdUIs6qCYQ4xgn2QC7F+L/hIX7WWiEHZFcHYO8bMbhKxD3J2yLyYwyEBsY+09V7RC5cO7YFSPzYuH/JftwCH+JrHZpCbXLIkf89UGPw0hTvjBAKZGKN7hwERawrnsG8aS+EjGbrB/lo89KIaCjFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708359720; c=relaxed/simple;
-	bh=poqWJYLpGWi6VBFBO/1VRRUYnD195F2U9nLBnrdiLtM=;
-	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=GSy4LT4sLEAmYKM7S2POin0cVcu5mIrX3FRUjeZ/A4zj1lrNnQNscdE6BugHkqpH71Nzfr6MZHfuu2Ichzf5ZgNxAIBGxvZlkV0Jm9fECBkiPcqPh4ImnUiBClf+LCQ4kFqh4l5YCb7NjDn5/kC4uWcM6X4+7BVxQzJkmo8BuVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K3owxR2p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75F58C433F1;
-	Mon, 19 Feb 2024 16:21:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708359720;
-	bh=poqWJYLpGWi6VBFBO/1VRRUYnD195F2U9nLBnrdiLtM=;
-	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=K3owxR2puc00Fi/sNvX25bta2oCRh324+1yVJNmegAkHOyvefBAGrTpw67aLA3bSX
-	 RMSHc70alN0Lr/O8hGRc7Oz7qEwcrQDetb+ARehMy8fIR46fEq9eBXPSBJjiDOezh0
-	 sw/DMCXYP1LNll3BZQKR/OM/1jTbaex0zqyVUJX+86l7sYi/UWwcMFRJoBpUiZMJp/
-	 riNebfzWR+J/RtSGvmR8SoqGViP7e1f8lNxe0+ui8XHcMWO1FMEJgEowkeUZl3UuF/
-	 gJ++/Zp9vUcpilbYJSkscewO6mmT5YM9FKrwhz94bOH7zHf8bP2JNbi2qeEZurcjp/
-	 dRNz+fSMps4Ig==
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1708359901; c=relaxed/simple;
+	bh=cFjJxouXv5NZJXPTmp/tnMpe+c8tHhVBt4C7mhJC21g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PjB0+dJDYjbleD8OAam5hH0O3qqSrBkFYWOZlAijC6mCEYDg5Lg8Ikink3l1jZwpnMKefrrDWPYJdACDxRUAwbkBr3ZJGrDAS5H1KkJN34cX8VGgT7NYd7B2iGqqeUkrgmSOEUphmMLlw8f+TZWzqox3fcg3E2kztvJxBtfFc9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=m7wAZCUy; arc=none smtp.client-ip=217.70.183.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 17EF01BF204;
+	Mon, 19 Feb 2024 16:24:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1708359896;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=e7X6+O6y7A5fbGRJ2LaA18oGTtAGJIFRQoFoV1pDv1E=;
+	b=m7wAZCUyxT/q4P16f+n13OjvXMouLWL0dOW2ObxcuTX9ADRcvJPunAPBSVoRQzuCphdQlR
+	ynSJcn5phtdBRfOU66TCFyCZnLJhfosfYOQeJqIcaruRNsIAGv0zxYjfzw8Cl799wj2JhV
+	2bFFW8Olnlxfw4ulwl0T0nXC31kX5lmwkghosj/PBFfCqK38xi8HuwIf8ZbAwCm7TIuGFT
+	ZxvopUEEhbPts6b/gVwWiIf32TI8n66ceq56SSnz2Ylr1X+aVVUSOMadtj5msTBe3mwVQV
+	O/5pyz/CsP6BrMjal/4I3Aexjij82u7nc06QtmVRIuvuz6LprwI9LTDAENZ1Vg==
+Message-ID: <b3c31f4c-e837-47b6-bd0d-e8cf2b9964aa@bootlin.com>
+Date: Mon, 19 Feb 2024 17:24:55 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH 1/4] wifi: wilc1000: split deeply nested RCU list
- traversal
- in dedicated helper
-From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240215-wilc_fix_rcu_usage-v1-1-f610e46c6f82@bootlin.com>
-References: <20240215-wilc_fix_rcu_usage-v1-1-f610e46c6f82@bootlin.com>
-To: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/4] wifi: wilc1000: fix RCU usage
+Content-Language: en-US
+To: Kalle Valo <kvalo@kernel.org>
 Cc: linux-wireless@vger.kernel.org, Ajay Singh <ajay.kathat@microchip.com>,
  Claudiu Beznea <claudiu.beznea@tuxon.dev>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- linux-kernel@vger.kernel.org,
- =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170835971632.848163.13838781391580317277.kvalo@kernel.org>
-Date: Mon, 19 Feb 2024 16:21:58 +0000 (UTC)
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linux-kernel@vger.kernel.org
+References: <20240215-wilc_fix_rcu_usage-v1-0-f610e46c6f82@bootlin.com>
+ <87h6i4mnoj.fsf@kernel.org>
+From: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+In-Reply-To: <87h6i4mnoj.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: alexis.lothore@bootlin.com
 
-Alexis Lothoré <alexis.lothore@bootlin.com> wrote:
-
-> Move netif_wake_queue and its surrounding RCU operations in a dedicated
-> function to clarify wilc_txq_task and ease refactoring
+On 2/19/24 17:19, Kalle Valo wrote:
+> Alexis Lothoré <alexis.lothore@bootlin.com> writes:
 > 
-> Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
+>> This small series aims to fix multiple warnings observed when enabling
+>> CONFIG_PROVE_RCU_LIST:
+>> - add missing locks to create corresponding critical read sections
+>> - fix mix between RCU and SRCU API usage
+>>
+>> While at it, since SRCU API is already in use in the driver, any fix done
+>> on RCU usage was also done with the SRCU variant of RCU API. I do not
+>> really get why we are using SRCU in this driver instead of classic RCU, as
+>> it seems to be done in any other wireless driver.
+> 
+> And even more so, no other driver in drivers/net use SRCU.
+> 
+>> My understanding is that primary SRCU use case is for compatibility
+>> with realtime kernel, which needs to be preemptible everywhere. Has
+>> the driver been really developped with this constraint in mind ? If
+>> you have more details about this, feel free to educate me.
+> 
+> Alexis, if you have the time I recommend submitting a patchset
+> converting wilc1000 to use classic RCU. At least I have a hard time
+> understanding why SRCU is needed, especially after seeing the warning
+> you found.
 
-4 patches applied to wireless-next.git, thanks.
-
-5d2dbccc2b3c wifi: wilc1000: split deeply nested RCU list traversal in dedicated helper
-059d0e3876ab wifi: wilc1000: use SRCU instead of RCU for vif list traversal
-51e4aa8c449b wifi: wilc1000: fix declarations ordering
-dd66185c23f7 wifi: wilc1000: add missing read critical sections around vif list traversal
+If nobody else comes in with a strong argument in favor of keeping SRCU, yes I
+can certainly add that to my backlog :)
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240215-wilc_fix_rcu_usage-v1-1-f610e46c6f82@bootlin.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Alexis Lothoré, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
