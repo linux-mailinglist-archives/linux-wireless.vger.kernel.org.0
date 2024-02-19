@@ -1,125 +1,127 @@
-Return-Path: <linux-wireless+bounces-3762-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3763-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E00D859D2D
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Feb 2024 08:43:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62E59859DBA
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Feb 2024 09:02:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D80C1F22AE0
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Feb 2024 07:43:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 967241C20C78
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Feb 2024 08:02:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 834A220B24;
-	Mon, 19 Feb 2024 07:43:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E410F24B34;
+	Mon, 19 Feb 2024 07:57:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="VVl8JQpi"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from us-smtp-delivery-195.mimecast.com (us-smtp-delivery-195.mimecast.com [170.10.129.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f53.google.com (mail-vs1-f53.google.com [209.85.217.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A7F020B11
-	for <linux-wireless@vger.kernel.org>; Mon, 19 Feb 2024 07:43:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E6C924A09
+	for <linux-wireless@vger.kernel.org>; Mon, 19 Feb 2024 07:57:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708328606; cv=none; b=B36tXXGRI9O3YXd0EdCYVNK/mUO+blJQ5ofWELOkLwiEQziPzbxdmU2GMOxM1IUJx9LJqSjAfbaQzQuWZztiHCn/zA+rKAPP36CZg/5S9+WvU/e3stB3+WKwAv3SdMv3HDv4UGHvwl0XWql3ylFYui1+3ow93e65wS1dF33x3mA=
+	t=1708329430; cv=none; b=f+Q3O61hjMgtdOSJbtPljsws/WZ8shuDr1YwHqjYcPI+0HxWs90r1y7ib8itp5/y0RR461lHjQ4vQBTgk0PbSP4f3thT0PCzyyZrjTqyw3Svgj+M2wX82NaKTfkWGtKpkaYcTKrTEjnl75QnYfTfOYHMM79za3TuZjFq7YCPT58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708328606; c=relaxed/simple;
-	bh=CspWxoX+5MxWTUfvwUaErl3ZF5VVTRvzZtJDKGpVefk=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=ZXmxGpE0P0XRDvp+XTnkpSdlyCgL8IHRRf4szWzNo2GhHrh0Ha7SqrRdXQ+mV1vv7LUZs406Ll1GLaLcQPKNOooZ3HLxnjg8bhnBshGrUeB+QzT+c0Gmu1C6x1GtBy1heu5Ni+EGVx3Jw/C5dnJ/gW8k8AgcKl94jcgx85mvhT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mbari.org; spf=pass smtp.mailfrom=mbari.org; arc=none smtp.client-ip=170.10.129.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mbari.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mbari.org
-Received: from sleet.shore.mbari.org (sleet.shore.mbari.org [134.89.12.10])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-633-dp-mKkxlNzubNEaBX-sDJw-1; Mon,
- 19 Feb 2024 02:43:21 -0500
-X-MC-Unique: dp-mKkxlNzubNEaBX-sDJw-1
-Received: from localhost (localhost [127.0.0.1])
-	by sleet.shore.mbari.org (Postfix) with ESMTP id 163CE81060205;
-	Sun, 18 Feb 2024 23:43:20 -0800 (PST)
-X-Virus-Scanned: amavis at sleet.shore.mbari.org
-Received: from sleet.shore.mbari.org ([127.0.0.1])
- by localhost (sleet.shore.mbari.org [127.0.0.1]) (amavis, port 10026)
- with ESMTP id xx6jalnc2v3B; Sun, 18 Feb 2024 23:43:20 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-	by sleet.shore.mbari.org (Postfix) with ESMTP id EC75481060200;
-	Sun, 18 Feb 2024 23:43:19 -0800 (PST)
-Received: from [192.168.6.194] (raven.shore.mbari.org [134.89.10.221])
-	by sleet.shore.mbari.org (Postfix) with ESMTPSA;
-	Sun, 18 Feb 2024 23:43:19 -0800 (PST)
-Subject: Re: rtw88 driver support for rtl8723ds does not work on Radxa
- RockPi-S
-To: Kalle Valo <kvalo@kernel.org>, Larry Finger <Larry.Finger@lwfinger.net>
-Cc: linux-wireless@vger.kernel.org, martin.blumenstingl@googlemail.com
-References: <9f47e65e-35f1-b090-cad1-4d8333293b00@mbari.org>
- <9f7c6005-e9c5-4691-87c2-fee8641f02a4@lwfinger.net>
- <f8d31d74-fdfe-8706-6748-273b8c3674ca@mbari.org>
- <b9a4df4e-4b1f-436f-ae4b-90fc0c68ae81@lwfinger.net>
- <878r3hc6hy.fsf@kernel.org>
-From: Brent Roman <brent@mbari.org>
-Organization: MBARI
-Message-ID: <42772df2-32b3-2b37-045d-b528a752bef7@mbari.org>
-Date: Sun, 18 Feb 2024 23:43:19 -0800
-User-Agent: Mozilla/5.0 (X11; Linux i686; rv:46.0) Gecko/20100101 Firefox/46.0
+	s=arc-20240116; t=1708329430; c=relaxed/simple;
+	bh=Oey3ZN4EIWUJzNAo3Boteeg+KwnzJ3oRelbiZ+NcSGs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rfNKy8caznDmOlZ2dB6/hS5kuB66ExcSehxAERxfVm4Cm4s1JID7wyJxt3IROZR71eJVYU7w2W8mU3p5kZuAP8+u/aUulvn7ySOl89ynXvRQJ53QL6xsEV/QD+mYiyHfDn3425RjigexYamJObvb21K2BdHMeO3r8HCG7xRWsWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=VVl8JQpi; arc=none smtp.client-ip=209.85.217.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-vs1-f53.google.com with SMTP id ada2fe7eead31-46d60c75683so339493137.1
+        for <linux-wireless@vger.kernel.org>; Sun, 18 Feb 2024 23:57:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1708329428; x=1708934228; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Oey3ZN4EIWUJzNAo3Boteeg+KwnzJ3oRelbiZ+NcSGs=;
+        b=VVl8JQpietD6ymCw8P666kr9JYEJOP/6jeXxWYk9wcv7MiDlOZHDq7j78X8ip5RtIL
+         oGOg9zYfQV0Sd4wVp+AvOhyd1zR/usG2RKVc8dc9MV8tXFrH2CeZQ0YWWa9evUyQJQ/s
+         drcPWv7qhkki+1T1yyXOIwpaLakGZoChRSfvzccCuQY3XjVtz7jCXViDDBb1vrPa2K8Y
+         +EcJXvaxSF6pM2Uk9/oetGyr/zPuk4PGPok/1+mdFuioVNYGLnilS9zjbbOY1YFcZHCB
+         B15hP2Ev/V3gsUF7j4dhNYeKiiKrTNge27kTORfRqqI7x30iJgnGqpsogtpL9MH66rbC
+         tBxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708329428; x=1708934228;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Oey3ZN4EIWUJzNAo3Boteeg+KwnzJ3oRelbiZ+NcSGs=;
+        b=lnb9xqtOCT5hPnibCaAYMJRvdr9fgT/Z8tOicAxO20HAd8Jt09eTh+jIpKHNzsJGQG
+         CDfnAhX1Q7NRjRMrdf37d+lcoyd4+NDn+yBv3SQErBU02WdCjLbKbwYuCPb/Qkv81m8b
+         Mtl42jDAcXy5aOd7rurbFNK8EfTFzC2WlynCu6/sFmIXaLElm0jzMLHeeKhgeFOaEHRl
+         uf4od4NbmQ5jMn3WknA8Eism1EfCFdVKfzxFRJdZjiB4+uml4f2QTdwJMwsOozWs0Fx1
+         aa+QQe0EAuIROyVVbggdZWKUgedTnYBXnUqCyc9Ovg3J44Y3vqiXf54YUkMJLNol1AzY
+         CqfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXXX6/ashg50vSsarHKnymgodsPr9xZrd9ScfuolrRkIodqv/QD55oUCOib17HugAlgSEEMxf93kTrfLLVCL5yqZ76cAs/EVDH40TLtjYo=
+X-Gm-Message-State: AOJu0Yxk0aSMldnE9WWL40k2JLbYxdSDKiZcuEv14D26PwL7JpYa6XHb
+	LJsWXrGPdhlO/7lVtcyhQ5+Zr+6J0TKt1LcVsCt2EoA4gj2o7AoEni7SjiVSd0HtGVSNVK7b5rr
+	K76YS8Oa8Y0js1efTKM06cnNb6DH6gGOzkxXojw==
+X-Google-Smtp-Source: AGHT+IGkQijUvXHSNfPb2HxhHlZq4HKDdG92W7zvsTAzBpVd1PSmvpJBFeiTOYN7sqVAKs/Q5f+Y2wj1Qp78qPvhlpQ=
+X-Received: by 2002:a05:6102:409:b0:470:4cfa:c814 with SMTP id
+ d9-20020a056102040900b004704cfac814mr2022895vsq.24.1708329428140; Sun, 18 Feb
+ 2024 23:57:08 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <878r3hc6hy.fsf@kernel.org>
-X-Clacks-Overhead: GNU Terry Pratchett
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: mbari.org
-Content-Type: text/plain; charset=WINDOWS-1252; format=flowed
+References: <20240216203215.40870-1-brgl@bgdev.pl> <20240216203215.40870-3-brgl@bgdev.pl>
+ <71e9a57e-8be3-4213-9822-45dfc5eb7ceb@linaro.org>
+In-Reply-To: <71e9a57e-8be3-4213-9822-45dfc5eb7ceb@linaro.org>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Mon, 19 Feb 2024 08:56:57 +0100
+Message-ID: <CAMRc=Md1PzoZFDWHWRufktmMiBE0Dp7eYhecpwuaS3AW-Y_g=w@mail.gmail.com>
+Subject: Re: [PATCH v5 02/18] arm64: defconfig: enable ath12k as a module
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Kalle Valo <kvalo@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konrad.dybcio@linaro.org>, Liam Girdwood <lgirdwood@gmail.com>, 
+	Mark Brown <broonie@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Saravana Kannan <saravanak@google.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Arnd Bergmann <arnd@arndb.de>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Alex Elder <elder@linaro.org>, 
+	Srini Kandagatla <srinivas.kandagatla@linaro.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Abel Vesa <abel.vesa@linaro.org>, 
+	Manivannan Sadhasivam <mani@kernel.org>, Lukas Wunner <lukas@wunner.de>, 
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, linux-bluetooth@vger.kernel.org, 
+	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-pci@vger.kernel.org, linux-pm@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Yes, that's all true.=A0 However...
-Random MAC address assignment tends to cause devices to be assigned a=20
-different IP address on each reboot.
-This often doesn't play nicely with port forwarding.
-
-It's difficult to "prove" the RK3308 cpu serial numbers are unique, but=20
-they should be and the few I've tested have been.
-
-- brent
-
-Kalle Valo wrote:
-> Larry Finger <Larry.Finger@lwfinger.net> writes:
+On Mon, Feb 19, 2024 at 8:31=E2=80=AFAM Krzysztof Kozlowski
+<krzysztof.kozlowski@linaro.org> wrote:
 >
->> On 2/17/24 23:13, Brent Roman wrote:
->>> Larry,
->>> Radxa confirmed that they do not program the eFUSE on these boards.
->>> We do not get a sensible MAC from the chip, so I derive a one from
->>> the CPU's unique serial number.
->>> It's a hack, but it works well and is standard's compliant.
->>> The RockPI-S a *very* inexpensive board, so I can understand Radxa
->>> wanting to minimize the time spent configuring each one.
->>> https://shop.allnetchina.cn/products/rock-pi-s
->>> The vendor driver seems to deal with this by applying typical gain
->>> parameters when the eFUSE is invalid.
->>> With that driver, this board's WiFi performs beautifully, despite
->>> the unprogrammed eFUSE.
->>> Would you accept a patch to add this logic to RTW88?
->> Of course a patch would be accepted. Ultimately, the changes should be
->> made to the wireless-next code base, and sent to this mailing list. To
->> make things easier, you can send me a patch file for the rtw88 repo,
->> and I can reformat it for wireless-next and send it to the mailing
->> list under your signed-off-by. Either one would work.
->>
->> Thanks for sorting this out. I like the idea of deriving the MAC
->> address from the CPU serial number. That is unique and reproducible.
-> But make sure that the CPU serial number is really unique. If it's not
-> that can cause MAC address collisions which is not good.
+> On 16/02/2024 21:31, Bartosz Golaszewski wrote:
+> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> >
+> > Build the ath12k driver as a module for arm64 default config.
 >
-> Usually wireless drivers create a random address if a stored MAC address
-> is not available.
+> This we see from the diff. Please tell us "why", e.g. "Board foo with
+> Qualcomm baz uses it."
+>
+> Also this should not be in these series. It only makes the
+> power-sequencing patchset bigger, without any real reason.
+>
+>
+> Best regards,
+> Krzysztof
 >
 
+Got it, I will resend it separately.
 
---=20
-  Brent Roman                                   MBARI
-  Software Engineer               Tel: (831) 775-1808
-  mailto:brent@mbari.org  http://www.mbari.org/~brent
-
+Bart
 
