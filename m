@@ -1,88 +1,95 @@
-Return-Path: <linux-wireless+bounces-3782-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3783-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD07885A839
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Feb 2024 17:08:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 133B285A8B4
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Feb 2024 17:20:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 499A9B24AB0
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Feb 2024 16:08:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C47B0285FC6
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Feb 2024 16:20:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A20B3D0A6;
-	Mon, 19 Feb 2024 16:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8369340BEF;
+	Mon, 19 Feb 2024 16:19:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oraUqvh/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xo5yyCr1"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694473B79D;
-	Mon, 19 Feb 2024 16:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 591D140BE4;
+	Mon, 19 Feb 2024 16:19:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708358907; cv=none; b=qk8yHIxtG5IaF19z0ONN6Q6wAIcc6hxdssI0OLNElnoRocXT1oLX5y142XTkpqxjZMwods7K47CNhjNMmrzdrwbOufM+wj1PdFA6VQcduCQf2/OTql7M5PabCxzsJDlGbeZMgUuFbpfmh9FqlN9lCkFZYiB7usLxpEpEVCffqLc=
+	t=1708359584; cv=none; b=h4Pl7sVUNH6harYUSdGXUDYU9VRUt/mzVrOrNWPXpqnX7jxK0It/4YpwfiHcj7eMJPG54/dPGbSwKKoNcTLs/DjH7uY+KDaCHcw1EWkLmnkk6yJm7W0vOWjU/yOf4lkEcZyPTmKK5pzR8v5UjV8HMtTGg5Z7jrN+eDfPPZRNM30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708358907; c=relaxed/simple;
-	bh=w5zyWB0zCqUq5ura4kPaJjtdUevtDVevxgEmY/Ns0J4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B+VxS0u9fh4dM6+CMdACsotEL/6nTLvau4MNRLFDLAjXbeaS0PVe8zmPWX5esau8yiD/UgRu3zrLxzBBb9amq9Uo25sokrWfBIanTk2S/2J1y1xzrQ78MkxQtE+JLkLBRI/dDYYO02x7Fbj9U/D43qbmAUPo7ShCTG2O/6tofPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oraUqvh/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5046C433B1;
-	Mon, 19 Feb 2024 16:08:24 +0000 (UTC)
+	s=arc-20240116; t=1708359584; c=relaxed/simple;
+	bh=geMTJ9lOTTXbNkYKZFBhsIQdmz8LDBCNbCre8M8nqR0=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=OnisBO6ozDisvQX3znNgeJsLqLm47XXixPrKrEsq9TOTqQAOnYsnOEptiPgm47o90KH1XOiPp0lrX6YZyGo4K7Mm6WDBa6rKPhHeMQO42jofe7apZf09uC4cXapUIe1s5B5zQbiLxb7K4tbNfdTlczr+N3bezepj+9qjTGHcMXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xo5yyCr1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89F60C43399;
+	Mon, 19 Feb 2024 16:19:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708358906;
-	bh=w5zyWB0zCqUq5ura4kPaJjtdUevtDVevxgEmY/Ns0J4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oraUqvh//OrA+nxEoztgmnAS+4ohUmYxlaCY1rqD8oC8cBSOYiKU8RHTdk7Fz8zUH
-	 p2MCufGHuJ75baRx8RxloHqcobppPB9VCxs8V5DVo82t4iQL8k+MDizJp2cCicC6aL
-	 dIyEb0cpNBSpucJ9iJLcOqFwn/dX/ani86me9QQItwuEG6URVcyNqwqV3IvkSqY7G8
-	 llLd5YAwtkqb8EZ72SUn/Fgc5TrUx1vClozODBhUkFPqkMFwxBe/EBAAZ/55Yz5L6P
-	 /1+VRVVUkVap4fXEhq+21Qy82FclEEF+9w23gP1EsrQpdZ28sZyqalNxj/H7FOOHDU
-	 fK6W0vzJBMCgA==
-Date: Mon, 19 Feb 2024 16:08:22 +0000
-From: Simon Horman <horms@kernel.org>
-To: Colin Ian King <colin.i.king@gmail.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-	kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] wifi: mac80211: clean up assignments to pointer cache.
-Message-ID: <20240219160822.GF40273@kernel.org>
-References: <20240215232151.2075483-1-colin.i.king@gmail.com>
+	s=k20201202; t=1708359583;
+	bh=geMTJ9lOTTXbNkYKZFBhsIQdmz8LDBCNbCre8M8nqR0=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=Xo5yyCr17Zoe09ZxqrdyCQU2C6g1HE9oPU0CRmvyA8NN9MqCk+sP6YsTrqD1nbheD
+	 ZGbriuY5QIQt7FJmgODmak9gdO89i6WdJuNuzt3kQS+GT5wyRNVMNWBcfHM6WuZkhR
+	 CHd6SYp3jxQa9G3TZsPxRBuOLfrRjKvdZrIcEojizE2trJ7IiUa4J1fbHERsmRcdCZ
+	 gKVmYrLRZ70GMdsr3IolfJuSY6alj3rdMbIBOn1p+WBUn2rxp0kHf2+7CQA9Hj9kg5
+	 MbGnhP3Utq9Ok/JWLZBeqrY9Med7mcC//cLqVzvK6AkHoifC6oqHaHvL9D1lEJeiYK
+	 80AmKKiI7eN3Q==
+From: Kalle Valo <kvalo@kernel.org>
+To: Alexis =?utf-8?Q?Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+Cc: linux-wireless@vger.kernel.org,  Ajay Singh <ajay.kathat@microchip.com>,
+  Claudiu Beznea <claudiu.beznea@tuxon.dev>,  Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>,  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/4] wifi: wilc1000: fix RCU usage
+References: <20240215-wilc_fix_rcu_usage-v1-0-f610e46c6f82@bootlin.com>
+Date: Mon, 19 Feb 2024 18:19:40 +0200
+In-Reply-To: <20240215-wilc_fix_rcu_usage-v1-0-f610e46c6f82@bootlin.com>
+	("Alexis =?utf-8?Q?Lothor=C3=A9=22's?= message of "Thu, 15 Feb 2024
+ 16:36:17 +0100")
+Message-ID: <87h6i4mnoj.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240215232151.2075483-1-colin.i.king@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 15, 2024 at 11:21:51PM +0000, Colin Ian King wrote:
-> From: Colin Ian King <colin.i.king@intel.com>
-> 
-> The assignment to pointer cache in function mesh_fast_tx_gc can
-> be made at the declaration time rather than a later assignment.
-> There are also 3 functions where pointer cache is being initialized
-> at declaration time and later re-assigned again with the same
-> value, these are redundant and can be removed.
-> 
-> Cleans up code and three clang scan build warnings:
-> warning: Value stored to 'cache' during its initialization is never
-> read [deadcode.DeadStores]
-> 
-> Signed-off-by: Colin Ian King <colin.i.king@intel.com>
+Alexis Lothor=C3=A9 <alexis.lothore@bootlin.com> writes:
 
-FWIIW, these changes look fine to me although I might have split the
-mesh_fast_tx_gc() and mesh_fast_tx_flush_sta() changes into different
-patches as they seem to address separate issues.
+> This small series aims to fix multiple warnings observed when enabling
+> CONFIG_PROVE_RCU_LIST:
+> - add missing locks to create corresponding critical read sections
+> - fix mix between RCU and SRCU API usage
+>
+> While at it, since SRCU API is already in use in the driver, any fix done
+> on RCU usage was also done with the SRCU variant of RCU API. I do not
+> really get why we are using SRCU in this driver instead of classic RCU, as
+> it seems to be done in any other wireless driver.
 
-That notwithstanding,
+And even more so, no other driver in drivers/net use SRCU.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+> My understanding is that primary SRCU use case is for compatibility
+> with realtime kernel, which needs to be preemptible everywhere. Has
+> the driver been really developped with this constraint in mind ? If
+> you have more details about this, feel free to educate me.
+
+Alexis, if you have the time I recommend submitting a patchset
+converting wilc1000 to use classic RCU. At least I have a hard time
+understanding why SRCU is needed, especially after seeing the warning
+you found.
+
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
 
