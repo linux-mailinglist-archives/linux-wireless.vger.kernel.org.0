@@ -1,168 +1,175 @@
-Return-Path: <linux-wireless+bounces-3806-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3807-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A576A85BD32
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Feb 2024 14:31:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C981185BD50
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Feb 2024 14:38:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D375D1C22349
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Feb 2024 13:31:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75CD328283B
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Feb 2024 13:38:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAA6A6A331;
-	Tue, 20 Feb 2024 13:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5FAB6A345;
+	Tue, 20 Feb 2024 13:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fCdvBwJ5"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="OewB+TF4"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f50.google.com (mail-ua1-f50.google.com [209.85.222.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97A24482FA;
-	Tue, 20 Feb 2024 13:31:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EA806A339
+	for <linux-wireless@vger.kernel.org>; Tue, 20 Feb 2024 13:38:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708435896; cv=none; b=rybErF8g4CkykPPfXF0iH8CweThjayXN+sU6YW2Yw70lgsFQ5C7dtthqawFMhRgEN8Nv5jnzx1uk7q7kPh1NZXKiQO1gpfCgeWldK8M73W7iIccsAKv92Z6qSpkAr5daSVw2FmOvjygLzIn9J9iCnu5sMA46EFryx6S2/8opk4Q=
+	t=1708436327; cv=none; b=oJmN/fJX7C4321+x2o+H0pYNmt3Z+wp9LYxlvPc8mmQfpOHhEQMKGGshim/UsBdCTI9jDXNLs9XjMsNldtDhi6kEUzUPd44KLRppUaQgYmtnMHNfGKZb3dPsbaTdWqvIN0on+VJjU9K02DjScIIkkVIlz3YYgOq5T0idlEs5vZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708435896; c=relaxed/simple;
-	bh=Om4nwbIVaGL4qkTV+9XeVJq/OQVsY234eiAuH2YW+nA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UWy3iEk1/trh9YC4xQNo1I8REKCgcucBwh6oKz8LTJK/cYjauPsb0Yl9gCgEf9qmiD8+nVdjqy0R9FzgqaUYy9RVedF8tc/JomMAw2pCCUVnz18KU+dlkNOHg5vn9UQmTts0XuYm/+sU2d+tzRx/DUiHpgZ6vHkP1IUjBU47kR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fCdvBwJ5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6216C433F1;
-	Tue, 20 Feb 2024 13:31:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708435896;
-	bh=Om4nwbIVaGL4qkTV+9XeVJq/OQVsY234eiAuH2YW+nA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fCdvBwJ5g4P6QCqmo1jWb+twkXRB9GwNdPKu+6MMASAH79965qHZD0Lb53JKBWrBo
-	 AYAxQPNBQWSXDGupFhdKQ8xuMy7Tr0aisE2OiPHTyLXgSh6cYNkkEi8e9I2nxhrt+B
-	 cG/FoxwOPcckd8n699VEJnUiCmBJtwEDyFiGv6AMhQuQsqhgWoMnpDfYIrb+BPFVkv
-	 KUaoNRnP2s2EQIVLlRbkHTtMU/CO+jDpAkVOztMbQDCEsQdXqWtyuKORe1JTiVor4K
-	 tYnDdmXiE6o3CKmABeogdmMXU9db4lIIl8r71H0YoZ1s+0bh5wKp+9QbjIkO0vy5Z7
-	 Vxy1qGz+v569A==
-Date: Tue, 20 Feb 2024 13:31:25 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Kalle Valo <kvalo@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Saravana Kannan <saravanak@google.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Alex Elder <elder@linaro.org>,
-	Srini Kandagatla <srinivas.kandagatla@linaro.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Lukas Wunner <lukas@wunner.de>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-wireless@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
-	linux-pm@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: [PATCH v5 09/18] arm64: dts: qcom: qrb5165-rb5: model the PMU of
- the QCA6391
-Message-ID: <5a3f5e1b-8162-4619-a10b-d4711afe533b@sirena.org.uk>
-References: <20240216203215.40870-1-brgl@bgdev.pl>
- <20240216203215.40870-10-brgl@bgdev.pl>
- <48164f18-34d0-4053-a416-2bb63aaae74b@sirena.org.uk>
- <CAMRc=Md7ymMTmF1OkydewF5C32jDNy0V+su7pcJPHKto6VLjLg@mail.gmail.com>
- <8e392aed-b5f7-486b-b5c0-5568e13796ec@sirena.org.uk>
- <CAMRc=MeAXEyV47nDO_WPQqEQxSYFWTrwVPAtLghkfONj56FGVA@mail.gmail.com>
+	s=arc-20240116; t=1708436327; c=relaxed/simple;
+	bh=4WZOopDoEYKpAtwPm5C0A71TU5vL9M5eFHgg+NZQj4w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SKqzDGI5PJY76vXwjdUnWV2zwEuAiOrV0xKsCb48pdbC1F6Pszdl+ZcYniDGwRluTJ3WaS18Vv41nHnWoMiGY4KH8aatG1+BLSlcqI3D3MH1SLfcZJXEACkiuKiqkqCQ9RTQSedDbJVv0AVZ2IoCjA0hfW8iHzB4V8uwL8j2O5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=OewB+TF4; arc=none smtp.client-ip=209.85.222.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-ua1-f50.google.com with SMTP id a1e0cc1a2514c-7d5bbbe57bbso2191388241.1
+        for <linux-wireless@vger.kernel.org>; Tue, 20 Feb 2024 05:38:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1708436325; x=1709041125; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jYWyO9WtNhHDsuk1E/qE9QTBsr5s/M0F3rpI0kzs3Ro=;
+        b=OewB+TF498dZFsT/KuZm7ufWPtOwybPSt3hEHvRNDqzwE7m9wAi8x+gaS0uUgHnfud
+         8/SW6nylrrsqUBhU0ZtsB6TOqazdzg62hNqvxA2aDSVb+b77OgymP+ZBePaiu/lQf7U7
+         CwM0Tv81mVdcqbZyXnn918TFP5SeE5NjqsvlqSPxxPVcyfd9MCVU07zWyaKebJnBfi+r
+         3XjsPR6g4dCr8qTZVwmFGb2k1W6EqgX9wFpMpydW/d1Ctd6HSMfKItoj+uOqE7WpE3pA
+         gerrJlMLDgdfzRCMVtKLS8OUfDTGb7H9E+JgXoL9v/qxxi4fb/zZQ394shf/+HJurLEU
+         Yrag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708436325; x=1709041125;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jYWyO9WtNhHDsuk1E/qE9QTBsr5s/M0F3rpI0kzs3Ro=;
+        b=FH1COQzy2ryHQROoNfhAD3CnPT9SMZMaz3w3SGHExNU9FR6LS3qnsUIshNTv0QK7VK
+         VcImy+ATQhS0UKuYH6x7kjqexD3wBy0tm284MJay3RIJhSKkjbA1Foo4s7sngGqaPQvi
+         t0dhmJBEye/T/u0GbhhL7Nbd4r1DIz5oKzJ9QvKCpGSOqNa3H5y9wFCHlYZYCG7XifT5
+         rnt02B4G+ON2odInkOXvq6XhXa0VI1ARnz4LGKQGjeHA+VghRP6MWUOL4z6fuHbTRqnS
+         MOcNq+5r4VTopytip614ReLH1/OqRp+/4BuWXwN1Em6Y/KxFhsGvwWo39Vcox7Qq3e8G
+         ZR8w==
+X-Forwarded-Encrypted: i=1; AJvYcCU1+gFzsYZ/saUsnpsxgMVuvg1AMei/5U+arjDGFb+mqFWdNhKgCQjGaZgb3w6uFTTqndmN5AAufEBJmtMpp1jv2TqAKq1+nFRJrOSLcow=
+X-Gm-Message-State: AOJu0YwMdNdAtoxBoqJ9k1FdFU2o/nFGAzBZrIExiwW6FHJNqBJox8QW
+	52LlCmiX7we4vDITb3ZFlk6KnuHOOgBmkzOnu3l1xRzD9vqj3529Z8Aj/IwmMB+e0lpf9ILzoOd
+	tjTbbFgvdNJ42KBE32bhYkmLUueJ5btywU+xThA==
+X-Google-Smtp-Source: AGHT+IHez508i8rKwFXJLq+MmlnYcRFhCJXklYpkOKtPALfYGVznxIgsQEekDscIKGhR2FGP8107Do5jDZq7aOpexmY=
+X-Received: by 2002:a67:fbcb:0:b0:470:3ece:b431 with SMTP id
+ o11-20020a67fbcb000000b004703eceb431mr5233751vsr.4.1708436324939; Tue, 20 Feb
+ 2024 05:38:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="WgMc8yUhf91ALlog"
-Content-Disposition: inline
-In-Reply-To: <CAMRc=MeAXEyV47nDO_WPQqEQxSYFWTrwVPAtLghkfONj56FGVA@mail.gmail.com>
-X-Cookie: E = MC ** 2 +- 3db
-
-
---WgMc8yUhf91ALlog
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+References: <20240216203215.40870-1-brgl@bgdev.pl> <20240216203215.40870-10-brgl@bgdev.pl>
+ <48164f18-34d0-4053-a416-2bb63aaae74b@sirena.org.uk> <CAMRc=Md7ymMTmF1OkydewF5C32jDNy0V+su7pcJPHKto6VLjLg@mail.gmail.com>
+ <8e392aed-b5f7-486b-b5c0-5568e13796ec@sirena.org.uk> <CAMRc=MeAXEyV47nDO_WPQqEQxSYFWTrwVPAtLghkfONj56FGVA@mail.gmail.com>
+ <5a3f5e1b-8162-4619-a10b-d4711afe533b@sirena.org.uk>
+In-Reply-To: <5a3f5e1b-8162-4619-a10b-d4711afe533b@sirena.org.uk>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Tue, 20 Feb 2024 14:38:33 +0100
+Message-ID: <CAMRc=MdTub4u0dm5PgTQPnYPuR=SRnh=ympEZqo_UyrQDrQw6w@mail.gmail.com>
+Subject: Re: [PATCH v5 09/18] arm64: dts: qcom: qrb5165-rb5: model the PMU of
+ the QCA6391
+To: Mark Brown <broonie@kernel.org>
+Cc: Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Kalle Valo <kvalo@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konrad.dybcio@linaro.org>, Liam Girdwood <lgirdwood@gmail.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Saravana Kannan <saravanak@google.com>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Arnd Bergmann <arnd@arndb.de>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Marek Szyprowski <m.szyprowski@samsung.com>, 
+	Alex Elder <elder@linaro.org>, Srini Kandagatla <srinivas.kandagatla@linaro.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Abel Vesa <abel.vesa@linaro.org>, 
+	Manivannan Sadhasivam <mani@kernel.org>, Lukas Wunner <lukas@wunner.de>, 
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, linux-bluetooth@vger.kernel.org, 
+	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-pci@vger.kernel.org, linux-pm@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 20, 2024 at 12:16:10PM +0100, Bartosz Golaszewski wrote:
-> On Mon, Feb 19, 2024 at 8:59=E2=80=AFPM Mark Brown <broonie@kernel.org> w=
-rote:
-> > On Mon, Feb 19, 2024 at 07:48:20PM +0100, Bartosz Golaszewski wrote:
+On Tue, Feb 20, 2024 at 2:31=E2=80=AFPM Mark Brown <broonie@kernel.org> wro=
+te:
+>
+> On Tue, Feb 20, 2024 at 12:16:10PM +0100, Bartosz Golaszewski wrote:
+> > On Mon, Feb 19, 2024 at 8:59=E2=80=AFPM Mark Brown <broonie@kernel.org>=
+ wrote:
+> > > On Mon, Feb 19, 2024 at 07:48:20PM +0100, Bartosz Golaszewski wrote:
+>
+> > > > No, the users don't request any regulators (or rather: software
+> > > > representations thereof) because - as per the cover letter - no
+> > > > regulators are created by the PMU driver. This is what is physicall=
+y
+> > > > on the board - as the schematics and the datasheet define it. I too=
+k
+>
+> > > The above makes no sense.  How can constraints be "what is physically=
+ on
+> > > the board", particularly variable constrants when there isn't even a
+> > > consumer?  What values are you taking from which documentation?
+>
+> > The operating conditions for PMU outputs. I took them from a
+> > confidential datasheet. There's a table for input constraints and
+> > possible output values.
+>
+> That sounds like you're just putting the maximum range of voltages that
+> the PMU can output in there.  This is a fundamental misunderstanding of
+> what the constraints are for, the constraints exist to specify what is
+> safe on a specific board which will in essentially all cases be much
+> more restricted.  The regulator driver should describe whatever the PMU
+> can support by itself, the constraints whatever is actually safe and
+> functional on the specific board.
+>
 
-> > > No, the users don't request any regulators (or rather: software
-> > > representations thereof) because - as per the cover letter - no
-> > > regulators are created by the PMU driver. This is what is physically
-> > > on the board - as the schematics and the datasheet define it. I took
+Ok, got it. Yeah I misunderstood that, but I think it's maybe the
+second or third time I'm adding a regulators node myself to DT. I'll
+change that.
 
-> > The above makes no sense.  How can constraints be "what is physically on
-> > the board", particularly variable constrants when there isn't even a
-> > consumer?  What values are you taking from which documentation?
+> > And what do you mean by there not being any consumers? The WLAN and BT
+> > *are* the consumers.
+>
+> There are no drivers that bind to the regulators and vary the voltages
+> at runtime.
+>
 
-> The operating conditions for PMU outputs. I took them from a
-> confidential datasheet. There's a table for input constraints and
-> possible output values.
+Even with the above misunderstanding clarified: so what? DT is the
+representation of hardware. There's nothing that obligates us to model
+DT sources in drivers 1:1.
 
-That sounds like you're just putting the maximum range of voltages that
-the PMU can output in there.  This is a fundamental misunderstanding of
-what the constraints are for, the constraints exist to specify what is
-safe on a specific board which will in essentially all cases be much
-more restricted.  The regulator driver should describe whatever the PMU
-can support by itself, the constraints whatever is actually safe and
-functional on the specific board.
+> > > > the values from the docs verbatim. In C, we create a power sequenci=
+ng
+> > > > provider which doesn't use the regulator framework at all.
+>
+> > > For something that doesn't use the regulator framework at all what
+> > > appears to be a provider in patch 16 ("power: pwrseq: add a driver fo=
+r
+> > > the QCA6390 PMU module") seems to have a lot of regualtor API calls?
+>
+> > This driver is a power sequencing *provider* but also a regulator
+> > *consumer*. It gets regulators from the host and exposes a power
+> > sequencer to *its* consumers (WLAN and BT). On DT it exposes
+> > regulators (LDO outputs of the PMU) but we don't instantiate them in
+> > C.
+>
+> Right, which sounds a lot like being a user of the regualtor framework.
 
-> And what do you mean by there not being any consumers? The WLAN and BT
-> *are* the consumers.
+Ok, I meant "user" as a regulator provider but maybe I wasn't clear enough.
 
-There are no drivers that bind to the regulators and vary the voltages
-at runtime.
-
-> > > the values from the docs verbatim. In C, we create a power sequencing
-> > > provider which doesn't use the regulator framework at all.
-
-> > For something that doesn't use the regulator framework at all what
-> > appears to be a provider in patch 16 ("power: pwrseq: add a driver for
-> > the QCA6390 PMU module") seems to have a lot of regualtor API calls?
-
-> This driver is a power sequencing *provider* but also a regulator
-> *consumer*. It gets regulators from the host and exposes a power
-> sequencer to *its* consumers (WLAN and BT). On DT it exposes
-> regulators (LDO outputs of the PMU) but we don't instantiate them in
-> C.
-
-Right, which sounds a lot like being a user of the regualtor framework.
-
---WgMc8yUhf91ALlog
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmXUqa0ACgkQJNaLcl1U
-h9B24wf+Lz2wjf7I6W3InKvWNmGf3yUaGumEqSnMFkL3stpkvgqYLbA8ReYHbIUT
-79XKO978Mxiz1EmV4P5JJlLodwosB8KwgRLoP9jJBJuUmza9tplD5bE7e7T0+aQy
-HhywB2qi8aAR11BzU3hSdONfTa32ME+bcqKqAmRf3LORwIYvgdMDmqmuaqUToQfe
-m/9kN5kWczPASPOUb7WfF+78lEvBZmRZZNQ+gaYiMgIkY8vrxWgQjeLASfIIMPwt
-v72d6hMS/cdZEVFON8Lz7La1SJdqpFl4jjIiehjedX9tHoSddFDUbowQaUspH7zh
-8LY9xVabmnUn+13LLE2JwgbELkPl+g==
-=taRx
------END PGP SIGNATURE-----
-
---WgMc8yUhf91ALlog--
+Bart
 
