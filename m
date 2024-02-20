@@ -1,74 +1,74 @@
-Return-Path: <linux-wireless+bounces-3821-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3822-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A08785C395
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Feb 2024 19:26:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0EE585C3E5
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Feb 2024 19:47:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D64D51F223F3
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Feb 2024 18:26:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97AEB1F23C1B
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Feb 2024 18:47:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC2B478691;
-	Tue, 20 Feb 2024 18:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9061212F58D;
+	Tue, 20 Feb 2024 18:44:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TfOzKb/H"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q0cuCoEx"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BC9C78665
-	for <linux-wireless@vger.kernel.org>; Tue, 20 Feb 2024 18:26:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D1F130AD9
+	for <linux-wireless@vger.kernel.org>; Tue, 20 Feb 2024 18:44:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708453575; cv=none; b=Pf5cj6QFHdcEIUFwkUSfHCZypU0c1OMpvs7CFqyE+/2itXyXGR45PzZhT93PDIosTBcigToQ4YFgJELC3dm10feqmi2vfqptqYdPhZzAcXlD14kuyXI4Sc5C2x8udpcv9dHfMlY5a87Hq2+ebzAZIUUOsMWlL3oKBc5RS57oIxo=
+	t=1708454698; cv=none; b=q8sWmL0f7pSKAZ6o4o9gepnKeXrQwa9MPWhy+7zQczHHGyhMzxf3ajo7HIDREBQDD4aQ0zr8ajndTtpuYLA0SBez6GOW9znvnrbtf0VV2RptpfoVk6UG0MgRFuMXeOh5CxSVjmH2ENFw6ZKfla01pgGONsuDMOp5N4z2Cv/KN4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708453575; c=relaxed/simple;
-	bh=0wVxiB2sfr8pII8/cn0+gfPY3a2qH6ez1ggadjqqF48=;
+	s=arc-20240116; t=1708454698; c=relaxed/simple;
+	bh=tbJhwdL5CpbPKbtQ9mCFnx/RYmGwgvHGCQvAR2HFfwk=;
 	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=XytTiW/B5WHfteuFe0X1r7RTnSQH247upngE4vTIRnxZvp7A3ktTlGr3aK6UaOLN8mtVzI85R+yywQdS3AcLgQynrX8mSiBYV29voCuxSh0Bo0qA2FCSUDAKxGcqvlFnYzBkirlTKp3GpqdLF3HCKDozVL11ZtJXy92jJZi7p4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TfOzKb/H; arc=none smtp.client-ip=209.85.208.48
+	 In-Reply-To:Content-Type; b=CEgV472rIyoQm8VRfJVgcyScXEEnbAgRG81O3y5U8uCXN8uA17qC0rN5YdXXtMK6Mme+hs2mq6gvPJrDoNvqzOsrYHpZt6kLUhvm2sihniqHxReQmFPpoAWvPKjGfWlYevasSnGpf+SB0wu7f13/qRRqb7LnHG1jtreN/twHxzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q0cuCoEx; arc=none smtp.client-ip=209.85.167.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-55a8fd60af0so8596257a12.1
-        for <linux-wireless@vger.kernel.org>; Tue, 20 Feb 2024 10:26:13 -0800 (PST)
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-50eac018059so8661137e87.0
+        for <linux-wireless@vger.kernel.org>; Tue, 20 Feb 2024 10:44:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708453572; x=1709058372; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1708454695; x=1709059495; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=oKukJOM9dMXvjzIi3ceVmkJBF7dszWbqUfPqY2iRFbU=;
-        b=TfOzKb/Hf9VqwndKRDSq1mqwIzPrmoNV8W3MOcb19ozf96n9dKOfdBkDMDf5tch2jd
-         4SVaNF+za+kQN/hf1vgnNqlzS7LoMbhmkPcNchPoh6f/5nAyiAGeIFysu7O642lMhVFB
-         vhSvVkMG+8iQshtchlPC7vzX9ZO3qrBkx5+OSO1a5mEt9frctJ5M2g2NLrDB5M11LfE2
-         h2bRwaTGVwmqRz56G+LVMTR4/hi1gK9t8VOcZL8fbHa0l95gTyzUDU1FxeXdiePrZQ4K
-         Eh465tlREI8xV/gIm/E0SbP2/3cS3RigF1OWlPth1l1rrk60JwfIK2IG+arn3XEgiUbJ
-         gzCw==
+        bh=9ecrs0mrShdhXLESbWFdhwhIzwusWUWXEPBDal4bXT8=;
+        b=Q0cuCoExM/lxDWjSVMJivk4r/IMV9pHKJBd/5AT8EG9fmYWtjVbhtDP5H6mA+altq/
+         xxm/Qr34k8JuQb0T1V3jyJhw0Lwl+qWmU6hITvDETbHeX617qONeCYHzfoca/n1Ok0kP
+         tZfNO1Cf6xK4mB2ZtX4DJL0gAwbu0RFbm2W50LtXp4CRLB2NYzenpI/Y9iI3dw0icyuO
+         duOQy9V7JD4J4mq88TJZQHdjMJtbe+Wdn3FrTkPfbVAfecEE1kZMEqRVr3BBsCS0kGvt
+         UmXx4tBjf6M3ZwRvxaoxy7Ifa33ZoZdLJdaOylHFrkpTUPVT2nlmhbU+xbmfF0xMi78y
+         Amxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708453572; x=1709058372;
+        d=1e100.net; s=20230601; t=1708454695; x=1709059495;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:subject:from:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oKukJOM9dMXvjzIi3ceVmkJBF7dszWbqUfPqY2iRFbU=;
-        b=IlcN63YQWuUWpXMLiiCSBNFuSUooxTvdXFGBxMsLR8YKA1b2M5l9f/qVfQ0UOJ/o4B
-         1NsFwDhVUPJ6YQAJZ/Zjn3LKaOUPIkyGtZmv/3Uff0oFxbtG0Oo+OECtEbD+lreB0vSe
-         +65tiQVosIiZZua555pbZS5Lsb1JDCo4j1wzQLtsadx+mDKpHG7192OtJBY5LQHaHYsR
-         gwg0M//uY9pU1k7sZRyUJeX0LQ3gCj2LTOLHgqpYTb8h//KuCrmcCZtxA9O3YGtjl9UL
-         PX3KaAuCljenYATw4+eIpnuZmd7zXUVwIbxfLugw0V2mMlF3T1CzYuWdPX4yQwMoR/Qz
-         ESzQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXikmyXbVjB+vMSt1K1TXK6R1nGXl5xqXHXpYG/fwHKDCqVmfggql9ZbiKG8qPUlv2arrh++g37nczUqfG2ePkXkYUbFP/Wy6MADqNAGYs=
-X-Gm-Message-State: AOJu0YxLizLVBFG0XOwpVHfSnLp4XjaQfZZXad5+X/msVxmeUazUeUto
-	XJPac+k8jMqXHp2jlvvXuEpLC/xCUSPRcr/WvXYlyleJFCDJldR8
-X-Google-Smtp-Source: AGHT+IGr3BPhmEfyOp/Eq4kZJoyJGg9zLFIRAYIUjUG9yo9gmn2BCb75e2UnN8e3iuZ2/GDRgBxjDg==
-X-Received: by 2002:aa7:cf8d:0:b0:564:6756:277 with SMTP id z13-20020aa7cf8d000000b0056467560277mr4399913edx.6.1708453571967;
-        Tue, 20 Feb 2024 10:26:11 -0800 (PST)
+        bh=9ecrs0mrShdhXLESbWFdhwhIzwusWUWXEPBDal4bXT8=;
+        b=XKcLt1jXRv/LkimpK4WOe4o37IjaRg0B+9C8FhXrD7WQswkbr1FdkYF8kE5Dk7aX0f
+         f2xP5HsW07PW90fnYiDHH8xWJ+AH5as7PzgHwA9zpOwTY01aXdQQ7nMxcKRJtxOZtBKh
+         HPdKr8lyhOq7DJ+3aGqHVFCwE5tVkyg+fWT8IuPHPBkY5l0Ca8kF4im1PjRWOLxIguAO
+         +xhU6rM8FXJ1nLJX7IvlrHQwH836e8Jq0MhsVqTHjGvfspcX5kll/TAG1ifcpgCEcNYo
+         7i59taZ7P/I1qIcg14AQWdknI7iEi2E0RDSL4V+olSIcOeT4P6Yj7/Ne21i/XN45vCG+
+         uILA==
+X-Forwarded-Encrypted: i=1; AJvYcCWv/LTAL2gJgdoDpBO97eoxBstemyiOzhlBIWKYKqVA8X7e/MyvyGjQ08DZ9xRzIFZyOeW9J/ucdIiLXMCw8ws0w9vGCLzhK2GGkDt2oT0=
+X-Gm-Message-State: AOJu0YwvX5J6A0eZdWvjhAwHz73B1dCosHDMyEEIpVhqkN2M65Q7qjjI
+	C3fSIXw7XjDsgFJJFd0nTH5v6QWk+oce65yCA5Gy2z3AbRAETLxc
+X-Google-Smtp-Source: AGHT+IGxr+lKSECoNq17bQFlHv+ABk5Gnn8zA/hMw1aZWdynPsoudvcFoxHrzufaFhR14nUT3glT7w==
+X-Received: by 2002:a05:6512:131d:b0:512:b187:ae0a with SMTP id x29-20020a056512131d00b00512b187ae0amr5701728lfu.6.1708454694559;
+        Tue, 20 Feb 2024 10:44:54 -0800 (PST)
 Received: from [192.168.68.106] (178-191-200-70.hdsl.highway.telekom.at. [178.191.200.70])
-        by smtp.gmail.com with ESMTPSA id i26-20020a50fc1a000000b005603dea632esm3899548edr.88.2024.02.20.10.26.09
+        by smtp.gmail.com with ESMTPSA id o24-20020a056512051800b00512ac349016sm1060191lfb.306.2024.02.20.10.44.51
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 20 Feb 2024 10:26:11 -0800 (PST)
-Message-ID: <3fddb7e8-c09f-41ff-8ddf-13cb8a958bab@gmail.com>
-Date: Tue, 20 Feb 2024 19:26:09 +0100
+        Tue, 20 Feb 2024 10:44:54 -0800 (PST)
+Message-ID: <e99f3e22-7032-441c-83f7-973b701dfb37@gmail.com>
+Date: Tue, 20 Feb 2024 19:44:50 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -77,7 +77,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Till Kamppeter <till.kamppeter@gmail.com>
-Subject: Google Summer of Code 2024 - The Linux Foundation got ACCEPTED!!
+Subject: Google Summer of Code 2024 - Get a Mentor!
 To: Alexey Khoroshilov <khoroshilov@ispras.ru>,
  "Luis R. Rodriguez" <mcgrof@gmail.com>,
  linux-wireless <linux-wireless@vger.kernel.org>, dl9pf@gmx.de,
@@ -116,21 +116,18 @@ Content-Transfer-Encoding: 7bit
 
 Hi,
 
-some minutes ago, I received the message that the Linux Foundation got 
-ACCEPTED as mentoring organization in the 20th Google Summer of Code.
+anyone of you, who wants to be a mentor needs to accept the GSoC terms 
+for 2024 before being able to get invited.
 
-Now everyone of us should
+To do so, got to the dashboard
 
-- Get in contact with their communities to spread the news so that 
-potential candidates start joining us quickly.
+     https://summerofcode.withgoogle.com/dashboard/
 
-- Speak up for mentoring contributors so that we can register you as 
-mentor and you get access to the web app
+and expand "2024" to see the terms. Agree to them and tell me when you 
+are done with that. I will invite you as mentor then.
 
-- Add more project ideas as they come
-
-Please do not yet post in the social media or on your project's site. 
-Official announcement of accepted orgs is tomorrow, Feb 21, 18:00 UTC.
+If you did not participate in 2022 or 2023 you will have to create a new 
+account.
 
     Till
 
