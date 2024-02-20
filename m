@@ -1,93 +1,113 @@
-Return-Path: <linux-wireless+bounces-3799-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3800-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE53185B12F
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Feb 2024 04:11:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6295B85B52A
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Feb 2024 09:29:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 761F51F23C28
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Feb 2024 03:11:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EA99285649
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Feb 2024 08:29:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64712405EC;
-	Tue, 20 Feb 2024 03:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36A2E5D46C;
+	Tue, 20 Feb 2024 08:29:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="yZgfSkvD"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 104753EA88
-	for <linux-wireless@vger.kernel.org>; Tue, 20 Feb 2024 03:11:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDCA75D46D
+	for <linux-wireless@vger.kernel.org>; Tue, 20 Feb 2024 08:29:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708398710; cv=none; b=Y2t1Vk7TmgwJA10kEr+zFNTrP38pPXzhZ1RXnrvdedfDuzTCffOMV0QomOobyYIVEauVqPQ62osMooduQH/cFxq5R7ppia4QFl+b4dxxn6jsbX+nSdNnWbN7WkI3yrJoMmrEdZ25sIaZwc07U9RB+pD74FNrnkLfhmcOmTIBfGc=
+	t=1708417761; cv=none; b=THxR/0Q82Qih0MyG7Xka+X7JHT0MjTMR/ENgma1fUHO7cEbvtRiW0EfHxxJWMRNJYe+BucYizk1DnheyIgBhVZIohCKi4P7V6/JXKxJHuujsQ7aAxUP8VbRzMq4eD6ZwcrSMmktRYo+6/q9oBGEeXQ7iBRoDvDZA1fYkehakJKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708398710; c=relaxed/simple;
-	bh=DA0/tfiL8I9A9gvsPhHRsJ1ybfj29D2IeyrAaBX5Y6I=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=t5BmBC9feUzjsaKwqebbpR1qOf5Qm56D07U6nXlDML6D2JPmpwxAMH7hfAe4m1xR7y/txIe7+aSC4ETYbCWmp52wWEIzZvBvjItQyx4OdhT5fvIS7O0qbk0bD71ubWnsaM8paUQh+GyjFbnOczC4yq7RPqUDqb8IiugmLHpgp0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 41K3BRMn8171635, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 41K3BRMn8171635
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 20 Feb 2024 11:11:28 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2375.32; Tue, 20 Feb 2024 11:11:27 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 20 Feb 2024 11:11:26 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::c9b7:82a9:7e98:fa7f]) by
- RTEXMBS04.realtek.com.tw ([fe80::c9b7:82a9:7e98:fa7f%7]) with mapi id
- 15.01.2507.035; Tue, 20 Feb 2024 11:11:26 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Johannes Berg <johannes@sipsolutions.net>,
-        Bitterblue Smith
-	<rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>
-CC: Larry Finger <Larry.Finger@lwfinger.net>
-Subject: RE: [PATCH] wifi: rtlwifi: Fix setting the basic rates
-Thread-Topic: [PATCH] wifi: rtlwifi: Fix setting the basic rates
-Thread-Index: AQHaYd6p9MFJopYdqEyEhDzoYDfrTLERRPeQ//+nGgCAAaHr0A==
-Date: Tue, 20 Feb 2024 03:11:26 +0000
-Message-ID: <ff0bd1f2e3724933bf943d3b79b2ab2d@realtek.com>
-References: <35165caf-337c-4da0-b55c-c1a7081a1456@gmail.com>
-	 <afded3d1768247cca613f55943a013aa@realtek.com>
- <f69f27acb8171cea5fdf6ceedb92efbced909300.camel@sipsolutions.net>
-In-Reply-To: <f69f27acb8171cea5fdf6ceedb92efbced909300.camel@sipsolutions.net>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1708417761; c=relaxed/simple;
+	bh=1Z5nW50RCgvyaJjqEQ5nzCoK8QBWqW7eC1y5ojbKHck=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=SRVTSGPTxhQF7NUOSqn7piyt7Lxu9iz3G/hSpk7xn7XYOvdHN/IItPo5zXSi8f+jfuW8Jfg+ZAF8lZzlf1/QMcSbYSLKdzRwmvXsD0wMoUT7VBW3NDEa38dGxlDkRsegsa2eAjkW4yIQEkGmdTE1Y9WKwYvwXV+lBn4XgALoGHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=yZgfSkvD; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=yf7nCsydEUajMG+b41i3DePva+5QBND2P8cM4bgDKVs=;
+	t=1708417758; x=1709627358; b=yZgfSkvDs5z21BQkUANYuVaFZ1FR60nRGTxmXgdYVAmMUHj
+	Hy2LaWecwlZbnplYKf5kGgoGVMgoGmoEuGrKUtuMKWLvQY95kTZ1t3vIq1vIYRZVvvAK5rpHQ6WuU
+	AZ4Jl3T2rVgix0pWPM3AelFmMBuLFpZDnQGbc/tkgTAWZzkOw+ycsHBoHGmRJQuYu7f/5sPmkr99V
+	c0ZjGcHIDFOlYDbV92Lp8t4Dywp1Y/+hcSAf7ny/8mEaqVETayIsPDskSD00hgVBZgisHH189eYwD
+	3NpWv8QQbx1FU5K56V6teLDQx2X5o9q2BFfXVkpYFYtAwe66goTq6sTC6nVWcLiA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rcLV5-00000000lWJ-01N6
+	for linux-wireless@vger.kernel.org;
+	Tue, 20 Feb 2024 09:29:15 +0100
+Message-ID: <a180980bd880a7d89e71ef0d0bb10c232cdf867f.camel@sipsolutions.net>
+Subject: Re: [PATCH 3/8] wifi: mac80211:  make associated BSS pointer
+ visible to the driver
+From: Johannes Berg <johannes@sipsolutions.net>
+To: linux-wireless@vger.kernel.org
+Date: Tue, 20 Feb 2024 09:29:14 +0100
+In-Reply-To: <25c51905aac00bde0591d169d00b301c608234c5.camel@sipsolutions.net>
+References: <20240206145411.3217588-1-miriam.rachel.korenblit@intel.com>
+	 <20240206164849.6fe9782b87b4.Ifbffef638f07ca7f5c2b27f40d2cf2942d21de0b@changeid>
+	 <25c51905aac00bde0591d169d00b301c608234c5.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
+X-malware-bazaar: not-scanned
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogSm9oYW5uZXMgQmVyZyA8
-am9oYW5uZXNAc2lwc29sdXRpb25zLm5ldD4NCj4gU2VudDogTW9uZGF5LCBGZWJydWFyeSAxOSwg
-MjAyNCA2OjA0IFBNDQo+IFRvOiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT47IEJp
-dHRlcmJsdWUgU21pdGggPHJ0bDg4MjFjZXJmZTJAZ21haWwuY29tPjsNCj4gbGludXgtd2lyZWxl
-c3NAdmdlci5rZXJuZWwub3JnDQo+IENjOiBMYXJyeSBGaW5nZXIgPExhcnJ5LkZpbmdlckBsd2Zp
-bmdlci5uZXQ+DQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0hdIHdpZmk6IHJ0bHdpZmk6IEZpeCBzZXR0
-aW5nIHRoZSBiYXNpYyByYXRlcw0KPiANCj4gSSBhbHNvIGhhdmUgYSBidW5jaCBvZiBleHBsYW5h
-dGlvbnMgYWJvdXQgdGhhdCBpbiB0aGUgaXdsbXZtIGRyaXZlciBpbg0KPiBkcml2ZXJzL25ldC93
-aXJlbGVzcy9pbnRlbC9pd2x3aWZpL212bS9tYWMtY3R4dC5jIGFyb3VuZCBsaW5lIDM2MC4NCg0K
-VGhhbmtzIGZvciB0aGUgZXhwbGFuYXRpb25zLiBJZiBubyBPRkRNIHJhdGVzIGNvbnRhaW5lZCBp
-biBiYXNpYyByYXRlLCBtYW5kYXRvcnkNCnJhdGUgKDZNLCAxMk0gYW5kIDI0TSkgd2lsbCBiZSBh
-ZGRlZC4gVGhpcyBpcyB0aGUgcG9pbnQgSSBhbHNvIG1pc3NlZC4NCg0KQml0dGVyYmx1ZSwgcGxl
-YXNlIHVzZSB0aGUgc2FtZSBsb2dpYyBhcyBpd2x3aWZpIHRvIHNlZSBpZiBpdCB3b3JrcyBhcyBl
-eHBlY3RlZC4gDQoNClBpbmctS2UgDQoNCg==
+On Mon, 2024-02-12 at 14:45 +0100, Johannes Berg wrote:
+> On Tue, 2024-02-06 at 16:54 +0200, Miri Korenblit wrote:
+> > Some drivers need the data in it, so move it to the link conf,
+> > which is exposed to the driver.
+>=20
+> > + * @bss: the cfg80211 bss descriptor. Valid only for a station, and on=
+ly
+> > + *	when associated.
+> >=20
+>=20
+> For the record, I'm dropping this patch.
+>=20
+> Yes, the data is there in the stack, but the cfg80211 BSS contains data
+> that is not authenticated (from probe responses etc.) whereas mac80211
+> is (hopefully always) operating on data that is authenticated with
+> beacon protection.
+>=20
+> So exposing this to the driver feels fragile - if it actually gets used
+> for pretty much anything, it won't necessarily be authenticated data.
+
+Changed my mind again ;-)
+
+The issue ends up being as described above, but there are some other
+things that the iwlwifi driver would like to access that are most easily
+obtained via this information, not just RSSI. The other thing on our
+list now is the BSS load, and we had a patch [1] to parse it in mac80211
+and then it's authenticated, but really we don't care much for security
+purposes and would like to also have it from probe responses which are
+never authenticated.
+
+[1] https://lore.kernel.org/r/20240216135047.b771830d9b12.If5885d651cb01147=
+11ee1f6c1cb8fe31a69bf0a7@changeid
+
+
+So I'll apply this patch with a documentation change to warn the data
+contained is not authenticated, and drop the patch [1] linked above
+instead. This gives the driver more flexibility, at the expense of
+perhaps a slightly greater risk of using it for something it shouldn't
+be used for, but the alternatives would put more driver-specific logic
+into mac80211, which we don't really want either.
+
+johannes
 
