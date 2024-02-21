@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-3881-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3882-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DD8B85E6C8
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Feb 2024 19:56:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FC8B85E6CC
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Feb 2024 19:56:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F98E1C25248
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Feb 2024 18:56:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEC0428A865
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Feb 2024 18:56:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B4AA85642;
-	Wed, 21 Feb 2024 18:55:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD75A8565F;
+	Wed, 21 Feb 2024 18:56:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F1qWlOmM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c2tFQzsi"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 783A385628
-	for <linux-wireless@vger.kernel.org>; Wed, 21 Feb 2024 18:55:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87FAE85642
+	for <linux-wireless@vger.kernel.org>; Wed, 21 Feb 2024 18:56:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708541759; cv=none; b=owWLvQ5nDXKZqQHsVQNn5ccQItSWRmm0nNWgfvEOYm4rPi9GNs9SEYIKTXfm2JgkMpMkIKCN6kEv2jly+3lVYP1rtyUjI2rZI1fQxoA4fSpm0JgA887mDxRAtUK4Up2Vy9TLFtZZ1BST1uiWRyifagvCWt8vlmsvbSd8l3+QWdk=
+	t=1708541794; cv=none; b=OqyONe2YgRFufVTIFAfXrBeeOXIxiPtw82ILaiLw1wIiBKr3QzLV00PeasH8xiVjBtAUv08gzka9BM8FgTIxLHQ1b/hUfFwrzwdgnttgiZcv/bieta+W9Bb+N1t1kwnWCLVCD3MUbEyRlL69inWAXysHrf78xdXoNVYV+shKTU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708541759; c=relaxed/simple;
-	bh=ULOSVrAoDBAPPFICGwRJfwCBY7H7dZeBb1SpHOgGcrE=;
+	s=arc-20240116; t=1708541794; c=relaxed/simple;
+	bh=LRbL/GJWJHekSNZBbFRgblA4t+YACUE0jeTVAfn169w=;
 	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=qkugj6NgRiaR6MN/vqRocddc7Jb4dm6JgAmW15xdI2QER+mWX6BcLcT96pOg1GN9WsbQ5WnCK/OClrVLraal40i1oFBwCIKqJt4p643WSAXP6Evod9ufbbYFJZ8RH5wrLIQxhxMbQx15Qjqa97ssd5QybAt3hw+a3PfWlQUjLoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F1qWlOmM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BA0CC433C7;
-	Wed, 21 Feb 2024 18:55:58 +0000 (UTC)
+	 Cc:Message-ID:Date; b=FHuJM1ULFQ7w2+mRGceha0UR0h4srEPuNrcAK5/stX0Dgr7maOp7uYU011hMSj63wK1FZkpSK19atkbgqChBb5NvY5eiBUqcwv3GQVZ/cSijN2ngjd98qnoT1hXAubEkIrPS8KzJHbX43l0V+dqiY+mCOn/C5iRUUGoeRTd7vhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c2tFQzsi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94860C433F1;
+	Wed, 21 Feb 2024 18:56:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708541759;
-	bh=ULOSVrAoDBAPPFICGwRJfwCBY7H7dZeBb1SpHOgGcrE=;
+	s=k20201202; t=1708541794;
+	bh=LRbL/GJWJHekSNZBbFRgblA4t+YACUE0jeTVAfn169w=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=F1qWlOmMX3i5pSKM8RaNrDAnoxnhc5QGAwcs1d0TkvQj6/3p5Vu93/0+vDGH+7PgF
-	 ocA5bjSHfW1hMsH3GTarTI7TGp+LJwcr0l5YyMIVfKqxlu0TB2fabxB55P0EDZfT3X
-	 QfddDytf5trMoQg0W2wHEoU5UXR4jgYqDTDWNPOFsBPUBZCJuOM2eGpRDkx+H+D6jo
-	 V1++3wOqTAVZaBNK8gqu9MmepPtKh2+Lv45ScdRSKbA8bvWie99WMESjR2LDt8hUqu
-	 ZxKdqWdQLuuY1D6brrQDrafoTencn2slcxpggw+AoQm+/1sTdUPKIhFAA+bGPlb+JK
-	 izHLXyPW9uscQ==
+	b=c2tFQzsiP5nAF0l2h8oi/BR80W6t93NeWrtwgK9SWhPOvRC7pGsgwXMQniWv7dbvd
+	 OdWrVZg8z+RsS7Fr8QqN6KFw0yBRptWuQN3sHb4Ev+aC9AY6Zko8CNtbtg+T1TM1VA
+	 nR4zZVsXzBGXlXvywAi1H0zR4NSMHDuhUZffz/PsvCTTehWzZ+TIvXHIEyc4oXSaDn
+	 MyYov80zSDWhZUl54gpFgmAMd34wwfx4UnJ/2U6MKwo48sULytKcGOe8bQAD0wr77C
+	 syWc7xyM4m+QlRZw+oELXQBxHjsm03KhF0pxBPl05kq9WYEmtr4ZxjvFhDJXdDzjf9
+	 6CLOMTxDnCFyQ==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -49,46 +49,41 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: rtlwifi: set initial values for unexpected cases of
- USB
- endpoint priority
+Subject: Re: [PATCH] wifi: brcmfmac: Add DMI nvram filename quirk for ACEPC W5
+ Pro
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240216033949.34765-1-pkshih@realtek.com>
-References: <20240216033949.34765-1-pkshih@realtek.com>
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: <linux-wireless@vger.kernel.org>
+In-Reply-To: <20240216213649.251718-1-hdegoede@redhat.com>
+References: <20240216213649.251718-1-hdegoede@redhat.com>
+To: Hans de Goede <hdegoede@redhat.com>
+Cc: Arend van Spriel <aspriel@gmail.com>,
+ Franky Lin <franky.lin@broadcom.com>,
+ Hante Meuleman <hante.meuleman@broadcom.com>,
+ Hans de Goede <hdegoede@redhat.com>, linux-wireless@vger.kernel.org,
+ brcm80211-dev-list.pdl@broadcom.com
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170854175641.1918455.1895081784487885318.kvalo@kernel.org>
-Date: Wed, 21 Feb 2024 18:55:58 +0000 (UTC)
+Message-ID: <170854179043.1918455.5901929299708483573.kvalo@kernel.org>
+Date: Wed, 21 Feb 2024 18:56:32 +0000 (UTC)
 
-Ping-Ke Shih <pkshih@realtek.com> wrote:
+Hans de Goede <hdegoede@redhat.com> wrote:
 
-> Map USB endpoints to hardware and AC queues according to number of USB
-> endpoints. However, original only give a warning for unexpected cases but
-> initial values are not given. Then, smatch warns:
+> The ACEPC W5 Pro HDMI stick contains quite generic names in the sys_vendor
+> and product_name DMI strings, without this patch brcmfmac will try to load:
+> "brcmfmac43455-sdio.$(DEFAULT_STRING)-$(DEFAULT_STRING).txt" as nvram file
+> which is both too generic and messy with the $ symbols in the name.
 > 
-> drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.c:642
->   _rtl92cu_init_chipn_two_out_ep_priority() error: uninitialized symbol 'valuelow'.
-> drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.c:644
->   _rtl92cu_init_chipn_two_out_ep_priority() error: uninitialized symbol 'valuehi'.
-> drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.c:649
->   _rtl92cu_init_chipn_two_out_ep_priority() error: uninitialized symbol 'valuehi'.
-> drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.c:650
->   _rtl92cu_init_chipn_two_out_ep_priority() error: uninitialized symbol 'valuelow'.
+> The ACEPC W5 Pro uses the same Ampak AP6255 module as the ACEPC T8
+> and the nvram for the T8 is already in linux-firmware, so point the new
+> DMI nvram filename quirk to the T8 nvram file.
 > 
-> The regular selection is high and low queues, so move default (unexpected)
-> case along with that.
-> 
-> Compile tested only.
-> 
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 
 Patch applied to wireless-next.git, thanks.
 
-9208e85c6272 wifi: rtlwifi: set initial values for unexpected cases of USB endpoint priority
+32167707aa5e wifi: brcmfmac: Add DMI nvram filename quirk for ACEPC W5 Pro
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240216033949.34765-1-pkshih@realtek.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20240216213649.251718-1-hdegoede@redhat.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
