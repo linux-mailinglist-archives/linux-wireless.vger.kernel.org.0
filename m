@@ -1,74 +1,73 @@
-Return-Path: <linux-wireless+bounces-3857-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3858-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 356E585D7E2
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Feb 2024 13:25:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA19185D7FD
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Feb 2024 13:38:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5904C1C21E11
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Feb 2024 12:25:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E4F62825F5
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Feb 2024 12:38:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BE5451C30;
-	Wed, 21 Feb 2024 12:24:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DC4D69312;
+	Wed, 21 Feb 2024 12:38:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PKMYueo7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X8oIQ3JV"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F259A55C3C
-	for <linux-wireless@vger.kernel.org>; Wed, 21 Feb 2024 12:24:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA5669945
+	for <linux-wireless@vger.kernel.org>; Wed, 21 Feb 2024 12:38:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708518292; cv=none; b=f9JYXjb44qNZ38OzuNuolryXeoEHL8ahgvqwVsxM4lK9KYJIWugAUsAEU1vZQogtlrMzaK9lQmMq7AnXpKWIKYfuPvv5PpWXPG7Mgphu1Rcs4kzICEKK7GtQ71yt6GJ4uWd5Nf74WfB4RU9d0ilkyEs2PU8bfg+njlj0vLuc/DI=
+	t=1708519095; cv=none; b=n8CI3Bs9F1amSxcSpUcqBiwesOttNSZpMcRDngMNxCrp57qQf6B7uHjRgnuycq9QNwWWQnh968lyiHJTuNwy+xkYc+rAOjxMVwz6YmIXyjBWiiaaFi8Cb709oumSmCJ2RqBzXbdNCDJ7dV2b1iFMOs+0pn/Uzokf1X3FuUVo/nY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708518292; c=relaxed/simple;
-	bh=ZTh9IpAXXJ1qqf7ZWeJmXMLLunYfQM1CIFlNKOQsc9o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=B5AioqfOKIvC/bVMPcAjTZ6naquLQTfVvWBLB4Bc9Qvf5+Jk0CalVWzA7BMZiu9aUTA4mvSpU7N2+UYDV/nFUuV18BfyTSWN3Zy37ZruPYn+qrEn1QKrt2fSLViwZoAvDaaZ5f2XGeU4RjXaimnuGIigbRsDQ4ohk6hVa+1B5s8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PKMYueo7; arc=none smtp.client-ip=209.85.214.178
+	s=arc-20240116; t=1708519095; c=relaxed/simple;
+	bh=2DIU9m4srJpLOzj5EtilGvjZP4FJn5xKGraJQlch/2w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hEbNQRCe4ikurJWRhxbMz/hG4QJ6CyruvpkAlrLuxNjwiwhnXtCvGrOK5Hg5Z6i0zNgbTvSexfaF4dPOgrmQQkwU4LOQDkE8c5IHeoZqEmvsbjGOtgVl5JuLDTGzsFO5K7iYn7RvH6dO1cn/jTd2M6gtgLUvd13oBdMnmRF5Gsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X8oIQ3JV; arc=none smtp.client-ip=209.85.215.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-1dc0e5b223eso20436475ad.1
-        for <linux-wireless@vger.kernel.org>; Wed, 21 Feb 2024 04:24:50 -0800 (PST)
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-5d8b276979aso5048728a12.2
+        for <linux-wireless@vger.kernel.org>; Wed, 21 Feb 2024 04:38:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708518290; x=1709123090; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:to
+        d=gmail.com; s=20230601; t=1708519094; x=1709123894; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=66a1SkriqYZwFi+KxueabQNi4cABZqW0pWRLSi43YVE=;
-        b=PKMYueo7X4hdbwkXp8OE3j8p5ibzgaHM3wux8ciKIvPBPPGGVbSQEzQ6a2XT9L3wdX
-         MI9CiSsaBFqAeRjd1QXSgvY9TN+RmnEX8fRRn4E+8DC/5Pc81VssME+XaYIjJBkL20gJ
-         Mx2MeDiOLNwgqKEr347NsBEHIQbZBv6H8yy6UTIvQujwNqqiey+7UaY7ZcFlcipNnUpD
-         DYlDM3AHUheW4aHchjb1SuZ2o7ydn9QQIq7ODKFuCenKtWLDTESQSHWr4o8XSmqAAhO7
-         L2E6/4w6AKhac+pp/gGSPyVbXqOBtkboxaxMFN0EsNrV/+kaiUKcwLD20PbKkkXergHL
-         ac/A==
+        bh=eI0ppqpQX94Yu79Tq3Cq2zj5iCtQ44NJHr7Cb/yza1A=;
+        b=X8oIQ3JVM/+5ZBc9kgZ4qb8tLKFQG/lFkc785K+ZZl/kABWAa3At9jkO96IpoqM7Xs
+         +qSBXInF+CFiU8KEzihEW1z5W0oDHcmf8PwUlvc958bRflkOPmxqL0cWjfLlCEEOAFAi
+         n4+gws4nESlD7GbV09aKz0JhIFrsdSmFOef8CEIn/kmmGR+lgZ0PkZRbdYretqsTfYIy
+         TpcYeBfY24yZirqPS6aG22YkxmvxIq5XWRHgp0KItLymaq2OYATxrZdxYDMguO6EH6qi
+         AgQLxvA75BdQLHZ+TZRPVWpKvKG+PVOzz70gps/0dBrpRHWCz49EXe+uxllfPkRa16DQ
+         MVwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708518290; x=1709123090;
-        h=content-transfer-encoding:in-reply-to:from:references:to
+        d=1e100.net; s=20230601; t=1708519094; x=1709123894;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=66a1SkriqYZwFi+KxueabQNi4cABZqW0pWRLSi43YVE=;
-        b=cRJaXnxz8oLCWuYhdgDgDdEPNbiF31/CwqMTdsq9dyxaxCsUbVWmr0wxx9GuaSZYem
-         P5oo8fH0bhblEEBaE6hrHVf5R/K6lePFxFQs/1RDrk8PfWpMRJSL5uHzFSv0cDJia9EO
-         Qa+AWCLAr9VmJ48Obajwjdx89QaWDLVhEkaElOWR6cTbOIRdmrN5S3+8YQ4sqMwoQolB
-         Au2rKuUtpxbAdN10KbhTX1UjVvVD0Jlw3UqUOk27e9N/iSbYvm7DyB5SKxnSkZYy4JrX
-         XGIXz19x58CIWbxlx3NajuF46SQ6PGK2Ux9xGDxbPHNZtMAMhkSvPd1m+hmidZZZ+zVT
-         Nb4g==
-X-Forwarded-Encrypted: i=1; AJvYcCWQY3kWKxWoBx7FkgrkKSVX0TAES+pejR3ZgVDuuRfSwUNoZYZieQB0nr3EcB07CcKKxXhxXUjEMdlZ5q2H5Ntw29aKGBrMB0BdEJsJQ/8=
-X-Gm-Message-State: AOJu0YwgiZMqcrI0qrpP5X7szaJlo1EMV6lbMGjxgp7v9+7llgBzToXt
-	A7hMlRvHD4ArkzTBwA38y1ItEl4GpSbz56SNdoxMjJZPBucrPtii
-X-Google-Smtp-Source: AGHT+IHsgSyPRttNapmppYGXK+6DSIPGbvQQeZ1yGtvCffImSGXYgZvo/wz8HielDR5at32g8xM2+Q==
-X-Received: by 2002:a17:90b:1c0b:b0:29a:36f0:7d7e with SMTP id oc11-20020a17090b1c0b00b0029a36f07d7emr27134pjb.38.1708518289806;
-        Wed, 21 Feb 2024 04:24:49 -0800 (PST)
+        bh=eI0ppqpQX94Yu79Tq3Cq2zj5iCtQ44NJHr7Cb/yza1A=;
+        b=dV2jwXYqOU/osrkZMgJxos9zh6LXC2ocWVZjH9h1nJFyfidGaO2GjpgJZy7j3a+n7R
+         02eZ/nK8s/TWI7FBZgG9NSjMFslW4r33KsXs5b3xGdvF6NPji9ZBISX1gDvXEpSyTyLH
+         27gbrjGhVRfBUSgr4PGCZx5UZdExHjNlNb3GQNSB3m40x06rygAyKnLIB/7EjXWsgIjm
+         urwgpqStzh23IsyUymalJubw6Kb1FtipZG+8dksGfVuZJTD2vbFqNVh957LGN+A4u3+s
+         Qk6TULI7sZGfGazY9EMeEnObvXzKL3J0AwA83SCU8gvIb8N+JnR0EfnCY6O/9bhGLbps
+         8Czg==
+X-Gm-Message-State: AOJu0YxRpbe8d/U4lR0UV1M4YjnLivy+b8CQDN9MpAmnYOJaXrbKjg28
+	6qI8hohI2KzsMueEcqGoiMZdavaPVsQR+ZwlbLuPe57biVFRc2ydGFMNPgSA
+X-Google-Smtp-Source: AGHT+IGqtkxSLniu96E4rr3pDu1aapqH0m/3J++FYnoNms4oj3x2lG8eyPx+27WSjhh2/xOfNjUJLw==
+X-Received: by 2002:a17:90b:11c4:b0:299:2c4b:5d21 with SMTP id gv4-20020a17090b11c400b002992c4b5d21mr12247399pjb.15.1708519093637;
+        Wed, 21 Feb 2024 04:38:13 -0800 (PST)
 Received: from [10.102.4.159] ([208.195.13.130])
-        by smtp.gmail.com with ESMTPSA id ch19-20020a17090af41300b0029996fd70e2sm6749962pjb.45.2024.02.21.04.24.48
+        by smtp.gmail.com with ESMTPSA id ee3-20020a17090afc4300b0029a04ec7084sm1621082pjb.54.2024.02.21.04.38.12
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 21 Feb 2024 04:24:49 -0800 (PST)
-Message-ID: <eaeb8e9b-3809-4f89-a5b2-7949aa01fbde@gmail.com>
-Date: Wed, 21 Feb 2024 04:24:46 -0800
+        Wed, 21 Feb 2024 04:38:13 -0800 (PST)
+Message-ID: <d67fb4f4-aea2-4668-aac4-6e7eca8db4fa@gmail.com>
+Date: Wed, 21 Feb 2024 04:38:10 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -76,154 +75,110 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: ath11k multicast action frame RX
+Subject: Re: [PATCH] wifi: ath10k: poll service ready message before failing
 Content-Language: en-US
-To: Baochen Qiang <quic_bqiang@quicinc.com>,
- "open list:MEDIATEK MT76 WIRELESS LAN DRIVER"
- <linux-wireless@vger.kernel.org>, ath11k@lists.infradead.org
-References: <dcdbd757-ad6e-4fe0-a0c1-fe328431b73b@locusrobotics.com>
- <642b61a6-e3c0-4831-887f-f25314bf166d@locusrobotics.com>
- <90ac3bdc-8797-4d57-8bc9-48e0ad406674@quicinc.com>
- <1dafe0e5-292b-4764-86c7-cc1757aeb3b6@gmail.com>
- <ed8eeb92-e1eb-445e-989d-2340c26faf44@quicinc.com>
- <7a62031b-ad1f-4da2-8217-19a5d7fdc0f4@gmail.com>
- <f363f179-b41f-4bea-882f-e4aacb8ad519@quicinc.com>
+To: Baochen Qiang <quic_bqiang@quicinc.com>, ath10k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+References: <20240221031729.2707-1-quic_bqiang@quicinc.com>
 From: James Prestwood <prestwoj@gmail.com>
-In-Reply-To: <f363f179-b41f-4bea-882f-e4aacb8ad519@quicinc.com>
+In-Reply-To: <20240221031729.2707-1-quic_bqiang@quicinc.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
+Hi Baochen,
 
-On 2/20/24 7:45 PM, Baochen Qiang wrote:
+On 2/20/24 7:17 PM, Baochen Qiang wrote:
+> Currently host relies on CE interrupts to get notified that
+> the service ready message is ready. This results in timeout
+> issue if the interrupt is not fired, due to some unknown
+> reasons. See below logs:
 >
+> [76321.937866] ath10k_pci 0000:02:00.0: wmi service ready event not received
+> ...
+> [76322.016738] ath10k_pci 0000:02:00.0: Could not init core: -110
 >
-> On 1/31/2024 8:28 PM, James Prestwood wrote:
->> Hi Baochen,
->>
->>>> As you may have guessed I don't _really_ know what I'm doing. When 
->>>> I got this working with ath10k I saw monitor device was being used 
->>>> in order to receive probes, and did the same for multicast action 
->>>> frames and it "just worked". The frames themselves were still being 
->>>> received on the station device. I attempted to mimic the changes 
->>>> with ath11k.
->>>>
->>>> The end goal here is just that, be able to receive multicast action 
->>>> frames on the station device which currently does not work. I'm 
->>>> only seeing unicast frames when i enable RX debugging. The driver 
->>>> support for multicast action RX in the kernel for this is basically 
->>>> zero. An extended feature flag was added by Jouni when he added 
->>>> support to ath9k, I added limited ath10k support for a variant I 
->>>> tested, and I'd like to do the same for ath11k as we are 
->>>> transitioning to the WCN6855.
->>> OK, so you are testing this with latest ath.git, without any private 
->>> changes, and it doesn't work, right? Could you share your test 
->>> steps? Basically how are you sending multicast action frames from 
->>> AP/peer, and how to check if that frame received or not (I am 
->>> assuming by checking RX logs)?
->>
->> Yep I'm on the latest ath.git, and with no changes apart from that 
->> MSI vector hack to get it working with vfio-pci.
->>
->> The way I'm testing this is using IWD with DPP PKEX. Building IWD 
->> should be relatively straight forward, very few dependencies. This 
->> will also include iwctl which is IWD's command line utility:
->>
->> https://git.kernel.org/pub/scm/network/wireless/iwd.git/
->>
->> I have two devices, the configurator device (device A, ath11k) is 
->> what should be able to receive the multicast action frames. The 
->> enrollee device (device B) can use probably any hardware as sending 
->> multicast action frames should be supported. IWD will not start a DPP 
->> PKEX configurator without EXT_FEATURE_MULTICAST_REGISTRATIONS set but 
->> if you enable RX logging that should be good enough to see if the 
->> frame is making it to the ath11k driver itself. Once multicast RX is 
->> supported we would need to add that extended feature to ath11k, or at 
->> least the tested variant. If you want, you can hack in that feature 
->> bit and start a configurator but if your able to get the muticast RX 
->> working I can probably take it from there:
->>
->> 1. Enable RX logging on device A
->>
->> 2. Start IWD on device A
->>
->>      iwd -d
->>
->> 3. Connect to a network on device A
->>
->>      iwctl station <wlan> connect <ssid>
->>
->>      <enter passphrase>
->>
->> # Optional: start a configurator. This won't work without the ext 
->> feature set
->>
->>     iwctl pkex <wlan> configure secret123
->>
->> 4. Start IWD on device B, do not connect.
->>
->>      iwd -d
->>
->> 5. Start DPP PKEX as an enrollee on device B:
->>
->>      iwctl pkex <wlan> enroll secret123
->>
->> On device B you should see IWD first scan to establish nearby 
->> APs/frequencies, then begin iterating those frequencies and sending a 
->> multicast action frame.
-> Hi James, I reproduced this issue following your guide. From the 
-> advise of firmware team, a new flag is needed. With that flag, I did 
-> see the multicast action frame in device A logging. Before I proceed, 
-> want to clarify something: that frame is only seen after device A 
-> triggers a scan (I triggered it manually using iw, not IWD itself 
-> because IWD not working on device A due to unknown errors), if no scan 
-> no frame seen. I am not sure if this behavior is expected so now 
-> checking with internal team on it.
+> And finally it causes WLAN interface bring up failure.
 >
-> So there comes a question: will IWD triggers scan on device A in order 
-> to receive that frame?
+> Change to give it one more chance here by polling CE rings,
+> before failing directly.
+>
+> Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00157-QCARMSWPZ-1
+>
+> Fixes: 5e3dd157d7e7 ("ath10k: mac80211 driver for Qualcomm Atheros 802.11ac CQA98xx devices")
+> Reported-by: James Prestwood <prestwoj@gmail.com>
+> Link: https://lore.kernel.org/linux-wireless/304ce305-fbe6-420e-ac2a-d61ae5e6ca1a@gmail.com/
+> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+> ---
+>   drivers/net/wireless/ath/ath10k/wmi.c | 22 +++++++++++++++++++---
+>   1 file changed, 19 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
+> index ddf15717d504..bf6cb2c73128 100644
+> --- a/drivers/net/wireless/ath/ath10k/wmi.c
+> +++ b/drivers/net/wireless/ath/ath10k/wmi.c
+> @@ -1763,12 +1763,28 @@ void ath10k_wmi_put_wmi_channel(struct ath10k *ar, struct wmi_channel *ch,
+>   
+>   int ath10k_wmi_wait_for_service_ready(struct ath10k *ar)
+>   {
+> -	unsigned long time_left;
+> +	unsigned long time_left, i;
+>   
+>   	time_left = wait_for_completion_timeout(&ar->wmi.service_ready,
+>   						WMI_SERVICE_READY_TIMEOUT_HZ);
+> -	if (!time_left)
+> -		return -ETIMEDOUT;
+> +	if (!time_left) {
+> +		/* Sometimes the PCI HIF doesn't receive interrupt
+> +		 * for the service ready message even if the buffer
+> +		 * was completed. PCIe sniffer shows that it's
+> +		 * because the corresponding CE ring doesn't fires
+> +		 * it. Workaround here by polling CE rings once.
+> +		 */
+> +		ath10k_warn(ar, "failed to receive service ready completion, polling..\n");
+> +
+> +		for (i = 0; i < CE_COUNT; i++)
+> +			ath10k_hif_send_complete_check(ar, i, 1);
+> +
+> +		time_left = wait_for_completion_timeout(&ar->wmi.service_ready,
+> +							WMI_SERVICE_READY_TIMEOUT_HZ);
+> +		if (!time_left)
+> +			return -ETIMEDOUT;
+> +	}
+> +
+>   	return 0;
+>   }
+>   
+>
+> base-commit: 707e306f3573fa321ae197d77366578e4566cff5
 
-That's great its possible! And thank you for looking into this.
+Thank you for looking at this I will test this and see if it resolves 
+the problem we're seeing but since its somewhat rare it may take me a 
+bit to validate.
 
-That seems very odd that device A would need to scan in order to receive 
-a multicast frame. In all reality neither device should have to scan at 
-all, device B just does in order to know what frequencies to start 
-sending the multicast frames on. Even this isn't entirely needed if the 
-frequency was known ahead of time. I think something is not right if a 
-scan must be issued in order to receive these frames. This wasn't 
-required by ath10k when I added it, nor is it by mac80211_hwsim; you can 
-just start listening and receive the frames.
+Is this any different than just trying to bring up the interface again 
+from userspace? I could be wrong, but my concern with this is that when 
+I retried in userspace things got into a very odd state:
+
+  - IWD starts
+
+  - ifdown interface
+
+  - ifup interface, timeout -110
+
+  - Retry ifup, success
+
+  - Authenticate/associate succeed
+
+  - 4-way handshake fails because the device never received the 1/4 frame.
+
+IWD would then retry indefinitely with auth/assoc succeeding but never 
+receiving any 4-way handshake frames. The only way to get things working 
+again was reloading the ath10k driver/reboot. Maybe this patch is 
+different because its waiting for the initial request and no issuing a 
+second one? Just wanted to point that out in case it sheds any light.
 
 Thanks,
 
 James
 
->
->>
->> Thanks,
->>
->> James
->>
->>>
->>>>
->>>> And help is much appreciated, and I'm happy to put in the work its 
->>>> just a steep learning curve coupled with the fact that any FW level 
->>>> communication is proprietary. I really just need a nudge in the 
->>>> right direction.
->>>>
->>>> Thanks,
->>>>
->>>> James
->>>>
->>>>>
->>>>>> Thanks,
->>>>>>
->>>>>> James
->>>>>>
->>>>>>>
->>>>>>> Thanks,
->>>>>>>
->>>>>>> James
->>>>>>>
->>>>>>>
->>>>>
 
