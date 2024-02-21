@@ -1,145 +1,105 @@
-Return-Path: <linux-wireless+bounces-3872-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3873-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6F4185E478
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Feb 2024 18:22:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9102085E519
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Feb 2024 19:00:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37DD6B211AA
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Feb 2024 17:22:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4827D283E63
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Feb 2024 18:00:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4901183A10;
-	Wed, 21 Feb 2024 17:22:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D219B83CDF;
+	Wed, 21 Feb 2024 18:00:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="lRXYkRq0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O2ualo2M"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79A4B7FBDC;
-	Wed, 21 Feb 2024 17:22:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A72557BB00;
+	Wed, 21 Feb 2024 18:00:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708536155; cv=none; b=tl82jz/kZ9xh/2iZz80h0oBsa3egNSUDn0N/1r/ukePJMsYOPLqZvBRLzNa3k95QtgZ9IlDA9vWP5NiJBWtzLIG1rj6XrQWOaJvNemB+dQFeXAOX+03uhma43bGi0ZM/hRIa1Q4/rXBVJbWOKg3DFxrttwBEwZ8b5ioLpPnDF90=
+	t=1708538415; cv=none; b=Rxzp5oEMHSHLeerwSYawNeHF2U46u2JAH5DyMxbzCL/Fv5p5KiHMCsMRAIsN3BIR+u4cKNORuyncPm5j53WzqW+B1WCYWXMlKc6Jbsx0Qmq4ZV0UytPKL+fYwbrfexodXBxAHVGe9qnCTX58YQ5NtJHQWF4BPvOLbIvKOUVbnDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708536155; c=relaxed/simple;
-	bh=IyBKPSwtGfLjQXX0GNBOrKL3WAkHUPwsIKtl305joU8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=SJd0wZSoKF2axoTtjV+/rnCF5tQYHObir7NUi/N9GdbQhywRT25kfT8BoMfWCZ8YNDDkSyC2Sv91CCX0TUqwIjmBFIEzGQdC6xr6uKwYYs3IKQDV0luuMbkz7bRF+6SB7B1exr7TUginnswrQ3MwBhFOO+JDe1VdfWKpgkujk6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=lRXYkRq0; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41LBg667027993;
-	Wed, 21 Feb 2024 17:22:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=BxK9QSTmoRrLlulObARwPvXOu7dmPoYPffk1xFoAODY=; b=lR
-	XYkRq0cpysKF767sTnZ8rplwyTOoBTMobixY08Lo0l3sAIkQ88gCS83tB308/URf
-	Xny+kb8/0HEEorF4TruOW5rg7+EYjQoXmSXfSnSgSP+sxztBU1NbuiMDlG9SFO+K
-	2tqwGsBbaD9arVGb47P27CwyH4xheAHtJxqsFHPxjQkK8gdvJP3K/gSQaIp0HMG5
-	sZJ+lyHprNEjsm6WH1p7WybTKyj6YknNF1hQZPmQ+3tf7tCSMI1xWDsUpNCF1TR5
-	M4qof1Yqepq28BxcUvEfkIJvY8mUp8gHbu6otod/hy2nwvLCadBa5GI4DCvBj9OP
-	HnkLty1xiWHZ3RYbXt+A==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wdgge0u9h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 21 Feb 2024 17:22:26 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 41LHMPCC005697
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 21 Feb 2024 17:22:25 GMT
-Received: from [10.110.34.22] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Wed, 21 Feb
- 2024 09:22:25 -0800
-Message-ID: <8fa5a254-7c9c-4f71-ae84-a7dc7c7aab03@quicinc.com>
-Date: Wed, 21 Feb 2024 09:22:24 -0800
+	s=arc-20240116; t=1708538415; c=relaxed/simple;
+	bh=jxZwS9DN/zj+74jkA+Tojl38QtgkRwQ4DpNjiGFaawA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=J81eSvge2iKvxhU9z/VM/xizVee7ACqlO/IM0gFjZ8G7oIO5xBwdNEdQAuhtPqgfarq9VnG3lsH+hOBB0sVwp/KTbdirZYHO3ns6W0xb4tBzgNTz5sKKvx6KJwsSehwHdSVccZK43kqflS+16M34qroY2b4fS+R/2mCQFEU76lw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O2ualo2M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EEF5C433F1;
+	Wed, 21 Feb 2024 18:00:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708538415;
+	bh=jxZwS9DN/zj+74jkA+Tojl38QtgkRwQ4DpNjiGFaawA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=O2ualo2McOjkeWFt8Ny1g5JkA0rbFsfW+tHcf5qM2Hny6sF5bRCZiPEFjlT237Jq5
+	 2GTE/Em43/ZGYALhEcStY5oPj5DfA9MgfgKGUK0nzb0GYQdeNzMh3PuXipYfgWUYr6
+	 C0YC6sD/+4gZcufJszBiMpW2zpoRlQtmz4OjYrKepJhFgHWyIgXNdgNf0X4E8IdZ2y
+	 fwbJC66YKfHBeAvJSt7KEBRcq/N8OrHKKftTGy7NfHQTRKTePhqcKY7uPrldc4enSd
+	 vNSr+BdMXVhca85/8/GJnkWsi4vy5MGHOlu42USDa+jUpz1p0UtPOAF+NiRkZ25kDu
+	 a3iVVkVNck4iA==
+Date: Wed, 21 Feb 2024 11:00:13 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Kalle Valo <kvalo@kernel.org>
+Cc: quic_jjohnson@quicinc.com, morbo@google.com, justinstitt@google.com,
+	quic_periyasa@quicinc.com, ath12k@lists.infradead.org,
+	linux-wireless@vger.kernel.org, llvm@lists.linux.dev,
+	patches@lists.linux.dev
+Subject: Re: [PATCH] wifi: ath12k: Fix uninitialized use of ret in
+ ath12k_mac_allocate()
+Message-ID: <20240221180013.GA2074929@dev-arch.thelio-3990X>
+References: <20240205-ath12k-mac-wuninitialized-v1-1-3fda7b17357f@kernel.org>
+ <170731849247.2220494.17976129376947521581.kvalo@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] bus: mhi: host: add mhi_power_down_no_destroy()
-Content-Language: en-US
-To: Baochen Qiang <quic_bqiang@quicinc.com>, <ath11k@lists.infradead.org>,
-        <mhi@lists.linux.dev>
-CC: <linux-wireless@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>
-References: <20240221030026.10553-1-quic_bqiang@quicinc.com>
- <20240221030026.10553-2-quic_bqiang@quicinc.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20240221030026.10553-2-quic_bqiang@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: p720gyruh47yBjuK3CApn8LPqUJQMutT
-X-Proofpoint-ORIG-GUID: p720gyruh47yBjuK3CApn8LPqUJQMutT
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-21_04,2024-02-21_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 clxscore=1015
- spamscore=0 malwarescore=0 suspectscore=0 impostorscore=0 mlxscore=0
- priorityscore=1501 phishscore=0 lowpriorityscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2402120000 definitions=main-2402210135
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <170731849247.2220494.17976129376947521581.kvalo@kernel.org>
 
-On 2/20/2024 7:00 PM, Baochen Qiang wrote:
-> ath11k fails to resume:
-> 
-> ath11k_pci 0000:06:00.0: timeout while waiting for restart complete
-> 
-> This happens because when calling mhi_sync_power_up() the MHI subsystem
-> eventually calls device_add() from mhi_create_devices() but the device
-> creation is deferred:
-> 
-> mhi mhi0_IPCR: Driver qcom_mhi_qrtr force probe deferral
-> 
-> The reason for deferring device creation is explained in dpm_prepare():
-> 
->         /*
->          * It is unsafe if probing of devices will happen during suspend or
->          * hibernation and system behavior will be unpredictable in this case.
->          * So, let's prohibit device's probing here and defer their probes
->          * instead. The normal behavior will be restored in dpm_complete().
->          */
-> 
-> Because the device probe is deferred, the qcom_mhi_qrtr_probe() is not
-> called and thus MHI channels are not prepared:
-> 
-> So what this means that QRTR is not delivering messages and the QMI connection
-> is not working between ath11k and the firmware, resulting a failure in firmware
-> initialization.
-> 
-> To fix this add new function mhi_power_down_no_destroy() which doesn't destroy
-> the devices for channels during power down. This way we avoid probe defer issue
-> and finally can get ath11k hibernation working with the following patches.
-> 
-> Actually there is an RFC version of this change and it gets positive results
-> from multiple users. Firstly Mani doesn't like this idea and insists that an
-> MHI device should be destroyed when going to suspend/hibernation, see
-> 
-> https://lore.kernel.org/mhi/20231127162022.518834-1-kvalo@kernel.org/
-> 
-> Then Mani changed his mind after a further discussion with kernel PM guys,
-> see
-> 
-> https://lore.kernel.org/all/21cd2098-97e1-4947-a5bb-a97582902ead@quicinc.com/
-> 
-> So we come up with the regular version and it is almost identical with that RFC
-> version.
-> 
-> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
-> 
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Hi Kalle,
 
+On Wed, Feb 07, 2024 at 03:08:14PM +0000, Kalle Valo wrote:
+> Nathan Chancellor <nathan@kernel.org> wrote:
+> 
+> > Clang warns (or errors with CONFIG_WERROR=y):
+> > 
+> >   drivers/net/wireless/ath/ath12k/mac.c:8060:9: error: variable 'ret' is uninitialized when used here [-Werror,-Wuninitialized]
+> >    8060 |         return ret;
+> >         |                ^~~
+> >   drivers/net/wireless/ath/ath12k/mac.c:8022:9: note: initialize the variable 'ret' to silence this warning
+> >    8022 |         int ret, i, j;
+> >         |                ^
+> >         |                 = 0
+> >   1 error generated.
+> > 
+> > Commit 6db6e70a17f6 ("wifi: ath12k: Introduce the container for mac80211
+> > hw") added a completely uninitialized use of ret. Prior to that change,
+> > -ENOMEM was returned to the callers of ath12k_mac_allocate() whenever
+> > ath12k_mac_hw_allocate() failed. Assign that value to ret to make sure
+> > it is always initialized when used and clear up the warning.
+> > 
+> > Closes: https://github.com/ClangBuiltLinux/linux/issues/1989i
+> > Fixes: 6db6e70a17f6 ("wifi: ath12k: Introduce the container for mac80211 hw")
+> > Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> > Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+> 
+> Patch applied to ath-next branch of ath.git, thanks.
+> 
+> 04edb5dc68f4 wifi: ath12k: Fix uninitialized use of ret in ath12k_mac_allocate()
+
+It doesn't seem like this tree or branch flows into -next on its own, so
+this patch is not present in and the build still breaks on
+next-20240221. Can this be fixed so that this warning stops breaking our
+builds?
+
+Cheers,
+Nathan
 
