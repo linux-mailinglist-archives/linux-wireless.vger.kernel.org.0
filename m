@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-3882-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3883-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FC8B85E6CC
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Feb 2024 19:56:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D224085E6CE
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Feb 2024 19:57:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEC0428A865
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Feb 2024 18:56:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 570CAB26FB2
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Feb 2024 18:57:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD75A8565F;
-	Wed, 21 Feb 2024 18:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18C3885945;
+	Wed, 21 Feb 2024 18:56:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c2tFQzsi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jm2Cxvib"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87FAE85642
-	for <linux-wireless@vger.kernel.org>; Wed, 21 Feb 2024 18:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E576885642;
+	Wed, 21 Feb 2024 18:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708541794; cv=none; b=OqyONe2YgRFufVTIFAfXrBeeOXIxiPtw82ILaiLw1wIiBKr3QzLV00PeasH8xiVjBtAUv08gzka9BM8FgTIxLHQ1b/hUfFwrzwdgnttgiZcv/bieta+W9Bb+N1t1kwnWCLVCD3MUbEyRlL69inWAXysHrf78xdXoNVYV+shKTU8=
+	t=1708541816; cv=none; b=LzPKpzLCO8XWefNDcazTw8LsykL88Lu1Vzuo2Q7UTqoDgbxS+y1UFuhehbIyRT2sCsNVPbCpOvaPdikq7F4QMgJJ4dy3R8DsL8xIAcA9FaMeA0STpHBFdWs2rHHuJMFsVGMV6uktK6TlAWCDuuf1w6qFanM0msX/XOZa9QgZCMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708541794; c=relaxed/simple;
-	bh=LRbL/GJWJHekSNZBbFRgblA4t+YACUE0jeTVAfn169w=;
+	s=arc-20240116; t=1708541816; c=relaxed/simple;
+	bh=x/lhlI51yb6yH2YUoCrdyfz4kHTWX+g1FJ7xY4yHJ5g=;
 	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=FHuJM1ULFQ7w2+mRGceha0UR0h4srEPuNrcAK5/stX0Dgr7maOp7uYU011hMSj63wK1FZkpSK19atkbgqChBb5NvY5eiBUqcwv3GQVZ/cSijN2ngjd98qnoT1hXAubEkIrPS8KzJHbX43l0V+dqiY+mCOn/C5iRUUGoeRTd7vhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c2tFQzsi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94860C433F1;
-	Wed, 21 Feb 2024 18:56:32 +0000 (UTC)
+	 Cc:Message-ID:Date; b=bTzLK5J9CGyaPqTuwhzDXJTlLdBe05a7zVcLl5GyPozJBuVEz8HsGN2AYHO2W+ZFxAiGbNGdGK0TiEscVsh5k/HGiDUZzj+WixFrfukfP1xPXNRxbpsjYXDRVC0pS67IyN98qxxuLCBOsXi2R62jf/tnHL3d8OS13xWpQDtHuoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jm2Cxvib; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0B11C43390;
+	Wed, 21 Feb 2024 18:56:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708541794;
-	bh=LRbL/GJWJHekSNZBbFRgblA4t+YACUE0jeTVAfn169w=;
+	s=k20201202; t=1708541815;
+	bh=x/lhlI51yb6yH2YUoCrdyfz4kHTWX+g1FJ7xY4yHJ5g=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=c2tFQzsiP5nAF0l2h8oi/BR80W6t93NeWrtwgK9SWhPOvRC7pGsgwXMQniWv7dbvd
-	 OdWrVZg8z+RsS7Fr8QqN6KFw0yBRptWuQN3sHb4Ev+aC9AY6Zko8CNtbtg+T1TM1VA
-	 nR4zZVsXzBGXlXvywAi1H0zR4NSMHDuhUZffz/PsvCTTehWzZ+TIvXHIEyc4oXSaDn
-	 MyYov80zSDWhZUl54gpFgmAMd34wwfx4UnJ/2U6MKwo48sULytKcGOe8bQAD0wr77C
-	 syWc7xyM4m+QlRZw+oELXQBxHjsm03KhF0pxBPl05kq9WYEmtr4ZxjvFhDJXdDzjf9
-	 6CLOMTxDnCFyQ==
+	b=jm2CxvibFpZ4eNyMCS/LTN877w6WRQjclIGZ/aKILm0jFuKJvKVkj0KzszedcwVcn
+	 p9Rru7KLs0Gb0yenqLuAC9Napf2tHXYjmFURtlG5AHUbbC6b+A7KyZqYjFTNDIKtu4
+	 swrx+vZN9F6eThgd5cgmuUmBasIUpq10KSA/bMsp3nlcJL957n2EGqC8lojq/B2VAM
+	 K0zC4GiROBBQpScoqLZ9gekdDmmcvaAX+dQbGj0Tclpr3QILlRy2Kc7idgZeCymwaJ
+	 /HqAVZujRkMzHQH2L1Fn+GSAZim058Ot6npcC1GiyMAXCVVeZU/3LillNEW421jq1R
+	 SKOngIKnPsN5A==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -48,42 +48,60 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: brcmfmac: Add DMI nvram filename quirk for ACEPC W5
- Pro
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2] wifi: wilc1000: revert reset line logic flip
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240216213649.251718-1-hdegoede@redhat.com>
-References: <20240216213649.251718-1-hdegoede@redhat.com>
-To: Hans de Goede <hdegoede@redhat.com>
-Cc: Arend van Spriel <aspriel@gmail.com>,
- Franky Lin <franky.lin@broadcom.com>,
- Hante Meuleman <hante.meuleman@broadcom.com>,
- Hans de Goede <hdegoede@redhat.com>, linux-wireless@vger.kernel.org,
- brcm80211-dev-list.pdl@broadcom.com
+In-Reply-To: <20240217-wilc_1000_reset_line-v2-1-b216f433d7d5@bootlin.com>
+References: <20240217-wilc_1000_reset_line-v2-1-b216f433d7d5@bootlin.com>
+To: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+Cc: linux-wireless@vger.kernel.org, Ajay Singh <ajay.kathat@microchip.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+ David Mosberger-Tang <davidm@egauge.net>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ linux-kernel@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>,
+ =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170854179043.1918455.5901929299708483573.kvalo@kernel.org>
-Date: Wed, 21 Feb 2024 18:56:32 +0000 (UTC)
+Message-ID: <170854181192.1918455.14748300319931361175.kvalo@kernel.org>
+Date: Wed, 21 Feb 2024 18:56:53 +0000 (UTC)
 
-Hans de Goede <hdegoede@redhat.com> wrote:
+Alexis Lothoré <alexis.lothore@bootlin.com> wrote:
 
-> The ACEPC W5 Pro HDMI stick contains quite generic names in the sys_vendor
-> and product_name DMI strings, without this patch brcmfmac will try to load:
-> "brcmfmac43455-sdio.$(DEFAULT_STRING)-$(DEFAULT_STRING).txt" as nvram file
-> which is both too generic and messy with the $ symbols in the name.
+> This reverts commit fcf690b0b47494df51d214db5c5a714a400b0257.
 > 
-> The ACEPC W5 Pro uses the same Ampak AP6255 module as the ACEPC T8
-> and the nvram for the T8 is already in linux-firmware, so point the new
-> DMI nvram filename quirk to the T8 nvram file.
+> When using a wilc1000 chip over a spi bus, users can optionally define a
+> reset gpio and a chip enable gpio. The reset line of wilc1000 is active
+> low, so to hold the chip in reset, a low (physical) value must be applied.
 > 
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> The corresponding device tree binding documentation was introduced by
+> commit f31ee3c0a555 ("wilc1000: Document enable-gpios and reset-gpios
+> properties") and correctly indicates that the reset line is an active-low
+> signal. The corresponding driver part, brought by commit ec031ac4792c
+> ("wilc1000: Add reset/enable GPIO support to SPI driver") was applying the
+> correct logic. But commit fcf690b0b474 ("wifi: wilc1000: use correct
+> sequence of RESET for chip Power-UP/Down") eventually flipped this logic
+> and started misusing the gpiod APIs, applying an inverted logic when
+> powering up/down the chip (for example, setting the reset line to a logic
+> "1" during power up, which in fact asserts the reset line when device tree
+> describes the reset line as GPIO_ACTIVE_LOW). As a consequence, any
+> platform currently using the driver in SPI mode must use a faulty reset
+> line description in device tree, or else chip will be maintained in reset
+> and will not even allow to bring up the chip.
+> 
+> Fix reset line usage by inverting back the gpiod APIs usage, setting the
+> reset line to the logic value "0" when powering the chip, and the logic
+> value "1" when powering off the chip.
+> 
+> Fixes: fcf690b0b474 ("wifi: wilc1000: use correct sequence of RESET for chip Power-UP/Down")
+> Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
+> Acked-by: Conor Dooley <conor.dooley@microchip.com>
+> Acked-by: Ajay Singh <ajay.kathat@microchip.com>
 
 Patch applied to wireless-next.git, thanks.
 
-32167707aa5e wifi: brcmfmac: Add DMI nvram filename quirk for ACEPC W5 Pro
+f3ec64394763 wifi: wilc1000: revert reset line logic flip
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240216213649.251718-1-hdegoede@redhat.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20240217-wilc_1000_reset_line-v2-1-b216f433d7d5@bootlin.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
