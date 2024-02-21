@@ -1,212 +1,105 @@
-Return-Path: <linux-wireless+bounces-3837-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3838-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72A5585CF24
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Feb 2024 04:50:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0718485D1F3
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Feb 2024 08:58:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 60242B21259
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Feb 2024 03:50:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6340286977
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Feb 2024 07:58:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D85DE25613;
-	Wed, 21 Feb 2024 03:45:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="akCkwgPC"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 015223B787;
+	Wed, 21 Feb 2024 07:58:52 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A41039851
-	for <linux-wireless@vger.kernel.org>; Wed, 21 Feb 2024 03:45:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C053B785
+	for <linux-wireless@vger.kernel.org>; Wed, 21 Feb 2024 07:58:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708487135; cv=none; b=sb8F9+n0B9jndo7Hw3VW0bhafZwFwVZ1kqgdzYdFt8CyApKAc//ZO0oB+wevjYGbJLYdqwaS4wmPl8GrlSd13j60hoFzu26fcI1xcVjDVoicdHdonLSiE4WmSHUjuMGAh22R7C4f+m43xUhYcYf419SPDzNT8lCydRktZCLaxSg=
+	t=1708502331; cv=none; b=c1yKNxUdyVUgUjupCLlYqkfKvCFJM8wCnSvO16J/Qgr5F2miyUP8xBWvQHyhO7BrDjXxu2ZqldsLxQmVzopKsKGz/vKt49vNZQLaDPNWmwRBbEf/bDYMRa/QBNQyUsAXq7pvORSCSROX2U6zB016UrRY09ROTyhnqzqS4DOZk3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708487135; c=relaxed/simple;
-	bh=+fjVFtdLm6Ytbx9gLheoPCRF4BdbD3bveqhy/93u3HY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=cN5FFQBWgLX3ebhiu3HXmW0XagKr76a0h2OqmdZVFPfFKUQuJWnA8xmIWVsIgBKcrDpQ7YCZ592dnlLoxDLd9AWvanAQuIPM2QGi5nfYANxFZ3Bdr8oRb/0EhbgdvS9Cj3FXWs2S4vtkEuH7s1AR5t8+cfQWSR2iun3m7jcgJkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=akCkwgPC; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41L2CaUa023429;
-	Wed, 21 Feb 2024 03:45:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=e8qw/W7WciIoIxmEDrFyAyTEWAtj07O6Yyg0bIXdv3Y=; b=ak
-	CkwgPCubLrbab9B+4JVexFPSeMR4psr8E6E1Q+kxuf5eL1SG4YJEn+7BQ9DQthVv
-	uv3UpPkalO++zKXlhrjPs4zQXiCj1L4w0cVGg7N+le8UhceVMlapjhtozqF1BtIL
-	hkDTcOOihPug/TeRWnFTNH3rjcfpi7MLgT0+8pMRRSlqz0Wkoa5cmrvmm3Jqk+EK
-	llf/0YOXC9wUlq5w8S2rpdF8iAcKTbevyyaeGL34TVzkMrV+yAIhv+25LOcZ2gEg
-	M2DjM7LQFxpTc1BUXQnKnW0MxF84o6Qv7iTXkrFUuMJhpqtx/ixl+F+TWcZnJNmG
-	HIe9A1AOEXObN9PAh3TA==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wd21s8vex-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 21 Feb 2024 03:45:30 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 41L3jTap014152
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 21 Feb 2024 03:45:29 GMT
-Received: from [10.231.195.68] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Tue, 20 Feb
- 2024 19:45:28 -0800
-Message-ID: <f363f179-b41f-4bea-882f-e4aacb8ad519@quicinc.com>
-Date: Wed, 21 Feb 2024 11:45:25 +0800
+	s=arc-20240116; t=1708502331; c=relaxed/simple;
+	bh=lU97ICEr2Q7XxRgtPCL5qkh8h6B3sDqEuKgB7ZY67xk=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=hqovEIeyXXUmF7b6uNys3F2sJvX9epL6c74FRU/9undzDSibejUttjS+VI/VtMqSeUCuOo1Z/NRTBL0HyqTw/aDLnGa5hw9BO/EAajeL7NASCrcrMDXzPJsMymL3wRBAy3aOjmsU3+zj5N1Nfy0yx6LvzaPfl53txQ1aU1JyPhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 41L7wS7Q1903549, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 41L7wS7Q1903549
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 21 Feb 2024 15:58:28 +0800
+Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.17; Wed, 21 Feb 2024 15:58:28 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Wed, 21 Feb 2024 15:58:27 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::c9b7:82a9:7e98:fa7f]) by
+ RTEXMBS04.realtek.com.tw ([fe80::c9b7:82a9:7e98:fa7f%7]) with mapi id
+ 15.01.2507.035; Wed, 21 Feb 2024 15:58:27 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Johannes Berg <johannes@sipsolutions.net>,
+        Aditya Kumar Singh
+	<quic_adisi@quicinc.com>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "Jeff
+ Johnson" <quic_jjohnson@quicinc.com>,
+        Ilan Peer <ilan.peer@intel.com>, "Jouni
+ Malinen" <j@w1.fi>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: RE: [PATCH v8 4/5] wifi: mac80211: start and finalize channel switch on link basis
+Thread-Topic: [PATCH v8 4/5] wifi: mac80211: start and finalize channel switch
+ on link basis
+Thread-Index: AQHaU4YW43ZUC/cFnUyW8JfF3/48hLD//cCAgAAEzoCABc0KgIAACpsAgAB9JYCAAPMbgIAAOXcAgAAazYCAAAqOAIAAHYkAgAACHICADMP6oA==
+Date: Wed, 21 Feb 2024 07:58:27 +0000
+Message-ID: <5a89e63fb7644d12be72154c90c96199@realtek.com>
+References: <20240130140918.1172387-1-quic_adisi@quicinc.com>
+	 <20240130140918.1172387-5-quic_adisi@quicinc.com>
+	 <b73dd1f9c23c164179c38e2109aa1550d87e87ed.camel@sipsolutions.net>
+	 <646d1e3e404a437f4c99c80996eb4f194ac242b8.camel@sipsolutions.net>
+	 <26df9aa6-e497-4040-ad5c-c647454acca6@quicinc.com>
+	 <b2cf5c1d-7842-4e59-b25a-904a6879fa9c@quicinc.com>
+	 <f7174207668cac149246cafa0e4b4749ee3289f0.camel@sipsolutions.net>
+	 <ac5825e8-0cb1-476e-be5c-ad0170122f77@quicinc.com>
+	 <fe2100dcfe9ae9b4517f239faf25374c27f473a5.camel@sipsolutions.net>
+	 <5c0fd2eb-eb19-4b69-a325-ad9eef633336@quicinc.com>
+	 <bc81466177afd0014ccdd9030c5807339bb288db.camel@sipsolutions.net>
+	 <18c0d4de-392a-420c-8a05-466a83cd2eb8@quicinc.com>
+ <3c550ae335a9762a9cbd0c8109b6dd99faeb8f6f.camel@sipsolutions.net>
+In-Reply-To: <3c550ae335a9762a9cbd0c8109b6dd99faeb8f6f.camel@sipsolutions.net>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: ath11k multicast action frame RX
-Content-Language: en-US
-To: James Prestwood <prestwoj@gmail.com>,
-        "open list:MEDIATEK MT76 WIRELESS
- LAN DRIVER" <linux-wireless@vger.kernel.org>,
-        <ath11k@lists.infradead.org>
-References: <dcdbd757-ad6e-4fe0-a0c1-fe328431b73b@locusrobotics.com>
- <642b61a6-e3c0-4831-887f-f25314bf166d@locusrobotics.com>
- <90ac3bdc-8797-4d57-8bc9-48e0ad406674@quicinc.com>
- <1dafe0e5-292b-4764-86c7-cc1757aeb3b6@gmail.com>
- <ed8eeb92-e1eb-445e-989d-2340c26faf44@quicinc.com>
- <7a62031b-ad1f-4da2-8217-19a5d7fdc0f4@gmail.com>
-From: Baochen Qiang <quic_bqiang@quicinc.com>
-In-Reply-To: <7a62031b-ad1f-4da2-8217-19a5d7fdc0f4@gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: uzanLWPHl4qgtbRgredxBwpb8Yms52Rk
-X-Proofpoint-GUID: uzanLWPHl4qgtbRgredxBwpb8Yms52Rk
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-20_06,2024-02-20_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 impostorscore=0
- priorityscore=1501 adultscore=0 spamscore=0 lowpriorityscore=0 bulkscore=0
- clxscore=1011 mlxscore=0 suspectscore=0 mlxlogscore=999 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2402120000
- definitions=main-2402210025
 
-
-
-On 1/31/2024 8:28 PM, James Prestwood wrote:
-> Hi Baochen,
-> 
->>> As you may have guessed I don't _really_ know what I'm doing. When I 
->>> got this working with ath10k I saw monitor device was being used in 
->>> order to receive probes, and did the same for multicast action frames 
->>> and it "just worked". The frames themselves were still being received 
->>> on the station device. I attempted to mimic the changes with ath11k.
->>>
->>> The end goal here is just that, be able to receive multicast action 
->>> frames on the station device which currently does not work. I'm only 
->>> seeing unicast frames when i enable RX debugging. The driver support 
->>> for multicast action RX in the kernel for this is basically zero. An 
->>> extended feature flag was added by Jouni when he added support to 
->>> ath9k, I added limited ath10k support for a variant I tested, and I'd 
->>> like to do the same for ath11k as we are transitioning to the WCN6855.
->> OK, so you are testing this with latest ath.git, without any private 
->> changes, and it doesn't work, right? Could you share your test steps? 
->> Basically how are you sending multicast action frames from AP/peer, 
->> and how to check if that frame received or not (I am assuming by 
->> checking RX logs)?
-> 
-> Yep I'm on the latest ath.git, and with no changes apart from that MSI 
-> vector hack to get it working with vfio-pci.
-> 
-> The way I'm testing this is using IWD with DPP PKEX. Building IWD should 
-> be relatively straight forward, very few dependencies. This will also 
-> include iwctl which is IWD's command line utility:
-> 
-> https://git.kernel.org/pub/scm/network/wireless/iwd.git/
-> 
-> I have two devices, the configurator device (device A, ath11k) is what 
-> should be able to receive the multicast action frames. The enrollee 
-> device (device B) can use probably any hardware as sending multicast 
-> action frames should be supported. IWD will not start a DPP PKEX 
-> configurator without EXT_FEATURE_MULTICAST_REGISTRATIONS set but if you 
-> enable RX logging that should be good enough to see if the frame is 
-> making it to the ath11k driver itself. Once multicast RX is supported we 
-> would need to add that extended feature to ath11k, or at least the 
-> tested variant. If you want, you can hack in that feature bit and start 
-> a configurator but if your able to get the muticast RX working I can 
-> probably take it from there:
-> 
-> 1. Enable RX logging on device A
-> 
-> 2. Start IWD on device A
-> 
->      iwd -d
-> 
-> 3. Connect to a network on device A
-> 
->      iwctl station <wlan> connect <ssid>
-> 
->      <enter passphrase>
-> 
-> # Optional: start a configurator. This won't work without the ext 
-> feature set
-> 
->     iwctl pkex <wlan> configure secret123
-> 
-> 4. Start IWD on device B, do not connect.
-> 
->      iwd -d
-> 
-> 5. Start DPP PKEX as an enrollee on device B:
-> 
->      iwctl pkex <wlan> enroll secret123
-> 
-> On device B you should see IWD first scan to establish nearby 
-> APs/frequencies, then begin iterating those frequencies and sending a 
-> multicast action frame.
-Hi James, I reproduced this issue following your guide. From the advise 
-of firmware team, a new flag is needed. With that flag, I did see the 
-multicast action frame in device A logging. Before I proceed, want to 
-clarify something: that frame is only seen after device A triggers a 
-scan (I triggered it manually using iw, not IWD itself because IWD not 
-working on device A due to unknown errors), if no scan no frame seen. I 
-am not sure if this behavior is expected so now checking with internal 
-team on it.
-
-So there comes a question: will IWD triggers scan on device A in order 
-to receive that frame?
-
-> 
-> Thanks,
-> 
-> James
-> 
->>
->>>
->>> And help is much appreciated, and I'm happy to put in the work its 
->>> just a steep learning curve coupled with the fact that any FW level 
->>> communication is proprietary. I really just need a nudge in the right 
->>> direction.
->>>
->>> Thanks,
->>>
->>> James
->>>
->>>>
->>>>> Thanks,
->>>>>
->>>>> James
->>>>>
->>>>>>
->>>>>> Thanks,
->>>>>>
->>>>>> James
->>>>>>
->>>>>>
->>>>
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogSm9oYW5uZXMgQmVyZyA8
+am9oYW5uZXNAc2lwc29sdXRpb25zLm5ldD4NCj4gU2VudDogVHVlc2RheSwgRmVicnVhcnkgMTMs
+IDIwMjQgODo0OSBQTQ0KPiBUbzogQWRpdHlhIEt1bWFyIFNpbmdoIDxxdWljX2FkaXNpQHF1aWNp
+bmMuY29tPg0KPiBDYzogbGludXgtd2lyZWxlc3NAdmdlci5rZXJuZWwub3JnOyBKZWZmIEpvaG5z
+b24gPHF1aWNfampvaG5zb25AcXVpY2luYy5jb20+OyBJbGFuIFBlZXINCj4gPGlsYW4ucGVlckBp
+bnRlbC5jb20+OyBKb3VuaSBNYWxpbmVuIDxqQHcxLmZpPjsgUGluZy1LZSBTaGloIDxwa3NoaWhA
+cmVhbHRlay5jb20+OyBSeWRlciBMZWUNCj4gPHJ5ZGVyLmxlZUBtZWRpYXRlay5jb20+DQo+IFN1
+YmplY3Q6IFJlOiBbUEFUQ0ggdjggNC81XSB3aWZpOiBtYWM4MDIxMTogc3RhcnQgYW5kIGZpbmFs
+aXplIGNoYW5uZWwgc3dpdGNoIG9uIGxpbmsgYmFzaXMNCj4gDQo+ICBiKSBsZXQncyB3YWl0IGZv
+ciBSZWFsdGVrIHRvIGNvbW1lbnQgYWxzbyBhZnRlciB0aGUgTHVuYXIgTmV3IFllYXIgOikNCj4g
+DQoNClNvcnJ5IGZvciB0aGUgbGF0ZS4gDQoNClJlYWx0ZWsgZmlybXdhcmUgY2FuIHVwZGF0ZSBw
+YXJ0bmVyIGxpbmtzJyBDU0EvRUNTQSBieSBnaXZlbiBvZmZzZXQgb2YNCmJlYWNvbiB0ZW1wbGF0
+ZSwgd2hpY2ggbWF0Y2hlcyB0aGUgY29uY2x1c2lvbiBvZiB0aGlzIHRocmVhZCwgYW5kIFJlYWx0
+ZWsgdmVuZG9yDQoob3V0IG9mIHRyZWUpIGRyaXZlciBoYXMgdmVyaWZpZWQgdGhlIGZpcm13YXJl
+IGludGVyZmFjZS4gU28gdGhhdCB3aWxsDQp3b3JrIHRvIFJlYWx0ZWsgV2lGaSA3IGNoaXBzLiAN
+Cg0KUGluZy1LZSANCg0K
 
