@@ -1,146 +1,112 @@
-Return-Path: <linux-wireless+bounces-3825-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3826-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E76185CC31
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Feb 2024 00:44:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97BDC85CE46
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Feb 2024 03:47:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4AD92284BC4
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Feb 2024 23:44:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 220411F21B61
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Feb 2024 02:47:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38E61154C0C;
-	Tue, 20 Feb 2024 23:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26E7679FD;
+	Wed, 21 Feb 2024 02:47:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MVw8eBpT"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="QLgmCdDW"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E33BD15444C;
-	Tue, 20 Feb 2024 23:44:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C34246A4
+	for <linux-wireless@vger.kernel.org>; Wed, 21 Feb 2024 02:47:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708472666; cv=none; b=NOlWbgbqZ2zl1iHh8CkO8jCkR5fS87PjWZSCzlGgEVLGrc+V9BqDTuYnIqEYXDZCyknJVqBPld+xBcQFbfvtOCEfQpNlSe4/i1avKs37tHOUuze64Hpy64pUbl5nKlaGlnZKajFihzRHFFb2ghrJbD/4shPfOzgGoRuRzXFZBAM=
+	t=1708483666; cv=none; b=StQsZac2cXUOggatWI2Dnbq+FQeT+xOHUMgw46rGBiJd9gW95ZZv1PRdHcyzm8B2TJevIJoRKG77/IsGVee/oW8PllFPC8W+a5Qu+ah1+Ydypd3FbLuB7HCfpfeS2NUEZsk6kOOyqzfTzXr9fu7IS0KYcfESX81/iDsWHa5NpDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708472666; c=relaxed/simple;
-	bh=Zxy/pymnMx5rTDOnldO5AbT5UwWB1Dt3XC+eanXoo2Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IJWSICJMZ44PGLmO5i8WNKcBHnIF6c01TpUO+mJQZnKoeb/cy7Q/GsAbeDyB06siKzPLQgOIDDIGBnTm1L+yFy5qte8azTRiz5LE3s4iQo145BFRoA7mcV7RrPARMPtFV2RjaGCrrCLgFeQkz7w5LIMX5ntvALi4A/9rtHrN+j0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MVw8eBpT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2019DC433F1;
-	Tue, 20 Feb 2024 23:44:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708472665;
-	bh=Zxy/pymnMx5rTDOnldO5AbT5UwWB1Dt3XC+eanXoo2Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MVw8eBpTCjdftSTyEbvxYQwqBQu3kUyua3/5maqJotrEpeQPF8MT/1EbtFAFQFqfY
-	 K0t7zPYZFcaMD3RHTzSC0Uzv22Ugf1jGS0lzKX4sZDiF2uJlHtf54PreCVaOTr3Tfw
-	 EsNQcr25WGsNXahnwTYIKVKmHvjdlK1vnLLqa/lqMd9ZP0CJAoHHVpjm1IDApXd34L
-	 K8FF/7Nu8P3ZfXeqfPWePnahSDfkXSU50X19KYac3SI+AfDNsTcHOD0rG9WKxl6ASe
-	 5A+s/TjQHvdaFIsr3eOLqD/cnd9vXh+RwYFkBVZ9DdjLYfhoL8QluOXvPfeX7MKiVt
-	 orv+kbQUnDC4w==
-Date: Tue, 20 Feb 2024 23:44:14 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Kalle Valo <kvalo@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Saravana Kannan <saravanak@google.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Alex Elder <elder@linaro.org>,
-	Srini Kandagatla <srinivas.kandagatla@linaro.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Lukas Wunner <lukas@wunner.de>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-wireless@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
-	linux-pm@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: [PATCH v5 14/18] PCI/pwrctl: add a power control driver for
- WCN7850
-Message-ID: <53f0956f-ee64-4bd6-b44f-cbebafd42e46@sirena.org.uk>
-References: <20240216203215.40870-1-brgl@bgdev.pl>
- <20240216203215.40870-15-brgl@bgdev.pl>
- <d5d603dc-ec66-4e21-aa41-3b25557f1fb7@sirena.org.uk>
- <CAMRc=MeUjKPS3ANE6=7WZ3kbbGAdyE8HeXFN=75Jp-pVyBaWrQ@mail.gmail.com>
- <ea08a286-ff53-4d58-ae41-38cca151508c@sirena.org.uk>
- <17bbd9ae-0282-430e-947b-e6fb08c53af7@linaro.org>
+	s=arc-20240116; t=1708483666; c=relaxed/simple;
+	bh=R2Qo3/hv24zc8jGSgUbo1hiXe2o3V7lua6z8W9xicWY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NZzhli+bi25dXPtTgNKuvuctJft8A7HeGBizj7vNeRG0F1YSpp8UE80WLvWxEiVgaMwhX1ysGA+HiJKoN5C8Yho40zbo12DCXe3Er0eMHSvs/l7cq0OOp6FxRlbZMdUttNqXcyf36zzQ1YsZC7xXoY+DRhDhotEHN/mfd9xOiF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=QLgmCdDW; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41L0wCqG021654;
+	Wed, 21 Feb 2024 02:47:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=qcppdkim1; bh=xifyS9o
+	6esMWtyWRg9qMDPPuumLYutmJZbuYukfXBqM=; b=QLgmCdDWfYzdJOi7DqDa4bK
+	oGNccqZkd1OMmxzdMppXkENod5aBGxIAlp6D2YRMy9UxK5Mvbfb4J6b0cmmPIW3/
+	LLJQIcI5fx2wdu6EA/MCxq0YJZltVfwRQuCTgOLJD8eQzlgbj9GJxvRVlrnNv02a
+	3XRPsX6MokE20anVYEyF0ar2SnsNmJ+zgo3Am9L8gh9SwwLSitfAdzWmLsVrT0LQ
+	2k5pEptMqbkzKocUlXDjfTYe+ZC6bEY6YyzoUfPrPGeDNIB5MTqDeK3036bMqkm7
+	gbqcBRqM8p5EyIWjn/psuuQ/rRpKIj5P4ngS+BYyxGpfDD0drcR3+kUtp0+hFnw=
+	=
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wd21urs4u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 21 Feb 2024 02:47:40 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 41L2le30020094
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 21 Feb 2024 02:47:40 GMT
+Received: from bqiang-SFF.qca.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Tue, 20 Feb 2024 18:47:38 -0800
+From: Baochen Qiang <quic_bqiang@quicinc.com>
+To: <ath11k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, <quic_bqiang@quicinc.com>
+Subject: [PATCH 0/5] wifi: ath11k: prepare for hibernation support
+Date: Wed, 21 Feb 2024 10:47:20 +0800
+Message-ID: <20240221024725.10057-1-quic_bqiang@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="w1C+bNORgZucbhbU"
-Content-Disposition: inline
-In-Reply-To: <17bbd9ae-0282-430e-947b-e6fb08c53af7@linaro.org>
-X-Cookie: E = MC ** 2 +- 3db
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 3WqrfY_CAsbxDrkq91t9O1A5sEOaQCkB
+X-Proofpoint-ORIG-GUID: 3WqrfY_CAsbxDrkq91t9O1A5sEOaQCkB
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-20_06,2024-02-20_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 suspectscore=0
+ bulkscore=0 priorityscore=1501 spamscore=0 lowpriorityscore=0 mlxscore=0
+ phishscore=0 mlxlogscore=536 impostorscore=0 malwarescore=0 clxscore=1011
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2402120000
+ definitions=main-2402210018
+
+This is to do some prepare work for hibernation, the final hibernation
+support comes in a following patch set.
+
+Baochen Qiang (4):
+  wifi: ath11k: rearrange IRQ enable/disable in reset path
+  wifi: ath11k: remove MHI LOOPBACK channels
+  wifi: ath11k: do not dump SRNG statistics during resume
+  wifi: ath11k: fix warning on DMA ring capabilities event
+
+Kalle Valo (1):
+  wifi: ath11k: thermal: don't try to register multiple times
+
+ drivers/net/wireless/ath/ath11k/core.c    |  8 ++--
+ drivers/net/wireless/ath/ath11k/mhi.c     | 56 -----------------------
+ drivers/net/wireless/ath/ath11k/qmi.c     |  5 +-
+ drivers/net/wireless/ath/ath11k/thermal.c |  5 +-
+ drivers/net/wireless/ath/ath11k/wmi.c     |  3 +-
+ 5 files changed, 14 insertions(+), 63 deletions(-)
 
 
---w1C+bNORgZucbhbU
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+base-commit: 707e306f3573fa321ae197d77366578e4566cff5
+-- 
+2.25.1
 
-On Tue, Feb 20, 2024 at 10:21:04PM +0100, Konrad Dybcio wrote:
-> On 20.02.2024 13:47, Mark Brown wrote:
-
-> > Are you *sure* this actually happens (and that the regulators don't
-> > figure it out by themselves), especially given that the consumers are
-> > just specifying the load once rather than varying it dynamically at
-> > runtime which is supposed to be the use case for this API?  This API is
-> > intended to be used dynamically, if the regulator always needs to be in
-> > a particular mode just configure that statically.
-
-> *AFAIU*
-
-> The regulators aggregate the requested current (there may be
-> multiple consumers) and then it's decided if it's high enough
-> to jump into HPM.
-
-Yes, that's the theory - I just question if it actually does something
-useful in practice.  Between regulators getting more and more able to
-figure out mode switching autonomously based on load monitoring and them
-getting more efficient it's become very unclear if this actually
-accomplishes anything, the only usage is the Qualcomm stuff and that's
-all really unsophisticated and has an air of something that's being
-cut'n'pasted forwards rather than delivering practical results.  There
-is some value at ultra low loads, but that's more for suspend modes than
-for actual use.
-
---w1C+bNORgZucbhbU
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmXVOUsACgkQJNaLcl1U
-h9B4Sgf/U1Mvu4f6A7qzABpKd9BB7OcLPxH6iSmo8bzo4Tx8MZhge4nd6FITJ9Qr
-BMMbYW8osslMnOrHCH0Pat8hVGnQqDL6a0xURC3B0/E1PLgC9f0+licqpxxQTRqL
-V2Mm42QnAwLrug2ACCRxhByQxjl8c4eknu+KFgpJtIJNfM5UlnJ4kF4voEBkQBIC
-/69z0ZVKAyuebe3Q+EtAh/Vm0HA2d6cb9JsjqOSQnoyFXEqExFuqEZoIhdzrn9bM
-Y6j+npu1uSv+PyaTRXnB6Kf7SZdk1cmghtBmYh/hSh3tjsZvJw5i9GBc3UklYcl+
-oSruwA9tsK/zK0w2x1N+Iah+Bv2l9g==
-=u1/w
------END PGP SIGNATURE-----
-
---w1C+bNORgZucbhbU--
 
