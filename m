@@ -1,131 +1,118 @@
-Return-Path: <linux-wireless+bounces-3840-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3841-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3BF585D246
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Feb 2024 09:13:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19EE185D265
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Feb 2024 09:19:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACD452856F7
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Feb 2024 08:13:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B2471C22F38
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Feb 2024 08:19:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B77E53BB26;
-	Wed, 21 Feb 2024 08:13:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E8hBAxYa"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D4983B199;
+	Wed, 21 Feb 2024 08:19:42 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B6023C6A6;
-	Wed, 21 Feb 2024 08:13:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 464093B794
+	for <linux-wireless@vger.kernel.org>; Wed, 21 Feb 2024 08:19:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708503190; cv=none; b=H/vKxrmEUyzQ3bALIuIhqR8OxhMlnnQL8A1tbQe4OwmrtMQ7FLgS8dlIX1uVrFDHDhxr9TqPcAW+JBEf69sp4zA7eSumnlXofjJ02ErXSnO6K0xp5zW0kXowN5oGEhgGxzOs6qRK79CaooJFDsw/JI5/9d6prZHemGiT2QkESOw=
+	t=1708503582; cv=none; b=nPBKRxmkK6vfvmda+bLWXczOuIXR0GrwX7V+iDH/MX5/sPIuD2+23ZopYYdlqhKB9wSfdsbCKwXMCGeegPCFvOarDeIiqTWYgxsG6pXc8YjyjoWaYIL9ghAKh7FDHhQTH1xai8LE4ugwgch6pcJ3tkT3SXbSlxlwe83e92iDOZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708503190; c=relaxed/simple;
-	bh=6z67RUfRUOi4Z6G49qLe9mM2AhVwVasTkIShUsafPWw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=do0aJxZNw88mRH0qduEDncaX15JvDcrPMVWcjmsuKR8bL8gtO+qnwjYN9zDs1QMCxCr7gu01GpXxNdwdp1bDLole1l/kUim9gLDpXlQ58BpWBbs2vT3eEbnTt4UzalyTDfMuxWfvz1NT/i+panUEAKNxmqAbP+BwjMdihRR+22k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E8hBAxYa; arc=none smtp.client-ip=209.85.167.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-512b42b6697so3647127e87.1;
-        Wed, 21 Feb 2024 00:12:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708503177; x=1709107977; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/eWTzORbbiIpz3VaWvIplgyLsTQizBCwhJdtvKmGP+A=;
-        b=E8hBAxYa4KPSlPIJjri91+Yc/lWvNYjxta4N9LEe8jK28QcD3ojDGJMzB+gqzY0Zz7
-         +gRnkth8sXMkcyjr2p7sbTBqqRI7Plf9XIxb1A8mSSEAedF4CpSrK7XvU7DAu0d50gFK
-         K3ZMrOT20UAnD1IwbFkj7N5NYSGBXwsHTaAoCrrr+RBOoTs9Q1Tu3AFYKOvRcMR+YlnO
-         Ap+pMeXLkmi7l9j8qI0gd/Ci/G9It00YB8ZTSroBhGHXtWqVAfXEdNOUjRHlqARV1aKI
-         HnDt6CLL12hOR1QbWURkbWfTsMO2afVh2tQ1W3AswyACXWfrMN41a/KaUI5OMVzAi1ri
-         8QBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708503177; x=1709107977;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/eWTzORbbiIpz3VaWvIplgyLsTQizBCwhJdtvKmGP+A=;
-        b=UyJYFsdG1LxOZs1o/qhiZ067SheBvmklytVhXQ5MoltZ3PztlkoqQM5Wn0clkxRcfV
-         WMjJJsMbNip0ppORy7u40khBAwx0FdpwxnNn7qMEgeF+1ypZdgqTlg8jiQ4/eL/Is8tn
-         NyOGi6TeW3ukOiShtoD68DUhXO7dmO32LuUDJVGBCg0x6gCBHbmZvUppECMeREEdDjG2
-         MUQDBSPcUnNTooLu9R/jUsw3AgrGVkmE/7NovHzjIHxUCMzN+5lXOgv7Tr0h3M6kqLXL
-         Z2acn9A/91TceUYEqtLQNK5MI4zYHH9ZdVh8HqOm9EscGqEwGO9HxPx6XFPGXrQrurLj
-         C+YA==
-X-Forwarded-Encrypted: i=1; AJvYcCVwmE/5YWMFt+P3zWABHgIfP+UEJ1UmErp2WSeJsq0iGLcWzdwt+pJAqTG0PxwUt4X7Hnk9MtX/NNHh/F33GIntXFoptBjwL7hQ1h1nHLPmprn03HAlnVM9jyoDT804DUuFfwUhFD/OmMH1E3AeJvFgq38ziYS6ASLgZUYDjlRR69mi
-X-Gm-Message-State: AOJu0Ywo33T3xqW9U0255idcxIcN6JqSJMQZ/RmjpTRLH8I6wrLkLeyX
-	KjaSsn6JgIKOV0jMOK7QCOcGumJSuXYoKwRa1SvS9Yl8JgH8a5w7
-X-Google-Smtp-Source: AGHT+IGyQ9GZtCJkvm9sABHTesHxad3BmSuXezswVyaQVUsfQ8lWVuh6nqCARxX2kR0Q88GbH2OUqw==
-X-Received: by 2002:a05:6512:3409:b0:512:b3bf:b803 with SMTP id i9-20020a056512340900b00512b3bfb803mr5927236lfr.39.1708503177210;
-        Wed, 21 Feb 2024 00:12:57 -0800 (PST)
-Received: from localhost.lan (031011218106.poznan.vectranet.pl. [31.11.218.106])
-        by smtp.gmail.com with ESMTPSA id r8-20020ac25f88000000b0051144c7cf9esm1562692lfe.265.2024.02.21.00.12.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Feb 2024 00:12:56 -0800 (PST)
-From: =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-To: Felix Fietkau <nbd@nbd.name>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Ryder Lee <ryder.lee@mediatek.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: Shayne Chen <shayne.chen@mediatek.com>,
-	Sean Wang <sean.wang@mediatek.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	Peter Chiu <chui-hao.chiu@mediatek.com>
-Subject: [PATCH] dt-bindings: net: wireless: mt76: allow all 4 interrupts for MT7981
-Date: Wed, 21 Feb 2024 09:12:38 +0100
-Message-Id: <20240221081238.24775-1-zajec5@gmail.com>
-X-Mailer: git-send-email 2.35.3
+	s=arc-20240116; t=1708503582; c=relaxed/simple;
+	bh=3QNxUN+gdjc6i9qc7K/VxuuvKxATIOpcnulRK/0tI2o=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=uj/EZRiaDIRxIvgxPuIEl5Rfs7E4IVhHVW3ju6bZ3K4Bf1qSATWNYNbgorwEqnyvRO8xrkyP6DFQtQEvL/ARYUrJU5E4pIxGPdKscH0bRWzq3cPbuBVdeopzGAVATuMSUS0wqDUM3Eq1MmbjwLjlPEi7UVHFasZHZQ5OB8vzvcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 41L8JC8A0909455, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 41L8JC8A0909455
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 21 Feb 2024 16:19:14 +0800
+Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2375.32; Wed, 21 Feb 2024 16:19:13 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Wed, 21 Feb 2024 16:19:12 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::c9b7:82a9:7e98:fa7f]) by
+ RTEXMBS04.realtek.com.tw ([fe80::c9b7:82a9:7e98:fa7f%7]) with mapi id
+ 15.01.2507.035; Wed, 21 Feb 2024 16:19:12 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Johannes Berg <johannes@sipsolutions.net>,
+        Aditya Kumar Singh
+	<quic_adisi@quicinc.com>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "Jeff
+ Johnson" <quic_jjohnson@quicinc.com>,
+        Ilan Peer <ilan.peer@intel.com>, "Jouni
+ Malinen" <j@w1.fi>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Arend van Spriel
+	<arend.vanspriel@broadcom.com>,
+        Felix Fietkau <nbd@openwrt.org>
+Subject: RE: [PATCH v8 4/5] wifi: mac80211: start and finalize channel switch on link basis
+Thread-Topic: [PATCH v8 4/5] wifi: mac80211: start and finalize channel switch
+ on link basis
+Thread-Index: AQHaU4YW43ZUC/cFnUyW8JfF3/48hLD//cCAgAAEzoCABc0KgIAACpsAgAB9JYCAAPMbgIAAOXcAgAAazYCAAAqOAIAAHYkAgAACHICADMP6oP//gIoAgACISOA=
+Date: Wed, 21 Feb 2024 08:19:12 +0000
+Message-ID: <00094ae0ca73461c88799c070ad9b55a@realtek.com>
+References: <20240130140918.1172387-1-quic_adisi@quicinc.com>
+	 <20240130140918.1172387-5-quic_adisi@quicinc.com>
+	 <b73dd1f9c23c164179c38e2109aa1550d87e87ed.camel@sipsolutions.net>
+	 <646d1e3e404a437f4c99c80996eb4f194ac242b8.camel@sipsolutions.net>
+	 <26df9aa6-e497-4040-ad5c-c647454acca6@quicinc.com>
+	 <b2cf5c1d-7842-4e59-b25a-904a6879fa9c@quicinc.com>
+	 <f7174207668cac149246cafa0e4b4749ee3289f0.camel@sipsolutions.net>
+	 <ac5825e8-0cb1-476e-be5c-ad0170122f77@quicinc.com>
+	 <fe2100dcfe9ae9b4517f239faf25374c27f473a5.camel@sipsolutions.net>
+	 <5c0fd2eb-eb19-4b69-a325-ad9eef633336@quicinc.com>
+	 <bc81466177afd0014ccdd9030c5807339bb288db.camel@sipsolutions.net>
+	 <18c0d4de-392a-420c-8a05-466a83cd2eb8@quicinc.com>
+	 <3c550ae335a9762a9cbd0c8109b6dd99faeb8f6f.camel@sipsolutions.net>
+	 <5a89e63fb7644d12be72154c90c96199@realtek.com>
+ <32b5e358f7b54f4921e0a9e44a71f3a791f0d0da.camel@sipsolutions.net>
+In-Reply-To: <32b5e358f7b54f4921e0a9e44a71f3a791f0d0da.camel@sipsolutions.net>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-From: Rafał Miłecki <rafal@milecki.pl>
-
-MT7981 (Filogic 820) is a low cost version of MT7986 (Filogic 830) with
-a similar wireless controller that also supports four interrupts.
-
-Cc: Peter Chiu <chui-hao.chiu@mediatek.com>
-Cc: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
----
- .../devicetree/bindings/net/wireless/mediatek,mt76.yaml          | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
-index 0c6835db397f..eabceb849537 100644
---- a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
-+++ b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
-@@ -226,6 +226,7 @@ allOf:
-         compatible:
-           contains:
-             enum:
-+              - mediatek,mt7981-wmac
-               - mediatek,mt7986-wmac
-     then:
-       properties:
--- 
-2.35.3
-
+DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEpvaGFubmVzIEJlcmcgPGpv
+aGFubmVzQHNpcHNvbHV0aW9ucy5uZXQ+DQo+IFNlbnQ6IFdlZG5lc2RheSwgRmVicnVhcnkgMjEs
+IDIwMjQgNDoxMCBQTQ0KPiBUbzogUGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRlay5jb20+OyBB
+ZGl0eWEgS3VtYXIgU2luZ2ggPHF1aWNfYWRpc2lAcXVpY2luYy5jb20+DQo+IENjOiBsaW51eC13
+aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmc7IEplZmYgSm9obnNvbiA8cXVpY19qam9obnNvbkBxdWlj
+aW5jLmNvbT47IElsYW4gUGVlcg0KPiA8aWxhbi5wZWVyQGludGVsLmNvbT47IEpvdW5pIE1hbGlu
+ZW4gPGpAdzEuZmk+OyBSeWRlciBMZWUgPHJ5ZGVyLmxlZUBtZWRpYXRlay5jb20+OyBBcmVuZCB2
+YW4gU3ByaWVsDQo+IDxhcmVuZC52YW5zcHJpZWxAYnJvYWRjb20uY29tPjsgRmVsaXggRmlldGth
+dSA8bmJkQG9wZW53cnQub3JnPg0KPiBTdWJqZWN0OiBSZTogW1BBVENIIHY4IDQvNV0gd2lmaTog
+bWFjODAyMTE6IHN0YXJ0IGFuZCBmaW5hbGl6ZSBjaGFubmVsIHN3aXRjaCBvbiBsaW5rIGJhc2lz
+DQo+IA0KPiBJIGd1ZXNzIHRoYXQnZCBhbHNvIGFwcGx5IHRvIHByb2JlIHJlc3BvbnNlcz8gT3Ig
+ZG9lcyBpdCBub3Qgc2VuZCB0aG9zZQ0KPiBhdCBhbGw/IEJ1dCB3ZSBkaXNjdXNzZWQgYmVmb3Jl
+IHRoYXQgbWF5YmUgd2UgZG9uJ3QgaGF2ZSB0byBiZSBwZXJmZWN0DQo+IHRoZXJlLCBzbyBJIGd1
+ZXNzIHdlIGNhbiBmaW5kIHNvbWUgc29sdXRpb24gdG8gdGhhdC4NCg0KVW5mb3J0dW5hdGVseSwg
+UmVhbHRlayBmaXJtd2FyZSBkb2Vzbid0IHNlbmQgcHJvYmUgcmVzcG9uc2VzIGF0IGFsbC4gU3Rp
+bGwNCm5lZWQgaG9zdGFwZCB0byByZXBseSB0aG9zZS4gDQoNClBpbmctS2UgDQoNCg==
 
