@@ -1,229 +1,166 @@
-Return-Path: <linux-wireless+bounces-3910-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3911-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E328385F65A
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Feb 2024 12:00:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13AFB85F674
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Feb 2024 12:04:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FF3C2832C7
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Feb 2024 11:00:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C01C6287760
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Feb 2024 11:04:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA18A3FB14;
-	Thu, 22 Feb 2024 11:00:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B441C45953;
+	Thu, 22 Feb 2024 11:04:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="VkMj3gfd"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hEl9ABbk"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96FCC3FB29
-	for <linux-wireless@vger.kernel.org>; Thu, 22 Feb 2024 11:00:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB39C44377
+	for <linux-wireless@vger.kernel.org>; Thu, 22 Feb 2024 11:03:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708599628; cv=none; b=ecAIU+7aVudM4OWZa4eWfdEenYIttlov2i28Isx8J2rd0o36n+dsUqd5yfxXs6uzDd5pC2uwzPkiqdeXh20eU5RzC0BEJQaUY8SyoGHrSJKnrdcK2bHyibE2TR8uaNuOLffD3SahACh04Vfg9UOLfU66uqgw7Deq+EZ8nMG/e9E=
+	t=1708599841; cv=none; b=OXpwgn5CKZt4y5OSPcZ44kfop27Gx9DppRFcAz4M2VwmJH/PcS63nb2YxZuBelRFodYmNcObCmlCziLSgLXe9dhxs2vpDwm801eRDAtcC6hPhWRmqfQDZl+lNslcoBnFN/bRL5cH+wzFDbRJ3GG+V7/g0i5Q+p4V7D4+Pn6HVmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708599628; c=relaxed/simple;
-	bh=4SUhFECzfgHvN70ojLHKQ96rAaBsv2JrpKaeoW6p6NU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KZXEXGIRz9igcl+KOHjjsL1NS6CrxtdcUtKtJ6U6IcH7z2eJvqn9va4hmkNHsiG+1oitKkblXy6qOUgsPCItio5P2Xb2uBx1yoWYzm2Vvd2FioWYFri7pBAyBZ6UOCVfcjHndVYug3phVHCuPVM/NF1uRRnUyLQZvwXdGELPguI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=VkMj3gfd; arc=none smtp.client-ip=209.85.221.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-4c852c6e5f7so1061191e0c.3
-        for <linux-wireless@vger.kernel.org>; Thu, 22 Feb 2024 03:00:26 -0800 (PST)
+	s=arc-20240116; t=1708599841; c=relaxed/simple;
+	bh=ooTfdMy9rbYkDyC8POkG+mPFbaq8KI7pfWzVFSirO6M=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=e5LTa4d9VTyDynGiYFLsN+hsR/b+J1OfFgRU91VU7/eG0RemqdPHNpHyJvZlCBIw9Wxm/KX3bFaJspSStz5/1ILHsBXqpgiybNAQ6B+FWg14KwBnCtWTp8cVniZ3QmjOOv+IBhZOsMytD3Ln11Wj4AId2/vGkCE0liB3gpJX3ds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hEl9ABbk; arc=none smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a3f893ad5f4so64789266b.2
+        for <linux-wireless@vger.kernel.org>; Thu, 22 Feb 2024 03:03:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1708599625; x=1709204425; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/H/VIpoB4an+Mp36arHK/D3Ob8nW5Qqkhlyoj2/3jaw=;
-        b=VkMj3gfdcFnz42zo5KLDCMaRFv4b0U0/AkjZW3epTqbYbaaD/h/iHU2FIa7Mnr67md
-         RBQ/zLS3xiCJ7ptiCQHAbPPXT3IafWKRdsIVBZfOFupfDQikMwPe+HIUEEXz5hUCweSC
-         7iangEDzwS2C0DVrsWpOxQ1BXQquior9uqGpoJhTf3S8FWWEAW5lh1VLiQ7H6pfpAnta
-         zQF50G8AMFwP+rxRZrPI8PlG3ULBuAz6yR0FfurGccUNuZrxkzFdhihk0QxIZskLoEfQ
-         fpB8b5AMkjka5xduQ7XAaeUdfCGEyQNStzPei9FXlsjUhdP0N7qvAAPEsQ6hTOFCtr/v
-         3fqw==
+        d=gmail.com; s=20230601; t=1708599838; x=1709204638; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:references:cc:to:from
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=GNu9kyMQj9x9F3+xGj4dwff9omQ4wTIwRIANSumZYHU=;
+        b=hEl9ABbkbVtSm1NJhRA4PBZYV92empDuiIeiNpRhdQR+PQCTZz9UpERAG6nT4MwuYL
+         nABn0wm7pPu8ELNONXsMfWG2gArIzjy/mjevLFdxeqJwz7Eiqxt5JxnZZ1aa/3Q5qGIq
+         2PU4IxtDMnf1pAgqijkb5FHTQW9nVBviV7Ri+8J4n0WjHEvDT3KmhN/hCoy5FVD8yoKz
+         wmcpZuGv1N9qX2AvMlg3PWGQ4oifL8xPQzK9IrFj98XDFi58TSsS5gUcuYI5TiRYkn3+
+         nwpXYuD3oOJsrDL6Y1WrUNPfbpLzQriFfJskR2BDYjKO3+O2vnVVB6Lnj83c2f4XcmDW
+         HufA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708599625; x=1709204425;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/H/VIpoB4an+Mp36arHK/D3Ob8nW5Qqkhlyoj2/3jaw=;
-        b=fAoR3i8wr6fmvH4jhEe/cxErM/O36YeQCSHG7LX0fsbwiC+miJskLj75bAa52svMZE
-         HK5q31hCzgo0E5B9uGHmljRYpIydWGM1Aj16qUXP4NLre+A3b1bC62mrmbt31HO0gaVJ
-         STo2HY/3GX+znKyuU0CEGJi+JPdkmJxuxecIbLWfYF9psAGidrEgMEwiFjW0tCMdmY8x
-         wfnhOdbA1GYTe+37PhxR52XLg3nwdIKP6GSrxNkQOkUhg9RuroC5wniEp0RiqRC8ONgB
-         7mhV3cYHP+aD7+M5p5Hyfu6MpJAcva1a78DwabMK1s4Sljn3lOr4npEDrvVwrzuRrwok
-         +gPA==
-X-Forwarded-Encrypted: i=1; AJvYcCUU3OizgmF2XfPrmmoqLzwqDAjWd/6kRUoBK8fnLTTEd8bNU5LczuHUiYPGxEKVkEqQgaa1Ri4gj/h+A/tjQD7h6/P/IQIhIQpesm4qCuQ=
-X-Gm-Message-State: AOJu0Yyu2qFGkYy/rwGHFRkoMnQxAVZSasimaYAi8x91SiyjMlSnrzwu
-	xSAQSJo+rvHlVd2x+9yX2Fb6omHG0/V/qPRcDDASqPm3g1PRfoji7TczUu8vDkp4lzYSHRdhklh
-	2NVlMx1ZzcR+upS+YGKy3qypJta9HtRAQcG0UdQ==
-X-Google-Smtp-Source: AGHT+IGc4k4afM7yOHcqPtsyx85w0wC4eDvcktSKZo2fOpRx3WfdsV144zf5agpJ1l8kNtCEpqQOOt7K2tgZtw6QOw8=
-X-Received: by 2002:a1f:4a45:0:b0:4c7:7760:8f12 with SMTP id
- x66-20020a1f4a45000000b004c777608f12mr12070252vka.2.1708599625549; Thu, 22
- Feb 2024 03:00:25 -0800 (PST)
+        d=1e100.net; s=20230601; t=1708599838; x=1709204638;
+        h=content-transfer-encoding:in-reply-to:references:cc:to:from
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GNu9kyMQj9x9F3+xGj4dwff9omQ4wTIwRIANSumZYHU=;
+        b=VO2wfTWxrcXftz2/qag6Ob3iIbWTvZR5UovbSJWcJUWFNH805DUOV2qq+FQ4Tq+2rA
+         /s3ztmB9IDTx2zMo6HMWAORVF7+JsgLkaUWjUF8BJSoW4M38jgsiHa93DkY2ewTSybzO
+         AFXmnbJaO7PLv9Q4bMU7WAHWy14CVX4Xz2DSUrGL7uYXP2emVL/+Rax74vZn6qPmDVAD
+         6lWW/iTh8bF+U/AXVDjfRv/p0SXBAQ4K1ZvUZVzp+P9W9FOGFOvklMfdiBbcjy1GvmZI
+         QccJxbPcvm1ElMueQ2q02pVQ2WVJnAtatgu7/v8yw6YQPWLsC9ER5Yvvj9Crt1OlRHuX
+         NwKw==
+X-Forwarded-Encrypted: i=1; AJvYcCVZHrqsa6JvmsRmCG9bEMd0qAohdbZqy8NVsJbfqXvH/z+uOOH+WXuCHSLdr9RLGWg5zQOhg/rVOLg4QzQQ+nswCjXxC20XM4cDoUTxR7I=
+X-Gm-Message-State: AOJu0YwZG0yUU8f0NnzLZroi8H82Fo46/xS5NPEXEjtV2OkRGWPL4D7T
+	OShANjoOtZlx//Og2UY4m1hsAgjqlvNCGi1MCvleT3x3G8wVTa5d
+X-Google-Smtp-Source: AGHT+IEV0BG67FP1qKG/JByu9uTx69/9v3UGsYliRamKUwbT18IUNjtaGK1TmX8qgVJmgdXTSSFmcQ==
+X-Received: by 2002:a17:906:e58:b0:a3e:dfce:dae8 with SMTP id q24-20020a1709060e5800b00a3edfcedae8mr6047430eji.42.1708599837923;
+        Thu, 22 Feb 2024 03:03:57 -0800 (PST)
+Received: from [192.168.68.106] (178-191-200-70.hdsl.highway.telekom.at. [178.191.200.70])
+        by smtp.gmail.com with ESMTPSA id tj9-20020a170907c24900b00a3ca56e9bcfsm5863532ejc.187.2024.02.22.03.03.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 22 Feb 2024 03:03:57 -0800 (PST)
+Message-ID: <811e6377-38be-48aa-acd5-2dd37248476e@gmail.com>
+Date: Thu, 22 Feb 2024 12:03:55 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240216203215.40870-1-brgl@bgdev.pl> <CAA8EJppt4-L1RyDeG=1SbbzkTDhLkGcmAbZQeY0S6wGnBbFbvw@mail.gmail.com>
- <e4cddd9f-9d76-43b7-9091-413f923d27f2@linaro.org> <CAA8EJpp6+2w65o2Bfcr44tE_ircMoON6hvGgyWfvFuh3HamoSQ@mail.gmail.com>
- <4d2a6f16-bb48-4d4e-b8fd-7e4b14563ffa@linaro.org> <CAA8EJpq=iyOfYzNATRbpqfBaYSdJV1Ao5t2ewLK+wY+vEaFYAQ@mail.gmail.com>
- <CAMRc=Mfnpusf+mb-CB5S8_p7QwVW6owekC5KcQF0qrR=iOQ=oA@mail.gmail.com>
- <CAA8EJppY7VTrDz3-FMZh2qHoU+JSGUjCVEi5x=OZgNVxQLm3eQ@mail.gmail.com>
- <b9a31374-8ea9-407e-9ec3-008a95e2b18b@linaro.org> <CAA8EJppWY8c-pF75WaMadWtEuaAyCc5A1VLEq=JmB2Ngzk-zyw@mail.gmail.com>
-In-Reply-To: <CAA8EJppWY8c-pF75WaMadWtEuaAyCc5A1VLEq=JmB2Ngzk-zyw@mail.gmail.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Thu, 22 Feb 2024 12:00:14 +0100
-Message-ID: <CAMRc=Md6SoXukoGb4bW-CSYgjpO4RL+0Uu3tYrZzgSgVtFH6Sw@mail.gmail.com>
-Subject: Re: [PATCH v5 00/18] power: sequencing: implement the subsystem and
- add first users
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: neil.armstrong@linaro.org, Marcel Holtmann <marcel@holtmann.org>, 
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Kalle Valo <kvalo@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Saravana Kannan <saravanak@google.com>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Arnd Bergmann <arnd@arndb.de>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Alex Elder <elder@linaro.org>, 
-	Srini Kandagatla <srinivas.kandagatla@linaro.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Abel Vesa <abel.vesa@linaro.org>, 
-	Manivannan Sadhasivam <mani@kernel.org>, Lukas Wunner <lukas@wunner.de>, linux-bluetooth@vger.kernel.org, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-pci@vger.kernel.org, linux-pm@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: Google Summer of Code 2024 - Mentors, ask the experienced
+ mentors!
+Content-Language: en-US
+From: Till Kamppeter <till.kamppeter@gmail.com>
+To: Alexey Khoroshilov <khoroshilov@ispras.ru>,
+ "Luis R. Rodriguez" <mcgrof@gmail.com>,
+ linux-wireless <linux-wireless@vger.kernel.org>, dl9pf@gmx.de,
+ =?UTF-8?Q?Jan-Simon_M=C3=B6ller?= <jsmoeller@linuxfoundation.org>,
+ Daniel Baluta <daniel.baluta@gmail.com>, Vadim Mutilin <mutilin@ispras.ru>,
+ Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+ Ira McDonald <blueroofmusic@gmail.com>, Michael Sweet <msweet@msweet.org>,
+ Tobias Hoffmann <smilingthax@googlemail.com>, Jay Berkenbilt <ejb@ql.org>,
+ Nicholas Mc Guire <der.herr@hofr.at>, Matt Germonprez
+ <germonprez@gmail.com>, Philippe Ombredanne <pombredanne@nexb.com>,
+ Gary O'Neall <garysourceauditor@gmail.com>,
+ "Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
+ Nicholas Mc Guire <der.herr@hofr.at>,
+ Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
+ Rithvik Patibandla <rithvikp98@gmail.com>,
+ Dheeraj Yadav <dhirajyadav135@gmail.com>,
+ Deepak Patankar <patankardeepak04@gmail.com>, Ian Rogers
+ <irogers@google.com>, Bhavna Kosta <bhavnakosta2020@gmail.com>,
+ Gaurav Guleria <b20099@students.iitmandi.ac.in>,
+ B20251 Kushagra Sharma <b20251@students.iitmandi.ac.in>,
+ Mohit Verma <b20215@students.iitmandi.ac.in>,
+ Pratyush Ranjan <pratyush.ranjan911@gmail.com>,
+ Kate Stewart <kstewart@linuxfoundation.org>, benjamin@zephyrproject.org,
+ David de Barros Tadokoro <davidbtadokoro@usp.br>,
+ Jon Oster <jon.oster@toradex.com>, siqueirajordao@riseup.net,
+ peterz@infradead.org, Zdenek Dohnal <zdohnal@redhat.com>,
+ Andrei Iosif <andrei.iosif@canonical.com>,
+ Danny Brennan <mdannyb11@gmail.com>, Kurt Pfeifle <kurt.pfeifle@gmail.com>
+Cc: Aveek Basu <basu.aveek@gmail.com>
+References: <0d74749a-52e8-4082-98b3-9efafeb1168f@gmail.com>
+ <67df246c-062e-415e-9419-df4cf006409e@gmail.com>
+In-Reply-To: <67df246c-062e-415e-9419-df4cf006409e@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Feb 19, 2024 at 11:21=E2=80=AFPM Dmitry Baryshkov
-<dmitry.baryshkov@linaro.org> wrote:
->
-> On Mon, 19 Feb 2024 at 19:18, <neil.armstrong@linaro.org> wrote:
-> >
-> > On 19/02/2024 13:33, Dmitry Baryshkov wrote:
-> > > On Mon, 19 Feb 2024 at 14:23, Bartosz Golaszewski <brgl@bgdev.pl> wro=
-te:
-> > >>
-> > >> On Mon, Feb 19, 2024 at 11:26=E2=80=AFAM Dmitry Baryshkov
-> > >> <dmitry.baryshkov@linaro.org> wrote:
-> > >>>
-> > >>
-> > >> [snip]
-> > >>
-> > >>>>>>>>
-> > >>>>>>>> For WCN7850 we hide the existence of the PMU as modeling it is=
- simply not
-> > >>>>>>>> necessary. The BT and WLAN devices on the device-tree are repr=
-esented as
-> > >>>>>>>> consuming the inputs (relevant to the functionality of each) o=
-f the PMU
-> > >>>>>>>> directly.
-> > >>>>>>>
-> > >>>>>>> We are describing the hardware. From the hardware point of view=
-, there
-> > >>>>>>> is a PMU. I think at some point we would really like to describ=
-e all
-> > >>>>>>> Qualcomm/Atheros WiFI+BT units using this PMU approach, includi=
-ng the
-> > >>>>>>> older ath10k units present on RB3 (WCN3990) and db820c (QCA6174=
-).
-> > >>>>>>
-> > >>>>>> While I agree with older WiFi+BT units, I don't think it's neede=
-d for
-> > >>>>>> WCN7850 since BT+WiFi are now designed to be fully independent a=
-nd PMU is
-> > >>>>>> transparent.
-> > >>>>>
-> > >>>>> I don't see any significant difference between WCN6750/WCN6855 an=
-d
-> > >>>>> WCN7850 from the PMU / power up point of view. Could you please p=
-oint
-> > >>>>> me to the difference?
-> > >>>>>
-> > >>>>
-> > >>>> The WCN7850 datasheet clearly states there's not contraint on the =
-WLAN_EN
-> > >>>> and BT_EN ordering and the only requirement is to have all input r=
-egulators
-> > >>>> up before pulling up WLAN_EN and/or BT_EN.
-> > >>>>
-> > >>>> This makes the PMU transparent and BT and WLAN can be described as=
- independent.
-> > >>>
-> > >>>  From the hardware perspective, there is a PMU. It has several LDOs=
-. So
-> > >>> the device tree should have the same style as the previous
-> > >>> generations.
-> > >>>
-> > >>
-> > >> My thinking was this: yes, there is a PMU but describing it has no
-> > >> benefit (unlike QCA6x90). If we do describe, then we'll end up havin=
-g
-> > >> to use pwrseq here despite it not being needed because now we won't =
-be
-> > >> able to just get regulators from WLAN/BT drivers directly.
-> > >>
-> > >> So I also vote for keeping it this way. Let's go into the package
-> > >> detail only if it's required.
-> > >
-> > > The WiFi / BT parts are not powered up by the board regulators. They
-> > > are powered up by the PSU. So we are not describing it in the accurat=
-e
-> > > way.
-> >
-> > I disagree, the WCN7850 can also be used as a discrete PCIe M.2 card, a=
-nd in
-> > this situation the PCIe part is powered with the M.2 slot and the BT si=
-de
-> > is powered separately as we currently do it now.
->
-> QCA6390 can also be used as a discrete M.2 card.
->
-> > So yes there's a PMU, but it's not an always visible hardware part, fro=
-m the
-> > SoC PoV, only the separate PCIe and BT subsystems are visible/controlla=
-ble/powerable.
->
-> From the hardware point:
-> - There is a PMU
-> - The PMU is connected to the board supplies
-> - Both WiFi and BT parts are connected to the PMU
-> - The BT_EN / WLAN_EN pins are not connected to the PMU
->
-> So, not representing the PMU in the device tree is a simplification.
->
+And here are all the sessions so far:
 
-What about the existing WLAN and BT users of similar packages? We
-would have to deprecate a lot of existing bindings. I don't think it's
-worth it.
 
-The WCN7850 is already described in bindings as consuming what is PMUs
-inputs and not its outputs.
 
-Bart
+Managing inquiries of potential GSoC contributors Mentor discussion panel
 
-> >
-> > Neil
-> >
-> > >
-> > > Moreover, I think we definitely want to move BT driver to use only th=
-e
-> > > pwrseq power up method. Doing it in the other way results in the code
-> > > duplication and possible issues because of the regulator / pwrseq
-> > > taking different code paths.
->
-> --
-> With best wishes
-> Dmitry
+Time: Thursday, Feb 22 1600-1700 UTC
+
+Meet link: meet.google.com/gxe-jiqf-pwc
+
+
+
+Lessons learned from years of being an Org Admin
+
+Time: Wednesday, Feb 28 1600-1700 UTC
+
+Meet link: meet.google.com/imy-dtbp-had
+
+
+
+Tips and tricks to be a great mentor
+
+Time: Tuesday, March 5 1600-1700 UTC
+
+Meet link: meet.google.com/wfy-rdgy-kwd
+
+
+
+Making the most of the Community Bonding period
+
+Time: Thursday, April 25 1500-1600 UTC
+
+Meet link: meet.google.com/huz-enjt-ati
+
+
+
+    Till
+
+
+On 21/02/2024 23:07, Till Kamppeter wrote:
+> Hi,
+> 
+> the GSoC organization team is running 4 panel sessions where mentors can 
+> ask the panel of 4 experienced mentors. Each of the 4 sessions is about 
+> a different subject matter and with a different group of panelists. The 
+> panelists are long-term mentors which have stepped up voluntarily to 
+> help the new or less experienced mentors (but experienced ones can also 
+> learn).
 
