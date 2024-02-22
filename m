@@ -1,101 +1,139 @@
-Return-Path: <linux-wireless+bounces-3893-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3894-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B992085F0BC
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Feb 2024 06:11:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7FA385F11A
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Feb 2024 06:47:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B5A2B23B6B
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Feb 2024 05:11:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20CEB1C22238
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Feb 2024 05:47:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBCA56FB5;
-	Thu, 22 Feb 2024 05:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A18912B8D;
+	Thu, 22 Feb 2024 05:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="inhKv/ym"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ul/ppe0Y"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2FEE5CB5;
-	Thu, 22 Feb 2024 05:11:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D98910A12
+	for <linux-wireless@vger.kernel.org>; Thu, 22 Feb 2024 05:47:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708578689; cv=none; b=TlZqJSlFFILBZml/mVg6461FVWz+JfdjjAiJFiY0SaGsdZ/5PEZ7fKk5XV/o/zLdsGlFwT6NAS1dl0ajrZqTBKE9/IXATcz5cghltJnsoQLl/911FsnNybnkgB+acJNfYY80MBeLanvmBI5MuekZZXh1LerEOUJNzPfAkr+Lyyw=
+	t=1708580868; cv=none; b=qDryRSLZAYUXs3mcGiRBs66PvnC5kawPERXYHsM2Z1VYrSvF9E0VLIzBjU6y/PRPtazsspBUbzLI6zxoPbnwZXHqEItyaS2kDjrVIspMxzzCishvUqrxzElUwXMZj/djxSj/G7xvsNgVXDMZWoL6Kja6PuqXHHp8KcyhFr+zB1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708578689; c=relaxed/simple;
-	bh=m3go9PyXkUEaWcrp2di/xWPzCxW/M2MoaEZgItIDZJk=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=Z3Ob4Dkau3tcBy6rSdwyvD5j4PqQHJUhJxhC5OenGQVe8GJvduqT68R3ix5J1ltgjQVvXXE/h3Uxj0KANcq05OwgaA7MWQtpzBvvQ9h8/tf7oOLhQJ7ADHOsgnUEAcXZOBpIsaI/I+SCo4AR4+6fogyxxNYVBiKJlTLmpydQPec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=inhKv/ym; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 020D9C433F1;
-	Thu, 22 Feb 2024 05:11:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708578689;
-	bh=m3go9PyXkUEaWcrp2di/xWPzCxW/M2MoaEZgItIDZJk=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=inhKv/ymSz9YT7XMzN+wxtGu6stgBOPiSURtbbU4dPY2ZZwZAwjKfJyDFrdHB30MP
-	 ITRdfcNj2+dVWd1RkmN0SaV4tj0xlnaLplzbiyjbobG6XoLFFCIYXjiUHLWdIBQzht
-	 GHFcehyHsjaaCPKyydOG+xzRD31Cqfg72hfI4dxpNJRVa6lV3A4T9HjHgfWUfEaPNp
-	 B37ue+hOJWofjbTLIyu6sY6speTW3JtPXdHVr9yLA7z3KyRZUK95s6hcHiCNC9Jasy
-	 DQToMHIAIDBDaiRFtgaJ+3uLV545TznrTjjjX/aOi/rsXULxj/XNk5OPFsUFtfO06c
-	 Dgjl0+uKOi55w==
-From: Kalle Valo <kvalo@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Jeff Johnson <quic_jjohnson@quicinc.com>,  Karthikeyan Periyasamy
- <quic_periyasa@quicinc.com>,  <netdev@vger.kernel.org>,
-  <linux-wireless@vger.kernel.org>
-Subject: Re: pull-request: wireless-next-2024-02-20
-References: <20240220165842.917CDC433F1@smtp.kernel.org>
-	<20240221143531.56942c6e@kernel.org>
-	<2dbb3ca4-78fd-4125-b13f-4ad440923291@quicinc.com>
-	<b25a5783-a9ca-4356-ae17-bbda1340b522@quicinc.com>
-	<20240221172521.4dcb382c@kernel.org>
-Date: Thu, 22 Feb 2024 07:11:25 +0200
-In-Reply-To: <20240221172521.4dcb382c@kernel.org> (Jakub Kicinski's message of
-	"Wed, 21 Feb 2024 17:25:21 -0800")
-Message-ID: <875xyhaxs2.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1708580868; c=relaxed/simple;
+	bh=qdDEQ/odklpLTC89u2grpARtU2NkpDJ3xSWe0VUu6UY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=onLqLip6m0nNNN2Yeraq2N7FJblFzxvBKHks/8i4EwcEROmxWkEyH0+x6V4u0mbU4zOomCLv0X6AmfTxa38rtVp35NHCUafseo3+UVst+HSyZ7RLE9xY438KL4uTfBCc9Ttiw6reeRUQcl/8vDJlImwEb3ob/+FMQr8gofpAxtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ul/ppe0Y; arc=none smtp.client-ip=209.85.210.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-6e08dd0fa0bso468479b3a.1
+        for <linux-wireless@vger.kernel.org>; Wed, 21 Feb 2024 21:47:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1708580866; x=1709185666; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=wSWmeGU/PHEWXrJBkyrdMCv0vQ2HmKobzP0FHV/IZQY=;
+        b=ul/ppe0Ys0tdOppd+Dygcuxs5uzpbBUWoI88prMGpADwiSWfswYtfsgjVQaDbceI3r
+         v6klax3A0mE8EKBNWo/mJ02spHqw21oGB+EqfQmRFlUVKrz5Sb6F+qfXDOG/DBSc8kLK
+         bQk4we4YgxgRXidVT1riMmugMXUNmLoVnvWFhOBd8dJq/ikyb6zoHU4lNNHapD3i9ZUn
+         SknFuzC9Ee5u/Jt1o3SAzJDW3JIw/AaBHKqAeyVB11j186z5jm2ZO4l6ZTaAcQE2edzi
+         mIV4jDEJFa7pGxsGDrz0rQkJNVhZRY73faXzmkyiOuN1Ji4nIYGwWjfpEfuCyXTKWeYs
+         SXgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708580866; x=1709185666;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wSWmeGU/PHEWXrJBkyrdMCv0vQ2HmKobzP0FHV/IZQY=;
+        b=eWX/RaHfHXRWsGMzCS5UjeaTch3IayJwxk3LXJnZkQBfwybYwRAb2xzTWGBCYgYYq0
+         wAEQzeRZC9+33svydFW4wtWGhUXkxE6wxvEV4oJoo1uEMTfrnS6SPYB8+2k+wxgO7snW
+         w8UHLyfAzQ6VwAu0TlCRSN+XHLttYuqD8R5Xp3CNn19uP3f4zQl+IOldvPEjuV3FEfeR
+         DvmoWZn3v0bl55ND9zjqtCgZCz+hpEk1ALxoKDxQTnIEzVCaWM+EfuNA58BRvSheQPne
+         AQRvhWCsz7ZLALaNHgaQCWKswsRoyZiBO4LFYg36RBPaw5VnV8YTgbhf753+Zw532k0q
+         ue1g==
+X-Forwarded-Encrypted: i=1; AJvYcCU0zmeVuocBqYfSP3jPH4hgyY+6aL8xN/ZyAk9xQnzyDKNO65znNtwqmVgE8N3Dquzvh8XBNxbiRZUaSZDlxeyZaE8i6rgqky+3HpJr8vs=
+X-Gm-Message-State: AOJu0Yy6OC+dgmTCwOR/za5z+m6FAh4xgxVc04BKqHzNeo247DUm6W9S
+	EwZ0wkT8LtyMLL+zrOZ5F7lf82p7MH3hBd+udyeaiUW5fdPoiuyHT7U8ceKvMw==
+X-Google-Smtp-Source: AGHT+IHcAZ7rWFCCCCrNCo/vjZ7VNYn7nL2POZRFMS+2IBVvi+pUx8xK0KHdEmv6esp16oSwmLVbuA==
+X-Received: by 2002:a05:6a00:2d0f:b0:6e0:4a19:8da6 with SMTP id fa15-20020a056a002d0f00b006e04a198da6mr2882834pfb.3.1708580866081;
+        Wed, 21 Feb 2024 21:47:46 -0800 (PST)
+Received: from thinkpad ([117.193.212.166])
+        by smtp.gmail.com with ESMTPSA id fn16-20020a056a002fd000b006e3dfb2ef4esm8623980pfb.95.2024.02.21.21.47.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Feb 2024 21:47:45 -0800 (PST)
+Date: Thu, 22 Feb 2024 11:17:39 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>, Kalle Valo <kvalo@kernel.org>,
+	Linux Wireless <linux-wireless@vger.kernel.org>,
+	ath11k@lists.infradead.org, LKML <linux-kernel@vger.kernel.org>,
+	mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org
+Subject: Re: ath11k allocation failure on resume breaking wifi until power
+ cycle
+Message-ID: <20240222054739.GG3374@thinkpad>
+References: <96481a45-3547-4d23-ad34-3a8f1d90c1cd@suse.cz>
+ <0994ae16-8174-4a04-b454-1974b16bc106@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <0994ae16-8174-4a04-b454-1974b16bc106@quicinc.com>
 
-Jakub Kicinski <kuba@kernel.org> writes:
+On Wed, Feb 21, 2024 at 08:34:23AM -0800, Jeff Johnson wrote:
+> On 2/21/2024 6:39 AM, Vlastimil Babka wrote:
+> > Hi,
+> > 
+> > starting with 6.8 rc series, I'm experiencing problems on resume from s2idle
+> > on my laptop, which is Lenovo T14s Gen3:
+> > 
+> > LENOVO 21CRS0K63K/21CRS0K63K, BIOS R22ET65W (1.35 )
+> > ath11k_pci 0000:01:00.0: wcn6855 hw2.1
+> > ath11k_pci 0000:01:00.0: chip_id 0x12 chip_family 0xb board_id 0xff soc_id 0x400c1211
+> > ath11k_pci 0000:01:00.0: fw_version 0x1106196e fw_build_timestamp 2024-01-12 11:30 fw_build_id WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.37
+> > 
+> > The problem is an allocation failure happening on resume from s2idle. After
+> > that the wifi stops working and even a reboot won't fix it, only a
+> > poweroff/poweron cycle of the laptop.
+> > 
 
-> On Wed, 21 Feb 2024 17:18:41 -0800 Jeff Johnson wrote:
->> > definitely a flaw in 6db6e70a17f6 ("wifi: ath12k: Introduce the
->> > container for mac80211 hw")
->> > 
->> > my setup is using gcc which isn't flagging this :(
->> > 
->> > Karthikeyan, can you submit a patch?
->>
->> I see this was already fixed by:
->> 04edb5dc68f4 ("wifi: ath12k: Fix uninitialized use of ret in
->> ath12k_mac_allocate()")
->
-> In wireless-next? Could you do a quick follow up PR so that
-> it gets into net-next before the warning propagates into more
-> of the networking sub-trees?
+Looks like WLAN is powered down during s2idle, which doesn't make sense. I hope
+Jeff will figure out what's going on.
 
-The fix is in ath-next but I'll pull ath-next into wireless-next and
-then send a wireless-next pull request. So you should have the pull
-request in few hours.
+But if you can share the dmesg after enabling the debug prints of both ath11k
+and MHI, it will help a lot.
 
-Sorry about this, I somehow understood this was a W=1 warning and didn't
-prioritise the fix. After re-reading the commit message I can't
-understand why I made that assumption, my bad.
+- Mani
 
-What worries me is that the kbuild bot didn't warn this at all (or I
-missed that as well). Is it using older clang version or what?
+> > This is order 4 (costly order), GFP_NOIO (maybe it's originally GFP_KERNEL
+> > but we restrict to GFP_NOIO during resume) allocation, thus it's impossible
+> > to do memory compaction and the page allocator gives up. Such high-order
+> > allocations should have a fallback using smaller pages, or maybe it could at
+> > least retry once the restricted GFP_NOIO context is gone.
+> > 
+> > I don't know why it never happened before 6.8, didn't spot anything obvious
+> > and it happens too unreliably to go bisect. Any idea?
+> 
+> I've asked the development team to look at this, but in the interim can
+> you apply the two hibernation patchsets to see if those cleanups also
+> fix your problem:
+> 
+> [PATCH 0/5] wifi: ath11k: prepare for hibernation support
+> https://lore.kernel.org/linux-wireless/20240221024725.10057-1-quic_bqiang@quicinc.com
+> 
+> [PATCH 0/3] wifi: ath11k: hibernation support
+> https://lore.kernel.org/linux-wireless/20240221030026.10553-1-quic_bqiang@quicinc.com
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+மணிவண்ணன் சதாசிவம்
 
