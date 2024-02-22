@@ -1,136 +1,140 @@
-Return-Path: <linux-wireless+bounces-3925-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3926-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3248A85FA41
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Feb 2024 14:50:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CBDF85FA93
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Feb 2024 15:00:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EDC7BB251E4
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Feb 2024 13:50:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE6851C25664
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Feb 2024 14:00:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E13CF1350D0;
-	Thu, 22 Feb 2024 13:50:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Crwxl1B0"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8797F1350FE;
+	Thu, 22 Feb 2024 14:00:07 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EB891350C6
-	for <linux-wireless@vger.kernel.org>; Thu, 22 Feb 2024 13:50:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09308135403;
+	Thu, 22 Feb 2024 14:00:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708609815; cv=none; b=PwXxJOEf5XCycgFcX3SaN4kPQziDb7V3QOsXeuGkfN/RiVoj0QnX7EPw6DNeY+Un4D8f3OdQ2JZ0TRxxcJgOC67ImOcWqUYZOAhFxngV09YM6SVz38W8AAaLjz39vpDiSNb4R25Ww/e9Azyy8D2X9vos59hX2U3E3yM5u7QmXnI=
+	t=1708610407; cv=none; b=cECg+DKR/paMp6nBEBMemt7suyMtsGODO9lvkuw8mgs16VB32PX5OpUsqx4CIZc5+hxzFCQyVf9gZkIYntTcLR9UR9C1SCrIENK7zO0WOUZHeqdt1Q9DICnIJhR16Y0DqGx/SBx2AFlA3a4y3xQPXPdLXhuMutIURqOf/x9wkfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708609815; c=relaxed/simple;
-	bh=sxjrviJKUO4ego+bavj+MGIR978E5EVGQ1XQmUcD98o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=g4/WK2q5FQI309rYdEDAwKXPKfMnQkPzRb8NtKcbt1yykGobxV5Pu5KYdOkAfHkVvHQbD6chTpdqmLf8mr+9x0cPgVBttmTTwrZxydTKDRx/CQ6YFPJ1ds0tbHg4BHqKBPNcvnQEQjNI6KryC9cMPovgck7tf1DhOkNJJqrh6ts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Crwxl1B0; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-512be6fda52so5048117e87.0
-        for <linux-wireless@vger.kernel.org>; Thu, 22 Feb 2024 05:50:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1708609812; x=1709214612; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=pJephV2azj0AUd3p7RK/qiB+wFc6v/rmXTqmszZdGYI=;
-        b=Crwxl1B0FjzMUgXzRAjhwhKxjXDFfw3cobauF6YUniUd/URytp6IHP1Sw1shFQENJY
-         JvKlW6TCh6riS9OCk79869+f/zv6LF4/dBdtLhdQnMx6c+sT6Hz2fi5n+CLuAo5k3ypd
-         tkMlRz5VwsMn8ho+xMbIhOlg0TS5LnwI/it2l6l5kAJwpNwITibGgZwkTQqtDYWQj1sR
-         v8lRBtdRKj6OV26AgIDO1TFdzb5PWjhYPv38wC4o3EsRV3uYEGUO3zGPwpXhkY476LHS
-         LWWZUrtbjxnULkm39+/fgX5Lq/g7OjIPXoZGjOIMV8G8b1UYnv1fDiGhyxYC6yvMGJY7
-         X28A==
+	s=arc-20240116; t=1708610407; c=relaxed/simple;
+	bh=faC93JEXJFCufNC5dOS6ApNeW8gKvRR+kMj0RPtYFkQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SF7tB6DRQ1XgTvMipaTQlB1vulN5vxcLOCYtwrJNXSdJGTUxn1tKysc17kXMpDyj4tSPRcW/DndCAgFzDqwS5j0HFrG/1FTy+xJU8vrdqqoZt9oRexi7sQXWkn9vD8p1DsjVGPEwOtAz25wSZ3+ENx0qEcBh+C11avOhM2FIEL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.161.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-5a0333a9779so134114eaf.0;
+        Thu, 22 Feb 2024 06:00:05 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708609812; x=1709214612;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pJephV2azj0AUd3p7RK/qiB+wFc6v/rmXTqmszZdGYI=;
-        b=orvZaN0r+C6Q9cYj9535OmfEZQCSDJu+bV9twG8mZLRObpgFyqlAXpVCR27jG0xywZ
-         dDAoOTN1YA33dXC+P3ku3XCoPZm+4v7XwqC/fHFY5W+2kZevJdVZErOuzr1+n+HiZ5Yb
-         tCbDSt1EQExUMJZzgyu4mm2F9q2t93KpYILPozSn2327++MWXTUEwbeCqY1Sr77KaRiS
-         ESX1RNcFn3kYciqd50S3/PgG0kIWkjT9wWOaSlsizxQG2IismqGbc6n7vl/4vJWnfL9/
-         b3z4oOMwO1JD8OAawthAsnH6QOXD1sw2WUV1l08dIXT/qpkUeAIxU9t+0cal/Xjm9yon
-         P+WA==
-X-Forwarded-Encrypted: i=1; AJvYcCXb/ouoQhlw5bTwZwzBvh9mYdcbIAlycQXn5Edzdc/8HUQRXN7vZPG7zJJBqppDjm6fRNhZy8kJ5wbDGjdo8dBmHHvWxWCbXYiMKJFVYDg=
-X-Gm-Message-State: AOJu0YzIv2WVFk8aKPheciSZ6zWD4cPba7rTxwTOVB9U2NtzpKESs46Y
-	sAWN+wludZ6G0eCy1cG0FQUg4CSAQWOxBqWzLiPVZPZKnYO+4Z2nr+lztQzeDZQ=
-X-Google-Smtp-Source: AGHT+IE9BXN2VEhMe3Dj96ylym+FP0b5Vptp4csqYAGSEtnaJOuMGHCx4Xtg1mVnTPnIJMauzl6yEA==
-X-Received: by 2002:a05:6512:4cd:b0:512:c802:7a9 with SMTP id w13-20020a05651204cd00b00512c80207a9mr5048333lfq.38.1708609812269;
-        Thu, 22 Feb 2024 05:50:12 -0800 (PST)
-Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
-        by smtp.googlemail.com with ESMTPSA id r11-20020a05600c35cb00b004120537210esm6505491wmq.46.2024.02.22.05.50.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 Feb 2024 05:50:11 -0800 (PST)
-Message-ID: <f0ece748-b60b-49d8-8273-924260af9ee0@linaro.org>
-Date: Thu, 22 Feb 2024 14:50:11 +0100
+        d=1e100.net; s=20230601; t=1708610405; x=1709215205;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2wGnYwIfq9nup3u9bw55avJLf6TS9fj3kCr0bhf4Ym8=;
+        b=cnUzz2lmsOqJs3jlzy8yNVZGDcTSNHIrKHCGqoldcWIucfjqCBve+f1miGMHg+qy+h
+         Kkget2JI5pw50dSUH3WS9urkcWCBbtIqFqDQSr7KG0qFhgfbmIoSWS+CDHBmRhdcRi1s
+         00l9cKtRN+HebfPFQvKdZ82gJdnCopKb0y3rW4jKEEk7bvlNYUePPhbMmuu3Q6fVpeQV
+         cXd7NEVjYVbiGYXgSbuUUSb5j/ur3rJCzbroiOJyUoSgzvdXCZiBuXGrajfri/KJ82hq
+         3F0ecUHM6ZDaSDQDb5fN9fou/oPvbG4o74JFPWHk7+8NeGHv0Yj5+1bK7cxN4cJNaWwe
+         2FCg==
+X-Forwarded-Encrypted: i=1; AJvYcCWEPAyK6h/JXcQk/dQ3VZShRs8K9Z1xlcvAHMymYDP9etpzQaKOo/IIqp+6wah1EcPgND0CFs/lgiMSjx8UFqIHjkDlKkmpVOLT5SbmUt0wGkqaPRmkFXK0WIGMJHnncRJBMirrd/DS9m2oRmKPJ/uctlhPXZcXYvIiGv3j1abB9+BbCYsIim+NTS+xgeU7oBlJW5ge+Xn81mQLA9i5qQ==
+X-Gm-Message-State: AOJu0Yza3Z7YAwUB1O1YIKSlQq6BuffQc85zMGP8wdX8yugE7eJnZ15e
+	sBTB+Ivvvsu6Pa3PPIURT1UWcQ+sNHcPtIr8St+6+cQkeINNUTkzveAWSpD5gL6dAuo0PxT7R7j
+	etT6rUfeFvzldzzvKnDDIhwXzfuc=
+X-Google-Smtp-Source: AGHT+IFk/cRrA9w3h6K7wqQ/CveV9XXnLmyjBHYg13D8CnoEJk666aXdvpwHpLKnzNNGD1cS009+cnPg4rM90X+uxuM=
+X-Received: by 2002:a05:6820:134d:b0:59f:881f:9318 with SMTP id
+ b13-20020a056820134d00b0059f881f9318mr26243164oow.0.1708610404960; Thu, 22
+ Feb 2024 06:00:04 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/9] thermal: Get rid of CONFIG_THERMAL_WRITABLE_TRIPS
-Content-Language: en-US
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
- Linux PM <linux-pm@vger.kernel.org>
-Cc: Lukasz Luba <lukasz.luba@arm.com>, LKML <linux-kernel@vger.kernel.org>,
- Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- Zhang Rui <rui.zhang@intel.com>, netdev@vger.kernel.org,
- Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>,
- Miri Korenblit <miriam.rachel.korenblit@intel.com>,
- linux-wireless@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Manaf Meethalavalappu Pallikunhi <quic_manafm@quicinc.com>
-References: <6017196.lOV4Wx5bFT@kreacher> <4545870.LvFx2qVVIh@kreacher>
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <4545870.LvFx2qVVIh@kreacher>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <6017196.lOV4Wx5bFT@kreacher> <9235101.CDJkKcVGEf@kreacher> <cd710cd4-c723-48e0-80d2-72d9d95f9e0c@linaro.org>
+In-Reply-To: <cd710cd4-c723-48e0-80d2-72d9d95f9e0c@linaro.org>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 22 Feb 2024 14:59:53 +0100
+Message-ID: <CAJZ5v0jD=AmR0w49wDhDJ2Bq1KewUmGApe_Gc=v7SNb-jtqNPA@mail.gmail.com>
+Subject: Re: [PATCH v2 8/9] thermal: of: Set THERMAL_TRIP_FLAG_RW_TEMP directly
+To: Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>, Linux PM <linux-pm@vger.kernel.org>, 
+	Lukasz Luba <lukasz.luba@arm.com>, LKML <linux-kernel@vger.kernel.org>, 
+	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>, 
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Zhang Rui <rui.zhang@intel.com>, 
+	netdev@vger.kernel.org, Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>, 
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>, linux-wireless@vger.kernel.org, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Manaf Meethalavalappu Pallikunhi <quic_manafm@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 12/02/2024 19:26, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> The only difference made by CONFIG_THERMAL_WRITABLE_TRIPS is whether or
-> not the writable trips mask passed during thermal zone registration
-> will take any effect, but whoever passes a non-zero writable trips mask
-> to thermal_zone_device_register_with_trips() can be forgiven thinking
-> that it will always work.
-> 
-> Moreover, some thermal drivers expect user space to set trip temperature
-> values, so they select CONFIG_THERMAL_WRITABLE_TRIPS, possibly overriding
-> a manual choice to unset it and going against the design purportedly
-> allowing system integrators to decide on the writability of trip points
-> for the given kernel build.  It is also set in one platform's defconfig.
-> 
-> Forthermore, CONFIG_THERMAL_WRITABLE_TRIPS only affects trip temperature,
-> because trip hysteresis is writable as long as the thermal zone provides
-> a callback to update it, regardless of the CONFIG_THERMAL_WRITABLE_TRIPS
-> value.
-> 
-> The above means that the symbol in question is used inconsistently and
-> its purpose is at least moot, so remove it and always take the writable
-> trip mask passed to thermal_zone_device_register_with_trips() into
-> account.
-> 
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Thu, Feb 22, 2024 at 2:48=E2=80=AFPM Daniel Lezcano
+<daniel.lezcano@linaro.org> wrote:
+>
+> On 12/02/2024 19:40, Rafael J. Wysocki wrote:
+> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> >
+> > It is now possible to flag trip points with THERMAL_TRIP_FLAG_RW_TEMP
+> > to allow their temperature to be set from user space via sysfs instead
+> > of using a nonzero writable trips mask during thermal zone registration=
+,
+> > so make the OF thermal code do that.
+> >
+> > No intentional functional impact.
+> >
+> > Note that this change is requisite for dropping the mask argument from
+> > thermal_zone_device_register_with_trips() going forward.
+> >
+> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > ---
+> >
+> > v1 -> v2: Rename trip flag (Stanislaw).
+> >
+> > ---
+> >   drivers/thermal/thermal_of.c |    8 ++++----
+> >   1 file changed, 4 insertions(+), 4 deletions(-)
+> >
+> > Index: linux-pm/drivers/thermal/thermal_of.c
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > --- linux-pm.orig/drivers/thermal/thermal_of.c
+> > +++ linux-pm/drivers/thermal/thermal_of.c
+> > @@ -117,6 +117,8 @@ static int thermal_of_populate_trip(stru
+> >               return ret;
+> >       }
+> >
+> > +     trip->flags =3D THERMAL_TRIP_FLAG_RW_TEMP;
+> > +
+> >       return 0;
+> >   }
+>
+> Even if you are not at the origin of this default behavior. I'm
+> wondering if we should be more protective against changes from userspace
+> when the firmware is telling us to protect the silicon at a specific
+> temperature.
+>
+> What do you think if we set the THERMAL_TRIP_FLAG_RW_TEMP only if the
+> trip point is not bound to a cooling device?
+>
+> So trip points without associated cooling device can be writable but
+> others can be considered as managed by the kernel and no modifiable.
 
-Reviewed-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+This sounds reasonable to me.
 
+This is mostly relevant to thermal_of anyway, because the other
+drivers asking for writable trip temperature seem to want it
+regardless.
 
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+> (This comment does not put in question this patch BTW)
 
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
-
+OK
 
