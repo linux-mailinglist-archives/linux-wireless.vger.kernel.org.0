@@ -1,292 +1,218 @@
-Return-Path: <linux-wireless+bounces-3919-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3920-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A13085F8A5
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Feb 2024 13:51:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B84385F8E0
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Feb 2024 13:54:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87C1F1C24335
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Feb 2024 12:51:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 874CE1F2174A
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Feb 2024 12:54:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 568FC12EBC6;
-	Thu, 22 Feb 2024 12:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84FC95FBA5;
+	Thu, 22 Feb 2024 12:53:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="LKLzS/CH"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Hxu4BIaR"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ua1-f53.google.com (mail-ua1-f53.google.com [209.85.222.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE8912DDAF
-	for <linux-wireless@vger.kernel.org>; Thu, 22 Feb 2024 12:50:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7FC12E1EB
+	for <linux-wireless@vger.kernel.org>; Thu, 22 Feb 2024 12:53:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708606255; cv=none; b=qswRzQD6upCQMMtx1z6CR298KuT4Qybmk+OYbu99cH7t8sWx2EZUbrtmKXZkbuH/KEqTkaq0qO684GGUlxogsfUdqX8Xs92P/dxlLEnFu5pDsWQbb1rSmN3VS5+7wN8+lYTGS6UgtGXOk8/HmECX22MgZyHH4oM1ehHJeN5d9ns=
+	t=1708606417; cv=none; b=JkyXRGpWJtbvtZswZ6L4GRyOxp9vMXLXdd9gAoSjIkKRSXMjnAQOR1T2KzLUztZDAV3jLZlcWtrB8bxJRvKv1wghVZ3tpoL3yydjo4YMho2e357Mwkb7+AFsoQ33YiXpQmTAC2Bl69k/BQJYyc19B5qZWgcY5gonAtKCC+EVjR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708606255; c=relaxed/simple;
-	bh=D/Rv64Y5sXOy1hNvU3YRveE5JBFKjHlveZT/G/uvFqU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Pm22vzXk/qSZPYCCLMxdHVbE1XQobbxhHZz5eUS4C4NscsTOuXxZYXYdZgWtmMcDc+jfYtrnt6aZgwyNDtcU5Hu6j8rASMqxB1f3YwzfoQRVv+HHId2X5l61LGD3VZF7aQwQAjmKq6nxXHa25cUPmQRl1WQO5OWE/JhylgLyhx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=LKLzS/CH; arc=none smtp.client-ip=209.85.222.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-ua1-f53.google.com with SMTP id a1e0cc1a2514c-7d5c514944fso405432241.1
-        for <linux-wireless@vger.kernel.org>; Thu, 22 Feb 2024 04:50:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1708606252; x=1709211052; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=W1FTSWWbKgvLwm17WUy3ABhI4j9ElVgmuDBNeAXwxPE=;
-        b=LKLzS/CHlY6j3aQfqyPsc5py+kJ8OsywTj+C1GxUa56NtwFEvXEZbAN73hjDfs1u61
-         rBd9Lm5HciyVN4GLjzgUzwv2yx8nxETNIrEgbi6MJDDaCFEdgYM4yNFAruQMLhWpbtar
-         zcGx76yKl/kZS2u3/qZinz5CsdOtwdvaAWSWpkn+2hfbSxSBLM4jGydIsoU8SOS+6agt
-         wBgmDNTBmDDU3Oi6mwWc9zccq4gRgGtrS9+JTkElLL2qudbn3RnC0EdvjUuChsV+k/CJ
-         PwLS9dPXcbkz/E6aBRNXbw4fuWFFA8nI/15r2IDMKUrvHRM6vPOabtIr66OoNtNL+5Of
-         bjvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708606252; x=1709211052;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=W1FTSWWbKgvLwm17WUy3ABhI4j9ElVgmuDBNeAXwxPE=;
-        b=L8P+7D7Ot/WSKuvA4S2/E2BRGJ9c3ax3y4r8xVm1OutYFGnz/cssoirLXiFXaIf8l9
-         H2/tusv1/g746W1Za7FS+9Ix//jxKYtCdr0e73wi/jrk7ouFFhSruAJHfUFx0Bi9TdVb
-         AS+FlG9ffPLTB0zr79UsjSUMQNA2hMXWAELwvlrYins5yWUJQ9PQjEp6Iq1bMsOI0bTs
-         94qJWeXe1JZnHRmtTjeS8kr4GROMBOf8xub81WnTffyu8w1kWb9Kda2hZgi2l9kZUmAi
-         bak0HT2vcZQUupvdh9PEMSxLS4+cR9piL/CH9PBT3uiIjPHLUq5LxUC8Vppl+7A1XIQz
-         GgaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWswRw/K3Nu8CSMMK3DrRJrA6nanA+d33BZTycVcVkiSMNzZkxnmhI3UKgHJHHEB8Cc7Wfzvkgr6PVO4i7qGx0xd0HsTVvYvU/GAl6lQA8=
-X-Gm-Message-State: AOJu0YwTOPWMMhhhA2SlqGZu4KIreP3mO2nAH7Zv0mx2BOmuPdaq/pKT
-	WN1o7UaiKl5dHR9t1vNIDPUrFrRlrfQtMi01euVx1ir+MlBaZagLZRZisxLPwJsolf+G5SW8FQm
-	0PDk3QCY/hFlEC5QuxhXeshOGZL49ZP83zT8oJA==
-X-Google-Smtp-Source: AGHT+IE1dv1EwDAd6TX1lQGq6n3XBsSY4vP2JhDCLl+t1UgliKtkx4suismK+MOv4dm7qGwschM/R4BLzbUnH1NzkV8=
-X-Received: by 2002:a05:6102:dc8:b0:470:4043:8f21 with SMTP id
- e8-20020a0561020dc800b0047040438f21mr1890402vst.11.1708606252028; Thu, 22 Feb
- 2024 04:50:52 -0800 (PST)
+	s=arc-20240116; t=1708606417; c=relaxed/simple;
+	bh=LZgtdNh8PdMd+M5SIlVXhcmVfCaPUu3SsPn+gHniYe4=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=APrL3q+chYccIcWydTt/cWBeLamzEig5zLwU+dC0l4ETroBYlsq9Gr2EKqtalIsmmwlsAevgZlY7ccJnY8er3PDAI0jk8W/tVHRS3mXY4hIwMjmwiob62OvbqhqtaeurDmMDNjZ2o0wiHYxVxa8M499uG85tPDFldv/KmdnEm5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Hxu4BIaR; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708606415; x=1740142415;
+  h=date:from:to:cc:subject:message-id;
+  bh=LZgtdNh8PdMd+M5SIlVXhcmVfCaPUu3SsPn+gHniYe4=;
+  b=Hxu4BIaRIkODh0Qlr9hozqp6C41dxpOtphfwybUOBcWuHjqmubhG2g7I
+   CZsK1BbF1SZ1+Adosj93mqjUClGQ7IWr8+l79TcCdJP0P0HqiWQc8xCk1
+   fmOcwt/eRVHCre6KI2VdZh9q9CUJtQ8vRZUzvmnQ9+h5dokMLrebfzFwg
+   fydciUs8RXsY+qkhms5KN0if/bIQJaOq0botCMgI42RM3Ri80CDvvu9c7
+   JVzxWYbJBRXigOFNQOrlFWdY0BKH5/0y/3imk5IhfnazHOmkLxBbnpgKd
+   cYgS+UaWRCq4zGOoxmsqFY2EhD71etytFqe/ZC+5lPHJ2bpvAuFl0gpw2
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10991"; a="2691746"
+X-IronPort-AV: E=Sophos;i="6.06,177,1705392000"; 
+   d="scan'208";a="2691746"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Feb 2024 04:53:35 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,177,1705392000"; 
+   d="scan'208";a="5447206"
+Received: from lkp-server02.sh.intel.com (HELO 3c78fa4d504c) ([10.239.97.151])
+  by fmviesa010.fm.intel.com with ESMTP; 22 Feb 2024 04:53:34 -0800
+Received: from kbuild by 3c78fa4d504c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rd8Zt-0006K0-2s;
+	Thu, 22 Feb 2024 12:53:30 +0000
+Date: Thu, 22 Feb 2024 20:52:34 +0800
+From: kernel test robot <lkp@intel.com>
+To: Kalle Valo <kvalo@kernel.org>
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+ linux-wireless@vger.kernel.org
+Subject: [wireless:for-next] BUILD SUCCESS
+ 1b7d9ab3e66655f19ee0c60cc667913da19a41f0
+Message-ID: <202402222029.Hjozyw1R-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240216203215.40870-1-brgl@bgdev.pl> <CAA8EJppt4-L1RyDeG=1SbbzkTDhLkGcmAbZQeY0S6wGnBbFbvw@mail.gmail.com>
- <e4cddd9f-9d76-43b7-9091-413f923d27f2@linaro.org> <CAA8EJpp6+2w65o2Bfcr44tE_ircMoON6hvGgyWfvFuh3HamoSQ@mail.gmail.com>
- <4d2a6f16-bb48-4d4e-b8fd-7e4b14563ffa@linaro.org> <CAA8EJpq=iyOfYzNATRbpqfBaYSdJV1Ao5t2ewLK+wY+vEaFYAQ@mail.gmail.com>
- <CAMRc=Mfnpusf+mb-CB5S8_p7QwVW6owekC5KcQF0qrR=iOQ=oA@mail.gmail.com>
- <CAA8EJppY7VTrDz3-FMZh2qHoU+JSGUjCVEi5x=OZgNVxQLm3eQ@mail.gmail.com>
- <b9a31374-8ea9-407e-9ec3-008a95e2b18b@linaro.org> <CAA8EJppWY8c-pF75WaMadWtEuaAyCc5A1VLEq=JmB2Ngzk-zyw@mail.gmail.com>
- <CAMRc=Md6SoXukoGb4bW-CSYgjpO4RL+0Uu3tYrZzgSgVtFH6Sw@mail.gmail.com>
- <CAA8EJprUM6=ZqTwWLB8rW8WRDqwncafa-szSsTvPQCOOSXUn_w@mail.gmail.com>
- <CAMRc=Metemd=24t0RJw-O9Z0-cg4mESouOfvMVLs_rJDCwRBPQ@mail.gmail.com> <CAA8EJprJTj7o0ATrQbF_38tW+kLspF1nBySg+_y_RWmadVnV9A@mail.gmail.com>
-In-Reply-To: <CAA8EJprJTj7o0ATrQbF_38tW+kLspF1nBySg+_y_RWmadVnV9A@mail.gmail.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Thu, 22 Feb 2024 13:50:40 +0100
-Message-ID: <CAMRc=MfkQuaJ3FnVwbVKQRQEgmJKbZh7SJoK3Kbmb5ebzE2rKA@mail.gmail.com>
-Subject: Re: [PATCH v5 00/18] power: sequencing: implement the subsystem and
- add first users
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Rob Herring <robh@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>
-Cc: neil.armstrong@linaro.org, Marcel Holtmann <marcel@holtmann.org>, 
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Kalle Valo <kvalo@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konrad.dybcio@linaro.org>, Liam Girdwood <lgirdwood@gmail.com>, 
-	Mark Brown <broonie@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Saravana Kannan <saravanak@google.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Arnd Bergmann <arnd@arndb.de>, Marek Szyprowski <m.szyprowski@samsung.com>, Alex Elder <elder@linaro.org>, 
-	Srini Kandagatla <srinivas.kandagatla@linaro.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Abel Vesa <abel.vesa@linaro.org>, 
-	Manivannan Sadhasivam <mani@kernel.org>, Lukas Wunner <lukas@wunner.de>, linux-bluetooth@vger.kernel.org, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-pci@vger.kernel.org, linux-pm@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 22, 2024 at 1:47=E2=80=AFPM Dmitry Baryshkov
-<dmitry.baryshkov@linaro.org> wrote:
->
-> On Thu, 22 Feb 2024 at 14:27, Bartosz Golaszewski <brgl@bgdev.pl> wrote:
-> >
-> > On Thu, Feb 22, 2024 at 12:27=E2=80=AFPM Dmitry Baryshkov
-> > <dmitry.baryshkov@linaro.org> wrote:
-> > >
-> > > On Thu, 22 Feb 2024 at 13:00, Bartosz Golaszewski <brgl@bgdev.pl> wro=
-te:
-> > > >
-> > > > On Mon, Feb 19, 2024 at 11:21=E2=80=AFPM Dmitry Baryshkov
-> > > > <dmitry.baryshkov@linaro.org> wrote:
-> > > > >
-> > > > > On Mon, 19 Feb 2024 at 19:18, <neil.armstrong@linaro.org> wrote:
-> > > > > >
-> > > > > > On 19/02/2024 13:33, Dmitry Baryshkov wrote:
-> > > > > > > On Mon, 19 Feb 2024 at 14:23, Bartosz Golaszewski <brgl@bgdev=
-.pl> wrote:
-> > > > > > >>
-> > > > > > >> On Mon, Feb 19, 2024 at 11:26=E2=80=AFAM Dmitry Baryshkov
-> > > > > > >> <dmitry.baryshkov@linaro.org> wrote:
-> > > > > > >>>
-> > > > > > >>
-> > > > > > >> [snip]
-> > > > > > >>
-> > > > > > >>>>>>>>
-> > > > > > >>>>>>>> For WCN7850 we hide the existence of the PMU as modeli=
-ng it is simply not
-> > > > > > >>>>>>>> necessary. The BT and WLAN devices on the device-tree =
-are represented as
-> > > > > > >>>>>>>> consuming the inputs (relevant to the functionality of=
- each) of the PMU
-> > > > > > >>>>>>>> directly.
-> > > > > > >>>>>>>
-> > > > > > >>>>>>> We are describing the hardware. From the hardware point=
- of view, there
-> > > > > > >>>>>>> is a PMU. I think at some point we would really like to=
- describe all
-> > > > > > >>>>>>> Qualcomm/Atheros WiFI+BT units using this PMU approach,=
- including the
-> > > > > > >>>>>>> older ath10k units present on RB3 (WCN3990) and db820c =
-(QCA6174).
-> > > > > > >>>>>>
-> > > > > > >>>>>> While I agree with older WiFi+BT units, I don't think it=
-'s needed for
-> > > > > > >>>>>> WCN7850 since BT+WiFi are now designed to be fully indep=
-endent and PMU is
-> > > > > > >>>>>> transparent.
-> > > > > > >>>>>
-> > > > > > >>>>> I don't see any significant difference between WCN6750/WC=
-N6855 and
-> > > > > > >>>>> WCN7850 from the PMU / power up point of view. Could you =
-please point
-> > > > > > >>>>> me to the difference?
-> > > > > > >>>>>
-> > > > > > >>>>
-> > > > > > >>>> The WCN7850 datasheet clearly states there's not contraint=
- on the WLAN_EN
-> > > > > > >>>> and BT_EN ordering and the only requirement is to have all=
- input regulators
-> > > > > > >>>> up before pulling up WLAN_EN and/or BT_EN.
-> > > > > > >>>>
-> > > > > > >>>> This makes the PMU transparent and BT and WLAN can be desc=
-ribed as independent.
-> > > > > > >>>
-> > > > > > >>>  From the hardware perspective, there is a PMU. It has seve=
-ral LDOs. So
-> > > > > > >>> the device tree should have the same style as the previous
-> > > > > > >>> generations.
-> > > > > > >>>
-> > > > > > >>
-> > > > > > >> My thinking was this: yes, there is a PMU but describing it =
-has no
-> > > > > > >> benefit (unlike QCA6x90). If we do describe, then we'll end =
-up having
-> > > > > > >> to use pwrseq here despite it not being needed because now w=
-e won't be
-> > > > > > >> able to just get regulators from WLAN/BT drivers directly.
-> > > > > > >>
-> > > > > > >> So I also vote for keeping it this way. Let's go into the pa=
-ckage
-> > > > > > >> detail only if it's required.
-> > > > > > >
-> > > > > > > The WiFi / BT parts are not powered up by the board regulator=
-s. They
-> > > > > > > are powered up by the PSU. So we are not describing it in the=
- accurate
-> > > > > > > way.
-> > > > > >
-> > > > > > I disagree, the WCN7850 can also be used as a discrete PCIe M.2=
- card, and in
-> > > > > > this situation the PCIe part is powered with the M.2 slot and t=
-he BT side
-> > > > > > is powered separately as we currently do it now.
-> > > > >
-> > > > > QCA6390 can also be used as a discrete M.2 card.
-> > > > >
-> > > > > > So yes there's a PMU, but it's not an always visible hardware p=
-art, from the
-> > > > > > SoC PoV, only the separate PCIe and BT subsystems are visible/c=
-ontrollable/powerable.
-> > > > >
-> > > > > From the hardware point:
-> > > > > - There is a PMU
-> > > > > - The PMU is connected to the board supplies
-> > > > > - Both WiFi and BT parts are connected to the PMU
-> > > > > - The BT_EN / WLAN_EN pins are not connected to the PMU
-> > > > >
-> > > > > So, not representing the PMU in the device tree is a simplificati=
-on.
-> > > > >
-> > > >
-> > > > What about the existing WLAN and BT users of similar packages? We
-> > > > would have to deprecate a lot of existing bindings. I don't think i=
-t's
-> > > > worth it.
-> > >
-> > > We have bindings that are not reflecting the hardware. So yes, we
-> > > should gradually update them once the powerseq is merged.
-> > >
-> > > > The WCN7850 is already described in bindings as consuming what is P=
-MUs
-> > > > inputs and not its outputs.
-> > >
-> > > So do WCN6855 and QCA6391 BlueTooth parts.
-> > >
-> >
-> > That is not true for the latter, this series is adding regulators for i=
-t.
->
-> But the bindings exist already, so you still have to extend it,
-> deprecating regulator-less bindings.
->
-> Bartosz, I really don't understand what is the issue there. There is a
-> PMU. As such it should be represented in the DT and it can be handled
-> by the same driver as you are adding for QCA6390.
->
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
+branch HEAD: 1b7d9ab3e66655f19ee0c60cc667913da19a41f0  MAINTAINERS: wifi: Add N: ath1*k entries to match .yaml files
 
-The issue is that we'll pull in the pwrseq subsystem for WCN7850 which
-clearly does not require it in practice.
+elapsed time: 1064m
 
-I'd like to hear Krzysztof, Conor or Rob chime in here and make the
-decision on how to proceed.
+configs tested: 128
+configs skipped: 3
 
-Bart
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-> >
-> > Bart
-> >
-> > > >
-> > > > Bart
-> > > >
-> > > > > >
-> > > > > > Neil
-> > > > > >
-> > > > > > >
-> > > > > > > Moreover, I think we definitely want to move BT driver to use=
- only the
-> > > > > > > pwrseq power up method. Doing it in the other way results in =
-the code
-> > > > > > > duplication and possible issues because of the regulator / pw=
-rseq
-> > > > > > > taking different code paths.
-> > > > >
-> > > > > --
-> > > > > With best wishes
-> > > > > Dmitry
-> > >
-> > >
-> > >
-> > > --
-> > > With best wishes
-> > > Dmitry
->
->
->
-> --
-> With best wishes
-> Dmitry
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                   randconfig-001-20240222   gcc  
+arc                   randconfig-002-20240222   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   clang
+arm                              allyesconfig   gcc  
+arm                     am200epdkit_defconfig   gcc  
+arm                                 defconfig   clang
+arm                        multi_v7_defconfig   gcc  
+arm                       omap2plus_defconfig   gcc  
+arm                   randconfig-001-20240222   gcc  
+arm                   randconfig-002-20240222   gcc  
+arm                           tegra_defconfig   gcc  
+arm64                            allmodconfig   clang
+arm64                             allnoconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                 randconfig-002-20240222   gcc  
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+csky                  randconfig-001-20240222   gcc  
+csky                  randconfig-002-20240222   gcc  
+hexagon                          allmodconfig   clang
+hexagon                           allnoconfig   clang
+hexagon                          allyesconfig   clang
+hexagon                             defconfig   clang
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-002-20240222   clang
+i386         buildonly-randconfig-003-20240222   clang
+i386         buildonly-randconfig-005-20240222   clang
+i386                                defconfig   clang
+i386                  randconfig-001-20240222   clang
+i386                  randconfig-002-20240222   clang
+i386                  randconfig-004-20240222   clang
+i386                  randconfig-006-20240222   clang
+i386                  randconfig-012-20240222   clang
+i386                  randconfig-015-20240222   clang
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20240222   gcc  
+loongarch             randconfig-002-20240222   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                          multi_defconfig   gcc  
+m68k                        stmark2_defconfig   gcc  
+microblaze                       alldefconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                      pic32mzda_defconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                 randconfig-001-20240222   gcc  
+nios2                 randconfig-002-20240222   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc                randconfig-001-20240222   gcc  
+parisc                randconfig-002-20240222   gcc  
+parisc64                            defconfig   gcc  
+powerpc                    adder875_defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   clang
+powerpc                        cell_defconfig   gcc  
+powerpc64             randconfig-003-20240222   gcc  
+riscv                            allmodconfig   clang
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   clang
+riscv                               defconfig   clang
+riscv                 randconfig-002-20240222   gcc  
+s390                             allmodconfig   clang
+s390                              allnoconfig   clang
+s390                             allyesconfig   gcc  
+s390                                defconfig   clang
+s390                  randconfig-001-20240222   gcc  
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                         ap325rxa_defconfig   gcc  
+sh                                  defconfig   gcc  
+sh                    randconfig-001-20240222   gcc  
+sh                    randconfig-002-20240222   gcc  
+sh                          rsk7264_defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                               defconfig   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+sparc64               randconfig-001-20240222   gcc  
+sparc64               randconfig-002-20240222   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   gcc  
+um                                  defconfig   clang
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   clang
+x86_64                            allnoconfig   clang
+x86_64                           allyesconfig   clang
+x86_64                              defconfig   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+xtensa                            allnoconfig   gcc  
+xtensa                randconfig-001-20240222   gcc  
+xtensa                randconfig-002-20240222   gcc  
+xtensa                    xip_kc705_defconfig   gcc  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
