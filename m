@@ -1,58 +1,60 @@
-Return-Path: <linux-wireless+bounces-3953-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3954-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8A27860FB4
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Feb 2024 11:44:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F625860FB5
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Feb 2024 11:44:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 164ED1C22E67
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Feb 2024 10:44:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31F171F22B2D
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Feb 2024 10:44:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F3B37AE72;
-	Fri, 23 Feb 2024 10:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C4D3823C2;
+	Fri, 23 Feb 2024 10:40:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="j/sWPWyU"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="rSoImGCy"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E650B6518F
-	for <linux-wireless@vger.kernel.org>; Fri, 23 Feb 2024 10:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77CC6657CB
+	for <linux-wireless@vger.kernel.org>; Fri, 23 Feb 2024 10:40:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708684829; cv=none; b=tY5khj6/SZjmHIwW5htH8V3f+tek0NLtfMOQDB7jpfIzlV7krngwd8xOGtL5x8/IcfP/7nS+rIB6JipgHWl5ouw2GMnj6gLCsVYDRudsUCSzP3XL5QMpvxNYdhK6uNBg6CSkIoHT7iANJjYE88ebws2dnSypQpacnAzTqmk/grI=
+	t=1708684830; cv=none; b=l5Pg3bOKG5ILsdn/gmAGYMCH0C2PjkkFQJG2FZCuWwdt8v6F6qSzmsAQ9f8b2GBHgjPLDZgvksJyREbE9rW7BAcXsZDTyYBH/OKt1S9kBHv9e74ltG1Q7qHzIi/WIHgAJT7Iw9B5sgD66n7a80388BNjU93Pp3+a74f1XXthwD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708684829; c=relaxed/simple;
-	bh=rQr6Dy9x+klZ7X5zTO2b/9ItmRu2KDIQpqzj/gZTXoc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mKgUBdkNBUsV78+lqW7EfhBtzxfULkZOTSCX6rsJXNV7YmKQpRosN+0nnKzNq1QG3SHWOFoxdaeWET2YKlEZeYD0FIsJSis8S7beBODgrnun68TvTvBFJqwt5Q2SOdRWfKNYfAEIQDdBtvKBdLtlVkH4jOxc+2jVL9v581FdAmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=j/sWPWyU; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1708684830; c=relaxed/simple;
+	bh=N9Ha5VP2I+HePfF7aTlALEIoCR4QFJDljzyfSp7aYWw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dvHI5Rep0s8wHUHoUdfIprIwrh7dOMW1U2DhiGPklyrHVXr5D2qjSWZCNpLXXMeX5Zkm+HSmzbnvxhUepmokFN6LjMjuxTPkh5uVrQbsEEWt09Cbdf36IC2jAt5UshfHl45ixAJU1byKD2rnALmpq/VBfWj7wuP79SLE1lT1gDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=rSoImGCy; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=kVVoD+Zb1UNXE4wHYDblk/3nRXQAcnY+p2WV3o6Aq90=; t=1708684828; x=1709894428; 
-	b=j/sWPWyU02XYdI+5KVT3GYG5FTiWaiP7LP7JBh04I04eGRWaeHqg5XKh1OebsyQx7a08U6NxMwq
-	djlrLf1WtvGvR//I3it1FuS3sHTWSkvBV1LW0ZbRCQ2MwQyWV9CiR6cVDNm+QO6DxuPkjOvx7OryA
-	rR7bRctaQHIC6vnCU/+avQEQ/fEERR7PkDfY7YG2RgmLWX9DLKGc9PHRg68euvCpK3owLMLuV6NnP
-	rbKQGGoIUxj346Q6y6+9T1MkCNm9SibqvKrlv13ZuGrvkBZaGe+GKfEP+XoO0Xt4TOSjmgLcHZ5W8
-	MEYXt5U16NlTSjIy3QsvU9KoJybcy8T4SJlw==;
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=Q6WJgDIUltkG8ruQDkYSpdMVic8dXTqLITH614bSoo4=;
+	t=1708684828; x=1709894428; b=rSoImGCydEUyCJyeSxU76pC4xo7j3Mm4OMHg3piDn5ISODN
+	f+FGOFsCNK2PFDMQw84yCYcJkM1S0ylnrUWx2X0Au3VoUV7hWMcftyChguy3Dnv9yau0BKDPtZfvm
+	TVNuGg8k2Q5f+Sfuwb31s12OBP65C76CAS7uCDLSKIojMhfRfvhvSF/EZpfhFoCew70yYkhkECcx4
+	3Cy4Op1EwQlnSyJoeFkSBOFosiXYFcAEi3U6QUqEgkSel5BRbiQBRqnMaf1YbLchJzmfdHx7WZh1o
+	f3iYImZ4x0Tq2HDlovWcLoWAUJDEzxvVLrbgqJ+rOoFfM205fRMR93zsdGzuK58w==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.97)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1rdSyf-000000051om-0yQ0;
-	Fri, 23 Feb 2024 11:40:25 +0100
+	id 1rdSyf-000000051om-3QZR;
+	Fri, 23 Feb 2024 11:40:26 +0100
 From: Johannes Berg <johannes@sipsolutions.net>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 1/5] wifi: b43: silence sparse warnings
-Date: Fri, 23 Feb 2024 11:40:23 +0100
-Message-ID: <20240223114023.c64e2d348453.Iccc4ace1116721a044e5f31f40ea7709e72145f3@changeid>
+Subject: [PATCH 2/5] wifi: brcmsmac: silence sparse warnings
+Date: Fri, 23 Feb 2024 11:40:24 +0100
+Message-ID: <20240223114023.06e5ade90bcd.I41a0cbae1fa259cfbf5fa117ddfce908877475a2@changeid>
 X-Mailer: git-send-email 2.43.2
+In-Reply-To: <20240223114023.c64e2d348453.Iccc4ace1116721a044e5f31f40ea7709e72145f3@changeid>
+References: <20240223114023.c64e2d348453.Iccc4ace1116721a044e5f31f40ea7709e72145f3@changeid>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -69,56 +71,85 @@ due to the usage of bitwise not, but really we do want
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- drivers/net/wireless/broadcom/b43/phy_ht.c | 6 +++---
- drivers/net/wireless/broadcom/b43/phy_n.c  | 4 ++--
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ .../broadcom/brcm80211/brcmsmac/phy/phy_lcn.c    |  2 +-
+ .../broadcom/brcm80211/brcmsmac/phy/phy_n.c      | 16 +++++++++-------
+ 2 files changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/b43/phy_ht.c b/drivers/net/wireless/broadcom/b43/phy_ht.c
-index d050971d150a..26a226126bc4 100644
---- a/drivers/net/wireless/broadcom/b43/phy_ht.c
-+++ b/drivers/net/wireless/broadcom/b43/phy_ht.c
-@@ -322,8 +322,8 @@ static void b43_phy_ht_bphy_reset(struct b43_wldev *dev, bool reset)
- 			    B43_PHY_B_BBCFG_RSTCCA | B43_PHY_B_BBCFG_RSTRX);
- 	else
- 		b43_phy_mask(dev, B43_PHY_B_BBCFG,
--			     (u16)~(B43_PHY_B_BBCFG_RSTCCA |
--				    B43_PHY_B_BBCFG_RSTRX));
-+			     0xffff & ~(B43_PHY_B_BBCFG_RSTCCA |
-+					B43_PHY_B_BBCFG_RSTRX));
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
+index 7717eb85a1db..aae2cf95fe95 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
+@@ -3299,7 +3299,7 @@ wlc_lcnphy_run_samples(struct brcms_phy *pi,
  
- 	b43_write16(dev, B43_MMIO_PSM_PHY_HDR, tmp);
- }
-@@ -551,7 +551,7 @@ static void b43_phy_ht_tx_power_ctl(struct b43_wldev *dev, bool enable)
- 				phy_ht->tx_pwr_idx[i] =
- 					b43_phy_read(dev, status_regs[i]);
- 		}
--		b43_phy_mask(dev, B43_PHY_HT_TXPCTL_CMD_C1, ~en_bits);
-+		b43_phy_mask(dev, B43_PHY_HT_TXPCTL_CMD_C1, 0xffff & ~en_bits);
+ 	if (iqcalmode) {
+ 
+-		and_phy_reg(pi, 0x453, (u16) ~(0x1 << 15));
++		and_phy_reg(pi, 0x453, 0xffff & ~(0x1 << 15));
+ 		or_phy_reg(pi, 0x453, (0x1 << 15));
  	} else {
- 		b43_phy_set(dev, B43_PHY_HT_TXPCTL_CMD_C1, en_bits);
+ 		write_phy_reg(pi, 0x63f, 1);
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
+index 8580a2754789..ffa4b7c5ed25 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
+@@ -17587,7 +17587,7 @@ static void wlc_phy_txpwrctrl_pwr_setup_nphy(struct brcms_phy *pi)
+ 	or_phy_reg(pi, 0x122, (0x1 << 0));
  
-diff --git a/drivers/net/wireless/broadcom/b43/phy_n.c b/drivers/net/wireless/broadcom/b43/phy_n.c
-index 2c0c019a815d..4bb005b93f2c 100644
---- a/drivers/net/wireless/broadcom/b43/phy_n.c
-+++ b/drivers/net/wireless/broadcom/b43/phy_n.c
-@@ -6246,7 +6246,7 @@ static void b43_nphy_channel_setup(struct b43_wldev *dev,
- 		b43_write16(dev, B43_MMIO_PSM_PHY_HDR, tmp16 | 4);
- 		/* Take BPHY out of the reset */
- 		b43_phy_mask(dev, B43_PHY_B_BBCFG,
--			     (u16)~(B43_PHY_B_BBCFG_RSTCCA | B43_PHY_B_BBCFG_RSTRX));
-+			     ~(B43_PHY_B_BBCFG_RSTCCA | B43_PHY_B_BBCFG_RSTRX) & 0xffff);
- 		b43_write16(dev, B43_MMIO_PSM_PHY_HDR, tmp16);
+ 	if (NREV_GE(pi->pubpi.phy_rev, 3))
+-		and_phy_reg(pi, 0x1e7, (u16) (~(0x1 << 15)));
++		and_phy_reg(pi, 0x1e7, 0x7fff);
+ 	else
+ 		or_phy_reg(pi, 0x1e7, (0x1 << 15));
+ 
+@@ -18086,7 +18086,7 @@ wlc_phy_rfctrlintc_override_nphy(struct brcms_phy *pi, u8 field, u16 value,
+ 						   (0x1 << 10));
+ 
+ 					and_phy_reg(pi, 0x2ff, (u16)
+-						    ~(0x3 << 14));
++						    0xffff & ~(0x3 << 14));
+ 					or_phy_reg(pi, 0x2ff, (0x1 << 13));
+ 					or_phy_reg(pi, 0x2ff, (0x1 << 0));
+ 				} else {
+@@ -21053,7 +21053,7 @@ wlc_phy_chanspec_nphy_setup(struct brcms_phy *pi, u16 chanspec,
+ 		      (val | MAC_PHY_FORCE_CLK));
+ 
+ 		and_phy_reg(pi, (NPHY_TO_BPHY_OFF + BPHY_BB_CONFIG),
+-			    (u16) (~(BBCFG_RESETCCA | BBCFG_RESETRX)));
++			    0xffff & ~(BBCFG_RESETCCA | BBCFG_RESETRX));
+ 
+ 		bcma_write16(pi->d11core, D11REGOFFS(psm_phy_hdr_param), val);
  	}
+@@ -21287,7 +21287,8 @@ void wlc_phy_antsel_init(struct brcms_phy_pub *ppi, bool lut_init)
  
-@@ -6377,7 +6377,7 @@ static int b43_nphy_set_channel(struct b43_wldev *dev,
- 	} else if (channel_type == NL80211_CHAN_HT40MINUS) {
- 		b43_phy_mask(dev, B43_NPHY_RXCTL, ~B43_NPHY_RXCTL_BSELU20);
- 		if (phy->rev >= 7)
--			b43_phy_mask(dev, 0x310, (u16)~0x8000);
-+			b43_phy_mask(dev, 0x310, 0x7fff);
- 	}
+ 		bcma_set16(pi->d11core, D11REGOFFS(psm_gpio_oe), mask);
  
- 	if (phy->rev >= 19) {
+-		bcma_mask16(pi->d11core, D11REGOFFS(psm_gpio_out), ~mask);
++		bcma_mask16(pi->d11core, D11REGOFFS(psm_gpio_out),
++			    0xffff & ~mask);
+ 
+ 		if (lut_init) {
+ 			write_phy_reg(pi, 0xf8, 0x02d8);
+@@ -23197,7 +23198,7 @@ void wlc_phy_stopplayback_nphy(struct brcms_phy *pi)
+ 		or_phy_reg(pi, 0xc3, NPHY_sampleCmd_STOP);
+ 	else if (playback_status & 0x2)
+ 		and_phy_reg(pi, 0xc2,
+-			    (u16) ~NPHY_iqloCalCmdGctl_IQLO_CAL_EN);
++			    0xffff & ~NPHY_iqloCalCmdGctl_IQLO_CAL_EN);
+ 
+ 	and_phy_reg(pi, 0xc3, (u16) ~(0x1 << 2));
+ 
+@@ -28202,8 +28203,9 @@ void wlc_phy_txpwrctrl_enable_nphy(struct brcms_phy *pi, u8 ctrl_type)
+ 
+ 		if (NREV_GE(pi->pubpi.phy_rev, 3))
+ 			and_phy_reg(pi, 0x1e7,
+-				    (u16) (~((0x1 << 15) |
+-					     (0x1 << 14) | (0x1 << 13))));
++				    0xffff & ~((0x1 << 15) |
++					       (0x1 << 14) |
++					       (0x1 << 13)));
+ 		else
+ 			and_phy_reg(pi, 0x1e7,
+ 				    (u16) (~((0x1 << 14) | (0x1 << 13))));
 -- 
 2.43.2
 
