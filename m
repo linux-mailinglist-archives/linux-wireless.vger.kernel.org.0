@@ -1,124 +1,125 @@
-Return-Path: <linux-wireless+bounces-3952-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3953-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2DD6860F28
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Feb 2024 11:24:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8A27860FB4
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Feb 2024 11:44:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7040F1F25881
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Feb 2024 10:24:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 164ED1C22E67
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Feb 2024 10:44:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BA285C8FC;
-	Fri, 23 Feb 2024 10:24:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F3B37AE72;
+	Fri, 23 Feb 2024 10:40:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Jc+F2rTT"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="j/sWPWyU"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E33EC5CDC9
-	for <linux-wireless@vger.kernel.org>; Fri, 23 Feb 2024 10:24:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E650B6518F
+	for <linux-wireless@vger.kernel.org>; Fri, 23 Feb 2024 10:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708683894; cv=none; b=QJb1HdkOBNAJLepr2fzF1YS6tmUlh5b2JF5wGdWGftzq3NmdtWGTPuo5oXAMicafJ/k9UWDVuM7MX0TBs5b13LPE62Bj8gch27WHIW7DkR9yJ5bgKTJQM3TRDPte8gT22g0IlVBGZ+O69wwmfTICaK4khljtT3IQMBkKTWnflHI=
+	t=1708684829; cv=none; b=tY5khj6/SZjmHIwW5htH8V3f+tek0NLtfMOQDB7jpfIzlV7krngwd8xOGtL5x8/IcfP/7nS+rIB6JipgHWl5ouw2GMnj6gLCsVYDRudsUCSzP3XL5QMpvxNYdhK6uNBg6CSkIoHT7iANJjYE88ebws2dnSypQpacnAzTqmk/grI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708683894; c=relaxed/simple;
-	bh=seHIDCaE09IrD+Kzps1y8HBnkWqbAxe+/oLoH+5V3wU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=JOKHnkNaDl/ntT6VWqByiuNx4w0nvBKA+IXECSXAYvWkDCW2DOEUVZ1xj8H/AEKA0NKvTATDHiZFlBUxCPOk4skiRc5PaQL7+m871bImPRxneAJtd7LaRPTuhEVJ1IscEK8s7mMb9AayFjXf8Mw8Q7e+MU9JX/jMhF4qd5aF8Go=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Jc+F2rTT; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1708684829; c=relaxed/simple;
+	bh=rQr6Dy9x+klZ7X5zTO2b/9ItmRu2KDIQpqzj/gZTXoc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mKgUBdkNBUsV78+lqW7EfhBtzxfULkZOTSCX6rsJXNV7YmKQpRosN+0nnKzNq1QG3SHWOFoxdaeWET2YKlEZeYD0FIsJSis8S7beBODgrnun68TvTvBFJqwt5Q2SOdRWfKNYfAEIQDdBtvKBdLtlVkH4jOxc+2jVL9v581FdAmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=j/sWPWyU; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=sp2B4D9/0w1QTOZortpqHMVQ4ts9mYrEajVEaf5OebA=;
-	t=1708683893; x=1709893493; b=Jc+F2rTTv66klLams65ieeRAIFPgeloFimkdZ0IbBREq9Gr
-	rpSVwahe7YdQoOoOVzan+6C6Roq7Q3zKW1G5gEDNLFin9mNdjGBdF2g8ICiz2CM7gUNytNV9xO/PJ
-	dZD+8wwrXK1W858kNfFZyROjqkgns0Qr0YuPzofDvVTA3xmsFR/9js8VRcibzpCLigXpgR7z6zBuI
-	p7oEcrz1SQUR4J/EjBdQiHIuYI0IHX9oYK5uGiQNsOj5EljSzcib+aInttLzcRtwJihQn3+ZZc0aO
-	+DOvLMtUgJaguovIXI4Dmf3MCMpMwmz+6h8EsMtbqFLyLGNrfUWoOzGnx6rJabjw==;
+	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=kVVoD+Zb1UNXE4wHYDblk/3nRXQAcnY+p2WV3o6Aq90=; t=1708684828; x=1709894428; 
+	b=j/sWPWyU02XYdI+5KVT3GYG5FTiWaiP7LP7JBh04I04eGRWaeHqg5XKh1OebsyQx7a08U6NxMwq
+	djlrLf1WtvGvR//I3it1FuS3sHTWSkvBV1LW0ZbRCQ2MwQyWV9CiR6cVDNm+QO6DxuPkjOvx7OryA
+	rR7bRctaQHIC6vnCU/+avQEQ/fEERR7PkDfY7YG2RgmLWX9DLKGc9PHRg68euvCpK3owLMLuV6NnP
+	rbKQGGoIUxj346Q6y6+9T1MkCNm9SibqvKrlv13ZuGrvkBZaGe+GKfEP+XoO0Xt4TOSjmgLcHZ5W8
+	MEYXt5U16NlTSjIy3QsvU9KoJybcy8T4SJlw==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.97)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1rdSjZ-000000051Gr-3mwB;
-	Fri, 23 Feb 2024 11:24:50 +0100
-Message-ID: <43aa9b89d5066d9a81b8f9d8e5e60124cf84193d.camel@sipsolutions.net>
-Subject: Re: [PATCH 8/8] rsi: miscallaneous changes for 9116 and common
+	id 1rdSyf-000000051om-0yQ0;
+	Fri, 23 Feb 2024 11:40:25 +0100
 From: Johannes Berg <johannes@sipsolutions.net>
-To: Siva Rebbagondla <siva8118@gmail.com>, Kalle Valo <kvalo@codeaurora.org>
-Cc: linux-wireless@vger.kernel.org, amitkarwar@gmail.com, 
-	krishna.pedda@redpinesignals.com, Ganapathiraju Kondraju
-	 <ganapathi.kondraju@redpinesignals.com>
-Date: Fri, 23 Feb 2024 11:24:48 +0100
-In-Reply-To: <20190403041309.12829-9-siva8118@gmail.com> (sfid-20190403_061346_533049_3118E7F8)
-References: <20190403041309.12829-1-siva8118@gmail.com>
-	 <20190403041309.12829-9-siva8118@gmail.com>
-	 (sfid-20190403_061346_533049_3118E7F8)
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
+To: linux-wireless@vger.kernel.org
+Cc: Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 1/5] wifi: b43: silence sparse warnings
+Date: Fri, 23 Feb 2024 11:40:23 +0100
+Message-ID: <20240223114023.c64e2d348453.Iccc4ace1116721a044e5f31f40ea7709e72145f3@changeid>
+X-Mailer: git-send-email 2.43.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 
-On Wed, 2019-04-03 at 09:43 +0530, Siva Rebbagondla wrote:
->=20
->  static int rsi_usb_reg_write(struct usb_device *usbdev,
->  			     u32 reg,
-> -			     u16 value,
-> +			     u32 value,
->  			     u16 len)
->  {
->  	u8 *usb_reg_buf;
-> @@ -226,17 +226,17 @@ static int rsi_usb_reg_write(struct usb_device *usb=
-dev,
->  	if (!usb_reg_buf)
->  		return status;
-> =20
-> -	usb_reg_buf[0] =3D (value & 0x00ff);
-> -	usb_reg_buf[1] =3D (value & 0xff00) >> 8;
-> -	usb_reg_buf[2] =3D 0x0;
-> -	usb_reg_buf[3] =3D 0x0;
-> +	usb_reg_buf[0] =3D (cpu_to_le32(value) & 0x00ff);
-> +	usb_reg_buf[1] =3D (cpu_to_le32(value) & 0xff00) >> 8;
-> +	usb_reg_buf[2] =3D (cpu_to_le32(value) & 0x00ff0000) >> 16;
-> +	usb_reg_buf[3] =3D (cpu_to_le32(value) & 0xff000000) >> 24;
+From: Johannes Berg <johannes.berg@intel.com>
 
+sparse complains on this code about casts that lose bits
+due to the usage of bitwise not, but really we do want
+16 bits only, so clarify that by using masks.
 
-The cpu_to_le32() was wrong here, it's already contained in the shifting
-that happened here ...
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ drivers/net/wireless/broadcom/b43/phy_ht.c | 6 +++---
+ drivers/net/wireless/broadcom/b43/phy_n.c  | 4 ++--
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
+diff --git a/drivers/net/wireless/broadcom/b43/phy_ht.c b/drivers/net/wireless/broadcom/b43/phy_ht.c
+index d050971d150a..26a226126bc4 100644
+--- a/drivers/net/wireless/broadcom/b43/phy_ht.c
++++ b/drivers/net/wireless/broadcom/b43/phy_ht.c
+@@ -322,8 +322,8 @@ static void b43_phy_ht_bphy_reset(struct b43_wldev *dev, bool reset)
+ 			    B43_PHY_B_BBCFG_RSTCCA | B43_PHY_B_BBCFG_RSTRX);
+ 	else
+ 		b43_phy_mask(dev, B43_PHY_B_BBCFG,
+-			     (u16)~(B43_PHY_B_BBCFG_RSTCCA |
+-				    B43_PHY_B_BBCFG_RSTRX));
++			     0xffff & ~(B43_PHY_B_BBCFG_RSTCCA |
++					B43_PHY_B_BBCFG_RSTRX));
+ 
+ 	b43_write16(dev, B43_MMIO_PSM_PHY_HDR, tmp);
+ }
+@@ -551,7 +551,7 @@ static void b43_phy_ht_tx_power_ctl(struct b43_wldev *dev, bool enable)
+ 				phy_ht->tx_pwr_idx[i] =
+ 					b43_phy_read(dev, status_regs[i]);
+ 		}
+-		b43_phy_mask(dev, B43_PHY_HT_TXPCTL_CMD_C1, ~en_bits);
++		b43_phy_mask(dev, B43_PHY_HT_TXPCTL_CMD_C1, 0xffff & ~en_bits);
+ 	} else {
+ 		b43_phy_set(dev, B43_PHY_HT_TXPCTL_CMD_C1, en_bits);
+ 
+diff --git a/drivers/net/wireless/broadcom/b43/phy_n.c b/drivers/net/wireless/broadcom/b43/phy_n.c
+index 2c0c019a815d..4bb005b93f2c 100644
+--- a/drivers/net/wireless/broadcom/b43/phy_n.c
++++ b/drivers/net/wireless/broadcom/b43/phy_n.c
+@@ -6246,7 +6246,7 @@ static void b43_nphy_channel_setup(struct b43_wldev *dev,
+ 		b43_write16(dev, B43_MMIO_PSM_PHY_HDR, tmp16 | 4);
+ 		/* Take BPHY out of the reset */
+ 		b43_phy_mask(dev, B43_PHY_B_BBCFG,
+-			     (u16)~(B43_PHY_B_BBCFG_RSTCCA | B43_PHY_B_BBCFG_RSTRX));
++			     ~(B43_PHY_B_BBCFG_RSTCCA | B43_PHY_B_BBCFG_RSTRX) & 0xffff);
+ 		b43_write16(dev, B43_MMIO_PSM_PHY_HDR, tmp16);
+ 	}
+ 
+@@ -6377,7 +6377,7 @@ static int b43_nphy_set_channel(struct b43_wldev *dev,
+ 	} else if (channel_type == NL80211_CHAN_HT40MINUS) {
+ 		b43_phy_mask(dev, B43_NPHY_RXCTL, ~B43_NPHY_RXCTL_BSELU20);
+ 		if (phy->rev >= 7)
+-			b43_phy_mask(dev, 0x310, (u16)~0x8000);
++			b43_phy_mask(dev, 0x310, 0x7fff);
+ 	}
+ 
+ 	if (phy->rev >= 19) {
+-- 
+2.43.2
 
-Easier to just write that as
-
- __le32 *usb_reg_buf;
-
- ...
-
- usb_reg_buf[0] =3D cpu_to_le32(value);
-
-however.
-
-=20
->  	status =3D usb_control_msg(usbdev,
->  				 usb_sndctrlpipe(usbdev, 0),
->  				 USB_VENDOR_REGISTER_WRITE,
->  				 RSI_USB_REQ_OUT,
-> -				 ((reg & 0xffff0000) >> 16),
-> -				 (reg & 0xffff),
-> +				 ((cpu_to_le32(reg) & 0xffff0000) >> 16),
-> +				 (cpu_to_le32(reg) & 0xffff),
-
-This change also seems completely wrong, and we should probably revert
-it?
-
-johannes
 
