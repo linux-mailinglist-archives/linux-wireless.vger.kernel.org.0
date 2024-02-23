@@ -1,60 +1,59 @@
-Return-Path: <linux-wireless+bounces-3957-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3958-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22E40860FB8
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Feb 2024 11:44:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44A6A860FBB
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Feb 2024 11:45:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 550B51C22E44
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Feb 2024 10:44:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7215284E5A
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Feb 2024 10:45:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB5957E593;
-	Fri, 23 Feb 2024 10:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD498664B9;
+	Fri, 23 Feb 2024 10:40:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Zkude+fj"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="G9Y1gaOQ"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65641823C1
-	for <linux-wireless@vger.kernel.org>; Fri, 23 Feb 2024 10:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5775665189
+	for <linux-wireless@vger.kernel.org>; Fri, 23 Feb 2024 10:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708684831; cv=none; b=MSn9s4lgQw8CZHqvC8+WPcrnSAnKeuGG5uD7NnFCoqL4XxvbJI5bPi9mq5i1/vf4/LIdZSxpmOecGooQwG2UAjZpJ4/Sjn/OCGbbZhznwSuhdFFDWGWK35WSyfRYiJL0G2Cq+RrDXk60OCN1ycjL5DcQ6iqV5tlJJAy/Apt2aPU=
+	t=1708684851; cv=none; b=nCeRz4G0qE4aYUIvr0SRr1xJd6crneVpx5z2InlqEAK/wCfO9MzvAWtUc8S4vh8jin2R2WS699GqaHGp+gs4aZLEXUU/IjofMuFThQwxDSTk7/EmEmE6CCnWbKekXCrc38ItDI7fBpkqyjbccYU527oLRJUsUjv9DhuOlBraE14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708684831; c=relaxed/simple;
-	bh=hV/yKZZi42u/3GX5RrWl/h2TSUXotFB4WE2JNkiUvfk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kOa6VdGzadwHTe/PVS2lSpkBSO1p7QYczhRuQbYyqykCvBQydeYWR0J7OCLGwiUB3O/4OYTwPX88PpvDzeE+BwiKSQ9rJraQD5olOc4ffCt5Jr6S5JRS9451ltkQxhGbJ1TPhrHU5R9mZdAWstyaESvEDN5A71IAI26dLGHv9pY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Zkude+fj; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1708684851; c=relaxed/simple;
+	bh=2Ny4ZKkPvfcxx0hqI52hsY8mzq6R+cI5RkmIGS/LIEU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ETZ32Is63JkYPw5PmM8NCb+d8S//Tu+4DqN33Bb0vyEtWvNfYflP7ix8THo2W6N8z7lUi2/4Av36TvDcENsxTl9iAhtpuXekq6Ft5/9AZ7M7M3iFyP6CEHOYGAlJYQZ560iAwczYqXrVxJXcilQ0Lr3k66SEUie27BPETRj1fe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=G9Y1gaOQ; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=szU5A2/fb9fuRVNP/Fl2eh853klpAqTds4ZyeiHJd+8=;
-	t=1708684830; x=1709894430; b=Zkude+fjij/6sEieZVxDRectXbRLCP1sz2xxGR7hmrRipYq
-	HDVnXLqSX3AVK3Oxi4Bkre5BZg3lDUMJ7eMO4g5ECnpJCCZl1jOcL4rstyvV8iAuviogYp/eRXutH
-	18W5gO4g06PET0/IH4A1lWyNJTJpukDAarVjqs9udyGnkYA3giIYBloqI9tHn1XeksD3k07IM4Ly3
-	KpqNFLsMTBQ/uf1pruOfx5WlpL+k8Pjit22Fw4klK4M1sD4IX92OrIF7kot5EZHg1ayIx+9Dlg9KL
-	BpjSiF5uZJDidYzCv1XUXPs/tJIb0KP9om1AVkdtW9EzgNhI1IWy+5Joatl/LOYQ==;
+	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=JsyHyOE7XGMBIWQkskHzTGwQdcYe1pZjgIGs5D7Llgk=; t=1708684850; x=1709894450; 
+	b=G9Y1gaOQg5/f4qQ1vr2XQIeq+srjS6UT9buQ5n5dpOjjpUOlcD+JnCIMCkfYB+tpmUffFDzjgYf
+	Imr6agjHTszRay56+KmbQpn4jQDZ4/mUDYbe2g0wmp1h4GZEB8stFR3zU7GzMaYaZp7lje5Xd8zPx
+	sb6nP7/y0Qc4EWnEkximmDosrMIw1RfVFZFtqiXnDJtUyQgvCMRdpnaKXCzZDCGQoVnRJQFU4NBO2
+	WYg3zL7lQKX1iAME6CLSp56BI2Syfpsm0D4XSmHaSMTQg+E84aJwtmaqH6hAgSMnsUfLfqFNVPTZE
+	BwHaI1up+8OYT98/e7ljRzxNLRVFSObSVuPg==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.97)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1rdSyh-000000051om-2NVb;
-	Fri, 23 Feb 2024 11:40:27 +0100
+	id 1rdSz1-000000051q6-47fD;
+	Fri, 23 Feb 2024 11:40:48 +0100
 From: Johannes Berg <johannes@sipsolutions.net>
 To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 5/5] wifi: zd1211rw: silence sparse warnings
-Date: Fri, 23 Feb 2024 11:40:27 +0100
-Message-ID: <20240223114023.976fcd59e97a.I0bba4ef7dc2847ce8ab5ec229149e1a09413b8b9@changeid>
+Cc: Siva Rebbagondla <siva8118@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH] wifi: rsi: fix endian conversions
+Date: Fri, 23 Feb 2024 11:40:45 +0100
+Message-ID: <20240223114045.7bfdc048832c.I576bbf9fe7ca2948dbe3e00c0fa0f37594e85046@changeid>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240223114023.c64e2d348453.Iccc4ace1116721a044e5f31f40ea7709e72145f3@changeid>
-References: <20240223114023.c64e2d348453.Iccc4ace1116721a044e5f31f40ea7709e72145f3@changeid>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,39 +64,51 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-This code wants to compare the obtained value, but as it also
-has a special type for register addresses to find places doing
-such compares and calculations wrong, we need explicit casts
-here to silence sparse.
+This really seems like a bug, endian conversions now happen
+twice in this code. Remove one conversion to make sparse no
+longer warn, not sure anyone can even test this on big endian
+platforms.
 
+Fixes: 0a60014b76f5 ("rsi: miscallaneous changes for 9116 and common")
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- drivers/net/wireless/zydas/zd1211rw/zd_usb.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/wireless/rsi/rsi_91x_usb.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/zydas/zd1211rw/zd_usb.c b/drivers/net/wireless/zydas/zd1211rw/zd_usb.c
-index 8505d84eeed6..f3b567a13ded 100644
---- a/drivers/net/wireless/zydas/zd1211rw/zd_usb.c
-+++ b/drivers/net/wireless/zydas/zd1211rw/zd_usb.c
-@@ -380,7 +380,7 @@ static inline void handle_regs_int(struct urb *urb)
- 	spin_lock_irqsave(&intr->lock, flags);
+diff --git a/drivers/net/wireless/rsi/rsi_91x_usb.c b/drivers/net/wireless/rsi/rsi_91x_usb.c
+index 10a465686439..0ce8c9aad1f1 100644
+--- a/drivers/net/wireless/rsi/rsi_91x_usb.c
++++ b/drivers/net/wireless/rsi/rsi_91x_usb.c
+@@ -222,7 +222,7 @@ static int rsi_usb_reg_write(struct usb_device *usbdev,
+ 			     u32 value,
+ 			     u16 len)
+ {
+-	u8 *usb_reg_buf;
++	__le32 *usb_reg_buf;
+ 	int status = -ENOMEM;
  
- 	int_num = le16_to_cpu(*(__le16 *)(urb->transfer_buffer+2));
--	if (int_num == CR_INTERRUPT) {
-+	if (int_num == (u16)CR_INTERRUPT) {
- 		struct zd_mac *mac = zd_hw_mac(zd_usb_to_hw(urb->context));
- 		spin_lock(&mac->lock);
- 		memcpy(&mac->intr_buffer, urb->transfer_buffer,
-@@ -416,7 +416,8 @@ static inline void handle_regs_int(struct urb *urb)
- 	spin_unlock_irqrestore(&intr->lock, flags);
+ 	if (len > RSI_USB_CTRL_BUF_SIZE)
+@@ -232,17 +232,14 @@ static int rsi_usb_reg_write(struct usb_device *usbdev,
+ 	if (!usb_reg_buf)
+ 		return status;
  
- 	/* CR_INTERRUPT might override read_reg too. */
--	if (int_num == CR_INTERRUPT && atomic_read(&intr->read_regs_enabled))
-+	if (int_num == (u16)CR_INTERRUPT &&
-+	    atomic_read(&intr->read_regs_enabled))
- 		handle_regs_int_override(urb);
- }
+-	usb_reg_buf[0] = (cpu_to_le32(value) & 0x00ff);
+-	usb_reg_buf[1] = (cpu_to_le32(value) & 0xff00) >> 8;
+-	usb_reg_buf[2] = (cpu_to_le32(value) & 0x00ff0000) >> 16;
+-	usb_reg_buf[3] = (cpu_to_le32(value) & 0xff000000) >> 24;
++	usb_reg_buf[0] = cpu_to_le32(value);
  
+ 	status = usb_control_msg(usbdev,
+ 				 usb_sndctrlpipe(usbdev, 0),
+ 				 USB_VENDOR_REGISTER_WRITE,
+ 				 RSI_USB_REQ_OUT,
+-				 ((cpu_to_le32(reg) & 0xffff0000) >> 16),
+-				 (cpu_to_le32(reg) & 0xffff),
++				 upper_16_bits(reg),
++				 lower_16_bits(reg),
+ 				 (void *)usb_reg_buf,
+ 				 len,
+ 				 USB_CTRL_SET_TIMEOUT);
 -- 
 2.43.2
 
