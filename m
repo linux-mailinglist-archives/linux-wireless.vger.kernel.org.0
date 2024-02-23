@@ -1,67 +1,61 @@
-Return-Path: <linux-wireless+bounces-3947-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3948-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44A7E860A63
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Feb 2024 06:45:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8855D860D71
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Feb 2024 10:02:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00A90285D4F
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Feb 2024 05:45:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 17CB0B227F6
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Feb 2024 09:02:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8986711CAD;
-	Fri, 23 Feb 2024 05:45:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA00118C36;
+	Fri, 23 Feb 2024 09:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ndZsELO9"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Yeg6aFkP"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D20F11171E
-	for <linux-wireless@vger.kernel.org>; Fri, 23 Feb 2024 05:45:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CF2C18E0C
+	for <linux-wireless@vger.kernel.org>; Fri, 23 Feb 2024 09:02:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708667130; cv=none; b=T+DHV1bgy5K5MJMlqdo5ebUnv3wjKxuhIq1g2vNMoGRxHrs6e8NpdvsQwnoZ8y0CA8G5mfQ3lHCz0EPmX4l6za6iS8rwQIxhT7KtCl4u6IB0CAdPTjJvwneAzzvEI4mTOXSySf3Hbi4kpRxuNiaFeIxNUbB3thhleN8wbjtGk4I=
+	t=1708678923; cv=none; b=p37Jb/fAtRzspUTrfqv6nPtx6bM8QlxWfg1497dNytEOkyP70bNZyGfO5U6oRBrjZinv+EJryFQfMsjftpHCn41IFlWoSCEsGcKKjBAnumZOgdcp75/gmmCxRuQXJjNrM1bqx+Yj/qt4KBVwmzI+6fBS01GjL0wFqcxKBzHLMuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708667130; c=relaxed/simple;
-	bh=W+f2St+xqAGzRkDgFAe83L3KorkvAFQw+GehKYaZuAc=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=TzsJKDBxj2NdLsx/UCQv6UUCz8UiGd4b3KjH5FdonUG6qtPUMnzVR6uOyP3HBpWojM2y1xP3Oj5lrrt/+aasXHo+GWFQdC/rAPLVL8W66wsyB3QAujk70r5Hdoy63W9T4l7NQ4U4g8Gr4tXe3rFJShQa9TbH4FL5xbeoXNNWBoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ndZsELO9; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41N4I1ui008028;
-	Fri, 23 Feb 2024 05:45:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:mime-version
-	:content-transfer-encoding:content-type; s=qcppdkim1; bh=mV/2Tiu
-	FRKoqYy+l9ovdEcmeodlyGe2KgMowwS7SSDw=; b=ndZsELO9d7l/a3vn/PMNUJ4
-	QTVN/XSuXfRRlcDegBGdMOkXBi7kwn4t1YsnosjWakNKERJqWRtGfZYoucWIKXTr
-	SBItE96QKkdRWramhPXzGugbwmwR2iEifsZBYP8jT3eXxWTYmlhSSgGXIVatw8jT
-	zbmxPD2+OMMNc7we3atU7/lzjLt3ShluXo6cs2jeO+QhZ+jhjWmXDBztuMgmYSat
-	IQUI80fulerhCrpEGbGjpZ3LL2tcdx1n4Ah1jXZvHWTJn/Vuzt66WBqzE1sl2W1K
-	AjO07wZ7x6BLdtK8a0J5XwVtAmgZhZg6eETLd4Byao+/cNnbCmYO0orG8xulJSQ=
-	=
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3weedkrv04-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 23 Feb 2024 05:45:21 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 41N5jKQJ000565
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 23 Feb 2024 05:45:20 GMT
-Received: from Mayan.qca.qualcomm.com (10.80.80.8) by
- nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Thu, 22 Feb 2024 21:45:19 -0800
-From: Kang Yang <quic_kangyang@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, <quic_kangyang@quicinc.com>
-Subject: [PATCH] wifi: ath12k: add rcu lock for ath12k_wmi_p2p_noa_event()
-Date: Fri, 23 Feb 2024 13:45:05 +0800
-Message-ID: <20240223054505.438839-1-quic_kangyang@quicinc.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1708678923; c=relaxed/simple;
+	bh=sqKbhMJzhsihxTtTEJ5J7MQ3m/Ho0hYEiMaMKAIFa2Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WXjlYjVtUM7XLnpClv0yKHoBIaFEWP5BYdIPTEIL40JiqTxHqVELA/T8Qt9i2z2XXZowZMa7vdD1fxwwE6DR9+o3lXQ1S5dEh8JinAPQuqUdlz3JBbeYghTwWyUbjzZB3BsythjmKo//twkBl3GF5YDL6S3Zda62KwNt3AbiiN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Yeg6aFkP; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=NFnawQLqckakB5qhJof+/PNCBcsfRpomgyB1w5DcmpI=; t=1708678921; x=1709888521; 
+	b=Yeg6aFkPwhSZHOm6ER0xA2HA6SfAioUg5xW82S65tfjcAX6IDJJGhQSOtpvX0m82juRr0l/E10B
+	fa1qlLd2nHQ+kjoXwJOO/TPtMAZD9J74KySSt4KK/5NHHfPRGQ0beUcADEP9/MJCcAV/TpvP4VcY2
+	IEyQhW7Tc1t5EvgTPYoyh1eX/NB5yFFRna4KdNFoZ3hnzJSvweDbU4XmZm0EL0d3dwoxR9xrHEU0P
+	UldDhQPg2o6DKXpxaaH2G/phplUyT65unbMBTXQnn5M1U1x3RKzR5mXSWEei/6GLyomal9mI9bi+q
+	qYP5VoR7h2+jxOa4OUXCiWLJqDR5wiDPiZYA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rdRRG-00000004yKf-17gB;
+	Fri, 23 Feb 2024 10:01:50 +0100
+From: Johannes Berg <johannes@sipsolutions.net>
+To: linux-wireless@vger.kernel.org
+Cc: Felix Fietkau <nbd@nbd.name>,
+	Jeff Johnson <jjohnson@kernel.org>,
+	ath11k@lists.infradead.org,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH] bitfield: suppress "dubious: x & !y" sparse warning
+Date: Fri, 23 Feb 2024 10:01:46 +0100
+Message-ID: <20240223100146.d243b6b1a9a1.I033828b1187c6bccf086e31400f7e933bb8373e7@changeid>
+X-Mailer: git-send-email 2.43.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -69,85 +63,50 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: VaYCnJsUS-jNWWvqIvmBiXxbxkn8LyLt
-X-Proofpoint-GUID: VaYCnJsUS-jNWWvqIvmBiXxbxkn8LyLt
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-22_15,2024-02-22_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- malwarescore=0 clxscore=1015 lowpriorityscore=0 mlxlogscore=788
- phishscore=0 suspectscore=0 spamscore=0 adultscore=0 mlxscore=0
- bulkscore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2402120000 definitions=main-2402230037
 
-Warning will appear when running P2P GO:
+From: Johannes Berg <johannes.berg@intel.com>
 
-WARNING: suspicious RCU usage
-drivers/net/wireless/ath/ath12k/mac.c:583 suspicious rcu_dereference_check() usage!
-other info that might help us debug this:
-rcu_scheduler_active = 2, debug_locks = 1
-no locks held by swapper/0/0.
-stack backtrace:
-CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.8.0-rc4-wt-ath+ #4
-Call Trace:
- <IRQ>
- dump_stack_lvl+0x82/0xa0
- dump_stack+0x14/0x20
- lockdep_rcu_suspicious+0x214/0x3b0
- ath12k_mac_get_ar_by_vdev_id+0x192/0x220 [ath12k]
- ath12k_wmi_op_rx+0x2d7/0x1b40 [ath12k]
+There's a somewhat common pattern of using FIELD_PREP()
+even for single bits, e.g.
 
-ath12k_mac_get_ar_by_vdev_id() requires its callers to have called
-rcu_read_lock(), but in ath12k_wmi_p2p_noa_event() it is called without
-doing so, and hence the warning was triggered.
+ cmd->info1 |= FIELD_PREP(HTT_SRNG_SETUP_CMD_INFO1_RING_FLAGS_MSI_SWAP,
+                          !!(params.flags & HAL_SRNG_FLAGS_MSI_SWAP));
 
-Add rcu_read_lock() and rcu_read_unlock() to avoid warning.
+which might as well be written as
 
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+ if (params.flags & HAL_SRNG_FLAGS_MSI_SWAP)
+   cmd->info1 |= HTT_SRNG_SETUP_CMD_INFO1_RING_FLAGS_MSI_SWAP;
 
-Fixes: 9411eecb60cb ("wifi: ath12k: implement handling of P2P NoA event")
-Reported-by: Kalle Valo <quic_kvalo@quicinc.com>
-Closes: https://lore.kernel.org/linux-wireless/87o7cusyvw.fsf@kernel.org/
-Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
+(since info1 is fully initialized to start with), but in
+a long chain of FIELD_PREP() this really seems fine.
+
+However, it triggers a sparse warning, in the check in
+the macro for whether a constant value fits into the mask,
+as this contains a "& (_val)". In this case, this really
+is always intentional, so just suppress the warning by
+adding "0+" to the expression, indicating explicitly that
+this is correct.
+
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- drivers/net/wireless/ath/ath12k/wmi.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ include/linux/bitfield.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index 838161dd9098..9d69a1769926 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -6736,18 +6736,21 @@ static int ath12k_wmi_p2p_noa_event(struct ath12k_base *ab,
- 		   "wmi tlv p2p noa vdev_id %i descriptors %u\n",
- 		   vdev_id, le32_get_bits(noa->noa_attr, WMI_P2P_NOA_INFO_DESC_NUM));
- 
-+	rcu_read_lock();
- 	ar = ath12k_mac_get_ar_by_vdev_id(ab, vdev_id);
- 	if (!ar) {
- 		ath12k_warn(ab, "invalid vdev id %d in P2P NoA event\n",
- 			    vdev_id);
- 		ret = -EINVAL;
--		goto out;
-+		goto unlock;
- 	}
- 
- 	ath12k_p2p_noa_update_by_vdev_id(ar, vdev_id, noa);
- 
- 	ret = 0;
- 
-+unlock:
-+	rcu_read_unlock();
- out:
- 	kfree(tb);
- 	return ret;
-
-base-commit: 707e306f3573fa321ae197d77366578e4566cff5
+diff --git a/include/linux/bitfield.h b/include/linux/bitfield.h
+index ebfa12f69501..63928f173223 100644
+--- a/include/linux/bitfield.h
++++ b/include/linux/bitfield.h
+@@ -66,7 +66,8 @@
+ 				 _pfx "mask is not constant");		\
+ 		BUILD_BUG_ON_MSG((_mask) == 0, _pfx "mask is zero");	\
+ 		BUILD_BUG_ON_MSG(__builtin_constant_p(_val) ?		\
+-				 ~((_mask) >> __bf_shf(_mask)) & (_val) : 0, \
++				 ~((_mask) >> __bf_shf(_mask)) &	\
++					(0 + (_val)) : 0,		\
+ 				 _pfx "value too large for the field"); \
+ 		BUILD_BUG_ON_MSG(__bf_cast_unsigned(_mask, _mask) >	\
+ 				 __bf_cast_unsigned(_reg, ~0ull),	\
 -- 
-2.34.1
+2.43.2
 
 
