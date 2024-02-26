@@ -1,176 +1,209 @@
-Return-Path: <linux-wireless+bounces-3998-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3999-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C576866E22
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Feb 2024 10:20:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93E77866E4B
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Feb 2024 10:25:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA303286020
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Feb 2024 09:20:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D6371F24763
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Feb 2024 09:25:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED4CC1EEEA;
-	Mon, 26 Feb 2024 08:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E807F5A7B3;
+	Mon, 26 Feb 2024 08:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="nx4kAT+o"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="PBkRM6fm";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="Dai91Ri6";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="PBkRM6fm";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="Dai91Ri6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE9A61CAA2
-	for <linux-wireless@vger.kernel.org>; Mon, 26 Feb 2024 08:43:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB4745B043;
+	Mon, 26 Feb 2024 08:45:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708936982; cv=none; b=HDojEIKaRv59n21IFXrGYSm7FOQUEK8irjUN6hFSjt2s0+mm5flsCWJlOD/yTQfjM+InYjWtovRrpD2S8ewphU4JeYDstWVByJgFAIzBEoodTtJ1VteT1QxbJAHTMEhBLwNBQQhVB2umiQnpWNhKF5/nlZWF+ChYH2OjLbQFGPc=
+	t=1708937122; cv=none; b=T7S77fx4yI6TslsDkxo9Qgqn2RHZX6Sb5FnBMJavQ8NkwyRPwTDkG1v09aYLYFUbiaSKupuDnU1IOsTRDhF1vBLuy8s3xmaYd2vsf5RKt6pscNyxcs/Sq4bsjN11ZEM2chtyeySGwt1qCLdn4h4KFyZLaWwGXvDe4gC0M5P2lOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708936982; c=relaxed/simple;
-	bh=JFvbODBGxPuSbdK8jF+Mg9nCZeldfMzPtY2GrJzopQE=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=u4oDXwADTrcHwSaU4pOwPKiX6J6AWGz+8/pRuXy2LzYbkbo2heKVUerVXBbEZSNRynK7cgZM/q4hZG+vfh+6OH9o3mK+RhumA120eKw7jOsz9G6pogCZ6+9rIxn9pJDHaqm6xfbnYkVvGvEXDWXq+HouXEyk5GSIFpKUUjUrTsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=nx4kAT+o; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=Ro1ZkUfDNBOqrQxGwae3yVtnW2/XzWschVsU0vfdjt4=;
-	t=1708936980; x=1710146580; b=nx4kAT+o7SLqguxDdKw8uWXzBu61RFIYbdjux+Ul3nDuh0f
-	5Fv5HV0v6WOS7hHMYlPS6tttxQmcuoPV9W4nRLCHSB9XaTPtyv/GpZ68/aWpybYPghfKqDzUFjlws
-	9+CUl2pmtFeLGko5kaEcJ1cNy8b+Tx2Esew/aM5nRym6+L4rU7m6AfVHaaxBXStKArYfDZq+hTLbo
-	1v5OO9rL4o5TMjnSQ1MV348Hk7isdntCS4QCf3dGoD1wLGYlbuUywbjcZwLMjxgjy3Hpl+QXdKdoA
-	65ybNvxx+ZEfHrduPhGwLwmZt352cJwXiNeHv9nVBQuzIh1swhWkhDW+c4atsRBQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1reWZe-000000095Zp-0OMv;
-	Mon, 26 Feb 2024 09:42:58 +0100
-Message-ID: <bdc7c51e3b6afaa7ac79efa15c6d1d41e9e918b5.camel@sipsolutions.net>
-Subject: Re: Kernel deadlock in 6.7.5 + hacks, maybe debugfs related.
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Ben Greear <greearb@candelatech.com>, linux-wireless
-	 <linux-wireless@vger.kernel.org>
-Date: Mon, 26 Feb 2024 09:42:56 +0100
-In-Reply-To: <1c9fa9e5-09f1-0522-fdbc-dbcef4d255ca@candelatech.com>
-References: <1c9fa9e5-09f1-0522-fdbc-dbcef4d255ca@candelatech.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
+	s=arc-20240116; t=1708937122; c=relaxed/simple;
+	bh=u1Uk/L1IrDcZRw5xoA8GWBJ3cV7BLElyTityFQ63bWw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PbfhWBnfwyGU9Y36xxhVxHVu73Ek45U+A/HRAuT69gmj/0sLjJAsKPYY0W8/vRSfUu08+1bqyHOz8ymD6DK9uQW+iQDioKc63GPqKvfiKMvPbeVtihdDQyIqfL0nj8Kv0A1GzH3z4FynUN3T4Dkt0gM+yncp5AFIFn8FiLbICfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=PBkRM6fm; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=Dai91Ri6; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=PBkRM6fm; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=Dai91Ri6; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id DC91D1FB3C;
+	Mon, 26 Feb 2024 08:45:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1708937117; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lDNCpqpWyCkrHeQ7/zkg5D0/ATBvTrpfH/+EnnRRQpU=;
+	b=PBkRM6fmokE6jjHDdz8GB36mu7HbbxclHhhnWXeZwysKGoyzxEWjnY/jPplKMKaKM99Ezj
+	cPtdoc7kgrMVbdCDmV/htbc8CpLDN0Ie2cww4yJxPHBuFtufv/mggKHHSjIsSuYNArM0cA
+	SD/Vcs4c2uSv8rKGnpw3XETQ2A/oCwQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1708937117;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lDNCpqpWyCkrHeQ7/zkg5D0/ATBvTrpfH/+EnnRRQpU=;
+	b=Dai91Ri6pWuqMHPB2xjKfgEgy9cpl1XoFPn9dtEfRQAwfcO1SkHbOOInI0bH9SQhuMF7OW
+	7iktYSiqDiJFArAQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1708937117; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lDNCpqpWyCkrHeQ7/zkg5D0/ATBvTrpfH/+EnnRRQpU=;
+	b=PBkRM6fmokE6jjHDdz8GB36mu7HbbxclHhhnWXeZwysKGoyzxEWjnY/jPplKMKaKM99Ezj
+	cPtdoc7kgrMVbdCDmV/htbc8CpLDN0Ie2cww4yJxPHBuFtufv/mggKHHSjIsSuYNArM0cA
+	SD/Vcs4c2uSv8rKGnpw3XETQ2A/oCwQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1708937117;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lDNCpqpWyCkrHeQ7/zkg5D0/ATBvTrpfH/+EnnRRQpU=;
+	b=Dai91Ri6pWuqMHPB2xjKfgEgy9cpl1XoFPn9dtEfRQAwfcO1SkHbOOInI0bH9SQhuMF7OW
+	7iktYSiqDiJFArAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C234213A58;
+	Mon, 26 Feb 2024 08:45:17 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id kmwTL51P3GWSFQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 26 Feb 2024 08:45:17 +0000
+Message-ID: <a36b35a9-fb37-4afe-a718-a47dfe658cb5@suse.cz>
+Date: Mon, 26 Feb 2024 09:45:17 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+User-Agent: Mozilla Thunderbird
+Subject: Re: ath11k allocation failure on resume breaking wifi until power
+ cycle
+Content-Language: en-US
+To: Baochen Qiang <quic_bqiang@quicinc.com>,
+ Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+ Jeff Johnson <quic_jjohnson@quicinc.com>, Takashi Iwai <tiwai@suse.de>,
+ Jiri Slaby <jirislaby@kernel.org>
+Cc: Kalle Valo <kvalo@kernel.org>,
+ Linux Wireless <linux-wireless@vger.kernel.org>, ath11k@lists.infradead.org,
+ LKML <linux-kernel@vger.kernel.org>, mhi@lists.linux.dev,
+ linux-arm-msm@vger.kernel.org
+References: <96481a45-3547-4d23-ad34-3a8f1d90c1cd@suse.cz>
+ <0994ae16-8174-4a04-b454-1974b16bc106@quicinc.com>
+ <20240222054739.GG3374@thinkpad>
+ <38c36d16-9cc1-4f03-b758-4a3ba90f8aa4@suse.cz>
+ <abc0c24f-2137-41eb-bb99-80aea8dacdb2@quicinc.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+In-Reply-To: <abc0c24f-2137-41eb-bb99-80aea8dacdb2@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Level: 
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=PBkRM6fm;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Dai91Ri6
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-4.50 / 50.00];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 XM_UA_NO_VERSION(0.01)[];
+	 SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	 TO_DN_SOME(0.00)[];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_TRACE(0.00)[suse.cz:+];
+	 MX_GOOD(-0.01)[];
+	 RCPT_COUNT_SEVEN(0.00)[11];
+	 NEURAL_HAM_SHORT(-0.20)[-1.000];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 MID_RHS_MATCH_FROM(0.00)[];
+	 BAYES_HAM(-3.00)[100.00%];
+	 ARC_NA(0.00)[];
+	 R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	 FROM_HAS_DN(0.00)[];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 NEURAL_HAM_LONG(-1.00)[-1.000];
+	 MIME_GOOD(-0.10)[text/plain];
+	 DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
+	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:dkim,suse.com:url];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 RCVD_TLS_ALL(0.00)[]
+X-Spam-Score: -4.50
+X-Rspamd-Queue-Id: DC91D1FB3C
+X-Spam-Flag: NO
 
-On Fri, 2024-02-23 at 09:08 -0800, Ben Greear wrote:
+On 2/26/24 03:09, Baochen Qiang wrote:
+> 
+> 
+> On 2/23/2024 11:28 PM, Vlastimil Babka wrote:
+>> On 2/22/24 06:47, Manivannan Sadhasivam wrote:
+>>> On Wed, Feb 21, 2024 at 08:34:23AM -0800, Jeff Johnson wrote:
+>>>> On 2/21/2024 6:39 AM, Vlastimil Babka wrote:
+>>>>> Hi,
+>>>>>
+>>>>> starting with 6.8 rc series, I'm experiencing problems on resume from s2idle
+>>>>> on my laptop, which is Lenovo T14s Gen3:
+>>>>>
+>>>>> LENOVO 21CRS0K63K/21CRS0K63K, BIOS R22ET65W (1.35 )
+>>>>> ath11k_pci 0000:01:00.0: wcn6855 hw2.1
+>>>>> ath11k_pci 0000:01:00.0: chip_id 0x12 chip_family 0xb board_id 0xff soc_id 0x400c1211
+>>>>> ath11k_pci 0000:01:00.0: fw_version 0x1106196e fw_build_timestamp 2024-01-12 11:30 fw_build_id WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.37
+>>>>>
+>>>>> The problem is an allocation failure happening on resume from s2idle. After
+>>>>> that the wifi stops working and even a reboot won't fix it, only a
+>>>>> poweroff/poweron cycle of the laptop.
+>>>>>
+>>>
+>>> Looks like WLAN is powered down during s2idle, which doesn't make sense. I hope
+>>> Jeff will figure out what's going on.
+>> 
+>> You mean the firmware is supposed to power it down/up transparently without
+>> kernel involvement? Because it should be powered down to save the power, no?
+> Let me clarify: from backtrace info, seems you are using a kernel with 
+> the hibernation-support patches [1] applied, which are not accepted yet 
+> to mainline kernel or even 
+> git://git.kernel.org/pub/scm/linux/kernel/git/mani/mhi.git.
 
-> [905261.271981] INFO: task systemd-resolve:948 blocked for more than 180 =
-seconds.
-> [905261.277834]       Tainted: G           O       6.7.3+ #34
-> [905261.281939] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disabl=
-es this message.
-> [905261.288474] task:systemd-resolve state:D stack:0     pid:948   tgid:9=
-48   ppid:1      flags:0x00000002
+Oh, you're right. Sorry for confusing you all. The rc kernel builds we have
+for openSUSE have nearly no non-upstream patches so it didn't really occur
+to me to double check if there might be in the area.
 
-I don't know what that's doing, but
+Seems Takashi (Cc'd) added them indeed to make hibernation work:
+https://bugzilla.suse.com/show_bug.cgi?id=1207948#c51
 
-> [905261.288477] Call Trace:
-> [905261.288478]  <TASK>
-> [905261.288481]  __schedule+0x377/0xa10
-> [905261.288486]  ? _copy_to_user+0x20/0x30
-> [905261.288507]  schedule+0x29/0xc0
-> [905261.288509]  schedule_preempt_disabled+0xc/0x20
-> [905261.288511]  __mutex_lock.constprop.0+0x34d/0x760
-> [905261.288514]  do_ip_setsockopt+0x4a/0x1150
+But then, why do they affect also s2idle, is it intentional? And why I only
+started seeing the problems in 6.8, the patches are there since August.
 
-I'm going to assume that this is RTNL, the socket lock isn't technically
-a mutex, and doesn't seem reasonable in this context.
+> So this is why you see WLAN firmware is powered down during suspend.
+> 
+> [1] 
+> https://patchwork.kernel.org/project/linux-wireless/cover/20231127162022.518834-1-kvalo@kernel.org/
+> 
+>> 
+>> But I just found out that when I build my own kernel using the distro config
+>> as base but reduced by make localmodconfig, the "mhi mhi0: Requested to
+>> power ON" and related messages don't occur anymore, so there's something
+>> weird going on.
+> Here your own kernel doesn't include the hibernation-support patches, right?
 
-> [905261.337114] task:xdg-desktop-por state:D stack:0     pid:2485  tgid:2=
-485  ppid:1742   flags:0x00000002
-> [905261.337116] Call Trace:
-> [905261.337117]  <TASK>
-> [905261.337118]  __schedule+0x377/0xa10
-> [905261.337120]  ? poll_freewait+0x40/0xa0
-> [905261.337122]  schedule+0x29/0xc0
-> [905261.337138]  schedule_preempt_disabled+0xc/0x20
-> [905261.337139]  __mutex_lock.constprop.0+0x34d/0x760
-> [905261.337142]  __netlink_dump_start+0x6c/0x280
-> [905261.337143]  ? rtnl_mdb_dump+0x160/0x160
-> [905261.337146]  rtnetlink_rcv_msg+0x267/0x3b0
+Right.
 
-A lot of other things are waiting for the RTNL too.
 
-> [905261.353300] INFO: task btserver:3593 blocked for more than 180 second=
-s.
-> [905261.358620]       Tainted: G           O       6.7.3+ #34
-> [905261.362729] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disabl=
-es this message.
-> [905261.369263] task:btserver        state:D stack:0     pid:3593  tgid:3=
-593  ppid:2866   flags:0x00000002
-> [905261.369265] Call Trace:
-> [905261.369266]  <TASK>
-> [905261.369267]  __schedule+0x377/0xa10
-> [905261.369268]  ? sched_clock+0xc/0x20
-> [905261.369270]  schedule+0x29/0xc0
-> [905261.369271]  schedule_timeout+0x136/0x150
-> [905261.369274]  wait_for_completion+0x7d/0x130
-> [905261.369292]  wiphy_locked_debugfs_read+0x114/0x180 [cfg80211]
-> [905261.369363]  ? wiphy_locked_debugfs_write_work+0x30/0x30 [cfg80211]
-> [905261.369400]  ? rts_threshold_read+0x80/0x80 [cfg80211]
-> [905261.369438]  ? ieee80211_link_sta_debugfs_drv_remove+0x40/0x40 [mac80=
-211]
-> [905261.369516]  ieee80211_if_read_sdata+0x55/0x80 [mac80211]
-
-This you saw - it's waiting for the completion of the read of the ...
-not sure which file? Any chance you could find out which fd this process
-has open when it happens?
-
-> [905261.369553]  ? ieee80211_link_sta_debugfs_drv_remove+0x40/0x40 [mac80=
-211]
-> [905261.369587]  ? ieee80211_if_fmt_dot11MeshMaxRetries+0x20/0x20 [mac802=
-11]
-
-I don't think we can trust any of the lines marked "?", they're probably
-old prior stack contents ... these don't show up in the call stack of
-ieee80211_if_read_sdata() directly, after all.
-
-> [905261.402921] INFO: task kworker/u16:17:2582370 blocked for more than 1=
-80 seconds.
-> [905261.409024]       Tainted: G           O       6.7.3+ #34
-> [905261.413157] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disabl=
-es this message.
-> [905261.419735] task:kworker/u16:17  state:D stack:0     pid:2582370 tgid=
-:2582370 ppid:2      flags:0x00004000
-> [905261.419738] Workqueue: events_unbound cfg80211_wiphy_work [cfg80211]
-> [905261.419788] Call Trace:
-> [905261.419788]  <TASK>
-> [905261.419789]  __schedule+0x377/0xa10
-> [905261.419792]  schedule+0x29/0xc0
-> [905261.419793]  schedule_preempt_disabled+0xc/0x20
-> [905261.419795]  __mutex_lock.constprop.0+0x34d/0x760
-> [905261.419797]  cfg80211_wiphy_work+0x15/0xb0 [cfg80211]
-> [905261.419827]  process_one_work+0x15d/0x330
-
-This is a bit interesting - why is the wiphy work stuck trying to
-acquire the wiphy mutex? But nothing related to the RTNL.
-
-This does explain why the debugfs is stuck though. So maybe doesn't
-matter knowing which file got stuck ...
-
-> [905261.436449] Future hung task reports are suppressed, see sysctl kerne=
-l.hung_task_warnings
-
-I think we're missing the process that's actually stuck though, maybe
-here or later?
-
-Seems like there must be a process somewhere that holds RTNL and wiphy
-mutex, but didn't get listed here. Maybe it's live-locked? Maybe it's
-actually a netdev removal (which would hold both those locks), but then
-why is it stuck and not shown?
-
-johannes
 
