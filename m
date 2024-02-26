@@ -1,163 +1,77 @@
-Return-Path: <linux-wireless+bounces-3995-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-3996-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87EC3866A47
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Feb 2024 07:49:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B13D6866A94
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Feb 2024 08:18:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D46B1F220EE
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Feb 2024 06:49:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63B0E1F21160
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Feb 2024 07:18:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 200A21B27D;
-	Mon, 26 Feb 2024 06:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E53DE1BDCE;
+	Mon, 26 Feb 2024 07:18:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jBomfR7/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-io1-f71.google.com (mail-io1-f71.google.com [209.85.166.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7029E1BDCB
-	for <linux-wireless@vger.kernel.org>; Mon, 26 Feb 2024 06:49:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C19ECEEDA
+	for <linux-wireless@vger.kernel.org>; Mon, 26 Feb 2024 07:18:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708930158; cv=none; b=kexw3Jc360CPxer7LZR7hGuEJnldGAQsbvRiBYxqvO30siD21uUgI0T7QDoNoluF32a0+M0PAauZS5SvW9TBMCz1Ddk8VBa65Hennq8pUw3FVqvAACfMqc8lPOhV6tOn/oTdh4dGrzqkz8UiUgkhgYNPSvlP4RULmVOtWs7DwKw=
+	t=1708931930; cv=none; b=ISpv6OmbC1b/UURzJPc0dk7ivbyxxkhgHtTZtJRO3Y9Pj4k05xqxs/vGWgiaWQJQlRxChf+ZPuwYUzik2uSM57XSZpu5scTMr0RcxYEZpIzMIL2091QN4ZdGSv251K0S5afVYtoM3y/FCd5sI70RRxmD7f1EsKqyrzgBYvL8kbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708930158; c=relaxed/simple;
-	bh=skqVvvgaswYH/WEaOwX9w475uwS/p84Gka6Zk3K+GN8=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=dcUU1Oy/fbSpK50lswwBoYlalGxHAfaw2xYoN4D56sy9epoafvTF9cIL0azuSdvV9mo/yj3DPdALYuyPtZa9mc9A6CSdNnuxZC+LKg3ra6T7WIvwdrz1ztBTkZ/XSxKsAeDPmEzi0OLanOYwjNbfCYhW9mrThH3WHIA25LV20Xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f71.google.com with SMTP id ca18e2360f4ac-7bfffd9b47fso277973539f.1
-        for <linux-wireless@vger.kernel.org>; Sun, 25 Feb 2024 22:49:16 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708930155; x=1709534955;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=MiwReltw5l/9lgFXelRMQJoGyzLPKT+OcNcrGA3d1ls=;
-        b=LCxdr5qG6ogKmMY52jjZORdJziNX0GY3SpWJ4c96JEpsxJz37zySeA0vFfawXeot9T
-         kTey2FlKRzE0F7FrI+MTSO6F5fH7KsM7cNWwwrvmwGVngy69uKoBO6QNza96Oh30OOM+
-         kzGH4vCqmNRRyfImfLK9rVB6YtmUar/9HepGYl5EiLR7pNm4rpOGDrKhcSvHHcM8ptKp
-         lPDPH1b2kLN4Lwms9JKrZ8hKXtUi18X8eW9UML2rin9Rj9CEnujNMIpWIQuysKL95b2y
-         WxpAaAuuD7mXb1J3HP9M3Ls7GMekLIjLelQ56rPrC5vmttkqEEzXlPuTVsUa9RVdwkvM
-         ENPA==
-X-Forwarded-Encrypted: i=1; AJvYcCW45DxUcSU9WRFxdZoVPnwMU0tqWbjCHkgVpKpxhZuJkhUfMFZ7PWrj5FWXV1UXh0kTi4eVsGBMUatgYbOCWXBBx0QaLTm6d70o1f2z8IE=
-X-Gm-Message-State: AOJu0YwjCaBvHtAo8a3pdZeq2jIfd6OyK9dZBRsD3sVKhDp0SCGxBAUS
-	SAaURCxMo9+C3Zk1AfIkzNQEyEDLk4MEDoFaxWt9idr1+ysa8oINzDiBixT31ziUtiPrQL0q+CE
-	MxnQOQXYbSwyLB/TF9GDA24z5FxITklobWYzf/3nLDTM7MpTsjO+iT9E=
-X-Google-Smtp-Source: AGHT+IHtNvAlMcbT0OKeWgo2OEqBQ8gNaZFbz+QtW2/TAnVfx6wWYxq/kZKND5fNwECz+V/kxSF+e0PVg89UHGOn93RL+a8vRnvl
+	s=arc-20240116; t=1708931930; c=relaxed/simple;
+	bh=elbuon70cVLTRHv3Iv7ezxzVxH83AMoPaG58xnVpA48=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=JfQ+uXnle5g+v8aKieAX1Y7uOp1AFobjQxv7AYt2Gypi6lFX3HGxhHOvzrTRgPmgVNY38Lt1IfHTDPH/xSR3kv6keje5i4HM1W0J128afcWNXJpqQMISSpDrs4r/P/eqDPQ78evGxkjwjdgx66nF2es+QfJakfPs7So/P0hx8JI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jBomfR7/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F741C433C7;
+	Mon, 26 Feb 2024 07:18:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708931930;
+	bh=elbuon70cVLTRHv3Iv7ezxzVxH83AMoPaG58xnVpA48=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=jBomfR7/oZXWbUEmUawwWS1VbSmINYz/lxMByTB3ilUBHLy+ludEi8vXH7UiKLUGR
+	 iKxPmM8MDJtBpdVKqsnWd0LNkokaGt5pfI7MxllPVhJl/pMqvpdm8jlUs/mUhiY8wL
+	 pgEibuM4XlvnFGDj6965K8jWo2hh3rptX5lbwmESrEpa+nBf8w046nvnU4v9uQ79FE
+	 BhcPkPnnSyRS2Ym1gVImUvM68QHh/8dhhT8GXIh2yUES2X6AH46zHTv23bHrsIqfNJ
+	 myunGep2XhtzCtmxRlYJ7SI+c7QWoFOqrjep/nNmaJy1P7RALYX8fphkwVryzbYkZs
+	 kOnKwpjTTqrOg==
+From: Kalle Valo <kvalo@kernel.org>
+To: "serge" <vasilugin@yandex.ru>
+Cc: linux-wireless@vger.kernel.org,  Stanislaw Gruszka <stf_xl@wp.pl>
+Subject: Re: [PATCH] wifi:rt2x00: don't overwrite SoC specific bbp init
+References: <20240226094016.1JaTRGbB@mail-nwsmtp-smtp-production-main-29.myt.yp-c.yandex.net>
+Date: Mon, 26 Feb 2024 09:18:47 +0200
+In-Reply-To: <20240226094016.1JaTRGbB@mail-nwsmtp-smtp-production-main-29.myt.yp-c.yandex.net>
+	(serge's message of "Mon, 26 Feb 2024 13:40:14 +0700")
+Message-ID: <87o7c3ae20.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:12c8:b0:363:b9d6:1261 with SMTP id
- i8-20020a056e0212c800b00363b9d61261mr348596ilm.0.1708930155728; Sun, 25 Feb
- 2024 22:49:15 -0800 (PST)
-Date: Sun, 25 Feb 2024 22:49:15 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000e0d7ac0612434e59@google.com>
-Subject: [syzbot] [wireless?] WARNING in drv_unassign_vif_chanctx
-From: syzbot <syzbot+1c8a495af056338d5c19@syzkaller.appspotmail.com>
-To: davem@davemloft.net, edumazet@google.com, johannes@sipsolutions.net, 
-	kuba@kernel.org, linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 
-Hello,
+"serge" <vasilugin@yandex.ru> writes:
 
-syzbot found the following issue on:
+> SoCs rt305x have the same MAC version but SoC specific bbp init function
+>
+> Signed-off-by: Serge Vailugin <vasilugin@yandex.ru>
 
-HEAD commit:    2a770cdc4382 tun: Fix xdp_rxq_info's queue_index when deta..
-git tree:       net
-console output: https://syzkaller.appspot.com/x/log.txt?x=14aec3aa180000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=eff9f3183d0a20dd
-dashboard link: https://syzkaller.appspot.com/bug?extid=1c8a495af056338d5c19
-compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+The commit message should answer to the question 'Why?'. What user
+visible issue/symptom does this patch fix?
 
-Unfortunately, I don't have any reproducer for this issue yet.
+Also From field need to match with s-o-b, now the names are different.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/54ceb0944449/disk-2a770cdc.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/69b79e7b7a86/vmlinux-2a770cdc.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/dedbc599c2f7/bzImage-2a770cdc.xz
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+1c8a495af056338d5c19@syzkaller.appspotmail.com
-
-WARNING: CPU: 1 PID: 14618 at net/mac80211/driver-ops.c:343 drv_unassign_vif_chanctx+0x477/0x6c0 net/mac80211/driver-ops.c:343
-Modules linked in:
-CPU: 1 PID: 14618 Comm: syz-executor.1 Not tainted 6.8.0-rc5-syzkaller-00129-g2a770cdc4382 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/25/2024
-RIP: 0010:drv_unassign_vif_chanctx+0x477/0x6c0 net/mac80211/driver-ops.c:343
-Code: e9 48 b8 00 00 00 00 00 fc ff df 0f b6 04 03 84 c0 0f 85 08 01 00 00 41 8b 16 48 c7 c7 40 27 bb 8c 48 89 ee e8 8a 18 83 f6 90 <0f> 0b 90 90 e9 db fc ff ff 48 c7 c1 0c 9a 85 8f 80 e1 07 80 c1 03
-RSP: 0018:ffffc90018017130 EFLAGS: 00010246
-RAX: c575d6a35704e800 RBX: 1ffff11005a0b29a RCX: 0000000000040000
-RDX: ffffc9000b9f4000 RSI: 000000000001c717 RDI: 000000000001c718
-RBP: ffff88802d058128 R08: ffffffff81577ab2 R09: 1ffff110172a51a2
-R10: dffffc0000000000 R11: ffffed10172a51a3 R12: ffff88802d05a740
-R13: ffff88802d058c80 R14: ffff88802d0594d0 R15: ffff88802e178e20
-FS:  00007f013e91c6c0(0000) GS:ffff8880b9500000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000000c01c04b000 CR3: 000000008cbc6000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- ieee80211_assign_link_chanctx+0x16d/0x8b0 net/mac80211/chan.c:878
- __ieee80211_link_release_channel+0x306/0x460 net/mac80211/chan.c:1801
- ieee80211_teardown_sdata net/mac80211/iface.c:810 [inline]
- ieee80211_if_change_type+0x222/0xad0 net/mac80211/iface.c:1897
- ieee80211_change_iface+0xd2/0x4f0 net/mac80211/cfg.c:219
- rdev_change_virtual_intf net/wireless/rdev-ops.h:74 [inline]
- cfg80211_change_iface+0x75e/0xed0 net/wireless/util.c:1209
- nl80211_set_interface+0x592/0x810 net/wireless/nl80211.c:4229
- genl_family_rcv_msg_doit net/netlink/genetlink.c:1113 [inline]
- genl_family_rcv_msg net/netlink/genetlink.c:1193 [inline]
- genl_rcv_msg+0xad6/0xe50 net/netlink/genetlink.c:1208
- netlink_rcv_skb+0x1e3/0x430 net/netlink/af_netlink.c:2543
- genl_rcv+0x28/0x40 net/netlink/genetlink.c:1217
- netlink_unicast_kernel net/netlink/af_netlink.c:1341 [inline]
- netlink_unicast+0x7ea/0x980 net/netlink/af_netlink.c:1367
- netlink_sendmsg+0xa3b/0xd70 net/netlink/af_netlink.c:1908
- sock_sendmsg_nosec net/socket.c:730 [inline]
- __sock_sendmsg+0x221/0x270 net/socket.c:745
- ____sys_sendmsg+0x525/0x7d0 net/socket.c:2584
- ___sys_sendmsg net/socket.c:2638 [inline]
- __sys_sendmsg+0x2b0/0x3a0 net/socket.c:2667
- do_syscall_64+0xf9/0x240
- entry_SYSCALL_64_after_hwframe+0x6f/0x77
-RIP: 0033:0x7f013dc7dda9
-Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 e1 20 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f013e91c0c8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007f013ddac050 RCX: 00007f013dc7dda9
-RDX: 0000000000000000 RSI: 0000000020000100 RDI: 0000000000000008
-RBP: 00007f013dcca47a R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 000000000000006e R14: 00007f013ddac050 R15: 00007ffc6b796908
- </TASK>
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
