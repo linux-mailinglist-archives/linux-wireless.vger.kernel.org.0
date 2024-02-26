@@ -1,148 +1,178 @@
-Return-Path: <linux-wireless+bounces-4016-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4017-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA582867BB7
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Feb 2024 17:23:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87525867BF3
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Feb 2024 17:28:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 698CB1F22808
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Feb 2024 16:23:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A7BD1F21232
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Feb 2024 16:28:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64B2912C55E;
-	Mon, 26 Feb 2024 16:23:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ZT4TrlSz"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9451312F580;
+	Mon, 26 Feb 2024 16:28:20 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF4D91D531
-	for <linux-wireless@vger.kernel.org>; Mon, 26 Feb 2024 16:23:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECFE712DD9A
+	for <linux-wireless@vger.kernel.org>; Mon, 26 Feb 2024 16:28:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708964615; cv=none; b=duu5YlFqQYcn5DZp5IbKlJ0BEtl11jM6DyfvAGDrLLZEEr12Ek9iqOnPQwitm/1vZ5lLIVvZkS1E7Isj04DU4WORNwT1K4KNzZ96aCiTYKB+8OoPInLQhJGPIvZOLRwXH5w16reeMzcIEOgz3ZhlpVmQYG1+ObRiq/D4qHTZbqk=
+	t=1708964900; cv=none; b=L7AFlbAsc+yPPtqZJwWkArqJMIaOBjPBGOGTRVnevw4yotFtNixQd+ntMvO/wFoCGHQTiDrkXEkIx6pVbo5yoy/9Z56+DUaah6wTq5YfAxzFD5WXvyWD8xn2NP0YqaWPZ8Ci3tlGPVkvRPoKAYak9k/6B/5bK2l1QlWW/KIsamw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708964615; c=relaxed/simple;
-	bh=BswgVwet0J1iiomw+BzU2YYJCD31yL0733y/fU+Ptrc=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SsQyvofa0SUrpJntYSqfbtxyq2R7N+2008bwoVPjnqO5MZjEei13rc+nhbjYxGuqnol5241D6gxKP3rfgu1SI5SR+Ib473oCQEHJIR9xZenRFImZJ4I4U2pmbgj6jOZZVo6xzNRTn3ehN8qcrjUn82mP5DqrmyLRAmsiSm7XCZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ZT4TrlSz; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41QFvanE014668;
-	Mon, 26 Feb 2024 16:23:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-transfer-encoding:content-type; s=
-	qcppdkim1; bh=t/h71+wlEHwsYZEPUlyMmXrPN2hMz8pUG7Chz3Ai/os=; b=ZT
-	4TrlSz+R9YdGcwu9IIM8dxYi0RapuLgHyxHg+GDMmG0ltUSmzvmpag50qp23qbiy
-	W+HRNS8orxbkTVgfPucxUwqIFnnJHBB+BwACsl3J/uEnQQVzlrdXrBAkt0jkAXwU
-	dTL0v7TWY0+FBk3/okyvW5OrSy0GIawFr6+k5ESn/bL5LDfK+gRM4WmkkkTMmWLa
-	Ut2t9F2UCz2ZkdN4wXosTD8ZcPitbuYyBHN+pSkXUnc/JdVZi4UfZJATGnZbVwDs
-	LYoCrPnDCJ5RdZzWSfUeFzO8/aEfY7rLGzefzGo+TNIrLJSE/3sJnllH9rzCq9UH
-	GDCcqlrTkLzNnU5+JCLw==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wgkxnhdk2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 26 Feb 2024 16:23:31 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 41QGNVjL026881
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 26 Feb 2024 16:23:31 GMT
-Received: from hu-periyasa-blr.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Mon, 26 Feb 2024 08:23:29 -0800
-From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>,
-        Karthikeyan Periyasamy
-	<quic_periyasa@quicinc.com>
-Subject: [PATCH 3/3] wifi: ath12k: Refactor error handler of Rxdma replenish
-Date: Mon, 26 Feb 2024 21:53:10 +0530
-Message-ID: <20240226162310.629162-4-quic_periyasa@quicinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240226162310.629162-1-quic_periyasa@quicinc.com>
-References: <20240226162310.629162-1-quic_periyasa@quicinc.com>
+	s=arc-20240116; t=1708964900; c=relaxed/simple;
+	bh=PBvLSkJ0RlMNhxfai6oORd1LycycMbzbxT3QXcIUt7o=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=VfjJc84orVcyfritSH0zwdWXOV2+JjkGy/fw3k1SCyUFgOeoe5+Dx1NMeGUz6ZnxeTlQ0UH+bus6hFBJ0gImRYCXiNFB8rShI5mTC1a6lUjb7BYrCSG/4KITdhhQOVxRwG3EbWGVSYCB8iDI0TID8guVZr8YtOe/yewqeZewBuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-3651f5a357bso22849205ab.3
+        for <linux-wireless@vger.kernel.org>; Mon, 26 Feb 2024 08:28:18 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708964898; x=1709569698;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=GaFtmKz1ML1BUrUdmUz99JxEkS2YkyD21nhp0myYn3o=;
+        b=gXeUEvJipn88AgxMT+u9DFA8iOoxpQ+RZgCHw8iJfs0JpXAcyQ+HmdzR2O1noQqrEZ
+         7wXsa4XFn7phI9oqZiyxF9vjcrAoYb/hdec+MxJsH4CCCL7KbAqPPbwFAxL8i6/OjNP2
+         SlJOIDnWU50z73iqE2jCt/h7qnFkr/pCt4oPZId3ylReRv2h8JzQMIUeWHG4geTR2BjX
+         q6BnBqCLcNjrvFuXbxKTy+nwjyoVu/PHv8kQHdMfaC+sU9jUd27WaMsB28Uw59T2BJZt
+         sVtiTGt38lFmjChJWpN2PmibFoVTk8VINTnDscVfffv0kOvIRL8vH+scWBb/X3jDjkE/
+         g+/w==
+X-Forwarded-Encrypted: i=1; AJvYcCUTSsLmD6sKmTTX4nCP7psPcThGe5mun1lgdqjUV6xg9zUnuEgh2HURYEZ3WKerZxAqIe1smb4mYMRzRPP9GcUUITTauNm3AzsOBriLI48=
+X-Gm-Message-State: AOJu0YyJmzY8K9X+wYwxPf2WVY5eko8Kp/T+u/E5RORy8iVavzt77NK7
+	IGehLtjCHl9/gaLaJtKOlC6fv2O0MD4sczwmIwdZ5SVAp1tByRPTgsbMxqlcQPSiDDxGWkNIJs2
+	0cIxBAHYj7gfKpwV2G7rb/C/eLawYn+uwWIKXa4RRZjXOgyPV5PZFEfo=
+X-Google-Smtp-Source: AGHT+IFZIWQjWGnnOclLWZCh56V9VO9E83SaMAcJ/kzj5FpSjaFbfTUUAoWSlF22hiVJa3xkwUZTH1LDpP2yVrOgtvyLvivS9Dqw
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: LUZfHbLR5D8p2n8u1xIEfAN2cmRMS9tM
-X-Proofpoint-GUID: LUZfHbLR5D8p2n8u1xIEfAN2cmRMS9tM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-26_11,2024-02-26_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=858 mlxscore=0
- priorityscore=1501 impostorscore=0 malwarescore=0 adultscore=0
- suspectscore=0 lowpriorityscore=0 clxscore=1015 bulkscore=0 phishscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2402120000 definitions=main-2402260124
+X-Received: by 2002:a05:6638:4093:b0:474:78f7:20d7 with SMTP id
+ m19-20020a056638409300b0047478f720d7mr247478jam.3.1708964898244; Mon, 26 Feb
+ 2024 08:28:18 -0800 (PST)
+Date: Mon, 26 Feb 2024 08:28:18 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000b18c2406124b652e@google.com>
+Subject: [syzbot] [wireless?] KMSAN: uninit-value in ieee80211_amsdu_to_8023s
+From: syzbot <syzbot+d050d437fe47d479d210@syzkaller.appspotmail.com>
+To: davem@davemloft.net, edumazet@google.com, johannes@sipsolutions.net, 
+	kuba@kernel.org, linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-The Rxdma replenish handler currently contains redundant code in both the
-success and error cases. To avoid the redundant code, implement a
-conditional jump mechanism by placing a goto statement to prevent
-unnecessary execution of the error handling code when the operation is
-successful. This change streamline the code readability and enhance its
-efficiency.
+Hello,
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+syzbot found the following issue on:
 
-Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+HEAD commit:    39133352cbed Merge tag 'for-linus' of git://git.kernel.org..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=178741c2180000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=1b015d567058472
+dashboard link: https://syzkaller.appspot.com/bug?extid=d050d437fe47d479d210
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+userspace arch: i386
+
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/72fbd705c5a5/disk-39133352.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/4715a07937bd/vmlinux-39133352.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/0340c0b3a7dc/bzImage-39133352.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+d050d437fe47d479d210@syzkaller.appspotmail.com
+
+=====================================================
+BUG: KMSAN: uninit-value in ieee80211_amsdu_to_8023s+0x8c1/0x2d40 net/wireless/util.c:856
+ ieee80211_amsdu_to_8023s+0x8c1/0x2d40 net/wireless/util.c:856
+ __ieee80211_rx_h_amsdu+0x91a/0x13b0 net/mac80211/rx.c:3047
+ ieee80211_rx_h_amsdu net/mac80211/rx.c:3133 [inline]
+ ieee80211_rx_handlers+0x571a/0x10c40 net/mac80211/rx.c:4141
+ ieee80211_invoke_rx_handlers net/mac80211/rx.c:4185 [inline]
+ ieee80211_prepare_and_rx_handle+0x5640/0x9690 net/mac80211/rx.c:5033
+ __ieee80211_rx_handle_packet net/mac80211/rx.c:5239 [inline]
+ ieee80211_rx_list+0x642c/0x65d0 net/mac80211/rx.c:5410
+ ieee80211_rx_napi+0x84/0x3e0 net/mac80211/rx.c:5433
+ ieee80211_rx include/net/mac80211.h:4983 [inline]
+ ieee80211_tasklet_handler+0x19f/0x330 net/mac80211/main.c:318
+ tasklet_action_common+0x391/0xd30 kernel/softirq.c:780
+ tasklet_action+0x26/0x30 kernel/softirq.c:805
+ __do_softirq+0x1b7/0x7c5 kernel/softirq.c:553
+ invoke_softirq kernel/softirq.c:427 [inline]
+ __irq_exit_rcu kernel/softirq.c:632 [inline]
+ irq_exit_rcu+0x69/0x120 kernel/softirq.c:644
+ sysvec_apic_timer_interrupt+0x7c/0x90 arch/x86/kernel/apic/apic.c:1076
+ asm_sysvec_apic_timer_interrupt+0x1f/0x30 arch/x86/include/asm/idtentry.h:649
+ update_stack_state+0x146/0x270
+ unwind_next_frame+0x1a2/0x480 arch/x86/kernel/unwind_frame.c:315
+ arch_stack_walk+0x1df/0x2c0 arch/x86/kernel/stacktrace.c:25
+ stack_trace_save+0xa9/0xe0 kernel/stacktrace.c:122
+ kmsan_save_stack_with_flags mm/kmsan/core.c:74 [inline]
+ kmsan_internal_chain_origin+0x57/0xd0 mm/kmsan/core.c:183
+ __msan_chain_origin+0xc1/0x140 mm/kmsan/instrumentation.c:251
+ __skb_dst_copy include/net/dst.h:282 [inline]
+ skb_dst_copy include/net/dst.h:290 [inline]
+ __copy_skb_header+0x362/0x840 net/core/skbuff.c:1420
+ __skb_clone+0x57/0x650 net/core/skbuff.c:1471
+ skb_clone+0x3aa/0x540 net/core/skbuff.c:1961
+ __netlink_deliver_tap_skb net/netlink/af_netlink.c:300 [inline]
+ __netlink_deliver_tap+0x60a/0xc90 net/netlink/af_netlink.c:325
+ netlink_deliver_tap net/netlink/af_netlink.c:338 [inline]
+ __netlink_sendskb net/netlink/af_netlink.c:1285 [inline]
+ netlink_sendskb+0x232/0x260 net/netlink/af_netlink.c:1294
+ netlink_unicast+0x70e/0x1250 net/netlink/af_netlink.c:1382
+ nlmsg_unicast include/net/netlink.h:1144 [inline]
+ netlink_ack+0x1954/0x1a70 net/netlink/af_netlink.c:2505
+ netlink_rcv_skb+0x50a/0x650 net/netlink/af_netlink.c:2549
+ genl_rcv+0x40/0x60 net/netlink/genetlink.c:1217
+ netlink_unicast_kernel net/netlink/af_netlink.c:1341 [inline]
+ netlink_unicast+0xf49/0x1250 net/netlink/af_netlink.c:1367
+ netlink_sendmsg+0x1238/0x13d0 net/netlink/af_netlink.c:1908
+ sock_sendmsg_nosec net/socket.c:730 [inline]
+ __sock_sendmsg net/socket.c:745 [inline]
+ __sys_sendto+0x735/0xa10 net/socket.c:2191
+ __do_compat_sys_socketcall net/compat.c:475 [inline]
+ __se_compat_sys_socketcall+0xcea/0x1a10 net/compat.c:423
+ __ia32_compat_sys_socketcall+0x6b/0xa0 net/compat.c:423
+ do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
+ __do_fast_syscall_32+0xb5/0x110 arch/x86/entry/common.c:321
+ do_fast_syscall_32+0x37/0x70 arch/x86/entry/common.c:346
+ do_SYSENTER_32+0x1f/0x30 arch/x86/entry/common.c:384
+ entry_SYSENTER_compat_after_hwframe+0x70/0x7a
+
+Local variable hdr created at:
+ ieee80211_amsdu_to_8023s+0x5b/0x2d40 net/wireless/util.c:832
+ __ieee80211_rx_h_amsdu+0x91a/0x13b0 net/mac80211/rx.c:3047
+
+CPU: 1 PID: 6024 Comm: syz-executor.4 Not tainted 6.8.0-rc5-syzkaller-00029-g39133352cbed #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/25/2024
+=====================================================
+
+
 ---
- drivers/net/wireless/ath/ath12k/dp_rx.c | 14 +++-----------
- 1 file changed, 3 insertions(+), 11 deletions(-)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
-index 2a0e4faadcf1..a593beecdd12 100644
---- a/drivers/net/wireless/ath/ath12k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
-@@ -337,7 +337,7 @@ int ath12k_dp_rx_bufs_replenish(struct ath12k_base *ab,
- 	num_remain = req_entries;
- 
- 	if (!num_remain)
--		goto skip_replenish;
-+		goto out;
- 
- 	/* Get the descriptor from free list */
- 	if (list_empty(used_list)) {
-@@ -389,22 +389,14 @@ int ath12k_dp_rx_bufs_replenish(struct ath12k_base *ab,
- 		ath12k_hal_rx_buf_addr_info_set(desc, paddr, cookie, mgr);
- 	}
- 
--skip_replenish:
--	ath12k_hal_srng_access_end(ab, srng);
--
--	if (!list_empty(used_list))
--		ath12k_dp_rx_enqueue_free(dp, used_list);
--
--	spin_unlock_bh(&srng->lock);
--
--	return req_entries - num_remain;
-+	goto out;
- 
- fail_dma_unmap:
- 	dma_unmap_single(ab->dev, paddr, skb->len + skb_tailroom(skb),
- 			 DMA_FROM_DEVICE);
- fail_free_skb:
- 	dev_kfree_skb_any(skb);
--
-+out:
- 	ath12k_hal_srng_access_end(ab, srng);
- 
- 	if (!list_empty(used_list))
--- 
-2.34.1
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
