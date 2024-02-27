@@ -1,81 +1,95 @@
-Return-Path: <linux-wireless+bounces-4057-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4058-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2B518689B0
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Feb 2024 08:15:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 323238689BC
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Feb 2024 08:19:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4CAA1C21185
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Feb 2024 07:15:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 99195B21029
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Feb 2024 07:19:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFA1653E2D;
-	Tue, 27 Feb 2024 07:15:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F13754BCB;
+	Tue, 27 Feb 2024 07:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xhry3IRG"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="SN8pe4f9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5664453E36
-	for <linux-wireless@vger.kernel.org>; Tue, 27 Feb 2024 07:15:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B903C5477C
+	for <linux-wireless@vger.kernel.org>; Tue, 27 Feb 2024 07:19:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709018138; cv=none; b=e2aW5JU99i36cG+Y6X3LG6i31QEZj2xDjiY3bElPeyP7J/ZNGgwk4IgN3n0bfR5bEX4dhc7nwPUHHJphcnXNaIn0uHDORMH9NXwgFeIxDVrw0z3fUd6tZb8oKOTks6TKUjauwHPt097JmRmB7s1Avy8dX81wXgxI9LMPKfFKSUk=
+	t=1709018365; cv=none; b=fSzntCCGsh/9Ngim7p6Qegx1POK+OUjGV/PiGEQa+/1uzP7gFe2EkLuHgQeEWK4yXs4/6QmTgL/vw2uCcMCWMGWas6abnKZw3mLzubRjwU389dY2KQQHFRjR9n4Uq/i/zpMNepsUNcTg8GtIi7E6gWZPA6+0WtPAUI5WMLNv7Zg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709018138; c=relaxed/simple;
-	bh=xdj2tmp5ZSTgv8RxX6+UK1ZIo0D0A5lr94dBSBt32Tk=;
+	s=arc-20240116; t=1709018365; c=relaxed/simple;
+	bh=lVyTXCleZImck8BrH8tMbX31xUSHJ2/S9SscG0nZ/HY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ATNmfLl8qUlnrEiEjAmhxHynkQElA4luguss7sCIBYBse4J7vErzeLlQZXglqh57hDD3tcdMyQxIGF9doC80rXiSOCu4jgpEUt0qgkKyymGpXfaJ0zo1qL0J+AhAquyThKYiZL/5TkhGRsef4BNkd1N9JnazM4atxBewUGBQKeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xhry3IRG; arc=none smtp.client-ip=209.85.214.176
+	 Content-Type:Content-Disposition:In-Reply-To; b=VUqwTBoyG8ncuZKx6s3T0w9DbYlaPId+NGtaM9Jg7SxxSWPLa+kzyse7JViZxGlE8bCT+yGaHIbeAmpcXE+zwvxhkvjVp1NoDetwAQ/wqp0bfr2qhpm0a9OnoCZjzHLgs3+XzqP8KByzmQdQ/KD7Z+wMUEkWeJgJ+X0+yTeo1mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=SN8pe4f9; arc=none smtp.client-ip=209.85.215.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-1d7881b1843so30037065ad.3
-        for <linux-wireless@vger.kernel.org>; Mon, 26 Feb 2024 23:15:37 -0800 (PST)
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-5cedfc32250so3699820a12.0
+        for <linux-wireless@vger.kernel.org>; Mon, 26 Feb 2024 23:19:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1709018136; x=1709622936; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1709018362; x=1709623162; darn=vger.kernel.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=uZsei3QWNYjEWHv4rj1KYROyeU0O84dua5Y6JN0udQc=;
-        b=xhry3IRGLRcnxCZPGGfYFpZAKkIrf2Si8O6yF1Z+M20lTHyy5glq+wQ5OiPWkptm6u
-         KVhN3uHMOlX8Ae30PZsVtvW6VwU722sgT6kOQ2HHC+VB8CBRB43o3CnQgysr9BLbbzer
-         198RcRF8DddvHU30meWrOsJSth0Up13F9VfknSsizNl/XG8FGYKr8IkQxyF4FPbNL3Jw
-         8+hxLvMNuml7W6HIj6tDkc8mmihgk6A8zECAHeeO0FpUgBsR0yTEdOyw0nWL/qYKo4Fy
-         FAmRH0nrev/18LzvCbcEoI1ePyv3zPC6USYKp17Pw1wwdHSvC1qvIVz+j6oNecC8qBZ5
-         PIag==
+        bh=QxFTuOsrpMcuyCu0Hy+lb4Bd4RUL02qdG86Qt+qw8gE=;
+        b=SN8pe4f9gF6DAhXL3H5nVuy9/w+r3VioQsssbYjj34y2xhuyYlxxfqFuvOmfHkdM09
+         v6dwv2JXQKwf2bvCcniKQo+TmVpY3wC/vvXBCdEym2SsgIQ28bqbtHQeifFAb0PK7E+h
+         WtDa6biEK1of15P0u1Pub+0bTnBY4DcoLz1Z8sLgf4C2X9LQbDTWrDQ3dqRX8fE22cUS
+         j6KmnXsKIer9e0MQSyYxqLpjJVE27E3FalLmBtO2vxeSI90OPSNoMay3DeqnZRYef6ay
+         1GcAL1pbTDPDE354jNrtcP3sxhY6bpr1aKMMDpfaOPmdGMg/abx125hq8nDrOmZRLTel
+         qQdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709018136; x=1709622936;
+        d=1e100.net; s=20230601; t=1709018362; x=1709623162;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uZsei3QWNYjEWHv4rj1KYROyeU0O84dua5Y6JN0udQc=;
-        b=U43ChqOjhIay0aZADJ54eP6Brr3JmlsqtWyqI8QLDzx2ANzN6zx2dLEQ28ULgw/4a1
-         /cpZRB6q9+4rNIgVqTd5BTO9hRHRTehhykH6Jusp5Sw6k7ekfh73kD8cW+X92zvniyZ5
-         /XQLHtedFkPutS6p0HzdeYCtt62Gm8asHkiYpjvVJpmFsDmEDQzY4gp+xTxEubMPlPtF
-         ko/vGjJPlJW8oy8u/GnP/5FMu+MW3oKyvm5YwZHuDzu+B6y8JmJiPt9T84qzrdXx89YO
-         CafUn0GJSs+HJzDDDO83CdHbbzeocWBS2cm64A5tmHWx/x1QFvTNkHvalJ1RD/wYc7HC
-         oRsg==
-X-Forwarded-Encrypted: i=1; AJvYcCXbBk8dV/ag+cfjeDwNW0ekVOP1Eh3D73s3Sq3qDEpzW+M69vvs8L/1QhF8fPe2MvVFo+UeU//gsap728BbEouVKrdNvD9K8d0/+iftSbw=
-X-Gm-Message-State: AOJu0YxHf+vVgXCn4Ua5Fs9tKWzTHV4rSau7gPlHLzV43NmYErwdE1bS
-	scg5YX/j9nSFnl1Tye0/Urc5hq+s6vxdi0jLIYoK6UoUZgfgXAJC75z/YtEI+g==
-X-Google-Smtp-Source: AGHT+IFibjJl0nFMxkStNH2v97+irfnxX0GXGBgtTqgJL/pFmNgfMwh9TcBG1L8V21fOgN6jL/Y6fQ==
-X-Received: by 2002:a17:902:7ec8:b0:1db:cb54:5e77 with SMTP id p8-20020a1709027ec800b001dbcb545e77mr10479462plb.22.1709018136598;
-        Mon, 26 Feb 2024 23:15:36 -0800 (PST)
+        bh=QxFTuOsrpMcuyCu0Hy+lb4Bd4RUL02qdG86Qt+qw8gE=;
+        b=cQh/SvQMTFnHJ+CkzrXo8FxqrKdhs64bYWe1pHPCp3/sgv/8IwvlWnTaXKOwavheov
+         ttGZV90E/D8Jyo0OPoVjAu5qHCohQQKzVEeii5uH4+hLWI4gPizgYUDBkyx+TknMXTTK
+         BekCVxHhgLDxKzwqZaRefanI72et8/WS77YcCUb3eJ8AjOoFqivQ8+CN8C5ZXrxtyDF1
+         WQ7zqOjueKgK+81ZnEvtxcyWFhvquxaMQYGlCQIP0n8tISsOw0S0/7r/FmrMTFnPwV4T
+         mGfymyXKw4yB8pxjKl7go3jBl6qaEaNsEqPosfz15ym6omDD9kZE6bwpK92mWWbBmPYk
+         /qkg==
+X-Forwarded-Encrypted: i=1; AJvYcCWrht9eUy0sBl6zkdDlCNqOe1/u3oG011yCK22g5TmssonhWO4IrxJHuJKyQ0zFvErh9dlqF6gCYg+2m8mfEtUFk7+YlyYzfMSA2xtM38A=
+X-Gm-Message-State: AOJu0YwrM78ZaJhhzK3iKHjfEoSysgZPUj7Aoke9+93AuD0k/cqJNJhs
+	T2pwDxwLNZZSQCF8Et0cFfuwLZXWNPbzxJymeDsU7KEow68LYRnZKOy/F5UyGgId9Uf02KqfCS8
+	=
+X-Google-Smtp-Source: AGHT+IF1LF7zhEOVHEOb+Wy1qkWAaN21CKUVcJcNJZUjgL5YGc8K+RirkDo2jbJKuMOoL83r7N2YfA==
+X-Received: by 2002:a05:6a20:e605:b0:1a1:e83:8eb4 with SMTP id my5-20020a056a20e60500b001a10e838eb4mr801517pzb.9.1709018361960;
+        Mon, 26 Feb 2024 23:19:21 -0800 (PST)
 Received: from thinkpad ([117.213.97.177])
-        by smtp.gmail.com with ESMTPSA id k22-20020a170902ba9600b001dcabf123c9sm813379pls.155.2024.02.26.23.15.34
+        by smtp.gmail.com with ESMTPSA id kr12-20020a170903080c00b001dca813b07csm839619plb.62.2024.02.26.23.19.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Feb 2024 23:15:36 -0800 (PST)
-Date: Tue, 27 Feb 2024 12:45:31 +0530
+        Mon, 26 Feb 2024 23:19:21 -0800 (PST)
+Date: Tue, 27 Feb 2024 12:49:15 +0530
 From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 To: Baochen Qiang <quic_bqiang@quicinc.com>
-Cc: ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, mhi@lists.linux.dev
-Subject: Re: [PATCH v2 2/3] net: qrtr: support suspend/hibernation
-Message-ID: <20240227071531.GD2587@thinkpad>
-References: <20240227063613.4478-1-quic_bqiang@quicinc.com>
- <20240227063613.4478-3-quic_bqiang@quicinc.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Takashi Iwai <tiwai@suse.de>, Jiri Slaby <jirislaby@kernel.org>,
+	Kalle Valo <kvalo@kernel.org>,
+	Linux Wireless <linux-wireless@vger.kernel.org>,
+	ath11k@lists.infradead.org, LKML <linux-kernel@vger.kernel.org>,
+	mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org
+Subject: Re: ath11k allocation failure on resume breaking wifi until power
+ cycle
+Message-ID: <20240227071915.GE2587@thinkpad>
+References: <96481a45-3547-4d23-ad34-3a8f1d90c1cd@suse.cz>
+ <0994ae16-8174-4a04-b454-1974b16bc106@quicinc.com>
+ <20240222054739.GG3374@thinkpad>
+ <38c36d16-9cc1-4f03-b758-4a3ba90f8aa4@suse.cz>
+ <abc0c24f-2137-41eb-bb99-80aea8dacdb2@quicinc.com>
+ <a36b35a9-fb37-4afe-a718-a47dfe658cb5@suse.cz>
+ <34123ee0-26c9-4240-8d58-aba02f7c66b9@quicinc.com>
+ <20240226114307.GA8422@thinkpad>
+ <c4b7ec62-7d2d-438b-904d-d935e09e517c@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -85,82 +99,101 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240227063613.4478-3-quic_bqiang@quicinc.com>
+In-Reply-To: <c4b7ec62-7d2d-438b-904d-d935e09e517c@quicinc.com>
 
-On Tue, Feb 27, 2024 at 02:36:12PM +0800, Baochen Qiang wrote:
-> MHI devices may not be destroyed during suspend/hibernation, so need
-> to unprepare/prepare MHI channels throughout the transition, this is
-> done by adding suspend/resume callbacks.
+On Tue, Feb 27, 2024 at 10:43:22AM +0800, Baochen Qiang wrote:
 > 
-> The suspend callback is called in the late suspend stage, this means
-> MHI channels are still alive at suspend stage, and that makes it
-> possible for an MHI controller driver to communicate with others over
-> those channels at suspend stage. While the resume callback is called
-> in the early resume stage, for a similar reason.
 > 
-> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
+> On 2/26/2024 7:43 PM, Manivannan Sadhasivam wrote:
+> > On Mon, Feb 26, 2024 at 05:11:17PM +0800, Baochen Qiang wrote:
+> > > 
+> > > 
+> > > On 2/26/2024 4:45 PM, Vlastimil Babka wrote:
+> > > > On 2/26/24 03:09, Baochen Qiang wrote:
+> > > > > 
+> > > > > 
+> > > > > On 2/23/2024 11:28 PM, Vlastimil Babka wrote:
+> > > > > > On 2/22/24 06:47, Manivannan Sadhasivam wrote:
+> > > > > > > On Wed, Feb 21, 2024 at 08:34:23AM -0800, Jeff Johnson wrote:
+> > > > > > > > On 2/21/2024 6:39 AM, Vlastimil Babka wrote:
+> > > > > > > > > Hi,
+> > > > > > > > > 
+> > > > > > > > > starting with 6.8 rc series, I'm experiencing problems on resume from s2idle
+> > > > > > > > > on my laptop, which is Lenovo T14s Gen3:
+> > > > > > > > > 
+> > > > > > > > > LENOVO 21CRS0K63K/21CRS0K63K, BIOS R22ET65W (1.35 )
+> > > > > > > > > ath11k_pci 0000:01:00.0: wcn6855 hw2.1
+> > > > > > > > > ath11k_pci 0000:01:00.0: chip_id 0x12 chip_family 0xb board_id 0xff soc_id 0x400c1211
+> > > > > > > > > ath11k_pci 0000:01:00.0: fw_version 0x1106196e fw_build_timestamp 2024-01-12 11:30 fw_build_id WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.37
+> > > > > > > > > 
+> > > > > > > > > The problem is an allocation failure happening on resume from s2idle. After
+> > > > > > > > > that the wifi stops working and even a reboot won't fix it, only a
+> > > > > > > > > poweroff/poweron cycle of the laptop.
+> > > > > > > > > 
+> > > > > > > 
+> > > > > > > Looks like WLAN is powered down during s2idle, which doesn't make sense. I hope
+> > > > > > > Jeff will figure out what's going on.
+> > > > > > 
+> > > > > > You mean the firmware is supposed to power it down/up transparently without
+> > > > > > kernel involvement? Because it should be powered down to save the power, no?
+> > > > > Let me clarify: from backtrace info, seems you are using a kernel with
+> > > > > the hibernation-support patches [1] applied, which are not accepted yet
+> > > > > to mainline kernel or even
+> > > > > git://git.kernel.org/pub/scm/linux/kernel/git/mani/mhi.git.
+> > > > 
+> > > > Oh, you're right. Sorry for confusing you all. The rc kernel builds we have
+> > > > for openSUSE have nearly no non-upstream patches so it didn't really occur
+> > > > to me to double check if there might be in the area.
+> > > > 
+> > > > Seems Takashi (Cc'd) added them indeed to make hibernation work:
+> > > > https://bugzilla.suse.com/show_bug.cgi?id=1207948#c51
+> > > > 
+> > > > But then, why do they affect also s2idle, is it intentional? And why I only
+> > > Yes, it's intentional. When suspend/resume, ath11k does the same for either
+> > > a s2idle suspend or a deep one.
+> > > 
+> > 
+> > That's a terrible idea for usecases like Android IMO. s2idle happens very often
+> > on Android platforms (screen lock) and do you want to powerdown the WLAN device
+> > all the time?
+> I am not familiar with Android case. Is WoWLAN enabled in that case? I am
+> asking this because if WoWLAN is enabled ath11k goes another path and only
+> calls mhi_pm_suspend()/resume() instead of mhi_power_down()/up().
 > 
-> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
 
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-
-Could you please confirm if this patch can be applied separately and won't cause
-regression?
+I don't work on Android platform, no idea about WoWLAN. But I just raised a
+possible issue. Please check with the Qcom internal Android teams about this. If
+it is not going to be an issue (different code path as you said above), then
+feel free to ignore my comment.
 
 - Mani
 
-> ---
->  net/qrtr/mhi.c | 27 +++++++++++++++++++++++++++
->  1 file changed, 27 insertions(+)
-> 
-> diff --git a/net/qrtr/mhi.c b/net/qrtr/mhi.c
-> index 9ced13c0627a..e96b82a6742c 100644
-> --- a/net/qrtr/mhi.c
-> +++ b/net/qrtr/mhi.c
-> @@ -118,6 +118,32 @@ static const struct mhi_device_id qcom_mhi_qrtr_id_table[] = {
->  };
->  MODULE_DEVICE_TABLE(mhi, qcom_mhi_qrtr_id_table);
->  
-> +static int __maybe_unused qcom_mhi_qrtr_pm_suspend_late(struct device *dev)
-> +{
-> +	struct mhi_device *mhi_dev = container_of(dev, struct mhi_device, dev);
-> +
-> +	mhi_unprepare_from_transfer(mhi_dev);
-> +
-> +	return 0;
-> +}
-> +
-> +static int __maybe_unused qcom_mhi_qrtr_pm_resume_early(struct device *dev)
-> +{
-> +	struct mhi_device *mhi_dev = container_of(dev, struct mhi_device, dev);
-> +	int rc;
-> +
-> +	rc = mhi_prepare_for_transfer_autoqueue(mhi_dev);
-> +	if (rc)
-> +		dev_err(dev, "failed to prepare for autoqueue transfer %d\n", rc);
-> +
-> +	return rc;
-> +}
-> +
-> +static const struct dev_pm_ops qcom_mhi_qrtr_pm_ops = {
-> +	SET_LATE_SYSTEM_SLEEP_PM_OPS(qcom_mhi_qrtr_pm_suspend_late,
-> +				     qcom_mhi_qrtr_pm_resume_early)
-> +};
-> +
->  static struct mhi_driver qcom_mhi_qrtr_driver = {
->  	.probe = qcom_mhi_qrtr_probe,
->  	.remove = qcom_mhi_qrtr_remove,
-> @@ -126,6 +152,7 @@ static struct mhi_driver qcom_mhi_qrtr_driver = {
->  	.id_table = qcom_mhi_qrtr_id_table,
->  	.driver = {
->  		.name = "qcom_mhi_qrtr",
-> +		.pm = &qcom_mhi_qrtr_pm_ops,
->  	},
->  };
->  
-> -- 
-> 2.25.1
-> 
+> > 
+> > Even though it offers power saving, I'm worried about the latency and possible
+> > teardown of the chipset. Later is only valid if the chipset undergoes complete
+> > power cycle though.
+> > 
+> > - Mani
+> > 
+> > > > started seeing the problems in 6.8, the patches are there since August.
+> > > > 
+> > > > > So this is why you see WLAN firmware is powered down during suspend.
+> > > > > 
+> > > > > [1]
+> > > > > https://patchwork.kernel.org/project/linux-wireless/cover/20231127162022.518834-1-kvalo@kernel.org/
+> > > > > 
+> > > > > > 
+> > > > > > But I just found out that when I build my own kernel using the distro config
+> > > > > > as base but reduced by make localmodconfig, the "mhi mhi0: Requested to
+> > > > > > power ON" and related messages don't occur anymore, so there's something
+> > > > > > weird going on.
+> > > > > Here your own kernel doesn't include the hibernation-support patches, right?
+> > > > 
+> > > > Right.
+> > > > 
+> > > > 
+> > > > 
+> > 
 
 -- 
 மணிவண்ணன் சதாசிவம்
