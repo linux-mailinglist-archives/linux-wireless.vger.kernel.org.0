@@ -1,113 +1,106 @@
-Return-Path: <linux-wireless+bounces-4060-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4061-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E557868A71
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Feb 2024 09:07:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 699FB868A97
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Feb 2024 09:12:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA42A1F24CB3
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Feb 2024 08:07:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 093661F24C97
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Feb 2024 08:12:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DA6456466;
-	Tue, 27 Feb 2024 08:07:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CA4354F8A;
+	Tue, 27 Feb 2024 08:12:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=aixigo.com header.i=@aixigo.com header.b="F0OV3dhQ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from zg8tmtu5ljg5lje1ms4xmtka.icoremail.net (zg8tmtu5ljg5lje1ms4xmtka.icoremail.net [159.89.151.119])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C36255E62;
-	Tue, 27 Feb 2024 08:07:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.89.151.119
+Received: from mail.aixigo.de (mail.aixigo.de [5.145.142.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBBD356441
+	for <linux-wireless@vger.kernel.org>; Tue, 27 Feb 2024 08:12:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.145.142.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709021225; cv=none; b=QiDiFaPeMALAwbQmpiOg1hRX+CUigXqluWwJG24T5K1EY3e3k+mfPnaFsqgd0ahQ6jiYH5BH+fuyMVB6RhncOwgKSOhgn24/+i7K/U6pbFl0OlqiU8PKG0vExIRXCKcvy/G6tTZu5DnPzzo8LwSiUmNwXjZU9G2Ie2KH1//10O8=
+	t=1709021571; cv=none; b=FZ/G3eeQGiyNCmdUELu19TckXGNhn8aHkqUQ0RTKam8ncBWYI6MalZSWeINfvYH7YYav+sHbypstivQeEVKsFKOE4djHUKwx2LQz/5ZoNdL7B97RlIZ4JWRrudjkLr+QqAr4AiS+n53bk4wo7UKzqtXSbtdWLIXBpAy/hwGDy+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709021225; c=relaxed/simple;
-	bh=bn8lBdZvB6L2HQkh78StuFH3Cwbf8lGTxYiUbBqrdUk=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=MhhROsfbMTK/tFR0hsqv/aZepUxNNg7ynpxeqw/tAaq3N0d8qbgbUP4rnmQaogheUqC+Y/hjNaw3Ff7SiYJwgrIzcqk9F30Srk41P3aTiTY13g0WWY3JjDERaAPQRK11jd/jVUTLTY4dFTQ6Mk3F6Fhr61g+8QT+VgtwuT6Ydo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=159.89.151.119
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
-Received: from ubuntu.localdomain (unknown [218.12.19.154])
-	by mail-app2 (Coremail) with SMTP id by_KCgBnF6b2l91l841JAg--.21305S2;
-	Tue, 27 Feb 2024 16:06:27 +0800 (CST)
-From: Duoming Zhou <duoming@zju.edu.cn>
-To: linux-kernel@vger.kernel.org
-Cc: brcm80211-dev-list.pdl@broadcom.com,
-	brcm80211@lists.linux.dev,
-	linux-wireless@vger.kernel.org,
-	justinstitt@google.com,
-	john@keeping.me.uk,
-	quic_alokad@quicinc.com,
-	marcan@marcan.st,
-	johannes.berg@intel.com,
-	linus.walleij@linaro.org,
-	kvalo@kernel.org,
-	arend.vanspriel@broadcom.com,
-	Duoming Zhou <duoming@zju.edu.cn>
-Subject: [PATCH] wifi: brcm80211: handle pmk_op allocation failure
-Date: Tue, 27 Feb 2024 16:06:13 +0800
-Message-Id: <20240227080613.34001-1-duoming@zju.edu.cn>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID:by_KCgBnF6b2l91l841JAg--.21305S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7ZF43XrW3XrWUAry8Wr13twb_yoW8GFWkpw
-	s7GFyqyr1UWw4Skw45tFyvvryFga17K3sYkr4jy3s3uFZ3Gr1rJr48KFyFvFnYyr4ay3y2
-	vFWktF98Wr4DWw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9j14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26rxl
-	6s0DM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxa
-	n2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
-	AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
-	17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
-	IF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
-	IxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvf
-	C2KfnxnUUI43ZEXa7VUbGQ6JUUUUU==
-X-CM-SenderInfo: qssqjiasttq6lmxovvfxof0/1tbiAwQEAWXc3dIQZQAcsd
+	s=arc-20240116; t=1709021571; c=relaxed/simple;
+	bh=TGTRfMQt2WIwbfRvPhR0fYm/f8QTMbQPz/5vGE2EYNI=;
+	h=Message-ID:Date:MIME-Version:From:To:Subject:Content-Type; b=S5vLjqnA/6Z4Gk2tHaXJ08faodCfI5jc1BNTkVbk+Lpaj+viZlYXoxkJd4joYxAmOVNfJ2IcyYH69Wy8M+PcjGyRcQZ/Y0l7HdmwnngcJgo4aSAr3tSL03yE5zoZaxMAginm/nchIgslkM/vPQ/rotjURJhWdQNHVoHZP5Mg6XA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aixigo.com; spf=pass smtp.mailfrom=aixigo.com; dkim=pass (1024-bit key) header.d=aixigo.com header.i=@aixigo.com header.b=F0OV3dhQ; arc=none smtp.client-ip=5.145.142.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aixigo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aixigo.com
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; s=default; bh=TGTRfMQt2WIw
+	bfRvPhR0fYm/f8QTMbQPz/5vGE2EYNI=; h=subject:to:from:date;
+	d=aixigo.com; b=F0OV3dhQl3BTnp+u2QuRYKxfPPNh17czBWJDgt1kHNZ3Ydc/Fs86Yk
+	2FEDjeOsxWOoRfaoVkHi+F2x1HYAQMPJA/3pCOhKbec3ThGd4254pGhDE3ALhTbxLBKhNK
+	8p9lSGioeVsY974PaGk1EHRqt/j4EtLicXvoufe0NqITEN4=
+Received: from mailhost.ac.aixigo.de (mailhost.ac.aixigo.de [172.19.96.11])
+	by mail.aixigo.de (OpenSMTPD) with ESMTPS id 69c9f0c3 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
+	for <linux-wireless@vger.kernel.org>;
+	Tue, 27 Feb 2024 09:12:43 +0100 (CET)
+Received: from [172.19.97.128] (dpcl082.ac.aixigo.de [172.19.97.128])
+	by mailhost.ac.aixigo.de (8.17.1.9/8.17.1.9/Debian-2) with ESMTPS id 41R8CgIl2525758
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT);
+	Tue, 27 Feb 2024 09:12:43 +0100
+Message-ID: <dd1e2440-bb05-48d7-9f68-29bae758110d@aixigo.com>
+Date: Tue, 27 Feb 2024 09:12:42 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Betterbird (Linux)
+From: Harald Dunkel <harald.dunkel@aixigo.com>
+Content-Language: en-US
+To: linux-wireless@vger.kernel.org
+Subject: "iwlwifi: probe of 0000:00:14.3 failed with error -22"
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 1.0.3 at srvvm01.ac.aixigo.de
+X-Virus-Status: Clean
 
-The kzalloc() in brcmf_pmksa_v3_op() will return null if the
-physical memory has run out. As a result, if we dereference
-the null value, the null pointer dereference bug will happen.
+Hi folks,
 
-Return -ENOMEM from brcmf_pmksa_v3_op() if kzalloc() fails
-for pmk_op.
+The Intel Wifi hardware of a colleague's Tuxedo laptop (running Debian 12,
+kernel 6.1.76) isn't found at boot time anymore. It doesn't come back on a
+reboot. The kernel log shows
 
-Fixes: a96202acaea4 ("wifi: brcmfmac: cfg80211: Add support for PMKID_V3 operations")
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
----
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 5 +++++
- 1 file changed, 5 insertions(+)
+[Mon Feb 26 13:21:23 2024] Intel(R) Wireless WiFi driver for Linux
+[Mon Feb 26 13:21:23 2024] RAPL PMU: API unit is 2^-32 Joules, 3 fixed counters, 655360 ms ovfl timer
+[Mon Feb 26 13:21:23 2024] iwlwifi 0000:00:14.3: enabling device (0000 -> 0002)
+[Mon Feb 26 13:21:23 2024] iwlwifi 0000:00:14.3: Adding cdb to rf id
+[Mon Feb 26 13:21:23 2024] iwlwifi 0000:00:14.3: Detected RF 0x1010c000 from crf id 0x504
+[Mon Feb 26 13:21:23 2024] iwlwifi: No config found for PCI dev 51f1/0000, rev=0x370, rfid=0x1010c000
+[Mon Feb 26 13:21:23 2024] iwlwifi: probe of 0000:00:14.3 failed with error -22
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-index 28d6a30cc01..3b420b33188 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-@@ -4322,6 +4322,10 @@ brcmf_pmksa_v3_op(struct brcmf_if *ifp, struct cfg80211_pmksa *pmksa,
- 	int ret;
- 
- 	pmk_op = kzalloc(sizeof(*pmk_op), GFP_KERNEL);
-+	if (!pmk_op) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
- 	pmk_op->version = cpu_to_le16(BRCMF_PMKSA_VER_3);
- 
- 	if (!pmksa) {
-@@ -4340,6 +4344,7 @@ brcmf_pmksa_v3_op(struct brcmf_if *ifp, struct cfg80211_pmksa *pmksa,
- 	pmk_op->length = cpu_to_le16(length);
- 
- 	ret = brcmf_fil_iovar_data_set(ifp, "pmkid_info", pmk_op, sizeof(*pmk_op));
-+out:
- 	kfree(pmk_op);
- 	return ret;
- }
--- 
-2.17.1
+Please note the last 3 lines. rfkill doesn't list wireless.
 
+On another Tuxedo laptop with the same hardware (AFAICT) we get
+
+[Tue Feb 27 07:35:34 2024] Intel(R) Wireless WiFi driver for Linux
+[Tue Feb 27 07:35:34 2024] iwlwifi 0000:00:14.3: enabling device (0000 -> 0002)
+[Tue Feb 27 07:35:34 2024] iwlwifi 0000:00:14.3: firmware: direct-loading firmware iwlwifi-so-a0-hr-b0-72.ucode
+[Tue Feb 27 07:35:34 2024] iwlwifi 0000:00:14.3: api flags index 2 larger than supported by driver
+[Tue Feb 27 07:35:34 2024] iwlwifi 0000:00:14.3: TLV_FW_FSEQ_VERSION: FSEQ Version: 0.0.2.36
+[Tue Feb 27 07:35:34 2024] iwlwifi 0000:00:14.3: firmware: failed to load iwl-debug-yoyo.bin (-2)
+[Tue Feb 27 07:35:34 2024] iwlwifi 0000:00:14.3: firmware: failed to load iwl-debug-yoyo.bin (-2)
+[Tue Feb 27 07:35:34 2024] iwlwifi 0000:00:14.3: loaded firmware version 72.daa05125.0 so-a0-hr-b0-72.ucode op_mode iwlmvm
+:
+[Tue Feb 27 07:35:35 2024] iwlwifi 0000:00:14.3: Detected Intel(R) Wi-Fi 6 AX201 160MHz, REV=0x370
+:
+[Tue Feb 27 07:35:35 2024] iwlwifi 0000:00:14.3: Detected RF HR B3, rfid=0x10a100
+:
+[Tue Feb 27 07:35:36 2024] iwlwifi 0000:00:14.3: base HW address: e4:0d:xx:xx:xx:xx
+
+
+Upgrading the kernel to Debian's backports version 6.5.7 doesn't help.
+No wifi. I had upgraded the firmware file to version 83 as well, but this
+is moot if the firmware isn't loaded at all.
+
+
+Every helpful comment is highly appreciated
+
+Harri
 
