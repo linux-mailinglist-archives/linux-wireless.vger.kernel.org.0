@@ -1,124 +1,183 @@
-Return-Path: <linux-wireless+bounces-4107-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4108-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EEBE869C34
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Feb 2024 17:34:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A046869D99
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Feb 2024 18:29:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3731B25EF8
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Feb 2024 16:28:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2C651F2161D
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Feb 2024 17:29:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 950DB1482FA;
-	Tue, 27 Feb 2024 16:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E2384DA11;
+	Tue, 27 Feb 2024 17:25:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jEp1AAGD"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="Hwex8Hpk"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3470145321
-	for <linux-wireless@vger.kernel.org>; Tue, 27 Feb 2024 16:27:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96FA014C5AE
+	for <linux-wireless@vger.kernel.org>; Tue, 27 Feb 2024 17:25:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709051276; cv=none; b=SCu67pV68LTzkXXCzoFkGHta37QdKxHKxaP0ZAusyVN0i2Z+FpvpoOezEUw+OdCekudciAZgdp6YWkj3dTH2M6v1vDLb6FM4K5X+gAI9VoLvg6WP3Rq+MiGa2Anj25R62HQ6nrxEipyr4zUS/ESbgNCkNnm00eVOB9lWw3p1wD8=
+	t=1709054707; cv=none; b=YdWximaVw+kPFhWFFeN2q+Ks0bhA1GKxPVgNbMIhgNU50z6zvAikMdWbzV0OmeOpx4zspWp0OJBA+F7CH2QtHbWmO2byFw7eNNalVXcqwxEKiQOKY4sLuoc04AlmRjzm2sySnqLnezDgrRmaTmXCB7UF7gSS2112kfSvgggfgfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709051276; c=relaxed/simple;
-	bh=OvXpsA93xm59ZyaavvETwj8M5JBsMJ3PoLtaa4ZDxRA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jKnI6dudruwyFwLWTwnvqkQ26pScyNeODFJdE+PknFIppW1XnL3zGmMC/U945POjMaWoSCO7VVc232jZP29pUFyJaiLMGjG8PfLgFeFsitQa7oqGl1FAH6eEJq7s3uIAnKkJMsMPm/DNEeWNQNRbBlKWm4KFIOl36Y0/RcKvMOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jEp1AAGD; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a3f893ad5f4so636833666b.2
-        for <linux-wireless@vger.kernel.org>; Tue, 27 Feb 2024 08:27:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709051273; x=1709656073; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=n4PRTMKgdsyUAd6+XpEn/tSWs0U/FElHQbeSuxyAhiw=;
-        b=jEp1AAGDgX8MxS/qtl8OhiLtcRQC4Sm2zgD+sFrR8fahDiPSL4zhT1jZm2ckubUbZp
-         l4FFFs07gmmMFAAQnkX9BfNXVKRCH8VScFGnVQmwbQVv764rJ29AVrYJs1R8WaFjuLUb
-         BJxAtGk/uSfPLjY6hJ072rYi0PHMfM1dtp1cGPmD44qyW/MPPlINGJzdJyjJEvmw1iTs
-         LpxdcLqcvWj1aHRL4mylU828xqieE4Jmlpsc6/nJEEJmu2ZyR+Lu16m8U5TuVc4JTTln
-         CEdj3LeF3e1s1J9O0nCNExzttv3mQLirkYHsRYAsd1SY3mNX3tqB53P+p76ESGJGxLci
-         4fJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709051273; x=1709656073;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=n4PRTMKgdsyUAd6+XpEn/tSWs0U/FElHQbeSuxyAhiw=;
-        b=Cw6RPS7vNtQfL9cy/MJJBT57UyHaZSosfNXg/u/Gb1NQvzlWlesSaZNwsqtYPjDrd/
-         IfkEQFU4jO8OGohvmIRLQyZfH7n7YogK2/Wp1eg5r9oRB1eMdtld3ysATwDwiqqR0tY5
-         gXwmkrBB/P25YLlK2t8Rr/g9vpsoaWwYGDNY/tTgEolvJENYyP5FfU1AINHdwJeyD9gt
-         RulbB34+vNreNE6XtrafDk77kPc+A+Y5byAZ0gbyNJovH6jl9UP0dD9RGM6zDv6mR8Tc
-         tsQexKuEo7W3lp9pDZTglNBlZYcL9O7im+wKDBnnajYItxUK4qGKizwmmXxqTVFXEujm
-         eDng==
-X-Gm-Message-State: AOJu0YxLEe4rnwav0Fme9JoapfJYsd0GwMAaJZJEsBpVQ2j/E+0h/Z0c
-	Bc3N8eU4aw4NsnzjOssnQwUofRGF1bLEggGF8/mIBV3AfOyn205G0SsD/4hH
-X-Google-Smtp-Source: AGHT+IHfyUznoipnBSPXnB2tK+O8Q2p+gCiGzoz2DFbWaxg+I/Bv3Db6gdf2ouGjdhjFzHGWYYcRKw==
-X-Received: by 2002:a17:906:19c5:b0:a3f:9d69:3643 with SMTP id h5-20020a17090619c500b00a3f9d693643mr7147645ejd.32.1709051273138;
-        Tue, 27 Feb 2024 08:27:53 -0800 (PST)
-Received: from [192.168.1.50] ([79.119.240.211])
-        by smtp.gmail.com with ESMTPSA id s18-20020a17090699d200b00a43a478e4f0sm846610ejn.180.2024.02.27.08.27.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 Feb 2024 08:27:52 -0800 (PST)
-Message-ID: <aacc9bf5-90e3-4e7a-af44-33d11fe89c18@gmail.com>
-Date: Tue, 27 Feb 2024 18:27:51 +0200
+	s=arc-20240116; t=1709054707; c=relaxed/simple;
+	bh=MoHnidf2hQOTkA00I04VmJjVUcxuzCQNqo83NuUqMNQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=VDv3MB/B0WKfa8b1hTy896X0DFXI+55tWnlo1Uj7YbHYZVOTg+KvBhCml0SdmwFI3LImS+J0CLyZ1ZokqXsp+tjxNST/iViMPYSrVT1iQaUNt0y9zJpXCMK/meFH0PJAR/Cn5CYcvKzIsnB9AVgzfUlKD7tvUadgdDcGWfAUOkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=Hwex8Hpk; arc=none smtp.client-ip=148.163.129.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 5260DB0005C;
+	Tue, 27 Feb 2024 17:25:03 +0000 (UTC)
+Received: from [192.168.100.159] (unknown [50.251.239.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by mail3.candelatech.com (Postfix) with ESMTPSA id D7A3513C2B0;
+	Tue, 27 Feb 2024 09:25:02 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com D7A3513C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1709054702;
+	bh=MoHnidf2hQOTkA00I04VmJjVUcxuzCQNqo83NuUqMNQ=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=Hwex8HpkxroAvQD1T+afVrMkdedkgzLtIQdid/t0Hd0mKGNliQ+EUr38SiW9O63r8
+	 /a94aRZj+dEmgSzYEUCeSn1/eYLQs9OiqN5xqXtiPhfV4n2kxt+vJPUDYjE4LLSJGQ
+	 y6U0D2Kq/idWXvcUUGNGdQbf06fdhjL0ToVKW4/g=
+Message-ID: <70e92b03-1566-7eff-ba28-18ef69785205@candelatech.com>
+Date: Tue, 27 Feb 2024 09:25:02 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] wifi: rtw88: 8821cu: Fix firmware upload fail
-To: Sascha Hauer <sha@pengutronix.de>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
- Ping-Ke Shih <pkshih@realtek.com>, Sean Mollet <sean@malmoset.com>
-References: <731ea688-04ef-4f02-9d01-3e9026981057@gmail.com>
- <Zd3b81m3_Hh47lww@pengutronix.de>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: Kernel deadlock in 6.7.5 + hacks, maybe debugfs related.
 Content-Language: en-US
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <Zd3b81m3_Hh47lww@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
+To: Johannes Berg <johannes@sipsolutions.net>,
+ linux-wireless <linux-wireless@vger.kernel.org>
+References: <1c9fa9e5-09f1-0522-fdbc-dbcef4d255ca@candelatech.com>
+ <bdc7c51e3b6afaa7ac79efa15c6d1d41e9e918b5.camel@sipsolutions.net>
+ <95d56b9a-4b91-476f-bab3-7af0f28ff469@candelatech.com>
+ <0f8a0451e547f318febcbe36823e1f9914cc684b.camel@sipsolutions.net>
+ <33cc22b8-5852-42ae-9e80-8c3c58c36b6d@candelatech.com>
+ <4a3edd404b84da53b56bb0a391cb42d00f42f4c5.camel@sipsolutions.net>
+ <492a290b-752f-48c3-be16-59bdf7914487@candelatech.com>
+ <366ed520b5f4b3cd603be11124f9b51e32ce8106.camel@sipsolutions.net>
+ <f2aec39d67cdb20cf813b575231ab95b409e315d.camel@sipsolutions.net>
+From: Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+In-Reply-To: <f2aec39d67cdb20cf813b575231ab95b409e315d.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-MDID: 1709054704-1CQUaOvFqoeA
+X-MDID-O:
+ us5;ut7;1709054704;1CQUaOvFqoeA;<greearb@candelatech.com>;b42792dba290a1257c3f0aaf1c60b0ff
 
-Adding Sean Mollet because I forgot earlier.
-
-On 27/02/2024 14:56, Sascha Hauer wrote:
-> On Tue, Feb 27, 2024 at 02:18:20PM +0200, Bitterblue Smith wrote:
->> +	if (addr < 0xFE00) {
->> +		if (addr <= 0xff)
->> +			current_reg_sec = REG_ON_SEC;
->> +		else if (0x1000 <= addr && addr <= 0x10ff)
->> +			current_reg_sec = REG_ON_SEC;
->> +		else
->> +			current_reg_sec = REG_OFF_SEC;
->> +	} else {
->> +		current_reg_sec = REG_LOCAL_SEC;
->> +	}
->> +
->> +	if (current_reg_sec != REG_ON_SEC)
->> +		return;
+On 2/27/24 08:13, Johannes Berg wrote:
+> On Tue, 2024-02-27 at 15:58 +0100, Johannes Berg wrote:
+>>
+>> Which, btw, ignoring comments, braces, whitespace - then really just
+>> removes the line you're getting stuck on.
+>>
+>> So actually no ... invert the test?
+>>
+>>   if (refcount_dec_and_test(...))
+>>     return;
+>>
+>> If it hit zero here, there's guaranteed to be no user, so we can return.
+>>
+>> If it's not zero yet, we might yet go into a new cancellation, so we
+>> need the rest of the function.
+>>
 > 
-> Is there something we want to do with current_reg_sec == REG_LOCAL_SEC
-> or current_reg_sec == REG_OFF_SEC later? If not the above could be
-> rewritten as:
+> This is what I wrote now:
 > 
-> 	if (addr > 0xff && addr < 0x1000)
-> 		return;
-> 	if (addr > 0x10ff)
-> 		return;
 > 
-> 	...
+> Subject: [PATCH] debugfs: fix wait/cancellation handling during remove
+> 
+> Ben Greear further reports deadlocks during concurrent debugfs
+> remove while files are being accessed, even though the code in
+> question now uses debugfs cancellations. Turns out that despite
+> all the review on the locking, we missed completely that the
+> logic is wrong: if the refcount hits zero we can finish (and
+> need not wait for the completion), but if it doesn't we have
+> to trigger all the cancellations. As written, we can _never_
+> get into the loop triggering the cancellations. Fix this, and
+> explain it better while at it.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 8c88a474357e ("debugfs: add API to allow debugfs operations cancellation")
+> Reported-by: Ben Greear <greearb@candelatech.com>
+> Closes: https://lore.kernel.org/r/1c9fa9e5-09f1-0522-fdbc-dbcef4d255ca@candelatech.com
+> Change-Id: I6c7aeff8c9d6628a8bc1ddcf332205a49d801f17
+> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> ---
+>   fs/debugfs/inode.c | 25 ++++++++++++++++++++-----
+>   1 file changed, 20 insertions(+), 5 deletions(-)
+> 
+> diff --git a/fs/debugfs/inode.c b/fs/debugfs/inode.c
+> index 034a617cb1a5..a40da0065433 100644
+> --- a/fs/debugfs/inode.c
+> +++ b/fs/debugfs/inode.c
+> @@ -751,13 +751,28 @@ static void __debugfs_file_removed(struct dentry *dentry)
+>   	if ((unsigned long)fsd & DEBUGFS_FSDATA_IS_REAL_FOPS_BIT)
+>   		return;
+>   
+> -	/* if we hit zero, just wait for all to finish */
+> -	if (!refcount_dec_and_test(&fsd->active_users)) {
+> -		wait_for_completion(&fsd->active_users_drained);
+> +	/* if this was the last reference, we're done */
+> +	if (refcount_dec_and_test(&fsd->active_users))
+>   		return;
+> -	}
+>   
+> -	/* if we didn't hit zero, try to cancel any we can */
+> +	/*
+> +	 * If there's still a reference, the code that obtained it can
+> +	 * be in different states:
+> +	 *  - The common case of not using cancellations, or already
+> +	 *    after debugfs_leave_cancellation(), where we just need
+> +	 *    to wait for debugfs_file_put() which signals the completion;
+> +	 *  - inside a cancellation section, i.e. between
+> +	 *    debugfs_enter_cancellation() and debugfs_leave_cancellation(),
+> +	 *    in which case we need to trigger the ->cancel() function,
+> +	 *    and then wait for debugfs_file_put() just like in the
+> +	 *    previous case;
+> +	 *  - before debugfs_enter_cancellation() (but obviously after
+> +	 *    debugfs_file_get()), in which case we may not see the
+> +	 *    cancellation in the list on the first round of the loop,
+> +	 *    but debugfs_enter_cancellation() signals the completion
+> +	 *    after adding it, so this code gets woken up to call the
+> +	 *    ->cancel() function.
+> +	 */
+>   	while (refcount_read(&fsd->active_users)) {
+>   		struct debugfs_cancellation *c;
+>   
+> 
+> 
+> Can you test it and let me know if that works?
+> 
+> Same as what we discussed, FWIW, other than the comments.
 
-Dunno, I just copied the code from the other drivers:
+Thanks for the patch, I'm adding it to our kernel now and we'll start testing it.
 
-https://github.com/morrownr/8821cu-20210916/blob/5b39398e2de146edeb76716420f3288f508bea61/os_dep/linux/usb_ops_linux.c#L171
-https://github.com/morrownr/88x2bu-20210702/blob/bb6e514230791010a34daf0d6ccf55ef97309dbf/os_dep/linux/usb_ops_linux.c#L171
-https://github.com/thales-dis-dr/rtl8822CU/blob/4182c79e0c5362dcea46088dab9fed27795b5579/os_dep/linux/usb_ops_linux.c#L171
+Thanks,
+Ben
+
+> 
+> johannes
+> 
+
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
+
+
 
