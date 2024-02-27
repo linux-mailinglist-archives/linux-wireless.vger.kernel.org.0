@@ -1,150 +1,126 @@
-Return-Path: <linux-wireless+bounces-4111-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4112-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 441A4869E54
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Feb 2024 18:53:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CABE386A02F
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Feb 2024 20:28:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35F301C230A1
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Feb 2024 17:53:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 805D01F21DA2
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Feb 2024 19:28:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C15814EB45;
-	Tue, 27 Feb 2024 17:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D10E51C50;
+	Tue, 27 Feb 2024 19:27:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="yzdzyNvt"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="GKdYn0b8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72A281487E0;
-	Tue, 27 Feb 2024 17:53:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE2C52F70;
+	Tue, 27 Feb 2024 19:27:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709056412; cv=none; b=tnSKZlU5ZVXDuK42SYD2kmsr3WGYgDwRfrHV2D+yy1pdl8zllWfEBZmUyIVo20/piaEEHkSNRDClpl+06yE9P7X0ADxGZKMUspwT2QaHMNsdHzWmoNXat1CrQ805eFxFbTfARgGyqg6SEBWVycjTr2D/AHCcPndzN7L16rY7XKM=
+	t=1709062070; cv=none; b=KvAmxOUsaqANd3Cy+riQwcVu/SvVN/5rE9Y/hwz6XTsrS4Y3YXbMpqtzv5As/DdGhLnBx4Ol4nVUcKIMHt0sGA5XO7LmPD+5g96HiWP70PFG1ZpaZdCGAKtdwrSej3EulUIGLFCqv4PKTNcyJkM07TuPtcIGcWMXEf9JEe6OhIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709056412; c=relaxed/simple;
-	bh=c90nDEyQ9o6pvTcW0BOnwG8XDipWFoGcy4Cc229zvz8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GMAsOENv+30lO4g7bYikhl4uptc0+MLh63GUYxqlL9A0E5wkYJbe7jYrRWVr0UlXWtzgiuXuYgJaJdozThMI47W08LEfbDYr4EOh0cEsnUsbGmax15Se6SAoPY7zop1rYrdi6MlYJqvRxuMJElZLdVE+drIkuWHbseaqsvSoNFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=yzdzyNvt; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
-Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 5B7D2214FB;
-	Tue, 27 Feb 2024 18:53:28 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1709056408;
-	bh=LKeDRUHtoiqOMYcLDtZAVbnU3PdygZ0zlrtrdsKagF8=; h=From:To:Subject;
-	b=yzdzyNvtTXl/zNpCf8cFRsrGrhKsr+qrQJMpET+wKzJxNODHCVvFnWamw2cqROZDT
-	 m3dEuR3JvCGetiJpfTmcmG0MOFms/Rvgc9XX4IjCCha5pAGZ8rNd9z8tA7U10Nh+/9
-	 nC662E2VpOtsMRyEWD51yPkEod+AYG7K8+kyI/F173CrIZlqpPMe3bf3AhyJmgM5jH
-	 eTorhaYYewY4JY1S6PuvPgWjFaCtv/GroVQiay58E7c5oP4ud/Rs57f7tqDf3/r5UK
-	 kV1U9gk2koCaEt0lCVtlqFX5+iK9qE+tSZwxEREOFgZnUCJ6zsrjeOSvhBh3dKUtDh
-	 nH3OK+4xKBqpg==
-Date: Tue, 27 Feb 2024 18:53:26 +0100
-From: Francesco Dolcini <francesco@dolcini.it>
-To: David Lin <yu-hao.lin@nxp.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	briannorris@chromium.org, kvalo@kernel.org, francesco@dolcini.it,
-	tsung-hsien.hsieh@nxp.com
-Subject: Re: [PATCH v8 2/2] wifi: mwifiex: add host mlme for AP mode
-Message-ID: <20240227175326.GC11034@francesco-nb>
-References: <20231222032123.1036277-1-yu-hao.lin@nxp.com>
- <20231222032123.1036277-3-yu-hao.lin@nxp.com>
+	s=arc-20240116; t=1709062070; c=relaxed/simple;
+	bh=5oEm1RChv3GL4arXwxEkGvioNYmhvDkfvFKj6EpBLz8=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=htsDmEtG0kpWea9jP1o04Sshu1zyOTz45zzybapDqv9lRAvO4OzDDusPsf9u+NM49EGz1jLqhB30nWwjAhdSh8fsBgXrvufB91yKei5tMtCo6WzC45A/kX5Stfz+T5ccW21gKxOrz4Ibr7e/pp4dneSRFth/OEQ8tNX/Nq0JxHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=GKdYn0b8; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=5oEm1RChv3GL4arXwxEkGvioNYmhvDkfvFKj6EpBLz8=;
+	t=1709062066; x=1710271666; b=GKdYn0b8DoL8SZwBHXpwpsTgyAoAwYK4M00sIeO0dQy8Gp+
+	GWDauXoQx3RDFmXhdP511AqE7nc/ji05pm7B0v9KMfzejewjD9G8ppCXgkmlxSRZChMbqapHc0ZF9
+	TXjcobIh2W/uJGtFnqPf+H6bqC5FFb2mgaGfx36Xch/PR8kOYActAl6hfH+6bHbeViZjevw9YQD0b
+	EIbARL8TeGR8zTrfwbz2bpCzNnl9UAuLPzLi4QiChWw7mUGKFCT+duagmbPGbYv8VEQhxIjgrcYx6
+	sSFKv3/XdtYjiGVGmU4VGfJzgwkgSzXCK4jFDEzTQNQZKSYZ+u7b6nP3Sdy+xf5Q==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rf378-0000000Auqj-49jd;
+	Tue, 27 Feb 2024 20:27:43 +0100
+Message-ID: <c5cb0ce3a940fa65eee4b5f9d5000da91cf35829.camel@sipsolutions.net>
+Subject: Re: [PATCH 1/1] wifi: nl80211: Add support for plumbing SAE groups
+ to driver
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Jeff Johnson <quic_jjohnson@quicinc.com>, Jakub Kicinski
+ <kuba@kernel.org>
+Cc: Kalle Valo <kvalo@kernel.org>, Vinayak Yadawad
+	 <vinayak.yadawad@broadcom.com>, linux-wireless@vger.kernel.org, 
+	jithu.jance@broadcom.com, Arend van Spriel <arend.vanspriel@broadcom.com>, 
+	netdev@vger.kernel.org
+Date: Tue, 27 Feb 2024 20:27:41 +0100
+In-Reply-To: <0da40ae1-c033-4089-a64e-27d16bce7ab6@quicinc.com>
+References: 
+	<309965e8ef4d220053ca7e6bd34393f892ea1bb8.1707486287.git.vinayak.yadawad@broadcom.com>
+	 <87mss6f8jh.fsf@kernel.org>
+	 <2c38eaed47808a076b6986412f92bb955b0599c3.camel@sipsolutions.net>
+	 <20240213174314.26982cd8@kernel.org>
+	 <6641f3f90bdc1d24f3a7fd795be672ce02685630.camel@sipsolutions.net>
+	 <0da40ae1-c033-4089-a64e-27d16bce7ab6@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231222032123.1036277-3-yu-hao.lin@nxp.com>
+X-malware-bazaar: not-scanned
 
-On Fri, Dec 22, 2023 at 11:21:23AM +0800, David Lin wrote:
-> Add host based MLME to enable WPA3 functionalities in AP mode.
-> This feature required a firmware with the corresponding V2 Key API
-> support. The feature (WPA3) is currently enabled and verified only
-> on IW416. Also, verified no regression with change when host MLME
-> is disabled.
-> 
-> Signed-off-by: David Lin <yu-hao.lin@nxp.com>
+Hi,
 
-Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Sorry, I buried this thread because I thought I needed more time to
+respond than I had two weeks ago, and then forgot about it. My bad.
 
-with the same disclaimer from patch 1/2, I'm not a wireless driver expert.
+On Wed, 2024-02-14 at 08:57 -0800, Jeff Johnson wrote:
+> There are good reasons these out-of-tree drivers exist, but there is
+> also a movement, at least for the Qualcomm infrastructure products, to
+> transition to an upstream driver, in part due to customer requests. So
+> it is disconcerting that you are talking about inserting barriers to
+> converting to an upstream driver.
 
-> ---
-> 
-> v8:
->    - first full and complete patch to support host based MLME for AP
->      mode.
-> 
-> ---
->  .../net/wireless/marvell/mwifiex/cfg80211.c   |  79 +++++++-
->  drivers/net/wireless/marvell/mwifiex/cmdevt.c |   2 +
->  drivers/net/wireless/marvell/mwifiex/fw.h     |  21 +++
->  drivers/net/wireless/marvell/mwifiex/ioctl.h  |   5 +
->  .../wireless/marvell/mwifiex/sta_cmdresp.c    |   2 +
->  .../net/wireless/marvell/mwifiex/uap_cmd.c    | 171 ++++++++++++++++++
->  drivers/net/wireless/marvell/mwifiex/util.c   |  24 +++
->  7 files changed, 301 insertions(+), 3 deletions(-)
-> 
+FWIW, I don't think of what I wrote as advocating for *inserting*
+barriers that didn't already exist today.
 
-...
+> But we need our userspace interfaces to survive since both
+> Qualcomm and our customers have years of work invested in the existing
+> userspace interfaces and applications. The customers who want an
+> upstream driver do not want to be forced to rewrite their applications
+> to support it.
 
-> diff --git a/drivers/net/wireless/marvell/mwifiex/uap_cmd.c b/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
-> index e78a201cd150..1e7f4afe9960 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
-> @@ -760,6 +786,144 @@ static int mwifiex_cmd_uap_sta_deauth(struct mwifiex_private *priv,
->  	return 0;
->  }
->  
-> +/* This function prepares AP specific add station command.
-> + */
-> +static int mwifiex_cmd_uap_add_station(struct mwifiex_private *priv,
-> +				       struct host_cmd_ds_command *cmd,
-> +				       u16 cmd_action, void *data_buf)
-> +{
-> +	struct host_cmd_ds_add_station *new_sta = &cmd->params.sta_info;
-> +	struct mwifiex_sta_info *add_sta = (struct mwifiex_sta_info *)data_buf;
-> +	struct station_parameters *params = add_sta->params;
-> +	struct mwifiex_sta_node *sta_ptr;
-> +	u8 *pos;
-> +	u8 qos_capa;
-> +	u16 header_len = sizeof(struct mwifiex_ie_types_header);
-> +	u16 tlv_len;
-> +	int size;
-> +	struct mwifiex_ie_types_data *tlv;
-> +	struct mwifiex_ie_types_sta_flag *sta_flag;
-> +	int i;
-> +
-> +	cmd->command = cpu_to_le16(HostCmd_CMD_ADD_NEW_STATION);
-> +	new_sta->action = cpu_to_le16(cmd_action);
-> +	size = sizeof(struct host_cmd_ds_add_station) + S_DS_GEN;
-> +
-> +	if (cmd_action == HostCmd_ACT_ADD_STA)
-> +		sta_ptr = mwifiex_add_sta_entry(priv, add_sta->peer_mac);
-> +	else
-> +		sta_ptr = mwifiex_get_sta_entry(priv, add_sta->peer_mac);
-> +
-> +	if (!sta_ptr)
-> +		return -1;
-> +
-> +	memcpy(new_sta->peer_mac, add_sta->peer_mac, ETH_ALEN);
-> +
-> +	if (cmd_action == HostCmd_ACT_REMOVE_STA)
-> +		goto done;
+Then maybe they don't _really_ want an upstream driver? What's their
+reasoning for wanting an upstream driver anyway - usually it ends up
+being something around upstream's checks & balances, etc. But not
+inventing gratuitous API differences is part of those?
 
-This goto here, skipping lot of code, just to do
+> In the kernel we have a clear mantra to not break userspace. That should
+> hopefully hold true when converting from an out-of-tree driver to an
+> upstream one.
 
-  cmd->size = cpu_to_le16(size);
-  return 0;
+No, not at all? The kernel's policy of not breaking userspace
+unsurprisingly only extends to ... the kernel. Whatever happened out of
+tree isn't covered, and really shouldn't be. It doesn't even really
+quite extend to staging. And this policy is actually often a reason
+_not_ to include something in the kernel, until userspace interfaces
+stabilize.
 
-is not really nice for my personal taste, but fine like that.
+And since this was prompted by my mention of vendor APIs: Our upstream
+stance on vendor APIs has been debated and consequently documented here:
+https://wireless.wiki.kernel.org/en/developers/documentation/nl80211#vendor=
+-specific_api
 
-Francesco
+As far as I'm concerned, there's no intention of deviating from that
+policy for the purpose of getting a currently non-upstream driver into
+the tree.
+
+johannes
 
