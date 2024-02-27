@@ -1,102 +1,109 @@
-Return-Path: <linux-wireless+bounces-4114-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4115-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB58086A097
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Feb 2024 20:58:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A76AB86A141
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Feb 2024 21:58:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17E971C21FB1
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Feb 2024 19:58:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A855B1C25491
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Feb 2024 20:58:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BECF14A081;
-	Tue, 27 Feb 2024 19:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 848C714EFDB;
+	Tue, 27 Feb 2024 20:58:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eo6G1mRu"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B47149DEF;
-	Tue, 27 Feb 2024 19:58:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B29513AA36;
+	Tue, 27 Feb 2024 20:58:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709063925; cv=none; b=E+zlQX4q7SD65wRRNKRC3VozBIk5U5THQ00dQqPjB+Fp1ZYLwHInPYNWuAU44OWVJDBEy3tbjTgqx35NzMlkxE/9ry34m/CT/rqLESteFQjzdLDPYRws+R7IFCMigRitfKdmDJxSc86ZR2RbZLwTAYLVBbEHcdm/8Q7fsffORq4=
+	t=1709067502; cv=none; b=ufIFS0W5tM29b7vudR6dcW/sNPena+V+DPO38H4lX3Y+PYjptyq1d1ddHOlj9ONzOY+5qGasDNy5/Dcnv8A5a04SatxGHO4DTEYZYqBUKq8qsEzMu8+x7wsYN91/VtSprJZU0MJjyaRScuDCy8lBa5u1sLj7C8ijjivJqGKHzUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709063925; c=relaxed/simple;
-	bh=P4sD4HUPQfVisayH8Xs+cN1CttbdVsl7C2KwjoNCd/c=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=fMj/XdaBQvOHKavhYsDbB2k0/pIj7BIOcoPTBLrLi+sWwN8Rm/Acos/BvAYMaPb6sarMlhcfR5KxYhE/4gnJqI910tIXae9f4C1OpKzmnNMjAVrNMy6jeC1YfpaKqL72XfQOzGyC6qO+3eZynkpbVUY0ovk9Bg+wpmZLc618Ads=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=perches.com; spf=pass smtp.mailfrom=perches.com; arc=none smtp.client-ip=216.40.44.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=perches.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=perches.com
-Received: from omf16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id F25BB1C100D;
-	Tue, 27 Feb 2024 19:58:35 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf16.hostedemail.com (Postfix) with ESMTPA id 7918F2000F;
-	Tue, 27 Feb 2024 19:58:31 +0000 (UTC)
-Message-ID: <421ad59de37ac6bb52c95dde2e3d4bb28590ecca.camel@perches.com>
-Subject: Re: [PATCH] wifi: brcm80211: handle pmk_op allocation failure
-From: Joe Perches <joe@perches.com>
-To: Arend van Spriel <arend.vanspriel@broadcom.com>, Duoming Zhou
-	 <duoming@zju.edu.cn>, linux-kernel@vger.kernel.org
-Cc: brcm80211-dev-list.pdl@broadcom.com, brcm80211@lists.linux.dev, 
- linux-wireless@vger.kernel.org, justinstitt@google.com, john@keeping.me.uk,
-  quic_alokad@quicinc.com, marcan@marcan.st, johannes.berg@intel.com, 
- linus.walleij@linaro.org, kvalo@kernel.org
-Date: Tue, 27 Feb 2024 11:58:30 -0800
-In-Reply-To: <d5ce0495-2f18-4176-90e5-7bba76132ea1@broadcom.com>
-References: <20240227080613.34001-1-duoming@zju.edu.cn>
-	 <87166784-79ab-4eb4-ad1e-af4bc31757b7@broadcom.com>
-	 <b0a352781f58a829deadffbe2ef2085c97c6ab32.camel@perches.com>
-	 <d5ce0495-2f18-4176-90e5-7bba76132ea1@broadcom.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+	s=arc-20240116; t=1709067502; c=relaxed/simple;
+	bh=S4m9bTr9zzQmMMFY2/OXtF3VQx5pxQRtlH/CRZM8IfM=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=BiNoe5K/lMudptGYflSMDjtAjqAA5N7QHiNzJ6EF40GpwvJbldM3LzUXyBUgxyYj8+4iuogrG9zhQdL4btq+KEeLqHWdE1BkhJ4yPGgoIBIZHD2xxYMYwBvJL/KNN4wUE2D0ZzuAR+Ka5f2LH/EFwmnMpD5ptIXbU8bvHQ0Pvks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eo6G1mRu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADEBAC43390;
+	Tue, 27 Feb 2024 20:58:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709067502;
+	bh=S4m9bTr9zzQmMMFY2/OXtF3VQx5pxQRtlH/CRZM8IfM=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=eo6G1mRufXusc5lBh8VM/I4kP7svGiyBEr5GcRHlW2rjy8FQ6LMKLVCmTbh5uUzK7
+	 /4wqI2mIBHYcUUZQjAwFoZvHuy/ey/pSoFbG5wUffKiJXrp1l8NWFz4wlZq+IfcDZT
+	 dfbMxAuBzypEcrjbDjDbjYrjhZ53lXcTchOKNeh8FSWjfgX6PAqyA92l64dGlyG2m9
+	 3DKoCefKda353PzsCgR1KZYec9AoA5zN9HXoCtcA2+n0hoGVNtehajnKdNu0VtxE9O
+	 yhQXUFqPbtfuuRWgF2ql2N4iQHHM82e3MCiyW5UwCTvYGojZ1Tb2Wer35+iBh05+dA
+	 achG7ZtD0zjnw==
+From: Kalle Valo <kvalo@kernel.org>
+To: Javier Martinez Canillas <javierm@redhat.com>
+Cc: linux-kernel@vger.kernel.org,  Nishanth Menon <nm@ti.com>,  Breno Leitao
+ <leitao@debian.org>,  Li Zetao <lizetao1@huawei.com>,
+  linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] wlcore: sdio: warn only once for
+ wl12xx_sdio_raw_{read,write}() failures
+References: <20240227002059.379267-1-javierm@redhat.com>
+Date: Tue, 27 Feb 2024 22:58:18 +0200
+In-Reply-To: <20240227002059.379267-1-javierm@redhat.com> (Javier Martinez
+	Canillas's message of "Tue, 27 Feb 2024 01:20:46 +0100")
+Message-ID: <8734tdaal1.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 7918F2000F
-X-Stat-Signature: 5ecpjek1crfwbbitof44ux9oq795j1oo
-X-Rspamd-Server: rspamout05
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Session-ID: U2FsdGVkX196uCPc1Mhr+W6xRTIiGgxS4/v22vRLx4Y=
-X-HE-Tag: 1709063911-815136
-X-HE-Meta: U2FsdGVkX1/eFvup7WVqYePDzElmDFKyTelnhnAvhZBAaG9nRU/946LUePwJqVPgeDaVi6NNnZR6oQ5clfR/7HRIIAmaPHKnpYGEEIGRjrY2lCmChwJGR31H8bfb2scA+M4gjeceuQGuY/5aJ9uylZKxYGL5j+aKZLSbbS3TF+s47nvl0d+diQafbBT9HSfzF/ZP+ZrBZvSqjXG6yPll4EYxlGDYjbJVJlPs26XPoitAuHsXlhwUfVh4XJ+M4NVI7xxvYaHi9+8DATgbWWEpgDt1zEpJunjTZ3QO/hYhjc1kVYX0BpvCZ9AuGGdPBCIGtBH6GYui4GbVkYfIjBK3Ud0zK5VmJiXC86GH85y2NT3aFEJ+zmRngH1mrQakLgJ9GFFEjdiIEAf+Dt6Nc+7YQG3vRcu0ZKtxeFUgaBxbkIi1YGl/ueclBzjntDxo38smjnqxAscgBXVOeoswPn0GSQ==
+Content-Type: text/plain
 
-On Tue, 2024-02-27 at 20:40 +0100, Arend van Spriel wrote:
-> On 2/27/2024 12:42 PM, Joe Perches wrote:
-> > On Tue, 2024-02-27 at 12:21 +0100, Arend van Spriel wrote:
-> > > On 2/27/2024 9:06 AM, Duoming Zhou wrote:
-> > > > The kzalloc() in brcmf_pmksa_v3_op() will return null if the
-> > > > physical memory has run out. As a result, if we dereference
-> > > > the null value, the null pointer dereference bug will happen.
-> > > >=20
-> > > > Return -ENOMEM from brcmf_pmksa_v3_op() if kzalloc() fails
-> > > > for pmk_op.
-> > >=20
-> > > NAK (see below)
-> > >=20
-> > > Also this issue was reported earlier by Joe Perches. Not sure if he
-> > > wants to be mentioned as such.
-> >=20
-> > I think it's unimportant to be mentioned.
-> >=20
-> > I think it's more important that the code be researched
-> > that the simple return of -ENOMEM the appropriate fix
-> > and is handled by all possible callers of the function.
->=20
-> Right. That is what I did after which I replied on Feb 18 to your email.
->=20
-> https://lore.kernel.org/all/3e1f11b3-a689-4c8e-bfda-b43649db7106@broadcom=
-.com/
->=20
+Javier Martinez Canillas <javierm@redhat.com> writes:
 
-Right, I did that as well, but I didn't look up
-the entire calling tree.
+> Report these failures only once, instead of keep logging the warnings for
+> the same condition every time that a SDIO read or write is attempted. This
+> behaviour is spammy and unnecessarily pollutes the kernel log buffer.
 
-It likely works.  It's also likely better than
-the write through of the null pointer.
+Removing error messages is not usually a good idea, it would be much
+better to fix the root cause.
+
+> For example, on an AM625 BeaglePlay board where accessing a SDIO WiFi chip
+> fails with an -110 error:
+>
+>   $ dmesg | grep "sdio write\|read failed (-110)" | wc -l
+>   39
+
+-110 is -ETIMEDOUT. Why is it timing out?
+
+> Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
+> ---
+>
+>  drivers/net/wireless/ti/wlcore/sdio.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/net/wireless/ti/wlcore/sdio.c b/drivers/net/wireless/ti/wlcore/sdio.c
+> index eb5482ed76ae..47ecf33a0fbe 100644
+> --- a/drivers/net/wireless/ti/wlcore/sdio.c
+> +++ b/drivers/net/wireless/ti/wlcore/sdio.c
+> @@ -75,8 +75,8 @@ static int __must_check wl12xx_sdio_raw_read(struct device *child, int addr,
+>  
+>  	sdio_release_host(func);
+>  
+> -	if (WARN_ON(ret))
+> -		dev_err(child->parent, "sdio read failed (%d)\n", ret);
+> +	if (WARN_ON_ONCE(ret))
+> +		dev_err_once(child->parent, "sdio read failed (%d)\n", ret);
+
+WARN_ON() feels excessive here, maybe remove that entirely? But
+dev_err_ratelimited() feels more approriate than printing the error just
+once.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
