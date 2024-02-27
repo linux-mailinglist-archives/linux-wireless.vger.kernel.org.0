@@ -1,107 +1,111 @@
-Return-Path: <linux-wireless+bounces-4095-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4096-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A054F869897
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Feb 2024 15:40:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 533F486989E
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Feb 2024 15:43:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1185AB30FC1
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Feb 2024 14:33:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EBDC2901CF
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Feb 2024 14:43:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FA9413B79F;
-	Tue, 27 Feb 2024 14:32:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A565513B29B;
+	Tue, 27 Feb 2024 14:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="UCCSd7DH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EbNUhTWr"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB1CD13B798
-	for <linux-wireless@vger.kernel.org>; Tue, 27 Feb 2024 14:32:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BE435FBB3;
+	Tue, 27 Feb 2024 14:43:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709044365; cv=none; b=bpCLPmky+SlW5vQiRybCzFkCN+p8im0diXGBEsDAAV1SpRAjcrklUj74/v1MwGekp5nzjXsWKqF/Utr4DqvtDRV/JPP07oBDojUy3hKFDqfOfX3qGxK+UzhAfrW7tmquJdo8CnvZuMaqyzZh4ZBv0kc4Gcj1TYQqcVQctYNTwIg=
+	t=1709044987; cv=none; b=As5++8SCX5ZBrou5qmDruEe4I++PuY7+hqBbkWC/Ky2JRrnNZNzg7eGjovr35KkNb3RYUwl73EkBewLW3tf8piFzNhB4AtLQZykumOhArUhfNWrca3zTuj830GNG+Vp2aYf34oV4k8N/O8gK5yR3a2rEsJluizjJ8WXSqweSnBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709044365; c=relaxed/simple;
-	bh=axcPbXbUSY/XRNTbE30hBVb/AtnvuIDIVJHGFhc3q1M=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=QmOr7b86Xm3Y/WhbaLd2y3HUUFdRgO4soNPnjlflSDMCaOqS0UJJ8Hw2GatdRQxPh6DUNV09GEwhpZ49kBxa9FU/97PdSZy8p2jDqq3mvwa9C3ESpUuxiiQX1VgQGtDMHHlCc8wZ/t2SwWoSo4AfhJZ2LrZkgGECX6kYIO/rMCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=UCCSd7DH; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=7ipt4vJibGdGJI8ORo6RBWcE0A4Qt4II4w3bnSgo/ls=;
-	t=1709044363; x=1710253963; b=UCCSd7DHEbj+Qlrq1Ll1XRhFx31sLqFBIaF7tjiwsweD/XX
-	6rcirzqjT5GAx/nkv2y/VZX+Ss5Jlusw/+TAgluRd1KDgxsHQWQowTZpHUac3oUn+t5ffmn6MqrtY
-	n3Ny1AtHjG88TUcQgAUhEDwlBPuu9oN5s24sxA07u9Op+nOPZljleMTu9qJkv6k43WJJ8kerAdL2g
-	YZrhWTrotb/CtHqs83ZE1hTviWoqmPy8gGQTG/PfaL7aJ9VxWu0m+zBNAcAcV8tU4Ey49Q06uMt+3
-	xHCs36WdNHonLj1NjYrFU6/fxMzdh4t4AP+OrOLxhnnmS4N6rTRVpVqdP3QhEadQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1reyVc-0000000AjQ1-3IZ2;
-	Tue, 27 Feb 2024 15:32:40 +0100
-Message-ID: <4a3edd404b84da53b56bb0a391cb42d00f42f4c5.camel@sipsolutions.net>
-Subject: Re: Kernel deadlock in 6.7.5 + hacks, maybe debugfs related.
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Ben Greear <greearb@candelatech.com>, linux-wireless
-	 <linux-wireless@vger.kernel.org>
-Date: Tue, 27 Feb 2024 15:32:39 +0100
-In-Reply-To: <33cc22b8-5852-42ae-9e80-8c3c58c36b6d@candelatech.com>
-References: <1c9fa9e5-09f1-0522-fdbc-dbcef4d255ca@candelatech.com>
-	 <bdc7c51e3b6afaa7ac79efa15c6d1d41e9e918b5.camel@sipsolutions.net>
-	 <95d56b9a-4b91-476f-bab3-7af0f28ff469@candelatech.com>
-	 <0f8a0451e547f318febcbe36823e1f9914cc684b.camel@sipsolutions.net>
-	 <33cc22b8-5852-42ae-9e80-8c3c58c36b6d@candelatech.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
+	s=arc-20240116; t=1709044987; c=relaxed/simple;
+	bh=DytXs2Kq0REoXTCul2OemM5lmaQM/IuOHuGspWgLqzE=;
+	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
+	 Cc:Message-ID:Date; b=qlftXM16u2YlCI19/aGUe2aAPGxYwDzxAlZI0QMgVv+X0WWes6T02BC6kHS8Zs6veVwwCLRbu4toI16J591RVrQ/nqh3dJYHK5Us0Te3XNDBiN4ieQtyzE6QL2nFjW6ZIXSAGWTSUo2AkcTaprD9pDvADViw6VIcwnPuJuA9IOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EbNUhTWr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81AC5C433F1;
+	Tue, 27 Feb 2024 14:43:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709044986;
+	bh=DytXs2Kq0REoXTCul2OemM5lmaQM/IuOHuGspWgLqzE=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=EbNUhTWrqo+/uOMGcfFC5ZLud5wfMJbPHX8Otm3B0bpuLpcQ3IMmM+zlMSKf5Sn6z
+	 lvqLVvy7L6Z7skS7FNmTuqiz03t6SuTTHRTjXcsY0Et5wfVcs+D8cBCt4GmBjdr44s
+	 kQx9y0PKNpzvOO9a72dNEPyzfseNNNMNKTvsHWjxnaJpkUom7xBRPcfz6a6LC7LAzs
+	 ZGN+JQYRA1gbr+W4bzYJFKBD9GoLtd/w2U+4kEbFuHyvsIveXqj4xYaPG0HTy0BmrU
+	 i6+hCLqyBrWwjzF+cYrNSanCLqmWSXPhw6eg4UNevsFVK/MLqkX0ryXMs05kgQpoKk
+	 3onbxDufNjDTQ==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH][next] wifi: brcmfmac: fweh: Fix boot crash on Raspberry
+ Pi 4
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <Zc+3PFCUvLoVlpg8@neat>
+References: <Zc+3PFCUvLoVlpg8@neat>
+To: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc: Arend van Spriel <arend.vanspriel@broadcom.com>,
+ Nathan Chancellor <nathan@kernel.org>, linux-wireless@vger.kernel.org,
+ brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
+ linux-kernel@vger.kernel.org, "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ linux-hardening@vger.kernel.org
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <170904498245.3524945.4143383846872449498.kvalo@kernel.org>
+Date: Tue, 27 Feb 2024 14:43:04 +0000 (UTC)
 
-On Tue, 2024-02-27 at 06:29 -0800, Ben Greear wrote:
-> > --- a/fs/debugfs/inode.c
-> > +++ b/fs/debugfs/inode.c
-> > @@ -751,13 +751,19 @@ static void __debugfs_file_removed(struct dentry =
-*dentry)
-> >   	if ((unsigned long)fsd & DEBUGFS_FSDATA_IS_REAL_FOPS_BIT)
-> >   		return;
-> >  =20
-> > -	/* if we hit zero, just wait for all to finish */
-> > -	if (!refcount_dec_and_test(&fsd->active_users)) {
-> > -		wait_for_completion(&fsd->active_users_drained);
-> > -		return;
-> > -	}
-> > +	/*
-> > +	 * Now that debugfs_file_get() no longer sees a valid entry,
-> > +	 * decrement the refcount to remove the initial reference.
-> > +	 */
-> > +	refcount_dec(&fsd->active_users);
+"Gustavo A. R. Silva" <gustavoars@kernel.org> wrote:
 
->=20
-> [   94.576688] ------------[ cut here ]------------
-> [   94.576699] refcount_t: decrement hit 0; leaking memory.
->=20
+> Fix boot crash on Raspberry Pi by moving the update to `event->datalen`
+> before data is copied into flexible-array member `data` via `memcpy()`.
+> 
+> Flexible-array member `data` was annotated with `__counted_by(datalen)`
+> in commit 62d19b358088 ("wifi: brcmfmac: fweh: Add __counted_by for
+> struct brcmf_fweh_queue_item and use struct_size()"). The intention of
+> this is to gain visibility into the size of `data` at run-time through
+> its _counter_ (in this case `datalen`), and with this have its accesses
+> bounds-checked at run-time via CONFIG_FORTIFY_SOURCE and
+> CONFIG_UBSAN_BOUNDS.
+> 
+> To effectively accomplish the above, we shall update the counter
+> (`datalen`), before the first access to the flexible array (`data`),
+> which was also done in the mentioned commit.
+> 
+> However, commit edec42821911 ("wifi: brcmfmac: allow per-vendor event
+> handling") inadvertently caused a buffer overflow, detected by
+> FORTIFY_SOURCE. It moved the `event->datalen = datalen;` update to after
+> the first `data` access, at which point `event->datalen` was not yet
+> updated from zero (after calling `kzalloc()`), leading to the overflow
+> issue.
+> 
+> This fix repositions the `event->datalen = datalen;` update before
+> accessing `data`, restoring the intended buffer overflow protection. :)
+> 
+> Fixes: edec42821911 ("wifi: brcmfmac: allow per-vendor event handling")
+> Reported-by: Nathan Chancellor <nathan@kernel.org>
+> Closes: https://gist.github.com/nathanchance/e22f681f3bfc467f15cdf6605021aaa6
+> Tested-by: Nathan Chancellor <nathan@kernel.org>
+> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+> Reviewed-by: Kees Cook <keescook@chromium.org>
+> Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 
-Ah ... right, refcount_dec() doesn't like to hit 0, it's not meant for
-this path.
+Patch applied to wireless-next.git, thanks.
 
-I guess we can
+ec1aae190c77 wifi: brcmfmac: fweh: Fix boot crash on Raspberry Pi 4
 
-if (refcount_dec_and_test(...))
-   return;
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/Zc+3PFCUvLoVlpg8@neat/
 
-while (refcount_read(...)) { ... }
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
-johannes
 
