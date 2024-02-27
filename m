@@ -1,157 +1,139 @@
-Return-Path: <linux-wireless+bounces-4034-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4035-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D9D7868259
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Feb 2024 22:02:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB6E88684F3
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Feb 2024 01:21:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36A341F2553F
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Feb 2024 21:02:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 185751C22709
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Feb 2024 00:21:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD0CE131757;
-	Mon, 26 Feb 2024 21:02:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D677E36D;
+	Tue, 27 Feb 2024 00:21:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="jUmAv6cT"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EtbmAdUx"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E42E405CE;
-	Mon, 26 Feb 2024 21:02:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23E0B36C
+	for <linux-wireless@vger.kernel.org>; Tue, 27 Feb 2024 00:21:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708981353; cv=none; b=J5IqeOY3Fv1uMYWjufuWcUk5RBceHyM9Vcv5X6xmVcA3YM+SapbYls/aBYXyQvB+KdXB5fotv5/EgZlHDfesO1KTzwFr2VDOyXW5sDUzFXKpDi/WjEk6hkpAzxgYNBGmvsuI4J8FH6SGG5bYBxVIhFB3Is0c5udZMuG9jum3BD0=
+	t=1708993269; cv=none; b=iWbMVDelyyQ6/nWg+oNN51TGHT1FgO3FQgmy45N/FmP0dqrJlsPyIeyJF01oUzYj4CnvHoQVjZJZKOG8avPMdq5ZPPO7R6GLGYtkPqkImJRmErD27QJ4mXD0FoMPwWMVtDlbxOKPIfH+Q7eOKudEmNo4g4mKWN4RYUaBd1DfIAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708981353; c=relaxed/simple;
-	bh=A7PRublYTk9mFqh5r3xgnvZLW5vvAp5cJyd1arhzfOU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=FpfQY/rUF40A/Qt/01jp0Y4kkfz9m2AWohg3ucR55mW1fTEgui2gkNcmAcUrIZo94ECY53Za0GqQZOb7WiuF5ScLrSKfm/njA8y81kMpZ08X+ShdIFb5gFtQG3uyVP7c3YxHl1Cy3J2BdkZwsuDrciYelUEOyM1vVHp0pk0FeFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=jUmAv6cT; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41QGhw9s010029;
-	Mon, 26 Feb 2024 21:02:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:date:subject:mime-version:content-type
-	:content-transfer-encoding:message-id:to:cc; s=qcppdkim1; bh=iLr
-	i/+mCTqTZgvVwhFdKyztQ7pBz1bs9wWlBzJYoMss=; b=jUmAv6cTScKEJe7tE6e
-	9L2/OqPOfnItUQpB0RtSwU7OUDK3lnEv0AB93ZC0z7jwqVd2YgwPBmg3+Kv63y2l
-	zA6RDUZEmif9wWKtlMF3v2qTeBC8xtbckkygUrbkjTv1rL+a8Xa3w3FEsn+tUEnJ
-	ATwxSWVI0lABJyjNlU0/pz8MSBtD5GTlVhjSVQiLvzoCddGSrNoAVNmBh2Vgh/2n
-	Q6aCMl6TS2L+7VAn8Mnb6U4GbJmssJO/ihzb8AZ8sGwEfhIi29xWBAQlKztvbUvP
-	ENTv3dLlS0ID0Q66sMVFfPxyZZiTL4TRVRgjbbJbqySY4z1XKjn6zOHSy/3AkOa7
-	0rA==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wgkxpa2sv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 26 Feb 2024 21:02:24 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 41QL1ujA019544
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 26 Feb 2024 21:02:08 GMT
-Received: from [169.254.0.1] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Mon, 26 Feb
- 2024 13:01:56 -0800
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-Date: Mon, 26 Feb 2024 13:01:56 -0800
-Subject: [PATCH] wifi: ath11k: remove obsolete struct wmi_start_scan_arg
+	s=arc-20240116; t=1708993269; c=relaxed/simple;
+	bh=fYTwBpg7uMTawTUnQ2BSWuwAUKm59qg1pIXrtXgXbFU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FQ0Sgs/MwLuFpEf6kZv4bMvKrVgxJZ/xKw97ciqzGpflF0oSp0J9gi9+K41xMf6lL/pU1buupQ+0cRnZRwo/44nwFqP7xWkplZsv61ZUcFVQiqjO3KB3FzQvPFeAvKpSNv3v33mSAhEmjiuRWvGSZ0PNhi0oMOjPVcPUt5Q4PqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EtbmAdUx; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1708993266;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=deu2WpFSMCIwa7mbcBS0LlHiNgXZ/4WozKcv0iuRKBQ=;
+	b=EtbmAdUx3TLx1uxDIteZl3MX4pjw150lSMFNoxCXZK1a9vZ8bBTG2fFDu9F4/Mfj4q6zcX
+	WnuolmZ6gQMGgos5HRGYmgFJ4InES++k36k3DM5J1fuAQ0GdRn7HE6eLNH/KRxtlECAGAQ
+	xt/bEpAQLU2W1L9a1pFttnbII1k7DCM=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-449-Zlk-oQ-3NHihdyEn-k_ejQ-1; Mon, 26 Feb 2024 19:21:05 -0500
+X-MC-Unique: Zlk-oQ-3NHihdyEn-k_ejQ-1
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-33dadb50731so1954215f8f.1
+        for <linux-wireless@vger.kernel.org>; Mon, 26 Feb 2024 16:21:04 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708993263; x=1709598063;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=deu2WpFSMCIwa7mbcBS0LlHiNgXZ/4WozKcv0iuRKBQ=;
+        b=VJZMAjPBnDuTDSupuemQ1jHMP9eY88NrsG1oyIsuZVFpWHQYgAKielyFr6glx/wWuR
+         PB8jQg6HmeqjBMekkpO9J93jn4kfPMc/i2dWgOXe0+0c1dX0RCu5hUsRFKaGecVrF7Nn
+         25J8Z9BHapczxcP+r7oplpxqxETa6Sx7tgZUvWycsvkwfoVPH51PECiw6AryLSUFBq1A
+         r/SkcmH8U8f6/ToAAMBdZIGZ/1/C8savOiNBL8mVAEDZMzBXbDiwYBT/Yc6+KZXqNhvh
+         NJYZm9OQ8K5eOsC+VQX7WjTB6HooE0zAB8O5pQQxxJwrOQpBoyCcRPr7srAWivQO8JOf
+         r7bA==
+X-Forwarded-Encrypted: i=1; AJvYcCUkfG5//FOKMngAnoU4T3xkpVhbG09rIdgE/I0kaBtGudqNfF+c9CHABCDuO1z7macRimUkkI43lpOv2tHG/KKHn9nn+Yt77InWPcmOkBk=
+X-Gm-Message-State: AOJu0Yz1bWWtCOVpD503cj/lgpcD3dHyVB3UJrskCAoxSnF93eBQfYUX
+	PswqGBQ/JTf1Y2tU3Wn3XLkvxVdjfYR/Br9Zg+FNLvh6QwvRARhN6aiF4KKbDVhC9pixWg/i0w4
+	60c6c4jJzOdWz2kL9843I35AAT4fD7I5qJx5DIOouzNj/zZMlpUvg3XXwR+eL+gNS
+X-Received: by 2002:a5d:588b:0:b0:33d:d96b:2615 with SMTP id n11-20020a5d588b000000b0033dd96b2615mr3090208wrf.47.1708993263418;
+        Mon, 26 Feb 2024 16:21:03 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGRfO+KR9IwLDp+vA/SLuUUNQWiLiDHzfpZePGawUDhvo/EwptbYbLO0SUGcBbbRPRC2I4yhw==
+X-Received: by 2002:a5d:588b:0:b0:33d:d96b:2615 with SMTP id n11-20020a5d588b000000b0033dd96b2615mr3090190wrf.47.1708993263000;
+        Mon, 26 Feb 2024 16:21:03 -0800 (PST)
+Received: from localhost (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
+        by smtp.gmail.com with ESMTPSA id f1-20020adfe901000000b0033d8b1ace25sm9720705wrm.2.2024.02.26.16.21.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Feb 2024 16:21:02 -0800 (PST)
+From: Javier Martinez Canillas <javierm@redhat.com>
+To: linux-kernel@vger.kernel.org
+Cc: Nishanth Menon <nm@ti.com>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Breno Leitao <leitao@debian.org>,
+	Kalle Valo <kvalo@kernel.org>,
+	Li Zetao <lizetao1@huawei.com>,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH] wlcore: sdio: warn only once for wl12xx_sdio_raw_{read,write}() failures
+Date: Tue, 27 Feb 2024 01:20:46 +0100
+Message-ID: <20240227002059.379267-1-javierm@redhat.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20240226-ath11k-obsolete-wmi_start_scan_arg-v1-1-c0b94c6e191d@quicinc.com>
-X-B4-Tracking: v=1; b=H4sIAEP83GUC/5WNSw7CIBQAr9Kw9hmgH4wr72GaBumjfdGCAlZN0
- 7uLvYHLmcXMwiIGwsiOxcICzhTJuwxiVzAzajcgUJ+ZSS4rLmUDOo1CXMFfor9hQnhN1MWkQ+q
- i0a7TYQBVN6q3kltbc5ZD94CW3tvk3GYeKSYfPttzFj/7V34WIKBWtsSyVLo6NKfHkww5szd+Y
- u26rl9CPJ0A1gAAAA==
-To: Kalle Valo <kvalo@kernel.org>, Jeff Johnson <quic_jjohnson@quicinc.com>
-CC: <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-X-Mailer: b4 0.13.0
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: NnjY68zs3LXtfQYj2si6rPjfB-AGIKm9
-X-Proofpoint-GUID: NnjY68zs3LXtfQYj2si6rPjfB-AGIKm9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-26_11,2024-02-26_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=707 suspectscore=0 phishscore=0 adultscore=0 bulkscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2402120000 definitions=main-2402260162
+Content-Transfer-Encoding: 8bit
 
-ath11k inherited struct wmi_start_scan_arg from ath10k. However, in
-ath11k, this struct is unused -- struct scan_req_params is used for
-this functionality. So remove the unused struct.
+Report these failures only once, instead of keep logging the warnings for
+the same condition every time that a SDIO read or write is attempted. This
+behaviour is spammy and unnecessarily pollutes the kernel log buffer.
 
-No functional changes, compile tested only.
+For example, on an AM625 BeaglePlay board where accessing a SDIO WiFi chip
+fails with an -110 error:
 
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+  $ dmesg | grep "sdio write\|read failed (-110)" | wc -l
+  39
+
+Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
 ---
- drivers/net/wireless/ath/ath11k/wmi.h | 30 +-----------------------------
- 1 file changed, 1 insertion(+), 29 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
-index bb419e3abb00..1c980f56bc72 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.h
-+++ b/drivers/net/wireless/ath/ath11k/wmi.h
-@@ -1,7 +1,7 @@
- /* SPDX-License-Identifier: BSD-3-Clause-Clear */
- /*
-  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2023 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- 
- #ifndef ATH11K_WMI_H
-@@ -3444,34 +3444,6 @@ struct wmi_bssid_arg {
- 	const u8 *bssid;
- };
- 
--struct wmi_start_scan_arg {
--	u32 scan_id;
--	u32 scan_req_id;
--	u32 vdev_id;
--	u32 scan_priority;
--	u32 notify_scan_events;
--	u32 dwell_time_active;
--	u32 dwell_time_passive;
--	u32 min_rest_time;
--	u32 max_rest_time;
--	u32 repeat_probe_time;
--	u32 probe_spacing_time;
--	u32 idle_time;
--	u32 max_scan_time;
--	u32 probe_delay;
--	u32 scan_ctrl_flags;
--
--	u32 ie_len;
--	u32 n_channels;
--	u32 n_ssids;
--	u32 n_bssids;
--
--	u8 ie[WLAN_SCAN_PARAMS_MAX_IE_LEN];
--	u32 channels[64];
--	struct wmi_ssid_arg ssids[WLAN_SCAN_PARAMS_MAX_SSID];
--	struct wmi_bssid_arg bssids[WLAN_SCAN_PARAMS_MAX_BSSID];
--};
--
- #define WMI_SCAN_STOP_ONE       0x00000000
- #define WMI_SCN_STOP_VAP_ALL    0x01000000
- #define WMI_SCAN_STOP_ALL       0x04000000
+ drivers/net/wireless/ti/wlcore/sdio.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
----
-base-commit: 3ab6aff5793c3c7bdf6535d9b0024544a4abbdd5
-change-id: 20240226-ath11k-obsolete-wmi_start_scan_arg-7567df20ff50
+diff --git a/drivers/net/wireless/ti/wlcore/sdio.c b/drivers/net/wireless/ti/wlcore/sdio.c
+index eb5482ed76ae..47ecf33a0fbe 100644
+--- a/drivers/net/wireless/ti/wlcore/sdio.c
++++ b/drivers/net/wireless/ti/wlcore/sdio.c
+@@ -75,8 +75,8 @@ static int __must_check wl12xx_sdio_raw_read(struct device *child, int addr,
+ 
+ 	sdio_release_host(func);
+ 
+-	if (WARN_ON(ret))
+-		dev_err(child->parent, "sdio read failed (%d)\n", ret);
++	if (WARN_ON_ONCE(ret))
++		dev_err_once(child->parent, "sdio read failed (%d)\n", ret);
+ 
+ 	if (unlikely(dump)) {
+ 		printk(KERN_DEBUG "wlcore_sdio: READ from 0x%04x\n", addr);
+@@ -120,8 +120,8 @@ static int __must_check wl12xx_sdio_raw_write(struct device *child, int addr,
+ 
+ 	sdio_release_host(func);
+ 
+-	if (WARN_ON(ret))
+-		dev_err(child->parent, "sdio write failed (%d)\n", ret);
++	if (WARN_ON_ONCE(ret))
++		dev_err_once(child->parent, "sdio write failed (%d)\n", ret);
+ 
+ 	return ret;
+ }
+-- 
+2.43.0
 
 
