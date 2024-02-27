@@ -1,107 +1,116 @@
-Return-Path: <linux-wireless+bounces-4088-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4090-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62CB08691A6
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Feb 2024 14:23:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30811869440
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Feb 2024 14:52:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DA8428D299
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Feb 2024 13:23:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F9C31C249FC
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Feb 2024 13:52:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 099FD1332A7;
-	Tue, 27 Feb 2024 13:23:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qnjpRWG1"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 106471420B3;
+	Tue, 27 Feb 2024 13:51:30 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA46E13A87C
-	for <linux-wireless@vger.kernel.org>; Tue, 27 Feb 2024 13:23:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [20.231.56.155])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3675313F01E;
+	Tue, 27 Feb 2024 13:51:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=20.231.56.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709040184; cv=none; b=lGCd0jzvSmTCt/vvomZN1P37qZx5wvGB4Q6Fk9SoUYSD4Y4YsrwNX6NNbFeiX1jGC/PxEozvOMSA+WzEm5U+s6e4NGVghPLagmI+CGA6oqLVXB/9XMN013DE4f693/9n7vTA/v/8W2ob4wAFi7+uoFah4x//PMVAkEOM+k0A1+g=
+	t=1709041889; cv=none; b=RTiR3QrJqHTqUFo6G0wiRlGrO2VE7DCNZP8siXdkaBk0x8x8B14GqfcZEbpVuH0CQrDK4hSU4/9NX6m13I/zEFu8FZn43JruAE/Jv3hnGOrLkfRjKu4H/f2IrIZLOJvArfTF+ZTeBBRukd3KScB83rzoggYJS7KvZeibpQicnbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709040184; c=relaxed/simple;
-	bh=TUkZkkUGbM11amjg6L2bFOhq4Ad1EaBH2oZivW9MLj8=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=V72qD9rCI9NE28JpVDuRqG0NVyHk8hrnNW9GpzHWGyxP+cdK5SQV04ZNDiC+COJYVPwJgszn4YNePZDGpwLey9HDyg6/lHTjaQ+a/UeBMhiveVmjRexkpw7drp3HVGgWXx3HRM3MyA+vD5v6MLnffmIc8qKYppMu70UURftQBtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qnjpRWG1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A887AC433C7;
-	Tue, 27 Feb 2024 13:23:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709040184;
-	bh=TUkZkkUGbM11amjg6L2bFOhq4Ad1EaBH2oZivW9MLj8=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=qnjpRWG10Z1GRIM7uPI78mrinLBuTcKaqqj4xGZY0OLDrQKXbSZy8od7d2L2LEfqX
-	 K3n2hFb7Sl59E4Yb3v6D906va6CnV//7I1EE1PT1EbqKLQWSNk6PNOsbqUtgqKcWIr
-	 OwwRQbcWNaaSf228gp3jggrQg3Q1uN/56W72Wc2FpzGtft68Yegp3MBFOql2hB/Ix3
-	 5ipAMT0XpA3WXTpEI4JF3IHhQoKrimhQHod6me4IlIP+24fHbvT4UZXcqF/oubB8T1
-	 LVP0CyhQDcjQDvLWp6l4+wfNR+bNZRqRvZD47Li33tcsIGhHERlbLoQtZH3PnS92a2
-	 JAlHMO8sv/ukA==
-From: Kalle Valo <kvalo@kernel.org>
-To: Lingbo Kong <quic_lingbok@quicinc.com>
-Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v4] wifi: ath12k: report tx bitrate for iw dev xxx
- station dump
-References: <20240219095802.1147-1-quic_lingbok@quicinc.com>
-	<87y1b7jkxu.fsf@kernel.org>
-	<6f39eb1c-97f7-4029-a5f2-5ab36ff0f0a6@quicinc.com>
-Date: Tue, 27 Feb 2024 15:23:01 +0200
-In-Reply-To: <6f39eb1c-97f7-4029-a5f2-5ab36ff0f0a6@quicinc.com> (Lingbo Kong's
-	message of "Tue, 27 Feb 2024 21:07:36 +0800")
-Message-ID: <877ciq9h3e.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1709041889; c=relaxed/simple;
+	bh=25KIikUSQM4AHnPVJzVUXiR8trFSdiqq3nXlzQll/2U=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID; b=cZwkL6WCkcNrbMjwl5TbOkdUoCCk/gBU/iqhuvDA14iQcWlMJexUUB58b5k+msQXLmb/1/VXLMxaHbA5SaI8DWVMPX0cEhbw5L1NTQwa4c8VMgSMncuhPNoP4k8SIe7Ub8CPa3iq3rXztRrbntWQUi6OSVYjn/uy2F9znUg/PHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=20.231.56.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
+Received: from duoming$zju.edu.cn ( [124.236.128.238] ) by
+ ajax-webmail-mail-app3 (Coremail) ; Tue, 27 Feb 2024 21:44:43 +0800
+ (GMT+08:00)
+Date: Tue, 27 Feb 2024 21:44:43 +0800 (GMT+08:00)
+X-CM-HeaderCharset: UTF-8
+From: duoming@zju.edu.cn
+To: "Joe Perches" <joe@perches.com>
+Cc: "Arend van Spriel" <arend.vanspriel@broadcom.com>,
+	linux-kernel@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
+	brcm80211@lists.linux.dev, linux-wireless@vger.kernel.org,
+	justinstitt@google.com, john@keeping.me.uk, quic_alokad@quicinc.com,
+	marcan@marcan.st, johannes.berg@intel.com, linus.walleij@linaro.org,
+	kvalo@kernel.org
+Subject: Re: [PATCH] wifi: brcm80211: handle pmk_op allocation failure
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2023.4-cmXT5 build
+ 20231205(37e20f0e) Copyright (c) 2002-2024 www.mailtech.cn
+ mispb-4df6dc2c-e274-4d1c-b502-72c5c3dfa9ce-zj.edu.cn
+In-Reply-To: <b0a352781f58a829deadffbe2ef2085c97c6ab32.camel@perches.com>
+References: <20240227080613.34001-1-duoming@zju.edu.cn>
+ <87166784-79ab-4eb4-ad1e-af4bc31757b7@broadcom.com>
+ <b0a352781f58a829deadffbe2ef2085c97c6ab32.camel@perches.com>
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=UTF-8
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Message-ID: <62bf57d8.2291.18deacf80c6.Coremail.duoming@zju.edu.cn>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:cC_KCgBHvTdM591lQACiAQ--.38834W
+X-CM-SenderInfo: qssqjiasttq6lmxovvfxof0/1tbiAwQEAWXc3dIZAwAAsu
+X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
+	CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
+	daVFxhVjvjDU=
 
-Lingbo Kong <quic_lingbok@quicinc.com> writes:
-
-> On 2024/2/26 23:37, Kalle Valo wrote:
->> Lingbo Kong <quic_lingbok@quicinc.com> writes:
->> 
->>> The tx bitrate of "iw dev xxx station dump" always show an invalid value
->>> "tx bitrate: 6.0MBit/s".
->>>
->>> To address this issue, parse the tx complete report from firmware and
->>> indicate the tx rate to mac80211.
->>>
->>> After that, "iw dev xxx station dump" show the correct tx bitrate such as:
->>> tx bitrate: 104.0 MBit/s MCS 13
->>> tx bitrate: 144.4 MBit/s MCS 15 short GI
->>> tx bitrate: 626.9 MBit/s 80MHz HE-MCS 6 HE-NSS 2 HE-GI 0 HE-DCM 0
->>> tx bitrate: 1921.5 MBit/s 160MHz HE-MCS 9 HE-NSS 2 HE-GI 0 HE-DCM 0
->>>
->>> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
->>> Tested-on: QCN9274 hw2.0 PCI QCN9274 hw2.0 PCI
->>> WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
->>>
->>> Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
->> Please use full englist words like transmit instead of tx. Also the
->> title could be simplified to:
->> wifi: ath12k: report station mode transmit rate to user space
->> Here I assumed this only works in station mode. Or does this also
->> support AP and P2P mode? The commit message should explain that.
->> 
->
-> Ok, i will apply it in next version. Thanks for pointing out.
-
-After rereading my comments maybe keep the title simple like:
-
-  wifi: ath12k: report station mode transmit rate
-
-But it would be good to clarify in the commit message what modes this is
-supported. And what hardware families support this.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+T24gVHVlLCAyNyBGZWIgMjAyNCAwMzo0MjoxMyAtMDgwMCBKb2UgUGVyY2hlcyB3cm90ZToKPiA+
+ID4gVGhlIGt6YWxsb2MoKSBpbiBicmNtZl9wbWtzYV92M19vcCgpIHdpbGwgcmV0dXJuIG51bGwg
+aWYgdGhlCj4gPiA+IHBoeXNpY2FsIG1lbW9yeSBoYXMgcnVuIG91dC4gQXMgYSByZXN1bHQsIGlm
+IHdlIGRlcmVmZXJlbmNlCj4gPiA+IHRoZSBudWxsIHZhbHVlLCB0aGUgbnVsbCBwb2ludGVyIGRl
+cmVmZXJlbmNlIGJ1ZyB3aWxsIGhhcHBlbi4KPiA+ID4gCj4gPiA+IFJldHVybiAtRU5PTUVNIGZy
+b20gYnJjbWZfcG1rc2FfdjNfb3AoKSBpZiBremFsbG9jKCkgZmFpbHMKPiA+ID4gZm9yIHBta19v
+cC4KPiA+IAo+ID4gTkFLIChzZWUgYmVsb3cpCj4gPiAKPiA+IEFsc28gdGhpcyBpc3N1ZSB3YXMg
+cmVwb3J0ZWQgZWFybGllciBieSBKb2UgUGVyY2hlcy4gTm90IHN1cmUgaWYgaGUgCj4gPiB3YW50
+cyB0byBiZSBtZW50aW9uZWQgYXMgc3VjaC4KPiAKPiBJIHRoaW5rIGl0J3MgdW5pbXBvcnRhbnQg
+dG8gYmUgbWVudGlvbmVkLgo+IAo+IEkgdGhpbmsgaXQncyBtb3JlIGltcG9ydGFudCB0aGF0IHRo
+ZSBjb2RlIGJlIHJlc2VhcmNoZWQKPiB0aGF0IHRoZSBzaW1wbGUgcmV0dXJuIG9mIC1FTk9NRU0g
+dGhlIGFwcHJvcHJpYXRlIGZpeAo+IGFuZCBpcyBoYW5kbGVkIGJ5IGFsbCBwb3NzaWJsZSBjYWxs
+ZXJzIG9mIHRoZSBmdW5jdGlvbi4KClRoZXJlIGFyZSB0aHJlZSBmdW5jdGlvbnMgdGhhdCBjYWxs
+IHRoZSBicmNtZl9wbWtzYV92M19vcCgpLAppbmNsdWRpbmcgYnJjbWZfY2ZnODAyMTFfc2V0X3Bt
+a3NhKCksIGJyY21mX2NmZzgwMjExX2RlbF9wbWtzYSgpCmFuZCBicmNtZl9jZmc4MDIxMV9mbHVz
+aF9wbWtzYSgpLiBUaGUgcmV0dXJuIHR5cGUgb2YgdGhlIGFib3ZlCnRocmVlIGZ1bmN0aW9ucyBp
+cyBzMzIuIElmIGJyY21mX3Bta3NhX3YzX29wKCkgcmV0dXJucyAtRU5PTUVNLAp0aGUgYWJvdmUg
+dGhyZWUgZnVuY3Rpb25zIHdpbGwgYWxzbyByZXR1cm4gLUVOT01FTS4gSXQgY291bGQgYmUKaGFu
+ZGxlZCBhcHByb3ByaWF0ZWx5IGJ5IHRoZSBjYWxsZXJzIG9mIHRoZSBmdW5jdGlvbi4gU28gSSB0
+aGluawp0aGUgc2ltcGxlIHJldHVybiBvZiAtRU5PTUVNIGlzIGFwcHJvcHJpYXRlLgoKPiA+ID4g
+Rml4ZXM6IGE5NjIwMmFjYWVhNCAoIndpZmk6IGJyY21mbWFjOiBjZmc4MDIxMTogQWRkIHN1cHBv
+cnQgZm9yIFBNS0lEX1YzIG9wZXJhdGlvbnMiKQo+ID4gPiBTaWduZWQtb2ZmLWJ5OiBEdW9taW5n
+IFpob3UgPGR1b21pbmdAemp1LmVkdS5jbj4KPiA+ID4gLS0tCj4gPiA+ICAgZHJpdmVycy9uZXQv
+d2lyZWxlc3MvYnJvYWRjb20vYnJjbTgwMjExL2JyY21mbWFjL2NmZzgwMjExLmMgfCA1ICsrKysr
+Cj4gPiA+ICAgMSBmaWxlIGNoYW5nZWQsIDUgaW5zZXJ0aW9ucygrKQo+ID4gPiAKPiA+ID4gZGlm
+ZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL2Jyb2FkY29tL2JyY204MDIxMS9icmNtZm1h
+Yy9jZmc4MDIxMS5jcSBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL2Jyb2FkY29tL2JyY204MDIxMS9i
+cmNtZm1hYy9jZmc4MDIxMS5jCj4gPiA+IGluZGV4IDI4ZDZhMzBjYzAxLi4zYjQyMGIzMzE4OCAx
+MDA2NDQKPiA+ID4gLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvYnJvYWRjb20vYnJjbTgwMjEx
+L2JyY21mbWFjL2NmZzgwMjExLmMKPiA+ID4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvYnJv
+YWRjb20vYnJjbTgwMjExL2JyY21mbWFjL2NmZzgwMjExLmMKPiA+ID4gQEAgLTQzMjIsNiArNDMy
+MiwxMCBAQCBicmNtZl9wbWtzYV92M19vcChzdHJ1Y3QgYnJjbWZfaWYgKmlmcCwgc3RydWN0IGNm
+ZzgwMjExX3Bta3NhICpwbWtzYSwKPiA+ID4gICAJaW50IHJldDsKPiA+ID4gICAKPiA+ID4gICAJ
+cG1rX29wID0ga3phbGxvYyhzaXplb2YoKnBta19vcCksIEdGUF9LRVJORUwpOwo+ID4gPiArCWlm
+ICghcG1rX29wKSB7Cj4gPiA+ICsJCXJldCA9IC1FTk9NRU07Cj4gPiA+ICsJCWdvdG8gb3V0Owo+
+ID4gPiArCX0KPiA+IAo+ID4gVGhlcmUgaXMgcmVhbGx5IG5vIG5lZWQgdG8gaW50cm9kdWNlIGEg
+bmV3IGxhYmVsIGZvciB0aGlzLiBBbHRob3VnaCB5b3UgCj4gPiBjYW4ga2ZyZWUoKSBhIE5VTEwg
+cG9pbnRlciB0aGVyZSBpcyBubyBuZWVkIHRvIGRvIHNvIHdoZW4geW91IGtub3cgCj4gPiBhbHJl
+YWR5IGl0IGlzIE5VTEwuIEp1c3QgcmV0dXJuIC1FTk9NRU0gYW5kIGJlIGRvbmUgd2l0aCBpdC4K
+PiA+IAo+ID4gUmVnYXJkcywKPiA+IEFyZW5kCj4gPiAKPiA+ID4gICAJcG1rX29wLT52ZXJzaW9u
+ID0gY3B1X3RvX2xlMTYoQlJDTUZfUE1LU0FfVkVSXzMpOwo+ID4gPiAgIAo+ID4gPiAgIAlpZiAo
+IXBta3NhKSB7Cj4gPiA+IEBAIC00MzQwLDYgKzQzNDQsNyBAQCBicmNtZl9wbWtzYV92M19vcChz
+dHJ1Y3QgYnJjbWZfaWYgKmlmcCwgc3RydWN0IGNmZzgwMjExX3Bta3NhICpwbWtzYSwKPiA+ID4g
+ICAJcG1rX29wLT5sZW5ndGggPSBjcHVfdG9fbGUxNihsZW5ndGgpOwo+ID4gPiAgIAo+ID4gPiAg
+IAlyZXQgPSBicmNtZl9maWxfaW92YXJfZGF0YV9zZXQoaWZwLCAicG1raWRfaW5mbyIsIHBta19v
+cCwgc2l6ZW9mKCpwbWtfb3ApKTsKPiA+ID4gK291dDoKPiA+ID4gICAJa2ZyZWUocG1rX29wKTsK
+PiA+ID4gICAJcmV0dXJuIHJldDsKPiA+ID4gICB9CgpCZXN0IHJlZ2FyZHMsCkR1b21pbmcgWmhv
+dQo=
 
