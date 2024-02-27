@@ -1,63 +1,71 @@
-Return-Path: <linux-wireless+bounces-4072-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4073-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53AE8868E0F
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Feb 2024 11:53:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BE75868E86
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Feb 2024 12:13:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 773461C23FCC
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Feb 2024 10:53:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5FC2281EA0
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Feb 2024 11:13:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD84B1386BB;
-	Tue, 27 Feb 2024 10:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A275139583;
+	Tue, 27 Feb 2024 11:13:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Hd24gszB"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Ml25MJSt"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E9901386B4;
-	Tue, 27 Feb 2024 10:52:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14F6D1386CB
+	for <linux-wireless@vger.kernel.org>; Tue, 27 Feb 2024 11:12:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709031178; cv=none; b=nRq7roqbIxcefLQcmNX1FCQ65E2+ZAIs6jjrwic5Rd9Bql8q4ll+pRNRbq2OzRRY28nW8+VQKogo7mS0IzjipCxTvjLy6F+ZY/deJB/zssWfKRH7KFiNR+f7c6b4z2IM+ZtnD351u2VHvv0GHoabWz7K7EOQRQR3zejroL5Nus4=
+	t=1709032382; cv=none; b=EDiKts3xUfANJCbVO1LQwzR7bNgfxnDxh+9DIY1qfbwX5ASTZ0jWN2fyhkDoovOYRNoJ3YTMS8Txi7XcIZWmSe1+IUrvTG8SRiJVi+pfjI9hLo25c0Iu5IRNX+5tglRlSJaZ51WWTehKIShTIllQRl15E8yhJYEj4BqMQXHgTgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709031178; c=relaxed/simple;
-	bh=QSZjUZ50vwu6ctMABlEVPk9Zai34/PnEUL4lGN7lmPM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=bH8+utmpLvYOyvSNdDYSrRfmM/HZBxn3d1C+RVQlxEbOYkegolM2ghtcvyGUZVODKEOx7MwSOfroRVA7iqpxtmCzS2u/4WrL1rZsnnPezX8u15C/qssCuTD1RGtbAVyFsg5/TbOHzDYX1a12Ycx3HIrZL2ZiAPXmSEsF6elnW/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Hd24gszB; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41R9ZEO6022683;
-	Tue, 27 Feb 2024 10:52:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=oDTJ2+9IOdVFHed5HSEjPpe5xJe6fV9RI3NfptpcPqs=; b=Hd
-	24gszBc7RVtN/CcDKsaPg+8q8BxR+sVHWy8r1Iq0UuiJ4lv6zw4tG1r7yd3h/O3N
-	NB87wTnctuFZ4p3Zrm1MJkJ+nz89M7plIfl/ep/KHkWsnjSr9btO8FxWi2pRHGQU
-	YfZrzcS9CYy/UH4erOM69IPHpz78j63DffgqMMLVj5A76oGrDo5M6eOubM1T1+M8
-	I9ZKMBvezkpXDiagHwXAU5P6ExEftDDMwWeuufZfiQRGEkEaRMFV3z+J4v4KoEQC
-	VNuyQ7BpQbbgf65Bu4nL5HblMSwgZGBjNGlI2t5ARlzkVga3Prkn1tAn3idcgOsl
-	BsNb24ktk6hCmk7pQj+A==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wh50795km-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 27 Feb 2024 10:52:51 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 41RAqbO6007654
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 27 Feb 2024 10:52:37 GMT
-Received: from [10.231.195.68] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Tue, 27 Feb
- 2024 02:52:36 -0800
-Message-ID: <033a82d5-b8c1-437c-be85-ea37fb1e9420@quicinc.com>
-Date: Tue, 27 Feb 2024 18:52:33 +0800
+	s=arc-20240116; t=1709032382; c=relaxed/simple;
+	bh=d+Ov2hZsfyB476NNSdFbVCf1K3jsYJHNl/CmWu4lGFU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UAHN8VY28FViLkZqPN159JkIUh+QGQuzve57gqYkB6UjfpyF0SIfWNhjw99OIaBOOeyUGfB2XyzhB75j+dYXvrMnbMa/dBdBzdq6h7DyeCa/sc7CnGL338U0JaMWAV4q0UZVitcpTeV2xGZUk8qUeJ1NKQFjKtB1AOsaRFiR+NU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Ml25MJSt; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-33d6bd39470so2258099f8f.3
+        for <linux-wireless@vger.kernel.org>; Tue, 27 Feb 2024 03:12:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1709032378; x=1709637178; darn=vger.kernel.org;
+        h=in-reply-to:autocrypt:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=P0eoXGt+g4RpU2b7YLNM960oDAd3g/19QefU//zbQNg=;
+        b=Ml25MJSt9PB9u0/fhrL0cl1+FEdQgUFKMG+3wdlHE+VKAy51P6+JYFL6Zc+yFRHUxE
+         TMfPQsMlvgVg8xHxSeYjtH7jRjLRgTqfQTT/t1+gsCuOJ0HvNDeJt8RA1CroBZ3dKn6U
+         Y9SCdfd9XFiACrIEkub0hrLGtJjPa/4ibujJs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709032378; x=1709637178;
+        h=in-reply-to:autocrypt:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=P0eoXGt+g4RpU2b7YLNM960oDAd3g/19QefU//zbQNg=;
+        b=qRKXknZG63G+LteqZEo+oSSfPBye6jV1DahYKgaQ5/lbpra1qGsnjD8YEj55VoPxjP
+         bv36uq+4ZN0zMj8ejqEVh1/BMD/KGHQ1/2Pu+T/q8oUld7Bsnmh2B5U/rrougNGDNVCu
+         DiK+AwAhJl0Pdcjf7CgblDv5hQ5b55A8Aj1iHr3Lz/OZQFpZ9HeHGhYl/UlmsSxK9vuB
+         gHkV95Htk4wnb68wesB6D3G/wed1PXLdhTDsvRoVGajzcohXgIU8hmyLWl//d/DZefTP
+         MRW1iqxC1/4YUATk69QVjfIKa7lxqHxRGVrAHghQZHyt0deALBDeskIS3185y5hFeQbh
+         I2Mw==
+X-Forwarded-Encrypted: i=1; AJvYcCU3hguVQHN5ZBbYObLs5k9LMTWLO2bwLSt6kgUc8WrIlnMxZb1qAZVc/DRMNe1yKW8GdYwvkTvAZoqgpqHQNUwRxotyxLAEzt5KKcBNj1E=
+X-Gm-Message-State: AOJu0Yw71t2cOxUjAtNJ70lkbyPs94XjoQk61KMfn5ztheY04OUrPcgX
+	FXkyoU0IBb0H8N2bglCsUFxb9Liw35c/gttwNfDIPHzixXt8PS/hpjn5gIIPLA==
+X-Google-Smtp-Source: AGHT+IHHvz90/p2Xwwzr4JipR+b7w6FewUofHz/rB0n3h35sC6WNGRzXnS1OB6r03nFrD5oDiv+SWA==
+X-Received: by 2002:adf:eecf:0:b0:33d:2474:5aa with SMTP id a15-20020adfeecf000000b0033d247405aamr6683014wrp.40.1709032378466;
+        Tue, 27 Feb 2024 03:12:58 -0800 (PST)
+Received: from [10.230.42.27] ([192.19.152.250])
+        by smtp.gmail.com with ESMTPSA id bu25-20020a056000079900b0033d8a17a710sm11352379wrb.88.2024.02.27.03.12.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 27 Feb 2024 03:12:58 -0800 (PST)
+Message-ID: <356ec25f-b5e0-4b1b-bd0a-0d6cb9ae3c0c@broadcom.com>
+Date: Tue, 27 Feb 2024 12:12:57 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,120 +73,191 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/3] wifi: ath11k: hibernation support
+Subject: Re: [PATCH][next] wifi: brcmfmac: fweh: Fix boot crash on Raspberry
+ Pi 4
+To: Kalle Valo <kvalo@kernel.org>, "Gustavo A. R. Silva"
+ <gustavoars@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>, linux-wireless@vger.kernel.org,
+ brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
+ linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+References: <Zc+3PFCUvLoVlpg8@neat>
+ <170902559101.3280425.2706190192200235643.kvalo@kernel.org>
+From: Arend van Spriel <arend.vanspriel@broadcom.com>
+Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
+ 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
+In-Reply-To: <170902559101.3280425.2706190192200235643.kvalo@kernel.org>
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="000000000000d897eb06125b1be9"
+
+--000000000000d897eb06125b1be9
 Content-Language: en-US
-To: <ath11k@lists.infradead.org>, <manivannan.sadhasivam@linaro.org>
-CC: <linux-wireless@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        <mhi@lists.linux.dev>
-References: <20240227104427.7505-1-quic_bqiang@quicinc.com>
-From: Baochen Qiang <quic_bqiang@quicinc.com>
-In-Reply-To: <20240227104427.7505-1-quic_bqiang@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: CrHNkUuqffRZyeNywZ20-pPS7P4TUBea
-X-Proofpoint-GUID: CrHNkUuqffRZyeNywZ20-pPS7P4TUBea
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-26_11,2024-02-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 suspectscore=0
- clxscore=1015 mlxscore=0 malwarescore=0 impostorscore=0 phishscore=0
- lowpriorityscore=0 mlxlogscore=999 priorityscore=1501 spamscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2402120000 definitions=main-2402270084
 
+On 2/27/2024 10:19 AM, Kalle Valo wrote:
+> "Gustavo A. R. Silva" <gustavoars@kernel.org> wrote:
+> 
+>> Fix boot crash on Raspberry Pi by moving the update to `event->datalen`
+>> before data is copied into flexible-array member `data` via `memcpy()`.
+>>
+>> Flexible-array member `data` was annotated with `__counted_by(datalen)`
+>> in commit 62d19b358088 ("wifi: brcmfmac: fweh: Add __counted_by for
+>> struct brcmf_fweh_queue_item and use struct_size()"). The intention of
+>> this is to gain visibility into the size of `data` at run-time through
+>> its _counter_ (in this case `datalen`), and with this have its accesses
+>> bounds-checked at run-time via CONFIG_FORTIFY_SOURCE and
+>> CONFIG_UBSAN_BOUNDS.
+>>
+>> To effectively accomplish the above, we shall update the counter
+>> (`datalen`), before the first access to the flexible array (`data`),
+>> which was also done in the mentioned commit.
+>>
+>> However, commit edec42821911 ("wifi: brcmfmac: allow per-vendor event
+>> handling") inadvertently caused a buffer overflow, detected by
+>> FORTIFY_SOURCE. It moved the `event->datalen = datalen;` update to after
+>> the first `data` access, at which point `event->datalen` was not yet
+>> updated from zero (after calling `kzalloc()`), leading to the overflow
+>> issue.
+>>
+>> This fix repositions the `event->datalen = datalen;` update before
+>> accessing `data`, restoring the intended buffer overflow protection. :)
+>>
+>> Fixes: edec42821911 ("wifi: brcmfmac: allow per-vendor event handling")
+>> Reported-by: Nathan Chancellor <nathan@kernel.org>
+>> Closes: https://gist.github.com/nathanchance/e22f681f3bfc467f15cdf6605021aaa6
+>> Tested-by: Nathan Chancellor <nathan@kernel.org>
+>> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+>> Reviewed-by: Kees Cook <keescook@chromium.org>
+> 
+> Arend, ack?
 
+Figured Kees Cook was the trumping authority here, but here it is:
 
-On 2/27/2024 6:44 PM, Baochen Qiang wrote:
-> Currently in ath11k we keep the firmware running on the WLAN device when the
-> network interface (wlan0) is down. The problem is that this will break
-> hibernation, obviously the firmware can't be running after the whole system is
-> powered off. To power down the ath11k firmware for suspend/hibernation some
-> changes both in MHI subsystem and ath11k are needed.
-> 
-> This patchset fixes a longstanding bug report about broken hibernation support:
-> 
-> https://bugzilla.kernel.org/show_bug.cgi?id=214649
-> 
-> There already is an RFC version which has been tested by multiple users with
-> positive results:
-> 
-> https://patchwork.kernel.org/project/linux-wireless/cover/20231127162022.518834-1-kvalo@kernel.org/
-> 
-> Basically the RFC version adds two APIs to MHI stack: with the first one ath11k
-> is able to keep MHI devices when going to suspend/hibernation, getting us rid of
-> the probe deferral issue when resume back. while with the second one ath11k could
-> manually prepare/unprepare MHI channels by itself, which is needed because QRTR
-> doesn't probe those channels automatically in this case.
-> 
-> Mani, the MHI maintainer, firstly doesn't like that version and insists that an
-> MHI device should be destroyed when suspend/hibernation, according to his
-> understanding on device driver model. See
-> 
-> https://lore.kernel.org/mhi/20231127162022.518834-1-kvalo@kernel.org/
-> 
-> After a long discussion Mani thought we might need a new PM callback with which
-> ath11k is able to wait until kernel unblocks device probe and thus MHI channels
-> get probed. So we came to the kernel PM list and there Mani realized that his
-> understanding is not correct so he finally agrees to keep MHI device during
-> suspend/hibernation. See
-> 
-> https://lore.kernel.org/all/21cd2098-97e1-4947-a5bb-a97582902ead@quicinc.com/
-> 
-> Mani also pointed out that an MHI controller driver (ath11k here) should not touch
-> MHI channels directly because those channels are managed by the corresponding MHI
-> client driver (QRTR here). To address this, we come up with this version.
-> 
-> Compared with that RFC version, this version adds PM callbacks in QRTR module:
-> suspend callback unprepares MHI channels during suspend and resume callback
-> prepares those channels during resume. In this way ath11k doesn't need to do
-> unprepare/prepare work by itself so those two APIs added in RFC version are
-> removed now.
-> 
-> The power down/up procedure requires a specific sequence in which PM callbacks
-> of wiphy, ath11k and QRTR are called, this is achieved by exploiting the
-> child-father relationship between their device struct, and also the PM framework
-> which separates whole suspend/resume process into several stages. Details in
-> patch [3/3].
-> 
-> v3:
->   - skip QRTR suspend/resume if MHI device is found to be in suspend state.
-Forget to mention that comments on 'destroy_device' are also updated per 
-Mani in patch 1/3.
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 
-> 
-> v2:
->   - add comment on why destroying the device is optional in
->     mhi_pm_disable_transition().
->   - rename mhi_power_down_no_destroy() as mhi_power_down_keep_dev().
->   - refine API description of mhi_power_down() and
->     mhi_power_down_keep_dev().
->   - add/remove __maybe_unused to QRTR PM callbacks.
->   - remove '#ifdef CONFIG_PM'.
->   - refine commit log of patch 1/3 and 2/3.
-> 
-> Baochen Qiang (3):
->    bus: mhi: host: add mhi_power_down_keep_dev()
->    net: qrtr: support suspend/hibernation
->    wifi: ath11k: support hibernation
-> 
->   drivers/bus/mhi/host/internal.h        |   4 +-
->   drivers/bus/mhi/host/pm.c              |  42 ++++++++--
->   drivers/net/wireless/ath/ath11k/ahb.c  |   6 +-
->   drivers/net/wireless/ath/ath11k/core.c | 105 +++++++++++++++++--------
->   drivers/net/wireless/ath/ath11k/core.h |   6 +-
->   drivers/net/wireless/ath/ath11k/hif.h  |  14 +++-
->   drivers/net/wireless/ath/ath11k/mhi.c  |  12 ++-
->   drivers/net/wireless/ath/ath11k/mhi.h  |   5 +-
->   drivers/net/wireless/ath/ath11k/pci.c  |  44 +++++++++--
->   drivers/net/wireless/ath/ath11k/qmi.c  |   2 +-
->   include/linux/mhi.h                    |  18 ++++-
->   net/qrtr/mhi.c                         |  46 +++++++++++
->   12 files changed, 244 insertions(+), 60 deletions(-)
-> 
-> 
-> base-commit: c39a5cfa0448f3afbee78373f16d87815a674f11
+Gr. AvS
+
+--000000000000d897eb06125b1be9
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+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
+2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
+Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
+HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
+Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
+KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
+Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
+dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
+OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
+MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
+BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
+ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
+zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
+sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
+BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
+N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
+p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
+YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCwydhRWMdgWfTIWju3
+3ooZ+RvfBqj0Yqh+AqxYEhHj7jAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yNDAyMjcxMTEyNThaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAH9kljoXCXD9T2daecWDCoLsCeLqmPgrSKKZv
+08GL68CAu2cOBUu/IuXlOTBnqJ4qhBHQkZsSlc86zXAtxdTrrMOXEDkBf3ZZkjPGSuP4DaDuncBT
+iM9gVjHzcTew7J3MrVF8Y2Ps5ud6xk9Gx7GME8M79TIHA4Da4ke95/sYWFUxMLN/KUkxi3Vha0n5
+r09LLTBmC8OUwieY8J6v9rIBJ57SOs1CA7ygFgY10MtTNjRxnsEGJfUP4kBNQgqmbE2fu3/ySKkq
+3vIo/qhLQNO61isDUdCJVpLLXZB+CFCjnnLqfvuqOYNcdUKisUafDW8CtFH4UWfBfmXVo6DIk6ph
+wg==
+--000000000000d897eb06125b1be9--
 
