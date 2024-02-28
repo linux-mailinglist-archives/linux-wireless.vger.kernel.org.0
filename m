@@ -1,225 +1,208 @@
-Return-Path: <linux-wireless+bounces-4205-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4206-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C4ED86B39A
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 16:46:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48BDE86B3D8
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 16:54:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A925D1F238CD
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 15:46:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9ECC1F2D735
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 15:54:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9674E15CD77;
-	Wed, 28 Feb 2024 15:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2626915CD5D;
+	Wed, 28 Feb 2024 15:54:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="PrX32Ap/"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="jojpmHSA"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A428A15CD73
-	for <linux-wireless@vger.kernel.org>; Wed, 28 Feb 2024 15:46:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C64E15B99E
+	for <linux-wireless@vger.kernel.org>; Wed, 28 Feb 2024 15:54:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709135206; cv=none; b=OT1vx0MC6L/L7FopCSTv5sitcutIj2M4LVEPNvlOm4truyoyNbbCIXqOINZ7zf1k8pL0lSCjGJjBoWRTkFTyqX90bWz6Zm+lWYrxLSQSUX/fQppLZycZB8+czzNeQMB5QG2PJ1WoF2AzfvUGtGLHREz+TKPStmDF9xG/lhuYbGQ=
+	t=1709135671; cv=none; b=uH0WqSKMtsYJ0xSvOPtChDj14tNMPq4kOcPXufCk4OARRpdMO9mcavm9uFZ+bwyPlGSvjIW6mCml3DMfc9UYG7gVHPAG7PBRmlg3ojlS/pAv8zEfybQMkgjulrhQ+j0pck/NXtz8XAvX1t9WH+bUbpNXt+rhAesB4yvIvrLktqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709135206; c=relaxed/simple;
-	bh=hbfHgygufL3amx161ypDTE9kc1zS58JuL5hZtG29Do0=;
-	h=From:To:CC:Date:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=etwqU556n0UfNZCIh1n/mc0DffBNYZ9jVKi1IzjXkIxQVJy6T1rF3tilzgtlB076giqY8bvf4P9gtpNEwzpVSfD/m1dOGJkHNUTA57T4jn/irQSV1TiOihMOFRa/2tnAZR2mjMhCHHcccSW+QOPyKWYO6lfKQxwv8uGaAKqO4+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=PrX32Ap/; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-33d32f74833so3117180f8f.3
-        for <linux-wireless@vger.kernel.org>; Wed, 28 Feb 2024 07:46:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1709135203; x=1709740003; darn=vger.kernel.org;
-        h=mime-version:subject:user-agent:references:in-reply-to:message-id
-         :date:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=u9DwaFfbMt4LCxYoG2+3oek0h5cLmIci+nk5YW/mWr4=;
-        b=PrX32Ap/+qvLz8QTDRKmjnCpbsjfQS5DNvYTry1j8U19IIA4Vhl8RwFHuB+tFeFyZ/
-         lR7aFF/vkFBfRa0P7vLvMfpKApjqU79PvMc3eUwBKclVJ+eUnpJolimArKtWhef6G2iT
-         cD9q95JTigGCwUzm2qi15ZMZr2+OO9wPDGh1k=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709135203; x=1709740003;
-        h=mime-version:subject:user-agent:references:in-reply-to:message-id
-         :date:cc:to:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=u9DwaFfbMt4LCxYoG2+3oek0h5cLmIci+nk5YW/mWr4=;
-        b=u7V5A1QyFqJ/eKWGjbgW7bm3DucvuMYzQP7S85ICM+rYuYc/IycV0NcLW//kpGPd7o
-         u6BRto0VUXEcyvu63IrwK+GLjbmFli4hci2Q+fspEwDbarAdR9JLtAk+kBmt/kIjD04v
-         jAaHtSJGIF4upcuepHq/EvZMgCJbaqwnyD39nPDbJY9vHn+0b004qmwn5mtNh306bAsZ
-         cY9qCX7G1ZQ+/JjZRZc+NSnrfsZiLMtbUwSdywPAxFFEk+9r9hm6lQVIbCTbn82LNmoA
-         cB8EFkuglAAHN3lQZrS755xIyZ9A1DorzSP94HFmfU3b3X4G4FgXX2ZikfLWtJM6GKRf
-         Wa9w==
-X-Forwarded-Encrypted: i=1; AJvYcCUjVOXYz5eQGmg6H9qyrL8RWT+qEIr3e/0il0WjXLv7wfmQzAVFZ8c1WcFhk4M+/LYtILAgeMy3nd53kAHKLHRHEIjyhHDTcNU+wXuVSnc=
-X-Gm-Message-State: AOJu0YwXlAamEYvuqFFPtxbmJIsekDrA5fgIvw4d8xaC0E9zy0WPl7U1
-	JJq2vFs2N4vvxADDepKjB1XCljGAKfJ/h5mR50HR1GBh1IOiivCUhXlFgydX3w==
-X-Google-Smtp-Source: AGHT+IHQN68KE4OEiZrl4HLpjd4rXhK4a01mIb7ofUTAPf156UfR5b+Zs8/4ExnmGn46/Je3C04ONg==
-X-Received: by 2002:a5d:6288:0:b0:33b:5f1d:5ef4 with SMTP id k8-20020a5d6288000000b0033b5f1d5ef4mr9108503wru.1.1709135202946;
-        Wed, 28 Feb 2024 07:46:42 -0800 (PST)
-Received: from [192.168.178.38] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id bk25-20020a0560001d9900b0033dd98c518bsm9706734wrb.50.2024.02.28.07.46.42
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 28 Feb 2024 07:46:42 -0800 (PST)
-From: Arend Van Spriel <arend.vanspriel@broadcom.com>
-To: Kees Cook <kees@kernel.org>, Duoming Zhou <duoming@zju.edu.cn>, <linux-kernel@vger.kernel.org>
-CC: <brcm80211-dev-list.pdl@broadcom.com>, <brcm80211@lists.linux.dev>, <linux-wireless@vger.kernel.org>, <justinstitt@google.com>, <jisoo.jang@yonsei.ac.kr>, <petr.tesarik.ext@huawei.com>, <quic_alokad@quicinc.com>, <hdegoede@redhat.com>, <keescook@chromium.org>, <johannes.berg@intel.com>, <kvalo@kernel.org>
-Date: Wed, 28 Feb 2024 16:46:39 +0100
-Message-ID: <18df0654c38.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <8B696743-9487-4A78-B9B4-16DA4F2F8E26@kernel.org>
-References: <20240228063408.7006-1-duoming@zju.edu.cn>
- <8B696743-9487-4A78-B9B4-16DA4F2F8E26@kernel.org>
-User-Agent: AquaMail/1.49.2 (build: 104902408)
-Subject: Re: [PATCH v2] wifi: brcm80211: handle pmk_op allocation failure
+	s=arc-20240116; t=1709135671; c=relaxed/simple;
+	bh=iwRJRIuIobmNV7gqABwlstN+7p4wjpQObuLK77wgugY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=PIEVKPPff66BN39Enhyxghad1AnXr3OPVCpzQAepXAcrUuZIwsxXd3xjtisrLiEtL/9S4tD00ydLJasxN1UJPfVgWkPPjn13EhWZxuTRl3YhZQtLC9KU8a3r282iRyY7Yzx5DJOjC/NSukkZ01i4UYHFlnyI7Al3vJI1TyLuRJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=jojpmHSA; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41SBMC7t003720;
+	Wed, 28 Feb 2024 15:54:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=jCMY1kRheSJ8wXd9sCi/k84OcVHKtwMU9rrcefoFk5M=; b=jo
+	jpmHSA1tAdDwsgO9uFZ6Nq+Gsodo3itY/SyrMKpbjc7Ni8p+PMt33Nq7PBUJ7h3q
+	DKBxmAiyjaEzYTv3ABhDy+DzfsuBkFvFwGM8LY5ftK4Ka+IRKMclgnTfkcHCTlOc
+	J8ZXrJyjGEPPGERzZfzSdIY/xTufx1oyfMxH2uyLQFfax44g0xgzHK/CsXQnhJ2F
+	QfoBxRLGZ8hGD3eZXprAA+Nbi+amHArUOlvH7+Aa6sM/b2JIFk9gmzA6EuCK3coH
+	ieLVuUEmQwYbmzQ9lLPHfILVPcOhEZ/9m5MwaoivT9tmqBXuz5o54AlhfQABAsEk
+	6mdOpY53G7e05RPdc6kQ==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3whw3f1kav-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 28 Feb 2024 15:54:22 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 41SFsL12006854
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 28 Feb 2024 15:54:21 GMT
+Received: from [10.110.113.97] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Wed, 28 Feb
+ 2024 07:54:21 -0800
+Message-ID: <788f1df8-64e1-4b3c-ae8e-00c67be1c3de@quicinc.com>
+Date: Wed, 28 Feb 2024 07:54:20 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="000000000000aabe890612730c17"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: ath11k: fix few -Wmaybe-uninitialized warnings
+Content-Language: en-US
+To: Dmitry Antipov <dmantipov@yandex.ru>,
+        Baochen Qiang
+	<quic_bqiang@quicinc.com>
+CC: Kalle Valo <kvalo@kernel.org>, <ath11k@lists.infradead.org>,
+        <linux-wireless@vger.kernel.org>, <lvc-project@linuxtesting.org>
+References: <20240228131406.165786-1-dmantipov@yandex.ru>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20240228131406.165786-1-dmantipov@yandex.ru>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: Sjc8y0hYHA6-Wk1R-a3eP3B5wfCO3e3l
+X-Proofpoint-GUID: Sjc8y0hYHA6-Wk1R-a3eP3B5wfCO3e3l
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-28_08,2024-02-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 spamscore=0
+ suspectscore=0 adultscore=0 impostorscore=0 priorityscore=1501 bulkscore=0
+ mlxscore=0 clxscore=1011 malwarescore=0 phishscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2402120000
+ definitions=main-2402280124
 
---000000000000aabe890612730c17
-Content-Type: text/plain; format=flowed; charset="us-ascii"
-Content-Transfer-Encoding: 8bit
+On 2/28/2024 5:14 AM, Dmitry Antipov wrote:
+> When compiling with gcc version 14.0.1 20240226 (experimental) and
+> W=12, I've noticed the following warnings:
+> 
+> drivers/net/wireless/ath/ath11k/mac.c: In function 'ath11k_mac_op_remain_on_channel':
+> drivers/net/wireless/ath/ath11k/mac.c:9230:12: warning: 'ret' may be used uninitialized
+> [-Wmaybe-uninitialized]
+>  9230 |         if (ret)
+> 
+> drivers/net/wireless/ath/ath11k/qmi.c: In function 'ath11k_qmi_load_file_target_mem':
+> drivers/net/wireless/ath/ath11k/qmi.c:2401:16: warning: 'ret' may be used uninitialized
+> [-Wmaybe-uninitialized]
+>  2401 |         return ret;
+> 
+> drivers/net/wireless/ath/ath11k/qmi.c: In function 'ath11k_qmi_load_bdf_qmi':
+> drivers/net/wireless/ath/ath11k/qmi.c:2494:17: warning: 'fw_entry' may be used uninitialized
+> [-Wmaybe-uninitialized]
+>  2494 |                 release_firmware(fw_entry);
+> 
+> And a bunch of them traced to uninitialized fields of the same
+> variable, e.g.:
+> 
+> drivers/net/wireless/ath/ath11k/spectral.c: In function 'ath11k_spectral_process_data':
+> drivers/net/wireless/ath/ath11k/spectral.c:700:47: warning: 'summ_rpt.meta.freq1' may
+> be used uninitialized [-Wmaybe-uninitialized]
+>   700 |         struct ath11k_spectral_summary_report summ_rpt;
+> 
+> Fix all of the above by using 0 and NULL initializers where appropriate.
+> Note there are few more (less obvious) -Wmaybe-uninitialized warnings
+> still remains, but they're hardly possible to fix without running on
+> a physical hardware. Compile tested oly.
+> 
+> Also noticed by Linux Verification Center (linuxtesting.org) with SVACE.
+> 
+> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+> ---
+>  drivers/net/wireless/ath/ath11k/mac.c      | 2 +-
+>  drivers/net/wireless/ath/ath11k/qmi.c      | 4 ++--
+>  drivers/net/wireless/ath/ath11k/spectral.c | 2 +-
+>  3 files changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+> index a6a37d67a50a..b89bc7ceaaa7 100644
+> --- a/drivers/net/wireless/ath/ath11k/mac.c
+> +++ b/drivers/net/wireless/ath/ath11k/mac.c
+> @@ -9201,7 +9201,7 @@ static int ath11k_mac_op_remain_on_channel(struct ieee80211_hw *hw,
+>  	struct ath11k *ar = hw->priv;
+>  	struct ath11k_vif *arvif = ath11k_vif_to_arvif(vif);
+>  	struct scan_req_params *arg;
+> -	int ret;
+> +	int ret = 0;
 
-On February 28, 2024 3:48:18 PM Kees Cook <kees@kernel.org> wrote:
+NAK
+the only time ret would be uninitialized is if the initial switch()
+processed an unknown state, in which case we should stop processing, not
+process as successful.
 
-> On February 27, 2024 10:34:08 PM PST, Duoming Zhou <duoming@zju.edu.cn> wrote:
->> The kzalloc() in brcmf_pmksa_v3_op() will return null if the
->> physical memory has run out. As a result, if we dereference
->> the null value, the null pointer dereference bug will happen.
->>
->> Return -ENOMEM from brcmf_pmksa_v3_op() if kzalloc() fails
->> for pmk_op.
->>
->> Fixes: a96202acaea4 ("wifi: brcmfmac: cfg80211: Add support for PMKID_V3 
->> operations")
->> Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
->> ---
->> Changes in v2:
->> - Drop the new label and just return -ENOMEM.
->>
->> drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 3 +++
->> 1 file changed, 3 insertions(+)
->>
->> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c 
->> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
->> index 28d6a30cc01..7af6d6448b9 100644
->> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
->> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
->> @@ -4322,6 +4322,9 @@ brcmf_pmksa_v3_op(struct brcmf_if *ifp, struct 
->> cfg80211_pmksa *pmksa,
->> int ret;
->>
->> pmk_op = kzalloc(sizeof(*pmk_op), GFP_KERNEL);
->> + if (!pmk_op)
->> + ret = -ENOMEM;
->
-> This doesn't fix anything. It doesn't stop the execution path; it'll 
-> continue and immediately dereference the NULL pmk_op in the next line...
+the correct fix for this is to add a default: to the switch() which
+warns and sets ret to an appropriate errno
 
-Crap. Do I look bad :-( Thanks for catching my blunder. I was seeing what I 
-wanted to see I guess.
+Please submit as a separate patch
 
-Regards,
-Arend
+>  	u32 scan_time_msec;
+>  
+>  	mutex_lock(&ar->conf_mutex);
+> diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
+> index 5006f81f779b..4477f652e068 100644
+> --- a/drivers/net/wireless/ath/ath11k/qmi.c
+> +++ b/drivers/net/wireless/ath/ath11k/qmi.c
+> @@ -2293,7 +2293,7 @@ static int ath11k_qmi_load_file_target_mem(struct ath11k_base *ab,
+>  	struct qmi_txn txn;
+>  	const u8 *temp = data;
+>  	void __iomem *bdf_addr = NULL;
+> -	int ret;
+> +	int ret = 0;
 
->
->> +
->> pmk_op->version = cpu_to_le16(BRCMF_PMKSA_VER_3);
->>
->> if (!pmksa) {
->
-> --
-> Kees Cook
+I hate this since the only time ret would be uninitialized is if len is
+0 (and hence we never execute the while(remaining) loop), but nothing
+ever calls this static function with len == 0
 
+but the alternative to this is to add a guard check and that seems like
+overkill, so this one is ok
 
+>  	u32 remaining = len;
+>  
+>  	req = kzalloc(sizeof(*req), GFP_KERNEL);
+> @@ -2406,7 +2406,7 @@ static int ath11k_qmi_load_bdf_qmi(struct ath11k_base *ab,
+>  {
+>  	struct device *dev = ab->dev;
+>  	char filename[ATH11K_QMI_MAX_BDF_FILE_NAME_SIZE];
+> -	const struct firmware *fw_entry;
+> +	const struct firmware *fw_entry = NULL;
+>  	struct ath11k_board_data bd;
+>  	u32 fw_size, file_type;
+>  	int ret = 0, bdf_type;
+> diff --git a/drivers/net/wireless/ath/ath11k/spectral.c b/drivers/net/wireless/ath/ath11k/spectral.c
+> index 79e091134515..4c826b539404 100644
+> --- a/drivers/net/wireless/ath/ath11k/spectral.c
+> +++ b/drivers/net/wireless/ath/ath11k/spectral.c
+> @@ -697,7 +697,7 @@ static int ath11k_spectral_process_data(struct ath11k *ar,
+>  	struct ath11k_base *ab = ar->ab;
+>  	struct spectral_tlv *tlv;
+>  	struct spectral_summary_fft_report *summary = NULL;
+> -	struct ath11k_spectral_summary_report summ_rpt;
+> +	struct ath11k_spectral_summary_report summ_rpt = { 0 };
 
+prefer just {} since that works correctly if we ever want to add a
+non-scalar as the first member
 
---000000000000aabe890612730c17
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+>  	struct fft_sample_ath11k *fft_sample = NULL;
+>  	u8 *data;
+>  	u32 data_len, i;
 
-MIIQdwYJKoZIhvcNAQcCoIIQaDCCEGQCAQExDzANBglghkgBZQMEAgEFADALBgkqhkiG9w0BBwGg
-gg3OMIIFDTCCA/WgAwIBAgIQeEqpED+lv77edQixNJMdADANBgkqhkiG9w0BAQsFADBMMSAwHgYD
-VQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBSMzETMBEGA1UEChMKR2xvYmFsU2lnbjETMBEGA1UE
-AxMKR2xvYmFsU2lnbjAeFw0yMDA5MTYwMDAwMDBaFw0yODA5MTYwMDAwMDBaMFsxCzAJBgNVBAYT
-AkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMTEwLwYDVQQDEyhHbG9iYWxTaWduIEdDQyBS
-MyBQZXJzb25hbFNpZ24gMiBDQSAyMDIwMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA
-vbCmXCcsbZ/a0fRIQMBxp4gJnnyeneFYpEtNydrZZ+GeKSMdHiDgXD1UnRSIudKo+moQ6YlCOu4t
-rVWO/EiXfYnK7zeop26ry1RpKtogB7/O115zultAz64ydQYLe+a1e/czkALg3sgTcOOcFZTXk38e
-aqsXsipoX1vsNurqPtnC27TWsA7pk4uKXscFjkeUE8JZu9BDKaswZygxBOPBQBwrA5+20Wxlk6k1
-e6EKaaNaNZUy30q3ArEf30ZDpXyfCtiXnupjSK8WU2cK4qsEtj09JS4+mhi0CTCrCnXAzum3tgcH
-cHRg0prcSzzEUDQWoFxyuqwiwhHu3sPQNmFOMwIDAQABo4IB2jCCAdYwDgYDVR0PAQH/BAQDAgGG
-MGAGA1UdJQRZMFcGCCsGAQUFBwMCBggrBgEFBQcDBAYKKwYBBAGCNxQCAgYKKwYBBAGCNwoDBAYJ
-KwYBBAGCNxUGBgorBgEEAYI3CgMMBggrBgEFBQcDBwYIKwYBBQUHAxEwEgYDVR0TAQH/BAgwBgEB
-/wIBADAdBgNVHQ4EFgQUljPR5lgXWzR1ioFWZNW+SN6hj88wHwYDVR0jBBgwFoAUj/BLf6guRSSu
-TVD6Y5qL3uLdG7wwegYIKwYBBQUHAQEEbjBsMC0GCCsGAQUFBzABhiFodHRwOi8vb2NzcC5nbG9i
-YWxzaWduLmNvbS9yb290cjMwOwYIKwYBBQUHMAKGL2h0dHA6Ly9zZWN1cmUuZ2xvYmFsc2lnbi5j
-b20vY2FjZXJ0L3Jvb3QtcjMuY3J0MDYGA1UdHwQvMC0wK6ApoCeGJWh0dHA6Ly9jcmwuZ2xvYmFs
-c2lnbi5jb20vcm9vdC1yMy5jcmwwWgYDVR0gBFMwUTALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgEo
-CjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAN
-BgkqhkiG9w0BAQsFAAOCAQEAdAXk/XCnDeAOd9nNEUvWPxblOQ/5o/q6OIeTYvoEvUUi2qHUOtbf
-jBGdTptFsXXe4RgjVF9b6DuizgYfy+cILmvi5hfk3Iq8MAZsgtW+A/otQsJvK2wRatLE61RbzkX8
-9/OXEZ1zT7t/q2RiJqzpvV8NChxIj+P7WTtepPm9AIj0Keue+gS2qvzAZAY34ZZeRHgA7g5O4TPJ
-/oTd+4rgiU++wLDlcZYd/slFkaT3xg4qWDepEMjT4T1qFOQIL+ijUArYS4owpPg9NISTKa1qqKWJ
-jFoyms0d0GwOniIIbBvhI2MJ7BSY9MYtWVT5jJO3tsVHwj4cp92CSFuGwunFMzCCA18wggJHoAMC
-AQICCwQAAAAAASFYUwiiMA0GCSqGSIb3DQEBCwUAMEwxIDAeBgNVBAsTF0dsb2JhbFNpZ24gUm9v
-dCBDQSAtIFIzMRMwEQYDVQQKEwpHbG9iYWxTaWduMRMwEQYDVQQDEwpHbG9iYWxTaWduMB4XDTA5
-MDMxODEwMDAwMFoXDTI5MDMxODEwMDAwMFowTDEgMB4GA1UECxMXR2xvYmFsU2lnbiBSb290IENB
-IC0gUjMxEzARBgNVBAoTCkdsb2JhbFNpZ24xEzARBgNVBAMTCkdsb2JhbFNpZ24wggEiMA0GCSqG
-SIb3DQEBAQUAA4IBDwAwggEKAoIBAQDMJXaQeQZ4Ihb1wIO2hMoonv0FdhHFrYhy/EYCQ8eyip0E
-XyTLLkvhYIJG4VKrDIFHcGzdZNHr9SyjD4I9DCuul9e2FIYQebs7E4B3jAjhSdJqYi8fXvqWaN+J
-J5U4nwbXPsnLJlkNc96wyOkmDoMVxu9bi9IEYMpJpij2aTv2y8gokeWdimFXN6x0FNx04Druci8u
-nPvQu7/1PQDhBjPogiuuU6Y6FnOM3UEOIDrAtKeh6bJPkC4yYOlXy7kEkmho5TgmYHWyn3f/kRTv
-riBJ/K1AFUjRAjFhGV64l++td7dkmnq/X8ET75ti+w1s4FRpFqkD2m7pg5NxdsZphYIXAgMBAAGj
-QjBAMA4GA1UdDwEB/wQEAwIBBjAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBSP8Et/qC5FJK5N
-UPpjmove4t0bvDANBgkqhkiG9w0BAQsFAAOCAQEAS0DbwFCq/sgM7/eWVEVJu5YACUGssxOGhigH
-M8pr5nS5ugAtrqQK0/Xx8Q+Kv3NnSoPHRHt44K9ubG8DKY4zOUXDjuS5V2yq/BKW7FPGLeQkbLmU
-Y/vcU2hnVj6DuM81IcPJaP7O2sJTqsyQiunwXUaMld16WCgaLx3ezQA3QY/tRG3XUyiXfvNnBB4V
-14qWtNPeTCekTBtzc3b0F5nCH3oO4y0IrQocLP88q1UOD5F+NuvDV0m+4S4tfGCLw0FREyOdzvcy
-a5QBqJnnLDMfOjsl0oZAzjsshnjJYS8Uuu7bVW/fhO4FCU29KNhyztNiUGUe65KXgzHZs7XKR1g/
-XzCCBVYwggQ+oAMCAQICDE79bW6SMzVJMuOi1zANBgkqhkiG9w0BAQsFADBbMQswCQYDVQQGEwJC
-RTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1zYTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMg
-UGVyc29uYWxTaWduIDIgQ0EgMjAyMDAeFw0yMjA5MTAxMTQzMjNaFw0yNTA5MTAxMTQzMjNaMIGV
-MQswCQYDVQQGEwJJTjESMBAGA1UECBMJS2FybmF0YWthMRIwEAYDVQQHEwlCYW5nYWxvcmUxFjAU
-BgNVBAoTDUJyb2FkY29tIEluYy4xGTAXBgNVBAMTEEFyZW5kIFZhbiBTcHJpZWwxKzApBgkqhkiG
-9w0BCQEWHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wggEiMA0GCSqGSIb3DQEBAQUAA4IB
-DwAwggEKAoIBAQDxOB8Yu89pZLsG9Ic8ZY3uGibuv+NRsij+E70OMJQIwugrByyNq5xgH0BI22vJ
-LT7VKCB6YJC88ewEFfYi3EKW/sn6RL16ImUM40beDmQ12WBquJRoxVNyoByNalmTOBNYR95ZQZJw
-1nrzaoJtK0XIsv0dNCUcLlAc+jHkngD+I0ptVuWoMO1BcJexqJf5iX2M1CdC8PXTh9g4FIQnG2mc
-2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
-Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
-HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
-Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
-KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
-Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
-dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
-OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
-MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
-BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
-ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
-zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
-sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
-BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
-N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
-p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
-YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCAB++3izfh2Syu92o+y
-vxWJqiRgwsXFP1x4dvDV25qhMjAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yNDAyMjgxNTQ2NDNaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
-AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAoM8k32aNHzKCHaJcwA1jVywRvXOGmAUQzXuU
-hHapT1PhA3iUuhQTDPKEs4VviChvQCgzO3dcTomFtqfF8yW/ygsz7owT8IdGw+c/+Cbv7S1atZwJ
-DEYd3FZ4i4ZMT9HB5LCeQX7sAUHGoUXlaRW1x9qt8SJVrCJoLgzQmJaMyDMk4RhVCSkWXT0HlEjb
-vPtFk57HMy/F6zRTyl3s02qmCPqWjf/A4BmbFhEc/M7dbVQnuBRNZXNBQpM/fmp56WJz0d88cAdQ
-a+6m8Ekl9CT0ymxjmuTceCZXcL1JeE+jWX2ffQjH+Wb67vr6KckgeJ6w05IsdW+Eolluv9v5rdHs
-Cw==
---000000000000aabe890612730c17--
 
