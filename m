@@ -1,67 +1,67 @@
-Return-Path: <linux-wireless+bounces-4167-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4168-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA92386AB6B
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 10:36:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5874386AB6C
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 10:36:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6AB4F282BF4
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 09:36:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89DE91C20BB9
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 09:36:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3074F364D4;
-	Wed, 28 Feb 2024 09:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D3736AFF;
+	Wed, 28 Feb 2024 09:36:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="lRsrjPIA"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="DAiaLFTC"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BEF636123
-	for <linux-wireless@vger.kernel.org>; Wed, 28 Feb 2024 09:36:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB239364DF
+	for <linux-wireless@vger.kernel.org>; Wed, 28 Feb 2024 09:36:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709112964; cv=none; b=TvK1mkiFzf9Kg5m1e8Y+g2ZNuYpBdJgOTf97X95ZQvJfbNCwq4m3Wr/lvGCIzyzFN4UrEhhPsjUvmC6LwOR0SlwoURnOciN8S7IoPAo5ywp+Puyh0Zv+bFetZXUl0D+x57rxxYHRfy0qEScri01nc5DM92ljKM+WgzoHR6HbEdg=
+	t=1709112966; cv=none; b=jJxmf6Iy/KM+rDKX8lBfIv8OYIlFi81InqMnEvgaekJg8j7NyUAAy8PwOEYjfQjD5wMi3a/rMBchbCOlJoo8bfvhcNeZp4n+s4ll5PzLBHn0OV9YPELTfqUd0FQuAoqRxdjf52I/nTHQ2+HUv25n9E2mLeFodB0lIhJsqz0AhzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709112964; c=relaxed/simple;
-	bh=ph+inMJpVBelNmK0UOnV/piW2DzFDy2/ZI/yazSrecY=;
+	s=arc-20240116; t=1709112966; c=relaxed/simple;
+	bh=VPbc65+VGQ0NXrMUV7MSnw0Zkr6vdRTV4zrcz8RhXPk=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s+kaVAEXXgJLw8TlsfKXqa65w8yeTkp2JUA0DO/vb5FqdZ5+GYWPqNV2QvNjpDiGlWrsJhxDTnQLIwp5cvMBGFyy9F/gGIN9+gNo8yBusSfM+S9qg6zRzuyO5kcnCXqYhVPB3SDHTASMUxR+i5o7h1/fmYE8iG3dWkLgc6nHUXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=lRsrjPIA; arc=none smtp.client-ip=205.220.168.131
+	 MIME-Version:Content-Type; b=X4FSbpMZdqwXDDZGVXyYefrvF04dmHANK3M0VtckA5vDZU1fapRxATeJNWktVBrdoJyU2WJ/QR0aCKO/et8STdReRn2lr8ses6eRIYw8P+1DMDJRY4LRBRq+UYJkDlTAuLaxUP3U9iKb0JVrPoyrasQ60Mlfj0sCyd/D1kPDQVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=DAiaLFTC; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41S6OUlS003609;
-	Wed, 28 Feb 2024 09:35:59 GMT
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41S6oCHR008330;
+	Wed, 28 Feb 2024 09:36:01 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	from:to:cc:subject:date:message-id:in-reply-to:references
 	:mime-version:content-transfer-encoding:content-type; s=
-	qcppdkim1; bh=/JjLnKsiyO7yJp+LU5B2/Dm3b081IRrmMYYJ3f835Jo=; b=lR
-	srjPIA3b/Fzo5mNEGSgRempc9mxs16Gapq8nCvSWBzFjUdfzRoIqcEc7b/q2Y0u2
-	UvqYdiDUB3YhpmrvAc/YcLIawOFHaudtL5PxTVO2+KHXAZL2t1TlxF+lb2+7S1S+
-	aILEMLUYgTfSbXb8d26+JAib8aWa3awzJA4RSHu/vJPgiwnUx7Dw+Ns/rrYGbl/o
-	8hFi/YLOexxB21NKiqy2vH4d1FUbXWT5BVOLy0Vk69oTwUZO6MpPTayixqrK+p9O
-	Xu9q+Vk4HMSm5xYBjPDvuLID2idf4Ygg+6AA1Q+y1LzSHUG40/WuyYqGv7SWkLKA
-	s/5Rz1y2onCndcp5ff9g==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3whw3f0kqj-1
+	qcppdkim1; bh=ajuHYkDGZwcvYcnmMdFoyUQ5YYFqfpnWUwyA35aWg3A=; b=DA
+	iaLFTCsuUNoMbi3unqXNpeOUtNJIfyjRkmxyXV5nsasX6wOzBYwgXzSuxS/z5A9Z
+	xxesyv7EJjLiX6p0OEGBnnuBwTGSHJUQd1xQISV3wsJMkuITW7PpUqxytDFjCHZL
+	mm3KM6Z3fI46xjfWlzKDdle95rOekw4s3+h3Q9csRNB+x1AKECsEvbCL/3f6pl+r
+	8T8gWpfNBuSBw2s1Z3NPUxJQd2qBOToQlsyyT0ZygUg5zxiilLY/lyCG5xAVU1SX
+	ojAhz+WDtDgQ7Bg3ewouRj6UC4IjPQa0GkzMkvlF/TWZKino5xuBRHskpleKQJrZ
+	9VndNxlGWCVF/paOUqBw==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3whwb3rk56-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 28 Feb 2024 09:35:59 +0000 (GMT)
+	Wed, 28 Feb 2024 09:36:01 +0000 (GMT)
 Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 41S9ZxwM020623
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 41S9a0av029116
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 28 Feb 2024 09:35:59 GMT
+	Wed, 28 Feb 2024 09:36:00 GMT
 Received: from Mayan.qca.qualcomm.com (10.80.80.8) by
  nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Wed, 28 Feb 2024 01:35:57 -0800
+ 15.2.1118.40; Wed, 28 Feb 2024 01:35:59 -0800
 From: Kang Yang <quic_kangyang@quicinc.com>
 To: <ath11k@lists.infradead.org>
 CC: <linux-wireless@vger.kernel.org>, <quic_kangyang@quicinc.com>
-Subject: [PATCH v2 3/6] wifi: ath11k: implement handling of P2P NoA event
-Date: Wed, 28 Feb 2024 17:35:34 +0800
-Message-ID: <20240228093537.25052-4-quic_kangyang@quicinc.com>
+Subject: [PATCH v2 4/6] wifi: ath11k: change WLAN_SCAN_PARAMS_MAX_IE_LEN from 256 to 512
+Date: Wed, 28 Feb 2024 17:35:35 +0800
+Message-ID: <20240228093537.25052-5-quic_kangyang@quicinc.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240228093537.25052-1-quic_kangyang@quicinc.com>
 References: <20240228093537.25052-1-quic_kangyang@quicinc.com>
@@ -77,391 +77,42 @@ X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01b.na.qualcomm.com (10.47.209.197)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: DSc90_wGwJJKgK5CqzQ7Kbdj4SoUKpXi
-X-Proofpoint-GUID: DSc90_wGwJJKgK5CqzQ7Kbdj4SoUKpXi
+X-Proofpoint-ORIG-GUID: Sdf1taMvY3uSDWnOiwIO0XuadmMm63aR
+X-Proofpoint-GUID: Sdf1taMvY3uSDWnOiwIO0XuadmMm63aR
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-02-28_04,2024-02-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 spamscore=0
- suspectscore=0 adultscore=0 impostorscore=0 priorityscore=1501 bulkscore=0
- mlxscore=0 clxscore=1015 malwarescore=0 phishscore=0 lowpriorityscore=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 impostorscore=0
+ priorityscore=1501 phishscore=0 suspectscore=0 spamscore=0 malwarescore=0
+ mlxlogscore=999 mlxscore=0 lowpriorityscore=0 clxscore=1015 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2402120000
  definitions=main-2402280075
 
-The NoA(Notice of Absence) attribute is used by the P2P Group Owner to
-signal its absence due to power save timing, concurrent operation, or
-off-channel scanning. It is also used in the P2P Presence Request-Response
-mechanism.
-
-The NoA attribute shall be present in the P2P IE in the beacon frames
-transmitted by a P2P Group Owner when a NoA schedule is being advertised,
-or when the CTWindow is non-zero.
-
-So add support to update P2P information after P2P GO is up through
-event WMI_P2P_NOA_EVENTID, and always put it in probe resp.
-
-Create p2p.c and p2p.h for P2P related functions and definitions.
+Mac80211 needs more space for P2P scan ie in P2P mode, 256 is not
+enough, resize it to 512.
 
 Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.37
 Tested-on: QCA2066 hw2.1 PCI WLAN.HSP.1.1-03926.13-QCAHSPSWPL_V2_SILICONZ_CE-2.52297.2
 
 Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 ---
- drivers/net/wireless/ath/ath11k/Makefile |   3 +-
- drivers/net/wireless/ath/ath11k/p2p.c    | 149 +++++++++++++++++++++++
- drivers/net/wireless/ath/ath11k/p2p.h    |  22 ++++
- drivers/net/wireless/ath/ath11k/wmi.c    |  68 ++++++++++-
- drivers/net/wireless/ath/ath11k/wmi.h    |  31 +++++
- 5 files changed, 271 insertions(+), 2 deletions(-)
- create mode 100644 drivers/net/wireless/ath/ath11k/p2p.c
- create mode 100644 drivers/net/wireless/ath/ath11k/p2p.h
+ drivers/net/wireless/ath/ath11k/wmi.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/Makefile b/drivers/net/wireless/ath/ath11k/Makefile
-index 2c94d50ae36f..43d2d8ddcdc0 100644
---- a/drivers/net/wireless/ath/ath11k/Makefile
-+++ b/drivers/net/wireless/ath/ath11k/Makefile
-@@ -18,7 +18,8 @@ ath11k-y += core.o \
- 	    dbring.o \
- 	    hw.o \
- 	    pcic.o \
--	    fw.o
-+	    fw.o \
-+	    p2p.o
- 
- ath11k-$(CONFIG_ATH11K_DEBUGFS) += debugfs.o debugfs_htt_stats.o debugfs_sta.o
- ath11k-$(CONFIG_NL80211_TESTMODE) += testmode.o
-diff --git a/drivers/net/wireless/ath/ath11k/p2p.c b/drivers/net/wireless/ath/ath11k/p2p.c
-new file mode 100644
-index 000000000000..aabf1e04b465
---- /dev/null
-+++ b/drivers/net/wireless/ath/ath11k/p2p.c
-@@ -0,0 +1,149 @@
-+// SPDX-License-Identifier: BSD-3-Clause-Clear
-+/*
-+ * Copyright (c) 2024 Qualcomm Innovation Center, Inc. All rights reserved.
-+ */
-+
-+#include "core.h"
-+#include "wmi.h"
-+#include "mac.h"
-+#include "p2p.h"
-+
-+static void ath11k_p2p_noa_ie_fill(u8 *data, size_t len,
-+				   const struct ath11k_wmi_p2p_noa_info *noa)
-+{
-+	struct ieee80211_p2p_noa_attr *noa_attr;
-+	u8 noa_descriptors, ctwindow;
-+	bool oppps;
-+	__le16 *noa_attr_len;
-+	u16 attr_len;
-+	int i;
-+
-+	ctwindow = u32_get_bits(noa->noa_attr, WMI_P2P_NOA_INFO_CTWIN_TU);
-+	oppps = u32_get_bits(noa->noa_attr, WMI_P2P_NOA_INFO_OPP_PS);
-+	noa_descriptors = u32_get_bits(noa->noa_attr,
-+				       WMI_P2P_NOA_INFO_DESC_NUM);
-+
-+	/* P2P IE */
-+	data[0] = WLAN_EID_VENDOR_SPECIFIC;
-+	data[1] = len - 2;
-+	data[2] = (WLAN_OUI_WFA >> 16) & 0xff;
-+	data[3] = (WLAN_OUI_WFA >> 8) & 0xff;
-+	data[4] = (WLAN_OUI_WFA >> 0) & 0xff;
-+	data[5] = WLAN_OUI_TYPE_WFA_P2P;
-+
-+	/* NOA ATTR */
-+	data[6] = IEEE80211_P2P_ATTR_ABSENCE_NOTICE;
-+	noa_attr_len = (__le16 *)&data[7]; /* 2 bytes */
-+	noa_attr = (struct ieee80211_p2p_noa_attr *)&data[9];
-+
-+	noa_attr->index = u32_get_bits(noa->noa_attr,
-+				       WMI_P2P_NOA_INFO_INDEX);
-+	noa_attr->oppps_ctwindow = ctwindow;
-+	if (oppps)
-+		noa_attr->oppps_ctwindow |= IEEE80211_P2P_OPPPS_ENABLE_BIT;
-+
-+	for (i = 0; i < noa_descriptors; i++) {
-+		noa_attr->desc[i].count = noa->descriptors[i].type_count;
-+		noa_attr->desc[i].duration =
-+			cpu_to_le32(noa->descriptors[i].duration);
-+		noa_attr->desc[i].interval =
-+			cpu_to_le32(noa->descriptors[i].interval);
-+		noa_attr->desc[i].start_time =
-+			cpu_to_le32(noa->descriptors[i].start_time);
-+	}
-+
-+	attr_len = 2; /* index + oppps_ctwindow */
-+	attr_len += noa_descriptors * sizeof(struct ieee80211_p2p_noa_desc);
-+	*noa_attr_len = __cpu_to_le16(attr_len);
-+}
-+
-+static size_t
-+ath11k_p2p_noa_ie_len_compute(const struct ath11k_wmi_p2p_noa_info *noa)
-+{
-+	size_t len = 0;
-+	u8 noa_descriptors = u32_get_bits(noa->noa_attr,
-+					  WMI_P2P_NOA_INFO_DESC_NUM);
-+
-+	if (!(noa_descriptors) &&
-+	    !(u32_get_bits(noa->noa_attr, WMI_P2P_NOA_INFO_OPP_PS)))
-+		return 0;
-+
-+	len += 1 + 1 + 4; /* EID + len + OUI */
-+	len += 1 + 2; /* noa attr + attr len */
-+	len += 1 + 1; /* index + oppps_ctwindow */
-+	len += noa_descriptors *
-+		sizeof(struct ieee80211_p2p_noa_desc);
-+
-+	return len;
-+}
-+
-+static void ath11k_p2p_noa_ie_assign(struct ath11k_vif *arvif, void *ie,
-+				     size_t len)
-+{
-+	struct ath11k *ar = arvif->ar;
-+
-+	lockdep_assert_held(&ar->data_lock);
-+
-+	kfree(arvif->u.ap.noa_data);
-+
-+	arvif->u.ap.noa_data = ie;
-+	arvif->u.ap.noa_len = len;
-+}
-+
-+static void __ath11k_p2p_noa_update(struct ath11k_vif *arvif,
-+				    const struct ath11k_wmi_p2p_noa_info *noa)
-+{
-+	struct ath11k *ar = arvif->ar;
-+	void *ie;
-+	size_t len;
-+
-+	lockdep_assert_held(&ar->data_lock);
-+
-+	ath11k_p2p_noa_ie_assign(arvif, NULL, 0);
-+
-+	len = ath11k_p2p_noa_ie_len_compute(noa);
-+	if (!len)
-+		return;
-+
-+	ie = kmalloc(len, GFP_ATOMIC);
-+	if (!ie)
-+		return;
-+
-+	ath11k_p2p_noa_ie_fill(ie, len, noa);
-+	ath11k_p2p_noa_ie_assign(arvif, ie, len); }
-+
-+void ath11k_p2p_noa_update(struct ath11k_vif *arvif,
-+			   const struct ath11k_wmi_p2p_noa_info *noa)
-+{
-+	struct ath11k *ar = arvif->ar;
-+
-+	spin_lock_bh(&ar->data_lock);
-+	__ath11k_p2p_noa_update(arvif, noa);
-+	spin_unlock_bh(&ar->data_lock);
-+}
-+
-+static void ath11k_p2p_noa_update_vdev_iter(void *data, u8 *mac,
-+					    struct ieee80211_vif *vif)
-+{
-+	struct ath11k_vif *arvif = ath11k_vif_to_arvif(vif);
-+	struct ath11k_p2p_noa_arg *arg = data;
-+
-+	if (arvif->vdev_id != arg->vdev_id)
-+		return;
-+
-+	ath11k_p2p_noa_update(arvif, arg->noa);
-+}
-+
-+void ath11k_p2p_noa_update_by_vdev_id(struct ath11k *ar, u32 vdev_id,
-+				      const struct ath11k_wmi_p2p_noa_info *noa)
-+{
-+	struct ath11k_p2p_noa_arg arg = {
-+		.vdev_id = vdev_id,
-+		.noa = noa,
-+	};
-+
-+	ieee80211_iterate_active_interfaces_atomic(ar->hw,
-+						   IEEE80211_IFACE_ITER_NORMAL,
-+						   ath11k_p2p_noa_update_vdev_iter,
-+						   &arg);
-+}
-diff --git a/drivers/net/wireless/ath/ath11k/p2p.h b/drivers/net/wireless/ath/ath11k/p2p.h
-new file mode 100644
-index 000000000000..d907940a9b09
---- /dev/null
-+++ b/drivers/net/wireless/ath/ath11k/p2p.h
-@@ -0,0 +1,22 @@
-+/* SPDX-License-Identifier: BSD-3-Clause-Clear */
-+/*
-+ * Copyright (c) 2024 Qualcomm Innovation Center, Inc. All rights reserved.
-+ */
-+
-+#ifndef ATH11K_P2P_H
-+#define ATH11K_P2P_H
-+
-+#include "wmi.h"
-+
-+struct ath11k_wmi_p2p_noa_info;
-+
-+struct ath11k_p2p_noa_arg {
-+	u32 vdev_id;
-+	const struct ath11k_wmi_p2p_noa_info *noa;
-+};
-+
-+void ath11k_p2p_noa_update(struct ath11k_vif *arvif,
-+			   const struct ath11k_wmi_p2p_noa_info *noa);
-+void ath11k_p2p_noa_update_by_vdev_id(struct ath11k *ar, u32 vdev_id,
-+				      const struct ath11k_wmi_p2p_noa_info *noa);
-+#endif
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index d86fcdd374c6..c74aa3f95658 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -20,6 +20,7 @@
- #include "hw.h"
- #include "peer.h"
- #include "testmode.h"
-+#include "p2p.h"
- 
- struct wmi_tlv_policy {
- 	size_t min_len;
-@@ -154,6 +155,10 @@ static const struct wmi_tlv_policy wmi_tlv_policies[] = {
- 		.min_len = sizeof(struct wmi_per_chain_rssi_stats) },
- 	[WMI_TAG_TWT_ADD_DIALOG_COMPLETE_EVENT] = {
- 		.min_len = sizeof(struct wmi_twt_add_dialog_event) },
-+	[WMI_TAG_P2P_NOA_INFO] = {
-+		.min_len = sizeof(struct ath11k_wmi_p2p_noa_info) },
-+	[WMI_TAG_P2P_NOA_EVENT] = {
-+		.min_len = sizeof(struct wmi_p2p_noa_event) },
- };
- 
- #define PRIMAP(_hw_mode_) \
-@@ -981,7 +986,7 @@ int ath11k_wmi_vdev_start(struct ath11k *ar, struct wmi_vdev_start_req_arg *arg,
- 		      FIELD_PREP(WMI_TLV_LEN, 0);
- 
- 	/* Note: This is a nested TLV containing:
--	 * [wmi_tlv][wmi_p2p_noa_descriptor][wmi_tlv]..
-+	 * [wmi_tlv][ath11k_wmi_p2p_noa_descriptor][wmi_tlv]..
- 	 */
- 
- 	ptr += sizeof(*tlv);
-@@ -8645,6 +8650,64 @@ static void ath11k_wmi_gtk_offload_status_event(struct ath11k_base *ab,
- 	kfree(tb);
- }
- 
-+static int ath11k_wmi_p2p_noa_event(struct ath11k_base *ab,
-+				    struct sk_buff *skb)
-+{
-+	const void **tb;
-+	const struct wmi_p2p_noa_event *ev;
-+	const struct ath11k_wmi_p2p_noa_info *noa;
-+	struct ath11k *ar;
-+	int ret, vdev_id;
-+	u8 noa_descriptors;
-+
-+	tb = ath11k_wmi_tlv_parse_alloc(ab, skb, GFP_ATOMIC);
-+	if (IS_ERR(tb)) {
-+		ret = PTR_ERR(tb);
-+		ath11k_warn(ab, "failed to parse tlv: %d\n", ret);
-+		return ret;
-+	}
-+
-+	ev = tb[WMI_TAG_P2P_NOA_EVENT];
-+	noa = tb[WMI_TAG_P2P_NOA_INFO];
-+
-+	if (!ev || !noa) {
-+		ret = -EPROTO;
-+		goto out;
-+	}
-+
-+	vdev_id = ev->vdev_id;
-+	noa_descriptors = u32_get_bits(noa->noa_attr,
-+				       WMI_P2P_NOA_INFO_DESC_NUM);
-+
-+	if (noa_descriptors > WMI_P2P_MAX_NOA_DESCRIPTORS) {
-+		ath11k_warn(ab, "invalid descriptor num %d in P2P NoA event\n",
-+			    noa_descriptors);
-+		return -EINVAL;
-+		goto out;
-+	}
-+
-+	ath11k_dbg(ab, ATH11K_DBG_WMI,
-+		   "wmi tlv p2p noa vdev_id %i descriptors %u\n",
-+		   vdev_id, noa_descriptors);
-+
-+	rcu_read_lock();
-+	ar = ath11k_mac_get_ar_by_vdev_id(ab, vdev_id);
-+	if (!ar) {
-+		ath11k_warn(ab, "invalid vdev id %d in P2P NoA event\n",
-+			    vdev_id);
-+		ret = -EINVAL;
-+		goto unlock;
-+	}
-+
-+	ath11k_p2p_noa_update_by_vdev_id(ar, vdev_id, noa);
-+
-+unlock:
-+	rcu_read_unlock();
-+out:
-+	kfree(tb);
-+	return 0;
-+}
-+
- static void ath11k_wmi_tlv_op_rx(struct ath11k_base *ab, struct sk_buff *skb)
- {
- 	struct wmi_cmd_hdr *cmd_hdr;
-@@ -8772,6 +8835,9 @@ static void ath11k_wmi_tlv_op_rx(struct ath11k_base *ab, struct sk_buff *skb)
- 	case WMI_GTK_OFFLOAD_STATUS_EVENTID:
- 		ath11k_wmi_gtk_offload_status_event(ab, skb);
- 		break;
-+	case WMI_P2P_NOA_EVENTID:
-+		ath11k_wmi_p2p_noa_event(ab, skb);
-+		break;
- 	default:
- 		ath11k_dbg(ab, ATH11K_DBG_WMI, "unsupported event id 0x%x\n", id);
- 		break;
 diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
-index 4c20202947c7..564f4a9ac8ce 100644
+index 564f4a9ac8ce..ae788949bf40 100644
 --- a/drivers/net/wireless/ath/ath11k/wmi.h
 +++ b/drivers/net/wireless/ath/ath11k/wmi.h
-@@ -3630,6 +3630,37 @@ struct wmi_ftm_event_msg {
- 	u8 data[];
- } __packed;
+@@ -66,7 +66,7 @@ struct wmi_tlv {
  
-+#define WMI_P2P_MAX_NOA_DESCRIPTORS		4
-+
-+struct wmi_p2p_noa_event {
-+	u32 vdev_id;
-+} __packed;
-+
-+struct ath11k_wmi_p2p_noa_descriptor {
-+	u32 type_count; /* 255: continuous schedule, 0: reserved */
-+	u32 duration;  /* Absent period duration in micro seconds */
-+	u32 interval;   /* Absent period interval in micro seconds */
-+	u32 start_time; /* 32 bit tsf time when in starts */
-+} __packed;
-+
-+#define WMI_P2P_NOA_INFO_CHANGED_FLAG		BIT(0)
-+#define WMI_P2P_NOA_INFO_INDEX			GENMASK(15, 8)
-+#define WMI_P2P_NOA_INFO_OPP_PS			BIT(16)
-+#define WMI_P2P_NOA_INFO_CTWIN_TU		GENMASK(23, 17)
-+#define WMI_P2P_NOA_INFO_DESC_NUM		GENMASK(31, 24)
-+
-+struct ath11k_wmi_p2p_noa_info {
-+	/* Bit 0 - Flag to indicate an update in NOA schedule
-+	 * Bits 7-1 - Reserved
-+	 * Bits 15-8 - Index (identifies the instance of NOA sub element)
-+	 * Bit  16 - Opp PS state of the AP
-+	 * Bits 23-17 -  Ctwindow in TUs
-+	 * Bits 31-24 -  Number of NOA descriptors
-+	 */
-+	u32 noa_attr;
-+	struct ath11k_wmi_p2p_noa_descriptor descriptors[WMI_P2P_MAX_NOA_DESCRIPTORS];
-+} __packed;
-+
- #define WMI_BEACON_TX_BUFFER_SIZE	512
+ #define WLAN_SCAN_PARAMS_MAX_SSID    16
+ #define WLAN_SCAN_PARAMS_MAX_BSSID   4
+-#define WLAN_SCAN_PARAMS_MAX_IE_LEN  256
++#define WLAN_SCAN_PARAMS_MAX_IE_LEN  512
  
- #define WMI_EMA_TMPL_IDX_SHIFT            8
+ #define WMI_APPEND_TO_EXISTING_CHAN_LIST_FLAG 1
+ 
 -- 
 2.34.1
 
