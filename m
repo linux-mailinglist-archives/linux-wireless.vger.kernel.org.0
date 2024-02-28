@@ -1,73 +1,76 @@
-Return-Path: <linux-wireless+bounces-4212-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4213-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D780C86B795
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 19:46:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0ED986B7CC
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 20:02:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C67321C20F2F
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 18:46:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF9A51C21FA2
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 19:02:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A646971EAE;
-	Wed, 28 Feb 2024 18:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C0BB40870;
+	Wed, 28 Feb 2024 19:02:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ac6pwsO4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="agcNssyU"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F15FF71EB0
-	for <linux-wireless@vger.kernel.org>; Wed, 28 Feb 2024 18:46:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFDC81EA6E
+	for <linux-wireless@vger.kernel.org>; Wed, 28 Feb 2024 19:02:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709146010; cv=none; b=GAsJBdE54eA2bmILS5ru9rkJtgfjXkgf3lQckQRhtf/jJRD35nBeVNTp2x5FK8RD0Om9F59wlrKw4029Hp816QRyDEB4FqxKjTDfbyIQZ1KSUGCLCMeYZY/d5gm38fA54LyFX9z28xxDxSSTTxiLOlU8/ZcK2c40f1bwZRFlAwg=
+	t=1709146927; cv=none; b=TVqCqrli84rZooOh9aUkWRqkAhtu0XfecJ7krVCpeVU3U+lv1HEGngZn9uYUG4RV4uuUVEXTbUvVzhpFffcBe1l2r87jEkRh17sc2f9DxXfMaeXJPGNdT1MDRKW5CMG7m/ufR4pXHrNYYFzp/wl88E9fLdnfvhkRXIZD0f5TutM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709146010; c=relaxed/simple;
-	bh=saSHKYQ5L7ihvRJfQPH3ZpaibZPWmOL0qJjM/8cJrEw=;
+	s=arc-20240116; t=1709146927; c=relaxed/simple;
+	bh=9g4y2IVfAQrUN0HTvRJRw710VakyA5XoR0fWI3iw/8M=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Eos9kP3r/8pVk4MiHAGnroNj+Z5uqVeh7EwuKDPQexXy1M8CasvTQS4no2wU2B/NRwYqgPGScmKP1qqmNadeqElVFbNTmDZqBseTdanUke4akJPsgcqGP1Lfp28Nb0w3FinyNfyMfLJOCwIBF13SHyJf4slJ+tuTbp8ImUgsf1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ac6pwsO4; arc=none smtp.client-ip=209.85.160.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	 In-Reply-To:Content-Type; b=DO0Wod5aNrlip/Y3v50Ho51XTFDphkxnMbA7QSs0x7QPxQrcai/WNL18XWiwNb/Sz5R23ekVeVkN2yfYJgY4w2n15c+3iZCjqsawpmJ4L75BqGoPpxhP4Ewlggl8NBa6QkKuYrU2WjneSOfksALdQDBq2adKcZiSsHmQTsn1rm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lwfinger.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=agcNssyU; arc=none smtp.client-ip=209.85.167.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lwfinger.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-42e89610ed8so149811cf.3
-        for <linux-wireless@vger.kernel.org>; Wed, 28 Feb 2024 10:46:48 -0800 (PST)
+Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-3c19e8d4a9eso9126b6e.0
+        for <linux-wireless@vger.kernel.org>; Wed, 28 Feb 2024 11:02:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709146008; x=1709750808; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1709146924; x=1709751724; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=PHuw2uncckIZhbhm2xvPn9FEgRi3tDLRWW2k4Bzu7Ns=;
-        b=Ac6pwsO4cTgB8sDaxkFaQiPlEHwlYIjEUH2bjNYHe0/WTW194PjZOTDUrBNia4Brqq
-         91Gd607rpEojNooFxpLRxgIjQ/WByokAMVBWd8t4C8glTgDPB7SIchzQKJHfJVp9B9ll
-         jWjQq0q/KlQV2e4HowoaM/C3YVMyYKU4XABLusK55uAwgFucvaYtruhVWZXE932o8164
-         RDAmv/TefkGcD2/DLJrG31MCwmUGZDHrHwt9/J3mVVHfJ/CX06gNkCTpAqzKQfJngSH4
-         uFy0dJJHQT9Ue3peeY39ps072KyVPK0iMzoNN3sQLtK3SwMubw8wZJLHORr3wYUGFac4
-         kJBA==
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=5O0ZfWuMG4BsPkn1lukAcwRckYsDgg1ZfQ+/p93tbGg=;
+        b=agcNssyU7lSfemN/KHrgepoCt75iqdg6jl2/hSdj5JwjQgsxFjBFbXiDfUSob5ktvr
+         0gMSE1QFjXC6IpykdAxnQXBA1vO44InA9ez4IWJk823BOwt9T9aZnPHN4smJqI/oUBot
+         4auZUgiSdkSwMVYGB5celpH5hojJ1K6QQQsf2C0OVKpxSzlmiQPITnNEFKDKeBYPHE9G
+         bujYm2WW4DlNzSNZZGLSpA2xSQdVuIBrr1QDIbtpCTKEZs1y2kmApsloPuqlFr38WWq6
+         IKo5L2E5hw1qrRJu4brv3hT6ZHPvqNcRAI5+iHi1C/0SBK86lQzygkHc75OH78tANVKc
+         WHjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709146008; x=1709750808;
+        d=1e100.net; s=20230601; t=1709146924; x=1709751724;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PHuw2uncckIZhbhm2xvPn9FEgRi3tDLRWW2k4Bzu7Ns=;
-        b=FLkZh641+YpJlLKEdf4TLk8ZBoeL1++Vmtpl9QxQZXyxp3kxVYSRrMsou0fYqCBRrt
-         Aq2Ag/DBaUAFK5O23rSsvLWtO+h5LseKXy9zAsHzzuHagqwq0zDEQGuAAVPtImcoEdE6
-         4XGwkruslOg7Dn0ooVyLrYNg8GEvvVftGTWaOMXLZphPgS8hpeVermXT8CwPIPx2GYdE
-         NJjzPsO2dUI6eroHI3bs/QCLqDym7ogszB5126cq5RFJsWOf4PGr2nV2JBon7QuUwr8K
-         gRxn0WW+cuJ+REnB8lCydKDSsVpZrRB24dSDbKnGDSq9lysJG+1kBXlUOH3LHdPWh2Q6
-         VTLA==
-X-Gm-Message-State: AOJu0YypILP+N/7S6zw56DcFHbOqOi+4V4DgAelLw92sCDuBxGEFUVPb
-	qXji1X4Wvtg1OCm5dSOS5YqX4ohP9qf/BAE3Nit5es87CIm1Oppa
-X-Google-Smtp-Source: AGHT+IHlslU2XdNksuaZaX3Gi0NN29fJA1PPl8Wp5p7mMyg8xMXPyIIC2VYMkGn/4eaoSq99d65yxg==
-X-Received: by 2002:ac8:5c96:0:b0:42e:b063:a35f with SMTP id r22-20020ac85c96000000b0042eb063a35fmr1850048qta.8.1709146007686;
-        Wed, 28 Feb 2024 10:46:47 -0800 (PST)
-Received: from [10.102.4.159] ([208.195.13.130])
-        by smtp.gmail.com with ESMTPSA id t6-20020ac85306000000b0042c1ce79b4bsm18198qtn.50.2024.02.28.10.46.46
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5O0ZfWuMG4BsPkn1lukAcwRckYsDgg1ZfQ+/p93tbGg=;
+        b=FBxjjHTnUD6v084xxgOKwGCri/Wz3GayQ9twYiZ+UzLKNjoDU/3A0rtlCwwL4NDKR3
+         zCqsd0GkIxZVm+oRJVC2rb+VKLAA6YQzJFb38U/zbPcNhJIUWJiQQ0kQxWsOwqDcdGl/
+         xdlwgTRrAuqUIUs89uapMPFagYg7o+Shnj1mI3ysBdksVBq8U0kX0TlnfoHWrrQILJX9
+         Wvckv4BwVj3saHweE+kllURzfVBn/PwuKbIOuCNnZy106gUfpqXjJiUikE2ixJ6SwQhE
+         U47AXVf/6KK+YSGJtb1/tilM034GBj80jSiyJ85juRi6Fdvn20v+Ni8uvmFqzAzFWJvx
+         Bc4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWHbyynPO+RZdH42NES0r+he235vLWea2Wm3ZNEMF9jE30OJDxq10eGfIF40sp8wdoi8LGeL37SL0grhH9vx3mUIg2njYes/yWeuAXR7nU=
+X-Gm-Message-State: AOJu0YzuLIJswWdF3/Ry7Yn8S5LdLQWceKRorJ6M3PV2hw7pFFWhYv+x
+	gj+7mIVOrgioiWvEzlzP1QH+6tiDUSt8eWivaWhzoLy0AcDwDhb/
+X-Google-Smtp-Source: AGHT+IGMy2jZFeRB9YV2mw7/Au2mHAMYq6fe0bNBS7Ugmv+rUBD5gfNtTVrtvoCPl71fCgDJFC2hig==
+X-Received: by 2002:a05:6808:1998:b0:3c1:adab:989e with SMTP id bj24-20020a056808199800b003c1adab989emr6524924oib.37.1709146924060;
+        Wed, 28 Feb 2024 11:02:04 -0800 (PST)
+Received: from [192.168.1.119] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id w5-20020a056808018500b003c170120a9bsm1960oic.26.2024.02.28.11.02.03
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 28 Feb 2024 10:46:47 -0800 (PST)
-Message-ID: <6362d9b2-6ed2-4454-bf1b-8614d181bc93@gmail.com>
-Date: Wed, 28 Feb 2024 10:46:45 -0800
+        Wed, 28 Feb 2024 11:02:03 -0800 (PST)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <17ff48b2-1f78-4eaf-b4ad-9dfeb5ea8620@lwfinger.net>
+Date: Wed, 28 Feb 2024 13:02:02 -0600
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -75,155 +78,72 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: ath10k: poll service ready message before failing
+Subject: Re: [PATCH 4/4] wifi: rtw88: 8821c: Fix false alarm count
 Content-Language: en-US
-To: Baochen Qiang <quic_bqiang@quicinc.com>, ath10k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-References: <20240221031729.2707-1-quic_bqiang@quicinc.com>
- <d67fb4f4-aea2-4668-aac4-6e7eca8db4fa@gmail.com>
- <0ee7ae2f-8034-4908-b6e3-fa17a995c661@quicinc.com>
-From: James Prestwood <prestwoj@gmail.com>
-In-Reply-To: <0ee7ae2f-8034-4908-b6e3-fa17a995c661@quicinc.com>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Ping-Ke Shih <pkshih@realtek.com>
+References: <909d9f75-44cd-4710-9d3f-56691fd58090@gmail.com>
+ <38e3d94e-0cab-4a43-be10-c15ff5387919@gmail.com>
+ <b908b9a7-e1fd-47ba-b573-ac11b334101b@lwfinger.net>
+ <c68d2d91-fb81-41e2-b8a2-0eb63783311b@gmail.com>
+From: Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <c68d2d91-fb81-41e2-b8a2-0eb63783311b@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Hi Baochen,
-
-On 2/21/24 6:18 PM, Baochen Qiang wrote:
->
->
-> On 2/21/2024 8:38 PM, James Prestwood wrote:
->> Hi Baochen,
->>
->> On 2/20/24 7:17 PM, Baochen Qiang wrote:
->>> Currently host relies on CE interrupts to get notified that
->>> the service ready message is ready. This results in timeout
->>> issue if the interrupt is not fired, due to some unknown
->>> reasons. See below logs:
+On 2/28/24 03:57, Bitterblue Smith wrote:
+> On 28/02/2024 00:46, Larry Finger wrote:
+>> On 2/27/24 06:20, Bitterblue Smith wrote:
+>>> Make dm_info->total_fa_cnt the sum of cck_fa_cnt and ofdm_fa_cnt,
+>>> not just ofdm_fa_cnt.
 >>>
->>> [76321.937866] ath10k_pci 0000:02:00.0: wmi service ready event not 
->>> received
->>> ...
->>> [76322.016738] ath10k_pci 0000:02:00.0: Could not init core: -110
->>>
->>> And finally it causes WLAN interface bring up failure.
->>>
->>> Change to give it one more chance here by polling CE rings,
->>> before failing directly.
->>>
->>> Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00157-QCARMSWPZ-1
->>>
->>> Fixes: 5e3dd157d7e7 ("ath10k: mac80211 driver for Qualcomm Atheros 
->>> 802.11ac CQA98xx devices")
->>> Reported-by: James Prestwood <prestwoj@gmail.com>
->>> Link: 
->>> https://lore.kernel.org/linux-wireless/304ce305-fbe6-420e-ac2a-d61ae5e6ca1a@gmail.com/
->>> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+>>> Fixes: 960361238b86 ("rtw88: 8821c: add false alarm statistics")
+>>> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 >>> ---
->>>   drivers/net/wireless/ath/ath10k/wmi.c | 22 +++++++++++++++++++---
->>>   1 file changed, 19 insertions(+), 3 deletions(-)
+>>>    drivers/net/wireless/realtek/rtw88/rtw8821c.c | 2 +-
+>>>    1 file changed, 1 insertion(+), 1 deletion(-)
 >>>
->>> diff --git a/drivers/net/wireless/ath/ath10k/wmi.c 
->>> b/drivers/net/wireless/ath/ath10k/wmi.c
->>> index ddf15717d504..bf6cb2c73128 100644
->>> --- a/drivers/net/wireless/ath/ath10k/wmi.c
->>> +++ b/drivers/net/wireless/ath/ath10k/wmi.c
->>> @@ -1763,12 +1763,28 @@ void ath10k_wmi_put_wmi_channel(struct 
->>> ath10k *ar, struct wmi_channel *ch,
->>>   int ath10k_wmi_wait_for_service_ready(struct ath10k *ar)
->>>   {
->>> -    unsigned long time_left;
->>> +    unsigned long time_left, i;
->>>       time_left = wait_for_completion_timeout(&ar->wmi.service_ready,
->>>                           WMI_SERVICE_READY_TIMEOUT_HZ);
->>> -    if (!time_left)
->>> -        return -ETIMEDOUT;
->>> +    if (!time_left) {
->>> +        /* Sometimes the PCI HIF doesn't receive interrupt
->>> +         * for the service ready message even if the buffer
->>> +         * was completed. PCIe sniffer shows that it's
->>> +         * because the corresponding CE ring doesn't fires
->>> +         * it. Workaround here by polling CE rings once.
->>> +         */
->>> +        ath10k_warn(ar, "failed to receive service ready 
->>> completion, polling..\n");
->>> +
->>> +        for (i = 0; i < CE_COUNT; i++)
->>> +            ath10k_hif_send_complete_check(ar, i, 1);
->>> +
->>> +        time_left = 
->>> wait_for_completion_timeout(&ar->wmi.service_ready,
->>> +                            WMI_SERVICE_READY_TIMEOUT_HZ);
->>> +        if (!time_left)
->>> +            return -ETIMEDOUT;
->>> +    }
->>> +
->>>       return 0;
->>>   }
->>>
->>> base-commit: 707e306f3573fa321ae197d77366578e4566cff5
+>>> diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821c.c b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
+>>> index 429bb420b056..fe5d8e188350 100644
+>>> --- a/drivers/net/wireless/realtek/rtw88/rtw8821c.c
+>>> +++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
+>>> @@ -773,9 +773,9 @@ static void rtw8821c_false_alarm_statistics(struct rtw_dev *rtwdev)
+>>>          dm_info->cck_fa_cnt = cck_fa_cnt;
+>>>        dm_info->ofdm_fa_cnt = ofdm_fa_cnt;
+>>> +    dm_info->total_fa_cnt = ofdm_fa_cnt;
+>>>        if (cck_enable)
+>>>            dm_info->total_fa_cnt += cck_fa_cnt;
+>>> -    dm_info->total_fa_cnt = ofdm_fa_cnt;
+>>>          crc32_cnt = rtw_read32(rtwdev, REG_CRC_CCK);
+>>>        dm_info->cck_ok_cnt = FIELD_GET(GENMASK(15, 0), crc32_cnt);
 >>
->> Thank you for looking at this I will test this and see if it resolves 
->> the problem we're seeing but since its somewhat rare it may take me a 
->> bit to validate.
+>> I applied these 4 patches to my rtw88 GitHub repo, and loaded rtw_core with the disable_lps_deep=y option. The option reduced the number of "firmware failed to leave lps state" messages, but did not eliminate all of them. The messages I received are as follows:
 >>
->> Is this any different than just trying to bring up the interface 
->> again from userspace? I could be wrong, but my concern with this is 
->> that when I retried in userspace things got into a very odd state:
+>> [ 2063.847153] rtw_8821cu 3-6:1.0: firmware failed to leave lps state
+>> [ 2450.120216] rtw_8821cu 3-6:1.0: timed out to flush queue 2
+> 
+> [...]
+> 
+>> [ 4323.823755] rtw_8821cu 3-6:1.0: firmware failed to leave lps state
+>> [ 4453.846759] rtw_8821cu 3-6:1.0: firmware failed to leave lps state
+>> [ 4455.822861] rtw_8821cu 3-6:1.0: firmware failed to leave lps state
 >>
->>   - IWD starts
+>> My system has now been up for about 4470 sec. Obviously these messages come in a burst.
 >>
->>   - ifdown interface
+>> Larry
 >>
->>   - ifup interface, timeout -110
->>
->>   - Retry ifup, success
->>
->>   - Authenticate/associate succeed
->>
->>   - 4-way handshake fails because the device never received the 1/4 
->> frame.
->>
-> Don't get time to look into this case, but I suppose there might be 
-> some issues in error handling when interface up fails, kind of 
-> incorrect irq enable/disable or something else impacting data path, so 
-> no data frame received even after a second interface up retry succeeds,
->
-> Anyway please test this patch, which is supposed to be the right fix 
-> to this issue.
+> 
+> I have never seen these. I guess you don't get these messages
+> without the patches? Can you see which patch causes this, please?
 
-This does appear to have fixed it! For reference this was my test:
+Bitterblue,
 
-  for i in $(seq 1 100000); do sudo ip link set wlan0 down; sudo ip link 
-set wlan0 up; echo $?; done
+These warnings are not new, but probably only happen for some models of 8821CU.
 
-I never saw the up command fail, and after a while I noticed one of the 
-iterations took a bit longer to complete. Checked dmesg and saw:
+When I get time, I will try to see if I can quiet them,
 
-[ 1006.017198] ath10k_pci 0000:02:00.0: failed to receive service ready 
-completion, polling..
-[ 1006.017295] ath10k_pci 0000:02:00.0: service ready completion 
-received, continuing normally
-
-I then started IWD and it was able to connect fine (data frames were 
-being passed). I was able to trigger this 3 times relatively quickly, 
-each time IWD connected afterwards. So from my end this appears fixed.
-
-You can add tested-by me if you like:
-
-Tested-By: James Prestwood <prestwoj@gmail.com> # on QCA6174 hw3.2
+Larry
 
 
->
->> IWD would then retry indefinitely with auth/assoc succeeding but 
->> never receiving any 4-way handshake frames. The only way to get 
->> things working again was reloading the ath10k driver/reboot. Maybe 
->> this patch is different because its waiting for the initial request 
->> and no issuing a second one? Just wanted to point that out in case it 
->> sheds any light.
->>
->> Thanks,
->>
->> James
->>
 
