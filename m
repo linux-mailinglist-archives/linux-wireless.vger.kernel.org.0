@@ -1,145 +1,253 @@
-Return-Path: <linux-wireless+bounces-4174-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4176-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD24A86ABE9
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 11:11:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90BD386AC1B
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 11:24:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83FEE28A96F
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 10:10:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 465EE28360D
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 10:24:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80B50374CC;
-	Wed, 28 Feb 2024 10:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9D442D05C;
+	Wed, 28 Feb 2024 10:24:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jE9bnBwE"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iOaJ7WDj"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE1137143
-	for <linux-wireless@vger.kernel.org>; Wed, 28 Feb 2024 10:10:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7196E55C2E
+	for <linux-wireless@vger.kernel.org>; Wed, 28 Feb 2024 10:24:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709115052; cv=none; b=ckUOL8Si/I/OKZSfK3Al7C/g5FgllUsukbm26d15IWc2YxoOQfk1YBmYp6j4h+Niz4AIL8pTAvbrosvAmZ1Ornt3FEHmiAQ67n4pmTnB/ouf2cF8tjYHIipxp8oVVsgu5G3MJgTU3g9aurjjcJ+icS1yS4bWL03H8ufq2RBTGaE=
+	t=1709115872; cv=none; b=lAF2PmGcFSAxBm3zqyJ5H2O9f6Nrw9LN6DfginqOzbM1uuFbBtofgTyG578fRpoN9I8WiygCFwaFWQMpZIUfGk7DR+jRMViqAUjgAyvTTajrdaPzTDy8UtNYrtDZmVWvdy28jfdXMBTpZHOQsfqUhu2dgZxuGv9+MoTQj/sQWIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709115052; c=relaxed/simple;
-	bh=tdz0czbokXbZx8NoSb1bVuk3MM7myK0Cqgqnu3P9uqg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=u773IzCX23YY028ZcGwPTmuuGhwFdsDIHvA7wgxYqvH/M0sfullcKbiSkaRTHaJHNX91Dgkd9PHbhmQwwK5HVDTbRAW8/h1JuNZozlJq9UFX2JJPbMrFOEMwC8ZeLUli0J3tAVziZZcm3GQP0KDApPkOzamer0qmBS+OOHiI8sA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=jE9bnBwE; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1709115049;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=EDEC0vsrgcNRv6UvAcMAg7ZhZIrIeAEq54Sn/mnIp3o=;
-	b=jE9bnBwEqRkOzPXuNoecXap5xf5GvkOqmolz4yT2Oi9b3t+nvF2RXQ3RLntF8/vzCy4B+z
-	ZYvlpenEiHyRSaRPFpoiVWfHPzyJV/0uywd57FZQo71H15K8MwCW+QmAWTHaDBg694Nies
-	4mzzqSvfTj+ZAZch5ZLfXIVR0b06YvM=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-282-9bux0t8JMrCwLUL7NxhCSQ-1; Wed, 28 Feb 2024 05:10:46 -0500
-X-MC-Unique: 9bux0t8JMrCwLUL7NxhCSQ-1
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-40e40126031so28406345e9.0
-        for <linux-wireless@vger.kernel.org>; Wed, 28 Feb 2024 02:10:45 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709115045; x=1709719845;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=EDEC0vsrgcNRv6UvAcMAg7ZhZIrIeAEq54Sn/mnIp3o=;
-        b=MIj9iXygLeEcqhSiSeB1w9qcCqbwb2midlYbyNwjJpGEP/KJAQBboCy76xcTmFuPYd
-         mIjZsSjY/luI/EibQtZnvXZlkSrBznZlZ9NwsHi+WXtUX67emNN2+Ee12siLSRL1kQfq
-         tai1KCJqHust/fimi0cyUYYFRzGzWdWUWwG9I+AsAjN6EKl669Wc5cW9ndHkCz30hDBv
-         o0mn7k9IYWDZBtf/4xiTFbNPyaC/UxwCJiaao46w5R0n1mMPwdbV+sPWGcP8uAxVDoB1
-         xKFy0FkA5dKwLUiVtFJcmCnFUPevbReetXCJBVdlyEqK0oC/373l7xWA0HB2GavUe/OW
-         CnlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXGPHAm+yfFNFDcxXO+8/rid0d2WRBFKXav+pcyEm099PH0ECI2WkvWgP6PW34rHmM0yPE6aC49uvHubCnRsOkriHxcWO9xBJGYVbO+7vE=
-X-Gm-Message-State: AOJu0Yxle4bVYu0xSuET+utv+t1i8E9f7B7H8e9n6ymuFG+/DyqLX7fM
-	rkkcbEv4jz1JeZxvi/wqTuUd+YPeh56ka8Ps5ACIE291jL/PsX31v2Z6BpNzeDqpnaNeO18XV2n
-	dVu5yARcie55YPfwS/xA4GpdiRNcMTXmaM83t1Kxm81/cR2TgIOh2f6jXfLsQ9Mrs
-X-Received: by 2002:adf:e30e:0:b0:33d:6bd5:9f00 with SMTP id b14-20020adfe30e000000b0033d6bd59f00mr8878800wrj.41.1709115044908;
-        Wed, 28 Feb 2024 02:10:44 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGNBvyItDUcjcIv0Np/7pXiZKIT9CIiSDAQ+3HmvfjfhrAlJ9hPwCLMmeprtUdu0nI7lbpBTg==
-X-Received: by 2002:adf:e30e:0:b0:33d:6bd5:9f00 with SMTP id b14-20020adfe30e000000b0033d6bd59f00mr8878785wrj.41.1709115044551;
-        Wed, 28 Feb 2024 02:10:44 -0800 (PST)
-Received: from localhost (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
-        by smtp.gmail.com with ESMTPSA id bo28-20020a056000069c00b0033b406bc689sm14668667wrb.75.2024.02.28.02.10.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Feb 2024 02:10:44 -0800 (PST)
-From: Javier Martinez Canillas <javierm@redhat.com>
-To: linux-kernel@vger.kernel.org
-Cc: Nishanth Menon <nm@ti.com>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Breno Leitao <leitao@debian.org>,
-	Kalle Valo <kvalo@kernel.org>,
-	Li Zetao <lizetao1@huawei.com>,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH v2] wlcore: sdio: Rate limit wl12xx_sdio_raw_{read,write}() failures warns
-Date: Wed, 28 Feb 2024 11:10:32 +0100
-Message-ID: <20240228101042.728881-1-javierm@redhat.com>
-X-Mailer: git-send-email 2.43.2
+	s=arc-20240116; t=1709115872; c=relaxed/simple;
+	bh=e0w74DyEJaRfxLcd+VUcuABISFIEhuiH6FKulZOJF4M=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=qQpz9ySuuP1TdMJTBi33FktLieu4PzDDOLZiiE4sfsUiSDRI+PoX39atAbZ8S8KF1WBIqSeYXTxCJ9Bc24wXuZculOpFHLKuRt3s1zaJZM7jLKN0nJrj7zihKTD6nMhTA3skvQgffngWwkMEJlq0+j/Iqd6u/VftgrbMetkn03M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iOaJ7WDj; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1709115871; x=1740651871;
+  h=date:from:to:cc:subject:message-id;
+  bh=e0w74DyEJaRfxLcd+VUcuABISFIEhuiH6FKulZOJF4M=;
+  b=iOaJ7WDjMrBTje9hQrBSczY9qvI3tGaXTEP8eQBom+P0zzev7zalklpE
+   RpkdGzciS4aL9BdH2ucITaYg8fp9YkCMGcHA0akgEkKlPjz/G+IWJRlkN
+   U1u4wkTxf/Kd9qj1IAPNtixkXvmWoHtdZgwxtr3Biz3qFFQG6C8NDRNTJ
+   DrddUTEOPxfJSQ1F7W494x/Aktf9yzkQIjZsVZvbx0zpAnW/Wfzl5gDcA
+   m7K6FeKqVz8wo+TXik0eBaw8k4JJ45mRCW63uHH9Hw8+a3WrEVo/EvecD
+   JbxHMaRvA26NhwZRfHH5TDkwQZFp5yInBXyJBtwzb04E2DR8j+9xWdajt
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="3429717"
+X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; 
+   d="scan'208";a="3429717"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Feb 2024 02:24:26 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; 
+   d="scan'208";a="11993947"
+Received: from lkp-server02.sh.intel.com (HELO 3c78fa4d504c) ([10.239.97.151])
+  by fmviesa004.fm.intel.com with ESMTP; 28 Feb 2024 02:24:25 -0800
+Received: from kbuild by 3c78fa4d504c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rfH6g-000Byf-1T;
+	Wed, 28 Feb 2024 10:24:11 +0000
+Date: Wed, 28 Feb 2024 18:23:01 +0800
+From: kernel test robot <lkp@intel.com>
+To: Kalle Valo <kvalo@kernel.org>
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+ linux-wireless@vger.kernel.org
+Subject: [wireless-next:main] BUILD SUCCESS
+ 734940143fbdde7998c75607f85a5e438dd93c8e
+Message-ID: <202402281857.3JsmuejM-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-When these failures happen, the warning and call trace is printed which is
-excessive. Instead, just print the error but rate limited to prevent warns
-to unnecessarily pollute the kernel log buffer and make the serial console
-practically unusable.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: 734940143fbdde7998c75607f85a5e438dd93c8e  Merge tag 'mt76-for-kvalo-2024-02-22' of https://github.com/nbd168/wireless
 
-For example, on an AM625 BeaglePlay board where accessing a SDIO WiFi chip
-fails with an -110 (ETIMEDOUT) error:
+elapsed time: 1122m
 
-  $ dmesg | grep "sdio write\|read failed (-110)" | wc -l
-  39
+configs tested: 163
+configs skipped: 3
 
-Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
-Reviewed-by: Breno Leitao <leitao@debian.org>
----
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Changes in v2:
-- Add Reviewed-by tag by Breno Leitao.
-- Drop warns which seems excesive and rate limit the error (Kalle Vallo).
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                   randconfig-001-20240228   gcc  
+arc                   randconfig-002-20240228   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   clang
+arm                              allyesconfig   gcc  
+arm                                 defconfig   clang
+arm                   randconfig-001-20240228   clang
+arm                   randconfig-002-20240228   clang
+arm                   randconfig-003-20240228   clang
+arm                   randconfig-004-20240228   gcc  
+arm64                            allmodconfig   clang
+arm64                             allnoconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                 randconfig-001-20240228   clang
+arm64                 randconfig-002-20240228   gcc  
+arm64                 randconfig-003-20240228   gcc  
+arm64                 randconfig-004-20240228   clang
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+csky                  randconfig-001-20240228   gcc  
+csky                  randconfig-002-20240228   gcc  
+hexagon                          allmodconfig   clang
+hexagon                           allnoconfig   clang
+hexagon                          allyesconfig   clang
+hexagon                             defconfig   clang
+hexagon               randconfig-001-20240228   clang
+hexagon               randconfig-002-20240228   clang
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20240228   clang
+i386         buildonly-randconfig-002-20240228   clang
+i386         buildonly-randconfig-003-20240228   clang
+i386         buildonly-randconfig-004-20240228   clang
+i386         buildonly-randconfig-005-20240228   gcc  
+i386         buildonly-randconfig-006-20240228   clang
+i386                                defconfig   clang
+i386                  randconfig-001-20240228   clang
+i386                  randconfig-002-20240228   clang
+i386                  randconfig-003-20240228   gcc  
+i386                  randconfig-004-20240228   clang
+i386                  randconfig-005-20240228   clang
+i386                  randconfig-006-20240228   gcc  
+i386                  randconfig-011-20240228   clang
+i386                  randconfig-012-20240228   clang
+i386                  randconfig-013-20240228   gcc  
+i386                  randconfig-014-20240228   gcc  
+i386                  randconfig-015-20240228   gcc  
+i386                  randconfig-016-20240228   clang
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20240228   gcc  
+loongarch             randconfig-002-20240228   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                 randconfig-001-20240228   gcc  
+nios2                 randconfig-002-20240228   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc                randconfig-001-20240228   gcc  
+parisc                randconfig-002-20240228   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   clang
+powerpc               randconfig-001-20240228   clang
+powerpc               randconfig-002-20240228   clang
+powerpc               randconfig-003-20240228   gcc  
+powerpc64             randconfig-001-20240228   clang
+powerpc64             randconfig-002-20240228   clang
+powerpc64             randconfig-003-20240228   gcc  
+riscv                            allmodconfig   clang
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   clang
+riscv                               defconfig   clang
+riscv                 randconfig-001-20240228   clang
+riscv                 randconfig-002-20240228   clang
+s390                             allmodconfig   clang
+s390                              allnoconfig   clang
+s390                             allyesconfig   gcc  
+s390                                defconfig   clang
+s390                  randconfig-001-20240228   clang
+s390                  randconfig-002-20240228   gcc  
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sh                    randconfig-001-20240228   gcc  
+sh                    randconfig-002-20240228   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                               defconfig   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+sparc64               randconfig-001-20240228   gcc  
+sparc64               randconfig-002-20240228   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   gcc  
+um                                  defconfig   clang
+um                             i386_defconfig   gcc  
+um                    randconfig-001-20240228   clang
+um                    randconfig-002-20240228   clang
+um                           x86_64_defconfig   clang
+x86_64                            allnoconfig   clang
+x86_64                           allyesconfig   clang
+x86_64       buildonly-randconfig-001-20240228   gcc  
+x86_64       buildonly-randconfig-002-20240228   clang
+x86_64       buildonly-randconfig-003-20240228   clang
+x86_64       buildonly-randconfig-004-20240228   gcc  
+x86_64       buildonly-randconfig-005-20240228   gcc  
+x86_64       buildonly-randconfig-006-20240228   clang
+x86_64                              defconfig   gcc  
+x86_64                randconfig-001-20240228   clang
+x86_64                randconfig-002-20240228   gcc  
+x86_64                randconfig-003-20240228   gcc  
+x86_64                randconfig-004-20240228   gcc  
+x86_64                randconfig-005-20240228   gcc  
+x86_64                randconfig-006-20240228   clang
+x86_64                randconfig-011-20240228   clang
+x86_64                randconfig-012-20240228   clang
+x86_64                randconfig-013-20240228   clang
+x86_64                randconfig-014-20240228   gcc  
+x86_64                randconfig-015-20240228   gcc  
+x86_64                randconfig-016-20240228   gcc  
+x86_64                randconfig-071-20240228   gcc  
+x86_64                randconfig-072-20240228   clang
+x86_64                randconfig-073-20240228   gcc  
+x86_64                randconfig-074-20240228   gcc  
+x86_64                randconfig-075-20240228   clang
+x86_64                randconfig-076-20240228   clang
+x86_64                          rhel-8.3-rust   clang
+xtensa                            allnoconfig   gcc  
+xtensa                randconfig-001-20240228   gcc  
+xtensa                randconfig-002-20240228   gcc  
 
- drivers/net/wireless/ti/wlcore/sdio.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/wireless/ti/wlcore/sdio.c b/drivers/net/wireless/ti/wlcore/sdio.c
-index eb5482ed76ae..70b9648acaaf 100644
---- a/drivers/net/wireless/ti/wlcore/sdio.c
-+++ b/drivers/net/wireless/ti/wlcore/sdio.c
-@@ -75,8 +75,8 @@ static int __must_check wl12xx_sdio_raw_read(struct device *child, int addr,
- 
- 	sdio_release_host(func);
- 
--	if (WARN_ON(ret))
--		dev_err(child->parent, "sdio read failed (%d)\n", ret);
-+	if (ret)
-+		dev_err_ratelimited(child->parent, "sdio read failed (%d)\n", ret);
- 
- 	if (unlikely(dump)) {
- 		printk(KERN_DEBUG "wlcore_sdio: READ from 0x%04x\n", addr);
-@@ -120,8 +120,8 @@ static int __must_check wl12xx_sdio_raw_write(struct device *child, int addr,
- 
- 	sdio_release_host(func);
- 
--	if (WARN_ON(ret))
--		dev_err(child->parent, "sdio write failed (%d)\n", ret);
-+	if (ret)
-+		dev_err_ratelimited(child->parent, "sdio write failed (%d)\n", ret);
- 
- 	return ret;
- }
 -- 
-2.43.2
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
