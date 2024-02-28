@@ -1,63 +1,63 @@
-Return-Path: <linux-wireless+bounces-4201-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4202-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64B2E86B28C
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 16:00:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FFF986B2C5
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 16:10:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 053771F27EE2
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 15:00:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C48BC1F283C7
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 15:10:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89A8515B112;
-	Wed, 28 Feb 2024 15:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE87615B114;
+	Wed, 28 Feb 2024 15:10:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="az5Z+rvC"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="aKq5Y6QM"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C78515B10D;
-	Wed, 28 Feb 2024 15:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7324A1534F4;
+	Wed, 28 Feb 2024 15:10:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709132406; cv=none; b=MTLo6h2Qjm4GH/lmu2wndNV9biJ/TSvRJdC5d/lyu3B3u//lG85Ccdt064nSZ+MOR0OrEn2VnAYfU4mvQhT5Tjqg+OlS9UbUDzD9sZRWCtrkx10qLQDYoq1bh0csb1IWIDbKtRExp1ppET9Tg1iDrWxXHhcqN8Rs/NFiLoSLO0U=
+	t=1709133011; cv=none; b=Y8A5nQfChJsX3vjTziXzrRFTQq4DjmMPikzTrC3EChNwz6ieTxfGQRM5s6gKvPYVActC4LtXHZoLuJXWHUQkTWpbpOAqScCqqelrd2pcd6JcY6M+QL/++ze+BW/I4UNILm7LzO7U6tpHzf7bLF8c/Jn+baoSpwSOUdc/UmJutGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709132406; c=relaxed/simple;
-	bh=LolsVB0Zf2W7CZjOv+Yh7zbYkWss1NhXLWb8MwxRpDI=;
+	s=arc-20240116; t=1709133011; c=relaxed/simple;
+	bh=9u/8+KZJ0MTJJfCJtK/uTqbOvB/Bdowsj61A4/yqMCk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=hm+Rm5uw4I9Z9IGOr1RlpZPFuh6+O4p57oBFLRFWRXvCaPuXe4q14SY/3yYQ7ic+OlnwbW9KTqc6giRNU4q0YRuFDFetS3sXHTZCRlCUuLXHdF2nVF0sy8EkMCpUjBdzYgJQH09HB8GZGRlvPsRKyHnT6kTU1CYr57CPTa6Fg58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=az5Z+rvC; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:Content-Type; b=dvrXZ3mUWemcnf6T8M4yvg3C+atv2rc/ntQ5df3BshfXG4OW1mnajH/bjI+QWwkaDvQS+0HLNgjhnvZIFz1oSVWb1sZNcS0eIe0IAEfq5tyRhA2D78v5l/eW6kejHnGwjK6HHEo3sbgfA4JczVJj5RKogJAp2gq+pg5WQJy6/lY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=aKq5Y6QM; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41S6uAST011443;
-	Wed, 28 Feb 2024 14:59:57 GMT
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41S7xIuE029887;
+	Wed, 28 Feb 2024 15:09:59 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	message-id:date:mime-version:subject:to:cc:references:from
 	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=LolsVB0Zf2W7CZjOv+Yh7zbYkWss1NhXLWb8MwxRpDI=; b=az
-	5Z+rvCYSDxZUoUJ1smPh5SJxULsMYpVAg4QzAlRejJx7guKxaTEFISZJWQaNWZgm
-	vqdnsRf+M5gQugBhX9U19wpocIlLlOjZ0kXMWcemCS91oyGfLCk3oo0ospIbJrDA
-	3n41ywyq9cFM1d/oPTe7JU+5Uo7JU9/nNc+TK7bbQMHQbGy5tW5vXS4UGdpCf9LV
-	OQnwZLNBhAAHMp4vEIjzod9hiWVuOxV/mdk35r+LTqaw9K7zIoXQ+RdCsq/VYvHB
-	jT1KLo50qLt6769dQtlMSlxQURxIpmVwD8OiFypEcxg0yhKDJRcfjTwjXj0ynSE2
-	8LNouOZlXNdqLkjgTcag==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3whw3f1dyn-1
+	qcppdkim1; bh=NgSKT9bSt+5HyOHU2nbwhRfsX+0p99ARykC4+Vikdec=; b=aK
+	q5Y6QMY9hI4wbjESWkIrv0eZyF2ziwlNnY9XaL/Dt1qFsuCcHBjwTIuPRRL3nBHF
+	RQnPXxHd4N1QmCmifr5FyvyUr0fpVd4bDD6WngIBF3lr6+kG0u0v50V8HZYXcEbQ
+	kKEkzEZ73j4UXtwzcUXLk2E0ZlKkjneclBdm5fwcecq5oHrttbEoPNRemN6rDY2S
+	naSHj7cFXWetq0Ok0AyLfrj9BSADp2OGeW53ML1DGAzIfXvVnYofQQaklW8Kxfmg
+	OHwvDPpH/bCWjvOOTPlSKjS1jGWJUza+qVdcctIqVWdUOvAhgc19R+ZSMzrckY91
+	YNtmPIbRXd9a0LvTMEOg==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3whw3f1f59-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 28 Feb 2024 14:59:57 +0000 (GMT)
+	Wed, 28 Feb 2024 15:09:58 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 41SExuIa018876
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 41SF9vIq016764
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 28 Feb 2024 14:59:56 GMT
+	Wed, 28 Feb 2024 15:09:57 GMT
 Received: from [10.110.113.97] (10.80.80.8) by nalasex01a.na.qualcomm.com
  (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Wed, 28 Feb
- 2024 06:59:56 -0800
-Message-ID: <d8c90f33-d0ab-4d73-9580-2547446671a0@quicinc.com>
-Date: Wed, 28 Feb 2024 06:59:55 -0800
+ 2024 07:09:57 -0800
+Message-ID: <1d0f2a64-85d1-4f2d-81f1-6a6938ad3d34@quicinc.com>
+Date: Wed, 28 Feb 2024 07:09:56 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,47 +65,69 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: net: wireless: ath10k: add
- qcom,no-msa-ready-indicator prop
+Subject: Re: [PATCH v4 1/3] bus: mhi: host: add mhi_power_down_keep_dev()
 Content-Language: en-US
-To: Marc Gonzalez <mgonzalez@freebox.fr>, Kalle Valo <kvalo@kernel.org>,
-        ath10k <ath10k@lists.infradead.org>
-CC: wireless <linux-wireless@vger.kernel.org>,
-        DT
-	<devicetree@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Krzysztof
- Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley
-	<conor+dt@kernel.org>,
-        Pierre-Hugues Husson <phhusson@freebox.fr>
-References: <14daa98e-7fd3-4ebb-87bb-5d2c1fba679f@freebox.fr>
- <b8de96c7-cbb6-4a09-a4d4-2c11b3ab3e01@freebox.fr>
+To: Baochen Qiang <quic_bqiang@quicinc.com>, <ath11k@lists.infradead.org>,
+        <manivannan.sadhasivam@linaro.org>
+CC: <linux-wireless@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <mhi@lists.linux.dev>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <netdev@vger.kernel.org>
+References: <20240228022243.17762-1-quic_bqiang@quicinc.com>
+ <20240228022243.17762-2-quic_bqiang@quicinc.com>
 From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <b8de96c7-cbb6-4a09-a4d4-2c11b3ab3e01@freebox.fr>
+In-Reply-To: <20240228022243.17762-2-quic_bqiang@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: eQA6F6l0b66UTTMGn5Y3RbOoHFn92Bkk
-X-Proofpoint-GUID: eQA6F6l0b66UTTMGn5Y3RbOoHFn92Bkk
+X-Proofpoint-ORIG-GUID: HMPjIilb73nt7sz1IHjINmNd_s4H4MSs
+X-Proofpoint-GUID: HMPjIilb73nt7sz1IHjINmNd_s4H4MSs
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-02-28_07,2024-02-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=789 spamscore=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 spamscore=0
  suspectscore=0 adultscore=0 impostorscore=0 priorityscore=1501 bulkscore=0
- mlxscore=0 clxscore=1011 malwarescore=0 phishscore=0 lowpriorityscore=0
+ mlxscore=0 clxscore=1015 malwarescore=0 phishscore=0 lowpriorityscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2402120000
- definitions=main-2402280118
+ definitions=main-2402280119
 
-On 2/28/2024 5:24 AM, Marc Gonzalez wrote:
-> The driver waits for this indicator before proceeding,
-> yet some WCNSS firmwares apparently do not send it.
-> On those devices, it seems safe to ignore the indicator,
-> and continue loading the firmware.
-
-Can you list the product/hardware/firmware where this is observed?
-Would prefer to fix the firmware if the issue is there
+On 2/27/2024 6:22 PM, Baochen Qiang wrote:
+> ath11k fails to resume:
+> 
+> ath11k_pci 0000:06:00.0: timeout while waiting for restart complete
+> 
+> This happens because when calling mhi_sync_power_up() the MHI subsystem
+> eventually calls device_add() from mhi_create_devices() but the device
+> creation is deferred:
+> 
+> mhi mhi0_IPCR: Driver qcom_mhi_qrtr force probe deferral
+> 
+> The reason for deferring device creation is explained in dpm_prepare():
+> 
+>         /*
+>          * It is unsafe if probing of devices will happen during suspend or
+>          * hibernation and system behavior will be unpredictable in this case.
+>          * So, let's prohibit device's probing here and defer their probes
+>          * instead. The normal behavior will be restored in dpm_complete().
+>          */
+> 
+> Because the device probe is deferred, the qcom_mhi_qrtr_probe() is not
+> called and thus MHI channels are not prepared:
+> 
+> So what this means that QRTR is not delivering messages and the QMI connection
+> is not working between ath11k and the firmware, resulting a failure in firmware
+> initialization.
+> 
+> To fix this add new function mhi_power_down_keep_dev() which doesn't destroy
+> the devices for channels during power down. This way we avoid probe defer issue
+> and finally can get ath11k hibernation working with the following patches.
+> 
+> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
+> 
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
 
