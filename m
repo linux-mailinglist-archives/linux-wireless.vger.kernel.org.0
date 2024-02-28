@@ -1,191 +1,187 @@
-Return-Path: <linux-wireless+bounces-4210-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4211-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76FDD86B522
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 17:38:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BCCE86B5BF
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 18:19:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99CD51C21EA0
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 16:38:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96EC5B27653
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 17:19:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5D7A1E4AB;
-	Wed, 28 Feb 2024 16:38:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E3533FBB8;
+	Wed, 28 Feb 2024 17:19:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="xAd72J1L";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="iVEBTj8T";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Pz2nAxBu";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="NOaApkRl"
+	dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b="DXrmfXjQ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4E3A1CAAB;
-	Wed, 28 Feb 2024 16:38:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB7AB3FBB4
+	for <linux-wireless@vger.kernel.org>; Wed, 28 Feb 2024 17:19:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709138331; cv=none; b=tk94ekSRZZAWEGeKt1YlXnXmV9Rw4o0XK7uftqeymPt8HgM1hSI/p7sprIKiEyKdYcnAJaEtuSWX6RL7gv8vMTCVl1uKaMQKzMKu2hD6K5Wh8UBxeXAnsZ51zra8NpHkFz3HJaE+mYD3ElDKha5ZCgapJSTtjsyWo0mBYGg3hVU=
+	t=1709140751; cv=none; b=iyZDfsxexAlX4Wc4noLCF0RG3ZfRLAgMzVbuGpk91N5c5bMGSmWL9MWXrv/9+odBmkZKP9D4Lpgk4bqrYf6nE1qdGQAggwNWEU+SB2Jv+esqZnv/WsqMbLfmuqxDkfMXF46s5waAh9mEQ/OzPiAPBTtNuE497tzo12gDZnD7pRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709138331; c=relaxed/simple;
-	bh=JxP9GcXwVJpfYHD5gmr0uw+XlSWp8lZYEClj+2tCrXk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gpQLMTQeehWfdVbfARX8Bv/PapS3PcQBOeao6X6U6GECvfhCQ9rZC5uOyOKl2BdHjDkjfVWKxMsaQMQTngVDOVVRMt6/dETARZgn2fK4EIz16xEzZXgaamE5nKzMdYqrkqo/YzgD/AweDsvpKGV6kn3HqmsZ/gbXijDhG0l37TM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=xAd72J1L; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=iVEBTj8T; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Pz2nAxBu; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=NOaApkRl; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id DD2621F796;
-	Wed, 28 Feb 2024 16:38:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1709138328; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=WO75YmVzdv4mgGMuVpHJywPWnkx4nZzb1oXuZM8U/OM=;
-	b=xAd72J1LCi8cOXXBPuA2v6ecbOaxI1mocvxa5VlSOATY3Qq6adB9mlwXKgwR+7BLaEXqKq
-	9LHNniy13houaZan2dEqrXiRxpQmKsCjLfMRMCb2FjO6WYTQTFwcBpxrxJkTKhnl3wVlxH
-	WgkauH9XCXKoUsdQPKDLIzkdMrGDrLI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1709138328;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=WO75YmVzdv4mgGMuVpHJywPWnkx4nZzb1oXuZM8U/OM=;
-	b=iVEBTj8T/fJOHrH8qMuL/lVhFKn36Me8/ItQxiqw0VffvT2wiUAywQkl11GHmEGFeO+YgG
-	p5gDWPdsNK4uVfBg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1709138327; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=WO75YmVzdv4mgGMuVpHJywPWnkx4nZzb1oXuZM8U/OM=;
-	b=Pz2nAxBuTbtnoXxsv8ZfZ5yUKVszLZyHBjAMEh4V6s7GKUsBAaQiBF0+g38+q+GUe9J3EE
-	NP4gVM172uZ2LjUaNB6CH8rcmRMyNLdCaVoLlo8tdGL7tIrZPej6P6/h0mEY+n8Cl74sBD
-	A6MXAkaxceWSBIKRYOqdyUTQQjt54r4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1709138327;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=WO75YmVzdv4mgGMuVpHJywPWnkx4nZzb1oXuZM8U/OM=;
-	b=NOaApkRltBSHYazj/9Z4XTydxb1TByctk72JjsFGFd8nX8rj4GS/Mg5MnQBAdOanIBgyE2
-	dccfUcns1tc2DxBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id ABACA13A58;
-	Wed, 28 Feb 2024 16:38:47 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id q8vsJ5dh32WbFQAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Wed, 28 Feb 2024 16:38:47 +0000
-From: Takashi Iwai <tiwai@suse.de>
-To: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Cc: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] iwlwifi: cfg: Add missing MODULE_FIRMWARE() for *.pnvm
-Date: Wed, 28 Feb 2024 17:38:37 +0100
-Message-Id: <20240228163837.4320-1-tiwai@suse.de>
-X-Mailer: git-send-email 2.35.3
+	s=arc-20240116; t=1709140751; c=relaxed/simple;
+	bh=aFsYKNxuMdtcs33QU/5Jsqcp+ASWrz7gi1ostsw1AUI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qfCxG+iWWJvkXxahTSoRC+LVrCeo1ZZK1MG1FMv9dBOA1cI+vaEq3AC14MK21b4QqunnXy57XTTBtPFHQq3eoW/wee/5eJiwH7qBFgRM2oWJTljSO6Lf+mV0BY7skZMaDjycajXEjtBldhuBuPul4zy4KbdPiwkATwoo1KLRXgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b=DXrmfXjQ; arc=none smtp.client-ip=209.85.167.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freebox.fr
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-512be9194b7so6009355e87.1
+        for <linux-wireless@vger.kernel.org>; Wed, 28 Feb 2024 09:19:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=freebox-fr.20230601.gappssmtp.com; s=20230601; t=1709140746; x=1709745546; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=likxxYoOfEMuAKtEYTDM9v8GLGgkDJojgZCQVbAvfQM=;
+        b=DXrmfXjQSajsclQwZGhOS9uebMhrSySXVGzI/eiLLTMg2I1OoZ2Lsbokbx00WldgDo
+         lrOzLK32H7nT/8ce9V8Pnj+kURYG3XsqcbkOzrj40YXx09tFIhMECf8xlm1qyB9vz1aP
+         SxvdZ4Dv6ZBW044erGyiQPo3bBqvT9l1zvp2WM4GURvvL1v6zW/UaqMrhXfx0f0FWHkK
+         7dzv+stdKWwfOhqXpn2tXiol8utcKFs+JZlrPUyHN47ZV3Zg2aj87liO9Wd8obwHtE/B
+         ZdEz9Dv4hwzlk2w2jDU1j+PTQuGIWokbufBtU8dtG3YL7yNGbOVaQPgvIbbBYhzf4QAT
+         1joQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709140746; x=1709745546;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=likxxYoOfEMuAKtEYTDM9v8GLGgkDJojgZCQVbAvfQM=;
+        b=Jkewavlg86Ryu+6UUcHKvbWe9LSFoSQ1P0+IqLyWHfRcJZ2YhSXIlogdtojn97N0Ea
+         TgP1n9Mz7oo6K5wIa76vfzcrmDL/NVxzCQlVxVtNsq8sl3lpp2EP6JGoe0mfdUQJJf7k
+         dUU3doQ0YijLh2PQiC10ZRB0xmcYYzxUrx2A5s1qyoDQygrVzBOhi5DGDsSaDdvitbdM
+         DBa0byULVWyghbRqiAZJhoKVBjT++C3JU+FZrQCd1tsrivF2t+ynpLznr8skxgiZeVW4
+         XKuKjGXHUlz4srtjyPlxFmcowhWEK5AvUigUALGS7lnslo+K2nODDYTce72LnrnOihdL
+         2k7w==
+X-Forwarded-Encrypted: i=1; AJvYcCXbSJnVo4+EFbplwLJlLy5FAhxdukjMhbVsCmbg+pbiUj3qWfqvlcwg4fuHpZhrU6ieT06XKJu+PGZ6v71rYqMmZ14iqOYCOWXIK76fXXA=
+X-Gm-Message-State: AOJu0YxyhKUYwDH0vGisVJ7MeFdFxZhtTW8ZF2P4/ewbab6Pn9wcXgAi
+	V5hpYBlG9QMDRVBswiQpemt7yYlaZcZqTAlpHKJ5h9yY43g9fiSngV7nMJd5KUI=
+X-Google-Smtp-Source: AGHT+IEE4slZWG1595pj5QbfSYHDutE8sbK9mwf+NBrBMJOjYn3TB2ETiL96EkfflJv/cEyXxsBr/g==
+X-Received: by 2002:a05:6512:398f:b0:512:b372:4eed with SMTP id j15-20020a056512398f00b00512b3724eedmr296674lfu.8.1709140745602;
+        Wed, 28 Feb 2024 09:19:05 -0800 (PST)
+Received: from ?IPV6:2a02:8428:2a4:1a01:6dfa:263f:dd7e:9456? ([2a02:8428:2a4:1a01:6dfa:263f:dd7e:9456])
+        by smtp.gmail.com with ESMTPSA id a21-20020a05600c349500b00412b10ce488sm2803097wmq.23.2024.02.28.09.19.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 28 Feb 2024 09:19:05 -0800 (PST)
+Message-ID: <c58e67e6-6a7f-4963-86b9-580165bf05ba@freebox.fr>
+Date: Wed, 28 Feb 2024 18:19:03 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spamd-Bar: /
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Pz2nAxBu;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=NOaApkRl
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [0.52 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	 FROM_HAS_DN(0.00)[];
-	 RCPT_COUNT_THREE(0.00)[4];
-	 R_MISSING_CHARSET(2.50)[];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 BROKEN_CONTENT_TYPE(1.50)[];
-	 TO_DN_SOME(0.00)[];
-	 NEURAL_HAM_LONG(-1.00)[-1.000];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 DKIM_TRACE(0.00)[suse.de:+];
-	 MX_GOOD(-0.01)[];
-	 MID_CONTAINS_FROM(1.00)[];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[opensuse.org:url,suse.de:dkim,suse.de:email];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 NEURAL_HAM_SHORT(-0.17)[-0.834];
-	 RCVD_TLS_ALL(0.00)[];
-	 BAYES_HAM(-3.00)[100.00%];
-	 RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]
-X-Spam-Score: 0.52
-X-Rspamd-Queue-Id: DD2621F796
-X-Spam-Flag: NO
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] dt-bindings: net: wireless: ath10k: add
+ qcom,no-msa-ready-indicator prop
+Content-Language: en-US
+To: Kalle Valo <kvalo@kernel.org>
+Cc: Jeff Johnson <quic_jjohnson@quicinc.com>,
+ ath10k <ath10k@lists.infradead.org>,
+ wireless <linux-wireless@vger.kernel.org>, DT <devicetree@vger.kernel.org>,
+ Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Pierre-Hugues Husson <phhusson@freebox.fr>,
+ Jami Kettunen <jamipkettunen@gmail.com>,
+ Jeffrey Hugo <quic_jhugo@quicinc.com>
+References: <14daa98e-7fd3-4ebb-87bb-5d2c1fba679f@freebox.fr>
+ <b8de96c7-cbb6-4a09-a4d4-2c11b3ab3e01@freebox.fr> <871q8wk7o3.fsf@kernel.org>
+ <3392f356-7b19-483d-b9f8-3bd84068fa52@freebox.fr> <87wmqoilzf.fsf@kernel.org>
+From: Marc Gonzalez <mgonzalez@freebox.fr>
+In-Reply-To: <87wmqoilzf.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-A few models require *.pnvm files while we don't declare them via
-MODULE_FIRMWARE().  This resulted in the breakage of WiFi on the
-system that relies on the information from modinfo (e.g. openSUSE
-installer image).
+On 28/02/2024 17:37, Kalle Valo wrote:
 
-This patch adds those missing MODULE_FIRMWARE() entries for *.pnvm
-files.
+> Marc Gonzalez writes:
+> 
+>> On 28/02/2024 15:03, Kalle Valo wrote:
+>>
+>>> Marc Gonzalez writes:
+>>>
+>>>> +  qcom,no-msa-ready-indicator:
+>>>> +    type: boolean
+>>>> +    description:
+>>>> +      The driver waits for this indicator before proceeding,
+>>>> +      yet some WCNSS firmwares apparently do not send it.
+>>>> +      On those devices, it seems safe to ignore the indicator,
+>>>> +      and continue loading the firmware.
+>>>
+>>> This sounds more like a firmware feature, not a hardware feature. What
+>>> about having a flag in enum ath10k_fw_features in firmware-2.bin?
+>>
+>> Are you using the word "feature" as in "it was done purposefully" ?
+> 
+> No, there's no bigger meaning like that. It's more like ath10k has to do
+> something differently when a certain bit is enabled in the firmware. I
+> just had to pick a word for the enum and from my limited vocabulary I
+> chose "feature" :)
 
-Link: https://bugzilla.opensuse.org/show_bug.cgi?id=1207553
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
----
+Understood!
 
-The original patch was submitted months ago
-  https://lore.kernel.org/r/20230405063546.12439-1-tiwai@suse.de
-but it seems forgotten / overlooked.
-Now updated to the latest firmware files and resubmitted.
+>> Is enum ath10k_fw_features also supposed to include work-arounds?
+> 
+> Yes, and we already use.
+> 
+>> Sorry, I've grepped over the entire Linux source code,
+>> and I cannot find where ath10k_fw_features is used,
+>> other than in ath10k_core_get_fw_feature_str().
+> 
+> Here's one example where in ath10k we use a feature bit as a workaround:
+> 
+> 	/* Don't trust error code from otp.bin */
+> 	ATH10K_FW_FEATURE_IGNORE_OTP_RESULT = 7,
+> 
+>         ....
+> 
+> 	if (!(skip_otp || test_bit(ATH10K_FW_FEATURE_IGNORE_OTP_RESULT,
+> 				   ar->running_fw->fw_file.fw_features)) &&
+> 	    result != 0) {
+> 		ath10k_err(ar, "otp calibration failed: %d", result);
+> 		return -EINVAL;
+> 	}
+> 
+> BTW for modifying firmware-N.bin files we have a script here:
+> 
+> https://github.com/qca/qca-swiss-army-knife/blob/master/tools/scripts/ath10k/ath10k-fwencoder
 
+If I understand correctly, you are saying that there is
+(maybe... probably) a bug in the FW, so it makes sense to
+tag that specific FW file with a special bit which the kernel
+will interpret as "this FW is broken in a specific way;
+and here's how to work around the issue."
 
- drivers/net/wireless/intel/iwlwifi/cfg/22000.c | 4 ++++
- drivers/net/wireless/intel/iwlwifi/cfg/ax210.c | 3 +++
- drivers/net/wireless/intel/iwlwifi/cfg/bz.c    | 2 ++
- 3 files changed, 9 insertions(+)
+So this bit would serve the same purpose as my proposed
+"qcom,no-msa-ready-indicator" bit (that bit existed instead
+in my board's device tree).
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-index d594694206b3..fb31a4262edc 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-@@ -426,3 +426,7 @@ MODULE_FIRMWARE(IWL_QU_B_JF_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_QUZ_A_HR_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_QUZ_A_JF_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_CC_A_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
-+
-+MODULE_FIRMWARE("iwlwifi-so-a0-gf4-a0.pnvm");
-+MODULE_FIRMWARE("iwlwifi-so-a0-gf-a0.pnvm");
-+MODULE_FIRMWARE("iwlwifi-ty-a0-gf-a0.pnvm");
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/ax210.c b/drivers/net/wireless/intel/iwlwifi/cfg/ax210.c
-index 134635c70ce8..aa0f501ff74e 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/ax210.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/ax210.c
-@@ -299,3 +299,6 @@ MODULE_FIRMWARE(IWL_MA_B_HR_B_FW_MODULE_FIRMWARE(IWL_AX210_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_MA_B_GF_A_FW_MODULE_FIRMWARE(IWL_AX210_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_MA_B_GF4_A_FW_MODULE_FIRMWARE(IWL_AX210_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_MA_B_MR_A_FW_MODULE_FIRMWARE(IWL_AX210_UCODE_API_MAX));
-+
-+MODULE_FIRMWARE("iwlwifi-ma-b0-gf4-a0.pnvm");
-+MODULE_FIRMWARE("iwlwifi-ma-b0-gf-a0.pnvm");
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/bz.c b/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
-index 82da957adcf6..1b6249561cd5 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
-@@ -179,3 +179,5 @@ MODULE_FIRMWARE(IWL_BZ_A_FM_C_MODULE_FIRMWARE(IWL_BZ_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_BZ_A_FM4_B_MODULE_FIRMWARE(IWL_BZ_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_GL_B_FM_B_MODULE_FIRMWARE(IWL_BZ_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_GL_C_FM_C_MODULE_FIRMWARE(IWL_BZ_UCODE_API_MAX));
-+
-+MODULE_FIRMWARE("iwlwifi-gl-c0-fm-c0.pnvm");
--- 
-2.35.3
+The problem I see is that the firmware files are signed.
+Thus, changing a single bit breaks the verification...
+UNLESS the FW format allows for a signed section ALONG-SIDE
+an unsigned section?
+
+>> As mentioned in my other reply, there are several msm8998-based
+>> devices affected by this issue. Is it not appropriate to consider
+>> a kernel-based work-around?
+> 
+> Sorry, not following you here. But I'll try to answer anyway:
+> 
+> I have understood that Device Tree is supposed to describe hardware, not
+> software. This is why having this property in DT does not look right
+> place for this. For example, if the ath10k firmware is fixed then DT
+> would have to be changed even though nothing changed in hardware. But of
+> course DT maintainers have the final say.
+
+At some point, we start wandering into meta-physical considerations
+such as "if FW cannot ever be changed, when does FIRM become HARD?"
+(and other GPLv3 niceties). But this is a discussion for another list.
+
+Regards
 
 
