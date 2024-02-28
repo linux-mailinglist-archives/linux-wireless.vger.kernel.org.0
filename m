@@ -1,58 +1,63 @@
-Return-Path: <linux-wireless+bounces-4144-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4145-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4D5186AA65
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 09:49:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 171C686AA66
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 09:49:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4D811C20EFA
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 08:49:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 492851C21797
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 08:49:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 423562D052;
-	Wed, 28 Feb 2024 08:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAF232D608;
+	Wed, 28 Feb 2024 08:49:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="VM0w4hCU"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="CngXkI+2"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F2C1F608
-	for <linux-wireless@vger.kernel.org>; Wed, 28 Feb 2024 08:49:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 407F92D03C
+	for <linux-wireless@vger.kernel.org>; Wed, 28 Feb 2024 08:49:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709110148; cv=none; b=AcAqSgtwpNoetCVwcdrs55HtwYSO+N1vWUa9NHuR0wSC6q6zcBbttEucZ9ziUToxCgL5MOdmyG6tgk8kVTdaAB9ASE744MY+WU9dcTPlVD77eQpKDk+LF+2LN/E2x7My/5hvvTztOjcbPPk1eA6uMGwvI19anWGX6AEgMzMbeDE=
+	t=1709110149; cv=none; b=K+bbCVG/ZoeAP5BjlLEQkQ5Uxb6jLHI41KDBfWX1GeALA1o8JxwSkV1zguV6qEHUsInBVeYywgTmQzx9ARkoMSOFzPBdjtwgbqaU3COMHxu5BSDnwSn70UoBBoAYAb/YkFFZ9Sn50gogvAoZ7PQrT1R3M7/Ixuo5uNKglFUnWG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709110148; c=relaxed/simple;
-	bh=756ARI+CGcugO4QXBzDhLYnW8LfaKi+guBQG9KedS5Y=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version; b=LOJlTc3tZyTNAfUr+p4cPntAR677sreCuSdHv6jWxUTPDCdgkRjHMgMdmAhtUj/EYv0vvqk1xMsjHMSV5HfbIGKJ5kul8xKx6ylkAVH85h3Dq0QGyyqxKCOtN9Dg6YWWSlCAt9lXWUuZusiwoYzzP8ZPyC4jZfmg3UJeTUS+laM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=VM0w4hCU; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1709110149; c=relaxed/simple;
+	bh=5KKFBh1tF2E4tKXxGF/UOVMJYzRymGqFBgy5BlghBAw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ecFYyWNgEshJ9fv80PrqKRu+yAAzr6kgz+8uMcDBjvKqh0SlgNTec1lGEjTHX+YyYfn15SaqHQO//F/X5ntVShAXLdaGkI85vGRaDWd0bc1fee3Y+hwxiBVQ/msCwceIdtYr1EnbMACMvZIyxq0gbVERsFRIeIs0DtHOMwzGJHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=CngXkI+2; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:To:From:Content-Type:Sender:Reply-To:Cc:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=756ARI+CGcugO4QXBzDhLYnW8LfaKi+guBQG9KedS5Y=; t=1709110146; x=1710319746; 
-	b=VM0w4hCUBZLkfyZDAnzh3EZTOPdOgqkMVH/nio1BSvd7u8llbs1wYRZJ0fElUB+01O59d5rzULS
-	0RKreSKZgunAjzTPfgB2OdQS60EOrilITckppIeBOqHqcJEuDu87m/TW2UVIAQnm3a1R3MPZWnQc+
-	fqvJFCOYMNP2CkZIWSAh/ns1QM2YeEEc2Y9vgX0Q/aT0IgZHEuOobVSA3TUpiXiSOPNnsYX104yhM
-	ze4CtwuzMFU6lmI2rmj/VO0sNJ0ZCv7loFFK1P09daPobPa6x8wGqcVa1+XMKriONU5LJoMeTF2UA
-	cc2S5YQ6hgvHCgCieWgpykuXLiOV1hGyWXWA==;
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=H+XwrbdiD4rnC/9MUfRE3p0qdR70VLvZQpYrE5v3SSo=;
+	t=1709110148; x=1710319748; b=CngXkI+2Ewr0LQH6e5SZhuQzRUlRj/lAUnlOwmd6g+RTPLT
+	yEdFsbMN2w6g06ast0c850ia2OZpx2sAqvHKiZwEJcQLQJCDZmK1nIwTPxwUza12RWbcBEArGl6n8
+	XH+5MgYuBMeEJJyiq1xvMCjodh0q6ENjHT4BFfkYcGx/gj0e4U4Sg4JHbdCzp9tpKXZRyouNTEjuD
+	qWNV64qCBF7jtsbw0eOD/QmAdpmS06MgjlpJw84r3Xuz4gvnkWB9WQ9iCe1y2gUG6H3RiouMe9vh2
+	/a0FqEersaAtd+9XADWG8wYcrMZI05Hmdu269pCSOquL8lYW8OMPxZC/BIlLNi5w==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.97)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1rfFce-0000000C0BC-29LZ
-	for linux-wireless@vger.kernel.org;
-	Wed, 28 Feb 2024 09:49:04 +0100
+	id 1rfFcf-0000000C0BC-0m26;
+	Wed, 28 Feb 2024 09:49:05 +0100
 From: Johannes Berg <johannes@sipsolutions.net>
 To: linux-wireless@vger.kernel.org
-Subject: [PATCH 0/8] wifi: mac80211: element parsing cleanups
-Date: Wed, 28 Feb 2024 09:48:08 +0100
-Message-ID: <20240228084901.18661-10-johannes@sipsolutions.net>
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Subject: [PATCH 1/8] wifi: mac80211: update scratch_pos after defrag
+Date: Wed, 28 Feb 2024 09:48:09 +0100
+Message-ID: <20240228094901.9da35f39eeb7.I7127f2918ec4cba416fcbc35eacaea10262c1268@changeid>
 X-Mailer: git-send-email 2.43.2
+In-Reply-To: <20240228084901.18661-10-johannes@sipsolutions.net>
+References: <20240228084901.18661-10-johannes@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -61,11 +66,33 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-There are some small issues in how element parsing works, and
-I'm going to reuse it a bit differently for CSA. But before,
-clean it up a bit, and in particular hide the scratch buffer,
-which was used oddly in a few places.
+From: Johannes Berg <johannes.berg@intel.com>
 
-johannes
+The scratch_pos update here was lost after defrag, so any
+other uses of the scratch buffer might overwrite it.
+
+Fixes: a286de1aa38f ("wifi: mac80211: Rename multi_link")
+Reviewed-by: Benjamin Berg <benjamin.berg@intel.com>
+Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ net/mac80211/parse.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/net/mac80211/parse.c b/net/mac80211/parse.c
+index 196a882e4c19..233c761823d3 100644
+--- a/net/mac80211/parse.c
++++ b/net/mac80211/parse.c
+@@ -800,6 +800,7 @@ static void ieee80211_mle_parse_link(struct ieee802_11_elems *elems,
+ 
+ 	elems->ml_basic = (const void *)elems->scratch_pos;
+ 	elems->ml_basic_len = ml_len;
++	elems->scratch_pos += ml_len;
+ 
+ 	ieee80211_mle_get_sta_prof(elems, params->link_id);
+ 	prof = elems->prof;
+-- 
+2.43.2
 
 
