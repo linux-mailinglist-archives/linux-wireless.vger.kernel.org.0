@@ -1,97 +1,118 @@
-Return-Path: <linux-wireless+bounces-4162-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4153-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0DBD86AA96
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 09:57:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25AEB86AA85
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 09:56:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8486C1F24FD8
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 08:57:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 578441C21613
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 08:56:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0193536136;
-	Wed, 28 Feb 2024 08:57:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="CC3iAzJu"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 961B621379;
+	Wed, 28 Feb 2024 08:56:04 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B28136103
-	for <linux-wireless@vger.kernel.org>; Wed, 28 Feb 2024 08:57:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4641D53D
+	for <linux-wireless@vger.kernel.org>; Wed, 28 Feb 2024 08:56:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709110650; cv=none; b=RzGvLfmpx4ZjwR9PvF4o0aXUikWGE4yVqSh4h+TgsMHkrQ0CC+6xlSxAc1ij94vYJPvgj93fI9OCezwxp+md1DZ/E5vBMtUtnS5sg4Z1+UZvHa9qbezORmar+NRadeXZxIM2vQDIb8wInmTuYgMpE6OrQk2v9+yG9GyeQajhHIA=
+	t=1709110564; cv=none; b=VGg5P+RcWEY5sM4fOBPGOYRAILBAwM4HYV7nJa7CbvCQXJ2sh4EuB9+MBdFM+P4byybpoHT/N+Ium0xxvRsXFxgGJBfo1hZOKteLrkhOg/JYJeNDYU/iXpWOThpI7KrtVflTEfEZbez/9QnUchN0amjliKWT8u9uIA2GZxn1ls8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709110650; c=relaxed/simple;
-	bh=r7UGfWCcvYvR6Cjokm5UalBHfJnWo+6rlLLoR2GqsPc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TPcwvFEgqml+5OG27JQbLClqZ6sg2sPr9QziqqvirNrB+wbLaqFfET/gcISQDRcqSE8+vX8WxQM3/vWBnHYgGIgb8bEPaW8J5uMSymZmkCl0ChZU9Z7Yu330Tv/ZUUbB4OKRX7gr5CpQMf0isPitKCvG/XCktYkuZGB8Nbd36vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=CC3iAzJu; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=SJwlyrqBNk2cmNjjnNKUT3Ao3z2tiQ2mPcJUTde19fk=;
-	t=1709110649; x=1710320249; b=CC3iAzJuY1zoAOzy+2lSrfucysk7PyFzwVEfKIOTC/Ghi6n
-	KAhGLsFRtsCO8KAPvY6rCTg0QnPJ8bFEEajMSd2OSo5u+R9hmb67Typ064U6UNvrzuGW1W77SvC6M
-	4xtiBpSHOZGLw6mnkevIVbGABt3lNE5TTX6G0205x0fSusoy3iUBT4ohdLi//ZFm/rvChvsOrbKVr
-	OR3mmP02Ui7zpnOaW7swft3nEbrS5wQbJBe+kM3nMNDdH7lMQUEeH2gdCWkiWYfs5NE0jq+1FgJqo
-	QyWkOdcKMWU131lOPscsnQHrxIGBm87y8l6Q8wvD3uduZF3yloaxjap0sV2mp88A==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1rfFkk-0000000C0hJ-2XWu;
-	Wed, 28 Feb 2024 09:57:26 +0100
-From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH 8/8] wifi: mac80211: remove TDLS peers on link deactivation
-Date: Wed, 28 Feb 2024 09:55:48 +0100
-Message-ID: <20240228095719.a7dd812c37bf.I3474dbde79e9e7a539d47f6f81f32e6c3e459080@changeid>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240228085718.21171-10-johannes@sipsolutions.net>
-References: <20240228085718.21171-10-johannes@sipsolutions.net>
+	s=arc-20240116; t=1709110564; c=relaxed/simple;
+	bh=bpSJsPzCKvfYSFJ9bhNv8qfnQIhkLP+ASnqF+eIx8gY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=P8jHgeFR5BF5SbqJgKRhSSwz2kLMUccBjUU0EE0n0/M8n46vRxrAPUkVwDyRw9A32RXNq3Eze4gHVz8XnHEH706D3EiaChApSYZk3F5V63DzAjR8kyAYBZVKKGZ/IeXCK5rSUll1DJKMT8NZbqhaXcZ8Ky1sTMLy3dUWGmGM9AY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1rfFjE-0004ae-3R; Wed, 28 Feb 2024 09:55:52 +0100
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1rfFjB-003MEG-KX; Wed, 28 Feb 2024 09:55:49 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1rfFjB-00C2L8-1j;
+	Wed, 28 Feb 2024 09:55:49 +0100
+Date: Wed, 28 Feb 2024 09:55:49 +0100
+From: Sascha Hauer <sha@pengutronix.de>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	Ping-Ke Shih <pkshih@realtek.com>, Sean Mollet <sean@malmoset.com>
+Subject: Re: [PATCH 1/4] wifi: rtw88: 8821cu: Fix firmware upload fail
+Message-ID: <Zd71FWoTDn5plI5R@pengutronix.de>
+References: <731ea688-04ef-4f02-9d01-3e9026981057@gmail.com>
+ <Zd3b81m3_Hh47lww@pengutronix.de>
+ <aacc9bf5-90e3-4e7a-af44-33d11fe89c18@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aacc9bf5-90e3-4e7a-af44-33d11fe89c18@gmail.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+On Tue, Feb 27, 2024 at 06:27:51PM +0200, Bitterblue Smith wrote:
+> Adding Sean Mollet because I forgot earlier.
+> 
+> On 27/02/2024 14:56, Sascha Hauer wrote:
+> > On Tue, Feb 27, 2024 at 02:18:20PM +0200, Bitterblue Smith wrote:
+> >> +	if (addr < 0xFE00) {
+> >> +		if (addr <= 0xff)
+> >> +			current_reg_sec = REG_ON_SEC;
+> >> +		else if (0x1000 <= addr && addr <= 0x10ff)
+> >> +			current_reg_sec = REG_ON_SEC;
+> >> +		else
+> >> +			current_reg_sec = REG_OFF_SEC;
+> >> +	} else {
+> >> +		current_reg_sec = REG_LOCAL_SEC;
+> >> +	}
+> >> +
+> >> +	if (current_reg_sec != REG_ON_SEC)
+> >> +		return;
+> > 
+> > Is there something we want to do with current_reg_sec == REG_LOCAL_SEC
+> > or current_reg_sec == REG_OFF_SEC later? If not the above could be
+> > rewritten as:
+> > 
+> > 	if (addr > 0xff && addr < 0x1000)
+> > 		return;
+> > 	if (addr > 0x10ff)
+> > 		return;
+> > 
+> > 	...
+> 
+> Dunno, I just copied the code from the other drivers:
+> 
+> https://github.com/morrownr/8821cu-20210916/blob/5b39398e2de146edeb76716420f3288f508bea61/os_dep/linux/usb_ops_linux.c#L171
 
-If a link is deactivated, we really cannot sustain any
-TDLS connections on that link any more. With the API
-now changed, fix this issue and remove TDLS connections.
+Ok, nothing is done with current_reg_sec here as well, so I suggest
+rewriting the check like I suggested.
 
-Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/mac80211/link.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Sascha
 
-diff --git a/net/mac80211/link.c b/net/mac80211/link.c
-index 87a413374ece..685ec66b4264 100644
---- a/net/mac80211/link.c
-+++ b/net/mac80211/link.c
-@@ -356,7 +356,7 @@ static int _ieee80211_set_active_links(struct ieee80211_sub_if_data *sdata,
- 
- 		link = sdata_dereference(sdata->link[link_id], sdata);
- 
--		/* FIXME: kill TDLS connections on the link */
-+		ieee80211_teardown_tdls_peers(link);
- 
- 		ieee80211_link_release_channel(link);
- 	}
 -- 
-2.43.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
