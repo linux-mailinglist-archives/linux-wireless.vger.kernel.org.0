@@ -1,240 +1,160 @@
-Return-Path: <linux-wireless+bounces-4188-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4189-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3D3A86AF8E
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 13:55:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6FAA86B01B
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 14:20:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7C8A1C24322
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 12:55:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D645C1C257EB
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 13:20:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BBB11487DC;
-	Wed, 28 Feb 2024 12:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 150183BBEE;
+	Wed, 28 Feb 2024 13:20:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="b3kOhcC4"
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="Zh6vIBIw"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward201c.mail.yandex.net (forward201c.mail.yandex.net [178.154.239.220])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCC1E73522
-	for <linux-wireless@vger.kernel.org>; Wed, 28 Feb 2024 12:54:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E75C6149DE2
+	for <linux-wireless@vger.kernel.org>; Wed, 28 Feb 2024 13:19:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.220
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709124889; cv=none; b=XyENV/J/RQxkgZBCD+bXe2+3KDEjP9iOj980zTaLxDFSqxLiNOyJ0Ffpcdlo7RlhigNCzQGSEui1QxtouFOkSdSF/wIFjwr6mIFpEIv8kKZev/pn/2iNHgyRNg6HKlTCpSrx8WvbPnOygJsxMQ7fsA7NVAlV87mNe9kXdRLfSM4=
+	t=1709126400; cv=none; b=Q3vE8bqzpztbYUUUDhuRY4pL+xO3XxpnIJChQbiEelMrEp7hBOrwXQG6o1aS3KR+xUZPWktW9ymmf3ihjp4st5zftrOhbvub5RErHiKKAp1wX98TY+pllyYWhApoohI+mUhxCpGKGHOBsmsi1x0lyzcizM1dvO0wNCaEtaZdmXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709124889; c=relaxed/simple;
-	bh=9LxBTbyDd58/FA69mYLDKq3BNH9rEqa+WS2S+3Wh3cY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=he7nER5LXVLndntFFFXFn2hF3JXBmOD5XVmUT2GTbJAImdgqhHvzsQB5nwftC6sbesA5xoPPJKHnvf20OoxNmhhyKVF9A5XamAj5QpDBv+44O0sGVN2pMyTsB6sHoM9y1FX9KBBo74SqARVhcibypT/GM+ppQN+tU85WjKQDrVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=b3kOhcC4; arc=none smtp.client-ip=209.85.219.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-68f9e399c91so36177706d6.2
-        for <linux-wireless@vger.kernel.org>; Wed, 28 Feb 2024 04:54:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1709124887; x=1709729687; darn=vger.kernel.org;
-        h=in-reply-to:autocrypt:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ADAixClTi2mkKtSxtSUMWSB2UWRX99fvcRLOC1H8nzg=;
-        b=b3kOhcC4QcXoyhndLFePtCPiR0g3WRN/tpM9t+Ya9md+hMn/DhTUaBMzXs/IdtzdMp
-         Yeq1FsIhqbJEcXXd4pSpt/wPcBNuP0r5gCURBSx1Mg64pZ9LcfXsRQoY0ympfI3wZhxa
-         jepVZ4VjVj1jTTHFXb5QdJoXY4U21i5LUeMNI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709124887; x=1709729687;
-        h=in-reply-to:autocrypt:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ADAixClTi2mkKtSxtSUMWSB2UWRX99fvcRLOC1H8nzg=;
-        b=ZiKY6+1waFEtHNlqnMzU7V8ibqgRHcwmf8bhlnPcSlPBc7vr2mdb5Xsq7aYxffeLJL
-         dANQBSDPqJgiVPwALIC+sbaR6CGyrqMd4AdbG3Dt1bS9AdQ3ruXEcjHVO/wIWB35iCRI
-         MKYeYSiJKSRMR/23nzIBWTYES5uUOCdH3EUvvLxPk6m0/89dPupPR4azERN4ZubUkIzi
-         YViYCjigTU64diYJ+O3HT/PyEG3cS/s3WKiIQHG+ZxXQfV8lAl4xo2y2TDY/on36ibdy
-         kq93+EYjcGicqJ+jJHgRPPrGhDaUNoQRZU2lGG0lA+3X86RxxhKY5O3Ho7icgswUXemY
-         AgGw==
-X-Forwarded-Encrypted: i=1; AJvYcCUm1PPIncuAyF77X0DMDB2ENcboj0tthaVPWkMn2V97i/+6cIhzhDx5xcVwhobhXsVcB9hpCYPHkNt34W6B4k0Zp4MR8kMzWHHOGlWzd/w=
-X-Gm-Message-State: AOJu0YzNnecijf+VEwLVE1+oGsQhm36et8AlqEkBZeNQ9CACnHI7eCMi
-	D/tWBIz+slU70ui8YjHUswtK5qCNVq90JIu/kNaZZJHAq4m1xNbRmxeAqyt+2A==
-X-Google-Smtp-Source: AGHT+IEEkRjp/Tf8PyTixQfGeuF21+b/o7akS0WyB77yKWd2wJGvmL1PalrzZzmImr+Ib1HxPJvADg==
-X-Received: by 2002:a05:6214:5287:b0:68f:6e0a:d47d with SMTP id kj7-20020a056214528700b0068f6e0ad47dmr5581996qvb.49.1709124886786;
-        Wed, 28 Feb 2024 04:54:46 -0800 (PST)
-Received: from [10.176.68.61] ([192.19.148.250])
-        by smtp.gmail.com with ESMTPSA id kv5-20020a056214534500b0068d191dfa9fsm5197366qvb.94.2024.02.28.04.54.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 28 Feb 2024 04:54:46 -0800 (PST)
-Message-ID: <bca41096-0011-4a19-8c31-3273749e92fe@broadcom.com>
-Date: Wed, 28 Feb 2024 13:54:43 +0100
+	s=arc-20240116; t=1709126400; c=relaxed/simple;
+	bh=uLiJjCAL4NrQGVPz9RxXPebySmm7585inFNecGAQGpI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=anO8aVyS9+LLC2JcGAKxzEehbJZOuL7b83aL4qdNL3r3YCi/m+OnMqsuC/xgv4BTKMXHzchxw/12elWyiqO4u2LC0+DmnZIzURxZ3PdGJqpSvjDJG3gVXru+oiKwNzQZseN9/dUkDRwjuqRjOQsL1DQdQep9wl8AAP/6OXfDfG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=Zh6vIBIw; arc=none smtp.client-ip=178.154.239.220
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
+Received: from forward102c.mail.yandex.net (forward102c.mail.yandex.net [IPv6:2a02:6b8:c03:500:1:45:d181:d102])
+	by forward201c.mail.yandex.net (Yandex) with ESMTPS id 0C01865FF2
+	for <linux-wireless@vger.kernel.org>; Wed, 28 Feb 2024 16:14:39 +0300 (MSK)
+Received: from mail-nwsmtp-smtp-production-main-44.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-44.sas.yp-c.yandex.net [IPv6:2a02:6b8:c14:440b:0:640:fa3a:0])
+	by forward102c.mail.yandex.net (Yandex) with ESMTPS id 4158D60A9D;
+	Wed, 28 Feb 2024 16:14:31 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-44.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id TEZITt9GcOs0-3Rndb7bc;
+	Wed, 28 Feb 2024 16:14:30 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+	t=1709126070; bh=BKd6AYY/qyTKWtkQvGPqgumRbX+7Xt8jtiNMbeWZso8=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=Zh6vIBIwD3HKf9QXIrjO+8dxj1pcdIn9cM52S56TGPK+j8f2ohMsArG9Hrg2bvWM+
+	 QRbCArehx8ZXhYeVYtG1rVpfTsHGfRFUcNKIMdDz3R6naDJkDfJvJebX3XuMiYhw7z
+	 7OCVP8Ft/flXLxBlFn30noMdVXAfTbzMZ+JVgdVA=
+Authentication-Results: mail-nwsmtp-smtp-production-main-44.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From: Dmitry Antipov <dmantipov@yandex.ru>
+To: Baochen Qiang <quic_bqiang@quicinc.com>
+Cc: Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	ath11k@lists.infradead.org,
+	linux-wireless@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH] wifi: ath11k: fix few -Wmaybe-uninitialized warnings
+Date: Wed, 28 Feb 2024 16:14:06 +0300
+Message-ID: <20240228131406.165786-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.43.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] wifi: brcm80211: handle pmk_op allocation failure
-To: Duoming Zhou <duoming@zju.edu.cn>, linux-kernel@vger.kernel.org
-Cc: brcm80211-dev-list.pdl@broadcom.com, brcm80211@lists.linux.dev,
- linux-wireless@vger.kernel.org, justinstitt@google.com,
- jisoo.jang@yonsei.ac.kr, petr.tesarik.ext@huawei.com,
- quic_alokad@quicinc.com, hdegoede@redhat.com, keescook@chromium.org,
- johannes.berg@intel.com, kvalo@kernel.org
-References: <20240228063408.7006-1-duoming@zju.edu.cn>
-From: Arend van Spriel <arend.vanspriel@broadcom.com>
-Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
- 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
-In-Reply-To: <20240228063408.7006-1-duoming@zju.edu.cn>
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="000000000000c4d602061270a525"
+Content-Transfer-Encoding: 8bit
 
---000000000000c4d602061270a525
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+When compiling with gcc version 14.0.1 20240226 (experimental) and
+W=12, I've noticed the following warnings:
 
-On 2/28/2024 7:34 AM, Duoming Zhou wrote:
-> The kzalloc() in brcmf_pmksa_v3_op() will return null if the
-> physical memory has run out. As a result, if we dereference
-> the null value, the null pointer dereference bug will happen.
-> 
-> Return -ENOMEM from brcmf_pmksa_v3_op() if kzalloc() fails
-> for pmk_op.
-> 
-> Fixes: a96202acaea4 ("wifi: brcmfmac: cfg80211: Add support for PMKID_V3 operations")
+drivers/net/wireless/ath/ath11k/mac.c: In function 'ath11k_mac_op_remain_on_channel':
+drivers/net/wireless/ath/ath11k/mac.c:9230:12: warning: 'ret' may be used uninitialized
+[-Wmaybe-uninitialized]
+ 9230 |         if (ret)
 
-Thanks!
+drivers/net/wireless/ath/ath11k/qmi.c: In function 'ath11k_qmi_load_file_target_mem':
+drivers/net/wireless/ath/ath11k/qmi.c:2401:16: warning: 'ret' may be used uninitialized
+[-Wmaybe-uninitialized]
+ 2401 |         return ret;
 
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-> ---
-> Changes in v2:
->    - Drop the new label and just return -ENOMEM.
-> 
->   drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 3 +++
->   1 file changed, 3 insertions(+)
+drivers/net/wireless/ath/ath11k/qmi.c: In function 'ath11k_qmi_load_bdf_qmi':
+drivers/net/wireless/ath/ath11k/qmi.c:2494:17: warning: 'fw_entry' may be used uninitialized
+[-Wmaybe-uninitialized]
+ 2494 |                 release_firmware(fw_entry);
 
---000000000000c4d602061270a525
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+And a bunch of them traced to uninitialized fields of the same
+variable, e.g.:
 
-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
-2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
-Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
-HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
-Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
-KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
-Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
-dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
-OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
-MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
-BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
-ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
-zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
-sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
-BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
-N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
-p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
-YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCABLi9H0eyyr3VgkFHM
-6yUdmm5s2zPdlqaG8JVww3FQ/zAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yNDAyMjgxMjU0NDdaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
-AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAfH+k1ktzy1070OarZ4D5Fn7KR6YQKlfRrUDD
-PfiCVNUmzYX9BHpC5l0dHDv6DQjn78Usu6/TzYVo2cd2aLI6XEoDMZu5sDdzHhRfAQfjXGsiVmNN
-UY9pWb+5Gq9z/wkgh6eqG+wIkho+gfVXiKaeZkivHk000c39qQ06MmsPlMSNc5K/ZJHg5SG4VkH3
-6/UeQ+aWUeNrJ86Dl+gh8VJvh9xtFvmtHt/i3iWfl7HaUujPqNcoQsQ4v8qbc/SG+KrPNy1VEVnr
-FT8Civ9UUhNti9TjqfGv67MwcRvn67oAQxcMOwb/6+zum1fgiCWUOTIrK7yQZNKyWZ9QqhrL7+Dk
-LA==
---000000000000c4d602061270a525--
+drivers/net/wireless/ath/ath11k/spectral.c: In function 'ath11k_spectral_process_data':
+drivers/net/wireless/ath/ath11k/spectral.c:700:47: warning: 'summ_rpt.meta.freq1' may
+be used uninitialized [-Wmaybe-uninitialized]
+  700 |         struct ath11k_spectral_summary_report summ_rpt;
+
+Fix all of the above by using 0 and NULL initializers where appropriate.
+Note there are few more (less obvious) -Wmaybe-uninitialized warnings
+still remains, but they're hardly possible to fix without running on
+a physical hardware. Compile tested oly.
+
+Also noticed by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+---
+ drivers/net/wireless/ath/ath11k/mac.c      | 2 +-
+ drivers/net/wireless/ath/ath11k/qmi.c      | 4 ++--
+ drivers/net/wireless/ath/ath11k/spectral.c | 2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index a6a37d67a50a..b89bc7ceaaa7 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -9201,7 +9201,7 @@ static int ath11k_mac_op_remain_on_channel(struct ieee80211_hw *hw,
+ 	struct ath11k *ar = hw->priv;
+ 	struct ath11k_vif *arvif = ath11k_vif_to_arvif(vif);
+ 	struct scan_req_params *arg;
+-	int ret;
++	int ret = 0;
+ 	u32 scan_time_msec;
+ 
+ 	mutex_lock(&ar->conf_mutex);
+diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
+index 5006f81f779b..4477f652e068 100644
+--- a/drivers/net/wireless/ath/ath11k/qmi.c
++++ b/drivers/net/wireless/ath/ath11k/qmi.c
+@@ -2293,7 +2293,7 @@ static int ath11k_qmi_load_file_target_mem(struct ath11k_base *ab,
+ 	struct qmi_txn txn;
+ 	const u8 *temp = data;
+ 	void __iomem *bdf_addr = NULL;
+-	int ret;
++	int ret = 0;
+ 	u32 remaining = len;
+ 
+ 	req = kzalloc(sizeof(*req), GFP_KERNEL);
+@@ -2406,7 +2406,7 @@ static int ath11k_qmi_load_bdf_qmi(struct ath11k_base *ab,
+ {
+ 	struct device *dev = ab->dev;
+ 	char filename[ATH11K_QMI_MAX_BDF_FILE_NAME_SIZE];
+-	const struct firmware *fw_entry;
++	const struct firmware *fw_entry = NULL;
+ 	struct ath11k_board_data bd;
+ 	u32 fw_size, file_type;
+ 	int ret = 0, bdf_type;
+diff --git a/drivers/net/wireless/ath/ath11k/spectral.c b/drivers/net/wireless/ath/ath11k/spectral.c
+index 79e091134515..4c826b539404 100644
+--- a/drivers/net/wireless/ath/ath11k/spectral.c
++++ b/drivers/net/wireless/ath/ath11k/spectral.c
+@@ -697,7 +697,7 @@ static int ath11k_spectral_process_data(struct ath11k *ar,
+ 	struct ath11k_base *ab = ar->ab;
+ 	struct spectral_tlv *tlv;
+ 	struct spectral_summary_fft_report *summary = NULL;
+-	struct ath11k_spectral_summary_report summ_rpt;
++	struct ath11k_spectral_summary_report summ_rpt = { 0 };
+ 	struct fft_sample_ath11k *fft_sample = NULL;
+ 	u8 *data;
+ 	u32 data_len, i;
+-- 
+2.43.2
+
 
