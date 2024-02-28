@@ -1,135 +1,114 @@
-Return-Path: <linux-wireless+bounces-4172-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4173-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6D2786ABB8
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 10:57:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D619686ABDA
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 11:07:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9297528C1E4
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 09:57:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B9201F22F73
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 10:07:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D92936AE1;
-	Wed, 28 Feb 2024 09:57:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C38D2D052;
+	Wed, 28 Feb 2024 10:07:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dz6JZdCs"
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="SK1CSyQM"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward203c.mail.yandex.net (forward203c.mail.yandex.net [178.154.239.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 749A536AE5
-	for <linux-wireless@vger.kernel.org>; Wed, 28 Feb 2024 09:57:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE6B91EB22
+	for <linux-wireless@vger.kernel.org>; Wed, 28 Feb 2024 10:07:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709114225; cv=none; b=NEu6py9RUQSyd3HWAvum6++Gyjm2Y76WMF5f3ouxhf1FyC6w2Hext2I0rldLeW5bbo3aGV+55NUjC+VkoQH7mfj+CYmFwI9omVVpstIh81fpdC1N/DfrzSMwUTVfbtXPXy+FkNydFftOYqTiA/pPQ1nNkSmyV4dlWYyOP+n8qw0=
+	t=1709114839; cv=none; b=AaAlmow0yfODkLic46k+sHp0GHEGTKj1xDebBkOs1UMotMDTKqcmAvCVI51aNxPwBID27au6qd3FFnngFcUNhVQSFmv3RSbgbWUlvZ6WYMvtWtfdO8Xzt8Fb2yNJlNV3rAkKB3Lzj00vsALFhpj2sz7CCBLgjbM8mvundcoNjhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709114225; c=relaxed/simple;
-	bh=ytukn58XE2jz8twDhgASBLNiY4Lgqw6GNzAVZ8aLAUM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=odQBH97oUq3l+gkjP3D9cQL58/Pm27oBw/MbhhUVD5lSK7b7Vvqm+O3GYv/VI7xFrDIHEnsDWRBaJrqkYBq0g/RFvwZdQC6GOo2zIDPpSPltVx7krBwHULC3wzhjhYrlv/9K/e6rzM8DHek0HmPxD/pbRl29aiWTW1pOLCGyW5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dz6JZdCs; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5648d92919dso7047716a12.1
-        for <linux-wireless@vger.kernel.org>; Wed, 28 Feb 2024 01:57:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709114222; x=1709719022; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=WYeIZVyhQqvBcCqZKAZX3Q597galSijOaaLq9tWBOPY=;
-        b=Dz6JZdCsoZXwb80Xk8iIOnvPZSMRuYVCmTr4TEgiBmpWXQweKnbHkDC/H9tGHV88e2
-         apmVWgoECjHHJ2v2sLnYKJ8kGLUllWzuDoL6rEqV0Kvvgo71kACgrFKawwJyMPU1Jg8Y
-         /eyOxnZ9h19UIk2O7BGe7Fx+ENZjtkAZ81I8rrsVzsQBP8zWYAP0H5zKA9+9KRvXSts1
-         Z3fUKtINluJRYcQMQpWm3rHu2lLrH0ybpD5LtTJnDPgrbEASVidP5mu4WrMWGmLEA7ro
-         VKjejds3PPQO2a2ilXMB6jhEB15/DCzIWQnRwdou8tsWNmcIdxVZUA1RaVkiwPXdaG04
-         SBDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709114222; x=1709719022;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WYeIZVyhQqvBcCqZKAZX3Q597galSijOaaLq9tWBOPY=;
-        b=HN8jhHWtA7DYuHfFlHYQGyGySnUIMRlA0VwUXzSAkuJCK2u2c+L32HgsD5do4LrBuo
-         ONS/v/WaIbm5F2sfWKajlkq8J4Ulmjn77yf5z1Luefdh7925pUdrwYJ6xTdlXR6pPlx3
-         X+0ucY/teP4rb2M95DDXhIkNfVIcM7XlIuNCUO5BxWiRmB92QiPBv98tRDHVu5YDuwWS
-         OHBPl/C7IgK2/G1jg6bugNVZ550DzDpv7lHPDiAI4YQcCgYzSu3v/YWiabfl2KUovqYI
-         nSWaTzJoSqhKc0/l2U5g8T7jthVDMYzlVreRel15qJOe0PloSqcqLmBhnIIkPq8hyg6H
-         kj4g==
-X-Forwarded-Encrypted: i=1; AJvYcCV+twKtKIA4e3NYDrTkfN3megVCkze8x5YruGrrdd54176/HgsZ/IRgPlUz5HQJjvgqWWvlAPrJAIJRwPvDFpqLrjrsCRsRP0snlkpJ49o=
-X-Gm-Message-State: AOJu0YwEeq910a/DpKuHdEjrItM6aevNyufhIN71S3tvFUWWIe6jRJ3j
-	9cmHpByz610kJVPypKVkADd0IrkA/F7eb4NLz4AuepgzBVbpbTmvEL9xiW2K
-X-Google-Smtp-Source: AGHT+IHKgoRAWkE50lep95qovcqSNMxRt88vCw0l4gkUlNqCI+PT41bZz3P4NtpwUzj+avqpwBmMsw==
-X-Received: by 2002:aa7:c695:0:b0:566:ef9:a499 with SMTP id n21-20020aa7c695000000b005660ef9a499mr4775973edq.1.1709114221611;
-        Wed, 28 Feb 2024 01:57:01 -0800 (PST)
-Received: from [192.168.1.50] ([79.119.240.211])
-        by smtp.gmail.com with ESMTPSA id b13-20020a056402138d00b005658186279csm1619725edv.18.2024.02.28.01.57.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 28 Feb 2024 01:57:01 -0800 (PST)
-Message-ID: <c68d2d91-fb81-41e2-b8a2-0eb63783311b@gmail.com>
-Date: Wed, 28 Feb 2024 11:57:00 +0200
+	s=arc-20240116; t=1709114839; c=relaxed/simple;
+	bh=ekK2toNcYssRB+Ke9KTOU38XoEmlkj4TzqCZDVJVX00=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BcWtFcfZvq8z57Ee3mgBIzvu9MkC6BQiNwzsC7wHZ9YXg9LWxic1/p9JAWqSywWHC9GaTNcYHdUuaioyYqWHxHsPQCPFumzMlxr0KZoWBbGyWtaxKTC8TeCbaoMAwYl6M5/0lwpVcnjAcc5UOueq/QLvItQV55nDaPMGk/XL344=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=SK1CSyQM; arc=none smtp.client-ip=178.154.239.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
+Received: from forward102b.mail.yandex.net (forward102b.mail.yandex.net [IPv6:2a02:6b8:c02:900:1:45:d181:d102])
+	by forward203c.mail.yandex.net (Yandex) with ESMTPS id 5D8E865028
+	for <linux-wireless@vger.kernel.org>; Wed, 28 Feb 2024 13:01:04 +0300 (MSK)
+Received: from mail-nwsmtp-smtp-production-main-46.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-46.sas.yp-c.yandex.net [IPv6:2a02:6b8:c14:40a4:0:640:8f61:0])
+	by forward102b.mail.yandex.net (Yandex) with ESMTPS id ED909609CC;
+	Wed, 28 Feb 2024 13:00:55 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-46.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id s0WeXZ7EUGk0-MPorsuKX;
+	Wed, 28 Feb 2024 13:00:55 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+	t=1709114455; bh=qEJeYbmJxo0BtItp/7yVTF7rBZlv9oown4rhFVe/Ymw=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=SK1CSyQMM4jD42S1SLWEHk7xn+TZARBpgwD7fqWz+ozAdqoZmY7hzrMtI0ezC0wGd
+	 Q520UvPdLOjkv4GpbO/eGos5M1AThga4qVbXFaRLxs4bKkXVQB7dsMCphdaPGY7AoY
+	 gAUMR/6+omTKRKV7I8zVaFfwBMmxY4nL/6BSZd8A=
+Authentication-Results: mail-nwsmtp-smtp-production-main-46.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From: Dmitry Antipov <dmantipov@yandex.ru>
+To: Baochen Qiang <quic_bqiang@quicinc.com>
+Cc: Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	ath11k@lists.infradead.org,
+	linux-wireless@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH] wifi: ath11k: use ath11k_mac_get_ar_by_pdev_id() consistently
+Date: Wed, 28 Feb 2024 13:00:38 +0300
+Message-ID: <20240228100038.138267-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.43.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] wifi: rtw88: 8821c: Fix false alarm count
-To: Larry Finger <Larry.Finger@lwfinger.net>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Ping-Ke Shih <pkshih@realtek.com>
-References: <909d9f75-44cd-4710-9d3f-56691fd58090@gmail.com>
- <38e3d94e-0cab-4a43-be10-c15ff5387919@gmail.com>
- <b908b9a7-e1fd-47ba-b573-ac11b334101b@lwfinger.net>
-Content-Language: en-US
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <b908b9a7-e1fd-47ba-b573-ac11b334101b@lwfinger.net>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 28/02/2024 00:46, Larry Finger wrote:
-> On 2/27/24 06:20, Bitterblue Smith wrote:
->> Make dm_info->total_fa_cnt the sum of cck_fa_cnt and ofdm_fa_cnt,
->> not just ofdm_fa_cnt.
->>
->> Fixes: 960361238b86 ("rtw88: 8821c: add false alarm statistics")
->> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
->> ---
->>   drivers/net/wireless/realtek/rtw88/rtw8821c.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821c.c b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
->> index 429bb420b056..fe5d8e188350 100644
->> --- a/drivers/net/wireless/realtek/rtw88/rtw8821c.c
->> +++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
->> @@ -773,9 +773,9 @@ static void rtw8821c_false_alarm_statistics(struct rtw_dev *rtwdev)
->>         dm_info->cck_fa_cnt = cck_fa_cnt;
->>       dm_info->ofdm_fa_cnt = ofdm_fa_cnt;
->> +    dm_info->total_fa_cnt = ofdm_fa_cnt;
->>       if (cck_enable)
->>           dm_info->total_fa_cnt += cck_fa_cnt;
->> -    dm_info->total_fa_cnt = ofdm_fa_cnt;
->>         crc32_cnt = rtw_read32(rtwdev, REG_CRC_CCK);
->>       dm_info->cck_ok_cnt = FIELD_GET(GENMASK(15, 0), crc32_cnt);
-> 
-> I applied these 4 patches to my rtw88 GitHub repo, and loaded rtw_core with the disable_lps_deep=y option. The option reduced the number of "firmware failed to leave lps state" messages, but did not eliminate all of them. The messages I received are as follows:
-> 
-> [ 2063.847153] rtw_8821cu 3-6:1.0: firmware failed to leave lps state
-> [ 2450.120216] rtw_8821cu 3-6:1.0: timed out to flush queue 2
+Since 'ath11k_mac_get_ar_by_pdev_id()' can return NULL, check
+the return value in 'ath11k_wmi_tlv_rssi_chain_parse()' as well
+as in 'ath11k_wmi_tlv_fw_stats_data_parse()', and return -EINVAL
+in case of error. Compile tested only.
 
-[...]
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-> [ 4323.823755] rtw_8821cu 3-6:1.0: firmware failed to leave lps state
-> [ 4453.846759] rtw_8821cu 3-6:1.0: firmware failed to leave lps state
-> [ 4455.822861] rtw_8821cu 3-6:1.0: firmware failed to leave lps state
-> 
-> My system has now been up for about 4470 sec. Obviously these messages come in a burst.
-> 
-> Larry
-> 
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+---
+ drivers/net/wireless/ath/ath11k/wmi.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-I have never seen these. I guess you don't get these messages
-without the patches? Can you see which patch causes this, please?
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
+index 34ab9631ff36..2d93e4e78a37 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -6498,6 +6498,12 @@ static int ath11k_wmi_tlv_rssi_chain_parse(struct ath11k_base *ab,
+ 	rcu_read_lock();
+ 
+ 	ar = ath11k_mac_get_ar_by_pdev_id(ab, ev->pdev_id);
++	if (!ar) {
++		ath11k_warn(ab, "%s: invalid pdev_id %d\n",
++			    __func__, ev->pdev_id);
++		ret = -EINVAL;
++		goto exit;
++	}
+ 	stats->stats_id = WMI_REQUEST_RSSI_PER_CHAIN_STAT;
+ 
+ 	ath11k_dbg(ab, ATH11K_DBG_WMI,
+@@ -6570,6 +6576,12 @@ static int ath11k_wmi_tlv_fw_stats_data_parse(struct ath11k_base *ab,
+ 	rcu_read_lock();
+ 
+ 	ar = ath11k_mac_get_ar_by_pdev_id(ab, ev->pdev_id);
++	if (!ar) {
++		ath11k_warn(ab, "%s: invalid pdev_id %d\n",
++			    __func__, ev->pdev_id);
++		ret = -EINVAL;
++		goto exit;
++	}
+ 
+ 	for (i = 0; i < ev->num_pdev_stats; i++) {
+ 		const struct wmi_pdev_stats *src;
+-- 
+2.43.2
+
 
