@@ -1,90 +1,108 @@
-Return-Path: <linux-wireless+bounces-4133-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4134-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC8E286A736
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 04:30:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D1C986A85E
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 07:34:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 707FA2833E9
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 03:30:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7E271F23780
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Feb 2024 06:34:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D28D01F952;
-	Wed, 28 Feb 2024 03:30:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oWYW/YvM"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BB132231A;
+	Wed, 28 Feb 2024 06:34:51 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB2D62F24;
-	Wed, 28 Feb 2024 03:30:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [52.237.72.81])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1685821370;
+	Wed, 28 Feb 2024 06:34:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.237.72.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709091032; cv=none; b=l/kaMK80PnkK3X8IrH7iczgZeLDsvEcC05YZa9RE/ZalL5oFnKRLmJmuy0HzHuBC2BTRlfHprq06lIvMsprLm87PhQVlsdeVhcUFjEV0PNIXcXpUm6C7KO8GTh1+0jOjU5PWiXlYlIGD9wnMV1eU3CNCk3WfLA+diR2lkp9xE48=
+	t=1709102091; cv=none; b=oAQ1k0w96zZIpBVOklwMGjYNFx5jYJiN2vKUObJq42bWqDjByepu0yp09r1oMTPHv7imJP2wPzlhlu5Tr/1aUNbQ0Bv8MpthRcbW7B69tQiIKovR2Fb2Q/VYTxuF45JL9bKi7Folhgyw7yYV9V/5cfXyQGQJXQ4jbUXsrOhDHaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709091032; c=relaxed/simple;
-	bh=nd/CaMYuwTn+UcDF+3uUxq1gzce4dc+lhHjqIRE/w88=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=byiqwDa3AcZHjPRbJ/TRLCR5F77tEdIETS6XZun8UAL3LPQCyQyr3nFZ7bDA7AY0VAN3SVQC8CM5Byw54bLE62Auxz3S2Ayizn7BqgjQsdl30PAIfIHQ4SxH3BWPbZrqqlkY52yVBa5KewKudjFNX9fg+d1FE5/qJRE1KfIotlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oWYW/YvM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 306D4C43390;
-	Wed, 28 Feb 2024 03:30:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709091032;
-	bh=nd/CaMYuwTn+UcDF+3uUxq1gzce4dc+lhHjqIRE/w88=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=oWYW/YvMs+poN8WVP3TKYiG8l6UPS1GraPrHxqADQp33b71T3xDwphuRWDr3mEsge
-	 mFNmGTVYqGVKqBEZ/KuXcFw/cVN8pDDY49VBryV+2Qi7Tjr1Z4y5Bzs3SaDLhzCLbI
-	 ed+ZqSuuuY66HGuAV6YduOJmjBKnU7J5ZGq6AWLrk8y/qz/xMQY43WfAhBm1qIhujm
-	 NBiC+JIynrhuq7IJDzudCL8pdK5yS5sLkVCzLVSsgxJ6/RXmfi55PN1gU/JLtDuux1
-	 +j7yzN5I4obpPVaDGQXzCmu3svKqbOYZQWafug46ny7QVN+WOfjOR/JfYljJp61Kb9
-	 +3Iq6F05DqCmQ==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 0D495D88FB0;
-	Wed, 28 Feb 2024 03:30:32 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1709102091; c=relaxed/simple;
+	bh=BtgjlI5R/JINMM0XHTf7xkkI6D/GSjgXYOSNCXC+TyU=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=kpzunenMffjvilWpLbAJulgy34xu6DapuH2gvfOXBQHcmtJusKOxWvk0YTOo5JOqLMeyNXmNo6kl3VqNDxWVX9qZDiXu7CB6x50olzGIX+PCbIYoNR6FIVMdtbfQS0k8qEVS4/gd+1gU1RM+DcDrv2TJZvu+72u53NbyklAprwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=52.237.72.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
+Received: from ubuntu.localdomain (unknown [218.12.17.192])
+	by mail-app4 (Coremail) with SMTP id cS_KCgAXD33h095lH7WxAQ--.53491S2;
+	Wed, 28 Feb 2024 14:34:23 +0800 (CST)
+From: Duoming Zhou <duoming@zju.edu.cn>
+To: linux-kernel@vger.kernel.org
+Cc: brcm80211-dev-list.pdl@broadcom.com,
+	brcm80211@lists.linux.dev,
+	linux-wireless@vger.kernel.org,
+	justinstitt@google.com,
+	jisoo.jang@yonsei.ac.kr,
+	petr.tesarik.ext@huawei.com,
+	quic_alokad@quicinc.com,
+	hdegoede@redhat.com,
+	keescook@chromium.org,
+	johannes.berg@intel.com,
+	kvalo@kernel.org,
+	arend.vanspriel@broadcom.com,
+	Duoming Zhou <duoming@zju.edu.cn>
+Subject: [PATCH v2] wifi: brcm80211: handle pmk_op allocation failure
+Date: Wed, 28 Feb 2024 14:34:08 +0800
+Message-Id: <20240228063408.7006-1-duoming@zju.edu.cn>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID:cS_KCgAXD33h095lH7WxAQ--.53491S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7XFyDAF1UAr4kCw1xuFyrtFb_yoWkKFX_KF
+	40vwnrJr1rKryvgryDZwsrXrZYkF1vqrZ7GrnFvayfAayrJrWUKrs5ZF98Aw47WFZFgFn8
+	uw4UX34rG34YqjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUb3xFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr1j
+	6rxdM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxa
+	n2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
+	AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
+	17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
+	IF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
+	IxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvf
+	C2KfnxnUUI43ZEXa7VUbGQ6JUUUUU==
+X-CM-SenderInfo: qssqjiasttq6lmxovvfxof0/1tbiAwIFAWXeL1IIMwAGs+
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: pull-request: wireless-2024-02-27
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <170909103204.32106.16533188305242295276.git-patchwork-notify@kernel.org>
-Date: Wed, 28 Feb 2024 03:30:32 +0000
-References: <20240227135751.C5EC6C43390@smtp.kernel.org>
-In-Reply-To: <20240227135751.C5EC6C43390@smtp.kernel.org>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: netdev@vger.kernel.org, linux-wireless@vger.kernel.org
 
-Hello:
+The kzalloc() in brcmf_pmksa_v3_op() will return null if the
+physical memory has run out. As a result, if we dereference
+the null value, the null pointer dereference bug will happen.
 
-This pull request was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Return -ENOMEM from brcmf_pmksa_v3_op() if kzalloc() fails
+for pmk_op.
 
-On Tue, 27 Feb 2024 13:57:51 +0000 (UTC) you wrote:
-> Hi,
-> 
-> here's a pull request to net tree, more info below. Please let me know if there
-> are any problems.
-> 
-> Kalle
-> 
-> [...]
+Fixes: a96202acaea4 ("wifi: brcmfmac: cfg80211: Add support for PMKID_V3 operations")
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+---
+Changes in v2:
+  - Drop the new label and just return -ENOMEM.
 
-Here is the summary with links:
-  - pull-request: wireless-2024-02-27
-    https://git.kernel.org/netdev/net/c/ed2c0e4cb693
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-You are awesome, thank you!
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index 28d6a30cc01..7af6d6448b9 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -4322,6 +4322,9 @@ brcmf_pmksa_v3_op(struct brcmf_if *ifp, struct cfg80211_pmksa *pmksa,
+ 	int ret;
+ 
+ 	pmk_op = kzalloc(sizeof(*pmk_op), GFP_KERNEL);
++	if (!pmk_op)
++		ret = -ENOMEM;
++
+ 	pmk_op->version = cpu_to_le16(BRCMF_PMKSA_VER_3);
+ 
+ 	if (!pmksa) {
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.17.1
 
 
