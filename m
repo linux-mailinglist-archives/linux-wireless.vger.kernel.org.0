@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-4258-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4260-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E08486CD79
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 16:50:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEEB986CDD2
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 16:57:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 46C79B23734
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 15:50:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFF2F1C20DC6
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 15:57:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0906152DEF;
-	Thu, 29 Feb 2024 15:49:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 221F77580A;
+	Thu, 29 Feb 2024 15:49:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YLxlnSoN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fCmBrg/P"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5DBA152DE8;
-	Thu, 29 Feb 2024 15:49:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB68D757E6;
+	Thu, 29 Feb 2024 15:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709221743; cv=none; b=IUppb2x6tHFyNFMLvTNbHS9AVjmKdp7Lgmlol7/SzSqtB0l9Q+zNuq+SlLh7OnpH4QMWj6F/K9ins9Y1HEjurvO9KUFDpwxzC6m6L+3CFgH4V6JAnCPhkSUKfrW3iopWbbY//OafOOd2HlosgNyh0Uqh/UieIHQdSLjqaQ5OvsQ=
+	t=1709221797; cv=none; b=dB4XmXRuFQA69ScUkX412agUCibkQiSHJNFb0MzVo687mITmcfC7DFPTOdDdzxtf+R8wTtFrEJU01pyJKFOa0rzo4mfPurxDZaC01ic3vh0NM+dyuxuASMqAqnhUdA4zyrmUIzBBM4+gsDoP0JW3bCcxglxAaHFbaxdS1OV4mF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709221743; c=relaxed/simple;
-	bh=j550hXwWP/YTOVIMT0h+JvfnFMdMqNbR4wV75CUjEiU=;
+	s=arc-20240116; t=1709221797; c=relaxed/simple;
+	bh=hoUFVXBUc4PJkc2Bbi/RC+j7C+Z0Ys8ZxYU9GzypvvU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kaeMxZxeZq6jBJpW3QhgrRXyw6w1SsZjz/JUWvN+2Vkk51UYf4pTybYmTvlXqvySAep6s0MHF0zwlkJUudmLX3iJYA6T3ORdCJB94x9jtqIj5MeBb0LlI7yr5MYEsxreZPqUkEHMtZUloQ7CxAfp7JeP74+oRRo6XAffTOCP0yE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YLxlnSoN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 202C7C43390;
-	Thu, 29 Feb 2024 15:49:02 +0000 (UTC)
+	 MIME-Version; b=d+IIDFuQ3tZ6vAW0AInfOOIhiUihPHEsheqdwMiiMgarwerRSbzwTbCQYWd1dHRNvKVa5YGRGo4GXomY+qfUm4ovuOkA31oQfsycqNIhNdytdDYVZjwA/xlGvxO7S1P3ct3Ncdz/yLhr1e0ioCfsXaS1oojvkXz3ELHP6P+UMNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fCmBrg/P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60E9AC433F1;
+	Thu, 29 Feb 2024 15:49:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709221743;
-	bh=j550hXwWP/YTOVIMT0h+JvfnFMdMqNbR4wV75CUjEiU=;
+	s=k20201202; t=1709221796;
+	bh=hoUFVXBUc4PJkc2Bbi/RC+j7C+Z0Ys8ZxYU9GzypvvU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YLxlnSoNTumpMr/F2IIy8CNcdwEK5c14UOuMyUlG1wN477+oREnRdYUl98eGi+zoz
-	 hp6jqKrtC2vCW1ayY4jWspaef+5ZgObKNWJre7Fbz1EsU4lBxTz2mQF/7W2oJf9lp1
-	 NMcoRGCb+WtnAX5eEOCxu5Q4Q9SkMV0zHXLjYTrif3G1rLptrz4ujfbiL5lz4raGBk
-	 Fue498cfskSO2yI32LTbuH9eEuNowpFe0ReQtiz5XlnF5P1twk+CHtW/HxLZRzKA52
-	 baWzx6N8dRNMnTl5EMIbAJ/tFiXuGvuBnHf9Iwu646TwP55Fw+mgmNb+Vh8cGuTlm4
-	 92+5lv78PAQUg==
+	b=fCmBrg/PP/e6IRwRqT+r9nvc5iMgxMPxnlyCujdNvUTx/f63MOzIdn5mmoWsxCHRk
+	 wC/dH6yCrCOgiSu+7lXvo1NkZvsM4j1ZCNT4h5OwEEI7GnW+1fWjMaYKV76u5iyxvY
+	 p+zAIDgwBq8BH4XOOFNlTxvx7jlJs//xfqcNQM/xaGCo7mPLwBQdioPlyQUylV0SeZ
+	 4p4Wtq5psd+wKYskckUx56/POszo5kDrXxTGDTfks5RAvBp5y2vLZoVixAEAYbNuwe
+	 9/ggychTNKVWvEm8V+p0ADLYQWESMjAJplWDGHdANJI1VwQ9NKbR6DiiJ3T7Q/K6ki
+	 wfl/Sp6xy33lQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -54,12 +54,12 @@ Cc: Daniel Gabay <daniel.gabay@intel.com>,
 	avraham.stern@intel.com,
 	shaul.triebitz@intel.com,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.7 06/26] wifi: iwlwifi: mvm: use correct address 3 in A-MSDU
-Date: Thu, 29 Feb 2024 10:48:25 -0500
-Message-ID: <20240229154851.2849367-6-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 05/21] wifi: iwlwifi: mvm: use correct address 3 in A-MSDU
+Date: Thu, 29 Feb 2024 10:49:25 -0500
+Message-ID: <20240229154946.2850012-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240229154851.2849367-1-sashal@kernel.org>
-References: <20240229154851.2849367-1-sashal@kernel.org>
+In-Reply-To: <20240229154946.2850012-1-sashal@kernel.org>
+References: <20240229154946.2850012-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -68,7 +68,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.7.6
+X-stable-base: Linux 6.6.18
 Content-Transfer-Encoding: 8bit
 
 From: Daniel Gabay <daniel.gabay@intel.com>
@@ -106,10 +106,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 59 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-index db986bfc4dc3f..461f26d9214e4 100644
+index 6fdb2c38518e3..4ea3aabc64883 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-@@ -520,13 +520,24 @@ static void iwl_mvm_set_tx_cmd_crypto(struct iwl_mvm *mvm,
+@@ -500,13 +500,24 @@ static void iwl_mvm_set_tx_cmd_crypto(struct iwl_mvm *mvm,
  	}
  }
  
@@ -135,7 +135,7 @@ index db986bfc4dc3f..461f26d9214e4 100644
  {
  	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
  	struct iwl_device_tx_cmd *dev_cmd;
-@@ -584,7 +595,7 @@ iwl_mvm_set_tx_params(struct iwl_mvm *mvm, struct sk_buff *skb,
+@@ -564,7 +575,7 @@ iwl_mvm_set_tx_params(struct iwl_mvm *mvm, struct sk_buff *skb,
  			cmd->len = cpu_to_le16((u16)skb->len);
  
  			/* Copy MAC header from skb into command buffer */
@@ -144,7 +144,7 @@ index db986bfc4dc3f..461f26d9214e4 100644
  
  			cmd->flags = cpu_to_le16(flags);
  			cmd->rate_n_flags = cpu_to_le32(rate_n_flags);
-@@ -599,7 +610,7 @@ iwl_mvm_set_tx_params(struct iwl_mvm *mvm, struct sk_buff *skb,
+@@ -579,7 +590,7 @@ iwl_mvm_set_tx_params(struct iwl_mvm *mvm, struct sk_buff *skb,
  			cmd->len = cpu_to_le16((u16)skb->len);
  
  			/* Copy MAC header from skb into command buffer */
@@ -153,7 +153,7 @@ index db986bfc4dc3f..461f26d9214e4 100644
  
  			cmd->flags = cpu_to_le32(flags);
  			cmd->rate_n_flags = cpu_to_le32(rate_n_flags);
-@@ -617,7 +628,7 @@ iwl_mvm_set_tx_params(struct iwl_mvm *mvm, struct sk_buff *skb,
+@@ -597,7 +608,7 @@ iwl_mvm_set_tx_params(struct iwl_mvm *mvm, struct sk_buff *skb,
  	iwl_mvm_set_tx_cmd_rate(mvm, tx_cmd, info, sta, hdr->frame_control);
  
  	/* Copy MAC header from skb into command buffer */
@@ -162,7 +162,7 @@ index db986bfc4dc3f..461f26d9214e4 100644
  
  out:
  	return dev_cmd;
-@@ -820,7 +831,8 @@ int iwl_mvm_tx_skb_non_sta(struct iwl_mvm *mvm, struct sk_buff *skb)
+@@ -800,7 +811,8 @@ int iwl_mvm_tx_skb_non_sta(struct iwl_mvm *mvm, struct sk_buff *skb)
  
  	IWL_DEBUG_TX(mvm, "station Id %d, queue=%d\n", sta_id, queue);
  
@@ -172,7 +172,7 @@ index db986bfc4dc3f..461f26d9214e4 100644
  	if (!dev_cmd)
  		return -1;
  
-@@ -1140,7 +1152,8 @@ static int iwl_mvm_tx_pkt_queued(struct iwl_mvm *mvm,
+@@ -1120,7 +1132,8 @@ static int iwl_mvm_tx_pkt_queued(struct iwl_mvm *mvm,
   */
  static int iwl_mvm_tx_mpdu(struct iwl_mvm *mvm, struct sk_buff *skb,
  			   struct ieee80211_tx_info *info,
@@ -182,7 +182,7 @@ index db986bfc4dc3f..461f26d9214e4 100644
  {
  	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
  	struct iwl_mvm_sta *mvmsta;
-@@ -1172,7 +1185,8 @@ static int iwl_mvm_tx_mpdu(struct iwl_mvm *mvm, struct sk_buff *skb,
+@@ -1152,7 +1165,8 @@ static int iwl_mvm_tx_mpdu(struct iwl_mvm *mvm, struct sk_buff *skb,
  		iwl_mvm_probe_resp_set_noa(mvm, skb);
  
  	dev_cmd = iwl_mvm_set_tx_params(mvm, skb, info, hdrlen,
@@ -192,7 +192,7 @@ index db986bfc4dc3f..461f26d9214e4 100644
  	if (!dev_cmd)
  		goto drop;
  
-@@ -1294,9 +1308,11 @@ int iwl_mvm_tx_skb_sta(struct iwl_mvm *mvm, struct sk_buff *skb,
+@@ -1274,9 +1288,11 @@ int iwl_mvm_tx_skb_sta(struct iwl_mvm *mvm, struct sk_buff *skb,
  	struct iwl_mvm_sta *mvmsta = iwl_mvm_sta_from_mac80211(sta);
  	struct ieee80211_tx_info info;
  	struct sk_buff_head mpdus_skbs;
@@ -204,7 +204,7 @@ index db986bfc4dc3f..461f26d9214e4 100644
  
  	if (WARN_ON_ONCE(!mvmsta))
  		return -1;
-@@ -1307,26 +1323,59 @@ int iwl_mvm_tx_skb_sta(struct iwl_mvm *mvm, struct sk_buff *skb,
+@@ -1287,26 +1303,59 @@ int iwl_mvm_tx_skb_sta(struct iwl_mvm *mvm, struct sk_buff *skb,
  	memcpy(&info, skb->cb, sizeof(info));
  
  	if (!skb_is_gso(skb))
