@@ -1,48 +1,48 @@
-Return-Path: <linux-wireless+bounces-4241-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4242-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0B1986C3EB
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 09:42:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C74186C3EC
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 09:42:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E8F81C22394
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 08:42:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02D8F2843F0
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 08:42:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AAA650A6D;
-	Thu, 29 Feb 2024 08:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37C31524BA;
+	Thu, 29 Feb 2024 08:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="fPcJytgm"
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="tKrXytYX"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from forward103c.mail.yandex.net (forward103c.mail.yandex.net [178.154.239.214])
+Received: from forward103b.mail.yandex.net (forward103b.mail.yandex.net [178.154.239.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A936143AD5
-	for <linux-wireless@vger.kernel.org>; Thu, 29 Feb 2024 08:41:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.214
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFBC850A63
+	for <linux-wireless@vger.kernel.org>; Thu, 29 Feb 2024 08:41:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709196068; cv=none; b=CWUfhWaMCl883W4D3sgRREHjq42rffrRfKn6g7N31SvZcR/bovlp+J3CXebsv8gsSxha6us+h+QM8OoIzpHbTz+UB3v9DCze/hiV3y4i8v/O44ib1bVwxif4gaf9Af56Wsw6E9SdSCE+1ZF4DoMWHRLBoO7KNE0hKxFHeY/8Eu4=
+	t=1709196069; cv=none; b=d5kXF1ykBpErVjQ7p09KZ5RWXlfnjPdSeEWtxv6qATJbYBsvLVPgIHgQXHBbwsnISeMCOd3nNRTwnPH9KTO8SXl+JpJ6x/A0j4FPqCIKT07SlfmLX2Aiqw4Ebttr8c8yGYcXNhRjamFNuG/m34ta7my61/ti3QrGY6OrV8Fvgs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709196068; c=relaxed/simple;
-	bh=tq0wf6eEo8lPoEY7Vg8wPwEQ2+/zhBI1SDEB7FHWoBQ=;
+	s=arc-20240116; t=1709196069; c=relaxed/simple;
+	bh=FPC/7D9VUAWtvds0/iDUODpNTYLTF9IwPj1Va/W1jfw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gdnuUEPfMuwV7Uoyw1CaYzLOs/NHsvJdMJDMSlSDJ0QuWC+8GDJZJdHx+0Gf5yXzGZ9x/LPCNrz/U4C6N4TF+1HbdavTGRbsMAvxjYPsgEY3At8oFwjnjJTC3Q/rYSA+E/yUn00IEgS/7ICOUhFiSDno0nsrb9lv2SbR/LDLl74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=fPcJytgm; arc=none smtp.client-ip=178.154.239.214
+	 MIME-Version; b=sAedkdbiXCtNB+8UEmi47t+E4F0a+YzuyV+hb1roguQ52gmEdbSWy7MMe6zcrzYz2tRF7+vQc7oHeE9w8JvdQMHV/ecoqM5vXFZjoKu7QfbeTY6KZ7Jt7eZYh+g/6pFkw3lYTlEDxzsyl4J2GkoGSMo05esQEM2sPpLfYxLhswo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=tKrXytYX; arc=none smtp.client-ip=178.154.239.150
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
 Received: from mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net [IPv6:2a02:6b8:c14:6e01:0:640:627f:0])
-	by forward103c.mail.yandex.net (Yandex) with ESMTPS id 129A860B62;
-	Thu, 29 Feb 2024 11:40:57 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id teVSqmLJiW20-6Zz5L67T;
-	Thu, 29 Feb 2024 11:40:56 +0300
+	by forward103b.mail.yandex.net (Yandex) with ESMTPS id 2207E608F4;
+	Thu, 29 Feb 2024 11:40:58 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id teVSqmLJiW20-XbXOpn5f;
+	Thu, 29 Feb 2024 11:40:57 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1709196056; bh=0Ttr1Rc6LQgnqCWP+1fX+y357g9rrnweJwnKxC38lcw=;
+	t=1709196057; bh=Y8PDnHy/+7z0sDz6icCVsb+FrINzU6iAYcCS8mDYRMc=;
 	h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
-	b=fPcJytgmrLEdj4b4RUjGE1QFf2MbLbirXX7ySfLWviSpH9d84PMpWcv4JDZrKDeI/
-	 NlE9eu7RmuIm8isWTbIH04HFEcQTM7NKeK4WbMMPmlWIBXqjjbWpNaJK/wvz0efAh+
-	 aSaN3+xDLSrJd/2Kr1/STmhI0dLvEVz1fLSM4vfE=
+	b=tKrXytYXXTgBiriEUfIaIKTE08u7e7f7B2KmMrKNrb2l22syKt0nX433X86cjOBJ7
+	 qRQKprR8WWG05Im2GIsSlta7h3Xpzc9b+w6sp00Ky1Tb9BeuV4EXKoEcccEYALBYwl
+	 6XL+/J0VWmvLuEPCOSJ+4F+PFjEvIBm3fcFqdbJg=
 Authentication-Results: mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
 From: Dmitry Antipov <dmantipov@yandex.ru>
 To: Jeff Johnson <quic_jjohnson@quicinc.com>
@@ -52,12 +52,13 @@ Cc: Baochen Qiang <quic_bqiang@quicinc.com>,
 	linux-wireless@vger.kernel.org,
 	lvc-project@linuxtesting.org,
 	Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH 1/3] [v2] wifi: ath11k: use ath11k_mac_get_ar_by_pdev_id() consistently
-Date: Thu, 29 Feb 2024 11:40:29 +0300
-Message-ID: <20240229084031.51957-1-dmantipov@yandex.ru>
+Subject: [PATCH 2/3] [v2] wifi: ath11k: handle unknown scan state in ath11k_mac_op_remain_on_channel()
+Date: Thu, 29 Feb 2024 11:40:30 +0300
+Message-ID: <20240229084031.51957-2-dmantipov@yandex.ru>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <788f1df8-64e1-4b3c-ae8e-00c67be1c3de@quicinc.com>
+In-Reply-To: <20240229084031.51957-1-dmantipov@yandex.ru>
 References: <788f1df8-64e1-4b3c-ae8e-00c67be1c3de@quicinc.com>
+ <20240229084031.51957-1-dmantipov@yandex.ru>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -66,50 +67,37 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Since 'ath11k_mac_get_ar_by_pdev_id()' can return NULL, check
-the return value in 'ath11k_wmi_tlv_rssi_chain_parse()' as well
-as in 'ath11k_wmi_tlv_fw_stats_data_parse()', and return -EINVAL
-in case of error. Compile tested only.
+In 'ath11k_mac_op_remain_on_channel()', add fallback default to
+handle an unknown scan state with -EINVAL. Compile tested only.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Initially found by Linux Verification Center (linuxtesting.org)
+with SVACE (and reported as an attempt to use uninitialized
+variable).
 
+Suggested-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 ---
-v2: aggregate to the series
+v2: prefer fallback branch over dummy initializer (Jeff Johnson)
 ---
- drivers/net/wireless/ath/ath11k/wmi.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/net/wireless/ath/ath11k/mac.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index 34ab9631ff36..2d93e4e78a37 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -6498,6 +6498,12 @@ static int ath11k_wmi_tlv_rssi_chain_parse(struct ath11k_base *ab,
- 	rcu_read_lock();
- 
- 	ar = ath11k_mac_get_ar_by_pdev_id(ab, ev->pdev_id);
-+	if (!ar) {
-+		ath11k_warn(ab, "%s: invalid pdev_id %d\n",
-+			    __func__, ev->pdev_id);
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index a6a37d67a50a..47d3d5fd0423 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -9224,6 +9224,11 @@ static int ath11k_mac_op_remain_on_channel(struct ieee80211_hw *hw,
+ 	case ATH11K_SCAN_ABORTING:
+ 		ret = -EBUSY;
+ 		break;
++	default:
++		ath11k_warn(ar->ab, "%s: unexpected scan state: %d\n",
++			    __func__, ar->scan.state);
 +		ret = -EINVAL;
-+		goto exit;
-+	}
- 	stats->stats_id = WMI_REQUEST_RSSI_PER_CHAIN_STAT;
++		break;
+ 	}
+ 	spin_unlock_bh(&ar->data_lock);
  
- 	ath11k_dbg(ab, ATH11K_DBG_WMI,
-@@ -6570,6 +6576,12 @@ static int ath11k_wmi_tlv_fw_stats_data_parse(struct ath11k_base *ab,
- 	rcu_read_lock();
- 
- 	ar = ath11k_mac_get_ar_by_pdev_id(ab, ev->pdev_id);
-+	if (!ar) {
-+		ath11k_warn(ab, "%s: invalid pdev_id %d\n",
-+			    __func__, ev->pdev_id);
-+		ret = -EINVAL;
-+		goto exit;
-+	}
- 
- 	for (i = 0; i < ev->num_pdev_stats; i++) {
- 		const struct wmi_pdev_stats *src;
 -- 
 2.44.0
 
