@@ -1,53 +1,53 @@
-Return-Path: <linux-wireless+bounces-4230-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4231-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5698886C2C9
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 08:47:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 074D486C2CA
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 08:47:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF107281082
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 07:47:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BE701C2130D
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 07:47:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FC1B45C04;
-	Thu, 29 Feb 2024 07:46:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D74B4D110;
+	Thu, 29 Feb 2024 07:46:26 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B215C51037
-	for <linux-wireless@vger.kernel.org>; Thu, 29 Feb 2024 07:46:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2C35481BF
+	for <linux-wireless@vger.kernel.org>; Thu, 29 Feb 2024 07:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709192783; cv=none; b=fJx2cX7XH95OXcpogCqrfswJ5ThAGAo/dxyGwKWh1JJnF5hiRaFDz1DDR8zCnIdqBptop6zJ5H3dShcP3L6beP7SfVVGMK0ktPudmCjSdui3v0hHkP3oVQUtqMIEP0RFW39N4d2RiNYo1NcJ4i2gl2zBFyoCdarE2FteD2kv/UI=
+	t=1709192785; cv=none; b=Le55Xi0JWygwTHa1FeAgKILqE4kaWYW9/tQDve9MrpREQ7wjb7tlXKx1iTQHBUo86UJc8j3tZzfYm0eoIKpruvd7XoskcJ2wTPINq8yd/kRFaQ7DaofhgqTIp1yCZ4GtiAHIT6yYXX72uLQiPVKY8yiA8UyXdfAu4iHtBMEziRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709192783; c=relaxed/simple;
-	bh=oxYM/lOmOou4OFvW1tSlDBEUsijTL0P+eNcyAONN7Xg=;
+	s=arc-20240116; t=1709192785; c=relaxed/simple;
+	bh=puVNhTK/zM11r0hXWu0x5CnjJZbzvhVrpGMmNZzL4hk=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qiVfG6mVB7B0et59sW8jA4oEKbggXuQQulrED4T7iC9JPpXhj3/Amq4rQvF5w3tWLLnWXQXXSCCM5HsuPj3LlCqOE6QHY5QUTVmOFIP9GbOmdGWtHQ6gOg50UZQYiE2GVIrlvuorg5jVFtq/7ovV1WIEpVAmjkA29MN7gFw/oKY=
+	 MIME-Version:Content-Type; b=hg+0PKX/mDF36rgGCPzcKZDqDbpIfyXshnQ9DeqdFV1IQKkXpL+q6VWvwC9hqRA74Dpi9F1h9HlhyjMg2XcyWlD9NZopMl1thocty7o1iPYYyR82QCPS5bz9WRK3+0Rn7fSxgpXurJ7vFTSo4YGWXrGbC8Sflej8pu0Px0CyQ5w=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 41T7kChdD1229757, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 41T7kChdD1229757
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 41T7kGkuD1229760, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 41T7kGkuD1229760
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 29 Feb 2024 15:46:12 +0800
+	Thu, 29 Feb 2024 15:46:16 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2375.32; Thu, 29 Feb 2024 15:46:13 +0800
+ 15.1.2507.17; Thu, 29 Feb 2024 15:46:17 +0800
 Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 29 Feb
- 2024 15:46:12 +0800
+ 2024 15:46:17 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <kvalo@kernel.org>
 CC: <ku920601@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 1/8] wifi: rtw89: mac: add coexistence helpers {cfg/get}_plt
-Date: Thu, 29 Feb 2024 15:45:07 +0800
-Message-ID: <20240229074514.219276-2-pkshih@realtek.com>
+Subject: [PATCH 2/8] wifi: rtw89: 8922a: add coexistence helpers of SW grant
+Date: Thu, 29 Feb 2024 15:45:08 +0800
+Message-ID: <20240229074514.219276-3-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240229074514.219276-1-pkshih@realtek.com>
 References: <20240229074514.219276-1-pkshih@realtek.com>
@@ -61,180 +61,200 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
 
-When hardware grant BT initially but transition to grant WiFi, the PLT
-(polluted) bit is set to assist coexistence mechanism to debug if
-grant signal is expected.
+Under some circumstances, coexistence mechanism want to keep grant BT or
+WiFi, such as inquiry and WiFi is connecting, to ensure BT or WiFi can
+transmit or receive data in that period.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/mac.c    |  8 +++-
- drivers/net/wireless/realtek/rtw89/mac.h    | 22 ++++++++++-
- drivers/net/wireless/realtek/rtw89/mac_be.c | 41 +++++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/reg.h    | 14 +++++++
- 4 files changed, 81 insertions(+), 4 deletions(-)
+ drivers/net/wireless/realtek/rtw89/core.h     |  6 ++
+ drivers/net/wireless/realtek/rtw89/mac.h      |  3 +
+ drivers/net/wireless/realtek/rtw89/mac_be.c   | 76 +++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/reg.h      | 28 +++++++
+ drivers/net/wireless/realtek/rtw89/rtw8922a.c |  2 +
+ 5 files changed, 115 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index 908245ac46bd..288383ee6d1e 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -5615,7 +5615,8 @@ int rtw89_mac_cfg_gnt_v1(struct rtw89_dev *rtwdev,
- }
- EXPORT_SYMBOL(rtw89_mac_cfg_gnt_v1);
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index d62d23015c48..2bf1e4e95c0f 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -1151,9 +1151,15 @@ struct rtw89_mac_ax_gnt {
+ 	u8 gnt_wl;
+ } __packed;
  
--int rtw89_mac_cfg_plt(struct rtw89_dev *rtwdev, struct rtw89_mac_ax_plt *plt)
-+static
-+int rtw89_mac_cfg_plt_ax(struct rtw89_dev *rtwdev, struct rtw89_mac_ax_plt *plt)
- {
- 	u32 reg;
- 	u16 val;
-@@ -5711,7 +5712,7 @@ bool rtw89_mac_get_ctrl_path(struct rtw89_dev *rtwdev)
- 	return !!val;
- }
- 
--u16 rtw89_mac_get_plt_cnt(struct rtw89_dev *rtwdev, u8 band)
-+static u16 rtw89_mac_get_plt_cnt_ax(struct rtw89_dev *rtwdev, u8 band)
- {
- 	u32 reg;
- 	u16 cnt;
-@@ -6340,6 +6341,9 @@ const struct rtw89_mac_gen_def rtw89_mac_gen_ax = {
- 	.parse_phycap_map = rtw89_parse_phycap_map_ax,
- 	.cnv_efuse_state = rtw89_cnv_efuse_state_ax,
- 
-+	.cfg_plt = rtw89_mac_cfg_plt_ax,
-+	.get_plt_cnt = rtw89_mac_get_plt_cnt_ax,
++struct rtw89_mac_ax_wl_act {
++	u8 wlan_act_en;
++	u8 wlan_act;
++};
 +
- 	.get_txpwr_cr = rtw89_mac_get_txpwr_cr_ax,
+ #define RTW89_MAC_AX_COEX_GNT_NR 2
+ struct rtw89_mac_ax_coex_gnt {
+ 	struct rtw89_mac_ax_gnt band[RTW89_MAC_AX_COEX_GNT_NR];
++	struct rtw89_mac_ax_wl_act bt[RTW89_MAC_AX_COEX_GNT_NR];
+ };
  
- 	.write_xtal_si = rtw89_mac_write_xtal_si_ax,
+ enum rtw89_btc_ncnt {
 diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
-index db95509fad2f..721a57150378 100644
+index 721a57150378..c55b7e4918eb 100644
 --- a/drivers/net/wireless/realtek/rtw89/mac.h
 +++ b/drivers/net/wireless/realtek/rtw89/mac.h
-@@ -958,6 +958,9 @@ struct rtw89_mac_gen_def {
- 	int (*parse_phycap_map)(struct rtw89_dev *rtwdev);
- 	int (*cnv_efuse_state)(struct rtw89_dev *rtwdev, bool idle);
- 
-+	int (*cfg_plt)(struct rtw89_dev *rtwdev, struct rtw89_mac_ax_plt *plt);
-+	u16 (*get_plt_cnt)(struct rtw89_dev *rtwdev, u8 band);
-+
- 	bool (*get_txpwr_cr)(struct rtw89_dev *rtwdev,
- 			     enum rtw89_phy_idx phy_idx,
- 			     u32 reg_base, u32 *cr);
-@@ -1185,8 +1188,23 @@ int rtw89_mac_cfg_gnt(struct rtw89_dev *rtwdev,
+@@ -1188,6 +1188,8 @@ int rtw89_mac_cfg_gnt(struct rtw89_dev *rtwdev,
  		      const struct rtw89_mac_ax_coex_gnt *gnt_cfg);
  int rtw89_mac_cfg_gnt_v1(struct rtw89_dev *rtwdev,
  			 const struct rtw89_mac_ax_coex_gnt *gnt_cfg);
--int rtw89_mac_cfg_plt(struct rtw89_dev *rtwdev, struct rtw89_mac_ax_plt *plt);
--u16 rtw89_mac_get_plt_cnt(struct rtw89_dev *rtwdev, u8 band);
-+
-+static inline
-+int rtw89_mac_cfg_plt(struct rtw89_dev *rtwdev, struct rtw89_mac_ax_plt *plt)
-+{
-+	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
-+
-+	return mac->cfg_plt(rtwdev, plt);
-+}
-+
-+static inline
-+u16 rtw89_mac_get_plt_cnt(struct rtw89_dev *rtwdev, u8 band)
-+{
-+	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
-+
-+	return mac->get_plt_cnt(rtwdev, band);
-+}
-+
- void rtw89_mac_cfg_sb(struct rtw89_dev *rtwdev, u32 val);
- u32 rtw89_mac_get_sb(struct rtw89_dev *rtwdev);
++int rtw89_mac_cfg_gnt_v2(struct rtw89_dev *rtwdev,
++			 const struct rtw89_mac_ax_coex_gnt *gnt_cfg);
+ 
+ static inline
+ int rtw89_mac_cfg_plt(struct rtw89_dev *rtwdev, struct rtw89_mac_ax_plt *plt)
+@@ -1210,6 +1212,7 @@ u32 rtw89_mac_get_sb(struct rtw89_dev *rtwdev);
  bool rtw89_mac_get_ctrl_path(struct rtw89_dev *rtwdev);
+ int rtw89_mac_cfg_ctrl_path(struct rtw89_dev *rtwdev, bool wl);
+ int rtw89_mac_cfg_ctrl_path_v1(struct rtw89_dev *rtwdev, bool wl);
++int rtw89_mac_cfg_ctrl_path_v2(struct rtw89_dev *rtwdev, bool wl);
+ void rtw89_mac_power_mode_change(struct rtw89_dev *rtwdev, bool enter);
+ void rtw89_mac_notify_wake(struct rtw89_dev *rtwdev);
+ 
 diff --git a/drivers/net/wireless/realtek/rtw89/mac_be.c b/drivers/net/wireless/realtek/rtw89/mac_be.c
-index 320e88229971..c68fef0f55f1 100644
+index c68fef0f55f1..7ca94b70a9cb 100644
 --- a/drivers/net/wireless/realtek/rtw89/mac_be.c
 +++ b/drivers/net/wireless/realtek/rtw89/mac_be.c
-@@ -1797,6 +1797,44 @@ static int trx_init_be(struct rtw89_dev *rtwdev)
+@@ -1797,6 +1797,82 @@ static int trx_init_be(struct rtw89_dev *rtwdev)
  	return 0;
  }
  
-+static
-+int rtw89_mac_cfg_plt_be(struct rtw89_dev *rtwdev, struct rtw89_mac_ax_plt *plt)
++int rtw89_mac_cfg_gnt_v2(struct rtw89_dev *rtwdev,
++			 const struct rtw89_mac_ax_coex_gnt *gnt_cfg)
 +{
-+	u32 reg;
-+	u16 val;
-+	int ret;
++	u32 val = 0;
 +
-+	ret = rtw89_mac_check_mac_en(rtwdev, plt->band, RTW89_CMAC_SEL);
-+	if (ret)
-+		return ret;
++	if (gnt_cfg->band[0].gnt_bt)
++		val |= B_BE_GNT_BT_BB0_VAL | B_BE_GNT_BT_RX_BB0_VAL |
++		       B_BE_GNT_BT_TX_BB0_VAL;
 +
-+	reg = rtw89_mac_reg_by_idx(rtwdev, R_BE_BT_PLT, plt->band);
-+	val = (plt->tx & RTW89_MAC_AX_PLT_LTE_RX ? B_BE_TX_PLT_GNT_LTE_RX : 0) |
-+	      (plt->tx & RTW89_MAC_AX_PLT_GNT_BT_TX ? B_BE_TX_PLT_GNT_BT_TX : 0) |
-+	      (plt->tx & RTW89_MAC_AX_PLT_GNT_BT_RX ? B_BE_TX_PLT_GNT_BT_RX : 0) |
-+	      (plt->tx & RTW89_MAC_AX_PLT_GNT_WL ? B_BE_TX_PLT_GNT_WL : 0) |
-+	      (plt->rx & RTW89_MAC_AX_PLT_LTE_RX ? B_BE_RX_PLT_GNT_LTE_RX : 0) |
-+	      (plt->rx & RTW89_MAC_AX_PLT_GNT_BT_TX ? B_BE_RX_PLT_GNT_BT_TX : 0) |
-+	      (plt->rx & RTW89_MAC_AX_PLT_GNT_BT_RX ? B_BE_RX_PLT_GNT_BT_RX : 0) |
-+	      (plt->rx & RTW89_MAC_AX_PLT_GNT_WL ? B_BE_RX_PLT_GNT_WL : 0) |
-+	      B_BE_PLT_EN;
-+	rtw89_write16(rtwdev, reg, val);
++	if (gnt_cfg->band[0].gnt_bt_sw_en)
++		val |= B_BE_GNT_BT_BB0_SWCTRL | B_BE_GNT_BT_RX_BB0_SWCTRL |
++		       B_BE_GNT_BT_TX_BB0_SWCTRL;
++
++	if (gnt_cfg->band[0].gnt_wl)
++		val |= B_BE_GNT_WL_BB0_VAL | B_BE_GNT_WL_RX_VAL |
++		       B_BE_GNT_WL_TX_VAL | B_BE_GNT_WL_BB_PWR_VAL;
++
++	if (gnt_cfg->band[0].gnt_wl_sw_en)
++		val |= B_BE_GNT_WL_BB0_SWCTRL | B_BE_GNT_WL_RX_SWCTRL |
++		       B_BE_GNT_WL_TX_SWCTRL | B_BE_GNT_WL_BB_PWR_SWCTRL;
++
++	if (gnt_cfg->band[1].gnt_bt)
++		val |= B_BE_GNT_BT_BB1_VAL | B_BE_GNT_BT_RX_BB1_VAL |
++		       B_BE_GNT_BT_TX_BB1_VAL;
++
++	if (gnt_cfg->band[1].gnt_bt_sw_en)
++		val |= B_BE_GNT_BT_BB1_SWCTRL | B_BE_GNT_BT_RX_BB1_SWCTRL |
++		       B_BE_GNT_BT_TX_BB1_SWCTRL;
++
++	if (gnt_cfg->band[1].gnt_wl)
++		val |= B_BE_GNT_WL_BB1_VAL | B_BE_GNT_WL_RX_VAL |
++		       B_BE_GNT_WL_TX_VAL | B_BE_GNT_WL_BB_PWR_VAL;
++
++	if (gnt_cfg->band[1].gnt_wl_sw_en)
++		val |= B_BE_GNT_WL_BB1_SWCTRL | B_BE_GNT_WL_RX_SWCTRL |
++		       B_BE_GNT_WL_TX_SWCTRL | B_BE_GNT_WL_BB_PWR_SWCTRL;
++
++	if (gnt_cfg->bt[0].wlan_act_en)
++		val |= B_BE_WL_ACT_SWCTRL;
++	if (gnt_cfg->bt[0].wlan_act)
++		val |= B_BE_WL_ACT_VAL;
++	if (gnt_cfg->bt[1].wlan_act_en)
++		val |= B_BE_WL_ACT2_SWCTRL;
++	if (gnt_cfg->bt[1].wlan_act)
++		val |= B_BE_WL_ACT2_VAL;
++
++	rtw89_write32(rtwdev, R_BE_GNT_SW_CTRL, val);
 +
 +	return 0;
 +}
++EXPORT_SYMBOL(rtw89_mac_cfg_gnt_v2);
 +
-+static u16 rtw89_mac_get_plt_cnt_be(struct rtw89_dev *rtwdev, u8 band)
++int rtw89_mac_cfg_ctrl_path_v2(struct rtw89_dev *rtwdev, bool wl)
 +{
-+	u32 reg;
-+	u16 cnt;
++	struct rtw89_btc *btc = &rtwdev->btc;
++	struct rtw89_btc_dm *dm = &btc->dm;
++	struct rtw89_mac_ax_gnt *g = dm->gnt.band;
++	struct rtw89_mac_ax_wl_act *gbt = dm->gnt.bt;
++	int i;
 +
-+	reg = rtw89_mac_reg_by_idx(rtwdev, R_BE_BT_PLT, band);
-+	cnt = rtw89_read32_mask(rtwdev, reg, B_BE_BT_PLT_PKT_CNT_MASK);
-+	rtw89_write16_set(rtwdev, reg, B_BE_BT_PLT_RST);
++	if (wl)
++		return 0;
 +
-+	return cnt;
++	for (i = 0; i < RTW89_PHY_MAX; i++) {
++		g[i].gnt_bt_sw_en = 1;
++		g[i].gnt_bt = 1;
++		g[i].gnt_wl_sw_en = 1;
++		g[i].gnt_wl = 0;
++		gbt[i].wlan_act = 1;
++		gbt[i].wlan_act_en = 0;
++	}
++
++	return rtw89_mac_cfg_gnt_v2(rtwdev, &dm->gnt);
 +}
++EXPORT_SYMBOL(rtw89_mac_cfg_ctrl_path_v2);
 +
- static int rtw89_set_hw_sch_tx_en_v2(struct rtw89_dev *rtwdev, u8 mac_idx,
- 				     u32 tx_en, u32 tx_en_mask)
+ static
+ int rtw89_mac_cfg_plt_be(struct rtw89_dev *rtwdev, struct rtw89_mac_ax_plt *plt)
  {
-@@ -2439,6 +2477,9 @@ const struct rtw89_mac_gen_def rtw89_mac_gen_be = {
- 	.parse_phycap_map = rtw89_parse_phycap_map_be,
- 	.cnv_efuse_state = rtw89_cnv_efuse_state_be,
- 
-+	.cfg_plt = rtw89_mac_cfg_plt_be,
-+	.get_plt_cnt = rtw89_mac_get_plt_cnt_be,
-+
- 	.get_txpwr_cr = rtw89_mac_get_txpwr_cr_be,
- 
- 	.write_xtal_si = rtw89_mac_write_xtal_si_be,
 diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
-index 37ccd8ffa87a..c2751391044a 100644
+index c2751391044a..a7f7703a2556 100644
 --- a/drivers/net/wireless/realtek/rtw89/reg.h
 +++ b/drivers/net/wireless/realtek/rtw89/reg.h
-@@ -6457,6 +6457,20 @@
- #define B_BE_PORT_DROP_4_0_MASK GENMASK(20, 16)
- #define B_BE_MBSSID_DROP_15_0_MASK GENMASK(15, 0)
+@@ -5932,6 +5932,34 @@
+ #define B_BE_MACID_ACQ_GRP0_CLR_P BIT(2)
+ #define B_BE_R_MACID_ACQ_CHK_EN BIT(0)
  
-+#define R_BE_BT_PLT 0x1087C
-+#define R_BE_BT_PLT_C1 0x1487C
-+#define B_BE_BT_PLT_PKT_CNT_MASK GENMASK(31, 16)
-+#define B_BE_BT_PLT_RST BIT(9)
-+#define B_BE_PLT_EN BIT(8)
-+#define B_BE_RX_PLT_GNT_LTE_RX BIT(7)
-+#define B_BE_RX_PLT_GNT_BT_RX BIT(6)
-+#define B_BE_RX_PLT_GNT_BT_TX BIT(5)
-+#define B_BE_RX_PLT_GNT_WL BIT(4)
-+#define B_BE_TX_PLT_GNT_LTE_RX BIT(3)
-+#define B_BE_TX_PLT_GNT_BT_RX BIT(2)
-+#define B_BE_TX_PLT_GNT_BT_TX BIT(1)
-+#define B_BE_TX_PLT_GNT_WL BIT(0)
++#define R_BE_GNT_SW_CTRL 0x0E348
++#define B_BE_WL_ACT2_VAL BIT(25)
++#define B_BE_WL_ACT2_SWCTRL BIT(24)
++#define B_BE_WL_ACT_VAL BIT(23)
++#define B_BE_WL_ACT_SWCTRL BIT(22)
++#define B_BE_GNT_BT_RX_BB1_VAL BIT(21)
++#define B_BE_GNT_BT_RX_BB1_SWCTRL BIT(20)
++#define B_BE_GNT_BT_TX_BB1_VAL BIT(19)
++#define B_BE_GNT_BT_TX_BB1_SWCTRL BIT(18)
++#define B_BE_GNT_BT_RX_BB0_VAL BIT(17)
++#define B_BE_GNT_BT_RX_BB0_SWCTRL BIT(16)
++#define B_BE_GNT_BT_TX_BB0_VAL BIT(15)
++#define B_BE_GNT_BT_TX_BB0_SWCTRL BIT(14)
++#define B_BE_GNT_WL_RX_VAL BIT(13)
++#define B_BE_GNT_WL_RX_SWCTRL BIT(12)
++#define B_BE_GNT_WL_TX_VAL BIT(11)
++#define B_BE_GNT_WL_TX_SWCTRL BIT(10)
++#define B_BE_GNT_BT_BB1_VAL BIT(9)
++#define B_BE_GNT_BT_BB1_SWCTRL BIT(8)
++#define B_BE_GNT_WL_BB1_VAL BIT(7)
++#define B_BE_GNT_WL_BB1_SWCTRL BIT(6)
++#define B_BE_GNT_BT_BB0_VAL BIT(5)
++#define B_BE_GNT_BT_BB0_SWCTRL BIT(4)
++#define B_BE_GNT_WL_BB0_VAL BIT(3)
++#define B_BE_GNT_WL_BB0_SWCTRL BIT(2)
++#define B_BE_GNT_WL_BB_PWR_VAL BIT(1)
++#define B_BE_GNT_WL_BB_PWR_SWCTRL BIT(0)
 +
- #define R_BE_PTCL_BSS_COLOR_0 0x108A0
- #define R_BE_PTCL_BSS_COLOR_0_C1 0x148A0
- #define B_BE_BSS_COLOB_BE_PORT_3_MASK GENMASK(29, 24)
+ #define R_BE_PWR_MACID_PATH_BASE 0x0E500
+ #define R_BE_PWR_MACID_LMT_BASE 0x0ED00
+ 
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922a.c b/drivers/net/wireless/realtek/rtw89/rtw8922a.c
+index 823f0d840df9..0e99ecea32a3 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8922a.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8922a.c
+@@ -2246,6 +2246,8 @@ static const struct rtw89_chip_ops rtw8922a_chip_ops = {
+ 	.query_rxdesc		= rtw89_core_query_rxdesc_v2,
+ 	.fill_txdesc		= rtw89_core_fill_txdesc_v2,
+ 	.fill_txdesc_fwcmd	= rtw89_core_fill_txdesc_fwcmd_v2,
++	.cfg_ctrl_path		= rtw89_mac_cfg_ctrl_path_v2,
++	.mac_cfg_gnt		= rtw89_mac_cfg_gnt_v2,
+ 	.stop_sch_tx		= rtw89_mac_stop_sch_tx_v2,
+ 	.resume_sch_tx		= rtw89_mac_resume_sch_tx_v2,
+ 	.h2c_dctl_sec_cam	= rtw89_fw_h2c_dctl_sec_cam_v2,
 -- 
 2.25.1
 
