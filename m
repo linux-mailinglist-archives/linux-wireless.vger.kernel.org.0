@@ -1,124 +1,109 @@
-Return-Path: <linux-wireless+bounces-4259-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4261-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A3A986CDC0
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 16:56:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D06186D277
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 19:40:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AABA1C20A00
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 15:56:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E84D2288769
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 18:40:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB70870AFE;
-	Thu, 29 Feb 2024 15:49:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b="euMtdEpU"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E41F7D081;
+	Thu, 29 Feb 2024 18:40:33 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bues.ch (bues.ch [80.190.117.144])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 201A170AD9
-	for <linux-wireless@vger.kernel.org>; Thu, 29 Feb 2024 15:49:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CF5A160629;
+	Thu, 29 Feb 2024 18:40:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.190.117.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709221782; cv=none; b=hADbbhZy8CtQhx7tWfO+JaeqevXXydJeo7gEtcY+L78ZW1AxzH7qhommlxEXjvRcW6vzNND+OslkgxThdeqS+nvAbGjjPD2bRb4diZKTdWjlqA5SVrdxyhzUXt9bxXsEs8hEzpKDlnRG3n5/bCuJReKpWcAP4R1tUj2Xdb7e+kg=
+	t=1709232033; cv=none; b=lxUzGeLqQUIySs6IDnd4EChgPCKbZ2ViOsS93dVX1Snvu7rtYmzHtmkAyJHPXzY5872noTTccxmxADWZulnZLvRaR108R7/AhNzg439tjjUcRvPCx8ZbdJ5AJ0yfnwyK29cvg8JukIX1JedC7dFuLGLCn4JGgjOQgOgSm588M0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709221782; c=relaxed/simple;
-	bh=CHcI2S0JEPj8mELbXV5Hi3VYv5okgHeAmgENHLm1Efk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=O9JJrmrsULswaUXPhwVFGNbovRA1AqWeqN3kDyLTpm41L+8EdykncPVyQhwvaMcpP4CKtLQ2jodd9zh0WRGLL2yyw4xEOvU7OiF62rUT5JhvyMLA15RcunmaH0CKA9JQ9/Bdio2x5GuKhByakEqkCRIn596RFSnz4scja1h19aI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b=euMtdEpU; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freebox.fr
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-412c37a8001so546275e9.2
-        for <linux-wireless@vger.kernel.org>; Thu, 29 Feb 2024 07:49:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=freebox-fr.20230601.gappssmtp.com; s=20230601; t=1709221778; x=1709826578; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=CJWLEHwKCTq5M6yaIuOIWFF3XC8JrWtOfeFaJKHLycI=;
-        b=euMtdEpUASCWHkgHI9o62h903+/f5eQ+yMeCJ7dB0LaTHtIXYiteBT1Jxc+tWiRw8a
-         0PI0j+yS8g6fcfmUJ+0JOQOxUYjt7Zd6BZtlfQ4vDF1fjKzNDqg2mIeKOE4Iu+riR2NX
-         zh85Bcp0h8ufFpaVFnuSpXT6UCw8E1MMpiwBFpgdoMHIVgDZm5m3BsaQHzUfm6xdHVJK
-         ZhknKW46++XwHkbHdwXzyJWb07NRon2Rl8e1Xi668nI7qOkMkv84RenW1vwHZ2bDth4w
-         xxAbH9CFVRsPbXZyKYs9JjmLNvn2wmZ80XkPU3jqj1n8SgjiAWdiDVWmd51lZRw9YQ2O
-         kzXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709221778; x=1709826578;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CJWLEHwKCTq5M6yaIuOIWFF3XC8JrWtOfeFaJKHLycI=;
-        b=KrbEerYOo31MdLSI8C239gg0fe1HeDjUIYNMbl5Oqc132b0kgEPY1Qyojvusc0o9pI
-         rxbmEWlPTvWmnZnmkiAbEuRbhQaCFJUSCIGfyGC1j0Akb6Gey1aH2BXmHUizxIiNYYmL
-         UY6FRVZR1sLkSqgDTiC/l3unQfcu7NOf/uzw5tsTGKscJVOQvpOXkhqwsgAw+snjjk+R
-         LUaJFqLMgXX6SsRj831GSyH27t9LE5/lOQxhPewQhMxGA2Kxl3r71cUBpxG3xCCpAqQK
-         h+5NLwCCItZO/Vj7voxjZIRtY0kcc1mKcm5PWMwyZ+9dMGZe0RoQUusI+l2tr6WGNoRk
-         8Njw==
-X-Forwarded-Encrypted: i=1; AJvYcCVZkDmQUJ7Jmbdk1zt5wN1t87x+/zaPWjfO2d4QVzsfY/0jgI+peSvncbWALb0W7z0JnsRej+7C1APsOnqhKyNMAqdFTHA2hXTEeCCDMF0=
-X-Gm-Message-State: AOJu0Yz2l98XF+5choQX9hC11S9g+TZrQKRHJ9sBEykd085FYoMfDWPy
-	IbSkagdoMdas5qwDHtx5cAzPmkQXYYesIeXCRyXdxQXrqc2zBtIk5sc34NUr7OA=
-X-Google-Smtp-Source: AGHT+IE9abPTuZJImsBPPVwExiBHv3+UHoPZOEA+bzFtWuIKypEfuzgNNp3VESK6x/US7chA1lqTew==
-X-Received: by 2002:a5d:58f2:0:b0:33d:29c1:c28c with SMTP id f18-20020a5d58f2000000b0033d29c1c28cmr1851510wrd.66.1709221778325;
-        Thu, 29 Feb 2024 07:49:38 -0800 (PST)
-Received: from [192.168.108.81] (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id n13-20020a5d4c4d000000b0033cfa00e497sm2074044wrt.64.2024.02.29.07.49.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Feb 2024 07:49:38 -0800 (PST)
-Message-ID: <49bcc88d-2562-40c9-81f6-64a48deb2066@freebox.fr>
-Date: Thu, 29 Feb 2024 16:49:37 +0100
+	s=arc-20240116; t=1709232033; c=relaxed/simple;
+	bh=UW+TdciKB5gSR3r9g/ate3m4F5PvqE5YslCXW8lrDB0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NzqqzIREYIgV9z4AqVXaG2RJsHcYtT3gbQCNcFLXCU6L9V4OZScUr82D8CYpn8YqvbZcfPcUEAGjH0X6RmQ0mkKLwZxQjkQOG3IE1URZGTK+EbvxXnnQXVbQDUvgz1nbdgitJBXY0Gn6tzi9urdGJQu9EmSGmOT9AGBi3Nnsnlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bues.ch; spf=pass smtp.mailfrom=bues.ch; arc=none smtp.client-ip=80.190.117.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bues.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bues.ch
+Received: by bues.ch with esmtpsa (Exim 4.96)
+	(envelope-from <m@bues.ch>)
+	id 1rfkqo-000F5s-3B;
+	Thu, 29 Feb 2024 19:09:46 +0100
+Date: Thu, 29 Feb 2024 19:08:54 +0100
+From: Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
+To: Rand Deeb <rand.sec96@gmail.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ deeb.rand@confident.ru, lvc-project@linuxtesting.org,
+ voskresenski.stanislav@confident.ru
+Subject: Re: [PATCH] ssb: Fix potential NULL pointer dereference in
+ ssb_device_uevent
+Message-ID: <20240229190854.3717772c@barney>
+In-Reply-To: <20240229093756.129324-1-rand.sec96@gmail.com>
+References: <20240229093756.129324-1-rand.sec96@gmail.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: net: wireless: ath10k: add
- qcom,no-msa-ready-indicator prop
-Content-Language: en-US
-To: Jeff Johnson <quic_jjohnson@quicinc.com>, Kalle Valo <kvalo@kernel.org>,
- ath10k <ath10k@lists.infradead.org>
-Cc: MSM <linux-arm-msm@vger.kernel.org>,
- wireless <linux-wireless@vger.kernel.org>, DT <devicetree@vger.kernel.org>,
- Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Pierre-Hugues Husson <phhusson@freebox.fr>,
- Jami Kettunen <jamipkettunen@gmail.com>,
- Jeffrey Hugo <quic_jhugo@quicinc.com>
-References: <14daa98e-7fd3-4ebb-87bb-5d2c1fba679f@freebox.fr>
- <b8de96c7-cbb6-4a09-a4d4-2c11b3ab3e01@freebox.fr>
- <d8c90f33-d0ab-4d73-9580-2547446671a0@quicinc.com>
-From: Marc Gonzalez <mgonzalez@freebox.fr>
-In-Reply-To: <d8c90f33-d0ab-4d73-9580-2547446671a0@quicinc.com>
+Content-Type: multipart/signed; boundary="Sig_/ob.XXZ=76OiP5u+w1/NKFuc";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+
+--Sig_/ob.XXZ=76OiP5u+w1/NKFuc
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 
-On 28/02/2024 15:59, Jeff Johnson wrote:
+On Thu, 29 Feb 2024 12:37:56 +0300
+Rand Deeb <rand.sec96@gmail.com> wrote:
 
-> On 2/28/2024 5:24 AM, Marc Gonzalez wrote:
->
->> The driver waits for this indicator before proceeding,
->> yet some WCNSS firmwares apparently do not send it.
->> On those devices, it seems safe to ignore the indicator,
->> and continue loading the firmware.
-> 
-> Can you list the product/hardware/firmware where this is observed?
-> Would prefer to fix the firmware if the issue is there
+>  static int ssb_device_uevent(struct device *dev, struct kobj_uevent_env =
+*env)
+>  {
+> -	struct ssb_device *ssb_dev =3D dev_to_ssb_dev(dev);
+> +	struct ssb_device *ssb_dev;
+> =20
+>  	if (!dev)
+>  		return -ENODEV;
+> =20
+> +	ssb_dev =3D dev_to_ssb_dev(dev);
+> +
+>  	return add_uevent_var(env,
+>  			     "MODALIAS=3Dssb:v%04Xid%04Xrev%02X",
+>  			     ssb_dev->id.vendor, ssb_dev->id.coreid,
 
-Hello Jeff,
+Good catch.
+Acked-by: Michael B=C3=BCsch <m@bues.ch>
 
-Do you think it is possible that the ath10k IP block in the msm8998/sdm835
-has never actually sent the MSA_READY indication?
 
-Perhaps the vendor driver does not wait for MSA_READY, and therefore this
-issue has never caused a problem downstream?
+--=20
+Michael B=C3=BCsch
+https://bues.ch/
 
-In that case, we could enable the work-around for all msm8998 boards?
+--Sig_/ob.XXZ=76OiP5u+w1/NKFuc
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
-Regards
+-----BEGIN PGP SIGNATURE-----
 
+iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAmXgyDcACgkQ9TK+HZCN
+iw6qKg//T18rCQhWWnilcYj4srdCKlazbrCftkkAQSu680rHZXaMTlgLWeNKxBve
+TUf2P0v7S2d6BDpoNiyixNkYiJX0VyhXPQRUvmqFMhP+cy9zuWMrvLLBxgGRzuh/
+XeKw9Gnwhp+KQNsuE9MlH1JC8T+tVQxvpBvyxNdHGL3UWi9+xRgNnRtRkc2nWTBO
+7x4hMpYNmE+NbyIwoj4ps2+wruvzTvAQnaMNtwcyImBKd/J7fE7FPRVqP57+xR+C
+bftMfFV4xn7rArpU+Pg+8wEryOUIhPJ9ZmO/CLejkjaE2qoy7PP4sZbdcCSeMxak
+w10uZ1x7veeNspxNEMSKTjuvRcKJgg0x2eFKFhLbTnJg9D60yeDVTK+9S/QVHpXa
+frndJ8VCxjMq2+bY2sdglOZelAtAh9PQzLgma3HlRvwe6zprWZdmexih06oFV+kW
+4vQNus9qhZxCl7Wpxap/OlFwdgINqU/J6VDAsnt0wyMd1kdGXJaZDXeKAfY/a6B8
+eM//hyWbJ+axLvtJxbnZOCUffy64yqGLJMYUQi9dfAriyDtIozRP7vGsqEDlhVTP
+xz4PlzWuoEyzCAF9DBQ3hYxihCgGuOE9bGXg8dG0MPTw8V1XjigKdqPJyWETi43o
+PJGNkPWysXXCE03+KAmvpz3VNYGBFRy7+YiRUC6bImGqMaszisM=
+=8bGs
+-----END PGP SIGNATURE-----
+
+--Sig_/ob.XXZ=76OiP5u+w1/NKFuc--
 
