@@ -1,143 +1,106 @@
-Return-Path: <linux-wireless+bounces-4254-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4255-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77D0786CBDD
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 15:46:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F122D86CBE5
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 15:47:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08C671F2482D
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 14:46:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A88F1280F54
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 14:47:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9280137779;
-	Thu, 29 Feb 2024 14:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6569B47F79;
+	Thu, 29 Feb 2024 14:47:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aixigo.com header.i=@aixigo.com header.b="JqXvBkOz"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="bY+XvT9Y"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.aixigo.de (mail.aixigo.de [5.145.142.10])
+Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CE35137767
-	for <linux-wireless@vger.kernel.org>; Thu, 29 Feb 2024 14:45:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.145.142.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A16B137757
+	for <linux-wireless@vger.kernel.org>; Thu, 29 Feb 2024 14:47:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709217950; cv=none; b=bP7UL0ZQiiGXumMfR7PGdbTt18SqVp33vJ4RsxGZYxI3/Uj6RA8Ooz+tY+8Qd3SrvCtKko2cEoWaoQmb1rZx1A33FpLn/bfeySeUjmlCeHfzI8T65JF39N8/BXI8qCDjT39+Yx3Rq0rnnZ8RplV9nvJZ2cLDgbtkeTVj1V9lrYQ=
+	t=1709218030; cv=none; b=tggBE1E2vwl9I5bi8Wjxf8SR49Mk+6WpbywoT7+jWjRHodO+SlbYmbKb+4sZaz4Ozp0It7a6QkgU6QTcL4mHnjUrYFri/LbSJSAUs4+jhrqk3nKHAzkf5/NqJBYPfpSajbX+fF6UIydZL3lXkimLmDVEXFx2CKDI9sSxjX63HgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709217950; c=relaxed/simple;
-	bh=H+cRqbqPGJ75w6hI9ljZWV3rNqj+mXrDQtyHGY/bncw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=I5T5vj94Jns1U+o86QNb+JTWiyaQX6L1VyNFDSxLUD9pgGG7qP5tVBCaJT5QNhYIP6uaxb3WEZ1XCKDYXV1zrPEIjTrqHUiHIZW93tLNFgRwt/3kV0pnAnOJXjwYFLqkNCFozh9kyJwnwXlJwQIuh2XZ2gffw/gadUGKX08uAxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aixigo.com; spf=pass smtp.mailfrom=aixigo.com; dkim=pass (1024-bit key) header.d=aixigo.com header.i=@aixigo.com header.b=JqXvBkOz; arc=none smtp.client-ip=5.145.142.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aixigo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aixigo.com
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; s=default; bh=H+cRqbqPGJ75
-	w6hI9ljZWV3rNqj+mXrDQtyHGY/bncw=; h=in-reply-to:from:references:to:
-	subject:date; d=aixigo.com; b=JqXvBkOzaaVBux0vez5QCa+wuqoWEBpw47V8jDIA
-	W8A0iTt52pZIbpXmrVlEerXSf4AkXbQG1ZyrSEHBs2eSN98ekFtClXSu6NDKwxGscncYxa
-	pFO4GlXLPwuXEyZVqRmAGCo/JaVWDP6Eg8wNug1dOZ8LD4XC3/1o5BRLWoNg8=
-Received: from mailhost.ac.aixigo.de (mailhost.ac.aixigo.de [172.19.96.11])
-	by mail.aixigo.de (OpenSMTPD) with ESMTPS id 2dc9baaa (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Thu, 29 Feb 2024 15:45:42 +0100 (CET)
-Received: from [172.19.97.128] (dpcl082.ac.aixigo.de [172.19.97.128])
-	by mailhost.ac.aixigo.de (8.17.1.9/8.17.1.9/Debian-2) with ESMTPS id 41TEjgUo132510
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT);
-	Thu, 29 Feb 2024 15:45:42 +0100
-Message-ID: <5cd86456-ff2b-4e4a-aa12-1e11e5de92a5@aixigo.com>
-Date: Thu, 29 Feb 2024 15:45:41 +0100
+	s=arc-20240116; t=1709218030; c=relaxed/simple;
+	bh=UEwgZO4zFDy1ZX3tBkNqyir0jdURKrAXmho4rFSTvbQ=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Or/wyFQIq+Fc8nAQxl6imamjr/gIFOTKlT701hvQfZXrUgzBYEiiSys9/dflmEMFulzVeMNuF3DAP8NDd8ThF/RybqigzTWwEW8Nxs3guNzJ0eUPQvI0M0Wka/X/trsJwEOmU7H4Oun2cuP5VwA087o8vS1UGiSXlpEi4UEra44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=bY+XvT9Y; arc=none smtp.client-ip=198.47.23.249
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 41TEl49N059210;
+	Thu, 29 Feb 2024 08:47:04 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1709218024;
+	bh=UEwgZO4zFDy1ZX3tBkNqyir0jdURKrAXmho4rFSTvbQ=;
+	h=From:To:CC:Subject:Date:References:In-Reply-To;
+	b=bY+XvT9YMfe48UXZ9nqJmYdIKkvkhuwZqj+sMjoepzpVQxZuZvCipBCbdViQTDtn2
+	 /g4oAP5tebXnOZb3hCZZnzJWBzlpqnQBOBMFTbj34SwX4OwoE4xiKbGpaYLqPikb5g
+	 GWjSA5h2WCBfOBkU2MKlyxuyc/iQKZT4HDOgWkNI=
+Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
+	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 41TEl4U5082640
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 29 Feb 2024 08:47:04 -0600
+Received: from DLEE102.ent.ti.com (157.170.170.32) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 29
+ Feb 2024 08:47:04 -0600
+Received: from DLEE102.ent.ti.com ([fe80::2cde:e57d:8075:c010]) by
+ DLEE102.ent.ti.com ([fe80::2cde:e57d:8075:c010%17]) with mapi id
+ 15.01.2507.023; Thu, 29 Feb 2024 08:47:04 -0600
+From: "Itzhak, Shlomi" <shlomii@ti.com>
+To: Fabio Estevam <festevam@gmail.com>, "Mishol, Guy" <guym@ti.com>,
+        "Menon,
+ Nishanth" <nm@ti.com>
+CC: linux-wireless <linux-wireless@vger.kernel.org>
+Subject: RE: wl18xx: Error when using the latest firmware
+Thread-Topic: wl18xx: Error when using the latest firmware
+Thread-Index: AQHaawLp3FzDhcJ2Kk6kBVguw1clRbEhZZCw
+Date: Thu, 29 Feb 2024 14:47:04 +0000
+Message-ID: <5229778a589d461fa292cae5e73367f7@ti.com>
+References: <CAOMZO5DqMjMj_-ohuNmKvWu+i1pN8LHXnG8fGYKrk=OH+mO2BA@mail.gmail.com>
+In-Reply-To: <CAOMZO5DqMjMj_-ohuNmKvWu+i1pN8LHXnG8fGYKrk=OH+mO2BA@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-exclaimer-md-config: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Linux)
-Subject: Re: "iwlwifi: probe of 0000:00:14.3 failed with error -22"
-To: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org
-References: <dd1e2440-bb05-48d7-9f68-29bae758110d@aixigo.com>
- <9edf7003715cfdda3c794f3adbaeac5f36ada8ee.camel@sipsolutions.net>
- <b9b2224a-f021-483a-8606-6aed94c5f6f9@aixigo.com>
- <795b376aa2c9112527cf135a5176f01c6af69ade.camel@sipsolutions.net>
-From: Harald Dunkel <harald.dunkel@aixigo.com>
-Content-Language: en-US
-In-Reply-To: <795b376aa2c9112527cf135a5176f01c6af69ade.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 1.0.3 at srvvm01.ac.aixigo.de
-X-Virus-Status: Clean
 
-Hi Johannes,
-
-On 2024-02-28 11:30:44, Johannes Berg wrote:
-> On Wed, 2024-02-28 at 11:23 +0100, Harald Dunkel wrote:
-> 
->> It used to work with the same kernel.
-> 
-> OK.
-> 
->> This is what we get for the new (6.5.10, Debian backports) kernel now:
-> 
-> But that'd mean it's working - or are you saying that's a different
-> machine?
-> 
-
-The laptop recovered on a power off reset over night. It worked again
-on the next morning (I was told). I logged in via VPN to upgrade kernel
-and ucode file. My colleague rebooted it once again, and it is still
-working.
-
-
->> [Tue Feb 27 09:44:51 2024] iwlwifi 0000:00:14.3: enabling device (0000 -> 0002)
->> [Tue Feb 27 09:44:51 2024] iwlwifi 0000:00:14.3: Detected crf-id 0x1300504, cnv-id 0x80400 wfpm id 0x80000030
->> [Tue Feb 27 09:44:51 2024] iwlwifi 0000:00:14.3: PCI dev 51f1/0074, rev=0x370, rfid=0x10a100
-> 
-> This seems to work, has a proper PCI ID, and shows a different RF ID?
-> 
-
-Yes, I would say so.
-
-> You previously showed
-> 
-> iwlwifi: No config found for PCI dev 51f1/0000, rev=0x370, rfid=0x1010c000
-> 
-> So I think it'd still be interesting to know this line from the system
-> that doesn't work any more, to see if it really was _exactly_ the same,
-> as this before and changed, or whatever happened.
-> 
-
-root@ppcl013:~# grep rfid /var/log/kern.log
-2024-02-26T09:55:24.858020+01:00 ppcl013 kernel: [   82.527151] iwlwifi: No config found for PCI dev 51f1/0000, rev=0x370, rfid=0x1010c000
-2024-02-26T13:21:24.361666+01:00 ppcl013 kernel: [   20.136735] iwlwifi: No config found for PCI dev 51f1/0000, rev=0x370, rfid=0x1010c000
-2024-02-26T15:30:25.639827+01:00 ppcl013 kernel: [   38.203931] iwlwifi 0000:00:14.3: PCI dev 51f1/0000, rev=0x370, rfid=0x3010a100
-2024-02-26T15:30:25.639828+01:00 ppcl013 kernel: [   38.204862] iwlwifi: No config found for PCI dev 51f1/0000, rev=0x370, rfid=0x3010a100
-2024-02-26T20:45:28.752692+01:00 ppcl013 kernel: [   21.294757] iwlwifi 0000:00:14.3: PCI dev 51f1/0074, rev=0x370, rfid=0x10a100
-2024-02-26T20:45:28.752723+01:00 ppcl013 kernel: [   21.813877] iwlwifi 0000:00:14.3: Detected RF HR B3, rfid=0x10a100
-2024-02-27T09:11:49.132498+01:00 ppcl013 kernel: [   48.939136] iwlwifi 0000:00:14.3: PCI dev 51f1/0074, rev=0x370, rfid=0x10a100
-2024-02-27T09:11:49.132582+01:00 ppcl013 kernel: [   49.420458] iwlwifi 0000:00:14.3: Detected RF HR B3, rfid=0x10a100
-2024-02-27T09:44:52.740746+01:00 ppcl013 kernel: [   57.435249] iwlwifi 0000:00:14.3: PCI dev 51f1/0074, rev=0x370, rfid=0x10a100
-2024-02-27T09:44:52.740759+01:00 ppcl013 kernel: [   57.764033] iwlwifi 0000:00:14.3: Detected RF HR B3, rfid=0x10a100
-
-> 
->>> If you really have subdevice ID 0000 then something went wrong and you
->>> have a blank OTP (now), which seems very strange.
->>>
->>> This is an integrated NIC where part of the NIC is integrated into the
->>> platform, and other parts are on the companion RF (CRF), so could also
->>> be that the CRF module isn't seated well any more in the slot and it
->>> just cannot access the data properly?
->>>
->>
->> You mean there could be a problem with the wifi card not being plugged in
->> properly? We will check when my colleague is in the office.
-> 
-> Yes, that's what I mean.
-> 
-
-We will check when my colleague is back from home office, but this
-might take some time.
-
-
-Regards
-
-Harri
+SGksDQpZb3UgYXJlIHVzaW5nIGEgdmVyeSBvbGQgZHJpdmVyIGlmIGl0IHRocm93cyBhbiBlcnJv
+ciBvZiBGVyA4LjkuKi4qLjU4Lg0KVGhlcmUgd2VyZSB0d28gbWFqb3IgZHJpdmVyIHVwZGF0ZXMg
+c2luY2UgdGhlbiwgb25lIGZvciB0aGUgV1BBMyBzdXBwb3J0IGFuZCB0aGUgb3RoZXIgZm9yIGEg
+bWFqb3IgaXNzdWUgd2UgaGFkIHdpdGggYSBQTiBkcmlmdC4NCkJvdHRvbSBsaW5lLCB0byB0YWtl
+IHRoZSBsYXRlc3QgRlcsIHlvdSB3b3VsZCBhbHNvIG5lZWQgdG8gaW1wbGVtZW50IGFsbCB0aGUg
+ZHJpdmVyIHBhdGNoZXMuDQpZb3UgY2FuIGZpbmQgdGhvc2UgdW5kZXIgaHR0cHM6Ly9naXQudGku
+Y29tL2NnaXQvd2lsaW5rOC13bGFuL2J1aWxkLXV0aWxpdGVzL2xvZy8/aD1yOC45DQpSZWdhcmRz
+LA0KU2hsb21pDQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBGYWJpbyBFc3Rl
+dmFtIDxmZXN0ZXZhbUBnbWFpbC5jb20+IA0KU2VudDogVGh1cnNkYXksIEZlYnJ1YXJ5IDI5LCAy
+MDI0IDE6MzIgUE0NClRvOiBJdHpoYWssIFNobG9taSA8c2hsb21paUB0aS5jb20+OyBzYXVyYWJo
+bmFyYW5nQHRpLmNvbTsgTWlzaG9sLCBHdXkgPGd1eW1AdGkuY29tPjsgTWVub24sIE5pc2hhbnRo
+IDxubUB0aS5jb20+DQpDYzogbGludXgtd2lyZWxlc3MgPGxpbnV4LXdpcmVsZXNzQHZnZXIua2Vy
+bmVsLm9yZz4NClN1YmplY3Q6IHdsMTh4eDogRXJyb3Igd2hlbiB1c2luZyB0aGUgbGF0ZXN0IGZp
+cm13YXJlDQoNCkhpLA0KDQpJIGFtIHJ1bm5pbmcga2VybmVsIDYuNi4xOCBvbiBhbiBpbXg2ZGwg
+Ym9hcmQgd2l0aCB0aGUgV0wxOFhYIFdpZmkgY2hpcC4NCg0KSSB0cmllZCB1c2luZyB0aGUgbW9z
+dCByZWNlbnQgZmlybXdhcmUgKDguOS4xLjAuMikgZnJvbSB0aGUgbWFzdGVyIGJyYW5jaCBvZjoN
+Cg0KaHR0cHM6Ly9naXQudGkuY29tL2NnaXQvd2lsaW5rOC13bGFuL3dsMTh4eF9mdy9sb2cvDQoN
+CmJ1dCB0aGUgZm9sbG93aW5nIGVycm9yIGlzIHNlZW46DQoNCndsY29yZTogRVJST1IgWW91ciBX
+aUZpIEZXIHZlcnNpb24gKDguOS4xLjAuMikgaXMgaW52YWxpZC4NClBsZWFzZSB1c2UgYXQgbGVh
+c3QgRlcgOC45LiouKi41OC4NCg0KVGhlbiBJIHVzZWQgRlcgOC45LjAuMC45MCBhbmQgdGhpcyB2
+ZXJzaW9uIGlzIGFjY2VwdGVkLg0KDQpTaG91bGQgZHJpdmVycy9uZXQvd2lyZWxlc3MvdGkvd2xj
+b3JlL2Jvb3QuYyBiIGJlIGNoYW5nZWQgdG8gYWxsb3cgcnVubmluZyB0aGUgbGF0ZXN0IDguOS4x
+LjAuMj8gV2hhdCBpcyB0aGUgcmVjb21tZW5kZWQgd2wxOHh4IGZpcm13YXJlIHZlcnNpb24gd2hl
+biBydW5uaW5nIGEgbWFpbmxpbmUga2VybmVsPw0KDQpBbnkgc3VnZ2VzdGlvbnM/DQoNClRoYW5r
+cywNCg0KRmFiaW8gRXN0ZXZhbQ0K
 
