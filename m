@@ -1,117 +1,106 @@
-Return-Path: <linux-wireless+bounces-4273-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4274-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 979B886D6E7
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 23:36:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4CD986D6FA
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 23:47:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DB541F23A3D
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 22:36:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7EC3F1F237A0
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 22:47:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBEEF20326;
-	Thu, 29 Feb 2024 22:36:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 093E744364;
+	Thu, 29 Feb 2024 22:47:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="efaYidMa"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="iVZOhk+A"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC83200D2
-	for <linux-wireless@vger.kernel.org>; Thu, 29 Feb 2024 22:36:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C2DF16FF47
+	for <linux-wireless@vger.kernel.org>; Thu, 29 Feb 2024 22:47:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709246163; cv=none; b=txLh8KVJzaeHyjV8UD/w2vHzItGprac3uWQ10QHEzfGTrbpfGy5wQ7ulA8iNar/xQ9GoEyDmVNJVZv2ZEzmXLu80F/BTZ3zpZFeNIE9khZiKPTGW6JaoqWMNQ/k2C9+ZUpGWVs4mO/gCJcWhscCbzzvok2495FRdF9vQJix8N+Y=
+	t=1709246848; cv=none; b=bxN3l/SQIYJsYv4Jp/0euktN0WboVVPha7Vg3U1TIHpmW1FHRMkb7aR6QfjSkSPLiYaloCBRqUhMORT40/FHnmpOeGz4xl04ulJm8iuSFjbt/6vPjeFdllF80LSBEr7kP1OeQWWOrspSZ/RtwIYs87f0CpziYnpeuo7E68MXhsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709246163; c=relaxed/simple;
-	bh=cb97msDWtnE4Qdtc6BLZ22e1WsjXWlfwXBJTw4CYFRs=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=UH4pCAVHFWylxz7Z0hRQXDvGkE7TdOkfh0z5chOsBYCe0z+6+DG9VrdtzzPzdicEEkSMDIIPDfrxin+yu0bpPz5MILuRMgK+3tsv2UCs5ldmJQ6lHoItRo5Nkz2GekouFhDWSnV2cwUGgV5iHRoyK3d2vH/ceWRIiotuGV0ZyvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=efaYidMa; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-512b3b04995so1314275e87.3
-        for <linux-wireless@vger.kernel.org>; Thu, 29 Feb 2024 14:36:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709246160; x=1709850960; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=5zb66jO9LcwwLFlmdvbIbnbvhJ5fEvEL6G6MxWHGK/k=;
-        b=efaYidMaIWhOPBV3+2OCIyan3rQQByM53+EWs3lFU+ZQsUgsS4fUqVhXwz2tSYFQ0z
-         +fZCkqWa/sjR800pM0u1XOnnBuYOsoJdXtGxYbUPQXwJpo16YQrW5l9kbCqfi7qVIspE
-         KEWAJPdps/9zONlFn12PBong4RmZ2l1CVsd7Knas0jSMUyfP0wLdjyZ9Nc0OdvyDkeg7
-         5VcUHo8sH/Dfsw8NUTNabwBv2gRHg/oIXODpW54j1Apy+R0MEMWZYf5mLWskd/vOjEer
-         L1KQkqfNagXiLDFbS9FDkmntsgiLx6raJYt+H1hHBj4YBWCj4NnYOGPfId98++rPWVNK
-         bpEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709246160; x=1709850960;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5zb66jO9LcwwLFlmdvbIbnbvhJ5fEvEL6G6MxWHGK/k=;
-        b=GQ6B0C8LCzJkr0t1TXz25rU4edbc7m50N/WIqhrxkRzRf7u4R0FwSTrLZYhmUjIQ6/
-         f4eW0bvJxaMwlWxqjCV0ovejpKpt8tcuy9pzMbWYi+IKm5Ezkf/6ohAcuMsfiBFXsg1g
-         5dXE/yi99IFMONiCi4/uIy9RA8p6+JthU0yjZ0xjNLVGzpk7xh70HNFI97p+GDurkUrq
-         L2PqENTUO8paOgIrgh5ml+XNbjbVpL96RbWwKVM80KRn49uh340dwIam94C2mAN6dc13
-         /pGK112YJqBG8614L0GzUj93ZwJsu4RKWpl9A1Vt09S8Tvrs/+c/wOiTN1VuV0QPvjZ3
-         G4Uw==
-X-Gm-Message-State: AOJu0YzFeMIJSHtoRDo93Pyyt/+nhY3LYUNbdJPpf0jE8oCfRwpl7ghS
-	A/i0QZkP2yfC8SL2SAmZFzjp4/7dzBH2zZBHBun12ROsvPyHj8mf28ynxueq
-X-Google-Smtp-Source: AGHT+IHPdx0h6C9/1YI82SIjFjjWLHR+hJF4wwYNY5zbwE6g1qRczLH3d7sgx88cGUffntyfUO4jHQ==
-X-Received: by 2002:a05:6512:619:b0:512:e85f:175b with SMTP id b25-20020a056512061900b00512e85f175bmr1907773lfe.16.1709246159954;
-        Thu, 29 Feb 2024 14:35:59 -0800 (PST)
-Received: from [192.168.1.50] ([79.119.240.211])
-        by smtp.gmail.com with ESMTPSA id f18-20020a05600c155200b00412b68cc169sm3360442wmg.16.2024.02.29.14.35.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Feb 2024 14:35:59 -0800 (PST)
-Message-ID: <f3cb6d17-e4e4-44a7-9c9b-72aed994b5c9@gmail.com>
-Date: Fri, 1 Mar 2024 00:35:58 +0200
+	s=arc-20240116; t=1709246848; c=relaxed/simple;
+	bh=IFL2UTuP7GjeNNucKAwdaH3o1YbcMQYfUt9xnP/oyn0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=uwLDXlyg39Bw/BEQIzrRsMmWTlgg4yhsMU/p5sZQa3LbLiTAH7GXNYi1oU2M+O2gok1MxFAYqR2Wxcv7+vwb3pKI/zyGCzcZwmegkm7QLM0/VRWIUtcnBJJUHXZOj08Pty3tWBSxwCQbwUSgm8dYXZSzizcNd0Iha6XxzgpEc3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=iVZOhk+A; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=whHqOi4K4MuTBvtTPXcBH2zyy2R21VV+8M9moi2Ie/I=;
+	t=1709246843; x=1710456443; b=iVZOhk+AyUKz7AbxdPBejqS4xJNbuk3v8bC9HwzLAB6Tg+t
+	1tgqvQIrvhPXSEV1aPVwMpRQ2ePHMopTNyiGsUb4/eCYWERXj35j2EtD6LNJSVFpF2mIURvq4TGKw
+	8PKVkMhDwQJtKcCb3LGpwK5E2IQUcq4YkUcd0xFSMdjOV9SjNSpVbzovYhoSEDDdN/j9O6ZKHoX59
+	QfJ3TLhW9lkTKVVQvt5BL5AnqokCsjwLMj+kEJCW0jKzM/v7XJcOpaOoBagnZOauQVfxnmRKN357g
+	WKfMsbLMGHa9FDo0vg+7xmLGUYwZJWx598RF0lW5GbOYPl48u9MAmYYsNSDU9Gkg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rfpBP-0000000DvAj-26S8;
+	Thu, 29 Feb 2024 23:47:19 +0100
+Message-ID: <4b906144041ab6e7bf4fb35e6cb42635c8cd21d5.camel@sipsolutions.net>
+Subject: Re: [PATCH v2 11/13] wifi: mac80211: fix advertised TTLM scheduling
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Ben Greear <greearb@candelatech.com>, Miri Korenblit
+	 <miriam.rachel.korenblit@intel.com>
+Cc: linux-wireless@vger.kernel.org, Ayala Beker <ayala.beker@intel.com>
+Date: Thu, 29 Feb 2024 23:47:18 +0100
+In-Reply-To: <b502cc28-865c-4f00-9f09-76851d6629ba@candelatech.com>
+References: 
+	<20231220133549.bdfb8a9c7c54.I973563562969a27fea8ec5685b96a3a47afe142f@changeid>
+	 <20231220133549.15079c34e5c8.I0dd50bcceff5953080cdd7aee5118b72c78c6507@changeid>
+	 <b502cc28-865c-4f00-9f09-76851d6629ba@candelatech.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: [PATCH v2 4/4] wifi: rtw88: 8821c: Fix false alarm count
-Content-Language: en-US
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Ping-Ke Shih <pkshih@realtek.com>, Sascha Hauer <sha@pengutronix.de>
-References: <f12ed39d-28e8-4b8b-8d22-447bcf295afc@gmail.com>
-In-Reply-To: <f12ed39d-28e8-4b8b-8d22-447bcf295afc@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 
-total_fa_cnt is supposed to include cck_fa_cnt and ofdm_fa_cnt, not just
-ofdm_fa_cnt.
+On Thu, 2024-02-29 at 13:41 -0800, Ben Greear wrote:
+> On 12/20/23 03:41, Miri Korenblit wrote:
+> > From: Ayala Beker <ayala.beker@intel.com>
+> >=20
+> > Handle a case of time overflow, where the switch time might
+> > be smaller than the partial TSF in the beacon.
+> > Additionally, apply advertised TTLM earlier in order to be
+> > ready on time on the newly activated links.
+> >=20
+> > Fixes: 702e80470a33 ("wifi: mac80211: support handling of advertised TI=
+D-to-link mapping")
+> > Signed-off-by: Ayala Beker <ayala.beker@intel.com>
+> > Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+> > Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+>=20
+> While rebasing my 6.7 tree on 6.8, I notice this patch applied, which I t=
+hink means
+> it was not applied to 6.8 upstream.  Was that on purpose?
+>=20
 
-Fixes: 960361238b86 ("rtw88: 8821c: add false alarm statistics")
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
----
-v2:
- - No change.
----
- drivers/net/wireless/realtek/rtw88/rtw8821c.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+It's there as far as I can tell?
 
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821c.c b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
-index 429bb420b056..fe5d8e188350 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8821c.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
-@@ -773,9 +773,9 @@ static void rtw8821c_false_alarm_statistics(struct rtw_dev *rtwdev)
- 
- 	dm_info->cck_fa_cnt = cck_fa_cnt;
- 	dm_info->ofdm_fa_cnt = ofdm_fa_cnt;
-+	dm_info->total_fa_cnt = ofdm_fa_cnt;
- 	if (cck_enable)
- 		dm_info->total_fa_cnt += cck_fa_cnt;
--	dm_info->total_fa_cnt = ofdm_fa_cnt;
- 
- 	crc32_cnt = rtw_read32(rtwdev, REG_CRC_CCK);
- 	dm_info->cck_ok_cnt = FIELD_GET(GENMASK(15, 0), crc32_cnt);
--- 
-2.43.2
+
+commit b1a23f8ae0d76ad32fe36682730c050251275b0b
+Author: Ayala Beker <ayala.beker@intel.com>
+Date:   Wed Dec 20 13:41:44 2023 +0200
+
+    wifi: mac80211: fix advertised TTLM scheduling
+
+
+Maybe git rebase reduced yours to some whitespace changes or something
+:)
+
+johannes
 
