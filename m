@@ -1,106 +1,123 @@
-Return-Path: <linux-wireless+bounces-4255-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4256-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F122D86CBE5
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 15:47:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F01F86CC47
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 16:01:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A88F1280F54
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 14:47:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECC472814CD
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 15:01:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6569B47F79;
-	Thu, 29 Feb 2024 14:47:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C8EB7D419;
+	Thu, 29 Feb 2024 15:01:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="bY+XvT9Y"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="VTV7AJrr"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A16B137757
-	for <linux-wireless@vger.kernel.org>; Thu, 29 Feb 2024 14:47:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B4E31E885
+	for <linux-wireless@vger.kernel.org>; Thu, 29 Feb 2024 15:00:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709218030; cv=none; b=tggBE1E2vwl9I5bi8Wjxf8SR49Mk+6WpbywoT7+jWjRHodO+SlbYmbKb+4sZaz4Ozp0It7a6QkgU6QTcL4mHnjUrYFri/LbSJSAUs4+jhrqk3nKHAzkf5/NqJBYPfpSajbX+fF6UIydZL3lXkimLmDVEXFx2CKDI9sSxjX63HgU=
+	t=1709218861; cv=none; b=gdPYtx4m9lgfwiINR3+7tN6bDMhQJ18EpCoIDKLBo/vAWKtQPN/XNdkaJFRdOBnh5uXQX5pLkSZ7nJelRPuHuhiatblRb/j/EOQ5eXaArHWzqo3gqqgzGehsaT6lrw5wOe9eOf4EZJmvDeNWwddVJeIXgkio97HRvgMJY4/WRyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709218030; c=relaxed/simple;
-	bh=UEwgZO4zFDy1ZX3tBkNqyir0jdURKrAXmho4rFSTvbQ=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Or/wyFQIq+Fc8nAQxl6imamjr/gIFOTKlT701hvQfZXrUgzBYEiiSys9/dflmEMFulzVeMNuF3DAP8NDd8ThF/RybqigzTWwEW8Nxs3guNzJ0eUPQvI0M0Wka/X/trsJwEOmU7H4Oun2cuP5VwA087o8vS1UGiSXlpEi4UEra44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=bY+XvT9Y; arc=none smtp.client-ip=198.47.23.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 41TEl49N059210;
-	Thu, 29 Feb 2024 08:47:04 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1709218024;
-	bh=UEwgZO4zFDy1ZX3tBkNqyir0jdURKrAXmho4rFSTvbQ=;
-	h=From:To:CC:Subject:Date:References:In-Reply-To;
-	b=bY+XvT9YMfe48UXZ9nqJmYdIKkvkhuwZqj+sMjoepzpVQxZuZvCipBCbdViQTDtn2
-	 /g4oAP5tebXnOZb3hCZZnzJWBzlpqnQBOBMFTbj34SwX4OwoE4xiKbGpaYLqPikb5g
-	 GWjSA5h2WCBfOBkU2MKlyxuyc/iQKZT4HDOgWkNI=
-Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
-	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 41TEl4U5082640
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 29 Feb 2024 08:47:04 -0600
-Received: from DLEE102.ent.ti.com (157.170.170.32) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 29
- Feb 2024 08:47:04 -0600
-Received: from DLEE102.ent.ti.com ([fe80::2cde:e57d:8075:c010]) by
- DLEE102.ent.ti.com ([fe80::2cde:e57d:8075:c010%17]) with mapi id
- 15.01.2507.023; Thu, 29 Feb 2024 08:47:04 -0600
-From: "Itzhak, Shlomi" <shlomii@ti.com>
-To: Fabio Estevam <festevam@gmail.com>, "Mishol, Guy" <guym@ti.com>,
-        "Menon,
- Nishanth" <nm@ti.com>
-CC: linux-wireless <linux-wireless@vger.kernel.org>
-Subject: RE: wl18xx: Error when using the latest firmware
-Thread-Topic: wl18xx: Error when using the latest firmware
-Thread-Index: AQHaawLp3FzDhcJ2Kk6kBVguw1clRbEhZZCw
-Date: Thu, 29 Feb 2024 14:47:04 +0000
-Message-ID: <5229778a589d461fa292cae5e73367f7@ti.com>
-References: <CAOMZO5DqMjMj_-ohuNmKvWu+i1pN8LHXnG8fGYKrk=OH+mO2BA@mail.gmail.com>
-In-Reply-To: <CAOMZO5DqMjMj_-ohuNmKvWu+i1pN8LHXnG8fGYKrk=OH+mO2BA@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-exclaimer-md-config: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1709218861; c=relaxed/simple;
+	bh=cUVgi5ZDWIz41sKJ7g1DF368Aa3pDomwK85wey4ibiI=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=pW4DXJVt6tDFICZP4fW9B0OUZhJejeDaowfUANUmy0cd8/vsoSZi8UPnK0GHy3Bed83jZt3hh8psU00wND7zCL+6SMXuFDEx/trj1nQ9f/LdtwN97tm/iiY/VQQjKpXBcr76rxY3uRR/Z+XzjtMs4EdOLQTwcslEPCoP875yLmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=VTV7AJrr; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=mU56VwBgI+WrEQ5CJfeHa/rJkmhZfltDPzzNAXEskWQ=;
+	t=1709218860; x=1710428460; b=VTV7AJrrjuN8bg23mZYvgVD1XWPCFF9OoOO/BX970kHPZst
+	WszwtjoYPUSjOqw7pqoS84BGzGBrpijtkLPDH7TBOSXmqmxhl5LebjCT8ddpXF1Vzxkp6bHg7qWEv
+	UXFqCpgYxsQjwLsFyYW8XjUKJOxgaSpFSoYbvbsqhMfRuhXsXwMSuJgdpoQvnUeFftEQips76sEEr
+	+RM4NBRQIuSy9BVQgbkyxSbFDO+F278tyXsmrkNz3/BOmEUkGdUpkZe0+sr9/BKrB+9LN3QMOSikB
+	zVbeABrGhEMSPVumYuUnrb+7UFY3522xtZWw2FgjGfC2a2fni73bLfkjLjEyRRlQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rfhu5-0000000DeTz-2k4h;
+	Thu, 29 Feb 2024 16:00:57 +0100
+Message-ID: <88fe8575145bbd78a8207537dae85c81aa4955f0.camel@sipsolutions.net>
+Subject: Re: "iwlwifi: probe of 0000:00:14.3 failed with error -22"
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Harald Dunkel <harald.dunkel@aixigo.com>, linux-wireless@vger.kernel.org
+Date: Thu, 29 Feb 2024 16:00:56 +0100
+In-Reply-To: <5cd86456-ff2b-4e4a-aa12-1e11e5de92a5@aixigo.com>
+References: <dd1e2440-bb05-48d7-9f68-29bae758110d@aixigo.com>
+	 <9edf7003715cfdda3c794f3adbaeac5f36ada8ee.camel@sipsolutions.net>
+	 <b9b2224a-f021-483a-8606-6aed94c5f6f9@aixigo.com>
+	 <795b376aa2c9112527cf135a5176f01c6af69ade.camel@sipsolutions.net>
+	 <5cd86456-ff2b-4e4a-aa12-1e11e5de92a5@aixigo.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-malware-bazaar: not-scanned
 
-SGksDQpZb3UgYXJlIHVzaW5nIGEgdmVyeSBvbGQgZHJpdmVyIGlmIGl0IHRocm93cyBhbiBlcnJv
-ciBvZiBGVyA4LjkuKi4qLjU4Lg0KVGhlcmUgd2VyZSB0d28gbWFqb3IgZHJpdmVyIHVwZGF0ZXMg
-c2luY2UgdGhlbiwgb25lIGZvciB0aGUgV1BBMyBzdXBwb3J0IGFuZCB0aGUgb3RoZXIgZm9yIGEg
-bWFqb3IgaXNzdWUgd2UgaGFkIHdpdGggYSBQTiBkcmlmdC4NCkJvdHRvbSBsaW5lLCB0byB0YWtl
-IHRoZSBsYXRlc3QgRlcsIHlvdSB3b3VsZCBhbHNvIG5lZWQgdG8gaW1wbGVtZW50IGFsbCB0aGUg
-ZHJpdmVyIHBhdGNoZXMuDQpZb3UgY2FuIGZpbmQgdGhvc2UgdW5kZXIgaHR0cHM6Ly9naXQudGku
-Y29tL2NnaXQvd2lsaW5rOC13bGFuL2J1aWxkLXV0aWxpdGVzL2xvZy8/aD1yOC45DQpSZWdhcmRz
-LA0KU2hsb21pDQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBGYWJpbyBFc3Rl
-dmFtIDxmZXN0ZXZhbUBnbWFpbC5jb20+IA0KU2VudDogVGh1cnNkYXksIEZlYnJ1YXJ5IDI5LCAy
-MDI0IDE6MzIgUE0NClRvOiBJdHpoYWssIFNobG9taSA8c2hsb21paUB0aS5jb20+OyBzYXVyYWJo
-bmFyYW5nQHRpLmNvbTsgTWlzaG9sLCBHdXkgPGd1eW1AdGkuY29tPjsgTWVub24sIE5pc2hhbnRo
-IDxubUB0aS5jb20+DQpDYzogbGludXgtd2lyZWxlc3MgPGxpbnV4LXdpcmVsZXNzQHZnZXIua2Vy
-bmVsLm9yZz4NClN1YmplY3Q6IHdsMTh4eDogRXJyb3Igd2hlbiB1c2luZyB0aGUgbGF0ZXN0IGZp
-cm13YXJlDQoNCkhpLA0KDQpJIGFtIHJ1bm5pbmcga2VybmVsIDYuNi4xOCBvbiBhbiBpbXg2ZGwg
-Ym9hcmQgd2l0aCB0aGUgV0wxOFhYIFdpZmkgY2hpcC4NCg0KSSB0cmllZCB1c2luZyB0aGUgbW9z
-dCByZWNlbnQgZmlybXdhcmUgKDguOS4xLjAuMikgZnJvbSB0aGUgbWFzdGVyIGJyYW5jaCBvZjoN
-Cg0KaHR0cHM6Ly9naXQudGkuY29tL2NnaXQvd2lsaW5rOC13bGFuL3dsMTh4eF9mdy9sb2cvDQoN
-CmJ1dCB0aGUgZm9sbG93aW5nIGVycm9yIGlzIHNlZW46DQoNCndsY29yZTogRVJST1IgWW91ciBX
-aUZpIEZXIHZlcnNpb24gKDguOS4xLjAuMikgaXMgaW52YWxpZC4NClBsZWFzZSB1c2UgYXQgbGVh
-c3QgRlcgOC45LiouKi41OC4NCg0KVGhlbiBJIHVzZWQgRlcgOC45LjAuMC45MCBhbmQgdGhpcyB2
-ZXJzaW9uIGlzIGFjY2VwdGVkLg0KDQpTaG91bGQgZHJpdmVycy9uZXQvd2lyZWxlc3MvdGkvd2xj
-b3JlL2Jvb3QuYyBiIGJlIGNoYW5nZWQgdG8gYWxsb3cgcnVubmluZyB0aGUgbGF0ZXN0IDguOS4x
-LjAuMj8gV2hhdCBpcyB0aGUgcmVjb21tZW5kZWQgd2wxOHh4IGZpcm13YXJlIHZlcnNpb24gd2hl
-biBydW5uaW5nIGEgbWFpbmxpbmUga2VybmVsPw0KDQpBbnkgc3VnZ2VzdGlvbnM/DQoNClRoYW5r
-cywNCg0KRmFiaW8gRXN0ZXZhbQ0K
+Hi Harald,
+
+> The laptop recovered on a power off reset over night. It worked again
+> on the next morning (I was told). I logged in via VPN to upgrade kernel
+> and ucode file. My colleague rebooted it once again, and it is still
+> working.
+
+Fun :)
+
+Well also good I guess. No idea what could have happened though.
+
+> root@ppcl013:~# grep rfid /var/log/kern.log
+> 2024-02-26T09:55:24.858020+01:00 ppcl013 kernel: [   82.527151] iwlwifi: =
+No config found for PCI dev 51f1/0000, rev=3D0x370, rfid=3D0x1010c000
+> 2024-02-26T13:21:24.361666+01:00 ppcl013 kernel: [   20.136735] iwlwifi: =
+No config found for PCI dev 51f1/0000, rev=3D0x370, rfid=3D0x1010c000
+> 2024-02-26T15:30:25.639827+01:00 ppcl013 kernel: [   38.203931] iwlwifi 0=
+000:00:14.3: PCI dev 51f1/0000, rev=3D0x370, rfid=3D0x3010a100
+> 2024-02-26T15:30:25.639828+01:00 ppcl013 kernel: [   38.204862] iwlwifi: =
+No config found for PCI dev 51f1/0000, rev=3D0x370, rfid=3D0x3010a100
+> 2024-02-26T20:45:28.752692+01:00 ppcl013 kernel: [   21.294757] iwlwifi 0=
+000:00:14.3: PCI dev 51f1/0074, rev=3D0x370, rfid=3D0x10a100
+> 2024-02-26T20:45:28.752723+01:00 ppcl013 kernel: [   21.813877] iwlwifi 0=
+000:00:14.3: Detected RF HR B3, rfid=3D0x10a100
+> 2024-02-27T09:11:49.132498+01:00 ppcl013 kernel: [   48.939136] iwlwifi 0=
+000:00:14.3: PCI dev 51f1/0074, rev=3D0x370, rfid=3D0x10a100
+> 2024-02-27T09:11:49.132582+01:00 ppcl013 kernel: [   49.420458] iwlwifi 0=
+000:00:14.3: Detected RF HR B3, rfid=3D0x10a100
+> 2024-02-27T09:44:52.740746+01:00 ppcl013 kernel: [   57.435249] iwlwifi 0=
+000:00:14.3: PCI dev 51f1/0074, rev=3D0x370, rfid=3D0x10a100
+> 2024-02-27T09:44:52.740759+01:00 ppcl013 kernel: [   57.764033] iwlwifi 0=
+000:00:14.3: Detected RF HR B3, rfid=3D0x10a100
+
+That's interesting though because at one point it bound to it properly,
+but still had a 0000 PCI ID and the (likely wrong) RFID 0x3010a100, vs.
+most of the working cases have 0074 PCI ID and 0x10a100 RFID.
+
+So looks like something is not quite stable with this system, but it
+still worked most of the time!
+
+> We will check when my colleague is back from home office, but this
+> might take some time.
+
+Sure. Seems to work now, so at least that's good, I guess.
+
+I still think this might be an issue here, or maybe the CRF is just
+flaky somehow? Don't have any experience with these kind of issues
+either, TBH.
+
+Anyway, glad it works again.
+
+johannes
 
