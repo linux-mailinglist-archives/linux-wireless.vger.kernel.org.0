@@ -1,67 +1,82 @@
-Return-Path: <linux-wireless+bounces-4243-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4244-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09CAF86C3ED
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 09:42:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50A0386C581
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 10:38:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B77282898A6
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 08:42:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 824D01C21D6A
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 09:38:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E0F052F8C;
-	Thu, 29 Feb 2024 08:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB9C06086B;
+	Thu, 29 Feb 2024 09:38:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="YVWJWqBz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GXaizONx"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from forward203c.mail.yandex.net (forward203c.mail.yandex.net [178.154.239.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B93152F65
-	for <linux-wireless@vger.kernel.org>; Thu, 29 Feb 2024 08:41:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F09B860864;
+	Thu, 29 Feb 2024 09:38:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709196072; cv=none; b=AYQUJ97qgeQxKlrrfR/QlunMvbqZvoHQPUcSykmQQoRfFO2plawuLCNHjvl6CRWb10i9etIgRgEeqbjwToiv1sKW9VNUW7aFa019JP8crK2icTgqWAUx4PhbyARfDrAkbkzdTKRbvGjqP8AVtlrmKMRmHMuaf9Dg+V7zuzZp9lQ=
+	t=1709199507; cv=none; b=Ux24+e9yUt8rOX2o0mQSY/zKwhNczbXtirKZaqLEDUq8moeH4RfOO65E4WxQYyasQOsm6g+r+l+jOzuYpFNiHQwHi3iEPU8/5Pfg+5hGxPEaZHNgnzq05f2vRWMWHn6tRDM+6to5P47S/9JWoPHYeBFggon04W9h506OlWlZ0ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709196072; c=relaxed/simple;
-	bh=32vgW31IsGnFpXY0jSvBWmEx0mmTVKtOzYQKYUV5jLM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ACg909McrYnrEzl+zIXRYZwZdjGiE0khfA8adSOjTPZ8N9Mp3J/6urPoheWrDIaaBND/3ZNSKiX0SqKexRlw0Xu2IdgkcBaWL80sC0+swBP/7HjgXH4/NcSM7cjKFKCRLXsUIw1TeaYk7aRhgjBAuGQ8t48MEwNyVeVaeUMVzYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=YVWJWqBz; arc=none smtp.client-ip=178.154.239.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
-Received: from forward101b.mail.yandex.net (forward101b.mail.yandex.net [IPv6:2a02:6b8:c02:900:1:45:d181:d101])
-	by forward203c.mail.yandex.net (Yandex) with ESMTPS id BE7D16338A
-	for <linux-wireless@vger.kernel.org>; Thu, 29 Feb 2024 11:41:06 +0300 (MSK)
-Received: from mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net [IPv6:2a02:6b8:c14:6e01:0:640:627f:0])
-	by forward101b.mail.yandex.net (Yandex) with ESMTPS id 814E560A7A;
-	Thu, 29 Feb 2024 11:40:59 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id teVSqmLJiW20-ppqodj5g;
-	Thu, 29 Feb 2024 11:40:58 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1709196058; bh=etD7nXdUPW+wM9En1JEoPr/6++ncac2+Uo/5yHDDw2w=;
-	h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
-	b=YVWJWqBzZPFo39FdY5QZJ0WeKhxQhrd54W3PQ4T/d8hlnf4+GBEshzvy191xaGHQk
-	 JNxbWY4U8bwRZHHIijJvWPrZoHsj6W7qHMDst1NHXZ6fkA4UKlv8kOCktPbnVOEbL8
-	 bmzUteaGyvzWNJX9I5dErU0rqipzgarnmmjpky8w=
-Authentication-Results: mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From: Dmitry Antipov <dmantipov@yandex.ru>
-To: Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc: Baochen Qiang <quic_bqiang@quicinc.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	ath11k@lists.infradead.org,
+	s=arc-20240116; t=1709199507; c=relaxed/simple;
+	bh=geByKowRyOVCMK36p263NAG5QqZ0xPskpiZgukdnWdM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sZSxI203t+SUUAS4Wop9RHiCilljG/WumaCbN3UICK/Yc0MlStX0S5myEgwqCLZLpC+WpUNpcPJSwvcwCPTHoRS1snxkbk0EZhRMkOsGJKY4irsQVOBtyi99b841UHCqtm28OqsEXII38yluezM7KTW1NCR2mW0M/pVEHiTEXHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GXaizONx; arc=none smtp.client-ip=209.85.167.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-513235b5975so825265e87.2;
+        Thu, 29 Feb 2024 01:38:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1709199503; x=1709804303; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=X+z65Ols8Ev/rVV6Hj6ehUx1Ocn6O7rfEJ/QlCaZe84=;
+        b=GXaizONxcH6OS6+KBSNHeaTIqkshx5JSb84/5NfWOkMgH0pWifr4YhRzZ2njrOMhI7
+         WWR+9vFvezUwdxHY/7HJJl3SlvbMLx2pFg5pEU9KtW0Lnzohc1pNadrQ7D15DSa2M410
+         QFDuHIN87jHAQKvu+JHF+hWxIifI1rKxp8xxg55kAFNUr8l1j1qdTKlcF46YjNiBFRO1
+         7dF0hKEPFNMCnAAEOiFq8cg8BPhEhbocTaqOVKUXfgPl289uht8l8TFYRxoqKrKWkElo
+         FA6AOV9mMqIUkiVhGNy1/idgZlx6i1uewFyiusR4a+pnN65kDyAXWQho0CqFG9SUO3Kw
+         Lq/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709199503; x=1709804303;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=X+z65Ols8Ev/rVV6Hj6ehUx1Ocn6O7rfEJ/QlCaZe84=;
+        b=pjqPwmxSGFlPTgIiw6wqVAfy/K3FrB3aA6Pu3nDlrHKbXKG+BXtb3HNTcjno8Z6tIU
+         4JaVnt0KcLd2kj7GOrCvjzuIZjlKR0GHG/vWN8jErHKRGxrclg1VQYXVFieDMWzbImen
+         R6Cs9WNeQxIs3E/lyGKUsjHa0jMaUyVyJvHPvpvU57i+6RWU/vmjNiC08Bqolyxuyijo
+         99hx2I6B5r26/ZlIjGH4LS9krTyF9fiUFQdS2Knxrr669jSobMNq7YKgcNAdZbXNGOJM
+         oXXSXyReHshQ53XDQ5tJ3nYzgUi4RHk5GrywvTus57F/+d8XUjgUIAjZKVvxXU21ENL6
+         vHTA==
+X-Forwarded-Encrypted: i=1; AJvYcCWoFarDMTGjlpNo+ZAILnlYJOEhS9UizxgSMSMew9D8tjTZacrPPuCmhB8usXYnOHEWWIHhZiOoV7G2w9BP/fwnS4B5Qr46yzkoveq9NvujeUNEAXrXG7vvlOpauk/IRftNKfr6Grv8iBAEszI=
+X-Gm-Message-State: AOJu0YwuTUC3v1G0PJ8b1Xbz9WsCZndraE13fIzeb8vyyBEPZxAGBhUO
+	PeQrF1G7M2gSDzQtdZY9B75zn9W27ZvzbjDUoOnTpy2YjFM8wCIYIUyAaLbr+h/gww==
+X-Google-Smtp-Source: AGHT+IH04wVFxQ+/BAeopM/1ea/U9uubsTCuaOszB/Zgk36ckE2szxzw+HRMAdcNMTvSgVECqmccsw==
+X-Received: by 2002:ac2:52aa:0:b0:513:23da:9766 with SMTP id r10-20020ac252aa000000b0051323da9766mr971087lfm.55.1709199502806;
+        Thu, 29 Feb 2024 01:38:22 -0800 (PST)
+Received: from rand-ubuntu-development.dl.local (mail.confident.ru. [85.114.29.218])
+        by smtp.gmail.com with ESMTPSA id dw27-20020a0565122c9b00b0051304114e7asm189189lfb.6.2024.02.29.01.38.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Feb 2024 01:38:22 -0800 (PST)
+From: Rand Deeb <rand.sec96@gmail.com>
+To: Michael Buesch <m@bues.ch>,
 	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: deeb.rand@confident.ru,
 	lvc-project@linuxtesting.org,
-	Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH 3/3] [v2] wifi: ath11k: fix few -Wmaybe-uninitialized warnings
-Date: Thu, 29 Feb 2024 11:40:31 +0300
-Message-ID: <20240229084031.51957-3-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240229084031.51957-1-dmantipov@yandex.ru>
-References: <788f1df8-64e1-4b3c-ae8e-00c67be1c3de@quicinc.com>
- <20240229084031.51957-1-dmantipov@yandex.ru>
+	voskresenski.stanislav@confident.ru,
+	Rand Deeb <rand.sec96@gmail.com>
+Subject: [PATCH] ssb: Fix potential NULL pointer dereference in ssb_device_uevent
+Date: Thu, 29 Feb 2024 12:37:56 +0300
+Message-Id: <20240229093756.129324-1-rand.sec96@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -70,78 +85,42 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When compiling with gcc version 14.0.1 20240226 (experimental) and
-W=12, I've noticed the following warnings:
+The ssb_device_uevent function first attempts to convert the 'dev' pointer
+to 'struct ssb_device *'. However, it mistakenly dereferences 'dev' before
+performing the NULL check, potentially leading to a NULL pointer
+dereference if 'dev' is NULL.
 
-drivers/net/wireless/ath/ath11k/qmi.c: In function 'ath11k_qmi_load_file_target_mem':
-drivers/net/wireless/ath/ath11k/qmi.c:2401:16: warning: 'ret' may be used uninitialized
-[-Wmaybe-uninitialized]
- 2401 |         return ret;
+To fix this issue, this patch moves the NULL check before dereferencing the
+'dev' pointer, ensuring that the pointer is valid before attempting to use
+it.
 
-drivers/net/wireless/ath/ath11k/qmi.c: In function 'ath11k_qmi_load_bdf_qmi':
-drivers/net/wireless/ath/ath11k/qmi.c:2494:17: warning: 'fw_entry' may be used uninitialized
-[-Wmaybe-uninitialized]
- 2494 |                 release_firmware(fw_entry);
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-And a bunch of them traced to an uninitialized fields of the same
-variable, e.g.:
-
-drivers/net/wireless/ath/ath11k/spectral.c: In function 'ath11k_spectral_process_data':
-drivers/net/wireless/ath/ath11k/spectral.c:700:47: warning: 'summ_rpt.meta.freq1' may
-be used uninitialized [-Wmaybe-uninitialized]
-  700 |         struct ath11k_spectral_summary_report summ_rpt;
-
-Fix all of the above by using 0, NULL, and {} initializers, respectively.
-Note there are few more (less obvious) -Wmaybe-uninitialized warnings
-still remains, but they're hardly possible to fix without running on
-a physical hardware. Compile tested only.
-
-Also noticed by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Rand Deeb <rand.sec96@gmail.com>
 ---
-v2: use {} initializer (Jeff Johnson) and aggregate to the series
----
- drivers/net/wireless/ath/ath11k/qmi.c      | 4 ++--
- drivers/net/wireless/ath/ath11k/spectral.c | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/ssb/main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
-index 5006f81f779b..4477f652e068 100644
---- a/drivers/net/wireless/ath/ath11k/qmi.c
-+++ b/drivers/net/wireless/ath/ath11k/qmi.c
-@@ -2293,7 +2293,7 @@ static int ath11k_qmi_load_file_target_mem(struct ath11k_base *ab,
- 	struct qmi_txn txn;
- 	const u8 *temp = data;
- 	void __iomem *bdf_addr = NULL;
--	int ret;
-+	int ret = 0;
- 	u32 remaining = len;
+diff --git a/drivers/ssb/main.c b/drivers/ssb/main.c
+index 9e54bc7eec66..74f549557a01 100644
+--- a/drivers/ssb/main.c
++++ b/drivers/ssb/main.c
+@@ -340,11 +340,13 @@ static int ssb_bus_match(struct device *dev, struct device_driver *drv)
  
- 	req = kzalloc(sizeof(*req), GFP_KERNEL);
-@@ -2406,7 +2406,7 @@ static int ath11k_qmi_load_bdf_qmi(struct ath11k_base *ab,
+ static int ssb_device_uevent(struct device *dev, struct kobj_uevent_env *env)
  {
- 	struct device *dev = ab->dev;
- 	char filename[ATH11K_QMI_MAX_BDF_FILE_NAME_SIZE];
--	const struct firmware *fw_entry;
-+	const struct firmware *fw_entry = NULL;
- 	struct ath11k_board_data bd;
- 	u32 fw_size, file_type;
- 	int ret = 0, bdf_type;
-diff --git a/drivers/net/wireless/ath/ath11k/spectral.c b/drivers/net/wireless/ath/ath11k/spectral.c
-index 79e091134515..9834e7dc5120 100644
---- a/drivers/net/wireless/ath/ath11k/spectral.c
-+++ b/drivers/net/wireless/ath/ath11k/spectral.c
-@@ -697,7 +697,7 @@ static int ath11k_spectral_process_data(struct ath11k *ar,
- 	struct ath11k_base *ab = ar->ab;
- 	struct spectral_tlv *tlv;
- 	struct spectral_summary_fft_report *summary = NULL;
--	struct ath11k_spectral_summary_report summ_rpt;
-+	struct ath11k_spectral_summary_report summ_rpt = {};
- 	struct fft_sample_ath11k *fft_sample = NULL;
- 	u8 *data;
- 	u32 data_len, i;
+-	struct ssb_device *ssb_dev = dev_to_ssb_dev(dev);
++	struct ssb_device *ssb_dev;
+ 
+ 	if (!dev)
+ 		return -ENODEV;
+ 
++	ssb_dev = dev_to_ssb_dev(dev);
++
+ 	return add_uevent_var(env,
+ 			     "MODALIAS=ssb:v%04Xid%04Xrev%02X",
+ 			     ssb_dev->id.vendor, ssb_dev->id.coreid,
 -- 
-2.44.0
+2.34.1
 
 
