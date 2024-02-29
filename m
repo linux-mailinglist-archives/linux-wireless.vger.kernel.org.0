@@ -1,273 +1,124 @@
-Return-Path: <linux-wireless+bounces-4260-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4259-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEEB986CDD2
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 16:57:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A3A986CDC0
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 16:56:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFF2F1C20DC6
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 15:57:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AABA1C20A00
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 15:56:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 221F77580A;
-	Thu, 29 Feb 2024 15:49:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB70870AFE;
+	Thu, 29 Feb 2024 15:49:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fCmBrg/P"
+	dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b="euMtdEpU"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB68D757E6;
-	Thu, 29 Feb 2024 15:49:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 201A170AD9
+	for <linux-wireless@vger.kernel.org>; Thu, 29 Feb 2024 15:49:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709221797; cv=none; b=dB4XmXRuFQA69ScUkX412agUCibkQiSHJNFb0MzVo687mITmcfC7DFPTOdDdzxtf+R8wTtFrEJU01pyJKFOa0rzo4mfPurxDZaC01ic3vh0NM+dyuxuASMqAqnhUdA4zyrmUIzBBM4+gsDoP0JW3bCcxglxAaHFbaxdS1OV4mF4=
+	t=1709221782; cv=none; b=hADbbhZy8CtQhx7tWfO+JaeqevXXydJeo7gEtcY+L78ZW1AxzH7qhommlxEXjvRcW6vzNND+OslkgxThdeqS+nvAbGjjPD2bRb4diZKTdWjlqA5SVrdxyhzUXt9bxXsEs8hEzpKDlnRG3n5/bCuJReKpWcAP4R1tUj2Xdb7e+kg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709221797; c=relaxed/simple;
-	bh=hoUFVXBUc4PJkc2Bbi/RC+j7C+Z0Ys8ZxYU9GzypvvU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d+IIDFuQ3tZ6vAW0AInfOOIhiUihPHEsheqdwMiiMgarwerRSbzwTbCQYWd1dHRNvKVa5YGRGo4GXomY+qfUm4ovuOkA31oQfsycqNIhNdytdDYVZjwA/xlGvxO7S1P3ct3Ncdz/yLhr1e0ioCfsXaS1oojvkXz3ELHP6P+UMNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fCmBrg/P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60E9AC433F1;
-	Thu, 29 Feb 2024 15:49:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709221796;
-	bh=hoUFVXBUc4PJkc2Bbi/RC+j7C+Z0Ys8ZxYU9GzypvvU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fCmBrg/PP/e6IRwRqT+r9nvc5iMgxMPxnlyCujdNvUTx/f63MOzIdn5mmoWsxCHRk
-	 wC/dH6yCrCOgiSu+7lXvo1NkZvsM4j1ZCNT4h5OwEEI7GnW+1fWjMaYKV76u5iyxvY
-	 p+zAIDgwBq8BH4XOOFNlTxvx7jlJs//xfqcNQM/xaGCo7mPLwBQdioPlyQUylV0SeZ
-	 4p4Wtq5psd+wKYskckUx56/POszo5kDrXxTGDTfks5RAvBp5y2vLZoVixAEAYbNuwe
-	 9/ggychTNKVWvEm8V+p0ADLYQWESMjAJplWDGHdANJI1VwQ9NKbR6DiiJ3T7Q/K6ki
-	 wfl/Sp6xy33lQ==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Daniel Gabay <daniel.gabay@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	kvalo@kernel.org,
-	gregory.greenman@intel.com,
-	ilan.peer@intel.com,
-	avraham.stern@intel.com,
-	shaul.triebitz@intel.com,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 05/21] wifi: iwlwifi: mvm: use correct address 3 in A-MSDU
-Date: Thu, 29 Feb 2024 10:49:25 -0500
-Message-ID: <20240229154946.2850012-5-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240229154946.2850012-1-sashal@kernel.org>
-References: <20240229154946.2850012-1-sashal@kernel.org>
+	s=arc-20240116; t=1709221782; c=relaxed/simple;
+	bh=CHcI2S0JEPj8mELbXV5Hi3VYv5okgHeAmgENHLm1Efk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=O9JJrmrsULswaUXPhwVFGNbovRA1AqWeqN3kDyLTpm41L+8EdykncPVyQhwvaMcpP4CKtLQ2jodd9zh0WRGLL2yyw4xEOvU7OiF62rUT5JhvyMLA15RcunmaH0CKA9JQ9/Bdio2x5GuKhByakEqkCRIn596RFSnz4scja1h19aI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b=euMtdEpU; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freebox.fr
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-412c37a8001so546275e9.2
+        for <linux-wireless@vger.kernel.org>; Thu, 29 Feb 2024 07:49:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=freebox-fr.20230601.gappssmtp.com; s=20230601; t=1709221778; x=1709826578; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=CJWLEHwKCTq5M6yaIuOIWFF3XC8JrWtOfeFaJKHLycI=;
+        b=euMtdEpUASCWHkgHI9o62h903+/f5eQ+yMeCJ7dB0LaTHtIXYiteBT1Jxc+tWiRw8a
+         0PI0j+yS8g6fcfmUJ+0JOQOxUYjt7Zd6BZtlfQ4vDF1fjKzNDqg2mIeKOE4Iu+riR2NX
+         zh85Bcp0h8ufFpaVFnuSpXT6UCw8E1MMpiwBFpgdoMHIVgDZm5m3BsaQHzUfm6xdHVJK
+         ZhknKW46++XwHkbHdwXzyJWb07NRon2Rl8e1Xi668nI7qOkMkv84RenW1vwHZ2bDth4w
+         xxAbH9CFVRsPbXZyKYs9JjmLNvn2wmZ80XkPU3jqj1n8SgjiAWdiDVWmd51lZRw9YQ2O
+         kzXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709221778; x=1709826578;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=CJWLEHwKCTq5M6yaIuOIWFF3XC8JrWtOfeFaJKHLycI=;
+        b=KrbEerYOo31MdLSI8C239gg0fe1HeDjUIYNMbl5Oqc132b0kgEPY1Qyojvusc0o9pI
+         rxbmEWlPTvWmnZnmkiAbEuRbhQaCFJUSCIGfyGC1j0Akb6Gey1aH2BXmHUizxIiNYYmL
+         UY6FRVZR1sLkSqgDTiC/l3unQfcu7NOf/uzw5tsTGKscJVOQvpOXkhqwsgAw+snjjk+R
+         LUaJFqLMgXX6SsRj831GSyH27t9LE5/lOQxhPewQhMxGA2Kxl3r71cUBpxG3xCCpAqQK
+         h+5NLwCCItZO/Vj7voxjZIRtY0kcc1mKcm5PWMwyZ+9dMGZe0RoQUusI+l2tr6WGNoRk
+         8Njw==
+X-Forwarded-Encrypted: i=1; AJvYcCVZkDmQUJ7Jmbdk1zt5wN1t87x+/zaPWjfO2d4QVzsfY/0jgI+peSvncbWALb0W7z0JnsRej+7C1APsOnqhKyNMAqdFTHA2hXTEeCCDMF0=
+X-Gm-Message-State: AOJu0Yz2l98XF+5choQX9hC11S9g+TZrQKRHJ9sBEykd085FYoMfDWPy
+	IbSkagdoMdas5qwDHtx5cAzPmkQXYYesIeXCRyXdxQXrqc2zBtIk5sc34NUr7OA=
+X-Google-Smtp-Source: AGHT+IE9abPTuZJImsBPPVwExiBHv3+UHoPZOEA+bzFtWuIKypEfuzgNNp3VESK6x/US7chA1lqTew==
+X-Received: by 2002:a5d:58f2:0:b0:33d:29c1:c28c with SMTP id f18-20020a5d58f2000000b0033d29c1c28cmr1851510wrd.66.1709221778325;
+        Thu, 29 Feb 2024 07:49:38 -0800 (PST)
+Received: from [192.168.108.81] (freebox.vlq16.iliad.fr. [213.36.7.13])
+        by smtp.gmail.com with ESMTPSA id n13-20020a5d4c4d000000b0033cfa00e497sm2074044wrt.64.2024.02.29.07.49.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 29 Feb 2024 07:49:38 -0800 (PST)
+Message-ID: <49bcc88d-2562-40c9-81f6-64a48deb2066@freebox.fr>
+Date: Thu, 29 Feb 2024 16:49:37 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.18
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] dt-bindings: net: wireless: ath10k: add
+ qcom,no-msa-ready-indicator prop
+Content-Language: en-US
+To: Jeff Johnson <quic_jjohnson@quicinc.com>, Kalle Valo <kvalo@kernel.org>,
+ ath10k <ath10k@lists.infradead.org>
+Cc: MSM <linux-arm-msm@vger.kernel.org>,
+ wireless <linux-wireless@vger.kernel.org>, DT <devicetree@vger.kernel.org>,
+ Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Pierre-Hugues Husson <phhusson@freebox.fr>,
+ Jami Kettunen <jamipkettunen@gmail.com>,
+ Jeffrey Hugo <quic_jhugo@quicinc.com>
+References: <14daa98e-7fd3-4ebb-87bb-5d2c1fba679f@freebox.fr>
+ <b8de96c7-cbb6-4a09-a4d4-2c11b3ab3e01@freebox.fr>
+ <d8c90f33-d0ab-4d73-9580-2547446671a0@quicinc.com>
+From: Marc Gonzalez <mgonzalez@freebox.fr>
+In-Reply-To: <d8c90f33-d0ab-4d73-9580-2547446671a0@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Daniel Gabay <daniel.gabay@intel.com>
+On 28/02/2024 15:59, Jeff Johnson wrote:
 
-[ Upstream commit 2e57b77583ca34fdb6e14f253172636c52f81cf2 ]
+> On 2/28/2024 5:24 AM, Marc Gonzalez wrote:
+>
+>> The driver waits for this indicator before proceeding,
+>> yet some WCNSS firmwares apparently do not send it.
+>> On those devices, it seems safe to ignore the indicator,
+>> and continue loading the firmware.
+> 
+> Can you list the product/hardware/firmware where this is observed?
+> Would prefer to fix the firmware if the issue is there
 
-As described in IEEE sta 802.11-2020, table 9-30 (Address
-field contents), A-MSDU address 3 should contain the BSSID
-address.
+Hello Jeff,
 
-In TX_CMD we copy the MAC header from skb, and skb address 3
-holds the destination address, but it may not be identical to
-the BSSID.
+Do you think it is possible that the ath10k IP block in the msm8998/sdm835
+has never actually sent the MSA_READY indication?
 
-Using the wrong destination address appears to work with (most)
-receivers without MLO, but in MLO some devices are checking for
-it carefully, perhaps as a consequence of link to MLD address
-translation.
+Perhaps the vendor driver does not wait for MSA_READY, and therefore this
+issue has never caused a problem downstream?
 
-Replace address 3 in the TX_CMD MAC header with the correct
-address while retaining the skb address 3 unchanged.
-This ensures that skb address 3 will be utilized later for
-constructing the A-MSDU subframes.
+In that case, we could enable the work-around for all msm8998 boards?
 
-Note that we fill in the MLD address, but the firmware will do the
-necessary translation to link address after encryption.
-
-Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240204235836.4583a1bf9188.I3f8e7892bdf8f86b4daa28453771a8c9817b2416@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c | 69 ++++++++++++++++++---
- 1 file changed, 59 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-index 6fdb2c38518e3..4ea3aabc64883 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-@@ -500,13 +500,24 @@ static void iwl_mvm_set_tx_cmd_crypto(struct iwl_mvm *mvm,
- 	}
- }
- 
-+static void iwl_mvm_copy_hdr(void *cmd, const void *hdr, int hdrlen,
-+			     const u8 *addr3_override)
-+{
-+	struct ieee80211_hdr *out_hdr = cmd;
-+
-+	memcpy(cmd, hdr, hdrlen);
-+	if (addr3_override)
-+		memcpy(out_hdr->addr3, addr3_override, ETH_ALEN);
-+}
-+
- /*
-  * Allocates and sets the Tx cmd the driver data pointers in the skb
-  */
- static struct iwl_device_tx_cmd *
- iwl_mvm_set_tx_params(struct iwl_mvm *mvm, struct sk_buff *skb,
- 		      struct ieee80211_tx_info *info, int hdrlen,
--		      struct ieee80211_sta *sta, u8 sta_id)
-+		      struct ieee80211_sta *sta, u8 sta_id,
-+		      const u8 *addr3_override)
- {
- 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
- 	struct iwl_device_tx_cmd *dev_cmd;
-@@ -564,7 +575,7 @@ iwl_mvm_set_tx_params(struct iwl_mvm *mvm, struct sk_buff *skb,
- 			cmd->len = cpu_to_le16((u16)skb->len);
- 
- 			/* Copy MAC header from skb into command buffer */
--			memcpy(cmd->hdr, hdr, hdrlen);
-+			iwl_mvm_copy_hdr(cmd->hdr, hdr, hdrlen, addr3_override);
- 
- 			cmd->flags = cpu_to_le16(flags);
- 			cmd->rate_n_flags = cpu_to_le32(rate_n_flags);
-@@ -579,7 +590,7 @@ iwl_mvm_set_tx_params(struct iwl_mvm *mvm, struct sk_buff *skb,
- 			cmd->len = cpu_to_le16((u16)skb->len);
- 
- 			/* Copy MAC header from skb into command buffer */
--			memcpy(cmd->hdr, hdr, hdrlen);
-+			iwl_mvm_copy_hdr(cmd->hdr, hdr, hdrlen, addr3_override);
- 
- 			cmd->flags = cpu_to_le32(flags);
- 			cmd->rate_n_flags = cpu_to_le32(rate_n_flags);
-@@ -597,7 +608,7 @@ iwl_mvm_set_tx_params(struct iwl_mvm *mvm, struct sk_buff *skb,
- 	iwl_mvm_set_tx_cmd_rate(mvm, tx_cmd, info, sta, hdr->frame_control);
- 
- 	/* Copy MAC header from skb into command buffer */
--	memcpy(tx_cmd->hdr, hdr, hdrlen);
-+	iwl_mvm_copy_hdr(tx_cmd->hdr, hdr, hdrlen, addr3_override);
- 
- out:
- 	return dev_cmd;
-@@ -800,7 +811,8 @@ int iwl_mvm_tx_skb_non_sta(struct iwl_mvm *mvm, struct sk_buff *skb)
- 
- 	IWL_DEBUG_TX(mvm, "station Id %d, queue=%d\n", sta_id, queue);
- 
--	dev_cmd = iwl_mvm_set_tx_params(mvm, skb, &info, hdrlen, NULL, sta_id);
-+	dev_cmd = iwl_mvm_set_tx_params(mvm, skb, &info, hdrlen, NULL, sta_id,
-+					NULL);
- 	if (!dev_cmd)
- 		return -1;
- 
-@@ -1120,7 +1132,8 @@ static int iwl_mvm_tx_pkt_queued(struct iwl_mvm *mvm,
-  */
- static int iwl_mvm_tx_mpdu(struct iwl_mvm *mvm, struct sk_buff *skb,
- 			   struct ieee80211_tx_info *info,
--			   struct ieee80211_sta *sta)
-+			   struct ieee80211_sta *sta,
-+			   const u8 *addr3_override)
- {
- 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
- 	struct iwl_mvm_sta *mvmsta;
-@@ -1152,7 +1165,8 @@ static int iwl_mvm_tx_mpdu(struct iwl_mvm *mvm, struct sk_buff *skb,
- 		iwl_mvm_probe_resp_set_noa(mvm, skb);
- 
- 	dev_cmd = iwl_mvm_set_tx_params(mvm, skb, info, hdrlen,
--					sta, mvmsta->deflink.sta_id);
-+					sta, mvmsta->deflink.sta_id,
-+					addr3_override);
- 	if (!dev_cmd)
- 		goto drop;
- 
-@@ -1274,9 +1288,11 @@ int iwl_mvm_tx_skb_sta(struct iwl_mvm *mvm, struct sk_buff *skb,
- 	struct iwl_mvm_sta *mvmsta = iwl_mvm_sta_from_mac80211(sta);
- 	struct ieee80211_tx_info info;
- 	struct sk_buff_head mpdus_skbs;
-+	struct ieee80211_vif *vif;
- 	unsigned int payload_len;
- 	int ret;
- 	struct sk_buff *orig_skb = skb;
-+	const u8 *addr3;
- 
- 	if (WARN_ON_ONCE(!mvmsta))
- 		return -1;
-@@ -1287,26 +1303,59 @@ int iwl_mvm_tx_skb_sta(struct iwl_mvm *mvm, struct sk_buff *skb,
- 	memcpy(&info, skb->cb, sizeof(info));
- 
- 	if (!skb_is_gso(skb))
--		return iwl_mvm_tx_mpdu(mvm, skb, &info, sta);
-+		return iwl_mvm_tx_mpdu(mvm, skb, &info, sta, NULL);
- 
- 	payload_len = skb_tail_pointer(skb) - skb_transport_header(skb) -
- 		tcp_hdrlen(skb) + skb->data_len;
- 
- 	if (payload_len <= skb_shinfo(skb)->gso_size)
--		return iwl_mvm_tx_mpdu(mvm, skb, &info, sta);
-+		return iwl_mvm_tx_mpdu(mvm, skb, &info, sta, NULL);
- 
- 	__skb_queue_head_init(&mpdus_skbs);
- 
-+	vif = info.control.vif;
-+	if (!vif)
-+		return -1;
-+
- 	ret = iwl_mvm_tx_tso(mvm, skb, &info, sta, &mpdus_skbs);
- 	if (ret)
- 		return ret;
- 
- 	WARN_ON(skb_queue_empty(&mpdus_skbs));
- 
-+	/*
-+	 * As described in IEEE sta 802.11-2020, table 9-30 (Address
-+	 * field contents), A-MSDU address 3 should contain the BSSID
-+	 * address.
-+	 * Pass address 3 down to iwl_mvm_tx_mpdu() and further to set it
-+	 * in the command header. We need to preserve the original
-+	 * address 3 in the skb header to correctly create all the
-+	 * A-MSDU subframe headers from it.
-+	 */
-+	switch (vif->type) {
-+	case NL80211_IFTYPE_STATION:
-+		addr3 = vif->cfg.ap_addr;
-+		break;
-+	case NL80211_IFTYPE_AP:
-+		addr3 = vif->addr;
-+		break;
-+	default:
-+		addr3 = NULL;
-+		break;
-+	}
-+
- 	while (!skb_queue_empty(&mpdus_skbs)) {
-+		struct ieee80211_hdr *hdr;
-+		bool amsdu;
-+
- 		skb = __skb_dequeue(&mpdus_skbs);
-+		hdr = (void *)skb->data;
-+		amsdu = ieee80211_is_data_qos(hdr->frame_control) &&
-+			(*ieee80211_get_qos_ctl(hdr) &
-+			 IEEE80211_QOS_CTL_A_MSDU_PRESENT);
- 
--		ret = iwl_mvm_tx_mpdu(mvm, skb, &info, sta);
-+		ret = iwl_mvm_tx_mpdu(mvm, skb, &info, sta,
-+				      amsdu ? addr3 : NULL);
- 		if (ret) {
- 			/* Free skbs created as part of TSO logic that have not yet been dequeued */
- 			__skb_queue_purge(&mpdus_skbs);
--- 
-2.43.0
+Regards
 
 
