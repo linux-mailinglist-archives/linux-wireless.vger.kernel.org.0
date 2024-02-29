@@ -1,114 +1,116 @@
-Return-Path: <linux-wireless+bounces-4240-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4241-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDA0086C34D
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 09:21:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0B1986C3EB
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 09:42:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7CFDBB22256
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 08:21:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E8F81C22394
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 08:42:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 053B938F80;
-	Thu, 29 Feb 2024 08:21:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AAA650A6D;
+	Thu, 29 Feb 2024 08:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="TeWhDM3g"
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="fPcJytgm"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from forward103c.mail.yandex.net (forward103c.mail.yandex.net [178.154.239.214])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB5E84879E
-	for <linux-wireless@vger.kernel.org>; Thu, 29 Feb 2024 08:20:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A936143AD5
+	for <linux-wireless@vger.kernel.org>; Thu, 29 Feb 2024 08:41:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.214
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709194861; cv=none; b=UoAp4W2bQX3iS3fUmPbV46LM3H7mhpVcxS/36YgrOLcO7CBjUpmKzzWiTB8ZFlvbw/WAl+oBMTSdIEptmXg4w1j6lwOGnLSoEYmR61prCUYxnsv1irMNu2V7d343TAIeAfoCypsElP7uC745kcrUZ48KktfEZ6v3gFVmXTBonpI=
+	t=1709196068; cv=none; b=CWUfhWaMCl883W4D3sgRREHjq42rffrRfKn6g7N31SvZcR/bovlp+J3CXebsv8gsSxha6us+h+QM8OoIzpHbTz+UB3v9DCze/hiV3y4i8v/O44ib1bVwxif4gaf9Af56Wsw6E9SdSCE+1ZF4DoMWHRLBoO7KNE0hKxFHeY/8Eu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709194861; c=relaxed/simple;
-	bh=eX6+s3mpvdpSs9F4jSOUi42xtniB6gW6o5TRrTUv0dQ=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=FYNK9DnGtHikRw6JWiLTF1+EUzEnLu1mGNul/gyyuQoPWlvhPcLGexBc1aoOB5JkGPEopC8yS0raDC3aDrlk4P3Rzik3aoyjJCdWH9pHhgYWk0my0HULhee3QCgL26qZCAxpFIQhvA6MfWxCzJ/JRPK3S/Yjaj7yIY5Rd66QkAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=TeWhDM3g; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=eX6+s3mpvdpSs9F4jSOUi42xtniB6gW6o5TRrTUv0dQ=;
-	t=1709194857; x=1710404457; b=TeWhDM3gQaAaa7PdJDybguBqn1/R4eZgMIXdB4R7+MdKtut
-	BG0EIGdg+WMYSiSbQbFvLjC/0uhusZtuVdJCu6SHJHeO2aAa8Zk4XnMmo+O5xnmDNa+/ZRr07dpbz
-	ftpjYknOeHiNcqgFz0gfHt0w8ipX0wKgtuJpsFEuY6MidnguSX6YTUVq9IuxtcmRIhxukYBOG4tsT
-	zK6DG3YD4D2tCnFhokeVCH7nCpY48ah8i4h4pBAjuooNvTucvCP158O3ZklUEM5Zpz+bfe00bbnMI
-	5yfccEzC70wMSLGjXxnOQG4YLDdiemGlDfk4mAcin2AmXkLjTr33+LG618GN6dqg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1rfbet-0000000DQaJ-0DA1;
-	Thu, 29 Feb 2024 09:20:51 +0100
-Message-ID: <8bf09320299478cc16751a7d3e5d090a6ecad331.camel@sipsolutions.net>
-Subject: Re: [v4,2/2] wifi: mac80211: refactor STA CSA parsing flows
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Michael-cy Lee =?UTF-8?Q?=28=E6=9D=8E=E5=B3=BB=E5=AE=87=29?=
-	 <Michael-cy.Lee@mediatek.com>, "linux-wireless@vger.kernel.org"
-	 <linux-wireless@vger.kernel.org>
-Cc: "linux-mediatek@lists.infradead.org"
- <linux-mediatek@lists.infradead.org>,  "nbd@nbd.name" <nbd@nbd.name>,
- Evelyn Tsai =?UTF-8?Q?=28=E8=94=A1=E7=8F=8A=E9=88=BA=29?=
- <Evelyn.Tsai@mediatek.com>, "lorenzo@kernel.org" <lorenzo@kernel.org>,
- Money Wang =?UTF-8?Q?=28=E7=8E=8B=E4=BF=A1=E5=AE=89=29?=
- <Money.Wang@mediatek.com>
-Date: Thu, 29 Feb 2024 09:20:49 +0100
-In-Reply-To: <4e08126a3bed3e2108e76f2a30d9bf470b5fe4db.camel@mediatek.com>
-References: <20231222010914.6521-1-michael-cy.lee@mediatek.com>
-	 <20231222010914.6521-3-michael-cy.lee@mediatek.com>
-	 <b74f21d22a41b2ca635e64f04c06d5db6d38d920.camel@sipsolutions.net>
-	 <765fb43a372825f6063894809f204150d87d4d18.camel@mediatek.com>
-	 <51cad25c273b27885f5387f995db48ef97df2996.camel@sipsolutions.net>
-	 <4e08126a3bed3e2108e76f2a30d9bf470b5fe4db.camel@mediatek.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
+	s=arc-20240116; t=1709196068; c=relaxed/simple;
+	bh=tq0wf6eEo8lPoEY7Vg8wPwEQ2+/zhBI1SDEB7FHWoBQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gdnuUEPfMuwV7Uoyw1CaYzLOs/NHsvJdMJDMSlSDJ0QuWC+8GDJZJdHx+0Gf5yXzGZ9x/LPCNrz/U4C6N4TF+1HbdavTGRbsMAvxjYPsgEY3At8oFwjnjJTC3Q/rYSA+E/yUn00IEgS/7ICOUhFiSDno0nsrb9lv2SbR/LDLl74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=fPcJytgm; arc=none smtp.client-ip=178.154.239.214
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
+Received: from mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net [IPv6:2a02:6b8:c14:6e01:0:640:627f:0])
+	by forward103c.mail.yandex.net (Yandex) with ESMTPS id 129A860B62;
+	Thu, 29 Feb 2024 11:40:57 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id teVSqmLJiW20-6Zz5L67T;
+	Thu, 29 Feb 2024 11:40:56 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+	t=1709196056; bh=0Ttr1Rc6LQgnqCWP+1fX+y357g9rrnweJwnKxC38lcw=;
+	h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
+	b=fPcJytgmrLEdj4b4RUjGE1QFf2MbLbirXX7ySfLWviSpH9d84PMpWcv4JDZrKDeI/
+	 NlE9eu7RmuIm8isWTbIH04HFEcQTM7NKeK4WbMMPmlWIBXqjjbWpNaJK/wvz0efAh+
+	 aSaN3+xDLSrJd/2Kr1/STmhI0dLvEVz1fLSM4vfE=
+Authentication-Results: mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From: Dmitry Antipov <dmantipov@yandex.ru>
+To: Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc: Baochen Qiang <quic_bqiang@quicinc.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	ath11k@lists.infradead.org,
+	linux-wireless@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH 1/3] [v2] wifi: ath11k: use ath11k_mac_get_ar_by_pdev_id() consistently
+Date: Thu, 29 Feb 2024 11:40:29 +0300
+Message-ID: <20240229084031.51957-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <788f1df8-64e1-4b3c-ae8e-00c67be1c3de@quicinc.com>
+References: <788f1df8-64e1-4b3c-ae8e-00c67be1c3de@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 
-Hi,
+Since 'ath11k_mac_get_ar_by_pdev_id()' can return NULL, check
+the return value in 'ath11k_wmi_tlv_rssi_chain_parse()' as well
+as in 'ath11k_wmi_tlv_fw_stats_data_parse()', and return -EINVAL
+in case of error. Compile tested only.
 
->=20
-> https://lore.kernel.org/linux-wireless/3c550ae335a9762a9cbd0c8109b6dd99fa=
-eb8f6f.camel@sipsolutions.net/
->=20
-> We=E2=80=99re reading this discussion and will give our rely as soon as
-> possible.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Great, thanks.
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+---
+v2: aggregate to the series
+---
+ drivers/net/wireless/ath/ath11k/wmi.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-> > Would you be willing/interested in testing any of this code? I'm
-> > currently not really able to test it, so not sure if I should push it
-> > out.
->=20
-> Of course we=E2=80=99re willing to do the test.
-> But we=E2=80=99re still working on MLD AP right now, and the critical upd=
-ate
-> will be the next.
-> In other word, to test MLD STA=E2=80=99s behavior we need to first get th=
-e MLD
-> AP ready.
-> If it=E2=80=99s OK, could you give us your changes? Maybe we can test it =
-during
-> the development.
->=20
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
+index 34ab9631ff36..2d93e4e78a37 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -6498,6 +6498,12 @@ static int ath11k_wmi_tlv_rssi_chain_parse(struct ath11k_base *ab,
+ 	rcu_read_lock();
+ 
+ 	ar = ath11k_mac_get_ar_by_pdev_id(ab, ev->pdev_id);
++	if (!ar) {
++		ath11k_warn(ab, "%s: invalid pdev_id %d\n",
++			    __func__, ev->pdev_id);
++		ret = -EINVAL;
++		goto exit;
++	}
+ 	stats->stats_id = WMI_REQUEST_RSSI_PER_CHAIN_STAT;
+ 
+ 	ath11k_dbg(ab, ATH11K_DBG_WMI,
+@@ -6570,6 +6576,12 @@ static int ath11k_wmi_tlv_fw_stats_data_parse(struct ath11k_base *ab,
+ 	rcu_read_lock();
+ 
+ 	ar = ath11k_mac_get_ar_by_pdev_id(ab, ev->pdev_id);
++	if (!ar) {
++		ath11k_warn(ab, "%s: invalid pdev_id %d\n",
++			    __func__, ev->pdev_id);
++		ret = -EINVAL;
++		goto exit;
++	}
+ 
+ 	for (i = 0; i < ev->num_pdev_stats; i++) {
+ 		const struct wmi_pdev_stats *src;
+-- 
+2.44.0
 
-I actually posted it to the list yesterday, but it's probably more
-useful to have it in combined form, so I've now pushed this branch:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git/=
-log/?h=3Dcrosslink-csa&cache=3D0
-
-johannes
 
