@@ -1,73 +1,73 @@
-Return-Path: <linux-wireless+bounces-4271-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4272-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7213886D6E5
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 23:34:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C7F686D6E6
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 23:35:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 525EC1C21B6B
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 22:34:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D055288E2A
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 22:35:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4BB3200CD;
-	Thu, 29 Feb 2024 22:34:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6C50200D2;
+	Thu, 29 Feb 2024 22:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WuwgwAhn"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h5TVpGzz"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4EC208DA
-	for <linux-wireless@vger.kernel.org>; Thu, 29 Feb 2024 22:34:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03EDE200D6
+	for <linux-wireless@vger.kernel.org>; Thu, 29 Feb 2024 22:35:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709246057; cv=none; b=QUX/xfYJ/BFBgC6hqV5XRSzgFbgZt6+SQVsMMHQKFSi6VRQ7FrRO456JAkLYb6qN2oNnOQ14vqdgriZ5+sSXpqpIk38IwieEpp9DvtY+hpU10HZNL/v2gEbZTBM5KRDFnRLJ7TgiBGxrf3UD4v2Y1IsnowYH5c5jgrSUx4zfLsY=
+	t=1709246113; cv=none; b=h1qN1fQpoEf1h6fQV6hQLm3Bw5G/fENEgHvnJiuqBmdOdm8euMipJ9f5Ew7rbwvZISnFhzG+hBW/GPVUuSOcgp7cFCCcNWkLZXOQfIfv8KeDkJEpH4sEXfumdndgj7VBRh/SQWSyS9tpuoicOvxIRh0jxUjOohoYrw3+hQz243A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709246057; c=relaxed/simple;
-	bh=fD/xamvG6zR8Ouxc+TXsK8mP2JejVEg2rAqhlxbaink=;
+	s=arc-20240116; t=1709246113; c=relaxed/simple;
+	bh=Y9ZNtBb2i8bkQqqVZSFI03rn3V2CJEjmODvUowGdR2o=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=pKhIr2Ig9K37T+5xzhBFV7tpLXgeTHmkCdg3SmOwqODMJ+KR3/M25OxR+1sxk1BWxDSVaFf1jtgVSeK/i7VBComwlDz+uD5zFzL/1mLipkijDj5aQO0bR4HCOPATrNnUEni8k5Mkbo18rx5As/jZMRudwf7aKuZnvCznzVzH0+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WuwgwAhn; arc=none smtp.client-ip=209.85.167.47
+	 In-Reply-To:Content-Type; b=MnbuSN69X7VKpYnfd3PMF5Ss3GggyihC+DekM2rAltexxBJRGG8mby/pDa8o4/h3+9kDm2B9On2iV9+kDqeIfKbN3aHyz7DLlzOabIrqjSdnSFhlnY9KOwq8oKzQoznuAQFSE73F8xhJTg90gf547S3KV/MTTNmOalBcykKKeZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h5TVpGzz; arc=none smtp.client-ip=209.85.167.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5131f3fc695so1578684e87.1
-        for <linux-wireless@vger.kernel.org>; Thu, 29 Feb 2024 14:34:15 -0800 (PST)
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-512f54fc2dbso1232777e87.1
+        for <linux-wireless@vger.kernel.org>; Thu, 29 Feb 2024 14:35:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709246054; x=1709850854; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1709246110; x=1709850910; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:references:cc:to:from
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=a3JZvTB/m4fw2x2v8iZTUePG8qieB3qG0XBnMg/1QpA=;
-        b=WuwgwAhnPKsArJ9LRtOTepnI8D40WJIo53K9/IGgRfmJSf09vDyVHrmeOfwPv6dKAT
-         6xiFfkDlAK7An5DS4w4m1MKK+9F0PBUY3A1vW53NrYtI3kxNqyR/Xcq/u8P6q6K54CFC
-         +to4nA84j5Lo2bb0V+6YsG/gMdbH7WurUNL/wbKxl80HLK9L9KE/JtdsJ9l+N6DmcsMv
-         G+IGzp0K3VlMsWtlq6QNQpL24eCbQrwTlaWALiCAEPOA/dk2Y1tOqhy3jzGHbVe3QArX
-         O2CKx5s/0hJuMJNOKioie400Q+EfsjpEiYmrJ3Bwf5bDcnMfsk9oEx2eGIO+dzuhnF7L
-         Jivw==
+        bh=u8QSQ/xkN8iJeY3GCsJrJUDcbOEjNrSo0xZqIJB6tho=;
+        b=h5TVpGzzU6s+yp+mbkoUxL3bdkq9vV8q01CQMnV3O6WmwtiSx/L83L70eWmR8vaerr
+         tacMwPePDMx91Pb4Qme3eShHrpgOUdcVAhOpc2QypQpOSIa63yLKKLc2//9sZTp3LuZd
+         eDsjA0mLy2AFf6w/yrGOcUEXjQeH0VEVRg1NVfa2GXraKUp70ga1BBnCQXsLj80CZyHi
+         aYm4p1Gzf/e9cPYz9f012Kwu/nTlvlPls/p9sKksN56cEnhcE7zUGgjJPbnXfKv+FvDS
+         skV5hNy7YEPau8/XxNkGmThQvG+WzoKwG6Ejy+v9DoLYJxfUhJOvM8m4gDUKe9M8vImZ
+         hztQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709246054; x=1709850854;
+        d=1e100.net; s=20230601; t=1709246110; x=1709850910;
         h=content-transfer-encoding:in-reply-to:references:cc:to:from
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=a3JZvTB/m4fw2x2v8iZTUePG8qieB3qG0XBnMg/1QpA=;
-        b=rhK7AM4avTonovIDjPkLD2HyFqDDeiWuKyLSzFpJLQ/SHe+YAh7w0KINVbpCYXDtfJ
-         0QpX82q9tcf7WQ4XwAVTIaQHxYMHSh4Xa9qI8hODniY9RKArCkrx2m69m3O4coHe5x+E
-         YU+53AsbJMFrVQLRUiDb+060NeeDvKdf8bC39oVGtIakIXsW4HqTMJBiHqLgnjIVEFb2
-         Zqvm1/+F3dBFzRCEjSPR+00rIBLWSucdmnG5pQshPuRwZVoPdnqKxU/rZNfnkMkoOtNG
-         rSzWvBkJSjgLzsAk5H8F1yeieIWKjS9BJqPh9AWv2kBpid6JYh5YzDLGwjkLKrxUTBg+
-         AfUA==
-X-Gm-Message-State: AOJu0YwSUpx/KaNQpJuhF6wIizdjrExkg7x3joE2qYdzgzaPOni5kpZ1
-	q7862I9531OZiGa6sjkPeZhq2bOq3zMFORkBGEPJFxEjqd2mQmpxMLk8M7vk
-X-Google-Smtp-Source: AGHT+IG6+6mhadPMKfVleb/i0CgUM8XUrNH7ZO4wOH2WHMUhvLW917ZKiW8scjoTu052y0gCPR9gPA==
-X-Received: by 2002:a05:6512:31ca:b0:513:1cfd:14b2 with SMTP id j10-20020a05651231ca00b005131cfd14b2mr2628041lfe.33.1709246054046;
-        Thu, 29 Feb 2024 14:34:14 -0800 (PST)
+        bh=u8QSQ/xkN8iJeY3GCsJrJUDcbOEjNrSo0xZqIJB6tho=;
+        b=omIQPxs2FTetNjYH9Gsr3Fl77b3Lh7E5smW79bgIHNZJSGUuD9PBaQeqUw2Knl4ILa
+         poTBlj3YT9hZ7RReSl0TnHj6SKbWJwYnGGjFNJyWRhbBUEilpuyChFD/sYD+qRYnnYa5
+         n3dTecRuLabuTNVwmm7Pc4z9umELFVhNUS5kj68kkDaV6CRZoCgbUN+6kQixsFYyl1pP
+         JlPvANcwTig1/Gp+U6dIK7a8YbOt1l+OTMHvFPazSy6BmIzkS7a6ITl2OiHmj6gmJeNW
+         nQn1a7MYyBf9Qq0cDJQRshjMyjj9MNbEXETU0aDwnPAy27bdmxtTfty4ocDIes+sJW1K
+         /IDw==
+X-Gm-Message-State: AOJu0YyHgIebzH2zuEgv+wyDtG4JV0OrW3+27BGnOzSdnK0VDuFT9+kF
+	D4qLCVDNIQLwIM+af+6InUm6ObeP4DV8/1t76GaVwKci6R0zP0KZxgaYxDvs
+X-Google-Smtp-Source: AGHT+IGZjHzV9RxE+21jdyL1swDMuMZybAcsxLWU+yiIkxTSNEVpjLjxzAaoWQsGeqdnMCvsHviXEw==
+X-Received: by 2002:a05:6512:3493:b0:512:ed78:a840 with SMTP id v19-20020a056512349300b00512ed78a840mr2075171lfr.61.1709246110142;
+        Thu, 29 Feb 2024 14:35:10 -0800 (PST)
 Received: from [192.168.1.50] ([79.119.240.211])
-        by smtp.gmail.com with ESMTPSA id f18-20020a05600c155200b00412b68cc169sm3360442wmg.16.2024.02.29.14.34.13
+        by smtp.gmail.com with ESMTPSA id f18-20020a05600c155200b00412b68cc169sm3360442wmg.16.2024.02.29.14.35.09
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Feb 2024 14:34:13 -0800 (PST)
-Message-ID: <aeeefad9-27c8-4506-a510-ef9a9a8731a4@gmail.com>
-Date: Fri, 1 Mar 2024 00:34:13 +0200
+        Thu, 29 Feb 2024 14:35:09 -0800 (PST)
+Message-ID: <276c31d8-b9a8-4e54-a3ac-09b74657aff7@gmail.com>
+Date: Fri, 1 Mar 2024 00:35:09 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -75,7 +75,7 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [PATCH v2 2/4] wifi: rtw88: 8821cu: Fix connection failure
+Subject: [PATCH v2 3/4] wifi: rtw88: 8821c: Fix beacon loss and disconnect
 Content-Language: en-US
 From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
@@ -85,51 +85,79 @@ In-Reply-To: <f12ed39d-28e8-4b8b-8d22-447bcf295afc@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Clear bit 8 of REG_SYS_STATUS1 after MAC power on.
+Tenda U9 V2.0, which contains RTL8811CU, is practically unusable because
+of frequent disconnections:
 
-Without this, some RTL8821CU and RTL8811CU cannot connect to any
-network:
+Feb 23 14:46:45 ideapad2 wpa_supplicant[427]: wlp3s0f3u2: CTRL-EVENT-BEACON-LOSS
+Feb 23 14:46:46 ideapad2 wpa_supplicant[427]: wlp3s0f3u2: CTRL-EVENT-DISCONNECTED
+	bssid=90:55:de:__:__:__ reason=4 locally_generated=1
 
-Feb 19 13:33:11 ideapad2 kernel: wlp3s0f3u2: send auth to
-	90:55:de:__:__:__ (try 1/3)
-Feb 19 13:33:13 ideapad2 kernel: wlp3s0f3u2: send auth to
-	90:55:de:__:__:__ (try 2/3)
-Feb 19 13:33:14 ideapad2 kernel: wlp3s0f3u2: send auth to
-	90:55:de:__:__:__ (try 3/3)
-Feb 19 13:33:15 ideapad2 kernel: wlp3s0f3u2: authentication with
-	90:55:de:__:__:__ timed out
+Feb 23 14:46:52 ideapad2 wpa_supplicant[427]: wlp3s0f3u2: CTRL-EVENT-CONNECTED
+	- Connection to 90:55:de:__:__:__ completed [id=0 id_str=]
+Feb 23 14:46:54 ideapad2 wpa_supplicant[427]: wlp3s0f3u2: CTRL-EVENT-BEACON-LOSS
+Feb 23 14:46:55 ideapad2 wpa_supplicant[427]: wlp3s0f3u2: CTRL-EVENT-DISCONNECTED
+	bssid=90:55:de:__:__:__ reason=4 locally_generated=1
 
-The RTL8822CU and RTL8822BU out-of-tree drivers do this as well, so do
-it for all three types of chips.
+Feb 23 14:47:01 ideapad2 wpa_supplicant[427]: wlp3s0f3u2: CTRL-EVENT-CONNECTED
+	- Connection to 90:55:de:__:__:__ completed [id=0 id_str=]
+Feb 23 14:47:04 ideapad2 wpa_supplicant[427]: wlp3s0f3u2: CTRL-EVENT-BEACON-LOSS
+Feb 23 14:47:05 ideapad2 wpa_supplicant[427]: wlp3s0f3u2: CTRL-EVENT-DISCONNECTED
+	bssid=90:55:de:__:__:__ reason=4 locally_generated=1
 
-Tested with RTL8811CU (Tenda U9 V2.0).
+This is caused by a mistake in the chip initialisation. This version of
+the chip requires loading an extra AGC table right after the main one,
+but the extra table is being loaded at the wrong time, in
+rtw_chip_board_info_setup().
 
+Move the extra AGC table loading to the right place, in
+rtw_phy_load_tables().
+
+The rtw_chip_board_info_setup() can only do "software" things, and
+rtw_phy_load_tables() can really do IO.
+
+Fixes: 5d6651fe8583 ("rtw88: 8821c: support RFE type2 wifi NIC")
 Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 ---
 v2:
- - Check for pwr_on instead of pwr_seq == chip->pwr_on_seq.
+ - Add more information in the commit message.
 ---
- drivers/net/wireless/realtek/rtw88/mac.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/wireless/realtek/rtw88/main.c | 2 --
+ drivers/net/wireless/realtek/rtw88/phy.c  | 3 +++
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/mac.c b/drivers/net/wireless/realtek/rtw88/mac.c
-index 298663b03580..0c1c1ff31085 100644
---- a/drivers/net/wireless/realtek/rtw88/mac.c
-+++ b/drivers/net/wireless/realtek/rtw88/mac.c
-@@ -309,6 +309,13 @@ static int rtw_mac_power_switch(struct rtw_dev *rtwdev, bool pwr_on)
- 	pwr_seq = pwr_on ? chip->pwr_on_seq : chip->pwr_off_seq;
- 	ret = rtw_pwr_seq_parser(rtwdev, pwr_seq);
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index 6d22628129d0..ffba6b88f392 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -2032,8 +2032,6 @@ static int rtw_chip_board_info_setup(struct rtw_dev *rtwdev)
+ 	rtw_phy_setup_phy_cond(rtwdev, hal->pkg_type);
  
-+	if (pwr_on && rtw_hci_type(rtwdev) == RTW_HCI_TYPE_USB) {
-+		if (chip->id == RTW_CHIP_TYPE_8822C ||
-+		    chip->id == RTW_CHIP_TYPE_8822B ||
-+		    chip->id == RTW_CHIP_TYPE_8821C)
-+			rtw_write8_clr(rtwdev, REG_SYS_STATUS1 + 1, BIT(0));
-+	}
-+
- 	if (rtw_hci_type(rtwdev) == RTW_HCI_TYPE_SDIO)
- 		rtw_write32(rtwdev, REG_SDIO_HIMR, imr);
+ 	rtw_phy_init_tx_power(rtwdev);
+-	if (rfe_def->agc_btg_tbl)
+-		rtw_load_table(rtwdev, rfe_def->agc_btg_tbl);
+ 	rtw_load_table(rtwdev, rfe_def->phy_pg_tbl);
+ 	rtw_load_table(rtwdev, rfe_def->txpwr_lmt_tbl);
+ 	rtw_phy_tx_power_by_rate_config(hal);
+diff --git a/drivers/net/wireless/realtek/rtw88/phy.c b/drivers/net/wireless/realtek/rtw88/phy.c
+index 128e75a81bf3..37ef80c9091d 100644
+--- a/drivers/net/wireless/realtek/rtw88/phy.c
++++ b/drivers/net/wireless/realtek/rtw88/phy.c
+@@ -1761,12 +1761,15 @@ static void rtw_load_rfk_table(struct rtw_dev *rtwdev)
  
+ void rtw_phy_load_tables(struct rtw_dev *rtwdev)
+ {
++	const struct rtw_rfe_def *rfe_def = rtw_get_rfe_def(rtwdev);
+ 	const struct rtw_chip_info *chip = rtwdev->chip;
+ 	u8 rf_path;
+ 
+ 	rtw_load_table(rtwdev, chip->mac_tbl);
+ 	rtw_load_table(rtwdev, chip->bb_tbl);
+ 	rtw_load_table(rtwdev, chip->agc_tbl);
++	if (rfe_def->agc_btg_tbl)
++		rtw_load_table(rtwdev, rfe_def->agc_btg_tbl);
+ 	rtw_load_rfk_table(rtwdev);
+ 
+ 	for (rf_path = 0; rf_path < rtwdev->hal.rf_path_num; rf_path++) {
 -- 
 2.43.2
 
