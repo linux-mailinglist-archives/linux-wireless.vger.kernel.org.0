@@ -1,53 +1,53 @@
-Return-Path: <linux-wireless+bounces-4234-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4235-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39AF786C2CD
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 08:47:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC01A86C2CE
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 08:47:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A4DB0B25A70
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 07:47:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B9AF1C21639
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Feb 2024 07:47:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C283B481AC;
-	Thu, 29 Feb 2024 07:46:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 103AE46556;
+	Thu, 29 Feb 2024 07:46:43 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64B4647F53
-	for <linux-wireless@vger.kernel.org>; Thu, 29 Feb 2024 07:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17487481AD
+	for <linux-wireless@vger.kernel.org>; Thu, 29 Feb 2024 07:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709192799; cv=none; b=PvXw/gmzmCsomemdutEXthuG/TP356Ld2TMIcw1TmUcbD/qW0O0Zg5rlEhqXysZIJdk64FpkhMq2naExpN3wCmPu30AibFjHPy9QccSxVJn6kDWTCSaGMv41n8uQ59XRnxwUWtIgxAlimtDayhkszOS6LlHSmsTD6fmKi324fJI=
+	t=1709192803; cv=none; b=V2tWYFcCDmncmYGlrUBEltDMpIJxP9n+BHVnHpKQ43tI3nSY9z5hll7I7OVI69Smbubmanh67XcOeUKe3oPRnE23axEEkaUv9lv76k8Cx+atR7Y2SO3pjY0Mg5S8tBfluf3NGXVBBaIHbyt3/prZWcqTWJanwQOdlCXYry2Dnvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709192799; c=relaxed/simple;
-	bh=nxP/MZ8qUjhnShXg1SdEEjd56AV4D6ot4IcYe8Ub7Uc=;
+	s=arc-20240116; t=1709192803; c=relaxed/simple;
+	bh=7Q76NB9Ehx+Nb1BSG5SQ5hNB93S4Du8PSRRi2jGPApE=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RM1NPXuABDWivU318xauler6pf4O/uCvpz58z8c/H5dgIhwYOAv4GDvat4w7fLffoyKI53Yeegqq3nNS5pHN2fQbIm+A2LBqTPy0jkhTrQcSuKjeHPNuE/169+IhNusxrVEtY0UadeT4i5nSQSY2TGPLtJhtkp41PFn+CVn/mDc=
+	 MIME-Version:Content-Type; b=YpgDfyjHxGsfcFeThIsF9orgmF76lLpf/VVckYYH2YPJqtRvWwfIhADe2LElzeiKNp8pf8N/BoExX4kH5q/OQVZO1tN5K8jv3bPHw9kRbhnVeOxGzLtgceA/NUpA7ZCQ17mAjxVIXw6YL4L9BGxyh386JP9YLkYJVWztQT+HAdc=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 41T7kUSG11229851, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 41T7kUSG11229851
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 41T7kYvrD1229906, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 41T7kYvrD1229906
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 29 Feb 2024 15:46:30 +0800
+	Thu, 29 Feb 2024 15:46:34 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.17; Thu, 29 Feb 2024 15:46:31 +0800
+ 15.1.2375.32; Thu, 29 Feb 2024 15:46:35 +0800
 Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 29 Feb
- 2024 15:46:30 +0800
+ 2024 15:46:35 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <kvalo@kernel.org>
 CC: <ku920601@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 5/8] wifi: rtw89: coex: Reorder H2C command index to align with firmware
-Date: Thu, 29 Feb 2024 15:45:11 +0800
-Message-ID: <20240229074514.219276-6-pkshih@realtek.com>
+Subject: [PATCH 6/8] wifi: rtw89: coex: add return value to ensure H2C command is success or not
+Date: Thu, 29 Feb 2024 15:45:12 +0800
+Message-ID: <20240229074514.219276-7-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240229074514.219276-1-pkshih@realtek.com>
 References: <20240229074514.219276-1-pkshih@realtek.com>
@@ -61,412 +61,170 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
 From: Ching-Te Ku <ku920601@realtek.com>
 
-Wi-Fi firmware need some driver information to do decision or do some
-real-time control. Driver will update these information by H2C command.
-The chip 8922a H2C command index is different from before chips/branch,
-so need to assign the correct index to let firmware parsing.
+Add return value to H2C function, and only record down the value while
+H2C command success, this can help us to check the real time status.
 
 Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/coex.c | 53 ++++++++++++++---------
- drivers/net/wireless/realtek/rtw89/core.h |  1 +
- drivers/net/wireless/realtek/rtw89/fw.c   | 36 +++++++--------
- drivers/net/wireless/realtek/rtw89/fw.h   | 30 ++++++++-----
- 4 files changed, 72 insertions(+), 48 deletions(-)
+ drivers/net/wireless/realtek/rtw89/coex.c | 52 ++++++++++++++---------
+ drivers/net/wireless/realtek/rtw89/coex.h |  2 +
+ 2 files changed, 34 insertions(+), 20 deletions(-)
 
 diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wireless/realtek/rtw89/coex.c
-index ee658d3bea78..c270d0c26c00 100644
+index c270d0c26c00..c74b1b6be2d3 100644
 --- a/drivers/net/wireless/realtek/rtw89/coex.c
 +++ b/drivers/net/wireless/realtek/rtw89/coex.c
-@@ -134,70 +134,70 @@ static const struct rtw89_btc_ver rtw89_btc_ver_defs[] = {
- 	 .fcxstep = 7,   .fcxnullsta = 7, .fcxmreg = 7,  .fcxgpiodbg = 7,
- 	 .fcxbtver = 7,  .fcxbtscan = 7,  .fcxbtafh = 7, .fcxbtdevinfo = 7,
- 	 .fwlrole = 2,   .frptmap = 7,    .fcxctrl = 7,  .fcxinit = 7,
--	 .info_buf = 1800, .max_role_num = 6,
-+	 .drvinfo_type = 1, .info_buf = 1800, .max_role_num = 6,
- 	},
- 	{RTL8851B, RTW89_FW_VER_CODE(0, 29, 29, 0),
- 	 .fcxbtcrpt = 105, .fcxtdma = 3,    .fcxslots = 1, .fcxcysta = 5,
- 	 .fcxstep = 3,   .fcxnullsta = 2, .fcxmreg = 2,  .fcxgpiodbg = 1,
- 	 .fcxbtver = 1,  .fcxbtscan = 2,  .fcxbtafh = 2, .fcxbtdevinfo = 1,
- 	 .fwlrole = 2,   .frptmap = 3,    .fcxctrl = 1,  .fcxinit = 0,
--	 .info_buf = 1800, .max_role_num = 6,
-+	 .drvinfo_type = 0, .info_buf = 1800, .max_role_num = 6,
- 	},
- 	{RTL8852C, RTW89_FW_VER_CODE(0, 27, 57, 0),
- 	 .fcxbtcrpt = 4, .fcxtdma = 3,    .fcxslots = 1, .fcxcysta = 3,
- 	 .fcxstep = 3,   .fcxnullsta = 2, .fcxmreg = 1,  .fcxgpiodbg = 1,
- 	 .fcxbtver = 1,  .fcxbtscan = 1,  .fcxbtafh = 2, .fcxbtdevinfo = 1,
- 	 .fwlrole = 1,   .frptmap = 3,    .fcxctrl = 1,  .fcxinit = 0,
--	 .info_buf = 1280, .max_role_num = 5,
-+	 .drvinfo_type = 0, .info_buf = 1280, .max_role_num = 5,
- 	},
- 	{RTL8852C, RTW89_FW_VER_CODE(0, 27, 42, 0),
- 	 .fcxbtcrpt = 4, .fcxtdma = 3,    .fcxslots = 1, .fcxcysta = 3,
- 	 .fcxstep = 3,   .fcxnullsta = 2, .fcxmreg = 1,  .fcxgpiodbg = 1,
- 	 .fcxbtver = 1,  .fcxbtscan = 1,  .fcxbtafh = 2, .fcxbtdevinfo = 1,
- 	 .fwlrole = 1,   .frptmap = 2,    .fcxctrl = 1,  .fcxinit = 0,
--	 .info_buf = 1280, .max_role_num = 5,
-+	 .drvinfo_type = 0, .info_buf = 1280, .max_role_num = 5,
- 	},
- 	{RTL8852C, RTW89_FW_VER_CODE(0, 27, 0, 0),
- 	 .fcxbtcrpt = 4, .fcxtdma = 3,    .fcxslots = 1, .fcxcysta = 3,
- 	 .fcxstep = 3,   .fcxnullsta = 2, .fcxmreg = 1,  .fcxgpiodbg = 1,
- 	 .fcxbtver = 1,  .fcxbtscan = 1,  .fcxbtafh = 1, .fcxbtdevinfo = 1,
- 	 .fwlrole = 1,   .frptmap = 2,    .fcxctrl = 1,  .fcxinit = 0,
--	 .info_buf = 1280, .max_role_num = 5,
-+	 .drvinfo_type = 0, .info_buf = 1280, .max_role_num = 5,
- 	},
- 	{RTL8852B, RTW89_FW_VER_CODE(0, 29, 29, 0),
- 	 .fcxbtcrpt = 105, .fcxtdma = 3,  .fcxslots = 1, .fcxcysta = 5,
- 	 .fcxstep = 3,   .fcxnullsta = 2, .fcxmreg = 2,  .fcxgpiodbg = 1,
- 	 .fcxbtver = 1,  .fcxbtscan = 2,  .fcxbtafh = 2, .fcxbtdevinfo = 1,
- 	 .fwlrole = 2,   .frptmap = 3,    .fcxctrl = 1,  .fcxinit = 0,
--	 .info_buf = 1800, .max_role_num = 6,
-+	 .drvinfo_type = 0, .info_buf = 1800, .max_role_num = 6,
- 	},
- 	{RTL8852B, RTW89_FW_VER_CODE(0, 29, 14, 0),
- 	 .fcxbtcrpt = 5, .fcxtdma = 3,    .fcxslots = 1, .fcxcysta = 4,
- 	 .fcxstep = 3,   .fcxnullsta = 2, .fcxmreg = 1,  .fcxgpiodbg = 1,
- 	 .fcxbtver = 1,  .fcxbtscan = 1,  .fcxbtafh = 2, .fcxbtdevinfo = 1,
- 	 .fwlrole = 1,   .frptmap = 3,    .fcxctrl = 1,  .fcxinit = 0,
--	 .info_buf = 1800, .max_role_num = 6,
-+	 .drvinfo_type = 0, .info_buf = 1800, .max_role_num = 6,
- 	},
- 	{RTL8852B, RTW89_FW_VER_CODE(0, 27, 0, 0),
- 	 .fcxbtcrpt = 4, .fcxtdma = 3,    .fcxslots = 1, .fcxcysta = 3,
- 	 .fcxstep = 3,   .fcxnullsta = 2, .fcxmreg = 1,  .fcxgpiodbg = 1,
- 	 .fcxbtver = 1,  .fcxbtscan = 1,  .fcxbtafh = 1, .fcxbtdevinfo = 1,
- 	 .fwlrole = 1,   .frptmap = 1,    .fcxctrl = 1,  .fcxinit = 0,
--	 .info_buf = 1280, .max_role_num = 5,
-+	 .drvinfo_type = 0, .info_buf = 1280, .max_role_num = 5,
- 	},
- 	{RTL8852A, RTW89_FW_VER_CODE(0, 13, 37, 0),
- 	 .fcxbtcrpt = 4, .fcxtdma = 3,    .fcxslots = 1, .fcxcysta = 3,
- 	 .fcxstep = 3,   .fcxnullsta = 2, .fcxmreg = 1,  .fcxgpiodbg = 1,
- 	 .fcxbtver = 1,  .fcxbtscan = 1,  .fcxbtafh = 2, .fcxbtdevinfo = 1,
- 	 .fwlrole = 1,   .frptmap = 3,    .fcxctrl = 1,  .fcxinit = 0,
--	 .info_buf = 1280, .max_role_num = 5,
-+	 .drvinfo_type = 0, .info_buf = 1280, .max_role_num = 5,
- 	},
- 	{RTL8852A, RTW89_FW_VER_CODE(0, 13, 0, 0),
- 	 .fcxbtcrpt = 1, .fcxtdma = 1,    .fcxslots = 1, .fcxcysta = 2,
- 	 .fcxstep = 2,   .fcxnullsta = 1, .fcxmreg = 1,  .fcxgpiodbg = 1,
- 	 .fcxbtver = 1,  .fcxbtscan = 1,  .fcxbtafh = 1, .fcxbtdevinfo = 1,
- 	 .fwlrole = 0,   .frptmap = 0,    .fcxctrl = 0,  .fcxinit = 0,
--	 .info_buf = 1024, .max_role_num = 5,
-+	 .drvinfo_type = 0, .info_buf = 1024, .max_role_num = 5,
- 	},
+@@ -683,20 +683,25 @@ static void _run_coex(struct rtw89_dev *rtwdev,
+ static void _write_scbd(struct rtw89_dev *rtwdev, u32 val, bool state);
+ static void _update_bt_scbd(struct rtw89_dev *rtwdev, bool only_update);
  
- 	/* keep it to be the last as default entry */
-@@ -206,7 +206,7 @@ static const struct rtw89_btc_ver rtw89_btc_ver_defs[] = {
- 	 .fcxstep = 2,   .fcxnullsta = 1, .fcxmreg = 1,  .fcxgpiodbg = 1,
- 	 .fcxbtver = 1,  .fcxbtscan = 1,  .fcxbtafh = 1, .fcxbtdevinfo = 1,
- 	 .fwlrole = 0,   .frptmap = 0,    .fcxctrl = 0,  .fcxinit = 0,
--	 .info_buf = 1024, .max_role_num = 5,
-+	 .drvinfo_type = 0, .info_buf = 1024, .max_role_num = 5,
- 	},
- };
+-static void _send_fw_cmd(struct rtw89_dev *rtwdev, u8 h2c_class, u8 h2c_func,
+-			 void *param, u16 len)
++static int _send_fw_cmd(struct rtw89_dev *rtwdev, u8 h2c_class, u8 h2c_func,
++			void *param, u16 len)
+ {
+ 	struct rtw89_btc *btc = &rtwdev->btc;
+ 	struct rtw89_btc_btf_fwinfo *pfwinfo = &btc->fwinfo;
+ 	struct rtw89_btc_cx *cx = &btc->cx;
+ 	struct rtw89_btc_wl_info *wl = &cx->wl;
++	struct rtw89_btc_dm *dm = &btc->dm;
+ 	int ret;
  
-@@ -2102,25 +2102,31 @@ static void _fw_set_drv_info(struct rtw89_dev *rtwdev, u8 type)
- 	switch (type) {
- 	case CXDRVINFO_INIT:
- 		if (ver->fcxinit == 7)
--			rtw89_fw_h2c_cxdrv_init_v7(rtwdev);
-+			rtw89_fw_h2c_cxdrv_init_v7(rtwdev, type);
- 		else
--			rtw89_fw_h2c_cxdrv_init(rtwdev);
-+			rtw89_fw_h2c_cxdrv_init(rtwdev, type);
- 		break;
- 	case CXDRVINFO_ROLE:
- 		if (ver->fwlrole == 0)
--			rtw89_fw_h2c_cxdrv_role(rtwdev);
-+			rtw89_fw_h2c_cxdrv_role(rtwdev, type);
- 		else if (ver->fwlrole == 1)
--			rtw89_fw_h2c_cxdrv_role_v1(rtwdev);
-+			rtw89_fw_h2c_cxdrv_role_v1(rtwdev, type);
- 		else if (ver->fwlrole == 2)
--			rtw89_fw_h2c_cxdrv_role_v2(rtwdev);
-+			rtw89_fw_h2c_cxdrv_role_v2(rtwdev, type);
- 		break;
- 	case CXDRVINFO_CTRL:
-+		if (ver->drvinfo_type == 1)
-+			type = 2;
-+
- 		if (ver->fcxctrl == 7)
--			rtw89_fw_h2c_cxdrv_ctrl_v7(rtwdev);
-+			rtw89_fw_h2c_cxdrv_ctrl_v7(rtwdev, type);
- 		else
--			rtw89_fw_h2c_cxdrv_ctrl(rtwdev);
-+			rtw89_fw_h2c_cxdrv_ctrl(rtwdev, type);
- 		break;
- 	case CXDRVINFO_TRX:
-+		if (ver->drvinfo_type == 1)
-+			type = 3;
-+
- 		dm->trx_info.tx_power = u32_get_bits(rf_para.wl_tx_power,
- 						     RTW89_BTC_WL_DEF_TX_PWR);
- 		dm->trx_info.rx_gain = u32_get_bits(rf_para.wl_rx_gain,
-@@ -2131,11 +2137,18 @@ static void _fw_set_drv_info(struct rtw89_dev *rtwdev, u8 type)
- 						       RTW89_BTC_WL_DEF_TX_PWR);
- 		dm->trx_info.cn = wl->cn_report;
- 		dm->trx_info.nhm = wl->nhm.pwr;
--		rtw89_fw_h2c_cxdrv_trx(rtwdev);
-+		rtw89_fw_h2c_cxdrv_trx(rtwdev, type);
- 		break;
- 	case CXDRVINFO_RFK:
--		rtw89_fw_h2c_cxdrv_rfk(rtwdev);
-+		if (ver->drvinfo_type == 1)
-+			return;
-+
-+		rtw89_fw_h2c_cxdrv_rfk(rtwdev, type);
- 		break;
-+	case CXDRVINFO_TXPWR:
-+	case CXDRVINFO_FDDT:
-+	case CXDRVINFO_MLO:
-+	case CXDRVINFO_OSI:
- 	default:
- 		break;
+-	if (!wl->status.map.init_ok) {
++	if (len > BTC_H2C_MAXLEN || len == 0) {
++		btc->fwinfo.cnt_h2c_fail++;
++		dm->error.map.h2c_buffer_over = true;
++		return -EINVAL;
++	} else if (!wl->status.map.init_ok) {
+ 		rtw89_debug(rtwdev, RTW89_DBG_BTC,
+ 			    "[BTC], %s(): return by btc not init!!\n", __func__);
+ 		pfwinfo->cnt_h2c_fail++;
+-		return;
++		return -EINVAL;
+ 	} else if ((wl->status.map.rf_off_pre == BTC_LPS_RF_OFF &&
+ 		    wl->status.map.rf_off == BTC_LPS_RF_OFF) ||
+ 		   (wl->status.map.lps_pre == BTC_LPS_RF_OFF &&
+@@ -704,15 +709,17 @@ static void _send_fw_cmd(struct rtw89_dev *rtwdev, u8 h2c_class, u8 h2c_func,
+ 		rtw89_debug(rtwdev, RTW89_DBG_BTC,
+ 			    "[BTC], %s(): return by wl off!!\n", __func__);
+ 		pfwinfo->cnt_h2c_fail++;
+-		return;
++		return -EINVAL;
  	}
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 91a8f62dc70a..7957b7b9e4c7 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -2791,6 +2791,7 @@ struct rtw89_btc_ver {
- 	u8 fcxctrl;
- 	u8 fcxinit;
  
-+	u8 drvinfo_type;
- 	u16 info_buf;
- 	u8 max_role_num;
- };
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 4c607c8b4d15..185cd339c085 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -3753,7 +3753,7 @@ int rtw89_fw_h2c_ra(struct rtw89_dev *rtwdev, struct rtw89_ra_info *ra, bool csi
- 	return ret;
+-	pfwinfo->cnt_h2c++;
+-
+ 	ret = rtw89_fw_h2c_raw_with_hdr(rtwdev, h2c_class, h2c_func, param, len,
+ 					false, true);
+-	if (ret != 0)
++	if (ret)
+ 		pfwinfo->cnt_h2c_fail++;
++	else
++		pfwinfo->cnt_h2c++;
++
++	return ret;
  }
  
--int rtw89_fw_h2c_cxdrv_init(struct rtw89_dev *rtwdev)
-+int rtw89_fw_h2c_cxdrv_init(struct rtw89_dev *rtwdev, u8 type)
+ static void _reset_btc_var(struct rtw89_dev *rtwdev, u8 type)
+@@ -1938,6 +1945,7 @@ static void rtw89_btc_fw_en_rpt(struct rtw89_dev *rtwdev,
+ 	struct rtw89_btc_btf_fwinfo *fwinfo = &btc->fwinfo;
+ 	struct rtw89_btc_btf_set_report r = {0};
+ 	u32 val, bit_map;
++	int ret;
+ 
+ 	if ((wl_smap->rf_off || wl_smap->lps != BTC_LPS_OFF) && rpt_state != 0)
+ 		return;
+@@ -1956,13 +1964,13 @@ static void rtw89_btc_fw_en_rpt(struct rtw89_dev *rtwdev,
+ 	if (val == fwinfo->rpt_en_map)
+ 		return;
+ 
+-	fwinfo->rpt_en_map = val;
+-
+ 	r.fver = BTF_SET_REPORT_VER;
+ 	r.enable = cpu_to_le32(val);
+ 	r.para = cpu_to_le32(rpt_state);
+ 
+-	_send_fw_cmd(rtwdev, BTFC_SET, SET_REPORT_EN, &r, sizeof(r));
++	ret = _send_fw_cmd(rtwdev, BTFC_SET, SET_REPORT_EN, &r, sizeof(r));
++	if (!ret)
++		fwinfo->rpt_en_map = val;
+ }
+ 
+ static void rtw89_btc_fw_set_slots(struct rtw89_dev *rtwdev, u8 num,
+@@ -2050,6 +2058,7 @@ static void _fw_set_policy(struct rtw89_dev *rtwdev, u16 policy_type,
  {
  	struct rtw89_btc *btc = &rtwdev->btc;
  	struct rtw89_btc_dm *dm = &btc->dm;
-@@ -3773,7 +3773,7 @@ int rtw89_fw_h2c_cxdrv_init(struct rtw89_dev *rtwdev)
- 	skb_put(skb, len);
- 	h2c = (struct rtw89_h2c_cxinit *)skb->data;
++	int ret;
  
--	h2c->hdr.type = CXDRVINFO_INIT;
-+	h2c->hdr.type = type;
- 	h2c->hdr.len = len - H2C_LEN_CXDRVHDR;
+ 	dm->run_action = action;
  
- 	h2c->ant_type = ant->type;
-@@ -3820,7 +3820,7 @@ int rtw89_fw_h2c_cxdrv_init(struct rtw89_dev *rtwdev)
- 	return ret;
+@@ -2078,11 +2087,12 @@ static void _fw_set_policy(struct rtw89_dev *rtwdev, u16 policy_type,
+ 	if (btc->lps == 1)
+ 		rtw89_set_coex_ctrl_lps(rtwdev, btc->lps);
+ 
+-	_send_fw_cmd(rtwdev, BTFC_SET, SET_CX_POLICY,
+-		     btc->policy, btc->policy_len);
+-
+-	memcpy(&dm->tdma_now, &dm->tdma, sizeof(dm->tdma_now));
+-	memcpy(&dm->slot_now, &dm->slot, sizeof(dm->slot_now));
++	ret = _send_fw_cmd(rtwdev, BTFC_SET, SET_CX_POLICY,
++			   btc->policy, btc->policy_len);
++	if (!ret) {
++		memcpy(&dm->tdma_now, &dm->tdma, sizeof(dm->tdma_now));
++		memcpy(&dm->slot_now, &dm->slot, sizeof(dm->slot_now));
++	}
+ 
+ 	if (btc->update_policy_force)
+ 		btc->update_policy_force = false;
+@@ -2298,20 +2308,22 @@ static void _set_bt_tx_power(struct rtw89_dev *rtwdev, u8 level)
+ {
+ 	struct rtw89_btc *btc = &rtwdev->btc;
+ 	struct rtw89_btc_bt_info *bt = &btc->cx.bt;
++	int ret;
+ 	u8 buf;
+ 
+ 	if (bt->rf_para.tx_pwr_freerun == level)
+ 		return;
+ 
+-	bt->rf_para.tx_pwr_freerun = level;
+-	btc->dm.rf_trx_para.bt_tx_power = level;
+-
+ 	rtw89_debug(rtwdev, RTW89_DBG_BTC,
+ 		    "[BTC], %s(): level = %d\n",
+ 		    __func__, level);
+ 
+ 	buf = (s8)(-level);
+-	_send_fw_cmd(rtwdev, BTFC_SET, SET_BT_TX_PWR, &buf, 1);
++	ret = _send_fw_cmd(rtwdev, BTFC_SET, SET_BT_TX_PWR, &buf, 1);
++	if (!ret) {
++		bt->rf_para.tx_pwr_freerun = level;
++		btc->dm.rf_trx_para.bt_tx_power = level;
++	}
  }
  
--int rtw89_fw_h2c_cxdrv_init_v7(struct rtw89_dev *rtwdev)
-+int rtw89_fw_h2c_cxdrv_init_v7(struct rtw89_dev *rtwdev, u8 type)
- {
- 	struct rtw89_btc *btc = &rtwdev->btc;
- 	struct rtw89_btc_dm *dm = &btc->dm;
-@@ -3838,7 +3838,7 @@ int rtw89_fw_h2c_cxdrv_init_v7(struct rtw89_dev *rtwdev)
- 	skb_put(skb, len);
- 	h2c = (struct rtw89_h2c_cxinit_v7 *)skb->data;
+ #define BTC_BT_RX_NORMAL_LVL 7
+diff --git a/drivers/net/wireless/realtek/rtw89/coex.h b/drivers/net/wireless/realtek/rtw89/coex.h
+index dd9707b4a6d4..13303830684e 100644
+--- a/drivers/net/wireless/realtek/rtw89/coex.h
++++ b/drivers/net/wireless/realtek/rtw89/coex.h
+@@ -7,6 +7,8 @@
  
--	h2c->hdr.type = CXDRVINFO_INIT;
-+	h2c->hdr.type = type;
- 	h2c->hdr.ver = btc->ver->fcxinit;
- 	h2c->hdr.len = len - H2C_LEN_CXDRVHDR_V7;
- 	h2c->init = *init_info;
-@@ -3866,7 +3866,7 @@ int rtw89_fw_h2c_cxdrv_init_v7(struct rtw89_dev *rtwdev)
- #define H2C_LEN_CXDRVINFO_ROLE_SIZE(max_role_num) \
- 	(4 + 12 * (max_role_num) + H2C_LEN_CXDRVHDR)
+ #include "core.h"
  
--int rtw89_fw_h2c_cxdrv_role(struct rtw89_dev *rtwdev)
-+int rtw89_fw_h2c_cxdrv_role(struct rtw89_dev *rtwdev, u8 type)
- {
- 	struct rtw89_btc *btc = &rtwdev->btc;
- 	const struct rtw89_btc_ver *ver = btc->ver;
-@@ -3891,7 +3891,7 @@ int rtw89_fw_h2c_cxdrv_role(struct rtw89_dev *rtwdev)
- 	skb_put(skb, len);
- 	cmd = skb->data;
- 
--	RTW89_SET_FWCMD_CXHDR_TYPE(cmd, CXDRVINFO_ROLE);
-+	RTW89_SET_FWCMD_CXHDR_TYPE(cmd, type);
- 	RTW89_SET_FWCMD_CXHDR_LEN(cmd, len - H2C_LEN_CXDRVHDR);
- 
- 	RTW89_SET_FWCMD_CXROLE_CONNECT_CNT(cmd, role_info->connect_cnt);
-@@ -3947,7 +3947,7 @@ int rtw89_fw_h2c_cxdrv_role(struct rtw89_dev *rtwdev)
- #define H2C_LEN_CXDRVINFO_ROLE_SIZE_V1(max_role_num) \
- 	(4 + 16 * (max_role_num) + H2C_LEN_CXDRVINFO_ROLE_DBCC_LEN + H2C_LEN_CXDRVHDR)
- 
--int rtw89_fw_h2c_cxdrv_role_v1(struct rtw89_dev *rtwdev)
-+int rtw89_fw_h2c_cxdrv_role_v1(struct rtw89_dev *rtwdev, u8 type)
- {
- 	struct rtw89_btc *btc = &rtwdev->btc;
- 	const struct rtw89_btc_ver *ver = btc->ver;
-@@ -3971,7 +3971,7 @@ int rtw89_fw_h2c_cxdrv_role_v1(struct rtw89_dev *rtwdev)
- 	skb_put(skb, len);
- 	cmd = skb->data;
- 
--	RTW89_SET_FWCMD_CXHDR_TYPE(cmd, CXDRVINFO_ROLE);
-+	RTW89_SET_FWCMD_CXHDR_TYPE(cmd, type);
- 	RTW89_SET_FWCMD_CXHDR_LEN(cmd, len - H2C_LEN_CXDRVHDR);
- 
- 	RTW89_SET_FWCMD_CXROLE_CONNECT_CNT(cmd, role_info->connect_cnt);
-@@ -4037,7 +4037,7 @@ int rtw89_fw_h2c_cxdrv_role_v1(struct rtw89_dev *rtwdev)
- #define H2C_LEN_CXDRVINFO_ROLE_SIZE_V2(max_role_num) \
- 	(4 + 8 * (max_role_num) + H2C_LEN_CXDRVINFO_ROLE_DBCC_LEN + H2C_LEN_CXDRVHDR)
- 
--int rtw89_fw_h2c_cxdrv_role_v2(struct rtw89_dev *rtwdev)
-+int rtw89_fw_h2c_cxdrv_role_v2(struct rtw89_dev *rtwdev, u8 type)
- {
- 	struct rtw89_btc *btc = &rtwdev->btc;
- 	const struct rtw89_btc_ver *ver = btc->ver;
-@@ -4061,7 +4061,7 @@ int rtw89_fw_h2c_cxdrv_role_v2(struct rtw89_dev *rtwdev)
- 	skb_put(skb, len);
- 	cmd = skb->data;
- 
--	RTW89_SET_FWCMD_CXHDR_TYPE(cmd, CXDRVINFO_ROLE);
-+	RTW89_SET_FWCMD_CXHDR_TYPE(cmd, type);
- 	RTW89_SET_FWCMD_CXHDR_LEN(cmd, len - H2C_LEN_CXDRVHDR);
- 
- 	RTW89_SET_FWCMD_CXROLE_CONNECT_CNT(cmd, role_info->connect_cnt);
-@@ -4121,7 +4121,7 @@ int rtw89_fw_h2c_cxdrv_role_v2(struct rtw89_dev *rtwdev)
- }
- 
- #define H2C_LEN_CXDRVINFO_CTRL (4 + H2C_LEN_CXDRVHDR)
--int rtw89_fw_h2c_cxdrv_ctrl(struct rtw89_dev *rtwdev)
-+int rtw89_fw_h2c_cxdrv_ctrl(struct rtw89_dev *rtwdev, u8 type)
- {
- 	struct rtw89_btc *btc = &rtwdev->btc;
- 	const struct rtw89_btc_ver *ver = btc->ver;
-@@ -4138,7 +4138,7 @@ int rtw89_fw_h2c_cxdrv_ctrl(struct rtw89_dev *rtwdev)
- 	skb_put(skb, H2C_LEN_CXDRVINFO_CTRL);
- 	cmd = skb->data;
- 
--	RTW89_SET_FWCMD_CXHDR_TYPE(cmd, CXDRVINFO_CTRL);
-+	RTW89_SET_FWCMD_CXHDR_TYPE(cmd, type);
- 	RTW89_SET_FWCMD_CXHDR_LEN(cmd, H2C_LEN_CXDRVINFO_CTRL - H2C_LEN_CXDRVHDR);
- 
- 	RTW89_SET_FWCMD_CXCTRL_MANUAL(cmd, ctrl->manual);
-@@ -4165,7 +4165,7 @@ int rtw89_fw_h2c_cxdrv_ctrl(struct rtw89_dev *rtwdev)
- 	return ret;
- }
- 
--int rtw89_fw_h2c_cxdrv_ctrl_v7(struct rtw89_dev *rtwdev)
-+int rtw89_fw_h2c_cxdrv_ctrl_v7(struct rtw89_dev *rtwdev, u8 type)
- {
- 	struct rtw89_btc *btc = &rtwdev->btc;
- 	struct rtw89_btc_ctrl_v7 *ctrl = &btc->ctrl.ctrl_v7;
-@@ -4182,7 +4182,7 @@ int rtw89_fw_h2c_cxdrv_ctrl_v7(struct rtw89_dev *rtwdev)
- 	skb_put(skb, len);
- 	h2c = (struct rtw89_h2c_cxctrl_v7 *)skb->data;
- 
--	h2c->hdr.type = CXDRVINFO_INIT;
-+	h2c->hdr.type = type;
- 	h2c->hdr.ver = btc->ver->fcxctrl;
- 	h2c->hdr.len = sizeof(*h2c) - H2C_LEN_CXDRVHDR_V7;
- 	h2c->ctrl = *ctrl;
-@@ -4205,7 +4205,7 @@ int rtw89_fw_h2c_cxdrv_ctrl_v7(struct rtw89_dev *rtwdev)
- }
- 
- #define H2C_LEN_CXDRVINFO_TRX (28 + H2C_LEN_CXDRVHDR)
--int rtw89_fw_h2c_cxdrv_trx(struct rtw89_dev *rtwdev)
-+int rtw89_fw_h2c_cxdrv_trx(struct rtw89_dev *rtwdev, u8 type)
- {
- 	struct rtw89_btc *btc = &rtwdev->btc;
- 	struct rtw89_btc_trx_info *trx = &btc->dm.trx_info;
-@@ -4221,7 +4221,7 @@ int rtw89_fw_h2c_cxdrv_trx(struct rtw89_dev *rtwdev)
- 	skb_put(skb, H2C_LEN_CXDRVINFO_TRX);
- 	cmd = skb->data;
- 
--	RTW89_SET_FWCMD_CXHDR_TYPE(cmd, CXDRVINFO_TRX);
-+	RTW89_SET_FWCMD_CXHDR_TYPE(cmd, type);
- 	RTW89_SET_FWCMD_CXHDR_LEN(cmd, H2C_LEN_CXDRVINFO_TRX - H2C_LEN_CXDRVHDR);
- 
- 	RTW89_SET_FWCMD_CXTRX_TXLV(cmd, trx->tx_lvl);
-@@ -4261,7 +4261,7 @@ int rtw89_fw_h2c_cxdrv_trx(struct rtw89_dev *rtwdev)
- }
- 
- #define H2C_LEN_CXDRVINFO_RFK (4 + H2C_LEN_CXDRVHDR)
--int rtw89_fw_h2c_cxdrv_rfk(struct rtw89_dev *rtwdev)
-+int rtw89_fw_h2c_cxdrv_rfk(struct rtw89_dev *rtwdev, u8 type)
- {
- 	struct rtw89_btc *btc = &rtwdev->btc;
- 	struct rtw89_btc_wl_info *wl = &btc->cx.wl;
-@@ -4278,7 +4278,7 @@ int rtw89_fw_h2c_cxdrv_rfk(struct rtw89_dev *rtwdev)
- 	skb_put(skb, H2C_LEN_CXDRVINFO_RFK);
- 	cmd = skb->data;
- 
--	RTW89_SET_FWCMD_CXHDR_TYPE(cmd, CXDRVINFO_RFK);
-+	RTW89_SET_FWCMD_CXHDR_TYPE(cmd, type);
- 	RTW89_SET_FWCMD_CXHDR_LEN(cmd, H2C_LEN_CXDRVINFO_RFK - H2C_LEN_CXDRVHDR);
- 
- 	RTW89_SET_FWCMD_CXRFK_STATE(cmd, rfk_info->state);
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
-index 51087fa3bc0d..6993451a6ef9 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.h
-+++ b/drivers/net/wireless/realtek/rtw89/fw.h
-@@ -2324,9 +2324,15 @@ enum rtw89_btc_btf_set {
- 	SET_BT_IGNORE_WLAN_ACT,
- 	SET_BT_TX_PWR,
- 	SET_BT_LNA_CONSTRAIN,
--	SET_BT_GOLDEN_RX_RANGE,
-+	SET_BT_QUERY_DEV_LIST,
-+	SET_BT_QUERY_DEV_INFO,
- 	SET_BT_PSD_REPORT,
- 	SET_H2C_TEST,
-+	SET_IOFLD_RF,
-+	SET_IOFLD_BB,
-+	SET_IOFLD_MAC,
-+	SET_IOFLD_SCBD,
-+	SET_H2C_MACRO,
- 	SET_MAX1,
- };
- 
-@@ -2340,6 +2346,10 @@ enum rtw89_btc_cxdrvinfo {
- 	CXDRVINFO_CTRL,
- 	CXDRVINFO_SCAN,
- 	CXDRVINFO_TRX,  /* WL traffic to WL fw */
-+	CXDRVINFO_TXPWR,
-+	CXDRVINFO_FDDT,
-+	CXDRVINFO_MLO,
-+	CXDRVINFO_OSI,
- 	CXDRVINFO_MAX,
- };
- 
-@@ -4548,15 +4558,15 @@ int rtw89_fw_h2c_rssi_offload(struct rtw89_dev *rtwdev,
- 			      struct rtw89_rx_phy_ppdu *phy_ppdu);
- int rtw89_fw_h2c_tp_offload(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif);
- int rtw89_fw_h2c_ra(struct rtw89_dev *rtwdev, struct rtw89_ra_info *ra, bool csi);
--int rtw89_fw_h2c_cxdrv_init(struct rtw89_dev *rtwdev);
--int rtw89_fw_h2c_cxdrv_init_v7(struct rtw89_dev *rtwdev);
--int rtw89_fw_h2c_cxdrv_role(struct rtw89_dev *rtwdev);
--int rtw89_fw_h2c_cxdrv_role_v1(struct rtw89_dev *rtwdev);
--int rtw89_fw_h2c_cxdrv_role_v2(struct rtw89_dev *rtwdev);
--int rtw89_fw_h2c_cxdrv_ctrl(struct rtw89_dev *rtwdev);
--int rtw89_fw_h2c_cxdrv_ctrl_v7(struct rtw89_dev *rtwdev);
--int rtw89_fw_h2c_cxdrv_trx(struct rtw89_dev *rtwdev);
--int rtw89_fw_h2c_cxdrv_rfk(struct rtw89_dev *rtwdev);
-+int rtw89_fw_h2c_cxdrv_init(struct rtw89_dev *rtwdev, u8 type);
-+int rtw89_fw_h2c_cxdrv_init_v7(struct rtw89_dev *rtwdev, u8 type);
-+int rtw89_fw_h2c_cxdrv_role(struct rtw89_dev *rtwdev, u8 type);
-+int rtw89_fw_h2c_cxdrv_role_v1(struct rtw89_dev *rtwdev, u8 type);
-+int rtw89_fw_h2c_cxdrv_role_v2(struct rtw89_dev *rtwdev, u8 type);
-+int rtw89_fw_h2c_cxdrv_ctrl(struct rtw89_dev *rtwdev, u8 type);
-+int rtw89_fw_h2c_cxdrv_ctrl_v7(struct rtw89_dev *rtwdev, u8 type);
-+int rtw89_fw_h2c_cxdrv_trx(struct rtw89_dev *rtwdev, u8 type);
-+int rtw89_fw_h2c_cxdrv_rfk(struct rtw89_dev *rtwdev, u8 type);
- int rtw89_fw_h2c_del_pkt_offload(struct rtw89_dev *rtwdev, u8 id);
- int rtw89_fw_h2c_add_pkt_offload(struct rtw89_dev *rtwdev, u8 *id,
- 				 struct sk_buff *skb_ofld);
++#define BTC_H2C_MAXLEN 2020
++
+ enum btc_mode {
+ 	BTC_MODE_NORMAL,
+ 	BTC_MODE_WL,
 -- 
 2.25.1
 
