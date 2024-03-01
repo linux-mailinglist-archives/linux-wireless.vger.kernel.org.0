@@ -1,131 +1,125 @@
-Return-Path: <linux-wireless+bounces-4289-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4290-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C804686DAB8
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Mar 2024 05:36:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE54586DCA4
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Mar 2024 09:01:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 081C61C20CAB
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Mar 2024 04:36:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7855D2825E6
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Mar 2024 08:01:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE48246425;
-	Fri,  1 Mar 2024 04:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71A7169D09;
+	Fri,  1 Mar 2024 08:01:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NYXOROii"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6CF0405DB;
-	Fri,  1 Mar 2024 04:36:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 420A367E6C;
+	Fri,  1 Mar 2024 08:01:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709267797; cv=none; b=DMzdx+r34ksA462fXuoba67PY4FIkL2ezHbwQVUbai/v60xIgeOtN4/EDoNYfgzPivahrokXAc0OjA+Z1iBPnpUqvoT60uf7dwCNkmD4b/ErwwuESsJ8LNiPwl0g01f+e8+fll/4VNEISI5VFMssq4iP59E7SQn0m5rKXXRdGr0=
+	t=1709280083; cv=none; b=iEU6uWdnG4KLFdlf6q7nOEQV5EBILtazLZTe/SgWv8D+Z5a+M/0msBQV4raoQK1mVdCaS++Xe0wPXdBCVDIllpm7LARlS/jdx22F+lFNj3HLRxtNU5DFHTrO5niak1hiIJ12WYRKbLxUi1vBGQCyrxX56s2Gf/BCm7c6lnd48MA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709267797; c=relaxed/simple;
-	bh=wdCREJ/ERf9GMjaN03MmgOGKwhRWI9srDXXsfp4H4vU=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=KacBlezhe5owo/SdsxAd1l4hgvqHSvOuKYrCz19GrL+eybr9UB8jmTLO7CqXXUly+hKI7LtddXiVQzqeU6em+Z/7M/T4C6hhCbKnNyghgYeEqLghkYvP2/XXcwuf/dq6Rzsweact3gMgtWJx1sepzuxPPSgQMdawV/C/HRIZ5cY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4214a9Q011893683, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 4214a9Q011893683
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 1 Mar 2024 12:36:09 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.17; Fri, 1 Mar 2024 12:36:10 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Fri, 1 Mar 2024 12:36:08 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::c9b7:82a9:7e98:fa7f]) by
- RTEXMBS04.realtek.com.tw ([fe80::c9b7:82a9:7e98:fa7f%7]) with mapi id
- 15.01.2507.035; Fri, 1 Mar 2024 12:36:08 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Ping-Ke Shih <pkshih@realtek.com>, Fiona Klute <fiona.klute@gmx.de>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC: "kvalo@kernel.org" <kvalo@kernel.org>,
-        "ulf.hansson@linaro.org"
-	<ulf.hansson@linaro.org>,
-        "linux-mmc@vger.kernel.org"
-	<linux-mmc@vger.kernel.org>,
-        "pavel@ucw.cz" <pavel@ucw.cz>, "megi@xff.cz"
-	<megi@xff.cz>
-Subject: RE: [PATCH v2 5/9] wifi: rtw88: Add rtw8703b.c
-Thread-Topic: [PATCH v2 5/9] wifi: rtw88: Add rtw8703b.c
-Thread-Index: AQHaadh8n611UJm6iUqkDrqnT0K/C7EiKLcwgAAmtxA=
-Date: Fri, 1 Mar 2024 04:36:08 +0000
-Message-ID: <4fc45b4289d747dd80f76dcacef3c54d@realtek.com>
-References: <20240227235507.781615-1-fiona.klute@gmx.de>
- <20240227235507.781615-6-fiona.klute@gmx.de>
- <3805850d51334319984bc304ca1dc3c4@realtek.com>
-In-Reply-To: <3805850d51334319984bc304ca1dc3c4@realtek.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1709280083; c=relaxed/simple;
+	bh=jMRWjjBb3WoG96heiGE+SbBHlPWqedM9ZSLpfueiMU8=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=WxwVmu/dG9MKnzTmMBt4fBd+39N6m7SVf1bsD5FBZ2N0RMuLDlEvpNFaBdYHT45gY3PihYDMSx1hKlbIbcR6hPWjo34Xz71rXVv+Lm4aCQEd1oR3xvIU9GweDZc9qaDlljAS7YPRkmcDvRGi7R0UPWNqWGOoBM3v78D8L++06TU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NYXOROii; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06746C433C7;
+	Fri,  1 Mar 2024 08:01:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709280082;
+	bh=jMRWjjBb3WoG96heiGE+SbBHlPWqedM9ZSLpfueiMU8=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=NYXOROiiPwwVhYxx1fbNDxcpy1ncuwsxP3IJmfH3QY4e9lqXC5mcmHEFwLekftNje
+	 HdPvpXFl6MuYkRR+Dfj6GtbgTEKlYB9UH3l/RbRuSX/0okn+jTeVDtHyODc8LX/3Gd
+	 AMQelHir1f7Nh0yNghqmyI1UhM6pXRNUEqQPlumhjtthx8wh8D2LDcu0etWNaUhNnc
+	 h/PYPpr43thxVRBRjuPZ0DgbPuDlNfDGqOdclU4s6Ikxm3oOULyAMLohqdtohzALz/
+	 Yjb8O3lflw7vPwKeej6m09O5t2iFHNoHj8yLsi6swrrIwx6xZXLk/NUgtli0Yob3zp
+	 GbGLT+UfGyS7A==
+From: Kalle Valo <kvalo@kernel.org>
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: Jeff Johnson <quic_jjohnson@quicinc.com>,  "David S. Miller"
+ <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,  Jakub
+ Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>,  Rob Herring
+ <robh+dt@kernel.org>,  Krzysztof Kozlowski
+ <krzysztof.kozlowski+dt@linaro.org>,  Conor Dooley <conor+dt@kernel.org>,
+  Bjorn Andersson <andersson@kernel.org>,  Konrad Dybcio
+ <konrad.dybcio@linaro.org>,  ath10k@lists.infradead.org,
+  linux-wireless@vger.kernel.org,  netdev@vger.kernel.org,
+  devicetree@vger.kernel.org,  linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH RFC 2/4] wifi: ath10k: support board-specific firmware
+ overrides
+References: <20240130-wcn3990-firmware-path-v1-0-826b93202964@linaro.org>
+	<20240130-wcn3990-firmware-path-v1-2-826b93202964@linaro.org>
+Date: Fri, 01 Mar 2024 10:01:17 +0200
+In-Reply-To: <20240130-wcn3990-firmware-path-v1-2-826b93202964@linaro.org>
+	(Dmitry Baryshkov's message of "Tue, 30 Jan 2024 18:38:38 +0200")
+Message-ID: <87h6hq8joy.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain
 
+Dmitry Baryshkov <dmitry.baryshkov@linaro.org> writes:
 
+> Different Qualcomm platforms using WCN3990 WiFI chip use SoC-specific
+> firmware versions with different features. For example firmware for
+> SDM845 doesn't use single-chan-info-per-channel feature, while firmware
+> for QRB2210 / QRB4210 requires that feature. Allow board DT files to
+> override the subdir of the fw dir used to lookup the firmware-N.bin file
+> decribing corresponding WiFi firmware.
+>
+> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-> -----Original Message-----
-> From: Ping-Ke Shih <pkshih@realtek.com>
-> Sent: Friday, March 1, 2024 10:33 AM
-> To: Fiona Klute <fiona.klute@gmx.de>; linux-wireless@vger.kernel.org
-> Cc: kvalo@kernel.org; ulf.hansson@linaro.org; linux-mmc@vger.kernel.org; =
-pavel@ucw.cz; megi@xff.cz
-> Subject: RE: [PATCH v2 5/9] wifi: rtw88: Add rtw8703b.c
->=20
->=20
->=20
-> > -----Original Message-----
-> > From: Fiona Klute <fiona.klute@gmx.de>
-> > Sent: Wednesday, February 28, 2024 7:55 AM
-> > To: linux-wireless@vger.kernel.org; Ping-Ke Shih <pkshih@realtek.com>
-> > Cc: Fiona Klute <fiona.klute@gmx.de>; kvalo@kernel.org; ulf.hansson@lin=
-aro.org;
-> linux-mmc@vger.kernel.org;
-> > pavel@ucw.cz; megi@xff.cz
-> > Subject: [PATCH v2 5/9] wifi: rtw88: Add rtw8703b.c
-> >
-> > +
-> > +#define TRANS_SEQ_END                  \
-> > +       {0xFFFF,                        \
-> > +        RTW_PWR_CUT_ALL_MSK,           \
-> > +        RTW_PWR_INTF_ALL_MSK,          \
-> > +        0,                             \
-> > +        RTW_PWR_CMD_END, 0, 0}
->=20
-> Move this macro to main.h along with RTW_PWR_CUT_ALL_MSK.
+Sorry for the delay, too many drivers... But this looks good to me, few
+small comments.
 
-Think of this again, I prefer removing braces
-#define TRANS_SEQ_END			\
-	 0xFFFF,			\
-	 RTW_PWR_CUT_ALL_MSK,		\
-	 RTW_PWR_INTF_ALL_MSK,		\
-	 0,				\
-	 RTW_PWR_CMD_END, 0, 0
+In the commit message it would it would be good to have an example of
+the new firmware path. And also mention that board file (board-2.bin)
+handling is not affected, at least that's how understood from reading
+the code.
 
-Then, consumers look like
+> --- a/drivers/net/wireless/ath/ath10k/core.c
+> +++ b/drivers/net/wireless/ath/ath10k/core.c
+> @@ -942,11 +942,20 @@ static const struct firmware *ath10k_fetch_fw_file(struct ath10k *ar,
+>  	if (dir == NULL)
+>  		dir = ".";
+>  
+> +	if (ar->board_name) {
+> +		snprintf(filename, sizeof(filename), "%s/%s/%s",
+> +			 dir, ar->board_name, file);
+> +		ret = firmware_request_nowarn(&fw, filename, ar->dev);
+> +		ath10k_dbg(ar, ATH10K_DBG_BOOT, "boot fw request '%s': %d\n",
+> +			   filename, ret);
+> +		if (!ret)
+> +			return fw;
+> +	}
 
-static const struct rtw_pwr_seq_cmd trans_carddis_to_cardemu_8703b[] =3D {
-	{0x0005,
-	 RTW_PWR_CUT_ALL_MSK,
-	 RTW_PWR_INTF_ALL_MSK,
-	 RTW_PWR_ADDR_MAC,
-	 RTW_PWR_CMD_WRITE, BIT(7), 0},
-	{TRANS_SEQ_END},  // <=3D=3D=3D This one will be consistent with others.
-};
+So here you test if ar->board_name is NULL.
 
-Ping-Ke
+> --- a/drivers/net/wireless/ath/ath10k/snoc.c
+> +++ b/drivers/net/wireless/ath/ath10k/snoc.c
+> @@ -1337,6 +1337,9 @@ static void ath10k_snoc_quirks_init(struct ath10k *ar)
+>  	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
+>  	struct device *dev = &ar_snoc->dev->dev;
+>  
+> +	/* ignore errors, default to empty string */
+> +	of_property_read_string(dev->of_node, "firmware-name", &ar->board_name);
 
+What do you mean with empty string in this case, "\n" (with length of 1)
+or NULL? Should we also test for strlen(0) in ath10k_fetch_fw_file()?
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
