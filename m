@@ -1,97 +1,156 @@
-Return-Path: <linux-wireless+bounces-4282-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4283-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74EA686D87D
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Mar 2024 01:58:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 844FB86D95A
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Mar 2024 03:04:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0968828479C
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Mar 2024 00:58:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5A221C229F1
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Mar 2024 02:04:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49B1617550;
-	Fri,  1 Mar 2024 00:58:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA42639847;
+	Fri,  1 Mar 2024 02:04:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="pKzjQ+u7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A725514F7A;
-	Fri,  1 Mar 2024 00:57:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248E238FBC;
+	Fri,  1 Mar 2024 02:04:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709254682; cv=none; b=OcaHw0UvTzRkqcen8K5eNxj/mmFCrUuDWV8+iQy3UD03XNvMXV/EDivbz+JBY/CTu5EcbZ0UQE8Y8Zm2SIUpIavhlTVaE4efZT3pO+45yPY6kAI484xTP04Y7Hz0Rr/4aFMxdxjgF5zQM/iWQ4FnigbmcaPgASJNkXlk7RJjqWQ=
+	t=1709258667; cv=none; b=pfPx7dR5E9CkZibBae3SmhcdRfDdCBsAky92knXylzNMBocRdD0iYEcYsyF39LPiEraBzIQvb6qRNI8hFDB0uOvS1iLnL9zDfvunm1EpqGhVc1lkJh8ecWwjDa6CgKkiXeLFj5133ho8MDynASfBexJhUtQzpoDfF5A1x6z+SZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709254682; c=relaxed/simple;
-	bh=pwCX/E0k7EwsEKk3v9azU19A3exTb1vYXc/2gyI4x2U=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=NENSVDTnDV3klbED2pSQGVM1RNT850yi3vr24HJfo7sMUiiQ9u6794CrVusPb3S8fxeR6tx1YYn9frztokxWTNCjq1ygqz12O+H6jFxePs+jc3SyoBfTrXMh4dQI//+vE2uHIsJB2YfVjQuBoFfp2ZgusRizcbjcfiHt2gtoWH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4210vZppD1743211, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 4210vZppD1743211
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 1 Mar 2024 08:57:35 +0800
-Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.17; Fri, 1 Mar 2024 08:57:36 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Fri, 1 Mar 2024 08:57:35 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::c9b7:82a9:7e98:fa7f]) by
- RTEXMBS04.realtek.com.tw ([fe80::c9b7:82a9:7e98:fa7f%7]) with mapi id
- 15.01.2507.035; Fri, 1 Mar 2024 08:57:29 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Fiona Klute <fiona.klute@gmx.de>,
-        "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>
-CC: "kvalo@kernel.org" <kvalo@kernel.org>,
-        "ulf.hansson@linaro.org"
-	<ulf.hansson@linaro.org>,
-        "linux-mmc@vger.kernel.org"
-	<linux-mmc@vger.kernel.org>,
-        "pavel@ucw.cz" <pavel@ucw.cz>, "megi@xff.cz"
-	<megi@xff.cz>
-Subject: RE: [PATCH v2 0/9] rtw88: Add support for RTL8723CS/RTL8703B
-Thread-Topic: [PATCH v2 0/9] rtw88: Add support for RTL8723CS/RTL8703B
-Thread-Index: AQHaadiBpVQLHkii4E2ByhEDok10+bEg35uwgACqAYCAAIk3UA==
-Date: Fri, 1 Mar 2024 00:57:29 +0000
-Message-ID: <0ee4679bd3e2442f9e57e6d63ccf2927@realtek.com>
-References: <20240227235507.781615-1-fiona.klute@gmx.de>
- <61980d74cdb24dd38a2f2e12c79125e2@realtek.com>
- <31dd8a43-0df0-4f1b-905d-67b1a63fab0e@gmx.de>
-In-Reply-To: <31dd8a43-0df0-4f1b-905d-67b1a63fab0e@gmx.de>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1709258667; c=relaxed/simple;
+	bh=EUE081BGTpKI2jPBm9l1DAZfBilSuxIrE7H7+2z6rZU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=qNhBQ1zyUBQ36RQH1hHAqteKvzc8AE2r5D5C4OPrMl3cmkG1OC4ndnTY+FKEI1Fj6/S18gSMWZ+KACi8z3j/j6m6VRJhBv1QFnFjONglkaT3Alf/7Lj0qS9v24IHMnddW1VwPh9ibPnjByc6usc19lKlT+upSstvL1q0MxhfJG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=pKzjQ+u7; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 4210oB4O002798;
+	Fri, 1 Mar 2024 02:04:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=qCn2CH+WxcE0RRkPCW/gs9CnYBAjab4ADjZKcKMLPuk=; b=pK
+	zjQ+u7uSv+S+UixgecppGb/dBVrX0b/LUyXbXp0MAe6DfjOKWq3bSBczwTX78cNJ
+	E127Ey6x6a0Cz+tJzGikZayFGo+qN3zOrt+eWIE7rOc/G0WP+oU/zcwAzoFlZTN9
+	3JL44MBn92GUxkEurqGE+PFO+UAuG00AxOEv1v6d8tO9OwWvsAr5OVbISmbVIHlD
+	oq+WCRt9KpVDWpVZLPx1rFgZ2xON6NyyPcg76RSsSDfH+y5R1ObEuT0Bpx0qnIQZ
+	W6XRMCRBqjHOiGdzkEoCGWdjpc9tWB7icPEBD79tvz4x+Zs0F8C3MVbidunNkuDa
+	Qn/QoCv/ODx9/18ul+pw==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wjx9y1970-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 01 Mar 2024 02:04:13 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42124CIq002965
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 1 Mar 2024 02:04:12 GMT
+Received: from [10.231.195.68] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Thu, 29 Feb
+ 2024 18:04:09 -0800
+Message-ID: <b5b3f46d-ad98-44e5-84e0-7b00fe29ec5a@quicinc.com>
+Date: Fri, 1 Mar 2024 10:04:06 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/3] bus: mhi: host: add mhi_power_down_keep_dev()
+Content-Language: en-US
+To: Kalle Valo <kvalo@kernel.org>
+CC: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        "Kalle Valo
+ (QUIC)" <quic_kvalo@quicinc.com>,
+        <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <linux-arm-msm@vger.kernel.org>, <mhi@lists.linux.dev>,
+        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <netdev@vger.kernel.org>
+References: <20240228022243.17762-1-quic_bqiang@quicinc.com>
+ <20240228022243.17762-2-quic_bqiang@quicinc.com>
+ <20240229101202.GB2999@thinkpad>
+ <531daaa9-cf14-4812-8908-c617bd25bc08@quicinc.com>
+ <87le7383nd.fsf@kernel.org>
+From: Baochen Qiang <quic_bqiang@quicinc.com>
+In-Reply-To: <87le7383nd.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: mO0jaRZNk5ofn2jUbE7-xk37L4P-YGcS
+X-Proofpoint-ORIG-GUID: mO0jaRZNk5ofn2jUbE7-xk37L4P-YGcS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-29_08,2024-02-29_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 adultscore=0
+ clxscore=1015 impostorscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ lowpriorityscore=0 priorityscore=1501 malwarescore=0 bulkscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2402120000 definitions=main-2403010016
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogRmlvbmEgS2x1dGUgPGZp
-b25hLmtsdXRlQGdteC5kZT4NCj4gU2VudDogRnJpZGF5LCBNYXJjaCAxLCAyMDI0IDg6NDUgQU0N
-Cj4gVG86IFBpbmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPjsgbGludXgtd2lyZWxlc3NA
-dmdlci5rZXJuZWwub3JnDQo+IENjOiBrdmFsb0BrZXJuZWwub3JnOyB1bGYuaGFuc3NvbkBsaW5h
-cm8ub3JnOyBsaW51eC1tbWNAdmdlci5rZXJuZWwub3JnOyBwYXZlbEB1Y3cuY3o7IG1lZ2lAeGZm
-LmN6DQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggdjIgMC85XSBydHc4ODogQWRkIHN1cHBvcnQgZm9y
-IFJUTDg3MjNDUy9SVEw4NzAzQg0KPiANCj4gVGhlIGJpZ2dlciBjaGFuZ2VzIGFyZSBhbGwgaW4g
-cnR3ODcwM2IuaCAocGF0Y2ggNDsgdGhlIFBIWSBzdGF0dXMgc3RydWN0DQo+IGluc3RlYWQgb2Yg
-bWFjcm9zKSBhbmQgcnR3ODcwM2IuYyAocGF0Y2ggNTsgUEhZIHN0YXR1cyBwYXJzaW5nLCBNQUMN
-Cj4gYWRkcmVzcyByZXRyaWV2YWwsIGFuZCBJS1EgZG9uZSB3YWl0KS4gVGhlIFBIWSBzdGF0dXMg
-c3RydWN0IGlzDQo+IGJhc2ljYWxseSB0aGUgc2FtZSBhcyBpbiB0aGUgdmVuZG9yIGRyaXZlciwg
-SSBqdXN0IHJlc29sdmVkIHNvbWUgbWFjcm8NCj4gZGV0b3VycyBmb3IgYmlnL2xpdHRsZSBlbmRp
-YW4gZGV0ZWN0aW9uIGFuZCBzcGVsbGVkIG91dCAicmVzZXJ2ZWQiIGluDQo+IGZpZWxkIG5hbWVz
-Lg0KPiANCj4gQ2hhbmdlcyBpbiB0aGUgb3RoZXIgcGF0Y2hlcyBhcmUgbWluaW1hbDogYWRkaXRp
-b25hbCBNT0RVTEVfQVVUSE9SIGluDQo+IHJ0dzg3MjN4LmMsIG1pc3NpbmcgInN0YXRpYyJzIGlu
-IHJ0dzg3MjN4LmMgYW5kIHJ0dzg3MjN4LmgsIGZvcm1hdHRpbmcsDQo+IGFuZCB1c2luZyBydHdf
-cmVhZDhfbWFzayBpbiB0aGUgZmlybXdhcmUgcmVzZXQgKHBhdGNoIDYpLg0KDQpUaGFua3MgZm9y
-IHRoZSBpbmZvLiANCg0KUGluZy1LZSANCg0K
+
+
+On 3/1/2024 3:35 AM, Kalle Valo wrote:
+> Baochen Qiang <quic_bqiang@quicinc.com> writes:
+> 
+>> On 2/29/2024 6:12 PM, Manivannan Sadhasivam wrote:
+>>> On Wed, Feb 28, 2024 at 10:22:41AM +0800, Baochen Qiang wrote:
+>>>> ath11k fails to resume:
+>>>>
+>>>> ath11k_pci 0000:06:00.0: timeout while waiting for restart complete
+>>>>
+>>>> This happens because when calling mhi_sync_power_up() the MHI subsystem
+>>>> eventually calls device_add() from mhi_create_devices() but the device
+>>>> creation is deferred:
+>>>>
+>>>> mhi mhi0_IPCR: Driver qcom_mhi_qrtr force probe deferral
+>>>>
+>>>> The reason for deferring device creation is explained in dpm_prepare():
+>>>>
+>>>>           /*
+>>>>            * It is unsafe if probing of devices will happen during suspend or
+>>>>            * hibernation and system behavior will be unpredictable in this case.
+>>>>            * So, let's prohibit device's probing here and defer their probes
+>>>>            * instead. The normal behavior will be restored in dpm_complete().
+>>>>            */
+>>>>
+>>>> Because the device probe is deferred, the qcom_mhi_qrtr_probe() is not
+>>>> called and thus MHI channels are not prepared:
+>>>>
+>>>> So what this means that QRTR is not delivering messages and the QMI connection
+>>>> is not working between ath11k and the firmware, resulting a failure in firmware
+>>>> initialization.
+>>>>
+>>>> To fix this add new function mhi_power_down_keep_dev() which doesn't destroy
+>>>> the devices for channels during power down. This way we avoid probe defer issue
+>>>> and finally can get ath11k hibernation working with the following patches.
+>>>>
+>>>> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
+>>>>
+>>>> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+>>>
+>>> Did Kalle co-author this patch? If so, his Co-developed-by tag should
+>>> be added.
+>>
+>> Hmm, I'm not sure...  I would like Kalle's thoughts on this.
+> 
+> IIRC I did only some simple cleanup before submitting the patch so I
+> don't think Co-developed-by is justified. I'm also fine with removing my
+> Signed-off-by.
+Thanks Kalle.
+
+Hi Mani, so according to Kalle's comments, I'd like to keep the patch as is.
+
+> 
 
