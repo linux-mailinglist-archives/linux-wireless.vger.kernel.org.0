@@ -1,103 +1,117 @@
-Return-Path: <linux-wireless+bounces-4295-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4296-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FFB386E39C
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Mar 2024 15:43:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BB0586E516
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Mar 2024 17:16:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8ED301C21239
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Mar 2024 14:43:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2176FB23E13
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Mar 2024 16:16:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 960BC38DC3;
-	Fri,  1 Mar 2024 14:43:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD86B6E2A3;
+	Fri,  1 Mar 2024 16:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="xxNTTc97"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="bG5ygqzj"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D25023DE;
-	Fri,  1 Mar 2024 14:43:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D86BF71B2B
+	for <linux-wireless@vger.kernel.org>; Fri,  1 Mar 2024 16:16:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709304232; cv=none; b=JwvZxssYQxsBiA9JeswHDZY/eDCLjxfPk5aUL/tx2dwZy5D4tNIikDogMJS0EBfdtr2Kh6QfTV1KUmHesPorLXbPe2UNBIIcDr4I52t0shU5pZBdT/isbJdtRjxEnHahCt4ylvvBlXLjrrWkmTUAYPvWZwNWjX5HrlrIvhcL+KU=
+	t=1709309790; cv=none; b=Mmp5sYS1h/PzFHK85rlW/j8D14GrAXzyU8l00v8g68DG5mhOTtzKFObf/bTYqQGt5mXQqSDfl1YakWHzAhjvR2WNNJw4NJammhDFiE1Ttr50BRlTKctId6EfQonFjAxrrKC7AFGexaT8L2Ynkj9j7/ZBQrOFd4E42xdKPUkjozA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709304232; c=relaxed/simple;
-	bh=g/5FdFmANw8vfKyQblOhb3dPtLnfPxgu5rTqDPLM/k0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=N0YwpXMTVpndVfdr3MT5PaLTfpjWhMaYtr0U/Ml+huNrkJO9XZvJ5DzfR1RgEy6NCZvjQR2US6saFSAo3ft3bDUacpQz7or+qeWdABv6nka7xPeFXsqDqLOJZ7usE7ooiA99qzXNkGzI7C8mFKZgti1mRQa42T+zL+UwNN0fu/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=xxNTTc97; arc=none smtp.client-ip=46.235.227.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1709304229;
-	bh=g/5FdFmANw8vfKyQblOhb3dPtLnfPxgu5rTqDPLM/k0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=xxNTTc97xWYp4JHtRwbQppAyuiFMXatZr52S8x9U/4TFPZ1ascmVK8vAU4mjYEzBq
-	 Ykt+7E/MR8BSvG9PeoGYfiaOMmtqXUhN/4DXG6vrhD+soagLQbiuEmmdy+4r0lrAZO
-	 RAkqLMeNDa2bZHflQJJ6NLEfW2xGoyaR/9g0V7Ag1l3STfFDbmhVYpNDer3cyPAwAX
-	 pxzr8htRsrWFkVP7HF37kkPIkduT3wUHBMbuyru+2XH4Qwl94k/OkkvE6cjznHaxCa
-	 be6nP4OuhB7n7xer/eWCg3+KKmNflNZMbl9Xo6uoH8Ej7o265Ya7KFGXe+NvmujkLp
-	 7TQEbUwPHkSdg==
-Received: from localhost.localdomain (broslavsky.collaboradmins.com [68.183.210.73])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: usama.anjum)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id A6DB837803EE;
-	Fri,  1 Mar 2024 14:43:42 +0000 (UTC)
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
-To: Felix Fietkau <nbd@nbd.name>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Ryder Lee <ryder.lee@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Sean Wang <sean.wang@mediatek.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	kernel@collabora.com,
-	kernel-janitors@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: [PATCH] wifi: mt76: connac: check for null before dereferencing
-Date: Fri,  1 Mar 2024 19:44:06 +0500
-Message-Id: <20240301144406.2808307-1-usama.anjum@collabora.com>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1709309790; c=relaxed/simple;
+	bh=DcKb6DOVih7XxWhZcOlWGPemOOwfrQQ0BnIqEvl6sKs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=h1X+4BChtC7hkNaNbqA3nKWnGprExPmS8dBzXzgYsbAw47tGhBwakKb/ShxcjOvM8SxkV5qD/xu7dFHLSExzuXAdtL0aYm4NjdP92/zUZEamhQli+TmzRNguZflw6TLkNSV/+IbZLEwncOrFWCzeCkfag97AR0khDHnEKixUKII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=bG5ygqzj; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 421B1LP3023563;
+	Fri, 1 Mar 2024 16:16:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=P9oSbjYVwwJViyUns6YHVbiAEOcSyvonOUoUVWmngIM=; b=bG
+	5ygqzjSrP3tQctJO7k8jkDe/SqI7BGpb7WxC3jv5dLahF1+RR6UPuK6u/nS3E0t5
+	3n71gKIOjfvMvSAJupo3VXM0b4oXBeGA0s9vBJu0I7mLzTPL3SmqFM/5oge1CxBF
+	aKpKBPRYbomP95MIbUG+6YNDQS0jPTu4i9ux//rNmOD6xUgqqMksumWGqSklYXEE
+	xHb4CH1ogq1jTJs+Og4JkeYfqcTLiIKJTrwQAw4D0BwsI16xSO7rdzN1/LxjpRWR
+	L06nDaXuxgG7KA0n53DJMaIrEcES+tcw7KGML5GkihwbvpNoovUYIXnkhBJvKvvy
+	mP0URZ2X5raYPFyrmVdw==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wk9mf1cvv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 01 Mar 2024 16:16:18 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 421GGHa7015847
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 1 Mar 2024 16:16:17 GMT
+Received: from [10.110.42.209] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Fri, 1 Mar
+ 2024 08:16:17 -0800
+Message-ID: <6bdcffce-e657-4990-bd60-5dd67abbb9c9@quicinc.com>
+Date: Fri, 1 Mar 2024 08:16:16 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: ath11k: adjust a comment to reflect reality
+Content-Language: en-US
+To: Kevin Lo <kevlo@kevlo.org>, <ath11k@lists.infradead.org>
+CC: Kalle Valo <kvalo@kernel.org>, <linux-wireless@vger.kernel.org>
+References: <Zd1Muyd8mtA1Hih7@ns.kevlo.org>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <Zd1Muyd8mtA1Hih7@ns.kevlo.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: H6N7GW0bgFRtuYB6wISkgmCb7NRoJ7Et
+X-Proofpoint-GUID: H6N7GW0bgFRtuYB6wISkgmCb7NRoJ7Et
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-01_17,2024-03-01_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 phishscore=0
+ spamscore=0 clxscore=1011 priorityscore=1501 adultscore=0 impostorscore=0
+ mlxscore=0 mlxlogscore=896 lowpriorityscore=0 bulkscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2402120000
+ definitions=main-2403010135
 
-The wcid can be NULL. It should be checked for validity before
-dereferencing it to avoid crash.
+On 2/26/2024 6:45 PM, Kevin Lo wrote:
+> In ath11k_mhi_set_mhictrl_reset(), I observed on QCA6390/QCN9074/WCN6855,
+> MHISTATUS has SYSERR bit always been set after SOC_GLOBAL_RESET.
+> 
+> Signed-off-by: Kevin Lo <kevlo@kevlo.org>
+> ---
+> diff --git a/drivers/net/wireless/ath/ath11k/mhi.c b/drivers/net/wireless/ath/ath11k/mhi.c
+> index 3de7fa6f88d0..1198e80d9dff 100644
+> --- a/drivers/net/wireless/ath/ath11k/mhi.c
+> +++ b/drivers/net/wireless/ath/ath11k/mhi.c
+> @@ -158,8 +158,8 @@ void ath11k_mhi_set_mhictrl_reset(struct ath11k_base *ab)
+>  
+>  	ath11k_dbg(ab, ATH11K_DBG_PCI, "mhistatus 0x%x\n", val);
+>  
+> -	/* Observed on QCA6390 that after SOC_GLOBAL_RESET, MHISTATUS
+> -	 * has SYSERR bit set and thus need to set MHICTRL_RESET
+> +	/* After SOC_GLOBAL_RESET, MHISTATUS has SYSERR bit
+> +	 * always been set and thus need to set MHICTRL_RESET
+>  	 * to clear SYSERR.
+>  	 */
+>  	ath11k_pcic_write32(ab, MHICTRL, MHICTRL_RESET_MASK);
 
-Fixes: 098428c400ff ("wifi: mt76: connac: set correct muar_idx for mt799x chipsets")
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
----
- drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index af0c2b2aacb00..7af60eebe517a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -283,7 +283,7 @@ __mt76_connac_mcu_alloc_sta_req(struct mt76_dev *dev, struct mt76_vif *mvif,
- 	};
- 	struct sk_buff *skb;
- 
--	if (is_mt799x(dev) && !wcid->sta)
-+	if (is_mt799x(dev) && wcid && !wcid->sta)
- 		hdr.muar_idx = 0xe;
- 
- 	mt76_connac_mcu_get_wlan_idx(dev, wcid, &hdr.wlan_idx_lo,
--- 
-2.39.2
-
+Unless you've verified this is always true for every supported chipset
+I'd rather more accurately say something like:
+After SOC_GLOBAL_RESET, MHISTATUS may still have SYSERR bit set and thus...
 
