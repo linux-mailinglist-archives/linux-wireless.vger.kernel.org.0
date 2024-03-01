@@ -1,106 +1,187 @@
-Return-Path: <linux-wireless+bounces-4280-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4281-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F098E86D869
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Mar 2024 01:40:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A86F986D871
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Mar 2024 01:45:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F9121F23A04
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Mar 2024 00:40:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C54ED1C20DA5
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Mar 2024 00:45:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F03903C1D;
-	Fri,  1 Mar 2024 00:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FDE933C0;
+	Fri,  1 Mar 2024 00:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="UZAW4Az4"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=fiona.klute@gmx.de header.b="glzy6rzq"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53C6C2571
-	for <linux-wireless@vger.kernel.org>; Fri,  1 Mar 2024 00:40:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EFA22916;
+	Fri,  1 Mar 2024 00:45:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709253640; cv=none; b=pawMkexXzTKerbTf3+8jLxhj1xINwHMHTUDn/EB5QY4oqmqCzy2w2xtyXmHmppo1caIH0KutBktx0Ghr4iU5o79EpL+a3rUZjLSX41/87pMbTc+bsYcR9ESvrBaCvJ4peKxtGG6V0NM6yAsHtjcswY5t1QYf3MSMU2lqJU3uS7w=
+	t=1709253928; cv=none; b=smlClwzCAkXwaJy90AqwdNBIxblADk7vOTE9Cmcp0MOXmS4/VVZ1mKfW3DIHB0X7WnqK0EX5zVsk99XAwfNFy521kCLr3Pg35RyPaWNGnCJhoSk/ZFxbAgiuEyOjF51B5DA5QIoZn/qdB+N+p2/aBZzzX39dzwxtPAB5VESuvfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709253640; c=relaxed/simple;
-	bh=muLgGupmanQwoOkaJ46uTZdhMTCwpFMyxV8hvto3RLU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bFkpy5VhgBYd6gcmy1lIZoGVkFCp9t4xvhFEo7prSee+RQu+S2eV6R60kmZJxfWA8tMmKDpHADPbxPZStqU0pk/jt1F5FWeH7Ocrrt6fj/0YAWVcNvST/poUWL4fGDnB5wTZ6mIqdCHdKcVLqtdBeZOpvrpDasFdCXoz+yEZYCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=UZAW4Az4; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-6e56a5b2812so1033138b3a.1
-        for <linux-wireless@vger.kernel.org>; Thu, 29 Feb 2024 16:40:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1709253637; x=1709858437; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=uLux+aUHo/V4i5EAKecz3RknuLa58zL1C1hJWsd2v88=;
-        b=UZAW4Az4iJ8wP3f9OBpYXXgPY/U8beXjkZFTnXJlC8pIWoRutqUDWJNnq8J/Ac5+PG
-         884axoo+xguxaWvklp9UTwrJdGHBFE4ngbNc2jSlwGPuoLuCwpUrWaOu+A1jSsLyjKCv
-         KQXHiudCSihXgPjFK7nQpSmDlPbILalf4K+H0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709253637; x=1709858437;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uLux+aUHo/V4i5EAKecz3RknuLa58zL1C1hJWsd2v88=;
-        b=uLv8hUVYGOfQNwPLC7JpgBK8yrq0S0xf4kjk97h48SgzFD0nga1lnla/No/xw8Anzo
-         ELoKC+o5SRhg1RjqdDyvzmdKMquLUkHSZNcsAnv9K0+rDHG9G9o3Ndach5QWxowHrQYh
-         eANsyIy55gEUUrbD1A7SliLD20LdkgUb39NfzGxqarrhF/MGr8zBaQFJcnkhcjTiEuMu
-         rriGiASEsv9Msjk79BH0mE0mXWy1F9rNSzm0HduC5HVBSSJBCmWV4j2aC4pjGnNplCaP
-         SFBQpqtUtANbZrS3ydSL3fYc2SRqk1/pAWz0gvITzPRUPkBpGMkMjBgnBahjtUObkzi9
-         WLvw==
-X-Forwarded-Encrypted: i=1; AJvYcCXX8TN+VV9FqcYFq5A4AGqlVi38TKPeU0gFbQB6bE0zokjHG5K6YNkV5OBSAwF8G2/dtKWLpGo4P6d9NICIAsxa/RGoTagCJFTA5P58/+M=
-X-Gm-Message-State: AOJu0YwjPhrS+f5+TAv8RUJzrHVgcB9248W5DBNadIbiKbqjkgE0qvph
-	u8G0bWO6DWiAURuptxDzQ8Xrj9YT/u43BdtRYgksBwvor0VzRIgLCOrE162QlA==
-X-Google-Smtp-Source: AGHT+IHFUeR1ugKofHFnvWfCfO87r1lfl6kXIYM4J/RlEeAi/4GNXDb6FENvl1zIyk1SVIFJGbZskA==
-X-Received: by 2002:a05:6a20:1582:b0:1a0:d57b:1c93 with SMTP id h2-20020a056a20158200b001a0d57b1c93mr50622pzj.33.1709253637593;
-        Thu, 29 Feb 2024 16:40:37 -0800 (PST)
-Received: from www.outflux.net ([198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id w8-20020a17090ad60800b00296a23e407csm4249537pju.7.2024.02.29.16.40.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Feb 2024 16:40:37 -0800 (PST)
-Date: Thu, 29 Feb 2024 16:40:36 -0800
-From: Kees Cook <keescook@chromium.org>
-To: Duoming Zhou <duoming@zju.edu.cn>
-Cc: linux-kernel@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
-	brcm80211@lists.linux.dev, linux-wireless@vger.kernel.org,
-	justinstitt@google.com, quic_alokad@quicinc.com,
-	jisoo.jang@yonsei.ac.kr, petr.tesarik.ext@huawei.com,
-	hdegoede@redhat.com, johannes.berg@intel.com, kvalo@kernel.org,
-	arend.vanspriel@broadcom.com
-Subject: Re: [PATCH v3] wifi: brcm80211: handle pmk_op allocation failure
-Message-ID: <202402291640.9AAD719D3@keescook>
-References: <20240229103153.18533-1-duoming@zju.edu.cn>
+	s=arc-20240116; t=1709253928; c=relaxed/simple;
+	bh=iPFfVjiyS+z+zX5CZ63M9OT2EsMyB1aIKrlPflSfew0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=P9pxCWItSae3qO+wKPXdu3wDiemo7FJdaaUcHLO5/r4FEH1uJiWTBVKFACRkS+fBK62kKxLR0xOWYoXSX2zvTEy48AChdclbuFOAcmiKo6bi+txWeLiWqVd0SD10wXllDPWqj9FdWZqIN0BC2XmaSRBE2T8OZ75s0BkwKcFjJkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=fiona.klute@gmx.de header.b=glzy6rzq; arc=none smtp.client-ip=212.227.17.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+	t=1709253909; x=1709858709; i=fiona.klute@gmx.de;
+	bh=iPFfVjiyS+z+zX5CZ63M9OT2EsMyB1aIKrlPflSfew0=;
+	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
+	 In-Reply-To;
+	b=glzy6rzqBxlSyZPTxw2OMqIib6HPouZDMyti9ffdQESB78Ix8lz897CkZP0UxPKI
+	 079/Ahuq4rtJAW89FGH1vh1Uqhl4uhfL7jcRGJTCDnlYzepbfj8l+FvljeFC21Fnb
+	 8hvhOdHI9lvRPoahhfrLBWtWCf7WfbKyubZqFTGC+3SeBq2SD8i/vBH2A6oAPz/lP
+	 VCL9oa0yX3YS4HnTDy8zSZdXAdH89QtTCGrAf9feLAIqcqBLWWGc3UfGsY2Il5yiS
+	 ycaPuXcsGRFaTqpG2JPhcoAcf2JuQkPmwoe1nMCUvLkMb5l2xPK69PEKm+1dDHBO5
+	 JW3W3XsNwhb/QDvhfA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.7.2] ([85.22.24.88]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MeCtj-1r8AMd3TTb-00bLT5; Fri, 01
+ Mar 2024 01:45:08 +0100
+Message-ID: <31dd8a43-0df0-4f1b-905d-67b1a63fab0e@gmx.de>
+Date: Fri, 1 Mar 2024 01:45:07 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240229103153.18533-1-duoming@zju.edu.cn>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/9] rtw88: Add support for RTL8723CS/RTL8703B
+To: Ping-Ke Shih <pkshih@realtek.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: "kvalo@kernel.org" <kvalo@kernel.org>,
+ "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
+ "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+ "pavel@ucw.cz" <pavel@ucw.cz>, "megi@xff.cz" <megi@xff.cz>
+References: <20240227235507.781615-1-fiona.klute@gmx.de>
+ <61980d74cdb24dd38a2f2e12c79125e2@realtek.com>
+Content-Language: de-DE, en-US
+From: Fiona Klute <fiona.klute@gmx.de>
+Autocrypt: addr=fiona.klute@gmx.de; keydata=
+ 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
+In-Reply-To: <61980d74cdb24dd38a2f2e12c79125e2@realtek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:6PcTm6Fh8aYDLmh74+2lb1msevuTwX2ZP2YMNnEAOMmjth0L9ib
+ +YKc93qxRv8SoiSfxLbijeyUMhQnfx/IIkdKj+5V7ujrv4VPNsA8IRZ/WvsMEsniAUMcVEb
+ e5jq77kkK0qEThtbeLQtmTo8O+qTrdgHkpKSteXqLerYkABZPDRSiz7v8CCotrvh9fbDbEo
+ SY1O4iYpTUQrOtXkg5GxA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:E9b/1G2qFNA=;qhuHNpW6hAC/u2uHTq1IJbW1Y7D
+ ogxomcqGdaoFCHHNhb3WvFFzpxLJdg49DakKHDrD2MOi5BnQKPJ3d8n7KTJ/4mSHALVxTM54L
+ yoWKt4gTatOk/QClK9YYV5HcwocOxgJcYfSMmtops4V7F4W0AleUiamBTz3qNqafN6H1G+miX
+ 95rRU0kTkUzG4zqaP8nqvgCdlUEha3Nkw///XNAsMGb7lskuV5Es4UL/zeKQ3XauhdPvPmJ61
+ oAAvmeOjYEPXha0tH0IXzOSs/GETe+md3MOAZkFaG62NYOMXOE3qc5DlhpChu6pX/iz46wsfW
+ Q7viF9yELFqlOC2cFgtcoBwltgRAUSboGWYph9sUSGov6mkmX8oqsXF287J0cbnBr2tmH/KpY
+ 0v5O0HsUH3JGNojaTTKv9jMvBHuBqbEas8Gqq5+7TVQa6RxsJH40yzcnwU93EQo3H9yxfjosg
+ c1vSWJAznjY8l3tjH57vFGufxnkbW3SxkBUlNV44iE8LqmhplXGlXfoKXbw+kRBvoFuovuzJH
+ QIUDRlqJ0GZMnaCez0qUBZ2Wcf4boYmbQ8BhD3t/XWv2OaQFjYrvb90ydgOH+608icWQLC0H+
+ PiacYBnb85hDPOgMdOL3W7FYzjzyM3WPv8lDKIXPzZi7i6l13Y+/ERybrbOfn5ouZrvkUpEBL
+ YW+nn13B0XGD21rayfT0ZXcfDO3MNcZs1nu1wmGFzTZjquv/5HTx1cOvI4NLFxjbFlpXWjHdU
+ 5j3bIObjL1PTZ3YCRW+P2JdGBNANx9koBBBsKGoICp/v+2BCYzmWypDwH4vzYmT2hchF1rcGo
+ FVqHA1HrZJV3WqybVWXCULdqa2nNqlDOpGItord7FlYfw=
 
-On Thu, Feb 29, 2024 at 06:31:53PM +0800, Duoming Zhou wrote:
-> The kzalloc() in brcmf_pmksa_v3_op() will return null if the
-> physical memory has run out. As a result, if we dereference
-> the null value, the null pointer dereference bug will happen.
-> 
-> Return -ENOMEM from brcmf_pmksa_v3_op() if kzalloc() fails
-> for pmk_op.
-> 
-> Fixes: a96202acaea4 ("wifi: brcmfmac: cfg80211: Add support for PMKID_V3 operations")
-> Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Am 29.02.24 um 07:40 schrieb Ping-Ke Shih:
+>
+>
+>> -----Original Message-----
+>> From: Fiona Klute <fiona.klute@gmx.de>
+>> Sent: Wednesday, February 28, 2024 7:55 AM
+>> To: linux-wireless@vger.kernel.org; Ping-Ke Shih <pkshih@realtek.com>
+>> Cc: Fiona Klute <fiona.klute@gmx.de>; kvalo@kernel.org; ulf.hansson@lin=
+aro.org; linux-mmc@vger.kernel.org;
+>> pavel@ucw.cz; megi@xff.cz
+>> Subject: [PATCH v2 0/9] rtw88: Add support for RTL8723CS/RTL8703B
+>>
+>
+> [...]
+>
+>>
+>> v2:
+>>    * Parse PHY status using struct instead of macros
+>>    * Prefer MAC from EFUSE if available, move retrieving MAC from DT to
+>>      a separate function
+>>    * Tidy up wait for IQK to be done, replace mdelay loop with
+>>      read_poll_timeout
+>>    * Set dual author for rtw88_8723x
+>>    * Add missing "static" to rtw8723x function declarations, fixes
+>>      build failure when not built as a module
+>>    * Various style fixes
+>
+> You have some changes by v2, so I think you don't need to take my ack-by=
+ for
+> those patches. Then, it will be easier for me to review patches you have
+> changed.
 
-Thanks for the respin! :)
+Sorry, I thought I was supposed to keep them unless I make larger, not
+requested changes.
 
-Reviewed-by: Kees Cook <keescook@chromium.org>
+> Anyway, could you point out patches I should pay attention? Or I will re=
+view
+> entire patchset one-by-one.
 
--- 
-Kees Cook
+The bigger changes are all in rtw8703b.h (patch 4; the PHY status struct
+instead of macros) and rtw8703b.c (patch 5; PHY status parsing, MAC
+address retrieval, and IKQ done wait). The PHY status struct is
+basically the same as in the vendor driver, I just resolved some macro
+detours for big/little endian detection and spelled out "reserved" in
+field names.
+
+Changes in the other patches are minimal: additional MODULE_AUTHOR in
+rtw8723x.c, missing "static"s in rtw8723x.c and rtw8723x.h, formatting,
+and using rtw_read8_mask in the firmware reset (patch 6).
+
+Best regards,
+Fiona
+
 
