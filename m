@@ -1,53 +1,53 @@
-Return-Path: <linux-wireless+bounces-4316-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4317-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8006E86EDAB
-	for <lists+linux-wireless@lfdr.de>; Sat,  2 Mar 2024 01:59:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D253086EDAC
+	for <lists+linux-wireless@lfdr.de>; Sat,  2 Mar 2024 01:59:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3698F286D2D
-	for <lists+linux-wireless@lfdr.de>; Sat,  2 Mar 2024 00:59:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 875DC286BC6
+	for <lists+linux-wireless@lfdr.de>; Sat,  2 Mar 2024 00:59:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05D64747F;
-	Sat,  2 Mar 2024 00:59:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30DF579CB;
+	Sat,  2 Mar 2024 00:59:53 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4BDB7464
-	for <linux-wireless@vger.kernel.org>; Sat,  2 Mar 2024 00:59:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D97ED79C8
+	for <linux-wireless@vger.kernel.org>; Sat,  2 Mar 2024 00:59:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709341188; cv=none; b=bRaPBJsX/28/4KpSmC7VFbrjNV7c29Cd1q3p7jOQbH58lREjHuCsAcso6x/zLZpQFhuNrDNiqjQ9FJtdZb79BZdPq2Keu/xNgx/p+dIqvEpePLmHFdIa0eF226BKLYFNJWZDNQFIWXfxTgIBHhZLVciQYs2ATAWVkgju3n6o0Pc=
+	t=1709341193; cv=none; b=PwzK9Egdsnip5UA04QMYngoeSF3pdK6FRUEoUE2OfeBdLS3VHBQm6jAYhpdpb5UJNAmtJ5AHk4DGw6MnANte8aUOfsdKfHpaAQHKBNKl6bK3ZO+VOQWK22/whnpQqKNJk4QmFNstgAC685tqbG7hIuuU9xwxC0sc3Zkyn3fhvSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709341188; c=relaxed/simple;
-	bh=6HlIZVryYgoEGsEeKBs68v3Lqs8Jq+wifQYwuvxEv9A=;
+	s=arc-20240116; t=1709341193; c=relaxed/simple;
+	bh=1l37Jzl/3/kMVPjHL5TQZ8N71Fh0t0gJQy0IsqgKtLE=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Nlu71Fjug61ch5xHxiuH8mxPOSUocsc8UcsdNpW+3Tyt4BnbFKEffD6UgvcxakbYWZTFXwbRANz85A+8NHXpd6Go/feInopRMbKVfMZlBANAiOGmzLBI6NfLtfOqpQZzjpO5dWNiymGacPpnh2ZLe6e6Q0+5yxEtBtzH1RGu+Hk=
+	 MIME-Version:Content-Type; b=rzLYG4OjRFSsJnv69emRbYaC8YTTeuZ58aq2l6Hp/DJBP1Pa1L1GdkkX6KKKIafa4QduURfBpaFvQYSl/IBv5AGgT53L41FTmLX0WKc985egQQOHsx+gRC6c0v0UTkdZfzFAuOYbcsPQJWpusLa9w9jaLkU9O/WPNYzmt0mErlU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4220xfDsB2370274, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 4220xfDsB2370274
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4220xj7gB2370287, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 4220xj7gB2370287
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 2 Mar 2024 08:59:41 +0800
+	Sat, 2 Mar 2024 08:59:45 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2375.32; Sat, 2 Mar 2024 08:59:41 +0800
+ 15.1.2507.17; Sat, 2 Mar 2024 08:59:45 +0800
 Received: from [127.0.1.1] (172.16.16.155) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Sat, 2 Mar
- 2024 08:59:41 +0800
+ 2024 08:59:45 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <kvalo@kernel.org>
 CC: <timlee@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 3/7] wifi: rtw89: update DMA function with different generation
-Date: Sat, 2 Mar 2024 08:58:24 +0800
-Message-ID: <20240302005828.13666-4-pkshih@realtek.com>
+Subject: [PATCH 4/7] wifi: rtw89: wow: update config mac function with different generation
+Date: Sat, 2 Mar 2024 08:58:25 +0800
+Message-ID: <20240302005828.13666-5-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240302005828.13666-1-pkshih@realtek.com>
 References: <20240302005828.13666-1-pkshih@realtek.com>
@@ -61,290 +61,283 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
 
 From: Chin-Yen Lee <timlee@realtek.com>
 
-The register of control and polling function for TX/RX DMA is different
-from different generation, so update them. Also rename polling_dma
-function to polling_dma_idle to avoid misunderstanding.
+The registers to configure mac function for WoWLAN mode that are different
+from different generation, so update them.
 
 Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.h   |  8 +++---
- drivers/net/wireless/realtek/rtw89/pci.c    | 29 ++++++++++++---------
- drivers/net/wireless/realtek/rtw89/pci.h    | 27 +++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/pci_be.c | 24 ++++++++++++-----
- drivers/net/wireless/realtek/rtw89/wow.c    |  4 +--
- 5 files changed, 68 insertions(+), 24 deletions(-)
+ drivers/net/wireless/realtek/rtw89/fw.h     |  9 +++-
+ drivers/net/wireless/realtek/rtw89/mac.c    | 37 ++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/mac.h    |  8 ++++
+ drivers/net/wireless/realtek/rtw89/mac_be.c | 48 +++++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/reg.h    | 16 +++++++
+ drivers/net/wireless/realtek/rtw89/wow.c    | 28 +-----------
+ 6 files changed, 117 insertions(+), 29 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 956864f0ff8b..59deab4e756e 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -3118,7 +3118,7 @@ struct rtw89_hci_ops {
- 	void (*ctrl_txdma_ch)(struct rtw89_dev *rtwdev, bool enable);
- 	void (*ctrl_txdma_fw_ch)(struct rtw89_dev *rtwdev, bool enable);
- 	void (*ctrl_trxhci)(struct rtw89_dev *rtwdev, bool enable);
--	int (*poll_txdma_ch)(struct rtw89_dev *rtwdev);
-+	int (*poll_txdma_ch_idle)(struct rtw89_dev *rtwdev);
- 	void (*clr_idx_all)(struct rtw89_dev *rtwdev);
- 	void (*clear)(struct rtw89_dev *rtwdev, struct pci_dev *pdev);
- 	void (*disable_intr)(struct rtw89_dev *rtwdev);
-@@ -5169,12 +5169,12 @@ static inline void rtw89_hci_ctrl_trxhci(struct rtw89_dev *rtwdev, bool enable)
- 		rtwdev->hci.ops->ctrl_trxhci(rtwdev, enable);
- }
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
+index 9c5464dcc081..bdfd2583650d 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.h
++++ b/drivers/net/wireless/realtek/rtw89/fw.h
+@@ -64,6 +64,8 @@ struct rtw89_h2creg_sch_tx_en {
+ #define RTW89_H2CREG_SCH_TX_EN_W1_MASK GENMASK(15, 0)
+ #define RTW89_H2CREG_SCH_TX_EN_W1_BAND BIT(16)
  
--static inline int rtw89_hci_poll_txdma_ch(struct rtw89_dev *rtwdev)
-+static inline int rtw89_hci_poll_txdma_ch_idle(struct rtw89_dev *rtwdev)
- {
- 	int ret = 0;
++#define RTW89_H2CREG_WOW_CPUIO_RX_CTRL_EN GENMASK(23, 16)
++
+ #define RTW89_H2CREG_MAX 4
+ #define RTW89_C2HREG_MAX 4
+ #define RTW89_C2HREG_HDR_LEN 2
+@@ -95,7 +97,9 @@ enum rtw89_mac_h2c_type {
+ 	RTW89_FWCMD_H2CREG_FUNC_FWERR,
+ 	RTW89_FWCMD_H2CREG_FUNC_GET_FEATURE,
+ 	RTW89_FWCMD_H2CREG_FUNC_GETPKT_INFORM,
+-	RTW89_FWCMD_H2CREG_FUNC_SCH_TX_EN
++	RTW89_FWCMD_H2CREG_FUNC_SCH_TX_EN,
++	RTW89_FWCMD_H2CREG_FUNC_WOW_TRX_STOP = 0x6,
++	RTW89_FWCMD_H2CREG_FUNC_WOW_CPUIO_RX_CTRL = 0xA,
+ };
  
--	if (rtwdev->hci.ops->poll_txdma_ch)
--		ret = rtwdev->hci.ops->poll_txdma_ch(rtwdev);
-+	if (rtwdev->hci.ops->poll_txdma_ch_idle)
-+		ret = rtwdev->hci.ops->poll_txdma_ch_idle(rtwdev);
+ enum rtw89_mac_c2h_type {
+@@ -104,7 +108,8 @@ enum rtw89_mac_c2h_type {
+ 	RTW89_FWCMD_C2HREG_FUNC_ERR_MSG,
+ 	RTW89_FWCMD_C2HREG_FUNC_PHY_CAP,
+ 	RTW89_FWCMD_C2HREG_FUNC_TX_PAUSE_RPT,
+-	RTW89_FWCMD_C2HREG_FUNC_NULL = 0xFF
++	RTW89_FWCMD_C2HREG_FUNC_WOW_CPUIO_RX_ACK = 0xA,
++	RTW89_FWCMD_C2HREG_FUNC_NULL = 0xFF,
+ };
+ 
+ enum rtw89_fw_c2h_category {
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
+index 28e07ff7eb2a..38124f9a178b 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.c
++++ b/drivers/net/wireless/realtek/rtw89/mac.c
+@@ -6265,6 +6265,41 @@ int rtw89_mac_ptk_drop_by_band_and_wait(struct rtw89_dev *rtwdev,
  	return ret;
  }
  
-diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
-index d4c8799d6f2e..19001130ad94 100644
---- a/drivers/net/wireless/realtek/rtw89/pci.c
-+++ b/drivers/net/wireless/realtek/rtw89/pci.c
-@@ -218,7 +218,7 @@ int rtw89_pci_sync_skb_for_device_and_validate_rx_info(struct rtw89_dev *rtwdev,
- 	return ret;
- }
- 
--static void rtw89_pci_ctrl_txdma_ch_pcie(struct rtw89_dev *rtwdev, bool enable)
-+static void rtw89_pci_ctrl_txdma_ch_ax(struct rtw89_dev *rtwdev, bool enable)
- {
- 	const struct rtw89_pci_info *info = rtwdev->pci_info;
- 	const struct rtw89_reg_def *dma_stop1 = &info->dma_stop1;
-@@ -235,7 +235,7 @@ static void rtw89_pci_ctrl_txdma_ch_pcie(struct rtw89_dev *rtwdev, bool enable)
- 	}
- }
- 
--static void rtw89_pci_ctrl_txdma_fw_ch_pcie(struct rtw89_dev *rtwdev, bool enable)
-+static void rtw89_pci_ctrl_txdma_fw_ch_ax(struct rtw89_dev *rtwdev, bool enable)
- {
- 	const struct rtw89_pci_info *info = rtwdev->pci_info;
- 	const struct rtw89_reg_def *dma_stop1 = &info->dma_stop1;
-@@ -2524,7 +2524,7 @@ static void rtw89_pci_clr_idx_all_ax(struct rtw89_dev *rtwdev)
- 			  B_AX_CLR_RXQ_IDX | B_AX_CLR_RPQ_IDX);
- }
- 
--static int rtw89_poll_txdma_ch_idle_pcie(struct rtw89_dev *rtwdev)
-+static int rtw89_pci_poll_txdma_ch_idle_ax(struct rtw89_dev *rtwdev)
- {
- 	const struct rtw89_pci_info *info = rtwdev->pci_info;
- 	u32 ret, check, dma_busy;
-@@ -2551,7 +2551,7 @@ static int rtw89_poll_txdma_ch_idle_pcie(struct rtw89_dev *rtwdev)
- 	return 0;
- }
- 
--static int rtw89_poll_rxdma_ch_idle_pcie(struct rtw89_dev *rtwdev)
-+static int rtw89_pci_poll_rxdma_ch_idle_ax(struct rtw89_dev *rtwdev)
- {
- 	const struct rtw89_pci_info *info = rtwdev->pci_info;
- 	u32 ret, check, dma_busy;
-@@ -2571,13 +2571,13 @@ static int rtw89_pci_poll_dma_all_idle(struct rtw89_dev *rtwdev)
- {
- 	u32 ret;
- 
--	ret = rtw89_poll_txdma_ch_idle_pcie(rtwdev);
-+	ret = rtw89_pci_poll_txdma_ch_idle_ax(rtwdev);
- 	if (ret) {
- 		rtw89_err(rtwdev, "txdma ch busy\n");
- 		return ret;
- 	}
- 
--	ret = rtw89_poll_rxdma_ch_idle_pcie(rtwdev);
-+	ret = rtw89_pci_poll_rxdma_ch_idle_ax(rtwdev);
- 	if (ret) {
- 		rtw89_err(rtwdev, "rxdma ch busy\n");
- 		return ret;
-@@ -2756,8 +2756,8 @@ static int rtw89_pci_ops_mac_pre_init_ax(struct rtw89_dev *rtwdev)
- 	}
- 
- 	/* disable all channels except to FW CMD channel to download firmware */
--	rtw89_pci_ctrl_txdma_ch_pcie(rtwdev, false);
--	rtw89_pci_ctrl_txdma_fw_ch_pcie(rtwdev, true);
-+	rtw89_pci_ctrl_txdma_ch_ax(rtwdev, false);
-+	rtw89_pci_ctrl_txdma_fw_ch_ax(rtwdev, true);
- 
- 	/* start DMA activities */
- 	rtw89_pci_ctrl_dma_all(rtwdev, true);
-@@ -2870,7 +2870,7 @@ static int rtw89_pci_ops_mac_post_init_ax(struct rtw89_dev *rtwdev)
- 	}
- 
- 	/* enable DMA for all queues */
--	rtw89_pci_ctrl_txdma_ch_pcie(rtwdev, true);
-+	rtw89_pci_ctrl_txdma_ch_ax(rtwdev, true);
- 
- 	/* Release PCI IO */
- 	rtw89_write32_clr(rtwdev, info->dma_stop1.addr,
-@@ -4093,6 +4093,10 @@ const struct rtw89_pci_gen_def rtw89_pci_gen_ax = {
- 	.lv1rst_stop_dma = rtw89_pci_lv1rst_stop_dma_ax,
- 	.lv1rst_start_dma = rtw89_pci_lv1rst_start_dma_ax,
- 
-+	.ctrl_txdma_ch = rtw89_pci_ctrl_txdma_ch_ax,
-+	.ctrl_txdma_fw_ch = rtw89_pci_ctrl_txdma_fw_ch_ax,
-+	.poll_txdma_ch_idle = rtw89_pci_poll_txdma_ch_idle_ax,
-+
- 	.aspm_set = rtw89_pci_aspm_set_ax,
- 	.clkreq_set = rtw89_pci_clkreq_set_ax,
- 	.l1ss_set = rtw89_pci_l1ss_set_ax,
-@@ -4130,10 +4134,11 @@ static const struct rtw89_hci_ops rtw89_pci_ops = {
- 	.recovery_start = rtw89_pci_ops_recovery_start,
- 	.recovery_complete = rtw89_pci_ops_recovery_complete,
- 
--	.ctrl_txdma_ch	= rtw89_pci_ctrl_txdma_ch_pcie,
--	.ctrl_txdma_fw_ch = rtw89_pci_ctrl_txdma_fw_ch_pcie,
-+	.ctrl_txdma_ch	= rtw89_pci_ctrl_txdma_ch,
-+	.ctrl_txdma_fw_ch = rtw89_pci_ctrl_txdma_fw_ch,
- 	.ctrl_trxhci	= rtw89_pci_ctrl_dma_trx,
--	.poll_txdma_ch	= rtw89_poll_txdma_ch_idle_pcie,
-+	.poll_txdma_ch_idle = rtw89_pci_poll_txdma_ch_idle,
-+
- 	.clr_idx_all	= rtw89_pci_clr_idx_all,
- 	.clear		= rtw89_pci_clear_resource,
- 	.disable_intr	= rtw89_pci_disable_intr_lock,
-diff --git a/drivers/net/wireless/realtek/rtw89/pci.h b/drivers/net/wireless/realtek/rtw89/pci.h
-index c1954cb12030..4a817dd9822e 100644
---- a/drivers/net/wireless/realtek/rtw89/pci.h
-+++ b/drivers/net/wireless/realtek/rtw89/pci.h
-@@ -1243,6 +1243,10 @@ struct rtw89_pci_gen_def {
- 	int (*lv1rst_stop_dma)(struct rtw89_dev *rtwdev);
- 	int (*lv1rst_start_dma)(struct rtw89_dev *rtwdev);
- 
-+	void (*ctrl_txdma_ch)(struct rtw89_dev *rtwdev, bool enable);
-+	void (*ctrl_txdma_fw_ch)(struct rtw89_dev *rtwdev, bool enable);
-+	int (*poll_txdma_ch_idle)(struct rtw89_dev *rtwdev);
-+
- 	void (*aspm_set)(struct rtw89_dev *rtwdev, bool enable);
- 	void (*clkreq_set)(struct rtw89_dev *rtwdev, bool enable);
- 	void (*l1ss_set)(struct rtw89_dev *rtwdev, bool enable);
-@@ -1709,4 +1713,27 @@ static inline int rtw89_pci_reset_bdram(struct rtw89_dev *rtwdev)
- 	return gen_def->rst_bdram(rtwdev);
- }
- 
-+static inline void rtw89_pci_ctrl_txdma_ch(struct rtw89_dev *rtwdev, bool enable)
++static int rtw89_wow_config_mac_ax(struct rtw89_dev *rtwdev, bool enable_wow)
 +{
-+	const struct rtw89_pci_info *info = rtwdev->pci_info;
-+	const struct rtw89_pci_gen_def *gen_def = info->gen_def;
++	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
++	int ret;
 +
-+	return gen_def->ctrl_txdma_ch(rtwdev, enable);
++	if (enable_wow) {
++		ret = rtw89_mac_resize_ple_rx_quota(rtwdev, true);
++		if (ret) {
++			rtw89_err(rtwdev, "[ERR]patch rx qta %d\n", ret);
++			return ret;
++		}
++
++		rtw89_write32_set(rtwdev, R_AX_RX_FUNCTION_STOP, B_AX_HDR_RX_STOP);
++		rtw89_write32_clr(rtwdev, mac->rx_fltr, B_AX_SNIFFER_MODE);
++		rtw89_mac_cfg_ppdu_status(rtwdev, RTW89_MAC_0, false);
++		rtw89_write32(rtwdev, R_AX_ACTION_FWD0, 0);
++		rtw89_write32(rtwdev, R_AX_ACTION_FWD1, 0);
++		rtw89_write32(rtwdev, R_AX_TF_FWD, 0);
++		rtw89_write32(rtwdev, R_AX_HW_RPT_FWD, 0);
++	} else {
++		ret = rtw89_mac_resize_ple_rx_quota(rtwdev, false);
++		if (ret) {
++			rtw89_err(rtwdev, "[ERR]patch rx qta %d\n", ret);
++			return ret;
++		}
++
++		rtw89_write32_clr(rtwdev, R_AX_RX_FUNCTION_STOP, B_AX_HDR_RX_STOP);
++		rtw89_mac_cfg_ppdu_status(rtwdev, RTW89_MAC_0, true);
++		rtw89_write32(rtwdev, R_AX_ACTION_FWD0, TRXCFG_MPDU_PROC_ACT_FRWD);
++		rtw89_write32(rtwdev, R_AX_TF_FWD, TRXCFG_MPDU_PROC_TF_FRWD);
++	}
++
++	return 0;
 +}
 +
-+static inline void rtw89_pci_ctrl_txdma_fw_ch(struct rtw89_dev *rtwdev, bool enable)
-+{
-+	const struct rtw89_pci_info *info = rtwdev->pci_info;
-+	const struct rtw89_pci_gen_def *gen_def = info->gen_def;
+ static u8 rtw89_fw_get_rdy_ax(struct rtw89_dev *rtwdev, enum rtw89_fwdl_check_type type)
+ {
+ 	u8 val = rtw89_read8(rtwdev, R_AX_WCPU_FW_CTRL);
+@@ -6353,5 +6388,7 @@ const struct rtw89_mac_gen_def rtw89_mac_gen_ax = {
+ 
+ 	.add_chan_list = rtw89_hw_scan_add_chan_list,
+ 	.scan_offload = rtw89_fw_h2c_scan_offload,
 +
-+	return gen_def->ctrl_txdma_fw_ch(rtwdev, enable);
-+}
++	.wow_config_mac = rtw89_wow_config_mac_ax,
+ };
+ EXPORT_SYMBOL(rtw89_mac_gen_ax);
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
+index 8904ae222331..331beeabae09 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.h
++++ b/drivers/net/wireless/realtek/rtw89/mac.h
+@@ -169,6 +169,12 @@ enum rtw89_mac_ax_l0_to_l1_event {
+ 	MAC_AX_L0_TO_L1_EVENT_MAX = 15,
+ };
+ 
++enum rtw89_mac_wow_fw_status {
++	WOWLAN_NOT_READY = 0x00,
++	WOWLAN_SLEEP_READY = 0x01,
++	WOWLAN_RESUME_READY = 0x02,
++};
 +
-+static inline int rtw89_pci_poll_txdma_ch_idle(struct rtw89_dev *rtwdev)
-+{
-+	const struct rtw89_pci_info *info = rtwdev->pci_info;
-+	const struct rtw89_pci_gen_def *gen_def = info->gen_def;
+ #define RTW89_PORT_OFFSET_TU_TO_32US(shift_tu) ((shift_tu) * 1024 / 32)
+ 
+ enum rtw89_mac_dbg_port_sel {
+@@ -977,6 +983,8 @@ struct rtw89_mac_gen_def {
+ 	int (*scan_offload)(struct rtw89_dev *rtwdev,
+ 			    struct rtw89_scan_option *option,
+ 			    struct rtw89_vif *rtwvif);
 +
-+	return gen_def->poll_txdma_ch_idle(rtwdev);
-+}
- #endif
-diff --git a/drivers/net/wireless/realtek/rtw89/pci_be.c b/drivers/net/wireless/realtek/rtw89/pci_be.c
-index 0276d5d05925..1a3f02c687f7 100644
---- a/drivers/net/wireless/realtek/rtw89/pci_be.c
-+++ b/drivers/net/wireless/realtek/rtw89/pci_be.c
-@@ -317,8 +317,7 @@ static void rtw89_pci_ser_setting_be(struct rtw89_dev *rtwdev)
- 	rtw89_write32(rtwdev, R_BE_REG_PL1_MASK, val32);
++	int (*wow_config_mac)(struct rtw89_dev *rtwdev, bool enable_wow);
+ };
+ 
+ extern const struct rtw89_mac_gen_def rtw89_mac_gen_ax;
+diff --git a/drivers/net/wireless/realtek/rtw89/mac_be.c b/drivers/net/wireless/realtek/rtw89/mac_be.c
+index ffa185ba0ab7..cc7d3b3fab90 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac_be.c
++++ b/drivers/net/wireless/realtek/rtw89/mac_be.c
+@@ -2193,6 +2193,52 @@ static void rtw89_mac_dump_qta_lost_be(struct rtw89_dev *rtwdev)
+ 	dump_err_status_dispatcher_be(rtwdev);
  }
  
--static void rtw89_pci_ctrl_txdma_ch_be(struct rtw89_dev *rtwdev, bool all_en,
--				       bool h2c_en)
-+static void rtw89_pci_ctrl_txdma_ch_be(struct rtw89_dev *rtwdev, bool enable)
- {
- 	u32 mask_all;
- 	u32 val;
-@@ -331,12 +330,19 @@ static void rtw89_pci_ctrl_txdma_ch_be(struct rtw89_dev *rtwdev, bool all_en,
- 	val = rtw89_read32(rtwdev, R_BE_HAXI_DMA_STOP1);
- 	val |= B_BE_STOP_CH13 | B_BE_STOP_CH14;
- 
--	if (all_en)
-+	if (enable)
- 		val &= ~mask_all;
- 	else
- 		val |= mask_all;
- 
--	if (h2c_en)
-+	rtw89_write32(rtwdev, R_BE_HAXI_DMA_STOP1, val);
++static int rtw89_mac_cpu_io_rx(struct rtw89_dev *rtwdev, bool wow_enable)
++{
++	struct rtw89_mac_h2c_info h2c_info = {};
++	struct rtw89_mac_c2h_info c2h_info = {};
++	u32 ret;
++
++	h2c_info.id = RTW89_FWCMD_H2CREG_FUNC_WOW_CPUIO_RX_CTRL;
++	h2c_info.content_len = sizeof(h2c_info.u.hdr);
++	h2c_info.u.hdr.w0 = u32_encode_bits(wow_enable, RTW89_H2CREG_WOW_CPUIO_RX_CTRL_EN);
++
++	ret = rtw89_fw_msg_reg(rtwdev, &h2c_info, &c2h_info);
++	if (ret)
++		return ret;
++
++	if (c2h_info.id != RTW89_FWCMD_C2HREG_FUNC_WOW_CPUIO_RX_ACK)
++		ret = -EINVAL;
++
++	return ret;
 +}
 +
-+static void rtw89_pci_ctrl_txdma_fw_ch_be(struct rtw89_dev *rtwdev, bool enable)
++static int rtw89_wow_config_mac_be(struct rtw89_dev *rtwdev, bool enable_wow)
 +{
-+	u32 val = rtw89_read32(rtwdev, R_BE_HAXI_DMA_STOP1);
++	if (enable_wow) {
++		rtw89_write32_set(rtwdev, R_BE_RX_STOP, B_BE_HOST_RX_STOP);
++		rtw89_write32_clr(rtwdev, R_BE_RX_FLTR_OPT, B_BE_SNIFFER_MODE);
++		rtw89_mac_cpu_io_rx(rtwdev, enable_wow);
++		rtw89_mac_cfg_ppdu_status(rtwdev, RTW89_MAC_0, false);
++		rtw89_write32(rtwdev, R_BE_FWD_ERR, 0);
++		rtw89_write32(rtwdev, R_BE_FWD_ACTN0, 0);
++		rtw89_write32(rtwdev, R_BE_FWD_ACTN1, 0);
++		rtw89_write32(rtwdev, R_BE_FWD_ACTN2, 0);
++		rtw89_write32(rtwdev, R_BE_FWD_TF0, 0);
++		rtw89_write32(rtwdev, R_BE_FWD_TF1, 0);
++		rtw89_write32(rtwdev, R_BE_FWD_ERR, 0);
++		rtw89_write32(rtwdev, R_BE_HW_PPDU_STATUS, 0);
++		rtw89_write8(rtwdev, R_BE_DBG_WOW_READY, WOWLAN_NOT_READY);
++	} else {
++		rtw89_mac_cpu_io_rx(rtwdev, enable_wow);
++		rtw89_write32_clr(rtwdev, R_BE_RX_STOP, B_BE_HOST_RX_STOP);
++		rtw89_write32_set(rtwdev, R_BE_RX_FLTR_OPT, R_BE_RX_FLTR_OPT);
++		rtw89_mac_cfg_ppdu_status(rtwdev, RTW89_MAC_0, true);
++	}
 +
-+	if (enable)
- 		val &= ~B_BE_STOP_CH12;
- 	else
- 		val |= B_BE_STOP_CH12;
-@@ -375,7 +381,8 @@ static int rtw89_pci_ops_mac_pre_init_be(struct rtw89_dev *rtwdev)
- 	rtw89_pci_pcie_setting_be(rtwdev);
- 	rtw89_pci_ser_setting_be(rtwdev);
- 
--	rtw89_pci_ctrl_txdma_ch_be(rtwdev, false, true);
-+	rtw89_pci_ctrl_txdma_ch_be(rtwdev, false);
-+	rtw89_pci_ctrl_txdma_fw_ch_be(rtwdev, true);
- 	rtw89_pci_ctrl_trxdma_pcie_be(rtwdev, MAC_AX_PCIE_ENABLE,
- 				      MAC_AX_PCIE_ENABLE, MAC_AX_PCIE_ENABLE);
- 
-@@ -485,7 +492,8 @@ static int rtw89_pci_ops_mac_post_init_be(struct rtw89_dev *rtwdev)
- 	rtw89_pci_ctrl_trxdma_pcie_be(rtwdev, MAC_AX_PCIE_IGNORE,
- 				      MAC_AX_PCIE_IGNORE, MAC_AX_PCIE_ENABLE);
- 	rtw89_pci_ctrl_wpdma_pcie_be(rtwdev, true);
--	rtw89_pci_ctrl_txdma_ch_be(rtwdev, true, true);
-+	rtw89_pci_ctrl_txdma_ch_be(rtwdev, true);
-+	rtw89_pci_ctrl_txdma_fw_ch_be(rtwdev, true);
- 	rtw89_pci_configure_mit_be(rtwdev);
- 
- 	return 0;
-@@ -559,6 +567,10 @@ const struct rtw89_pci_gen_def rtw89_pci_gen_be = {
- 	.lv1rst_stop_dma = rtw89_pci_lv1rst_stop_dma_be,
- 	.lv1rst_start_dma = rtw89_pci_lv1rst_start_dma_be,
- 
-+	.ctrl_txdma_ch = rtw89_pci_ctrl_txdma_ch_be,
-+	.ctrl_txdma_fw_ch = rtw89_pci_ctrl_txdma_fw_ch_be,
-+	.poll_txdma_ch_idle = rtw89_pci_poll_txdma_ch_idle_be,
++	return 0;
++}
 +
- 	.aspm_set = rtw89_pci_aspm_set_be,
- 	.clkreq_set = rtw89_pci_clkreq_set_be,
- 	.l1ss_set = rtw89_pci_l1ss_set_be,
+ static void rtw89_mac_dump_cmac_err_status_be(struct rtw89_dev *rtwdev,
+ 					      u8 band)
+ {
+@@ -2452,5 +2498,7 @@ const struct rtw89_mac_gen_def rtw89_mac_gen_be = {
+ 
+ 	.add_chan_list = rtw89_hw_scan_add_chan_list_be,
+ 	.scan_offload = rtw89_fw_h2c_scan_offload_be,
++
++	.wow_config_mac = rtw89_wow_config_mac_be,
+ };
+ EXPORT_SYMBOL(rtw89_mac_gen_be);
+diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
+index 9419960d1faf..1dca93d0401d 100644
+--- a/drivers/net/wireless/realtek/rtw89/reg.h
++++ b/drivers/net/wireless/realtek/rtw89/reg.h
+@@ -4451,6 +4451,9 @@
+ #define B_BE_HCI_RXDMA_EN BIT(1)
+ #define B_BE_HCI_TXDMA_EN BIT(0)
+ 
++#define R_BE_DBG_WOW_READY 0x815E
++#define B_BE_DBG_WOW_READY GENMASK(7, 0)
++
+ #define R_BE_DMAC_FUNC_EN 0x8400
+ #define B_BE_DMAC_CRPRT BIT(31)
+ #define B_BE_MAC_FUNC_EN BIT(30)
+@@ -5004,6 +5007,12 @@
+ 			       B_BE_CR_WRFF_OVERFLOW_ERR_INT_EN | \
+ 			       B_BE_CR_WRFF_UNDERFLOW_ERR_INT_EN)
+ 
++#define R_BE_RX_STOP 0x8914
++#define B_BE_CPU_RX_STOP BIT(17)
++#define B_BE_HOST_RX_STOP BIT(16)
++#define B_BE_CPU_RX_CH_STOP_MSK GENMASK(15, 8)
++#define B_BE_HOST_RX_CH_STOP_MSK GENMASK(5, 0)
++
+ #define R_BE_DISP_FWD_WLAN_0 0x8938
+ #define B_BE_FWD_WLAN_CPU_TYPE_13_MASK GENMASK(31, 30)
+ #define B_BE_FWD_WLAN_CPU_TYPE_12_MASK GENMASK(29, 28)
+@@ -5519,6 +5528,13 @@
+ #define B_BE_DROP_NONDMA_PPDU BIT(2)
+ #define B_BE_APPEND_FCS BIT(0)
+ 
++#define R_BE_FWD_ERR 0x9C10
++#define R_BE_FWD_ACTN0 0x9C14
++#define R_BE_FWD_ACTN1 0x9C18
++#define R_BE_FWD_ACTN2 0x9C1C
++#define R_BE_FWD_TF0 0x9C20
++#define R_BE_FWD_TF1 0x9C24
++
+ #define R_BE_HW_PPDU_STATUS 0x9C30
+ #define B_BE_FWD_RPKTTYPE_MASK GENMASK(31, 26)
+ #define B_BE_FWD_PPDU_PRTID_MASK GENMASK(25, 23)
 diff --git a/drivers/net/wireless/realtek/rtw89/wow.c b/drivers/net/wireless/realtek/rtw89/wow.c
-index 852f8a7794be..286c59931fca 100644
+index 286c59931fca..689a4e94387a 100644
 --- a/drivers/net/wireless/realtek/rtw89/wow.c
 +++ b/drivers/net/wireless/realtek/rtw89/wow.c
-@@ -560,7 +560,7 @@ static int rtw89_wow_enable_trx_pre(struct rtw89_dev *rtwdev)
+@@ -41,34 +41,8 @@ static void rtw89_wow_leave_lps(struct rtw89_dev *rtwdev)
+ static int rtw89_wow_config_mac(struct rtw89_dev *rtwdev, bool enable_wow)
+ {
+ 	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
+-	int ret;
  
- 	rtw89_mac_ptk_drop_by_band_and_wait(rtwdev, RTW89_MAC_0);
+-	if (enable_wow) {
+-		ret = rtw89_mac_resize_ple_rx_quota(rtwdev, true);
+-		if (ret) {
+-			rtw89_err(rtwdev, "[ERR]patch rx qta %d\n", ret);
+-			return ret;
+-		}
+-		rtw89_write32_set(rtwdev, R_AX_RX_FUNCTION_STOP, B_AX_HDR_RX_STOP);
+-		rtw89_write32_clr(rtwdev, mac->rx_fltr, B_AX_SNIFFER_MODE);
+-		rtw89_mac_cfg_ppdu_status(rtwdev, RTW89_MAC_0, false);
+-		rtw89_write32(rtwdev, R_AX_ACTION_FWD0, 0);
+-		rtw89_write32(rtwdev, R_AX_ACTION_FWD1, 0);
+-		rtw89_write32(rtwdev, R_AX_TF_FWD, 0);
+-		rtw89_write32(rtwdev, R_AX_HW_RPT_FWD, 0);
+-	} else {
+-		ret = rtw89_mac_resize_ple_rx_quota(rtwdev, false);
+-		if (ret) {
+-			rtw89_err(rtwdev, "[ERR]patch rx qta %d\n", ret);
+-			return ret;
+-		}
+-		rtw89_write32_clr(rtwdev, R_AX_RX_FUNCTION_STOP, B_AX_HDR_RX_STOP);
+-		rtw89_mac_cfg_ppdu_status(rtwdev, RTW89_MAC_0, true);
+-		rtw89_write32(rtwdev, R_AX_ACTION_FWD0, TRXCFG_MPDU_PROC_ACT_FRWD);
+-		rtw89_write32(rtwdev, R_AX_TF_FWD, TRXCFG_MPDU_PROC_TF_FRWD);
+-	}
+-
+-	return 0;
++	return mac->wow_config_mac(rtwdev, enable_wow);
+ }
  
--	ret = rtw89_hci_poll_txdma_ch(rtwdev);
-+	ret = rtw89_hci_poll_txdma_ch_idle(rtwdev);
- 	if (ret) {
- 		rtw89_err(rtwdev, "txdma ch busy\n");
- 		return ret;
-@@ -583,7 +583,7 @@ static int rtw89_wow_enable_trx_post(struct rtw89_dev *rtwdev)
- 	rtw89_hci_disable_intr(rtwdev);
- 	rtw89_hci_ctrl_trxhci(rtwdev, false);
- 
--	ret = rtw89_hci_poll_txdma_ch(rtwdev);
-+	ret = rtw89_hci_poll_txdma_ch_idle(rtwdev);
- 	if (ret) {
- 		rtw89_err(rtwdev, "failed to poll txdma ch idle pcie\n");
- 		return ret;
+ static void rtw89_wow_set_rx_filter(struct rtw89_dev *rtwdev, bool enable)
 -- 
 2.25.1
 
