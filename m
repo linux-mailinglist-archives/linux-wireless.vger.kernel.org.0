@@ -1,94 +1,141 @@
-Return-Path: <linux-wireless+bounces-4338-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4339-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 157A8870557
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Mar 2024 16:23:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46DEF870611
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Mar 2024 16:46:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5C7E2813E2
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Mar 2024 15:23:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 791641C2113B
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Mar 2024 15:46:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80AD33FE58;
-	Mon,  4 Mar 2024 15:23:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9316C47A74;
+	Mon,  4 Mar 2024 15:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="FmAVzTGp"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="WjmK5HMq"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EB0F3F9C0
-	for <linux-wireless@vger.kernel.org>; Mon,  4 Mar 2024 15:23:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7D803F9E8;
+	Mon,  4 Mar 2024 15:43:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709565808; cv=none; b=U9nFUceE7xdzhlq3UWDrHpgFNE7dA/fp9xOLH/t2IVfbBTOLzEqgDwrnJYJ3zSt6nVc2E3Sgkv+HJdzhI2HsDzpKNj9y+CwoK9cE9Wopu9DK6qjRwWUFZHz58lJsn0/7r4NdfzFv6LwGMJ7LfGzzanw8KTOrlOxN4gi1quceQbs=
+	t=1709567024; cv=none; b=lKxlXDrT1aK4MQy6bMzwasy9fRkTtKzNgeWEmJdq31zruNq7X+/62AYa0EwAohANB56ZvE9hBi5L6lGSAk6Klniejm0W0sSgip48sivFywsSeCWhA3XKIRukQeVX5SPGJcTiOAFPgerHhUAf5PLTU6pTaZSW7dQJp6KE6WCPIF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709565808; c=relaxed/simple;
-	bh=9T3EbTHONBgQcb3H7lylWbmDBuwbd0RkfktleVFc5fw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=LtUrYJrHAcclUOZg5TeSQOiFp34ISFA24mQmOo3cXcoqIJ7FY0946VKT522Y1Zvql6K3xHq5fKrk/tu7vQushIg8yR7nap1S3sygFCSEtVzvD4L1bXlmg9J7DXOgHEs979qCIks7eIh6vOZcAbd+8r4mbaYKceRkYBpTnt+7mBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=FmAVzTGp; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=9T3EbTHONBgQcb3H7lylWbmDBuwbd0RkfktleVFc5fw=;
-	t=1709565805; x=1710775405; b=FmAVzTGpnyLq8UA4MCkl71SaX0l7kWjSQ/lUnE0KMpvOtYl
-	apNeDgampNmonUY0wui1rZ82bZpIZK5xnwB3rLQ35WZEXltoOVrkqaEtu35/JT9TfZYheokqLHwoD
-	U6hdSzRuv6GRHC4kBm/ecoIu50fBplHMCmjgNAqdSRD7dhp1OtQ3WZZ1/uZWjuYd77FrvOxZwEvxf
-	M4449bJswDmUrKe76zmyd37IOoGxU2a46Md5K2u08GTMLR6+dZbyejU/PpClHyeGgUIn5rpOw2tbw
-	3dcGQE7DU28ZrpAIy8uKY0jnOT4iVFLXv29L8JDnTo6fa0QGIu39SL8DFIN0t4DQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1rhA9q-00000001RxJ-1MPU;
-	Mon, 04 Mar 2024 16:23:14 +0100
-Message-ID: <91955fe006705879b5debbb1618262754ea4be7a.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: mac80211: Adjust CQM handling for MLO
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: linux-wireless@vger.kernel.org, Ilan Peer <ilan.peer@intel.com>, Miriam
-	Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Date: Mon, 04 Mar 2024 16:23:13 +0100
-In-Reply-To: <8734t682er.fsf@kernel.org>
-References: 
-	<20240228094753.bf6a3fefe553.Id738810b73e1087e01d5885508b70a3631707627@changeid>
-	 <8734t682er.fsf@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
+	s=arc-20240116; t=1709567024; c=relaxed/simple;
+	bh=xuZd+cgrnZMlbvNt5kc6N4y+J5AumquEEyJsSE57UGA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=SEmRr2Ch3b+kkcO7iuAG9LJmvdHMyav/qAM/Uith5UG1BWZl44q9Y3fVau5BtNl1WPfoQQiwOKtNaB3RGJ+PL1b3Mcm9A7ngeojSnaigjX1QaRbWQQtNw4Y6hYaattozPbt4+hxlU8DOdOVtTPnyckXX6a4ih1h9QBfo8SSCgys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=WjmK5HMq; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 424DpTpY012644;
+	Mon, 4 Mar 2024 15:43:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=deRVXEzWEHdzZK+Mwu06ZOOus810hUYZYRCV3UNPgGM=; b=Wj
+	mK5HMqhA31kVDitqHBmpfSjz408304m6gbeR7htqsgtJ0+RCAQt5Vy2aN5COemd9
+	kp2+Du0uDiyouanV0IJVM1YOlGvav/5SkrXC0K9Hdvh1HXkIfYlpGOua/s6tCNce
+	oFj31YU5XGOlW0tyUJYMAQx7p+F44bTpLqd8fMamXxoS0/pyRy0LUrJ3SwSeQEOm
+	YtrJZnnn8alfzPdm/fAQ/GsM4mryJLgITN2+A5RDrC1akMzU0yP1sRFizmLsIYFr
+	WFX2lGwKKwTl7bg0Z9iu6G/8aO+HBkuhoOzOAXpLiAxxHXp/++MaQUJkkQuasana
+	z7ghdqASt0d/Ml8qGr2A==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wn5b39ek4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 04 Mar 2024 15:42:59 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 424FgwxO020247
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 4 Mar 2024 15:42:58 GMT
+Received: from [10.110.86.150] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Mon, 4 Mar
+ 2024 07:42:58 -0800
+Message-ID: <95c5d498-e00c-4f51-9517-1881a9b3585d@quicinc.com>
+Date: Mon, 4 Mar 2024 07:42:57 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 3/3] wifi: ath11k: support hibernation
+Content-Language: en-US
+To: Baochen Qiang <quic_bqiang@quicinc.com>, <ath11k@lists.infradead.org>,
+        <manivannan.sadhasivam@linaro.org>
+CC: <linux-wireless@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <mhi@lists.linux.dev>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <netdev@vger.kernel.org>
+References: <20240304060932.80839-1-quic_bqiang@quicinc.com>
+ <20240304060932.80839-4-quic_bqiang@quicinc.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20240304060932.80839-4-quic_bqiang@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: hrrJl6C6UIcbQ-X-j1sKrhXvHn1IHjTX
+X-Proofpoint-ORIG-GUID: hrrJl6C6UIcbQ-X-j1sKrhXvHn1IHjTX
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-04_11,2024-03-04_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
+ mlxlogscore=692 lowpriorityscore=0 suspectscore=0 priorityscore=1501
+ spamscore=0 clxscore=1015 mlxscore=0 adultscore=0 impostorscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2402120000 definitions=main-2403040120
 
-On Mon, 2024-03-04 at 17:03 +0200, Kalle Valo wrote:
-> Johannes Berg <johannes@sipsolutions.net> writes:
->=20
-> > From: Ilan Peer <ilan.peer@intel.com>
-> >=20
-> > The CQM handling did not consider the MLO case and thus notified
-> > a not-existing link with the CQM change. To fix this, propagate
-> > the CQM notification to all the active links (handling both the
-> > non-MLO and MLO cases).
-> >=20
-> > TODO: this currently propagates the same configuration to all
-> > links regardless of the band. This might not be the correct
-> > approach as different links might need to be configured with
-> > different values.
->=20
-> Is that TODO link there intentionally?
->=20
+On 3/3/2024 10:09 PM, Baochen Qiang wrote:
+> Now that all infrastructure is in place and ath11k is fixed to handle all the
+> corner cases, power down the ath11k firmware during suspend and power it back
+> up during resume. This fixes the problem when using hibernation with ath11k PCI
+> devices.
+> 
+> For suspend, two conditions needs to be satisfied:
+>         1. since MHI channel unprepare would be done in late suspend stage,
+>            ath11k needs to get all QMI-dependent things done before that stage.
+>         2. and because unprepare MHI channels requires a working MHI stack,
+>            ath11k is not allowed to call mhi_power_down() until that finishes.
+> So the original suspend callback is separated into two parts: the first part
+> handles all QMI-dependent things in suspend callback; while the second part
+> powers down MHI in suspend_late callback. This is valid because kernel calls
+> ath11k's suspend callback before all suspend_late callbacks, making the first
+> condition happy. And because MHI devices are children of ath11k device
+> (ab->dev), kernel guarantees that ath11k's suspend_late callback is called
+> after QRTR's suspend_late callback, this satisfies the second condition.
+> 
+> Above analysis also applies to resume process. so the original resume
+> callback is separated into two parts: the first part powers up MHI stack
+> in resume_early callback, this guarantees MHI stack is working when
+> QRTR tries to prepare MHI channels (kernel calls QRTR's resume_early callback
+> after ath11k's resume_early callback, due to the child-father relationship);
+> the second part waits for the completion of restart, which won't fail now
+> since MHI channels are ready for use by QMI.
+> 
+> Another notable change is in power down path, we tell mhi_power_down() to not
+> to destroy MHI devices, making it possible for QRTR to help unprepare/prepare
+> MHI channels, and finally get us rid of the probe-defer issue when resume.
+> 
+> Also change related code due to interface changes.
+> 
+> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
+> 
+> Tested-by: Takashi Iwai <tiwai@suse.de>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
 
-Yeah, we need to consider this in the context of what wpa_s wants to do,
-etc. So this _helps_, but it may not appropriately resolve the issue of
-what this API really does.
+As was the case in the MHI patch, this looks strange. If you are adding
+Kalle's SOB just because he was a proxy for v1, please remove it. But if
+Kalle provided significant modifications then you should add a
+Co-developed-by: tag.
 
-johannes
+/jeff
 
