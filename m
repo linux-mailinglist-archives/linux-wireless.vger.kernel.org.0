@@ -1,163 +1,171 @@
-Return-Path: <linux-wireless+bounces-4349-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4350-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 053DB870AD0
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Mar 2024 20:37:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F60E870AE5
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Mar 2024 20:46:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5EFD8B277FF
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Mar 2024 19:37:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9F0D0B214FB
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Mar 2024 19:46:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17B614653A;
-	Mon,  4 Mar 2024 19:37:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23EF179957;
+	Mon,  4 Mar 2024 19:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="l0z4duNt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hOz4Lfo2"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51F3478664
-	for <linux-wireless@vger.kernel.org>; Mon,  4 Mar 2024 19:37:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE9214653A;
+	Mon,  4 Mar 2024 19:46:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709581034; cv=none; b=b231w60wfNxAj7iIqt/qSHOpmZbTr0EPJd7rfj3zAkypbH79WVbnKWofKOu8o+60ZWscMuVQDSIE1t+JpsfOgQDUZCFFAjXUihf676zoN5eB3XiGbsC3KCZoJYSoBwlwwbule9tvGnVbu1cWPNSOglvlap6/N5E7Ng6hI5Bcnik=
+	t=1709581563; cv=none; b=WUVBmlz8mXz5D7MR4CC6EZEMTLC2IkBfw9lpCmioE1Ij5IuPReu0NCjfkfyPUiJakLNZBXFhsOb8ETKjwWCJoR+3Wq5OMW6Vcwbphe0pAWmCng2uUQuz5MOxIK2NuKRtidSPcmN5jld/l5K131qyIZAhXrVpn8tgG9ZUCLGXH3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709581034; c=relaxed/simple;
-	bh=zSZR47L3Q06bALQAjz7UncLPKPhky0zHAZkotbQNt6A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LUCgvp+Wmju8YNiQL7VMnc6xc2WPOjYtU98LNX27D9fyPhszk88xnvkqDC9KYa1gnkpY7Zpk20DDdBRo5slEWii3eANroml6fvceyzzt1zy2ZEVfp+LfUxiAqaCJ4CV53IP/h3P2rYRLFXY2min2wsKyuwLNzgRgS5Tgimrm5O8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=l0z4duNt; arc=none smtp.client-ip=209.85.219.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-dc23bf7e5aaso5395266276.0
-        for <linux-wireless@vger.kernel.org>; Mon, 04 Mar 2024 11:37:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1709581031; x=1710185831; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=J8fbNX2+d4xJt/r4hFrd8+YanInaSaY5k4I1MnWjcGk=;
-        b=l0z4duNtw3zloCFl5g7OB5ofhZctea9yY0BlKOw0HEIKf4WXshuib578vXtEL2EwvH
-         GPPuO/pCkH8Bi3+kaZQeZXahWPwE0OG6NNnxGmDbMyNRfkYdfS//KcnNRxTxAKr/tMPi
-         Xs9MPAXgHwfqLb2RM03F9hmVpPgIMFICDJSiG/l2ziJUOUc95KQ8qW9fKi3eFgNojwRu
-         zJ5EMRxALoaPqFW/TimTbImtJr+Wxt/QUOiNAxWDXMB9Tp5NbMyOG8WkGKopsdV6dEwz
-         UikGYJijpm4Ws1rwtL+E5gkiHmpbHelF5Ry0/ik4Y6I71GrHDJoviq/yClIWGNQFiCpm
-         hZwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709581031; x=1710185831;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=J8fbNX2+d4xJt/r4hFrd8+YanInaSaY5k4I1MnWjcGk=;
-        b=t8vgWMXx5bjtEgytIXbQ1Uxoo2DMiJnGDS/I/rr0XUH8MG4aV257EgAxOvBtDCL3PU
-         uCAva5fGgtME5SOowfT2rJALKojorz2dTzfbvC1gGuYVE97Q7maw5bCQcRePXIka4zXT
-         VoG4ik4gd7J0iV0d2QMBBAICjsd+LaTKFGpZAFPcUdjRjxEC6ZB2gUG9jwJOG9/Oz/aw
-         rOF9xUfuCjoEjOgXCz3ecTgOuZGvDUCJBg5nMeaMCRWZWIM1r9rRtbYsk7RJNbjL0c5k
-         kBKpJSlx6hpF8N56QgqkLy5qiQEPwCaQuHgd4iildtuYP5i3ay6Q02ILM+BnjXHyNyZE
-         cwRA==
-X-Forwarded-Encrypted: i=1; AJvYcCWTfQ6mMS63nweOx7B4iZ4Nkum7z0tCabd7CmmhCvK2YFVoy+JezRd4l5jQp1wsCts8fjU2CWg7afu0PvoNkd1vJYT40Cgt00+dEVXpaxg=
-X-Gm-Message-State: AOJu0YxFaPqZ87vS91gHW3MDJT/EM1G7hJ0nuCRbVXHgX9WBE+O9CBjw
-	yNZwfoFO7Ea4pUBiQR5u2/4C84c0w0deAuxJcvdA2IfiOaaIjRC5VcWEMBTtHwhVu2i4AKjw7aY
-	jBkqtxrLvZeS6b9Ear3hSXjnGtjSV6RZnlwjIhA==
-X-Google-Smtp-Source: AGHT+IFskfMkvbhuL7lWERfrGXnJYipiwsI8cQNOg7iPvazOr109t1rBNvJLaoiLtPJsynrOADgfWnkXxFwLlxr+9KE=
-X-Received: by 2002:a05:6902:544:b0:dcc:9e88:b15 with SMTP id
- z4-20020a056902054400b00dcc9e880b15mr7619178ybs.41.1709581031338; Mon, 04 Mar
- 2024 11:37:11 -0800 (PST)
+	s=arc-20240116; t=1709581563; c=relaxed/simple;
+	bh=/na7WEDTqbrrPLUSeebOS56+PR8+1l0yqJy14F4XQB8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kmx78zBfwMKvyaEpSIhT+/N//7ldQ17pBLnRc+RjH/5Z6o+BvW/OOTBkTVx2GOcPVJRZ+nsrM81dT+gX5la82Pwh30SLHWTe85chv5ypZAU5lMqv7ytOuw+KEX3MF8kgkDLctQZAIXA8GYENeRmV3YNVrKJSlsDw4PC8YiuBEdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hOz4Lfo2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2F8EC433C7;
+	Mon,  4 Mar 2024 19:45:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709581562;
+	bh=/na7WEDTqbrrPLUSeebOS56+PR8+1l0yqJy14F4XQB8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hOz4Lfo2GqFYe4VT6KfpdU8Ptl34mhm3G/feNyyc3raVGdIACu/37hz7dNKedSv2V
+	 7uGDcYwHEYKvYYrtNI4YUi8rKXZMntCegrcAdsMvz1XD99sztroSckd/H9EX0CwkXZ
+	 xjTd39t2zfjefzf0GXn2lq6JCa1VIuFY742G/sipfZ3MBFBzMpf6J/ZuKMulGoPOk7
+	 7JPq7dkzFa/NHiXy+pb+q9jbb69T7TdCCnpoQB94wFFImYACE5F1ub2QxafltZGjlr
+	 2qoLlIS8YQhih1MH7LgXVV3WkqA08SD0VsKBUetxROqWm8XyyHINaW0/ohLsxtZvMy
+	 Gy0vyQfiQCvxg==
+Date: Mon, 4 Mar 2024 19:45:57 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: Marc Gonzalez <mgonzalez@freebox.fr>, Kalle Valo <kvalo@kernel.org>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	ath10k <ath10k@lists.infradead.org>,
+	wireless <linux-wireless@vger.kernel.org>,
+	DT <devicetree@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Pierre-Hugues Husson <phhusson@freebox.fr>,
+	Jami Kettunen <jamipkettunen@gmail.com>,
+	Jeffrey Hugo <quic_jhugo@quicinc.com>
+Subject: Re: [PATCH 1/2] dt-bindings: net: wireless: ath10k: add
+ qcom,no-msa-ready-indicator prop
+Message-ID: <20240304-superior-vicinity-3dc6ca88141a@spud>
+References: <14daa98e-7fd3-4ebb-87bb-5d2c1fba679f@freebox.fr>
+ <b8de96c7-cbb6-4a09-a4d4-2c11b3ab3e01@freebox.fr>
+ <871q8wk7o3.fsf@kernel.org>
+ <3392f356-7b19-483d-b9f8-3bd84068fa52@freebox.fr>
+ <87wmqoilzf.fsf@kernel.org>
+ <20240229-ageless-primal-7a0544420949@spud>
+ <68a49964-7c05-4575-a4f3-35848c08fefc@freebox.fr>
+ <20240304-component-animator-e2ee0ab7574a@spud>
+ <CAA8EJpq5HQaO2E2Pd7yqUTsWyQ_pLDdyoWng8QmWTzYn5fv3PQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <14daa98e-7fd3-4ebb-87bb-5d2c1fba679f@freebox.fr>
- <b8de96c7-cbb6-4a09-a4d4-2c11b3ab3e01@freebox.fr> <871q8wk7o3.fsf@kernel.org>
- <3392f356-7b19-483d-b9f8-3bd84068fa52@freebox.fr> <87wmqoilzf.fsf@kernel.org>
- <20240229-ageless-primal-7a0544420949@spud> <68a49964-7c05-4575-a4f3-35848c08fefc@freebox.fr>
- <20240304-component-animator-e2ee0ab7574a@spud>
-In-Reply-To: <20240304-component-animator-e2ee0ab7574a@spud>
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Mon, 4 Mar 2024 21:37:00 +0200
-Message-ID: <CAA8EJpq5HQaO2E2Pd7yqUTsWyQ_pLDdyoWng8QmWTzYn5fv3PQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] dt-bindings: net: wireless: ath10k: add
- qcom,no-msa-ready-indicator prop
-To: Conor Dooley <conor@kernel.org>
-Cc: Marc Gonzalez <mgonzalez@freebox.fr>, Kalle Valo <kvalo@kernel.org>, 
-	Jeff Johnson <quic_jjohnson@quicinc.com>, ath10k <ath10k@lists.infradead.org>, 
-	wireless <linux-wireless@vger.kernel.org>, DT <devicetree@vger.kernel.org>, 
-	Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Pierre-Hugues Husson <phhusson@freebox.fr>, Jami Kettunen <jamipkettunen@gmail.com>, 
-	Jeffrey Hugo <quic_jhugo@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="wojNABL86L/ImB3a"
+Content-Disposition: inline
+In-Reply-To: <CAA8EJpq5HQaO2E2Pd7yqUTsWyQ_pLDdyoWng8QmWTzYn5fv3PQ@mail.gmail.com>
 
-On Mon, 4 Mar 2024 at 21:34, Conor Dooley <conor@kernel.org> wrote:
->
-> On Mon, Mar 04, 2024 at 05:21:37PM +0100, Marc Gonzalez wrote:
-> > On 29/02/2024 19:40, Conor Dooley wrote:
+
+--wojNABL86L/ImB3a
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, Mar 04, 2024 at 09:37:00PM +0200, Dmitry Baryshkov wrote:
+> On Mon, 4 Mar 2024 at 21:34, Conor Dooley <conor@kernel.org> wrote:
 > >
-> > > On Wed, Feb 28, 2024 at 06:37:08PM +0200, Kalle Valo wrote:
+> > On Mon, Mar 04, 2024 at 05:21:37PM +0100, Marc Gonzalez wrote:
+> > > On 29/02/2024 19:40, Conor Dooley wrote:
 > > >
-> > >> Marc Gonzalez wrote:
-> > >>
-> > >>> As mentioned in my other reply, there are several msm8998-based
-> > >>> devices affected by this issue. Is it not appropriate to consider
-> > >>> a kernel-based work-around?
-> > >>
-> > >> Sorry, not following you here. But I'll try to answer anyway:
-> > >>
-> > >> I have understood that Device Tree is supposed to describe hardware, not
-> > >> software. This is why having this property in DT does not look right
-> > >> place for this. For example, if the ath10k firmware is fixed then DT
-> > >> would have to be changed even though nothing changed in hardware. But of
-> > >> course DT maintainers have the final say.
+> > > > On Wed, Feb 28, 2024 at 06:37:08PM +0200, Kalle Valo wrote:
+> > > >
+> > > >> Marc Gonzalez wrote:
+> > > >>
+> > > >>> As mentioned in my other reply, there are several msm8998-based
+> > > >>> devices affected by this issue. Is it not appropriate to consider
+> > > >>> a kernel-based work-around?
+> > > >>
+> > > >> Sorry, not following you here. But I'll try to answer anyway:
+> > > >>
+> > > >> I have understood that Device Tree is supposed to describe hardwar=
+e, not
+> > > >> software. This is why having this property in DT does not look rig=
+ht
+> > > >> place for this. For example, if the ath10k firmware is fixed then =
+DT
+> > > >> would have to be changed even though nothing changed in hardware. =
+But of
+> > > >> course DT maintainers have the final say.
+> > > >
+> > > > I dunno, if the firmware affects the functionality of the hardware =
+in a
+> > > > way that cannot be detected from the operating system at runtime how
+> > > > else is it supposed to deal with that?
+> > > > The devicetree is supposed to describe hardware, yes, but at a cert=
+ain
+> > > > point the line between firmware and hardware is invisible :)
+> > > > Not describing software is mostly about not using it to determine
+> > > > software policy in the operating system.
 > > >
-> > > I dunno, if the firmware affects the functionality of the hardware in a
-> > > way that cannot be detected from the operating system at runtime how
-> > > else is it supposed to deal with that?
-> > > The devicetree is supposed to describe hardware, yes, but at a certain
-> > > point the line between firmware and hardware is invisible :)
-> > > Not describing software is mostly about not using it to determine
-> > > software policy in the operating system.
+> > > Recording here what was discussed a few days ago on IRC:
+> > >
+> > > If all msm8998 boards are affected, then it /might/ make sense
+> > > to work around the issue for ALL msm8998 boards:
+> > >
+> > > diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wire=
+less/ath/ath10k/qmi.c
+> > > index 0776e79b25f3a..9da06da518fb6 100644
+> > > --- a/drivers/net/wireless/ath/ath10k/qmi.c
+> > > +++ b/drivers/net/wireless/ath/ath10k/qmi.c
+> > > @@ -1076,6 +1076,9 @@ int ath10k_qmi_init(struct ath10k *ar, u32 msa_=
+size)
+> > >       qmi->ar =3D ar;
+> > >       ar_snoc->qmi =3D qmi;
+> > >
+> > > +     if (of_device_is_compatible(of_root, "qcom,msm8998")
+> > > +             qmi->no_point_in_waiting_for_msa_ready_indicator =3D tr=
+ue;
+> > > +
+> > >       if (of_property_read_bool(dev->of_node, "qcom,msa-fixed-perm"))
+> > >               qmi->msa_fixed_perm =3D true;
+> > >
+> > >
+> > > Thus, anyone porting an msm8998 board to mainline would automatically
+> > > get the work-around, without having to hunt down the feature bit,
+> > > and tweak the FW files.
 > >
-> > Recording here what was discussed a few days ago on IRC:
-> >
-> > If all msm8998 boards are affected, then it /might/ make sense
-> > to work around the issue for ALL msm8998 boards:
-> >
-> > diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wireless/ath/ath10k/qmi.c
-> > index 0776e79b25f3a..9da06da518fb6 100644
-> > --- a/drivers/net/wireless/ath/ath10k/qmi.c
-> > +++ b/drivers/net/wireless/ath/ath10k/qmi.c
-> > @@ -1076,6 +1076,9 @@ int ath10k_qmi_init(struct ath10k *ar, u32 msa_size)
-> >       qmi->ar = ar;
-> >       ar_snoc->qmi = qmi;
-> >
-> > +     if (of_device_is_compatible(of_root, "qcom,msm8998")
-> > +             qmi->no_point_in_waiting_for_msa_ready_indicator = true;
-> > +
-> >       if (of_property_read_bool(dev->of_node, "qcom,msa-fixed-perm"))
-> >               qmi->msa_fixed_perm = true;
-> >
-> >
-> > Thus, anyone porting an msm8998 board to mainline would automatically
-> > get the work-around, without having to hunt down the feature bit,
-> > and tweak the FW files.
->
-> How come the root node comes into this, don't you have a soc-specific
-> compatible for the integration on this SoC?
+> > How come the root node comes into this, don't you have a soc-specific
+> > compatible for the integration on this SoC?
+>=20
+> No. Ath10k uses WiFi SoC as an SoC designator rather than the main SoC.
 
-No. Ath10k uses WiFi SoC as an SoC designator rather than the main SoC.
+Suitability of either fix aside, can you explain this to me? Is the "WiFi
+SoC" accessible from the "main SoC" at a regular MMIO address? The
+"ath10k" compatible says it is SDIO-based & the other two compatibles
+seem to be MMIO.
 
-My 2c: I think it's easier to fix the firmware features bits, it's
-more future proof (and error proof).
+--wojNABL86L/ImB3a
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> (I am assuming that this is not the SDIO variant, given then it'd not be
-> fixed to this particular implementation)
+-----BEGIN PGP SIGNATURE-----
 
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZeYk9QAKCRB4tDGHoIJi
+0kaaAQDnE4MEozONllZ+Q/SJg4H13bE1VgsWK3RoMjw0F+WHYQEAvEapGyAe9GIz
+HA9NkpMj89CoBgLGj94SaMDYp4oFfgo=
+=fxeV
+-----END PGP SIGNATURE-----
 
-
--- 
-With best wishes
-Dmitry
+--wojNABL86L/ImB3a--
 
