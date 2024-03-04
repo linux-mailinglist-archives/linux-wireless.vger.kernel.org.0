@@ -1,86 +1,83 @@
-Return-Path: <linux-wireless+bounces-4336-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4337-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C87C86FED1
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Mar 2024 11:20:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9660C8704C0
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Mar 2024 16:03:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBAB2283645
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Mar 2024 10:20:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6B9C1C21215
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Mar 2024 15:03:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 113FE364B7;
-	Mon,  4 Mar 2024 10:17:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A52FD45945;
+	Mon,  4 Mar 2024 15:03:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="fb11IaKc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IpyT2ep5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85FA4241E5;
-	Mon,  4 Mar 2024 10:17:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F6103F9C0
+	for <linux-wireless@vger.kernel.org>; Mon,  4 Mar 2024 15:03:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709547436; cv=none; b=TBzlZraY1SI2XsCYBcpchtbPVgCjnG6N3fGAcaQOG7dXizrroS2Kf+9XnisQJnNH+qnylo8v6jfVqvsfyqpgUgudzCl8rPAG5PgFCeF7FrnP0qVIloYMAioE22f8SmHcj8cG9trD6W9liZ45ybMlbmlw1JEZjNw2FFotvzXB5tY=
+	t=1709564625; cv=none; b=tXSO+UGwu+k/vNtLjuMfbNsWxYG3L24XNIr5xXxq+/7emMJRmo5UdtrI16R7J3zL7B3UMvzoYv4B8gQbvggHohTDg3haiw2kOtFfTky3XpyL1QN3d9WBw0xhXoeXlF2Yh51Vx8EVMYnvWF/SozLcOJuY9EO/6FiNAWfUZbYEkw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709547436; c=relaxed/simple;
-	bh=ltcyOw+TgqviIKZ8PQUG8CPcAe7I74uGtSNAStThC1w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VJOpuJ4Kb7F501R/AL3cTwe/+2P2gzOhLay28fshaUIk+kUrT3oliZTQpss/sHa2QLq8fMpZnbPSyYGhGcht/E1JbxFm797QHUyWzOMLjFvlCfV727IJ5Otr3tMNDn06rpSktSkF0ZoHS6XEzN70MlWeT8nlwfpLcBuaqLx4c4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=fb11IaKc; arc=none smtp.client-ip=46.235.227.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1709547432;
-	bh=ltcyOw+TgqviIKZ8PQUG8CPcAe7I74uGtSNAStThC1w=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=fb11IaKccd0sn7CyPKu2BXQKbFW2upyD39noI5TM03TJBBiM5ye+aWnCUUD2VbkIq
-	 2TnHjnBrpEVsp4dAD81Wujg/2j3bYBUPN+PI1ui+pqh3XqbQ9AS1HyWi5D+Tm0y9Tl
-	 NXav/eWcHeq9xhcHxEkGYzaSJGHAt9AJ4EHlVVVOCSkNGkqR4NwznUGaNk+vUJaiDE
-	 IvaQKjCwcb0EBo5VHb7oK2HPqb7UUoSsCo+BnT+j04XQmITA8I8pylgLfe7w4TJCjv
-	 GVclBtl4+0/QhrYVEDW+AR1QYgVcXe+cPtL2ufpRyVs+46CSb+DPwSEyEoDusH73BK
-	 xCWmU2AHLwU7Q==
-Received: from [100.113.186.2] (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: kholk11)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id D33AE3781FE9;
-	Mon,  4 Mar 2024 10:17:11 +0000 (UTC)
-Message-ID: <fcb78476-d1e4-4354-99a6-0bb92a2ec3b6@collabora.com>
-Date: Mon, 4 Mar 2024 11:17:11 +0100
+	s=arc-20240116; t=1709564625; c=relaxed/simple;
+	bh=WQGQ27mX80efnKaDnp/B9HWNqMMcFRihUMuvEC5ETXw=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=uCmz29e2CUq5BBzNdh6EkYtmGJ7BOIY4bOo/M/OnZDRwY/JFRjT1t3q9arTH8fAmFUZj7EzBbxYq+k8/zY1Jsgk5y81cMKrGdZ+IG3joUlX604M+5dWFffdT5QqMgvPlnKexK9KIZ7yzm0A1YuAk0nqeZYOcWeUSJENRxa29zQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IpyT2ep5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E269C433F1;
+	Mon,  4 Mar 2024 15:03:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709564625;
+	bh=WQGQ27mX80efnKaDnp/B9HWNqMMcFRihUMuvEC5ETXw=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=IpyT2ep5fKlrHz1Zwj6I79qS47B2R0XE7lpq2xOWh6z/sKpZ0yRfm9d6VYUQplSre
+	 jtdSu6U40ELisDVIkA6t94GrR32aWR3TR99IR6Msenoenuisy2otjFsrSihJUoMLlG
+	 +6rM7smsnvbDa3Wg/8L6MWSF/yH19nPigciAKAYvWh+WUzgtvabRmBxcet2W1cBojE
+	 Pu4Ujs/77Ptl8H4dEuHEA8nj3PMfuEAp8T0X8b2RBXguufMB2KLM1BkZdN16Weri3B
+	 zfk1HVwPbRHRftxVED8TEMq4D7OmIgO80Y9LDMP4O4zcCAGjzybuGI5+8R4mGn5FuU
+	 hzKcDE7fsrAGg==
+From: Kalle Valo <kvalo@kernel.org>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org,  Ilan Peer <ilan.peer@intel.com>,
+  Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Subject: Re: [PATCH] wifi: mac80211: Adjust CQM handling for MLO
+References: <20240228094753.bf6a3fefe553.Id738810b73e1087e01d5885508b70a3631707627@changeid>
+Date: Mon, 04 Mar 2024 17:03:40 +0200
+In-Reply-To: <20240228094753.bf6a3fefe553.Id738810b73e1087e01d5885508b70a3631707627@changeid>
+	(Johannes Berg's message of "Wed, 28 Feb 2024 09:47:54 +0100")
+Message-ID: <8734t682er.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: mt76: connac: check for null before dereferencing
-Content-Language: en-US
-To: Muhammad Usama Anjum <usama.anjum@collabora.com>,
- Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
- Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>,
- Sean Wang <sean.wang@mediatek.com>, Kalle Valo <kvalo@kernel.org>,
- Matthias Brugger <matthias.bgg@gmail.com>
-Cc: kernel@collabora.com, kernel-janitors@vger.kernel.org,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
-References: <20240301144406.2808307-1-usama.anjum@collabora.com>
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <20240301144406.2808307-1-usama.anjum@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-Il 01/03/24 15:44, Muhammad Usama Anjum ha scritto:
-> The wcid can be NULL. It should be checked for validity before
-> dereferencing it to avoid crash.
-> 
-> Fixes: 098428c400ff ("wifi: mt76: connac: set correct muar_idx for mt799x chipsets")
-> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Johannes Berg <johannes@sipsolutions.net> writes:
 
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+> From: Ilan Peer <ilan.peer@intel.com>
+>
+> The CQM handling did not consider the MLO case and thus notified
+> a not-existing link with the CQM change. To fix this, propagate
+> the CQM notification to all the active links (handling both the
+> non-MLO and MLO cases).
+>
+> TODO: this currently propagates the same configuration to all
+> links regardless of the band. This might not be the correct
+> approach as different links might need to be configured with
+> different values.
 
+Is that TODO link there intentionally?
 
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
