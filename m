@@ -1,100 +1,83 @@
-Return-Path: <linux-wireless+bounces-4414-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4370-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB9B0872E31
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Mar 2024 06:07:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5897B871944
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Mar 2024 10:13:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D48401C21CAD
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Mar 2024 05:07:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06D6D282137
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Mar 2024 09:13:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 072531759E;
-	Wed,  6 Mar 2024 05:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BE1253365;
+	Tue,  5 Mar 2024 09:13:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ca6XAgw4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GCt1Zf7W"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A22C4D502
-	for <linux-wireless@vger.kernel.org>; Wed,  6 Mar 2024 05:07:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3870153371
+	for <linux-wireless@vger.kernel.org>; Tue,  5 Mar 2024 09:13:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709701649; cv=none; b=bAPjEEg2NcfgFTX1YgzXlYG4m1yrsZ/y9eHfa7VN5yonZMVal8RfYA1f/roHylMbpbbIgHeUrzBUjBPlxGR3D9Ymu5JY84oAkJRgCfkvdrtnb5CqgLm54th0e8dJyXzvi1cWuIZIhP9DBtwkvkP264zKDVDryIso7l/zwCOXXTs=
+	t=1709630015; cv=none; b=RKIMy0se+mTyJt76I9HEmxERp8/6p+xsJb1rKI7jQrfWCDXrdlpCPHFxTBl4oloTeAZwnyMrImgnGNzLooIW4WY0b9B/qK01eFTkaISpo5fl21NEfMe9QTp4Pm4vCjE4Sxpb6i52+8Kd33aaZuG4Df7p/HHjljO/uSEcWT0TPFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709701649; c=relaxed/simple;
-	bh=vM1vrycYNuI2CDlgzThNyra8dsNUN1vKX1G34vvidq4=;
-	h=Message-ID:From:To:Date:Subject; b=pRqYSFxCVrCy7Zo9iQYtfSjT6UVeFwgp3h7vwCkuIQ1CmREV/k8ZD1ppo4DrrlL3PzxUx9sv9EmeTIL10WkfC3ZtMwx1ID3cAWsVzYg14gcBG4WR32/zumqAziffMtZke8GSm6iLjysm/YHzuy4FnGixbhMOwTVkVjM0KF82ZHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ca6XAgw4; arc=none smtp.client-ip=209.85.167.49
+	s=arc-20240116; t=1709630015; c=relaxed/simple;
+	bh=8tYBr4vyrCza+kGrJmx//V6O/Nvw711BnTzONS7/f08=;
+	h=Message-ID:To:From:Date:Subject; b=VzpKtKi2ShBTiW4Pf9Krefn2tcS7RN5oi7j+HCbVILGDbZLRI+ikuDcBn3NFOYXBw4OsNl8qra39Tek0qhGlwG4Pm7lK2buRfYfT91lN1+y0FhnQMWVQGouQjwyqcIwa4t8c1M/uBQ/Hdh2VuRe+Z3SkqvW2w5T22huAFpq1toM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GCt1Zf7W; arc=none smtp.client-ip=209.85.208.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-51336ab1fb7so5311615e87.1
-        for <linux-wireless@vger.kernel.org>; Tue, 05 Mar 2024 21:07:22 -0800 (PST)
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2d309a23d76so41199461fa.1
+        for <linux-wireless@vger.kernel.org>; Tue, 05 Mar 2024 01:13:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709701641; x=1710306441; darn=vger.kernel.org;
-        h=subject:date:to:from:message-id:from:to:cc:subject:date:message-id
+        d=gmail.com; s=20230601; t=1709630007; x=1710234807; darn=vger.kernel.org;
+        h=subject:date:from:to:message-id:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=p25nvhc++Hz5g9H7DY88WPK6TzNBnFpV+lUa7SdJDWE=;
-        b=ca6XAgw4tQAWsX0NHWszz1CZGJcE9Lrkb8PAgXDgalG7C7ckaLbICax5VYWp+XfV4l
-         0NdhCZoWx4iyJUK0f19R3gKWFR/CroSKf35AxEDAW9kkzyvjAwnhR6b2zx7sT5iL8fWL
-         c5Ok+O2lV3H9c6TkktsgFw4jfbhLo0kxzMxOt8hMAhsYFtWM/lw3/CXK5tqZWQgvOarw
-         mRlhFokTRfhmPM3tj3los9TYTT+H9UsPZCh3tJEaLiqcoC6strXJPmD8di9T4ktAWCqX
-         WKTltnetNqL7Tlko/TNv7kd1RdNMl6cUuj/wVqh9T3u2XUk2USwthk7cM/UC3hm2Yu0r
-         GcvA==
+        bh=lSwFMECUx2uIUbzh/MM197xma0a/G4siBr0K0QXUizk=;
+        b=GCt1Zf7WGhY3vZmOFRZwI3hq3n8mOnkvzQPXMSAb/oLj+muYstbhfSb96VxIudlGI6
+         OehKI7MZ6jHbQMkB4CaLVogWl9y00BUmhOc01kHLrwUj+eezmhOZS0XBlggAuBLC7b7Y
+         r7momqJyK4PVbHJEhhsmG899mfpqi/tG1R2rgIyuyODeYAYs/YkFI3kkCQIl+zimm2TP
+         pkhXZjTX3NScIxlsWEwaQXziI/zXVrt/qeYv01gYriqpaqmWDvcQ2wvIvhL5S7qYxOgS
+         veaB5GdgZDpqwcwya6rr6N/EZ7Di9bUWeApcaf5VtVN5clZA/iN5hc5iGdrx7qni/z/o
+         DhIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709701641; x=1710306441;
-        h=subject:date:to:from:message-id:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1709630007; x=1710234807;
+        h=subject:date:from:to:message-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=p25nvhc++Hz5g9H7DY88WPK6TzNBnFpV+lUa7SdJDWE=;
-        b=I5/1SLnvGGOHIy3Pac/IDVFYS1V6DJDp3QSA9BGD8D6r03/Epxj9qbt3MKBRISwAif
-         8pBv/Tc6IR4jCDOyYcuWZIQKNuFJQ12ohoENsn6NdRT9M6u8WBMxGGmByrLFr+0BF4mf
-         7hCtuRsSEd57g++gPw2Ax9DEud2P93FXHydRb/id7z91V7OjDXUtb3x1kzFV37hAx7xK
-         p0dfYctF/SeTVZLHbpI7upxrXcNDBKtZRAsQ0gp6rewxgAKdZFo/SgXwMwCol6QtFhTB
-         rPDZUVAi45DCv5TiqBTZkY7xb8553QQGG9AVLw8/Iad3+MbjZnqI4+u2J8oL/SJTZqR+
-         qEnA==
-X-Gm-Message-State: AOJu0Yx/fMRNzxkyH4QvRoRjeeil8WerohdgJCxzlIpGK/nKscKK4KNG
-	HYgKndgbHYsuEQBiRhubran/t87caNlU63U7k7LXnhaG49Z6gTOr
-X-Google-Smtp-Source: AGHT+IHRoUNQox2t6fqeIWDs+mPOV+CJ6JgCjGLD0io6HzNerWkJitsrZhAS4rRsJemrXLpWp+rChw==
-X-Received: by 2002:a05:6512:601:b0:513:1f2b:35f6 with SMTP id b1-20020a056512060100b005131f2b35f6mr2513716lfe.35.1709701639598;
-        Tue, 05 Mar 2024 21:07:19 -0800 (PST)
+        bh=lSwFMECUx2uIUbzh/MM197xma0a/G4siBr0K0QXUizk=;
+        b=ftshQEajji310x6ZJ60TEOnDEhyevRHv7rGRkn+O4Kt9/x1wVPth3Pj0+vUq0bxaNW
+         NoT08sqWNPkYpc5n4gSCmvnJsEkJnkFw4lrNafJ4+LVZ7/fq4m5w4ZM0UXLssMFptUdK
+         27Zj+4M7H/o9FiwsQ+UtrxUe2xRHItQbqL0PXvW2IIbHlrnrzxz7FLTpM/YpmY4ehGLX
+         sQy1SINToVF7OuMRimN8+lE4OkWq0WOcJDFW5hLQ1rC37AIMt5238iPOGfn2hqMoAPsn
+         IX9p2DmSuznL1vJSVNERpDHanBFsz0lVjYarxUSvH6souxK1M3Qs8aLaLonjUVmxfQ75
+         pcwg==
+X-Forwarded-Encrypted: i=1; AJvYcCUcTrWy8a6uwfQH/zfLTf/s6+5ljehAf4QE2NqnT4Vc95q/yvSa5tO0Cv0St3ViyUHaRktOvGOzufNsYSXMn/tpEmCfBwUaruXLimCQ07U=
+X-Gm-Message-State: AOJu0YzzA3tiRCt+tsOVNeGXPgO4UU9u6qLDXrTXYN6VMtmONMBRqZnQ
+	Ax+oK7oNy5RSsjuoAPOIHoEZMIwEFcJ6w8G5VXzqxvA+NAVYXq2JsDrOmy1YPC9Z1Q==
+X-Google-Smtp-Source: AGHT+IHENC8A5fxeG+Peu7wemB3bmOVbX1yZCxgwwRizNmAeHa0lEi0YGosy5NuXQaPhFmzqiPQUcw==
+X-Received: by 2002:a05:651c:c2:b0:2d3:2d30:d28 with SMTP id 2-20020a05651c00c200b002d32d300d28mr562931ljr.9.1709630006201;
+        Tue, 05 Mar 2024 01:13:26 -0800 (PST)
 Received: from localhost (nat-inorg.chem.msu.ru. [93.180.12.29])
-        by smtp.gmail.com with ESMTPSA id c8-20020a056512074800b005130d251b57sm2483736lfs.166.2024.03.05.21.07.18
+        by smtp.gmail.com with ESMTPSA id b10-20020a2e894a000000b002d0d02e50fdsm2128751ljk.78.2024.03.05.01.13.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Mar 2024 21:07:18 -0800 (PST)
-Message-ID: <49ded27035efa87a97e040206581b2fc.legale.legale@gmail.com>
+        Tue, 05 Mar 2024 01:13:25 -0800 (PST)
+Message-ID: <d9739fa6d3dd085587c4f413087dfd6c.legale.legale@gmail.com>
+To: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org
 From: Isaev Ruslan <legale.legale@gmail.com>
-To: linux-wireless@vger.kernel.org
 Date: Mon, 4 Mar 2024 23:01:58 +0300
-Subject: [PATCH v6] Add JSON output options to 'iw' for scan results
+Subject: [PATCH v5] Add JSON output options to 'iw' for scan results
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 
-v6 changes:
-- add universal print func
-iw_printf(const char *key, const char *fmt, ...)
-- rewrite print_ssid_escaped() as a demo with new concept
-
-void print_ssid_escaped(const uint8_t len, const uint8_t *data) {
-	char *escaped_ssid = ssid_escape(len, data);
-	iw_printf("SSID", "%s", escaped_ssid);
-}
-
-How it works:
-	text output:
-Tabs for text output is based on json depth. For example: ssid is depth 3
-or something so 3 tabs will be printed before "SSID: %s"
-
-	json output:
-iw_printf will print number (without "") or text based on passed format.
-
-For all number formats. Formats:  %d %i %p %hu etc will print without quotes
-If else format is passed iw_print will print it with quotes. To make it work
-some new functions added.
+v5 changes:
+	- add json print to print_ap_channel_report()
+	- minor refactor open_json_object()
 
 branch: v5.19
 
@@ -122,19 +105,16 @@ Thank you.
 Signed-off-by: Isaev Ruslan <legale.legale@gmail.com>
 ---
  Makefile           |    2 +-
- iw.c               |   29 +-
- json/a             |  Bin 0 -> 23512 bytes
- json/a.out         |  Bin 0 -> 23512 bytes
- json/json_print.c  |  284 ++++++
- json/json_print.h  |   63 ++
- json/json_writer.c |  298 +++++++
- json/json_writer.h |   76 ++
+ iw.c               |   27 +-
+ iw.h               |    1 +
+ json/json_print.c  |  206 +++++
+ json/json_print.h  |   57 ++
+ json/json_writer.c |  296 +++++++
+ json/json_writer.h |   68 ++
  json/main.c        |   28 +
- scan.c             | 2111 ++++++++++++++++++++++++++++----------------
- util.c             |  488 +++++++---
- 11 files changed, 2492 insertions(+), 887 deletions(-)
- create mode 100755 json/a
- create mode 100755 json/a.out
+ scan.c             | 2117 ++++++++++++++++++++++++++++----------------
+ util.c             |  492 +++++++---
+ 10 files changed, 2407 insertions(+), 887 deletions(-)
  create mode 100644 json/json_print.c
  create mode 100644 json/json_print.h
  create mode 100644 json/json_writer.c
@@ -155,7 +135,7 @@ index 2fb8db8..6cda648 100644
  OBJS := $(VERSION_OBJS) version.o
  
 diff --git a/iw.c b/iw.c
-index 35308ba..624aaf2 100644
+index 35308ba..779a728 100644
 --- a/iw.c
 +++ b/iw.c
 @@ -24,6 +24,8 @@
@@ -167,7 +147,15 @@ index 35308ba..624aaf2 100644
  /* libnl 1.x compatibility code */
  #if !defined(CONFIG_LIBNL20) && !defined(CONFIG_LIBNL30)
  static inline struct nl_handle *nl_socket_alloc(void)
-@@ -181,7 +183,11 @@ static void __usage_cmd(const struct cmd *cmd, char *indent, bool full)
+@@ -44,6 +46,7 @@ static inline int nl_socket_set_buffer_size(struct nl_sock *sk,
+ #endif /* CONFIG_LIBNL20 && CONFIG_LIBNL30 */
+ 
+ int iw_debug = 0;
++int iw_json = 0;
+ 
+ static int nl80211_init(struct nl80211_state *state)
+ {
+@@ -181,7 +184,11 @@ static void __usage_cmd(const struct cmd *cmd, char *indent, bool full)
  static void usage_options(void)
  {
  	printf("Options:\n");
@@ -180,7 +168,7 @@ index 35308ba..624aaf2 100644
  }
  
  static const char *argv0;
-@@ -592,6 +598,23 @@ int main(int argc, char **argv)
+@@ -592,6 +599,20 @@ int main(int argc, char **argv)
  		argv++;
  	}
  
@@ -198,13 +186,10 @@ index 35308ba..624aaf2 100644
 +		argv++;
 +	}
 +
-+	//init json anyway to track depth
-+	if (!iw_json) new_json_obj(1, 0);
-+
  	if (argc > 0 && strcmp(*argv, "--version") == 0) {
  		version();
  		return 0;
-@@ -648,5 +671,9 @@ int main(int argc, char **argv)
+@@ -648,5 +669,9 @@ int main(int argc, char **argv)
  
  	nl80211_cleanup(&nlstate);
  
@@ -214,355 +199,39 @@ index 35308ba..624aaf2 100644
 +	}
  	return err;
  }
-diff --git a/json/a b/json/a
-new file mode 100755
-index 0000000000000000000000000000000000000000..49a62723867de656ae8da6bd7c0c3287986e320a
-GIT binary patch
-literal 23512
-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
-
-literal 0
-HcmV?d00001
-
-diff --git a/json/a.out b/json/a.out
-new file mode 100755
-index 0000000000000000000000000000000000000000..49a62723867de656ae8da6bd7c0c3287986e320a
-GIT binary patch
-literal 23512
-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
-
-literal 0
-HcmV?d00001
-
+diff --git a/iw.h b/iw.h
+index e712c59..b97eb55 100644
+--- a/iw.h
++++ b/iw.h
+@@ -179,6 +179,7 @@ struct vendor_event {
+ extern const char iw_version[];
+ 
+ extern int iw_debug;
++extern int iw_json;
+ 
+ int handle_cmd(struct nl80211_state *state, enum id_input idby,
+ 	       int argc, char **argv);
 diff --git a/json/json_print.c b/json/json_print.c
 new file mode 100644
-index 0000000..be72620
+index 0000000..e2772cf
 --- /dev/null
 +++ b/json/json_print.c
-@@ -0,0 +1,284 @@
+@@ -0,0 +1,206 @@
 +/*
-+* json_print.c		"print regular or json output, based on json_writer".
-+*
-+*             This program is free software; you can redistribute it and/or
-+*             modify it under the terms of the GNU General Public License
-+*             as published by the Free Software Foundation; either version
-+*             2 of the License, or (at your option) any later version.
-+*
-+* Authors:    Julien Fortin, <julien@cumulusnetworks.com>
-+*/
++ * json_print.c		"print regular or json output, based on json_writer".
++ *
++ *             This program is free software; you can redistribute it and/or
++ *             modify it under the terms of the GNU General Public License
++ *             as published by the Free Software Foundation; either version
++ *             2 of the License, or (at your option) any later version.
++ *
++ * Authors:    Julien Fortin, <julien@cumulusnetworks.com>
++ */
 +#include "json_print.h"
 +#include <stdarg.h>
 +#include <stdio.h>
 +#include <stdlib.h>
 +#include <unistd.h>
-+#include <string.h>
-+
-+int iw_json = 0;
-+
 +#define SPRINT_BSIZE 64
 +#define SPRINT_BUF(x) char x[SPRINT_BSIZE]
 +static json_writer_t *_jw;
@@ -611,10 +280,10 @@ index 0000000..be72620
 +		jsonw_end_object(_jw);
 +}
 +/*
-+* Start json array or string array using
-+* the provided string as json key (if not null)
-+* or array delimiter in non-json context.
-+*/
++ * Start json array or string array using
++ * the provided string as json key (if not null)
++ * or array delimiter in non-json context.
++ */
 +void open_json_array(const char *key, const char *str) {
 +	if (is_json_context()) {
 +		if (key)
@@ -625,8 +294,8 @@ index 0000000..be72620
 +	}
 +}
 +/*
-+* End json array or string array
-+*/
++ * End json array or string array
++ */
 +void close_json_array(const char *delim) {
 +	if (is_json_context())
 +		jsonw_end_array(_jw);
@@ -634,9 +303,9 @@ index 0000000..be72620
 +		printf("%s", delim);
 +}
 +/*
-+* pre-processor directive to generate similar
-+* functions handling different types
-+*/
++ * pre-processor directive to generate similar
++ * functions handling different types
++ */
 +#define _PRINT_FUNC(type_name, type)                       \
 +__attribute__((format(printf, 3, 0)))                      \
 +void print_##type_name(                                    \
@@ -666,38 +335,17 @@ index 0000000..be72620
 +_PRINT_FUNC(uint, unsigned int);
 +_PRINT_FUNC(float, double);
 +#undef _PRINT_FUNC
-+
 +void print_string(enum output_type type, const char *key, const char *fmt, ...) {
 +	va_list args;
 +	va_start(args, fmt);
 +
 +	if (_IS_JSON_CONTEXT(type)) {
-+		char buf[1024];
-+		vsnprintf(buf, sizeof(buf), fmt, args);
-+		if (key) {
-+			jsonw_string_field(_jw, key, buf);
-+		} else {
-+			jsonw_string(_jw, buf);
-+		}
-+	} else if (_IS_FP_CONTEXT(type)) {
-+		vfprintf(stdout, fmt, args);
-+	}
-+
-+	va_end(args);
-+}
-+
-+void print_num(enum output_type type, const char *key, const char *fmt, ...) {
-+	va_list args;
-+	va_start(args, fmt);
-+
-+
-+	if (_IS_JSON_CONTEXT(type)) {
 +		char buffer[1024];
 +		vsnprintf(buffer, sizeof(buffer), fmt, args);
 +		if (key) {
-+			jsonw_num_field(_jw, key, buffer);
++			jsonw_string_field(_jw, key, buffer);
 +		} else {
-+			jsonw_num(_jw, buffer);
++			jsonw_string(_jw, buffer);
 +		}
 +	} else if (_IS_FP_CONTEXT(type)) {
 +		vfprintf(stdout, fmt, args);
@@ -706,10 +354,10 @@ index 0000000..be72620
 +	va_end(args);
 +}
 +/*
-+* value's type is bool. When using this function in FP context you can't pass
-+* a value to it, you will need to use "is_json_context()" to have different
-+* branch for json and regular output. grep -r "print_bool" for example
-+*/
++ * value's type is bool. When using this function in FP context you can't pass
++ * a value to it, you will need to use "is_json_context()" to have different
++ * branch for json and regular output. grep -r "print_bool" for example
++ */
 +void print_bool(enum output_type type,
 +								const char *key,
 +								const char *fmt,
@@ -724,12 +372,12 @@ index 0000000..be72620
 +	}
 +}
 +/*
-+* In JSON context uses hardcode %#x format: 42 -> 0x2a
-+*/
++ * In JSON context uses hardcode %#x format: 42 -> 0x2a
++ */
 +void print_0xhex(enum output_type type,
-+								const char *key,
-+								const char *fmt,
-+								unsigned long long hex) {
++								 const char *key,
++								 const char *fmt,
++								 unsigned long long hex) {
 +	if (_IS_JSON_CONTEXT(type)) {
 +		SPRINT_BUF(b1);
 +		snprintf(b1, sizeof(b1), "%#llx", hex);
@@ -739,9 +387,9 @@ index 0000000..be72620
 +	}
 +}
 +void print_hex(enum output_type type,
-+							const char *key,
-+							const char *fmt,
-+							unsigned int hex) {
++							 const char *key,
++							 const char *fmt,
++							 unsigned int hex) {
 +	if (_IS_JSON_CONTEXT(type)) {
 +		SPRINT_BUF(b1);
 +		snprintf(b1, sizeof(b1), "%x", hex);
@@ -754,9 +402,9 @@ index 0000000..be72620
 +	}
 +}
 +/*
-+* In JSON context we don't use the argument "value" we simply call jsonw_null
-+* whereas FP context can use "value" to output anything
-+*/
++ * In JSON context we don't use the argument "value" we simply call jsonw_null
++ * whereas FP context can use "value" to output anything
++ */
 +void print_null(enum output_type type,
 +								const char *key,
 +								const char *fmt,
@@ -770,71 +418,17 @@ index 0000000..be72620
 +		fprintf(stdout, fmt, value);
 +	}
 +}
-+
-+enum format_type {
-+	FORMAT_STRING,
-+	FORMAT_NUMBER
-+};
-+
-+// all number formats
-+const char* num_formats[] = {
-+	"%d", "%i", "%u",
-+	"%f", "%lf", "%e", "%E", "%g", "%G",
-+	"%ld", "%li", "%lu",
-+	"%lld", "%lli", "%llu",
-+	"%hhd", "%hhi", "%hhu",
-+	"%hd", "%hi", "%hu",
-+	"%Lf", "%zd", "%zi", "%zu", "%p"
-+};
-+
-+#define MAX_FORMAT_TYPE sizeof(num_formats) / sizeof(num_formats[0])
-+static enum format_type get_format_type(const char* fmt) {
-+	for (int i = 0; i < MAX_FORMAT_TYPE; i++) {
-+		if (strstr(fmt, num_formats[i])) {
-+			return FORMAT_NUMBER;
-+		}
-+	}
-+	return FORMAT_STRING;
++/* Print line separator (if not in JSON mode) */
++void print_nl(void) {
++	if (!_jw)
++		printf("%s", "\n");
 +}
-+
-+void iw_printf(const char *key, const char *fmt, ...) {
-+	va_list args;
-+	static char buf[1024];
-+	va_start(args, fmt);
-+	vsnprintf(buf, sizeof(buf), fmt, args);
-+	va_end(args);
-+
-+
-+	enum format_type type = get_format_type(fmt);
-+
-+	if (iw_json) {
-+		switch (type) {
-+			case FORMAT_NUMBER:
-+				print_num(PRINT_JSON, key, "%s", buf);
-+				break;
-+			case FORMAT_STRING:
-+			default:
-+				print_string(PRINT_JSON, key, "%s", buf);
-+				break;
-+		}
-+	} else {
-+		//tab intend based on json depth
-+		if(_jw){
-+			for (int i = 0; i < _jw->depth; i++) {
-+				printf("\t");
-+			}
-+		}
-+		printf("%s: %s\n", key, buf);
-+	}
-+
-+}
-\ No newline at end of file
 diff --git a/json/json_print.h b/json/json_print.h
 new file mode 100644
-index 0000000..56e4ff0
+index 0000000..4925803
 --- /dev/null
 +++ b/json/json_print.h
-@@ -0,0 +1,63 @@
+@@ -0,0 +1,57 @@
 +/*
 + * json_print.h		"print regular or json output, based on json_writer".
 + *
@@ -848,9 +442,6 @@ index 0000000..56e4ff0
 +#ifndef _JSON_PRINT_H_
 +#define _JSON_PRINT_H_
 +#include "json_writer.h"
-+
-+extern int iw_json;
-+
 +json_writer_t *get_json_writer(void);
 +/*
 + * use:
@@ -871,6 +462,7 @@ index 0000000..56e4ff0
 +void close_json_object(void);
 +void open_json_array(const char *key, const char *str);
 +void close_json_array(const char *delim);
++void print_nl(void);
 +#define _PRINT_FUNC(type_name, type)         \
 +	void print_##type_name(enum output_type t, \
 +												 const char *key,    \
@@ -893,17 +485,13 @@ index 0000000..56e4ff0
 +#undef _PRINT_FUNC
 +
 +void print_string(enum output_type type, const char *key, const char *fmt, ...);
-+void print_num(enum output_type type, const char *key, const char *fmt, ...);
-+
-+void iw_printf(const char *key, const char *fmt, ...);
-+
 +#endif /* _JSON_PRINT_H_ */
 diff --git a/json/json_writer.c b/json/json_writer.c
 new file mode 100644
-index 0000000..79e49b9
+index 0000000..ae59389
 --- /dev/null
 +++ b/json/json_writer.c
-@@ -0,0 +1,298 @@
+@@ -0,0 +1,296 @@
 +// SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause) //
 +/*
 + * Simple streaming JSON writer
@@ -921,7 +509,12 @@ index 0000000..79e49b9
 +#include <stdbool.h>
 +#include <stdint.h>
 +#include <stdio.h>
-+
++struct json_writer {
++	FILE *out;					/* output file */
++	unsigned int depth; /* nesting */
++	bool pretty;				/* optional whitepace */
++	char sep;						/* either nul or comma */
++};
 +/* indentation for pretty print */
 +static void jsonw_indent(json_writer_t *self) {
 +	unsigned int i;
@@ -1054,9 +647,6 @@ index 0000000..79e49b9
 +	jsonw_eor(self);
 +	jsonw_puts(self, value);
 +}
-+void jsonw_num(json_writer_t *self, const char *value) {
-+	jsonw_printf(self, "%s", value);
-+}
 +void jsonw_bool(json_writer_t *self, bool val) {
 +	jsonw_printf(self, "%s", val ? "true" : "false");
 +}
@@ -1103,10 +693,6 @@ index 0000000..79e49b9
 +void jsonw_string_field(json_writer_t *self, const char *prop, const char *val) {
 +	jsonw_name(self, prop);
 +	jsonw_string(self, val);
-+}
-+void jsonw_num_field(json_writer_t *self, const char *prop, const char *val) {
-+	jsonw_name(self, prop);
-+	jsonw_num(self, val);
 +}
 +void jsonw_bool_field(json_writer_t *self, const char *prop, bool val) {
 +	jsonw_name(self, prop);
@@ -1204,10 +790,10 @@ index 0000000..79e49b9
 +#endif
 diff --git a/json/json_writer.h b/json/json_writer.h
 new file mode 100644
-index 0000000..b19ab91
+index 0000000..a092e56
 --- /dev/null
 +++ b/json/json_writer.h
-@@ -0,0 +1,76 @@
+@@ -0,0 +1,68 @@
 +/* SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause) */
 +/*
 + * Simple streaming JSON writer
@@ -1223,13 +809,7 @@ index 0000000..b19ab91
 +#include <stdint.h>
 +#include <stdio.h>
 +/* Opaque class structure */
-+typedef struct json_writer {
-+	FILE *out;					/* output file */
-+	unsigned int depth; 		/* nesting */
-+	bool pretty;				/* optional whitepace */
-+	char sep;					/* either nul or comma */
-+} json_writer_t;
-+
++typedef struct json_writer json_writer_t;
 +/* Create a new JSON stream */
 +json_writer_t *jsonw_new(FILE *f);
 +/* End output to JSON stream */
@@ -1243,7 +823,6 @@ index 0000000..b19ab91
 +void jsonw_float_fmt(json_writer_t *self, const char *fmt, double num);
 +
 +void jsonw_string(json_writer_t *self, const char *value);
-+void jsonw_num(json_writer_t *self, const char *value);
 +void jsonw_bool(json_writer_t *self, bool val);
 +void jsonw_null(json_writer_t *self);
 +void jsonw_float(json_writer_t *self, double num);
@@ -1261,7 +840,6 @@ index 0000000..b19ab91
 +
 +/* Useful Combinations of name and value */
 +void jsonw_string_field(json_writer_t *self, const char *prop, const char *val);
-+void jsonw_num_field(json_writer_t *self, const char *prop, const char *val);
 +void jsonw_bool_field(json_writer_t *self, const char *prop, bool value);
 +void jsonw_null_field(json_writer_t *self, const char *prop);
 +void jsonw_float_field(json_writer_t *self, const char *prop, double num);
@@ -1319,7 +897,7 @@ index 0000000..21d7cf4
 +}
 +
 diff --git a/scan.c b/scan.c
-index dfc136a..f8f1107 100644
+index dfc136a..f04efb1 100644
 --- a/scan.c
 +++ b/scan.c
 @@ -12,6 +12,8 @@
@@ -1348,18 +926,24 @@ index dfc136a..f8f1107 100644
  }
  
  struct print_ies_data {
-@@ -560,9 +565,7 @@ struct print_ies_data {
+@@ -560,9 +565,13 @@ struct print_ies_data {
  static void print_ssid(const uint8_t type, uint8_t len, const uint8_t *data,
  		       const struct print_ies_data *ie_buffer)
  {
 -	printf(" ");
 -	print_ssid_escaped(len, data);
 -	printf("\n");
++	if(!iw_json){
++		printf(" ");
 +		print_ssid_escaped(len, data);
++		printf("\n");
++	} else {
++		print_ssid_escaped(len, data);
++	}
  }
  
  #define BSS_MEMBERSHIP_SELECTOR_VHT_PHY 126
-@@ -574,21 +577,35 @@ static void print_supprates(const uint8_t type, uint8_t len,
+@@ -574,21 +583,35 @@ static void print_supprates(const uint8_t type, uint8_t len,
  {
  	int i;
  
@@ -1407,7 +991,7 @@ index dfc136a..f8f1107 100644
  }
  
  static void print_rm_enabled_capabilities(const uint8_t type, uint8_t len,
-@@ -601,16 +618,18 @@ static void print_rm_enabled_capabilities(const uint8_t type, uint8_t len,
+@@ -601,16 +624,18 @@ static void print_rm_enabled_capabilities(const uint8_t type, uint8_t len,
  		     ((__u64) data[3]) << 24 |
  		     ((__u64) data[4]) << 32;
  
@@ -1432,7 +1016,7 @@ index dfc136a..f8f1107 100644
  	} while (0)
  
  	PRINT_RM_CAPA(0, "Link Measurement");
-@@ -642,14 +661,24 @@ static void print_rm_enabled_capabilities(const uint8_t type, uint8_t len,
+@@ -642,14 +667,24 @@ static void print_rm_enabled_capabilities(const uint8_t type, uint8_t len,
  	PRINT_RM_CAPA(34, "FTM Range Report");
  	PRINT_RM_CAPA(35, "Civic Location Measurement");
  
@@ -1460,7 +1044,7 @@ index dfc136a..f8f1107 100644
  }
  
  static const char *country_env_str(char environment)
-@@ -669,46 +698,90 @@ static const char *country_env_str(char environment)
+@@ -669,46 +704,90 @@ static const char *country_env_str(char environment)
  static void print_country(const uint8_t type, uint8_t len, const uint8_t *data,
  			  const struct print_ies_data *ie_buffer)
  {
@@ -1577,7 +1161,7 @@ index dfc136a..f8f1107 100644
  	return;
  }
  
-@@ -716,29 +789,37 @@ static void print_powerconstraint(const uint8_t type, uint8_t len,
+@@ -716,29 +795,37 @@ static void print_powerconstraint(const uint8_t type, uint8_t len,
  				  const uint8_t *data,
  				  const struct print_ies_data *ie_buffer)
  {
@@ -1623,7 +1207,7 @@ index dfc136a..f8f1107 100644
  }
  
  static void print_ap_channel_report(const uint8_t type, uint8_t len, const uint8_t *data,
-@@ -747,13 +828,22 @@ static void print_ap_channel_report(const uint8_t type, uint8_t len, const uint8
+@@ -747,13 +834,22 @@ static void print_ap_channel_report(const uint8_t type, uint8_t len, const uint8
  	uint8_t oper_class = data[0];
  	int i;
  
@@ -1652,7 +1236,7 @@ index dfc136a..f8f1107 100644
  }
  
  static void print_cipher(const uint8_t *data)
-@@ -761,59 +851,56 @@ static void print_cipher(const uint8_t *data)
+@@ -761,59 +857,56 @@ static void print_cipher(const uint8_t *data)
  	if (memcmp(data, ms_oui, 3) == 0) {
  		switch (data[3]) {
  		case 0:
@@ -1728,7 +1312,7 @@ index dfc136a..f8f1107 100644
  }
  
  static void print_auth(const uint8_t *data)
-@@ -821,90 +908,86 @@ static void print_auth(const uint8_t *data)
+@@ -821,90 +914,86 @@ static void print_auth(const uint8_t *data)
  	if (memcmp(data, ms_oui, 3) == 0) {
  		switch (data[3]) {
  		case 1:
@@ -1844,7 +1428,7 @@ index dfc136a..f8f1107 100644
  }
  
  static void _print_rsn_ie(const char *defcipher, const char *defauth,
-@@ -913,158 +996,305 @@ static void _print_rsn_ie(const char *defcipher, const char *defauth,
+@@ -913,158 +1002,305 @@ static void _print_rsn_ie(const char *defcipher, const char *defauth,
  	bool first = true;
  	__u16 count, capa;
  	int i;
@@ -2272,7 +1856,7 @@ index dfc136a..f8f1107 100644
  	}
  }
  
-@@ -1090,7 +1320,11 @@ static void print_rsn(const uint8_t type, uint8_t len, const uint8_t *data,
+@@ -1090,7 +1326,11 @@ static void print_rsn(const uint8_t type, uint8_t len, const uint8_t *data,
  static void print_ht_capa(const uint8_t type, uint8_t len, const uint8_t *data,
  			  const struct print_ies_data *ie_buffer)
  {
@@ -2285,7 +1869,7 @@ index dfc136a..f8f1107 100644
  	print_ht_capability(data[0] | (data[1] << 8));
  	print_ampdu_length(data[2] & 3);
  	print_ampdu_spacing((data[2] >> 2) & 7);
-@@ -1264,7 +1498,7 @@ static void print_tx_power_envelope(const uint8_t type, uint8_t len,
+@@ -1264,7 +1504,7 @@ static void print_tx_power_envelope(const uint8_t type, uint8_t len,
  		"Local Maximum Transmit Power For 160/80+80 MHz",
  	};
  
@@ -2294,7 +1878,7 @@ index dfc136a..f8f1107 100644
  
  	if (local_max_tx_power_count + 2 != len)
  		return;
-@@ -1274,9 +1508,9 @@ static void print_tx_power_envelope(const uint8_t type, uint8_t len,
+@@ -1274,9 +1514,9 @@ static void print_tx_power_envelope(const uint8_t type, uint8_t len,
  		int8_t power_val = ((int8_t)data[1 + i]) >> 1;
  		int8_t point5 = data[1 + i] & 1;
  		if (point5)
@@ -2306,7 +1890,7 @@ index dfc136a..f8f1107 100644
  	}
  }
  
-@@ -1300,22 +1534,36 @@ static void print_ht_op(const uint8_t type, uint8_t len, const uint8_t *data,
+@@ -1300,22 +1540,36 @@ static void print_ht_op(const uint8_t type, uint8_t len, const uint8_t *data,
  		"20 MHz",
  		"any",
  	};
@@ -2359,7 +1943,7 @@ index dfc136a..f8f1107 100644
  }
  
  static void print_capabilities(const uint8_t type, uint8_t len,
-@@ -1336,6 +1584,7 @@ static void print_capabilities(const uint8_t type, uint8_t len,
+@@ -1336,6 +1590,7 @@ static void print_capabilities(const uint8_t type, uint8_t len,
  		ie += ie[1] + 2;
  	}
  
@@ -2367,7 +1951,7 @@ index dfc136a..f8f1107 100644
  	for (i = 0; i < len; i++) {
  		base = i * 8;
  
-@@ -1343,15 +1592,15 @@ static void print_capabilities(const uint8_t type, uint8_t len,
+@@ -1343,15 +1598,15 @@ static void print_capabilities(const uint8_t type, uint8_t len,
  			if (!(data[i] & (1 << bit)))
  				continue;
  
@@ -2386,7 +1970,7 @@ index dfc136a..f8f1107 100644
  		break;						\
  	}							\
  	sum += val;						\
-@@ -1368,7 +1617,7 @@ static void print_capabilities(const uint8_t type, uint8_t len,
+@@ -1368,7 +1623,7 @@ static void print_capabilities(const uint8_t type, uint8_t len,
  
  			case 6:
  				s_psmp_support = true;
@@ -2395,7 +1979,7 @@ index dfc136a..f8f1107 100644
  				break;
  
  			CAPA(7, "Event");
-@@ -1424,7 +1673,7 @@ static void print_capabilities(const uint8_t type, uint8_t len,
+@@ -1424,7 +1679,7 @@ static void print_capabilities(const uint8_t type, uint8_t len,
  			CAPA(55, "QLoad Report");
  			CAPA(56, "Alternate EDCA");
  			CAPA(57, "Unprotected TXOP Negotiation");
@@ -2404,7 +1988,7 @@ index dfc136a..f8f1107 100644
  			CAPA(59, "Reserved");
  			CAPA(60, "Protected QLoad Report");
  			CAPA(61, "TDLS Wider Bandwidth");
-@@ -1444,39 +1693,53 @@ static void print_capabilities(const uint8_t type, uint8_t len,
+@@ -1444,39 +1699,53 @@ static void print_capabilities(const uint8_t type, uint8_t len,
  			CAPA(73, "Extended Spectrum Management Capable");
  			CAPA(74, "Reserved");
  			default:
@@ -2480,7 +2064,7 @@ index dfc136a..f8f1107 100644
  }
  
  static void print_tim(const uint8_t type, uint8_t len, const uint8_t *data,
-@@ -1499,7 +1762,6 @@ static void print_ibssatim(const uint8_t type, uint8_t len, const uint8_t *data,
+@@ -1499,7 +1768,6 @@ static void print_ibssatim(const uint8_t type, uint8_t len, const uint8_t *data,
  static void print_vht_capa(const uint8_t type, uint8_t len, const uint8_t *data,
  			   const struct print_ies_data *ie_buffer)
  {
@@ -2488,7 +2072,7 @@ index dfc136a..f8f1107 100644
  	print_vht_info((__u32) data[0] | ((__u32)data[1] << 8) |
  		       ((__u32)data[2] << 16) | ((__u32)data[3] << 24),
  		       data + 4);
-@@ -1515,12 +1777,20 @@ static void print_vht_oper(const uint8_t type, uint8_t len, const uint8_t *data,
+@@ -1515,12 +1783,20 @@ static void print_vht_oper(const uint8_t type, uint8_t len, const uint8_t *data,
  		[2] = "160 MHz",
  	};
  
@@ -2515,7 +2099,7 @@ index dfc136a..f8f1107 100644
  }
  
  static void print_supp_op_classes(const uint8_t type, uint8_t len,
-@@ -1532,29 +1802,70 @@ static void print_supp_op_classes(const uint8_t type, uint8_t len,
+@@ -1532,29 +1808,70 @@ static void print_supp_op_classes(const uint8_t type, uint8_t len,
  	int zero_delimiter = 0;
  	int one_hundred_thirty_delimiter = 0;
  
@@ -2578,14 +2162,14 @@ index dfc136a..f8f1107 100644
 +		while (++p < next_data) {
 +			if (*p == 130) {
 +				one_hundred_thirty_delimiter = 1;
- 				break;
++				break;
 +			}
 +			if (*p == 0) {
 +				zero_delimiter = 0;
-+				break;
+ 				break;
 +			}
 +			printf("\t\t * operating class: %d\n", *p);
- 		}
++		}
 +
 +		if (one_hundred_thirty_delimiter){
 +			while (++p < next_data) {
@@ -2599,12 +2183,12 @@ index dfc136a..f8f1107 100644
 +				if (*p == 0)
 +					break;
 +			}
-+		}
+ 		}
 +	}
  }
  
  static void print_measurement_pilot_tx(const uint8_t type, uint8_t len,
-@@ -1563,8 +1874,12 @@ static void print_measurement_pilot_tx(const uint8_t type, uint8_t len,
+@@ -1563,8 +1880,12 @@ static void print_measurement_pilot_tx(const uint8_t type, uint8_t len,
  {
  	uint8_t *p, len_remaining;
  
@@ -2619,7 +2203,7 @@ index dfc136a..f8f1107 100644
  
  	if (len <= 1)
  		return;
-@@ -1584,24 +1899,32 @@ static void print_measurement_pilot_tx(const uint8_t type, uint8_t len,
+@@ -1584,24 +1905,32 @@ static void print_measurement_pilot_tx(const uint8_t type, uint8_t len,
  
  		/* 802.11-2016 only allows vendor specific elements */
  		if (subelement_id != 221) {
@@ -2662,7 +2246,7 @@ index dfc136a..f8f1107 100644
  		len_remaining -= len;
  	}
  }
-@@ -1610,67 +1933,123 @@ static void print_obss_scan_params(const uint8_t type, uint8_t len,
+@@ -1610,67 +1939,123 @@ static void print_obss_scan_params(const uint8_t type, uint8_t len,
  				   const uint8_t *data,
  				   const struct print_ies_data *ie_buffer)
  {
@@ -2831,7 +2415,7 @@ index dfc136a..f8f1107 100644
  }
  
  struct ie_print {
-@@ -1682,31 +2061,54 @@ struct ie_print {
+@@ -1682,31 +2067,54 @@ struct ie_print {
  };
  
  static void print_ie(const struct ie_print *p, const uint8_t type, uint8_t len,
@@ -2908,7 +2492,7 @@ index dfc136a..f8f1107 100644
  #define PRINT_IGN {		\
  	.name = "IGNORE",	\
  	.print = NULL,		\
-@@ -1765,41 +2167,66 @@ static bool print_wifi_wmm_param(const uint8_t *data, uint8_t len)
+@@ -1765,41 +2173,66 @@ static bool print_wifi_wmm_param(const uint8_t *data, uint8_t len)
  	int i;
  	static const char *aci_tbl[] = { "BE", "BK", "VI", "VO" };
  
@@ -3001,7 +2585,7 @@ index dfc136a..f8f1107 100644
  }
  
  static void print_wifi_wmm(const uint8_t type, uint8_t len, const uint8_t *data,
-@@ -1858,209 +2285,217 @@ static void print_wifi_wps(const uint8_t type, uint8_t len, const uint8_t *data,
+@@ -1858,209 +2291,217 @@ static void print_wifi_wps(const uint8_t type, uint8_t len, const uint8_t *data,
  			break;
  
  		switch (subtype) {
@@ -3397,7 +2981,7 @@ index dfc136a..f8f1107 100644
  		}
  
  		data += sublen + 4;
-@@ -2068,13 +2503,19 @@ static void print_wifi_wps(const uint8_t type, uint8_t len, const uint8_t *data,
+@@ -2068,13 +2509,19 @@ static void print_wifi_wps(const uint8_t type, uint8_t len, const uint8_t *data,
  	}
  
  	if (len != 0) {
@@ -3420,7 +3004,7 @@ index dfc136a..f8f1107 100644
  	}
  }
  
-@@ -2217,31 +2658,60 @@ static void print_vendor(unsigned char len, unsigned char *data,
+@@ -2217,31 +2664,60 @@ static void print_vendor(unsigned char len, unsigned char *data,
  			 bool unknown, enum print_ie_type ptype)
  {
  	int i;
@@ -3500,7 +3084,7 @@ index dfc136a..f8f1107 100644
  	}
  
  	if (len >= 4 && memcmp(data, wfa_oui, 3) == 0) {
-@@ -2275,7 +2745,6 @@ static void print_vendor(unsigned char len, unsigned char *data,
+@@ -2275,7 +2751,6 @@ static void print_vendor(unsigned char len, unsigned char *data,
  static void print_he_capa(const uint8_t type, uint8_t len, const uint8_t *data,
  			  const struct print_ies_data *ie_buffer)
  {
@@ -3508,7 +3092,7 @@ index dfc136a..f8f1107 100644
  	print_he_capability(data, len);
  }
  
-@@ -2345,66 +2814,93 @@ void print_ies(unsigned char *ie, int ielen, bool unknown,
+@@ -2345,66 +2820,93 @@ void print_ies(unsigned char *ie, int ielen, bool unknown,
  
  static void print_capa_dmg(__u16 capa)
  {
@@ -3641,7 +3225,7 @@ index dfc136a..f8f1107 100644
  }
  
  static int print_bss_handler(struct nl_msg *msg, void *arg)
-@@ -2433,108 +2929,225 @@ static int print_bss_handler(struct nl_msg *msg, void *arg)
+@@ -2433,108 +2935,225 @@ static int print_bss_handler(struct nl_msg *msg, void *arg)
  	nla_parse(tb, NL80211_ATTR_MAX, genlmsg_attrdata(gnlh, 0),
  		  genlmsg_attrlen(gnlh, 0), NULL);
  
@@ -3963,7 +3547,7 @@ index dfc136a..f8f1107 100644
  
  	return NL_SKIP;
 diff --git a/util.c b/util.c
-index 8a2ba10..4a2906a 100644
+index 8a2ba10..0692633 100644
 --- a/util.c
 +++ b/util.c
 @@ -5,6 +5,8 @@
@@ -3975,7 +3559,7 @@ index 8a2ba10..4a2906a 100644
  void mac_addr_n2a(char *mac_addr, const unsigned char *arg)
  {
  	int i, l;
-@@ -220,19 +222,26 @@ int ieee80211_frequency_to_channel(int freq)
+@@ -220,19 +222,30 @@ int ieee80211_frequency_to_channel(int freq)
  		return 0;
  }
  
@@ -3983,8 +3567,21 @@ index 8a2ba10..4a2906a 100644
 -{
 -	int i;
 +static char *ssid_escape(const uint8_t len, const uint8_t *data) {
-+    static char buf[512]; // static buffer
-+	int pos = 0;
++    static char ssid_escaped[512]; // static buffer
++    int pos = 0;
++
++    for (int i = 0; i < len && pos < sizeof(ssid_escaped) - 5; i++) { // leave space for "\xXX" and terminator byte
++        if (isprint(data[i]) && data[i] != ' ' && data[i] != '\\') {
++            ssid_escaped[pos++] = data[i];
++        } else if (data[i] == ' ' && (i != 0 && i != len - 1)) {
++            ssid_escaped[pos++] = ' ';
++        } else {
++            pos += snprintf(ssid_escaped + pos, sizeof(ssid_escaped) - pos, "\\x%.2x", data[i]);
++        }
++    }
++    ssid_escaped[pos] = '\0'; // set terminator byte
++    return ssid_escaped;
++}
  
 -	for (i = 0; i < len; i++) {
 -		if (isprint(data[i]) && data[i] != ' ' && data[i] != '\\')
@@ -3995,26 +3592,17 @@ index 8a2ba10..4a2906a 100644
 -		else
 -			printf("\\x%.2x", data[i]);
 -	}
-+    for (int i = 0; i < len && pos < sizeof(buf) - 5; i++) { // leave space for "\xXX" and terminator byte
-+        if (isprint(data[i]) && data[i] != ' ' && data[i] != '\\') {
-+            buf[pos++] = data[i];
-+        } else if (data[i] == ' ' && (i != 0 && i != len - 1)) {
-+            buf[pos++] = ' ';
-+        } else {
-+            pos += snprintf(buf + pos, sizeof(buf) - pos, "\\x%.2x", data[i]);
-+        }
-+    }
-+    buf[pos] = '\0'; // set terminator byte
-+    return buf;
-+}
-+
 +void print_ssid_escaped(const uint8_t len, const uint8_t *data) {
 +	char *escaped_ssid = ssid_escape(len, data);
-+	iw_printf("SSID", "%s", escaped_ssid);
++    if (!iw_json) {
++        printf("%s", escaped_ssid);
++    } else {
++        print_string(PRINT_JSON, "SSID", "%s", escaped_ssid);
++    }
  }
  
  static int hex2num(char digit)
-@@ -743,38 +752,103 @@ int put_chandef(struct nl_msg *msg, struct chandef *chandef)
+@@ -743,38 +756,103 @@ int put_chandef(struct nl_msg *msg, struct chandef *chandef)
  	return -ENOBUFS;
  }
  
@@ -4133,7 +3721,7 @@ index 8a2ba10..4a2906a 100644
  }
  
  /*
-@@ -816,19 +890,32 @@ void print_ampdu_length(__u8 exponent)
+@@ -816,19 +894,32 @@ void print_ampdu_length(__u8 exponent)
  
  	max_ampdu_length = compute_ampdu_length(exponent);
  
@@ -4174,7 +3762,7 @@ index 8a2ba10..4a2906a 100644
  }
  
  void print_ht_capability(__u16 cap)
-@@ -836,10 +923,19 @@ void print_ht_capability(__u16 cap)
+@@ -836,10 +927,19 @@ void print_ht_capability(__u16 cap)
  #define PRINT_HT_CAP(_cond, _str) \
  	do { \
  		if (_cond) \
@@ -4196,7 +3784,7 @@ index 8a2ba10..4a2906a 100644
  
  	PRINT_HT_CAP((cap & BIT(0)), "RX LDPC");
  	PRINT_HT_CAP((cap & BIT(1)), "HT20/HT40");
-@@ -878,6 +974,10 @@ void print_ht_capability(__u16 cap)
+@@ -878,6 +978,10 @@ void print_ht_capability(__u16 cap)
  	PRINT_HT_CAP((cap & BIT(14)), "40 MHz Intolerant");
  
  	PRINT_HT_CAP((cap & BIT(15)), "L-SIG TXOP protection");
@@ -4207,7 +3795,7 @@ index 8a2ba10..4a2906a 100644
  #undef PRINT_HT_CAP
  }
  
-@@ -893,32 +993,48 @@ void print_ht_mcs(const __u8 *mcs)
+@@ -893,32 +997,48 @@ void print_ht_mcs(const __u8 *mcs)
  	tx_max_num_spatial_streams = ((mcs[12] >> 2) & 3) + 1;
  	tx_unequal_modulation = !!(mcs[12] & (1 << 4));
  
@@ -4269,7 +3857,7 @@ index 8a2ba10..4a2906a 100644
  	}
  }
  
-@@ -1033,13 +1149,13 @@ static const struct vht_nss_ratio nss_ratio_tbl[3][4] = {
+@@ -1033,13 +1153,13 @@ static const struct vht_nss_ratio nss_ratio_tbl[3][4] = {
  	},
  };
  
@@ -4285,7 +3873,7 @@ index 8a2ba10..4a2906a 100644
  	case 3:
  		rstr = "3/4";
  		break;
-@@ -1054,7 +1170,7 @@ static void print_nss_ratio_value(int ratio)
+@@ -1054,7 +1174,7 @@ static void print_nss_ratio_value(int ratio)
  		break;
  	}
  
@@ -4294,7 +3882,7 @@ index 8a2ba10..4a2906a 100644
  }
  
  static void print_nss_ratio(const char *str, bool force_show, int ratio)
-@@ -1063,53 +1179,83 @@ static void print_nss_ratio(const char *str, bool force_show, int ratio)
+@@ -1063,53 +1183,83 @@ static void print_nss_ratio(const char *str, bool force_show, int ratio)
  		return;
  	if (ratio == 4) {
  		if (force_show)
@@ -4401,7 +3989,7 @@ index 8a2ba10..4a2906a 100644
  		}
  	} else {
  		print_nss_ratio("20Mhz", false, nss_tbl->bw_20);
-@@ -1119,6 +1265,9 @@ void print_vht_info(__u32 capa, const __u8 *mcs)
+@@ -1119,6 +1269,9 @@ void print_vht_info(__u32 capa, const __u8 *mcs)
  		print_nss_ratio("80+80Mhz", false, nss_tbl->bw_80_80);
  		printf("\n");
  	}
@@ -4411,7 +3999,7 @@ index 8a2ba10..4a2906a 100644
  
  	PRINT_VHT_CAPA(4, "RX LDPC");
  	PRINT_VHT_CAPA(5, "short GI (80 MHz)");
-@@ -1138,36 +1287,39 @@ void print_vht_info(__u32 capa, const __u8 *mcs)
+@@ -1138,36 +1291,39 @@ void print_vht_info(__u32 capa, const __u8 *mcs)
  	PRINT_VHT_CAPA(28, "RX antenna pattern consistency");
  	PRINT_VHT_CAPA(29, "TX antenna pattern consistency");
  
@@ -4478,7 +4066,7 @@ index 8a2ba10..4a2906a 100644
  }
  
  static void __print_he_capa(const __u16 *mac_cap,
-@@ -1183,13 +1335,13 @@ static void __print_he_capa(const __u16 *mac_cap,
+@@ -1183,13 +1339,13 @@ static void __print_he_capa(const __u16 *mac_cap,
  	#define PRINT_HE_CAP(_var, _idx, _bit, _str) \
  	do { \
  		if (_var[_idx] & BIT(_bit)) \
@@ -4494,7 +4082,7 @@ index 8a2ba10..4a2906a 100644
  	} while (0)
  
  	#define PRINT_HE_MAC_CAP(...) PRINT_HE_CAP(mac_cap, __VA_ARGS__)
-@@ -1198,10 +1350,16 @@ static void __print_he_capa(const __u16 *mac_cap,
+@@ -1198,10 +1354,16 @@ static void __print_he_capa(const __u16 *mac_cap,
  	#define PRINT_HE_PHY_CAP0(_idx, _bit, ...) PRINT_HE_CAP(phy_cap, _idx, _bit + 8, __VA_ARGS__)
  	#define PRINT_HE_PHY_CAP_MASK(...) PRINT_HE_CAP_MASK(phy_cap, __VA_ARGS__)
  
@@ -4515,7 +4103,7 @@ index 8a2ba10..4a2906a 100644
  
  	PRINT_HE_MAC_CAP(0, 0, "+HTC HE Supported");
  	PRINT_HE_MAC_CAP(0, 1, "TWT Requester");
-@@ -1238,10 +1396,25 @@ static void __print_he_capa(const __u16 *mac_cap,
+@@ -1238,10 +1400,25 @@ static void __print_he_capa(const __u16 *mac_cap,
  	PRINT_HE_MAC_CAP(2, 11, "UL 2x996-Tone RU");
  	PRINT_HE_MAC_CAP(2, 12, "OM Control UL MU Data Disable RX");
  
@@ -4545,7 +4133,7 @@ index 8a2ba10..4a2906a 100644
  
  	PRINT_HE_PHY_CAP0(0, 1, "HE40/2.4GHz");
  	PRINT_HE_PHY_CAP0(0, 2, "HE40/HE80/5GHz");
-@@ -1308,6 +1481,8 @@ static void __print_he_capa(const __u16 *mac_cap,
+@@ -1308,6 +1485,8 @@ static void __print_he_capa(const __u16 *mac_cap,
  	PRINT_HE_PHY_CAP(5, 4, "RX Full BW SU Using HE MU PPDU with Compression SIGB");
  	PRINT_HE_PHY_CAP(5, 5, "RX Full BW SU Using HE MU PPDU with Non-Compression SIGB");
  
@@ -4554,7 +4142,7 @@ index 8a2ba10..4a2906a 100644
  	mcs_used = 0;
  	for (i = 0; i < 3; i++) {
  		__u8 phy_cap_support[] = { BIT(1) | BIT(2), BIT(3), BIT(4) };
-@@ -1321,20 +1496,43 @@ static void __print_he_capa(const __u16 *mac_cap,
+@@ -1321,20 +1500,43 @@ static void __print_he_capa(const __u16 *mac_cap,
  		if ((i * 2 + 2) * sizeof(mcs_set[0]) >= mcs_len)
  			return;
  
@@ -4611,7 +4199,7 @@ index 8a2ba10..4a2906a 100644
  		}
  		mcs_used += 2 * sizeof(mcs_set[0]);
  	}
-@@ -1348,12 +1546,23 @@ static void __print_he_capa(const __u16 *mac_cap,
+@@ -1348,12 +1550,23 @@ static void __print_he_capa(const __u16 *mac_cap,
  			ppet_len = 0;
  	}
  
@@ -4641,7 +4229,7 @@ index 8a2ba10..4a2906a 100644
  	}
  }
  
-@@ -1362,9 +1571,16 @@ void print_iftype_list(const char *name, const char *pfx, struct nlattr *attr)
+@@ -1362,9 +1575,16 @@ void print_iftype_list(const char *name, const char *pfx, struct nlattr *attr)
  	struct nlattr *ift;
  	int rem;
  
@@ -4661,7 +4249,7 @@ index 8a2ba10..4a2906a 100644
  }
  
  void print_iftype_line(struct nlattr *attr)
-@@ -1694,7 +1910,7 @@ int get_cf1(const struct chanmode *chanmode, unsigned long freq)
+@@ -1694,7 +1914,7 @@ int get_cf1(const struct chanmode *chanmode, unsigned long freq)
  				6435, 6515, 6595, 6675, 6755, 6835,
  				6195, 6995 };
  	unsigned int bw160[] = { 5180, 5500, 5955, 6115, 6275, 6435,
