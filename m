@@ -1,75 +1,86 @@
-Return-Path: <linux-wireless+bounces-4335-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4336-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5BB786FBC1
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Mar 2024 09:22:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C87C86FED1
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Mar 2024 11:20:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85E231F21728
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Mar 2024 08:22:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBAB2283645
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Mar 2024 10:20:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CDEC17560;
-	Mon,  4 Mar 2024 08:22:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 113FE364B7;
+	Mon,  4 Mar 2024 10:17:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="fb11IaKc"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.kevlo.org (mail.kevlo.org [220.134.220.36])
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6931C171AF
-	for <linux-wireless@vger.kernel.org>; Mon,  4 Mar 2024 08:22:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.134.220.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85FA4241E5;
+	Mon,  4 Mar 2024 10:17:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709540524; cv=none; b=uaM2m5+mUXsBKYJ7dGrIh7dQ4AgHlv8V4+AV132FzmIUiAxndrCtKiKNwPHxSxdq+EuJlE7ynXxgIvmRQEm1hUHCNe4MNr//qRrX9jIs92MIMcOMLWRFwodga3dJUYoZ34SHZlh968b88rBA8MhjkkLuJtqftYRPAk7xQ00/P9U=
+	t=1709547436; cv=none; b=TBzlZraY1SI2XsCYBcpchtbPVgCjnG6N3fGAcaQOG7dXizrroS2Kf+9XnisQJnNH+qnylo8v6jfVqvsfyqpgUgudzCl8rPAG5PgFCeF7FrnP0qVIloYMAioE22f8SmHcj8cG9trD6W9liZ45ybMlbmlw1JEZjNw2FFotvzXB5tY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709540524; c=relaxed/simple;
-	bh=71ZK4g1MeT75y19WsqXFQT1Zj55AUp39uYBT0Fbz4pI=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=gkNSjMr4q6FaHenEfnlDWBtUYySTzriq0Zo74ar/sGc9j7tdW3N/q7OR9jFbCRnpEvDsMlssJCSw3z4r4v9WjRpgm/CmwKVSImb6MO3bv/qVgF7PDD3qur2GokklArkZnGIDmmScH5B7C1XixL7N+Iamp2r2dEf1SGmrRRHuzVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kevlo.org; spf=pass smtp.mailfrom=kevlo.org; arc=none smtp.client-ip=220.134.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kevlo.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kevlo.org
-Received: from localhost (ns.kevlo.org [local])
-	by ns.kevlo.org (OpenSMTPD) with ESMTPA id 07a1ee66;
-	Mon, 4 Mar 2024 16:22:00 +0800 (CST)
-Date: Mon, 4 Mar 2024 16:22:00 +0800
-From: Kevin Lo <kevlo@kevlo.org>
-To: ath11k@lists.infradead.org
-Cc: Jeff Johnson <quic_jjohnson@quicinc.com>, Kalle Valo <kvalo@kernel.org>,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH v2] wifi: ath11k: adjust a comment to reflect reality
-Message-ID: <ZeWEqGVibkMg2APi@ns.kevlo.org>
+	s=arc-20240116; t=1709547436; c=relaxed/simple;
+	bh=ltcyOw+TgqviIKZ8PQUG8CPcAe7I74uGtSNAStThC1w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VJOpuJ4Kb7F501R/AL3cTwe/+2P2gzOhLay28fshaUIk+kUrT3oliZTQpss/sHa2QLq8fMpZnbPSyYGhGcht/E1JbxFm797QHUyWzOMLjFvlCfV727IJ5Otr3tMNDn06rpSktSkF0ZoHS6XEzN70MlWeT8nlwfpLcBuaqLx4c4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=fb11IaKc; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1709547432;
+	bh=ltcyOw+TgqviIKZ8PQUG8CPcAe7I74uGtSNAStThC1w=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=fb11IaKccd0sn7CyPKu2BXQKbFW2upyD39noI5TM03TJBBiM5ye+aWnCUUD2VbkIq
+	 2TnHjnBrpEVsp4dAD81Wujg/2j3bYBUPN+PI1ui+pqh3XqbQ9AS1HyWi5D+Tm0y9Tl
+	 NXav/eWcHeq9xhcHxEkGYzaSJGHAt9AJ4EHlVVVOCSkNGkqR4NwznUGaNk+vUJaiDE
+	 IvaQKjCwcb0EBo5VHb7oK2HPqb7UUoSsCo+BnT+j04XQmITA8I8pylgLfe7w4TJCjv
+	 GVclBtl4+0/QhrYVEDW+AR1QYgVcXe+cPtL2ufpRyVs+46CSb+DPwSEyEoDusH73BK
+	 xCWmU2AHLwU7Q==
+Received: from [100.113.186.2] (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: kholk11)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id D33AE3781FE9;
+	Mon,  4 Mar 2024 10:17:11 +0000 (UTC)
+Message-ID: <fcb78476-d1e4-4354-99a6-0bb92a2ec3b6@collabora.com>
+Date: Mon, 4 Mar 2024 11:17:11 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: mt76: connac: check for null before dereferencing
+Content-Language: en-US
+To: Muhammad Usama Anjum <usama.anjum@collabora.com>,
+ Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
+ Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>,
+ Sean Wang <sean.wang@mediatek.com>, Kalle Valo <kvalo@kernel.org>,
+ Matthias Brugger <matthias.bgg@gmail.com>
+Cc: kernel@collabora.com, kernel-janitors@vger.kernel.org,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
+References: <20240301144406.2808307-1-usama.anjum@collabora.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+In-Reply-To: <20240301144406.2808307-1-usama.anjum@collabora.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On QCA6390/QCN9074/WCN6855, MHISTATUS may still have SYSERR bit set
-after SOC_GLOBAL_RESET.
+Il 01/03/24 15:44, Muhammad Usama Anjum ha scritto:
+> The wcid can be NULL. It should be checked for validity before
+> dereferencing it to avoid crash.
+> 
+> Fixes: 098428c400ff ("wifi: mt76: connac: set correct muar_idx for mt799x chipsets")
+> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
 
-changes for v2:
-- update comment about resetting MHICTRL to clear SYSERR
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-Signed-off-by: Kevin Lo <kevlo@kevlo.org>
---- 
-diff --git a/drivers/net/wireless/ath/ath11k/mhi.c b/drivers/net/wireless/ath/ath11k/mhi.c
-index fb4ecf9a103e..956fff0d4962 100644
---- a/drivers/net/wireless/ath/ath11k/mhi.c
-+++ b/drivers/net/wireless/ath/ath11k/mhi.c
-@@ -158,9 +158,8 @@ void ath11k_mhi_set_mhictrl_reset(struct ath11k_base *ab)
- 
- 	ath11k_dbg(ab, ATH11K_DBG_PCI, "mhistatus 0x%x\n", val);
- 
--	/* Observed on QCA6390 that after SOC_GLOBAL_RESET, MHISTATUS
--	 * has SYSERR bit set and thus need to set MHICTRL_RESET
--	 * to clear SYSERR.
-+	/* After SOC_GLOBAL_RESET, MHISTATUS may still have SYSERR bit set 
-+	 * and thus need to set MHICTRL_RESET to clear SYSERR.
- 	 */
- 	ath11k_pcic_write32(ab, MHICTRL, MHICTRL_RESET_MASK);
- 
+
 
