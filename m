@@ -1,63 +1,63 @@
-Return-Path: <linux-wireless+bounces-4358-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4359-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F07E7870CCF
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Mar 2024 22:28:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ED6C870EBF
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Mar 2024 22:46:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91F1A1F25E68
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Mar 2024 21:28:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B68FE1F21B7E
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Mar 2024 21:46:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90F08200A9;
-	Mon,  4 Mar 2024 21:28:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC85C7B3D8;
+	Mon,  4 Mar 2024 21:46:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="nYK/CWmD"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="F05ipFzq"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7671EB5A
-	for <linux-wireless@vger.kernel.org>; Mon,  4 Mar 2024 21:28:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D41E10A35;
+	Mon,  4 Mar 2024 21:46:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587736; cv=none; b=PJ89fnAkArheNXXZR/thXUZYS8O0nfR4ho6IX+SWT28FMth1Av8I/0KBNsU1HYKuKMrEu/vRKvCYLansM8xNu5YM0na6IaeRafqYCSzKF4it5da5FWwhDykd4TNaQhhVQ7jw3u4z5kiFnWA6av6H9fTyia085hPwRJjHxakhbZk=
+	t=1709588792; cv=none; b=gSHo90drCFaStRAm9cWBuMCfNo/DgEakhtbSbKFzLDN2SQiZ7osiqfiXxddeg6+JjT/D5SyN1VAdL1xGFhpRNV/qoe5+zrbB/AhJUKahxn8LHnKcnB7ALMUxkIMCBxxUA5pxNit6ARnKgt46s8gbPP5+nJoayqCeJwVloq/6+8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587736; c=relaxed/simple;
-	bh=3HH54GOGYWpmYkQRlCVBqk0/H2cZ8Xdgxpy+A31X4MM=;
+	s=arc-20240116; t=1709588792; c=relaxed/simple;
+	bh=PkIAzelvrlhN7PE4DU9IpFBpQgozAf+D/ekjzn1DMXg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=AiPujDYhrmwGp1eNLma6iECDGA8KSKcRWSJL8sdKKazGnMHdbITp2A9sMlvnrPsW2u920xB9GaF2Ncv5RTQF2cQY564CXN2V5AB2dBvmBCqPr6PfY2KPnVH+lgbfs2XbjutjM9nZ7a11LpWVCyTGqUACHEC47hN81yAvNYr10Wc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=nYK/CWmD; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:Content-Type; b=lNVn2bMxTzU4onpVDc7qEkiWlUQE2G7m0sa+Ubg+YkP1CSRbYXZzWWakEXVsdcGfF0MwrR4Y2WINsU5qeDqLt7a6PUT5MhkhPtuc3oMZZgAGDnNCcnth8ehnvxgYiLBNkpyG7jT6hO+IhP4G+zfBAgG9C0wHyqqfNzWROY26wHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=F05ipFzq; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 424Ks6Ns023379;
-	Mon, 4 Mar 2024 21:28:49 GMT
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 424Hb3bO030620;
+	Mon, 4 Mar 2024 21:46:13 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	message-id:date:mime-version:subject:to:cc:references:from
 	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=+IARBE/EvMWWgCZuAmqq/YDfg7jlJ9qON1QOo/XTooE=; b=nY
-	K/CWmD0iqhJqIhV2fqkWDIiQMNdKRYucYYlQiGidf6Zd/cwRG++pHmnneQ8OhTT6
-	0Cp1U8FydupquQgcAbTFkF7Bl19bMu7NdTgTognDdGHz4uQnrN/ASfCUH5i0+gJ/
-	oZLf+VqFLycUDbYLEpuAScAMRl0egjs06BV8M3bKEt/UXHH6/JTVxHPOKFQGlLfo
-	csBk00QT2OahFShEF5dovCMWNuEYPlwVezMBf3GneMB0k1h0oRDrYnQatYFuTEJD
-	XFO/aBWg/xHXUKa55W6nC+OibdPmi3j4S+SGJ92surivFnWj+ycmS/FDTAjYBTi3
-	vqRRbtuDuvFQL0BgmnwQ==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wn96esun1-1
+	qcppdkim1; bh=peMhEB7LCKrCHa9OQkkEzlMT5kXB97fl2hhCe2/Uhp8=; b=F0
+	5ipFzqX2DqedTwKQaNkZu0i6fINNBBHXpMl40gfvSLuBSV57UHwkxOszjHIuW0/h
+	ifk1VaqNMcungqiqp4moEj7SzADlppz1D8M2USpjKpMuJ9zcMb2g7YvL1k4B7FN4
+	wegXQgkTKLhcZt/bJsxnn5qMiN6Fpn0QPseA/Tw+FXS6IQBdQFaBrgzTrfyIEIvy
+	mqIavOUbDdADtWCcoA89r+W79jHTSPFd2PRM8bxYv6/CbDx0q5H5T0MjWijBd/D8
+	8o1AJ7zKp5JwKj8yaNDEIDMesTMTZCtNlT2dGXzpuWs3kZCYuRJNHNkMJiTxe7Rf
+	r45sRoG7jOjKe7dAUEAg==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wn8fxsys0-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 04 Mar 2024 21:28:49 +0000 (GMT)
+	Mon, 04 Mar 2024 21:46:12 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 424LSmUx001743
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 424LkBW2008665
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 4 Mar 2024 21:28:48 GMT
+	Mon, 4 Mar 2024 21:46:11 GMT
 Received: from [10.110.86.150] (10.80.80.8) by nalasex01a.na.qualcomm.com
  (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Mon, 4 Mar
- 2024 13:28:48 -0800
-Message-ID: <574de3b9-3328-470b-a998-761e1d5fb8a9@quicinc.com>
-Date: Mon, 4 Mar 2024 13:28:47 -0800
+ 2024 13:46:10 -0800
+Message-ID: <228772c6-034e-4727-b410-391316d8f340@quicinc.com>
+Date: Mon, 4 Mar 2024 13:46:09 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,66 +65,92 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iw: Add JSON output options to 'iw' for scan results
+Subject: Re: [PATCH] arm64: defconfig: build ath12k as a module
 Content-Language: en-US
-To: Isaev Ruslan <legale.legale@gmail.com>,
-        Johannes Berg
-	<johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>
-References: <CACDmYyeipzNzeBoXQEtsXRu9uHUuteZ1ymJZZ-GsM=zhT19trg@mail.gmail.com>
- <4370a021c6870c58fb15718ee9e4ce8d675b3e3a.camel@sipsolutions.net>
- <CACDmYydF7ZDSGh-9XQ5bvyAcXt1m8JE-EXMTd8mDbGcegO1gfA@mail.gmail.com>
+To: Bartosz Golaszewski <brgl@bgdev.pl>,
+        Catalin Marinas
+	<catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Bjorn Andersson
+	<quic_bjorande@quicinc.com>,
+        Krzysztof Kozlowski
+	<krzysztof.kozlowski@linaro.org>,
+        Geert Uytterhoeven
+	<geert+renesas@glider.be>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        "Arnd
+ Bergmann" <arnd@arndb.de>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        "Marek
+ Szyprowski" <m.szyprowski@samsung.com>
+CC: <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+References: <20240219084610.11007-1-brgl@bgdev.pl>
+ <CAMRc=Md0H4=UZWNOoZR3-b50BrF-ch=34aPdqm2JhOXQzNi-mQ@mail.gmail.com>
 From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <CACDmYydF7ZDSGh-9XQ5bvyAcXt1m8JE-EXMTd8mDbGcegO1gfA@mail.gmail.com>
+In-Reply-To: <CAMRc=Md0H4=UZWNOoZR3-b50BrF-ch=34aPdqm2JhOXQzNi-mQ@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: rSqoPTKggGjSMuvwko2nXYOmQqzujjQq
-X-Proofpoint-GUID: rSqoPTKggGjSMuvwko2nXYOmQqzujjQq
+X-Proofpoint-GUID: ZlLrK936vgFL4t36CuSf9fGamDQGBLFA
+X-Proofpoint-ORIG-GUID: ZlLrK936vgFL4t36CuSf9fGamDQGBLFA
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-04_17,2024-03-04_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
- adultscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0 malwarescore=0
- mlxscore=0 impostorscore=0 clxscore=1015 mlxlogscore=662
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2402120000 definitions=main-2403040166
+ definitions=2024-03-04_18,2024-03-04_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 bulkscore=0 mlxlogscore=666 clxscore=1015 phishscore=0
+ mlxscore=0 adultscore=0 suspectscore=0 spamscore=0 impostorscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2402120000 definitions=main-2403040169
 
-On 3/4/2024 12:23 PM, Isaev Ruslan wrote:
-> On Mon, 4 Mar 2024 at 22:00, Johannes Berg <johannes@sipsolutions.net> wrote:
+On 3/3/2024 2:34 AM, Bartosz Golaszewski wrote:
+> On Mon, Feb 19, 2024 at 9:46 AM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
 >>
->>>
->>> If these changes prove valuable, I am prepared to continue working on
->>> extending JSON output support throughout the tool.
->>> Feedback is welcome and appreciated.
->>>
+>> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 >>
->> I'd prefer to look at it unmangled - can you resend it with whitespace
->> preserving tools please?
+>> Qualcomm sm8550-qrd and sm8650-qrd boards have ath12k modules as part of
+>> their on-board WCN7850 WLAN/BT packages. Enable the relevant driver in
+>> defconfig.
+>>
+>> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+
+Would have been nice to cc the ath12k and linux-wireless lists (done
+now). Just happened to stumble across this.
+
+As an ath12k maintainer--
+Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+
+>> ---
+>>  arch/arm64/configs/defconfig | 1 +
+>>  1 file changed, 1 insertion(+)
+>>
+>> diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
+>> index 056a6cc546a4..3f3d3350cf90 100644
+>> --- a/arch/arm64/configs/defconfig
+>> +++ b/arch/arm64/configs/defconfig
+>> @@ -408,6 +408,7 @@ CONFIG_WCN36XX=m
+>>  CONFIG_ATH11K=m
+>>  CONFIG_ATH11K_AHB=m
+>>  CONFIG_ATH11K_PCI=m
+>> +CONFIG_ATH12K=m
+>>  CONFIG_BRCMFMAC=m
+>>  CONFIG_MWIFIEX=m
+>>  CONFIG_MWIFIEX_SDIO=m
+>> --
+>> 2.40.1
+>>
 > 
-> If I understood you correctly, you wanted to see the patch without whitespaces.
-> I have sent the patch v2 in a separate email.
-
-no, we want patches with correct whitespace/indentation
-
-all of the patches you've sent so far have multiple places where correct
-code indentation is not present.
-
-for example:
-+ if (argc > 0 && strcmp(*argv, "-j") == 0) {
-+ iw_json = 1;
-+ new_json_obj(1, 0); //pretty print disabled
-+ argc--;
-+ argv++;
-+ }
-
-Not sure how you are posting, but note that many e-mail clients mangle
-patches.
-
-Please refer to:
-<https://docs.kernel.org/process/email-clients.html>
+> Gentle ping.
+> 
+> Bart
+> 
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
 
 
