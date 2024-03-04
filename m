@@ -1,156 +1,115 @@
-Return-Path: <linux-wireless+bounces-4342-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4343-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29A838706E5
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Mar 2024 17:21:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24B22870861
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Mar 2024 18:36:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D9B11C2147E
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Mar 2024 16:21:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B43C9B23DC6
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Mar 2024 17:36:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25AF947A6C;
-	Mon,  4 Mar 2024 16:21:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B4ED6026F;
+	Mon,  4 Mar 2024 17:36:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b="NgVQlMgg"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QbUvT6xe"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF8E482DA
-	for <linux-wireless@vger.kernel.org>; Mon,  4 Mar 2024 16:21:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7B0A45942
+	for <linux-wireless@vger.kernel.org>; Mon,  4 Mar 2024 17:36:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709569304; cv=none; b=qIW40hBgnxh+9L7R7pJc530ErPehc/roQ/a7DahX41hX7yi2WlAwDLWYc+4XRp0RxjkuqpSzB0FArAl1rZQadLeTNW/YFwTmWaS2jfGgcNBsx6Fm4HuusGqNgYUqgwQgw37CWUhn0W8gKW/qNAFb0XDeVVn4bUgk6S5ztBJbCxQ=
+	t=1709573803; cv=none; b=EPa3KvYbFNMJvdKKXpJ+tOUSSQGIWkMY0HPgqveeKLhent8a4OSvh3hKi5zcNs2Mbl/0y8FRFkcHASm7pBRyOPXkweUC35Ti6dJk3RqSaxCzjAl3hFs3Y9CB7UqBHPnHeoNuSrauUGCzMwdbxLHTm22EtpjricwhBdAHJ7D8t1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709569304; c=relaxed/simple;
-	bh=4xTBM2H/u8UluDDjHyyVTU6zuFLKL29UdTc9YUE4eAo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nRgI3SMLF0KU04TBShqyde1WVEyYQNAr0QWtmFdufCEJmKKlTdqBYbPtykKgA8wgrXOoIcMSoKIcA5PKXcbzCMny3NLEBU3C0UGBzltgm4BM8C7cqk4lT24VwdWvHFhHmyLwroPpyxsIpre60klSMUUSld4n3jxPWjjfcV6zNjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b=NgVQlMgg; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freebox.fr
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-33dd2f0a0c4so2647465f8f.0
-        for <linux-wireless@vger.kernel.org>; Mon, 04 Mar 2024 08:21:40 -0800 (PST)
+	s=arc-20240116; t=1709573803; c=relaxed/simple;
+	bh=x0cxzbpjoyvdXqMNr27LADNQou95xpV813xwiZn5Wb0=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=GUwfojGJwmLOMArGKybxWxZUeVktTzSwwOvdLWL9I2i2tr9HLToy1LHpDoFRqFeF71lJ+eniX4ZTcKD1aec1PPCqh/9ozRAyYaMWFFOJ0RcMU3Kn+tFHU288Kqu5BI85th+RWblYy+XTxxrtSuMw1Rt+u4pb5aR5rdyOpKO3ARg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QbUvT6xe; arc=none smtp.client-ip=209.85.160.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-21f70f72fb5so3559858fac.1
+        for <linux-wireless@vger.kernel.org>; Mon, 04 Mar 2024 09:36:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=freebox-fr.20230601.gappssmtp.com; s=20230601; t=1709569299; x=1710174099; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=2NauviWk607nxbEN2DlOAU5kjIWJKRTn3ayaQZc8Isw=;
-        b=NgVQlMgge4QCpUwVlDmIxRcygs/OVn2MjAQqsCzTNYhDpRKe8DO9xodhUUJdjU6uJ4
-         28G7n7/ihslT3+vyEN0rBz1wLPRNtBq7xVa3nblODgrUaQwSv2BTeoZod9N3T9mp2+OG
-         R5jRY0grd/4RlVcoCtc1qVSIO1eDBit6lwub+hvboMgt8bkOkaGi20QzKLTiuLS2YmIE
-         a/QDgVWXNjzqtW9NPrpFhiEnnrg5aavxQrpz2gGR9zYMJ9vEe/ZPi4NgfMKobQyvIM2m
-         J1beEG6N/6vEvqj+GoxDYD2Yz6lB5t5AnoV52ymmgE1sIxsak9pNfY6uFqXzxYAzm1TA
-         /Wsg==
+        d=gmail.com; s=20230601; t=1709573799; x=1710178599; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=x0cxzbpjoyvdXqMNr27LADNQou95xpV813xwiZn5Wb0=;
+        b=QbUvT6xe+TYewRUGHUZy1rSmYh53D6uJ4ddC2OdEYzO10BG+E27qkTTIq+YI0zGpFQ
+         UDJQ9wGx3S9DbVuy6QIifdN3SF4Ge3I/jWJWv4Z4Z111CZYPjej0fciyHcmqH0QlHF2u
+         1CmyC0di3B7heXDPiPtbkTB5Y4gs2xb2jlLHV8pL/pLPEGUqqRJNHR9ZriZSZoWtfUOa
+         8wuG6ks6hkQWMuACFdub4smXjEbLeWcxJS0dojXwJV0YfmaBBnrbGbt6FD545iqPUIdT
+         lvIWBhyutMsvf9ieaRPmgW97fWG1W0AeeX3i9nbLtzik8Uibhze9pBpBhbbR4R6m7xTf
+         n/hg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709569299; x=1710174099;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2NauviWk607nxbEN2DlOAU5kjIWJKRTn3ayaQZc8Isw=;
-        b=jIjWi1zOpCUeP0KGD3xw6qEk8UsBbdk81696vxODY2ZnGxQu5WGvHVdgowS/vsiMmr
-         DurczkQvc1VUS1s2lf+EgfW0nBH4laU5VvWfVyrnRVd7rFGdxW0LWsgK9YHzENnHGths
-         zSrvLPrbR9LKdWGlcP+mWD3SQMEwNcQ4+lppTnIaqGpnx9D0m/pRAuU35T4vJtejIgni
-         eVSmf4gm+OoBlo955GjhrlxJqfQvTDTwA1QcxRRz+tHYtliGc1EtVuadRXxuMH6WVWZz
-         g5RAl137nbBNtEBI0OqChxjaWDxLl10cUb+L4mUJpYFTZ9y/1mWExgErE5Mj2JIeTZaj
-         FedA==
-X-Forwarded-Encrypted: i=1; AJvYcCUXlMJ49BeR+nfQq+cZqYIdH4MST1nnlbWy2UlQnpGDY7BmQzAl9WHxSRfHaI544q01ryVJj/XJPgjWypOfohALWlZ2O5+oKHnd7RDrXy8=
-X-Gm-Message-State: AOJu0YySdV7vzQd6okaoxWs4ll0UVerbrBrljKZIPZ+4YQCQIYVfU+Cc
-	iYnqFk95L/aPZTlKqSPyARaTgKIt9v5cAAhyBbUvjqOIkDgFj/VkwHRYeHdUMrY=
-X-Google-Smtp-Source: AGHT+IFeuAkLZo+7SpvCw19rJhG+qBzOg0lkgNPbLPmlzxdr5EnioyfQyd2ksDtt5/vGI8oC1ahhPQ==
-X-Received: by 2002:a5d:42cb:0:b0:33d:d84f:1ef0 with SMTP id t11-20020a5d42cb000000b0033dd84f1ef0mr6098847wrr.12.1709569298835;
-        Mon, 04 Mar 2024 08:21:38 -0800 (PST)
-Received: from [192.168.108.81] (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id az23-20020adfe197000000b0033e4403c6a9sm1552302wrb.22.2024.03.04.08.21.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 04 Mar 2024 08:21:38 -0800 (PST)
-Message-ID: <68a49964-7c05-4575-a4f3-35848c08fefc@freebox.fr>
-Date: Mon, 4 Mar 2024 17:21:37 +0100
+        d=1e100.net; s=20230601; t=1709573799; x=1710178599;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=x0cxzbpjoyvdXqMNr27LADNQou95xpV813xwiZn5Wb0=;
+        b=ucYm5ubqotE/OR491gRB8a3WBRrof3JK6cd/e9MgyYg0x6WBeP8Eu/BDpfWPzrm2Fd
+         oIZxkHJVrfFWktY8XGvwlsZr5x3519XxJKWMxdDP+ZivBiU7SMgrS1jLQQg0josIHWss
+         khQ6f4enr/EOk4ROfCrhjU5bN1DtEy+ma0U6+EBo2RaAOTZe8tQSaGEDSS49zwHIfdwY
+         o7l4XnLuAtAKyeJQiqTFZ/JQLwTFE/EUrdFy+9DoEwy+C24SdgqB3f5rpGa+hMl7eQu0
+         e9aS4m+mVHB3UMARp+Bw5YeGxHoML87FMyd9+MxEHnZhV6scqfE+PdChwgs2yCSthrzK
+         gN/Q==
+X-Gm-Message-State: AOJu0YxbNTEnIv/4cYlEFvuS2TxOCTMz/yBX5NRM1jSSj22ps0+h47+B
+	n5iArkam38CVgPZXN1ILELKZVHCmIGL9UVHjooyeZ6Q4K5m74ppiGihd8kP3bk5I+ZhqNeuWene
+	3QPPNbnGSbSnyMfrcMQoc6LTFSmzF159Vs6c=
+X-Google-Smtp-Source: AGHT+IHvvq6FwFsc6cFQX92GS4uHlNXHVs5KuZ6P1FZ7YoAsc6jjR6KJAuUoVqaukAs23pZu9VMMKbaVfDs+ICMr0+g=
+X-Received: by 2002:a05:6870:7248:b0:21e:aca4:883 with SMTP id
+ y8-20020a056870724800b0021eaca40883mr12429626oaf.15.1709573799635; Mon, 04
+ Mar 2024 09:36:39 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: net: wireless: ath10k: add
- qcom,no-msa-ready-indicator prop
-Content-Language: en-US
-To: Conor Dooley <conor@kernel.org>, Kalle Valo <kvalo@kernel.org>
-Cc: Jeff Johnson <quic_jjohnson@quicinc.com>,
- ath10k <ath10k@lists.infradead.org>,
- wireless <linux-wireless@vger.kernel.org>, DT <devicetree@vger.kernel.org>,
- Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Pierre-Hugues Husson <phhusson@freebox.fr>,
- Jami Kettunen <jamipkettunen@gmail.com>,
- Jeffrey Hugo <quic_jhugo@quicinc.com>,
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-References: <14daa98e-7fd3-4ebb-87bb-5d2c1fba679f@freebox.fr>
- <b8de96c7-cbb6-4a09-a4d4-2c11b3ab3e01@freebox.fr> <871q8wk7o3.fsf@kernel.org>
- <3392f356-7b19-483d-b9f8-3bd84068fa52@freebox.fr> <87wmqoilzf.fsf@kernel.org>
- <20240229-ageless-primal-7a0544420949@spud>
-From: Marc Gonzalez <mgonzalez@freebox.fr>
-In-Reply-To: <20240229-ageless-primal-7a0544420949@spud>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Dead Ballo <deadballo@gmail.com>
+Date: Mon, 4 Mar 2024 10:36:27 -0700
+Message-ID: <CANJ9ypXpS8M57B+N8r8NvH-jA9uBpHAf7Afp4hfLCqV7sBJL4A@mail.gmail.com>
+Subject: How do I limit ath9k wireless interface to 2M?
+To: linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 29/02/2024 19:40, Conor Dooley wrote:
+Hello. I need to limit a wifi adapter to using 1M to 2M because this
+and another chipset (rtl8187l) have better reception fidelity at those
+bitrates which is important when creating a mile-long link. I have
+used this successfully for years using an older kernel using the
+argument:
 
-> On Wed, Feb 28, 2024 at 06:37:08PM +0200, Kalle Valo wrote:
->
->> Marc Gonzalez wrote:
->> 
->>> As mentioned in my other reply, there are several msm8998-based
->>> devices affected by this issue. Is it not appropriate to consider
->>> a kernel-based work-around?
->>
->> Sorry, not following you here. But I'll try to answer anyway:
->>
->> I have understood that Device Tree is supposed to describe hardware, not
->> software. This is why having this property in DT does not look right
->> place for this. For example, if the ath10k firmware is fixed then DT
->> would have to be changed even though nothing changed in hardware. But of
->> course DT maintainers have the final say.
-> 
-> I dunno, if the firmware affects the functionality of the hardware in a
-> way that cannot be detected from the operating system at runtime how
-> else is it supposed to deal with that?
-> The devicetree is supposed to describe hardware, yes, but at a certain
-> point the line between firmware and hardware is invisible :)
-> Not describing software is mostly about not using it to determine
-> software policy in the operating system.
+iwconfig wlan0 rate 2M auto
 
-Recording here what was discussed a few days ago on IRC:
+However a solution using the new method using iw wlan0 set bitrates
+has evaded me. I have tried various incantations which don't seem to
+work even when they go through without error. Firstly, nothing works
+unless I reset the interface:
 
-If all msm8998 boards are affected, then it /might/ make sense
-to work around the issue for ALL msm8998 boards:
+> ifconfig wlan0 down;iwconfig wlan0 mode Managed;ifconfig wlan0 up
 
-diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wireless/ath/ath10k/qmi.c
-index 0776e79b25f3a..9da06da518fb6 100644
---- a/drivers/net/wireless/ath/ath10k/qmi.c
-+++ b/drivers/net/wireless/ath/ath10k/qmi.c
-@@ -1076,6 +1076,9 @@ int ath10k_qmi_init(struct ath10k *ar, u32 msa_size)
- 	qmi->ar = ar;
- 	ar_snoc->qmi = qmi;
- 
-+	if (of_device_is_compatible(of_root, "qcom,msm8998")
-+		qmi->no_point_in_waiting_for_msa_ready_indicator = true;
-+
- 	if (of_property_read_bool(dev->of_node, "qcom,msa-fixed-perm"))
- 		qmi->msa_fixed_perm = true;
- 
+Then I *quickly* have to set the bit rate. Interestingly, the old
+iwconfic line above also executed without error, although it doesn't
+seem to do what is intended. Anyway I'll enter a line like:
 
-Thus, anyone porting an msm8998 board to mainline would automatically
-get the work-around, without having to hunt down the feature bit,
-and tweak the FW files.
+> iw wlan0 set bitrates legacy-2.4 1 ht-mcs-2.4 0
 
+or
+> iw wlan0 set bitrates legacy-2.4 1 2 ht-mcs-2.4 0 1 2
+(or iw dev, not sure what the difference is)
 
--- 
-Regards
+and again, it will enter without issue but the bitrate does not get
+constrained. If I try to enter ANY of the above lines (including the
+iwconfig one) some time after a connection is established, I get the
+command failed: Invalid argument (-22) error. Same exact command,
+syntax, and options but this time I get an error. To get around the
+error I have to take down the interface and put it back up, although
+again I don't get the expected behavior.
 
+Any help would be appreciated! Unfortunately, I can't use the decade
+old Linux kernel, which worked as intended, as backporting everything
+else would be just about impossible.
+
+-Ball
 
