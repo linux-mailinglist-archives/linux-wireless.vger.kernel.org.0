@@ -1,341 +1,152 @@
-Return-Path: <linux-wireless+bounces-4371-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4372-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BABB18719C3
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Mar 2024 10:41:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90166871B4A
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Mar 2024 11:32:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 351171F22736
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Mar 2024 09:41:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3F401C21C59
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Mar 2024 10:32:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7358A54770;
-	Tue,  5 Mar 2024 09:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 398825821B;
+	Tue,  5 Mar 2024 10:17:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="HukG+SWd"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h7cgmCkZ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E32555337B
-	for <linux-wireless@vger.kernel.org>; Tue,  5 Mar 2024 09:41:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D0E55915E
+	for <linux-wireless@vger.kernel.org>; Tue,  5 Mar 2024 10:17:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709631694; cv=none; b=g3iViQ84SszBck8NPI8aMBowQ2FAatZbcDyyIZcSL9VEFvnDDD7+ulIP3aITdhgyVGk5XmxUNrYe6OSGQZdbERXtAohWh8ZuprxTi59Rnug36n4vEhhuJYVoar9prKpZ8uJGRP61xieVbz/oj/L8ahQ56qYDUo2R5we9VsxMRYc=
+	t=1709633878; cv=none; b=aMl1eU4a9Df1nSmcLKwNs9DfPHPkYPYcQV1AXysvGQxiLU3U4m+ZqPOIwaacYPJf4PInVERdqN41hFwP5nG+XeMpiG/Hsw2/3dTxgwNjNLhQNNKD7pSJHX6Zq8AHbyvnZzQuZ23N4AwBrQty5+HKah813EayIlEZfRs5DNOEry4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709631694; c=relaxed/simple;
-	bh=IUnpRePB2qmDApx3ZXS/Z8cYNSwa2wNlhuDzjTTh9GE=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=MeT8zlrmxjY8uDYiafk2bcXQ5PAwbaNSEeymPd5aVPPwZt+20aFoWXF3MJVPJf/wk5foWDdtLi74AmzD5kpC7CipyM2IA+bnU3D6wEVxdHDKHE6JWaUtn0/gwPEBw6om/G1H9lhI9v5UxKdLVxSGlDNsMg3aa269e2fZavyVSrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=HukG+SWd; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=/U/NADY2mgCHejwOLhZFCF08saicDpvQ+0oneD79spM=;
-	t=1709631690; x=1710841290; b=HukG+SWd4DxBAnDV8ynSBF/M7WfXmJhRd0ZWRDfBvj2hbxp
-	jvJy8T31LGR+fGsDS8mf+THxWbLuM9AhNiYPh8dyxRccIE/YPrDPyBe7hMrwY6sUcVzfHrr5bPp+Y
-	U7Sr7pG41P8TBJWCn40+7hhR+mU8JHsqdP2MYM/kDWVNAdGwm98UDhDsS3wsfsBlWNOsBOSXoZ402
-	y1WywfOxy2DhJ2tfdhZDTw9uq8xem4iUaZqjD6MkRom33INeB8OMwXiRImkAzEgJmsFqZeZgaz+8Q
-	BQX32DJgMw4lxtQ2bT1T0RqYdDLcu7YY0FgyZ5SvbuaqlITdrJJRJTLfF9wYYCJA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1rhRIc-00000002fnY-2xRQ;
-	Tue, 05 Mar 2024 10:41:26 +0100
-Message-ID: <12f91b008d6f2b4e6241794d2852c1c84fe6c12c.camel@sipsolutions.net>
-Subject: Re: [PATCH v5] Add JSON output options to 'iw' for scan results
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Isaev Ruslan <legale.legale@gmail.com>, linux-wireless@vger.kernel.org
-Date: Tue, 05 Mar 2024 10:41:25 +0100
-In-Reply-To: <5c5be485dcfceb44fc731e47758d6be3.legale.legale@gmail.com>
-References: <5c5be485dcfceb44fc731e47758d6be3.legale.legale@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
+	s=arc-20240116; t=1709633878; c=relaxed/simple;
+	bh=02rRBdah8Kw4nKA3CoZ1lCcThz/0YViRNufTr1WnnYU=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:
+	 References:In-Reply-To; b=iD0ushEWLgBDJYMH5ICigeqlqYuha5vfGH5WBVYRiJb9HMIMY9LsxC26M+v3bU3UKY7XYAXD1amHqIgn/keZADBw48NgrN9h2zq99bFRgeJoNQkqoOD4dDN5SHc+gq0yiuSsiBPWyHNAU3ngic/4SOZBQgc7Es269/7PxNX+ezU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h7cgmCkZ; arc=none smtp.client-ip=209.85.167.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-513181719easo3682825e87.3
+        for <linux-wireless@vger.kernel.org>; Tue, 05 Mar 2024 02:17:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1709633874; x=1710238674; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MZB2cq1jcWM3wFmeEYfToHWZ81P+7MKTxEgQqW6pzeo=;
+        b=h7cgmCkZ+gbXQj5Dwq/1BSDJ8Y1i2MoLlls/esq7EreYkGiW3+uwsJqKlYuM0dAVBs
+         AfKhBAGmFvzZQylvWUaGwJxOe79+M+yvmVQFYMqDi3Iva6MsPRC4rK0TXMuchXA6LIaZ
+         Tt+YBTisd81swytv+aGFJ0meUSe89LB+KEUxSKlvfnefrxv+8TF580yACV9OJLedghk4
+         ykCgnMfleKa73TXBQSHtuea+PPeRaFotMVu9Xy1xYHdrBq0PR7hKPYSeTg1IqWG9EKAM
+         YZNCs/66EhxssoLBinw9P/SutppjVDSv10SrLZB2NHhXx2CHi1gZxdsUWoGrlM/yGSeH
+         PZ5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709633874; x=1710238674;
+        h=in-reply-to:references:to:from:subject:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=MZB2cq1jcWM3wFmeEYfToHWZ81P+7MKTxEgQqW6pzeo=;
+        b=hJtFRx+CWiZMlhx0ryd7nCFXvf0DoY888jDIOnnPGRlOblsGe275kiXYebIPE/w7tY
+         b/RH7uqnEmgqgnt+irC7DQdbdf1JS1LUcu8wvINT3NB9sjgVqgkENkxk0vPK7K/hjOcr
+         xJMNOym1jPaFKZRZcYewDO57bG8WzpPyO5HKOiW9+kRkWpKW/GHvuDUs3e7cNIQiBsdo
+         U0R8LDdPQ4wfR7VC/6Qgh40QJI1zhfJIO1XpnDEBog3i0MIM2+RN9rpYrITx0F6XS+am
+         cVbFQCkSOwgWThWpCCSP0ayREccucovJrh7KRB6r62DzghY2LdyaHZEWmP1K//AZkM1P
+         Qf5w==
+X-Forwarded-Encrypted: i=1; AJvYcCX1t8CdGIuNLBQVGzsymC0skF89XFcxf4F7JtPXI22rvGpzhruLqw16d/3OyKJiJvu7PL7glA/VqBAhkFuqebw3q9MgV7qe4r93lFqYJ68=
+X-Gm-Message-State: AOJu0Yx6+iHgQV5n9a83HlYggFuoercf7U+KyHPAvIxzfDy3fAB5FQY7
+	np9B1uUgfj8Ifv8fALKtYQywhaYCeSjYwG+av7U2jca3rLV3L+qJNmmUTVlg
+X-Google-Smtp-Source: AGHT+IFkRxSe3wb8bPWhhkE9EuM0VKNH6ziPhWKB6Bz7oBl/U+5HLE8zd9uH03EkFiFqSXaghA2R3w==
+X-Received: by 2002:a05:6512:3054:b0:513:1e8a:f1a5 with SMTP id b20-20020a056512305400b005131e8af1a5mr1417345lfb.5.1709633874098;
+        Tue, 05 Mar 2024 02:17:54 -0800 (PST)
+Received: from localhost (freebox.vlq16.iliad.fr. [213.36.7.13])
+        by smtp.gmail.com with ESMTPSA id c17-20020a05600c0a5100b00412ef14a8ecsm674903wmq.41.2024.03.05.02.17.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 05 Mar 2024 02:17:53 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 05 Mar 2024 11:17:53 +0100
+Message-Id: <CZLQMMSSUWBF.1NPJJYDRIXGIR@gmail.com>
+Subject: Re: [PATCH v5] Add JSON output options to 'iw' for scan results
+From: "Nicolas Escande" <nico.escande@gmail.com>
+To: "Johannes Berg" <johannes@sipsolutions.net>, "Isaev Ruslan"
+ <legale.legale@gmail.com>, <linux-wireless@vger.kernel.org>
+X-Mailer: aerc 0.15.2
+References: <5c5be485dcfceb44fc731e47758d6be3.legale.legale@gmail.com>
+ <12f91b008d6f2b4e6241794d2852c1c84fe6c12c.camel@sipsolutions.net>
+In-Reply-To: <12f91b008d6f2b4e6241794d2852c1c84fe6c12c.camel@sipsolutions.net>
 
-On Mon, 2024-03-04 at 23:01 +0300, Isaev Ruslan wrote:
-> v5 changes:
-> 	- add json print to print_ap_channel_report()
-> 	- minor refactor open_json_object()
+On Tue Mar 5, 2024 at 10:41 AM CET, Johannes Berg wrote:
+[...]
+>
+> I'm generally not going to look into these files for now, but including
+> them internally means we have to maintain them. I'd almost prefer a
+> library that can be used.
 
-Alright, yay, so mechanical submission issues out of the way, this looks
-readable :)
+For what it's worth jansson has been very good to me. It has printf() like
+object creation which usually integrates well with c programs.
 
-> branch: v5.19
+>
+> However, with that said,
+>
+> > +/*
+> > + * json_print.c		"print regular or json output, based on json_writer".
+> > + *
+> > + *             This program is free software; you can redistribute it =
+and/or
+> > + *             modify it under the terms of the GNU General Public Lic=
+ense
+> > + *             as published by the Free Software Foundation; either ve=
+rsion
+> > + *             2 of the License, or (at your option) any later version=
+.
+>
+>
+> This doesn't work well with the ISC license of iw. Which is another
+> reason to prefer an existing library, I suppose.
 
-That's almost two years old, so you'll obviously have to rebase it on
-the latest main branch. But we can have more fundamental discussions
-first.
+With MIT license https://github.com/akheron/jansson/blob/master/LICENSE
 
-> This commit introduces the ability to output scan results from 'iw' in
-> JSON format, similar to the 'ip' utility from the iproute2 package.
-> The addition aims to enhance the tool's usability and scriptability
-> by providing a structured data format option.
+[...]
 
-Generally, I'm not opposed to that, but I think we've had this
-discussion before, and I don't want to see a lot of extra complexity in
-the code for it.
+>
+> So ... Like I wrote above, generally I'm not against doing this. But
+> like I also tried to explain above, I think it needs to be less
+> "duplicative". I'm happy to change the code in major ways to make JSON
+> output easier, I'm also happy to let that change the output in some ways
+> (maybe the default should be YAML-compatible ;-) ).
 
-> Two new command-line options are added:
-> - '-j': Outputs scan results in compact JSON format.
-> - '-jj': Outputs scan results in pretty-printed JSON format.
+>
+> But I'd really want to see this done in a way that doesn't end up with
+> having to duplicate everything all the time.
+>
 
+For me, having a "good" json representation means, as you pointed out, usin=
+g the
+right json underlying type and most of the time I'm afraid that means a com=
+plete
+different code path because of the underlying type/container. It's always a
+blurry line obviously but duplicating in a complete seperate function that =
+only
+does the right thing for json output may end up being cleaner codewise.
 
-With tools like 'jq' being near ubiquitous, is there much value in
-having two output formats? I'd almost say only support -j (and I don't
-like '-jj' anyway, probably would prefer -j/--json and --json=3Dpretty or
-so), and then 'jq' can do pretty-printing and coloring etc.?
+> We'll also need to figure out the licensing situation, and perhaps
+> ideally find a way to not add ~1.5k LOC to support it, but link against
+> something that exists already.
 
-> +	//close root json object and deinit jsonw
-> +	if(iw_json){
-> +		delete_json_obj();
-> +	}
++1 for not reimplementing the wheel.
 
-Please generally try to follow the (existing/Linux) coding style more
-closely. I don't mind C99 comments but a space would be nice, space
-after if, space before the opening brace, no braces needed here though,
-perhaps more (just not on these four lines :-) )
+>
+> johannes
 
-> +++ b/json/json_print.c
-
-I'm generally not going to look into these files for now, but including
-them internally means we have to maintain them. I'd almost prefer a
-library that can be used.
-
-However, with that said,
-
-> +/*
-> + * json_print.c		"print regular or json output, based on json_writer".
-> + *
-> + *             This program is free software; you can redistribute it an=
-d/or
-> + *             modify it under the terms of the GNU General Public Licen=
-se
-> + *             as published by the Free Software Foundation; either vers=
-ion
-> + *             2 of the License, or (at your option) any later version.
-
-
-This doesn't work well with the ISC license of iw. Which is another
-reason to prefer an existing library, I suppose.
-
-> +++ b/json/json_writer.c
-> @@ -0,0 +1,296 @@
-> +// SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause) //
-
-We don't use SPDX license tags here yet, so not sure this is meaningful,
-we also don't have a dir with the actual license texts like the kernel
-has for instance.
-
-If going this way it'd probably be useful to add SPDX tags to all
-existing files too.
-
-Here, off the top of my head, I suspect the BSD-2-Clause should actually
-be compatible to releasing the whole thing under ISC, but need to check
-that too.
-
-> --- a/scan.c
-> +++ b/scan.c
-> @@ -12,6 +12,8 @@
->  #include "nl80211.h"
->  #include "iw.h"
-> =20
-> +#include "json/json_print.h"
-> +
->  #define WLAN_CAPABILITY_ESS		(1<<0)
->  #define WLAN_CAPABILITY_IBSS		(1<<1)
->  #define WLAN_CAPABILITY_CF_POLLABLE	(1<<2)
-> @@ -546,10 +548,13 @@ static int handle_scan(struct nl80211_state *state,
-> =20
->  static void tab_on_first(bool *first)
->  {
-> -	if (!*first)
-> -		printf("\t");
-> -	else
-> +	if (!*first){
-> +		if(!iw_json){
-> +			printf("\t");
-> +		}
-> +	}else{
->  		*first =3D false;
-> +	}
-
-Coding style. Not sure why you don't just skip the whole thing if json
-is turned on?
-
->  static void print_ssid(const uint8_t type, uint8_t len, const uint8_t *d=
-ata,
->  		       const struct print_ies_data *ie_buffer)
->  {
-> -	printf(" ");
-> -	print_ssid_escaped(len, data);
-> -	printf("\n");
-> +	if(!iw_json){
-> +		printf(" ");
-> +		print_ssid_escaped(len, data);
-> +		printf("\n");
-> +	} else {
-> +		print_ssid_escaped(len, data);
-> +	}
->  }
-
-Might be more useful to provide a JSON-output for SSIDs? Surely you'd
-also want to escape them in a JSON-compatible way, since you'd want to
-use '\uXXXX' encoding to actually get proper bytes out on the other side
-without a special decoder?
-
-> @@ -574,21 +583,35 @@ static void print_supprates(const uint8_t type, uin=
-t8_t len,
->  {
->  	int i;
-> =20
-> -	printf(" ");
-> -
-> -	for (i =3D 0; i < len; i++) {
-> -		int r =3D data[i] & 0x7f;
-> +	if(iw_json){
-> +		open_json_array("array", NULL);
-> +		for (i =3D 0; i < len; i++) {
-> +			int r =3D data[i] & 0x7f;
-> +			if (r =3D=3D BSS_MEMBERSHIP_SELECTOR_VHT_PHY && data[i] & 0x80){
-> +				print_string(PRINT_JSON, NULL, "VHT%s", data[i] & 0x80 ? "*" : "");
-> +			} else if (r =3D=3D BSS_MEMBERSHIP_SELECTOR_HT_PHY && data[i] & 0x80)=
-{
-> +				print_string(PRINT_JSON, NULL, "HT%s", data[i] & 0x80 ? "*" : "");
-> +			} else {
-> +				print_string(PRINT_JSON, NULL, "%d.%d%s", r/2, 5*(r&1), data[i] & 0x=
-80 ? "*" : "");
-> +			}
-> +		}
-> +		close_json_array(NULL);
-> +	}else{
-> +		printf(" ");
-> +		for (i =3D 0; i < len; i++) {
-> +			int r =3D data[i] & 0x7f;
-
-So generally, here, no - I don't like this style of working at all. We'd
-really want to have as little "if (iw_json)" as possible in the code. In
-code like this, we really shouldn't have such an if at all, but only
-e.g.
-
-  open_json_array();
-  for (...) {
-    if (...)
-      print_string(...);
-  }
-  close_json_array();
-
-Surely we can come up with an abstraction where something like
-print_string() does the right thing either way? And open/close JSON
-array does the '\n' needed after it, or something?
-Maybe we'd pass an argument to open_json_array() that says how we want
-it printed in the non-JSON case (and rename it to open_array?), e.g.
-should it all be on one line like here, or should it be multiple lines
-with " - " prefix on each line, etc. JSON also tracks nesting, I guess,
-so we could even do that for nested stuff in the normal output where we
-use tabs etc.?
-
-Generally, I'd also say that we never promised stable output, so if the
-output changes slightly due to such, I'm perfectly fine with that,
-whoever relied on it (and that includes me in some internal code) gets
-to keep the pieces when it breaks ...
-
-
-Also, looking at the function calls, all those NULL and PRINT_JSON are
-pointless, as far as I can tell? So I think it'd make more sense to come
-up with a JSON-supporting but otherwise agnostic API abstraction:
-
- open_array(SINGLE_LINE); // could also be MULTI_LINE
- for ...
-   print_string("VHT%s", data[i] & 0x80 ? "*" : "");
- close_array();
-
-
-Maybe open_array returns some kind of token that you pass to the inner
-calls down to close_array(), or maybe it just keeps a stack of these
-internally, I could see either way working (though an internal stack
-would probably be simpler to use, and with a lot of code using it, that
-might make sense for to trade off against the additional internal
-complexity)
-
-
-Somewhat unrelated to that discussion, you might also want to not
-actually use print_string() for rates here though, and possibly use a
-different JSON encoding for the rates (and membership selectors), e.g.
-as an object with a 'basic' property? But I don't care much about that
-part, though generally I'd argue strings shouldn't be used where there's
-a better representation with native JSON types.
-
-
-> +	if(iw_json){
-> +		print_string(PRINT_JSON, "capabilities_raw", "0x%02x 0x%02x 0x%02x 0x%=
-02x 0x%02x", data[0], data[1], data[2], data[3], data[4]);
-
-That's a really bad JSON representation, a string with bytes, rather
-than an array of bytes?
-
->  static void print_erp(const uint8_t type, uint8_t len, const uint8_t *da=
-ta,
->  		      const struct print_ies_data *ie_buffer)
->  {
->  	if (data[0] =3D=3D 0x00)
-> -		printf(" <no flags>");
-> +		iw_json ? print_bool(PRINT_JSON, "no_flags", "%s", true) : printf(" <n=
-o flags>");
-
-It seems like you'd generally want to have a container for each of
-these, so you have
-
- // probably these two lines outside of the print_erp() call even
- open_json_object("erp");
- print_u8("tag", type);
-
- print_flags(...);
-
-or something, rather than including "no_flags" in the object?
-
-> +			iw_json ? print_string(PRINT_JSON, NULL, "WEP-40") : printf("WEP-40")=
-;
-
-This goes just along with what I wrote above, but that iw_json thing
-here seems really pointless, and just makes things difficult.
-
-(I also don't like the use of the ternary operator in this way but
-that's maybe not quite the point.)
-
-[snip lots of similar stuff]
-
->  	unsigned int bw160[] =3D { 5180, 5500, 5955, 6115, 6275, 6435,
-> -				  6595, 6755, 6915 };
-> +				6595, 6755, 6915 };
-
-nit: unrelated whitespace change
-
-
-
-So ... Like I wrote above, generally I'm not against doing this. But
-like I also tried to explain above, I think it needs to be less
-"duplicative". I'm happy to change the code in major ways to make JSON
-output easier, I'm also happy to let that change the output in some ways
-(maybe the default should be YAML-compatible ;-) ).
-
-But I'd really want to see this done in a way that doesn't end up with
-having to duplicate everything all the time.
-
-We'll also need to figure out the licensing situation, and perhaps
-ideally find a way to not add ~1.5k LOC to support it, but link against
-something that exists already.
-
-johannes
 
