@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-4396-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4397-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F25B8872707
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Mar 2024 19:54:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A510287270C
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Mar 2024 19:55:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B58A1F26512
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Mar 2024 18:54:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D68461C26E4D
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Mar 2024 18:55:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A400918E28;
-	Tue,  5 Mar 2024 18:54:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7432323758;
+	Tue,  5 Mar 2024 18:55:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bMN0TxcD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uq4n6J4e"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8045A7C092
-	for <linux-wireless@vger.kernel.org>; Tue,  5 Mar 2024 18:54:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50E4A22F08
+	for <linux-wireless@vger.kernel.org>; Tue,  5 Mar 2024 18:55:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709664863; cv=none; b=TxGXX8mP8n9V3hsat41dqLypmjxoZOotUPP0tlgxcsrj2h+YcDk0vCVZ3BpE7z/SzeVHkPrejaCyz2VgeHUYAukfhi/02PErDt3cMOKQ0D31kN6j8nLNCkb6gxrHIrlRKY1yWrXMvw2cnSSEbAG7gxvqSaTUVges99czwOc8+oU=
+	t=1709664916; cv=none; b=GaSuU3560KJroK7nmYHoSf3TClQu1Wzn3QC31NVwNeXYyTWbdU0VITTZ2IVSal+LChlvrMVe5YU3XmXuphp8Xa9+sfdti7e9UlxdxG1XwwaGVCgL/zB3XV7bJ+8/hnfo4p70GcA/7A+Pqelr9T6OdodRyt5NwyXuFNHGv0UWqG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709664863; c=relaxed/simple;
-	bh=3lY4m/6cJGW8FKoKv7kry2BGRk7q/bXXnh/7Lg083AA=;
+	s=arc-20240116; t=1709664916; c=relaxed/simple;
+	bh=OImQOKwMxwcAF5wo/xJ4GuMVkAfdgp1waVKV9ygeUig=;
 	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=ExHvkvz8v+uLdJP0fxF1FtkZL/qYE4uRrwQ5m+APbPqjqbi9Dld/EdlxZ0/oXeXnTM7+8OoIeeCOQwKwqHYd77EPjSu40uw5+eJeP6YyXRWGYvP2tuVNhTgkquH15ho5NWncIQVhsbMF9UdSMTjvj7TImbUfur6Z1PrEAxqU/iA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bMN0TxcD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0B0AC433C7;
-	Tue,  5 Mar 2024 18:54:22 +0000 (UTC)
+	 Cc:Message-ID:Date; b=iw8Ah2eYqsOdjqrnm/csFLcGqID+AdKD050L+LjAIdA3XFR5TWwbDtArLN+6+wWOdDLvyEIviDMPZN3fYPCLtEFCMAwmphZdVPq5uLNOQUF4juIw8BisHcUBOuaI7zTFNIbHjchy+/tK/z9c3CZvsDil/hBPIwvZ9m9XjijBYSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uq4n6J4e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28698C433F1;
+	Tue,  5 Mar 2024 18:55:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709664863;
-	bh=3lY4m/6cJGW8FKoKv7kry2BGRk7q/bXXnh/7Lg083AA=;
+	s=k20201202; t=1709664915;
+	bh=OImQOKwMxwcAF5wo/xJ4GuMVkAfdgp1waVKV9ygeUig=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=bMN0TxcDK7arqjbK2YQxyQisbBZjPGJPKLBsclWJdtIPX3wqCdcXKTKjepuJ7+75j
-	 715dDeN+Um/pWlsxPnYCo28as8G/EtFJBfF1grqj41Al095ndXSCz/IfZTT+pM1l6x
-	 c+qdt20mcFCrg5uHD1npeb0xQwYUUc7sdMiyWaTz1XfFJAUA/tDiIm3XIvl4uu9ckE
-	 6/ON2C7ir8APhsAEcbR/1qqcTw/bT0UsOzWqcY4uux61yc397LCZi1mfAn4XK3UzqV
-	 PGzVzGrTYA0ycp2CrewzlKjDBjz9jDrzLru7ogoKZd5mQmXrOw2Yeyz3AT6fVbdADj
-	 b20pNa2t1DUCw==
+	b=uq4n6J4eLsedJyVNw6oA1jZ3mdjQcdUDgH06u9o6xlYS6tluZzx5Vl2I989mNW11D
+	 u4AXQm5I/7kZxhkJ14I3lqtAwgb3mWzPouQfZsWTiUcymOKCVNPoMrS3JfQHB7RuGE
+	 3UjKd0u0jPJ5J0bwBJ0VZ2lEdeiRi/JsM6kQPWPP1s4abVOO8d/rcEDWrLSzD6rIm9
+	 4Pe0Jxq6W56rsQ12Xkx8eMFc4iPYJNPtSdrxuCwEZlFhVHgmj72lVpHS5s6Z3t6p3F
+	 4+Dzfxji7HdbAZNePUhIldY/m8xNy0iSfXSAlM/9pKLYqzL6AqHi2wcoPfVoCbDejh
+	 OI4CzLL5IHBvg==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -49,36 +49,38 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: cw1200: restore endian swapping
+Subject: Re: [PATCH 1/8] wifi: rtw89: mac: add coexistence helpers
+ {cfg/get}_plt
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: 
- <20240228121156.62f820aa6dfb.Ia63314e4d0ed1ee76f100846d68f0722abf6b793@changeid>
-References: 
- <20240228121156.62f820aa6dfb.Ia63314e4d0ed1ee76f100846d68f0722abf6b793@changeid>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org, Johannes Berg <johannes.berg@intel.com>
+In-Reply-To: <20240229074514.219276-2-pkshih@realtek.com>
+References: <20240229074514.219276-2-pkshih@realtek.com>
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: <ku920601@realtek.com>, <linux-wireless@vger.kernel.org>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170966486094.424347.11119875384963522018.kvalo@kernel.org>
-Date: Tue,  5 Mar 2024 18:54:22 +0000 (UTC)
+Message-ID: <170966491343.424347.14790085973195976950.kvalo@kernel.org>
+Date: Tue,  5 Mar 2024 18:55:14 +0000 (UTC)
 
-Johannes Berg <johannes@sipsolutions.net> wrote:
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-> From: Johannes Berg <johannes.berg@intel.com>
+> When hardware grant BT initially but transition to grant WiFi, the PLT
+> (polluted) bit is set to assist coexistence mechanism to debug if
+> grant signal is expected.
 > 
-> The code here looks well thought-out, so it seems likely
-> that the byte-swaps are actually needed, due to SPI bus
-> and device behaviour. Restore the byte-swapping, in a way
-> that doesn't result in sparse warnings.
-> 
-> Fixes: 7ceade653429 ("wifi: cw1200: fix __le16 sparse warnings")
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-Patch applied to wireless-next.git, thanks.
+8 patches applied to wireless-next.git, thanks.
 
-81e060584f1d wifi: cw1200: restore endian swapping
+0cb01e0edf78 wifi: rtw89: mac: add coexistence helpers {cfg/get}_plt
+d569f8545c7d wifi: rtw89: 8922a: add coexistence helpers of SW grant
+652c9642eda6 wifi: rtw89: coex: add init_info H2C command format version 7
+9d27596fdac5 wifi: rtw89: coex: add BTC ctrl_info version 7 and related logic
+6ee10fcd284d wifi: rtw89: coex: Reorder H2C command index to align with firmware
+eae888cfb734 wifi: rtw89: coex: add return value to ensure H2C command is success or not
+bb90a32c3c7d wifi: rtw89: coex: When Bluetooth not available don't set power/gain
+2422c2158fb5 wifi: rtw89: coex: Add coexistence policy to decrease WiFi packet CRC-ERR
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240228121156.62f820aa6dfb.Ia63314e4d0ed1ee76f100846d68f0722abf6b793@changeid/
+https://patchwork.kernel.org/project/linux-wireless/patch/20240229074514.219276-2-pkshih@realtek.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
