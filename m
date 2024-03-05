@@ -1,55 +1,56 @@
-Return-Path: <linux-wireless+bounces-4382-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4383-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2D6F8721D6
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Mar 2024 15:46:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FDA1872256
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Mar 2024 16:02:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8347F1F24091
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Mar 2024 14:46:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A6D8287AFF
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Mar 2024 15:02:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AF6986AD4;
-	Tue,  5 Mar 2024 14:45:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DA68126F22;
+	Tue,  5 Mar 2024 15:02:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lGWKnq0w"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oe4RaEmw"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4189D86AD0;
-	Tue,  5 Mar 2024 14:45:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 385E6126F07;
+	Tue,  5 Mar 2024 15:02:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709649958; cv=none; b=ibJrqKsx7y5Qpn4ZkEZ01saPO0uw4dY0lc5QX+b47aAPnRudJGmirkUoAUCAJHP/1rg3dkW+UKJ4+PUdZlC7on3sE3YNtqgQx3cRECZMU5VcZzKhGkrp+C1eu/sg+gnN+mBrCDSarbTf8Vi4i8W5gwRdpb+PCHjW/8ybt1InYTk=
+	t=1709650945; cv=none; b=gbbP+jY8LilfNPTDHmX3XuAb1XmUQ4KuCDxj8zDOMjdbHwOOud0WEKp4upVBEu/Yjf3Kw4NmKm/LiG2tDg8CullcGsITewpSptbfqZKxG4ohJKr9VXTQcJ95wPxRqPg1m2Ud1hk0LLEKDp3GR7cHa0eN5AHdV3gCL+gOeVkuu+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709649958; c=relaxed/simple;
-	bh=5G7PGZMu/aicnTYhUQekw8jRSJeEEv9A1txZjh/ZQaY=;
+	s=arc-20240116; t=1709650945; c=relaxed/simple;
+	bh=0rbnt5WowyAgoXkHNQgR9IcAjCdySQfxwlKA/O2YA8E=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=R6Hn1Lk3qbMqvzk/RduxDWoupB2UDjJFM1TLX7ZH5b5kuxXLmbJJJ5i8/qxQnrvNVvahQAIBIfNfKvTqDnjC0yt93L89nZSBSyDmnoGzF0DOc3SIUJsbeQ6pdP1v6yZzX3M9NyLLUoyZ00rWGq8jGDPiWFzfN2Pa67OkRtt11qI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lGWKnq0w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 887A2C433C7;
-	Tue,  5 Mar 2024 14:45:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=V0JBpvmEtEwf9FSPf7SCWrt077DqmUmpx7RYOwjxCGff6MN1+m7aA8tVdJcbBl0BvTg9hCTdRzJaGpCUU93IpsubJ8Q5N7cXGdEFK6/440oJgM10BpNVIeweQSBDU9diIdPu1XBki3yU0Ifr7Aw6nWFRFnyXJMxQ8Viygi6GjXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oe4RaEmw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 000C3C43390;
+	Tue,  5 Mar 2024 15:02:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709649957;
-	bh=5G7PGZMu/aicnTYhUQekw8jRSJeEEv9A1txZjh/ZQaY=;
+	s=k20201202; t=1709650944;
+	bh=0rbnt5WowyAgoXkHNQgR9IcAjCdySQfxwlKA/O2YA8E=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=lGWKnq0wV1cArcaiC2IzwVjteX5G4wZqCSqTxVLf/cpk9GBnqCMW3KwK5rTcGT6bU
-	 IYx0ZCL7h2tpD87hypAGK4hAqa2VIxSLFr0jy6brDbetzzDy+e7mQyEG3FEp+FpKXK
-	 H+nit08zQDFy0jmjBgYYBRym2UryE6Rzuc979eVouGqJxn6RaX6yBdNnG8Qmkqr2jO
-	 Z4QI4gN1zCgfScCNj9AEv4s6YlEX3RUuvpgxboIaaDd6kHJ1eHBKfhM8q/3aIrCKCH
-	 0uk2S5D4bNjoR3Fe5D42ycNLoAlM+uLIDcBN3RZ7l5/wq4mw+gmFw1VujtvFPH9DMP
-	 dsS55+2k6pCKQ==
+	b=oe4RaEmwb56V9aJZVSGYFBa8921haPfL81eYTBT0JngbFSd2vVVXet1O19s1DAOTQ
+	 cExOm4VRyJF2m26HLsUd7VjTWYJ5PFuruxatgrsz7KvO+BzWzodyhhVwuoISUD4m8U
+	 w3ucNaXYkiISv5BLTs4IHlLg3sK/kdOvxN1uytHidirFBzyYg7p5Blt7fdyKt2s67B
+	 EwElCO9iukHboXHf3Wk0d+hcjOpM0LBSshIRG17vjehk6lD64IKxM1UogK1NlIpguB
+	 6C6NF/sSwQhtFCvGcV1BcXCdoLT1Oq5/yq0csLC8xrMuIc20pqPDr4kwDAVkY1Y0tX
+	 Hd/chwUWiyVqw==
 From: Kalle Valo <kvalo@kernel.org>
-To: Conor Dooley <conor@kernel.org>
-Cc: Marc Gonzalez <mgonzalez@freebox.fr>,  Jeff Johnson
+To: Marc Gonzalez <mgonzalez@freebox.fr>
+Cc: Conor Dooley <conor@kernel.org>,  Jeff Johnson
  <quic_jjohnson@quicinc.com>,  ath10k <ath10k@lists.infradead.org>,
   wireless <linux-wireless@vger.kernel.org>,  DT
  <devicetree@vger.kernel.org>,  Rob Herring <robh+dt@kernel.org>,
   Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,  Conor Dooley
  <conor+dt@kernel.org>,  Pierre-Hugues Husson <phhusson@freebox.fr>,  Jami
- Kettunen <jamipkettunen@gmail.com>,  Jeffrey Hugo <quic_jhugo@quicinc.com>
+ Kettunen <jamipkettunen@gmail.com>,  Jeffrey Hugo
+ <quic_jhugo@quicinc.com>,  Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Subject: Re: [PATCH 1/2] dt-bindings: net: wireless: ath10k: add
  qcom,no-msa-ready-indicator prop
 References: <14daa98e-7fd3-4ebb-87bb-5d2c1fba679f@freebox.fr>
@@ -58,10 +59,11 @@ References: <14daa98e-7fd3-4ebb-87bb-5d2c1fba679f@freebox.fr>
 	<3392f356-7b19-483d-b9f8-3bd84068fa52@freebox.fr>
 	<87wmqoilzf.fsf@kernel.org>
 	<20240229-ageless-primal-7a0544420949@spud>
-Date: Tue, 05 Mar 2024 16:45:53 +0200
-In-Reply-To: <20240229-ageless-primal-7a0544420949@spud> (Conor Dooley's
-	message of "Thu, 29 Feb 2024 18:40:57 +0000")
-Message-ID: <87le6w7n4u.fsf@kernel.org>
+	<68a49964-7c05-4575-a4f3-35848c08fefc@freebox.fr>
+Date: Tue, 05 Mar 2024 17:02:19 +0200
+In-Reply-To: <68a49964-7c05-4575-a4f3-35848c08fefc@freebox.fr> (Marc
+	Gonzalez's message of "Mon, 4 Mar 2024 17:21:37 +0100")
+Message-ID: <877cigiux0.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -71,44 +73,69 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Conor Dooley <conor@kernel.org> writes:
+Marc Gonzalez <mgonzalez@freebox.fr> writes:
 
-> On Wed, Feb 28, 2024 at 06:37:08PM +0200, Kalle Valo wrote:
->> Marc Gonzalez <mgonzalez@freebox.fr> writes:
+> On 29/02/2024 19:40, Conor Dooley wrote:
 >
->> > As mentioned in my other reply, there are several msm8998-based
->> > devices affected by this issue. Is it not appropriate to consider
->> > a kernel-based work-around?
+>> On Wed, Feb 28, 2024 at 06:37:08PM +0200, Kalle Valo wrote:
+>>
+>>> Marc Gonzalez wrote:
+>>> 
+>>>> As mentioned in my other reply, there are several msm8998-based
+>>>> devices affected by this issue. Is it not appropriate to consider
+>>>> a kernel-based work-around?
+>>>
+>>> Sorry, not following you here. But I'll try to answer anyway:
+>>>
+>>> I have understood that Device Tree is supposed to describe hardware, not
+>>> software. This is why having this property in DT does not look right
+>>> place for this. For example, if the ath10k firmware is fixed then DT
+>>> would have to be changed even though nothing changed in hardware. But of
+>>> course DT maintainers have the final say.
 >> 
->> Sorry, not following you here. But I'll try to answer anyway:
->> 
->> I have understood that Device Tree is supposed to describe hardware, not
->> software. This is why having this property in DT does not look right
->> place for this. For example, if the ath10k firmware is fixed then DT
->> would have to be changed even though nothing changed in hardware. But of
->> course DT maintainers have the final say.
+>> I dunno, if the firmware affects the functionality of the hardware in a
+>> way that cannot be detected from the operating system at runtime how
+>> else is it supposed to deal with that?
+>> The devicetree is supposed to describe hardware, yes, but at a certain
+>> point the line between firmware and hardware is invisible :)
+>> Not describing software is mostly about not using it to determine
+>> software policy in the operating system.
 >
-> I dunno, if the firmware affects the functionality of the hardware in a
-> way that cannot be detected from the operating system at runtime how
-> else is it supposed to deal with that?
+> Recording here what was discussed a few days ago on IRC:
+>
+> If all msm8998 boards are affected, then it /might/ make sense
+> to work around the issue for ALL msm8998 boards:
+>
+> diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wireless/ath/ath10k/qmi.c
+> index 0776e79b25f3a..9da06da518fb6 100644
+> --- a/drivers/net/wireless/ath/ath10k/qmi.c
+> +++ b/drivers/net/wireless/ath/ath10k/qmi.c
+> @@ -1076,6 +1076,9 @@ int ath10k_qmi_init(struct ath10k *ar, u32 msa_size)
+>  	qmi->ar = ar;
+>  	ar_snoc->qmi = qmi;
+>  
+> +	if (of_device_is_compatible(of_root, "qcom,msm8998")
+> +		qmi->no_point_in_waiting_for_msa_ready_indicator = true;
+> +
+>  	if (of_property_read_bool(dev->of_node, "qcom,msa-fixed-perm"))
+>  		qmi->msa_fixed_perm = true;
+>  
+>
+> Thus, anyone porting an msm8998 board to mainline would automatically
+> get the work-around, without having to hunt down the feature bit,
+> and tweak the FW files.
 
-This is why we implemented in ath10k firmware-N.bin with all sorts of
-meta data about the firmware. There are a lots of different ath10k
-firmware branches and they have differences which ath10k needs to take
-into account. firmware-N.bin tells all that info to ath10k runtime, per
-firmware release.
+The point with firmware-N.bin file is that NO tweaking or hunting down
+firmware files is necessary. All the files would be in
+linux-firmware.git and ath10k would automatically choose the correct
+firmware-N file. From ath10k side all is needed is Dmitry's patchset[1]
+and your (Marc) patch adding the feature bit check to ath10k.
 
-> The devicetree is supposed to describe hardware, yes, but at a certain
-> point the line between firmware and hardware is invisible :)
-> Not describing software is mostly about not using it to determine
-> software policy in the operating system.
+And if later the firmware is fixed, we will update the firmware-N.bin
+file at the same time in linux-firmware.git and the user doesn't notice
+anything.
 
-For me it feels wrong to use DT for handling WLAN firmware differences.
-For example, what if the ath10k firmware in linux-firmware is fixed? Are
-we expecting that DT in existing boards is updated? But how is the DT
-update going to be synced with linux-firmware releases? Sure, in this
-case it most likely won't matter but as a generic solution this looks
-very fragile to me.
+[1] https://patchwork.kernel.org/project/linux-wireless/cover/20240130-wcn3990-firmware-path-v1-0-826b93202964@linaro.org/
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
