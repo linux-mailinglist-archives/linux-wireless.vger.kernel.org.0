@@ -1,132 +1,113 @@
-Return-Path: <linux-wireless+bounces-4401-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4402-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0793872721
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Mar 2024 19:58:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41CE6872772
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Mar 2024 20:21:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 05E3CB28F7C
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Mar 2024 18:58:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C582DB232A4
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Mar 2024 19:21:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1BC41BF3C;
-	Tue,  5 Mar 2024 18:57:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBDC1250FE;
+	Tue,  5 Mar 2024 19:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LKU15OYn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kmbEN/Qd"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D7A91BDC9
-	for <linux-wireless@vger.kernel.org>; Tue,  5 Mar 2024 18:57:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B491E1B809;
+	Tue,  5 Mar 2024 19:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709665079; cv=none; b=JyN2UKw48hkrne8wouWdcE47yy5ag4UIfpZ6k6OgluvVgqzWUslTdw0EXweE4sUrK0/GHBHJ4CMWS8Q0LsEquAdFcA81CYOz2gibQ5KYXypmjYftNwpxSMoOTr0KJpLkItWjpIdUsWNOY6UrTtxP+ZKUSLhQeGQ0tOe/57D6sOQ=
+	t=1709666461; cv=none; b=UP3PLwFq5ByUDQNlZjkwKVulE7BBs3J0YVnQWbAttTLdlwhCiEbR8z7XphGh4KMhf0tfsCu7YagttN73OTKoMBHAjgsm6kOH3YxbExzX2Cx03Kx7eugJVGLamn9YAGa1nKzSwXDjc5IF8vOsDmCrQsi2RKsruQVXiRhUgx7xmt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709665079; c=relaxed/simple;
-	bh=h+7wf7RO/SXTi2xMW6pf3osdjV68Mp9fLkZgtd5hih4=;
-	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=qjTzB1Eb+JdhqGF/JUKbJU+h1iqpivs8X1f11dv5NH5U2oYUetMiXSKlrMoWJsPiev1KZ6tFXMSBk2rjjVHpretCp7iQLd975rgEFyZxZqhe45NjKcDis8fWFMFg5NsddOK1taBugJIhRMm48A3X7L4OjUVKOk9GePQ5enT4VIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LKU15OYn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C184AC433C7;
-	Tue,  5 Mar 2024 18:57:57 +0000 (UTC)
+	s=arc-20240116; t=1709666461; c=relaxed/simple;
+	bh=jG8PjPDjHjrzDu50mfZQbgkQ+cDwgQ7Iq6c6nCmgzwY=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=gmJsKvQwwhVwZXmlA9wZ5oxbNpnFRun+YGEB4N0Lhw+kShhmZuUYkc2IXWNM0OIKFEAtD3tevdmgWg4Aiq2UBcWPTWYLgQhPo32DOJJranmvZ4X1Pg9cKrgMEWj13Exy1L5sliuggq3UC4JrbT+ktwaEBZWomZO8ZjW1/WOwyWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kmbEN/Qd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03ED8C433C7;
+	Tue,  5 Mar 2024 19:20:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709665079;
-	bh=h+7wf7RO/SXTi2xMW6pf3osdjV68Mp9fLkZgtd5hih4=;
-	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=LKU15OYndlqoUpe+hKbrfJ+mvdmFeEfKbMIH2ClOwkKJuKlBXYCS7evt4I4h4iluW
-	 x9V8B2ML55oWp3wsx1J85622naSoN2ulNMWAuCZojtCtPOSXHed17mjJrqnsUcozuo
-	 12u/OOjR+nVThUMzmVOaVpbHtZNwpUoNF8wzJbDsKmmN/ZQRoxaQ4VSFULd3SS/TtY
-	 eVs8sVrGwQ/fkXTmUb2sVMAC8FYgPTskbQc4Dr8UEaCkoS1U7DYFx85oaOfFzkFElJ
-	 uwQcsv3YwPWGDuPD9KGAAE++OIBikYYBWSwQjGrAqkN3oZ2bpbl0ak+clYN8rNFX9i
-	 1J5HV0NAwB8tg==
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1709666461;
+	bh=jG8PjPDjHjrzDu50mfZQbgkQ+cDwgQ7Iq6c6nCmgzwY=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=kmbEN/QdufeshqadsHgjXE85SU3L0z8KHYggPny+2OevlwR1rTVgV4izDZkSg7jDy
+	 AvLvND/kK6D2n7r8ZKDdUfPmZeZQSZUId0sIvZmHnUMHtklpj+b71cwtdL8Ao0IpWN
+	 1lSEmghmvIMKt3osl/fCUkBO3UYwlY1Jo/yVJHIMJgr8xoFQWXH7pQVc6lK/Pj2sFK
+	 WhsHrSEa01JM59SjumY/bwDWuhNggOdhwGQZdLpGtSBSC9MgdBG/c0FEs599QjWb1b
+	 5hJifFFcfbXErF3xU4fwoHxjy0OHuqjEYjrLxlM7YVM9MX+AO1HOi33rP8XAjW+8bg
+	 iyZfVC9hXj6Qg==
+From: Kalle Valo <kvalo@kernel.org>
+To: Marc Gonzalez <mgonzalez@freebox.fr>
+Cc: Jeff Johnson <quic_jjohnson@quicinc.com>,  ath10k
+ <ath10k@lists.infradead.org>,  wireless <linux-wireless@vger.kernel.org>,
+  DT <devicetree@vger.kernel.org>,  Rob Herring <robh+dt@kernel.org>,
+  Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,  Conor Dooley
+ <conor+dt@kernel.org>,  Pierre-Hugues Husson <phhusson@freebox.fr>,  Jami
+ Kettunen <jamipkettunen@gmail.com>,  Jeffrey Hugo
+ <quic_jhugo@quicinc.com>,  Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Subject: Re: [PATCH 1/2] dt-bindings: net: wireless: ath10k: add
+ qcom,no-msa-ready-indicator prop
+References: <14daa98e-7fd3-4ebb-87bb-5d2c1fba679f@freebox.fr>
+	<b8de96c7-cbb6-4a09-a4d4-2c11b3ab3e01@freebox.fr>
+	<871q8wk7o3.fsf@kernel.org>
+	<3392f356-7b19-483d-b9f8-3bd84068fa52@freebox.fr>
+	<87wmqoilzf.fsf@kernel.org>
+	<c58e67e6-6a7f-4963-86b9-580165bf05ba@freebox.fr>
+	<87cyse8j9m.fsf@kernel.org>
+	<6d4b1381-c121-4cda-a8c9-9ccac56bd447@freebox.fr>
+	<87plw87nsc.fsf@kernel.org>
+	<0816f7bb-3c97-4b90-8e19-191552ea6e26@freebox.fr>
+Date: Tue, 05 Mar 2024 21:20:57 +0200
+In-Reply-To: <0816f7bb-3c97-4b90-8e19-191552ea6e26@freebox.fr> (Marc
+	Gonzalez's message of "Tue, 5 Mar 2024 18:32:20 +0100")
+Message-ID: <87h6hk7aee.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: pull-request: ath-next-20240305
-From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <87y1awh8kj.fsf@kernel.org>
-References: <87y1awh8kj.fsf@kernel.org>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
- ath11k@lists.infradead.org, ath12k@lists.infradead.org,
- quic_jjohnson@quicinc.com
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170966507585.424347.4426290600622256900.kvalo@kernel.org>
-Date: Tue,  5 Mar 2024 18:57:57 +0000 (UTC)
+Content-Type: text/plain
 
-Kalle Valo <kvalo@kernel.org> wrote:
+Marc Gonzalez <mgonzalez@freebox.fr> writes:
 
-> Hi,
-> 
-> Please pull, more information in the tag below.
-> 
-> Kalle
-> 
-> 
-> The following changes since commit a4634aa71fee11f5e3e13bf7d80ee1480a64ce70:
-> 
->   bonding: rate-limit bonding driver inspect messages (2024-02-22 19:13:18 -0800)
-> 
-> are available in the Git repository at:
-> 
->   git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git tags/ath-next-20240305
-> 
-> for you to fetch changes up to 776c9c93bb0511d04e6222546499e5ea20ad51b0:
-> 
->   wifi: ath12k: fix license in p2p.c and p2p.h (2024-02-28 16:09:29 +0200)
-> 
-> ----------------------------------------------------------------
-> ath.git patches for v6.9
-> 
-> Only some minor cleanup in ath11k and ath12k. Adding Jeff as the
-> maintainer for ath10k, ath11k and ath12k DT bindings.
-> 
-> ----------------------------------------------------------------
-> Baochen Qiang (5):
->       wifi: ath11k: rearrange IRQ enable/disable in reset path
->       wifi: ath11k: remove MHI LOOPBACK channels
->       wifi: ath11k: do not dump SRNG statistics during resume
->       wifi: ath11k: fix warning on DMA ring capabilities event
->       wifi: ath11k: decrease MHI channel buffer length to 8KB
-> 
-> Jeff Johnson (2):
->       dt-bindings: net: wireless: qcom: Update maintainers
->       wifi: ath11k: constify MHI channel and controller configs
-> 
-> Kalle Valo (2):
->       wifi: ath11k: thermal: don't try to register multiple times
->       wifi: ath12k: fix license in p2p.c and p2p.h
-> 
-> Kang Yang (1):
->       wifi: ath12k: add rcu lock for ath12k_wmi_p2p_noa_event()
-> 
->  .../bindings/net/wireless/qcom,ath10k.yaml         |  1 +
->  .../bindings/net/wireless/qcom,ath11k-pci.yaml     |  1 +
->  .../bindings/net/wireless/qcom,ath11k.yaml         |  1 +
->  drivers/net/wireless/ath/ath11k/core.c             |  8 ++-
->  drivers/net/wireless/ath/ath11k/mhi.c              | 68 ++--------------------
->  drivers/net/wireless/ath/ath11k/qmi.c              |  5 +-
->  drivers/net/wireless/ath/ath11k/thermal.c          |  5 +-
->  drivers/net/wireless/ath/ath11k/wmi.c              |  3 +-
->  drivers/net/wireless/ath/ath12k/p2p.c              |  2 +-
->  drivers/net/wireless/ath/ath12k/p2p.h              |  2 +-
->  drivers/net/wireless/ath/ath12k/wmi.c              |  5 +-
->  11 files changed, 29 insertions(+), 72 deletions(-)
+> On 05/03/2024 15:31, Kalle Valo wrote:
+>
+>> Thanks, this is exactly what I'm proposing.
+>
+> With your suggestions, the patch becomes much simpler:
 
-Pulled, thanks.
+Nice, looks good to me.
 
-f654e228ed6b Merge tag 'ath-next-20240305' of git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath
+> I need to build a kernel + rootfs + FW to test the proposed solution,
+> then I can spin a formal submission.
+
+Yeah, please do test this to make sure we are not missing anything :)
+
+> (I didn't understand why this patch requires Dmitry's series?)
+
+Dmitry's patchset is needed so that we can have board specific
+firmware-N.bin files. At the moment there can be only one firmware-N.bin
+(ath10k/WCN3990/hw1.0/firmware-5.bin) for all boards with WCN3990.
+
+Your patch can be applied to ath.git independently from Dmitry's
+patchset but we need Dmitry's patchset applied before updating
+linux-firmware.git.
+
+> Do I need to submit a symmetric patch to linux-firmware to define bit 23?
+> And also a patch to add the bit to some firmwares? (All msm8998 FWs?)
+
+Me and Jeff can handle linux-firmware.git submission. We will also add
+the new bit to ath10k-fwencoder.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/87y1awh8kj.fsf@kernel.org/
+https://patchwork.kernel.org/project/linux-wireless/list/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
 
