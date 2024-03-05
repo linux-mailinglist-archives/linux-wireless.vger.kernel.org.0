@@ -1,156 +1,118 @@
-Return-Path: <linux-wireless+bounces-4359-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4360-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ED6C870EBF
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Mar 2024 22:46:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C78108711EF
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Mar 2024 01:46:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B68FE1F21B7E
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Mar 2024 21:46:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D3AD1F23D07
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Mar 2024 00:46:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC85C7B3D8;
-	Mon,  4 Mar 2024 21:46:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="F05ipFzq"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBF8C5382;
+	Tue,  5 Mar 2024 00:46:11 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D41E10A35;
-	Mon,  4 Mar 2024 21:46:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7477E3210
+	for <linux-wireless@vger.kernel.org>; Tue,  5 Mar 2024 00:46:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588792; cv=none; b=gSHo90drCFaStRAm9cWBuMCfNo/DgEakhtbSbKFzLDN2SQiZ7osiqfiXxddeg6+JjT/D5SyN1VAdL1xGFhpRNV/qoe5+zrbB/AhJUKahxn8LHnKcnB7ALMUxkIMCBxxUA5pxNit6ARnKgt46s8gbPP5+nJoayqCeJwVloq/6+8s=
+	t=1709599571; cv=none; b=aCjUjVwQutKRsvdoctpP3EzJvgbSqECaXrEP0SdCxpF5pNgCw+lNUYe1fPk/xtZewq2EGn4fL1wOK5r4Bx1+eGdMJtvInLu/aP2Y73uqDVm+HFXgrEJshRNyzFNuAqIlAdaRreGZvrNGAajATa0Vi7mVc5IM6N/7JUyDnkxf3D8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588792; c=relaxed/simple;
-	bh=PkIAzelvrlhN7PE4DU9IpFBpQgozAf+D/ekjzn1DMXg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=lNVn2bMxTzU4onpVDc7qEkiWlUQE2G7m0sa+Ubg+YkP1CSRbYXZzWWakEXVsdcGfF0MwrR4Y2WINsU5qeDqLt7a6PUT5MhkhPtuc3oMZZgAGDnNCcnth8ehnvxgYiLBNkpyG7jT6hO+IhP4G+zfBAgG9C0wHyqqfNzWROY26wHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=F05ipFzq; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 424Hb3bO030620;
-	Mon, 4 Mar 2024 21:46:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=peMhEB7LCKrCHa9OQkkEzlMT5kXB97fl2hhCe2/Uhp8=; b=F0
-	5ipFzqX2DqedTwKQaNkZu0i6fINNBBHXpMl40gfvSLuBSV57UHwkxOszjHIuW0/h
-	ifk1VaqNMcungqiqp4moEj7SzADlppz1D8M2USpjKpMuJ9zcMb2g7YvL1k4B7FN4
-	wegXQgkTKLhcZt/bJsxnn5qMiN6Fpn0QPseA/Tw+FXS6IQBdQFaBrgzTrfyIEIvy
-	mqIavOUbDdADtWCcoA89r+W79jHTSPFd2PRM8bxYv6/CbDx0q5H5T0MjWijBd/D8
-	8o1AJ7zKp5JwKj8yaNDEIDMesTMTZCtNlT2dGXzpuWs3kZCYuRJNHNkMJiTxe7Rf
-	r45sRoG7jOjKe7dAUEAg==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wn8fxsys0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 04 Mar 2024 21:46:12 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 424LkBW2008665
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 4 Mar 2024 21:46:11 GMT
-Received: from [10.110.86.150] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Mon, 4 Mar
- 2024 13:46:10 -0800
-Message-ID: <228772c6-034e-4727-b410-391316d8f340@quicinc.com>
-Date: Mon, 4 Mar 2024 13:46:09 -0800
+	s=arc-20240116; t=1709599571; c=relaxed/simple;
+	bh=tc4AEy7B6Rc7D0EIqf8rS6hLAXDvBZgYg2BpiuuTMJE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=iN8i2pfseyD5KKx0i7LnbrX8r/f63U0IrMne1EP+1rRZ4xxW44cQHk6l+ioJ3tMIACOzAkYYboUzFLQNeZnxt10JSZJcUGUpmgZk/YxL2Tz5ja6bKuUZU2PTGqp8cLwAwBwsYWFu4mO5nFsRJ1RLrxKB1G61l3xV1qp3dMjtWKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4250jsSfB3909755, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 4250jsSfB3909755
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 5 Mar 2024 08:45:54 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 5 Mar 2024 08:45:55 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Tue, 5 Mar
+ 2024 08:45:54 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: <kvalo@kernel.org>
+CC: <dian_syuan0116@realtek.com>, <linux-wireless@vger.kernel.org>
+Subject: [PATCH] wifi: rtw89: Correct EHT TX rate on 20MHz connection
+Date: Tue, 5 Mar 2024 08:45:02 +0800
+Message-ID: <20240305004502.6655-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64: defconfig: build ath12k as a module
-Content-Language: en-US
-To: Bartosz Golaszewski <brgl@bgdev.pl>,
-        Catalin Marinas
-	<catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Bjorn Andersson
-	<quic_bjorande@quicinc.com>,
-        Krzysztof Kozlowski
-	<krzysztof.kozlowski@linaro.org>,
-        Geert Uytterhoeven
-	<geert+renesas@glider.be>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        "Arnd
- Bergmann" <arnd@arndb.de>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        "Marek
- Szyprowski" <m.szyprowski@samsung.com>
-CC: <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-        <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-References: <20240219084610.11007-1-brgl@bgdev.pl>
- <CAMRc=Md0H4=UZWNOoZR3-b50BrF-ch=34aPdqm2JhOXQzNi-mQ@mail.gmail.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <CAMRc=Md0H4=UZWNOoZR3-b50BrF-ch=34aPdqm2JhOXQzNi-mQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: ZlLrK936vgFL4t36CuSf9fGamDQGBLFA
-X-Proofpoint-ORIG-GUID: ZlLrK936vgFL4t36CuSf9fGamDQGBLFA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-04_18,2024-03-04_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 bulkscore=0 mlxlogscore=666 clxscore=1015 phishscore=0
- mlxscore=0 adultscore=0 suspectscore=0 spamscore=0 impostorscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2402120000 definitions=main-2403040169
+Content-Type: text/plain
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-On 3/3/2024 2:34 AM, Bartosz Golaszewski wrote:
-> On Mon, Feb 19, 2024 at 9:46 AM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
->>
->> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->>
->> Qualcomm sm8550-qrd and sm8650-qrd boards have ath12k modules as part of
->> their on-board WCN7850 WLAN/BT packages. Enable the relevant driver in
->> defconfig.
->>
->> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Dian-Syuan Yang <dian_syuan0116@realtek.com>
 
-Would have been nice to cc the ath12k and linux-wireless lists (done
-now). Just happened to stumble across this.
+We used EHT capability of 20MHz-only as rate mask to RA (rate adaptive)
+H2C command when connecting with AP set EHT 20MHz. It would get the
+wrong rate mask and the MCS rate can only reach MCS11.
 
-As an ath12k maintainer--
-Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+According to the description of 802.11be spec, if all supported channel
+bandwidth field of HE PHY capabilities are zero, then the EHT capability
+of 20MHz-only is valid. As a result, we adjust the code to set correct
+rate mask based on HE PHY bandwidth capability.
 
->> ---
->>  arch/arm64/configs/defconfig | 1 +
->>  1 file changed, 1 insertion(+)
->>
->> diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
->> index 056a6cc546a4..3f3d3350cf90 100644
->> --- a/arch/arm64/configs/defconfig
->> +++ b/arch/arm64/configs/defconfig
->> @@ -408,6 +408,7 @@ CONFIG_WCN36XX=m
->>  CONFIG_ATH11K=m
->>  CONFIG_ATH11K_AHB=m
->>  CONFIG_ATH11K_PCI=m
->> +CONFIG_ATH12K=m
->>  CONFIG_BRCMFMAC=m
->>  CONFIG_MWIFIEX=m
->>  CONFIG_MWIFIEX_SDIO=m
->> --
->> 2.40.1
->>
-> 
-> Gentle ping.
-> 
-> Bart
-> 
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+Signed-off-by: Dian-Syuan Yang <dian_syuan0116@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw89/phy.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
+index 12da63d64307..eaa18140d1a8 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.c
++++ b/drivers/net/wireless/realtek/rtw89/phy.c
+@@ -122,6 +122,7 @@ static u64 get_eht_ra_mask(struct ieee80211_sta *sta)
+ 	struct ieee80211_sta_eht_cap *eht_cap = &sta->deflink.eht_cap;
+ 	struct ieee80211_eht_mcs_nss_supp_20mhz_only *mcs_nss_20mhz;
+ 	struct ieee80211_eht_mcs_nss_supp_bw *mcs_nss;
++	u8 *he_phy_cap = sta->deflink.he_cap.he_cap_elem.phy_cap_info;
+ 
+ 	switch (sta->deflink.bandwidth) {
+ 	case IEEE80211_STA_RX_BW_320:
+@@ -132,15 +133,19 @@ static u64 get_eht_ra_mask(struct ieee80211_sta *sta)
+ 		mcs_nss = &eht_cap->eht_mcs_nss_supp.bw._160;
+ 		/* MCS 9, 11, 13 */
+ 		return get_eht_mcs_ra_mask(mcs_nss->rx_tx_max_nss, 9, 3);
++	case IEEE80211_STA_RX_BW_20:
++		if (!(he_phy_cap[0] &
++		      IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_MASK_ALL)) {
++			mcs_nss_20mhz = &eht_cap->eht_mcs_nss_supp.only_20mhz;
++			/* MCS 7, 9, 11, 13 */
++			return get_eht_mcs_ra_mask(mcs_nss_20mhz->rx_tx_max_nss, 7, 4);
++		}
++		fallthrough;
+ 	case IEEE80211_STA_RX_BW_80:
+ 	default:
+ 		mcs_nss = &eht_cap->eht_mcs_nss_supp.bw._80;
+ 		/* MCS 9, 11, 13 */
+ 		return get_eht_mcs_ra_mask(mcs_nss->rx_tx_max_nss, 9, 3);
+-	case IEEE80211_STA_RX_BW_20:
+-		mcs_nss_20mhz = &eht_cap->eht_mcs_nss_supp.only_20mhz;
+-		/* MCS 7, 9, 11, 13 */
+-		return get_eht_mcs_ra_mask(mcs_nss_20mhz->rx_tx_max_nss, 7, 4);
+ 	}
+ }
+ 
+-- 
+2.25.1
 
 
