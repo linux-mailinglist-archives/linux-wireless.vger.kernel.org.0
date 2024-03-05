@@ -1,115 +1,123 @@
-Return-Path: <linux-wireless+bounces-4392-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4393-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5861A8725FB
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Mar 2024 18:51:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21B4487260D
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Mar 2024 18:56:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A23A1C260F1
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Mar 2024 17:51:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3DCA1F21DD6
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Mar 2024 17:56:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D81AA17565;
-	Tue,  5 Mar 2024 17:50:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 552D1BE4D;
+	Tue,  5 Mar 2024 17:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KmWXksuh"
+	dkim=pass (2048-bit key) header.d=monroe.io header.i=@monroe.io header.b="lYTe0B4H"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-4317.proton.ch (mail-4317.proton.ch [185.70.43.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B287714016
-	for <linux-wireless@vger.kernel.org>; Tue,  5 Mar 2024 17:50:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91BCEDF5B
+	for <linux-wireless@vger.kernel.org>; Tue,  5 Mar 2024 17:56:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709661023; cv=none; b=QYfxubZD8AqQvw656KjnjE5r2o1WsBUjco8W3pTH2/vMr65J2quYsJMPYy1Bz2RoGtQCUHjlcpnrm/bVQrS9UCO1u9mKNvMwV21zOohPg/lKQ3kyd0Or1JzMRDNHp2wE1TlcRYI9QUz52Qxrxv3cj/KyrbB5Wns7Xo3zU3Hv6O8=
+	t=1709661371; cv=none; b=rrREvUSOFc9Cq9bEL0ZqsWXzia56J6UUkpw+HM1SzMEu2QC8USSX74zXXz33NNDiY8Heg1pIb5ZtOEF1ZD2R09sK4s25Ft8gFKB5H2btOHr9EfhePUZmlTLCsAQI/aFgS/RRo8xhWRxEriMLmIXvbSiuF/feuAI5HZ+oaPyHBbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709661023; c=relaxed/simple;
-	bh=B/qqkKrr/0yu0DgsPJn/0e3g4ZQw/3kxTKmccWISBBY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QR0+aE5TlZgFtlxLUUSMtBFW+8qiB2ufUwmGaRz/KJU9jiQhfnn6hah442+heSX16HFEzNVZY0e6RBOwCEUONWaQuRKk6UKQSjpfYIMtnXV4fUqZOzuEU3O/dn7Gghsf1GVJh/UunyH/IaAkzerjz5ILyMsF6MEn+DsAmE2Cgdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KmWXksuh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EA98C43399;
-	Tue,  5 Mar 2024 17:50:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709661023;
-	bh=B/qqkKrr/0yu0DgsPJn/0e3g4ZQw/3kxTKmccWISBBY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=KmWXksuhbs0nDjZkfkwRIQgavmtNgOG+ZHs54xPRRIgyMPaoSPDv0T9zs4P9m3Zqz
-	 YczSZcdKVgjEfY/um5ZlN8d/YzZpJxnv4sT1yKO6TTS+3wxAfq2SxlVCdIv7/QZPsM
-	 /LdB7FlDHgmZdl9vemGPKEAX2NzlUMi9sYyQrNg7oujoo/mHBBGAg5h4hH5y2suZZH
-	 AyKywYGmRTkxMeT0CgE3plCqRE4V6IBJj0sxJYtPHnZ+5pdOdi1D3OsqTmQYXk5RWM
-	 rD+Go07R3l9uqZp9m6yWTc+xBMaMnyrGwQarjAc8/SA/DzdeIOJ2IteqmUeIdUc0Ne
-	 uCzNpByVCFpow==
-From: Kalle Valo <kvalo@kernel.org>
-To: linux-wireless@vger.kernel.org
-Cc: ath10k@lists.infradead.org, ath11k@lists.infradead.org,
- ath12k@lists.infradead.org, quic_jjohnson@quicinc.com
-Subject: pull-request: ath-next-20240305
-Date: Tue, 05 Mar 2024 19:50:20 +0200
-Message-ID: <87y1awh8kj.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1709661371; c=relaxed/simple;
+	bh=oDsOsTeiTrnHZ6Ml0OymUtjzxHBbtozFlOmA7lhZg3s=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=e4SO+5q4lS4mZY4yIQ5Y5Qwq1ZlFi00hhN1a8qE+fLn8J/JZOJIx69Mht8LSoDZ5P9neUKyJcGIO6Q4sC/HiIrnciUXh4f5ZfxDclexkWpDw7u4UyzGSiyJdlrQqf6jAZcBu13q7DJuL016hKwqnjIieKfYGHiPhjooPfetll0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=monroe.io; spf=pass smtp.mailfrom=monroe.io; dkim=pass (2048-bit key) header.d=monroe.io header.i=@monroe.io header.b=lYTe0B4H; arc=none smtp.client-ip=185.70.43.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=monroe.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=monroe.io
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=monroe.io;
+	s=protonmail2; t=1709661359; x=1709920559;
+	bh=LCfHSJif2IzTulfiAhxVZDIoy9aDonUR7qQ6uLz691o=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=lYTe0B4HlEQUx4SQEzJDZQaKmxugpsW4T4zNt82JJM8zaQoLmxHbfVyuopBecSDzJ
+	 nSvcOj7m58LPqiIvx5ByUIZRUXyiLYs0wzRevJoNdTylj9GBCTBZ6rG+C5tbwrm5WW
+	 M5ZrUnAJDVNlwrwPoG00sW7w5EALbtQde9WpGOUx5tCZDVlsgMjVetyc7nbbzi2y5W
+	 Qo0auFI7EVGvSuWESyom0ltI+YwK2OPWs6qoll+VJEBg73U/s1PZiGDrYfp2x8SePl
+	 oWH8DTrKabi7jhspVJWDTeCuCnNA6U3A02X85jrpeIhZEN6bnN3bAz+Xq1lXasEWK0
+	 fbt4gFZf9nshQ==
+Date: Tue, 05 Mar 2024 17:55:35 +0000
+To: Felix Fietkau <nbd@nbd.name>, Johannes Berg <johannes.berg@intel.com>
+From: Chad Monroe <chad@monroe.io>
+Cc: Lorenzo Bianconi <lorenzo.bianconi@redhat.com>, Shayne Chen <shayne.chen@mediatek.com>, Evelyn Tsai <evelyn.tsai@mediatek.com>, Ryder Lee <ryder.lee@mediatek.com>, linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org, Chad Monroe <chad@monroe.io>
+Subject: [PATCH] wifi: mt76: mt7996: fix size of txpower MCU command
+Message-ID: <301ef7cfecc47fa488fdf172596c9ed75719410e.1709657969.git.chad@monroe.io>
+Feedback-ID: 9731019:user:proton
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+Fixes issues with scanning and low power output at some rates.
 
-Please pull, more information in the tag below.
+Fixes: f75e4779d215 ("wifi: mt76: mt7996: add txpower setting support")
+Signed-off-by: Chad Monroe <chad@monroe.io>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c    | 7 +++++--
+ drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h | 1 +
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-Kalle
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/=
+wireless/mediatek/mt76/mt7996/mcu.c
+index b44abe2acc81..cfb5a7d348eb 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -4464,7 +4464,7 @@ int mt7996_mcu_set_txpower_sku(struct mt7996_phy *phy=
+)
+ =09=09u8 band_idx;
+ =09} __packed req =3D {
+ =09=09.tag =3D cpu_to_le16(UNI_TXPOWER_POWER_LIMIT_TABLE_CTRL),
+-=09=09.len =3D cpu_to_le16(sizeof(req) + MT7996_SKU_RATE_NUM - 4),
++=09=09.len =3D cpu_to_le16(sizeof(req) + MT7996_SKU_PATH_NUM - 4),
+ =09=09.power_ctrl_id =3D UNI_TXPOWER_POWER_LIMIT_TABLE_CTRL,
+ =09=09.power_limit_type =3D TX_POWER_LIMIT_TABLE_RATE,
+ =09=09.band_idx =3D phy->mt76->band_idx,
+@@ -4479,7 +4479,7 @@ int mt7996_mcu_set_txpower_sku(struct mt7996_phy *phy=
+)
+ =09mphy->txpower_cur =3D tx_power;
+=20
+ =09skb =3D mt76_mcu_msg_alloc(&dev->mt76, NULL,
+-=09=09=09=09 sizeof(req) + MT7996_SKU_RATE_NUM);
++=09=09=09=09 sizeof(req) + MT7996_SKU_PATH_NUM);
+ =09if (!skb)
+ =09=09return -ENOMEM;
+=20
+@@ -4503,6 +4503,9 @@ int mt7996_mcu_set_txpower_sku(struct mt7996_phy *phy=
+)
+ =09/* eht */
+ =09skb_put_data(skb, &la.eht[0], sizeof(la.eht));
+=20
++=09/* padding */
++=09skb_put_zero(skb, MT7996_SKU_PATH_NUM - MT7996_SKU_RATE_NUM);
++
+ =09return mt76_mcu_skb_send_msg(&dev->mt76, skb,
+ =09=09=09=09     MCU_WM_UNI_CMD(TXPOWER), true);
+ }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/n=
+et/wireless/mediatek/mt76/mt7996/mt7996.h
+index 36d1f247d55a..ddeb40d522c5 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+@@ -50,6 +50,7 @@
+ #define MT7996_CFEND_RATE_11B=09=090x03=09/* 11B LP, 11M */
+=20
+ #define MT7996_SKU_RATE_NUM=09=09417
++#define MT7996_SKU_PATH_NUM=09=09494
+=20
+ #define MT7996_MAX_TWT_AGRT=09=0916
+ #define MT7996_MAX_STA_TWT_AGRT=09=098
+--=20
+2.39.2
 
 
-The following changes since commit a4634aa71fee11f5e3e13bf7d80ee1480a64ce70:
-
-  bonding: rate-limit bonding driver inspect messages (2024-02-22 19:13:18 -0800)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git tags/ath-next-20240305
-
-for you to fetch changes up to 776c9c93bb0511d04e6222546499e5ea20ad51b0:
-
-  wifi: ath12k: fix license in p2p.c and p2p.h (2024-02-28 16:09:29 +0200)
-
-----------------------------------------------------------------
-ath.git patches for v6.9
-
-Only some minor cleanup in ath11k and ath12k. Adding Jeff as the
-maintainer for ath10k, ath11k and ath12k DT bindings.
-
-----------------------------------------------------------------
-Baochen Qiang (5):
-      wifi: ath11k: rearrange IRQ enable/disable in reset path
-      wifi: ath11k: remove MHI LOOPBACK channels
-      wifi: ath11k: do not dump SRNG statistics during resume
-      wifi: ath11k: fix warning on DMA ring capabilities event
-      wifi: ath11k: decrease MHI channel buffer length to 8KB
-
-Jeff Johnson (2):
-      dt-bindings: net: wireless: qcom: Update maintainers
-      wifi: ath11k: constify MHI channel and controller configs
-
-Kalle Valo (2):
-      wifi: ath11k: thermal: don't try to register multiple times
-      wifi: ath12k: fix license in p2p.c and p2p.h
-
-Kang Yang (1):
-      wifi: ath12k: add rcu lock for ath12k_wmi_p2p_noa_event()
-
- .../bindings/net/wireless/qcom,ath10k.yaml         |  1 +
- .../bindings/net/wireless/qcom,ath11k-pci.yaml     |  1 +
- .../bindings/net/wireless/qcom,ath11k.yaml         |  1 +
- drivers/net/wireless/ath/ath11k/core.c             |  8 ++-
- drivers/net/wireless/ath/ath11k/mhi.c              | 68 ++--------------------
- drivers/net/wireless/ath/ath11k/qmi.c              |  5 +-
- drivers/net/wireless/ath/ath11k/thermal.c          |  5 +-
- drivers/net/wireless/ath/ath11k/wmi.c              |  3 +-
- drivers/net/wireless/ath/ath12k/p2p.c              |  2 +-
- drivers/net/wireless/ath/ath12k/p2p.h              |  2 +-
- drivers/net/wireless/ath/ath12k/wmi.c              |  5 +-
- 11 files changed, 29 insertions(+), 72 deletions(-)
 
