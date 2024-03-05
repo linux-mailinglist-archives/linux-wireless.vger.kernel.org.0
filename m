@@ -1,207 +1,341 @@
-Return-Path: <linux-wireless+bounces-4369-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4371-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FBF58718FD
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Mar 2024 10:07:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BABB18719C3
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Mar 2024 10:41:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E796C285081
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Mar 2024 09:07:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 351171F22736
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Mar 2024 09:41:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FCCF4CB58;
-	Tue,  5 Mar 2024 09:05:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7358A54770;
+	Tue,  5 Mar 2024 09:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="UzTNUPk4"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="HukG+SWd"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A39B14F8A1
-	for <linux-wireless@vger.kernel.org>; Tue,  5 Mar 2024 09:05:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.180.131
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709629551; cv=fail; b=oVa1pxJzNlwpjLe7g8zY9UrSLJM6iSd4z9dbaWRACuN76XODQvn3jd1nUuUGuUEpb8Ph1qutQvRsKeCfTI3nwt51Bq+OqLlq3Y2rbg2jmNKHqmhi08LhDkGxvmrC0IoSApMoX0bNP2SQ/7xPZwiMbS32obw3uvg+M2fEruuiwIQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709629551; c=relaxed/simple;
-	bh=vOpF/Ny2ZpqSwpsw61UkiSkASMq691CKLDBNv84dc/c=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=RAwQBhSO3MszUCA590xzPvARzOxFBl0wh0cp38McyYF4VEi9syYpEiGxOBI53DpoogVY84xFGYEE1t1cg0PhVACl+/YAE8bxefvu9SoVmLlYS9Oe6z4eTvnvpJExkayjXDL2wtn3/Enaw70CAARoqw5kOl/NyfIEhcnc4hX5obI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=qti.qualcomm.com; spf=pass smtp.mailfrom=qti.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=UzTNUPk4; arc=fail smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=qti.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qti.qualcomm.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 4256KIhY014638;
-	Tue, 5 Mar 2024 09:05:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	from:to:cc:subject:date:message-id:references:in-reply-to
-	:content-type:content-transfer-encoding:mime-version; s=
-	qcppdkim1; bh=vOpF/Ny2ZpqSwpsw61UkiSkASMq691CKLDBNv84dc/c=; b=Uz
-	TNUPk4v51mqyvjkGyQ1RIHf2Gf9/p1wb4h+vQdG5zW6kDEeswUbnnQhnkZ1N9N6w
-	l9NFzy1WFAioqWQTf43AAAoVLMOnTS8H94uEiiq94yX94aT4+Ni22EWldr3yNlG+
-	KptMWoOwFW8o8JFNPUbrUFtbtvO5/eREFcIMQZp/0I+tBGBYl3GVwh/pK0IRyt0e
-	VltMXipNnlI+EBXeMG6XSM0ZMAQyFPGMUOULEmwlr5a4NwFtr9QouBXOkftYGSmb
-	G+7aGO6OLD+AckZwkZt7ikFOuu6zOKbmNCHpNOQqcywfAz3FnbFPXqnPCGYZ01g1
-	xHYbTpj0jFvnvmGX/OOA==
-Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2040.outbound.protection.outlook.com [104.47.66.40])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wnx0y0ah4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 05 Mar 2024 09:05:44 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=COHiEgmeDb5u0QeZ/R7dPT9wX7Zw40Nj7lFtc6x9NAwuFa9dxvIADLIc0lM57jkkdKahTkA3L9sAhWFf7aKzU0bSc1iu+nxmEgo2Ypq6k8T2KJrSD4GR/2LejeJyayQ536y06Xhc9DGp8nmewxoMfeadO6UYLmb0ZVawIrBhwitTfrbe6X0SugjIN4MNF04uNhxeyMH/t2vO9pf/dqZlhM/QApMwC6elu8OBJIYf8AKWePkXnO0wfLohIiio5QnO6Q+YtSHEXLLS9vu881w6gM3qDeGNhHU5T417b6esblWX5AgUgtGmJYdqcZm0blZ7zao8F7VoPxZZn6pU/znKnA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vOpF/Ny2ZpqSwpsw61UkiSkASMq691CKLDBNv84dc/c=;
- b=K+cxodo0QCPH2uDoe5XxR5OOVEyzJUcqoBW2UNyQLr9QIol/TtFc+tbCrhOBPScPTptk/HMB7m0K4aT0GKTxi0AYMIY+BCpcDTyrVc4unYo4fwgQglrBWES6JFzNXjFcK5ZELLXEATpv/NncCVGk99btv9E6v6s1ukZnACoLRKYwkSBqhbtWqPAxj7x8snursr1g+QwwbR39aTPJqloduwoomex/59kGDZe2Jp5B/JrOsMqKfyuCqvbm7o1ySgik+WkxWemJkgKePZBVvIe5EW7bqzwffP50L5bUh79L8W+gO0hbu74CbWug6PCQvMGnuTr4x9euNKDH9xfpgAPEag==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=qti.qualcomm.com; dmarc=pass action=none
- header.from=qti.qualcomm.com; dkim=pass header.d=qti.qualcomm.com; arc=none
-Received: from CH3PR02MB9068.namprd02.prod.outlook.com (2603:10b6:610:148::7)
- by CH2PR02MB6695.namprd02.prod.outlook.com (2603:10b6:610:78::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7339.39; Tue, 5 Mar
- 2024 09:05:40 +0000
-Received: from CH3PR02MB9068.namprd02.prod.outlook.com
- ([fe80::60a2:66c7:d1d3:966d]) by CH3PR02MB9068.namprd02.prod.outlook.com
- ([fe80::60a2:66c7:d1d3:966d%2]) with mapi id 15.20.7339.035; Tue, 5 Mar 2024
- 09:05:40 +0000
-From: "Thiraviyam Mariyappan (Temp)" <tmariyap@qti.qualcomm.com>
-To: "Jeff Johnson (QUIC)" <quic_jjohnson@quicinc.com>,
-        "Thiraviyam Mariyappan
- (Temp) (QUIC)" <quic_tmariyap@quicinc.com>,
-        "ath12k@lists.infradead.org"
-	<ath12k@lists.infradead.org>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH] wifi: ath12k: remove reserve member of wbm completion
- structure
-Thread-Topic: [PATCH] wifi: ath12k: remove reserve member of wbm completion
- structure
-Thread-Index: AQHaa7m1Rs3dK6hLmkGP6XnJWaCf2LEjGnMAgAXE2iA=
-Date: Tue, 5 Mar 2024 09:05:40 +0000
-Message-ID: 
- <CH3PR02MB9068432A870F6DE95DF54243F9222@CH3PR02MB9068.namprd02.prod.outlook.com>
-References: <20240301091936.12054-1-quic_tmariyap@quicinc.com>
- <6a91daf9-76ea-4379-8b12-1b9cb23b3869@quicinc.com>
-In-Reply-To: <6a91daf9-76ea-4379-8b12-1b9cb23b3869@quicinc.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CH3PR02MB9068:EE_|CH2PR02MB6695:EE_
-x-ms-office365-filtering-correlation-id: be2218cb-7666-4c92-2d90-08dc3cf36e4c
-x-ld-processed: 98e9ba89-e1a1-4e38-9007-8bdabc25de1d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 
- nmSk3RBAa0v1QrdWSEn/v9kA3VmVyJBqh4Num+zEZaBKZSEmq3/KFztO/hN1f5XdnH9yy1sRdgmnUy6wtSmbw5Egw9swkqJYJxY+6fiZ4hlnNzJihf2KDHlvueD3iYRyBJ2+WXHdUbqXJMGSI3QSyt3FE/qlUEflUUlu364sw79eK4BGbrqv8OVw7kh9xKXcOKS7dEPb5uWVjl2yBWlKQiUtj9QitvDQRlRebSq2R8KXhbCR199VeddiygUpXgqhcxfZKgSoUbGs4t7yt11PXCy4dyoB9CY4o4qWYQIASftVD/xWboeyHZAaWDzsiLDNawqrzJddkBCpg9PPsPnRoqtLucpR7uv5S3swRlRideFucrvudYZOHhQYq1Sa7fyR4oml3X2n5aCxx9VsfBsz2yW2JHM2dGK9sCZktCIn3KHL58ThUpslu4OxqaFttzwVLxefic1F8P2gtM1zbc88jm6SxnPEe2IHt9MvDOsLYJZrxHwFh4vqQqSjpkXKzTlfjwHfiJUpmkRUr6Mmr0iZto1qW4aZhDimmNzAdeuVTocu7BZyRA0sw8W2feIUThX+949FdcyCIHqxsEPbq+A8Jhru1fk6bzpYrxGFFuWf7YP2q2KiVtev9eKWP4PjvNQmd/Sdtg06zk8RRZV8kgx78CC0TyPEvQxuT8PYEZG3Bv0FFQGWwVW3CKxxbLYhsVhM3GLISVZ64o045UdsEukksA==
-x-forefront-antispam-report: 
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR02MB9068.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(38070700009);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: 
- =?utf-8?B?b1M4REJLRHd2ZVVPb0RFYlZSOUlvWHNGbWozd0xOL3lJaXpWVXF1NDIwMXdh?=
- =?utf-8?B?VWFGdkhKbTVMUjl1cnI4bjZjVmZZSFZZV2dMWCszZkloYWE0YXV4S21Rb2Mv?=
- =?utf-8?B?bDR2T01oNFFzT2pYMEQ3eUdRUytDUWtzZzAveDdVUmQvQ1REYW5vNURFWk5R?=
- =?utf-8?B?QjdFMVlFOGpOeG9sYjlXOEtZcHVsNFlPYmU0WEdneVZwY0t6bjZkZ2ZMb3Bz?=
- =?utf-8?B?VlIyRFg0REwvZ3JwOWg4K05PaVZVSVhHZjFvVFVyRlB1bWpXb3RVd1Z3b1lB?=
- =?utf-8?B?TEcyZnlVY2FlcmZHdktTNHd0cFJ2cU1CaVlrUUhMb3dXTmRzTEg2SDlSVi9j?=
- =?utf-8?B?YlFrK00xaHVLQ2s1K0lKMTVEVlA2aXd2RnpEaHZtVVoyQjVWM2ZKVk55ejNa?=
- =?utf-8?B?ckh0REFDNGx5dUl2QmtmbnNsUFNkWVU1UzM1cEw3L3M0djBEMU9DTU03cHVM?=
- =?utf-8?B?MnhpUTZHT3o3eVBpY05KSVBGMjZvUC9jWTFMRVhabFQ4Y0NvcVU5dVN1b2Zl?=
- =?utf-8?B?NWVtZGZ4L3IzK2FVeGg1VkNjRXlqSGVxYkxMbklYQVh5TXdxR3NyYXpZQ1lk?=
- =?utf-8?B?VzRzYVgrQmYwRnlzbVdWTFVuSXRHQzNzc2xCYi81cDJmZDdJcFI0bk1IR1VU?=
- =?utf-8?B?UW1DbW56Y2xHTTZKcmdIcU5RZW1rbHdZOWVWMW52ZG5KUloxSEhXT0Vma1du?=
- =?utf-8?B?akxJT2dPZVdCSG5TdUMyV0p2T1BLQ0dnUkhQZGlCN3BydTlZZlp4bWlLTlZX?=
- =?utf-8?B?bER0ZG9FYzJldlBlL0lnQVBpb00vdUVjbGVrTURvMHlaNXRSZE5VaExGTnZi?=
- =?utf-8?B?bXBpV25tM21ZZXV5WkRUUGF6c3NxbUVOTEpPVThFWU5xclBvb05yR2kvdEp3?=
- =?utf-8?B?MnFhREtjNUoybWlNcVViWjJ5VG9oeXI5UGlVaXExNEM5TE1lTWNodkpkUFlQ?=
- =?utf-8?B?Nm5jNnNjalZweEtrZUljeUQ5LzZ0ZTJ3bGg0Mm5NRmNMQ1BQYnl4S0NjaDZn?=
- =?utf-8?B?RGNvZ1BRN2xWZzJyYjRTd0lCWHhXWS9SM0tITlFqbmJ4eGJTVXQ4TFpGNEw3?=
- =?utf-8?B?RXlxaHBaSWwvUzNoRVpmdy9LblhHclpDVExvRjF2RU5QWjQzdjBkeWErcUFw?=
- =?utf-8?B?T1VhTVd1UUVQNk9TN0paSnpxcmpuWVNIL2lpV2x1ZEFTdWNXaW9YZjhUc25o?=
- =?utf-8?B?NkdhZkRvTktvR0FSTTNZWGNpMEh0QmU5aWFkZEVJOHhkYXR5S0FFZGRsT3lQ?=
- =?utf-8?B?SlpxdXpBUkFSS2RtRzNIK1V1czlGcGhxTExCU3luVXZQQmsrQnhLbmF2QW1q?=
- =?utf-8?B?WG1XNGZkTE9yd0w4aS90MzcyazhrZlkxSHFRc215OTNjdnd3dUZxNWhIRk1E?=
- =?utf-8?B?bUIzL2ovNXR5NUxoWW1zMnRlTDVBQXNNMFVJTldFZVptdVVRMnovZUpRNmQ5?=
- =?utf-8?B?eDkvZzdzcVpFVzE0RlUzajR6YS9kTFRYQnF6ZDZmTWdLOVJreEdMSmJMOStu?=
- =?utf-8?B?N3NKbXV0b2x3dk9Fa2hRdVNFb1hTU1ZncmNrVjZ6MkNnMk81dVlqcW5hcnRZ?=
- =?utf-8?B?NnRPdWJDa2VmQWlZckhWdWhPQmZVMVJVOXBhc0M3WjgvS3lxSWZvQTZtV0Js?=
- =?utf-8?B?RHBLRldPcXYxS1lVd0lueE5BMThvY1lMdWkzVlhWSmt0RWVQTkIrMW41aExm?=
- =?utf-8?B?aGtkY0tGaXVzVVNsOXBCOWdQODdwYmRFY0lqYUUyL1RMN0F6OGRrSE9venUy?=
- =?utf-8?B?VncrTG1zSGNFSXlTeTJUOHN0eFVvenQ2Rzl6bjN1SzVHU0tKMnhvaGhibHdY?=
- =?utf-8?B?SEl2S0hvaFE4S3A5V0VmbElXcitCeksvRFluMDkyNWthWElML2VjSk9WT3d5?=
- =?utf-8?B?Tm9vTkVqZEZkTDBCZXR6bktYNkt6ZzlQUEcrZGFVc1ZUVm1HRVVHMEhwTEFt?=
- =?utf-8?B?TmRmMUFFSWErMXhzU1BoNjBqd25ON1I0UkFGeWwrVHVSbEgrM1dac2xZdkZP?=
- =?utf-8?B?bEg0Z0RnM3RnSHdJVVlpOEdxUzQ3NG1HclJnSlFlK3NGNHVlcy9rZS91a2F2?=
- =?utf-8?B?dko5d0RxVUFUcG0wd0szRWpSTEF2b056L0xzaTI3cHZIWUJRVWEwVGhmZ0tI?=
- =?utf-8?Q?dHV2PdAkGqGBIU2o7m7U8dCU1?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E32555337B
+	for <linux-wireless@vger.kernel.org>; Tue,  5 Mar 2024 09:41:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709631694; cv=none; b=g3iViQ84SszBck8NPI8aMBowQ2FAatZbcDyyIZcSL9VEFvnDDD7+ulIP3aITdhgyVGk5XmxUNrYe6OSGQZdbERXtAohWh8ZuprxTi59Rnug36n4vEhhuJYVoar9prKpZ8uJGRP61xieVbz/oj/L8ahQ56qYDUo2R5we9VsxMRYc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709631694; c=relaxed/simple;
+	bh=IUnpRePB2qmDApx3ZXS/Z8cYNSwa2wNlhuDzjTTh9GE=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=MeT8zlrmxjY8uDYiafk2bcXQ5PAwbaNSEeymPd5aVPPwZt+20aFoWXF3MJVPJf/wk5foWDdtLi74AmzD5kpC7CipyM2IA+bnU3D6wEVxdHDKHE6JWaUtn0/gwPEBw6om/G1H9lhI9v5UxKdLVxSGlDNsMg3aa269e2fZavyVSrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=HukG+SWd; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=/U/NADY2mgCHejwOLhZFCF08saicDpvQ+0oneD79spM=;
+	t=1709631690; x=1710841290; b=HukG+SWd4DxBAnDV8ynSBF/M7WfXmJhRd0ZWRDfBvj2hbxp
+	jvJy8T31LGR+fGsDS8mf+THxWbLuM9AhNiYPh8dyxRccIE/YPrDPyBe7hMrwY6sUcVzfHrr5bPp+Y
+	U7Sr7pG41P8TBJWCn40+7hhR+mU8JHsqdP2MYM/kDWVNAdGwm98UDhDsS3wsfsBlWNOsBOSXoZ402
+	y1WywfOxy2DhJ2tfdhZDTw9uq8xem4iUaZqjD6MkRom33INeB8OMwXiRImkAzEgJmsFqZeZgaz+8Q
+	BQX32DJgMw4lxtQ2bT1T0RqYdDLcu7YY0FgyZ5SvbuaqlITdrJJRJTLfF9wYYCJA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rhRIc-00000002fnY-2xRQ;
+	Tue, 05 Mar 2024 10:41:26 +0100
+Message-ID: <12f91b008d6f2b4e6241794d2852c1c84fe6c12c.camel@sipsolutions.net>
+Subject: Re: [PATCH v5] Add JSON output options to 'iw' for scan results
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Isaev Ruslan <legale.legale@gmail.com>, linux-wireless@vger.kernel.org
+Date: Tue, 05 Mar 2024 10:41:25 +0100
+In-Reply-To: <5c5be485dcfceb44fc731e47758d6be3.legale.legale@gmail.com>
+References: <5c5be485dcfceb44fc731e47758d6be3.legale.legale@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
-	nfRKv4hSN15vuT75m0stQbUf5WPVBhkcoZHyxdUBTEpK7zQfbF6EW0kBNzjM5B6ln2cLCD/E6BgmHo4pU3Gx5VgbMnw88X0XFclzlvd6pjytq3ufjQWZd/x4KzXbNkeTTh5K/xK/85otLDjswr383uMqHnAFpgmirKTrTtSY/x/X89pJaDH2vGF91SjOjhWIVrL7E4yEyCzPAkJSqkQ0zEZq8ictbPUqLmVnq+WpRUlPXWwuO62a8/OJqOGyY2Q+8NBiEER9IKW1SSlgLsaRfsDhjvXhEeZd5KZv7Oj4B3nLE2EKIHHxGE9lP/EUB5hV+9PAm+ma+Jo4sl6C6jnPz66Q4JjaVGuW/yiTSp8V+EL82GF1IMMgE131NY47jSlaKXu6H6NC0uNBc5haQhlY5V5+3ZOoNyBn6zyeSLXHZmxMZJgth0DNK0WqNdtXHCR3RThsGTnyFyOx83n63Kkv1D+n+hcaZ4CAwDNDVGgA9qn1PeS7/npehGrB8Ci+3jgTrfDyAzO4Dh3kTxQ+0csdFuxn9+5vzv2EGWx+xDehEfuUafTmx/YPaBV+Ih3U0onsg80TUCDUFPN/QXSzB7y0il1bnksaoOL9gg5Uv/9IiLJlHG8qkpSA6Xq194DNgtOu
-X-OriginatorOrg: qti.qualcomm.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR02MB9068.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: be2218cb-7666-4c92-2d90-08dc3cf36e4c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Mar 2024 09:05:40.4616
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 98e9ba89-e1a1-4e38-9007-8bdabc25de1d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: OY9zLZ5feGFDfz5I4SVoOrTfMrK8z2xkCMEdcXiOfQfng6111uylwlP/xhNHrDumiTl6z3bgdHMI6KhUuHHLKHsGWnTSm0Mzey1eV8h9YU8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR02MB6695
-X-Proofpoint-GUID: JO5fgh2n4pgyFH4Dri17QOirBztCanIq
-X-Proofpoint-ORIG-GUID: JO5fgh2n4pgyFH4Dri17QOirBztCanIq
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-05_06,2024-03-04_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxscore=0
- bulkscore=0 impostorscore=0 clxscore=1011 priorityscore=1501 adultscore=0
- mlxlogscore=999 lowpriorityscore=0 suspectscore=0 spamscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2402120000 definitions=main-2403050071
+X-malware-bazaar: not-scanned
 
-DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEplZmYgSm9obnNvbiAoUVVJ
-QykgPHF1aWNfampvaG5zb25AcXVpY2luYy5jb20+DQo+IFNlbnQ6IEZyaWRheSwgTWFyY2ggMSwg
-MjAyNCAxMDoyMyBQTQ0KPiBUbzogVGhpcmF2aXlhbSBNYXJpeWFwcGFuIChUZW1wKSAoUVVJQykg
-PHF1aWNfdG1hcml5YXBAcXVpY2luYy5jb20+Ow0KPiBhdGgxMmtAbGlzdHMuaW5mcmFkZWFkLm9y
-Zw0KPiBDYzogbGludXgtd2lyZWxlc3NAdmdlci5rZXJuZWwub3JnDQo+IFN1YmplY3Q6IFJlOiBb
-UEFUQ0hdIHdpZmk6IGF0aDEyazogcmVtb3ZlIHJlc2VydmUgbWVtYmVyIG9mIHdibQ0KPiBjb21w
-bGV0aW9uIHN0cnVjdHVyZQ0KPiANCj4gT24gMy8xLzIwMjQgMToxOSBBTSwgcXVpY190bWFyaXlh
-cEBxdWljaW5jLmNvbSB3cm90ZToNCj4gPiBGcm9tOiBUaGlyYXZpeWFtIE1hcml5YXBwYW4gPHF1
-aWNfdG1hcml5YXBAcXVpY2luYy5jb20+DQo+ID4NCj4gPiBJbiB0eCBjb21wbGV0aW9uLCBzdGF0
-dXMgZGVzYyBvYnRhaW5lZCBmcm9tIG9mZnNldHRpbmcgdGhlIGFkZHJlc3MNCj4gPiBmcm9tIHdi
-bSByaW5nLiBIYXZpbmcgcmVzZXJ2ZWQgOCBieXRlcyBpbiBzdGF0dXMgZGVzYyBvZmZzZXRzIHRo
-ZQ0KPiA+IGFkZHJlc3MgdHdpY2UgYW5kIHJlYWQgdGhlIHZhbHVlcyBmcm9tIHRoZSBpbmNvcnJl
-Y3QgYWRkcmVzcy4NCj4gPiBTbywgcmVtb3ZpbmcgdGhlIHJlc2VydmVkIDggYnl0ZXMgZnJvbSB3
-Ym0gY29tcGxldGlvbiBzdHJ1Y3R1cmUuDQo+IA0KPiBXaHkgbm90IGluc3RlYWQgcmVtb3ZlIHRo
-ZSBhZGRpdGlvbiBvZg0KPiBIVFRfVFhfV0JNX0NPTVBfU1RBVFVTX09GRlNFVCBpbg0KPiBhdGgx
-MmtfZHBfdHhfcHJvY2Vzc19odHRfdHhfY29tcGxldGUoKT8NClNpbWlsYXIgdG8gYXRoMTFrLCBy
-ZW1vdmVkIHRoaXMgbWVtYmVyIGZyb20gdGhlIHN0cnVjdHVyZS4gV2lsbCBjaGVjayBhbmQgYWRk
-cmVzcyBpbiBuZXh0IHBhdGNoIHZlcnNpb24uDQo+IA0KPiBUaGF0IHdvdWxkIHJlbW92ZSBhbiB1
-bm5lY2Vzc2FyeSBvcGVyYXRpb24gaW4gdGhlIGRhdGEgcGF0aC4NCj4gDQo+ID4NCj4gPiBBbHNv
-IHRoaXMgcGF0Y2ggaXMgYXBwbGljYWJsZSBmb3IgV0NONzg1MC4NCj4gPg0KPiA+IFRlc3RlZC1v
-bjogUUNOOTI3NCBodzIuMCBQQ0kgV0xBTi5XQkUuMS4wLjEtMDAwMjktDQo+IFFDQUhLU1dQTF9T
-SUxJQ09OWi0xDQo+ID4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBUaGlyYXZpeWFtIE1hcml5YXBwYW4g
-PHF1aWNfdG1hcml5YXBAcXVpY2luYy5jb20+DQo+ID4gLS0tDQo+ID4gIGRyaXZlcnMvbmV0L3dp
-cmVsZXNzL2F0aC9hdGgxMmsvZHAuaCB8IDEgLQ0KPiA+ICAxIGZpbGUgY2hhbmdlZCwgMSBkZWxl
-dGlvbigtKQ0KPiA+DQo+ID4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL2F0aC9h
-dGgxMmsvZHAuaA0KPiA+IGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvYXRoL2F0aDEyay9kcC5oDQo+
-ID4gaW5kZXggZWIyZGQ0MDhlMDgxLi5kMDFmYzBiMGM5YTUgMTAwNjQ0DQo+ID4gLS0tIGEvZHJp
-dmVycy9uZXQvd2lyZWxlc3MvYXRoL2F0aDEyay9kcC5oDQo+ID4gKysrIGIvZHJpdmVycy9uZXQv
-d2lyZWxlc3MvYXRoL2F0aDEyay9kcC5oDQo+ID4gQEAgLTM4Nyw3ICszODcsNiBAQCBzdHJ1Y3Qg
-YXRoMTJrX2RwIHsNCj4gPiAgI2RlZmluZSBIVFRfVFhfV0JNX0NPTVBfSU5GTzJfQUNLX1JTU0kN
-Cj4gCUdFTk1BU0soMzEsIDI0KQ0KPiA+DQo+ID4gIHN0cnVjdCBodHRfdHhfd2JtX2NvbXBsZXRp
-b24gew0KPiA+IC0JX19sZTMyIHJzdmQwWzJdOw0KPiA+ICAJX19sZTMyIGluZm8wOw0KPiA+ICAJ
-X19sZTMyIGluZm8xOw0KPiA+ICAJX19sZTMyIGluZm8yOw0KDQo=
+On Mon, 2024-03-04 at 23:01 +0300, Isaev Ruslan wrote:
+> v5 changes:
+> 	- add json print to print_ap_channel_report()
+> 	- minor refactor open_json_object()
+
+Alright, yay, so mechanical submission issues out of the way, this looks
+readable :)
+
+> branch: v5.19
+
+That's almost two years old, so you'll obviously have to rebase it on
+the latest main branch. But we can have more fundamental discussions
+first.
+
+> This commit introduces the ability to output scan results from 'iw' in
+> JSON format, similar to the 'ip' utility from the iproute2 package.
+> The addition aims to enhance the tool's usability and scriptability
+> by providing a structured data format option.
+
+Generally, I'm not opposed to that, but I think we've had this
+discussion before, and I don't want to see a lot of extra complexity in
+the code for it.
+
+> Two new command-line options are added:
+> - '-j': Outputs scan results in compact JSON format.
+> - '-jj': Outputs scan results in pretty-printed JSON format.
+
+
+With tools like 'jq' being near ubiquitous, is there much value in
+having two output formats? I'd almost say only support -j (and I don't
+like '-jj' anyway, probably would prefer -j/--json and --json=3Dpretty or
+so), and then 'jq' can do pretty-printing and coloring etc.?
+
+> +	//close root json object and deinit jsonw
+> +	if(iw_json){
+> +		delete_json_obj();
+> +	}
+
+Please generally try to follow the (existing/Linux) coding style more
+closely. I don't mind C99 comments but a space would be nice, space
+after if, space before the opening brace, no braces needed here though,
+perhaps more (just not on these four lines :-) )
+
+> +++ b/json/json_print.c
+
+I'm generally not going to look into these files for now, but including
+them internally means we have to maintain them. I'd almost prefer a
+library that can be used.
+
+However, with that said,
+
+> +/*
+> + * json_print.c		"print regular or json output, based on json_writer".
+> + *
+> + *             This program is free software; you can redistribute it an=
+d/or
+> + *             modify it under the terms of the GNU General Public Licen=
+se
+> + *             as published by the Free Software Foundation; either vers=
+ion
+> + *             2 of the License, or (at your option) any later version.
+
+
+This doesn't work well with the ISC license of iw. Which is another
+reason to prefer an existing library, I suppose.
+
+> +++ b/json/json_writer.c
+> @@ -0,0 +1,296 @@
+> +// SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause) //
+
+We don't use SPDX license tags here yet, so not sure this is meaningful,
+we also don't have a dir with the actual license texts like the kernel
+has for instance.
+
+If going this way it'd probably be useful to add SPDX tags to all
+existing files too.
+
+Here, off the top of my head, I suspect the BSD-2-Clause should actually
+be compatible to releasing the whole thing under ISC, but need to check
+that too.
+
+> --- a/scan.c
+> +++ b/scan.c
+> @@ -12,6 +12,8 @@
+>  #include "nl80211.h"
+>  #include "iw.h"
+> =20
+> +#include "json/json_print.h"
+> +
+>  #define WLAN_CAPABILITY_ESS		(1<<0)
+>  #define WLAN_CAPABILITY_IBSS		(1<<1)
+>  #define WLAN_CAPABILITY_CF_POLLABLE	(1<<2)
+> @@ -546,10 +548,13 @@ static int handle_scan(struct nl80211_state *state,
+> =20
+>  static void tab_on_first(bool *first)
+>  {
+> -	if (!*first)
+> -		printf("\t");
+> -	else
+> +	if (!*first){
+> +		if(!iw_json){
+> +			printf("\t");
+> +		}
+> +	}else{
+>  		*first =3D false;
+> +	}
+
+Coding style. Not sure why you don't just skip the whole thing if json
+is turned on?
+
+>  static void print_ssid(const uint8_t type, uint8_t len, const uint8_t *d=
+ata,
+>  		       const struct print_ies_data *ie_buffer)
+>  {
+> -	printf(" ");
+> -	print_ssid_escaped(len, data);
+> -	printf("\n");
+> +	if(!iw_json){
+> +		printf(" ");
+> +		print_ssid_escaped(len, data);
+> +		printf("\n");
+> +	} else {
+> +		print_ssid_escaped(len, data);
+> +	}
+>  }
+
+Might be more useful to provide a JSON-output for SSIDs? Surely you'd
+also want to escape them in a JSON-compatible way, since you'd want to
+use '\uXXXX' encoding to actually get proper bytes out on the other side
+without a special decoder?
+
+> @@ -574,21 +583,35 @@ static void print_supprates(const uint8_t type, uin=
+t8_t len,
+>  {
+>  	int i;
+> =20
+> -	printf(" ");
+> -
+> -	for (i =3D 0; i < len; i++) {
+> -		int r =3D data[i] & 0x7f;
+> +	if(iw_json){
+> +		open_json_array("array", NULL);
+> +		for (i =3D 0; i < len; i++) {
+> +			int r =3D data[i] & 0x7f;
+> +			if (r =3D=3D BSS_MEMBERSHIP_SELECTOR_VHT_PHY && data[i] & 0x80){
+> +				print_string(PRINT_JSON, NULL, "VHT%s", data[i] & 0x80 ? "*" : "");
+> +			} else if (r =3D=3D BSS_MEMBERSHIP_SELECTOR_HT_PHY && data[i] & 0x80)=
+{
+> +				print_string(PRINT_JSON, NULL, "HT%s", data[i] & 0x80 ? "*" : "");
+> +			} else {
+> +				print_string(PRINT_JSON, NULL, "%d.%d%s", r/2, 5*(r&1), data[i] & 0x=
+80 ? "*" : "");
+> +			}
+> +		}
+> +		close_json_array(NULL);
+> +	}else{
+> +		printf(" ");
+> +		for (i =3D 0; i < len; i++) {
+> +			int r =3D data[i] & 0x7f;
+
+So generally, here, no - I don't like this style of working at all. We'd
+really want to have as little "if (iw_json)" as possible in the code. In
+code like this, we really shouldn't have such an if at all, but only
+e.g.
+
+  open_json_array();
+  for (...) {
+    if (...)
+      print_string(...);
+  }
+  close_json_array();
+
+Surely we can come up with an abstraction where something like
+print_string() does the right thing either way? And open/close JSON
+array does the '\n' needed after it, or something?
+Maybe we'd pass an argument to open_json_array() that says how we want
+it printed in the non-JSON case (and rename it to open_array?), e.g.
+should it all be on one line like here, or should it be multiple lines
+with " - " prefix on each line, etc. JSON also tracks nesting, I guess,
+so we could even do that for nested stuff in the normal output where we
+use tabs etc.?
+
+Generally, I'd also say that we never promised stable output, so if the
+output changes slightly due to such, I'm perfectly fine with that,
+whoever relied on it (and that includes me in some internal code) gets
+to keep the pieces when it breaks ...
+
+
+Also, looking at the function calls, all those NULL and PRINT_JSON are
+pointless, as far as I can tell? So I think it'd make more sense to come
+up with a JSON-supporting but otherwise agnostic API abstraction:
+
+ open_array(SINGLE_LINE); // could also be MULTI_LINE
+ for ...
+   print_string("VHT%s", data[i] & 0x80 ? "*" : "");
+ close_array();
+
+
+Maybe open_array returns some kind of token that you pass to the inner
+calls down to close_array(), or maybe it just keeps a stack of these
+internally, I could see either way working (though an internal stack
+would probably be simpler to use, and with a lot of code using it, that
+might make sense for to trade off against the additional internal
+complexity)
+
+
+Somewhat unrelated to that discussion, you might also want to not
+actually use print_string() for rates here though, and possibly use a
+different JSON encoding for the rates (and membership selectors), e.g.
+as an object with a 'basic' property? But I don't care much about that
+part, though generally I'd argue strings shouldn't be used where there's
+a better representation with native JSON types.
+
+
+> +	if(iw_json){
+> +		print_string(PRINT_JSON, "capabilities_raw", "0x%02x 0x%02x 0x%02x 0x%=
+02x 0x%02x", data[0], data[1], data[2], data[3], data[4]);
+
+That's a really bad JSON representation, a string with bytes, rather
+than an array of bytes?
+
+>  static void print_erp(const uint8_t type, uint8_t len, const uint8_t *da=
+ta,
+>  		      const struct print_ies_data *ie_buffer)
+>  {
+>  	if (data[0] =3D=3D 0x00)
+> -		printf(" <no flags>");
+> +		iw_json ? print_bool(PRINT_JSON, "no_flags", "%s", true) : printf(" <n=
+o flags>");
+
+It seems like you'd generally want to have a container for each of
+these, so you have
+
+ // probably these two lines outside of the print_erp() call even
+ open_json_object("erp");
+ print_u8("tag", type);
+
+ print_flags(...);
+
+or something, rather than including "no_flags" in the object?
+
+> +			iw_json ? print_string(PRINT_JSON, NULL, "WEP-40") : printf("WEP-40")=
+;
+
+This goes just along with what I wrote above, but that iw_json thing
+here seems really pointless, and just makes things difficult.
+
+(I also don't like the use of the ternary operator in this way but
+that's maybe not quite the point.)
+
+[snip lots of similar stuff]
+
+>  	unsigned int bw160[] =3D { 5180, 5500, 5955, 6115, 6275, 6435,
+> -				  6595, 6755, 6915 };
+> +				6595, 6755, 6915 };
+
+nit: unrelated whitespace change
+
+
+
+So ... Like I wrote above, generally I'm not against doing this. But
+like I also tried to explain above, I think it needs to be less
+"duplicative". I'm happy to change the code in major ways to make JSON
+output easier, I'm also happy to let that change the output in some ways
+(maybe the default should be YAML-compatible ;-) ).
+
+But I'd really want to see this done in a way that doesn't end up with
+having to duplicate everything all the time.
+
+We'll also need to figure out the licensing situation, and perhaps
+ideally find a way to not add ~1.5k LOC to support it, but link against
+something that exists already.
+
+johannes
 
