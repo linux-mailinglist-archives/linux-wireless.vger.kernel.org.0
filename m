@@ -1,206 +1,422 @@
-Return-Path: <linux-wireless+bounces-4377-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4378-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF1A8871DE6
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Mar 2024 12:33:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81154871F7F
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Mar 2024 13:51:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2945A1F2B3FF
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Mar 2024 11:33:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFAD11F24043
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Mar 2024 12:51:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 980665A114;
-	Tue,  5 Mar 2024 11:32:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08D058593B;
+	Tue,  5 Mar 2024 12:51:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gAYst8qx"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hWTa+lsi"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
+Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com [209.85.221.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDF965A4CA
-	for <linux-wireless@vger.kernel.org>; Tue,  5 Mar 2024 11:32:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2110A85656
+	for <linux-wireless@vger.kernel.org>; Tue,  5 Mar 2024 12:51:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709638341; cv=none; b=QVBil5K0Bv3/EVSBuYKQb9DEiekGQiDPk3nUoIEf2HMfV6f8UM7kTVfytQHK1rvLfJOKcTW2igyHgl2u8G56SzK2JkxiXutVE6Zv6SMrLKCFi88butmLs9+OhFnEWzlg0bLeHrQhRWfCk/wdmzD9kHFki6cTP2darn0fsWy5bgk=
+	t=1709643091; cv=none; b=cumkQKA0CLbagKwcMkWyOFc4PIQER5sJ2hW2//w0+LU5M6iLx6DqOIO+reB7J3UR0jD+esUwMPlPl6+yY9U1sN+/t0JYgyEi49wFR20LJ/J+CpJwpMo2ReD/0faSFEjCBtnh5yXE1gxe9e8xWIqSgjtgeW7gRpD2KEPKLlSTFkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709638341; c=relaxed/simple;
-	bh=k+Vpfre8OOHrp6Ki7lPbdsUd3dzSm5Dn9i8Y5JhELd0=;
+	s=arc-20240116; t=1709643091; c=relaxed/simple;
+	bh=p+CcGUonCOCBHCVNnnpL+KHUOFlDvPXBzPpkJFPP+5s=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=t9H/0RJWoboRTGOhmYK1JdX+eobFZEzpBrIN2dqB3+xL3NTgPFY+xSeJQOjE4d8fKU9zbAVDZWd8Wca+uybO2CnOiMeUj4c8cRJkgzpzmEAjzdkADE4O/yT/8IkuRkv8G4FWRr9nCM1L9++i1o1kSAughFYpdCoiGb1kDuz8Hbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gAYst8qx; arc=none smtp.client-ip=209.85.219.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-dcc6fc978ddso4481898276.0
-        for <linux-wireless@vger.kernel.org>; Tue, 05 Mar 2024 03:32:19 -0800 (PST)
+	 To:Cc:Content-Type; b=BOeFjsHUwN0FZnBeaMdG4QuxA7Z93heZEO9oQJqEn1S0qCg6s7SO4MSqYn4gQFyGmvBz08KEu2kaypgLX0d0MgtQd7qt29l7qT4C6xGoPQfu2HK9EspHDdUsjbxIxrHG2928H3/wYqhJ9BCPEiz+IlQLa/Tblsj6vT8ea7mSXaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hWTa+lsi; arc=none smtp.client-ip=209.85.221.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-4d35b9a4b13so2175222e0c.0
+        for <linux-wireless@vger.kernel.org>; Tue, 05 Mar 2024 04:51:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709638339; x=1710243139; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1709643087; x=1710247887; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=twlQ/hLjmxNBF9eMFAk2VQFxlFQHT0OoHPlJuY8/dQw=;
-        b=gAYst8qx0AXeKUBrAq/RJfmGd7HcxjPr2XeT+wUkrYNNT4MgBd+6O+oKshRD7ibc8N
-         45rbFodebb9ETxPkuBeiaBQiqCS7/wec3fDlW/JslW80AAjLMdemgmajuGOqrRJFYkl0
-         5gzAC1iPjQd8Hk7wYlMyde98YuYpMl88qtwAFj/ukWsnidb+xgmo2DfOrtrzDeVJrVZb
-         OzKLEHuA2n37P77OESsOY7nQUXcLqQBYA5QjMSfyDotggwi+csiXJqFIAHcq1onU9ZZc
-         jcM14u9KDSRXKlx6xpgE18QAuwVf7C7r0o19NCiPJYOoJxqa9+/wNT54TogjmfAUIlr+
-         YSHQ==
+        bh=8f01X0HX1h5Sm8qEnlpaG944HYO6XVnNT3QfT6fyGgg=;
+        b=hWTa+lsi53UiQgqXep27EvSprZ8ad7tBZ/HSK8iapJc6Dd0mm2n1nBpOC0dLAk15tB
+         n66UM3uZsp3RNhY+sAF1AchM1wHQCUy00mEu8Jw8nnEOE027p0ukxC58rJYb1/srkjvL
+         hRd5+DBsJlKPot2mgcmpQ5uoej0Y2Ph4sMmX/Vic2Dny2UYmAjGpdzuZhsHj0Jowgo3m
+         Pnm2PJiyyGz4qqgcZHC2UsZxZL2LGtOILYS47uE6mxMqxnlRYreiDNe6XBm8YF1hl8ye
+         omOjC+VCc4NlbPXtn6wXnmsI0OF78oXmyz7TKHSQN9AZRYz/9t7z9z7LpqS5pnyL4jTU
+         GYWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709638339; x=1710243139;
+        d=1e100.net; s=20230601; t=1709643087; x=1710247887;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=twlQ/hLjmxNBF9eMFAk2VQFxlFQHT0OoHPlJuY8/dQw=;
-        b=aG2ciKidYTcX05A90FqQjUKW3xfP4WSlbYKSDoV8Z6M7zh4Yc55FynOaRzmnNTZim+
-         CW41fy1dqJ+uy/iNYQ9pDOvgcRk9fFI3BBJ0+mrCtx87K7ttpZJeFSopvGcLsFc+Wleq
-         buLhQB7XAnBR3gJuEeQij3XoMXinagTsSQNzMCo6yQSm1+WXpFr+FcZEmLWVh1HJwzbx
-         OljZH/859Idb3Pxl5kYA1y2oxpLiRbrS/I02WPzG1Plrc+RkJ0iaEbp7kLNRGAd4kQqo
-         CAKocgcwRQXOeM13HHEFNzFyDacA+3KtTIAgBz/pAvDhBWVRgMZ8/OlY8Z9C1PQ45TNd
-         a6jg==
-X-Forwarded-Encrypted: i=1; AJvYcCVS1DiSMBWRq/cw/Gw/8TnQvXtm3yUx8DHrsuJRe9/I0li6QQ5UEYi7JOf0XECG4t6OF8fdyp65foMmhoKO7tJNzO/k70FtgEO45NNP/LI=
-X-Gm-Message-State: AOJu0Ywxib8ZQGf+AzD6u9roxUJwyx1iEdnqBrdQ339SlKLSMuQmnU5F
-	apVRvXWMcRjHiW2/imEhclXMzVeBMQVuDrA3mzELS+vMP55talQPFNBtysgl5/OXKEtgx8ugKQI
-	Ow0TQRDWYDTYR76neJIII1kNPTyc=
-X-Google-Smtp-Source: AGHT+IExLN+uF9jOIKyPf2rbD5B42EB8fwGKG0mCpQwvNwWWJV2iNXLCm9cdVr3217CoXP8geGjKKfXVBiR0oujjRTY=
-X-Received: by 2002:a25:aa85:0:b0:dc6:cf8e:8f97 with SMTP id
- t5-20020a25aa85000000b00dc6cf8e8f97mr1787015ybi.27.1709638338731; Tue, 05 Mar
- 2024 03:32:18 -0800 (PST)
+        bh=8f01X0HX1h5Sm8qEnlpaG944HYO6XVnNT3QfT6fyGgg=;
+        b=Ah7G1pvdZDbwzfngNYJRKCyAkJ0F9s83s2R4CTTNbN0OQpl1WuGP385EaQrm1Pw+3P
+         G+Y2WIe0GpohB3AdDtX6gbddIyQozBLypiHRnTKyDoRMG+SFGS0Bs+ftW+9+XnLGW/xG
+         ETk8zjwGHeFLZxN5dvNHxJuFjNi4tyFZfM13x1y+sYJhab3xYWbXsTkU8/d+maKcKgZ3
+         7jIqBJL25WbX5fP/G87Ewji/AN4sJLx3z83Di24tPOxLWx2c7dd2yJFCnV7Ci0h1sJSo
+         cyPVzdDKGgIPoCZs748YDCRZ98wzHHvsVN2uZH2pvrqA8vekleeZVRJnYGxop/GREQ5C
+         OiAg==
+X-Forwarded-Encrypted: i=1; AJvYcCWL7GVwHF4XyLGBSjiym5DyGK7bte6Wf39kCLL2pvsgBO6kdrvcFgzkOOqO9FnwZIrVS2bMTHR6i0nEi0XkhCXpMJjgH/e3ytlHgu9F/Y0=
+X-Gm-Message-State: AOJu0Ywm8oHuXCeIbxRDGnXeNPmFNSsNoNbluMMg8kzePS5XMFg1zzJO
+	iRPQpz+d7LAJkYk6wmO7JWv5yKDM8MG/tAbM0ZuX3QrNxQEpQ36fzMjGbtNC6TYsFlFSZUU0pp7
+	0hM4hmJHyjQ32bJ0sjATV+DdXd2IRlW5OoZwxLQ==
+X-Google-Smtp-Source: AGHT+IHyiDPRr4AG2Ooyf9n352l8ddnsNr+Y66ddGYGsOtywzUGwKvhjH9tXYI9UGHemcSP352frAktMrX6UnFMuW9c=
+X-Received: by 2002:a05:6122:4109:b0:4d3:2d27:9f4 with SMTP id
+ ce9-20020a056122410900b004d32d2709f4mr1068729vkb.0.1709643086910; Tue, 05 Mar
+ 2024 04:51:26 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <5c5be485dcfceb44fc731e47758d6be3.legale.legale@gmail.com>
- <12f91b008d6f2b4e6241794d2852c1c84fe6c12c.camel@sipsolutions.net>
- <CZLQMMSSUWBF.1NPJJYDRIXGIR@gmail.com> <37398c88130c487be656eed4e378d6b047a3d612.camel@sipsolutions.net>
-In-Reply-To: <37398c88130c487be656eed4e378d6b047a3d612.camel@sipsolutions.net>
-From: Isaev Ruslan <legale.legale@gmail.com>
-Date: Tue, 5 Mar 2024 14:32:07 +0300
-Message-ID: <CACDmYycV9qP2TUMMz5ij75A18NEaVpke6t70r7ELNgV=8+sCRw@mail.gmail.com>
-Subject: Re: [PATCH v5] Add JSON output options to 'iw' for scan results
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Nicolas Escande <nico.escande@gmail.com>, linux-wireless@vger.kernel.org
+References: <20240216203215.40870-1-brgl@bgdev.pl>
+In-Reply-To: <20240216203215.40870-1-brgl@bgdev.pl>
+From: Amit Pundir <amit.pundir@linaro.org>
+Date: Tue, 5 Mar 2024 18:20:50 +0530
+Message-ID: <CAMi1Hd0D_jSHtcurh1R7uf=jpe2Lkn0yNxrEii2pNc0=ARU_FQ@mail.gmail.com>
+Subject: Re: [PATCH v5 00/18] power: sequencing: implement the subsystem and
+ add first users
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Kalle Valo <kvalo@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konrad.dybcio@linaro.org>, Liam Girdwood <lgirdwood@gmail.com>, 
+	Mark Brown <broonie@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Saravana Kannan <saravanak@google.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Arnd Bergmann <arnd@arndb.de>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Alex Elder <elder@linaro.org>, 
+	Srini Kandagatla <srinivas.kandagatla@linaro.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Abel Vesa <abel.vesa@linaro.org>, 
+	Manivannan Sadhasivam <mani@kernel.org>, Lukas Wunner <lukas@wunner.de>, 
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, linux-bluetooth@vger.kernel.org, 
+	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-pci@vger.kernel.org, linux-pm@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 5 Mar 2024 at 13:31, Johannes Berg <johannes@sipsolutions.net> wrote:
+On Sat, 17 Feb 2024 at 02:03, Bartosz Golaszewski <brgl@bgdev.pl> wrote:
 >
-> On Tue, 2024-03-05 at 11:17 +0100, Nicolas Escande wrote:
+> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 >
-> > For what it's worth jansson has been very good to me. It has printf() like
-> > object creation which usually integrates well with c programs.
+> First, I'd like to apologize for the somewhat chaotic previous iterations
+> of this series and improper versioning which was rightfully pointed out
+> to me. I figured that the scope changed so much that it didn't make sense
+> to consider previous submissions part of the same series as the original
+> RFC but others thought otherwise so this one becomes v5 and I'll keep the
+> versioning going forward.
 >
-> Nice :)
+> This is the summary of the work so far:
 >
-> > With MIT license https://github.com/akheron/jansson/blob/master/LICENSE
+> v1: Original RFC:
 >
-> If we link it as a library rather than copying it, that wouldn't even
-> matter (well unless it was GPL too, but even then you could still make a
-> build without it if you don't want the result to become GPL.)
+> https://lore.kernel.org/lkml/20240104130123.37115-1-brgl@bgdev.pl/T/
 >
-> > For me, having a "good" json representation means, as you pointed out, using the
-> > right json underlying type and most of the time I'm afraid that means a complete
-> > different code path because of the underlying type/container. It's always a
-> > blurry line obviously but duplicating in a complete seperate function that only
-> > does the right thing for json output may end up being cleaner codewise.
+> v2: First real patch series (should have been PATCH v2) adding what I
+>     referred to back then as PCI power sequencing:
 >
-> Yeah, depends, I guess. I'd rather see less duplicating, and in the
-> cases like in this patch it seems like it wouldn't even matter so much.
-> But agree it depends on the objects.
+> https://lore.kernel.org/linux-arm-kernel/2024021413-grumbling-unlivable-c145@gregkh/T/
+>
+> v3: RFC for the DT representation of the PMU supplying the WLAN and BT
+>     modules inside the QCA6391 package (was largely separate from the
+>     series but probably should have been called PATCH or RFC v3):
+>
+> https://lore.kernel.org/all/CAMRc=Mc+GNoi57eTQg71DXkQKjdaoAmCpB=h2ndEpGnmdhVV-Q@mail.gmail.com/T/
+>
+> v4: Second attempt at the full series with changed scope (introduction of
+>     the pwrseq subsystem, should have been RFC v4)
+>
+> https://lore.kernel.org/lkml/20240201155532.49707-1-brgl@bgdev.pl/T/
+>
+> ===
+>
+> With that out of the way, I'd like to get down to explaining the two
+> problems I'm trying to solve.
+>
+> Problem statement #1: Dynamic bus chicken-and-egg problem.
+>
+> Certain on-board PCI devices need to be powered up before they are can be
+> detected but their PCI drivers won't get bound until the device is
+> powered-up so enabling the relevant resources in the PCI device driver
+> itself is impossible.
+>
+> Problem statement #2: Sharing inter-dependent resources between devices.
+>
+> Certain devices that use separate drivers (often on different busses)
+> share resources (regulators, clocks, etc.). Typically these resources
+> are reference-counted but in some cases there are additional interactions
+> between them to consider, for example specific power-up sequence timings.
+>
+> ===
+>
+> The reason for tackling both of these problems in a single series is the
+> fact the the platform I'm working on - Qualcomm RB5 - deals with both and
+> both need to be addressed in order to enable WLAN and Bluetooth support
+> upstream.
+>
+> The on-board WLAN/BT package - QCA6391 - has a Power Management Unit that
+> takes inputs from the host and exposes LDO outputs consumed by the BT and
+> WLAN modules which can be powered-up and down independently. However
+> a delay of 100ms must be respected between enabling the BT- and
+> WLAN-enable GPIOs[*].
+>
+> ===
+>
+> This series is logically split into several sections. I'll go
+> patch-by-patch and explain each step.
+>
+> Patch 1/18:
+>
+> This is a commit taken from the list by Jonathan Cameron that adds
+> a __free() helper for OF nodes. Not strictly related to the series but
+> until said commit ends in next, I need to carry it with this series.
+>
+> Patch 2/18:
+>
+> This enables the ath12k PCI module in arm64 defconfig as Qualcomm sm8650
+> and sm8550 reference platforms use it in the WCN7850 module.
+>
+> Patches 3/18-6/18:
+>
+> These contain all relevant DT bindings changes. We add new documents for
+> the QCA6390 PMU and ATH12K devices as well as extend the bindings for the
+> Qualcomm Bluetooth and ATH11K modules with regulators used by them in
+> QCA6390.
+>
+> Patches 7/18-9/18:
+>
+> These contain changes to device-tree sources for the three platforms we
+> work with in this series. As the WCN7850 module doesn't require any
+> specific timings introducing dependencies between the Bluetooth and WLAN
+> modules, while the QCA6390 does, we take two different approaches to how
+> me model them in DT.
+>
+> For WCN7850 we hide the existence of the PMU as modeling it is simply not
+> necessary. The BT and WLAN devices on the device-tree are represented as
+> consuming the inputs (relevant to the functionality of each) of the PMU
+> directly.
+>
+> For QCA6390 on RB5 we add the PMU node as a platform device. It consumes
+> regulators and GPIOs from the host and exposed regulators consumer in turn
+> by the BT and WLAN modules. This represents the internal structure of the
+> package.
+>
+> Patches 10/18-14/18:
+>
+> These contain the bulk of the PCI changes for this series. We introduce
+> a simple framework for powering up PCI devices before detecting them on
+> the bus and the first user of this library in the form of the WCN7850 PCI
+> power control driver.
+>
+> The general approach is as follows: PCI devices that need special
+> treatment before they can be powered up, scanned and bound to their PCI
+> drivers must be described on the device-tree as child nodes of the PCI
+> port node. These devices will be instantiated on the platform bus. They
+> will in fact be generic platform devices with the compatible of the form
+> used for PCI devices already upstream ("pci<vendor ID>,<device ID">). We
+> add a new directory under drivers/pci/pwrctl/ that contains PCI pwrctl
+> drivers. These drivers are platform drivers that will now be matched
+> against the devices instantiated from port children just like any other
+> platform pairs.
+>
+> Both the power control platform device *AND* the associated PCI device
+> reuse the same OF node and have access to the same properties. The goal
+> of the platform driver is to request and bring up any required resources
+> and let the pwrctl framework know that it's now OK to rescan the bus and
+> detect the devices. When the device is bound, we are notified about it
+> by the PCI bus notifier event and can establish a device link between the
+> power control device and the PCI device so that any future extension for
+> power-management will already be able to work with the correct hierachy.
+>
+> The reusing of the OF node is the reason for the small changes to the PCI
+> OF core: as the bootloader can possibly leave the relevant regulators on
+> before booting linux, the PCI device can be detected before its platform
+> abstraction is probed. In this case, we find that device first and mark
+> its OF node as reused. The pwrctl framework handles the opposite case
+> (when the PCI device is detected only after the platform driver
+> successfully enabled it).
+>
+> Patches 15/18-16/18:
+>
+> These add a relatively simple power sequencing subsystem and the first
+> driver using it: the pwrseq module for the QCA6390 PMU.
+>
+> For the record: Bjorn suggested a different solution: a regulator driver
+> that would - based on which regulators are enabled by a consumer - enable
+> relevant resources (drive the enable GPIOs) while respecting the
+> HW-specific delays. This would however require significant and yet
+> unprecised changed to the regulator subsystem as well as be an abuse of
+> the regulator provider API akin to using the reset framework for power
+> sequencing as proposed before.
+>
+> Instead I'm proposing to add a subsystem that allows different devices to
+> use a shared power sequence split into consumer-specific as well as
+> common "units".
+>
+> A power sequence provider driver registers a set of units with pwrseq
+> core. Each unit can be enabled and disabled and contains an optional list
+> of other units which must be enabled before it itself can be. A unit
+> represents a discreet chunk of the power sequence.
+>
+> It also registers a list of targets: a target is an abstraction wrapping
+> a unit which allows consumers to tell pwrseq which unit they want to
+> reach. Real-life example is the driver we're adding here: there's a set
+> of common regulators, two PCIe-specific ones and two enable GPIOs: one
+> for Bluetooth and one for WLAN.
+>
+> The Bluetooth driver requests a descriptor to the power sequencer and
+> names the target it wants to reach:
+>
+>     pwrseq = devm_pwrseq_get(dev, "bluetooth");
+>
+> The pwrseq core then knows that when the driver calls:
+>
+>     pwrseq_power_on(pwrseq);
+>
+> It must enable the "bluetooth-enable" unit but it depends on the
+> "regulators-common" unit so this one is enabled first. The provider
+> driver is also in charge of assuring an appropriate delay between
+> enabling the BT and WLAN enable GPIOs. The WLAN-specific resources are
+> handled by the "wlan-enable" unit and so are not enabled until the WLAN
+> driver requests the "wlan" target to be powered on.
+>
+> Another thing worth discussing is the way we associate the consumer with
+> the relevant power sequencer. DT maintainers have expressed a discontent
+> with the existing mmc pwrseq bindings and have NAKed an earlier
+> initiative to introduce global pwrseq bindings to the kernel[1].
+>
+> In this approach, we model the existing regulators and GPIOs in DT but
+> the pwrseq subsystem requires each provider to provide a .match()
+> callback. Whenever a consumer requests a power sequencer handle, we
+> iterate over the list of pwrseq drivers and call .match() for each. It's
+> up to the driver to verify in a platform-specific way whether it deals
+> with its consumer and let the core pwrseq code know.
+>
+> The advantage of this over reusing the regulator or reset subsystem is
+> that it's more generalized and can handle resources of all kinds as well
+> as deal with any kind of power-on sequences: for instance, Qualcomm has
+> a PCI switch they want a driver for but this switch requires enabling
+> some resources first (PCI pwrctl) and then configuring the device over
+> I2C (which can be handled by the pwrseq provider).
+>
+> Patch 17/18:
+>
+> This patch makes the Qualcomm Bluetooth driver get and use the power
+> sequencer for QCA6390.
+>
+> Patch 18/18:
+>
+> While tiny, this patch is possibly the highlight of the entire series.
+> It uses the two abstraction layers we introduced before to create an
+> elegant power sequencing PCI power control driver and supports the ath11k
+> module on QCA6390.
+>
+> With this series we can now enable BT and WLAN on several new Qualcomm
+> boards upstream.
+>
+> I tested the series on RB5 while Neil tested it on sm8650-qrd and
+> sm8550-qrd.
 
-I think i could make a universal printf() like function with
-additional args for json representation.
-
-Something like this:
-before:
-printf("\t * Manufacturer: %.*s\n", sublen, data + 4);
-
-after:
-printf_json("\t * Manufacturer", "%.*s", sublen, data + 4);
-
-
-void printf_json(const char* key, const char* fmt, ...) {
-    char buf[1024];
-    va_list args;
-    va_start(args, format);
-
-    if (iw_json) {
-        vsnprintf(buf, sizeof(buf), format, args);
-        print_string(PRINT_JSON, key, "%s", buf);
-    } else {
-        printf("\t * %s: ", key);
-        vprintf(fmt, args);
-        printf("\n");
-    }
-
-    va_end(args);
-}
-
-
+Tested-by: Amit Pundir <amit.pundir@linaro.org> # On RB5 running AOSP
 
 >
-> Just things like
+> Best Regards,
+> Bartosz Golaszewski
 >
->         iw_json ? print_string(PRINT_JSON, "manufacturer", "%.*s", sublen, data + 4) : printf("\t * Manufacturer: %.*s\n", sublen, data + 4);
+> It's hard to list the changes between versions here as the scope changed
+> significantly between each iteration and some versions were not even full
+> series but rather RFCs for parts of the solution. For this reason, I'll
+> only start listing changes starting from v6.
 >
-> seem like the worst of both worlds... More obviously perhaps where it's
-> not even different:
+> [*] This is what the docs say. In practice it seems that this delay can be
+> ignored. However the subsequent model - QCA6490 - *does* require users to
+> respect it, so the problem remains valid.
 >
->         iw_json ? print_string(PRINT_JSON, NULL, "FT/IEEE 802.1X") : printf("FT/IEEE 802.1X");
+> [1] https://lore.kernel.org/netdev/20210829131305.534417-1-dmitry.baryshkov@linaro.org/
 >
-> or
+> Bartosz Golaszewski (15):
+>   arm64: defconfig: enable ath12k as a module
+>   dt-bindings: regulator: describe the PMU module of the QCA6390 package
+>   dt-bindings: net: bluetooth: qualcomm: describe regulators for QCA6390
+>   dt-bindings: new: wireless: qcom,ath11k: describe the ath11k on
+>     QCA6390
+>   dt-bindings: new: wireless: describe the ath12k PCI module
+>   arm64: dts: qcom: qrb5165-rb5: model the PMU of the QCA6391
+>   PCI: hold the rescan mutex when scanning for the first time
+>   PCI/pwrctl: reuse the OF node for power controlled devices
+>   PCI/pwrctl: create platform devices for child OF nodes of the port
+>     node
+>   PCI/pwrctl: add PCI power control core code
+>   PCI/pwrctl: add a power control driver for WCN7850
+>   power: sequencing: implement the pwrseq core
+>   power: pwrseq: add a driver for the QCA6390 PMU module
+>   Bluetooth: qca: use the power sequencer for QCA6390
+>   PCI/pwrctl: add a PCI power control driver for power sequenced devices
 >
->         iw_json ? print_string(PRINT_JSON, NULL, "%.02x-%.02x-%.02x:%d", data[0], data[1] ,data[2], data[3]) : printf("%.02x-%.02x-%.02x:%d", data[0], data[1] ,data[2], data[3]);
+> Jonathan Cameron (1):
+>   of: Add cleanup.h based auto release via __free(device_node) markings.
+>
+> Neil Armstrong (2):
+>   arm64: dts: qcom: sm8550-qrd: add the Wifi node
+>   arm64: dts: qcom: sm8650-qrd: add the Wifi node
+>
+>  .../net/bluetooth/qualcomm-bluetooth.yaml     |   17 +
+>  .../net/wireless/qcom,ath11k-pci.yaml         |   28 +
+>  .../net/wireless/qcom,ath12k-pci.yaml         |  103 ++
+>  .../bindings/regulator/qcom,qca6390-pmu.yaml  |  166 +++
+>  MAINTAINERS                                   |    8 +
+>  arch/arm64/boot/dts/qcom/qrb5165-rb5.dts      |  123 +-
+>  arch/arm64/boot/dts/qcom/sm8250.dtsi          |   10 +
+>  arch/arm64/boot/dts/qcom/sm8550-qrd.dts       |   37 +
+>  arch/arm64/boot/dts/qcom/sm8550.dtsi          |   10 +
+>  arch/arm64/boot/dts/qcom/sm8650-qrd.dts       |   29 +
+>  arch/arm64/boot/dts/qcom/sm8650.dtsi          |   10 +
+>  arch/arm64/configs/defconfig                  |    1 +
+>  drivers/bluetooth/hci_qca.c                   |   31 +
+>  drivers/pci/Kconfig                           |    1 +
+>  drivers/pci/Makefile                          |    1 +
+>  drivers/pci/bus.c                             |    9 +-
+>  drivers/pci/of.c                              |   14 +-
+>  drivers/pci/probe.c                           |    2 +
+>  drivers/pci/pwrctl/Kconfig                    |   25 +
+>  drivers/pci/pwrctl/Makefile                   |    7 +
+>  drivers/pci/pwrctl/core.c                     |  136 +++
+>  drivers/pci/pwrctl/pci-pwrctl-pwrseq.c        |   84 ++
+>  drivers/pci/pwrctl/pci-pwrctl-wcn7850.c       |  202 ++++
+>  drivers/pci/remove.c                          |    2 +
+>  drivers/power/Kconfig                         |    1 +
+>  drivers/power/Makefile                        |    1 +
+>  drivers/power/sequencing/Kconfig              |   28 +
+>  drivers/power/sequencing/Makefile             |    6 +
+>  drivers/power/sequencing/core.c               | 1065 +++++++++++++++++
+>  drivers/power/sequencing/pwrseq-qca6390.c     |  353 ++++++
+>  include/linux/of.h                            |    2 +
+>  include/linux/pci-pwrctl.h                    |   51 +
+>  include/linux/pwrseq/consumer.h               |   56 +
+>  include/linux/pwrseq/provider.h               |   75 ++
+>  34 files changed, 2678 insertions(+), 16 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/net/wireless/qcom,ath12k-pci.yaml
+>  create mode 100644 Documentation/devicetree/bindings/regulator/qcom,qca6390-pmu.yaml
+>  create mode 100644 drivers/pci/pwrctl/Kconfig
+>  create mode 100644 drivers/pci/pwrctl/Makefile
+>  create mode 100644 drivers/pci/pwrctl/core.c
+>  create mode 100644 drivers/pci/pwrctl/pci-pwrctl-pwrseq.c
+>  create mode 100644 drivers/pci/pwrctl/pci-pwrctl-wcn7850.c
+>  create mode 100644 drivers/power/sequencing/Kconfig
+>  create mode 100644 drivers/power/sequencing/Makefile
+>  create mode 100644 drivers/power/sequencing/core.c
+>  create mode 100644 drivers/power/sequencing/pwrseq-qca6390.c
+>  create mode 100644 include/linux/pci-pwrctl.h
+>  create mode 100644 include/linux/pwrseq/consumer.h
+>  create mode 100644 include/linux/pwrseq/provider.h
+>
+> --
+> 2.40.1
 >
 >
-> Whereas with something like
->
->         iw_json ? print_string(PRINT_JSON, "response_type", "%d%s", val, val == 3 ? " (AP)" : "") : printf("\t * Response Type: %d%s\n", val, val == 3 ? " (AP)" : "");
->
-> (ugh, I don't like those long lines)
->
-> you probably don't even want to have the " (AP)" thing in the JSON, but
-> make it a real integer type rather than a string with print_string()!
->
-> But we could make that
->
->         output_int("response_type", "Response Type", val);
->         if (val == 3)
->                 hint("(AP)");
->
-> and the hint() just doesn't do anything in JSON?
->
-> And maybe even "response_type" is translated to "Response Type" for the
-> human output so you don't need to add the other "Response Type" there.
-> Dunno. I really wouldn't mind if in some places that meant we'd now
-> output "Response Type" instead of "response type" or "Response type" or
-> something.
->
-> Or perhaps do it the other way around, so "Response Type" is lower-cased
-> and illegal chars like " " are replaced by "_", although that makes the
-> JSON representation less obvious in the code.
->
-> Picking one arbitrarily, we'd have something
->
->         output_int("Response Type", val);
->         if (val == 3)
->                 hint("(AP)");
->
-> which seems far nicer than
->
->         iw_json ? print_string(PRINT_JSON, "response_type", "%d%s", val, val == 3 ? " (AP)" : "") : printf("\t * Response Type: %d%s\n", val, val == 3 ? " (AP)" : "");
->
-> in both code and JSON representation.
->
-> Yes we'll have to do something about the \n and indentation and I know
-> I'm handwaving about that, but it seems like with open_object() and
-> close_object() etc. that need to keep a state stack anyway, that should
-> be solvable?
->
-> I'd argue that we should try to get somewhere around 80-90% of the cases
-> unified in this matter, and then have special things for the rest that
-> are special kinds of objects, etc.
->
-> Right now it's pretty much 100% special cases.
->
-> johannes
 
