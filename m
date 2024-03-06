@@ -1,419 +1,274 @@
-Return-Path: <linux-wireless+bounces-4433-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4434-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 204458736BF
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Mar 2024 13:40:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53FA0873707
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Mar 2024 13:54:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 62BEAB20A53
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Mar 2024 12:40:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A38F28218F
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Mar 2024 12:54:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04FD21272B9;
-	Wed,  6 Mar 2024 12:40:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EB8C12C81D;
+	Wed,  6 Mar 2024 12:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="JUv8NE9P"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="LJQKxQlu"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from JPN01-OS0-obe.outbound.protection.outlook.com (mail-os0jpn01olkn2030.outbound.protection.outlook.com [40.92.98.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9187386621;
-	Wed,  6 Mar 2024 12:40:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.98.30
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709728846; cv=fail; b=E2gTKKNgMioPw+kYXuNkIT1kS+k9PhATlHvQg/SG9vPSPdPXh0CU++AErrUp5wsHuhXnwMaqo0izCQ8QJ+xo0dMQ+oDTx9iRiiK0gjftko/EJYijlEhakQyEQwDEivbp683muSyKDlOQaHMVwFxtlIP9ugvdSFDcegnpiqUOeKk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709728846; c=relaxed/simple;
-	bh=0DIT8vRGbkFn4fFXdPdOaI/B43qMJw0kpX/v8gDJZf4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=sIy8IThQVtiAJofKkvEWmGKJVSxwd50f6YBUeMTPHAXyF3X1WQzYMUBE03v5Y1zAMg62LT7NITCg/KgqVpjEJyLNdN6fye7qMFbinSZJZu0NPaDdCJ1hfZn9Fuh7pxC3WoeFu1+3qNrm7OhP31obD4OB/inJnG2AW2H6MAzSpvk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=fail (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=JUv8NE9P reason="signature verification failed"; arc=fail smtp.client-ip=40.92.98.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=iahnpr9nu8xXlAgDMRjcJbf/tpW4u1N42cN9Pub+sy2UAtpbMaCfPqcczpQSqs1zO16kYIv44UJvOlio7BQgNXTd3ouixMfiUnD8hFi45yHCmhiNBCo2JERcuDRWHjDgqwDXpDDeMnTfV+r/qHiSnweRAnmGjRX/bLs6pfShndVV53zx32PF+S9w6S6HvzpQAlXNM6rNQw4BtaWjcCyT6crWHqcXNRCenwSwKK1gOgacPtJqiuq5C//jlB2ODJU5ZdPwN6yTsTBsem3h+O4v2Jf+KQDu/wr1UeGqAVPbCmW08eP6AhjbzcOldlRLX/QWG7iTTgzu6BxxWjvLUOov7A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=noGfxLvPbxnLpweiggOKmItIhD1pkDaIxw+XTK+txfs=;
- b=B+kZ2riVHA4zNthp4Zd3f9zpKQDcPfF0dittCohn34uhACNERnk0kxUVtIZct4+v3t5PFURcG65ZfeB8zFPjYAKLKSmCtXIBsfsigFQxteOslBWRRbrjsT4Ahj2gb107Q+K78pCV1NAbRIb5dJxvwn+AnuFVWoYmprCBSub640Hp6WuDGrDkEGVsBZiDeXOrVzGlql+wt3WbnJumkoadQO1TrHkWHIzIkFkPnABmKNrDgn64KcIboDQ15Ehpps/OoSG79VH0RaQaK4DsAd6rojJ9sQfPIwrt1VR0wpNUqwFCe779zdKkuIh6qFEF2C1lEgIW9NTWQ+6vurEudefmng==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=noGfxLvPbxnLpweiggOKmItIhD1pkDaIxw+XTK+txfs=;
- b=JUv8NE9PAr63q9zXlRzBBSX78JZDrAA1GuvqKtVMvmlkkwe4oePg5egBVwSMdIaOUl1dJKo2wxrDV/F0UkSdc27DYjB/53kxOLh9KBsicmCt1wOwvw/I+FcbNCpbL2n9wyaRAY4RY8S3K5vDX8osZafqdR6KtNF0cDDXQ+DJzZlWGmASVWUCH2XZmsZf9nyT7ToM5wHn9zEwqgSEq0ZdTOxGMugn52aH5tBDLiLtlfe2UnlyeRrggJ4lZEcb3EuLSv7W+VScVxl8qmBiViJf/di2DNkcaimGwZEG4Zv3YkoIqKEYSGHDrDu5SdYHjtNP1LAdrviz9xSw9XedGN+W9Q==
-Received: from TYTP286MB3564.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:39d::8)
- by TYCP286MB2880.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:307::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.24; Wed, 6 Mar
- 2024 12:40:40 +0000
-Received: from TYTP286MB3564.JPNP286.PROD.OUTLOOK.COM
- ([fe80::8e48:6e1:f641:32b1]) by TYTP286MB3564.JPNP286.PROD.OUTLOOK.COM
- ([fe80::8e48:6e1:f641:32b1%7]) with mapi id 15.20.7362.019; Wed, 6 Mar 2024
- 12:40:40 +0000
-Date: Wed, 6 Mar 2024 20:40:37 +0800
-From: Dawei Li <set_pte_at@outlook.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
-	"npiggin@gmail.com" <npiggin@gmail.com>,
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-	"linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-	"linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-	"alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3] powerpc: macio: Make remove callback of macio driver
- void returned
-Message-ID:
- <TYTP286MB356472357994D5EA49E2F5E3CA212@TYTP286MB3564.JPNP286.PROD.OUTLOOK.COM>
-References: <TYCP286MB232391520CB471E7C8D6EA84CAD19@TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM>
- <3dc29701-239f-4a3b-b571-b9732975bd73@csgroup.eu>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <3dc29701-239f-4a3b-b571-b9732975bd73@csgroup.eu>
-X-TMN: [Nh3sQUEUbpxaXXOwSoNdFxws6+REaLee]
-X-ClientProxiedBy: SI2PR02CA0040.apcprd02.prod.outlook.com
- (2603:1096:4:196::6) To TYTP286MB3564.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:39d::8)
-X-Microsoft-Original-Message-ID: <20240306124037.GA2466@wendao-VirtualBox>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5550B13173D
+	for <linux-wireless@vger.kernel.org>; Wed,  6 Mar 2024 12:53:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709729604; cv=none; b=e65X8b4S5Kws16+E0W1SnDJ93MKUzwiTBUFrhK5o+3bAa7A6e8ClNEteuPdYuCsGEPQXyCoIcdleX8kHfU0YIq9SVJ0y4kr6L9aLqk0S3cxCVrfax+mNTsbQaJf6p25cotkD4FWY0HWszJ2jn5mSQqG5rHimC1uItqYO2UbGSRw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709729604; c=relaxed/simple;
+	bh=Xj9YEclTTUHUhxcmdjxMc1vrbO4oMbWZx3zRvSC2EjU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Spp3HtjUyu4pdu928Km5TaRwWyZ24f9cNX4H2qnXJ37JB/WGDckGd8U+FJZT0BiihpjlsRG5Ni0HNrfB69yAowbvZY10pjm6NBtz66OzRUOsBQHlnYjFA3zizd1Hr8/44wfva5DoeZ0ZdkCnrvmiP+l4Y3L9BbCFsbcFDIiCzMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=LJQKxQlu; arc=none smtp.client-ip=209.85.160.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-429de32dad9so48084811cf.2
+        for <linux-wireless@vger.kernel.org>; Wed, 06 Mar 2024 04:53:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1709729602; x=1710334402; darn=vger.kernel.org;
+        h=in-reply-to:autocrypt:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HtepAiwvEuZZn/vMjtqjmxZEGRQ2eiEcXO3ROPNJa3k=;
+        b=LJQKxQluBLoM1q8ufHZQV62Q2emIOcZr/lzYUJMP0kS8AkuOFrcmDR2zMiQ4WNX2lk
+         c4ua4uhRxCGweQux9zSkHuwdoKk9uCsLY+1VrkFeu+Ez/MK6OLkmqCauGneZU2+GQ8wC
+         ORs6MNuSJWyAIudkwwNBySD8xz6OQzLGFxvHI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709729602; x=1710334402;
+        h=in-reply-to:autocrypt:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=HtepAiwvEuZZn/vMjtqjmxZEGRQ2eiEcXO3ROPNJa3k=;
+        b=Dsugm2z95Hoau0362HMaKK56A/5SjgN1M/Gg6B2SKX2SNgfVpGskKKqZtylxpGlF27
+         cDW94csHgbnx92o3Y7iXHmTkaCDpAP3MergvyIiXo66D8UBMeEGO9sTlzv2SZwUuV7Zc
+         oy0L4Cbmtgictz7s5Yr4rcn5LSBXdwIXtD6cKjR5bIpqQQIcXlquPV3VJxObkbQtBf9M
+         vhH7B3/ieUB2wtbE0VsRO5cckFmxRxEX5VBojWer+ORo3FOWDFTnhoKWdsvYKUVdzfEl
+         SnYUKjf12xsm5hZAX1KXTaplityH1gpQ+mrTc/VAuFzLxRS6pGENihVGqDLRhyeYoyJ4
+         ypTw==
+X-Forwarded-Encrypted: i=1; AJvYcCUBuilKZl3bwqJ/s5DEFQmNmFh9RfFADePOCm7Y6/kPTGfWj1Q4JXUIFlm87qclx+CA4hG3EDsm/DLetJKY5jm0Dh0s7am/B7FfQzentIc=
+X-Gm-Message-State: AOJu0YzksDCZIR5autYjJkKfzmstx7GBXHKIdlwbSjmc9Ip6zF6FyiKS
+	XtKiyndV/XjsJVoLDwH3D+sPG6xv/d2ZK1eruYvoMoXxiFbXRcv0gQsehOv6IA==
+X-Google-Smtp-Source: AGHT+IHHs7KNW0R4O+ivvfcIe4jReNTOwu7CO+VZqaMOxuZZ2z3SP2EilaheJyO970wVGr7l66+QFg==
+X-Received: by 2002:ac8:5993:0:b0:42e:f85d:4f41 with SMTP id e19-20020ac85993000000b0042ef85d4f41mr5421324qte.56.1709729602224;
+        Wed, 06 Mar 2024 04:53:22 -0800 (PST)
+Received: from [10.176.68.61] ([192.19.148.250])
+        by smtp.gmail.com with ESMTPSA id n9-20020ac85a09000000b0042efa065946sm2172607qta.6.2024.03.06.04.53.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 06 Mar 2024 04:53:21 -0800 (PST)
+Message-ID: <29de0b03-f65b-4918-ab5b-28dfd1c16a5d@broadcom.com>
+Date: Wed, 6 Mar 2024 13:53:19 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TYTP286MB3564:EE_|TYCP286MB2880:EE_
-X-MS-Office365-Filtering-Correlation-Id: e92084cb-eb20-4297-f73d-08dc3ddaa149
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	mNc3gDI7HEWYdy9uSOU+QAsWz8a8yzdnHZUuW0hgIEFIhZdB1s9jv26Oq0ZqmY5ZLARFZwg04jDk1WGNH8NkJEld29lX9gd5eLAAVOuWNNG7fdCxIrVgT3/JCZst3sipPGfokCSOM7jaZMfGJKQlr1NzLkp32am3M8boXDQwgjZz49dnO62sDWrhlWfpkhM7h00NL4kw+lGuK9Xm93TLWY8WEEId5u4iXH+LDIzFyaz8YHr1L4yt1sIr8SutLJVsz9DJJStLYuDZJW5T/nve5zh3ocTXqzUG1AWfB63WQj2V3wlQ8IEh//ShvaJVPwBPsIoZYcUZ/zvBNTBSunLX0cJZ5gitHmg2kFJ/hqFMtPmQ/ibbYzAYSeB6l6DQyTECnhKFGmmanHFaLqwHm4hMU9cBB6qzwBjVF6xjhzh6zoXoMb2SIpQ/O+4RkpgYynMQ2MPePT0C5c9JKUQoSby4LydssNGeDYAEfTrlTiOCqM+SHO4oxzGOyDcTMc12NDj+3CTO2VxbRpZZ/2zv4gQ6np4tDXdMNI7uJ7LWlT12rLfTIodgsoSzwgsIr8kQoi+N2tJkj4dH8Yj7rvf3w7SD9ruQvxMs8HInTgoqSsJwa6g=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?T3Bo20pNCVM2OdvWX1Y++BEykzr2r0JSnpquix8IRRlylEZKyKslXMz3Dh?=
- =?iso-8859-1?Q?l7ZqGjwcL+MYCZACLmjxL+XKAQ/XoviitNZNqVUvrXP69maYJ5ldANjjUp?=
- =?iso-8859-1?Q?++4YADg+7Cqf6JPDiIjon8rOA5pHUphKaSPkx9GPZh/rLs38yipE8fkoor?=
- =?iso-8859-1?Q?zJJdbdlJkSkekolM4LJ5BO+gSxs2iTsP3kyFZpSStHaDQCx0E8BTNv5ACj?=
- =?iso-8859-1?Q?F1YN9WKsYlxSjmaXo7VIrBq5DnHbiPCSmGfkg9UOA+5j+wZNkX7w8t6pT2?=
- =?iso-8859-1?Q?crWl4/3XgurxpygHqt9y2zczfAnp9NZRIr45V9b+C8Ih39VOQtmbhzq7Gh?=
- =?iso-8859-1?Q?fRNvFrUZAWU2wVflo06HLS5Qpk/xhwkMI5/3rWi/oMgioa3z5X8mf73BsK?=
- =?iso-8859-1?Q?kbxHAY0vRL/JEROEiO2UDoIxykU88cGOHanNqszWD6uofEmkcrGAM8m4PB?=
- =?iso-8859-1?Q?7otg6a1vGrNarOcbS76vvtNVaNjo09Cl7Qw7pL+AZLPxyIH/EqAUqR89Bf?=
- =?iso-8859-1?Q?HQl0vOfS2zReuq9/FsdCQZeK6zXoIs0u7lo7iFYQ+bR4WkjUE6Mq8Aab6g?=
- =?iso-8859-1?Q?pGShwur+nivRhHVxNEhQXawbd1z8vyrN5quEFYKM3csatteI47HFVNql/q?=
- =?iso-8859-1?Q?7mHHcdariX+awiuQ4BAPE4B77uAJQtX648PON79sl+w1ut4/9kpKX8shQV?=
- =?iso-8859-1?Q?gban8X7jSh8Keeut+VnR3ulE3lfk1lPbmIFeSr3lKxHEm4PETSTM2ZZK+v?=
- =?iso-8859-1?Q?fqtCHBul6Grdv4JPE+0NuB/cMrcsEVcvKDwm30hwBKgYxLNqZ+jWWDPvYn?=
- =?iso-8859-1?Q?SuF0/CE+J54+FQsqeM6iASN2DLhQ/UFW3RqalQNc89tCSGbjCnqh+uhklN?=
- =?iso-8859-1?Q?rUglgKqfTMqxK4paxyTABCqdfdifbqZ3cYBen0RuGRdJZn34zPO6jZDbXF?=
- =?iso-8859-1?Q?/qsZijOAPafP/I3vXmWeCOpOFMX/UOeAdyUxaeYstd0Hx9ZHX7fIh9msRL?=
- =?iso-8859-1?Q?CJ9XuSctLnYpI0utaadlrciAtyFULAYTIiEXG+DxB2fwqCRvfgae3YV1dd?=
- =?iso-8859-1?Q?mHJ9G3WW8FynLgqU99AEXGSLXVkJFjNbbVfFIiVvZoWGTbU6jYHTHHFtML?=
- =?iso-8859-1?Q?YmhEKlebmYaQav4vv5uTtfC++eO+BreSW2q2oaTYB6KahwgAleswsMtA34?=
- =?iso-8859-1?Q?b08Bii8M4pDE3o7LjS2H/t6YND1T5Pwi7pBsEVMkTFJbR7cb/YaoBxSSgR?=
- =?iso-8859-1?Q?YkgcLS2e5+Wbwa1p78NkwRvmE7q3GbFdtp2gym+V0=3D?=
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e92084cb-eb20-4297-f73d-08dc3ddaa149
-X-MS-Exchange-CrossTenant-AuthSource: TYTP286MB3564.JPNP286.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Mar 2024 12:40:40.2608
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYCP286MB2880
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: brcmfmac: pcie: handle randbuf allocation failure
+To: Arnd Bergmann <arnd@arndb.de>, Kalle Valo <kvalo@kernel.org>
+Cc: Duoming Zhou <duoming@zju.edu.cn>, linux-kernel@vger.kernel.org,
+ Konrad Dybcio <konrad.dybcio@linaro.org>, Hans de Goede
+ <hdegoede@redhat.com>, minipli@grsecurity.net,
+ linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
+ brcm80211-dev-list.pdl@broadcom.com
+References: <20240301135134.29577-1-duoming@zju.edu.cn>
+ <fdaefac9-1d02-4424-b893-4306b97028ca@broadcom.com>
+ <87h6hjhbqy.fsf@kernel.org>
+ <3d433b58-384f-452e-904d-62e23b3b5a0b@app.fastmail.com>
+From: Arend van Spriel <arend.vanspriel@broadcom.com>
+Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
+ 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
+In-Reply-To: <3d433b58-384f-452e-904d-62e23b3b5a0b@app.fastmail.com>
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="0000000000009f62620612fd716d"
 
-Hi Christophe,
+--0000000000009f62620612fd716d
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Feb 20, 2024 at 04:12:17PM +0000, Christophe Leroy wrote:
-> Hi Michael,
+On 3/6/2024 12:07 PM, Arnd Bergmann wrote:
+> On Wed, Mar 6, 2024, at 11:53, Kalle Valo wrote:
+>> Arend van Spriel <arend.vanspriel@broadcom.com> writes:
+>>
+>>> On 3/1/2024 2:51 PM, Duoming Zhou wrote:
+>>>> The kzalloc() in brcmf_pcie_download_fw_nvram() will return
+>>>> null if the physical memory has run out. As a result, if we
+>>>> use get_random_bytes() to generate random bytes in the randbuf,
+>>>> the null pointer dereference bug will happen.
+>>>> Return -ENOMEM from brcmf_pcie_download_fw_nvram() if kzalloc()
+>>>> fails for randbuf.
+>>>> Fixes: 91918ce88d9f ("wifi: brcmfmac: pcie: Provide a buffer of
+>>>> random bytes to the device")
+>>>
+>>> Looks good to me. Looking for kernel guideline about stack usage to
+>>> determine whether it would be ok to just use buffer on stack. Does
+>>> anyone know. This one is 256 bytes so I guess the allocation is
+>>> warranted here.
+>>
+>> Arnd, what do you suggest? Do we have any documentation or guidelines
+>> anywhere?
 > 
-> ping ?
+> I don't think we have anything document about this. I usually
+> consider anything more than half a kilobyte as excessive,
+> even though the warning limit is higher.
 > 
-> Le 01/02/2023 à 15:36, Dawei Li a écrit :
-> > Commit fc7a6209d571 ("bus: Make remove callback return void") forces
-> > bus_type::remove be void-returned, it doesn't make much sense for any
-> > bus based driver implementing remove callbalk to return non-void to
-> > its caller.
-> > 
-> > This change is for macio bus based drivers.
-> > 
-> > Signed-off-by: Dawei Li <set_pte_at@outlook.com>
-> 
-> This patch is Acked , any special reason for not applying it ?
-> 
-> Note that it now conflicts with commit 1535d5962d79 ("wifi: remove 
-> orphaned orinoco driver") but resolution is trivial, just drop the 
-> changes to that file.
+> 256 bytes is usually fine, but in this case I would split out
+> the basic block that does this into a separate function
+> so it does not share the stack frame with other leaf functions
+> below brcmf_pcie_download_fw_nvram(). It might also be justified
+> to then mark it as noinline_for_stack.
 
-Thanks for picking it up, hardly believe that it's been one year.
+Thanks, Arnd
 
-Michael,
+Makes sense.
 
-I will respin V4 if it's needed.
+@Duoming Zhou,
 
-Thanks,
+Can you provide a v2 with separate function using buffer on stack?
 
-   Dawei
+static noinline_for_stack
+void brcmf_pcie_provide_random_bytes(struct brcmf_pciedev_info *devinfo, 
+u32 address)
+{
+	u8 randbuf[BRCMF_RANDOM_SEED_LENGTH];
+	:
+	:
+}
 
-> 
-> Christophe
-> 
-> > ---
-> > v2 -> v3
-> > - Rebased on latest powerpc/next.
-> > - cc' to relevant subsysem lists.
-> > 
-> > v1 -> v2
-> > - Revert unneeded changes.
-> > - Rebased on latest powerpc/next.
-> > 
-> > v1
-> > - https://lore.kernel.org/all/TYCP286MB2323FCDC7ECD87F8D97CB74BCA189@TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM/
-> > ---
-> >   arch/powerpc/include/asm/macio.h                | 2 +-
-> >   drivers/ata/pata_macio.c                        | 4 +---
-> >   drivers/macintosh/rack-meter.c                  | 4 +---
-> >   drivers/net/ethernet/apple/bmac.c               | 4 +---
-> >   drivers/net/ethernet/apple/mace.c               | 4 +---
-> >   drivers/net/wireless/intersil/orinoco/airport.c | 4 +---
-> >   drivers/scsi/mac53c94.c                         | 5 +----
-> >   drivers/scsi/mesh.c                             | 5 +----
-> >   drivers/tty/serial/pmac_zilog.c                 | 7 ++-----
-> >   sound/aoa/soundbus/i2sbus/core.c                | 4 +---
-> >   10 files changed, 11 insertions(+), 32 deletions(-)
-> > 
-> > diff --git a/arch/powerpc/include/asm/macio.h b/arch/powerpc/include/asm/macio.h
-> > index ff5fd82d9ff0..cb9c386dacf8 100644
-> > --- a/arch/powerpc/include/asm/macio.h
-> > +++ b/arch/powerpc/include/asm/macio.h
-> > @@ -125,7 +125,7 @@ static inline struct pci_dev *macio_get_pci_dev(struct macio_dev *mdev)
-> >   struct macio_driver
-> >   {
-> >   	int	(*probe)(struct macio_dev* dev, const struct of_device_id *match);
-> > -	int	(*remove)(struct macio_dev* dev);
-> > +	void	(*remove)(struct macio_dev *dev);
-> >   
-> >   	int	(*suspend)(struct macio_dev* dev, pm_message_t state);
-> >   	int	(*resume)(struct macio_dev* dev);
-> > diff --git a/drivers/ata/pata_macio.c b/drivers/ata/pata_macio.c
-> > index 9ccaac9e2bc3..653106716a4b 100644
-> > --- a/drivers/ata/pata_macio.c
-> > +++ b/drivers/ata/pata_macio.c
-> > @@ -1187,7 +1187,7 @@ static int pata_macio_attach(struct macio_dev *mdev,
-> >   	return rc;
-> >   }
-> >   
-> > -static int pata_macio_detach(struct macio_dev *mdev)
-> > +static void pata_macio_detach(struct macio_dev *mdev)
-> >   {
-> >   	struct ata_host *host = macio_get_drvdata(mdev);
-> >   	struct pata_macio_priv *priv = host->private_data;
-> > @@ -1202,8 +1202,6 @@ static int pata_macio_detach(struct macio_dev *mdev)
-> >   	ata_host_detach(host);
-> >   
-> >   	unlock_media_bay(priv->mdev->media_bay);
-> > -
-> > -	return 0;
-> >   }
-> >   
-> >   #ifdef CONFIG_PM_SLEEP
-> > diff --git a/drivers/macintosh/rack-meter.c b/drivers/macintosh/rack-meter.c
-> > index c28893e41a8b..f2f83c4f3af5 100644
-> > --- a/drivers/macintosh/rack-meter.c
-> > +++ b/drivers/macintosh/rack-meter.c
-> > @@ -523,7 +523,7 @@ static int rackmeter_probe(struct macio_dev* mdev,
-> >   	return rc;
-> >   }
-> >   
-> > -static int rackmeter_remove(struct macio_dev* mdev)
-> > +static void rackmeter_remove(struct macio_dev *mdev)
-> >   {
-> >   	struct rackmeter *rm = dev_get_drvdata(&mdev->ofdev.dev);
-> >   
-> > @@ -558,8 +558,6 @@ static int rackmeter_remove(struct macio_dev* mdev)
-> >   
-> >   	/* Get rid of me */
-> >   	kfree(rm);
-> > -
-> > -	return 0;
-> >   }
-> >   
-> >   static int rackmeter_shutdown(struct macio_dev* mdev)
-> > diff --git a/drivers/net/ethernet/apple/bmac.c b/drivers/net/ethernet/apple/bmac.c
-> > index 9e653e2925f7..292b1f9cd9e7 100644
-> > --- a/drivers/net/ethernet/apple/bmac.c
-> > +++ b/drivers/net/ethernet/apple/bmac.c
-> > @@ -1591,7 +1591,7 @@ bmac_proc_info(char *buffer, char **start, off_t offset, int length)
-> >   }
-> >   #endif
-> >   
-> > -static int bmac_remove(struct macio_dev *mdev)
-> > +static void bmac_remove(struct macio_dev *mdev)
-> >   {
-> >   	struct net_device *dev = macio_get_drvdata(mdev);
-> >   	struct bmac_data *bp = netdev_priv(dev);
-> > @@ -1609,8 +1609,6 @@ static int bmac_remove(struct macio_dev *mdev)
-> >   	macio_release_resources(mdev);
-> >   
-> >   	free_netdev(dev);
-> > -
-> > -	return 0;
-> >   }
-> >   
-> >   static const struct of_device_id bmac_match[] =
-> > diff --git a/drivers/net/ethernet/apple/mace.c b/drivers/net/ethernet/apple/mace.c
-> > index fd1b008b7208..e6350971c707 100644
-> > --- a/drivers/net/ethernet/apple/mace.c
-> > +++ b/drivers/net/ethernet/apple/mace.c
-> > @@ -272,7 +272,7 @@ static int mace_probe(struct macio_dev *mdev, const struct of_device_id *match)
-> >   	return rc;
-> >   }
-> >   
-> > -static int mace_remove(struct macio_dev *mdev)
-> > +static void mace_remove(struct macio_dev *mdev)
-> >   {
-> >   	struct net_device *dev = macio_get_drvdata(mdev);
-> >   	struct mace_data *mp;
-> > @@ -296,8 +296,6 @@ static int mace_remove(struct macio_dev *mdev)
-> >   	free_netdev(dev);
-> >   
-> >   	macio_release_resources(mdev);
-> > -
-> > -	return 0;
-> >   }
-> >   
-> >   static void dbdma_reset(volatile struct dbdma_regs __iomem *dma)
-> > diff --git a/drivers/net/wireless/intersil/orinoco/airport.c b/drivers/net/wireless/intersil/orinoco/airport.c
-> > index a890bfa0d5cc..276a06cdd1f5 100644
-> > --- a/drivers/net/wireless/intersil/orinoco/airport.c
-> > +++ b/drivers/net/wireless/intersil/orinoco/airport.c
-> > @@ -85,7 +85,7 @@ airport_resume(struct macio_dev *mdev)
-> >   	return err;
-> >   }
-> >   
-> > -static int
-> > +static void
-> >   airport_detach(struct macio_dev *mdev)
-> >   {
-> >   	struct orinoco_private *priv = dev_get_drvdata(&mdev->ofdev.dev);
-> > @@ -111,8 +111,6 @@ airport_detach(struct macio_dev *mdev)
-> >   
-> >   	macio_set_drvdata(mdev, NULL);
-> >   	free_orinocodev(priv);
-> > -
-> > -	return 0;
-> >   }
-> >   
-> >   static int airport_hard_reset(struct orinoco_private *priv)
-> > diff --git a/drivers/scsi/mac53c94.c b/drivers/scsi/mac53c94.c
-> > index f75928f7773e..42648ca9b8ed 100644
-> > --- a/drivers/scsi/mac53c94.c
-> > +++ b/drivers/scsi/mac53c94.c
-> > @@ -508,7 +508,7 @@ static int mac53c94_probe(struct macio_dev *mdev, const struct of_device_id *mat
-> >   	return rc;
-> >   }
-> >   
-> > -static int mac53c94_remove(struct macio_dev *mdev)
-> > +static void mac53c94_remove(struct macio_dev *mdev)
-> >   {
-> >   	struct fsc_state *fp = (struct fsc_state *)macio_get_drvdata(mdev);
-> >   	struct Scsi_Host *host = fp->host;
-> > @@ -526,11 +526,8 @@ static int mac53c94_remove(struct macio_dev *mdev)
-> >   	scsi_host_put(host);
-> >   
-> >   	macio_release_resources(mdev);
-> > -
-> > -	return 0;
-> >   }
-> >   
-> > -
-> >   static struct of_device_id mac53c94_match[] =
-> >   {
-> >   	{
-> > diff --git a/drivers/scsi/mesh.c b/drivers/scsi/mesh.c
-> > index 84b541a57b7b..cd2575b88c85 100644
-> > --- a/drivers/scsi/mesh.c
-> > +++ b/drivers/scsi/mesh.c
-> > @@ -1986,7 +1986,7 @@ static int mesh_probe(struct macio_dev *mdev, const struct of_device_id *match)
-> >   	return -ENODEV;
-> >   }
-> >   
-> > -static int mesh_remove(struct macio_dev *mdev)
-> > +static void mesh_remove(struct macio_dev *mdev)
-> >   {
-> >   	struct mesh_state *ms = (struct mesh_state *)macio_get_drvdata(mdev);
-> >   	struct Scsi_Host *mesh_host = ms->host;
-> > @@ -2013,11 +2013,8 @@ static int mesh_remove(struct macio_dev *mdev)
-> >   	macio_release_resources(mdev);
-> >   
-> >   	scsi_host_put(mesh_host);
-> > -
-> > -	return 0;
-> >   }
-> >   
-> > -
-> >   static struct of_device_id mesh_match[] =
-> >   {
-> >   	{
-> > diff --git a/drivers/tty/serial/pmac_zilog.c b/drivers/tty/serial/pmac_zilog.c
-> > index 13668ffdb1e7..d4640479c338 100644
-> > --- a/drivers/tty/serial/pmac_zilog.c
-> > +++ b/drivers/tty/serial/pmac_zilog.c
-> > @@ -1507,12 +1507,12 @@ static int pmz_attach(struct macio_dev *mdev, const struct of_device_id *match)
-> >    * That one should not be called, macio isn't really a hotswap device,
-> >    * we don't expect one of those serial ports to go away...
-> >    */
-> > -static int pmz_detach(struct macio_dev *mdev)
-> > +static void pmz_detach(struct macio_dev *mdev)
-> >   {
-> >   	struct uart_pmac_port	*uap = dev_get_drvdata(&mdev->ofdev.dev);
-> >   	
-> >   	if (!uap)
-> > -		return -ENODEV;
-> > +		return;
-> >   
-> >   	uart_remove_one_port(&pmz_uart_reg, &uap->port);
-> >   
-> > @@ -1523,11 +1523,8 @@ static int pmz_detach(struct macio_dev *mdev)
-> >   	dev_set_drvdata(&mdev->ofdev.dev, NULL);
-> >   	uap->dev = NULL;
-> >   	uap->port.dev = NULL;
-> > -	
-> > -	return 0;
-> >   }
-> >   
-> > -
-> >   static int pmz_suspend(struct macio_dev *mdev, pm_message_t pm_state)
-> >   {
-> >   	struct uart_pmac_port *uap = dev_get_drvdata(&mdev->ofdev.dev);
-> > diff --git a/sound/aoa/soundbus/i2sbus/core.c b/sound/aoa/soundbus/i2sbus/core.c
-> > index 51ed2f34b276..35f39727994d 100644
-> > --- a/sound/aoa/soundbus/i2sbus/core.c
-> > +++ b/sound/aoa/soundbus/i2sbus/core.c
-> > @@ -364,15 +364,13 @@ static int i2sbus_probe(struct macio_dev* dev, const struct of_device_id *match)
-> >   	return 0;
-> >   }
-> >   
-> > -static int i2sbus_remove(struct macio_dev* dev)
-> > +static void i2sbus_remove(struct macio_dev *dev)
-> >   {
-> >   	struct i2sbus_control *control = dev_get_drvdata(&dev->ofdev.dev);
-> >   	struct i2sbus_dev *i2sdev, *tmp;
-> >   
-> >   	list_for_each_entry_safe(i2sdev, tmp, &control->list, item)
-> >   		soundbus_remove_one(&i2sdev->sound);
-> > -
-> > -	return 0;
-> >   }
-> >   
-> >   #ifdef CONFIG_PM
+Regards,
+Arend
+
+--0000000000009f62620612fd716d
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+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
+2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
+Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
+HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
+Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
+KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
+Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
+dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
+OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
+MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
+BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
+ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
+zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
+sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
+BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
+N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
+p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
+YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCBcHj7ZvaXFtiaZbdOC
+oy78p528VoWHs1DYoddJyNhXHDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yNDAzMDYxMjUzMjJaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAJ6IWC3REC9BVCMnsYnlUkFfMJspiO/Ijt5fv
+JFlinvftLQyRtjguWV7fW3ohRiAmu/LKwMc2wBRlh5NdO8L0zV1E79pOT/XeyDUotyeY0EsuoAEf
+cFwmCGS0b1DYEkKOt7lx7hJcgzxbzi8aHixkUI2ReDOyRrZgn6/2SPpRuEoAvJNaQQymXh2RdSpA
+lYTc/OnXx3N9qkDRgBBteMf06/KM+1rgdeq1i1e0xoTTlaO91w4k92yTQiGIAQZ0MYe0YhRrM307
+Qr81ZztL/DuToj4j0w0+D9cCXS9iJVj91bpE1qHdEjfFHrXnHQ/2/gfDvhO1BmSsmDlSxfp5ll0O
+WQ==
+--0000000000009f62620612fd716d--
 
