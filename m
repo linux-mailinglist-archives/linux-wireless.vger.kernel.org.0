@@ -1,223 +1,134 @@
-Return-Path: <linux-wireless+bounces-4441-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4442-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72E4D873D19
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Mar 2024 18:15:37 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4495873FC0
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Mar 2024 19:39:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96D181C226B4
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Mar 2024 17:15:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B2B03B22DCC
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Mar 2024 18:39:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9812913A26E;
-	Wed,  6 Mar 2024 17:15:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TAVpwhTA"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB7B313E7C5;
+	Wed,  6 Mar 2024 18:35:52 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6992B8004B
-	for <linux-wireless@vger.kernel.org>; Wed,  6 Mar 2024 17:15:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B11613E7D4
+	for <linux-wireless@vger.kernel.org>; Wed,  6 Mar 2024 18:35:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709745334; cv=none; b=parSRXg+ll6cL3aXKK6uCJPrp6vT0T69ThsVEHbAT8uBSgum0sW0Tkp7ZFIXJEhtM0o/2+xDn9inax+RLdHThfNxKN/XLpJyMChoPxv78RRv+iQ0w3pxExUKcs3xXTb1ZEk3ZXKBM6nxjiwdj+TX4pw4hjbMxX/UVGhFffMDkqM=
+	t=1709750152; cv=none; b=RuC/RFr+H7LO3opWYMQywuYv+QjrKEAx1u+Goaixq0fP6hdCbsW/C9EjGrICol1xpHRIh/QuSReBPTJC+paHVeEOFLdvmsPBShXy59ihV1uMwoy31lf2odsF04CyNf62FIilVeecpg0rgpWBfZfhZXyUsr5XyreyjkWJX+PHyh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709745334; c=relaxed/simple;
-	bh=/m7Dtdd1SrjK2YsyYoNSJc3aIry/7feyggFbyj22fNo=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=qtqCtlU933FkF3JwMMb6PGgLVia6LY0gYvsjznoK+CjkfAK+1gFFcJR/+/n22eQ+RKhJWEjyPta991iXD+sceyJBwCq9R3Ks8Nbkgekrqb17/UQUYFgNugDUhdOCnTEk/QUBTmVxf3C91m0L1W+g62V3wpvDgaJT4VzuVcw0LjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TAVpwhTA; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709745332; x=1741281332;
-  h=date:from:to:cc:subject:message-id;
-  bh=/m7Dtdd1SrjK2YsyYoNSJc3aIry/7feyggFbyj22fNo=;
-  b=TAVpwhTAlW/dgnH4q7Sn/9AMusp9ZdFGzW5PPYpHvRTvma4Vx+b+2Ol+
-   PPGacGRYTWO57K77NOpAHnKuIB67rkioR4pIwWDeviN7xE7te92fyo8jq
-   v03rMTaqWWMRX3p9rJOAmCTziNbtrB2fuAZvktGCIFOtTNzqfRVtQFG2O
-   UrY/uVJ/4X15ZyBgJJUAVkv2/kjKKheJR2yjzGyKiHV0MSus8otVYIgu3
-   2SIXfsKUjPTgxqEYXeug5pGmgwelykQL4nPFsBIGgnvaq+teLVGcERNcD
-   Tw0V01Iqc4vkoMBJu+hhqwW/WCz7HmJBHjiBMS6CWfrd50wuaZyQoKtGG
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11005"; a="15783512"
-X-IronPort-AV: E=Sophos;i="6.06,208,1705392000"; 
-   d="scan'208";a="15783512"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2024 09:15:30 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,208,1705392000"; 
-   d="scan'208";a="14319079"
-Received: from lkp-server01.sh.intel.com (HELO b21307750695) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 06 Mar 2024 09:15:29 -0800
-Received: from kbuild by b21307750695 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rhurX-0004QF-1G;
-	Wed, 06 Mar 2024 17:15:27 +0000
-Date: Thu, 07 Mar 2024 01:14:55 +0800
-From: kernel test robot <lkp@intel.com>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
- linux-wireless@vger.kernel.org
-Subject: [wireless-next:main] BUILD SUCCESS
- f654e228ed6b822e87e6e6ad8e889bedccae2e16
-Message-ID: <202403070150.vGgROAEW-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1709750152; c=relaxed/simple;
+	bh=1vIIlOoXQqaRL43xN9hPITwtLtN+twVOgmkPslLsNSY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jxG8X0+Uu5Rqb3naOldldUmSFZ5G9hU30FLqfz8VgKVhb8JPcc9NDqxhMgVmJy98B5kPoMb4qrtrdZXhltuiwlL/uieS2iSNzTBEoPgvHQduxcXSA4doK85drfQbonJ8XvDBdglLN7kmyb8EydZdx71jtx/ocw0ARSRO5wuEGLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1rhw7D-0005KA-VB; Wed, 06 Mar 2024 19:35:43 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1rhw7C-004nYD-HC; Wed, 06 Mar 2024 19:35:42 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1rhw7C-000p5I-1P;
+	Wed, 06 Mar 2024 19:35:42 +0100
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org,
+	kernel@pengutronix.de
+Subject: [PATCH next] net: rfkill: gpio: Convert to platform remove callback returning void
+Date: Wed,  6 Mar 2024 19:35:38 +0100
+Message-ID: <20240306183538.88777-2-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2029; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=1vIIlOoXQqaRL43xN9hPITwtLtN+twVOgmkPslLsNSY=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBl6Ld6SXNQ8RTQGV6ETDKHTmfaKrEzAajOf//vI aD7Twxafl6JATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZei3egAKCRCPgPtYfRL+ TliWB/4/44bcLECBDXbTYdOrnui5QJtNtr/GO/rgOMROTbzVURUfiQFiqKq2+5VFqIptqQiyyB2 yrWVWkXmXIyuvb5TDcbgoZWWwxv+zCF7SrX7S3bFOn9kWPaDEdbQKCh6trAHBsz9XZa+RVgYa8w MYoRMLTDXVcPS9p0fJKXf0CFEgjdBzod6gkiX37Oj5ur7Hm+EhdLjif6enPC42LCIw2NBwoQq4D eJZk43wPzmBA5cAmtl802rhpxI2RA9WCBHO+GibMoD/bGX/fhI9QL+PWxfBr9wFGqyltcdLc9qM 2W02UJ4z5D/p1e5u0/+zb0hJjNET5bbA9cTak6GR9MHiyMiL
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: f654e228ed6b822e87e6e6ad8e889bedccae2e16  Merge tag 'ath-next-20240305' of git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code. However the value returned is ignored (apart
+from emitting a warning) and this typically results in resource leaks.
 
-elapsed time: 1277m
+To improve here there is a quest to make the remove callback return
+void. In the first step of this quest all drivers are converted to
+.remove_new(), which already returns void. Eventually after all drivers
+are converted, .remove_new() will be renamed to .remove().
 
-configs tested: 133
-configs skipped: 3
+Trivially convert this driver from always returning zero in the remove
+callback to the void returning variant.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+Hello,
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                   randconfig-001-20240306   gcc  
-arc                   randconfig-002-20240306   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   clang
-arm                              allyesconfig   gcc  
-arm                                 defconfig   clang
-arm                   randconfig-001-20240306   gcc  
-arm                   randconfig-002-20240306   clang
-arm                   randconfig-003-20240306   clang
-arm                   randconfig-004-20240306   clang
-arm64                            allmodconfig   clang
-arm64                             allnoconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                 randconfig-001-20240306   gcc  
-arm64                 randconfig-002-20240306   clang
-arm64                 randconfig-003-20240306   gcc  
-arm64                 randconfig-004-20240306   clang
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-csky                  randconfig-001-20240306   gcc  
-csky                  randconfig-002-20240306   gcc  
-hexagon                          allmodconfig   clang
-hexagon                           allnoconfig   clang
-hexagon                          allyesconfig   clang
-hexagon                             defconfig   clang
-hexagon               randconfig-001-20240306   clang
-hexagon               randconfig-002-20240306   clang
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20240306   clang
-i386         buildonly-randconfig-002-20240306   clang
-i386         buildonly-randconfig-003-20240306   gcc  
-i386         buildonly-randconfig-004-20240306   clang
-i386         buildonly-randconfig-005-20240306   clang
-i386         buildonly-randconfig-006-20240306   gcc  
-i386                                defconfig   clang
-i386                  randconfig-001-20240306   gcc  
-i386                  randconfig-002-20240306   clang
-i386                  randconfig-003-20240306   clang
-i386                  randconfig-004-20240306   clang
-i386                  randconfig-005-20240306   gcc  
-i386                  randconfig-006-20240306   clang
-i386                  randconfig-011-20240306   clang
-i386                  randconfig-012-20240306   clang
-i386                  randconfig-013-20240306   gcc  
-i386                  randconfig-014-20240306   gcc  
-i386                  randconfig-015-20240306   clang
-i386                  randconfig-016-20240306   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20240306   gcc  
-loongarch             randconfig-002-20240306   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                 randconfig-001-20240306   gcc  
-nios2                 randconfig-002-20240306   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc                randconfig-001-20240306   gcc  
-parisc                randconfig-002-20240306   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   clang
-powerpc               randconfig-001-20240306   gcc  
-powerpc               randconfig-002-20240306   gcc  
-powerpc               randconfig-003-20240306   clang
-powerpc64             randconfig-001-20240306   gcc  
-powerpc64             randconfig-002-20240306   clang
-powerpc64             randconfig-003-20240306   clang
-riscv                            allmodconfig   clang
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   clang
-riscv                               defconfig   clang
-riscv                 randconfig-001-20240306   clang
-riscv                 randconfig-002-20240306   gcc  
-s390                             allmodconfig   clang
-s390                              allnoconfig   clang
-s390                             allyesconfig   gcc  
-s390                                defconfig   clang
-s390                  randconfig-001-20240306   clang
-s390                  randconfig-002-20240306   gcc  
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sh                    randconfig-001-20240306   gcc  
-sh                    randconfig-002-20240306   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                               defconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   gcc  
-um                                  defconfig   clang
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   clang
-x86_64                            allnoconfig   clang
-x86_64                           allyesconfig   clang
-x86_64                              defconfig   gcc  
-x86_64                          rhel-8.3-rust   clang
-xtensa                            allnoconfig   gcc  
+this is merge window material. I'm unsure if I should put "net-next" or
+"next" or "wireless-next" into the subject line. I hope my choice
+doesn't make people angry :-)
 
+Best regards
+Uwe
+
+ net/rfkill/rfkill-gpio.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/net/rfkill/rfkill-gpio.c b/net/rfkill/rfkill-gpio.c
+index 4e32d659524e..84529886c2e6 100644
+--- a/net/rfkill/rfkill-gpio.c
++++ b/net/rfkill/rfkill-gpio.c
+@@ -156,14 +156,12 @@ static int rfkill_gpio_probe(struct platform_device *pdev)
+ 	return ret;
+ }
+ 
+-static int rfkill_gpio_remove(struct platform_device *pdev)
++static void rfkill_gpio_remove(struct platform_device *pdev)
+ {
+ 	struct rfkill_gpio_data *rfkill = platform_get_drvdata(pdev);
+ 
+ 	rfkill_unregister(rfkill->rfkill_dev);
+ 	rfkill_destroy(rfkill->rfkill_dev);
+-
+-	return 0;
+ }
+ 
+ #ifdef CONFIG_ACPI
+@@ -183,7 +181,7 @@ MODULE_DEVICE_TABLE(of, rfkill_of_match);
+ 
+ static struct platform_driver rfkill_gpio_driver = {
+ 	.probe = rfkill_gpio_probe,
+-	.remove = rfkill_gpio_remove,
++	.remove_new = rfkill_gpio_remove,
+ 	.driver = {
+ 		.name = "rfkill_gpio",
+ 		.acpi_match_table = ACPI_PTR(rfkill_acpi_match),
+
+base-commit: 11afac187274a6177a7ac82997f8691c0f469e41
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.43.0
+
 
