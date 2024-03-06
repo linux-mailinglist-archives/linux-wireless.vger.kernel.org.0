@@ -1,113 +1,255 @@
-Return-Path: <linux-wireless+bounces-4415-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4413-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 393D7872ED9
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Mar 2024 07:24:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9186872E15
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Mar 2024 05:44:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A4834B23A45
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Mar 2024 06:24:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA6CE1C21E07
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Mar 2024 04:44:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 803A61CA96;
-	Wed,  6 Mar 2024 06:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB97C79E4;
+	Wed,  6 Mar 2024 04:44:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicklyemailsend77.com header.i=@quicklyemailsend77.com header.b="u0nVH4x4"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="QljbtKB+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from quicklyemailsend77.com (quicklyemailsend77.com [57.128.172.43])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78711C6A4
-	for <linux-wireless@vger.kernel.org>; Wed,  6 Mar 2024 06:24:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.128.172.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B7D0179B5
+	for <linux-wireless@vger.kernel.org>; Wed,  6 Mar 2024 04:44:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709706246; cv=none; b=gsbZICPfsD8XZC89URO/3svFeZ8E7BhyPlmxMJO5JslC9RO7+oUZkxTF3M/NBg0jyW+U0FWphzHALVYrEwBoomAh38393x0Ak5jQjyY0zG2y0Q9qfvHzkcA7MCkEQ8GixDlpa+QbUoV4ylmxndXipejC3Ty00s/sYVCRtcHrsRo=
+	t=1709700284; cv=none; b=IO3v2KXBHxdAJ7FDnmBbNivig0vGQfzQHC6omnNj01Fte1cbeq5C8ul60Sm9MNKJQf6apTK1Uhy52IQcD1NtUfd8eUnQoC+MwtUdThx3QwwpwosB/RnGywgP86ykU3sOzQk0lOwjr1CUDh9cMJRqzlFq9L90KcEVGxZ7loeizQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709706246; c=relaxed/simple;
-	bh=UkCnC3hxyWUR811IY5T5PlAQFaHotSY7xhHSl4hh88I=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RYr9/EkLs0NhCcK5Rb0gaDP5koFz69bKYZj/gKt+le70kLmYP5lZd/BxhCsU1TYoekPgDh3niAbeQdXg/cqoTJ1FsnQLp1lpz7dLKxnvmdgXLQ1ku4B/RK3doUDHP3oQGVVvibt9ICR0zK/6BbVPOdYDnTlVtcCwFYTqIplkumA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicklyemailsend77.com; spf=pass smtp.mailfrom=quicklyemailsend77.com; dkim=pass (2048-bit key) header.d=quicklyemailsend77.com header.i=@quicklyemailsend77.com header.b=u0nVH4x4; arc=none smtp.client-ip=57.128.172.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicklyemailsend77.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicklyemailsend77.com
-Received: from quicklyemailsend77.com (unknown [185.255.114.95])
-	by quicklyemailsend77.com (Postfix) with ESMTPA id 2D34F3977AE
-	for <linux-wireless@vger.kernel.org>; Wed,  6 Mar 2024 03:51:50 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 quicklyemailsend77.com 2D34F3977AE
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=quicklyemailsend77.com; s=default; t=1709697110;
-	bh=eefLZdwY5mr6nwq86b3d+rtsxGUHJntuGmXl+R35AcQ=;
-	h=Reply-To:From:To:Subject:Date:From;
-	b=u0nVH4x4CwMZoTLiXj0cHJbh4naJpuPQSt1sIRPuAsvT60dbZzhy9djxdY2OLCKNj
-	 xQkc6rwrQhegnetEhaH4k+eyNAT7sV0Elwdc0VneTxqinTEii3Df9Yc3ld+29TCbpY
-	 WkWcywJ1SQ/fRNAUfsJ6oP9PjpEeg2thu0iJs6alZA7vQYxymTyJ6DYpaij1IxeKrI
-	 0bCYW+LmhcAYC4gO0faUjCSzpQqchpULGEmLKdFbADR+9i7twbeD7nCHeV3qkDYLrA
-	 Mpj15ESkC4I9Gb1Jt3RqCdbtbzB+NRBhsYdIqDHDyMegd9ENp8d0+J57AtUmwbKGbL
-	 Le20C0wc+dKYg==
-Reply-To: joakimlarson@skendiaelevator.com
-From: info@quicklyemailsend77.com
-To: linux-wireless@vger.kernel.org
-Subject: =?UTF-8?B?7YyQ66ekIOusuOydmCAyMDI0?=
-Date: 05 Mar 2024 19:51:49 -0800
-Message-ID: <20240305195148.52BA0801BE1600CE@quicklyemailsend77.com>
+	s=arc-20240116; t=1709700284; c=relaxed/simple;
+	bh=HgOrVK3draNDYq63qFD3REzO8c1p+cxbycwBXCYlU0E=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
+	 In-Reply-To:Content-Type; b=NdyRalx+cZwHKSLnSlDl3RiyZCGuRtzEJGVfEXyg0oqan3lmz+TGBMRwQ1w0E6AsuUdUnXUUCv+CQRTVJR2T2d0uHbu0bVZT4+w37hrZaYXOLrE8qSQeLUIpAvF7Cn/6qfHa/NGDWxajzn5BP1sDDnXh8mXtpKsD5MndxRBT9wo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=QljbtKB+; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 4260g51q014707;
+	Wed, 6 Mar 2024 04:44:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:from:to:cc:references
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=2qH83HxliV1uVpQGC6xK96ulfWTpQIzrVHaZ2J7NW+k=; b=Ql
+	jbtKB+3AttpWtH6S2P9UsKnXEMT+sIdowqq7s5OU2u3K1RtCmVYyz+uilSrCWl3q
+	vnhaUyfqAXMdt1Mj9MAduVMIB61pmK9o4dR+zzXgfcNoAeO7H+Hh+eeRAfETyQEy
+	PIqcQmCuPKUMC4apR7avCI2wNwJk628/b39bsOu0/jCCfbMFAfvJ1nNdZR8hJsam
+	hqSJjmnMWhioVLG8989E7PLxRrwD69kPL9UEB/wbl2CAafCkCIfYUjGxXtGFr8Cn
+	yXf5Q0iuzXyuFxAT99RnsG4+QJcxI2ijmdwSvJmm5Ste0VN4NBEWbzezmuReKjQk
+	FJlX+oTWokbAoWmGuYNA==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wp028adfm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 06 Mar 2024 04:44:33 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 4264iWDO028802
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 6 Mar 2024 04:44:32 GMT
+Received: from [10.253.9.240] (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Tue, 5 Mar
+ 2024 20:44:31 -0800
+Message-ID: <c9af14d1-2202-493c-9dae-7e3924e4e149@quicinc.com>
+Date: Wed, 6 Mar 2024 12:44:29 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] wifi: mac80211: mlme: fix verification of puncturing
+ bitmap obtained from AP
+Content-Language: en-US
+From: Kang Yang <quic_kangyang@quicinc.com>
+To: Johannes Berg <johannes@sipsolutions.net>, <ath12k@lists.infradead.org>,
+        Kalle Valo <kvalo@kernel.org>, Kalle Valo <quic_kvalo@quicinc.com>
+CC: <linux-wireless@vger.kernel.org>
+References: <20230928055022.9670-1-quic_kangyang@quicinc.com>
+ <20230928055022.9670-2-quic_kangyang@quicinc.com>
+ <08ff36664eb34bce8e7beb425233b1e8d4a4971c.camel@sipsolutions.net>
+ <d85bd8f7-a6aa-6ff7-09a8-57005e4d0779@quicinc.com>
+In-Reply-To: <d85bd8f7-a6aa-6ff7-09a8-57005e4d0779@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: MlkG6IrN481YpYMktXDB74gg_Hwrnhya
+X-Proofpoint-ORIG-GUID: MlkG6IrN481YpYMktXDB74gg_Hwrnhya
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-06_01,2024-03-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ lowpriorityscore=0 mlxlogscore=999 suspectscore=0 phishscore=0 spamscore=0
+ malwarescore=0 mlxscore=0 clxscore=1011 bulkscore=0 impostorscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2402120000 definitions=main-2403060035
 
 
-=EC=95=88=EB=85=95=ED=95=98=EC=84=B8=EC=9A=94
-=20
-=EC=8A=A4=EC=9B=A8=EB=8D=B4 =EC=8A=A4=EC=B9=B8=EB=94=94=EC=95=84 =EC=97=98=
-=EB=A0=88=EB=B0=94=ED=86=A0(Skandia Elevato)=EC=97=90=EC=84=9C =EC=98=A8 =
-=EC=9A=94=EC=95=84=ED=82=B4 =EB=9D=BC=EB=A5=B4=EC=86=90(JOAKIM LARSSON) .
-=20
-=EC=9A=B0=EB=A6=AC=EB=8A=94 =EA=B8=B4=EA=B8=89=ED=95=98=EA=B2=8C =EA=B7=80=
-=ED=95=98=EC=9D=98 =EC=A0=9C=ED=92=88=EC=9D=84 =ED=95=84=EC=9A=94=EB=A1=9C =
-=ED=95=98=EB=A9=B0 =EA=B0=80=EB=8A=A5=ED=95=9C =ED=95=9C =EB=B9=A8=EB=A6=AC=
- =EC=8B=9C=ED=97=98 =EC=A3=BC=EB=AC=B8=EC=9D=84 =ED=95=98=EA=B3=A0 =EC=8B=
-=B6=EC=8A=B5=EB=8B=88=EB=8B=A4. 
-=20
-=EC=98=A8=EB=9D=BC=EC=9D=B8=EC=9C=BC=EB=A1=9C =EC=A0=9C=ED=92=88=EC=97=90 =
-=EB=8C=80=ED=95=9C =EC=A0=95=EB=B3=B4=EB=A5=BC =EC=88=98=EC=A7=91=ED=95=98=
-=EA=B3=A0 =EC=9E=88=EC=8A=B5=EB=8B=88=EB=8B=A4. 
-=20
-=EA=B7=B8=EB=A6=AC=EA=B3=A0 =EB=82=B4 =EB=AA=A8=EC=9E=84=EC=97=90=EC=84=9C =
-=EB=82=98=EB=8A=94 =EC=9A=B0=EB=A6=AC=EA=B0=80 =EB=8B=B9=EC=8B=A0=EC=9D=98 =
-=EC=A0=9C=ED=92=88=EC=9D=84 =EC=A3=BC=EB=AC=B8=ED=95=A0 =EA=B2=83=EC=9D=B4=
-=EB=9D=BC=EA=B3=A0 =EC=83=9D=EA=B0=81=ED=95=A9=EB=8B=88=EB=8B=A4.
-=20
-1. =EC=B5=9C=EC=8B=A0 Catalouge=EB=A5=BC =EB=B3=B4=EB=82=BC =EC=88=98 =EC=
-=9E=88=EC=8A=B5=EB=8B=88=EA=B9=8C?
-=20
-2. =EC=9A=B0=EB=A6=AC=EA=B0=80 =EC=A3=BC=EB=AC=B8=ED=95=A0 =EC=88=98 =EC=9E=
-=88=EB=8A=94 =EC=B5=9C=EC=86=8C=ED=95=9C=EC=9D=80 =EB=AC=B4=EC=97=87=EC=9D=
-=B4=EA=B3=A0 =EB=98=90=ED=95=9C =EA=B8=B0=EA=B0=84=EC=9D=84 =EB=B3=B4=EB=82=
-=B4=EC=8B=AD=EC=8B=9C=EC=98=A4=20
-=EB=B0=8F =EC=A1=B0=EA=B1=B4.
-3. =EC=9A=B0=EB=A6=AC=EA=B0=80 =EC=A3=BC=EB=AC=B8=ED=95=98=EB=8A=94 =EA=B2=
-=BD=EC=9A=B0 =EC=A7=80=EB=B6=88=EC=9D=84 =EC=96=B4=EB=96=BB=EA=B2=8C =ED=95=
-=B4=EA=B2=B0=ED=95=98=EA=B8=B0=EB=A5=BC =EC=9B=90=ED=95=98=EC=8B=AD=EB=8B=
-=88=EA=B9=8C?
-=20
-=EA=B7=80=ED=95=98=EC=9D=98 =ED=9A=8C=EC=8B=A0 =EB=8C=80=EA=B8=B0 =EC=A4=91=
+
+Due to Johannes's refactor of Puncturing bitmap, this patchset can be 
+abandoned now.
 
 
-Mr Joakim larssonv(=EB=B6=80=EC=82=AC=EC=9E=A5/=EC=98=81=EC=97=85 =EA=B4=80=
-=EB=A6=AC=EC=9E=90)
+Will prepare a new patch about puncturing bitmap for ath12k.
 
-=EB=B0=A9=EB=AC=B8=EC=9E=90 =EC=A3=BC=EC=86=8C: Kedumsv=C3=A4gen 14, SE-534=
- 94 Vara, Sweden
 
-=EB=B0=B0=EC=86=A1 =EC=A3=BC=EC=86=8C: Industriv=C3=A4gen, SE-534 94 Vara, =
-Sweden
-
-joakimlarson@skendiaelevator.com
-https://skandiaelevator.com
-
+On 10/19/2023 11:25 AM, Kang Yang wrote:
+> 
+> 
+> On 10/18/2023 7:39 PM, Johannes Berg wrote:
+>>>   static bool ieee80211_config_puncturing(struct ieee80211_link_data 
+>>> *link,
+>>>                       const struct ieee80211_eht_operation *eht_oper,
+>>>                       u64 *changed)
+>>>   {
+>>> +    struct cfg80211_chan_def rx_chandef = link->conf->chandef;
+>>>       u16 bitmap = 0, extracted;
+>>> +    u8 bw = 0;
+>>>       if ((eht_oper->params & IEEE80211_EHT_OPER_INFO_PRESENT) &&
+>>>           (eht_oper->params &
+>>> @@ -5684,6 +5706,28 @@ static bool ieee80211_config_puncturing(struct 
+>>> ieee80211_link_data *link,
+>>>           const u8 *disable_subchannel_bitmap = info->optional;
+>>>           bitmap = get_unaligned_le16(disable_subchannel_bitmap);
+>>> +        bw = u8_get_bits(info->control, IEEE80211_EHT_OPER_CHAN_WIDTH);
+>>> +        rx_chandef.width = ieee80211_rx_bw_to_nlwidth(bw);
+>>
+>> But looking here, it clearly _doesn't_ make sense. IEEE80211_STA_RX_BW_*
+>> is a purely internal API, has nothing to do with the spec.
+>>
+>> All this might even be "accidentally correct", but it really isn't right
+>> at all - the values in IEEE80211_EHT_OPER_CHAN_WIDTH are
+>> IEEE80211_EHT_OPER_CHAN_WIDTH_*, not IEEE80211_STA_RX_BW_*.
+>>
+> 
+> 
+> 
+> Oh, sorry that i didn't notice IEEE80211_EHT_OPER_CHAN_WIDTH_*, will 
+> replace them.
+> 
+> 
+>>
+>>
+>> More generally though, I don't even understand the change.
+> 
+> 
+> During assoc, downgrade may happen in func ieee80211_config_bw(). In 
+> this situation, the bandwidth in beacon and the bandwidth after 
+> downgrade(chandef->width, maybe i should call it local bandwidth during 
+> below context, will use this name in next version) during assoc will be 
+> different.
+> 
+> The change is based on this point.
+> 
+> 
+>>
+>>> +        if (rx_chandef.width == NL80211_CHAN_WIDTH_80)
+>>> +            rx_chandef.center_freq1 =
+>>> +                ieee80211_channel_to_frequency(info->ccfs0,
+>>> +                                   rx_chandef.chan->band);
+>>> +        else if (rx_chandef.width == NL80211_CHAN_WIDTH_160 ||
+>>> +             rx_chandef.width == NL80211_CHAN_WIDTH_320)
+>>> +            rx_chandef.center_freq1 =
+>>> +                ieee80211_channel_to_frequency(info->ccfs1,
+>>> +                                   rx_chandef.chan->band);
+>>> +    }
+>>> +
+>>> +    if (!cfg80211_valid_disable_subchannel_bitmap(&bitmap,
+>>> +                              &rx_chandef)) {
+> 
+> 
+> Here i change you code 
+> cfg80211_valid_disable_subchannel_bitmap(&bitmap,&link->conf->chandef) to
+> cfg80211_valid_disable_subchannel_bitmap(&bitmap,&rx_chandef)
+> 
+> As described above, downgrade may happen before enter 
+> ieee80211_config_puncturing(), so the bandwidth in link->conf->chandef 
+> may be different with bandwidth in beacon.
+> 
+> Here, the bitmap you used is from eht_oper in beacon, but the bandwidth 
+> you used is local bandwidth. They are not match. This is the first issue.
+> 
+> 
+>>> +        link_info(link,
+>>> +              "Got an invalid disable subchannel bitmap from AP %pM: 
+>>> bitmap = 0x%x, bw = 0x%x. disconnect\n",
+>>> +              link->u.mgd.bssid,
+>>> +              bitmap,
+>>> +              rx_chandef.width);
+>>> +        return false;
+>>>       }
+>>>       extracted = ieee80211_extract_dis_subch_bmap(eht_oper,
+>> // I've filled in the context here in the patch
+> 
+> 
+> Here is move the cfg80211_valid_disable_subchannel_bitmap() before the 
+> ieee80211_extract_dis_subch_bmap(), cause i think check should done 
+> before extract.
+> 
+> This is the second issue i said(perhaps not a issue).
+> 
+> 
+> 
+>>>                                                       
+>>> &link->conf->chandef,
+>>>                                                       bitmap);
+>>>
+>>>          /* accept if there are no changes */
+>>>          if (!(*changed & BSS_CHANGED_BANDWIDTH) &&
+>>>              extracted == link->conf->eht_puncturing)
+>>>                  return true;
+>>
+>> but ... ieee80211_extract_dis_subch_bmap actually already takes the
+>> bandwidth from eht_oper into account!
+> 
+> Yes, the ieee80211_extract_dis_subch_bmap realy takes the bandwidth from 
+> eht_oper into account, and the local_bw in this func is the local 
+> bandwidth i discuss.
+> 
+> You already notice the difference between bandwidth from eht_oper and 
+> local bandwidth in ieee80211_extract_dis_subch_bmap(). I think you 
+> should also take it into account when you use 
+> cfg80211_valid_disable_subchannel_bitmap(), right?
+> 
+> BTW, do you want to verify the bitmap from eht_oper, or the extracted 
+> bitmap?
+> 
+> Anyway, whether you want to verify the bitmap from eht_oper or extracted 
+> bitmap in cfg80211_valid_disable_subchannel_bitmap(), the bitmap and 
+> bandwidth must correspond.
+> 
+> 
+> 
+>>> -    if (!cfg80211_valid_disable_subchannel_bitmap(&bitmap,
+>>> -                              &link->conf->chandef)) {
+>>
+>> So are you saying that the real bug is that we're missing to update the
+>> link->conf->chandef with the EHT operation from the assoc response?
+>>
+>> But you didn't fix that issue ... so not sure?
+> 
+> 
+> I have described my patch with the comments above, maybe i should make 
+> my commit log more coherent.
+> 
+> 
+> Besides, this is you first version, i made some comments on Nov. 21, 
+> 2022, 7:29 a.m. Maybe you already forget them.
+> https://patchwork.kernel.org/project/linux-wireless/patch/20220325140859.e48bf244f157.I3547481d49f958389f59dfeba3fcc75e72b0aa6e@changeid/
+> 
+> 
+>>
+>> johannes
+>>
+> 
 
