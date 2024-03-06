@@ -1,129 +1,86 @@
-Return-Path: <linux-wireless+bounces-4429-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4430-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6FC487358F
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Mar 2024 12:26:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AD358735A5
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Mar 2024 12:36:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 870E71F26DF4
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Mar 2024 11:26:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8461B22DE0
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Mar 2024 11:36:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49F1B7F7C1;
-	Wed,  6 Mar 2024 11:26:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B8A57867C;
+	Wed,  6 Mar 2024 11:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XNRSSwK3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HHPIPDY8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883547F481;
-	Wed,  6 Mar 2024 11:26:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4770F604D5;
+	Wed,  6 Mar 2024 11:36:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709724393; cv=none; b=tT9J7wsyupa7HpVp/aKT2DhI2x/usCzHvGsfae2n3oCo/lwivvf2cm/WsTqBvETsFk6sP9TpqDWbsxFThyLXMpv6QCrwwGFZ5dtpDKgZE573Wq0nVCZiZ3P3lToRR+EPzZ140IBor0GKvl2Y1W8HNW2MfVbcRikeNMDwE8vzGcg=
+	t=1709724978; cv=none; b=riDzPQuvC9ZDOsNM/Cgy/dOsPl7BII+GAlcyMpwQ/qb6QmeyjHkWBg3M/dcBd5KrdwE5JDjtmVFrosWDWrkh52twwHhnSyWz2xkNFfd9FNlVjGQQjp8YwNZleU/u3XJE7KBcY6tqxO59jhD/dicDEWGim4HfhHRTeBanpbYLx/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709724393; c=relaxed/simple;
-	bh=gOliCHdIhgBV7q1NLhl7x0s+V5V9uDwRDxehcYX/cE0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=cO9yAxc0txkf94ldmnJVjSu6exDJsnTfJyIEAvWaEckCKgiY5YK//mP/gOFlmdKZRSaiDFyRxjlWRPXxAyRwuK/fbAD2Uh2faoTwHXRQqU+/lCuc8mV/bo27bWhqwJEvBLcm5DhI7oPQgnXTmpanE4J0TlVOWx+IyBvAg8c668o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XNRSSwK3; arc=none smtp.client-ip=209.85.167.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5135ab96dcbso863615e87.1;
-        Wed, 06 Mar 2024 03:26:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709724390; x=1710329190; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tpGDKqk8r4MMhQWPAjkpllQftqadx7vE/B26eIDNkxw=;
-        b=XNRSSwK3YGLc3E+nfwPoxXjCOEOwYoXxggLaq8y87w/WmcuIZCtSkSDs5Mhtmodx5T
-         zcCBHSiBWCTbyr1fR/jQp1tWe9P7CvpS3Jbm2z3IJYWPrHj9i/N/LJ5kg+q41s3erm5J
-         oYT471s5Rn6ul95mrK+1MR49zjXqIya63xLyDEjP1q/Ycs0qcr60jk1zOf6999YIyauM
-         d+/QbcnxNM1chz+n9JgWvv0WblF6lEo3f8TIGrA2l92/8VIUNdXtuiNU+rKNFbY/bvRa
-         xXLsOTXU68nmz0oyi3k260TS5Nl46Rrh5h7QuuyVwoM+jZpP8xvIYH3//1YMvylfBtZU
-         RoUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709724390; x=1710329190;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tpGDKqk8r4MMhQWPAjkpllQftqadx7vE/B26eIDNkxw=;
-        b=hvIwQKADHeaR6h5adF8ovyWbQga5Ayc4Kw7q0Huw6O9fJBqIi1aKUwVaswG70JAeqj
-         xmkaIyM6lSoYiKN7CojlXeyy4UAI8iUh0jTGLG62icbIuZ5Sa3ebwjQAfzxnjQP3E1Gw
-         qEwVwJxrxRnjs1uz0c+OrXKEpVzjBFNOAmy40m1q4P/lpc+8dXUj2maXEcpWS/zSS54X
-         mq4491gsKCAFw99cThQeFEJshqS24g7VgCqCyiKtNGcRwloRXvwQm8Nc+gk1HdX7+mCb
-         8tcPalWO0DtnYa2yfA326IW3NkF7TmnAsxFI3OjrdU0JupXiaRxSpTPejs4sGwfA5fZ3
-         36pw==
-X-Forwarded-Encrypted: i=1; AJvYcCV2PcV5chqY1yaTxs8pnOrISTrmb9FMzxShw33nWndLNt6nTw0UujRginy9eNmX1BVezxrd6Qgdulg7uVjZCr5mFBlTgAFSPh/L0L/1caP/CUlitux/k4jL5+3YcAwm6oSLYSa+cDFP2Nol57E=
-X-Gm-Message-State: AOJu0Yzkc8rJhcFBfC5056ZVPy7q9ToxcJAi04+mt0XJyNZmFqogAPao
-	1pEbW1AZlcPaCW1iKxBwTScZFYYhfILbIl5tL/KErwsGswzOigDZ
-X-Google-Smtp-Source: AGHT+IFLqQYS4L2t+Ktsd23D5IHht1KQAiUdDItEDyVlhuNVQapcO3cLMkivaXKBF1MIZP28km9tZA==
-X-Received: by 2002:ac2:4836:0:b0:512:f4f6:9343 with SMTP id 22-20020ac24836000000b00512f4f69343mr1853154lft.26.1709724389385;
-        Wed, 06 Mar 2024 03:26:29 -0800 (PST)
-Received: from rand-ubuntu-development.dl.local (mail.confident.ru. [85.114.29.218])
-        by smtp.gmail.com with ESMTPSA id b6-20020a056512070600b00513216fa562sm2576385lfs.202.2024.03.06.03.26.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Mar 2024 03:26:28 -0800 (PST)
-From: Rand Deeb <rand.sec96@gmail.com>
-To: kvalo@kernel.org
-Cc: deeb.rand@confident.ru,
-	linux-kernel@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	m@bues.ch,
-	rand.sec96@gmail.com,
-	voskresenski.stanislav@confident.ru
-Subject: [PATCH v2] ssb: Fix potential NULL pointer dereference in ssb_device_uevent
-Date: Wed,  6 Mar 2024 14:25:58 +0300
-Message-Id: <20240306112558.163415-1-rand.sec96@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <170966495037.424347.1344425289163744212.kvalo@kernel.org>
+	s=arc-20240116; t=1709724978; c=relaxed/simple;
+	bh=EYPvwpSzXJAtAhLtRrNbtR5A5VaRRo7dt9OYmdJzSlU=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=IXZrTpSGc/4hDzRpdDMt7rjqxY5V+c4BF2S7q/q2eBvzbY4RsRWGKHSJAn0uMI7J9x0Bfkhh6sSOujjZzwICyZRXh6EDgKBtJFBV7DHCpzwX+ECFihmAfZfmHkG8EX0eXcat3qafS8QtJV/Qra/GcQLiDQQWx84GIluyeq5vaLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HHPIPDY8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C097C433F1;
+	Wed,  6 Mar 2024 11:36:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709724977;
+	bh=EYPvwpSzXJAtAhLtRrNbtR5A5VaRRo7dt9OYmdJzSlU=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=HHPIPDY8RxnjljDpAkz41MV4E33qMpoPfhQfQaC6SiuTVuFfLb94Muf00XtKk3pun
+	 tbzNE6yxcNdfBmwmbddSp3FIVbPPKUwmQIKF9QoWb/fFeRmjr4Qvl8S1+3o89eRidR
+	 bdizK524pgRTwzHuC25EPvYW/Gm1xSZ0zCmKDV5ve/esr1eWLnY3y/9NuICgTXN0UP
+	 7PCzcoiM2MXmUmgXgeorMwldjd7sX3OSouqC91D+Z8upLbnKn9yugRRBYxNIvB7m3B
+	 lLK+n+6lcqUIJVJU0o/Mw07Ni7tVYYZj55anRmpSZAG2Z80NXyj0v+WuRvE5fTjfL5
+	 9NjgbFjlotgKg==
+From: Kalle Valo <kvalo@kernel.org>
+To: Rand Deeb <rand.sec96@gmail.com>
+Cc: deeb.rand@confident.ru,  linux-kernel@vger.kernel.org,
+  linux-wireless@vger.kernel.org,  lvc-project@linuxtesting.org,
+  m@bues.ch,  voskresenski.stanislav@confident.ru
+Subject: Re: [PATCH v2] ssb: Fix potential NULL pointer dereference in
+ ssb_device_uevent
 References: <170966495037.424347.1344425289163744212.kvalo@kernel.org>
+	<20240306112558.163415-1-rand.sec96@gmail.com>
+Date: Wed, 06 Mar 2024 13:36:14 +0200
+In-Reply-To: <20240306112558.163415-1-rand.sec96@gmail.com> (Rand Deeb's
+	message of "Wed, 6 Mar 2024 14:25:58 +0300")
+Message-ID: <878r2vh9sh.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Hi Kalle,
+Rand Deeb <rand.sec96@gmail.com> writes:
 
-It seems there's been a mix-up in applying the patch. The previous patch
-was intended for the linux-5.10.y branch, not the master branch. I
-appreciate your attention to detail.
+> Hi Kalle,
+>
+> It seems there's been a mix-up in applying the patch. The previous patch
+> was intended for the linux-5.10.y branch, not the master branch. I
+> appreciate your attention to detail.
+>
+> The following patch has been tailored for the master branch and should
+> resolve the issue properly. Thank you for your understanding.
 
-The following patch has been tailored for the master branch and should
-resolve the issue properly. Thank you for your understanding.
+This text should be below '---' line so that it's not included to the
+git history and you should restore the original commit message. Please
+submit v3 with the correct commit message and please also read the wiki
+link below.
 
-Signed-off-by: Rand Deeb <rand.sec96@gmail.com>
----
- drivers/ssb/main.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/ssb/main.c b/drivers/ssb/main.c
-index b9934b9c2d70..070a99a4180c 100644
---- a/drivers/ssb/main.c
-+++ b/drivers/ssb/main.c
-@@ -341,11 +341,13 @@ static int ssb_bus_match(struct device *dev, struct device_driver *drv)
- 
- static int ssb_device_uevent(const struct device *dev, struct kobj_uevent_env *env)
- {
--	const struct ssb_device *ssb_dev = dev_to_ssb_dev(dev);
-+	const struct ssb_device *ssb_dev;
- 
- 	if (!dev)
- 		return -ENODEV;
- 
-+	ssb_dev = dev_to_ssb_dev(dev);
-+
- 	return add_uevent_var(env,
- 			     "MODALIAS=ssb:v%04Xid%04Xrev%02X",
- 			     ssb_dev->id.vendor, ssb_dev->id.coreid,
 -- 
-2.34.1
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
