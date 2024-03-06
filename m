@@ -1,133 +1,101 @@
-Return-Path: <linux-wireless+bounces-4435-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4436-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94F48873859
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Mar 2024 15:06:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3039873899
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Mar 2024 15:11:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 966491C21128
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Mar 2024 14:06:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F42028469A
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Mar 2024 14:11:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE5E5131E32;
-	Wed,  6 Mar 2024 14:05:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1B7F130E49;
+	Wed,  6 Mar 2024 14:11:48 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from zg8tmtu5ljg5lje1ms4xmtka.icoremail.net (zg8tmtu5ljg5lje1ms4xmtka.icoremail.net [159.89.151.119])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E279F131744;
-	Wed,  6 Mar 2024 14:05:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.89.151.119
+Received: from sgoci-sdnproxy-4.icoremail.net (sgoci-sdnproxy-4.icoremail.net [129.150.39.64])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32CBB131744;
+	Wed,  6 Mar 2024 14:11:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.150.39.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709733916; cv=none; b=Dqa3q6u3DRulFTh76UN/uX4R/lidW3hoPkQlmfP+J+cyWfL+1VqwUTa/XJNDU+46oMiL3X2WVAq1SYDcydPm4TK5u7dg1YHT6w4qneBod4rjNNFawnrmw9/y/q1A9hvN+7O88wW7s9c2hhaXWkRlVTvX4KWtsNgnwzgQLdgz8PQ=
+	t=1709734308; cv=none; b=fbPl142g+ClxqC/2P0QqPQ7O9X9MCd/q99PFlJr/FfKpDwqRjtU6mC64t9cb1nz7jfYIfmC299YBnBPWs+KXB1qKgMAZr2asvnjbxlz/7cOiahN1QjiaDureA30YjjAU9xfBE9h4plzx8d9/IXFK7uRTAci9J/03oQbx4myJSY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709733916; c=relaxed/simple;
-	bh=c+XZMGGuRxFnqFTMxWLbMgz0UPxrybXa/Oa8LOWX8MA=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=gtYnVzMy1xrIF07tzlWlBa5DEqxFVDDbS5FEKAmGvjL7NgajjS2Y0ONmE9gGwZtRoiM97G4F/tHkD5bdQpUNrgzRMouoU3+Mguwm6VdJflKt1tiHtLRwDfiqEVVMWrBBTeVSWILy565ZJt6yXT9oxkQ8atotSxisDTxpDf0Z8y4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=159.89.151.119
+	s=arc-20240116; t=1709734308; c=relaxed/simple;
+	bh=fZVgHUnYdsFxM3B1qJGTGRghmDpQj6Xe/Q2Ec5t6OfA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID; b=VeNKN5HArV8VsUweYgp7szpadp3P8GG/ZmkuK3IhMlBY2n1Bn+gDzNLBdtcUpoiHKL3N6rufSJjZ43fRLxo2ucIUboNacVbP22q72MquPlGMWRKpvPz5OivI92ct6G3EMVkmin08rbD8OXnALuiGV/FiCD5h2HK4W6GDaX3+TSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=129.150.39.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
-Received: from ubuntu.localdomain (unknown [106.117.76.127])
-	by mail-app3 (Coremail) with SMTP id cC_KCgAnLjn6d+hlumYFAg--.2983S2;
-	Wed, 06 Mar 2024 22:04:52 +0800 (CST)
-From: Duoming Zhou <duoming@zju.edu.cn>
-To: linux-kernel@vger.kernel.org
-Cc: brcm80211-dev-list.pdl@broadcom.com,
-	brcm80211@lists.linux.dev,
-	linux-wireless@vger.kernel.org,
-	minipli@grsecurity.net,
-	hdegoede@redhat.com,
-	kvalo@kernel.org,
-	arend.vanspriel@broadcom.com,
-	arnd@arndb.de,
-	Duoming Zhou <duoming@zju.edu.cn>
-Subject: [PATCH v2] wifi: brcmfmac: pcie: handle randbuf allocation failure
-Date: Wed,  6 Mar 2024 22:04:37 +0800
-Message-Id: <20240306140437.18177-1-duoming@zju.edu.cn>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID:cC_KCgAnLjn6d+hlumYFAg--.2983S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxGw4UJFW7Zr17Xr1rGryrXrb_yoW5Gr1Dpa
-	y5JFW29r1UGa1Sg39YkFZ7Cr1Yy3ZYk3y0gw4xG397uF15Ary8Zry09FyF9r1UurWIya47
-	tayUtF9rWFsxt37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9Y14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
-	Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x
-	0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2
-	zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF
-	4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWU
-	CwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCT
-	nIWIevJa73UjIFyTuYvjfUonmRUUUUU
-X-CM-SenderInfo: qssqjiasttq6lmxovvfxof0/1tbiAwQMAWXnadMZWQAusc
+Received: from duoming$zju.edu.cn ( [106.117.76.127] ) by
+ ajax-webmail-mail-app2 (Coremail) ; Wed, 6 Mar 2024 22:11:21 +0800
+ (GMT+08:00)
+Date: Wed, 6 Mar 2024 22:11:21 +0800 (GMT+08:00)
+X-CM-HeaderCharset: UTF-8
+From: duoming@zju.edu.cn
+To: "Arend van Spriel" <arend.vanspriel@broadcom.com>
+Cc: "Arnd Bergmann" <arnd@arndb.de>, "Kalle Valo" <kvalo@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	"Konrad Dybcio" <konrad.dybcio@linaro.org>,
+	"Hans de Goede" <hdegoede@redhat.com>, minipli@grsecurity.net,
+	linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com
+Subject: Re: [PATCH] wifi: brcmfmac: pcie: handle randbuf allocation failure
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2023.4-cmXT5 build
+ 20231205(37e20f0e) Copyright (c) 2002-2024 www.mailtech.cn
+ mispb-4df6dc2c-e274-4d1c-b502-72c5c3dfa9ce-zj.edu.cn
+In-Reply-To: <29de0b03-f65b-4918-ab5b-28dfd1c16a5d@broadcom.com>
+References: <20240301135134.29577-1-duoming@zju.edu.cn>
+ <fdaefac9-1d02-4424-b893-4306b97028ca@broadcom.com>
+ <87h6hjhbqy.fsf@kernel.org>
+ <3d433b58-384f-452e-904d-62e23b3b5a0b@app.fastmail.com>
+ <29de0b03-f65b-4918-ab5b-28dfd1c16a5d@broadcom.com>
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=UTF-8
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Message-ID: <224867b0.cdd3.18e141ac13c.Coremail.duoming@zju.edu.cn>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:by_KCgBnja2JeehlSFzNAg--.50707W
+X-CM-SenderInfo: qssqjiasttq6lmxovvfxof0/1tbiAwQMAWXnadMaowAAsL
+X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
+	CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
+	daVFxhVjvjDU=
 
-The kzalloc() in brcmf_pcie_download_fw_nvram() will return null
-if the physical memory has run out. As a result, if we use
-get_random_bytes() to generate random bytes in the randbuf, the
-null pointer dereference bug will happen.
-
-In order to prevent allocation failure, this patch adds a separate
-function using buffer on kernel stack to generate random bytes in
-the randbuf, which could prevent the kernel stack from overflow.
-
-Fixes: 91918ce88d9f ("wifi: brcmfmac: pcie: Provide a buffer of random bytes to the device")
-Suggested-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
----
-Changes in v2:
-  - Add a separate function using buffer on stack.
-
- .../wireless/broadcom/brcm80211/brcmfmac/pcie.c   | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-index d7fb88bb6ae..06698a714b5 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-@@ -1675,6 +1675,15 @@ struct brcmf_random_seed_footer {
- #define BRCMF_RANDOM_SEED_MAGIC		0xfeedc0de
- #define BRCMF_RANDOM_SEED_LENGTH	0x100
- 
-+static noinline_for_stack void
-+brcmf_pcie_provide_random_bytes(struct brcmf_pciedev_info *devinfo, u32 address)
-+{
-+	u8 randbuf[BRCMF_RANDOM_SEED_LENGTH];
-+
-+	get_random_bytes(randbuf, BRCMF_RANDOM_SEED_LENGTH);
-+	memcpy_toio(devinfo->tcm + address, randbuf, BRCMF_RANDOM_SEED_LENGTH);
-+}
-+
- static int brcmf_pcie_download_fw_nvram(struct brcmf_pciedev_info *devinfo,
- 					const struct firmware *fw, void *nvram,
- 					u32 nvram_len)
-@@ -1717,7 +1726,6 @@ static int brcmf_pcie_download_fw_nvram(struct brcmf_pciedev_info *devinfo,
- 				.length = cpu_to_le32(rand_len),
- 				.magic = cpu_to_le32(BRCMF_RANDOM_SEED_MAGIC),
- 			};
--			void *randbuf;
- 
- 			/* Some Apple chips/firmwares expect a buffer of random
- 			 * data to be present before NVRAM
-@@ -1729,10 +1737,7 @@ static int brcmf_pcie_download_fw_nvram(struct brcmf_pciedev_info *devinfo,
- 				    sizeof(footer));
- 
- 			address -= rand_len;
--			randbuf = kzalloc(rand_len, GFP_KERNEL);
--			get_random_bytes(randbuf, rand_len);
--			memcpy_toio(devinfo->tcm + address, randbuf, rand_len);
--			kfree(randbuf);
-+			brcmf_pcie_provide_random_bytes(devinfo, address);
- 		}
- 	} else {
- 		brcmf_dbg(PCIE, "No matching NVRAM file found %s\n",
--- 
-2.17.1
-
+T24gV2VkLCA2IE1hciAyMDI0IDEzOjUzOjE5ICswMTAwIEFyZW5kIHZhbiBTcHJpZWwgd3JvdGU6
+Cj4gPj4+PiBUaGUga3phbGxvYygpIGluIGJyY21mX3BjaWVfZG93bmxvYWRfZndfbnZyYW0oKSB3
+aWxsIHJldHVybgo+ID4+Pj4gbnVsbCBpZiB0aGUgcGh5c2ljYWwgbWVtb3J5IGhhcyBydW4gb3V0
+LiBBcyBhIHJlc3VsdCwgaWYgd2UKPiA+Pj4+IHVzZSBnZXRfcmFuZG9tX2J5dGVzKCkgdG8gZ2Vu
+ZXJhdGUgcmFuZG9tIGJ5dGVzIGluIHRoZSByYW5kYnVmLAo+ID4+Pj4gdGhlIG51bGwgcG9pbnRl
+ciBkZXJlZmVyZW5jZSBidWcgd2lsbCBoYXBwZW4uCj4gPj4+PiBSZXR1cm4gLUVOT01FTSBmcm9t
+IGJyY21mX3BjaWVfZG93bmxvYWRfZndfbnZyYW0oKSBpZiBremFsbG9jKCkKPiA+Pj4+IGZhaWxz
+IGZvciByYW5kYnVmLgo+ID4+Pj4gRml4ZXM6IDkxOTE4Y2U4OGQ5ZiAoIndpZmk6IGJyY21mbWFj
+OiBwY2llOiBQcm92aWRlIGEgYnVmZmVyIG9mCj4gPj4+PiByYW5kb20gYnl0ZXMgdG8gdGhlIGRl
+dmljZSIpCj4gPj4+Cj4gPj4+IExvb2tzIGdvb2QgdG8gbWUuIExvb2tpbmcgZm9yIGtlcm5lbCBn
+dWlkZWxpbmUgYWJvdXQgc3RhY2sgdXNhZ2UgdG8KPiA+Pj4gZGV0ZXJtaW5lIHdoZXRoZXIgaXQg
+d291bGQgYmUgb2sgdG8ganVzdCB1c2UgYnVmZmVyIG9uIHN0YWNrLiBEb2VzCj4gPj4+IGFueW9u
+ZSBrbm93LiBUaGlzIG9uZSBpcyAyNTYgYnl0ZXMgc28gSSBndWVzcyB0aGUgYWxsb2NhdGlvbiBp
+cwo+ID4+PiB3YXJyYW50ZWQgaGVyZS4KPiA+Pgo+ID4+IEFybmQsIHdoYXQgZG8geW91IHN1Z2dl
+c3Q/IERvIHdlIGhhdmUgYW55IGRvY3VtZW50YXRpb24gb3IgZ3VpZGVsaW5lcwo+ID4+IGFueXdo
+ZXJlPwo+ID4gCj4gPiBJIGRvbid0IHRoaW5rIHdlIGhhdmUgYW55dGhpbmcgZG9jdW1lbnQgYWJv
+dXQgdGhpcy4gSSB1c3VhbGx5Cj4gPiBjb25zaWRlciBhbnl0aGluZyBtb3JlIHRoYW4gaGFsZiBh
+IGtpbG9ieXRlIGFzIGV4Y2Vzc2l2ZSwKPiA+IGV2ZW4gdGhvdWdoIHRoZSB3YXJuaW5nIGxpbWl0
+IGlzIGhpZ2hlci4KPiA+IAo+ID4gMjU2IGJ5dGVzIGlzIHVzdWFsbHkgZmluZSwgYnV0IGluIHRo
+aXMgY2FzZSBJIHdvdWxkIHNwbGl0IG91dAo+ID4gdGhlIGJhc2ljIGJsb2NrIHRoYXQgZG9lcyB0
+aGlzIGludG8gYSBzZXBhcmF0ZSBmdW5jdGlvbgo+ID4gc28gaXQgZG9lcyBub3Qgc2hhcmUgdGhl
+IHN0YWNrIGZyYW1lIHdpdGggb3RoZXIgbGVhZiBmdW5jdGlvbnMKPiA+IGJlbG93IGJyY21mX3Bj
+aWVfZG93bmxvYWRfZndfbnZyYW0oKS4gSXQgbWlnaHQgYWxzbyBiZSBqdXN0aWZpZWQKPiA+IHRv
+IHRoZW4gbWFyayBpdCBhcyBub2lubGluZV9mb3Jfc3RhY2suCj4gCj4gVGhhbmtzLCBBcm5kCj4g
+Cj4gTWFrZXMgc2Vuc2UuCj4gCj4gQER1b21pbmcgWmhvdSwKPiAKPiBDYW4geW91IHByb3ZpZGUg
+YSB2MiB3aXRoIHNlcGFyYXRlIGZ1bmN0aW9uIHVzaW5nIGJ1ZmZlciBvbiBzdGFjaz8KPiAKPiBz
+dGF0aWMgbm9pbmxpbmVfZm9yX3N0YWNrCj4gdm9pZCBicmNtZl9wY2llX3Byb3ZpZGVfcmFuZG9t
+X2J5dGVzKHN0cnVjdCBicmNtZl9wY2llZGV2X2luZm8gKmRldmluZm8sIAo+IHUzMiBhZGRyZXNz
+KQo+IHsKPiAJdTggcmFuZGJ1ZltCUkNNRl9SQU5ET01fU0VFRF9MRU5HVEhdOwo+IAk6Cj4gCToK
+PiB9CgpUaGFuayB5b3UgZm9yIHlvdXIgc3VnZ2VzdGlvbnMsIEkgaGF2ZSBhbHJlYWR5IHByb3Zp
+ZGVkIGEgdjIuCgpCZXN0IHJlZ2FyZHMsCkR1b21pbmcgWmhvdQo=
 
