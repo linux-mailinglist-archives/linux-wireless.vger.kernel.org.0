@@ -1,147 +1,129 @@
-Return-Path: <linux-wireless+bounces-4428-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4429-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBF8E873575
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Mar 2024 12:15:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6FC487358F
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Mar 2024 12:26:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00AB91C22F1B
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Mar 2024 11:15:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 870E71F26DF4
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Mar 2024 11:26:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCF6C60B88;
-	Wed,  6 Mar 2024 11:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49F1B7F7C1;
+	Wed,  6 Mar 2024 11:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vMmObzNl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XNRSSwK3"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA3A3605B4;
-	Wed,  6 Mar 2024 11:15:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883547F481;
+	Wed,  6 Mar 2024 11:26:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709723724; cv=none; b=hCtQ6QBl1FdgmYxD+XC/iE0smx1264tkWH/6WIRT8XSqixW5T2mZZm2jU6L8yQJrTRlHJ+Qs8Mv2kCa7mmZRIUWDUXYkQhFu9IHq5CRe+IWABKA6qhw0+rdaEGXK+C58rolARWsvaO9B+KVF/BiJdxDxqktEhzAsoPTwiqRU9UU=
+	t=1709724393; cv=none; b=tT9J7wsyupa7HpVp/aKT2DhI2x/usCzHvGsfae2n3oCo/lwivvf2cm/WsTqBvETsFk6sP9TpqDWbsxFThyLXMpv6QCrwwGFZ5dtpDKgZE573Wq0nVCZiZ3P3lToRR+EPzZ140IBor0GKvl2Y1W8HNW2MfVbcRikeNMDwE8vzGcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709723724; c=relaxed/simple;
-	bh=YC1JZzUSGm90LAa8typocXvGi3dcuKhnwtfIEXMfegA=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=d/wZwqSry1aorr4MqKBU/boJ6BtOrGaowugjDpXeUNSLtNi744pjDv59RloXJkGrG+HKD9+Je/Xp3URdaiNCzIp2wwMSV9DhotxHKjT6S1QAdrthOJX56tY+KGoQQKwbfDnYoBvHwhv4h2/R/iIOZfHAX2ZnH2OMdSMoR2yKYIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vMmObzNl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02C5FC433C7;
-	Wed,  6 Mar 2024 11:15:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709723724;
-	bh=YC1JZzUSGm90LAa8typocXvGi3dcuKhnwtfIEXMfegA=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=vMmObzNlM9Tbn7pDK2KR94nuzJA+dkX/WTBV9JAHY7Zq6pgtm9EWAr8uauJqUg2Fw
-	 PQ2GNr12JQkL2VIlIu1gaL6rQsr1KJkhS/0Wau+AeicDKCWf8B4cpfRHDWaYzRdz9/
-	 jQWAkUJO+clPilmjGVk/JO8AKzdjmdVS1tQJb1DrLIyfr9VJgamMaI9kGkb/BcQWUC
-	 DNeXHgiEEikyZZBU1BOPHyjpN5gVdP2eeLh97OQyDR+CC/G3gJVqFIxNWjPgGpEEGq
-	 c8yYEAOZCz1kNUNwB7pD3+QUES9AnH4qu1uUyQoMAW7hhBHBkirC6CRXsFDinpVcKG
-	 S/KcJa5KFduBg==
-From: Kalle Valo <kvalo@kernel.org>
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Jeff Johnson <quic_jjohnson@quicinc.com>,  "David S. Miller"
- <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,  Jakub
- Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>,  Rob Herring
- <robh+dt@kernel.org>,  Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>,  Conor Dooley <conor+dt@kernel.org>,
-  Bjorn Andersson <andersson@kernel.org>,  Konrad Dybcio
- <konrad.dybcio@linaro.org>,  ath10k@lists.infradead.org,
-  linux-wireless@vger.kernel.org,  netdev@vger.kernel.org,
-  devicetree@vger.kernel.org,  linux-arm-msm@vger.kernel.org,  Krzysztof
- Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH RFC v2 0/4] wifi: ath10k: support board-specific
- firmware overrides
-References: <20240306-wcn3990-firmware-path-v2-0-f89e98e71a57@linaro.org>
-	<87plw7hgt4.fsf@kernel.org>
-	<CAA8EJpr6fRfY5pNz6cXVTaNashqffy5_qLv9c35nkgjaDuSgyQ@mail.gmail.com>
-Date: Wed, 06 Mar 2024 13:15:18 +0200
-In-Reply-To: <CAA8EJpr6fRfY5pNz6cXVTaNashqffy5_qLv9c35nkgjaDuSgyQ@mail.gmail.com>
-	(Dmitry Baryshkov's message of "Wed, 6 Mar 2024 11:23:21 +0200")
-Message-ID: <87cys7hard.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1709724393; c=relaxed/simple;
+	bh=gOliCHdIhgBV7q1NLhl7x0s+V5V9uDwRDxehcYX/cE0=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=cO9yAxc0txkf94ldmnJVjSu6exDJsnTfJyIEAvWaEckCKgiY5YK//mP/gOFlmdKZRSaiDFyRxjlWRPXxAyRwuK/fbAD2Uh2faoTwHXRQqU+/lCuc8mV/bo27bWhqwJEvBLcm5DhI7oPQgnXTmpanE4J0TlVOWx+IyBvAg8c668o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XNRSSwK3; arc=none smtp.client-ip=209.85.167.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5135ab96dcbso863615e87.1;
+        Wed, 06 Mar 2024 03:26:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1709724390; x=1710329190; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tpGDKqk8r4MMhQWPAjkpllQftqadx7vE/B26eIDNkxw=;
+        b=XNRSSwK3YGLc3E+nfwPoxXjCOEOwYoXxggLaq8y87w/WmcuIZCtSkSDs5Mhtmodx5T
+         zcCBHSiBWCTbyr1fR/jQp1tWe9P7CvpS3Jbm2z3IJYWPrHj9i/N/LJ5kg+q41s3erm5J
+         oYT471s5Rn6ul95mrK+1MR49zjXqIya63xLyDEjP1q/Ycs0qcr60jk1zOf6999YIyauM
+         d+/QbcnxNM1chz+n9JgWvv0WblF6lEo3f8TIGrA2l92/8VIUNdXtuiNU+rKNFbY/bvRa
+         xXLsOTXU68nmz0oyi3k260TS5Nl46Rrh5h7QuuyVwoM+jZpP8xvIYH3//1YMvylfBtZU
+         RoUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709724390; x=1710329190;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tpGDKqk8r4MMhQWPAjkpllQftqadx7vE/B26eIDNkxw=;
+        b=hvIwQKADHeaR6h5adF8ovyWbQga5Ayc4Kw7q0Huw6O9fJBqIi1aKUwVaswG70JAeqj
+         xmkaIyM6lSoYiKN7CojlXeyy4UAI8iUh0jTGLG62icbIuZ5Sa3ebwjQAfzxnjQP3E1Gw
+         qEwVwJxrxRnjs1uz0c+OrXKEpVzjBFNOAmy40m1q4P/lpc+8dXUj2maXEcpWS/zSS54X
+         mq4491gsKCAFw99cThQeFEJshqS24g7VgCqCyiKtNGcRwloRXvwQm8Nc+gk1HdX7+mCb
+         8tcPalWO0DtnYa2yfA326IW3NkF7TmnAsxFI3OjrdU0JupXiaRxSpTPejs4sGwfA5fZ3
+         36pw==
+X-Forwarded-Encrypted: i=1; AJvYcCV2PcV5chqY1yaTxs8pnOrISTrmb9FMzxShw33nWndLNt6nTw0UujRginy9eNmX1BVezxrd6Qgdulg7uVjZCr5mFBlTgAFSPh/L0L/1caP/CUlitux/k4jL5+3YcAwm6oSLYSa+cDFP2Nol57E=
+X-Gm-Message-State: AOJu0Yzkc8rJhcFBfC5056ZVPy7q9ToxcJAi04+mt0XJyNZmFqogAPao
+	1pEbW1AZlcPaCW1iKxBwTScZFYYhfILbIl5tL/KErwsGswzOigDZ
+X-Google-Smtp-Source: AGHT+IFLqQYS4L2t+Ktsd23D5IHht1KQAiUdDItEDyVlhuNVQapcO3cLMkivaXKBF1MIZP28km9tZA==
+X-Received: by 2002:ac2:4836:0:b0:512:f4f6:9343 with SMTP id 22-20020ac24836000000b00512f4f69343mr1853154lft.26.1709724389385;
+        Wed, 06 Mar 2024 03:26:29 -0800 (PST)
+Received: from rand-ubuntu-development.dl.local (mail.confident.ru. [85.114.29.218])
+        by smtp.gmail.com with ESMTPSA id b6-20020a056512070600b00513216fa562sm2576385lfs.202.2024.03.06.03.26.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Mar 2024 03:26:28 -0800 (PST)
+From: Rand Deeb <rand.sec96@gmail.com>
+To: kvalo@kernel.org
+Cc: deeb.rand@confident.ru,
+	linux-kernel@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	m@bues.ch,
+	rand.sec96@gmail.com,
+	voskresenski.stanislav@confident.ru
+Subject: [PATCH v2] ssb: Fix potential NULL pointer dereference in ssb_device_uevent
+Date: Wed,  6 Mar 2024 14:25:58 +0300
+Message-Id: <20240306112558.163415-1-rand.sec96@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <170966495037.424347.1344425289163744212.kvalo@kernel.org>
+References: <170966495037.424347.1344425289163744212.kvalo@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-Dmitry Baryshkov <dmitry.baryshkov@linaro.org> writes:
+Hi Kalle,
 
-> On Wed, 6 Mar 2024 at 11:04, Kalle Valo <kvalo@kernel.org> wrote:
->
->>
->> Dmitry Baryshkov <dmitry.baryshkov@linaro.org> writes:
->>
->> > On WCN3990 platforms actual firmware, wlanmdsp.mbn, is sideloaded to the
->> > modem DSP via the TQFTPserv. These MBN files are signed by the device
->> > vendor, can only be used with the particular SoC or device.
->> >
->> > Unfortunately different firmware versions come with different features.
->> > For example firmware for SDM845 doesn't use single-chan-info-per-channel
->> > feature, while firmware for QRB2210 / QRB4210 requires that feature.
->> >
->> > Allow board DT files to override the subdir of the fw dir used to lookup
->> > the firmware-N.bin file decribing corresponding WiFi firmware.
->> > For example, adding firmware-name = "qrb4210" property will make the
->> > driver look for the firmware-N.bin first in ath10k/WCN3990/hw1.0/qrb4210
->> > directory and then fallback to the default ath10k/WCN3990/hw1.0 dir.
->> >
->> > Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
->> > ---
->> > Changes in v2:
->> > - Fixed the comment about the default board name being NULL (Kalle)
->> > - Expanded commit message to provide examples for firmware paths (Kalle)
->> > - Added a note regarding board-2.bin to the commit message (Kalle)
->> > - Link to v1:
->> > https://lore.kernel.org/r/20240130-wcn3990-firmware-path-v1-0-826b93202964@linaro.org
->>
->> From my point of view this looks good now but let's see what others say.
->> Is there a specific reason why you marked this as RFC still?
->
-> No, I just forgot to remove it from the series settings, so you can
-> consider it as final.
+It seems there's been a mix-up in applying the patch. The previous patch
+was intended for the linux-5.10.y branch, not the master branch. I
+appreciate your attention to detail.
 
-Good, so let's ignore the RFC label for this v2.
+The following patch has been tailored for the master branch and should
+resolve the issue properly. Thank you for your understanding.
 
-> I had one minor question in my head (but that's mostly for patches 3
-> and 4): in linux-firmware we will have ath10k/WCN3990/hw1.0/qcm2290
-> and make qrb4210 as a symlink to it. Is that fine from your POV? 
+Signed-off-by: Rand Deeb <rand.sec96@gmail.com>
+---
+ drivers/ssb/main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Yes, I think using a symlink is a good idea.
-
-> Or should we use sensible device names (e.g. qcom-rb1)?
-
-I guess 'qcom-rb1' refers to 'Qualcomm Robotics RB1' board? In other
-words, the question is that should we use chipset specific names like
-'qcm2290' or product based names like 'qcom-rb1'?
-
-That's a good question for which I don't have a good answer :) I'm not
-very familiar with WCN3990 hardware and SoCs to have a full picture of
-all this, especially how the firmware images are signed or what
-different firmware branches there are etc.
-
-To be on the safe side using 'qcom-rb1' makes sense but on the other
-hand that means we need to update linux-firmware (basically add a new
-symlink) everytime a new product is added. But are there going to be
-that many new ath10k based products?
-
-Using 'qcm2290' is easier because for a new product then there only
-needs to be a change in DTS and no need to change anything
-linux-firmware. But here the risk is that if there's actually two
-different ath10k firmware branches for 'qcm2290'. If that ever happens
-(I hope not) I guess we could solve that by adding new 'qcm2290-foo'
-directory?
-
-But I don't really know, thoughts?
-
+diff --git a/drivers/ssb/main.c b/drivers/ssb/main.c
+index b9934b9c2d70..070a99a4180c 100644
+--- a/drivers/ssb/main.c
++++ b/drivers/ssb/main.c
+@@ -341,11 +341,13 @@ static int ssb_bus_match(struct device *dev, struct device_driver *drv)
+ 
+ static int ssb_device_uevent(const struct device *dev, struct kobj_uevent_env *env)
+ {
+-	const struct ssb_device *ssb_dev = dev_to_ssb_dev(dev);
++	const struct ssb_device *ssb_dev;
+ 
+ 	if (!dev)
+ 		return -ENODEV;
+ 
++	ssb_dev = dev_to_ssb_dev(dev);
++
+ 	return add_uevent_var(env,
+ 			     "MODALIAS=ssb:v%04Xid%04Xrev%02X",
+ 			     ssb_dev->id.vendor, ssb_dev->id.coreid,
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.34.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
