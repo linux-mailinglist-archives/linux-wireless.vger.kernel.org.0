@@ -1,101 +1,185 @@
-Return-Path: <linux-wireless+bounces-4436-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4437-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3039873899
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Mar 2024 15:11:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D37318738F1
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Mar 2024 15:24:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F42028469A
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Mar 2024 14:11:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5ADDE1F256C5
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Mar 2024 14:24:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1B7F130E49;
-	Wed,  6 Mar 2024 14:11:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9668F134730;
+	Wed,  6 Mar 2024 14:24:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rnGXafhB"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sgoci-sdnproxy-4.icoremail.net (sgoci-sdnproxy-4.icoremail.net [129.150.39.64])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32CBB131744;
-	Wed,  6 Mar 2024 14:11:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.150.39.64
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49D861332B1
+	for <linux-wireless@vger.kernel.org>; Wed,  6 Mar 2024 14:24:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709734308; cv=none; b=fbPl142g+ClxqC/2P0QqPQ7O9X9MCd/q99PFlJr/FfKpDwqRjtU6mC64t9cb1nz7jfYIfmC299YBnBPWs+KXB1qKgMAZr2asvnjbxlz/7cOiahN1QjiaDureA30YjjAU9xfBE9h4plzx8d9/IXFK7uRTAci9J/03oQbx4myJSY8=
+	t=1709735049; cv=none; b=BY5lL2OVV6B35ShqWCaFwTJdDRnYMNg3aD853XZd0bT5FvEPrE5dlTFnjdf6qrSKz/XVXszY2KZVcCQn9LzPBP54iCxTTo/PDPAWelZG2jN1bYrG8fee9SHs6EwFjr/eY9mx/YWHYg5nUDX4xGZwCp6ch3ZtLQuF6HHpl2Pkf2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709734308; c=relaxed/simple;
-	bh=fZVgHUnYdsFxM3B1qJGTGRghmDpQj6Xe/Q2Ec5t6OfA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=VeNKN5HArV8VsUweYgp7szpadp3P8GG/ZmkuK3IhMlBY2n1Bn+gDzNLBdtcUpoiHKL3N6rufSJjZ43fRLxo2ucIUboNacVbP22q72MquPlGMWRKpvPz5OivI92ct6G3EMVkmin08rbD8OXnALuiGV/FiCD5h2HK4W6GDaX3+TSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=129.150.39.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
-Received: from duoming$zju.edu.cn ( [106.117.76.127] ) by
- ajax-webmail-mail-app2 (Coremail) ; Wed, 6 Mar 2024 22:11:21 +0800
- (GMT+08:00)
-Date: Wed, 6 Mar 2024 22:11:21 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From: duoming@zju.edu.cn
-To: "Arend van Spriel" <arend.vanspriel@broadcom.com>
-Cc: "Arnd Bergmann" <arnd@arndb.de>, "Kalle Valo" <kvalo@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	"Konrad Dybcio" <konrad.dybcio@linaro.org>,
-	"Hans de Goede" <hdegoede@redhat.com>, minipli@grsecurity.net,
-	linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
-	brcm80211-dev-list.pdl@broadcom.com
-Subject: Re: [PATCH] wifi: brcmfmac: pcie: handle randbuf allocation failure
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2023.4-cmXT5 build
- 20231205(37e20f0e) Copyright (c) 2002-2024 www.mailtech.cn
- mispb-4df6dc2c-e274-4d1c-b502-72c5c3dfa9ce-zj.edu.cn
-In-Reply-To: <29de0b03-f65b-4918-ab5b-28dfd1c16a5d@broadcom.com>
-References: <20240301135134.29577-1-duoming@zju.edu.cn>
- <fdaefac9-1d02-4424-b893-4306b97028ca@broadcom.com>
- <87h6hjhbqy.fsf@kernel.org>
- <3d433b58-384f-452e-904d-62e23b3b5a0b@app.fastmail.com>
- <29de0b03-f65b-4918-ab5b-28dfd1c16a5d@broadcom.com>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+	s=arc-20240116; t=1709735049; c=relaxed/simple;
+	bh=eZpMPKa6e7jU2jBVyiXD1uP0V9gbgVlt9tlhzywS1d0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Eiraw4aO0oNxCpiTl5/1Sbla8/wHq9a7dPiHT0dFyOyWQdPCWUAUFRaRYbaqHKSPVfvOi323vxDhuvV4yjDLXTPCoqWIYuimNizgyt7Pwp+O9RukY9BOaRs7/AE1ChMe1oiZX/aPbByw7tpFmwCdd2Lz4VPfTVq2fBVxe+QVHCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rnGXafhB; arc=none smtp.client-ip=209.85.128.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-609241c2696so11262477b3.0
+        for <linux-wireless@vger.kernel.org>; Wed, 06 Mar 2024 06:24:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1709735046; x=1710339846; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=eZpMPKa6e7jU2jBVyiXD1uP0V9gbgVlt9tlhzywS1d0=;
+        b=rnGXafhBwgZ3X2A7OmLQqrx5w0KJmp1jM8ggJm/FkaIdToXtbz2JqG8vXRnDnliy+b
+         4GUyy4fx2rXA5B9TDVbC4GMKv90EFetLO4Q7//m9Nbd/sS6UmB3ERiuF0sWRJeOKC3FN
+         fZKZ9NF6V25uga2MmVAv9YxnyHy6yI5JtT7f5/1MwsZnwAA7PLgT8cMkNXOzqXQNaLfx
+         nbkK9FxfEpi7ELYEluRBprSi+HwBwExs/+kq3UbPSHzXuHclY040y3rhuwH0vvXrd8LG
+         c7fAUFPAFRyT3Rk46cpVA8u7ehx46UPn/vgbVDPKrbcEoS86/dL9c6hUbBLXp4/wCSgI
+         nmEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709735046; x=1710339846;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eZpMPKa6e7jU2jBVyiXD1uP0V9gbgVlt9tlhzywS1d0=;
+        b=lp4M88fW2VCy5pp6Py2iAcsTgZNQ5SveIQ/W+D2eV/0ZI20FB6hKJzDWfSnZo6wBpf
+         XiwcxJyNg+48KZ4QDiXuXLWe3AItpZz7t2SXPB3lOV8UZeJUz/p2ksELS6al8Wx4eeoz
+         MYADpPXcKdpyT2xV4ZhsGqoMWZXbgZ9TdfecP3GxSilJ9KTWjzcTipPN+suPdY1TpwTF
+         z6MJS/+HmD5uX0opwoooN7KudYX+0O/SvabwMgLVORbIjS7xWvgLk7nWqQAlMe37znYL
+         cfDOs5xQARtML80xsb39gEPN9opFsOALAFzyUNm61K53v7y3ErRPlrQ6AEIZCB597ksa
+         5SzA==
+X-Forwarded-Encrypted: i=1; AJvYcCU3/yxM1nvqcs3p7M7S+OwaQ7EzOo2p7Yvyn0QkX7RgJfPTKJbb7MwHR1kyrDXpCbSi38rvBYKghISWH08EZOkP3VBFiOSUYVIOes7XU+Y=
+X-Gm-Message-State: AOJu0Yz2vlQtL0QgRdVdI+AGTVRUndPjwWnM0AE3F9N/tSENdb4N1rLo
+	AMSm5Dexd3/FH0i3GLmB16H/L6qdIs7T87DZw0pUh7Or2EfBrfuMGJ9/xmaSTRa+xdkKZZwffDl
+	m5lXZ5TMaQDTaDmITDwlD8bBQ0Ob/Q2mfHpIDBw==
+X-Google-Smtp-Source: AGHT+IFtPw7iiv+byEAcjoYdyvfBnMJrrGDYSOvTrCZtLuKlzx6HBrSrHHu558ENUxjrcYdwWnuD1V710Dta5mIdRvM=
+X-Received: by 2002:a81:85c5:0:b0:609:9171:130d with SMTP id
+ v188-20020a8185c5000000b006099171130dmr10635779ywf.19.1709735046114; Wed, 06
+ Mar 2024 06:24:06 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <224867b0.cdd3.18e141ac13c.Coremail.duoming@zju.edu.cn>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:by_KCgBnja2JeehlSFzNAg--.50707W
-X-CM-SenderInfo: qssqjiasttq6lmxovvfxof0/1tbiAwQMAWXnadMaowAAsL
-X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
-	CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
-	daVFxhVjvjDU=
+References: <20240306-wcn3990-firmware-path-v2-0-f89e98e71a57@linaro.org>
+ <87plw7hgt4.fsf@kernel.org> <CAA8EJpr6fRfY5pNz6cXVTaNashqffy5_qLv9c35nkgjaDuSgyQ@mail.gmail.com>
+ <87cys7hard.fsf@kernel.org>
+In-Reply-To: <87cys7hard.fsf@kernel.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date: Wed, 6 Mar 2024 16:23:55 +0200
+Message-ID: <CAA8EJpowyEEbXQ4YK-GQ63wZSkJDy04qJsC2uuYCXt+aJ1HSOQ@mail.gmail.com>
+Subject: Re: [PATCH RFC v2 0/4] wifi: ath10k: support board-specific firmware overrides
+To: Kalle Valo <kvalo@kernel.org>
+Cc: Jeff Johnson <quic_jjohnson@quicinc.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Rob Herring <robh+dt@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
+	ath10k@lists.infradead.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, 
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 
-T24gV2VkLCA2IE1hciAyMDI0IDEzOjUzOjE5ICswMTAwIEFyZW5kIHZhbiBTcHJpZWwgd3JvdGU6
-Cj4gPj4+PiBUaGUga3phbGxvYygpIGluIGJyY21mX3BjaWVfZG93bmxvYWRfZndfbnZyYW0oKSB3
-aWxsIHJldHVybgo+ID4+Pj4gbnVsbCBpZiB0aGUgcGh5c2ljYWwgbWVtb3J5IGhhcyBydW4gb3V0
-LiBBcyBhIHJlc3VsdCwgaWYgd2UKPiA+Pj4+IHVzZSBnZXRfcmFuZG9tX2J5dGVzKCkgdG8gZ2Vu
-ZXJhdGUgcmFuZG9tIGJ5dGVzIGluIHRoZSByYW5kYnVmLAo+ID4+Pj4gdGhlIG51bGwgcG9pbnRl
-ciBkZXJlZmVyZW5jZSBidWcgd2lsbCBoYXBwZW4uCj4gPj4+PiBSZXR1cm4gLUVOT01FTSBmcm9t
-IGJyY21mX3BjaWVfZG93bmxvYWRfZndfbnZyYW0oKSBpZiBremFsbG9jKCkKPiA+Pj4+IGZhaWxz
-IGZvciByYW5kYnVmLgo+ID4+Pj4gRml4ZXM6IDkxOTE4Y2U4OGQ5ZiAoIndpZmk6IGJyY21mbWFj
-OiBwY2llOiBQcm92aWRlIGEgYnVmZmVyIG9mCj4gPj4+PiByYW5kb20gYnl0ZXMgdG8gdGhlIGRl
-dmljZSIpCj4gPj4+Cj4gPj4+IExvb2tzIGdvb2QgdG8gbWUuIExvb2tpbmcgZm9yIGtlcm5lbCBn
-dWlkZWxpbmUgYWJvdXQgc3RhY2sgdXNhZ2UgdG8KPiA+Pj4gZGV0ZXJtaW5lIHdoZXRoZXIgaXQg
-d291bGQgYmUgb2sgdG8ganVzdCB1c2UgYnVmZmVyIG9uIHN0YWNrLiBEb2VzCj4gPj4+IGFueW9u
-ZSBrbm93LiBUaGlzIG9uZSBpcyAyNTYgYnl0ZXMgc28gSSBndWVzcyB0aGUgYWxsb2NhdGlvbiBp
-cwo+ID4+PiB3YXJyYW50ZWQgaGVyZS4KPiA+Pgo+ID4+IEFybmQsIHdoYXQgZG8geW91IHN1Z2dl
-c3Q/IERvIHdlIGhhdmUgYW55IGRvY3VtZW50YXRpb24gb3IgZ3VpZGVsaW5lcwo+ID4+IGFueXdo
-ZXJlPwo+ID4gCj4gPiBJIGRvbid0IHRoaW5rIHdlIGhhdmUgYW55dGhpbmcgZG9jdW1lbnQgYWJv
-dXQgdGhpcy4gSSB1c3VhbGx5Cj4gPiBjb25zaWRlciBhbnl0aGluZyBtb3JlIHRoYW4gaGFsZiBh
-IGtpbG9ieXRlIGFzIGV4Y2Vzc2l2ZSwKPiA+IGV2ZW4gdGhvdWdoIHRoZSB3YXJuaW5nIGxpbWl0
-IGlzIGhpZ2hlci4KPiA+IAo+ID4gMjU2IGJ5dGVzIGlzIHVzdWFsbHkgZmluZSwgYnV0IGluIHRo
-aXMgY2FzZSBJIHdvdWxkIHNwbGl0IG91dAo+ID4gdGhlIGJhc2ljIGJsb2NrIHRoYXQgZG9lcyB0
-aGlzIGludG8gYSBzZXBhcmF0ZSBmdW5jdGlvbgo+ID4gc28gaXQgZG9lcyBub3Qgc2hhcmUgdGhl
-IHN0YWNrIGZyYW1lIHdpdGggb3RoZXIgbGVhZiBmdW5jdGlvbnMKPiA+IGJlbG93IGJyY21mX3Bj
-aWVfZG93bmxvYWRfZndfbnZyYW0oKS4gSXQgbWlnaHQgYWxzbyBiZSBqdXN0aWZpZWQKPiA+IHRv
-IHRoZW4gbWFyayBpdCBhcyBub2lubGluZV9mb3Jfc3RhY2suCj4gCj4gVGhhbmtzLCBBcm5kCj4g
-Cj4gTWFrZXMgc2Vuc2UuCj4gCj4gQER1b21pbmcgWmhvdSwKPiAKPiBDYW4geW91IHByb3ZpZGUg
-YSB2MiB3aXRoIHNlcGFyYXRlIGZ1bmN0aW9uIHVzaW5nIGJ1ZmZlciBvbiBzdGFjaz8KPiAKPiBz
-dGF0aWMgbm9pbmxpbmVfZm9yX3N0YWNrCj4gdm9pZCBicmNtZl9wY2llX3Byb3ZpZGVfcmFuZG9t
-X2J5dGVzKHN0cnVjdCBicmNtZl9wY2llZGV2X2luZm8gKmRldmluZm8sIAo+IHUzMiBhZGRyZXNz
-KQo+IHsKPiAJdTggcmFuZGJ1ZltCUkNNRl9SQU5ET01fU0VFRF9MRU5HVEhdOwo+IAk6Cj4gCToK
-PiB9CgpUaGFuayB5b3UgZm9yIHlvdXIgc3VnZ2VzdGlvbnMsIEkgaGF2ZSBhbHJlYWR5IHByb3Zp
-ZGVkIGEgdjIuCgpCZXN0IHJlZ2FyZHMsCkR1b21pbmcgWmhvdQo=
+On Wed, 6 Mar 2024 at 13:15, Kalle Valo <kvalo@kernel.org> wrote:
+>
+> Dmitry Baryshkov <dmitry.baryshkov@linaro.org> writes:
+>
+> > On Wed, 6 Mar 2024 at 11:04, Kalle Valo <kvalo@kernel.org> wrote:
+> >
+> >>
+> >> Dmitry Baryshkov <dmitry.baryshkov@linaro.org> writes:
+> >>
+> >> > On WCN3990 platforms actual firmware, wlanmdsp.mbn, is sideloaded to the
+> >> > modem DSP via the TQFTPserv. These MBN files are signed by the device
+> >> > vendor, can only be used with the particular SoC or device.
+> >> >
+> >> > Unfortunately different firmware versions come with different features.
+> >> > For example firmware for SDM845 doesn't use single-chan-info-per-channel
+> >> > feature, while firmware for QRB2210 / QRB4210 requires that feature.
+> >> >
+> >> > Allow board DT files to override the subdir of the fw dir used to lookup
+> >> > the firmware-N.bin file decribing corresponding WiFi firmware.
+> >> > For example, adding firmware-name = "qrb4210" property will make the
+> >> > driver look for the firmware-N.bin first in ath10k/WCN3990/hw1.0/qrb4210
+> >> > directory and then fallback to the default ath10k/WCN3990/hw1.0 dir.
+> >> >
+> >> > Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> >> > ---
+> >> > Changes in v2:
+> >> > - Fixed the comment about the default board name being NULL (Kalle)
+> >> > - Expanded commit message to provide examples for firmware paths (Kalle)
+> >> > - Added a note regarding board-2.bin to the commit message (Kalle)
+> >> > - Link to v1:
+> >> > https://lore.kernel.org/r/20240130-wcn3990-firmware-path-v1-0-826b93202964@linaro.org
+> >>
+> >> From my point of view this looks good now but let's see what others say.
+> >> Is there a specific reason why you marked this as RFC still?
+> >
+> > No, I just forgot to remove it from the series settings, so you can
+> > consider it as final.
+>
+> Good, so let's ignore the RFC label for this v2.
+>
+> > I had one minor question in my head (but that's mostly for patches 3
+> > and 4): in linux-firmware we will have ath10k/WCN3990/hw1.0/qcm2290
+> > and make qrb4210 as a symlink to it. Is that fine from your POV?
+>
+> Yes, I think using a symlink is a good idea.
+>
+> > Or should we use sensible device names (e.g. qcom-rb1)?
+>
+> I guess 'qcom-rb1' refers to 'Qualcomm Robotics RB1' board? In other
+> words, the question is that should we use chipset specific names like
+> 'qcm2290' or product based names like 'qcom-rb1'?
+>
+> That's a good question for which I don't have a good answer :) I'm not
+> very familiar with WCN3990 hardware and SoCs to have a full picture of
+> all this, especially how the firmware images are signed or what
+> different firmware branches there are etc.
+
+I checked Pixel-3 data, it has wlanmdsp.mbn signed by Google.
+
+>
+> To be on the safe side using 'qcom-rb1' makes sense but on the other
+> hand that means we need to update linux-firmware (basically add a new
+> symlink) everytime a new product is added. But are there going to be
+> that many new ath10k based products?
+>
+> Using 'qcm2290' is easier because for a new product then there only
+> needs to be a change in DTS and no need to change anything
+> linux-firmware. But here the risk is that if there's actually two
+> different ath10k firmware branches for 'qcm2290'. If that ever happens
+> (I hope not) I guess we could solve that by adding new 'qcm2290-foo'
+> directory?
+>
+> But I don't really know, thoughts?
+
+After some thought, I'd suggest to follow approach taken by the rest
+of qcom firmware:
+put a default (accepted by non-secured hardware) firmware to SoC dir
+and then put a vendor-specific firmware into subdir. If any of such
+vendors appear, we might even implement structural fallback: first
+look into sdm845/Google/blueline, then in sdm845/Google, sdm845/ and
+finally just under hw1.0.
+
+>
+> --
+> https://patchwork.kernel.org/project/linux-wireless/list/
+>
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
+
+--
+With best wishes
+Dmitry
 
