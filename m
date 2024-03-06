@@ -1,146 +1,113 @@
-Return-Path: <linux-wireless+bounces-4412-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4415-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A585872DA9
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Mar 2024 04:47:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 393D7872ED9
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Mar 2024 07:24:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC10F1C22395
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Mar 2024 03:47:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A4834B23A45
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Mar 2024 06:24:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1B7F15AC4;
-	Wed,  6 Mar 2024 03:47:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 803A61CA96;
+	Wed,  6 Mar 2024 06:24:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicklyemailsend77.com header.i=@quicklyemailsend77.com header.b="u0nVH4x4"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from quicklyemailsend77.com (quicklyemailsend77.com [57.128.172.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11327171D1
-	for <linux-wireless@vger.kernel.org>; Wed,  6 Mar 2024 03:47:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78711C6A4
+	for <linux-wireless@vger.kernel.org>; Wed,  6 Mar 2024 06:24:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.128.172.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709696848; cv=none; b=AY4D+sR1ssBqiuKJqBJKwh8bxiDEvTHfE+bKsZBObTvMZ1vWcSUHXzdYn4u+o3ec6UyFxkLtvDaSt24YcLG7dbrzP14u5lUzhO/NPfTJcKKKUXd+NS8bf7i/JTzm19I5+W/3N5YKZzGS0FWX0G6fuFyA7HYWxsf+GubL4WhHpXg=
+	t=1709706246; cv=none; b=gsbZICPfsD8XZC89URO/3svFeZ8E7BhyPlmxMJO5JslC9RO7+oUZkxTF3M/NBg0jyW+U0FWphzHALVYrEwBoomAh38393x0Ak5jQjyY0zG2y0Q9qfvHzkcA7MCkEQ8GixDlpa+QbUoV4ylmxndXipejC3Ty00s/sYVCRtcHrsRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709696848; c=relaxed/simple;
-	bh=+nJZV6zHOpPX4a+ZBt83FDtYPe4mDT0yXOXV4M2w9rs=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IlQ9PdGTO2virp5EjeDILEoSPUDg5JH9EFZKNmb7Hfcda7H7o1FRmFAyauUdeBZivc/7liTBFfiad9XUGHRLVhdnmmBjfTPbcZfHkbdn/oJyVzgPVfGHIqZAsR0pAnrXq3l0FtiQQ2GQ+/JJJmgvkAOORzLchtTGMcZM45ygeL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4263lL7y9482476, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 4263lL7y9482476
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 6 Mar 2024 11:47:21 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Wed, 6 Mar 2024 11:47:22 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 6 Mar
- 2024 11:47:21 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <kvalo@kernel.org>
-CC: <ku920601@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 6/6] wifi: rtw89: 8922a: add 8922ae to Makefile and Kconfig
-Date: Wed, 6 Mar 2024 11:45:58 +0800
-Message-ID: <20240306034558.19648-7-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240306034558.19648-1-pkshih@realtek.com>
-References: <20240306034558.19648-1-pkshih@realtek.com>
+	s=arc-20240116; t=1709706246; c=relaxed/simple;
+	bh=UkCnC3hxyWUR811IY5T5PlAQFaHotSY7xhHSl4hh88I=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RYr9/EkLs0NhCcK5Rb0gaDP5koFz69bKYZj/gKt+le70kLmYP5lZd/BxhCsU1TYoekPgDh3niAbeQdXg/cqoTJ1FsnQLp1lpz7dLKxnvmdgXLQ1ku4B/RK3doUDHP3oQGVVvibt9ICR0zK/6BbVPOdYDnTlVtcCwFYTqIplkumA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicklyemailsend77.com; spf=pass smtp.mailfrom=quicklyemailsend77.com; dkim=pass (2048-bit key) header.d=quicklyemailsend77.com header.i=@quicklyemailsend77.com header.b=u0nVH4x4; arc=none smtp.client-ip=57.128.172.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicklyemailsend77.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicklyemailsend77.com
+Received: from quicklyemailsend77.com (unknown [185.255.114.95])
+	by quicklyemailsend77.com (Postfix) with ESMTPA id 2D34F3977AE
+	for <linux-wireless@vger.kernel.org>; Wed,  6 Mar 2024 03:51:50 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 quicklyemailsend77.com 2D34F3977AE
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=quicklyemailsend77.com; s=default; t=1709697110;
+	bh=eefLZdwY5mr6nwq86b3d+rtsxGUHJntuGmXl+R35AcQ=;
+	h=Reply-To:From:To:Subject:Date:From;
+	b=u0nVH4x4CwMZoTLiXj0cHJbh4naJpuPQSt1sIRPuAsvT60dbZzhy9djxdY2OLCKNj
+	 xQkc6rwrQhegnetEhaH4k+eyNAT7sV0Elwdc0VneTxqinTEii3Df9Yc3ld+29TCbpY
+	 WkWcywJ1SQ/fRNAUfsJ6oP9PjpEeg2thu0iJs6alZA7vQYxymTyJ6DYpaij1IxeKrI
+	 0bCYW+LmhcAYC4gO0faUjCSzpQqchpULGEmLKdFbADR+9i7twbeD7nCHeV3qkDYLrA
+	 Mpj15ESkC4I9Gb1Jt3RqCdbtbzB+NRBhsYdIqDHDyMegd9ENp8d0+J57AtUmwbKGbL
+	 Le20C0wc+dKYg==
+Reply-To: joakimlarson@skendiaelevator.com
+From: info@quicklyemailsend77.com
+To: linux-wireless@vger.kernel.org
+Subject: =?UTF-8?B?7YyQ66ekIOusuOydmCAyMDI0?=
+Date: 05 Mar 2024 19:51:49 -0800
+Message-ID: <20240305195148.52BA0801BE1600CE@quicklyemailsend77.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add 8922AE to Makefile and Kconfig. Currently, it can support STA, AP and
-monitor modes with good performance. Implemented initial BT-coexistence
-function only, and will to fine tune this component.
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/Kconfig  | 15 +++++++++++++++
- drivers/net/wireless/realtek/rtw89/Makefile | 12 +++++++++++-
- 2 files changed, 26 insertions(+), 1 deletion(-)
+=EC=95=88=EB=85=95=ED=95=98=EC=84=B8=EC=9A=94
+=20
+=EC=8A=A4=EC=9B=A8=EB=8D=B4 =EC=8A=A4=EC=B9=B8=EB=94=94=EC=95=84 =EC=97=98=
+=EB=A0=88=EB=B0=94=ED=86=A0(Skandia Elevato)=EC=97=90=EC=84=9C =EC=98=A8 =
+=EC=9A=94=EC=95=84=ED=82=B4 =EB=9D=BC=EB=A5=B4=EC=86=90(JOAKIM LARSSON) .
+=20
+=EC=9A=B0=EB=A6=AC=EB=8A=94 =EA=B8=B4=EA=B8=89=ED=95=98=EA=B2=8C =EA=B7=80=
+=ED=95=98=EC=9D=98 =EC=A0=9C=ED=92=88=EC=9D=84 =ED=95=84=EC=9A=94=EB=A1=9C =
+=ED=95=98=EB=A9=B0 =EA=B0=80=EB=8A=A5=ED=95=9C =ED=95=9C =EB=B9=A8=EB=A6=AC=
+ =EC=8B=9C=ED=97=98 =EC=A3=BC=EB=AC=B8=EC=9D=84 =ED=95=98=EA=B3=A0 =EC=8B=
+=B6=EC=8A=B5=EB=8B=88=EB=8B=A4. 
+=20
+=EC=98=A8=EB=9D=BC=EC=9D=B8=EC=9C=BC=EB=A1=9C =EC=A0=9C=ED=92=88=EC=97=90 =
+=EB=8C=80=ED=95=9C =EC=A0=95=EB=B3=B4=EB=A5=BC =EC=88=98=EC=A7=91=ED=95=98=
+=EA=B3=A0 =EC=9E=88=EC=8A=B5=EB=8B=88=EB=8B=A4. 
+=20
+=EA=B7=B8=EB=A6=AC=EA=B3=A0 =EB=82=B4 =EB=AA=A8=EC=9E=84=EC=97=90=EC=84=9C =
+=EB=82=98=EB=8A=94 =EC=9A=B0=EB=A6=AC=EA=B0=80 =EB=8B=B9=EC=8B=A0=EC=9D=98 =
+=EC=A0=9C=ED=92=88=EC=9D=84 =EC=A3=BC=EB=AC=B8=ED=95=A0 =EA=B2=83=EC=9D=B4=
+=EB=9D=BC=EA=B3=A0 =EC=83=9D=EA=B0=81=ED=95=A9=EB=8B=88=EB=8B=A4.
+=20
+1. =EC=B5=9C=EC=8B=A0 Catalouge=EB=A5=BC =EB=B3=B4=EB=82=BC =EC=88=98 =EC=
+=9E=88=EC=8A=B5=EB=8B=88=EA=B9=8C?
+=20
+2. =EC=9A=B0=EB=A6=AC=EA=B0=80 =EC=A3=BC=EB=AC=B8=ED=95=A0 =EC=88=98 =EC=9E=
+=88=EB=8A=94 =EC=B5=9C=EC=86=8C=ED=95=9C=EC=9D=80 =EB=AC=B4=EC=97=87=EC=9D=
+=B4=EA=B3=A0 =EB=98=90=ED=95=9C =EA=B8=B0=EA=B0=84=EC=9D=84 =EB=B3=B4=EB=82=
+=B4=EC=8B=AD=EC=8B=9C=EC=98=A4=20
+=EB=B0=8F =EC=A1=B0=EA=B1=B4.
+3. =EC=9A=B0=EB=A6=AC=EA=B0=80 =EC=A3=BC=EB=AC=B8=ED=95=98=EB=8A=94 =EA=B2=
+=BD=EC=9A=B0 =EC=A7=80=EB=B6=88=EC=9D=84 =EC=96=B4=EB=96=BB=EA=B2=8C =ED=95=
+=B4=EA=B2=B0=ED=95=98=EA=B8=B0=EB=A5=BC =EC=9B=90=ED=95=98=EC=8B=AD=EB=8B=
+=88=EA=B9=8C?
+=20
+=EA=B7=80=ED=95=98=EC=9D=98 =ED=9A=8C=EC=8B=A0 =EB=8C=80=EA=B8=B0 =EC=A4=91=
 
-diff --git a/drivers/net/wireless/realtek/rtw89/Kconfig b/drivers/net/wireless/realtek/rtw89/Kconfig
-index 90ffbab7cc4c..eaea4eaeb361 100644
---- a/drivers/net/wireless/realtek/rtw89/Kconfig
-+++ b/drivers/net/wireless/realtek/rtw89/Kconfig
-@@ -28,6 +28,9 @@ config RTW89_8852B
- config RTW89_8852C
- 	tristate
- 
-+config RTW89_8922A
-+	tristate
-+
- config RTW89_8851BE
- 	tristate "Realtek 8851BE PCI wireless network (Wi-Fi 6) adapter"
- 	depends on PCI
-@@ -72,6 +75,18 @@ config RTW89_8852CE
- 
- 	  802.11ax PCIe wireless network (Wi-Fi 6E) adapter
- 
-+config RTW89_8922AE
-+	tristate "Realtek 8922AE PCI wireless network (Wi-Fi 7) adapter"
-+	depends on PCI
-+	select RTW89_CORE
-+	select RTW89_PCI
-+	select RTW89_8922A
-+	help
-+	  Select this option will enable support for 8922AE chipset
-+
-+	  802.11be PCIe wireless network (Wi-Fi 7) adapter
-+	  supporting 2x2 2GHz/5GHz/6GHz 4096-QAM 160MHz channels.
-+
- config RTW89_DEBUG
- 	bool
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/Makefile b/drivers/net/wireless/realtek/rtw89/Makefile
-index 41940099af1b..86a553fb0136 100644
---- a/drivers/net/wireless/realtek/rtw89/Makefile
-+++ b/drivers/net/wireless/realtek/rtw89/Makefile
-@@ -4,10 +4,13 @@ obj-$(CONFIG_RTW89_CORE) += rtw89_core.o
- rtw89_core-y += core.o \
- 		mac80211.o \
- 		mac.o \
-+		mac_be.o \
- 		phy.o \
-+		phy_be.o \
- 		fw.o \
- 		cam.o \
- 		efuse.o \
-+		efuse_be.o \
- 		regd.o \
- 		sar.o \
- 		coex.o \
-@@ -54,8 +57,15 @@ rtw89_8852c-objs := rtw8852c.o \
- obj-$(CONFIG_RTW89_8852CE) += rtw89_8852ce.o
- rtw89_8852ce-objs := rtw8852ce.o
- 
-+obj-$(CONFIG_RTW89_8922A) += rtw89_8922a.o
-+rtw89_8922a-objs := rtw8922a.o \
-+		    rtw8922a_rfk.o
-+
-+obj-$(CONFIG_RTW89_8922AE) += rtw89_8922ae.o
-+rtw89_8922ae-objs := rtw8922ae.o
-+
- rtw89_core-$(CONFIG_RTW89_DEBUG) += debug.o
- 
- obj-$(CONFIG_RTW89_PCI) += rtw89_pci.o
--rtw89_pci-y := pci.o
-+rtw89_pci-y := pci.o pci_be.o
- 
--- 
-2.25.1
+
+Mr Joakim larssonv(=EB=B6=80=EC=82=AC=EC=9E=A5/=EC=98=81=EC=97=85 =EA=B4=80=
+=EB=A6=AC=EC=9E=90)
+
+=EB=B0=A9=EB=AC=B8=EC=9E=90 =EC=A3=BC=EC=86=8C: Kedumsv=C3=A4gen 14, SE-534=
+ 94 Vara, Sweden
+
+=EB=B0=B0=EC=86=A1 =EC=A3=BC=EC=86=8C: Industriv=C3=A4gen, SE-534 94 Vara, =
+Sweden
+
+joakimlarson@skendiaelevator.com
+https://skandiaelevator.com
 
 
