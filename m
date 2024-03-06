@@ -1,185 +1,264 @@
-Return-Path: <linux-wireless+bounces-4437-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4438-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D37318738F1
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Mar 2024 15:24:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFC98873A14
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Mar 2024 16:04:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5ADDE1F256C5
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Mar 2024 14:24:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F3B61C23B1C
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Mar 2024 15:04:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9668F134730;
-	Wed,  6 Mar 2024 14:24:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rnGXafhB"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBA194DA1B;
+	Wed,  6 Mar 2024 15:04:34 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49D861332B1
-	for <linux-wireless@vger.kernel.org>; Wed,  6 Mar 2024 14:24:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A97D131E4B
+	for <linux-wireless@vger.kernel.org>; Wed,  6 Mar 2024 15:04:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709735049; cv=none; b=BY5lL2OVV6B35ShqWCaFwTJdDRnYMNg3aD853XZd0bT5FvEPrE5dlTFnjdf6qrSKz/XVXszY2KZVcCQn9LzPBP54iCxTTo/PDPAWelZG2jN1bYrG8fee9SHs6EwFjr/eY9mx/YWHYg5nUDX4xGZwCp6ch3ZtLQuF6HHpl2Pkf2o=
+	t=1709737474; cv=none; b=nA09jXVnK/GEWbIxAwEHciqUQOTk7dIi1KbrR/DxwbTXwyM2T3eJZeEIhMKtK8MvR8ZYavvgPVmeQXWb7qiXJPxXte6XrQyktxDj2SHQCXNR6Zo923ZRT/tWGyr/A49k5ilE1LUNbenFndsz079bzn+WAK+MMyv1yADOUBAh2es=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709735049; c=relaxed/simple;
-	bh=eZpMPKa6e7jU2jBVyiXD1uP0V9gbgVlt9tlhzywS1d0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Eiraw4aO0oNxCpiTl5/1Sbla8/wHq9a7dPiHT0dFyOyWQdPCWUAUFRaRYbaqHKSPVfvOi323vxDhuvV4yjDLXTPCoqWIYuimNizgyt7Pwp+O9RukY9BOaRs7/AE1ChMe1oiZX/aPbByw7tpFmwCdd2Lz4VPfTVq2fBVxe+QVHCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rnGXafhB; arc=none smtp.client-ip=209.85.128.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-609241c2696so11262477b3.0
-        for <linux-wireless@vger.kernel.org>; Wed, 06 Mar 2024 06:24:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1709735046; x=1710339846; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=eZpMPKa6e7jU2jBVyiXD1uP0V9gbgVlt9tlhzywS1d0=;
-        b=rnGXafhBwgZ3X2A7OmLQqrx5w0KJmp1jM8ggJm/FkaIdToXtbz2JqG8vXRnDnliy+b
-         4GUyy4fx2rXA5B9TDVbC4GMKv90EFetLO4Q7//m9Nbd/sS6UmB3ERiuF0sWRJeOKC3FN
-         fZKZ9NF6V25uga2MmVAv9YxnyHy6yI5JtT7f5/1MwsZnwAA7PLgT8cMkNXOzqXQNaLfx
-         nbkK9FxfEpi7ELYEluRBprSi+HwBwExs/+kq3UbPSHzXuHclY040y3rhuwH0vvXrd8LG
-         c7fAUFPAFRyT3Rk46cpVA8u7ehx46UPn/vgbVDPKrbcEoS86/dL9c6hUbBLXp4/wCSgI
-         nmEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709735046; x=1710339846;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=eZpMPKa6e7jU2jBVyiXD1uP0V9gbgVlt9tlhzywS1d0=;
-        b=lp4M88fW2VCy5pp6Py2iAcsTgZNQ5SveIQ/W+D2eV/0ZI20FB6hKJzDWfSnZo6wBpf
-         XiwcxJyNg+48KZ4QDiXuXLWe3AItpZz7t2SXPB3lOV8UZeJUz/p2ksELS6al8Wx4eeoz
-         MYADpPXcKdpyT2xV4ZhsGqoMWZXbgZ9TdfecP3GxSilJ9KTWjzcTipPN+suPdY1TpwTF
-         z6MJS/+HmD5uX0opwoooN7KudYX+0O/SvabwMgLVORbIjS7xWvgLk7nWqQAlMe37znYL
-         cfDOs5xQARtML80xsb39gEPN9opFsOALAFzyUNm61K53v7y3ErRPlrQ6AEIZCB597ksa
-         5SzA==
-X-Forwarded-Encrypted: i=1; AJvYcCU3/yxM1nvqcs3p7M7S+OwaQ7EzOo2p7Yvyn0QkX7RgJfPTKJbb7MwHR1kyrDXpCbSi38rvBYKghISWH08EZOkP3VBFiOSUYVIOes7XU+Y=
-X-Gm-Message-State: AOJu0Yz2vlQtL0QgRdVdI+AGTVRUndPjwWnM0AE3F9N/tSENdb4N1rLo
-	AMSm5Dexd3/FH0i3GLmB16H/L6qdIs7T87DZw0pUh7Or2EfBrfuMGJ9/xmaSTRa+xdkKZZwffDl
-	m5lXZ5TMaQDTaDmITDwlD8bBQ0Ob/Q2mfHpIDBw==
-X-Google-Smtp-Source: AGHT+IFtPw7iiv+byEAcjoYdyvfBnMJrrGDYSOvTrCZtLuKlzx6HBrSrHHu558ENUxjrcYdwWnuD1V710Dta5mIdRvM=
-X-Received: by 2002:a81:85c5:0:b0:609:9171:130d with SMTP id
- v188-20020a8185c5000000b006099171130dmr10635779ywf.19.1709735046114; Wed, 06
- Mar 2024 06:24:06 -0800 (PST)
+	s=arc-20240116; t=1709737474; c=relaxed/simple;
+	bh=yrW4jzZPo5yDUGGlsssCweVf3KtmxhRvCDCcvHr6gLI=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=cQG+DKBRWT1Twk/cawNd/k/zUdi4roAa19pdUgTgxb7vaqKWLY63zn9gTx/0brA2+IUQaL8qKGHcGx/OMDbPALkFiCINoBvvvjPj7ahX7OdP+eyDr6b4OdbdNerdd0SqKihNIWTheJNGbziUUmOeEFCLbKYOyi5J/M+aWYLWvy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jkbsc.co.uk; spf=pass smtp.mailfrom=jkbsc.co.uk; arc=none smtp.client-ip=217.70.183.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jkbsc.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jkbsc.co.uk
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 7D20A2000B
+	for <linux-wireless@vger.kernel.org>; Wed,  6 Mar 2024 15:04:28 +0000 (UTC)
+Date: Wed, 6 Mar 2024 15:04:27 +0000
+From: John Beattie <jkb@jkbsc.co.uk>
+To: linux-wireless@vger.kernel.org
+Subject: intel ax201 microcode error
+Message-ID: <20240306150427.GA250467@fladday.local>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240306-wcn3990-firmware-path-v2-0-f89e98e71a57@linaro.org>
- <87plw7hgt4.fsf@kernel.org> <CAA8EJpr6fRfY5pNz6cXVTaNashqffy5_qLv9c35nkgjaDuSgyQ@mail.gmail.com>
- <87cys7hard.fsf@kernel.org>
-In-Reply-To: <87cys7hard.fsf@kernel.org>
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Wed, 6 Mar 2024 16:23:55 +0200
-Message-ID: <CAA8EJpowyEEbXQ4YK-GQ63wZSkJDy04qJsC2uuYCXt+aJ1HSOQ@mail.gmail.com>
-Subject: Re: [PATCH RFC v2 0/4] wifi: ath10k: support board-specific firmware overrides
-To: Kalle Valo <kvalo@kernel.org>
-Cc: Jeff Johnson <quic_jjohnson@quicinc.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
-	ath10k@lists.infradead.org, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, 
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-GND-Sasl: jkb@jkbsc.co.uk
 
-On Wed, 6 Mar 2024 at 13:15, Kalle Valo <kvalo@kernel.org> wrote:
->
-> Dmitry Baryshkov <dmitry.baryshkov@linaro.org> writes:
->
-> > On Wed, 6 Mar 2024 at 11:04, Kalle Valo <kvalo@kernel.org> wrote:
-> >
-> >>
-> >> Dmitry Baryshkov <dmitry.baryshkov@linaro.org> writes:
-> >>
-> >> > On WCN3990 platforms actual firmware, wlanmdsp.mbn, is sideloaded to the
-> >> > modem DSP via the TQFTPserv. These MBN files are signed by the device
-> >> > vendor, can only be used with the particular SoC or device.
-> >> >
-> >> > Unfortunately different firmware versions come with different features.
-> >> > For example firmware for SDM845 doesn't use single-chan-info-per-channel
-> >> > feature, while firmware for QRB2210 / QRB4210 requires that feature.
-> >> >
-> >> > Allow board DT files to override the subdir of the fw dir used to lookup
-> >> > the firmware-N.bin file decribing corresponding WiFi firmware.
-> >> > For example, adding firmware-name = "qrb4210" property will make the
-> >> > driver look for the firmware-N.bin first in ath10k/WCN3990/hw1.0/qrb4210
-> >> > directory and then fallback to the default ath10k/WCN3990/hw1.0 dir.
-> >> >
-> >> > Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> >> > ---
-> >> > Changes in v2:
-> >> > - Fixed the comment about the default board name being NULL (Kalle)
-> >> > - Expanded commit message to provide examples for firmware paths (Kalle)
-> >> > - Added a note regarding board-2.bin to the commit message (Kalle)
-> >> > - Link to v1:
-> >> > https://lore.kernel.org/r/20240130-wcn3990-firmware-path-v1-0-826b93202964@linaro.org
-> >>
-> >> From my point of view this looks good now but let's see what others say.
-> >> Is there a specific reason why you marked this as RFC still?
-> >
-> > No, I just forgot to remove it from the series settings, so you can
-> > consider it as final.
->
-> Good, so let's ignore the RFC label for this v2.
->
-> > I had one minor question in my head (but that's mostly for patches 3
-> > and 4): in linux-firmware we will have ath10k/WCN3990/hw1.0/qcm2290
-> > and make qrb4210 as a symlink to it. Is that fine from your POV?
->
-> Yes, I think using a symlink is a good idea.
->
-> > Or should we use sensible device names (e.g. qcom-rb1)?
->
-> I guess 'qcom-rb1' refers to 'Qualcomm Robotics RB1' board? In other
-> words, the question is that should we use chipset specific names like
-> 'qcm2290' or product based names like 'qcom-rb1'?
->
-> That's a good question for which I don't have a good answer :) I'm not
-> very familiar with WCN3990 hardware and SoCs to have a full picture of
-> all this, especially how the firmware images are signed or what
-> different firmware branches there are etc.
+Hi,
 
-I checked Pixel-3 data, it has wlanmdsp.mbn signed by Google.
-
->
-> To be on the safe side using 'qcom-rb1' makes sense but on the other
-> hand that means we need to update linux-firmware (basically add a new
-> symlink) everytime a new product is added. But are there going to be
-> that many new ath10k based products?
->
-> Using 'qcm2290' is easier because for a new product then there only
-> needs to be a change in DTS and no need to change anything
-> linux-firmware. But here the risk is that if there's actually two
-> different ath10k firmware branches for 'qcm2290'. If that ever happens
-> (I hope not) I guess we could solve that by adding new 'qcm2290-foo'
-> directory?
->
-> But I don't really know, thoughts?
-
-After some thought, I'd suggest to follow approach taken by the rest
-of qcom firmware:
-put a default (accepted by non-secured hardware) firmware to SoC dir
-and then put a vendor-specific firmware into subdir. If any of such
-vendors appear, we might even implement structural fallback: first
-look into sdm845/Google/blueline, then in sdm845/Google, sdm845/ and
-finally just under hw1.0.
-
->
-> --
-> https://patchwork.kernel.org/project/linux-wireless/list/
->
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+I have an issue with my wifi related to microcode and possibly the iwlwifi
+driver. Apologies if this is the wrong forum, if there is a better alternative
+please let me know.
 
 
---
-With best wishes
-Dmitry
+I have a NUC10I7FNH3 running mint 20.1, inxi output below.
+
+My wifi connection gets reset from time to time triggered by a microcode error,
+dmesg extract below.  I wanted to check that the right microcode was being
+loaded at boot, so I checked lspci & dmesg which give me conflicting
+information.  First that the device is recognised by lspci as a Wireless-AC 9462
+(Wi-Fi 5) but also that iwlwifi detects the device as Wi-Fi 6 AX201 and loads
+firmware which I think is associated with the AX201. Specifically, firmware
+version 50.3e391d3e.0, see notes at the bottom.
+
+lspci reports it as Wireless-AC 9462. I used setpci to read the PCI ID registers
+and got the same answer: 8086:02f0, which corresponds to Wireless-AC 9462.  As
+stated above, the machine has an AX201 module installed, which might be
+8086:06f0, but there is no PCI device with that ID present.
+
+Hence first question: does this matter, given that the iwlwifi driver appears to
+load correct microcode?  Or, is any other part of the system going to make wrong
+decisions given that the device is wrongly reported everywhere else.
+
+Web searches show me that this mixup has been seen before. But I haven't found a
+page which addresses the mix-up directly, just pages which talk about upgrading
+the kernel or downgrading the driver or other fixes, all aiming to get wifi
+working.
+
+If it does matter that the PCI ID is wrong, how do I fix it?
+
+But the main question is, does anyone have any advice for how to address my
+problem where the wifi resets due to a microcode fault?
+
+Many thanks for reading this.
+
+John Beattie
+
+
+
+- - - - - -
+$ inxi -Fx
+System:    Host: fladday Kernel: 5.4.0-170-generic x86_64 bits: 64 compiler: gcc v: 9.4.0 Desktop: MATE 1.24.0 
+           Distro: Linux Mint 20.1 Ulyssa base: Ubuntu 20.04 focal 
+Machine:   Type: Mini-pc System: Intel Client Systems product: NUC10i7FNH v: K61081-306 serial: <superuser/root required> 
+           Mobo: Intel model: NUC10i7FNB v: K61360-305 serial: <superuser/root required> UEFI: Intel 
+           v: FNCML357.0046.2020.0928.1457 date: 09/28/2020 
+CPU:       Topology: 6-Core model: Intel Core i7-10710U bits: 64 type: MT MCP arch: N/A L2 cache: 12.0 MiB 
+           flags: avx avx2 lm nx pae sse sse2 sse3 sse4_1 sse4_2 ssse3 vmx bogomips: 38399 
+           Speed: 2021 MHz min/max: 400/4700 MHz Core speeds (MHz): 1: 700 2: 705 3: 739 4: 705 5: 700 6: 700 7: 700 8: 700 
+           9: 700 10: 701 11: 700 12: 700 
+Graphics:  Device-1: Intel driver: i915 v: kernel bus ID: 00:02.0 
+           Display: x11 server: X.Org 1.20.13 driver: modesetting unloaded: fbdev,vesa resolution: 1920x1080~75Hz 
+           OpenGL: renderer: Mesa Intel UHD Graphics (CML GT2) v: 4.6 Mesa 21.2.6 direct render: Yes 
+Audio:     Device-1: Intel driver: snd_hda_intel v: kernel bus ID: 00:1f.3 
+           Sound Server: ALSA v: k5.4.0-170-generic 
+Network:   Device-1: Intel Wireless-AC 9462 driver: iwlwifi v: kernel port: 3000 bus ID: 00:14.3 
+           IF: wlp0s20f3 state: up mac: b0:a4:60:16:4a:4a 
+           Device-2: Intel Ethernet I219-V driver: e1000e v: 3.2.6-k port: efa0 bus ID: 00:1f.6 
+           IF: eno1 state: down mac: 1c:69:7a:a1:c4:ed 
+Drives:    Local Storage: total: 1.14 TiB used: 1007.63 GiB (86.1%) 
+           ID-1: /dev/nvme0n1 model: 256GB PCS PCIe M.2 SSD size: 238.47 GiB 
+           ID-2: /dev/sda vendor: Seagate model: ST1000LM048-2E7172 size: 931.51 GiB 
+Partition: ID-1: / size: 231.49 GiB used: 131.08 GiB (56.6%) fs: ext4 dev: /dev/dm-1 
+           ID-2: /boot size: 703.1 MiB used: 218.9 MiB (31.1%) fs: ext4 dev: /dev/nvme0n1p2 
+           ID-3: swap-1 size: 976.0 MiB used: 66.0 MiB (6.8%) fs: swap dev: /dev/dm-2 
+Sensors:   System Temperatures: cpu: 54.0 C mobo: 49.0 C 
+           Fan Speeds (RPM): N/A 
+Info:      Processes: 631 Uptime: 2d 5h 27m Memory: 31.07 GiB used: 11.94 GiB (38.4%) Init: systemd runlevel: 5 Compilers: 
+           gcc: 9.4.0 Shell: bash v: 5.0.17 inxi: 3.0.38 
+
+
+$ dmesg | grep iwlwifi  ## boot up, also microcode error
+
+[  558.190932] iwlwifi 0000:00:14.3: enabling device (0000 -> 0002)
+[  558.198922] iwlwifi 0000:00:14.3: TLV_FW_FSEQ_VERSION: FSEQ Version: 58.3.35.22
+[  558.198925] iwlwifi 0000:00:14.3: Found debug destination: EXTERNAL_DRAM
+[  558.198926] iwlwifi 0000:00:14.3: Found debug configuration: 0
+[  558.199149] iwlwifi 0000:00:14.3: loaded firmware version 50.3e391d3e.0 op_mode iwlmvm
+[  558.232626] iwlwifi 0000:00:14.3: Detected Intel(R) Wi-Fi 6 AX201 160MHz, REV=0x354
+[  558.240075] iwlwifi 0000:00:14.3: Applying debug destination EXTERNAL_DRAM
+[  558.240408] iwlwifi 0000:00:14.3: Allocated 0x00400000 bytes for firmware monitor.
+[  558.385652] iwlwifi 0000:00:14.3: base HW address: b0:a4:60:16:4a:4a
+[  558.399945] iwlwifi 0000:00:14.3 wlp0s20f3: renamed from wlan0
+[  559.486208] iwlwifi 0000:00:14.3: Applying debug destination EXTERNAL_DRAM
+[  559.630840] iwlwifi 0000:00:14.3: FW already configured (0) - re-configuring
+[  559.635571] iwlwifi 0000:00:14.3: BIOS contains WGDS but no WRDS
+
+[85884.104825] iwlwifi 0000:00:14.3: Microcode SW error detected. Restarting 0x0.
+[85884.104921] iwlwifi 0000:00:14.3: Start IWL Error Log Dump:
+[85884.104926] iwlwifi 0000:00:14.3: Status: 0x00000040, count: 6
+[85884.104931] iwlwifi 0000:00:14.3: Loaded firmware version: 50.3e391d3e.0
+[85884.104937] iwlwifi 0000:00:14.3: 0x00004433 | ADVANCED_SYSASSERT          
+[85884.104941] iwlwifi 0000:00:14.3: 0x000022F0 | trm_hw_status0
+[85884.104944] iwlwifi 0000:00:14.3: 0x00000000 | trm_hw_status1
+[85884.104948] iwlwifi 0000:00:14.3: 0x004C9534 | branchlink2
+[85884.104952] iwlwifi 0000:00:14.3: 0x00000E56 | interruptlink1
+[85884.104956] iwlwifi 0000:00:14.3: 0x00000E56 | interruptlink2
+[85884.104959] iwlwifi 0000:00:14.3: 0x0003070E | data1
+[85884.104963] iwlwifi 0000:00:14.3: 0x00000001 | data2
+[85884.104967] iwlwifi 0000:00:14.3: 0x00000001 | data3
+[85884.104970] iwlwifi 0000:00:14.3: 0x75012D45 | beacon time
+[85884.104974] iwlwifi 0000:00:14.3: 0xC80B22BD | tsf low
+[85884.104978] iwlwifi 0000:00:14.3: 0x0000001C | tsf hi
+[85884.104982] iwlwifi 0000:00:14.3: 0x00000000 | time gp1
+[85884.104985] iwlwifi 0000:00:14.3: 0xDDBCBBD1 | time gp2
+[85884.104989] iwlwifi 0000:00:14.3: 0x00000001 | uCode revision type
+[85884.104993] iwlwifi 0000:00:14.3: 0x00000032 | uCode version major
+[85884.104996] iwlwifi 0000:00:14.3: 0x3E391D3E | uCode version minor
+[85884.105000] iwlwifi 0000:00:14.3: 0x00000351 | hw version
+[85884.105004] iwlwifi 0000:00:14.3: 0x00C89004 | board version
+[85884.105007] iwlwifi 0000:00:14.3: 0x809AFC0F | hcmd
+[85884.105011] iwlwifi 0000:00:14.3: 0x00020000 | isr0
+[85884.105015] iwlwifi 0000:00:14.3: 0x00400000 | isr1
+[85884.105019] iwlwifi 0000:00:14.3: 0x08E00002 | isr2
+[85884.105022] iwlwifi 0000:00:14.3: 0x04C36F8C | isr3
+[85884.105026] iwlwifi 0000:00:14.3: 0x00000000 | isr4
+[85884.105029] iwlwifi 0000:00:14.3: 0x0057019C | last cmd Id
+[85884.105033] iwlwifi 0000:00:14.3: 0x00016854 | wait_event
+[85884.105037] iwlwifi 0000:00:14.3: 0x000000D4 | l2p_control
+[85884.105040] iwlwifi 0000:00:14.3: 0x00000020 | l2p_duration
+[85884.105044] iwlwifi 0000:00:14.3: 0x00000007 | l2p_mhvalid
+[85884.105048] iwlwifi 0000:00:14.3: 0x00000081 | l2p_addr_match
+[85884.105052] iwlwifi 0000:00:14.3: 0x00000009 | lmpm_pmg_sel
+[85884.105055] iwlwifi 0000:00:14.3: 0x00000000 | timestamp
+[85884.105059] iwlwifi 0000:00:14.3: 0x000078AC | flow_handler
+[85884.105101] iwlwifi 0000:00:14.3: Start IWL Error Log Dump:
+[85884.105105] iwlwifi 0000:00:14.3: Status: 0x00000040, count: 7
+[85884.105109] iwlwifi 0000:00:14.3: 0x20000070 | NMI_INTERRUPT_LMAC_FATAL
+[85884.105113] iwlwifi 0000:00:14.3: 0x00000000 | umac branchlink1
+[85884.105117] iwlwifi 0000:00:14.3: 0x80465E6A | umac branchlink2
+[85884.105120] iwlwifi 0000:00:14.3: 0xC0086BD4 | umac interruptlink1
+[85884.105124] iwlwifi 0000:00:14.3: 0x804834A4 | umac interruptlink2
+[85884.105127] iwlwifi 0000:00:14.3: 0x00000400 | umac data1
+[85884.105131] iwlwifi 0000:00:14.3: 0x804834A4 | umac data2
+[85884.105135] iwlwifi 0000:00:14.3: 0x00000000 | umac data3
+[85884.105138] iwlwifi 0000:00:14.3: 0x00000032 | umac major
+[85884.105142] iwlwifi 0000:00:14.3: 0x3E391D3E | umac minor
+[85884.105145] iwlwifi 0000:00:14.3: 0xDDBCBBE2 | frame pointer
+[85884.105149] iwlwifi 0000:00:14.3: 0xC0885F40 | stack pointer
+[85884.105153] iwlwifi 0000:00:14.3: 0x00590400 | last host cmd
+[85884.105157] iwlwifi 0000:00:14.3: 0x00000000 | isr status reg
+[85884.105175] iwlwifi 0000:00:14.3: Fseq Registers:
+[85884.105193] iwlwifi 0000:00:14.3: 0x60000000 | FSEQ_ERROR_CODE
+[85884.105214] iwlwifi 0000:00:14.3: 0x80290033 | FSEQ_TOP_INIT_VERSION
+[85884.105234] iwlwifi 0000:00:14.3: 0x00070043 | FSEQ_CNVIO_INIT_VERSION
+[85884.105254] iwlwifi 0000:00:14.3: 0x0000A481 | FSEQ_OTP_VERSION
+[85884.105273] iwlwifi 0000:00:14.3: 0x00000003 | FSEQ_TOP_CONTENT_VERSION
+[85884.105292] iwlwifi 0000:00:14.3: 0x4552414E | FSEQ_ALIVE_TOKEN
+[85884.105312] iwlwifi 0000:00:14.3: 0x20000302 | FSEQ_CNVI_ID
+[85884.105331] iwlwifi 0000:00:14.3: 0x01300504 | FSEQ_CNVR_ID
+[85884.105351] iwlwifi 0000:00:14.3: 0x20000302 | CNVI_AUX_MISC_CHIP
+[85884.105374] iwlwifi 0000:00:14.3: 0x01300504 | CNVR_AUX_MISC_CHIP
+[85884.105395] iwlwifi 0000:00:14.3: 0x05B0905B | CNVR_SCU_SD_REGS_SD_REG_DIG_DCDC_VTRIM
+[85884.105415] iwlwifi 0000:00:14.3: 0x0000025B | CNVR_SCU_SD_REGS_SD_REG_ACTIVE_VDIG_MIRROR
+[85884.105616] iwlwifi 0000:00:14.3: Collecting data: trigger 2 fired.
+
+
+
+$ lspci | grep Network
+00:14.3 Network controller: Intel Corporation Wireless-AC 9462
+
+# setpci -d 8086:02f0 0.L
+02f08086
+
+# setpci -d 8086:06f0 0.L
+setpci: Warning: No devices selected for "0.l".
+
+# lshw:
+*-network:0
+             description: Wireless interface
+             product: Wireless-AC 9462
+             vendor: Intel Corporation
+             physical id: 14.3
+             bus info: pci@0000:00:14.3
+             logical name: wlp0s20f3
+             version: 00
+             serial: b0:a4:60:16:4a:4a
+             width: 64 bits
+             clock: 33MHz
+             capabilities: pm msi pciexpress msix bus_master cap_list ethernet physical wireless
+             configuration: broadcast=yes driver=iwlwifi driverversion=5.4.0-170-generic firmware=50.3e391d3e.0 ip=192.168.0.16 latency=0 link=yes multicast=yes wireless=IEEE 802.11
+
+# rfkill list
+0: hci0: Bluetooth
+	Soft blocked: yes
+	Hard blocked: no
+1: phy0: Wireless LAN
+	Soft blocked: no
+	Hard blocked: no
+
+
+
+Firmware version & microcode filename.  From
+https://packages.debian.org/bullseye/firmware-iwlwifi I find this mapping,
+starting with the firmware version which is mentioned in my dmesg:
+
+   50.3e391d3e.0 (iwlwifi-Qu-b0-hr-b0-50.ucode)
+
+From Intel
+(https://www.intel.com/content/www/us/en/support/articles/000005511/wireless.html)
+I get this:
+
+Intel Wi-Fi 6 AX201 160MHz	5.2+	iwlwifi-Qu-48.13675109.0.tgz
+
+This tgz, downloaded from the Intel web page, includes
+iwlwifi-Qu-b0-hr-b0-48.ucode which might be an earlier version of the file
+listed on the debian page, i.e. -48 instead of -50.
+
+So the line in the dmesg which reports that firmware version 50.3e391d3e.0 was
+loaded is close but doesn't exactly conform to the information on the intel
+webpage.  However, I think it is for AX201, not for 9462, so it is right in that
+sense.
 
