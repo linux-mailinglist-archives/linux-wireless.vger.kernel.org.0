@@ -1,146 +1,134 @@
-Return-Path: <linux-wireless+bounces-4450-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4451-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE638874B3B
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 10:47:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B4B9874D03
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 12:08:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D19C91C2180B
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 09:47:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3D453B212CF
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 11:08:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D1D0839F6;
-	Thu,  7 Mar 2024 09:47:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A8D3127B7C;
+	Thu,  7 Mar 2024 11:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="XyzFi1A5"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="hOIzRp3P"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03DD839EF
-	for <linux-wireless@vger.kernel.org>; Thu,  7 Mar 2024 09:47:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C6CE1E52A
+	for <linux-wireless@vger.kernel.org>; Thu,  7 Mar 2024 11:08:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709804856; cv=none; b=KAKsVMoSnoriyecDIlarrpLv5A70K0QWRAp51RaSbBpu18WXqCdn5YpEDufF9g/PDVs+wvoxX6Ni96JSIebfJncENolVybFg/KbvJubCZU1QYLOcQdoEeFOCnAh6AP7+ATjKUQdodiXcV1HfqTl57jEpHnPYX5YaYCdcxWJjhP8=
+	t=1709809709; cv=none; b=oDyiwTE/CankwAzZBiYY3ZWyYRpqqbTiSA3gA4M/rnCG6X3zTpp2Xh9CCY0A6zQGn5NZ8uxBTEdyDrZCn2k0reMftDDlwPuBu+0hORYI/unsRy4Otyk48nz9M/Qfhe7JbVfvAMfYyKW92wAiGxywFp/ufwwAad5I2YzUjM9EpC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709804856; c=relaxed/simple;
-	bh=C4cA2eMzqxQKt1xW0+RxsTQyTIVD3+oeNtUU+uXxNCg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=ZgQMRGod9irpc/nYHtWdM+vdwGBkPDXF5lB/brYdT4A2cv6OASL7r32ZPjS6wNyVgqHiYpDg3t7V6BItbxEUHmTK6IkoaX8PFbN0T7kTE9wbGH7OoOMkt9Dazq/5IeEQwQDrNyFBonap0tu2im0+vo7pm+sMdGAqzKDN7DMSTWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=XyzFi1A5; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 4277ndrm005292;
-	Thu, 7 Mar 2024 09:47:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=FIomtRaUEzhjsVAIwJkR52Eyfs5z54AAhKI/aKDbYY0=; b=Xy
-	zFi1A54mtwp/Ps9OoV2JTadrC/JteOs5wMRJip8JbJmg0Tft0Q0D+6JbBsYXt1Ae
-	gtaMZZhNjjIMw+YIgvbu30P7LBsbnAjDxAM8ActnNPUXeaE7nHcDjNFwhoEy2XEy
-	Cn1XByStqL5lGUQvMRYzj2yZkZxcruiaNZTAXCaohzT8nSM/n72UUFeTJVBt/lE0
-	kU3IP77y7Tgym5iRibUBwCAOVwLTkpWlmHKiarhC38BGe7NI0JfwXFJSA/LnCWo3
-	BIm0eZZop/iglFeyO5rDffl8FVlhDMjpeOFtnK82FA2bCEYQMifAna6U7q9iHD9+
-	qzSmofP8ZFm0V2fDRVHw==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wq9h8g71t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 Mar 2024 09:47:22 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 4279kq5w025326
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 7 Mar 2024 09:46:52 GMT
-Received: from [10.253.39.187] (10.80.80.8) by nalasex01b.na.qualcomm.com
- (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Thu, 7 Mar
- 2024 01:46:48 -0800
-Message-ID: <4536614a-7f4c-420f-b042-f71cf46ba08d@quicinc.com>
-Date: Thu, 7 Mar 2024 17:46:45 +0800
+	s=arc-20240116; t=1709809709; c=relaxed/simple;
+	bh=MlJEDnz3lc4Jvj7xN4NWhZIiaR0f5ZBKVRaT+9GWcNc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=M4katBGsB0zOGT1n1BkKnve0KSwnnQungf9htjCYp0kuwxRxsRCC57S8Jcp1CxZwQSU4phwVmpsu3qsdUtEVqwFC8z1PAqzrLhUwBElz0eAsZaDYrEEMvUkPF4fLnmkO/ytBZ9M6OMq8Jb+fB2b3NnYRwFb/o/JgWOltgzzeDfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=hOIzRp3P; arc=none smtp.client-ip=210.61.82.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: 01d80504dc7311ee935d6952f98a51a9-20240307
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=oP6i39R/fK+jF6uZWGIiot3B/64njBTpoJW5U6r7Zd4=;
+	b=hOIzRp3PPz6/yat1ZpG9MamFksgiR8fl74ke8FTwDTaSJKoUTEzUx0IoxrGiP6wy7lrowYWKfx3lXiKeFgRDS1mcYNtiVm+6mBvMwdEnrI8Dqgh63YNpf+T7xlf/ZLfuXqY6cY6UtUt9k3qjGGTXs2ya8M0qbvmdAdhJ4HxrZ4A=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.37,REQID:43c0f9bb-a3bb-4ff3-a04b-a8623e0440f1,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:6f543d0,CLOUDID:f89e9fff-c16b-4159-a099-3b9d0558e447,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+	RL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,
+	SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 01d80504dc7311ee935d6952f98a51a9-20240307
+Received: from mtkmbs13n2.mediatek.inc [(172.21.101.108)] by mailgw02.mediatek.com
+	(envelope-from <mingyen.hsieh@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 2086597899; Thu, 07 Mar 2024 19:08:20 +0800
+Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
+ MTKMBS14N1.mediatek.inc (172.21.101.75) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Thu, 7 Mar 2024 19:08:16 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Thu, 7 Mar 2024 19:08:16 +0800
+From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
+To: <nbd@nbd.name>, <lorenzo@kernel.org>
+CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
+	<Soul.Huang@mediatek.com>, <Leon.Yen@mediatek.com>,
+	<Eric-SY.Chang@mediatek.com>, <km.lin@mediatek.com>,
+	<robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
+	<Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
+	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
+	<linux-mediatek@lists.infradead.org>, Ming Yen Hsieh
+	<mingyen.hsieh@mediatek.com>
+Subject: [PATCH] wifi: mt76: mt7925: ensure 4-byte alignment for suspend & wow command
+Date: Thu, 7 Mar 2024 19:08:15 +0800
+Message-ID: <20240307110815.527-1-mingyen.hsieh@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 08/11] wifi: ath12k: allow specific mgmt frame tx while
- vdev is not up
-Content-Language: en-US
-To: Kalle Valo <kvalo@kernel.org>
-CC: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-References: <20240130040303.370590-1-quic_kangyang@quicinc.com>
- <20240130040303.370590-9-quic_kangyang@quicinc.com>
- <87il31r26k.fsf@kernel.org>
-From: Kang Yang <quic_kangyang@quicinc.com>
-In-Reply-To: <87il31r26k.fsf@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: IP3sIwhvg9s76rhdY2S_-3ps28NLUsLz
-X-Proofpoint-ORIG-GUID: IP3sIwhvg9s76rhdY2S_-3ps28NLUsLz
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-07_06,2024-03-06_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
- lowpriorityscore=0 mlxlogscore=999 priorityscore=1501 suspectscore=0
- spamscore=0 clxscore=1015 malwarescore=0 mlxscore=0 adultscore=0
- phishscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2402120000 definitions=main-2403070071
+Content-Type: text/plain
+X-TM-AS-Product-Ver: SMEX-14.0.0.3152-9.1.1006-23728.005
+X-TM-AS-Result: No-10--2.722700-8.000000
+X-TMASE-MatchedRID: K1/iR2xcoOfwa4iJAsefGDQlj13qze9pLoYOuiLW+uU1LB46LFAAklO4
+	BD7nLMxn4ZH8wasvhJf8uYcF5GffsqmVr/PsmqxPdE/dhjO8a+T0O7M3lSnTW5soi2XrUn/Jn6K
+	dMrRsL14qtq5d3cxkNRqXnrxrKCOXF7DZKeo3Cs2hOSsaDAFb6nDL8L6nn4dfX7wf7//XRh+eVw
+	YTr6L30KUA5kk8GugVrqf4jZC2Wrxm1z+N6ypGjYN/qZcpq7vWF0aD5ljt43pMcHZD6gqu7wxMj
+	fifIXfowkvVoA11Twp+3BndfXUhXQ==
+X-TM-AS-User-Approved-Sender: No
+X-TM-AS-User-Blocked-Sender: No
+X-TMASE-Result: 10--2.722700-8.000000
+X-TMASE-Version: SMEX-14.0.0.3152-9.1.1006-23728.005
+X-TM-SNTS-SMTP:
+	3ECA7F6D3A5597C68898AB61E16C428324056E3158A9EB0AFDBE3C6B9F5406682000:8
 
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
+Before sending suspend & wow command to FW, its length should be
+4-bytes alignd.
 
-On 2/7/2024 12:24 AM, Kalle Valo wrote:
-> Kang Yang <quic_kangyang@quicinc.com> writes:
-> 
->> In current code, the management frames must be sent after vdev is started.
->> But for P2P device, vdev won't start until P2P negotiation is done. So
->> this logic doesn't make sense for P2P device.
->>
->> Also use ar->conf_mutex to synchronize ar to avoid potential conflicts.
-> 
-> Please do locking changes in a separate followup patch, I removed this
-> in the pending branch:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=d357dcb3cd0cd3bf57064dc673b5477d884454b3
-> 
-> I assume you are referring to ar->allocated_vdev_map and access to that
-> indeed doesn't look consistent. Most of the places take conf->mutex but
-> I see some places which it's accessed without the mutex, for example
-> ath12k_mac_get_arvif_by_vdev_id() and ath12k_mac_get_ar_by_vdev_id().
-> 
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 1 +
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.h      | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-
-Hi, kalle:
-
-I just take a look for ath12k_mac_get_arvif_by_vdev_id() and 
-ath12k_mac_get_ar_by_vdev_id.
-
-Both of them use rcu_read_lock(), so we don't need mutex_lock() anymore, 
-right?
-
-I also tried to add mutex_lock() for them, cannot work well:
-[ 7804.291286] BUG: sleeping function called from invalid context at 
-kernel/locking/mutex.c:585
-[ 7804.291349] in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 0, 
-name: swapper/8
-[ 7804.291358] preempt_count: 101, expected: 0
-[ 7804.291366] RCU nest depth: 1, expected: 0
-[ 7804.291374] 1 lock held by swapper/8/0:
-……
-
-
-> I recommend in the followup patch checking all the access to
-> ar->allocated_vdev_map, fixing that if needed and adding documentation
-> to struct ath12k::allocated_vdev_map how it's supposed to be protected.
-> 
-
-
-So i think the initial change is sufficient: just use mutex_lock() in
-ath12k_mgmt_over_wmi_tx_work().
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+index af0c2b2aacb0..ef29d093f9c3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+@@ -2527,6 +2527,7 @@ int mt76_connac_mcu_set_hif_suspend(struct mt76_dev *dev, bool suspend)
+ 			__le16 tag;
+ 			__le16 len;
+ 			u8 suspend;
++			u8 pad[7];
+ 		} __packed hif_suspend;
+ 	} req = {
+ 		.hif_suspend = {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
+index 2a0bbfe7bfa5..b8315a89f4a9 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
+@@ -535,7 +535,7 @@ struct mt7925_wow_pattern_tlv {
+ 	u8 offset;
+ 	u8 mask[MT76_CONNAC_WOW_MASK_MAX_LEN];
+ 	u8 pattern[MT76_CONNAC_WOW_PATTEN_MAX_LEN];
+-	u8 rsv[4];
++	u8 rsv[7];
+ } __packed;
+ 
+ static inline enum connac3_mcu_cipher_type
+-- 
+2.18.0
 
 
