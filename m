@@ -1,138 +1,112 @@
-Return-Path: <linux-wireless+bounces-4452-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4453-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C409874D30
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 12:17:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32372874F19
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 13:32:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E3A81C20E05
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 11:17:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AEEB1C22B1E
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 12:32:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F6068529C;
-	Thu,  7 Mar 2024 11:17:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0D7486656;
+	Thu,  7 Mar 2024 12:32:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R/oo9gHk"
+	dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b="lBx1+QuJ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA945C8E3
-	for <linux-wireless@vger.kernel.org>; Thu,  7 Mar 2024 11:17:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D78F384FD5;
+	Thu,  7 Mar 2024 12:32:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709810249; cv=none; b=V5ND37qMKzbU+IxnE+1ze38I+5IG4JpEb2xuW/79a2LMW3gEV6uQEewmUg9jTjSDRs0YhxaSFk/51FgEc1anxPp11uxJib+GJm0gAbTcnUW/tDN8ysWzqaWhrUNZurPHs52VhnhvOETxrGuQ7om4og7jJ3h4o/oDd/Fd/EIedPU=
+	t=1709814742; cv=none; b=qlrHjZF5gfMHB129LSyAWWqP2IoxSWOf210cWLZpG6im0mcsxbpDRKZ/wH/+4QTofWegGoXm0PSqWYJDQ20yNU069sTvF5x7u2OzfIF9J3u8Fx54earuwfFVlU9Ep75b/KRcRVbzS6RN5tyUW48IHEQlcqYJ0AChMc3b94KyOaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709810249; c=relaxed/simple;
-	bh=noVrTzADk5MLxl13sgvJBZuvtxPbZk2va39CKN/RpZg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iV/Tc9Ba1C4/MPIPfRU0FIrKYtZu4VLKDPd5A6l8uDjrHpPtcUJE2+2xczIwYJLbugWDTVEfY5L0lpY4l8p4Z+IDRXIReNx8fds3NbKO+GcubyTCysTrvoUffSdhkFNNHDfcGGoS0h+ESquAY93bkxIjGI/GmqyDO8fEt90zMfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R/oo9gHk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DEAEC433F1;
-	Thu,  7 Mar 2024 11:17:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709810249;
-	bh=noVrTzADk5MLxl13sgvJBZuvtxPbZk2va39CKN/RpZg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=R/oo9gHklGo8uO05iepe8rNIEo6T8MNgguU6igYntI+hs5KIYx9/NFYq36wjUQ/W3
-	 Hw5cG941fglskyhsbU3QyiQ0qBeuM4Jy3/lhLV1uR8QfaSBlSP0Qug1L71FT+H32Ow
-	 x9Ym3YMZtpaBxhf5tgHHdn94An3bCVQyyyrrvWxuCVnHhG/ku8AsLhA8I9I259nn2o
-	 6szOK62LOn0avmXglumCSJvfL960Q2K0Vv6MNohr8mZTVjArRG1icYodwsTDH9qzeI
-	 HoqR+dZVsfm4y6cp2YO8RtutMI+NCiH8wB7cX2qcfIHd2DGKndgQt+XsaGXi72/2fD
-	 pks4VSPTaGdmA==
-Date: Thu, 7 Mar 2024 12:17:25 +0100
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
-Cc: nbd@nbd.name, deren.wu@mediatek.com, Sean.Wang@mediatek.com,
-	Soul.Huang@mediatek.com, Leon.Yen@mediatek.com,
-	Eric-SY.Chang@mediatek.com, km.lin@mediatek.com,
-	robin.chiu@mediatek.com, ch.yeh@mediatek.com, posh.sun@mediatek.com,
-	Quan.Zhou@mediatek.com, Ryder.Lee@mediatek.com,
-	Shayne.Chen@mediatek.com, linux-wireless@vger.kernel.org,
-	linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH] wifi: mt76: mt7925: ensure 4-byte alignment for suspend
- & wow command
-Message-ID: <ZemiRaRNhNTn-XLb@lore-desk>
-References: <20240307110815.527-1-mingyen.hsieh@mediatek.com>
+	s=arc-20240116; t=1709814742; c=relaxed/simple;
+	bh=CnKV7YkmwKVN45OVgq9HMp191oP0lkB4cDHb6peK+T4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=qSXw9glSI9pQzgAlZWw01fjMjQRLCoYzV23qVcUHioZC0HVjAXzgiDk9IEn3fvtI04niI/Hp8XJ3kLK8YOx/xl3LthwwB8UvrfrVCjtioVkV7NSWpGB2J32Y6dVJTbGOLtyTmvsS4k7e3p+6CmBWYuyk9U5TOBXTK9pp7uauiK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; spf=pass smtp.mailfrom=ellerman.id.au; dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b=lBx1+QuJ; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ellerman.id.au
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1709814736;
+	bh=CnKV7YkmwKVN45OVgq9HMp191oP0lkB4cDHb6peK+T4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=lBx1+QuJTEVHApTpCCDU+EV1Aykxe0USdn1M5qeFxUu86nOmkjduBDq8dT3o7qXpm
+	 oS8/qBbiILsQJC5KQx/qJRP/+1Rtwj+Mvna+PmMaQHKiOOUzj3K4BfsAnCXpYBeO5i
+	 sIHi1sZKR2G1jRkcILr1PE7EJZw85kHZ0/HyQZD5Je+4MUjufb3f6fIkyubjPbz8re
+	 /xYRYrDhHsNlHZi8hwJ5D8xkg2qXwM8ii3IePd37e1Jh7QAPge7a0+jwCSZNdI+ZOe
+	 Y4f3knEgXbFr14hWz3pvmzLU64Pzxk2jZ5fbpD4Fd7BcqwRmHFTOSol/RnqeVlE3F0
+	 mpc6I8Pch7Hkg==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Tr7wZ6z4Xz4wc8;
+	Thu,  7 Mar 2024 23:32:14 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Dawei Li <set_pte_at@outlook.com>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>
+Cc: "npiggin@gmail.com" <npiggin@gmail.com>, "linuxppc-dev@lists.ozlabs.org"
+ <linuxppc-dev@lists.ozlabs.org>, "linux-ide@vger.kernel.org"
+ <linux-ide@vger.kernel.org>, "netdev@vger.kernel.org"
+ <netdev@vger.kernel.org>, "linux-wireless@vger.kernel.org"
+ <linux-wireless@vger.kernel.org>, "linux-scsi@vger.kernel.org"
+ <linux-scsi@vger.kernel.org>, "linux-serial@vger.kernel.org"
+ <linux-serial@vger.kernel.org>, "alsa-devel@alsa-project.org"
+ <alsa-devel@alsa-project.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3] powerpc: macio: Make remove callback of macio driver
+ void returned
+In-Reply-To: <TYTP286MB356472357994D5EA49E2F5E3CA212@TYTP286MB3564.JPNP286.PROD.OUTLOOK.COM>
+References: <TYCP286MB232391520CB471E7C8D6EA84CAD19@TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM>
+ <3dc29701-239f-4a3b-b571-b9732975bd73@csgroup.eu>
+ <TYTP286MB356472357994D5EA49E2F5E3CA212@TYTP286MB3564.JPNP286.PROD.OUTLOOK.COM>
+Date: Thu, 07 Mar 2024 23:32:14 +1100
+Message-ID: <87bk7qnrxt.fsf@mail.lhotse>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="hPK9O+BSXO6lyn26"
-Content-Disposition: inline
-In-Reply-To: <20240307110815.527-1-mingyen.hsieh@mediatek.com>
-
-
---hPK9O+BSXO6lyn26
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-> From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
->=20
-> Before sending suspend & wow command to FW, its length should be
-> 4-bytes alignd.
->=20
-> Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-> ---
->  drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 1 +
->  drivers/net/wireless/mediatek/mt76/mt7925/mcu.h      | 2 +-
->  2 files changed, 2 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drive=
-rs/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-> index af0c2b2aacb0..ef29d093f9c3 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-> @@ -2527,6 +2527,7 @@ int mt76_connac_mcu_set_hif_suspend(struct mt76_dev=
- *dev, bool suspend)
->  			__le16 tag;
->  			__le16 len;
->  			u8 suspend;
-> +			u8 pad[7];
+Dawei Li <set_pte_at@outlook.com> writes:
+> Hi Christophe,
+>
+> On Tue, Feb 20, 2024 at 04:12:17PM +0000, Christophe Leroy wrote:
+>> Hi Michael,
+>>=20
+>> ping ?
+>>=20
+>> Le 01/02/2023 =C3=A0 15:36, Dawei Li a =C3=A9crit=C2=A0:
+>> > Commit fc7a6209d571 ("bus: Make remove callback return void") forces
+>> > bus_type::remove be void-returned, it doesn't make much sense for any
+>> > bus based driver implementing remove callbalk to return non-void to
+>> > its caller.
+>> >=20
+>> > This change is for macio bus based drivers.
+>> >=20
+>> > Signed-off-by: Dawei Li <set_pte_at@outlook.com>
+>>=20
+>> This patch is Acked , any special reason for not applying it ?
+>>=20
+>> Note that it now conflicts with commit 1535d5962d79 ("wifi: remove=20
+>> orphaned orinoco driver") but resolution is trivial, just drop the=20
+>> changes to that file.
+>
+> Thanks for picking it up, hardly believe that it's been one year.
+>
+> Michael,
+>
+> I will respin V4 if it's needed.
 
-mt76_connac_mcu_set_hif_suspend() is used even by other drv (e.g. mt7615). =
-Is
-this change backward compatible?
+No that's fine, I'll sort it out.
 
-Regards,
-Lorenzo
-
->  		} __packed hif_suspend;
->  	} req =3D {
->  		.hif_suspend =3D {
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h b/drivers/ne=
-t/wireless/mediatek/mt76/mt7925/mcu.h
-> index 2a0bbfe7bfa5..b8315a89f4a9 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
-> @@ -535,7 +535,7 @@ struct mt7925_wow_pattern_tlv {
->  	u8 offset;
->  	u8 mask[MT76_CONNAC_WOW_MASK_MAX_LEN];
->  	u8 pattern[MT76_CONNAC_WOW_PATTEN_MAX_LEN];
-> -	u8 rsv[4];
-> +	u8 rsv[7];
->  } __packed;
-> =20
->  static inline enum connac3_mcu_cipher_type
-> --=20
-> 2.18.0
->=20
-
---hPK9O+BSXO6lyn26
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCZemiRQAKCRA6cBh0uS2t
-rC3TAQD2nyW0jjKsA5ibpFk88RbBGpFj7M5IY6YKAUfYccBL7QEA+ACex8pWuzKC
-NG0ubBBlrg29kthxg6x65IyMhkSwHQY=
-=VuWY
------END PGP SIGNATURE-----
-
---hPK9O+BSXO6lyn26--
+cheers
 
