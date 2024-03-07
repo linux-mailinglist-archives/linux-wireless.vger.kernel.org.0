@@ -1,123 +1,145 @@
-Return-Path: <linux-wireless+bounces-4447-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4448-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBE7987497D
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 09:23:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 227D88749DE
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 09:39:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 295381C21344
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 08:23:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 548F31C213FB
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 08:39:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F6D4633F9;
-	Thu,  7 Mar 2024 08:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 865E270CAA;
+	Thu,  7 Mar 2024 08:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RgZVpI2a"
+	dkim=pass (2048-bit key) header.d=sartura.hr header.i=@sartura.hr header.b="cJShu0by"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62A755FDCC
-	for <linux-wireless@vger.kernel.org>; Thu,  7 Mar 2024 08:23:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9BF6657D5
+	for <linux-wireless@vger.kernel.org>; Thu,  7 Mar 2024 08:39:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709799787; cv=none; b=ot1n2kMdDvjgO4m9RsbsLNAmLXPLP2vaknyWh8DtOco9xNJGyJdjYgzRFI6ktGzUoUajttOeeguCsRite5PZzTTHHfur7ULPAmKhHoYgw8HmSGrmOt7WDWqS56aVTDWpzHovHUN7n35eGH3CHWdBXm6BTE8QS0fRyq/nTl26qeI=
+	t=1709800779; cv=none; b=P3KqrFrYY2Y/0d6sSo9USKSx1OeYxOzugWfuGPoo0lML4IaML5elYRkwEV66npR3YJ0c21QvjoJhlJ66971uCIZzjz0Gilt+8m52EB2eLFmapnfS9FTWTQZ2g9f2juyWoqCwRv4yn6x2PIEt3QbWbpZcDnLPbcgbxZuLnaozr4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709799787; c=relaxed/simple;
-	bh=c7DU7j1T11TpDZaT0tyl9BIJh8qXovMj5Xh/pKI1SjM=;
+	s=arc-20240116; t=1709800779; c=relaxed/simple;
+	bh=hS8zu4sRYSZWgtYsgxH06GASLmu07y/0dobyT5SPg6U=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gu7AZJmQY8sf4xLIUzCcpF1S2Cu5b8aYTXy3Br1yv7zHJ882N3km4t9KBljXDFEeRhAixyvz/+J7SDeiU4NKzPFH+nPGigBlz3v9glO+Z+EFPfMvWZU5uKpw4pYqyrXIysikISXYDBGdGh5z8TA7qFFvRJlQL8ws6usdcFu/cFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RgZVpI2a; arc=none smtp.client-ip=209.85.128.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-6099703e530so5752317b3.3
-        for <linux-wireless@vger.kernel.org>; Thu, 07 Mar 2024 00:23:05 -0800 (PST)
+	 To:Cc:Content-Type; b=VVFNaf5f3uTdwH1zbnw4iRMkCKq7YZd2Lxt41oVeSs6rGkSNddGLWGKlCq84K8cE6/XHGKs7FAAmxJaigVB/5mF10+dZPzyrrlL3UVXvXYmEq5eIh7XY1w21MLZfihzE0Dfi7PpPP2PPiVJyrrOpnqx+m0n/okZH/KX/4bQiePU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sartura.hr; spf=pass smtp.mailfrom=sartura.hr; dkim=pass (2048-bit key) header.d=sartura.hr header.i=@sartura.hr header.b=cJShu0by; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sartura.hr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sartura.hr
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2997a92e23bso351040a91.3
+        for <linux-wireless@vger.kernel.org>; Thu, 07 Mar 2024 00:39:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1709799784; x=1710404584; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=BTCDlQMgEr5UEnpV5mDn3dJxhyjjt0R5yPNztDHuRWA=;
-        b=RgZVpI2am6/GI15D1D4hI8zwL8t0VmcPmEejTBQpsiE8+uEUjS8UmS8kuf324X76Mw
-         ONy+yYJHOCT6yYbCB9VHBPEKZoVkyEPibwDbzGPjV+bppR8YNjW2FQF0NgY7lHM5dcCP
-         IkrF3m/OqYv0yNU+p8llY/cDUWDQejUluw+C6b31jrCDBfHOHDHQ9Ai5WFhPTW2kp7XH
-         wo4Kq5Kh9GmQafI1OZ5cjx9bsz9DVcsvShpoZqSbrWwTSOxXAkUMe4KIjW+ZELr2p2Lz
-         +NHrs+dbw/qAx6K6Q4KpMxU12nq+tY+uZ5KUGr+fePYo312vdlrStCOoSiAo7hlhZLaE
-         vBTA==
+        d=sartura.hr; s=sartura; t=1709800777; x=1710405577; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hS8zu4sRYSZWgtYsgxH06GASLmu07y/0dobyT5SPg6U=;
+        b=cJShu0bywpR69DEgMheGIQtf7FiaYZjQybyX65efDlN4n3g7QSmY+qccBNGJsuMEXE
+         UEK6LzecOSEvFJ+bBIPcNMjLwPVB42gaYcBVOevjqZxnT7u4PrzAj0k+T1JwkAzpessQ
+         ExudqK8HxQbcvpvlU60zn9aUFhLEI3HidVxDLpikQqIToG7di/h0SJjr+FA+cZenQdhm
+         M9o9ALqzVQ2oykhWd9Wm6ZlNxNpHKh7yCPDS4j0oQ8k3tyxd9v5mQO+fbRnC4gD2Nihh
+         Sd8f+clFv7GSh3XqMRsFRrShqthzJB55vLxzMOr8oraM/W3mF2JSgXbZA0zjVW576hRi
+         tAIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709799784; x=1710404584;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=BTCDlQMgEr5UEnpV5mDn3dJxhyjjt0R5yPNztDHuRWA=;
-        b=eDYalUftq0DpEXHl0AkjEykPFTyaScmRWp9K6m9swsLs/M2wpGOLJ+SJh3wVr5dj/+
-         ZdJgVyVcyrKFs9ChkCe+DFNKtzJEe6JgzZlP6xBEYFGRhtugjaMGPxVM++tjS5D3txzJ
-         an3AZSJkj8IGIteMXzwQB+bKytFkj20px1MxRYLMEkMBbpc/ysWQyxebbTy4x5eMZo3E
-         zh6AVbj2UjkmfxnF3PiUy1Ehph/7Nc7r7hHtI3GA+10b4edTewNbCD+f9RjfmzbmrAL4
-         nSntZVgdbjvcoCvJLOJ2sftelDjZg2B9MDZCIQ7NwN+KF6vT1Zdt1ZWihLmvYEgQgTrm
-         YIZg==
-X-Forwarded-Encrypted: i=1; AJvYcCX8rF4gPvyoJ6E2KY9b/+LWpHNTAXeFL/M2DYvYaz63SnwU8Lx9js0znEBozkkUKzEKf+44pNbKxfCWtxzMuWxkRjQCx+OyJjYp4KkJtFg=
-X-Gm-Message-State: AOJu0YzmVa+bz7jig/w3JrpXbXWjujBHcGDU4cuFKYVOPGuO0x9K1g9I
-	2/aAGTxtHFOhdDGbXCrmXfnZDOdVHomz5B/UcBWY+XK2x1PCskozpl46zTn0S9YIeezhusZJfvx
-	hwjr+IcEdiH7o++WhgLz/d21koL0y7gL5MnVf1w==
-X-Google-Smtp-Source: AGHT+IGtlINLMOBpnSyCH2ZmpwWY+N46YIj+jpgvXOKi2Jcaj1+sVPOFaJ/lVWVfwLTv+DvW59tvQrS42RXoxx6CtmY=
-X-Received: by 2002:a0d:d882:0:b0:607:834f:b4c4 with SMTP id
- a124-20020a0dd882000000b00607834fb4c4mr1560071ywe.29.1709799784322; Thu, 07
- Mar 2024 00:23:04 -0800 (PST)
+        d=1e100.net; s=20230601; t=1709800777; x=1710405577;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hS8zu4sRYSZWgtYsgxH06GASLmu07y/0dobyT5SPg6U=;
+        b=fILd/e19V+gtZJCpXg+9sORDfy6itx1K0aD6pLHxaxHNqJvFmnkf5iR68S2Dlm19wJ
+         XONHh/emQPx2ifi+ugDWPftcLXK3NKM1NvB29/VVr05MVcaeZpSpxPJwY/O0tqHq2Qtc
+         m3qSstf0oE4Ubv/niIGf92zfKij/TULYD9ENMNqulA1YQr/pihCzlmqEFW2cEPaxiVMt
+         HDJl5Kq+MwAqoSpVO1IJVz/+bb6ouOj5fDXvkS39poRMatTJ9rj4VCRt20MSEvsvNBMO
+         X+AnzyQpTINYh+SJvb+dYFZ0TYuYb2Z9frzzqwRZGXoQVrgNFtTmHc+KqjG6CgCVTql9
+         QxDg==
+X-Forwarded-Encrypted: i=1; AJvYcCWpbM054XWeb8oeW+7DwmXzRY0U/4+EHkCn12MOy1PI+vHVW7g+mQceFFue10dk5OCaKGmjEb4BtpCbihIV53bc4HT1Nqnyl16sGAruwsg=
+X-Gm-Message-State: AOJu0YyC/LtKatkdpKq24b9SgIntOMNSQoycpnFE8loS1mX4heJSjq08
+	RTrNYuiEl6zpn36t1C7/b9NIuZft7qCRgRZDsB+uJKk66DQRFtVAzSEK/mJNH2uolTGpMShwNgu
+	S59ZVIztcoVolx7D+8UzqDxuJRTQCRj6O3zL20w==
+X-Google-Smtp-Source: AGHT+IFtYoz85x+BrsyL3WDeniAwghS6EjRoEeJUdL1XSOqljGL47ACIuTJtfbK74x/u65ZmTCLctG2MbKAUjQXLWiY=
+X-Received: by 2002:a17:90a:9b02:b0:299:2807:1eb1 with SMTP id
+ f2-20020a17090a9b0200b0029928071eb1mr16879947pjp.34.1709800777227; Thu, 07
+ Mar 2024 00:39:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240306-wcn3990-firmware-path-v2-0-f89e98e71a57@linaro.org>
- <87plw7hgt4.fsf@kernel.org> <CAA8EJpr6fRfY5pNz6cXVTaNashqffy5_qLv9c35nkgjaDuSgyQ@mail.gmail.com>
- <87cys7hard.fsf@kernel.org> <CAA8EJpowyEEbXQ4YK-GQ63wZSkJDy04qJsC2uuYCXt+aJ1HSOQ@mail.gmail.com>
- <baa7a017-ee4b-4e8f-9bb8-1e3857e18855@quicinc.com>
-In-Reply-To: <baa7a017-ee4b-4e8f-9bb8-1e3857e18855@quicinc.com>
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Thu, 7 Mar 2024 10:22:53 +0200
-Message-ID: <CAA8EJpq780+=b-XEShsS4ixtpOJxwigvR-E0nPJ1Xz0CV_eO4Q@mail.gmail.com>
-Subject: Re: [PATCH RFC v2 0/4] wifi: ath10k: support board-specific firmware overrides
+References: <bac97f31-4a70-4c4c-8179-4ede0b32f869@quicinc.com>
+In-Reply-To: <bac97f31-4a70-4c4c-8179-4ede0b32f869@quicinc.com>
+From: Robert Marko <robert.marko@sartura.hr>
+Date: Thu, 7 Mar 2024 09:39:26 +0100
+Message-ID: <CA+HBbNFQ+25u_PK2j3vYtiCZwv+shVAVeAHKqQCwhyCopORt4Q@mail.gmail.com>
+Subject: Re: New staging repos for ath1*k firmware
 To: Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc: Kalle Valo <kvalo@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
-	ath10k@lists.infradead.org, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, 
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: ath10k <ath10k@lists.infradead.org>, ath11k <ath11k@lists.infradead.org>, 
+	ath12k <ath12k@lists.infradead.org>, 
+	linux-wireless <linux-wireless@vger.kernel.org>, Kalle Valo <quic_kvalo@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 7 Mar 2024 at 00:25, Jeff Johnson <quic_jjohnson@quicinc.com> wrote:
+On Wed, Mar 6, 2024 at 8:23=E2=80=AFPM Jeff Johnson <quic_jjohnson@quicinc.=
+com> wrote:
 >
-> On 3/6/2024 6:23 AM, Dmitry Baryshkov wrote:
-> > After some thought, I'd suggest to follow approach taken by the rest
-> > of qcom firmware:
-> > put a default (accepted by non-secured hardware) firmware to SoC dir
-> > and then put a vendor-specific firmware into subdir. If any of such
-> > vendors appear, we might even implement structural fallback: first
-> > look into sdm845/Google/blueline, then in sdm845/Google, sdm845/ and
-> > finally just under hw1.0.
+> Historically, prior to being incorporated into the linux-firmware
+> project, firmware for kernel.org ath1*k drivers has been first published
+> to Kalle's GitHub:
+> https://github.com/kvalo/ath10k-firmware
+> https://github.com/kvalo/ath11k-firmware
+> (ath12k firmware was pushed to the ath11k-firmware repo on a temporary
+> basis in anticipation of this move)
 >
-> are there existing examples in linux-firmware?
+> But in order to have repos with multiple maintainers, as well as to have
+> a hosting platform with more control, we have moved to CodeLinaro:
+> https://git.codelinaro.org/clo/ath-firmware/ath10k-firmware
+> https://git.codelinaro.org/clo/ath-firmware/ath11k-firmware
+> https://git.codelinaro.org/clo/ath-firmware/ath12k-firmware
+>
+> Note that most people should not care about this -- normally you should
+> use the firmware that is in the official linux-firmware repo:
+> https://git.kernel.org/cgit/linux/kernel/git/firmware/linux-firmware.git/
+>
+> You should only need to access the staging repos if you need a previous
+> version to work around an issue, or if you are testing new firmware that
+> is supposed to fix a problem that you've reported.
+>
+> Please let Kalle & I know if you have any issues with these new repos!
 
-Yes. QCM2290 / QRB4210 platforms have "updated" wlanmdsp.mbn file,
-which actually prompted us to work on these overrides. I have opened
-the MR against linux-firmware, marked as draft for now, until all
-discussions are finished:
+Can I please ask for IPQ6018 firmware to be updated to 2.9.0.1 as well?
 
-https://gitlab.com/kernel-firmware/linux-firmware/-/merge_requests/165
+We have added IPQ6018 support to OpenWrt but we are forced to use the old 2=
+.4
+firmware since anything newer is crashing on IPQ6018, we had the same issue=
+ on
+IPQ8074 but it was fixed with 2.9.0.1 firmware.
 
-> or is the whole point being only the default firmware is in
-> linux-firmware and vendors would follow this pattern if they add their
-> own firmware?
+Even for IPQ8074, there is newer 2.9.0.1 firmware that is only
+available as part of
+QSDK and the community would benefit from being able to use it.
 
-Unfortunately not.
+Ideally, ath11k-firmware would at least contain the same blobs as the QUIC =
+repo:
+https://github.com/quic/upstream-wifi-fw.git
 
--- 
-With best wishes
-Dmitry
+Regards,
+Robert
+>
+> /jeff
+>
+
+
+--=20
+Robert Marko
+Staff Embedded Linux Engineer
+Sartura Ltd.
+Lendavska ulica 16a
+10000 Zagreb, Croatia
+Email: robert.marko@sartura.hr
+Web: www.sartura.hr
 
