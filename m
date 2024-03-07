@@ -1,239 +1,121 @@
-Return-Path: <linux-wireless+bounces-4462-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4463-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3850987558A
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 18:51:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C07F8755AE
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 18:59:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B2FC1C21AA0
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 17:51:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 60AB41C2334B
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 17:59:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0411130E4F;
-	Thu,  7 Mar 2024 17:51:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A780F131750;
+	Thu,  7 Mar 2024 17:59:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="lvsqJQXD"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE1EA130E23;
-	Thu,  7 Mar 2024 17:51:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 454CA130E30
+	for <linux-wireless@vger.kernel.org>; Thu,  7 Mar 2024 17:59:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709833866; cv=none; b=XHpslKcu+3+b4kyLLeYHZl7Py3DikNHvdQIoIqOrNVHRDgU2So3CJwvgeXNRBIZf4QkOpKqYvsubQSxT8mihq9seclMFHaWAgxbT3bKVf7jc3q/AzILlFQFDL28utSaQHBjBPj8nezHqL5hS186ji+oJlfz+okTIHUzvkMjhl1A=
+	t=1709834359; cv=none; b=nA0ykHKmpqTSvpQ9CyWFFbT9TH3r3L86yVjuR3G1uvmuzdkt3B3aS3JDdbQvKgt+OLJTEuAj6Mp5UuWbg4rafMhXnxRRNQt4CohTFzSk4T9R9SyzftiqWlAlRvydrePIXKONQArMKwfLZ3bbnLEpeaJkuuStfC20HoiKhP1rGdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709833866; c=relaxed/simple;
-	bh=LrT0NGCNxkZ932L/HfzGFxMUYmyWozRwxheB5aYJdCY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=o15maJymv9odab9+gk5iTZIwhIVV2UNqI02CyxXb+TJrn46f6RuKIyKnNc7tun5iXWr+K9oBl+0sutRSzql6TkluilBj+AjoOyV1hnJaA33tkqDPNiguIizVu7meP0hFxwaZIcM0boQ7X1TleamIsXyMMFOYnJckVVyWuQxuz+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-564372fb762so1486313a12.0;
-        Thu, 07 Mar 2024 09:51:04 -0800 (PST)
+	s=arc-20240116; t=1709834359; c=relaxed/simple;
+	bh=O2hdfjlzZlZ0CPCqJt23wbPJbF7Ae0mInAc+itOKRtw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZOKvx7RSTXOr56kPH2b9T8n/bd+JzOTONhb9wWv5ndUIvoq3BXTIVpEmBXi7D9e5M4tQn5yfqlk98frDDCiBsCi6BFuxeQX9nEexYQ090ydowgr+91Txl+te/XBqI6BdP2KvafV8vu6uYO1SdCwZfzO2pXRGkvO9TA0wfmQBrig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=lvsqJQXD; arc=none smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-6da9c834646so1082886b3a.3
+        for <linux-wireless@vger.kernel.org>; Thu, 07 Mar 2024 09:59:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1709834356; x=1710439156; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=VEqlp2HgRH1JvED8C1eQ8Jd7JtBfD5vT+Rfxt4u7aG4=;
+        b=lvsqJQXDodKjSvzCkHGyvGIv590mgf5/x5L8bNeJIkKlUuhyrGYEXKSyBKohU4K58c
+         8FK2Z//BCr7b8m1Egf1qWTEoL146hwp8ibyRWEvnAgg13VrTXobJJa13emiBnrAi1sgP
+         Hj8OxNmc8Be94QSabBeN6nbcM8WDbqE2K10Uk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709833863; x=1710438663;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=G3MIfGO3k7f6zIfDg/I6OeKxvIxDh2bPbWHKtpIBemM=;
-        b=TSSaT7Osyqy6syYf1g/Aq4HF6sA21gCcvytFHapndtZ6Y+v03AW/QKliVmFDzv/kBv
-         JQqSaRDBDX78FKJMlsOAXF77nubzRd3+SJ+YWN3iZIWuAL5qNPOTVkzCyKzr153lAjVg
-         okRtyMOYvXkYh9JW9j+PLm+sr4D3UocT4ZFIo/L9+g6kLQ9Jvg0HQ4uo9Pk562DrGdyH
-         11cSsP+1ZllMU8IAWnn1fVfsEej+YBt7fLJZ71aqn8Qvh/hHxu+1aOy+FldHIbbur/OO
-         wyxJNyxxULZHMqAIzayknj0CT2s2lyfohJw5yRFo2E508o0eUHNl0Eq97sThmV0aJ5Nf
-         GWKA==
-X-Forwarded-Encrypted: i=1; AJvYcCWNu4temoYKwY67DR12KcPcCJl5cMOnKnZJOqU7M5S90Ib2k3MWUxxWGa1ANfdopMu0WblAkLXSBXQc2hHLd6GnKwQmnJ+Bcezd6PnA
-X-Gm-Message-State: AOJu0Yww/QXZF+DL0KcJ5Drb3gXMNrbhNZUFAfGCwZBtR5+z2fNxk7fj
-	jcfvgGvn8KCuztB1BPxG8wprW5go374leucs1SPyBpWdRFWE5uDFFH6JUKk5
-X-Google-Smtp-Source: AGHT+IGE7COA8LXHVdLL1oQMQdLJNzQLRVSrWgARCGiG2GDbuK/vK1S4PhIbtrctYJhuaa4usFoVsg==
-X-Received: by 2002:a50:8e56:0:b0:568:2149:329a with SMTP id 22-20020a508e56000000b005682149329amr355169edx.19.1709833862825;
-        Thu, 07 Mar 2024 09:51:02 -0800 (PST)
-Received: from localhost (fwdproxy-lla-007.fbsv.net. [2a03:2880:30ff:7::face:b00c])
-        by smtp.gmail.com with ESMTPSA id d8-20020a50fe88000000b005673e29cc0fsm5116984edt.54.2024.03.07.09.51.02
+        d=1e100.net; s=20230601; t=1709834356; x=1710439156;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VEqlp2HgRH1JvED8C1eQ8Jd7JtBfD5vT+Rfxt4u7aG4=;
+        b=P6urBFLyD6pSeAcV1Zs9S6eNjJRbyCO8SgfatzvIpwMmJ/Z4w6XzJunjojeT0BbUVg
+         L3XNe3Rkfu/7nHPA8WfTXLmMgQ23NCbVcpXx3PS2Q1cysoqF2ssRKcvQA3xEe+5xWmwD
+         y+vgy8ahJYIAIm5VHjwMrmY08Ug/3ONtKQv1rmO7gM56l5zSc9ed/rXDnD+0sOoLNPVt
+         Fd9X46NkOHKK1pxWLrew0IvpQMoL2rAMX6o9EY+/7SGQOxfB8dC1yyFECW9c0BFAaK4Z
+         hPIHgH9kUJaV1cgl70HoTJk+RgLPKpjdLiEt6IhJE48Z/kSuD+f/oqdrgnJCLPilhll6
+         6Rxw==
+X-Gm-Message-State: AOJu0YxTqAK3VRAIAuJGHq6N9AsjQigT7ETg2yt7e101iEwpZ+fIlWnK
+	Px7FDDqBO+i0UQTlx9CGJj20ofto+qkf6LwlUS8Lf4imN4htSMl/9g5Eluy2wg==
+X-Google-Smtp-Source: AGHT+IEOvEuUqre/6sdNhgEG9LkJsdT6YuHjsXW6DtfCKNmHlmt7CPFD+bSq/JO0jH9mi0j5BLd1wQ==
+X-Received: by 2002:a05:6a20:da87:b0:1a1:4cd2:441f with SMTP id iy7-20020a056a20da8700b001a14cd2441fmr9864304pzb.6.1709834355997;
+        Thu, 07 Mar 2024 09:59:15 -0800 (PST)
+Received: from www.outflux.net ([198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id q4-20020a63e944000000b005dc1edf7371sm13198387pgj.9.2024.03.07.09.59.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Mar 2024 09:51:02 -0800 (PST)
-From: Breno Leitao <leitao@debian.org>
-To: linux-wireless@vger.kernel.org,
-	johannes.berg@intel.com,
+        Thu, 07 Mar 2024 09:59:15 -0800 (PST)
+Date: Thu, 7 Mar 2024 09:59:14 -0800
+From: Kees Cook <keescook@chromium.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: linux-wireless@vger.kernel.org, johannes.berg@intel.com,
 	gregory.greenman@intel.com,
 	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Kalle Valo <kvalo@kernel.org>
-Cc: kuba@kernel.org,
-	keescook@chromium.org,
+	Kalle Valo <kvalo@kernel.org>, kuba@kernel.org,
 	Alon Giladi <alon.giladi@intel.com>,
 	Benjamin Berg <benjamin.berg@intel.com>,
 	Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
 	Avraham Stern <avraham.stern@intel.com>,
 	Christian Marangi <ansuelsmth@gmail.com>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH] wifi: iwlwifi: pcie: allocate dummy net_device dynamically
-Date: Thu,  7 Mar 2024 09:48:31 -0800
-Message-ID: <20240307174843.1719130-1-leitao@debian.org>
-X-Mailer: git-send-email 2.43.0
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] wifi: iwlwifi: pcie: allocate dummy net_device
+ dynamically
+Message-ID: <202403070958.BE50CCDC@keescook>
+References: <20240307174843.1719130-1-leitao@debian.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240307174843.1719130-1-leitao@debian.org>
 
-struct net_device shouldn't be embedded into any structure, instead,
-the owner should use the priv space to embed their state into net_device.
+On Thu, Mar 07, 2024 at 09:48:31AM -0800, Breno Leitao wrote:
+> struct net_device shouldn't be embedded into any structure, instead,
+> the owner should use the priv space to embed their state into net_device.
+> 
+> Embedding net_device into structures prohibits the usage of flexible
+> arrays in the net_device structure. For more details, see the discussion
+> at [1].
+> 
+> Un-embed the net_device from struct iwl_trans_pcie by converting it
+> into a pointer. Then use the leverage alloc_netdev() to allocate the
+> net_device object at iwl_trans_pcie_alloc.
+> 
+> The private data of net_device becomes a pointer for the struct
+> iwl_trans_pcie, so, it is easy to get back to the iwl_trans_pcie parent
+> given the net_device object.
+> 
+> [1] https://lore.kernel.org/all/20240229225910.79e224cf@kernel.org/
+> 
+> Signed-off-by: Breno Leitao <leitao@debian.org>
 
-Embedding net_device into structures prohibits the usage of flexible
-arrays in the net_device structure. For more details, see the discussion
-at [1].
+Ah, nice! Thanks for doing this.
 
-Un-embed the net_device from struct iwl_trans_pcie by converting it
-into a pointer. Then use the leverage alloc_netdev() to allocate the
-net_device object at iwl_trans_pcie_alloc.
+I had to double-check the pointer-to-pointer stuff, but it makes sense
+to me now. :)
 
-The private data of net_device becomes a pointer for the struct
-iwl_trans_pcie, so, it is easy to get back to the iwl_trans_pcie parent
-given the net_device object.
+Reviewed-by: Kees Cook <keescook@chromium.org>
 
-[1] https://lore.kernel.org/all/20240229225910.79e224cf@kernel.org/
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- .../wireless/intel/iwlwifi/pcie/internal.h    |  2 +-
- drivers/net/wireless/intel/iwlwifi/pcie/rx.c  | 11 +++++--
- .../net/wireless/intel/iwlwifi/pcie/trans.c   | 29 +++++++++++++------
- 3 files changed, 29 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
-index 7805a42948af..a7eebe400b5b 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
-@@ -386,7 +386,7 @@ struct iwl_trans_pcie {
- 	dma_addr_t iml_dma_addr;
- 	struct iwl_trans *trans;
- 
--	struct net_device napi_dev;
-+	struct net_device *napi_dev;
- 
- 	/* INT ICT Table */
- 	__le32 *ict_tbl;
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-index 9c2461ba13c5..984d7bcd381f 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-@@ -1000,6 +1000,11 @@ void iwl_pcie_rx_init_rxb_lists(struct iwl_rxq *rxq)
- 
- static int iwl_pcie_rx_handle(struct iwl_trans *trans, int queue, int budget);
- 
-+static inline struct iwl_trans_pcie *iwl_netdev_to_trans_pcie(struct net_device *dev)
-+{
-+	return *(struct iwl_trans_pcie **)netdev_priv(dev);
-+}
-+
- static int iwl_pcie_napi_poll(struct napi_struct *napi, int budget)
- {
- 	struct iwl_rxq *rxq = container_of(napi, struct iwl_rxq, napi);
-@@ -1007,7 +1012,7 @@ static int iwl_pcie_napi_poll(struct napi_struct *napi, int budget)
- 	struct iwl_trans *trans;
- 	int ret;
- 
--	trans_pcie = container_of(napi->dev, struct iwl_trans_pcie, napi_dev);
-+	trans_pcie = iwl_netdev_to_trans_pcie(napi->dev);
- 	trans = trans_pcie->trans;
- 
- 	ret = iwl_pcie_rx_handle(trans, rxq->id, budget);
-@@ -1034,7 +1039,7 @@ static int iwl_pcie_napi_poll_msix(struct napi_struct *napi, int budget)
- 	struct iwl_trans *trans;
- 	int ret;
- 
--	trans_pcie = container_of(napi->dev, struct iwl_trans_pcie, napi_dev);
-+	trans_pcie = iwl_netdev_to_trans_pcie(napi->dev);
- 	trans = trans_pcie->trans;
- 
- 	ret = iwl_pcie_rx_handle(trans, rxq->id, budget);
-@@ -1131,7 +1136,7 @@ static int _iwl_pcie_rx_init(struct iwl_trans *trans)
- 			if (trans_pcie->msix_enabled)
- 				poll = iwl_pcie_napi_poll_msix;
- 
--			netif_napi_add(&trans_pcie->napi_dev, &rxq->napi,
-+			netif_napi_add(trans_pcie->napi_dev, &rxq->napi,
- 				       poll);
- 			napi_enable(&rxq->napi);
- 		}
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-index 6c76b2dd6878..e5af3d7dfbb1 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-@@ -1986,13 +1986,6 @@ static void iwl_trans_pcie_configure(struct iwl_trans *trans,
- 	trans->command_groups = trans_cfg->command_groups;
- 	trans->command_groups_size = trans_cfg->command_groups_size;
- 
--	/* Initialize NAPI here - it should be before registering to mac80211
--	 * in the opmode but after the HW struct is allocated.
--	 * As this function may be called again in some corner cases don't
--	 * do anything if NAPI was already initialized.
--	 */
--	if (trans_pcie->napi_dev.reg_state != NETREG_DUMMY)
--		init_dummy_netdev(&trans_pcie->napi_dev);
- 
- 	trans_pcie->fw_reset_handshake = trans_cfg->fw_reset_handshake;
- }
-@@ -2057,6 +2050,8 @@ void iwl_trans_pcie_free(struct iwl_trans *trans)
- 		iwl_pcie_tx_free(trans);
- 	iwl_pcie_rx_free(trans);
- 
-+	free_netdev(trans_pcie->napi_dev);
-+
- 	if (trans_pcie->rba.alloc_wq) {
- 		destroy_workqueue(trans_pcie->rba.alloc_wq);
- 		trans_pcie->rba.alloc_wq = NULL;
-@@ -3594,7 +3589,7 @@ struct iwl_trans *iwl_trans_pcie_alloc(struct pci_dev *pdev,
- 			       const struct pci_device_id *ent,
- 			       const struct iwl_cfg_trans_params *cfg_trans)
- {
--	struct iwl_trans_pcie *trans_pcie;
-+	struct iwl_trans_pcie *trans_pcie, **priv;
- 	struct iwl_trans *trans;
- 	int ret, addr_size;
- 	const struct iwl_trans_ops *ops = &trans_ops_pcie_gen2;
-@@ -3623,6 +3618,20 @@ struct iwl_trans *iwl_trans_pcie_alloc(struct pci_dev *pdev,
- 
- 	trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
- 
-+	/* Initialize NAPI here - it should be before registering to mac80211
-+	 * in the opmode but after the HW struct is allocated.
-+	 */
-+	trans_pcie->napi_dev = alloc_netdev(sizeof(struct iwl_trans_pcie *),
-+					    "dummy", NET_NAME_UNKNOWN,
-+					    init_dummy_netdev);
-+	if (!trans_pcie->napi_dev) {
-+		ret = -ENOMEM;
-+		goto out_free_trans;
-+	}
-+	/* The private struct in netdev is a pointer to struct iwl_trans_pcie */
-+	priv = netdev_priv(trans_pcie->napi_dev);
-+	*priv = trans_pcie;
-+
- 	trans_pcie->trans = trans;
- 	trans_pcie->opmode_down = true;
- 	spin_lock_init(&trans_pcie->irq_lock);
-@@ -3637,7 +3646,7 @@ struct iwl_trans *iwl_trans_pcie_alloc(struct pci_dev *pdev,
- 						   WQ_HIGHPRI | WQ_UNBOUND, 0);
- 	if (!trans_pcie->rba.alloc_wq) {
- 		ret = -ENOMEM;
--		goto out_free_trans;
-+		goto out_free_ndev;
- 	}
- 	INIT_WORK(&trans_pcie->rba.rx_alloc, iwl_pcie_rx_allocator_work);
- 
-@@ -3757,6 +3766,8 @@ struct iwl_trans *iwl_trans_pcie_alloc(struct pci_dev *pdev,
- 	iwl_pcie_free_ict(trans);
- out_no_pci:
- 	destroy_workqueue(trans_pcie->rba.alloc_wq);
-+out_free_ndev:
-+	free_netdev(trans_pcie->napi_dev);
- out_free_trans:
- 	iwl_trans_free(trans);
- 	return ERR_PTR(ret);
 -- 
-2.43.0
-
+Kees Cook
 
