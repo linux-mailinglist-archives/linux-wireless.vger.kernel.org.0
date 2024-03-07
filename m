@@ -1,108 +1,191 @@
-Return-Path: <linux-wireless+bounces-4458-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4459-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA5668753FD
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 17:14:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 471E4875437
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 17:35:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6572528317D
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 16:14:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F32951F223E9
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 16:35:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 841FC1E49E;
-	Thu,  7 Mar 2024 16:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3FD553366;
+	Thu,  7 Mar 2024 16:34:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bKwmC8hU"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="WRAaaX7C"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFEE31EEEA
-	for <linux-wireless@vger.kernel.org>; Thu,  7 Mar 2024 16:14:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1CC012EBEB
+	for <linux-wireless@vger.kernel.org>; Thu,  7 Mar 2024 16:34:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709828091; cv=none; b=Kephe1swU3INN0DnKixig+9oUZa9xK7eDs765bi7eieXEjkHEEURCJwgwdQ+9Xhv8iZgyoEVkNZTlelC/rJR3y5d1WCFkAhH5tG3x2TFmCtrzgX+drT87CPCAg7hpaW0iDd3sPeCAMSO9AdrIcRxiEWYH3oqEtXZ+7y/TydIOn0=
+	t=1709829287; cv=none; b=QybCDOIkTPLiyH0RchlQHYsJGVAXDpza3ChOOd4a0J1udL80AHiayKaiz6Kx21CtZaZUcksgYID4FA6cqK++qkGiJz14jSsWh1jQF7dlVXLwtFCKQyMLzHTnSi8L+NGiBFBUm1OUDxUf4O8XREcuxQSLeYhX2G5ykaws2qMbyEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709828091; c=relaxed/simple;
-	bh=QLKHu4wr/Z8unpsuiPyLu0/96WcGSaB7uVKEveHcOY8=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=t4RCWYzdDDV93aSBJ4QoEkqsS54XhuJBiDNj6hGstmkGv2pEP4azqtCHa/6FEsF4by9/xH4/pMwPEymyhVscrIsm9kYHzhIxw5b/CVzFm1NOQeFDzfrnzFGXm22OKXQfDA4beBeCZ8VdffNEBW/5niIOsdTIIENGHiNrAYmA1WI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bKwmC8hU; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-51323dfce59so1019421e87.3
-        for <linux-wireless@vger.kernel.org>; Thu, 07 Mar 2024 08:14:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709828088; x=1710432888; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=s3pccFh9QeQc8osAVDN9SW+WA/jGQlV6jyKzeyjL3g4=;
-        b=bKwmC8hUBFVT0E36JhWr8TAFXiEBTpGyx5vGImq9anD4FIlngZLh0h6vMLY5PMtaG5
-         fw0pD4kDlw00Ed9UByv7RqLjzp2uObrL24XYmkVWQgdphtTXjrRAqWl+S/ZNKlCPmkt/
-         W/974qPMwJiltgzKqiyLE0EIPaN9ybwbWZ8kU0BaEUfo9Rxl7uoM7WF4khtwH+d5DDwc
-         WlJq6m4Xv6nKiFjNW7L7knNLB1+2JByQ6X8Xk2X+cs8nOy+V+y5/R6Z6Ei2TqpAYT5a3
-         cUGXzpduRXhqUaE7yGppU2PyZfjgK0j1/5Xd5x8QXH9USf/ty7LAbfqA3gfBdqHw7mbJ
-         NUpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709828088; x=1710432888;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=s3pccFh9QeQc8osAVDN9SW+WA/jGQlV6jyKzeyjL3g4=;
-        b=Y3O6WpQJKdvJnTiQYJ04HZY4Gp9Oa2DlS75FsuUEe3YUK76KwZR/c4YNriDgTXGjSy
-         vUYC0R5itMZWSe3iBXHo8lv965R7rlBfSLC2T+sUOpYklLh4jSI7Coii5XECT2FEyZKB
-         EpZJyDcNwYexsJz2CHSxkOPn0Vnrmpom3pWfK7BzhlHD3Gt2GdRQXPpd/rElIcSsZ8bD
-         sUxnslR5kO2smaqYmQqUz6NIdYij9Vhe7mvj+etQZDKZJYeknv0VKusr3cbqVx5GKaZk
-         e0fzVtnnWZ5UylCfM1UeETyzNytdpf5IzQulnLv8AcyDrMa+ZGOmpWrRQO0v7fLcoQTL
-         kQrA==
-X-Forwarded-Encrypted: i=1; AJvYcCVbC95fC0Bvo/EI1w7lI7r/lHufN2pY9h3BmUbwxxxPrAI8xSi6UiwqBu/B+45/Gh1rR/hydWynzTqJZToj8wLCA5v6l+xfeNyLDhwNBkg=
-X-Gm-Message-State: AOJu0YxYyJeO1q7gfvQZlImjSEln4dELt01ADGn8/OzJTlIZOts5N+C+
-	B9eyMxM3wbOzk+dCQCYcTNZbsdsUVzyjd4NNlXdZAuJulSN/6iZyyIYrJl/oDGpeOw==
-X-Google-Smtp-Source: AGHT+IFtCU0PehP9TCdRvH72QeC5r8XVh/nI8gXn8Rviv91SWqPHmNFv7w460WIzjmGbJY+cj6+q9w==
-X-Received: by 2002:a05:6512:329c:b0:512:bf99:7d80 with SMTP id p28-20020a056512329c00b00512bf997d80mr1826309lfe.1.1709828087596;
-        Thu, 07 Mar 2024 08:14:47 -0800 (PST)
-Received: from radar-prod1.wnam.ru (nat-inorg.chem.msu.ru. [93.180.12.29])
-        by smtp.gmail.com with ESMTPSA id o15-20020ac24bcf000000b0051357109ae5sm1132030lfq.3.2024.03.07.08.14.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Mar 2024 08:14:46 -0800 (PST)
-Date: Thu, 7 Mar 2024 19:14:41 +0300
-From: Ruslan Isaev <legale.legale@gmail.com>
-To: Johannes Berg <johannes@sipsolutions.net>,
-	linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v7] Add JSON output options to 'iw' for scan results
-Message-ID: <Zenn8QaDJ0kxon2w@radar-prod1.wnam.ru>
-References: <d1988e179abb5911a8ddedfe95018bf4.legale.legale@gmail.com>
- <a1ac8dae34081e0ccde0fddf445f2ef13dbd06e5.camel@sipsolutions.net>
+	s=arc-20240116; t=1709829287; c=relaxed/simple;
+	bh=HEl67rgBltv239sfOcJC9NNvrvRy/R4jqdWdd3+mDrg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oHX3Ecmjwpu3CofYKATFwOxeVizhNSSTsIlD9cJZfakGgx5E5SmnXc+O8fUtgZ3tcMxLzLwz4bBr1eDEPcGeNlsfwz7m6TMe7CwQBhPPsNPIsV9isVSRAsqCX7trGdMrQYu6UbPwNEwtGgSrZyVGnvi4CdkQ34w7teqmVOa8tr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=WRAaaX7C; arc=none smtp.client-ip=67.231.154.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id C94258C0090;
+	Thu,  7 Mar 2024 16:34:35 +0000 (UTC)
+Received: from [192.168.100.159] (unknown [50.251.239.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by mail3.candelatech.com (Postfix) with ESMTPSA id 5FD8713C2B0;
+	Thu,  7 Mar 2024 08:34:34 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 5FD8713C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1709829275;
+	bh=HEl67rgBltv239sfOcJC9NNvrvRy/R4jqdWdd3+mDrg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=WRAaaX7C1watv5wxRHh6ihR0fiEJsvelFnc8C7O5PuaDtBk+9BLOpGxFM3RS/fdrb
+	 bfs3taFseSoIBQN6iRCSvvd9fHOM2y65HQB4AEDYCxZbW+liEnFFpAKdkjag3ghikT
+	 DGaq+LJYjO/jUpGaASSLE74l1fP0Gp9H+Uz3HZn8=
+Message-ID: <fcaf3039-e1ea-cd82-07d8-2aa33544edfa@candelatech.com>
+Date: Thu, 7 Mar 2024 08:34:34 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a1ac8dae34081e0ccde0fddf445f2ef13dbd06e5.camel@sipsolutions.net>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH] wifi: mt76: mt7921s: fix potential hung tasks during chip
+ recovery
+Content-Language: en-US
+To: Mingyen Hsieh <mingyen.hsieh@mediatek.com>, nbd@nbd.name,
+ lorenzo@kernel.org
+Cc: deren.wu@mediatek.com, Sean.Wang@mediatek.com, Soul.Huang@mediatek.com,
+ Leon.Yen@mediatek.com, Eric-SY.Chang@mediatek.com, km.lin@mediatek.com,
+ robin.chiu@mediatek.com, ch.yeh@mediatek.com, posh.sun@mediatek.com,
+ Quan.Zhou@mediatek.com, Ryder.Lee@mediatek.com, Shayne.Chen@mediatek.com,
+ linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
+References: <20240307094632.21638-1-mingyen.hsieh@mediatek.com>
+From: Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+In-Reply-To: <20240307094632.21638-1-mingyen.hsieh@mediatek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MDID: 1709829278-ek1p80uEYpVq
+X-MDID-O:
+ us5;at1;1709829278;ek1p80uEYpVq;<greearb@candelatech.com>;4565bb147eaa37fbc7c729da17b34891
 
-On Thu, Mar 07, 2024 at 04:23:47PM +0100, Johannes Berg wrote:
-> On Mon, 2024-03-04 at 23:01 +0300, Isaev Ruslan wrote:
-> > v7 changes:
-> > - binaries json/a json/a.out removed
-> > 
-> > v6 changes:
-> > - add iw_printf(const char *key, const char *fmt, ...)
-> > - rewrite print_ssid_escaped() as a demo with new concept
-> > 
+On 3/7/24 01:46, Mingyen Hsieh wrote:
+> From: Leon Yen <leon.yen@mediatek.com>
 > 
-> I guess it'd kind of be useless to test that way, but it'd be nicer to
-> review a patch that only has new concepts?
+> During chip recovery (e.g. chip reset), there is a possible situation that
+> kernel worker reset_work is holding the lock and waiting for kernel thread
+> stat_worker to be parked, while stat_worker is waiting for the release of
+> the same lock.
+> It causes a deadlock resulting in the dumping of hung tasks messages and
+> possible rebooting of the device.
 > 
-> Maybe split it anyway - one patch to add all the external code, one to
-> do the 'right' things and one with all the other stuff for testing?
-> 
-> johannes
+> This patch prevents the execution of stat_worker during the chip recovery.
 
-Ok. I will replace all the prints with new concept prints with iw_printf().
-I hope it will not be useless.
+Hello,
+
+I was able to hang my 7996 system doing a radio reset yesterday.  Is this same
+or similar fix needed for 7996?
+
+Thanks
+Ben
+
+> 
+> Signed-off-by: Leon Yen <leon.yen@mediatek.com>
+> Signed-off-by: Ming Yen Hsieh <MingYen.Hsieh@mediatek.com>
+> ---
+>   drivers/net/wireless/mediatek/mt76/mt7921/mac.c      | 2 ++
+>   drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c  | 2 --
+>   drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c | 2 --
+>   drivers/net/wireless/mediatek/mt76/sdio.c            | 3 ++-
+>   4 files changed, 4 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+> index 867e14f6b93a..73e42ef42983 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+> @@ -663,6 +663,7 @@ void mt7921_mac_reset_work(struct work_struct *work)
+>   	int i, ret;
+>   
+>   	dev_dbg(dev->mt76.dev, "chip reset\n");
+> +	set_bit(MT76_RESET, &dev->mphy.state);
+>   	dev->hw_full_reset = true;
+>   	ieee80211_stop_queues(hw);
+>   
+> @@ -691,6 +692,7 @@ void mt7921_mac_reset_work(struct work_struct *work)
+>   	}
+>   
+>   	dev->hw_full_reset = false;
+> +	clear_bit(MT76_RESET, &dev->mphy.state);
+>   	pm->suspended = false;
+>   	ieee80211_wake_queues(hw);
+>   	ieee80211_iterate_active_interfaces(hw,
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
+> index c866144ff061..031ba9aaa4e2 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
+> @@ -64,7 +64,6 @@ int mt7921e_mac_reset(struct mt792x_dev *dev)
+>   	mt76_wr(dev, dev->irq_map->host_irq_enable, 0);
+>   	mt76_wr(dev, MT_PCIE_MAC_INT_ENABLE, 0x0);
+>   
+> -	set_bit(MT76_RESET, &dev->mphy.state);
+>   	set_bit(MT76_MCU_RESET, &dev->mphy.state);
+>   	wake_up(&dev->mt76.mcu.wait);
+>   	skb_queue_purge(&dev->mt76.mcu.res_q);
+> @@ -115,7 +114,6 @@ int mt7921e_mac_reset(struct mt792x_dev *dev)
+>   
+>   	err = __mt7921_start(&dev->phy);
+>   out:
+> -	clear_bit(MT76_RESET, &dev->mphy.state);
+>   
+>   	local_bh_disable();
+>   	napi_enable(&dev->mt76.tx_napi);
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
+> index 389eb0903807..1f77cf71ca70 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
+> @@ -98,7 +98,6 @@ int mt7921s_mac_reset(struct mt792x_dev *dev)
+>   	mt76_connac_free_pending_tx_skbs(&dev->pm, NULL);
+>   	mt76_txq_schedule_all(&dev->mphy);
+>   	mt76_worker_disable(&dev->mt76.tx_worker);
+> -	set_bit(MT76_RESET, &dev->mphy.state);
+>   	set_bit(MT76_MCU_RESET, &dev->mphy.state);
+>   	wake_up(&dev->mt76.mcu.wait);
+>   	skb_queue_purge(&dev->mt76.mcu.res_q);
+> @@ -135,7 +134,6 @@ int mt7921s_mac_reset(struct mt792x_dev *dev)
+>   
+>   	err = __mt7921_start(&dev->phy);
+>   out:
+> -	clear_bit(MT76_RESET, &dev->mphy.state);
+>   
+>   	mt76_worker_enable(&dev->mt76.tx_worker);
+>   
+> diff --git a/drivers/net/wireless/mediatek/mt76/sdio.c b/drivers/net/wireless/mediatek/mt76/sdio.c
+> index 3e88798df017..a4ed00eebc48 100644
+> --- a/drivers/net/wireless/mediatek/mt76/sdio.c
+> +++ b/drivers/net/wireless/mediatek/mt76/sdio.c
+> @@ -499,7 +499,8 @@ static void mt76s_tx_status_data(struct mt76_worker *worker)
+>   	dev = container_of(sdio, struct mt76_dev, sdio);
+>   
+>   	while (true) {
+> -		if (test_bit(MT76_REMOVED, &dev->phy.state))
+> +		if (test_bit(MT76_RESET, &dev->phy.state) ||
+> +		    test_bit(MT76_REMOVED, &dev->phy.state))
+>   			break;
+>   
+>   		if (!dev->drv->tx_status_data(dev, &update))
+
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
+
 
 
