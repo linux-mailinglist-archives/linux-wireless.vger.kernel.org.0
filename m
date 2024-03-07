@@ -1,150 +1,108 @@
-Return-Path: <linux-wireless+bounces-4457-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4458-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2560F875325
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 16:29:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA5668753FD
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 17:14:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9B1B1F248F5
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 15:29:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6572528317D
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 16:14:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 658F312F36D;
-	Thu,  7 Mar 2024 15:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 841FC1E49E;
+	Thu,  7 Mar 2024 16:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b="ctgMptqN"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bKwmC8hU"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 023FF1EEEA
-	for <linux-wireless@vger.kernel.org>; Thu,  7 Mar 2024 15:29:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFEE31EEEA
+	for <linux-wireless@vger.kernel.org>; Thu,  7 Mar 2024 16:14:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709825372; cv=none; b=P63QiKsS7hbkLmt4pDzjO3BO/ePQl8btdKV5jhJx2h0kjmshCFWy4SJdCxaCtV2KR1DTJqGChxtYYojla9q5LbTFjv9TV3cdlI5bh4LWj2aSTdvzq85MVsR3NgHyAEmVQN9qU9OMKdWKIbGfsxsA6A9nTnNO1oggaI9d1O7m1LI=
+	t=1709828091; cv=none; b=Kephe1swU3INN0DnKixig+9oUZa9xK7eDs765bi7eieXEjkHEEURCJwgwdQ+9Xhv8iZgyoEVkNZTlelC/rJR3y5d1WCFkAhH5tG3x2TFmCtrzgX+drT87CPCAg7hpaW0iDd3sPeCAMSO9AdrIcRxiEWYH3oqEtXZ+7y/TydIOn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709825372; c=relaxed/simple;
-	bh=/CwM10SLvVd0qeLIDk7fSDRyhLofwyJ6hkYcbEkvGBs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=a2bGHGBnQKZ9A8Wteicu1EF5FdwjC/4nx6mbmAUY5noiSV3LW7N9yP1I+UsEksNvdDRGw/DnslE544f1iVWrWQgGz+ndPxlzLE7hX2FkJHq+LbYiU8x7uUTpbILRNqox214gZfvxvgspLgTcAdhEPjjygtULXE+rfkQg3hrDloE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b=ctgMptqN; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freebox.fr
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4130fefef75so5884645e9.2
-        for <linux-wireless@vger.kernel.org>; Thu, 07 Mar 2024 07:29:29 -0800 (PST)
+	s=arc-20240116; t=1709828091; c=relaxed/simple;
+	bh=QLKHu4wr/Z8unpsuiPyLu0/96WcGSaB7uVKEveHcOY8=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=t4RCWYzdDDV93aSBJ4QoEkqsS54XhuJBiDNj6hGstmkGv2pEP4azqtCHa/6FEsF4by9/xH4/pMwPEymyhVscrIsm9kYHzhIxw5b/CVzFm1NOQeFDzfrnzFGXm22OKXQfDA4beBeCZ8VdffNEBW/5niIOsdTIIENGHiNrAYmA1WI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bKwmC8hU; arc=none smtp.client-ip=209.85.167.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-51323dfce59so1019421e87.3
+        for <linux-wireless@vger.kernel.org>; Thu, 07 Mar 2024 08:14:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=freebox-fr.20230601.gappssmtp.com; s=20230601; t=1709825368; x=1710430168; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=X4rA7glPrCrKwr981a28u15ca/pzff2LojpS0g84uXI=;
-        b=ctgMptqNcuDfgmlLEsDRLPR12V3i3DxbmO/UcFyVmvKjM1HGMH9MHW2U3HOQpgCnlZ
-         +5ZobBhHtfu2GbxWFq1WR5YWylV1mMNrZoAXdSzOItn4aRbK6jTO4a55xhGgWFHMuI4J
-         kxjicZxKvv48aKdxxSGL2yzsDqszbQP4zOwBXhA4Y3klHEwlFpWWEXIvHUwLE29YVgyt
-         tGaBTw0aqQ182m/6TU+azNIWDY+1NcU3NUdMXl1S7LswcKg5HIOu8YQtJwO8G2yfCWiJ
-         Ysbi2PaAxbKMmOADchHMzzZdQDm2OrzvCYtvisiCrUYN+NwcmNK18rhp8NyWSROR//US
-         uueg==
+        d=gmail.com; s=20230601; t=1709828088; x=1710432888; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=s3pccFh9QeQc8osAVDN9SW+WA/jGQlV6jyKzeyjL3g4=;
+        b=bKwmC8hUBFVT0E36JhWr8TAFXiEBTpGyx5vGImq9anD4FIlngZLh0h6vMLY5PMtaG5
+         fw0pD4kDlw00Ed9UByv7RqLjzp2uObrL24XYmkVWQgdphtTXjrRAqWl+S/ZNKlCPmkt/
+         W/974qPMwJiltgzKqiyLE0EIPaN9ybwbWZ8kU0BaEUfo9Rxl7uoM7WF4khtwH+d5DDwc
+         WlJq6m4Xv6nKiFjNW7L7knNLB1+2JByQ6X8Xk2X+cs8nOy+V+y5/R6Z6Ei2TqpAYT5a3
+         cUGXzpduRXhqUaE7yGppU2PyZfjgK0j1/5Xd5x8QXH9USf/ty7LAbfqA3gfBdqHw7mbJ
+         NUpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709825368; x=1710430168;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=X4rA7glPrCrKwr981a28u15ca/pzff2LojpS0g84uXI=;
-        b=LpgWmzdmdHBY62Wuag8gHGlNU/qmDyEavM/2qKUDBvgyBuesMcsxxYELIqlMxA5NzO
-         IJBNKp4DPhDHeuS9NClTgI3NJYKq2AlOmjvemoad4V6XwcAaqkAKXWVdpyVf52aUWRoq
-         Oh9y4iaRm8LOVtWmR1xjFOppVKgpn/6L+KBBa9CkGQSTtaywaPhiiVkN65LdXSBb0EjP
-         MjKScuAJ1tmNxgwgXJZ7k/k7ENVUQlwTmLYjM/ndPRM3PVNkCdsBIEsHlwVRy/a0DYEf
-         J3Lr7gNScnNlBSzq83Y1Imd0ME3ib53ioHu0L3I0rO06V+s3QTfslhYSk4uYhTq6zT0N
-         SIfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXCrahS1gxDzWPO/VMk83KUbsTStGM1XVmE9Aoj/Md8D79ZoiFESvteWkjI2BuDSxqqi3prMMc3ZZjTPFbZSvYvXmLJM0cTx9kMGRQPD5c=
-X-Gm-Message-State: AOJu0Yze7AI9hutD+dTFN+5rsDAavYvRFGj9dmyRZcwwzli5+GigqGjV
-	xdXDgUc6qwkH4KgKfkRHbnLh8dJQpAVdXtC69q96yym7vplf4nH7e9WP7B6CsAo=
-X-Google-Smtp-Source: AGHT+IGEMjZrwSX4KlE3+S4Mx14JfUgPt2iuZklnN3V5j7oUm9gfxTUCLTshjWeoxPKz1UsSxB7+iA==
-X-Received: by 2002:a05:600c:450e:b0:413:1013:cc7f with SMTP id t14-20020a05600c450e00b004131013cc7fmr1576665wmo.29.1709825368172;
-        Thu, 07 Mar 2024 07:29:28 -0800 (PST)
-Received: from [192.168.108.81] (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id w14-20020a05600c474e00b004131310a29fsm1366528wmo.15.2024.03.07.07.29.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 07 Mar 2024 07:29:27 -0800 (PST)
-Message-ID: <2f588948-0261-4985-91e8-d5060e673cd9@freebox.fr>
-Date: Thu, 7 Mar 2024 16:29:27 +0100
+        d=1e100.net; s=20230601; t=1709828088; x=1710432888;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=s3pccFh9QeQc8osAVDN9SW+WA/jGQlV6jyKzeyjL3g4=;
+        b=Y3O6WpQJKdvJnTiQYJ04HZY4Gp9Oa2DlS75FsuUEe3YUK76KwZR/c4YNriDgTXGjSy
+         vUYC0R5itMZWSe3iBXHo8lv965R7rlBfSLC2T+sUOpYklLh4jSI7Coii5XECT2FEyZKB
+         EpZJyDcNwYexsJz2CHSxkOPn0Vnrmpom3pWfK7BzhlHD3Gt2GdRQXPpd/rElIcSsZ8bD
+         sUxnslR5kO2smaqYmQqUz6NIdYij9Vhe7mvj+etQZDKZJYeknv0VKusr3cbqVx5GKaZk
+         e0fzVtnnWZ5UylCfM1UeETyzNytdpf5IzQulnLv8AcyDrMa+ZGOmpWrRQO0v7fLcoQTL
+         kQrA==
+X-Forwarded-Encrypted: i=1; AJvYcCVbC95fC0Bvo/EI1w7lI7r/lHufN2pY9h3BmUbwxxxPrAI8xSi6UiwqBu/B+45/Gh1rR/hydWynzTqJZToj8wLCA5v6l+xfeNyLDhwNBkg=
+X-Gm-Message-State: AOJu0YxYyJeO1q7gfvQZlImjSEln4dELt01ADGn8/OzJTlIZOts5N+C+
+	B9eyMxM3wbOzk+dCQCYcTNZbsdsUVzyjd4NNlXdZAuJulSN/6iZyyIYrJl/oDGpeOw==
+X-Google-Smtp-Source: AGHT+IFtCU0PehP9TCdRvH72QeC5r8XVh/nI8gXn8Rviv91SWqPHmNFv7w460WIzjmGbJY+cj6+q9w==
+X-Received: by 2002:a05:6512:329c:b0:512:bf99:7d80 with SMTP id p28-20020a056512329c00b00512bf997d80mr1826309lfe.1.1709828087596;
+        Thu, 07 Mar 2024 08:14:47 -0800 (PST)
+Received: from radar-prod1.wnam.ru (nat-inorg.chem.msu.ru. [93.180.12.29])
+        by smtp.gmail.com with ESMTPSA id o15-20020ac24bcf000000b0051357109ae5sm1132030lfq.3.2024.03.07.08.14.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Mar 2024 08:14:46 -0800 (PST)
+Date: Thu, 7 Mar 2024 19:14:41 +0300
+From: Ruslan Isaev <legale.legale@gmail.com>
+To: Johannes Berg <johannes@sipsolutions.net>,
+	linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v7] Add JSON output options to 'iw' for scan results
+Message-ID: <Zenn8QaDJ0kxon2w@radar-prod1.wnam.ru>
+References: <d1988e179abb5911a8ddedfe95018bf4.legale.legale@gmail.com>
+ <a1ac8dae34081e0ccde0fddf445f2ef13dbd06e5.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: net: wireless: ath10k: add
- qcom,no-msa-ready-indicator prop
-Content-Language: en-US
-To: Jeff Johnson <quic_jjohnson@quicinc.com>, Conor Dooley
- <conor@kernel.org>, Kalle Valo <kvalo@kernel.org>
-Cc: ath10k <ath10k@lists.infradead.org>,
- wireless <linux-wireless@vger.kernel.org>, DT <devicetree@vger.kernel.org>,
- Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Pierre-Hugues Husson <phhusson@freebox.fr>,
- Jami Kettunen <jamipkettunen@gmail.com>,
- Jeffrey Hugo <quic_jhugo@quicinc.com>
-References: <14daa98e-7fd3-4ebb-87bb-5d2c1fba679f@freebox.fr>
- <b8de96c7-cbb6-4a09-a4d4-2c11b3ab3e01@freebox.fr> <871q8wk7o3.fsf@kernel.org>
- <3392f356-7b19-483d-b9f8-3bd84068fa52@freebox.fr> <87wmqoilzf.fsf@kernel.org>
- <20240229-ageless-primal-7a0544420949@spud>
- <c48ead11-0e2a-4066-b324-84f802215c9a@quicinc.com>
-From: Marc Gonzalez <mgonzalez@freebox.fr>
-In-Reply-To: <c48ead11-0e2a-4066-b324-84f802215c9a@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a1ac8dae34081e0ccde0fddf445f2ef13dbd06e5.camel@sipsolutions.net>
 
-On 29/02/2024 20:46, Jeff Johnson wrote:
-
-> On 2/29/2024 10:40 AM, Conor Dooley wrote:
->
->> On Wed, Feb 28, 2024 at 06:37:08PM +0200, Kalle Valo wrote:
->>
->>> Marc Gonzalez writes:
->>
->>>> As mentioned in my other reply, there are several msm8998-based
->>>> devices affected by this issue. Is it not appropriate to consider
->>>> a kernel-based work-around?
->>>
->>> Sorry, not following you here. But I'll try to answer anyway:
->>>
->>> I have understood that Device Tree is supposed to describe hardware, not
->>> software. This is why having this property in DT does not look right
->>> place for this. For example, if the ath10k firmware is fixed then DT
->>> would have to be changed even though nothing changed in hardware. But of
->>> course DT maintainers have the final say.
->>
->> I dunno, if the firmware affects the functionality of the hardware in a
->> way that cannot be detected from the operating system at runtime how
->> else is it supposed to deal with that?
->> The devicetree is supposed to describe hardware, yes, but at a certain
->> point the line between firmware and hardware is invisible :)
->> Not describing software is mostly about not using it to determine
->> software policy in the operating system.
+On Thu, Mar 07, 2024 at 04:23:47PM +0100, Johannes Berg wrote:
+> On Mon, 2024-03-04 at 23:01 +0300, Isaev Ruslan wrote:
+> > v7 changes:
+> > - binaries json/a json/a.out removed
+> > 
+> > v6 changes:
+> > - add iw_printf(const char *key, const char *fmt, ...)
+> > - rewrite print_ssid_escaped() as a demo with new concept
+> > 
 > 
-> FWIW I've compared ath10k to the out-of-tree Android driver and there
-> are discrepancies in this area. I've asked the development team that
-> supports ath10k to provide a recommendation.
+> I guess it'd kind of be useless to test that way, but it'd be nicer to
+> review a patch that only has new concepts?
+> 
+> Maybe split it anyway - one patch to add all the external code, one to
+> do the 'right' things and one with all the other stuff for testing?
+> 
+> johannes
 
-Hello Jeff,
-
-Have you heard back from the dev team?
-
-Do they confirm that an issue involving missing MSA_READY notifications
-was ever noticed?
-
-What devices were affected? (All msm8998? A subset of msm8998?)
-
-Was the issue eventually fixed?
-(Probably fixed, otherwise newer devices would be affected)
-
--- 
-Regards.
-
+Ok. I will replace all the prints with new concept prints with iw_printf().
+I hope it will not be useless.
 
 
