@@ -1,112 +1,132 @@
-Return-Path: <linux-wireless+bounces-4453-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4454-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32372874F19
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 13:32:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39C8D8750BB
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 14:49:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AEEB1C22B1E
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 12:32:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D3D9B26069
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 13:49:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0D7486656;
-	Thu,  7 Mar 2024 12:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09AC812D768;
+	Thu,  7 Mar 2024 13:42:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b="lBx1+QuJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X/pf71CK"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D78F384FD5;
-	Thu,  7 Mar 2024 12:32:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4989D12D740;
+	Thu,  7 Mar 2024 13:42:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709814742; cv=none; b=qlrHjZF5gfMHB129LSyAWWqP2IoxSWOf210cWLZpG6im0mcsxbpDRKZ/wH/+4QTofWegGoXm0PSqWYJDQ20yNU069sTvF5x7u2OzfIF9J3u8Fx54earuwfFVlU9Ep75b/KRcRVbzS6RN5tyUW48IHEQlcqYJ0AChMc3b94KyOaY=
+	t=1709818933; cv=none; b=Ak5dyLkwEf/Hp97xhGMNN5zVZsFr2pRDICAh7rmHtPs1gwvhVf++uDdJK97VHjtTuBgjAN4dAYUa965lOQIq/jKBzXkc9cAq6XnrQJcEBW0L5tgJd4jUfXL90cBHdHUUy3fIZvkTQ/Jd7hJtVT+FlcKA8biaYqvAU0R8t0V/MEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709814742; c=relaxed/simple;
-	bh=CnKV7YkmwKVN45OVgq9HMp191oP0lkB4cDHb6peK+T4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=qSXw9glSI9pQzgAlZWw01fjMjQRLCoYzV23qVcUHioZC0HVjAXzgiDk9IEn3fvtI04niI/Hp8XJ3kLK8YOx/xl3LthwwB8UvrfrVCjtioVkV7NSWpGB2J32Y6dVJTbGOLtyTmvsS4k7e3p+6CmBWYuyk9U5TOBXTK9pp7uauiK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; spf=pass smtp.mailfrom=ellerman.id.au; dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b=lBx1+QuJ; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ellerman.id.au
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1709814736;
-	bh=CnKV7YkmwKVN45OVgq9HMp191oP0lkB4cDHb6peK+T4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=lBx1+QuJTEVHApTpCCDU+EV1Aykxe0USdn1M5qeFxUu86nOmkjduBDq8dT3o7qXpm
-	 oS8/qBbiILsQJC5KQx/qJRP/+1Rtwj+Mvna+PmMaQHKiOOUzj3K4BfsAnCXpYBeO5i
-	 sIHi1sZKR2G1jRkcILr1PE7EJZw85kHZ0/HyQZD5Je+4MUjufb3f6fIkyubjPbz8re
-	 /xYRYrDhHsNlHZi8hwJ5D8xkg2qXwM8ii3IePd37e1Jh7QAPge7a0+jwCSZNdI+ZOe
-	 Y4f3knEgXbFr14hWz3pvmzLU64Pzxk2jZ5fbpD4Fd7BcqwRmHFTOSol/RnqeVlE3F0
-	 mpc6I8Pch7Hkg==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Tr7wZ6z4Xz4wc8;
-	Thu,  7 Mar 2024 23:32:14 +1100 (AEDT)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Dawei Li <set_pte_at@outlook.com>, Christophe Leroy
- <christophe.leroy@csgroup.eu>
-Cc: "npiggin@gmail.com" <npiggin@gmail.com>, "linuxppc-dev@lists.ozlabs.org"
- <linuxppc-dev@lists.ozlabs.org>, "linux-ide@vger.kernel.org"
- <linux-ide@vger.kernel.org>, "netdev@vger.kernel.org"
- <netdev@vger.kernel.org>, "linux-wireless@vger.kernel.org"
- <linux-wireless@vger.kernel.org>, "linux-scsi@vger.kernel.org"
- <linux-scsi@vger.kernel.org>, "linux-serial@vger.kernel.org"
- <linux-serial@vger.kernel.org>, "alsa-devel@alsa-project.org"
- <alsa-devel@alsa-project.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3] powerpc: macio: Make remove callback of macio driver
- void returned
-In-Reply-To: <TYTP286MB356472357994D5EA49E2F5E3CA212@TYTP286MB3564.JPNP286.PROD.OUTLOOK.COM>
-References: <TYCP286MB232391520CB471E7C8D6EA84CAD19@TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM>
- <3dc29701-239f-4a3b-b571-b9732975bd73@csgroup.eu>
- <TYTP286MB356472357994D5EA49E2F5E3CA212@TYTP286MB3564.JPNP286.PROD.OUTLOOK.COM>
-Date: Thu, 07 Mar 2024 23:32:14 +1100
-Message-ID: <87bk7qnrxt.fsf@mail.lhotse>
+	s=arc-20240116; t=1709818933; c=relaxed/simple;
+	bh=eerM3hiqwqeDIiaLPjjDKrALxrDo2REmYNtR6GjmEjk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=d3V9tsxBU5zMn09Hn2hMa5p6PzggJn/CpZ++tK43OneOWm8k5tbp3MAFB+fDqs7miVAAOmAWmIHG1bSjQSfhzokhcUTfkcB/XI73DQQtKTXoqq9a3upps3eW8lrg55OAG2omn/m2R6XuBGyy3dAots8/TOq04ZAgmUOSTrhExF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X/pf71CK; arc=none smtp.client-ip=209.85.167.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-51320ca689aso918443e87.2;
+        Thu, 07 Mar 2024 05:42:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1709818930; x=1710423730; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8qnF8BPNjxJ8K/TF3RMW7rPF5KtBEwyGXkbhBH+pChQ=;
+        b=X/pf71CK6DRqD2yTxs00G1FZIfiDLzJUtA5EUfi0C0rRCgtuf1oIwHNQCUO6egvwRz
+         mLq/gxmuPw7g00dHx1mVYK5dZq8HKjTuu1S1YxggVhCvHXlwE+Ww1+3Wtq4XvhN/QqCx
+         JkGe/wSa6EGdrBLSEYxJqDC5t/b1F+ZviAD2cTJjdi69WwZlIAyRjHDLajFkjPEvTj3A
+         jdN3hFdWz8tdcGUHVHKUNUHCoUv0Jr4EOa7h1qj9URLj+Er6KCTCahUHpHf0eT5ya5tz
+         WzmidayrksUw79TSIr/6NBcmxcYhGkZUIc6j50ltWYjbJJGdk2ly28ONnx+LJGIX/DJI
+         XnUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709818930; x=1710423730;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8qnF8BPNjxJ8K/TF3RMW7rPF5KtBEwyGXkbhBH+pChQ=;
+        b=xLpBNlJgMa/msDUKdFaT7cJGl3odthsI0TR9Au9h/IhiCSRsnd98n3vAiFHIIVu9Yz
+         qoi63hB0yNrGiv5+PawAyT3GkP+gueEnvW1pMU5DyvKApy6Is8iV0y5jRaK51ac35yGK
+         TzPwDvgnDin41GEANDYKeltO3hFk7mJVKDtSPq8q1oaPXjR8qp1uGSDGkmuH/5zsuKE1
+         NhkBoLP/RiRU3T1xh/2BqaH0n4KvR5cB0CwmUdRjt0oi8yOafgbftL8bsWk9Sl3F2owd
+         swQ1yVNPv9L8M1WTe8m7FOUKpLCIqPgUYQhw5Mbj5aUgweQlPnlVNSXC+87VkaRO1Tq+
+         py0g==
+X-Forwarded-Encrypted: i=1; AJvYcCX+1kslRMWr3NirBcpbBiwigbnhsOSyZzH9Exi9l9//nl5MSVy5MUKmC69Dygg98C5QedRCX9IJJRFGQKxBN6PNWsDiTtieADAxTJeuZGzkFn0mvcsZPagMW2KEgHvXXjNhPxXbOwZcSDbJeXE=
+X-Gm-Message-State: AOJu0YzfEVBI0aWkF/YIrNgTxzR/lmKzzYNtao7M38KaMRpjY8KychHI
+	CNqEVjMjlNRbooi7Ob2yNSjYsw76gtxsCZhjUGdZjjnQYKl+Qd5S
+X-Google-Smtp-Source: AGHT+IHbkPRl1kCxLX77oo2TcdE33qOWzJsDdD/rToFKNCZJKYc9M90wyto9BSmCoMfxZnkY6t2oTQ==
+X-Received: by 2002:ac2:511b:0:b0:513:116d:4d9b with SMTP id q27-20020ac2511b000000b00513116d4d9bmr1401300lfb.60.1709818930079;
+        Thu, 07 Mar 2024 05:42:10 -0800 (PST)
+Received: from rand-ubuntu-development.dl.local (mail.confident.ru. [85.114.29.218])
+        by smtp.gmail.com with ESMTPSA id l10-20020ac24a8a000000b0051321a5b0b8sm3062665lfp.201.2024.03.07.05.42.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Mar 2024 05:42:09 -0800 (PST)
+From: Rand Deeb <rand.sec96@gmail.com>
+To: jonas.gorski@gmail.com
+Cc: deeb.rand@confident.ru,
+	khoroshilov@ispras.ru,
+	kvalo@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	m@bues.ch,
+	rand.sec96@gmail.com,
+	voskresenski.stanislav@confident.ru
+Subject: Re: [PATCH v3] ssb: Fix potential NULL pointer dereference in ssb_device_uevent
+Date: Thu,  7 Mar 2024 16:41:42 +0300
+Message-Id: <20240307134142.169523-1-rand.sec96@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <CAOiHx==HHd3Nu=p5192=tOP-kAzJZUg2iRO2j8UCtcpfGT13nw@mail.gmail.com>
+References: <CAOiHx==HHd3Nu=p5192=tOP-kAzJZUg2iRO2j8UCtcpfGT13nw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Dawei Li <set_pte_at@outlook.com> writes:
-> Hi Christophe,
->
-> On Tue, Feb 20, 2024 at 04:12:17PM +0000, Christophe Leroy wrote:
->> Hi Michael,
->>=20
->> ping ?
->>=20
->> Le 01/02/2023 =C3=A0 15:36, Dawei Li a =C3=A9crit=C2=A0:
->> > Commit fc7a6209d571 ("bus: Make remove callback return void") forces
->> > bus_type::remove be void-returned, it doesn't make much sense for any
->> > bus based driver implementing remove callbalk to return non-void to
->> > its caller.
->> >=20
->> > This change is for macio bus based drivers.
->> >=20
->> > Signed-off-by: Dawei Li <set_pte_at@outlook.com>
->>=20
->> This patch is Acked , any special reason for not applying it ?
->>=20
->> Note that it now conflicts with commit 1535d5962d79 ("wifi: remove=20
->> orphaned orinoco driver") but resolution is trivial, just drop the=20
->> changes to that file.
->
-> Thanks for picking it up, hardly believe that it's been one year.
->
-> Michael,
->
-> I will respin V4 if it's needed.
 
-No that's fine, I'll sort it out.
+On Wed, Mar 6, 2024 at 10:51 PM Jonas Gorski <jonas.gorski@gmail.com> wrote:
+>
+> Hi
+>
+> The NULL check is what needs to be fixed/removed, not the code
+> surrounding it. This function will be called from dev_uevent() [1]
+> where dev cannot be NULL. So a NULL dereference cannot happen.
+>
+> Most other implementors of bus_type::uevent have no NULL check. To be
+> precise, there is only one other implementor with a NULL check,
+> rio_uevent(), and none of the other ones have one. See e.g.
+> bcma_device_uevent(), memstick_uevent(), mips_cdmm_uevent(), or
+> fsl_mc_bus_uevent().
 
-cheers
+
+Hi Jonas,
+
+Thank you for the feedback. To be precise there are actually 8 other 
+implementors (and potentially more) with a NULL check not just one 
+(parisc_uevent, serio_uevent, ipack_uevent, pci_uevent, pcmcia_bus_uevent, 
+rio_uevent, zorro_uevent, and soundbus_ueven).
+
+After a second review, I totally concur with your observations. I quickly 
+judged, I believed there might be an alternative way to call the function 
+because it's not the only one with a null check, and actually the patch 
+version 1 got accknowleded, that's why i'm confused. 
+
+Given that null is improbable in this context due to the calls being made 
+through uevent, we should eliminate the redundant condition. In light of 
+this, would you recommend sending a new version (v4) of the patch with the 
+correct title and info, or do you think it would be more appropriate to 
+submit an entirely fresh patch? i'll also send patches to all of the 
+implementors.
+
+Best regards.
 
