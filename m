@@ -1,137 +1,140 @@
-Return-Path: <linux-wireless+bounces-4474-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4475-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD5F2875925
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 22:20:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECDBA875974
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 22:39:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D43AB23631
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 21:20:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 262C11C215C1
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 21:39:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D857E13AA2D;
-	Thu,  7 Mar 2024 21:20:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mzfx1bGr"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA34A634E4;
+	Thu,  7 Mar 2024 21:39:24 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bues.ch (bues.ch [80.190.117.144])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08F1F20B38;
-	Thu,  7 Mar 2024 21:20:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A951724B33;
+	Thu,  7 Mar 2024 21:39:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.190.117.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709846405; cv=none; b=qVidbC0ycN7l8Fr3vB1s+dGRFn2Fqg5Jxuu4imlyypYtZz7QzOINbHTq58p9ItBSn/247Q1ogZNJgEMqfqEsIWzf2zxvOsC8K3kW4mJl+HHEjjBPGzNQdMztAJ0ANA+xWiyXDNgdBD1KzSHb5yVMmC8m0UkKX8cMuhbZ1kzIFQ8=
+	t=1709847564; cv=none; b=IzIlt6/orh1d5Sbs8q+BVhiGZKVq8Uit3OdlhpMb9rQvW4wS0Yvn69keD9KTFyrEYt2/P34enHIBl0miVFyFxqbQHNgbquY7G2vOW+I2XzuqE6lDRHgdPEfgUm5muXEe8ROaECjOLnWeiJpzuD7b8hbjvxtx1YjmQsrBlesitcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709846405; c=relaxed/simple;
-	bh=xdHld3fsdtPljdPCL66D7ZTvMhGAvf9JeorKbStlTFc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fSnBsd5EPVmanC3THMK9A9Mu+kRguFFXyRky6O/srSLhFr4RF1riRXTYjioyfsTn0nvGO4PX67ewLf8oLUGz89Rk4YvmcGypNXZhknIARqXDCCirymf3yrOCtSeN5De/LVakiEQgVA/8n/0OTmVDDacxi9mCemCqn3QFBmsUV34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mzfx1bGr; arc=none smtp.client-ip=209.85.208.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2d2ab9c5e83so12647021fa.2;
-        Thu, 07 Mar 2024 13:20:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709846402; x=1710451202; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FxAW6z2fWfFSrmQ+Ro+a/GGTy69KREURq9bDQwEnpUQ=;
-        b=mzfx1bGrhYz2GwofGg1ERFd0Fp9t9E+3F1285u5KQR8S5DyYRblfOcJddEVu9C5KuQ
-         SUclPS89Snducnc6TxjDqpz7H76GzF8WvLvBUWdjxLViqkxRiAIK4l9zCqTDF8S3W+oa
-         rpkR24oXir0u24ajeXWqbQLQjzj3YVhIIlvQ+P7PCPFlHS1eofveYkQDTvBe7sZMmm8B
-         qam+CtKcDUOk6NXY6IacmAMXV0H28NfttQwjkxfoAX7x1iP7Hup9pT3JMX1tYhv2eT0Y
-         hQ1XAYakkNpi2HRUfBT3xTQeJGWnCcSeCLME1YhOKrENQ5BaUMbYg9UVRYOO3DtDyK3D
-         6Ggg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709846402; x=1710451202;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FxAW6z2fWfFSrmQ+Ro+a/GGTy69KREURq9bDQwEnpUQ=;
-        b=HocPm4WzauENdLfuzGr2ku04nNmM+EjlNpEgshDftsCq7r6H0GzEDkDPFiH9hnfvrt
-         SW2yEu9NI+4cPM/sDyh3OSNX/aCxPDcCj08hJUjBcuRJuR/Yfwo2QE1yhigES+SK+JDl
-         071/3xzJbTV2RJKjTbeTyQpKXLgvWl1cVoA5zdFgNJYJQwcoodQdYuiR+nMGKOePh7ng
-         maxpepb07wnDNwsmjJcMrBxn1ycNWJtDk7t0kJ8J3/YwnKxYW+PjE7jDRgYuitb8W6Rv
-         3gxsKNC8MqzhAPuHMtpMXGM5H/hcgEwV4p0flODuHbbuoc6MO0iEzBh+GBiEatIO8cYr
-         DZZg==
-X-Forwarded-Encrypted: i=1; AJvYcCXRr89fcBYuO7Y1Fq4cUdojPR3NAOJ3Bvl8SLAInLilsKOyAhhwewMFa3jDFDdPE6bPlUyUUrDq7oq6ofpV18vscVZPLRclAS9C9+0ZAH31MRJH4ZHVScYz+iI0R2RUm4nQ027p4rpiflGQkCg=
-X-Gm-Message-State: AOJu0Yy67OzBSavPitxKFo0cpXs+Igh+b+AXbBOE5DaAclpVCo6iZATW
-	sGcrnuaJ39J1FNtDwKn9iyTMImwgdZQI6hFO+p5tEIYHhwNJKHAwhjUNhEReY/TA7Q==
-X-Google-Smtp-Source: AGHT+IH4bFWXliiFPy8OHDFILE3C+glH0nxYOHkaYl1BFf/+aSDidJoTSbKkVKKKkIOqYDJAmqHxqg==
-X-Received: by 2002:a05:651c:204d:b0:2d3:28b3:d9e0 with SMTP id t13-20020a05651c204d00b002d328b3d9e0mr2110144ljo.40.1709846401462;
-        Thu, 07 Mar 2024 13:20:01 -0800 (PST)
-Received: from rand-ubuntu-development.dl.local (mail.confident.ru. [85.114.29.218])
-        by smtp.gmail.com with ESMTPSA id k20-20020a2e8894000000b002d2d7f4ac11sm3232995lji.0.2024.03.07.13.20.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Mar 2024 13:20:01 -0800 (PST)
-From: Rand Deeb <rand.sec96@gmail.com>
-To: m@bues.ch
-Cc: deeb.rand@confident.ru,
-	jonas.gorski@gmail.com,
-	khoroshilov@ispras.ru,
-	kvalo@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	rand.sec96@gmail.com,
-	voskresenski.stanislav@confident.ru
-Subject: Re: [PATCH v3] ssb: Fix potential NULL pointer dereference in ssb_device_uevent
-Date: Fri,  8 Mar 2024 00:19:28 +0300
-Message-Id: <20240307211928.170877-1-rand.sec96@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240307192405.34aa9841@barney>
+	s=arc-20240116; t=1709847564; c=relaxed/simple;
+	bh=zd3k2erw2uuk3c3BlzYGox7hufIJkQAw3qdZTOa76Hk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qrDPW+hkS321ZsjoD2W88bttqneaZaIjL5SKWUp1We0nucPpFWoNVDdae+j5lm6hdMs6hNwWpC11zyV6IWfOhIdKbkte+d9v1WhLeZ7N8L9vUiDo5n5GxMTiQ06xacU7qfax2hzLIILd+SMj66s51AYFe04tej5V2tIjXjTi7NA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bues.ch; spf=pass smtp.mailfrom=bues.ch; arc=none smtp.client-ip=80.190.117.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bues.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bues.ch
+Received: by bues.ch with esmtpsa (Exim 4.96)
+	(envelope-from <m@bues.ch>)
+	id 1riLSN-0011K1-2v;
+	Thu, 07 Mar 2024 22:39:15 +0100
+Date: Thu, 7 Mar 2024 22:38:49 +0100
+From: Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
+To: Rand Deeb <rand.sec96@gmail.com>
+Cc: deeb.rand@confident.ru, jonas.gorski@gmail.com, khoroshilov@ispras.ru,
+ kvalo@kernel.org, linux-kernel@vger.kernel.org,
+ linux-wireless@vger.kernel.org, lvc-project@linuxtesting.org,
+ voskresenski.stanislav@confident.ru
+Subject: Re: [PATCH v3] ssb: Fix potential NULL pointer dereference in
+ ssb_device_uevent
+Message-ID: <20240307223849.13d5b58b@barney>
+In-Reply-To: <20240307211928.170877-1-rand.sec96@gmail.com>
 References: <20240307192405.34aa9841@barney>
+ <20240307211928.170877-1-rand.sec96@gmail.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="Sig_/77_XRhf9eTJBa5tLWZ8j/5.";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+
+--Sig_/77_XRhf9eTJBa5tLWZ8j/5.
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 
+On Fri,  8 Mar 2024 00:19:28 +0300
+Rand Deeb <rand.sec96@gmail.com> wrote:
 
-On Thu, Mar 7, 2024 at 9:24 PM Michael Büsch <m@bues.ch> wrote:
+> Yes, I agree, this is not critical code, but what's the point of leaving=
+=20
+> redundant conditions even if they won't make a significant performance=20
+> difference, regardless of the policy (In other words, as a friendly=20
+> discussion) ?
 
-> There is only one reason to eliminate NULL checks:
-> In extremely performance critical code, if it improves performance
-> significantly and it is clearly documented that the pointer can never be NULL.
->
-> This is not that case here. This is not critical code.
+The point is that leaving them in is defensive programming against future c=
+hanges
+or against possible misunderstandings of the situation.
 
-Hi Michael, thank you for your collaboration and feedback.
-Yes, I agree, this is not critical code, but what's the point of leaving 
-redundant conditions even if they won't make a significant performance 
-difference, regardless of the policy (In other words, as a friendly 
-discussion) ?
-Please take a look at https://git.kernel.org/netdev/net-next/c/92fc97ae9cfd
-same situation but it has been applied ! why ?
+Removing this check would improve nothing.
 
+> I understand and respect your point of view as software engineer but it's=
+ a
+> matter of design problems which is not our case here.
 
-> Having NULL checks is defensive programming.
-> Removing NULL checks is a hazard.
-> Not having these checks is a big part of why security sucks in today's software.
+No, it very well is.
 
-I understand and respect your point of view as software engineer but it's a
-matter of design problems which is not our case here.
-Defensive programming is typically applied when there's a potential risk, 
-but in our scenario, it's impossible for 'dev' to be NULL. If we adopt this
-approach as a form of defensive programming, we'd find ourselves adding 
-similar conditions to numerous functions and parameters. Moreover, this 
-would unnecessarily complicate the codebase, especially during reviews. For
-instance, encountering such a condition might lead one to assume that 'dev'
-could indeed be NULL before reaching this function. That's my viewpoint.
+> Defensive programming is typically applied when there's a potential risk,=
+=20
 
-> V3 shall be applied, because it fixes a clear bug. Whether this bug can actually
-> be triggered or not in today's kernel doesn't matter.
+A NULL pointer dereference is Undefined Behavior.
+It can't get much worse in C.
 
-so would you recommend fix the commit message as Jeff Johnson recommended ?
-or just keep it as it is ?
+> If we adopt this
+> approach as a form of defensive programming, we'd find ourselves adding=20
+> similar conditions to numerous functions and parameters.
 
---
-Best Regards
-Rand Deeb
+Not at all.
+Your suggestion was about REMOVING a null pointer check.
+Not about adding one.
+I NAK-ed the REMOVAL of a null pointer check. Not the addition.
+
+> Moreover, this=20
+> would unnecessarily complicate the codebase, especially during reviews.
+
+Absolutely wrong.
+Not having a NULL check complicates reviews.
+Reviewers will have to prove that pointers cannot be NULL, if there is no c=
+heck.
+
+> so would you recommend fix the commit message as Jeff Johnson recommended=
+ ?
+> or just keep it as it is ?
+
+I don't care about the commit message.
+I comment on the change itself.
+
+--=20
+Michael B=C3=BCsch
+https://bues.ch/
+
+--Sig_/77_XRhf9eTJBa5tLWZ8j/5.
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAmXqM+kACgkQ9TK+HZCN
+iw7AkhAAtjwrADdXDv3c1cw4PcRMu8bD0Rn9zHyG1fgd3lFsnX2gsBGVSWgLZC8j
+rcNpXm93xPAWZ7scQOjJ26AZ8tD0CIFY7DyAACnTGx99GkEPWV6o5LLxLXXCPkJf
+Xoe8/O4l3mfGSgxRxv9zINuv2zSzHIP3IPFVRdnnKILxvX6fw7fSrkZNCbZ+DSRb
+4Apm1U3jluhvwMca98apidbXM1de7uWKW6SXN3WVxvRtPApIj/9umyDI1snkq/RQ
+GiZicGEmHH2NPLJL49bepMNBHf3YCEDhHp0b1tgkTClN3CtK207ZRdvkuPTTsJsP
+zR/2TPR3eahhqd5ZPMwn6HMt2zQaMElRtExnrlmSviv7wO+ju/PYZPNSsCo7MBpx
+pmjGcNIsAjPqQWsUt6FXgUK4deOt89hEdCIVx+jV1ciL8BhP3wg2lHIeukvAIzK2
+xIFCH2CV5q0V23gf9Ops53qTCRBpHdGmocBs/iSR+e31vhe/rcb6aEEsWDsmtkj1
+6NOyQZUceOuPJhvO6VRNQ+YsfsdbtUCGArtbfHTZbX0iSL3fVL2s2jh6plgK+1ag
+KduC4r0YB2SotyxbCtrXOsnVQz2scppQJs2vRBOxmdcc90MPJlWLzFTtTkimjvmt
+ATb9VgyM1M5E4JLxxXfBANznqYf+ERWRgw+sOqaNd68isFMIWFI=
+=MbLe
+-----END PGP SIGNATURE-----
+
+--Sig_/77_XRhf9eTJBa5tLWZ8j/5.--
 
