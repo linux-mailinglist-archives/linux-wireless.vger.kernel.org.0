@@ -1,118 +1,140 @@
-Return-Path: <linux-wireless+bounces-4466-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4471-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9B8587560A
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 19:24:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F22FB87572A
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 20:30:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF2581C2042D
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 18:24:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39C25B21D9C
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 19:30:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 141BB131E2E;
-	Thu,  7 Mar 2024 18:24:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CC4A1369A6;
+	Thu,  7 Mar 2024 19:30:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="WkwWvxhE"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from bues.ch (bues.ch [80.190.117.144])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.164])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE562130ADF;
-	Thu,  7 Mar 2024 18:24:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.190.117.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF6531369A4
+	for <linux-wireless@vger.kernel.org>; Thu,  7 Mar 2024 19:30:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.164
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709835884; cv=none; b=LqyBvsGm9fwvVDOk5EF39eRCNsBei5r8n/l6uQct+hyJjhyTJACVnC8WJuC9xkSPsXZIlRJnJc3NOC6dZbIF8AKbW+oZ0kAWu1tHM1Jumgl5qwN/cRrZdEAIFFcsqBGQdYxhZ9F9DkusGhJt7TEcjDYBLRta8TDiLE2l3UD0CDg=
+	t=1709839808; cv=none; b=BHflqogCYk2MKoSDRsrn1OKJwDp1/hleuJ7iKnR2syXQvlJtewlcBqw4k++qQKwjpJx2BS0vjnX2cD7idtHlAck+InEQNipkuwhNQ/9hOHgUmkjvgQKZTRt/DKQTumURBNrcIfOio5JzmW3TSYighYELdO3c++tqvAJT70Ii1/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709835884; c=relaxed/simple;
-	bh=bmMfawzjcrQ9urG/fPu4rua8NJxWPKOC1ywnVzCVBZo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PYmsDdbxE8XEJxuuqXTRk3oKxHyl60KPkxPaCC2oYO6/C4jAlcqpNG8Tl11zxeaz7XH8+bbPz3x5ITUXc3Iel+WIjUaECJz8++foXGlB3R0EpdT6givIdbi5T93zL4QKqahNIbaIGmLqailncdmN1VXo49SXzrdaAwTNR53bUYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bues.ch; spf=pass smtp.mailfrom=bues.ch; arc=none smtp.client-ip=80.190.117.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bues.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bues.ch
-Received: by bues.ch with esmtpsa (Exim 4.96)
-	(envelope-from <m@bues.ch>)
-	id 1riIPl-000qCZ-2r;
-	Thu, 07 Mar 2024 19:24:20 +0100
-Date: Thu, 7 Mar 2024 19:24:05 +0100
-From: Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
-To: Rand Deeb <rand.sec96@gmail.com>
-Cc: jonas.gorski@gmail.com, deeb.rand@confident.ru, khoroshilov@ispras.ru,
- kvalo@kernel.org, linux-kernel@vger.kernel.org,
- linux-wireless@vger.kernel.org, lvc-project@linuxtesting.org,
- voskresenski.stanislav@confident.ru
-Subject: Re: [PATCH v3] ssb: Fix potential NULL pointer dereference in
- ssb_device_uevent
-Message-ID: <20240307192405.34aa9841@barney>
-In-Reply-To: <20240307134142.169523-1-rand.sec96@gmail.com>
-References: <CAOiHx==HHd3Nu=p5192=tOP-kAzJZUg2iRO2j8UCtcpfGT13nw@mail.gmail.com>
- <20240307134142.169523-1-rand.sec96@gmail.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1709839808; c=relaxed/simple;
+	bh=PxmoAJnoMO8QQY9kPszditvML+bPeaKTD4C00Ht/1Rk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Fpms6xsjUxnmeLynnt+CoayG+UqQTqouY7tnrtYp4HEkOTc/NyBN98N+Km5x7eyduHCmLxafvXUgzJTDEVhIEFnpo2jUqM/e1rwoO4Lla91oUs0gnVhDnJL+h8EUOHmCRNO1kYdwBQvk5bVqJnSzP5l4A93P8ChQZ4kuD0H3YDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=WkwWvxhE; arc=none smtp.client-ip=67.231.154.164
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id E49128007D
+	for <linux-wireless@vger.kernel.org>; Thu,  7 Mar 2024 19:29:58 +0000 (UTC)
+Received: from ben-dt5.candelatech.com (unknown [50.251.239.81])
+	by mail3.candelatech.com (Postfix) with ESMTP id 63B6E13C2B0;
+	Thu,  7 Mar 2024 11:29:58 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 63B6E13C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1709839798;
+	bh=PxmoAJnoMO8QQY9kPszditvML+bPeaKTD4C00Ht/1Rk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=WkwWvxhEvfWznD5nqVILPb6EzG8FHhcMQDRWVnRJmlcljsOmS46xxEmplE52oAoNm
+	 rdYDAFgmM2NxMYNBwst2C9b9zBx8OGIZgg2ZFuI0xZfX90qSP5wmDXyvzC2nUk4cYU
+	 gIxAJHAdJ+dHh80yP98DBkrPk9iNQdWidSdYWQ5o=
+From: greearb@candelatech.com
+To: linux-wireless@vger.kernel.org
+Cc: Ben Greear <greearb@candelatech.com>
+Subject: [PATCH 1/6] wifi: mt76: mt7996:  add debugging for MCU command timeouts.
+Date: Thu,  7 Mar 2024 11:29:46 -0800
+Message-ID: <20240307192951.3271156-1-greearb@candelatech.com>
+X-Mailer: git-send-email 2.42.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/EICs9rZNMSRHQGfY17PNDw/";
- protocol="application/pgp-signature"; micalg=pgp-sha512
+Content-Transfer-Encoding: 8bit
+X-MDID: 1709839799-I5RMuBD_6oGZ
+X-MDID-O:
+ us5;at1;1709839799;I5RMuBD_6oGZ;<greearb@candelatech.com>;f7146c1849a4b08a52804beb1c1cdf45
 
---Sig_/EICs9rZNMSRHQGfY17PNDw/
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+From: Ben Greear <greearb@candelatech.com>
 
-On Thu,  7 Mar 2024 16:41:42 +0300
-Rand Deeb <rand.sec96@gmail.com> wrote:
+Print information about whether the message is the first timeout,
+and also print info if we manage to recover after a timeout.
 
-> Given that null is improbable in this context due to the calls being made=
-=20
-> through uevent, we should eliminate the redundant condition. In light of=
-=20
-> this, would you recommend sending a new version (v4)
+Signed-off-by: Ben Greear <greearb@candelatech.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt76.h     |  2 ++
+ .../net/wireless/mediatek/mt76/mt7996/mcu.c   | 31 +++++++++++++++++--
+ 2 files changed, 30 insertions(+), 3 deletions(-)
 
-No.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index b20c34d5a0f7..c341915e4d62 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -829,6 +829,8 @@ struct mt76_dev {
+ 	struct device *dma_dev;
+ 
+ 	struct mt76_mcu mcu;
++	u32 first_failed_mcu_cmd; /* for debugging */
++	u32 last_successful_mcu_cmd; /* for debugging */
+ 
+ 	struct net_device napi_dev;
+ 	struct net_device tx_napi_dev;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index 699be57309c2..a858a0914bf0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -200,14 +200,39 @@ mt7996_mcu_parse_response(struct mt76_dev *mdev, int cmd,
+ 	int ret = 0;
+ 
+ 	if (!skb) {
+-		dev_err(mdev->dev, "Message %08x (seq %d) timeout\n",
+-			cmd, seq);
++		const char *first = "Secondary";
++
++		if (!mdev->first_failed_mcu_cmd)
++			first = "Initial";
++
++		dev_err(mdev->dev,
++			"MCU: %s Failure: Message %08x (cid %lx ext_cid: %lx seq %d) timeout.  Last successful cmd: 0x%x\n",
++			first,
++			cmd, FIELD_GET(__MCU_CMD_FIELD_ID, cmd),
++			FIELD_GET(__MCU_CMD_FIELD_EXT_ID, cmd), seq,
++			mdev->last_successful_mcu_cmd);
++
++		if (!mdev->first_failed_mcu_cmd)
++			mdev->first_failed_mcu_cmd = cmd;
+ 		return -ETIMEDOUT;
+ 	}
+ 
++	mdev->last_successful_mcu_cmd = cmd;
++
++	if (mdev->first_failed_mcu_cmd) {
++		dev_err(mdev->dev, "MCU: First success after failure: Message %08x (cid %lx ext_cid: %lx seq %d)\n",
++			cmd, FIELD_GET(__MCU_CMD_FIELD_ID, cmd),
++			FIELD_GET(__MCU_CMD_FIELD_EXT_ID, cmd), seq);
++		mdev->first_failed_mcu_cmd = 0;
++	}
++
+ 	rxd = (struct mt7996_mcu_rxd *)skb->data;
+-	if (seq != rxd->seq)
++	if (seq != rxd->seq) {
++		/* This can happen if the previous request didn't wait (which is normal).
++		 * Quietly return EAGAIN in that case, it is not something to warn about.
++		 */
+ 		return -EAGAIN;
++	}
+ 
+ 	if (cmd == MCU_CMD(PATCH_SEM_CONTROL)) {
+ 		skb_pull(skb, sizeof(*rxd) - 4);
+-- 
+2.42.0
 
-We should _not_ eliminate NULL checks in this code.
-Ever.
-There is only one reason to eliminate NULL checks:
-In extremely performance critical code, if it improves performance
-significantly and it is clearly documented that the pointer can never be NU=
-LL.
-
-This is not that case here. This is not critical code.
-
-Having NULL checks is defensive programming.
-Removing NULL checks is a hazard.
-Not having these checks is a big part of why security sucks in today's soft=
-ware.
-
-V3 shall be applied, because it fixes a clear bug. Whether this bug can act=
-ually
-be triggered or not in today's kernel doesn't matter.
-
---=20
-Michael B=C3=BCsch
-https://bues.ch/
-
---Sig_/EICs9rZNMSRHQGfY17PNDw/
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAmXqBkUACgkQ9TK+HZCN
-iw7FrQ/+LHJe8g6BkVKrdLKc/L7rLp0XojDoW643xNMWUXyFLCQ8WnsmkFrr2Co0
-re2MKcdhCNfJPxj4A2ZMEr9ASFjll6jvqHGotdgsUHFQ0YPa+4ZLXdKNKaPgDlYp
-CoBs5sMNRGPtMFlh1g1U4R92cAMoSEvuj+nXEx8j+MA3dHT3fy6aPXAofVwOlwOr
-t9iqAeNMsR+kSf4LLKNnv3r5WmXbuWC3bMe72ESpCtExuvUkQ0RXuBBdInPXPSYC
-+yu5uITrNjxMzyydYo6Kkr0pksO8yrNjLQaCbIhl1xKz/KO92ye7QivRxlGqyOQZ
-mRE/RVthmZR1/l2HpVFgkvAlFYIEiWfLU2MJhgPaAWfPNP5gAaxrw3At0nkhx3Tf
-8C8asZeKWds4eMu901VOzEO2jqDiAtjSMEhr+i4fP912DhP03HdXXYhI1Stl4wOu
-yx7dwOkuR19IwlGVSQ1cqKkI0a85i2oY5R7Jtub1Tujm1w23KCde/GlPIB41sepe
-2N/7xOaNrJZGuKnuUgeazcdLhOhenO6SUwnC1BZYkTEtxekEGxDMby6GBqnWdwdN
-H2RNnbwq5BfP3V4N6+gVSOk6Td1hFMubD6rUozgvEz/xaMYMo6GF/T/WxhTpjMQ/
-/uuwUDh9HHe/pgcnbyeUYllyKDaW6xAE8CwVpq8WGQurQ3I9+I8=
-=ZdG7
------END PGP SIGNATURE-----
-
---Sig_/EICs9rZNMSRHQGfY17PNDw/--
 
