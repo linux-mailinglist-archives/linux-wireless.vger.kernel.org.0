@@ -1,107 +1,118 @@
-Return-Path: <linux-wireless+bounces-4465-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4466-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08355875607
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 19:21:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9B8587560A
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 19:24:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 845A8B244D4
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 18:21:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF2581C2042D
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 18:24:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5465A133401;
-	Thu,  7 Mar 2024 18:20:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="f7F40tMU"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 141BB131E2E;
+	Thu,  7 Mar 2024 18:24:44 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bues.ch (bues.ch [80.190.117.144])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8531332AA
-	for <linux-wireless@vger.kernel.org>; Thu,  7 Mar 2024 18:20:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE562130ADF;
+	Thu,  7 Mar 2024 18:24:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.190.117.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709835644; cv=none; b=LbJHwCyoFj66x+0WXc9MPQvPLxT550Mthy64p6h6SBBsJAjnwSpQmNQ2zQkRQovXlN9OgL7EzaBKqK8K7GLMLmYOOOnXutdvoqVorb0mHyJGyLneWfPKvfkqFJiMUGVpDuRYuQmBNaE+0wPxTEgFNG6p4GasV1A6Zpft9aSd0RU=
+	t=1709835884; cv=none; b=LqyBvsGm9fwvVDOk5EF39eRCNsBei5r8n/l6uQct+hyJjhyTJACVnC8WJuC9xkSPsXZIlRJnJc3NOC6dZbIF8AKbW+oZ0kAWu1tHM1Jumgl5qwN/cRrZdEAIFFcsqBGQdYxhZ9F9DkusGhJt7TEcjDYBLRta8TDiLE2l3UD0CDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709835644; c=relaxed/simple;
-	bh=MJuHjlaNQXzJRjRj5UnHiXpaMdeh+7eUfRSf5q5UY3E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IhINlKeedbHYN3gAPoqersM39AyLahm08yeOlqoGvfeX/ABJpu3v1MkeG43gd5aTtEbvKMxicNgWAHe7YCMgSypIHKqcqHY/lal0GHR8k7EoXmVrZFdfKTgguMjN9Cullz6DI27Egqio9MKo8mwvxd2s3tlgQbDuIRN04f4AWiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=f7F40tMU; arc=none smtp.client-ip=148.163.129.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-Received: from dispatch1-us1.ppe-hosted.com (ip6-localhost [127.0.0.1])
-	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 5D1142C0122
-	for <linux-wireless@vger.kernel.org>; Thu,  7 Mar 2024 18:20:35 +0000 (UTC)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 407B11C006D
-	for <linux-wireless@vger.kernel.org>; Thu,  7 Mar 2024 18:20:28 +0000 (UTC)
-Received: from ben-dt5.candelatech.com (unknown [50.251.239.81])
-	by mail3.candelatech.com (Postfix) with ESMTP id D31B913C2B0;
-	Thu,  7 Mar 2024 10:20:26 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com D31B913C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1709835627;
-	bh=MJuHjlaNQXzJRjRj5UnHiXpaMdeh+7eUfRSf5q5UY3E=;
-	h=From:To:Cc:Subject:Date:From;
-	b=f7F40tMUcYj4mydSjDBK4uokrWtKe1CXpZjhsEfVSTpAOnOZUkE7OuT4HCtPzS22j
-	 YF6IrrpTADoD+t58xYY4B2897dSJ8U4sU31fwMiAgWOpKzZoH/gx4tChGtqLqHrJFW
-	 8sjba02ejpm+LjhcB7f9ZIKSju4Ij5O8OWx7MyiQ=
-From: greearb@candelatech.com
-To: linux-wireless@vger.kernel.org
-Cc: Ben Greear <greearb@candelatech.com>
-Subject: [PATCH] wifi: mac80211: Report bss-color in ethtool stats.
-Date: Thu,  7 Mar 2024 10:20:24 -0800
-Message-ID: <20240307182024.3224197-1-greearb@candelatech.com>
-X-Mailer: git-send-email 2.42.0
+	s=arc-20240116; t=1709835884; c=relaxed/simple;
+	bh=bmMfawzjcrQ9urG/fPu4rua8NJxWPKOC1ywnVzCVBZo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PYmsDdbxE8XEJxuuqXTRk3oKxHyl60KPkxPaCC2oYO6/C4jAlcqpNG8Tl11zxeaz7XH8+bbPz3x5ITUXc3Iel+WIjUaECJz8++foXGlB3R0EpdT6givIdbi5T93zL4QKqahNIbaIGmLqailncdmN1VXo49SXzrdaAwTNR53bUYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bues.ch; spf=pass smtp.mailfrom=bues.ch; arc=none smtp.client-ip=80.190.117.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bues.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bues.ch
+Received: by bues.ch with esmtpsa (Exim 4.96)
+	(envelope-from <m@bues.ch>)
+	id 1riIPl-000qCZ-2r;
+	Thu, 07 Mar 2024 19:24:20 +0100
+Date: Thu, 7 Mar 2024 19:24:05 +0100
+From: Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
+To: Rand Deeb <rand.sec96@gmail.com>
+Cc: jonas.gorski@gmail.com, deeb.rand@confident.ru, khoroshilov@ispras.ru,
+ kvalo@kernel.org, linux-kernel@vger.kernel.org,
+ linux-wireless@vger.kernel.org, lvc-project@linuxtesting.org,
+ voskresenski.stanislav@confident.ru
+Subject: Re: [PATCH v3] ssb: Fix potential NULL pointer dereference in
+ ssb_device_uevent
+Message-ID: <20240307192405.34aa9841@barney>
+In-Reply-To: <20240307134142.169523-1-rand.sec96@gmail.com>
+References: <CAOiHx==HHd3Nu=p5192=tOP-kAzJZUg2iRO2j8UCtcpfGT13nw@mail.gmail.com>
+ <20240307134142.169523-1-rand.sec96@gmail.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-MDID: 1709835628-cvt9M1HvIbTy
-X-MDID-O:
- us5;ut7;1709835628;cvt9M1HvIbTy;<greearb@candelatech.com>;f7146c1849a4b08a52804beb1c1cdf45
+Content-Type: multipart/signed; boundary="Sig_/EICs9rZNMSRHQGfY17PNDw/";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
 
-From: Ben Greear <greearb@candelatech.com>
+--Sig_/EICs9rZNMSRHQGfY17PNDw/
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Provide efficient way to read current bss color.
+On Thu,  7 Mar 2024 16:41:42 +0300
+Rand Deeb <rand.sec96@gmail.com> wrote:
 
-Signed-off-by: Ben Greear <greearb@candelatech.com>
----
- net/mac80211/ethtool.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+> Given that null is improbable in this context due to the calls being made=
+=20
+> through uevent, we should eliminate the redundant condition. In light of=
+=20
+> this, would you recommend sending a new version (v4)
 
-diff --git a/net/mac80211/ethtool.c b/net/mac80211/ethtool.c
-index 99f6174a9d69..6058834db228 100644
---- a/net/mac80211/ethtool.c
-+++ b/net/mac80211/ethtool.c
-@@ -51,7 +51,8 @@ static const char ieee80211_gstrings_sta_stats[][ETH_GSTRING_LEN] = {
- 	"rx_duplicates", "rx_fragments", "rx_dropped",
- 	"tx_packets", "tx_bytes",
- 	"tx_filtered", "tx_retry_failed", "tx_retries",
--	"sta_state", "txrate", "rxrate", "signal",
-+	"sta_state", "txrate", "rxrate", "signal", "bss_color",
-+	/* Add new stats above here, channel and others go below */
- 	"channel", "noise", "ch_time", "ch_time_busy",
- 	"ch_time_ext_busy", "ch_time_rx", "ch_time_tx"
- };
-@@ -151,6 +152,11 @@ static void ieee80211_get_stats(struct net_device *dev,
- 		}
- 	}
- 
-+	if (sdata->vif.bss_conf.he_bss_color.enabled)
-+		data[i++] = sdata->vif.bss_conf.he_bss_color.color;
-+	else
-+		data[i++] = 0;
-+
- do_survey:
- 	i = STA_STATS_LEN - STA_STATS_SURVEY_LEN;
- 	/* Get survey stats for current channel */
--- 
-2.42.0
+No.
 
+We should _not_ eliminate NULL checks in this code.
+Ever.
+There is only one reason to eliminate NULL checks:
+In extremely performance critical code, if it improves performance
+significantly and it is clearly documented that the pointer can never be NU=
+LL.
+
+This is not that case here. This is not critical code.
+
+Having NULL checks is defensive programming.
+Removing NULL checks is a hazard.
+Not having these checks is a big part of why security sucks in today's soft=
+ware.
+
+V3 shall be applied, because it fixes a clear bug. Whether this bug can act=
+ually
+be triggered or not in today's kernel doesn't matter.
+
+--=20
+Michael B=C3=BCsch
+https://bues.ch/
+
+--Sig_/EICs9rZNMSRHQGfY17PNDw/
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAmXqBkUACgkQ9TK+HZCN
+iw7FrQ/+LHJe8g6BkVKrdLKc/L7rLp0XojDoW643xNMWUXyFLCQ8WnsmkFrr2Co0
+re2MKcdhCNfJPxj4A2ZMEr9ASFjll6jvqHGotdgsUHFQ0YPa+4ZLXdKNKaPgDlYp
+CoBs5sMNRGPtMFlh1g1U4R92cAMoSEvuj+nXEx8j+MA3dHT3fy6aPXAofVwOlwOr
+t9iqAeNMsR+kSf4LLKNnv3r5WmXbuWC3bMe72ESpCtExuvUkQ0RXuBBdInPXPSYC
++yu5uITrNjxMzyydYo6Kkr0pksO8yrNjLQaCbIhl1xKz/KO92ye7QivRxlGqyOQZ
+mRE/RVthmZR1/l2HpVFgkvAlFYIEiWfLU2MJhgPaAWfPNP5gAaxrw3At0nkhx3Tf
+8C8asZeKWds4eMu901VOzEO2jqDiAtjSMEhr+i4fP912DhP03HdXXYhI1Stl4wOu
+yx7dwOkuR19IwlGVSQ1cqKkI0a85i2oY5R7Jtub1Tujm1w23KCde/GlPIB41sepe
+2N/7xOaNrJZGuKnuUgeazcdLhOhenO6SUwnC1BZYkTEtxekEGxDMby6GBqnWdwdN
+H2RNnbwq5BfP3V4N6+gVSOk6Td1hFMubD6rUozgvEz/xaMYMo6GF/T/WxhTpjMQ/
+/uuwUDh9HHe/pgcnbyeUYllyKDaW6xAE8CwVpq8WGQurQ3I9+I8=
+=ZdG7
+-----END PGP SIGNATURE-----
+
+--Sig_/EICs9rZNMSRHQGfY17PNDw/--
 
