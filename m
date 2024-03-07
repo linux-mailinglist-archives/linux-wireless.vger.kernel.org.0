@@ -1,192 +1,146 @@
-Return-Path: <linux-wireless+bounces-4449-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4450-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69861874B37
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 10:46:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE638874B3B
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 10:47:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25CBC283C00
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 09:46:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D19C91C2180B
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Mar 2024 09:47:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 790E384FAA;
-	Thu,  7 Mar 2024 09:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D1D0839F6;
+	Thu,  7 Mar 2024 09:47:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="cDL8lAj6"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="XyzFi1A5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 679DF839FE
-	for <linux-wireless@vger.kernel.org>; Thu,  7 Mar 2024 09:46:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03DD839EF
+	for <linux-wireless@vger.kernel.org>; Thu,  7 Mar 2024 09:47:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709804806; cv=none; b=X5QF9utS1nkQWYqs5yDFkhQOEFhG7HkqdUU3pkkHqy3RKu2PqiQuoiz5DGNnqWtfGkkcQq9Sy9yi3UcCxw5qJo68ONVPtJOB5y+W2L4E7ZzhEwkTaxnBkAA1BpvIaCTFe9vH4ez5y8DlbA3OfvjzO7elkJnAH/BggWvMHN3DsBc=
+	t=1709804856; cv=none; b=KAKsVMoSnoriyecDIlarrpLv5A70K0QWRAp51RaSbBpu18WXqCdn5YpEDufF9g/PDVs+wvoxX6Ni96JSIebfJncENolVybFg/KbvJubCZU1QYLOcQdoEeFOCnAh6AP7+ATjKUQdodiXcV1HfqTl57jEpHnPYX5YaYCdcxWJjhP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709804806; c=relaxed/simple;
-	bh=aE0P/I9MimmZDXK7fECRVNPlLjLg8jwfVYsyDHGXnBc=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KEEM3QYj7AEyfrkWRWm+rM2Vrn9/2uFEa4np4DHpNLG8QjF+mxWZskS0VSTDVipIWlgn7wMMIUy1/dJ6poNtqjDF0VTejrF4VPzPp+e2rJvpxZamTr5MuMN4Z4Q3z2KfHXBaIzcLPTWc6E6LqBljl0805a9f6xAKKuRRVUBF0oc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=cDL8lAj6; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 9777d15edc6711eeb8927bc1f75efef4-20240307
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=cDwewr94viCP0HwMbysx6bAqUHjnkE31vXLiSH3xJjU=;
-	b=cDL8lAj6M1wA/54a5xV24ra5uZN6OGf/24TUlBpS3pCrH446/ALLu1gNluJtiotlj5aOYzGNZ28PPMo+mVN93aGBk94RN8VeY80MZiiOF0ns6074XQj8NEYyA/b2CUWKX2I8Ndt8LWvNzn6Y5nNbTIUHqV880SrAZdyXNIAkoB4=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.37,REQID:eff87113-86af-404a-8575-9108d1d3dd07,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:6f543d0,CLOUDID:29082190-e2c0-40b0-a8fe-7c7e47299109,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-	RL:11|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
-	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
-X-UUID: 9777d15edc6711eeb8927bc1f75efef4-20240307
-Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw01.mediatek.com
-	(envelope-from <mingyen.hsieh@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1102334042; Thu, 07 Mar 2024 17:46:37 +0800
-Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Thu, 7 Mar 2024 17:46:35 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Thu, 7 Mar 2024 17:46:35 +0800
-From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
-To: <nbd@nbd.name>, <lorenzo@kernel.org>
-CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
-	<Soul.Huang@mediatek.com>, <Leon.Yen@mediatek.com>,
-	<Eric-SY.Chang@mediatek.com>, <km.lin@mediatek.com>,
-	<robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
-	<Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
-	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
-	<linux-mediatek@lists.infradead.org>, Leon Yen <leon.yen@mediatek.com>, "Ming
- Yen Hsieh" <MingYen.Hsieh@mediatek.com>
-Subject: [PATCH] wifi: mt76: mt7921s: fix potential hung tasks during chip recovery
-Date: Thu, 7 Mar 2024 17:46:32 +0800
-Message-ID: <20240307094632.21638-1-mingyen.hsieh@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+	s=arc-20240116; t=1709804856; c=relaxed/simple;
+	bh=C4cA2eMzqxQKt1xW0+RxsTQyTIVD3+oeNtUU+uXxNCg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=ZgQMRGod9irpc/nYHtWdM+vdwGBkPDXF5lB/brYdT4A2cv6OASL7r32ZPjS6wNyVgqHiYpDg3t7V6BItbxEUHmTK6IkoaX8PFbN0T7kTE9wbGH7OoOMkt9Dazq/5IeEQwQDrNyFBonap0tu2im0+vo7pm+sMdGAqzKDN7DMSTWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=XyzFi1A5; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 4277ndrm005292;
+	Thu, 7 Mar 2024 09:47:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=FIomtRaUEzhjsVAIwJkR52Eyfs5z54AAhKI/aKDbYY0=; b=Xy
+	zFi1A54mtwp/Ps9OoV2JTadrC/JteOs5wMRJip8JbJmg0Tft0Q0D+6JbBsYXt1Ae
+	gtaMZZhNjjIMw+YIgvbu30P7LBsbnAjDxAM8ActnNPUXeaE7nHcDjNFwhoEy2XEy
+	Cn1XByStqL5lGUQvMRYzj2yZkZxcruiaNZTAXCaohzT8nSM/n72UUFeTJVBt/lE0
+	kU3IP77y7Tgym5iRibUBwCAOVwLTkpWlmHKiarhC38BGe7NI0JfwXFJSA/LnCWo3
+	BIm0eZZop/iglFeyO5rDffl8FVlhDMjpeOFtnK82FA2bCEYQMifAna6U7q9iHD9+
+	qzSmofP8ZFm0V2fDRVHw==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wq9h8g71t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 07 Mar 2024 09:47:22 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 4279kq5w025326
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 7 Mar 2024 09:46:52 GMT
+Received: from [10.253.39.187] (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Thu, 7 Mar
+ 2024 01:46:48 -0800
+Message-ID: <4536614a-7f4c-420f-b042-f71cf46ba08d@quicinc.com>
+Date: Thu, 7 Mar 2024 17:46:45 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-Product-Ver: SMEX-14.0.0.3152-9.1.1006-23728.005
-X-TM-AS-Result: No-10--5.482200-8.000000
-X-TMASE-MatchedRID: BF/mp1RsF79X3cGZowF380hEDfw/93BugQP483M95wFh2fnHe1cil3pt
-	C95MCcU350LRIq48WpLvKOYqns9K5YdO+dHJdtOqH5YQyOg71ZZUENBIMyKD0Z6fSoF3Lt+MIA6
-	D0Tft3i8SOLmgpsr0im5D1dJNZVNGYf4+ATMa0GuHZXNSWjgdU273ma3jsPM2ta3+iMLLdN8glz
-	H/IwfDMcIXl3iP70Q4bmFMcyfDfoAoeQN21jrIqUZakoam9+aeMVx/3ZYby7/uxO+ZKScKRqPFj
-	JEFr+olwXCBO/GKkVr3FLeZXNZS4KBkcgGnJ4WmW0jeEK7aWWMHt/b3mOdz0U+DGfGDEvNRwOxN
-	ZGMpQrh+3BndfXUhXQ==
-X-TM-AS-User-Approved-Sender: No
-X-TM-AS-User-Blocked-Sender: No
-X-TMASE-Result: 10--5.482200-8.000000
-X-TMASE-Version: SMEX-14.0.0.3152-9.1.1006-23728.005
-X-TM-SNTS-SMTP: 77BCF30B649236999228776849688CE98C0BA8729BAB87AB2E8F4A171FC22AF32000:8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 08/11] wifi: ath12k: allow specific mgmt frame tx while
+ vdev is not up
+Content-Language: en-US
+To: Kalle Valo <kvalo@kernel.org>
+CC: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+References: <20240130040303.370590-1-quic_kangyang@quicinc.com>
+ <20240130040303.370590-9-quic_kangyang@quicinc.com>
+ <87il31r26k.fsf@kernel.org>
+From: Kang Yang <quic_kangyang@quicinc.com>
+In-Reply-To: <87il31r26k.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: IP3sIwhvg9s76rhdY2S_-3ps28NLUsLz
+X-Proofpoint-ORIG-GUID: IP3sIwhvg9s76rhdY2S_-3ps28NLUsLz
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-07_06,2024-03-06_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
+ lowpriorityscore=0 mlxlogscore=999 priorityscore=1501 suspectscore=0
+ spamscore=0 clxscore=1015 malwarescore=0 mlxscore=0 adultscore=0
+ phishscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2402120000 definitions=main-2403070071
 
-From: Leon Yen <leon.yen@mediatek.com>
 
-During chip recovery (e.g. chip reset), there is a possible situation that
-kernel worker reset_work is holding the lock and waiting for kernel thread
-stat_worker to be parked, while stat_worker is waiting for the release of
-the same lock.
-It causes a deadlock resulting in the dumping of hung tasks messages and
-possible rebooting of the device.
 
-This patch prevents the execution of stat_worker during the chip recovery.
+On 2/7/2024 12:24 AM, Kalle Valo wrote:
+> Kang Yang <quic_kangyang@quicinc.com> writes:
+> 
+>> In current code, the management frames must be sent after vdev is started.
+>> But for P2P device, vdev won't start until P2P negotiation is done. So
+>> this logic doesn't make sense for P2P device.
+>>
+>> Also use ar->conf_mutex to synchronize ar to avoid potential conflicts.
+> 
+> Please do locking changes in a separate followup patch, I removed this
+> in the pending branch:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=d357dcb3cd0cd3bf57064dc673b5477d884454b3
+> 
+> I assume you are referring to ar->allocated_vdev_map and access to that
+> indeed doesn't look consistent. Most of the places take conf->mutex but
+> I see some places which it's accessed without the mutex, for example
+> ath12k_mac_get_arvif_by_vdev_id() and ath12k_mac_get_ar_by_vdev_id().
+> 
 
-Signed-off-by: Leon Yen <leon.yen@mediatek.com>
-Signed-off-by: Ming Yen Hsieh <MingYen.Hsieh@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7921/mac.c      | 2 ++
- drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c  | 2 --
- drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c | 2 --
- drivers/net/wireless/mediatek/mt76/sdio.c            | 3 ++-
- 4 files changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-index 867e14f6b93a..73e42ef42983 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-@@ -663,6 +663,7 @@ void mt7921_mac_reset_work(struct work_struct *work)
- 	int i, ret;
- 
- 	dev_dbg(dev->mt76.dev, "chip reset\n");
-+	set_bit(MT76_RESET, &dev->mphy.state);
- 	dev->hw_full_reset = true;
- 	ieee80211_stop_queues(hw);
- 
-@@ -691,6 +692,7 @@ void mt7921_mac_reset_work(struct work_struct *work)
- 	}
- 
- 	dev->hw_full_reset = false;
-+	clear_bit(MT76_RESET, &dev->mphy.state);
- 	pm->suspended = false;
- 	ieee80211_wake_queues(hw);
- 	ieee80211_iterate_active_interfaces(hw,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
-index c866144ff061..031ba9aaa4e2 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
-@@ -64,7 +64,6 @@ int mt7921e_mac_reset(struct mt792x_dev *dev)
- 	mt76_wr(dev, dev->irq_map->host_irq_enable, 0);
- 	mt76_wr(dev, MT_PCIE_MAC_INT_ENABLE, 0x0);
- 
--	set_bit(MT76_RESET, &dev->mphy.state);
- 	set_bit(MT76_MCU_RESET, &dev->mphy.state);
- 	wake_up(&dev->mt76.mcu.wait);
- 	skb_queue_purge(&dev->mt76.mcu.res_q);
-@@ -115,7 +114,6 @@ int mt7921e_mac_reset(struct mt792x_dev *dev)
- 
- 	err = __mt7921_start(&dev->phy);
- out:
--	clear_bit(MT76_RESET, &dev->mphy.state);
- 
- 	local_bh_disable();
- 	napi_enable(&dev->mt76.tx_napi);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
-index 389eb0903807..1f77cf71ca70 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
-@@ -98,7 +98,6 @@ int mt7921s_mac_reset(struct mt792x_dev *dev)
- 	mt76_connac_free_pending_tx_skbs(&dev->pm, NULL);
- 	mt76_txq_schedule_all(&dev->mphy);
- 	mt76_worker_disable(&dev->mt76.tx_worker);
--	set_bit(MT76_RESET, &dev->mphy.state);
- 	set_bit(MT76_MCU_RESET, &dev->mphy.state);
- 	wake_up(&dev->mt76.mcu.wait);
- 	skb_queue_purge(&dev->mt76.mcu.res_q);
-@@ -135,7 +134,6 @@ int mt7921s_mac_reset(struct mt792x_dev *dev)
- 
- 	err = __mt7921_start(&dev->phy);
- out:
--	clear_bit(MT76_RESET, &dev->mphy.state);
- 
- 	mt76_worker_enable(&dev->mt76.tx_worker);
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/sdio.c b/drivers/net/wireless/mediatek/mt76/sdio.c
-index 3e88798df017..a4ed00eebc48 100644
---- a/drivers/net/wireless/mediatek/mt76/sdio.c
-+++ b/drivers/net/wireless/mediatek/mt76/sdio.c
-@@ -499,7 +499,8 @@ static void mt76s_tx_status_data(struct mt76_worker *worker)
- 	dev = container_of(sdio, struct mt76_dev, sdio);
- 
- 	while (true) {
--		if (test_bit(MT76_REMOVED, &dev->phy.state))
-+		if (test_bit(MT76_RESET, &dev->phy.state) ||
-+		    test_bit(MT76_REMOVED, &dev->phy.state))
- 			break;
- 
- 		if (!dev->drv->tx_status_data(dev, &update))
--- 
-2.18.0
+Hi, kalle:
+
+I just take a look for ath12k_mac_get_arvif_by_vdev_id() and 
+ath12k_mac_get_ar_by_vdev_id.
+
+Both of them use rcu_read_lock(), so we don't need mutex_lock() anymore, 
+right?
+
+I also tried to add mutex_lock() for them, cannot work well:
+[ 7804.291286] BUG: sleeping function called from invalid context at 
+kernel/locking/mutex.c:585
+[ 7804.291349] in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 0, 
+name: swapper/8
+[ 7804.291358] preempt_count: 101, expected: 0
+[ 7804.291366] RCU nest depth: 1, expected: 0
+[ 7804.291374] 1 lock held by swapper/8/0:
+……
+
+
+> I recommend in the followup patch checking all the access to
+> ar->allocated_vdev_map, fixing that if needed and adding documentation
+> to struct ath12k::allocated_vdev_map how it's supposed to be protected.
+> 
+
+
+So i think the initial change is sufficient: just use mutex_lock() in
+ath12k_mgmt_over_wmi_tx_work().
 
 
