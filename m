@@ -1,86 +1,143 @@
-Return-Path: <linux-wireless+bounces-4499-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4500-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3F448768FE
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Mar 2024 17:58:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31810876A13
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Mar 2024 18:40:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3175C1C210ED
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Mar 2024 16:58:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7A341F21555
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Mar 2024 17:40:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4429E1B94E;
-	Fri,  8 Mar 2024 16:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76F3917745;
+	Fri,  8 Mar 2024 17:40:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Guk7T/al"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="MQWAfUpl"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CE7F568A;
-	Fri,  8 Mar 2024 16:58:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB9CA3217
+	for <linux-wireless@vger.kernel.org>; Fri,  8 Mar 2024 17:40:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709917121; cv=none; b=OY+Q2tqLuk6Cp34K+gvwDIwYABsbIoe0vDvwk/JfqCZEi9labkgyL7I3D7Kq60zOOYQoqBbmbmGgpNSxi84nLziiGdJEo0dbfhjTi5Ro05ZBulaUy1VK89fXtc+e6Oi2XQLeXcZF80MvuVfFKXmaT//Ide8fSuyTd0GRjHPhlvo=
+	t=1709919636; cv=none; b=G51kEBkYTT9ehQK3S0BEtY47b/vtxOceNKuHX97JKtD6q6NeuAe2qIG/zIxChPS+AIpA/xAXa1a1t+Tv4mCV8MCkZEercq4+CINspWxi0VytDcTw17yZON+iqfP+fNmZuEcmYezJbufFLKeYvWs2lzN+IE28gnj5enEk665JX4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709917121; c=relaxed/simple;
-	bh=iNmXo8VTyuxY4K5U7xMgjpP8WIW/L8srrZvIuGs9f4c=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=clrfNKmte4uee7v76zF0efbhezsUOGL/eGV2TgwFwJ0W4WyGjKyEwByADGUMoq8WvFGK5mxV9ZdJNifwI0lF3Dif16SPmN7GTjGJNOVQJaCvk69md+NSeCE4RGCNopSvOp3uGK+k4qcHvAdT3NNY/xgI/GecuJAdozc75uhQC6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Guk7T/al; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36091C43390;
-	Fri,  8 Mar 2024 16:58:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709917120;
-	bh=iNmXo8VTyuxY4K5U7xMgjpP8WIW/L8srrZvIuGs9f4c=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Guk7T/alKYOoH/Zkw8c3fXXR8aKhbWBhKRPm/VVnPPlyzK2pUnff54kW5gXEW/62F
-	 7ZeayGP9Wlgk0INLuZVI4mzdkImIIozg12UL8m0En76Tt9UVQZe3bKUXvHU2X+c9vA
-	 rWpgABJbCclknX0Z+zkSKE08QGDYp/0eQtOx7yPquG+2/te/OBPtLN92F8BK51owz4
-	 XX+3uw/i6VWkKaGIvM2ACWnLFO62gFi6hdhXnlZ2hNCIiUyPmLpIgYq2npVZXrrN7M
-	 NTMe6prxrCnWNMotk980RSv7wEoP5CC0A9NFCxAnVJxcQUWWOHcc1q1+los7UG2nnZ
-	 sevPv83bluSSQ==
-Date: Fri, 8 Mar 2024 08:58:39 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: netdev@vger.kernel.org, linux-wireless@vger.kernel.org, Ching-Te Ku
- <ku920601@realtek.com>, Ping-Ke Shih <pkshih@realtek.com>
-Subject: Re: pull-request: wireless-next-2024-03-08
-Message-ID: <20240308085839.47d8cb37@kernel.org>
-In-Reply-To: <87wmqc4qik.fsf@kernel.org>
-References: <20240308100429.B8EA2C433F1@smtp.kernel.org>
-	<20240308074539.04512f66@kernel.org>
-	<87wmqc4qik.fsf@kernel.org>
+	s=arc-20240116; t=1709919636; c=relaxed/simple;
+	bh=Hj8wb+9de1K4dcUoESzKFuYXKdIYwZDzn+i1vq/khQY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=KVLw3opEsLnGah8rwxmAu2rp0p+YoN1wss53rhicc1Gi6dAy1w6P2W2ysFmUMeeCCKILpfD/LX7hwHo2tE/3SZD78ph3OHNr/iU0Mtzo3OaWhqsElPRVIU8Vwj0E2dazDNxfSAViAFHrbtb1hvsC6OZVHin/ohLuh2POYgmaFTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=MQWAfUpl; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 428EDasb012920;
+	Fri, 8 Mar 2024 17:40:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=tAxJOHK/y8r3HpEc4iWNbFgEY/y83JJn47Cgt3l7pMs=; b=MQ
+	WAfUpl1+5EU5R4Ewp7D7p2k3rzcA7JlcfNV2H0kdOBnQxBHqKEjJcBrB3+qJd22K
+	Qi84NLMULhonM+P1McECg9+klYCHrKOlhaPwgb8kBTrq6zAg3p2oK/RU2xyRMpdz
+	xci9/GRATgc2JxUTgjfv8XociGOMYI0KzHESUdto484ZpG5VwlBJ4pHsVpubXG4i
+	ru2h8uSP3d5F7WZWg4jCObQFRy9FibD/4xJWBiTeFNl4t8XGv3/MJpbgxKKcQYKh
+	QNq2WrLQIke1t/vjbiGSO8woL4TZEp2oVFgLU3F8Iz81g9TT2KB67dpCl0pr5n72
+	TGTQ9pBfm1SCKmm44utA==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wr16y0uuq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 08 Mar 2024 17:40:32 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 428HeVYf021955
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 8 Mar 2024 17:40:31 GMT
+Received: from [10.110.115.232] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Fri, 8 Mar
+ 2024 09:40:31 -0800
+Message-ID: <7ab9885b-5fb6-4686-b29b-d287e569293b@quicinc.com>
+Date: Fri, 8 Mar 2024 09:40:31 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: mac80211: Improve bss-color configuration.
+Content-Language: en-US
+To: <greearb@candelatech.com>, <linux-wireless@vger.kernel.org>
+References: <20240307181039.3219840-1-greearb@candelatech.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20240307181039.3219840-1-greearb@candelatech.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: iFSaW9Q-KEOWyNI24LNInqOd7En7jAxA
+X-Proofpoint-GUID: iFSaW9Q-KEOWyNI24LNInqOd7En7jAxA
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-08_08,2024-03-06_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ phishscore=0 adultscore=0 spamscore=0 priorityscore=1501 clxscore=1011
+ bulkscore=0 suspectscore=0 malwarescore=0 impostorscore=0 mlxscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2402120000 definitions=main-2403080141
 
-On Fri, 08 Mar 2024 18:50:11 +0200 Kalle Valo wrote:
-> > coccicheck flags:
-> >
-> > drivers/net/wireless/realtek/rtw89/rtw8922a.c:2235:2-4: WARNING: possible condition with no effect (if == else)  
+On 3/7/2024 10:10 AM, greearb@candelatech.com wrote:
+> From: Ben Greear <greearb@candelatech.com>
 > 
-> Thanks, but how did you find this? I'm asking just to understand your process, at
-> least the pull request shows all green:
+> Always tell driver to apply bss color settings if beacon indicates
+> the bss coloring has been set.
+
+why? please describe the problem you are fixing
+
 > 
-> https://patchwork.kernel.org/project/netdevbpf/patch/20240308100429.B8EA2C433F1@smtp.kernel.org/
+> And only enable bss coloring if beacon indicates bss color setting
+> is valid and also enabled.
 > 
-> We don't run coccicheck so it's not surprising there are new warnings.
+> Signed-off-by: Ben Greear <greearb@candelatech.com>
+> ---
+>  net/mac80211/cfg.c | 9 +++++----
+>  1 file changed, 5 insertions(+), 4 deletions(-)
+> 
+> diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+> index 327682995c92..aaa62c05428c 100644
+> --- a/net/mac80211/cfg.c
+> +++ b/net/mac80211/cfg.c
+> @@ -1314,7 +1314,7 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
+>  			      IEEE80211_HE_OPERATION_RTS_THRESHOLD_MASK);
+>  		changed |= BSS_CHANGED_HE_OBSS_PD;
+>  
+> -		if (params->beacon.he_bss_color.enabled)
+> +		if (params->beacon.he_bss_color_valid)
+>  			changed |= BSS_CHANGED_HE_BSS_COLOR;
+>  	}
+>  
+> @@ -1494,6 +1494,7 @@ static int ieee80211_change_beacon(struct wiphy *wiphy, struct net_device *dev,
+>  	int err;
+>  	struct ieee80211_bss_conf *link_conf;
+>  	u64 changed = 0;
+> +	bool color_en;
+>  
+>  	lockdep_assert_wiphy(wiphy);
+>  
+> @@ -1530,9 +1531,9 @@ static int ieee80211_change_beacon(struct wiphy *wiphy, struct net_device *dev,
+>  	if (err < 0)
+>  		return err;
+>  
+> -	if (beacon->he_bss_color_valid &&
+> -	    beacon->he_bss_color.enabled != link_conf->he_bss_color.enabled) {
+> -		link_conf->he_bss_color.enabled = beacon->he_bss_color.enabled;
+> +	color_en = beacon->he_bss_color.enabled && beacon->he_bss_color_valid;
+> +	if (color_en != link_conf->he_bss_color.enabled) {
+> +		link_conf->he_bss_color.enabled = color_en;
+>  		changed |= BSS_CHANGED_HE_BSS_COLOR;
+>  	}
+>  
 
-We have another bunch of tests now which run on all outstanding patches
-every 3 hours. selftests for example. We need to aggregate because
-there's too much code getting posted. One of the "tests" we run is
-make coccicheck.
-
-https://github.com/kuba-moo/nipa/blob/master/contest/tests/cocci-check.sh
-
-it's supposed to report back to patchwork as "contest", but
-the reporting is not 100% accurate I need to fix it :| 
-I look here instead: https://netdev.bots.linux.dev/status.html
 
