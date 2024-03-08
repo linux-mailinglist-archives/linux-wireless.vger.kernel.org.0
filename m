@@ -1,143 +1,90 @@
-Return-Path: <linux-wireless+bounces-4501-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4502-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC5BD876A20
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Mar 2024 18:44:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 585A5876A35
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Mar 2024 18:50:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53A9D1F225A7
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Mar 2024 17:44:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87C511C2123C
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Mar 2024 17:50:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EB118C1A;
-	Fri,  8 Mar 2024 17:44:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D9495380F;
+	Fri,  8 Mar 2024 17:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="AEjDaLVI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c56hgiTy"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 227631E4A9
-	for <linux-wireless@vger.kernel.org>; Fri,  8 Mar 2024 17:44:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14DEB51C4B;
+	Fri,  8 Mar 2024 17:50:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709919851; cv=none; b=NBVywrjTD9876WYdutkB0NuEsxrlGd88bNzqBK3qN5MSA/9FZwl2HXObteLXYlXbpzQa79dMAKjLA89Rg91zTkgeQSnKOD9hU5kOH3b6AS+c/KSeW57mU8yaS3yoUHAJ/u16f+wtN5sAblcvm5DoFGd1pQeyOAbZu4+aGQ+mFHA=
+	t=1709920245; cv=none; b=G8yWlH7NV2+UrI9YQdyUr7kZEGwpoSqI+mYFXSLgqddzFpfFmbOwG6FLh+fhK9LjPFvg1BkLPogVCslyziqqtt4oo/0kN9+VL+TU7qkKM7syEupH2RNIMxsssLfxMYnOSMrsJM8hVEIRBa6i++IC1bQKA2b0iG/wN8aPaXNfcEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709919851; c=relaxed/simple;
-	bh=LkeOnudSuWPolOTOChhjMlm5fRCbUIX7mTSVjYBlHA8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=LBeonq0QJQgMK4XxhKrzBHcPW7vnVmaVzG6RDFx/W96CUEikDsaRo/7e0tmpi+aUrmgqxTzO72RLOyi2FpeDMMsnB33dnKcqOuiEgl+LUxNZVLq1QVp71Go8VdjGpLr5OThanWHNKcCDzFN1X5vF/K3CrN0gVOIfwLqYcflPbFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=AEjDaLVI; arc=none smtp.client-ip=148.163.129.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 37F0560006B;
-	Fri,  8 Mar 2024 17:44:07 +0000 (UTC)
-Received: from [192.168.1.23] (unknown [98.97.34.142])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id 4968513C2B0;
-	Fri,  8 Mar 2024 09:44:05 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 4968513C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1709919845;
-	bh=LkeOnudSuWPolOTOChhjMlm5fRCbUIX7mTSVjYBlHA8=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=AEjDaLVICTqsWVDL3oi3aXDhuZRjK2lStysNArsJU2viBe8N/XTljuHrbrnqLP0Yc
-	 As3SsTSo+DnnaYt7P9utyMCrjR5bkq2PvsSw/JRodLo8oR6owIwOQ7RQErUq2LXfcF
-	 9jCX67tql6Q+2Okw4AkaEkDSRmIRk8KiYXovgSp4=
-Message-ID: <69b95f70-d43f-4ed5-9aa6-5a3f498700bf@candelatech.com>
-Date: Fri, 8 Mar 2024 09:44:04 -0800
+	s=arc-20240116; t=1709920245; c=relaxed/simple;
+	bh=A+hvmdLaV/gTU/Ui6twpNLDf9/QkGRWSw9vHS3ATObE=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=fpKVN4onjRICxnVj70mXYLBPcq+rOXANkJYVFX4jZK8+QeZ1RHWigyUbDCIJFk8cBZyqs2LBpOqti4N0rgORSPdF24LIDE0ykrIm6CK5Mroo3M15PFKJxTHPlQCKsH8rGqUS2aCombmtrwzI9WzDyqunX/rnjlg9s4inY/5YQCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c56hgiTy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 971CAC433F1;
+	Fri,  8 Mar 2024 17:50:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709920244;
+	bh=A+hvmdLaV/gTU/Ui6twpNLDf9/QkGRWSw9vHS3ATObE=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=c56hgiTyGicInhof79N01EiQMmsFNonjWrHUqRpCf5/DvGX0856zgxCy/nf/NV6EA
+	 FgCiBXuJCuTZ7VqvDVHi4QX7VdYMIlIv7l2AnUDhdhv5mwF/mF7aa3xufpWGUq7Ag0
+	 fR5r1k/O1GnkKgo2Z3QagEpJIPrfEYFL0rvhhqnIAKb0aKYLatynKWCQTiWJ57tuIV
+	 kJ0MbCw+QsMVsL3amFr3SeFfczxR+gnCXTh7XaMrRrefchRAyH1CNEKZAxC1u6VmzE
+	 BcpWDkq4mPD8geplk7kjYQQABzen4KvHKJmbL4jqO6viQbKQgjzwCBik58XSCizKMo
+	 gJGKMzxYMN3pw==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 72B2AC39562;
+	Fri,  8 Mar 2024 17:50:44 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: mac80211: Improve bss-color configuration.
-Content-Language: en-MW
-To: Jeff Johnson <quic_jjohnson@quicinc.com>, linux-wireless@vger.kernel.org
-References: <20240307181039.3219840-1-greearb@candelatech.com>
- <7ab9885b-5fb6-4686-b29b-d287e569293b@quicinc.com>
-From: Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <7ab9885b-5fb6-4686-b29b-d287e569293b@quicinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MDID: 1709919847-m8eLzND5mFx7
-X-MDID-O:
- us5;ut7;1709919847;m8eLzND5mFx7;<greearb@candelatech.com>;4d73edfb1b11e4059731496ff152f6e4
+Content-Transfer-Encoding: 8bit
+Subject: Re: pull-request: wireless-next-2024-03-08
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <170992024446.15593.2682606960737891240.git-patchwork-notify@kernel.org>
+Date: Fri, 08 Mar 2024 17:50:44 +0000
+References: <20240308100429.B8EA2C433F1@smtp.kernel.org>
+In-Reply-To: <20240308100429.B8EA2C433F1@smtp.kernel.org>
+To: Kalle Valo <kvalo@kernel.org>
+Cc: netdev@vger.kernel.org, linux-wireless@vger.kernel.org
 
-On 3/8/24 09:40, Jeff Johnson wrote:
-> On 3/7/2024 10:10 AM, greearb@candelatech.com wrote:
->> From: Ben Greear <greearb@candelatech.com>
->>
->> Always tell driver to apply bss color settings if beacon indicates
->> the bss coloring has been set.
+Hello:
+
+This pull request was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Fri,  8 Mar 2024 10:04:29 +0000 (UTC) you wrote:
+> Hi,
 > 
-> why? please describe the problem you are fixing
-
-To ensure driver is set to known state.  This does not fix any known bug,
-but seems appropriate, and I noticed driver wasn't being set to
-disabled when BSS color was disabled while debugging some other issues
-(the driver in question defaulted to disabled).
-
->> And only enable bss coloring if beacon indicates bss color setting
->> is valid and also enabled.
-
-This seems more correct behaviour to me.  It does not fix any known
-problem.
-
-Thanks,
-Ben
-
->>
->> Signed-off-by: Ben Greear <greearb@candelatech.com>
->> ---
->>   net/mac80211/cfg.c | 9 +++++----
->>   1 file changed, 5 insertions(+), 4 deletions(-)
->>
->> diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
->> index 327682995c92..aaa62c05428c 100644
->> --- a/net/mac80211/cfg.c
->> +++ b/net/mac80211/cfg.c
->> @@ -1314,7 +1314,7 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
->>   			      IEEE80211_HE_OPERATION_RTS_THRESHOLD_MASK);
->>   		changed |= BSS_CHANGED_HE_OBSS_PD;
->>   
->> -		if (params->beacon.he_bss_color.enabled)
->> +		if (params->beacon.he_bss_color_valid)
->>   			changed |= BSS_CHANGED_HE_BSS_COLOR;
->>   	}
->>   
->> @@ -1494,6 +1494,7 @@ static int ieee80211_change_beacon(struct wiphy *wiphy, struct net_device *dev,
->>   	int err;
->>   	struct ieee80211_bss_conf *link_conf;
->>   	u64 changed = 0;
->> +	bool color_en;
->>   
->>   	lockdep_assert_wiphy(wiphy);
->>   
->> @@ -1530,9 +1531,9 @@ static int ieee80211_change_beacon(struct wiphy *wiphy, struct net_device *dev,
->>   	if (err < 0)
->>   		return err;
->>   
->> -	if (beacon->he_bss_color_valid &&
->> -	    beacon->he_bss_color.enabled != link_conf->he_bss_color.enabled) {
->> -		link_conf->he_bss_color.enabled = beacon->he_bss_color.enabled;
->> +	color_en = beacon->he_bss_color.enabled && beacon->he_bss_color_valid;
->> +	if (color_en != link_conf->he_bss_color.enabled) {
->> +		link_conf->he_bss_color.enabled = color_en;
->>   		changed |= BSS_CHANGED_HE_BSS_COLOR;
->>   	}
->>   
+> here's a pull request to net-next tree, more info below. Please let me know if
+> there are any problems.
 > 
+> Kalle
+> 
+> [...]
 
+Here is the summary with links:
+  - pull-request: wireless-next-2024-03-08
+    https://git.kernel.org/netdev/net-next/c/75c2946db360
+
+You are awesome, thank you!
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
 
