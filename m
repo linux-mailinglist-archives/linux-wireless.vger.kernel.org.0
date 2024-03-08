@@ -1,133 +1,99 @@
-Return-Path: <linux-wireless+bounces-4486-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4487-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECADA87640E
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Mar 2024 13:11:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EEC187642E
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Mar 2024 13:20:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D1271F21E95
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Mar 2024 12:11:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57CDA285798
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Mar 2024 12:20:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A951656755;
-	Fri,  8 Mar 2024 12:11:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE6E92110E;
+	Fri,  8 Mar 2024 12:20:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fp5Fx7So"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="GpNPf/Di"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51E455E57;
-	Fri,  8 Mar 2024 12:11:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24DD356464
+	for <linux-wireless@vger.kernel.org>; Fri,  8 Mar 2024 12:20:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709899881; cv=none; b=U9hZqeESfzfcUM2tcAH4FpI/zgdun6P7xAIgpl9MCkTyFuYjDD08Tt0/vpPvAsXdGYctKd3W82EoeUChobTDGh8z3LQvJkqJZgOnhgUOKIS9CLV2j1v2fK1A9syNYmeia2wLU09YgGrKgy18gtJs65W6ZITMxQmprVOG3uttBaU=
+	t=1709900410; cv=none; b=PwkaW8QiWzj/9kTVUSFESN/gwMWGBy641s7bxwnvpWBGYNGlcA5OoC5P8Pzywyuk1CjOEB4JmfJ5YN6u1xHwE7lK6zxfGl6FTaewtDOyPFmpeJpHzg3Go0h0p0PvsBmxoioR0BgyYSf4WaPfGgeIqzBjcQgjAAuJ/DBR1ad0LWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709899881; c=relaxed/simple;
-	bh=u4myuziinAHA+RzQxn7J0GstogU0y+s2j9zS1VgekCo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=azY7LpntmXaWt/Apf885miX03WThN79z5/DFrNtXnQKpa19/P/cTDWMRvDKOh76MVBgm+9KtS8hi2Y3hd20M257uHidKoDV/oN8cCV0wCe1pGNefFsBla07s9xXz/K6y7zKizjF2llHX7CR28DCTsSujCt6RYU1gunKNTQUr4ng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fp5Fx7So; arc=none smtp.client-ip=209.85.208.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2d422b6253cso2862661fa.2;
-        Fri, 08 Mar 2024 04:11:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709899878; x=1710504678; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=u4myuziinAHA+RzQxn7J0GstogU0y+s2j9zS1VgekCo=;
-        b=fp5Fx7Soz3jHOYaZKKsZlTB9sOMhHr4wl/5k8o78kj5oPGSDf0UInq7GMn8aFIqDPl
-         jPyv0cSS4LCS9mYdwa1+uMTQ+7T1hc9iwZyva4sUpDEzjhI1rO6/jj6oLBZ9q1VZ6pvN
-         KMvb3cR32O6XSV8p6GMgS5U27XBZRBq+DaOpnDGkGU0Qq3fGAGh5fVHES60j2B12IcZk
-         X6orDGHP174DckrpSDuU51j6PlCPyPwi+n1Os1C4g4Nr1dOuCEzhSm/aJoBefIYz6UmG
-         yGFmth0ZbpuooYiE2CnQRLN3fzlvGNRrYRd1r989deb/9MkCiy3kuF7I0HfE+kKA1Jms
-         OBAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709899878; x=1710504678;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=u4myuziinAHA+RzQxn7J0GstogU0y+s2j9zS1VgekCo=;
-        b=tmPNLh9ugxVBmEXXxR1VCiV3TBn9ZA8wrbjnlCiJavOxFUz7IqRUhMgwQqK5jaagAL
-         TPenNa7wnIWJeP7RFtMBo06VfBRruIM6apUptEP78OY9HyaRAZVb+K2a4v3Ctuo4bjWE
-         /TJLvRD8khFgWtdIEsaF9Sc+rjvd1dA/TYjQwQW3QhDfbfQSOFEZ7vDoAtgYVbzoFwlh
-         xlT0pvsSApvgJaB0c9lmdHA04DN22BG3gK1zOCRg6t+oXTd8SeDMOQZvxAKb8zQhIFiW
-         yNjrGEytu6IbTQlQYZqVnuBMiSz7UpD1DNI/zOO1tNIX1ItiTVXqk+L28b9BKofUuZM4
-         IlTg==
-X-Forwarded-Encrypted: i=1; AJvYcCXuwhrSz9kCI6BXw1Ie7TWaZHqSUf09XaTSzMjgdiWx6RXTQ8SS6Ai7Wr7B0Y4/kQneJI2TlrrW/mCKUA2p4cJA+piSfZ7GC0MWgV6hIKJhrCEMdEp/jai15g4k9pPrCEB2FttC+E5OBLQVlp0=
-X-Gm-Message-State: AOJu0YyUT4AoGhutnKi1WoD0uaVistZ9iH6NCojrpZ9q/xUc81iLInDX
-	CX1CFSQlZ2zSO6BAzIEc69VJ8SqxsL1J6QJnJ59y0f2w82V+6KnFJh1E4MKXlnqEppjc+1xY8hx
-	Y79jRicyl8JOaa5LfdKtEMUhbnvI=
-X-Google-Smtp-Source: AGHT+IFOD3e+SaV736HdUegwhtFhUl8vlHK561xG6D82XTIxXEv593zyQhGzN7zz6UKn9ypwZl9UUa8WHhtgrQnyuis=
-X-Received: by 2002:ac2:4e09:0:b0:513:5ed9:c193 with SMTP id
- e9-20020ac24e09000000b005135ed9c193mr4365888lfr.35.1709899877910; Fri, 08 Mar
- 2024 04:11:17 -0800 (PST)
+	s=arc-20240116; t=1709900410; c=relaxed/simple;
+	bh=cYFjiRix+ABBSuAwdsHr1pGc9HQUSZQpyc6DPOTWQD0=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=akzvgLQnCq2XbXZ13mL4uydTQHyTAj0s+E+ODYIgfN+59lEuVaq62iS70rhN8oRh5W/EPBg/Oink/rtqVPe/l6Pqjv8A5JWuRnPfROkibj2CycbOZKXtUQn1t6Wb+HfSzJ37mz2aWOGJys6m43Ye6ZYsNw44/NEadpJUFd7aclQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=GpNPf/Di; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=cYFjiRix+ABBSuAwdsHr1pGc9HQUSZQpyc6DPOTWQD0=;
+	t=1709900404; x=1711110004; b=GpNPf/DiOEvamwSbJc2fPDIZOedNo5vJrRnCKL6lAb5xL1X
+	ljrtubhdx2MiO4yULgiWn3esYlKHMFXWrlTtCdd0Oii20faZ8AdTLEBlzlvQes7hdehHsVLrzRsQG
+	WL6dxqF1fF7s0BOVzBAsCdaRxf7xI/xJXQ/YPOt0M/fMy7ICLbPVll5X8f2FBBYqtcbFRB3uII+ob
+	hrLTPdy3a8xtcoySD071Ryy7UWRQwUeBdCpkVfGt7turR4SioRFe27sdfj6J5+G9FXpXu31I8U52P
+	Kbo2Sj8Sw+ZJwBc9dK/LW9mQBogEzCRWiAXMqUAQIgOMmqMe2W/iEUEtAQ6RpP+Q==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1riZCd-00000007ZTx-2u1E;
+	Fri, 08 Mar 2024 13:19:55 +0100
+Message-ID: <29f7aa2c233277ab4bb56bcff8e228036ee96a2e.camel@sipsolutions.net>
+Subject: Re: regression: [PATCH] wifi: mac80211: set station RX-NSS on
+ reconfig
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Andreas Tobler <andreas.tobler@onway.ch>, linux-wireless@vger.kernel.org
+Date: Fri, 08 Mar 2024 13:19:54 +0100
+In-Reply-To: <014a25e4-5609-4e3e-a593-8a2bf1bd5568@onway.ch>
+References: <014a25e4-5609-4e3e-a593-8a2bf1bd5568@onway.ch>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240307223849.13d5b58b@barney> <20240307232927.171197-1-rand.sec96@gmail.com>
- <CAAMvbhE53upfqfB=afJK9YAZUWFTBN8ripae0W+PUUXdwj4-kw@mail.gmail.com>
-In-Reply-To: <CAAMvbhE53upfqfB=afJK9YAZUWFTBN8ripae0W+PUUXdwj4-kw@mail.gmail.com>
-From: Rand Deeb <rand.sec96@gmail.com>
-Date: Fri, 8 Mar 2024 15:11:06 +0300
-Message-ID: <CAN8dotnMCQG+cUxKR_aq6=XxqMTh7KLDCpH1sOa6RqujKfYRgg@mail.gmail.com>
-Subject: Re: [PATCH v3] ssb: Fix potential NULL pointer dereference in ssb_device_uevent
-To: James Dutton <james.dutton@gmail.com>
-Cc: deeb.rand@confident.ru, jonas.gorski@gmail.com, khoroshilov@ispras.ru, 
-	kvalo@kernel.org, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, lvc-project@linuxtesting.org, 
-	voskresenski.stanislav@confident.ru
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-malware-bazaar: not-scanned
 
-On Fri, Mar 8, 2024 at 4:05=E2=80=AFAM James Dutton <james.dutton@gmail.com=
-> wrote:
-> The reason it is probably not a good design is what comes later.
-> Another developer comes along and says I see a nice SUM(a, b);
-> function that I would like to re-use in my new function I am adding.
-> But that new developer introduces a bug whereby they have implemented
-> their CHECK(a) wrongly which results in SUM(a, b) now being a security
-> exploit point because of some very subtle bug in CHECK(a) that no one
-> noticed initially.
-> After a while, we might have ten functions that all re-use SUM(a, b)
-> at which point it becomes too time consuming for someone to check all
-> ten functions don't have bugs in their CHECK(a) steps.
-> It is always easier for the safety checks to be done as close as
-> possible to the potential exploit point (e.g. NULL pointer
-> dereference) so that it catches all future cases of re-use of the
-> function.
-> For example, there exist today zero day exploits in the Linux wireless
-> code that is due to the absence of these checks being done at the
-> exploit point.
-> The biggest problem with all this, is if I sutily (without wishing to
-> give away that it is to fix a zero day exploit) submitted a patch to
-> do an extra check in SUM(a, b) that I know prevents a zero day
-> exploit, my patch would be rejected.
+On Fri, 2024-03-08 at 12:58 +0100, Andreas Tobler wrote:
+> Hello Johannes, all.
+>=20
+> with this commit[0] we encounter a performance regression in one of our=
+=20
+> AP/STA tests. The performance drop is about 100Mbps+
+>=20
+> Our setup is a hostap (2.10) configured AP on 802.11ac, channel 46.=20
+> (40MHz). The client connects via wpa (2.10) and then we produce traffic.=
+=20
+> Before this commit, the throughput was around 250 Mbps, with this commit=
+=20
+> the performance is now down to 135 Mbps.
+>=20
+> The wifi cards we use are WLE600VX from compex, a ath10k based one. The=
+=20
+> kernel we're on is 6.1.80. We've seen it on 6.6 too but didn't investigat=
+e.
+>=20
+> Now, the ieee80211_sta_set_rx_nss() function has two FIXME comments. One=
+=20
+> in where it handles the ht capability and one in the vht part. Both=20
+> FIXME's are: 'consider rx_highest?'
+>=20
 
-Hi James,
+I think you'll find that all that is unrelated, and this fixes it:
 
-Thank you very much for your detailed and interesting interaction. In fact,
-while I was writing the example, I expected such a comment :)
+https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git/=
+commit/?id=3Da8bca3e9371dc5e276af4168be099b2a05554c2a
 
-The example is just an explanation, do not take it literally, but it is
-definitely better than the second method. Now, if the developer makes a
-mistake using the function, this is possible, but this is not a convincing
-reason to add redundant code everywhere. In addition mistakes could occur
-in all scenarios.
-
-I agree with you in general, but I will answer you in simple statements:
-
-For this reason, modification permission should not be granted to anyone,
-and for this reason there are reviewers and documentation. In the end,
-Somehow, software engineering concepts are applied because this is one of
-the most important projects and not a calculator project as homework for
-the university.
-
-Best Regards
+johannes
 
