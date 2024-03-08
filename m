@@ -1,111 +1,106 @@
-Return-Path: <linux-wireless+bounces-4495-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4496-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D9B2876730
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Mar 2024 16:19:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32083876785
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Mar 2024 16:45:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC80A281372
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Mar 2024 15:19:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E02A42857F9
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Mar 2024 15:45:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17F7C1DDEC;
-	Fri,  8 Mar 2024 15:19:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e1a/ZMv9"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57B3D1DFFD;
+	Fri,  8 Mar 2024 15:45:13 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bues.ch (bues.ch [80.190.117.144])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A8E4400;
-	Fri,  8 Mar 2024 15:19:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EF4E1F934;
+	Fri,  8 Mar 2024 15:45:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.190.117.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709911151; cv=none; b=QoM5EcXd5+204dKuoiNdFp5S6SdtNEKSKEVc1ol0Ui75SJ0IXirUqzDdeMHSs2zyockH/S+eqcWAfEZwGuWYRb7b7GK69dgreFQ69zSDhzfUQvSo0HaAKti3I4dWUU1NOvF6E49GRE0vdI3f1S8T7rXil0jSruRS+7i3TDv7LWg=
+	t=1709912713; cv=none; b=r7ZgaVFPbmIVOxzL21mz1MuyWN0Drg42Jr+Bi8sqife118/sM3nEllrUMkoBzLahXp3D5YYA3KD6sa4L98asIKVnCS88ZHhwYfhtReoDsnr8JaK5JWk6g+UV4g9BmzR39Eu1RM4bJ2Cp72NKgE+8IroGuivEQh8md/1TUMLKMfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709911151; c=relaxed/simple;
-	bh=2aEWrJvvukoPuyYJLD9Zn0ge1MPAdinGfbWVtaTvHp4=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=GlDAJt6AW+/jNWisHYnwiOJ21qpi/H5MvbAllD1mw2tIRQnvT+ZFKOyWX9BcXT7yb0ECgGDTx9RWHfKRZLeLjtMAUu8/GQxUG/IjF4eygkOcgzTLl3yieMKtGS4ec/v9masDrw3j/LfUqKGw1NfrW0QkonhH6DFi2kya+CDrAkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e1a/ZMv9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1DDDC433C7;
-	Fri,  8 Mar 2024 15:19:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709911150;
-	bh=2aEWrJvvukoPuyYJLD9Zn0ge1MPAdinGfbWVtaTvHp4=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=e1a/ZMv9W69wCrDHRgkvlZIa4zoUJ8J8Q3ymIbKisGFKt85jmdi8rfigpLWuxyFVV
-	 0NMyFXtGSPpANaWp4n+9q7gax4lJv6/l/ymG2gcd8wjKVcn2OYjQ1nlW0pHBvhwvlu
-	 1WSi0bGr3izdfGytW1OtnQXfBWA/rRrzf3KgYRsKCyT9k2R1DLweSj4xcahwGjiTPS
-	 LCNlE5MKl+CpM8Enh+hZWwiAnV0G67ryNjl5C8rOiWaT6dXdIidkWXKtNY5hduirgp
-	 y/3xoHrWixGF2LDAur5awj7cBiaNBTUXF9V3bqbfjuerY2BtKIJku2z3U6hBDIDv92
-	 lL4q8dkNZ2MbA==
-From: Kalle Valo <kvalo@kernel.org>
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Jeff Johnson <quic_jjohnson@quicinc.com>,  "David S. Miller"
- <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,  Jakub
- Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>,  Rob Herring
- <robh+dt@kernel.org>,  Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>,  Conor Dooley <conor+dt@kernel.org>,
-  Bjorn Andersson <andersson@kernel.org>,  Konrad Dybcio
- <konrad.dybcio@linaro.org>,  ath10k@lists.infradead.org,
-  linux-wireless@vger.kernel.org,  netdev@vger.kernel.org,
-  devicetree@vger.kernel.org,  linux-arm-msm@vger.kernel.org,  Krzysztof
- Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH RFC v2 0/4] wifi: ath10k: support board-specific
- firmware overrides
-References: <20240306-wcn3990-firmware-path-v2-0-f89e98e71a57@linaro.org>
-	<87plw7hgt4.fsf@kernel.org>
-	<CAA8EJpr6fRfY5pNz6cXVTaNashqffy5_qLv9c35nkgjaDuSgyQ@mail.gmail.com>
-	<87cys7hard.fsf@kernel.org>
-	<CAA8EJpowyEEbXQ4YK-GQ63wZSkJDy04qJsC2uuYCXt+aJ1HSOQ@mail.gmail.com>
-Date: Fri, 08 Mar 2024 17:19:05 +0200
-In-Reply-To: <CAA8EJpowyEEbXQ4YK-GQ63wZSkJDy04qJsC2uuYCXt+aJ1HSOQ@mail.gmail.com>
-	(Dmitry Baryshkov's message of "Wed, 6 Mar 2024 16:23:55 +0200")
-Message-ID: <87v85wg39y.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1709912713; c=relaxed/simple;
+	bh=XkJffO4Kahb1zkXZvM3TCnNZLMJJAGLAGtJUiIL1pic=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=iIfUW7f9EXzufV76Evwt5CLB+3HiG66lYy3O7yh4HjZaIHcfdvyZ8Imb7CpmGfoOlhAfcOSGSVxy/jQw0yrMzrjQMCPti35eUV9QS6/lyFDhqp5v1zOqwM60oUYiH5upSupoOuxd4B0DId1hMeOGThcQtleLHmxRQAzgGnBgXn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bues.ch; spf=pass smtp.mailfrom=bues.ch; arc=none smtp.client-ip=80.190.117.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bues.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bues.ch
+Received: by bues.ch with esmtpsa (Exim 4.96)
+	(envelope-from <m@bues.ch>)
+	id 1ricP9-000nrO-2u;
+	Fri, 08 Mar 2024 16:45:03 +0100
+Date: Fri, 8 Mar 2024 16:44:29 +0100
+From: Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
+To: Rand Deeb <rand.sec96@gmail.com>
+Cc: deeb.rand@confident.ru, jonas.gorski@gmail.com, khoroshilov@ispras.ru,
+ kvalo@kernel.org, linux-kernel@vger.kernel.org,
+ linux-wireless@vger.kernel.org, lvc-project@linuxtesting.org,
+ voskresenski.stanislav@confident.ru, james.dutton@gmail.com
+Subject: Re: [PATCH v3] ssb: Fix potential NULL pointer dereference in
+ ssb_device_uevent
+Message-ID: <20240308164429.0a01fc41@barney>
+In-Reply-To: <CAN8dotkp7tQ6znKM5=1iM08hLvjLK-VbQm9LuqcGBf0e3ok=kg@mail.gmail.com>
+References: <20240307223849.13d5b58b@barney>
+ <20240307232927.171197-1-rand.sec96@gmail.com>
+ <20240308060943.2410ef2e@barney>
+ <CAN8dotkp7tQ6znKM5=1iM08hLvjLK-VbQm9LuqcGBf0e3ok=kg@mail.gmail.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: multipart/signed; boundary="Sig_/UBAVpEGvFW.8SZN79fr457G";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
 
-Dmitry Baryshkov <dmitry.baryshkov@linaro.org> writes:
+--Sig_/UBAVpEGvFW.8SZN79fr457G
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
->> To be on the safe side using 'qcom-rb1' makes sense but on the other
->> hand that means we need to update linux-firmware (basically add a new
->> symlink) everytime a new product is added. But are there going to be
->> that many new ath10k based products?
->>
->> Using 'qcm2290' is easier because for a new product then there only
->> needs to be a change in DTS and no need to change anything
->> linux-firmware. But here the risk is that if there's actually two
->> different ath10k firmware branches for 'qcm2290'. If that ever happens
->> (I hope not) I guess we could solve that by adding new 'qcm2290-foo'
->> directory?
->>
->> But I don't really know, thoughts?
->
-> After some thought, I'd suggest to follow approach taken by the rest
-> of qcom firmware:
+On Fri, 8 Mar 2024 14:36:56 +0300
+Rand Deeb <rand.sec96@gmail.com> wrote:
+> Adding a redundant null
+> check goes against code clarity instead of enhancing it.
 
-Can you provide pointers to those cases?
+You keep on moving goal posts.
+The check is already there. Therefore, this is about removal of this NULL c=
+heck.
+Which is not acceptable.
 
-> put a default (accepted by non-secured hardware) firmware to SoC dir
-> and then put a vendor-specific firmware into subdir. If any of such
-> vendors appear, we might even implement structural fallback: first
-> look into sdm845/Google/blueline, then in sdm845/Google, sdm845/ and
-> finally just under hw1.0.
+> I respect your opinion, but it seems we are stuck in a while(1) loop
+> without a break.
 
-Honestly that looks quite compilicated compared to having just one
-sub-directory. How will ath10k find the directory names (or I vendor and
-model names) like 'Google' or 'blueline' in this example?
+Don't worry. I'll ignore this thread from now on.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+--=20
+Michael B=C3=BCsch
+https://bues.ch/
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+--Sig_/UBAVpEGvFW.8SZN79fr457G
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAmXrMl0ACgkQ9TK+HZCN
+iw6djg//cErRxyXC6LYNIJ79g3Zqn0XiRGBUoxnpKZvv+kUJ+2qe14ne/H9CIEqT
+m+KyOI++0XWwWkrMEPvO01psTr3ra6WHeGFwYmVngj+hSmJ3mODWl+w+WCLeL6hU
+hhXabKrwaXs+2ZGAYDA8dyE6ihMSLsPpNElsUY1x6Y1id9NkkrSMkPXh/jCpa4lO
+Vzy5qXISAyQ4NIZajqH6e4oUjwuixr9oghFOkSe/FW7UI8aZ+Cci9F/YI2sJL9SD
+ThWiVfhEK9iiUtGulfW7gsknP0uEO9bj9oZj5KSd5Wvg4zhep59es/TzBJCYFLyF
+QShqke8zkRpRX1FaZLqhrSj2m9bnTSi5OmuwENBsuOELjDwbIPOx8+DHU4q6VMgq
+F+FZkHdzCNiAWHwWfc9Fi8brFdguVFN84FrvRaHkze76y0zh10uBDAHVeeY5ADDB
+rp/Kr0fPQxq/YoWqbbqZggE6CdoxrWQG6JypC+OwFeEGkLL5rFAnMwmC4nAbJAov
++UE1Qd5OcgGsH7p/7BbVDlf6IWBYhqxBsFAMKzjPF/MeqBzhYYi8rwVxP4VOpgjL
+kJmgb5n+MtuLD5lCvdY+P+Rbn7M2JeAIaoDnA/QdgGB6Fs52+4SeHuPIDf9WXFDW
+q3kjTBJNfmDk7SykJn9jAt6Tv8Bl+IuTIB2XigrFy4PETaX2CNE=
+=6clV
+-----END PGP SIGNATURE-----
+
+--Sig_/UBAVpEGvFW.8SZN79fr457G--
 
