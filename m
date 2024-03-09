@@ -1,172 +1,153 @@
-Return-Path: <linux-wireless+bounces-4506-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4507-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ED708770AA
-	for <lists+linux-wireless@lfdr.de>; Sat,  9 Mar 2024 12:31:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23A0E8770BA
+	for <lists+linux-wireless@lfdr.de>; Sat,  9 Mar 2024 12:40:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB4A0281B0A
-	for <lists+linux-wireless@lfdr.de>; Sat,  9 Mar 2024 11:31:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D16A92817D4
+	for <lists+linux-wireless@lfdr.de>; Sat,  9 Mar 2024 11:40:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C4AB364A8;
-	Sat,  9 Mar 2024 11:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D578219E1;
+	Sat,  9 Mar 2024 11:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="MT101XZK"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zXP4yDPL"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1B65C8B
-	for <linux-wireless@vger.kernel.org>; Sat,  9 Mar 2024 11:31:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB1D32DF7D
+	for <linux-wireless@vger.kernel.org>; Sat,  9 Mar 2024 11:40:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709983899; cv=none; b=BViC6w0vIvefDdLKc8gjw/oCoYl1chM9N2pgEove5ra7vJ5Ohn2FS77CpiLiOUUWZzRLLuNA/0TAcZRCkE4zHqMqc3hOY5n2zbjVC3KAJFccLstVByhU/7UYX4Eg17FCl9JkKgiJoX1x1U70LGodIHUL2im0qz5DzD0ELyX3S6w=
+	t=1709984414; cv=none; b=tvJz6nY/5rxclTlg0zebXqBksiv9Kq/7JQLvvm0gjscbVy4QBlRPOrmzZxZi1GhafZI8jzzGN5BoCG3I+S4zbIRYoaZhoiWQTwW//ZyUhMHSn6rClcmSExagAplFjCWXOUSMfcTwiAXjzKPwd4VtvomsqTzOpvb88ufSE6cpntI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709983899; c=relaxed/simple;
-	bh=+4hzvJN8DYLSpCPeXE68462T5eW8VNCw3ueaJlUjxQs=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jaPcCYPovA9M4ELTekl7wzWwF2afqNUxzZkKwx3CJt7lRdiMpnAh0JEcdKryzmLO5/Tv5XFSMqDlPmr/6SimYxR9WLbyGtdJiqB832N9g1npSZ71pKTl4RGO9JUzlAE4sVgsn1TbqrQkxxcpTaE78OINPSpcqpUOuhUiyAfBmtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=MT101XZK; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 429BJ1nc013375;
-	Sat, 9 Mar 2024 11:31:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:mime-version
-	:content-transfer-encoding:content-type; s=qcppdkim1; bh=+wyx/Vh
-	Gct4tBH0Mou0Kr9MyBVWlStejrsiczgJZsiA=; b=MT101XZK6YLmPkfBiMU2d9t
-	Jm4pH5rdFiQ/bCDTPei6vBmBfHzVfRSCiqmUHj6gFtEZhk80nBpEbY1WilCw3rgW
-	c9NtL/ymzB2PGnlLJRSuhN39nv+nerBYy1wW38lMu2fDbMpjzbt625HV6jQbE8bL
-	4qWmzLj/ttTySF9sKXxiKxjPeof8gezXURaqFvlDuL8M8ddzDxOBtM3kt28xVkrR
-	XyVlZyjNRw9Mgeid4yg5v+RFMiEOJSxMq+LnKFYRdWBB2Lej0Q5T4r1DwOJZQ/xo
-	ROiN6oo64TXbo346xJ7kVkWorpUL/DP0TBr4dsVBXb33uFgx3G1Nf7qe0V5RN1Q=
-	=
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wrg5b0dwb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 09 Mar 2024 11:31:29 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 429BVSCs003955
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 9 Mar 2024 11:31:28 GMT
-Received: from bqiang-Celadon-RN.qca.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Sat, 9 Mar 2024 03:31:27 -0800
-From: Baochen Qiang <quic_bqiang@quicinc.com>
-To: <ath11k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, <quic_bqiang@quicinc.com>
-Subject: [PATCH] wifi: ath11k: don't force enable power save on non-running vdevs
-Date: Sat, 9 Mar 2024 19:31:15 +0800
-Message-ID: <20240309113115.11498-1-quic_bqiang@quicinc.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1709984414; c=relaxed/simple;
+	bh=AcjiAeQatQDuwLO7SojDRwfirCb/9gyvuNvcqqn+74w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tlHXjsLTJV5SSEvagLMoYzmdp+orWMzLgNbwsdbJH98QcY0HgaLqf6hsoC7VS4RUnIuknBecOontAgjZggAs5d2aSq3bgj+I173UL02pP2b4dlWJBeJZKKtkS74yjGkpl5eQRkHkjvCUVcA4Ds0crnZbBEju/zAx30cLFDk5TWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=zXP4yDPL; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-413216e601eso1692915e9.1
+        for <linux-wireless@vger.kernel.org>; Sat, 09 Mar 2024 03:40:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1709984411; x=1710589211; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=PiZ18EYKyPx5U5rDgsFDdkm4ck96gDm9CGcSJj95AZI=;
+        b=zXP4yDPLJesfu/Z5ycY7bovzbGbpNRTaMDhcCRJ2ynpkAzcItlqCvDSfW7d++qmrJq
+         7b9mDHUQzjMRD8vf6vYoK/ZBmGWsy7NpogM3f8a+I9h7jCw3VKgaOtJtvj9Gz5xnCJZk
+         GnVnPRCUeTkAcqpVCuv7l/lp0Tkl6hZfPjMzpHcbPmXkGd6sDxpZ9FwrSDF0hOdiajXt
+         qKz0qjgN+iFy13YFSgKCfNR3uXzThQIGGFOh03rf12WzmwBa390PVDiahrEG+qVdsH+O
+         CYrUdkZLSkQtI41dAsMKklLUMwGuCja4lKP4B6qGQuxSd33T6ofBsgiYKr5nJnypVV0c
+         VeaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709984411; x=1710589211;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=PiZ18EYKyPx5U5rDgsFDdkm4ck96gDm9CGcSJj95AZI=;
+        b=gaPwPBmcHQ9gv7a7A08q5VSb7ekdTVBeqwHz4vzk264ZooT35tTLrwXiB3ytVxdHH8
+         3E0MnmIedq9nHgkTOMQUaeN4zNfGRa7IEYAfyhahksr1Y59t423W7xvfsfftO3gQTQbB
+         hiMI5ZzP9SK7+3SiSIaYZZPvB+zaeQDig3gUxyKayhFE8To/8FuGXpCPKQbe7jPypNBt
+         lhWCRPNVC0ItBZpgrL255BGv1X0jZiB0qLBeNjl3MS0ckCXmR0DoSZEz6Pm5b0fgePKk
+         KJmnTnZZWhEdFPh7DNBSzq7Lhhn2rCQc+AwpclIV5IiwZBZMOMs74kyFKWXBd91NSu3X
+         ZspQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXo0hVM8T6Thns9wcaY4iBPbNkyMpyaEJ3epQtRGVNfdrqsu5INLVzkP+kTznjEfDWPydX1Bqz29TeyxL4dvLpj0+oIQBN/GX9+90C+HuY=
+X-Gm-Message-State: AOJu0YzbKK7E+k4EOsUhdonGPQsKg335GUyRUT1ihssH1Enx37bsLEtD
+	0WDDWU4mO2H++VagaE1WLISUq+5mcDi9SUpX4VIn5+G8DL3WCqEzDOLSX76+GKM=
+X-Google-Smtp-Source: AGHT+IGHEden3nKsvIb8hzbKEtjM80tsw+OsS6Ta9JHpf2DkK7Cc9GhFCa10vUNuFwWgjTY8WlMhtg==
+X-Received: by 2002:a05:600c:350c:b0:412:c809:5421 with SMTP id h12-20020a05600c350c00b00412c8095421mr1312280wmq.2.1709984411098;
+        Sat, 09 Mar 2024 03:40:11 -0800 (PST)
+Received: from [192.168.1.20] ([178.197.222.97])
+        by smtp.gmail.com with ESMTPSA id jh3-20020a05600ca08300b0041304100fa9sm8702893wmb.45.2024.03.09.03.40.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 09 Mar 2024 03:40:10 -0800 (PST)
+Message-ID: <947e76c9-51e8-4826-8ea1-0df6b10d6a3f@linaro.org>
+Date: Sat, 9 Mar 2024 12:40:09 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: QMr27MUFxRgrmnh_kk8i3YnMjow-HylW
-X-Proofpoint-ORIG-GUID: QMr27MUFxRgrmnh_kk8i3YnMjow-HylW
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-08_08,2024-03-06_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 clxscore=1015
- mlxscore=0 phishscore=0 lowpriorityscore=0 impostorscore=0 suspectscore=0
- malwarescore=0 spamscore=0 mlxlogscore=999 bulkscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2402120000
- definitions=main-2403090092
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] dt-bindings: net: wireless: brcm,bcm4329-fmac: Add
+ CYW43439 DT binding
+Content-Language: en-US
+To: Marek Vasut <marex@denx.de>, linux-wireless@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Conor Dooley <conor+dt@kernel.org>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Kalle Valo <kvalo@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
+ devicetree@vger.kernel.org, netdev@vger.kernel.org,
+ van Spriel <arend@broadcom.com>
+References: <20240309031355.269835-1-marex@denx.de>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <20240309031355.269835-1-marex@denx.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Currently we force enable power save on non-running vdevs, this results
-in unexpected ping latency in below scenarios:
-	1. disable power save from userspace.
-	2. trigger suspend/resume.
+On 09/03/2024 04:13, Marek Vasut wrote:
+> CYW43439 is a Wi-Fi + Bluetooth combo device from Infineon. The
+> WiFi part is capable of 802.11 b/g/n. This chip is present e.g.
+> on muRata 1YN module. Extend the binding with its DT compatible.
+> 
+> Signed-off-by: Marek Vasut <marex@denx.de>
+> ---
 
-With step 1 power save is disabled successfully and we get a good latency:
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-PING 192.168.1.1 (192.168.1.1) 56(84) bytes of data.
-64 bytes from 192.168.1.1: icmp_seq=1 ttl=64 time=5.13 ms
-64 bytes from 192.168.1.1: icmp_seq=2 ttl=64 time=5.45 ms
-64 bytes from 192.168.1.1: icmp_seq=3 ttl=64 time=5.99 ms
-64 bytes from 192.168.1.1: icmp_seq=4 ttl=64 time=6.34 ms
-64 bytes from 192.168.1.1: icmp_seq=5 ttl=64 time=4.47 ms
-64 bytes from 192.168.1.1: icmp_seq=6 ttl=64 time=6.45 ms
-
-While after step 2, the latency becomes much larger:
-
-PING 192.168.1.1 (192.168.1.1) 56(84) bytes of data.
-64 bytes from 192.168.1.1: icmp_seq=1 ttl=64 time=17.7 ms
-64 bytes from 192.168.1.1: icmp_seq=2 ttl=64 time=15.0 ms
-64 bytes from 192.168.1.1: icmp_seq=3 ttl=64 time=14.3 ms
-64 bytes from 192.168.1.1: icmp_seq=4 ttl=64 time=16.5 ms
-64 bytes from 192.168.1.1: icmp_seq=5 ttl=64 time=20.1 ms
-
-The reason is, with step 2, power save is force enabled due to vdev not
-running, although mac80211 was trying to disable it to honor userspace
-configuration:
-
-ath11k_pci 0000:03:00.0: wmi cmd sta powersave mode psmode 1 vdev id 0
-Call Trace:
- ath11k_wmi_pdev_set_ps_mode
- ath11k_mac_op_bss_info_changed
- ieee80211_bss_info_change_notify
- ieee80211_reconfig
- ieee80211_resume
- wiphy_resume
-
-This logic is taken from ath10k where it was added due to below comment:
-
-	Firmware doesn't behave nicely and consumes more power than
-	necessary if PS is disabled on a non-started vdev.
-
-However we don't know whether such an issue also occurs to ath11k firmware
-or not. But even if it does, it's not appropriate because it goes against
-userspace, even cfg/mac80211 don't know we have enabled it in fact.
-
-Remove it to fix this issue. In this way we not only get a better latency,
-but also, and the most important, keeps the consistency between userspace
-and kernel/driver. The biggest price for that would be the power consumption,
-which is not that important, compared with the consistency.
-
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
-
-Fixes: b2beffa7d9a6 ("ath11k: enable 802.11 power save mode in station mode")
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
----
- drivers/net/wireless/ath/ath11k/mac.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index a6a37d67a50a..42a6a51a6a9d 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -1231,14 +1231,7 @@ static int ath11k_mac_vif_setup_ps(struct ath11k_vif *arvif)
- 
- 	enable_ps = arvif->ps;
- 
--	if (!arvif->is_started) {
--		/* mac80211 can update vif powersave state while disconnected.
--		 * Firmware doesn't behave nicely and consumes more power than
--		 * necessary if PS is disabled on a non-started vdev. Hence
--		 * force-enable PS for non-running vdevs.
--		 */
--		psmode = WMI_STA_PS_MODE_ENABLED;
--	} else if (enable_ps) {
-+	if (enable_ps) {
- 		psmode = WMI_STA_PS_MODE_ENABLED;
- 		param = WMI_STA_PS_PARAM_INACTIVITY_TIME;
- 
-
-base-commit: 7a5ed5a3801e9b6cf7bafbb0a05c70cef620b22a
--- 
-2.25.1
+Best regards,
+Krzysztof
 
 
