@@ -1,69 +1,67 @@
-Return-Path: <linux-wireless+bounces-4505-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4506-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 357D1876EE8
-	for <lists+linux-wireless@lfdr.de>; Sat,  9 Mar 2024 04:14:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ED708770AA
+	for <lists+linux-wireless@lfdr.de>; Sat,  9 Mar 2024 12:31:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 328031C20C11
-	for <lists+linux-wireless@lfdr.de>; Sat,  9 Mar 2024 03:14:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB4A0281B0A
+	for <lists+linux-wireless@lfdr.de>; Sat,  9 Mar 2024 11:31:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74F772DF9F;
-	Sat,  9 Mar 2024 03:14:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C4AB364A8;
+	Sat,  9 Mar 2024 11:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="cm9ABFlu"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="MT101XZK"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D9C27269;
-	Sat,  9 Mar 2024 03:14:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1B65C8B
+	for <linux-wireless@vger.kernel.org>; Sat,  9 Mar 2024 11:31:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709954054; cv=none; b=blbRetJwUEXVwcQNGF1LZbRQVLTvpXI1CZeVMqV4gYUfWGDUaFw0+EKl84i3lgh9JUJiT9oo3wgU9rCLfrNGANPkyY0wdWZOOtFSo563d9zHa/BDFu9FhAuHKCet9A57UOjPG1Bdbw29XwecngBgieumOtiBprXjiqRz1qo73Ws=
+	t=1709983899; cv=none; b=BViC6w0vIvefDdLKc8gjw/oCoYl1chM9N2pgEove5ra7vJ5Ohn2FS77CpiLiOUUWZzRLLuNA/0TAcZRCkE4zHqMqc3hOY5n2zbjVC3KAJFccLstVByhU/7UYX4Eg17FCl9JkKgiJoX1x1U70LGodIHUL2im0qz5DzD0ELyX3S6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709954054; c=relaxed/simple;
-	bh=WJcq/6TzFWbS0B0v6wATw70iSKAipfCLTJwpZIyvltw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Usczd13wvGvbPLfzqUWpAkiCj9632s4nbxGBHeYwccNZ1RF3DbccZ886iMdWH2OG0pMRLhhMli9NtAsvIvIdLDvmsTrIU74jM1U1BaYoIlG5jE+RFFdOy8eTkty6GuCev5H31jvA8ZRnGAlMbe8iHWCTQdsabTDuBlMZc+/Alqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=cm9ABFlu; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id ECCC687D2D;
-	Sat,  9 Mar 2024 04:14:08 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1709954049;
-	bh=9ZLRhz108bLVoXPyvecqoKo8hPm+so89oLO+wcL/NP0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=cm9ABFluWmjvv1sNx3ppyv0pssiqs4dcp5F0zZhkueKV+XY3odSZbFEbx+oq0wLbI
-	 ZjzeZg/fCjF1GuTriPrCrDcoSvCIobssgxZWdkua+rZnoM5O3Fmj5Vwb8BJjBxnrsH
-	 Pdrs/zf1f55Rbtpn2IMLXJlwlrpLVx1FrNM9aPPZaLnoGVFMbLdx8IPlgNCbuUBnQH
-	 lC4hbsZE2vEhSW+lK9MqqatzhT3ElxMzkwTJRLufpg3iWvT/D4dUjwQ0ShAG58GvM6
-	 fQcLOKYZylOZRgC7DU1Hng+lgk5lxJvQVx5a3LJ5H1uPyNv8dFqz2P3Eq0aR0ZVikP
-	 u4dFCZhDBo3GA==
-From: Marek Vasut <marex@denx.de>
-To: linux-wireless@vger.kernel.org
-Cc: Marek Vasut <marex@denx.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Kalle Valo <kvalo@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	devicetree@vger.kernel.org,
-	netdev@vger.kernel.org,
-	van Spriel <arend@broadcom.com>
-Subject: [PATCH] dt-bindings: net: wireless: brcm,bcm4329-fmac: Add CYW43439 DT binding
-Date: Sat,  9 Mar 2024 04:13:17 +0100
-Message-ID: <20240309031355.269835-1-marex@denx.de>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1709983899; c=relaxed/simple;
+	bh=+4hzvJN8DYLSpCPeXE68462T5eW8VNCw3ueaJlUjxQs=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jaPcCYPovA9M4ELTekl7wzWwF2afqNUxzZkKwx3CJt7lRdiMpnAh0JEcdKryzmLO5/Tv5XFSMqDlPmr/6SimYxR9WLbyGtdJiqB832N9g1npSZ71pKTl4RGO9JUzlAE4sVgsn1TbqrQkxxcpTaE78OINPSpcqpUOuhUiyAfBmtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=MT101XZK; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 429BJ1nc013375;
+	Sat, 9 Mar 2024 11:31:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=qcppdkim1; bh=+wyx/Vh
+	Gct4tBH0Mou0Kr9MyBVWlStejrsiczgJZsiA=; b=MT101XZK6YLmPkfBiMU2d9t
+	Jm4pH5rdFiQ/bCDTPei6vBmBfHzVfRSCiqmUHj6gFtEZhk80nBpEbY1WilCw3rgW
+	c9NtL/ymzB2PGnlLJRSuhN39nv+nerBYy1wW38lMu2fDbMpjzbt625HV6jQbE8bL
+	4qWmzLj/ttTySF9sKXxiKxjPeof8gezXURaqFvlDuL8M8ddzDxOBtM3kt28xVkrR
+	XyVlZyjNRw9Mgeid4yg5v+RFMiEOJSxMq+LnKFYRdWBB2Lej0Q5T4r1DwOJZQ/xo
+	ROiN6oo64TXbo346xJ7kVkWorpUL/DP0TBr4dsVBXb33uFgx3G1Nf7qe0V5RN1Q=
+	=
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wrg5b0dwb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 09 Mar 2024 11:31:29 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 429BVSCs003955
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 9 Mar 2024 11:31:28 GMT
+Received: from bqiang-Celadon-RN.qca.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Sat, 9 Mar 2024 03:31:27 -0800
+From: Baochen Qiang <quic_bqiang@quicinc.com>
+To: <ath11k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, <quic_bqiang@quicinc.com>
+Subject: [PATCH] wifi: ath11k: don't force enable power save on non-running vdevs
+Date: Sat, 9 Mar 2024 19:31:15 +0800
+Message-ID: <20240309113115.11498-1-quic_bqiang@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -71,44 +69,104 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: QMr27MUFxRgrmnh_kk8i3YnMjow-HylW
+X-Proofpoint-ORIG-GUID: QMr27MUFxRgrmnh_kk8i3YnMjow-HylW
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-08_08,2024-03-06_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 clxscore=1015
+ mlxscore=0 phishscore=0 lowpriorityscore=0 impostorscore=0 suspectscore=0
+ malwarescore=0 spamscore=0 mlxlogscore=999 bulkscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2402120000
+ definitions=main-2403090092
 
-CYW43439 is a Wi-Fi + Bluetooth combo device from Infineon. The
-WiFi part is capable of 802.11 b/g/n. This chip is present e.g.
-on muRata 1YN module. Extend the binding with its DT compatible.
+Currently we force enable power save on non-running vdevs, this results
+in unexpected ping latency in below scenarios:
+	1. disable power save from userspace.
+	2. trigger suspend/resume.
 
-Signed-off-by: Marek Vasut <marex@denx.de>
+With step 1 power save is disabled successfully and we get a good latency:
+
+PING 192.168.1.1 (192.168.1.1) 56(84) bytes of data.
+64 bytes from 192.168.1.1: icmp_seq=1 ttl=64 time=5.13 ms
+64 bytes from 192.168.1.1: icmp_seq=2 ttl=64 time=5.45 ms
+64 bytes from 192.168.1.1: icmp_seq=3 ttl=64 time=5.99 ms
+64 bytes from 192.168.1.1: icmp_seq=4 ttl=64 time=6.34 ms
+64 bytes from 192.168.1.1: icmp_seq=5 ttl=64 time=4.47 ms
+64 bytes from 192.168.1.1: icmp_seq=6 ttl=64 time=6.45 ms
+
+While after step 2, the latency becomes much larger:
+
+PING 192.168.1.1 (192.168.1.1) 56(84) bytes of data.
+64 bytes from 192.168.1.1: icmp_seq=1 ttl=64 time=17.7 ms
+64 bytes from 192.168.1.1: icmp_seq=2 ttl=64 time=15.0 ms
+64 bytes from 192.168.1.1: icmp_seq=3 ttl=64 time=14.3 ms
+64 bytes from 192.168.1.1: icmp_seq=4 ttl=64 time=16.5 ms
+64 bytes from 192.168.1.1: icmp_seq=5 ttl=64 time=20.1 ms
+
+The reason is, with step 2, power save is force enabled due to vdev not
+running, although mac80211 was trying to disable it to honor userspace
+configuration:
+
+ath11k_pci 0000:03:00.0: wmi cmd sta powersave mode psmode 1 vdev id 0
+Call Trace:
+ ath11k_wmi_pdev_set_ps_mode
+ ath11k_mac_op_bss_info_changed
+ ieee80211_bss_info_change_notify
+ ieee80211_reconfig
+ ieee80211_resume
+ wiphy_resume
+
+This logic is taken from ath10k where it was added due to below comment:
+
+	Firmware doesn't behave nicely and consumes more power than
+	necessary if PS is disabled on a non-started vdev.
+
+However we don't know whether such an issue also occurs to ath11k firmware
+or not. But even if it does, it's not appropriate because it goes against
+userspace, even cfg/mac80211 don't know we have enabled it in fact.
+
+Remove it to fix this issue. In this way we not only get a better latency,
+but also, and the most important, keeps the consistency between userspace
+and kernel/driver. The biggest price for that would be the power consumption,
+which is not that important, compared with the consistency.
+
+Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
+
+Fixes: b2beffa7d9a6 ("ath11k: enable 802.11 power save mode in station mode")
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
 ---
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Conor Dooley <conor+dt@kernel.org>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Kalle Valo <kvalo@kernel.org>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Rob Herring <robh@kernel.org>
-Cc: devicetree@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org
-Cc: netdev@vger.kernel.org
-Cc: van Spriel <arend@broadcom.com>
----
- .../devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml      | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/ath/ath11k/mac.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-index 4aa521f1be8cd..e564f20d8f415 100644
---- a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-+++ b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-@@ -44,6 +44,7 @@ properties:
-               - brcm,bcm4366-fmac
-               - cypress,cyw4373-fmac
-               - cypress,cyw43012-fmac
-+              - infineon,cyw43439-fmac
-           - const: brcm,bcm4329-fmac
-       - enum:
-           - brcm,bcm4329-fmac
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index a6a37d67a50a..42a6a51a6a9d 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -1231,14 +1231,7 @@ static int ath11k_mac_vif_setup_ps(struct ath11k_vif *arvif)
+ 
+ 	enable_ps = arvif->ps;
+ 
+-	if (!arvif->is_started) {
+-		/* mac80211 can update vif powersave state while disconnected.
+-		 * Firmware doesn't behave nicely and consumes more power than
+-		 * necessary if PS is disabled on a non-started vdev. Hence
+-		 * force-enable PS for non-running vdevs.
+-		 */
+-		psmode = WMI_STA_PS_MODE_ENABLED;
+-	} else if (enable_ps) {
++	if (enable_ps) {
+ 		psmode = WMI_STA_PS_MODE_ENABLED;
+ 		param = WMI_STA_PS_PARAM_INACTIVITY_TIME;
+ 
+
+base-commit: 7a5ed5a3801e9b6cf7bafbb0a05c70cef620b22a
 -- 
-2.43.0
+2.25.1
 
 
