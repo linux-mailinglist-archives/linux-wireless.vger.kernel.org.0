@@ -1,215 +1,126 @@
-Return-Path: <linux-wireless+bounces-4515-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4518-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A0E38770DB
-	for <lists+linux-wireless@lfdr.de>; Sat,  9 Mar 2024 12:58:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DD8B8770FD
+	for <lists+linux-wireless@lfdr.de>; Sat,  9 Mar 2024 13:12:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3DE451C20A8A
-	for <lists+linux-wireless@lfdr.de>; Sat,  9 Mar 2024 11:58:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC6841F212C3
+	for <lists+linux-wireless@lfdr.de>; Sat,  9 Mar 2024 12:12:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA5C33BBF1;
-	Sat,  9 Mar 2024 11:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7A062BD12;
+	Sat,  9 Mar 2024 12:12:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=fiona.klute@gmx.de header.b="LX14kvBY"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="RMieqmfo"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52EB3A8F9;
-	Sat,  9 Mar 2024 11:57:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0301B1D69E
+	for <linux-wireless@vger.kernel.org>; Sat,  9 Mar 2024 12:12:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709985471; cv=none; b=MPAvjm7srYKaVcVYqDKoR92rp2yfxoKwijlRrLjbwOcQDRhP7ao0EP1YSQ/ltkTXSksrprmxCtEqZ+sEhio11LX7bFNeaTtksSPCpt3MKsmdZXF3STdf8/Gc+lw4vGKWH1JFUtdi9XSPxsVTiJf+oWMxhBE7QJr2IV9lijubfcE=
+	t=1709986329; cv=none; b=g1CBoVemN60XxUrIOpzFTdnCzaU+Rz7tufI3wWIE4EYQbsTY6W94t8xqrFulq5YX4hi5UKsP7MBcf2rc9FpzGL7upQNWCnPQHFFGyRn2sjdXJZoZB6G/LiWz/jI0NHjn5nVm4WxDKUFPmIrR9YHTaHWE2w3bqmg2vxN1xnXjVbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709985471; c=relaxed/simple;
-	bh=lir2t2pdVtLxfOYmeHCDbRJi+Djx6fijtKcExQHW/WU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PbOwpiXIrJFfdcu3LN3BJVzhZ7JH3qA7QsVHHzNJep7T/1vaOJzn2nXsD062w0MnvScvMTSjM/CsTbK9aT4HpbCJD8pWHhioYi/DihM/GKujPX5S+ZaW7kvwDMV17geBOU55kX2w3w0J+gldXAI3pR5Jvgq1hyIVkJwkcyxjEi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=fiona.klute@gmx.de header.b=LX14kvBY; arc=none smtp.client-ip=212.227.15.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-	t=1709985457; x=1710590257; i=fiona.klute@gmx.de;
-	bh=lir2t2pdVtLxfOYmeHCDbRJi+Djx6fijtKcExQHW/WU=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:
-	 References;
-	b=LX14kvBYsTDPLLDkUNJa8VYsBZ+0NHDFJY/Y478Y5gtjtRhx9LB/rsbNhvHmF5e8
-	 i2cKx+AFs9njqOF/30zh7jDBrLVgbrjHLNyjJ5tiJisOONuF18Ph2+c545DbVjiQB
-	 Uxwoj6cq5lj2+iGu6Fi1BwZrFGez6KaP79VWEEfIutrdjTmReYPJsFHwCZxWjKxx9
-	 MiAlY22qV0DOmwN+4Jp+lgQkpfd6sJO0DIf9lOwQvX0wOXR6njU3X+snylQG/tOEL
-	 YTVGOPAhWC0/qYpLsX2nqpAR42WoJxHvx3OmzDtk/cjvx5nSh3IeCAH7/33nwLCoF
-	 xNJb6CCsdSRCulzM2Q==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from haruka.lan ([85.22.112.71]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MNbp3-1rUHxS27x5-00P5X4; Sat, 09
- Mar 2024 12:57:37 +0100
-From: Fiona Klute <fiona.klute@gmx.de>
-To: linux-wireless@vger.kernel.org,
-	Ping-Ke Shih <pkshih@realtek.com>
-Cc: Fiona Klute <fiona.klute@gmx.de>,
-	Kalle Valo <kvalo@kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	linux-mmc@vger.kernel.org,
-	Pavel Machek <pavel@ucw.cz>,
-	=?UTF-8?q?Ond=C5=99ej=20Jirman?= <megi@xff.cz>
-Subject: [PATCH v3 9/9] wifi: rtw88: SDIO device driver for RTL8723CS
-Date: Sat,  9 Mar 2024 12:56:45 +0100
-Message-ID: <20240309115650.367204-10-fiona.klute@gmx.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240309115650.367204-1-fiona.klute@gmx.de>
-References: <20240309115650.367204-1-fiona.klute@gmx.de>
+	s=arc-20240116; t=1709986329; c=relaxed/simple;
+	bh=lGzWTqHJWrbe/AGrJv9PLurC/cJDG5AsL0NXRejmcZk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=W5MySAMt2W5lZ7VRqE8xzFBNm0ptP4y9pfwrpPpOGyPprQsCzcZJCCcGYGEyrSwWZHKgmxgqujvBwYzLwDct0dL1H/kb7sf9M9d1qDR6+Tu9LYQuBZcOGGsDYhV4NombyUvI8SsC+u4Cihh4rFOkVti9ZeyxB0DRaL4n7PbRZE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=RMieqmfo; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 429C9QvG023037;
+	Sat, 9 Mar 2024 12:11:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=qcppdkim1; bh=8spNzfV
+	DYXqnoGqZxoqtSV6/KIyrNwZMnMKRiN9BDlE=; b=RMieqmfoHBnG+9Ku4NsIX8s
+	TSwi5zvJ362NfTQ/xAKoFt5F+z65/AVyMODKO52Fa9kRL4ox8Y/aF/x8eXuWD/db
+	OvNNb9HQhUvo7cYxtZnPct3UzwMvi8e9QiukgC3OKECtDZGYy2OHhe8ef4tAUA6T
+	fjPLh23qvM7/jYpw1oqhnpfmpoL6JknuQ5pWRrV3LgDP+dGs7QJuzFbrisvVlgHP
+	oMt9Incv1C0bVBD8ArbieQQQu4CFSLAfuUmbb6UwxrERoRCO5GQcxZIm2bP3LUdS
+	U2tKToSYU2fKR942imJwuiMbDJ0ArGwT50BXSd6IFykeCEip+rPNaGu7IcC5G0w=
+	=
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wrfc40gdc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 09 Mar 2024 12:11:47 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 429CBku9025436
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 9 Mar 2024 12:11:46 GMT
+Received: from lingbok-Birman-PHX.qca.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Sat, 9 Mar 2024 04:11:45 -0800
+From: Lingbo Kong <quic_lingbok@quicinc.com>
+To: <ath11k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, <quic_lingbok@quicinc.com>
+Subject: [PATCH] wifi: ath11k: modify the calculation of the average signal strength in station mode
+Date: Sat, 9 Mar 2024 20:11:29 +0800
+Message-ID: <20240309121129.5379-1-quic_lingbok@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:WNZSjhbM9GWxzJcfU9uH56tkLyDLRbN3WLO8RW78lg8b5lXlm9H
- k/rFiUV+cyBBQEsREIAjvG5+1pyjwl6L2+98F5o0NO/ltaKxwQZy1hR8E4aLO/YI52Iou0t
- oItak8CIz/cauRBsxJIt+K+XOjElrBqU979UoRoXLEPpsjfvLd+zkbTy2Rv1cULtCmmarX2
- x7+ubcxteW553f1ie7MOQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:XZp3ocSsxUo=;2jZpIZ5nQHDm8LeGRWG/jpYobcP
- 8qbjzdvK9WU5GAW4Ix1Ep+vMh5441L9uhLxUe24KPfucfGQMtCQB9AWJ7HU08R+jBnzheJ1Mj
- AfsMXaR2YxcM7Em/BnaDMaVsXy/t6bwEWW2P+PP0sLWyL9mlzCzBCCuNW0P0J4YA/JQYIKqnO
- evCjg3bKRfzkjNJo4+e1H/8TqA6dpqBAFPms3hsaxxNZbVHbIGiBZTkbEm47iM/72NnqBvQF3
- su7vibkzZ2aZL1OmTr60/vyCySTzTRUNIQPOCOYsS940xkVXK683VtjDqmzUdRrDi0UZDEWkW
- AYmtKXGnDt0IidDrFYeBxWPtIWVsVtJ4TyhBmshc8yMxkDGPWt5/Z6EKHbdA6j+/EVB6S6faa
- 100YCMC1mF/D6OZbIbOOfyqp8iz5WYMZVKhoKCeDIyDxGA3yqVUHzQ6YLtDKxnK9HcEey5vfq
- V0HDtUbRJhOMqQCx8TYKVgrFcxerhTtAm4FcdZnR2kzbiyggMDLj0O0mC72P9k3eaYMhmauwQ
- Gc6K0FbiyNb2mZuUWbxaGICHNxSIRYYGJr2o5FKGTzias9+EMQb2jsfWPRvGfoQnCwr78zn49
- sOTEcCKMoPQSYkB+oWHci3buFgX5kjwoXCEG7wqbOsdEfjPtmi37/MqY09n21GbVmblDaVkLC
- Ei6Oc33H/2oQ4lfPww6+qgYUermqp+ieBDJoO2IcSdLNhp39XLp66RIdBbFzwzvGbHCrNG7j4
- DdN5nGasO8S7bJDhVK+oF0GGQ/xsdEXboiRtOwq7A3I1d/5bIXM35JR4pOoQxOZZ9NimtcNT7
- TquyvkMtA6OvJVOugJ19kfZQFV5vZesENuYnAj4T0a2wk=
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: RjZfXhawuQL65f5jBpmYmYePYhydz9he
+X-Proofpoint-GUID: RjZfXhawuQL65f5jBpmYmYePYhydz9he
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-08_08,2024-03-06_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ mlxlogscore=999 clxscore=1011 spamscore=0 mlxscore=0 malwarescore=0
+ priorityscore=1501 adultscore=0 suspectscore=0 phishscore=0 bulkscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2402120000 definitions=main-2403090098
 
-This driver uses the new rtw8703b chip driver code.
+Currently, the calculation of the average signal strength in station mode
+is incorrect.
 
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Acked-by: Ulf Hansson <ulf.hansson@linaro.org> # For SDIO
-Tested-by: Pavel Machek <pavel@ucw.cz>
-Signed-off-by: Fiona Klute <fiona.klute@gmx.de>
-=2D--
- drivers/net/wireless/realtek/rtw88/Kconfig    | 18 ++++++++++
- drivers/net/wireless/realtek/rtw88/Makefile   |  6 ++++
- .../net/wireless/realtek/rtw88/rtw8723cs.c    | 34 +++++++++++++++++++
- include/linux/mmc/sdio_ids.h                  |  1 +
- 4 files changed, 59 insertions(+)
- create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8723cs.c
+This is because before calculating the average signal strength, ath11k need
+to determine whether the hardware and firmware support db2dbm, if the
+hardware and firmware support db2dbm, do not need to add noise floor,
+otherwise, need to add noise floor.
 
-diff --git a/drivers/net/wireless/realtek/rtw88/Kconfig b/drivers/net/wire=
-less/realtek/rtw88/Kconfig
-index 07b5b2f6eef..22838ede03c 100644
-=2D-- a/drivers/net/wireless/realtek/rtw88/Kconfig
-+++ b/drivers/net/wireless/realtek/rtw88/Kconfig
-@@ -31,6 +31,10 @@ config RTW88_8822C
- config RTW88_8723X
- 	tristate
+Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
 
-+config RTW88_8703B
-+	tristate
-+	select RTW88_8723X
-+
- config RTW88_8723D
- 	tristate
- 	select RTW88_8723X
-@@ -126,6 +130,20 @@ config RTW88_8723DS
+Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
+---
+ drivers/net/wireless/ath/ath11k/mac.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
- 	  802.11n SDIO wireless network adapter
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index a6a37d67a50a..1f9cf7a42ba8 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -8976,8 +8976,11 @@ static void ath11k_mac_op_sta_statistics(struct ieee80211_hw *hw,
+ 		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_SIGNAL);
+ 	}
+ 
+-	sinfo->signal_avg = ewma_avg_rssi_read(&arsta->avg_rssi) +
+-		ATH11K_DEFAULT_NOISE_FLOOR;
++	sinfo->signal_avg = ewma_avg_rssi_read(&arsta->avg_rssi);
++
++	if (!db2dbm)
++		sinfo->signal_avg += ATH11K_DEFAULT_NOISE_FLOOR;
++
+ 	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_SIGNAL_AVG);
+ }
+ 
 
-+config RTW88_8723CS
-+	tristate "Realtek 8723CS SDIO wireless network adapter"
-+	depends on MMC
-+	select RTW88_CORE
-+	select RTW88_SDIO
-+	select RTW88_8703B
-+	help
-+	  Select this option to enable support for 8723CS chipset (EXPERIMENTAL)
-+
-+	  This module adds support for the 8723CS 802.11n SDIO
-+	  wireless network adapter.
-+
-+	  If you choose to build a module, it'll be called rtw88_8723cs.
-+
- config RTW88_8723DU
- 	tristate "Realtek 8723DU USB wireless network adapter"
- 	depends on USB
-diff --git a/drivers/net/wireless/realtek/rtw88/Makefile b/drivers/net/wir=
-eless/realtek/rtw88/Makefile
-index 22516c98460..8f47359b438 100644
-=2D-- a/drivers/net/wireless/realtek/rtw88/Makefile
-+++ b/drivers/net/wireless/realtek/rtw88/Makefile
-@@ -47,6 +47,12 @@ rtw88_8822cu-objs		:=3D rtw8822cu.o
- obj-$(CONFIG_RTW88_8723X)	+=3D rtw88_8723x.o
- rtw88_8723x-objs		:=3D rtw8723x.o
-
-+obj-$(CONFIG_RTW88_8703B)	+=3D rtw88_8703b.o
-+rtw88_8703b-objs		:=3D rtw8703b.o rtw8703b_tables.o
-+
-+obj-$(CONFIG_RTW88_8723CS)	+=3D rtw88_8723cs.o
-+rtw88_8723cs-objs		:=3D rtw8723cs.o
-+
- obj-$(CONFIG_RTW88_8723D)	+=3D rtw88_8723d.o
- rtw88_8723d-objs		:=3D rtw8723d.o rtw8723d_table.o
-
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723cs.c b/drivers/net/=
-wireless/realtek/rtw88/rtw8723cs.c
-new file mode 100644
-index 00000000000..8d38d36be8c
-=2D-- /dev/null
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8723cs.c
-@@ -0,0 +1,34 @@
-+// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
-+/* Copyright Fiona Klute <fiona.klute@gmx.de> */
-+
-+#include <linux/mmc/sdio_func.h>
-+#include <linux/mmc/sdio_ids.h>
-+#include <linux/module.h>
-+#include "main.h"
-+#include "rtw8703b.h"
-+#include "sdio.h"
-+
-+static const struct sdio_device_id rtw_8723cs_id_table[] =3D {
-+	{
-+		SDIO_DEVICE(SDIO_VENDOR_ID_REALTEK,
-+			    SDIO_DEVICE_ID_REALTEK_RTW8723CS),
-+		.driver_data =3D (kernel_ulong_t)&rtw8703b_hw_spec,
-+	},
-+	{}
-+};
-+MODULE_DEVICE_TABLE(sdio, rtw_8723cs_id_table);
-+
-+static struct sdio_driver rtw_8723cs_driver =3D {
-+	.name =3D "rtw8723cs",
-+	.id_table =3D rtw_8723cs_id_table,
-+	.probe =3D rtw_sdio_probe,
-+	.remove =3D rtw_sdio_remove,
-+	.drv =3D {
-+		.pm =3D &rtw_sdio_pm_ops,
-+		.shutdown =3D rtw_sdio_shutdown
-+	}};
-+module_sdio_driver(rtw_8723cs_driver);
-+
-+MODULE_AUTHOR("Fiona Klute <fiona.klute@gmx.de>");
-+MODULE_DESCRIPTION("Realtek 802.11n wireless 8723cs driver");
-+MODULE_LICENSE("Dual BSD/GPL");
-diff --git a/include/linux/mmc/sdio_ids.h b/include/linux/mmc/sdio_ids.h
-index 7fada7a714f..7cddfdac2f5 100644
-=2D-- a/include/linux/mmc/sdio_ids.h
-+++ b/include/linux/mmc/sdio_ids.h
-@@ -124,6 +124,7 @@
- #define SDIO_DEVICE_ID_REALTEK_RTW8723DS_2ANT	0xd723
- #define SDIO_DEVICE_ID_REALTEK_RTW8723DS_1ANT	0xd724
- #define SDIO_DEVICE_ID_REALTEK_RTW8821DS	0xd821
-+#define SDIO_DEVICE_ID_REALTEK_RTW8723CS	0xb703
-
- #define SDIO_VENDOR_ID_SIANO			0x039a
- #define SDIO_DEVICE_ID_SIANO_NOVA_B0		0x0201
-=2D-
-2.43.0
+base-commit: 7a5ed5a3801e9b6cf7bafbb0a05c70cef620b22a
+-- 
+2.34.1
 
 
