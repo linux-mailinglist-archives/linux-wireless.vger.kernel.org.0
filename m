@@ -1,140 +1,163 @@
-Return-Path: <linux-wireless+bounces-4519-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4520-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBB8A8771C3
-	for <lists+linux-wireless@lfdr.de>; Sat,  9 Mar 2024 16:08:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1FF6877296
+	for <lists+linux-wireless@lfdr.de>; Sat,  9 Mar 2024 19:02:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D9EEB20F5B
-	for <lists+linux-wireless@lfdr.de>; Sat,  9 Mar 2024 15:08:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D02581C20C63
+	for <lists+linux-wireless@lfdr.de>; Sat,  9 Mar 2024 18:02:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 964DD43AA3;
-	Sat,  9 Mar 2024 15:08:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07C8D111E;
+	Sat,  9 Mar 2024 18:02:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TqR+EJKN"
+	dkim=pass (1024-bit key) header.d=dd-wrt.com header.i=@dd-wrt.com header.b="Q/Eu5Pgn"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.as201155.net (mail.as201155.net [185.84.6.188])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEF1A28DDC
-	for <linux-wireless@vger.kernel.org>; Sat,  9 Mar 2024 15:07:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA632375B
+	for <linux-wireless@vger.kernel.org>; Sat,  9 Mar 2024 18:02:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.84.6.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709996880; cv=none; b=CAD6X1sX3nJkyu5MQBfivl14/WCvdxv2trHX/jdvQGeCzonFFf87lU5x703vtgl6X91RW7zMeGaod0EHuhTjgMcWiP3+hom7bV9HJASc+lkJ4FhSMqYmkM8le/dXtgBEVV51riUt6HhWTNYzAT556SkhLyObU6k6ut75D+7Sy7g=
+	t=1710007324; cv=none; b=MwSYZAfON40cgfCRiecgDCJbhqM/7/Chn2waMgaPrlCTyapHd6SyVv53y8EtNoYyt/JgOp8cDXkBVYzYZKxJiqoWtIj+dNQyp6r0slUq0h1DQH1ImzhbF5STbaC1BqnXZ6GyEvRcB6g8erLYkex/doUi2OFEn9QeJetjYHxziBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709996880; c=relaxed/simple;
-	bh=4m3hPqMvoFdvGn08wcU+Z5iHs4T7zsjJ+434nMiwhVI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mqk3eZJ8LQJDDLPMxbQMn6RZDkq41vg0MZzQNFyChQjbhLZRg75JPTn/B4Itt1bVbcB3HFF5BFtkWLISWJNcZ8/vCb5CulN3pluKJUsb5cYmLH9d1xywvxhJI7wGXMA+/6sl5KPcM4Jl6KeymbdHc4N79ePqFcPXMBMkR8kCWLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TqR+EJKN; arc=none smtp.client-ip=209.85.219.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-db4364ecd6aso1989470276.2
-        for <linux-wireless@vger.kernel.org>; Sat, 09 Mar 2024 07:07:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1709996878; x=1710601678; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=bsRsreksVUwY3JxwOHcn4AH1bjEDIW9wxkCIfNiLooU=;
-        b=TqR+EJKNDp+gRQUVitt30nbxcZzS2rqNKdN/EW1WFiZASHPYmyH7HGRZ5HZnDe7iLp
-         WoVqekJKiuY4m/RDLPhqSOqrNCQf2Od2306OJH233a6zyoM+5/8AtdKiLMOrz4bsrbLQ
-         cmcfdVJ4cZg01fQQYee6RwoYPMarMi8JqHMbaLRn1jdEbBOVlWY42HQw4kaqE/3gljry
-         GUMr5Oq6mAIwYiErzG3kVG7bQXHrEKTTCmTyEzjhcQiS18uakPvaxrbKUUjIMhATDgin
-         DINaoiK01V2zKZBslGlGp4SZ+71yIkvbdedGEA21un29Xg5u68fO4Y6YdTcTmolw2tD/
-         h6eQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709996878; x=1710601678;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bsRsreksVUwY3JxwOHcn4AH1bjEDIW9wxkCIfNiLooU=;
-        b=YRiGqHqc0RMkTsxs4Plrh/w79JYh0O5/ulWTEAJFrKSfzWHT9youTGTn2wzDadgg3t
-         dI7dS8OHVf3g6W2Yvau4xYi/FJ/RYz5Dct7u8sMw84fCRL8o1YA7P/6LHIZUc1EFeOeK
-         bcJ4A9UGovoA/doPCWgZHXTLXDPD8SVNzaCfwcy12gZSBBgdFsZSts+lvUDYQ1ZVpCFs
-         vj/gbFipsSIUfTrY/rPloNK4BZ8lM9eQbpNVTtBUiVAcRAfr+I5E5Xn0D871GMhczytU
-         xJIlYHpm6+8D27A1IkXsNMktij3fveAR3bN4hv8MHEN/tSxXq1Aq7jwwKPMGMVd/ODpU
-         EHWA==
-X-Forwarded-Encrypted: i=1; AJvYcCXwFUaTNg9mQWFgdEUOz0Pihb16E6CGQQ0IEI+Ve0PIEc5nNNh8gNzbPlxWGwqslav2I/jpY1xu7fbAWRkHFe3mvZkWXzKATB+lBUzHf0M=
-X-Gm-Message-State: AOJu0YxabvTALUbWmvpTznY6q/slBsJ/BXQ7KC+6UyYhUtm6Kco963jM
-	tgtOGcH/hF1sBhskPCWij7WgM6LbA1tZxNzXSoEHpNdDS6ezwxn9w34TOmZzByPL0OngsQARM3Y
-	xSDlDLTVQvwj87LvkTTqdtPuHps13WDOFbOIe2w==
-X-Google-Smtp-Source: AGHT+IF0IfT5MeJdtuGLAxcGUPTzOLwhQqEBQY+xRVBBT6xtNAXgDJlcofP3guSftIG+E5LI1hh+Y6ALeP+yMak/1A0=
-X-Received: by 2002:a25:6c09:0:b0:dd0:453b:485e with SMTP id
- h9-20020a256c09000000b00dd0453b485emr859326ybc.58.1709996877891; Sat, 09 Mar
- 2024 07:07:57 -0800 (PST)
+	s=arc-20240116; t=1710007324; c=relaxed/simple;
+	bh=t3NvgmyLuoXHg/mcs6TS1OxSam02oKhUanvsRS7ge9g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ic55hlELbre0lbTl8tlRqAfgb8yjgKkYUbnZDAYOppqNO8cQPvLpybWo+QH/kpDrHJcFZ2miqVG/HtohroaKnbzPlvXdkPM/IaGYtk0VU6CTdPDUus4eIeIr65XUj4EUnWk4wPomNbEcpRMYJIQ67Kb/Fw28Vva6X9EfWOV9n2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dd-wrt.com; spf=pass smtp.mailfrom=dd-wrt.com; dkim=pass (1024-bit key) header.d=dd-wrt.com header.i=@dd-wrt.com header.b=Q/Eu5Pgn; arc=none smtp.client-ip=185.84.6.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dd-wrt.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dd-wrt.com
+Received: from smtps.newmedia-net.de ([2a05:a1c0:0:de::167]:57564 helo=webmail.newmedia-net.de)
+	by mail.as201155.net with esmtps  (TLS1) tls TLS_RSA_WITH_AES_256_CBC_SHA
+	(Exim 4.96)
+	(envelope-from <s.gottschall@dd-wrt.com>)
+	id 1rj0yY-0002s4-1t;
+	Sat, 09 Mar 2024 18:59:15 +0100
+X-SASI-Hits: BODYTEXTP_SIZE_3000_LESS 0.000000, BODY_SIZE_2000_2999 0.000000,
+	BODY_SIZE_5000_LESS 0.000000, BODY_SIZE_7000_LESS 0.000000,
+	CTE_8BIT 0.000000, DKIM_ALIGNS 0.000000, DKIM_SIGNATURE 0.000000,
+	HTML_00_01 0.050000, HTML_00_10 0.050000, IN_REP_TO 0.000000,
+	LEGITIMATE_SIGNS 0.000000, MSGID_SAMEAS_FROM_HEX_844412 0.100000,
+	MSG_THREAD 0.000000, MULTIPLE_RCPTS 0.100000, MULTIPLE_REAL_RCPTS 0.000000,
+	NO_FUR_HEADER 0.000000, OUTBOUND 0.000000, OUTBOUND_SOPHOS 0.000000,
+	REFERENCES 0.000000, SENDER_NO_AUTH 0.000000, SUSP_DH_NEG 0.000000,
+	URI_WITH_PATH_ONLY 0.000000, __ANY_URI 0.000000, __BODY_NO_MAILTO 0.000000,
+	__BOUNCE_CHALLENGE_SUBJ 0.000000, __BOUNCE_NDR_SUBJ_EXEMPT 0.000000,
+	__BULK_NEGATE 0.000000, __CC_NAME 0.000000, __CC_NAME_DIFF_FROM_ACC 0.000000,
+	__CC_REAL_NAMES 0.000000, __CP_URI_IN_BODY 0.000000, __CT 0.000000,
+	__CTE 0.000000, __CT_TEXT_PLAIN 0.000000, __DKIM_ALIGNS_1 0.000000,
+	__DKIM_ALIGNS_2 0.000000, __DQ_NEG_DOMAIN 0.000000, __DQ_NEG_HEUR 0.000000,
+	__DQ_NEG_IP 0.000000, __FORWARDED_MSG 0.000000, __FRAUD_PARTNERSHIP 0.000000,
+	__FROM_DOMAIN_NOT_IN_BODY 0.000000, __FROM_NAME_NOT_IN_BODY 0.000000,
+	__FUR_RDNS_SOPHOS 0.000000, __HAS_CC_HDR 0.000000, __HAS_FROM 0.000000,
+	__HAS_MSGID 0.000000, __HAS_REFERENCES 0.000000,
+	__HEADER_ORDER_FROM 0.000000, __HIGHBIT_ASCII_MIX 0.000000,
+	__HTTPS_URI 0.000000, __IN_REP_TO 0.000000, __MAIL_CHAIN 0.000000,
+	__MIME_BOUND_CHARSET 0.000000, __MIME_TEXT_ONLY 0.000000,
+	__MIME_TEXT_P 0.000000, __MIME_TEXT_P1 0.000000, __MIME_VERSION 0.000000,
+	__MOZILLA_USER_AGENT 0.000000, __MSGID_HEX_844412 0.000000,
+	__MULTIPLE_RCPTS_CC_X2 0.000000, __MULTIPLE_RCPTS_TO_X2 0.000000,
+	__MULTIPLE_URI_TEXT 0.000000, __NO_HTML_TAG_RAW 0.000000,
+	__OUTBOUND_SOPHOS_FUR 0.000000, __OUTBOUND_SOPHOS_FUR_IP 0.000000,
+	__OUTBOUND_SOPHOS_FUR_RDNS 0.000000, __RCVD_PASS 0.000000,
+	__REFERENCES 0.000000, __SANE_MSGID 0.000000, __SCAN_D_NEG 0.000000,
+	__SCAN_D_NEG2 0.000000, __SCAN_D_NEG_HEUR 0.000000,
+	__SCAN_D_NEG_HEUR2 0.000000, __SUBJ_ALPHA_END 0.000000,
+	__SUBJ_ALPHA_NEGATE 0.000000, __SUBJ_REPLY 0.000000,
+	__TO_MALFORMED_2 0.000000, __TO_NAME 0.000000,
+	__TO_NAME_DIFF_FROM_ACC 0.000000, __TO_REAL_NAMES 0.000000,
+	__URI_ENDS_IN_SLASH 0.000000, __URI_HAS_HYPHEN_USC 0.000000,
+	__URI_IN_BODY 0.000000, __URI_MAILTO 0.000000, __URI_NOT_IMG 0.000000,
+	__URI_NO_WWW 0.000000, __URI_NS 0.000000, __URI_WITH_PATH 0.000000,
+	__USER_AGENT 0.000000, __X_MAILSCANNER 0.000000
+X-SASI-Probability: 8%
+X-SASI-RCODE: 200
+X-SASI-Version: Antispam-Engine: 5.1.4, AntispamData: 2024.3.9.173017
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=dd-wrt.com; s=mikd;
+	h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID; bh=RfEPUE/s2ovA9Fjpc51gZmR3vhNMiXC763Bj0mwC0dY=;
+	b=Q/Eu5PgnXLQwMSES/d9nQ2JI7Flke2Sqa7KXKzVVIhJRf/fQMghpO9E1iIyejOBRY40V7H2b+bthUWYbumHEIkmos8UgQNNiw6rC9ENP6BYUmLgMSrwCZlJ15nCUTsrdcWViSQ+xmdQ2SxWQnvwmwTLhEUSuCzD65iB9pHyDd0Y=;
+Message-ID: <3b57d932-0848-40f4-ab2d-a8d4afe11df1@dd-wrt.com>
+Date: Sat, 9 Mar 2024 18:58:47 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240306-wcn3990-firmware-path-v2-0-f89e98e71a57@linaro.org>
- <87plw7hgt4.fsf@kernel.org> <CAA8EJpr6fRfY5pNz6cXVTaNashqffy5_qLv9c35nkgjaDuSgyQ@mail.gmail.com>
- <87cys7hard.fsf@kernel.org> <CAA8EJpowyEEbXQ4YK-GQ63wZSkJDy04qJsC2uuYCXt+aJ1HSOQ@mail.gmail.com>
- <87v85wg39y.fsf@kernel.org>
-In-Reply-To: <87v85wg39y.fsf@kernel.org>
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Sat, 9 Mar 2024 17:07:46 +0200
-Message-ID: <CAA8EJpq_XLUEMC67ck2tZRjqS0PazCkQWWMGmwydeWxTETHwcg@mail.gmail.com>
-Subject: Re: [PATCH RFC v2 0/4] wifi: ath10k: support board-specific firmware overrides
-To: Kalle Valo <kvalo@kernel.org>
-Cc: Jeff Johnson <quic_jjohnson@quicinc.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
-	ath10k@lists.infradead.org, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, 
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: New staging repos for ath1*k firmware
+To: Kalle Valo <kvalo@kernel.org>, Robert Marko <robert.marko@sartura.hr>
+Cc: Jeff Johnson <quic_jjohnson@quicinc.com>,
+ ath10k <ath10k@lists.infradead.org>, ath11k <ath11k@lists.infradead.org>,
+ ath12k <ath12k@lists.infradead.org>,
+ linux-wireless <linux-wireless@vger.kernel.org>
+References: <bac97f31-4a70-4c4c-8179-4ede0b32f869@quicinc.com>
+ <CA+HBbNFQ+25u_PK2j3vYtiCZwv+shVAVeAHKqQCwhyCopORt4Q@mail.gmail.com>
+ <874jdigf76.fsf@kernel.org>
+From: Sebastian Gottschall <s.gottschall@dd-wrt.com>
+In-Reply-To: <874jdigf76.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass (webmail.newmedia-net.de: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=s.gottschall@dd-wrt.com; helo=webmail.newmedia-net.de;
+X-SA-Exim-Connect-IP: 127.0.0.1
+X-SA-Exim-Mail-From: s.gottschall@dd-wrt.com
+X-SA-Exim-Scanned: No (on webmail.newmedia-net.de); SAEximRunCond expanded to false
+X-NMN-MailScanner-Information: Please contact the ISP for more information
+X-NMN-MailScanner-ID: 1rj0yD-000FpE-At
+X-NMN-MailScanner: Found to be clean
+X-NMN-MailScanner-From: s.gottschall@dd-wrt.com
+X-Received:  from localhost.localdomain ([127.0.0.1] helo=webmail.newmedia-net.de)
+	by webmail.newmedia-net.de with esmtp (Exim 4.72)
+	(envelope-from <s.gottschall@dd-wrt.com>)
+	id 1rj0yD-000FpE-At; Sat, 09 Mar 2024 18:58:53 +0100
 
-On Fri, 8 Mar 2024 at 17:19, Kalle Valo <kvalo@kernel.org> wrote:
+
+Am 07.03.2024 um 17:49 schrieb Kalle Valo:
+> Robert Marko <robert.marko@sartura.hr> writes:
 >
-> Dmitry Baryshkov <dmitry.baryshkov@linaro.org> writes:
+>> On Wed, Mar 6, 2024 at 8:23 PM Jeff Johnson <quic_jjohnson@quicinc.com> wrote:
+>>
+>>> Historically, prior to being incorporated into the linux-firmware
+>>> project, firmware for kernel.org ath1*k drivers has been first published
+>>> to Kalle's GitHub:
+>>> https://github.com/kvalo/ath10k-firmware
+>>> https://github.com/kvalo/ath11k-firmware
+>>> (ath12k firmware was pushed to the ath11k-firmware repo on a temporary
+>>> basis in anticipation of this move)
+>>>
+>>> But in order to have repos with multiple maintainers, as well as to have
+>>> a hosting platform with more control, we have moved to CodeLinaro:
+>>> https://git.codelinaro.org/clo/ath-firmware/ath10k-firmware
+>>> https://git.codelinaro.org/clo/ath-firmware/ath11k-firmware
+>>> https://git.codelinaro.org/clo/ath-firmware/ath12k-firmware
+>>>
+>>> Note that most people should not care about this -- normally you should
+>>> use the firmware that is in the official linux-firmware repo:
+>>> https://git.kernel.org/cgit/linux/kernel/git/firmware/linux-firmware.git/
+>>>
+>>> You should only need to access the staging repos if you need a previous
+>>> version to work around an issue, or if you are testing new firmware that
+>>> is supposed to fix a problem that you've reported.
+>>>
+>>> Please let Kalle & I know if you have any issues with these new repos!
+>> Can I please ask for IPQ6018 firmware to be updated to 2.9.0.1 as well?
+>>
+>> We have added IPQ6018 support to OpenWrt but we are forced to use the old 2.4
+>> firmware since anything newer is crashing on IPQ6018, we had the same issue on
+>> IPQ8074 but it was fixed with 2.9.0.1 firmware.
+>>
+>> Even for IPQ8074, there is newer 2.9.0.1 firmware that is only
+>> available as part of
+>> QSDK and the community would benefit from being able to use it.
+> We are working on getting the AP chipset firmwares updated but
+> unfortunately no news yet.
+why isnt qca releasing the latest firmwares at all. i mean we all know 
+that the qca networking tree contains way newer firmwares for all 
+chipsets since a long time
+
 >
-> >> To be on the safe side using 'qcom-rb1' makes sense but on the other
-> >> hand that means we need to update linux-firmware (basically add a new
-> >> symlink) everytime a new product is added. But are there going to be
-> >> that many new ath10k based products?
-> >>
-> >> Using 'qcm2290' is easier because for a new product then there only
-> >> needs to be a change in DTS and no need to change anything
-> >> linux-firmware. But here the risk is that if there's actually two
-> >> different ath10k firmware branches for 'qcm2290'. If that ever happens
-> >> (I hope not) I guess we could solve that by adding new 'qcm2290-foo'
-> >> directory?
-> >>
-> >> But I don't really know, thoughts?
-> >
-> > After some thought, I'd suggest to follow approach taken by the rest
-> > of qcom firmware:
->
-> Can you provide pointers to those cases?
-
-https://gitlab.com/kernel-firmware/linux-firmware/-/tree/main/qcom/sc8280xp/LENOVO/21BX
-
->
-> > put a default (accepted by non-secured hardware) firmware to SoC dir
-> > and then put a vendor-specific firmware into subdir. If any of such
-> > vendors appear, we might even implement structural fallback: first
-> > look into sdm845/Google/blueline, then in sdm845/Google, sdm845/ and
-> > finally just under hw1.0.
->
-> Honestly that looks quite compilicated compared to having just one
-> sub-directory. How will ath10k find the directory names (or I vendor and
-> model names) like 'Google' or 'blueline' in this example?
-
-I was thinking about the firmware-name = "sdm845/Google/blueline". But
-this can be really simpler, firmware-name = "blueline" or
-"sdm845/blueline" with no need for fallbacks.
-
-My point is that the firmware-name provides the possibility to handle
-that in different ways.
-
--- 
-With best wishes
-Dmitry
 
