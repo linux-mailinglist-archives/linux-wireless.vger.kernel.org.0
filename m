@@ -1,90 +1,114 @@
-Return-Path: <linux-wireless+bounces-4504-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4505-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C11B876E12
-	for <lists+linux-wireless@lfdr.de>; Sat,  9 Mar 2024 01:20:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 357D1876EE8
+	for <lists+linux-wireless@lfdr.de>; Sat,  9 Mar 2024 04:14:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B65651F23130
-	for <lists+linux-wireless@lfdr.de>; Sat,  9 Mar 2024 00:19:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 328031C20C11
+	for <lists+linux-wireless@lfdr.de>; Sat,  9 Mar 2024 03:14:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E90CA37A;
-	Sat,  9 Mar 2024 00:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74F772DF9F;
+	Sat,  9 Mar 2024 03:14:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="cm9ABFlu"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33E936E;
-	Sat,  9 Mar 2024 00:19:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D9C27269;
+	Sat,  9 Mar 2024 03:14:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709943595; cv=none; b=a/+v5YT2CaNohpAFVPr1GUV7YLtS4MIMys/eehTGjQ7FNvWpdkJZxLF7Z8/HRKIz/CWlvy672q0sEboA5577FHhxaPYzveij6Aa3CdDuZqqJAmvKMmevPI9S68IO6E71gseQS2lGacx5DVoIoaetu/6tWB0XBz3i8nGYn7yE3ro=
+	t=1709954054; cv=none; b=blbRetJwUEXVwcQNGF1LZbRQVLTvpXI1CZeVMqV4gYUfWGDUaFw0+EKl84i3lgh9JUJiT9oo3wgU9rCLfrNGANPkyY0wdWZOOtFSo563d9zHa/BDFu9FhAuHKCet9A57UOjPG1Bdbw29XwecngBgieumOtiBprXjiqRz1qo73Ws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709943595; c=relaxed/simple;
-	bh=hgublxvBB0WVDZsVatODbqGkGHOgzWTNz3NCZI26pKw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=PC9Kn4R/n13SEMdeJE99MePW1iqebcejKnLWDm10cjOelxLnCs5M6nliWANj97swjbGuqWxmQB+H++ldBXTXrt2JXD1DIKjL3fXvIE8yZ7exzE4G04qxGePQaS4fdVIaNjehhmrqI6v4JfxBuu+2TaNC8qWsQzJUj3jPgziXV4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4290Jl7bA2356079, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 4290Jl7bA2356079
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 9 Mar 2024 08:19:47 +0800
-Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Sat, 9 Mar 2024 08:19:47 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Sat, 9 Mar 2024 08:19:46 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::c9b7:82a9:7e98:fa7f]) by
- RTEXMBS04.realtek.com.tw ([fe80::c9b7:82a9:7e98:fa7f%7]) with mapi id
- 15.01.2507.035; Sat, 9 Mar 2024 08:19:46 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: "kvalo@kernel.org" <kvalo@kernel.org>, "kuba@kernel.org" <kuba@kernel.org>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        DeanKu
-	<ku920601@realtek.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: pull-request: wireless-next-2024-03-08
-Thread-Topic: pull-request: wireless-next-2024-03-08
-Thread-Index: AQHacUAJ7oSqIHSLZEax02VmaRi8t7EtdrqAgACYMYP///czAA==
-Date: Sat, 9 Mar 2024 00:19:46 +0000
-Message-ID: <a73e5a8f7f6807b736c15a3ea25d063451aec6b5.camel@realtek.com>
-References: <20240308100429.B8EA2C433F1@smtp.kernel.org>
-	 <20240308074539.04512f66@kernel.org> <87wmqc4qik.fsf@kernel.org>
-In-Reply-To: <87wmqc4qik.fsf@kernel.org>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-user-agent: Evolution 3.36.1-2 
-x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <A80AC4CDEA649841BC595FE0A70ADC85@realtek.com>
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1709954054; c=relaxed/simple;
+	bh=WJcq/6TzFWbS0B0v6wATw70iSKAipfCLTJwpZIyvltw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Usczd13wvGvbPLfzqUWpAkiCj9632s4nbxGBHeYwccNZ1RF3DbccZ886iMdWH2OG0pMRLhhMli9NtAsvIvIdLDvmsTrIU74jM1U1BaYoIlG5jE+RFFdOy8eTkty6GuCev5H31jvA8ZRnGAlMbe8iHWCTQdsabTDuBlMZc+/Alqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=cm9ABFlu; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id ECCC687D2D;
+	Sat,  9 Mar 2024 04:14:08 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1709954049;
+	bh=9ZLRhz108bLVoXPyvecqoKo8hPm+so89oLO+wcL/NP0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=cm9ABFluWmjvv1sNx3ppyv0pssiqs4dcp5F0zZhkueKV+XY3odSZbFEbx+oq0wLbI
+	 ZjzeZg/fCjF1GuTriPrCrDcoSvCIobssgxZWdkua+rZnoM5O3Fmj5Vwb8BJjBxnrsH
+	 Pdrs/zf1f55Rbtpn2IMLXJlwlrpLVx1FrNM9aPPZaLnoGVFMbLdx8IPlgNCbuUBnQH
+	 lC4hbsZE2vEhSW+lK9MqqatzhT3ElxMzkwTJRLufpg3iWvT/D4dUjwQ0ShAG58GvM6
+	 fQcLOKYZylOZRgC7DU1Hng+lgk5lxJvQVx5a3LJ5H1uPyNv8dFqz2P3Eq0aR0ZVikP
+	 u4dFCZhDBo3GA==
+From: Marek Vasut <marex@denx.de>
+To: linux-wireless@vger.kernel.org
+Cc: Marek Vasut <marex@denx.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Kalle Valo <kvalo@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	devicetree@vger.kernel.org,
+	netdev@vger.kernel.org,
+	van Spriel <arend@broadcom.com>
+Subject: [PATCH] dt-bindings: net: wireless: brcm,bcm4329-fmac: Add CYW43439 DT binding
+Date: Sat,  9 Mar 2024 04:13:17 +0100
+Message-ID: <20240309031355.269835-1-marex@denx.de>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-T24gRnJpLCAyMDI0LTAzLTA4IGF0IDE4OjUwICswMjAwLCBLYWxsZSBWYWxvIHdyb3RlOg0KPiAN
-Cj4gSmFrdWIgS2ljaW5za2kgPGt1YmFAa2VybmVsLm9yZz4gd3JpdGVzOg0KPiANCj4gPiBmb3Ig
-YSBub24tdXJnZW50IGZvbGxvdyB1cC4gRG9lc24ndCBsb29rIGxpa2UgYW4gb2J2aW91cyBmYWxz
-ZSBwb3NpdGl2ZS4NCj4gDQo+IFBpbmcsIGNvdWxkIHlvdSBmaXggdGhpcywgcGxlYXNlPyBJbiB0
-aGUgcGF0Y2ggcGxlYXNlIGFkZCBDbG9zZXMgdGFnDQo+IHBvaW50aW5nIHRvIEpha3ViJ3MgZW1h
-aWwgYW5kIG1hcmsgaXQgZm9yIHdpcmVsZXNzIHRyZWUgKGFzc3VtaW5nIHRoZQ0KPiBtZXJnZSB3
-aW5kb3cgc3RhcnRzIG9uIFN1bmRheSwgb3RoZXJ3aXNlIHdlIHRha2UgaXQgdG8gd2lyZWxlc3Mt
-bmV4dCkuDQo+IA0KDQpJIGhhdmUgc2VudCBhIGZpeCBbMV0sIGFuZCB0aGF0IGlzIGEgdHlwbyBp
-bnN0ZWFkICgweDU1ZiB2cyAweDVmZikuDQpUaGFua3MgZm9yIHRoZSBmaW5kaW5nLg0KDQpQaW5n
-LUtlDQoNClsxXSBodHRwczovL2xvcmUua2VybmVsLm9yZy9saW51eC13aXJlbGVzcy8yMDI0MDMw
-OTAwMTM0OC45OTA2LTEtcGtzaGloQHJlYWx0ZWsuY29tL1QvI3UNCg0K
+CYW43439 is a Wi-Fi + Bluetooth combo device from Infineon. The
+WiFi part is capable of 802.11 b/g/n. This chip is present e.g.
+on muRata 1YN module. Extend the binding with its DT compatible.
+
+Signed-off-by: Marek Vasut <marex@denx.de>
+---
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Conor Dooley <conor+dt@kernel.org>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Kalle Valo <kvalo@kernel.org>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Rob Herring <robh@kernel.org>
+Cc: devicetree@vger.kernel.org
+Cc: linux-wireless@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Cc: van Spriel <arend@broadcom.com>
+---
+ .../devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml      | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
+index 4aa521f1be8cd..e564f20d8f415 100644
+--- a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
++++ b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
+@@ -44,6 +44,7 @@ properties:
+               - brcm,bcm4366-fmac
+               - cypress,cyw4373-fmac
+               - cypress,cyw43012-fmac
++              - infineon,cyw43439-fmac
+           - const: brcm,bcm4329-fmac
+       - enum:
+           - brcm,bcm4329-fmac
+-- 
+2.43.0
+
 
