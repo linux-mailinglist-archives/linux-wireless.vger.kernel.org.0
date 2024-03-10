@@ -1,117 +1,116 @@
-Return-Path: <linux-wireless+bounces-4521-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4522-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5223987741D
-	for <lists+linux-wireless@lfdr.de>; Sat,  9 Mar 2024 23:45:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DE77877494
+	for <lists+linux-wireless@lfdr.de>; Sun, 10 Mar 2024 01:35:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E629C28201D
-	for <lists+linux-wireless@lfdr.de>; Sat,  9 Mar 2024 22:45:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C761B1C20954
+	for <lists+linux-wireless@lfdr.de>; Sun, 10 Mar 2024 00:35:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D2FB44C9C;
-	Sat,  9 Mar 2024 22:45:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="iZV3SkMM"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1BDB620;
+	Sun, 10 Mar 2024 00:35:29 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from bues.ch (bues.ch [80.190.117.144])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE3C20B22;
-	Sat,  9 Mar 2024 22:45:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE84363;
+	Sun, 10 Mar 2024 00:35:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.190.117.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710024350; cv=none; b=FOlwUesg9rFk/wArOsfr8npMYwT2wK7QCadjIU8Nh8bwhDLGrcp4wCXmvYgEiz21wKKMMEyUOyoa8r44CaMJPZstb5757HjQnLKhwyiQUvprM8obZ7FAe/0GPosbF3GWGZhZ8cYhItXjxAVs175SSAJ9QtQxT55JtYq4nembIZw=
+	t=1710030929; cv=none; b=Wh4kQ73KDcSsWvN9W0CoeJ3kXLx4aw06ehzh2Miif0qSj1kjF5zG8fW0zZod5GO7RTfZNMp+xrIIL3ZmqhlSkRdn4iLXlOiDNwH87rlbT0n54OGPsKjSKX0GqejEPsu/LwNcmimuwFJbKGN5cDSZswQ8LyfBqxJN0Q3mYxFW9Gg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710024350; c=relaxed/simple;
-	bh=0wr76cui/63QHQTpUDqkmMkTQ9ZdNWUNuERh1WcLqU4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=IXAAHc6+MsosQvx4fDy8I3sVyiRYe6BEh1urOHEBROp04EpHJdHLGZ+CjxcwgjgUkVDp7LvKnJFXS0v0tEjla9NefiZpmUvMgzosvwTz/hsFj4NwXyE6Rbw4AzWvP4WHXRVqrV/94I/x4E0B9CllZpQEwaciQd3TGBi3ln6azcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=iZV3SkMM; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=fknmEs34Vbnx707+0zwgSmO1iUI8E7zWqIKhyAXJOyQ=; b=iZV3SkMMIQNrWwlVZkQzDsG9Zs
-	xNSudEPMlkhUJrQKKoaUE9lU2gLoi/uacJ5/2gv7a5rtJHZzLYoryD+eJgYl9ViqpysD5eGSJDF9g
-	3pZ+3mpFciJeh66gOxLqJF8F/KXOQLkTzNUr9oCb6D0uLGYjAHkJHYdfiOTFCM5vmXA4XWo1f4tSM
-	YueAxWpQ/7SS02j+ly+oENU0qfwQyIlCdF/LdZdtwRNEgSCOCEgsf2SXP0WonoCRqEFF6CQravRJU
-	iY/t/r0Qi0mAMqpQ1aPZV9bvmfePVX+dX/N3Di3RXfuSB4bHyf102+EbcDyb1OvBjZecX7Q6h9Dku
-	E6eyD7ug==;
-Received: from [50.53.50.0] (helo=bombadil.infradead.org)
-	by bombadil.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rj5Rm-0000000EP0O-1Or5;
-	Sat, 09 Mar 2024 22:45:42 +0000
-From: Randy Dunlap <rdunlap@infradead.org>
-To: linux-kernel@vger.kernel.org
-Cc: Randy Dunlap <rdunlap@infradead.org>,
-	Ying Sun <sunying@isrc.iscas.ac.cn>,
-	=?UTF-8?q?Michael=20B=C3=BCsch?= <m@bues.ch>,
-	linux-wireless@vger.kernel.org,
-	Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH] ssb: drop use of non-existing CONFIG_SSB_DEBUG symbol
-Date: Sat,  9 Mar 2024 14:45:38 -0800
-Message-ID: <20240309224540.22682-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.44.0
+	s=arc-20240116; t=1710030929; c=relaxed/simple;
+	bh=R8H3zZJPNckJrtz5/OGfEZLLWrMhX0eGnI2pP3CqM/Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TJ0QcgB5WwTdw5OG/5r+VObLIL47H80cl+xA00S8JZxAnY8baUNAXAftEmHaegGhLMRrGa0WqhTGV5nSj+lvMnpywqFTduMkDypwAvfOg9EvbQA6D9BqXbbCNezRdyEruSohF2Ito+YlXUizZ4XbM5CnQDfpZrlVVZ4IX3hqklU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bues.ch; spf=pass smtp.mailfrom=bues.ch; arc=none smtp.client-ip=80.190.117.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bues.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bues.ch
+Received: by bues.ch with esmtpsa (Exim 4.96)
+	(envelope-from <m@bues.ch>)
+	id 1rj79c-0010DC-1M;
+	Sun, 10 Mar 2024 01:35:02 +0100
+Date: Sun, 10 Mar 2024 01:34:39 +0100
+From: Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
+To: Randy Dunlap <rdunlap@infradead.org>
+Cc: linux-kernel@vger.kernel.org, Ying Sun <sunying@isrc.iscas.ac.cn>,
+ linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>
+Subject: Re: [PATCH] ssb: drop use of non-existing CONFIG_SSB_DEBUG symbol
+Message-ID: <20240310013439.44682105@barney>
+In-Reply-To: <20240309224540.22682-1-rdunlap@infradead.org>
+References: <20240309224540.22682-1-rdunlap@infradead.org>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="Sig_/Dtc7J8BxyXU=w1FDubeq5gF";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+
+--Sig_/Dtc7J8BxyXU=w1FDubeq5gF
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 
-CONFIG_SSB_DEBUG is used in one header file and nowhere else, so
-remove it and the now-empty inline function that contained it. Also
-remove the call to the empty inline function. The empty "default:"
-case is kept to prevent 2 compiler warnings:
+On Sat,  9 Mar 2024 14:45:38 -0800
+Randy Dunlap <rdunlap@infradead.org> wrote:
 
-  drivers/ssb/main.c:1133:9: warning: enumeration value 'SSB_BUSTYPE_PCMCIA' not handled in switch [-Wswitch]
-  drivers/ssb/main.c:1133:9: warning: enumeration value 'SSB_BUSTYPE_SDIO' not handled in switch [-Wswitch]
+> -static inline void __cold __ssb_dma_not_implemented(struct ssb_device *d=
+ev)
+> -{
+> -#ifdef CONFIG_SSB_DEBUG
+> -	printk(KERN_ERR "SSB: BUG! Calling DMA API for "
+> -	       "unsupported bustype %d\n", dev->bus->bustype);
+> -#endif /* DEBUG */
+> -}
+> -
+>  #ifdef CONFIG_SSB_PCIHOST
+>  /* PCI-host wrapper driver */
+>  extern int ssb_pcihost_register(struct pci_driver *driver);
+> diff -- a/drivers/ssb/main.c b/drivers/ssb/main.c
+> --- a/drivers/ssb/main.c
+> +++ b/drivers/ssb/main.c
+> @@ -1144,7 +1144,6 @@ u32 ssb_dma_translation(struct ssb_devic
+>  				return SSB_PCI_DMA;
+>  		}
+>  	default:
+> -		__ssb_dma_not_implemented(dev);
+>  	}
+>  	return 0;
+>  }
+>=20
 
-Reported-by: Ying Sun <sunying@isrc.iscas.ac.cn>
-Link: https://lore.kernel.org/lkml/4e8525fe.607e2.18a8ddfdce8.Coremail.sunying@isrc.iscas.ac.cn/
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Michael Büsch <m@bues.ch>
-Cc: linux-wireless@vger.kernel.org
-Cc: Kalle Valo <kvalo@kernel.org>
----
-This Closes only 1 of the 3 issues reported in the Link.
+Acked-by: Michael B=C3=BCsch <m@bues.ch>
 
- drivers/ssb/main.c      |    1 -
- include/linux/ssb/ssb.h |    8 --------
- 2 files changed, 9 deletions(-)
 
-diff -- a/include/linux/ssb/ssb.h b/include/linux/ssb/ssb.h
---- a/include/linux/ssb/ssb.h
-+++ b/include/linux/ssb/ssb.h
-@@ -621,14 +621,6 @@ extern u32 ssb_dma_translation(struct ss
- #define SSB_DMA_TRANSLATION_MASK	0xC0000000
- #define SSB_DMA_TRANSLATION_SHIFT	30
- 
--static inline void __cold __ssb_dma_not_implemented(struct ssb_device *dev)
--{
--#ifdef CONFIG_SSB_DEBUG
--	printk(KERN_ERR "SSB: BUG! Calling DMA API for "
--	       "unsupported bustype %d\n", dev->bus->bustype);
--#endif /* DEBUG */
--}
--
- #ifdef CONFIG_SSB_PCIHOST
- /* PCI-host wrapper driver */
- extern int ssb_pcihost_register(struct pci_driver *driver);
-diff -- a/drivers/ssb/main.c b/drivers/ssb/main.c
---- a/drivers/ssb/main.c
-+++ b/drivers/ssb/main.c
-@@ -1144,7 +1144,6 @@ u32 ssb_dma_translation(struct ssb_devic
- 				return SSB_PCI_DMA;
- 		}
- 	default:
--		__ssb_dma_not_implemented(dev);
- 	}
- 	return 0;
- }
+--=20
+Michael B=C3=BCsch
+https://bues.ch/
+
+--Sig_/Dtc7J8BxyXU=w1FDubeq5gF
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAmXtAB8ACgkQ9TK+HZCN
+iw4CEg//bOyNLseIVp8eLWwHbi4yo4y0lQrRv9KAnc2XdIMv/GCYNCsqDv3dMMS+
++/SjGPBZyD6bVQEJNRrdMARP8KuDMXGnx2ZTukXqHuSFxIr7gR422UZqCV65FLwv
+MvfMJIjOB+9WwtKkihz3UbsOocrVAZF4813mOK8fJgd/k0CXhvIpirNNMCT6X92a
+Bqo5eeR06Vx1ycOrwabT+a+50AlLw6OAbTL1szjyXllPJMsQukJsC0uklkhS7vS7
+DubOWY6RQz47Lqn9C/mAcnh3LsPpC1sjQ3EtlxxF3XaQ9+6MUZAl+sDUhlF2qi/k
+ekY8mtUbzU3rZtcb3AT0R7N5B4I1YzftKxTvwBHYv8D/oKmNSV2Fr4oYGGAwGWMO
+8DGJB9a1YAnk4pY/c9htJ1+yo3uXaC6F9yaUqOvWBskvWfeJ37VRkUOXStaI7E/q
+7VW+O737Uz/bVodhZk2KDo2/Z0wZeLlmxmsOVd7LPAwiePzEVfGfTTHzRVS3yCQM
+jyxwFv+FBhEBTLWKN2JxeSkqKnXrrwwTjNpSomo2INuPROjugZUiSq44xmPo0Cvo
+u8qtvsihKIUM3AAot260FrfRgvzKXd59wn4GsaVyNLuUP7o6G8DlB/S7EfGBuf9l
+iFkv5i2PdhIt4Sx1HgRKHFKkiYeUslPZKQC3OYkH6xEEHEC3/Ac=
+=Bvs/
+-----END PGP SIGNATURE-----
+
+--Sig_/Dtc7J8BxyXU=w1FDubeq5gF--
 
