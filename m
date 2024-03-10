@@ -1,419 +1,79 @@
-Return-Path: <linux-wireless+bounces-4528-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4523-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32E24877882
-	for <lists+linux-wireless@lfdr.de>; Sun, 10 Mar 2024 21:40:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB1F28774D4
+	for <lists+linux-wireless@lfdr.de>; Sun, 10 Mar 2024 02:40:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D2A1B207E7
-	for <lists+linux-wireless@lfdr.de>; Sun, 10 Mar 2024 20:39:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 823D41F21368
+	for <lists+linux-wireless@lfdr.de>; Sun, 10 Mar 2024 01:40:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29BF8374C2;
-	Sun, 10 Mar 2024 20:39:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAE1023A8;
+	Sun, 10 Mar 2024 01:40:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LMd349Is"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qdh411CY"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 475061E891
-	for <linux-wireless@vger.kernel.org>; Sun, 10 Mar 2024 20:39:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0FEE23A7
+	for <linux-wireless@vger.kernel.org>; Sun, 10 Mar 2024 01:40:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710103191; cv=none; b=gOgXEL1qpsvpRecQcaR3oyIVBE/E1uyurLoG/RUGpac/F4yC7/P6oNw+KuKcSWnIIF/csGq82EgpnLiKMgHrnm+L3Fo3dqwxUiiFmHJ8j6CiiXyf6Qr8aPDTAcWxihY4wlJIqvI/+DSmCVbnETrhK31+qov2GDqAL2B/L0Ao1qw=
+	t=1710034825; cv=none; b=FEyEWwAXk8tFqKW/v9GUO4BA+OAbsit4g/TxsW/OMNd9PxrpcNnQLoj61FVWIhLXilOn5mUCI7IV5sRB3ddhJxS1gRpsxZNjtfQksaBa9BQI9WqtVpAXa5WabKJ6U88bAbk/5nwG5ErCfD+JYJZbIO7AoRbJ3PRaYQAvAlPVHkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710103191; c=relaxed/simple;
-	bh=bE57uGoKTgZbl7o+rf+80AoPaI7SeYVO/RrWb1NXJRQ=;
-	h=Message-ID:From:Date:To:Subject; b=RQaAj6/t2RxA84G23SSuaWo6mITRAYNomI/8dQye8Hg+QeD6vx9Pv+harO2a1FEqJc9eKowN3MXxYop+1AZCK4Rx2Gp3cWcL2KgleSm0srhoV44Bt9+FLA5URIs3oBMyEF8VdRUwMjle1tC4Bnsh2++ZHpn/PDVCKm2IJCS+Ivk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LMd349Is; arc=none smtp.client-ip=209.85.208.177
+	s=arc-20240116; t=1710034825; c=relaxed/simple;
+	bh=JHyLcMoeg/5e+DV16zRYvCaSAuvj4NBhBxQe/rdH2jo=;
+	h=Message-ID:From:Date:To:Subject; b=rwUJKQFN6x7mGwQ2m8pM27xDH3bjSc1+ApLX6ZozVb1Zak9a3DZfjIOMm1GYP9PKfmqNMvwQXGC34qY0SCEfnD9CJiVa4vfYH8ct27abpe4rhRhIanudaMpSIqKb9e7vzQbq6czkyRXAHCimUgTIVO4+XNNsDXxbFq0wsxP3Vj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qdh411CY; arc=none smtp.client-ip=209.85.208.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2d2fad80eacso28704521fa.2
-        for <linux-wireless@vger.kernel.org>; Sun, 10 Mar 2024 13:39:43 -0700 (PDT)
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2d3f962a9dfso20572661fa.1
+        for <linux-wireless@vger.kernel.org>; Sat, 09 Mar 2024 17:40:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710103182; x=1710707982; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1710034818; x=1710639618; darn=vger.kernel.org;
         h=subject:to:date:from:message-id:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=7T5+XTDWR7JP5kJJ79z/e1+id3ujhi50TzIW4neUB28=;
-        b=LMd349Is8FvGuBwEs+Ig+6960VonTfc8YacG9lzdvhVyri1KraaTpIZlXkV4JL2jag
-         ifF5RudyN3IsQBVvdImo7Z/aAP9Harw02VGVtsY4FL63IYFAEaNQBENAOUZyDOg+OQpu
-         bmo867vQTtU6dL2xyHF3C1jVQ5pN0UbKFvl8h13vKE2IQ1oM6gIasWAd0vLCLxWkTjSE
-         2EU0FkKrMu3CqRJ4xpsKwdOJaFns3HKBJhhQgkGkBLUbW+9IHaV2nvhfvS0+rOBomSNF
-         wbYIM4rnY7rBxzOL1lX0fkH7xksSQ6wBLNGxYiqAsVg3Esfz9vfwFevHvKu3BzgZ9339
-         euig==
+        bh=P1pDVYrOSwr8QPN+Vg/6+9Nw3jiN4IYO/aSJtbmo0qI=;
+        b=Qdh411CYIpLEXvGPe9QepKevvzXMyFI3C2NK9h31Qgtt8Dyfe6w363fcNhOegc6FcB
+         8bBetJ4I42Qdld3oLL6OZBYfkzmkG/ZHUCd8uk9kkDtWLD3NoYXtr4TvAnwQAnDqgwwc
+         RDOqp6cOuxeZmCFysLO374mw3WxmggVhRDGrYr3XAYyvruW4bCESokc0xq3U+P1tCiOE
+         Fky1W7HXIBiUsRZDvL6/xIEzcPulPcuIE0hs+LK7Uh//FU0nJ5JVOXmxK09GgJTGyt74
+         AGCJ8KMaKGMUPy6X2L7fVut9uuwQaXBwLo8lHaZEHwj/9u19h+AX3K/vXg2KKIYg8dq0
+         jaCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710103182; x=1710707982;
+        d=1e100.net; s=20230601; t=1710034818; x=1710639618;
         h=subject:to:date:from:message-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=7T5+XTDWR7JP5kJJ79z/e1+id3ujhi50TzIW4neUB28=;
-        b=QQKDSiJbspGTgS/zUglU9NgP3GObhAH/MrpyZct70oMIf5vqD8YBB3YzWLDW+B4fNw
-         jKmjGswKWxyBXn63OZM1N06grehv4SD3FyuQ4aDKa9d3HdaTchrnMyD1HDaLm6zIqJ+4
-         o7FEsT49ebm9ed44RicU/SBcV4/Y55tfTnqZB5tRDbQOsTPWyovVYkAVs4SmKEa6bAsr
-         S6fYLs/4PJTRHjNYw7+JsbSKPuIivbC7ZuSjxqICUrj7f9+FLs6MIslmiCcqpg/o5h+e
-         PVhgYJKQJJixWgGgvZt0/6vwxNiLmBD85IllYw12wYjmfSxGFUIz1UZCydvtRHsltssP
-         QYHA==
-X-Forwarded-Encrypted: i=1; AJvYcCXhTjVl8QCFZYpTUFEBGoHzN+wJSre+qI24atHuFGRXWAMJ5slduvBhCbYKikQ9qw+ScCljsfUbclEOvG5ppgvMQAtcpSXbE9ZQKycoCNo=
-X-Gm-Message-State: AOJu0YxqILwhdMMgfqvYdibOt7Qx8PHXA+ojz5HpH35vBOfkqxUuw8Zh
-	x3pLIjRkcGs9R6l730vpbW6iaPBe+XQcLYcyjGgAJtIWVbJj3qmG
-X-Google-Smtp-Source: AGHT+IFXyj0EUmH//EsZKNhUhoSxZ+2nMLYAIUkKoTcURmHmI9BsFDa2Kwakth8DcJHJd6SSPyF1dw==
-X-Received: by 2002:a05:6512:987:b0:513:2f96:72b5 with SMTP id w7-20020a056512098700b005132f9672b5mr2668180lft.33.1710103181362;
-        Sun, 10 Mar 2024 13:39:41 -0700 (PDT)
+        bh=P1pDVYrOSwr8QPN+Vg/6+9Nw3jiN4IYO/aSJtbmo0qI=;
+        b=Fvu87TeLYRpv8XJBsGp7nBy5GBaHrDJ5kWTNnbwd4dshlaExzdvJDXgBbXdhuXZcPD
+         AiRbWDJ1YUo7FUdaTG3yAG+TbYCmvkeqj3NJ/Q2oIjZUrjELUNhN69+hlGFGgmSNyhe+
+         Qiqa/6aF6ZQv77bAewBq5PdPVKjFyvbpiALnuH5D++vrNeJ1KtcZs3Yr2xk9VEoc0BVI
+         6ilKL5uYPF6xgZzEoBV1RHurba74qvXgRwtnVb5KsvdkX8uP6FTS6kwcdXM9iMNGdyBp
+         23GExFsoTKZT1bguU5aVAlQBFcIuw+rOI9hGn+nVenDAf5jiJLHPaCV91NWwCAw+NxxE
+         pnBg==
+X-Forwarded-Encrypted: i=1; AJvYcCUpKVOAa9uTfK/64Vbj+iuS6ulQgN+u9e60A7JQXEqRLux+sG0qiRoGT7Bzu3xyaA/m5ZuCtrHEENsenBPAQMyhWEtII8kKHQAo6TkctKk=
+X-Gm-Message-State: AOJu0YwcrTil/mW+DmNhKDYpidt7FIRNZ/yVbaLU1p54waWUm+Q5kI3E
+	WvDVag7uGWWv9AWWqpWdG0JjAOptjN0qPsRA5XSSc1ChOH/UfWpstZxh4Acs7dmSSQ==
+X-Google-Smtp-Source: AGHT+IGwQ3hUwBcWV3KTcxEcnvwlyPkQOJfomC5ntvZjgaTmoCDpBPh/+3g3GJ+Szsv6rAdXI1Cwtw==
+X-Received: by 2002:a2e:9dcf:0:b0:2d4:e9c:e20f with SMTP id x15-20020a2e9dcf000000b002d40e9ce20fmr1699797ljj.48.1710034816736;
+        Sat, 09 Mar 2024 17:40:16 -0800 (PST)
 Received: from localhost (nat-inorg.chem.msu.ru. [93.180.12.29])
-        by smtp.gmail.com with ESMTPSA id p24-20020a19f018000000b005133cf64ee0sm778065lfc.142.2024.03.10.13.39.40
+        by smtp.gmail.com with ESMTPSA id s11-20020a05651c048b00b002d435b7da40sm72028ljc.38.2024.03.09.17.40.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 Mar 2024 13:39:40 -0700 (PDT)
-Message-ID: <a309ab9f291445a2a6682d1062f6cb19.legale.legale@gmail.com>
+        Sat, 09 Mar 2024 17:40:15 -0800 (PST)
+Message-ID: <c215a93a66d88e9bc20c6b67c1461400.legale.legale@gmail.com>
 From: Isaev Ruslan <legale.legale@gmail.com>
 Date: Sun, 10 Mar 2024 04:21:20 +0300
 To: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org
-Subject: [PATCH v11] Add JSON output options to 'iw' for scan results
+Subject: [PATCH v8] Add JSON output options to 'iw' for scan results
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-
-branch: master
-
-v11 changes:
-- patch rebased to master branch
-- iw_json_print.c: iw_printf() add double int format "%d.%d", "%i.%i" to parse as number
-- scan.c: add json output for print_interworking(), print_11u_advert(), print_11u_rcon()
-
-v10 changes:
-- revert printable text for `iw <dev> scan` to original
-- add iw_json_format_key() for json output. It will replace commas with
-spaces, convert text to lowercase, remove multiple spaces, replace spaces
-with _
-
-Examples:
-text output:
-root@ru-fap650-a3:/tmp# ./iw phy0-ap0 scan | head -n250
-00:0c:43:26:60:18:
-        Ifname: phy0-ap0
-        Status:
-        TSF:
-                usec: 321559832898
-                dd: 3
-                hh: 17
-                mm: 19
-                ss: 19
-        Frequency: 5180
-        Beacon Interval, TUs: 100
-        Capability:
-                ESS
-                Privacy
-                ShortPreamble
-        Capability Raw Value: 0x0031
-        Signal: -72.00 dBm
-        Last Seen Ago, ms: 2740
-        BSS Probe Response Data Frame:
-                SSID:
-                        SSID: tobe52
-                Supported rates:
-                        Rates:
-                                6.0*
-                                9.0
-                                12.0*
-                                18.0
-                                24.0*
-                                36.0
-                                48.0
-                                54.0
-                DS Parameter set:
-                        Channel: 36
-                HT capabilities:
-                        capabilities_value: 0x9ee
-                        capabilities:
-                                HT20/HT40
-                                SM Power Save disabled
-                                RX HT20 SGI
-                                RX HT40 SGI
-                                TX STBC
-                                RX STBC 1-stream
-                                Max AMSDU length: 7935 bytes
-                                No DSSS/CCK HT40
-                        max_ampdu_length: 65535
-                        max_ampdu_exponent: 0x003
-                        min_rx_ampdu_time_spacing: 4 usec
-                        min_rx_ampdu_time_spacing_value: 0x005
-                        ht_rx_mcs_idx_supported:
-                                0-32
-                HT operation:
-                        Primary Channel: 36
-                        Secondary Channel Offset: above
-                        STA Channel Width: any
-                        RIFS: 0
-                        HT Protection: no
-                        Non-GF Present: 0
-                        OBSS Non-GF Present: 0
-                        Dual Beacon: 0
-                        Dual CTS Protection: 0
-                        STBC Beacon: 0
-                        L-SIG TXOP Protection: 0
-                        PCO Active: 0
-                        PCO Phase: 0
-                RSN:
-                        version: 1
-                        group_cipher_data:
-                                CCMP
-                        Pairwise Ciphers Data:
-                                CCMP
-                        Authentication Suites Data:
-                                PSK
-                        Capabilities Raw Value: 0x0000
-                        Capabilities:
-                                1-PTKSA-RC
-                                1-GTKSA-RC
-                Extended capabilities:
-                        Capabilities:
-                                BSS Transition
-                                Operating Mode Notification
-                        Max Number Of MSSDUs In A-MSDU: -1
-                BSS Load:
-                        Station Count: 0
-                        Channel Utilisation: 0
-                        Available Admission Capacity: 31250
-                WMM:
-                        Version: 1
-                        BE:
-                                CW: 15-1023
-                                AIFSN: 3
-                        BK:
-                                CW: 15-1023
-                                AIFSN: 7
-                        VI:
-                                CW: 7-15
-                                AIFSN: 2
-                                TXOP_usec: 3008
-                        VO:
-                                CW: 3-7
-                                AIFSN: 2
-                                TXOP_usec: 1504
-                Country:
-                        Country: DB
-                        Environment: Indoor/Outdoor
-                        Channels:
-                                36:
-                                        First: 36
-                                        End: 64
-                                        Max power, dBm: 20
-                                100:
-                                        First: 100
-                                        End: 140
-                                        Max power, dBm: 20
-                                149:
-                                        First: 149
-                                        End: 165
-                                        Max power, dBm: 20
-                VHT capabilities:
-                        VHT Capabilities:
-                                VHT Capabilities Raw Value: 0x33c379b1
-                                Data: 7991
-                        Supported Channel Width:
-                        RX LDPC: true
-                        short GI (80 MHz): true
-                        TX STBC: true
-                        SU Beamformer: true
-                        SU Beamformee: true
-                        +HTC-VHT: true
-                        RX antenna pattern consistency: true
-                        TX antenna pattern consistency: true
-                        VHT RX MCS set:
-                                1 streams: MCS 0-9
-                                2 streams: MCS 0-9
-                                3 streams: MCS 0-9
-                                4 streams: MCS 0-9
-                                5 streams: not supported
-                                6 streams: not supported
-                                7 streams: not supported
-                                8 streams: not supported
-                        VHT RX highest supported Mbps: 1560
-                        VHT TX MCS set:
-                                1 streams: MCS 0-9
-                                2 streams: MCS 0-9
-                                3 streams: MCS 0-9
-                                4 streams: MCS 0-9
-                                5 streams: not supported
-                                6 streams: not supported
-                                7 streams: not supported
-                                8 streams: not supported
-                        VHT TX Highest Supported Mbps: 1560
-                        VHT extended NSS Supported: (null)
-                VHT operation:
-                        Channel Width: 1 (80 MHz)
-                        Center Freq Segment 1: 42
-                        Center freq Segment 2: 0
-                        VHT Basic MCS Set: 0xffaa
-
-tail part trimmed
-
-Same with pretty json:
-root@ru-fap650-a3:/tmp# ./iw -jj phy0-ap0 scan | head -n250
-{
-    "00:0c:43:26:60:18": {
-        "ifname": "phy0-ap0",
-        "status": "",
-        "tsf": {
-            "usec": 321643188840,
-            "dd": 3,
-            "hh": 17,
-            "mm": 20,
-            "ss": 43
-        },
-        "frequency": 5180,
-        "beacon_interval_tus": 100,
-        "capability": [ "ESS","Privacy","ShortPreamble" ],
-        "capability_raw_value": "0x0031",
-        "signal": "-79.00 dBm",
-        "last_seen_ago_ms": 2550,
-        "bss_probe_response_data_frame": {
-            "ssid": {
-                "ssid": "tobe52"
-            },
-            "supported_rates": {
-                "rates": [ "6.0*","9.0","12.0*","18.0","24.0*","36.0","48.0","54.0" ]
-            },
-            "ds_parameter_set": {
-                "channel": 36
-            },
-            "ht_capabilities": {
-                "capabilities_value": "0x9ee",
-                "capabilities": [ "HT20/HT40","SM Power Save disabled","RX HT20 SGI","RX HT40 SGI","TX STBC","RX STBC 1-stream","Max AMSDU length: 7935 bytes","No DSSS/CCK HT40" ],
-                "max_ampdu_length": 65535,
-                "max_ampdu_exponent": "0x003",
-                "min_rx_ampdu_time_spacing": "4 usec",
-                "min_rx_ampdu_time_spacing_value": "0x005",
-                "ht_rx_mcs_idx_supported": [ "0-32" ]
-            },
-            "ht_operation": {
-                "primary_channel": 36,
-                "secondary_channel_offset": "above",
-                "sta_channel_width": "any",
-                "rifs": 0,
-                "ht_protection": "no",
-                "non-gf_present": 0,
-                "obss_non-gf_present": 0,
-                "dual_beacon": 0,
-                "dual_cts_protection": 0,
-                "stbc_beacon": 0,
-                "l-sig_txop_protection": 0,
-                "pco_active": 0,
-                "pco_phase": 0
-            },
-            "rsn": {
-                "version": 1,
-                "group_cipher_data": [ "CCMP" ],
-                "pairwise_ciphers_data": [ "CCMP" ],
-                "authentication_suites_data": [ "PSK" ],
-                "capabilities_raw_value": "0x0000",
-                "capabilities": [ "1-PTKSA-RC","1-GTKSA-RC" ]
-            },
-            "extended_capabilities": {
-                "capabilities": [ "BSS Transition","Operating Mode Notification" ],
-                "max_number_of_mssdus_in_a-msdu": -1
-            },
-            "bss_load": {
-                "station_count": 0,
-                "channel_utilisation": 0,
-                "available_admission_capacity": 31250
-            },
-            "wmm": {
-                "version": 1,
-                "be": {
-                    "cw": "15-1023",
-                    "aifsn": 3
-                },
-                "bk": {
-                    "cw": "15-1023",
-                    "aifsn": 7
-                },
-                "vi": {
-                    "cw": "7-15",
-                    "aifsn": 2,
-                    "txop_usec": 3008
-                },
-                "vo": {
-                    "cw": "3-7",
-                    "aifsn": 2,
-                    "txop_usec": 1504
-                }
-            },
-            "country": {
-                "country": "DB",
-                "environment": "Indoor/Outdoor",
-                "channels": {
-                    "36": {
-                        "first": 36,
-                        "end": 64,
-                        "max_power_dbm": 20
-                    },
-                    "100": {
-                        "first": 100,
-                        "end": 140,
-                        "max_power_dbm": 20
-                    },
-                    "149": {
-                        "first": 149,
-                        "end": 165,
-                        "max_power_dbm": 20
-                    }
-                }
-            },
-            "vht_capabilities": {
-                "vht_capabilities": {
-                    "vht_capabilities_raw_value": "0x33c379b1",
-                    "data": "7991"
-                },
-                "supported_channel_width": {},
-                "rx_ldpc": "true",
-                "short_gi_(80_mhz)": "true",
-                "tx_stbc": "true",
-                "su_beamformer": "true",
-                "su_beamformee": "true",
-                "+htc-vht": "true",
-                "rx_antenna_pattern_consistency": "true",
-                "tx_antenna_pattern_consistency": "true",
-                "vht_rx_mcs_set": {
-                    "1_streams": "MCS 0-9",
-                    "2_streams": "MCS 0-9",
-                    "3_streams": "MCS 0-9",
-                    "4_streams": "MCS 0-9",
-                    "5_streams": "not supported",
-                    "6_streams": "not supported",
-                    "7_streams": "not supported",
-                    "8_streams": "not supported"
-                },
-                "vht_rx_highest_supported_mbps": 1560,
-                "vht_tx_mcs_set": {
-                    "1_streams": "MCS 0-9",
-                    "2_streams": "MCS 0-9",
-                    "3_streams": "MCS 0-9",
-                    "4_streams": "MCS 0-9",
-                    "5_streams": "not supported",
-                    "6_streams": "not supported",
-                    "7_streams": "not supported",
-                    "8_streams": "not supported"
-                },
-                "vht_tx_highest_supported_mbps": 1560,
-                "vht_extended_nss_supported": "(null)"
-            },
-            "vht_operation": {
-                "channel_width": "1 (80 MHz)",
-                "center_freq_segment_1": 42,
-                "center_freq_segment_2": 0,
-                "vht_basic_mcs_set": "0xffaa"
-            }
-        }
-    }
-}
-
-tail part trimmed
-
-v9 changes:
-- remove binary json/iw_json_printer
 
 v8 changes:
 - json_print.c rewritten.
@@ -533,28 +193,30 @@ Signed-off-by: Isaev Ruslan <legale.legale@gmail.com>
  Makefile             |    2 +-
  iw.c                 |   27 +-
  json/Makefile        |   19 +
- json/iw_json_print.c |  263 +++++++++
+ json/iw_json_print.c |  221 ++++++++
  json/iw_json_print.h |   35 ++
- json/json_writer.c   |  298 ++++++++++
+ json/iw_json_printer |  Bin 0 -> 28112 bytes
+ json/json_writer.c   |  298 +++++++++++
  json/json_writer.h   |   76 +++
  json/main.c          |   49 ++
- scan.c               | 1289 ++++++++++++++++++++----------------------
- util.c               |  444 +++++++++------
- 10 files changed, 1645 insertions(+), 857 deletions(-)
+ scan.c               | 1187 ++++++++++++++++++++----------------------
+ util.c               |  333 +++++++-----
+ 11 files changed, 1508 insertions(+), 739 deletions(-)
  create mode 100644 json/Makefile
  create mode 100644 json/iw_json_print.c
  create mode 100644 json/iw_json_print.h
+ create mode 100755 json/iw_json_printer
  create mode 100644 json/json_writer.c
  create mode 100644 json/json_writer.h
  create mode 100644 json/main.c
 
 diff --git a/Makefile b/Makefile
-index 17be33f..42de11c 100644
+index 2fb8db8..9b73f4b 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -20,7 +20,7 @@ CFLAGS += -Wdeclaration-after-statement
+@@ -19,7 +19,7 @@ CFLAGS += -Werror-implicit-function-declaration -Wsign-compare -Wno-unused-param
+ CFLAGS += -Wdeclaration-after-statement
  CFLAGS += $(CFLAGS_EVAL)
- CFLAGS += $(EXTRA_CFLAGS)
  
 -_OBJS := $(sort $(patsubst %.c,%.o,$(wildcard *.c)))
 +_OBJS := $(sort $(patsubst %.c,%.o,$(wildcard *.c) json/json_writer.c json/iw_json_print.c))
@@ -646,10 +308,10 @@ index 0000000..d7b0858
 +	rm -f $(OBJ_DIR)/*.o iw_json_printer
 diff --git a/json/iw_json_print.c b/json/iw_json_print.c
 new file mode 100644
-index 0000000..323342a
+index 0000000..998a8eb
 --- /dev/null
 +++ b/json/iw_json_print.c
-@@ -0,0 +1,263 @@
+@@ -0,0 +1,221 @@
 +/*
 +* iw_json_print.c 
 +* print text or json output, based on json_writer and json_print
@@ -662,58 +324,10 @@ index 0000000..323342a
 +#include <stdlib.h>
 +#include <unistd.h>
 +#include <string.h>
-+#include <ctype.h>
 +
 +int iw_json = 0;
 +
 +static json_writer_t *_jw;
-+
-+static void iw_json_print_intend() {
-+    for (unsigned i = 0; i < _jw->depth; i++) {
-+        printf("\t");
-+    }
-+}
-+
-+static const char *iw_json_format_key(const char *key, size_t keysize) {
-+    //buffer
-+    static char buf[1024];
-+    size_t bufsize = sizeof(buf);
-+
-+    //check keysize
-+    assert(keysize < bufsize);
-+
-+    // copy key to buffer
-+    memcpy(buf, key, keysize);
-+    buf[keysize] = '\0';
-+
-+    // replace comma with space
-+    for (size_t i = 0; i < keysize; i++) {
-+        if (buf[i] == ',') {
-+            buf[i] = ' ';
-+        }
-+    }
-+
-+    // replace space with _ and convert uppercase letters to lowercase
-+    size_t write_index = 0;
-+    int prev_is_space = 0;
-+    for (size_t i = 0; i < keysize; i++) {
-+        char lower_char = tolower(buf[i]); // convert to lowercase
-+        if (!isspace(lower_char)) {
-+            buf[write_index++] = lower_char;
-+            prev_is_space = 0;
-+        } else {
-+            if (!prev_is_space) {
-+                buf[write_index++] = '_';
-+            }
-+            prev_is_space = 1;
-+        }
-+    }
-+
-+    buf[write_index] = '\0';
-+
-+    return buf;
-+}
-+
 +void json_obj_new(int json, bool is_pretty) {
 +	iw_json = json;
 +	_jw = jsonw_new(stdout);
@@ -740,11 +354,14 @@ index 0000000..323342a
 +	va_start(args, fmt);
 +	vsnprintf(buf, sizeof(buf), fmt, args);
 +	if(!iw_json){
-+		iw_json_print_intend();
++		//tab intend based on json depth
++		for (unsigned i = 0; i < _jw->depth; i++) {
++			printf("\t");
++		}
 +		printf("%s:\n", (*buf != '\0') ? buf : "object");
 +		++_jw->depth;
 +	} else {
-+		if(*buf != '\0') jsonw_name(_jw, iw_json_format_key(buf, strlen(buf) + 1));
++		if(*buf != '\0') jsonw_name(_jw, buf);
 +		jsonw_start_object(_jw);
 +	}
 +
@@ -768,11 +385,14 @@ index 0000000..323342a
 +	// if not empty
 +	assert(buf);
 +	if(!iw_json){
-+		iw_json_print_intend();
++		//tab intend based on json depth
++		for (unsigned i = 0; i < _jw->depth; i++) {
++			printf("\t");
++		}
 +		printf("%s:\n", (*buf != '\0') ? buf : "array");
 +		++_jw->depth;
 +	} else {
-+		if(*buf != '\0') jsonw_name(_jw, iw_json_format_key(buf, strlen(buf) + 1));
++		if(*buf != '\0') jsonw_name(_jw, buf);
 +		jsonw_start_array(_jw);
 +	}
 +
@@ -789,7 +409,7 @@ index 0000000..323342a
 +}
 +
 +#define _PRINT_FUNC(type_name, type)                       \
-+void json_print_##type_name(const char *key, type value) { \
++void json_print_##type_name(const char *key, type value) {      \
 +		if (!key)                                          \
 +			jsonw_##type_name(_jw, value);                 \
 +		else                                               \
@@ -817,7 +437,7 @@ index 0000000..323342a
 +	char buf[1024];
 +	vsnprintf(buf, sizeof(buf), fmt, args);
 +	if (key) {
-+		jsonw_string_field(_jw, iw_json_format_key(key, strlen(key) +1), buf);
++		jsonw_string_field(_jw, key, buf);
 +	} else {
 +		jsonw_string(_jw, buf);
 +	}
@@ -832,7 +452,7 @@ index 0000000..323342a
 +	char buffer[1024];
 +	vsnprintf(buffer, sizeof(buffer), fmt, args);
 +	if (key) {
-+		jsonw_num_field(_jw, iw_json_format_key(key, strlen(key) +1), buffer);
++		jsonw_num_field(_jw, key, buffer);
 +	} else {
 +		jsonw_num(_jw, buffer);
 +	}
@@ -872,9 +492,7 @@ index 0000000..323342a
 +  "%zd",        // varies by system - size_t
 +  "%zi",        // varies by system - ssize_t
 +  "%zu",        // varies by system - size_t
-+  "%p",         // varies by system - pointer
-+  "%d.%d",      // double integer value
-+  "%i.%i"       // double integer value
++  "%p"          // varies by system - pointer
 +};
 +
 +#define MAX_FORMAT_TYPE sizeof(num_formats) / sizeof(num_formats[0])
@@ -909,7 +527,9 @@ index 0000000..323342a
 +		}
 +	} else {
 +		//tab intend based on json depth
-+		iw_json_print_intend();
++		for (unsigned i = 0; i < _jw->depth; i++) {
++			printf("\t");
++		}
 +		key ? printf("%s: %s\n", key, buf) : printf("%s\n", buf);
 +	}
 +}
@@ -955,6 +575,175 @@ index 0000000..7542624
 +void iw_printf(const char *key, const char *fmt, ...);
 +
 +#endif /* _JSON_PRINT_H_ */
+diff --git a/json/iw_json_printer b/json/iw_json_printer
+new file mode 100755
+index 0000000000000000000000000000000000000000..9511de64fe0289ce88af5fd74f307d131d04d424
+GIT binary patch
+literal 28112
+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
+Kw<*|)#(x2X{U8ni
+
+literal 0
+HcmV?d00001
+
 diff --git a/json/json_writer.c b/json/json_writer.c
 new file mode 100644
 index 0000000..79e49b9
@@ -1397,7 +1186,7 @@ index 0000000..c6683a9
 +}
 +
 diff --git a/scan.c b/scan.c
-index a99a414..6a32dd7 100644
+index dfc136a..470e79b 100644
 --- a/scan.c
 +++ b/scan.c
 @@ -12,6 +12,8 @@
@@ -1409,7 +1198,7 @@ index a99a414..6a32dd7 100644
  #define WLAN_CAPABILITY_ESS		(1<<0)
  #define WLAN_CAPABILITY_IBSS		(1<<1)
  #define WLAN_CAPABILITY_CF_POLLABLE	(1<<2)
-@@ -546,14 +548,6 @@ static int handle_scan(struct nl80211_state *state,
+@@ -544,14 +546,6 @@ static int handle_scan(struct nl80211_state *state,
  	return err;
  }
  
@@ -1424,7 +1213,7 @@ index a99a414..6a32dd7 100644
  struct print_ies_data {
  	unsigned char *ie;
  	int ielen;
-@@ -562,9 +556,7 @@ struct print_ies_data {
+@@ -560,9 +554,7 @@ struct print_ies_data {
  static void print_ssid(const uint8_t type, uint8_t len, const uint8_t *data,
  		       const struct print_ies_data *ie_buffer)
  {
@@ -1435,13 +1224,13 @@ index a99a414..6a32dd7 100644
  }
  
  #define BSS_MEMBERSHIP_SELECTOR_VHT_PHY 126
-@@ -576,21 +568,18 @@ static void print_supprates(const uint8_t type, uint8_t len,
+@@ -574,21 +566,18 @@ static void print_supprates(const uint8_t type, uint8_t len,
  {
  	int i;
  
 -	printf(" ");
 -
-+	json_arr_open("Rates");
++	json_arr_open("rates");
  	for (i = 0; i < len; i++) {
  		int r = data[i] & 0x7f;
 -
@@ -1466,7 +1255,7 @@ index a99a414..6a32dd7 100644
  }
  
  static void print_rm_enabled_capabilities(const uint8_t type, uint8_t len,
-@@ -603,16 +592,14 @@ static void print_rm_enabled_capabilities(const uint8_t type, uint8_t len,
+@@ -601,16 +590,14 @@ static void print_rm_enabled_capabilities(const uint8_t type, uint8_t len,
  		     ((__u64) data[3]) << 24 |
  		     ((__u64) data[4]) << 32;
  
@@ -1475,8 +1264,8 @@ index a99a414..6a32dd7 100644
 -							     data[0], data[1],
 -							     data[2], data[3],
 -							     data[4]);
-+	iw_printf("Capabilities Raw value", "0x%02x 0x%02x 0x%02x 0x%02x 0x%02x", data[0], data[1], data[2], data[3], data[4]);
-+	json_arr_open("Capabilities");
++	iw_printf("capabilities_raw", "0x%02x 0x%02x 0x%02x 0x%02x 0x%02x", data[0], data[1], data[2], data[3], data[4]);
++	json_arr_open("capabilities");
 +
  
  #define PRINT_RM_CAPA(_bit, _str) \
@@ -1487,15 +1276,15 @@ index a99a414..6a32dd7 100644
  	} while (0)
  
  	PRINT_RM_CAPA(0, "Link Measurement");
-@@ -644,14 +631,16 @@ static void print_rm_enabled_capabilities(const uint8_t type, uint8_t len,
+@@ -642,14 +629,16 @@ static void print_rm_enabled_capabilities(const uint8_t type, uint8_t len,
  	PRINT_RM_CAPA(34, "FTM Range Report");
  	PRINT_RM_CAPA(35, "Civic Location Measurement");
  
 -	printf("\t\tNonoperating Channel Max Measurement Duration: %i\n", data[3] >> 5);
 -	printf("\t\tMeasurement Pilot Capability: %i\n", data[4] & 7);
 +	json_arr_close();
-+	iw_printf("Non operating Channel Max Measurement Duration", "%d", data[3] >> 5);
-+	iw_printf("Measurement Pilot Capability", "%d", data[4] & 7);
++	iw_printf("nonoperating_channel_max_measurement_duration", "%d", data[3] >> 5);
++	iw_printf("measurement_pilot_capability", "%d", data[4] & 7);
 +
  }
  
@@ -1503,30 +1292,30 @@ index a99a414..6a32dd7 100644
  		     const struct print_ies_data *ie_buffer)
  {
 -	printf(" channel %d\n", data[0]);
-+	iw_printf("Channel", "%d", data[0]);
++	iw_printf("channel", "%d", data[0]);
  }
  
  static const char *country_env_str(char environment)
-@@ -671,28 +660,27 @@ static const char *country_env_str(char environment)
+@@ -669,28 +658,27 @@ static const char *country_env_str(char environment)
  static void print_country(const uint8_t type, uint8_t len, const uint8_t *data,
  			  const struct print_ies_data *ie_buffer)
  {
 -	printf(" %.*s", 2, data);
 -
 -	printf("\tEnvironment: %s\n", country_env_str(data[2]));
-+	iw_printf("Country", "%.*s", 2, data);
-+	iw_printf("Environment", "%s", country_env_str(data[2]));
++	iw_printf("country", "%.*s", 2, data);
++	iw_printf("environment", "%s", country_env_str(data[2]));
  
  	data += 3;
  	len -= 3;
  
  	if (len < 3) {
 -		printf("\t\tNo country IE triplets present\n");
-+		iw_printf("No Country IE Triplets Present", "true");
++		iw_printf("no_country_ie_triplets_present", "%s", "true");
  		return;
  	}
  
-+	json_obj_open("Channels");
++	json_obj_open("channels");
  	while (len >= 3) {
  		int end_channel;
  		union ieee80211_country_ie_triplet *triplet = (void *) data;
@@ -1537,23 +1326,23 @@ index a99a414..6a32dd7 100644
 -			       triplet->ext.reg_class,
 -			       triplet->ext.coverage_class,
 -			       triplet->ext.coverage_class * 450);
-+			iw_printf("Extension ID", "%d", triplet->ext.reg_extension_id);
-+			iw_printf("Regulatory Class", "%d", triplet->ext.reg_class);
-+			iw_printf("Coverage Class", "%d", triplet->ext.coverage_class);
-+			iw_printf("Coverage Class Up To, dBm", "%d", triplet->ext.coverage_class * 450);
++			iw_printf("extension id", "%d", triplet->ext.reg_extension_id);
++			iw_printf("regulatory class", "%d", triplet->ext.reg_class);
++			iw_printf("coverage class", "%d", triplet->ext.coverage_class);
++			iw_printf("coverage class up to", "%d", triplet->ext.coverage_class * 450);
  
  			data += 3;
  			len -= 3;
-@@ -705,11 +693,15 @@ static void print_country(const uint8_t type, uint8_t len, const uint8_t *data,
+@@ -703,11 +691,15 @@ static void print_country(const uint8_t type, uint8_t len, const uint8_t *data,
  		else
  			end_channel =  triplet->chans.first_channel + (4 * (triplet->chans.num_channels - 1));
  
 -		printf("\t\tChannels [%d - %d] @ %d dBm\n", triplet->chans.first_channel, end_channel, triplet->chans.max_power);
 -
 +		json_obj_open("%d", triplet->chans.first_channel);
-+		iw_printf("First", "%d", triplet->chans.first_channel);
-+		iw_printf("End", "%d", end_channel);
-+		iw_printf("Max power, dBm", "%d", triplet->chans.max_power);
++		iw_printf("first", "%d", triplet->chans.first_channel);
++		iw_printf("end", "%d", end_channel);
++		iw_printf("max power dbm", "%d", triplet->chans.max_power);
 +		json_obj_close();
  		data += 3;
  		len -= 3;
@@ -1562,12 +1351,12 @@ index a99a414..6a32dd7 100644
  
  	return;
  }
-@@ -718,29 +710,27 @@ static void print_powerconstraint(const uint8_t type, uint8_t len,
+@@ -716,29 +708,27 @@ static void print_powerconstraint(const uint8_t type, uint8_t len,
  				  const uint8_t *data,
  				  const struct print_ies_data *ie_buffer)
  {
 -	printf(" %d dB\n", data[0]);
-+	iw_printf("dB", "%d", data[0]);
++	iw_printf("db", "%d", data[0]);
  }
  
  static void print_tpcreport(const uint8_t type, uint8_t len,
@@ -1576,7 +1365,7 @@ index a99a414..6a32dd7 100644
  {
 -	printf(" TX power: %d dBm\n", data[0]);
 -	/* printf(" Link Margin (%d dB) is reserved in Beacons\n", data[1]); */
-+	iw_printf("TX power, dBm", "%d", data[0]);
++	iw_printf("tx_power_dbm", "%d", data[0]);
  }
  
  static void print_erp(const uint8_t type, uint8_t len, const uint8_t *data,
@@ -1584,29 +1373,29 @@ index a99a414..6a32dd7 100644
  {
  	if (data[0] == 0x00)
 -		printf(" <no flags>");
-+		iw_printf("No Flags", "true");
++		iw_printf("no_flags", "%s", "true");
  	if (data[0] & 0x01)
 -		printf(" NonERP_Present");
-+		iw_printf("Non ERP Present", "true");
++		iw_printf("nonerp_present", "%s", "true");
  	if (data[0] & 0x02)
 -		printf(" Use_Protection");
-+		iw_printf("Use Protection", "true");
++		iw_printf("use_protection", "%s", "true");
  	if (data[0] & 0x04)
 -		printf(" Barker_Preamble_Mode");
 -	printf("\n");
-+		iw_printf("Barker Preamble Mode", "true");
++		iw_printf("barker_preamble_mode", "%s", "true");
  }
  
  static void print_ap_channel_report(const uint8_t type, uint8_t len, const uint8_t *data,
-@@ -749,13 +739,13 @@ static void print_ap_channel_report(const uint8_t type, uint8_t len, const uint8
+@@ -747,13 +737,13 @@ static void print_ap_channel_report(const uint8_t type, uint8_t len, const uint8
  	uint8_t oper_class = data[0];
  	int i;
  
 -	printf("\n");
 -	printf("\t\t * operating class: %d\n", oper_class);
 -	printf("\t\t * channel(s):");
-+	iw_printf("Operating Class", "%d", oper_class);
-+	json_arr_open("Channels");
++	iw_printf("operating_class", "%d", oper_class);
++	json_arr_open("channels");
  	for (i = 1; i < len; ++i) {
 -		printf(" %d", data[i]);
 +		iw_printf(NULL, "%d", data[i]);
@@ -1617,7 +1406,7 @@ index a99a414..6a32dd7 100644
  }
  
  static void print_cipher(const uint8_t *data)
-@@ -763,59 +753,56 @@ static void print_cipher(const uint8_t *data)
+@@ -761,59 +751,56 @@ static void print_cipher(const uint8_t *data)
  	if (memcmp(data, ms_oui, 3) == 0) {
  		switch (data[3]) {
  		case 0:
@@ -1693,7 +1482,7 @@ index a99a414..6a32dd7 100644
  }
  
  static void print_auth(const uint8_t *data)
-@@ -823,127 +810,117 @@ static void print_auth(const uint8_t *data)
+@@ -821,127 +808,117 @@ static void print_auth(const uint8_t *data)
  	if (memcmp(data, ms_oui, 3) == 0) {
  		switch (data[3]) {
  		case 1:
@@ -1852,13 +1641,13 @@ index a99a414..6a32dd7 100644
  		return;
  	}
  
-@@ -951,20 +928,17 @@ static void _print_rsn_ie(const char *defcipher, const char *defauth,
+@@ -949,20 +926,17 @@ static void _print_rsn_ie(const char *defcipher, const char *defauth,
  	if (2 + (count * 4) > len)
  		goto invalid;
  
 -	tab_on_first(&first);
 -	printf("\t * Pairwise ciphers:");
-+	json_arr_open("Pairwise Ciphers Data");
++	json_arr_open("pairwise_ciphers_data");
  	for (i = 0; i < count; i++) {
 -		printf(" ");
  		print_cipher(data + 2 + (i * 4));
@@ -1872,17 +1661,17 @@ index a99a414..6a32dd7 100644
  	if (len < 2) {
 -		tab_on_first(&first);
 -		printf("\t * Authentication suites: %s\n", defauth);
-+		iw_printf("Authentication Suites", "%s", defauth);
++		iw_printf("authentication_suites", "%s", defauth);
  		return;
  	}
  
-@@ -972,66 +946,66 @@ static void _print_rsn_ie(const char *defcipher, const char *defauth,
+@@ -970,66 +944,66 @@ static void _print_rsn_ie(const char *defcipher, const char *defauth,
  	if (2 + (count * 4) > len)
  		goto invalid;
  
 -	tab_on_first(&first);
 -	printf("\t * Authentication suites:");
-+	json_arr_open("Authentication Suites Data");
++	json_arr_open("authentication_suites_data");
  	for (i = 0; i < count; i++) {
 -		printf(" ");
  		print_auth(data + 2 + (i * 4));
@@ -1897,9 +1686,9 @@ index a99a414..6a32dd7 100644
  		capa = data[0] | (data[1] << 8);
 -		tab_on_first(&first);
 -		printf("\t * Capabilities:");
-+		iw_printf("Capabilities Raw Value", "0x%.4x", capa);
++		iw_printf("capabilities_raw", "0x%.4x", capa);
 +
-+		json_arr_open("Capabilities");
++		json_arr_open("capabilities");
  		if (capa & 0x0001)
 -			printf(" PreAuth");
 +			iw_printf(NULL, "PreAuth");
@@ -1966,23 +1755,23 @@ index a99a414..6a32dd7 100644
  		data += 2;
  		len -= 2;
  	}
-@@ -1040,8 +1014,7 @@ static void _print_rsn_ie(const char *defcipher, const char *defauth,
+@@ -1038,8 +1012,7 @@ static void _print_rsn_ie(const char *defcipher, const char *defauth,
  		int pmkid_count = data[0] | (data[1] << 8);
  
  		if (len >= 2 + 16 * pmkid_count) {
 -			tab_on_first(&first);
 -			printf("\t * %d PMKIDs\n", pmkid_count);
-+			iw_printf("PMKIDs Count", "%d", pmkid_count);
++			iw_printf("pmkids_count", "%d", pmkid_count);
  			/* not printing PMKID values */
  			data += 2 + 16 * pmkid_count;
  			len -= 2 + 16 * pmkid_count;
-@@ -1050,23 +1023,23 @@ static void _print_rsn_ie(const char *defcipher, const char *defauth,
+@@ -1048,23 +1021,23 @@ static void _print_rsn_ie(const char *defcipher, const char *defauth,
  	}
  
  	if (len >= 4) {
 -		tab_on_first(&first);
 -		printf("\t * Group mgmt cipher suite: ");
-+		json_arr_open("Group MGMT Cipher Suite Data");
++		json_arr_open("group_mgmt_cipher_suite_data");
  		print_cipher(data);
 -		printf("\n");
 +		json_arr_close();
@@ -1993,8 +1782,8 @@ index a99a414..6a32dd7 100644
   invalid:
  	if (len != 0) {
 -		printf("\t\t * bogus tail data (%d):", len);
-+		iw_printf("Bogus Tail Data Length", "%d", len);
-+		json_arr_open("Bogus Tail Data");
++		iw_printf("bogus_tail_data_len", "%d", len);
++		json_arr_open("bogus_tail_data");
  		while (len) {
 -			printf(" %.2x", *data);
 +			iw_printf(NULL, "%.2x", *data);
@@ -2006,15 +1795,7 @@ index a99a414..6a32dd7 100644
  	}
  }
  
-@@ -1079,7 +1052,6 @@ static void print_rsn_ie(const char *defcipher, const char *defauth,
- static void print_osen_ie(const char *defcipher, const char *defauth,
- 			  uint8_t len, const uint8_t *data)
- {
--	printf("\n\t");
- 	_print_rsn_ie(defcipher, defauth, len, data, 1);
- }
- 
-@@ -1092,7 +1064,6 @@ static void print_rsn(const uint8_t type, uint8_t len, const uint8_t *data,
+@@ -1090,7 +1063,6 @@ static void print_rsn(const uint8_t type, uint8_t len, const uint8_t *data,
  static void print_ht_capa(const uint8_t type, uint8_t len, const uint8_t *data,
  			  const struct print_ies_data *ie_buffer)
  {
@@ -2022,91 +1803,7 @@ index a99a414..6a32dd7 100644
  	print_ht_capability(data[0] | (data[1] << 8));
  	print_ampdu_length(data[2] & 3);
  	print_ampdu_spacing((data[2] >> 2) & 7);
-@@ -1138,31 +1109,32 @@ static void print_interworking(const uint8_t type, uint8_t len,
- 			       const struct print_ies_data *ie_buffer)
- {
- 	/* See Section 7.3.2.92 in the 802.11u spec. */
--	printf("\n");
- 	if (len >= 1) {
- 		uint8_t ano = data[0];
--		printf("\t\tNetwork Options: 0x%hx\n", (unsigned short)(ano));
--		printf("\t\t\tNetwork Type: %i (%s)\n",
--		       (int)(ano & 0xf), ntype_11u(ano & 0xf));
-+		iw_printf("Network Options", "0x%hx", (unsigned short)(ano));
-+		iw_printf("Network type, least significant 4 bits", "%i", (int)(ano & 0xf));
-+		iw_printf("Network Type", "%s", ntype_11u(ano & 0xf));
-+		json_arr_open("Data");
- 		if (ano & (1<<4))
--			printf("\t\t\tInternet\n");
-+			iw_printf(NULL, "Internet");
- 		if (ano & (1<<5))
--			printf("\t\t\tASRA\n");
-+			iw_printf(NULL, "ASRA");
- 		if (ano & (1<<6))
--			printf("\t\t\tESR\n");
-+			iw_printf(NULL, "ESR");
- 		if (ano & (1<<7))
--			printf("\t\t\tUESA\n");
-+			iw_printf(NULL, "UESA");
-+		json_arr_close();
- 	}
- 	if ((len == 3) || (len == 9)) {
--		printf("\t\tVenue Group: %i (%s)\n",
--		       (int)(data[1]), vgroup_11u(data[1]));
--		printf("\t\tVenue Type: %i\n", (int)(data[2]));
-+		iw_printf("Venue Group Raw Value", "%i", (int)(data[1]));
-+		iw_printf("Venue Group", "%s", vgroup_11u(data[1]));
-+		iw_printf("Venue Type", "%i", (int)(data[2]));
- 	}
- 	if (len == 9)
--		printf("\t\tHESSID: %02hhx:%02hhx:%02hhx:%02hhx:%02hhx:%02hhx\n",
-+		iw_printf("HESSID", "%02hhx:%02hhx:%02hhx:%02hhx:%02hhx:%02hhx",
- 		       data[3], data[4], data[5], data[6], data[7], data[8]);
- 	else if (len == 7)
--		printf("\t\tHESSID: %02hhx:%02hhx:%02hhx:%02hhx:%02hhx:%02hhx\n",
-+		iw_printf("HESSID", "%02hhx:%02hhx:%02hhx:%02hhx:%02hhx:%02hhx",
- 		       data[1], data[2], data[3], data[4], data[5], data[6]);
- }
- 
-@@ -1173,28 +1145,26 @@ static void print_11u_advert(const uint8_t type, uint8_t len,
- 	/* See Section 7.3.2.93 in the 802.11u spec. */
- 	/* TODO: This code below does not decode private protocol IDs */
- 	int idx = 0;
--	printf("\n");
- 	while (idx < (len - 1)) {
- 		uint8_t qri = data[idx];
- 		uint8_t proto_id = data[idx + 1];
--		printf("\t\tQuery Response Info: 0x%hx\n", (unsigned short)(qri));
--		printf("\t\t\tQuery Response Length Limit: %i\n",
--		       (qri & 0x7f));
-+		iw_printf("Query Response Info", "0x%hx", (unsigned short)(qri));
-+		iw_printf("Query Response Length Limit", "%i", (qri & 0x7f));
- 		if (qri & (1<<7))
--			printf("\t\t\tPAME-BI\n");
-+			iw_printf("PAME-BI", "true");
- 		switch(proto_id) {
- 		case 0:
--			printf("\t\t\tANQP\n"); break;
-+			iw_printf("Protocol ID", "ANQP"); break;
- 		case 1:
--			printf("\t\t\tMIH Information Service\n"); break;
-+			iw_printf("Protocol ID", "MIH Information Service"); break;
- 		case 2:
--			printf("\t\t\tMIH Command and Event Services Capability Discovery\n"); break;
-+			iw_printf("Protocol ID", "MIH Command and Event Services Capability Discovery"); break;
- 		case 3:
--			printf("\t\t\tEmergency Alert System (EAS)\n"); break;
-+			iw_printf("Protocol ID", "Emergency Alert System (EAS)"); break;
- 		case 221:
--			printf("\t\t\tVendor Specific\n"); break;
-+			iw_printf("Protocol ID", "Vendor Specific"); break;
- 		default:
--			printf("\t\t\tReserved: %i\n", proto_id); break;
-+			iw_printf("Protocol ID", "Reserved: %i", proto_id); break;
- 		}
- 		idx += 2;
- 	}
-@@ -1208,47 +1178,46 @@ static void print_11u_rcon(const uint8_t type, uint8_t len, const uint8_t *data,
+@@ -1206,47 +1178,46 @@ static void print_11u_rcon(const uint8_t type, uint8_t len, const uint8_t *data,
  	int ln0 = data[1] & 0xf;
  	int ln1 = ((data[1] & 0xf0) >> 4);
  	int ln2 = 0;
@@ -2123,7 +1820,7 @@ index a99a414..6a32dd7 100644
 +		json_arr_open("OI 1");
  		if (2 + ln0 > len) {
 -			printf("Invalid IE length.\n");
-+			iw_printf(NULL, "Invalid IE length len: %d 2+ln0: %d", len, 2 + ln0);
++			iw_printf(NULL, "Invalid IE length", "len: %d 2+ln0: %d", len, 2 + ln0);
  		} else {
  			for (idx = 0; idx < ln0; idx++) {
 -				printf("%02hhx", data[2 + idx]);
@@ -2136,7 +1833,7 @@ index a99a414..6a32dd7 100644
  
  	if (ln1 > 0) {
 -		printf("\t\tOI 2: ");
-+		json_arr_open("OI 2");
++		json_arr_open("tOI 2");
  		if (2 + ln0 + ln1 > len) {
 -			printf("Invalid IE length.\n");
 +			iw_printf(NULL, "Invalid IE length len: %d 2 + ln0 + ln1: %d", len, 2 + ln0 + ln1);
@@ -2167,7 +1864,7 @@ index a99a414..6a32dd7 100644
  	}
  }
  
-@@ -1266,8 +1235,6 @@ static void print_tx_power_envelope(const uint8_t type, uint8_t len,
+@@ -1264,8 +1235,6 @@ static void print_tx_power_envelope(const uint8_t type, uint8_t len,
  		"Local Maximum Transmit Power For 160/80+80 MHz",
  	};
  
@@ -2176,23 +1873,19 @@ index a99a414..6a32dd7 100644
  	if (local_max_tx_power_count + 2 != len)
  		return;
  	if (local_max_tx_power_unit_interp != 0)
-@@ -1275,10 +1242,13 @@ static void print_tx_power_envelope(const uint8_t type, uint8_t len,
- 	for (i = 0; i < local_max_tx_power_count + 1; ++i) {
+@@ -1274,9 +1243,9 @@ static void print_tx_power_envelope(const uint8_t type, uint8_t len,
  		int8_t power_val = ((int8_t)data[1 + i]) >> 1;
  		int8_t point5 = data[1 + i] & 1;
-+		char power_name[64];
-+		size_t power_name_size = sizeof(power_name);
-+		snprintf(power_name, power_name_size, "%s, dBm", power_names[i]);
  		if (point5)
 -			printf("\t\t * %s: %i.5 dBm\n", power_names[i], power_val);
-+			iw_printf(power_name, "%i.%i", power_val, 5);
++			iw_printf(power_names[i], "%s: %i.5 dBm\n", power_names[i], power_val);
  		else
 -			printf("\t\t * %s: %i dBm\n", power_names[i], power_val);
-+			iw_printf(power_name, "%i", power_val);
++			iw_printf(power_names[i], "%s: %i dBm", power_names[i], power_val);
  	}
  }
  
-@@ -1302,22 +1272,19 @@ static void print_ht_op(const uint8_t type, uint8_t len, const uint8_t *data,
+@@ -1300,22 +1269,19 @@ static void print_ht_op(const uint8_t type, uint8_t len, const uint8_t *data,
  		"20 MHz",
  		"any",
  	};
@@ -2212,31 +1905,31 @@ index a99a414..6a32dd7 100644
 -	printf("\t\t * L-SIG TXOP Prot: %d\n", (data[5] & 0x2) >> 1);
 -	printf("\t\t * PCO active: %d\n", (data[5] & 0x4) >> 2);
 -	printf("\t\t * PCO phase: %d\n", (data[5] & 0x8) >> 3);
-+	iw_printf("Primary Channel", "%d", data[0]);
-+	iw_printf("Secondary Channel Offset", "%s", ht_secondary_offset[data[1] & 0x3]);
-+	iw_printf("STA Channel Width", "%s", sta_chan_width[(data[1] & 0x4)>>2]);
-+	iw_printf("RIFS", "%d", (data[1] & 0x8)>>3);
-+	iw_printf("HT Protection", "%s", protection[data[2] & 0x3]);
-+	iw_printf("Non-GF Present", "%d", (data[2] & 0x4) >> 2);
-+	iw_printf("OBSS Non-GF Present", "%d", (data[2] & 0x10) >> 4);
-+	iw_printf("Dual Beacon", "%d", (data[4] & 0x40) >> 6);
-+	iw_printf("Dual CTS Protection", "%d", (data[4] & 0x80) >> 7);
-+	iw_printf("STBC Beacon", "%d", data[5] & 0x1);
-+	iw_printf("L-SIG TXOP Protection", "%d", (data[5] & 0x2) >> 1);
-+	iw_printf("PCO Active", "%d", (data[5] & 0x4) >> 2);
-+	iw_printf("PCO Phase", "%d", (data[5] & 0x8) >> 3);
++	iw_printf("primary_channel", "%d", data[0]);
++	iw_printf("secondary_channel_offset", "%s", ht_secondary_offset[data[1] & 0x3]);
++	iw_printf("sta_channel_width", "%s", sta_chan_width[(data[1] & 0x4)>>2]);
++	iw_printf("rifs", "%d", (data[1] & 0x8)>>3);
++	iw_printf("ht_protection", "%s", protection[data[2] & 0x3]);
++	iw_printf("non-gf_present", "%d", (data[2] & 0x4) >> 2);
++	iw_printf("obss_non-gf_present", "%d", (data[2] & 0x10) >> 4);
++	iw_printf("dual_beacon", "%d", (data[4] & 0x40) >> 6);
++	iw_printf("dual_cts_protection", "%d", (data[4] & 0x80) >> 7);
++	iw_printf("stbc_beacon", "%d", data[5] & 0x1);
++	iw_printf("l-sig_txop_prot", "%d", (data[5] & 0x2) >> 1);
++	iw_printf("pco_active", "%d", (data[5] & 0x4) >> 2);
++	iw_printf("pco_phase", "%d", (data[5] & 0x8) >> 3);
  }
  
  static void print_capabilities(const uint8_t type, uint8_t len,
-@@ -1338,6 +1305,7 @@ static void print_capabilities(const uint8_t type, uint8_t len,
+@@ -1336,6 +1302,7 @@ static void print_capabilities(const uint8_t type, uint8_t len,
  		ie += ie[1] + 2;
  	}
  
-+	json_arr_open("Capabilities");
++	json_arr_open("capabilities");
  	for (i = 0; i < len; i++) {
  		base = i * 8;
  
-@@ -1345,15 +1313,13 @@ static void print_capabilities(const uint8_t type, uint8_t len,
+@@ -1343,15 +1310,13 @@ static void print_capabilities(const uint8_t type, uint8_t len,
  			if (!(data[i] & (1 << bit)))
  				continue;
  
@@ -2254,7 +1947,7 @@ index a99a414..6a32dd7 100644
  		break;						\
  	}							\
  	sum += val;						\
-@@ -1370,7 +1336,7 @@ static void print_capabilities(const uint8_t type, uint8_t len,
+@@ -1368,7 +1333,7 @@ static void print_capabilities(const uint8_t type, uint8_t len,
  
  			case 6:
  				s_psmp_support = true;
@@ -2263,7 +1956,7 @@ index a99a414..6a32dd7 100644
  				break;
  
  			CAPA(7, "Event");
-@@ -1426,7 +1392,7 @@ static void print_capabilities(const uint8_t type, uint8_t len,
+@@ -1424,7 +1389,7 @@ static void print_capabilities(const uint8_t type, uint8_t len,
  			CAPA(55, "QLoad Report");
  			CAPA(56, "Alternate EDCA");
  			CAPA(57, "Unprotected TXOP Negotiation");
@@ -2272,12 +1965,12 @@ index a99a414..6a32dd7 100644
  			CAPA(59, "Reserved");
  			CAPA(60, "Protected QLoad Report");
  			CAPA(61, "TDLS Wider Bandwidth");
-@@ -1450,62 +1416,50 @@ static void print_capabilities(const uint8_t type, uint8_t len,
- 			CAPA(79, "OBSS Narrow Bandwith RU in UL OFDMA Tolerance Support");
- 
+@@ -1444,62 +1409,50 @@ static void print_capabilities(const uint8_t type, uint8_t len,
+ 			CAPA(73, "Extended Spectrum Management Capable");
+ 			CAPA(74, "Reserved");
  			default:
 -				printf(" %d", bit);
-+				iw_printf(NULL, "Bit: %d", bit);
++				iw_printf(NULL, "bit: %d", bit);
  				break;
  			}
 +
@@ -2293,7 +1986,7 @@ index a99a414..6a32dd7 100644
  	if (s_psmp_support)
 -		printf("\n\t\t * Service Interval Granularity is %d ms",
 -		       (si_duration + 1) * 5);
-+		iw_printf("Service Interval Granularity, ms", "%d", (si_duration + 1) * 5);
++		iw_printf("service_interval_granularity_ms", "%d", (si_duration + 1) * 5);
  
  	if (is_vht_cap) {
 -		printf("\n\t\t * Max Number Of MSDUs In A-MSDU is ");
@@ -2319,7 +2012,7 @@ index a99a414..6a32dd7 100644
 +			case 3: max_amsdu_ = 8; break;
 +			default: break;
  		}
-+		iw_printf("Max Number Of MSSDUs In A-MSDU", "%d", max_amsdu_);
++		iw_printf("max_number_of_mssdu_in_a-msdu", "%d", max_amsdu_);
  	}
 -
 -	printf("\n");
@@ -2331,11 +2024,11 @@ index a99a414..6a32dd7 100644
 -	printf(" DTIM Count %u DTIM Period %u Bitmap Control 0x%x "
 -	       "Bitmap[0] 0x%x",
 -	       data[0], data[1], data[2], data[3]);
-+	iw_printf("Value", "DTIM Count %u DTIM Period %u Bitmap Control 0x%x Bitmap[0] 0x%x", data[0], data[1], data[2], data[3]);
++	iw_printf("value", "DTIM Count %u DTIM Period %u Bitmap Control 0x%x Bitmap[0] 0x%x", data[0], data[1], data[2], data[3]);
  	if (len - 4)
 -		printf(" (+ %u octet%s)", len - 4, len - 4 == 1 ? "" : "s");
 -	printf("\n");
-+		iw_printf("Octets", "%u", len - 4);
++		iw_printf("octets", "%u", len - 4);
  }
  
  static void print_ibssatim(const uint8_t type, uint8_t len, const uint8_t *data,
@@ -2352,36 +2045,36 @@ index a99a414..6a32dd7 100644
  	print_vht_info((__u32) data[0] | ((__u32)data[1] << 8) |
  		       ((__u32)data[2] << 16) | ((__u32)data[3] << 24),
  		       data + 4);
-@@ -1521,12 +1475,12 @@ static void print_vht_oper(const uint8_t type, uint8_t len, const uint8_t *data,
+@@ -1515,12 +1468,12 @@ static void print_vht_oper(const uint8_t type, uint8_t len, const uint8_t *data,
  		[2] = "160 MHz",
  	};
  
 -	printf("\n");
 -	printf("\t\t * channel width: %d (%s)\n", data[0],
-+	iw_printf("Channel Width", "%d (%s)", data[0],
++	iw_printf("channel_width", "%d (%s)", data[0],
  		data[0] < ARRAY_SIZE(chandwidths) ? chandwidths[data[0]] : "unknown");
 -	printf("\t\t * center freq segment 1: %d\n", data[1]);
 -	printf("\t\t * center freq segment 2: %d\n", data[2]);
 -	printf("\t\t * VHT basic MCS set: 0x%.2x%.2x\n", data[4], data[3]);
-+	iw_printf("Center Freq Segment 1", "%d", data[1]);
-+	iw_printf("Center freq Segment 2", "%d", data[2]);
-+	iw_printf("VHT Basic MCS Set", "0x%.2x%.2x", data[4], data[3]);
++	iw_printf("center freq segment 1", "%d", data[1]);
++	iw_printf("center freq segment 2", "%d", data[2]);
++	iw_printf("vht_basic_mcs_set", "0x%.2x%.2x", data[4], data[3]);
 +
  }
  
  static void print_supp_op_classes(const uint8_t type, uint8_t len,
-@@ -1538,8 +1492,8 @@ static void print_supp_op_classes(const uint8_t type, uint8_t len,
+@@ -1532,8 +1485,8 @@ static void print_supp_op_classes(const uint8_t type, uint8_t len,
  	int zero_delimiter = 0;
  	int one_hundred_thirty_delimiter = 0;
  
 -	printf("\n");
 -	printf("\t\t * current operating class: %d\n", *p);
-+	iw_printf("Current Operating Class", "%d", *p);
-+	json_arr_open("Operating Class");
++	iw_printf("current_operating_class", "%d", *p);
++	json_arr_open("operating_class");
  	while (++p < next_data) {
  		if (*p == 130) {
  			one_hundred_thirty_delimiter = 1;
-@@ -1549,18 +1503,28 @@ static void print_supp_op_classes(const uint8_t type, uint8_t len,
+@@ -1543,18 +1496,28 @@ static void print_supp_op_classes(const uint8_t type, uint8_t len,
  			zero_delimiter = 0;
  			break;
  		}
@@ -2391,7 +2084,7 @@ index a99a414..6a32dd7 100644
 -	if (one_hundred_thirty_delimiter)
 +	json_arr_close();
 +
-+	json_arr_open("Current Operating Class Extension");
++	json_arr_open("current operating class extension");
 +	if (one_hundred_thirty_delimiter){
  		while (++p < next_data) {
 -			printf("\t\t * current operating class extension: %d\n", *p);
@@ -2401,7 +2094,7 @@ index a99a414..6a32dd7 100644
 +	}
 +	json_arr_close();
 +
-+	json_arr_open("Operating Class Tuple");
++	json_arr_open("operating class tuple");
 +	if (zero_delimiter){
  		while (++p < next_data - 1) {
 -			printf("\t\t * operating class tuple: %d %d\n", p[0], p[1]);
@@ -2415,28 +2108,28 @@ index a99a414..6a32dd7 100644
  }
  
  static void print_measurement_pilot_tx(const uint8_t type, uint8_t len,
-@@ -1569,8 +1533,7 @@ static void print_measurement_pilot_tx(const uint8_t type, uint8_t len,
+@@ -1563,8 +1526,7 @@ static void print_measurement_pilot_tx(const uint8_t type, uint8_t len,
  {
  	uint8_t *p, len_remaining;
  
 -	printf("\n");
 -	printf("\t\t * interval: %d TUs\n", data[0]);
-+	iw_printf("Interval, TUs", "%d", data[0]);
++	iw_printf("interval_tus", "%d", data[0]);
  
  	if (len <= 1)
  		return;
-@@ -1590,23 +1553,21 @@ static void print_measurement_pilot_tx(const uint8_t type, uint8_t len,
+@@ -1584,23 +1546,21 @@ static void print_measurement_pilot_tx(const uint8_t type, uint8_t len,
  
  		/* 802.11-2016 only allows vendor specific elements */
  		if (subelement_id != 221) {
 -			printf("\t\t * <Invalid subelement ID %d>\n", subelement_id);
-+			iw_printf("Invalid Subelement ID", "%d", subelement_id);
++			iw_printf("invalid_subelement_id", "%d", subelement_id);
  			return;
  		}
  
  		if (len < 3 || len > len_remaining) {
 -			printf(" <Parse error, element too short>\n");
-+			iw_printf("Invalid Subelement ID", "%d", subelement_id);
++			iw_printf("invalid_subelement_id", "%d", subelement_id);
  			return;
  		}
  
@@ -2444,7 +2137,7 @@ index a99a414..6a32dd7 100644
 -			p[0], p[1], p[2]);
 -		/* add only two here and use ++p in while loop */
 -		p += 2;
-+		json_arr_open("Vendor Specific OUI");
++		json_arr_open("vendor_specific_oui");
  
 -		while (++p < end)
 -			printf(" %.2x", *p);
@@ -2456,7 +2149,7 @@ index a99a414..6a32dd7 100644
  
  		len_remaining -= len;
  	}
-@@ -1616,15 +1577,13 @@ static void print_obss_scan_params(const uint8_t type, uint8_t len,
+@@ -1610,15 +1570,13 @@ static void print_obss_scan_params(const uint8_t type, uint8_t len,
  				   const uint8_t *data,
  				   const struct print_ies_data *ie_buffer)
  {
@@ -2469,25 +2162,25 @@ index a99a414..6a32dd7 100644
 -	printf("\t\t * BSS width channel transition delay factor: %d\n", (data[11] << 8) | data[10]);
 -	printf("\t\t * OBSS Scan Activity Threshold: %d.%02d %%\n",
 -		((data[13] << 8) | data[12]) / 100, ((data[13] << 8) | data[12]) % 100);
-+	iw_printf("Passive dwell, TUs", "%d", (data[1] << 8) | data[0]);
-+	iw_printf("Active dwell, TUs", "%d", (data[3] << 8) | data[2]);
-+	iw_printf("Channel Width Trigger Scan Interval, s", "%d", (data[5] << 8) | data[4]);
-+	iw_printf("Scan Passive Total Per Channel, TUs", "%d", (data[7] << 8) | data[6]);
-+	iw_printf("Scan Active Total Per Channel, TUs", "%d", (data[9] << 8) | data[8]);
-+	iw_printf("BSS Width Channel Transition Delay Factor", "%d", (data[11] << 8) | data[10]);
-+	iw_printf("OBSS Scan Activity Threshold", "%d.%02d %%\n", ((data[13] << 8) | data[12]) / 100, ((data[13] << 8) | data[12]) % 100);
++	iw_printf("passive_dwell_tus", "%d", (data[1] << 8) | data[0]);
++	iw_printf("active_dwell_tus", "%d", (data[3] << 8) | data[2]);
++	iw_printf("channel_width_trigger_scan_interval_s", "%d", (data[5] << 8) | data[4]);
++	iw_printf("scan_passive_total_per_channel_tus", "%d", (data[7] << 8) | data[6]);
++	iw_printf("scan_active_total_per_channel_tus", "%d", (data[9] << 8) | data[8]);
++	iw_printf("bss_width_channel_transition_delay_factor", "%d", (data[11] << 8) | data[10]);
++	iw_printf("obss_scan_ctivity_threshold", "%d.%02d %%\n", ((data[13] << 8) | data[12]) / 100, ((data[13] << 8) | data[12]) % 100);
  }
  
  static void print_secchan_offs(const uint8_t type, uint8_t len,
-@@ -1632,58 +1591,58 @@ static void print_secchan_offs(const uint8_t type, uint8_t len,
+@@ -1626,51 +1584,52 @@ static void print_secchan_offs(const uint8_t type, uint8_t len,
  			       const struct print_ies_data *ie_buffer)
  {
  	if (data[0] < ARRAY_SIZE(ht_secondary_offset))
 -		printf(" %s (%d)\n", ht_secondary_offset[data[0]], data[0]);
-+		iw_printf("Value", "%s (%d)", ht_secondary_offset[data[0]], data[0]);
++		iw_printf("value", "%s (%d)", ht_secondary_offset[data[0]], data[0]);
  	else
 -		printf(" %d\n", data[0]);
-+		iw_printf("Value", "%d", data[0]);
++		iw_printf("value", "%d", data[0]);
  }
  
 -static void print_bss_load(const uint8_t type, uint8_t len, const uint8_t *data,
@@ -2499,9 +2192,9 @@ index a99a414..6a32dd7 100644
 -	printf("\t\t * channel utilisation: %d/255\n", data[2]);
 -	printf("\t\t * available admission capacity: %d [*32us]\n", (data[4] << 8) | data[3]);
 +	const int8_t *data = (int8_t *)_data;
-+	iw_printf("Station Count", "%d", (data[1] << 8) | data[0]);
-+	iw_printf("Channel Utilisation", "%d", data[2]);
-+	iw_printf("Available Admission Capacity", "%d", (data[4] << 8) | data[3]);
++	iw_printf("station count", "%d", (data[1] << 8) | data[0]);
++	iw_printf("channel utilisation", "%d", data[2]);
++	iw_printf("available admission capacity", "%d", (data[4] << 8) | data[3]);
  }
  
  static void print_mesh_conf(const uint8_t type, uint8_t len,
@@ -2516,13 +2209,13 @@ index a99a414..6a32dd7 100644
 -	printf("\t\t * Authentication Protocol ID: %d\n", data[4]);
 -	printf("\t\t * Mesh Formation Info:\n");
 -	printf("\t\t\t Number of Peerings: %d\n", (data[5] & 0x7E) >> 1);
-+	iw_printf("Active Path Selection Protocol ID", "%d", data[0]);
-+	iw_printf("Active Path Selection Metric ID", "%d", data[1]);
-+	iw_printf("Congestion Control Mode ID", "%d", data[2]);
-+	iw_printf("Synchronization Method ID", "%d", data[3]);
-+	iw_printf("Authentication Protocol ID", "%d", data[4]);
-+	json_arr_open("Mesh Formation Info");
-+	iw_printf("Number of Peerings", "%d", (data[5] & 0x7E) >> 1);
++	iw_printf("active_path_selection_protocol_id", "%d", data[0]);
++	iw_printf("active_path_selection_metric_id", "%d", data[1]);
++	iw_printf("congestion_control_mode_id", "%d", data[2]);
++	iw_printf("synchronization_method_id", "%d", data[3]);
++	iw_printf("authentication_protocol_id", "%d", data[4]);
++	json_arr_open("mesh_formation_info");
++	iw_printf("number_of_peerings", "%d", (data[5] & 0x7E) >> 1);
  	if (data[5] & 0x01)
 -		printf("\t\t\t Connected to Mesh Gate\n");
 +		iw_printf(NULL, "Connected to Mesh Gate");
@@ -2531,7 +2224,7 @@ index a99a414..6a32dd7 100644
 -	printf("\t\t * Mesh Capability\n");
 +		iw_printf(NULL, "Connected to AS");
 +	json_arr_close();
-+	json_arr_open("Mesh Capability");
++	json_arr_open("mesh_capability");
  	if (data[6] & 0x01)
 -		printf("\t\t\t Accepting Additional Mesh Peerings\n");
 +		iw_printf(NULL, "Accepting Additional Mesh Peerings");
@@ -2556,88 +2249,8 @@ index a99a414..6a32dd7 100644
 +	json_arr_close();
  }
  
- static void print_s1g_capa(const uint8_t type, uint8_t len,
- 			    const uint8_t *data,
- 			    const struct print_ies_data *ie_buffer)
- {
--	printf("\n");
- 	print_s1g_capability(data);
- }
- 
-@@ -1691,7 +1650,7 @@ static void print_short_beacon_int(const uint8_t type, uint8_t len,
- 			    const uint8_t *data,
- 			    const struct print_ies_data *ie_buffer)
- {
--	printf(" %d\n", (data[1] << 8) | data[0]);
-+	iw_printf("Value", "%d", (data[1] << 8) | data[0]);
- }
- 
- static void print_s1g_oper(const uint8_t type, uint8_t len,
-@@ -1739,39 +1698,41 @@ static void print_s1g_oper(const uint8_t type, uint8_t len,
- 		break;
- 	}
- 
--	printf("\n");
--	printf("\t\tChannel width:\n");
-+	json_arr_open("Channel Width Info");
- 	if (oper_ch_width == -1 || prim_ch_width == -1) {
--		printf("\t\t\tBSS primary channel width: invalid\n");
--		printf("\t\t\tBSS operating channel width: invalid\n");
-+		iw_printf(NULL, "BSS primary channel width: invalid");
-+		iw_printf(NULL, "BSS operating channel width: invalid");
- 	} else {
--		printf("\t\t\tBSS primary channel width: %d MHz\n", prim_ch_width);
--		printf("\t\t\tBSS operating channel width: %d MHz\n", oper_ch_width);
-+		iw_printf(NULL, "BSS primary channel width: %d MHz", prim_ch_width);
-+		iw_printf(NULL, "BSS operating channel width: %d MHz", oper_ch_width);
- 	}
- 	if (data[0] & BIT(5))
--		printf("\t\t\t1 MHz primary channel located at the lower side of 2 MHz\n");
-+		iw_printf(NULL, "1 MHz primary channel located at the lower side of 2 MHz");
- 	else
--		printf("\t\t\t1 MHz primary channel located at the upper side of 2 MHz\n");
-+		iw_printf(NULL, "1 MHz primary channel located at the upper side of 2 MHz");
- 
- 	if (data[0] & BIT(7))
--		printf("\t\t\tMCS 10 not recommended\n");
-+		iw_printf(NULL, "MCS 10 not recommended");
-+	json_arr_close();
- 
--	printf("\t\t* operating class: %d\n", data[1]);
--	printf("\t\t* primary channel number: %d\n", data[2]);
-+	iw_printf("Operating Class", "%d", data[1]);
-+	iw_printf("Primary Channel Number", "%d", data[2]);
- 
--	printf("\t\t* channel index: %d\n", data[3]);
-+	iw_printf("channel index", "%d", data[3]);
- 
--	printf("\t\tMax S1G MCS Map:\n");
--	printf("\t\t\tFor 1 SS: %s\n", s1g_ss_max_support((data[4] >> 2) & 0x3));
--	printf("\t\t\tFor 2 SS: %s\n", s1g_ss_max_support((data[4] >> 6) & 0x3));
--	printf("\t\t\tFor 3 SS: %s\n", s1g_ss_max_support((data[5] >> 2) & 0x3));
--	printf("\t\t\tFor 4 SS: %s\n", s1g_ss_max_support((data[5] >> 6) & 0x3));
-+	json_obj_open("Max S1G MCS Map");
-+	iw_printf("For 1 SS", "%s", s1g_ss_max_support((data[4] >> 2) & 0x3));
-+	iw_printf("For 2 SS", "%s", s1g_ss_max_support((data[4] >> 6) & 0x3));
-+	iw_printf("For 3 SS", "%s", s1g_ss_max_support((data[5] >> 2) & 0x3));
-+	iw_printf("For 4 SS", "%s", s1g_ss_max_support((data[5] >> 6) & 0x3));
-+	json_obj_close();
- 
--	printf("\t\tMin S1G MCS Map:\n");
--	printf("\t\t\tFor 1 SS: %s\n", s1g_ss_min_support(data[4] & 0x3));
--	printf("\t\t\tFor 2 SS: %s\n", s1g_ss_min_support((data[4] >> 4) & 0x3));
--	printf("\t\t\tFor 3 SS: %s\n", s1g_ss_min_support(data[5] & 0x3));
--	printf("\t\t\tFor 4 SS: %s\n", s1g_ss_min_support((data[5] >> 4) & 0x3));
-+	json_obj_open("Min S1G MCS Map");
-+	iw_printf("For 1 SS", "%s", s1g_ss_min_support(data[4] & 0x3));
-+	iw_printf("For 2 SS", "%s", s1g_ss_min_support((data[4] >> 4) & 0x3));
-+	iw_printf("For 3 SS", "%s", s1g_ss_min_support(data[5] & 0x3));
-+	iw_printf("For 4 SS", "%s", s1g_ss_min_support((data[5] >> 4) & 0x3));
-+	json_obj_close();
- }
- 
  struct ie_print {
-@@ -1783,31 +1744,34 @@ struct ie_print {
+@@ -1682,31 +1641,34 @@ struct ie_print {
  };
  
  static void print_ie(const struct ie_print *p, const uint8_t type, uint8_t len,
@@ -2656,10 +2269,10 @@ index a99a414..6a32dd7 100644
 -	printf("\t%s:", p->name);
 +	json_obj_open(p->name);
  	if (len < p->minlen || len > p->maxlen) {
-+		iw_printf("Invalid Length", "%d", len);
++		iw_printf("invalid_bytes", "%d", len);
  		if (len > 1) {
 -			printf(" <invalid: %d bytes:", len);
-+			json_arr_open("Invalid Data");
++			json_arr_open("data");
  			for (i = 0; i < len; i++)
 -				printf(" %.02x", data[i]);
 -			printf(">\n");
@@ -2671,9 +2284,9 @@ index a99a414..6a32dd7 100644
 +				iw_printf(NULL, "%.02x", data[i]);
 +			json_arr_close();
 +		} else if (len) {
-+			iw_printf("1 byte", "%d", data[0]);
++			iw_printf("invalid_1_byte", "%d", data[0]);
 +		} else {
-+			iw_printf("No data", "true");
++			iw_printf("no_data", "%s", "true");
 +		}
 +	} else {
 +		// print callback
@@ -2688,19 +2301,19 @@ index a99a414..6a32dd7 100644
  #define PRINT_IGN {		\
  	.name = "IGNORE",	\
  	.print = NULL,		\
-@@ -1870,41 +1834,36 @@ static bool print_wifi_wmm_param(const uint8_t *data, uint8_t len)
+@@ -1765,41 +1727,36 @@ static bool print_wifi_wmm_param(const uint8_t *data, uint8_t len)
  	int i;
  	static const char *aci_tbl[] = { "BE", "BK", "VI", "VO" };
  
 -	if (len < 19)
 -		goto invalid;
 +	if (len < 19){
-+		iw_printf("Invalid Length", "len < 19, len: %d", len);
++		iw_printf("invalid length", "len < 19, len: %d", len);
 +		return false;
 +	}
 +
 +
-+	iw_printf("Version", "%d", data[0]);
++	iw_printf("version", "%d", data[0]);
  
  	if (data[0] != 1) {
 -		printf("Parameter: not version 1: ");
@@ -2747,12 +2360,12 @@ index a99a414..6a32dd7 100644
  }
  
  static void print_wifi_wmm(const uint8_t type, uint8_t len, const uint8_t *data,
-@@ -1914,20 +1873,22 @@ static void print_wifi_wmm(const uint8_t type, uint8_t len, const uint8_t *data,
+@@ -1809,20 +1766,22 @@ static void print_wifi_wmm(const uint8_t type, uint8_t len, const uint8_t *data,
  
  	switch (data[0]) {
  	case 0x00:
 -		printf(" information:");
-+		json_arr_open("Information");
++		json_arr_open("information");
  		break;
  	case 0x01:
  		if (print_wifi_wmm_param(data + 1, len - 1))
@@ -2762,7 +2375,7 @@ index a99a414..6a32dd7 100644
 -		printf(" type %d:", data[0]);
 +		char buf[32];
 +		snprintf(buf, sizeof(buf), "type %d", data[0]);
-+		json_arr_open(buf);
++		json_arr_open(buf, NULL);
  		break;
  	}
  
@@ -2774,7 +2387,7 @@ index a99a414..6a32dd7 100644
  }
  
  static const char * wifi_wps_dev_passwd_id(uint16_t id)
-@@ -1953,7 +1914,6 @@ static const char * wifi_wps_dev_passwd_id(uint16_t id)
+@@ -1848,7 +1807,6 @@ static const char * wifi_wps_dev_passwd_id(uint16_t id)
  static void print_wifi_wps(const uint8_t type, uint8_t len, const uint8_t *data,
  			   const struct print_ies_data *ie_buffer)
  {
@@ -2782,7 +2395,7 @@ index a99a414..6a32dd7 100644
  	__u16 subtype, sublen;
  
  	while (len >= 4) {
-@@ -1963,209 +1923,175 @@ static void print_wifi_wps(const uint8_t type, uint8_t len, const uint8_t *data,
+@@ -1858,209 +1816,175 @@ static void print_wifi_wps(const uint8_t type, uint8_t len, const uint8_t *data,
  			break;
  
  		switch (subtype) {
@@ -2793,10 +2406,10 @@ index a99a414..6a32dd7 100644
 -				       "length %d)\n", sublen);
 +			case 0x104a:
 +				if (sublen < 1) {
-+					iw_printf("Version invalid length", "%d", sublen);
++					iw_printf("version_invalid_length", "%d", sublen);
 +					break;
 +				}
-+				iw_printf("Version",  "%d.%d", data[4] >> 4, data[4] & 0xF);
++				iw_printf("version",  "%d.%d", data[4] >> 4, data[4] & 0xF);
  				break;
 -			}
 -			printf("\t * Version: %d.%d\n", data[4] >> 4, data[4] & 0xF);
@@ -2812,7 +2425,7 @@ index a99a414..6a32dd7 100644
 -				printf("\t * Device Password ID: (invalid length %d)\n",
 -				       sublen);
 +			case 0x1011:
-+				iw_printf("Device name", "%.*s", sublen, data + 4);
++				iw_printf("device name", "%.*s", sublen, data + 4);
  				break;
 -			}
 -			id = data[4] << 8 | data[5];
@@ -2841,11 +2454,11 @@ index a99a414..6a32dd7 100644
 +			case 0x1012: {
 +				uint16_t id;
 +				if (sublen != 2) {
-+					iw_printf("Device password ID", "%d", sublen);
++					iw_printf("device_password_id", "%d", sublen);
 +					break;
 +				}
 +				id = data[4] << 8 | data[5];
-+				iw_printf("Device Password ID",  "%u (%s)", id, wifi_wps_dev_passwd_id(id));
++				iw_printf("device_password_id",  "%u (%s)", id, wifi_wps_dev_passwd_id(id));
  				break;
  			}
 -			val = data[4];
@@ -2857,13 +2470,13 @@ index a99a414..6a32dd7 100644
 -		case 0x103c: {
 -			__u8 val;
 +			case 0x1021:
-+				iw_printf("Manufacturer", "%.*s", sublen, data + 4);
++				iw_printf("manufacturer", "%.*s", sublen, data + 4);
 +				break;
 +			case 0x1023:
-+				iw_printf("Model", "%.*s", sublen, data + 4);
++				iw_printf("model", "%.*s", sublen, data + 4);
 +				break;
 +			case 0x1024:
-+				iw_printf("Model Number", "%.*s", sublen, data + 4);
++				iw_printf("model_number", "%.*s", sublen, data + 4);
 +				break;
 +			case 0x103b: {
 +				__u8 val;
@@ -2872,11 +2485,11 @@ index a99a414..6a32dd7 100644
 -				printf("\t * RF Bands: (invalid length %d)\n",
 -				       sublen);
 +				if (sublen < 1) {
-+					iw_printf("Response Type Invalid Length", "%d", sublen);
++					iw_printf("response_type_invalid_length", "%d", sublen);
 +					break;
 +				}
 +				val = data[4];
-+				iw_printf("Response Type", "%d%s", val, val == 3 ? " (AP)" : "");
++				iw_printf("response_type", "%d%s", val, val == 3 ? " (AP)" : "");
  				break;
  			}
 -			val = data[4];
@@ -2893,11 +2506,11 @@ index a99a414..6a32dd7 100644
 -				printf("\t * Selected Registrar: (invalid length %d)\n",
 -				       sublen);
 +				if (sublen < 1) {
-+					iw_printf("RF Bands Invalid Length", "%d", sublen);
++					iw_printf("rf_bands_invalid_length", "%d", sublen);
 +					break;
 +				}
 +				val = data[4];
-+				iw_printf("RF bands", "0x%x", val);
++				iw_printf("rf_bands", "0x%x", val);
  				break;
  			}
 -			val = data[4];
@@ -2918,11 +2531,11 @@ index a99a414..6a32dd7 100644
 -				printf("\t * Wi-Fi Protected Setup State: (invalid length %d)\n",
 -				       sublen);
 +				if (sublen < 1) {
-+					iw_printf("Selected Registrar Invalid Length", "%d", sublen);
++					iw_printf("selected_registrar_invalid_length", "%d", sublen);
 +					break;
 +				}
 +				val = data[4];
-+				iw_printf("Selected Registrar", "0x%x", val);
++				iw_printf("selected_registrar", "0x%x", val);
  				break;
  			}
 -			val = data[4];
@@ -2939,17 +2552,17 @@ index a99a414..6a32dd7 100644
 -			if (sublen != 16) {
 -				printf("(invalid, length=%d)\n", sublen);
 +			case 0x1042:
-+				iw_printf("Serial Number", "%.*s", sublen, data + 4);
++				iw_printf("serial_number", "%.*s", sublen, data + 4);
  				break;
 +			case 0x1044: {
 +				__u8 val;
 +
 +				if (sublen < 1) {
-+					iw_printf("Wi-Fi Protected Setup State Invalid Length", "%d", sublen);
++					iw_printf("wi-fi_protected_setup_state_invalid_length", "%d", sublen);
 +					break;
 +				}
 +				val = data[4];
-+				iw_printf("Wi-Fi Protected Setup State", "%d%s%s", val, val == 1 ? " (Unconfigured)" : "", val == 2 ? " (Configured)" : "");
++				iw_printf("wi-fi_protected_setup_state", "%d%s%s", val, val == 1 ? " (Unconfigured)" : "", val == 2 ? " (Configured)" : "");
 +					break;
  			}
 -			printf("%02x%02x%02x%02x-%02x%02x-%02x%02x-"
@@ -2981,10 +2594,10 @@ index a99a414..6a32dd7 100644
 -				       sublen);
 +			case 0x1047:
 +				if (sublen != 16) {
-+					iw_printf("UUID Invalid Length", "%d", sublen);
++					iw_printf("uuid_invalid_length", "%d", sublen);
 +					break;
 +				}
-+				iw_printf("UUID", "%02x%02x-%02x%02x%02x%02x%02x%02x",
++				iw_printf("uuid", "%02x%02x-%02x%02x%02x%02x%02x%02x",
 +					"%02x%02x-%02x%02x%02x%02x%02x%02x",
 +					data[4], data[5], data[6], data[7],
 +					data[8], data[9], data[10], data[11],
@@ -3013,17 +2626,17 @@ index a99a414..6a32dd7 100644
 +					data[7] == 0x00 &&
 +					data[8] == 0x01) {
 +					uint8_t v2 = data[9];
-+					iw_printf("Version2", "%d.%d", v2 >> 4, v2 & 0xf);
++					iw_printf("version2", "%d.%d", v2 >> 4, v2 & 0xf);
 +				} else {
-+					iw_printf("Unknown Vendor Extension Length", "%u", sublen);
++					iw_printf("unknown_vendor_extension_length", "%u", sublen);
 +				}
 +				break;
 +			case 0x1054: {
 +				if (sublen != 8) {
-+					iw_printf("Primary Device Type Invalid Length", "%d", sublen);
++					iw_printf("primary_device_type_invalid_length", "%d", sublen);
 +					break;
 +				}
-+				iw_printf("Primary Device Type",
++				iw_printf("primary_device_type",
 +					"%u-%02x%02x%02x%02x-%u",
 +					data[4] << 8 | data[5],
 +					data[6], data[7], data[8], data[9],
@@ -3045,11 +2658,11 @@ index a99a414..6a32dd7 100644
 +			case 0x1057: {
 +				__u8 val;
 +				if (sublen < 1) {
-+					iw_printf("AP Setup Locked Invalid Length", "%d", sublen);
++					iw_printf("ap_setup_locked_invalid_length", "%d", sublen);
 +					break;
 +				}
 +				val = data[4];
-+				iw_printf("AP Setup Locked", "0x%.2x", val);
++				iw_printf("ap_setup_locked", "0x%.2x", val);
  				break;
  			}
 -			meth = (data[4] << 8) + data[5];
@@ -3062,12 +2675,12 @@ index a99a414..6a32dd7 100644
 +				__u16 meth;
 +
 +				if (sublen < 2) {
-+					iw_printf("Config Methods Invalid Length", "%d", sublen);
++					iw_printf("config_methods_invalid_length", "%d", sublen);
 +					break;
 +				}
 +				meth = (data[4] << 8) + data[5];
-+				iw_printf("Config Methods Selected Registrar", "%s", "true");
-+				json_arr_open("Config Methods");
++				iw_printf("config_methods_selected_registrar", "%s", "true");
++				json_arr_open("config_methods");
 +
  #define T(bit, name) do {		\
  	if (meth & (1<<bit)) {		\
@@ -3120,8 +2733,8 @@ index a99a414..6a32dd7 100644
 +				const __u8 *subdata = data + 4;
 +				__u16 tmplen = sublen;
 +
-+				iw_printf("Unknown TLV", "%#.4x, %d bytes", subtype, tmplen);
-+				json_arr_open("Unknown TLV Data");
++				iw_printf("unknown_tlv", "%#.4x, %d bytes", subtype, tmplen);
++				json_arr_open("unknown_tlv_data");
 +
 +				while (tmplen) {
 +					iw_printf(NULL, "%.2x", *subdata);
@@ -3137,13 +2750,13 @@ index a99a414..6a32dd7 100644
  		}
  
  		data += sublen + 4;
-@@ -2173,13 +2099,15 @@ static void print_wifi_wps(const uint8_t type, uint8_t len, const uint8_t *data,
+@@ -2068,13 +1992,15 @@ static void print_wifi_wps(const uint8_t type, uint8_t len, const uint8_t *data,
  	}
  
  	if (len != 0) {
 -		printf("\t\t * bogus tail data (%d):", len);
-+		iw_printf("Bogus Tail Data Length", "%d", len);
-+		json_arr_open("Bogus Tail Data");
++		iw_printf(" bogus_tail_data_length", "%d", len);
++		json_arr_open("bogus_tail_data");
 +
  		while (len) {
 -			printf(" %.2x", *data);
@@ -3156,7 +2769,7 @@ index a99a414..6a32dd7 100644
  	}
  }
  
-@@ -2193,7 +2121,6 @@ static inline void print_p2p(const uint8_t type, uint8_t len,
+@@ -2088,7 +2014,6 @@ static inline void print_p2p(const uint8_t type, uint8_t len,
  			     const uint8_t *data,
  			     const struct print_ies_data *ie_buffer)
  {
@@ -3164,14 +2777,14 @@ index a99a414..6a32dd7 100644
  	__u8 subtype;
  	__u16 sublen;
  
-@@ -2206,17 +2133,16 @@ static inline void print_p2p(const uint8_t type, uint8_t len,
+@@ -2101,17 +2026,16 @@ static inline void print_p2p(const uint8_t type, uint8_t len,
  
  		switch (subtype) {
  		case 0x02: /* capability */
 -			tab_on_first(&first);
  			if (sublen < 2) {
 -				printf("\t * malformed capability\n");
-+				iw_printf("Malformed Capability", "true");
++				iw_printf("malformed capability", "true");
  				break;
  			}
 -			printf("\t * Group capa: 0x%.2x, Device capa: 0x%.2x\n",
@@ -3182,11 +2795,11 @@ index a99a414..6a32dd7 100644
  		case 0x0d: /* device info */
  			if (sublen < 6 + 2 + 8 + 1) {
 -				printf("\t * malformed device info\n");
-+				iw_printf("Malformed Device Info", "true");
++				iw_printf("malformed device info", "true");
  				break;
  			}
  			/* fall through */
-@@ -2242,15 +2168,17 @@ static inline void print_p2p(const uint8_t type, uint8_t len,
+@@ -2137,15 +2061,17 @@ static inline void print_p2p(const uint8_t type, uint8_t len,
  			const __u8 *subdata = data + 3;
  			__u16 tmplen = sublen;
  
@@ -3194,9 +2807,9 @@ index a99a414..6a32dd7 100644
 -			printf("\t * Unknown TLV (%#.2x, %d bytes):",
 -			       subtype, tmplen);
 +			json_obj_open("Unknown TLV");
-+			iw_printf("Type", "%#.2x", subtype);
-+			iw_printf("Length", "%d", tmplen);
-+			json_arr_open("Data");
++			iw_printf("type", "%#.2x", subtype);
++			iw_printf("length", "%d", tmplen);
++			json_arr_open("data");
  			while (tmplen) {
 -				printf(" %.2x", *subdata);
 +				iw_printf(NULL, "%.2x", *subdata);
@@ -3209,15 +2822,15 @@ index a99a414..6a32dd7 100644
  			break;
  		}
  		}
-@@ -2260,14 +2188,16 @@ static inline void print_p2p(const uint8_t type, uint8_t len,
+@@ -2155,14 +2081,16 @@ static inline void print_p2p(const uint8_t type, uint8_t len,
  	}
  
  	if (len != 0) {
 -		tab_on_first(&first);
 -		printf("\t * bogus tail data (%d):", len);
-+		json_obj_open("Bogus Tail Data");
-+		iw_printf("Length", "%d", len);
-+		json_arr_open("Data");
++		json_obj_open("bogus tail data");
++		iw_printf("length", "%d", len);
++		json_arr_open("data");
  		while (len) {
 -			printf(" %.2x", *data);
 +			iw_printf(NULL, "%.2x", *data);
@@ -3230,7 +2843,7 @@ index a99a414..6a32dd7 100644
  	}
  }
  
-@@ -2276,11 +2206,10 @@ static inline void print_hs20_ind(const uint8_t type, uint8_t len,
+@@ -2171,11 +2099,10 @@ static inline void print_hs20_ind(const uint8_t type, uint8_t len,
  				  const struct print_ies_data *ie_buffer)
  {
  	/* I can't find the spec for this...just going off what wireshark uses. */
@@ -3240,11 +2853,11 @@ index a99a414..6a32dd7 100644
 +		iw_printf("DGAF", "%i", (int)(data[0] & 0x1));
  	else
 -		printf("\t\tUnexpected length: %i\n", len);
-+		iw_printf("Unexpected Length", "%i", len);
++		iw_printf("Unexpected length", "%i", len);
  }
  
  static void print_wifi_owe_tarns(const uint8_t type, uint8_t len,
-@@ -2290,24 +2219,21 @@ static void print_wifi_owe_tarns(const uint8_t type, uint8_t len,
+@@ -2185,24 +2112,21 @@ static void print_wifi_owe_tarns(const uint8_t type, uint8_t len,
  	char mac_addr[20];
  	int ssid_len;
  
@@ -3272,7 +2885,7 @@ index a99a414..6a32dd7 100644
  	}
  }
  
-@@ -2322,30 +2248,32 @@ static void print_vendor(unsigned char len, unsigned char *data,
+@@ -2217,30 +2141,32 @@ static void print_vendor(unsigned char len, unsigned char *data,
  			 bool unknown, enum print_ie_type ptype)
  {
  	int i;
@@ -3312,7 +2925,7 @@ index a99a414..6a32dd7 100644
 +		if (!unknown) return;
 +
 +		iw_printf("MS/WiFi", "%#.2x", data[3]);
-+		json_arr_open("Data");
++		json_arr_open("data");
 +		for(i = 0; i < len - 4; i++){
 +			iw_printf(NULL, "%.02x", data[i + 4]);
 +		}
@@ -3320,7 +2933,7 @@ index a99a414..6a32dd7 100644
  		return;
  	}
  
-@@ -2360,27 +2288,31 @@ static void print_vendor(unsigned char len, unsigned char *data,
+@@ -2255,27 +2181,31 @@ static void print_vendor(unsigned char len, unsigned char *data,
  		}
  		if (!unknown)
  			return;
@@ -3344,7 +2957,7 @@ index a99a414..6a32dd7 100644
 +	json_obj_open("Vendor specific");
 +	iw_printf("OUI", "%.2x:%.2x:%.2x", data[0], data[1], data[2]);
 +
-+	json_arr_open("Data");
++	json_arr_open("data");
  	for (i = 3; i < len; i++)
 -		printf(" %.2x", data[i]);
 -	printf("\n");
@@ -3360,7 +2973,7 @@ index a99a414..6a32dd7 100644
  	print_he_capability(data, len);
  }
  
-@@ -2394,7 +2326,7 @@ static void print_extension(unsigned char len, unsigned char *ie,
+@@ -2289,7 +2219,7 @@ static void print_extension(unsigned char len, unsigned char *ie,
  	unsigned char tag;
  
  	if (len < 1) {
@@ -3369,14 +2982,14 @@ index a99a414..6a32dd7 100644
  		return;
  	}
  
-@@ -2408,10 +2340,13 @@ static void print_extension(unsigned char len, unsigned char *ie,
+@@ -2303,10 +2233,13 @@ static void print_extension(unsigned char len, unsigned char *ie,
  	if (unknown) {
  		int i;
  
 -		printf("\tUnknown Extension ID (%d):", ie[0]);
 +		json_obj_open("Unknown Extension ID");
-+		iw_printf("ID", "%d", ie[0]);
-+		json_arr_open("Data");
++		iw_printf("id", "%d", ie[0]);
++		json_arr_open("data");
  		for (i = 1; i < len; i++)
 -			printf(" %.2x", ie[i]);
 -		printf("\n");
@@ -3386,14 +2999,14 @@ index a99a414..6a32dd7 100644
  	}
  }
  
-@@ -2439,10 +2374,13 @@ void print_ies(unsigned char *ie, int ielen, bool unknown,
+@@ -2333,10 +2266,13 @@ void print_ies(unsigned char *ie, int ielen, bool unknown,
  		} else if (unknown) {
  			int i;
  
 -			printf("\tUnknown IE (%d):", ie[0]);
 +			json_obj_open("Unknown IE");
-+			iw_printf("IE", "%d", ie[0]);
-+			json_arr_open("Data");
++			iw_printf("ie", "%d", ie[0]);
++			json_arr_open("data");
  			for (i=0; i<ie[1]; i++)
 -				printf(" %.2x", ie[2+i]);
 -			printf("\n");
@@ -3403,7 +3016,7 @@ index a99a414..6a32dd7 100644
  		}
  		ielen -= ie[1] + 2;
  		ie += ie[1] + 2;
-@@ -2453,64 +2391,64 @@ static void print_capa_dmg(__u16 capa)
+@@ -2347,64 +2283,64 @@ static void print_capa_dmg(__u16 capa)
  {
  	switch (capa & WLAN_CAPABILITY_DMG_TYPE_MASK) {
  	case WLAN_CAPABILITY_DMG_TYPE_AP:
@@ -3493,7 +3106,7 @@ index a99a414..6a32dd7 100644
  }
  
  static int print_bss_handler(struct nl_msg *msg, void *arg)
-@@ -2537,16 +2475,15 @@ static int print_bss_handler(struct nl_msg *msg, void *arg)
+@@ -2430,16 +2366,15 @@ static int print_bss_handler(struct nl_msg *msg, void *arg)
  	int show = params->show_both_ie_sets ? 2 : 1;
  	bool is_dmg = false;
  
@@ -3513,7 +3126,7 @@ index a99a414..6a32dd7 100644
  		fprintf(stderr, "failed to parse nested attributes!\n");
  		return NL_SKIP;
  	}
-@@ -2555,78 +2492,85 @@ static int print_bss_handler(struct nl_msg *msg, void *arg)
+@@ -2448,73 +2383,80 @@ static int print_bss_handler(struct nl_msg *msg, void *arg)
  		return NL_SKIP;
  
  	mac_addr_n2a(mac_addr, nla_data(bss[NL80211_BSS_BSSID]));
@@ -3523,7 +3136,7 @@ index a99a414..6a32dd7 100644
  	if (tb[NL80211_ATTR_IFINDEX]) {
  		if_indextoname(nla_get_u32(tb[NL80211_ATTR_IFINDEX]), dev);
 -		printf("(on %s)", dev);
-+		iw_printf("Ifname", "%s", dev);
++		iw_printf("ifname", "%s", dev);
  	}
  
 +	char buf[32] = {0};
@@ -3549,13 +3162,13 @@ index a99a414..6a32dd7 100644
  		}
  	}
 -	printf("\n");
-+	iw_printf("Status", "%s", buf);
++	iw_printf("status", "%s", buf);
  
  	if (bss[NL80211_BSS_LAST_SEEN_BOOTTIME]) {
  		unsigned long long bt;
  		bt = (unsigned long long)nla_get_u64(bss[NL80211_BSS_LAST_SEEN_BOOTTIME]);
 -		printf("\tlast seen: %llu.%.3llus [boottime]\n", bt/1000000000, (bt%1000000000)/1000000);
-+		iw_printf("Last Seen", "%llu.%.3llus [boottime]", bt/1000000000, (bt%1000000000)/1000000);
++		iw_printf("last seen", "%llu.%.3llus [boottime]", bt/1000000000, (bt%1000000000)/1000000);
  	}
  
  	if (bss[NL80211_BSS_TSF]) {
@@ -3575,26 +3188,21 @@ index a99a414..6a32dd7 100644
  	}
  	if (bss[NL80211_BSS_FREQUENCY]) {
  		int freq = nla_get_u32(bss[NL80211_BSS_FREQUENCY]);
- 		if (bss[NL80211_BSS_FREQUENCY_OFFSET])
--			printf("\tfreq: %d.%d\n", freq,
--			    nla_get_u32(bss[NL80211_BSS_FREQUENCY_OFFSET]));
-+			iw_printf("Frequency, MHz", "%d.%d", freq, nla_get_u32(bss[NL80211_BSS_FREQUENCY_OFFSET]));
- 		else
--			printf("\tfreq: %d\n", freq);
-+			iw_printf("Frequency, MHz", "%d", freq);
- 
- 		if (freq > 45000)
- 			is_dmg = true;
+-		printf("\tfreq: %d\n", freq);
+-		if (freq > 45000)
+-			is_dmg = true;
++		iw_printf("freq", "%d", freq);
++		if (freq > 45000) is_dmg = true;
  	}
  	if (bss[NL80211_BSS_BEACON_INTERVAL])
 -		printf("\tbeacon interval: %d TUs\n",
 -			nla_get_u16(bss[NL80211_BSS_BEACON_INTERVAL]));
-+		iw_printf("Beacon Interval, TUs", "%d", nla_get_u16(bss[NL80211_BSS_BEACON_INTERVAL]));
++		iw_printf("beacon_interval_tus", "%d", nla_get_u16(bss[NL80211_BSS_BEACON_INTERVAL]));
  	if (bss[NL80211_BSS_CAPABILITY]) {
  		__u16 capa = nla_get_u16(bss[NL80211_BSS_CAPABILITY]);
 -		printf("\tcapability:");
 -		if (is_dmg)
-+		json_arr_open("Capability");
++		json_arr_open("capability");
 +		if (is_dmg){
  			print_capa_dmg(capa);
 -		else
@@ -3604,26 +3212,26 @@ index a99a414..6a32dd7 100644
 +		}
 +		json_arr_close();
 +
-+		iw_printf("Capability Raw Value", "0x%.4x", capa);
++		iw_printf("capability_raw", "0x%.4x", capa);
  	}
  	if (bss[NL80211_BSS_SIGNAL_MBM]) {
  		int s = nla_get_u32(bss[NL80211_BSS_SIGNAL_MBM]);
 -		printf("\tsignal: %d.%.2d dBm\n", s/100, s%100);
-+		iw_printf("Signal", "%d.%.2d dBm", s/100, s%100);
++		iw_printf("signal", "%d.%.2d dBm", s/100, s%100);
  	}
  	if (bss[NL80211_BSS_SIGNAL_UNSPEC]) {
  		unsigned char s = nla_get_u8(bss[NL80211_BSS_SIGNAL_UNSPEC]);
 -		printf("\tsignal: %d/100\n", s);
-+		iw_printf("Signal, Dbm", "%d/100", s);
++		iw_printf("signal_dbm", "%d/100", s);
  	}
  	if (bss[NL80211_BSS_SEEN_MS_AGO]) {
  		int age = nla_get_u32(bss[NL80211_BSS_SEEN_MS_AGO]);
 -		printf("\tlast seen: %d ms ago\n", age);
-+		iw_printf("Last Seen Ago, ms", "%d", age);
++		iw_printf("last_seen_ms_ago", "%d", age);
  	}
  
  	if (bss[NL80211_BSS_INFORMATION_ELEMENTS] && show--) {
-@@ -2634,21 +2578,24 @@ static int print_bss_handler(struct nl_msg *msg, void *arg)
+@@ -2522,21 +2464,24 @@ static int print_bss_handler(struct nl_msg *msg, void *arg)
  		struct nlattr *bcnies = bss[NL80211_BSS_BEACON_IES];
  
  		if (bss[NL80211_BSS_PRESP_DATA] ||
@@ -3636,14 +3244,14 @@ index a99a414..6a32dd7 100644
 -		print_ies(nla_data(ies), nla_len(ies),
 -			  params->unknown, params->type);
 +					nla_len(ies))))){
-+			json_obj_open("BSS Probe Response Data Frame");
++			json_obj_open("bss_probe_resp_data_frame");
 +			print_ies(nla_data(ies), nla_len(ies), params->unknown, params->type);
 +			json_obj_close();
 +		}
  	}
  	if (bss[NL80211_BSS_BEACON_IES] && show--) {
 -		printf("\tInformation elements from Beacon frame:\n");
-+		json_obj_open("BSS Beacon Frame");
++		json_obj_open("bss_beacon_frame");
  		print_ies(nla_data(bss[NL80211_BSS_BEACON_IES]),
 -			  nla_len(bss[NL80211_BSS_BEACON_IES]),
 -			  params->unknown, params->type);
@@ -3657,17 +3265,8 @@ index a99a414..6a32dd7 100644
  	return NL_SKIP;
  }
  
-@@ -2744,7 +2691,7 @@ static int handle_scan_combined(struct nl80211_state *state,
- 
- 	if (listen_events(state, ARRAY_SIZE(cmds), cmds) ==
- 					NL80211_CMD_SCAN_ABORTED) {
--		printf("scan aborted!\n");
-+		iw_printf("scan aborted", "true");
- 		return 0;
- 	}
- 
 diff --git a/util.c b/util.c
-index 2527650..c837f9c 100644
+index 8a2ba10..ea0982c 100644
 --- a/util.c
 +++ b/util.c
 @@ -5,6 +5,8 @@
@@ -3679,7 +3278,7 @@ index 2527650..c837f9c 100644
  void mac_addr_n2a(char *mac_addr, const unsigned char *arg)
  {
  	int i, l;
-@@ -222,19 +224,27 @@ int ieee80211_frequency_to_channel(int freq)
+@@ -220,19 +222,26 @@ int ieee80211_frequency_to_channel(int freq)
  		return 0;
  }
  
@@ -3688,7 +3287,6 @@ index 2527650..c837f9c 100644
 -	int i;
 +static char *ssid_escape(const uint8_t len, const uint8_t *data) {
 +    static char buf[512]; // static buffer
-+	int bufsize = (int)sizeof(buf);
 +	int pos = 0;
  
 -	for (i = 0; i < len; i++) {
@@ -3700,13 +3298,13 @@ index 2527650..c837f9c 100644
 -		else
 -			printf("\\x%.2x", data[i]);
 -	}
-+    for (int i = 0; i < len && pos < bufsize - 5; i++) { // leave space for "\xXX" and terminator byte
++    for (int i = 0; i < len && pos < sizeof(buf) - 5; i++) { // leave space for "\xXX" and terminator byte
 +        if (isprint(data[i]) && data[i] != ' ' && data[i] != '\\') {
 +            buf[pos++] = data[i];
 +        } else if (data[i] == ' ' && (i != 0 && i != len - 1)) {
 +            buf[pos++] = ' ';
 +        } else {
-+            pos += snprintf(buf + pos, bufsize - pos, "\\x%.2x", data[i]);
++            pos += snprintf(buf + pos, sizeof(buf) - pos, "\\x%.2x", data[i]);
 +        }
 +    }
 +    buf[pos] = '\0'; // set terminator byte
@@ -3719,16 +3317,45 @@ index 2527650..c837f9c 100644
  }
  
  static int hex2num(char digit)
-@@ -331,7 +341,7 @@ int parse_keys(struct nl_msg *msg, char **argv[], int *argc)
- 		NLA_PUT_U32(msg, NL80211_ATTR_WPA_VERSIONS, NL80211_WPA_VERSION_2);
+@@ -743,38 +752,90 @@ int put_chandef(struct nl_msg *msg, struct chandef *chandef)
+ 	return -ENOBUFS;
+ }
  
- 		if (strlen(&arg[pos]) != (sizeof(psk_keybuf) * 2) || !hex2bin(&arg[pos], psk_keybuf)) {
--			printf("Bad PSK\n");
-+			iw_printf("Bad PSK", "true");
- 			return -EINVAL;
- 		}
- 
-@@ -810,34 +820,52 @@ static void print_mcs_index(const __u8 *mcs)
++static void print_mcs_index3(const __u8 *mcs)
++{
++    int mcs_bit, prev_bit = -2, prev_cont = 0;
++
++    for (mcs_bit = 0; mcs_bit <= 76; mcs_bit++) {
++        unsigned int mcs_octet = mcs_bit/8;
++        unsigned int MCS_RATE_BIT = 1 << mcs_bit % 8;
++        bool mcs_rate_idx_set;
++
++        mcs_rate_idx_set = !!(mcs[mcs_octet] & MCS_RATE_BIT);
++
++        if (!mcs_rate_idx_set)
++            continue;
++
++        if (prev_bit != mcs_bit - 1) {
++            if (prev_bit != -2)
++                printf("%d, ", prev_bit);
++            else
++                printf(" ");
++            printf("%d", mcs_bit);
++            prev_cont = 0;
++        } else if (!prev_cont) {
++            printf("-");
++            prev_cont = 1;
++        }
++
++        prev_bit = mcs_bit;
++    }
++
++    if (prev_cont)
++        printf("%d", prev_bit);
++    printf("\n");
++}
++
+ static void print_mcs_index(const __u8 *mcs)
  {
  	int mcs_bit, prev_bit = -2, prev_cont = 0;
  
@@ -3796,7 +3423,7 @@ index 2527650..c837f9c 100644
  }
  
  /*
-@@ -880,18 +908,18 @@ void print_ampdu_length(__u8 exponent)
+@@ -817,18 +878,18 @@ void print_ampdu_length(__u8 exponent)
  	max_ampdu_length = compute_ampdu_length(exponent);
  
  	if (max_ampdu_length) {
@@ -3821,7 +3448,7 @@ index 2527650..c837f9c 100644
  }
  
  void print_ht_capability(__u16 cap)
-@@ -899,10 +927,11 @@ void print_ht_capability(__u16 cap)
+@@ -836,10 +897,11 @@ void print_ht_capability(__u16 cap)
  #define PRINT_HT_CAP(_cond, _str) \
  	do { \
  		if (_cond) \
@@ -3835,7 +3462,7 @@ index 2527650..c837f9c 100644
  
  	PRINT_HT_CAP((cap & BIT(0)), "RX LDPC");
  	PRINT_HT_CAP((cap & BIT(1)), "HT20/HT40");
-@@ -941,6 +970,8 @@ void print_ht_capability(__u16 cap)
+@@ -878,6 +940,8 @@ void print_ht_capability(__u16 cap)
  	PRINT_HT_CAP((cap & BIT(14)), "40 MHz Intolerant");
  
  	PRINT_HT_CAP((cap & BIT(15)), "L-SIG TXOP protection");
@@ -3844,7 +3471,7 @@ index 2527650..c837f9c 100644
  #undef PRINT_HT_CAP
  }
  
-@@ -956,32 +987,28 @@ void print_ht_mcs(const __u8 *mcs)
+@@ -893,32 +957,28 @@ void print_ht_mcs(const __u8 *mcs)
  	tx_max_num_spatial_streams = ((mcs[12] >> 2) & 3) + 1;
  	tx_unequal_modulation = !!(mcs[12] & (1 << 4));
  
@@ -3888,7 +3515,7 @@ index 2527650..c837f9c 100644
  	}
  }
  
-@@ -1096,13 +1123,13 @@ static const struct vht_nss_ratio nss_ratio_tbl[3][4] = {
+@@ -1033,13 +1093,13 @@ static const struct vht_nss_ratio nss_ratio_tbl[3][4] = {
  	},
  };
  
@@ -3904,7 +3531,7 @@ index 2527650..c837f9c 100644
  	case 3:
  		rstr = "3/4";
  		break;
-@@ -1117,52 +1144,53 @@ static void print_nss_ratio_value(int ratio)
+@@ -1054,52 +1114,51 @@ static void print_nss_ratio_value(int ratio)
  		break;
  	}
  
@@ -3951,20 +3578,18 @@ index 2527650..c837f9c 100644
 -	} while (0)
 -
 -	printf("\t\t\tMax MPDU length: ");
-+	json_obj_open("VHT Capabilities");
-+	iw_printf("VHT Capabilities Raw Value", "0x%.8x", capa);
++	iw_printf("vht_capabilities_raw", "0x%.8x", capa);
  	switch (capa & 3) {
 -	case 0: printf("3895\n"); break;
 -	case 1: printf("7991\n"); break;
 -	case 2: printf("11454\n"); break;
 -	case 3: printf("(reserved)\n");
-+		case 0: iw_printf("Data", "3895"); break;
-+		case 1: iw_printf("Data", "7991"); break;
-+		case 2: iw_printf("Data", "11454"); break;
-+		case 3: iw_printf("Data", "reserved");
++		case 0: iw_printf("vht_capabilities", "3895"); break;
++		case 1: iw_printf("vht_capabilities_data", "7991"); break;
++		case 2: iw_printf("vht_capabilities_data", "11454"); break;
++		case 3: iw_printf("vht_capabilities_data", "reserved");
  	}
-+	json_obj_close();
-+	json_obj_open("Supported Channel Width");
++	json_obj_open("supported_channel_width");
  
 -	printf("\t\t\tSupported Channel Width: ");
  	supp_chan_width = (capa >> 2) & 3;
@@ -3973,11 +3598,11 @@ index 2527650..c837f9c 100644
  
  	if (!nss_tbl->valid)
 -		printf("(reserved)\n");
-+		iw_printf("reserved", "true");
++		iw_printf("reserved", "%s", "true");
  	else if (nss_tbl->bw_20 == 4 &&
  		 nss_tbl->bw_40 == 4 &&
  		 nss_tbl->bw_80 == 4 &&
-@@ -1170,9 +1198,15 @@ void print_vht_info(__u32 capa, const __u8 *mcs)
+@@ -1107,9 +1166,15 @@ void print_vht_info(__u32 capa, const __u8 *mcs)
  		 (!nss_tbl->bw_80_80 || nss_tbl->bw_80_80 == 4)) {
  		/* old style print format */
  		switch (supp_chan_width) {
@@ -3987,16 +3612,16 @@ index 2527650..c837f9c 100644
 +			case 0:
 +				break;
 +			case 1:
-+				iw_printf("160", "true");
++				iw_printf("160", "%s", "true");
 +				break;
 +			case 2:
-+				iw_printf("160", "true");
-+				iw_printf("80+80", "true");
++				iw_printf("160", "%s", "true");
++				iw_printf("80+80", "%s", "true");
 +				break;
  		}
  	} else {
  		print_nss_ratio("20Mhz", false, nss_tbl->bw_20);
-@@ -1180,8 +1214,8 @@ void print_vht_info(__u32 capa, const __u8 *mcs)
+@@ -1117,8 +1182,8 @@ void print_vht_info(__u32 capa, const __u8 *mcs)
  		print_nss_ratio("80Mhz", false, nss_tbl->bw_80);
  		print_nss_ratio("160Mhz", false, nss_tbl->bw_160);
  		print_nss_ratio("80+80Mhz", false, nss_tbl->bw_80_80);
@@ -4006,7 +3631,7 @@ index 2527650..c837f9c 100644
  
  	PRINT_VHT_CAPA(4, "RX LDPC");
  	PRINT_VHT_CAPA(5, "short GI (80 MHz)");
-@@ -1201,36 +1235,42 @@ void print_vht_info(__u32 capa, const __u8 *mcs)
+@@ -1138,36 +1203,42 @@ void print_vht_info(__u32 capa, const __u8 *mcs)
  	PRINT_VHT_CAPA(28, "RX antenna pattern consistency");
  	PRINT_VHT_CAPA(29, "TX antenna pattern consistency");
  
@@ -4057,15 +3682,15 @@ index 2527650..c837f9c 100644
 +
  	tmp = mcs[6] | (mcs[7] << 8);
 -	printf("\t\tVHT TX highest supported: %d Mbps\n", tmp & 0x1fff);
-+	iw_printf("VHT TX Highest Supported Mbps", "%d", tmp & 0x1fff);
++	iw_printf("VHT TX highest supported Mbps", "%d", tmp & 0x1fff);
  
 -	printf("\t\tVHT extended NSS: %ssupported\n",
 -	       (tmp & (1 << 13)) ? "" : "not ");
-+	iw_printf("VHT extended NSS Supported", "%s", (tmp & (1 << 13)) ? true : false);
++	iw_printf("VHT extended NSS: supported", "%s", (tmp & (1 << 13)) ? true : false);
  }
  
  static void __print_he_capa(const __u16 *mac_cap,
-@@ -1246,13 +1286,13 @@ static void __print_he_capa(const __u16 *mac_cap,
+@@ -1183,13 +1254,13 @@ static void __print_he_capa(const __u16 *mac_cap,
  	#define PRINT_HE_CAP(_var, _idx, _bit, _str) \
  	do { \
  		if (_var[_idx] & BIT(_bit)) \
@@ -4081,7 +3706,7 @@ index 2527650..c837f9c 100644
  	} while (0)
  
  	#define PRINT_HE_MAC_CAP(...) PRINT_HE_CAP(mac_cap, __VA_ARGS__)
-@@ -1261,10 +1301,9 @@ static void __print_he_capa(const __u16 *mac_cap,
+@@ -1198,10 +1269,9 @@ static void __print_he_capa(const __u16 *mac_cap,
  	#define PRINT_HE_PHY_CAP0(_idx, _bit, ...) PRINT_HE_CAP(phy_cap, _idx, _bit + 8, __VA_ARGS__)
  	#define PRINT_HE_PHY_CAP_MASK(...) PRINT_HE_CAP_MASK(phy_cap, __VA_ARGS__)
  
@@ -4089,13 +3714,13 @@ index 2527650..c837f9c 100644
 -	for (i = 0; i < 3; i++)
 -		printf("%04x", mac_cap[i]);
 -	printf("):\n");
-+	iw_printf("HE MAC Capabilities Raw Value", "%s 0x%04x%04x%04x", pre, mac_cap[0], mac_cap[1], mac_cap[2]);
++	iw_printf("he_mac_capabilities_raw", "%s 0x%04x%04x%04x", pre, mac_cap[0], mac_cap[1], mac_cap[2]);
 +
-+	json_arr_open("HE MAC Capabilities");
++	json_arr_open("he_mac_capabilities");
  
  	PRINT_HE_MAC_CAP(0, 0, "+HTC HE Supported");
  	PRINT_HE_MAC_CAP(0, 1, "TWT Requester");
-@@ -1301,10 +1340,21 @@ static void __print_he_capa(const __u16 *mac_cap,
+@@ -1238,10 +1308,21 @@ static void __print_he_capa(const __u16 *mac_cap,
  	PRINT_HE_MAC_CAP(2, 11, "UL 2x996-Tone RU");
  	PRINT_HE_MAC_CAP(2, 12, "OM Control UL MU Data Disable RX");
  
@@ -4115,13 +3740,13 @@ index 2527650..c837f9c 100644
 +		}
 +
 +		json_arr_close();
-+		iw_printf("HE Phy Capabilities Raw Value", "%s 0x%s", pre, buf);
-+		json_arr_open("HE Phy Capabilities");
++		iw_printf("he_phy_capabilities_raw", "%s 0x%s", pre, buf);
++		json_arr_open("he_phy_capabilities");
 +	}
  
  	PRINT_HE_PHY_CAP0(0, 1, "HE40/2.4GHz");
  	PRINT_HE_PHY_CAP0(0, 2, "HE40/HE80/5GHz");
-@@ -1371,6 +1421,8 @@ static void __print_he_capa(const __u16 *mac_cap,
+@@ -1308,6 +1389,8 @@ static void __print_he_capa(const __u16 *mac_cap,
  	PRINT_HE_PHY_CAP(5, 4, "RX Full BW SU Using HE MU PPDU with Compression SIGB");
  	PRINT_HE_PHY_CAP(5, 5, "RX Full BW SU Using HE MU PPDU with Non-Compression SIGB");
  
@@ -4130,7 +3755,7 @@ index 2527650..c837f9c 100644
  	mcs_used = 0;
  	for (i = 0; i < 3; i++) {
  		__u8 phy_cap_support[] = { BIT(1) | BIT(2), BIT(3), BIT(4) };
-@@ -1386,19 +1438,26 @@ static void __print_he_capa(const __u16 *mac_cap,
+@@ -1323,19 +1406,26 @@ static void __print_he_capa(const __u16 *mac_cap,
  
  		for (j = 0; j < 2; j++) {
  			int k;
@@ -4138,8 +3763,8 @@ index 2527650..c837f9c 100644
 +			char buf[128] = {0};
 +			snprintf(buf, sizeof(buf), "%s_he_%s_mcs_and_nss_set", pre, j ? "tx" : "rx");
 +			json_obj_open(buf);
-+			iw_printf("Width, MHz", "%s", bw[i]);
-+			json_obj_open("Streams");
++			iw_printf("width_mhz", "%s", bw[i]);
++			json_obj_open("streams");
  			for (k = 0; k < 8; k++) {
  				__u16 mcs = mcs_set[(i * 2) + j];
  				mcs >>= k * 2;
@@ -4162,7 +3787,7 @@ index 2527650..c837f9c 100644
  		mcs_used += 2 * sizeof(mcs_set[0]);
  	}
  
-@@ -1411,12 +1470,23 @@ static void __print_he_capa(const __u16 *mac_cap,
+@@ -1348,12 +1438,23 @@ static void __print_he_capa(const __u16 *mac_cap,
  			ppet_len = 0;
  	}
  
@@ -4187,12 +3812,12 @@ index 2527650..c837f9c 100644
 +		}
 +
 +		if (ppet_len && (phy_cap[3] & BIT(15))) {
-+			iw_printf("PPE Threshold", "%s", buf);
++			iw_printf("ppe_threshold", "%s", buf);
 +		}
  	}
  }
  
-@@ -1425,9 +1495,9 @@ void print_iftype_list(const char *name, const char *pfx, struct nlattr *attr)
+@@ -1362,9 +1463,9 @@ void print_iftype_list(const char *name, const char *pfx, struct nlattr *attr)
  	struct nlattr *ift;
  	int rem;
  
@@ -4205,355 +3830,15 @@ index 2527650..c837f9c 100644
  }
  
  void print_iftype_line(struct nlattr *attr)
-@@ -1461,9 +1531,9 @@ void print_he_info(struct nlattr *nl_iftype)
- 	if (!tb[NL80211_BAND_IFTYPE_ATTR_IFTYPES])
- 		return;
+@@ -1694,7 +1795,7 @@ int get_cf1(const struct chanmode *chanmode, unsigned long freq)
+ 				6435, 6515, 6595, 6675, 6755, 6835,
+ 				6195, 6995 };
+ 	unsigned int bw160[] = { 5180, 5500, 5955, 6115, 6275, 6435,
+-				  6595, 6755, 6915 };
++				6595, 6755, 6915 };
  
--	printf("\t\tHE Iftypes: ");
-+	json_obj_open("HE Iftypes");
- 	print_iftype_line(tb[NL80211_BAND_IFTYPE_ATTR_IFTYPES]);
--	printf("\n");
-+	json_obj_close();
- 
- 	if (tb[NL80211_BAND_IFTYPE_ATTR_HE_CAP_MAC]) {
- 		len = nla_len(tb[NL80211_BAND_IFTYPE_ATTR_HE_CAP_MAC]);
-@@ -1517,39 +1587,43 @@ static void __print_eht_capa(int band,
- 			     bool indent)
- {
- 	unsigned int i;
--	const char *pre = indent ? "\t" : "";
- 	const char *mcs[] = { "0-7", "8-9", "10-11", "12-13"};
- 
- 	#define PRINT_EHT_CAP(_var, _idx, _bit, _str) \
- 	do { \
- 		if (_var[_idx] & BIT(_bit)) \
--			printf("%s\t\t\t" _str "\n", pre); \
-+			iw_printf(NULL, _str); \
- 	} while (0)
- 
- 	#define PRINT_EHT_CAP_MASK(_var, _idx, _shift, _mask, _str) \
- 	do { \
- 		if ((_var[_idx] >> _shift) & _mask) \
--			printf("%s\t\t\t" _str ": %d\n", pre, (_var[_idx] >> _shift) & _mask); \
-+			iw_printf(NULL, "%s %d", _str, (_var[_idx] >> _shift) & _mask); \
- 	} while (0)
- 
- 	#define PRINT_EHT_MAC_CAP(...) PRINT_EHT_CAP(mac_cap, __VA_ARGS__)
- 	#define PRINT_EHT_PHY_CAP(...) PRINT_EHT_CAP(phy_cap, __VA_ARGS__)
- 	#define PRINT_EHT_PHY_CAP_MASK(...) PRINT_EHT_CAP_MASK(phy_cap, __VA_ARGS__)
- 
--	printf("%s\t\tEHT MAC Capabilities (0x", pre);
-+	json_obj_open("EHT MAC Capabilities");
-+	json_arr_open("Raw Data");
- 	for (i = 0; i < 2; i++)
--		printf("%02x", mac_cap[i]);
--	printf("):\n");
-+		iw_printf(NULL, "0x%02x", mac_cap[i]);
-+	json_arr_close();
- 
-+	json_arr_open("Data");
- 	PRINT_EHT_MAC_CAP(0, 0, "NSEP priority access Supported");
- 	PRINT_EHT_MAC_CAP(0, 1, "EHT OM Control Supported");
- 	PRINT_EHT_MAC_CAP(0, 2, "Triggered TXOP Sharing Supported");
- 	PRINT_EHT_MAC_CAP(0, 3, "ARR Supported");
-+	json_arr_close();
-+	json_obj_close();
- 
--	printf("%s\t\tEHT PHY Capabilities: (0x", pre);
-+	json_obj_open("EHT PHY Capabilities");
-+	json_arr_open("Raw Data");
- 	for (i = 0; i < 8; i++)
--		printf("%02x", ((__u8 *)phy_cap)[i]);
--	printf("):\n");
-+		iw_printf(NULL, "0x%02x", ((__u8 *)phy_cap)[i]);
-+	json_arr_close();
- 
- 	PRINT_EHT_PHY_CAP(0, 1, "320MHz in 6GHz Supported");
- 	PRINT_EHT_PHY_CAP(0, 2, "242-tone RU in BW wider than 20MHz Supported");
-@@ -1593,22 +1667,26 @@ static void __print_eht_capa(int band,
- 	PRINT_EHT_PHY_CAP(1, 28, "MU Beamformer (80MHz)");
- 	PRINT_EHT_PHY_CAP(1, 29, "MU Beamformer (160MHz)");
- 	PRINT_EHT_PHY_CAP(1, 30, "MU Beamformer (320MHz)");
-+	json_arr_close();
- 
--	printf("%s\t\tEHT MCS/NSS: (0x", pre);
-+	json_arr_open("EHT MCS/NSS");
- 	for (i = 0; i < mcs_len; i++)
--		printf("%02x", ((__u8 *)mcs_set)[i]);
--	printf("):\n");
-+		iw_printf(NULL, "0x%02x", ((__u8 *)mcs_set)[i]);
-+	json_arr_close();
-+	json_obj_close();
- 
-+	json_obj_open("HE Phy Capabilities");
-+	json_arr_open("Data");
- 	if (!(he_phy_cap[0] & ((BIT(2) | BIT(3) | BIT(4)) << 8))){
- 		for (i = 0; i < 4; i++)
--			printf("%s\t\tEHT bw=20 MHz, max NSS for MCS %s: Rx=%u, Tx=%u\n",
--			       pre, mcs[i],
-+			iw_printf(NULL, "EHT bw=20 MHz, max NSS for MCS %s: Rx=%u, Tx=%u",
-+			       mcs[i],
- 			       mcs_set[i] & 0xf, mcs_set[i] >> 4);
- 	} else {
- 		if (he_phy_cap[0] & (BIT(2) << 8)) {
- 			for (i = 0; i < 3; i++)
--				printf("%s\t\tEHT bw <= 80 MHz, max NSS for MCS %s: Rx=%u, Tx=%u\n",
--				       pre, mcs[i + 1],
-+				iw_printf(NULL, "EHT bw <= 80 MHz, max NSS for MCS %s: Rx=%u, Tx=%u",
-+				       mcs[i + 1],
- 				       mcs_set[i] & 0xf, mcs_set[i] >> 4);
- 		}
- 		mcs_set += 3;
-@@ -1618,8 +1696,8 @@ static void __print_eht_capa(int band,
- 	mcs_set += 3;
- 	if (he_phy_cap[0] & (BIT(3) << 8)) {
- 		for (i = 0; i < 3; i++)
--			printf("%s\t\tEHT bw=160 MHz, max NSS for MCS %s: Rx=%u, Tx=%u\n",
--			       pre, mcs[i + 1],
-+			iw_printf(NULL, "EHT bw=160 MHz, max NSS for MCS %s: Rx=%u, Tx=%u",
-+			       mcs[i + 1],
- 			       mcs_set[i] & 0xf, mcs_set[i] >> 4);
- 
- 	}
-@@ -1627,32 +1705,35 @@ static void __print_eht_capa(int band,
- 	mcs_set += 3;
- 	if (band == NL80211_BAND_6GHZ && (phy_cap[0] & BIT(1))) {
- 		for (i = 0; i < 3; i++)
--			printf("%s\t\tEHT bw=320 MHz, max NSS for MCS %s: Rx=%u, Tx=%u\n",
--			       pre, mcs[i + 1],
-+			iw_printf(NULL, "EHT bw=320 MHz, max NSS for MCS %s: Rx=%u, Tx=%u",
-+			       mcs[i + 1],
- 			       mcs_set[i] & 0xf, mcs_set[i] >> 4);
- 		if (he_phy_cap[0] & (BIT(3) << 8)) {
- 			for (i = 0; i < 3; i++)
--				printf("%s\t\tEHT bw=160 MHz, max NSS for MCS %s: Rx=%u, Tx=%u\n",
--				       pre, mcs[i + 1],
-+				iw_printf(NULL, "EHT bw=160 MHz, max NSS for MCS %s: Rx=%u, Tx=%u",
-+				       mcs[i + 1],
- 				       mcs_set[i] & 0xf, mcs_set[i] >> 4);
- 		}
- 
- 		mcs_set += 3;
- 		if (band == NL80211_BAND_6GHZ && (phy_cap[0] & BIT(1))) {
- 			for (i = 0; i < 3; i++)
--				printf("%s\t\tEHT bw=320 MHz, max NSS for MCS %s: Rx=%u, Tx=%u\n",
--				       pre, mcs[i + 1],
-+				iw_printf(NULL, "EHT bw=320 MHz, max NSS for MCS %s: Rx=%u, Tx=%u",
-+				       mcs[i + 1],
- 				       mcs_set[i] & 0xf, mcs_set[i] >> 4);
- 		}
- 	}
-+	json_arr_close();
- 
- 	if (ppet && ppet_len && (phy_cap[1] & BIT(11))) {
--		printf("%s\t\tEHT PPE Thresholds ", pre);
-+		json_arr_open("EHT PPE Thresholds");
- 		for (i = 0; i < ppet_len; i++)
- 			if (ppet[i])
--				printf("0x%02x ", ppet[i]);
--		printf("\n");
-+				iw_printf(NULL, "0x%02x", ppet[i]);
-+		json_arr_close();
- 	}
-+
-+	json_obj_close();
- }
- 
- void print_eht_info(struct nlattr *nl_iftype, int band)
-@@ -1884,7 +1965,7 @@ void print_s1g_capability(const uint8_t *caps)
- #define PRINT_S1G_CAP(_cond, _str) \
- 	do { \
- 		if (_cond) \
--			printf("\t\t\t" _str "\n"); \
-+			iw_printf(NULL, _str); \
- 	} while (0)
- 
- 	static char buf[20];
-@@ -1892,8 +1973,16 @@ void print_s1g_capability(const uint8_t *caps)
- 	uint8_t cap = caps[0];
- 
- 	/* S1G Capabilities Information subfield */
--	if (cap)
--		printf("\t\tByte[0]: 0x%02x\n", cap);
-+	iw_printf("S1G Capabilities Raw Value", "0x"
-+		"%02x%02x%02x%02x"
-+		"%02x%02x%02x%02x"
-+		"%02x%02x%02x%02x", 
-+		caps[0], caps[1], caps[2], caps[3],
-+		caps[4], caps[5], caps[6], caps[7],
-+		caps[8], caps[9], caps[10], caps[11]
-+	);
-+
-+	json_arr_open("Capabilities");
- 
- 	PRINT_S1G_CAP((cap & BIT(0)), "S1G PHY: S1G_LONG PPDU Format");
- 
-@@ -1905,7 +1994,7 @@ void print_s1g_capability(const uint8_t *caps)
- 		offset += sprintf(buf + offset, "%s", ((cap >> 1) & 0x8) ? " 8" : "");
- 		offset += sprintf(buf + offset, "%s", ((cap >> 1) & 0x10) ? " 16" : "");
- 		offset += sprintf(buf + offset, " MHz");
--		printf("\t\t\t%s\n", buf);
-+		iw_printf(NULL, buf);
- 	}
- 
- 	PRINT_S1G_CAP(((cap >> 6) & 0x3) == 0x0, "Channel width: 1, 2 MHz");
-@@ -1915,22 +2004,18 @@ void print_s1g_capability(const uint8_t *caps)
- 
- 	cap = caps[1];
- 
--	if (cap)
--		printf("\t\tByte[1]: 0x%02x\n", cap);
--
- 	PRINT_S1G_CAP((cap & BIT(0)), "Rx LDPC");
- 	PRINT_S1G_CAP((cap & BIT(1)), "Tx STBC");
- 	PRINT_S1G_CAP((cap & BIT(2)), "Rx STBC");
- 	PRINT_S1G_CAP((cap & BIT(3)), "SU Beamformer");
- 	PRINT_S1G_CAP((cap & BIT(4)), "SU Beamformee");
- 	if (cap & BIT(4))
--		printf("\t\t\tBeamformee STS: %d\n", (cap >> 5) + 1);
-+		iw_printf(NULL, "Beamformee STS: %d", (cap >> 5) + 1);
- 
- 	cap = caps[2];
--	printf("\t\tByte[2]: 0x%02x\n", cap);
- 
- 	if (caps[1] & BIT(3))
--		printf("\t\t\tSounding dimensions: %d\n", (cap & 0x7) + 1);
-+		iw_printf(NULL, "Sounding dimensions", "%d", (cap & 0x7) + 1);
- 
- 	PRINT_S1G_CAP((cap & BIT(3)), "MU Beamformer");
- 	PRINT_S1G_CAP((cap & BIT(4)), "MU Beamformee");
-@@ -1940,25 +2025,23 @@ void print_s1g_capability(const uint8_t *caps)
- 	PRINT_S1G_CAP(((cap >> 6) & 0x3) == 0x3, "Supports 1 and 2 STS Traveling Pilot");
- 
- 	cap = caps[3];
--	printf("\t\tByte[3]: 0x%02x\n", cap);
- 	PRINT_S1G_CAP((cap & BIT(0)), "RD Responder");
- 	/* BIT(1) in Byte 3 or BIT(25) in all capabilities is reserved */
- 	PRINT_S1G_CAP(((cap & BIT(2)) == 0x0), "Max MPDU length: 3895 bytes");
- 	PRINT_S1G_CAP((cap & BIT(2)), "Max MPDU length: 7991 bytes");
- 
- 	if (compute_ampdu_length((cap >> 2) & 0x3)) {
--		printf("\t\t\tMaximum AMPDU length: %d bytes (exponent: 0x0%02x)\n",
-+		iw_printf(NULL, "Maximum AMPDU length: %d bytes (exponent: 0x0%02x)",
- 		       compute_ampdu_length((cap >> 2) & 0x3), (cap >> 2) & 0x3);
- 	} else {
--		printf("\t\t\tMaximum AMPDU length: unrecognized bytes (exponent: %d)\n",
-+		iw_printf(NULL, "Maximum AMPDU length: unrecognized bytes (exponent: %d)",
- 		       (cap >> 2) & 0x3);
- 	}
- 
--	printf("\t\t\tMinimum MPDU time spacing: %s (0x%02x)\n",
-+	iw_printf(NULL, "Minimum MPDU time spacing: %s (0x%02x)",
- 	       print_ampdu_space((cap >> 5) & 0x7), (cap >> 5) & 0x7);
- 
- 	cap = caps[4];
--	printf("\t\tByte[4]: 0x%02x\n", cap);
- 	PRINT_S1G_CAP((cap & BIT(0)), "Uplink sync capable");
- 	PRINT_S1G_CAP((cap & BIT(1)), "Dynamic AID");
- 	PRINT_S1G_CAP((cap & BIT(2)), "BAT");
-@@ -1970,7 +2053,6 @@ void print_s1g_capability(const uint8_t *caps)
- 	PRINT_S1G_CAP(((cap >> 6) & 0x3) == 0x2, "Only non-sensor STAs");
- 
- 	cap = caps[5];
--	printf("\t\tByte[5]: 0x%02x\n", cap);
- 	PRINT_S1G_CAP((cap & BIT(0)), "Centralized authentication control");
- 	PRINT_S1G_CAP((cap & BIT(1)), "Distributed authentication control");
- 	PRINT_S1G_CAP((cap & BIT(2)), "A-MSDU supported");
-@@ -1983,9 +2065,6 @@ void print_s1g_capability(const uint8_t *caps)
- 	PRINT_S1G_CAP(((cap >> 6) & 0x3) == 0x3, "Group and TXOP-based sectorization operations");
- 
- 	cap = caps[6];
--	if (cap)
--		printf("\t\tByte[6]: 0x%02x\n", cap);
--
- 	PRINT_S1G_CAP((cap & BIT(0)), "OBSS mitigation");
- 	PRINT_S1G_CAP((cap & BIT(1)), "Fragment BA");
- 	PRINT_S1G_CAP((cap & BIT(2)), "NDP PS-Poll");
-@@ -2002,7 +2081,6 @@ void print_s1g_capability(const uint8_t *caps)
- 	}
- 
- 	cap = caps[7];
--	printf("\t\tByte[7]: 0x%02x\n", cap);
- 	PRINT_S1G_CAP((cap & BIT(0)), "TACK support as PS-Poll response");
- 	PRINT_S1G_CAP((cap & BIT(1)), "Duplicate 1 MHz");
- 	PRINT_S1G_CAP((cap & BIT(2)), "MCS negotiation");
-@@ -2013,52 +2091,47 @@ void print_s1g_capability(const uint8_t *caps)
- 	PRINT_S1G_CAP((cap & BIT(7)), "Temporary PS mode switch");
- 
- 	cap = caps[8];
--	if (cap)
--		printf("\t\tByte[8]: 0x%02x\n", cap);
--
- 	PRINT_S1G_CAP((cap & BIT(0)), "TWT grouping");
- 	PRINT_S1G_CAP((cap & BIT(1)), "BDT capable");
--	printf("\t\t\tColor: %u\n", (cap >> 2) & 0x7);
-+	iw_printf(NULL, "Color: %u", (cap >> 2) & 0x7);
- 	PRINT_S1G_CAP((cap & BIT(5)), "TWT requester");
- 	PRINT_S1G_CAP((cap & BIT(6)), "TWT responder");
- 	PRINT_S1G_CAP((cap & BIT(7)), "PV1 frame support");
- 
- 	cap = caps[9];
--	if (cap)
--		printf("\t\tByte[9]: 0x%02x\n", cap);
--
- 	PRINT_S1G_CAP((cap & BIT(0)), "Link Adaptation without NDP CMAC PPDU capable");
- 	/* Rest of byte 9 bits are reserved */
- 
- 	/* Supported S1G-MCS and NSS Set subfield */
- 	/* Rx S1G-MCS Map */
- 	cap = caps[10];
--	printf("\t\tMax Rx S1G MCS Map: 0x%02x\n", cap);
--	printf("\t\t\tFor 1 SS: %s\n", s1g_ss_max_support(cap & 0x3));
--	printf("\t\t\tFor 2 SS: %s\n", s1g_ss_max_support((cap >> 2) & 0x3));
--	printf("\t\t\tFor 3 SS: %s\n", s1g_ss_max_support((cap >> 4) & 0x3));
--	printf("\t\t\tFor 4 SS: %s\n", s1g_ss_max_support((cap >> 6) & 0x3));
-+	iw_printf(NULL, "Max Rx S1G MCS Map: 0x%02x", cap);
-+	iw_printf(NULL, "For 1 SS: %s", s1g_ss_max_support(cap & 0x3));
-+	iw_printf(NULL, "For 2 SS: %s", s1g_ss_max_support((cap >> 2) & 0x3));
-+	iw_printf(NULL, "For 3 SS: %s", s1g_ss_max_support((cap >> 4) & 0x3));
-+	iw_printf(NULL, "For 4 SS: %s", s1g_ss_max_support((cap >> 6) & 0x3));
- 
- 	/* Rx Long GI data rate field comprises of 9 bits */
- 	cap = caps[11];
- 	if (cap || caps[12] & 0x1)
--		printf("\t\t\tRx Highest Long GI Data Rate: %u Mbps\n",
-+		iw_printf(NULL, "Rx Highest Long GI Data Rate: %u Mbps",
- 		       cap + ((caps[12] & 0x1) << 8));
- 
- 	/* Tx S1G-MCS Map */
- 	cap = caps[12];
--	printf("\t\tMax Tx S1G MCS Map: 0x%02x\n", cap);
--	printf("\t\t\tFor 1 SS: %s\n", s1g_ss_max_support((cap >> 1) & 0x3));
--	printf("\t\t\tFor 2 SS: %s\n", s1g_ss_max_support((cap >> 3) & 0x3));
--	printf("\t\t\tFor 3 SS: %s\n", s1g_ss_max_support((cap >> 5) & 0x3));
--	printf("\t\t\tFor 4 SS: %s\n", s1g_ss_max_support(((cap >> 7) & 0x1) +
-+	iw_printf(NULL, "Max Tx S1G MCS Map: 0x%02x", cap);
-+	iw_printf(NULL, "For 1 SS: %s", s1g_ss_max_support((cap >> 1) & 0x3));
-+	iw_printf(NULL, "For 2 SS: %s", s1g_ss_max_support((cap >> 3) & 0x3));
-+	iw_printf(NULL, "For 3 SS: %s", s1g_ss_max_support((cap >> 5) & 0x3));
-+	iw_printf(NULL, "For 4 SS: %s", s1g_ss_max_support(((cap >> 7) & 0x1) +
- 	       ((caps[13] << 1) & 0x2)));
- 
- 	/* Tx Long GI data rate field comprises of 9 bits */
- 	cap = caps[13];
- 	if (((cap >> 7) & 0x7f) || (caps[14] & 0x3))
--		printf("\t\t\tTx Highest Long GI Data Rate: %u Mbps\n", ((cap >> 7) & 0x7f) +
-+		iw_printf(NULL, "Tx Highest Long GI Data Rate: %u Mbps", ((cap >> 7) & 0x7f) +
- 			((caps[14] & 0x3) << 7));
-+	if(cap) json_arr_close();
- 
- 	/* Rx and Tx single spatial streams and S1G MCS Map for 1 MHz */
- 	cap = (caps[15] >> 2) & 0xf;
-@@ -2071,6 +2144,9 @@ void print_s1g_capability(const uint8_t *caps)
- 	PRINT_S1G_CAP((cap & 0x3) == 0x1, "Tx single SS for 1 MHz: single SS and S1G-MCS 2");
- 	PRINT_S1G_CAP((cap & 0x3) == 0x2, "Tx single SS for 1 MHz: single SS and S1G-MCS 7");
- 	PRINT_S1G_CAP((cap & 0x3) == 0x3, "Tx single SS for 1 MHz: single SS and S1G-MCS 9");
-+	
-+	json_arr_close();
-+
- 	/* Last 2 bits are reserved */
- #undef PRINT_S1G_CAP
- }
+ 	switch (chanmode->width) {
+ 	case NL80211_CHAN_WIDTH_80:
 -- 
 2.42.0
 
