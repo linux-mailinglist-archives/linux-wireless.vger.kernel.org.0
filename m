@@ -1,110 +1,81 @@
-Return-Path: <linux-wireless+bounces-4558-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4559-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57A47878008
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Mar 2024 13:32:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F187D87802A
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Mar 2024 13:54:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 079DF1F210EB
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Mar 2024 12:32:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5A73283A15
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Mar 2024 12:54:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FD6D8460;
-	Mon, 11 Mar 2024 12:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2C3D36AE4;
+	Mon, 11 Mar 2024 12:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iIvkJoHv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CahyvtN6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0245E22075
-	for <linux-wireless@vger.kernel.org>; Mon, 11 Mar 2024 12:32:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEEE422064
+	for <linux-wireless@vger.kernel.org>; Mon, 11 Mar 2024 12:54:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710160344; cv=none; b=d56LmzT1UEXsKyvAYHEvvE2+/mW5pOgm1A1X8B3wSiPkWdYCgpfoaId3w3eKeyKPYN9MhtzTMh35cilGy3BxDDRVpISoFUT7UxStGYNeVh8Vipl8Y5UBj07Izl3b0EeSjGNd/wnEaeESa5WtiGjTc/fpYzGOJs86+YmQBZ8SfT0=
+	t=1710161647; cv=none; b=JMjc1fjhPXW0M2K/9JEB84vLpB7kFdwpmgrJCPYraKkP7iiAsEjQzxU2fzkuoV8huJns6EfGL/lahxTh24UWiW3oeRaRcF3yqOhfiCfEB7QY5qpVNb+uC/HxmfTte1gMEUsW7AThaCXNpAqLz3jt4VmpCkcWOUD0A1j1wTKljWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710160344; c=relaxed/simple;
-	bh=vz4OWnKV+wG8V0TUgdYoyb+MpScvALIp8Gjv8Qh36sE=;
-	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=L4mzn/QZ2V2bkqSum6O7e1IcfiwaV+PsSMWGB1UJ0uwHmuSFPYO989Fo8bSE08sRIs6z+91XXrxZq5GmBf/aY6U17rUP0nBL/EqMp0Fj8lf693KzoVRs2zXNJdm3P0GfvqXekEqvZ1ll/402/O98r6Ivmqoh4d2Szaha5ulmCPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iIvkJoHv; arc=none smtp.client-ip=209.85.222.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-7882dd2b1c9so326522785a.1
-        for <linux-wireless@vger.kernel.org>; Mon, 11 Mar 2024 05:32:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710160341; x=1710765141; darn=vger.kernel.org;
-        h=content-transfer-encoding:subject:from:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EFVDgUNk2W+iqDUx7eCGMs7iHsOijEwcGaYgYxw2ycw=;
-        b=iIvkJoHv652Kja/Ge8mTEyp0d8nYiHRHZW9uic/hsc5fssKZYZ+UEFrxnkaa7+1jol
-         PLQxxBUYheDBvgY6TW1bnZgDq3iewyx8Ujt0kUWoxI4zbs7B+JSn8/SmpURhnNe+OTMq
-         /vivt4I7P45+sssg0M4YBm+FBuCbV8XquMnH4+rUxZR49xd38eHGBXziEwL6ToJ3qouM
-         A7m5JCkZp/A3gHgp/jvLyPmGLZ5xKKZGHKvpE5LOrfWse6OhuFOa9TUlIGuQy5nUY7/o
-         7tDvFxfMIrB/1nHna4sT3c25RP1i7NIA5bP3ukO6Hw+uKnvGMT8efmISUiPj7sRWVKQy
-         fspA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710160341; x=1710765141;
-        h=content-transfer-encoding:subject:from:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=EFVDgUNk2W+iqDUx7eCGMs7iHsOijEwcGaYgYxw2ycw=;
-        b=gCqV0neHypeoBluBI7cLz8QVSA1HMlg6i2OmGxy3XoU2A+NIQ1b4tPmBRfKOPf2YFf
-         A/bq0wCkR6mXGTEcWZaObdLRj/eQXQGrGPJYlR48bcX0UUSPdHPh/N4cYQdg5kY3idIj
-         dJl3CJZqxi/YkBZZdoZ05vWtMVqf4LGioVj3Q7Neni8S0F/hHJ5XyGywA8k3byUFwvfa
-         2kCebUv5uSPnXWfpLaNe7xFwN8qxVXZj20VNUpYMOEynIbCENdIFMZf5PYAR42gw+oys
-         oAuQRjByZkGfyJbSYBQwNyia6QjSDmZqPwMgooPgpq3MDxjZiqxd4/8wPcZ+cC5U/iO7
-         Uyqw==
-X-Gm-Message-State: AOJu0YxxodbPVf5US40U1kuqQGHqAKbcVTVkF+4RltPr3IH9+NYXJEo1
-	r754e9e/xKgcPp40Y6uD4m8CLs88Ysrd1DEEe7IubmjivjV+gWVXAxIdUayR
-X-Google-Smtp-Source: AGHT+IGRRRJBJfHEL2gqcSWe6pnIW0FnRBy7hwKUOzTTBBOLB6WiY94EhxmI7Sq7WQl1rciUFBdOFg==
-X-Received: by 2002:a05:620a:470a:b0:788:5d76:1bae with SMTP id bs10-20020a05620a470a00b007885d761baemr9724914qkb.6.1710160341467;
-        Mon, 11 Mar 2024 05:32:21 -0700 (PDT)
-Received: from [10.102.4.159] ([208.195.13.130])
-        by smtp.gmail.com with ESMTPSA id n21-20020a05620a295500b0078870f11abasm644087qkp.81.2024.03.11.05.32.20
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 Mar 2024 05:32:20 -0700 (PDT)
-Message-ID: <e7535e82-10dc-4068-960b-bfe7c6b14aee@gmail.com>
-Date: Mon, 11 Mar 2024 05:32:18 -0700
+	s=arc-20240116; t=1710161647; c=relaxed/simple;
+	bh=MmRmSMYDdBBytU1bQlovE5mbYXTLKDuy1pvF9chw3b0=;
+	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
+	 Cc:Message-ID:Date; b=oM48/sQYLMPq6qqkl17DfaPLyvLuaS1wxoVCaazA778gY6mc/wC90Xlv3j761anxdLdp2+qi+1hdeI854oMNUt5jKjjrs96GsWdgb2kAj58z6s1xr4GGCWhcNdLEufMQHJYcmajztJIYM/fOxTDWcik1UvaaR22kC70MnXyChMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CahyvtN6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B395C433F1;
+	Mon, 11 Mar 2024 12:54:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710161647;
+	bh=MmRmSMYDdBBytU1bQlovE5mbYXTLKDuy1pvF9chw3b0=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=CahyvtN6pceNp/tgBfiFYWCL9zQG0RRmPuFNBU77kBNdhgHT6VMtN48ndf41GTpCI
+	 I+CJOpBz6oywYKYkgY7RA26N4CrzCcHbQTJYxB9oxZQnb6qObzVJ4Sq1WRL3ORdAgR
+	 x+Iqx2fWvMRkcG0oldPi64ZPtgkdQ7u6xBhoOzikNe4RcBI7GKhf3MsYfKfgG1pHt3
+	 d7+e4nts+lLHfmvaaEyjX+4mmZuGHXAwlW9KoaO3qPkSN/ztPGsFnsAsoCUMuylYc4
+	 cyp09VeRh3oOSDIwTUWS9be8NC22VfKZX3Z3YhhMFoIes9ZoUePhn3N7nxto7hl/c1
+	 YoSim1JoHKAvw==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: "open list:MEDIATEK MT76 WIRELESS LAN DRIVER"
- <linux-wireless@vger.kernel.org>
-From: James Prestwood <prestwoj@gmail.com>
-Subject: iw hex escapes SSID, but not other fields
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2] wifi: ath11k: adjust a comment to reflect reality
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <ZeWEqGVibkMg2APi@ns.kevlo.org>
+References: <ZeWEqGVibkMg2APi@ns.kevlo.org>
+To: Kevin Lo <kevlo@kevlo.org>
+Cc: ath11k@lists.infradead.org, Jeff Johnson <quic_jjohnson@quicinc.com>,
+ linux-wireless@vger.kernel.org
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <171016164435.1596381.210173282754394983.kvalo@kernel.org>
+Date: Mon, 11 Mar 2024 12:54:06 +0000 (UTC)
 
-Hi,
+Kevin Lo <kevlo@kevlo.org> wrote:
 
-It was reported to me that some of our tooling (which parses iw output) 
-fails due to a network using a WPS device name with non utf-8 
-characters. I see that for SSID fields there is specific handling for 
-escaping non utf8 bytes, but not for the WPS Device Name (nor any other 
-fields AFAICT).
+> On QCA6390/QCN9074/WCN6855, MHISTATUS may still have SYSERR bit set
+> after SOC_GLOBAL_RESET.
+> 
+> Signed-off-by: Kevin Lo <kevlo@kevlo.org>
+> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-Before you rip me a new one for using iw output like this I have since 
-removed this and now use IWD's DBus API :) But older versions of the 
-software do still parse iw output. Just wanted to report this since iw 
-does print to stdout, so it does seem like it should try and escape 
-those bytes when possible, like it does for SSIDs.
+Patch applied to ath-next branch of ath.git, thanks.
 
-Side note, I see the JSON patches are progressing which is probably 
-going to be the proper way to use iw as an automated tool going forward. 
-I haven't looked at those in detail (maybe its already taken care of), 
-but the above issue will likely need to be handled since JSON requires 
-utf-8.
+a368b0a9854e wifi: ath11k: adjust a comment to reflect reality
 
-Thanks,
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/ZeWEqGVibkMg2APi@ns.kevlo.org/
 
-James
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
 
