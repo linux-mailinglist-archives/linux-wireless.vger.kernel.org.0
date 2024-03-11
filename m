@@ -1,89 +1,106 @@
-Return-Path: <linux-wireless+bounces-4570-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4571-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 234188785D4
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Mar 2024 17:56:14 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ED59878617
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Mar 2024 18:11:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B83E11F21AD5
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Mar 2024 16:56:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F4153B21C1F
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Mar 2024 17:11:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B078487BF;
-	Mon, 11 Mar 2024 16:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16AE14AEDA;
+	Mon, 11 Mar 2024 17:11:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="dl1NqHij"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from tretyak2.mcst.ru (tretyak2.mcst.ru [212.5.119.215])
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D83A05026D;
-	Mon, 11 Mar 2024 16:55:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.5.119.215
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AEB34AEC3;
+	Mon, 11 Mar 2024 17:11:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710176150; cv=none; b=rF48Lojjzs7Z8BBMBft+EyjxwpeBfxPacnKHJkOtrdrBRvJuFejNEw1fy7AZwkyW9jOiij01Ucw+J4BQE+frowOJYsd3RQtZalR17Q++BqjPXyfA7j8YlLiR6lsz5k2J+xPSqEAFQ78MIclqlkGlC33XEnuV8RGeFKq0j5WDGPg=
+	t=1710177088; cv=none; b=HWXnvlapoBcqz/uVWDuRCPYIEEzBMWXqaN9iopTZP01R7z48Ztz1dLQOV0F6I4CAqMbopmM1klNaEwxUhi3z7EDlK/mRfxHH8vUy+UMpk+v0HvIZYRDane6a1VtIPc+d4QEZq0wQ6p7AnBPFpRuvu5jyt3EIzoUlSfKjLmFv/P8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710176150; c=relaxed/simple;
-	bh=kdzWBX3LAegiWKoliuOc67TGbPzxENLVqK5kivBeZ8A=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=OHz0osBoMyRlRtKYT1lsFdCo3L2ycjFQHs8yQRdr1ttpUNsiPqGX1GV8N8GMU6Vlo+/LjWMy8ZZzMmgzhtKlwVzAOUGqAvRx1IWkXzBRh4+rkuETCf/tcUbJXF6yqsOtw5kIaFfbnQUf7iuiGFSFRzW8DTScEJQARmJg06G6dRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mcst.ru; spf=pass smtp.mailfrom=mcst.ru; arc=none smtp.client-ip=212.5.119.215
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mcst.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mcst.ru
-Received: from tretyak2.mcst.ru (localhost [127.0.0.1])
-	by tretyak2.mcst.ru (Postfix) with ESMTP id 08035102398;
-	Mon, 11 Mar 2024 19:48:48 +0300 (MSK)
-Received: from frog.lab.sun.mcst.ru (frog.lab.sun.mcst.ru [176.16.4.50])
-	by tretyak2.mcst.ru (Postfix) with ESMTP id E9BF910239A;
-	Mon, 11 Mar 2024 19:48:02 +0300 (MSK)
-Received: from artemiev-i.lab.sun.mcst.ru (avior-1 [192.168.63.223])
-	by frog.lab.sun.mcst.ru (8.13.4/8.12.11) with ESMTP id 42BGm2ma020437;
-	Mon, 11 Mar 2024 19:48:02 +0300
-From: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Igor Artemiev <Igor.A.Artemiev@mcst.ru>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        lvc-project@linuxtesting.org
-Subject: [lvc-project] [PATCH] wifi: cfg80211: fix rdev_dump_mpp() arguments order
-Date: Mon, 11 Mar 2024 19:45:19 +0300
-Message-Id: <20240311164519.118398-1-Igor.A.Artemiev@mcst.ru>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1710177088; c=relaxed/simple;
+	bh=5AOlmp0WhMZQanJVzfmUCGnKbq90HEOIbEhrlt/ju1k=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=CM/BGMxRkiQHrBkbfXrQKdVDo99lfRC9cyncUqyTMcH0PSxbL6KSZ+Zf61BILYXTa6c2cLArdclGZXIVgIZJMsqxcVb5BfwCsywNUHVXP7sANnrWo4c5dDt4tfcpAnU68Ozuz1sZQIJU27kGRizELv6XY+b38VPYj7KRf5w3/CA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=dl1NqHij; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1710177085;
+	bh=5AOlmp0WhMZQanJVzfmUCGnKbq90HEOIbEhrlt/ju1k=;
+	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
+	b=dl1NqHij7NxipguTGBERLEIq1bqfVRVP4iq3wioNLnoRj8g82MYWcih38MC1YerDb
+	 YhPWoqoawOeG7J4ySudJmbQ64zMgmzEPziktv0To8I/s5RD4sK3x+XDx0nkmsIB2eC
+	 htiJP4vxClYA8IPklK1mq1etU6mBcnrMIBPNFpzDeio9bKEFjNTc5++dxjOEy9Yawi
+	 V97kUv+MyIoZND+Z8lyElxyXZeUndm0a/JY8Q3XVaIfzAcc3p95pz6amt0zErJssIV
+	 wswXPg+bMzbbuhGFVTrPNABshzD/Y01VLthmaXySK9zYeolaTh1DypNY3jBQ7OS/ku
+	 gIUIVVy+Qh8kA==
+Received: from [10.193.1.1] (broslavsky.collaboradmins.com [68.183.210.73])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: usama.anjum)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 45F1B378200D;
+	Mon, 11 Mar 2024 17:11:19 +0000 (UTC)
+Message-ID: <ab6b08c5-86a2-47e3-8683-28cdbe5be7cf@collabora.com>
+Date: Mon, 11 Mar 2024 22:11:51 +0500
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Anti-Virus: Kaspersky Anti-Virus for Linux Mail Server 5.6.39/RELEASE,
-	 bases: 20111107 #2745587, check: 20240311 notchecked
-X-AV-Checked: ClamAV using ClamSMTP
+User-Agent: Mozilla Thunderbird
+Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>, kernel@collabora.com,
+ kernel-janitors@vger.kernel.org, linux-wireless@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH] wifi: mt76: connac: check for null before dereferencing
+Content-Language: en-US
+To: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
+ Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>,
+ Sean Wang <sean.wang@mediatek.com>, Kalle Valo <kvalo@kernel.org>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+References: <20240301144406.2808307-1-usama.anjum@collabora.com>
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+In-Reply-To: <20240301144406.2808307-1-usama.anjum@collabora.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Fix the order of arguments in the TP_ARGS macro 
-for the rdev_dump_mpp tracepoint event.
+Soft reminder
 
-Found by Linux Verification Center (linuxtesting.org).
+On 3/1/24 7:44 PM, Muhammad Usama Anjum wrote:
+> The wcid can be NULL. It should be checked for validity before
+> dereferencing it to avoid crash.
+> 
+> Fixes: 098428c400ff ("wifi: mt76: connac: set correct muar_idx for mt799x chipsets")
+> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+> ---
+>  drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+> index af0c2b2aacb00..7af60eebe517a 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+> @@ -283,7 +283,7 @@ __mt76_connac_mcu_alloc_sta_req(struct mt76_dev *dev, struct mt76_vif *mvif,
+>  	};
+>  	struct sk_buff *skb;
+>  
+> -	if (is_mt799x(dev) && !wcid->sta)
+> +	if (is_mt799x(dev) && wcid && !wcid->sta)
+>  		hdr.muar_idx = 0xe;
+>  
+>  	mt76_connac_mcu_get_wlan_idx(dev, wcid, &hdr.wlan_idx_lo,
 
-Signed-off-by: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
----
- net/wireless/trace.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/wireless/trace.h b/net/wireless/trace.h
-index 1f374c8a17a5..cc3fd4177bce 100644
---- a/net/wireless/trace.h
-+++ b/net/wireless/trace.h
-@@ -1013,7 +1013,7 @@ TRACE_EVENT(rdev_get_mpp,
- TRACE_EVENT(rdev_dump_mpp,
- 	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev, int _idx,
- 		 u8 *dst, u8 *mpp),
--	TP_ARGS(wiphy, netdev, _idx, mpp, dst),
-+	TP_ARGS(wiphy, netdev, _idx, dst, mpp),
- 	TP_STRUCT__entry(
- 		WIPHY_ENTRY
- 		NETDEV_ENTRY
 -- 
-2.39.2
-
+BR,
+Muhammad Usama Anjum
 
