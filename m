@@ -1,81 +1,90 @@
-Return-Path: <linux-wireless+bounces-4559-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4560-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F187D87802A
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Mar 2024 13:54:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17F65878046
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Mar 2024 14:05:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5A73283A15
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Mar 2024 12:54:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 497E41C211B6
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Mar 2024 13:05:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2C3D36AE4;
-	Mon, 11 Mar 2024 12:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D88438F9C;
+	Mon, 11 Mar 2024 13:05:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CahyvtN6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jXRZwXFN"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEEE422064
-	for <linux-wireless@vger.kernel.org>; Mon, 11 Mar 2024 12:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC27B33070
+	for <linux-wireless@vger.kernel.org>; Mon, 11 Mar 2024 13:05:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710161647; cv=none; b=JMjc1fjhPXW0M2K/9JEB84vLpB7kFdwpmgrJCPYraKkP7iiAsEjQzxU2fzkuoV8huJns6EfGL/lahxTh24UWiW3oeRaRcF3yqOhfiCfEB7QY5qpVNb+uC/HxmfTte1gMEUsW7AThaCXNpAqLz3jt4VmpCkcWOUD0A1j1wTKljWU=
+	t=1710162355; cv=none; b=qdOCmGsz85+J6e2CFbne+Ys/P4Rl2zLB0NElIX30kRp0VeHbwxEIk7da2WWvzXLlEoCFDF9f8izd2aNrTMk+xZp6R+4AYNz8Mm8/DhSskXSVmfSmA3JSPH9Qs9Hj9gjhJzjZc17ZAv9nQLeWS0s4Zrv8xsUKXLxvw24df/fe0zI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710161647; c=relaxed/simple;
-	bh=MmRmSMYDdBBytU1bQlovE5mbYXTLKDuy1pvF9chw3b0=;
-	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=oM48/sQYLMPq6qqkl17DfaPLyvLuaS1wxoVCaazA778gY6mc/wC90Xlv3j761anxdLdp2+qi+1hdeI854oMNUt5jKjjrs96GsWdgb2kAj58z6s1xr4GGCWhcNdLEufMQHJYcmajztJIYM/fOxTDWcik1UvaaR22kC70MnXyChMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CahyvtN6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B395C433F1;
-	Mon, 11 Mar 2024 12:54:06 +0000 (UTC)
+	s=arc-20240116; t=1710162355; c=relaxed/simple;
+	bh=sY2aZjoVcuD10saQ+X4Mufz+T7UFLiCtz8ISoPvBb6o=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=cNsiheF3NpJvE9JvcGPk2FWA4lJqeuEk55+RwKDGYgyh+kQ4b/NRH9gULEpAsgX3LBiv+8Ww4aRnNj3/lC6ZJ0NpRPWZUI8RxpA3jFojLJqhpsyrDHQM5a0mvzwgt4Snx38KY26Kd+IKxBXK0NgSTVppjoo7HbNmJjM5y5fY/ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jXRZwXFN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FD78C433F1;
+	Mon, 11 Mar 2024 13:05:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710161647;
-	bh=MmRmSMYDdBBytU1bQlovE5mbYXTLKDuy1pvF9chw3b0=;
-	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=CahyvtN6pceNp/tgBfiFYWCL9zQG0RRmPuFNBU77kBNdhgHT6VMtN48ndf41GTpCI
-	 I+CJOpBz6oywYKYkgY7RA26N4CrzCcHbQTJYxB9oxZQnb6qObzVJ4Sq1WRL3ORdAgR
-	 x+Iqx2fWvMRkcG0oldPi64ZPtgkdQ7u6xBhoOzikNe4RcBI7GKhf3MsYfKfgG1pHt3
-	 d7+e4nts+lLHfmvaaEyjX+4mmZuGHXAwlW9KoaO3qPkSN/ztPGsFnsAsoCUMuylYc4
-	 cyp09VeRh3oOSDIwTUWS9be8NC22VfKZX3Z3YhhMFoIes9ZoUePhn3N7nxto7hl/c1
-	 YoSim1JoHKAvw==
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1710162354;
+	bh=sY2aZjoVcuD10saQ+X4Mufz+T7UFLiCtz8ISoPvBb6o=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=jXRZwXFNS3Ur55NfAET7PVqXesG1NUU3SDI/9RZAltqgpakO/kbF2ajVfls1mAAhI
+	 S8poL8faVGFYlh8IlBXPBjC6g/zORsaWzhx8evzeMOuR5vy6bX1jxkuDyqygQSh/es
+	 RAP6NcX717wu+kNSNzT6hKHHCzlo7uQhcC8/UzJGarCqrCTfcLDPdG1BxtcElEPyPU
+	 7Juac/cLfso9pA0hQe56iHZH3jWKuOJxq3KZq3rhVuZUKM2iEZiSDqfcW6j4FxolyP
+	 eGDpwjHyYSRarZxioLNWp9z1FCRp2xesDtrD5LrQ/wxEPEWa7x2/dEPz+F/NPp/Fw8
+	 tQfkMkCpKyYMQ==
+From: Kalle Valo <kvalo@kernel.org>
+To: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH 2/3] wifi: ath12k: Optimize the lock contention of used
+ list in Rx data path
+References: <20240226162310.629162-1-quic_periyasa@quicinc.com>
+	<20240226162310.629162-3-quic_periyasa@quicinc.com>
+Date: Mon, 11 Mar 2024 15:05:51 +0200
+In-Reply-To: <20240226162310.629162-3-quic_periyasa@quicinc.com> (Karthikeyan
+	Periyasamy's message of "Mon, 26 Feb 2024 21:53:09 +0530")
+Message-ID: <87msr4gbps.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] wifi: ath11k: adjust a comment to reflect reality
-From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <ZeWEqGVibkMg2APi@ns.kevlo.org>
-References: <ZeWEqGVibkMg2APi@ns.kevlo.org>
-To: Kevin Lo <kevlo@kevlo.org>
-Cc: ath11k@lists.infradead.org, Jeff Johnson <quic_jjohnson@quicinc.com>,
- linux-wireless@vger.kernel.org
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <171016164435.1596381.210173282754394983.kvalo@kernel.org>
-Date: Mon, 11 Mar 2024 12:54:06 +0000 (UTC)
+Content-Type: text/plain
 
-Kevin Lo <kevlo@kevlo.org> wrote:
+Karthikeyan Periyasamy <quic_periyasa@quicinc.com> writes:
 
-> On QCA6390/QCN9074/WCN6855, MHISTATUS may still have SYSERR bit set
-> after SOC_GLOBAL_RESET.
-> 
-> Signed-off-by: Kevin Lo <kevlo@kevlo.org>
-> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+> When a packet arrives in Rx rings, the RX descriptor moves from the used
+> list to the free list. Then, the rxdma ring gets replenished, where the Rx
+> descriptor again moves from the free list to the used list. At the end, the
+> descriptor came to the used list with unnecessary list movement. The
+> descriptor used list is maintained in the Rxdma ring structure, which
+> creates lock contention for the list operations (add, delete) in the Rx
+> data path. Optimize the Rx data path by removing the used list from the
+> common Rxdma ring and maintain as a local variable in the Rx ring handler
+> itself, which avoid lock contention. Now, to find the used list descriptor
+> during descriptor cleanup, we need to check the in_use flag for each Rx
+> descriptor.
+>
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+>
+> Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
 
-Patch applied to ath-next branch of ath.git, thanks.
-
-a368b0a9854e wifi: ath11k: adjust a comment to reflect reality
+Before looking at this in detail: When optimising something it would be
+good to have before and after numbers showing the improvement. Otherwise
+it's just wishful thinking.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/ZeWEqGVibkMg2APi@ns.kevlo.org/
+https://patchwork.kernel.org/project/linux-wireless/list/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
 
