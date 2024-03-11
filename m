@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-4568-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4569-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24621878332
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Mar 2024 16:20:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83823878360
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Mar 2024 16:25:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9CF46B23AA1
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Mar 2024 15:20:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4F751C2187D
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Mar 2024 15:25:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D30035D725;
-	Mon, 11 Mar 2024 15:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56C80627E5;
+	Mon, 11 Mar 2024 15:14:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ppofodmH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LJ8SIlLL"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A15EA5D478;
-	Mon, 11 Mar 2024 15:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26EFC626DD;
+	Mon, 11 Mar 2024 15:14:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710170003; cv=none; b=BazuytoCzeu69PXQFih9Q6WK+Sx/vtYBkpzQ5guDe2mbd2ZMeP0mc+zsdcMbrSyQUtF4afszwZrPlqX6Bbu4ouCwfpBQQS1TDIFEkyomzHV9cKxmUqd7U5K934J5oOEu9mKZYURtwaQl3A3FaasywRclx3yqViAvagqvNlqKl04=
+	t=1710170042; cv=none; b=Hzfg7tPsnfYQgj0JuTmUwjd16xQ5NZ+WuBQuX3wmCbHJh7KNreaCjkpoJbAmyPvBYFHuTiRB0suYjV2qoHJKzB4EWk0rlDOh7UlVwqg59t0dAajrf9d0e4rNEdEzsrmgOOqt/Mccafriw00897FO4BrzX+Uo8GMpme/UgdifcA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710170003; c=relaxed/simple;
+	s=arc-20240116; t=1710170042; c=relaxed/simple;
 	bh=S9i6rVDTLrc92ZdyKfg4Ixk7H6eGpB3PH6E05e+MPh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WQHprln3CG9QEXi+Jh2UFZNA9Em8VT1C+bqnEGRkRCNrA1Ts4j5RmAOgQVIGcCBKdiqH/4o6X0rWySrTdVYHtwicG1e/zDAZk9OtUqBekOECyoRlTAQIZrqVqxxKeZ5U8XBdTmuV6sSU7OMZXcWRyQaxQAhMNn6LleE/d329iZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ppofodmH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE355C433F1;
-	Mon, 11 Mar 2024 15:13:21 +0000 (UTC)
+	 MIME-Version; b=XmfUgjS7Qa4lVSPXFIlEYVay/a+5/dNRSDVANRdKSxJ37gH0pNI9ZDhGZvaLeWeYBF5Ys3CGFeZk+AfVl0BIMgvbgHq29F/dC2LK5O1OahmTuSQ7MztpUnKD6Vs4NiYQC0UPOeWYXHyWfEVTpNkJR1RyGrsN3xAOz9o+rqjfyvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LJ8SIlLL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5DE5C43394;
+	Mon, 11 Mar 2024 15:14:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710170003;
+	s=k20201202; t=1710170042;
 	bh=S9i6rVDTLrc92ZdyKfg4Ixk7H6eGpB3PH6E05e+MPh0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ppofodmHbVK1DKp9osxVgBljmkNyxz+AKN4+vOTN7dMG2oyzuQsAuLFGguTMEKrcl
-	 LYfjKrsRs4wyqrqdCIf0akKPISge4X3qPoYteQWwy6KhX+//Nu5Zo9sjUyv+VeOKYe
-	 xALK6Vcune5XheIwBS9O9GMYN0GsrbWJWyBgC1khmd0fy9MGsoFKnW7C1arBwoKxbV
-	 cd413iO+bb2Z1k88VGof0ZJxUcNuKhmBntislTHRgt/YG6g6sGvUZ/XV73d9SXBLTp
-	 i0jBgBFeXZjEbNtX8/G3NCXCqOP3z5XNkstbZp2c5QQ9xj0c8pl7ljPJ5IKgB5NbRy
-	 WHuL3FQfM9tkg==
+	b=LJ8SIlLLJNBLgbNtaeZomfFWNjpDebvVzUG2itxNxNhpP9lcAWN5JiNIMqaEqN+qa
+	 iyFIam55NRPCNrBurXddfb9tTZpK0+XXj80AQ4oMYYnkoEysrX4k5p38yYg+sicYVW
+	 QQzSj/YdWNM4FGTFiBwDwGDM8kqTs4q/30m2OfgkGENvo4/iKm1Je2Ku2vmH10eHhr
+	 sxk918SFqyVyJcNbqUVRK2CtyQcXKMZGGL5pt0qdnZiaoQvWK9KgVxZtT6Rg/eMzvk
+	 0QYI/RrSrzQS4AgY7fmVarMU23zQJtIwY2OAdaDz3dbBauSCJRgdmuaSbjPeUkN8ZD
+	 s9G5SdpSpurYg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -54,12 +54,12 @@ Cc: Felix Fietkau <nbd@nbd.name>,
 	pabeni@redhat.com,
 	linux-wireless@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 05/17] wifi: mac80211: only call drv_sta_rc_update for uploaded stations
-Date: Mon, 11 Mar 2024 11:12:56 -0400
-Message-ID: <20240311151314.317776-5-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 04/13] wifi: mac80211: only call drv_sta_rc_update for uploaded stations
+Date: Mon, 11 Mar 2024 11:13:39 -0400
+Message-ID: <20240311151354.318293-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240311151314.317776-1-sashal@kernel.org>
-References: <20240311151314.317776-1-sashal@kernel.org>
+In-Reply-To: <20240311151354.318293-1-sashal@kernel.org>
+References: <20240311151354.318293-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -68,7 +68,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.21
+X-stable-base: Linux 6.1.81
 Content-Transfer-Encoding: 8bit
 
 From: Felix Fietkau <nbd@nbd.name>
