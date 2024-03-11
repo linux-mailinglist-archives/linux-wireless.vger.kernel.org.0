@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-4567-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4568-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DD448782F3
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Mar 2024 16:15:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24621878332
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Mar 2024 16:20:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B6D1CB20D70
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Mar 2024 15:14:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9CF46B23AA1
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Mar 2024 15:20:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91C774D5BA;
-	Mon, 11 Mar 2024 15:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D30035D725;
+	Mon, 11 Mar 2024 15:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WRzlxPY7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ppofodmH"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 689A84D5AB;
-	Mon, 11 Mar 2024 15:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A15EA5D478;
+	Mon, 11 Mar 2024 15:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710169960; cv=none; b=YWXVrmGPbQsLutf+st5rEgl2WbTGSC8OeX3jmMCnSFyKjd3UvIdHP9n4XFGfZsZsF2OEkGXCclv5TBShi0VRDm8pub4BCgbyhTjViRdHY8sYcQVivsqQLi+KYO8wNO/mGgODEf44Lng1ss2U9Jsir4fGpA+NiaNauaLpteKJLAo=
+	t=1710170003; cv=none; b=BazuytoCzeu69PXQFih9Q6WK+Sx/vtYBkpzQ5guDe2mbd2ZMeP0mc+zsdcMbrSyQUtF4afszwZrPlqX6Bbu4ouCwfpBQQS1TDIFEkyomzHV9cKxmUqd7U5K934J5oOEu9mKZYURtwaQl3A3FaasywRclx3yqViAvagqvNlqKl04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710169960; c=relaxed/simple;
+	s=arc-20240116; t=1710170003; c=relaxed/simple;
 	bh=S9i6rVDTLrc92ZdyKfg4Ixk7H6eGpB3PH6E05e+MPh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CoAbyHJuZV5vyZ0og6siJEO30Q2sUmqqJ9BgEjKBFcaI3vL85v0L/7x1QTJAn5HoEG4757crFWR9dpiHqOvtNeh4hN/8WZxSL4XSe8ykSDeo9AohvyDnnjiqoq1xrxsHTzFrqcazrwsH3tSYSLhoUYJRkH1onRr/7mcuoFehr4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WRzlxPY7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA96BC433C7;
-	Mon, 11 Mar 2024 15:12:38 +0000 (UTC)
+	 MIME-Version; b=WQHprln3CG9QEXi+Jh2UFZNA9Em8VT1C+bqnEGRkRCNrA1Ts4j5RmAOgQVIGcCBKdiqH/4o6X0rWySrTdVYHtwicG1e/zDAZk9OtUqBekOECyoRlTAQIZrqVqxxKeZ5U8XBdTmuV6sSU7OMZXcWRyQaxQAhMNn6LleE/d329iZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ppofodmH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE355C433F1;
+	Mon, 11 Mar 2024 15:13:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710169960;
+	s=k20201202; t=1710170003;
 	bh=S9i6rVDTLrc92ZdyKfg4Ixk7H6eGpB3PH6E05e+MPh0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WRzlxPY7RJc8oKN38Ed0fqs3VQMWE3Caq7wpROnWkEOa/C9/d+3kXz22pqo7oltfN
-	 +XyIKCMfdtI29ilQwVVxDEHKhk7pfBGFh+9KpJWqRV2Rsn7h5EmWYmwY5UiD+Lfk77
-	 SZomocpblTunbjYbY7YY3HvsitVVBQnKfuB3NIjo/id463SZE6vypDi0hcLZmJqxAg
-	 IL1NuknE/4VCafcRycDUsW+9a08RRwyQjuiA0zIQoAi9CfqlO1lPUk7Q+zDTSSp8Pc
-	 1AEi/FSW4ZoIq0TZJyOPUYO7YM1YVtOD1rgxlyamJ1A/NkFA83Lx7xdGEuIdKrGPnu
-	 st/fOnYH4rUKA==
+	b=ppofodmHbVK1DKp9osxVgBljmkNyxz+AKN4+vOTN7dMG2oyzuQsAuLFGguTMEKrcl
+	 LYfjKrsRs4wyqrqdCIf0akKPISge4X3qPoYteQWwy6KhX+//Nu5Zo9sjUyv+VeOKYe
+	 xALK6Vcune5XheIwBS9O9GMYN0GsrbWJWyBgC1khmd0fy9MGsoFKnW7C1arBwoKxbV
+	 cd413iO+bb2Z1k88VGof0ZJxUcNuKhmBntislTHRgt/YG6g6sGvUZ/XV73d9SXBLTp
+	 i0jBgBFeXZjEbNtX8/G3NCXCqOP3z5XNkstbZp2c5QQ9xj0c8pl7ljPJ5IKgB5NbRy
+	 WHuL3FQfM9tkg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -54,12 +54,12 @@ Cc: Felix Fietkau <nbd@nbd.name>,
 	pabeni@redhat.com,
 	linux-wireless@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.7 10/23] wifi: mac80211: only call drv_sta_rc_update for uploaded stations
-Date: Mon, 11 Mar 2024 11:11:50 -0400
-Message-ID: <20240311151217.317068-10-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 05/17] wifi: mac80211: only call drv_sta_rc_update for uploaded stations
+Date: Mon, 11 Mar 2024 11:12:56 -0400
+Message-ID: <20240311151314.317776-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240311151217.317068-1-sashal@kernel.org>
-References: <20240311151217.317068-1-sashal@kernel.org>
+In-Reply-To: <20240311151314.317776-1-sashal@kernel.org>
+References: <20240311151314.317776-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -68,7 +68,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.7.9
+X-stable-base: Linux 6.6.21
 Content-Transfer-Encoding: 8bit
 
 From: Felix Fietkau <nbd@nbd.name>
