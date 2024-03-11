@@ -1,66 +1,66 @@
-Return-Path: <linux-wireless+bounces-4542-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4543-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10E92877AF1
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Mar 2024 07:29:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF2DA877AF2
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Mar 2024 07:29:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA896281CDC
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Mar 2024 06:29:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F3ED1C20D5A
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Mar 2024 06:29:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2835914275;
-	Mon, 11 Mar 2024 06:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A69814A96;
+	Mon, 11 Mar 2024 06:28:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CpibnTai"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YgXSnjqd"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E9913AE8
-	for <linux-wireless@vger.kernel.org>; Mon, 11 Mar 2024 06:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A124C1428F
+	for <linux-wireless@vger.kernel.org>; Mon, 11 Mar 2024 06:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710138530; cv=none; b=qCYuTkasii7KXxqfivjbZQS1VtOeiaglUP378xRJPJ9KazRlQT1wlLFL/FQAE26BwnhcwPxhfTdxqWTDjt3xOX+V2mFG1toJjK+0NWtQfZRtiOKU1XNNbymztk7iy741Q5NqGrRo1PcWLsp97eP/OuXnzftMLXoMNplq+nVA0JU=
+	t=1710138532; cv=none; b=FgGQD0I/8pcoCJ4/oplG5+vNmSjPyz4Tx76JdNk0EA2fqn6NzxfGOya7P0QxF3dY0F2ujpaDFngFEvV17ALIG0LswnViFLFH4HunOmf+mWQlPPJdWEN+rTUzXO3Y0s9z10JLC9OShYYSBKRTnBmROq6jTF1tgLA0Yv1xmnwD9B8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710138530; c=relaxed/simple;
-	bh=gHTM7X4Pt17euL85qkcgIg2qVbWTn3/1sN2tLi8erbQ=;
+	s=arc-20240116; t=1710138532; c=relaxed/simple;
+	bh=Rf5BpwF1xL4GFJeiz3F8A+hforaprU1Ck5U3u69cdco=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SwzLp9ch1Pyt7DZdlEqvA6f7lDZ+DD9W6/SFpMZyhPdSD3jXUZzDEJVxXldCX+X3KglvcP/YiFM8aggiAGO8glU7nL9x1R2ZKcE+oobZ8ub1ct2po/LPKR0IMG0K9qlIlrHGspH6hffkcNcVgtlKSKM6T/NnxXw4wWuuDzNv5KE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CpibnTai; arc=none smtp.client-ip=192.198.163.7
+	 MIME-Version; b=J9v2PaH7ZDDFLVsHRiUCUAbXGbpJCuZQZaF8LGagNI9iqGfz63ORZXzeKx6hX+mQsMVwzAy2dfts+AD6f6zA/x8CDuDub2yyhSeHEpKB5uLBMl1pkJwHdNHMvbP4Grw9S1HTqtWBoqdNb/JW5HoKFbY8mAACCTLitWDI+JLlf58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YgXSnjqd; arc=none smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1710138528; x=1741674528;
+  t=1710138531; x=1741674531;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=gHTM7X4Pt17euL85qkcgIg2qVbWTn3/1sN2tLi8erbQ=;
-  b=CpibnTailv9/p6rMnVU0zhwYGXadXbGw61qIG3T5UztbB2vjIk6y+pFJ
-   XlH4lEZUGsTiZtZqUjM9pIHf8Y9BbO33PZU7FszVOb8SRsUPdx6x9LaZZ
-   MzZJu3NahF+YfayD7Liyb/K9dXBoW3E+bDEzkiCfmN1cBbUMA9QHINaX/
-   jw1F/pPYv0qAMiJxdcz1iU4thuLmLZ/GBvjbMe5I3Qf/gFV9imLUbmkc3
-   o9ZSdNMXsvoR5TORMJB2Ebf/3dv8wKu5FVDhb7H5UL+55+UkOB+BjNiwr
-   9Rd8+SBIbboyzPaQ15zw73s5YAX0p68MxroGZIep9NtmklgmG/eVYoBf5
+  bh=Rf5BpwF1xL4GFJeiz3F8A+hforaprU1Ck5U3u69cdco=;
+  b=YgXSnjqdwWT30Zp4XxGuCbxpENPi3CAdEBA6x4kgan1z7UwMuvL+3ZdD
+   Dj+CMhsj6s1OCyHhBECHG/pywOQcYZzbX+3pEkZKLtjjNod5ra9L8aY8B
+   1RbMYOZLzEmmtDhYGVnP4mdoYfls4mZYbcFTT/dklWpJ/w4O3CKzzHK45
+   eAyKHdW54EDT6QWJlBPLcfuS+uUpVqqOTednY9bqXUoqAj3twZL8s9NaC
+   nJthvR8X/90//6A2wmqSjsYh7JTZmGpKKPwfx+/ADYhEGVv28m5OjbfPp
+   w0ZPkSL/J1SzHkVsNbf0pbryW5nZqZJmZuPu+NBeJqrHhCHgGF/WeaSVM
    g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11009"; a="30226788"
+X-IronPort-AV: E=McAfee;i="6600,9927,11009"; a="30226793"
 X-IronPort-AV: E=Sophos;i="6.07,115,1708416000"; 
-   d="scan'208";a="30226788"
+   d="scan'208";a="30226793"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2024 23:28:48 -0700
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2024 23:28:50 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,115,1708416000"; 
-   d="scan'208";a="15657714"
+   d="scan'208";a="15657719"
 Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2024 23:28:47 -0700
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2024 23:28:49 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 10/15] wifi: iwlwifi: mvm: fix flushing during quiet CSA
-Date: Mon, 11 Mar 2024 08:28:10 +0200
-Message-Id: <20240311081938.d5d629f32ea8.I86d9b849d92273542bfc2d9c671b66179e7ebb72@changeid>
+Subject: [PATCH 11/15] wifi: iwlwifi: mvm: advertise IEEE80211_HW_HANDLES_QUIET_CSA
+Date: Mon, 11 Mar 2024 08:28:11 +0200
+Message-Id: <20240311081938.fa75403b5eaa.Ie3ff02215f810fcfefd6a22c481567f94f61c0c6@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240311062815.4099838-1-miriam.rachel.korenblit@intel.com>
 References: <20240311062815.4099838-1-miriam.rachel.korenblit@intel.com>
@@ -75,109 +75,155 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-If, for any reason, we're going to attempt to flush the queues
-while quiet CSA is happening, this cannot succeed. This could
-be the case if for example mac80211 were to flush after TXing
-e.g. a deauth frame due to disconnecting during the CSA.
+The firmware has handled quiet in CSA for a long time now, but
+it didn't really matter much. However, now with quiet CSA on a
+perhaps secondary link, we don't want mac80211 to stop queues,
+we can continue using a link that's not requiring quiet. Set
+the feature flag for MLO-capable devices indicating that we'll
+handle the quiet entirely in the driver/device.
 
-In this case, drop the frames instead, the firmware won't let
-us do any transmissions and may also become unhappy if we're
-not going to disconnect quickly enough.
-
-Currently this doesn't happen as mac80211 stops queues, but
-we'll want to let mac80211 know not to stop queues for proper
-multi-link support during CSA, so we need to handle this case.
+However, the firmware doesn't handle quiet in AP mode since we
+don't really expect to really be needing that (without radar
+detection), but - even for testing - make that work properly
+by simply not pulling from TXQs in this scenario.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 19 +++++++++++++++++--
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  2 ++
- 2 files changed, 19 insertions(+), 2 deletions(-)
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 58 ++++++++++++++++++-
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  7 ++-
+ 2 files changed, 61 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index b8488984cc0e..5f8a53a77290 100644
+index 5f8a53a77290..bea40de36b7a 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -1437,6 +1437,7 @@ int iwl_mvm_post_channel_switch(struct ieee80211_hw *hw,
- 		u8 ap_sta_id = mvmvif->link[link_id]->ap_sta_id;
+@@ -359,8 +359,11 @@ int iwl_mvm_mac_setup_register(struct iwl_mvm *mvm)
+ 	/* Set this early since we need to have it for the check below */
+ 	if (mvm->mld_api_is_used && mvm->nvm_data->sku_cap_11be_enable &&
+ 	    !iwlwifi_mod_params.disable_11ax &&
+-	    !iwlwifi_mod_params.disable_11be)
++	    !iwlwifi_mod_params.disable_11be) {
+ 		hw->wiphy->flags |= WIPHY_FLAG_SUPPORTS_MLO;
++		/* we handle this already earlier, but need it for MLO */
++		ieee80211_hw_set(hw, HANDLES_QUIET_CSA);
++	}
  
- 		mvmvif->csa_bcn_pending = false;
-+		mvmvif->csa_blocks_tx = false;
- 		mvmsta = iwl_mvm_sta_from_staid_protected(mvm, ap_sta_id);
+ 	/* With MLD FW API, it tracks timing by itself,
+ 	 * no need for any timing from the host
+@@ -903,6 +906,8 @@ void iwl_mvm_mac_itxq_xmit(struct ieee80211_hw *hw, struct ieee80211_txq *txq)
+ 					&mvmtxq->state) &&
+ 			      !test_bit(IWL_MVM_TXQ_STATE_STOP_REDIRECT,
+ 					&mvmtxq->state) &&
++			      !test_bit(IWL_MVM_TXQ_STATE_STOP_AP_CSA,
++					&mvmtxq->state) &&
+ 			      !test_bit(IWL_MVM_STATUS_IN_D3, &mvm->status))) {
+ 			skb = ieee80211_tx_dequeue(hw, txq);
  
- 		if (WARN_ON(!mvmsta)) {
-@@ -5433,6 +5434,7 @@ int iwl_mvm_pre_channel_switch(struct ieee80211_hw *hw,
- 	mutex_lock(&mvm->mutex);
+@@ -1421,6 +1426,20 @@ int iwl_mvm_set_tx_power(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+ 	return iwl_mvm_send_cmd_pdu(mvm, cmd_id, 0, len, &cmd);
+ }
  
- 	mvmvif->csa_failed = false;
-+	mvmvif->csa_blocks_tx = false;
- 
- 	IWL_DEBUG_MAC80211(mvm, "pre CSA to freq %d\n",
- 			   chsw->chandef.center_freq1);
-@@ -5471,6 +5473,8 @@ int iwl_mvm_pre_channel_switch(struct ieee80211_hw *hw,
- 
- 		break;
- 	case NL80211_IFTYPE_STATION:
-+		mvmvif->csa_blocks_tx = chsw->block_tx;
++static void iwl_mvm_post_csa_tx(void *data, struct ieee80211_sta *sta)
++{
++	struct ieee80211_hw *hw = data;
++	int i;
 +
- 		/*
- 		 * In the new flow FW is in charge of timing the switch so there
- 		 * is no need for all of this
-@@ -5635,8 +5639,8 @@ static void iwl_mvm_flush_no_vif(struct iwl_mvm *mvm, u32 queues, bool drop)
- void iwl_mvm_mac_flush(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 		       u32 queues, bool drop)
- {
-+	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
- 	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
--	struct iwl_mvm_vif *mvmvif;
- 	struct iwl_mvm_sta *mvmsta;
- 	struct ieee80211_sta *sta;
- 	bool ap_sta_done = false;
-@@ -5648,11 +5652,22 @@ void iwl_mvm_mac_flush(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 		return;
++	for (i = 0; i < ARRAY_SIZE(sta->txq); i++) {
++		struct iwl_mvm_txq *mvmtxq =
++			iwl_mvm_txq_from_mac80211(sta->txq[i]);
++
++		clear_bit(IWL_MVM_TXQ_STATE_STOP_AP_CSA, &mvmtxq->state);
++		iwl_mvm_mac_itxq_xmit(hw, sta->txq[i]);
++	}
++}
++
+ int iwl_mvm_post_channel_switch(struct ieee80211_hw *hw,
+ 				struct ieee80211_vif *vif,
+ 				struct ieee80211_bss_conf *link_conf)
+@@ -1459,6 +1478,18 @@ int iwl_mvm_post_channel_switch(struct ieee80211_hw *hw,
+ 
+ 			iwl_mvm_stop_session_protection(mvm, vif);
+ 		}
++	} else if (vif->type == NL80211_IFTYPE_AP && mvmvif->csa_blocks_tx) {
++		struct iwl_mvm_txq *mvmtxq =
++			iwl_mvm_txq_from_mac80211(vif->txq);
++
++		clear_bit(IWL_MVM_TXQ_STATE_STOP_AP_CSA, &mvmtxq->state);
++
++		local_bh_disable();
++		iwl_mvm_mac_itxq_xmit(hw, vif->txq);
++		ieee80211_iterate_stations_atomic(hw, iwl_mvm_post_csa_tx, hw);
++		local_bh_enable();
++
++		mvmvif->csa_blocks_tx = false;
  	}
  
-+	if (!drop && hweight16(vif->active_links) <= 1) {
-+		int link_id = vif->active_links ? __ffs(vif->active_links) : 0;
-+		struct ieee80211_bss_conf *link_conf;
+ 	mvmvif->ps_disabled = false;
+@@ -5421,6 +5452,18 @@ static int iwl_mvm_old_pre_chan_sw_sta(struct iwl_mvm *mvm,
+ 	return 0;
+ }
+ 
++static void iwl_mvm_csa_block_txqs(void *data, struct ieee80211_sta *sta)
++{
++	int i;
 +
-+		link_conf = wiphy_dereference(hw->wiphy,
-+					      vif->link_conf[link_id]);
-+		if (WARN_ON(!link_conf))
-+			return;
-+		if (link_conf->csa_active && mvmvif->csa_blocks_tx)
-+			drop = true;
++	for (i = 0; i < ARRAY_SIZE(sta->txq); i++) {
++		struct iwl_mvm_txq *mvmtxq =
++			iwl_mvm_txq_from_mac80211(sta->txq[i]);
++
++		set_bit(IWL_MVM_TXQ_STATE_STOP_AP_CSA, &mvmtxq->state);
 +	}
++}
 +
- 	/* Make sure we're done with the deferred traffic before flushing */
- 	flush_work(&mvm->add_stream_wk);
+ #define IWL_MAX_CSA_BLOCK_TX 1500
+ int iwl_mvm_pre_channel_switch(struct ieee80211_hw *hw,
+ 			       struct ieee80211_vif *vif,
+@@ -5429,6 +5472,7 @@ int iwl_mvm_pre_channel_switch(struct ieee80211_hw *hw,
+ 	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
+ 	struct ieee80211_vif *csa_vif;
+ 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
++	struct iwl_mvm_txq *mvmtxq;
+ 	int ret;
  
  	mutex_lock(&mvm->mutex);
--	mvmvif = iwl_mvm_vif_from_mac80211(vif);
+@@ -5471,6 +5515,18 @@ int iwl_mvm_pre_channel_switch(struct ieee80211_hw *hw,
  
- 	/* flush the AP-station and all TDLS peers */
- 	for (i = 0; i < mvm->fw->ucode_capa.num_stations; i++) {
+ 		mvmvif->csa_target_freq = chsw->chandef.chan->center_freq;
+ 
++		if (!chsw->block_tx)
++			break;
++		/* don't need blocking in driver otherwise - mac80211 will do */
++		if (!ieee80211_hw_check(mvm->hw, HANDLES_QUIET_CSA))
++			break;
++
++		mvmvif->csa_blocks_tx = true;
++		mvmtxq = iwl_mvm_txq_from_mac80211(vif->txq);
++		set_bit(IWL_MVM_TXQ_STATE_STOP_AP_CSA, &mvmtxq->state);
++		ieee80211_iterate_stations_atomic(mvm->hw,
++						  iwl_mvm_csa_block_txqs,
++						  NULL);
+ 		break;
+ 	case NL80211_IFTYPE_STATION:
+ 		mvmvif->csa_blocks_tx = chsw->block_tx;
 diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-index e9da4d2bc13a..ffc8f20700d6 100644
+index ffc8f20700d6..d58cd7d41fe1 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
 +++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-@@ -370,6 +370,7 @@ struct iwl_mvm_vif_link_info {
-  * @csa_countdown: indicates that CSA countdown may be started
-  * @csa_failed: CSA failed to schedule time event, report an error later
-  * @csa_bcn_pending: indicates that we are waiting for a beacon on a new channel
-+ * @csa_blocks_tx: CSA is blocking TX
-  * @features: hw features active for this vif
-  * @ap_beacon_time: AP beacon time for synchronisation (on older FW)
-  * @bf_enabled: indicates if beacon filtering is enabled
-@@ -445,6 +446,7 @@ struct iwl_mvm_vif {
- 	bool csa_countdown;
- 	bool csa_failed;
- 	bool csa_bcn_pending;
-+	bool csa_blocks_tx;
- 	u16 csa_target_freq;
- 	u16 csa_count;
- 	u16 csa_misbehave;
+@@ -759,9 +759,10 @@ struct iwl_mvm_txq {
+ 	struct list_head list;
+ 	u16 txq_id;
+ 	atomic_t tx_request;
+-#define IWL_MVM_TXQ_STATE_STOP_FULL	0
+-#define IWL_MVM_TXQ_STATE_STOP_REDIRECT	1
+-#define IWL_MVM_TXQ_STATE_READY		2
++#define IWL_MVM_TXQ_STATE_READY		0
++#define IWL_MVM_TXQ_STATE_STOP_FULL	1
++#define IWL_MVM_TXQ_STATE_STOP_REDIRECT	2
++#define IWL_MVM_TXQ_STATE_STOP_AP_CSA	3
+ 	unsigned long state;
+ };
+ 
 -- 
 2.34.1
 
