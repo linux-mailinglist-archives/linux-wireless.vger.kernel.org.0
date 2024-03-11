@@ -1,246 +1,189 @@
-Return-Path: <linux-wireless+bounces-4564-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4565-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 682DE878286
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Mar 2024 15:58:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 511608782CE
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Mar 2024 16:12:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D234282082
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Mar 2024 14:58:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E5E04B20BEB
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Mar 2024 15:12:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E8DF40C1F;
-	Mon, 11 Mar 2024 14:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F8E841C7F;
+	Mon, 11 Mar 2024 15:12:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GFdHBBgB"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from netrider.rowland.org (netrider.rowland.org [192.131.102.5])
-	by smtp.subspace.kernel.org (Postfix) with SMTP id CC6444120B
-	for <linux-wireless@vger.kernel.org>; Mon, 11 Mar 2024 14:52:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.131.102.5
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F9240BF5;
+	Mon, 11 Mar 2024 15:12:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710168773; cv=none; b=EVB9dWqyMvUJFhq8XvAsT+mKahl2TbFHyOb6n0Kv4b11hPQHnicXOOTvzp8vKRlV/t6jCl1hbb/9E8aqc3NGz/y2EQRZNygmeviDXCMOsnR9kn7LOqJskKyTjAnKoFVBMmOAYU9aKxgqthBsgQ08jjioFOxgrvCz8o809NLHEGw=
+	t=1710169945; cv=none; b=UD0Omk5RmtRv9dytLqeLDAnXlQ/fCVaSqDKpoedPuxEbGQj9h9BkQrDLkiQCEfQEbL3TZ7sLsAXkATIrYjTtV982AJmut5kcdJBfrV8UiPga19hC18gyRJguHT02+vlHSeatPdFzyUkiPexu83tStIT8SCFdI3uw7Cv/BGSPRhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710168773; c=relaxed/simple;
-	bh=x6syf5h9N6EY0r6mH5slFRcJoZ+qnnPp216cL4DaJCc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cfA/4hokm+lefo0NVKReVTTXJ2UdT8hH9BfS6KTWg8CvbMN8CunaCMURKK+QaRadrCpUk7XBL00JFCJE6hgHSZJNQXYdkml+eJo4aEMLTl2JXlzcoVsnaD6RIHm5CmMxXFdghAXmn/dOEaAlCcRw2/ui7v8iYpW9PqfPdFgLhUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=rowland.harvard.edu; spf=pass smtp.mailfrom=netrider.rowland.org; arc=none smtp.client-ip=192.131.102.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netrider.rowland.org
-Received: (qmail 350973 invoked by uid 1000); 11 Mar 2024 10:52:50 -0400
-Date: Mon, 11 Mar 2024 10:52:50 -0400
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
-  Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
-  Ryder Lee <ryder.lee@mediatek.com>
-Cc: Alexey Dobriyan <adobriyan@gmail.com>,
-  Linux List Kernel Mailing <linux-kernel@vger.kernel.org>,
-  linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org
-Subject: Re: regression/bisected/6.8 commit
- 5d390df3bdd13d178eb2e02e60e9a480f7103f7b prevents the system going into
- suspend mode
-Message-ID: <3e82882f-91f8-4373-b33f-829252fa2ff0@rowland.harvard.edu>
-References: <CABXGCsNnE=tz6dfQO4fU58jAYNT2A=9g0CjtdMOQ05AVM6yDRA@mail.gmail.com>
- <c10916cd-670f-41c9-a3a7-7599b0a9a946@p183>
- <CABXGCsOPPuDSSLsOpzvzv+t8yL9z-gzoMTBY0wAL-s1Cd+bDyg@mail.gmail.com>
- <65081fe0-cd4a-4168-90b3-7559357d3b55@p183>
- <CABXGCsO-eZi8az3Yd2G6StJcrjmRCiUbXJz2oLw2OkVExgexkQ@mail.gmail.com>
+	s=arc-20240116; t=1710169945; c=relaxed/simple;
+	bh=olviz3N7KgcKZNdsBQeT6Zs90vm3EAN2EEUiaQCQYdk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=vFS9L7wFgqdq8hgXvOd0rw4EhOwsJbWgzC4re/3pSL+kMdLiA2iRwIs/RlUoPvmPBgFyx2wb5GR9A5ihyy5u7abc6vYZMFViZL7Vf5evue3Y4WbELe5l0jRC61nVeofo50KpiI/vZEbp+pq853TabtaMMahMVQHCGeO7grJe0o8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GFdHBBgB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD1D5C433F1;
+	Mon, 11 Mar 2024 15:12:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710169944;
+	bh=olviz3N7KgcKZNdsBQeT6Zs90vm3EAN2EEUiaQCQYdk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=GFdHBBgB+Rz+xQRtQ6l2oS/KJ2HHXNraDmvNKLsHls8wPnBhxS5mp/F8wLzxG2L9q
+	 Jkpqxwl48Xsx8w+lBlgc0hQv96hJkLp0Jtaw9Ai0I+NxRLEbBiiwOWeOiFGQ4Aw/dp
+	 /hSi1tgnPRmm2QKuOsJh5KJv3vkHBs51g9tjRi57twruB3e3LSUXPgQfTrwPNpqCNs
+	 yRg7lKDt92wmSVmHbz8qBer15KVAYl4j32R60YUTKWyvdg2qYRsA+Y16tEO38SSyKY
+	 3kV2kUuUD1kSOD+LcL99V0iXZoXhgdGmtOhEppnAMGFmAXzMQV2oJ4bRCzvfSFtt9g
+	 OidnsA9QftbWg==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Benjamin Berg <benjamin.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	kvalo@kernel.org,
+	gregory.greenman@intel.com,
+	yedidya.ben.shimol@intel.com,
+	trix@redhat.com,
+	gustavoars@kernel.org,
+	haim.dreyfuss@intel.com,
+	avraham.stern@intel.com,
+	emmanuel.grumbach@intel.com,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.7 02/23] wifi: iwlwifi: mvm: ensure offloading TID queue exists
+Date: Mon, 11 Mar 2024 11:11:42 -0400
+Message-ID: <20240311151217.317068-2-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240311151217.317068-1-sashal@kernel.org>
+References: <20240311151217.317068-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.7.9
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CABXGCsO-eZi8az3Yd2G6StJcrjmRCiUbXJz2oLw2OkVExgexkQ@mail.gmail.com>
 
-On Mon, Mar 11, 2024 at 07:28:51AM +0500, Mikhail Gavrilov wrote:
-> On Fri, Mar 8, 2024 at 10:03 PM Alexey Dobriyan <adobriyan@gmail.com> wrote:
-> >
-> > OK, lets exclude newbie mistakes.
-> >
-> > Exclude CIFS:
-> >
-> > * start with clean compile into out-of-tree directory
-> >
-> >         mkdir ../obj-001
-> >         cp .config ../obj-001/.config
-> >         make -k -j$(nproc) O=../obj-001         # buggy kernel
-> >         sudo rm -rf /lib/modules/$(uname -r)    # no mixed module copies
-> >         sudo make O=../obj-001 modules_install
-> >         sudo make O=../obj-001 install
-> >
-> >         [patch]
-> >
-> >         mkdir ../obj-002
-> >                 ...
-> >
-> > This is what I use in Production(tm):
-> >
-> >         #!/bin/sh -x
-> >         sudo rm -rf /lib/modules/$(uname -r)            &&\
-> >         sudo make modules_install                       &&\
-> >         sudo make install                               &&\
-> >         sudo emerge @module-rebuild                     &&\
-> >         sudo grub-mkconfig -o /boot/grub/grub.cfg       &&\
-> >         sync                                            &&\
-> >         sudo nvme flush /dev/nvme*n1
-> >
-> > * After rebooting double check that build number in /proc/version
-> >   matches .version in the ../obj directory:
-> >
-> >         $ cat /proc/version
-> > Linux version 6.7.4-100.fc38.x86_64 (mockbuild@68dbdffd8a2b4619991006cfcbec2871) (gcc (GCC) 13.2.1 20231011 (Red Hat 13.2.1-4), GNU ld version 2.39-16.fc38) [[[[[ ===> #1 <===  ]]]]] SMP PREEMPT_DYNAMIC Mon Feb  5 22:19:06 UTC 2024
-> >
-> >         $ cat ../obj/.version
-> >         1
-> >
-> > This verifies that you've rebooted into correct kernel.
-> >
-> > * keep both full kernel trees in two separate directories
-> >
-> >         if both vmlinux are identical, you may try to find which modules
-> >         are different
-> >
-> > * disassemble fs/smb/client/smbencrypt.o or (cifs.ko) for both kernels
-> >
-> >         objdump -M intel -dr $(find ../obj-001 -type f -name cifs.ko) >000.s
-> >         objdump -M intel -dr $(find ../obj-002 -type f -name cifs.ko) >001.s
-> >         diff -u0 000.s 001.s
-> >
-> > For your experiment, number should be 1 (first clean recompile from
-> > scratch) and then 2 (after applying 1 patch).
-> >
-> > If the bug is not 100% reproducible, then bisecting gets more
-> > entertaining because you can't be really sure each step is in the right
-> > direction.
-> >
-> 
-> Apology for misleading. At the weekend I investigated the problem deeper.
-> And now I can say which device is broken suspend mode.
-> It is a DJI Osmo Pocket 3 when it is switched in file transfer mode [1].
-> The issue can be easily reproduced even with the 5.17 kernel with
-> different error message:
-> [  102.441187] Freezing of tasks failed after 20.000 seconds (1 tasks
-> refusing to freeze, wq_busy=0):
-> [  102.441220] task:(udev-worker)   state:D stack:24720 pid: 1085
-> ppid:   997 flags:0x00004006
-> [  102.441232] Call Trace:
-> [  102.441235]  <TASK>
-> [  102.441242]  __schedule+0xe21/0x49c0
-> [  102.441253]  ? rcu_read_lock_sched_held+0x10/0x70
-> [  102.441259]  ? __update_load_avg_cfs_rq+0x667/0xce0
-> [  102.441267]  ? cpufreq_this_cpu_can_update+0x46/0x150
-> [  102.441275]  ? io_schedule_timeout+0x190/0x190
-> [  102.441280]  ? sugov_update_single_freq+0x750/0x750
-> [  102.441286]  ? update_load_avg+0x1389/0x1a50
-> [  102.441294]  schedule+0xe0/0x280
-> [  102.441300]  schedule_timeout+0x1ad/0x260
-> [  102.441305]  ? usleep_range_state+0x170/0x170
-> [  102.441313]  ? set_rq_online.part.0+0x160/0x160
-> [  102.441319]  ? _raw_spin_unlock_irq+0x24/0x50
-> [  102.441325]  __wait_for_common+0x2ba/0x370
-> [  102.441331]  ? usleep_range_state+0x170/0x170
-> [  102.441337]  ? bit_wait_timeout+0x160/0x160
-> [  102.441344]  ? __kasan_record_aux_stack+0xe/0xa0
-> [  102.441350]  ? _raw_spin_unlock_irq+0x24/0x50
-> [  102.441357]  __flush_work+0x487/0x9b0
-> [  102.441365]  ? queue_delayed_work_on+0xb0/0xb0
-> [  102.441371]  ? flush_workqueue_prep_pwqs+0x3f0/0x3f0
-> [  102.441382]  ? do_one_initcall+0xd1/0x430
-> [  102.441387]  ? do_init_module+0x190/0x6e0
-> [  102.441392]  ? load_module+0x77a6/0xaca0
-> [  102.441397]  ? __do_sys_finit_module+0x111/0x1b0
-> [  102.441401]  ? do_syscall_64+0x5c/0x80
-> [  102.441407]  ? entry_SYSCALL_64_after_hwframe+0x44/0xae
-> [  102.441412]  ? trace_hardirqs_off+0xe/0x110
-> [  102.441418]  ? try_to_grab_pending+0x8a/0x630
-> [  102.441425]  __cancel_work_timer+0x313/0x470
-> [  102.441431]  ? mod_delayed_work_on+0x120/0x120
-> [  102.441440]  ? set_rq_online.part.0+0x160/0x160
-> [  102.441448]  mt76u_stop_tx+0x10b/0x360 [mt76_usb]
-> [  102.441459]  ? slab_free_freelist_hook+0xe7/0x1d0
-> [  102.441465]  ? mt76u_resume_rx+0x260/0x260 [mt76_usb]
-> [  102.441474]  ? set_rq_online.part.0+0x160/0x160
-> [  102.441481]  ? usb_poison_urb+0x1f/0x30
-> [  102.441487]  ? mt76u_stop_rx+0xff/0x190 [mt76_usb]
-> [  102.441496]  mt76u_queues_deinit+0x2b/0x900 [mt76_usb]
-> [  102.441505]  ? mt76x2u_register_device+0x44d/0x5b0 [mt76x2u]
-> [  102.441517]  mt76x2u_probe+0xc4/0x290 [mt76x2u]
-> [  102.441528]  usb_probe_interface+0x278/0x6f0
-> [  102.441536]  really_probe+0x510/0xba0
-> [  102.441543]  __driver_probe_device+0x29e/0x450
-> [  102.441550]  driver_probe_device+0x4a/0x120
-> [  102.441555]  __driver_attach+0x1c3/0x420
-> [  102.441561]  ? __device_attach_driver+0x240/0x240
-> [  102.441566]  bus_for_each_dev+0x130/0x1c0
-> [  102.441573]  ? subsys_dev_iter_exit+0x10/0x10
-> [  102.441582]  bus_add_driver+0x39c/0x570
-> [  102.441589]  driver_register+0x20d/0x380
-> [  102.441594]  ? __raw_spin_lock_init+0x3b/0x110
-> [  102.441600]  usb_register_driver+0x237/0x400
-> [  102.441607]  ? 0xffffffffc0634000
-> [  102.441612]  do_one_initcall+0xd1/0x430
-> [  102.441618]  ? trace_event_raw_event_initcall_level+0x1a0/0x1a0
-> [  102.441627]  ? kasan_unpoison+0x40/0x60
-> [  102.441634]  do_init_module+0x190/0x6e0
-> [  102.441642]  load_module+0x77a6/0xaca0
-> [  102.441659]  ? module_frob_arch_sections+0x20/0x20
-> [  102.441665]  ? ima_read_file+0x160/0x160
-> [  102.441672]  ? bpf_lsm_kernel_read_file+0x10/0x10
-> [  102.441680]  ? kernel_read_file+0x247/0x850
-> [  102.441692]  ? __do_sys_finit_module+0x111/0x1b0
-> [  102.441697]  __do_sys_finit_module+0x111/0x1b0
-> [  102.441703]  ? __ia32_sys_init_module+0xa0/0xa0
-> [  102.441707]  ? __lock_acquire+0x53d0/0x53d0
-> [  102.441713]  ? reacquire_held_locks+0x4e0/0x4e0
-> [  102.441723]  ? seqcount_lockdep_reader_access.constprop.0+0xa6/0xb0
-> [  102.441729]  ? ktime_get_coarse_real_ts64+0x3d/0xc0
-> [  102.441738]  do_syscall_64+0x5c/0x80
-> [  102.441743]  ? btrfs_drop_pages+0x2e0/0x2e0
-> [  102.441749]  ? trace_hardirqs_on+0x1c/0x130
-> [  102.441754]  ? __fget_light+0x51/0x230
-> [  102.441761]  ? fpregs_assert_state_consistent+0x4b/0xb0
-> [  102.441766]  ? rcu_read_lock_sched_held+0x10/0x70
-> [  102.441771]  ? trace_hardirqs_on_prepare+0x72/0x160
-> [  102.441776]  ? do_syscall_64+0x68/0x80
-> [  102.441781]  ? do_syscall_64+0x68/0x80
-> [  102.441786]  entry_SYSCALL_64_after_hwframe+0x44/0xae
-> [  102.441792] RIP: 0033:0x7efdc5a2511d
-> [  102.441796] RSP: 002b:00007fff8ccfeb08 EFLAGS: 00000246 ORIG_RAX:
-> 0000000000000139
-> [  102.441803] RAX: ffffffffffffffda RBX: 000055860e73d960 RCX: 00007efdc5a2511d
-> [  102.441807] RDX: 0000000000000000 RSI: 00007efdc5b4107d RDI: 000000000000005e
-> [  102.441811] RBP: 00007fff8ccfebc0 R08: 0000000000000001 R09: 00007fff8ccfeb50
-> [  102.441815] R10: 0000000000000050 R11: 0000000000000246 R12: 00007efdc5b4107d
-> [  102.441818] R13: 0000000000020000 R14: 000055860e7574e0 R15: 000055860eaffeb0
-> [  102.441828]  </TASK>
-> [  102.441892] OOM killer enabled.
-> 
-> I don’t know if it makes sense to try to build older kernels, but with
-> my toolkit more older kernels failed to build.
-> Also I noted that after switch DJI Osmo Pocket 3 in file transfer mode
-> loaded follow modules:
-> rndis_host cdc_ether usbnet mii uas usb_storage exfat
-> But manually removing them
-> # rmmod rndis_host cdc_ether usbnet mii uas usbstorage exfat
-> the problem does't gone.
-> Looks like something bad happening deep inside the usb stack.
-> Let's invite the guys from usb mail list here.
-> Maybe they could help us where to go next.
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-The driver that shows up in the stack dump is mt76x2u.  You should bring 
-this to the attention of the Mediatek MT76 wireless LAN driver's 
-maintainers (added to the address and CC list).
+[ Upstream commit 78f65fbf421a61894c14a1b91fe2fb4437b3fe5f ]
 
-Alan Stern
+The resume code path assumes that the TX queue for the offloading TID
+has been configured. At resume time it then tries to sync the write
+pointer as it may have been updated by the firmware.
 
-> [1] https://postimg.cc/bsg46pNM
-> 
-> -- 
-> Best Regards,
-> Mike Gavrilov.
-> 
+In the unusual event that no packets have been send on TID 0, the queue
+will not have been allocated and this causes a crash. Fix this by
+ensuring the queue exist at suspend time.
+
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240218194912.6632e6dc7b35.Ie6e6a7488c9c7d4529f13d48f752b5439d8ac3c4@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c  |  9 ++++++-
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c | 28 ++++++++++++++++++++
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.h |  3 ++-
+ 3 files changed, 38 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+index 92c45571bd691..a640860ab7acd 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+@@ -1286,7 +1286,9 @@ static int __iwl_mvm_suspend(struct ieee80211_hw *hw,
+ 
+ 		mvm->net_detect = true;
+ 	} else {
+-		struct iwl_wowlan_config_cmd wowlan_config_cmd = {};
++		struct iwl_wowlan_config_cmd wowlan_config_cmd = {
++			.offloading_tid = 0,
++		};
+ 
+ 		wowlan_config_cmd.sta_id = mvmvif->deflink.ap_sta_id;
+ 
+@@ -1298,6 +1300,11 @@ static int __iwl_mvm_suspend(struct ieee80211_hw *hw,
+ 			goto out_noreset;
+ 		}
+ 
++		ret = iwl_mvm_sta_ensure_queue(
++			mvm, ap_sta->txq[wowlan_config_cmd.offloading_tid]);
++		if (ret)
++			goto out_noreset;
++
+ 		ret = iwl_mvm_get_wowlan_config(mvm, wowlan, &wowlan_config_cmd,
+ 						vif, mvmvif, ap_sta);
+ 		if (ret)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
+index bba96a9688906..9905925142279 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
+@@ -1502,6 +1502,34 @@ static int iwl_mvm_sta_alloc_queue(struct iwl_mvm *mvm,
+ 	return ret;
+ }
+ 
++int iwl_mvm_sta_ensure_queue(struct iwl_mvm *mvm,
++			     struct ieee80211_txq *txq)
++{
++	struct iwl_mvm_txq *mvmtxq = iwl_mvm_txq_from_mac80211(txq);
++	int ret = -EINVAL;
++
++	lockdep_assert_held(&mvm->mutex);
++
++	if (likely(test_bit(IWL_MVM_TXQ_STATE_READY, &mvmtxq->state)) ||
++	    !txq->sta) {
++		return 0;
++	}
++
++	if (!iwl_mvm_sta_alloc_queue(mvm, txq->sta, txq->ac, txq->tid)) {
++		set_bit(IWL_MVM_TXQ_STATE_READY, &mvmtxq->state);
++		ret = 0;
++	}
++
++	local_bh_disable();
++	spin_lock(&mvm->add_stream_lock);
++	if (!list_empty(&mvmtxq->list))
++		list_del_init(&mvmtxq->list);
++	spin_unlock(&mvm->add_stream_lock);
++	local_bh_enable();
++
++	return ret;
++}
++
+ void iwl_mvm_add_new_dqa_stream_wk(struct work_struct *wk)
+ {
+ 	struct iwl_mvm *mvm = container_of(wk, struct iwl_mvm,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.h b/drivers/net/wireless/intel/iwlwifi/mvm/sta.h
+index b33a0ce096d46..3cf8a70274ce8 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.h
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
+ /*
+- * Copyright (C) 2012-2014, 2018-2023 Intel Corporation
++ * Copyright (C) 2012-2014, 2018-2024 Intel Corporation
+  * Copyright (C) 2013-2014 Intel Mobile Communications GmbH
+  * Copyright (C) 2015-2016 Intel Deutschland GmbH
+  */
+@@ -571,6 +571,7 @@ void iwl_mvm_modify_all_sta_disable_tx(struct iwl_mvm *mvm,
+ 				       bool disable);
+ 
+ void iwl_mvm_csa_client_absent(struct iwl_mvm *mvm, struct ieee80211_vif *vif);
++int iwl_mvm_sta_ensure_queue(struct iwl_mvm *mvm, struct ieee80211_txq *txq);
+ void iwl_mvm_add_new_dqa_stream_wk(struct work_struct *wk);
+ int iwl_mvm_add_pasn_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+ 			 struct iwl_mvm_int_sta *sta, u8 *addr, u32 cipher,
+-- 
+2.43.0
+
 
