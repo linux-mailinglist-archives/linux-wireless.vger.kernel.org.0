@@ -1,215 +1,110 @@
-Return-Path: <linux-wireless+bounces-4554-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4558-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEA94877E39
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Mar 2024 11:39:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57A47878008
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Mar 2024 13:32:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73EEA2825A1
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Mar 2024 10:39:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 079DF1F210EB
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Mar 2024 12:32:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A16B83AC08;
-	Mon, 11 Mar 2024 10:38:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FD6D8460;
+	Mon, 11 Mar 2024 12:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=fiona.klute@gmx.de header.b="RGWLAGuq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iIvkJoHv"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E63C38DEC;
-	Mon, 11 Mar 2024 10:38:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0245E22075
+	for <linux-wireless@vger.kernel.org>; Mon, 11 Mar 2024 12:32:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710153506; cv=none; b=acvATlGI4D4KoJ2jqpOBAyH5xQ6F4brrGLBwN9ZJv8SetLi0ECYOMaWptLv08J2VdoB7+wlGDl7onSQL/tW6wcTijapxwVYJ/b9pC0uFZ42ux3wEepzhmLaPq815A5krBEtmwXgav/t/hxrP7qLFqgC9/aASWNbOVaapo+4wkFs=
+	t=1710160344; cv=none; b=d56LmzT1UEXsKyvAYHEvvE2+/mW5pOgm1A1X8B3wSiPkWdYCgpfoaId3w3eKeyKPYN9MhtzTMh35cilGy3BxDDRVpISoFUT7UxStGYNeVh8Vipl8Y5UBj07Izl3b0EeSjGNd/wnEaeESa5WtiGjTc/fpYzGOJs86+YmQBZ8SfT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710153506; c=relaxed/simple;
-	bh=lir2t2pdVtLxfOYmeHCDbRJi+Djx6fijtKcExQHW/WU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rFEyRScNnyVg+Hnpn64NVrIzQHmCij/NGpHbwpzleSUymCEbrr3ZOt8NmuRSYKsGA33AIcawnAo+Tipt6tGoMTikRCzVmYMTIaNKN8onlIHYxsHNYQjWt4nQbaE59HrqMmuOOdB+kAI913N7LQuVBXXnx2j/DGh0LKbN4L/pifw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=fiona.klute@gmx.de header.b=RGWLAGuq; arc=none smtp.client-ip=212.227.15.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-	t=1710153493; x=1710758293; i=fiona.klute@gmx.de;
-	bh=lir2t2pdVtLxfOYmeHCDbRJi+Djx6fijtKcExQHW/WU=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:
-	 References;
-	b=RGWLAGuqITGPhCQkPQTka2y7Ax0h9Us3hVVAwyurH4apKVnoN4hRPXjDqxuybfSh
-	 pMqbVKdcbg2bej+GyEYnGlKS11qTxtH5x/kvMh42S7wGa0vfd448+/kDPPnnYPrbL
-	 RUg22GTfKd5Onl//dw8zErJhKo6ip3aeLsOtBoT56GL575Vmv561+mSyhEISFGWE4
-	 rz507AiRR9Z4icfDseWfnE3PXui5969cxEI1oel7QRgJa0v4IJnJR6zvQwB/CVxVe
-	 4J8IqksAHkP1QXj5MBg9kHnq2wGPl2Ve/vASBzE6cHsnvorQAUjPdWPG2T04taJx/
-	 5Wgg7cyW29sOxlNgMw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from haruka.lan ([85.22.108.92]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MwfWa-1quFTi3eos-00y8vq; Mon, 11
- Mar 2024 11:38:13 +0100
-From: Fiona Klute <fiona.klute@gmx.de>
-To: linux-wireless@vger.kernel.org,
-	Ping-Ke Shih <pkshih@realtek.com>
-Cc: Fiona Klute <fiona.klute@gmx.de>,
-	Kalle Valo <kvalo@kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	linux-mmc@vger.kernel.org,
-	Pavel Machek <pavel@ucw.cz>,
-	=?UTF-8?q?Ond=C5=99ej=20Jirman?= <megi@xff.cz>
-Subject: [PATCH v4 9/9] wifi: rtw88: SDIO device driver for RTL8723CS
-Date: Mon, 11 Mar 2024 11:37:13 +0100
-Message-ID: <20240311103735.615541-10-fiona.klute@gmx.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240311103735.615541-1-fiona.klute@gmx.de>
-References: <20240311103735.615541-1-fiona.klute@gmx.de>
+	s=arc-20240116; t=1710160344; c=relaxed/simple;
+	bh=vz4OWnKV+wG8V0TUgdYoyb+MpScvALIp8Gjv8Qh36sE=;
+	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=L4mzn/QZ2V2bkqSum6O7e1IcfiwaV+PsSMWGB1UJ0uwHmuSFPYO989Fo8bSE08sRIs6z+91XXrxZq5GmBf/aY6U17rUP0nBL/EqMp0Fj8lf693KzoVRs2zXNJdm3P0GfvqXekEqvZ1ll/402/O98r6Ivmqoh4d2Szaha5ulmCPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iIvkJoHv; arc=none smtp.client-ip=209.85.222.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-7882dd2b1c9so326522785a.1
+        for <linux-wireless@vger.kernel.org>; Mon, 11 Mar 2024 05:32:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1710160341; x=1710765141; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EFVDgUNk2W+iqDUx7eCGMs7iHsOijEwcGaYgYxw2ycw=;
+        b=iIvkJoHv652Kja/Ge8mTEyp0d8nYiHRHZW9uic/hsc5fssKZYZ+UEFrxnkaa7+1jol
+         PLQxxBUYheDBvgY6TW1bnZgDq3iewyx8Ujt0kUWoxI4zbs7B+JSn8/SmpURhnNe+OTMq
+         /vivt4I7P45+sssg0M4YBm+FBuCbV8XquMnH4+rUxZR49xd38eHGBXziEwL6ToJ3qouM
+         A7m5JCkZp/A3gHgp/jvLyPmGLZ5xKKZGHKvpE5LOrfWse6OhuFOa9TUlIGuQy5nUY7/o
+         7tDvFxfMIrB/1nHna4sT3c25RP1i7NIA5bP3ukO6Hw+uKnvGMT8efmISUiPj7sRWVKQy
+         fspA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710160341; x=1710765141;
+        h=content-transfer-encoding:subject:from:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=EFVDgUNk2W+iqDUx7eCGMs7iHsOijEwcGaYgYxw2ycw=;
+        b=gCqV0neHypeoBluBI7cLz8QVSA1HMlg6i2OmGxy3XoU2A+NIQ1b4tPmBRfKOPf2YFf
+         A/bq0wCkR6mXGTEcWZaObdLRj/eQXQGrGPJYlR48bcX0UUSPdHPh/N4cYQdg5kY3idIj
+         dJl3CJZqxi/YkBZZdoZ05vWtMVqf4LGioVj3Q7Neni8S0F/hHJ5XyGywA8k3byUFwvfa
+         2kCebUv5uSPnXWfpLaNe7xFwN8qxVXZj20VNUpYMOEynIbCENdIFMZf5PYAR42gw+oys
+         oAuQRjByZkGfyJbSYBQwNyia6QjSDmZqPwMgooPgpq3MDxjZiqxd4/8wPcZ+cC5U/iO7
+         Uyqw==
+X-Gm-Message-State: AOJu0YxxodbPVf5US40U1kuqQGHqAKbcVTVkF+4RltPr3IH9+NYXJEo1
+	r754e9e/xKgcPp40Y6uD4m8CLs88Ysrd1DEEe7IubmjivjV+gWVXAxIdUayR
+X-Google-Smtp-Source: AGHT+IGRRRJBJfHEL2gqcSWe6pnIW0FnRBy7hwKUOzTTBBOLB6WiY94EhxmI7Sq7WQl1rciUFBdOFg==
+X-Received: by 2002:a05:620a:470a:b0:788:5d76:1bae with SMTP id bs10-20020a05620a470a00b007885d761baemr9724914qkb.6.1710160341467;
+        Mon, 11 Mar 2024 05:32:21 -0700 (PDT)
+Received: from [10.102.4.159] ([208.195.13.130])
+        by smtp.gmail.com with ESMTPSA id n21-20020a05620a295500b0078870f11abasm644087qkp.81.2024.03.11.05.32.20
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 11 Mar 2024 05:32:20 -0700 (PDT)
+Message-ID: <e7535e82-10dc-4068-960b-bfe7c6b14aee@gmail.com>
+Date: Mon, 11 Mar 2024 05:32:18 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Qvq81pw7X5ueB7u7MHFaITgC3hRiOGasufQ8v8Y2PVQ1MipOksv
- XTB7HrxNz8omrcU6NScCKSbCUOA+p8P3+IoW1ZSb5rLGaQghq4j6vAm657BII+wKubElcWl
- b0c3+KmgvGPI8o6k17PAUqA7Njl2TR1I6JLT7wuLhKOofyc+S0I4vFDzPrJ+B6ODyzhN8A6
- uWiAPaRJHkhUKFnuxxxpw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:NAs1F1JZ5m0=;OOiwLlC59FZ6nFjC3brx/zEi5NL
- FzZCYDF8QSrSPIZFczn3EIR6onm+JvjVnAqDHGkTOZehVUdxm4I4AqlNq6phqzVg6WlOLnt14
- e6bUNS+nvSOq4i5Bk80wHsBMamjYnKVty93O7YMGrjhaMBAtzj6bqY44WvMStQgNOB/I2CO2n
- RkqKamIMinopgkO2saSQ9I8pk/6ntGL/MaSV1Dh/T4P/sTEiwO5rnuGsMcP/wWPkzG+n9voUw
- B9eLzTEFRUba9pg+TCyoZw7Zrks+FEYC3nbDxN0q3zcAMRJG/ff+wJ6NQM3i3GvqSp9uaL7Nm
- uYIoWVXlZ3B5+T+HMSd6OFkTgUTiAXHJpCZpbDehIeKkR8eNkxKXeyTc2JQW2lD/368ZnQt9o
- yGLq37iGQtLR7QT2Cf9hbBKIwTwO0d1EONkUMBOoKB0d5alehlems51NRiB2z4KZLsADkQOML
- PlSShMOrXKUqcftJYaAfFGsbdR1Me5Y81deHjfdD/ofC9rlEmwFZszO9r2SN9Arv/aEpsV+lm
- HyA8Kb2ScI/d84JJzrIFDOSTQW0tWESX9PUzyzWmkv7Vv7bUE2iMNWszcaWJOcynGxkGjcedj
- noGL+oILN2pp8zKj8psvOMzK874fKlGoNIblTz06B+oId4Xx4YjL4TbJyzPdxhbXN/fa7fCpf
- 2DSstKaGCI1jkwbxjgqkUk/CiysnDzFvrJ5/OuwQacsBozxy11/26HPkPYYiXNW28q3/VeHNj
- GXOyikeb9s83i7j75lDnChoMeFtJEx62o3uNJ0KF3J67VYI6PkHEpT+hL8R1XzJ6zduLJAukR
- Aw1jk/vDS677+Qhc0Qggzy6BjksCVmD14U3GdLyyHkyDU=
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: "open list:MEDIATEK MT76 WIRELESS LAN DRIVER"
+ <linux-wireless@vger.kernel.org>
+From: James Prestwood <prestwoj@gmail.com>
+Subject: iw hex escapes SSID, but not other fields
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-This driver uses the new rtw8703b chip driver code.
+Hi,
 
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Acked-by: Ulf Hansson <ulf.hansson@linaro.org> # For SDIO
-Tested-by: Pavel Machek <pavel@ucw.cz>
-Signed-off-by: Fiona Klute <fiona.klute@gmx.de>
-=2D--
- drivers/net/wireless/realtek/rtw88/Kconfig    | 18 ++++++++++
- drivers/net/wireless/realtek/rtw88/Makefile   |  6 ++++
- .../net/wireless/realtek/rtw88/rtw8723cs.c    | 34 +++++++++++++++++++
- include/linux/mmc/sdio_ids.h                  |  1 +
- 4 files changed, 59 insertions(+)
- create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8723cs.c
+It was reported to me that some of our tooling (which parses iw output) 
+fails due to a network using a WPS device name with non utf-8 
+characters. I see that for SSID fields there is specific handling for 
+escaping non utf8 bytes, but not for the WPS Device Name (nor any other 
+fields AFAICT).
 
-diff --git a/drivers/net/wireless/realtek/rtw88/Kconfig b/drivers/net/wire=
-less/realtek/rtw88/Kconfig
-index 07b5b2f6eef..22838ede03c 100644
-=2D-- a/drivers/net/wireless/realtek/rtw88/Kconfig
-+++ b/drivers/net/wireless/realtek/rtw88/Kconfig
-@@ -31,6 +31,10 @@ config RTW88_8822C
- config RTW88_8723X
- 	tristate
+Before you rip me a new one for using iw output like this I have since 
+removed this and now use IWD's DBus API :) But older versions of the 
+software do still parse iw output. Just wanted to report this since iw 
+does print to stdout, so it does seem like it should try and escape 
+those bytes when possible, like it does for SSIDs.
 
-+config RTW88_8703B
-+	tristate
-+	select RTW88_8723X
-+
- config RTW88_8723D
- 	tristate
- 	select RTW88_8723X
-@@ -126,6 +130,20 @@ config RTW88_8723DS
+Side note, I see the JSON patches are progressing which is probably 
+going to be the proper way to use iw as an automated tool going forward. 
+I haven't looked at those in detail (maybe its already taken care of), 
+but the above issue will likely need to be handled since JSON requires 
+utf-8.
 
- 	  802.11n SDIO wireless network adapter
+Thanks,
 
-+config RTW88_8723CS
-+	tristate "Realtek 8723CS SDIO wireless network adapter"
-+	depends on MMC
-+	select RTW88_CORE
-+	select RTW88_SDIO
-+	select RTW88_8703B
-+	help
-+	  Select this option to enable support for 8723CS chipset (EXPERIMENTAL)
-+
-+	  This module adds support for the 8723CS 802.11n SDIO
-+	  wireless network adapter.
-+
-+	  If you choose to build a module, it'll be called rtw88_8723cs.
-+
- config RTW88_8723DU
- 	tristate "Realtek 8723DU USB wireless network adapter"
- 	depends on USB
-diff --git a/drivers/net/wireless/realtek/rtw88/Makefile b/drivers/net/wir=
-eless/realtek/rtw88/Makefile
-index 22516c98460..8f47359b438 100644
-=2D-- a/drivers/net/wireless/realtek/rtw88/Makefile
-+++ b/drivers/net/wireless/realtek/rtw88/Makefile
-@@ -47,6 +47,12 @@ rtw88_8822cu-objs		:=3D rtw8822cu.o
- obj-$(CONFIG_RTW88_8723X)	+=3D rtw88_8723x.o
- rtw88_8723x-objs		:=3D rtw8723x.o
-
-+obj-$(CONFIG_RTW88_8703B)	+=3D rtw88_8703b.o
-+rtw88_8703b-objs		:=3D rtw8703b.o rtw8703b_tables.o
-+
-+obj-$(CONFIG_RTW88_8723CS)	+=3D rtw88_8723cs.o
-+rtw88_8723cs-objs		:=3D rtw8723cs.o
-+
- obj-$(CONFIG_RTW88_8723D)	+=3D rtw88_8723d.o
- rtw88_8723d-objs		:=3D rtw8723d.o rtw8723d_table.o
-
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723cs.c b/drivers/net/=
-wireless/realtek/rtw88/rtw8723cs.c
-new file mode 100644
-index 00000000000..8d38d36be8c
-=2D-- /dev/null
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8723cs.c
-@@ -0,0 +1,34 @@
-+// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
-+/* Copyright Fiona Klute <fiona.klute@gmx.de> */
-+
-+#include <linux/mmc/sdio_func.h>
-+#include <linux/mmc/sdio_ids.h>
-+#include <linux/module.h>
-+#include "main.h"
-+#include "rtw8703b.h"
-+#include "sdio.h"
-+
-+static const struct sdio_device_id rtw_8723cs_id_table[] =3D {
-+	{
-+		SDIO_DEVICE(SDIO_VENDOR_ID_REALTEK,
-+			    SDIO_DEVICE_ID_REALTEK_RTW8723CS),
-+		.driver_data =3D (kernel_ulong_t)&rtw8703b_hw_spec,
-+	},
-+	{}
-+};
-+MODULE_DEVICE_TABLE(sdio, rtw_8723cs_id_table);
-+
-+static struct sdio_driver rtw_8723cs_driver =3D {
-+	.name =3D "rtw8723cs",
-+	.id_table =3D rtw_8723cs_id_table,
-+	.probe =3D rtw_sdio_probe,
-+	.remove =3D rtw_sdio_remove,
-+	.drv =3D {
-+		.pm =3D &rtw_sdio_pm_ops,
-+		.shutdown =3D rtw_sdio_shutdown
-+	}};
-+module_sdio_driver(rtw_8723cs_driver);
-+
-+MODULE_AUTHOR("Fiona Klute <fiona.klute@gmx.de>");
-+MODULE_DESCRIPTION("Realtek 802.11n wireless 8723cs driver");
-+MODULE_LICENSE("Dual BSD/GPL");
-diff --git a/include/linux/mmc/sdio_ids.h b/include/linux/mmc/sdio_ids.h
-index 7fada7a714f..7cddfdac2f5 100644
-=2D-- a/include/linux/mmc/sdio_ids.h
-+++ b/include/linux/mmc/sdio_ids.h
-@@ -124,6 +124,7 @@
- #define SDIO_DEVICE_ID_REALTEK_RTW8723DS_2ANT	0xd723
- #define SDIO_DEVICE_ID_REALTEK_RTW8723DS_1ANT	0xd724
- #define SDIO_DEVICE_ID_REALTEK_RTW8821DS	0xd821
-+#define SDIO_DEVICE_ID_REALTEK_RTW8723CS	0xb703
-
- #define SDIO_VENDOR_ID_SIANO			0x039a
- #define SDIO_DEVICE_ID_SIANO_NOVA_B0		0x0201
-=2D-
-2.43.0
+James
 
 
