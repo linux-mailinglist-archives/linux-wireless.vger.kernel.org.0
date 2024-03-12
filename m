@@ -1,110 +1,150 @@
-Return-Path: <linux-wireless+bounces-4575-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4576-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57191878735
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Mar 2024 19:24:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B74C878C0A
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Mar 2024 01:51:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D3772B20FC3
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Mar 2024 18:24:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 10C961F21B74
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Mar 2024 00:51:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D33E4537FB;
-	Mon, 11 Mar 2024 18:24:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="blvCPZ8j"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F2AF469D;
+	Tue, 12 Mar 2024 00:51:45 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5150C405DB
-	for <linux-wireless@vger.kernel.org>; Mon, 11 Mar 2024 18:24:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 555364687;
+	Tue, 12 Mar 2024 00:51:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710181459; cv=none; b=eYytt6HlBW23lUWNaVMar61y+A/w2z6l3qPQYx6E6nbdZtz9UOrNEBLCDcKcVhd3THKVfOvPmf5fuGC2+9x0tt+xgOv0Wb0z0VzjXw22zSdXqxz2pPrueHRF5mMX+gou0Khnci5sZ+3513szA31lRgzxwnz0obluf5+Fxe44Hgo=
+	t=1710204705; cv=none; b=HIGlPkcUVVIUbGXclAvZ16YvoKNvGTDX2xupIVo+PUJF2gm6WsOmZamCEPcLzpqLtlnW8ixMIt5/XpljvpRRBAAg8hk8dhu6SMSXOlqx5VVM4CKdsWfKqzJBJeipIiBxW+OwnTx7pYQ5atCIUy/2aV5B8zC2AujThueYFMtxn+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710181459; c=relaxed/simple;
-	bh=U8E92IU9DtUQxBvBJ2whjQTdyZl1lE/b3qMTL9DJgf8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=SZATd3gG5PRPteQr2l2egvDwJPgHDS4ftVq2Z3SC/9axGnWTI71Mg0MtMUeySMK0dtzbhuNiYA69rbbLhaM17Ogi+sYFt24Pu6JUkQGk676BDM4T3wIOMmo+Dcac8e7Z3zZ5KeGb+qa27mKxgVaeD3mo3pr44NIrPjApcn5+svk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=blvCPZ8j; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42BI6d5O015197;
-	Mon, 11 Mar 2024 18:24:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=3dbnZy9PMAwLUevb9cJ5wVzKNdfRDIk6OIje3IIgNk8=; b=bl
-	vCPZ8jrHp3oOXP8ee9kkLZfuWgXXbiVHsyLtNOz2PVqd8RhdDSlS9xafRLxfCaIO
-	JKjo9AnxwBqJxH6y/bD+EFWW/nOrQINYklTu71PyEGv5whGlHx8lUN9oEo7RgyK+
-	vNroAi9JCfCBBxBSnJevGIxSJ4AZGyLuzYTxvaZg4kNc922wPzpF2xE7bWkQwQzi
-	4/yhcHo5ndRKh7HxROSgDzvll/AcvnhePRGRu+uOkVQrY+Ej8Pmb1yOhjmyYVSFU
-	CadBgWTBwCNszcBkITF0SH35FHeCx5n2cfaXYWa/bLWIVqMML4eU7+nOYHxsokHm
-	34V0GTWtzy7XjyWqMuTw==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wt6xr01f3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 11 Mar 2024 18:24:13 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42BIOC4q022319
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 11 Mar 2024 18:24:12 GMT
-Received: from [10.227.110.203] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Mon, 11 Mar
- 2024 11:24:11 -0700
-Message-ID: <65a0c600-ce42-4945-9a7f-6874cb98ad34@quicinc.com>
-Date: Mon, 11 Mar 2024 11:24:10 -0700
+	s=arc-20240116; t=1710204705; c=relaxed/simple;
+	bh=I9K9BVLii/8HN8DV2WSlMkrYGU2lnprQPPb2YJacOaA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=T5O2pCYPIjka21aP/6WSbsotMhshs9zJ9kOxyeAnlXIien38RMjOU7N5cvUFPL5wflaBSpppc/bK5b9uo1GL0RhsvrI990CzqiZYk5m9U2n2uosIWxAB2jS02nFvP8dn41vOlS11K3JxYlST7xUe0A8O5sYc5NpbafFUqXYkjzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 42C0pRFk93912248, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 42C0pRFk93912248
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 12 Mar 2024 08:51:27 +0800
+Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 12 Mar 2024 08:51:28 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 12 Mar 2024 08:51:27 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::c9b7:82a9:7e98:fa7f]) by
+ RTEXMBS04.realtek.com.tw ([fe80::c9b7:82a9:7e98:fa7f%7]) with mapi id
+ 15.01.2507.035; Tue, 12 Mar 2024 08:51:27 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: kernel test robot <lkp@intel.com>, "kvalo@kernel.org" <kvalo@kernel.org>
+CC: "llvm@lists.linux.dev" <llvm@lists.linux.dev>,
+        "oe-kbuild-all@lists.linux.dev" <oe-kbuild-all@lists.linux.dev>,
+        DeanKu
+	<ku920601@realtek.com>,
+        "linux-wireless@vger.kernel.org"
+	<linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH 1/6] wifi: rtw89: coex: Add WiFi role info format version 8
+Thread-Topic: [PATCH 1/6] wifi: rtw89: coex: Add WiFi role info format version
+ 8
+Thread-Index: AQHab3kFMtEkFRfg50iTnxaBVnS+xrEyIU8AgAEt2BA=
+Date: Tue, 12 Mar 2024 00:51:27 +0000
+Message-ID: <6c753d964f5e462a8a9afa63c2777cf0@realtek.com>
+References: <20240306034558.19648-2-pkshih@realtek.com>
+ <202403112247.DlQU3eaG-lkp@intel.com>
+In-Reply-To: <202403112247.DlQU3eaG-lkp@intel.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] wifi: ath12k: fix desc address calculation in wbm tx
- completion
-Content-Language: en-US
-To: <quic_tmariyap@quicinc.com>, <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20240311180708.9334-1-quic_tmariyap@quicinc.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20240311180708.9334-1-quic_tmariyap@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: C89pv61tODLIF4N8wEUVO88o-DYWsgAi
-X-Proofpoint-ORIG-GUID: C89pv61tODLIF4N8wEUVO88o-DYWsgAi
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-11_10,2024-03-11_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 impostorscore=0
- spamscore=0 malwarescore=0 suspectscore=0 mlxlogscore=999 phishscore=0
- clxscore=1015 lowpriorityscore=0 bulkscore=0 adultscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2402120000 definitions=main-2403110136
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-On 3/11/2024 11:07 AM, quic_tmariyap@quicinc.com wrote:
-> From: Thiraviyam Mariyappan <quic_tmariyap@quicinc.com>
-> 
-> In tx completion, status desc is obtained from offsetting the address
-> from wbm ring. Having HTT_TX_WBM_COMP_STATUS_OFFSET(8) and reserved 8
-> bytes in status desc offsets the address twice and read the values
-> from the incorrect address. Hence, remove the
-> HTT_TX_WBM_COMP_STATUS_OFFSET from wbm completion address calculation.
-> 
-> Also this patch is applicable for WCN7850.
-> 
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-> 
-> Signed-off-by: Thiraviyam Mariyappan <quic_tmariyap@quicinc.com>
 
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+
+> -----Original Message-----
+> From: kernel test robot <lkp@intel.com>
+> Sent: Monday, March 11, 2024 10:49 PM
+> To: Ping-Ke Shih <pkshih@realtek.com>; kvalo@kernel.org
+> Cc: llvm@lists.linux.dev; oe-kbuild-all@lists.linux.dev; DeanKu <ku920601=
+@realtek.com>;
+> linux-wireless@vger.kernel.org
+> Subject: Re: [PATCH 1/6] wifi: rtw89: coex: Add WiFi role info format ver=
+sion 8
+>=20
+> Hi Ping-Ke,
+>=20
+> kernel test robot noticed the following build warnings:
+>=20
+> [auto build test WARNING on wireless-next/main]
+> [also build test WARNING on next-20240308]
+> [cannot apply to wireless/main linus/master v6.8]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch#_base_tree_information]
+>=20
+> url:
+> https://github.com/intel-lab-lkp/linux/commits/Ping-Ke-Shih/wifi-rtw89-co=
+ex-Add-WiFi-role-info-format-
+> version-8/20240306-115058
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless=
+-next.git main
+> patch link:    https://lore.kernel.org/r/20240306034558.19648-2-pkshih%40=
+realtek.com
+> patch subject: [PATCH 1/6] wifi: rtw89: coex: Add WiFi role info format v=
+ersion 8
+> config: x86_64-allmodconfig
+> (https://download.01.org/0day-ci/archive/20240311/202403112247.DlQU3eaG-l=
+kp@intel.com/config)
+> compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project
+> 6009708b4367171ccdbf4b5905cb6a803753fe18)
+> reproduce (this is a W=3D1 build):
+> (https://download.01.org/0day-ci/archive/20240311/202403112247.DlQU3eaG-l=
+kp@intel.com/reproduce)
+>=20
+> If you fix the issue in a separate patch/commit (i.e. not just a new vers=
+ion of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202403112247.DlQU3eaG-lkp=
+@intel.com/
+>=20
+> All warnings (new ones prefixed by >>):
+>=20
+> >> drivers/net/wireless/realtek/rtw89/coex.c:5480:20: warning: variable '=
+cnt_2g' set but not used
+> [-Wunused-but-set-variable]
+>     5480 |         u8 i, j, cnt =3D 0, cnt_2g =3D 0, cnt_5g =3D 0;
+>          |                           ^
+> >> drivers/net/wireless/realtek/rtw89/coex.c:5480:32: warning: variable '=
+cnt_5g' set but not used
+> [-Wunused-but-set-variable]
+>     5480 |         u8 i, j, cnt =3D 0, cnt_2g =3D 0, cnt_5g =3D 0;
+>          |                                       ^
+>    2 warnings generated.
+>=20
+
+These two counters are prepared to support coming MLO, so I will add necess=
+ary
+debug messages ahead to avoid these warnings.=20
+
+Ping-Ke=20
 
 
