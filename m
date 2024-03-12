@@ -1,107 +1,167 @@
-Return-Path: <linux-wireless+bounces-4633-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4634-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53BA587988D
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Mar 2024 17:09:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E008879D20
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Mar 2024 21:59:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 829301C213A7
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Mar 2024 16:09:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA44A1F21994
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Mar 2024 20:59:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35E947D071;
-	Tue, 12 Mar 2024 16:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FCE37E10A;
+	Tue, 12 Mar 2024 20:59:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="LaEc8IqK"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F8B7CF09;
-	Tue, 12 Mar 2024 16:09:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 884BA382
+	for <linux-wireless@vger.kernel.org>; Tue, 12 Mar 2024 20:59:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710259777; cv=none; b=m1CgDC9jPQWWJGt/DEmyK6bmsGqm3WRyeN4FDelg3TboCbQDH/Gt4/kr41GcoMihxWt6pJ08+oKO0Ro55zkWu1PJBjmEHf1L82HFzsp5x8Bd2n4xL+QzvI5AxNi1//l6q0mm9WYrIacYjCYREvmVhbMZnO9Dq1bIcevChUqAL78=
+	t=1710277168; cv=none; b=JNSNnUrw97h+isbDM3po/1FgNGxNMB+vxP4heHhLGNAuiybqi0GLy43ObYrsltcX8UiAY5SiEeE+EHXJgQKMQQLO6lA17slTPQSIiVcrOJmJRrQwcMFMYm6fZo1S1/SuPs/atViokhzgY+Qk+MVT/YUEJgkaPBvsZZGoMOoYZ+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710259777; c=relaxed/simple;
-	bh=cDyDRHryGPqpj5GSXxvbgaqrkmOHvBYWafXLeSXan9s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EBIhUDOdkJ/dqvljxfVc+CggIPXK6coQCuqAQyih6+4uQL1ZudrecVrPQ8rmZzPWyhqlXFDBzJdPi/4plts2HUFL4udkSKKtKOQ5VR4Jsa9fDvnbcG+SEhRs3cryfkfFfUbR0TYvTVLWAMcPP2sd/sJl6IieJqgxsx0rxnqp+h0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lwfinger.net; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lwfinger.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2d28e465655so88633051fa.0;
-        Tue, 12 Mar 2024 09:09:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710259773; x=1710864573;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1em0UiU249DrHLeNzLIJml8irT8PKoy/CdEqSjvk3lI=;
-        b=WLsHnGmMcLWDpfzNiDdJ7DstxhgTN1c5wVEOkL6wCM/5uN/lVyeU0EUK3AYvourF5z
-         aXVHXSn76yrE0q2PuguPyae75A1BqRc3vI3fnfoEm+3UpensUr6TnfFWyNum7yZrORwd
-         gNnUbF4O8FxSSWiyeeXdiY/AskvV9jcyUikTGe0TAEoJlk2GQvPOY6QlBquDolBPla+Q
-         4NU0p1WNnE8fxlk19RFZvVi8y92E2LtENxMFrDyf3dDpDYFqwz2O7mq5Za/8iWVQdZkG
-         QfNCLi6RhaidaCqmu/hbTV5DQN4tllTpTPSJctyi1jG+vvpPRxBYIVlPuq8JSLjmzQnz
-         1GkA==
-X-Forwarded-Encrypted: i=1; AJvYcCVexvfKEv+l8L+HIIiTGzKcrn8nVi5UAAVYwnQljilpewuTz32T1Grq3XkP4h2gLCAJqS5Z2Rj+lDxL4uEVCcQztiQrSAVQtPAQ12jgb7m+WtlxIcRiI2ymWTxjxXVwCLcCFHrmZ2yigu8=
-X-Gm-Message-State: AOJu0YyY9JQmhYDG7G+aF9pKYHtL+4HkvQTIv2TW4mv0wsa86lkdvPPO
-	B20eQnNlaLZDntptcf29xN+fpss4DJfT6m+On39eXt+2wGzrXVWxtEOWZQZmZxomf/CU7bZ4hmU
-	ofNHFH0LRFfAVG9S31PFQLKw6xH8=
-X-Google-Smtp-Source: AGHT+IFn4yvJ3wdeK2JRTYDdajOpz3X1T5HkNFOVvAAPj0sw1Er1amaiiwNIwxU60pyeaOTe7OqlmP4wfAHZVO8m9sE=
-X-Received: by 2002:a2e:9e19:0:b0:2d2:6608:3d05 with SMTP id
- e25-20020a2e9e19000000b002d266083d05mr6193541ljk.52.1710259772949; Tue, 12
- Mar 2024 09:09:32 -0700 (PDT)
+	s=arc-20240116; t=1710277168; c=relaxed/simple;
+	bh=tidWqtdJkl/V0+5ccbSw7NWlc22HgAjNHlM0zo6JsMA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=HZrKP5dZ1b6LXltwa7QkK5XbkySyX75yuqMXUm2kO/aYZe95LC3rdon3pImoZx4CfHTm5Iy3pn7XBhMv7PLbX1uZUpRTdpLNNWQkoTuRsCj14mY0KR3W/7GQsWNKRO01qhYSw2dC+L7mqBfFVEVlEciKTY1dVHFe/AAGm75XEnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=LaEc8IqK; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42CKeQel016219;
+	Tue, 12 Mar 2024 20:59:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=4uw/qFoW9jGPAe7Ib9fIAeYoIcFG35WvSTxMS1sNb2c=; b=La
+	Ec8IqKu7sLMRmnyRYqADi0gvnzbs3Z9h/k96YPl02+rvOOrdaAwqQ8niU4q6DGOq
+	lbw3DX4RTcL1eKL63Ci9mlp62+f9tezvE4rpCBsfxOQuxixaRZlPQno1GS07Ngk7
+	Ik+h1Xp2BtJtsFIWOVwz+DylbwnrYF5NG17etdLWKbV7tErQ6XckFsqSMMFm/Ktt
+	nnYt5T74+vzRaTRScVb1l0bNuK/qcouKQlhS0CKQMWgkK1MBAjOKyhHuWCCpr9Oh
+	gP9poQmGoMwoM04s9Nmed4F5aKpr74eNppVDUnXqX2l2WJTRyAVkNUhbwm8cg6AF
+	xW5AFeoVWMjy6szJBbcA==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wtfwn253d-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 Mar 2024 20:59:14 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42CKxDQi003045
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 Mar 2024 20:59:13 GMT
+Received: from [10.110.27.195] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Tue, 12 Mar
+ 2024 13:59:12 -0700
+Message-ID: <e717c1c4-25d9-48bd-9a46-815e777f6526@quicinc.com>
+Date: Tue, 12 Mar 2024 13:59:11 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240311103735.615541-1-fiona.klute@gmx.de> <e540243c657043f9a6d0a8d5314191d3@realtek.com>
- <ZfAVlEhsMwYMq9BY@amd.ucw.cz> <6c73784ecc04cadbcaae3f7e073ffb120e13853c.camel@realtek.com>
-In-Reply-To: <6c73784ecc04cadbcaae3f7e073ffb120e13853c.camel@realtek.com>
-From: Larry Finger <Larry.Finger@lwfinger.net>
-Date: Tue, 12 Mar 2024 11:09:21 -0500
-Message-ID: <CAP71bdXhOTY83ODqJjb6Qjt=8HZqwx-YFbwcvWzXx5WMBFtT9Q@mail.gmail.com>
-Subject: Re: [PATCH v4 0/9] rtw88: Add support for RTL8723CS/RTL8703B
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: "pavel@ucw.cz" <pavel@ucw.cz>, 
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, "kvalo@kernel.org" <kvalo@kernel.org>, 
-	"megi@xff.cz" <megi@xff.cz>, "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>, 
-	"linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>, "fiona.klute@gmx.de" <fiona.klute@gmx.de>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 00/12] wifi: ath12k: Add single wiphy support
+Content-Language: en-US
+To: Rameshkumar Sundaram <quic_ramess@quicinc.com>,
+        <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, Sriram R <quic_srirrama@quicinc.com>
+References: <20240312135557.1778379-1-quic_ramess@quicinc.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20240312135557.1778379-1-quic_ramess@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: NPrYYZUeE3xUdn1M3LJ6fQPUJYIbZvu7
+X-Proofpoint-GUID: NPrYYZUeE3xUdn1M3LJ6fQPUJYIbZvu7
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-12_13,2024-03-12_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 spamscore=0
+ bulkscore=0 clxscore=1015 lowpriorityscore=0 mlxscore=0 priorityscore=1501
+ suspectscore=0 impostorscore=0 malwarescore=0 mlxlogscore=999 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2402120000
+ definitions=main-2403120160
 
-Those patches have been merged with
-https://github.com/lwfinger/rtw88.git. If you have an rtw8723ds, you
-can access the new driver now.
+On 3/12/2024 6:55 AM, Rameshkumar Sundaram wrote:
+> From: Sriram R <quic_srirrama@quicinc.com>
+> 
+> With the introduction of Multi Link Operation (MLO) support in
+> IEEE802.11be, each EHT AP/non AP interface is capable of
+> operating with multiple radio links.
+> 
+> cfg80211/mac80211 expects drivers to abstract the communication
+> between such Multi Link HW and mac80211/cfg80211 since it depends
+> on different driver/HW implementation. Hence the single wiphy
+> abstraction with changes in datastructures were introduced in
+> "wifi: ath12k: Introduce hw abstraction"
+> 
+> This patchset extends the implementation to allow combination
+> of multiple underlying radios into a single composite hw/wiphy
+> for registration. Since now multiple radios are represented by
+> a single wiphy, changes are required in various mac ops that the
+> driver supports since the driver now needs to learn on how to tunnel
+> various mac ops properly to a specific radio.
+> 
+> This patchset covers the basic mac80211 ops for an interface bring up
+> and operation.
+> 
+> Note:
+> Monitor and hw reconfig support for Single Wiphy will be done in future
+> patchsets.
+> 
+> ---
+>  v4:
+>  - Updated missing Signed-off details for patches.
+> 
+>  v3:
+>   - Rebased on ToT (added additional ar check in PATCH 08/12 for p2p)
+>   - Introduced iterator to loop through ars in an ah(for_each_ar())
+>   - Addressed comments on reverse xmas tree declaration style.
+> 
+>  v2:
+>   - Rebased on ToT and dependent patchset
+> 
+> 
+> Karthikeyan Periyasamy (1):
+>   wifi: ath12k: add multiple radio support in a single MAC HW
+>     un/register
+> 
+> Sriram R (11):
+>   wifi: ath12k: Modify add and remove chanctx ops for single wiphy
+>     support
+>   wifi: ath12k: modify ath12k mac start/stop ops for single wiphy
+>   wifi: ath12k: vdev statemachine changes for single wiphy
+>   wifi: ath12k: scan statemachine changes for single wiphy
+>   wifi: ath12k: fetch correct radio based on vdev status
+>   wifi: ath12k: Cache vdev configs before vdev create
+>   wifi: ath12k: Add additional checks for vif and sta iterators
+>   wifi: ath12k: modify regulatory support for single wiphy architecture
+>   wifi: ath12k: Modify set and get antenna mac ops for single wiphy
+>   wifi: ath12k: Modify rts threshold mac op for single wiphy
+>   wifi: ath12k: support get_survey mac op for single wiphy
+> 
+>  drivers/net/wireless/ath/ath12k/core.h |  38 +-
+>  drivers/net/wireless/ath/ath12k/hw.h   |   1 +
+>  drivers/net/wireless/ath/ath12k/mac.c  | 911 +++++++++++++++++++------
+>  drivers/net/wireless/ath/ath12k/p2p.c  |   3 +-
+>  drivers/net/wireless/ath/ath12k/p2p.h  |   1 +
+>  drivers/net/wireless/ath/ath12k/reg.c  |  55 +-
+>  6 files changed, 785 insertions(+), 224 deletions(-)
+> 
 
-On Tue, Mar 12, 2024 at 4:01=E2=80=AFAM Ping-Ke Shih <pkshih@realtek.com> w=
-rote:
->
-> On Tue, 2024-03-12 at 09:43 +0100, Pavel Machek wrote:
-> > Hi!
-> >
-> > > > v4:
-> > > >   * Move definition of GET_RX_DESC_BW from rtw8703b.c to rx.h (now =
-in
-> > > >     patch 3/9 "wifi: rtw88: Add definitions for 8703b chip")
-> > >
-> > > v4 looks good to me. Thanks for the great work!
-> > >
-> > > I also have run sparse/smatch with v4, no warning/error.
-> >
-> > Does it mean you queued the patch, or is someone else expected to do
-> > that?
-> >
->
-> I mean this patchset is okay to me, and Kalle will help to apply this
-> patchset to wireless-next tree. I suppose next next kernel v6.10 will
-> have this.
->
-> Ping-Ke
->
->
->
->
+ath12k-check reports the following issues when run against the series:
+drivers/net/wireless/ath/ath12k/core.h:994: Macro argument reuse 'index' - possible side-effects?
+drivers/net/wireless/ath/ath12k/core.h:994: Macro argument reuse 'ah' - possible side-effects?
+drivers/net/wireless/ath/ath12k/mac.c:3635: Please don't use multiple blank lines
+drivers/net/wireless/ath/ath12k/mac.c:6230: line length of 92 exceeds 90 columns
+drivers/net/wireless/ath/ath12k/mac.c:8429: Missing a blank line after declarations
+
 
