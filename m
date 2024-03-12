@@ -1,83 +1,103 @@
-Return-Path: <linux-wireless+bounces-4589-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4590-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B94EF878F88
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Mar 2024 09:16:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85767878FE1
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Mar 2024 09:43:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9FB61C21697
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Mar 2024 08:16:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 90604B210EF
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Mar 2024 08:43:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC7969D00;
-	Tue, 12 Mar 2024 08:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15F3977653;
+	Tue, 12 Mar 2024 08:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="bf87jEAB"
+	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="loRvjQAW"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87CA369D11
-	for <linux-wireless@vger.kernel.org>; Tue, 12 Mar 2024 08:16:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF18D76EEA;
+	Tue, 12 Mar 2024 08:43:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710231401; cv=none; b=rCpkki1pgrkcXfZUn3zDn20ndD7C+58KDynJAqS4HN8QhAuwZnReLofN9mt5FjTv7MaZl+46Cgo3W0/A6bYLnAZWyKQvl29OI1oda44z7a1Ja1Awyp6CYcTeU/NmkhNsQanu14gZBQT9qFUQQ9hcUcW+D0Eq72qpRUNa56Wjyjo=
+	t=1710232987; cv=none; b=WXgoUcZxL9hdP6LV5tBUyQAxutE/fD+peYQgREQMw8PSAUZeQTIeAiCEWEAzIFKYjqHKmKJCwJE3KB7vzulGoGRLIbfdxgEyp+Nn5YkxfxHvI6V7Zf3zEardNsl14HZkSzlTitYTiwFzcAVXsCMs/zanXK2Na0uohzJ9KIxhKv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710231401; c=relaxed/simple;
-	bh=ihz++E9B6/8HRGfur9tdMnVj2qTl+gPGQxmLPwTE2Ko=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=FOaxcX07JGhcRLN6+s35spXj2/Wwo7KAL56pxnF+G7Xg0KktYBbnihnMSFNt+cFJ+O4jvyNxI4FHSb2EllvLt2ozMxXcycX2XD7XxJciNV1YWHzh5eH/gAPxt2/1AK1Gx1b9HcmmtikQxUAERo/HjMr/tvPC8Wf4FX35vWUZmN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=bf87jEAB; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=ihz++E9B6/8HRGfur9tdMnVj2qTl+gPGQxmLPwTE2Ko=;
-	t=1710231398; x=1711440998; b=bf87jEABK0Eu4wwNmCXHJkEJ9Dtg7rcbnA1Dm9ZzyV+Wb6b
-	brlk6PNBrzJvElymjCmtHwcyVh4lKhUxBEITMK4kSy5eunwohTtUoKeIcpgwapkiI5ZxPA+5faUGT
-	cXdsNMiQ3QhSlqDF2R1JVpGM1Aqcm3WLPbl2OkAlmr16tiVheiWW4lbJVpMMJUD05KomagfeNXQgv
-	0Dmvc+ZJ3mF5+PB29vWWplft8THEd1BaI0ZUbFqau34lLKAqKwYt71CDOnOWq21Eux/uj/5xLRn42
-	71rAPmxFLP+uiqJarS7nlIjMEJDbnczYPE/MKFFKBA0ARkOEpBZzSUDSqvTy0Y0g==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1rjxJE-0000000DjWz-1qLP;
-	Tue, 12 Mar 2024 09:16:28 +0100
-Message-ID: <8cc7e7f7b2914385b481ecfdd7bc3f67fc4546b3.camel@sipsolutions.net>
-Subject: Re: [PATCH 1/2] wifi: mac80211: supplement parsing of puncturing
- bitmap
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Kang Yang <quic_kangyang@quicinc.com>, ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-Date: Tue, 12 Mar 2024 09:16:27 +0100
-In-Reply-To: <20240312045947.576231-2-quic_kangyang@quicinc.com>
-References: <20240312045947.576231-1-quic_kangyang@quicinc.com>
-	 <20240312045947.576231-2-quic_kangyang@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
+	s=arc-20240116; t=1710232987; c=relaxed/simple;
+	bh=8PTC3st//TZQtxJV2dNX9uPD5gJj55Zs3j0hF1eyaUs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=p7hvP3s95CPX+zUiZtLkL2FeIJheLC+UVE/NbykN3N+a3WuFePjfK+w3hrinx9q6VGrPnfJvHU8XamsBk2e5Tlihhx5+TZZhTZW7C/ThmrcMqP4LlinLtOdmj1lfWT3M4C/j6l/2jSyAZ39MaWTotEskrLh4Oxq1Ab9947uByL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz; spf=pass smtp.mailfrom=ucw.cz; dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b=loRvjQAW; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id 890651C007F; Tue, 12 Mar 2024 09:43:01 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
+	t=1710232981;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=v91wZVSG1tHVmRuWN1qiVImveP0XzlTDO1nWD46gUJo=;
+	b=loRvjQAWm3P3Jo8q7qb64psvBgHTz2l4iOi+wkuoMPvD5KHCVIvAYLTytKtc93Oflj04B6
+	6GlIJztqjIjMFEQdY7u0TolPubSTIgPtYDWCgNgkuTowvNjqRLsxyYgAOiHBoUHG6/3aGJ
+	JiJcjbHg2kqDYPQD4oPrVSR54LWq20o=
+Date: Tue, 12 Mar 2024 09:43:00 +0100
+From: Pavel Machek <pavel@ucw.cz>
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: Fiona Klute <fiona.klute@gmx.de>,
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	Kalle Valo <kvalo@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>,
+	"linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+	=?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>
+Subject: Re: [PATCH v4 0/9] rtw88: Add support for RTL8723CS/RTL8703B
+Message-ID: <ZfAVlEhsMwYMq9BY@amd.ucw.cz>
+References: <20240311103735.615541-1-fiona.klute@gmx.de>
+ <e540243c657043f9a6d0a8d5314191d3@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="oJG9/PmtjpM3J0ZL"
+Content-Disposition: inline
+In-Reply-To: <e540243c657043f9a6d0a8d5314191d3@realtek.com>
 
-On Tue, 2024-03-12 at 12:59 +0800, Kang Yang wrote:
-> Current mac80211 won't parsing puncturing bitmap when process EHT
-> Operation element in 6 GHz band or Bandwidth Indication element. This
-> leads to puncturing bitmap cannot be updated in related situations, such
-> as connecting to an EHT AP in 6 GHz band.
+
+--oJG9/PmtjpM3J0ZL
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi!
+
+> > v4:
+> >   * Move definition of GET_RX_DESC_BW from rtw8703b.c to rx.h (now in
+> >     patch 3/9 "wifi: rtw88: Add definitions for 8703b chip")
 >=20
-> So supplement parsing of puncturing bitmap for these elements.
+> v4 looks good to me. Thanks for the great work!=20
+>=20
+> I also have run sparse/smatch with v4, no warning/error.
 
-Hah, yes, I just noticed that too and fixed the second part yesterday,
-and was still thinking about how I could test the first part :-)
+Does it mean you queued the patch, or is someone else expected to do
+that?
 
-johannes
+Best regards,
+								Pavel
+--=20
+People of Russia, stop Putin before his war on Ukraine escalates.
 
+--oJG9/PmtjpM3J0ZL
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZfAVlAAKCRAw5/Bqldv6
+8spzAJwIiOlVNcksyRfJ9gr5uv+xyAzkZgCgj7iw0ScQtCNbuHqRwDrnwDyzo5E=
+=Lmem
+-----END PGP SIGNATURE-----
+
+--oJG9/PmtjpM3J0ZL--
 
