@@ -1,68 +1,68 @@
-Return-Path: <linux-wireless+bounces-4618-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4619-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75DDE879572
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Mar 2024 14:56:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CCCC879573
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Mar 2024 14:57:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 992D31C211B8
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Mar 2024 13:56:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C035F1C20F2B
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Mar 2024 13:57:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 239017AE52;
-	Tue, 12 Mar 2024 13:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9016B7A73A;
+	Tue, 12 Mar 2024 13:56:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="nTp3K+so"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Libgazv8"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5974C7A727
-	for <linux-wireless@vger.kernel.org>; Tue, 12 Mar 2024 13:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5CFA7AE66
+	for <linux-wireless@vger.kernel.org>; Tue, 12 Mar 2024 13:56:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710251796; cv=none; b=H+rvCxrOfWkAZTpWB3dzl3PAHCi80oAH+Qxh+CpKulA9zw6L0YBzJ+wXmn8ZH+4mdYPcECd6Dvor9T6zkSE/yp9IJB0Hhj7tjNu63p4r4QyF1ZTfW5azDPJRrVO+8dpywJgyfMagnYIHTHr2duLojOOnfDsmLFeIBeiYMvd5ypU=
+	t=1710251798; cv=none; b=V3Vu19DByalpNSfX+wCjmrplUTg71+XSoKo2i2tiHxwsNwLTpLnE+Tg6itulq8czO+HZbQawT7EVa2WRPJHXNbm4b/wJzI+Qx4B1nW5gT+q4WnnhTC7nm40hAkqIk9n3MvixDZMUhqIoE/V6IZyMF07GYI6STqz1Fs6bNFnDAXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710251796; c=relaxed/simple;
-	bh=XtHp0yLqy6ivhK6w+LaQbIptMNAp2HspDh7MiGOUdfY=;
+	s=arc-20240116; t=1710251798; c=relaxed/simple;
+	bh=7W4OUgNVMzF9XfX6uq7xvrcecUuBbDemjdUiN5XS7gE=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mtISrYWkTBdVjLcy7afPemzCXaKpva5kjwJk0FpQvmIYXhg/IULkduOOAbXVVrSC3lPzqj2kKse+pp3tWDY+NIsJofN4FQJMkgUyQZ8FvIW8gKuEo7GRthoEusvvyYabXgis1Bw3IeKNONULmaIJsf4IUNGkiFjcmWpBLG9MoMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=nTp3K+so; arc=none smtp.client-ip=205.220.180.131
+	 MIME-Version:Content-Type; b=hBul6sPmu1zvArm3w3WJjR6/fbApTfLYLYdaLuGZ8PxAmw7lolYP5VdTRxPi6PjI69ogH262GtWkgKdjWBVtashRQ/VPwhtJCWYdNVXMZ9e9EaY2P8qOLjv7bqx6Cobua8W58u5U88aIWeNQwk0UTp251lGrEadkiBy5L5PC/i4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Libgazv8; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42CCoqou009224;
-	Tue, 12 Mar 2024 13:56:31 GMT
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42CC6FUu016298;
+	Tue, 12 Mar 2024 13:56:32 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	from:to:cc:subject:date:message-id:in-reply-to:references
 	:mime-version:content-transfer-encoding:content-type; s=
-	qcppdkim1; bh=iwNLwE5VaJ5KHUmqQvQE6m7gdO56HNGhNTGs74gUxkw=; b=nT
-	p3K+soN6nvSyifdCmVcnA357nXmtCoUZs9o/OU5HkIx5xRbym9S2cj+dd0o2o9lf
-	WHmExwqkeitpqVvev7wPaCRtsWdLCo9GnvKKvHoLUkJlR554cTiVMgaiCiHMHoK9
-	N3jdAGYqn8SuQzXN8i4iopGWFX6Ey3/SzSUepIRgT7qGTeS0VKzUUa5kOfjSOzsy
-	FiOX/bgvPnQRFbI+p+7/QWM3dU2QEDr3ebpC2i19iSikWln7z/3z4rII08yeH9AG
-	f+/b7wLcamnGJvtXm7g2SSvoxBMCkXzlKvBfa7XnhVmIunUycjiYV3lL2v1dznXk
-	G/hbvnnxBNf9YbTCKpoA==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wtjef0s4n-1
+	qcppdkim1; bh=F1Vkjv15kOyuJ0ijQHb7gMXNYF2kAZNqnmU1I1mhgLg=; b=Li
+	bgazv8RRuyBZU5pVF1McfSloEynUelW2zNMLhWob400TumROfXqKBFA3h/5Enuy+
+	ZsGUQy3AX0funAnSJHlgEW6zo+6oAyjZMItHxoSL5btFvAIcSEaL5X7ystotoNja
+	opY4OiXQPL41Xenkear2NYUIPM2vJxrFT+3VAobLyuI8vinvk+3Lmj4cnWSrCIMt
+	2WIuhQTkmHqjMUfilZqXkwcYdVGukmS0xE7kpVEZUsXC3qHnQdPwbHixx4iR3kI5
+	h8DYuOAgzBPR6lvdW1IB1X35Q4m2PN2Kh+No1aEEJsRloLncvqVNJ6LJRrzhQ3Wf
+	OVVLdYfhap/yjjDV70og==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wtprj87vt-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 Mar 2024 13:56:30 +0000 (GMT)
+	Tue, 12 Mar 2024 13:56:32 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42CDuTFc006554
+	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42CDuVbo022500
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 Mar 2024 13:56:29 GMT
+	Tue, 12 Mar 2024 13:56:31 GMT
 Received: from hu-ramess-blr.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Tue, 12 Mar 2024 06:56:27 -0700
+ 15.2.1118.40; Tue, 12 Mar 2024 06:56:29 -0700
 From: Rameshkumar Sundaram <quic_ramess@quicinc.com>
 To: <ath12k@lists.infradead.org>
 CC: <linux-wireless@vger.kernel.org>, Sriram R <quic_srirrama@quicinc.com>,
         Rameshkumar Sundaram <quic_ramess@quicinc.com>
-Subject: [PATCH v4 07/12] wifi: ath12k: Cache vdev configs before vdev create
-Date: Tue, 12 Mar 2024 19:25:52 +0530
-Message-ID: <20240312135557.1778379-8-quic_ramess@quicinc.com>
+Subject: [PATCH v4 08/12] wifi: ath12k: Add additional checks for vif and sta iterators
+Date: Tue, 12 Mar 2024 19:25:53 +0530
+Message-ID: <20240312135557.1778379-9-quic_ramess@quicinc.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240312135557.1778379-1-quic_ramess@quicinc.com>
 References: <20240312135557.1778379-1-quic_ramess@quicinc.com>
@@ -78,25 +78,24 @@ X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: zFDzt7Rqg2kOnEngGRfNISdEcGo_Sblr
-X-Proofpoint-GUID: zFDzt7Rqg2kOnEngGRfNISdEcGo_Sblr
+X-Proofpoint-GUID: EjJmu0uyn8Wm-2tdtQfLRzeq9VboESZP
+X-Proofpoint-ORIG-GUID: EjJmu0uyn8Wm-2tdtQfLRzeq9VboESZP
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-03-12_08,2024-03-12_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 impostorscore=0
- suspectscore=0 bulkscore=0 spamscore=0 mlxscore=0 phishscore=0
- malwarescore=0 mlxlogscore=841 priorityscore=1501 lowpriorityscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2402120000 definitions=main-2403120107
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ impostorscore=0 mlxscore=0 bulkscore=0 clxscore=1015 spamscore=0
+ malwarescore=0 lowpriorityscore=0 adultscore=0 priorityscore=1501
+ phishscore=0 mlxlogscore=824 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2402120000 definitions=main-2403120106
 
 From: Sriram R <quic_srirrama@quicinc.com>
 
-Since the vdev create for a corresponding vif is deferred
-until a channel is assigned, cache the information which
-are received through mac80211 ops between add_interface()
-and assign_vif_chanctx() and set them once the vdev is
-created on one of the ath12k radios as the channel gets
-assigned via assign_vif_chanctx().
+Since vif and sta objects of different radios are added to same
+local hw list in mac80211, additional checks need to be done
+in driver to ensure we are processing the intended vif
+and sta corresponding to the radio when the vif and sta mac80211
+iterator utils are used from driver.
 
 Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
 Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
@@ -104,227 +103,147 @@ Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ
 Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
 Signed-off-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
 ---
- drivers/net/wireless/ath/ath12k/core.h |  19 ++++
- drivers/net/wireless/ath/ath12k/mac.c  | 116 +++++++++++++++++++------
- 2 files changed, 107 insertions(+), 28 deletions(-)
+ drivers/net/wireless/ath/ath12k/core.h |  1 +
+ drivers/net/wireless/ath/ath12k/mac.c  | 22 ++++++++++++++++++++--
+ drivers/net/wireless/ath/ath12k/p2p.c  |  3 ++-
+ drivers/net/wireless/ath/ath12k/p2p.h  |  1 +
+ 4 files changed, 24 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-index 70daec38d486..fe151aa90687 100644
+index fe151aa90687..4b21e7bcec3f 100644
 --- a/drivers/net/wireless/ath/ath12k/core.h
 +++ b/drivers/net/wireless/ath/ath12k/core.h
-@@ -214,6 +214,24 @@ enum ath12k_monitor_flags {
- 	ATH12K_FLAG_MONITOR_ENABLED,
- };
- 
-+struct ath12k_tx_conf {
-+	bool changed;
-+	u16 ac;
-+	struct ieee80211_tx_queue_params tx_queue_params;
-+};
-+
-+struct ath12k_key_conf {
-+	bool changed;
-+	enum set_key_cmd cmd;
-+	struct ieee80211_key_conf *key;
-+};
-+
-+struct ath12k_vif_cache {
-+	struct ath12k_tx_conf tx_conf;
-+	struct ath12k_key_conf key_conf;
-+	u32 bss_conf_changed;
-+};
-+
- struct ath12k_vif {
- 	u32 vdev_id;
- 	enum wmi_vdev_type vdev_type;
-@@ -268,6 +286,7 @@ struct ath12k_vif {
- 	u8 vdev_stats_id;
- 	u32 punct_bitmap;
- 	bool ps;
-+	struct ath12k_vif_cache cache;
- };
+@@ -291,6 +291,7 @@ struct ath12k_vif {
  
  struct ath12k_vif_iter {
+ 	u32 vdev_id;
++	struct ath12k *ar;
+ 	struct ath12k_vif *arvif;
+ };
+ 
 diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 6d2176b0a556..fab92f08fdb7 100644
+index fab92f08fdb7..a77d6dbaea46 100644
 --- a/drivers/net/wireless/ath/ath12k/mac.c
 +++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -3021,12 +3021,14 @@ static void ath12k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
- 
- 	ar = ath12k_get_ar_by_vif(hw, vif);
- 
--	/* TODO if the vdev is not created on a certain radio,
-+	/* if the vdev is not created on a certain radio,
- 	 * cache the info to be updated later on vdev creation
- 	 */
- 
--	if (!ar)
-+	if (!ar) {
-+		arvif->cache.bss_conf_changed |= changed;
- 		return;
-+	}
- 
- 	mutex_lock(&ar->conf_mutex);
- 
-@@ -3517,12 +3519,11 @@ static int ath12k_clear_peer_keys(struct ath12k_vif *arvif,
- 	return first_errno;
- }
- 
--static int ath12k_mac_op_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
--				 struct ieee80211_vif *vif, struct ieee80211_sta *sta,
--				 struct ieee80211_key_conf *key)
-+static int ath12k_mac_set_key(struct ath12k *ar, enum set_key_cmd cmd,
-+			      struct ieee80211_vif *vif, struct ieee80211_sta *sta,
-+			      struct ieee80211_key_conf *key)
- {
--	struct ath12k *ar;
--	struct ath12k_base *ab;
-+	struct ath12k_base *ab = ar->ab;
+@@ -533,7 +533,8 @@ static void ath12k_get_arvif_iter(void *data, u8 *mac,
+ 	struct ath12k_vif_iter *arvif_iter = data;
  	struct ath12k_vif *arvif = ath12k_vif_to_arvif(vif);
- 	struct ath12k_peer *peer;
- 	struct ath12k_sta *arsta;
-@@ -3530,28 +3531,11 @@ static int ath12k_mac_op_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
- 	int ret = 0;
- 	u32 flags = 0;
  
--	/* BIP needs to be done in software */
--	if (key->cipher == WLAN_CIPHER_SUITE_AES_CMAC ||
--	    key->cipher == WLAN_CIPHER_SUITE_BIP_GMAC_128 ||
--	    key->cipher == WLAN_CIPHER_SUITE_BIP_GMAC_256 ||
--	    key->cipher == WLAN_CIPHER_SUITE_BIP_CMAC_256)
--		return 1;
--
--	ar = ath12k_get_ar_by_vif(hw, vif);
--	if (!ar) {
--		WARN_ON_ONCE(1);
--		return -EINVAL;
--	}
--	ab = ar->ab;
-+	lockdep_assert_held(&ar->conf_mutex);
+-	if (arvif->vdev_id == arvif_iter->vdev_id)
++	if (arvif->vdev_id == arvif_iter->vdev_id &&
++	    arvif->ar == arvif_iter->ar)
+ 		arvif_iter->arvif = arvif;
+ }
  
--	if (test_bit(ATH12K_FLAG_HW_CRYPTO_DISABLED, &ar->ab->dev_flags))
-+	if (test_bit(ATH12K_FLAG_HW_CRYPTO_DISABLED, &ab->dev_flags))
- 		return 1;
+@@ -543,6 +544,7 @@ struct ath12k_vif *ath12k_mac_get_arvif(struct ath12k *ar, u32 vdev_id)
+ 	u32 flags;
  
--	if (key->keyidx > WMI_MAX_KEY_INDEX)
--		return -ENOSPC;
--
--	mutex_lock(&ar->conf_mutex);
--
- 	if (sta)
- 		peer_addr = sta->addr;
- 	else if (arvif->vdev_type == WMI_VDEV_TYPE_STA)
-@@ -3643,6 +3627,43 @@ static int ath12k_mac_op_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
- 	spin_unlock_bh(&ab->base_lock);
+ 	arvif_iter.vdev_id = vdev_id;
++	arvif_iter.ar = ar;
  
- exit:
-+	return ret;
-+}
-+
-+
-+static int ath12k_mac_op_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
-+				 struct ieee80211_vif *vif, struct ieee80211_sta *sta,
-+				 struct ieee80211_key_conf *key)
-+{
-+	struct ath12k_vif *arvif = ath12k_vif_to_arvif(vif);
+ 	flags = IEEE80211_IFACE_ITER_RESUME_ALL;
+ 	ieee80211_iterate_active_interfaces_atomic(ath12k_ar_to_hw(ar),
+@@ -6818,14 +6820,19 @@ struct ath12k_mac_change_chanctx_arg {
+ 	struct ieee80211_vif_chanctx_switch *vifs;
+ 	int n_vifs;
+ 	int next_vif;
 +	struct ath12k *ar;
-+	int ret;
-+
-+	/* BIP needs to be done in software */
-+	if (key->cipher == WLAN_CIPHER_SUITE_AES_CMAC ||
-+	    key->cipher == WLAN_CIPHER_SUITE_BIP_GMAC_128 ||
-+	    key->cipher == WLAN_CIPHER_SUITE_BIP_GMAC_256 ||
-+	    key->cipher == WLAN_CIPHER_SUITE_BIP_CMAC_256)
-+		return 1;
-+
-+	if (key->keyidx > WMI_MAX_KEY_INDEX)
-+		return -ENOSPC;
-+
-+	ar = ath12k_get_ar_by_vif(hw, vif);
-+	if (!ar) {
-+		/* ar is expected to be valid when sta ptr is available */
-+		if (sta) {
-+			WARN_ON_ONCE(1);
-+			return -EINVAL;
-+		}
-+		arvif->cache.key_conf.cmd = cmd;
-+		arvif->cache.key_conf.key = key;
-+		arvif->cache.key_conf.changed = true;
-+		return 0;
-+	}
-+
-+	mutex_lock(&ar->conf_mutex);
-+	ret = ath12k_mac_set_key(ar, cmd, vif, sta, key);
- 	mutex_unlock(&ar->conf_mutex);
- 	return ret;
- }
-@@ -4477,7 +4498,10 @@ static int ath12k_mac_op_conf_tx(struct ieee80211_hw *hw,
+ };
  
- 	ar = ath12k_get_ar_by_vif(hw, vif);
- 	if (!ar) {
--		/* TODO cache the info and apply after vdev is created */
-+		/* cache the info and apply after vdev is created */
-+		arvif->cache.tx_conf.changed = true;
-+		arvif->cache.tx_conf.ac = ac;
-+		arvif->cache.tx_conf.tx_queue_params = *params;
- 		return -EINVAL;
- 	}
- 
-@@ -6121,6 +6145,41 @@ static int ath12k_mac_vdev_create(struct ath12k *ar, struct ieee80211_vif *vif)
- 	return ret;
- }
- 
-+static void ath12k_mac_vif_cache_flush(struct ath12k *ar,  struct ieee80211_vif *vif)
-+{
+ static void
+ ath12k_mac_change_chanctx_cnt_iter(void *data, u8 *mac,
+ 				   struct ieee80211_vif *vif)
+ {
 +	struct ath12k_vif *arvif = ath12k_vif_to_arvif(vif);
-+	struct ath12k_base *ab = ar->ab;
-+	int ret;
-+
-+	lockdep_assert_held(&ar->conf_mutex);
-+
-+	if (arvif->cache.tx_conf.changed) {
-+		ret = ath12k_mac_conf_tx(arvif, 0, arvif->cache.tx_conf.ac,
-+					 &arvif->cache.tx_conf.tx_queue_params);
-+		if (ret)
-+			ath12k_warn(ab,
-+				    "unable to apply tx config parameters to vdev %d\n",
-+				    ret);
-+	}
-+
-+	if (arvif->cache.bss_conf_changed)
-+		ath12k_mac_bss_info_changed(ar, arvif, &vif->bss_conf,
-+					    arvif->cache.bss_conf_changed);
-+
-+	if (arvif->cache.key_conf.changed) {
-+		ret = ath12k_mac_set_key(ar, arvif->cache.key_conf.cmd,
-+					 vif, NULL,
-+					 arvif->cache.key_conf.key);
-+		if (ret) {
-+			WARN_ON_ONCE(1);
-+			ath12k_warn(ab, "unable to apply set key param to vdev %d ret %d\n",
-+				    arvif->vdev_id, ret);
-+		}
-+	}
-+
-+	memset(&arvif->cache, 0, sizeof(struct ath12k_vif_cache));
-+}
-+
- static struct ath12k *ath12k_mac_assign_vif_to_vdev(struct ieee80211_hw *hw,
- 						    struct ieee80211_vif *vif,
- 						    struct ieee80211_chanctx_conf *ctx)
-@@ -6203,10 +6262,11 @@ static struct ath12k *ath12k_mac_assign_vif_to_vdev(struct ieee80211_hw *hw,
- 		goto unlock;
- 	}
+ 	struct ath12k_mac_change_chanctx_arg *arg = data;
  
--	/* TODO If the vdev is created during channel assign and not during
-+	/* If the vdev is created during channel assign and not during
- 	 * add_interface(), Apply any parameters for the vdev which were received
- 	 * after add_interface, corresponding to this vif.
- 	 */
-+	ath12k_mac_vif_cache_flush(ar, vif);
- unlock:
- 	mutex_unlock(&ar->conf_mutex);
- out:
++	if (arvif->ar != arg->ar)
++		return;
++
+ 	if (rcu_access_pointer(vif->bss_conf.chanctx_conf) != arg->ctx)
+ 		return;
+ 
+@@ -6836,9 +6843,13 @@ static void
+ ath12k_mac_change_chanctx_fill_iter(void *data, u8 *mac,
+ 				    struct ieee80211_vif *vif)
+ {
++	struct ath12k_vif *arvif = ath12k_vif_to_arvif(vif);
+ 	struct ath12k_mac_change_chanctx_arg *arg = data;
+ 	struct ieee80211_chanctx_conf *ctx;
+ 
++	if (arvif->ar != arg->ar)
++		return;
++
+ 	ctx = rcu_access_pointer(vif->bss_conf.chanctx_conf);
+ 	if (ctx != arg->ctx)
+ 		return;
+@@ -6957,7 +6968,7 @@ static void
+ ath12k_mac_update_active_vif_chan(struct ath12k *ar,
+ 				  struct ieee80211_chanctx_conf *ctx)
+ {
+-	struct ath12k_mac_change_chanctx_arg arg = { .ctx = ctx };
++	struct ath12k_mac_change_chanctx_arg arg = { .ctx = ctx, .ar = ar };
+ 	struct ieee80211_hw *hw = ath12k_ar_to_hw(ar);
+ 
+ 	lockdep_assert_held(&ar->conf_mutex);
+@@ -7533,6 +7544,9 @@ static void ath12k_mac_set_bitrate_mask_iter(void *data,
+ 	struct ath12k_sta *arsta = ath12k_sta_to_arsta(sta);
+ 	struct ath12k *ar = arvif->ar;
+ 
++	if (arsta->arvif != arvif)
++		return;
++
+ 	spin_lock_bh(&ar->data_lock);
+ 	arsta->changed |= IEEE80211_RC_SUPP_RATES_CHANGED;
+ 	spin_unlock_bh(&ar->data_lock);
+@@ -7543,10 +7557,14 @@ static void ath12k_mac_set_bitrate_mask_iter(void *data,
+ static void ath12k_mac_disable_peer_fixed_rate(void *data,
+ 					       struct ieee80211_sta *sta)
+ {
++	struct ath12k_sta *arsta = ath12k_sta_to_arsta(sta);
+ 	struct ath12k_vif *arvif = data;
+ 	struct ath12k *ar = arvif->ar;
+ 	int ret;
+ 
++	if (arsta->arvif != arvif)
++		return;
++
+ 	ret = ath12k_wmi_set_peer_param(ar, sta->addr,
+ 					arvif->vdev_id,
+ 					WMI_PEER_PARAM_FIXED_RATE,
+diff --git a/drivers/net/wireless/ath/ath12k/p2p.c b/drivers/net/wireless/ath/ath12k/p2p.c
+index d334df720032..3a851ee15b2f 100644
+--- a/drivers/net/wireless/ath/ath12k/p2p.c
++++ b/drivers/net/wireless/ath/ath12k/p2p.c
+@@ -121,7 +121,7 @@ static void ath12k_p2p_noa_update_vdev_iter(void *data, u8 *mac,
+ 	struct ath12k_vif *arvif = ath12k_vif_to_arvif(vif);
+ 	struct ath12k_p2p_noa_arg *arg = data;
+ 
+-	if (arvif->vdev_id != arg->vdev_id)
++	if (arvif->ar != arg->ar || arvif->vdev_id != arg->vdev_id)
+ 		return;
+ 
+ 	ath12k_p2p_noa_update(arvif, arg->noa);
+@@ -132,6 +132,7 @@ void ath12k_p2p_noa_update_by_vdev_id(struct ath12k *ar, u32 vdev_id,
+ {
+ 	struct ath12k_p2p_noa_arg arg = {
+ 		.vdev_id = vdev_id,
++		.ar = ar,
+ 		.noa = noa,
+ 	};
+ 
+diff --git a/drivers/net/wireless/ath/ath12k/p2p.h b/drivers/net/wireless/ath/ath12k/p2p.h
+index 5768139a7844..b2eec51a9900 100644
+--- a/drivers/net/wireless/ath/ath12k/p2p.h
++++ b/drivers/net/wireless/ath/ath12k/p2p.h
+@@ -12,6 +12,7 @@ struct ath12k_wmi_p2p_noa_info;
+ 
+ struct ath12k_p2p_noa_arg {
+ 	u32 vdev_id;
++	struct ath12k *ar;
+ 	const struct ath12k_wmi_p2p_noa_info *noa;
+ };
+ 
 -- 
 2.25.1
 
