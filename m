@@ -1,201 +1,142 @@
-Return-Path: <linux-wireless+bounces-4642-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4643-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CA20879EC7
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Mar 2024 23:32:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78686879EDB
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Mar 2024 23:35:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 705D21C2093D
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Mar 2024 22:32:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3356A2814BA
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Mar 2024 22:35:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A9371C3D;
-	Tue, 12 Mar 2024 22:32:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91CB22BB1E;
+	Tue, 12 Mar 2024 22:35:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="N9NdAIEe"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="DDoByb2v"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E4953FE46
-	for <linux-wireless@vger.kernel.org>; Tue, 12 Mar 2024 22:32:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFCC12B2D7
+	for <linux-wireless@vger.kernel.org>; Tue, 12 Mar 2024 22:35:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710282748; cv=none; b=M4JqrmR8GmMsH1WEOvL3E+DtG56rSEtnjP2hjS+wnuJxOOkF8TH/fyfBIcydAzyz1sWBVyN9mpqDPebT8BqAN7lMg05D8e01qjyIIfMs798NbBzJvALXUQ81vYJbD2OFKSR+vaM77rcRKVlLFluI4I3SeWF/YMwwbb3H5yxUXCc=
+	t=1710282910; cv=none; b=htc9vqZWcIbaEq1X9RkuoEQhPXXxc95UV0v2s1ryr6SHcZpHGgUWjYyd//kVmH9RHwWlzAIHo4yI+cO1G67rSBs0+JEP9OM59FGdvf/ST8jq/8AcPy23xWe2WUtVsv1g7U0ReOZkBBEW0meUBkn4vnv0Y2U4YlC+r6EYOJ4YlWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710282748; c=relaxed/simple;
-	bh=yy6CrV/ltgpCr7krPvApgacgSUlnOgGyW+PsB7Y3Lys=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=LPj0g2bMxN7O+wppSJtEWoOzKSgPq4iwcNx9rh/KNqtcxwajys09jt+dznfDf1FvnJ5tSedl56xVes+ghCRcqHm1SbVvOIyGuoOvJOzz7IBOf5xGuz3fAebaWoU5O1wFnNqQki2vOhSssBVQNOZq3NZTjh/Y1K1vK40YkMNF0o4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=N9NdAIEe; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1710282746; x=1741818746;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=yy6CrV/ltgpCr7krPvApgacgSUlnOgGyW+PsB7Y3Lys=;
-  b=N9NdAIEeb5h9IyOL4FNkt1XOZz5Qwzpo04cbi5XFPgXqo/HrHdij10RQ
-   6BX3OfyqkitSga3TkaRr5Qk8Za3b46Ag6ysRQsjx/bSeEH2pbkkjhV8n2
-   jUziI3PHSBOHyfqABBrKRD15F8qR3uR9FlrXtqtLwr50u2Ot6Jo/tgpPX
-   6INkMytClYM521ZptNmQoXuJgi4TOLUcNZxcTmRMP99hYnxWSVj/XZJTv
-   Ad4cBkrZG1GFmbvOyWZtWQyg1XnzrrZdvGqm7fmOrU6R+iIkb1HxDtO5A
-   KLhsC04cpXjZxZbH+D3XSq78YfWTSqG4ermT/vhnqLg5ts6N1lKLd2jKo
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11011"; a="30460771"
-X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
-   d="scan'208";a="30460771"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2024 15:32:25 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
-   d="scan'208";a="16339579"
-Received: from lkp-server01.sh.intel.com (HELO b21307750695) ([10.239.97.150])
-  by orviesa003.jf.intel.com with ESMTP; 12 Mar 2024 15:32:23 -0700
-Received: from kbuild by b21307750695 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rkAfU-000Bjd-1z;
-	Tue, 12 Mar 2024 22:32:20 +0000
-Date: Wed, 13 Mar 2024 06:31:52 +0800
-From: kernel test robot <lkp@intel.com>
-To: Randy Dunlap <rdunlap@infradead.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
-Subject: [wireless-next:main 6/6] drivers/ssb/main.c:1149:2: warning: label
- at end of compound statement is a C23 extension
-Message-ID: <202403130633.muvbu9ev-lkp@intel.com>
+	s=arc-20240116; t=1710282910; c=relaxed/simple;
+	bh=6kPoGA5fRcPkUoeNjiK8yOVPuslrhHUEVroEKjGMHSI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=DfX4x65Wqh3QDoGnppPSsVG1+B97mv2WFpOPNy+FENddXC7ty6BQ/Xb1MbI6x1ny5FooCUH5bHZbRumByYwJ4ZS4Xt9JJXHwajDTOf0DzLNRP4hFFOKrAkYGqB772nZg4gykg067i78fn9n4nx5b87x9kfqSb80b+8XhfF/SNyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=DDoByb2v; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42CLcuRt012064;
+	Tue, 12 Mar 2024 22:35:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=vsyVJruxp+6dWhHIK32pwu/f4gts7QyZJscu6ziDTnI=; b=DD
+	oByb2v0m8R/jfI9s6XmZbnIeIGrgAZBVhC9QXmOqg2Gyo7Q5GnKc+pwsgqdEBMZl
+	WVWwfsXZw9Ob4hVzA72Lc+duW/xbCLZVf/1UPFCIIWy0VZwK2kEdnxY9epzX/W7a
+	MgpZPRtDFGddvymNY8l0NYIauNygRhIvAxFSbZT1KvjPiFxr3THEXLTue6YBWT56
+	YHn2xPsjWqyS+8RdngKASujmrxB9AhWJdABD+pbr7nZNGcZA9Hw3BPdbjFQjymnQ
+	wB0Bd6Xsq61NklFqaXv8+O4PGaoyQv6Altq6pcTAa8DcgxHA8uTfB8Zb0ZhDlvp1
+	DpMetwhRxUjI7ZYOaYyg==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wtjwut0ha-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 Mar 2024 22:35:04 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42CMZ3pu020905
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 Mar 2024 22:35:03 GMT
+Received: from [10.110.27.195] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Tue, 12 Mar
+ 2024 15:35:03 -0700
+Message-ID: <34ffab82-44ec-485d-84a5-d5bd9aec9a85@quicinc.com>
+Date: Tue, 12 Mar 2024 15:35:01 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 05/12] wifi: ath12k: scan statemachine changes for
+ single wiphy
+Content-Language: en-US
+To: Rameshkumar Sundaram <quic_ramess@quicinc.com>,
+        <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, Sriram R <quic_srirrama@quicinc.com>
+References: <20240312135557.1778379-1-quic_ramess@quicinc.com>
+ <20240312135557.1778379-6-quic_ramess@quicinc.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20240312135557.1778379-6-quic_ramess@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: lT0LqeB8uZXsE5fUCer7zhQhjnq1INqr
+X-Proofpoint-ORIG-GUID: lT0LqeB8uZXsE5fUCer7zhQhjnq1INqr
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-12_14,2024-03-12_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 clxscore=1015
+ malwarescore=0 impostorscore=0 bulkscore=0 mlxscore=0 phishscore=0
+ suspectscore=0 priorityscore=1501 lowpriorityscore=0 spamscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2402120000 definitions=main-2403120173
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-head:   e27b02e23a701e5761f1d6028643e1203a1c56de
-commit: e27b02e23a701e5761f1d6028643e1203a1c56de [6/6] ssb: drop use of non-existing CONFIG_SSB_DEBUG symbol
-config: hexagon-allyesconfig (https://download.01.org/0day-ci/archive/20240313/202403130633.muvbu9ev-lkp@intel.com/config)
-compiler: clang version 19.0.0git (https://github.com/llvm/llvm-project 503c55e17037436dcd45ac69dea8967e67e3f5e8)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240313/202403130633.muvbu9ev-lkp@intel.com/reproduce)
+On 3/12/2024 6:55 AM, Rameshkumar Sundaram wrote:
+> From: Sriram R <quic_srirrama@quicinc.com>
+> 
+> When multiple radios are advertised as a single wiphy which
+> supports various bands, a default scan request to mac80211
+> from cfg80211 will split the driver request based on band,
+> so each request will have channels belonging to the same band.
+> With this supported by default, the ath12k driver on receiving
+> this request checks for one of the channels in the request and
+> selects the corresponding radio(ar) on which the scan is going
+> to be performed and creates a vdev on that radio.
+> 
+> Note that on scan completion this vdev is not deleted. If a new
+> scan request is seen on that same vif for a different band the
+> vdev will be deleted and created on the new radio supporting the
+> request. The vdev delete logic is refactored to have this done
+> dynamically.
+> 
+> The reason for not deleting the vdev on scan stop is to avoid
+> repeated delete-create sequence if the scan is on the same band.
+> Also, during channel assign, new vdev creation can be optimized
+> as well.
+> 
+> Also if the scan is requested when the vdev is in started state,
+> no switching to new radio is allowed and scan on channels only
+> within same radio is allowed.
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+> 
+> Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
+> Signed-off-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
+> ---
+...
+> +	/* If the vif is already assigned to a specific vdev of an ar,
+> +	 * check whether its already started, vdev which is started
+> +	 * are not allowed to switch to a new radio.
+> +	 * If the vdev is not started, but was earlier created on a
+> +	 * different ar, delete that vdev and create a new one. We don't
+> +	 * delete at the scan stop as an optimization to avoid reduntant
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202403130633.muvbu9ev-lkp@intel.com/
+s/reduntant/redundant/
 
-All warnings (new ones prefixed by >>):
+> +	 * delete-create vdev's for the same ar, in case the request is
+> +	 * always on the same band for the vif
+> +	 */
 
-   In file included from drivers/ssb/main.c:11:
-   In file included from drivers/ssb/ssb_private.h:8:
-   In file included from include/linux/ssb/ssb.h:9:
-   In file included from include/linux/pci.h:38:
-   In file included from include/linux/interrupt.h:11:
-   In file included from include/linux/hardirq.h:11:
-   In file included from ./arch/hexagon/include/generated/asm/hardirq.h:1:
-   In file included from include/asm-generic/hardirq.h:17:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:13:
-   In file included from arch/hexagon/include/asm/io.h:328:
-   include/asm-generic/io.h:547:31: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     547 |         val = __raw_readb(PCI_IOBASE + addr);
-         |                           ~~~~~~~~~~ ^
-   include/asm-generic/io.h:560:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     560 |         val = __le16_to_cpu((__le16 __force)__raw_readw(PCI_IOBASE + addr));
-         |                                                         ~~~~~~~~~~ ^
-   include/uapi/linux/byteorder/little_endian.h:37:51: note: expanded from macro '__le16_to_cpu'
-      37 | #define __le16_to_cpu(x) ((__force __u16)(__le16)(x))
-         |                                                   ^
-   In file included from drivers/ssb/main.c:11:
-   In file included from drivers/ssb/ssb_private.h:8:
-   In file included from include/linux/ssb/ssb.h:9:
-   In file included from include/linux/pci.h:38:
-   In file included from include/linux/interrupt.h:11:
-   In file included from include/linux/hardirq.h:11:
-   In file included from ./arch/hexagon/include/generated/asm/hardirq.h:1:
-   In file included from include/asm-generic/hardirq.h:17:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:13:
-   In file included from arch/hexagon/include/asm/io.h:328:
-   include/asm-generic/io.h:573:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     573 |         val = __le32_to_cpu((__le32 __force)__raw_readl(PCI_IOBASE + addr));
-         |                                                         ~~~~~~~~~~ ^
-   include/uapi/linux/byteorder/little_endian.h:35:51: note: expanded from macro '__le32_to_cpu'
-      35 | #define __le32_to_cpu(x) ((__force __u32)(__le32)(x))
-         |                                                   ^
-   In file included from drivers/ssb/main.c:11:
-   In file included from drivers/ssb/ssb_private.h:8:
-   In file included from include/linux/ssb/ssb.h:9:
-   In file included from include/linux/pci.h:38:
-   In file included from include/linux/interrupt.h:11:
-   In file included from include/linux/hardirq.h:11:
-   In file included from ./arch/hexagon/include/generated/asm/hardirq.h:1:
-   In file included from include/asm-generic/hardirq.h:17:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:13:
-   In file included from arch/hexagon/include/asm/io.h:328:
-   include/asm-generic/io.h:584:33: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     584 |         __raw_writeb(value, PCI_IOBASE + addr);
-         |                             ~~~~~~~~~~ ^
-   include/asm-generic/io.h:594:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     594 |         __raw_writew((u16 __force)cpu_to_le16(value), PCI_IOBASE + addr);
-         |                                                       ~~~~~~~~~~ ^
-   include/asm-generic/io.h:604:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     604 |         __raw_writel((u32 __force)cpu_to_le32(value), PCI_IOBASE + addr);
-         |                                                       ~~~~~~~~~~ ^
-   In file included from drivers/ssb/main.c:11:
-   In file included from drivers/ssb/ssb_private.h:8:
-   In file included from include/linux/ssb/ssb.h:9:
-   In file included from include/linux/pci.h:2688:
-   In file included from include/linux/dma-mapping.h:11:
-   In file included from include/linux/scatterlist.h:8:
-   In file included from include/linux/mm.h:2188:
-   include/linux/vmstat.h:522:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
-     522 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
-         |                               ~~~~~~~~~~~ ^ ~~~
->> drivers/ssb/main.c:1149:2: warning: label at end of compound statement is a C23 extension [-Wc23-extensions]
-    1149 |         }
-         |         ^
-   8 warnings generated.
-
-
-vim +1149 drivers/ssb/main.c
-
-04023afcce2eaf Rafał Miłecki  2011-08-14  1132  
-61e115a56d1aaf Michael Buesch 2007-09-18  1133  u32 ssb_dma_translation(struct ssb_device *dev)
-61e115a56d1aaf Michael Buesch 2007-09-18  1134  {
-61e115a56d1aaf Michael Buesch 2007-09-18  1135  	switch (dev->bus->bustype) {
-61e115a56d1aaf Michael Buesch 2007-09-18  1136  	case SSB_BUSTYPE_SSB:
-61e115a56d1aaf Michael Buesch 2007-09-18  1137  		return 0;
-61e115a56d1aaf Michael Buesch 2007-09-18  1138  	case SSB_BUSTYPE_PCI:
-04023afcce2eaf Rafał Miłecki  2011-08-14  1139  		if (pci_is_pcie(dev->bus->host_pci) &&
-04023afcce2eaf Rafał Miłecki  2011-08-14  1140  		    ssb_read32(dev, SSB_TMSHIGH) & SSB_TMSHIGH_DMA64) {
-04023afcce2eaf Rafał Miłecki  2011-08-14  1141  			return SSB_PCIE_DMA_H32;
-04023afcce2eaf Rafał Miłecki  2011-08-14  1142  		} else {
-04023afcce2eaf Rafał Miłecki  2011-08-14  1143  			if (ssb_dma_translation_special_bit(dev))
-a9770a815d280d Rafał Miłecki  2011-07-20  1144  				return SSB_PCIE_DMA_H32;
-a9770a815d280d Rafał Miłecki  2011-07-20  1145  			else
-61e115a56d1aaf Michael Buesch 2007-09-18  1146  				return SSB_PCI_DMA;
-04023afcce2eaf Rafał Miłecki  2011-08-14  1147  		}
-f225763a7d6c92 Michael Buesch 2008-06-20  1148  	default:
-61e115a56d1aaf Michael Buesch 2007-09-18 @1149  	}
-61e115a56d1aaf Michael Buesch 2007-09-18  1150  	return 0;
-61e115a56d1aaf Michael Buesch 2007-09-18  1151  }
-61e115a56d1aaf Michael Buesch 2007-09-18  1152  EXPORT_SYMBOL(ssb_dma_translation);
-61e115a56d1aaf Michael Buesch 2007-09-18  1153  
-
-:::::: The code at line 1149 was first introduced by commit
-:::::: 61e115a56d1aafd6e6a8a9fee8ac099a6128ac7b [SSB]: add Sonics Silicon Backplane bus support
-
-:::::: TO: Michael Buesch <mb@bu3sch.de>
-:::::: CC: David S. Miller <davem@sunset.davemloft.net>
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
