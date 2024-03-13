@@ -1,79 +1,161 @@
-Return-Path: <linux-wireless+bounces-4696-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4697-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 167B287B2AB
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 21:13:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7571F87B261
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 20:57:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E5D2B24459
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 19:55:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B7C6286C3B
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 19:57:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D62B64C600;
-	Wed, 13 Mar 2024 19:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74D2A50261;
+	Wed, 13 Mar 2024 19:57:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WlztrFQj"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp1.ms.mff.cuni.cz (smtp-in1.ms.mff.cuni.cz [195.113.20.234])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77039210E9;
-	Wed, 13 Mar 2024 19:54:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A2D4F88A
+	for <linux-wireless@vger.kernel.org>; Wed, 13 Mar 2024 19:57:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710359702; cv=none; b=fCoE66glVwDAqlONBGXMbWp/AjApc/9keNVBc+uBKL6MKw67BE584UOmCIAjw9mLIRxz0RK97X97aFP2rKgnDeL6+ajkNqKdlrIIutKUgYVyIfeVuubvEfHxJfMxK7e6Idn11uh15fEYqWhFoK7lCAau5wumjfU0PCQjoPjZ9Bo=
+	t=1710359822; cv=none; b=MVcnY/hC4xC8W4XSX84uo5u7pNRwuBu4uXI+IQ3h327JzWdMKdnXYlj2T255jPkbEvvB2fcD3d0KmFacStRO7FIWqsxK/FTfLYnREcJpNUT1JN+haYIYzSq3sya6xMNOvwIY+1wlAbfGbJD7brXJitf1vbksyZ+maNCaeisvPkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710359702; c=relaxed/simple;
-	bh=j+U9E9lfJdvcOySZsZqHvCJpzYfOaJSbSsP89+NlbHc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:References:Cc:
-	 Subject:In-Reply-To; b=H72ibz9oLePnDKZ78wuAHIbNSpRXDmp3Xwl2ydND0Mhi7ATsu2wjyQW/reb5UgPMalAqxtiWviXn8ihN5wkXBOg7CuU1PYKAzHtmjOfwgkVhetGTA3qpelk+aC8MkX3HI+QGCF7nOZWi8HwmmtkbazgBmk6z7n4jAJRpEO9RxxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=matfyz.cz; arc=none smtp.client-ip=195.113.20.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matfyz.cz
-X-SubmittedBy: id balejk@matfyz.cz subject /postalCode=110+2000/O=Univerzita+20Karlova/street=Ovocn+5CxC3+5CxBD+20trh+20560/5/ST=Praha,+20Hlavn+5CxC3+5CxAD+20m+5CxC4+5Cx9Bsto/C=CZ/CN=Karel+20Balej/emailAddress=balejk@matfyz.cz
-	serial F5FD910E8FE2121B897F7E55B84E351D
-	issued by /C=NL/O=GEANT+20Vereniging/CN=GEANT+20Personal+20CA+204
-	auth type TLS.CUNI
-Received: from localhost (koleje-wifi-0013.koleje.cuni.cz [78.128.191.13])
-	(authenticated)
-	by smtp1.ms.mff.cuni.cz (8.16.1/8.16.1) with ESMTPS id 42DJsD9Z080389
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-	Wed, 13 Mar 2024 20:54:15 +0100 (CET)
-	(envelope-from balejk@matfyz.cz)
+	s=arc-20240116; t=1710359822; c=relaxed/simple;
+	bh=Ig7e77/d/kykTewz4aOEKwihFw8EYCmrLassdKaTYVI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aW3qFFPf1CUjaPuxkPre0k2Oj7KQnl/k5XA1+sjnG4YdNvGrPSpi3pgOSPWpJGJJaYLNUg+uKAr5LLg4nYUrgQpZK9IQnPDFznKhGnAEaVgO3Bvl0gynzAolfmt/4sd9Fm6s7pQvNDro8EHauCLhUWk49xQpPJWKJ7wuBkIwDiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WlztrFQj; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-1dd81aee2b4so2098205ad.0
+        for <linux-wireless@vger.kernel.org>; Wed, 13 Mar 2024 12:57:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1710359820; x=1710964620; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=R9BIhdFsSeXM2bYHGsp/3rh0lF2hEZKMymreY4sLWlo=;
+        b=WlztrFQjxrneNKCYab1vGQHzoi52HRwfHPB+kQayElmHSN1wQpZJdICI5UaGqO173w
+         Pr1KrUo+u4fZXBuOVYti8d5KXLulix+P+1hnN5cKsvr47+fNepL1czSM+HBKoQM3U/SE
+         NjuFaEveJmd16SUvtJTA3F1FeHsSn9o5fRzaEXDQQFektKvOkF11uvJy/Nsi351BLclK
+         Bcef/Qq+GzLfJgUwMBT+gYvk8bxCOW54WawNR2hWGAkLjnO4mv/e/itiHE6uUMq4Tf8t
+         aMMc6j70RfLC35CTWf/RGjFcCoeGMMjwksFuWv/eZkme5COs1hKPZ161Fx4Qq06kwLuH
+         AcSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710359820; x=1710964620;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=R9BIhdFsSeXM2bYHGsp/3rh0lF2hEZKMymreY4sLWlo=;
+        b=qAphzv9fpqiDre7DDbJZ8K7mKn/G3gpl5cwf95no2ig5npwdIRFtwSV+Mqd8PDSNUJ
+         zlTCaACm05XSPMjmtQX7jGZNChpyrv3XffhIMsjNZiNhZN7cz7/wm7YY359Idv1t8J06
+         gf6eaF4FlbgDLj4A1r4TAbkp1br23Nv2+ufVVVp6+9GHS19jpGcxwKXGZDEFDMvsPRnD
+         xHoqumhiw5pjVjSCmrTF5DM7nVp3h9H3AH/XnzXSQU1eMYPCcSPDL1hbFj9hYYqrnG/o
+         GoIeZvbn134sy9XWMETa4+IMovF8cQ5dxtJlRpEBzYmF8LY+TOm6n9EBx5TBh0h9ZqYA
+         Ou9g==
+X-Forwarded-Encrypted: i=1; AJvYcCVUQibODIjl0WsE5eLhYUidNZR0iCNQBrYrowU7lHVOfuhRC7TFsg6tUQzr8upVKVpSEzcFZ1qrm62tEOqZP+lk3vNHssC4wy5RJgYa8tk=
+X-Gm-Message-State: AOJu0YycUF7Jpve8sX1lQqawkikezm5CasTc7wws8ENMk2C4TyQ/bTXO
+	5KlxCVAc3Rbl2xOfa7wW+okGRTkPvl23emIN2jm4WAuME+hBCU9apWZe7JfOZwJgDT4/kbI15tH
+	9Km7C2UHnyyxWSF6631JfqICUBNg9RbDxeMw=
+X-Google-Smtp-Source: AGHT+IFUUPriNOMvJrZ6Q7KL/xrBdzmS+LtrePmywwgC1cnLtzpniigum4VgCQ9MmbFI2QbBR5EUQk2jz+MYOHadsqE=
+X-Received: by 2002:a17:902:7403:b0:1dd:e34:d820 with SMTP id
+ g3-20020a170902740300b001dd0e34d820mr15001228pll.28.1710359820091; Wed, 13
+ Mar 2024 12:57:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 13 Mar 2024 20:54:44 +0100
-Message-Id: <CZSVWO3IDZ96.38O0P161Z99XU@matfyz.cz>
-To: "Johannes Berg" <johannes@sipsolutions.net>,
-        "James Prestwood"
- <prestwoj@gmail.com>,
-        "Michael Yartys" <mail@yartys.no>
-From: "Karel Balej" <balejk@matfyz.cz>
-References: <005f998ec59e27633b1b99fdf929e40ccfd401c1.camel@sipsolutions.net>, <f2dcbe55-0f0e-4173-8e21-f899c6fc802a@gmail.com>, <NbWQKmrYDD20KKHeq9TMda2MJFE00-weepZGuSIRzO5BOgMlTbWBkDlNNweA2dhbvF8TK1F_cHbMxblLVNREZa1HZEFt9TVCkTB1jo_5ppc=@yartys.no>, <CZSHRUIJ4RKL.34T4EASV5DNJM@matfyz.cz>, <20231010212240.61637-1-dimitri.ledkov@canonical.com>
-Cc: <alexandre.torgue@foss.st.com>, <davem@davemloft.net>,
-        <dhowells@redhat.com>, <herbert@gondor.apana.org.au>,
-        <keyrings@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-        <linux-crypto@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-modules@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>, <mcgrof@kernel.org>,
-        <mcoquelin.stm32@gmail.com>, <linux-wireless@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <dimitri.ledkov@canonical.com>,
-        <iwd@lists.linux.dev>, <regressions@lists.linux.dev>
-Subject: Re: [REGRESSION] Re: [PATCH] crypto: pkcs7: remove sha1 support
-In-Reply-To: <CZSHRUIJ4RKL.34T4EASV5DNJM@matfyz.cz>
+MIME-Version: 1.0
+References: <20240312135557.1778379-1-quic_ramess@quicinc.com>
+ <20240312135557.1778379-2-quic_ramess@quicinc.com> <4a527729-2bf8-47ce-8275-d36b76bde95c@quicinc.com>
+ <3178cf8c-d328-4fe2-b3be-f5c4c908f20f@quicinc.com> <605a673e-3686-47d0-b71b-1e314fde65db@quicinc.com>
+ <87il1qf571.fsf@kernel.org> <87edcef4qi.fsf@kernel.org> <f768cfec-d20d-424d-85ef-3576434aca12@quicinc.com>
+In-Reply-To: <f768cfec-d20d-424d-85ef-3576434aca12@quicinc.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
+Date: Wed, 13 Mar 2024 20:56:48 +0100
+Message-ID: <CAOiHx=kx03MKKyMcJPxYPZH=E7krZwfsDqq2xnow8qRB7D-aqQ@mail.gmail.com>
+Subject: Re: [PATCH v4 01/12] wifi: ath12k: add multiple radio support in a
+ single MAC HW un/register
+To: Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc: Kalle Valo <kvalo@kernel.org>, Rameshkumar Sundaram <quic_ramess@quicinc.com>, 
+	ath12k@lists.infradead.org, linux-wireless@vger.kernel.org, 
+	Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you all for your feedback so far.
+On Wed, 13 Mar 2024 at 20:18, Jeff Johnson <quic_jjohnson@quicinc.com> wrote:
+>
+> On 3/13/2024 9:58 AM, Kalle Valo wrote:
+> > Kalle Valo <kvalo@kernel.org> writes:
+> >
+> >> Jeff Johnson <quic_jjohnson@quicinc.com> writes:
+> >>
+> >>> On 3/13/2024 5:57 AM, Rameshkumar Sundaram wrote:
+> >>>> On 3/13/2024 3:23 AM, Jeff Johnson wrote:
+> >>>>> and guess we have to figure out how to suppress the ath12k-check issues with
+> >>>>> this macro
+> >>>> ath12k-check complains about the reuse of ah and index arguments which
+> >>>> may get evaluated multiple times if its an arithmetic expression, But
+> >>>> areas where we use the macro in our code aren't doing so.
+> >>>> Do you have any suggestions here ? or shall we go back and use this
+> >>>> for-loop inline.
+> >>>
+> >>> The macro makes sense -- we'll need to update the overrides in ath12k-check.
+> >>
+> >> IIRC it is possible to avoid variable reuse in macros with typeof()
+> >> operator (or something like that). I can't remember the details right
+> >> now but I think there are examples in the kernel code.
+> >
+> > Here's the GCC documentation with an example:
+> >
+> > https://gcc.gnu.org/onlinedocs/gcc/Typeof.html
+> >
+>
+> the problem here is that the macro actually writes to those arguments multiple
+> times, so we actually need to reuse the arguments
+>
+> the macro as defined exactly matches the semantics of other for_each macros in
+> the kernel, i.e. see in include/linux/list.h:
+> #define list_for_each(pos, head) \
+>         for (pos = (head)->next; !list_is_head(pos, (head)); pos = pos->next)
+>
+> what I don't understand is why list_for_each() doesn't trigger the same
+> checkpatch issues. even stranger is that if I copy that macro into ath12k then
+> I do see the same checkpatch issues:
+> CHECK: Macro argument reuse 'pos' - possible side-effects?
+> #998: FILE: drivers/net/wireless/ath/ath12k/core.h:998:
+> +#define list_for_each(pos, head) \
+> +       for (pos = (head)->next; !list_is_head(pos, (head)); pos = pos->next)
+>
+> CHECK: Macro argument reuse 'head' - possible side-effects?
+> #998: FILE: drivers/net/wireless/ath/ath12k/core.h:998:
+> +#define list_for_each(pos, head) \
+> +       for (pos = (head)->next; !list_is_head(pos, (head)); pos = pos->next)
+>
+> So I'm really confused since I don't see anything in checkpatch.pl that would
+> cause the behavior to change between macros in include/linux/list.h vs macros
+> in drivers/net/wireless/ath/ath12k/core.h
 
-Since it seems that this really is a regression on the kernel side, let
-me add the appropriate list to Cc and tag this:
+The definition of the macro causes the complaint, not the usage of it.
+If you run checkpatch.pl on include/linux/list.h, you'll get the same
+output:
 
-#regzbot introduced: 16ab7cb5825f
+$ ./scripts/checkpatch.pl --strict --file include/linux/list.h
+...
+CHECK: Macro argument reuse 'pos' - possible side-effects?
+#686: FILE: include/linux/list.h:686:
++#define list_for_each(pos, head) \
++ for (pos = (head)->next; !list_is_head(pos, (head)); pos = pos->next)
 
-Best regards,
-K. B.
+CHECK: Macro argument reuse 'head' - possible side-effects?
+#686: FILE: include/linux/list.h:686:
++#define list_for_each(pos, head) \
++ for (pos = (head)->next; !list_is_head(pos, (head)); pos = pos->next)
+...
+
+Best Regards,
+Jonas
 
