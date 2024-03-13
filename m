@@ -1,122 +1,115 @@
-Return-Path: <linux-wireless+bounces-4689-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4690-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4029487AFF8
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 19:40:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A74BC87B0D0
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 20:02:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39170B27C03
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 18:39:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C4EA1F263C3
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 19:02:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B1A582869;
-	Wed, 13 Mar 2024 17:26:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7B6669D01;
+	Wed, 13 Mar 2024 18:02:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ih/RA9K2"
+	dkim=pass (2048-bit key) header.d=anddroptable-net.20230601.gappssmtp.com header.i=@anddroptable-net.20230601.gappssmtp.com header.b="ZvPdQDwQ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C69823D0;
-	Wed, 13 Mar 2024 17:26:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8456997C
+	for <linux-wireless@vger.kernel.org>; Wed, 13 Mar 2024 18:02:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710350773; cv=none; b=JKiclYvZz1YAvmyLFiI99I00XL1kFol8T6RuuILJtwpRUks9CPuPlE4AWDWnVEm4+/PHbnE82vF1nej6hyLSE9EC89A64Hg4oFaue+NY36vA9Nn+wLuyxTyTKAg3+VbMJNuhWjEDLgqTS5bM/n2LM9XRWkSiV/GlE0zJFQKCw5I=
+	t=1710352966; cv=none; b=e/BmgoYP2W3tg9a2qZv1kUB8NIfoKe0tExL7OyeyHG+g2ISQEzOZHdUXdOX9YAszuhqBr+erb8/8P7XWNon0DqHkxdka9aE4jz5Lm7+MY43JK5y8EaK+N3fleeS7GBF3DfmxmXrwOdcs1lah7TCG3tLyIBcTcmVQwc+fThe1lKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710350773; c=relaxed/simple;
-	bh=pHdBbxIGCsn6bga9ZUWJIdqQzQ/NGDwpmOuAP2belZo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ibx26gv1Mj/Xtquvv7wHvPBXz5wvd8YFw3V3kOrcyUFWvUaSNViukZ8tVe4T48raWir0bxeJI+57M6veZCmYC5WBpO2canfvevzHGlXwyTkRNg2Uux0DyZ9aPux8ChVDUYdyBYrm0CPLH+DF+TszTr2cXpYBCdJeUHHZ6pf3Yao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ih/RA9K2; arc=none smtp.client-ip=209.85.222.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-788598094c4so5260685a.0;
-        Wed, 13 Mar 2024 10:26:11 -0700 (PDT)
+	s=arc-20240116; t=1710352966; c=relaxed/simple;
+	bh=d8P2S/1lXpLTVK+DbMjmEVnQgdJt6uNCAkAcBhGKgXw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=AlhQpt/AsX/LjuR0fdvY9GPOL+OEp2GgO0CEbWqoZ70j+yApMAdoCz2T+KzCTBZstPAG9797G5tTepSz9jORXJ9y3s4NvQ7k4PnzuSGhCkZgpuVnYaEAX24n4VLMGWGjlxeWnwo4ZyEGtIIRhPpPhQnHkFpP4p84Ah9wEdH3tlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=anddroptable.net; spf=none smtp.mailfrom=anddroptable.net; dkim=pass (2048-bit key) header.d=anddroptable-net.20230601.gappssmtp.com header.i=@anddroptable-net.20230601.gappssmtp.com header.b=ZvPdQDwQ; arc=none smtp.client-ip=209.85.167.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=anddroptable.net
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=anddroptable.net
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-513a6416058so226558e87.1
+        for <linux-wireless@vger.kernel.org>; Wed, 13 Mar 2024 11:02:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710350770; x=1710955570; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/xlPdDv6yvSDgUYLn/3ttkYWsR7atQ5kgTqz8H924Zg=;
-        b=ih/RA9K2TpucD0A8pA6vOGj9e4ua/89FjLztujfp+MObcS6sHjzdTD4V2y03sGUViV
-         i4NtKtEWQgFU+D30OVanaxcXUpLvUPifvTOeVh+Orw42h7O8mM31avL9dM0GiaTpYNX8
-         j6fu5qDupiMnOJP28RpUUMPWfqEhC1Y5d8JGruSWx+U7DFnGucoT1lVXgTHisueicQpG
-         5yZho8mUottLpWQiG2uPItRPouijwVyOo7WWfKIB50c9vNPwryJm6sRnleih+begoJq4
-         CN4cZUsrdtiBfjuBvovONrkGFEyt8/d65g4ztbabkbAC767KOT0Kwhsj+urEWCOAEcOB
-         1Sxg==
+        d=anddroptable-net.20230601.gappssmtp.com; s=20230601; t=1710352961; x=1710957761; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=hGAe8hH3+Zeq8r40fkNvF+CxEMn2/xrWFetVwkyYBkQ=;
+        b=ZvPdQDwQ9S0jQJzKmUHR1p2Y6/vb0zB7tZimmmc9l/sQ0sRNx6X2MVvx2auJoTnYhN
+         cPk/1Ctcg2d0N3x6FMMYe3RcKdrVBOM6q7FbYRyxBgSqan6SB89rOIUAuGUeWiSF9Wvw
+         2Yt24I5MbWg/UKJVxvo67LYSYCDRwX/V4ffyfrVqnjKMvltPjxSoRG3hJn6DinDullK0
+         l4VY3gy1raeBzb/MO2szIQrA+7nWSG5BbyKm5JN6m7BbEvLEFkGD6rq195uINzuKasIn
+         E6cgic4jQu5Uybm+f75LHyhzPe2tYlGYz8aGs4ljiw4h6m2M+i//RkYTJvs/M7ezQ+5W
+         C2Wg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710350770; x=1710955570;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/xlPdDv6yvSDgUYLn/3ttkYWsR7atQ5kgTqz8H924Zg=;
-        b=l2sPbEtEXDR/ZzjWkb4lZirt95S6+HtbpsJ4YH2qAw2C+5XVYDeM23nfdzdbkGNf1O
-         ebxbUwDalEW5FHvXVPixRPvFmG1lsNalGRRcktKen4Tc+Ib4FXc9qaZX6yj+NwfwmOnk
-         zil3GodIdC2dsbl3FT6nGQ4DXqgnSFvMVtMyY+4EUgX8q9DBvTmCyixtZCBXTYii2ACS
-         P+7T/tBCCuJsUvv5/0QUj0mWPltMuPKCHyDmXVuO2q6Rds4hbpVeGLh3ahT++9sX+QI9
-         MqdibHSqvWO4YyEtC5oajnGo4HevHaVSmEVr5PWy7of0rsiOb2WBWjiPAiRCs8ZXn6oy
-         GCcA==
-X-Forwarded-Encrypted: i=1; AJvYcCVtE4uApdPj7Yyod1FQX0vhaaX+0aFzdWcm+ca9H4ZwFQNbsgSp2wfuphEHVxMVbypgBMWrPaEHoGxk49Z0lkIifwgz+YM3YKvnxJy7pwtIDGXvIIQ7lrXto5IewspRLWDfHjKOJQPH8pm1ekpO8rqkgn3NfiGGtRmc1w7f4e0wXGNRD60uI96Oi24qW6u28MtI96UYlMz6WEbwC3QoewzYLluFlVOoVHhM++Xrseyhe+CiLXJz2ZMXOytL6MWazRZRsv0bb3kQiJ55nyDF1iutQAKjnVOQMkmtbLM=
-X-Gm-Message-State: AOJu0YzfUlNScLe8t9U5ISTys6i3l55qhlJv3bIerPSkcROfz9rucFPA
-	+eJbwsv2qztSddrDgz26fl6eR0lQE8tIYXea7Uo417XUHo2C6rV9
-X-Google-Smtp-Source: AGHT+IFyyiGiWin6XQHjnKeLqB0dBkLVo4kmfRKf8luDrrfr/cY3NN2DX7JZ46wiVXxtXIKQSkqJLg==
-X-Received: by 2002:a05:620a:178e:b0:787:a83a:cfed with SMTP id ay14-20020a05620a178e00b00787a83acfedmr607731qkb.70.1710350770507;
-        Wed, 13 Mar 2024 10:26:10 -0700 (PDT)
-Received: from [10.102.4.159] ([208.195.13.130])
-        by smtp.gmail.com with ESMTPSA id yf23-20020a05620a3bd700b007884b14b0b4sm4888800qkn.51.2024.03.13.10.26.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 Mar 2024 10:26:10 -0700 (PDT)
-Message-ID: <f2dcbe55-0f0e-4173-8e21-f899c6fc802a@gmail.com>
-Date: Wed, 13 Mar 2024 10:26:06 -0700
+        d=1e100.net; s=20230601; t=1710352961; x=1710957761;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hGAe8hH3+Zeq8r40fkNvF+CxEMn2/xrWFetVwkyYBkQ=;
+        b=Q3NI7eAcyQW7bOWtzFpPOXNgIqKuum0nYrOqUqqf1LoRoPxOek2XFHquvWRZrLfAva
+         rpBqTOcbi06XbEs+N88TQ6RESYLwHKrn+oWzp5P5GfFz6x4F6sJoSJWAu3vWCWbbxtk5
+         JD2IWxtM/LrhohpknDtz0Zdrl/1sp4DMtnwKgTUmWxPtNeJOnrjQcbjD7f5AOSgoUy/H
+         ajtqHF1rvYkDs9V0nAnhmrwD078bFytwtiqkqQG2aur87dyJR2HBNXHAdkDYm01s6MSb
+         keBKHz3YmhN1mDpksHQq/6BwIC+f6yjdFNhHhhHfa9iDdtx+Flsi95er5ngtUwgo/whs
+         Tz5w==
+X-Gm-Message-State: AOJu0YyxyedB0wsBJAaZsydOL3zKvGHzxcMZpLNwD8rYlLVPMv/OL6X4
+	4ZXNulfLyidfXR3JUY544hoBM2I4AWxtxIuD9eEtZYXbU1lS6G2DypkjdazJKOICtXKmo3CfP6u
+	U
+X-Google-Smtp-Source: AGHT+IF6dQMZCY0uO/D+WDoXCOymSMO9IMmF9q0hdA2JlwRZ7rB0vGkbLWlJfVHUhA87tn/q5W6JxQ==
+X-Received: by 2002:ac2:495e:0:b0:513:cbf2:50b2 with SMTP id o30-20020ac2495e000000b00513cbf250b2mr1057120lfi.13.1710352961405;
+        Wed, 13 Mar 2024 11:02:41 -0700 (PDT)
+Received: from bl-64.blancco.com ([193.64.185.110])
+        by smtp.gmail.com with ESMTPSA id fb6-20020a056512124600b005139cbb1695sm2059655lfb.264.2024.03.13.11.02.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Mar 2024 11:02:41 -0700 (PDT)
+From: =?UTF-8?q?V=C3=ADctor=20Gonzalo?= <victor.gonzalo@anddroptable.net>
+To: linux-wireless@vger.kernel.org
+Cc: =?UTF-8?q?V=C3=ADctor=20Gonzalo?= <victor.gonzalo@anddroptable.net>
+Subject: [PATCH] wifi: iwlwifi: Add missing MODULE_FIRMWARE for Qu-c0-jf-b0
+Date: Wed, 13 Mar 2024 20:02:27 +0200
+Message-Id: <20240313180227.2224780-1-victor.gonzalo@anddroptable.net>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] Re: [PATCH] crypto: pkcs7: remove sha1 support
-To: Johannes Berg <johannes@sipsolutions.net>, Karel Balej
- <balejk@matfyz.cz>, dimitri.ledkov@canonical.com
-Cc: alexandre.torgue@foss.st.com, davem@davemloft.net, dhowells@redhat.com,
- herbert@gondor.apana.org.au, keyrings@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com, mcgrof@kernel.org,
- mcoquelin.stm32@gmail.com, linux-wireless@vger.kernel.org,
- netdev@vger.kernel.org, iwd@lists.linux.dev
-References: <CZSHRUIJ4RKL.34T4EASV5DNJM@matfyz.cz>
- <005f998ec59e27633b1b99fdf929e40ccfd401c1.camel@sipsolutions.net>
-Content-Language: en-US
-From: James Prestwood <prestwoj@gmail.com>
-In-Reply-To: <005f998ec59e27633b1b99fdf929e40ccfd401c1.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi,
+The module metadata for the firmware file iwlwifi-Qu-c0-jf-b0-* is missing.
 
-On 3/13/24 1:56 AM, Johannes Berg wrote:
-> Not sure why you're CC'ing the world, but I guess adding a few more
-> doesn't hurt ...
->
-> On Wed, 2024-03-13 at 09:50 +0100, Karel Balej wrote:
->>   and I use iwd
-> This is your problem, the wireless stack in the kernel doesn't use any
-> kernel crypto code for 802.1X.
+Signed-off-by: Víctor Gonzalo <victor.gonzalo@anddroptable.net>
+---
+ drivers/net/wireless/intel/iwlwifi/cfg/22000.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Yes, the wireless stack has zero bearing on the issue. I think that's 
-what you meant by "problem".
+diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
+index d594694206b3..906f2790f561 100644
+--- a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
++++ b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
+@@ -44,6 +44,8 @@
+ 	IWL_QU_C_HR_B_FW_PRE "-" __stringify(api) ".ucode"
+ #define IWL_QU_B_JF_B_MODULE_FIRMWARE(api) \
+ 	IWL_QU_B_JF_B_FW_PRE "-" __stringify(api) ".ucode"
++#define IWL_QU_C_JF_B_MODULE_FIRMWARE(api) \
++	IWL_QU_C_JF_B_FW_PRE "-" __stringify(api) ".ucode"
+ #define IWL_CC_A_MODULE_FIRMWARE(api)			\
+ 	IWL_CC_A_FW_PRE "-" __stringify(api) ".ucode"
+ 
+@@ -423,6 +425,7 @@ const struct iwl_cfg iwl_cfg_quz_a0_hr_b0 = {
+ MODULE_FIRMWARE(IWL_QU_B_HR_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
+ MODULE_FIRMWARE(IWL_QU_C_HR_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
+ MODULE_FIRMWARE(IWL_QU_B_JF_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
++MODULE_FIRMWARE(IWL_QU_C_JF_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
+ MODULE_FIRMWARE(IWL_QUZ_A_HR_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
+ MODULE_FIRMWARE(IWL_QUZ_A_JF_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
+ MODULE_FIRMWARE(IWL_CC_A_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
+-- 
+2.34.1
 
-IWD has used the kernel crypto API forever which was abruptly broken, 
-that is the problem.
-
-The original commit says it was to remove support for sha1 signed kernel 
-modules, but it did more than that and broke the keyctl API.
-
->
-> I suppose iwd wants to use the kernel infrastructure but has no
-> fallbacks to other implementations.
-> johannes
->
 
