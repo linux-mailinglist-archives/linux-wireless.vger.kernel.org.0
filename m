@@ -1,96 +1,150 @@
-Return-Path: <linux-wireless+bounces-4693-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4694-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4E1B87B152
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 20:13:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E1E087B262
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 20:57:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD80A1C27B72
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 19:13:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ED060B3593E
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 19:36:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6F6162A15;
-	Wed, 13 Mar 2024 18:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8EEF524DD;
+	Wed, 13 Mar 2024 19:32:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yartys.no header.i=@yartys.no header.b="KrKykjnW"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="jTKiTusy"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F2001A38D7;
-	Wed, 13 Mar 2024 18:39:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.165.51.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F8451C59
+	for <linux-wireless@vger.kernel.org>; Wed, 13 Mar 2024 19:32:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710355201; cv=none; b=JJGGste2srWiX+VyiJfw69h6Ro6LHWYemOaAKSIHcn9gN3G6D8/6vBkkRquMu0YNZBpMtWaq025n/pjiAxKxGdq7w+45uSs/RtIai3o71NCAHSAgAMdotYCS1/9aP8LVps8ena/ERqaLSDZaaJ6af1JoBzCJ7HZuf3KJEcMaNiY=
+	t=1710358362; cv=none; b=gvsbZD2IUDZzQeDDrwHvCqGHuyIOwB1wde+nABeSMX4kCNj5iuJ3dklj4gePmZ7hP3LvhzieaaSCeBhKRP2OP2onTD5Un12p9Vw4RZB9h6++mv7Leh1I8x2laC7GJsFTETzaz/zBcCgT0qiZJDwz7ZU9hgq3FgYANvfDgvrrjMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710355201; c=relaxed/simple;
-	bh=Yrv8K3dsh6oQe0fjpFm5hJusnOC8JMbr41ioJIneLpA=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kc0NpeEDlggxn1bcKNuZKkT8DgCIsCiEUtfEMOQaTgqLmRiW0l+9l4vhVACimjf1tfTJf0SbB1oCLvFNsFcIjHZnN0aaDfMN0L2XK9YdsWpDYg/BtbmwMvMeNOYW64eEQznBvdJwlcricRUw3FBhj2HQ48sfCNYbP4bsZRqaxNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yartys.no; spf=pass smtp.mailfrom=yartys.no; dkim=pass (2048-bit key) header.d=yartys.no header.i=@yartys.no header.b=KrKykjnW; arc=none smtp.client-ip=188.165.51.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yartys.no
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yartys.no
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yartys.no;
-	s=protonmail2; t=1710355183; x=1710614383;
-	bh=Yrv8K3dsh6oQe0fjpFm5hJusnOC8JMbr41ioJIneLpA=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=KrKykjnW5eFDDULKUiFGV+s7Y+Nvz+Tnn1yTw8HC6fXQ/B7Rtcrn2a8Ufw+mPREHg
-	 tDi5RZEf/D4wxLWLBwp7V3gLFSq8tXkbySxgQr2KYOahuHzApZ9UDBdvCRux+zbUHp
-	 Qu4mZhaiGHYR51PP5aQqM7dbTt45b4iXu1UUYuHKZT/huLEF1M8T21JdBBw3ACqjJF
-	 ero40e4Ujk7NiLh/mTpB5ymvd1WFOyQxNb5h2wrc0e0PaNQJjhJQpRiObxFh3NSW0Q
-	 86BST8cig9RaTNJs4OkBmi5tzkM90F0goJTer1YWD75PRnS7+1uNfwcc+o9uybvspB
-	 5EAMNwiSk8PyQ==
-Date: Wed, 13 Mar 2024 18:39:27 +0000
-To: Johannes Berg <johannes@sipsolutions.net>
-From: Michael Yartys <mail@yartys.no>
-Cc: Karel Balej <balejk@matfyz.cz>, dimitri.ledkov@canonical.com, alexandre.torgue@foss.st.com, davem@davemloft.net, dhowells@redhat.com, herbert@gondor.apana.org.au, keyrings@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, mcgrof@kernel.org, mcoquelin.stm32@gmail.com, linux-wireless@vger.kernel.org, netdev@vger.kernel.org, iwd@lists.linux.dev
-Subject: Re: [REGRESSION] Re: [PATCH] crypto: pkcs7: remove sha1 support
-Message-ID: <NbWQKmrYDD20KKHeq9TMda2MJFE00-weepZGuSIRzO5BOgMlTbWBkDlNNweA2dhbvF8TK1F_cHbMxblLVNREZa1HZEFt9TVCkTB1jo_5ppc=@yartys.no>
-In-Reply-To: <005f998ec59e27633b1b99fdf929e40ccfd401c1.camel@sipsolutions.net>
-References: <CZSHRUIJ4RKL.34T4EASV5DNJM@matfyz.cz> <005f998ec59e27633b1b99fdf929e40ccfd401c1.camel@sipsolutions.net>
-Feedback-ID: 77365699:user:proton
+	s=arc-20240116; t=1710358362; c=relaxed/simple;
+	bh=dz2qUhYwqZlLBNAXo9ISbibTdCv8OLaCNGW5h0a+dy8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=HZB9agJJRfC2oOMBxMfuEpbbABqLtzNJX8Xqk7qKW7mC7gqhhoxtZDXOrYH0tW3YuS7c5C6wyzi/HKCRK1esTHxzGke2/3lfJBTmG/caC7WIiPVWf8YU3qnzhoS0JZ5qzVNHyKAcA3natZh8wMhQhXJaFk2/uvvAs7bpuLMBp6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=jTKiTusy; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42DHbiiu007534;
+	Wed, 13 Mar 2024 19:32:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=CdpApk3S4HSr0CiXYnW6tPkH4TA5GMk3//SIt+Nkpgw=; b=jT
+	KiTusy1bseVrSEeBryccPpfUHWFiW+wGluyOTj8dTHj6Jhw8vUqIbkTqlHRtCDV+
+	pXrhC8fAui3I0PX+JadDnn8DnG8qxY7U16LvkRpA2xxu8URCocwrrdl3vdviFUXu
+	ygBz6TUMk0Seugn5Db5w49gCz6x1aWk9urMqbJCNbhUu0NtDifEgsyBHWjnL1lSn
+	d77hz7ZYs30W7abD5RYwsoiiNK9y8r+p5JD4EcDAkOkK8YMnj2xlemn5o59BMHI5
+	TubTlg4ggwibVM9Ex3JvDIpijwTSECEpejKhclSum/0gX9BlZlxVecDq1Jw5NOaB
+	EHKWCkXc3u4YqOP9V8qA==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wugq18bhc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 13 Mar 2024 19:32:24 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42DJWNIK014930
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 13 Mar 2024 19:32:23 GMT
+Received: from [10.110.27.195] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Wed, 13 Mar
+ 2024 12:32:22 -0700
+Message-ID: <e1c3ba7e-b358-42a3-a8db-f9c098132350@quicinc.com>
+Date: Wed, 13 Mar 2024 12:32:22 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: New staging repos for ath1*k firmware
+Content-Language: en-US
+To: Sebastian Gottschall <s.gottschall@dd-wrt.com>,
+        Kalle Valo
+	<kvalo@kernel.org>, Robert Marko <robert.marko@sartura.hr>
+CC: ath10k <ath10k@lists.infradead.org>, ath11k <ath11k@lists.infradead.org>,
+        ath12k <ath12k@lists.infradead.org>,
+        linux-wireless
+	<linux-wireless@vger.kernel.org>
+References: <bac97f31-4a70-4c4c-8179-4ede0b32f869@quicinc.com>
+ <CA+HBbNFQ+25u_PK2j3vYtiCZwv+shVAVeAHKqQCwhyCopORt4Q@mail.gmail.com>
+ <874jdigf76.fsf@kernel.org> <3b57d932-0848-40f4-ab2d-a8d4afe11df1@dd-wrt.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <3b57d932-0848-40f4-ab2d-a8d4afe11df1@dd-wrt.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: LFvmZHV3EDeKWzJ-DWG_dWLH8e1zC7UF
+X-Proofpoint-GUID: LFvmZHV3EDeKWzJ-DWG_dWLH8e1zC7UF
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-13_09,2024-03-13_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 bulkscore=0
+ spamscore=0 lowpriorityscore=0 mlxlogscore=999 phishscore=0
+ priorityscore=1501 mlxscore=0 malwarescore=0 adultscore=0 suspectscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2402120000 definitions=main-2403130149
 
-Hi
+On 3/9/2024 9:58 AM, Sebastian Gottschall wrote:
+> 
+> Am 07.03.2024 um 17:49 schrieb Kalle Valo:
+>> Robert Marko <robert.marko@sartura.hr> writes:
+>>
+>>> On Wed, Mar 6, 2024 at 8:23 PM Jeff Johnson <quic_jjohnson@quicinc.com> wrote:
+>>>
+>>>> Historically, prior to being incorporated into the linux-firmware
+>>>> project, firmware for kernel.org ath1*k drivers has been first published
+>>>> to Kalle's GitHub:
+>>>> https://github.com/kvalo/ath10k-firmware
+>>>> https://github.com/kvalo/ath11k-firmware
+>>>> (ath12k firmware was pushed to the ath11k-firmware repo on a temporary
+>>>> basis in anticipation of this move)
+>>>>
+>>>> But in order to have repos with multiple maintainers, as well as to have
+>>>> a hosting platform with more control, we have moved to CodeLinaro:
+>>>> https://git.codelinaro.org/clo/ath-firmware/ath10k-firmware
+>>>> https://git.codelinaro.org/clo/ath-firmware/ath11k-firmware
+>>>> https://git.codelinaro.org/clo/ath-firmware/ath12k-firmware
+>>>>
+>>>> Note that most people should not care about this -- normally you should
+>>>> use the firmware that is in the official linux-firmware repo:
+>>>> https://git.kernel.org/cgit/linux/kernel/git/firmware/linux-firmware.git/
+>>>>
+>>>> You should only need to access the staging repos if you need a previous
+>>>> version to work around an issue, or if you are testing new firmware that
+>>>> is supposed to fix a problem that you've reported.
+>>>>
+>>>> Please let Kalle & I know if you have any issues with these new repos!
+>>> Can I please ask for IPQ6018 firmware to be updated to 2.9.0.1 as well?
+>>>
+>>> We have added IPQ6018 support to OpenWrt but we are forced to use the old 2.4
+>>> firmware since anything newer is crashing on IPQ6018, we had the same issue on
+>>> IPQ8074 but it was fixed with 2.9.0.1 firmware.
+>>>
+>>> Even for IPQ8074, there is newer 2.9.0.1 firmware that is only
+>>> available as part of
+>>> QSDK and the community would benefit from being able to use it.
+>> We are working on getting the AP chipset firmwares updated but
+>> unfortunately no news yet.
+> why isnt qca releasing the latest firmwares at all. i mean we all know 
+> that the qca networking tree contains way newer firmwares for all 
+> chipsets since a long time
 
-This came in via the iwd mailing list, and I would like to add some small a=
- detail as I also experience this issue on my university eduroam network. I=
-'ve verified that the certificate chain doesn't contain SHA-1 signed certif=
-icates, so the update breaks more than just SHA-1.
+Kalle & I are just the conduit, but I've relayed this thread to the folks
+responsible for feeding us the firmware releases.
 
-Michael
+/jeff
 
 
-
-
-On Wednesday, March 13th, 2024 at 09:56, Johannes Berg <johannes@sipsolutio=
-ns.net> wrote:
-
->=20
->=20
-> Not sure why you're CC'ing the world, but I guess adding a few more
-> doesn't hurt ...
->=20
-> On Wed, 2024-03-13 at 09:50 +0100, Karel Balej wrote:
->=20
-> > and I use iwd
->=20
->=20
-> This is your problem, the wireless stack in the kernel doesn't use any
-> kernel crypto code for 802.1X.
->=20
-> I suppose iwd wants to use the kernel infrastructure but has no
-> fallbacks to other implementations.
->=20
-> johannes
 
