@@ -1,118 +1,145 @@
-Return-Path: <linux-wireless+bounces-4698-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4699-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF71E87B29D
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 21:11:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F15587B2A7
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 21:13:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF1151C215F9
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 20:11:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEAD428CFC2
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 20:13:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 764924CDF9;
-	Wed, 13 Mar 2024 20:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 949F04E1CE;
+	Wed, 13 Mar 2024 20:13:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=testtoast.com header.i=@testtoast.com header.b="LAet/sVO";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="e+FNuDBW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dv14OMTm"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from wfout5-smtp.messagingengine.com (wfout5-smtp.messagingengine.com [64.147.123.148])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B54F225AF
-	for <linux-wireless@vger.kernel.org>; Wed, 13 Mar 2024 20:11:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF76E4D133;
+	Wed, 13 Mar 2024 20:12:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710360704; cv=none; b=EGkr4IPnBs9poZA85BUtI/kuxqeIPTYpSTts1tW7jiPlmvDBdX0ehYkfODqq/i2og4OrVHpOcMk3GLGpl5ZlyOzspkH7he3ENnNQ2Zj+HSejwbR5/gI9HDZtRCkfG9NNL7PMN6vzPv/BInMdAhm2lxbmo34rVUa7Le1vVILha2c=
+	t=1710360781; cv=none; b=PrSLHrP9zcDxo/vw8mZ3b9QORhj8ND0tzXv/ykX36sVxFzLL/NLio82UKW4u+ugUxeI2r54kH71IFZ4Fct3DzT77bZl8Ib2Q1zn+reCgHYnskBlo5hirBxm2A7S4+DrcAPdhT/yOsvSoifOyyKNnqzm8rgXwgb6tREs5FipEXwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710360704; c=relaxed/simple;
-	bh=2m0C7ch1xH1O8hDXN+WRm34/IKnji9tgr6vSQ2U+Ex4=;
-	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
-	 Subject:Content-Type; b=biQSYYeIbt57tHK4gU7fDgQfYXLfEmNEqv1okg8EHVLpQEU1CmkysxStHoWpfevrHjqM/zssUPg3i4Li59tc/W19iEBVPhsjnBhQWjWRPfaQ/KKqU2aKkezarQkRjzzNvtFJKuJJgS8kV3Psr0usyWlgA5UbnW89Ox80opUpuwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=testtoast.com; spf=pass smtp.mailfrom=testtoast.com; dkim=pass (2048-bit key) header.d=testtoast.com header.i=@testtoast.com header.b=LAet/sVO; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=e+FNuDBW; arc=none smtp.client-ip=64.147.123.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=testtoast.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=testtoast.com
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfout.west.internal (Postfix) with ESMTP id B2F811C00072;
-	Wed, 13 Mar 2024 16:11:41 -0400 (EDT)
-Received: from imap47 ([10.202.2.97])
-  by compute5.internal (MEProxy); Wed, 13 Mar 2024 16:11:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=testtoast.com;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1710360701; x=
-	1710447101; bh=wb0FXIrSDvkxIEWnvmcKLFK2rBTR+GDQDrOfET6lYWM=; b=L
-	Aet/sVOawAlaCeE+74nWCtyEZ7LopDDnYFEu1HWYFwugGAmzHzF3VzuKLZllbi2U
-	DRx0PcwB4A4o/cn8C+AS5dPNBFBbBZP5gTX0gX5WxzWM7eRQ8bglbe+N7WrpsIsz
-	8UdKEvjWmO2JHV2H3faYpUp8YN6KUo+q6xDYd438kdC9R61QY76KZ91oY7V+zatz
-	pUJrTZEpfMqKzTZ4kVIb/n8VYWbpuRFa7sJULa3rRX80R40ZBFyM5H70ZueRRIjA
-	mOYiLRzqY39Ef2Pn4A7tNLxWNtuLpMAKiFL5Aj7quaPZtSP+2dW+fxS299LAZtVZ
-	LHkDT76vvvYEXnaD6FU5w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm1; t=1710360701; x=1710447101; bh=wb0FXIrSDvkxIEWnvmcKLFK2rBTR
-	+GDQDrOfET6lYWM=; b=e+FNuDBW7AzdZ90wyBiG/qBzziEo4URzFc6q4m8W/qR8
-	r5VRjHjtP0Lc3/rLG28pDzoIM2IqJUFl1qOQU2t1I3D/w0JybC8S8IJE5VBMWuey
-	MTVWm81F6P/ltd+G7nG3Ob2rhvLY8tkSHtKA6o8Hz78VpJhqWJ6WqPn38hMGAXwm
-	5X1jmd+ZpTIPz1xShPLhFJrHTpwECI+GYHMx7HFt1JFlGDHPFsLi8ezECW7LVGCQ
-	PsBypSMGpdnpi0dwvSKLSCAnWTrOUSQmBShatAZDynZfirGT23T3xEz9DX6wGuul
-	MnVwr9w3jdBYs73aDGC6HFM4gAL64chjMi7QmLafBw==
-X-ME-Sender: <xms:fQjyZTmcy7iTP0iu9SrBEk4HDnxrq2G9tOEe9vyES54exqlWoVaE_w>
-    <xme:fQjyZW3WjldoNquzTF9nj3ma3U1T8L9h9MemsBWWE6oA89qhtk5hKTLuSAn3b2g1U
-    kr4O2M9lfO-gJU5Bw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrjeehgddufeefucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucenucfjughrpefofgggkfgjfhffhffvvefutgesth
-    dtredtreertdenucfhrhhomhepfdfthigrnhcuhggrlhhklhhinhdfuceorhihrghnseht
-    vghsthhtohgrshhtrdgtohhmqeenucggtffrrghtthgvrhhnpeehvdevieegudejueefge
-    ffhefhffevudfhieejgfdtffetlefgteeuveeiudeijeenucevlhhushhtvghrufhiiigv
-    pedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehrhigrnhesthgvshhtthhorghsthdrtg
-    homh
-X-ME-Proxy: <xmx:fQjyZZqSU8ZCJfXaJlD9fTRX9SnPYWu2a8df-JjdvH044KsQcBs2EQ>
-    <xmx:fQjyZbkzJ36rD_riKzkZoFS6aYkPYDUf_vQANaWTKiZ0rrE50PvWpg>
-    <xmx:fQjyZR0A-UeZbs1F9xy9guf3vfrrM4gI_GDLLK2aF6vUDnQEIsMegA>
-    <xmx:fQjyZau2wRwIdq5k0iqM9VbS37Q75uJEc71SgfmxXGlz9QNTv3nCLw>
-    <xmx:fQjyZfATJ7K5iHMFPyjVkxVT3V_ZX8qGZSg-c7_IdK7uwgJ53qNPDyD76pc>
-Feedback-ID: idc0145fc:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 0544BA6007A; Wed, 13 Mar 2024 16:11:41 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-251-g8332da0bf6-fm-20240305.001-g8332da0b
+	s=arc-20240116; t=1710360781; c=relaxed/simple;
+	bh=xEydpAbl+UnNX21HEQRz8uun/LLyMM3kGBycf29Y6jk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=l+ifM4XD823FAHhGS1B7r1kMx0qOxGqiRSQNbZpGOOJgpGDW0TL5K7ldqwnIuzaMIsiFDGxH6PWIVjGxiPmPPxPDF+om8OfJyJ8VjhSktENV36CGJJkMFDb/zEcyklLTWS2KaGEz6ajq0Ri4KLzhmr4JvknecWN+q1gK0BMSyVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dv14OMTm; arc=none smtp.client-ip=209.85.210.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-6e530b53bb5so120204a34.0;
+        Wed, 13 Mar 2024 13:12:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1710360779; x=1710965579; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=mcoUVHgwLLkW5HjqhzTOaCJXpQUFZkJrmtPUv2eDI9M=;
+        b=Dv14OMTmaXITEX8wgbeLHhN99do6Iiz6P0G3xfFBgIm5/ADUF5HBe/FyHnU+hJREbD
+         2rUuJ3oc6Xx0ETfY/FGEeUkeH0GedgzffAeGeoreUohfjbhId9ev6h620kYimD2UGal8
+         GDKpEHWJ2W9abzo2gi2Igy9S1Fa6YwcMH8tI5Istew4Ytd+Ihjm/4F09bEE+QlTrqlwQ
+         chtSX/r4uGUbGsMTx9gj3LP1EyB1eXt0kY6m8wPk5ALBHuRllJTiB0s0bkWzFGfBEeSc
+         fnTR/6fVLHS9MSLBza11phtpROXA0tk+u0Tyn49euR1E7dETNLNLOo6M7fukKhVdfvHS
+         8ZRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710360779; x=1710965579;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mcoUVHgwLLkW5HjqhzTOaCJXpQUFZkJrmtPUv2eDI9M=;
+        b=Hmkm8J7TkQuSwpDM43tkLjyE7jrOv18GN+oPeInlUgXo22n9SI/Tb0cD20TmLtGE31
+         ovY7gyS+WpaPRkeyRMySpL8otO9oeHRclbsxjWcHce3acmqC9OD6CzxCXVvelucQdnNB
+         DdsblcwY6QCbpYvYS0JPRYL7PzbOc1wf+Ai0apNNvxezConjU2enb6qg1MCFjqBrAb9j
+         z3XpVLpHazi3+dRdkKljrnhB8Z+uFBXXGyDAY63Pp7XMJEdEcN7zmJbZiFiCcdtiCylw
+         fbCFC5gzoPkRUXO+c167Ydvadwh9Vti46hFtmQl0SOfJxK7YSa44LNmwGjxeF+8l459/
+         82nQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVQRgiH28zU4JF8GsVrReA8Sb9mfqeXNQuHcbrXYaLJH+jcLgWeRGl7+j1OhRhvhi0jz8AAznp/dGxhli8lIQQ0vsAknpsfXgrNpONlY0g0pF30hklcZLhvf9Cx4yMW1/A80n3voadfj1qpff6vJfAwpn7OEd5dISUEiSt1PZqE+gc7uEjlMkItxT3mWJKJjQuyYhAxNGcnL+LpmpPl2qNW+nIYn2TOT6ANryU/XbVH0K3LWM0eannirX9wFd3112jDM5V5aj3RpEtfRolvdOtrzOwITj8TytV2mfA=
+X-Gm-Message-State: AOJu0YzBzHdCfQp36v4ASL71vv1B18LIks2veks7Yvkc0Rh7cInZbqp9
+	Qc4ecpjKvwVrXGwNPf7s1zuVbczq2EN7PgIGa++nPYgPXpW+7AcdtGmpDKKMmkA=
+X-Google-Smtp-Source: AGHT+IFSK8EKQA4YLa1BW2O3gR/c6PoFXPU5Py2EL9IBEyYIERWPhz76GtYioIywO8cwI62nqsu0ow==
+X-Received: by 2002:a05:6870:f14e:b0:221:8fd9:284c with SMTP id l14-20020a056870f14e00b002218fd9284cmr4587256oac.1.1710360778906;
+        Wed, 13 Mar 2024 13:12:58 -0700 (PDT)
+Received: from [10.102.4.159] ([208.195.13.130])
+        by smtp.gmail.com with ESMTPSA id x2-20020a0ce0c2000000b00690d36c64d2sm3341355qvk.53.2024.03.13.13.12.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 13 Mar 2024 13:12:58 -0700 (PDT)
+Message-ID: <b838e729-dc30-4e18-b928-c34c16b08606@gmail.com>
+Date: Wed, 13 Mar 2024 13:12:54 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <d16f8068-d6b2-4f10-bf9c-1e2fb77d91ee@app.fastmail.com>
-In-Reply-To: <2afd1590823740a2b6a8f7e485a33842@realtek.com>
-References: <f3656995-b8fe-49c4-93b7-67612c685954@app.fastmail.com>
- <2afd1590823740a2b6a8f7e485a33842@realtek.com>
-Date: Thu, 14 Mar 2024 09:11:20 +1300
-From: "Ryan Walklin" <ryan@testtoast.com>
-To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: "linux-sunxi@lists.linux.dev" <linux-sunxi@lists.linux.dev>
-Subject: Re: [BUG] rtw88: RTL8821CS warning on entering power-save mode
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] Re: [PATCH] crypto: pkcs7: remove sha1 support
+Content-Language: en-US
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: Johannes Berg <johannes@sipsolutions.net>, Karel Balej
+ <balejk@matfyz.cz>, dimitri.ledkov@canonical.com,
+ alexandre.torgue@foss.st.com, davem@davemloft.net, dhowells@redhat.com,
+ herbert@gondor.apana.org.au, keyrings@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com, mcgrof@kernel.org,
+ mcoquelin.stm32@gmail.com, linux-wireless@vger.kernel.org,
+ netdev@vger.kernel.org, iwd@lists.linux.dev
+References: <CZSHRUIJ4RKL.34T4EASV5DNJM@matfyz.cz>
+ <005f998ec59e27633b1b99fdf929e40ccfd401c1.camel@sipsolutions.net>
+ <f2dcbe55-0f0e-4173-8e21-f899c6fc802a@gmail.com>
+ <20240313194423.GA1111@sol.localdomain>
+From: James Prestwood <prestwoj@gmail.com>
+In-Reply-To: <20240313194423.GA1111@sol.localdomain>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-> Did the extensive logging of LPS state happen always? Or happen after a while? 
-> Try module parameter rtw_disable_lps_deep_mode=1 to see if it works well.
+Hi,
 
-No after about ~2mins or so. Thanks I will try that.
+On 3/13/24 12:44 PM, Eric Biggers wrote:
+> On Wed, Mar 13, 2024 at 10:26:06AM -0700, James Prestwood wrote:
+>> Hi,
+>>
+>> On 3/13/24 1:56 AM, Johannes Berg wrote:
+>>> Not sure why you're CC'ing the world, but I guess adding a few more
+>>> doesn't hurt ...
+>>>
+>>> On Wed, 2024-03-13 at 09:50 +0100, Karel Balej wrote:
+>>>>    and I use iwd
+>>> This is your problem, the wireless stack in the kernel doesn't use any
+>>> kernel crypto code for 802.1X.
+>> Yes, the wireless stack has zero bearing on the issue. I think that's what
+>> you meant by "problem".
+>>
+>> IWD has used the kernel crypto API forever which was abruptly broken, that
+>> is the problem.
+>>
+>> The original commit says it was to remove support for sha1 signed kernel
+>> modules, but it did more than that and broke the keyctl API.
+>>
+> Which specific API is iwd using that is relevant here?
+> I cloned https://kernel.googlesource.com/pub/scm/network/wireless/iwd
+> and grepped for keyctl and AF_ALG, but there are no matches.
 
-> The IO of SDIO is slower than PCIE, so maybe we can try to enlarge timeout time
-> in rtw_power_mode_change():
+IWD uses ELL for its crypto, which uses the AF_ALG API:
 
-Good to know, I will try that patch also.
+https://git.kernel.org/pub/scm/libs/ell/ell.git/
 
-> Not sure why this could lead crash, because it is only a warning. 
+I believe the failure is when calling:
 
-Sorry yes you are right, it is just a warning. The WiFi does continue to work.
+KEYCTL_PKEY_QUERY enc="x962" hash="sha1"
 
-Thanks for the reply, will try your suggestions and update.
+ From logs Michael posted on the IWD list, the ELL API that fails is:
 
-Ryan
+l_key_get_info (ell.git/ell/key.c:416)
+
+Thanks,
+
+James
+
+>
+> - Eric
 
