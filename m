@@ -1,63 +1,74 @@
-Return-Path: <linux-wireless+bounces-4688-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4689-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C140587AFE8
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 19:38:37 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4029487AFF8
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 19:40:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA8CE1C25A2C
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 18:38:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39170B27C03
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 18:39:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CE5663117;
-	Wed, 13 Mar 2024 17:25:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B1A582869;
+	Wed, 13 Mar 2024 17:26:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="UN92uJFX"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ih/RA9K2"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B750181AD1
-	for <linux-wireless@vger.kernel.org>; Wed, 13 Mar 2024 17:25:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C69823D0;
+	Wed, 13 Mar 2024 17:26:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710350738; cv=none; b=HoXl5xmJn1gepiIx3StUADlaY167BUTDYC+76lZsksEbYlA4mpbmzMnL66sXPX9UhaFy+Hs22rc6y6/5L/uxY7oZ65L0JOUvIxageRneP8OvzxqqFRIemfGBbb6ON6n8Oyb9Fq/3sxyT/osMsjQE2uc+usYMqpaKxjzE2vlRcE4=
+	t=1710350773; cv=none; b=JKiclYvZz1YAvmyLFiI99I00XL1kFol8T6RuuILJtwpRUks9CPuPlE4AWDWnVEm4+/PHbnE82vF1nej6hyLSE9EC89A64Hg4oFaue+NY36vA9Nn+wLuyxTyTKAg3+VbMJNuhWjEDLgqTS5bM/n2LM9XRWkSiV/GlE0zJFQKCw5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710350738; c=relaxed/simple;
-	bh=v1B/1fYnPkecf5RDD0WWCCJyu6CP2ppHDyTk+VNIg7o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=kH1X0VkIPbpev3QZ5vMHMsrgTeNPwZM8cBLEXjVHFiaJFyg2/DvNoVRRqpsWuHoWjhQikZnrBN385neFtrtids2YC2ub3Oji8++E38WIFmP1af+Fg/Y88kG3aFniEhKK30G/CjZI64/JZlRBZ8YoCseAIYiE5H7f1HOz47Njtko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=UN92uJFX; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42DFCCGS003542;
-	Wed, 13 Mar 2024 17:25:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=EcwFO52/1CgSdPoWVw8hr6j4WBHecOlldApDkuWLDDo=; b=UN
-	92uJFXGoxM6UsvPb7Jl1dcTKpSwLF4X5jdAm5ckeFCLSTd7uVWVOHaGa9NUgEzJy
-	oMjoiW/tmkoUD4xb/K75gmoiSMOVPO2QaWHHd+s8xF6xmg4wrep79vny13ma7vf7
-	tzT5g0YlRycBNaK79FT0Fqw5/Ao/VTWPovQceU9fpSXZf2ld92r9RJ+DKg97/cAl
-	aJbTz9ZNxi+MhQEazzR+7aXEWAHXUS9X2ny7lAnxEd5wuScEEGl7iY5GI+KUGXU/
-	ashfq00j2kXjPmwJ1DmBAFIJQwDPIhlP53sZdoRX+Mwn33RCHGa/W7dhlpbXIMmG
-	DYArDQDhZjHItVclNtKQ==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wuam5gvrr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 13 Mar 2024 17:25:32 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42DHPVOE016039
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 13 Mar 2024 17:25:31 GMT
-Received: from [10.110.27.195] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Wed, 13 Mar
- 2024 10:25:30 -0700
-Message-ID: <9a8cebda-c627-4876-b5e7-9edbad72ab1a@quicinc.com>
-Date: Wed, 13 Mar 2024 10:25:30 -0700
+	s=arc-20240116; t=1710350773; c=relaxed/simple;
+	bh=pHdBbxIGCsn6bga9ZUWJIdqQzQ/NGDwpmOuAP2belZo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ibx26gv1Mj/Xtquvv7wHvPBXz5wvd8YFw3V3kOrcyUFWvUaSNViukZ8tVe4T48raWir0bxeJI+57M6veZCmYC5WBpO2canfvevzHGlXwyTkRNg2Uux0DyZ9aPux8ChVDUYdyBYrm0CPLH+DF+TszTr2cXpYBCdJeUHHZ6pf3Yao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ih/RA9K2; arc=none smtp.client-ip=209.85.222.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-788598094c4so5260685a.0;
+        Wed, 13 Mar 2024 10:26:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1710350770; x=1710955570; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/xlPdDv6yvSDgUYLn/3ttkYWsR7atQ5kgTqz8H924Zg=;
+        b=ih/RA9K2TpucD0A8pA6vOGj9e4ua/89FjLztujfp+MObcS6sHjzdTD4V2y03sGUViV
+         i4NtKtEWQgFU+D30OVanaxcXUpLvUPifvTOeVh+Orw42h7O8mM31avL9dM0GiaTpYNX8
+         j6fu5qDupiMnOJP28RpUUMPWfqEhC1Y5d8JGruSWx+U7DFnGucoT1lVXgTHisueicQpG
+         5yZho8mUottLpWQiG2uPItRPouijwVyOo7WWfKIB50c9vNPwryJm6sRnleih+begoJq4
+         CN4cZUsrdtiBfjuBvovONrkGFEyt8/d65g4ztbabkbAC767KOT0Kwhsj+urEWCOAEcOB
+         1Sxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710350770; x=1710955570;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/xlPdDv6yvSDgUYLn/3ttkYWsR7atQ5kgTqz8H924Zg=;
+        b=l2sPbEtEXDR/ZzjWkb4lZirt95S6+HtbpsJ4YH2qAw2C+5XVYDeM23nfdzdbkGNf1O
+         ebxbUwDalEW5FHvXVPixRPvFmG1lsNalGRRcktKen4Tc+Ib4FXc9qaZX6yj+NwfwmOnk
+         zil3GodIdC2dsbl3FT6nGQ4DXqgnSFvMVtMyY+4EUgX8q9DBvTmCyixtZCBXTYii2ACS
+         P+7T/tBCCuJsUvv5/0QUj0mWPltMuPKCHyDmXVuO2q6Rds4hbpVeGLh3ahT++9sX+QI9
+         MqdibHSqvWO4YyEtC5oajnGo4HevHaVSmEVr5PWy7of0rsiOb2WBWjiPAiRCs8ZXn6oy
+         GCcA==
+X-Forwarded-Encrypted: i=1; AJvYcCVtE4uApdPj7Yyod1FQX0vhaaX+0aFzdWcm+ca9H4ZwFQNbsgSp2wfuphEHVxMVbypgBMWrPaEHoGxk49Z0lkIifwgz+YM3YKvnxJy7pwtIDGXvIIQ7lrXto5IewspRLWDfHjKOJQPH8pm1ekpO8rqkgn3NfiGGtRmc1w7f4e0wXGNRD60uI96Oi24qW6u28MtI96UYlMz6WEbwC3QoewzYLluFlVOoVHhM++Xrseyhe+CiLXJz2ZMXOytL6MWazRZRsv0bb3kQiJ55nyDF1iutQAKjnVOQMkmtbLM=
+X-Gm-Message-State: AOJu0YzfUlNScLe8t9U5ISTys6i3l55qhlJv3bIerPSkcROfz9rucFPA
+	+eJbwsv2qztSddrDgz26fl6eR0lQE8tIYXea7Uo417XUHo2C6rV9
+X-Google-Smtp-Source: AGHT+IFyyiGiWin6XQHjnKeLqB0dBkLVo4kmfRKf8luDrrfr/cY3NN2DX7JZ46wiVXxtXIKQSkqJLg==
+X-Received: by 2002:a05:620a:178e:b0:787:a83a:cfed with SMTP id ay14-20020a05620a178e00b00787a83acfedmr607731qkb.70.1710350770507;
+        Wed, 13 Mar 2024 10:26:10 -0700 (PDT)
+Received: from [10.102.4.159] ([208.195.13.130])
+        by smtp.gmail.com with ESMTPSA id yf23-20020a05620a3bd700b007884b14b0b4sm4888800qkn.51.2024.03.13.10.26.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 13 Mar 2024 10:26:10 -0700 (PDT)
+Message-ID: <f2dcbe55-0f0e-4173-8e21-f899c6fc802a@gmail.com>
+Date: Wed, 13 Mar 2024 10:26:06 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,62 +76,47 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: mac80211_hwsim: set link ID information during Rx
+Subject: Re: [REGRESSION] Re: [PATCH] crypto: pkcs7: remove sha1 support
+To: Johannes Berg <johannes@sipsolutions.net>, Karel Balej
+ <balejk@matfyz.cz>, dimitri.ledkov@canonical.com
+Cc: alexandre.torgue@foss.st.com, davem@davemloft.net, dhowells@redhat.com,
+ herbert@gondor.apana.org.au, keyrings@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com, mcgrof@kernel.org,
+ mcoquelin.stm32@gmail.com, linux-wireless@vger.kernel.org,
+ netdev@vger.kernel.org, iwd@lists.linux.dev
+References: <CZSHRUIJ4RKL.34T4EASV5DNJM@matfyz.cz>
+ <005f998ec59e27633b1b99fdf929e40ccfd401c1.camel@sipsolutions.net>
 Content-Language: en-US
-To: Aditya Kumar Singh <quic_adisi@quicinc.com>, <johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>
-References: <20240313145402.456514-1-quic_adisi@quicinc.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20240313145402.456514-1-quic_adisi@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
+From: James Prestwood <prestwoj@gmail.com>
+In-Reply-To: <005f998ec59e27633b1b99fdf929e40ccfd401c1.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: FWfrUHzcYkJIZOYQ0z0khNSgtHG6-Nl3
-X-Proofpoint-ORIG-GUID: FWfrUHzcYkJIZOYQ0z0khNSgtHG6-Nl3
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-13_09,2024-03-13_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- mlxlogscore=946 impostorscore=0 adultscore=0 mlxscore=0 priorityscore=1501
- phishscore=0 spamscore=0 bulkscore=0 lowpriorityscore=0 malwarescore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2402120000 definitions=main-2403130132
 
-On 3/13/2024 7:54 AM, Aditya Kumar Singh wrote:
-> Currently link ID information is not passed to mac80211 via Rx status by
-> mac80211_hwsim. This leads to packet getting dropped in function
-> __ieee80211_rx_handle_packet since it expects the link ID if packet is
-> intended for a MLO station and the station is not directly passed via
-> pubsta function argument.
-> 
-> Add changes to pass the link ID information in Rx status.
-> 
-> Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
+Hi,
 
-Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+On 3/13/24 1:56 AM, Johannes Berg wrote:
+> Not sure why you're CC'ing the world, but I guess adding a few more
+> doesn't hurt ...
+>
+> On Wed, 2024-03-13 at 09:50 +0100, Karel Balej wrote:
+>>   and I use iwd
+> This is your problem, the wireless stack in the kernel doesn't use any
+> kernel crypto code for 802.1X.
 
-> ---
->  drivers/net/wireless/virtual/mac80211_hwsim.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
-> index b55fe320633c..783114ccb5b8 100644
-> --- a/drivers/net/wireless/virtual/mac80211_hwsim.c
-> +++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
-> @@ -1721,6 +1721,9 @@ static void mac80211_hwsim_rx(struct mac80211_hwsim_data *data,
->  				sp->active_links_rx &= ~BIT(link_id);
->  			else
->  				sp->active_links_rx |= BIT(link_id);
-> +
-> +			rx_status->link_valid = true;
-> +			rx_status->link_id = link_id;
->  		}
->  		rcu_read_unlock();
->  	}
-> 
-> base-commit: e27b02e23a701e5761f1d6028643e1203a1c56de
+Yes, the wireless stack has zero bearing on the issue. I think that's 
+what you meant by "problem".
 
+IWD has used the kernel crypto API forever which was abruptly broken, 
+that is the problem.
+
+The original commit says it was to remove support for sha1 signed kernel 
+modules, but it did more than that and broke the keyctl API.
+
+>
+> I suppose iwd wants to use the kernel infrastructure but has no
+> fallbacks to other implementations.
+> johannes
+>
 
