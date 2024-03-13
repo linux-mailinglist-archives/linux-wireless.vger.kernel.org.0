@@ -1,180 +1,112 @@
-Return-Path: <linux-wireless+bounces-4703-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4704-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8353187B43C
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 23:10:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4C9C87B464
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 23:34:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C9176B23308
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 22:10:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B7681F23755
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 22:34:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CE7759B4B;
-	Wed, 13 Mar 2024 22:10:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7194C4C602;
+	Wed, 13 Mar 2024 22:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hlrZKybJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="npSbBQaU"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F7535917C;
-	Wed, 13 Mar 2024 22:10:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA8254691
+	for <linux-wireless@vger.kernel.org>; Wed, 13 Mar 2024 22:34:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710367846; cv=none; b=mpaRoZx8xyVP1CmslbZ/fBNhxNUTI3TefKb+HiO8fIDVfy4sXTiR9eh4VwGe83LfyHWsi3FRCdU7MoVN1bGmQ+/fZefxYhPE5K+kX1wzWU6ZUQOoPRROh0p2DaNZNE83b27ycp9zPkC62spRblmrZV/C8PuWsTHYUu9lsaBLgAI=
+	t=1710369292; cv=none; b=YGeJQ42Y0/6t8QXFUo7nc+VLEAJG6HEEz8PeEQmd24j6WWncSZayZ4xDx72cwjq150D6ItrlYhdmFnpcdgrkNAq36Y7iYdvI/apAas+uMBNV6jUr2XVSGb8nyfoqQ+jl1OrhtQ/O5moAyJFch58NKKz4Vzq1fQvfumKK7GmC8jE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710367846; c=relaxed/simple;
-	bh=5APNX9joY8E9yLLTfEuVlbvQ/cODNID0jd3oX4Dqksg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pC4dxYuYHW6KNvXXXe0iRiVIzsnMmompUYig7Dj93Nw+odxJV+17Q4JSyHdYbb/AtkV0fj7FiJgIknTM8Fp5uNSwtiOzR0/b0FKtKdD8186L/slRXbVBTZSOrsB7ci54pdDZdvv02uO81CYic6lUGl6EZOsVSdFWBu7geX7wIFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hlrZKybJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AAEEC433F1;
-	Wed, 13 Mar 2024 22:10:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710367845;
-	bh=5APNX9joY8E9yLLTfEuVlbvQ/cODNID0jd3oX4Dqksg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hlrZKybJJe3Ws3NMMxCNeEsHHbw+o6y1ncI16R6kzSspIO+mmP6NvDgwf4y8KiWzB
-	 ISriQDG/umtsjSLZngtc4bWRPmhaVLTwDEOJycCVs9T3pb2db6630MGkmEU1X9BTXf
-	 C/FR1pn4FLZNh7+e2vIRbE75VMM25aAR7Ehz3Q5So2rhXs8lMAJ/BPam+hhyEE2RK8
-	 TKJzV2JoGANM/fguI5enojXimqQG14HPKu1bLHKGoszu/nNEhNHQE4sQ1LLPnOn7gz
-	 zp7GTVMs3MuZxyJr6kTsKeJA9ylvnISwYysl+bpNM9dmNSZ3Hug4u0zZxEyvRICWYD
-	 MYiWylj9cA9LA==
-Date: Wed, 13 Mar 2024 15:10:43 -0700
-From: Eric Biggers <ebiggers@kernel.org>
-To: James Prestwood <prestwoj@gmail.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
-	Karel Balej <balejk@matfyz.cz>, dimitri.ledkov@canonical.com,
-	alexandre.torgue@foss.st.com, davem@davemloft.net,
-	dhowells@redhat.com, herbert@gondor.apana.org.au,
-	keyrings@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-modules@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com, mcgrof@kernel.org,
-	mcoquelin.stm32@gmail.com, linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org, iwd@lists.linux.dev
-Subject: Re: [REGRESSION] Re: [PATCH] crypto: pkcs7: remove sha1 support
-Message-ID: <20240313221043.GC1111@sol.localdomain>
-References: <CZSHRUIJ4RKL.34T4EASV5DNJM@matfyz.cz>
- <005f998ec59e27633b1b99fdf929e40ccfd401c1.camel@sipsolutions.net>
- <f2dcbe55-0f0e-4173-8e21-f899c6fc802a@gmail.com>
- <20240313194423.GA1111@sol.localdomain>
- <b838e729-dc30-4e18-b928-c34c16b08606@gmail.com>
- <20240313202223.GB1111@sol.localdomain>
- <db86cba4-0e61-441d-8e66-405a13b61a3c@gmail.com>
+	s=arc-20240116; t=1710369292; c=relaxed/simple;
+	bh=e/cc35nw8Z4eW+VhYr3NXHW018qxJb3AgS3T4JMAYIU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=l9rD7xXQKVqvwXrrSf0bhbOxqzFHwbRG6gQ0hVKtUs6qlWdeejkftc2+XSUqNlpkK/Vq7GirLC8A9FIts16Gzk68jX5UE7hegrIzeBBvSwCbuIFmD9jAdsmNsBg5BHN6CB8UEAI/wEIGoNAdirzyF39JjEq5OoBmxhj4HE17/6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=npSbBQaU; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-413e93b10bfso2442045e9.1
+        for <linux-wireless@vger.kernel.org>; Wed, 13 Mar 2024 15:34:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1710369289; x=1710974089; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Px9dtxft1nvcMxcOPjIgdhacHfUErsgECW7G80gB22o=;
+        b=npSbBQaUSQTmPH4ImlbWxCGFhI7X+wouCVc7k3OVD4vJKo6jC7BLrLw6rfPMayb5hz
+         0+HZRoQ2qHrcMDgpcLcDfFDzyXQHEshLkLP+YrpL486ID854qvqD+h4NZ3JF5mTXML5b
+         VSQJEWoOuzCB6ZtoNtw1S3LY41D3UmU8u+EUNcnDy8zk/XxL2UhjOmQmHTONTQCFTIpo
+         Aiq5rgNbq/4v7+vSwO0uKttvm1SkUrP2pQJQyaBr9DxYqr6B+7zUEuA/0Vv4KDRV4ILo
+         nd7dwpAqft3QHTxUQbv4ge0VXjsnpYaoPI7NglKhrG5R8mKNrE3TF2wc2rX2C3UoSlyy
+         v6qQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710369289; x=1710974089;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Px9dtxft1nvcMxcOPjIgdhacHfUErsgECW7G80gB22o=;
+        b=RYs6aMaKuuEVICQEMjyIrLIkbCppyaL5qIzxKVSSeNtk+JaynYXRfwn0LwSB2+QyXt
+         Dait0VJASWtPt8CbJxUmdCKzTHMf8IFMm0jx80Y8a7gqwT3aMzHApygPORJ5x5+zIMqM
+         nSPDjHmg66T7kO25aFhfuesh2vj60587mdU/Y5qDMPnH6DSy9S6XgKMS00KvEyK/LqfL
+         9HiGtAUqmNDZGLghZqIoRw2CxB07rFFLWrgttv7NYFK6yjpiABdh+m4GsYNi/ywVWdXA
+         yiCs+a1iN+m48lyxuM9F6RwLYnFPNUiGNuajpfg07VIMPfQV5R2Vq1/4fj82HaUQwlX6
+         ToiQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUL4JTpE43vwrQs7N+ypTOCT2RT72GdB7miMFGBiWenF/yTswBYLr0w+mis08D+8PGqPkjW9wTrm/jnU7GfD+3SRcTD5tbnUt+mbRLIB28=
+X-Gm-Message-State: AOJu0Yx+VISruNnmmtvYDvi5R3lvNWw475o82oaemRWS7tap3//WTqkC
+	AInyDbELw91vHFEYS5KdxlYOYdu8wZwgr1JdeFVGVtkatPJQYtKQ0iZkVvi8
+X-Google-Smtp-Source: AGHT+IEr3P7XM2Dlst3HYhmGWzxtRKG3ufqBhsggYSMaeeO9aDsHnx4tZqyOq2Ety60T8qttlIGS1Q==
+X-Received: by 2002:a05:600c:35c3:b0:410:78fb:bed2 with SMTP id r3-20020a05600c35c300b0041078fbbed2mr93071wmq.19.1710369288641;
+        Wed, 13 Mar 2024 15:34:48 -0700 (PDT)
+Received: from [192.168.1.50] ([79.119.240.211])
+        by smtp.gmail.com with ESMTPSA id iv14-20020a05600c548e00b00412ee7d65a6sm417042wmb.6.2024.03.13.15.34.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 13 Mar 2024 15:34:48 -0700 (PDT)
+Message-ID: <f50424f4-c478-4d1e-898f-b2f9fc2bf14d@gmail.com>
+Date: Thu, 14 Mar 2024 00:34:45 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <db86cba4-0e61-441d-8e66-405a13b61a3c@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: rtlwifi: rtl8192de: Fix 5 GHz TX power
+Content-Language: en-US
+To: Ping-Ke Shih <pkshih@realtek.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Larry Finger <Larry.Finger@lwfinger.net>
+References: <9995b805-ef8b-47c9-b176-ff540066039a@gmail.com>
+ <43c344357f564170872501e34490c851@realtek.com>
+ <a9a93e7bd7e94870be0f38dd6792ab29@realtek.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <a9a93e7bd7e94870be0f38dd6792ab29@realtek.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Mar 13, 2024 at 02:17:29PM -0700, James Prestwood wrote:
-> Hi,
+On 13/03/2024 04:00, Ping-Ke Shih wrote:
 > 
-> On 3/13/24 1:22 PM, Eric Biggers wrote:
-> > On Wed, Mar 13, 2024 at 01:12:54PM -0700, James Prestwood wrote:
-> > > Hi,
-> > > 
-> > > On 3/13/24 12:44 PM, Eric Biggers wrote:
-> > > > On Wed, Mar 13, 2024 at 10:26:06AM -0700, James Prestwood wrote:
-> > > > > Hi,
-> > > > > 
-> > > > > On 3/13/24 1:56 AM, Johannes Berg wrote:
-> > > > > > Not sure why you're CC'ing the world, but I guess adding a few more
-> > > > > > doesn't hurt ...
-> > > > > > 
-> > > > > > On Wed, 2024-03-13 at 09:50 +0100, Karel Balej wrote:
-> > > > > > >     and I use iwd
-> > > > > > This is your problem, the wireless stack in the kernel doesn't use any
-> > > > > > kernel crypto code for 802.1X.
-> > > > > Yes, the wireless stack has zero bearing on the issue. I think that's what
-> > > > > you meant by "problem".
-> > > > > 
-> > > > > IWD has used the kernel crypto API forever which was abruptly broken, that
-> > > > > is the problem.
-> > > > > 
-> > > > > The original commit says it was to remove support for sha1 signed kernel
-> > > > > modules, but it did more than that and broke the keyctl API.
-> > > > > 
-> > > > Which specific API is iwd using that is relevant here?
-> > > > I cloned https://kernel.googlesource.com/pub/scm/network/wireless/iwd
-> > > > and grepped for keyctl and AF_ALG, but there are no matches.
-> > > IWD uses ELL for its crypto, which uses the AF_ALG API:
-> > > 
-> > > https://git.kernel.org/pub/scm/libs/ell/ell.git/
-> > Thanks for pointing out that the relevant code is really in that separate
-> > repository.  Note, it seems that keyctl() is the problem here, not AF_ALG.  The
-> > blamed commit didn't change anything for AF_ALG.
-> > 
-> > > I believe the failure is when calling:
-> > > 
-> > > KEYCTL_PKEY_QUERY enc="x962" hash="sha1"
-> > > 
-> > >  From logs Michael posted on the IWD list, the ELL API that fails is:
-> > > 
-> > > l_key_get_info (ell.git/ell/key.c:416)
-> > Okay, I guess that's what's actually causing the problem.  KEYCTL_PKEY_* are a
-> > weird set of APIs where userspace can ask the kernel to do asymmetric key
-> > operations.  It's unclear why they exist, as the same functionality is available
-> > in userspace crypto libraries.
-> > 
-> > I suppose that the blamed commit, or at least part of it, will need to be
-> > reverted to keep these weird keyctls working.
-> > 
-> > For the future, why doesn't iwd just use a userspace crypto library such as
-> > OpenSSL?
 > 
-> I was not around when the original decision was made, but a few reasons I
-> know we don't use openSSL:
+>> -----Original Message-----
+>> From: Ping-Ke Shih <pkshih@realtek.com>
+>> Sent: Wednesday, March 13, 2024 9:55 AM
+>> To: Bitterblue Smith <rtl8821cerfe2@gmail.com>; linux-wireless@vger.kernel.org
+>> Cc: Larry Finger <Larry.Finger@lwfinger.net>
+>> Subject: RE: [PATCH] wifi: rtlwifi: rtl8192de: Fix 5 GHz TX power
+>>
+>>> Tested only with rtl8192du, which will use the same TX power code.
 > 
->  - IWD has virtually zero dependencies.
+> Because another patchset adding rtl8192du is based on this patch, I suggest
+> to send them as single one patchset. 
+> 
+> Ping-Ke
+> 
 
-Depending on something in the kernel does not eliminate a dependency; it just
-adds that particular kernel UAPI to your list of dependencies.  The reason that
-we're having this discussion in the first place is because iwd is depending on
-an obscure kernel UAPI that is not well defined.  Historically it's been hard to
-avoid "breaking" changes in these crypto-related UAPIs because of the poor
-design where a huge number of algorithms are potentially supported, but the list
-is undocumented and it varies from one system to another based on configuration.
-Also due to their obscurity many kernel developers don't know that these UAPIs
-even exist.  (The reaction when someone finds out is usually "Why!?")
-
-It may be worth looking at if iwd should make a different choice for this
-dependency.  It's understandable to blame dependencies when things go wrong, but
-at the same time the choice of dependency is very much a choice, and some
-choices can be more technically sound and cause fewer problems than others...
-
->  - OpenSSL + friends are rather large libraries.
-
-The Linux kernel is also large, and it's made larger by having to support
-obsolete crypto algorithms for backwards compatibility with iwd.
-
->  - AF_ALG has transparent hardware acceleration (not sure if openSSL does
-> too).
-
-OpenSSL takes advantage of CPU-based hardware acceleration, e.g. AES-NI.
-
-> Another consideration is once you support openSSL someone wants wolfSSL,
-> then boringSSL etc. Even if users implement support it just becomes a huge
-> burden to carry for the project. Just look at wpa_supplicant's src/crypto/
-> folder, nearly 40k LOC in there, compared to ELL's crypto modules which is
-> ~5k. You have to sort out all the nitty gritty details of each library, and
-> provide a common driver/API for the core code, differences between openssl
-> versions, the list goes on.
-
-What is the specific functionality that you're actually relying on that you
-think would need 40K lines of code to replace, even using OpenSSL?  I see you
-are using KEYCTL_PKEY_*, but what specifically are you using them for?  What
-operations are being performed, and with which algorithms and key formats?
-Also, is the kernel behavior that you're relying on documented anywhere?  There
-are man pages for those keyctls, but they don't say anything about any
-particular hash algorithm, SHA-1 or otherwise, being supported.
-
-- Eric
+I can do that, but Kalle will probably apply this patch long
+before v2 of that patchset is ready.
 
