@@ -1,99 +1,79 @@
-Return-Path: <linux-wireless+bounces-4695-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4696-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C24F887B225
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 20:44:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 167B287B2AB
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 21:13:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EC2328D65B
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 19:44:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E5D2B24459
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 19:55:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31A4B4AEFD;
-	Wed, 13 Mar 2024 19:44:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m+lHgNSp"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D62B64C600;
+	Wed, 13 Mar 2024 19:55:02 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp1.ms.mff.cuni.cz (smtp-in1.ms.mff.cuni.cz [195.113.20.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DED3F4776A;
-	Wed, 13 Mar 2024 19:44:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77039210E9;
+	Wed, 13 Mar 2024 19:54:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710359066; cv=none; b=pmthT7VxFmPBUiL+OTRNIUHMGNQyfr/FNYhbj81Sdl7Kke7FioK5H5oP4cnkt4+LNxCZBd0AFGhUuHQRvMgu1Y58cH1/lmOXMLxdVbJtdxyHqgyW9gaUSoZWg83mzpw4r8ja9d8AZ4oNu/WcAxDWoQRn8/fAmbAh8XmZoMniDMU=
+	t=1710359702; cv=none; b=fCoE66glVwDAqlONBGXMbWp/AjApc/9keNVBc+uBKL6MKw67BE584UOmCIAjw9mLIRxz0RK97X97aFP2rKgnDeL6+ajkNqKdlrIIutKUgYVyIfeVuubvEfHxJfMxK7e6Idn11uh15fEYqWhFoK7lCAau5wumjfU0PCQjoPjZ9Bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710359066; c=relaxed/simple;
-	bh=y4IkOkfDTy6Hf5RFlO9oP6K871NhGp6uazdYCzXOG5o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YjjqEgF/Ig42wOKYGZE6Esr5KjrfJXhS1FrmR/qqrjsgiV0YV0Ufhgkh/LvFLSUcAargJd9awgJqqcHpwLmz0Iveqlqif2uQAoQ+q1GlBosNDT0Kbnmguycm0ke9eURaeHFKnTOkFw49dtbgE5B7EzxTpQDQ4pwMFo+avp7xM64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m+lHgNSp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD9B6C433F1;
-	Wed, 13 Mar 2024 19:44:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710359065;
-	bh=y4IkOkfDTy6Hf5RFlO9oP6K871NhGp6uazdYCzXOG5o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=m+lHgNSpmOVZFWHTL9/c1q9/BAn+Hs2c1s3lqTXVoGwnLWhY7ebljIWs+Di9lmYPq
-	 qXxJTCDpoiM7OxydG+AfbATKxYHfO32qhDAHBzPR0ycn1LuXPzCJNyE8PopCBIoZ0M
-	 VwhveDYuplvMxkTUkwzkykT4bQqyHomo7QVmqsp1/ZjJfE9/gcUTM1Q3+1xPmgCX7G
-	 I5dWqE2e/Uh5P0Z0lGYULRAIvr/aFXnaHeV5yTMsJ1D3VxEfHcvff3RKqfp8Y3iGSm
-	 eNptZnJxrvjBkgKQV7nTr0N1VrlxJ7XMFIUOIIqlrwLGQqZYj6y7WNi7DkErD8bqC8
-	 uaVnhthnNyIfw==
-Date: Wed, 13 Mar 2024 12:44:23 -0700
-From: Eric Biggers <ebiggers@kernel.org>
-To: James Prestwood <prestwoj@gmail.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
-	Karel Balej <balejk@matfyz.cz>, dimitri.ledkov@canonical.com,
-	alexandre.torgue@foss.st.com, davem@davemloft.net,
-	dhowells@redhat.com, herbert@gondor.apana.org.au,
-	keyrings@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-modules@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com, mcgrof@kernel.org,
-	mcoquelin.stm32@gmail.com, linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org, iwd@lists.linux.dev
-Subject: Re: [REGRESSION] Re: [PATCH] crypto: pkcs7: remove sha1 support
-Message-ID: <20240313194423.GA1111@sol.localdomain>
-References: <CZSHRUIJ4RKL.34T4EASV5DNJM@matfyz.cz>
- <005f998ec59e27633b1b99fdf929e40ccfd401c1.camel@sipsolutions.net>
- <f2dcbe55-0f0e-4173-8e21-f899c6fc802a@gmail.com>
+	s=arc-20240116; t=1710359702; c=relaxed/simple;
+	bh=j+U9E9lfJdvcOySZsZqHvCJpzYfOaJSbSsP89+NlbHc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:References:Cc:
+	 Subject:In-Reply-To; b=H72ibz9oLePnDKZ78wuAHIbNSpRXDmp3Xwl2ydND0Mhi7ATsu2wjyQW/reb5UgPMalAqxtiWviXn8ihN5wkXBOg7CuU1PYKAzHtmjOfwgkVhetGTA3qpelk+aC8MkX3HI+QGCF7nOZWi8HwmmtkbazgBmk6z7n4jAJRpEO9RxxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=matfyz.cz; arc=none smtp.client-ip=195.113.20.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matfyz.cz
+X-SubmittedBy: id balejk@matfyz.cz subject /postalCode=110+2000/O=Univerzita+20Karlova/street=Ovocn+5CxC3+5CxBD+20trh+20560/5/ST=Praha,+20Hlavn+5CxC3+5CxAD+20m+5CxC4+5Cx9Bsto/C=CZ/CN=Karel+20Balej/emailAddress=balejk@matfyz.cz
+	serial F5FD910E8FE2121B897F7E55B84E351D
+	issued by /C=NL/O=GEANT+20Vereniging/CN=GEANT+20Personal+20CA+204
+	auth type TLS.CUNI
+Received: from localhost (koleje-wifi-0013.koleje.cuni.cz [78.128.191.13])
+	(authenticated)
+	by smtp1.ms.mff.cuni.cz (8.16.1/8.16.1) with ESMTPS id 42DJsD9Z080389
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
+	Wed, 13 Mar 2024 20:54:15 +0100 (CET)
+	(envelope-from balejk@matfyz.cz)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f2dcbe55-0f0e-4173-8e21-f899c6fc802a@gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 13 Mar 2024 20:54:44 +0100
+Message-Id: <CZSVWO3IDZ96.38O0P161Z99XU@matfyz.cz>
+To: "Johannes Berg" <johannes@sipsolutions.net>,
+        "James Prestwood"
+ <prestwoj@gmail.com>,
+        "Michael Yartys" <mail@yartys.no>
+From: "Karel Balej" <balejk@matfyz.cz>
+References: <005f998ec59e27633b1b99fdf929e40ccfd401c1.camel@sipsolutions.net>, <f2dcbe55-0f0e-4173-8e21-f899c6fc802a@gmail.com>, <NbWQKmrYDD20KKHeq9TMda2MJFE00-weepZGuSIRzO5BOgMlTbWBkDlNNweA2dhbvF8TK1F_cHbMxblLVNREZa1HZEFt9TVCkTB1jo_5ppc=@yartys.no>, <CZSHRUIJ4RKL.34T4EASV5DNJM@matfyz.cz>, <20231010212240.61637-1-dimitri.ledkov@canonical.com>
+Cc: <alexandre.torgue@foss.st.com>, <davem@davemloft.net>,
+        <dhowells@redhat.com>, <herbert@gondor.apana.org.au>,
+        <keyrings@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-crypto@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-modules@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>, <mcgrof@kernel.org>,
+        <mcoquelin.stm32@gmail.com>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <dimitri.ledkov@canonical.com>,
+        <iwd@lists.linux.dev>, <regressions@lists.linux.dev>
+Subject: Re: [REGRESSION] Re: [PATCH] crypto: pkcs7: remove sha1 support
+In-Reply-To: <CZSHRUIJ4RKL.34T4EASV5DNJM@matfyz.cz>
 
-On Wed, Mar 13, 2024 at 10:26:06AM -0700, James Prestwood wrote:
-> Hi,
-> 
-> On 3/13/24 1:56 AM, Johannes Berg wrote:
-> > Not sure why you're CC'ing the world, but I guess adding a few more
-> > doesn't hurt ...
-> > 
-> > On Wed, 2024-03-13 at 09:50 +0100, Karel Balej wrote:
-> > >   and I use iwd
-> > This is your problem, the wireless stack in the kernel doesn't use any
-> > kernel crypto code for 802.1X.
-> 
-> Yes, the wireless stack has zero bearing on the issue. I think that's what
-> you meant by "problem".
-> 
-> IWD has used the kernel crypto API forever which was abruptly broken, that
-> is the problem.
-> 
-> The original commit says it was to remove support for sha1 signed kernel
-> modules, but it did more than that and broke the keyctl API.
-> 
+Thank you all for your feedback so far.
 
-Which specific API is iwd using that is relevant here?
-I cloned https://kernel.googlesource.com/pub/scm/network/wireless/iwd
-and grepped for keyctl and AF_ALG, but there are no matches.
+Since it seems that this really is a regression on the kernel side, let
+me add the appropriate list to Cc and tag this:
 
-- Eric
+#regzbot introduced: 16ab7cb5825f
+
+Best regards,
+K. B.
 
