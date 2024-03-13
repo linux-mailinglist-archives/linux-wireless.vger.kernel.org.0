@@ -1,221 +1,180 @@
-Return-Path: <linux-wireless+bounces-4702-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4703-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DD6487B420
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 23:05:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8353187B43C
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 23:10:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF7B9B21CBD
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 22:05:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C9176B23308
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 22:10:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1603359163;
-	Wed, 13 Mar 2024 22:05:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CE7759B4B;
+	Wed, 13 Mar 2024 22:10:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Tx2fjCqB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hlrZKybJ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 583815916B
-	for <linux-wireless@vger.kernel.org>; Wed, 13 Mar 2024 22:05:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F7535917C;
+	Wed, 13 Mar 2024 22:10:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710367509; cv=none; b=H0KjMvf812/8zQz1t8ZPfwQdDUSv/fTTufs80DbwGqMfk7T+lcC7oGEvXOROwRafNDUt79dZKOz+hi5heA0m9TsnEfAeWJc0MhkH7lS21rceImRsog9654/j0I7Z/tNbh2z/SRZJAjpYr47oa3xHKQo7pj8DqJrzvj73C4hCz1I=
+	t=1710367846; cv=none; b=mpaRoZx8xyVP1CmslbZ/fBNhxNUTI3TefKb+HiO8fIDVfy4sXTiR9eh4VwGe83LfyHWsi3FRCdU7MoVN1bGmQ+/fZefxYhPE5K+kX1wzWU6ZUQOoPRROh0p2DaNZNE83b27ycp9zPkC62spRblmrZV/C8PuWsTHYUu9lsaBLgAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710367509; c=relaxed/simple;
-	bh=wCePhRMicuKh6E5nikDLo8T6wb9tNMGVg/MBWLW/JbI=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=jdfs4952f6BfN0pn57wC5HhVTAYqU/wLKcun7fSzguXPulQCh7sZMdL4gOac9ihG876tSGfzhDjuhhyGKeHRsuTmeleMeLN+azgx5CwZE+oI62k3PaizMTysPQExuFA6dpLEFiUlUTyEU9AAXhTNMltjXVeX8fau9XOe5Ncy6M8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Tx2fjCqB; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1710367507; x=1741903507;
-  h=date:from:to:cc:subject:message-id;
-  bh=wCePhRMicuKh6E5nikDLo8T6wb9tNMGVg/MBWLW/JbI=;
-  b=Tx2fjCqBVFj62cVw+TIddmHxgLp+YKG1+vYAqdI1lbbq3x4tLicPqAwt
-   9UBFeYcpLNEBZaWy2l0I9iz9WWPP5GdW9Xe6Z8yTUeHesIkL+8IpiSld6
-   F4x93P+QRGpjMEY3VrTIvBqdGkTw3lDRlMOHAmKhlYW8YtU4RC9FJJkPy
-   4kS9p0Xp5U25lzXNp37km/dIYUyfXlQM5GQd2F+MBbkyuDBquzYiPH+PB
-   9lm01kbSEVNRbe5AyiY+/SIrulqHn8o63Eyip3wj60VgzXmpZQQGECaKa
-   xhHJ24y22t+u5B/qGJPdCGYET/XLEIrsZjwna+zrigUnXFiuWDiBYxttj
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11012"; a="5018049"
-X-IronPort-AV: E=Sophos;i="6.07,123,1708416000"; 
-   d="scan'208";a="5018049"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2024 15:05:07 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,123,1708416000"; 
-   d="scan'208";a="12095639"
-Received: from lkp-server01.sh.intel.com (HELO b21307750695) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 13 Mar 2024 15:05:06 -0700
-Received: from kbuild by b21307750695 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rkWic-000CnR-2U;
-	Wed, 13 Mar 2024 22:05:02 +0000
-Date: Thu, 14 Mar 2024 06:04:04 +0800
-From: kernel test robot <lkp@intel.com>
-To: Jakub Kicinski <kuba@kernel.org>
+	s=arc-20240116; t=1710367846; c=relaxed/simple;
+	bh=5APNX9joY8E9yLLTfEuVlbvQ/cODNID0jd3oX4Dqksg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pC4dxYuYHW6KNvXXXe0iRiVIzsnMmompUYig7Dj93Nw+odxJV+17Q4JSyHdYbb/AtkV0fj7FiJgIknTM8Fp5uNSwtiOzR0/b0FKtKdD8186L/slRXbVBTZSOrsB7ci54pdDZdvv02uO81CYic6lUGl6EZOsVSdFWBu7geX7wIFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hlrZKybJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AAEEC433F1;
+	Wed, 13 Mar 2024 22:10:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710367845;
+	bh=5APNX9joY8E9yLLTfEuVlbvQ/cODNID0jd3oX4Dqksg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hlrZKybJJe3Ws3NMMxCNeEsHHbw+o6y1ncI16R6kzSspIO+mmP6NvDgwf4y8KiWzB
+	 ISriQDG/umtsjSLZngtc4bWRPmhaVLTwDEOJycCVs9T3pb2db6630MGkmEU1X9BTXf
+	 C/FR1pn4FLZNh7+e2vIRbE75VMM25aAR7Ehz3Q5So2rhXs8lMAJ/BPam+hhyEE2RK8
+	 TKJzV2JoGANM/fguI5enojXimqQG14HPKu1bLHKGoszu/nNEhNHQE4sQ1LLPnOn7gz
+	 zp7GTVMs3MuZxyJr6kTsKeJA9ylvnISwYysl+bpNM9dmNSZ3Hug4u0zZxEyvRICWYD
+	 MYiWylj9cA9LA==
+Date: Wed, 13 Mar 2024 15:10:43 -0700
+From: Eric Biggers <ebiggers@kernel.org>
+To: James Prestwood <prestwoj@gmail.com>
 Cc: Johannes Berg <johannes@sipsolutions.net>,
- Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
-Subject: [wireless:for-next] BUILD SUCCESS
- 67072c314f5f0ec12a7a51a19f7156eebb073654
-Message-ID: <202403140658.yF57uRTF-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	Karel Balej <balejk@matfyz.cz>, dimitri.ledkov@canonical.com,
+	alexandre.torgue@foss.st.com, davem@davemloft.net,
+	dhowells@redhat.com, herbert@gondor.apana.org.au,
+	keyrings@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-modules@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com, mcgrof@kernel.org,
+	mcoquelin.stm32@gmail.com, linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org, iwd@lists.linux.dev
+Subject: Re: [REGRESSION] Re: [PATCH] crypto: pkcs7: remove sha1 support
+Message-ID: <20240313221043.GC1111@sol.localdomain>
+References: <CZSHRUIJ4RKL.34T4EASV5DNJM@matfyz.cz>
+ <005f998ec59e27633b1b99fdf929e40ccfd401c1.camel@sipsolutions.net>
+ <f2dcbe55-0f0e-4173-8e21-f899c6fc802a@gmail.com>
+ <20240313194423.GA1111@sol.localdomain>
+ <b838e729-dc30-4e18-b928-c34c16b08606@gmail.com>
+ <20240313202223.GB1111@sol.localdomain>
+ <db86cba4-0e61-441d-8e66-405a13b61a3c@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <db86cba4-0e61-441d-8e66-405a13b61a3c@gmail.com>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
-branch HEAD: 67072c314f5f0ec12a7a51a19f7156eebb073654  Merge branch 'tcp-rds-fix-use-after-free-around-kernel-tcp-reqsk'
+On Wed, Mar 13, 2024 at 02:17:29PM -0700, James Prestwood wrote:
+> Hi,
+> 
+> On 3/13/24 1:22 PM, Eric Biggers wrote:
+> > On Wed, Mar 13, 2024 at 01:12:54PM -0700, James Prestwood wrote:
+> > > Hi,
+> > > 
+> > > On 3/13/24 12:44 PM, Eric Biggers wrote:
+> > > > On Wed, Mar 13, 2024 at 10:26:06AM -0700, James Prestwood wrote:
+> > > > > Hi,
+> > > > > 
+> > > > > On 3/13/24 1:56 AM, Johannes Berg wrote:
+> > > > > > Not sure why you're CC'ing the world, but I guess adding a few more
+> > > > > > doesn't hurt ...
+> > > > > > 
+> > > > > > On Wed, 2024-03-13 at 09:50 +0100, Karel Balej wrote:
+> > > > > > >     and I use iwd
+> > > > > > This is your problem, the wireless stack in the kernel doesn't use any
+> > > > > > kernel crypto code for 802.1X.
+> > > > > Yes, the wireless stack has zero bearing on the issue. I think that's what
+> > > > > you meant by "problem".
+> > > > > 
+> > > > > IWD has used the kernel crypto API forever which was abruptly broken, that
+> > > > > is the problem.
+> > > > > 
+> > > > > The original commit says it was to remove support for sha1 signed kernel
+> > > > > modules, but it did more than that and broke the keyctl API.
+> > > > > 
+> > > > Which specific API is iwd using that is relevant here?
+> > > > I cloned https://kernel.googlesource.com/pub/scm/network/wireless/iwd
+> > > > and grepped for keyctl and AF_ALG, but there are no matches.
+> > > IWD uses ELL for its crypto, which uses the AF_ALG API:
+> > > 
+> > > https://git.kernel.org/pub/scm/libs/ell/ell.git/
+> > Thanks for pointing out that the relevant code is really in that separate
+> > repository.  Note, it seems that keyctl() is the problem here, not AF_ALG.  The
+> > blamed commit didn't change anything for AF_ALG.
+> > 
+> > > I believe the failure is when calling:
+> > > 
+> > > KEYCTL_PKEY_QUERY enc="x962" hash="sha1"
+> > > 
+> > >  From logs Michael posted on the IWD list, the ELL API that fails is:
+> > > 
+> > > l_key_get_info (ell.git/ell/key.c:416)
+> > Okay, I guess that's what's actually causing the problem.  KEYCTL_PKEY_* are a
+> > weird set of APIs where userspace can ask the kernel to do asymmetric key
+> > operations.  It's unclear why they exist, as the same functionality is available
+> > in userspace crypto libraries.
+> > 
+> > I suppose that the blamed commit, or at least part of it, will need to be
+> > reverted to keep these weird keyctls working.
+> > 
+> > For the future, why doesn't iwd just use a userspace crypto library such as
+> > OpenSSL?
+> 
+> I was not around when the original decision was made, but a few reasons I
+> know we don't use openSSL:
+> 
+>  - IWD has virtually zero dependencies.
 
-elapsed time: 1184m
+Depending on something in the kernel does not eliminate a dependency; it just
+adds that particular kernel UAPI to your list of dependencies.  The reason that
+we're having this discussion in the first place is because iwd is depending on
+an obscure kernel UAPI that is not well defined.  Historically it's been hard to
+avoid "breaking" changes in these crypto-related UAPIs because of the poor
+design where a huge number of algorithms are potentially supported, but the list
+is undocumented and it varies from one system to another based on configuration.
+Also due to their obscurity many kernel developers don't know that these UAPIs
+even exist.  (The reaction when someone finds out is usually "Why!?")
 
-configs tested: 131
-configs skipped: 3
+It may be worth looking at if iwd should make a different choice for this
+dependency.  It's understandable to blame dependencies when things go wrong, but
+at the same time the choice of dependency is very much a choice, and some
+choices can be more technically sound and cause fewer problems than others...
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+>  - OpenSSL + friends are rather large libraries.
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   clang
-arm                              allyesconfig   gcc  
-arm                                 defconfig   clang
-arm64                            allmodconfig   clang
-arm64                             allnoconfig   gcc  
-arm64                               defconfig   gcc  
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-hexagon                          allmodconfig   clang
-hexagon                           allnoconfig   clang
-hexagon                          allyesconfig   clang
-hexagon                             defconfig   clang
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20240313   gcc  
-i386         buildonly-randconfig-001-20240314   clang
-i386         buildonly-randconfig-002-20240313   gcc  
-i386         buildonly-randconfig-002-20240314   clang
-i386         buildonly-randconfig-003-20240313   clang
-i386         buildonly-randconfig-004-20240313   clang
-i386         buildonly-randconfig-005-20240313   clang
-i386         buildonly-randconfig-006-20240313   gcc  
-i386         buildonly-randconfig-006-20240314   clang
-i386                                defconfig   clang
-i386                  randconfig-001-20240313   clang
-i386                  randconfig-002-20240313   clang
-i386                  randconfig-002-20240314   clang
-i386                  randconfig-003-20240313   clang
-i386                  randconfig-004-20240313   gcc  
-i386                  randconfig-004-20240314   clang
-i386                  randconfig-005-20240313   gcc  
-i386                  randconfig-006-20240313   clang
-i386                  randconfig-011-20240313   gcc  
-i386                  randconfig-011-20240314   clang
-i386                  randconfig-012-20240313   clang
-i386                  randconfig-013-20240313   gcc  
-i386                  randconfig-013-20240314   clang
-i386                  randconfig-014-20240313   gcc  
-i386                  randconfig-015-20240313   clang
-i386                  randconfig-015-20240314   clang
-i386                  randconfig-016-20240313   gcc  
-i386                  randconfig-016-20240314   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                        allyesconfig   gcc  
-loongarch                           defconfig   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                             allmodconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                         rt305x_defconfig   clang
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-openrisc                         allmodconfig   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   clang
-powerpc                      bamboo_defconfig   clang
-powerpc                     kilauea_defconfig   clang
-riscv                            allmodconfig   clang
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   clang
-riscv                               defconfig   clang
-s390                             allmodconfig   clang
-s390                              allnoconfig   clang
-s390                             allyesconfig   gcc  
-s390                                defconfig   clang
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-um                               alldefconfig   clang
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   gcc  
-um                                  defconfig   clang
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   clang
-x86_64                            allnoconfig   clang
-x86_64                           allyesconfig   clang
-x86_64       buildonly-randconfig-004-20240314   gcc  
-x86_64                              defconfig   gcc  
-x86_64                randconfig-001-20240314   gcc  
-x86_64                randconfig-002-20240314   gcc  
-x86_64                randconfig-012-20240314   gcc  
-x86_64                randconfig-013-20240314   gcc  
-x86_64                randconfig-014-20240314   gcc  
-x86_64                randconfig-016-20240314   gcc  
-x86_64                randconfig-071-20240314   gcc  
-x86_64                randconfig-074-20240314   gcc  
-x86_64                randconfig-075-20240314   gcc  
-x86_64                randconfig-076-20240314   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa                            allnoconfig   gcc  
-xtensa                           allyesconfig   gcc  
+The Linux kernel is also large, and it's made larger by having to support
+obsolete crypto algorithms for backwards compatibility with iwd.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+>  - AF_ALG has transparent hardware acceleration (not sure if openSSL does
+> too).
+
+OpenSSL takes advantage of CPU-based hardware acceleration, e.g. AES-NI.
+
+> Another consideration is once you support openSSL someone wants wolfSSL,
+> then boringSSL etc. Even if users implement support it just becomes a huge
+> burden to carry for the project. Just look at wpa_supplicant's src/crypto/
+> folder, nearly 40k LOC in there, compared to ELL's crypto modules which is
+> ~5k. You have to sort out all the nitty gritty details of each library, and
+> provide a common driver/API for the core code, differences between openssl
+> versions, the list goes on.
+
+What is the specific functionality that you're actually relying on that you
+think would need 40K lines of code to replace, even using OpenSSL?  I see you
+are using KEYCTL_PKEY_*, but what specifically are you using them for?  What
+operations are being performed, and with which algorithms and key formats?
+Also, is the kernel behavior that you're relying on documented anywhere?  There
+are man pages for those keyctls, but they don't say anything about any
+particular hash algorithm, SHA-1 or otherwise, being supported.
+
+- Eric
 
