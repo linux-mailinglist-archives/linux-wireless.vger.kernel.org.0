@@ -1,115 +1,155 @@
-Return-Path: <linux-wireless+bounces-4690-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4691-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A74BC87B0D0
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 20:02:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A979787B0D6
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 20:02:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C4EA1F263C3
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 19:02:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB7091C2695E
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 19:02:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7B6669D01;
-	Wed, 13 Mar 2024 18:02:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FD6769DFF;
+	Wed, 13 Mar 2024 18:04:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=anddroptable-net.20230601.gappssmtp.com header.i=@anddroptable-net.20230601.gappssmtp.com header.b="ZvPdQDwQ"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="iU+dh2TT"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8456997C
-	for <linux-wireless@vger.kernel.org>; Wed, 13 Mar 2024 18:02:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F017469DF7
+	for <linux-wireless@vger.kernel.org>; Wed, 13 Mar 2024 18:04:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710352966; cv=none; b=e/BmgoYP2W3tg9a2qZv1kUB8NIfoKe0tExL7OyeyHG+g2ISQEzOZHdUXdOX9YAszuhqBr+erb8/8P7XWNon0DqHkxdka9aE4jz5Lm7+MY43JK5y8EaK+N3fleeS7GBF3DfmxmXrwOdcs1lah7TCG3tLyIBcTcmVQwc+fThe1lKQ=
+	t=1710353093; cv=none; b=rp+dxsEjp9hIm3WhI3ESlfI9IzwSzp9vJFbiK8jXESl6QzdKijDn7rUd+YIBfrDd59S7UJixNkZh7OVZ/bpaSFtP0UYc426a5K7gRDq61DfOuT+oxzo8cjxtw7OaU3KBQbS4zrRLtHM7LJskG8ijltbetwChBMU2lXEHIJvKxpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710352966; c=relaxed/simple;
-	bh=d8P2S/1lXpLTVK+DbMjmEVnQgdJt6uNCAkAcBhGKgXw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=AlhQpt/AsX/LjuR0fdvY9GPOL+OEp2GgO0CEbWqoZ70j+yApMAdoCz2T+KzCTBZstPAG9797G5tTepSz9jORXJ9y3s4NvQ7k4PnzuSGhCkZgpuVnYaEAX24n4VLMGWGjlxeWnwo4ZyEGtIIRhPpPhQnHkFpP4p84Ah9wEdH3tlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=anddroptable.net; spf=none smtp.mailfrom=anddroptable.net; dkim=pass (2048-bit key) header.d=anddroptable-net.20230601.gappssmtp.com header.i=@anddroptable-net.20230601.gappssmtp.com header.b=ZvPdQDwQ; arc=none smtp.client-ip=209.85.167.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=anddroptable.net
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=anddroptable.net
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-513a6416058so226558e87.1
-        for <linux-wireless@vger.kernel.org>; Wed, 13 Mar 2024 11:02:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=anddroptable-net.20230601.gappssmtp.com; s=20230601; t=1710352961; x=1710957761; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=hGAe8hH3+Zeq8r40fkNvF+CxEMn2/xrWFetVwkyYBkQ=;
-        b=ZvPdQDwQ9S0jQJzKmUHR1p2Y6/vb0zB7tZimmmc9l/sQ0sRNx6X2MVvx2auJoTnYhN
-         cPk/1Ctcg2d0N3x6FMMYe3RcKdrVBOM6q7FbYRyxBgSqan6SB89rOIUAuGUeWiSF9Wvw
-         2Yt24I5MbWg/UKJVxvo67LYSYCDRwX/V4ffyfrVqnjKMvltPjxSoRG3hJn6DinDullK0
-         l4VY3gy1raeBzb/MO2szIQrA+7nWSG5BbyKm5JN6m7BbEvLEFkGD6rq195uINzuKasIn
-         E6cgic4jQu5Uybm+f75LHyhzPe2tYlGYz8aGs4ljiw4h6m2M+i//RkYTJvs/M7ezQ+5W
-         C2Wg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710352961; x=1710957761;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hGAe8hH3+Zeq8r40fkNvF+CxEMn2/xrWFetVwkyYBkQ=;
-        b=Q3NI7eAcyQW7bOWtzFpPOXNgIqKuum0nYrOqUqqf1LoRoPxOek2XFHquvWRZrLfAva
-         rpBqTOcbi06XbEs+N88TQ6RESYLwHKrn+oWzp5P5GfFz6x4F6sJoSJWAu3vWCWbbxtk5
-         JD2IWxtM/LrhohpknDtz0Zdrl/1sp4DMtnwKgTUmWxPtNeJOnrjQcbjD7f5AOSgoUy/H
-         ajtqHF1rvYkDs9V0nAnhmrwD078bFytwtiqkqQG2aur87dyJR2HBNXHAdkDYm01s6MSb
-         keBKHz3YmhN1mDpksHQq/6BwIC+f6yjdFNhHhhHfa9iDdtx+Flsi95er5ngtUwgo/whs
-         Tz5w==
-X-Gm-Message-State: AOJu0YyxyedB0wsBJAaZsydOL3zKvGHzxcMZpLNwD8rYlLVPMv/OL6X4
-	4ZXNulfLyidfXR3JUY544hoBM2I4AWxtxIuD9eEtZYXbU1lS6G2DypkjdazJKOICtXKmo3CfP6u
-	U
-X-Google-Smtp-Source: AGHT+IF6dQMZCY0uO/D+WDoXCOymSMO9IMmF9q0hdA2JlwRZ7rB0vGkbLWlJfVHUhA87tn/q5W6JxQ==
-X-Received: by 2002:ac2:495e:0:b0:513:cbf2:50b2 with SMTP id o30-20020ac2495e000000b00513cbf250b2mr1057120lfi.13.1710352961405;
-        Wed, 13 Mar 2024 11:02:41 -0700 (PDT)
-Received: from bl-64.blancco.com ([193.64.185.110])
-        by smtp.gmail.com with ESMTPSA id fb6-20020a056512124600b005139cbb1695sm2059655lfb.264.2024.03.13.11.02.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Mar 2024 11:02:41 -0700 (PDT)
-From: =?UTF-8?q?V=C3=ADctor=20Gonzalo?= <victor.gonzalo@anddroptable.net>
-To: linux-wireless@vger.kernel.org
-Cc: =?UTF-8?q?V=C3=ADctor=20Gonzalo?= <victor.gonzalo@anddroptable.net>
-Subject: [PATCH] wifi: iwlwifi: Add missing MODULE_FIRMWARE for Qu-c0-jf-b0
-Date: Wed, 13 Mar 2024 20:02:27 +0200
-Message-Id: <20240313180227.2224780-1-victor.gonzalo@anddroptable.net>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1710353093; c=relaxed/simple;
+	bh=B7ys/ab6JdYM7fkgVjxt2EyFm5ZIcgd9Gb44a4sf1Ik=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=B1qNQmSonpiDzN7yWyFH3PedJLOVN+BOks96O7ZujZBbBapXnB+HTDm27ql/hsUOTJjQugv5WAwdfJ1O6Yvadm/GZf39nrkNGFwKXLCca38XlZzxFk8AU5ZEJwAsnDpdHLGxjdR5lYEvkDbTqPIl9ufCdw46CEX6zNuzd+XheF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=iU+dh2TT; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42D9v9oW007297;
+	Wed, 13 Mar 2024 18:04:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=scks9tYyUMDTRmnslv2srjZa5cALFnqvoeHDv12bEXg=; b=iU
+	+dh2TTrN1JSsUZv1fik7LWagnOOxrJn7H9MewamhvTLoyQf9SHtIwUiX/YPsppi7
+	r/BZOtaHxVQgrJeuOMt4taBOep/on+nmKtvRXzJmZqv7dNWRCfq59m+qeiVkonDD
+	4iC+LSvT583fwg5NsgVBWTj+7RrCMUCBNVyGlT236Ey9ZqYT4Tj4uxNmc73Y/S7K
+	0LdLH+Qs9a9QuWr5PIAGzOMokoVHzrh6kGlVOKZN9iwRkf1pUdN8GCRF+wG6/2pu
+	xTG2YfzZaXxjVdPhfZ5zgzebSonWHQl8qAG2I8deCzM9HDh1dOX0ePdp3oDvsk5O
+	zhiQ6x4USAznZi1Bc0nw==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wu9y3s2ry-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 13 Mar 2024 18:04:46 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42DI4jp6002860
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 13 Mar 2024 18:04:45 GMT
+Received: from [10.110.27.195] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Wed, 13 Mar
+ 2024 11:04:44 -0700
+Message-ID: <f768cfec-d20d-424d-85ef-3576434aca12@quicinc.com>
+Date: Wed, 13 Mar 2024 11:04:44 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 01/12] wifi: ath12k: add multiple radio support in a
+ single MAC HW un/register
+Content-Language: en-US
+To: Kalle Valo <kvalo@kernel.org>
+CC: Rameshkumar Sundaram <quic_ramess@quicinc.com>,
+        <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        "Karthikeyan
+ Periyasamy" <quic_periyasa@quicinc.com>
+References: <20240312135557.1778379-1-quic_ramess@quicinc.com>
+ <20240312135557.1778379-2-quic_ramess@quicinc.com>
+ <4a527729-2bf8-47ce-8275-d36b76bde95c@quicinc.com>
+ <3178cf8c-d328-4fe2-b3be-f5c4c908f20f@quicinc.com>
+ <605a673e-3686-47d0-b71b-1e314fde65db@quicinc.com>
+ <87il1qf571.fsf@kernel.org> <87edcef4qi.fsf@kernel.org>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <87edcef4qi.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: ehXgaA8TvWHcA0CCSqY7-kG8qzDYlNJ5
+X-Proofpoint-GUID: ehXgaA8TvWHcA0CCSqY7-kG8qzDYlNJ5
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-13_09,2024-03-13_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=956 spamscore=0
+ impostorscore=0 adultscore=0 mlxscore=0 suspectscore=0 lowpriorityscore=0
+ bulkscore=0 malwarescore=0 clxscore=1015 phishscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2402120000
+ definitions=main-2403130137
 
-The module metadata for the firmware file iwlwifi-Qu-c0-jf-b0-* is missing.
+On 3/13/2024 9:58 AM, Kalle Valo wrote:
+> Kalle Valo <kvalo@kernel.org> writes:
+> 
+>> Jeff Johnson <quic_jjohnson@quicinc.com> writes:
+>>
+>>> On 3/13/2024 5:57 AM, Rameshkumar Sundaram wrote:
+>>>> On 3/13/2024 3:23 AM, Jeff Johnson wrote:
+>>>>> and guess we have to figure out how to suppress the ath12k-check issues with
+>>>>> this macro
+>>>> ath12k-check complains about the reuse of ah and index arguments which 
+>>>> may get evaluated multiple times if its an arithmetic expression, But 
+>>>> areas where we use the macro in our code aren't doing so.
+>>>> Do you have any suggestions here ? or shall we go back and use this 
+>>>> for-loop inline.
+>>>
+>>> The macro makes sense -- we'll need to update the overrides in ath12k-check.
+>>
+>> IIRC it is possible to avoid variable reuse in macros with typeof()
+>> operator (or something like that). I can't remember the details right
+>> now but I think there are examples in the kernel code.
+> 
+> Here's the GCC documentation with an example:
+> 
+> https://gcc.gnu.org/onlinedocs/gcc/Typeof.html
+> 
 
-Signed-off-by: Víctor Gonzalo <victor.gonzalo@anddroptable.net>
----
- drivers/net/wireless/intel/iwlwifi/cfg/22000.c | 3 +++
- 1 file changed, 3 insertions(+)
+the problem here is that the macro actually writes to those arguments multiple
+times, so we actually need to reuse the arguments
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-index d594694206b3..906f2790f561 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-@@ -44,6 +44,8 @@
- 	IWL_QU_C_HR_B_FW_PRE "-" __stringify(api) ".ucode"
- #define IWL_QU_B_JF_B_MODULE_FIRMWARE(api) \
- 	IWL_QU_B_JF_B_FW_PRE "-" __stringify(api) ".ucode"
-+#define IWL_QU_C_JF_B_MODULE_FIRMWARE(api) \
-+	IWL_QU_C_JF_B_FW_PRE "-" __stringify(api) ".ucode"
- #define IWL_CC_A_MODULE_FIRMWARE(api)			\
- 	IWL_CC_A_FW_PRE "-" __stringify(api) ".ucode"
- 
-@@ -423,6 +425,7 @@ const struct iwl_cfg iwl_cfg_quz_a0_hr_b0 = {
- MODULE_FIRMWARE(IWL_QU_B_HR_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_QU_C_HR_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_QU_B_JF_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
-+MODULE_FIRMWARE(IWL_QU_C_JF_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_QUZ_A_HR_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_QUZ_A_JF_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_CC_A_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
--- 
-2.34.1
+the macro as defined exactly matches the semantics of other for_each macros in
+the kernel, i.e. see in include/linux/list.h:
+#define list_for_each(pos, head) \
+	for (pos = (head)->next; !list_is_head(pos, (head)); pos = pos->next)
 
+what I don't understand is why list_for_each() doesn't trigger the same
+checkpatch issues. even stranger is that if I copy that macro into ath12k then
+I do see the same checkpatch issues:
+CHECK: Macro argument reuse 'pos' - possible side-effects?
+#998: FILE: drivers/net/wireless/ath/ath12k/core.h:998:
++#define list_for_each(pos, head) \
++       for (pos = (head)->next; !list_is_head(pos, (head)); pos = pos->next)
+
+CHECK: Macro argument reuse 'head' - possible side-effects?
+#998: FILE: drivers/net/wireless/ath/ath12k/core.h:998:
++#define list_for_each(pos, head) \
++       for (pos = (head)->next; !list_is_head(pos, (head)); pos = pos->next)
+
+So I'm really confused since I don't see anything in checkpatch.pl that would
+cause the behavior to change between macros in include/linux/list.h vs macros
+in drivers/net/wireless/ath/ath12k/core.h
+
+<scratch head>
+
+/jeff
 
