@@ -1,74 +1,73 @@
-Return-Path: <linux-wireless+bounces-4709-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4710-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C769A87B487
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 23:45:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F8C087B488
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 23:46:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3DF58B20F84
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 22:45:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C0007B20F83
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 22:46:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F81B59B56;
-	Wed, 13 Mar 2024 22:45:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54F1D5A10A;
+	Wed, 13 Mar 2024 22:46:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jTihWBUs"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dmJ0ofj3"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2E3E59B40
-	for <linux-wireless@vger.kernel.org>; Wed, 13 Mar 2024 22:45:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D1BB5A0EB
+	for <linux-wireless@vger.kernel.org>; Wed, 13 Mar 2024 22:46:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710369952; cv=none; b=dYMhupHKCjzDxbh7cu+cSjvfxDgQEZ6QW/1GmuUygGbpkZaavCBAX8ZpgbIeP+8C3TkaeGhXEFcT3iYMeeUsTbBamyCg85G2CxjpDvR0Ugt6MSRBXNKnmqPbkKn1KlH5vxSzjaAobNafkQK/JVo18eUtwZZ2P4irX3MVCuYleA4=
+	t=1710369978; cv=none; b=bgK3v1FFMUuceGQr/iD+4rOTeSAWNLcPpwwpWuoOE8oJLwQL4MuUtf1Ci/T5JobibhHN97jzyd64+dItjEBmYlORO6RAZ0mGuX4WgtPQdqfhrhJY4gehnAUoJVkGGQvfhoFdW719ToJSdXnxVLN6qudqRxcSQY3MyyjtYMfLSWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710369952; c=relaxed/simple;
-	bh=Vc7CXOMVJLO+cLwiNp2iOZmzA625Qw3FpG7x3kqGtKc=;
+	s=arc-20240116; t=1710369978; c=relaxed/simple;
+	bh=qzxki/s1wFB56wtkZ5Rrv5zgBwr/bgpmmq1YD1p2n98=;
 	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=tgzi1IrbGnUDwjFhCIAM9t9EhYvOp5ZI5THVxWpjT9Q9tIhdTQzxETgCx4+3c2cu7WxAe+qWnIJII02bc9XOxVlKQQMCLr8A+An2/PwY7KlHGeSrKDNF+LtrKcNfdtXYLZagzxnppCoGNOxnK17HCgo3EuvnkZtmlbehSsQM658=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jTihWBUs; arc=none smtp.client-ip=209.85.221.53
+	 In-Reply-To:Content-Type; b=BltSDOxgwaJp6p3o3BwEzie4yZteN4DUtG72kuGcHlgAnpnHKpAUZTN1CD92VtU35x+fni/oDgF36QWVgEIlm9sJF7B+HSYa5ckIOyH02u2BJqDTqf5Xq719SGuopu40Uv/IGeenZAcNAScstWlmYCMYQKLNP75h4kDpSqGJOJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dmJ0ofj3; arc=none smtp.client-ip=209.85.221.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-33e95b68b3eso244722f8f.1
-        for <linux-wireless@vger.kernel.org>; Wed, 13 Mar 2024 15:45:50 -0700 (PDT)
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-33e92b3b5c9so317925f8f.2
+        for <linux-wireless@vger.kernel.org>; Wed, 13 Mar 2024 15:46:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710369949; x=1710974749; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1710369975; x=1710974775; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=vuhteVjsNA14JFD90A9MRwHUSNKPyCCZGXeZClRl81U=;
-        b=jTihWBUsFbcFSQgYJYMqj2GDND6tHwLxmtemKsGNmDK/apnmW/aIEdNNaUl4xlOMGY
-         HzaFDBjvo4zNhDHYV2EgQXX/+Mv+xOZQW6TcE/Qn/74lFpUmeTaNJg11JA4wh88/BZvJ
-         W5QSQGvFdaVqsmASpHmEusp7hJEaMupPHU/yrLeLTkkd8/MoDUv9pxTXaiOJBVNjUv5X
-         kwkXj1yenxdL6BWEbNuqEBWd58+TqwO9ump/qHVOd6P/3t/JBzPWfRhzkdHPJ6OyAGgY
-         b5aRF6tILJ774Xeh4O2T3DJSREV+Aq2dSKzuvykjASY0GtyoQsWQKVXcaU1yjvSrJ8bY
-         1gaw==
+        bh=B48XPBGoiDJeJMz3+wFnKIi762r+/sjAvDr0Nu4Cohg=;
+        b=dmJ0ofj304mSdv41UN1rbgmm81KAP5HQivXaEvHPlZkWeWRYyupw3ByfZTTpG8txVm
+         2OoOrLM8iLPnf/IdSCZMyG8Y06B74UbX9IFv9NcrUwVhDI0htl0RN7rND9jWy4v2nEWv
+         xp2lPNGxOr98iVnEr5c7D4N3UVgDKxFrnr8EVDlca8AXG5/VwmdL+tvsCUTtjnYkFO76
+         hLJwqB+pPZMGYLFwX4HMs/Y6RJPGkCfsRPrzD4+Ip9wU6GniNqZ6c7I/ea1oYJl8C6Am
+         LQPuoa1lxv/rIyyt170XYGfiV7ejezhYRSdy3V6YKektrYt1pcLdb/dQiyVmjYUPpF6g
+         Iy1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710369949; x=1710974749;
+        d=1e100.net; s=20230601; t=1710369975; x=1710974775;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:subject:from:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vuhteVjsNA14JFD90A9MRwHUSNKPyCCZGXeZClRl81U=;
-        b=A3PL0RhL624vTewxY6Nz3Tl1+dbDAkOCCdAw9y4ohNW02UUSgJpbBoTTE9oN9rw1l9
-         x4qHaAHnV3M56yWeYkya3J8wvd2Bt6Xkg8a3r+ow6A6vPNIVagryC4oK1CuSwHU7SFD+
-         J3wYxy/qjnVkKdaA8SyQhtFdoVYxeDCRvH11fNVye6mBI4Lch7W1wS13tZ0g1keKvxss
-         sllGw0uhBuwH8Q3WmCz5qlwhW8oumDfpsyhh+o+m1idAvGzAbTeaTAYLfakVcnRmnsnM
-         YtPYX5HtFRxnb8bMFXZSuCnA2bLYXwEwgo9Gb4lVi4nFhBWapw/p68mrARZXVfQU3Og8
-         tbmw==
-X-Forwarded-Encrypted: i=1; AJvYcCXQGrXJqPRcBXcwhgOFn5TaGy3xGdoSQ7AAdWEH8aTx64TP3rAJWfG1JMDeS02XIUaQEdex9hQkswp3xsoCzeWhFKRfRdzN7ksR3prWFvY=
-X-Gm-Message-State: AOJu0Yws6yT2O0Q9FfE6ENCbqhHSPbbuSYCxbGQM2QZH5hYeusdVrhR1
-	HRyP2tdh5kMKgXpifMIe4VukZg5ooqHsZVi9PpFP/1vO9ANqvdO+jCJbuXZb
-X-Google-Smtp-Source: AGHT+IEre73d84AShoI6/6zaFPVl7oP3O0F7/g6Re/dR4c/AcLSYqIEAgACdlI4gYcijelSsJbB8Uw==
-X-Received: by 2002:a5d:64ed:0:b0:33d:fb3:9021 with SMTP id g13-20020a5d64ed000000b0033d0fb39021mr3122946wri.54.1710369948736;
-        Wed, 13 Mar 2024 15:45:48 -0700 (PDT)
+        bh=B48XPBGoiDJeJMz3+wFnKIi762r+/sjAvDr0Nu4Cohg=;
+        b=oM2UlmmwCUi8YEWbVAOi5sgZlyVImcmAOkIoXADmbTQRbKbVmoRXOsmxLtmydqY9Pq
+         HtOFA35MkY+0RVYNmJ7KiDtVZxqb1tIuRZFlbQcRk/gCU3NSGuFwlJ7iM+xMxNvOIUL0
+         EARewphhssligdsaneeFYf6VxhdwfR76/hCks/9cSir8rZT0h9wtWG+BHJ09DSORS5/I
+         ++8B5fx+arDuFlbrdMpHAcK7POf/LDUp7lGsctk2g+NsCkP/y6p5E51KCnYFvXu56xvr
+         QeTnjjT8RqOiz/Q+JXqGAPeI6wQbQdyXXt7tqO0u6RKuwVPblsuckChbjRmjlvpPyHUn
+         LQUg==
+X-Gm-Message-State: AOJu0YwWU/rEHQvYN5Bqgnl0j2sxb5qB7oF8uHkgUM9zVWBF4HqLXnBa
+	KgRwiViUZ1awfjofgtTWfhQgKIQPjvYCGG18vlUIBsNt6JdC/d8e
+X-Google-Smtp-Source: AGHT+IGywWCBTmCY97bIEbltZBJ93Chdb9P1lvHJc+vfzgYoq2C+oIzM+4cpcKKjh0IHebnBziN2AA==
+X-Received: by 2002:a05:6000:e51:b0:33b:187c:4ca0 with SMTP id dy17-20020a0560000e5100b0033b187c4ca0mr2469537wrb.62.1710369974956;
+        Wed, 13 Mar 2024 15:46:14 -0700 (PDT)
 Received: from [192.168.1.50] ([79.119.240.211])
-        by smtp.gmail.com with ESMTPSA id bn5-20020a056000060500b0033e49aebafasm176437wrb.3.2024.03.13.15.45.47
+        by smtp.gmail.com with ESMTPSA id bn5-20020a056000060500b0033e49aebafasm176437wrb.3.2024.03.13.15.46.13
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 Mar 2024 15:45:48 -0700 (PDT)
-Message-ID: <1cfe8151-0989-4853-961d-e14daf293744@gmail.com>
-Date: Thu, 14 Mar 2024 00:45:47 +0200
+        Wed, 13 Mar 2024 15:46:14 -0700 (PDT)
+Message-ID: <7fd2d445-9db0-4170-8d89-78d42f476255@gmail.com>
+Date: Thu, 14 Mar 2024 00:46:13 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -77,94 +76,40 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: Re: [PATCH 3/3] wifi: rtlwifi: Add new rtl8192du driver
-To: Ping-Ke Shih <pkshih@realtek.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>,
- "s.l-h@gmx.de" <s.l-h@gmx.de>, "chewitt@libreelec.tv" <chewitt@libreelec.tv>
+Subject: Re: [PATCH 1/3] wifi: rtlwifi: Move code from rtl8192de to
+ rtl8192d-common
+To: Kalle Valo <kvalo@kernel.org>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ Ping-Ke Shih <pkshih@realtek.com>, Larry Finger <Larry.Finger@lwfinger.net>,
+ Stefan Lippers-Hollmann <s.l-h@gmx.de>,
+ Christian Hewitt <chewitt@libreelec.tv>
 References: <e1922019-21eb-4013-a35f-0077167e92cf@gmail.com>
- <303a7402-43f0-4f98-9aa1-b4eb660eead0@gmail.com>
- <9e5485592f792339593d0b03b86794e5e010337a.camel@realtek.com>
+ <87jzm64ig6.fsf@kernel.org>
 Content-Language: en-US
-In-Reply-To: <9e5485592f792339593d0b03b86794e5e010337a.camel@realtek.com>
+In-Reply-To: <87jzm64ig6.fsf@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 13/03/2024 07:49, Ping-Ke Shih wrote:
-> On Wed, 2024-03-13 at 00:23 +0200, Bitterblue Smith wrote:
->>
->> The RTL8192DU is an older Wifi 4 dual band chip. It comes in two
->> flavours: single MAC single PHY (like most Realtek Wifi 4 USB devices),
->> and dual MAC dual PHY.
->>
->> The single MAC single PHY version is 2T2R and can work either in the
->> 2.4 GHz band or the 5 GHz band.
->>
->> The dual MAC dual PHY version has two USB interfaces and appears to the
->> system as two separate 1T1R Wifi devices, one working in the 2.4 GHz
->> band, the other in the 5 GHz band.
->>
->> This was tested only with a single MAC single PHY device.
+On 13/03/2024 10:58, Kalle Valo wrote:
+> Bitterblue Smith <rtl8821cerfe2@gmail.com> writes:
 > 
-> 
-> Please run checkpatch.pl that reports:
->   "total: 0 errors, 11 warnings, 27 checks, 8045 lines checked"
-> 
-> (Sorry, I wrongly posted above result on patch 2/3)> 
-
-I did run checkpatch, these are the things I decided to ignore. :)
-I will have another look.
-
+>> Create the new module rtl8192d-common and move some code into it from
+>> rtl8192de. Now the rtl8192de driver (PCI) and the new rtl8192du driver
+>> (USB) can share some of the code.
+>>
+>> This is mostly the code that required little effort to make it
+>> shareable. There are a few more functions which they could share, with
+>> some changes.
+>>
+>> The only other changes in this patch should be adjusting whitespace and
+>> renaming some functions.
+>>
+>> Tested only with RTL8192DU.
 >>
 >> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
->> ---
->>
->> Should I split this into multiple patches, one for each new file,
->> to make reviewing easier?
->>
->> ---
->>  drivers/net/wireless/realtek/rtlwifi/Kconfig  |   12 +
->>  drivers/net/wireless/realtek/rtlwifi/Makefile |    1 +
->>  .../realtek/rtlwifi/rtl8192du/Makefile        |   13 +
->>  .../wireless/realtek/rtlwifi/rtl8192du/dm.c   |  788 +++++
->>  .../wireless/realtek/rtlwifi/rtl8192du/dm.h   |   10 +
->>  .../wireless/realtek/rtlwifi/rtl8192du/fw.c   |  109 +
->>  .../wireless/realtek/rtlwifi/rtl8192du/fw.h   |    9 +
->>  .../wireless/realtek/rtlwifi/rtl8192du/hw.c   | 1238 +++++++
->>  .../wireless/realtek/rtlwifi/rtl8192du/hw.h   |   24 +
->>  .../wireless/realtek/rtlwifi/rtl8192du/led.c  |   10 +
->>  .../wireless/realtek/rtlwifi/rtl8192du/led.h  |    9 +
->>  .../wireless/realtek/rtlwifi/rtl8192du/phy.c  | 3064 +++++++++++++++++
->>  .../wireless/realtek/rtlwifi/rtl8192du/phy.h  |   32 +
->>  .../wireless/realtek/rtlwifi/rtl8192du/rf.c   |  236 ++
->>  .../wireless/realtek/rtlwifi/rtl8192du/rf.h   |   11 +
->>  .../wireless/realtek/rtlwifi/rtl8192du/sw.c   |  310 ++
->>  .../wireless/realtek/rtlwifi/rtl8192du/sw.h   |   12 +
->>  .../realtek/rtlwifi/rtl8192du/table.c         | 1675 +++++++++
->>  .../realtek/rtlwifi/rtl8192du/table.h         |   30 +
->>  .../wireless/realtek/rtlwifi/rtl8192du/trx.c  |  380 ++
->>  .../wireless/realtek/rtlwifi/rtl8192du/trx.h  |   60 +
->>  21 files changed, 8033 insertions(+)
 > 
-> Please split this patch to small ones. Like make dm.c/dm.h as a patch,
-> hw.c/hw.h as another patch and etc. For smaller files such as led.c/led.h,
-> it is fine to combine with others. 
+> A cover letter is would be really good to have.
 > 
 
-Okay.
-
-> 
-> Though you have done 8192DU in rtlwifi, I still want to know how you decide
-> to support 8192DU in rtlwifi instead of rtl8xxxu. IIRC most USB users of
-> Realtek WiFi use rtl8xxxu. 
-> 
-> Ping-Ke
-> 
-
-Originally I worked on rtl8xxxu. I didn't like how many changes
-it needed to support this chip. And then the first test with
-rtl8xxxu produced no scan results. At that point I gave up and
-modified rtl8192de instead. (The first test with the modified
-rtl8192de also produced no scan results... but rtlwifi has a lot
-of debugging output, which helped.)
+I can add one. What should I write in it?
 
