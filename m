@@ -1,124 +1,88 @@
-Return-Path: <linux-wireless+bounces-4670-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4671-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BE2587A441
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 09:52:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 518B687A459
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 09:57:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C01D21F222B5
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 08:52:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83FFF1C21B67
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 08:57:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 835371A701;
-	Wed, 13 Mar 2024 08:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FE221B5B2;
+	Wed, 13 Mar 2024 08:57:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Ab3VxTqE"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp1.ms.mff.cuni.cz (smtp-in1.ms.mff.cuni.cz [195.113.20.234])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B311912E73;
-	Wed, 13 Mar 2024 08:52:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0488E1AAD4;
+	Wed, 13 Mar 2024 08:57:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710319941; cv=none; b=ho1gzQ+Q8wj1jSxBMVrPkOQMo3lRxo9+SnVlNFaFIYXLjzSqUZxHUXzWX25sTof/Xqgn9Np2T2szmn1Kq+FDSCUk1+Ab3JHWjKZe6ILZLZa5+R4SZ7RbYgcIayUKM0w49kwe7BXF+n5xF5FJP4TeFY72Bu7/7ojvaVhi8TtYSmI=
+	t=1710320236; cv=none; b=FdKTjixzT4uQtnzwzaZFzePfb/kFoXpI5aOaIyPABAtyjT93SHnvm9UZO4h8PICsTlXQt8x/QiBjfiA1sM4glkjim+ICEBC9a7JhfTRXL65wps7MunBVvzVjP7Gl+t+DzrlX9WJJjA05PCrPq9ewTDtohnC47huvJsMTBMpmlRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710319941; c=relaxed/simple;
-	bh=+NePArLWJMB57UThWlpn3BKXqneliUUo+Wa39GBb6SQ=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:To:From:
-	 In-Reply-To; b=HXQ6SUGto9CJzXQDIifpc0tJNK/1/aqdmypyOYL0oZEQ3srdY5TXDjd2A4QgHcMDeBMPaS2+cofvuxoXo/TOaaOGm3+RAJHj4koN4wyvpkkWL+2Lm6ssjEHHHlRq0VPqgCuuSgO6xiFyKA6hyNMvv0piwY67oNLzx7ujR1g1XqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=matfyz.cz; arc=none smtp.client-ip=195.113.20.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matfyz.cz
-X-SubmittedBy: id balejk@matfyz.cz subject /postalCode=110+2000/O=Univerzita+20Karlova/street=Ovocn+5CxC3+5CxBD+20trh+20560/5/ST=Praha,+20Hlavn+5CxC3+5CxAD+20m+5CxC4+5Cx9Bsto/C=CZ/CN=Karel+20Balej/emailAddress=balejk@matfyz.cz
-	serial F5FD910E8FE2121B897F7E55B84E351D
-	issued by /C=NL/O=GEANT+20Vereniging/CN=GEANT+20Personal+20CA+204
-	auth type TLS.CUNI
-Received: from localhost (koleje-wifi-0013.koleje.cuni.cz [78.128.191.13])
-	(authenticated)
-	by smtp1.ms.mff.cuni.cz (8.16.1/8.16.1) with ESMTPS id 42D8neSJ059445
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-	Wed, 13 Mar 2024 09:49:41 +0100 (CET)
-	(envelope-from balejk@matfyz.cz)
+	s=arc-20240116; t=1710320236; c=relaxed/simple;
+	bh=qMFjOw5oWXHTNwfAIdt5NPZlOtPArHhvm1xObO8VH44=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=VpA+nCygPwfzXAVsONPwYhfuI6A5xuUxxMlIal/EriqTked0hPgYP9zF4qMVZMREL6k1Omz2WmMwmCqEGYV/s/hmZ+o0EarfxaX5pf1KG+rtPY6AZH+PF+2Ze+vBRobItYlj3Gnk6QgEQC/BUeKKzaYXSDhDiTv6FOFCxILcQEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Ab3VxTqE; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=7Z3xpgxMC3SabrhTXAHSyPXqOmddBGRm2jLKIlBKce0=;
+	t=1710320234; x=1711529834; b=Ab3VxTqE9GZ/mGpgNWdO20gXFpnG8sqFCd4Dfl1/7f8lbDF
+	IevLjr0RN7NoCLrp8O7XfRLjtbLQ6F54xkWZd51cIvoQGdPLjR4P1Z1fhdf4AxOzWLm3J2OCdZLPm
+	tMOlP10dZt3Bmfwy2gnLtHHUO4+vI+sRrTegBw8rpcQSA7LCT/BVRzySJynIKnuRavwXJ0XOVE1v/
+	rJuBY3nVDIVURI0HntM5cr74WFg4Cm1wTuO5MqMdY1BC44CYOPU4RnM19fsb/mQtl59/jgbFuwcI8
+	BBiJapuJt54Jpdq1hihdCAd5WYpKdG1aRhAl2UoPbxFzguk9N5ZBMifA4g42F8+w==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rkKPv-0000000F7E9-0rbB;
+	Wed, 13 Mar 2024 09:56:55 +0100
+Message-ID: <005f998ec59e27633b1b99fdf929e40ccfd401c1.camel@sipsolutions.net>
+Subject: Re: [REGRESSION] Re: [PATCH] crypto: pkcs7: remove sha1 support
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Karel Balej <balejk@matfyz.cz>, dimitri.ledkov@canonical.com
+Cc: alexandre.torgue@foss.st.com, davem@davemloft.net, dhowells@redhat.com, 
+	herbert@gondor.apana.org.au, keyrings@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, mcgrof@kernel.org, 
+	mcoquelin.stm32@gmail.com, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, iwd@lists.linux.dev
+Date: Wed, 13 Mar 2024 09:56:53 +0100
+In-Reply-To: <CZSHRUIJ4RKL.34T4EASV5DNJM@matfyz.cz>
+References: <CZSHRUIJ4RKL.34T4EASV5DNJM@matfyz.cz>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 13 Mar 2024 09:50:11 +0100
-Message-Id: <CZSHRUIJ4RKL.34T4EASV5DNJM@matfyz.cz>
-Cc: <alexandre.torgue@foss.st.com>, <davem@davemloft.net>,
-        <dhowells@redhat.com>, <herbert@gondor.apana.org.au>,
-        <keyrings@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-        <linux-crypto@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-modules@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>, <mcgrof@kernel.org>,
-        <mcoquelin.stm32@gmail.com>, <linux-wireless@vger.kernel.org>,
-        <netdev@vger.kernel.org>
-Subject: [REGRESSION] Re: [PATCH] crypto: pkcs7: remove sha1 support
-To: <dimitri.ledkov@canonical.com>,
-        "Johannes Berg"
- <johannes@sipsolutions.net>
-From: "Karel Balej" <balejk@matfyz.cz>
-In-Reply-To: <20231010212240.61637-1-dimitri.ledkov@canonical.com>
+MIME-Version: 1.0
+X-malware-bazaar: not-scanned
 
-Dimitri, Johannes,
+Not sure why you're CC'ing the world, but I guess adding a few more
+doesn't hurt ...
 
-ever since upgrading to Linux v6.7 I am unable to connect to a 802.1X
-wireless network (specifically, eduroam). In my dmesg, the following
-messages appear:
+On Wed, 2024-03-13 at 09:50 +0100, Karel Balej wrote:
+>=20
+>  and I use iwd
 
-	[   68.161621] wlan0: authenticate with xx:xx:xx:xx:xx:xx (local address=
-=3Dxx:xx:xx:xx:xx:xx)
-	[   68.163733] wlan0: send auth to xx:xx:xx:xx:xx:xx (try 1/3)
-	[   68.165773] wlan0: authenticated
-	[   68.166785] wlan0: associate with xx:xx:xx:xx:xx:xx (try 1/3)
-	[   68.168498] wlan0: RX AssocResp from xx:xx:xx:xx:xx:xx (capab=3D0x1411 =
-status=3D0 aid=3D4)
-	[   68.172445] wlan0: associated
-	[   68.204956] wlan0: Limiting TX power to 23 (23 - 0) dBm as advertised b=
-y xx:xx:xx:xx:xx:xx
-	[   70.262032] wlan0: deauthenticated from xx:xx:xx:xx:xx:xx (Reason: 23=
-=3DIEEE8021X_FAILED)
-	[   73.065966] wlan0: authenticate with xx:xx:xx:xx:xx:xx (local address=
-=3Dxx:xx:xx:xx:xx:xx)
-	[   73.068006] wlan0: send auth to xx:xx:xx:xx:xx:xx (try 1/3)
-	[   73.070166] wlan0: authenticated
-	[   73.070756] wlan0: associate with xx:xx:xx:xx:xx:xx (try 1/3)
-	[   73.072807] wlan0: RX AssocResp from xx:xx:xx:xx:xx:xx (capab=3D0x1411 =
-status=3D0 aid=3D4)
-	[   73.076676] wlan0: associated
-	[   73.120396] wlan0: Limiting TX power to 23 (23 - 0) dBm as advertised b=
-y xx:xx:xx:xx:xx:xx
-	[   75.148376] wlan0: deauthenticating from xx:xx:xx:xx:xx:xx by local cho=
-ice (Reason: 23=3DIEEE8021X_FAILED)
-	[   77.718016] wlan0: authenticate with xx:xx:xx:xx:xx:xx (local address=
-=3Dxx:xx:xx:xx:xx:xx)
-	[   77.720137] wlan0: send auth to xx:xx:xx:xx:xx:xx (try 1/3)
-	[   77.722670] wlan0: authenticated
-	[   77.724737] wlan0: associate with xx:xx:xx:xx:xx:xx (try 1/3)
-	[   77.726172] wlan0: RX AssocResp from xx:xx:xx:xx:xx:xx (capab=3D0x1411 =
-status=3D0 aid=3D4)
-	[   77.730822] wlan0: associated
-	[   77.830763] wlan0: Limiting TX power to 23 (23 - 0) dBm as advertised b=
-y xx:xx:xx:xx:xx:xx
-	[   79.784199] wlan0: deauthenticating from xx:xx:xx:xx:xx:xx by local cho=
-ice (Reason: 23=3DIEEE8021X_FAILED)
+This is your problem, the wireless stack in the kernel doesn't use any
+kernel crypto code for 802.1X.
 
-The connection works fine with v6.6 and I have bisected the problem to
-the revision introduced by this patch (16ab7cb5825f mainline).
+I suppose iwd wants to use the kernel infrastructure but has no
+fallbacks to other implementations.
 
-My wireless kernel driver is iwlwifi and I use iwd. I started the bisect
-with a config copied from my distribution package [1].
-
-Would you please help me with this? Please let me know if I forgot to
-mention something which could be helpful in resolving this.
-
-[1] https://raw.githubusercontent.com/void-linux/void-packages/master/srcpk=
-gs/linux6.6/files/x86_64-dotconfig
-
-Thank you very much, kind regards,
-K. B.
+johannes
 
