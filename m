@@ -1,74 +1,63 @@
-Return-Path: <linux-wireless+bounces-4711-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4712-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 514C287B48C
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 23:47:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4307D87B4A1
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 23:52:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BBC3BB21425
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 22:47:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF9F52860E2
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 22:52:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 541595A10A;
-	Wed, 13 Mar 2024 22:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 258C75C90A;
+	Wed, 13 Mar 2024 22:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DJ3bCiKN"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Oo1BkIWf"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1DC35F55C
-	for <linux-wireless@vger.kernel.org>; Wed, 13 Mar 2024 22:47:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56B085A0EB;
+	Wed, 13 Mar 2024 22:52:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710370052; cv=none; b=C/bXv5cPCrm7yNAy8ON4VtT7Ja/6rgaTd1TKY3My8/GzT4BSUTwvGAjVlrIcGPsPe+3hWQNC6gYAaf1GsLSg4fqSvgDQwuSbQDlC5ywKctkuQonu6BuWthMpzAEUiBg1PPHc+C/UbBCqcZ5ANYMFaj8wvbVMWJ1mpD3wwnKf0PY=
+	t=1710370342; cv=none; b=nfb/qfDFBGCwNQY+vCMhszt0YijKy75mXyk1QMc7824sDKDih+9A7kR7IL28pFby67nANAn9H4PcqRlU49655eoYhGhWeKxADKM5r/OO5NTjUMdTV6h2uN7raW+hjtoUcY2fPqvS8+eo4WfGpCUUfzKLepRxaq4OJD48jYUeR/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710370052; c=relaxed/simple;
-	bh=VfTSM43w+WUg9vXqXFLekxfMcp6LPAnPotTTMYsrpa0=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=Bhpip5CeSMlFILtujhckYLp+GYMzzvtgQEGJ4uzDnbGWeLGb2xg1j9B1d299JwaEz4435u5cnV2ZRayLhGEztWel5XDpmaN45tpyyJjqaRV8foLEBl3il6H709bIo9lyqK1Xz2Bb+DdXC0czFDIZfd8U7+BvI1IIPJVKm0ESIAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DJ3bCiKN; arc=none smtp.client-ip=209.85.221.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-33e82c720f8so370044f8f.3
-        for <linux-wireless@vger.kernel.org>; Wed, 13 Mar 2024 15:47:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710370048; x=1710974848; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=KJ2w5FSfVhsOvGaIKx5jdqh3C417ekXUz7f8HvFq7hA=;
-        b=DJ3bCiKNcvovq50DmCSaweSpMjpH8BaBNDba8HfYo2BGRnAoSxT7n+RMLY6JMtiyQZ
-         FurbzqhfLBkO+fAO6EgZzVBKwRUGZX2I7Gn2rThRO23AYDMQLPruST7Z/UNlFaxpS9Pc
-         eHp+dOgxtNPWZwwD7ZzdLs2e9Cdd8madHyrhF3mCMWb9GPwYLi94AJrt61e9De9hFES0
-         TEEx1WzeNkjsNVN9+36F0O2++tk5RK2g0CILM/CO/aNG9g9G+hQ/2aPg71shm4UWRa20
-         NTnQkBfUwuZ+/ErfmIWPnC62S+xT7Rf8Y7n00H/Lr+JnJlmyfj7vtYaAEvCJGiHwcUOA
-         tD3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710370048; x=1710974848;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KJ2w5FSfVhsOvGaIKx5jdqh3C417ekXUz7f8HvFq7hA=;
-        b=SbHNH1G50PBJ8yQdNE725HQ6EPdByuakKXN+AoiEs1nntsEaLBbi7GT/bfwSvZoaDy
-         AKxfCZJxAjt82KXL85+ZrKSHmNz629NtO99/Fk8rDB5tf7+ldIGgIwK07F8D5ShbaCRj
-         OaYDB08BMpyw6m821ij9mCpL20PfZRo8UdvLTwsw/YEC8bz5jtDG1xad1tpOj61/vvP+
-         YW28WkztIPHEfJSfIzbEh0TViz2dyaoOEeIVAVEQBc4dar/xOmQ3T78Y25jYuo/rNXca
-         ZRUGBwks3naj6JXBomlSeesrA+DI3oCj1bVanfp9sSH+A+R4i89b+dRbDP9nfOFufMGR
-         F1og==
-X-Forwarded-Encrypted: i=1; AJvYcCXqjobPFHBhmPeaFNSpyS8/aOjFJBL4eIUJDmsS/vhkb9DUiSrHc0pz+eta4N6VuWdng+FulrXWEsFkbQ+nqJ2lmjSZNJ8zrWt6DdoSLqs=
-X-Gm-Message-State: AOJu0YxICyx3hkRDaphi6wG6ZCprJSSvkAwJBqKlGrAZZaQYklPynvKK
-	WnwTaQrrXdGayy4YnHyxWWnJg6v94Bxd5pNrg+QDrHMYBmcwSxvk
-X-Google-Smtp-Source: AGHT+IHBYSeaCeS6HMDBrEZJbEKJQb9Dqe3slYhkGKznfCP36wY5gnv3OxWdJ2PM+xC0Xp2Q1WDidw==
-X-Received: by 2002:a05:6000:4021:b0:33e:3bf3:a097 with SMTP id cp33-20020a056000402100b0033e3bf3a097mr9333wrb.26.1710370047696;
-        Wed, 13 Mar 2024 15:47:27 -0700 (PDT)
-Received: from [192.168.1.50] ([79.119.240.211])
-        by smtp.gmail.com with ESMTPSA id bn5-20020a056000060500b0033e49aebafasm176437wrb.3.2024.03.13.15.47.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 Mar 2024 15:47:27 -0700 (PDT)
-Message-ID: <a674d357-c917-413a-a4fb-1ee22f43d9ff@gmail.com>
-Date: Thu, 14 Mar 2024 00:47:25 +0200
+	s=arc-20240116; t=1710370342; c=relaxed/simple;
+	bh=2HTUB6/xaI3gevTSl8qBS2gA7J94MLFpCqKyqXxHdvE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Zbh87a2DYO1BGkZ6iTEdW6veST/3LnLjXhLpFlRIvBdUqNxbHy28dEFHfnA9ohKbURnl12yc3YpMEZahXIRVfa4lLP+Cdnkd8Vn18zURT2SD2HSqmyKjpG9MNdeiWmXkOBv7d4Owco/dAGdRwI6f/iz0b9q40rN9gYfh4lDAJ44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Oo1BkIWf; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42DLvbOk027157;
+	Wed, 13 Mar 2024 22:51:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=jMWRMbYIZO6Y6crhunSlTLQWHGSrabz5NP2clR8Lzyg=; b=Oo
+	1BkIWfF5BgnNE5erj2KzvK5P+JuEwBGFIvCrt1oZmJouOaIkAt/ut4+LkTvha3ZY
+	zcitRhWsD989nVr1OvjtDHsMLidGPFkLsBITSxc2c8A4cs3wOcCGSoUWbMywpFCW
+	BXQSK0AUS5kORIAatZgMPoIozG9E3andaAWyv0eJzJBrfvN5+ktshIqcBkk94eGE
+	9AZWlhJMNvsCQ447ZIdIRrvB9K5No+1iyFVhoIRQjsybcDR477Hltjb5QvJ5FFIN
+	V9UHH5twxJHdSX6w3R6pMufWGdywphC6pZng0+mYDtaEVbvP5vgHGYhMW43xd0PG
+	HpDwtkwNhbVGoFrp5ffg==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wu9xaspgj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 13 Mar 2024 22:51:13 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42DMpCRs004527
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 13 Mar 2024 22:51:12 GMT
+Received: from [10.110.27.195] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Wed, 13 Mar
+ 2024 15:51:11 -0700
+Message-ID: <f0492c92-1015-48e3-bfce-598c7a4843d1@quicinc.com>
+Date: Wed, 13 Mar 2024 15:51:10 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -76,648 +65,152 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: Re: [PATCH 2/3] wifi: rtlwifi: Adjust rtl8192d-common for USB
-To: Ping-Ke Shih <pkshih@realtek.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>,
- "s.l-h@gmx.de" <s.l-h@gmx.de>, "chewitt@libreelec.tv" <chewitt@libreelec.tv>
-References: <e1922019-21eb-4013-a35f-0077167e92cf@gmail.com>
- <d70dc39c-a3e5-43f6-9cb4-612d08035c57@gmail.com>
- <fdd95844c3a127356bab4250dfc46b16041829ee.camel@realtek.com>
+Subject: Re: [REGRESSION] Re: [PATCH] crypto: pkcs7: remove sha1 support
 Content-Language: en-US
-In-Reply-To: <fdd95844c3a127356bab4250dfc46b16041829ee.camel@realtek.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: Eric Biggers <ebiggers@kernel.org>, James Prestwood <prestwoj@gmail.com>
+CC: Johannes Berg <johannes@sipsolutions.net>, Karel Balej <balejk@matfyz.cz>,
+        <dimitri.ledkov@canonical.com>, <alexandre.torgue@foss.st.com>,
+        <davem@davemloft.net>, <dhowells@redhat.com>,
+        <herbert@gondor.apana.org.au>, <keyrings@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-crypto@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-modules@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>, <mcgrof@kernel.org>,
+        <mcoquelin.stm32@gmail.com>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <iwd@lists.linux.dev>
+References: <CZSHRUIJ4RKL.34T4EASV5DNJM@matfyz.cz>
+ <005f998ec59e27633b1b99fdf929e40ccfd401c1.camel@sipsolutions.net>
+ <f2dcbe55-0f0e-4173-8e21-f899c6fc802a@gmail.com>
+ <20240313194423.GA1111@sol.localdomain>
+ <b838e729-dc30-4e18-b928-c34c16b08606@gmail.com>
+ <20240313202223.GB1111@sol.localdomain>
+ <db86cba4-0e61-441d-8e66-405a13b61a3c@gmail.com>
+ <20240313221043.GC1111@sol.localdomain>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20240313221043.GC1111@sol.localdomain>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: EQ1oBcAKVVr6392XzSXRR2wEAfpYrNcm
+X-Proofpoint-GUID: EQ1oBcAKVVr6392XzSXRR2wEAfpYrNcm
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-13_09,2024-03-13_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 impostorscore=0 adultscore=0 mlxlogscore=999 mlxscore=0
+ priorityscore=1501 phishscore=0 malwarescore=0 bulkscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2402120000
+ definitions=main-2403130174
 
-On 13/03/2024 05:46, Ping-Ke Shih wrote:
-> On Wed, 2024-03-13 at 00:20 +0200, Bitterblue Smith wrote:
+On 3/13/2024 3:10 PM, Eric Biggers wrote:
+> On Wed, Mar 13, 2024 at 02:17:29PM -0700, James Prestwood wrote:
+>> Hi,
 >>
->> A few of the shared functions need small changes for the USB driver.
+>> On 3/13/24 1:22 PM, Eric Biggers wrote:
+>>> On Wed, Mar 13, 2024 at 01:12:54PM -0700, James Prestwood wrote:
+>>>> Hi,
+>>>>
+>>>> On 3/13/24 12:44 PM, Eric Biggers wrote:
+>>>>> On Wed, Mar 13, 2024 at 10:26:06AM -0700, James Prestwood wrote:
+>>>>>> Hi,
+>>>>>>
+>>>>>> On 3/13/24 1:56 AM, Johannes Berg wrote:
+>>>>>>> Not sure why you're CC'ing the world, but I guess adding a few more
+>>>>>>> doesn't hurt ...
+>>>>>>>
+>>>>>>> On Wed, 2024-03-13 at 09:50 +0100, Karel Balej wrote:
+>>>>>>>>     and I use iwd
+>>>>>>> This is your problem, the wireless stack in the kernel doesn't use any
+>>>>>>> kernel crypto code for 802.1X.
+>>>>>> Yes, the wireless stack has zero bearing on the issue. I think that's what
+>>>>>> you meant by "problem".
+>>>>>>
+>>>>>> IWD has used the kernel crypto API forever which was abruptly broken, that
+>>>>>> is the problem.
+>>>>>>
+>>>>>> The original commit says it was to remove support for sha1 signed kernel
+>>>>>> modules, but it did more than that and broke the keyctl API.
+>>>>>>
+>>>>> Which specific API is iwd using that is relevant here?
+>>>>> I cloned https://kernel.googlesource.com/pub/scm/network/wireless/iwd
+>>>>> and grepped for keyctl and AF_ALG, but there are no matches.
+>>>> IWD uses ELL for its crypto, which uses the AF_ALG API:
+>>>>
+>>>> https://git.kernel.org/pub/scm/libs/ell/ell.git/
+>>> Thanks for pointing out that the relevant code is really in that separate
+>>> repository.  Note, it seems that keyctl() is the problem here, not AF_ALG.  The
+>>> blamed commit didn't change anything for AF_ALG.
+>>>
+>>>> I believe the failure is when calling:
+>>>>
+>>>> KEYCTL_PKEY_QUERY enc="x962" hash="sha1"
+>>>>
+>>>>  From logs Michael posted on the IWD list, the ELL API that fails is:
+>>>>
+>>>> l_key_get_info (ell.git/ell/key.c:416)
+>>> Okay, I guess that's what's actually causing the problem.  KEYCTL_PKEY_* are a
+>>> weird set of APIs where userspace can ask the kernel to do asymmetric key
+>>> operations.  It's unclear why they exist, as the same functionality is available
+>>> in userspace crypto libraries.
+>>>
+>>> I suppose that the blamed commit, or at least part of it, will need to be
+>>> reverted to keep these weird keyctls working.
+>>>
+>>> For the future, why doesn't iwd just use a userspace crypto library such as
+>>> OpenSSL?
 >>
->> Also, add a few macros to wifi.h and initialise rtlhal.interfaceindex
->> for USB devices.
-> 
-> 
-> Please run checkpatch.pl that reports
->   "total: 0 errors, 11 warnings, 27 checks, 8045 lines checked"
-> I think these are newly introduced by this patch. 
-> 
-> 
+>> I was not around when the original decision was made, but a few reasons I
+>> know we don't use openSSL:
 >>
->> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
->> ---
->>  .../wireless/realtek/rtlwifi/rtl8192d/def.h   |   2 +
->>  .../realtek/rtlwifi/rtl8192d/fw_common.c      |  19 +++
->>  .../realtek/rtlwifi/rtl8192d/hw_common.c      |  46 ++++--
->>  .../realtek/rtlwifi/rtl8192d/phy_common.c     |  26 ++-
->>  .../realtek/rtlwifi/rtl8192d/phy_common.h     |   6 +
->>  .../wireless/realtek/rtlwifi/rtl8192d/reg.h   | 156 +++++++++++++++---
->>  drivers/net/wireless/realtek/rtlwifi/usb.c    |   3 +
->>  drivers/net/wireless/realtek/rtlwifi/wifi.h   |   5 +
->>  8 files changed, 222 insertions(+), 41 deletions(-)
->>
->> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192d/def.h
->> b/drivers/net/wireless/realtek/rtlwifi/rtl8192d/def.h
->> index 21726d9b4aef..ee45f51fcf71 100644
->> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8192d/def.h
->> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192d/def.h
->> @@ -116,6 +116,8 @@ enum version_8192d {
->>  #define IS_92D_E_CUT(version)          ((IS_92D(version)) ?            \
->>                                  ((GET_CVID_CUT_VERSION(version) ==     \
->>                                  CHIP_92D_E_CUT) ? true : false) : false)
->> +#define IS_NORMAL_CHIP(version)        \
->> +       ((version & NORMAL_CHIP) ? true : false)
+>>  - IWD has virtually zero dependencies.
 > 
-> #define IS_NORMAL_CHIP(version) !!(version & NORMAL_CHIP)
+> Depending on something in the kernel does not eliminate a dependency; it just
+> adds that particular kernel UAPI to your list of dependencies.  The reason that
+> we're having this discussion in the first place is because iwd is depending on
+> an obscure kernel UAPI that is not well defined.  Historically it's been hard to
+> avoid "breaking" changes in these crypto-related UAPIs because of the poor
+> design where a huge number of algorithms are potentially supported, but the list
+> is undocumented and it varies from one system to another based on configuration.
+> Also due to their obscurity many kernel developers don't know that these UAPIs
+> even exist.  (The reaction when someone finds out is usually "Why!?")
 > 
->>
->>  enum rf_optype {
->>         RF_OP_BY_SW_3WIRE = 0,
->> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192d/fw_common.c
->> b/drivers/net/wireless/realtek/rtlwifi/rtl8192d/fw_common.c
->> index e333275c51c3..ac48bd9dcc9f 100644
->> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8192d/fw_common.c
->> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192d/fw_common.c
->> @@ -94,9 +94,22 @@ EXPORT_SYMBOL_GPL(rtl92d_fw_free_to_go);
->>  void rtl92d_firmware_selfreset(struct ieee80211_hw *hw)
->>  {
->>         struct rtl_priv *rtlpriv = rtl_priv(hw);
->> +       struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
->>         u8 u1b_tmp;
->>         u8 delay = 100;
->>
->> +       if (rtlhal->interface == INTF_USB) {
->> +               delay *= 60;
+> It may be worth looking at if iwd should make a different choice for this
+> dependency.  It's understandable to blame dependencies when things go wrong, but
+> at the same time the choice of dependency is very much a choice, and some
+> choices can be more technically sound and cause fewer problems than others...
 > 
-> Out of curiosity, how did you decide this factor 60?
+>>  - OpenSSL + friends are rather large libraries.
 > 
+> The Linux kernel is also large, and it's made larger by having to support
+> obsolete crypto algorithms for backwards compatibility with iwd.
+> 
+>>  - AF_ALG has transparent hardware acceleration (not sure if openSSL does
+>> too).
+> 
+> OpenSSL takes advantage of CPU-based hardware acceleration, e.g. AES-NI.
+> 
+>> Another consideration is once you support openSSL someone wants wolfSSL,
+>> then boringSSL etc. Even if users implement support it just becomes a huge
+>> burden to carry for the project. Just look at wpa_supplicant's src/crypto/
+>> folder, nearly 40k LOC in there, compared to ELL's crypto modules which is
+>> ~5k. You have to sort out all the nitty gritty details of each library, and
+>> provide a common driver/API for the core code, differences between openssl
+>> versions, the list goes on.
+> 
+> What is the specific functionality that you're actually relying on that you
+> think would need 40K lines of code to replace, even using OpenSSL?  I see you
+> are using KEYCTL_PKEY_*, but what specifically are you using them for?  What
+> operations are being performed, and with which algorithms and key formats?
+> Also, is the kernel behavior that you're relying on documented anywhere?  There
+> are man pages for those keyctls, but they don't say anything about any
+> particular hash algorithm, SHA-1 or otherwise, being supported.
 
-Just because the out-of-tree driver uses a delay of 300 ms:
-https://github.com/lwfinger/rtl8192du/blob/2c5450dd3783e1085f09a8c7a632318c7d0f1d39/hal/rtl8192d_hal_init.c#L329-L346
+<https://lore.kernel.org/all/CA+55aFxW7NMAMvYhkvz1UPbUTUJewRt6Yb51QAx5RtrWOwjebg@mail.gmail.com/>
+"And we simply do not break user space."
+-Linus Torvalds
 
-rtl8192de uses 100 * 0.05 ms. Multiplying by 60 gives 300 ms.
+Is this no longer applicable?
 
-> Let's define a name such as RTL_USB_DELAY_FACTOR to be clear. 
-> 
->> +
->> +               rtl_write_byte(rtlpriv, REG_FSIMR, 0);
->> +
->> +               /* We need to disable other HRCV INT to influence 8051 reset. */
->> +               rtl_write_byte(rtlpriv, REG_FWIMR, 0x20);
->> +
->> +               /* Close mask to prevent incorrect FW write operation. */
->> +               rtl_write_byte(rtlpriv, REG_FTIMR, 0);
->> +       }
->> +
->>         /* Set (REG_HMETFR + 3) to  0x20 is reset 8051 */
->>         rtl_write_byte(rtlpriv, REG_HMETFR + 3, 0x20);
->>         u1b_tmp = rtl_read_byte(rtlpriv, REG_SYS_FUNC_EN + 1);
->> @@ -107,6 +120,12 @@ void rtl92d_firmware_selfreset(struct ieee80211_hw *hw)
->>                 udelay(50);
->>                 u1b_tmp = rtl_read_byte(rtlpriv, REG_SYS_FUNC_EN + 1);
->>         }
->> +
->> +       if (rtlhal->interface == INTF_USB) {
->> +               if ((u1b_tmp & BIT(2)) && delay == 0)
-> 
-> #define BIT_FEN_CPUEN BIT(10)
-> 
-> Because BIT(2) of REG_SYS_FUNC_EN + 1 is BIT(10)
-> 
-> 
->> +                       rtl_write_byte(rtlpriv, REG_FWIMR, 0);
->> +       }
->> +
->>         WARN_ONCE((delay <= 0), "rtl8192de: 8051 reset failed!\n");
->>         rtl_dbg(rtlpriv, COMP_FW, DBG_DMESG,
->>                 "=====> 8051 reset success (%d)\n", delay);
->> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192d/hw_common.c
->> b/drivers/net/wireless/realtek/rtlwifi/rtl8192d/hw_common.c
->> index ada08f82adff..b9bc2fdde5e2 100644
->> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8192d/hw_common.c
->> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192d/hw_common.c
->> @@ -622,9 +622,14 @@ static void _rtl92de_read_macphymode_from_prom(struct ieee80211_hw *hw,
->>  {
->>         struct rtl_priv *rtlpriv = rtl_priv(hw);
->>         struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
->> -       u8 macphy_crvalue = content[EEPROM_MAC_FUNCTION];
->> +       bool is_single_mac = true;
->>
->> -       if (macphy_crvalue & BIT(3)) {
->> +       if (rtlhal->interface == INTF_PCI)
->> +               is_single_mac = !!(content[EEPROM_MAC_FUNCTION] & BIT(3));
->> +       else if (rtlhal->interface == INTF_USB)
->> +               is_single_mac = !(content[EEPROM_ENDPOINT_SETTING] & BIT(0));
->> +
->> +       if (is_single_mac) {
->>                 rtlhal->macphymode = SINGLEMAC_SINGLEPHY;
->>                 rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD,
->>                         "MacPhyMode SINGLEMAC_SINGLEPHY\n");
->> @@ -663,6 +668,7 @@ static void _rtl92de_efuse_update_chip_version(struct ieee80211_hw *hw)
->>                 rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD, "D-CUT!!!\n");
->>                 break;
->>         case 0xCC33:
->> +       case 0x33CC:
->>                 chipver |= CHIP_92D_E_CUT;
->>                 rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD, "E-CUT!!!\n");
->>                 break;
->> @@ -679,14 +685,22 @@ static void _rtl92de_read_adapter_info(struct ieee80211_hw *hw)
->>         struct rtl_priv *rtlpriv = rtl_priv(hw);
->>         struct rtl_efuse *rtlefuse = rtl_efuse(rtl_priv(hw));
->>         struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
->> -       int params[] = {RTL8190_EEPROM_ID, EEPROM_VID, EEPROM_DID,
->> -                       EEPROM_SVID, EEPROM_SMID, EEPROM_MAC_ADDR_MAC0_92D,
->> -                       EEPROM_CHANNEL_PLAN, EEPROM_VERSION, EEPROM_CUSTOMER_ID,
->> -                       COUNTRY_CODE_WORLD_WIDE_13};
->> +       int params_pci[] = {RTL8190_EEPROM_ID, EEPROM_VID, EEPROM_DID,
->> +                           EEPROM_SVID, EEPROM_SMID, EEPROM_MAC_ADDR_MAC0_92D,
->> +                           EEPROM_CHANNEL_PLAN, EEPROM_VERSION, EEPROM_CUSTOMER_ID,
->> +                           COUNTRY_CODE_WORLD_WIDE_13};
->> +       int params_usb[] = {RTL8190_EEPROM_ID, EEPROM_VID_USB, EEPROM_PID_USB,
->> +                           EEPROM_VID_USB, EEPROM_PID_USB, EEPROM_MAC_ADDR_MAC0_92DU,
->> +                           EEPROM_CHANNEL_PLAN, EEPROM_VERSION, EEPROM_CUSTOMER_ID,
->> +                           COUNTRY_CODE_WORLD_WIDE_13};
-> 
-> static const int params_xxx[], and the const should propagate into rtl_get_hwinfo().
-> 
->> +       int *params = params_pci;
->>         int i;
->>         u16 usvalue;
->>         u8 *hwinfo;
->>
->> +       if (rtlhal->interface == INTF_USB)
->> +               params = params_usb;
->> +
->>         hwinfo = kzalloc(HWSET_MAX_SIZE, GFP_KERNEL);
->>         if (!hwinfo)
->>                 return;
->> @@ -858,7 +872,7 @@ static void rtl92de_update_hal_rate_mask(struct ieee80211_hw *hw,
->>                                                         1 : 0;
->>         enum wireless_mode wirelessmode = 0;
->>         bool shortgi = false;
->> -       u32 value[2];
->> +       u8 rate_mask[5];
->>         u8 macid = 0;
->>         u8 mimo_ps = IEEE80211_SMPS_OFF;
->>
->> @@ -966,12 +980,17 @@ static void rtl92de_update_hal_rate_mask(struct ieee80211_hw *hw,
->>                 break;
->>         }
->>
->> -       value[0] = (ratr_bitmap & 0x0fffffff) | (ratr_index << 28);
->> -       value[1] = macid | (shortgi ? 0x20 : 0x00) | 0x80;
->> +       *(u32 *)&rate_mask = (ratr_bitmap & 0x0fffffff) |
->> +                                    (ratr_index << 28);
-> 
-> 'u32' is weird to me. Shouldn't it be __le32?
-> But I prefer a struct of rate_mask. 
-> 
-
-I don't like this either, but it was easy to copy from rtl8192cu.
-
-Something like this?
-
-#define RAID_MASK		GENMASK(31, 28)
-#define RATE_MASK_MASK		GENMASK(27, 0)
-#define SHORT_GI_MASK		BIT(5)
-#define MACID_MASK		GENMASK(4, 0)
-	
-struct rtl92d_rate_mask {
-	__le32 rate_mask_and_raid;
-	u8 macid_and_short_gi;
-} __packed;
-
->> +       rate_mask[4] = macid | (shortgi ? 0x20 : 0x00) | 0x80;
->>         rtl_dbg(rtlpriv, COMP_RATR, DBG_DMESG,
->> -               "ratr_bitmap :%x value0:%x value1:%x\n",
->> -               ratr_bitmap, value[0], value[1]);
->> -       rtl92d_fill_h2c_cmd(hw, H2C_RA_MASK, 5, (u8 *) value);
->> +       "Rate_index:%x, ratr_val:%x, %5phC\n",
->> +               ratr_index, ratr_bitmap, rate_mask);
->> +       memcpy(rtlpriv->rate_mask, rate_mask, 5);
-> 
-> 5 ==> sizeof(rtlpriv->rate_mask)
-> 
->> +       /* rtl92d_fill_h2c_cmd() does USB I/O and will result in a
->> +        * "scheduled while atomic" if called directly
->> +        */
->> +       schedule_work(&rtlpriv->works.fill_h2c_cmd);
->>         if (macid != 0)
->>                 sta_entry->ratr_index = ratr_index;
->>  }
->> @@ -1015,7 +1034,8 @@ bool rtl92de_gpio_radio_on_off_checking(struct ieee80211_hw *hw, u8 *valid)
->>         bool actuallyset = false;
->>         unsigned long flag;
->>
->> -       if (rtlpci->being_init_adapter)
->> +       if (rtlpriv->rtlhal.interface == INTF_PCI &&
->> +           rtlpci->being_init_adapter)
->>                 return false;
->>         if (ppsc->swrf_processing)
->>                 return false;
->> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192d/phy_common.c
->> b/drivers/net/wireless/realtek/rtlwifi/rtl8192d/phy_common.c
->> index 487628ac491b..1e39940a3ba7 100644
->> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8192d/phy_common.c
->> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192d/phy_common.c
->> @@ -81,11 +81,13 @@ u32 rtl92d_phy_query_rf_reg(struct ieee80211_hw *hw, enum radio_path rfpath,
->>         rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
->>                 "regaddr(%#x), rfpath(%#x), bitmask(%#x)\n",
->>                 regaddr, rfpath, bitmask);
->> -       spin_lock(&rtlpriv->locks.rf_lock);
->> +       if (rtlpriv->rtlhal.interface == INTF_PCI)
->> +               spin_lock(&rtlpriv->locks.rf_lock);
-> 
-> Does it mean USB never read/write RF registers simultaneously? How can you
-> ensure that? 
-> 
-
-I don't know. It seems to work fine. The out-of-tree driver
-doesn't have locks here:
-https://github.com/lwfinger/rtl8192du/blob/2c5450dd3783e1085f09a8c7a632318c7d0f1d39/hal/rtl8192d_phycfg.c#L637
-
-rtl8xxxu and rtl8192cu don't have locks either.
-
->>         original_value = _rtl92d_phy_rf_serial_read(hw, rfpath, regaddr);
->>         bitshift = calculate_bit_shift(bitmask);
->>         readback_value = (original_value & bitmask) >> bitshift;
->> -       spin_unlock(&rtlpriv->locks.rf_lock);
->> +       if (rtlpriv->rtlhal.interface == INTF_PCI)
->> +               spin_unlock(&rtlpriv->locks.rf_lock);
->>         rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
->>                 "regaddr(%#x), rfpath(%#x), bitmask(%#x), original_value(%#x)\n",
->>                 regaddr, rfpath, bitmask, original_value);
->> @@ -105,7 +107,8 @@ void rtl92d_phy_set_rf_reg(struct ieee80211_hw *hw, enum radio_path rfpath,
->>                 regaddr, bitmask, data, rfpath);
->>         if (bitmask == 0)
->>                 return;
->> -       spin_lock(&rtlpriv->locks.rf_lock);
->> +       if (rtlpriv->rtlhal.interface == INTF_PCI)
->> +               spin_lock(&rtlpriv->locks.rf_lock);
->>         if (rtlphy->rf_mode != RF_OP_BY_FW) {
->>                 if (bitmask != RFREG_OFFSET_MASK) {
->>                         original_value = _rtl92d_phy_rf_serial_read(hw,
->> @@ -116,7 +119,8 @@ void rtl92d_phy_set_rf_reg(struct ieee80211_hw *hw, enum radio_path rfpath,
->>                 }
->>                 _rtl92d_phy_rf_serial_write(hw, rfpath, regaddr, data);
->>         }
->> -       spin_unlock(&rtlpriv->locks.rf_lock);
->> +       if (rtlpriv->rtlhal.interface == INTF_PCI)
->> +               spin_unlock(&rtlpriv->locks.rf_lock);
->>         rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
->>                 "regaddr(%#x), bitmask(%#x), data(%#x), rfpath(%#x)\n",
->>                 regaddr, bitmask, data, rfpath);
->> @@ -642,6 +646,8 @@ static void rtl92d_phy_set_io(struct ieee80211_hw *hw)
->>         case IO_CMD_PAUSE_DM_BY_SCAN:
->>                 rtlphy->initgain_backup.xaagccore1 = de_digtable->cur_igvalue;
->>                 de_digtable->cur_igvalue = 0x37;
->> +               if (rtlpriv->rtlhal.interface == INTF_USB)
->> +                       de_digtable->cur_igvalue = 0x17;
->>                 rtl92d_dm_write_dig(hw);
->>                 break;
->>         default:
->> @@ -698,22 +704,28 @@ void rtl92d_phy_config_macphymode(struct ieee80211_hw *hw)
->>         struct rtl_priv *rtlpriv = rtl_priv(hw);
->>         struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
->>         u8 offset = REG_MAC_PHY_CTRL_NORMAL;
->> +       u8 temp = 0xf0;
-> 
-> 'tmp' instead. Or 'phy_ctrl', or 'ctrl' would be clear. 
-> 
->> +
->> +       if (rtlhal->interface == INTF_USB) {
->> +               temp = rtl_read_byte(rtlpriv, offset);
->> +               temp &= ~(BIT(0) | BIT(1) | BIT(2));
->> +       }
->>
->>         switch (rtlhal->macphymode) {
->>         case DUALMAC_DUALPHY:
->>                 rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD,
->>                         "MacPhyMode: DUALMAC_DUALPHY\n");
->> -               rtl_write_byte(rtlpriv, offset, 0xF3);
->> +               rtl_write_byte(rtlpriv, offset, temp | BIT(0) | BIT(1));
->>                 break;
->>         case SINGLEMAC_SINGLEPHY:
->>                 rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD,
->>                         "MacPhyMode: SINGLEMAC_SINGLEPHY\n");
->> -               rtl_write_byte(rtlpriv, offset, 0xF4);
->> +               rtl_write_byte(rtlpriv, offset, temp | BIT(2));
->>                 break;
->>         case DUALMAC_SINGLEPHY:
->>                 rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD,
->>                         "MacPhyMode: DUALMAC_SINGLEPHY\n");
->> -               rtl_write_byte(rtlpriv, offset, 0xF1);
->> +               rtl_write_byte(rtlpriv, offset, temp | BIT(0));
->>                 break;
->>         }
->>  }
->> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192d/phy_common.h
->> b/drivers/net/wireless/realtek/rtlwifi/rtl8192d/phy_common.h
->> index 071776d05eb9..5649a11f4405 100644
->> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8192d/phy_common.h
->> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192d/phy_common.h
->> @@ -41,6 +41,9 @@ static inline void rtl92d_acquire_cckandrw_pagea_ctl(struct ieee80211_hw *hw,
->>  {
->>         struct rtl_priv *rtlpriv = rtl_priv(hw);
->>
->> +       if (rtlpriv->rtlhal.interface == INTF_USB)
->> +               return;
->> +
->>         if (rtlpriv->rtlhal.interfaceindex == 1)
->>                 spin_lock_irqsave(&rtlpriv->locks.cck_and_rw_pagea_lock, *flag);
->>  }
->> @@ -50,6 +53,9 @@ static inline void rtl92d_release_cckandrw_pagea_ctl(struct ieee80211_hw *hw,
->>  {
->>         struct rtl_priv *rtlpriv = rtl_priv(hw);
->>
->> +       if (rtlpriv->rtlhal.interface == INTF_USB)
->> +               return;
->> +
-> 
-> Why USB doesn't need the lock? I guess USB could be "scheduled while atomic",
-> but this lock is to ensure read/write as expected.
-> 
-
-I don't know. The calls to AcquireCCKAndRWPageAControl and
-ReleaseCCKAndRWPageAControl are commented out and their
-implementations are missing from the out-of-tree driver:
-https://github.com/lwfinger/rtl8192du/blob/2c5450dd3783e1085f09a8c7a632318c7d0f1d39/hal/rtl8192d_phycfg.c#L2622-L2624
-
-> If you have explanation, please add them to commit message. 
-> 
-> 
->>         if (rtlpriv->rtlhal.interfaceindex == 1)
->>                 spin_unlock_irqrestore(&rtlpriv->locks.cck_and_rw_pagea_lock,
->>                         *flag);
->> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192d/reg.h
->> b/drivers/net/wireless/realtek/rtlwifi/rtl8192d/reg.h
->> index 2783d7e7b227..1f2daf779539 100644
->> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8192d/reg.h
->> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192d/reg.h
->>
-> 
-> [...]
-> 
->> +
->> +#define _TXDMA_HIQ_MAP(x)                      (((x) & 0x3) << 14)
-> 
-> GENMASK(15, 14) ?
-> 
->> +#define _TXDMA_MGQ_MAP(x)                      (((x) & 0x3) << 12)
->> +#define _TXDMA_BKQ_MAP(x)                      (((x) & 0x3) << 10)
->> +#define _TXDMA_BEQ_MAP(x)                      (((x) & 0x3) <<  8)
->> +#define _TXDMA_VIQ_MAP(x)                      (((x) & 0x3) <<  6)
->> +#define _TXDMA_VOQ_MAP(x)                      (((x) & 0x3) <<  4)
->> +
->> +#define QUEUE_LOW                              1
->> +#define QUEUE_NORMAL                           2
->> +#define QUEUE_HIGH                             3
->> +
->> +#define _HPQ(x)                                        ((x) & 0xFF)
-> 
-> 
-> #define HPQ_MASK GENMASK(7, 0)
-> u32_get_bits(x, HPQ_MASK) ?
-> 
-> 
-> 
->> +#define _LPQ(x)                                        (((x) & 0xFF) << 8)
->> +#define _PUBQ(x)                               (((x) & 0xFF) << 16)
->> +#define _NPQ(x)                                        ((x) & 0xFF)
->> +#define LD_RQPN                                        BIT(31)
->> +
->>
-> 
-> [...]
-> 
->> diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c
->> b/drivers/net/wireless/realtek/rtlwifi/usb.c
->> index 6e8c87a2fae4..2ea72d9e3957 100644
->> --- a/drivers/net/wireless/realtek/rtlwifi/usb.c
->> +++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
->> @@ -979,6 +979,9 @@ int rtl_usb_probe(struct usb_interface *intf,
->>         usb_priv->dev.intf = intf;
->>         usb_priv->dev.udev = udev;
->>         usb_set_intfdata(intf, hw);
->> +       /* For dual MAC RTL8192DU, which has two interfaces. */
->> +       rtlpriv->rtlhal.interfaceindex =
->> +               intf->altsetting[0].desc.bInterfaceNumber;
-> 
-> So, you will see two USB adapters when you plug 8192DU?
-> 
-
-When you plug the dual MAC version, lsusb will show one device,
-with two interfaces. rtl_usb_probe() is called twice. This is
-copied from linux-hardware.org:
-
-Bus 003 Device 004: ID 0bda:8193 Realtek Semiconductor Corp. RTL8192DU 802.11an WLAN Adapter
-Device Descriptor:
-  bLength                18
-  bDescriptorType         1
-  bcdUSB               2.00
-  bDeviceClass            0 
-  bDeviceSubClass         0 
-  bDeviceProtocol         0 
-  bMaxPacketSize0        64
-  idVendor           0x0bda Realtek Semiconductor Corp.
-  idProduct          0x8193 RTL8192DU 802.11an WLAN Adapter
-  bcdDevice            0.00
-  iManufacturer           1 Realtek
-  iProduct                2 801.11n NIC
-  iSerial                 3 ...
-  bNumConfigurations      1
-  Configuration Descriptor:
-    bLength                 9
-    bDescriptorType         2
-    wTotalLength       0x0037
-    bNumInterfaces          2
-    bConfigurationValue     1
-    iConfiguration          0 
-    bmAttributes         0x80
-      (Bus Powered)
-    MaxPower              500mA
-    Interface Descriptor:
-      bLength                 9
-      bDescriptorType         4
-      bInterfaceNumber        0
-      bAlternateSetting       0
-      bNumEndpoints           2
-      bInterfaceClass       255 Vendor Specific Class
-      bInterfaceSubClass    255 Vendor Specific Subclass
-      bInterfaceProtocol    255 Vendor Specific Protocol
-      iInterface              0 
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x81  EP 1 IN
-        bmAttributes            2
-          Transfer Type            Bulk
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0200  1x 512 bytes
-        bInterval               0
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x02  EP 2 OUT
-        bmAttributes            2
-          Transfer Type            Bulk
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0200  1x 512 bytes
-        bInterval               0
-    Interface Descriptor:
-      bLength                 9
-      bDescriptorType         4
-      bInterfaceNumber        1
-      bAlternateSetting       0
-      bNumEndpoints           2
-      bInterfaceClass       255 Vendor Specific Class
-      bInterfaceSubClass    255 Vendor Specific Subclass
-      bInterfaceProtocol    255 Vendor Specific Protocol
-      iInterface              0 
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x89  EP 9 IN
-        bmAttributes            2
-          Transfer Type            Bulk
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0200  1x 512 bytes
-        bInterval               0
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x0a  EP 10 OUT
-        bmAttributes            2
-          Transfer Type            Bulk
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0200  1x 512 bytes
-        bInterval               0
-Device Qualifier (for other device speed):
-  bLength                10
-  bDescriptorType         6
-  bcdUSB               2.00
-  bDeviceClass            0 
-  bDeviceSubClass         0 
-  bDeviceProtocol         0 
-  bMaxPacketSize0        64
-  bNumConfigurations      1
-Device Status:     0x0000
-  (Bus Powered)
-
-
-Mine is the single MAC version:
-
-Bus 001 Device 007: ID 0bda:8194 Realtek Semiconductor Corp. 802.11n NIC
-Device Descriptor:
-  bLength                18
-  bDescriptorType         1
-  bcdUSB               2.00
-  bDeviceClass            0 [unknown]
-  bDeviceSubClass         0 [unknown]
-  bDeviceProtocol         0 
-  bMaxPacketSize0        64
-  idVendor           0x0bda Realtek Semiconductor Corp.
-  idProduct          0x8194 802.11n NIC
-  bcdDevice            0.00
-  iManufacturer           1 Realtek
-  iProduct                2 802.11n NIC
-  iSerial                 3 00e04c000001
-  bNumConfigurations      1
-  Configuration Descriptor:
-    bLength                 9
-    bDescriptorType         2
-    wTotalLength       0x002e
-    bNumInterfaces          1
-    bConfigurationValue     1
-    iConfiguration          0 
-    bmAttributes         0x80
-      (Bus Powered)
-    MaxPower              500mA
-    Interface Descriptor:
-      bLength                 9
-      bDescriptorType         4
-      bInterfaceNumber        0
-      bAlternateSetting       0
-      bNumEndpoints           4
-      bInterfaceClass       255 Vendor Specific Class
-      bInterfaceSubClass    255 Vendor Specific Subclass
-      bInterfaceProtocol    255 Vendor Specific Protocol
-      iInterface              0 
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x81  EP 1 IN
-        bmAttributes            2
-          Transfer Type            Bulk
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0200  1x 512 bytes
-        bInterval               0
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x02  EP 2 OUT
-        bmAttributes            2
-          Transfer Type            Bulk
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0200  1x 512 bytes
-        bInterval               0
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x03  EP 3 OUT
-        bmAttributes            2
-          Transfer Type            Bulk
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0200  1x 512 bytes
-        bInterval               0
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x85  EP 5 IN
-        bmAttributes            3
-          Transfer Type            Interrupt
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0040  1x 64 bytes
-        bInterval               3
-
-
-> 
->>         /* init cfg & intf_ops */
->>         rtlpriv->rtlhal.interface = INTF_USB;
->>         rtlpriv->cfg = rtl_hal_cfg;
->> diff --git a/drivers/net/wireless/realtek/rtlwifi/wifi.h
->> b/drivers/net/wireless/realtek/rtlwifi/wifi.h
->> index 9fabf597cfd6..c45463744f16 100644
->> --- a/drivers/net/wireless/realtek/rtlwifi/wifi.h
->> +++ b/drivers/net/wireless/realtek/rtlwifi/wifi.h
->> @@ -20,6 +20,7 @@
->>  #define        MASKBYTE1                               0xff00
->>  #define        MASKBYTE2                               0xff0000
->>  #define        MASKBYTE3                               0xff000000
->> +#define        MASKH3BYTES                             0xffffff00
->>  #define        MASKHWORD                               0xffff0000
->>  #define        MASKLWORD                               0x0000ffff
->>  #define        MASKDWORD                               0xffffffff
->> @@ -48,6 +49,10 @@
->>  #define        MASK20BITS                              0xfffff
->>  #define RFREG_OFFSET_MASK                      0xfffff
->>
->> +/* For dual MAC RTL8192DU */
->> +#define        MAC0_ACCESS_PHY1                        0x4000
->> +#define        MAC1_ACCESS_PHY0                        0x2000
->> +
->>  #define RF_CHANGE_BY_INIT                      0
->>  #define RF_CHANGE_BY_IPS                       BIT(28)
->>  #define RF_CHANGE_BY_PS                                BIT(29)
->> --
->> 2.43.2
 
