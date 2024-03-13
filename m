@@ -1,179 +1,135 @@
-Return-Path: <linux-wireless+bounces-4653-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4654-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2316879FA9
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 00:25:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE63887A004
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 01:08:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 753581F216EC
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Mar 2024 23:25:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 07DEFB21D15
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 00:08:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA49D46551;
-	Tue, 12 Mar 2024 23:25:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B962385;
+	Wed, 13 Mar 2024 00:08:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Pe8O0Rmy"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jHjN/IAA"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C8B14293
-	for <linux-wireless@vger.kernel.org>; Tue, 12 Mar 2024 23:25:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BD8A383
+	for <linux-wireless@vger.kernel.org>; Wed, 13 Mar 2024 00:08:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710285948; cv=none; b=Rnb0iq3cGRAwI/F5ST5Oeyq+k9MkIXnRtiFSMrJXzPUDpJ9ZM43sQ0Jt/ew5MykyN4g1ii4cnVAGhpM62Ooa7kpLsM5cMCAEDQi2sakG77alQyjFwEStDPpYrv9EoGk+CAU3teFXqTv/1OGq94ohSMWtuK9YiDb2LHvniVBD64w=
+	t=1710288510; cv=none; b=GB7heJy0DGDlID52wdhdd8+Ni1ljwd1pfBsaf5tHk3nT2VMwFCb37rmNZNAjsvoVfyyYClrtZyUmb5sHO+YuhkVNuEczh8buRd445+vLk/tyJ9ueQLLW1lXa1pBIusBwKunzNSVXwu2x2meck8hHnNjYUXiSRvFYv6Vbo/4dEoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710285948; c=relaxed/simple;
-	bh=AHMt+NJdc/+KC3nW12xukDLxSjp4w/TGI8Kzufo364A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=ldEQ7g657ogQ+aIBAcb9wml/Gv/ecP1yDQRTujhJhvfLz3JqSv9oxmiIuAR5C5uqeIXOqDWUbXi2G50EemyOuqyUHB+VZVUoZTZNoSlzZOivTNq5XMcONu1pSTi7mfUX+mkMKCjWoHS4wkF7YAJo7nZ7BbSfri3rWIxASvElFzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Pe8O0Rmy; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42CMq9Ts009926;
-	Tue, 12 Mar 2024 23:25:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=U57j0rFTSpCPaCIeJjRmCGJl4DJbjApEu9z5qpiQusU=; b=Pe
-	8O0RmyNq/0sj2RzU+UMf+joqjTWHW4o7JqSdEd7gqUlnz5iJrVq8kKYleNR8sLKT
-	NkkX7Av0XpQcg3YTmk87diV9rEbfm8r/8xcF1nCct47kg42hxrBNVj2x+asxdX0J
-	gawWvfPy4YgdpDWHdvB60oG8YjalPEljAzXSQ/CPYACPPnzOYXQjucyuxJaVLvgS
-	D5VNrdTzuOy/GFW1LO9D8DP3XoWfXv+zR7aBZZcgFHnvzOvfsGqIZziJi7YUjCch
-	w0bOYnk7k7WQ0xw8TB8cgUZnUfdwr3ylw2bePBFFinOeGZUNw52amDlgkc/yDy4a
-	ihSEWQl07LW8fOvcu0oA==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wu07c81gu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 Mar 2024 23:25:42 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42CNPfYf018096
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 Mar 2024 23:25:41 GMT
-Received: from [10.110.27.195] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Tue, 12 Mar
- 2024 16:25:41 -0700
-Message-ID: <036abbcc-eb90-48db-a82e-5565bcc336ef@quicinc.com>
-Date: Tue, 12 Mar 2024 16:25:40 -0700
+	s=arc-20240116; t=1710288510; c=relaxed/simple;
+	bh=I0JK+EDHi2xDG0YYuYPBZvn/RnpkHpBlYYtfBSfbK9U=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=rHOqZASGVbzi50cNhdtTXlVg1fZmp/GKXDxyPVtSA7JWPO2Cl/5aXoC9eWl+M0r+od8JfvNkjUDe9vWX7LbRN6zJ5zCwW+nmUXyiXDgRXcd2kA6dBDTfElcnJ3nqcNc+QPUMwFZFy7TYpQ1pvjz5uxqreEOImr/EOdWoIFqoMKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jHjN/IAA; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1710288509; x=1741824509;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=I0JK+EDHi2xDG0YYuYPBZvn/RnpkHpBlYYtfBSfbK9U=;
+  b=jHjN/IAAx/91L50DWUPX8c6t7shZ0EIylzWBW9VnbDaHt7UGEh8QqksL
+   hwJlFT7McSZb9+dD4LUXD/NB5YBfjYmkXbryxo12eWMUn96nVCL197zmS
+   Dj+DPhGKgjvAegFsUmYsC4VcG4YAQ6+P6m13TgHhiAMSkb/+qIB1O831J
+   FYp5Tr0dVmJERkqGtG+GRbc82OZ3QtYOYdOgRZfRuhJK434jFDR4ZeRgd
+   tnEllzjh+57CDZBBIDwseHOZkRyfc7iDEnxsrGVYX2WENO+G62yMTQvzH
+   yKUmfnmzznMmxL2pdcyVom5w7sK2xAS1c/U+XrL+MHxOpjG00/IB4+xej
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11011"; a="16429407"
+X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
+   d="scan'208";a="16429407"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2024 17:08:28 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
+   d="scan'208";a="16444679"
+Received: from lkp-server01.sh.intel.com (HELO b21307750695) ([10.239.97.150])
+  by orviesa005.jf.intel.com with ESMTP; 12 Mar 2024 17:08:26 -0700
+Received: from kbuild by b21307750695 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rkCAR-000BoT-24;
+	Wed, 13 Mar 2024 00:08:23 +0000
+Date: Wed, 13 Mar 2024 08:08:06 +0800
+From: kernel test robot <lkp@intel.com>
+To: Randy Dunlap <rdunlap@infradead.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
+Subject: [wireless-next:main 6/6] drivers/ssb/main.c:1148:10: error: label at
+ end of compound statement: expected statement
+Message-ID: <202403130705.xI2y4Nym-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 12/12] wifi: ath12k: support get_survey mac op for
- single wiphy
-Content-Language: en-US
-To: Rameshkumar Sundaram <quic_ramess@quicinc.com>,
-        <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, Sriram R <quic_srirrama@quicinc.com>
-References: <20240312135557.1778379-1-quic_ramess@quicinc.com>
- <20240312135557.1778379-13-quic_ramess@quicinc.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20240312135557.1778379-13-quic_ramess@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 7g4lFtsFCLic5mtMQy3FTkNcMpea2rWc
-X-Proofpoint-GUID: 7g4lFtsFCLic5mtMQy3FTkNcMpea2rWc
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-12_14,2024-03-12_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 spamscore=0
- phishscore=0 adultscore=0 lowpriorityscore=0 clxscore=1015 mlxlogscore=833
- priorityscore=1501 malwarescore=0 suspectscore=0 bulkscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2402120000
- definitions=main-2403120180
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-On 3/12/2024 6:55 AM, Rameshkumar Sundaram wrote:
-> From: Sriram R <quic_srirrama@quicinc.com>
-> 
-> The radio for which the survey info needs to be collected
-> depends on the channel idx which could be based on the band.
-> Use the idx to identify the appropriate sband since multiple
-> bands could be combined for single wiphy case.
-> 
-> Also use the channel idx and sband to identify the corresponding
-> radio on which the survey results needs to be populated.
-> 
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-> 
-> Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
-> Signed-off-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
-> ---
->  drivers/net/wireless/ath/ath12k/mac.c | 25 ++++++++++++++++---------
->  1 file changed, 16 insertions(+), 9 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-> index 6123d7db2edc..a31003f8325d 100644
-> --- a/drivers/net/wireless/ath/ath12k/mac.c
-> +++ b/drivers/net/wireless/ath/ath12k/mac.c
-> @@ -7821,7 +7821,6 @@ ath12k_mac_update_bss_chan_survey(struct ath12k *ar,
->  static int ath12k_mac_op_get_survey(struct ieee80211_hw *hw, int idx,
->  				    struct survey_info *survey)
->  {
-> -	struct ath12k_hw *ah = ath12k_hw_to_ah(hw);
->  	struct ath12k *ar;
->  	struct ieee80211_supported_band *sband;
->  	struct survey_info *ar_survey;
-> @@ -7830,12 +7829,6 @@ static int ath12k_mac_op_get_survey(struct ieee80211_hw *hw, int idx,
->  	if (idx >= ATH12K_NUM_CHANS)
->  		return -ENOENT;
->  
-> -	ar = ath12k_ah_to_ar(ah, 0);
-> -
-> -	ar_survey = &ar->survey[idx];
-> -
-> -	mutex_lock(&ar->conf_mutex);
-> -
->  	sband = hw->wiphy->bands[NL80211_BAND_2GHZ];
->  	if (sband && idx >= sband->n_channels) {
->  		idx -= sband->n_channels;
-> @@ -7850,6 +7843,21 @@ static int ath12k_mac_op_get_survey(struct ieee80211_hw *hw, int idx,
->  		goto exit;
->  	}
->  
-> +	ar = ath12k_mac_get_ar_by_chan(hw, &sband->channels[idx]);
-> +	if (!ar) {
-> +		if (sband->channels[idx].flags & IEEE80211_CHAN_DISABLED) {
-> +			ret = 0;
-> +			memset(survey, 0, sizeof(*survey));
-> +			goto exit;
-> +		}
-> +		ret = -ENOENT;
-> +		goto exit;
-> +	}
-> +
-> +	ar_survey = &ar->survey[idx];
-> +
-> +	mutex_lock(&ar->conf_mutex);
-> +
->  	ath12k_mac_update_bss_chan_survey(ar, &sband->channels[idx]);
->  
->  	spin_lock_bh(&ar->data_lock);
-> @@ -7861,9 +7869,8 @@ static int ath12k_mac_op_get_survey(struct ieee80211_hw *hw, int idx,
->  	if (ar->rx_channel == survey->channel)
->  		survey->filled |= SURVEY_INFO_IN_USE;
->  
-> -exit:
->  	mutex_unlock(&ar->conf_mutex);
-> -
-> +exit:
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+head:   e27b02e23a701e5761f1d6028643e1203a1c56de
+commit: e27b02e23a701e5761f1d6028643e1203a1c56de [6/6] ssb: drop use of non-existing CONFIG_SSB_DEBUG symbol
+config: arm-randconfig-004-20240313 (https://download.01.org/0day-ci/archive/20240313/202403130705.xI2y4Nym-lkp@intel.com/config)
+compiler: clang version 15.0.7 (https://github.com/llvm/llvm-project.git 8dfdcc7b7bf66834a761bd8de445840ef68e4d1a)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240313/202403130705.xI2y4Nym-lkp@intel.com/reproduce)
 
-goto should normally only be used when there is centralized cleanup.
-since now there is no cleanup required, all of the goto exit calls should just
-directly return the appropriate error
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202403130705.xI2y4Nym-lkp@intel.com/
 
->  	return ret;
->  }
->  
+All errors (new ones prefixed by >>):
 
+>> drivers/ssb/main.c:1148:10: error: label at end of compound statement: expected statement
+           default:
+                   ^
+                    ;
+   1 error generated.
+
+
+vim +1148 drivers/ssb/main.c
+
+04023afcce2eaf Rafał Miłecki  2011-08-14  1132  
+61e115a56d1aaf Michael Buesch 2007-09-18  1133  u32 ssb_dma_translation(struct ssb_device *dev)
+61e115a56d1aaf Michael Buesch 2007-09-18  1134  {
+61e115a56d1aaf Michael Buesch 2007-09-18  1135  	switch (dev->bus->bustype) {
+61e115a56d1aaf Michael Buesch 2007-09-18  1136  	case SSB_BUSTYPE_SSB:
+61e115a56d1aaf Michael Buesch 2007-09-18  1137  		return 0;
+61e115a56d1aaf Michael Buesch 2007-09-18  1138  	case SSB_BUSTYPE_PCI:
+04023afcce2eaf Rafał Miłecki  2011-08-14  1139  		if (pci_is_pcie(dev->bus->host_pci) &&
+04023afcce2eaf Rafał Miłecki  2011-08-14  1140  		    ssb_read32(dev, SSB_TMSHIGH) & SSB_TMSHIGH_DMA64) {
+04023afcce2eaf Rafał Miłecki  2011-08-14  1141  			return SSB_PCIE_DMA_H32;
+04023afcce2eaf Rafał Miłecki  2011-08-14  1142  		} else {
+04023afcce2eaf Rafał Miłecki  2011-08-14  1143  			if (ssb_dma_translation_special_bit(dev))
+a9770a815d280d Rafał Miłecki  2011-07-20  1144  				return SSB_PCIE_DMA_H32;
+a9770a815d280d Rafał Miłecki  2011-07-20  1145  			else
+61e115a56d1aaf Michael Buesch 2007-09-18  1146  				return SSB_PCI_DMA;
+04023afcce2eaf Rafał Miłecki  2011-08-14  1147  		}
+f225763a7d6c92 Michael Buesch 2008-06-20 @1148  	default:
+61e115a56d1aaf Michael Buesch 2007-09-18  1149  	}
+61e115a56d1aaf Michael Buesch 2007-09-18  1150  	return 0;
+61e115a56d1aaf Michael Buesch 2007-09-18  1151  }
+61e115a56d1aaf Michael Buesch 2007-09-18  1152  EXPORT_SYMBOL(ssb_dma_translation);
+61e115a56d1aaf Michael Buesch 2007-09-18  1153  
+
+:::::: The code at line 1148 was first introduced by commit
+:::::: f225763a7d6c92c4932dbd528437997078496fcc ssb, b43, b43legacy, b44: Rewrite SSB DMA API
+
+:::::: TO: Michael Buesch <mb@bu3sch.de>
+:::::: CC: John W. Linville <linville@tuxdriver.com>
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
