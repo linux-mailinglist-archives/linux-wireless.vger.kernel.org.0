@@ -1,161 +1,118 @@
-Return-Path: <linux-wireless+bounces-4697-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4698-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7571F87B261
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 20:57:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF71E87B29D
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 21:11:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B7C6286C3B
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 19:57:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF1151C215F9
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 20:11:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74D2A50261;
-	Wed, 13 Mar 2024 19:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 764924CDF9;
+	Wed, 13 Mar 2024 20:11:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WlztrFQj"
+	dkim=pass (2048-bit key) header.d=testtoast.com header.i=@testtoast.com header.b="LAet/sVO";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="e+FNuDBW"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from wfout5-smtp.messagingengine.com (wfout5-smtp.messagingengine.com [64.147.123.148])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A2D4F88A
-	for <linux-wireless@vger.kernel.org>; Wed, 13 Mar 2024 19:57:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B54F225AF
+	for <linux-wireless@vger.kernel.org>; Wed, 13 Mar 2024 20:11:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710359822; cv=none; b=MVcnY/hC4xC8W4XSX84uo5u7pNRwuBu4uXI+IQ3h327JzWdMKdnXYlj2T255jPkbEvvB2fcD3d0KmFacStRO7FIWqsxK/FTfLYnREcJpNUT1JN+haYIYzSq3sya6xMNOvwIY+1wlAbfGbJD7brXJitf1vbksyZ+maNCaeisvPkA=
+	t=1710360704; cv=none; b=EGkr4IPnBs9poZA85BUtI/kuxqeIPTYpSTts1tW7jiPlmvDBdX0ehYkfODqq/i2og4OrVHpOcMk3GLGpl5ZlyOzspkH7he3ENnNQ2Zj+HSejwbR5/gI9HDZtRCkfG9NNL7PMN6vzPv/BInMdAhm2lxbmo34rVUa7Le1vVILha2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710359822; c=relaxed/simple;
-	bh=Ig7e77/d/kykTewz4aOEKwihFw8EYCmrLassdKaTYVI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aW3qFFPf1CUjaPuxkPre0k2Oj7KQnl/k5XA1+sjnG4YdNvGrPSpi3pgOSPWpJGJJaYLNUg+uKAr5LLg4nYUrgQpZK9IQnPDFznKhGnAEaVgO3Bvl0gynzAolfmt/4sd9Fm6s7pQvNDro8EHauCLhUWk49xQpPJWKJ7wuBkIwDiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WlztrFQj; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-1dd81aee2b4so2098205ad.0
-        for <linux-wireless@vger.kernel.org>; Wed, 13 Mar 2024 12:57:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710359820; x=1710964620; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=R9BIhdFsSeXM2bYHGsp/3rh0lF2hEZKMymreY4sLWlo=;
-        b=WlztrFQjxrneNKCYab1vGQHzoi52HRwfHPB+kQayElmHSN1wQpZJdICI5UaGqO173w
-         Pr1KrUo+u4fZXBuOVYti8d5KXLulix+P+1hnN5cKsvr47+fNepL1czSM+HBKoQM3U/SE
-         NjuFaEveJmd16SUvtJTA3F1FeHsSn9o5fRzaEXDQQFektKvOkF11uvJy/Nsi351BLclK
-         Bcef/Qq+GzLfJgUwMBT+gYvk8bxCOW54WawNR2hWGAkLjnO4mv/e/itiHE6uUMq4Tf8t
-         aMMc6j70RfLC35CTWf/RGjFcCoeGMMjwksFuWv/eZkme5COs1hKPZ161Fx4Qq06kwLuH
-         AcSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710359820; x=1710964620;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=R9BIhdFsSeXM2bYHGsp/3rh0lF2hEZKMymreY4sLWlo=;
-        b=qAphzv9fpqiDre7DDbJZ8K7mKn/G3gpl5cwf95no2ig5npwdIRFtwSV+Mqd8PDSNUJ
-         zlTCaACm05XSPMjmtQX7jGZNChpyrv3XffhIMsjNZiNhZN7cz7/wm7YY359Idv1t8J06
-         gf6eaF4FlbgDLj4A1r4TAbkp1br23Nv2+ufVVVp6+9GHS19jpGcxwKXGZDEFDMvsPRnD
-         xHoqumhiw5pjVjSCmrTF5DM7nVp3h9H3AH/XnzXSQU1eMYPCcSPDL1hbFj9hYYqrnG/o
-         GoIeZvbn134sy9XWMETa4+IMovF8cQ5dxtJlRpEBzYmF8LY+TOm6n9EBx5TBh0h9ZqYA
-         Ou9g==
-X-Forwarded-Encrypted: i=1; AJvYcCVUQibODIjl0WsE5eLhYUidNZR0iCNQBrYrowU7lHVOfuhRC7TFsg6tUQzr8upVKVpSEzcFZ1qrm62tEOqZP+lk3vNHssC4wy5RJgYa8tk=
-X-Gm-Message-State: AOJu0YycUF7Jpve8sX1lQqawkikezm5CasTc7wws8ENMk2C4TyQ/bTXO
-	5KlxCVAc3Rbl2xOfa7wW+okGRTkPvl23emIN2jm4WAuME+hBCU9apWZe7JfOZwJgDT4/kbI15tH
-	9Km7C2UHnyyxWSF6631JfqICUBNg9RbDxeMw=
-X-Google-Smtp-Source: AGHT+IFUUPriNOMvJrZ6Q7KL/xrBdzmS+LtrePmywwgC1cnLtzpniigum4VgCQ9MmbFI2QbBR5EUQk2jz+MYOHadsqE=
-X-Received: by 2002:a17:902:7403:b0:1dd:e34:d820 with SMTP id
- g3-20020a170902740300b001dd0e34d820mr15001228pll.28.1710359820091; Wed, 13
- Mar 2024 12:57:00 -0700 (PDT)
+	s=arc-20240116; t=1710360704; c=relaxed/simple;
+	bh=2m0C7ch1xH1O8hDXN+WRm34/IKnji9tgr6vSQ2U+Ex4=;
+	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
+	 Subject:Content-Type; b=biQSYYeIbt57tHK4gU7fDgQfYXLfEmNEqv1okg8EHVLpQEU1CmkysxStHoWpfevrHjqM/zssUPg3i4Li59tc/W19iEBVPhsjnBhQWjWRPfaQ/KKqU2aKkezarQkRjzzNvtFJKuJJgS8kV3Psr0usyWlgA5UbnW89Ox80opUpuwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=testtoast.com; spf=pass smtp.mailfrom=testtoast.com; dkim=pass (2048-bit key) header.d=testtoast.com header.i=@testtoast.com header.b=LAet/sVO; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=e+FNuDBW; arc=none smtp.client-ip=64.147.123.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=testtoast.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=testtoast.com
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailfout.west.internal (Postfix) with ESMTP id B2F811C00072;
+	Wed, 13 Mar 2024 16:11:41 -0400 (EDT)
+Received: from imap47 ([10.202.2.97])
+  by compute5.internal (MEProxy); Wed, 13 Mar 2024 16:11:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=testtoast.com;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm1; t=1710360701; x=
+	1710447101; bh=wb0FXIrSDvkxIEWnvmcKLFK2rBTR+GDQDrOfET6lYWM=; b=L
+	Aet/sVOawAlaCeE+74nWCtyEZ7LopDDnYFEu1HWYFwugGAmzHzF3VzuKLZllbi2U
+	DRx0PcwB4A4o/cn8C+AS5dPNBFBbBZP5gTX0gX5WxzWM7eRQ8bglbe+N7WrpsIsz
+	8UdKEvjWmO2JHV2H3faYpUp8YN6KUo+q6xDYd438kdC9R61QY76KZ91oY7V+zatz
+	pUJrTZEpfMqKzTZ4kVIb/n8VYWbpuRFa7sJULa3rRX80R40ZBFyM5H70ZueRRIjA
+	mOYiLRzqY39Ef2Pn4A7tNLxWNtuLpMAKiFL5Aj7quaPZtSP+2dW+fxS299LAZtVZ
+	LHkDT76vvvYEXnaD6FU5w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm1; t=1710360701; x=1710447101; bh=wb0FXIrSDvkxIEWnvmcKLFK2rBTR
+	+GDQDrOfET6lYWM=; b=e+FNuDBW7AzdZ90wyBiG/qBzziEo4URzFc6q4m8W/qR8
+	r5VRjHjtP0Lc3/rLG28pDzoIM2IqJUFl1qOQU2t1I3D/w0JybC8S8IJE5VBMWuey
+	MTVWm81F6P/ltd+G7nG3Ob2rhvLY8tkSHtKA6o8Hz78VpJhqWJ6WqPn38hMGAXwm
+	5X1jmd+ZpTIPz1xShPLhFJrHTpwECI+GYHMx7HFt1JFlGDHPFsLi8ezECW7LVGCQ
+	PsBypSMGpdnpi0dwvSKLSCAnWTrOUSQmBShatAZDynZfirGT23T3xEz9DX6wGuul
+	MnVwr9w3jdBYs73aDGC6HFM4gAL64chjMi7QmLafBw==
+X-ME-Sender: <xms:fQjyZTmcy7iTP0iu9SrBEk4HDnxrq2G9tOEe9vyES54exqlWoVaE_w>
+    <xme:fQjyZW3WjldoNquzTF9nj3ma3U1T8L9h9MemsBWWE6oA89qhtk5hKTLuSAn3b2g1U
+    kr4O2M9lfO-gJU5Bw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrjeehgddufeefucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucenucfjughrpefofgggkfgjfhffhffvvefutgesth
+    dtredtreertdenucfhrhhomhepfdfthigrnhcuhggrlhhklhhinhdfuceorhihrghnseht
+    vghsthhtohgrshhtrdgtohhmqeenucggtffrrghtthgvrhhnpeehvdevieegudejueefge
+    ffhefhffevudfhieejgfdtffetlefgteeuveeiudeijeenucevlhhushhtvghrufhiiigv
+    pedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehrhigrnhesthgvshhtthhorghsthdrtg
+    homh
+X-ME-Proxy: <xmx:fQjyZZqSU8ZCJfXaJlD9fTRX9SnPYWu2a8df-JjdvH044KsQcBs2EQ>
+    <xmx:fQjyZbkzJ36rD_riKzkZoFS6aYkPYDUf_vQANaWTKiZ0rrE50PvWpg>
+    <xmx:fQjyZR0A-UeZbs1F9xy9guf3vfrrM4gI_GDLLK2aF6vUDnQEIsMegA>
+    <xmx:fQjyZau2wRwIdq5k0iqM9VbS37Q75uJEc71SgfmxXGlz9QNTv3nCLw>
+    <xmx:fQjyZfATJ7K5iHMFPyjVkxVT3V_ZX8qGZSg-c7_IdK7uwgJ53qNPDyD76pc>
+Feedback-ID: idc0145fc:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 0544BA6007A; Wed, 13 Mar 2024 16:11:41 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.11.0-alpha0-251-g8332da0bf6-fm-20240305.001-g8332da0b
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240312135557.1778379-1-quic_ramess@quicinc.com>
- <20240312135557.1778379-2-quic_ramess@quicinc.com> <4a527729-2bf8-47ce-8275-d36b76bde95c@quicinc.com>
- <3178cf8c-d328-4fe2-b3be-f5c4c908f20f@quicinc.com> <605a673e-3686-47d0-b71b-1e314fde65db@quicinc.com>
- <87il1qf571.fsf@kernel.org> <87edcef4qi.fsf@kernel.org> <f768cfec-d20d-424d-85ef-3576434aca12@quicinc.com>
-In-Reply-To: <f768cfec-d20d-424d-85ef-3576434aca12@quicinc.com>
-From: Jonas Gorski <jonas.gorski@gmail.com>
-Date: Wed, 13 Mar 2024 20:56:48 +0100
-Message-ID: <CAOiHx=kx03MKKyMcJPxYPZH=E7krZwfsDqq2xnow8qRB7D-aqQ@mail.gmail.com>
-Subject: Re: [PATCH v4 01/12] wifi: ath12k: add multiple radio support in a
- single MAC HW un/register
-To: Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc: Kalle Valo <kvalo@kernel.org>, Rameshkumar Sundaram <quic_ramess@quicinc.com>, 
-	ath12k@lists.infradead.org, linux-wireless@vger.kernel.org, 
-	Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
+Message-Id: <d16f8068-d6b2-4f10-bf9c-1e2fb77d91ee@app.fastmail.com>
+In-Reply-To: <2afd1590823740a2b6a8f7e485a33842@realtek.com>
+References: <f3656995-b8fe-49c4-93b7-67612c685954@app.fastmail.com>
+ <2afd1590823740a2b6a8f7e485a33842@realtek.com>
+Date: Thu, 14 Mar 2024 09:11:20 +1300
+From: "Ryan Walklin" <ryan@testtoast.com>
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: "linux-sunxi@lists.linux.dev" <linux-sunxi@lists.linux.dev>
+Subject: Re: [BUG] rtw88: RTL8821CS warning on entering power-save mode
+Content-Type: text/plain
 
-On Wed, 13 Mar 2024 at 20:18, Jeff Johnson <quic_jjohnson@quicinc.com> wrote:
->
-> On 3/13/2024 9:58 AM, Kalle Valo wrote:
-> > Kalle Valo <kvalo@kernel.org> writes:
-> >
-> >> Jeff Johnson <quic_jjohnson@quicinc.com> writes:
-> >>
-> >>> On 3/13/2024 5:57 AM, Rameshkumar Sundaram wrote:
-> >>>> On 3/13/2024 3:23 AM, Jeff Johnson wrote:
-> >>>>> and guess we have to figure out how to suppress the ath12k-check issues with
-> >>>>> this macro
-> >>>> ath12k-check complains about the reuse of ah and index arguments which
-> >>>> may get evaluated multiple times if its an arithmetic expression, But
-> >>>> areas where we use the macro in our code aren't doing so.
-> >>>> Do you have any suggestions here ? or shall we go back and use this
-> >>>> for-loop inline.
-> >>>
-> >>> The macro makes sense -- we'll need to update the overrides in ath12k-check.
-> >>
-> >> IIRC it is possible to avoid variable reuse in macros with typeof()
-> >> operator (or something like that). I can't remember the details right
-> >> now but I think there are examples in the kernel code.
-> >
-> > Here's the GCC documentation with an example:
-> >
-> > https://gcc.gnu.org/onlinedocs/gcc/Typeof.html
-> >
->
-> the problem here is that the macro actually writes to those arguments multiple
-> times, so we actually need to reuse the arguments
->
-> the macro as defined exactly matches the semantics of other for_each macros in
-> the kernel, i.e. see in include/linux/list.h:
-> #define list_for_each(pos, head) \
->         for (pos = (head)->next; !list_is_head(pos, (head)); pos = pos->next)
->
-> what I don't understand is why list_for_each() doesn't trigger the same
-> checkpatch issues. even stranger is that if I copy that macro into ath12k then
-> I do see the same checkpatch issues:
-> CHECK: Macro argument reuse 'pos' - possible side-effects?
-> #998: FILE: drivers/net/wireless/ath/ath12k/core.h:998:
-> +#define list_for_each(pos, head) \
-> +       for (pos = (head)->next; !list_is_head(pos, (head)); pos = pos->next)
->
-> CHECK: Macro argument reuse 'head' - possible side-effects?
-> #998: FILE: drivers/net/wireless/ath/ath12k/core.h:998:
-> +#define list_for_each(pos, head) \
-> +       for (pos = (head)->next; !list_is_head(pos, (head)); pos = pos->next)
->
-> So I'm really confused since I don't see anything in checkpatch.pl that would
-> cause the behavior to change between macros in include/linux/list.h vs macros
-> in drivers/net/wireless/ath/ath12k/core.h
+> Did the extensive logging of LPS state happen always? Or happen after a while? 
+> Try module parameter rtw_disable_lps_deep_mode=1 to see if it works well.
 
-The definition of the macro causes the complaint, not the usage of it.
-If you run checkpatch.pl on include/linux/list.h, you'll get the same
-output:
+No after about ~2mins or so. Thanks I will try that.
 
-$ ./scripts/checkpatch.pl --strict --file include/linux/list.h
-...
-CHECK: Macro argument reuse 'pos' - possible side-effects?
-#686: FILE: include/linux/list.h:686:
-+#define list_for_each(pos, head) \
-+ for (pos = (head)->next; !list_is_head(pos, (head)); pos = pos->next)
+> The IO of SDIO is slower than PCIE, so maybe we can try to enlarge timeout time
+> in rtw_power_mode_change():
 
-CHECK: Macro argument reuse 'head' - possible side-effects?
-#686: FILE: include/linux/list.h:686:
-+#define list_for_each(pos, head) \
-+ for (pos = (head)->next; !list_is_head(pos, (head)); pos = pos->next)
-...
+Good to know, I will try that patch also.
 
-Best Regards,
-Jonas
+> Not sure why this could lead crash, because it is only a warning. 
+
+Sorry yes you are right, it is just a warning. The WiFi does continue to work.
+
+Thanks for the reply, will try your suggestions and update.
+
+Ryan
 
