@@ -1,103 +1,124 @@
-Return-Path: <linux-wireless+bounces-4669-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4670-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F60A87A31E
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 07:58:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BE2587A441
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 09:52:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6A451F21D83
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 06:58:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C01D21F222B5
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Mar 2024 08:52:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D99C168BA;
-	Wed, 13 Mar 2024 06:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 835371A701;
+	Wed, 13 Mar 2024 08:52:21 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from bues.ch (bues.ch [80.190.117.144])
+Received: from smtp1.ms.mff.cuni.cz (smtp-in1.ms.mff.cuni.cz [195.113.20.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B98C5168A4;
-	Wed, 13 Mar 2024 06:58:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.190.117.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B311912E73;
+	Wed, 13 Mar 2024 08:52:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710313093; cv=none; b=nU/6wWHYsTq7LNeRKwk0ZmTTY375/es7HF7SEraYiyuod738PRnC+/my7q/aReFyGwECJ60yRqk53+nGUSN6PU1xkYkPt0r/Gi2UKZF4r6L27DrwSNT22YbCW9YFXuW33lzUrc+OSlt4fCe8B1TOdr+L+xJ/JhQTp0gZUmfKTbc=
+	t=1710319941; cv=none; b=ho1gzQ+Q8wj1jSxBMVrPkOQMo3lRxo9+SnVlNFaFIYXLjzSqUZxHUXzWX25sTof/Xqgn9Np2T2szmn1Kq+FDSCUk1+Ab3JHWjKZe6ILZLZa5+R4SZ7RbYgcIayUKM0w49kwe7BXF+n5xF5FJP4TeFY72Bu7/7ojvaVhi8TtYSmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710313093; c=relaxed/simple;
-	bh=PmvW/ZHZb2jfjmyR2iBa0omnwRUCkpZVR3fy4IPhgMA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FQ1bcXJntRNDDJoZtD/KZeK3hlhFzcjgxb+vO0Bn9/b25XXl9AKTHcyvOW3NQ5/X//2KoQb0lO1W4shu4YVZP1mUYfVeACpZf9feDk0wu64HMlM+CWWTiizh3B1Y9+gFvSuss6kLy7pmRyjagAJg8uFBjvGlQmp/GjhNEZ4it58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bues.ch; spf=pass smtp.mailfrom=bues.ch; arc=none smtp.client-ip=80.190.117.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bues.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bues.ch
-Received: by bues.ch with esmtpsa (Exim 4.96)
-	(envelope-from <m@bues.ch>)
-	id 1rkIYi-000FRd-1l;
-	Wed, 13 Mar 2024 07:57:51 +0100
-Date: Wed, 13 Mar 2024 07:57:09 +0100
-From: Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
-To: Randy Dunlap <rdunlap@infradead.org>
-Cc: linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>,
- linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>, Johannes
- Berg <johannes@sipsolutions.net>, llvm@lists.linux.dev
-Subject: Re: [PATCH] ssb: use "break" on default case to prevent warning
-Message-ID: <20240313075709.482211d3@barney>
-In-Reply-To: <20240313001305.18820-1-rdunlap@infradead.org>
-References: <20240313001305.18820-1-rdunlap@infradead.org>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1710319941; c=relaxed/simple;
+	bh=+NePArLWJMB57UThWlpn3BKXqneliUUo+Wa39GBb6SQ=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:To:From:
+	 In-Reply-To; b=HXQ6SUGto9CJzXQDIifpc0tJNK/1/aqdmypyOYL0oZEQ3srdY5TXDjd2A4QgHcMDeBMPaS2+cofvuxoXo/TOaaOGm3+RAJHj4koN4wyvpkkWL+2Lm6ssjEHHHlRq0VPqgCuuSgO6xiFyKA6hyNMvv0piwY67oNLzx7ujR1g1XqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=matfyz.cz; arc=none smtp.client-ip=195.113.20.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matfyz.cz
+X-SubmittedBy: id balejk@matfyz.cz subject /postalCode=110+2000/O=Univerzita+20Karlova/street=Ovocn+5CxC3+5CxBD+20trh+20560/5/ST=Praha,+20Hlavn+5CxC3+5CxAD+20m+5CxC4+5Cx9Bsto/C=CZ/CN=Karel+20Balej/emailAddress=balejk@matfyz.cz
+	serial F5FD910E8FE2121B897F7E55B84E351D
+	issued by /C=NL/O=GEANT+20Vereniging/CN=GEANT+20Personal+20CA+204
+	auth type TLS.CUNI
+Received: from localhost (koleje-wifi-0013.koleje.cuni.cz [78.128.191.13])
+	(authenticated)
+	by smtp1.ms.mff.cuni.cz (8.16.1/8.16.1) with ESMTPS id 42D8neSJ059445
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
+	Wed, 13 Mar 2024 09:49:41 +0100 (CET)
+	(envelope-from balejk@matfyz.cz)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/lAmWD3L.FvhZsA1hfsd.+nj";
- protocol="application/pgp-signature"; micalg=pgp-sha512
-
---Sig_/lAmWD3L.FvhZsA1hfsd.+nj
-Content-Type: text/plain; charset=UTF-8
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 13 Mar 2024 09:50:11 +0100
+Message-Id: <CZSHRUIJ4RKL.34T4EASV5DNJM@matfyz.cz>
+Cc: <alexandre.torgue@foss.st.com>, <davem@davemloft.net>,
+        <dhowells@redhat.com>, <herbert@gondor.apana.org.au>,
+        <keyrings@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-crypto@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-modules@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>, <mcgrof@kernel.org>,
+        <mcoquelin.stm32@gmail.com>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>
+Subject: [REGRESSION] Re: [PATCH] crypto: pkcs7: remove sha1 support
+To: <dimitri.ledkov@canonical.com>,
+        "Johannes Berg"
+ <johannes@sipsolutions.net>
+From: "Karel Balej" <balejk@matfyz.cz>
+In-Reply-To: <20231010212240.61637-1-dimitri.ledkov@canonical.com>
 
-On Tue, 12 Mar 2024 17:13:03 -0700
-Randy Dunlap <rdunlap@infradead.org> wrote:
-> --- a/drivers/ssb/main.c
-> +++ b/drivers/ssb/main.c
-> @@ -1144,6 +1144,7 @@ u32 ssb_dma_translation(struct ssb_devic
->  				return SSB_PCI_DMA;
->  		}
->  	default:
-> +		break;
->  	}
->  	return 0;
->  }
->=20
+Dimitri, Johannes,
 
-Acked-by: Michael B=C3=BCsch <m@bues.ch>
+ever since upgrading to Linux v6.7 I am unable to connect to a 802.1X
+wireless network (specifically, eduroam). In my dmesg, the following
+messages appear:
 
+	[   68.161621] wlan0: authenticate with xx:xx:xx:xx:xx:xx (local address=
+=3Dxx:xx:xx:xx:xx:xx)
+	[   68.163733] wlan0: send auth to xx:xx:xx:xx:xx:xx (try 1/3)
+	[   68.165773] wlan0: authenticated
+	[   68.166785] wlan0: associate with xx:xx:xx:xx:xx:xx (try 1/3)
+	[   68.168498] wlan0: RX AssocResp from xx:xx:xx:xx:xx:xx (capab=3D0x1411 =
+status=3D0 aid=3D4)
+	[   68.172445] wlan0: associated
+	[   68.204956] wlan0: Limiting TX power to 23 (23 - 0) dBm as advertised b=
+y xx:xx:xx:xx:xx:xx
+	[   70.262032] wlan0: deauthenticated from xx:xx:xx:xx:xx:xx (Reason: 23=
+=3DIEEE8021X_FAILED)
+	[   73.065966] wlan0: authenticate with xx:xx:xx:xx:xx:xx (local address=
+=3Dxx:xx:xx:xx:xx:xx)
+	[   73.068006] wlan0: send auth to xx:xx:xx:xx:xx:xx (try 1/3)
+	[   73.070166] wlan0: authenticated
+	[   73.070756] wlan0: associate with xx:xx:xx:xx:xx:xx (try 1/3)
+	[   73.072807] wlan0: RX AssocResp from xx:xx:xx:xx:xx:xx (capab=3D0x1411 =
+status=3D0 aid=3D4)
+	[   73.076676] wlan0: associated
+	[   73.120396] wlan0: Limiting TX power to 23 (23 - 0) dBm as advertised b=
+y xx:xx:xx:xx:xx:xx
+	[   75.148376] wlan0: deauthenticating from xx:xx:xx:xx:xx:xx by local cho=
+ice (Reason: 23=3DIEEE8021X_FAILED)
+	[   77.718016] wlan0: authenticate with xx:xx:xx:xx:xx:xx (local address=
+=3Dxx:xx:xx:xx:xx:xx)
+	[   77.720137] wlan0: send auth to xx:xx:xx:xx:xx:xx (try 1/3)
+	[   77.722670] wlan0: authenticated
+	[   77.724737] wlan0: associate with xx:xx:xx:xx:xx:xx (try 1/3)
+	[   77.726172] wlan0: RX AssocResp from xx:xx:xx:xx:xx:xx (capab=3D0x1411 =
+status=3D0 aid=3D4)
+	[   77.730822] wlan0: associated
+	[   77.830763] wlan0: Limiting TX power to 23 (23 - 0) dBm as advertised b=
+y xx:xx:xx:xx:xx:xx
+	[   79.784199] wlan0: deauthenticating from xx:xx:xx:xx:xx:xx by local cho=
+ice (Reason: 23=3DIEEE8021X_FAILED)
 
---=20
-Michael B=C3=BCsch
-https://bues.ch/
+The connection works fine with v6.6 and I have bisected the problem to
+the revision introduced by this patch (16ab7cb5825f mainline).
 
---Sig_/lAmWD3L.FvhZsA1hfsd.+nj
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+My wireless kernel driver is iwlwifi and I use iwd. I started the bisect
+with a config copied from my distribution package [1].
 
------BEGIN PGP SIGNATURE-----
+Would you please help me with this? Please let me know if I forgot to
+mention something which could be helpful in resolving this.
 
-iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAmXxTkUACgkQ9TK+HZCN
-iw7XbhAAhZBrIaJW+jJWzeReGnwkM2jo+nR5Z0ZS2ksYzu5VBUurKhS3IeS+u9p+
-Gyoo1DyumX51X55/o/ebjrr9nlC5jCjGMesahGDeX1RVk8PFYp7MMparQTW9sPCc
-8tcNr+GmuONVw0D7aE0uABpTsvjykeD2XQ59XELeqT5B1aC39wxtEfR58hbYmZ93
-uBaB78g9vJDe53a/0yA82bfJa4JwWyDX/0PGANKg2vpXV5fJ1wYsXoO96Za2TZwb
-qi7AJdSod8k5C2RiAqR6NH1fSP3kVtwRKQq39J9ihl74MjKx1G1DtRN+Xqm12HYZ
-caRXhW/oh+untqS3+ubrHxMa4hyBKAR6giVguE0Nm0fcoNxAdwUA9C96RT02T62Z
-Uk8CLTX7uvf/HNxwr9Z3VRnV+p4ojdlw9qWDmd+nT9NU9DK6lYcFfTD5CZUK4A2m
-hX4Z1ugA84zkyRp2otO+oeo2HI4qLGrZ11sn0qhPtq8gQZdn+ivjkSMAk7neGdsi
-RutcYGnquzZ0Zk2t8RsSV5MrJXSwBJFakAVIgh/PqHX7u0x4/ZLyhCfPgcba1jxo
-7KG7uHC8J58qtWQ+fVBp67WmkHvRy5ePuxqOaFSLKZBAqHLpa9NIo9egNDGw5SK9
-j1BpUn3BFoEYnMb8z8eaxaAWhtu1wb1q7+ZpjxW2e8+CQnGCm0o=
-=p4Wg
------END PGP SIGNATURE-----
+[1] https://raw.githubusercontent.com/void-linux/void-packages/master/srcpk=
+gs/linux6.6/files/x86_64-dotconfig
 
---Sig_/lAmWD3L.FvhZsA1hfsd.+nj--
+Thank you very much, kind regards,
+K. B.
 
