@@ -1,192 +1,111 @@
-Return-Path: <linux-wireless+bounces-4771-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4772-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A796B87C3C1
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Mar 2024 20:39:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE4D887C3C3
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Mar 2024 20:40:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB1411C21366
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Mar 2024 19:39:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 899072822CC
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Mar 2024 19:40:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 651C974BED;
-	Thu, 14 Mar 2024 19:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35A9775807;
+	Thu, 14 Mar 2024 19:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="THa41/Ga"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="be/06FhS"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C306D2E410
-	for <linux-wireless@vger.kernel.org>; Thu, 14 Mar 2024 19:39:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2CA12BB13;
+	Thu, 14 Mar 2024 19:40:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710445154; cv=none; b=oAwXIzG+yRIx5L5jXI4KkUtXy/kkrSvlun2j7nHSFGPgXooi3PbmcH0HdPpi9/qU3o7xh2Xt4boHRN4sKOULmmDJZb02Sx5yc/lRClN+Tbc+ANFoJ4OKkZsYPkCDXqEsCzsg8PymLqssJF3QsR1PnU3BX4EQE+FdRTB/DLUYj9o=
+	t=1710445239; cv=none; b=IKgNshX0y1op76MmLl+cO1SQkZUL52VpSRwmdfdWCD0jtznaontPHw7h8O5ojST6A+vNdl7jb/37YlH5NlB/4bgn624LmcEPkVa3uDPY/y3eGoWX2yvLpv1BZJS5tzqF8EGQhun4mI2T0TQLW+fYo8Jsuby3BseD8Q02zpGEIwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710445154; c=relaxed/simple;
-	bh=yO1Y9ijNN5HaD+qJhn+gjdK4bWQxw3YOGyQhAb5wyvs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=ajy3OBS1RnOqmxMdulpocKqKXk/7+610uYC69JYkPMLI8ll5caVrPaKSerOSHZxR6TuE5ueBcVcodPIgzWL64QNsqKB4BIaUVWGAyqKBiEU9WXCOvoKYn511uTjKszJy7WU0KZCK47tb9QncI1iY65iSu38UW50vBrmHuDNEYXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=THa41/Ga; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42EIMmt7022229;
-	Thu, 14 Mar 2024 19:39:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=B/KaWl0GPaaZMb8ZSsPnu+zNN9UBDBkXGIQ15mbtGUE=; b=TH
-	a41/GaB+S41ITRbJw/hVbZa1hX7u+WxqPHI49eYSqGgNvBYwyMTw+hV5GHWCo+a+
-	dakDrJWFhFsTo/RKhDwam+WjMjOUUrRu17wOsz+jIFZ0Z2mdeYMbGsa6ZgjyC7yq
-	LJsRWZqMhliqpYMLG081fgomwQcFMONOZ/2p+P3wlkc6grLQtO6MGzAsoQmaxNI8
-	EH8x4alcpVerOKPMHqKuZmYTxYC4in55tdD4LWc2LCrPY5ND+RAsoQTz2BTtwcf9
-	7fVG5Ah7HK3WkBxJiB7xVxcfa4uFfX9LTTZGSda+fSTv9S3mQw+TfRksdWRBdKe9
-	38D3PEI2KuVLJm8g0ymg==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wuujsst9r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 14 Mar 2024 19:39:05 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42EJd4Pr021692
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 14 Mar 2024 19:39:04 GMT
-Received: from [10.50.25.76] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Thu, 14 Mar
- 2024 12:39:01 -0700
-Message-ID: <f542dbeb-debf-4335-9d49-4d12510f8bb4@quicinc.com>
-Date: Fri, 15 Mar 2024 01:08:56 +0530
+	s=arc-20240116; t=1710445239; c=relaxed/simple;
+	bh=yqTlmnf69fHubQexPXqqONf3QGnNyWhVSFVyqG6LZvA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gMgFqNxI8s8yFzpVwRiSoE71LNGnEBoKm6nG1TIOEvFTAzTKhRZLE3pJQuq66WwZBwPQKb538ShsMeuiqGrpuAAB/omt9Of4wl1pvWB+wBOUgQ7YlIXnkAtFYEJNncknNhB1JukcAjCZ90CgfW5mJmzED4r0G0uZh0LvqXt1+AU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=be/06FhS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D208C433F1;
+	Thu, 14 Mar 2024 19:40:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710445238;
+	bh=yqTlmnf69fHubQexPXqqONf3QGnNyWhVSFVyqG6LZvA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=be/06FhS2UKbtX0uABfVqBHqnFX6+r7rWE5qLEQhao/dMX4kN9yTKhIRMCpmwc8WH
+	 Fe+IVeoJ2MsRn2NdOu1upW2ZCGErZg8uInYgQUhYaxcK8jP33raF9YDs2qZsPM2Sgh
+	 hfbT5JUx+H5467wDkkGSNsbRBDVuKx6TUY9X550rKws4tgVPAGQy37dGEQxb4W1E0m
+	 Toi0+c2IZTwEcYcX/acDV3fym+ZXa6CP4U4q/ABQqUE6RZ1FO5U3Lv4tN5a01WnU6+
+	 4XqRuCdqjBtL84s3dNO6uIPvnhLPQxmzW9jv8NW16Vm+8InjVmA2NDFkGQX+7v3FdY
+	 TwBnHNnmsHN/w==
+Date: Thu, 14 Mar 2024 12:40:37 -0700
+From: Eric Biggers <ebiggers@kernel.org>
+To: Karel Balej <balejk@matfyz.cz>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Cc: keyrings@vger.kernel.org, linux-wireless@vger.kernel.org,
+	iwd@lists.linux.dev, James Prestwood <prestwoj@gmail.com>,
+	Dimitri John Ledkov <dimitri.ledkov@canonical.com>,
+	linux-crypto@vger.kernel.org
+Subject: Re: [PATCH] Revert "crypto: pkcs7 - remove sha1 support"
+Message-ID: <20240314194037.GA1132@sol.localdomain>
+References: <20240313233227.56391-1-ebiggers@kernel.org>
+ <CZTBKHQZXJTR.3VMFEA8MZSP5W@matfyz.cz>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 01/12] wifi: ath12k: add multiple radio support in a
- single MAC HW un/register
-Content-Language: en-US
-To: Jonas Gorski <jonas.gorski@gmail.com>,
-        Jeff Johnson
-	<quic_jjohnson@quicinc.com>,
-        Kalle Valo <kvalo@kernel.org>
-CC: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-References: <20240312135557.1778379-1-quic_ramess@quicinc.com>
- <20240312135557.1778379-2-quic_ramess@quicinc.com>
- <4a527729-2bf8-47ce-8275-d36b76bde95c@quicinc.com>
- <3178cf8c-d328-4fe2-b3be-f5c4c908f20f@quicinc.com>
- <605a673e-3686-47d0-b71b-1e314fde65db@quicinc.com>
- <87il1qf571.fsf@kernel.org> <87edcef4qi.fsf@kernel.org>
- <f768cfec-d20d-424d-85ef-3576434aca12@quicinc.com>
- <CAOiHx=kx03MKKyMcJPxYPZH=E7krZwfsDqq2xnow8qRB7D-aqQ@mail.gmail.com>
-From: Rameshkumar Sundaram <quic_ramess@quicinc.com>
-In-Reply-To: <CAOiHx=kx03MKKyMcJPxYPZH=E7krZwfsDqq2xnow8qRB7D-aqQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 0_OefDgNq13k7S93VxIRSDVzQWLAKFsD
-X-Proofpoint-GUID: 0_OefDgNq13k7S93VxIRSDVzQWLAKFsD
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-14_13,2024-03-13_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
- suspectscore=0 malwarescore=0 phishscore=0 adultscore=0 clxscore=1011
- impostorscore=0 lowpriorityscore=0 mlxlogscore=999 spamscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2402120000 definitions=main-2403140152
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CZTBKHQZXJTR.3VMFEA8MZSP5W@matfyz.cz>
 
-
-
-On 3/14/2024 1:26 AM, Jonas Gorski wrote:
-> On Wed, 13 Mar 2024 at 20:18, Jeff Johnson <quic_jjohnson@quicinc.com> wrote:
->>
->> On 3/13/2024 9:58 AM, Kalle Valo wrote:
->>> Kalle Valo <kvalo@kernel.org> writes:
->>>
->>>> Jeff Johnson <quic_jjohnson@quicinc.com> writes:
->>>>
->>>>> On 3/13/2024 5:57 AM, Rameshkumar Sundaram wrote:
->>>>>> On 3/13/2024 3:23 AM, Jeff Johnson wrote:
->>>>>>> and guess we have to figure out how to suppress the ath12k-check issues with
->>>>>>> this macro
->>>>>> ath12k-check complains about the reuse of ah and index arguments which
->>>>>> may get evaluated multiple times if its an arithmetic expression, But
->>>>>> areas where we use the macro in our code aren't doing so.
->>>>>> Do you have any suggestions here ? or shall we go back and use this
->>>>>> for-loop inline.
->>>>>
->>>>> The macro makes sense -- we'll need to update the overrides in ath12k-check.
->>>>
->>>> IIRC it is possible to avoid variable reuse in macros with typeof()
->>>> operator (or something like that). I can't remember the details right
->>>> now but I think there are examples in the kernel code.
->>>
->>> Here's the GCC documentation with an example:
->>>
->>> https://gcc.gnu.org/onlinedocs/gcc/Typeof.html
->>>
-Thanks Kalle for the references, as Jeff mentioned below, we need to 
-reuse the arguments since we write to ar and index arguments on each 
-iteration.
-
-Defining local vars using typeof() without limiting their scope (since 
-we are defining a for_each iterator{}) leads other issues like 
-redefinition of variables in functions where we use this macro more than 
-once :(
-
-Also even if we somehow manage to convince check-patch, we'll still end 
-up evaluating index and ar arguments in every iteration of loop.
-This just gives an impression to check-patch that the macro is unsafe 
-(although logically its not).
-Experts, what is the standard we should follow here. Please suggest.
-
->>
->> the problem here is that the macro actually writes to those arguments multiple
->> times, so we actually need to reuse the arguments
->>
->> the macro as defined exactly matches the semantics of other for_each macros in
->> the kernel, i.e. see in include/linux/list.h:
->> #define list_for_each(pos, head) \
->>          for (pos = (head)->next; !list_is_head(pos, (head)); pos = pos->next)
->>
->> what I don't understand is why list_for_each() doesn't trigger the same
->> checkpatch issues. even stranger is that if I copy that macro into ath12k then
->> I do see the same checkpatch issues:
->> CHECK: Macro argument reuse 'pos' - possible side-effects?
->> #998: FILE: drivers/net/wireless/ath/ath12k/core.h:998:
->> +#define list_for_each(pos, head) \
->> +       for (pos = (head)->next; !list_is_head(pos, (head)); pos = pos->next)
->>
->> CHECK: Macro argument reuse 'head' - possible side-effects?
->> #998: FILE: drivers/net/wireless/ath/ath12k/core.h:998:
->> +#define list_for_each(pos, head) \
->> +       for (pos = (head)->next; !list_is_head(pos, (head)); pos = pos->next)
->>
->> So I'm really confused since I don't see anything in checkpatch.pl that would
->> cause the behavior to change between macros in include/linux/list.h vs macros
->> in drivers/net/wireless/ath/ath12k/core.h
+On Thu, Mar 14, 2024 at 09:11:08AM +0100, Karel Balej wrote:
+> Eric,
 > 
-> The definition of the macro causes the complaint, not the usage of it.
-> If you run checkpatch.pl on include/linux/list.h, you'll get the same
-> output:
+> Eric Biggers, 2024-03-13T16:32:27-07:00:
+> > From: Eric Biggers <ebiggers@google.com>
+> >
+> > This reverts commit 16ab7cb5825fc3425c16ad2c6e53d827f382d7c6 because it
+> > broke iwd.  iwd uses the KEYCTL_PKEY_* UAPIs via its dependency libell,
+> > and apparently it is relying on SHA-1 signature support.  These UAPIs
+> > are fairly obscure, and their documentation does not mention which
+> > algorithms they support.  iwd really should be using a properly
+> > supported userspace crypto library instead.  Regardless, since something
+> > broke we have to revert the change.
+> >
+> > It may be possible that some parts of this commit can be reinstated
+> > without breaking iwd (e.g. probably the removal of MODULE_SIG_SHA1), but
+> > for now this just does a full revert to get things working again.
+> >
+> > Reported-by: Karel Balej <balejk@matfyz.cz>
+> > Closes: https://lore.kernel.org/r/CZSHRUIJ4RKL.34T4EASV5DNJM@matfyz.cz
+> > Cc: Dimitri John Ledkov <dimitri.ledkov@canonical.com>
+> > Signed-off-by: Eric Biggers <ebiggers@google.com>
 > 
-> $ ./scripts/checkpatch.pl --strict --file include/linux/list.h
-> ...
-> CHECK: Macro argument reuse 'pos' - possible side-effects?
-> #686: FILE: include/linux/list.h:686:
-> +#define list_for_each(pos, head) \
-> + for (pos = (head)->next; !list_is_head(pos, (head)); pos = pos->next)
+> thank you very much for the revert. I have compiled 6.8 with this patch
+> and attest that it solves my eduroam connection issue.
 > 
-> CHECK: Macro argument reuse 'head' - possible side-effects?
-> #686: FILE: include/linux/list.h:686:
-> +#define list_for_each(pos, head) \
-> + for (pos = (head)->next; !list_is_head(pos, (head)); pos = pos->next)
-> ...
-Thanks Jonas and Jeff for your insights!!
+> Tested-by: Karel Balej <balejk@matfyz.cz>
+> 
+> May I please ask, though, why you did not Cc stable (and add a Fixes
+> trailer for that matter)? It seems like something that would be nice to
+> see fixed in 6.7.y and 6.8.y too as soon as possible.
+
+I just forgot.  Reverts usually get backported without asking anyway, but the
+following should be added to make it explicit:
+
+    Fixes: 16ab7cb5825f ("crypto: pkcs7 - remove sha1 support")
+    Cc: stable@vger.kernel.org
+
+That should just be added when the patch is applied, unless I happen to need to
+send out a new version anyway.
+
+We need to decide who is actually going to apply this revert.  Probably Herbert,
+since he took the commit that's being reverted?
+
+- Eric
 
