@@ -1,72 +1,69 @@
-Return-Path: <linux-wireless+bounces-4716-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4717-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58ABE87B5BA
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Mar 2024 01:19:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D04F887B5C3
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Mar 2024 01:25:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA09B284DEA
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Mar 2024 00:19:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DF311F22926
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Mar 2024 00:25:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61BFB63D;
-	Thu, 14 Mar 2024 00:19:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFB382579;
+	Thu, 14 Mar 2024 00:25:42 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 819F17F;
-	Thu, 14 Mar 2024 00:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B3F0624
+	for <linux-wireless@vger.kernel.org>; Thu, 14 Mar 2024 00:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710375556; cv=none; b=QEOzB8dgQO3jK9fMGpD2gSxHPUhjXVyeIeYA7mheMUUebJ7nrZcn/iwQ8tPzxKKkk8fw2ltAmR6tEAlVV8WN+7G0eW0jhCvbojch7ad0yPw4vo6er8iOjy8XBCpAecCbCu/CLGfU6ZgZ9re+a7CX/NWDvDgBLzzJWmT2cljRZ5o=
+	t=1710375942; cv=none; b=YztH5fh8HUvh1CKgox1Xz1jFYodfkDb2BkW91Q7rP/wrMuAY5zmzRkKnuO4oh2m3gtNUe7t9GKQ4KD1xlK282xBbP5zWLalI+SZ68kjFWajh9RQiD2zSOO8Bfjaj0J6phFkq6pls1C40fFP74pgVIVQvFWSQrC/XuKevRyqDcu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710375556; c=relaxed/simple;
-	bh=NfnEMUvDnrnJTF/DEiBJxxTzwBHO/iEmpBZnnE9wW9I=;
+	s=arc-20240116; t=1710375942; c=relaxed/simple;
+	bh=3aAiuxGnkIuEJiH3b7aAn9bgJsMAB6XZNypW85vpjQE=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Gg8WfHYDsTGl6jus4LdT/Kf9hH3d3wq5T7j/EamjhUcUhR3OknWqsjhSYU2+EvPTFmnjxF/fwjFVWDXF2Iz2oWPEx4WlJUpS+C4oLdp+9MyVE7huhuJqtbwbROkZMap9nme5+TP4dwq1aCebJ3pC6tCfqglJeaOMvwugZO+dRDI=
+	 Content-Type:MIME-Version; b=HqS9oT2Hc6qKpOU/Bld7Axc56zovEdblj9FpNoG+RKtouVfgG4QsU15xTb8w9o9sOYG18cbUzXiOs7fl01MSg7OIPU5fxg1OS124d3aPfrCGncLLEuCkKi5CKuz7gwuuspZk8t1XD8mqRJeaiNYnpAW9cobpaBPnTGyiEgsUGC4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 42E0IgpkE1048147, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 42E0IgpkE1048147
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 42E0PUNX01048639, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 42E0PUNX01048639
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 14 Mar 2024 08:18:42 +0800
-Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+	Thu, 14 Mar 2024 08:25:30 +0800
+Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 14 Mar 2024 08:18:42 +0800
+ 15.1.2507.35; Thu, 14 Mar 2024 08:25:31 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 14 Mar 2024 08:18:42 +0800
+ 15.1.2507.35; Thu, 14 Mar 2024 08:25:30 +0800
 Received: from RTEXMBS04.realtek.com.tw ([fe80::c9b7:82a9:7e98:fa7f]) by
  RTEXMBS04.realtek.com.tw ([fe80::c9b7:82a9:7e98:fa7f%7]) with mapi id
- 15.01.2507.035; Thu, 14 Mar 2024 08:18:42 +0800
+ 15.01.2507.035; Thu, 14 Mar 2024 08:25:30 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
-To: "pavel@ucw.cz" <pavel@ucw.cz>, "fiona.klute@gmx.de" <fiona.klute@gmx.de>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "kvalo@kernel.org" <kvalo@kernel.org>, "megi@xff.cz" <megi@xff.cz>,
-        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
-Subject: Re: [PATCH v4 0/9] rtw88: Add support for RTL8723CS/RTL8703B
-Thread-Topic: [PATCH v4 0/9] rtw88: Add support for RTL8723CS/RTL8703B
-Thread-Index: AQHac6A1Psbdiic/Xku5IpChPAWGprEzakIQ///a9ACAAASaAIAB2eSAgAC5AoA=
-Date: Thu, 14 Mar 2024 00:18:42 +0000
-Message-ID: <063926329b2507ce4073dd05fdfc47929f3bb038.camel@realtek.com>
-References: <20240311103735.615541-1-fiona.klute@gmx.de>
-	 <e540243c657043f9a6d0a8d5314191d3@realtek.com>
-	 <ZfAVlEhsMwYMq9BY@amd.ucw.cz>
-	 <6c73784ecc04cadbcaae3f7e073ffb120e13853c.camel@realtek.com>
-	 <38fc27be-0e46-4677-bbe3-c0b9689dfbd5@gmx.de>
-In-Reply-To: <38fc27be-0e46-4677-bbe3-c0b9689dfbd5@gmx.de>
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "rtl8821cerfe2@gmail.com" <rtl8821cerfe2@gmail.com>
+CC: "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>
+Subject: Re: [PATCH] wifi: rtlwifi: rtl8192de: Fix 5 GHz TX power
+Thread-Topic: [PATCH] wifi: rtlwifi: rtl8192de: Fix 5 GHz TX power
+Thread-Index: AQHadHc+y1p0wnFmpUaBbm9dm2gSZ7E05aGAgAAFZjCAANM6gIAAHq2A
+Date: Thu, 14 Mar 2024 00:25:30 +0000
+Message-ID: <4c601df104e882b559d2070815394f74d75975c5.camel@realtek.com>
+References: <9995b805-ef8b-47c9-b176-ff540066039a@gmail.com>
+	 <43c344357f564170872501e34490c851@realtek.com>
+	 <a9a93e7bd7e94870be0f38dd6792ab29@realtek.com>
+	 <f50424f4-c478-4d1e-898f-b2f9fc2bf14d@gmail.com>
+In-Reply-To: <f50424f4-c478-4d1e-898f-b2f9fc2bf14d@gmail.com>
 Accept-Language: en-US, zh-TW
 Content-Language: zh-TW
 user-agent: Evolution 3.36.1-2 
 Content-Type: text/plain; charset="utf-8"
-Content-ID: <B2FB466B4698BD48BA3DB2E2C16E6329@realtek.com>
+Content-ID: <4B0D78442907DE49BC94974F01F21E26@realtek.com>
 Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -74,9 +71,26 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-DQo+IA0KPiBJcyB0aGVyZSBhbnl0aGluZyBJIHN0aWxsIG5lZWQgdG8gZG8gdG8gZ2V0IHRoZSBm
-aXJtd2FyZSBpbnRvDQo+IGxpbnV4LWZpcm13YXJlPw0KPiANCg0KUGxlYXNlIHNlbmQgbWUgYSBm
-aXJtd2FyZSBwYXRjaCBhZ2Fpbi4gSW4gY2FzZSBJIHNlbmQgd3JvbmcgZmlybXdhcmUgdG8NCmxp
-dW54LWZpcm13YXJlLiANCg0KUGluZy1LZSANCg0K
+T24gVGh1LCAyMDI0LTAzLTE0IGF0IDAwOjM0ICswMjAwLCBCaXR0ZXJibHVlIFNtaXRoIHdyb3Rl
+Og0KPiANCj4gT24gMTMvMDMvMjAyNCAwNDowMCwgUGluZy1LZSBTaGloIHdyb3RlOg0KPiA+IA0K
+PiA+ID4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gPiA+IEZyb206IFBpbmctS2UgU2hp
+aCA8cGtzaGloQHJlYWx0ZWsuY29tPg0KPiA+ID4gU2VudDogV2VkbmVzZGF5LCBNYXJjaCAxMywg
+MjAyNCA5OjU1IEFNDQo+ID4gPiBUbzogQml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBn
+bWFpbC5jb20+OyBsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmcNCj4gPiA+IENjOiBMYXJy
+eSBGaW5nZXIgPExhcnJ5LkZpbmdlckBsd2Zpbmdlci5uZXQ+DQo+ID4gPiBTdWJqZWN0OiBSRTog
+W1BBVENIXSB3aWZpOiBydGx3aWZpOiBydGw4MTkyZGU6IEZpeCA1IEdIeiBUWCBwb3dlcg0KPiA+
+ID4gDQo+ID4gPiA+IFRlc3RlZCBvbmx5IHdpdGggcnRsODE5MmR1LCB3aGljaCB3aWxsIHVzZSB0
+aGUgc2FtZSBUWCBwb3dlciBjb2RlLg0KPiA+IA0KPiA+IEJlY2F1c2UgYW5vdGhlciBwYXRjaHNl
+dCBhZGRpbmcgcnRsODE5MmR1IGlzIGJhc2VkIG9uIHRoaXMgcGF0Y2gsIEkgc3VnZ2VzdA0KPiA+
+IHRvIHNlbmQgdGhlbSBhcyBzaW5nbGUgb25lIHBhdGNoc2V0Lg0KPiA+IA0KPiANCj4gSSBjYW4g
+ZG8gdGhhdCwgYnV0IEthbGxlIHdpbGwgcHJvYmFibHkgYXBwbHkgdGhpcyBwYXRjaCBsb25nDQo+
+IGJlZm9yZSB2MiBvZiB0aGF0IHBhdGNoc2V0IGlzIHJlYWR5Lg0KDQpSaWdodC4gQnV0IG5leHQg
+dGltZSB5b3UgY2FuIHNlbmQgbXV0dWFsIGRlcGVuZGVudCBwYXRjaGVzIGluIGEgcGF0Y2hzZXQs
+IG9yDQpkZXNjcmliZSB0aGVpciBkZXBlbmRlbmN5IGluIGNvdmVyIGxldHRlci4gQW5kLCBJIHBy
+ZWZlciB0aGVtIGluIGEgcGF0Y2hzZXQuIA0KDQoNCg==
 
