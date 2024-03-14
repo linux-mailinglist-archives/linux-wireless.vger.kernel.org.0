@@ -1,74 +1,73 @@
-Return-Path: <linux-wireless+bounces-4748-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4749-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4ACD87BDFF
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Mar 2024 14:50:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1C0087BE0B
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Mar 2024 14:51:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C8821F2196D
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Mar 2024 13:50:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A65381F21BFB
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Mar 2024 13:51:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BB665B5DD;
-	Thu, 14 Mar 2024 13:49:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFBB66FE27;
+	Thu, 14 Mar 2024 13:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZMXNJddk"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XFjnzYWX"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1FCF6F086
-	for <linux-wireless@vger.kernel.org>; Thu, 14 Mar 2024 13:49:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14A826FE01
+	for <linux-wireless@vger.kernel.org>; Thu, 14 Mar 2024 13:50:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710424189; cv=none; b=WuqaRr8y/C6+Ze0Sxji4W6JPqZ3R1vYpix/tNV4HJcvm57IyN27QW9M8syNTeHwkrGnrgpeNZJQEXxeYbVkqLRjQ6/+jG3UA/uPKxmKTB8rUuXVxx5qPJ4eo7pJM+a4RgzS7xz77Wetf0Bo+uEEqeL9eIoso6m3BLbScrfKM1hk=
+	t=1710424240; cv=none; b=QdZ+P/4HyAPr6YDVt0p//UHRRVoi08YwcUdTUHeSrkyiWmlq8IaTv51PqP8vMAfWN4PmRrFKynuzYup7Rw/KEKfDzC+xJb7OtszK6EbqmrzU1CQVx2zdDzEBWpP8vUexbuRRtxwm5acSTq+FMRvZx0/zQweoaLptq8zoS3hEOKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710424189; c=relaxed/simple;
-	bh=Zz6SnVk9tgMQBvLB4IZv3fQB4v5VNvwEdjL4+jC3b80=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=pHPV22MgvYfOgDuoYiz2A21sI+9ZcngRWmc51JQwmCYr63cNr8UNuUPfhdF4nDX+nuFbbuVbzEkxtMAHsVChnKTJAWsl7jMkzxZICGfAuF90oroCoznuRDlgT25yLWNRRCBSgqwt9EIg+C0FqcSEiZfVsHgMhpmo9/VxKP2xAqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZMXNJddk; arc=none smtp.client-ip=209.85.218.50
+	s=arc-20240116; t=1710424240; c=relaxed/simple;
+	bh=dRacphyH+U+MYUIyrQY1+Am4jouMi5WqHwzc2QkcfHA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jBDB1F3aTi9S0kcQsLSP47JslYmRvXT9GN3ptsYb4ltzZRBxkTWNA9zjYDweyegUa+9ipugSaf2kuWEBEUl0O2T0K7Wh9bh9vCidWgVMhTlPouXPe5GlNRU97tGOYPB2TWCvSBH1+5rU6u2BnQgVl4sYqNuSfv8+o9qgPPMG+Yc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XFjnzYWX; arc=none smtp.client-ip=209.85.218.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a3fb8b0b7acso105191266b.2
-        for <linux-wireless@vger.kernel.org>; Thu, 14 Mar 2024 06:49:47 -0700 (PDT)
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a28a6cef709so129729166b.1
+        for <linux-wireless@vger.kernel.org>; Thu, 14 Mar 2024 06:50:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710424186; x=1711028986; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=9zN6ds5gGFuNudCMx3gEXJO4VDtaDTzyuQb9NeUKPg8=;
-        b=ZMXNJddkpDiXot04n6VBXBI8knHKcv9IZ91+Fm9dmaP7fOGAjULwh0zpD9gZYvbzyI
-         XwgvdVf6jwx8WVFArA8CDIYdhKbAqxxB20buG1Yz0OGu+bJcyuJ6GB1fw2hSkeiImaQJ
-         GQvwW0zuW6lRfUQ2uLSB1r8T5/X8lq+2LvpoHO+FkZpt0klveRiMVh6TsjYCTNVcUlOG
-         pq+ZAyCB1quBzwIw0U1cUjJMYaRLHVoZDuxZNxAnpVpa8N5dT6YFgaMf33EAqgWqK7F2
-         OtwoQi7F9H/R7iey494vPFy2kkd8JQrE74PsUToSjS49AzI8fXv3FoejEB2j1/jJmh2o
-         opoQ==
+        d=gmail.com; s=20230601; t=1710424237; x=1711029037; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=avJCQMG6Pf0zzn2eFFgh6QeYbr+jhS3nUWUPtuqZD9w=;
+        b=XFjnzYWX284moRp/jRggvLALFe1Vf4oWjuYWtdF5UerqXacyjf2Mvax3+a10Y4oBXb
+         Klx3sYToE59q0Yd+VmrIXhT1xyM9003Ut0ydwYA1TaqVJTR/WKLlXLNNqyKNpWesYPdp
+         OrNQs6Nu05qhzSfJ+uWARJ/J2ESLehi52WjAIkkJrEBcWQ8VuBIaNuC+uKMrWb5v6oBe
+         nNTquqpaACSbbx2x6tyojqEAQg4fEM7o0jldKL1xZ5Z8pEH9kLzg4hQk6dQojtXbTS+R
+         lhlgsG4pAnz+LiGdBgpzl5jdJVyeCo9rZTIY4xRBdi0q05wZgT9BOkLpmI+J8M13lZeO
+         Fw/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710424186; x=1711028986;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1710424237; x=1711029037;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9zN6ds5gGFuNudCMx3gEXJO4VDtaDTzyuQb9NeUKPg8=;
-        b=BxhZRgtQdbJRHc9Ab2X2iGX2AmtLkvWV9AY/bm/geCTFl7Ly7QsL5dUVapWrfA+gx3
-         O0XZ9qHD1/RoFWdH+B8a8fGu/6MLzUIKer7kWaZIeFxr/jW6U/1/gbyKkg/uOyEjk2PF
-         biAy+23n4CC6utJZmiaX6XfNTl02peqf2T+4vTlqMyXsB2mwqn4yvYTN0yP8IH6pzaqv
-         ddvUKXk7OUVXW2Y/APku6C7cEKllnq9iBbT7GGtfPUVllfuUWXSpClhLoQs/9PRtCYeX
-         ff2scCDQo8c+K1XKvAGgfGBtIglE5VZKmq/HFBCtF7j43q5xONK+gDfxUsxTfJVjbC4j
-         IOXw==
-X-Forwarded-Encrypted: i=1; AJvYcCW5ras7gmerR+LAtjENZ4lyUcY9498yNN071gMaxw+FzfBkVVRSBcn3i5zrS2TAgTaJFIX+CQSHIa/qEKVgLHfpu8qx1bbDILwlAdOYddM=
-X-Gm-Message-State: AOJu0YyV56rcU7PTbx+7SIEI0RO/8uor9M+wTyyPCkgvTtKfJKKNusxS
-	d1O0W63ixRAXWqV2xPlqk4ppRhiTyP66ipdUo4xG60RC4k1gx+At
-X-Google-Smtp-Source: AGHT+IHOt7wUyYd8zHnEl3Y50jWlEl/eVIVBjZxcBqJeXRJO2/KhTY2W1jrKn8HMdiX7Krgo5OfVsA==
-X-Received: by 2002:a17:907:c783:b0:a45:a7f8:1b6b with SMTP id tz3-20020a170907c78300b00a45a7f81b6bmr1548367ejc.46.1710424185847;
-        Thu, 14 Mar 2024 06:49:45 -0700 (PDT)
+        bh=avJCQMG6Pf0zzn2eFFgh6QeYbr+jhS3nUWUPtuqZD9w=;
+        b=QqVTzynfx46vLtwJDgWoz7Pst+D6PI/fIwZ2c8CDSAKWTdNZl5/owutkOzYCMp5gZg
+         j1XEaJ7MayudhknIYKe9ZQYZJ7ZodUJdYIFhS2F7mWnl36WWJL7r9n4cVi5bgTJX2Zye
+         m5b1DFJNMd9bAXZNUuzhjg5FUSzA8CPcZgLMovphHj1dJPqHLT/QgU/ViDQ3pY7XPxK0
+         2E9QvhiPPKr5nqC4AaEOtDyQ7Qkc64J4ATnjRHzXcfFKmCfwTpRPP1SYaclESqLJvpQc
+         ph8nvVkcSU+GIm1QOEHhsIJoacmBwqqI5ffx4NaqM+HJ/l6m2sl5DHdKs74rNmxRu8ZQ
+         9yLQ==
+X-Gm-Message-State: AOJu0YwSQLOwJnLikXpbQsVMzapAH5Rar3U8dfM7uMVRjLX3AD1nh6Iu
+	lTAm53IO2wYnVxsX1pharaNKn1Msri6Hf+u77e5NYFSv1nTHNr+Y
+X-Google-Smtp-Source: AGHT+IEkfKoUnmfQYoOv2+qoAb1Lcsa2lDpDkDVKHAPxQmxQT+i4LqJXus1DFu1st2OPiWlYVgu4EQ==
+X-Received: by 2002:a17:906:548d:b0:a46:557b:c72c with SMTP id r13-20020a170906548d00b00a46557bc72cmr552039ejo.8.1710424237129;
+        Thu, 14 Mar 2024 06:50:37 -0700 (PDT)
 Received: from [192.168.1.50] ([79.119.240.211])
-        by smtp.gmail.com with ESMTPSA id h11-20020a17090619cb00b00a3ce60b003asm730923ejd.176.2024.03.14.06.49.44
+        by smtp.gmail.com with ESMTPSA id h11-20020a17090619cb00b00a3ce60b003asm730923ejd.176.2024.03.14.06.50.36
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 Mar 2024 06:49:45 -0700 (PDT)
-Message-ID: <f734bd50-8a04-447b-b1e8-11eb6c958f34@gmail.com>
-Date: Thu, 14 Mar 2024 15:49:44 +0200
+        Thu, 14 Mar 2024 06:50:36 -0700 (PDT)
+Message-ID: <5e86599c-c313-45d0-a49c-1c247f8cd230@gmail.com>
+Date: Thu, 14 Mar 2024 15:50:36 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -76,118 +75,63 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: Re: [PATCH 2/3] wifi: rtlwifi: Adjust rtl8192d-common for USB
-To: Ping-Ke Shih <pkshih@realtek.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>,
- "s.l-h@gmx.de" <s.l-h@gmx.de>, "chewitt@libreelec.tv" <chewitt@libreelec.tv>
-References: <e1922019-21eb-4013-a35f-0077167e92cf@gmail.com>
- <d70dc39c-a3e5-43f6-9cb4-612d08035c57@gmail.com>
- <fdd95844c3a127356bab4250dfc46b16041829ee.camel@realtek.com>
- <a674d357-c917-413a-a4fb-1ee22f43d9ff@gmail.com>
- <f07686170eed48c21f18ce2850ffde4401c25bf5.camel@realtek.com>
+Subject: Re: [PATCH 1/3] wifi: rtlwifi: Move code from rtl8192de to
+ rtl8192d-common
 Content-Language: en-US
-In-Reply-To: <f07686170eed48c21f18ce2850ffde4401c25bf5.camel@realtek.com>
+To: Kalle Valo <kvalo@kernel.org>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ Ping-Ke Shih <pkshih@realtek.com>, Larry Finger <Larry.Finger@lwfinger.net>,
+ Stefan Lippers-Hollmann <s.l-h@gmx.de>,
+ Christian Hewitt <chewitt@libreelec.tv>
+References: <e1922019-21eb-4013-a35f-0077167e92cf@gmail.com>
+ <87jzm64ig6.fsf@kernel.org> <7fd2d445-9db0-4170-8d89-78d42f476255@gmail.com>
+ <87a5n1fcqi.fsf@kernel.org> <871q8dfbmq.fsf@kernel.org>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <871q8dfbmq.fsf@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 14/03/2024 03:20, Ping-Ke Shih wrote:
-> On Thu, 2024-03-14 at 00:47 +0200, Bitterblue Smith wrote:
+On 14/03/2024 10:42, Kalle Valo wrote:
+> Kalle Valo <kvalo@kernel.org> writes:
+> 
+>> Bitterblue Smith <rtl8821cerfe2@gmail.com> writes:
 >>
->> On 13/03/2024 05:46, Ping-Ke Shih wrote:
->>> On Wed, 2024-03-13 at 00:20 +0200, Bitterblue Smith wrote:
+>>> On 13/03/2024 10:58, Kalle Valo wrote:
+>>>> Bitterblue Smith <rtl8821cerfe2@gmail.com> writes:
 >>>>
->>>> @@ -966,12 +980,17 @@ static void rtl92de_update_hal_rate_mask(struct ieee80211_hw *hw,
->>>>                 break;
->>>>         }
+>>>>> Create the new module rtl8192d-common and move some code into it from
+>>>>> rtl8192de. Now the rtl8192de driver (PCI) and the new rtl8192du driver
+>>>>> (USB) can share some of the code.
+>>>>>
+>>>>> This is mostly the code that required little effort to make it
+>>>>> shareable. There are a few more functions which they could share, with
+>>>>> some changes.
+>>>>>
+>>>>> The only other changes in this patch should be adjusting whitespace and
+>>>>> renaming some functions.
+>>>>>
+>>>>> Tested only with RTL8192DU.
+>>>>>
+>>>>> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 >>>>
->>>> -       value[0] = (ratr_bitmap & 0x0fffffff) | (ratr_index << 28);
->>>> -       value[1] = macid | (shortgi ? 0x20 : 0x00) | 0x80;
->>>> +       *(u32 *)&rate_mask = (ratr_bitmap & 0x0fffffff) |
->>>> +                                    (ratr_index << 28);
+>>>> A cover letter is would be really good to have.
 >>>
->>> 'u32' is weird to me. Shouldn't it be __le32?
->>> But I prefer a struct of rate_mask.
->>>
+>>> I can add one. What should I write in it?
 >>
->> I don't like this either, but it was easy to copy from rtl8192cu.
->>
->> Something like this?
->>
->> #define RAID_MASK               GENMASK(31, 28)
->> #define RATE_MASK_MASK          GENMASK(27, 0)
->> #define SHORT_GI_MASK           BIT(5)
->> #define MACID_MASK              GENMASK(4, 0)
->>
->> struct rtl92d_rate_mask {
->>         __le32 rate_mask_and_raid;
->>         u8 macid_and_short_gi;
->> } __packed;
+>> Basically just a short (few sentences) introduction what the patchset
+>> adds and if there are problematic/broken/todo items, for example in this
+>> case that the firmware upload is pending. This info helps the reviewers
+>> and also having the cover letters makes the grouping in email
+>> applications better.
 > 
-> Yes, something like that, but struct size should be 5.
+> Here's a very good example of a cover letter:
 > 
->>>> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192d/phy_common.c
->>>> b/drivers/net/wireless/realtek/rtlwifi/rtl8192d/phy_common.c
->>>> index 487628ac491b..1e39940a3ba7 100644
->>>> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8192d/phy_common.c
->>>> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192d/phy_common.c
->>>> @@ -81,11 +81,13 @@ u32 rtl92d_phy_query_rf_reg(struct ieee80211_hw *hw, enum radio_path
->>>> rfpath,
->>>>         rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
->>>>                 "regaddr(%#x), rfpath(%#x), bitmask(%#x)\n",
->>>>                 regaddr, rfpath, bitmask);
->>>> -       spin_lock(&rtlpriv->locks.rf_lock);
->>>> +       if (rtlpriv->rtlhal.interface == INTF_PCI)
->>>> +               spin_lock(&rtlpriv->locks.rf_lock);
->>>
->>> Does it mean USB never read/write RF registers simultaneously? How can you
->>> ensure that?
->>>
->>
->> I don't know. It seems to work fine. The out-of-tree driver
->> doesn't have locks here:
->> https://github.com/lwfinger/rtl8192du/blob/2c5450dd3783e1085f09a8c7a632318c7d0f1d39/hal/rtl8192d_phycfg.c#L637
->>
->> rtl8xxxu and rtl8192cu don't have locks either.
+> https://patchwork.kernel.org/project/linux-wireless/cover/20240311103735.615541-1-fiona.klute@gmx.de/
 > 
-> Not sure if race condition is existing to read/write RF registers, but
-> no idea to dig the problem. Maybe, current code has no problem though.
-> At least, your newly changes don't affect original PCI behavior, right?
+> The only gripe I have is that the version change log should be in
+> reverse order (v4, v3, v2 instead of v2, v3, v4) but that's just
+> cosmetics.
 > 
 
-Yes, the PCI driver should behave like before.
-
-> 
->>>> diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c
->>>> b/drivers/net/wireless/realtek/rtlwifi/usb.c
->>>> index 6e8c87a2fae4..2ea72d9e3957 100644
->>>> --- a/drivers/net/wireless/realtek/rtlwifi/usb.c
->>>> +++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
->>>> @@ -979,6 +979,9 @@ int rtl_usb_probe(struct usb_interface *intf,
->>>>         usb_priv->dev.intf = intf;
->>>>         usb_priv->dev.udev = udev;
->>>>         usb_set_intfdata(intf, hw);
->>>> +       /* For dual MAC RTL8192DU, which has two interfaces. */
->>>> +       rtlpriv->rtlhal.interfaceindex =
->>>> +               intf->altsetting[0].desc.bInterfaceNumber;
->>>
->>> So, you will see two USB adapters when you plug 8192DU?
->>>
->>
->> When you plug the dual MAC version, lsusb will show one device,
->> with two interfaces. rtl_usb_probe() is called twice. This is
->> copied from linux-hardware.org:
->>
->> Mine is the single MAC version:
->>
-> 
-> Does it mean you only tested single MAC version? But, your code will support
-> two MAC version, right?
-> 
-> 
-
-Theoretically all the code for dual MAC is there. But I only
-tested the single MAC version, and Stefan also has the single
-MAC version.
+Okay, I will send v2 with a cover letter.
 
