@@ -1,74 +1,76 @@
-Return-Path: <linux-wireless+bounces-4765-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4766-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDAA287C243
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Mar 2024 18:52:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF86587C268
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Mar 2024 19:09:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 390F1B20FFF
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Mar 2024 17:52:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 296E828349D
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Mar 2024 18:09:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A61674BE4;
-	Thu, 14 Mar 2024 17:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9153D74C01;
+	Thu, 14 Mar 2024 18:08:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b="DDQ4JToL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HsmwSFDt"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F242C745FD
-	for <linux-wireless@vger.kernel.org>; Thu, 14 Mar 2024 17:52:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B2831A38D0;
+	Thu, 14 Mar 2024 18:08:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710438746; cv=none; b=niaG6MYSWLcX0sQ5P1WOYjyMtjQ0lvOFFJb9KxSS6QNEkZALywd1E/U84XE1Pb0oMuBYqkzIrLnCEKoAG+2k3RKSbQ7sevTQWzYzqYDE7iV7ABeQYEv1k8IXOP7wQEHDo/aGGp42m/YpTVSZZNM0sNfuRSoPQw9tXBIeIYdXFT4=
+	t=1710439739; cv=none; b=JB/6LwiuIQIZ+aaXe1nLpJT5KDVntPQbpkqdZ0u2WrE6vrLpd3YjL6pBpBbMLr7YFoemENPKfMN71GV6dwuLB4zxz1BjhLgO3oXpYB1O436+WhA5Ng2Wdam+qAOdqEPM4eYUv+YANqnAyRS0FnjtV/4lSztOuE6r/RJqZ2UtKqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710438746; c=relaxed/simple;
-	bh=VsxCniOj1rJue4dxpvsXa2nOXt3zHVY6JDDiyhzmCic=;
+	s=arc-20240116; t=1710439739; c=relaxed/simple;
+	bh=X6o8TSPFA25/+lbdQH4LC6ihPnyGKBsoHvc/7dwd6Kc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Vk1tS50albwsShugYNo1uXT7EfLG9LSsIdKFerEd+tWJnTy/6+7v0/rQ4FzeQEnkuYWsz1Ydoi9ErUf7SmPeiqxjFPZX2XUidhukJIhhNAem8iYVesq9Tc3TzRQMDTk5mdCrGI5yg8uX/YC+Mch5AWOUVZuyVed1q0OSccRIaIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b=DDQ4JToL; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freebox.fr
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-33e76d653b5so1110840f8f.3
-        for <linux-wireless@vger.kernel.org>; Thu, 14 Mar 2024 10:52:23 -0700 (PDT)
+	 In-Reply-To:Content-Type; b=aNCb4NfAHE55YeY7QFCSnzceyDdbKZwPhYtTDbAn9KSMV4eb6BoGDZiLJo5oCdQVjSNdJs5ZKOC92MVlc/5LWfS6z0SbHyTP84OoWlVnhls6Ry3iYGX0NCs/MdeoHwg6gjQvuyM4sVKFqOVbEP686kZGjx1tPHS6q9rgWdok2AA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lwfinger.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HsmwSFDt; arc=none smtp.client-ip=209.85.210.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lwfinger.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-6e66817ff5dso576269a34.0;
+        Thu, 14 Mar 2024 11:08:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=freebox-fr.20230601.gappssmtp.com; s=20230601; t=1710438742; x=1711043542; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ydOw5fr/AFZUtVGxJCncGRnX7kcC+G1b69vGaI6Rc7o=;
-        b=DDQ4JToLSnHcCKUF0sKPKpxklN3O5QsxPsXKFWyqVPnrd61EwFVPHWous9ap4y/2iB
-         p+IUnH4sg69qzTxNRwlwHgq2HrCi1PfabOwF5hDiUd0HK4fz1gUTkGjiSHyPnLZaev1P
-         ze/pR5C/7uVSDj8O6zfpaDq4G+PwlqMXUv5B8eoeXaP3rd3bRTfiJ2s1oi6Syxixhapg
-         Bd9Qf+mHB1mbP2RxgxQrtMtjbY/HDwnG7455sZWDPo0uJRU78jelNCCfGeumB3QH1BUl
-         9pGvyhis6bL3a7QhYO1Auh18I/tQ1r/KE0AQgLQd2eMIUMaY8pDLxhn6e4DC2zN1tjQ4
-         5ZZw==
+        d=gmail.com; s=20230601; t=1710439736; x=1711044536; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=O6QjNBOUXNMcsITHYgGLYglrjmHq8B75jMGMpg7X+sA=;
+        b=HsmwSFDt3wGSK1HCL1hf0drafFWDlyIs6I165LRz233m7yIFvdZ7oOZ2MRpRSG+gHa
+         Hqt0fgCHY6CEDSHIbHUkdJ2oXiw5zkwmTtAOtDPtJVcx2GZTVhBPIsY8VbX6d8JKRgy8
+         OhQPvpg02wnKaYNEgIl60P8FvUqkJL38qtL+yIzzDp3vLnojQc2U/Zd9mzQ9hVpYCdCC
+         zNdE6kC3ViB39mqBfPF81ILvNi+eOBEqzWaTUD1gZXzAHS2FrCKNxqx+i+neMTI7Z5Yp
+         n4mhJtfatAYbm7ea15bFQeEBYHAB84PqpT02Xn2J+pgP5BGCQ4m8+AiWDX/3yU0i3q6m
+         tQLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710438742; x=1711043542;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ydOw5fr/AFZUtVGxJCncGRnX7kcC+G1b69vGaI6Rc7o=;
-        b=v69Y2P/lyCG0ReY0cLs4+ICgfBi5AVxAkKBowtW/azeyWbFtzK6wk1LMwsqjyW8smW
-         dv+QE1TlOZ9E3O74NXGln7i2JXjFk+DciS2qxt9ueD7nMG0KC8x1tr285QbRvCU1gDhm
-         JF5bZ63jOgqVSveVIhHWcW1QQueh0IcDVVbCXM3UYoklpcFUuhc5THOXeWlORdmgJynf
-         T+tglQA9c0IcWT8GbeALPGrsrL0y2AsVMbLKvlg9zoEHQmKMTyhXBRtSB8zEpweT3qpl
-         MbYlAalmq23QQh8bYnnuWzTTmQdlQ3wSrhvd2YZBJAdbmsA0bzeTOwhKyFCAATsdeJVJ
-         /wPQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV/Iz9ZRa/o4UrJxy/7tAVXruxKRZH5jyctB2tfXmzlz+sQ+W2KkDcmQ/E+PpwFmaQoLOYNIWsIea+qZGbdV2stwMuIBH1Y/A0ch/xlgbw=
-X-Gm-Message-State: AOJu0Yz7h4riaB0lL5j62jpwGb2nr7r16yktPuMvuE61EqTkWSQ63miK
-	P87swttR/CCmt22yaphsDMyvaSIy0A2OJ1FdDBnxmti7Ikht9i637FScEY4Ojqg=
-X-Google-Smtp-Source: AGHT+IEOyhXOB1aioQMfsxpLm0S1khFSThiLIjiZsbb+aHejkjcjgWgHwFtSf1gI/HfTM8GLlmW6jA==
-X-Received: by 2002:adf:e3c4:0:b0:33e:7650:24c8 with SMTP id k4-20020adfe3c4000000b0033e765024c8mr2049164wrm.12.1710438742240;
-        Thu, 14 Mar 2024 10:52:22 -0700 (PDT)
-Received: from [192.168.108.81] (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id bt14-20020a056000080e00b0033e2777f313sm1270176wrb.72.2024.03.14.10.52.21
+        d=1e100.net; s=20230601; t=1710439736; x=1711044536;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=O6QjNBOUXNMcsITHYgGLYglrjmHq8B75jMGMpg7X+sA=;
+        b=TtMVXQf/9lDLugmVzw4E3xXJ7AvVbkshtYvagiqptDYLr+MdlEy9RTkOtbzOa5rslP
+         LfVrZeXoIVuUzXG4LZMqe4/X/vdC+17svucXmdqtEO1AT72Ew2Hsw+328A954RbPsRux
+         Za4v/E+XgukeTtSZ/Kq4eFU1Yuzrw+8C6IQ02GB4hUurFW0ObGQKOzJ9uBWM9T47Lh1/
+         H+VnYjpLWBSt5bHUJor0OKerMQ4qh2dBNIUjcTQeWOt3eZFYAif/KpbgY1zYWBjRKdb6
+         sveFnTpY001Jgzn5uskOHV9LNNKiqiu0HJiKZpuQlEYhOv+ykDY3Xe+f9wPb/7TD49Hi
+         AXxA==
+X-Forwarded-Encrypted: i=1; AJvYcCWtq6LH6D/hk6ISqSC5rRfwNnyAu8hidG3chFUfh8Ag/HJziHfczyOBvMJMCJ9mwbXkVY/CmByiR0MfVJ0UJZP7muyC5K6ENPRwQvsAZvAcwxCQIiZ1MIvulhodPJe84AF+pPgnkf8ceINHZn0=
+X-Gm-Message-State: AOJu0YxTd7OriIlpo64hYxuWX4Oq7eGqEQ4miWwgTnybcI1j2PCF6Mp5
+	rEZuStiTTKaoV4gtARBiLnec7+dskAcVAJrVqlk+kxaJYAea89bur+q9R09g
+X-Google-Smtp-Source: AGHT+IEP1bedK+Yggcc37A6cZSW3SoeHE9/yvyPLi/Ng3EufKic3dCTFQ336z48Icdx9WwcHiuDtrw==
+X-Received: by 2002:a9d:7c87:0:b0:6e6:7667:992e with SMTP id q7-20020a9d7c87000000b006e67667992emr964963otn.28.1710439736504;
+        Thu, 14 Mar 2024 11:08:56 -0700 (PDT)
+Received: from [192.168.1.119] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id s5-20020a056830124500b006e51a824d56sm366857otp.51.2024.03.14.11.08.55
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 Mar 2024 10:52:21 -0700 (PDT)
-Message-ID: <150c9705-e5ed-4d4a-b935-c0101a27795e@freebox.fr>
-Date: Thu, 14 Mar 2024 18:52:21 +0100
+        Thu, 14 Mar 2024 11:08:56 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <fd321855-0ee6-41ce-9cdf-364aa971f5f3@lwfinger.net>
+Date: Thu, 14 Mar 2024 13:08:53 -0500
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -76,74 +78,123 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: net: wireless: ath10k: add
- qcom,no-msa-ready-indicator prop
+Subject: Re: [PATCH 2/3] net: b43: Convert sprintf/snprintf to sysfs_emit
+To: Li Zhijian <lizhijian@fujitsu.com>, linux-kernel@vger.kernel.org
+Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+ b43-dev@lists.infradead.org
+References: <20240314094823.1324898-1-lizhijian@fujitsu.com>
+ <20240314094823.1324898-2-lizhijian@fujitsu.com>
 Content-Language: en-US
-To: Jeff Johnson <quic_jjohnson@quicinc.com>, Kalle Valo <kvalo@kernel.org>
-Cc: ath10k <ath10k@lists.infradead.org>,
- wireless <linux-wireless@vger.kernel.org>, DT <devicetree@vger.kernel.org>,
- Pierre-Hugues Husson <phhusson@freebox.fr>,
- Jami Kettunen <jamipkettunen@gmail.com>,
- Jeffrey Hugo <quic_jhugo@quicinc.com>
-References: <14daa98e-7fd3-4ebb-87bb-5d2c1fba679f@freebox.fr>
- <b8de96c7-cbb6-4a09-a4d4-2c11b3ab3e01@freebox.fr> <871q8wk7o3.fsf@kernel.org>
- <3392f356-7b19-483d-b9f8-3bd84068fa52@freebox.fr> <87wmqoilzf.fsf@kernel.org>
- <20240229-ageless-primal-7a0544420949@spud>
- <c48ead11-0e2a-4066-b324-84f802215c9a@quicinc.com>
- <2f588948-0261-4985-91e8-d5060e673cd9@freebox.fr>
- <15db6593-c474-43a5-ad20-b0e108137713@quicinc.com>
- <cbedb60c-c849-4b7e-a00e-c75ec8429adb@quicinc.com>
-From: Marc Gonzalez <mgonzalez@freebox.fr>
-In-Reply-To: <cbedb60c-c849-4b7e-a00e-c75ec8429adb@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
+From: Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <20240314094823.1324898-2-lizhijian@fujitsu.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 14/03/2024 15:33, Jeff Johnson wrote:
-
-> On 3/7/2024 8:46 AM, Jeff Johnson wrote:
->
->> On 3/7/2024 7:29 AM, Marc Gonzalez wrote:
->>
->>> Have you heard back from the dev team?
->>>
->>> Do they confirm that an issue involving missing MSA_READY notifications
->>> was ever noticed?
->>>
->>> What devices were affected? (All msm8998? A subset of msm8998?)
->>>
->>> Was the issue eventually fixed?
->>> (Probably fixed, otherwise newer devices would be affected)
->>
->> The feedback I received was "it might be ok to change all ath10k qmi to
->> skip waiting for msa_ready", and it was pointed out that ath11k (and
->> ath12k) do not wait for it.
->>
->> However with so many deployed devices, "might be ok" isn't a strong
->> argument for changing the default behavior.
->>
->> So my preference would be to use the firmware capability in the board
->> file that Kalle has recommended.
+On 3/14/24 04:48, Li Zhijian wrote:
+> Per filesystems/sysfs.rst, show() should only use sysfs_emit()
+> or sysfs_emit_at() when formatting the value to be returned to user space.
 > 
-> Marc,
-> I finally have an engineer who wants to research this further.
-> Can you provide the kernel log that shows the firmware version being used?
+> coccinelle complains that there are still a couple of functions that use
+> snprintf(). Convert them to sysfs_emit().
+> 
+> sprintf() will be converted as weel if they have.
+> 
+> Generally, this patch is generated by
+> make coccicheck M=<path/to/file> MODE=patch \
+> COCCI=scripts/coccinelle/api/device_attr_show.cocci
+> 
+> No functional change intended
+> 
+> CC: Larry Finger <Larry.Finger@lwfinger.net>
+> CC: Kalle Valo <kvalo@kernel.org>
+> CC: linux-wireless@vger.kernel.org
+> CC: b43-dev@lists.infradead.org
+> Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+> ---
+> This is a part of the work "Fix coccicheck device_attr_show warnings"[1]
+> Split them per subsystem so that the maintainer can review it easily
+> [1] https://lore.kernel.org/lkml/20240116041129.3937800-1-lizhijian@fujitsu.com/
+> ---
+>   drivers/net/wireless/broadcom/b43/sysfs.c       | 13 ++++---------
+>   drivers/net/wireless/broadcom/b43legacy/sysfs.c | 17 +++++++----------
+>   2 files changed, 11 insertions(+), 19 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/broadcom/b43/sysfs.c b/drivers/net/wireless/broadcom/b43/sysfs.c
+> index 0679d132968f..261b2b746a9c 100644
+> --- a/drivers/net/wireless/broadcom/b43/sysfs.c
+> +++ b/drivers/net/wireless/broadcom/b43/sysfs.c
+> @@ -53,19 +53,14 @@ static ssize_t b43_attr_interfmode_show(struct device *dev,
+>   
+>   	switch (wldev->phy.g->interfmode) {
+>   	case B43_INTERFMODE_NONE:
+> -		count =
+> -		    snprintf(buf, PAGE_SIZE,
+> -			     "0 (No Interference Mitigation)\n");
+> +		count = sysfs_emit(buf, "0 (No Interference Mitigation)\n");
+>   		break;
+>   	case B43_INTERFMODE_NONWLAN:
+> -		count =
+> -		    snprintf(buf, PAGE_SIZE,
+> -			     "1 (Non-WLAN Interference Mitigation)\n");
+> +		count = sysfs_emit(buf,
+> +				   "1 (Non-WLAN Interference Mitigation)\n");
+>   		break;
+>   	case B43_INTERFMODE_MANUALWLAN:
+> -		count =
+> -		    snprintf(buf, PAGE_SIZE,
+> -			     "2 (WLAN Interference Mitigation)\n");
+> +		count = sysfs_emit(buf, "2 (WLAN Interference Mitigation)\n");
+>   		break;
+>   	default:
+>   		B43_WARN_ON(1);
+> diff --git a/drivers/net/wireless/broadcom/b43legacy/sysfs.c b/drivers/net/wireless/broadcom/b43legacy/sysfs.c
+> index eec087ca30e6..b1c5ea4750fa 100644
+> --- a/drivers/net/wireless/broadcom/b43legacy/sysfs.c
+> +++ b/drivers/net/wireless/broadcom/b43legacy/sysfs.c
+> @@ -75,16 +75,15 @@ static ssize_t b43legacy_attr_interfmode_show(struct device *dev,
+>   
+>   	switch (wldev->phy.interfmode) {
+>   	case B43legacy_INTERFMODE_NONE:
+> -		count = snprintf(buf, PAGE_SIZE, "0 (No Interference"
+> -				 " Mitigation)\n");
+> +		count = sysfs_emit(buf, "0 (No Interference" " Mitigation)\n");
+>   		break;
+>   	case B43legacy_INTERFMODE_NONWLAN:
+> -		count = snprintf(buf, PAGE_SIZE, "1 (Non-WLAN Interference"
+> -				 " Mitigation)\n");
+> +		count = sysfs_emit(buf, "1 (Non-WLAN Interference"
+> +				   " Mitigation)\n");
+>   		break;
+>   	case B43legacy_INTERFMODE_MANUALWLAN:
+> -		count = snprintf(buf, PAGE_SIZE, "2 (WLAN Interference"
+> -				 " Mitigation)\n");
+> +		count = sysfs_emit(buf, "2 (WLAN Interference"
+> +				   " Mitigation)\n");
+>   		break;
+>   	default:
+>   		B43legacy_WARN_ON(1);
+> @@ -155,11 +154,9 @@ static ssize_t b43legacy_attr_preamble_show(struct device *dev,
+>   	mutex_lock(&wldev->wl->mutex);
+>   
+>   	if (wldev->short_preamble)
+> -		count = snprintf(buf, PAGE_SIZE, "1 (Short Preamble"
+> -				 " enabled)\n");
+> +		count = sysfs_emit(buf, "1 (Short Preamble" " enabled)\n");
+>   	else
+> -		count = snprintf(buf, PAGE_SIZE, "0 (Short Preamble"
+> -				 " disabled)\n");
+> +		count = sysfs_emit(buf, "0 (Short Preamble" " disabled)\n");
+>   
+>   	mutex_unlock(&wldev->wl->mutex);
+>   
 
-Hello Jeff,
+The code changes are OK, but the subject should be "wifi: b43:", not "net: 
+b43:". Kalle may be able to correct this when he applies the patch.
 
-Is this the line you're after:
+Acked-by: Larry Finger <Larry.Finger@lwfinger.net>
 
-[   32.367011] ath10k_snoc 18800000.wifi: qmi fw_version 0x100204b2 fw_build_timestamp 2019-09-04 03:01 fw_build_id QC_IMAGE_VERSION_STRING=WLAN.HL.1.0-01202-QCAHLSWMTPLZ-1.221523.2
+Thanks,
 
-Hopefully, my Debian setup will soon be 100% functional
-so I can easily tweak the kernel, and add more logs.
-
-
-Bonus question:
-Is it legal for my company to publish our versions of qcom firmwares on linux-firmware?
-(Perhaps a generic set of FWs would work; but AFAIU, there is some kind
-of signature verification at some point)
-
-
-Regards
+Larry
 
 
