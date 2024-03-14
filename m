@@ -1,173 +1,101 @@
-Return-Path: <linux-wireless+bounces-4725-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4726-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA58B87B8F8
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Mar 2024 08:54:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 319A487B90B
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Mar 2024 09:03:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80C2128AD04
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Mar 2024 07:54:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 312B31C20EDC
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Mar 2024 08:03:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A3D05CDD3;
-	Thu, 14 Mar 2024 07:54:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC4403209;
+	Thu, 14 Mar 2024 08:03:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sartura.hr header.i=@sartura.hr header.b="XC3AcKV4"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Z+rIx6C5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F725CDD0
-	for <linux-wireless@vger.kernel.org>; Thu, 14 Mar 2024 07:54:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC67846A2
+	for <linux-wireless@vger.kernel.org>; Thu, 14 Mar 2024 08:03:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710402890; cv=none; b=FQIF/xO5MI7N5lwmC6CPJ6E3/wxbuAEM1+O9opsY9Pq92zfH9/PQhw0jkpu/c+RQ0l+UytO2Qi8SbPzuEiSKhAZgDR0i8eeEx4zE4EN5lhdfvZQKsveHJo82d5J7s0HMarSO/SsHv6fjA1Alnpv3Lrn61Jaextpj59SiFbb/aPc=
+	t=1710403433; cv=none; b=sJQfmxKvtIPvmSODxuSdOjQtiENs0OEekk1YJF9Xgnf5i5NOKFf+2NsgOIXKQ2qbB10D6mx2wVSFLhsbP4DYXyRLEsZSvYICX8V7ajNUP2I78wRPAigZ51vhEqZmssJW9NRHPH/vMCbRwGunqvj+VJ0j5sIbhMNq5Jt1fCQ7q6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710402890; c=relaxed/simple;
-	bh=cN7o+/qmYgcI6mfFvGvyMIK9dyOtURHv4+OCyOKUvZw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Jm65mdtYzU+3QKTdQyu/H24kC8HV1pEFdj4holoAZJIuZrnogfO69mYP4HtyL4QYw0LY2XHhisZh3JXXq2R+Nqhx1CL14Rpowh7fbHlkC9tXJW77w50FwDohaQnCa+KPmMrY2X/UDs6QrXIYBw2shh4e2fo2rutmV6Sdwg7ANOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sartura.hr; spf=pass smtp.mailfrom=sartura.hr; dkim=pass (2048-bit key) header.d=sartura.hr header.i=@sartura.hr header.b=XC3AcKV4; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sartura.hr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sartura.hr
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-6e46dcd8feaso503519b3a.2
-        for <linux-wireless@vger.kernel.org>; Thu, 14 Mar 2024 00:54:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sartura.hr; s=sartura; t=1710402887; x=1711007687; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cN7o+/qmYgcI6mfFvGvyMIK9dyOtURHv4+OCyOKUvZw=;
-        b=XC3AcKV4+kOcgUso7TcT6Nhbm8l8ANQJRQH7ZJkv/DfrTBL5sdTUdo1eyZ1XYrCqZ3
-         TaMcTrtXH0gIT4K4E5LqQ1t/Yqo2w7hR+ibArxDoKUEH0Pv9bw0ibOzqD54JTYoV6pm7
-         PHLCQrrVaTi2Y990iQAmxKF7EwcttmsaVPqC+NIGe4cvnhGZPDlj8XuB5ERAPUjlqlCp
-         XnZ7YGRkGe1HZ4c+2VbRzV8cjrgk6lfZMqeqL8lHpOuR5Wh7UbuxCHwMmOBmg+yXysCC
-         BurgeOzuMLWvelbLc30SmqQS0YKfZgfSQ/rhzro0E2ZOrJAfJyBSl0C95a2NF3wamORf
-         FS0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710402887; x=1711007687;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cN7o+/qmYgcI6mfFvGvyMIK9dyOtURHv4+OCyOKUvZw=;
-        b=bOX4dQ61l2GiZjhm3bki91z8hQYAC2zM8C7+mWfLKdLnfxi48uV4DcAoVqGeHHyZKO
-         5csKEVT0fUPBlOtWfa5CUhOpkaFQIZmHHcRsuHrbhhF341e+c+2CJg3Lc608vXSM1SdP
-         qlh2pLOEr1jRCFb2FllMAfEP0RelPVmYrMJzsro04QG9aSnuj515EmnoJVDV7q6cogGI
-         iMBMC/HP2219CWthmJreUo8xdy4nVtaDn14Vy8XrpTCGyxZwIHuSeWnMKgIWLAVXQ4nu
-         ZKAKuOzgIiGCWrXByjS5q8CWYk8ZkLnDBffYSBSnGIsly/3yItcrmzl7KNa9QytfvM39
-         5B/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXFUQitKR7QPWcOcHTHmtfScyLic580p9DIxrVRtMMAwoTE64z15iM+fX50Oy1w6Z/zZ2DjpHtNM8pis6Cv9xN6hzOeUTgsepOmdVQEXxI=
-X-Gm-Message-State: AOJu0Yy1hl+VRbniyJbq8Be2w98ewCp2RKHyJe1Y7TpcDEvmEaxcwJV6
-	zYEPPNTddUpRbCpBJ8oVS23l5qmQABM51b3LSQwv7lFZsuwdiaPVDxwMl4yggUwm6PjC+l9oEp9
-	eiSUOXYGuu89feT1sX8G+izj5Y6djVSoMhysqWA==
-X-Google-Smtp-Source: AGHT+IG/lL1tGT8pUkeu0A2+qzoAZei3Uz5BJOvgcI6NI2QLRo2V2am+Q+iMK9F7GfX4WbiCWc94PrXdNrcRfpaX310=
-X-Received: by 2002:a05:6a21:a596:b0:1a0:f2a4:40da with SMTP id
- gd22-20020a056a21a59600b001a0f2a440damr1353534pzc.6.1710402887344; Thu, 14
- Mar 2024 00:54:47 -0700 (PDT)
+	s=arc-20240116; t=1710403433; c=relaxed/simple;
+	bh=37XdsY1X1f+aS6JptCY/qd3SYUiAnJzvSx4grkQjdVk=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=MrunMLZpSAFfk3MLAKzC08YpEwojlVRq4slf7eIAke03jrMOKFW9NYNl9Dk18kUhw1RMLWPvTPhUUvBI6yTJJyvKNbf+19qRDO2sWjvEd3Yt8Z3Q8hIm1W891t0+CX4IsLaIOtwxX7QDz/CzqDXT8d4MYO8+SLXIIqg8q4sAdLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Z+rIx6C5; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=37XdsY1X1f+aS6JptCY/qd3SYUiAnJzvSx4grkQjdVk=;
+	t=1710403430; x=1711613030; b=Z+rIx6C5kAqBl+mL5IpOSx42Ov6TJQBgNm716KqhmsaLonq
+	gV3ATHr6btpB14nT9Du5EshvfPK6JyWAZuOsEHA+8a8lPl5cxgzwTKC+55L9VPVdhnrhz2MzD6LAr
+	9r/HV+IQ4IiDC+N85207XohGsd891KBNh0FXL4Ytky/lFSUa5QmDlzKzzh8vFFmoK1nH/i8fpxKGk
+	PhSEJvgWQ5H7PBLLIlXWoUsdxv0gJ+h/hagCyB73/plpLxe/IXkGBWPvOekQczuYCt0EJvID4bcD6
+	GJHJCxlNNx/+QGs/1O8K+0rh6es9sr9asTuelh+ULgjFPEc4fPNX0oZqTYMEMezQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rkg42-0000000GQd6-07OU;
+	Thu, 14 Mar 2024 09:03:46 +0100
+Message-ID: <24017bc8d01a92df6a21acb244644c5d975407d5.camel@sipsolutions.net>
+Subject: Re: [PATCH 1/2] wifi: mac80211: supplement parsing of puncturing
+ bitmap
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Kang Yang <quic_kangyang@quicinc.com>, ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+Date: Thu, 14 Mar 2024 09:03:44 +0100
+In-Reply-To: <4f79391f-cd81-4a3d-a236-447cb4c1f4d2@quicinc.com>
+References: <20240312045947.576231-1-quic_kangyang@quicinc.com>
+	 <20240312045947.576231-2-quic_kangyang@quicinc.com>
+	 <8cc7e7f7b2914385b481ecfdd7bc3f67fc4546b3.camel@sipsolutions.net>
+	 <4f79391f-cd81-4a3d-a236-447cb4c1f4d2@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <bac97f31-4a70-4c4c-8179-4ede0b32f869@quicinc.com>
- <CA+HBbNFQ+25u_PK2j3vYtiCZwv+shVAVeAHKqQCwhyCopORt4Q@mail.gmail.com>
- <874jdigf76.fsf@kernel.org> <3b57d932-0848-40f4-ab2d-a8d4afe11df1@dd-wrt.com> <e1c3ba7e-b358-42a3-a8db-f9c098132350@quicinc.com>
-In-Reply-To: <e1c3ba7e-b358-42a3-a8db-f9c098132350@quicinc.com>
-From: Robert Marko <robert.marko@sartura.hr>
-Date: Thu, 14 Mar 2024 08:54:36 +0100
-Message-ID: <CA+HBbNGZJdvHBeP0cFwK4XgEWxggxqE1RGAXrJmavaExv6NH6A@mail.gmail.com>
-Subject: Re: New staging repos for ath1*k firmware
-To: Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc: Sebastian Gottschall <s.gottschall@dd-wrt.com>, Kalle Valo <kvalo@kernel.org>, 
-	ath10k <ath10k@lists.infradead.org>, ath11k <ath11k@lists.infradead.org>, 
-	ath12k <ath12k@lists.infradead.org>, 
-	linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-malware-bazaar: not-scanned
 
-On Wed, Mar 13, 2024 at 8:32=E2=80=AFPM Jeff Johnson <quic_jjohnson@quicinc=
-.com> wrote:
->
-> On 3/9/2024 9:58 AM, Sebastian Gottschall wrote:
-> >
-> > Am 07.03.2024 um 17:49 schrieb Kalle Valo:
-> >> Robert Marko <robert.marko@sartura.hr> writes:
-> >>
-> >>> On Wed, Mar 6, 2024 at 8:23=E2=80=AFPM Jeff Johnson <quic_jjohnson@qu=
-icinc.com> wrote:
-> >>>
-> >>>> Historically, prior to being incorporated into the linux-firmware
-> >>>> project, firmware for kernel.org ath1*k drivers has been first publi=
-shed
-> >>>> to Kalle's GitHub:
-> >>>> https://github.com/kvalo/ath10k-firmware
-> >>>> https://github.com/kvalo/ath11k-firmware
-> >>>> (ath12k firmware was pushed to the ath11k-firmware repo on a tempora=
-ry
-> >>>> basis in anticipation of this move)
-> >>>>
-> >>>> But in order to have repos with multiple maintainers, as well as to =
-have
-> >>>> a hosting platform with more control, we have moved to CodeLinaro:
-> >>>> https://git.codelinaro.org/clo/ath-firmware/ath10k-firmware
-> >>>> https://git.codelinaro.org/clo/ath-firmware/ath11k-firmware
-> >>>> https://git.codelinaro.org/clo/ath-firmware/ath12k-firmware
-> >>>>
-> >>>> Note that most people should not care about this -- normally you sho=
-uld
-> >>>> use the firmware that is in the official linux-firmware repo:
-> >>>> https://git.kernel.org/cgit/linux/kernel/git/firmware/linux-firmware=
-.git/
-> >>>>
-> >>>> You should only need to access the staging repos if you need a previ=
-ous
-> >>>> version to work around an issue, or if you are testing new firmware =
-that
-> >>>> is supposed to fix a problem that you've reported.
-> >>>>
-> >>>> Please let Kalle & I know if you have any issues with these new repo=
-s!
-> >>> Can I please ask for IPQ6018 firmware to be updated to 2.9.0.1 as wel=
-l?
-> >>>
-> >>> We have added IPQ6018 support to OpenWrt but we are forced to use the=
- old 2.4
-> >>> firmware since anything newer is crashing on IPQ6018, we had the same=
- issue on
-> >>> IPQ8074 but it was fixed with 2.9.0.1 firmware.
-> >>>
-> >>> Even for IPQ8074, there is newer 2.9.0.1 firmware that is only
-> >>> available as part of
-> >>> QSDK and the community would benefit from being able to use it.
-> >> We are working on getting the AP chipset firmwares updated but
-> >> unfortunately no news yet.
-> > why isnt qca releasing the latest firmwares at all. i mean we all know
-> > that the qca networking tree contains way newer firmwares for all
-> > chipsets since a long time
->
-> Kalle & I are just the conduit, but I've relayed this thread to the folks
-> responsible for feeding us the firmware releases.
+On Thu, 2024-03-14 at 11:21 +0800, Kang Yang wrote:
+>=20
+> On 3/12/2024 4:16 PM, Johannes Berg wrote:
+> > On Tue, 2024-03-12 at 12:59 +0800, Kang Yang wrote:
+> > > Current mac80211 won't parsing puncturing bitmap when process EHT
+> > > Operation element in 6 GHz band or Bandwidth Indication element. This
+> > > leads to puncturing bitmap cannot be updated in related situations, s=
+uch
+> > > as connecting to an EHT AP in 6 GHz band.
+> > >=20
+> > > So supplement parsing of puncturing bitmap for these elements.
+> >=20
+> > Hah, yes, I just noticed that too and fixed the second part yesterday,
+> > and was still thinking about how I could test the first part :-)
+> >=20
+>=20
+>=20
+> So what are you planning to do with this patch?
+>=20
+> Any suggestions or you want to add puncutring bitmap parsing by your patc=
+h?
+>=20
 
-Trust me,
-the community knows that you are trying your best and a lot of things
-are out of your control and we really appreciate that.
+No no, all good. I was just commenting :)
 
-Regards,
-Robert
->
-> /jeff
->
->
+Once the trees settle and all (we're in the middle of the merge window)
+I'll apply this.
 
-
---=20
-Robert Marko
-Staff Embedded Linux Engineer
-Sartura Ltd.
-Lendavska ulica 16a
-10000 Zagreb, Croatia
-Email: robert.marko@sartura.hr
-Web: www.sartura.hr
+johannes
 
