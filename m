@@ -1,178 +1,153 @@
-Return-Path: <linux-wireless+bounces-4736-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4739-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0588E87BA64
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Mar 2024 10:27:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69E5F87BAAD
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Mar 2024 10:48:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 292C61C22106
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Mar 2024 09:27:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BA391C21402
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Mar 2024 09:48:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 359026BB45;
-	Thu, 14 Mar 2024 09:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C82E6DCF5;
+	Thu, 14 Mar 2024 09:48:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="U6JVC39S"
+	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="YI1oeMRO"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from esa12.hc1455-7.c3s2.iphmx.com (esa12.hc1455-7.c3s2.iphmx.com [139.138.37.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A13126D1A1
-	for <linux-wireless@vger.kernel.org>; Thu, 14 Mar 2024 09:27:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC34C6CDDF;
+	Thu, 14 Mar 2024 09:48:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.138.37.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710408455; cv=none; b=f6CsKOO0HKJIy2jePo95FN1i0bKIZcUF6MGyoFrjrp1wM9WVAHFlRSgakqYJUCOzu4gOCEbUDcIOsEJDs6peBbWF+/18TmZIy/VtWmzsV0x3zZDBDUsO29hoCgXNLDvBU33sc82hyHy071M7blH1ng76UHAfshs18aIONHjgP8U=
+	t=1710409723; cv=none; b=cn9BYad/ihGqtbOodWVcK9+z45M4AJoFKVSavG4qMkS9tusLHbB3ZhsUF/vl8e2+UKFVZ/yVEJ5pYiIT5KLeBnO1qpiqxlrhJMd6soxKPLvY5boFb2c6pACuw6BRR8MbZcUklPAfPKL7Noswqo7iuygwNWhlrvCopKzv7ZO7+cQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710408455; c=relaxed/simple;
-	bh=3upzWNXo7I9cyo6kuyN3v6u4c/vo6o5J41kcqwLENvs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=lHMwfLDskLi7Z3fTS4YY5JsUqQ4MPIsvaosJ98hIo2mm8eF/ickUpbJGvoTfLL2T+rXXRfbHz2QZ3Q+jgJgrwAf76KsvRXOAMWl9SDiYGplw6H+6g33AMCTBt54GzqRb1wGGIaOWv735bzBOMzcWBNxA1mD4uZCT5pFXoiVjKws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=U6JVC39S; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42E6co6d023793;
-	Thu, 14 Mar 2024 09:27:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=NDCgEUAAUG+BJEiBMUHxjJYf9BD9fQ4xHSOClod/mCs=; b=U6
-	JVC39ShGYEFVa9/yadsyi4VFhBtdBOOgdHiu5NTTTK1GPJBNABKHNEG2pDlSM9GA
-	3W4+dna70Q9flP88ITbV43BI1oC/01A1TBNjO6ewu71ErTVx6XoPLo7cOYJhQJzm
-	rpoQgY4k9Mx9TV7/eEhuoEQC5oWT4WhLTiZ5zY2B4ERp3hR7FbA/pY/LU2lbKy9y
-	XzWzslzxIcFE2z4buuC2bm/9mgkel8nvTs+chvVpKkZDFLxWKA+hM9XtR7g3aMNh
-	LPknu7quf/gf2rmsc187HR39lFFX2eXSCCr60azUBBjIQFwDXiPkWA87Uq1KO5xS
-	n4aZIrULm9iyFuFER61Q==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wupch12vw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 14 Mar 2024 09:27:27 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42E9RQHq010245
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 14 Mar 2024 09:27:26 GMT
-Received: from [10.110.125.139] (10.80.80.8) by nalasex01b.na.qualcomm.com
- (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Thu, 14 Mar
- 2024 02:27:24 -0700
-Message-ID: <fd8384dc-b35f-477e-aac3-b7a5f49ce712@quicinc.com>
-Date: Thu, 14 Mar 2024 17:27:22 +0800
+	s=arc-20240116; t=1710409723; c=relaxed/simple;
+	bh=tXWoDv0MCVcjPegxH+LsuRrAuyb6Of1Y0FhIRJQ/Wsw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=IgiS+xD3oiQ1uzVmWpQzmwHavjH9xZYVhYqkd+HeNinGKsmEQVvzIqlfuVeIjue+zpGeiO6HXgqyb2abEHbtd3bwaKNi9iJIvod/QHZZQ3Ee9AmTrEim+u0YlzBpnnNwOUBpj/+Ok1aPpOZOyRt4WOfAiFub+Sz/H1NLQ9imUp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=YI1oeMRO; arc=none smtp.client-ip=139.138.37.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+  t=1710409719; x=1741945719;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=tXWoDv0MCVcjPegxH+LsuRrAuyb6Of1Y0FhIRJQ/Wsw=;
+  b=YI1oeMRO7bg02fVIy+YWaheiQ1MxCvINdAvuGMmscYsuOh4uwvb8OL5P
+   dXgzJxia4FuTh8mE9PUOg5J17zyRvHFKiNFBY0Y7uZPJ0S5yNHCVyIdoO
+   cu7Pci6zSH3e5mW5p+BASbpYMoNTENWlzZba3tm9u+TP885pC5zjYwJGk
+   4IRj1pf9QjczwIAfrOMXW04hbZo8OkL31wFyOBN1T39orzIGSbH+nP7ul
+   CKC9QsUlFpxg5XPDpt/hpIe1ufvJ8/kS1g0rPR4o9A5V+qWJNEGSCEMnL
+   Edb4xyxG1y/5g+zJVV8POaEhArjIL5QNhW8ZpJEo1EhKyOClzeGNYmNe6
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11012"; a="131570232"
+X-IronPort-AV: E=Sophos;i="6.07,125,1708354800"; 
+   d="scan'208";a="131570232"
+Received: from unknown (HELO yto-r3.gw.nic.fujitsu.com) ([218.44.52.219])
+  by esa12.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2024 18:48:36 +0900
+Received: from yto-m3.gw.nic.fujitsu.com (yto-nat-yto-m3.gw.nic.fujitsu.com [192.168.83.66])
+	by yto-r3.gw.nic.fujitsu.com (Postfix) with ESMTP id F10D99D107;
+	Thu, 14 Mar 2024 18:48:33 +0900 (JST)
+Received: from kws-ab4.gw.nic.fujitsu.com (kws-ab4.gw.nic.fujitsu.com [192.51.206.22])
+	by yto-m3.gw.nic.fujitsu.com (Postfix) with ESMTP id 3A27DE6268;
+	Thu, 14 Mar 2024 18:48:33 +0900 (JST)
+Received: from edo.cn.fujitsu.com (edo.cn.fujitsu.com [10.167.33.5])
+	by kws-ab4.gw.nic.fujitsu.com (Postfix) with ESMTP id C1E5A6B4D4;
+	Thu, 14 Mar 2024 18:48:32 +0900 (JST)
+Received: from localhost.localdomain (unknown [10.167.226.45])
+	by edo.cn.fujitsu.com (Postfix) with ESMTP id 1D2AE1A006B;
+	Thu, 14 Mar 2024 17:48:32 +0800 (CST)
+From: Li Zhijian <lizhijian@fujitsu.com>
+To: linux-kernel@vger.kernel.org
+Cc: Li Zhijian <lizhijian@fujitsu.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Jeff Johnson <jjohnson@kernel.org>,
+	linux-wireless@vger.kernel.org,
+	ath11k@lists.infradead.org,
+	ath10k@lists.infradead.org
+Subject: [PATCH 1/3] net: ath: Convert sprintf/snprintf to sysfs_emit
+Date: Thu, 14 Mar 2024 17:48:21 +0800
+Message-Id: <20240314094823.1324898-1-lizhijian@fujitsu.com>
+X-Mailer: git-send-email 2.31.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] wifi: ath12k: report tx bitrate for iw dev xxx station
- dump
-To: Kalle Valo <kvalo@kernel.org>
-CC: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-References: <20240219095802.1147-1-quic_lingbok@quicinc.com>
- <87y1b7jkxu.fsf@kernel.org>
- <6f39eb1c-97f7-4029-a5f2-5ab36ff0f0a6@quicinc.com>
- <877ciq9h3e.fsf@kernel.org>
- <4e67118d-80e4-422e-aa39-73b891ee6042@quicinc.com>
- <87a5nkkfs1.fsf@kernel.org>
-Content-Language: en-US
-From: Lingbo Kong <quic_lingbok@quicinc.com>
-In-Reply-To: <87a5nkkfs1.fsf@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: U1r8I_g-PpgggMJv87MeaAnSjIFBIsP7
-X-Proofpoint-GUID: U1r8I_g-PpgggMJv87MeaAnSjIFBIsP7
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-14_07,2024-03-13_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 mlxscore=0
- priorityscore=1501 impostorscore=0 phishscore=0 lowpriorityscore=0
- mlxlogscore=950 suspectscore=0 bulkscore=0 adultscore=0 clxscore=1011
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2402120000 definitions=main-2403140066
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-TM-AS-Product-Ver: IMSS-9.1.0.1417-9.0.0.1002-28250.006
+X-TM-AS-User-Approved-Sender: Yes
+X-TMASE-Version: IMSS-9.1.0.1417-9.0.1002-28250.006
+X-TMASE-Result: 10--3.130400-10.000000
+X-TMASE-MatchedRID: ebEStOsB1eE4ibokZ3+Q0CoiRKlBVkYIBXngI6jFvpfDqO6/8R69QE8U
+	roFNOGp7a6aAZTOwtJmRloiW1Kgftd2ZdKe8BPbSrMZ+BqQt2Nps/NNpVQ666iXOD7ucKRbIQiM
+	ingSlKoKMx5HzfQifbPE41045MrHXFDCN/1eC4ASdVNZaI2n6/wmWvXEqQTm5wLkNMQzGl5B+Kr
+	WCPbERPznpYPqS6jzxEi2pD9yuITrh15/JKUJo/p4CIKY/Hg3AGdQnQSTrKGPEQdG7H66TyHEqm
+	8QYBtMO3LlEZYYZnW9rIyN56uP6NRM6ylMvEXGk1oRQBQClV4HA/0Gjnf5bBp2jOiFp3dpx6YyQ
+	KoFjU2kssxlojaTXaZ9+GrWpP0BdW4wbpXTb5DJKKve1kh3RY37qSWrndbmQn0bOriG5BVc=
+X-TMASE-SNAP-Result: 1.821001.0001-0-1-22:0,33:0,34:0-0
 
+Per filesystems/sysfs.rst, show() should only use sysfs_emit()
+or sysfs_emit_at() when formatting the value to be returned to user space.
 
+coccinelle complains that there are still a couple of functions that use
+snprintf(). Convert them to sysfs_emit().
 
-On 2024/2/28 19:08, Kalle Valo wrote:
-> Lingbo Kong <quic_lingbok@quicinc.com> writes:
-> 
->> On 2024/2/27 21:23, Kalle Valo wrote:
->>> Lingbo Kong <quic_lingbok@quicinc.com> writes:
->>>
->>>> On 2024/2/26 23:37, Kalle Valo wrote:
->>>>> Lingbo Kong <quic_lingbok@quicinc.com> writes:
->>>>>
->>>>>> The tx bitrate of "iw dev xxx station dump" always show an invalid value
->>>>>> "tx bitrate: 6.0MBit/s".
->>>>>>
->>>>>> To address this issue, parse the tx complete report from firmware and
->>>>>> indicate the tx rate to mac80211.
->>>>>>
->>>>>> After that, "iw dev xxx station dump" show the correct tx bitrate such as:
->>>>>> tx bitrate: 104.0 MBit/s MCS 13
->>>>>> tx bitrate: 144.4 MBit/s MCS 15 short GI
->>>>>> tx bitrate: 626.9 MBit/s 80MHz HE-MCS 6 HE-NSS 2 HE-GI 0 HE-DCM 0
->>>>>> tx bitrate: 1921.5 MBit/s 160MHz HE-MCS 9 HE-NSS 2 HE-GI 0 HE-DCM 0
->>>>>>
->>>>>> Tested-on: WCN7850 hw2.0 PCI
->>>>>> WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
->>>>>> Tested-on: QCN9274 hw2.0 PCI QCN9274 hw2.0 PCI
->>>>>> WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
->>>>>>
->>>>>> Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
->>>>> Please use full englist words like transmit instead of tx. Also the
->>>>> title could be simplified to:
->>>>> wifi: ath12k: report station mode transmit rate to user space
->>>>> Here I assumed this only works in station mode. Or does this also
->>>>> support AP and P2P mode? The commit message should explain that.
->>>>>
->>>>
->>>> Ok, i will apply it in next version. Thanks for pointing out.
->>> After rereading my comments maybe keep the title simple like:
->>>     wifi: ath12k: report station mode transmit rate
->>> But it would be good to clarify in the commit message what modes
->>> this is
->>> supported. And what hardware families support this.
->>
->> Hi kalle, Could you please offer your opinion on this commit message?
->>
->> wifi: ath12k: report station mode transmit rate
->>
->> Currently, the transmit rate of "iw dev xxx station dump" command
->> always show an invalid value.
->>
->> To address this issue, ath12k parse the info of transmit complete
->> report from firmware and indicate the transmit rate to mac80211.
->>
->> This patch only applies to the WCN7850's station mode.
->>
->> After that, "iw dev xxx station dump" show the correct transmit rate.
->> Such as:
->> tx bitrate: 104.0 MBit/s MCS 13
->> tx bitrate: 144.4 MBit/s MCS 15 short GI tx bitrate: 626.9 MBit/s
->> 80MHz HE-MCS 6 HE-NSS 2 HE-GI 0 HE-DCM 0 tx bitrate: 1921.5 MBit/s
->> 160MHz HE-MCS 9 HE-NSS 2 HE-GI 0 HE-DCM 0
-> 
-> Looks good, except for readability I would add an empty line after "Such
-> as:".
-> 
-> I noticed that the signal patch depends on this patchset:
-> 
-> https://patchwork.kernel.org/project/linux-wireless/patch/20240219111417.1185-1-quic_lingbok@quicinc.com/
-> 
-> In that you should submit both patchses in same patchset. But please
-> wait until I have reviewed the signal strength patch.
+sprintf() will be converted as weel if they have.
 
-Hi, kalle,
+Generally, this patch is generated by
+make coccicheck M=<path/to/file> MODE=patch \
+COCCI=scripts/coccinelle/api/device_attr_show.cocci
 
-Would you mind if I kindly inquire whether you might have forgotten to 
-review "wifi: ath12k: report signal for iw dev xxx station dump" patch?
-After you review, I can put the two patches into the same patchset:)
+No functional change intended
 
-Best regards
-Lingbo Kong
+CC: Kalle Valo <kvalo@kernel.org>
+CC: Jeff Johnson <jjohnson@kernel.org>
+CC: linux-wireless@vger.kernel.org
+CC: ath11k@lists.infradead.org
+CC: ath10k@lists.infradead.org
+Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+---
+This is a part of the work "Fix coccicheck device_attr_show warnings"[1]
+Split them per subsystem so that the maintainer can review it easily
+[1] https://lore.kernel.org/lkml/20240116041129.3937800-1-lizhijian@fujitsu.com/
+---
+ drivers/net/wireless/ath/ath10k/thermal.c | 2 +-
+ drivers/net/wireless/ath/ath11k/thermal.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath10k/thermal.c b/drivers/net/wireless/ath/ath10k/thermal.c
+index 31c8d7fbb095..8b15ec07b107 100644
+--- a/drivers/net/wireless/ath/ath10k/thermal.c
++++ b/drivers/net/wireless/ath/ath10k/thermal.c
+@@ -100,7 +100,7 @@ static ssize_t ath10k_thermal_show_temp(struct device *dev,
+ 	spin_unlock_bh(&ar->data_lock);
+ 
+ 	/* display in millidegree celsius */
+-	ret = snprintf(buf, PAGE_SIZE, "%d\n", temperature * 1000);
++	ret = sysfs_emit(buf, "%d\n", temperature * 1000);
+ out:
+ 	mutex_unlock(&ar->conf_mutex);
+ 	return ret;
+diff --git a/drivers/net/wireless/ath/ath11k/thermal.c b/drivers/net/wireless/ath/ath11k/thermal.c
+index 41e7499f075f..18d6eab5cce3 100644
+--- a/drivers/net/wireless/ath/ath11k/thermal.c
++++ b/drivers/net/wireless/ath/ath11k/thermal.c
+@@ -101,7 +101,7 @@ static ssize_t ath11k_thermal_show_temp(struct device *dev,
+ 	spin_unlock_bh(&ar->data_lock);
+ 
+ 	/* display in millidegree Celsius */
+-	ret = snprintf(buf, PAGE_SIZE, "%d\n", temperature * 1000);
++	ret = sysfs_emit(buf, "%d\n", temperature * 1000);
+ out:
+ 	mutex_unlock(&ar->conf_mutex);
+ 	return ret;
+-- 
+2.29.2
+
 
