@@ -1,142 +1,129 @@
-Return-Path: <linux-wireless+bounces-4720-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4721-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACA9187B618
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Mar 2024 02:20:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6A6687B61B
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Mar 2024 02:28:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12CF8285DCB
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Mar 2024 01:20:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 727AA284CA6
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Mar 2024 01:28:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A7B84A0F;
-	Thu, 14 Mar 2024 01:20:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29B243211;
+	Thu, 14 Mar 2024 01:28:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="GLMHdTsr"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF9394A08
-	for <linux-wireless@vger.kernel.org>; Thu, 14 Mar 2024 01:20:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB621C01
+	for <linux-wireless@vger.kernel.org>; Thu, 14 Mar 2024 01:28:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710379234; cv=none; b=f27pgUOvJ7mYAGxwvtW+p9yftZTEdM0DRi1g0nct2iHszmkUzMzwPuiYb+qg7DCIc/jzPZahlTZUfxZQCi9joUod+5ugmcPJb8zea3CIHz4swO9ceHIWvuskJSTqnugRl8JTcj9u/czMc5zApva4TePP6BtxKiEFRRl+QF2ZR/4=
+	t=1710379732; cv=none; b=W5CsihGA8QkvUElqQJ0mbQzyNxTavMF8BfIzZ2EYbeHJFJelPU79K5IA6UUWweYoCwyjtwNZqsOC6uDgXAwnGUaVZArpqV8LwbiDN9nQ3g7ANRsQD+taTCKKy+nLZYMlp/7J5G+NrSeoc1VwsJFDnuowaMbAQWnBcbrwpRbbr7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710379234; c=relaxed/simple;
-	bh=Wjp3opTPtLne8ub46CupP0UX0moijXdWBrdVx9Z5UiE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=b7p0ftRhCNADGVFNJQI8orTQZ3qBxQCB1JNdYaSdOm7+zGz0mv6zQxLxRIjF0TI6s4s1/0B3phIJE4B/7vvIhsAb/kFJ/Hly2Dsi03k4hV0ZnxOLj5dyfbHy0KRuQwr21E1vpcbBDArle6Q50dPjdpkw4MAGir5mYsdYqiG1neg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 42E1K68s81067549, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 42E1K68s81067549
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 14 Mar 2024 09:20:06 +0800
-Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+	s=arc-20240116; t=1710379732; c=relaxed/simple;
+	bh=g3Y336IsJUIRf5sBB1SyTWwcaN7r+jyNC62AO76iWRc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sbTccC8jE8FPTztU8EPAVRblOE8LEc5E7yjj4w4HUAWXwyzjV9JY3Ti6Rc8UvWOZ/HnSa33x46TNhyPspnKFtdNHlhZ/0EklIeDTiprCrpMNC1c+5U+w4ZiEmDoct3pUiKQY3lk91ZhYv3Z8kXanG1AKbrufrjOpvXVr4wWnspo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=GLMHdTsr; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42E0DVEl003885;
+	Thu, 14 Mar 2024 01:28:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=qcppdkim1; bh=9GeWyRD
+	TBwCzlBj4XSX3keRBXiH6I8DYE/DRXqfudtk=; b=GLMHdTsrEoF9mbq7KtavxAj
+	NLmiJSTeO5h9TSGdDm5RBdHxPaPho0bgdJtsgHO6GRllOeNyOMRPgxXwemrCHfrs
+	AAruA8KPACvglHdY/SJxx3Q68x/PB7AoYOTftcIs3rlRnujWxO3VowIpgf0XkhyT
+	kxDhRCYBoZauF3Auozc2PJ6CTmTQAJ9nWD0M8oHTS0co64eabnCisBTVqgGug9O7
+	OP1gZGHm6dVM+deEccDxIzYmDdKpHkwO7LByCohXyhYKGZ/GffKt89WqG/rpPago
+	n0kkqB+kb3CXGhuTPz6zUWBDLy2wWn3Kak5FAi+dJ4J85jpS49zZtp22YSLjfhg=
+	=
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wub3nhtax-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 14 Mar 2024 01:28:42 +0000 (GMT)
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
+	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42E1SfnV016411
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 14 Mar 2024 01:28:41 GMT
+Received: from Z2-SFF-G9-MQ.ap.qualcomm.com (10.80.80.8) by
+ nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 14 Mar 2024 09:20:07 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 14 Mar 2024 09:20:06 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::c9b7:82a9:7e98:fa7f]) by
- RTEXMBS04.realtek.com.tw ([fe80::c9b7:82a9:7e98:fa7f%7]) with mapi id
- 15.01.2507.035; Thu, 14 Mar 2024 09:20:06 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "rtl8821cerfe2@gmail.com" <rtl8821cerfe2@gmail.com>
-CC: "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>,
-        "s.l-h@gmx.de"
-	<s.l-h@gmx.de>,
-        "chewitt@libreelec.tv" <chewitt@libreelec.tv>
-Subject: Re: [PATCH 2/3] wifi: rtlwifi: Adjust rtl8192d-common for USB
-Thread-Topic: [PATCH 2/3] wifi: rtlwifi: Adjust rtl8192d-common for USB
-Thread-Index: AQHadMuOOO7rHmATSEu0OX4oEjo6i7E0gg8AgAE/E4CAACplgA==
-Date: Thu, 14 Mar 2024 01:20:06 +0000
-Message-ID: <f07686170eed48c21f18ce2850ffde4401c25bf5.camel@realtek.com>
-References: <e1922019-21eb-4013-a35f-0077167e92cf@gmail.com>
-	 <d70dc39c-a3e5-43f6-9cb4-612d08035c57@gmail.com>
-	 <fdd95844c3a127356bab4250dfc46b16041829ee.camel@realtek.com>
-	 <a674d357-c917-413a-a4fb-1ee22f43d9ff@gmail.com>
-In-Reply-To: <a674d357-c917-413a-a4fb-1ee22f43d9ff@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-user-agent: Evolution 3.36.1-2 
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <E769770C287EEF478E645BD623C26934@realtek.com>
-Content-Transfer-Encoding: base64
+ 15.2.1118.40; Wed, 13 Mar 2024 18:28:40 -0700
+From: Miaoqing Pan <quic_miaoqing@quicinc.com>
+To: <kvalo@kernel.org>
+CC: <quic_jjohnson@quicinc.com>, <ath12k@lists.infradead.org>,
+        <linux-wireless@vger.kernel.org>,
+        Miaoqing Pan <quic_miaoqing@quicinc.com>
+Subject: [PATCH] wifi: ath12k: fix memory leak in ath12k_pci_remove()
+Date: Thu, 14 Mar 2024 09:27:46 +0800
+Message-ID: <20240314012746.2729101-1-quic_miaoqing@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: Yp2UEAoaOv0CYS-2v_PpXs04nwqQHpie
+X-Proofpoint-ORIG-GUID: Yp2UEAoaOv0CYS-2v_PpXs04nwqQHpie
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-13_11,2024-03-13_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
+ adultscore=0 clxscore=1011 impostorscore=0 mlxlogscore=985 malwarescore=0
+ phishscore=0 suspectscore=0 bulkscore=0 priorityscore=1501 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2402120000
+ definitions=main-2403140006
 
-T24gVGh1LCAyMDI0LTAzLTE0IGF0IDAwOjQ3ICswMjAwLCBCaXR0ZXJibHVlIFNtaXRoIHdyb3Rl
-Og0KPiANCj4gT24gMTMvMDMvMjAyNCAwNTo0NiwgUGluZy1LZSBTaGloIHdyb3RlOg0KPiA+IE9u
-IFdlZCwgMjAyNC0wMy0xMyBhdCAwMDoyMCArMDIwMCwgQml0dGVyYmx1ZSBTbWl0aCB3cm90ZToN
-Cj4gPiA+IA0KPiA+ID4gQEAgLTk2NiwxMiArOTgwLDE3IEBAIHN0YXRpYyB2b2lkIHJ0bDkyZGVf
-dXBkYXRlX2hhbF9yYXRlX21hc2soc3RydWN0IGllZWU4MDIxMV9odyAqaHcsDQo+ID4gPiAgICAg
-ICAgICAgICAgICAgYnJlYWs7DQo+ID4gPiAgICAgICAgIH0NCj4gPiA+IA0KPiA+ID4gLSAgICAg
-ICB2YWx1ZVswXSA9IChyYXRyX2JpdG1hcCAmIDB4MGZmZmZmZmYpIHwgKHJhdHJfaW5kZXggPDwg
-MjgpOw0KPiA+ID4gLSAgICAgICB2YWx1ZVsxXSA9IG1hY2lkIHwgKHNob3J0Z2kgPyAweDIwIDog
-MHgwMCkgfCAweDgwOw0KPiA+ID4gKyAgICAgICAqKHUzMiAqKSZyYXRlX21hc2sgPSAocmF0cl9i
-aXRtYXAgJiAweDBmZmZmZmZmKSB8DQo+ID4gPiArICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgKHJhdHJfaW5kZXggPDwgMjgpOw0KPiA+IA0KPiA+ICd1MzInIGlzIHdlaXJkIHRv
-IG1lLiBTaG91bGRuJ3QgaXQgYmUgX19sZTMyPw0KPiA+IEJ1dCBJIHByZWZlciBhIHN0cnVjdCBv
-ZiByYXRlX21hc2suDQo+ID4gDQo+IA0KPiBJIGRvbid0IGxpa2UgdGhpcyBlaXRoZXIsIGJ1dCBp
-dCB3YXMgZWFzeSB0byBjb3B5IGZyb20gcnRsODE5MmN1Lg0KPiANCj4gU29tZXRoaW5nIGxpa2Ug
-dGhpcz8NCj4gDQo+ICNkZWZpbmUgUkFJRF9NQVNLICAgICAgICAgICAgICAgR0VOTUFTSygzMSwg
-MjgpDQo+ICNkZWZpbmUgUkFURV9NQVNLX01BU0sgICAgICAgICAgR0VOTUFTSygyNywgMCkNCj4g
-I2RlZmluZSBTSE9SVF9HSV9NQVNLICAgICAgICAgICBCSVQoNSkNCj4gI2RlZmluZSBNQUNJRF9N
-QVNLICAgICAgICAgICAgICBHRU5NQVNLKDQsIDApDQo+IA0KPiBzdHJ1Y3QgcnRsOTJkX3JhdGVf
-bWFzayB7DQo+ICAgICAgICAgX19sZTMyIHJhdGVfbWFza19hbmRfcmFpZDsNCj4gICAgICAgICB1
-OCBtYWNpZF9hbmRfc2hvcnRfZ2k7DQo+IH0gX19wYWNrZWQ7DQoNClllcywgc29tZXRoaW5nIGxp
-a2UgdGhhdCwgYnV0IHN0cnVjdCBzaXplIHNob3VsZCBiZSA1Lg0KDQo+ID4gPiBkaWZmIC0tZ2l0
-IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDgxOTJkL3BoeV9jb21t
-b24uYw0KPiA+ID4gYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODE5
-MmQvcGh5X2NvbW1vbi5jDQo+ID4gPiBpbmRleCA0ODc2MjhhYzQ5MWIuLjFlMzk5NDBhM2JhNyAx
-MDA2NDQNCj4gPiA+IC0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsd2lmaS9y
-dGw4MTkyZC9waHlfY29tbW9uLmMNCj4gPiA+ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3Jl
-YWx0ZWsvcnRsd2lmaS9ydGw4MTkyZC9waHlfY29tbW9uLmMNCj4gPiA+IEBAIC04MSwxMSArODEs
-MTMgQEAgdTMyIHJ0bDkyZF9waHlfcXVlcnlfcmZfcmVnKHN0cnVjdCBpZWVlODAyMTFfaHcgKmh3
-LCBlbnVtIHJhZGlvX3BhdGgNCj4gPiA+IHJmcGF0aCwNCj4gPiA+ICAgICAgICAgcnRsX2RiZyhy
-dGxwcml2LCBDT01QX1JGLCBEQkdfVFJBQ0UsDQo+ID4gPiAgICAgICAgICAgICAgICAgInJlZ2Fk
-ZHIoJSN4KSwgcmZwYXRoKCUjeCksIGJpdG1hc2soJSN4KVxuIiwNCj4gPiA+ICAgICAgICAgICAg
-ICAgICByZWdhZGRyLCByZnBhdGgsIGJpdG1hc2spOw0KPiA+ID4gLSAgICAgICBzcGluX2xvY2so
-JnJ0bHByaXYtPmxvY2tzLnJmX2xvY2spOw0KPiA+ID4gKyAgICAgICBpZiAocnRscHJpdi0+cnRs
-aGFsLmludGVyZmFjZSA9PSBJTlRGX1BDSSkNCj4gPiA+ICsgICAgICAgICAgICAgICBzcGluX2xv
-Y2soJnJ0bHByaXYtPmxvY2tzLnJmX2xvY2spOw0KPiA+IA0KPiA+IERvZXMgaXQgbWVhbiBVU0Ig
-bmV2ZXIgcmVhZC93cml0ZSBSRiByZWdpc3RlcnMgc2ltdWx0YW5lb3VzbHk/IEhvdyBjYW4geW91
-DQo+ID4gZW5zdXJlIHRoYXQ/DQo+ID4gDQo+IA0KPiBJIGRvbid0IGtub3cuIEl0IHNlZW1zIHRv
-IHdvcmsgZmluZS4gVGhlIG91dC1vZi10cmVlIGRyaXZlcg0KPiBkb2Vzbid0IGhhdmUgbG9ja3Mg
-aGVyZToNCj4gaHR0cHM6Ly9naXRodWIuY29tL2x3ZmluZ2VyL3J0bDgxOTJkdS9ibG9iLzJjNTQ1
-MGRkMzc4M2UxMDg1ZjA5YThjN2E2MzIzMThjN2QwZjFkMzkvaGFsL3J0bDgxOTJkX3BoeWNmZy5j
-I0w2MzcNCj4gDQo+IHJ0bDh4eHh1IGFuZCBydGw4MTkyY3UgZG9uJ3QgaGF2ZSBsb2NrcyBlaXRo
-ZXIuDQoNCk5vdCBzdXJlIGlmIHJhY2UgY29uZGl0aW9uIGlzIGV4aXN0aW5nIHRvIHJlYWQvd3Jp
-dGUgUkYgcmVnaXN0ZXJzLCBidXQNCm5vIGlkZWEgdG8gZGlnIHRoZSBwcm9ibGVtLiBNYXliZSwg
-Y3VycmVudCBjb2RlIGhhcyBubyBwcm9ibGVtIHRob3VnaC4NCkF0IGxlYXN0LCB5b3VyIG5ld2x5
-IGNoYW5nZXMgZG9uJ3QgYWZmZWN0IG9yaWdpbmFsIFBDSSBiZWhhdmlvciwgcmlnaHQ/DQoNCg0K
-PiA+ID4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsd2lmaS91
-c2IuYw0KPiA+ID4gYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvdXNiLmMN
-Cj4gPiA+IGluZGV4IDZlOGM4N2EyZmFlNC4uMmVhNzJkOWUzOTU3IDEwMDY0NA0KPiA+ID4gLS0t
-IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3VzYi5jDQo+ID4gPiArKysg
-Yi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvdXNiLmMNCj4gPiA+IEBAIC05
-NzksNiArOTc5LDkgQEAgaW50IHJ0bF91c2JfcHJvYmUoc3RydWN0IHVzYl9pbnRlcmZhY2UgKmlu
-dGYsDQo+ID4gPiAgICAgICAgIHVzYl9wcml2LT5kZXYuaW50ZiA9IGludGY7DQo+ID4gPiAgICAg
-ICAgIHVzYl9wcml2LT5kZXYudWRldiA9IHVkZXY7DQo+ID4gPiAgICAgICAgIHVzYl9zZXRfaW50
-ZmRhdGEoaW50ZiwgaHcpOw0KPiA+ID4gKyAgICAgICAvKiBGb3IgZHVhbCBNQUMgUlRMODE5MkRV
-LCB3aGljaCBoYXMgdHdvIGludGVyZmFjZXMuICovDQo+ID4gPiArICAgICAgIHJ0bHByaXYtPnJ0
-bGhhbC5pbnRlcmZhY2VpbmRleCA9DQo+ID4gPiArICAgICAgICAgICAgICAgaW50Zi0+YWx0c2V0
-dGluZ1swXS5kZXNjLmJJbnRlcmZhY2VOdW1iZXI7DQo+ID4gDQo+ID4gU28sIHlvdSB3aWxsIHNl
-ZSB0d28gVVNCIGFkYXB0ZXJzIHdoZW4geW91IHBsdWcgODE5MkRVPw0KPiA+IA0KPiANCj4gV2hl
-biB5b3UgcGx1ZyB0aGUgZHVhbCBNQUMgdmVyc2lvbiwgbHN1c2Igd2lsbCBzaG93IG9uZSBkZXZp
-Y2UsDQo+IHdpdGggdHdvIGludGVyZmFjZXMuIHJ0bF91c2JfcHJvYmUoKSBpcyBjYWxsZWQgdHdp
-Y2UuIFRoaXMgaXMNCj4gY29waWVkIGZyb20gbGludXgtaGFyZHdhcmUub3JnOg0KPiANCj4gTWlu
-ZSBpcyB0aGUgc2luZ2xlIE1BQyB2ZXJzaW9uOg0KPiANCg0KRG9lcyBpdCBtZWFuIHlvdSBvbmx5
-IHRlc3RlZCBzaW5nbGUgTUFDIHZlcnNpb24/IEJ1dCwgeW91ciBjb2RlIHdpbGwgc3VwcG9ydA0K
-dHdvIE1BQyB2ZXJzaW9uLCByaWdodD8NCg0KDQo=
+Kmemleak reported this error:
+
+  unreferenced object 0xffff1c165cec3060 (size 32):
+    comm "insmod", pid 560, jiffies 4296964570 (age 235.596s)
+    backtrace:
+      [<000000005434db68>] __kmem_cache_alloc_node+0x1f4/0x2c0
+      [<000000001203b155>] kmalloc_trace+0x40/0x88
+      [<0000000028adc9c8>] _request_firmware+0xb8/0x608
+      [<00000000cad1aef7>] firmware_request_nowarn+0x50/0x80
+      [<000000005011a682>] local_pci_probe+0x48/0xd0
+      [<00000000077cd295>] pci_device_probe+0xb4/0x200
+      [<0000000087184c94>] really_probe+0x150/0x2c0
+
+The firmware memory was allocated in ath12k_pci_probe(), but not
+freed in ath12k_pci_remove() in case ATH12K_FLAG_QMI_FAIL bit is
+set. So call ath12k_fw_unmap() to free the memory.
+
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.2.0-02280-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1
+
+Signed-off-by: Miaoqing Pan <quic_miaoqing@quicinc.com>
+---
+ drivers/net/wireless/ath/ath12k/pci.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
+index 14954bc05144..f4b48f96a223 100644
+--- a/drivers/net/wireless/ath/ath12k/pci.c
++++ b/drivers/net/wireless/ath/ath12k/pci.c
+@@ -1505,6 +1505,7 @@ static void ath12k_pci_remove(struct pci_dev *pdev)
+ 	if (test_bit(ATH12K_FLAG_QMI_FAIL, &ab->dev_flags)) {
+ 		ath12k_pci_power_down(ab);
+ 		ath12k_qmi_deinit_service(ab);
++		ath12k_fw_unmap(ab);
+ 		goto qmi_fail;
+ 	}
+ 
+-- 
+2.25.1
+
 
