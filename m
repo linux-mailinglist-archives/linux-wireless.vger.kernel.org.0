@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-4732-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4733-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6FD487B9DC
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Mar 2024 09:56:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2AB887B9E4
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Mar 2024 09:57:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CA20283ABB
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Mar 2024 08:56:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D442D1C20A85
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Mar 2024 08:57:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D21346BB50;
-	Thu, 14 Mar 2024 08:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0403A6BB4E;
+	Thu, 14 Mar 2024 08:57:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a8oFIJAz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="urZlGzlo"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9988A6BB45;
-	Thu, 14 Mar 2024 08:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4AFB6BB45
+	for <linux-wireless@vger.kernel.org>; Thu, 14 Mar 2024 08:57:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710406600; cv=none; b=lYz/l5lXGcHkIWv7HUBmbOaSr1V/oUEdvknUMStak6sBNrkSVF6dkxNR4KC/IhSWvurlIzmUYSdr/UByTcJr4ayGijvpLksjPIKu65pZtSPjaMnblmLw8u9WcnyhHJv6W39iVUIBv0bQcG45xnWZaP2f0W2X+Hk9Kt9cuL9NfPE=
+	t=1710406669; cv=none; b=td7RX5Vm7Cf3OX8ufP3spHPXFOhtJVs29vrLMQwkyKOyLSkUbwIuF2XqMZwL2e18vyWcEVHNAZvsKlqE9gfAAha/ZcQRxC27c6QWcOukIyaFZR2zItDbiMudmF4iFLXVkO/0NKkGY8wXRHEi+HtWlQUSxUls2+W8TL2xMqXDtIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710406600; c=relaxed/simple;
-	bh=Py12VRbMdvVtfACD906rKN/O+uZfySHQwj9jlidK6BQ=;
+	s=arc-20240116; t=1710406669; c=relaxed/simple;
+	bh=vnpigjL/wJa5cfe4TCR5A0cUxuexPURN3oDPGzV8RNc=;
 	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=G3HNFa4nOcFWyAEhtbMLch+7aHlYyhXRHfllRWdETgPyIx2JcOdCjFypgleSh6kETEIPnPgEUlBOtb938wTo+meZILMrIgCEkHVchV+qF9Q9w2qr4jcLWYhJBAY/rqKLDWImKNd7QhuVAaPIWxiGbTPAO9xlGNK5bj9bSw4VULs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a8oFIJAz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C60BC433C7;
-	Thu, 14 Mar 2024 08:56:38 +0000 (UTC)
+	 Cc:Message-ID:Date; b=UZ0C8QWhf7RK1MimpjiUwwuV4wqCAMMza0f0oULWGlOQNvDL/ad6yC4rOLGHI+TssMcDasDmzJ8As6Hx6Limk83tZ43Bd5vII6y7EZ1jSlDwuAev/eDzD/iPjXk21C1UhJuo7tCKjb9s7XofrZXqb3THptx2G36mEj99KZtJKEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=urZlGzlo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9D4CC433C7;
+	Thu, 14 Mar 2024 08:57:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710406600;
-	bh=Py12VRbMdvVtfACD906rKN/O+uZfySHQwj9jlidK6BQ=;
+	s=k20201202; t=1710406669;
+	bh=vnpigjL/wJa5cfe4TCR5A0cUxuexPURN3oDPGzV8RNc=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=a8oFIJAzxiH4GpOSFGQVCtrCcnaXB9VB9CT7nBejXkRsL0OSFYgHJ6/ldVCRAmo6H
-	 oKsPB9hYigEfgXXqk/PT5F/4XoDVYeD9veC4VDmHK649jguTFhhHtjr9KSutwuzzyI
-	 W2Xjtwr7TZnY3WIRH1gYLgavB4CtBpT79rnDaUIn97F5QOTJAB/3g76ZMMYeQGvtNf
-	 wiUs1mzJTIegjmkbfNqqWkZZDRpohUzIOa+JqPZHC4HZul62T0u/iUCId/AxkD4+hd
-	 MG5nIkcxzd7lTLl/Jk8LWhjrVCxuwcUs4A2UQW2lhDG4EfmXpUQhOYbvNK1j0O5TbO
-	 uXahCjWNrIkyg==
+	b=urZlGzlo/v1XwicSVZHGX2ioHFzXxNOE8+Xicav7jGqm2DVhDzOkMSEpNx48DCjrZ
+	 nHdAQVUgyx/WpZHqzC5w7njf6wC5dDRiQnotx5sAbrKwtAwvDuZvShj4Mojc609U/w
+	 sPu9RLr9izqHieoFvpz3Cga+7bq3S8h+oXWxmVrbKd+BQ0fwxi/bSDgujJ9UeBL0fK
+	 gQKnUPOxJmGNo4YglX83XdHMwUCceU0ERxh9eJkXmupyRPB+TyL8MQ7yrmjzRFZCdB
+	 EWAxW02HIzdX5nJal/jW5DpS6tJpyoryfbv5Tnv5uY/s09jm4ntFjfvzTluPSoHkOk
+	 45u4kaELVz8Hg==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -48,46 +48,39 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] ssb: use "break" on default case to prevent warning
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2 1/6] wifi: rtw89: coex: Add WiFi role info format
+ version 8
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240313001305.18820-1-rdunlap@infradead.org>
-References: <20240313001305.18820-1-rdunlap@infradead.org>
-To: Randy Dunlap <rdunlap@infradead.org>
-Cc: linux-kernel@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>,
- kernel test robot <lkp@intel.com>,
- =?utf-8?q?Michael_B=C3=BCsch?= <m@bues.ch>, linux-wireless@vger.kernel.org,
- Johannes Berg <johannes@sipsolutions.net>, llvm@lists.linux.dev
+In-Reply-To: <20240312013721.17452-2-pkshih@realtek.com>
+References: <20240312013721.17452-2-pkshih@realtek.com>
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: <ku920601@realtek.com>, <linux-wireless@vger.kernel.org>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <171040659685.2399140.4522460188387409537.kvalo@kernel.org>
-Date: Thu, 14 Mar 2024 08:56:38 +0000 (UTC)
+Message-ID: <171040666658.2399140.8880384896950680639.kvalo@kernel.org>
+Date: Thu, 14 Mar 2024 08:57:48 +0000 (UTC)
 
-Randy Dunlap <rdunlap@infradead.org> wrote:
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-> Having an empty default: case in a switch statement causes a warning
-> (when using Clang; I don't see the warning when using gcc),
-> so add a "break;" to the default case to prevent the warning:
+> From: Ching-Te Ku <ku920601@realtek.com>
 > 
-> drivers/ssb/main.c:1149:2: warning: label at end of compound statement is a C2x extension [-Wc2x-extensions]
+> In order to control the hardware band and related protocol control,
+> add version 8 format and related logic to control the mechanism.
 > 
-> Fixes: e27b02e23a70 ("ssb: drop use of non-existing CONFIG_SSB_DEBUG symbol")
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202403130717.TWm17FiD-lkp@intel.com/
-> Cc: Michael Büsch <m@bues.ch>
-> Cc: linux-wireless@vger.kernel.org
-> Cc: Kalle Valo <kvalo@kernel.org>
-> Cc: Johannes Berg <johannes@sipsolutions.net>
-> Cc: llvm@lists.linux.dev
-> Acked-by: Michael Büsch <m@bues.ch>
-> Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+> Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-Patch applied to wireless-next.git, thanks.
+6 patches applied to wireless-next.git, thanks.
 
-6c700b35a534 ssb: use "break" on default case to prevent warning
+4e430ca43032 wifi: rtw89: coex: Add WiFi role info format version 8
+bd120fa34f77 wifi: rtw89: coex: Add antenna setting function for RTL8922A
+69cf60501642 wifi: rtw89: coex: Add TDMA version 7
+a7d6f8d0c6d2 wifi: rtw89: coex: Add TDMA slot parameter setting version 7
+89d58c931b59 wifi: rtw89: 8922a: update chip parameter for coex
+f95d9045b987 wifi: rtw89: 8922a: add 8922ae to Makefile and Kconfig
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240313001305.18820-1-rdunlap@infradead.org/
+https://patchwork.kernel.org/project/linux-wireless/patch/20240312013721.17452-2-pkshih@realtek.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
