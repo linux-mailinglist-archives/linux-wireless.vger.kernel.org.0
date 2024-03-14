@@ -1,97 +1,102 @@
-Return-Path: <linux-wireless+bounces-4727-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4728-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 688AA87B920
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Mar 2024 09:11:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ECFA87B92C
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Mar 2024 09:18:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BD8D2849DC
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Mar 2024 08:11:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E6631C20A06
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Mar 2024 08:18:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB07B5DF19;
-	Thu, 14 Mar 2024 08:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 514EC5D488;
+	Thu, 14 Mar 2024 08:18:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eNTFsRl7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp1.ms.mff.cuni.cz (smtp-in1.ms.mff.cuni.cz [195.113.20.234])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14FEE5DF0F;
-	Thu, 14 Mar 2024 08:11:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA2E5B1EB
+	for <linux-wireless@vger.kernel.org>; Thu, 14 Mar 2024 08:18:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710403864; cv=none; b=SYT5XfZaZgDkodQmqWyVu/QMoIFh1c4ney4L1sMizX7sy56CpNqjYtBgDSheixkHzWftaFTMiHbXKRbHZY66BZioYJV/zC+RFUoG2+YT9x4GeOIXXiOyNA1wNXOhzwFs5aOTo8cfIs3B6T/SXRjZC/YxdIQSUr3AJ4RehFBHWdA=
+	t=1710404297; cv=none; b=CJrA4theipiqpnUuxGiAm+lfDK+EFgh3RoWTL9PkKQJklSGGO1PA+hUFre7mgDl2x7gnw4K6DdGpGx6UotETNdKdyt5MB6Q/BCXFgIIlaVKJN8hqT9qDatTnoBxlt+keFY+dguwDjngMmhTzu5q+jzRYainuuqTXG3VtumcY6Rg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710403864; c=relaxed/simple;
-	bh=49yIHFFM4D8uhYFoMXrapMVE1Go2KxtcaF5olJvsteM=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Cc:Subject:
-	 References:In-Reply-To; b=UC/tHadfCkuGtMcBAGKOv3ZJf4QFJFbU6zAnBTAms57MrWeYKxB2bOMP1ZrpuB4jqVjtrtDEQw/VDrDNIz9jw3tAcgDAc5n1Nzu2au8bqVLTglvvooBoWuKFqhDYD3jrUqX+hDp+iXgme2FNEfZnMCIeVibOrfAR0x01U9U9xw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=matfyz.cz; arc=none smtp.client-ip=195.113.20.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matfyz.cz
-X-SubmittedBy: id balejk@matfyz.cz subject /postalCode=110+2000/O=Univerzita+20Karlova/street=Ovocn+5CxC3+5CxBD+20trh+20560/5/ST=Praha,+20Hlavn+5CxC3+5CxAD+20m+5CxC4+5Cx9Bsto/C=CZ/CN=Karel+20Balej/emailAddress=balejk@matfyz.cz
-	serial F5FD910E8FE2121B897F7E55B84E351D
-	issued by /C=NL/O=GEANT+20Vereniging/CN=GEANT+20Personal+20CA+204
-	auth type TLS.CUNI
-Received: from localhost (koleje-wifi-0013.koleje.cuni.cz [78.128.191.13])
-	(authenticated)
-	by smtp1.ms.mff.cuni.cz (8.16.1/8.16.1) with ESMTPS id 42E8AbKT011126
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-	Thu, 14 Mar 2024 09:10:39 +0100 (CET)
-	(envelope-from balejk@matfyz.cz)
+	s=arc-20240116; t=1710404297; c=relaxed/simple;
+	bh=h4Fk7j4U/R67oc9Ho9G3bq00MWYct2I4+JUX8xs5apE=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=OnUCzbiSCWoMYq/T+++lXceFP2QvtEKT+fI4GEAyMTbeANghHkA0IGW/8ivj3txpCfc9mTMKpvf/Hm2vSPOiOlbpkXUDBK5/g8eja/+58Gbj3AAIjsdgn9dIUkC5GssBxxxO2W42D4SW7gQGqKIpZhLxJWETLX+VSkFO4tpiTPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eNTFsRl7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55644C433C7;
+	Thu, 14 Mar 2024 08:18:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710404296;
+	bh=h4Fk7j4U/R67oc9Ho9G3bq00MWYct2I4+JUX8xs5apE=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=eNTFsRl7uaclE9SvMJVAmfv/1ati9qiTLmB36HHvpDBUjgYtxvbA6G/HBqxn3ZMRu
+	 RWeWjZN+l4CWWP5kxEzw6XBN0k7b08L8j+Gegyc0oULs2nWN7RKSewfU66M0+wzni8
+	 dr/xQYK7adBlahFlH36aRMx0dyirFLl1VVKS9QC93843MXHfmUlxnuU0R10Nvbmp9r
+	 INUu4ZPWNSNXktqDKw8jrraCrbDWE634PHLq9SOj7MwQXmxDKI8PFotphNRm+AU7MF
+	 mOiu5sdSQ5Xw6H2jzvEqtC9phPRR+0TbC1ZfpG7JCh84lFnW8VwY/cbuNAtXazy6Df
+	 QUslPKnAIsWuA==
+From: Kalle Valo <kvalo@kernel.org>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+  Ping-Ke Shih <pkshih@realtek.com>,  Larry Finger
+ <Larry.Finger@lwfinger.net>,  Stefan Lippers-Hollmann <s.l-h@gmx.de>,
+  Christian Hewitt <chewitt@libreelec.tv>
+Subject: Re: [PATCH 1/3] wifi: rtlwifi: Move code from rtl8192de to
+ rtl8192d-common
+References: <e1922019-21eb-4013-a35f-0077167e92cf@gmail.com>
+	<87jzm64ig6.fsf@kernel.org>
+	<7fd2d445-9db0-4170-8d89-78d42f476255@gmail.com>
+Date: Thu, 14 Mar 2024 10:18:13 +0200
+In-Reply-To: <7fd2d445-9db0-4170-8d89-78d42f476255@gmail.com> (Bitterblue
+	Smith's message of "Thu, 14 Mar 2024 00:46:13 +0200")
+Message-ID: <87a5n1fcqi.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 14 Mar 2024 09:11:08 +0100
-Message-Id: <CZTBKHQZXJTR.3VMFEA8MZSP5W@matfyz.cz>
-To: "Eric Biggers" <ebiggers@kernel.org>
-From: "Karel Balej" <balejk@matfyz.cz>
-Cc: <keyrings@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
-        <iwd@lists.linux.dev>, "James Prestwood" <prestwoj@gmail.com>,
-        "Dimitri
- John Ledkov" <dimitri.ledkov@canonical.com>,
-        <linux-crypto@vger.kernel.org>,
-        "Herbert Xu" <herbert@gondor.apana.org.au>
-Subject: Re: [PATCH] Revert "crypto: pkcs7 - remove sha1 support"
-References: <20240313233227.56391-1-ebiggers@kernel.org>
-In-Reply-To: <20240313233227.56391-1-ebiggers@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain
 
-Eric,
+Bitterblue Smith <rtl8821cerfe2@gmail.com> writes:
 
-Eric Biggers, 2024-03-13T16:32:27-07:00:
-> From: Eric Biggers <ebiggers@google.com>
+> On 13/03/2024 10:58, Kalle Valo wrote:
+>> Bitterblue Smith <rtl8821cerfe2@gmail.com> writes:
+>> 
+>>> Create the new module rtl8192d-common and move some code into it from
+>>> rtl8192de. Now the rtl8192de driver (PCI) and the new rtl8192du driver
+>>> (USB) can share some of the code.
+>>>
+>>> This is mostly the code that required little effort to make it
+>>> shareable. There are a few more functions which they could share, with
+>>> some changes.
+>>>
+>>> The only other changes in this patch should be adjusting whitespace and
+>>> renaming some functions.
+>>>
+>>> Tested only with RTL8192DU.
+>>>
+>>> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+>> 
+>> A cover letter is would be really good to have.
 >
-> This reverts commit 16ab7cb5825fc3425c16ad2c6e53d827f382d7c6 because it
-> broke iwd.  iwd uses the KEYCTL_PKEY_* UAPIs via its dependency libell,
-> and apparently it is relying on SHA-1 signature support.  These UAPIs
-> are fairly obscure, and their documentation does not mention which
-> algorithms they support.  iwd really should be using a properly
-> supported userspace crypto library instead.  Regardless, since something
-> broke we have to revert the change.
->
-> It may be possible that some parts of this commit can be reinstated
-> without breaking iwd (e.g. probably the removal of MODULE_SIG_SHA1), but
-> for now this just does a full revert to get things working again.
->
-> Reported-by: Karel Balej <balejk@matfyz.cz>
-> Closes: https://lore.kernel.org/r/CZSHRUIJ4RKL.34T4EASV5DNJM@matfyz.cz
-> Cc: Dimitri John Ledkov <dimitri.ledkov@canonical.com>
-> Signed-off-by: Eric Biggers <ebiggers@google.com>
+> I can add one. What should I write in it?
 
-thank you very much for the revert. I have compiled 6.8 with this patch
-and attest that it solves my eduroam connection issue.
+Basically just a short (few sentences) introduction what the patchset
+adds and if there are problematic/broken/todo items, for example in this
+case that the firmware upload is pending. This info helps the reviewers
+and also having the cover letters makes the grouping in email
+applications better.
 
-Tested-by: Karel Balej <balejk@matfyz.cz>
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-May I please ask, though, why you did not Cc stable (and add a Fixes
-trailer for that matter)? It seems like something that would be nice to
-see fixed in 6.7.y and 6.8.y too as soon as possible.
-
-Kind regards,
-K. B.
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
