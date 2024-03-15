@@ -1,69 +1,77 @@
-Return-Path: <linux-wireless+bounces-4784-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4787-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C74987C74C
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Mar 2024 02:44:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC7A287C8A8
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Mar 2024 06:53:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D09DB282C61
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Mar 2024 01:44:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB6C11C22280
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Mar 2024 05:52:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F0F44C8F;
-	Fri, 15 Mar 2024 01:44:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62AE113FFC;
+	Fri, 15 Mar 2024 05:52:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="TE06+Pid"
+	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="o+N57xuP"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from esa2.hc1455-7.c3s2.iphmx.com (esa2.hc1455-7.c3s2.iphmx.com [207.54.90.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B53494C8D
-	for <linux-wireless@vger.kernel.org>; Fri, 15 Mar 2024 01:44:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B7B12E5D;
+	Fri, 15 Mar 2024 05:52:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.54.90.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710467060; cv=none; b=dMalP1/H9/AYo8Poap+RnFCneSHu6t+Y7mOzdHu01pw/TfbwgDH+DH14zWZ1HUWqnxjHn+6QWWqxFD1kQBRshPEF/0Wh7Qw/07JSZ7AKWciO6AkJLcp10RMcTAgHCQYq9TaiwMNTVAEKpTMOtCyNQCJvdRruzeSO4CnmBn03ouo=
+	t=1710481956; cv=none; b=EOYlBP1JDbVT9ySWdOuvyzbLifOIHII89UxzI31K5/g5R47Jt7+LNdZZTeSBsnRhI3V9ofqbmn6c5R7CAG5dDWHHN2E8ewrcQQBQrV8XxmaF0X0UhabOw1tyddcELdDeUamt7O9jvPJlPbd822Xxsx6EmApsjF8KwG+q0km0n/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710467060; c=relaxed/simple;
-	bh=9XKMlrIspoL/raBToNSPMIiwY134egt6M/bJXHioSr0=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mGsoEhScnALWmQLH/XtqNNYxHQGu1mR4WyMpR4+nlQQyLBfcR4UB8RDMY2b/PgIOZu70H0Qc9YaqB8V4o2mA4bPdpISmrba0AQGYRJH13l5RD+49exY9W+O4B/cuPAHcp1nSgSJjcBTCeJnX+NkFxIg/YsGr2b8Iz+Wq6m0apM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=TE06+Pid; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42F0rj8n007011;
-	Fri, 15 Mar 2024 01:44:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:mime-version
-	:content-transfer-encoding:content-type; s=qcppdkim1; bh=RTbjxZI
-	OMviRH3aUzis16GaSM/Y+0ZKj9CvJ6VLKnZs=; b=TE06+Pid3fXdXgUndikRCvE
-	lZcx96JtqUGIDt5ROL3RAQKCicGB+3r1DfdZTTJwJmhKB4QywoM5MRTKNlpr/yYk
-	5EwegHTDK/24u56ZpuPmg8/Y/QmI8PtvDwBFH/uvjcHVPeqdPSLrflf4SIrgKtYm
-	Sdm7AdNaw5fjLQ5XWOtSi3ep3sjkmPrpiGJ8cPwIaDgUUJNEy+irT8eI/iV0rdMc
-	+c4Fs1BVYZsWAZeSP+sG7xIaQpaq8RudAxGYCj6jGo6vRYmknCxuXskOhNKhcjOT
-	e9J/KYKbrQy2xlY5MhswzAgHGxg+vzXJ2yyGIC06DUQ3YpBveHZjeWc0bP6a0Ig=
-	=
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wva0609d9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 15 Mar 2024 01:44:08 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42F1i74U028555
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 15 Mar 2024 01:44:07 GMT
-Received: from Z2-SFF-G9-MQ.ap.qualcomm.com (10.80.80.8) by
- nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Thu, 14 Mar 2024 18:44:05 -0700
-From: Miaoqing Pan <quic_miaoqing@quicinc.com>
-To: <kvalo@kernel.org>
-CC: <quic_jjohnson@quicinc.com>, <ath11k@lists.infradead.org>,
-        <linux-wireless@vger.kernel.org>,
-        Miaoqing Pan <quic_miaoqing@quicinc.com>
-Subject: [PATCH] wifi: ath11k: fix memory leak in ath11k_xxx_remove()
-Date: Fri, 15 Mar 2024 09:43:07 +0800
-Message-ID: <20240315014307.3132980-1-quic_miaoqing@quicinc.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1710481956; c=relaxed/simple;
+	bh=Qv6phc/4FuyjqrfYPdqCTnpCxBNfhp35atRySiUpzR8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mu4ub+lwNQYImM7o5kcmE6uMcJnXGHhMYFJIGjXot8fxCL7rcRCD3HA8CnEMNGZfoOJbCoVSIrSHh6zBijixCoM/tLpB5WtK8iui3wPz6hEZeERPMcahJLr9TMf6S1QyShjdODJNYLiCuVuu3TRE4AE3losKlM8yHqYr1woC9YM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=o+N57xuP; arc=none smtp.client-ip=207.54.90.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+  t=1710481953; x=1742017953;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Qv6phc/4FuyjqrfYPdqCTnpCxBNfhp35atRySiUpzR8=;
+  b=o+N57xuPi/Z7+TC/ISSCVVhAZ1hWGntvgTDA7tkJsTmZgZu4lcEIqXD8
+   w+alt92cGw9Xc1+JQN7/GJV0ti1MHvOdNf9LOVrNnMsntc12SZUtgGavh
+   IqobV0clTy/CmY+BS9wTAilAsonNEnn+/tWQjQ9Sta6FUGqeqarhQXLxb
+   WPJ6G5ZIcXlW7ABaMVLBbqX7afzCTrhZ7+72J6Pa3FOU75OIsGrYECSmV
+   NukKDZ+JkeEpX6OWLPcpM4kUGOFgZRKIsRN4K0Ha+qESc/xlGFi1AbgW7
+   fCwhGZpQq5DdWNivnFTh//bIOIxXsXmg2dkroLpq2UpDgKtWB1bmHkVh8
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11013"; a="152383413"
+X-IronPort-AV: E=Sophos;i="6.07,127,1708354800"; 
+   d="scan'208";a="152383413"
+Received: from unknown (HELO oym-r2.gw.nic.fujitsu.com) ([210.162.30.90])
+  by esa2.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Mar 2024 14:52:29 +0900
+Received: from oym-m4.gw.nic.fujitsu.com (oym-nat-oym-m4.gw.nic.fujitsu.com [192.168.87.61])
+	by oym-r2.gw.nic.fujitsu.com (Postfix) with ESMTP id 3C36DF2647;
+	Fri, 15 Mar 2024 14:52:27 +0900 (JST)
+Received: from kws-ab3.gw.nic.fujitsu.com (kws-ab3.gw.nic.fujitsu.com [192.51.206.21])
+	by oym-m4.gw.nic.fujitsu.com (Postfix) with ESMTP id 6609F10613D;
+	Fri, 15 Mar 2024 14:52:26 +0900 (JST)
+Received: from edo.cn.fujitsu.com (edo.cn.fujitsu.com [10.167.33.5])
+	by kws-ab3.gw.nic.fujitsu.com (Postfix) with ESMTP id E188820097CFA;
+	Fri, 15 Mar 2024 14:52:25 +0900 (JST)
+Received: from localhost.localdomain (unknown [10.167.226.45])
+	by edo.cn.fujitsu.com (Postfix) with ESMTP id 1A9A31A006B;
+	Fri, 15 Mar 2024 13:52:24 +0800 (CST)
+From: Li Zhijian <lizhijian@fujitsu.com>
+To: linux-kernel@vger.kernel.org
+Cc: Li Zhijian <lizhijian@fujitsu.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Jeff Johnson <jjohnson@kernel.org>,
+	linux-wireless@vger.kernel.org,
+	ath11k@lists.infradead.org,
+	ath10k@lists.infradead.org
+Subject: [PATCH v2 1/3] wifi: ath: Convert sprintf/snprintf to sysfs_emit
+Date: Fri, 15 Mar 2024 13:52:09 +0800
+Message-Id: <20240315055211.1347548-1-lizhijian@fujitsu.com>
+X-Mailer: git-send-email 2.31.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -71,73 +79,78 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 22b0kfWFUIDFYEBMIersIueYpjbfAZNA
-X-Proofpoint-ORIG-GUID: 22b0kfWFUIDFYEBMIersIueYpjbfAZNA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-14_13,2024-03-13_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 impostorscore=0
- spamscore=0 phishscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0
- clxscore=1011 priorityscore=1501 mlxscore=0 adultscore=0 mlxlogscore=834
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2403140001
- definitions=main-2403150010
+X-TM-AS-GCONF: 00
+X-TM-AS-Product-Ver: IMSS-9.1.0.1417-9.0.0.1002-28252.004
+X-TM-AS-User-Approved-Sender: Yes
+X-TMASE-Version: IMSS-9.1.0.1417-9.0.1002-28252.004
+X-TMASE-Result: 10--3.370400-10.000000
+X-TMASE-MatchedRID: /mcjwogdDrk4ibokZ3+Q0CoiRKlBVkYIBXngI6jFvpfDqO6/8R69QE8U
+	roFNOGp7a6aAZTOwtJmRloiW1Kgftd2ZdKe8BPbSrMZ+BqQt2Nps/NNpVQ666hXsn8ikX6Gtzv0
+	+UmYCZcMPNxz2EvpSIAhBeNJICtc+zK2lwdvrNt2qH6mIBejVf2ItZ2e1geixEd+K6O5Nt53oKE
+	r2irJf5CL637QCIVpi8vc3EUpCmrV8M8QL/JCA9N9JA2lmQRNUrzl8sNiWClKbKItl61J/yZ+in
+	TK0bC9eKrauXd3MZDXdPm6Zo4+L6rfjitlkYmpJaIu8tbWsF6z9+jPt2YyIEwSvEMdfhO/82WMg
+	P9XH4iW61V4Xac0M7FrnjD0+bxg0N7Br+Gphn4yMa1PejsZJrBXFEH92Kf64nTtPxlIuIBW9Hzj
+	86YHXBCnifx5AGfCL
+X-TMASE-SNAP-Result: 1.821001.0001-0-1-22:0,33:0,34:0-0
 
-The firmware memory was allocated in ath11k_pci_probe() or
-ath11k_ahb_probe(), but not freed in ath11k_xxx_remove() in case
-ATH11K_FLAG_QMI_FAIL bit is set. So call ath11k_fw_destroy() to
-free the memory.
+Per filesystems/sysfs.rst, show() should only use sysfs_emit()
+or sysfs_emit_at() when formatting the value to be returned to user space.
 
-Found while fixing the same problem in ath12k:
-https://lore.kernel.org/linux-wireless/20240314012746.2729101-1-quic_miaoqing@quicinc.com
+coccinelle complains that there are still a couple of functions that use
+snprintf(). Convert them to sysfs_emit().
 
-No functional changes, compile tested only.
+sprintf() will be converted as weel if they have.
 
-Signed-off-by: Miaoqing Pan <quic_miaoqing@quicinc.com>
+Generally, this patch is generated by
+make coccicheck M=<path/to/file> MODE=patch \
+COCCI=scripts/coccinelle/api/device_attr_show.cocci
+
+No functional change intended
+
+CC: Kalle Valo <kvalo@kernel.org>
+CC: Jeff Johnson <jjohnson@kernel.org>
+CC: linux-wireless@vger.kernel.org
+CC: ath11k@lists.infradead.org
+CC: ath10k@lists.infradead.org
+Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
 ---
- drivers/net/wireless/ath/ath11k/ahb.c | 1 +
- drivers/net/wireless/ath/ath11k/fw.c  | 1 +
- drivers/net/wireless/ath/ath11k/pci.c | 1 +
- 3 files changed, 3 insertions(+)
+V2: subject updated
 
-diff --git a/drivers/net/wireless/ath/ath11k/ahb.c b/drivers/net/wireless/ath/ath11k/ahb.c
-index 7c0a23517949..6bc4e55c6c2b 100644
---- a/drivers/net/wireless/ath/ath11k/ahb.c
-+++ b/drivers/net/wireless/ath/ath11k/ahb.c
-@@ -1259,6 +1259,7 @@ static void ath11k_ahb_remove(struct platform_device *pdev)
- 		ath11k_ahb_power_down(ab);
- 		ath11k_debugfs_soc_destroy(ab);
- 		ath11k_qmi_deinit_service(ab);
-+		ath11k_fw_destroy(ab);
- 		goto qmi_fail;
- 	}
+This is a part of the work "Fix coccicheck device_attr_show warnings"[1]
+Split them per subsystem so that the maintainer can review it easily
+[1] https://lore.kernel.org/lkml/20240116041129.3937800-1-lizhijian@fujitsu.com/
+---
+ drivers/net/wireless/ath/ath10k/thermal.c | 2 +-
+ drivers/net/wireless/ath/ath11k/thermal.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath10k/thermal.c b/drivers/net/wireless/ath/ath10k/thermal.c
+index 31c8d7fbb095..8b15ec07b107 100644
+--- a/drivers/net/wireless/ath/ath10k/thermal.c
++++ b/drivers/net/wireless/ath/ath10k/thermal.c
+@@ -100,7 +100,7 @@ static ssize_t ath10k_thermal_show_temp(struct device *dev,
+ 	spin_unlock_bh(&ar->data_lock);
  
-diff --git a/drivers/net/wireless/ath/ath11k/fw.c b/drivers/net/wireless/ath/ath11k/fw.c
-index 4e36292a79db..22327d5f9680 100644
---- a/drivers/net/wireless/ath/ath11k/fw.c
-+++ b/drivers/net/wireless/ath/ath11k/fw.c
-@@ -166,3 +166,4 @@ void ath11k_fw_destroy(struct ath11k_base *ab)
- {
- 	release_firmware(ab->fw.fw);
- }
-+EXPORT_SYMBOL(ath11k_fw_destroy);
-diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
-index be9d2c69cc41..6099d02d5f65 100644
---- a/drivers/net/wireless/ath/ath11k/pci.c
-+++ b/drivers/net/wireless/ath/ath11k/pci.c
-@@ -973,6 +973,7 @@ static void ath11k_pci_remove(struct pci_dev *pdev)
- 		ath11k_pci_power_down(ab);
- 		ath11k_debugfs_soc_destroy(ab);
- 		ath11k_qmi_deinit_service(ab);
-+		ath11k_fw_destroy(ab);
- 		goto qmi_fail;
- 	}
+ 	/* display in millidegree celsius */
+-	ret = snprintf(buf, PAGE_SIZE, "%d\n", temperature * 1000);
++	ret = sysfs_emit(buf, "%d\n", temperature * 1000);
+ out:
+ 	mutex_unlock(&ar->conf_mutex);
+ 	return ret;
+diff --git a/drivers/net/wireless/ath/ath11k/thermal.c b/drivers/net/wireless/ath/ath11k/thermal.c
+index 41e7499f075f..18d6eab5cce3 100644
+--- a/drivers/net/wireless/ath/ath11k/thermal.c
++++ b/drivers/net/wireless/ath/ath11k/thermal.c
+@@ -101,7 +101,7 @@ static ssize_t ath11k_thermal_show_temp(struct device *dev,
+ 	spin_unlock_bh(&ar->data_lock);
  
+ 	/* display in millidegree Celsius */
+-	ret = snprintf(buf, PAGE_SIZE, "%d\n", temperature * 1000);
++	ret = sysfs_emit(buf, "%d\n", temperature * 1000);
+ out:
+ 	mutex_unlock(&ar->conf_mutex);
+ 	return ret;
 -- 
-2.25.1
+2.29.2
 
 
