@@ -1,82 +1,81 @@
-Return-Path: <linux-wireless+bounces-4789-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4790-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A99E487CADB
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Mar 2024 10:49:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC93E87CDC4
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Mar 2024 14:09:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D578281FEF
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Mar 2024 09:49:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D79B2816EE
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Mar 2024 13:09:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C41C217BD5;
-	Fri, 15 Mar 2024 09:49:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="nS/mr1G9"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A8C425613;
+	Fri, 15 Mar 2024 13:09:49 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp1.ms.mff.cuni.cz (smtp-in1.ms.mff.cuni.cz [195.113.20.234])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88AE23D76;
-	Fri, 15 Mar 2024 09:49:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C24FB2511E;
+	Fri, 15 Mar 2024 13:09:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710496178; cv=none; b=pQD0usPRYwroevWqBy41Y2w9Fvx3rgOjt+RLUnlcGJvN20wfWsd812bOhEtw15h8lBC2tS06TlR/UOxG65rJLruqn7iSl1oMK+QeMvvWJrb9CUwgB9Z+4bk0HruYAmXwm45l0PxvzBSA4oWW6Wr8eO4cI509zneLlIMVMZ4FP+Y=
+	t=1710508189; cv=none; b=R3B2URpvlf7BGIrWHHLkGrIFnOpRXC82ST9ynZm7p276DKxIduHbrjwcs/1qBhcqArFCabNNF4fG3/5N9k63ONFSMCRpQz7fxyzBy/1MGtLnwKpVMRE1SUC9FkhbB/4x9l9tfPZvdv7UB3NFDXXHF4bNsTNCXUJYyp45NlwOHV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710496178; c=relaxed/simple;
-	bh=IvwRJt3u2lCE2S8ckyxSaFXMoO4jI4DtyMsiY2HqSrE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QL+A7gRFvr1+66PeXp/04u2XvsXaJwuiTraSNbiwJPYnV7y+bHBNUx9fQc/Y68tipRlzduRWRCd9y0SsNXGxkYShYloUnhGWFwCVKjePUf347hAkHfu0Xr0t/35xEX/OvN5qgJPKroj9KGUcxB/rAJy9pp4Y4lrkUseXSX70t7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=nS/mr1G9; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
-Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id CD28A1FA8C;
-	Fri, 15 Mar 2024 10:49:31 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1710496172;
-	bh=IvwRJt3u2lCE2S8ckyxSaFXMoO4jI4DtyMsiY2HqSrE=; h=From:To:Subject;
-	b=nS/mr1G93Zpp5yJVdg/j3GUx9KS+VUW3TgRpTWx8+gmGhck6zlGnUGN7zjOBpMGen
-	 tBhiKVayYXHKboV3b+k1+8/m7F4ZVBF4ZucfaNsmJu/vIk1NZPg64djemDDsOI2LsA
-	 Q8vrwUqqDkDUCOaAFhO1WNVMCvJnfwyX1GtKETv/CUgWpUnlNyX5NBdI+O0KLP1H8B
-	 WZ9XPMVrISSuabJ6GpuguvMuqV01qgeKY8DSt8R0rlRnP0BV86BwIJxK/+RblPw9/k
-	 qpjsJ0fUbNaHHopGEBwzfPxLA0aZR5ADLM0n0jybr9Iic5MRiWzPfbdzUXOLk55923
-	 jsd6cr8Irmw0A==
-Date: Fri, 15 Mar 2024 10:49:27 +0100
-From: Francesco Dolcini <francesco@dolcini.it>
-To: briannorris@chromium.org, kvalo@kernel.org
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	David Lin <yu-hao.lin@nxp.com>, francesco@dolcini.it,
-	tsung-hsien.hsieh@nxp.com, rafael.beims@toradex.com,
-	Francesco Dolcini <francesco.dolcini@toradex.com>
-Subject: Re: [PATCH v9 0/2] wifi: mwifiex: add code to support host mlme
-Message-ID: <20240315094927.GA6624@francesco-nb>
-References: <20240306020053.18054-1-yu-hao.lin@nxp.com>
+	s=arc-20240116; t=1710508189; c=relaxed/simple;
+	bh=W+ABfQLN3KCOvRqGEyd8pg1ypVwpXtU704uye5orKeI=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:To:From:
+	 References:In-Reply-To; b=K6O0f8BMwTs/Rvu7S/4IBYfibd9wvrRhATDvU4wiCuD5LUJtpbA8i2Tcf6IV0najsUbnd0hAQE6z1egVj4nlxSucwKPtfELAibVSv4Lx0S5GHPkMqIzY8hiRrSWs8uzjT7zTK3TPf+9nuMgeKAAxmsynW1V32evpJuBD9GW1/rY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=matfyz.cz; arc=none smtp.client-ip=195.113.20.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matfyz.cz
+X-SubmittedBy: id balejk@matfyz.cz subject /postalCode=110+2000/O=Univerzita+20Karlova/street=Ovocn+5CxC3+5CxBD+20trh+20560/5/ST=Praha,+20Hlavn+5CxC3+5CxAD+20m+5CxC4+5Cx9Bsto/C=CZ/CN=Karel+20Balej/emailAddress=balejk@matfyz.cz
+	serial F5FD910E8FE2121B897F7E55B84E351D
+	issued by /C=NL/O=GEANT+20Vereniging/CN=GEANT+20Personal+20CA+204
+	auth type TLS.CUNI
+Received: from localhost (cdwifi-a106.cd-t.cz [213.235.133.106] (may be forged))
+	(authenticated)
+	by smtp1.ms.mff.cuni.cz (8.16.1/8.16.1) with ESMTPS id 42FD8Ug8098517
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
+	Fri, 15 Mar 2024 14:08:33 +0100 (CET)
+	(envelope-from balejk@matfyz.cz)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240306020053.18054-1-yu-hao.lin@nxp.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 15 Mar 2024 14:09:01 +0100
+Message-Id: <CZUCJ4CEVXMS.2MML8IFVVTBC9@matfyz.cz>
+Cc: <alexandre.torgue@foss.st.com>, <davem@davemloft.net>,
+        <dhowells@redhat.com>, <herbert@gondor.apana.org.au>,
+        <keyrings@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-crypto@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-modules@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>, <mcgrof@kernel.org>,
+        <mcoquelin.stm32@gmail.com>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <dimitri.ledkov@canonical.com>,
+        <iwd@lists.linux.dev>, "Johannes Berg" <johannes@sipsolutions.net>,
+        "James
+ Prestwood" <prestwoj@gmail.com>,
+        "Michael Yartys" <mail@yartys.no>
+Subject: Re: [REGRESSION] Re: [PATCH] crypto: pkcs7: remove sha1 support
+To: <regressions@lists.linux.dev>
+From: "Karel Balej" <balejk@matfyz.cz>
+References: <005f998ec59e27633b1b99fdf929e40ccfd401c1.camel@sipsolutions.net> <f2dcbe55-0f0e-4173-8e21-f899c6fc802a@gmail.com> <NbWQKmrYDD20KKHeq9TMda2MJFE00-weepZGuSIRzO5BOgMlTbWBkDlNNweA2dhbvF8TK1F_cHbMxblLVNREZa1HZEFt9TVCkTB1jo_5ppc=@yartys.no> <CZSHRUIJ4RKL.34T4EASV5DNJM@matfyz.cz> <20231010212240.61637-1-dimitri.ledkov@canonical.com> <CZSVWO3IDZ96.38O0P161Z99XU@matfyz.cz>
+In-Reply-To: <CZSVWO3IDZ96.38O0P161Z99XU@matfyz.cz>
 
-Hello Brian (and Kalle),
+#regzbot title: SHA1 support removal breaks iwd's ability to connect to edu=
+roam
+#regzbot monitor: https://lore.kernel.org/all/20240313233227.56391-1-ebigge=
+rs@kernel.org/
+#regzbot monitor: https://lore.kernel.org/all/CZSHRUIJ4RKL.34T4EASV5DNJM@ma=
+tfyz.cz/
+#regzbot link: https://lore.kernel.org/iwd/njvxKaPo_CBxsQGaNSRHj8xOSxzk1_j_=
+K-minIe4GCKUMB1qxJT8nPk9SGmfqg7Aepm_5dO7FEofYIYP1g15R9V5dJ0F8bN6O4VthSjzu1g=
+=3D@yartys.no/
 
-On Wed, Mar 06, 2024 at 10:00:51AM +0800, David Lin wrote:
-> This series add host based MLME support to the mwifiex driver, this
-> enables WPA3 support in both client and AP mode.
-
-What's your plan for this series? I know you raised some concern when
-this started months ago and I'd love to know if there is something that
-would need to be addressed to move forward here.
-
-
-Francesco
-
-p.s. I'm aware we are in the middle of the Linux merge window and
-nothing will happen till it closes.
-
+Sorry for the tracking mess...
 
