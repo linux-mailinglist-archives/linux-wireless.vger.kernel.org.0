@@ -1,182 +1,183 @@
-Return-Path: <linux-wireless+bounces-4781-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4782-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87EA187C685
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Mar 2024 00:39:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACF2987C709
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Mar 2024 02:17:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F364B1F224F2
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Mar 2024 23:39:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68074281B24
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Mar 2024 01:17:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3786C111A2;
-	Thu, 14 Mar 2024 23:38:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 679F815BF;
+	Fri, 15 Mar 2024 01:17:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SowCYaPC"
+	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="bZSR3ctN"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from esa9.fujitsucc.c3s2.iphmx.com (esa9.fujitsucc.c3s2.iphmx.com [68.232.159.90])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB84113FE7;
-	Thu, 14 Mar 2024 23:38:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710459539; cv=none; b=Nv6m7LKbpHiTfU7SYeprMQLT3x/qrEKT4P6uOtsGb5bRwC9JJKzMnzU0AEjQVZd+rP/oqI1/uQD1CWZTjF1/L4k+xmSreoBaqurYtILR+A6oHwzDnmnf/XHC467zeMBkswJC6sosCIxyN27oEjW7oioE9Lgn5NpcXD7+95CEkno=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710459539; c=relaxed/simple;
-	bh=ToO7+GC40SPPq/DJBkYHMz5VkP5cIZgxtl9+T1qyeNw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FX4en9A/QOie8YbNpuWQN/z2ef0M8KeubaF9OiBzH7ymaaGPgdhX1XOqr4EHPpSUTHZZlky0dOtMQGih/pOC8Z8QLTjp++TWB2xEqOqx5ZeF7XU26Syr98VovRFh4fEXmgD0UTTocR9GFNhVDoMeELa2+AGH3S+NaY7iJCt06yY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SowCYaPC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 957B9C43601;
-	Thu, 14 Mar 2024 23:38:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710459538;
-	bh=ToO7+GC40SPPq/DJBkYHMz5VkP5cIZgxtl9+T1qyeNw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=SowCYaPCOLjEnDgHQ2XC7R0LqG8iVH1tSpqaCRt02cjOZBaHctbbQFmzEqjRcvhmj
-	 i/Zv0c3M92heLQdOgfA7NRi08RATmBjbXeesA48ueQQzaTtz4oMZJC+BryGvTZ5lm3
-	 hO56AiCBUqrXAEan0fgh5ziDS9R32mi6gkiDZJxFX6Tr8T275Z2BSpkjdh5qiRIEDa
-	 /g22lzM98Iq3qxplKJI1PJDely87LNSOCGJT/fh/f8iXg2Z/v7lVh3UzAkWK6HdC8Z
-	 bvJhRgLIhynwbMDwZicreJqGkqeTdLFI23xGNjsyjPB+cNlOpR29hGWDtjed/bGmM8
-	 7bHtbgf2uwG1Q==
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2d4360ab3daso19976631fa.3;
-        Thu, 14 Mar 2024 16:38:58 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWd2Px/Af6sDtDIT8cbm+QE6lgHKXyCWAQCf3vBqr8tyO8+A83j8fPqfatAzq+Ag/2pojYzm1AWZC60+oeOL/mkfrRaHWXYHVwDYLb1JCaBy1pb1RChTMzSoCCSbD9/Hh6FewnSjf+JaeyqVrtTZXtEZrRP+z0P5DhCqugdfBPeBsb7+wNFI5dz8df9kf4iLenMbUMbo9j2FmGL7p+cEuKYnikYyOmUFVhwvknmgSPLXAhREwx7PhAV8mTuR9UTq37e0FXoKHQwfqByE7+6GBt1pmmaEJx41LIWL7c=
-X-Gm-Message-State: AOJu0YxhxQM6KkgZsEklxfjW5qw2KmMnrPUoyl9vT+Le4EedwOsVwDeO
-	d8u/W51X0Z7sa1wwOfOfPwffsTtzDfYNQQ1+/aKnGGeJoniGAAAIFLIbcYajObokB4O3c5TcpdA
-	RHU6s4MximEJPvz2HYU3TJcLUZxE=
-X-Google-Smtp-Source: AGHT+IF2/ImKbZWGcxV6yAg7OxnoINqcxhfzgB5aBbVZi8+MbYBftvaXns5kzEnVc2lBbJ0XnQ1q0SLbGXlAKuS4j2k=
-X-Received: by 2002:a2e:9a8a:0:b0:2d2:3fac:5fdc with SMTP id
- p10-20020a2e9a8a000000b002d23fac5fdcmr2171806lji.10.1710459536886; Thu, 14
- Mar 2024 16:38:56 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCDC6139D;
+	Fri, 15 Mar 2024 01:17:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=68.232.159.90
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1710465447; cv=fail; b=q6kPV/1yszqAsdqhNQU0FBCjRSoVr2E3rUrlndjFpXb/5UDXrbi7g0S23EkAjBhGqRThnjnXZiRK4MyUq/CY9AWMqHabifDVsFV8eEdGtU6IqxxUpBSim8IKBNXX4aIXW74nHZobXtZS1urp3ZBpeJwWRH5Fki6o2HOjHfpAeK4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1710465447; c=relaxed/simple;
+	bh=DVxDsBflY6kZ69SFyzdl5ZAMx6899FxhXPUbMXpzdu8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Fv7lom7kqw6gkbAuZEkta42z68Pgwmc4qUn3k2Gb44N/sjL/+/QPWYRo803AhTS7OPuFVoti93ntP4HCC2hWnwT/5KXY2iiJJpDnPTkhqhlQUP63gju+NpMH7rUkiQZHfcAKIPmYViVRwIiGrRTjRNXlHf/3wte1LmgLcBrcgQY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=bZSR3ctN; arc=fail smtp.client-ip=68.232.159.90
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj1;
+  t=1710465446; x=1742001446;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=DVxDsBflY6kZ69SFyzdl5ZAMx6899FxhXPUbMXpzdu8=;
+  b=bZSR3ctNtxlgsJi0vYo6h4XCU8/A1ssrhYE3ktnVXArbCVATOsdMOzpu
+   EO7KLMFqmvnhNrNEKtxmBXeWGQI95FXmhxIWBue0vijQtVnHG1qQGTsQ3
+   0EKOf60SCIBsCZ4EvLoM4VpvpBgNgmpjtwQ3o83VoK+3uyxw3Bv2MWTp7
+   WwRCnkxOM9S2XMqLATWparZd1TE1b22lMA/q7nqZT/qlqlLzloTRRRHU5
+   2xccdHK1qIOUH7Xidvu6NbNj6TNp4rDQO/0jn0AXNduZuubuxq91x+J2N
+   94eeV61uzk+GSEytTEHVEB/nRf04raAXeyHhv06+/tgMABgSOofd+wCT2
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11013"; a="114208371"
+X-IronPort-AV: E=Sophos;i="6.07,127,1708354800"; 
+   d="scan'208";a="114208371"
+Received: from mail-tycjpn01lp2168.outbound.protection.outlook.com (HELO JPN01-TYC-obe.outbound.protection.outlook.com) ([104.47.23.168])
+  by ob1.fujitsucc.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Mar 2024 10:16:12 +0900
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=JB92qP4hUohurSZcrS0y9qFbxtSCjea0JcER6sjkzobaTeotg5iqlmDL/U0LwNUCwDkHSs71d7VW/aSTabqE+mgr3KeyzAC4K6Xo5TR99SVVV243jxCHQL7atYrmtOxlfRQQcn4nlmiHlBXLngveFqzoFqv35kjFXzWYFq7Wu1AZykmpVFTmgtC1Mqns9t3sWDeXKiI71dp+mxqu4BX/Biusgdkn3rrRsBIli1QOvZSRfzgm5hf1kcgtFfSTzfc4hXwBXvdo31yOmbLOowV2gc+c1VZ55msf3gOU6vaX+lckTnueHO9uXQeJdSDAvesN82qA37gYzwncIbiljO59sA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DVxDsBflY6kZ69SFyzdl5ZAMx6899FxhXPUbMXpzdu8=;
+ b=EFMf6qkgFfvZ9AkN1M0Ji/3jlS4LsX1Hmp9q1RfGEFK6YCk+8wDECI9rUqLcdLKSCCSxc+yA+UNqv3PRRHZh+f3G69NOB5/KEaO+IVxEWI5GnbBl0d/xGACGcFswBKOAZSyCt589FNl5WemPxZNAPAC7iwRBaDv9GDQolaPIC18VraQniY1eXj2Yb4oYDcB6P/LjPiaTKVhfv1PUgSDIp0tXSBlAl0iqLOjEPTK4fYIKgWObxju/cE3xW6kswYbrapjZVA+hFOqucnlkum7BEILCaHroAZUUxE3EGectl5PJLnlO3lgf3EwkZ4yLYg0YAdR43MzcNpCjyblnHx0qmA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=fujitsu.com; dmarc=pass action=none header.from=fujitsu.com;
+ dkim=pass header.d=fujitsu.com; arc=none
+Received: from TYAPR01MB5818.jpnprd01.prod.outlook.com
+ (2603:1096:404:8059::10) by OS3PR01MB9739.jpnprd01.prod.outlook.com
+ (2603:1096:604:1ed::9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.18; Fri, 15 Mar
+ 2024 01:16:07 +0000
+Received: from TYAPR01MB5818.jpnprd01.prod.outlook.com
+ ([fe80::c52a:473a:a14f:7f0e]) by TYAPR01MB5818.jpnprd01.prod.outlook.com
+ ([fe80::c52a:473a:a14f:7f0e%3]) with mapi id 15.20.7386.017; Fri, 15 Mar 2024
+ 01:16:07 +0000
+From: "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com>
+To: =?utf-8?B?TWljaGFlbCBCw7xzY2g=?= <m@bues.ch>
+CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Larry
+ Finger <Larry.Finger@lwfinger.net>, Kalle Valo <kvalo@kernel.org>,
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"b43-dev@lists.infradead.org" <b43-dev@lists.infradead.org>
+Subject: Re: [PATCH 2/3] net: b43: Convert sprintf/snprintf to sysfs_emit
+Thread-Topic: [PATCH 2/3] net: b43: Convert sprintf/snprintf to sysfs_emit
+Thread-Index: AQHadfTI2s7BUux6ekGPp1x+w9aTsLE3j/aAgABw1QA=
+Date: Fri, 15 Mar 2024 01:16:07 +0000
+Message-ID: <191ee62c-ab5e-498c-86d1-951771c9834f@fujitsu.com>
+References: <20240314094823.1324898-1-lizhijian@fujitsu.com>
+ <20240314094823.1324898-2-lizhijian@fujitsu.com>
+ <20240314193215.74aac927@barney>
+In-Reply-To: <20240314193215.74aac927@barney>
+Accept-Language: en-US, zh-CN
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Mozilla Thunderbird
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=fujitsu.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: TYAPR01MB5818:EE_|OS3PR01MB9739:EE_
+x-ms-office365-filtering-correlation-id: 7cd895e6-4d50-4bae-d91a-08dc448d7e29
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ jZkJWhPZErGLqy+wDT0mD16z9mWqDOPx0rKIJ0ILs75/1BTrv/VD7NQad+Wn4aWb55ZAzhHEfIjEShuwVbXWxt3gXvnqKVX2d1BC+RVG9cttDO6/quT4y8hYT5DpffvK+Ztz59j1YHP38k3Civr1bdh7YYpmShmLWGqyqNB+McQNrUFMH77rgqkLmPk6kJZCnFO4mbuZq1kXW0jRJ4ojpvYFvhjwJkMo/64QeWOoPb/YFHoe+7y9x3R2NuZ/C2d1P8V9h7W6DwUkitntleRG+YLXaTIcqICNUVnVKgJscVcVC72dEObMJpB2d9KUNeBrBhZdcM61svcdsBXeABv05BPPFKZ52ISg3dOYn3e+L3vYmcNh7E62qsu6O8NF2qiGGgwmChv0krBBbLFmbo/c9/JOHlMfHJxcIAA+seVQX7oK+1lcG00t2o3HttxBWRzI9MTEJiuW7MMPH7/kQ6612rM/B7NKZmyT+ptMyYRns5+4zMXqWs0kzNtVXPsjSvS1anpos7ybHPaqcql6J/ruiTxsBgDr/Lt2nkNg/PLQIWaOX9bP1q/MiNJmGqkorKWnQuhJH6z/aBFaRJ4uRqw8rxEnxKoY7DtkFBEI8HPPItwX9eH5+7aP6hAfLVJ99ifROuA1+xZ4NedKMVg8u2GCNF2FtQiki03OMTqrm+tiHQIO5v16OPRfjQoCgyx5ummsIicAjC3DodcOfWjl+AkunzZBZ29rWIIgZDp0bti59lnsXUBEs8sS/FtbFMC/qIou
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYAPR01MB5818.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(1800799015)(366007)(1580799018)(38070700009);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?anNsVWthUHpiUDdBRVZiM2J1Mk5VbkpLVUZJd2dTbnpWOVcxVTZlejlrYXFM?=
+ =?utf-8?B?SWhFQ0xwaVJkT2xUbGJqY3VHSXZrWmlWaXpNc2R4WmdXNWF6NmNaeUtrblM3?=
+ =?utf-8?B?OHk0NGVzVnhTZDZFODgxZGZTeEpLb01XY3Axd2hmWU9xRlFLMTBCbk9QUmM4?=
+ =?utf-8?B?QndsN2ZvSFhCbktUaENuK0N4bDFrWlNaaUM3VmluUWJLRmVscGdLZUpqcGEv?=
+ =?utf-8?B?dHAxMjdBQUp2aWFxR05SV2ZDMGVPaEpianZ5dUJ2YXRHbTkyRmY0ODJaKzRw?=
+ =?utf-8?B?SVR0ankwaFVDMGhidUQ3WFdORm96NjIrNW1BOVFSVlJKQmQ3NnFUbnlpaEZj?=
+ =?utf-8?B?SHJWQms2aWRuVk5qaU15Z0pGVFdRTDRnZU1ERXlBdC9oaW5NSXhVdTBzNWhD?=
+ =?utf-8?B?UjdGTkx6VjVuMlhYNnZsQVlZbmtyNE9EaWZsQmZDRDVOc1ZGa0sxTmVTS3U3?=
+ =?utf-8?B?a2UrUzdaT0JGNU9BVzluM0hPSUFRSWc2RkdXRjhnaUc5OXNOOVVCRzFjSkla?=
+ =?utf-8?B?YnJwNTJ2U0dZZk1idStaay82ZEFjQjlmWFJWc0wwYnZFa2F2VWJ2UE5xdVVX?=
+ =?utf-8?B?Q2p2OVhFWDVLNmwzcFJvekx3N0Y0ZlVlUThKWExIUEhPNXJKMS8yVWhvN29Z?=
+ =?utf-8?B?NmorZHBNSURkbDRYN3RIZEl0UURBUHphOXBDNmdXZjkrQ1lHU21oZG5ybWhr?=
+ =?utf-8?B?K1lMaE9uUUhVWjJIckR1bEcrQnpSakp3US9JNUpKeEg3aDcrcXBuL0tDaWpB?=
+ =?utf-8?B?bHFYZlNEZzBFamFhUzF0Wm9NYUQ3Z1lJenM1ZzdVaEl4YWFKWGp2OUFRWm1k?=
+ =?utf-8?B?MkZXeDdSWGl3UllscXN2NkdHRnZ6aDBqd1pNd0JCR0dTbWFEaDdPYTJ1RldF?=
+ =?utf-8?B?aU1JTkVzQXZNc3Uybi9CcExvdTVuUXI0cW9jTXpFUzZvZ2RHSGVqUVRNVXNV?=
+ =?utf-8?B?Nzk2R0R5SWhQWUFrbVE5cDYxYVliMGs3WVVDc3prSmxOanl6Ry9XZlNMTDlR?=
+ =?utf-8?B?ZnJHY2VzZVorbXovdU9QbE90Z1FDUTlrM1BKWTVBelZKdEhJbFBGR0h1NVZr?=
+ =?utf-8?B?UWRwSUxIaWNydGhSNllHT2N2cTNtNGp0S1p6blpmUnJvSEg3cVorbGczV2d1?=
+ =?utf-8?B?OFBEcGw1R3N6NUJRZVAzYk54RnMzSnRDMlI3cDJyVFpaOXJMSDBhNURCL09m?=
+ =?utf-8?B?Rit2ay82SUV3YmZPc1FobjJKbUlVZHVlcXF6clhuUzA3YUFwTENBK3VTQTcx?=
+ =?utf-8?B?THF0aktvMG5QcFNGbGpxSGx4VkZUQ0t5M091ZVBMSlBLbEk4Qm4wbjAwREdr?=
+ =?utf-8?B?QnlJeEg2K3pxQXZ0NldkOGVNSk5raXVhaHFjOWQxSHE4Wkx0bjNLRTZWcmk1?=
+ =?utf-8?B?allVWnVGNWRlb3lzOUNqYlVEYWFaanNnWVZVeVd1anFUS1o3bXQzSjB1QjVa?=
+ =?utf-8?B?ZHRONlgzQjY1K2R6a2c2M2ZVSE8vb1VCbFFDekk0aHY1T01DYWpMVE1TM2JO?=
+ =?utf-8?B?M0VUMkEvbTRHZGFUMWR6Y20wL0N3WHJzZlZHVUF3VHAweDllN3hOVjVNSkY1?=
+ =?utf-8?B?bUVGV2VxN3FZbFpPcFd2UVN3b09oZUcxc29ScVRtbmZGbitNWXZvMDJkVVlr?=
+ =?utf-8?B?OTN3RW1PaWYzcUozMDRoWW1yOXJDVkRtMnpQem4wRGd2SWM3RXJxekZ1MDlI?=
+ =?utf-8?B?NUFIL0lTd3RUcFVGRUhBNG5ZRkpxYkUycmNDL2hTWEUrc3dUcnlDRWlHYkZD?=
+ =?utf-8?B?UWc0Q2taTlhOZEhKK2JBMFRkZjRzcVFDKzN6eCtIMjhqRHZrQjlpbGN4V2ZO?=
+ =?utf-8?B?NnNkMVFyZTYwZm54VHpWVlkyKzZhTVdvQktWekhVOXlWZDY0MXpRSXNBNUlr?=
+ =?utf-8?B?NDdYendLZlFpNWNXYWJsQ3k0dnovS1FlVC9lcjRnR3FJZXlIcXdGUW5TWnl5?=
+ =?utf-8?B?Q2pDRmZuR0J0NW50OHRPc0llTWdiMHZaZFFsRjBSY3QzTXptb2ZBVS9IK29m?=
+ =?utf-8?B?bmJsMndmL3A3M21SbW9KdkJ3Yms3WThJeFR2Y3krNEcyS2YvZE51bDh3SXpC?=
+ =?utf-8?B?VWdVRDlyR0w1a2RzMnR1bWtNME54azlkNVFGOW8yc1JvejZGT1NIVEY1eEwy?=
+ =?utf-8?B?WnBGUTgvYnZKaWVMMEdET3pRT2xlZE9UQTlFWnZVR0FEQ3pNV1BYbGxPbkhB?=
+ =?utf-8?B?S2c9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <B96E88789B20AB479E041DAFFEF02B7A@jpnprd01.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <005f998ec59e27633b1b99fdf929e40ccfd401c1.camel@sipsolutions.net>
- <f2dcbe55-0f0e-4173-8e21-f899c6fc802a@gmail.com> <20240313194423.GA1111@sol.localdomain>
- <b838e729-dc30-4e18-b928-c34c16b08606@gmail.com> <20240313202223.GB1111@sol.localdomain>
- <db86cba4-0e61-441d-8e66-405a13b61a3c@gmail.com> <20240313221043.GC1111@sol.localdomain>
- <f0492c92-1015-48e3-bfce-598c7a4843d1@quicinc.com> <20240313230611.GD1111@sol.localdomain>
- <a4d24b2c-7dbf-4354-9514-f8a253aac14b@gmail.com> <20240314202011.GB1132@sol.localdomain>
-In-Reply-To: <20240314202011.GB1132@sol.localdomain>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Fri, 15 Mar 2024 00:38:45 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXGxxRs6Rkhevm9NSY6TaJUsOmF3UqdHUo=NRg9kQKtSBA@mail.gmail.com>
-Message-ID: <CAMj1kXGxxRs6Rkhevm9NSY6TaJUsOmF3UqdHUo=NRg9kQKtSBA@mail.gmail.com>
-Subject: Re: [REGRESSION] Re: [PATCH] crypto: pkcs7: remove sha1 support
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: James Prestwood <prestwoj@gmail.com>, Jeff Johnson <quic_jjohnson@quicinc.com>, 
-	Johannes Berg <johannes@sipsolutions.net>, Karel Balej <balejk@matfyz.cz>, 
-	dimitri.ledkov@canonical.com, alexandre.torgue@foss.st.com, 
-	davem@davemloft.net, dhowells@redhat.com, herbert@gondor.apana.org.au, 
-	keyrings@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-modules@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	mcgrof@kernel.org, mcoquelin.stm32@gmail.com, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, iwd@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	3d1X+zHGnFg69TUxaRpnEzJI8UbHVfIJ/bYkVZlm6NVSHdcgYmJNY3uk3Cc4pUoB3srIQUoy7H+l54OvHEGXNUcbJIEQP7rDuT3YMVFmgJCT4SrhLjrxWOZY3zxiMxCOl5F4ZwnGIqF/XWIDCgq5rKksdyB2OOd16zPzDU/sZvCQuSvn3AZ4N8zsoES2YBwgCrgBbtnimU3q3Ex0gXfo5RkOzTMhyQ1WqX02WhhU8DQ2fAfGlWq1iisIl9KWxir5cDwOaPDEhW8d4Fr5My7RK/gMPOd0McSwpt1jJGhF8T9WhaL3QqxwXNB5InSsOM3ZIELe1e54vpoFYHNQVckZww2SejIOhtC03atbvMnmwTcK/u9wh326Xqhr2WKAyg3xVJ+te95XM2Cck2YadEfVXUd4ooJmBN1mZL3NBqwKg3GREYcFSzLeL9cxsOS6KoNExIXWUOwtmrDs0bHrY0FgF/m9nRcIjfPV9oLrxsnXdxdmuR8pdPQigeILBnhdSlYkuri3Wy0j6q7k5jfiFvj3rAZwFfA7jNbxYpXAZ0izlUKhlbR5JbFmz95aINMkPFYI39Gv20QOGtAmNG+7/4IiW4ma5zoc6hBOqK6HMESxYx/ioyZ1GvBjGqjKrK4TzPPr
+X-OriginatorOrg: fujitsu.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TYAPR01MB5818.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7cd895e6-4d50-4bae-d91a-08dc448d7e29
+X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Mar 2024 01:16:07.7125
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: a19f121d-81e1-4858-a9d8-736e267fd4c7
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: XiRXqLJqOC6XRQA+7SiDlzGUs0bOQBSxtLBgbb4UJAttYmht8hGF7OppLG33/QtmA0MEdu6F2kjXwIkjsPy6SQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS3PR01MB9739
 
-On Thu, 14 Mar 2024 at 21:20, Eric Biggers <ebiggers@kernel.org> wrote:
->
-> On Thu, Mar 14, 2024 at 04:52:47AM -0700, James Prestwood wrote:
-> > IWD uses AF_ALG/keyctl for _all_ its crypto, cipher, and checksum needs.
-> > Anything that wifi requires as far as crypto goes IWD uses the kernel,
-> > except ECC is the only exception. The entire list of crypto requirements
-> > (for full support at least) for IWD is here:
-> >
-> > https://git.kernel.org/pub/scm/network/wireless/iwd.git/tree/tools/test_runner_kernel_config
->
-> That's quite an extensive list, and it's not documented in the iwd README.
-> Don't you get bug reports from users who are running a kernel that's missing one
-> of those options?
->
-> > For KEYCTL_PKEY_* specifically we use it for all asymmetric crypto
-> > operations, (query), encrypt, decrypt, sign, verify.
-> >
-> > I'll be honest, the AF_ALG/keyctl support in ELL was mostly done by the time
-> > I started working on IWD so I was not aware the documentation was so poor.
-> > That is an entirely separate issue than this IMO, and I'm happy to help with
-> > getting docs updated to include a proper list of supported features. In
-> > addition maybe some automated testing that gets run on kernel builds which
-> > actually exercises this API so it doesn't get accidentally get broken in the
-> > future? Docs/tests IMO are the proper "fix" here, not telling someone to
-> > stop using an API that has existed a long time.
->
-> I looked into the history, and it seems the KEYCTL_PKEY_* APIs were added as a
-> collaboration between the iwd developers and the kernel keyrings maintainer.
-> So, as far as I can tell, it's not that the kernel had an existing API that iwd
-> started using.  It's that iwd got some APIs added to the kernel for themselves.
-> KEYCTL_PKEY_* don't seem to have been adopted elsewhere; Debian Code Search
-> doesn't return any notable results.  keyctl does provide a command-line
-> interface to them, but I can't find any users of the keyctl commands either.
->
-> Then, everyone disappeared and it got dumped on the next generation of kernel
-> developers, who often don't know that this API even exists.  And since the API
-> is also poorly specified and difficult to maintain (e.g., changing a seemingly
-> unrelated part of the kernel can break it), the results are predictable...  And
-> of course the only thing that breaks is iwd, since it's the only user.
->
-> It would be worth taking a step back and looking at the overall system
-> architecture here.  Is this the best way to ensure a reliable wireless
-> experience for Linux users?
->
-> Maybe it's time to admit that KEYCTL_PKEY_* was basically an experiment, and a
-> different direction (e.g. using OpenSSL) should be taken...
->
-> (Another issue with the kernel keyrings stuff is that provides a significant
-> attack surface for the kernel to be exploited.)
->
-> If you do decide to continue with the status quo, it may be necessary for the
-> iwd developers to take a more active role in maintaining this API in order to
-> ensure it continues working properly for you.
->
-> AF_ALG is on *slightly* firmer ground since it's been around for longer, is
-> properly part of the crypto subsystem, and has a few other users.  Unfortunately
-> it still suffers from the same issues though, just to a slightly lesser degree.
->
-
-We dropped MD4 because there are no users in the kernel. It is not the
-kernel's job to run code on behalf of user space if it does not
-require any privileges and can therefore execute in user space
-directly.
-
-The fact that AF_ALG permits this is a huge oversight on the part of
-the kernel community, and a major maintenance burden. The point of
-AF_ALG was to expose hardware crypto accelerators (which are shared
-resources that /need/ to be managed by the kernel) to user space, and
-we inadvertently ended up allowing the kernel's pure-software
-algorithms to be used in the same way.
-
-The fact that we even added APIs to the kernel to accommodate iwd is
-even worse. It means system call overhead (which has become worse due
-to all the speculation mitigations) to execute some code that could
-execute in user space just as well, which is a bad idea for other
-reasons too (for instance, accelerated crypto that uses SIMD in the
-kernel disables preemption on many architectures, resulting in
-scheduling jitter)
-
-Note that in the case of iwd, it is unlikely that the use of AF_ALG
-could ever result in meaningful use of hardware accelerators: today's
-wireless interfaces don't use software crypto for the bulk of the data
-(i.e., the packets themselves) and the wireless key exchange protocols
-etc are unlikely to be supported in generic crypto accelerators, and
-even if they were, the latency would likely result in worse
-performance overall than a software implementation.
-
-So iwd's deliberate choice to use the kernel as a crypto library is
-severely misguided. I have made the same point 4 years ago when I
-replaced iwd's use of the kernel's ecb(arc4) code with a suitable
-software implementation (3 files changed, 53 insertions, 40
-deletions). Of course, replacing other algorithms will take more work
-than that, but it is the only sensible approach. We all know the cat
-is out of the bag when it comes to AF_ALG, and we simply have to
-retain all those broken algorithms as executable code at the kernel's
-privileged execution level, just in case some user space is still
-around that relies on it. But that doesn't mean we cannot be very
-clear about our preferred way forward.
+DQoNCk9uIDE1LzAzLzIwMjQgMDI6MzIsIE1pY2hhZWwgQsO8c2NoIHdyb3RlOg0KPiBPbiBUaHUs
+IDE0IE1hciAyMDI0IDE3OjQ4OjIyICswODAwDQo+IExpIFpoaWppYW4gPGxpemhpamlhbkBmdWpp
+dHN1LmNvbT4gd3JvdGU6DQo+IA0KPj4gICAJY2FzZSBCNDNsZWdhY3lfSU5URVJGTU9ERV9OT05F
+Og0KPj4gLQkJY291bnQgPSBzbnByaW50ZihidWYsIFBBR0VfU0laRSwgIjAgKE5vIEludGVyZmVy
+ZW5jZSINCj4+IC0JCQkJICIgTWl0aWdhdGlvbilcbiIpOw0KPj4gKwkJY291bnQgPSBzeXNmc19l
+bWl0KGJ1ZiwgIjAgKE5vIEludGVyZmVyZW5jZSIgIiBNaXRpZ2F0aW9uKVxuIik7DQo+PiAgIAkJ
+YnJlYWs7DQo+IA0KPj4gICAJaWYgKHdsZGV2LT5zaG9ydF9wcmVhbWJsZSkNCj4+IC0JCWNvdW50
+ID0gc25wcmludGYoYnVmLCBQQUdFX1NJWkUsICIxIChTaG9ydCBQcmVhbWJsZSINCj4+IC0JCQkJ
+ICIgZW5hYmxlZClcbiIpOw0KPj4gKwkJY291bnQgPSBzeXNmc19lbWl0KGJ1ZiwgIjEgKFNob3J0
+IFByZWFtYmxlIiAiIGVuYWJsZWQpXG4iKTsNCj4+ICAgCWVsc2UNCj4+IC0JCWNvdW50ID0gc25w
+cmludGYoYnVmLCBQQUdFX1NJWkUsICIwIChTaG9ydCBQcmVhbWJsZSINCj4+IC0JCQkJICIgZGlz
+YWJsZWQpXG4iKTsNCj4+ICsJCWNvdW50ID0gc3lzZnNfZW1pdChidWYsICIwIChTaG9ydCBQcmVh
+bWJsZSIgIiBkaXNhYmxlZClcbiIpOw0KPj4gICANCj4gDQo+IFBsZWFzZSBlaXRoZXIgbGVhdmUg
+dGhlIGxpbmUgYnJlYWsgaW4gcGxhY2UsIG9yIHJlbW92ZSB0aGUgc3RyaW5nIGNvbnRpbnVhdGlv
+bi4NCg0KR29vZCBjYXRjaCwgaSB3aWxsIHVwZGF0ZSBpdC4NCg0KDQpUaGFua3MNClpoaWppYW4N
+Cg0KPiANCj4gDQo+IA==
 
