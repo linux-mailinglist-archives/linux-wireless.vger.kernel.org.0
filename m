@@ -1,130 +1,126 @@
-Return-Path: <linux-wireless+bounces-4804-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4805-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B66387DCA2
-	for <lists+linux-wireless@lfdr.de>; Sun, 17 Mar 2024 09:41:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FAFD87DCCC
+	for <lists+linux-wireless@lfdr.de>; Sun, 17 Mar 2024 10:53:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DBBCBB21080
-	for <lists+linux-wireless@lfdr.de>; Sun, 17 Mar 2024 08:41:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA9901F211DF
+	for <lists+linux-wireless@lfdr.de>; Sun, 17 Mar 2024 09:53:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE8498C05;
-	Sun, 17 Mar 2024 08:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C54321429E;
+	Sun, 17 Mar 2024 09:53:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=testtoast.com header.i=@testtoast.com header.b="Y1piuJph";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="nBzb41Oj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fbo+qHJw"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from fout2-smtp.messagingengine.com (fout2-smtp.messagingengine.com [103.168.172.145])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C0A63CF
-	for <linux-wireless@vger.kernel.org>; Sun, 17 Mar 2024 08:41:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1045414285
+	for <linux-wireless@vger.kernel.org>; Sun, 17 Mar 2024 09:53:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710664864; cv=none; b=uLZcoxhGA37cD/5/qDhffCGJlNDSjPzS0rFuoML0hLRT3NIgXGj6n63cVO7O2NVQHkUyAZcTu6yN6EL8BZMyZs9stEGH/tcOJ7S/DnORP17W/d+WmqYYb61HCiekfY/8KySb1L4koPg35rL6mJdSL8wFrJnr4rSatofyub2M6Hs=
+	t=1710669199; cv=none; b=r2SNwDA81wKhGYuGcfPnUSs7uo27GfjXgMF3KbW3lE3wt3CfycDkkeUoMS4SUU/qTSdnPyJcjMiN3Y3J9V+oykc9cxgIRrPvUu/6AxxABl8RArHQCJVMszFiXsnPFaPsBO2HurRUajqO005XnDrY1AWrrhIlknqnNLWS9vAlwD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710664864; c=relaxed/simple;
-	bh=anmDECffHNT93jRiQ0rFWIJyrxE2Iql748bcsJ3j+/w=;
-	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
-	 Subject:Content-Type; b=EzlYCx5QnL5MoCAgRunq29k5d3KU7nd8Pf4P7an2MezKvPf+vR1rYJkj9SiCMXEWcCvysUg599d+BFiTiK7ldE4oLcLci4uDO/jBBKQlCHzAcF9omiIxCMgVqWYJ0fR9vpgXMjiWkwNuDSdBePST3sx0UWGjQ08hifuFbfDHim8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=testtoast.com; spf=pass smtp.mailfrom=testtoast.com; dkim=pass (2048-bit key) header.d=testtoast.com header.i=@testtoast.com header.b=Y1piuJph; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=nBzb41Oj; arc=none smtp.client-ip=103.168.172.145
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=testtoast.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=testtoast.com
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfout.nyi.internal (Postfix) with ESMTP id 4D2AD13800A6;
-	Sun, 17 Mar 2024 04:41:01 -0400 (EDT)
-Received: from imap47 ([10.202.2.97])
-  by compute5.internal (MEProxy); Sun, 17 Mar 2024 04:41:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=testtoast.com;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1710664861; x=
-	1710751261; bh=iq/K40ZVnREET5uAoPChJlJ91jSHo5fC1dCAOVnA7uM=; b=Y
-	1piuJph5ONlP1Et9LIsGahW141CmZzoPrvhvUbqDWigYtnAr4PQgjP2S/D04SGa5
-	eKMD+0nCN6avXP7sDVXsVZdP4sl5M6Wj+IT08siBqa/DU9qQHX6/hhHP3ybexKgb
-	5KpIqjn1batlPMHI3koriQ/X+fTdxX0xwZsWwJKkzpbQTxeho57Ebvi0fXsT9N3n
-	cYK1FsT5R8+I4Y3FcmzgjzzCBAXngic5m2msujfAZkV7jIBvMusJvnI+sWkQ96yR
-	d8SubbLwXXKcBZTZQqDV36gDruYTGOwroDxDavc1yImEnIWCXKn6XnRjzHOLFlZ/
-	VJRROJUDka++bH5e/OMIQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1710664861; x=1710751261; bh=iq/K40ZVnREET5uAoPChJlJ91jSH
-	o5fC1dCAOVnA7uM=; b=nBzb41Oj7MHf1nwZWJi9RrtXILtmBjxlxr/8RYuKG9i/
-	IdSPx9VqMNjGpv24P76sKMIDef+S/vBqYbezffOQYrqdvQBuA3FDrN0YOUnp0/ID
-	x/DbmV2ENvl6574QAI04l8lDU7lzvor5FS1z54bNwCaKmVmGuhKexdMpLYPyAwe3
-	W5GQkDTG3hvuILXvWLC86MwAriLP7NgmrPW48H7ROh+K2bm3crdiD4Epvri4EHWe
-	j8tE+/UPMF3hydQPwrNvjGH0C8p6oqBEN6WqaCSGi9SG+XZdc7Wir0Uw31sSIkW4
-	foA85hdMHfPsSqkx+X1OpUIb7DPu8bpV/sIP67ZgnQ==
-X-ME-Sender: <xms:nKz2Za3ESRxddTFqYPDtAbRBmSSjF50N1BJvXxxu-9kCzERWuTqGdA>
-    <xme:nKz2ZdFHju_tfmeC_g_Yt-sDpYHpU_ApfiaQaLUVzGXQ0o3R1AE5M8WzoOO_1xy1r
-    DtIzPl0Oun8KDfpew>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrkeefgdduvdehucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftfih
-    rghnucghrghlkhhlihhnfdcuoehrhigrnhesthgvshhtthhorghsthdrtghomheqnecugg
-    ftrfgrthhtvghrnhephedvveeigedujeeufeegffehhfffveduhfeijefgtdffteelgfet
-    ueevieduieejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
-    homheprhihrghnsehtvghsthhtohgrshhtrdgtohhm
-X-ME-Proxy: <xmx:nKz2ZS6yJj7D0OPvxVDyRdwMNlXWu95aNEXprKpmDT3bvVqhst1G4A>
-    <xmx:nKz2Zb2d2qXcJDKzV5Q46oIyxpWTwjh7IKadcJW9ucoKv2nsi3PGiQ>
-    <xmx:nKz2ZdG7TJQg-KdS1hJADtwq7V9AqEK38p-Jy5k62K-Q1PHCfaSj3w>
-    <xmx:nKz2ZU9a_PgJenGkJlrX7j5p6gwInfMDc_9s-td7MGqaau5IqE2W8g>
-    <xmx:naz2ZdAastgVCkSx6zseZVw9CtgpdLtXZZqt3NCDuNds1Le_UVe0XQ>
-Feedback-ID: idc0145fc:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 17CE8A60078; Sun, 17 Mar 2024 04:40:59 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-300-gdee1775a43-fm-20240315.001-gdee1775a
+	s=arc-20240116; t=1710669199; c=relaxed/simple;
+	bh=xvfN9bHNxyDdwX7pxgBfNlNfHwuWkocrRTbBNz73WuI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OFxmksPkUXRNfiOmGXk+0pTg+sIZwdT37o3QJFQ0hpdsVRnkncbLKsckHYaNBZuIPDpJpQD1hbcmAO+7+2qwOzPBRa0aOonLXqRY34H058P5ykUxraz0a2HM0IuPzExwOk75Pj8Wj2HDJSXXdv/Kv3VJMLbGYLUMkdxi4zZUAk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fbo+qHJw; arc=none smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a46ac74611bso105828166b.0
+        for <linux-wireless@vger.kernel.org>; Sun, 17 Mar 2024 02:53:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1710669196; x=1711273996; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=O+kvfkm2+T1FsF0Lyu3Z24EAkdOeNAuipAJCjA7UiDg=;
+        b=fbo+qHJwMivbUeFD02qQ3+YoO8rq0HyIBYkh1AKlnJazR4xdEd2I4G0kpQ297hSeF3
+         krKhKWdjtmEaw4tSGi1o3Ga1XDscg5a8YRcfXIvK4PgP7Rul2ZGw4A6V1G1YG1wRRNqK
+         IlmOGZIsgNGkorDoRLMKU/pr4FXJBj7YZWauL3yEUhvHkR9D3kCHDqwDbYAyzOsKXUmK
+         HSqcEMBxAKNq56zYXN+OLkCi9IukQyJsxfZ9Gs3eo4Eet1w4A8Iy4jPBPdU7gpErNsuN
+         rZ8rjqKxDXt5BpUkwT2oAsb5mdw15y66gWeef9oYtMojiD/MywUrfgVRx5EW1dK0WMFM
+         Fr0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710669196; x=1711273996;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=O+kvfkm2+T1FsF0Lyu3Z24EAkdOeNAuipAJCjA7UiDg=;
+        b=n8nuUQaXLm+MfNymfleXGwMQ2zrvmQvk2tZFKGXAppuAT5db/AiHxM/NOY6amdsxC6
+         k9UH3S7wIT+Djgnm5IhB6tc2n9/Fz0bq5HGnSqZdealir7zRcHXbLclq7QCU/0nNRLuU
+         LNlxwM9zDjOuRMLYnUysXghv1QaKvzFyDNknkVEiUk6gezKaMUZtzL6EZ35O+b0A/4AE
+         9eb+ECx2vE8HQ3Pf2pwjvh2t644TW4JG/iO2Ow5Y0ZihC9f6fh4kytBGAA99fNiJPwIe
+         QelfKv++QMEYFTWeC60ydPj16Zmie2XeoQ5jthNZOYkapKe/h7HIpW4HDZQMqLLgQhqI
+         1WOw==
+X-Gm-Message-State: AOJu0Yw0d31hWO7Plh3FGlIsTy1mnk39jEDFNtHJ+NWf8ZAg3T1YIK9f
+	13qlFAkk27Fqv3tC+Iy3XlwUu0phWSGMoHvtfEEuATb/8GPKp6kZ2kZGVsHPEkai9uIg7UfMHHV
+	RrrVFcEVqW1UjwIa7w+vKS5S1JewEdOaRC+Q=
+X-Google-Smtp-Source: AGHT+IG4XCVrOTfJLaOa29sN69dat7+r6sQr8+Fj1uyC2oVFY1bmND6D1Hnk7o2xmc1pC6QdirnV5hQtGKLwq4p2XVU=
+X-Received: by 2002:a17:907:a687:b0:a46:1e21:3739 with SMTP id
+ vv7-20020a170907a68700b00a461e213739mr8666647ejc.6.1710669196191; Sun, 17 Mar
+ 2024 02:53:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <9ef4c29f-de98-4192-bf5d-1b2802496761@app.fastmail.com>
-In-Reply-To: <902ff7d3d6221f28df21c2e5b3e743671355c874.camel@realtek.com>
-References: <f3656995-b8fe-49c4-93b7-67612c685954@app.fastmail.com>
- <2afd1590823740a2b6a8f7e485a33842@realtek.com>
- <d5889133-4b8b-49bc-a26f-204ee9fcfdbb@app.fastmail.com>
- <902ff7d3d6221f28df21c2e5b3e743671355c874.camel@realtek.com>
-Date: Sun, 17 Mar 2024 21:40:39 +1300
-From: "Ryan Walklin" <ryan@testtoast.com>
-To: "Ping-Ke Shih" <pkshih@realtek.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: "linux-sunxi@lists.linux.dev" <linux-sunxi@lists.linux.dev>
-Subject: Re: [BUG] RTL8821CS panic on entering power-save mode
-Content-Type: text/plain
+References: <CAFED-j=3_xLuJFp5R_gThMtv2C6r6WzRxzrY3_wjFTn=XJQLwg@mail.gmail.com>
+ <bb884b84dbaa1c97f9d3a1e610f98ec6e069a706.camel@sipsolutions.net>
+In-Reply-To: <bb884b84dbaa1c97f9d3a1e610f98ec6e069a706.camel@sipsolutions.net>
+From: Janusz Dziedzic <janusz.dziedzic@gmail.com>
+Date: Sun, 17 Mar 2024 10:53:04 +0100
+Message-ID: <CAFED-jkowv0GTtWUC3=HwGNjzwe8d2F-m_QrZratdpA5HnkuBA@mail.gmail.com>
+Subject: Re: BE200 - 6.5 backports - disabled EHT issue
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-
-
-On Sat, 16 Mar 2024, at 2:47 AM, Ping-Ke Shih wrote:
-> This is because it is trying to enter PS mode but TX queue is still not empty.
-> If power consumption is not big deal to you, try to turn off PS by
->     iw wlan0 set power_save off
+pt., 15 mar 2024 o 19:04 Johannes Berg <johannes@sipsolutions.net> napisa=
+=C5=82(a):
 >
-> I think messages can be disappear. 
+> >
+> > I see this one do this:
+> >  if (!ieee80211_verify_sta_eht_mcs_support(sdata, sband, eht_oper))
+> >       *conn_flags |=3D IEEE80211_CONN_DISABLE_EHT;
+> >
+> > Testing on openwrt and using backports.
+> > Is there some patch I can easy cherry-pick to fix it?
+> > So far just disable ieee80211_verify_sta_eht_mcs_support() check and
+> > BE200 works in EHT mode correctly.
+>
+> Then either the code there or the AP is broken?
+>
+> That function checks that the client supports the MCSes that the AP
+> requires. If it lets you connect without them, then it's broken. If the
+> checks there are wrong, the code is broken :)
+>
+> I guess you can capture the assoc response frame and we can check
+> manually.
+Added such dbg:
 
-I would prefer to have power-saving on as it is a portable device but this does stop the remaining messages about the queue.
+printk(KERN_ERR "%d vs %d, %d vs %d\n",
+                                req_rx_nss, have_rx_nss,
+                                req_tx_nss, have_tx_nss);
+                        if (req_rx_nss > have_rx_nss ||
+                            req_tx_nss > have_tx_nss)
+                                return false;
 
-Finally I get extensive logging of 
+[   70.243183] ieee80211_verify_sta_eht_mcs_support nss 4  -
+(ARRAY_SIZE(req->rx_tx_max_nss))
+[   70.248336] 4 vs 2, 4 vs 2
+[   70.251035] disable EHT due to mcs
+[   70.260724] wlan1: send auth to ....
 
-[ 1137.214502] Bluetooth: hci0: Out-of-order packet arrived (0 != 1)
-[ 1142.185255] Bluetooth: hci0: Out-of-order packet arrived (1 != 2)
-[ 1142.319504] Bluetooth: hci0: Out-of-order packet arrived (2 != 3)
-[ 1142.446742] Bluetooth: hci0: Out-of-order packet arrived (3 != 4)
-[ 1142.574117] Bluetooth: hci0: Out-of-order packet arrived (4 != 5)
-[ 1143.160501] Bluetooth: hci0: Out-of-order packet arrived (5 != 6)
-[ 1143.287232] Bluetooth: hci0: Out-of-order packet arrived (6 != 7)
+AP have 4 NSS.
+Will dig more ...
 
-When I am running a bluetooth scan and/or connecting to a device, this seems harmless but does spam dmesg quite a bit.
-
-Thanks,
-
-Ryan
+BR
+Janusz
 
