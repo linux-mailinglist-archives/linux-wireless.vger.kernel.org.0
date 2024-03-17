@@ -1,175 +1,130 @@
-Return-Path: <linux-wireless+bounces-4803-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4804-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24FC287DB46
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 Mar 2024 20:01:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B66387DCA2
+	for <lists+linux-wireless@lfdr.de>; Sun, 17 Mar 2024 09:41:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEFDE281BFD
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 Mar 2024 19:00:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DBBCBB21080
+	for <lists+linux-wireless@lfdr.de>; Sun, 17 Mar 2024 08:41:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CEF7168BE;
-	Sat, 16 Mar 2024 19:00:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE8498C05;
+	Sun, 17 Mar 2024 08:41:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="wevPgso2"
+	dkim=pass (2048-bit key) header.d=testtoast.com header.i=@testtoast.com header.b="Y1piuJph";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="nBzb41Oj"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from omta34.uswest2.a.cloudfilter.net (omta34.uswest2.a.cloudfilter.net [35.89.44.33])
+Received: from fout2-smtp.messagingengine.com (fout2-smtp.messagingengine.com [103.168.172.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D44F18EA1
-	for <linux-wireless@vger.kernel.org>; Sat, 16 Mar 2024 19:00:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C0A63CF
+	for <linux-wireless@vger.kernel.org>; Sun, 17 Mar 2024 08:41:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710615656; cv=none; b=LFhl2yMdDbwJjKU/iQVnowQL1wbyKMfZp1mMSDPiY6oUiSkpqfYepW7Kqc5+KJyiWoKGvczb8Va53dOpE6z3FyRDKYSv0xpFS/BUcpfGQ4ZSVPi8/KGFq6a8xZPjtwtbcMkTA0zNZp+s4tBTVoFAOSGGTfAk2/aVzyvjH3CzsOM=
+	t=1710664864; cv=none; b=uLZcoxhGA37cD/5/qDhffCGJlNDSjPzS0rFuoML0hLRT3NIgXGj6n63cVO7O2NVQHkUyAZcTu6yN6EL8BZMyZs9stEGH/tcOJ7S/DnORP17W/d+WmqYYb61HCiekfY/8KySb1L4koPg35rL6mJdSL8wFrJnr4rSatofyub2M6Hs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710615656; c=relaxed/simple;
-	bh=UaBIRXmICBdYqq7e7oTf77ZP4e7SfSf7lVmL7cq9gOM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nklormgKkwCamUIj5t33hg6G7kumX4LBx/33rpvm8zRGh0tVQYp50PPs0/MfRXRiJJMqPTyKCnwPszsW+WZ/+5g8O0nuHR7HV7R16z+uQEjRypMqWhpNghWKLEbYjZD2m3g1W+nRHsR4RodnLg6HVkuav0Ezb5bvMRyKkRx/e7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=wevPgso2; arc=none smtp.client-ip=35.89.44.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
-Received: from eig-obgw-6006a.ext.cloudfilter.net ([10.0.30.182])
-	by cmsmtp with ESMTPS
-	id lXPjrbTtwHXmAlZFWr2vjv; Sat, 16 Mar 2024 18:59:18 +0000
-Received: from gator4166.hostgator.com ([108.167.133.22])
-	by cmsmtp with ESMTPS
-	id lZFWrDtT0dVLQlZFWrT0Bh; Sat, 16 Mar 2024 18:59:18 +0000
-X-Authority-Analysis: v=2.4 cv=ZufrKc7G c=1 sm=1 tr=0 ts=65f5ec06
- a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=UtBFqMlDG83dypD0sxEoAQ==:17
- a=IkcTkHD0fZMA:10 a=K6JAEmCyrfEA:10 a=wYkD_t78qR0A:10 a=NEAV23lmAAAA:8
- a=7YfXLusrAAAA:8 a=GHxNDdVd_46DcYOc0x4A:9 a=QEXdDO2ut3YA:10
- a=SLz71HocmBbuEhFRYD3r:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=eI2igFSMoMgGwV+GQ0CiFXFR47TjD/v6V+k+ICTNe+0=; b=wevPgso2IGgJVqRnHCsH+jTtht
-	/fvVibwPPB5J/OH88rwhaoNKg33NtVSE8ox40WAypeiCafMWiIyhS1rx7J8Ei0hvkzVMyXv5DeyOR
-	REN45azO0qHulKDe4hZo/UPzdWYMBj4cGYZ+5T4GyOe+qIpIrw5bqyfnBLznToKXaeN0D5XZQhwx8
-	sUqVn0YmekN09fFLK+jzjnsHhtX8Sm2QFhnLMeUfoZJyPyUZsmkj9BjOFs7MXNGiVvpRhWLd+4vGR
-	m2NalmLLO7oMdTt/TOccHpMQAEH8GQqDjK52HOKmZ/y/Lr6kgbQ7zk46G4lwN+KPHIi6U48GywcYD
-	M+8tc3Cg==;
-Received: from [201.172.174.229] (port=41890 helo=[192.168.15.10])
-	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <gustavo@embeddedor.com>)
-	id 1rlZFV-001MV9-1q;
-	Sat, 16 Mar 2024 13:59:17 -0500
-Message-ID: <cfc4c4c0-83f8-437c-8146-6b86968db67b@embeddedor.com>
-Date: Sat, 16 Mar 2024 12:59:11 -0600
+	s=arc-20240116; t=1710664864; c=relaxed/simple;
+	bh=anmDECffHNT93jRiQ0rFWIJyrxE2Iql748bcsJ3j+/w=;
+	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
+	 Subject:Content-Type; b=EzlYCx5QnL5MoCAgRunq29k5d3KU7nd8Pf4P7an2MezKvPf+vR1rYJkj9SiCMXEWcCvysUg599d+BFiTiK7ldE4oLcLci4uDO/jBBKQlCHzAcF9omiIxCMgVqWYJ0fR9vpgXMjiWkwNuDSdBePST3sx0UWGjQ08hifuFbfDHim8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=testtoast.com; spf=pass smtp.mailfrom=testtoast.com; dkim=pass (2048-bit key) header.d=testtoast.com header.i=@testtoast.com header.b=Y1piuJph; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=nBzb41Oj; arc=none smtp.client-ip=103.168.172.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=testtoast.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=testtoast.com
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailfout.nyi.internal (Postfix) with ESMTP id 4D2AD13800A6;
+	Sun, 17 Mar 2024 04:41:01 -0400 (EDT)
+Received: from imap47 ([10.202.2.97])
+  by compute5.internal (MEProxy); Sun, 17 Mar 2024 04:41:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=testtoast.com;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1710664861; x=
+	1710751261; bh=iq/K40ZVnREET5uAoPChJlJ91jSHo5fC1dCAOVnA7uM=; b=Y
+	1piuJph5ONlP1Et9LIsGahW141CmZzoPrvhvUbqDWigYtnAr4PQgjP2S/D04SGa5
+	eKMD+0nCN6avXP7sDVXsVZdP4sl5M6Wj+IT08siBqa/DU9qQHX6/hhHP3ybexKgb
+	5KpIqjn1batlPMHI3koriQ/X+fTdxX0xwZsWwJKkzpbQTxeho57Ebvi0fXsT9N3n
+	cYK1FsT5R8+I4Y3FcmzgjzzCBAXngic5m2msujfAZkV7jIBvMusJvnI+sWkQ96yR
+	d8SubbLwXXKcBZTZQqDV36gDruYTGOwroDxDavc1yImEnIWCXKn6XnRjzHOLFlZ/
+	VJRROJUDka++bH5e/OMIQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1710664861; x=1710751261; bh=iq/K40ZVnREET5uAoPChJlJ91jSH
+	o5fC1dCAOVnA7uM=; b=nBzb41Oj7MHf1nwZWJi9RrtXILtmBjxlxr/8RYuKG9i/
+	IdSPx9VqMNjGpv24P76sKMIDef+S/vBqYbezffOQYrqdvQBuA3FDrN0YOUnp0/ID
+	x/DbmV2ENvl6574QAI04l8lDU7lzvor5FS1z54bNwCaKmVmGuhKexdMpLYPyAwe3
+	W5GQkDTG3hvuILXvWLC86MwAriLP7NgmrPW48H7ROh+K2bm3crdiD4Epvri4EHWe
+	j8tE+/UPMF3hydQPwrNvjGH0C8p6oqBEN6WqaCSGi9SG+XZdc7Wir0Uw31sSIkW4
+	foA85hdMHfPsSqkx+X1OpUIb7DPu8bpV/sIP67ZgnQ==
+X-ME-Sender: <xms:nKz2Za3ESRxddTFqYPDtAbRBmSSjF50N1BJvXxxu-9kCzERWuTqGdA>
+    <xme:nKz2ZdFHju_tfmeC_g_Yt-sDpYHpU_ApfiaQaLUVzGXQ0o3R1AE5M8WzoOO_1xy1r
+    DtIzPl0Oun8KDfpew>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrkeefgdduvdehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftfih
+    rghnucghrghlkhhlihhnfdcuoehrhigrnhesthgvshhtthhorghsthdrtghomheqnecugg
+    ftrfgrthhtvghrnhephedvveeigedujeeufeegffehhfffveduhfeijefgtdffteelgfet
+    ueevieduieejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
+    homheprhihrghnsehtvghsthhtohgrshhtrdgtohhm
+X-ME-Proxy: <xmx:nKz2ZS6yJj7D0OPvxVDyRdwMNlXWu95aNEXprKpmDT3bvVqhst1G4A>
+    <xmx:nKz2Zb2d2qXcJDKzV5Q46oIyxpWTwjh7IKadcJW9ucoKv2nsi3PGiQ>
+    <xmx:nKz2ZdG7TJQg-KdS1hJADtwq7V9AqEK38p-Jy5k62K-Q1PHCfaSj3w>
+    <xmx:nKz2ZU9a_PgJenGkJlrX7j5p6gwInfMDc_9s-td7MGqaau5IqE2W8g>
+    <xmx:naz2ZdAastgVCkSx6zseZVw9CtgpdLtXZZqt3NCDuNds1Le_UVe0XQ>
+Feedback-ID: idc0145fc:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 17CE8A60078; Sun, 17 Mar 2024 04:40:59 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.11.0-alpha0-300-gdee1775a43-fm-20240315.001-gdee1775a
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mwl8k: Avoid overlapping composite structs that contain
- flex-arrays
-To: Erick Archer <erick.archer@gmx.com>, Kalle Valo <kvalo@kernel.org>,
- Johannes Berg <johannes.berg@intel.com>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- Kees Cook <keescook@chromium.org>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-hardening@vger.kernel.org
-References: <20240316150712.4633-1-erick.archer@gmx.com>
-Content-Language: en-US
-From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-In-Reply-To: <20240316150712.4633-1-erick.archer@gmx.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 201.172.174.229
-X-Source-L: No
-X-Exim-ID: 1rlZFV-001MV9-1q
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: ([192.168.15.10]) [201.172.174.229]:41890
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 3
-X-Org: HG=hgshared;ORG=hostgator;
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfEFj2fVnzfEktkj1oHEFoRT7dm5goV11Le3gOwnir2wh9smj/1mRmXNbB1qoyHxcKc4NdSpJQxmcmjrRd2Rx1DKZZyq0HdBRMz9A8wVPoQHqkZF9aCbD
- JFM7FDLLEymn1XKoG8MdvszGDsUPryk4SjODpZJnBxza+zkO4W9JuaIzCiQYnYSWJrqaLuYWZQPgi/VOSBoD1IT142ar8b5qgkHlEUqtGDi18eCUsd/AZdSh
+Message-Id: <9ef4c29f-de98-4192-bf5d-1b2802496761@app.fastmail.com>
+In-Reply-To: <902ff7d3d6221f28df21c2e5b3e743671355c874.camel@realtek.com>
+References: <f3656995-b8fe-49c4-93b7-67612c685954@app.fastmail.com>
+ <2afd1590823740a2b6a8f7e485a33842@realtek.com>
+ <d5889133-4b8b-49bc-a26f-204ee9fcfdbb@app.fastmail.com>
+ <902ff7d3d6221f28df21c2e5b3e743671355c874.camel@realtek.com>
+Date: Sun, 17 Mar 2024 21:40:39 +1300
+From: "Ryan Walklin" <ryan@testtoast.com>
+To: "Ping-Ke Shih" <pkshih@realtek.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: "linux-sunxi@lists.linux.dev" <linux-sunxi@lists.linux.dev>
+Subject: Re: [BUG] RTL8821CS panic on entering power-save mode
+Content-Type: text/plain
 
 
-[..]
 
-> 
-> Link: https://github.com/KSPP/linux/issues/202 [1]
-> Signed-off-by: Erick Archer <erick.archer@gmx.com>
-> ---
-> Hi everyone,
-> 
-> This patch is based on my understanding of the code. Any comments would
-> be greatly appreciated.
+On Sat, 16 Mar 2024, at 2:47 AM, Ping-Ke Shih wrote:
+> This is because it is trying to enter PS mode but TX queue is still not empty.
+> If power consumption is not big deal to you, try to turn off PS by
+>     iw wlan0 set power_save off
+>
+> I think messages can be disappear. 
 
-Thanks for looking into this. :)
+I would prefer to have power-saving on as it is a portable device but this does stop the remaining messages about the queue.
 
-I'm currently in the process of trying a general solution for all these
-composite structures without having to use two separate structs, avoid too
-much code churn, and continue allowing for __counted_by() annotations at
-the same time.
+Finally I get extensive logging of 
 
-I'll be sending a bunch of patches once the merge window closes. So, for
-now, I think it's wise to wait for those patches.
+[ 1137.214502] Bluetooth: hci0: Out-of-order packet arrived (0 != 1)
+[ 1142.185255] Bluetooth: hci0: Out-of-order packet arrived (1 != 2)
+[ 1142.319504] Bluetooth: hci0: Out-of-order packet arrived (2 != 3)
+[ 1142.446742] Bluetooth: hci0: Out-of-order packet arrived (3 != 4)
+[ 1142.574117] Bluetooth: hci0: Out-of-order packet arrived (4 != 5)
+[ 1143.160501] Bluetooth: hci0: Out-of-order packet arrived (5 != 6)
+[ 1143.287232] Bluetooth: hci0: Out-of-order packet arrived (6 != 7)
 
-More comments below.
+When I am running a bluetooth scan and/or connecting to a device, this seems harmless but does spam dmesg quite a bit.
 
-[..]
+Thanks,
 
-> diff --git a/drivers/net/wireless/marvell/mwl8k.c b/drivers/net/wireless/marvell/mwl8k.c
-> index ce8fea76dbb2..57de32ba4efc 100644
-> --- a/drivers/net/wireless/marvell/mwl8k.c
-> +++ b/drivers/net/wireless/marvell/mwl8k.c
-> @@ -586,13 +586,17 @@ static int mwl8k_request_firmware(struct mwl8k_priv *priv, char *fw_image,
->   	return 0;
->   }
-> 
-> -struct mwl8k_cmd_pkt {
-> +struct mwl8k_cmd_pkt_hdr {
->   	__le16	code;
->   	__le16	length;
->   	__u8	seq_num;
->   	__u8	macid;
->   	__le16	result;
-> -	char	payload[];
-> +} __packed;
-> +
-> +struct mwl8k_cmd_pkt {
-> +	struct mwl8k_cmd_pkt_hdr header;
-> +	char payload[];
->   } __packed;
-
-One of the problems with this is that `struct mwl8k_cmd_pkt` is candidate for a
-`__counted_by()` annotation:
-
-@@ -592,7 +592,7 @@ struct mwl8k_cmd_pkt {
-         __u8    seq_num;
-         __u8    macid;
-         __le16  result;
--       char    payload[];
-+       char    payload[] __counted_by(length);
-  } __packed;
-
-and with the changes you propose, that is not possible anymore because the counter
-member must be at the same level or in an anonymous struct also at the same level
-as `payload`.
-
-Thanks
---
-Gustavo
-
+Ryan
 
