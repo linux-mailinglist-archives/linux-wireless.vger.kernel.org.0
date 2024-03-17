@@ -1,188 +1,224 @@
-Return-Path: <linux-wireless+bounces-4806-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4807-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D13A787DDE7
-	for <lists+linux-wireless@lfdr.de>; Sun, 17 Mar 2024 16:23:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC51287DF4F
+	for <lists+linux-wireless@lfdr.de>; Sun, 17 Mar 2024 19:44:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 701C21F21277
-	for <lists+linux-wireless@lfdr.de>; Sun, 17 Mar 2024 15:23:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22FD51F21054
+	for <lists+linux-wireless@lfdr.de>; Sun, 17 Mar 2024 18:44:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06B581C6BC;
-	Sun, 17 Mar 2024 15:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F12E1CD3F;
+	Sun, 17 Mar 2024 18:44:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.com header.i=erick.archer@gmx.com header.b="eT598qn6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kpILxV7b"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E6751C69D;
-	Sun, 17 Mar 2024 15:22:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7DAC1CD2A
+	for <linux-wireless@vger.kernel.org>; Sun, 17 Mar 2024 18:44:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710688982; cv=none; b=HJGXLrP9ViDQec/gjngRWO8/dRZ+c/maT9YzL6bTCA4Hnt+9IEW3ZT59AF8Y+FebhTLG/aUZ/8rDIMslQDkwcI4sAHF53R4MiOZZ26N75UqeCbf4SHhZg+Tuuwl0fAyj+zPGb04uJqlCitwzrsQXAa3KimexFBr70orCXc98R2w=
+	t=1710701052; cv=none; b=nWeWwQDTMeFbs8D7zUN0BSnxyP9XF0U9Pyz9l+9oY0xuKXGJrQHRjTG++T10sN/EOlojuK/11Zo5dB6f5mOXPeRW5lmwYYJavK9eS5Aqra2CnjYK3/rVwfQZWt0GETwPdeepY4//5jcUP/mlM/fpXDdgYsdAF7MWadOxD7fZVoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710688982; c=relaxed/simple;
-	bh=lh2MHlp2ckMexGLnsmI0DncTe+skZ/F6FnmSJx8LNLs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RK83rpNctP4II4tII4p5H4995WRfuDwDZPOQErm96VcCvgHOG6ncPlwLpByUELdbt01EXXMn+dq67zsYkZ2Ce7yAhtsMIrQfIHi2BNCWWXuxKUPLrqahOtMvIZ3bwRtknhVQVD/LubF14qSaNQ+G9tAKDIl0qR01jjAvoxTD1Rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.com; spf=pass smtp.mailfrom=gmx.com; dkim=pass (2048-bit key) header.d=gmx.com header.i=erick.archer@gmx.com header.b=eT598qn6; arc=none smtp.client-ip=212.227.15.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.com;
-	s=s31663417; t=1710688956; x=1711293756; i=erick.archer@gmx.com;
-	bh=4HoP6GUCEhqxSXr5hp5FLvKgj6o9jMRN49ibj6948Ew=;
-	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:
-	 In-Reply-To;
-	b=eT598qn6JeaalM1r4RmXQVJsmphHcUe+tbZgBvsuB+pTv9mgmkiMaxTskuJdh0zS
-	 nqK8sthFLkA7kJzqFWFbXkF83/NF/A5DMyS8p+bsyPaVT4RG51Q9aporhnCyIFmAQ
-	 f6LB18Bg7paBwc6hwNdLWKCERU6YegLoPb7bNCF/y0I72DAU+J3xN3N55r9eByVXr
-	 DkR1CW/z29wWfEJs/vmFnjk6QsppFXTJ2y6gvgQNU1UcYwPWajOZTEaaaHeBFKG0M
-	 3wlj+IYLP/Z35RvqXdvL4M7NV4XIXduIZgYK04fp+QHpYZnUTpFtmiEfnaud6GZxw
-	 XugVUNgl3RZBtSwaVw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from titan ([79.157.194.183]) by mail.gmx.net (mrgmx005
- [212.227.17.184]) with ESMTPSA (Nemesis) id 1MJE2D-1rVi8V0wYd-00KirB; Sun, 17
- Mar 2024 16:22:36 +0100
-Date: Sun, 17 Mar 2024 16:22:25 +0100
-From: Erick Archer <erick.archer@gmx.com>
-To: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Cc: Erick Archer <erick.archer@gmx.com>, Kalle Valo <kvalo@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Kees Cook <keescook@chromium.org>, linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH] mwl8k: Avoid overlapping composite structs that contain
- flex-arrays
-Message-ID: <20240317152225.GA2850@titan>
-References: <20240316150712.4633-1-erick.archer@gmx.com>
- <cfc4c4c0-83f8-437c-8146-6b86968db67b@embeddedor.com>
+	s=arc-20240116; t=1710701052; c=relaxed/simple;
+	bh=25p03pPbOk82cGYc3a3hpNj57n3sYHhitao67hn9EZo=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=BJuz9KQki7Am9nXL9mQjbMZ9ZVuFImUtO8IyvaqE0WvGr2qFy+GQcqYPnIzHHKHL36Qu9EU9IlwrK+igGkrVN4xhCaMK8g1Sf1M8TlBjl5ilFxuqS2zITG3bgWbBeZw7x8loPlNGy3potdSpqPGX3D5lEFGG5k0fhrV+iVPxQxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kpILxV7b; arc=none smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-568a42133d8so3759436a12.1
+        for <linux-wireless@vger.kernel.org>; Sun, 17 Mar 2024 11:44:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1710701049; x=1711305849; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AyfOJBez2P/5YdB/VRhJH7F7mglQbrkLwc1SvLr1y/Y=;
+        b=kpILxV7bmwNaDUTn2DgxLs32d4p6z+FcivGiXy7HrDh5YVa/VHgcCgEFwaWcJUfF9u
+         QexaXT8oGIQP8uthDPA+ksTdY3LEtVz6aYCoWs2i2citzE3jF8jLF+AQUs2Sr0HV6nBO
+         WG9jUXQxwHknFbhRQq6rHhH5dq8o2hXXtdl+gWfPqQAE7Lj0i1w2UIRVn6cs/5u8yslM
+         oGZ7mi9nXZaMpbqkXIqqKXneaZE+AeFQiGBg2qnPdnBMuYhqGBq75Nnj5UFOB4rZLDeD
+         6gMEachLXYdiAaIg/tlC842mMtEsd+/pTAMOY5IlHDnNNDS/svjyYWCfJCJMznRM1BTp
+         c5eg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710701049; x=1711305849;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=AyfOJBez2P/5YdB/VRhJH7F7mglQbrkLwc1SvLr1y/Y=;
+        b=um2YIUG/kxxA1wptErbwN76n6Xlh1d2jkI1TNxxFo/xkwgFZdizHSUdKhPWNnhCXML
+         vizNg8ftcpLG7+gP8RJcrgIaH6H/KiuBBMb1IKkudXqudd7rKZot6J17Iust+CyEVQaM
+         F1Sao9MgKsQLtcjMw9ShEwLWEIeqtLveU03EIGmkTRh6QQw6MjMovjllU369jL4WYyI3
+         cmRu+2C/RPnBATy3INEaDn16pZYVkdVjo5U5SzFR1tIo8QYRpzGlFOgCao1q/MmLzJhH
+         FXF31it/+UcdIX+f2RBWDJDkXEHn5s7LIuUwqOteW+EgKQ3v+uDYZscDSQU67mzAP3jL
+         eFKg==
+X-Gm-Message-State: AOJu0YxmX5qSs4b5fJ0ctYtjpwa07wJSNhBqqfm4eTMW0noMU2/Ixrir
+	q7IHwhG49zl4iSFX1VKBUTorV7mbExU8MDB7mEIP4PGl3STckT3Pw2MNYKEE
+X-Google-Smtp-Source: AGHT+IHxBISFZ8/fRaTEGjcGxjbjYjYjwAYVseiJB1X5bAdpS8tljAP/AuNgYXdMa+XCOUa5RVtgtg==
+X-Received: by 2002:a05:6402:50d0:b0:568:d55c:1bb3 with SMTP id h16-20020a05640250d000b00568d55c1bb3mr1182947edb.31.1710701049038;
+        Sun, 17 Mar 2024 11:44:09 -0700 (PDT)
+Received: from [192.168.1.50] ([79.119.240.211])
+        by smtp.gmail.com with ESMTPSA id b10-20020aa7d48a000000b00568cee4a83dsm1017622edr.80.2024.03.17.11.44.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 17 Mar 2024 11:44:08 -0700 (PDT)
+Message-ID: <5c23149c-1487-438d-bb37-69e2dd8173dc@gmail.com>
+Date: Sun, 17 Mar 2024 20:44:07 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cfc4c4c0-83f8-437c-8146-6b86968db67b@embeddedor.com>
-X-Provags-ID: V03:K1:iJSmX0g5bCjMfunDwDcxRBemvxA3sjELLaorhmxZxOOKFPz15cS
- lexxXL/fS6hfnoKdd1Cjbc3I+zLkWqQjp9BOQoyN47U33mu4kUE9z2KWxBheNIUAJ4DMO1d
- 1inSFW3Gr1pCDnRRIF6M2y2x2PUpSP2njBglcxgOSg9RK6iVz+vgy9L5mTrnl1e3ctEP1Ao
- q+hv8SV7isarp9OwLkLow==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:HvsWI6BjGPo=;J4J2pYE0PSII/hrBc70lKcFg4X2
- am2ZTLIRcO582PnieP8iYg6pWc0G2ahvPVjvdMpZlXt5I7QsURD+MmauSXbshn1CUmu6iNrsJ
- vcjoz/7afePOcAJPnWg0MdpW5PDkZ0Na12JY+UpYcx7bpMc2vExKI+AKVVtKRmr9r+yoNXXDq
- Uv2PXagj10MOcMXOLTlOg3Yqma4Xyys8Gvj2hOqFQhSUoJHQnojV5jrw3YkfIMKQfSztCq75r
- jwU2fUtzto/Oj9rd8iqqg4EVzXNSiAvLHN4F4t2ke6W7mUj/zo0d7dBW3/fyI/6dYqKP/Nj8O
- evX10tzKMZNKhxV9qX+IVaBQZipZu8uBIkecZ4+CBfqPSDsAx/WpVG4iNVL6+zv2DEHbTTP5F
- Zl4N1fs/kG4gFG2r26qOkSLbPqfv8HXpF1nRTT1pjB7rld8xd9tK4WJQwUGubmmIutS1VOr11
- GiBl73Acp8+z55qLtbvAm+YiUxaOeC91vcRTOwW0UdUM59Wc2EqCcJWs46zvIWDQReJbxskt7
- Eh/kV5LlSP+BYcRVpmwZ/HGUB6lljDhyH5vXtF5V7cyvyMiLCcSFpt1C3QyWFCTJl29CYantk
- KGbyrczaZWP+YDhEFxAmjcQGtDAq822pGRRpXFYZVD12zxs89UPI+el125bAWTs6I2YEoNOLk
- BLjHloSAQ8rOk/v3lwNlTl5N0hAEZC9CZO3wpIojnHgTbOiocNvD/JsW/5/rbR4cffp1djk1H
- QoWHZuoVGpWsKFgsfhiSj5smrihe4EcJjPzIiig645MB7ZWJvtmhW5fPdQvgw0A4jeAmGBTbq
- 5l/HTJr2EZZgeihSwgVlAde4TA2Y91L4kAyjPpCWJ1t4M=
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Ping-Ke Shih <pkshih@realtek.com>,
+ Larry Finger <Larry.Finger@lwfinger.net>,
+ Stefan Lippers-Hollmann <s.l-h@gmx.de>,
+ Christian Hewitt <chewitt@libreelec.tv>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: [PATCH v2 00/12] wifi: rtlwifi: Add new rtl8192du driver
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Gustavo,
+These patches add a driver for the RTL8192DU chip.
 
-On Sat, Mar 16, 2024 at 12:59:11PM -0600, Gustavo A. R. Silva wrote:
->
-> [..]
->
-> >
-> > Link: https://github.com/KSPP/linux/issues/202 [1]
-> > Signed-off-by: Erick Archer <erick.archer@gmx.com>
-> > ---
-> > Hi everyone,
-> >
-> > This patch is based on my understanding of the code. Any comments woul=
-d
-> > be greatly appreciated.
->
-> Thanks for looking into this. :)
->
-> I'm currently in the process of trying a general solution for all these
-> composite structures without having to use two separate structs, avoid t=
-oo
-> much code churn, and continue allowing for __counted_by() annotations at
-> the same time.
+Patch 1 fixes a bug in rtl8192de. Patch 2 depends on it.
 
-I searched the mailing list and found several of your patches:
+Patch 2 moves a good portion of the code from rtl8192de to a new module
+rtl8192d-common.
 
-Link: https://lore.kernel.org/linux-hardening/ZfCXBykRw5XqBvf0@neat/
-Link: https://lore.kernel.org/linux-hardening/cover.1709658886.git.gustavo=
-ars@kernel.org/
-Link: https://lore.kernel.org/linux-hardening/ZeeaRuTpuxInH6ZB@neat/
+Patch 3 makes some adjustments to rtl8192d-common.
 
-In all of them you use the `struct_group_tagged()` helper to solve the
-overlapping scenario. Great proposal ;)
+The remaining patches add the new rtl8192du driver.
 
-> I'll be sending a bunch of patches once the merge window closes. So, for
-> now, I think it's wise to wait for those patches.
+Power saving is disabled by default because it's not working yet.
 
-So, are you working in a patch for the "mwl8k"? Or do you prefer
-a v2 of this patch based on your proposal?
+Dual MAC chips are not tested.
 
->
-> More comments below.
->
-> [..]
->
-> > diff --git a/drivers/net/wireless/marvell/mwl8k.c b/drivers/net/wirele=
-ss/marvell/mwl8k.c
-> > index ce8fea76dbb2..57de32ba4efc 100644
-> > --- a/drivers/net/wireless/marvell/mwl8k.c
-> > +++ b/drivers/net/wireless/marvell/mwl8k.c
-> > @@ -586,13 +586,17 @@ static int mwl8k_request_firmware(struct mwl8k_p=
-riv *priv, char *fw_image,
-> >   	return 0;
-> >   }
-> >
-> > -struct mwl8k_cmd_pkt {
-> > +struct mwl8k_cmd_pkt_hdr {
-> >   	__le16	code;
-> >   	__le16	length;
-> >   	__u8	seq_num;
-> >   	__u8	macid;
-> >   	__le16	result;
-> > -	char	payload[];
-> > +} __packed;
-> > +
-> > +struct mwl8k_cmd_pkt {
-> > +	struct mwl8k_cmd_pkt_hdr header;
-> > +	char payload[];
-> >   } __packed;
->
-> One of the problems with this is that `struct mwl8k_cmd_pkt` is candidat=
-e for a
-> `__counted_by()` annotation:
->
-> @@ -592,7 +592,7 @@ struct mwl8k_cmd_pkt {
->         __u8    seq_num;
->         __u8    macid;
->         __le16  result;
-> -       char    payload[];
-> +       char    payload[] __counted_by(length);
->  } __packed;
->
-> and with the changes you propose, that is not possible anymore because t=
-he counter
-> member must be at the same level or in an anonymous struct also at the s=
-ame level
-> as `payload`.
+Until Ping-Ke Shih will add the firmware to the linux-firmware
+repository, the driver can be tested with the firmware from Larry
+Finger's repository:
+https://github.com/lwfinger/rtl8192du/blob/master/rtl8192dufw.bin
 
-Ok, I understand the problem you raise and I agree.
-Anyway, thanks for your comments.
+v2:
+ - Add cover letter.
+ - Implement feedback.
+ - Fix more problems reported by checkpatch.
+ - Split the new driver into several patches (4-12) for easier
+   reviewing.
+ - More details about the changes can be found in each patch.
 
-Best regards,
-Erick
+Bitterblue Smith (12):
+  wifi: rtlwifi: rtl8192de: Fix 5 GHz TX power
+  wifi: rtlwifi: Move code from rtl8192de to rtl8192d-common
+  wifi: rtlwifi: Adjust rtl8192d-common for USB
+  wifi: rtlwifi: Add rtl8192du/table.{c,h}
+  wifi: rtlwifi: Add rtl8192du/hw.{c,h}
+  wifi: rtlwifi: Add rtl8192du/phy.{c,h}
+  wifi: rtlwifi: Add rtl8192du/trx.{c,h}
+  wifi: rtlwifi: Add rtl8192du/rf.{c,h}
+  wifi: rtlwifi: Add rtl8192du/fw.{c,h} and rtl8192du/led.{c,h}
+  wifi: rtlwifi: Add rtl8192du/dm.{c,h}
+  wifi: rtlwifi: Add rtl8192du/sw.{c,h}
+  wifi: rtlwifi: Enable the new rtl8192du driver
 
-> Thanks
-> --
-> Gustavo
->
+ drivers/net/wireless/realtek/rtlwifi/Kconfig  |   18 +
+ drivers/net/wireless/realtek/rtlwifi/Makefile |    2 +
+ drivers/net/wireless/realtek/rtlwifi/efuse.c  |    2 +-
+ drivers/net/wireless/realtek/rtlwifi/efuse.h  |    2 +-
+ .../realtek/rtlwifi/rtl8192d/Makefile         |   11 +
+ .../rtlwifi/{rtl8192de => rtl8192d}/def.h     |    0
+ .../realtek/rtlwifi/rtl8192d/dm_common.c      | 1079 ++++++
+ .../realtek/rtlwifi/rtl8192d/dm_common.h      |  100 +
+ .../realtek/rtlwifi/rtl8192d/fw_common.c      |  390 +++
+ .../realtek/rtlwifi/rtl8192d/fw_common.h      |   49 +
+ .../realtek/rtlwifi/rtl8192d/hw_common.c      | 1218 +++++++
+ .../realtek/rtlwifi/rtl8192d/hw_common.h      |   24 +
+ .../wireless/realtek/rtlwifi/rtl8192d/main.c  |    9 +
+ .../realtek/rtlwifi/rtl8192d/phy_common.c     |  830 +++++
+ .../realtek/rtlwifi/rtl8192d/phy_common.h     |   96 +
+ .../rtlwifi/{rtl8192de => rtl8192d}/reg.h     |  155 +-
+ .../realtek/rtlwifi/rtl8192d/rf_common.c      |  378 ++
+ .../realtek/rtlwifi/rtl8192d/rf_common.h      |   13 +
+ .../realtek/rtlwifi/rtl8192d/trx_common.c     |  516 +++
+ .../realtek/rtlwifi/rtl8192d/trx_common.h     |  442 +++
+ .../wireless/realtek/rtlwifi/rtl8192de/dm.c   | 1072 +-----
+ .../wireless/realtek/rtlwifi/rtl8192de/dm.h   |   91 +-
+ .../wireless/realtek/rtlwifi/rtl8192de/fw.c   |  375 +-
+ .../wireless/realtek/rtlwifi/rtl8192de/fw.h   |   37 -
+ .../wireless/realtek/rtlwifi/rtl8192de/hw.c   | 1168 +------
+ .../wireless/realtek/rtlwifi/rtl8192de/hw.h   |   11 -
+ .../wireless/realtek/rtlwifi/rtl8192de/led.c  |    2 +-
+ .../wireless/realtek/rtlwifi/rtl8192de/phy.c  |  918 +----
+ .../wireless/realtek/rtlwifi/rtl8192de/phy.h  |   59 +-
+ .../wireless/realtek/rtlwifi/rtl8192de/rf.c   |  375 +-
+ .../wireless/realtek/rtlwifi/rtl8192de/rf.h   |    5 -
+ .../wireless/realtek/rtlwifi/rtl8192de/sw.c   |   12 +-
+ .../wireless/realtek/rtlwifi/rtl8192de/trx.c  |  515 +--
+ .../wireless/realtek/rtlwifi/rtl8192de/trx.h  |  433 ---
+ .../realtek/rtlwifi/rtl8192du/Makefile        |   13 +
+ .../wireless/realtek/rtlwifi/rtl8192du/dm.c   |  125 +
+ .../wireless/realtek/rtlwifi/rtl8192du/dm.h   |   10 +
+ .../wireless/realtek/rtlwifi/rtl8192du/fw.c   |  109 +
+ .../wireless/realtek/rtlwifi/rtl8192du/fw.h   |    9 +
+ .../wireless/realtek/rtlwifi/rtl8192du/hw.c   | 1244 +++++++
+ .../wireless/realtek/rtlwifi/rtl8192du/hw.h   |   24 +
+ .../wireless/realtek/rtlwifi/rtl8192du/led.c  |   10 +
+ .../wireless/realtek/rtlwifi/rtl8192du/led.h  |    9 +
+ .../wireless/realtek/rtlwifi/rtl8192du/phy.c  | 3055 +++++++++++++++++
+ .../wireless/realtek/rtlwifi/rtl8192du/phy.h  |   32 +
+ .../wireless/realtek/rtlwifi/rtl8192du/rf.c   |  236 ++
+ .../wireless/realtek/rtlwifi/rtl8192du/rf.h   |   11 +
+ .../wireless/realtek/rtlwifi/rtl8192du/sw.c   |  311 ++
+ .../wireless/realtek/rtlwifi/rtl8192du/sw.h   |   12 +
+ .../realtek/rtlwifi/rtl8192du/table.c         | 1675 +++++++++
+ .../realtek/rtlwifi/rtl8192du/table.h         |   30 +
+ .../wireless/realtek/rtlwifi/rtl8192du/trx.c  |  380 ++
+ .../wireless/realtek/rtlwifi/rtl8192du/trx.h  |   60 +
+ drivers/net/wireless/realtek/rtlwifi/usb.c    |    3 +
+ drivers/net/wireless/realtek/rtlwifi/wifi.h   |    6 +
+ 55 files changed, 12788 insertions(+), 4983 deletions(-)
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/Makefile
+ rename drivers/net/wireless/realtek/rtlwifi/{rtl8192de => rtl8192d}/def.h (100%)
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/dm_common.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/dm_common.h
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/fw_common.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/fw_common.h
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/hw_common.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/hw_common.h
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/main.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/phy_common.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/phy_common.h
+ rename drivers/net/wireless/realtek/rtlwifi/{rtl8192de => rtl8192d}/reg.h (91%)
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/rf_common.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/rf_common.h
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/trx_common.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/trx_common.h
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/Makefile
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/dm.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/dm.h
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/fw.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/fw.h
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/hw.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/hw.h
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/led.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/led.h
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/phy.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/phy.h
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/rf.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/rf.h
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/sw.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/sw.h
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/table.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/table.h
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/trx.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/trx.h
+
+-- 
+2.43.2
 
