@@ -1,131 +1,119 @@
-Return-Path: <linux-wireless+bounces-4863-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4864-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A244687EFD3
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Mar 2024 19:36:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1DA887EFDE
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Mar 2024 19:40:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DA260B20A4F
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Mar 2024 18:36:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A3ED1F21511
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Mar 2024 18:40:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A057200DE;
-	Mon, 18 Mar 2024 18:36:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29E0325774;
+	Mon, 18 Mar 2024 18:40:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XfUAskPt"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="MSfRft/3"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E553C2D
-	for <linux-wireless@vger.kernel.org>; Mon, 18 Mar 2024 18:36:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BA2D22065
+	for <linux-wireless@vger.kernel.org>; Mon, 18 Mar 2024 18:40:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710786977; cv=none; b=jHZCOP6Gj+Turdb41pnGmlHuhvAucUjq12aC9hfXOzK5VcyCEfXBMYb2PQPcCjQvfdjYW7513UphlI3z37jcTnGoVpx4DE+2asjy8Jrn/F6tr347WolCpPGQpO0THk+c3JJ6nMPiUViofj2llJNXb7rI2lrYoskvcI7unk44R2A=
+	t=1710787230; cv=none; b=WAdo6VeYde2UU60NHw26/8ZmK4ukarkNBZL9hibVZILkTya5mNZCfrcxKvUSbtIOSoRUlpLZrq4mhHdwwLJMhNJuKEH7GYE86SidYtWzxHu15t8C4+jSe0iYpgCXniJWUuh6EJLQjkyA25EhoyMvfYd6MKveywwVBEtrwPd9njw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710786977; c=relaxed/simple;
-	bh=qTUvLzwfd95RoXDB01Ll9lSqEOSRkGN4C5oDdatz7Z4=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=WXH/hh8r21jwYp6yohiP74um0OV+/0dxfEvJfnzjFcUIXcgoRyx9Te86+fJrgoKvOqREFVni0zbzs9udbGt6xFAtjtnr4bpteUNbt527SYvAag72pjHaOzaGAOfBIRVKb1ZCSEBxGvtX22csJgooNSBEcxwIhdSpPzvFZ/2zBmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XfUAskPt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82FFEC433F1;
-	Mon, 18 Mar 2024 18:36:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710786976;
-	bh=qTUvLzwfd95RoXDB01Ll9lSqEOSRkGN4C5oDdatz7Z4=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=XfUAskPtE0e0Wf6CQwqcgngxOar//CiR5jn3je3Vmy95isM/3c7Ghfcp1M9m46Gpt
-	 vl+TVAcKMhro10d+pkQIHhnMPrBXzAHcxDoa0wkK+VMnT5Il2GwtO629ypmFdp7see
-	 HpZ3C/P7b9cV9nMhTMb+S24hoKZpN0WhiL8C1ZEQ7pLwD2NdCrRd+4BExMJ1S+H4Nx
-	 5pvfwSR+aVPDYi6fZNXAX/gU67c5YhRP1gpsRH3QVEJHN1o/tkTKq0C0GvOYRu1UFz
-	 XjDEBj0XD3MOobAEgKOXbKVSAAaM0Faweih7hvptIDmIF5nrKyAbCQvoqZfbIBtBQI
-	 PLUNZhspUMbig==
-From: Kalle Valo <kvalo@kernel.org>
-To: Rameshkumar Sundaram <quic_ramess@quicinc.com>
-Cc: Jonas Gorski <jonas.gorski@gmail.com>,  Jeff Johnson
- <quic_jjohnson@quicinc.com>,  <ath12k@lists.infradead.org>,
-  <linux-wireless@vger.kernel.org>,  Karthikeyan Periyasamy
- <quic_periyasa@quicinc.com>
-Subject: Re: [PATCH v4 01/12] wifi: ath12k: add multiple radio support in a
- single MAC HW un/register
-References: <20240312135557.1778379-1-quic_ramess@quicinc.com>
-	<20240312135557.1778379-2-quic_ramess@quicinc.com>
-	<4a527729-2bf8-47ce-8275-d36b76bde95c@quicinc.com>
-	<3178cf8c-d328-4fe2-b3be-f5c4c908f20f@quicinc.com>
-	<605a673e-3686-47d0-b71b-1e314fde65db@quicinc.com>
-	<87il1qf571.fsf@kernel.org> <87edcef4qi.fsf@kernel.org>
-	<f768cfec-d20d-424d-85ef-3576434aca12@quicinc.com>
-	<CAOiHx=kx03MKKyMcJPxYPZH=E7krZwfsDqq2xnow8qRB7D-aqQ@mail.gmail.com>
-	<f542dbeb-debf-4335-9d49-4d12510f8bb4@quicinc.com>
-Date: Mon, 18 Mar 2024 20:36:13 +0200
-In-Reply-To: <f542dbeb-debf-4335-9d49-4d12510f8bb4@quicinc.com> (Rameshkumar
-	Sundaram's message of "Fri, 15 Mar 2024 01:08:56 +0530")
-Message-ID: <87zfuvbd5u.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1710787230; c=relaxed/simple;
+	bh=+t5RRgAtt4VscMeHhsEG9kZokiP6U2kkSmDVQylLlgU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Gz0Kb2ehtzZS1IgoBEMmu4COkfiyZsxUpvprE01c8hQeKzZjHDx/EI3/FivGDu/dhexp59O0TOdvZdkbAEe1bRrZ6gPkg5QcCzhXazEwZKla28FylbP1bM8M1XjaPj+APHKS3BW2iji79rUlVwVkKYE8jxrP8tWuvmBggF0Xivs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=MSfRft/3; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42I9DurL017612;
+	Mon, 18 Mar 2024 18:40:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=T8uXItxpnC4YHT2PaqPywcT/FiBXK0Bmjj42RkCqRp8=; b=MS
+	fRft/3tYKAXBwInpZkebOzuH9K3bYcpVtMwCR3Ibz0e+PtPAyH+uwj5frn3/arXg
+	qNkFlryAn+/RX8IzxIgG6gz4LeN/D+WqyrFGjPqQ5bhMYOIpT2dZrUPiAkGtifBQ
+	CtJHUYC3Wl+S2Tbo7gzRAj7MCNFgS/kge30q3gq4af0+tNJD7NtMLmh3+x/OhnmB
+	K0JpwR2NJrrSN2vc4ocmpkVteplLilnoIZSDJJwMp5fd1UxKdjX+AoprwZLcEQb5
+	zvQdngB29dyEXoZf3/wS0qqjOcQtv1bKfU3SLtpaw9ICVsTB9PMKWrqXJTaoKuIr
+	uE50SZX7zYmdD13u0aow==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wxjt4s8x2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 18 Mar 2024 18:40:07 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42IIe6gW005290
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 18 Mar 2024 18:40:06 GMT
+Received: from [10.111.166.62] (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Mon, 18 Mar
+ 2024 11:40:05 -0700
+Message-ID: <4940b6cf-a68d-4799-ccf3-f90dcc105e3e@quicinc.com>
+Date: Mon, 18 Mar 2024 11:40:02 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: ath12k: use correct flag field for 320 MHz
+To: Kalle Valo <kvalo@kernel.org>
+CC: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+References: <20240314204651.11075-1-quic_alokad@quicinc.com>
+ <87sf0nczca.fsf@kernel.org> <878r2fctng.fsf@kernel.org>
+Content-Language: en-US
+From: Aloka Dixit <quic_alokad@quicinc.com>
+In-Reply-To: <878r2fctng.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: s_l9ruhOXrEZeU3zjDl5ZmACsWWiqOKS
+X-Proofpoint-ORIG-GUID: s_l9ruhOXrEZeU3zjDl5ZmACsWWiqOKS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-18_12,2024-03-18_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ adultscore=0 malwarescore=0 clxscore=1015 phishscore=0 priorityscore=1501
+ suspectscore=0 mlxscore=0 impostorscore=0 mlxlogscore=615 bulkscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2403140001 definitions=main-2403180141
 
-Rameshkumar Sundaram <quic_ramess@quicinc.com> writes:
-
-> On 3/14/2024 1:26 AM, Jonas Gorski wrote:
->> On Wed, 13 Mar 2024 at 20:18, Jeff Johnson <quic_jjohnson@quicinc.com> wrote:
+On 3/18/2024 10:54 AM, Kalle Valo wrote:
+> Kalle Valo <kvalo@kernel.org> writes:
+> 
+>> Aloka Dixit <quic_alokad@quicinc.com> writes:
+>>
+>>> WMI_PEER_EXT_320MHZ (0x2) is defined as an extended flag, replace
+>>> peer_flags by peer_flags_ext while sending peer data.
 >>>
->>> On 3/13/2024 9:58 AM, Kalle Valo wrote:
->>>> Kalle Valo <kvalo@kernel.org> writes:
->>>>
->>>>> Jeff Johnson <quic_jjohnson@quicinc.com> writes:
->>>>>
->>>>>> On 3/13/2024 5:57 AM, Rameshkumar Sundaram wrote:
->>>>>>> On 3/13/2024 3:23 AM, Jeff Johnson wrote:
->>>>>>>> and guess we have to figure out how to suppress the ath12k-check issues with
->>>>>>>> this macro
->>>>>>> ath12k-check complains about the reuse of ah and index arguments which
->>>>>>> may get evaluated multiple times if its an arithmetic expression, But
->>>>>>> areas where we use the macro in our code aren't doing so.
->>>>>>> Do you have any suggestions here ? or shall we go back and use this
->>>>>>> for-loop inline.
->>>>>>
->>>>>> The macro makes sense -- we'll need to update the overrides in ath12k-check.
->>>>>
->>>>> IIRC it is possible to avoid variable reuse in macros with typeof()
->>>>> operator (or something like that). I can't remember the details right
->>>>> now but I think there are examples in the kernel code.
->>>>
->>>> Here's the GCC documentation with an example:
->>>>
->>>> https://gcc.gnu.org/onlinedocs/gcc/Typeof.html
->>>>
-> Thanks Kalle for the references, as Jeff mentioned below, we need to
-> reuse the arguments since we write to ar and index arguments on each
-> iteration.
->
-> Defining local vars using typeof() without limiting their scope (since
-> we are defining a for_each iterator{}) leads other issues like
-> redefinition of variables in functions where we use this macro more
-> than once :(
->
-> Also even if we somehow manage to convince check-patch, we'll still
-> end up evaluating index and ar arguments in every iteration of loop.
-> This just gives an impression to check-patch that the macro is unsafe
-> (although logically its not).
-> Experts, what is the standard we should follow here. Please suggest.
+>>> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+>>>
+>>> Fixes: 6734cf9b4cc7 ("wifi: ath12k: peer assoc for 320 MHz")
+>>> Signed-off-by: Aloka Dixit <quic_alokad@quicinc.com>
+>>
+>> What does this fix from user's point of view? Does it mean that 320 MHz
+>> chanels were broken before and this commit fixes that? I can ammend the
+>> commit message.
+> 
+> And what about WCN7850? Does it work the same?
+> 
 
-Yeah, typeof() won't help here as we can't create a local variable. Or
-at least I can't come up way to do that safely, ideas very welcome.
-
-I think it's just best to ignore the checkpatch warning for now, unless
-better proposals come up. ath12k-check has functionality to ignore
-specific warnings (see checkpatch_filter array), I can add this warning
-to the array.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Hi Kalle,
+320 MHz association was broken. It was a re-basing error while sending 
+the original patch because the correct field was added during testing, 
+still used that way internally too. I have not tested WCN7850 on this 
+patch but yes will require the same field. Current code was setting  QOS 
+bit instead of 320MHz.
 
