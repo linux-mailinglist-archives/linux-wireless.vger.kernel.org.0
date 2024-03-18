@@ -1,66 +1,67 @@
-Return-Path: <linux-wireless+bounces-4847-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4848-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F02C287EE0D
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Mar 2024 17:54:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C19687EE0E
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Mar 2024 17:54:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5BE47B23F88
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Mar 2024 16:54:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF8FA1F23B97
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Mar 2024 16:54:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91D1B54F89;
-	Mon, 18 Mar 2024 16:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 808DC55775;
+	Mon, 18 Mar 2024 16:53:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CquGZVEx"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T/rPQ2JQ"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF57054FA4
-	for <linux-wireless@vger.kernel.org>; Mon, 18 Mar 2024 16:53:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 814E75576C
+	for <linux-wireless@vger.kernel.org>; Mon, 18 Mar 2024 16:53:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710780833; cv=none; b=cHO0UqQWb7khDgR78azW9FJcbE8j6HqOaokqYNaiHQiWFVC2jRBnYpImDb+Pp4ZpGb6c5nPDqFxgUmJxoY2jhBoWUJ/szZVi9N+WIPeIfiq83klIaQ0WgZSeztyvijhv7texh/qOqgEIUhkheLLR4Fwgf9pIYwPFXo0uG1Kh7X4=
+	t=1710780836; cv=none; b=kbNduYc+IsxOdmjzm7D0CfM2oBlFs35NpHIQIfTR0MeAcduo+WtEdEyXnq69dR8iVK0JFGuHpm39fcqHBTajXdJVyKH+v9foS+0d25HzGFlnktEF32qtHFrbkYV6c5BoOSrihCY6PTBcTE4QCJML3xEH8zqmr00DypmUVBiuvI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710780833; c=relaxed/simple;
-	bh=2+XOSAA3/2dmu4rimYG5Vy0Jx+I0tooRv+/7+e9me3g=;
+	s=arc-20240116; t=1710780836; c=relaxed/simple;
+	bh=L03e1PnEyC7If33Ek/e3BuquoNhxptWVv1cs2SQj260=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Fd6Nva86lKafamgvDDM4yfgtM6VBpH4AOfPON79Xa5n3KW5uI6uY3p1qVnGmTx+JZkKiFwPfFhEbrSG19tIYVnFr99Gm89s6sCnMVfNCl3JrhJCoPWxxHhd+9SIsmMDTuDyZfZtYvE3P+ocuaO/dhQLpj6/uCBprfBy5zg7XueM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CquGZVEx; arc=none smtp.client-ip=192.198.163.14
+	 MIME-Version; b=APYuEZPJsick/se0aO/RkEiTyxyn9iBOP1qj//x7X/RdG8PUNzw1GXloug2NdJgbkxQqi0cf7x900dH7tUqCInt5jbPA+rd3dYxhH//uAlkIXByGsqSRZUcodQlRgt8dEEfqlYmmmFHOLDXlhLfX+Em1t/Qzg8IPRn/ZTErVnzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T/rPQ2JQ; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1710780832; x=1742316832;
+  t=1710780835; x=1742316835;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=2+XOSAA3/2dmu4rimYG5Vy0Jx+I0tooRv+/7+e9me3g=;
-  b=CquGZVEx7MZQJulFm9RCsi0hiCBNWF47Sqyw3DyNHNJOTS6ICW/QqPp3
-   bgEwDX7713PT+deoXCt2E7wx6+GUNtmtT2roiIzv/C+Ut7O8Bx6p96fSf
-   J+vhwXN61L16RlWfsE3ZDLBTWb/SL3LjlW88jL0YcvmYtwH8rt8TVoipZ
-   iLOQQ9z2Ff83XuCMnnjg83YtAkEia3Mu+ipdNlDHINopdsIM0QOF9UH3i
-   WuIcsyvhUdfgo1uFEojl2M/yrpRq8ao2yHNuJXNJmPY+80pCAZe9fI30E
-   diqjvyyhb80t1LD4CywrqPt+82OE+NP5APA3gBKgNG+Ajtud7l/J4W9Na
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11017"; a="5819388"
+  bh=L03e1PnEyC7If33Ek/e3BuquoNhxptWVv1cs2SQj260=;
+  b=T/rPQ2JQqzOvhHtP/ccxR0Kh6eDzlsnWgKkbGj5gQy48vSo0jkD0at2O
+   Hxct+bWtG343rlIpU9J+CBubLTrfgZYrzqTHFM3WzOilswrFkZbr1iF4r
+   TpRWjUyGr+m4UOX0ApC7SlznuesAYbOTrHnke2/CIXaxfCCWWeCMuC8ZD
+   bl+GU6FPIx2XyywJbRbQbV8gYxF1PG503/MQw6puSSzcOL7wKf/Zcx4oN
+   8dvI2s5qkMBBj7eRbynNx7MDAeUFmsWCudBhZ1mOzHnoTLW+3oOlWb2XJ
+   1JM87ZIDc2hb6qzd05Ieqrf7DkmyMhpfo1HOLsX2XwpYx42ll1kTINnKr
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11017"; a="5819395"
 X-IronPort-AV: E=Sophos;i="6.07,134,1708416000"; 
-   d="scan'208";a="5819388"
+   d="scan'208";a="5819395"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2024 09:53:52 -0700
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2024 09:53:54 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,134,1708416000"; 
-   d="scan'208";a="13909782"
+   d="scan'208";a="13909816"
 Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2024 09:53:51 -0700
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2024 09:53:53 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 04/15] wifi: mac80211: clarify the dormant/suspended links docs
-Date: Mon, 18 Mar 2024 18:53:20 +0200
-Message-Id: <20240318184907.a5b24595b1a2.I92dd7d177b25df189b842d3bcddb1f2b13b1de13@changeid>
+	Ayala Beker <ayala.beker@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>
+Subject: [PATCH 05/15] wifi: mac80211: fix BSS_CHANGED_MLD_TTLM description
+Date: Mon, 18 Mar 2024 18:53:21 +0200
+Message-Id: <20240318184907.52b893a70758.I2dcb322b389441f33605fb952450cc2724eb9efd@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240318165331.3170594-1-miriam.rachel.korenblit@intel.com>
 References: <20240318165331.3170594-1-miriam.rachel.korenblit@intel.com>
@@ -73,42 +74,33 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Ayala Beker <ayala.beker@intel.com>
 
-Since I keep getting confused about this and asking about it,
-update the documentation.
+BSS_CHANGED_MLD_TTLM purpose is to let the driver know that
+negotiated TTLM was updated and as a result MLD suspended links
+status was change.
+Fix the description to better reflect it.
 
-In the future, especially when we add more reasons for a link
-to be disabled, we should add a per-link 'disable state' bitmap
-instead of maintaining all these bitmaps with subset logic, to
-indicate each of the different states separately.
-
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Ayala Beker <ayala.beker@intel.com>
+Reviewed-by: Ilan Peer <ilan.peer@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- include/net/mac80211.h | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ include/net/mac80211.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 353488ab94a2..47fa73a62f8a 100644
+index 47fa73a62f8a..757ec33882c2 100644
 --- a/include/net/mac80211.h
 +++ b/include/net/mac80211.h
-@@ -1921,10 +1921,12 @@ enum ieee80211_neg_ttlm_res {
-  * @active_links: The bitmap of active links, or 0 for non-MLO.
-  *	The driver shouldn't change this directly, but use the
-  *	API calls meant for that purpose.
-- * @dormant_links: bitmap of valid but disabled links, or 0 for non-MLO.
-- *	Must be a subset of valid_links.
-+ * @dormant_links: subset of the valid links that are disabled/suspended
-+ *	due to advertised or negotiated TTLM respectively.
-+ *	0 for non-MLO.
-  * @suspended_links: subset of dormant_links representing links that are
-- *	suspended.
-+ *	suspended due to negotiated TTLM, and could be activated in the
-+ *	future by tearing down the TTLM negotiation.
-  *	0 for non-MLO.
-  * @neg_ttlm: negotiated TID to link mapping info.
-  *	see &struct ieee80211_neg_ttlm.
+@@ -361,7 +361,7 @@ struct ieee80211_vif_chanctx_switch {
+  * @BSS_CHANGED_UNSOL_BCAST_PROBE_RESP: Unsolicited broadcast probe response
+  *	status changed.
+  * @BSS_CHANGED_MLD_VALID_LINKS: MLD valid links status changed.
+- * @BSS_CHANGED_MLD_TTLM: TID to link mapping was changed
++ * @BSS_CHANGED_MLD_TTLM: negotiated TID to link mapping was changed
+  */
+ enum ieee80211_bss_change {
+ 	BSS_CHANGED_ASSOC		= 1<<0,
 -- 
 2.34.1
 
