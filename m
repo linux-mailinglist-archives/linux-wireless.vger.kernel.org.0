@@ -1,65 +1,59 @@
-Return-Path: <linux-wireless+bounces-4869-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4870-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDD8C87F18A
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Mar 2024 21:49:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 044ED87F2BA
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Mar 2024 22:57:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9413B281146
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Mar 2024 20:49:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 235DF1C216C0
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Mar 2024 21:57:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A4E938DD0;
-	Mon, 18 Mar 2024 20:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04BDF59B60;
+	Mon, 18 Mar 2024 21:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="iyHxCgOV"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="qRSSsqAh"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.183])
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D52326AF0
-	for <linux-wireless@vger.kernel.org>; Mon, 18 Mar 2024 20:49:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5DA159B5E
+	for <linux-wireless@vger.kernel.org>; Mon, 18 Mar 2024 21:57:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710794947; cv=none; b=ijb8pzNcOAlnu0GO5c5G/WfW59ph+i63aeCCj+MqabKtouRpg/aTKIB2yxt/0VCqMWtcfWBGYC1c5ok4es7rs1xEA4k3eGp/bBsj4smMqN1ccGtDMngp5nFEmA62fzEYfXGoolBig/8j04RjxS35fcIV+OJYsU3ywJHUao1wiEA=
+	t=1710799058; cv=none; b=nCI2TEOQ/hCukv+rjDd9gxRvaeMdQgVYzWEyqVvoU+d7lqc35kCiaiz8apHPLf++TRauBaCqcoKWjFGNGqH+LvhERg/lDGDi3TBoLuLhc02kjkNwyBo8xN+ZGBtKyhbpAuJiTidWyVqcSl6vyo6jP8VXYAz/GYlBk1yIdmzmlvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710794947; c=relaxed/simple;
-	bh=wdOHzEdHenoE+HfdktD9iSBsrTsyT7Z0cRa6nvRXDLI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X0jekAzsr08n6rg61/KQtd0p3ODa9fokGz4+EDqjGk8DYoDGYLhjimjibkHZIOwTVLIY+LZe2YOhgyejJ/zd1dtlpfI7Rcj2Y1cy5O4a1tMNZvNpYD/A936Mx5Hv9CKWVjY6j5I260A2hmkRtkxlVe5uV8wyubzXtBMFRAW1Qvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=iyHxCgOV; arc=none smtp.client-ip=67.231.154.183
+	s=arc-20240116; t=1710799058; c=relaxed/simple;
+	bh=HVII/g1a507OH4sjYi8dqMem6KE3JutCRpYlHdvQgWg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QR6QkT5BseUYQgt//Out+DMNG3VK0D4ulcFgf8lxrAhi2otvxPfjqKer0SMpR7jI8IWBvl8FFeDJOLzUnKKPzxlMOXRvPxKlxytsrovr+tWCaBXm/+XnYyUTWNgxVIk3l5FRFMFvJ6onvX9BA5b7nu6cOLDxaDA1EvG8VeJcP6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=qRSSsqAh; arc=none smtp.client-ip=148.163.129.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-Received: from dispatch1-us1.ppe-hosted.com (ip6-localhost [127.0.0.1])
-	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 48EB8501E9F
-	for <linux-wireless@vger.kernel.org>; Mon, 18 Mar 2024 20:49:04 +0000 (UTC)
 X-Virus-Scanned: Proofpoint Essentials engine
 Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 3DEFF340065;
-	Mon, 18 Mar 2024 20:48:56 +0000 (UTC)
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 42F85180089;
+	Mon, 18 Mar 2024 21:57:34 +0000 (UTC)
 Received: from ct-eskewd.candelatech.com (unknown [50.251.239.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPS id 85FA413C2B1;
-	Mon, 18 Mar 2024 13:48:55 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 85FA413C2B1
+	by mail3.candelatech.com (Postfix) with ESMTPS id C7FB213C2B0;
+	Mon, 18 Mar 2024 14:57:33 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com C7FB213C2B0
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1710794935;
-	bh=wdOHzEdHenoE+HfdktD9iSBsrTsyT7Z0cRa6nvRXDLI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iyHxCgOVT3MKRhPboZ8FNA+9aCQ7h9bvXKM8wOcgfnxY3reh6T45BheKVeXimBujn
-	 GCqv5zVTQIVnZFRJwuhm34rbiIqf0LBV4RmA7Cm3b73rlovbFgKqZketiUoRQHswVQ
-	 LrUPToDoptJEl49cg88pQqvjl8AaGSAUdM+0QX4I=
+	s=default; t=1710799053;
+	bh=HVII/g1a507OH4sjYi8dqMem6KE3JutCRpYlHdvQgWg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=qRSSsqAh48nadT6z6hfjFQLx9WFLvL6ReVF7p4TB9YSUegJXVD6e+qtWAzzmSo9BP
+	 R5ujBPCqgevH6DIR95jN9uBXpwTPh4uRjGCjTG4qzteMh6OVbudeX9tYYR5zUU9OrA
+	 9pn/b9GJv9drZfZ17w8BmwhrdmJJ8CW1mb/Cop+o=
 From: Dylan Eskew <dylan.eskew@candelatech.com>
 To: Johannes Berg <johannes@sipsolutions.net>
 Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH] Update and add to the old EHT beacon info implementation to print EHT PHY and MAC capabilities as well as MCS/NSS information for WiFi-7 beacons.
-Date: Mon, 18 Mar 2024 13:46:40 -0700
-Message-ID: <20240318204849.73681-2-dylan.eskew@candelatech.com>
+Subject: [PATCH v2] iw: Scan: Add EHT beacon info support
+Date: Mon, 18 Mar 2024 14:57:32 -0700
+Message-ID: <20240318215733.112425-1-dylan.eskew@candelatech.com>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240318204849.73681-1-dylan.eskew@candelatech.com>
-References: <20240318204849.73681-1-dylan.eskew@candelatech.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -68,14 +62,22 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-MDID: 1710794937-e4unZB5CqHQM
+X-MDID: 1710799055-xOkDDDcf0R1A
 X-MDID-O:
- us5;at1;1710794937;e4unZB5CqHQM;<dylan.eskew@candelatech.com>;b42792dba290a1257c3f0aaf1c60b0ff
+ us5;ut7;1710799055;xOkDDDcf0R1A;<dylan.eskew@candelatech.com>;b42792dba290a1257c3f0aaf1c60b0ff
 
 From: "Dylan E." <dylan.eskew@candelatech.com>
 
+Update and add to the old EHT beacon info implementation to print
+EHT PHY and MAC capabilities as well as MCS/NSS information for WiFi-7
+beacons.
+
 Signed-off-by: Dylan Eskew <dylan.eskew@candelatech.com>
+
 ---
+
+v2: Fix subject
+
  info.c |   2 +-
  iw.h   |   3 +-
  scan.c |  37 ++++++++++++++---
