@@ -1,68 +1,66 @@
-Return-Path: <linux-wireless+bounces-4849-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4850-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B26AC87EE0F
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Mar 2024 17:54:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBECE87EE10
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Mar 2024 17:54:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E25D21C21D4C
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Mar 2024 16:54:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54F4F1F23D1F
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Mar 2024 16:54:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F20C55763;
-	Mon, 18 Mar 2024 16:53:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28E5155784;
+	Mon, 18 Mar 2024 16:54:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="F6xSIRuw"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TE7jXflu"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FCA655784
-	for <linux-wireless@vger.kernel.org>; Mon, 18 Mar 2024 16:53:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 834405576C
+	for <linux-wireless@vger.kernel.org>; Mon, 18 Mar 2024 16:53:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710780839; cv=none; b=c0AScjeTeLszNPzob3hdSMASAPDAnSJV7rrDyIMTcNHUu/OgNIam+m8cFsveb97I7dF0lDUZ7efkJbGGi9Ul5Qt/yEGDfO7EmjATfPOR4QBatnmc2vyM2P8oenFT7ms/NIQFuQxRvwd+99+aVy5YRzNpHAN+jACUF4NlpvCPrD8=
+	t=1710780841; cv=none; b=lAfZcnuDXY5bpYKa3SPB1TfBXEnjN3mQgUnmNkVOghFNXO7fnsJnL2w/CWjeRdYT5mgv46dIXc2JPl5pNY4dVBp6lIieGWI0BZ/rc7/gkMLySklK0hKZF48NuwfgX6gFl4pce/D6wFTChO1AlRIscdWJ7lfAHdq4QcqBETaazdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710780839; c=relaxed/simple;
-	bh=871JndVF66Ox22Baul085PLG5nnkJMtkTPaXhoL7zDA=;
+	s=arc-20240116; t=1710780841; c=relaxed/simple;
+	bh=4gXm7BW4Fbc4rYY7vho4sV9pl/TYnLmrxMwIeoQJY40=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=HTCJZdymGEvpLwiIs49kGPB4SZGOGDKQNXuQ9gSW4no9EYOvANUv8jrnSpD8ki2EdO+kuG+S+nr32yxON4NRjqEv1MR53Orb4CfMYO4ChexTZjY+cE9GLEAkylVbqLEgTmFpP65CU+ifc88qCsM7EVu2orysYrFdBAeXjBatJcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=F6xSIRuw; arc=none smtp.client-ip=192.198.163.14
+	 MIME-Version; b=Q3Y7++/F8E8JwDwtogQ1S1WMypp1Ty3NhnvA0qM7G4XQS1womHx4v/fqe88Wy6dFfQyTwOIZffYVfh4615wctan0W/1F75MKp106uyZETfgxBOYAwg0HYOW5LpwQQdOUxicfX9w/LB46yN4lHIbV/iwSMde5+D6eidwB0O4Zb+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TE7jXflu; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1710780838; x=1742316838;
+  t=1710780840; x=1742316840;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=871JndVF66Ox22Baul085PLG5nnkJMtkTPaXhoL7zDA=;
-  b=F6xSIRuwkCLO4zACZ+duUm6VJmkpzovHBSO/Bgkfcynkbqnny/Pl332i
-   +ksTXQGm0edWJls4z6bIMv3w+BSLcGDTm8Tf+nA/NKeipIv/oaSMb1oHq
-   kjXkMq1678BY2J+vLBFLhoePAwO+DlD83iXmtarnZkQgEXcr02aZzcWOo
-   FK3pQTp+hnk5xT/bokXiUUKe1DbbpC6bxK8GNqq/8FrPr2rzLQbZXP5s/
-   3LACxC5Ztq8WC5llqRjlVqY3pHFPZB55p6aRnaJK+YH6f+EC3eAnHOCwj
-   /u8XrC2EOXF5GllN2ZMAlwbopdOJmN71I46Y6N52on3XVOTULV+/ZZzl4
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11017"; a="5819406"
+  bh=4gXm7BW4Fbc4rYY7vho4sV9pl/TYnLmrxMwIeoQJY40=;
+  b=TE7jXfluvCl4ousx9djxneLvPXxlk88qSIXnwvcP5HjZF/iTlsV+fefB
+   mT4wrI9hnJhzfu2uPKQ/2nLMH73W94cf5tz0g8jIedaT90GP/bC3xeWax
+   q3C8cskAhvlGqFLPYOkvVCOVU+QL6Z7s1KFZFYNKTEDbwJAPpiKXvYz3m
+   Qc70fp+XMDBMrH2eM8GJpBtD3pDcpNFjNaIB4r/xpZg3iosxXX+17UQ+I
+   846vKdyIfZwDM8AO9gzbIobtbqUGxzcs4zlb5FOMqFvUxtgp9iuh2lT5O
+   u5lO5sfcbjapK2ZxRtK5YcMXl4iYigDeg0jExSlvubhjvG8tlDuj95usO
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11017"; a="5819413"
 X-IronPort-AV: E=Sophos;i="6.07,134,1708416000"; 
-   d="scan'208";a="5819406"
+   d="scan'208";a="5819413"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2024 09:53:57 -0700
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2024 09:53:59 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,134,1708416000"; 
-   d="scan'208";a="13909831"
+   d="scan'208";a="13909847"
 Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2024 09:53:55 -0700
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2024 09:53:58 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Ayala Beker <ayala.beker@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Ilan Peer <ilan.peer@intel.com>
-Subject: [PATCH 06/15] wifi: mac80211: correctly set active links upon TTLM
-Date: Mon, 18 Mar 2024 18:53:22 +0200
-Message-Id: <20240318184907.acddbbf39584.Ide858f95248fcb3e483c97fcaa14b0cd4e964b10@changeid>
+	Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+Subject: [PATCH 07/15] wifi: mac80211: handle indoor AFC/LPI AP on assoc success
+Date: Mon, 18 Mar 2024 18:53:23 +0200
+Message-Id: <20240318184907.89c25dae34ff.Ifd8b2983f400623ac03dc032fc9a20025c9ca365@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240318165331.3170594-1-miriam.rachel.korenblit@intel.com>
 References: <20240318165331.3170594-1-miriam.rachel.korenblit@intel.com>
@@ -75,49 +73,53 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Ayala Beker <ayala.beker@intel.com>
+From: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 
-Fix ieee80211_ttlm_set_links() to not set all active links,
-but instead let the driver know that valid links status changed
-and select the active links properly.
+Update power_type in bss_conf based on Indoor AFC and LPI power types
+received in HE 6 GHz operation element on assoc success.
 
-Fixes: 8f500fbc6c65 ("wifi: mac80211: process and save negotiated TID to Link mapping request")
-Signed-off-by: Ayala Beker <ayala.beker@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- net/mac80211/mlme.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ include/linux/ieee80211.h | 8 +++++---
+ net/mac80211/mlme.c       | 2 ++
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index 4fd9735bb75e..7f9b829dcb1e 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -2742,9 +2742,11 @@ static inline bool ieee80211_he_capa_size_ok(const u8 *data, u8 len)
+ #define IEEE80211_HE_OPERATION_PARTIAL_BSS_COLOR		0x40000000
+ #define IEEE80211_HE_OPERATION_BSS_COLOR_DISABLED		0x80000000
+ 
+-#define IEEE80211_6GHZ_CTRL_REG_LPI_AP	0
+-#define IEEE80211_6GHZ_CTRL_REG_SP_AP	1
+-#define IEEE80211_6GHZ_CTRL_REG_VLP_AP	2
++#define IEEE80211_6GHZ_CTRL_REG_LPI_AP		0
++#define IEEE80211_6GHZ_CTRL_REG_SP_AP		1
++#define IEEE80211_6GHZ_CTRL_REG_VLP_AP		2
++#define IEEE80211_6GHZ_CTRL_REG_INDOOR_LPI_AP	3
++#define IEEE80211_6GHZ_CTRL_REG_INDOOR_SP_AP	4
+ 
+ /**
+  * struct ieee80211_he_6ghz_oper - HE 6 GHz operation Information field
 diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 47a2cba8313f..30cba84e7053 100644
+index 30cba84e7053..a0f9fdc8b0d3 100644
 --- a/net/mac80211/mlme.c
 +++ b/net/mac80211/mlme.c
-@@ -5874,6 +5874,15 @@ static int ieee80211_ttlm_set_links(struct ieee80211_sub_if_data *sdata,
- 	}
- 
- 	if (sdata->vif.active_links != active_links) {
-+		/* usable links are affected when active_links are changed,
-+		 * so notify the driver about the status change
-+		 */
-+		changed |= BSS_CHANGED_MLD_VALID_LINKS;
-+		active_links &= sdata->vif.active_links;
-+		if (!active_links)
-+			active_links =
-+				BIT(__ffs(sdata->vif.valid_links &
-+				    ~dormant_links));
- 		ret = ieee80211_set_active_links(&sdata->vif, active_links);
- 		if (ret) {
- 			sdata_info(sdata, "Failed to set TTLM active links\n");
-@@ -5888,7 +5897,6 @@ static int ieee80211_ttlm_set_links(struct ieee80211_sub_if_data *sdata,
- 		goto out;
- 	}
- 
--	changed |= BSS_CHANGED_MLD_VALID_LINKS;
- 	sdata->vif.suspended_links = suspended_links;
- 	if (sdata->vif.suspended_links)
- 		changed |= BSS_CHANGED_MLD_TTLM;
+@@ -4429,9 +4429,11 @@ static bool ieee80211_assoc_config_link(struct ieee80211_link_data *link,
+ 			switch (u8_get_bits(he_6ghz_oper->control,
+ 					    IEEE80211_HE_6GHZ_OPER_CTRL_REG_INFO)) {
+ 			case IEEE80211_6GHZ_CTRL_REG_LPI_AP:
++			case IEEE80211_6GHZ_CTRL_REG_INDOOR_LPI_AP:
+ 				bss_conf->power_type = IEEE80211_REG_LPI_AP;
+ 				break;
+ 			case IEEE80211_6GHZ_CTRL_REG_SP_AP:
++			case IEEE80211_6GHZ_CTRL_REG_INDOOR_SP_AP:
+ 				bss_conf->power_type = IEEE80211_REG_SP_AP;
+ 				break;
+ 			case IEEE80211_6GHZ_CTRL_REG_VLP_AP:
 -- 
 2.34.1
 
