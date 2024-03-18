@@ -1,61 +1,64 @@
-Return-Path: <linux-wireless+bounces-4837-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4838-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 054AB87E89A
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Mar 2024 12:29:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F07AE87E8C2
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Mar 2024 12:41:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 895D4B22AF2
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Mar 2024 11:29:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 913341F236C9
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Mar 2024 11:41:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB4E1364CD;
-	Mon, 18 Mar 2024 11:28:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FDD1364C6;
+	Mon, 18 Mar 2024 11:41:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="h7AYbJfg"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="G3/PGZ+e"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4551364A5;
-	Mon, 18 Mar 2024 11:28:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C7E6364A4;
+	Mon, 18 Mar 2024 11:41:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710761326; cv=none; b=Kufb/uTtwRw3SawVAL/aHJ80osMht6TWotrn1k6kpSW2+4Zny67rf46Sp4ygFcloTL3bl29AyurJ8/3fvPc43AYJiYPnoSrMOXFrRjKEHGjvEbSdHewdleasHBP9NYtsTTw9x6UitZEa/AM28BtuNj00iF3/SLoOUjnQHcR4+2o=
+	t=1710762098; cv=none; b=KeTh6QiitmxNTtCW4hp2/phT3eJ+164ImvM64w4WWVukHQfHt2tIUPjmQHeMNPSaycGC8yFSPcBK6fnzNv9V9GC7CtLXcXewRqeyS4RKR7Vpr4//F2nqsiWQYjWUhICuiWToQTDSLO98hKLkc5C9SjWd4ewEJbLIL96Sw86o4UQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710761326; c=relaxed/simple;
-	bh=XP3eK5HcPs5i97lomC6HdBMoGbV9duL2dKQZymBXmsc=;
+	s=arc-20240116; t=1710762098; c=relaxed/simple;
+	bh=qW/yCs7VHd6TxBtdV7sUo/1MSWHIPbqNVftyIqwqeTQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ooWkhNn+FMn6Sn5Kv0KBK2wvqPQcBli1NaybQCFfOTkWknP0dnDUc0yxFYxphsPYef2iK9YMnQ8nvEe3R2xLQpojGlzHBQcJOxLHidWnQIizsq7WEhLyamwORHEti2gj1tyEPDyTRSgXEY43nBRArAzhX2tBkEWpQNBeRKrf7dQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=h7AYbJfg; arc=none smtp.client-ip=217.194.8.81
+	 Content-Type:Content-Disposition:In-Reply-To; b=fx8M2TFWG7eSNzpxm30tKOqUeuWFIwj21Bsd0w1nPT3pr2i/by+00XIqjp/Ay8E4LaqHA+aR+hxSV5ZDPLoRJ04yDZGDYCla8miRPkH0WEgvsnsD565TOmxlJDEBP133M/0TJuniWr64DQ8iS0EtKw37CnOK1OrZx0fqaw0x3zI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=G3/PGZ+e; arc=none smtp.client-ip=217.194.8.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 71A92206BF;
-	Mon, 18 Mar 2024 12:28:34 +0100 (CET)
+	by mail11.truemail.it (Postfix) with ESMTPA id 1738D2067D;
+	Mon, 18 Mar 2024 12:41:33 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1710761314;
-	bh=FkOHD0pnGkKqXtObJnUFQNgDIavF2Al3e0sMsXfSMsI=; h=From:To:Subject;
-	b=h7AYbJfg/BYwKxCY9VAvAKKHRSOZGVoO5Tqd3cE3ywBHvMNpVbyXrVNG9ZhpixfUT
-	 xjkE8E8+mHiULVeunSO7Ev596qy7n0XevxJckGkqVI3ySmAioAZRfvmTs3NPoa0PlV
-	 C6g4r4XTDOUkbEyeYYzaFSSy3y0IWlkP0pX2PFjFe0yIrskHgLkotzsVS2pMvRGjRW
-	 NgetGz9VQMFusVVe/0UKgyUQOjed00aumaRWZBqvaFiwA1fuPJR9LjiZwa40AeOTGZ
-	 qyhvesfjAzexl04vDnGwwyZTn2WJxvu5MVIMUKHDKEzCoiirhIaBkIZ07FJJHHI1rk
-	 SjRg/jXOBumzA==
-Date: Mon, 18 Mar 2024 12:28:30 +0100
+	s=default; t=1710762093;
+	bh=M1lFj/8COh+zHyLKRGim78FeBrFBeFtLgvjufT9nJgw=; h=From:To:Subject;
+	b=G3/PGZ+egKVVznvxItvmFYbHPlJIFnXPyDyZNy6vABtrZXOMFK6CjLkw/AQo/bk6G
+	 ct38+CWji4abwrJzHM3y1PAUq5+pDl6uHW0izDfD5kakv7pv6a12zMvIKEbK3Vk1T2
+	 NeurXrPHQilwL+7H338te7NpKQmmeQnYW2XU9gRXcf13e+rSzQHK7MFpen7n64Cri2
+	 HyODm9Kh3wibOS5QPagoCAp1un6wS4v2DBPfUxu7y+m6V1zsIec8auRnIDjGx4w9iT
+	 33rADSU4kBUSDulBs+TDaffAIGRsGSJuBFC7mk0ubjimwhfXy7K0MgCpDr4PjLMX3O
+	 VfrIOjNvbPFiQ==
+Date: Mon, 18 Mar 2024 12:41:31 +0100
 From: Francesco Dolcini <francesco@dolcini.it>
-To: Brian Norris <briannorris@chromium.org>
-Cc: Francesco Dolcini <francesco@dolcini.it>, kvalo@kernel.org,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	David Lin <yu-hao.lin@nxp.com>, tsung-hsien.hsieh@nxp.com,
-	rafael.beims@toradex.com,
+To: David Lin <yu-hao.lin@nxp.com>
+Cc: Brian Norris <briannorris@chromium.org>,
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"kvalo@kernel.org" <kvalo@kernel.org>,
+	"francesco@dolcini.it" <francesco@dolcini.it>,
+	Pete Hsieh <tsung-hsien.hsieh@nxp.com>,
 	Francesco Dolcini <francesco.dolcini@toradex.com>
-Subject: Re: [PATCH v9 0/2] wifi: mwifiex: add code to support host mlme
-Message-ID: <20240318112830.GA9565@francesco-nb>
+Subject: Re: [PATCH v9 1/2] wifi: mwifiex: add host mlme for client mode
+Message-ID: <20240318114131.GB9565@francesco-nb>
 References: <20240306020053.18054-1-yu-hao.lin@nxp.com>
- <20240315094927.GA6624@francesco-nb>
- <ZfTg1xKT-Mxmpf9w@google.com>
+ <20240306020053.18054-2-yu-hao.lin@nxp.com>
+ <ZfThCwGj-P5Owlsn@google.com>
+ <PA4PR04MB9638F2586DF7E8A41330C8C9D12D2@PA4PR04MB9638.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -64,31 +67,45 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZfTg1xKT-Mxmpf9w@google.com>
+In-Reply-To: <PA4PR04MB9638F2586DF7E8A41330C8C9D12D2@PA4PR04MB9638.eurprd04.prod.outlook.com>
 
-On Fri, Mar 15, 2024 at 04:59:19PM -0700, Brian Norris wrote:
-> On Fri, Mar 15, 2024 at 10:49:27AM +0100, Francesco Dolcini wrote:
-> > On Wed, Mar 06, 2024 at 10:00:51AM +0800, David Lin wrote:
-> > > This series add host based MLME support to the mwifiex driver, this
-> > > enables WPA3 support in both client and AP mode.
+Hello David,
+
+On Mon, Mar 18, 2024 at 02:00:35AM +0000, David Lin wrote:
+> > From: Brian Norris <briannorris@chromium.org>
+...
+> > >  .../net/wireless/marvell/mwifiex/sta_ioctl.c  |   2 +-
+> > >  drivers/net/wireless/marvell/mwifiex/sta_tx.c |   9 +-
+> > >  drivers/net/wireless/marvell/mwifiex/util.c   |  80 +++++
+> > >  15 files changed, 671 insertions(+), 14 deletions(-)
 > > 
-> > What's your plan for this series? I know you raised some concern when
-> > this started months ago and I'd love to know if there is something that
-> > would need to be addressed to move forward here.
-> 
-> My plan was (especially given the "Odd Fixes" status in MAINTAINERS) to
-> wait until a 2nd party was happy with things here. From my cursory
-> following of things, that has now occurred -- thanks for all the review
-> Francesco.
+> > (Per the above, I'd normally consider whether ~671 new lines is
+> > worth splitting into multiple patches. But I don't see any great
+> > logical ways to do that.)
+> Francesco suggested to use two patches for this host mlme new feature
+> from previous many patches. I knew it is a lot of changes, but I think
+> it should be the best way to add host mlme with two patches (one for
+> client and one for AP).
 
-Brian/Kalle, would be ok for you to add myself as reviewer for mwifiex?
-The patch flow on the driver is pretty limited, but I care about it
-and I am happy to help out if needed (and I have some hardware available
-for testing).
+What I explicitly asked was to not add code in a patch, and fix the
+newly added code in a following patch. What you are supposed to do is to
+just amend the original code when you get review feedback.
 
-If you agree I'll send a patch to the MAINTAINERS file.
+Splitting a big patch into multiple patches is welcome to easier review,
+and this needs to be done breaking down in logical pieces keeping in
+mind also bisect-ability.
+
+This [1] is an example of the addition of a relatively big new driver,
+and you can see that the series is broken down in smaller patches like
+"Add skeleton PowerVR driver", with intermediate steps that were
+non-functional, but they were building fine, they were correct and they
+were enabling more effective code review.
+
+Unfortunately, as Brian agreed here, there was no easy way to do it for
+this patch.
 
 Francesco
 
- 
+[1] https://lore.kernel.org/all/cover.1700668843.git.donald.robson@imgtec.com/
+
 
