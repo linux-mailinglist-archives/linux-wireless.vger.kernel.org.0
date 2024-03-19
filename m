@@ -1,205 +1,352 @@
-Return-Path: <linux-wireless+bounces-4875-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4876-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AE2787F51B
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Mar 2024 02:40:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94A8B87F577
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Mar 2024 03:31:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC5CB1F21792
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Mar 2024 01:40:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C82E9282B52
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Mar 2024 02:31:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92599612F6;
-	Tue, 19 Mar 2024 01:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9595A70CCD;
+	Tue, 19 Mar 2024 02:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="QQ5qQmw9"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="fdopob5d"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2130.outbound.protection.outlook.com [40.107.7.130])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A9851E504;
-	Tue, 19 Mar 2024 01:40:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.7.130
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710812429; cv=fail; b=D+Pyy323erKhSE65Kb7wbWoEOIZvTl6AdBRX0+fduuFJourv+O7hDZWFO5z0glMCIGF6EXsJsEiX0SYX6YTlj3dNB2RkaEXtWTlFw8x9aTHxoxUOqkxFiOaEvp0PWUTf/vBGpu1pVkBMDLD2wjLowHbpyq+HfEMgAfw/ilPkABI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710812429; c=relaxed/simple;
-	bh=GnoLhJyR0iesly2dv1uybV5hG44Ge4soDrEHq14375M=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=H340gFYOoF7vTv61Mlf9xucnMouwXrRFbIKgOD4lJR6k6M1zpbWef/kjK78/HywE68Is41t7XE1GQbRSSqmVuFJfqCdFJeDXR1fHvNBbAb91z0wYva6QVs9/lOmduNV1axnvGVjP1JMHjiA0nSI/6wj6a3GnK8RPlTqEEAQgZyI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=QQ5qQmw9; arc=fail smtp.client-ip=40.107.7.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=G9XgiLd+s6qMlv5LY0C1k8R/zvt8e8KBjvhxZsq4vTtkQt2SdWtPszZ7J11w2+SL2hJoYLGOOtUoPozNeTgIf5sfNsxD6SgRz2eh3Fu9mB/w/9m/IyC16/SuROQ0Szf/XD3wYiQ8VnumNh5OK+EElPlqEM7x6F0LSuErOdX66VZurK5lVp5pHRnP4vY1F8yTpFhVJt2Nhq31GVT8LeQVJ+BQj9aZfjc7T+6EVF3js2eQrtZ+5S4jDff6GeOg/N/PhusWKfrVPt7krPyaGdv39QEo7fys79eEC/PQ5weg0eRWvRtdVABl8NAKaXBqhq6TKdf9RYsfEHYU8fd95tUTVg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GnoLhJyR0iesly2dv1uybV5hG44Ge4soDrEHq14375M=;
- b=ZNy9T356uUdy5t36DO6LBsPszzxjzoGkaAoW+GdFBDj4TsoUP8seGo7rqneZ+0eFkmuh5/+5gvLumls12zWtb0D0CAkNyjr0WhpdGlFrdOj37B4y2GWU50t9ti1gJqHPIi4dlE+6X7qsKDxQQP/fiVCqkxNK6+FfB7PamZ2nJoNqqC1grZrd3tUB4Q4amdDSWsdwKwwFUp0p2Ydy5OqKaYHi0YyvMm+Mb/6/BjN9vmcPcqWrYSsdHZZCnpl2cCqDQB3pkk11hB1K2j64W2Pl518eDl9uvnFsC9TokU94W5Yjph7M6CiYG+iprKdBtzRhCOgDcmnKqf7aQErwrlJNuQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GnoLhJyR0iesly2dv1uybV5hG44Ge4soDrEHq14375M=;
- b=QQ5qQmw9Wp/qPLA0Uv9I3ukplznT5BlERQHs27kig98lDDEWJC8ggcnR5tfKrx0/ynIjaJf28l318BXV5IzSIW2LznOxJyxyn8xWKhIQP1XiaoclzXau1ldQM+hj0MPZ5RsuxcOeWdZyPMNhv5qjW0aCIBBB3X4VnRRMjj5/Yqg=
-Received: from PA4PR04MB9638.eurprd04.prod.outlook.com (2603:10a6:102:273::20)
- by DB8PR04MB7001.eurprd04.prod.outlook.com (2603:10a6:10:11f::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.26; Tue, 19 Mar
- 2024 01:40:24 +0000
-Received: from PA4PR04MB9638.eurprd04.prod.outlook.com
- ([fe80::6e8:79bd:7877:afa7]) by PA4PR04MB9638.eurprd04.prod.outlook.com
- ([fe80::6e8:79bd:7877:afa7%3]) with mapi id 15.20.7386.025; Tue, 19 Mar 2024
- 01:40:24 +0000
-From: David Lin <yu-hao.lin@nxp.com>
-To: Kalle Valo <kvalo@kernel.org>, Francesco Dolcini <francesco@dolcini.it>
-CC: "briannorris@chromium.org" <briannorris@chromium.org>,
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Pete Hsieh
-	<tsung-hsien.hsieh@nxp.com>, rafael.beims <rafael.beims@toradex.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>
-Subject: RE: [EXT] Re: [PATCH v9 0/2] wifi: mwifiex: add code to support host
- mlme
-Thread-Topic: [EXT] Re: [PATCH v9 0/2] wifi: mwifiex: add code to support host
- mlme
-Thread-Index: AQHab2onJLj7by1TDUGmc5gbcJq9YLE4nU6AgASwFVyAAQ/s8A==
-Date: Tue, 19 Mar 2024 01:40:24 +0000
-Message-ID:
- <PA4PR04MB9638820A9F4074F03F026B89D12C2@PA4PR04MB9638.eurprd04.prod.outlook.com>
-References: <20240306020053.18054-1-yu-hao.lin@nxp.com>
-	<20240315094927.GA6624@francesco-nb> <878r2fevu5.fsf@kernel.org>
-In-Reply-To: <878r2fevu5.fsf@kernel.org>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PA4PR04MB9638:EE_|DB8PR04MB7001:EE_
-x-ld-processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- l8QlYruWGQ+XyI8vPebdTaYgL1dEg/U8bX4XFTBpaPXZTTDMcVhegqP/5TZB4M8Q+9eGNmepV6X1dVNgcCU4cFw7MzCHUGSahILQTfZ36AB6CJgBcg8gnG5gbosfBK9o9rPxlUYOXY3cMaGP8CMwIgKcmn+9s9n7oQISnIY3i0suteEBkmY+ktoK6IIFGVwBaa38YUMnAdY/8suiTYynhLxjMWxUrmjLvZNiBKAcnD0zFR5WUBQlrYtvioRiNFx2kQma0qm3xjv4+9SNTUbGQsGjfUejmc23ZefHjVoF0TMR+C2EbIQ6iYQi3BWA/1H4KYtSsrxthgtFaWmf9rNt3vRpHhgb8W/oLbuvuHwD9Yq+VolCQZDvCKrTcISrREwnqMhMZGKWpEhWmceVZGbIHxtu1Oa7R070dtwt1EsaeeHhDrpERlNRTPEurW7Ea7hKyc1uLBTZW7egmUJx8uTxTWa+mvEsj10RWGm0TwRv/vILr/5Rag7T7fTWr3jLmgW/nfJaA2ffsOtXBPon+L5FFNZFvzNPL8QN7+xRznNh509dg+y8m/RBMgUMWw1zWPVyrg/E5Lmcz7bOt7NrhWjVYIf6vtWMIZN5xDjkyDVS0haQ4fycbzZqgvgqRYOA+uyreyRrwzOzxviFKLxrhSg3LmIjS28dFh2pU0zMf0l3j3s=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9638.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(1800799015)(376005);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?RVKRIUkn+HR0zeU9dy+oBuZSkR2EH59k9rNj7HHc7KK1bA/FC3ShXyayjkf5?=
- =?us-ascii?Q?F2ljgH9OCVMxEp6MMbnEFGQq0YJPQQJWhOaYZehTOzg+ufkxMD0ZNZu+7pzv?=
- =?us-ascii?Q?xQrWIu1RwrCGNjTp/iDNNlEVzSn4/c3rd1XfeHSxVyANrPmfpdD28xbI8fWS?=
- =?us-ascii?Q?/xWpzn280UManjFLdDKgGLPZh7DHBzq5N2NcawpuqxziZjxFDV8cXICmHHUh?=
- =?us-ascii?Q?K1mQKzUoA+d0OvRgl44y63V8bRUSMj9e3bzBOT3OItM3wh0vxYt9na+Kj5HD?=
- =?us-ascii?Q?AbHon4YcPkwwKbx2SeeOFnP/eQXJStRoF704iUgCQ3Mll9RXxIISwAdQkeOh?=
- =?us-ascii?Q?QZFa8iHZNUGZriEXqu+uyj1sibMZIkOtEAg5tBN1P0iOEMPZH0EdHudISe9l?=
- =?us-ascii?Q?DyC797uSg3QX7SnwCvjZZInihexpB275zpWHRVafnNyE3NNcoIu0rY0CFlPb?=
- =?us-ascii?Q?FNkIwzqXc21xpmpL7L3x1X0KSZ73B2C0e0Z+W9pHVFD2tqxmwEa/xV3fMHlE?=
- =?us-ascii?Q?Yggq4cElXCa39TnR9urnkk9xyp5guvDFv3M6lmlSbouaICHyKZPR5CimqzpR?=
- =?us-ascii?Q?10BcCRG//Azp90VmF1ij/u5CEBSFruGGS9cpIQjP3p9mletbUYg9J3IYVqu1?=
- =?us-ascii?Q?VCNlXGT8MD0eqGxHHl4VE2t7g+E04a9jLnSJ2m4/rOonng067BocrciYLmYr?=
- =?us-ascii?Q?su8CE1MuYBulamZUAZDSWhN4JmwKYf2IDdV9zdTxswpMy0hK7t49rUhHW3/z?=
- =?us-ascii?Q?hu4ZPDR5zUFXZ8xGSPMfSogD0W3Hqwg9/VOgpCFZaQra1P08jh30owSDt6II?=
- =?us-ascii?Q?YXwhSYHkuSa/XwPAfeHjFU53CI8dy3CUWNAZqj7c3u7xJBkdReh0TW1hiBDo?=
- =?us-ascii?Q?7Su2I6MQLzRjrpI+i0rabK7gA+gJ/msZoBKn/iLYNuVY6TjRBM3PYeULgoTA?=
- =?us-ascii?Q?L0Ok+jpBvZW9rppKBC0QYyMgusWCu0An7BrHRWg+ZtU3IyxKihSznL7t/i75?=
- =?us-ascii?Q?xeLhf9tOEylhYdip3asmtkorlp8TDnbJ96NuuRtui91KA5PiG9FzgscZ9Rj8?=
- =?us-ascii?Q?3sexQZODqu3/SRIRy8Ob4i9Khu9mjlkbCclyfYdKBXgLQBh1jX68vaeYZwQp?=
- =?us-ascii?Q?T7NaZcKNEeOoO1neGpuXXhbDv8B8fIqC45pksBcXxyPnojb3z+N4+YDrwGWZ?=
- =?us-ascii?Q?YawWv4vAErFQ5mGa1g6+zwt4ltsu3XielVkwFbYjwJQYEvhYa4m+YbUd74RG?=
- =?us-ascii?Q?7VCdjsvqs+Kb2X2vpihlDZhhflQWOdNlaQjSNkhMTepy8LnjtpIQkRL9toE0?=
- =?us-ascii?Q?S6zNXmLyiwAhsn5UZCx9Qje4QPX2Jvxjo2JvqWDsxCaQAsLaUflfGrOD1YlU?=
- =?us-ascii?Q?YV6YggB0VFBH3N3bxQHn972d+Mna8TWC/AFWE8una+sEL0V9knyYk0i582HO?=
- =?us-ascii?Q?I9/Tn652oObwl+hWR07UZCoLW1xI+aVtF5XKiMuPos8RyNJNg7crYjCkRFLE?=
- =?us-ascii?Q?WIjurvMDN/nUIxks3rQBjwXlaPK2KU/s4nn+zIyHT8GB3IcrZlR/Rtd6uRsW?=
- =?us-ascii?Q?OwuXxiyO8aFUYIjCdoVZ9C2V12jlcjHG6V+GS3eP?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CDE46FE29
+	for <linux-wireless@vger.kernel.org>; Tue, 19 Mar 2024 02:31:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1710815475; cv=none; b=OcmMTV+PC9/DPyeDR2auZawTEH1SUhqYxop5yGCvZZb1JcNSnJHOBFHKkS9j5wykAaEyajjsMuYcMFGEYjhDBCDl8nIcDE2KvtV2sK9Vi9FYPoM5mSYDumCMhNJVes6H179w5wGDpc00cklqNmrJd90LCBjtpFCyAWlQgww//24=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1710815475; c=relaxed/simple;
+	bh=qImercF9zK8SUkY7FBdkguatqRjXITXv2VlBgxgFDVg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=FIjSpaSEBGiiWmHQWYr3x7ycI/o+w6M6w3KDTucjg9IBM/vMUv4mUl2mZ1jgJS10H0Q4JdAzWOXfuIsF8ZZOaB6H2nJtPKXtsPvtZdWTW90YQbGOGg2G3YGAp0XeTYaKzmfQJ5CBQbD5xeiNt5BFICXiBqsvmVQTSq2+Lpe0m9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=fdopob5d; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42J1fU5O024752;
+	Tue, 19 Mar 2024 02:30:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=qcppdkim1; bh=Vk6at8d
+	H12/gePTZr7/aAsXSkaDtgCz9Hs7axk9lPzQ=; b=fdopob5dBtJedwJnnr9OfGi
+	hItLdoX/IAo/2ui88IGflJg0MxzFOnXrsWMWzLNWmhNcGfFdQb2SxD0cpEGZtDzy
+	AxtMACXIPcG9qgiErX/KzWkcegzdzV2cxLkPQ9EwxxRWOhP4Z8Gxu81CIJrzAjg5
+	eiSyJHxrODRhfiEgg/O8IoBD8INvP42Dn2sqU1z8qz4aLyxRMduVqvhVoBT/AHHQ
+	JAR6Y1v0Sk16mN5k6LrP7OZPrBx8/1XWIOC9IbMQgpw+ivCRO1jG+rzFMJbt9WdD
+	VkWTSLDFiWUGmKrdXkbm2NAABAdg8DIzfXsXYxNa42hmMrft1LvQeb4XmNz+ObA=
+	=
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wxmtcsqt8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 19 Mar 2024 02:30:58 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42J2UvZx015637
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 19 Mar 2024 02:30:58 GMT
+Received: from kangyang.ap.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Mon, 18 Mar 2024 19:30:55 -0700
+From: kangyang <quic_kangyang@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, <quic_kangyang@quicinc.com>
+Subject: [PATCH] wifi: ath12k: add support to handle beacon miss for WCN7850
+Date: Tue, 19 Mar 2024 10:30:32 +0800
+Message-ID: <20240319023032.719-1-quic_kangyang@quicinc.com>
+X-Mailer: git-send-email 2.34.1.windows.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9638.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 47c226fe-43bb-4479-56e5-08dc47b58c04
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Mar 2024 01:40:24.3304
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: oraQZKHCll8HVBYlXXoCRXmrENxRt4wcFCBMGCRmtaFEQoWLqJHWvMZ0rYj995zT/D0vg0XjoGlga0RudIBKCQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB7001
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: Y-kG5HTcFAvrvGTMK-HWX2K9DF0OXVy4
+X-Proofpoint-GUID: Y-kG5HTcFAvrvGTMK-HWX2K9DF0OXVy4
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-18_12,2024-03-18_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 malwarescore=0
+ priorityscore=1501 mlxscore=0 adultscore=0 impostorscore=0 clxscore=1015
+ spamscore=0 lowpriorityscore=0 phishscore=0 mlxlogscore=999 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2403140001
+ definitions=main-2403190018
 
-> From: Kalle Valo <kvalo@kernel.org>
-> Sent: Monday, March 18, 2024 5:25 PM
-> To: Francesco Dolcini <francesco@dolcini.it>
-> Cc: briannorris@chromium.org; linux-wireless@vger.kernel.org;
-> linux-kernel@vger.kernel.org; David Lin <yu-hao.lin@nxp.com>; Pete Hsieh
-> <tsung-hsien.hsieh@nxp.com>; rafael.beims <rafael.beims@toradex.com>;
-> Francesco Dolcini <francesco.dolcini@toradex.com>
-> Subject: [EXT] Re: [PATCH v9 0/2] wifi: mwifiex: add code to support host=
- mlme
->=20
-> Caution: This is an external email. Please take care when clicking links =
-or
-> opening attachments. When in doubt, report the message using the 'Report
-> this email' button
->=20
->=20
-> Francesco Dolcini <francesco@dolcini.it> writes:
->=20
-> > Hello Brian (and Kalle),
-> >
-> > On Wed, Mar 06, 2024 at 10:00:51AM +0800, David Lin wrote:
-> >> This series add host based MLME support to the mwifiex driver, this
-> >> enables WPA3 support in both client and AP mode.
-> >
-> > What's your plan for this series? I know you raised some concern when
-> > this started months ago and I'd love to know if there is something
-> > that would need to be addressed to move forward here.
->=20
-> Based on the history of this patchset I am a bit concerned if these patch=
-es
-> break existing setups. I'm sure Brian will look at that in detail but mor=
-e test
-> results from different setups we have the better.
->=20
+From: Kang Yang <quic_kangyang@quicinc.com>
 
-With host mlme: tested by NXP QA and Rafael.
-Without host mlme: tested by Francesco and myself.
+When AP goes down or too far away without indication to STA, beacon miss
+will be detected. Then for WCN7850's firmware, it will use roam event
+to send beacon miss to host.
 
-Thanks,
-David
+If STA doesn't handle the beacon miss, will keep the fake connection
+and unable to roam.
 
-> > p.s. I'm aware we are in the middle of the Linux merge window and
-> > nothing will happen till it closes.
->=20
-> BTW, thanks to some for-next branch trickery, we keep wireless-next open =
-also
-> during merge windows. This is to avoid unnecessarily stopping the
-> development.
->=20
-> --
-> https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fpatch=
-wor
-> k.kernel.org%2Fproject%2Flinux-wireless%2Flist%2F&data=3D05%7C02%7Cyu-hao
-> .lin%40nxp.com%7C8d38662f40b342dd6f9f08dc472d3cde%7C686ea1d3bc2b4c
-> 6fa92cd99c5c301635%7C0%7C0%7C638463506823212295%7CUnknown%7CT
-> WFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJX
-> VCI6Mn0%3D%7C0%7C%7C%7C&sdata=3DfFO%2F1WjAubSnNNfMtXfRXXmAMP
-> UEMjTHIIgjD4JDUnY%3D&reserved=3D0
->=20
-> https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fwirel=
-ess.
-> wiki.kernel.org%2Fen%2Fdevelopers%2Fdocumentation%2Fsubmittingpatches
-> &data=3D05%7C02%7Cyu-hao.lin%40nxp.com%7C8d38662f40b342dd6f9f08dc47
-> 2d3cde%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7C63846350682
-> 3225278%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2l
-> uMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=3DuLvfm66Y
-> G0OGFWNV2ZXngwVK%2FyuJlK5YO7wjbG8mUd0%3D&reserved=3D0
+So add support for WCN7850 to trigger disconnection from AP when
+receiving this event from firmware.
+
+It has to be noted that beacon miss event notification for QCN9274
+to be handled in a separate patch as it uses STA kickout WMI event
+to notify beacon miss and the current STA kickout event is processed
+as low_ack.
+
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+
+Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
+---
+ drivers/net/wireless/ath/ath12k/core.h |  2 +
+ drivers/net/wireless/ath/ath12k/mac.c  | 79 ++++++++++++++++++++++++--
+ drivers/net/wireless/ath/ath12k/mac.h  |  2 +
+ drivers/net/wireless/ath/ath12k/wmi.c  | 34 +++++------
+ drivers/net/wireless/ath/ath12k/wmi.h  |  3 +
+ 5 files changed, 98 insertions(+), 22 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
+index 97e5a0ccd233..9b82e98375aa 100644
+--- a/drivers/net/wireless/ath/ath12k/core.h
++++ b/drivers/net/wireless/ath/ath12k/core.h
+@@ -46,6 +46,7 @@
+ #define ATH12K_SMBIOS_BDF_EXT_MAGIC "BDF_"
+ 
+ #define ATH12K_INVALID_HW_MAC_ID	0xFF
++#define ATH12K_CONNECTION_LOSS_HZ	(3 * HZ)
+ #define	ATH12K_RX_RATE_TABLE_NUM	320
+ #define	ATH12K_RX_RATE_TABLE_11AX_NUM	576
+ 
+@@ -256,6 +257,7 @@ struct ath12k_vif {
+ 	u32 aid;
+ 	u8 bssid[ETH_ALEN];
+ 	struct cfg80211_bitrate_mask bitrate_mask;
++	struct delayed_work connection_loss_work;
+ 	int num_legacy_stations;
+ 	int rtscts_prot_mode;
+ 	int txpower;
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 52a5fb8b03e9..67f1242412dd 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -1345,6 +1345,75 @@ static void ath12k_control_beaconing(struct ath12k_vif *arvif,
+ 	ath12k_dbg(ar->ab, ATH12K_DBG_MAC, "mac vdev %d up\n", arvif->vdev_id);
+ }
+ 
++static void ath12k_mac_handle_beacon_iter(void *data, u8 *mac,
++					  struct ieee80211_vif *vif)
++{
++	struct sk_buff *skb = data;
++	struct ieee80211_mgmt *mgmt = (void *)skb->data;
++	struct ath12k_vif *arvif = ath12k_vif_to_arvif(vif);
++
++	if (vif->type != NL80211_IFTYPE_STATION)
++		return;
++
++	if (!ether_addr_equal(mgmt->bssid, vif->bss_conf.bssid))
++		return;
++
++	cancel_delayed_work(&arvif->connection_loss_work);
++}
++
++void ath12k_mac_handle_beacon(struct ath12k *ar, struct sk_buff *skb)
++{
++	ieee80211_iterate_active_interfaces_atomic(ath12k_ar_to_hw(ar),
++						   IEEE80211_IFACE_ITER_NORMAL,
++						   ath12k_mac_handle_beacon_iter,
++						   skb);
++}
++
++static void ath12k_mac_handle_beacon_miss_iter(void *data, u8 *mac,
++					       struct ieee80211_vif *vif)
++{
++	u32 *vdev_id = data;
++	struct ath12k_vif *arvif = ath12k_vif_to_arvif(vif);
++	struct ath12k *ar = arvif->ar;
++	struct ieee80211_hw *hw = ath12k_ar_to_hw(ar);
++
++	if (arvif->vdev_id != *vdev_id)
++		return;
++
++	if (!arvif->is_up)
++		return;
++
++	ieee80211_beacon_loss(vif);
++
++	/* Firmware doesn't report beacon loss events repeatedly. If AP probe
++	 * (done by mac80211) succeeds but beacons do not resume then it
++	 * doesn't make sense to continue operation. Queue connection loss work
++	 * which can be cancelled when beacon is received.
++	 */
++	ieee80211_queue_delayed_work(hw, &arvif->connection_loss_work,
++				     ATH12K_CONNECTION_LOSS_HZ);
++}
++
++void ath12k_mac_handle_beacon_miss(struct ath12k *ar, u32 vdev_id)
++{
++	ieee80211_iterate_active_interfaces_atomic(ath12k_ar_to_hw(ar),
++						   IEEE80211_IFACE_ITER_NORMAL,
++						   ath12k_mac_handle_beacon_miss_iter,
++						   &vdev_id);
++}
++
++static void ath12k_mac_vif_sta_connection_loss_work(struct work_struct *work)
++{
++	struct ath12k_vif *arvif = container_of(work, struct ath12k_vif,
++						connection_loss_work.work);
++	struct ieee80211_vif *vif = arvif->vif;
++
++	if (!arvif->is_up)
++		return;
++
++	ieee80211_connection_loss(vif);
++}
++
+ static void ath12k_peer_assoc_h_basic(struct ath12k *ar,
+ 				      struct ieee80211_vif *vif,
+ 				      struct ieee80211_sta *sta,
+@@ -2517,7 +2586,7 @@ static void ath12k_bss_disassoc(struct ath12k *ar,
+ 
+ 	arvif->is_up = false;
+ 
+-	/* TODO: cancel connection_loss_work */
++	cancel_delayed_work(&arvif->connection_loss_work);
+ }
+ 
+ static u32 ath12k_mac_get_rate_hw_value(int bitrate)
+@@ -5774,10 +5843,8 @@ static int ath12k_mac_op_add_interface(struct ieee80211_hw *hw,
+ 	arvif->vif = vif;
+ 
+ 	INIT_LIST_HEAD(&arvif->list);
+-
+-	/* Should we initialize any worker to handle connection loss indication
+-	 * from firmware in sta mode?
+-	 */
++	INIT_DELAYED_WORK(&arvif->connection_loss_work,
++			  ath12k_mac_vif_sta_connection_loss_work);
+ 
+ 	for (i = 0; i < ARRAY_SIZE(arvif->bitrate_mask.control); i++) {
+ 		arvif->bitrate_mask.control[i].legacy = 0xffffffff;
+@@ -6020,6 +6087,8 @@ static void ath12k_mac_op_remove_interface(struct ieee80211_hw *hw,
+ 	ar = ath12k_ah_to_ar(ah);
+ 	ab = ar->ab;
+ 
++	cancel_delayed_work_sync(&arvif->connection_loss_work);
++
+ 	mutex_lock(&ar->conf_mutex);
+ 
+ 	ath12k_dbg(ab, ATH12K_DBG_MAC, "mac remove interface (vdev %d)\n",
+diff --git a/drivers/net/wireless/ath/ath12k/mac.h b/drivers/net/wireless/ath/ath12k/mac.h
+index 3f5e1be0dff9..bfc655a4dfce 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.h
++++ b/drivers/net/wireless/ath/ath12k/mac.h
+@@ -78,4 +78,6 @@ enum ath12k_supported_bw ath12k_mac_mac80211_bw_to_ath12k_bw(enum rate_info_bw b
+ enum hal_encrypt_type ath12k_dp_tx_get_encrypt_type(u32 cipher);
+ int ath12k_mac_rfkill_enable_radio(struct ath12k *ar, bool enable);
+ int ath12k_mac_rfkill_config(struct ath12k *ar);
++void ath12k_mac_handle_beacon(struct ath12k *ar, struct sk_buff *skb);
++void ath12k_mac_handle_beacon_miss(struct ath12k *ar, u32 vdev_id);
+ #endif
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index 9d69a1769926..30de5ebde648 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -5927,10 +5927,8 @@ static void ath12k_mgmt_rx_event(struct ath12k_base *ab, struct sk_buff *skb)
+ 		}
+ 	}
+ 
+-	/* TODO: Pending handle beacon implementation
+-	 *if (ieee80211_is_beacon(hdr->frame_control))
+-	 *	ath12k_mac_handle_beacon(ar, skb);
+-	 */
++	if (ieee80211_is_beacon(hdr->frame_control))
++		ath12k_mac_handle_beacon(ar, skb);
+ 
+ 	ath12k_dbg(ab, ATH12K_DBG_MGMT,
+ 		   "event mgmt rx skb %pK len %d ftype %02x stype %02x\n",
+@@ -6137,42 +6135,44 @@ static void ath12k_roam_event(struct ath12k_base *ab, struct sk_buff *skb)
+ {
+ 	struct wmi_roam_event roam_ev = {};
+ 	struct ath12k *ar;
++	u32 vdev_id;
++	u8 roam_reason;
+ 
+ 	if (ath12k_pull_roam_ev(ab, skb, &roam_ev) != 0) {
+ 		ath12k_warn(ab, "failed to extract roam event");
+ 		return;
+ 	}
+ 
++	vdev_id = le32_to_cpu(roam_ev.vdev_id);
++	roam_reason = u32_get_bits(le32_to_cpu(roam_ev.reason),
++				   WMI_ROAM_REASON_MASK);
++
+ 	ath12k_dbg(ab, ATH12K_DBG_WMI,
+-		   "wmi roam event vdev %u reason 0x%08x rssi %d\n",
+-		   roam_ev.vdev_id, roam_ev.reason, roam_ev.rssi);
++		   "wmi roam event vdev %u reason %d rssi %d\n",
++		   vdev_id, roam_reason, roam_ev.rssi);
+ 
+ 	rcu_read_lock();
+-	ar = ath12k_mac_get_ar_by_vdev_id(ab, le32_to_cpu(roam_ev.vdev_id));
++	ar = ath12k_mac_get_ar_by_vdev_id(ab, vdev_id);
+ 	if (!ar) {
+-		ath12k_warn(ab, "invalid vdev id in roam ev %d",
+-			    roam_ev.vdev_id);
++		ath12k_warn(ab, "invalid vdev id in roam ev %d", vdev_id);
+ 		rcu_read_unlock();
+ 		return;
+ 	}
+ 
+-	if (le32_to_cpu(roam_ev.reason) >= WMI_ROAM_REASON_MAX)
++	if (roam_reason >= WMI_ROAM_REASON_MAX)
+ 		ath12k_warn(ab, "ignoring unknown roam event reason %d on vdev %i\n",
+-			    roam_ev.reason, roam_ev.vdev_id);
++			    roam_reason, vdev_id);
+ 
+-	switch (le32_to_cpu(roam_ev.reason)) {
++	switch (roam_reason) {
+ 	case WMI_ROAM_REASON_BEACON_MISS:
+-		/* TODO: Pending beacon miss and connection_loss_work
+-		 * implementation
+-		 * ath12k_mac_handle_beacon_miss(ar, vdev_id);
+-		 */
++		ath12k_mac_handle_beacon_miss(ar, vdev_id);
+ 		break;
+ 	case WMI_ROAM_REASON_BETTER_AP:
+ 	case WMI_ROAM_REASON_LOW_RSSI:
+ 	case WMI_ROAM_REASON_SUITABLE_AP_FOUND:
+ 	case WMI_ROAM_REASON_HO_FAILED:
+ 		ath12k_warn(ab, "ignoring not implemented roam event reason %d on vdev %i\n",
+-			    roam_ev.reason, roam_ev.vdev_id);
++			    roam_reason, vdev_id);
+ 		break;
+ 	}
+ 
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
+index 2492082b4524..27904a4deb18 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.h
++++ b/drivers/net/wireless/ath/ath12k/wmi.h
+@@ -4186,6 +4186,9 @@ struct wmi_peer_sta_kickout_event {
+ 	struct ath12k_wmi_mac_addr_params peer_macaddr;
+ } __packed;
+ 
++#define WMI_ROAM_REASON_MASK		GENMASK(3, 0)
++#define WMI_ROAM_SUBNET_STATUS_MASK	GENMASK(5, 4)
++
+ enum wmi_roam_reason {
+ 	WMI_ROAM_REASON_BETTER_AP = 1,
+ 	WMI_ROAM_REASON_BEACON_MISS = 2,
+
+base-commit: a2a4cf3541db8066af7e6d4eb6e9e6445f6d9658
+-- 
+2.34.1
+
 
