@@ -1,175 +1,152 @@
-Return-Path: <linux-wireless+bounces-4896-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4897-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5166687FA94
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Mar 2024 10:19:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CF7987FAE5
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Mar 2024 10:38:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0946B1F21A53
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Mar 2024 09:19:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE4721C21BE6
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Mar 2024 09:38:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1D727C0BA;
-	Tue, 19 Mar 2024 09:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29AE0548F9;
+	Tue, 19 Mar 2024 09:38:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="HZZO3gpe"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0A4265190
-	for <linux-wireless@vger.kernel.org>; Tue, 19 Mar 2024 09:19:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 713607C6CC
+	for <linux-wireless@vger.kernel.org>; Tue, 19 Mar 2024 09:38:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710839969; cv=none; b=WZ7K/2Im35PfrZs6tyAl3gehXFczNQHhg1YfAQERxSLXpds600PeY5bl4e0gJVFzxGYakcFLz+Rfq/E+ZgUpm0klOfqCMe7+HAawqAGxtzf6VrHaIBGF41YNeTnPHGBjD6MpXtI2pM+1l37FC/a59joDoDCCt3Ov1BQ6JW9chmY=
+	t=1710841085; cv=none; b=MvIYABZrUPW6YJcwy9pLRfG/0oLj4L5e8dVM15EGA13mrsWfSKmD7BMTkoXInqe1Qn6PIs0Bzf7MddxpixaY/hVCd8XHS6PDK4W6NoPuM9//fMY6QqOlD/AQT5zv1xbaZTFYMUEdclO5uxTP7SzS0AwzY655/E/KBB6PEzDL6zA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710839969; c=relaxed/simple;
-	bh=7ECs3bi2QNZinQQQGof9wcp2PVgQiqTIUYJw0wiMyDg=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=HopNuseVO+gQDCZOZI+AcAmrImxnj/0VdW7GpiEQg5tgRlTX3KeNWwnMVdRQyrW3Xvg5eJBjPErbM5GRLt7FguYf2Ettm6cXOwjsoHL1lPFmSlF8miYy9f2jHCBD7coGVgRzrDq9GEqNwmSj7qTp4oPskZ+4W1VDf70JTNg0+gg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 42J9J09C03921263, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 42J9J09C03921263
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 19 Mar 2024 17:19:00 +0800
-Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 19 Mar 2024 17:19:00 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 19 Mar 2024 17:19:00 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::4c42:f80:bcc2:d00f]) by
- RTEXMBS04.realtek.com.tw ([fe80::4c42:f80:bcc2:d00f%5]) with mapi id
- 15.01.2507.035; Tue, 19 Mar 2024 17:19:00 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "rtl8821cerfe2@gmail.com" <rtl8821cerfe2@gmail.com>
-CC: "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>,
-        "s.l-h@gmx.de"
-	<s.l-h@gmx.de>,
-        "chewitt@libreelec.tv" <chewitt@libreelec.tv>
-Subject: Re: [PATCH v2 00/12] wifi: rtlwifi: Add new rtl8192du driver
-Thread-Topic: [PATCH v2 00/12] wifi: rtlwifi: Add new rtl8192du driver
-Thread-Index: AQHaeJsdV0Mc7ABuwkCCsraXqw2IdLE+RVaA
-Date: Tue, 19 Mar 2024 09:18:59 +0000
-Message-ID: <2280b6c991fa09e66506088441f63790d092e343.camel@realtek.com>
-References: <5c23149c-1487-438d-bb37-69e2dd8173dc@gmail.com>
-In-Reply-To: <5c23149c-1487-438d-bb37-69e2dd8173dc@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-user-agent: Evolution 3.36.1-2 
-x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <AE5513379A71D24D890B3EA18F896E86@realtek.com>
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1710841085; c=relaxed/simple;
+	bh=6BbMu81K3KnrjmEE6asZwNZqoUgFyfAm10JGNy8uEaE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=USmSxl2yf88LFHQdimqWkqAjDcA8V4VkYEv9+fmlC/F/OfXklepCpNRP4GbBdXwiBuTyL1hxjw9w/K8cOBEBNprVHbInyWCB7eYLZpAWJ+EYETskl/mbmoH3MoYAEVhSIPfvBK1ov2ZFCzGHz5d9px+2teP1C0TWH3DBF6B7W3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=HZZO3gpe; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42J6iM53020456;
+	Tue, 19 Mar 2024 09:37:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=KqPIZmPIiOpiB2ei3mWHbtzUgzEyOQtTsWsDdS9stQY=; b=HZ
+	ZO3gpedKEM5n95QMtTG7h36EsxDiR/V+EkZZYYW7a3u7XyI7bFjpfE29HbMKG5MF
+	7ZpLX2nbXS38PTDz6OMbtDwxTQ+fzaTG7/jNUxdYvCH4TXg/oZ4zNJJPeRAFN3XP
+	xKqcTwb3pjOum+uunSS2b2IoS00vj7beD9f52ZUur3cUcrxAHck6c/oqig0kjc0+
+	PIp41B4qqVdDYhA6C3uMP7EJqqSTryKoEx+c5irpbvYDzh/HFBO3wDvIY6LbM/1u
+	XBo/vrlXT5S6UcO8dgA2AJdflnzDdLYukQ8Vd+Bv8cgPP/SX/SmoACigfH9PaGiu
+	FvtkmXR9jSywXAGBk3Jg==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wy5pprd18-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 19 Mar 2024 09:37:55 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42J9btXV014258
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 19 Mar 2024 09:37:55 GMT
+Received: from [10.201.208.160] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Tue, 19 Mar
+ 2024 02:37:53 -0700
+Message-ID: <1e9c36d9-0a2a-e458-a727-9630746b24e7@quicinc.com>
+Date: Tue, 19 Mar 2024 15:07:50 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 2/3] wifi: ath12k: Optimize the lock contention of used
+ list in Rx data path
+To: Kalle Valo <kvalo@kernel.org>
+CC: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+References: <20240226162310.629162-1-quic_periyasa@quicinc.com>
+ <20240226162310.629162-3-quic_periyasa@quicinc.com>
+ <87msr4gbps.fsf@kernel.org>
+ <33d25f11-d54d-6161-383d-d3823d5f6d19@quicinc.com>
+ <874jd3cszc.fsf@kernel.org>
+Content-Language: en-US
+From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+In-Reply-To: <874jd3cszc.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: b6gz-0-YDzJKHQImmwcb49uOG2ZTgJRt
+X-Proofpoint-ORIG-GUID: b6gz-0-YDzJKHQImmwcb49uOG2ZTgJRt
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-18_12,2024-03-18_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=1 priorityscore=1501
+ mlxlogscore=229 impostorscore=0 malwarescore=0 clxscore=1015 bulkscore=0
+ adultscore=0 phishscore=0 lowpriorityscore=0 mlxscore=1 suspectscore=0
+ spamscore=1 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2403140001 definitions=main-2403190073
 
-T24gU3VuLCAyMDI0LTAzLTE3IGF0IDIwOjQ0ICswMjAwLCBCaXR0ZXJibHVlIFNtaXRoIHdyb3Rl
-Og0KPiANCj4gdjI6DQo+ICAtIEFkZCBjb3ZlciBsZXR0ZXIuDQo+ICAtIEltcGxlbWVudCBmZWVk
-YmFjay4NCj4gIC0gRml4IG1vcmUgcHJvYmxlbXMgcmVwb3J0ZWQgYnkgY2hlY2twYXRjaC4NCj4g
-IC0gU3BsaXQgdGhlIG5ldyBkcml2ZXIgaW50byBzZXZlcmFsIHBhdGNoZXMgKDQtMTIpIGZvciBl
-YXNpZXINCj4gICAgcmV2aWV3aW5nLg0KPiAgLSBNb3JlIGRldGFpbHMgYWJvdXQgdGhlIGNoYW5n
-ZXMgY2FuIGJlIGZvdW5kIGluIGVhY2ggcGF0Y2guDQo+IA0KPiANCg0KSSBoYXZlIG5vdCBzdGFy
-dGVkIHJldmlld2luZyB5ZXQsIGJ1dCBjb21waWxlciByZXBvcnRzIGVycm9ycy93YXJuaW5nczoN
-Cg0KICBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODE5MmR1L3BoeS5j
-OiBJbiBmdW5jdGlvbiAncnRsOTJkX3BoeV9zZXRfcG93ZXJvbic6DQogIGRyaXZlcnMvbmV0L3dp
-cmVsZXNzL3JlYWx0ZWsvcnRsd2lmaS9ydGw4MTkyZHUvcGh5LmM6MzA1NToxOiBlcnJvcjogZXhw
-ZWN0ZWQgZGVjbGFyYXRpb24gb3IgDQpzdGF0ZW1lbnQgYXQgZW5kIG9mIGlucHV0DQogICAzMDU1
-IHwgfQ0KICAgICAgICB8IF4NCiAgQXQgdG9wIGxldmVsOg0KDQpBbmQsIHNwYXJzZS9zbWF0Y2gg
-cmVwb3J0IA0KDQogIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsd2lmaS9ydGw4MTky
-ZC9waHlfY29tbW9uLmg6MzA6MTc6IHdhcm5pbmc6ICdjaGFubmVsX2FsbCcgZGVmaW5lZA0KYnV0
-IG5vdCB1c2VkIFstV3VudXNlZC1jb25zdC12YXJpYWJsZT1dDQogIGRyaXZlcnMvbmV0L3dpcmVs
-ZXNzL3JlYWx0ZWsvcnRsd2lmaS9ydGw4MTkyZGUvLi4vcnRsODE5MmQvcGh5X2NvbW1vbi5oOjMw
-OjE3OiB3YXJuaW5nOg0KJ2NoYW5uZWxfYWxsJyBkZWZpbmVkIGJ1dCBub3QgdXNlZCBbLVd1bnVz
-ZWQtY29uc3QtdmFyaWFibGU9XQ0KICBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdp
-ZmkvcnRsODE5MmQvcGh5X2NvbW1vbi5oOjYwOjM5OiB3YXJuaW5nOiBjb250ZXh0IGltYmFsYW5j
-ZSBpbg0KJ3J0bDkyZF9iYW5kdHlwZV8yXzRHJyAtIHVuZXhwZWN0ZWQgdW5sb2NrDQogIGRyaXZl
-cnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsd2lmaS9ydGw4MTkyZC9waHlfY29tbW9uLmg6NjA6
-Mzk6IHdhcm5pbmc6IGNvbnRleHQgaW1iYWxhbmNlIGluDQoncnRsOTJkX2RtX2ZhbHNlX2FsYXJt
-X2NvdW50ZXJfc3RhdGlzdGljcycgLSB1bmV4cGVjdGVkIHVubG9jaw0KICBkcml2ZXJzL25ldC93
-aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODE5MmQvcGh5X2NvbW1vbi5oOjYwOjM5OiB3YXJu
-aW5nOiBjb250ZXh0IGltYmFsYW5jZSBpbg0KJ3J0bDkyZF9kbV9jY2tfcGFja2V0X2RldGVjdGlv
-bl90aHJlc2gnIC0gdW5leHBlY3RlZCB1bmxvY2sNCiAgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVh
-bHRlay9ydGx3aWZpL3J0bDgxOTJkZS8uLi9ydGw4MTkyZC9waHlfY29tbW9uLmg6MzA6MTc6IHdh
-cm5pbmc6DQonY2hhbm5lbF9hbGwnIGRlZmluZWQgYnV0IG5vdCB1c2VkIFstV3VudXNlZC1jb25z
-dC12YXJpYWJsZT1dDQogIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsd2lmaS9ydGw4
-MTkyZHUvLi4vcnRsODE5MmQvcGh5X2NvbW1vbi5oOjMwOjE3OiB3YXJuaW5nOg0KJ2NoYW5uZWxf
-YWxsJyBkZWZpbmVkIGJ1dCBub3QgdXNlZCBbLVd1bnVzZWQtY29uc3QtdmFyaWFibGU9XQ0KICBk
-cml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODE5MmQvcGh5X2NvbW1vbi5o
-OjMwOjE3OiB3YXJuaW5nOiAnY2hhbm5lbF9hbGwnIGRlZmluZWQNCmJ1dCBub3QgdXNlZCBbLVd1
-bnVzZWQtY29uc3QtdmFyaWFibGU9XQ0KICBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0
-bHdpZmkvcnRsODE5MmRlLy4uL3J0bDgxOTJkL3BoeV9jb21tb24uaDozMDoxNzogd2FybmluZzoN
-CidjaGFubmVsX2FsbCcgZGVmaW5lZCBidXQgbm90IHVzZWQgWy1XdW51c2VkLWNvbnN0LXZhcmlh
-YmxlPV0NCiAgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDgxOTJkZS8u
-Li9ydGw4MTkyZC9waHlfY29tbW9uLmg6NjA6Mzk6IHdhcm5pbmc6IGNvbnRleHQNCmltYmFsYW5j
-ZSBpbiAncnRsOTJkX3BoeV9zZXRfYndfbW9kZScgLSB1bmV4cGVjdGVkIHVubG9jaw0KICBkcml2
-ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODE5MmRlLy4uL3J0bDgxOTJkL3Bo
-eV9jb21tb24uaDo2MDozOTogd2FybmluZzogY29udGV4dA0KaW1iYWxhbmNlIGluICdfcnRsOTJk
-X3BoeV9yZWxvYWRfaW1yX3NldHRpbmcnIC0gdW5leHBlY3RlZCB1bmxvY2sNCiAgZHJpdmVycy9u
-ZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDgxOTJkZS8uLi9ydGw4MTkyZC9waHlfY29t
-bW9uLmg6NjA6Mzk6IHdhcm5pbmc6IGNvbnRleHQNCmltYmFsYW5jZSBpbiAncnRsOTJkX3BoeV9p
-cV9jYWxpYnJhdGUnIC0gdW5leHBlY3RlZCB1bmxvY2sNCiAgZHJpdmVycy9uZXQvd2lyZWxlc3Mv
-cmVhbHRlay9ydGx3aWZpL3J0bDgxOTJkdS8uLi9ydGw4MTkyZC9waHlfY29tbW9uLmg6MzA6MTc6
-IHdhcm5pbmc6DQonY2hhbm5lbF9hbGwnIGRlZmluZWQgYnV0IG5vdCB1c2VkIFstV3VudXNlZC1j
-b25zdC12YXJpYWJsZT1dDQogIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsd2lmaS9y
-dGw4MTkyZGUvLi4vcnRsODE5MmQvcGh5X2NvbW1vbi5oOjMwOjE3OiB3YXJuaW5nOg0KJ2NoYW5u
-ZWxfYWxsJyBkZWZpbmVkIGJ1dCBub3QgdXNlZCBbLVd1bnVzZWQtY29uc3QtdmFyaWFibGU9XQ0K
-ICBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODE5MmRlLy4uL3J0bDgx
-OTJkL3BoeV9jb21tb24uaDozMDoxNzogd2FybmluZzoNCidjaGFubmVsX2FsbCcgZGVmaW5lZCBi
-dXQgbm90IHVzZWQgWy1XdW51c2VkLWNvbnN0LXZhcmlhYmxlPV0NCiAgZHJpdmVycy9uZXQvd2ly
-ZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDgxOTJkL3BoeV9jb21tb24uYzo5MToxNjogd2Fybmlu
-ZzogY29udGV4dCBpbWJhbGFuY2UgaW4NCidydGw5MmRfcGh5X3F1ZXJ5X3JmX3JlZycgLSBkaWZm
-ZXJlbnQgbG9jayBjb250ZXh0cyBmb3IgYmFzaWMgYmxvY2sNCiAgZHJpdmVycy9uZXQvd2lyZWxl
-c3MvcmVhbHRlay9ydGx3aWZpL3J0bDgxOTJkL3BoeV9jb21tb24uYzo5ODo2OiB3YXJuaW5nOiBj
-b250ZXh0IGltYmFsYW5jZSBpbg0KJ3J0bDkyZF9waHlfc2V0X3JmX3JlZycgLSBkaWZmZXJlbnQg
-bG9jayBjb250ZXh0cyBmb3IgYmFzaWMgYmxvY2sNCiAgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVh
-bHRlay9ydGx3aWZpL3J0bDgxOTJkL3JmX2NvbW1vbi5jOjg6Njogd2FybmluZzogbm8gcHJldmlv
-dXMgcHJvdG90eXBlIGZvcg0KJ3J0bDkyZF9waHlfcmY2MDUyX3NldF9iYW5kd2lkdGgnIFstV21p
-c3NpbmctcHJvdG90eXBlc10NCiAgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZp
-L3J0bDgxOTJkL3JmX2NvbW1vbi5jOjQ2OjY6IHdhcm5pbmc6IG5vIHByZXZpb3VzIHByb3RvdHlw
-ZSBmb3INCidydGw5MmRfcGh5X3JmNjA1Ml9zZXRfY2NrX3R4cG93ZXInIFstV21pc3NpbmctcHJv
-dG90eXBlc10NCiAgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDgxOTJk
-L3JmX2NvbW1vbi5jOjM2Mjo2OiB3YXJuaW5nOiBubyBwcmV2aW91cyBwcm90b3R5cGUNCmZvciAn
-cnRsOTJkX3BoeV9yZjYwNTJfc2V0X29mZG1fdHhwb3dlcicgWy1XbWlzc2luZy1wcm90b3R5cGVz
-XQ0KICBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODE5MmR1L3BoeS5j
-OjMwNTU6MTogZXJyb3I6IGV4cGVjdGVkIGRlY2xhcmF0aW9uIG9yDQpzdGF0ZW1lbnQgYXQgZW5k
-IG9mIGlucHV0DQogIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsd2lmaS9ydGw4MTky
-ZHUvcGh5LmM6Mjk1Nzo2OiB3YXJuaW5nOiAncnRsOTJkdV9waHlfaW5pdF9wYV9iaWFzJw0KZGVm
-aW5lZCBidXQgbm90IHVzZWQgWy1XdW51c2VkLWZ1bmN0aW9uXQ0KICBkcml2ZXJzL25ldC93aXJl
-bGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODE5MmR1L3BoeS5jOjI5MjM6Njogd2FybmluZzogJ3J0
-bDkyZF9waHlfY2hlY2tfcG93ZXJvZmYnDQpkZWZpbmVkIGJ1dCBub3QgdXNlZCBbLVd1bnVzZWQt
-ZnVuY3Rpb25dDQogIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsd2lmaS9ydGw4MTky
-ZHUvcGh5LmM6MjY5NDo2OiB3YXJuaW5nOg0KJ3J0bDkyZF91cGRhdGVfYmJyZl9jb25maWd1cmF0
-aW9uJyBkZWZpbmVkIGJ1dCBub3QgdXNlZCBbLVd1bnVzZWQtZnVuY3Rpb25dDQogIGRyaXZlcnMv
-bmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsd2lmaS9ydGw4MTkyZHUvLi4vcnRsODE5MmQvcGh5X2Nv
-bW1vbi5oOjMwOjE3OiB3YXJuaW5nOg0KJ2NoYW5uZWxfYWxsJyBkZWZpbmVkIGJ1dCBub3QgdXNl
-ZCBbLVd1bnVzZWQtY29uc3QtdmFyaWFibGU9XQ0KICBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFs
-dGVrL3J0bHdpZmkvcnRsODE5MmQvcmZfY29tbW9uLmM6ODo2OiB3YXJuaW5nOiBzeW1ib2wNCidy
-dGw5MmRfcGh5X3JmNjA1Ml9zZXRfYmFuZHdpZHRoJyB3YXMgbm90IGRlY2xhcmVkLiBTaG91bGQg
-aXQgYmUgc3RhdGljPw0KICBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRs
-ODE5MmQvcmZfY29tbW9uLmM6NDY6Njogd2FybmluZzogc3ltYm9sDQoncnRsOTJkX3BoeV9yZjYw
-NTJfc2V0X2Nja190eHBvd2VyJyB3YXMgbm90IGRlY2xhcmVkLiBTaG91bGQgaXQgYmUgc3RhdGlj
-Pw0KICBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODE5MmQvcmZfY29t
-bW9uLmM6MzYyOjY6IHdhcm5pbmc6IHN5bWJvbA0KJ3J0bDkyZF9waHlfcmY2MDUyX3NldF9vZmRt
-X3R4cG93ZXInIHdhcyBub3QgZGVjbGFyZWQuIFNob3VsZCBpdCBiZSBzdGF0aWM/DQogIGRyaXZl
-cnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsd2lmaS9ydGw4MTkyZGUvLi4vcnRsODE5MmQvcGh5
-X2NvbW1vbi5oOjMwOjE3OiB3YXJuaW5nOg0KJ2NoYW5uZWxfYWxsJyBkZWZpbmVkIGJ1dCBub3Qg
-dXNlZCBbLVd1bnVzZWQtY29uc3QtdmFyaWFibGU9XQ0KDQpQbGVhc2UgY29ycmVjdCB0aGVtLiBJ
-IHdpbGwgd2FpdCBmb3IgeW91ciB2My4gDQoNClBpbmctS2UgDQoNCg0K
+
+On 3/18/2024 11:39 PM, Kalle Valo wrote:
+> Karthikeyan Periyasamy <quic_periyasa@quicinc.com> writes:
+>
+>> On 3/11/2024 6:35 PM, Kalle Valo wrote:
+>>> Karthikeyan Periyasamy <quic_periyasa@quicinc.com> writes:
+>>>
+>>>> When a packet arrives in Rx rings, the RX descriptor moves from the used
+>>>> list to the free list. Then, the rxdma ring gets replenished, where the Rx
+>>>> descriptor again moves from the free list to the used list. At the end, the
+>>>> descriptor came to the used list with unnecessary list movement. The
+>>>> descriptor used list is maintained in the Rxdma ring structure, which
+>>>> creates lock contention for the list operations (add, delete) in the Rx
+>>>> data path. Optimize the Rx data path by removing the used list from the
+>>>> common Rxdma ring and maintain as a local variable in the Rx ring handler
+>>>> itself, which avoid lock contention. Now, to find the used list descriptor
+>>>> during descriptor cleanup, we need to check the in_use flag for each Rx
+>>>> descriptor.
+>>>>
+>>>> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+>>>>
+>>>> Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+>>> Before looking at this in detail: When optimising something it would be
+>>> good to have before and after numbers showing the improvement. Otherwise
+>>> it's just wishful thinking.
+>> I don't have numbers. Like you said, Its just a wishful think.
+> So do you still want us to take this?
+>
+> In the future please do provide numbers to show that the optimisation
+> really helps as intended. Otherwise we might even go backwards.
+
+This is a simple UDP UL throughput test case results on x86+NUC device
+with QCN9274 card
+
+Before:
+Average:     CPU    %usr   %nice    %sys %iowait    %irq   %soft %steal  
+%guest  %gnice   %idle
+Average:     all    0.24    0.00   12.54    0.08    0.00 23.33    
+0.00    0.00    0.00   63.81
+
+After:
+Average:     CPU    %usr   %nice    %sys %iowait    %irq   %soft %steal  
+%guest  %gnice   %idle
+Average:     all    0.34    0.00    4.60    0.00    0.00 19.59    
+0.00    0.00    0.00   75.47
+
+is it fine to capture in the commit log ?
+
+-- 
+
+Karthikeyan Periyasamy
+--
+கார்த்திகேயன் பெரியசாமி
+
 
