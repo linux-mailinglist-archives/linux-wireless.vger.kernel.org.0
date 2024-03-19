@@ -1,100 +1,211 @@
-Return-Path: <linux-wireless+bounces-4898-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4899-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7EC187FBD9
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Mar 2024 11:34:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 469F387FC1A
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Mar 2024 11:48:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4DE7DB21DA8
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Mar 2024 10:34:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BED2C287686
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Mar 2024 10:48:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B1E22A8D7;
-	Tue, 19 Mar 2024 10:34:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j+gA29L5"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82FF14F8A9;
+	Tue, 19 Mar 2024 10:48:45 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20603257D;
-	Tue, 19 Mar 2024 10:33:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5334545940;
+	Tue, 19 Mar 2024 10:48:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710844440; cv=none; b=rt180VtcJ9vx95caRBbeYxs1iG6IYXegxHZf2TjVriDLIdxPOmnfgcz2khmgX/muiwtiNXb36k+YqAX0QOWJPxqp/ba/I9SJc9Q6pdijMOpV4LaL8q8XAmspuaF0rYKnMU9A047wa2SDbkqJGkjPAzktR9Cc6efJ8tTQLV+opUM=
+	t=1710845325; cv=none; b=oX0Q4GCeOhZBuYw8dA5Wn0mEdUFpr+kRzXd7iCmEetJ4MzzNYyifiTkVg1vvJgmYkq/cCHBX7ZhR2hlSz09Uo6/v0MGq983jFWhZloV9wtBLPf9Rl+6T23ddTMnKooG8yhSH4iGBWLXr+V35SbzwpSItZg5Sd3CNWuG/jtzecGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710844440; c=relaxed/simple;
-	bh=r0OjygzfBeFACEPBphQJgceCg2rQsdAGACWMzfN0J7E=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=siAe/Dcw42bj4xtsd5Hn+ApWcACP48L58aUNvL8P22aXKTK8BXdCGTSifKmWB5sR0JDLctJMRQOXnnvi5zY+u7cF63edgvv+HLp+quIYengFEhSwNQ+2yZom24X4Y1t88QZ6/D47LWoFzLTu23on559cyCAe/g5+GBLLjMHKsDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j+gA29L5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E02EAC433C7;
-	Tue, 19 Mar 2024 10:33:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710844439;
-	bh=r0OjygzfBeFACEPBphQJgceCg2rQsdAGACWMzfN0J7E=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=j+gA29L5bIWpUaZ3Y5w2nuifg6IQ7MC1PsAWxK7dY6e4moz3aOts++ygaJ48dmMxF
-	 GAsPFRLWste4qxxru+BG1Sd3MQzammvCqMz1qJogQ3a60qbTHpGdJVLP7ksRf04LiI
-	 2zmmIeLGc4rvsCmlsG1AZshM6O717efpf1lSVqIcz6/uixB5q3PZSdWsabM0I+QGKJ
-	 bgsPVxyiO1NPyUJmK1sdlI8IWE7WAhO8u0mqqpDFygCqOz2Q1xhbewtYWmJSnM+jTq
-	 0R2bK2liztzu7YWyYh/mzD4F4vfpzcXW0DxGTEi8FYhhEN1TvBOCBOmTkorCqmEySA
-	 6JVzLJNggtyww==
-From: Kalle Valo <kvalo@kernel.org>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: Brian Norris <briannorris@chromium.org>,
-  linux-wireless@vger.kernel.org,  linux-kernel@vger.kernel.org,  David Lin
- <yu-hao.lin@nxp.com>,  tsung-hsien.hsieh@nxp.com,
-  rafael.beims@toradex.com,  Francesco Dolcini
- <francesco.dolcini@toradex.com>
-Subject: Re: [PATCH v9 0/2] wifi: mwifiex: add code to support host mlme
-References: <20240306020053.18054-1-yu-hao.lin@nxp.com>
-	<20240315094927.GA6624@francesco-nb> <ZfTg1xKT-Mxmpf9w@google.com>
-	<20240318112830.GA9565@francesco-nb>
-Date: Tue, 19 Mar 2024 12:33:55 +0200
-In-Reply-To: <20240318112830.GA9565@francesco-nb> (Francesco Dolcini's message
-	of "Mon, 18 Mar 2024 12:28:30 +0100")
-Message-ID: <87r0g6bje4.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1710845325; c=relaxed/simple;
+	bh=AmY0S/XSTPSR4wg0dM/MbqWU3msGu1Ikv7x99ngue4U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=V/hAlYCWolimWn/XBmIfED9GAT59wO2q1fb753LxzCd30fVqeuzVlkMhwNd5Cu0RTOxw2m+gCiMkDyf8XoaSweGGisZGtpmmmnqq3UYSgR5ijLyMYs2kPPu/HwUCU5r/LsBB69sap1VUo5ysX8Co+dYrGN4pzG7v8CePlppgRgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a46cf8f649dso196717866b.3;
+        Tue, 19 Mar 2024 03:48:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710845321; x=1711450121;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2Pf9ToHTFBlUcNvi0ccDec6bsbZdFOYxpbDdlfC2TV8=;
+        b=Ph6KgNnMhIDOwadnVXSMOABLgwMmZJznDWHDLC36J30dUeHRAp2ffvNjZhEiOUM4Ip
+         CjkuoZp3UF7e/yCwPEKvwMsysi9vzTl7mG7Ce4EW6cPZQbYLG4ZSB8rcthxIWDrxMyhV
+         KT5gIpJEk4ta1pC/gWqlXxzVmOLETadImkfXWbPy7/VruXR8ew5+HDdS5eGcUtxMmp1D
+         +KbXWqpzgAXNHxxbKa45Y4JKa3845uK/NmV9IdtbEwxXsc+sldd2XjITfN28Di6FK/oQ
+         zPaaacREPQ2aQTeUoBnmAZ9J0f5BGV2riGj68fKD8J4VWmSaW7BuH/WzkNKpzQYAfg/y
+         bZqw==
+X-Forwarded-Encrypted: i=1; AJvYcCVkCRZWbGgaE/eF1gDKDyeCervssK5inoGL/Eu4dnku/ezoj94iJFg4QEDaJU2Nj78x3RBiJp3U9Sl+ds47v/rhbOj/uPXyXwz9J8y+e/cEcXmp3KfdQL6rn9mv121O4uNo29JjlSd73yl1af0=
+X-Gm-Message-State: AOJu0YwA5lU2pbKhck0fQefZV8XHNUUkTQLVdQ95bP6Js7YRxGnNtRRA
+	XF95pQ5n7HBzVg4wwuh0k8XitW93Lc2PR82xi9diTdr18QGGy50w
+X-Google-Smtp-Source: AGHT+IGuKBcD2QQQjVeFlvXngOSVaEvkMXfwiDGw4QgZ/UrAY/EfPNIFca1MM4+xo+QpvUeaIEoosw==
+X-Received: by 2002:a17:906:3e47:b0:a46:a71d:323a with SMTP id t7-20020a1709063e4700b00a46a71d323amr1396399eji.72.1710845321329;
+        Tue, 19 Mar 2024 03:48:41 -0700 (PDT)
+Received: from localhost (fwdproxy-lla-119.fbsv.net. [2a03:2880:30ff:77::face:b00c])
+        by smtp.gmail.com with ESMTPSA id l22-20020a1709067d5600b00a469e550472sm4108087ejp.60.2024.03.19.03.48.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Mar 2024 03:48:40 -0700 (PDT)
+From: Breno Leitao <leitao@debian.org>
+To: Kalle Valo <kvalo@kernel.org>,
+	Jeff Johnson <jjohnson@kernel.org>
+Cc: kuba@kernel.org,
+	keescook@chromium.org,
+	linux-wireless@vger.kernel.org (open list:NETWORKING DRIVERS (WIRELESS)),
+	ath10k@lists.infradead.org (open list:QUALCOMM ATHEROS ATH10K WIRELESS DRIVER),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH] ath10k: allocate dummy net_device dynamically
+Date: Tue, 19 Mar 2024 03:47:52 -0700
+Message-ID: <20240319104754.2535294-1-leitao@debian.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-Francesco Dolcini <francesco@dolcini.it> writes:
+Embedding net_device into structures prohibits the usage of flexible
+arrays in the net_device structure. For more details, see the discussion
+at [1].
 
-> On Fri, Mar 15, 2024 at 04:59:19PM -0700, Brian Norris wrote:
->> On Fri, Mar 15, 2024 at 10:49:27AM +0100, Francesco Dolcini wrote:
->> > On Wed, Mar 06, 2024 at 10:00:51AM +0800, David Lin wrote:
->> > > This series add host based MLME support to the mwifiex driver, this
->> > > enables WPA3 support in both client and AP mode.
->> > 
->> > What's your plan for this series? I know you raised some concern when
->> > this started months ago and I'd love to know if there is something that
->> > would need to be addressed to move forward here.
->> 
->> My plan was (especially given the "Odd Fixes" status in MAINTAINERS) to
->> wait until a 2nd party was happy with things here. From my cursory
->> following of things, that has now occurred -- thanks for all the review
->> Francesco.
->
-> Brian/Kalle, would be ok for you to add myself as reviewer for mwifiex?
-> The patch flow on the driver is pretty limited, but I care about it
-> and I am happy to help out if needed (and I have some hardware available
-> for testing).
->
-> If you agree I'll send a patch to the MAINTAINERS file.
+Un-embed the net_device from struct ath10k by converting it
+into a pointer. Then use the leverage alloc_netdev() to allocate the
+net_device object at ath10k_core_create(). The free of the device occurs
+at ath10k_core_destroy().
 
-At least from my point of view that sounds like a good idea, you have
-provided good review comments for this driver. But let's wait what Brian
-says.
+[1] https://lore.kernel.org/all/20240229225910.79e224cf@kernel.org/
 
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+ drivers/net/wireless/ath/ath10k/core.c | 10 ++++++++--
+ drivers/net/wireless/ath/ath10k/core.h |  2 +-
+ drivers/net/wireless/ath/ath10k/pci.c  |  2 +-
+ drivers/net/wireless/ath/ath10k/sdio.c |  2 +-
+ drivers/net/wireless/ath/ath10k/snoc.c |  4 ++--
+ drivers/net/wireless/ath/ath10k/usb.c  |  2 +-
+ 6 files changed, 14 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
+index 9ce6f49ab261..3736517002f6 100644
+--- a/drivers/net/wireless/ath/ath10k/core.c
++++ b/drivers/net/wireless/ath/ath10k/core.c
+@@ -3673,11 +3673,14 @@ struct ath10k *ath10k_core_create(size_t priv_size, struct device *dev,
+ 	INIT_WORK(&ar->set_coverage_class_work,
+ 		  ath10k_core_set_coverage_class_work);
+ 
+-	init_dummy_netdev(&ar->napi_dev);
++	ar->napi_dev = alloc_netdev(0, "dummy", NET_NAME_UNKNOWN,
++				    init_dummy_netdev);
++	if (!ar->napi_dev)
++		goto err_free_tx_complete;
+ 
+ 	ret = ath10k_coredump_create(ar);
+ 	if (ret)
+-		goto err_free_tx_complete;
++		goto err_free_netdev;
+ 
+ 	ret = ath10k_debug_create(ar);
+ 	if (ret)
+@@ -3687,6 +3690,8 @@ struct ath10k *ath10k_core_create(size_t priv_size, struct device *dev,
+ 
+ err_free_coredump:
+ 	ath10k_coredump_destroy(ar);
++err_free_netdev:
++	free_netdev(ar->napi_dev);
+ err_free_tx_complete:
+ 	destroy_workqueue(ar->workqueue_tx_complete);
+ err_free_aux_wq:
+@@ -3708,6 +3713,7 @@ void ath10k_core_destroy(struct ath10k *ar)
+ 
+ 	destroy_workqueue(ar->workqueue_tx_complete);
+ 
++	free_netdev(ar->napi_dev);
+ 	ath10k_debug_destroy(ar);
+ 	ath10k_coredump_destroy(ar);
+ 	ath10k_htt_tx_destroy(&ar->htt);
+diff --git a/drivers/net/wireless/ath/ath10k/core.h b/drivers/net/wireless/ath/ath10k/core.h
+index c110d15528bd..26003b519574 100644
+--- a/drivers/net/wireless/ath/ath10k/core.h
++++ b/drivers/net/wireless/ath/ath10k/core.h
+@@ -1269,7 +1269,7 @@ struct ath10k {
+ 	struct ath10k_per_peer_tx_stats peer_tx_stats;
+ 
+ 	/* NAPI */
+-	struct net_device napi_dev;
++	struct net_device *napi_dev;
+ 	struct napi_struct napi;
+ 
+ 	struct work_struct set_coverage_class_work;
+diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
+index 5c34b156b4ff..558bec96ae40 100644
+--- a/drivers/net/wireless/ath/ath10k/pci.c
++++ b/drivers/net/wireless/ath/ath10k/pci.c
+@@ -3217,7 +3217,7 @@ static void ath10k_pci_free_irq(struct ath10k *ar)
+ 
+ void ath10k_pci_init_napi(struct ath10k *ar)
+ {
+-	netif_napi_add(&ar->napi_dev, &ar->napi, ath10k_pci_napi_poll);
++	netif_napi_add(ar->napi_dev, &ar->napi, ath10k_pci_napi_poll);
+ }
+ 
+ static int ath10k_pci_init_irq(struct ath10k *ar)
+diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
+index 0ab5433f6cf6..e28f2fe1101b 100644
+--- a/drivers/net/wireless/ath/ath10k/sdio.c
++++ b/drivers/net/wireless/ath/ath10k/sdio.c
+@@ -2532,7 +2532,7 @@ static int ath10k_sdio_probe(struct sdio_func *func,
+ 		return -ENOMEM;
+ 	}
+ 
+-	netif_napi_add(&ar->napi_dev, &ar->napi, ath10k_sdio_napi_poll);
++	netif_napi_add(ar->napi_dev, &ar->napi, ath10k_sdio_napi_poll);
+ 
+ 	ath10k_dbg(ar, ATH10K_DBG_BOOT,
+ 		   "sdio new func %d vendor 0x%x device 0x%x block 0x%x/0x%x\n",
+diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
+index 2c39bad7ebfb..0449b9ffc32d 100644
+--- a/drivers/net/wireless/ath/ath10k/snoc.c
++++ b/drivers/net/wireless/ath/ath10k/snoc.c
+@@ -935,7 +935,7 @@ static int ath10k_snoc_hif_start(struct ath10k *ar)
+ 
+ 	bitmap_clear(ar_snoc->pending_ce_irqs, 0, CE_COUNT_MAX);
+ 
+-	dev_set_threaded(&ar->napi_dev, true);
++	dev_set_threaded(ar->napi_dev, true);
+ 	ath10k_core_napi_enable(ar);
+ 	ath10k_snoc_irq_enable(ar);
+ 	ath10k_snoc_rx_post(ar);
+@@ -1253,7 +1253,7 @@ static int ath10k_snoc_napi_poll(struct napi_struct *ctx, int budget)
+ 
+ static void ath10k_snoc_init_napi(struct ath10k *ar)
+ {
+-	netif_napi_add(&ar->napi_dev, &ar->napi, ath10k_snoc_napi_poll);
++	netif_napi_add(ar->napi_dev, &ar->napi, ath10k_snoc_napi_poll);
+ }
+ 
+ static int ath10k_snoc_request_irq(struct ath10k *ar)
+diff --git a/drivers/net/wireless/ath/ath10k/usb.c b/drivers/net/wireless/ath/ath10k/usb.c
+index 3c482baacec1..3b51b7f52130 100644
+--- a/drivers/net/wireless/ath/ath10k/usb.c
++++ b/drivers/net/wireless/ath/ath10k/usb.c
+@@ -1014,7 +1014,7 @@ static int ath10k_usb_probe(struct usb_interface *interface,
+ 		return -ENOMEM;
+ 	}
+ 
+-	netif_napi_add(&ar->napi_dev, &ar->napi, ath10k_usb_napi_poll);
++	netif_napi_add(ar->napi_dev, &ar->napi, ath10k_usb_napi_poll);
+ 
+ 	usb_get_dev(dev);
+ 	vendor_id = le16_to_cpu(dev->descriptor.idVendor);
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.43.0
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
