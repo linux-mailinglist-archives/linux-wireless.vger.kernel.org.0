@@ -1,67 +1,66 @@
-Return-Path: <linux-wireless+bounces-4883-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4884-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5888C87F910
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Mar 2024 09:12:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 811AD87F911
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Mar 2024 09:12:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DB161F22930
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Mar 2024 08:12:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C6F5282EB9
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Mar 2024 08:12:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74DE653E04;
-	Tue, 19 Mar 2024 08:10:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80F507BAEC;
+	Tue, 19 Mar 2024 08:10:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hxw2KzYi"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="D0L2tUTH"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7220F7BAEC
-	for <linux-wireless@vger.kernel.org>; Tue, 19 Mar 2024 08:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A5FC65195
+	for <linux-wireless@vger.kernel.org>; Tue, 19 Mar 2024 08:10:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710835849; cv=none; b=TIK3+5Ew6z+z2FkpHF5MEYKFi/6jNPQ4lCOqXUYCLRxfFFNLDenqLWKqGxPWgmleXmEs4ujWBFuTFiqYSf7PRUtwiFBxUrzYtnwbgcf8/oHaJArmp1QlRl9ZH6NvPc40rgqyv5DqmNa5pADb7DOWYVBL3Ujuklq+Uoa5ewYwroY=
+	t=1710835851; cv=none; b=uhvBisZIU0+CC6U6/iri9EclNpemqRQiNstUIwSlgf3ICfYH0l5ulhJVToEZSlEVmu5D57ZGkWdhaYgBMgac0rEDqXFs8VcCxTL+VmnTRpC2xhjM5IhvLmreMo9HlUcPMNddloPF0+kmT2d3oIrwO6I4XqBcQQCueWPUNOl0wRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710835849; c=relaxed/simple;
-	bh=q3n+1doiYi6JrYz6c5Y//4gOdiF+Dlfl8zoEM3UHUDI=;
+	s=arc-20240116; t=1710835851; c=relaxed/simple;
+	bh=KslKTG/WplijRbeUGf95VZRhYfbVmHi8g8kTc03aHR0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bPnFplk5kGG93xGK5Y45ljiI/3mlG0kCK7zZ3QQXqXfyhf/CN+5oy3N9Z7puabk8Fp9JZ2FQ9lavK2brPtRsxENpoUEP4BSgFz4wgTJuRoFSRhulWV0sa/ao/mzjzdZTi4VY3Q0s87DgmbPgQbKmUR2XecSCdz4OKXTNQw/a7/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hxw2KzYi; arc=none smtp.client-ip=198.175.65.17
+	 MIME-Version; b=IYfNKgdYIgznKZ2SgboaZ4iYccVaB48eYPMBercoYQOCKPtIX7L8U9ijdjtZFhAmNi8MEfK9sI8pByyyv5RiscRIlV1zStJ8eWX7qfZH20a7EeAmJpHvObUbU06ZqNOjWV5reRMWUKwHHWwGcSeMclR8bsvkZMIoP/q3mFC9bto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=D0L2tUTH; arc=none smtp.client-ip=198.175.65.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1710835847; x=1742371847;
+  t=1710835850; x=1742371850;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=q3n+1doiYi6JrYz6c5Y//4gOdiF+Dlfl8zoEM3UHUDI=;
-  b=hxw2KzYi/IqfeLZukq5rgxRgEuvdK3GcvGl7ZVEtNHEhFH8B9P26hXcH
-   udBEA+liqzFGYfE35JkaJ4z7B5BG1HNzP6jiQR9CLGmn9kkPTDx8D2gjf
-   LPVYWxtx3vhym5f6Gq95NNo06XpvmbuLXifKolTdHljEtDxdH6xQg/Qhz
-   dOqn4izmSx1prk5a5s/zbJV1SVYyz1/0wR+JbSnvcsRcsHiSPz1P59S0L
-   2flAzMd1sOSjVTQ+xjAknO2JyHy3f9hqvRcNLZ6Ic0fL+x8O+xMDeYmEW
-   v/iTav0xbrLX46FgrUpMe92mlaXWw/FxPff9uzl7A+bmy34765VDhSu6K
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11017"; a="5810524"
+  bh=KslKTG/WplijRbeUGf95VZRhYfbVmHi8g8kTc03aHR0=;
+  b=D0L2tUTH2RbGIc3YbWL30uOS3k52R7X+W25qO0AQf58KtWDfqamyiV03
+   0Je6oluPYLGvd0Fddb4HbrZmJzjD5Fl4UZLtt7IQ6+OYdA9mPA1MIYQz4
+   UpwKoQqHlM+vwFIwn4HG58USG/EtQogsz1nR0Lrg1iwois2Bbx9r18wbD
+   Ba9dUb9N9PVMJ+zKDc5VkyqUgiGBDc1Q0/IR9KsPhuMn6X+sRxGieEgDC
+   /KEalnhMp98H8s9iYqT2xhd11NczfWHdx118Ekqcj+IOCdpvg2Em40wJy
+   i90e5lqubkvHAnOaiogOVUUuueu5qgIUE7s4Cv0OnxoBhYtyZgnhI5OCp
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11017"; a="5810534"
 X-IronPort-AV: E=Sophos;i="6.07,136,1708416000"; 
-   d="scan'208";a="5810524"
+   d="scan'208";a="5810534"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2024 01:10:47 -0700
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2024 01:10:49 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,136,1708416000"; 
-   d="scan'208";a="18447576"
+   d="scan'208";a="18447590"
 Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2024 01:10:45 -0700
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2024 01:10:48 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Avraham Stern <avraham.stern@intel.com>,
-	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Subject: [PATCH 03/15] wifi: iwlwifi: mvm: add debugfs for forcing unprotected ranging request
-Date: Tue, 19 Mar 2024 10:10:15 +0200
-Message-Id: <20240319100755.8523150148ec.I7ab6c547513717e69ec385f72a8f43ea00bd9e0a@changeid>
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 04/15] wifi: iwlwifi: add a kunit test for PCI table duplicates
+Date: Tue, 19 Mar 2024 10:10:16 +0200
+Message-Id: <20240319100755.826b859abd62.I8140d7e9ae52ac50c6830818f8f95ccd0d94b3d3@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240319081027.3853611-1-miriam.rachel.korenblit@intel.com>
 References: <20240319081027.3853611-1-miriam.rachel.korenblit@intel.com>
@@ -74,87 +73,114 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Avraham Stern <avraham.stern@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-Add an option to force sending unprotected ranging request even if the
-station is associated to the responder or a PASN keys are configured.
-This is used for testing.
+We shouldn't have entries in the table that match the same
+device; it's possible to have a specific entry followed by
+a less specific entry (i.e. NNNN followed by ANY), but not
+entries that are dead, where an earlier entry matches the
+same as a later one.
 
-Signed-off-by: Avraham Stern <avraham.stern@intel.com>
-Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Add a test similar to the existing devinfo test to catch
+this situation.
+
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../wireless/intel/iwlwifi/mvm/debugfs-vif.c    |  2 ++
- .../wireless/intel/iwlwifi/mvm/ftm-initiator.c  | 17 ++++++++++++++++-
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h    |  1 +
- 3 files changed, 19 insertions(+), 1 deletion(-)
+ .../net/wireless/intel/iwlwifi/iwl-config.h   |  2 ++
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c |  3 ++-
+ .../wireless/intel/iwlwifi/tests/devinfo.c    | 26 ++++++++++++++++++-
+ 3 files changed, 29 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c
-index 3d272b3bed4e..5485e8bf613e 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c
-@@ -793,6 +793,8 @@ void iwl_mvm_vif_add_debugfs(struct ieee80211_hw *hw, struct ieee80211_vif *vif)
- 	MVM_DEBUGFS_ADD_FILE_VIF(rx_phyinfo, mvmvif->dbgfs_dir, 0600);
- 	MVM_DEBUGFS_ADD_FILE_VIF(quota_min, mvmvif->dbgfs_dir, 0600);
- 	MVM_DEBUGFS_ADD_FILE_VIF(os_device_timediff, mvmvif->dbgfs_dir, 0400);
-+	debugfs_create_bool("ftm_unprotected", 0200, mvmvif->dbgfs_dir,
-+			    &mvmvif->ftm_unprotected);
- 	MVM_DEBUGFS_ADD_FILE_VIF(int_mlo_scan, mvmvif->dbgfs_dir, 0200);
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-config.h b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
+index 6aa4f7f9c708..f1e7b15458c1 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-config.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
+@@ -11,6 +11,7 @@
+ #include <linux/netdevice.h>
+ #include <linux/ieee80211.h>
+ #include <linux/nl80211.h>
++#include <linux/mod_devicetable.h>
+ #include "iwl-csr.h"
+ #include "iwl-drv.h"
  
- 	if (vif->type == NL80211_IFTYPE_STATION && !vif->p2p &&
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
-index 4863a3c74640..c9000c878005 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-  * Copyright (C) 2015-2017 Intel Deutschland GmbH
-- * Copyright (C) 2018-2023 Intel Corporation
-+ * Copyright (C) 2018-2024 Intel Corporation
-  */
- #include <linux/etherdevice.h>
- #include <linux/math64.h>
-@@ -551,6 +551,15 @@ iwl_mvm_ftm_put_target(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- 			break;
- 		}
- 		rcu_read_unlock();
-+
-+#ifdef CONFIG_IWLWIFI_DEBUGFS
-+		if (mvmvif->ftm_unprotected) {
-+			target->sta_id = IWL_MVM_INVALID_STA;
-+			target->initiator_ap_flags &=
-+				~cpu_to_le32(IWL_INITIATOR_AP_FLAGS_PMF);
-+		}
-+
-+#endif
- 	} else {
- 		target->sta_id = IWL_MVM_INVALID_STA;
- 	}
-@@ -713,6 +722,12 @@ iwl_mvm_ftm_set_secured_ranging(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- {
- 	struct iwl_mvm_ftm_pasn_entry *entry;
- 	u32 flags = le32_to_cpu(target->initiator_ap_flags);
-+#ifdef CONFIG_IWLWIFI_DEBUGFS
-+	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
-+
-+	if (mvmvif->ftm_unprotected)
-+		return;
-+#endif
- 
- 	if (!(flags & (IWL_INITIATOR_AP_FLAGS_NON_TB |
- 		       IWL_INITIATOR_AP_FLAGS_TB)))
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-index 3f6fd6fef7cf..8134a5907908 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-@@ -437,6 +437,7 @@ struct iwl_mvm_vif {
- 	struct iwl_dbgfs_bf dbgfs_bf;
- 	struct iwl_mac_power_cmd mac_pwr_cmd;
- 	int dbgfs_quota_min;
-+	bool ftm_unprotected;
+@@ -484,6 +485,7 @@ const struct iwl_dev_info *
+ iwl_pci_find_dev_info(u16 device, u16 subsystem_device,
+ 		      u16 mac_type, u8 mac_step, u16 rf_type, u8 cdb,
+ 		      u8 jacket, u8 rf_id, u8 no_160, u8 cores, u8 rf_step);
++extern const struct pci_device_id iwl_hw_card_ids[];
  #endif
  
- 	/* FW identified misbehaving AP */
+ /*
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+index 916d417886e8..4cf811afdfa5 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+@@ -33,7 +33,7 @@ extern int _invalid_type;
+ 	.driver_data = _ASSIGN_CFG(cfg)
+ 
+ /* Hardware specific file defines the PCI IDs table for that hardware module */
+-static const struct pci_device_id iwl_hw_card_ids[] = {
++VISIBLE_IF_IWLWIFI_KUNIT const struct pci_device_id iwl_hw_card_ids[] = {
+ #if IS_ENABLED(CONFIG_IWLDVM)
+ 	{IWL_PCI_DEVICE(0x4232, 0x1201, iwl5100_agn_cfg)}, /* Mini Card */
+ 	{IWL_PCI_DEVICE(0x4232, 0x1301, iwl5100_agn_cfg)}, /* Half Mini Card */
+@@ -516,6 +516,7 @@ static const struct pci_device_id iwl_hw_card_ids[] = {
+ 	{0}
+ };
+ MODULE_DEVICE_TABLE(pci, iwl_hw_card_ids);
++EXPORT_SYMBOL_IF_IWLWIFI_KUNIT(iwl_hw_card_ids);
+ 
+ #define _IWL_DEV_INFO(_device, _subdevice, _mac_type, _mac_step, _rf_type, \
+ 		      _rf_id, _rf_step, _no_160, _cores, _cdb, _cfg, _name) \
+diff --git a/drivers/net/wireless/intel/iwlwifi/tests/devinfo.c b/drivers/net/wireless/intel/iwlwifi/tests/devinfo.c
+index 7aa47fce6e2d..7361b6d0cdb8 100644
+--- a/drivers/net/wireless/intel/iwlwifi/tests/devinfo.c
++++ b/drivers/net/wireless/intel/iwlwifi/tests/devinfo.c
+@@ -2,9 +2,10 @@
+ /*
+  * KUnit tests for the iwlwifi device info table
+  *
+- * Copyright (C) 2023 Intel Corporation
++ * Copyright (C) 2023-2024 Intel Corporation
+  */
+ #include <kunit/test.h>
++#include <linux/pci.h>
+ #include "iwl-drv.h"
+ #include "iwl-config.h"
+ 
+@@ -41,8 +42,31 @@ static void devinfo_table_order(struct kunit *test)
+ 	}
+ }
+ 
++static void devinfo_pci_ids(struct kunit *test)
++{
++	struct pci_dev *dev;
++
++	dev = kunit_kmalloc(test, sizeof(*dev), GFP_KERNEL);
++	KUNIT_ASSERT_NOT_NULL(test, dev);
++
++	for (int i = 0; iwl_hw_card_ids[i].vendor; i++) {
++		const struct pci_device_id *s, *t;
++
++		s = &iwl_hw_card_ids[i];
++		dev->vendor = s->vendor;
++		dev->device = s->device;
++		dev->subsystem_vendor = s->subvendor;
++		dev->subsystem_device = s->subdevice;
++		dev->class = s->class;
++
++		t = pci_match_id(iwl_hw_card_ids, dev);
++		KUNIT_EXPECT_PTR_EQ(test, t, s);
++	}
++}
++
+ static struct kunit_case devinfo_test_cases[] = {
+ 	KUNIT_CASE(devinfo_table_order),
++	KUNIT_CASE(devinfo_pci_ids),
+ 	{}
+ };
+ 
 -- 
 2.34.1
 
