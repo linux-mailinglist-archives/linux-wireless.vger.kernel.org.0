@@ -1,63 +1,74 @@
-Return-Path: <linux-wireless+bounces-4915-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4916-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B564088023A
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Mar 2024 17:28:08 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C669288024E
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Mar 2024 17:29:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8D461C23075
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Mar 2024 16:28:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3CCA3B23A09
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Mar 2024 16:29:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FE5785C6A;
-	Tue, 19 Mar 2024 16:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A71A2E62A;
+	Tue, 19 Mar 2024 16:28:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="dnzEI9O7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QaoTIUYg"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 728DB85C58
-	for <linux-wireless@vger.kernel.org>; Tue, 19 Mar 2024 16:23:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D0C657CC
+	for <linux-wireless@vger.kernel.org>; Tue, 19 Mar 2024 16:28:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710865389; cv=none; b=G3GjRlDJx6BgCrJT77EL+EKx+j/bEC1YoxkBXjntaI//NkDbz1IymV6tvwWBkwJlyoQlXkss58/2nqTKMgQlFICuI48mUex1gwSncui/YyfUt3J8M8F0A3VTowz/bL/am6e3985QZKEYzKMGPTdYdCqJUiuNZBvEBg0rx0pcKzs=
+	t=1710865729; cv=none; b=hWi/uNxjKmRohXYQWAYaSV98YZQam/LAJkVNDdMLhRxs36QfjCPH7pzPCFvr6X52Qy06gsChR+vY1x5aU6VOFbcSj6HvN2aHXo/VF/DYYUEQtKKGj1UJibVmr/E21QdpiC+h64gqRT1R4NnMVtUAA1et+2qrK4e51t/DlLwBWXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710865389; c=relaxed/simple;
-	bh=Sr0WFgYA8/TI9VTftw9J2kpxCSaByMpH5TL2mrioQVM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=bS/T1zXYHwmf24zWVEakjLG97yvP1S7OaOk7R6fRGPzwAY70fp4kgxhHRNLES4C/hegh04he1+IjzBfcH4UdBH7mC/rkRhFe5f100JdFWQGOC+zelZvBiGbpTw+GvswGLimAfJNWKa2F6mLj8ehc9qSnemiGnckbvDgNhco0iRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=dnzEI9O7; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42JBDvAU018807;
-	Tue, 19 Mar 2024 16:23:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=UhwONOCVo89AMBkpYVNTSiLDSlYoWdTO9A1OS2Xp3Ao=; b=dn
-	zEI9O7Eg6NT+MvhKvJONxMlZoGpWtrp6izQIM3EFlruATRJSkqJ1dDNcVUg6gwyQ
-	1pWI+Ma6GX5uPJGjkv9Xq+A68FLj7/It5n8SlvLzbCaF4q0+vggO4uBd7p6V9eJg
-	U/UEZkGVEgvxQJipwAQiTDoEoGXcPoN3ic0M3bLyuUgVG0arZtrXvo6zxmz4yGTk
-	ZeGFsxnJ+23+Cc1t/qYWp0nW+DjtvfAPB+QWNXS60qIqJGajiWhlfWSwk5OqnI1/
-	354H/sl//KWSl/rvYrgE0TFUkbv1+5XGHTEy4h1HLW3Fix6GxnVuSJaKH2+gOG0b
-	EctpMjhOaBvmrpDm2y/Q==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wy4gf9hdy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 19 Mar 2024 16:23:03 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42JGN2SL017738
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 19 Mar 2024 16:23:02 GMT
-Received: from [10.50.62.188] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Tue, 19 Mar
- 2024 09:23:00 -0700
-Message-ID: <6989461b-295e-4886-9d39-64f15cc01074@quicinc.com>
-Date: Tue, 19 Mar 2024 21:52:55 +0530
+	s=arc-20240116; t=1710865729; c=relaxed/simple;
+	bh=Y6DOV5/wfCqa/pECqjs+gqc1PtsSle6MTtpi/Znvaqk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Dkqhwm1HLYh9StDZCdQh7BJVoPdkUzMBiLVqhSP9caQApsdvWrAyHLeJRmCw6Nx8NyhT2hjI55LoNo8RMDJoS8TFstqcQUczfZI9vqcxhlZf2sdkcPBsDQFX1AjmiCVbXKothgjDMDry5s4xXDIzo0/MhI7aiqqkNqtvWUPkJtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QaoTIUYg; arc=none smtp.client-ip=209.85.208.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2d41d1bedc9so101764991fa.3
+        for <linux-wireless@vger.kernel.org>; Tue, 19 Mar 2024 09:28:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1710865724; x=1711470524; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=bZPNpc9mOi/aLEZkQnveHGtETHmlESkKOyB7eJHOdCk=;
+        b=QaoTIUYg1JaXZOyOZWWoWZZHg45OL0wlu/ClYIrLIyQObTmsoE5DMafpHekiRLfVgY
+         e8MXkl2XbMXs+VFeCyhyrIO9MRy/Ot5OL5fu8EhGZJOIfmcA3rz+XGP5tZVCBMXyc8ln
+         V0Hc2jgDsYW5zwsVx2OZafnL3SijluVUwrU2ksQvTDYamopLFuNgS3nN7dY3GYJlRLIT
+         W+/un9OJK6xANsuYCkmht9QCQ5w3KoIrBizDoMzEwoIHCkS87wrihdWK7RhSAD/wTdQ7
+         Nh8QTD0z61iRDF5Is0xibWQluLLwv0hHPb4iMhgpDuBoUsOShJSkdpVzQpPQv5xtYsuJ
+         ZLIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710865724; x=1711470524;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=bZPNpc9mOi/aLEZkQnveHGtETHmlESkKOyB7eJHOdCk=;
+        b=pibOEkFEPsmNJ9F9M0RCsZR+cSGsZAQWrR6It2WMCvII5syZ9Boh9hlEnUoiip5DYv
+         U1YGyTkm9FjzLS+BciOU5hVvtk93mzXB0yLVkN6BWjr4faq2Hf8+zEBSGGf1GG8/mkqO
+         CXWzzXaFo3Yth4yayvqwjqVaE1lJDDcMDAO64OHojXyDb+kkIKNiYP/wigv0EBDWsq1R
+         Rwd4K0D9yKS8Zq1nuuojSYXFm0Lvn7TlkauyDoH3mQpKBnrvy5XrNOSCuTbBw84WIpxI
+         kmnnOKE/mP9kyO9xyvPhpAV5AA8o4GwkAPJfahSjX77Zv34f8jZz7Z9vNcHU4/eZlgJ/
+         E36w==
+X-Forwarded-Encrypted: i=1; AJvYcCVB003SpeMzcJff8J2k/yRqNX0GHjgbb4cIlc9npw5lesOpuEj1FEtFxcsiQnkmbytC2p3aOudfy6iJRRIdKR9ZNwBzaAkZ2LHTN014EaM=
+X-Gm-Message-State: AOJu0YyjihNvJ8aOvJFyh9YYYqNCjk6nUdmb/wdoNQS+VIbqbX9DLTeV
+	mT7qrXR3wwj66xHbUiy6lD2C4WNC/onP3Yx2o4nzDkUlqNoUVb5g
+X-Google-Smtp-Source: AGHT+IFkuOm1rWUMUA7T9K+BWEx6TKaYz8X/DiwA7NUfHb6KXfr6W4GCR0Ud8iodCP6mr47l6eAjtA==
+X-Received: by 2002:a2e:8e99:0:b0:2d6:84a4:99b4 with SMTP id z25-20020a2e8e99000000b002d684a499b4mr2055735ljk.20.1710865724177;
+        Tue, 19 Mar 2024 09:28:44 -0700 (PDT)
+Received: from [192.168.1.50] ([79.119.240.211])
+        by smtp.gmail.com with ESMTPSA id be5-20020a1709070a4500b00a46a9425fe5sm3977139ejc.212.2024.03.19.09.28.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 19 Mar 2024 09:28:43 -0700 (PDT)
+Message-ID: <f19a1e6c-fd56-45b7-9936-a1a72d1988ad@gmail.com>
+Date: Tue, 19 Mar 2024 18:28:41 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,120 +76,151 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 12/12] wifi: ath12k: support get_survey mac op for
- single wiphy
+Subject: Re: [PATCH v2 00/12] wifi: rtlwifi: Add new rtl8192du driver
 Content-Language: en-US
-To: Jeff Johnson <quic_jjohnson@quicinc.com>, <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, Sriram R <quic_srirrama@quicinc.com>
-References: <20240312135557.1778379-1-quic_ramess@quicinc.com>
- <20240312135557.1778379-13-quic_ramess@quicinc.com>
- <036abbcc-eb90-48db-a82e-5565bcc336ef@quicinc.com>
-From: Rameshkumar Sundaram <quic_ramess@quicinc.com>
-In-Reply-To: <036abbcc-eb90-48db-a82e-5565bcc336ef@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+To: Ping-Ke Shih <pkshih@realtek.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>,
+ "s.l-h@gmx.de" <s.l-h@gmx.de>, "chewitt@libreelec.tv" <chewitt@libreelec.tv>
+References: <5c23149c-1487-438d-bb37-69e2dd8173dc@gmail.com>
+ <2280b6c991fa09e66506088441f63790d092e343.camel@realtek.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <2280b6c991fa09e66506088441f63790d092e343.camel@realtek.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: TAo5pE-sRnz6I_9ENKNpybTChxAkkBAB
-X-Proofpoint-ORIG-GUID: TAo5pE-sRnz6I_9ENKNpybTChxAkkBAB
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-19_05,2024-03-18_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 priorityscore=1501
- suspectscore=0 clxscore=1015 bulkscore=0 adultscore=0 malwarescore=0
- phishscore=0 impostorscore=0 lowpriorityscore=0 spamscore=0
- mlxlogscore=939 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2403140001 definitions=main-2403190125
 
+On 19/03/2024 11:18, Ping-Ke Shih wrote:
+> On Sun, 2024-03-17 at 20:44 +0200, Bitterblue Smith wrote:
+>>
+>> v2:
+>>  - Add cover letter.
+>>  - Implement feedback.
+>>  - Fix more problems reported by checkpatch.
+>>  - Split the new driver into several patches (4-12) for easier
+>>    reviewing.
+>>  - More details about the changes can be found in each patch.
+>>
+>>
+> 
+> I have not started reviewing yet, but compiler reports errors/warnings:
+> 
+>   drivers/net/wireless/realtek/rtlwifi/rtl8192du/phy.c: In function 'rtl92d_phy_set_poweron':
+>   drivers/net/wireless/realtek/rtlwifi/rtl8192du/phy.c:3055:1: error: expected declaration or 
+> statement at end of input
+>    3055 | }
+>         | ^
+>   At top level:
+> 
 
+Ahh, that's embarrassing. checkpatch said "else" after "break"
+is not useful, so I removed the else. I didn't notice the open
+brace after the if... and forgot to compile again before
+format-patch. Sorry about that.
 
-On 3/13/2024 4:55 AM, Jeff Johnson wrote:
-> On 3/12/2024 6:55 AM, Rameshkumar Sundaram wrote:
->> From: Sriram R <quic_srirrama@quicinc.com>
->>
->> The radio for which the survey info needs to be collected
->> depends on the channel idx which could be based on the band.
->> Use the idx to identify the appropriate sband since multiple
->> bands could be combined for single wiphy case.
->>
->> Also use the channel idx and sband to identify the corresponding
->> radio on which the survey results needs to be populated.
->>
->> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
->> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
->>
->> Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
->> Signed-off-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
->> ---
->>   drivers/net/wireless/ath/ath12k/mac.c | 25 ++++++++++++++++---------
->>   1 file changed, 16 insertions(+), 9 deletions(-)
->>
->> diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
->> index 6123d7db2edc..a31003f8325d 100644
->> --- a/drivers/net/wireless/ath/ath12k/mac.c
->> +++ b/drivers/net/wireless/ath/ath12k/mac.c
->> @@ -7821,7 +7821,6 @@ ath12k_mac_update_bss_chan_survey(struct ath12k *ar,
->>   static int ath12k_mac_op_get_survey(struct ieee80211_hw *hw, int idx,
->>   				    struct survey_info *survey)
->>   {
->> -	struct ath12k_hw *ah = ath12k_hw_to_ah(hw);
->>   	struct ath12k *ar;
->>   	struct ieee80211_supported_band *sband;
->>   	struct survey_info *ar_survey;
->> @@ -7830,12 +7829,6 @@ static int ath12k_mac_op_get_survey(struct ieee80211_hw *hw, int idx,
->>   	if (idx >= ATH12K_NUM_CHANS)
->>   		return -ENOENT;
->>   
->> -	ar = ath12k_ah_to_ar(ah, 0);
->> -
->> -	ar_survey = &ar->survey[idx];
->> -
->> -	mutex_lock(&ar->conf_mutex);
->> -
->>   	sband = hw->wiphy->bands[NL80211_BAND_2GHZ];
->>   	if (sband && idx >= sband->n_channels) {
->>   		idx -= sband->n_channels;
->> @@ -7850,6 +7843,21 @@ static int ath12k_mac_op_get_survey(struct ieee80211_hw *hw, int idx,
->>   		goto exit;
->>   	}
->>   
->> +	ar = ath12k_mac_get_ar_by_chan(hw, &sband->channels[idx]);
->> +	if (!ar) {
->> +		if (sband->channels[idx].flags & IEEE80211_CHAN_DISABLED) {
->> +			ret = 0;
->> +			memset(survey, 0, sizeof(*survey));
->> +			goto exit;
->> +		}
->> +		ret = -ENOENT;
->> +		goto exit;
->> +	}
->> +
->> +	ar_survey = &ar->survey[idx];
->> +
->> +	mutex_lock(&ar->conf_mutex);
->> +
->>   	ath12k_mac_update_bss_chan_survey(ar, &sband->channels[idx]);
->>   
->>   	spin_lock_bh(&ar->data_lock);
->> @@ -7861,9 +7869,8 @@ static int ath12k_mac_op_get_survey(struct ieee80211_hw *hw, int idx,
->>   	if (ar->rx_channel == survey->channel)
->>   		survey->filled |= SURVEY_INFO_IN_USE;
->>   
->> -exit:
->>   	mutex_unlock(&ar->conf_mutex);
->> -
->> +exit:
+> And, sparse/smatch report 
 > 
-> goto should normally only be used when there is centralized cleanup.
-> since now there is no cleanup required, all of the goto exit calls should just
-> directly return the appropriate error
+
+I installed sparse and smatch now.
+
+>   drivers/net/wireless/realtek/rtlwifi/rtl8192d/phy_common.h:30:17: warning: 'channel_all' defined
+> but not used [-Wunused-const-variable=]
+>   drivers/net/wireless/realtek/rtlwifi/rtl8192de/../rtl8192d/phy_common.h:30:17: warning:
+> 'channel_all' defined but not used [-Wunused-const-variable=]
+
+I see now that channel_all is only used in phy_common.c.
+I will move it there.
+
+>   drivers/net/wireless/realtek/rtlwifi/rtl8192d/phy_common.h:60:39: warning: context imbalance in
+> 'rtl92d_bandtype_2_4G' - unexpected unlock
+>   drivers/net/wireless/realtek/rtlwifi/rtl8192d/phy_common.h:60:39: warning: context imbalance in
+> 'rtl92d_dm_false_alarm_counter_statistics' - unexpected unlock
+>   drivers/net/wireless/realtek/rtlwifi/rtl8192d/phy_common.h:60:39: warning: context imbalance in
+> 'rtl92d_dm_cck_packet_detection_thresh' - unexpected unlock
+
+These look like false positives. Every unlock is preceded by
+a lock. I found a suggestion to annotate the functions with
+"__acquires(...)" and "__releases(...)" to quiet these warnings,
+but that didn't do anything. I can only fix it by copying the
+contents of rtl92d_acquire_cckandrw_pagea_ctl() and
+rtl92d_release_cckandrw_pagea_ctl() to the eight places where
+they are called, and duplicating the code that needs locking:
+
+	if (rtlpriv->rtlhal.interfaceindex == 1 &&
+	    rtlpriv->rtlhal.interface == INTF_PCI) {
+		spin_lock_irqsave(&rtlpriv->locks.cck_and_rw_pagea_lock, flag);
+		temp_cck = rtl_get_bbreg(hw, RCCK0_TXFILTER2,
+					 MASKDWORD) & MASKCCK;
+		spin_unlock_irqrestore(&rtlpriv->locks.cck_and_rw_pagea_lock, flag);
+	} else {
+		temp_cck = rtl_get_bbreg(hw, RCCK0_TXFILTER2,
+					 MASKDWORD) & MASKCCK;
+	}
+
+>   drivers/net/wireless/realtek/rtlwifi/rtl8192de/../rtl8192d/phy_common.h:30:17: warning:
+> 'channel_all' defined but not used [-Wunused-const-variable=]
+>   drivers/net/wireless/realtek/rtlwifi/rtl8192du/../rtl8192d/phy_common.h:30:17: warning:
+> 'channel_all' defined but not used [-Wunused-const-variable=]
+>   drivers/net/wireless/realtek/rtlwifi/rtl8192d/phy_common.h:30:17: warning: 'channel_all' defined
+> but not used [-Wunused-const-variable=]
+>   drivers/net/wireless/realtek/rtlwifi/rtl8192de/../rtl8192d/phy_common.h:30:17: warning:
+> 'channel_all' defined but not used [-Wunused-const-variable=]
+>   drivers/net/wireless/realtek/rtlwifi/rtl8192de/../rtl8192d/phy_common.h:60:39: warning: context
+> imbalance in 'rtl92d_phy_set_bw_mode' - unexpected unlock
+>   drivers/net/wireless/realtek/rtlwifi/rtl8192de/../rtl8192d/phy_common.h:60:39: warning: context
+> imbalance in '_rtl92d_phy_reload_imr_setting' - unexpected unlock
+>   drivers/net/wireless/realtek/rtlwifi/rtl8192de/../rtl8192d/phy_common.h:60:39: warning: context
+> imbalance in 'rtl92d_phy_iq_calibrate' - unexpected unlock
+>   drivers/net/wireless/realtek/rtlwifi/rtl8192du/../rtl8192d/phy_common.h:30:17: warning:
+> 'channel_all' defined but not used [-Wunused-const-variable=]
+>   drivers/net/wireless/realtek/rtlwifi/rtl8192de/../rtl8192d/phy_common.h:30:17: warning:
+> 'channel_all' defined but not used [-Wunused-const-variable=]
+>   drivers/net/wireless/realtek/rtlwifi/rtl8192de/../rtl8192d/phy_common.h:30:17: warning:
+> 'channel_all' defined but not used [-Wunused-const-variable=]
+
+>   drivers/net/wireless/realtek/rtlwifi/rtl8192d/phy_common.c:91:16: warning: context imbalance in
+> 'rtl92d_phy_query_rf_reg' - different lock contexts for basic block
+>   drivers/net/wireless/realtek/rtlwifi/rtl8192d/phy_common.c:98:6: warning: context imbalance in
+> 'rtl92d_phy_set_rf_reg' - different lock contexts for basic block
+
+This looks like sparse is getting confused. I fixed it
+by putting both lock and unlock inside the same if,
+like above.
+
+>   drivers/net/wireless/realtek/rtlwifi/rtl8192d/rf_common.c:8:6: warning: no previous prototype for
+> 'rtl92d_phy_rf6052_set_bandwidth' [-Wmissing-prototypes]
+>   drivers/net/wireless/realtek/rtlwifi/rtl8192d/rf_common.c:46:6: warning: no previous prototype for
+> 'rtl92d_phy_rf6052_set_cck_txpower' [-Wmissing-prototypes]
+>   drivers/net/wireless/realtek/rtlwifi/rtl8192d/rf_common.c:362:6: warning: no previous prototype
+> for 'rtl92d_phy_rf6052_set_ofdm_txpower' [-Wmissing-prototypes]
+
+It was missing #include "rf_common.h".
+
+>   drivers/net/wireless/realtek/rtlwifi/rtl8192du/phy.c:3055:1: error: expected declaration or
+> statement at end of input
+>   drivers/net/wireless/realtek/rtlwifi/rtl8192du/phy.c:2957:6: warning: 'rtl92du_phy_init_pa_bias'
+> defined but not used [-Wunused-function]
+>   drivers/net/wireless/realtek/rtlwifi/rtl8192du/phy.c:2923:6: warning: 'rtl92d_phy_check_poweroff'
+> defined but not used [-Wunused-function]
+>   drivers/net/wireless/realtek/rtlwifi/rtl8192du/phy.c:2694:6: warning:
+> 'rtl92d_update_bbrf_configuration' defined but not used [-Wunused-function]
+
+These warnings seem to be caused by that stray open brace I mentioned.
+
+>   drivers/net/wireless/realtek/rtlwifi/rtl8192du/../rtl8192d/phy_common.h:30:17: warning:
+> 'channel_all' defined but not used [-Wunused-const-variable=]
+>   drivers/net/wireless/realtek/rtlwifi/rtl8192d/rf_common.c:8:6: warning: symbol
+> 'rtl92d_phy_rf6052_set_bandwidth' was not declared. Should it be static?
+>   drivers/net/wireless/realtek/rtlwifi/rtl8192d/rf_common.c:46:6: warning: symbol
+> 'rtl92d_phy_rf6052_set_cck_txpower' was not declared. Should it be static?
+>   drivers/net/wireless/realtek/rtlwifi/rtl8192d/rf_common.c:362:6: warning: symbol
+> 'rtl92d_phy_rf6052_set_ofdm_txpower' was not declared. Should it be static?
+>   drivers/net/wireless/realtek/rtlwifi/rtl8192de/../rtl8192d/phy_common.h:30:17: warning:
+> 'channel_all' defined but not used [-Wunused-const-variable=]
 > 
-Sure, this sneaked through while rebasing, thanks for pointing out. Will 
-fix it in next version.
->>   	return ret;
->>   }
->>   
+> Please correct them. I will wait for your v3. 
 > 
+> Ping-Ke 
+> 
+> 
+
 
