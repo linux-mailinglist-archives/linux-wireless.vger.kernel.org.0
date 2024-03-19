@@ -1,225 +1,184 @@
-Return-Path: <linux-wireless+bounces-4905-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4906-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11DFD87FF06
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Mar 2024 14:45:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0747D87FF0A
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Mar 2024 14:47:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7CE861F2176F
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Mar 2024 13:45:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2CBD6B2332F
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Mar 2024 13:47:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 442458004F;
-	Tue, 19 Mar 2024 13:45:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7BFC80612;
+	Tue, 19 Mar 2024 13:47:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="es/EYNT1"
+	dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b="hAPsiTZQ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE388060A
-	for <linux-wireless@vger.kernel.org>; Tue, 19 Mar 2024 13:45:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E00CA8004F
+	for <linux-wireless@vger.kernel.org>; Tue, 19 Mar 2024 13:47:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710855936; cv=none; b=QyPWf4Rg05TrE3SAYTC0U6nTxHXakz7J4UahUMy3PsGdhSfz33v4eHTiUMjkRMt1IDgXCrPAoT5FedK6eBSdnae/r4Zh9odfsKh0eUy6nAdv6qS7eLBwTGJ23QbaYLylHDiUgO+U2v4+USR8ormBBadr5sfJHeePSdgLDS5WgMw=
+	t=1710856026; cv=none; b=sP/rO+ANESBWewDeN/nZ1UfEo7vxOlrLU0QRznE4OJNeW80rCQxsPYyplaHuMIEXFuTDlCNAzaEdwuCeArY7lPAeDPPbp6OgRGTeONidIP6O/s6YDGcF5JTZWjUrvHeLm9uKoLuyiaez25m6wUUQTHZLyGD/A6z7m45cbKQyeH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710855936; c=relaxed/simple;
-	bh=Y6mJ4TT1udX8LnFF78dqqfccDhXXc+edDkfcAFkfk2k=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=C8vEoDkJM2FhOQ+Hz7zKixeA8R8BOmReXCuNBxrvW0YULPjI1mFLHBPgIXrQutB13b6K/Vz3zXizQVFf0PhUvdfH6dcYmZwr0eblxuzq8I46PhqXtYraaLQEvjbIeDY8+VyGQoI7vw7XbSkNQMWCpwoBYcwrKRHqxLO9feawud4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=es/EYNT1; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42J4Q8iu029011;
-	Tue, 19 Mar 2024 13:45:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-transfer-encoding; s=qcppdkim1; bh=AQFx2OU
-	sNi7a3yBPHysolSPdvNgpM939e+P8DENsLjQ=; b=es/EYNT1invHP0PjeIbIXaQ
-	Tb4SwLKP061k+vfQkKNs+ZnkrtrndoTLoQkyOB6Y8e8JropXzpUsnQB9A0EkOKp0
-	QWcZjd+E23K3DhHQ3TFPZvm9daP3HdNWthM4XRoKxrtJKnSfTLlenuU9OuuhcKKt
-	19r43z4y5ADRNppgCHhRXKbboUfYvhph+k+4DUDO0JxkfuXr6MiyHqQhWEY8ZY13
-	RSg/1mbghYMIVjkjBHxtwhhZrqYTxJRPCp7fk5qpvqlFe+jBVkQquuBsmtsh5rRo
-	oeLA65atoueW/BVqJqhNfKe1gPZ4AvGsQizeq30jV/n+HsbPidaxZonwUfQ9+Hg=
-	=
-Received: from apblrppmta02.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wy2cjsbbn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 19 Mar 2024 13:45:29 +0000 (GMT)
-Received: from pps.filterd (APBLRPPMTA02.qualcomm.com [127.0.0.1])
-	by APBLRPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 42JDjQhm031321;
-	Tue, 19 Mar 2024 13:45:26 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 3ww4gkbf05-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 19 Mar 2024 13:45:26 +0000
-Received: from APBLRPPMTA02.qualcomm.com (APBLRPPMTA02.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42JDjQSk031313;
-	Tue, 19 Mar 2024 13:45:26 GMT
-Received: from hu-devc-blr-u22-a.qualcomm.com (hu-haric-blr.qualcomm.com [10.131.39.39])
-	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 42JDjPiV031311
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 19 Mar 2024 13:45:26 +0000
-Received: by hu-devc-blr-u22-a.qualcomm.com (Postfix, from userid 3844793)
-	id 54F4241330; Tue, 19 Mar 2024 19:15:25 +0530 (+0530)
-From: Hari Chandrakanthan <quic_haric@quicinc.com>
-To: ath11k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org,
-        Hari Chandrakanthan <quic_haric@quicinc.com>
-Subject: [PATCH v2 2/2] wifi: ath12k: Add support to rx retry stats
-Date: Tue, 19 Mar 2024 19:15:22 +0530
-Message-Id: <20240319134522.4021062-3-quic_haric@quicinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240319134522.4021062-1-quic_haric@quicinc.com>
-References: <20240319134522.4021062-1-quic_haric@quicinc.com>
+	s=arc-20240116; t=1710856026; c=relaxed/simple;
+	bh=FEiwQI/asXmWDBXom+D3pzYvYu5oomQFPI3U8pnogCY=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=Y3iz79FO9Z9LSsVY2+4VvnUsCNZ3q7TVcXYZ69ac/4yatItd6N/aQ7MUPhq3zwK7n9+xqhlOEiGjh1KpzASnsyDMz9lWp4JrlxD20O98T8nAVQF2KiIbDHqB0w23/xOFWRFmw76Ax6Y6Kh1HCgfiOZjoCHa2a+hhZ5HDPVjZj+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b=hAPsiTZQ; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freebox.fr
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-33eee0258abso1456029f8f.3
+        for <linux-wireless@vger.kernel.org>; Tue, 19 Mar 2024 06:47:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=freebox-fr.20230601.gappssmtp.com; s=20230601; t=1710856022; x=1711460822; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:references:cc:to:from
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=lwR815DYME77h4o7urLuS7peELXtGeH8pgEWYCx5jok=;
+        b=hAPsiTZQwXkN7uoNCWdj4UrmGX5ztPA7SOYGDPylPAzbCBi+n+rVuTGrSHj5ZUR+dc
+         e8qZPgd/YBXM8dg7LMVQzDIZbQUpN952W2qPhnD8K/NXFqaiNZmjlU01Qrj1tH/hrOyk
+         ssh3ZQFBvC1ze3v0r73qvt76vbXhqOttpST0OoP4JQnJ6rpf/i5WG8C2UbDEtsZ4KW/m
+         Ke+uBcNc2Bt4UbRqof6mKOyZjvA9JyCTVzN7wjOVhFp5Zpj5K0qaSJOSmcxbs1fomv4T
+         8pWtjMVT3FQmDMRI7rgEOGwsoBgHPDREuELosVX4Upl9n54YhXISn/UkUalu6WEcqAhF
+         FoEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710856022; x=1711460822;
+        h=content-transfer-encoding:in-reply-to:references:cc:to:from
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=lwR815DYME77h4o7urLuS7peELXtGeH8pgEWYCx5jok=;
+        b=whhJ1ZlVLSyImSfFVO4yurY2CPnLouPg7JIMw0938L0oHhyU8l/K2K2iuQEQZ8T2qT
+         siVT6vD9Aq6iqheGSZxneL+fjDyji6sq/kIQZTxfhzxctwsxeJt1x2VjSQYukfmde6lv
+         f6kETOPRf2J16bQVfp3/qfbnN+I6eDnHe0G8ySKiuHBLV8hAN+LK99rWpzzTXbbgbeE0
+         XcndyjpcvGunbDHs3p/NA0Z2eH6EHRFJkH6B+dbUdIkf5qNnzbmguty55X+wtRNQoNhM
+         ChuUr6diW/K+I+g0lwdCnrpQemuufX/Nm1/jhrpm2QrX4m/Ld58rMnIweIH/3vzZ0Q5u
+         Cnkg==
+X-Gm-Message-State: AOJu0Yx4k4234XKSwG/Zt1o5D7HztW7BGzrmwVBPFLRkNGjigZBeAtp6
+	BYvO3NIjmJprseg+CqshQ0ODbc9giSZB0ZZE2uGWn5BKjMIplZC6lSLI2ouOf08oeW+rYsmrCIu
+	q
+X-Google-Smtp-Source: AGHT+IH5tZbVzPk+iAAJs7mty1sSC4oAZJsAYS9f43ya3U/pZlXDgOVvkRBrz6cvKF1yPa9PO+hiEg==
+X-Received: by 2002:a5d:4577:0:b0:33e:8c7e:608f with SMTP id a23-20020a5d4577000000b0033e8c7e608fmr9272226wrc.12.1710856022158;
+        Tue, 19 Mar 2024 06:47:02 -0700 (PDT)
+Received: from [192.168.108.81] (freebox.vlq16.iliad.fr. [213.36.7.13])
+        by smtp.gmail.com with ESMTPSA id u17-20020a5d4351000000b0034180f6d3cfsm2974760wrr.73.2024.03.19.06.47.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 19 Mar 2024 06:47:01 -0700 (PDT)
+Message-ID: <880e016a-d4d2-4bc9-8c75-bbe4848515ad@freebox.fr>
+Date: Tue, 19 Mar 2024 14:47:01 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: kycZQHAjaQyp-i0Zb1hvEJeeo0kokrvy
-X-Proofpoint-GUID: kycZQHAjaQyp-i0Zb1hvEJeeo0kokrvy
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-19_03,2024-03-18_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
- priorityscore=1501 malwarescore=0 bulkscore=0 clxscore=1015
- impostorscore=0 lowpriorityscore=0 mlxlogscore=999 suspectscore=0
- mlxscore=0 phishscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2403140001 definitions=main-2403190105
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] dt-bindings: net: wireless: ath10k: add
+ qcom,no-msa-ready-indicator prop
+Content-Language: en-US
+From: Marc Gonzalez <mgonzalez@freebox.fr>
+To: wireless <linux-wireless@vger.kernel.org>,
+ ath10k <ath10k@lists.infradead.org>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+ Jeffrey Hugo <quic_jhugo@quicinc.com>, Bjorn Andersson
+ <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>,
+ Kalle Valo <kvalo@kernel.org>, Jeff Johnson <quic_jjohnson@quicinc.com>,
+ DT <devicetree@vger.kernel.org>, Pierre-Hugues Husson <phhusson@freebox.fr>,
+ Jami Kettunen <jamipkettunen@gmail.com>
+References: <14daa98e-7fd3-4ebb-87bb-5d2c1fba679f@freebox.fr>
+ <b8de96c7-cbb6-4a09-a4d4-2c11b3ab3e01@freebox.fr> <871q8wk7o3.fsf@kernel.org>
+ <3392f356-7b19-483d-b9f8-3bd84068fa52@freebox.fr> <87wmqoilzf.fsf@kernel.org>
+ <c58e67e6-6a7f-4963-86b9-580165bf05ba@freebox.fr> <87cyse8j9m.fsf@kernel.org>
+ <6d4b1381-c121-4cda-a8c9-9ccac56bd447@freebox.fr> <87plw87nsc.fsf@kernel.org>
+ <0816f7bb-3c97-4b90-8e19-191552ea6e26@freebox.fr> <87h6hk7aee.fsf@kernel.org>
+ <fb0ffdd9-923a-4191-8304-583243ad528b@freebox.fr>
+ <CAA8EJppHa=qEkKbSVs9hMCBXfhiC9MyAQO+v+6TCWhg==4CpOQ@mail.gmail.com>
+ <f26dfcc6-5fd3-486d-b0f2-80168eb213c7@freebox.fr>
+In-Reply-To: <f26dfcc6-5fd3-486d-b0f2-80168eb213c7@freebox.fr>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Add support to count station level rx retries.
-It denotes the number of data frames(MPDUs) received with rx retry bit
-set.
+On 18/03/2024 17:56, Marc Gonzalez wrote:
 
-The rx retry stats helps in understanding the medium during
-UL transmission.
+> Hmm, I don't see protection-domain-mapper running...
+> 
+> Feb 27 17:44:01 venus pd-mapper[308]: no pd maps available
+> Feb 27 17:44:01 venus pd-mapper[328]: no pd maps available
+> Feb 27 17:44:02 venus pd-mapper[345]: no pd maps available
+> Feb 27 17:44:02 venus pd-mapper[347]: no pd maps available
 
-Tested-on: QCN9274 hw1.0 PCI WLAN.WBE.1.2.1-00148-QCAHKSWPL_SILICONZ-1
+Doh! I had the firmware blobs properly embedded in the kernel,
+but the user-space tools needed them in the root filesystem.
 
-Signed-off-by: Hari Chandrakanthan <quic_haric@quicinc.com>
----
-v2: Rebased the patch
----
- drivers/net/wireless/ath/ath12k/core.h   | 1 +
- drivers/net/wireless/ath/ath12k/dp_mon.c | 8 ++++++++
- drivers/net/wireless/ath/ath12k/hal_rx.h | 7 ++++++-
- drivers/net/wireless/ath/ath12k/mac.c    | 3 +++
- 4 files changed, 18 insertions(+), 1 deletion(-)
+With that latest change, the kernel issue disappears,
+and most of the user-space tools seem happy:
 
-diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-index 97e5a0ccd233..8ffa9feb58d9 100644
---- a/drivers/net/wireless/ath/ath12k/core.h
-+++ b/drivers/net/wireless/ath/ath12k/core.h
-@@ -425,6 +425,7 @@ struct ath12k_sta {
- 	struct ath12k_rx_peer_stats *rx_stats;
- 	struct ath12k_wbm_tx_stats *wbm_tx_stats;
- 	u32 bw_prev;
-+	u32 rx_retries;
- };
- 
- #define ATH12K_MIN_5G_FREQ 4150
-diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c b/drivers/net/wireless/ath/ath12k/dp_mon.c
-index 2d56913a75d0..eb2f156b3e82 100644
---- a/drivers/net/wireless/ath/ath12k/dp_mon.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
-@@ -774,9 +774,11 @@ ath12k_dp_mon_rx_parse_status_tlv(struct ath12k_base *ab,
- 		u16 peer_id;
- 
- 		info[1] = __le32_to_cpu(mpdu_start->info1);
-+		info[3] = __le32_to_cpu(mpdu_start->info3);
- 		peer_id = u32_get_bits(info[1], HAL_RX_MPDU_START_INFO1_PEERID);
- 		if (peer_id)
- 			ppdu_info->peer_id = peer_id;
-+		ppdu_info->mpdu_retry = info[3] & HAL_RX_MPDU_START_INFO3_MPDU_RETRY;
- 
- 		ppdu_info->mpdu_len += u32_get_bits(info[1],
- 						    HAL_RX_MPDU_START_INFO2_MPDU_LEN);
-@@ -785,6 +787,9 @@ ath12k_dp_mon_rx_parse_status_tlv(struct ath12k_base *ab,
- 			ppdu_info->userid = userid;
- 			ppdu_info->ampdu_id[userid] =
- 				u32_get_bits(info[0], HAL_RX_MPDU_START_INFO1_PEERID);
-+			ppdu_info->userstats[userid].mpdu_retry =
-+				info[3] & HAL_RX_MPDU_START_INFO3_MPDU_RETRY;
-+
- 		}
- 
- 		mon_mpdu = kzalloc(sizeof(*mon_mpdu), GFP_ATOMIC);
-@@ -2209,6 +2214,8 @@ static void ath12k_dp_mon_rx_update_peer_su_stats(struct ath12k *ar,
- 	struct ath12k_rx_peer_stats *rx_stats = arsta->rx_stats;
- 	u32 num_msdu;
- 
-+	arsta->rx_retries  += ppdu_info->mpdu_retry;
-+
- 	if (!rx_stats)
- 		return;
- 
-@@ -2378,6 +2385,7 @@ ath12k_dp_mon_rx_update_user_stats(struct ath12k *ar,
- 
- 	arsta = ath12k_sta_to_arsta(peer->sta);
- 	rx_stats = arsta->rx_stats;
-+	arsta->rx_retries = user_stats->mpdu_retry;
- 
- 	if (!rx_stats)
- 		return;
-diff --git a/drivers/net/wireless/ath/ath12k/hal_rx.h b/drivers/net/wireless/ath/ath12k/hal_rx.h
-index 095216eabc01..ea2b89896abd 100644
---- a/drivers/net/wireless/ath/ath12k/hal_rx.h
-+++ b/drivers/net/wireless/ath/ath12k/hal_rx.h
-@@ -143,6 +143,7 @@ struct hal_rx_user_status {
- 	u32 mpdu_fcs_ok_bitmap[HAL_RX_NUM_WORDS_PER_PPDU_BITMAP];
- 	u32 mpdu_ok_byte_count;
- 	u32 mpdu_err_byte_count;
-+	bool mpdu_retry;
- };
- 
- #define HAL_MAX_UL_MU_USERS	37
-@@ -230,6 +231,7 @@ struct hal_rx_mon_ppdu_info {
- 	bool first_msdu_in_mpdu;
- 	bool is_ampdu;
- 	u8 medium_prot_type;
-+	bool mpdu_retry;
- };
- 
- #define HAL_RX_PPDU_START_INFO0_PPDU_ID		GENMASK(15, 0)
-@@ -447,10 +449,13 @@ struct hal_rx_phyrx_rssi_legacy_info {
- #define HAL_RX_MPDU_START_INFO0_PPDU_ID	GENMASK(31, 16)
- #define HAL_RX_MPDU_START_INFO1_PEERID	GENMASK(31, 16)
- #define HAL_RX_MPDU_START_INFO2_MPDU_LEN GENMASK(13, 0)
-+#define HAL_RX_MPDU_START_INFO3_MPDU_RETRY	BIT(19)
- struct hal_rx_mpdu_start {
- 	__le32 info0;
- 	__le32 info1;
--	__le32 rsvd1[11];
-+	__le32 rsvd1[8];
-+	__le32 info3;
-+	__le32 rsvd3[2];
- 	__le32 info2;
- 	__le32 rsvd2[9];
- } __packed;
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 52a5fb8b03e9..f050c5079e80 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -7467,6 +7467,9 @@ static void ath12k_mac_op_sta_statistics(struct ieee80211_hw *hw,
- 	sinfo->txrate.flags = arsta->txrate.flags;
- 	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_BITRATE);
- 
-+	sinfo->rx_retries = arsta->rx_retries;
-+	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_RX_RETRIES);
-+
- 	/* TODO: Use real NF instead of default one. */
- 	sinfo->signal = arsta->rssi_comb + ATH12K_DEFAULT_NOISE_FLOOR;
- 	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_SIGNAL);
--- 
-2.34.1
+  systemd-journald[199]: Journal started
+  systemd-journald[199]: Runtime Journal (/run/log/journal/0f2e92c39e6f4f3fa6585b56f928c8ed) is 8.0M, max 73.3M, 65.3M free.
+  systemd-random-seed[206]: Kernel entropy pool is not initialized yet, waiting until it is.
+  systemd-journald[199]: Time spent on flushing to /var/log/journal/0f2e92c39e6f4f3fa6585b56f928c8ed is 12.074ms for 3 entries.
+  systemd-journald[199]: System Journal (/var/log/journal/0f2e92c39e6f4f3fa6585b56f928c8ed) is 8.0M, max 4.0G, 3.9G free.
+  systemd-udevd[227]: Using default interface naming scheme 'v255'.
+  cron[285]: (CRON) INFO (pidfile fd = 3)
+  cron[285]: (CRON) INFO (Running @reboot jobs)
+  qrtr-ns[288]: ERROR qrtr-ns: nameserver already running, going dormant: Address already in use
+  rmtfs[291]: [RMTFS storage] request for unknown partition '/boot/modem_fsg_oem_1', rejecting
+  rmtfs[291]: [RMTFS storage] request for unknown partition '/boot/modem_fsg_oem_2', rejecting
+
+
+Corresponding kernel log:
+
+[    0.321715] ath10k_snoc 18800000.wifi: Adding to iommu group 0
+[    0.323787] ath10k_snoc 18800000.wifi: snoc xo-cal-data return -22
+[    0.325443] ath10k_snoc 18800000.wifi: supply vdd-3.3-ch1 not found, using dummy regulator
+[    0.325767] ath10k_snoc 18800000.wifi: qmi msa.paddr: 0x0000000094400000 , msa.vaddr: 0x(____ptrval____)
+[    0.325999] ath10k_snoc 18800000.wifi: snoc probe
+...
+[    8.430099] cfg80211: Loading compiled-in X.509 certificates for regulatory database
+[    8.443287] Loaded X.509 cert 'sforshee: 00b28ddf47aef9cea7'
+[    8.446323] Loaded X.509 cert 'wens: 61c038651aabdcf94bd0ac7ff06c7248db18c600'
+[    8.451411] clk: Not disabling unused clocks
+[    8.454159] cfg80211: loaded regulatory.db is malformed or signature is missing/invalid
+[    8.468829] ALSA device list[    8.506030] VFS: Mounted root (nfs filesystem) on device 0:21.
+[    8.511551] Freeing unused kernel memory: 5632K
+[    9.122863] systemd[1]: System time before build time, advancing clock.
+[   12.009922] systemd-journald[204]: Collecting audit messages is disabled.
+[   12.193174] systemd-journald[204]: Received client request to flush runtime journal.
+[   12.803236] random: crng init done
+[   13.580077] atl1c 0000:01:00.0 enp1s0: renamed from eth0 (while UP)
+[   15.255763] remoteproc remoteproc0: powering up 4080000.remoteproc
+[   15.263925] remoteproc remoteproc0: Booting fw image mba.mbn, size 234152
+[   15.277228] ath10k_snoc 18800000.wifi: received modem starting event
+[   15.370471] qcom-q6v5-mss 4080000.remoteproc: MBA booted without debug policy, loading mpss
+[   16.020964] ath10k_snoc 18800000.wifi: received modem running event
+[   16.029559] remoteproc remoteproc0: remote processor 4080000.remoteproc is now up
+[   18.649633] ath10k_snoc 18800000.wifi: wifi fw qmi service found
+[   18.649870] ath10k_snoc 18800000.wifi: qmi wifi fw qmi service connected
+[   18.658200] ath10k_snoc 18800000.wifi: qmi indication register request completed
+[   18.666483] ath10k_snoc 18800000.wifi: qmi host capability request completed
+[   18.674486] ath10k_snoc 18800000.wifi: qmi msa mem region 0 addr 0x0x0000000094400000 size 0x4000 flag 0x00000001
+[   18.676164] ath10k_snoc 18800000.wifi: qmi msa mem region 1 addr 0x0x0000000094404000 size 0xfc000 flag 0x00000000
+[   18.686350] ath10k_snoc 18800000.wifi: qmi msa mem info request completed
+[   18.738546] ath10k_snoc 18800000.wifi: qmi msa mem ready request completed
+[   18.791705] ath10k_snoc 18800000.wifi: qmi chip_id 0x30214 chip_family 0x4001 board_id 0xff soc_id 0x40010002
+[   18.792014] ath10k_snoc 18800000.wifi: qmi fw_version 0x100204b2 fw_build_timestamp 2019-09-04 03:01 fw_build_id QC_IMAGE_VERSION_STRING=WLAN.HL.1.0-01202-QCAHLSWMTPLZ-1.221523.2
+
+
+Yet, I still don't have a wlan network interface.
+
+# ip link
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+2: enp1s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP mode DEFAULT group default qlen 1000
+    link/ether 34:27:92:82:48:ec brd ff:ff:ff:ff:ff:ff
+
+
+I'm kinda stumped at this point... :(
+
+Regards
+
 
 
