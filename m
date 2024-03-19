@@ -1,86 +1,99 @@
-Return-Path: <linux-wireless+bounces-4901-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4902-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6102E87FD54
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Mar 2024 13:05:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0BD087FD63
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Mar 2024 13:12:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 029ED1F2359B
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Mar 2024 12:05:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B650B20D3A
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Mar 2024 12:12:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 973887F499;
-	Tue, 19 Mar 2024 12:05:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD55A7F469;
+	Tue, 19 Mar 2024 12:12:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Whl8MqBb"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="F02muasM"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 745967CF03
-	for <linux-wireless@vger.kernel.org>; Tue, 19 Mar 2024 12:05:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42ED7EF1C;
+	Tue, 19 Mar 2024 12:12:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710849951; cv=none; b=ed+haxJ8wmVUtbC5Iv7ZfX1WXCZU7KCzTENcJvtoXQcHsPcfqFxrBmr38mACmw6AJ52pdd0sYxLWNI/RYhxHuRhgT93GNi1HqcO607HwVT78cseLcZg3eNqj8hLzVedsdxoT/CmXHs3sc2o0N+aNQv/CfwjTiPNe/dXb0GPVWsg=
+	t=1710850364; cv=none; b=pnK2UT3ZwTmbJmdj0XPKmOdHmSu9quyrxfpR1yA1kecNmsSVL8+kZ5CmTR+BC0bFXHHaDaaO0JelRkOkw4ewEkUk+mJlxAEdZ87Su9SDTMtTDEm4GM6Z7aCCpgQECYpvAbdiGDyUwmDsuN1cVRG51kXDyNNVbCmYSb66hmqyGuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710849951; c=relaxed/simple;
-	bh=jbL5yL060xn9hTPjy4Qy/WXnGskckZCSHcM9eCIR0NI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SMtHzZ28e/oGScDO6qCpS2E3eNNSshnEjpp78ByH0W7HgwoEChwKtjkGyRyqyah8sfU1edzOo3dJMLa+l2nl3mOL75unhFDjQQtW2zTnAEf6MY9lJtFe3ON7QlZ1IlZY6YJg87L/6455k40termA+VNSc1IA5n7v4lMPRzH/VtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Whl8MqBb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DA3FC43390;
-	Tue, 19 Mar 2024 12:05:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710849950;
-	bh=jbL5yL060xn9hTPjy4Qy/WXnGskckZCSHcM9eCIR0NI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Whl8MqBb+kkkLfTjCrOW7DUrQiUAxSYQMutbOj6x1+uZjUXq8Zur0kqAWZMwNxCQx
-	 1FgnGU4f74ZTtHXiLpIJMrdQqiHgDKOuRaUKpzMIs+VMyI/vhTzOy6QpNq4czGYlNM
-	 YF3DsyIJZhY7RIE/c6nft3Kj9NiffxNN0HBvXz9G+N2rn4IY0BxJjXsQQu/UD90XXe
-	 U11ZOJoYtHd7anhKe0DByCal3TBlU28QfOKyOeoJS3WmLqLx1aUAbihkBcLJCRKAnx
-	 YteXamo9yUiXtl/h/zkoKLrmaiMnyvHH8lE+bNyWEFzZugn9czGb3KYxln8hH7xgRW
-	 U0kP06Tr0mtCQ==
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: nbd@nbd.name
-Cc: linux-wireless@vger.kernel.org,
-	lorenzo.bianconi@redhat.com,
-	shayne.chen@mediatek.com,
-	ryder.lee@mediatek.com
-Subject: [PATCH] wifi: mt76: mt7996: fix uninitialized variable in mt7996_irq_tasklet()
-Date: Tue, 19 Mar 2024 13:05:36 +0100
-Message-ID: <a9a5135d456e3070b79716e92422fa9fb9b98854.1710849730.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.44.0
+	s=arc-20240116; t=1710850364; c=relaxed/simple;
+	bh=czGExUm0Q+tTwI/oKFl4wc7Gw2rZFQVWLA/z3hJt3iU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=YV7Fg3vX3cqqA2JUgu+VR6psZ/QfsJry+slLIPD3Q9yLIKp3nnT+XZD5FdrSmibLzE3AYXYx0XXlxtXuHefGG3iQ8kwBrO1lkWVQKOhlgZkrxkoWNyxQjmgaBtLczsLuM5nwARtQc5RVDnyULclj5DgcN5jqJ2U8eVIKVxUEmmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=F02muasM; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=czGExUm0Q+tTwI/oKFl4wc7Gw2rZFQVWLA/z3hJt3iU=;
+	t=1710850360; x=1712059960; b=F02muasMMkcZERr0OHDIWRhFNUoVeE1mY4l29BXyMwfmuDJ
+	c8UTtFevh5/2nrwm3P0Gtj2BRks7RJT/SmYnSYiHbjcn85LwdoPBusoe6pxm2biDFEDRZR0p8UaBc
+	GZNoZ+y4+ZndS6jaQ05E7dXs0Nj2KpxCAW1CjPENcc5Pu7M2LpEPqeo08gcxkf9j3yWER0XFzLABG
+	g4ZaPIus//dfWDpAj2RKQU9taLZTwdsfW66QLnIRXW/UqoJMtTdbnd4ndcGc3YoCbENcDMcHM8/yK
+	5xGYBLnuWgA9tkGe3z5OXUZMxjBKM1zxS+3vaEW+HfYOFiNJhvEKWNaaoYaq3t/A==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rmYKV-00000005deo-2fEz;
+	Tue, 19 Mar 2024 13:12:31 +0100
+Message-ID: <969e95ccc4a1d35b45212b7fcb536ee90995e3b5.camel@sipsolutions.net>
+Subject: Re: [PATCH v9 0/2] wifi: mwifiex: add code to support host mlme
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Brian Norris <briannorris@chromium.org>, Francesco Dolcini
+	 <francesco@dolcini.it>
+Cc: kvalo@kernel.org, linux-wireless@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, David Lin <yu-hao.lin@nxp.com>, 
+	tsung-hsien.hsieh@nxp.com, rafael.beims@toradex.com, Francesco Dolcini
+	 <francesco.dolcini@toradex.com>
+Date: Tue, 19 Mar 2024 13:12:30 +0100
+In-Reply-To: <ZfTspRKFgrO9xCTH@google.com>
+References: <20240306020053.18054-1-yu-hao.lin@nxp.com>
+	 <20240315094927.GA6624@francesco-nb> <ZfTspRKFgrO9xCTH@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 
-Set intr1 to 0 in mt7996_irq_tasklet() in order to avoid possible
-uninitialized variable usage if wed is not active for hif2.
+On Fri, 2024-03-15 at 17:49 -0700, Brian Norris wrote:
+>=20
+> Now that I've looked a bit closer today: I'm realizing this may(?) be
+> one of the first "full MAC" drivers trying to implement its own MLME --
+> or at least, the auth/assoc bits.
 
-Fixes: 83eafc9251d6 ("wifi: mt76: mt7996: add wed tx support")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mt7996/mmio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Hmm, yeah, why _is_ that? mwifiex was originally "sold" as a "full MAC"
+driver, i.e. doing things in the firmware.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
-index 304e5fd14803..928a9663b49e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
-@@ -519,7 +519,7 @@ static void mt7996_irq_tasklet(struct tasklet_struct *t)
- 	struct mt7996_dev *dev = from_tasklet(dev, t, mt76.irq_tasklet);
- 	struct mtk_wed_device *wed = &dev->mt76.mmio.wed;
- 	struct mtk_wed_device *wed_hif2 = &dev->mt76.mmio.wed_hif2;
--	u32 i, intr, mask, intr1;
-+	u32 i, intr, mask, intr1 = 0;
- 
- 	if (dev->hif2 && mtk_wed_device_active(wed_hif2)) {
- 		mtk_wed_device_irq_set_mask(wed_hif2, 0);
--- 
-2.44.0
+We've said that "soft MAC" drivers should be using mac80211, but this
+thing can't seem to decide?
+
+Also decl.h should probably _shrink_ rather than grow, a number of
+things just replicate ieee80211.h (such as MWIFIEX_MGMT_HEADER_LEN
+really is just sizeof(ieee80211_mgmt) or so? Not quite correctly.)
+
+So yeah, agree with Brian, not only would this be the first, but it's
+also something we don't really _want_. All other drivers that want stuff
+like this are stuck in staging ...
+
+So why is this needed for a supposedly "firmware does it all" driver,
+and why can it not be integrated with mac80211 if it's no longer
+"firmware does it all"?
+
+johannes
 
 
