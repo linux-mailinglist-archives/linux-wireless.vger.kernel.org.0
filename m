@@ -1,87 +1,86 @@
-Return-Path: <linux-wireless+bounces-4940-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4941-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6522B88095A
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 03:04:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E10A5880BAC
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 08:07:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16DD71F22C50
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 02:04:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C9E2284117
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 07:07:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B4768C0B;
-	Wed, 20 Mar 2024 02:04:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 940BC22318;
+	Wed, 20 Mar 2024 07:07:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="nV3H0kTM"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4FB77489
-	for <linux-wireless@vger.kernel.org>; Wed, 20 Mar 2024 02:04:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13FB522309;
+	Wed, 20 Mar 2024 07:07:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710900257; cv=none; b=dcv+932cL8lMpt2XV98qM8g93PynDS0YNcAKS3shSAt20HpMw48PE1+iBN+88Lus0O4rjz0Z8ihw1nCf/1ppwIapIySLiNQmvjGjQ5HsOf5HA+qb7dRP4l/FDDp30mVq+E5cVDxPTtlUnjdkSOfLBpeG+wBGoNz/Rc7tdkA+g0M=
+	t=1710918435; cv=none; b=c+sunBrfO530/2QUgXtTE61A8cwbMhXlAA/qCSNwqRNIX7LmW0U9s86JWmargx4zV5ZwRZcpamPojRn6VUOIojlWnv5G3hrCnhPREroC/aQNrp4JXPl7vEsaA/wm23ltgptma288Qe31h+YYxU7OFPdFM43VsAUopCudM8h+JzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710900257; c=relaxed/simple;
-	bh=SHa113Ate6V9jWx3JHJkM8Vd8NUaAW8PAJeYonjZTCs=;
-	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
-	 Content-Type:Message-ID:Date; b=QRMp+QvqTJtqMq80pUFfaWIz6O7W1NUz1X2Sv/MIvcsRLrInoq2+1tOIFCxYmNQSKsIO69xccgs/vLHqyAFWhZq6n+MOm6fy95rH0t06E/mro1DyyRmJvcfeytIgSZoKD+JRBrc3iqfL/VSxl/c42J4ZUWykXOL8FCOOVa5ZKtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 42K23qgD6162607, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 42K23qgD6162607
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 20 Mar 2024 10:03:53 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Wed, 20 Mar 2024 10:03:52 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 20 Mar
- 2024 10:03:51 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Martin Kaistra <martin.kaistra@linutronix.de>,
-        <linux-wireless@vger.kernel.org>
-CC: Jes Sorensen <Jes.Sorensen@gmail.com>
-Subject: Re: [PATCH] wifi: rtl8xxxu: enable MFP support
-In-Reply-To: <20240314164850.86432-1-martin.kaistra@linutronix.de>
-References: <20240314164850.86432-1-martin.kaistra@linutronix.de>
+	s=arc-20240116; t=1710918435; c=relaxed/simple;
+	bh=imsC85LZ7G8ryotC8eiV2WIjFk665S1ivdu0dBN6TLo=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=TF9L5exZP4vbZOe/0sys90wzA33vbx5BX8ZBAn3oyWRtLdV8XFa2wcmwf3L8Bx63OVu5AwNDfpwjMwd3pI1WYHYjeltl1Qf4aDHEndEGuJ0FbydKYRohhkEnCORd6NbeA+14N1yZSmwo6gaydV5vS0kbpAwsDiNn7KoZqM4JpEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=nV3H0kTM; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=imsC85LZ7G8ryotC8eiV2WIjFk665S1ivdu0dBN6TLo=;
+	t=1710918432; x=1712128032; b=nV3H0kTMhVWxNse2y56aeYAJ3Dcvv5S4zwhrbZiPA4iYC33
+	L+dXS+r6hJ/yZPX4GWr19fkdV8xdRb+I32nEkxUJsOTu9yS/g7frgB+eXZwJQx48vecB4P2yOc+Zy
+	PSYQ3dk+igjAvSp5EL/agjl1gz7dMpRJtjpWjoi6yUX01xBdVMNFLx/09RGF7jTjhPNVF1ztqo+PB
+	tvqvohDvjFczN0LSwDed8RJQC8ouDKxy299hw6/8heH3IuCJPN1jGVsVXBI95NQW0PxN9dsA3hE67
+	LtB1Bl8wS0kFGT7pTcCdv31HKB3F+PMMuxsMvYsOoBlit3+43KpczfSevlA0dL/g==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rmq2P-00000006pAa-3J1Q;
+	Wed, 20 Mar 2024 08:07:02 +0100
+Message-ID: <638df3bb659caef38480aa97277207b89c101344.camel@sipsolutions.net>
+Subject: Re: [PATCH 0/3] wifi: nl80211: fix nl80211 UAPI kernel-doc
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Wed, 20 Mar 2024 08:07:00 +0100
+In-Reply-To: <20240319-kdoc-nl80211-v1-0-549e09d52866@quicinc.com>
+References: <20240319-kdoc-nl80211-v1-0-549e09d52866@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Message-ID: <c8ac7891-cd01-416f-b853-c5d001cfd2f5@RTEXMBS04.realtek.com.tw>
-Date: Wed, 20 Mar 2024 10:03:51 +0800
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
+X-malware-bazaar: not-scanned
 
-Martin Kaistra <martin.kaistra@linutronix.de> wrote:
+On Tue, 2024-03-19 at 11:26 -0700, Jeff Johnson wrote:
+> As part of my review of patches coming from the Qualcomm Innovation
+> Center I check to make sure that no checkpatch or kernel-doc issues
+> are introduced. An upcoming patch will propose a modification to
+> include/uapi/linux/nl80211.h. My review process flagged both
+> checkpatch and kernel-doc issues in the file, but these are
+> pre-existing issues. So this series fixes those pre-existing issues.
+>=20
 
-> In order to connect to networks which require 802.11w, add the
-> MFP_CAPABLE flag and let mac80211 do the actual crypto in software.
-> 
-> When a robust management frames is received, rx_dec->swdec is not set,
-> even though the HW did not decrypt it. Extend the check and don't set
-> RX_FLAG_DECRYPTED for these frames in order to use SW decryption.
-> 
-> Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
-> Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+Thanks Jeff.
 
-1 patch(es) applied to rtw-next branch of rtw.git, thanks.
+Can you say what you're running for this? I've been running kernel-doc
+and builds with W=3D1 for a long time, and not seen issues. Is this
+perhaps checks from a newer kernel (we're currently on 6.8-rc1 for
+$reasons)?
 
-77f5924fc41c wifi: rtl8xxxu: enable MFP support
-
----
-https://github.com/pkshih/rtw.git
-
+Thanks,
+johannes
 
