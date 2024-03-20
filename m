@@ -1,94 +1,119 @@
-Return-Path: <linux-wireless+bounces-4960-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4961-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F091880E6C
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 10:18:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E80D880E6E
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 10:19:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5608428114B
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 09:18:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0939B2817B0
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 09:19:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B50239FD0;
-	Wed, 20 Mar 2024 09:18:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C37A839FEB;
+	Wed, 20 Mar 2024 09:19:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jkevE2d6"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="bSaP2QKG"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from nbd.name (nbd.name [46.4.11.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D676B381AC;
-	Wed, 20 Mar 2024 09:18:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2615439FD0
+	for <linux-wireless@vger.kernel.org>; Wed, 20 Mar 2024 09:19:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710926287; cv=none; b=AbR4U38Ty/8AnBjLnkPKetb7V1dSau1jfuK2p3uiAYAxIR6DUTFwY3fDGO6UXPURg0RlVbJG6ccIoBBVtD2r9wB19vD6IUO+MIts/lkWeA/n3crhFtJlRdkCy1p8S383GPi138QvJF3Zpc3UgSfKMJlYBihpU7/oSVAUw1af17E=
+	t=1710926352; cv=none; b=rNzSv5FLWhGA8+jGn0eVj9yzaClzYQ9A4ckg0KRx0mpwWj26E8c3x18x1epr/A02WJ2kH6C8XExf0XJWg7rvMUklIfUcV9QGZbgGGLgrQHhDCRX/39IKz+Q7CI2rE66T2I6tjAnP7VhO5HpTXtpSJ/4lSD11fEGFlcGP0rrwRyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710926287; c=relaxed/simple;
-	bh=Ua8bP3Zu3ZhRW6pVJ78wmG35ErXgM57J4eb+99Iw6mA=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=bTcrSmoKkbUud8Ca4L8I/4i4IMjFvzRmA+cfq6F78auT+VBqtAkpKMk0qZStA6K7+PExVIoDQAspw2X7J8x5TyAOkPTJ9DivIZ19sEye/DNCZAz3eKxjxZ1eeZxvNYcnaN4rIdpVYtmyVKeqQKud8Pqo5k7M7HSxLiwp8R0KSJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jkevE2d6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77245C43390;
-	Wed, 20 Mar 2024 09:18:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710926287;
-	bh=Ua8bP3Zu3ZhRW6pVJ78wmG35ErXgM57J4eb+99Iw6mA=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=jkevE2d6SbeVSO/R0fC5L31xs+xPC3WUdEkV30i0Fl539olOogAPNKm7RcNmkKevs
-	 3kNv696eUzFfE7LP2gTDGorQB7/Cg8AWAbGhrle0guRq5l3WJZoGhw1FgNBmIRpVHB
-	 a06cs4qh4IKRsSPQ5r6ufG9j1qlA7c8zdINkLNAi9PFvhyKPXLAo4fPeArTBOitQCu
-	 ca1lYGADpExR1ppTnyYvldQb3rl7P20KPjJmYWam/9nTHwvhZCgRztJig2o3SIexcC
-	 VdPEHY0v3MbryAmX6d36sXmCkkWxLqOZOWwewU1V426yN+sm8k2A6DENAs12NP/v8t
-	 PpoH0RaF0lmaw==
-From: Kalle Valo <kvalo@kernel.org>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Jeff Johnson <quic_jjohnson@quicinc.com>,
-  linux-wireless@vger.kernel.org,  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/3] wifi: nl80211: fix nl80211 UAPI kernel-doc
-References: <20240319-kdoc-nl80211-v1-0-549e09d52866@quicinc.com>
-	<638df3bb659caef38480aa97277207b89c101344.camel@sipsolutions.net>
-Date: Wed, 20 Mar 2024 11:18:04 +0200
-In-Reply-To: <638df3bb659caef38480aa97277207b89c101344.camel@sipsolutions.net>
-	(Johannes Berg's message of "Wed, 20 Mar 2024 08:07:00 +0100")
-Message-ID: <87cyrp2reb.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1710926352; c=relaxed/simple;
+	bh=em2RJXHqfyjhgUPTOEsGAvznJ7MyjC3TW3MFgio8ZPk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ClmAxB4UKClPR+JrEcjUt4KHN9XtjPt0wF/mq83zRoySkcvAtqlG7cLUyK5VhasufUiNUOEHG/rhnOWtJhabpqBspe7+p1EbKbA3RgSBn4p5HXVGKX93MYAbvWTUoBFw3S6jrecvJbRmX7raSxTIxj9rDBHQYCtvnBoLUIrdv4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=bSaP2QKG; arc=none smtp.client-ip=46.4.11.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+	s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=D12QRKshMlk2EQq6CUq3PzchKGk4Pf/Ssh/VBZ69JEI=; b=bSaP2QKGscDYfPl0JQ4TKyG9HM
+	KsGLptqsuhrrgqn9FjQira/TdhJE8K7/FXdq9obOVU65wOFxDaQ9EQVFvDqSt7O8B8ERWdVEtgmPh
+	85T4fO9Y3/Ygz+0NA0l16SK1aaAFtHApQu12r7uGFRqH4wvc4BGV+zbldruiswVx9ENk=;
+Received: from p54ae9e7b.dip0.t-ipconnect.de ([84.174.158.123] helo=nf.local)
+	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.94.2)
+	(envelope-from <nbd@nbd.name>)
+	id 1rms66-007cMc-93; Wed, 20 Mar 2024 10:18:58 +0100
+Message-ID: <69f0cd9d-79de-4497-a964-07c981ac1a6f@nbd.name>
+Date: Wed, 20 Mar 2024 10:18:57 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: mt76: mt7915: workaround too long expansion sparse
+ warnings
+Content-Language: en-US
+To: Lorenzo Bianconi <lorenzo@kernel.org>, Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+ shayne.chen@mediatek.com, ryder.lee@mediatek.com
+References: <5457b92e41909dd75ab3db7a0e9ec372b917a386.1710858172.git.lorenzo@kernel.org>
+ <87h6h12rrg.fsf@kernel.org> <Zfqo0I3CpWE6tHTh@lore-desk>
+From: Felix Fietkau <nbd@nbd.name>
+Autocrypt: addr=nbd@nbd.name; keydata=
+ xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
+ ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
+ Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
+ AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
+ vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
+ wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
+ TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
+ l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
+ dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
+ HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
+ VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
+ CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
+ VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
+ Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
+ DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
+ wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
+ f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
+ aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
+ FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
+ TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
+ GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
+ cL98efvrjdstUfTCP2pfetyN
+In-Reply-To: <Zfqo0I3CpWE6tHTh@lore-desk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Johannes Berg <johannes@sipsolutions.net> writes:
-
-> On Tue, 2024-03-19 at 11:26 -0700, Jeff Johnson wrote:
->> As part of my review of patches coming from the Qualcomm Innovation
->> Center I check to make sure that no checkpatch or kernel-doc issues
->> are introduced. An upcoming patch will propose a modification to
->> include/uapi/linux/nl80211.h. My review process flagged both
->> checkpatch and kernel-doc issues in the file, but these are
->> pre-existing issues. So this series fixes those pre-existing issues.
+On 20.03.24 10:13, Lorenzo Bianconi wrote:
+>> Lorenzo Bianconi <lorenzo@kernel.org> writes:
 >> 
->
-> Thanks Jeff.
->
-> Can you say what you're running for this? I've been running kernel-doc
-> and builds with W=1 for a long time, and not seen issues. Is this
-> perhaps checks from a newer kernel (we're currently on 6.8-rc1 for
-> $reasons)?
+>> > Fix the following sparse warnings:
+>> >
+>> > drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c:1133:29: error: too long token expansion
+>> > drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c:1133:29: error: too long token expansion
+>> > drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c:1133:29: error: too long token expansion
+>> > drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c:1133:29: error: too long token expansion
+>> >
+>> > No functional changes, compile tested only.
+>> >
+>> > Fixes: e3296759f347 ("wifi: mt76: mt7915: enable per bandwidth power limit support")
+>> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+>> 
+>> Thanks Lorenzo! Could I take this directly to wireless-next? We are very
+>> close of being sparse clean in the wireless subsystem, there are just
+>> few warnings left ath drivers.
+> 
+> sure, I am fine with it.
+> @Felix?
+Sure.
+Acked-by: Felix Fietkau <nbd@nbd.name>
 
-FWIW I also check for kernel-doc warnings every time I push to wireless
-or wireless-next and I don't see anything, so it's not kernel version
-related. I think I'll add the Jeff's tests to my scripts, once he
-provides them, so that we can catch these early.
+- Felix
 
-Of course it would be even better to have patchwork tests for stuff like
-this. Here's hoping we eventually implement those :)
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
