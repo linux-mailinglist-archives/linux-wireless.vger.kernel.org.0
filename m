@@ -1,173 +1,106 @@
-Return-Path: <linux-wireless+bounces-4990-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4991-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1305A8815C7
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 17:40:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD80F881607
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 18:02:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 813C42818FB
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 16:39:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37B90285520
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 17:02:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D17015C3;
-	Wed, 20 Mar 2024 16:39:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FVc19hfP"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAA0169DEA;
+	Wed, 20 Mar 2024 17:01:59 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2901515A5
-	for <linux-wireless@vger.kernel.org>; Wed, 20 Mar 2024 16:39:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23E54EB47;
+	Wed, 20 Mar 2024 17:01:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710952796; cv=none; b=oK9RMFSTtmB0HtnznBZYhElzmTh4by3kFQft5Jdk1C4Ns+0jLOyy3k9nv83/k/5GOQfzuG3LGlIlcRjrCGZ5a/VtFwUDzRmNRr87fpKp1MlP1YgmDD0JP/KbUt8rkqTq7yrNUywMR8/2Sc8am1fPXHkphpz26ZFfKpWP20T7TnI=
+	t=1710954119; cv=none; b=QMwYa6O4OXXE5GRVR8fRrFm+p53exSwYOjo0CRzVnwp99ifW8ybyGM8rvrN04LXo69wcWjzlWv9ochARhAHAAEcFeIhFrBacRiDN8DWNK84l9F6Z3f3gl0lv5chlZsEsR3+XmSIeXd8FoB/VGAE0IEZoue8w/5XWP5VDkJd6xnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710952796; c=relaxed/simple;
-	bh=pdueHAqME/RXgy8B9mFyZ15nNoudCV+XV4ekjt1t7PU=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=Bhe1dasMKyRgB9sAgJ2YgOfr0Q6zQDcDqwFQvvTR0pAylGtX7PDTxyfifDYaMn2fRyOPVQlPl3EEow6ICp0MUBSRSf+v/zC0yNkWEq85Ve1/U4i1dhnVqSN3/eWLql4NcTXbfJP9SROzTABcYDk/thc+4Z2e7reVP2orh/tdU1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FVc19hfP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1C6FC43399;
-	Wed, 20 Mar 2024 16:39:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710952795;
-	bh=pdueHAqME/RXgy8B9mFyZ15nNoudCV+XV4ekjt1t7PU=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=FVc19hfPlD2Pe6iXcWwRKFQRVVTIBwSeK81M7Ns2vV4MoygQSFn9S7DkIGNqU/wfe
-	 dd+qCyPc078egc4X5E2JCEsh3R5ohsY1zvRGUhcReCzm8POz2JWc4EXjj4cNtfTGjj
-	 ettr+m+vnRaZGi31BZPdWVL00f0siVr6Hk8LzcBl/1tl6JYfDod+aYQeTt6ALg3tjo
-	 zzwx8j585+To2OE+ca5IJHVmR+Qzdy8OAav3k3CRM6w7P456VzP7N6NsXkr/B5SDyv
-	 BSBIykRtw7GTM9A3EXuzv0VTfwNreM3GDNkT2pAyjwQUk54iiKc38sHeLYpXETiFgY
-	 15FIDX5s5ezpg==
-From: Kalle Valo <kvalo@kernel.org>
-To: Lingbo Kong <quic_lingbok@quicinc.com>
-Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH] wifi: ath12k: report signal for iw dev xxx station dump
-References: <20240219111417.1185-1-quic_lingbok@quicinc.com>
-Date: Wed, 20 Mar 2024 18:39:52 +0200
-In-Reply-To: <20240219111417.1185-1-quic_lingbok@quicinc.com> (Lingbo Kong's
-	message of "Mon, 19 Feb 2024 19:14:17 +0800")
-Message-ID: <87o7b8amcn.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1710954119; c=relaxed/simple;
+	bh=riDnAYASVcYCRvsE9up4IqXSn5APJJQ9Ae+rukBzFQo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EzZJMxwdBHtR/LCGHVRzqp6iIFDkES/UzS70C5uTWVimqWNZ2b4rqgKhjHtSYxp19Vn7qlzn+2pAWvw1uu3ou+71IZVrzI/Y0M9i+UgeikB9kTrfRRXV/yEncZcMBmI3pF7s1OKewmB//8E0FPV0zAlo7bUxuuaoP0elpRdBpKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-513d3746950so104578e87.1;
+        Wed, 20 Mar 2024 10:01:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710954116; x=1711558916;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wEfzL/x+HvKfKexpvwPECfkK5QWCbVSUpN9Cn9FEYTo=;
+        b=Yrvjc//77d6YrXWuejx0beLNRi0W4B6PLrQN/QHyTUZyDGyhDUwpCBT/ZLHHEhfKfy
+         4Qe0BMINwJW2pQK/hT3Bw6swCcYCbi8Bgw2VsYE8/8rX2z3X/XC/1hIlCCAcqNWSs0W8
+         43J/VMBWWraix0t50UsaUceYVkYVkpC9iwkpfcKiw8zK10PZ2kR2OOpCrWoXmVrpryf+
+         nIRPVR/xlu/s1eGFpqZodNiEOV6abwW3Qqz9M87n84a0XP+5JIZ8/EXmBtWVOrkqyTRq
+         Z5bau67UinQGOyxaM7LGXYd4pWKhSmsJTiyWhXsK4wL2C9yr+BXcVXGVAY2LHOrhYXYS
+         40NA==
+X-Forwarded-Encrypted: i=1; AJvYcCUJi30MyommHEx0q14Afow9l7trEN08hSyat91gebUKA/bjbMBL8MjbOmWaC+TbRP5DXuTkYHkkc8h4Ux9MOEv+oraKGAapn0dqlpAmPcY7q6Z5sSrSDDs+mQaCfgbI1qVjsNsnVibPquDLVLk=
+X-Gm-Message-State: AOJu0Yx1UUqKP58G2AqYvtZ8cWjbKA0HIWfj/0t87RN08Xjadw/ge982
+	m4vyRrL/fSF50SAUaqHqLrXKD8uLoIMOm1fcZj4nExuZBnmqAGQb
+X-Google-Smtp-Source: AGHT+IFshgPj3UMN4cJiNIVIXvG/10g68W2pa6RLfXGSEY8o7CaDgP1x0o/YnloMRnopMl5TdGmZIQ==
+X-Received: by 2002:a05:6512:3fa:b0:513:cf4e:941b with SMTP id n26-20020a05651203fa00b00513cf4e941bmr1681905lfq.19.1710954115798;
+        Wed, 20 Mar 2024 10:01:55 -0700 (PDT)
+Received: from gmail.com (fwdproxy-lla-001.fbsv.net. [2a03:2880:30ff:1::face:b00c])
+        by smtp.gmail.com with ESMTPSA id n18-20020a05640205d200b00568b6d731e1sm5798016edx.4.2024.03.20.10.01.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 Mar 2024 10:01:55 -0700 (PDT)
+Date: Wed, 20 Mar 2024 10:01:53 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Kalle Valo <kvalo@kernel.org>
+Cc: Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Jeff Johnson <jjohnson@kernel.org>, kuba@kernel.org,
+	keescook@chromium.org,
+	"open list:NETWORKING DRIVERS (WIRELESS)" <linux-wireless@vger.kernel.org>,
+	"open list:QUALCOMM ATHEROS ATH10K WIRELESS DRIVER" <ath10k@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] ath10k: allocate dummy net_device dynamically
+Message-ID: <ZfsWgVeHJXMdh5bp@gmail.com>
+References: <20240319104754.2535294-1-leitao@debian.org>
+ <9fcdb857-da62-4832-ae11-043fe993e4ad@quicinc.com>
+ <87wmpwaprz.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87wmpwaprz.fsf@kernel.org>
 
-Lingbo Kong <quic_lingbok@quicinc.com> writes:
+On Wed, Mar 20, 2024 at 05:25:52PM +0200, Kalle Valo wrote:
+> Jeff Johnson <quic_jjohnson@quicinc.com> writes:
+> 
+> > On 3/19/2024 3:47 AM, Breno Leitao wrote:
+> >> Embedding net_device into structures prohibits the usage of flexible
+> >> arrays in the net_device structure. For more details, see the discussion
+> >> at [1].
+> >> 
+> >> Un-embed the net_device from struct ath10k by converting it
+> >> into a pointer. Then use the leverage alloc_netdev() to allocate the
+> >> net_device object at ath10k_core_create(). The free of the device occurs
+> >> at ath10k_core_destroy().
+> >> 
+> >> [1] https://lore.kernel.org/all/20240229225910.79e224cf@kernel.org/
+> >> 
+> >> Signed-off-by: Breno Leitao <leitao@debian.org>
+> >
+> > NAK this based upon the ath11k patch results.
+> >
+> > As suggested there we should just use kmalloc/kfree to match the existing logic.
+> 
+> BTW if the patch is not tested on a real device then it's good to
+> document that in the commit message with "Compile tested only" or
+> similar.
 
-> The signal of "iw dev xxx station dump" always show 0 dBm. This is because
-> currently signal is only set in ath12k_mgmt_rx_event function, and not set
-> for rx data packet. So, change to get signal from firmware and report to
-> mac80211.
->
-> After that, "iw dev xxx station dump" show the correct signal such as:
-> signal: -50 dBm
-> signal: -49 dBm
->
-> Tested-on: WCN7850 hw2.0 PCI
-> WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
->
-> Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
-
-I'll omit the cosmetics for now and focus on the big picture.
-
-First of all, no mention of WCN7850 and QCN9274 in the commit message.
-Not good.
-
-> --- a/drivers/net/wireless/ath/ath12k/hw.c
-> +++ b/drivers/net/wireless/ath/ath12k/hw.c
-> @@ -920,6 +920,8 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
->  		.otp_board_id_register = QCN9274_QFPROM_RAW_RFA_PDET_ROW13_LSB,
->  
->  		.supports_sta_ps = false,
-> +
-> +		.supports_rssi_stats = false,
->  	},
->  	{
->  		.name = "wcn7850 hw2.0",
-> @@ -993,6 +995,8 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
->  		.otp_board_id_register = 0,
->  
->  		.supports_sta_ps = true,
-> +
-> +		.supports_rssi_stats = true,
->  	},
->  	{
->  		.name = "qcn9274 hw2.0",
-> @@ -1061,6 +1065,8 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
->  		.otp_board_id_register = QCN9274_QFPROM_RAW_RFA_PDET_ROW13_LSB,
->  
->  		.supports_sta_ps = false,
-> +
-> +		.supports_rssi_stats = false,
->  	},
->  };
-
-Ok, based on this you enable this only for WCN7850 hw2.0. Why is that?
-
-We really should get rid of "I work only on WCN7850 and not care about
-QCN9274" mindset. And of course the other team says "I work only on
-QCN9274 and not care about WCN7850", sigh. If you work on ath12k you
-need to consider *BOTH* WCN7850 and QCN9274 families!
-
->  static void ath12k_mac_op_sta_statistics(struct ieee80211_hw *hw,
->  					 struct ieee80211_vif *vif,
->  					 struct ieee80211_sta *sta,
->  					 struct station_info *sinfo)
->  {
->  	struct ath12k_sta *arsta = ath12k_sta_to_arsta(sta);
-> +	struct ath12k *ar = arsta->arvif->ar;
-> +	s8 signal;
->  
->  	sinfo->rx_duration = arsta->rx_duration;
->  	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_RX_DURATION);
-> @@ -7473,8 +7503,19 @@ static void ath12k_mac_op_sta_statistics(struct ieee80211_hw *hw,
->  	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_BITRATE);
->  
->  	/* TODO: Use real NF instead of default one. */
-> -	sinfo->signal = arsta->rssi_comb + ATH12K_DEFAULT_NOISE_FLOOR;
-> -	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_SIGNAL);
-> +	signal = arsta->rssi_comb;
-> +
-> +	if (!signal &&
-> +	    arsta->arvif->vdev_type == WMI_VDEV_TYPE_STA &&
-> +	    ar->ab->hw_params->supports_rssi_stats &&
-> +	    !(ath12k_mac_get_fw_stats(ar, ar->pdev->pdev_id, 0,
-> +				      WMI_REQUEST_VDEV_STAT)))
-> +		signal = arsta->rssi_beacon;
-> +
-> +	if (signal) {
-> +		sinfo->signal = signal;
-> +		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_SIGNAL);
-> +	}
->  }
-
-If I'm reading the patch correctly this is the sequence:
-
-1. ath12k_mac_op_sta_statistics() is called
-
-2. WMI_REQUEST_STATS_CMDID is sent to the firmware
-
-3. ath12k_mac_op_sta_statistics() returns
-
-4. firmware sends WMI_UPDATE_STATS_EVENTID to host
-
-5. ath12k_wmi_tlv_fw_stats_data_parse() stores signal to arsta->rssi_beacon
-
-So doesn't this mean that ath12k_mac_op_sta_statistics() actually uses
-the previous value? And if ath12k_mac_op_sta_statistics() is called very
-seldom, like once an hour, the signal value can be one hour wrong?
-
-Also I don't see any protection when accessing arsta->rssi_beacon.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Good to know. Thanks. I will add it to the next patches.
 
