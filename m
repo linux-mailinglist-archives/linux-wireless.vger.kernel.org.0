@@ -1,136 +1,92 @@
-Return-Path: <linux-wireless+bounces-4952-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4954-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17E71880DBE
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 09:51:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78BB8880E2A
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 10:01:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 908F5B23A5B
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 08:51:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A7CB01C22ED9
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 09:01:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFA473FB2A;
-	Wed, 20 Mar 2024 08:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3A7939FEB;
+	Wed, 20 Mar 2024 08:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="Bc3L/JlT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tN+S9WGO"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from forward201b.mail.yandex.net (forward201b.mail.yandex.net [178.154.239.156])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DA0D3FB2C
-	for <linux-wireless@vger.kernel.org>; Wed, 20 Mar 2024 08:49:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF90639FC3
+	for <linux-wireless@vger.kernel.org>; Wed, 20 Mar 2024 08:59:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710924545; cv=none; b=M8LuZc5M+X9m1o+MRq4DPKp7sdW5YkCsojO1fHolfsutvABP59WULHI+OxxRRo4My2M4DBUN7ZJ5R0/At0rdU27GKuDxFXjXPAvDyvuXUa5Fnwqj6FksSbWOKSYWjjEk9au4xjEo0i7JGDSPf2kuLFr8pBrSCNI1lRdeNvzB0zs=
+	t=1710925159; cv=none; b=m0p53f2dEMmC2QN7ocJbFBfNlH9pEK2W5msumqIxdVdQOvvMbkj8TjUU7um2sjkfcwCj61HydAWy1JMFtc82dkAEnxs4jiwbIEQy6R8LhDHQXDJpL9Rx+Sq83Rv6t8COtc7ASdTAv8jx9skbXvg8HItzekcXKSD4ox7bqjD6Uz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710924545; c=relaxed/simple;
-	bh=Qlioykv5hApah2n20hboUTEU7sRCpV3NlM03TtGRKSU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MoDM7LhvfO8stvTFBnGRniCiaBGUm3VlOBhZTgW2GhC3PZyvTB1LDu+5K9jLYeu6P8P5O+U0ATcisCQLQL5otlpw0fA50L/+tZXx2VNVOYUeLKJrgb2f8JK03VtlBA+1fLxcRKOsFK3lewIkwAsvvkVn6+y+P5gcAvcK2OKh/fI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=Bc3L/JlT; arc=none smtp.client-ip=178.154.239.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
-Received: from forward103c.mail.yandex.net (forward103c.mail.yandex.net [IPv6:2a02:6b8:c03:500:1:45:d181:d103])
-	by forward201b.mail.yandex.net (Yandex) with ESMTPS id B06586736B
-	for <linux-wireless@vger.kernel.org>; Wed, 20 Mar 2024 11:43:35 +0300 (MSK)
-Received: from mail-nwsmtp-smtp-production-main-91.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-91.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:1791:0:640:98f4:0])
-	by forward103c.mail.yandex.net (Yandex) with ESMTPS id DCFF160B58;
-	Wed, 20 Mar 2024 11:43:27 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-91.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id PhAfFV1OduQ0-fJC1zOpZ;
-	Wed, 20 Mar 2024 11:43:27 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1710924207; bh=isYLfReRHHxvrQUz/5fzhXAtiXm5WmMKSF2U7YoDwjE=;
-	h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
-	b=Bc3L/JlT9BW9WnzJwzG3HYJMJ+mctMldAnkT2b7D4ZYrvcVTDwQ4mjtb/TEJgGUyj
-	 uWsWCgaa4wqw+IQw26aUEX99DOWSGo8Tr5JF8xkhxYCfNZKZqnqolOilxxTN/dhIaM
-	 g3GzYH7wbcR2B0j7Qejet5GFvgJBiKPRezGLk2U8=
-Authentication-Results: mail-nwsmtp-smtp-production-main-91.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From: Dmitry Antipov <dmantipov@yandex.ru>
+	s=arc-20240116; t=1710925159; c=relaxed/simple;
+	bh=u/VzySYQ1Rmdd+HxMwxGd5Tt1tOaSJ+SqoOW598AaYI=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=nkww2eGyhJ9GGxOg2WasII7Z0OrnALER7u288sOYbJ+VP55BAuvTslz06Fx10Iqh2+lA7RG6Y8khzQ9znJpf+dKXclTXCp5nOi2h4Ftgrktvkwfd5aAJBTxsqyeG8ImUvdVyEoEro6YgPd7k4LTGha7XDQQs8kG+VAirBB/PjqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tN+S9WGO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DB3FC433F1;
+	Wed, 20 Mar 2024 08:59:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710925159;
+	bh=u/VzySYQ1Rmdd+HxMwxGd5Tt1tOaSJ+SqoOW598AaYI=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=tN+S9WGOU0nrunB2baggcG4CrB1DudoUOqRDX3FSCpXLsemrDfAbRvjhih9QRT1XB
+	 jz9nBohWXforShjcapUvfJOXn3o5ueB/luksZf74v8vBBr+VfSJMI+px+9KuqMXUma
+	 ruwxVrDg5gJfWRCLUY0zmvyZayP0RWVHC0l4HYtMbYnRr052crhHgR/rq/xozBeH0b
+	 1QZJBFctzUo7qR/eo5S+AwNImci73V2gjaGRFJdtpbZpyBDpCuAcyNIaZLDEutF2Lj
+	 UnJnkX74fKnzv1WhsPUgxd2nKjBvElu4Xl55AuprZ4agW1kvAyEI6F43eN+MxBRkFJ
+	 0sk3ZjgMF3d+w==
+From: Kalle Valo <kvalo@kernel.org>
 To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: Kalle Valo <kvalo@kernel.org>,
-	linux-wireless@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH 2/2] wifi: rtlwifi: always assume QoS mode in rtl8192cu
-Date: Wed, 20 Mar 2024 11:43:24 +0300
-Message-ID: <20240320084324.109506-2-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240320084324.109506-1-dmantipov@yandex.ru>
-References: <20240320084324.109506-1-dmantipov@yandex.ru>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+  "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
+  "fiona.klute@gmx.de" <fiona.klute@gmx.de>,  "Jes.Sorensen@gmail.com"
+ <Jes.Sorensen@gmail.com>,  "s.hauer@pengutronix.de"
+ <s.hauer@pengutronix.de>,  "rtl8821cerfe2@gmail.com"
+ <rtl8821cerfe2@gmail.com>,  "Larry.Finger@lwfinger.net"
+ <Larry.Finger@lwfinger.net>,  "martin.kaistra@linutronix.de"
+ <martin.kaistra@linutronix.de>,  "martin.blumenstingl@googlemail.com"
+ <martin.blumenstingl@googlemail.com>,  "brianwitte@mailfence.com"
+ <brianwitte@mailfence.com>
+Subject: Re: Git tree to manage Realtek WiFi drivers
+References: <503a9152324a817c251193ee486e1bbcb48d2fa8.camel@realtek.com>
+Date: Wed, 20 Mar 2024 10:59:15 +0200
+In-Reply-To: <503a9152324a817c251193ee486e1bbcb48d2fa8.camel@realtek.com>
+	(Ping-Ke Shih's message of "Tue, 19 Mar 2024 01:33:27 +0000")
+Message-ID: <87edc5b7oc.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-In 'rtl92cu_set_hw_reg()', always assume that QoS mode is enabled
-as it was hardcoded since an initial commit. Compile tested only.
+Ping-Ke Shih <pkshih@realtek.com> writes:
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> First of all, thank all contributors (Cc'ed) to add new features and
+> chips support of Realtek WiFi under drivers/net/wireless/realtek/.
+>
+> To balance load of maintainers, I will start being the maintainer to manage
+> Realtek drivers [1] by an new git tree [2] that I fork from wireless-next,
+> and the main branch is rtw-next. For submitters, all things are the same as
+> usual except to codebase.
+>
+> Also welcome to help review patches from other contributors. That is
+> really helpful to get these drivers better.
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
- .../wireless/realtek/rtlwifi/rtl8192cu/hw.c   | 30 +++----------------
- 1 file changed, 4 insertions(+), 26 deletions(-)
+Ping-Ke, a big thank you for starting to maintain the rtw tree! Not only
+that it helps me, I suspect Realtek driver development will be faster as
+I'm not the bottleneck anymore.
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.c
-index 76bedfec55a3..0195c9a3e9e8 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.c
-@@ -1484,7 +1484,6 @@ void rtl92cu_set_hw_reg(struct ieee80211_hw *hw, u8 variable, u8 *val)
- 	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
- 	struct rtl_efuse *rtlefuse = rtl_efuse(rtl_priv(hw));
- 	struct rtl_ps_ctl *ppsc = rtl_psc(rtl_priv(hw));
--	enum wireless_mode wirelessmode = mac->mode;
- 	u8 idx = 0;
- 
- 	switch (variable) {
-@@ -1536,36 +1535,15 @@ void rtl92cu_set_hw_reg(struct ieee80211_hw *hw, u8 variable, u8 *val)
- 		}
- 	case HW_VAR_SLOT_TIME:{
- 			u8 e_aci;
--			u8 QOS_MODE = 1;
- 
- 			rtl_write_byte(rtlpriv, REG_SLOT, val[0]);
- 			rtl_dbg(rtlpriv, COMP_MLME, DBG_LOUD,
- 				"HW_VAR_SLOT_TIME %x\n", val[0]);
--			if (QOS_MODE) {
--				for (e_aci = 0; e_aci < AC_MAX; e_aci++)
--					rtlpriv->cfg->ops->set_hw_reg(hw,
--								HW_VAR_AC_PARAM,
--								&e_aci);
--			} else {
--				u8 sifstime = 0;
--				u8	u1baifs;
- 
--				if (IS_WIRELESS_MODE_A(wirelessmode) ||
--				    IS_WIRELESS_MODE_N_24G(wirelessmode) ||
--				    IS_WIRELESS_MODE_N_5G(wirelessmode))
--					sifstime = 16;
--				else
--					sifstime = 10;
--				u1baifs = sifstime + (2 *  val[0]);
--				rtl_write_byte(rtlpriv, REG_EDCA_VO_PARAM,
--					       u1baifs);
--				rtl_write_byte(rtlpriv, REG_EDCA_VI_PARAM,
--					       u1baifs);
--				rtl_write_byte(rtlpriv, REG_EDCA_BE_PARAM,
--					       u1baifs);
--				rtl_write_byte(rtlpriv, REG_EDCA_BK_PARAM,
--					       u1baifs);
--			}
-+			for (e_aci = 0; e_aci < AC_MAX; e_aci++)
-+				rtlpriv->cfg->ops->set_hw_reg(hw,
-+							      HW_VAR_AC_PARAM,
-+							      &e_aci);
- 			break;
- 		}
- 	case HW_VAR_ACK_PREAMBLE:{
 -- 
-2.44.0
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
