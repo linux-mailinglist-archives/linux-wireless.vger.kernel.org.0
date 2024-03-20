@@ -1,72 +1,72 @@
-Return-Path: <linux-wireless+bounces-4967-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4968-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D64F288101E
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 11:42:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FCD7881044
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 11:51:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02CE41C230C9
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 10:42:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5497282CD1
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 10:51:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76AAA79D1;
-	Wed, 20 Mar 2024 10:42:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A82339FD9;
+	Wed, 20 Mar 2024 10:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="iEvXqsOR"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="h54ySATl"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B687335B5
-	for <linux-wireless@vger.kernel.org>; Wed, 20 Mar 2024 10:42:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A813329CEB
+	for <linux-wireless@vger.kernel.org>; Wed, 20 Mar 2024 10:51:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710931325; cv=none; b=J5lciZN9M4gjK2FhahvZJhkilfRBg+iZOlspkvHTtAJPT1oih+0uFunR3f2+NS5O7sSyWfclpiVRsRhdu6Db+4p9oSUjkHUT2+DfZW/NEL08atNc1vBExnPYpCwW96HFnWAPflQbOSOyq0aHlQSQW4nXvDWWjz1TQyf+dtj54Yw=
+	t=1710931889; cv=none; b=Ybfkh9w6kXwrmbw4jtuPZ1jstvGunhnrDvrIZpXkV61OqX9x5h03GVmMIWieyfhObDfGwCt1f0PdFSUAFbdGF2jMUqJw8VIw88JIT1CGPZYMTnxxdOcJDWRgy6QglGwzowdivv0a3YWv0oItuEftntq/EJrLi15jXHYvT7XPS6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710931325; c=relaxed/simple;
-	bh=MPKO4ASOMVUlVvgvWhtlyEOGyOOM0kW9ducnSIwa5S0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:Cc:From:
-	 In-Reply-To:Content-Type; b=HP7745/UzQFU/eg3DIneOrM4OH8+zpR6fEltO/I+Nckb2N8JKhEfwL4XabjG1olnsWTek+wkL+jYEQTizMLDIWoh1itfjogbIelnZsIgq+Jlb8+0pvTYFIru2z5WgTC4JOih8Cn4CNJhZ7FAtjouTqymdPRrdtr8IPZ0JKRRbuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=iEvXqsOR; arc=none smtp.client-ip=209.85.222.170
+	s=arc-20240116; t=1710931889; c=relaxed/simple;
+	bh=sg0ELnlNJoEjcoDQfIqzcYjeQzY7C6TGXTLHco6IibA=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=Hlrchd98D0/rDQ5GYiX33aeLgUpFyfSm+3w36UvzeqluxfaJa1T7CBrT++7uO/JnUkbJdi2DBGMLTbW5HJyAJ1lxucOorT2dPMW5ulW6EMMRwXXW8dt6R7mbyC88V1TxZJQzjWuzkMsqC5zGJ8ofdygkfHP9hL29zJU/JzCzsfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=h54ySATl; arc=none smtp.client-ip=209.85.219.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-781753f52afso360236385a.2
-        for <linux-wireless@vger.kernel.org>; Wed, 20 Mar 2024 03:42:03 -0700 (PDT)
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-696315c9da5so12430366d6.2
+        for <linux-wireless@vger.kernel.org>; Wed, 20 Mar 2024 03:51:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1710931322; x=1711536122; darn=vger.kernel.org;
-        h=in-reply-to:autocrypt:from:cc:references:to:subject:user-agent
+        d=broadcom.com; s=google; t=1710931886; x=1711536686; darn=vger.kernel.org;
+        h=in-reply-to:autocrypt:references:cc:to:from:subject:user-agent
          :mime-version:date:message-id:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=cw296er5HBFzZVOD4eAZAYjOWPb9B3XpkinWhO1ZQgQ=;
-        b=iEvXqsORnT7LtLLVs/MVb3+Haat6cH21o+ukEBupwd7hA1oh5rBL1Y9Ob7tKcojvtH
-         GnOtFQwRB5SRDqnlr1LCdnV/Kw5e+MTKvELuPbChwD83FRZHZidutzp3o36AydZsYz7M
-         XFuND/IDm4AHf7aE6eFqaz8ldKThR0cJKargk=
+        bh=92P104EUL+a/VyixmAsMrmDXGv9jHMOYJ/pnfxhB2K8=;
+        b=h54ySATlEEeLQkVW+eZos3LzMbb5xFLnFcbtmeygxcPYrKJAyKKA1HKmZRpBDpwbxU
+         0D4wi4Q2v1Q60Kp5u3qChMbjwqd8BfOoVuc0/WkHcShiI046MxpnrQEEZgf8KPuBrKXy
+         S3n2p+YYcdu20bdOstP5i6EF4U3DjiygQGDRs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710931322; x=1711536122;
-        h=in-reply-to:autocrypt:from:cc:references:to:subject:user-agent
+        d=1e100.net; s=20230601; t=1710931886; x=1711536686;
+        h=in-reply-to:autocrypt:references:cc:to:from:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=cw296er5HBFzZVOD4eAZAYjOWPb9B3XpkinWhO1ZQgQ=;
-        b=v76/YiJeqIcwaaVgr3OxOIJg7a14oIqM5J4InwoYTTL5TYdZLccNQOMPPjBq+5ETB6
-         k1MbvAyD4nxmcXugIjbczCSYPj3cUQUL8ytsnrIbTwpIDYy4HQSzBWiHvA1DalAE1uDQ
-         Gjoq8GgltJ5iOX+ifGhFs74zq+EkVRRuSzJFQFeEDQoUwnhkyn6twA8W+Ej5QpQm8mSy
-         7vZK1MYBJh6IsVIe3Kk03/Xmsw5HXiGP8qzlsNlwqj39qdWj038eRK6tmJcldg4049s7
-         63mBnG8bbs71h9+WueeShwef/UsVVQcFkSlE34TG+oSbXy3v/uoMk+RjN6xdVl69BFcC
-         MdlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXsTTlHiMD5Ao4JHBjJ9QMRIup2TiQKLhWfKTsydzf/Wf6fqOHRIgivQv9p4jvAGzVofdyqddhl6kiwrkDgXF28lErafkfDh54w2U+uWcw=
-X-Gm-Message-State: AOJu0YxX6oGJbS+H0wiQ+D7rvi9ZnJWY7jFFgnLaJ9LKXHfST2O0xSGx
-	fIm4LC6p1MlCPfxxU3kaPaI7ibdCdNrqutyo1OjBVOJWoDP4Yma+FaENP9nZJKbzgbmozoZIg7H
-	Nf0mc3D4=
-X-Google-Smtp-Source: AGHT+IEO0kGll9N5HeF8HdamnNvFffKQZYe+naAehL9/oL7tyonxQDuf5FztWapxtBM9rWhlS2DUIg==
-X-Received: by 2002:ae9:ec0c:0:b0:789:f1b7:c612 with SMTP id h12-20020ae9ec0c000000b00789f1b7c612mr1617623qkg.4.1710931322333;
-        Wed, 20 Mar 2024 03:42:02 -0700 (PDT)
+        bh=92P104EUL+a/VyixmAsMrmDXGv9jHMOYJ/pnfxhB2K8=;
+        b=HLLO26lvzbiNFNTrFMk3vSJGhB1UOXGlgOlkYgfNkB60pPp41GKmwVBe9BZ1beRbmR
+         BKkBh5H/R0igrE9mwOqu1yX63UNGZ9OZ0imgf1Oc9wFu84VO5ks3Qt/mpUEuS+qCNxsA
+         n6E9bZPpQ9hjlSM5Tu++j9LoblB/o0qH0qpmKLumJLueEdyaiLU/oc9G2vrJXyKkp/gW
+         sLaV+PIR+i8OtLHtfcy0Un/lbpvEFVnTb2BZBIpG0v2Hf1eXohhqiPM6wHAsTeesKkVY
+         FXr7rpDb1XU2yIFz0Ehw940kpy3CaOdLdUfsiWGRh9OC5S82QSI0DWE2iKPF2eAoDgoG
+         JdMA==
+X-Forwarded-Encrypted: i=1; AJvYcCUY7P3oBevkou5KIlwF79FONpIvshEyezCPOPiGwzokjiSc3Fk36RY2gDlISN6DlBqe/JAtxsR/sefNz729ah+o3yGw89Xe+MnR89zFvGQ=
+X-Gm-Message-State: AOJu0YxZ4vNSukUqvV26vkwaNzOFSdnzYj9/REbHn9d7wvjCzsHJZirg
+	AxgezBTK9WhMSt0+eDj4XWWWfeDv4jVHLKVARpa6qT2Waj1AeszC9/vL5RgXb6rdMK/oq8uKXOL
+	sRqXs0Zs=
+X-Google-Smtp-Source: AGHT+IE6dZ9dozMA1FcI1W/S9HGU47oBqUyGWHNFeT2cB6NehPYby3h1j6XOoexFQFeQyLruXiZ0cA==
+X-Received: by 2002:a0c:cb87:0:b0:690:b3a3:2261 with SMTP id p7-20020a0ccb87000000b00690b3a32261mr17654381qvk.53.1710931886559;
+        Wed, 20 Mar 2024 03:51:26 -0700 (PDT)
 Received: from [10.176.68.61] ([192.19.148.250])
-        by smtp.gmail.com with ESMTPSA id x26-20020ae9f81a000000b00785d538aebdsm6409026qkh.95.2024.03.20.03.42.01
+        by smtp.gmail.com with ESMTPSA id a9-20020a0ce349000000b006916003c53asm7399643qvm.27.2024.03.20.03.51.25
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 20 Mar 2024 03:42:01 -0700 (PDT)
-Message-ID: <3618d1dc-cdff-4336-b35a-26307fa7b51c@broadcom.com>
-Date: Wed, 20 Mar 2024 11:41:59 +0100
+        Wed, 20 Mar 2024 03:51:25 -0700 (PDT)
+Message-ID: <d6e79a99-3304-41bf-9414-736438d7ab9c@broadcom.com>
+Date: Wed, 20 Mar 2024 11:51:24 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -75,10 +75,11 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: bump
-To: Hranislav Milenkovic <hmilenkovic@protonmail.com>
-References: <H1YMm0UlsCAAuLjY3yG9iqSb0G4tRSHoe0_-bLXMowq8eNCd7eW5Vs_D_PdO4KnriiKO5e5fehpmXmQPtAR9htqHRT5MgFZumadSikTcNWw=@protonmail.com>
-Cc: brcm80211@lists.linux.dev, linux-wireless <linux-wireless@vger.kernel.org>
 From: Arend van Spriel <arend.vanspriel@broadcom.com>
+To: Hranislav Milenkovic <hmilenkovic@protonmail.com>
+Cc: brcm80211@lists.linux.dev, linux-wireless <linux-wireless@vger.kernel.org>
+References: <H1YMm0UlsCAAuLjY3yG9iqSb0G4tRSHoe0_-bLXMowq8eNCd7eW5Vs_D_PdO4KnriiKO5e5fehpmXmQPtAR9htqHRT5MgFZumadSikTcNWw=@protonmail.com>
+ <3618d1dc-cdff-4336-b35a-26307fa7b51c@broadcom.com>
 Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
  xsFNBGP96SABEACfErEjSRi7TA1ttHYaUM3GuirbgqrNvQ41UJs1ag1T0TeyINqG+s6aFuO8
  evRHRnyAqTjMQoo4tkfy21XQX/OsBlgvMeNzfs6jnVwlCVrhqPkX5g5GaXJnO3c4AvXHyWik
@@ -122,176 +123,66 @@ Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
  NKowQLrlMBGXT4NnRNV0+yHmusXPOPIqQCKEtbWSx9s2slQxmXukPYvLnuRJqkPkvrTgjn5d
  eSE0Dkhni4292/Nn/TnZf5mxCNWH1p3dz/vrT6EIYk2GSJgCLoTkCcqaM6+5E4IwgYOq3UYu
  AAgeEbPV1QeTVAPrntrLb0t0U5vdwG7Xl40baV9OydTv7ghjYZU349w1d5mdxg==
-In-Reply-To: <H1YMm0UlsCAAuLjY3yG9iqSb0G4tRSHoe0_-bLXMowq8eNCd7eW5Vs_D_PdO4KnriiKO5e5fehpmXmQPtAR9htqHRT5MgFZumadSikTcNWw=@protonmail.com>
+In-Reply-To: <3618d1dc-cdff-4336-b35a-26307fa7b51c@broadcom.com>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="000000000000b919450614153d2e"
+	boundary="0000000000005a04460614155f6d"
 
---000000000000b919450614153d2e
+--0000000000005a04460614155f6d
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 3/7/2024 7:53 AM, Hranislav Milenkovic wrote:
-> Hi Arend, couple years later same question... can these crashes be 
-> fixed... who maintains chipset firmware for 43602... I get it for 
-> brcmfmac but who maintains firmwares from here 
-> https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/plain/brcm/ <https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/plain/brcm/>
+On 3/20/2024 11:41 AM, Arend van Spriel wrote:
+> On 3/7/2024 7:53 AM, Hranislav Milenkovic wrote:
+>> Hi Arend, couple years later same question... can these crashes be 
+>> fixed... who maintains chipset firmware for 43602... I get it for 
+>> brcmfmac but who maintains firmwares from here 
+>> https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/plain/brcm/ <https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/plain/brcm/>
+> 
+> Hi Hranislav,
+> 
+> The firmware repo is maintained by kernel.org. Regarding the firmwares 
+> for the brcm chips these have been submitted by Broadcom. The 43602 is 
+> EOL so there will be no regular releases. Can you provide hardware 
+> configuration details for your platform.
+> 
+> The firmware repo has two firmware files for 43602:
+> 
+> -rw-r--r--    brcmfmac43602-pcie.ap.bin    595472
+> -rw-r--r--    brcmfmac43602-pcie.bin        635449
+> 
+> Which one are you using?
+> 
+>> I have some crashes if you are interested (also have you seen this 
+>> bugreport 
+>> https://github.com/openwrt/openwrt/issues/14685#issuecomment-1980108432 <https://github.com/openwrt/openwrt/issues/14685#issuecomment-1980108432>)
+> 
+> You made me look. So are you using OpenWrt? What release/branch are you 
+> using?
+> 
+>>   Mar 05 19:13:21 178.220.177.32 kernel [ 5284.722477] ieee80211 phy0: 
+>> brcmf_fw_crashed: Firmware has halted or crashed
+>>   Mar 05 19:13:21 178.220.177.32 kernel [ 5284.729587] 0001:01:00.0: 
+>> CONSOLE: 005280.898
+>>   Mar 05 19:13:21 178.220.177.32 kernel [ 5284.734051] 0001:01:00.0: 
+>> CONSOLE: FWID 01-f458629d
 
-Hi Hranislav,
+This FWID is not matching the firmware files in linux-firmware repo:
 
-The firmware repo is maintained by kernel.org. Regarding the firmwares 
-for the brcm chips these have been submitted by Broadcom. The 43602 is 
-EOL so there will be no regular releases. Can you provide hardware 
-configuration details for your platform.
+$ for f in brcmfmac43602-pcie.*; do strings $f | tail -1; done
+43602a1-roml/pcie-ag-splitrx-fdap-mbss-mfp-wl11k-wl11u-txbf-pktctx-amsdutx-ampduretry-chkd2hdma-proptxstatus-11nprop 
+Version: 7.35.177.56 CRC: 548eccd4 Date: Fri 2015-09-18 03:31:06 PDT 
+Ucode Ver: 986.122 FWID: 01-6cb8e269
+43602a1-roml/pcie-ag-pktctx-splitrx-amsdutx-txbf-p2p-mchan-idauth-idsup-tdls-mfp-sr-proptxstatus-pktfilter-wowlpf-ampduhostreorder-keepalive-srom12-chkd2hdma 
+Version: 7.35.177.61 CRC: 55b10cfe Date: Tue 2015-11-10 06:39:55 PST 
+Ucode Ver: 986.122 FWID: 01-ea662a8c
 
-The firmware repo has two firmware files for 43602:
-
--rw-r--r--	brcmfmac43602-pcie.ap.bin	595472
--rw-r--r--	brcmfmac43602-pcie.bin		635449
-
-Which one are you using?
-
-> I have some crashes if you are interested (also have you seen this 
-> bugreport 
-> https://github.com/openwrt/openwrt/issues/14685#issuecomment-1980108432 
-> <https://github.com/openwrt/openwrt/issues/14685#issuecomment-1980108432>)
-
-You made me look. So are you using OpenWrt? What release/branch are you 
-using?
-
->   Mar 05 19:13:21 178.220.177.32 kernel [ 5284.722477] ieee80211 phy0: 
-> brcmf_fw_crashed: Firmware has halted or crashed
->   Mar 05 19:13:21 178.220.177.32 kernel [ 5284.729587] 0001:01:00.0: 
-> CONSOLE: 005280.898
->   Mar 05 19:13:21 178.220.177.32 kernel [ 5284.734051] 0001:01:00.0: 
-> CONSOLE: FWID 01-f458629d
->   Mar 05 19:13:21 178.220.177.32 kernel [ 5284.739004] 0001:01:00.0: 
-> CONSOLE: flags 110005
->   Mar 05 19:13:21 178.220.177.32 kernel [ 5284.743562] 0001:01:00.0: 
-> CONSOLE: 005280.898
->   Mar 05 19:13:21 178.220.177.32 kernel [ 5284.748079] 0001:01:00.0: 
-> CONSOLE: TRAP 7(26fea8): pc 1871d6, lr 1867e9, sp 26ff00, cpsr 800001df, 
-> spsr 800001bf
->   Mar 05 19:13:21 178.220.177.32 kernel [ 5284.758362] 0001:01:00.0: 
-> CONSOLE: 005280.898   r0 1000000, r1 40000000, r2 40, r3 1, r4 1fc8d8, 
-> r5 26af20, r6 25f2d4
->   Mar 05 19:13:21 178.220.177.32 kernel [ 5284.769074] 0001:01:00.0: 
-> CONSOLE: 005280.898   r7 25eab4, r8 25f2dc, r9 0, r10 bf3c0282, r11 
-> db1d6d6c, r12 6038120
->   Mar 05 19:13:21 178.220.177.32 kernel [ 5284.779551] 0001:01:00.0: 
-> CONSOLE: 005280.898
->   Mar 05 19:13:21 178.220.177.32 kernel [ 5284.784043] 0001:01:00.0: 
-> CONSOLE:    sp+0 00000000 0026af20 00000000 0018861d
->   Mar 05 19:13:21 178.220.177.32 kernel [ 5284.791385] 0001:01:00.0: 
-> CONSOLE: 005280.898   sp+10 00000000 0025f3c0 00000000 0018078c
->   Mar 05 19:13:21 178.220.177.32 kernel [ 5284.799596] 0001:01:00.0: 
-> CONSOLE:
->   Mar 05 19:13:21 178.220.177.32 kernel [ 5284.803114] 0001:01:00.0: 
-> CONSOLE: 005280.898 sp+c 0018861d
->   Mar 05 19:13:21 178.220.177.32 kernel [ 5284.808743] 0001:01:00.0: 
-> CONSOLE: 005280.898 sp+2c 00006fc7
->   Mar 05 19:13:21 178.220.177.32 kernel [ 5284.814441] 0001:01:00.0: 
-> CONSOLE: 005280.898 sp+30 00006f9d
->   Mar 05 19:13:21 178.220.177.32 kernel [ 5284.820146] 0001:01:00.0: 
-> CONSOLE: 005280.899 sp+3c 00007005
->   Mar 05 19:13:21 178.220.177.32 kernel [ 5284.825842] 0001:01:00.0: 
-> CONSOLE: 005280.899 sp+4c 00007243
->   Mar 05 19:13:21 178.220.177.32 kernel [ 5284.831544] 0001:01:00.0: 
-> CONSOLE: 005280.899 sp+5c 00183825
->   Mar 05 19:13:21 178.220.177.32 kernel [ 5284.837236] 0001:01:00.0: 
-> CONSOLE: 005280.899 sp+70 001837f9
->   Mar 05 19:13:21 178.220.177.32 kernel [ 5284.842937] 0001:01:00.0: 
-> CONSOLE: 005280.899 sp+8c 001823d7
->   Mar 05 19:13:21 178.220.177.32 kernel [ 5284.848640] 0001:01:00.0: 
-> CONSOLE: 005280.899 sp+98 000001df
->   Mar 05 19:13:21 178.220.177.32 kernel [ 5284.854329] 0001:01:00.0: 
-> CONSOLE: 005280.899 sp+d8 000071df
->   Mar 05 19:13:21 178.220.177.32 kernel [ 5284.860032] 0001:01:00.0: 
-> CONSOLE: 005280.899 sp+e8 00188e59
->   Mar 05 19:13:22 178.220.177.32 kernel [ 5285.797981] ieee80211 phy0: 
-> brcmf_fil_cmd_data: bus is down. we have nothing to do.
->   Mar 05 19:13:22 178.220.177.32 kernel [ 5285.805670] brcmfmac: 
-> brcmf_cfg80211_stop_ap: bss_enable config failed -5
->   Mar 05 19:13:22 178.220.177.32 kernel [ 5285.812497] ieee80211 phy0: 
-> brcmf_fil_cmd_data: bus is down. we have nothing to do.
->   Mar 05 19:13:22 178.220.177.32 kernel [ 5285.820190] ieee80211 phy0: 
-> brcmf_cfg80211_stop_ap: SET SSID error (-5)
->   Mar 05 19:13:22 178.220.177.32 kernel [ 5285.826827] ieee80211 phy0: 
-> brcmf_fil_cmd_data: bus is down. we have nothing to do.
->   Mar 05 19:13:22 178.220.177.32 kernel [ 5285.834521] ieee80211 phy0: 
-> brcmf_fil_cmd_data: bus is down. we have nothing to do.
->   Mar 05 19:13:22 178.220.177.32 kernel [ 5285.842213] brcmfmac: 
-> brcmf_cfg80211_stop_ap: wl apsta failed (-5)
->   Mar 05 19:13:22 178.220.177.32 kernel [ 5285.848420] ieee80211 phy0: 
-> brcmf_fil_cmd_data: bus is down. we have nothing to do.
->   Mar 05 19:13:22 178.220.177.32 kernel [ 5285.856098] ieee80211 phy0: 
-> brcmf_cfg80211_stop_ap: BRCMF_C_DOWN error -5
->   Mar 05 19:13:22 178.220.177.32 kernel [ 5285.864446] br0: port 
-> 4(wlan0) entered disabled state
->   Mar 05 19:13:22 178.220.177.32 kernel [ 5285.870425] device wlan0 left 
-> promiscuous mode
->   Mar 05 19:13:22 178.220.177.32 kernel [ 5285.874923] br0: port 
-> 4(wlan0) entered disabled state
->   Mar 05 19:13:22 178.220.177.32 kernel [ 5286.417713] brcmfmac: 
-> brcmf_fw_alloc_request: using brcm/brcmfmac43602-pcie for chip BCM43602/1
->   Mar 05 19:13:22 178.220.177.32 kernel [ 5286.428364] brcmfmac 
-> 0001:01:00.0: Direct firmware load for �H0� 
-> �\`�`�dp�`0�y��H0�\`�`�dp�`0�r� failed with error -2
-
-Not sure why this is all garbled. Can image there is not file with that 
-name though ;-) Above seems the driver attempts to recover from the 
-firmware crash. I can take a look at the firmware crash and the recovery 
-mechanism in the driver.
-
->   Mar 05 19:13:22 178.220.177.32 kernel [ 5286.441255] brcmfmac 
-> 0001:01:00.0: Direct firmware load for brcm/brcmfmac43602-pcie.txt 
-> failed with error -2
->   Mar 05 19:13:25 178.220.177.32 kernel [ 5289.150530] BUG: Bad page 
-> state in process modprobe  pfn:07150
->   Mar 05 19:13:25 178.220.177.32 kernel [ 5289.156407] page:86cb6f40 
-> count:-1 mapcount:0 mapping:  (null) index:0x0
->   Mar 05 19:13:25 178.220.177.32 kernel [ 5289.163118] flags: 0x0()
->   Mar 05 19:13:25 178.220.177.32 kernel [ 5289.165660] page dumped 
-> because: nonzero _count
->   Mar 06 05:20:56 178.220.177.32 kernel [41739.171893] 0002:03:00.0: 
-> CONSOLE: 041746.172 ucode revision 986.128
->   Mar 06 05:20:56 178.220.177.32 kernel [41739.178467] 0002:03:00.0: 
-> CONSOLE: 041746.172 wl0: PSM microcode watchdog fired at 41733 (seconds)
->   Mar 06 05:20:56 178.220.177.32 kernel [41739.187768] 0002:03:00.0: 
-> CONSOLE: 041746.172 wl0: psmdebug 0x00ec8111, phydebug 0x00000048, 
-> psm_brc 0x0501 psm_brc_1 0x0000maccontrol 0x84160403 ifsstat 0x00af 
-> m_cts_duration 0x0000 m_ucode_dbgst 0x0002
->   Mar 06 05:20:56 178.220.177.32 kernel [41739.206038] 0002:03:00.0: 
-> CONSOLE: 041746.172 wepctl 0x0050 wepstat 0x0000 wep_hdrloc 0x001e 
-> wep_psdulen 281
->   Mar 06 05:20:56 178.220.177.32 kernel [41739.216025] 0002:03:00.0: 
-> CONSOLE: 041746.172      RXE_RXCNT: 0x011f   DAGG: ctl: 0x0000, bleft: 
-> 0x0096
->   Mar 06 05:20:56 178.220.177.32 kernel [41739.225523] 0002:03:00.0: 
-> CONSOLE:      offs: 0x000c, stat: 0x1056, len: 0x0000
->   Mar 06 05:20:56 178.220.177.32 kernel [41739.232995] 0002:03:00.0: 
-> CONSOLE: 041746.172 M_RXFRM_BLK scr(0:63) btc_params(0:63) phydebug PC 
-> ampdu clk off
->   Mar 06 05:20:56 178.220.177.32 kernel [41739.243076] 0002:03:00.0: 
-> CONSOLE: 041746.172 wlc_dump_aggfifo:
->   Mar 06 05:20:56 178.220.177.32 kernel [41739.249089] 0002:03:00.0: 
-> CONSOLE: 041746.172 framerdy 0x0 bmccmd 7 framecnt 1024
->   Mar 06 05:20:56 178.220.177.32 kernel [41739.256822] 0002:03:00.0: 
-> CONSOLE: 041746.172 AQM agg params 0xfc0 maxlen hi/lo 0x0 0xffff minlen 
-> 0x0 adjlen 0x0
->   Mar 06 05:20:56 178.220.177.32 kernel [41739.267153] 0002:03:00.0: 
-> CONSOLE: 041746.172 AQM agg results 0x8001 len hi/lo: 0x0 0x22 
-> BAbitmap(0-3) 0 0 0 0
->   Mar 06 05:20:56 178.220.177.32 kernel [41739.277244] ieee80211 phy1: 
-> brcmf_psm_watchdog_notify: PSM's watchdog has fired!
-
-The PSM watchdog means the microcode got stuck in a bad state. Getting 
-microcode development involved in fixing this will prove difficult.
+Can you provide the above details for the firmware file you are using?
 
 Regards,
 Arend
 
---000000000000b919450614153d2e
+--0000000000005a04460614155f6d
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -362,15 +253,15 @@ BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
 N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
 p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCDQm4J/yEzV3Eu4AgyW
-RaP82wvc0j7EPZptBb+st1X6qDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yNDAzMjAxMDQyMDJaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCDrHe6+07LDzWVmDrVw
+cXlD4UDBPaPF5Z2FyhI+VEKe7jAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yNDAzMjAxMDUxMjZaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAJqqURApS8DXn6R5BfQUNzHUPyiqaefy/ggID
-XzJqfQyJr3GGVb79HV2SNIZSfkwMrWTUTa3tNu4VITPRzMZAScIN/FjVwPimxI7M10j8/JUpQ5pp
-YEYvCqTxvSnhF6T59qNWVFnemt7xs1j8iEfNF8gOpf9GKqCiHd6qtAAsGyZCmcguwZSUiVnsy8gA
-v+R0EDEdRvcy1j6daVLfYmItjPzOB1FEvj4JhsmZOk8vov6Lp7kJuV0i4TkbVkzujNIFHDN37gfV
-5SkTIu4zyW9idYZx52V+Gn0jkufnU4k5dY1EM0h2iIzBGJSF7nt/jTGLGBG4UFvMPiNdMyte8J/i
-6A==
---000000000000b919450614153d2e--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAjiQhUO4vMov2u75HG+dLWF/M53kSsXIwjk5R
+1E9YaaApu/kZEk62uQZ0kPhri7TAQvKh3yLKD3IhVbaUlrgcklIsU+bkaqKXY17uTwQZS8kDC1hd
+bgVwMaDXMKOFFxTYas3sIIzzncmy0zXOMYyVp1lkigMenQrmbitcGBqnmjdW4c5tBlMYEhIwb2J+
+8U3ylL47wZiKJ9nYyewV9xysuKkCX0FrBo3rqqXxmV3YRWTjc8kA9+Blx+b3ZoW/0KdLVfGkRAmi
+BYqw13bmAJPtXuO/wJsFdt+IaGDhNo9Ad9f1le+2L97UCAD7qNMDLi3dsN1XjDyevPPhGoWbqbiv
+8A==
+--0000000000005a04460614155f6d--
 
