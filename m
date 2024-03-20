@@ -1,54 +1,67 @@
-Return-Path: <linux-wireless+bounces-5009-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5011-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33C66881749
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 19:25:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BED4A8817A8
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 20:10:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8A4B28360D
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 18:25:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D5B51F231DD
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 19:10:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFD2D6E2B3;
-	Wed, 20 Mar 2024 18:24:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13BE685284;
+	Wed, 20 Mar 2024 19:10:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VvFbRt8h"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="QMYkJK40"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C6576DD0A
-	for <linux-wireless@vger.kernel.org>; Wed, 20 Mar 2024 18:24:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B3A284A43
+	for <linux-wireless@vger.kernel.org>; Wed, 20 Mar 2024 19:10:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710959096; cv=none; b=ALI5rDMd/41dDcvRiB4jWqFNbdruku8QnduWHIxvij++n3PEzTvTdaDL+fDprmJpcj/tktga61bH8s8uUmrsKZaCe21xvht0ZQpq8WIO8opRRNKp4ajD11RCNh43t81NLY2NVSkzZUcbYelPXlFgVaa+OlFGyvad84nOq8sKsHw=
+	t=1710961841; cv=none; b=aW8IwENBqSf3rMZrPWlvR/PklFgKq7tIjoHm0fa5i8uajtxSsMdHpLdwh8w7m1IpoC6XOnJtEQy4/WDCsZDRamIwiMgomq8Qla/OejlNzjTu1Q1Wgk/0TRDenC859avbOHv+8apf6Pw4X1u+ypAgM++lGrsjftWtmK5MvUne+P0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710959096; c=relaxed/simple;
-	bh=MjWyDUC/nS4snXHHsGdZsklEOiCdmd1uzg7HZvh8mDE=;
-	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=srYK3WIr3RtXMySMjuRkXoBHw1anhkAG7ZGQqi7bB8PPQE9w2FuBuxiRNn0NP3o5xJRJMQtwjUyW/M8REb7NFnWLKeZg43KckkY5XwP8t76l3gfmc1kDMzlXextq4mUuqC13JlA+6rl7x8d0dbd8gPmsTNXwlwtakyOjLbrDE8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VvFbRt8h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A19E3C433F1
-	for <linux-wireless@vger.kernel.org>; Wed, 20 Mar 2024 18:24:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710959096;
-	bh=MjWyDUC/nS4snXHHsGdZsklEOiCdmd1uzg7HZvh8mDE=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=VvFbRt8h1UaqH/hqkAxW8rrJtqCksQjEsyiPrwuK6ZVd556URRciN9uNnmrdWEeb7
-	 EE7jtiHlWGidXxFqVjzVwNKHGvFf2DH++UBxz+SE8Nsvp1y1/UIQHS5aktLjzyYW0q
-	 AIWJctyg0U4j04o8qy+6p5j/VziVZgpnKcbHLn/V+TOjVt2SEY77g6q993Yd2koCVM
-	 PXv3PmTWcuJL5WoLW1acVcuJuvgBQJrT11hzOAlqdVNwKEemkoNgxpGo/nZydEojqe
-	 Ho27gXygwD61rmRvCyGjvQhwkVIWMEZS6Y0pnop/0/oJUw6e8ochi4NCFDb1+MKPBP
-	 VkoGK+JVLQJJg==
-From: Kalle Valo <kvalo@kernel.org>
-To: linux-wireless@vger.kernel.org
-Subject: [PATCH 4/4] wifi: wil6210: fix sparse warnings
-Date: Wed, 20 Mar 2024 20:24:49 +0200
-Message-Id: <20240320182449.3757215-5-kvalo@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240320182449.3757215-1-kvalo@kernel.org>
-References: <20240320182449.3757215-1-kvalo@kernel.org>
+	s=arc-20240116; t=1710961841; c=relaxed/simple;
+	bh=cvAe1IbbfpMdNg15L7yuDuh5W4yHtNURa4PFAW93ZjY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=L4Gl3BTXVRp64ibeo/yXZju2uoeJwF1bMT7IlykV+P+tCa09Hbq10tc4uaJ1Smgm/lWbI+l/xTfqj/1jvJKXq4HRfzYUwAdHJZnvgLkX1m6a44PNwzV8x8WwQcH3fDxG7DBb22XcPhZFl3BXnL51Grnt/pZBQrGNXMz98aPIxdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=QMYkJK40; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42KI0QBV001324;
+	Wed, 20 Mar 2024 19:09:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=qcppdkim1; bh=rnJwfDg
+	c5Fxy6A1s47uO2AdPMaQlLbvtxjYhJPf5uhI=; b=QMYkJK40pfHxXxmAOYQRpXN
+	0RUcyqcnVWc6+8dpFg0gTu6heKCVQ9I5SyqbGV0IHIdIQQ2KH1iRnsromao0dNBN
+	sXhxr//J5j9cFCb0smwD9e2h0grB8TBpp7AFVK3D5thenyvYpv6mp1vep+TcyedE
+	rrz/4zYwOpFBvDjpNMYZ4SSLK9nIHG2bDvrQ8vw8nyZkxfcKviHAUEU2mkplJq4/
+	Xxw+N0Io3fJOu3RDipTmj6XqB6Pf2ByUaeixszGETrGpeojGijgX3RVAoOh3UngV
+	l7WmxM3xk9lq+/7ZcdqgRqyDOK0n4HF7CsZsWo7O16Yz3ie9HA2uoB56OooIBZg=
+	=
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wypxq23pg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 20 Mar 2024 19:09:59 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42KJ9vgW006667
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 20 Mar 2024 19:09:57 GMT
+Received: from hu-ramess-blr.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Wed, 20 Mar 2024 12:09:56 -0700
+From: Rameshkumar Sundaram <quic_ramess@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, Sriram R <quic_srirrama@quicinc.com>
+Subject: [PATCH v5 00/12] wifi: ath12k: Add single wiphy support
+Date: Thu, 21 Mar 2024 00:39:31 +0530
+Message-ID: <20240320190943.3850106-1-quic_ramess@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -56,79 +69,93 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: r9SnIIRNFCNQ0rlVwnE9GMtmuEH5OIud
+X-Proofpoint-GUID: r9SnIIRNFCNQ0rlVwnE9GMtmuEH5OIud
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-20_10,2024-03-18_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
+ lowpriorityscore=0 phishscore=0 clxscore=1015 malwarescore=0
+ priorityscore=1501 mlxlogscore=999 adultscore=0 suspectscore=0 mlxscore=0
+ bulkscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2403140001 definitions=main-2403200154
 
-From: Kalle Valo <quic_kvalo@quicinc.com>
+From: Sriram R <quic_srirrama@quicinc.com>
 
-Sparse warns:
+With the introduction of Multi Link Operation (MLO) support in
+IEEE802.11be, each EHT AP/non AP interface is capable of
+operating with multiple radio links.
 
-drivers/net/wireless/ath/wil6210/fw.c: note: in included file (through drivers/net/wireless/ath/wil6210/wil6210.h):
-drivers/net/wireless/ath/wil6210/fw.h:96:47: warning: array of flexible structures
-drivers/net/wireless/ath/wil6210/cfg80211.c: note: in included file (through drivers/net/wireless/ath/wil6210/wil6210.h):
-drivers/net/wireless/ath/wil6210/fw.h:96:47: warning: array of flexible structures
+cfg80211/mac80211 expects drivers to abstract the communication
+between such Multi Link HW and mac80211/cfg80211 since it depends
+on different driver/HW implementation. Hence the single wiphy
+abstraction with changes in datastructures were introduced in
+"wifi: ath12k: Introduce hw abstraction"
 
-I decided to remove the combos field altogether and just do pointer arithmetic
-instead. Not pretty but I didn't want to waste too much time on an orphaned
-driver.
+This patchset extends the implementation to allow combination
+of multiple underlying radios into a single composite hw/wiphy
+for registration. Since now multiple radios are represented by
+a single wiphy, changes are required in various mac ops that the
+driver supports since the driver now needs to learn on how to tunnel
+various mac ops properly to a specific radio.
 
-Compile tested only.
+This patchset covers the basic mac80211 ops for an interface bring up
+and operation.
 
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Note:
+Monitor and hw reconfig support for Single Wiphy will be done in future
+patchsets.
+
 ---
- drivers/net/wireless/ath/wil6210/cfg80211.c | 4 ++--
- drivers/net/wireless/ath/wil6210/fw.h       | 1 -
- drivers/net/wireless/ath/wil6210/fw_inc.c   | 4 ++--
- 3 files changed, 4 insertions(+), 5 deletions(-)
+ v5:
+ - Addressed Jeff's comments
+ - Made arvif config cache to be dynamic in PATCH 07/12
 
-diff --git a/drivers/net/wireless/ath/wil6210/cfg80211.c b/drivers/net/wireless/ath/wil6210/cfg80211.c
-index dbe4b3478f03..8993028709ec 100644
---- a/drivers/net/wireless/ath/wil6210/cfg80211.c
-+++ b/drivers/net/wireless/ath/wil6210/cfg80211.c
-@@ -2735,7 +2735,7 @@ int wil_cfg80211_iface_combinations_from_fw(
- 		return 0;
- 	}
- 
--	combo = conc->combos;
-+	combo = (const struct wil_fw_concurrency_combo *)(conc + 1);
- 	n_combos = le16_to_cpu(conc->n_combos);
- 	for (i = 0; i < n_combos; i++) {
- 		total_limits += combo->n_limits;
-@@ -2751,7 +2751,7 @@ int wil_cfg80211_iface_combinations_from_fw(
- 		return -ENOMEM;
- 	iface_limit = (struct ieee80211_iface_limit *)(iface_combinations +
- 						       n_combos);
--	combo = conc->combos;
-+	combo = (const struct wil_fw_concurrency_combo *)(conc + 1);
- 	for (i = 0; i < n_combos; i++) {
- 		iface_combinations[i].max_interfaces = combo->max_interfaces;
- 		iface_combinations[i].num_different_channels =
-diff --git a/drivers/net/wireless/ath/wil6210/fw.h b/drivers/net/wireless/ath/wil6210/fw.h
-index aa1620e0d24f..2079a90ec260 100644
---- a/drivers/net/wireless/ath/wil6210/fw.h
-+++ b/drivers/net/wireless/ath/wil6210/fw.h
-@@ -93,7 +93,6 @@ struct wil_fw_record_concurrency { /* type == wil_fw_type_comment */
- 	/* number of concurrency combinations that follow */
- 	__le16 n_combos;
- 	/* keep last - combinations, variable size by n_combos */
--	struct wil_fw_concurrency_combo combos[];
- } __packed;
- 
- /* brd file info encoded inside a comment record */
-diff --git a/drivers/net/wireless/ath/wil6210/fw_inc.c b/drivers/net/wireless/ath/wil6210/fw_inc.c
-index fbc84c03406b..c3c0b289dcf3 100644
---- a/drivers/net/wireless/ath/wil6210/fw_inc.c
-+++ b/drivers/net/wireless/ath/wil6210/fw_inc.c
-@@ -212,8 +212,8 @@ fw_handle_concurrency(struct wil6210_priv *wil, const void *data,
- 	}
- 
- 	n_combos = le16_to_cpu(rec->n_combos);
--	remain = size - offsetof(struct wil_fw_record_concurrency, combos);
--	combo = rec->combos;
-+	remain = size - sizeof(struct wil_fw_record_concurrency);
-+	combo = (const struct wil_fw_concurrency_combo *)(rec + 1);
- 	for (i = 0; i < n_combos; i++) {
- 		if (remain < sizeof(*combo))
- 			goto out_short;
+ v4:
+ - Updated missing Signed-off details for patches.
+
+ v3:
+  - Rebased on ToT (added additional ar check in PATCH 08/12 for p2p)
+  - Introduced iterator to loop through ars in an ah(for_each_ar())
+  - Addressed comments on reverse xmas tree declaration style.
+
+ v2:
+  - Rebased on ToT and dependent patchset
+
+Karthikeyan Periyasamy (1):
+  wifi: ath12k: add multiple radio support in a single MAC HW
+    un/register
+
+Sriram R (11):
+  wifi: ath12k: Modify add and remove chanctx ops for single wiphy
+    support
+  wifi: ath12k: modify ath12k mac start/stop ops for single wiphy
+  wifi: ath12k: vdev statemachine changes for single wiphy
+  wifi: ath12k: scan statemachine changes for single wiphy
+  wifi: ath12k: fetch correct radio based on vdev status
+  wifi: ath12k: Cache vdev configs before vdev create
+  wifi: ath12k: Add additional checks for vif and sta iterators
+  wifi: ath12k: modify regulatory support for single wiphy architecture
+  wifi: ath12k: Modify set and get antenna mac ops for single wiphy
+  wifi: ath12k: Modify rts threshold mac op for single wiphy
+  wifi: ath12k: support get_survey mac op for single wiphy
+
+ drivers/net/wireless/ath/ath12k/core.h |  38 +-
+ drivers/net/wireless/ath/ath12k/hw.h   |   1 +
+ drivers/net/wireless/ath/ath12k/mac.c  | 946 +++++++++++++++++++------
+ drivers/net/wireless/ath/ath12k/p2p.c  |   3 +-
+ drivers/net/wireless/ath/ath12k/p2p.h  |   1 +
+ drivers/net/wireless/ath/ath12k/reg.c  |  55 +-
+ 6 files changed, 815 insertions(+), 229 deletions(-)
+
+
+base-commit: 4b2f0ce6f2fe0fd906d408a01e494b85c272c7d7
 -- 
-2.39.2
+2.25.1
 
 
