@@ -1,113 +1,124 @@
-Return-Path: <linux-wireless+bounces-4996-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4997-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 173BA88162C
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 18:11:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6C1688163E
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 18:13:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 480D71C21B82
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 17:11:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 432FD1F21E79
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 17:13:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 452C969E0A;
-	Wed, 20 Mar 2024 17:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F53869DF4;
+	Wed, 20 Mar 2024 17:13:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="eeIBqa5g"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="SOzVXRsX"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A08CA524B7;
-	Wed, 20 Mar 2024 17:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B42BE69DE8
+	for <linux-wireless@vger.kernel.org>; Wed, 20 Mar 2024 17:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710954662; cv=none; b=IrjADqT8QvBL4ZPtRB4dqoREA8b1lppvrAYT6hjGcrR9jXb3Lh4Gjz1baUllXgAEIfPAkihvNAXoRhVBfbG72oern2Tz88WS0mF+hFR5NyAzh9kEutTwa8giE5k4ZMMeu2ZABaRu+FTjuMlNvC2ap5Cfawk9NOSAv35hn8/8Fu4=
+	t=1710954805; cv=none; b=Z6AyhSrR1S3pQgX0EdFAV2YueUSpLydlmo2dEBF/m1+b/q3kr8397PXgSUPA7djUzib+sH8sAEIM/ZCdWLjsV7epPfd3CqP+Ly6lB9mlr+LE8Ias7bA5nwaJpd6cioFqOGLk3dZTVgzTk7oSP/cRCO9vK0pv4DneEUpi5caqwVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710954662; c=relaxed/simple;
-	bh=758yDZKiS5NaJTvUE6Sej2pKrpl0pDcf5eSdOjc74PQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=uYzipQEaRV46bQQcBSZAWx1WbvWpXdL/RDoiqKcni4dzzv6KzU86odSTUyPMyN4plLOMfjIBlR77rc2OLq8S96dd+FIdncm69KXmjeDA3wWDH4wjB+8AySbd8hmxMO6JF9/TVLFWCm9YBSeHxvr4pBWpEuUkDS8gcJOAH+ttWxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=eeIBqa5g; arc=none smtp.client-ip=205.220.180.131
+	s=arc-20240116; t=1710954805; c=relaxed/simple;
+	bh=z3IeR0iaei7ZJ4wKNv1yiEGHGPByBpmFJR4ZaJtEkgA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TTXZrFFVbxuDEEm1dLhk7fGrUTXse2+yoPj97BQnh0lqwAlVoDRm2voBM+SokmPlAUTURBLcEubkAUYIF5PTUn5Saz3jYEWb7disYeyMnHlEPHPjX4kqUYOWenxlm7XMIc7HMSA05y15idMcIWFSU8PQGv8kco/eWdRodpjpYVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=SOzVXRsX; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42KF9oON020300;
-	Wed, 20 Mar 2024 17:10:40 GMT
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42KEjcfX004878;
+	Wed, 20 Mar 2024 17:13:19 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=pdLpiI9b9nBDFs8TZQQCkNJrT1iuZX4mOpgogUQwDa4=; b=ee
-	IBqa5gt3CDUQD4L6h3OxM9qzj1tIrmPABt4vyilW07MqULeNd5jerOKPQX2wyVEM
-	Or8I2PM+qDdYMBDAVGpLNv4PMwKG71Lkc11hxbjOf3FN14VkxxnayE9A6dpjYWbK
-	UtRNb9YqXZ8xDyc9QqB6jRfXNqdmkrJzh/99ms8m9VJlUeYcgxg69AV7mBDtHmzR
-	jxoib4ze/4irUt6XQ7qoa57E7DekYMHWZ0Lb0lVQYrOrhxnRKky3s7Grz982dO0W
-	9U9vgTUYbWuxPFTRCNIQ/MnIc4bWaIkurJBdaDVAcAEU483VNz4EfkkMdEMrmW8Q
-	NKOGqkZ0Q0lpsi3Xu0Xw==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3x01br8ey9-1
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding; s=qcppdkim1; bh=K7kXL+a40eAx0IhBFrh2
+	WRCAOiRuFpj3lSiUYKEdKz8=; b=SOzVXRsXQUVzu+9K+ILKFIZQSJqYk3W4VM0I
+	kHXtdurNgbM0DKY9ywVNSe7GhgV1ukVqBDg6cy0hCRw6KpROM69GXTOeyWtcoGYZ
+	HyDrZfkgWbCxRCn6LbaVW8ss8vPNcQj4hpkHLwX1zbg535GePEA7bzLxz1lCn9bY
+	sPm5qwPzg0h2n8eHR2wyAfDUG39K5S+M2cmGqq4mzoaDpEE9ALUDjP/8PPq5eBgk
+	VTYeBtZY3nU64XYrS+VktYOtpDnBkd4+Gg0WCmGSgwfvhQ6cZX20KAv0t3TxCzo0
+	lLxhJom5R9EMvLx92zEZuBo7fLUIcT7sqlG2u8AI5EusPZ8Cew==
+Received: from apblrppmta01.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wypxq1u1j-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 20 Mar 2024 17:10:39 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42KHAcR3001806
+	Wed, 20 Mar 2024 17:13:18 +0000 (GMT)
+Received: from pps.filterd (APBLRPPMTA01.qualcomm.com [127.0.0.1])
+	by APBLRPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 42KHDFB2028158;
+	Wed, 20 Mar 2024 17:13:16 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 3ww4gm7nu7-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 20 Mar 2024 17:10:38 GMT
-Received: from [10.110.120.226] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Wed, 20 Mar
- 2024 10:10:38 -0700
-Message-ID: <6ddf112f-29d7-42b6-8d80-b8ed8fd987ba@quicinc.com>
-Date: Wed, 20 Mar 2024 10:10:37 -0700
+	Wed, 20 Mar 2024 17:13:15 +0000
+Received: from APBLRPPMTA01.qualcomm.com (APBLRPPMTA01.qualcomm.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42KHDFjQ028152;
+	Wed, 20 Mar 2024 17:13:15 GMT
+Received: from hu-devc-blr-u22-a.qualcomm.com (hu-rgnanase-blr.qualcomm.com [10.190.106.79])
+	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 42KHDFGB028151
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 20 Mar 2024 17:13:15 +0000
+Received: by hu-devc-blr-u22-a.qualcomm.com (Postfix, from userid 2378837)
+	id A3E2341111; Wed, 20 Mar 2024 22:43:14 +0530 (+0530)
+From: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
+To: ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org,
+        Ramya Gnanasekar <quic_rgnanase@quicinc.com>
+Subject: [PATCH 0/2] wifi: ath12k: Add initial debugfs support in ath12k
+Date: Wed, 20 Mar 2024 22:43:03 +0530
+Message-Id: <20240320171305.655288-1-quic_rgnanase@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] wireless: ti: Can we just remove this flexible array?
-Content-Language: en-US
-To: Johannes Berg <johannes@sipsolutions.net>,
-        "Gustavo A. R. Silva"
-	<gustavo@embeddedor.com>,
-        Kalle Valo <kvalo@kernel.org>
-CC: <linux-wireless@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>,
-        <linux-hardening@vger.kernel.org>
-References: <3a531d5b-9bf6-4e88-ba8c-a76cfa95be20@embeddedor.com>
- <328306d9-953f-482b-bf9a-a753d7d4e2ed@quicinc.com>
- <483362b8-ea79-4036-89eb-d6ab737e1e96@embeddedor.com>
- <e7204512f71e9232572fced208899f7b6baa920d.camel@sipsolutions.net>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <e7204512f71e9232572fced208899f7b6baa920d.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
+Content-Transfer-Encoding: 8bit
+X-QCInternal: smtphost
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: VBF4b4NDxXiCL6u_BdQoatlKZFDHzLP3
-X-Proofpoint-ORIG-GUID: VBF4b4NDxXiCL6u_BdQoatlKZFDHzLP3
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: hY1ttI-sIiqqKk71V8lfj57DYvcLQ9ET
+X-Proofpoint-GUID: hY1ttI-sIiqqKk71V8lfj57DYvcLQ9ET
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-03-20_10,2024-03-18_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
- priorityscore=1501 phishscore=0 suspectscore=0 malwarescore=0
- clxscore=1015 mlxlogscore=371 lowpriorityscore=0 bulkscore=0 mlxscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2403140001 definitions=main-2403200138
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
+ lowpriorityscore=0 phishscore=0 clxscore=1011 malwarescore=0
+ priorityscore=1501 mlxlogscore=793 adultscore=0 suspectscore=0 mlxscore=0
+ bulkscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2403140001 definitions=main-2403200138
 
-On 3/20/2024 2:03 AM, Johannes Berg wrote:
-> On Tue, 2024-03-19 at 18:42 -0600, Gustavo A. R. Silva wrote:
->>
->>>> -       /* payload */
->>>> -       u8 data[];
->>>>    } __packed;
->>>
-> 
-> Why not keep (or even add in the cases where it's not) the comment
-> though?
+The initial debugfs infra support in ath12k driver and create the
+ath12k debugfs and soc-specific directories in /sys/kernel/debug/
 
-For something called <foo>_header isn't it implicit that something will
-probably follow?
+Add support to simulate RADAR interference through debugfs 
 
+ath12k
+`-- pci-0000:06:00.0
+    |-- mac0
+        `-- dfs_simulate_radar
+
+Ramasamy Kaliappan (1):
+  wifi: ath12k: Add initial debugfs support in ath12k
+
+Ramya Gnanasekar (1):
+  wifi: ath12k: Add radar simulation debugfs support
+
+ drivers/net/wireless/ath/ath12k/Kconfig   |  9 +++
+ drivers/net/wireless/ath/ath12k/Makefile  |  1 +
+ drivers/net/wireless/ath/ath12k/core.c    |  5 ++
+ drivers/net/wireless/ath/ath12k/core.h    | 10 +++
+ drivers/net/wireless/ath/ath12k/debugfs.c | 89 +++++++++++++++++++++++
+ drivers/net/wireless/ath/ath12k/debugfs.h | 30 ++++++++
+ drivers/net/wireless/ath/ath12k/mac.c     |  3 +
+ 7 files changed, 147 insertions(+)
+ create mode 100644 drivers/net/wireless/ath/ath12k/debugfs.c
+ create mode 100644 drivers/net/wireless/ath/ath12k/debugfs.h
+
+-- 
+2.17.1
 
