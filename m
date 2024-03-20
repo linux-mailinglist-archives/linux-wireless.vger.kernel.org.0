@@ -1,87 +1,116 @@
-Return-Path: <linux-wireless+bounces-4957-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4958-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8836880E56
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 10:10:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 977D2880E5C
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 10:12:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 625F12834B0
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 09:10:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5288D28350B
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 09:12:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B49D739AC4;
-	Wed, 20 Mar 2024 09:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 954BD39850;
+	Wed, 20 Mar 2024 09:12:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dI4YOufQ"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="uZW7+ZCG"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A3C39AC1
-	for <linux-wireless@vger.kernel.org>; Wed, 20 Mar 2024 09:10:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2838381A1;
+	Wed, 20 Mar 2024 09:12:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710925814; cv=none; b=B7w8j49/vXq6X7ZKOtnhYLz2f3oWT4zmCL52rIuEnqGnyZTL7dCSIidYN8dZqtHzPpLSBrN238KUg5Cmr7ffg8MotjR84MlR5kxYo4lYGSdZsD5vRqltTniYl3wGrLMKemgoNI/21GvhdZzOoYkAH7yzWVgvACR/Sk9P13WYXaY=
+	t=1710925970; cv=none; b=rny5KatR5E4aShbaBsTaDJ1lTrIwobT9Oa52P+14C3kjXcWwZ0Xx+q00ACs1IiDKeNwFXNm/bZwR+tfFYR/CQQroww7Wqr/L4dWWpL7GXnYZ8L3xHPnh8MFTXrtxYzz1/k2cZCfuBUmR+hdtZWPoOHEzgxkQJbLp8+V0GsYbTgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710925814; c=relaxed/simple;
-	bh=uSnOLaMSrNSN7NQwwpSh1i+Rm3BY5Q2gfZ25rx42k8c=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=mhKz+mspEh4CAiIxFzMftl61zIJoSR1PI4VB0e9IrNDg8z0Pvekgo330fobfzMDJc1oRABpIGXCG/YNpRK6jb39ejyDgH/oyvuJy+nN0TLy0bwEdOxoI29G4UEaSjTmOF6KYcPnrZZSIY4uGwI6DenyFMolP9D7oL5Hv7nywZPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dI4YOufQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCF36C433C7;
-	Wed, 20 Mar 2024 09:10:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710925814;
-	bh=uSnOLaMSrNSN7NQwwpSh1i+Rm3BY5Q2gfZ25rx42k8c=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=dI4YOufQ7Zc6vxs1s0bLojiGcjS52ae1TvCcuuFltk1IDVpLBsKp9sA8RfQcNE/c4
-	 V/rPNQpfUh5oSPBGOXs15rd/s4f5JH+wRO6spGj7Y5XPf5wqipVn8iGEslvz/+locm
-	 /RvA+0B8IYPGOk3Kfjgqdf+tegrn35i0At0R7u6Cym3x4an80myL/VD9pBWEz1o3hm
-	 PoHsY5zQBUVLPmNii5I6sTyTEIa4KH2tuqN6t7rDSfkLlffyIgLwq++Pu0DngjXfy9
-	 sy9gIySVC/OzjZtojOVeEHpNwLrt6y1or0uB7hDnadmB4PjrO0MeESppo08/WIckFt
-	 qCVGc1YIEjydg==
-From: Kalle Valo <kvalo@kernel.org>
-To: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: nbd@nbd.name,  linux-wireless@vger.kernel.org,
-  lorenzo.bianconi@redhat.com,  shayne.chen@mediatek.com,
-  ryder.lee@mediatek.com
-Subject: Re: [PATCH] wifi: mt76: mt7915: workaround too long expansion
- sparse warnings
-References: <5457b92e41909dd75ab3db7a0e9ec372b917a386.1710858172.git.lorenzo@kernel.org>
-Date: Wed, 20 Mar 2024 11:10:11 +0200
-In-Reply-To: <5457b92e41909dd75ab3db7a0e9ec372b917a386.1710858172.git.lorenzo@kernel.org>
-	(Lorenzo Bianconi's message of "Tue, 19 Mar 2024 16:12:47 +0100")
-Message-ID: <87h6h12rrg.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1710925970; c=relaxed/simple;
+	bh=+cQOlbmIo4jx4EXb7qfz4OBixcqEIrAG4ITC5AbEzzQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=s7JzZfR2pq+L0SaXEkulrlnhtVy5qWHxLl4m4cR6p3wuiRiW2E0o7hnvqr9J2rbC5Yw28gm6+ywvHMWAfo93Mh3bRSiN9pAn3fzNImXAhHfJMsIBMWwusWgkzOUKNsZlr13BCkqC4b83TBWFPmFlEu9tPuptjNP/AoURG2FtUNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=uZW7+ZCG; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=+cQOlbmIo4jx4EXb7qfz4OBixcqEIrAG4ITC5AbEzzQ=;
+	t=1710925969; x=1712135569; b=uZW7+ZCGBcDkwTsfFtJiyFeYgkVbl5iMuW66g7VGfLex9nh
+	g8gkQ2lavOhO0lLQBh1jAALO8ouNlMRhtxa7igiMeRXCpZPo9bhmxC0gxTMAMftHpEbwryKmixXFC
+	iwQk8+BV3ufr5dQdLQml6vJfrBJNBjRPK4txH4eyodv0FrjK18PycwalQVue57vLl70+K0rg2IJdB
+	s8DrQgb+yRuMEI7ldhnaT391KBvKtJ66iR4zms6An8tUtV2u+L+9QgP4kSByAgNuEDBVFD1b0mv2f
+	AgPIVHCLVsk98ZFJQJv9Wa3Ml0Py/Pvc2aU4sHBAX5z4dmcX8frkGJPVQw9fnO1w==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rms06-00000006u2O-1aY8;
+	Wed, 20 Mar 2024 10:12:46 +0100
+Message-ID: <b2d9a7ef53c5ab4212617e8edf202bbafe52e2f8.camel@sipsolutions.net>
+Subject: Re: [EXT] Re: [PATCH v9 0/2] wifi: mwifiex: add code to support
+ host mlme
+From: Johannes Berg <johannes@sipsolutions.net>
+To: David Lin <yu-hao.lin@nxp.com>, Brian Norris <briannorris@chromium.org>,
+  Francesco Dolcini <francesco@dolcini.it>
+Cc: "kvalo@kernel.org" <kvalo@kernel.org>, "linux-wireless@vger.kernel.org"
+ <linux-wireless@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, Pete Hsieh <tsung-hsien.hsieh@nxp.com>, 
+ "rafael.beims" <rafael.beims@toradex.com>, Francesco Dolcini
+ <francesco.dolcini@toradex.com>
+Date: Wed, 20 Mar 2024 10:12:45 +0100
+In-Reply-To: <PA4PR04MB9638BE73DDBCE1CE8AA32BA8D1332@PA4PR04MB9638.eurprd04.prod.outlook.com>
+References: <20240306020053.18054-1-yu-hao.lin@nxp.com>
+	 <20240315094927.GA6624@francesco-nb> <ZfTspRKFgrO9xCTH@google.com>
+	 <969e95ccc4a1d35b45212b7fcb536ee90995e3b5.camel@sipsolutions.net>
+	 <PA4PR04MB9638D253189D6DD330B198B2D1332@PA4PR04MB9638.eurprd04.prod.outlook.com>
+	 <PA4PR04MB9638BE73DDBCE1CE8AA32BA8D1332@PA4PR04MB9638.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-malware-bazaar: not-scanned
 
-Lorenzo Bianconi <lorenzo@kernel.org> writes:
+On Wed, 2024-03-20 at 01:10 +0000, David Lin wrote:
+> > >=20
+> > > Also decl.h should probably _shrink_ rather than grow, a number of
+> > > things just replicate ieee80211.h (such as MWIFIEX_MGMT_HEADER_LEN
+> > > really is just
+> > > sizeof(ieee80211_mgmt) or so? Not quite correctly.)
+> > >=20
+> >=20
+> > This can be done for feature patches.
 
-> Fix the following sparse warnings:
->
-> drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c:1133:29: error: too long token expansion
-> drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c:1133:29: error: too long token expansion
-> drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c:1133:29: error: too long token expansion
-> drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c:1133:29: error: too long token expansion
->
-> No functional changes, compile tested only.
->
-> Fixes: e3296759f347 ("wifi: mt76: mt7915: enable per bandwidth power limit support")
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+But this is a feature patch :-)
 
-Thanks Lorenzo! Could I take this directly to wireless-next? We are very
-close of being sparse clean in the wireless subsystem, there are just
-few warnings left ath drivers.
+> > > So yeah, agree with Brian, not only would this be the first, but it's
+> > > also something we don't really _want_. All other drivers that want
+> > > stuff like this are stuck in staging ...
+> > >=20
+> > > So why is this needed for a supposedly "firmware does it all" driver,
+> > > and why can it not be integrated with mac80211 if it's no longer "fir=
+mware
+> > does it all"?
+> > >=20
+> > > Johannes
+> >=20
+> > Our proprietary driver is cfg80211 driver, it is very hard to create a =
+brand new
+> > mac80211 driver and still can port all tested stuffs from our proprieta=
+ry driver.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+That basically doesn't matter for upstream at all.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+>=20
+> BTW, vendor should have the choice to use cfg80211 or mac80211 for their =
+chips, right?
+
+No, that's not how it works. The choice should be what makes sense
+architecturally.
+
+johannes
 
