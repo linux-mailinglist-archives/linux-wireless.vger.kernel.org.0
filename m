@@ -1,277 +1,151 @@
-Return-Path: <linux-wireless+bounces-4985-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4986-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 048B388135C
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 15:33:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24588881361
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 15:34:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B1B4B215D1
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 14:32:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 855C4B21708
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 14:34:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 441B542073;
-	Wed, 20 Mar 2024 14:32:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c8Ehzo7B"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C662A47F4D;
+	Wed, 20 Mar 2024 14:34:36 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f72.google.com (mail-io1-f72.google.com [209.85.166.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C9A3848E;
-	Wed, 20 Mar 2024 14:32:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 158E54594B
+	for <linux-wireless@vger.kernel.org>; Wed, 20 Mar 2024 14:34:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710945174; cv=none; b=RFvxteSegr+WCtWrgw9zfoHTRwTVvGLPQjrE6jadwM8CDUdCdhlbMEAwPbZQ+w1SwBcRSSmlWUNuAeLHbflX7wVn/8sUGy65euFYTY8CuGT7n1H9hO3bXi/bDOG0hfyC6HDnecqxYbLPEtaF1ncmtnO5YLHAIBB7431FVHGNJUQ=
+	t=1710945276; cv=none; b=tdZF4JkS/ZBOCOcSVcpW2+6CHwvvEvLPcb94IRcS35IpqTWsnAYTA6dGcA7by7kIIzGGfbJL9Ko3LfTaPLiFk7PWrtsXfiboXPC79I3E048eDVYP9GgMR1/ZKD5+Q2yQxTJB9RF+G0PBvbGMLCTeFCIBl48QjTv5fNzrt3k+AX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710945174; c=relaxed/simple;
-	bh=3JQ9oCUa5g8iZh84z/dzwbM73ILVKpXL8PoHZSM9gvk=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=VdHwoIcSxPY12RRCh1Oa24NpqjEmHPfWweAstenry7s1iGE3Ad6fQwjClC5FHXFecZ2FhrnbzEUhwbMgV0745Rr3xCwter0FTnr5vCdc0AVJOMC2Z8Gi+2/cZaamd98syb3xqop62dGLLcHEeBgShW+hPJcdJTS2NqDdytIabUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c8Ehzo7B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9EA6C433F1;
-	Wed, 20 Mar 2024 14:32:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710945173;
-	bh=3JQ9oCUa5g8iZh84z/dzwbM73ILVKpXL8PoHZSM9gvk=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=c8Ehzo7BsszXKbeF3LNKpF6Noap1iL3xRmv2MnDQjRhbF+toiBF9BaRxOKKcRFkXv
-	 1xpyj1S8yy1sD+lkm5SiEcx19yx+IjzXO+t9hL1CRkMljzLPJyBjsVbGvfUx7WhMR1
-	 m2MDFZ/x2Onu4npbOlbJFMfArm6DCgIbWWkSc/McJA1zkI6zwc9u/ixbwcBNbdd9ng
-	 19PafV4b/09z9cPu7fgQ3sUWEAGVT/JrML6OOBeKdWw5zXWWNbfl4JaDtcDagSSpHu
-	 gDunFaw3IdNDYmKRg97fk3tsPmo2Lv8y8OelQS/imOBg5D4jy02kJAxC8daTuudfBW
-	 JQBttvHSEW84w==
-From: Kalle Valo <kvalo@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Jeff Johnson <jjohnson@kernel.org>,  kuba@kernel.org,
-  keescook@chromium.org,  linux-wireless@vger.kernel.org (open
- list:NETWORKING DRIVERS (WIRELESS)),  ath11k@lists.infradead.org (open
- list:QUALCOMM ATHEROS ATH11K WIRELESS DRIVER),
-  linux-kernel@vger.kernel.org (open list)
-Subject: Re: [PATCH] wifi: ath11k: allocate dummy net_device dynamically
-References: <20240319185735.1268980-1-leitao@debian.org>
-Date: Wed, 20 Mar 2024 16:32:49 +0200
-In-Reply-To: <20240319185735.1268980-1-leitao@debian.org> (Breno Leitao's
-	message of "Tue, 19 Mar 2024 11:57:33 -0700")
-Message-ID: <871q85as8e.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1710945276; c=relaxed/simple;
+	bh=7hu9ZVSc8l53UBO4uyM282N7T1rYQJki/LduGx1yOF0=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Hock8vyv5MVcNcTcBcQwL/gM5bG/yd7jmmIt++NS5OkYMukhmJJf/jhipDTdIdjRUnrQemcySTwD1SDs9u6rlInsJCY5zIqYKb5uZLy6SMLystZ8/rte9JiuY9tgiCf8qPt2+vTCCFI9OO2D+muwg+z45A+4+d6guiesOfhtHUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f72.google.com with SMTP id ca18e2360f4ac-7cbf1d5d35bso591436539f.0
+        for <linux-wireless@vger.kernel.org>; Wed, 20 Mar 2024 07:34:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710945274; x=1711550074;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=khYNXymsT+E8p0FjZwJDp71uipc4zclpoWCWnK64qRY=;
+        b=UHeuKVTNh9aBlhYdasT3RrpffdqwreS/6czIwqfPkwFh0kNkPUgFQjw8eqlBhHhcu8
+         hWTDVKXDvnO1GnyfVc/ZzfGORJ91CorOVgEzwHilhD+yqZV8d9IN5WoGFalIQk+zCEG9
+         ZxjyyPvXl3pBXL9w0ONkppN7DmVqq8v2VxbP9imsmlVVcE6Gj/PrBEJJt+LA+pxvZ/WT
+         USS+t5KhEI1XP+MgGmwtYL1WXJlBOoJ825dkLGanBfp8vXbAT8G88LQNpPuv7gRq4sWm
+         IMtYjYmsoFuhjubmB7MaYz0wk9DzevCEm2b2VG+qqsLQY3yaVbNkiDyEnlrKZkcwApp1
+         tH1A==
+X-Forwarded-Encrypted: i=1; AJvYcCW3//ojJ8Rd6PvV7byeL4zYz0502oPxVqTyGqT6xmMhn1IzcdT+wQJ0lRGBnQdr9SBIk8U0mEHu9yfY1ODRe+zI3s3SRucNgQRcufZPBFg=
+X-Gm-Message-State: AOJu0YwPcEI309YF2WMi6t8YQZKpQCfWbUJLGvB4txrsIdAY3LfWUgUb
+	ZdKqITcFr61u4F+oQKWM26ywzYhd/DniIsOydIwia4D1UaDShc7QFNwcMQQUwy4Bq66GWjp9Ix5
+	I7GuzsbPJWEpKROzFLliE3r6hqFDB9wrdBu0UblWeXTAgZiByPkd89FM=
+X-Google-Smtp-Source: AGHT+IEwUt5CmmdyfyrxTdDCrWQb6XdC90azZ1N1oTcLzD7kppA3xheYUiF6BoxPXSNq/r0ALn1COjuDtKRDzVOD8Ttg/7hxXo6Y
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-Received: by 2002:a05:6602:3424:b0:7cc:70b6:4379 with SMTP id
+ n36-20020a056602342400b007cc70b64379mr265593ioz.1.1710945274309; Wed, 20 Mar
+ 2024 07:34:34 -0700 (PDT)
+Date: Wed, 20 Mar 2024 07:34:34 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000004e41110614187d35@google.com>
+Subject: [syzbot] [wireless?] [usb?] UBSAN: array-index-out-of-bounds in htc_issue_send
+From: syzbot <syzbot+93cbd5fbb85814306ba1@syzkaller.appspotmail.com>
+To: kvalo@kernel.org, linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com, toke@toke.dk
+Content-Type: text/plain; charset="UTF-8"
 
-Breno Leitao <leitao@debian.org> writes:
+Hello,
 
-> Embedding net_device into structures prohibits the usage of flexible
-> arrays in the net_device structure. For more details, see the discussion
-> at [1].
->
-> Un-embed the net_device from struct ath11k_ext_irq_grp by converting it
-> into a pointer. Then use the leverage alloc_netdev() to allocate the
-> net_device object at ath11k_ahb_config_ext_irq() for ahb, and
-> ath11k_pcic_ext_irq_config() for pcic.
->
->  The free of the device occurs at ath11k_ahb_free_ext_irq() for the ahb
-> case, and ath11k_pcic_free_ext_irq() for the pcic case.
->
-> [1] https://lore.kernel.org/all/20240229225910.79e224cf@kernel.org/
->
-> Signed-off-by: Breno Leitao <leitao@debian.org>
+syzbot found the following issue on:
 
-This crashes on my nuc x86 test box with WCN6855 hw2.0 when running
-rmmod, stacktrace below. I used tag ath-202403201010 from my ath.git
-tree as the baseline. Sorry that I'm not able to debug this further
-right now.
+HEAD commit:    a788e53c05ae usb: usb-acpi: Fix oops due to freeing uninit..
+git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
+console output: https://syzkaller.appspot.com/x/log.txt?x=1324bffa180000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=dd8c589043bc2b49
+dashboard link: https://syzkaller.appspot.com/bug?extid=93cbd5fbb85814306ba1
+compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11c95c6e180000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1734b9f1180000
 
-[  116.584290] rmmod ath11k_pci
-[  117.274127] general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] PREEMPT SMP DEBUG_PAGEALLOC KASAN
-[  117.274175] KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-[  117.274210] CPU: 1 PID: 1467 Comm: rmmod Not tainted 6.8.0-wt-ath+ #1338
-[  117.274259] Hardware name: Intel(R) Client Systems NUC8i7HVK/NUC8i7HVB, BIOS HNKBLi70.86A.0067.2021.0528.1339 05/28/2021
-[  117.274290] RIP: 0010:memcmp (lib/string.c:666) 
-[ 117.274335] Code: 24 0f 85 1a ff ff ff 49 83 ed 08 48 83 c3 08 49 83 c4 08 49 83 fd 07 0f 86 fb fe ff ff 48 89 d8 48 89 de 48 c1 e8 03 83 e6 07 <42> 0f b6 14 30 48 8d 43 07 48 89 c1 48 c1 e9 03 40 38 f2 40 0f 9e
-All code
-========
-   0:	24 0f                	and    $0xf,%al
-   2:	85 1a                	test   %ebx,(%rdx)
-   4:	ff                   	(bad)
-   5:	ff                   	(bad)
-   6:	ff 49 83             	decl   -0x7d(%rcx)
-   9:	ed                   	in     (%dx),%eax
-   a:	08 48 83             	or     %cl,-0x7d(%rax)
-   d:	c3                   	ret
-   e:	08 49 83             	or     %cl,-0x7d(%rcx)
-  11:	c4                   	(bad)
-  12:	08 49 83             	or     %cl,-0x7d(%rcx)
-  15:	fd                   	std
-  16:	07                   	(bad)
-  17:	0f 86 fb fe ff ff    	jbe    0xffffffffffffff18
-  1d:	48 89 d8             	mov    %rbx,%rax
-  20:	48 89 de             	mov    %rbx,%rsi
-  23:	48 c1 e8 03          	shr    $0x3,%rax
-  27:	83 e6 07             	and    $0x7,%esi
-  2a:*	42 0f b6 14 30       	movzbl (%rax,%r14,1),%edx		<-- trapping instruction
-  2f:	48 8d 43 07          	lea    0x7(%rbx),%rax
-  33:	48 89 c1             	mov    %rax,%rcx
-  36:	48 c1 e9 03          	shr    $0x3,%rcx
-  3a:	40 38 f2             	cmp    %sil,%dl
-  3d:	40                   	rex
-  3e:	0f                   	.byte 0xf
-  3f:	9e                   	sahf
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/070d17d2f510/disk-a788e53c.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/13f35a4bb3f0/vmlinux-a788e53c.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/6825f1cdc918/bzImage-a788e53c.xz
 
-Code starting with the faulting instruction
-===========================================
-   0:	42 0f b6 14 30       	movzbl (%rax,%r14,1),%edx
-   5:	48 8d 43 07          	lea    0x7(%rbx),%rax
-   9:	48 89 c1             	mov    %rax,%rcx
-   c:	48 c1 e9 03          	shr    $0x3,%rcx
-  10:	40 38 f2             	cmp    %sil,%dl
-  13:	40                   	rex
-  14:	0f                   	.byte 0xf
-  15:	9e                   	sahf
-[  117.274385] RSP: 0018:ffffc90004177af0 EFLAGS: 00010246
-[  117.274423] RAX: 0000000000000000 RBX: 0000000000000000 RCX: 1ffffffff57f2de9
-[  117.274461] RDX: 0000000000000020 RSI: 0000000000000000 RDI: 0000000000000000
-[  117.274493] RBP: ffffc90004177b20 R08: 0000000000000001 R09: fffffbfff57f3342
-[  117.274529] R10: ffffffffabf99a17 R11: ffffffffaa325926 R12: ffff888112c54bf8
-[  117.274568] R13: 0000000000000020 R14: dffffc0000000000 R15: ffff888112c54688
-[  117.274603] FS:  00007f1520d33740(0000) GS:ffff888231c00000(0000) knlGS:0000000000000000
-[  117.274637] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  117.274672] CR2: 00007f675c010d68 CR3: 000000010a9a0001 CR4: 00000000003706f0
-[  117.274707] Call Trace:
-[  117.274740]  <TASK>
-[  117.274776] ? show_regs (arch/x86/kernel/dumpstack.c:479) 
-[  117.274841] ? die_addr (arch/x86/kernel/dumpstack.c:421 arch/x86/kernel/dumpstack.c:460) 
-[  117.274891] ? exc_general_protection (arch/x86/kernel/traps.c:701 arch/x86/kernel/traps.c:643) 
-[  117.274935] ? asm_exc_general_protection (./arch/x86/include/asm/idtentry.h:564) 
-[  117.274983] ? do_syscall_64 (arch/x86/entry/common.c:52 (discriminator 1) arch/x86/entry/common.c:83 (discriminator 1)) 
-[  117.275019] ? memcmp (lib/string.c:666) 
-[  117.275050] dev_addr_check (net/core/dev_addr_lists.c:513 (discriminator 1)) 
-[  117.275090] dev_addr_flush (net/core/dev_addr_lists.c:535) 
-[  117.275127] free_netdev (net/core/dev.c:10976) 
-[  117.275164] ath11k_pcic_free_irq (drivers/net/wireless/ath/ath11k/pcic.c:312 (discriminator 2) drivers/net/wireless/ath/ath11k/pcic.c:334 (discriminator 2)) ath11k
-[  117.275234] ath11k_pci_remove (drivers/net/wireless/ath/ath11k/pci.c:478 drivers/net/wireless/ath/ath11k/pci.c:987) ath11k_pci
-[  117.275273] pci_device_remove (./include/linux/pm_runtime.h:140 drivers/pci/pci-driver.c:477) 
-[  117.275309] device_remove (drivers/base/dd.c:570) 
-[  117.275338] device_release_driver_internal (drivers/base/dd.c:1274 drivers/base/dd.c:1295) 
-[  117.275374] ? __kasan_check_read (mm/kasan/shadow.c:32) 
-[  117.275412] driver_detach (drivers/base/dd.c:1359) 
-[  117.275448] bus_remove_driver (drivers/base/bus.c:736) 
-[  117.275481] driver_unregister (drivers/base/driver.c:275) 
-[  117.275518] pci_unregister_driver (./include/linux/spinlock.h:351 drivers/pci/pci-driver.c:85 drivers/pci/pci-driver.c:1472) 
-[  117.275553] ? find_module_all (kernel/module/main.c:357 (discriminator 1)) 
-[  117.275588] ath11k_pci_exit (drivers/net/wireless/ath/ath11k/pci.c:1069) ath11k_pci
-[  117.275625] __do_sys_delete_module (kernel/module/main.c:756) 
-[  117.275663] ? module_flags (kernel/module/main.c:700) 
-[  117.275697] ? kmem_cache_free (mm/slub.c:4299 (discriminator 3) mm/slub.c:4363 (discriminator 3)) 
-[  117.275726] ? __fput (fs/file_table.c:390) 
-[  117.275763] ? debug_smp_processor_id (lib/smp_processor_id.c:61) 
-[  117.275802] __x64_sys_delete_module (kernel/module/main.c:698) 
-[  117.275890] do_syscall_64 (arch/x86/entry/common.c:52 (discriminator 1) arch/x86/entry/common.c:83 (discriminator 1)) 
-[  117.275925] entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:129) 
-[  117.275954] RIP: 0033:0x7f1520e80c8b
-[ 117.275994] Code: 73 01 c3 48 8b 0d 05 c2 0c 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa b8 b0 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d d5 c1 0c 00 f7 d8 64 89 01 48
-All code
-========
-   0:	73 01                	jae    0x3
-   2:	c3                   	ret
-   3:	48 8b 0d 05 c2 0c 00 	mov    0xcc205(%rip),%rcx        # 0xcc20f
-   a:	f7 d8                	neg    %eax
-   c:	64 89 01             	mov    %eax,%fs:(%rcx)
-   f:	48 83 c8 ff          	or     $0xffffffffffffffff,%rax
-  13:	c3                   	ret
-  14:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
-  1b:	00 00 00 
-  1e:	90                   	nop
-  1f:	f3 0f 1e fa          	endbr64
-  23:	b8 b0 00 00 00       	mov    $0xb0,%eax
-  28:	0f 05                	syscall
-  2a:*	48 3d 01 f0 ff ff    	cmp    $0xfffffffffffff001,%rax		<-- trapping instruction
-  30:	73 01                	jae    0x33
-  32:	c3                   	ret
-  33:	48 8b 0d d5 c1 0c 00 	mov    0xcc1d5(%rip),%rcx        # 0xcc20f
-  3a:	f7 d8                	neg    %eax
-  3c:	64 89 01             	mov    %eax,%fs:(%rcx)
-  3f:	48                   	rex.W
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+93cbd5fbb85814306ba1@syzkaller.appspotmail.com
 
-Code starting with the faulting instruction
-===========================================
-   0:	48 3d 01 f0 ff ff    	cmp    $0xfffffffffffff001,%rax
-   6:	73 01                	jae    0x9
-   8:	c3                   	ret
-   9:	48 8b 0d d5 c1 0c 00 	mov    0xcc1d5(%rip),%rcx        # 0xcc1e5
-  10:	f7 d8                	neg    %eax
-  12:	64 89 01             	mov    %eax,%fs:(%rcx)
-  15:	48                   	rex.W
-[  117.276031] RSP: 002b:00007ffe05526498 EFLAGS: 00000206 ORIG_RAX: 00000000000000b0
-[  117.276069] RAX: ffffffffffffffda RBX: 00005582d521c7e0 RCX: 00007f1520e80c8b
-[  117.276098] RDX: 000000000000000a RSI: 0000000000000800 RDI: 00005582d521c848
-[  117.276134] RBP: 00007ffe055264f8 R08: 0000000000000000 R09: 0000000000000000
-[  117.276174] R10: 00007f1520efcac0 R11: 0000000000000206 R12: 00007ffe055266d0
-[  117.276208] R13: 00007ffe05527eb7 R14: 00005582d521b2a0 R15: 00005582d521c7e0
-[  117.276245]  </TASK>
-[  117.276280] Modules linked in: ath11k_pci(-) ath11k mac80211 libarc4 cfg80211 qmi_helpers qrtr_mhi mhi qrtr nvme nvme_core
-[  117.276380] ---[ end trace 0000000000000000 ]---
-[  117.298338] RIP: 0010:memcmp (lib/string.c:666) 
-[ 117.298394] Code: 24 0f 85 1a ff ff ff 49 83 ed 08 48 83 c3 08 49 83 c4 08 49 83 fd 07 0f 86 fb fe ff ff 48 89 d8 48 89 de 48 c1 e8 03 83 e6 07 <42> 0f b6 14 30 48 8d 43 07 48 89 c1 48 c1 e9 03 40 38 f2 40 0f 9e
-All code
-========
-   0:	24 0f                	and    $0xf,%al
-   2:	85 1a                	test   %ebx,(%rdx)
-   4:	ff                   	(bad)
-   5:	ff                   	(bad)
-   6:	ff 49 83             	decl   -0x7d(%rcx)
-   9:	ed                   	in     (%dx),%eax
-   a:	08 48 83             	or     %cl,-0x7d(%rax)
-   d:	c3                   	ret
-   e:	08 49 83             	or     %cl,-0x7d(%rcx)
-  11:	c4                   	(bad)
-  12:	08 49 83             	or     %cl,-0x7d(%rcx)
-  15:	fd                   	std
-  16:	07                   	(bad)
-  17:	0f 86 fb fe ff ff    	jbe    0xffffffffffffff18
-  1d:	48 89 d8             	mov    %rbx,%rax
-  20:	48 89 de             	mov    %rbx,%rsi
-  23:	48 c1 e8 03          	shr    $0x3,%rax
-  27:	83 e6 07             	and    $0x7,%esi
-  2a:*	42 0f b6 14 30       	movzbl (%rax,%r14,1),%edx		<-- trapping instruction
-  2f:	48 8d 43 07          	lea    0x7(%rbx),%rax
-  33:	48 89 c1             	mov    %rax,%rcx
-  36:	48 c1 e9 03          	shr    $0x3,%rcx
-  3a:	40 38 f2             	cmp    %sil,%dl
-  3d:	40                   	rex
-  3e:	0f                   	.byte 0xf
-  3f:	9e                   	sahf
-
-Code starting with the faulting instruction
-===========================================
-   0:	42 0f b6 14 30       	movzbl (%rax,%r14,1),%edx
-   5:	48 8d 43 07          	lea    0x7(%rbx),%rax
-   9:	48 89 c1             	mov    %rax,%rcx
-   c:	48 c1 e9 03          	shr    $0x3,%rcx
-  10:	40 38 f2             	cmp    %sil,%dl
-  13:	40                   	rex
-  14:	0f                   	.byte 0xf
-  15:	9e                   	sahf
-[  117.298448] RSP: 0018:ffffc90004177af0 EFLAGS: 00010246
-[  117.298504] RAX: 0000000000000000 RBX: 0000000000000000 RCX: 1ffffffff57f2de9
-[  117.298554] RDX: 0000000000000020 RSI: 0000000000000000 RDI: 0000000000000000
-[  117.298600] RBP: ffffc90004177b20 R08: 0000000000000001 R09: fffffbfff57f3342
-[  117.298651] R10: ffffffffabf99a17 R11: ffffffffaa325926 R12: ffff888112c54bf8
-[  117.298700] R13: 0000000000000020 R14: dffffc0000000000 R15: ffff888112c54688
-[  117.298749] FS:  00007f1520d33740(0000) GS:ffff888231c00000(0000) knlGS:0000000000000000
-[  117.298810] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  117.298871] CR2: 00007f675c010d68 CR3: 000000010a9a0001 CR4: 00000000003706f0
-[  117.298924] Kernel panic - not syncing: Fatal exception
-[  117.299488] Kernel Offset: 0x26600000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
-[  117.328105] Rebooting in 10 seconds..
+usb 1-1: ath9k_htc: Transferred FW: ath9k_htc/htc_9271-1.4.0.fw, size: 51008
+ath9k_htc 1-1:1.0: ath9k_htc: HTC initialized with 33 credits
+------------[ cut here ]------------
+UBSAN: array-index-out-of-bounds in drivers/net/wireless/ath/ath9k/htc_hst.c:26:51
+index 255 is out of range for type 'htc_endpoint [22]'
+CPU: 1 PID: 2494 Comm: kworker/1:2 Not tainted 6.8.0-rc6-syzkaller-00190-ga788e53c05ae #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/29/2024
+Workqueue: events request_firmware_work_func
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x125/0x1b0 lib/dump_stack.c:106
+ ubsan_epilogue lib/ubsan.c:217 [inline]
+ __ubsan_handle_out_of_bounds+0x111/0x150 lib/ubsan.c:347
+ htc_issue_send.constprop.0+0x209/0x230 drivers/net/wireless/ath/ath9k/htc_hst.c:26
+ ath9k_wmi_cmd_issue drivers/net/wireless/ath/ath9k/wmi.c:305 [inline]
+ ath9k_wmi_cmd+0x424/0x630 drivers/net/wireless/ath/ath9k/wmi.c:342
+ ath9k_regread+0xdb/0x160 drivers/net/wireless/ath/ath9k/htc_drv_init.c:242
+ ath9k_hw_read_revisions drivers/net/wireless/ath/ath9k/hw.c:287 [inline]
+ __ath9k_hw_init drivers/net/wireless/ath/ath9k/hw.c:572 [inline]
+ ath9k_hw_init+0xf02/0x2b30 drivers/net/wireless/ath/ath9k/hw.c:700
+ ath9k_init_priv drivers/net/wireless/ath/ath9k/htc_drv_init.c:662 [inline]
+ ath9k_init_device drivers/net/wireless/ath/ath9k/htc_drv_init.c:839 [inline]
+ ath9k_htc_probe_device+0xb37/0x25f0 drivers/net/wireless/ath/ath9k/htc_drv_init.c:963
+ ath9k_htc_hw_init+0x33/0x70 drivers/net/wireless/ath/ath9k/htc_hst.c:529
+ ath9k_hif_usb_firmware_cb+0x272/0x620 drivers/net/wireless/ath/ath9k/hif_usb.c:1273
+ request_firmware_work_func+0x13a/0x240 drivers/base/firmware_loader/main.c:1163
+ process_one_work+0x886/0x15d0 kernel/workqueue.c:2633
+ process_scheduled_works kernel/workqueue.c:2706 [inline]
+ worker_thread+0x8b9/0x1290 kernel/workqueue.c:2787
+ kthread+0x2c6/0x3a0 kernel/kthread.c:388
+ ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:243
+ </TASK>
+---[ end trace ]---
 
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
