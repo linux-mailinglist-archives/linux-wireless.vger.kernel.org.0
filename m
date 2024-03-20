@@ -1,67 +1,66 @@
-Return-Path: <linux-wireless+bounces-5054-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5055-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45950881913
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 22:28:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37D63881915
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 22:28:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C9BA8B231FD
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 21:27:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC341B23249
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 21:28:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A179885C62;
-	Wed, 20 Mar 2024 21:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A17F85951;
+	Wed, 20 Mar 2024 21:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IUCu0E0K"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mHs9Xk5G"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C558624B;
-	Wed, 20 Mar 2024 21:27:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE71485C65
+	for <linux-wireless@vger.kernel.org>; Wed, 20 Mar 2024 21:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710970034; cv=none; b=tulQqSPYwGTYgaxjMgDiRrXIKEOJuMXBczAZszrAe1CSI9IWvd7dIwG77+v107w7IF4bsrJDi+NKUXqW3SZicFVeODD9qZmOYXGposjsyOVo7uWHnGKWyJRfuV8d0eGrprc61mjVMc++3hV/c09gYa4hf26PaD+CtAqxiOP5jgQ=
+	t=1710970036; cv=none; b=D5IiqkRAROjpwXruQb28JZb3hOaZ+AjSm1NBEXMtnW/RlbnL0OtrhxwtT7jv1sMNZuCsZBKBf0i/9whWLjDlGi8FkFBmpoPioWVqQXnL/YpRvoZcrHwcYn9XmyKWbItrmOaWaBWwrHRdgok26GbHXWX8BGEULzLUCXqsP2RNdek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710970034; c=relaxed/simple;
-	bh=CjhnpktcNcIRXLzJgkY11a71CMccKoOJwTXiIvUtcXw=;
+	s=arc-20240116; t=1710970036; c=relaxed/simple;
+	bh=YSBUIhPrA7wrXcRXy005UgiygbYmj01MsO26cVHOwMg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bjJewWCbTsxv6p4Err/cJgNBnVNoTVbkpQWDKAubSqliGR5yx66r5RlDcOzunIJdVVGqgDzhSjMtqYAa7UljU3HuACH3XW01ro068lSAXG40qHjPduODWdvsFkHYPEDntq8S5Xucne99ZTGzvOS2GOepkCuS4Wg0mwDm/XNfQ+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IUCu0E0K; arc=none smtp.client-ip=192.198.163.12
+	 MIME-Version; b=f5GXQVv6SKRPvJmeTAYoMNct/rD72UOxu1BsnUENXq7VXS8Hn5i5ewVWWDeuOTqslk/iqo52jR9YTOUAl9updZ4Aa/R+xY1yVXqxtL8gIhjJhBKc4+oL9c1IMKW9it88i+M+0Rq3VtcX1crqlS8PSsdercpsJ3zkGZD7lid7LQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mHs9Xk5G; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1710970033; x=1742506033;
+  t=1710970034; x=1742506034;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=CjhnpktcNcIRXLzJgkY11a71CMccKoOJwTXiIvUtcXw=;
-  b=IUCu0E0KcuYmVK/7nChaFttJoUpUvf5lOL4XrXe6YjUbjn/Hv67YYmDs
-   skBzlCEOaag/exkYSbvTPTm2osXii5eBsMSChw7GMD9ZeN6ejRTmr7gov
-   mmpUWQn3ZaFF2E4WIK21QW3El3WQFB/Nm9w1swHQ8bg9JIa94STB/FJDS
-   M+mABwpgVniSSYkl+jctJpGwINUn4g1uvtbk/GGP3DCcBtsSBq4jFsRW+
-   v2KFHsnn0hQqoYbgkIfNfEhvpZxdD33j6zpoS/vLy6X+vk8lzh+n63KW3
-   0QX/oJNAEgCE3+oyiZHZTNyHU0RtHKZDeT9H9kwnfRV1EPVV7hgWr2nfo
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11019"; a="9698111"
+  bh=YSBUIhPrA7wrXcRXy005UgiygbYmj01MsO26cVHOwMg=;
+  b=mHs9Xk5GfHtn5EyqFZtxst89vk0qsybFA/1iQ2dyNTo57RL86BOUEeJk
+   d7eYLmRwDBIK8RtruaS6vt91FehvRjd2V6NJtgIHnv4ZO90UtW2LVx4fJ
+   p8iFxfyuGsrPgQuzYjaDBejExswcAwlzHPhyx1wSFljXTiqRIgLw75ckj
+   VaNg6ZJC9j6+8AJhv2rGAk5Uz+TnaC13CTnFHFlnfHFaO3frw2JBWrx+S
+   x0aXRyAkAowyZpuk7kYko9o5zi9QNEQ4D5hJzL5kmLbeYdVLvUDOmtgYj
+   GHwS6s1dX8L+hv6D648YwPAzV8+lJrlStFFs5TTaldxMSM5Xw2pyPCDQ3
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11019"; a="9698118"
 X-IronPort-AV: E=Sophos;i="6.07,141,1708416000"; 
-   d="scan'208";a="9698111"
+   d="scan'208";a="9698118"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2024 14:27:12 -0700
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2024 14:27:14 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,141,1708416000"; 
-   d="scan'208";a="14184179"
+   d="scan'208";a="14184184"
 Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2024 14:27:11 -0700
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2024 14:27:13 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 11/17] wifi: iwlwifi: mvm: handle debugfs names more carefully
-Date: Wed, 20 Mar 2024 23:26:32 +0200
-Message-Id: <20240320232419.4dc1eb3dd015.I32f308b0356ef5bcf8d188dd98ce9b210e3ab9fd@changeid>
+	Ilan Peer <ilan.peer@intel.com>
+Subject: [PATCH 12/17] wifi: iwlwifi: mvm: Declare HE/EHT capabilities support for P2P interfaces
+Date: Wed, 20 Mar 2024 23:26:33 +0200
+Message-Id: <20240320232419.37fdea8e55a3.If074bdc6c6cd55b76c3421417a987d21ab6bb041@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240320212638.1446082-1-miriam.rachel.korenblit@intel.com>
 References: <20240320212638.1446082-1-miriam.rachel.korenblit@intel.com>
@@ -74,56 +73,51 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Ilan Peer <ilan.peer@intel.com>
 
-With debugfs=off, we can get here with the dbgfs_dir being
-an ERR_PTR(). Instead of checking for all this, which is
-often flagged as a mistake, simply handle the names here
-more carefully by printing them, then we don't need extra
-checks.
+Declare HE/EHT capabilities support also for P2P client and P2P GO
+interface types.
 
-Also, while checking, I noticed theoretically 'buf' is too
-small, so fix that size as well.
-
-Cc: stable@vger.kernel.org
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218422
-Fixes: c36235acb34f ("wifi: iwlwifi: mvm: rework debugfs handling")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c
-index 5485e8bf613e..af56a55063a7 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c
-@@ -806,7 +806,9 @@ void iwl_mvm_vif_dbgfs_add_link(struct iwl_mvm *mvm, struct ieee80211_vif *vif)
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
+index 03ff6ee546ce..149903f52567 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
+@@ -599,7 +599,8 @@ static const u8 iwl_vendor_caps[] = {
+ 
+ static const struct ieee80211_sband_iftype_data iwl_he_eht_capa[] = {
+ 	{
+-		.types_mask = BIT(NL80211_IFTYPE_STATION),
++		.types_mask = BIT(NL80211_IFTYPE_STATION) |
++			      BIT(NL80211_IFTYPE_P2P_CLIENT),
+ 		.he_cap = {
+ 			.has_he = true,
+ 			.he_cap_elem = {
+@@ -755,7 +756,8 @@ static const struct ieee80211_sband_iftype_data iwl_he_eht_capa[] = {
+ 		},
+ 	},
+ 	{
+-		.types_mask = BIT(NL80211_IFTYPE_AP),
++		.types_mask = BIT(NL80211_IFTYPE_AP) |
++			      BIT(NL80211_IFTYPE_P2P_GO),
+ 		.he_cap = {
+ 			.has_he = true,
+ 			.he_cap_elem = {
+@@ -908,7 +910,8 @@ iwl_nvm_fixup_sband_iftd(struct iwl_trans *trans,
+ 			 u8 tx_chains, u8 rx_chains,
+ 			 const struct iwl_fw *fw)
  {
- 	struct dentry *dbgfs_dir = vif->debugfs_dir;
- 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
--	char buf[100];
-+	char buf[3 * 3 + 11 + (NL80211_WIPHY_NAME_MAXLEN + 1) +
-+		 (7 + IFNAMSIZ + 1) + 6 + 1];
-+	char name[7 + IFNAMSIZ + 1];
+-	bool is_ap = iftype_data->types_mask & BIT(NL80211_IFTYPE_AP);
++	bool is_ap = iftype_data->types_mask & (BIT(NL80211_IFTYPE_AP) |
++						BIT(NL80211_IFTYPE_P2P_GO));
+ 	bool no_320;
  
- 	/* this will happen in monitor mode */
- 	if (!dbgfs_dir)
-@@ -819,10 +821,11 @@ void iwl_mvm_vif_dbgfs_add_link(struct iwl_mvm *mvm, struct ieee80211_vif *vif)
- 	 * find
- 	 * netdev:wlan0 -> ../../../ieee80211/phy0/netdev:wlan0/iwlmvm/
- 	 */
--	snprintf(buf, 100, "../../../%pd3/iwlmvm", dbgfs_dir);
-+	snprintf(name, sizeof(name), "%pd", dbgfs_dir);
-+	snprintf(buf, sizeof(buf), "../../../%pd3/iwlmvm", dbgfs_dir);
- 
--	mvmvif->dbgfs_slink = debugfs_create_symlink(dbgfs_dir->d_name.name,
--						     mvm->debugfs_dir, buf);
-+	mvmvif->dbgfs_slink =
-+		debugfs_create_symlink(name, mvm->debugfs_dir, buf);
- }
- 
- void iwl_mvm_vif_dbgfs_rm_link(struct iwl_mvm *mvm, struct ieee80211_vif *vif)
+ 	no_320 = (!trans->trans_cfg->integrated &&
 -- 
 2.34.1
 
