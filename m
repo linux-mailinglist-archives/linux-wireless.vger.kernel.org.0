@@ -1,119 +1,101 @@
-Return-Path: <linux-wireless+bounces-4961-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4962-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E80D880E6E
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 10:19:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A8DE880EB2
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 10:35:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0939B2817B0
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 09:19:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A9121C20F58
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 09:35:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C37A839FEB;
-	Wed, 20 Mar 2024 09:19:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="bSaP2QKG"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2679A39FF2;
+	Wed, 20 Mar 2024 09:35:07 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from nbd.name (nbd.name [46.4.11.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2615439FD0
-	for <linux-wireless@vger.kernel.org>; Wed, 20 Mar 2024 09:19:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4599D32C60
+	for <linux-wireless@vger.kernel.org>; Wed, 20 Mar 2024 09:35:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710926352; cv=none; b=rNzSv5FLWhGA8+jGn0eVj9yzaClzYQ9A4ckg0KRx0mpwWj26E8c3x18x1epr/A02WJ2kH6C8XExf0XJWg7rvMUklIfUcV9QGZbgGGLgrQHhDCRX/39IKz+Q7CI2rE66T2I6tjAnP7VhO5HpTXtpSJ/4lSD11fEGFlcGP0rrwRyQ=
+	t=1710927307; cv=none; b=dZLoEc91NyGcXahF3PoQ2wrEQcCRbD8grcevaFcSQTNT6uJRCi7A14bVGAB2wpZeJZSTSLqDybDgwaeBMgoSZnkCIRmdGmfQaYxQ++L0LvtemG0Cb9P73rBV1q2trJTjeVaEQLkicRL0LY6sW3LFvgxOb7uJkJWso2ZbsLDzyqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710926352; c=relaxed/simple;
-	bh=em2RJXHqfyjhgUPTOEsGAvznJ7MyjC3TW3MFgio8ZPk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ClmAxB4UKClPR+JrEcjUt4KHN9XtjPt0wF/mq83zRoySkcvAtqlG7cLUyK5VhasufUiNUOEHG/rhnOWtJhabpqBspe7+p1EbKbA3RgSBn4p5HXVGKX93MYAbvWTUoBFw3S6jrecvJbRmX7raSxTIxj9rDBHQYCtvnBoLUIrdv4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=bSaP2QKG; arc=none smtp.client-ip=46.4.11.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-	s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=D12QRKshMlk2EQq6CUq3PzchKGk4Pf/Ssh/VBZ69JEI=; b=bSaP2QKGscDYfPl0JQ4TKyG9HM
-	KsGLptqsuhrrgqn9FjQira/TdhJE8K7/FXdq9obOVU65wOFxDaQ9EQVFvDqSt7O8B8ERWdVEtgmPh
-	85T4fO9Y3/Ygz+0NA0l16SK1aaAFtHApQu12r7uGFRqH4wvc4BGV+zbldruiswVx9ENk=;
-Received: from p54ae9e7b.dip0.t-ipconnect.de ([84.174.158.123] helo=nf.local)
-	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.94.2)
-	(envelope-from <nbd@nbd.name>)
-	id 1rms66-007cMc-93; Wed, 20 Mar 2024 10:18:58 +0100
-Message-ID: <69f0cd9d-79de-4497-a964-07c981ac1a6f@nbd.name>
-Date: Wed, 20 Mar 2024 10:18:57 +0100
+	s=arc-20240116; t=1710927307; c=relaxed/simple;
+	bh=JmdCiyClq1MWCZtwV9HLKqQzrd97kryBzPBGA0T2NEM=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=DHIrPJBkJqikDHhY2/FeFz7UTVnf5r4XCWtn4VCUsERGsJg1Z1GY9/EEmmlgoBqSeJ8tHorcp2yhDsWNvX+m2xDWBDfix6NkN1ZD+yuR+ws2KsE9uIebL0N9Je2hK03GK53RXgyY6LGk9GKOghg3uW7rMKyKUBtXrylPQCQINEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 42K9YA0N0384908, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 42K9YA0N0384908
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 20 Mar 2024 17:34:10 +0800
+Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Wed, 20 Mar 2024 17:34:11 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Wed, 20 Mar 2024 17:34:10 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::4c42:f80:bcc2:d00f]) by
+ RTEXMBS04.realtek.com.tw ([fe80::4c42:f80:bcc2:d00f%5]) with mapi id
+ 15.01.2507.035; Wed, 20 Mar 2024 17:34:10 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Kalle Valo <kvalo@kernel.org>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
+        "fiona.klute@gmx.de"
+	<fiona.klute@gmx.de>,
+        "Jes.Sorensen@gmail.com" <Jes.Sorensen@gmail.com>,
+        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+        "rtl8821cerfe2@gmail.com"
+	<rtl8821cerfe2@gmail.com>,
+        "Larry.Finger@lwfinger.net"
+	<Larry.Finger@lwfinger.net>,
+        "martin.kaistra@linutronix.de"
+	<martin.kaistra@linutronix.de>,
+        "martin.blumenstingl@googlemail.com"
+	<martin.blumenstingl@googlemail.com>,
+        "brianwitte@mailfence.com"
+	<brianwitte@mailfence.com>
+Subject: RE: Git tree to manage Realtek WiFi drivers
+Thread-Topic: Git tree to manage Realtek WiFi drivers
+Thread-Index: AQHaeZ1wC1DGpCikcU2zHRKFE8bG1LFAVphtgAAHXYA=
+Date: Wed, 20 Mar 2024 09:34:10 +0000
+Message-ID: <94c25902ef33433dbb582fc1c503704c@realtek.com>
+References: <503a9152324a817c251193ee486e1bbcb48d2fa8.camel@realtek.com>
+ <87edc5b7oc.fsf@kernel.org>
+In-Reply-To: <87edc5b7oc.fsf@kernel.org>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: mt76: mt7915: workaround too long expansion sparse
- warnings
-Content-Language: en-US
-To: Lorenzo Bianconi <lorenzo@kernel.org>, Kalle Valo <kvalo@kernel.org>
-Cc: linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
- shayne.chen@mediatek.com, ryder.lee@mediatek.com
-References: <5457b92e41909dd75ab3db7a0e9ec372b917a386.1710858172.git.lorenzo@kernel.org>
- <87h6h12rrg.fsf@kernel.org> <Zfqo0I3CpWE6tHTh@lore-desk>
-From: Felix Fietkau <nbd@nbd.name>
-Autocrypt: addr=nbd@nbd.name; keydata=
- xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
- ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
- Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
- AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
- vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
- wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
- TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
- l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
- dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
- HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
- VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
- CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
- VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
- Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
- DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
- wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
- f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
- aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
- FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
- TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
- GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
- cL98efvrjdstUfTCP2pfetyN
-In-Reply-To: <Zfqo0I3CpWE6tHTh@lore-desk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-On 20.03.24 10:13, Lorenzo Bianconi wrote:
->> Lorenzo Bianconi <lorenzo@kernel.org> writes:
->> 
->> > Fix the following sparse warnings:
->> >
->> > drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c:1133:29: error: too long token expansion
->> > drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c:1133:29: error: too long token expansion
->> > drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c:1133:29: error: too long token expansion
->> > drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c:1133:29: error: too long token expansion
->> >
->> > No functional changes, compile tested only.
->> >
->> > Fixes: e3296759f347 ("wifi: mt76: mt7915: enable per bandwidth power limit support")
->> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
->> 
->> Thanks Lorenzo! Could I take this directly to wireless-next? We are very
->> close of being sparse clean in the wireless subsystem, there are just
->> few warnings left ath drivers.
-> 
-> sure, I am fine with it.
-> @Felix?
-Sure.
-Acked-by: Felix Fietkau <nbd@nbd.name>
 
-- Felix
+> Ping-Ke, a big thank you for starting to maintain the rtw tree! Not only
+> that it helps me, I suspect Realtek driver development will be faster as
+> I'm not the bottleneck anymore.
+
+I feel probably registers of Realtek WiFi residing in driver eat lots of yo=
+ur
+bandwidth. Now I can take that part myself, so you can get your time back.
+Again, your review is always helpful to our drivers!
+
+Ping-Ke
 
 
