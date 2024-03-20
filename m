@@ -1,67 +1,66 @@
-Return-Path: <linux-wireless+bounces-5057-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5056-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E375881917
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 22:28:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08245881916
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 22:28:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDD141F2214B
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 21:28:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1B161F21CCB
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 21:28:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 457B136B08;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 285ED85C70;
 	Wed, 20 Mar 2024 21:27:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ood4kt6B"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mpg7dDvT"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6CB885C65
-	for <linux-wireless@vger.kernel.org>; Wed, 20 Mar 2024 21:27:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9869C85C6A
+	for <linux-wireless@vger.kernel.org>; Wed, 20 Mar 2024 21:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710970041; cv=none; b=bNRXSX/Zo96t7yx79AczhufK+VFx2I/aBkIHw0dHfkHcm6LGe/RuFDqgEftuyMI52z+pQq52Q9Rkuw+s5Mw/42ZLcTcFdnzGffdru+hiXRDAg/gst9Cp7MUv6rz9v6V2dsGslUHQ9lK3mt4aLn7b8Ffim10gQVRylfNBtZ/HOME=
+	t=1710970041; cv=none; b=G9Fbj8qlLySLQaYuH7RZ037cGNQcMLiMMvmfXvyuQYK7RgiApxx4odsW/q/EZ10hpqCGJTELzgEBOMaP4dQg+sKXet/PvVqXgNCAM9HIPq+QYnAVb2qVHeJjoZh+R12+zpsUCDqH9Tzpx94INmDx+4zFZxYnbVrTbKjz/YP4VwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1710970041; c=relaxed/simple;
-	bh=kF8RqkWGKpsSZiC5vI1jIDNMrjiBNxUyTQ/OG7YIuYo=;
+	bh=jMmq3FBBSZV1RcYJ0p91pG+T8fW8kNGy/1K+l9C1iH4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=cX3VLkiakC2tU13GBGmFmnp4S4NIFNxShGTsJzXurP2OsgnRGz5tdlFxTjyfPtBEFQfBL0nz1rIzWSoUEhUxXmFI/COkRmY1rhh/fy0k9Sc5N9Bfs4Xphu5SjXPv5Bm9MY6oFgRgI28ZeXkkoSNZxlb8MFMgZWzYc/gjy0KfIvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ood4kt6B; arc=none smtp.client-ip=192.198.163.12
+	 MIME-Version; b=NGawKe2gnlFaT9iwhYu1VU61hW2av5z4Sw9zuiItGzgUPcsZ20JphWumruAeaVz967AJbWU+S8O1WJX95hi7iiZIuoVdbWEgpwlenWS+Rtros9cQLY9sohzBF8Pyv5u+kPZfQitb2T45A0tP/m5W3fjMSXK042/CRsO/GNnB08g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mpg7dDvT; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1710970038; x=1742506038;
+  t=1710970039; x=1742506039;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=kF8RqkWGKpsSZiC5vI1jIDNMrjiBNxUyTQ/OG7YIuYo=;
-  b=Ood4kt6BsZ1v0JX96dPdQ6ZuP2dA67aYrQk6jchPdw8KF6ADhWIxOn1T
-   2wbTVzefnRWIFY1Y/gIjUQoPapfkHKLdSzFtfPIS7x9cFxP67kZdLqvf4
-   k3rrKRRP+0E3kDi3aOhQOnTRNua9q9hKo+uxIbHQtsnmnKIEgaEUbEbJ5
-   W4a3lnsxF5nUrDMbxSSLuLkpeRFKBkPnG1sea+dpBiqrmXvW0gAM1besE
-   XR7tb+Y/1tumAz/5jIC1f6cIKx4mDiz29paMaHFaJ3BWclFu2sIJKupOy
-   58ciVI0PeTb5TfJxU2FpMFZn6VdbUpAjSig61YipYQwUtP+CJk5elIg8N
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11019"; a="9698127"
+  bh=jMmq3FBBSZV1RcYJ0p91pG+T8fW8kNGy/1K+l9C1iH4=;
+  b=mpg7dDvTHs3tALDKs4VsKUX5SE0Z6TO3A/FCkpzAT2Dp7F3pxYo4yWhT
+   akMgZqJ08e+yrFVeWtLmkhflH+AVnL6CK4jQIEA4n/K8TApuI9Jrs4XLL
+   +HkuUFG8FIcR0ujK2w+fKAnkaH7dG1gFlyMcjmFQLifjGk7tmtCgjup5K
+   KKmJQtiyW9QonGoO97CWu97UuCWeAaLoNDJl69tR9gAOy1qJLh5KxqkM9
+   aijZ1HGuazS9+D2gprTutbzIRnihrfCXfp51JCDdDOQojZjS5BeGPc6x9
+   s8R6A8UD1pk/mzR90Wx63/65bD0DR5oVKKEXsVlLo3GqjLqqTs/bGZRKx
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11019"; a="9698140"
 X-IronPort-AV: E=Sophos;i="6.07,141,1708416000"; 
-   d="scan'208";a="9698127"
+   d="scan'208";a="9698140"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2024 14:27:17 -0700
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2024 14:27:19 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,141,1708416000"; 
-   d="scan'208";a="14184191"
+   d="scan'208";a="14184198"
 Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2024 14:27:15 -0700
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2024 14:27:18 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
-	Mukesh Sisodiya <mukesh.sisodiya@intel.com>
-Subject: [PATCH 13/17] wifi: iwlwifi: Add support for LARI_CONFIG_CHANGE_CMD cmd v9
-Date: Wed, 20 Mar 2024 23:26:34 +0200
-Message-Id: <20240320232419.5c31ccd73119.I0363992efc3607368648d34a7918b2534150a3ca@changeid>
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 14/17] wifi: iwlwifi: mvm: set wider BW OFDMA ignore correctly
+Date: Wed, 20 Mar 2024 23:26:35 +0200
+Message-Id: <20240320232419.0d5fb0e971e4.I3b67c5e0ddcbe6e58143ec0bc4e40dd6dba4f863@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240320212638.1446082-1-miriam.rachel.korenblit@intel.com>
 References: <20240320212638.1446082-1-miriam.rachel.korenblit@intel.com>
@@ -74,116 +73,48 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-There is a requirement from OEMs to support new bits in DSM function 7,
-which will indicate enablement of 5.9 GHz in Canada.
-Add support for this by reading those bits from BIOS and sending it to the
-FW. mask unii4 allow bitmap based on LARI_CONFIG_CHANGE_CMD version
+Clearly, I put this flag into the wrong place: devices using the
+code in mac80211.c only do not support EHT, so this isn't even
+relevant. Fix this by moving the code to the right function.
 
-Signed-off-by: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
-Reviewed-by: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
+Fixes: 32a5690e9acb ("wifi: iwlwifi: mvm: support wider-bandwidth OFDMA")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../wireless/intel/iwlwifi/fw/api/nvm-reg.h   |  5 ++++-
- .../wireless/intel/iwlwifi/fw/regulatory.h    | 19 ++++++++++++++++++-
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |  9 ++++++++-
- 3 files changed, 30 insertions(+), 3 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c     | 3 ---
+ drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c | 3 +++
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/nvm-reg.h b/drivers/net/wireless/intel/iwlwifi/fw/api/nvm-reg.h
-index 58034dfa7e70..988b5421a629 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/nvm-reg.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/nvm-reg.h
-@@ -609,7 +609,7 @@ struct iwl_lari_config_change_cmd_v6 {
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 448b43d73625..40e70ffecd14 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -1698,9 +1698,6 @@ static int iwl_mvm_mac_add_interface(struct ieee80211_hw *hw,
+ 				     IEEE80211_VIF_SUPPORTS_CQM_RSSI;
+ 	}
  
- /**
-  * struct iwl_lari_config_change_cmd_v7 - change LARI configuration
-- * This structure is used also for lari cmd version 8.
-+ * This structure is used also for lari cmd version 8 and 9.
-  * @config_bitmap: Bitmap of the config commands. Each bit will trigger a
-  *     different predefined FW config operation.
-  * @oem_uhb_allow_bitmap: Bitmap of UHB enabled MCC sets.
-@@ -619,6 +619,8 @@ struct iwl_lari_config_change_cmd_v6 {
-  * @oem_unii4_allow_bitmap: Bitmap of unii4 allowed MCCs.There are two bits
-  *     per country, one to indicate whether to override and the other to
-  *     indicate allow/disallow unii4 channels.
-+ *     For LARI cmd version 4 to 8 - bits 0:3 are supported.
-+ *     For LARI cmd version 9 - bits 0:5 are supported.
-  * @chan_state_active_bitmap: Bitmap to enable different bands per country
-  *     or region.
-  *     Each bit represents a country or region, and a band to activate
-@@ -642,6 +644,7 @@ struct iwl_lari_config_change_cmd_v7 {
- } __packed;
- /* LARI_CHANGE_CONF_CMD_S_VER_7 */
- /* LARI_CHANGE_CONF_CMD_S_VER_8 */
-+/* LARI_CHANGE_CONF_CMD_S_VER_9 */
+-	if (vif->p2p || iwl_fw_lookup_cmd_ver(mvm->fw, PHY_CONTEXT_CMD, 1) < 5)
+-		vif->driver_flags |= IEEE80211_VIF_IGNORE_OFDMA_WIDER_BW;
+-
+ 	if (vif->type == NL80211_IFTYPE_P2P_DEVICE)
+ 		mvm->p2p_device_vif = vif;
  
- /* Activate UNII-1 (5.2GHz) for World Wide */
- #define ACTIVATE_5G2_IN_WW_MASK	BIT(4)
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h
-index 28e774766847..a0cb8881e629 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
- /*
-- * Copyright (C) 2023 Intel Corporation
-+ * Copyright (C) 2023-2024 Intel Corporation
-  */
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+index d18304ac126c..5a4973431c8b 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+@@ -92,6 +92,9 @@ static int iwl_mvm_mld_mac_add_interface(struct ieee80211_hw *hw,
+ 		mvm->csme_vif = vif;
+ 	}
  
- #ifndef __fw_regulatory_h__
-@@ -132,6 +132,23 @@ enum iwl_dsm_values_indonesia {
- 	DSM_VALUE_INDONESIA_MAX
- };
- 
-+enum iwl_dsm_unii4_bitmap {
-+	DSM_VALUE_UNII4_US_OVERRIDE_MSK		= BIT(0),
-+	DSM_VALUE_UNII4_US_EN_MSK		= BIT(1),
-+	DSM_VALUE_UNII4_ETSI_OVERRIDE_MSK	= BIT(2),
-+	DSM_VALUE_UNII4_ETSI_EN_MSK		= BIT(3),
-+	DSM_VALUE_UNII4_CANADA_OVERRIDE_MSK	= BIT(4),
-+	DSM_VALUE_UNII4_CANADA_EN_MSK		= BIT(5),
-+};
++	if (vif->p2p || iwl_fw_lookup_cmd_ver(mvm->fw, PHY_CONTEXT_CMD, 1) < 5)
++		vif->driver_flags |= IEEE80211_VIF_IGNORE_OFDMA_WIDER_BW;
 +
-+#define DSM_UNII4_ALLOW_BITMAP_CMD_V8 (DSM_VALUE_UNII4_US_OVERRIDE_MSK | \
-+				       DSM_VALUE_UNII4_US_EN_MSK | \
-+				       DSM_VALUE_UNII4_ETSI_OVERRIDE_MSK | \
-+				       DSM_VALUE_UNII4_ETSI_EN_MSK)
-+#define DSM_UNII4_ALLOW_BITMAP (DSM_UNII4_ALLOW_BITMAP_CMD_V8 | \
-+				DSM_VALUE_UNII4_CANADA_OVERRIDE_MSK | \
-+				DSM_VALUE_UNII4_CANADA_EN_MSK)
-+
- enum iwl_dsm_values_rfi {
- 	DSM_VALUE_RFI_DLVR_DISABLE	= BIT(0),
- 	DSM_VALUE_RFI_DDR_DISABLE	= BIT(1),
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index df3b29b998cf..1f8d4723512f 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -1239,8 +1239,14 @@ static void iwl_mvm_lari_cfg(struct iwl_mvm *mvm)
- 		cmd.oem_11ax_allow_bitmap = cpu_to_le32(value);
+ 	goto out_unlock;
  
- 	ret = iwl_bios_get_dsm(&mvm->fwrt, DSM_FUNC_ENABLE_UNII4_CHAN, &value);
--	if (!ret)
-+	if (!ret) {
-+		if (cmd_ver < 9)
-+			value &= DSM_UNII4_ALLOW_BITMAP_CMD_V8;
-+		else
-+			value &= DSM_UNII4_ALLOW_BITMAP;
-+
- 		cmd.oem_unii4_allow_bitmap = cpu_to_le32(value);
-+	}
- 
- 	ret = iwl_bios_get_dsm(&mvm->fwrt, DSM_FUNC_ACTIVATE_CHANNEL, &value);
- 	if (!ret) {
-@@ -1273,6 +1279,7 @@ static void iwl_mvm_lari_cfg(struct iwl_mvm *mvm)
- 		size_t cmd_size;
- 
- 		switch (cmd_ver) {
-+		case 9:
- 		case 8:
- 		case 7:
- 			cmd_size = sizeof(struct iwl_lari_config_change_cmd_v7);
+  out_free_bf:
 -- 
 2.34.1
 
