@@ -1,108 +1,175 @@
-Return-Path: <linux-wireless+bounces-5063-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5064-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0AE4881940
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 22:42:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF208881947
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 22:50:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A51C01F21782
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 21:42:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2B6028310A
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 21:50:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57DFC85C59;
-	Wed, 20 Mar 2024 21:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05F0185C45;
+	Wed, 20 Mar 2024 21:50:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="oGtY3zwS"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="NVYwzLlt"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883BA1400A
-	for <linux-wireless@vger.kernel.org>; Wed, 20 Mar 2024 21:41:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4C5BA45
+	for <linux-wireless@vger.kernel.org>; Wed, 20 Mar 2024 21:50:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710970916; cv=none; b=SkmgW0EOUcqaXGerSHe6LJmVH+Ws9TyDSzLEWJdrz3b3t8ioYgFpXfXxb2qf0+m1apGxMKufx8vYuXI6u9zcXqbCzVLz0fJn85EBGsOZPHiAVZs41IHvgxCNmz/npBnRw5PFP/PPvWhx695z32BRgnIp5Bn65EGDY0qKHGItxrE=
+	t=1710971432; cv=none; b=KFvWmgKcjbQrXsgjMLAKkpYslN7w4v7vrDmBql7/Y/l+GHYiennXI73gnTwH6U0DksXSTZnBgP0sX9zum/CupdBdO1lp4jmMZD/xE6Fq3skRbFAFq1FJgkVObJFj+zsqHIiW/tfeqAI7wuHQwAuWOM+iklpb0+ihzh+l3VL/aFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710970916; c=relaxed/simple;
-	bh=Ews29+L/mMo57ftfDZYhGcfiZxorIWvUOV2wArJFZ8M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=eIs97ClfvSOjl1QoyeJCaLKaA7QiWlLAB972yKtQ9WhGTJc2Q2r5+GW2d83CtVFumYPi81bMTZ82Ag+MXmUdPowKrHSlq/nUG007J7Drc+m9D24ZntXM8HOppqrtlRDZXgaFP2J3yfBimdYsVz8McJ0KefJ8owTrxjkD3YKCM0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=oGtY3zwS; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42KKd8mi005158;
-	Wed, 20 Mar 2024 21:41:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=TrGpARu5ZuTG/eoBqjGXmMOWoOzpDcHGgUQWNAIIyHE=; b=oG
-	tY3zwSbKK8VkLjkPQ0xOv8T1oRZ0FKBzApst5uDpZ06DG5ZUCE1Qgdnr1Ax6ugtF
-	7aGHdhmWOgS5B1gLvH43fvM+/NGy0sZCmtiB5sPT+jqbwxZpZVEKLiM4jKBqsXdC
-	ceRNyAsMf/jylFOUw9YSrzQGqfkkL8yQHvkvoq5FtF1Jhkx5NIr1J0J/KSS+aVBv
-	e0FKjUnwTI3b74PLqdsZJDh5G/vq3DTgFuUbIgbKr6jtLh4lNdzUNRizmZdEuwF1
-	FimitzJQM0IXIlE3njXU9XL/LRv1XTGOD+LOuk/K6nQEZx6ggF4SRW0TZpMyp5MR
-	hCF1vuGkA/hXgmA51biA==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wyy76hb8e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 20 Mar 2024 21:41:50 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42KLfn0G012187
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 20 Mar 2024 21:41:49 GMT
-Received: from [10.110.120.226] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Wed, 20 Mar
- 2024 14:41:48 -0700
-Message-ID: <4b2d875f-a073-41d8-bc72-e917d415829d@quicinc.com>
-Date: Wed, 20 Mar 2024 14:41:48 -0700
+	s=arc-20240116; t=1710971432; c=relaxed/simple;
+	bh=GIQekNhKN6ZhVqvNkVI/XRisn39GJLGs4aMBSBeIl80=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WOaRHeLB4/KID/ymN4x9pUOiImq582qJbq4ZuylTpURjExsKpFW1eyO2/fxYjYacPN8A7l5Wl8Q0ayu3mGF+B0CzDYggMdvdaZXkqEzVBH8lhPqCLzvTehIBtSFKQKSJ1FsUTarm8XO9bxIQg9FqvnIe276nM8fCOl68AQbrKno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=NVYwzLlt; arc=none smtp.client-ip=209.85.210.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-6e67b5d6dd8so152566a34.2
+        for <linux-wireless@vger.kernel.org>; Wed, 20 Mar 2024 14:50:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1710971429; x=1711576229; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7e5DS/yA7HbHfT6B5LGwx48ERu4SeNkBqpRXvy8fkH4=;
+        b=NVYwzLlt+EZUjEHnZLPfCjl3Ly/CoWKyg8hQKVjMoUEGHZ1Lfl43lM+eOG2MVzfSjO
+         VhvNzBfsJCSXBaIUEf8fA8Rkv9E7HzMFm3kWLfB6NtpboBkWKNmRoaY5SXgpQXSZcuHQ
+         YyT+6XS7OMORMaq5fW025gX6PTMA+mdTbeEQw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710971429; x=1711576229;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7e5DS/yA7HbHfT6B5LGwx48ERu4SeNkBqpRXvy8fkH4=;
+        b=vux0mSFM5Ap1Tqby+4u0fJMa39tYyG0Lyo9Txg23cwGkhjCA8I1JkF7ofBBbBlo1s6
+         cUhIlDjwUF9+SPzYm8xj4TCmj5yw5FI7mVtrrl4IICC2hOgIKH6Tg/b+bqHbprYCL7+q
+         LVFBYFH/9j+Kjy6rIPCdi9O0jZu/VF3oScF6wUOelQY4cZvJJsh/jLrd0hQVqhSPejHe
+         bKO+wOgLfdQonGMPUL7JU7UUPSu/he/bNL0HiuIYzeQGizxx6lR/25gViTa7Uog2BHJj
+         0O2gQTFPmOViFpZfB6SyjTjkaaWkIHu/gjG8dKZn/tIoUAVovMFr2AA0JtWPrlX4vgOI
+         SNMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUoR3MkGCNaVoyIgdoRkzaq7E+CRchDQyf7NMiWry5ESjfxm3kmnlACq8L4TcEpLyiRLYycTZvWuEOKzKrSJCX7JsEX48J2U/gfykBPE4s=
+X-Gm-Message-State: AOJu0YwnRGgFjdU4LJnT42hgiYg6/eHacrwfJEByRDUrUrOBeFYK1smO
+	yDb0bmuK7FFz39UqZ4ZHD3JubpKApkeHTwT23RWUcaK2prpJYEed6M4OS9NM1Q==
+X-Google-Smtp-Source: AGHT+IH9O5DCRQxgg/juNeTEEUiRb3od5GqM5/PbooTEf3XOb1UYlPpyE3wXSOeN2DuMZCfRVAQBUw==
+X-Received: by 2002:a05:6870:527:b0:221:cb66:c36b with SMTP id j39-20020a056870052700b00221cb66c36bmr3566275oao.4.1710971429612;
+        Wed, 20 Mar 2024 14:50:29 -0700 (PDT)
+Received: from localhost ([2620:15c:9d:2:8598:2b3d:6e11:4163])
+        by smtp.gmail.com with UTF8SMTPSA id k21-20020a628415000000b006e6bf165a3asm13056754pfd.91.2024.03.20.14.50.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 20 Mar 2024 14:50:29 -0700 (PDT)
+Date: Wed, 20 Mar 2024 14:50:28 -0700
+From: Brian Norris <briannorris@chromium.org>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: David Lin <yu-hao.lin@nxp.com>,
+	Francesco Dolcini <francesco@dolcini.it>,
+	"kvalo@kernel.org" <kvalo@kernel.org>,
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Pete Hsieh <tsung-hsien.hsieh@nxp.com>,
+	"rafael.beims" <rafael.beims@toradex.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>
+Subject: Re: [EXT] Re: [PATCH v9 0/2] wifi: mwifiex: add code to support host
+ mlme
+Message-ID: <ZftaJEIeNfV7YrVo@google.com>
+References: <20240306020053.18054-1-yu-hao.lin@nxp.com>
+ <20240315094927.GA6624@francesco-nb>
+ <ZfTspRKFgrO9xCTH@google.com>
+ <969e95ccc4a1d35b45212b7fcb536ee90995e3b5.camel@sipsolutions.net>
+ <PA4PR04MB9638D253189D6DD330B198B2D1332@PA4PR04MB9638.eurprd04.prod.outlook.com>
+ <PA4PR04MB9638BE73DDBCE1CE8AA32BA8D1332@PA4PR04MB9638.eurprd04.prod.outlook.com>
+ <b2d9a7ef53c5ab4212617e8edf202bbafe52e2f8.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 03/12] wifi: ath12k: modify ath12k mac start/stop ops
- for single wiphy
-Content-Language: en-US
-To: Rameshkumar Sundaram <quic_ramess@quicinc.com>,
-        <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, Sriram R <quic_srirrama@quicinc.com>
-References: <20240320190943.3850106-1-quic_ramess@quicinc.com>
- <20240320190943.3850106-4-quic_ramess@quicinc.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20240320190943.3850106-4-quic_ramess@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: bd-mPsZQIcRB32OTGBtCvZOy-SdoMyOm
-X-Proofpoint-ORIG-GUID: bd-mPsZQIcRB32OTGBtCvZOy-SdoMyOm
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-20_12,2024-03-18_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- suspectscore=0 malwarescore=0 bulkscore=0 spamscore=0 mlxscore=0
- priorityscore=1501 adultscore=0 clxscore=1015 mlxlogscore=486 phishscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2403140001 definitions=main-2403200174
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b2d9a7ef53c5ab4212617e8edf202bbafe52e2f8.camel@sipsolutions.net>
 
-On 3/20/2024 12:09 PM, Rameshkumar Sundaram wrote:
-> From: Sriram R <quic_srirrama@quicinc.com>
+On Wed, Mar 20, 2024 at 10:12:45AM +0100, Johannes Berg wrote:
+> On Wed, 2024-03-20 at 01:10 +0000, David Lin wrote:
+> > > > 
+> > > > Also decl.h should probably _shrink_ rather than grow, a number of
+> > > > things just replicate ieee80211.h (such as MWIFIEX_MGMT_HEADER_LEN
+> > > > really is just
+> > > > sizeof(ieee80211_mgmt) or so? Not quite correctly.)
+> > > > 
+> > > 
+> > > This can be done for feature patches.
 > 
-> When mac80211 does drv start/stop, apply the state change
-> for all the radios within the wiphy in ath12k.
-> 
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-> 
-> Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
-> Signed-off-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> But this is a feature patch :-)
 
+I'm going to hazard a guess David may have meant "future"?
+
+But yeah, I get overwhelemed at how similar-but-not-quite-the-same
+definitions in this driver sometimes. It definitely could use some
+spring cleaning.
+
+> > > > So yeah, agree with Brian, not only would this be the first, but it's
+> > > > also something we don't really _want_. All other drivers that want
+> > > > stuff like this are stuck in staging ...
+> > > > 
+> > > > So why is this needed for a supposedly "firmware does it all" driver,
+> > > > and why can it not be integrated with mac80211 if it's no longer "firmware
+> > > does it all"?
+> > > > 
+> > > > Johannes
+> > > 
+> > > Our proprietary driver is cfg80211 driver, it is very hard to create a brand new
+> > > mac80211 driver and still can port all tested stuffs from our proprietary driver.
+> 
+> That basically doesn't matter for upstream at all.
+
++1
+
+> > BTW, vendor should have the choice to use cfg80211 or mac80211 for their chips, right?
+> 
+> No, that's not how it works. The choice should be what makes sense
+> architecturally.
+
+And to put some specifics on it, that's what's described here:
+
+https://wireless.wiki.kernel.org/en/developers/documentation/mac80211
+https://wireless.wiki.kernel.org/en/developers/documentation/cfg80211
+
+(I don't consider myself an authority on this stuff, for the record.
+But:)
+
+I've often felt like the SoftMAC designation has a very fuzzy
+definition. Or, that definition is very much subject to the whims of the
+hardware/firmware vendor, and can change from day to day. For instance,
+it feels like there are plenty of "fat firmware" features in mac80211
+drivers today, where pretty much anything and everything *might* be
+handled in some kind of firmware-offload feature, in addition or instead
+of on the host CPU.
+
+But a key point that *is* a pretty hard designation, from the mac80211
+page:
+
+"SoftMAC devices allow for a finer control of the hardware, allowing for
+802.11 frame management to be done in software for them, for both
+parsing and generation of 802.11 wireless frames"
+
+AFAICT, mwifiex firmware still isn't allowing "parsing and generation of
+802.11 wireless frames" in any general form -- everything I see is still
+wrapped in custom firmware command protocols. I do see that the AUTH
+frame looks like it's essentially duplicating the standard mgmt format,
+and uses the driver's TX path for it, but there isn't a corresponding
+ASSOC management frame that I can see...
+...so I really can't tell how much control this firmware *does* give the
+host regarding arbitrary 802.11 frame management.
+
+But that's pretty much business as usual for anybody but the vendor in
+priorietary firmware land; I can't answer pretty much any question,
+other than what I can glean from a driver.
+
+Brian
 
