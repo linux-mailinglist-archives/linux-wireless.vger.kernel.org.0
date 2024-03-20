@@ -1,92 +1,83 @@
-Return-Path: <linux-wireless+bounces-4954-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4955-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78BB8880E2A
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 10:01:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BD8E880E36
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 10:03:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A7CB01C22ED9
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 09:01:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB7A01F219E9
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 09:03:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3A7939FEB;
-	Wed, 20 Mar 2024 08:59:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2ECA25605;
+	Wed, 20 Mar 2024 09:03:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tN+S9WGO"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="pkbhoZLW"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF90639FC3
-	for <linux-wireless@vger.kernel.org>; Wed, 20 Mar 2024 08:59:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 048723B791;
+	Wed, 20 Mar 2024 09:03:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710925159; cv=none; b=m0p53f2dEMmC2QN7ocJbFBfNlH9pEK2W5msumqIxdVdQOvvMbkj8TjUU7um2sjkfcwCj61HydAWy1JMFtc82dkAEnxs4jiwbIEQy6R8LhDHQXDJpL9Rx+Sq83Rv6t8COtc7ASdTAv8jx9skbXvg8HItzekcXKSD4ox7bqjD6Uz4=
+	t=1710925430; cv=none; b=XJdyPMDw4jUAF13w9rdD+AL1dRKlUjaygOTulYRjedAF0No2M8vP19gON6DvWv2tAmpIVWQr378kLiJXSyG9MD2HSrcDv1xGeKuOIQvWdgP5TYaek/CDktuZyh9T6enWgpSVFvhHc+RCmlUXXa3QEkMcK3JEYGohZhIL3f3OinI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710925159; c=relaxed/simple;
-	bh=u/VzySYQ1Rmdd+HxMwxGd5Tt1tOaSJ+SqoOW598AaYI=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=nkww2eGyhJ9GGxOg2WasII7Z0OrnALER7u288sOYbJ+VP55BAuvTslz06Fx10Iqh2+lA7RG6Y8khzQ9znJpf+dKXclTXCp5nOi2h4Ftgrktvkwfd5aAJBTxsqyeG8ImUvdVyEoEro6YgPd7k4LTGha7XDQQs8kG+VAirBB/PjqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tN+S9WGO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DB3FC433F1;
-	Wed, 20 Mar 2024 08:59:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710925159;
-	bh=u/VzySYQ1Rmdd+HxMwxGd5Tt1tOaSJ+SqoOW598AaYI=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=tN+S9WGOU0nrunB2baggcG4CrB1DudoUOqRDX3FSCpXLsemrDfAbRvjhih9QRT1XB
-	 jz9nBohWXforShjcapUvfJOXn3o5ueB/luksZf74v8vBBr+VfSJMI+px+9KuqMXUma
-	 ruwxVrDg5gJfWRCLUY0zmvyZayP0RWVHC0l4HYtMbYnRr052crhHgR/rq/xozBeH0b
-	 1QZJBFctzUo7qR/eo5S+AwNImci73V2gjaGRFJdtpbZpyBDpCuAcyNIaZLDEutF2Lj
-	 UnJnkX74fKnzv1WhsPUgxd2nKjBvElu4Xl55AuprZ4agW1kvAyEI6F43eN+MxBRkFJ
-	 0sk3ZjgMF3d+w==
-From: Kalle Valo <kvalo@kernel.org>
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-  "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
-  "fiona.klute@gmx.de" <fiona.klute@gmx.de>,  "Jes.Sorensen@gmail.com"
- <Jes.Sorensen@gmail.com>,  "s.hauer@pengutronix.de"
- <s.hauer@pengutronix.de>,  "rtl8821cerfe2@gmail.com"
- <rtl8821cerfe2@gmail.com>,  "Larry.Finger@lwfinger.net"
- <Larry.Finger@lwfinger.net>,  "martin.kaistra@linutronix.de"
- <martin.kaistra@linutronix.de>,  "martin.blumenstingl@googlemail.com"
- <martin.blumenstingl@googlemail.com>,  "brianwitte@mailfence.com"
- <brianwitte@mailfence.com>
-Subject: Re: Git tree to manage Realtek WiFi drivers
-References: <503a9152324a817c251193ee486e1bbcb48d2fa8.camel@realtek.com>
-Date: Wed, 20 Mar 2024 10:59:15 +0200
-In-Reply-To: <503a9152324a817c251193ee486e1bbcb48d2fa8.camel@realtek.com>
-	(Ping-Ke Shih's message of "Tue, 19 Mar 2024 01:33:27 +0000")
-Message-ID: <87edc5b7oc.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1710925430; c=relaxed/simple;
+	bh=ajQewOq3z6kaZJsImjXe5I9M1OMxJ07y6xZgj3AxAWs=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=HNw8m4BFF1mgfJNIyZ4EtnUIEFJcsQZTaKl/BsOa965khOTy36zpHnz+FDgMG4bKKnDBZC7zRhX6LyGcSP17jzw4BGZ/8XmzcU/sOOhuLjG1ivcokaE3t4XcC3bR7/OYbrMlw/f4u+hH5ESm0K2Z9mD6XnykDhZX9KEQnLFgq/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=pkbhoZLW; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=tZqcChox9CcHzEf0v2PKkwHSnC5LQfuFi9qz0i1saPE=;
+	t=1710925428; x=1712135028; b=pkbhoZLWOaWUotWk2wlSAZuhtswfw5tJ5ctb9qAhvsT3Jlo
+	0jpavuXQhcW8QhjIWpUgwHSs2HqUmqinU+HRYmpy6xbqIXkYT8NLKQ2VhBFC7N4Wfy7svp8zpUxPr
+	gsK+B+41eYsz0dj3cOgyu00JGi5vPu1qU1MnVKjoB5ZtdC4cU84Xx4qaCo6lHMiCTAx9CyIcxa95a
+	9urn6mLGKA0xMlqeFj91KIqQCCEmHwUlCPTwhpaV5tM8b8HkTYFJzIjabl0vmg6tUEFPbERS1ME3M
+	CfQYHLESjNCeoZLXBZZYZk6JBYgRve0/f/Qt6/rxogKmL0dNJTLOY3o2sOw1iR6g==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rmrrJ-00000006tf1-3zv6;
+	Wed, 20 Mar 2024 10:03:42 +0100
+Message-ID: <e7204512f71e9232572fced208899f7b6baa920d.camel@sipsolutions.net>
+Subject: Re: [RFC] wireless: ti: Can we just remove this flexible array?
+From: Johannes Berg <johannes@sipsolutions.net>
+To: "Gustavo A. R. Silva" <gustavo@embeddedor.com>, Jeff Johnson
+	 <quic_jjohnson@quicinc.com>, Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, 
+	linux-hardening@vger.kernel.org
+Date: Wed, 20 Mar 2024 10:03:40 +0100
+In-Reply-To: <483362b8-ea79-4036-89eb-d6ab737e1e96@embeddedor.com>
+References: <3a531d5b-9bf6-4e88-ba8c-a76cfa95be20@embeddedor.com>
+	 <328306d9-953f-482b-bf9a-a753d7d4e2ed@quicinc.com>
+	 <483362b8-ea79-4036-89eb-d6ab737e1e96@embeddedor.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-malware-bazaar: not-scanned
 
-Ping-Ke Shih <pkshih@realtek.com> writes:
+On Tue, 2024-03-19 at 18:42 -0600, Gustavo A. R. Silva wrote:
+>=20
+> > > -       /* payload */
+> > > -       u8 data[];
+> > >    } __packed;
+> >=20
 
-> First of all, thank all contributors (Cc'ed) to add new features and
-> chips support of Realtek WiFi under drivers/net/wireless/realtek/.
->
-> To balance load of maintainers, I will start being the maintainer to manage
-> Realtek drivers [1] by an new git tree [2] that I fork from wireless-next,
-> and the main branch is rtw-next. For submitters, all things are the same as
-> usual except to codebase.
->
-> Also welcome to help review patches from other contributors. That is
-> really helpful to get these drivers better.
+Why not keep (or even add in the cases where it's not) the comment
+though?
 
-Ping-Ke, a big thank you for starting to maintain the rtw tree! Not only
-that it helps me, I suspect Realtek driver development will be faster as
-I'm not the bottleneck anymore.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+johannes
 
