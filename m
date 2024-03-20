@@ -1,119 +1,95 @@
-Return-Path: <linux-wireless+bounces-4988-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4989-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E02B881442
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 16:13:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E662788147D
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 16:26:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 12002B221B2
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 15:13:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A26CF282B01
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 15:25:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D0DD481DF;
-	Wed, 20 Mar 2024 15:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2651650260;
+	Wed, 20 Mar 2024 15:25:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Kt8qapt7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MIuESAPt"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F2034DA1A;
-	Wed, 20 Mar 2024 15:13:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F30E34C61F;
+	Wed, 20 Mar 2024 15:25:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710947592; cv=none; b=M5sgx/b7cyzL0N1FIVd15prj0hUTc0eog4JJD4DfM//CcyEp2OABRqq5X81lzxdumf1LD2JMa8v3yFwdPbGw8DzK9wqRu6ZsUbpV0irSRMRvByUZkyhoLv6HvXfkOLs7qCYhbMisbcEa4aRG58hArOSD0zEMyU5cJb4FKbKs0/w=
+	t=1710948356; cv=none; b=iBfOOiC+3/jkue5x0spiZUAA6DWtvttTJpGQS4qfG60aWIwfd9tyCIo/Wg/Z8Zq5sfN3GYurVlAHjedonllWQ236LpHL7Vn9T0sEDMrQphIrZ7VgekAvulg2b3G3qVBvinrgMMz8amF0Kf/NEB09MDD43JPkhzyrYja0ElQmbic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710947592; c=relaxed/simple;
-	bh=pcGxRvY/FbBvBlq97QB2rq5HTC92beOMYNwfDm8kMEY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=OD7RrS4V8MKoDpw5nXgdIDBg/9xrQ+fyPpeBuTtAT1UPYEI3t5L2KiDuEl++tYxG0mfKzG7JHNvYeG4Pv/mYz8V0a5D6B1m+qyHlbFnfl57QSJJynnRZpumFZa06XZjSu5Q5vHbh73f04zom5r30DcwIe1VmpylCE6DDPtm5KRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Kt8qapt7; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42KEk4k5003864;
-	Wed, 20 Mar 2024 15:12:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=D1YOUigZ032H/1z4ozAs2t77AHgioIzVm+TtWp1zuOo=; b=Kt
-	8qapt7ufd0OQx13srzzsbnT9KvPuHggjZiFmhQWTtpzZ7fuYLIb4wkGrmqX6RGDG
-	Rc1duXWK14KJjXhdOX62pJBvfoEA9E/TgHfCkKcSHudS5m3/aTtMiFo60X01uBuv
-	thB47g7Ct+V6vzwji5jyArPCnt9asMr+hhNvI+WewvdeQmp2j05vAwbuCjLgOoNw
-	jQeYJf6GtV3Kl/LUkhMsle+uZ52t82m9xTk4vV62uUVDOFu54XR6/dz1oC/X4C+H
-	bozfSe/O2mmTCdURveUvk5LMMHoXYmNVn7vHslc3ah4rA33EGkZW88oVYoXJiGUd
-	bUgCcZxUWKP6qtYKCGkg==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3x01br85fy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 20 Mar 2024 15:12:48 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42KFCl7l027483
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 20 Mar 2024 15:12:47 GMT
-Received: from [10.110.120.226] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Wed, 20 Mar
- 2024 08:12:47 -0700
-Message-ID: <9fcdb857-da62-4832-ae11-043fe993e4ad@quicinc.com>
-Date: Wed, 20 Mar 2024 08:12:46 -0700
+	s=arc-20240116; t=1710948356; c=relaxed/simple;
+	bh=0UWHhH7UBptN7bELngpHg4QMteISn0vghq9W+vJ512A=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=iIsJbwlHYhkb6HAPsZ2jZBo7QTc2xapPSJOzDoPN6foE+qewKSn4nqhGf+rFVKnIk9QscZE5OzI9U8IcjLWfRVLQlmkLWdLWyoN516ogymCtvr1ieVAxhwezWwH1dX2fTmMbT7zs8JQbf6ZXizoQtGXUsSYqI6ADGQoSIGkVcFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MIuESAPt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBF0FC433C7;
+	Wed, 20 Mar 2024 15:25:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710948355;
+	bh=0UWHhH7UBptN7bELngpHg4QMteISn0vghq9W+vJ512A=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=MIuESAPtRv5GCgirO/qyzmRLvHHXJCOrd8plPAqUfLX2iR/7j7XUgPTzp85BLcf2t
+	 JUMAxHHID/F3grlo60zxh7IOHAutVwv2Bw77Nh3uF94JTl3HeBxVN5CXrHNqJkLEoZ
+	 RZ2WsXwn6RnI53FjjkCIqecI8Wlj8s6/U0RxYanVFyy80rQlcARHCa7kGsGOfFZLfi
+	 ayJKHO3W78VYlmjzB/4RZ0ZgSAPONOi6qYKHVHcX8TujvDzcyL861ms/7HGtAOBnrf
+	 I+4BubwtX/3n36arXTF00LzJ4meYKBO5jMgH73O07HuFOPPdgBGCivkYaBRdy2rIGI
+	 W++pT72selqRw==
+From: Kalle Valo <kvalo@kernel.org>
+To: Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc: Breno Leitao <leitao@debian.org>,  Jeff Johnson <jjohnson@kernel.org>,
+  <kuba@kernel.org>,  <keescook@chromium.org>,  "open list:NETWORKING
+ DRIVERS (WIRELESS)" <linux-wireless@vger.kernel.org>,  "open list:QUALCOMM
+ ATHEROS ATH10K WIRELESS DRIVER" <ath10k@lists.infradead.org>,  open list
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] ath10k: allocate dummy net_device dynamically
+References: <20240319104754.2535294-1-leitao@debian.org>
+	<9fcdb857-da62-4832-ae11-043fe993e4ad@quicinc.com>
+Date: Wed, 20 Mar 2024 17:25:52 +0200
+In-Reply-To: <9fcdb857-da62-4832-ae11-043fe993e4ad@quicinc.com> (Jeff
+	Johnson's message of "Wed, 20 Mar 2024 08:12:46 -0700")
+Message-ID: <87wmpwaprz.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ath10k: allocate dummy net_device dynamically
-Content-Language: en-US
-To: Breno Leitao <leitao@debian.org>, Kalle Valo <kvalo@kernel.org>,
-        Jeff
- Johnson <jjohnson@kernel.org>
-CC: <kuba@kernel.org>, <keescook@chromium.org>,
-        "open list:NETWORKING DRIVERS
- (WIRELESS)" <linux-wireless@vger.kernel.org>,
-        "open list:QUALCOMM ATHEROS
- ATH10K WIRELESS DRIVER" <ath10k@lists.infradead.org>,
-        open list
-	<linux-kernel@vger.kernel.org>
-References: <20240319104754.2535294-1-leitao@debian.org>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20240319104754.2535294-1-leitao@debian.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: q7s0hFZrLjK3gu1dnGtitAhln06Gey-B
-X-Proofpoint-ORIG-GUID: q7s0hFZrLjK3gu1dnGtitAhln06Gey-B
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-20_10,2024-03-18_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
- priorityscore=1501 phishscore=0 suspectscore=0 malwarescore=0
- clxscore=1015 mlxlogscore=943 lowpriorityscore=0 bulkscore=0 mlxscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2403140001 definitions=main-2403200121
+Content-Type: text/plain
 
-On 3/19/2024 3:47 AM, Breno Leitao wrote:
-> Embedding net_device into structures prohibits the usage of flexible
-> arrays in the net_device structure. For more details, see the discussion
-> at [1].
-> 
-> Un-embed the net_device from struct ath10k by converting it
-> into a pointer. Then use the leverage alloc_netdev() to allocate the
-> net_device object at ath10k_core_create(). The free of the device occurs
-> at ath10k_core_destroy().
-> 
-> [1] https://lore.kernel.org/all/20240229225910.79e224cf@kernel.org/
-> 
-> Signed-off-by: Breno Leitao <leitao@debian.org>
+Jeff Johnson <quic_jjohnson@quicinc.com> writes:
 
-NAK this based upon the ath11k patch results.
+> On 3/19/2024 3:47 AM, Breno Leitao wrote:
+>> Embedding net_device into structures prohibits the usage of flexible
+>> arrays in the net_device structure. For more details, see the discussion
+>> at [1].
+>> 
+>> Un-embed the net_device from struct ath10k by converting it
+>> into a pointer. Then use the leverage alloc_netdev() to allocate the
+>> net_device object at ath10k_core_create(). The free of the device occurs
+>> at ath10k_core_destroy().
+>> 
+>> [1] https://lore.kernel.org/all/20240229225910.79e224cf@kernel.org/
+>> 
+>> Signed-off-by: Breno Leitao <leitao@debian.org>
+>
+> NAK this based upon the ath11k patch results.
+>
+> As suggested there we should just use kmalloc/kfree to match the existing logic.
 
-As suggested there we should just use kmalloc/kfree to match the existing logic.
+BTW if the patch is not tested on a real device then it's good to
+document that in the commit message with "Compile tested only" or
+similar.
 
-/jeff
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
