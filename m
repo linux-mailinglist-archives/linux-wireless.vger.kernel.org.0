@@ -1,63 +1,63 @@
-Return-Path: <linux-wireless+bounces-5000-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5001-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3441C881650
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 18:16:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DE3788165D
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 18:18:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E221828561F
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 17:16:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 359F61F253BE
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 17:18:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F389B6A013;
-	Wed, 20 Mar 2024 17:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E35AA6A031;
+	Wed, 20 Mar 2024 17:18:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="XeSx6zml"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ZFxZiFuP"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64CE86A01D;
-	Wed, 20 Mar 2024 17:16:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82DA665BDC
+	for <linux-wireless@vger.kernel.org>; Wed, 20 Mar 2024 17:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710954979; cv=none; b=IcwlbKcEzNudQRUzRRT1lhMdp+Mb2xbL2e00H74VSvngfKg5OfwM/qcYD6R9C4wFUmgWeA0jaGk4V6ERd+iKYQlNrejgH5QSF77ckZPZMlPTAQ7bgQmCiPb8nYyLUoJjOa63BPee7BN7oEOecXK0xvwtnhDGm50Q0XFsIu+cGAY=
+	t=1710955101; cv=none; b=ZNkkXJulFYIgkWtnpoVDYylSwqN0g7AlI3IrshvP/tZT73Ga2WdCNAHbXV1URbKG2Fri6qngWp9Acnqay+SYrNP4KWsqKNsbt1OdbP+4gpRSTTqfpLnLf+cA3nZF/VGtR9bpT+A+3RnxoCuzDVzdDps1tT+gmhMEkJZQhGRnUAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710954979; c=relaxed/simple;
-	bh=LMDT/S5VYriR03orj+KffWgjmaIzJKd3iCBDJeHdEHE=;
+	s=arc-20240116; t=1710955101; c=relaxed/simple;
+	bh=IAYmgb789u+UyqHAp7unDeZgPn6lR58RB3ZKLg15MeQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=NxoOyU4cs4F5lNRWVnT0dkJMRSamI9qk7x05BitCvfVZgaTVdQ2FgREt3m84JRN1hVijfZiVVLs8flrF2rj16SFhUMvxoZM5Rf3AQiOq/Y6x/z11JyiSrcBrdkHtd7Q1v5ITRW/xMdAapawkbyxuwpGpLVAptEuPELL3cQwwuH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=XeSx6zml; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:Content-Type; b=lbtBfXnxPJA4gXiEioYzfAfh2OQkGI1T92Cvbt0xe512PDGBim/V5O0VB1ilcASiXM3sG3oenz62HP/3oOB5W94NzkZlrMbxbeEanHsIQS0458qKNtesZLhhRWp8Q7jWPBROKMm6yjJBvnPqahs2qPMity0pW8hd2EblSlOdSnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ZFxZiFuP; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42KGvcGU007681;
-	Wed, 20 Mar 2024 17:16:13 GMT
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42KEjZ1Q008838;
+	Wed, 20 Mar 2024 17:17:46 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	message-id:date:mime-version:subject:to:cc:references:from
 	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=ru400vBj+D3skoKY3EySOxlziOD0MUSbD8eBY1ccvPM=; b=Xe
-	Sx6zmlxLBbCYqN68kFIo86ixexE07sELsKmTeinG0kY2cdi6DrqEW2mW93YM3xdy
-	czXnAFPxS5GEWVnam1rTn2aKAmdvvcnSfhB6XWSo/X18R6zKmllB3Hx95Hm/kFQb
-	c6n7PrWqwhHKRYko7J+UAqiVMfO7RjEi0xz6i7/pk+zQI0Ca7mTLtSFUuinIT85X
-	fTh3GPgjs50SrCI5AS7SPBqCaBpJyplmRqQbTdTLVQ++9/igQ6IIuFXGWNpa+jyi
-	95Anq45kb6XDDvyIZGU9nJ+dH533teCSCJSuicBRrJtjB0IwkvEP2eeWPImD7thE
-	lApIgSBYbiVW7bK0w4qQ==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3x01jqgdmd-1
+	qcppdkim1; bh=DFCzwtCSg9E7/zcvdCpi/lvR69BooL2jQOwdFuuwWQI=; b=ZF
+	xZiFuPxmn5vDt9M3giU2zCtRbpA4Mv3Ev3Occ9GoccQqTfdV1a8Az/3I1e0NFbI/
+	jinhFrOApNpGA29l6+SzPZoN4pD+nSHPrZVwzLmB3xH0aui/r/CedZ3hvNWFa4tM
+	KaR5U0jxp2W4/zYEPIfHNFyzD4QNpk7RIROf1TEStHZrnJ5aRIoFqY5xEdn5aUOb
+	VRxmqnSF0o9zh/ic4g7qytIUU8sEiOURVqBGp+P9nUcRX63aAgnz5ycelKcIivYB
+	j+fHKtVBbmwe7CTzaMm5yzrNLxWX1jzVWYGRXKQHobA105OlU3I/lUwCb5MBzxpH
+	lp04arCJyF5w7Nn3RDCQ==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wyyvdgr14-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 20 Mar 2024 17:16:13 +0000 (GMT)
+	Wed, 20 Mar 2024 17:17:46 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42KHGCjE000513
+	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42KHHjwS012121
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 20 Mar 2024 17:16:12 GMT
+	Wed, 20 Mar 2024 17:17:45 GMT
 Received: from [10.110.120.226] (10.80.80.8) by nalasex01a.na.qualcomm.com
  (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Wed, 20 Mar
- 2024 10:16:12 -0700
-Message-ID: <2a2d2001-f87e-49be-8f5f-fcd175c4911a@quicinc.com>
-Date: Wed, 20 Mar 2024 10:16:11 -0700
+ 2024 10:17:44 -0700
+Message-ID: <0173fd46-4ad5-4859-be4d-5484e11756e0@quicinc.com>
+Date: Wed, 20 Mar 2024 10:17:44 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,50 +65,59 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] wifi: nl80211: fix nl80211 UAPI kernel-doc
+Subject: Re: Git tree to manage Realtek WiFi drivers
 Content-Language: en-US
-To: Johannes Berg <johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20240319-kdoc-nl80211-v1-0-549e09d52866@quicinc.com>
- <638df3bb659caef38480aa97277207b89c101344.camel@sipsolutions.net>
+To: Ping-Ke Shih <pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
+        "fiona.klute@gmx.de"
+	<fiona.klute@gmx.de>,
+        "Jes.Sorensen@gmail.com" <Jes.Sorensen@gmail.com>,
+        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+        "rtl8821cerfe2@gmail.com"
+	<rtl8821cerfe2@gmail.com>,
+        "Larry.Finger@lwfinger.net"
+	<Larry.Finger@lwfinger.net>,
+        "martin.kaistra@linutronix.de"
+	<martin.kaistra@linutronix.de>,
+        "martin.blumenstingl@googlemail.com"
+	<martin.blumenstingl@googlemail.com>,
+        "brianwitte@mailfence.com"
+	<brianwitte@mailfence.com>
+References: <503a9152324a817c251193ee486e1bbcb48d2fa8.camel@realtek.com>
+ <87edc5b7oc.fsf@kernel.org> <94c25902ef33433dbb582fc1c503704c@realtek.com>
 From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <638df3bb659caef38480aa97277207b89c101344.camel@sipsolutions.net>
+In-Reply-To: <94c25902ef33433dbb582fc1c503704c@realtek.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: qmKo9mfG43AzTc1OuSe-DSm_3ivX8aiN
-X-Proofpoint-ORIG-GUID: qmKo9mfG43AzTc1OuSe-DSm_3ivX8aiN
+X-Proofpoint-GUID: D97n5K8Dh9_Zi5ZAT9sucyzfCmobWWxD
+X-Proofpoint-ORIG-GUID: D97n5K8Dh9_Zi5ZAT9sucyzfCmobWWxD
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-03-20_10,2024-03-18_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 suspectscore=0
- adultscore=0 spamscore=0 mlxlogscore=675 mlxscore=0 impostorscore=0
- phishscore=0 priorityscore=1501 lowpriorityscore=0 bulkscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
+ bulkscore=0 priorityscore=1501 malwarescore=0 lowpriorityscore=0
+ impostorscore=0 adultscore=0 mlxlogscore=466 clxscore=1011 mlxscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2403140001 definitions=main-2403200138
 
-On 3/20/2024 12:07 AM, Johannes Berg wrote:
-> On Tue, 2024-03-19 at 11:26 -0700, Jeff Johnson wrote:
->> As part of my review of patches coming from the Qualcomm Innovation
->> Center I check to make sure that no checkpatch or kernel-doc issues
->> are introduced. An upcoming patch will propose a modification to
->> include/uapi/linux/nl80211.h. My review process flagged both
->> checkpatch and kernel-doc issues in the file, but these are
->> pre-existing issues. So this series fixes those pre-existing issues.
->>
+On 3/20/2024 2:34 AM, Ping-Ke Shih wrote:
 > 
-> Thanks Jeff.
+>> Ping-Ke, a big thank you for starting to maintain the rtw tree! Not only
+>> that it helps me, I suspect Realtek driver development will be faster as
+>> I'm not the bottleneck anymore.
 > 
-> Can you say what you're running for this? I've been running kernel-doc
-> and builds with W=1 for a long time, and not seen issues. Is this
-> perhaps checks from a newer kernel (we're currently on 6.8-rc1 for
-> $reasons)?
+> I feel probably registers of Realtek WiFi residing in driver eat lots of your
+> bandwidth. Now I can take that part myself, so you can get your time back.
+> Again, your review is always helpful to our drivers!
 
-files=$(git diff --name-only $base HEAD)
-scripts/kernel-doc -Werror -none $files
-scripts/checkpatch.pl --file $files
+I also thank you for stepping up! Now I can have more of Kalle's time for
+mentorship :)
+
+/jeff
 
 
