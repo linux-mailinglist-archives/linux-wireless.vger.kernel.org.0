@@ -1,187 +1,117 @@
-Return-Path: <linux-wireless+bounces-4932-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4933-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A58EC8808A9
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 01:42:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 505108808D3
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 01:58:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 983AA1C20F85
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 00:42:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBE7D1F23D3F
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 00:58:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6AE64685;
-	Wed, 20 Mar 2024 00:42:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="jQKvwGNZ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 823CDEBE;
+	Wed, 20 Mar 2024 00:58:09 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from omta040.useast.a.cloudfilter.net (omta040.useast.a.cloudfilter.net [44.202.169.39])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1EBB2904
-	for <linux-wireless@vger.kernel.org>; Wed, 20 Mar 2024 00:42:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 419AB15C3
+	for <linux-wireless@vger.kernel.org>; Wed, 20 Mar 2024 00:58:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710895343; cv=none; b=T0VMaxbo3Cd82aG82HHyLmaXoOwUO0ILhN/dJm1rYDoSBqi4CnG14c32pC7R+HJ/WdeOZdwrzMaliCv+/+EWBSA0pKnXsFFehNGbxOIXOwA+dinWs0odkBeraScYhFKEp4fEvJa7aCRV7nj1ZKkQ+AVuFDO6OPsOZDd5jMIMyrU=
+	t=1710896289; cv=none; b=N9v73CFyYlvCnHT5bpfyJGejQktyjn4sxZaOg3bz1vzGxnJzYRTFZYz388CZnTNqwzM0L78V27TAW4k1IjBKV3Rqif8MSOVAzy5K4jAbm9RKpcw97ZwDNYZjHi2vqGaMK1wc+K8BhD9g055JK1nZtPGbO9fQNOpquFUYYMXflBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710895343; c=relaxed/simple;
-	bh=eDCCyrEIxjjXZjmAOHkJjwnDrF9aFnzlqxo6rUPKKHo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Yrnaql8aQtjD/4IlNR4/iRE6CaYynbFLbjSqsI4+pDZUexrfDqVPoVWNgSzkKPsYdux0qKE65vUcWcP4nAkSENibC/WHBSBkA3QLXCp7q+NULAdBwGnHZN5i9XDICoSLNMn6aQRqZgBnUzEz3RpTF3htK6KD8ZM11X2KkE7OWXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=jQKvwGNZ; arc=none smtp.client-ip=44.202.169.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
-Received: from eig-obgw-5010a.ext.cloudfilter.net ([10.0.29.199])
-	by cmsmtp with ESMTPS
-	id mNgzrPQXKl9dRmk23rOJIu; Wed, 20 Mar 2024 00:42:15 +0000
-Received: from gator4166.hostgator.com ([108.167.133.22])
-	by cmsmtp with ESMTPS
-	id mk22r1j6Zkyhrmk22rmb0r; Wed, 20 Mar 2024 00:42:14 +0000
-X-Authority-Analysis: v=2.4 cv=Z9TqHmRA c=1 sm=1 tr=0 ts=65fa30e6
- a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=UtBFqMlDG83dypD0sxEoAQ==:17
- a=IkcTkHD0fZMA:10 a=K6JAEmCyrfEA:10 a=wYkD_t78qR0A:10
- a=9MzSDiJ5aBsJ5ggNAYYA:9 a=QEXdDO2ut3YA:10
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=C0e07c7tUncIYZeoirLLjhFyd9DWTwguNB6M2w9ToKU=; b=jQKvwGNZ137+7vtiHui2rYOKmH
-	IgMmALF64IXqM6Z2nVNyKnAcL+hVI3EWGatWtCNanCTX61DCV9PXSVFo9SoLFMrKHF7XKzWq8LKuZ
-	+IwONtjEoxW+zyTHi1Ig8e6Ja++CqLtVMVh6Q9tW3KIOdY35h0SW/a9Sj1P1E4mRgBA8aw/pjJukf
-	Y1A869t84U3xD4fFrpSmtZrxx0wju/JBoblRK2I+QvHaE4+8/5cPvJcdvPw20n7E9czzLdNp2AP8p
-	r0KpuT6KDH28Dld990MzI5+fZ/PfdZ1JYGQuVuQbUebFHjAnybKPWB0HHCre86GkV76epczsO8gpr
-	7bq/2Udg==;
-Received: from [201.172.174.229] (port=43928 helo=[192.168.15.10])
-	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <gustavo@embeddedor.com>)
-	id 1rmk21-003lXB-2i;
-	Tue, 19 Mar 2024 19:42:13 -0500
-Message-ID: <483362b8-ea79-4036-89eb-d6ab737e1e96@embeddedor.com>
-Date: Tue, 19 Mar 2024 18:42:12 -0600
+	s=arc-20240116; t=1710896289; c=relaxed/simple;
+	bh=He6XHQs8bps0rk8eSi1AISNnrXhL/kNa9fwrt/LKutw=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=qh+7eRFh2XK1l2kj8+NAiM8ed8z35FbjVn91Ov20p8oUjPaWF3rU1Sm3HmoGwK9eKYksN/P9oh9m2PIW7r33D4eRejX1YjrvrG/5aga71U1z2iTH33pO8Ismq5gcjFUh1RvvNefxxw6+MIwIFaWytBiNoXtHw0i4DB3jNNKzpoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 42K0vZRl9106730, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 42K0vZRl9106730
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 20 Mar 2024 08:57:35 +0800
+Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Wed, 20 Mar 2024 08:57:36 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Wed, 20 Mar 2024 08:57:36 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::4c42:f80:bcc2:d00f]) by
+ RTEXMBS04.realtek.com.tw ([fe80::4c42:f80:bcc2:d00f%5]) with mapi id
+ 15.01.2507.035; Wed, 20 Mar 2024 08:57:36 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC: "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>,
+        "s.l-h@gmx.de"
+	<s.l-h@gmx.de>,
+        "chewitt@libreelec.tv" <chewitt@libreelec.tv>
+Subject: RE: [PATCH v2 00/12] wifi: rtlwifi: Add new rtl8192du driver
+Thread-Topic: [PATCH v2 00/12] wifi: rtlwifi: Add new rtl8192du driver
+Thread-Index: AQHaeJsdV0Mc7ABuwkCCsraXqw2IdLE+RVaAgAB4WYCAARKesA==
+Date: Wed, 20 Mar 2024 00:57:36 +0000
+Message-ID: <45b98bd53119455fa727d67640211fab@realtek.com>
+References: <5c23149c-1487-438d-bb37-69e2dd8173dc@gmail.com>
+ <2280b6c991fa09e66506088441f63790d092e343.camel@realtek.com>
+ <f19a1e6c-fd56-45b7-9936-a1a72d1988ad@gmail.com>
+In-Reply-To: <f19a1e6c-fd56-45b7-9936-a1a72d1988ad@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] wireless: ti: Can we just remove this flexible array?
-Content-Language: en-US
-To: Jeff Johnson <quic_jjohnson@quicinc.com>, Kalle Valo <kvalo@kernel.org>
-Cc: linux-wireless@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- linux-hardening@vger.kernel.org
-References: <3a531d5b-9bf6-4e88-ba8c-a76cfa95be20@embeddedor.com>
- <328306d9-953f-482b-bf9a-a753d7d4e2ed@quicinc.com>
-From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-In-Reply-To: <328306d9-953f-482b-bf9a-a753d7d4e2ed@quicinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 201.172.174.229
-X-Source-L: No
-X-Exim-ID: 1rmk21-003lXB-2i
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: ([192.168.15.10]) [201.172.174.229]:43928
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 3
-X-Org: HG=hgshared;ORG=hostgator;
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfCAC62KMUkM+yK8Rb/3W+YimB8zjyXDdG8gwlYzJgSc/3ns8ufTEyOsFowdu7mW8GmOm3Ea7ve1/APPyf8IKt3Fu8mEKrl5NrMazrAh0xTIkcNSws59G
- U0iMwHGjLMxVp7XV8WdMyRXf4EWL7DUSHaU+triqeNnAqBl3n8dnClHG2fUb7kAKtX+p/vStduQHIv8ttam3x4pdFpaHdhf/nvf3GNV2ZhhYM1lHRnzdholb
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-
-
-On 3/19/24 16:54, Jeff Johnson wrote:
-> On 3/19/2024 2:59 PM, Gustavo A. R. Silva wrote:
->> Hi!
->>
->> `struct wl1271_cmd_header` is currently embedded in multiple other
->> structs, and it's causing many `-Wflex-array-member-not-at-end` warnings.
->>
->> Has this flexible-array member been used in the past or is it intended
->> for future use?
->>
->> Otherwise, I think we could just remove it.
->>
->> diff --git a/drivers/net/wireless/ti/wlcore/cmd.h b/drivers/net/wireless/ti/wlcore/cmd.h
->> index f2609d5b6bf7..4c2f2608ef3b 100644
->> --- a/drivers/net/wireless/ti/wlcore/cmd.h
->> +++ b/drivers/net/wireless/ti/wlcore/cmd.h
->> @@ -208,8 +208,6 @@ enum cmd_templ {
->>    struct wl1271_cmd_header {
->>           __le16 id;
->>           __le16 status;
->> -       /* payload */
->> -       u8 data[];
->>    } __packed;
-> 
-> I'd think you should just remove it
-> 
-
-Yep, I think I'm actually going to remove a few more:
-
-diff --git a/drivers/net/wireless/ti/wl1251/cmd.h b/drivers/net/wireless/ti/wl1251/cmd.h
-index e5874186f9d7..39159201b97e 100644
---- a/drivers/net/wireless/ti/wl1251/cmd.h
-+++ b/drivers/net/wireless/ti/wl1251/cmd.h
-@@ -89,8 +89,6 @@ enum wl1251_commands {
-  struct wl1251_cmd_header {
-         u16 id;
-         u16 status;
--       /* payload */
--       u8 data[];
-  } __packed;
-
-  struct  wl1251_command {
-diff --git a/drivers/net/wireless/ti/wl1251/wl12xx_80211.h b/drivers/net/wireless/ti/wl1251/wl12xx_80211.h
-index 7e28fe435b43..3d5b0df5b231 100644
---- a/drivers/net/wireless/ti/wl1251/wl12xx_80211.h
-+++ b/drivers/net/wireless/ti/wl1251/wl12xx_80211.h
-@@ -65,7 +65,6 @@ struct ieee80211_header {
-         u8 sa[ETH_ALEN];
-         u8 bssid[ETH_ALEN];
-         __le16 seq_ctl;
--       u8 payload[];
-  } __packed;
-
-  struct wl12xx_ie_header {
-diff --git a/drivers/net/wireless/ti/wlcore/cmd.h b/drivers/net/wireless/ti/wlcore/cmd.h
-index f2609d5b6bf7..4c2f2608ef3b 100644
---- a/drivers/net/wireless/ti/wlcore/cmd.h
-+++ b/drivers/net/wireless/ti/wlcore/cmd.h
-@@ -208,8 +208,6 @@ enum cmd_templ {
-  struct wl1271_cmd_header {
-         __le16 id;
-         __le16 status;
--       /* payload */
--       u8 data[];
-  } __packed;
-
-  #define WL1271_CMD_MAX_PARAMS 572
-diff --git a/drivers/net/wireless/ti/wlcore/wl12xx_80211.h b/drivers/net/wireless/ti/wlcore/wl12xx_80211.h
-index 1dd7ecc11f86..602915c4da26 100644
---- a/drivers/net/wireless/ti/wlcore/wl12xx_80211.h
-+++ b/drivers/net/wireless/ti/wlcore/wl12xx_80211.h
-@@ -66,7 +66,6 @@ struct ieee80211_header {
-         u8 sa[ETH_ALEN];
-         u8 bssid[ETH_ALEN];
-         __le16 seq_ctl;
--       u8 payload[];
-  } __packed;
-
-  struct wl12xx_ie_header {
-
---
-Gustavo
+DQo+ID4gICBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODE5MmQvcGh5
+X2NvbW1vbi5oOjYwOjM5OiB3YXJuaW5nOiBjb250ZXh0IGltYmFsYW5jZSBpbg0KPiA+ICdydGw5
+MmRfYmFuZHR5cGVfMl80RycgLSB1bmV4cGVjdGVkIHVubG9jaw0KPiA+ICAgZHJpdmVycy9uZXQv
+d2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDgxOTJkL3BoeV9jb21tb24uaDo2MDozOTogd2Fy
+bmluZzogY29udGV4dCBpbWJhbGFuY2UgaW4NCj4gPiAncnRsOTJkX2RtX2ZhbHNlX2FsYXJtX2Nv
+dW50ZXJfc3RhdGlzdGljcycgLSB1bmV4cGVjdGVkIHVubG9jaw0KPiA+ICAgZHJpdmVycy9uZXQv
+d2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDgxOTJkL3BoeV9jb21tb24uaDo2MDozOTogd2Fy
+bmluZzogY29udGV4dCBpbWJhbGFuY2UgaW4NCj4gPiAncnRsOTJkX2RtX2Nja19wYWNrZXRfZGV0
+ZWN0aW9uX3RocmVzaCcgLSB1bmV4cGVjdGVkIHVubG9jaw0KPiANCj4gVGhlc2UgbG9vayBsaWtl
+IGZhbHNlIHBvc2l0aXZlcy4gRXZlcnkgdW5sb2NrIGlzIHByZWNlZGVkIGJ5DQo+IGEgbG9jay4g
+SSBmb3VuZCBhIHN1Z2dlc3Rpb24gdG8gYW5ub3RhdGUgdGhlIGZ1bmN0aW9ucyB3aXRoDQo+ICJf
+X2FjcXVpcmVzKC4uLikiIGFuZCAiX19yZWxlYXNlcyguLi4pIiB0byBxdWlldCB0aGVzZSB3YXJu
+aW5ncywNCj4gYnV0IHRoYXQgZGlkbid0IGRvIGFueXRoaW5nLiBJIGNhbiBvbmx5IGZpeCBpdCBi
+eSBjb3B5aW5nIHRoZQ0KPiBjb250ZW50cyBvZiBydGw5MmRfYWNxdWlyZV9jY2thbmRyd19wYWdl
+YV9jdGwoKSBhbmQNCj4gcnRsOTJkX3JlbGVhc2VfY2NrYW5kcndfcGFnZWFfY3RsKCkgdG8gdGhl
+IGVpZ2h0IHBsYWNlcyB3aGVyZQ0KPiB0aGV5IGFyZSBjYWxsZWQsIGFuZCBkdXBsaWNhdGluZyB0
+aGUgY29kZSB0aGF0IG5lZWRzIGxvY2tpbmc6DQo+IA0KPiAgICAgICAgIGlmIChydGxwcml2LT5y
+dGxoYWwuaW50ZXJmYWNlaW5kZXggPT0gMSAmJg0KPiAgICAgICAgICAgICBydGxwcml2LT5ydGxo
+YWwuaW50ZXJmYWNlID09IElOVEZfUENJKSB7DQo+ICAgICAgICAgICAgICAgICBzcGluX2xvY2tf
+aXJxc2F2ZSgmcnRscHJpdi0+bG9ja3MuY2NrX2FuZF9yd19wYWdlYV9sb2NrLCBmbGFnKTsNCj4g
+ICAgICAgICAgICAgICAgIHRlbXBfY2NrID0gcnRsX2dldF9iYnJlZyhodywgUkNDSzBfVFhGSUxU
+RVIyLA0KPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIE1BU0tEV09S
+RCkgJiBNQVNLQ0NLOw0KPiAgICAgICAgICAgICAgICAgc3Bpbl91bmxvY2tfaXJxcmVzdG9yZSgm
+cnRscHJpdi0+bG9ja3MuY2NrX2FuZF9yd19wYWdlYV9sb2NrLCBmbGFnKTsNCj4gICAgICAgICB9
+IGVsc2Ugew0KPiAgICAgICAgICAgICAgICAgdGVtcF9jY2sgPSBydGxfZ2V0X2JicmVnKGh3LCBS
+Q0NLMF9UWEZJTFRFUjIsDQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgTUFTS0RXT1JEKSAmIE1BU0tDQ0s7DQo+ICAgICAgICAgfQ0KPiANCg0KRHVwbGljYXRlIG9m
+IG1haW4gc3RhdGVtZW50cyAndGVtcF9jY2sgPSAuLi4uJyBpc24ndCBnb29kLiBJIHByZWZlcg0K
+DQpib29sIG5lZWRfbG9jayA9IHJ0bHByaXYtPnJ0bGhhbC5pbnRlcmZhY2VpbmRleCA9PSAxICYm
+DQogICAgICAgICAgICAgICAgIHJ0bHByaXYtPnJ0bGhhbC5pbnRlcmZhY2UgPT0gSU5URl9QQ0k7
+DQoNCmlmIChuZWVkX2xvY2spDQoJc3Bpbl9sb2NrX2lycXNhdmUoJnJ0bHByaXYtPmxvY2tzLmNj
+a19hbmRfcndfcGFnZWFfbG9jaywgZmxhZyk7DQoNCgl0ZW1wX2NjayA9IHJ0bF9nZXRfYmJyZWco
+aHcsIFJDQ0swX1RYRklMVEVSMiwgTUFTS0RXT1JEKSAmIE1BU0tDQ0s7DQoNCmlmIChuZWVkX2xv
+Y2spDQoJc3Bpbl91bmxvY2tfaXJxcmVzdG9yZSgmcnRscHJpdi0+bG9ja3MuY2NrX2FuZF9yd19w
+YWdlYV9sb2NrLCBmbGFnKTsNCg0KDQpCdXQsIEkgd29uZGVyIHdoeSBzcGFyc2UgZG9lc24ndCBj
+b21wbGFpbiBvcmlnaW5hbCBjb2RlIChiZWZvcmUgeW91ciBwYXRjaHNldCkNCnRoYXQgdXNlZCBz
+dGF0aWMgaW5saW5lIGFscmVhZHkuIENhbiB3ZSBrZWVwIG9yaWdpbmFsIHN0eWxlPw0KDQpQaW5n
+LUtlIA0KDQo=
 
