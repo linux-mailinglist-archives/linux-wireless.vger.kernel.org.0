@@ -1,82 +1,155 @@
-Return-Path: <linux-wireless+bounces-4982-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-4983-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 644388812B9
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 14:55:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56CD88812C5
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 14:57:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 950C81C23611
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 13:55:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DC491C2375F
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Mar 2024 13:57:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDBB03D54C;
-	Wed, 20 Mar 2024 13:54:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82EF53FE23;
+	Wed, 20 Mar 2024 13:57:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mYXV8ApL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VmLdVIHA"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A24A29CFD
-	for <linux-wireless@vger.kernel.org>; Wed, 20 Mar 2024 13:54:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF8FA41E22
+	for <linux-wireless@vger.kernel.org>; Wed, 20 Mar 2024 13:57:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710942897; cv=none; b=KZpR+B3dx2CcOMYILb4jO3qsFd4kI9KGnoNrN2kOhgk8kWPwHg8aCIrvLMxqObjQfje4WYApQJWXzNEKHE83frUL0WAutyoNzgJOYG4mZhyIOxz1S+vyPYVxj65ZPJxkNg4wnpQhuDa5ut/N86MBJtiOdhELN+avLbfCZRUiOAM=
+	t=1710943049; cv=none; b=PxLI5f8Xr117C1IsKcODqPfSulckTCWRgyWHdVJJdkyLZaDwIGfTaUG5o/UQr+mp81lcarW1dppe+LRd7cgfzmus5qz0fWd2lz2bJjeu2EfrdoulxFSTieWOW2lcMuFUDOCGEnMkuNYndmDxEEijZDdIILAkQUK0WUzZh6Cq7S0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710942897; c=relaxed/simple;
-	bh=dkNkQOh/hGTDH36C/RRIAKYFE7cHmZYvbi6VnYqum04=;
-	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=V+EOI3X5Jo7MA1zbJOB0TKJn4GBSy1ofjsR1Olqtn5y29dzPsOgWBS5r/Vj7zWNjwyg59m8zLB0NjiLXa+FSW5DJx3zch+ONpQqdhdMMTWv3jFUI01/XUMg3KUpI3ExHA3hHnn2/45m4NHrFQaj+fHShkv9dqzL1RBaSDDcBLUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mYXV8ApL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44D5EC433C7;
-	Wed, 20 Mar 2024 13:54:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710942897;
-	bh=dkNkQOh/hGTDH36C/RRIAKYFE7cHmZYvbi6VnYqum04=;
-	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=mYXV8ApLa1bDQARvPiawF/0gxAzPKsYISzuIIglBOjgubQHXOT2yNg9gNl6rO7rGg
-	 WhbugaE/TYD0jlEZaEFY+3kmwACbxZImPsABSOgP0BifpPZGkqV6V7lA1C9K87cVkI
-	 ESm4FUlQBVi9rMIThCo9SFZr3rzUq9Uzubi0qS6BG5M+dvevMr/FEtvqmN10yNSxhM
-	 j8O4xilxrGaITgiKLyiZXUErp+6AqnPEuTlCd2CIcTX4SM7E8o5IKUruz0RNz9gJQ5
-	 RLj3lpGpsHhtZ/ZYFY3YDKnbSxFNOsGKnQmExkesuGpg5dx6MXVS1UTwyUxef1nHnT
-	 XsknlfVy9oFIQ==
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1710943049; c=relaxed/simple;
+	bh=tRlOXiUPcbMHmHQRt4vOHv23EMhlJgdhMEGla/RP8SM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mdmXVTLb9sw6+0U8BzxYaIwZq9KvdKearlNpFU2IqJKW5epJnf4tOR2u8taTsL5YED34FOXThbsqpLaQLrscu0fzYLmsJkvVcIvKjhB7tkyYQpSUGfdKIK4OyjVYBkzSvQKit1Vf31fWcnjmmlrNBmdJTT8TsfIsjnjsuBQBU5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VmLdVIHA; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-33eee0258abso1976498f8f.3
+        for <linux-wireless@vger.kernel.org>; Wed, 20 Mar 2024 06:57:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1710943046; x=1711547846; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=uzp7FbKcxGdwWygJepSs9tC/4GqEzGimBjWqb7j8sbY=;
+        b=VmLdVIHATc3M2U1q6dkKSdIgJg+wYy/Texe4pKKUtct/qBgHBUsn1vENXvpzEXGy9K
+         8RsGd/YHMInyVMEC7OM8YNj/hFhLR3Gdhbzqdr1TMaO9vj+vBoAFsNvJYzOc8+JxdfQc
+         kIyo1tUeDZF7Dv1YotScDp+DlReABFnau9Jm7HmB7PcpcDxVtY+ZxHzi0RK62h2nMgoo
+         1m5HfCXG3hyqBVfOcg/+IG1P611lbuHt8JgOGZM4PXFHyp8OGIIDP47U4xrA2tjOSZ1n
+         eM9w40mtwKQAjTreDp1cHPQuvKLNzxHUL2BqQSnZ3GM+tXh9xikiz9UNRShlBTDVn+4C
+         fpgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710943046; x=1711547846;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=uzp7FbKcxGdwWygJepSs9tC/4GqEzGimBjWqb7j8sbY=;
+        b=bvg/15AtemEJk8dC9jjJV9wziKE0Ji9jmNuFlMsqubwTdVntFOVzg1TTh/KCz1gPd/
+         SzSCG+30gYkZqeW6obMBY5givHYeR3PL7EAWGgirRi8GwdLej+6cC0/aM8k0dxyFA1km
+         9wxvc1TU4IXznzDH4KG3Om1z6o4J9NFSq1FQuET64dxMaIUsd4rL6SYgvjEsW4qtzNZ7
+         R6PGHhRRHoU4qjIXC7vagBlnhFBcE1jIWOJT2ubntTJYOV8ifhBmJCo4s/Q0Wl945rcB
+         x+2SCNa8Y1zQonGeNAlQfgSOHRl0fF4MwhPY1q2Q0W97r23GzY3JLXNolTJhCaqbJE1d
+         aSww==
+X-Forwarded-Encrypted: i=1; AJvYcCUwVs5V+lpkEbjop73w1TP/HSE+B6u0wn82x59Gco9d7YxX1Wz9H5t+ANLPnI1PncTgiklML1FPJveNSqa7yL9ieKOrnmFQrUOe+81AwmI=
+X-Gm-Message-State: AOJu0Ywrn6cb6die47loN86QdwoVWBBBmkjSAHjEepc6CYQyp8XFKxqQ
+	bLwSNWj8/YKjtIg95YNHOGFIZcUq3dAH38c8ucaCool0zU9Fzhdr
+X-Google-Smtp-Source: AGHT+IEh1yGDGOUIWYCdtwbPRbym9tG5qXGBu7DWyEq1XvGSr23lghnHSUEbbE5w/oY4BmG6xdJWng==
+X-Received: by 2002:adf:ed12:0:b0:33d:b2d7:6264 with SMTP id a18-20020adfed12000000b0033db2d76264mr1920043wro.51.1710943045825;
+        Wed, 20 Mar 2024 06:57:25 -0700 (PDT)
+Received: from [192.168.1.50] ([79.119.240.211])
+        by smtp.gmail.com with ESMTPSA id a26-20020a5d457a000000b0033e7e9c8657sm14769601wrc.45.2024.03.20.06.57.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 20 Mar 2024 06:57:25 -0700 (PDT)
+Message-ID: <75128dc9-402b-4904-8c00-15dee1537c6a@gmail.com>
+Date: Wed, 20 Mar 2024 15:57:24 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 00/12] wifi: rtlwifi: Add new rtl8192du driver
+To: Ping-Ke Shih <pkshih@realtek.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>,
+ "s.l-h@gmx.de" <s.l-h@gmx.de>, "chewitt@libreelec.tv" <chewitt@libreelec.tv>
+References: <5c23149c-1487-438d-bb37-69e2dd8173dc@gmail.com>
+ <2280b6c991fa09e66506088441f63790d092e343.camel@realtek.com>
+ <f19a1e6c-fd56-45b7-9936-a1a72d1988ad@gmail.com>
+ <45b98bd53119455fa727d67640211fab@realtek.com>
+Content-Language: en-US
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <45b98bd53119455fa727d67640211fab@realtek.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: ath11k: remove duplicate definitions in wmi.h
-From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240314021654.304451-1-quic_kangyang@quicinc.com>
-References: <20240314021654.304451-1-quic_kangyang@quicinc.com>
-To: Kang Yang <quic_kangyang@quicinc.com>
-Cc: <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
- <quic_kangyang@quicinc.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <171094289438.3225057.14544830230083761491.kvalo@kernel.org>
-Date: Wed, 20 Mar 2024 13:54:56 +0000 (UTC)
 
-Kang Yang <quic_kangyang@quicinc.com> wrote:
-
-> There are some duplicate definitions in wmi.h, remove them.
+On 20/03/2024 02:57, Ping-Ke Shih wrote:
 > 
-> No functional changes, compile tested only.
+>>>   drivers/net/wireless/realtek/rtlwifi/rtl8192d/phy_common.h:60:39: warning: context imbalance in
+>>> 'rtl92d_bandtype_2_4G' - unexpected unlock
+>>>   drivers/net/wireless/realtek/rtlwifi/rtl8192d/phy_common.h:60:39: warning: context imbalance in
+>>> 'rtl92d_dm_false_alarm_counter_statistics' - unexpected unlock
+>>>   drivers/net/wireless/realtek/rtlwifi/rtl8192d/phy_common.h:60:39: warning: context imbalance in
+>>> 'rtl92d_dm_cck_packet_detection_thresh' - unexpected unlock
+>>
+>> These look like false positives. Every unlock is preceded by
+>> a lock. I found a suggestion to annotate the functions with
+>> "__acquires(...)" and "__releases(...)" to quiet these warnings,
+>> but that didn't do anything. I can only fix it by copying the
+>> contents of rtl92d_acquire_cckandrw_pagea_ctl() and
+>> rtl92d_release_cckandrw_pagea_ctl() to the eight places where
+>> they are called, and duplicating the code that needs locking:
+>>
+>>         if (rtlpriv->rtlhal.interfaceindex == 1 &&
+>>             rtlpriv->rtlhal.interface == INTF_PCI) {
+>>                 spin_lock_irqsave(&rtlpriv->locks.cck_and_rw_pagea_lock, flag);
+>>                 temp_cck = rtl_get_bbreg(hw, RCCK0_TXFILTER2,
+>>                                          MASKDWORD) & MASKCCK;
+>>                 spin_unlock_irqrestore(&rtlpriv->locks.cck_and_rw_pagea_lock, flag);
+>>         } else {
+>>                 temp_cck = rtl_get_bbreg(hw, RCCK0_TXFILTER2,
+>>                                          MASKDWORD) & MASKCCK;
+>>         }
+>>
 > 
-> Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
-> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+> Duplicate of main statements 'temp_cck = ....' isn't good. I prefer
+> 
+> bool need_lock = rtlpriv->rtlhal.interfaceindex == 1 &&
+>                  rtlpriv->rtlhal.interface == INTF_PCI;
+> 
+> if (need_lock)
+> 	spin_lock_irqsave(&rtlpriv->locks.cck_and_rw_pagea_lock, flag);
+> 
+> 	temp_cck = rtl_get_bbreg(hw, RCCK0_TXFILTER2, MASKDWORD) & MASKCCK;
+> 
+> if (need_lock)
+> 	spin_unlock_irqrestore(&rtlpriv->locks.cck_and_rw_pagea_lock, flag);
+> 
 
-There was a conflict but git-am handled that automatically:
+Even this doesn't work. I get the same warning as before.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=5955a10e0a46d46216420b8d2b6c0a1c895892af
+> 
+> But, I wonder why sparse doesn't complain original code (before your patchset)
+> that used static inline already. Can we keep original style?
+> 
+I found the reason. In patch 2/12 I moved the two functions
+from rtl8192de/phy.h to rtl8192d/phy_common.h. This should be
+harmless. But I also deleted these lines from the end of
+rtl8192de/phy.h:
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240314021654.304451-1-quic_kangyang@quicinc.com/
+void rtl92d_acquire_cckandrw_pagea_ctl(struct ieee80211_hw *hw,
+				       unsigned long *flag);
+void rtl92d_release_cckandrw_pagea_ctl(struct ieee80211_hw *hw,
+				       unsigned long *flag);
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+They seemed pointless. If I add them to phy_common.h all the
+warnings about locks go away. I will do this for v3.
 
