@@ -1,118 +1,87 @@
-Return-Path: <linux-wireless+bounces-5101-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5102-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F4C9885D60
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Mar 2024 17:26:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6F4E885D8D
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Mar 2024 17:34:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1891D28181A
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Mar 2024 16:26:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 927C128184C
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Mar 2024 16:34:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE2F112CD97;
-	Thu, 21 Mar 2024 16:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7C3E2C80;
+	Thu, 21 Mar 2024 16:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nqxnzxD/"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="xArCIqZm"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7A0F12BF2E;
-	Thu, 21 Mar 2024 16:26:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D5AD12B70;
+	Thu, 21 Mar 2024 16:34:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711038368; cv=none; b=XedDjt//T166t0IuPutCYPIQzLyx+mfGIgADp4Dl3LIcW20U/I7SEaMYoNbi7IZksiIDfsEHq6lpcfWGNQWAH7/Pwii8A0I1TFjth/wTqDnjd+zcMU1okKoRENFwpQP3qQpCQo8EDpQn5cUZxC5rQgC/8OvPP7+BrQS2tJhK6f8=
+	t=1711038886; cv=none; b=aHc67uChsuQpnIZiMfF/e6O1JXq4pd+xa2xSIpugK9NikjYi3qinTfR+ZAAdpu+z70eue1NKwhC22hO5CzGz+SA/dMtOhvVcpxek/SW70J0HGtlvh2r63TsGHSZ6hrWZi1TXHZcdRBuc6rDC8JCZ7n+QrPsMRP8/AaRWscr5gPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711038368; c=relaxed/simple;
-	bh=o03R27T3nyhgHJSk8Nx5JFM1w/gztzsuOCe0SoTCrAQ=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=pg28s3pK6q0x3Kcj2DZo2B6hRJSnpHFtymCBHKySW8sHw/Eyr7ddVxf3Q8mTGRc30AhWMl5e+J82RrtJlqEDmxCKvkhYb0CPT5A3DHKFQ3weHvvcUWAAUhOlLviaqjE4jD0Dj3619hVkXDPRU63GtbwF6hMV5gkWPwpFXbTtS6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nqxnzxD/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54328C433C7;
-	Thu, 21 Mar 2024 16:26:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711038366;
-	bh=o03R27T3nyhgHJSk8Nx5JFM1w/gztzsuOCe0SoTCrAQ=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=nqxnzxD/O7UelVXyOYeBjfH76lNFXycIDL6vIsdi91LcDS3WK1sCL+bGDOUQth5du
-	 EXPMXZAXZEZ6LgH54rRJZr/o+UH/u8SLCj9ddwu/eDk7O6qvLGxoXHbzUlxtrwX9Ji
-	 Eu756KAePUUNqbKLltLXhlLt6Un1zCVe7JbIAlTmMq3i2GEvbrN5rrGieEdUMJKXJ/
-	 7gEFyCs8X7SeLTAvEPGTPaVvuwgnRpUlO9wrQsLl5TIGb+lx7YEdznH4jnKEYgKqut
-	 BZIHC7fYIlr0y6Czvmp+0tTazxIm9AgDKU0PAaly8rx9hkoaMT7tOkwA1uIQP8Htpw
-	 174xKpw4bRkqA==
+	s=arc-20240116; t=1711038886; c=relaxed/simple;
+	bh=RtgR1YRVTtLrIQG2IlxnE4nb8snfNhPNpqkH/yys6d4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=STEiqzYyGS8cu5D7pLoIHOCOny6RCektnwj1adXEEJPssxokXcNNOpfFB6q+blElTv1Nln4BCgVp12D4Pz1GnhW0I6EZQfjy5mpjU2y4NUoezIWW33T22C2nKw1hsjgKqPTSh52sSNkbCpAWMBhYt22J0Wxe3Pw29krcf7/WNLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=xArCIqZm; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Received: from francesco-nb.corp.toradex.com (31-10-206-125.static.upc.ch [31.10.206.125])
+	by mail11.truemail.it (Postfix) with ESMTPA id 70F3C1FA90;
+	Thu, 21 Mar 2024 17:34:33 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1711038873;
+	bh=qBN5oreNyLNY6HCijsSUjXMliK6o7sVw0PR0u0KgDOo=; h=From:To:Subject;
+	b=xArCIqZmGYRgvYJPgtLxeBlxZhomkggW9o03F+mkIh9REO4rvZ4kDthsLaH5gqIaM
+	 q1svvI13ybbLRu4HLv7KwLjkNKhWU8MO6/YnU49n5bZI7nUDhG2JQzqYHjogkh/93R
+	 eSKbsUQAKgV8Rw/35CgMnuI/INxOY5zgvran9IgFbVb/1KRaB6G7LYDIqP2FAtfC96
+	 ujLb96NyZQ/tUwqdAFM+UfvEThHXoZdY8CRPtnvSV1Z5fXCbDg18VcR779OqdM3Yn/
+	 qltxiNm65VzVK++noNFzjZrXB/mIU7V0Q/QjYS+vnpDmAE9IKDHVpdy340j1uUZg99
+	 1YyyeolpdpI3A==
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Brian Norris <briannorris@chromium.org>,
+	Kalle Valo <kvalo@kernel.org>
+Cc: Francesco Dolcini <francesco@dolcini.it>,
+	linux-kernel@vger.kernel.org,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH] MAINTAINERS: add myself as mwifiex driver reviewer
+Date: Thu, 21 Mar 2024 17:34:20 +0100
+Message-Id: <20240321163420.11158-1-francesco@dolcini.it>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 21 Mar 2024 18:26:02 +0200
-Message-Id: <CZZKH8G2XPIF.1G895LUGG0JWS@kernel.org>
-Cc: <linux-crypto@vger.kernel.org>, "Herbert Xu"
- <herbert@gondor.apana.org.au>, <keyrings@vger.kernel.org>,
- <linux-wireless@vger.kernel.org>, <iwd@lists.linux.dev>, "James Prestwood"
- <prestwoj@gmail.com>, "Dimitri John Ledkov" <dimitri.ledkov@canonical.com>,
- "Karel Balej" <balejk@matfyz.cz>
-Subject: Re: [PATCH] Revert "crypto: pkcs7 - remove sha1 support"
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Eric Biggers" <ebiggers@kernel.org>
-X-Mailer: aerc 0.17.0
-References: <20240313233227.56391-1-ebiggers@kernel.org>
- <CZXWE5J2QMIN.1L4QKQU7C7UMN@kernel.org>
- <20240321041015.GB2387@sol.localdomain>
-In-Reply-To: <20240321041015.GB2387@sol.localdomain>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Thu Mar 21, 2024 at 6:10 AM EET, Eric Biggers wrote:
-> On Tue, Mar 19, 2024 at 07:20:54PM +0200, Jarkko Sakkinen wrote:
-> > > diff --git a/crypto/asymmetric_keys/mscode_parser.c b/crypto/asymmetr=
-ic_keys/mscode_parser.c
-> > > index 05402ef8964e..8aecbe4637f3 100644
-> > > --- a/crypto/asymmetric_keys/mscode_parser.c
-> > > +++ b/crypto/asymmetric_keys/mscode_parser.c
-> > > @@ -73,10 +73,13 @@ int mscode_note_digest_algo(void *context, size_t=
- hdrlen,
-> > >  	char buffer[50];
-> > >  	enum OID oid;
-> > > =20
-> > >  	oid =3D look_up_OID(value, vlen);
-> > >  	switch (oid) {
-> > > +	case OID_sha1:
-> > > +		ctx->digest_algo =3D "sha1";
-> > > +		break;
-> >=20
-> > I fully agree with the change BUT...
-> >=20
-> > IMHO it would make sense to e.g either add inline comment about iwd
-> > dependency or link to the bug report here.
-> >=20
-> > I'd like to think that there is common will to eventually get rid of
-> > all of SHA-1, and thus in cases where it is not yet possible it would
-> > make sense to guide what to needs to be done to make it happen, right?
-> >=20
-> > BR, Jarkko
->
-> This is supposed to just be a revert, so it's best not to mess around wit=
-h
-> adding additional stuff that wasn't in the original commit.  The sha1 sig=
-natures
-> are also not unique; iwd is also forcing the kernel to keep supporting MD=
-4, RC4,
-> KEYCTL_DH_COMPUTE, KEYCTL_PKEY_{QUERY,ENCRYPT,DECRYPT,SIGN,VERIFY}, etc.
-> Probably more than I don't know about.  I guess all of this should be doc=
-umented
-> in the code in appropriate places.  Probably the iwd folks should step in=
- to do
-> this, as they know best what they're using and they got a lot of this add=
-ed to
-> the kernel in the first place.
->
-> - Eric
+As discussed on the mailing list [1], add myself as mwifiex driver reviewer.
 
-OK, fair point.
+[1] https://lore.kernel.org/all/20240318112830.GA9565@francesco-nb/
 
+Signed-off-by: Francesco Dolcini <francesco@dolcini.it>
+---
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
-BR, Jarkko
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 43b39956694a..1d155a96bb56 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -13110,6 +13110,7 @@ F:	drivers/net/ethernet/marvell/mvpp2/
+ 
+ MARVELL MWIFIEX WIRELESS DRIVER
+ M:	Brian Norris <briannorris@chromium.org>
++R:	Francesco Dolcini <francesco@dolcini.it>
+ L:	linux-wireless@vger.kernel.org
+ S:	Odd Fixes
+ F:	drivers/net/wireless/marvell/mwifiex/
+-- 
+2.39.2
+
 
