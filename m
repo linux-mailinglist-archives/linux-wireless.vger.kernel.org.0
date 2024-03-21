@@ -1,55 +1,55 @@
-Return-Path: <linux-wireless+bounces-5109-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5110-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9263A8860A0
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Mar 2024 19:37:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33F568860A1
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Mar 2024 19:38:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E3471F22543
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Mar 2024 18:37:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2BDF286F05
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Mar 2024 18:38:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA58656B98;
-	Thu, 21 Mar 2024 18:37:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7B845CB5;
+	Thu, 21 Mar 2024 18:38:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b="OYPtsuVM"
+	dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b="wvVSH/q4"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B20F12BE80
-	for <linux-wireless@vger.kernel.org>; Thu, 21 Mar 2024 18:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3513912BE80
+	for <linux-wireless@vger.kernel.org>; Thu, 21 Mar 2024 18:37:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.95.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711046274; cv=none; b=G/n5K1d6M3CZ166hRdi43yrN10elNsZsfEtTER8vF4+bpBHp+XEarFrnqoIh5pumxjYY3VzJ99XZrhk+GPhiYfXK6u3B4z6PvjXsvGj/LxneMp18it+itdyhBkLNOAtpse6C2AN4vzkO8ERO6BiK+eb9f5OuCXQ1lyNM19Gsp3A=
+	t=1711046281; cv=none; b=jtxMK79K4KGjpjH337MTkILd5NvZf13Cm/JeDJaiQST7Eq4QVX87/nnMt/bajfynEV0uFaPdvOs9jWrixhTtfapm1cgR7MllGPyzPVwYBhaNNyScUrlkRN1DArlzQGvS53H+8BkGUyuuK9ErANXFfhtGhXBHTSxsTob2AfD/YOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711046274; c=relaxed/simple;
-	bh=ojZIPiV7g6bmfC8b774a9YG4ZE9m7SBQNwmkKyNWp5c=;
+	s=arc-20240116; t=1711046281; c=relaxed/simple;
+	bh=PmaLNnjt0ffkLNKIF/utEbZtmaKN13emtGRqxayKoD4=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=fVAvRpgM9bam2jzxOdr4WCXP5UfqavU4w8fAv1W5YjhKnmfUrqY1q0IUYhpvAtvX0Ar9i22HaS8U+PfRD8tDR3ydSa8ol1Rb50lNdNIyfmmMDjXR0UhNHYgxSvC8DZgwrpRrQIR+ivISdgx2FRCc6S9nvRjQu5mINX3o154SiPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk; spf=pass smtp.mailfrom=toke.dk; dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b=OYPtsuVM; arc=none smtp.client-ip=45.145.95.4
+	 MIME-Version:Content-Type; b=E4v7JiN+EBXLJLwKsGxK6KExouqB2jCfRq5XIcoz35ewDnUGKnv+9YRnXkgpQ6fHIkliVWp+55gDQyje4tajfBIhIIrIXbD8P/M+bHPbCrA7C19wslN50bszsPlZn5wGqYL8gxTQzNWu67yWFlSIXFX8lC+Q3MEj0H/3/vcDSSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk; spf=pass smtp.mailfrom=toke.dk; dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b=wvVSH/q4; arc=none smtp.client-ip=45.145.95.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
 From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-	t=1711046268; bh=ojZIPiV7g6bmfC8b774a9YG4ZE9m7SBQNwmkKyNWp5c=;
+	t=1711046277; bh=PmaLNnjt0ffkLNKIF/utEbZtmaKN13emtGRqxayKoD4=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=OYPtsuVMKn6Lbx/liWSSa0JPXAb8JZd0YPXq4iCulvV/ea6l1cIFHk4Hy3JxLT4Y+
-	 8l3SKnFkllM/7Ad4n1v7bj1TrYN7Pva4eOSU+lZdIy/JNMF49wkHhqDiIVg6XNyqP1
-	 gSeNC0sHMhifpvRkq7Go0twxhQW/iQf2m011q1rmG7CPgu2BZiS52yy+nhi/WmGvKd
-	 zXJsmlIW+IoyJsSaYvl7KDUInt38ZURyAf2Ma6SE7OHkF4X4OWLWgfEC4gXK6eMWwF
-	 Eok+eTwRbG6+KHGf7EsACd6cLXOrZOr9Jpljmk1neddnhgLtkeTzoDgZ8Mh6ElBZj+
-	 Hatvx07K8SkuQ==
+	b=wvVSH/q49hA1hFKQOuu2VnZ57+p5KFXM6LS/FQZ6CI49VDRytU7ND5wSMWUVyUP7Y
+	 UWxO+Jd6tm8NjMCkov/WrlJGC9kBJBpDHG4J2KAPFnKKl2JF1EImRBdNkxWtLxpdUC
+	 uBPN7oYWG0UGD0mbx9CC1ORRrSjZg68V9zetEpzzi5raD1CTl9j0mJ4dToZbkXXJYA
+	 84GHdvc460WrWfHc+j1YU8tcdNQM2V5EptnmDJIWp/FEtLWw9d49s0k3E0gDpJ2VyH
+	 jIoJkOHjN7GPEiMAD/OSPtpeZ7tbSmVu/kR/9UV/S0EqzovUqinNZiXAlRA+V4hPx4
+	 4EzS6WEnDJH0Q==
 To: Kalle Valo <kvalo@kernel.org>
 Cc: linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 2/3] wifi: ath9k: fix ath9k_use_msi declaration
-In-Reply-To: <20240320170656.3534265-3-kvalo@kernel.org>
+Subject: Re: [PATCH 3/3] wifi: ath9k: eeprom: fix sparse endian warnings
+In-Reply-To: <20240320170656.3534265-4-kvalo@kernel.org>
 References: <20240320170656.3534265-1-kvalo@kernel.org>
- <20240320170656.3534265-3-kvalo@kernel.org>
-Date: Thu, 21 Mar 2024 19:37:48 +0100
+ <20240320170656.3534265-4-kvalo@kernel.org>
+Date: Thu, 21 Mar 2024 19:37:57 +0100
 X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <8734sjh1mr.fsf@toke.dk>
+Message-ID: <87zfurfn22.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,10 +65,32 @@ Kalle Valo <kvalo@kernel.org> writes:
 >
 > Sparse warns:
 >
-> drivers/net/wireless/ath/ath9k/init.c:79:5: warning: symbol 'ath9k_use_ms=
-i' was not declared. Should it be static?
+> drivers/net/wireless/ath/ath9k/eeprom_9287.c:82:9: warning: cast to restr=
+icted __le16
+> drivers/net/wireless/ath/ath9k/eeprom_9287.c:82:9: warning: cast from res=
+tricted __le32
+> drivers/net/wireless/ath/ath9k/eeprom_9287.c:83:9: warning: cast to restr=
+icted __le16
+> drivers/net/wireless/ath/ath9k/eeprom_9287.c:83:9: warning: cast from res=
+tricted __le32
+> drivers/net/wireless/ath/ath9k/eeprom_def.c:138:9: warning: cast to restr=
+icted __le16
+> drivers/net/wireless/ath/ath9k/eeprom_def.c:138:9: warning: cast from res=
+tricted __le32
+> drivers/net/wireless/ath/ath9k/eeprom_def.c:139:9: warning: cast to restr=
+icted __le16
+> drivers/net/wireless/ath/ath9k/eeprom_def.c:139:9: warning: cast from res=
+tricted __le32
+> drivers/net/wireless/ath/ath9k/eeprom_def.c:140:9: warning: cast to restr=
+icted __le16
+> drivers/net/wireless/ath/ath9k/eeprom_def.c:140:9: warning: cast from res=
+tricted __le32
+> drivers/net/wireless/ath/ath9k/eeprom_4k.c:79:9: warning: cast to restric=
+ted __le16
+> drivers/net/wireless/ath/ath9k/eeprom_4k.c:79:9: warning: cast from restr=
+icted __le32
 >
-> Move the extern to ath9k.h so that it's visible in init.c.
+> antCtrlChain is an array of __le32 so le32_to_cpu() needs to be used.
 >
 > Compile tested only.
 >
