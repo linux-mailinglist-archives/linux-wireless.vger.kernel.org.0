@@ -1,118 +1,151 @@
-Return-Path: <linux-wireless+bounces-5085-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5086-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB5C68855AC
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Mar 2024 09:29:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50FE68857AA
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Mar 2024 11:55:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94F6B283139
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Mar 2024 08:29:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06C0A1F21BCE
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Mar 2024 10:55:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51D9B69958;
-	Thu, 21 Mar 2024 08:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4B3F5645E;
+	Thu, 21 Mar 2024 10:55:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S3PLOttA"
+	dkim=pass (2048-bit key) header.d=inside-m2m.de header.i=@inside-m2m.de header.b="G0bEnPch"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.inside-m2m.de (mail.inside-m2m.de [188.68.57.244])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F87E6994D;
-	Thu, 21 Mar 2024 08:29:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D1F14284
+	for <linux-wireless@vger.kernel.org>; Thu, 21 Mar 2024 10:55:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.57.244
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711009763; cv=none; b=Uahta9xDGZDTXOroliyVeFMtxmrlZM1cFE2+FRhNkozGqV1FPy6Nx4+Z/XGtKWDFpv9HJs7wrX92AlO79uDj4eYSYuzID/azHj6RjJLBQzCzQ8FMR/ttGXaYjNWsR2/G2kd/PYC11o9WNoYyvZQsPieS5IVJmmgVZOAyWRuvXoo=
+	t=1711018554; cv=none; b=FHv7A8+dBf+RiAEbTQhpf9z24kWPTczXGAnpvF2zMarliTY8cVN+bDpIefpNtRxwcnhc37M5sz4gC9PtP0L0rRwfJuyH1IkHTShxa0vyOp0Wzp+PGXzuRP55ISapd/7ShQGzvMhNEzOA7JhCiMxLx6tgbS/U/kMlemN9H6CDXDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711009763; c=relaxed/simple;
-	bh=7kCuWcguJfXb+C5s5vznrmpMKt2aumVRMMbZ27GwQRI=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=Tn6tPdeIMWlzv+iDYBWF7av1ygEI6GnjVUEb/DDZ1I+gFqZb0vmYwNyZlIVWyK7nPA74HlXtnSP84GTeYwbmfYR5MtFUE95k/+hp7RqatF1fnchsZLpBFN/rCR9xQ9a14Ho4q4bUwfWKGpporTaDPcK82ndu4LQW5Jvr/nfFpH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S3PLOttA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDFA4C433C7;
-	Thu, 21 Mar 2024 08:29:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711009762;
-	bh=7kCuWcguJfXb+C5s5vznrmpMKt2aumVRMMbZ27GwQRI=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=S3PLOttAxQVJs5+U1SxWEPd1adUzlZKsRvspPFtIee7I+PkW7lYi5w01c5dKOfR8K
-	 qvGRCZ2YCxx6++ElMesCX5CyH73jUNLxtPE4cKM6a9wo8lzNe1tcRBIbYxoKXdojFh
-	 rzGySzbifLgGxwVRBD7BKLGlx+Pu7nln3i78b/welbNKlYgUrQKOln7QJV/aHj/TNw
-	 ZtVAjCUxOLAvyXT/5kGJzi/Xys4ZhypuKbrShGMAcbNkruLovn5Auw/TV4+Skul6uF
-	 zShoCG2AovfLVmh8Odh0g7HqKFPD92U/d8sBpZ5hcpg41eNmllphYZ4nSfmO0OrINj
-	 rT9nl9deErSgA==
-From: Kalle Valo <kvalo@kernel.org>
-To: Edward Adam Davis <eadavis@qq.com>
-Cc: syzbot+93cbd5fbb85814306ba1@syzkaller.appspotmail.com,
-  linux-kernel@vger.kernel.org,  linux-usb@vger.kernel.org,
-  linux-wireless@vger.kernel.org,  netdev@vger.kernel.org,
-  syzkaller-bugs@googlegroups.com,  toke@toke.dk
-Subject: Re: [PATCH usb] wifi: ath9k: fix oob in htc_issue_send
-References: <0000000000004e41110614187d35@google.com>
-	<tencent_7225DC0D859205DD8BDDAE191CCFBF0D8907@qq.com>
-Date: Thu, 21 Mar 2024 10:29:18 +0200
-In-Reply-To: <tencent_7225DC0D859205DD8BDDAE191CCFBF0D8907@qq.com> (Edward
-	Adam Davis's message of "Thu, 21 Mar 2024 15:31:33 +0800")
-Message-ID: <87bk789ee9.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1711018554; c=relaxed/simple;
+	bh=/OMSClYFa6oCiHHdSWa+gq+pInQxzfl8Z4v9phP+YOw=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=qxdTQrJHotgWURV9/JQPh9gdUs/uihfwoKKrRCcoD0GX+7S65XFfkwcJPTyhLo0gY7QpLl/jJRaB8VcAJMF0InGbRs2q9jZLmTfTB6G01IrxNvqr0YTXvN7rtXIo+xJto4REmdTA6cAPuNXsv8c9lEgSrw8vkulAgUP8nyxlA1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=inside-m2m.de; spf=pass smtp.mailfrom=inside-m2m.de; dkim=pass (2048-bit key) header.d=inside-m2m.de header.i=@inside-m2m.de header.b=G0bEnPch; arc=none smtp.client-ip=188.68.57.244
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=inside-m2m.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=inside-m2m.de
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=inside-m2m.de;
+	s=default; t=1711018548;
+	bh=/OMSClYFa6oCiHHdSWa+gq+pInQxzfl8Z4v9phP+YOw=;
+	h=Date:From:To:Subject:From;
+	b=G0bEnPchdDxYyHsE0JsewdmAu+/Q0gDiCI1DRTkYllSL15PmKA1AfspTYzTbvOaE7
+	 s8E/WBrebHcIf6DMRR2vXoiecJb9BWkrJArytgTX9i5D8wnUsVerbOASHpZHh+gXiy
+	 E9BjGpiFsuLhF4M553lNs/wHSh98RuSIWs5uFMX83KXbJE0UlSKbbcMaIl+TmQIhTl
+	 pGkT5lXEsnpwqIg/V+mPuFaaLt9EgkKFkHC5QBhiFv/f/bCoEM1Q5/IFPlE2y0PGDS
+	 xoFTfIip16YAX8wsS1glRBcR4go0ZJwv++TWQKADYs4/I6XztiXjN7i88F3KuHSDgY
+	 vQYuvPBRkWozQ==
+Received: from hephaistos.inside-m2m.de (business-90-187-159-109.pool2.vodafone-ip.de [90.187.159.109])
+	(Authenticated sender: konstantin.kletschke@inside-m2m.de)
+	by mail.inside-m2m.de (Postfix) with ESMTPSA id B0AAF400E1
+	for <linux-wireless@vger.kernel.org>; Thu, 21 Mar 2024 11:55:48 +0100 (CET)
+Date: Thu, 21 Mar 2024 11:55:47 +0100
+From: Konstantin Kletschke <konstantin.kletschke@inside-m2m.de>
+To: linux-wireless@vger.kernel.org
+Subject: AP mode on RTW88 8821cs
+Message-ID: <ZfwSM0paZg23iEPS@hephaistos.inside-m2m.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-Edward Adam Davis <eadavis@qq.com> writes:
 
-> [syzbot reported]
-> usb 1-1: ath9k_htc: Transferred FW: ath9k_htc/htc_9271-1.4.0.fw, size: 51008
-> ath9k_htc 1-1:1.0: ath9k_htc: HTC initialized with 33 credits
-> ------------[ cut here ]------------
-> UBSAN: array-index-out-of-bounds in drivers/net/wireless/ath/ath9k/htc_hst.c:26:51
-> index 255 is out of range for type 'htc_endpoint [22]'
-> CPU: 1 PID: 2494 Comm: kworker/1:2 Not tainted 6.8.0-rc6-syzkaller-00190-ga788e53c05ae #0
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/29/2024
-> Workqueue: events request_firmware_work_func
-> Call Trace:
->  <TASK>
->  __dump_stack lib/dump_stack.c:88 [inline]
->  dump_stack_lvl+0x125/0x1b0 lib/dump_stack.c:106
->  ubsan_epilogue lib/ubsan.c:217 [inline]
->  __ubsan_handle_out_of_bounds+0x111/0x150 lib/ubsan.c:347
->  htc_issue_send.constprop.0+0x209/0x230 drivers/net/wireless/ath/ath9k/htc_hst.c:26
->  ath9k_wmi_cmd_issue drivers/net/wireless/ath/ath9k/wmi.c:305 [inline]
->  ath9k_wmi_cmd+0x424/0x630 drivers/net/wireless/ath/ath9k/wmi.c:342
->  ath9k_regread+0xdb/0x160 drivers/net/wireless/ath/ath9k/htc_drv_init.c:242
->  ath9k_hw_read_revisions drivers/net/wireless/ath/ath9k/hw.c:287 [inline]
->  __ath9k_hw_init drivers/net/wireless/ath/ath9k/hw.c:572 [inline]
->  ath9k_hw_init+0xf02/0x2b30 drivers/net/wireless/ath/ath9k/hw.c:700
->  ath9k_init_priv drivers/net/wireless/ath/ath9k/htc_drv_init.c:662 [inline]
->  ath9k_init_device drivers/net/wireless/ath/ath9k/htc_drv_init.c:839 [inline]
->  ath9k_htc_probe_device+0xb37/0x25f0 drivers/net/wireless/ath/ath9k/htc_drv_init.c:963
->  ath9k_htc_hw_init+0x33/0x70 drivers/net/wireless/ath/ath9k/htc_hst.c:529
->  ath9k_hif_usb_firmware_cb+0x272/0x620 drivers/net/wireless/ath/ath9k/hif_usb.c:1273
->  request_firmware_work_func+0x13a/0x240 drivers/base/firmware_loader/main.c:1163
->  process_one_work+0x886/0x15d0 kernel/workqueue.c:2633
->  process_scheduled_works kernel/workqueue.c:2706 [inline]
->  worker_thread+0x8b9/0x1290 kernel/workqueue.c:2787
->  kthread+0x2c6/0x3a0 kernel/kthread.c:388
->  ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
->  ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:243
->  </TASK>
-> ---[ end trace ]---
-> [Fix]
-> If the target does not return a valid end point id during the device connection
-> process, returns a failure.
->
-> Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
-> Reported-and-tested-by: syzbot+93cbd5fbb85814306ba1@syzkaller.appspotmail.com
-> Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+We have a rockchip rk3328 board with an 8821cs chip connected via SDIO.
+Well, cs impiles SDIO, cu is USB variant.
 
-This should go to ath tree, not usb. No need to resend because of this.
+Normally thinks work quite well for use but we do not get AP mode to
+work.
+We use 6.5.13 kernel with our customized DT and the in kernel 8821cs
+driver:
+
+rtw88_8821cs           12288  0
+onboard_usb_hub        12288  0
+rtw88_8821c            81920  1 rtw88_8821cs
+crct10dif_ce           12288  1
+rtw88_sdio             24576  1 rtw88_8821cs
+rtw88_core            167936  2 rtw88_8821c,rtw88_sdio
+mac80211              929792  2 rtw88_sdio,rtw88_core
+libarc4                12288  1 mac80211
+cfg80211              921600  2 rtw88_core,mac80211
+
+We tried with wpa_cli and hostapd but to no avail.
+I tried hostapd with wlan0 and eth0 bridged into br0, the SSID appears
+in the wlan search results in other devices, connectig _seems_ to work
+but getting an IP is not possible.
+
+What my colleauge and me especially noticed, the TX counter for the
+wlan0 interface in this use case runs, RX stays at 0:
+
+br0       Link encap:Ethernet  HWaddr 4A:86:7D:63:5C:59
+          inet addr:10.16.10.103  Bcast:10.16.255.255  Mask:255.255.0.0
+          inet6 addr: fe80::4886:7dff:fe63:5c59/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:111361 errors:0 dropped:3479 overruns:0 frame:0
+          TX packets:28144 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:13333769 (12.7 MiB)  TX bytes:3847859 (3.6 MiB)
+
+eth0      Link encap:Ethernet  HWaddr 86:E0:C0:EA:FA:A8
+          inet6 addr: fe80::84e0:c0ff:feea:faa8/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:112803 errors:0 dropped:219 overruns:0 frame:0
+          TX packets:28405 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:15102222 (14.4 MiB)  TX bytes:3891727 (3.7 MiB)
+          Interrupt:51
+
+wlan0     Link encap:Ethernet  HWaddr F0:B0:40:4F:70:BC
+          inet6 addr: fe80::f2b0:40ff:fe4f:70bc/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:123446 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:18783966 (17.9 MiB)
+
+In order to provide useful debug information, what should I look into?
+
+Is it a known issue or should AP mode work flawlessly with those
+drivers, which implies I forgot something.
+When I use my software with an external USB WLAN stick with another
+driver, exchange all wlan0 by wlan1 occurences only:
+
+rtl8xxxu              192512  0
+rtl8192cu              81920  0
+rtl_usb                16384  1 rtl8192cu
+rtl8192c_common        65536  1 rtl8192cu
+rtlwifi               118784  3 rtl8192c_common,rtl_usb,rtl8192cu
+
+the software AP works immediately.
+
+Kind Regards
+Konstantin
+
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+INSIDE M2M GmbH
+Konstantin Kletschke
+Berenbosteler Straße 76 B
+30823 Garbsen
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Telefon: +49 (0) 5137 90950136
+Mobil: +49 (0) 151 15256238
+Fax: +49 (0) 5137 9095010
+
+konstantin.kletschke@inside-m2m.de
+http://www.inside-m2m.de 
+
+Geschäftsführung: Michael Emmert, Derek Uhlig
+HRB: 111204, AG Hannover
+
 
