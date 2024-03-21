@@ -1,59 +1,59 @@
-Return-Path: <linux-wireless+bounces-5092-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5093-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB5D6885AA1
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Mar 2024 15:26:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A08C885ABB
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Mar 2024 15:29:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66778282DF3
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Mar 2024 14:26:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF94028282B
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Mar 2024 14:29:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C52285276;
-	Thu, 21 Mar 2024 14:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C83185937;
+	Thu, 21 Mar 2024 14:28:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O9c+rvX8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SpxN06Lp"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04B8985274;
-	Thu, 21 Mar 2024 14:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3339885279;
+	Thu, 21 Mar 2024 14:28:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711031175; cv=none; b=Sg09+/+wr51JgRWgZs4tTIZA19i0hCObl6425ynnT4KI9seSs4J02C9MwASIg88frb+vNPZrR/sy7H+S52WX7i7XifGnsK1P3dwJ4Egwd+PFCu+y8eEnmLmIYAhPa7hMFjR8bjQ6pxtpthZlAv+8OmhTQED72AiQpAfLmxVx+54=
+	t=1711031303; cv=none; b=Rz9YUc+q5bErlzlbFEYaR35HfUWG/J0cXkMVGLTegPBDDcCH0tvG+oIGk5M0YsNWAytCyCIUpFOlZZ8rK29+p3hVIsiGew9kQkmOG5uEOAOMNMhyGOWXAlU0L9NA79gtTKOPavyF0ttvOcfjUoWqB88M2V3nhPMokpxO+mpRrj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711031175; c=relaxed/simple;
-	bh=VmkGFNifUtWmSip+krIO7T42x5hHDlDV33XxA8/204k=;
+	s=arc-20240116; t=1711031303; c=relaxed/simple;
+	bh=pH2prGeFdJHwwa2fwQUUxFRLlz1GTq7varQulC5JgdY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DCyHcz+gYKNw429XyQ/ADk4ogYiV03xcyzv0fOhn2I4+0XqChS+j0GhvEOqO5/zhHF+I7WLxs5Sa/YLHJp1EYNx1bD+Wa5jCQbdMjIcngNEvkYFhJRAqLRAkEI+KlsJwso1mVvSCr27lqUG0KelX6X3J9Fx9/E8xw0pLCNuVDqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O9c+rvX8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 351DDC433C7;
-	Thu, 21 Mar 2024 14:26:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=B8DHshr59EyVNQMuqoDXLvp2VcicAWl63RFCqmz+0YsAi2k6N/SDQz2y+qpfYlNvfYuiEn0q/4IcQVReUA1XNAfa4LG6Z+5z+v3HOJFqiksYgXynelgeepNvsJkR07lh4kkCwczFJ+dOPg82/ZvU8nRpL4zD+Q5nPvWRAJ5PpkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SpxN06Lp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BDABC433F1;
+	Thu, 21 Mar 2024 14:28:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711031174;
-	bh=VmkGFNifUtWmSip+krIO7T42x5hHDlDV33XxA8/204k=;
+	s=k20201202; t=1711031303;
+	bh=pH2prGeFdJHwwa2fwQUUxFRLlz1GTq7varQulC5JgdY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=O9c+rvX8i4il61QRCvQZZIAiCk8lK6SIcYkVxy8tvu8VVBa7Vxh3vIkSosuIIrzbx
-	 bQuomSoRPhCETV48+mILsD6OlGTXpRlTGtmWPLF8gCGNOTrheMvrvJ8F1de5P3tZBg
-	 KqOe3RMDdhE2z81ls9sa6N0IaYoR79yShQ7AniqyB9joJefWrsfdNx+zD55kh34Atp
-	 Ome4EhWb6agk3vxKuMuKa/X7HHwRFbYbt8MxBP3KrSCo8tHes35diAzPqR1n53LpQH
-	 rsaIIw2LEQ8olXaPHT84Ki8mRv3EOkHeeTgoRBExiYTSLXLyJDwp2/XQWs5DN1rWA4
-	 fbsTNlQruF4tQ==
-Date: Thu, 21 Mar 2024 07:26:13 -0700
+	b=SpxN06LppfVgIhmcsu1LrlaPRuDknGG/5OjUT5Wu+HapT8qxkC8DGJ+6guCxsERy1
+	 PXZpdK+Dm1USZIRFXud+clP1GT8QF72UPK7UfyHLkoAsFM24+lUacMN98ru+KSstF9
+	 OYj9uf+ri6/KXrTMW/4glRlbmBr29nm06GuRCGKcXVApw5eNf4g8DJJoGK6qz+rAGv
+	 J3xCmoV3A/XHruiLd9xAyosdmPjSmq+ePeZs8x4N25ak1RxBXhnTE+xp94RQ8LYc9f
+	 0LI5lyBQsTHoSzT0UOAl2NrNRpo9fzTVhGpL/H0FR3Wl/2Gv4YV9tpbUHAT9sjIENR
+	 tGTK4DbXeziKA==
+Date: Thu, 21 Mar 2024 07:28:21 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Florian Fainelli <f.fainelli@gmail.com>
+To: Jeff Johnson <quic_jjohnson@quicinc.com>
 Cc: Breno Leitao <leitao@debian.org>, Kalle Valo <kvalo@kernel.org>, Jeff
- Johnson <jjohnson@kernel.org>, keescook@chromium.org, "open list:NETWORKING
- DRIVERS (WIRELESS)" <linux-wireless@vger.kernel.org>, "open list:QUALCOMM
- ATHEROS ATH11K WIRELESS DRIVER" <ath11k@lists.infradead.org>, open list
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] wifi: ath11k: allocate dummy net_device dynamically
-Message-ID: <20240321072613.67466168@kernel.org>
-In-Reply-To: <a44f21e3-1773-4b56-b1f0-c03a6462a7c1@gmail.com>
-References: <20240319185735.1268980-1-leitao@debian.org>
-	<a44f21e3-1773-4b56-b1f0-c03a6462a7c1@gmail.com>
+ Johnson <jjohnson@kernel.org>, <keescook@chromium.org>, "open
+ list:NETWORKING DRIVERS (WIRELESS)" <linux-wireless@vger.kernel.org>, "open
+ list:QUALCOMM ATHEROS ATH10K WIRELESS DRIVER" <ath10k@lists.infradead.org>,
+ open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] ath10k: allocate dummy net_device dynamically
+Message-ID: <20240321072821.59f56757@kernel.org>
+In-Reply-To: <9fcdb857-da62-4832-ae11-043fe993e4ad@quicinc.com>
+References: <20240319104754.2535294-1-leitao@debian.org>
+	<9fcdb857-da62-4832-ae11-043fe993e4ad@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -63,25 +63,14 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 20 Mar 2024 07:05:42 -0700 Florian Fainelli wrote:
-> > @@ -533,8 +534,11 @@ static int ath11k_ahb_config_ext_irq(struct ath11k_base *ab)
-> >   
-> >   		irq_grp->ab = ab;
-> >   		irq_grp->grp_id = i;
-> > -		init_dummy_netdev(&irq_grp->napi_ndev);
-> > -		netif_napi_add(&irq_grp->napi_ndev, &irq_grp->napi,
-> > +		irq_grp->napi_ndev = alloc_netdev(0, "dummy", NET_NAME_UNKNOWN,
-> > +						  init_dummy_netdev);  
-> 
-> Is not this going to be a problem with multiple network device drivers 
-> loaded in a given system and all using "dummy" here? While 
-> NET_NAME_UNKNOWN ensures that this is not exposed to user-space, there 
-> is still this part of alloc_netdev_mqs() which is going to be non-unique:
-> 
->          ref_tracker_dir_init(&dev->refcnt_tracker, 128, name);
+On Wed, 20 Mar 2024 08:12:46 -0700 Jeff Johnson wrote:
+> NAK this based upon the ath11k patch results.
 
-Names are allocated are registration time, I think, so basically all
-devices will get an non-uniquely named ref tracker dir. For ethernet
-it will be unconverted "eth%d". The name only shows up in some prints,
-AFAICT, so not very important?
+The ath11 patch is much more complex, I'd wager this one is fine.
+
+> As suggested there we should just use kmalloc/kfree to match the existing logic.
+
+Please no. There is no magic here. alloc + free must match whether
+you're using magic object alloc wrapper (alloc_netdev()) or straight
+up kzalloc().
 
