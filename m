@@ -1,147 +1,146 @@
-Return-Path: <linux-wireless+bounces-5105-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5106-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93092885F2C
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Mar 2024 18:07:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BAF2885FA6
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Mar 2024 18:24:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B70A41C23913
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Mar 2024 17:07:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27850281CC3
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Mar 2024 17:24:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76CE0135A44;
-	Thu, 21 Mar 2024 17:01:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33E008564B;
+	Thu, 21 Mar 2024 17:24:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ezp+lh00"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hyx78quD"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C9F20B00
-	for <linux-wireless@vger.kernel.org>; Thu, 21 Mar 2024 17:00:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD0479E0
+	for <linux-wireless@vger.kernel.org>; Thu, 21 Mar 2024 17:24:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711040460; cv=none; b=ZzFG/UMI4283OxpVrD4VnevPAKB6n7nBelMxFbtRem/9BZBZ6ZX2DEGM1rg8MmX2DVtbJdnnUg1cx0pv4YAHJas/lnT71Pcznj8aFVu/TJ6yCxzASgSHFsdb3PbbglGgFXrv9KxRI8AQXQjWTzHCvkvNIcetREFuz2ANFAR/Xik=
+	t=1711041857; cv=none; b=evBZ+mjtiJTY/YEm98DlUv0G2ZPql8e7PRWcbAxu6TSqFXlRQxtMVpE4jDWNRaNQb0Q8D/HopoL2ZMFh4Gj/UEQ28v3CRcvYOp6D3v3Zhjm/3rivhmOpl7JEMfzVDBoFc1Ftw0ZURZqF93Cx60JA3hK9SfDYnA8egkUC7suLQYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711040460; c=relaxed/simple;
-	bh=kxA6j/sLvfHtIDVuxrpB+oAzL8fWSGAx5/Ktcuh0LIM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=SsvDoN/qexogB5YN8aLcTaojQMCbo0pfuSz/srOjMY7I0R+TlcFrqysVDy+f/eR+0UEHTdJiVUENEpu4RacpT9GVOOV9nB1zpUft+0FTSm7u6iGoiD5GiBb3VYTy9c2NyIxQoZS3w6mAUAyrwQ5rgy2I2OF9nL1k1k2j4WDUW4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lwfinger.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ezp+lh00; arc=none smtp.client-ip=209.85.161.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lwfinger.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-5a4859178f1so655878eaf.0
-        for <linux-wireless@vger.kernel.org>; Thu, 21 Mar 2024 10:00:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711040457; x=1711645257; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=Bi6qne34obTziw7kIdkMOgaA9asBzv9Y6LU9ez0EgFs=;
-        b=Ezp+lh00VcD6TsSHkkDiOx4GK6XVX64JpscHjYYlmSSkn5W2JdVSUF4wArUAYKiZj1
-         L3KPw2LKhyLV0ED0xINa30HFZKgP7NsWTjFefhqIRE2z5qvcIlV+OnmRZ0I/dUcQooIA
-         G7sv7EflxcFpA/vbR2oHLOKa5NJmjqV3L4kUl+SbqGDH9pv5wA8KCgVfVUhxcftbHa28
-         q5k2FwhsXyE6WToDE9dijZkadKH+KVjPnd3skhx6G9IlTSsVJw82mrGqr/7Lb1BEX9qj
-         ORLrPRdYCp0tOMRHXSvapb+OPjWm5joGhYQ0oB+r0tGf88QezqWW/DlMQcbaJRmyuQIX
-         WIUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711040457; x=1711645257;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Bi6qne34obTziw7kIdkMOgaA9asBzv9Y6LU9ez0EgFs=;
-        b=HNuhkp+Ytbh8M2Oz/iwcxu4adPB9RcNCMUZ6Uk417ZspRq2Lr3vwL1+mJ+jIvu9rMB
-         Zs6YdFvQsJVJrVDyNaprSi3A0Y9aOBmxITOAW/dvs6/TDOdPXEEFj1I+U5VhV1HC+3JM
-         mEf4JdAFxum+i1vYn0yx8rzhQTJWgmZpuKatsp4sF/gCEFr7qD4iX6FOjA5KloL7teh0
-         fzlftqwKn1B578UxJvsEc2dbVEjvMzo+86UOAgsG+jCszXMBXG4FNfMUbesDub7uqQa5
-         s/5sAPB+y/nGzm66gDb/ciEGy5MmjHScUmVzhGfc1fPzuMI+yOmNZF0s2dEZKFWf4B3c
-         jbHA==
-X-Forwarded-Encrypted: i=1; AJvYcCVLoq0R6Uzb7TVSpJPsiAx5AKrb3sxKpsPs1dYquvRMW93vipdEVvjgOaxB2vyI1+GbO5XL0LcOXyNrsn7Kygl3+GlD7SNGKjYUBsg1gXg=
-X-Gm-Message-State: AOJu0Yy6h7zR6CD8Yf3I4oRumiqRGXysYkh+2JZje461WuQKkyyW+Q4p
-	TjqDAGWYemSgIxa+pC/DaX5v64GjZXUQzWTScnR0IR1M2peqGr7r1qOHBzcg
-X-Google-Smtp-Source: AGHT+IH8k8YfiVHopGEl+fkeE/XB/Yjd27qzT7txviammJ+lWhJHZW54V+obzs+MsBJEoAbmQdMrew==
-X-Received: by 2002:a05:6820:2982:b0:5a4:6af7:5504 with SMTP id dq2-20020a056820298200b005a46af75504mr162704oob.0.1711040457143;
-        Thu, 21 Mar 2024 10:00:57 -0700 (PDT)
-Received: from [192.168.1.119] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id by12-20020a056820200c00b005a0fc5a89dfsm3322107oob.5.2024.03.21.10.00.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 21 Mar 2024 10:00:56 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <6830a20c-462d-425a-9c0d-0f76de270877@lwfinger.net>
-Date: Thu, 21 Mar 2024 12:00:53 -0500
+	s=arc-20240116; t=1711041857; c=relaxed/simple;
+	bh=UqWgiXpTx+g3y/yTRlgvUwo2ElHiGNZIewuCU+UdZnI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CBN/jT0peBIAR0JV13qInEQh22KTl4FB0HwFkj4aPZnKffeMtIcxPH0WGutEbP30bmwqLE4g6PAiZVoDJYpbJXpQspmpoPtkKguRty4GoLPP9qbgkMu+guBdokIa87fJVKM1gpZXELFRGLgBRuYCSqp0qhRqb9SDLn4czewIdZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hyx78quD; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1711041854;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=nx/csSlPOluSCIW0mpv5oVPqUBgi5HWFro0Q1XSjqX8=;
+	b=hyx78quDSSaMfPqqggWq0VWUMvlmXvGV7ULXRm+9Y1gO6HgDG+O1byH5hOy9y8jpNxA71S
+	2p3TbGQZUBIVXObNeK+6nkbQ64tLWumoiMqlKa3DVmrxiqv6oe8HXViIhQ6pvdkp3HXT8f
+	rS/wB7UzmTVUvMWmIGFzV7fDl/c7SL8=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-644-BIZles-tO0q0bkr2sYcD1w-1; Thu,
+ 21 Mar 2024 13:24:11 -0400
+X-MC-Unique: BIZles-tO0q0bkr2sYcD1w-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CAB8638009FB;
+	Thu, 21 Mar 2024 17:24:10 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.39.193.172])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 373F18173;
+	Thu, 21 Mar 2024 17:24:09 +0000 (UTC)
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+To: kvalo@kernel.org,
+	jjohnson@kernel.org,
+	linux-wireless@vger.kernel.org,
+	ath11k@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: quic_bqiang@quicinc.com,
+	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Subject: [PATCH] wifi: ath11k: workaround to use VMs
+Date: Thu, 21 Mar 2024 18:23:53 +0100
+Message-ID: <20240321172402.346191-1-jtornosm@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Is RTL8822CE with Kernel 6.1 for imx6
-To: =?UTF-8?B?5pa95bCP5LiwKOWMu+eUqOWItuWTgeS6p+S4mumbhuWboi3ljLvnlKjliLY=?=
- =?UTF-8?B?5ZOB6ZuG5Zui5pys6YOoKQ==?= <shixiaofeng@weigaogroup.com>,
- linux-wireless <linux-wireless@vger.kernel.org>
-References: <AF*AOABLHt4n7diA--9SIKqg.1.1711026798731.Hmail.shixiaofeng@weigaogroup.com>
-Content-Language: en-US
-From: Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <AF*AOABLHt4n7diA--9SIKqg.1.1711026798731.Hmail.shixiaofeng@weigaogroup.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
 
-On 3/21/24 08:13, 施小丰(医用制品产业集团-医用制品集团本部) wrote:
-> 
-> Dear linux wireless team:
->     This is Danny, a embedded software engineer
-> 
->     I have successfully run the 8822CE module in Linux kernel 5.4 with imx6 
-> hardware platform.
->     But it doesnt work in Kernel 6.1 though i have put many efforts to this issue.
->    So, we'd like to check with you whether the RTL8822CE chip is compatible with 
-> Linux Kernel 6.1.
->     My usage is as below:
-> 
->  1. imx6 board
->  2. build RTL8822CE as M in kernel 6.1 menuconfig
->  3. Each time after the board startup, i run four commands 
-> 
->      insmod rtw88_core.ko
->      insmod rtw88_pci.ko
->      insmod rtw88_8822c.ko
->      insmod rtw88_8822ce.ko
-> 4.  When run  insmod rtw88_8822ce.ko, in most cases, the error will show as 
-> below. (few times can work)
->   Detail error log is attached.
->    Same step (1) -(4) works very well with kernel 5.4 in same hadrware platform.
-> ================
-> root@imx6solosabresd:~/8822CE# ./insmod.sh
-> [   60.541840] rtw_8822ce 0000:01:00.0: enabling device (0000 -> 0003)
-> [   60.558145] rtw_8822ce 0000:01:00.0: Firmware version 9.9.4, H2C version 15
-> [   60.567135] rtw_8822ce 0000:01:00.0: Firmware version 9.9.15, H2C version 15
-> [   60.706697] 8<--- cut here ---
-> [   60.709775] Unhandled fault: imprecise external abort (0x1406) at 0x01b77740
-> [   60.716832] [01b77740] *pgd=00000000
-> [   60.720421] Internal error: : 1406 [#1] PREEMPT SMP ARM
-> [   60.725653] Modules linked in: rtw88_8822ce(+) rtw88_8822c rtw88_pci rtw88_core
-> [   60.732991] CPU: 0 PID: 796 Comm: insmod Not tainted 6.1.22-g9c59b15a9e72 #1
-> [   60.740049] Hardware name: Freescale i.MX6 Quad/DualLite (Device Tree)
-> [   60.746580] PC is at rtw_pci_read32+0x14/0x18 [rtw88_pci]
-> [   60.752015] LR is at rtw_chip_info_setup+0x48/0x588 [rtw88_core]
-> [   60.758170] pc : [<7f026048>]    lr : [<7f0001c0>]    psr: 60010013
-> [   60.764442] sp : c1d0dd28  ip : 00000201  fp : 89344040
-> [   60.769670] r10: 88b397a0  r9 : 88b3f890  r8 : 00000200
-> [   60.774897] r7 : 000003da  r6 : 000003d9  r5 : 7f03a2c8  r4 : 88b397a0
-> [   60.781428] r3 : c09200f0  r2 : 00000000  r1 : 000000f0  r0 : 00000000
-> [   60.787959] Flags: nZCv  IRQs on  FIQs on  Mode SVC_32  ISA ARM  Segment none
-> [   60.795100] Control: 10c5387d  Table: 15d10059  DAC: 00000051
-> [   60.800848] Register r0 information: NULL pointer
-> [   60.805564] Register r1 information: non-paged memory
-> [   60.810620] Register r2 information: NULL pointer
+Currently, this driver is not working when the device is handled in a
+Virtual Machine (PCI pass-through), as it was already reported here:
+https://lore.kernel.org/all/fc6bd06f-d52b-4dee-ab1b-4bb845cc0b95@quicinc.com/T/
+Baochen Qiang focused the problem and described how to have it working
+for a specific real MSI vector from host that needs to be used in VM too.
+And this value, as it was commented, can change.
 
-Danny,
+The problem seems complex to me and I don't know if there is any easy way
+to solve it. Meanwhile and using the information from Baochen Qiang,
+since the use of VMs is very interesting for testing procedures,
+I would like to just add this workaround that consists on adding a
+parameter to pass the real MSI vector from host to the VM. In that way,
+checking the 'lscpi' command output from host, it could be handled manually
+or with some user tool in order to have the VM with the driver working.
+Of course, if this parameter is not configured (zero value and default),
+we will have the same behavior as always.
 
-The RTL8822CE certainly works with kernel 6.1 on X86_64 hardware. Routine 
-rtw_pci_read32() where the unhandled fault happens has not been changed since 
-kernel 5.2.
+Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+---
+ drivers/net/wireless/ath/ath11k/pci.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+
+diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
+index be9d2c69cc41..0e322956b10f 100644
+--- a/drivers/net/wireless/ath/ath11k/pci.c
++++ b/drivers/net/wireless/ath/ath11k/pci.c
+@@ -31,6 +31,11 @@
+ 
+ #define TCSR_SOC_HW_SUB_VER	0x1910010
+ 
++static ulong ath11k_host_msi_addr = 0;
++module_param_named(host_msi_addr, ath11k_host_msi_addr, ulong, 0644);
++MODULE_PARM_DESC(host_msi_addr,
++		 "Workaround to configure the MSI address that is used from host in order to be used in VM");
++
+ static const struct pci_device_id ath11k_pci_id_table[] = {
+ 	{ PCI_VDEVICE(QCOM, QCA6390_DEVICE_ID) },
+ 	{ PCI_VDEVICE(QCOM, WCN6855_DEVICE_ID) },
+@@ -443,6 +448,18 @@ static int ath11k_pci_alloc_msi(struct ath11k_pci *ab_pci)
+ 
+ 	ath11k_pci_msi_disable(ab_pci);
+ 
++	if (ath11k_host_msi_addr) {
++		ab_pci->ab->pci.msi.ep_base_data = 0;
++		ab->pci.msi.addr_hi = (u32)(ath11k_host_msi_addr >> 32);
++		ab->pci.msi.addr_lo = (u32)(ath11k_host_msi_addr & 0xffffffff);
++
++		ath11k_dbg(ab, ATH11K_DBG_PCI, "msi addr hi 0x%x lo 0x%x base data is %d\n",
++			   ab->pci.msi.addr_hi,
++			   ab->pci.msi.addr_lo,
++			   ab->pci.msi.ep_base_data);
++		return 0;
++	}
++
+ 	msi_desc = irq_get_msi_desc(ab_pci->pdev->irq);
+ 	if (!msi_desc) {
+ 		ath11k_err(ab, "msi_desc is NULL!\n");
+@@ -482,6 +499,9 @@ static int ath11k_pci_config_msi_data(struct ath11k_pci *ab_pci)
+ {
+ 	struct msi_desc *msi_desc;
+ 
++	if (ath11k_host_msi_addr)
++		return 0;
++
+ 	msi_desc = irq_get_msi_desc(ab_pci->pdev->irq);
+ 	if (!msi_desc) {
+ 		ath11k_err(ab_pci->ab, "msi_desc is NULL!\n");
+-- 
+2.44.0
 
 
