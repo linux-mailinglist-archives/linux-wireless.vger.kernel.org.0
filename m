@@ -1,56 +1,56 @@
-Return-Path: <linux-wireless+bounces-5103-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5104-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15ADA885F08
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Mar 2024 18:04:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE08B885F12
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Mar 2024 18:05:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A88081F231FB
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Mar 2024 17:04:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 892E9281496
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Mar 2024 17:05:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB578142651;
-	Thu, 21 Mar 2024 16:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9909213340D;
+	Thu, 21 Mar 2024 16:54:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G81zQ6MD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dnyA4TD8"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96E081428E1
-	for <linux-wireless@vger.kernel.org>; Thu, 21 Mar 2024 16:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FB2C133404;
+	Thu, 21 Mar 2024 16:54:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711039978; cv=none; b=FpFcbb7XBz78G5YAXl2GQiSfCWLa09Taqw2QG9xy/IaUPJ7djNlGaVKxyRE6zgOVOm/Vkzf293NcGEZjN+6jGH7tnyzKIjqFe/fEPIFVLMCLJxZTpj7KoGij0BmTPoBOpw6apEHdD2xEeeFJtRKXk4b/k40gq04/DscNlK+uYwg=
+	t=1711040043; cv=none; b=UhBxQ16Yvau7xvrm9zhrIu2iEqRxH/SMVN0EhJ1VkX58h2DyVlWCs1uYx2GIv0UanrJgCxu9tTuhfiMBAx2Cu5DvIfy7bj6aWrXbZGVaVYFgakcUYEEQQ193s+y6NB+IC1tXnh5ZhKg0WLA+S2IdmU/LTu7Mt5TuVABM2PnjTms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711039978; c=relaxed/simple;
-	bh=MsrA7XiKs3c7x/GsarYSR+iS7sB0sU30tZufhfb/yzw=;
+	s=arc-20240116; t=1711040043; c=relaxed/simple;
+	bh=vKjcrD43FFa7nM60wwUAx4/dMdHQVuqCYLcviawXydE=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=Lsb3Iaz7qfiwdz/eErYUD3IgbpIuSbX8ex24twTa9DSa7bjc7VPjGv93n+ZcFUqnFZBRJO7NtfFfclq72/n94l+h2H4qZsnjWNThv+Br/N84C0YKB57U94DlJqAFn9czRm2RfFT7zv98viyPBEohbxoL2n5QiNt/fovIi+cOU8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G81zQ6MD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C767C433F1;
-	Thu, 21 Mar 2024 16:52:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SUxqALc2Pb22R0py/ZFXptM3f9COWGaEe8vrgz7cpbzq0XgZebLqrvMgV8WiXOuNCgTNx6wWNVffolGcZ3fyj9smblsCMzh/veyq2YTY0hIUQORnJ7GwpgLVnd0KIK3Zd94H4CsY2TtLn54Q62gHhuVoEY97q3iGzzO/qd0v7jw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dnyA4TD8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B759C433F1;
+	Thu, 21 Mar 2024 16:54:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711039978;
-	bh=MsrA7XiKs3c7x/GsarYSR+iS7sB0sU30tZufhfb/yzw=;
+	s=k20201202; t=1711040043;
+	bh=vKjcrD43FFa7nM60wwUAx4/dMdHQVuqCYLcviawXydE=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=G81zQ6MDuKsUEGuOFRZYDtPCKjuuov6X698zwwLTXWch985x/Tx5yLxQpSuuSW0UM
-	 Qt/y4+5hj+zF2DNr7orZSaAXX5mM41owioJkZIndl56znE5+QFt5cJD+GXa6u0dLdp
-	 yn6/y4ax0O9y1yzGoet1zN463uNSpTW0PmIzagzDZhKPZmARvPOJ67FfN/ifBbN3gu
-	 YYUiR9ZNxaBEmoWBq3PndwlaDIEPLmQkRf/wCTElUU3Wtaa6+tgKDWMe4LWzMVxfyO
-	 Mk+y2mSJGWQnnyNpr9/uKHv+gJ0UhtNop5RDiRvvCps7G2WjAx5zSZe/iZi2f9BcQu
-	 J6FS1aGar1jTQ==
+	b=dnyA4TD8SOgARZOSxjRq4c+f2LWKm1InIveFkkW24ZDfRYmjYNGWpl8qmCcxOb4yG
+	 LUiAwlK9/oghMbAMBbPnLl551VdA//wP5cPnjt0xI8hLCU7mSLFqI8mol9IWBWrAdn
+	 QnUvtfrcFb83mCydQuQTje28ZZ2fpZ5CGQnmW3/e3QHCiXrqae5qkk1igMcH98Z+h6
+	 OELEdicmshHtdMvNTq3wVlTygIxPD+6amXiJZmTd3sj+aPNXXLoQ6lDMAw4+kMnP1n
+	 7v5mq/lKrLxH4Z5Lu+SKU4dkFvE6L2M0/iYN13/zeE8qc/UXcCzfVvcU1xyb49pXqN
+	 PoQ30U+99Dcmg==
 From: Kalle Valo <kvalo@kernel.org>
-To: Nicolas Cavallari <Nicolas.Cavallari@green-communications.fr>
-Cc: nbd@nbd.name,  lorenzo.bianconi@redhat.com,  linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] wifi: mt76: mt7915: workaround dubious x | !y warning
-References: <20240321153437.403259-1-kvalo@kernel.org>
-	<06508917-f7a0-4ea7-b9da-eb392da9171f@green-communications.fr>
-Date: Thu, 21 Mar 2024 18:52:55 +0200
-In-Reply-To: <06508917-f7a0-4ea7-b9da-eb392da9171f@green-communications.fr>
-	(Nicolas Cavallari's message of "Thu, 21 Mar 2024 16:51:07 +0100")
-Message-ID: <8734sja5nc.fsf@kernel.org>
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: Brian Norris <briannorris@chromium.org>,  linux-kernel@vger.kernel.org,
+  linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] MAINTAINERS: add myself as mwifiex driver reviewer
+References: <20240321163420.11158-1-francesco@dolcini.it>
+Date: Thu, 21 Mar 2024 18:54:00 +0200
+In-Reply-To: <20240321163420.11158-1-francesco@dolcini.it> (Francesco
+	Dolcini's message of "Thu, 21 Mar 2024 17:34:20 +0100")
+Message-ID: <87y1ab8r13.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -60,34 +60,14 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Nicolas Cavallari <Nicolas.Cavallari@green-communications.fr> writes:
+Francesco Dolcini <francesco@dolcini.it> writes:
 
-> On 21/03/2024 16:34, Kalle Valo wrote:
->> Sparse warns:
->> drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c:526:9: warning:
->> dubious: x | !y
->> Workaround it by using the '?' operator. Compile tested only.
->> Signed-off-by: Kalle Valo <kvalo@kernel.org>
->> ---
->>   drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
->> b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
->> index 450f4d221184..3f47aafb1a6c 100644
->> --- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
->> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
->> @@ -523,7 +523,7 @@ mt7915_fw_debug_wm_set(void *data, u64 val)
->>     	/* WM CPU info record control */
->>   	mt76_clear(dev, MT_CPU_UTIL_CTRL, BIT(0));
->> -	mt76_wr(dev, MT_DIC_CMD_REG_CMD, BIT(2) | BIT(13) | !dev->fw.debug_wm);
->> +	mt76_wr(dev, MT_DIC_CMD_REG_CMD, BIT(2) | BIT(13) | dev->fw.debug_wm ? 0 : BIT(0));
+> As discussed on the mailing list [1], add myself as mwifiex driver reviewer.
 >
-> clang says "bitwise or with non-zero value always evaluates to true
-> [-Wtautological-bitwise-compare]"
->
-> It needs some parenthesis.
+> [1] https://lore.kernel.org/all/20240318112830.GA9565@francesco-nb/
 
-Thanks, I'll send v2.
+I'm nitpicking but the preferred way is to use the Link tag. I can fix
+that.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
