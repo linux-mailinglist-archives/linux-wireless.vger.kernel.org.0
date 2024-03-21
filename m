@@ -1,99 +1,118 @@
-Return-Path: <linux-wireless+bounces-5100-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5101-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E140885D37
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Mar 2024 17:17:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F4C9885D60
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Mar 2024 17:26:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D03E21F2409F
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Mar 2024 16:17:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1891D28181A
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Mar 2024 16:26:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B35912BF38;
-	Thu, 21 Mar 2024 16:17:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE2F112CD97;
+	Thu, 21 Mar 2024 16:26:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nqxnzxD/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.187])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC075B1E6
-	for <linux-wireless@vger.kernel.org>; Thu, 21 Mar 2024 16:17:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7A0F12BF2E;
+	Thu, 21 Mar 2024 16:26:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711037828; cv=none; b=rfL4FRbYVaBRn6VSK6M1wcSVoxr07HkpwZPSGkIIN6RfVFGrgLo5grVqkz9AQxuYyMRIRn5v2/FOuwo5Ruy4bDnRfjSKkU4xlVCvUyH+Xj1rS7H8BAuxEz3sL+neCoIV1SwPQNtBcM2rq7u38CRY+MKDwMbG1eBmofN0uLWsnIM=
+	t=1711038368; cv=none; b=XedDjt//T166t0IuPutCYPIQzLyx+mfGIgADp4Dl3LIcW20U/I7SEaMYoNbi7IZksiIDfsEHq6lpcfWGNQWAH7/Pwii8A0I1TFjth/wTqDnjd+zcMU1okKoRENFwpQP3qQpCQo8EDpQn5cUZxC5rQgC/8OvPP7+BrQS2tJhK6f8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711037828; c=relaxed/simple;
-	bh=30jy68VlGbmtsWE7K/SJnyAQQZ0T6LbTPbz7mONsDm0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=k20YdlAFIXCC4dL8QJgsJ4h5fAuSmRKaoXNFPWXetN0if2gDDe3+wBWLFU+xS6DobMXCFm5mfnJTjX4zGZmYp9WXNch5ZuZLm9+X9WSo0wyuqXnSJ3Nq9G4k7qm/rvpja1F+HyfvEQ9thzHevS7b4PX9T68Qki8B+vjjbToN6IE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=green-communications.fr; spf=pass smtp.mailfrom=green-communications.fr; arc=none smtp.client-ip=212.227.126.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=green-communications.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=green-communications.fr
-Received: from [192.168.0.66] ([85.168.41.102]) by mrelayeu.kundenserver.de
- (mreue012 [213.165.67.103]) with ESMTPSA (Nemesis) id
- 1Ml3ym-1r2DEF2KtQ-00lSaQ; Thu, 21 Mar 2024 16:51:07 +0100
-Message-ID: <06508917-f7a0-4ea7-b9da-eb392da9171f@green-communications.fr>
-Date: Thu, 21 Mar 2024 16:51:07 +0100
+	s=arc-20240116; t=1711038368; c=relaxed/simple;
+	bh=o03R27T3nyhgHJSk8Nx5JFM1w/gztzsuOCe0SoTCrAQ=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=pg28s3pK6q0x3Kcj2DZo2B6hRJSnpHFtymCBHKySW8sHw/Eyr7ddVxf3Q8mTGRc30AhWMl5e+J82RrtJlqEDmxCKvkhYb0CPT5A3DHKFQ3weHvvcUWAAUhOlLviaqjE4jD0Dj3619hVkXDPRU63GtbwF6hMV5gkWPwpFXbTtS6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nqxnzxD/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54328C433C7;
+	Thu, 21 Mar 2024 16:26:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711038366;
+	bh=o03R27T3nyhgHJSk8Nx5JFM1w/gztzsuOCe0SoTCrAQ=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=nqxnzxD/O7UelVXyOYeBjfH76lNFXycIDL6vIsdi91LcDS3WK1sCL+bGDOUQth5du
+	 EXPMXZAXZEZ6LgH54rRJZr/o+UH/u8SLCj9ddwu/eDk7O6qvLGxoXHbzUlxtrwX9Ji
+	 Eu756KAePUUNqbKLltLXhlLt6Un1zCVe7JbIAlTmMq3i2GEvbrN5rrGieEdUMJKXJ/
+	 7gEFyCs8X7SeLTAvEPGTPaVvuwgnRpUlO9wrQsLl5TIGb+lx7YEdznH4jnKEYgKqut
+	 BZIHC7fYIlr0y6Czvmp+0tTazxIm9AgDKU0PAaly8rx9hkoaMT7tOkwA1uIQP8Htpw
+	 174xKpw4bRkqA==
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: mt76: mt7915: workaround dubious x | !y warning
-Content-Language: en-US
-To: Kalle Valo <kvalo@kernel.org>, nbd@nbd.name, lorenzo.bianconi@redhat.com
-Cc: linux-wireless@vger.kernel.org
-References: <20240321153437.403259-1-kvalo@kernel.org>
-From: Nicolas Cavallari <Nicolas.Cavallari@green-communications.fr>
-In-Reply-To: <20240321153437.403259-1-kvalo@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:ZRFRDxkFbUdg1hxbn+QhNqzyPt3tYltabuhWinLvggqXtNaxZN7
- 7rUnL0XHjJnKYuZlsoUY7v3NPepATjyUZIAZZUHNkkCIeNJ03u+wy/DNZdS2PBd86OKtdJz
- /tvqJmCOr3kpVAIjFnZ/+DkCLGkCd2e4CKxP4gjyTSZEyZ0Y+Aukedlgd7TqyAf0z3Ei59K
- RKQPEUQaXkmDPEYCgXDtQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:UhyT2iIthC0=;pEMw45oHqDO3EA1YwRCD4n5L0/D
- xaVx0XGv8GFD7zoRY6Bej2/YZ82TmGrIQRAb4YEFpG8O4+xC05Hr3vS94MbyAWOKpviz812gW
- pKvO+hi2QFWaQCCfr2BKvtHAUSRdpNwRlrlLzlTTjke+Nkf6Mv/fHyToy7mhy80Q4vMqKm5uH
- KjfRv7TgBK8va4Ix9nViEc8FLslNITKqco5AY4EsnP7ihn9NKBiV0jPZ13LnOiu9FrYJFEWdK
- 6Oh273RKkg4jPDRrslw2Ejjh9tnSgjSDdgDGFpK2nlFfnrsG2Jqm2VbFq9lqzpM/PW7GhqKJ5
- +L/3Akoa37Mc27b2bhdc8n7sg3k19Y9bLE7CvgHlLGfC7RIby4K+tmMghiXVyG40ldS/Dek0r
- wY7UCLMRouoEzcBbwdFr+ri0xaFRPVJYN/rvVzWWcPqZF94h1XLzv8U+8LpTlb1p4oq441B3Y
- 7Rrq/SiAgt4rsd2SIr/xz97Z76xBHRHUjqfWWEF3Rkd/50RytC6VOIxgErIwnZtPB+bzMg8NN
- XsusxjrmdW8/1xioyyERGQmKii06sc8SOpz+d2TEO38/7//RBmmz5/OfXene3eE+dUinyzVwr
- lpKbdq4m3Vo266/JyNW1IHRemzW790hw9tH0Kan0wgbQuSz57q4BS+QqvryI5rc4dvIyr4/Xm
- lFrBE4OAnFY/udmxzlKyMellSWLFEQXCDTQNhcwRb2swBUWm3UfWpxlaSNlSvd+J6E+mEJivA
- 0IGUYlebbTA33NlBLJ62JVyxtcRdrdSV953oi7PDr2EtXV+z7slJ9M=
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 21 Mar 2024 18:26:02 +0200
+Message-Id: <CZZKH8G2XPIF.1G895LUGG0JWS@kernel.org>
+Cc: <linux-crypto@vger.kernel.org>, "Herbert Xu"
+ <herbert@gondor.apana.org.au>, <keyrings@vger.kernel.org>,
+ <linux-wireless@vger.kernel.org>, <iwd@lists.linux.dev>, "James Prestwood"
+ <prestwoj@gmail.com>, "Dimitri John Ledkov" <dimitri.ledkov@canonical.com>,
+ "Karel Balej" <balejk@matfyz.cz>
+Subject: Re: [PATCH] Revert "crypto: pkcs7 - remove sha1 support"
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Eric Biggers" <ebiggers@kernel.org>
+X-Mailer: aerc 0.17.0
+References: <20240313233227.56391-1-ebiggers@kernel.org>
+ <CZXWE5J2QMIN.1L4QKQU7C7UMN@kernel.org>
+ <20240321041015.GB2387@sol.localdomain>
+In-Reply-To: <20240321041015.GB2387@sol.localdomain>
 
-On 21/03/2024 16:34, Kalle Valo wrote:
-> Sparse warns:
-> 
-> drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c:526:9: warning: dubious: x | !y
-> 
-> Workaround it by using the '?' operator. Compile tested only.
-> 
-> Signed-off-by: Kalle Valo <kvalo@kernel.org>
-> ---
->   drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-> index 450f4d221184..3f47aafb1a6c 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-> @@ -523,7 +523,7 @@ mt7915_fw_debug_wm_set(void *data, u64 val)
->   
->   	/* WM CPU info record control */
->   	mt76_clear(dev, MT_CPU_UTIL_CTRL, BIT(0));
-> -	mt76_wr(dev, MT_DIC_CMD_REG_CMD, BIT(2) | BIT(13) | !dev->fw.debug_wm);
-> +	mt76_wr(dev, MT_DIC_CMD_REG_CMD, BIT(2) | BIT(13) | dev->fw.debug_wm ? 0 : BIT(0));
+On Thu Mar 21, 2024 at 6:10 AM EET, Eric Biggers wrote:
+> On Tue, Mar 19, 2024 at 07:20:54PM +0200, Jarkko Sakkinen wrote:
+> > > diff --git a/crypto/asymmetric_keys/mscode_parser.c b/crypto/asymmetr=
+ic_keys/mscode_parser.c
+> > > index 05402ef8964e..8aecbe4637f3 100644
+> > > --- a/crypto/asymmetric_keys/mscode_parser.c
+> > > +++ b/crypto/asymmetric_keys/mscode_parser.c
+> > > @@ -73,10 +73,13 @@ int mscode_note_digest_algo(void *context, size_t=
+ hdrlen,
+> > >  	char buffer[50];
+> > >  	enum OID oid;
+> > > =20
+> > >  	oid =3D look_up_OID(value, vlen);
+> > >  	switch (oid) {
+> > > +	case OID_sha1:
+> > > +		ctx->digest_algo =3D "sha1";
+> > > +		break;
+> >=20
+> > I fully agree with the change BUT...
+> >=20
+> > IMHO it would make sense to e.g either add inline comment about iwd
+> > dependency or link to the bug report here.
+> >=20
+> > I'd like to think that there is common will to eventually get rid of
+> > all of SHA-1, and thus in cases where it is not yet possible it would
+> > make sense to guide what to needs to be done to make it happen, right?
+> >=20
+> > BR, Jarkko
+>
+> This is supposed to just be a revert, so it's best not to mess around wit=
+h
+> adding additional stuff that wasn't in the original commit.  The sha1 sig=
+natures
+> are also not unique; iwd is also forcing the kernel to keep supporting MD=
+4, RC4,
+> KEYCTL_DH_COMPUTE, KEYCTL_PKEY_{QUERY,ENCRYPT,DECRYPT,SIGN,VERIFY}, etc.
+> Probably more than I don't know about.  I guess all of this should be doc=
+umented
+> in the code in appropriate places.  Probably the iwd folks should step in=
+ to do
+> this, as they know best what they're using and they got a lot of this add=
+ed to
+> the kernel in the first place.
+>
+> - Eric
 
-clang says "bitwise or with non-zero value always evaluates to true 
-[-Wtautological-bitwise-compare]"
+OK, fair point.
 
-It needs some parenthesis.
 
+BR, Jarkko
 
