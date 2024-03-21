@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-5097-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5098-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B4CB885B6B
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Mar 2024 16:09:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFBFC885B6C
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Mar 2024 16:09:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8B1E2B254F2
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Mar 2024 15:09:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DBCC1F239EC
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Mar 2024 15:09:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1478F85943;
-	Thu, 21 Mar 2024 15:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 286008595C;
+	Thu, 21 Mar 2024 15:09:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fo0cDsDh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UhF4jUSr"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4EC93A1DD
-	for <linux-wireless@vger.kernel.org>; Thu, 21 Mar 2024 15:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 011AE85943;
+	Thu, 21 Mar 2024 15:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711033744; cv=none; b=t7dNb8fQCpybVx8y770na3vZDVmOdrGUnj5eCYoFia0n2dU4xWEHz4eyeJNcQELvJ8WS6Z5tAeZjZuDOoY/y2m6IM2XHDFqJHMVql2T1K2dR+uxUwRvYqi6X9/d/ouL+PdR/Z0DZxJ4FpjKhfHxiUUYmzLR0dh0qLSEZBO4LeBM=
+	t=1711033777; cv=none; b=X2apdffCrs1yvSwrgeJ9X8GeWlGJJqE9J01Jq7nIAcx6srflqyleERwlL95jUe9qpPwB8YL7t6HCoN2YHHaAfs5YJRopsLIbc7VFT+vxZ1g8MF/zR+XuAtn0xO6THdODk7ZDW7pryi9pn8c6r2lcaJ4zbMk3JG8L/5EzuzNh2mE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711033744; c=relaxed/simple;
-	bh=AVrisdTo0YcYwUkt5rVAKmDOumoM56vN0yTSAF9NJ48=;
+	s=arc-20240116; t=1711033777; c=relaxed/simple;
+	bh=G6NTJt7joh2QpS7GqQPcdEuL7u8Et9P+QNk32/jLYpU=;
 	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=kCr41KDca1vk1jlxQwp3fKIiaj2u3o5BmxhAfpaVa4L12GElnSqGH72ej8bqKICC37iDHp9ZnnifvB4XlVmKqIzCaggQX3+CHnRZBkc1tlIv7guOIcdcpCqLYAx8bzKAyQwSrA/UM6ysJ0tqg4Eh0+iciTk88kyV4eznuIjQWy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fo0cDsDh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F423C433F1;
-	Thu, 21 Mar 2024 15:09:02 +0000 (UTC)
+	 Cc:Message-ID:Date; b=QF8olpmMttj89M+GKeuCaxJl56bM3Uh5yXaBecdE7MMfnLHd2zhjWyDHGA3k+/DCM1T2kVLxvFAB6qY+aXXxN6rQa94Dm2kyA1QMZpnNBLbyrCiVRAeqOC+WNRd66ikjJSHaA0DTR6OU7nkKoco9D4qNu9+Lrtn9fSnZLNN1Sc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UhF4jUSr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15787C433F1;
+	Thu, 21 Mar 2024 15:09:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711033743;
-	bh=AVrisdTo0YcYwUkt5rVAKmDOumoM56vN0yTSAF9NJ48=;
+	s=k20201202; t=1711033776;
+	bh=G6NTJt7joh2QpS7GqQPcdEuL7u8Et9P+QNk32/jLYpU=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=fo0cDsDh42wDwAEnnoYwPMSKwRPFcPdvxbcvLMYQopYwIs3unlByGaU3Hi0506jQs
-	 EsXxVcvBzJbHACL4ECC8eL77PDPjP7eS3PJcetj3VQDWoOxEwtoubNcECwrjNMOkjk
-	 nTYTLZTsVNaDWYBC47X3TWeKSRpuJ5IO/WWT1kn7MnPTtNvbIGXkfWxnJ4OiWOccW+
-	 2i47omdvnkaSg8w2sFJpuP9NF9uv86San1oetPLIWT0JHzJnBWfikb2dck2m/DknXY
-	 UCbNbP3S/Qo/p5eoMgoPn8nx/qqQys7YDuJ3Gnqj/7ED9VXpuJQDX8mbQtgrknSiwt
-	 qSfFG0MmvHhfQ==
+	b=UhF4jUSrSYeHjbQJYC6o8CrUYZzhIXPYMqF2agwKGGPwKAvgjwXmg4k/3SP1aZY9y
+	 M3UlBEyWsshsaL564wcKgUTrxx6Ogi+MudSF7fWrz37OcS3PZu4aF+sESH7h9tqJGX
+	 sWP5NR2w4TZ7dquuQGjRTU/zaXSuE2OIaG+KP1tngGSsNc9Zn5ykSFiqXW0kVvtz8C
+	 5CgasnTuVk7i0BlEsunY0mNWOQAktV0Kh5haPE8fI1Hya0ThYEi0QNtSB7OjbJ49ph
+	 75AlOTMX307Py4sfpTUP0xlQy20SPjPcPUIlbt3uQ5hz3TzPS8UzP5cKsJ926NtKmJ
+	 Ptuatsy0cm51A==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -49,41 +49,41 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: mt76: mt7915: workaround too long expansion sparse
- warnings
+Subject: Re: [PATCH] wifi: qtnfmac: allocate dummy net_device dynamically
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: 
- <5457b92e41909dd75ab3db7a0e9ec372b917a386.1710858172.git.lorenzo@kernel.org>
-References: 
- <5457b92e41909dd75ab3db7a0e9ec372b917a386.1710858172.git.lorenzo@kernel.org>
-To: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: nbd@nbd.name, linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
- shayne.chen@mediatek.com, ryder.lee@mediatek.com
+In-Reply-To: <20240319172634.894327-1-leitao@debian.org>
+References: <20240319172634.894327-1-leitao@debian.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: Igor Mitsyanko <imitsyanko@quantenna.com>,
+ Sergey Matyukevich <geomatsi@gmail.com>, kuba@kernel.org,
+ keescook@chromium.org,
+ linux-wireless@vger.kernel.org (open list:QUANTENNA QTNFMAC WIRELESS DRIVER),
+ linux-kernel@vger.kernel.org (open list)
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <171103374029.103792.2953656896517563053.kvalo@kernel.org>
-Date: Thu, 21 Mar 2024 15:09:02 +0000 (UTC)
+Message-ID: <171103377318.103792.6654245785464194890.kvalo@kernel.org>
+Date: Thu, 21 Mar 2024 15:09:34 +0000 (UTC)
 
-Lorenzo Bianconi <lorenzo@kernel.org> wrote:
+Breno Leitao <leitao@debian.org> wrote:
 
-> Fix the following sparse warnings:
+> Embedding net_device into structures prohibits the usage of flexible
+> arrays in the net_device structure. For more details, see the discussion
+> at [1].
 > 
-> drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c:1133:29: error: too long token expansion
-> drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c:1133:29: error: too long token expansion
-> drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c:1133:29: error: too long token expansion
-> drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c:1133:29: error: too long token expansion
+> Un-embed the net_device from struct qtnf_bus by converting it
+> into a pointer. Then use the leverage alloc_netdev() to allocate the
+> net_device object at qtnf_pcie_probe(). The free of the device occurs at
+> qtnf_pcie_remove().
 > 
-> No functional changes, compile tested only.
+> [1] https://lore.kernel.org/all/20240229225910.79e224cf@kernel.org/
 > 
-> Fixes: e3296759f347 ("wifi: mt76: mt7915: enable per bandwidth power limit support")
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> Acked-by: Felix Fietkau <nbd@nbd.name>
+> Signed-off-by: Breno Leitao <leitao@debian.org>
 
 Patch applied to wireless-next.git, thanks.
 
-2d5cde1143ec wifi: mt76: mt7915: workaround too long expansion sparse warnings
+61cdb09ff760 wifi: qtnfmac: allocate dummy net_device dynamically
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/5457b92e41909dd75ab3db7a0e9ec372b917a386.1710858172.git.lorenzo@kernel.org/
+https://patchwork.kernel.org/project/linux-wireless/patch/20240319172634.894327-1-leitao@debian.org/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
