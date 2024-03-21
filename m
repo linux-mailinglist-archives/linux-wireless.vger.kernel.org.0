@@ -1,90 +1,89 @@
-Return-Path: <linux-wireless+bounces-5080-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5081-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94B5B881C52
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Mar 2024 07:07:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F30D9881C6E
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Mar 2024 07:19:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D0E61F21A90
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Mar 2024 06:07:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 474E7282B91
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Mar 2024 06:19:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E7A738DC0;
-	Thu, 21 Mar 2024 06:07:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0DD03984D;
+	Thu, 21 Mar 2024 06:19:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hwRscf19"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B4D26FBF
-	for <linux-wireless@vger.kernel.org>; Thu, 21 Mar 2024 06:07:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB31F17F7
+	for <linux-wireless@vger.kernel.org>; Thu, 21 Mar 2024 06:19:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711001230; cv=none; b=iUq3dd52mNuuuwgguxqoCwsWBxXT0FntFXMo3jVFubTGXMe36y7ivIISHeLwjEN5GkYoPWAx3ZeFRX0oTgc/HjBYjar7jeAADgrXnM2i6xXDiebXHAZPY81UerYl9XyKzOumJfTftC23xTMrOvZaNGhZqkFtgaLfcWf5F2LNd3w=
+	t=1711001943; cv=none; b=YPjTfB4LNxgjD+MsOJDSSAjIhdlyMx/cn9SljJKQQHu2ifkVfViuSPUhsDwrJ8wPFjTgMGwocl/Z911s+MHoE8CA/wf+bJ9O3Z1kR9IOrp4algeAvGTkb/FoIW84KBjj6j9+/06MSslGM+Y+MebRcevHLyGyUTM4wO6ceagzL4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711001230; c=relaxed/simple;
-	bh=+pdIEGE9V9uYexEx7Bjdy467Ot37C/PMgtLbeLrzltE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=B7HARQN2DHUZOX2vH23DfQUbTpDa2uhDXim+zcuu9MiwY2YZ1BTcIMZ+RhP0zh69oWuz/yrMokAqqb/oAhwhYs/pCekDZA7ltyFNBy+rSJkB7IBgavC0cJ1Vpua9MZAF8oChSD6l6stRatay8xevTr3V/oP4QDpbtzDgB8EqTls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 42L66xo06911214, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 42L66xo06911214
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 21 Mar 2024 14:06:59 +0800
-Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 21 Mar 2024 14:06:59 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 21 Mar 2024 14:06:59 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::4c42:f80:bcc2:d00f]) by
- RTEXMBS04.realtek.com.tw ([fe80::4c42:f80:bcc2:d00f%5]) with mapi id
- 15.01.2507.035; Thu, 21 Mar 2024 14:06:59 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: "kvalo@kernel.org" <kvalo@kernel.org>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Leo.Li"
-	<leo.li@realtek.com>
+	s=arc-20240116; t=1711001943; c=relaxed/simple;
+	bh=5dGzTVUcGNYKLimkoBkJ4HyafL20dyFrQnfQHlqKomM=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=OjR6rVqlK8jIR+Kz3ajHpbTapsB6JH5fNpmwByru3Hf6wQYmDIM9uZLWB846MFZOKG5iGj/KPm1JaJx7hgdsfY47jT+bSi8Gpv6eJGhmMsMa8jSnBd3BmLjbOsA7pzKGKMZaO6W+l04Wm5/8xaW3/h1mGCPXD//jl2w+392ffmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hwRscf19; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73A56C433C7;
+	Thu, 21 Mar 2024 06:19:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711001942;
+	bh=5dGzTVUcGNYKLimkoBkJ4HyafL20dyFrQnfQHlqKomM=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=hwRscf19EE3iI19oTAIETD5fkhOZxrM4d8BsqMOWF4MDsnKd4Nw5qYkp0uD2l9zkg
+	 BCNZdfYmvy0IOhTYORUaoDJbMCghc9kDFjXgZAS93mzSy85yvFS//3WS3nNUnxOcx2
+	 gsgp75qrfPpmd+ns6g0kmpmUaTSnBrnaQCcHLseWG9B2jBqhkU0PkOCEJOctJuSYyC
+	 K25ecFeBTtxKX14u472PLh8ClCEYNNsCeYwRo0DUogfNoi/H69G/lEzlqCFFnU7XfV
+	 K+f9jWqyC11c9SXS4uZo+gHoqlGB7ovP60p3E+wbbyVWZGarBwfyYdWqq9JLAZICGg
+	 oqBqJZbUk5r9A==
+From: Kalle Valo <kvalo@kernel.org>
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+  "Leo.Li" <leo.li@realtek.com>
 Subject: Re: [PATCH] wifi: rtw89: disable txptctrl IMR to avoid flase alarm
-Thread-Topic: [PATCH] wifi: rtw89: disable txptctrl IMR to avoid flase alarm
-Thread-Index: AQHaezuD0B/f5lkmzkaOqNn1/IzumbFBpkXY//9/XgCAAI5OC///eyeA
-Date: Thu, 21 Mar 2024 06:06:59 +0000
-Message-ID: <01c674f6f1442494bc7ec9778bd650aa63e6ad95.camel@realtek.com>
 References: <20240321025603.20614-1-pkshih@realtek.com>
-	 <878r2c2mob.fsf@kernel.org>
-	 <2eefd73994778c1fa1dc03acf04708d686ec3185.camel@realtek.com>
-	 <87jzlw9l8y.fsf@kernel.org>
-In-Reply-To: <87jzlw9l8y.fsf@kernel.org>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-user-agent: Evolution 3.36.1-2 
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <9B17E140FB238141B680DCA9CCAFA2C2@realtek.com>
-Content-Transfer-Encoding: base64
+	<878r2c2mob.fsf@kernel.org>
+	<2eefd73994778c1fa1dc03acf04708d686ec3185.camel@realtek.com>
+	<87jzlw9l8y.fsf@kernel.org>
+	<01c674f6f1442494bc7ec9778bd650aa63e6ad95.camel@realtek.com>
+Date: Thu, 21 Mar 2024 08:18:59 +0200
+In-Reply-To: <01c674f6f1442494bc7ec9778bd650aa63e6ad95.camel@realtek.com>
+	(Ping-Ke Shih's message of "Thu, 21 Mar 2024 06:06:59 +0000")
+Message-ID: <87frwk9kfg.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
+Content-Type: text/plain
 
-T24gVGh1LCAyMDI0LTAzLTIxIGF0IDA4OjAxICswMjAwLCBLYWxsZSBWYWxvIHdyb3RlOg0KPiAN
-Cj4gUGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRlay5jb20+IHdyaXRlczoNCj4gDQo+ID4gU2hv
-dWxkIEkgY2hhbmdlIHRvIHdpcmVsZXNzIG1haWxpbmcgbGlzdCBhcyBUbyBmaWVsZCBhbmQgbm8g
-bmVlZCB0bw0KPiA+IGFkZCB5b3UgaW4gbmVpdGhlciBUbyBmaWVsZCBub3IgQ2MgZmllbGQgaW4g
-dGhlIGZ1dHVyZT8NCj4gDQo+IFllcywgcGxlYXNlIGRyb3AgbWUgZnJvbSBUbyBhbmQgQ2MgZmll
-bGRzLiBBbmQgaWYgdGhlcmUncyBhbiBpbXBvcnRhbnQNCj4gZml4IHlvdSB3YW50IHRvIGdvIHRv
-IHdpcmVsZXNzIHRyZWUgcGxlYXNlIGxhYmVsIGl0IGFzICJbUEFUQ0gNCj4gd2lyZWxlc3NdIiAo
-b3IgY29tbWVudCBvbiB0aGUgcGF0Y2gpIGFuZCBhc3NpZ24gdG8gbWUgb24gcGF0Y2h3b3JrLg0K
-PiANCg0KR290IGl0LiBCdXQsIHN0aWxsIGFkZCB5b3UgdG8gVG8tZmllbGQgZm9yIHB1bGwtcmVx
-dWVzdCwgcmlnaHQ/DQoNClBpbmctS2UNCg0K
+Ping-Ke Shih <pkshih@realtek.com> writes:
+
+> On Thu, 2024-03-21 at 08:01 +0200, Kalle Valo wrote:
+>> 
+>> Ping-Ke Shih <pkshih@realtek.com> writes:
+>> 
+>> > Should I change to wireless mailing list as To field and no need to
+>> > add you in neither To field nor Cc field in the future?
+>> 
+>> Yes, please drop me from To and Cc fields. And if there's an important
+>> fix you want to go to wireless tree please label it as "[PATCH
+>> wireless]" (or comment on the patch) and assign to me on patchwork.
+>
+> Got it. But, still add you to To-field for pull-request, right?
+
+Actually no need even for that. I take all patches and pull requests
+from patchwork anyway :)
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
