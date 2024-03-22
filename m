@@ -1,87 +1,87 @@
-Return-Path: <linux-wireless+bounces-5146-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5147-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EB3A886891
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Mar 2024 09:53:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9210E886A7D
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Mar 2024 11:38:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C8CBB24937
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Mar 2024 08:53:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C45BF1C20E87
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Mar 2024 10:38:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C30E3179B8;
-	Fri, 22 Mar 2024 08:53:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BAC33B2A8;
+	Fri, 22 Mar 2024 10:38:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hwwPnSDz"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31F1D18EC0
-	for <linux-wireless@vger.kernel.org>; Fri, 22 Mar 2024 08:53:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71762282FE
+	for <linux-wireless@vger.kernel.org>; Fri, 22 Mar 2024 10:38:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711097604; cv=none; b=OjxBdjQXDFBb9ODIpcjvBN8tAb9rjrsl40yaZrGlW5VaRf0YnzR0bE+RZk62wv8roZk+l4MOp7IzxkWTkXPYCSTyzxRxZ2vPmtsnPkMBWhQyTIug8HcQuUpJggOkvAEF1mdQU7DbEpqc+Eyosnb6zBERoiAm51PTdXHYZfLpiLE=
+	t=1711103888; cv=none; b=mtcJ7uagGMuJ42KX5fJT1/pq/tKLZZWHoYnE4C2tU8AulvRHVQh11htiuZBYMPrqvGap2h7/WY27FFDu/l2iPgInJIZSVFI1DOGs15Q9+GIAUsUBYvvLsGgoHujYcRZ1Ut/ruLid5NvB2CBwwK82afMmz5ZkfPX3jFhY1XkjQL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711097604; c=relaxed/simple;
-	bh=neXq4uOg8GPFki0xsr3nwuUn19IanPco6MnEm+IyiMQ=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=sbCToxPCHqftmz9W5GzlchKF/W1CckzzKNRvG/B2+YTcxMNm2rVshDPnrlMGu85Iy8595JPDgKdanU7OEpqbauHHArRHIGqNHGDskIuzdEvsy50Q+rAqOIV9it+IGXk7sCUxD7r3McmiyZPCNp2pjRUqcDd+XiPD3IhQuXq49qs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 42M8rAoL51589440, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 42M8rAoL51589440
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 22 Mar 2024 16:53:10 +0800
-Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Fri, 22 Mar 2024 16:53:10 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Fri, 22 Mar 2024 16:53:10 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::4c42:f80:bcc2:d00f]) by
- RTEXMBS04.realtek.com.tw ([fe80::4c42:f80:bcc2:d00f%5]) with mapi id
- 15.01.2507.035; Fri, 22 Mar 2024 16:53:10 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Dmitry Antipov <dmantipov@yandex.ru>
-CC: Kalle Valo <kvalo@kernel.org>,
-        "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>,
-        "lvc-project@linuxtesting.org"
-	<lvc-project@linuxtesting.org>
-Subject: RE: [PATCH 1/2] wifi: rtlwifi: drop WMM stubs from rtl8192cu
-Thread-Topic: [PATCH 1/2] wifi: rtlwifi: drop WMM stubs from rtl8192cu
-Thread-Index: AQHaeqPjW2/BnerMkUaWeJvPehqsv7FC0KeAgAAdW4CAAIi3cA==
-Date: Fri, 22 Mar 2024 08:53:10 +0000
-Message-ID: <22c82eb2c73645f3aba5e8607ffdd232@realtek.com>
-References: <20240320084324.109506-1-dmantipov@yandex.ru>
- <167eca8d-0a6b-4203-b8c8-f7ea431547c3@RTEXMBS04.realtek.com.tw>
- <5b0ae31f-11e0-4c31-928e-8b0e22abb799@yandex.ru>
-In-Reply-To: <5b0ae31f-11e0-4c31-928e-8b0e22abb799@yandex.ru>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1711103888; c=relaxed/simple;
+	bh=l4BqPVM87gJjFNn3Odmy/BJLvrQJMrIynptnhPUZvsk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=sHFQtTxjwTbp+VShiVdOoz/JjWkFh9i04MLwFRIcpFPC4q6Tv+f40W/V773LEWFktjfGOt7Id6tP2pM1LMayhngQ+Gby23y5gVKLDJOhQ8xtZZ/tUwJDjm+VVer9GhWmQbHypXGqOPuYmlnlNL1ygFglyOb7JVR7tnLIeXFrxPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hwwPnSDz; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1711103886;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=l4BqPVM87gJjFNn3Odmy/BJLvrQJMrIynptnhPUZvsk=;
+	b=hwwPnSDzQSTwVMpCXnTW2aCUhVxAHH6i8usm5gCCQVnPTivYXDaNwkCo4JcmHiX6UKjSdC
+	DFO7jodFhiDKEWZXeZWxwodmT2JI9qv7A0is7WMexId7cSgHhNBQooJA7izB9T2UodJ0dn
+	V9EzMozxipWz4AEL/7laWFHhq7P5yyo=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-643-WDxoLs2MOnOpqy38yxNsMA-1; Fri,
+ 22 Mar 2024 06:38:04 -0400
+X-MC-Unique: WDxoLs2MOnOpqy38yxNsMA-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7FDC53C025D9;
+	Fri, 22 Mar 2024 10:38:03 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.39.193.83])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 8D2D9C041EF;
+	Fri, 22 Mar 2024 10:38:01 +0000 (UTC)
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+To: quic_bqiang@quicinc.com
+Cc: ath11k@lists.infradead.org,
+	jjohnson@kernel.org,
+	jtornosm@redhat.com,
+	kvalo@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] wifi: ath11k: workaround to use VMs
+Date: Fri, 22 Mar 2024 11:37:53 +0100
+Message-ID: <20240322103756.94296-1-jtornosm@redhat.com>
+In-Reply-To: <87f0c6c9-43e5-4ea3-8f4c-9425e6a74b10@quicinc.com>
+References: <87f0c6c9-43e5-4ea3-8f4c-9425e6a74b10@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
 
-DQo+IFRoYW5rcy4gU2hvdWxkIEkgdXNlIHJ0dy1uZXh0IG9mIHJ0dy5naXQgZm9yIGZ1cnRoZXIg
-c2ltaWxhcg0KPiBjbGVhbnVwcyAoaWYgdGhlcmUgd2lsbCBiZSk/DQo+IA0KDQpZZXMsIGJ1dCB3
-ZSBwcmVmZXIgcmVhbCBmaXhlcyB3aXRoIHBvdGVudGlhbCByaXNrcy4gQ2xlYW51cHMgYXJlIGV4
-dHJhIGxvYWQgZm9yIHVzLiANCg0KUGluZy1LZSANCg0K
+Thank you for your comments.
+I don't have seen any change in MSI vector data but if it can be different from zero I will complete it.
+
+Best regards
+José Ignacio
+
 
