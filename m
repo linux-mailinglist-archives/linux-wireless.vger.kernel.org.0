@@ -1,93 +1,172 @@
-Return-Path: <linux-wireless+bounces-5127-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5128-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40D9488649F
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Mar 2024 02:26:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D14B0886507
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Mar 2024 03:10:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E81171F22EB4
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Mar 2024 01:26:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8AD51B215A9
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Mar 2024 02:10:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D37B65C;
-	Fri, 22 Mar 2024 01:26:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B565138C;
+	Fri, 22 Mar 2024 02:09:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="n2ww5tPe"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB3E92905
-	for <linux-wireless@vger.kernel.org>; Fri, 22 Mar 2024 01:26:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF1E6ABA;
+	Fri, 22 Mar 2024 02:09:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711070773; cv=none; b=GCGcQgpoOnvkvE9mkF7xDaI+fqQL3X5HpOeUF34Npu+oqGsOcTO4osGpR0ICYZnTRAJ4JvjxDKKC0ZBQFK8UgOO8pljdsgKhmg4fASPRPO+bjrvknI7wJaYvwvDZ+UKaxQVqY3r44rL4h9EgcheLpsgqSguL1AwUCXt8Jv4V1xU=
+	t=1711073389; cv=none; b=LiBlWpb4jsmhdMuzLGIBkWcnhNUog+STOz/SI/UNSxg+n1/MImlGKHxlaEw05xOe/CYu+CgY2TPosk6xb3vluAYlxdp3mUCcDn5OLaWVIUS5DD9oO7xMS5++N8ZL7i7BibM/5tPtCVoeuHrJjpjfApKf15zMd5qn7rlbweevijA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711070773; c=relaxed/simple;
-	bh=9aidg7GKYCoGw44cgWiPauiaglkau7lw0Ynk0K0ASKw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=GiHMCWjr+Llr6HG7T7LMwbn+SDYvp6FPJQSAgnXszq8LNuwzzy02GdCqy78rHD85NcyipZ+1xATsZ9S3coIjhYgGMNWaIbu+mAjZwp4I2jQK84HslXE4qUpmL34w+c7dMXP9l6Xu60pfNnwA4lJc5uqgjFZpf/w0+INIttVha9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 42M1Pd7tA1339408, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 42M1Pd7tA1339408
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 22 Mar 2024 09:25:39 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Fri, 22 Mar 2024 09:25:39 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Fri, 22 Mar 2024 09:25:38 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::4c42:f80:bcc2:d00f]) by
- RTEXMBS04.realtek.com.tw ([fe80::4c42:f80:bcc2:d00f%5]) with mapi id
- 15.01.2507.035; Fri, 22 Mar 2024 09:25:38 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "rtl8821cerfe2@gmail.com" <rtl8821cerfe2@gmail.com>
-CC: "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>,
-        "s.l-h@gmx.de"
-	<s.l-h@gmx.de>,
-        "chewitt@libreelec.tv" <chewitt@libreelec.tv>
-Subject: Re: [PATCH v3 01/12] wifi: rtlwifi: rtl8192de: Fix 5 GHz TX power
-Thread-Topic: [PATCH v3 01/12] wifi: rtlwifi: rtl8192de: Fix 5 GHz TX power
-Thread-Index: AQHaev2BAGYPBmfsRECC7UwfxaP+7bFCc06A
-Date: Fri, 22 Mar 2024 01:25:38 +0000
-Message-ID: <df597ba4a72da6522f23a790b4effa8cefc03ac3.camel@realtek.com>
-References: <7f4b3309-1580-48f3-9426-29f1eb4052fd@gmail.com>
-	 <bc6da9fe-f6e1-4b00-b776-72c9d845ed4d@gmail.com>
-In-Reply-To: <bc6da9fe-f6e1-4b00-b776-72c9d845ed4d@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-user-agent: Evolution 3.36.1-2 
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <F7A52FAB07AD5242A9BE800DA2590BC2@realtek.com>
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1711073389; c=relaxed/simple;
+	bh=28UgqqrJiALHfXA47nVVHJe296bE4Shv43fdZnADgWk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=nb+tRsSA0i/91KJL8cTQjOIAi4+QXy04UukP/OJACtZhcc+T3oe7DlObvIy3HcriD0FhHo4uElmPe9YuS4LpxsgU00HQoOAfP/mQ0gRCbu3OAfzvn3twI52vMnQjQb64LMGv5douq/uFcCa8Opjb2Lb82Z3PqAB6hmpYOaiS+QE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=n2ww5tPe; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42M1QSSV022596;
+	Fri, 22 Mar 2024 02:09:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=vNsCjSi1j5/EI3nXw5S3bozjUYto7C8vDTz/nXtktDs=; b=n2
+	ww5tPeoLGgGSSRNUVmzWQm7ULj5aNL8OOuoGRfOcnEfCzUwbfXtbZ1lJgrMxHtIU
+	r9Q+xrQtscnDqHlk6UIUcgwxtKHE/OfWEiTUWvv5uWagDkGMfjuMzKP4MzUymRkr
+	mP+/V2DuMl17ze9BZVpy3JDNCSbAJzmGDsvROUXwmO0mGuJGDyEtt0NvJNgS+AkD
+	0kL2pOJhTRrG/S5dfU6dg7mhM28fD2Y3/YnbG+yGFrZQOP/hY0s8zvxuZ2wqJbDC
+	GtZu8FCQnl3GSFA2d34rjRw152i2Od4BFbDbECr5AE3AvIVZnI8j/lMedqo3zSGr
+	5SJAxRx9DICWUCJnL4Xg==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3x0wy9gch9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 22 Mar 2024 02:09:37 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42M29bCc001189
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 22 Mar 2024 02:09:37 GMT
+Received: from [10.231.195.68] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Thu, 21 Mar
+ 2024 19:09:35 -0700
+Message-ID: <87f0c6c9-43e5-4ea3-8f4c-9425e6a74b10@quicinc.com>
+Date: Fri, 22 Mar 2024 10:09:33 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: ath11k: workaround to use VMs
+Content-Language: en-US
+To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>, <kvalo@kernel.org>,
+        <jjohnson@kernel.org>, <linux-wireless@vger.kernel.org>,
+        <ath11k@lists.infradead.org>, <linux-kernel@vger.kernel.org>
+References: <20240321172402.346191-1-jtornosm@redhat.com>
+From: Baochen Qiang <quic_bqiang@quicinc.com>
+In-Reply-To: <20240321172402.346191-1-jtornosm@redhat.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: VZAIN0bIqX9dIjtMgGppOotNdHZwq3oQ
+X-Proofpoint-ORIG-GUID: VZAIN0bIqX9dIjtMgGppOotNdHZwq3oQ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-21_14,2024-03-21_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 adultscore=0
+ bulkscore=0 suspectscore=0 impostorscore=0 lowpriorityscore=0
+ malwarescore=0 priorityscore=1501 phishscore=0 mlxscore=0 spamscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2403210001 definitions=main-2403220014
 
-T24gV2VkLCAyMDI0LTAzLTIwIGF0IDIxOjMzICswMjAwLCBCaXR0ZXJibHVlIFNtaXRoIHdyb3Rl
-Og0KPiANCj4gRGlmZmVyZW50IGNoYW5uZWxzIGhhdmUgZGlmZmVyZW50IFRYIHBvd2VyIHNldHRp
-bmdzLiBydGw4MTkyZGUgaXMgdXNpbmcNCj4gdGhlIFRYIHBvd2VyIHNldHRpbmcgZnJvbSB0aGUg
-d3JvbmcgY2hhbm5lbCBpbiB0aGUgNSBHSHogYmFuZCBiZWNhdXNlDQo+IF9ydGw5MmNfcGh5X2dl
-dF9yaWdodGNobmxwbGFjZSBleHBlY3RzIGFuIGFycmF5IHdoaWNoIGluY2x1ZGVzIGFsbCB0aGUN
-Cj4gY2hhbm5lbCBudW1iZXJzLCBidXQgaXQncyB1c2luZyBhbiBhcnJheSB3aGljaCBpbmNsdWRl
-cyBvbmx5IHRoZSA1IEdIeg0KPiBjaGFubmVsIG51bWJlcnMuDQo+IA0KPiBVc2UgdGhlIGFycmF5
-IGNoYW5uZWxfYWxsIChkZWZpbmVkIGluIHJ0bDgxOTJkZS9waHkuYykgaW5zdGVhZCBvZg0KPiB0
-aGUgaW5jb3JyZWN0IGNoYW5uZWw1ZyAoZGVmaW5lZCBpbiBjb3JlLmMpLg0KPiANCj4gVGVzdGVk
-IG9ubHkgd2l0aCBydGw4MTkyZHUsIHdoaWNoIHdpbGwgdXNlIHRoZSBzYW1lIFRYIHBvd2VyIGNv
-ZGUuDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBCaXR0ZXJibHVlIFNtaXRoIDxydGw4ODIxY2VyZmUy
-QGdtYWlsLmNvbT4NCg0KQWNrZWQtYnk6IFBpbmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsuY29t
-Pg0KDQo=
+
+
+On 3/22/2024 1:23 AM, Jose Ignacio Tornos Martinez wrote:
+> Currently, this driver is not working when the device is handled in a
+> Virtual Machine (PCI pass-through), as it was already reported here:
+> https://lore.kernel.org/all/fc6bd06f-d52b-4dee-ab1b-4bb845cc0b95@quicinc.com/T/
+> Baochen Qiang focused the problem and described how to have it working
+> for a specific real MSI vector from host that needs to be used in VM too.
+> And this value, as it was commented, can change.
+> 
+> The problem seems complex to me and I don't know if there is any easy way
+> to solve it. Meanwhile and using the information from Baochen Qiang,
+> since the use of VMs is very interesting for testing procedures,
+> I would like to just add this workaround that consists on adding a
+> parameter to pass the real MSI vector from host to the VM. In that way,
+> checking the 'lscpi' command output from host, it could be handled manually
+> or with some user tool in order to have the VM with the driver working.
+> Of course, if this parameter is not configured (zero value and default),
+> we will have the same behavior as always.
+> 
+> Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+> ---
+>   drivers/net/wireless/ath/ath11k/pci.c | 20 ++++++++++++++++++++
+>   1 file changed, 20 insertions(+)
+> 
+> diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
+> index be9d2c69cc41..0e322956b10f 100644
+> --- a/drivers/net/wireless/ath/ath11k/pci.c
+> +++ b/drivers/net/wireless/ath/ath11k/pci.c
+> @@ -31,6 +31,11 @@
+>   
+>   #define TCSR_SOC_HW_SUB_VER	0x1910010
+>   
+> +static ulong ath11k_host_msi_addr = 0;
+> +module_param_named(host_msi_addr, ath11k_host_msi_addr, ulong, 0644);
+> +MODULE_PARM_DESC(host_msi_addr,
+> +		 "Workaround to configure the MSI address that is used from host in order to be used in VM");
+MSI vector contains two parts: the address and the data. So you need to 
+add a parameter for MSI data as well.
+
+> +
+>   static const struct pci_device_id ath11k_pci_id_table[] = {
+>   	{ PCI_VDEVICE(QCOM, QCA6390_DEVICE_ID) },
+>   	{ PCI_VDEVICE(QCOM, WCN6855_DEVICE_ID) },
+> @@ -443,6 +448,18 @@ static int ath11k_pci_alloc_msi(struct ath11k_pci *ab_pci)
+>   
+>   	ath11k_pci_msi_disable(ab_pci);
+>   
+> +	if (ath11k_host_msi_addr) {
+> +		ab_pci->ab->pci.msi.ep_base_data = 0;
+Here, I guess you are assigning 0 because I gave it in my example. But 
+it is not always that, it changes from machine to machine, configuration 
+to configuration, and even time to time.
+
+The right way should be to use the MSI data parameter mentioned above.
+
+> +		ab->pci.msi.addr_hi = (u32)(ath11k_host_msi_addr >> 32);
+> +		ab->pci.msi.addr_lo = (u32)(ath11k_host_msi_addr & 0xffffffff);
+> +
+> +		ath11k_dbg(ab, ATH11K_DBG_PCI, "msi addr hi 0x%x lo 0x%x base data is %d\n",
+> +			   ab->pci.msi.addr_hi,
+> +			   ab->pci.msi.addr_lo,
+> +			   ab->pci.msi.ep_base_data);
+> +		return 0;
+> +	}
+> +
+>   	msi_desc = irq_get_msi_desc(ab_pci->pdev->irq);
+>   	if (!msi_desc) {
+>   		ath11k_err(ab, "msi_desc is NULL!\n");
+> @@ -482,6 +499,9 @@ static int ath11k_pci_config_msi_data(struct ath11k_pci *ab_pci)
+>   {
+>   	struct msi_desc *msi_desc;
+>   
+> +	if (ath11k_host_msi_addr)
+> +		return 0;
+> +
+>   	msi_desc = irq_get_msi_desc(ab_pci->pdev->irq);
+>   	if (!msi_desc) {
+>   		ath11k_err(ab_pci->ab, "msi_desc is NULL!\n");
 
