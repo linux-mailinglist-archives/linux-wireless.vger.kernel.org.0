@@ -1,49 +1,58 @@
-Return-Path: <linux-wireless+bounces-5150-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5151-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 140FE886B75
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Mar 2024 12:45:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 408DD886C92
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Mar 2024 14:05:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 985C3B21454
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Mar 2024 11:45:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9D45CB22EB8
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Mar 2024 13:05:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FDB13F9CE;
-	Fri, 22 Mar 2024 11:45:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E3F94AEE1;
+	Fri, 22 Mar 2024 13:04:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=inside-m2m.de header.i=@inside-m2m.de header.b="UrTP3VM6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+Received: from mail.inside-m2m.de (mail.inside-m2m.de [188.68.57.244])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 279AE3F8F4;
-	Fri, 22 Mar 2024 11:44:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3EDD487A7
+	for <linux-wireless@vger.kernel.org>; Fri, 22 Mar 2024 13:04:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.57.244
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711107902; cv=none; b=tCC8bFI8XJoR4T6c6K7iaUiVNGBLkTO0I758ikqMt9bvfO1jzex3KA4oYjiAPglMaWbl2QUG0NTyzAGqu2wPP/w0IgKJw6QNM3QMlBqseglq73iVoh8DaRbreygyyYGj042Xgwe4zbSF85nR9WSNIDKOqXkGwEPch/4lu9CDYKo=
+	t=1711112691; cv=none; b=N87BiRibwf+rSOKmQW0mV49I36CW5QQLfb/vcdxnR6MopvCzz4Uxt8UZS4t/M41jASQlzwcLocflaUTdcezRw6F34kqqVhsTsboy6V4PTTVMQzjKebBpfrCsGrLSaYFiGrWKkyL2/36R/aysF2rEB+eIazvBQQPra2angl+Pirg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711107902; c=relaxed/simple;
-	bh=3TzN2Lt6QPOtvQCHtJ7t44fnCg8LERCTZqdH35s6BEY=;
+	s=arc-20240116; t=1711112691; c=relaxed/simple;
+	bh=SdPNEsUv4uHhEm2dDPAPNewB7RTw3yRNh+MXOY0S0yQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E/3xWJZ636Xmd1z9dFFBrxlD3Y2/vBZbQRBIuemvw7sHrGCb+UrWHyUjW02YRnitxc9VIJvOKFX8Ug/4s5NIxaTS1kJTI64oZPAqTUgRZuBo/DP8AYcCIK3GvvGS2O91zfnFllF+U5w5WQuPmsDyiIYLct6nbs/BBzsGUMdSxOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; arc=none smtp.client-ip=144.6.53.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
-	id 1rndKP-009XMk-Km; Fri, 22 Mar 2024 19:44:54 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 22 Mar 2024 19:45:09 +0800
-Date: Fri, 22 Mar 2024 19:45:09 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: linux-crypto@vger.kernel.org, keyrings@vger.kernel.org,
-	linux-wireless@vger.kernel.org, iwd@lists.linux.dev,
-	James Prestwood <prestwoj@gmail.com>,
-	Dimitri John Ledkov <dimitri.ledkov@canonical.com>,
-	Karel Balej <balejk@matfyz.cz>
-Subject: Re: [PATCH] Revert "crypto: pkcs7 - remove sha1 support"
-Message-ID: <Zf1vRbvwYvj1KcTS@gondor.apana.org.au>
-References: <20240313233227.56391-1-ebiggers@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=M8VbAVWwenGXlinwBO2eTys5Kdky9h2YtfRzgdkE4DmAAxvTYh35fzQRE9yaaBDOWhfMoVuHMdBqguMCT8+4CRTHAh0wMH4Ltu8oq391y+Ag91DAtUs9Snx+rV4WI1P4ZcSOQB2Id9RNVIAXxez0npg4rf/snY6mucfbW2FBTnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=inside-m2m.de; spf=pass smtp.mailfrom=inside-m2m.de; dkim=pass (2048-bit key) header.d=inside-m2m.de header.i=@inside-m2m.de header.b=UrTP3VM6; arc=none smtp.client-ip=188.68.57.244
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=inside-m2m.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=inside-m2m.de
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=inside-m2m.de;
+	s=default; t=1711112678;
+	bh=SdPNEsUv4uHhEm2dDPAPNewB7RTw3yRNh+MXOY0S0yQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UrTP3VM6l7pf3INETDQ5keQMSXBrJXlOd/u01hAtA0uO2ACQ6MYB4+Ev5NnXHItb/
+	 2LxyVM0P5nomlqdTk38j1lgHFjqRf7Dcq0YV3G16Seq3u47lv5Kt5weE86ZvveNhPi
+	 qFJIVq065PE50ceofSOt0v0+GVwRO2gybDMUy6jvjNUt/ylF/zUPZxd5WK/kq6e0ds
+	 YetILa1SiNlN1x0IJHPRdHZ5Shq+C/SKAONwT97OB2c6L1xgeCeqjp6JVtBtpdaKg9
+	 +lGx/N0eitL13DJMIQnV8Tj8e22GqOyZmgdqxTVKHVVp6YtjVQSMb+ggruqQ8FN250
+	 pJxwqo+iRrk6g==
+Received: from hephaistos.home (unknown [94.31.104.219])
+	(Authenticated sender: konstantin.kletschke@inside-m2m.de)
+	by mail.inside-m2m.de (Postfix) with ESMTPSA id 6566B4018A;
+	Fri, 22 Mar 2024 14:04:38 +0100 (CET)
+Date: Fri, 22 Mar 2024 14:04:37 +0100
+From: Konstantin Kletschke <konstantin.kletschke@inside-m2m.de>
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: Re: AP mode on RTW88 8821cs
+Message-ID: <Zf2B5QZg_duHxWqn@hephaistos.home>
+References: <ZfwSM0paZg23iEPS@hephaistos.inside-m2m.de>
+ <be67119238e14fa09b3d9dc848d8edd9@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -52,41 +61,24 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240313233227.56391-1-ebiggers@kernel.org>
+In-Reply-To: <be67119238e14fa09b3d9dc848d8edd9@realtek.com>
 
-On Wed, Mar 13, 2024 at 04:32:27PM -0700, Eric Biggers wrote:
-> From: Eric Biggers <ebiggers@google.com>
-> 
-> This reverts commit 16ab7cb5825fc3425c16ad2c6e53d827f382d7c6 because it
-> broke iwd.  iwd uses the KEYCTL_PKEY_* UAPIs via its dependency libell,
-> and apparently it is relying on SHA-1 signature support.  These UAPIs
-> are fairly obscure, and their documentation does not mention which
-> algorithms they support.  iwd really should be using a properly
-> supported userspace crypto library instead.  Regardless, since something
-> broke we have to revert the change.
-> 
-> It may be possible that some parts of this commit can be reinstated
-> without breaking iwd (e.g. probably the removal of MODULE_SIG_SHA1), but
-> for now this just does a full revert to get things working again.
-> 
-> Reported-by: Karel Balej <balejk@matfyz.cz>
-> Closes: https://lore.kernel.org/r/CZSHRUIJ4RKL.34T4EASV5DNJM@matfyz.cz
-> Cc: Dimitri John Ledkov <dimitri.ledkov@canonical.com>
-> Signed-off-by: Eric Biggers <ebiggers@google.com>
-> ---
->  crypto/asymmetric_keys/mscode_parser.c    |  3 +
->  crypto/asymmetric_keys/pkcs7_parser.c     |  4 ++
->  crypto/asymmetric_keys/public_key.c       |  3 +-
->  crypto/asymmetric_keys/signature.c        |  2 +-
->  crypto/asymmetric_keys/x509_cert_parser.c |  8 +++
->  crypto/testmgr.h                          | 80 +++++++++++++++++++++++
->  include/linux/oid_registry.h              |  4 ++
->  kernel/module/Kconfig                     |  5 ++
->  8 files changed, 107 insertions(+), 2 deletions(-)
+Dear Ping-Ke,
 
-Patch applied.  Thanks.
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+On Fri, Mar 22, 2024 at 12:16:14AM +0000, Ping-Ke Shih wrote:
+
+> We had similar discussion before [1]. I think Martin will take his time to
+> investigate how to enable AP mode on SDIO WiFi cards.
+> 
+> [1] https://lore.kernel.org/linux-wireless/36972ff5-0c48-4bd2-8f9a-9649bfa24225@lexina.in/
+
+many thanks for letting me now, I did not find this with my google fu
+initially so I am aware now this is known.
+
+If there is anything I could provide, anybody let me know. 
+We have the hardware and compiler(s) :-)
+
+Regards
+Konstantin
+
 
