@@ -1,161 +1,234 @@
-Return-Path: <linux-wireless+bounces-5148-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5149-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 238EB886AB3
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Mar 2024 11:49:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D79B886B17
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Mar 2024 12:10:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1994283CE0
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Mar 2024 10:49:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 028DE284153
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Mar 2024 11:10:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98A103D3B1;
-	Fri, 22 Mar 2024 10:49:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1E1F3E49D;
+	Fri, 22 Mar 2024 11:10:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IjVO6f7B"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="b246Vj9R"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03EBD3A8D2
-	for <linux-wireless@vger.kernel.org>; Fri, 22 Mar 2024 10:49:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B450E3A1C5
+	for <linux-wireless@vger.kernel.org>; Fri, 22 Mar 2024 11:10:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711104577; cv=none; b=rMejc8X3FzXuZqZRESCpvCuCQ7+6E4UCQQXyP6+/l6STE5MrH3MVDCrMO0N6PtI43KkgK5VaJxa6Y2AT2uzENS3bpFzcfWTUAdeH9NJHgTOhApXl9OqK3H1719SCiyXlQ+lb28BD8F4xd9IitatI000mZ4Nd8RYaOL9APQS27LA=
+	t=1711105823; cv=none; b=ei859zfx47Mr0r9IGAwF/aWa86GnUxbwdgW7o22d7htQGwsElmwwHla2JjZWj1Pfbv9P3/u+AdaEKvJcBQZWjHV5Y3LukCTf4xybMUnPKPTi3u6b6dDQPMWPnJDLK4XOedIj8KIti+bnZLiCX18bzyFgxgqz+vRkw24MDzDB8u4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711104577; c=relaxed/simple;
-	bh=RdSS02s72D4eY2/gXrflggceGXsqtbDf/oNhoeFM0oc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oAJVnbWsWz1s4QDgaw2019/hO7u+GC31foFJ9Nu0SjzP4jUTO4t0uzmc+8qZaDOIb6f37q6Y9J6sV6TQxQ6tSAjhCTWEd637LXPA2bP+8sy+q8VHP7nbQrhM87G5suFzqiQkBfZ9xCuZrSIcjkEiCZSdZ2lDwgnw3ebJz7EH5kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IjVO6f7B; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1711104574;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7QdoXDPkirjhYNpXA2MhOMT7OeLESzKe1cciF8iSzK0=;
-	b=IjVO6f7BByhemNANc3aB3cjYoO8BJFZvyDMD5uuxL/WD9YGdc52tBwkgWCl6OmnAh85XkM
-	HlrHVJvP7L2jAy28cmOzHIYWcicQA+WBfhycEKkvpHufBGLIM4y/L9ugI9WtSV1KDWI6iJ
-	+t27ip2xsCKIIAlwimEHJfB87havR/A=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-459-CRPaDkl7NPSo9yKN7u25hg-1; Fri, 22 Mar 2024 06:49:31 -0400
-X-MC-Unique: CRPaDkl7NPSo9yKN7u25hg-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DC43385A58B;
-	Fri, 22 Mar 2024 10:49:30 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.39.193.83])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id CB34B2022C1D;
-	Fri, 22 Mar 2024 10:49:28 +0000 (UTC)
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-To: quic_bqiang@quicinc.com
-Cc: ath11k@lists.infradead.org,
-	jjohnson@kernel.org,
-	jtornosm@redhat.com,
-	kvalo@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH V2] wifi: ath11k: workaround to use VMs
-Date: Fri, 22 Mar 2024 11:49:12 +0100
-Message-ID: <20240322104912.94811-1-jtornosm@redhat.com>
-In-Reply-To: <87f0c6c9-43e5-4ea3-8f4c-9425e6a74b10@quicinc.com>
-References: <87f0c6c9-43e5-4ea3-8f4c-9425e6a74b10@quicinc.com>
+	s=arc-20240116; t=1711105823; c=relaxed/simple;
+	bh=XW0PjystoIlPD39MEtawhQCCNmKrJc9vL2TP/bScZ8o=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=rgPEHeMu307GRqnh3mmhrNl7V1sFcXkw2VXoSBtYQYvzTfrKaPRV4U9FNaB9BvXo0THFr4CT6SijCxS2tpBnKD+r7YFgaD5ub7VH9yZqCEr4xofjEw7MqUwx4+kOZwMQrycdxoIOtv1COmicvRNJREYj5Xylc/e99T7o8v0/vbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=b246Vj9R; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1711105822; x=1742641822;
+  h=date:from:to:cc:subject:message-id;
+  bh=XW0PjystoIlPD39MEtawhQCCNmKrJc9vL2TP/bScZ8o=;
+  b=b246Vj9R3DC3b+3BcOI3ZSP1XmOQKVHc18dy/zYVKAAnCtxb6EMp/H7y
+   G0c9bMru6gyCsz469Z9iXyrYKQsFIx8SMGbqTO7UbeeC6mDon72FkWHDX
+   1zqJHa5bXLf5lMT4yryHAxOgG/Qn2KdLJxakVWZ2BoxXDMty7BvumwjEg
+   55vDnQhizsJsaZ46fCKL4kEqJtjp9jaGbdv3XyMg0l1aSU5dDKD55V+Cx
+   /bRpPF0MdWX0OQPYvMh8VW3pIHiebb2/zDTqfGVnyFrasvSeT8ipOjVNW
+   8XyQBcRLzYYFJgAHkA+cGJyR5kjUo+5g5lWNzH7iCuh/DFqidpF2yzaYI
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="6755047"
+X-IronPort-AV: E=Sophos;i="6.07,145,1708416000"; 
+   d="scan'208";a="6755047"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2024 04:10:21 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,145,1708416000"; 
+   d="scan'208";a="19342773"
+Received: from lkp-server01.sh.intel.com (HELO b21307750695) ([10.239.97.150])
+  by fmviesa005.fm.intel.com with ESMTP; 22 Mar 2024 04:10:20 -0700
+Received: from kbuild by b21307750695 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rncmv-000KFv-2y;
+	Fri, 22 Mar 2024 11:10:17 +0000
+Date: Fri, 22 Mar 2024 19:09:33 +0800
+From: kernel test robot <lkp@intel.com>
+To: Kalle Valo <kvalo@kernel.org>
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+ linux-wireless@vger.kernel.org
+Subject: [wireless-next:main] BUILD SUCCESS
+ 61cdb09ff760dd32439cde1200a1a8bd208807cd
+Message-ID: <202403221928.LVRMTKbh-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
 
-Currently, this driver is not working when the device is handled in a
-Virtual Machine (PCI pass-through), as it was already reported here:
-https://lore.kernel.org/all/fc6bd06f-d52b-4dee-ab1b-4bb845cc0b95@quicinc.com/T/
-Baochen Qiang focused the problem and described how to have it working
-for a specific real MSI vector from host that needs to be used in VM too.
-And this value, as it was commented, can change.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: 61cdb09ff760dd32439cde1200a1a8bd208807cd  wifi: qtnfmac: allocate dummy net_device dynamically
 
-The problem seems complex to me and I don't know if there is any easy way
-to solve it (with no more information, not hardware/firmware related help
-or VMM action).
-Meanwhile and using the information from Baochen Qiang, since the use of
-VMs is very interesting for testing procedures, I would like to include
-this workaround that consists on adding two parameters to pass the real MSI
-vector address and data from host to the VM.
-In that way, checking the 'lscpi' command output from host, it could be
-handled manually or with some user tool in order to have the VM with the
-driver working.
-Of course, if the workaround is not used, that is if MSI vector address
-parameter is not configured (zero value and default), we will have the same
-behavior as always.
+elapsed time: 1146m
 
-Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
----
-V1 -> V2:
-- Add parameter for msi vector data as Baochen Qiang suggests.
+configs tested: 144
+configs skipped: 5
 
- drivers/net/wireless/ath/ath11k/pci.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
-index be9d2c69cc41..4c84208dcf5d 100644
---- a/drivers/net/wireless/ath/ath11k/pci.c
-+++ b/drivers/net/wireless/ath/ath11k/pci.c
-@@ -31,6 +31,15 @@
- 
- #define TCSR_SOC_HW_SUB_VER	0x1910010
- 
-+static ulong ath11k_host_msi_vector_addr = 0;
-+module_param_named(host_msi_vector_addr, ath11k_host_msi_vector_addr, ulong, 0644);
-+MODULE_PARM_DESC(host_msi_vector_addr,
-+		 "Workaround to configure the MSI vector address that is used from host in order to be used in VM");
-+static uint ath11k_host_msi_vector_data = 0;
-+module_param_named(host_msi_vector_data, ath11k_host_msi_vector_data, uint, 0644);
-+MODULE_PARM_DESC(host_msi_vector_data,
-+		 "Workaround to configure the MSI vector data that is used from host in order to be used in VM");
-+
- static const struct pci_device_id ath11k_pci_id_table[] = {
- 	{ PCI_VDEVICE(QCOM, QCA6390_DEVICE_ID) },
- 	{ PCI_VDEVICE(QCOM, WCN6855_DEVICE_ID) },
-@@ -443,6 +452,18 @@ static int ath11k_pci_alloc_msi(struct ath11k_pci *ab_pci)
- 
- 	ath11k_pci_msi_disable(ab_pci);
- 
-+	if (ath11k_host_msi_vector_addr) {
-+		ab_pci->ab->pci.msi.ep_base_data = ath11k_host_msi_vector_data;
-+		ab->pci.msi.addr_hi = (u32)(ath11k_host_msi_vector_addr >> 32);
-+		ab->pci.msi.addr_lo = (u32)(ath11k_host_msi_vector_addr & 0xffffffff);
-+
-+		ath11k_dbg(ab, ATH11K_DBG_PCI, "msi addr hi 0x%x lo 0x%x base data is %d\n",
-+			   ab->pci.msi.addr_hi,
-+			   ab->pci.msi.addr_lo,
-+			   ab->pci.msi.ep_base_data);
-+		return 0;
-+	}
-+
- 	msi_desc = irq_get_msi_desc(ab_pci->pdev->irq);
- 	if (!msi_desc) {
- 		ath11k_err(ab, "msi_desc is NULL!\n");
-@@ -482,6 +503,9 @@ static int ath11k_pci_config_msi_data(struct ath11k_pci *ab_pci)
- {
- 	struct msi_desc *msi_desc;
- 
-+	if (ath11k_host_msi_vector_addr)
-+		return 0;
-+
- 	msi_desc = irq_get_msi_desc(ab_pci->pdev->irq);
- 	if (!msi_desc) {
- 		ath11k_err(ab_pci->ab, "msi_desc is NULL!\n");
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                   randconfig-001-20240322   gcc  
+arc                   randconfig-002-20240322   gcc  
+arm                               allnoconfig   clang
+arm                              allyesconfig   gcc  
+arm                         axm55xx_defconfig   clang
+arm                                 defconfig   clang
+arm                   milbeaut_m10v_defconfig   clang
+arm                   randconfig-001-20240322   gcc  
+arm                   randconfig-004-20240322   gcc  
+arm                         s3c6400_defconfig   gcc  
+arm                           u8500_defconfig   gcc  
+arm                         wpcm450_defconfig   gcc  
+arm64                            allmodconfig   clang
+arm64                             allnoconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                 randconfig-002-20240322   gcc  
+arm64                 randconfig-003-20240322   gcc  
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+csky                  randconfig-001-20240322   gcc  
+csky                  randconfig-002-20240322   gcc  
+hexagon                          allmodconfig   clang
+hexagon                           allnoconfig   clang
+hexagon                          allyesconfig   clang
+hexagon                             defconfig   clang
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20240322   gcc  
+i386         buildonly-randconfig-002-20240322   gcc  
+i386         buildonly-randconfig-003-20240322   clang
+i386         buildonly-randconfig-004-20240322   clang
+i386         buildonly-randconfig-005-20240322   gcc  
+i386         buildonly-randconfig-006-20240322   clang
+i386                                defconfig   clang
+i386                  randconfig-001-20240322   clang
+i386                  randconfig-002-20240322   clang
+i386                  randconfig-003-20240322   gcc  
+i386                  randconfig-004-20240322   gcc  
+i386                  randconfig-005-20240322   clang
+i386                  randconfig-006-20240322   clang
+i386                  randconfig-011-20240322   gcc  
+i386                  randconfig-012-20240322   clang
+i386                  randconfig-013-20240322   clang
+i386                  randconfig-014-20240322   clang
+i386                  randconfig-015-20240322   gcc  
+i386                  randconfig-016-20240322   clang
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20240322   gcc  
+loongarch             randconfig-002-20240322   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                         cobalt_defconfig   gcc  
+mips                     decstation_defconfig   gcc  
+mips                         rt305x_defconfig   clang
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                 randconfig-001-20240322   gcc  
+nios2                 randconfig-002-20240322   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+openrisc                       virt_defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc                randconfig-001-20240322   gcc  
+parisc                randconfig-002-20240322   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   clang
+powerpc                      arches_defconfig   gcc  
+powerpc                     asp8347_defconfig   clang
+powerpc               randconfig-002-20240322   gcc  
+powerpc64             randconfig-002-20240322   gcc  
+riscv                            allmodconfig   clang
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   clang
+riscv                               defconfig   clang
+riscv                 randconfig-001-20240322   gcc  
+riscv                 randconfig-002-20240322   gcc  
+s390                             allmodconfig   clang
+s390                              allnoconfig   clang
+s390                             allyesconfig   gcc  
+s390                                defconfig   clang
+s390                  randconfig-001-20240322   gcc  
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sh                    randconfig-001-20240322   gcc  
+sh                    randconfig-002-20240322   gcc  
+sh                          rsk7269_defconfig   gcc  
+sh                           se7705_defconfig   gcc  
+sh                           se7721_defconfig   gcc  
+sh                           se7722_defconfig   gcc  
+sh                           sh2007_defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                               defconfig   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+sparc64               randconfig-001-20240322   gcc  
+sparc64               randconfig-002-20240322   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   gcc  
+um                                  defconfig   clang
+um                             i386_defconfig   gcc  
+um                    randconfig-001-20240322   gcc  
+um                           x86_64_defconfig   clang
+x86_64                            allnoconfig   clang
+x86_64                           allyesconfig   clang
+x86_64                              defconfig   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+xtensa                            allnoconfig   gcc  
+xtensa                randconfig-001-20240322   gcc  
+xtensa                randconfig-002-20240322   gcc  
+xtensa                         virt_defconfig   gcc  
+
 -- 
-2.44.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
