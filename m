@@ -1,118 +1,149 @@
-Return-Path: <linux-wireless+bounces-5205-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5206-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 104A388AA46
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Mar 2024 17:55:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CB2688AA61
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Mar 2024 17:56:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 413A91C372AA
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Mar 2024 16:54:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74B3F1C36EE4
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Mar 2024 16:56:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4263128831;
-	Mon, 25 Mar 2024 15:16:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44B5E639;
+	Mon, 25 Mar 2024 15:21:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="scn099pF"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="w1JqQ96V"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB409128379;
-	Mon, 25 Mar 2024 15:16:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE95F7F48F
+	for <linux-wireless@vger.kernel.org>; Mon, 25 Mar 2024 15:21:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711379806; cv=none; b=G6zTMB/KT3Y1D7cVB5P9Q9/X/6eBgYfnnepYqfc6yVK3EqKZV1pQPOWn8bUykzk6svEC2kuiLf8Gj+bEPQoUxDEjP6XlDC0Bctg7S09heLiI5WgNUUSq9yh+Q5Pt/lKWdJ/nBBGvtFua0GG7cYG2iPtF/G8oKj9QGuDqnCJ2m88=
+	t=1711380108; cv=none; b=AaoahrkoTXqokaheAEkVBvhQK/fFSV8iVEGeMj4nizI2N+sZGRNc98IRfCaGYvrirreAWtKfGTIYYca/WL006StXoX3/6Gvb95FyYP+AbbhcHmmu8834YhwROIWoBPzjFJC+djbKVZ4tIwUCC/akB/RCT+FMmStivQUG6/nanfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711379806; c=relaxed/simple;
-	bh=eLGAZ/vRoljcypq3yTVbQoX8hEGDIM6eWX2TQMhK5rU=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=Ivmig57t+GQlOlRIDhSct2Ag+DQTlSNZqnKa0EwWL2bgriGUqluT/8spt1aHlhIwHRvw6MHX7Go1K1NhsbAOlKsckfD2p2xf2kg8l4gKRoYsX7KJj72UuAJesnU9ArqmggOiiLeyIV8MPxbkEZbEBINUYPzFZBEOgr7RAZA/DYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=scn099pF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 586ABC433F1;
-	Mon, 25 Mar 2024 15:16:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711379806;
-	bh=eLGAZ/vRoljcypq3yTVbQoX8hEGDIM6eWX2TQMhK5rU=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=scn099pFRMZqUI45wqAnYd+1n0uina0bGoJVu+dWqPzVLGWhrSL7aUIPERdtMS3Fy
-	 JEYWOim+KjvH0S5mGtCe1i5ne5HJxl8SSBit8B3Ji8BJ7ZRUF/BDq5z3fI0iEBCdKM
-	 RHf2IAhIxHqMzXAvQCD3EwNclfzr3CsENBU+dqqnli+2MN4Xbk6/SqQUmz8NK95Mm7
-	 FPsxUCQu6f1kG6SRrGnXWG5JaWl6KQzCds4Y9gj2WPuoZ13qcL2toqboP7stGhoDxT
-	 O0LiMMwc1LmNTsAyARNZLJJC7FFK45BYIia4oz9nWQnNC5wIW5eARYk+XXy2dHmNeW
-	 KpDsbCB/rDxYA==
-From: Kalle Valo <kvalo@kernel.org>
-To: Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
-  <linux-wireless@vger.kernel.org>,  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 0/3] wifi: nl80211: fix nl80211 UAPI kernel-doc
-References: <20240319-kdoc-nl80211-v1-0-549e09d52866@quicinc.com>
-	<638df3bb659caef38480aa97277207b89c101344.camel@sipsolutions.net>
-	<2a2d2001-f87e-49be-8f5f-fcd175c4911a@quicinc.com>
-Date: Mon, 25 Mar 2024 17:16:43 +0200
-In-Reply-To: <2a2d2001-f87e-49be-8f5f-fcd175c4911a@quicinc.com> (Jeff
-	Johnson's message of "Wed, 20 Mar 2024 10:16:11 -0700")
-Message-ID: <87h6gu1gv8.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1711380108; c=relaxed/simple;
+	bh=K5L5k1m/rN3s6wgwiv8+rS9heNJYnXkXYw89D1KeMrs=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=L6rG5CXRVnEjpdkam3nU90/CVHYCqyAgmo/wpohTKSQjH0jrgh6ut2AZ2BSwDYbiaIFaNEUMewGFR9v0T0uiD+lCZhIC7EWJyv/UWw90szfCGjAff5HrwNUiDnxG9d7Ru3O5NgkFAPSVL6+7sXGJAJbcsd3tzc8FoNNsd+HJvlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=w1JqQ96V; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=SVCXwL1iI/bNs8G7d4KaZw3fMBGDP6EFpG9+mgrsaAI=;
+	t=1711380105; x=1712589705; b=w1JqQ96VKGVnwl/6lm+9N47wpkhFqTua+TCfZl//l0n/oni
+	s4HYtMYBgqcF7BdjfnlfMpmLeq1WPPdyROezkuxGh6oZ8+2O/R3LQqLUlgfpVJo5EKhxO45l1GEyj
+	il0PiAkzCVvy5gor32sNIZKkHj7HQLzcagflTwG9Sl962SbqKEb9Xn5jJ8QSCT1ACNos/M3LL7GGa
+	2WS7QfetH0GXOeVIyEqvOMIu+xsXFRxlejJr+wiTRBdmjUIp6Q4vrQ59eLi0Pn06nsryuSSNPGJsj
+	w9xaP3rvGxpmj7XawLz2r/NvLUt17sjP5w8n7FPadioeyXkQxZb9eiFUozNbgEYA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rom8t-0000000DuBG-0Ddh;
+	Mon, 25 Mar 2024 16:21:43 +0100
+Message-ID: <2c8338a29d3c42ebbf1fd5efd348c14471fa5004.camel@sipsolutions.net>
+Subject: Re: [PATCH] wifi: mac80211: validate link status before deciding on
+ off channel Tx
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Aditya Kumar Singh <quic_adisi@quicinc.com>
+Cc: linux-wireless@vger.kernel.org, Sriram R <quic_srirrama@quicinc.com>
+Date: Mon, 25 Mar 2024 16:21:42 +0100
+In-Reply-To: <20240312154620.242773-1-quic_adisi@quicinc.com>
+References: <20240312154620.242773-1-quic_adisi@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-malware-bazaar: not-scanned
 
-Jeff Johnson <quic_jjohnson@quicinc.com> writes:
+On Tue, 2024-03-12 at 21:16 +0530, Aditya Kumar Singh wrote:
 
-> On 3/20/2024 12:07 AM, Johannes Berg wrote:
->> On Tue, 2024-03-19 at 11:26 -0700, Jeff Johnson wrote:
->>> As part of my review of patches coming from the Qualcomm Innovation
->>> Center I check to make sure that no checkpatch or kernel-doc issues
->>> are introduced. An upcoming patch will propose a modification to
->>> include/uapi/linux/nl80211.h. My review process flagged both
->>> checkpatch and kernel-doc issues in the file, but these are
->>> pre-existing issues. So this series fixes those pre-existing issues.
->>>
->> 
->> Thanks Jeff.
->> 
->> Can you say what you're running for this? I've been running kernel-doc
->> and builds with W=1 for a long time, and not seen issues. Is this
->> perhaps checks from a newer kernel (we're currently on 6.8-rc1 for
->> $reasons)?
->
-> files=$(git diff --name-only $base HEAD)
-> scripts/kernel-doc -Werror -none $files
-> scripts/checkpatch.pl --file $files
+> In such cases, the bss active flag might not provide the exact
+> status of the MLD links.
 
-Thanks. So my plan is to run this in my check script:
+That's ... true I guess, but then I'm suspicious, why are you sending
+this patch? Does that mean 'active' is managed incorrectly and actually
+becomes false when one link is removed, rather than all? Can you fix
+that too? And if you fix that ... yeah we probably still should have
+this patch but ... _without_ this:
 
-scripts/kernel-doc -none \
-include/linux/ieee80211.h \
-include/net/cfg80211.h \
-include/net/ieee80211_radiotap.h \
-include/net/iw_handler.h \
-include/net/wext.h \
-include/uapi/linux/nl80211.h \
-include/uapi/linux/wireless.h \
-include/net/mac80211.h \
-include/linux/rfkill.h \
-include/uapi/linux/rfkill.h
+> +	/* This is consolidated status of the MLD or non ML bss */
+> +	if (sdata->bss->active)
+> +		return true;
 
-Did I miss anything important?
+I'd think?
 
-Although include/linux/rfkill.h has three warnings:
+> While at it, when source address is same as the link conf's address and
+> if userspace requested Tx on a specific link, add changes to use the same
+> link id if the link bss is matching the requested channel.
 
-include/linux/rfkill.h:104: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
- * rfkill_pause_polling(struct rfkill *rfkill)
-include/linux/rfkill.h:114: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
- * rfkill_resume_polling(struct rfkill *rfkill)
-include/linux/rfkill.h:331: warning: Function parameter or struct member 'rfkill' not described in 'rfkill_get_led_trigger_name'
+Why not separate that? It's really not related much?
 
-Any volunteers to fix those? :)
+> +	if (link_id < 0)
+> +		return false;
+> +
+> +	if (!sdata->vif.valid_links)
+> +		return false;
+> +
+> +	if (!(sdata->vif.valid_links & BIT(link_id)))
+> +		return false;
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+The second condition seems useless then?
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+But probably better to check *active* links, and then might as well use
+ieee80211_vif_link_active()?
+
+> +	link =3D sdata_dereference(sdata->link[link_id], sdata);
+> +	if (!link)
+> +		return false;
+
+That might be a WARN_ON()? After all, if links are valid (or active per
+above) that really should be there?
+
+>  int ieee80211_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
+>  		      struct cfg80211_mgmt_tx_params *params, u64 *cookie)
+>  {
+> @@ -817,7 +850,7 @@ int ieee80211_mgmt_tx(struct wiphy *wiphy, struct wir=
+eless_dev *wdev,
+>  	case NL80211_IFTYPE_P2P_GO:
+>  		if (sdata->vif.type !=3D NL80211_IFTYPE_ADHOC &&
+>  		    !ieee80211_vif_is_mesh(&sdata->vif) &&
+> -		    !sdata->bss->active)
+> +		    !ieee80211_is_link_bss_active(sdata, params->link_id))
+>  			need_offchan =3D true;
+> =20
+>  		rcu_read_lock();
+> @@ -897,8 +930,17 @@ int ieee80211_mgmt_tx(struct wiphy *wiphy, struct wi=
+reless_dev *wdev,
+>  				break;
+>  			}
+> =20
+> -			if (ether_addr_equal(conf->addr, mgmt->sa))
+> +			if (ether_addr_equal(conf->addr, mgmt->sa)) {
+> +				/* If userspace requested Tx on a specific link
+> +				 * use the same link id if the link bss is matching
+> +				 * the requested chan.
+> +				 */
+> +				if (sdata->vif.valid_links &&
+> +				    params->link_id >=3D 0 && params->link_id =3D=3D i &&
+> +				    params->chan =3D=3D chanctx_conf->def.chan)
+> +					link_id =3D i;
+>  				break;
+> +			}
+> =20
+>  			chanctx_conf =3D NULL;
+>  		}
+>=20
+> base-commit: c2b25092864a16c7865e406badedece5cc25fc2b
+
 
