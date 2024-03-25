@@ -1,178 +1,141 @@
-Return-Path: <linux-wireless+bounces-5220-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5221-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4737E88B2AD
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Mar 2024 22:25:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A953688ABB8
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Mar 2024 18:31:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 76A6CB2BF49
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Mar 2024 17:29:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3617E1F621F9
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Mar 2024 17:31:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7508612FB35;
-	Mon, 25 Mar 2024 16:23:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7473E4C63A;
+	Mon, 25 Mar 2024 16:27:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="bNg693gY"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="LQ1rNauS"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D42A839F6
-	for <linux-wireless@vger.kernel.org>; Mon, 25 Mar 2024 16:23:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996D250248
+	for <linux-wireless@vger.kernel.org>; Mon, 25 Mar 2024 16:27:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711383830; cv=none; b=V8ELMU+MqD3TGRv7vifgxdch6eww+O186u1Ko6dNIiTh+F+r0ikvJPM/+ct5oj+gOs1u8EPwPSJ0P2CaubEPXJrd4TLVTkX0uhGT3JNi1bjUgz/sZBOZllpRSQtB56Hwj0bKwGojUIKk9VERrRW6fhHcAirJpK7/LqjUwISxBSY=
+	t=1711384047; cv=none; b=aUFz63TujDawDq7xoDW6d6ZWt/Q2+02aGD/5Vjff+9/FfcaAlQwnWQO3SYnMrD70TcuF52da/tEMwGiJ5h65INLQX4ChWCeskogvAV+T55JAW8XMRyNdDAd8jjsM9bziSkoZ2JLy8wZ7SXLLZSsJti+wRj8d+RX7FKL6CkFMYCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711383830; c=relaxed/simple;
-	bh=YFrRYJmE2c0Njd/WjfccaQYzVP23csJig+MqZX6xV88=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SMRFEG959RM1gzg/8vh46iBG9s5NU4y7lNr0WVxfL5JzQX8JY+dHn0nKMP6EVIJz6TU/Mt5e6IWGn374IjjXWp5Bjajy4uk8f6GVJhNKpfzzXfG9WRHYbFg3vmNr2u3iOLsCIW3l4Qt+JPc8O54HdiY7B6cqjuRme5wE/ZXgi/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=bNg693gY; arc=none smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-513e25afabaso5402711e87.2
-        for <linux-wireless@vger.kernel.org>; Mon, 25 Mar 2024 09:23:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1711383826; x=1711988626; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rFcfwD2v6qpH4vAhBOADFCJxvrI715+cznBhJwreFCA=;
-        b=bNg693gYe+XqMbXPLwytAj1DW4TWOdFgIkYynhGZ5jLpywIn73CoqucTs3oAz8BXmi
-         k/Ivm6vwfw2fk13UUlQTvpD+XOJqmL2smuv253/e4EYqGUVC/F5E55gbZGVSFIV6c4T+
-         IVRcHRt10DBkqxd5bu307cFUdzzSJqs/CYXplnrB6BT3w61HjpmbKzV8QK9aDcLsxUpA
-         tSUOE5VIYP4vR+gbt0xhK1NDwyiYNMC2LIPd8ySb9bAaD2IfUqEJAYyc9Nmbc5bbHsfZ
-         nR/Q3Rp3A50GLOyCF5d4juoXyxED0bdEXlmhBJf0CX1jnARlkRekA2F/tTDZ8zCtahKJ
-         urXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711383826; x=1711988626;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rFcfwD2v6qpH4vAhBOADFCJxvrI715+cznBhJwreFCA=;
-        b=hx5eSbGYrRwRyd9K85oeCiGigSBjATQrlctgo26ZLdXT2PRY/yHIFvG8Vsgt2sIDjH
-         eW8vXdIw7gmqrKotWjm9tCmfyX2rwFXIUiGMsIf5NofUEQ0iMM1/LPS6PtQOdkeEdMWD
-         639DbmFb/7DEfrmZuLs9gvFBPGn04GGbRHsfW3p0lVGB7fw8XYkdgp1X87C1Jsxujs/T
-         N2FCQ90JOKaivliuH3D+ccuXz9srjeYVmLHDgC8TboxhhtNinDHl2z2ru93bLORNbn2S
-         whS7sv4RTm4eiJLmBea3VYAIaDYKEPSxzO4wo99Ujt3FzFjmpp8uZTn02KYUNVDgluoL
-         XhBw==
-X-Forwarded-Encrypted: i=1; AJvYcCV6UY+RMkbDV5Oou9lT5di0h9J+qN15NFu8N7ucI+fDxYE2kFChu8/mxxJ33u5oBuJ+pGLYcO8ZV8TIOB0NjK9xPaMx6vpW07n5KqaWMZM=
-X-Gm-Message-State: AOJu0Yy73dgEYGj057tEQbDg/pwyVbC1ggBkMNr8dYbK+ede+IjpHLj+
-	eZVnVstW9QpIZDKx4pP9WO591yB57UnfRBl1GniZbYsXao/557ItNq22zJO3BPDC9Lo7bSTk/Bn
-	Dq4Ud2n4DdTjUuiV+13U4ZhWA1LcVx0Vf9yBmKA==
-X-Google-Smtp-Source: AGHT+IH4j5PPquST9xGKo8St/ikKbO6tk+Yedi+DAtFkCTZT5UC4mlTlEQkIXAn9mq4Oivrt7Ob9WJnK0Bj5SKvyufE=
-X-Received: by 2002:a2e:8085:0:b0:2d4:ffe:c55e with SMTP id
- i5-20020a2e8085000000b002d40ffec55emr4716403ljg.25.1711383826136; Mon, 25 Mar
- 2024 09:23:46 -0700 (PDT)
+	s=arc-20240116; t=1711384047; c=relaxed/simple;
+	bh=8Ql+Kac9ddzN7IQvwdBQCMZkuzsdtgJi+M0dgfdEkn4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=CbPdhPcee1XXNOvyjtt24rLM9gNf0fXJB+R6tZV5m+DnAtc+tF6rzJ6uX9HtDYxoft35KDhgPqJ5kb7T0dhDslhgHfheFFEzgoOieGWisayNFqFfYbD6hK10fyx9AlGr8JUk2HNzWtiVTooNQNpy5YOwMrf8TCUfAwmOc04l/iQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=LQ1rNauS; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42P84P2e029311;
+	Mon, 25 Mar 2024 16:27:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=waVWADioXffzsZLB3KJMo9L81pjqqznMze7L/6+cFgM=; b=LQ
+	1rNauSWt1CHjG5nbJi8cdtCSmQhAgSgbxRx9hJ6HfbJRr19JjSGoNi5sX0epzePz
+	+2y77yyj8bzFdjUPSx6K93TbJQAaCPQ7c1opl+Q3VRx4Dc9G3YS1t3toQucqdWEz
+	8XoQ+e1dWKzZcqP4KgDgVB8QNE7lTNt930py0R8N6iY619ZYgYqziQGLkeI7klta
+	loorJpY3TL/NzrTyMzCLrX4fjEF3rsIJ35gI9YFIQ1bx5K8jDbYQWILdXQMVi9bK
+	MAohzapYWEgszxrzgOGqPzb7kHgcnE/Je8VzV9v6OGrs3Hxjap5JJ3M5cjsRcVLs
+	rcR0nRGnDzKA77Q256Uw==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3x35eah7q3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 25 Mar 2024 16:27:20 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42PGRJp1010840
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 25 Mar 2024 16:27:19 GMT
+Received: from [10.216.55.216] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Mon, 25 Mar
+ 2024 09:27:16 -0700
+Message-ID: <85455dcb-9242-4f50-b3e2-17499633189a@quicinc.com>
+Date: Mon, 25 Mar 2024 21:57:12 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240325131624.26023-1-brgl@bgdev.pl> <20240325131624.26023-5-brgl@bgdev.pl>
- <87r0fy8lde.fsf@kernel.org> <CAMRc=Mc2Tc8oHr5NVo=aHAADkJtGCDAVvJs+7V-19m2zGi-vbw@mail.gmail.com>
- <87frwe8jiu.fsf@kernel.org>
-In-Reply-To: <87frwe8jiu.fsf@kernel.org>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Mon, 25 Mar 2024 17:23:35 +0100
-Message-ID: <CAMRc=MdCv+vTMZML-wzRQqZZavquV3DABYM4KYw-HwqS47sTyw@mail.gmail.com>
-Subject: Re: [PATCH v6 04/16] dt-bindings: net: wireless: qcom,ath11k:
- describe the ath11k on QCA6390
-To: Kalle Valo <kvalo@kernel.org>
-Cc: Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Saravana Kannan <saravanak@google.com>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Arnd Bergmann <arnd@arndb.de>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Alex Elder <elder@linaro.org>, Srini Kandagatla <srinivas.kandagatla@linaro.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Abel Vesa <abel.vesa@linaro.org>, 
-	Manivannan Sadhasivam <mani@kernel.org>, Lukas Wunner <lukas@wunner.de>, 
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, linux-bluetooth@vger.kernel.org, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-pci@vger.kernel.org, linux-pm@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, ath11k@lists.infradead.org, 
-	Johan Hovold <johan@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 05/12] wifi: ath12k: scan statemachine changes for
+ single wiphy
+Content-Language: en-US
+To: Jeff Johnson <quic_jjohnson@quicinc.com>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, Sriram R <quic_srirrama@quicinc.com>
+References: <20240320190943.3850106-1-quic_ramess@quicinc.com>
+ <20240320190943.3850106-6-quic_ramess@quicinc.com>
+ <85e7f591-ed52-4554-bd92-09086eaebcdb@quicinc.com>
+ <e5fe8dc4-c44b-4734-906f-a9dcbb724bb1@quicinc.com>
+ <b03ab374-4d46-48ca-826c-3d2aa39034b4@quicinc.com>
+From: Rameshkumar Sundaram <quic_ramess@quicinc.com>
+In-Reply-To: <b03ab374-4d46-48ca-826c-3d2aa39034b4@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: FLvpiOE4uw5s42ZOWBjofQ1cJgLoDUV6
+X-Proofpoint-ORIG-GUID: FLvpiOE4uw5s42ZOWBjofQ1cJgLoDUV6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-25_13,2024-03-21_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ adultscore=0 impostorscore=0 bulkscore=0 mlxlogscore=999 malwarescore=0
+ spamscore=0 priorityscore=1501 phishscore=0 mlxscore=0 clxscore=1015
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2403210001 definitions=main-2403250091
 
-On Mon, Mar 25, 2024 at 3:37=E2=80=AFPM Kalle Valo <kvalo@kernel.org> wrote=
-:
->
-> Bartosz Golaszewski <brgl@bgdev.pl> writes:
->
-> > On Mon, Mar 25, 2024 at 2:57=E2=80=AFPM Kalle Valo <kvalo@kernel.org> w=
-rote:
-> >
-> >>
-> >> Bartosz Golaszewski <brgl@bgdev.pl> writes:
-> >>
-> >> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> >> >
-> >> > Add a PCI compatible for the ATH11K module on QCA6390 and describe t=
-he
-> >> > power inputs from the PMU that it consumes.
-> >> >
-> >> > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> >>
-> >> [...]
-> >>
-> >> > +allOf:
-> >> > +  - if:
-> >> > +      properties:
-> >> > +        compatible:
-> >> > +          contains:
-> >> > +            const: pci17cb,1101
-> >> > +    then:
-> >> > +      required:
-> >> > +        - vddrfacmn-supply
-> >> > +        - vddaon-supply
-> >> > +        - vddwlcx-supply
-> >> > +        - vddwlmx-supply
-> >> > +        - vddrfa0p8-supply
-> >> > +        - vddrfa1p2-supply
-> >> > +        - vddrfa1p7-supply
-> >> > +        - vddpcie0p9-supply
-> >> > +        - vddpcie1p8-supply
-> >>
-> >> I don't know DT well enough to know what the "required:" above means,
-> >> but does this take into account that there are normal "plug&play" type
-> >> of QCA6390 boards as well which don't need any DT settings?
-> >
-> > Do they require a DT node though for some reason?
->
-> You can attach the device to any PCI slot, connect the WLAN antenna and
-> it just works without DT nodes. I'm trying to make sure here that basic
-> setup still works.
->
 
-Sure, definitely. I there's no DT node, then the binding doesn't apply
-and the driver (the platform part of it) will not probe.
 
-> Adding also Johan and ath11k list. For example, I don't know what's the
-> plan with Lenovo X13s, will it use this framework? I guess in theory we
-> could have devices which use qcom,ath11k-calibration-variant from DT but
-> not any of these supply properties?
->
+On 3/25/2024 9:03 PM, Jeff Johnson wrote:
+> On 3/25/2024 8:24 AM, Rameshkumar Sundaram wrote:
+>> On 3/22/2024 1:24 AM, Jeff Johnson wrote:
+>>> On 3/20/2024 12:09 PM, Rameshkumar Sundaram wrote:
+>>>> From: Sriram R <quic_srirrama@quicinc.com>
+> ...
+>>>>    	ret = ath12k_wmi_vdev_delete(ar, arvif->vdev_id);
+>>>>    	if (ret) {
+>>>> -		ath12k_warn(ab, "failed to delete WMI vdev %d: %d\n",
+>>>> +		ath12k_warn(ab, "failed to delete WMI scan vdev %d: %d\n",
+>>>
+>>> this change seems strange. isn't ath12k_mac_vdev_delete() called from both the
+>>> scan logic and from the normal ath12k_mac_op_remove_interface(), so it might
+>>> not be a scan vdev that is being deleted?
+>>>
+>> No, in Single wiphy, the vdev logic creation for an arvif is such that
+>> at any given point of time only one vdev is created for an arvif (either
+>> by ath12k_mac_op_add_intf/assign_chanctx/hw_scan).
+>> Vdev created by mac_op_scan can either be re-used or deleted &
+>> re-created (on a different ar) by mac_op_assign_chanctx() if required.
+>> Also once mac_op_assign_chanctx has started the vdev of an arvif,
+>> mac_op_hw_scan can only use that vdev. So mac_op_remove just simply
+>> deletes the one that is currently created.
+> 
+> then if this function is only ever used to delete a scan vdev, then shouldn't
+> the name be changed to reflect that? the current generic name doesn't reflect
+> that specificity.
+> 
+Ah Sorry, i misunderstood your point earlier, as i mentioned vdev is 
+created for an arvif either by 
+ath12k_mac_op_add_intf/assign_chanctx/hw_scan).
+So this vdev_delete can never say if its a scan vdev. For some reason it 
+was put as scan vdev delete in print message :( .
+We should remove this change.
 
-Good point. I will receive the X13s in a month from now. I do plan on
-upstreaming correct support for WLAN and BT for it as well.
+Earlier I thought you were asking why vdev delete is being called from 
+both places and was trying explaining the logic behind. Totally missed 
+the print message, Really sorry about that.
 
-I guess we can always relax the requirements once a valid use-case appears?
 
-Bart
 
-> --
-> https://patchwork.kernel.org/project/linux-wireless/list/
->
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
-tches
+
 
