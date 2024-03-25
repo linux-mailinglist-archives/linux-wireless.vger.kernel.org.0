@@ -1,100 +1,87 @@
-Return-Path: <linux-wireless+bounces-5172-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5173-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CF9788A3B1
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Mar 2024 15:09:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2951388A452
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Mar 2024 15:24:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA5DD2E0936
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Mar 2024 14:09:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0035A2C487D
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Mar 2024 14:24:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE1A5148823;
-	Mon, 25 Mar 2024 10:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6863156974;
+	Mon, 25 Mar 2024 10:58:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="YuU/EZbM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qRu+jECm"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC241869D3
-	for <linux-wireless@vger.kernel.org>; Mon, 25 Mar 2024 09:47:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12CE112BF1C;
+	Mon, 25 Mar 2024 10:25:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711360043; cv=none; b=Zz900bV57ouboRHwPrE84KHFa146rrDBBljqYYiuM0zynbAXzfrzc1Eyrca+3abYdJkA4+NV8mOifdthe8bp4Qq0tAQh0t6rq618fNBfdrvljFg+LvzYiPkGAVYnCTLeE4PYAIxMUwPHDZFwZ40REpL7FXFU7BAh/rplZiugZi4=
+	t=1711362355; cv=none; b=JXE2dM/fOUGU6tBbNN78U09UYoKKyCCR4LeasZIfIFKvPpyvIbqlv1RaMEo6mgRPLEru4bzC0suAOFDDskTQB/KhQNeKBHKVxtqaUsRf9wvWeBdyQET7rZHNGOH8jXKKx8IxjcnHy0Pi1Xaw19brTs/0sSbW2pJyZrKh/NKH5cE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711360043; c=relaxed/simple;
-	bh=6pijbRLvBqblq1qEKDSEGAclPOx1WC5er47SvIapkY8=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=mr6ZfvFqMLZz4BS3iot1TtixNke6ECjHH9SIbkcOioaTYxGDViwxeYwF4zpruPaw2rMuccsrF25uhkxjjnc3qafYngNqk8P+187bMZmVohKY4L38q5WI25czd4lLOiNSeJ6byd9l3HAe4XssIxC9LwLTrKNOXdUxJeasWlH4FyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=YuU/EZbM; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=6pijbRLvBqblq1qEKDSEGAclPOx1WC5er47SvIapkY8=;
-	t=1711360040; x=1712569640; b=YuU/EZbMyHTY9Gr2cjSQNcTJCy+flYkc/OA88xc08lMNtNV
-	3SDtPUh6qoNBMw48m9OuQNsK7WvkmzRAnRG5X7r0R4cfQRsB1MYR9+0BHk3VlGW+yzxvr2oxbWFAB
-	w2nMhs6Ti9GHFMcHEv0oJh7SV168S6d7AI84AF5g+E3D5sFUpKUpcYj6pwXO74zboyn8vaOtxJNU8
-	aV/vVMn25DZZgmCW1/jR3v/RFsVYMMYkT8RCnWKGgbI87wPidp4dDuMfKRmZw4WTrfbeUL+5048+g
-	UzA/DTRdZNr7bZ/NSI/jq+jWJdmoSDhA5HmCn098p+NkjIeSwyCZlZa4eZ3dUQcw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1rogv9-0000000Djgl-2Iou;
-	Mon, 25 Mar 2024 10:47:11 +0100
-Message-ID: <661c532c30e9fa218cf0b3d30da0bb65aafc4e8c.camel@sipsolutions.net>
-Subject: Re: Access to ieee80211_conn_settings in the driver?
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Ben Greear <greearb@candelatech.com>, "linux-wireless@vger.kernel.org"
-	 <linux-wireless@vger.kernel.org>
-Date: Mon, 25 Mar 2024 10:47:10 +0100
-In-Reply-To: <1df701f9-3f27-4887-a9ed-60cf2f12beb4@candelatech.com>
-References: <1df701f9-3f27-4887-a9ed-60cf2f12beb4@candelatech.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
+	s=arc-20240116; t=1711362355; c=relaxed/simple;
+	bh=rgKrPMeIinA+Y9vEAPkdP4HEQqq6d2MoOEynV9a6Y7E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SJXuz6F/dYr0ZYszd8GwIXj9vJ0zVChBFtXhVdjusRABvF3SFXwG5V6UYJA+dLdrVnFn/Taw9hZvDgKbA1WRCHnQJ8wDZea74nDbDf9DDn7g6c2uSrZMYAq6nN0JLeo5uyvXwDPA/it9RNyY/9ObAmIDi9isY2mstS45q7B1Ecs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qRu+jECm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FAD6C433C7;
+	Mon, 25 Mar 2024 10:25:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711362354;
+	bh=rgKrPMeIinA+Y9vEAPkdP4HEQqq6d2MoOEynV9a6Y7E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qRu+jECmQwTaKa8Gb0BeCm7gDSyx2qjSYQiak14PNH8+PmPNjENAELcNDC7XoZw9S
+	 YNjsmiJAAij5d5YfS7l7GiaD4fHfqLMMFbbkO03Ddix7mod4pHOPuIQY3qKIeCakRA
+	 WM1bMxq1YVRUg4awMcV1HdKqX7cob6a29zSX88j28lLuI5IWuuEF72KlrHWhCZFN28
+	 7gVmLnOYahCteB3YAFw7bd7Yri8RYI6TqB3/ZsNbZkHmexUaHZ9tACxbySScfyhRMF
+	 cd3UjlUSnkh/iDREMlHHZrQA7XiwfVEz0KJxdKbfJQWSvoUHdzY+oJuHACHGsBO6u+
+	 HTN9D7nUCRp/g==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1rohWj-0000000016n-1mKx;
+	Mon, 25 Mar 2024 11:26:01 +0100
+Date: Mon, 25 Mar 2024 11:26:01 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Johan Hovold <johan+linaro@kernel.org>
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] wifi: mac80211: fix mlme_link_id_dbg()
+Message-ID: <ZgFROaFARFytQPMM@hovoldconsulting.com>
+References: <20240325085948.26203-1-johan+linaro@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240325085948.26203-1-johan+linaro@kernel.org>
 
-Hi Ben
+On Mon, Mar 25, 2024 at 09:59:48AM +0100, Johan Hovold wrote:
+> Make sure that the new mlme_link_id_dbg() macro honours
+> CONFIG_MAC80211_MLME_DEBUG as intended to avoid spamming the log with
+> messages like:
+> 
+> 	wlan0: no EHT support, limiting to HE
+> 	wlan0: determined local STA to be HE, BW limited to 160 MHz
+> 	wlan0: determined AP xx:xx:xx:xx:xx:xx to be VHT
+> 	wlan0: connecting with VHT mode, max bandwidth 160 MHz
+> 
+> Fixes: 310c8387c638 ("wifi: mac80211: clean up connection process")
+> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 
-> I'm interested in getting access to ieee80211_conn_settings
-> struct in drivers.
+Sorry about the resend. The original patch is here:
 
-My first instinct here is to say no. This thing was only introduced
-recently, and it was ... difficult ... to do. I don't even want to
-imagine I'd have had to worry about a whole bunch of drivers using it
-for random purposes as well.
+	https://lore.kernel.org/linux-wireless/20240324160559.18861-1-johan+linaro@kernel.org/
 
-> Specifically, so I can deal with disabling
-> 160Mhz in mt76 even if peer is 160Mhz for instance, on a per-station vdev=
- basis.
+Lore appears to be acting up, but before I realised that I thought I'd
+messed up my mail setup.
 
-Not sure how that even makes sense? You have the min_def in the chandef
-though, so you could do some bandwidth tricks there for AP side?
-
-> Actually, 160Mhz is bad example, but in case I want to pass other
-> association config info into the driver, like disabling as much of
-> OFDMA or MU-MIMO as possible.
-
-No idea what that means ... I mean I guess we could add somewhere
-(bss_conf?) a flag indicating "things" are needed, e.g. if you're
-connecting 160 MHz is it VHT or HE or EHT, to set things accordingly?
-
-
-> Is this of general interest, and if so, any suggestions for you
-> you'd like to see it implemented?
-
-I'd like to _not_ see it implemented :)
-
-johannes
+Johan
 
