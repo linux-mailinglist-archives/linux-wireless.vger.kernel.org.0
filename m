@@ -1,102 +1,102 @@
-Return-Path: <linux-wireless+bounces-5210-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5211-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CF4088AAE4
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Mar 2024 18:11:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8071E88AB23
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Mar 2024 18:16:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6EAF1F3D842
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Mar 2024 17:10:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B17D01C3CA81
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Mar 2024 17:16:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0332013D63A;
-	Mon, 25 Mar 2024 15:43:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D410F1514ED;
+	Mon, 25 Mar 2024 15:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="UKAPQrXF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SeyOuI7h"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 755E913B5B1
-	for <linux-wireless@vger.kernel.org>; Mon, 25 Mar 2024 15:43:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A87E73DABE4;
+	Mon, 25 Mar 2024 15:55:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711381424; cv=none; b=dGXZ3HT4xHq6N7YFpBy+p95xaVkn8/yKWVUjhsHrlRUpPr0gtG8jI4Oa4Uf+vEHbhlL/0RJuF4pc9sIYKxjt9NLXA7bFLFl8IMpL7XG3I1y5iFee6x2siI+pu+oHzylhv+dhj1E6x/ElFrMwDUTmYHTdEirmQXR50Bwa28j35z0=
+	t=1711382123; cv=none; b=XB67EDXV4eAw5akSW/H6R8bekB3crwTr6O81r7SV0Qo3iI/ujR6SLZgwX4YMXALNhmh3ftiJd2ykt31ji+OHMPIwVOaVI+6sym+7MV7bJydbmlBcIvQig7rJ8pEh1nPN7yuLnORLh+rDelQmVdGnxifC3XrVioXuWay9TMb0IEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711381424; c=relaxed/simple;
-	bh=xwa2f3nknM75qBmMc0nEUshQMPONb3axZRAIcOphsWg=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Vs3W+Y0Pj5EIjr9QtNHs+N3ne7wJLu1jfj7VvlTalRHnd+F4S6h4EzQEHe/rIP9afxyEFlETN0mqXvK9HhvcgchrRmVo/QbTiZufEnfXYUuvw9jHUHfLJvSccf0jqVcrk6SYBE++M0P18+uyKEVfleUVic1sR+eP8zo2JZMld+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=UKAPQrXF; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=Sy4fjWaAdBKAu/EG3F3ubpkpdvObIYk8CjnS0nfnncU=;
-	t=1711381423; x=1712591023; b=UKAPQrXF8UFFB0qqu1I1uVYXF3oPCENDQOcumVDpZXpxtff
-	yAAxi51PZXAi9Sjkyzvijl9ZlkL10FWG2u3mpApaZiRgyKz6SacMQs+k4UY8keuktabhiylqq+KST
-	NiPq3SScYvfd1qehES2yE1dNOAWhu5rwxLydEmSfBHPcOTk0COq+Gw08O6Lu848Is7mUSrtmdOm/9
-	oG/KHOCfZppu00cpdMj4alsoVIq8Q3vp/0kB3SzyYj80IYPizDJZNIgvXk5mua8vDm6lGEcnjMdzp
-	eYAAGySou0MSNgzM0Sf6isjchoBdGGJfX5+DoxJBmvDnROTC4tU3iqRih/6YyUsA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1romU8-0000000Dv5M-1Ce1;
-	Mon, 25 Mar 2024 16:43:40 +0100
-Message-ID: <d364e872eb29f03236630bab49a3243e2118ab22.camel@sipsolutions.net>
-Subject: Re: [PATCH v2 1/2] wifi: cfg80211/mac80211: Add support to rx retry
- stats
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Hari Chandrakanthan <quic_haric@quicinc.com>, ath11k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-Date: Mon, 25 Mar 2024 16:43:39 +0100
-In-Reply-To: <20240319134522.4021062-2-quic_haric@quicinc.com>
-References: <20240319134522.4021062-1-quic_haric@quicinc.com>
-	 <20240319134522.4021062-2-quic_haric@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
+	s=arc-20240116; t=1711382123; c=relaxed/simple;
+	bh=KCKMR+ILD4PVJLMsuipVfj8QVOZrAGWjhVprqfmw3eM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KT6baVoFVlASoKVe0Y2e9qxFAFH81X/ffUor1uESQlJRvL5q3y0/ZUge/fPsiPFnN16X83u+srz4LEKamgPkqDFjg6xmPYGtgm6Geq+eDK4uBeHCcgG0uHIQ2Pa4Hl4nvYkXmyJPnkffgcLxpDV81B64Qb5lDuq++QsoiIWPai0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SeyOuI7h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09906C433C7;
+	Mon, 25 Mar 2024 15:55:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711382123;
+	bh=KCKMR+ILD4PVJLMsuipVfj8QVOZrAGWjhVprqfmw3eM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SeyOuI7hEeFDNtNHmTwXhfq1ktE+wDYayMxGK2ZLVMYuwp0kbnwLz5e7Jmt/ns1ym
+	 u2ofHLYbYwBOXyGplLOOVb+6dnJwPk6Q5ZFQze/PLrViEtIOruOSEr3wVUt0GpZRlq
+	 VlJEg31GSfcodBpziQTUS+4hVlu0/79hyrA3Qxa1H942H8Bto1U4Ekx1mLU46+2DMX
+	 9SUM9LAyWtepGWr5XWprmlsLhkKBUbI6s2EY/pxoV6lFEQUMruzqQQQw3dHVLystmT
+	 DEk6ONnMoC6dWei9FCiwuNihKscwW/Z2kirMneP00lkvqgGqhDAfXQotktbf6LDRCf
+	 wHsaoesDL0BkQ==
+Date: Mon, 25 Mar 2024 15:55:18 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Brendan Higgins <brendanhiggins@google.com>,
+	David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>,
+	netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	kunit-dev@googlegroups.com, x86@kernel.org,
+	linux-wireless@vger.kernel.org
+Subject: Re: kunit alltests runs broken in mainline
+Message-ID: <c01d6e1c-1dad-4012-b8b0-dccf19b2e3f2@sirena.org.uk>
+Mail-Followup-To: Johannes Berg <johannes@sipsolutions.net>,
+	Brendan Higgins <brendanhiggins@google.com>,
+	David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>,
+	netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	kunit-dev@googlegroups.com, x86@kernel.org,
+	linux-wireless@vger.kernel.org
+References: <b743a5ec-3d07-4747-85e0-2fb2ef69db7c@sirena.org.uk>
+ <9c9e1297e2548b363fc93e774c8546e6ebf4efd6.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-
-On Tue, 2024-03-19 at 19:15 +0530, Hari Chandrakanthan wrote:
-> Add support to count station level rx retries.
-
-Should the subject say "for ... stats"?
-
-> +++ b/net/mac80211/sta_info.c
-> @@ -2653,6 +2653,11 @@ void sta_set_sinfo(struct sta_info *sta, struct st=
-ation_info *sinfo,
->  		sinfo->filled |=3D BIT_ULL(NL80211_STA_INFO_TX_RETRIES);
->  	}
-> =20
-> +	if (!(sinfo->filled & BIT_ULL(NL80211_STA_INFO_RX_RETRIES))) {
-> +		sinfo->rx_retries =3D sta->deflink.rx_stats.rx_retries;
-> +		sinfo->filled |=3D BIT_ULL(NL80211_STA_INFO_RX_RETRIES);
-> +	}
-
-The use of deflink here seems ... questionable?
-
-I know we've not really done any stats properly here for link STA
-(patches welcome), but I guess this could be a first one that at least
-sums up all the links like all of these should, and then find a way to
-expose per-link as well?
-
-Although possibly we should just expose per-link to cfg80211, and then
-have cfg80211 sum up for the MLD representation...
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="4jvBTpuTtm1bPuXu"
+Content-Disposition: inline
+In-Reply-To: <9c9e1297e2548b363fc93e774c8546e6ebf4efd6.camel@sipsolutions.net>
+X-Cookie: Evil isn't all bad.
 
 
-Either way, seems odd to add something now that absolutely cannot work
-for MLO?
+--4jvBTpuTtm1bPuXu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
+On Mon, Mar 25, 2024 at 04:29:53PM +0100, Johannes Berg wrote:
 
-johannes
+> But I'm not sure why ARCH=um is different?
+
+It's probably something to do with it lacking a bunch of features of
+normal architectures, especially around hardware support.
+
+--4jvBTpuTtm1bPuXu
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmYBnmUACgkQJNaLcl1U
+h9ALDgf/XYMGzxDASg1Yc8Xy1aYc9Vb0lyDqOp0iIGFDCn4UraS7RU63hYEfJ9R8
+DV/58lF9zliBinTQ4thT4fesKQsvQF51UJNH/WGUxyRg1McSxUtXkSK1DzRJmMKG
+JdFBftK8O4DlXrV96jszwXw9TZZNCaaRY8adwLVSZ1Y6FWlTTsz4miog5lZlIyWB
+N79/pkCbXjFD2MTtCiqNop+TXS1c24fLKH3G146bU4voKKd3Kx7Uo1uiiZQ2ebco
+Ofa+UNn14ETNn0YKsM5vngb5MaD+/EMFpxOPKEtX4fu0BPt+0akIr8UcnM5K6BTi
+z+U6vwsi/C1NgLQQLkS5Kpi0evb0vQ==
+=Pr7g
+-----END PGP SIGNATURE-----
+
+--4jvBTpuTtm1bPuXu--
 
