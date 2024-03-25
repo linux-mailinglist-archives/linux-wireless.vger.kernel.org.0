@@ -1,73 +1,64 @@
-Return-Path: <linux-wireless+bounces-5217-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5218-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C086688ABDA
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Mar 2024 18:35:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 243F188B44A
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Mar 2024 23:39:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41EB5C41644
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Mar 2024 17:23:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 52F80C601B3
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Mar 2024 17:24:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07A4C76053;
-	Mon, 25 Mar 2024 16:15:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E19C8128376;
+	Mon, 25 Mar 2024 16:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="ctE1BbDJ"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="A+GtRDey"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03435762E4;
-	Mon, 25 Mar 2024 16:15:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E8D7839F9;
+	Mon, 25 Mar 2024 16:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711383324; cv=none; b=XDmwFVQSAZ8E58LnymLP9smqwEIuE4vGFCvsxActhb5vyFSdUeO9FRS3KzEN+Y7eFnQ4fP5I7HuYuA4/RykSa7DRz9Sen/tbELi4Hl+U+ZMfPS1nc4Exp73JLpWSv+1SbQ9SCsXZg8lUSpUfUrUkg6gbjvg9+RhrXGBEcRkoRUY=
+	t=1711383400; cv=none; b=rEHygo2iyRxuHoMVYZvqAskmtW7Xm4xiieQdr1Pt0wr1zbrnwS3E6cNwinnVCwJ/ULFBqTpe+Tox2i21kYixyage3pWe1hr3Pi245JwuU0eKh17mT2BiPVOYwWGhPBI7aOdCNZ2VYQAvMxocWza0pLW68NxeyuxNpbDBMrnZhh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711383324; c=relaxed/simple;
-	bh=rjspqZsDWKxvQxYi5AzFtoSi9F2zWzwMbG+B1uCJKOg=;
+	s=arc-20240116; t=1711383400; c=relaxed/simple;
+	bh=vhysHfkaQ11aFpQ0qHmLTGDQbRzjDgbO6RjYe+i/sVM=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=AR7eFesJxHAnFuY11ysVY+Ft+j3zR23re6ifIb7+GrKoyDhLeSWevt7EtAZGpsNNZ1QXNd8Gl0nw9Pnw4GN7Mfi51nFc0KAlmoXlVWpgrDOGNGccd1CUNYaxs0SKRcbfjrnS2rai22Gw8mqGDoKhuuIGslQq8UcdCerxbyyCvMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=ctE1BbDJ; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=Nt7luvbfvUD5SK8FgiJCBDOFWHe3jB5DSVsKISmNd1xNFwTMQBw3YFXzr1tlWgCiRojX7z1vJWyhUmk5IQMTslNUpIpNXlLFNS7BNEfeTcjqGIcvneY/n5eswJpM0NnOqguXPa92hh6R+rV5GiExSykShRnq360sBaAaMe9qaf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=A+GtRDey; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=rjspqZsDWKxvQxYi5AzFtoSi9F2zWzwMbG+B1uCJKOg=;
-	t=1711383319; x=1712592919; b=ctE1BbDJfe/IZ4XW0ueCfiq0gF4JZ6OeTwB9k1n7QChuVBj
-	6x+u5is2EWyP1/wIFdHDyV3DFuiAsL6L/jR+wosHX+uOaBzRb8GUFsMo6m6em2i6LPwGyhrGc8CRi
-	FVt9ZBq5y4PXlLZtWM6YeuUUdTI+I48yDvw1lCxoCOsoLSbdtrSXArQjgHe/nDk+BkwUhsYofki3R
-	TTMLlg9Xc+QFkPu5AsrRqwdm1vCDlrXWnwWAnRSbhiQDOeeivFLQxeUlKTca9vpDIGdPkHQhKdSyj
-	k2j8zA7TNfP8ginAGDFzFnAzjBkewJqfTjjZDCugZuvqmIu1iwgUfKgJu/253gbg==;
+	Resent-Cc:Resent-Message-ID; bh=vhysHfkaQ11aFpQ0qHmLTGDQbRzjDgbO6RjYe+i/sVM=;
+	t=1711383399; x=1712592999; b=A+GtRDey9cKVu1Ia+XKk4zhU7wCcgSSA+tRxzGof/6V5PHR
+	DfzMfEXMZBXnuoL/SZsqyYydwn7nOUPTdEQHW45sqUDxVdJ6EMPb+33NbNevpdwLCafLWiuHZHtYb
+	KcZ7zpgHA+4BI7i11L85XWaiUe8YRncMUbCWoU0BZqXCfPirtLVBBL7wXzWjZL7hU/jROqf4gYuO8
+	h57eXzj+sP1UxlnN+cJ+cPd1LcnVjF6r4PwwNRi+OnXlQE1A6xCR3kOR+UWJ10cun0MVoeYzU+lCP
+	OFdxuj/LYs54RFW9NZyorwWjKAzi6WXM4kqNBtPZMrkiaxlpW4wyaBl782Pq15MQ==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.97)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1romye-0000000DwQZ-3Wpf;
-	Mon, 25 Mar 2024 17:15:13 +0100
-Message-ID: <4e5f3741819e457c5c79d825c6520cb9ee531b95.camel@sipsolutions.net>
-Subject: Re: [EXT] Re: [PATCH v9 0/2] wifi: mwifiex: add code to support
- host mlme
+	id 1ron00-0000000DwVC-2aTa;
+	Mon, 25 Mar 2024 17:16:36 +0100
+Message-ID: <0d314451371764362a43c4368469c2be6a17eb8c.camel@sipsolutions.net>
+Subject: Re: kunit alltests runs broken in mainline
 From: Johannes Berg <johannes@sipsolutions.net>
-To: Brian Norris <briannorris@chromium.org>, David Lin <yu-hao.lin@nxp.com>
-Cc: Francesco Dolcini <francesco@dolcini.it>, "kvalo@kernel.org"
- <kvalo@kernel.org>, "linux-wireless@vger.kernel.org"
- <linux-wireless@vger.kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, Pete Hsieh <tsung-hsien.hsieh@nxp.com>, 
- "rafael.beims" <rafael.beims@toradex.com>, Francesco Dolcini
- <francesco.dolcini@toradex.com>
-Date: Mon, 25 Mar 2024 17:15:11 +0100
-In-Reply-To: <Zf4rDifM6bLuqpX2@google.com>
-References: <20240306020053.18054-1-yu-hao.lin@nxp.com>
-	 <20240315094927.GA6624@francesco-nb> <ZfTspRKFgrO9xCTH@google.com>
-	 <969e95ccc4a1d35b45212b7fcb536ee90995e3b5.camel@sipsolutions.net>
-	 <PA4PR04MB9638D253189D6DD330B198B2D1332@PA4PR04MB9638.eurprd04.prod.outlook.com>
-	 <PA4PR04MB9638BE73DDBCE1CE8AA32BA8D1332@PA4PR04MB9638.eurprd04.prod.outlook.com>
-	 <b2d9a7ef53c5ab4212617e8edf202bbafe52e2f8.camel@sipsolutions.net>
-	 <ZftaJEIeNfV7YrVo@google.com>
-	 <PA4PR04MB9638F5037D1AB9BCF51CC9D9D1322@PA4PR04MB9638.eurprd04.prod.outlook.com>
-	 <Zf4rDifM6bLuqpX2@google.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: Brendan Higgins <brendanhiggins@google.com>, David Gow
+ <davidgow@google.com>,  Rae Moar <rmoar@google.com>,
+ netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ kunit-dev@googlegroups.com, x86@kernel.org, linux-wireless@vger.kernel.org
+Date: Mon, 25 Mar 2024 17:16:35 +0100
+In-Reply-To: <c01d6e1c-1dad-4012-b8b0-dccf19b2e3f2@sirena.org.uk>
+References: <b743a5ec-3d07-4747-85e0-2fb2ef69db7c@sirena.org.uk>
+	 <9c9e1297e2548b363fc93e774c8546e6ebf4efd6.camel@sipsolutions.net>
+	 <c01d6e1c-1dad-4012-b8b0-dccf19b2e3f2@sirena.org.uk>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
@@ -79,63 +70,19 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
-On Fri, 2024-03-22 at 18:06 -0700, Brian Norris wrote:
-> We appreciate it's well tested, but testing is still orthogonal to the
-> architectural questions. Architectural questions are important because
-> they affect the future maintainability of the mainline Linux wireless
-> stack. If the assumption is that *either* a driver is a cfg80211 driver
-> (with firmware-MLME, etc.) or a mac80211 driver (with host MLME), then
-> your series is breaking those assumptions.
+On Mon, 2024-03-25 at 15:55 +0000, Mark Brown wrote:
+> On Mon, Mar 25, 2024 at 04:29:53PM +0100, Johannes Berg wrote:
+>=20
+> > But I'm not sure why ARCH=3Dum is different?
+>=20
+> It's probably something to do with it lacking a bunch of features of
+> normal architectures, especially around hardware support.
 
-Maybe, maybe not, actually. The auth command _is_ somewhat special in
-that it mostly hands stuff down from userspace via cfg80211, but does
-require sending frames. As long as you don't have full offload, at
-least.
+Feels though that should make it *more* likely to not have support for
+some hardware driver like iwlwifi, not *less* :-)
 
-The way I see it, the issue here isn't necessarily the fact that this
-uses the auth command (and then requires assoc, of course), but that we
-see here this is "growing" towards a more mac80211-like model, with the
-code duplication (albeit little that it is today) implied by that. To
-me, it seems like the firmware is moving into the "oh we can't do all
-_that_ in firmware" territory, and that brings it closer to mac80211.
-
-At the same time, as you say, mac80211 is doing more and more offload
-capability, so it seems like apart from "today the firmware requires an
-assoc command rather than assoc frame processing in the host", it's
-actually not _that_ far apart any more!
-
-Now that may be an issue in the short term, but I wouldn't be surprised
-at all if desiring to implement FILS and other new features in this
-space would make the driver move to assoc frame processing in the host
-as well, because it's getting more and more complex, just like auth.
-
-At which point - yeah the APIs are still significantly different, but
-again we'd end up implementing something that exists in mac80211 today
-and taking it into mwifiex?
-
-> It may be harder to add
-> future additions to the mac80211 stack [*], if we have to add new
-> concerns of a non-mac80211 implementation in the mix.
-
-Not sure that makes a difference for mac80211 in itself, obviously
-changes in this space would then affect mwifiex, but that shouldn't be
-much of an issue.
-
-I'm less worried about this individual patch than what it says about the
-direction this driver and firmware are taking, and I fear we'll end up
-in a situation where over time this driver actually gets to a point
-where it should be using mac80211, but because it's such a piece-meal
-affair (auth frames now, etc.) and large architectural change, they'd
-never actually do that.
-
-To be fair, that might also require firmware API changes in some way. I
-used to think that was something we should never require, but I'm not so
-sure now any more - certainly we've changed our (Intel) FW API in
-support of Linux architecture many times, and overall that's for a
-better product (on Linux at least.)
-
-Also: David, I'd appreciate if you actually took this discussion
-seriously; so far you've not really contributed any technical arguments.
+Anyway, does it fix it for you as well? if yes, where/how should we get
+that in?
 
 johannes
 
