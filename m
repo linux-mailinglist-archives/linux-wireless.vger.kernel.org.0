@@ -1,87 +1,97 @@
-Return-Path: <linux-wireless+bounces-5173-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5174-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2951388A452
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Mar 2024 15:24:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CE8E88A4E0
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Mar 2024 15:42:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0035A2C487D
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Mar 2024 14:24:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C0641F3EF98
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Mar 2024 14:42:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6863156974;
-	Mon, 25 Mar 2024 10:58:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC7305A10A;
+	Mon, 25 Mar 2024 11:41:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qRu+jECm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iH0CeQlA"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12CE112BF1C;
-	Mon, 25 Mar 2024 10:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 391C818D876;
+	Mon, 25 Mar 2024 10:49:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711362355; cv=none; b=JXE2dM/fOUGU6tBbNN78U09UYoKKyCCR4LeasZIfIFKvPpyvIbqlv1RaMEo6mgRPLEru4bzC0suAOFDDskTQB/KhQNeKBHKVxtqaUsRf9wvWeBdyQET7rZHNGOH8jXKKx8IxjcnHy0Pi1Xaw19brTs/0sSbW2pJyZrKh/NKH5cE=
+	t=1711363800; cv=none; b=RQEBZl91nt7+4/xwh0omlYlIQk6VGeBHwllkZV7AUpboGYro+eQfC+vWuTAD5QrVnQKjL2X5mBMKqw83Yox/Dlh+bCys6phyc/t33OISws5hIMyDDZWnr74YcZd8vhg3mhbQv47SyR7sI3k52BD/7vog5J6P/scJUTcRruYJahA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711362355; c=relaxed/simple;
-	bh=rgKrPMeIinA+Y9vEAPkdP4HEQqq6d2MoOEynV9a6Y7E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SJXuz6F/dYr0ZYszd8GwIXj9vJ0zVChBFtXhVdjusRABvF3SFXwG5V6UYJA+dLdrVnFn/Taw9hZvDgKbA1WRCHnQJ8wDZea74nDbDf9DDn7g6c2uSrZMYAq6nN0JLeo5uyvXwDPA/it9RNyY/9ObAmIDi9isY2mstS45q7B1Ecs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qRu+jECm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FAD6C433C7;
-	Mon, 25 Mar 2024 10:25:54 +0000 (UTC)
+	s=arc-20240116; t=1711363800; c=relaxed/simple;
+	bh=4APY93stsQD/f+BZlZm5PfAh7Rhqxtgpj8c6AP25p3k=;
+	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
+	 Cc:Message-ID:Date; b=WlxfEnupdP0tZHf315gLYOyBp6X8eX5j/gzheXfrUj1qHf1L8nrTA7Twyo5yuFtt7Z91YnDxwzYVFEd1D4ZEIvd6AmQnbcDUzr8zVFVb66cYUmW7L46rnGgcsFKmIlGF/ncHf6l4f2dZXtrXxp/3+cnSRs/8qdR5uMEzgfCfrZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iH0CeQlA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E7EDC433F1;
+	Mon, 25 Mar 2024 10:49:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711362354;
-	bh=rgKrPMeIinA+Y9vEAPkdP4HEQqq6d2MoOEynV9a6Y7E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qRu+jECmQwTaKa8Gb0BeCm7gDSyx2qjSYQiak14PNH8+PmPNjENAELcNDC7XoZw9S
-	 YNjsmiJAAij5d5YfS7l7GiaD4fHfqLMMFbbkO03Ddix7mod4pHOPuIQY3qKIeCakRA
-	 WM1bMxq1YVRUg4awMcV1HdKqX7cob6a29zSX88j28lLuI5IWuuEF72KlrHWhCZFN28
-	 7gVmLnOYahCteB3YAFw7bd7Yri8RYI6TqB3/ZsNbZkHmexUaHZ9tACxbySScfyhRMF
-	 cd3UjlUSnkh/iDREMlHHZrQA7XiwfVEz0KJxdKbfJQWSvoUHdzY+oJuHACHGsBO6u+
-	 HTN9D7nUCRp/g==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1rohWj-0000000016n-1mKx;
-	Mon, 25 Mar 2024 11:26:01 +0100
-Date: Mon, 25 Mar 2024 11:26:01 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Johan Hovold <johan+linaro@kernel.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] wifi: mac80211: fix mlme_link_id_dbg()
-Message-ID: <ZgFROaFARFytQPMM@hovoldconsulting.com>
-References: <20240325085948.26203-1-johan+linaro@kernel.org>
+	s=k20201202; t=1711363798;
+	bh=4APY93stsQD/f+BZlZm5PfAh7Rhqxtgpj8c6AP25p3k=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=iH0CeQlApW8aTUVFbZu1b/HMbevfcepTiv36TcCR+vHgR2RzsGJcAAXMusTOj93Sa
+	 e5tsN+k/nkCbm86QSwcKYyySqK5tbBlQi7TMejLo5C83kE3JKcaSizi8GN9341lKPH
+	 OnfZEv5C1nuKWFAt9QvTLPBlKvt6GupcrUbviHoHueVIg+DIIn+75aPn8N5WtmRgsO
+	 tnc5vln5FjMjASrvYKsaaoeJG/Z9PhuVvkP/LIROwqSd2zEFXA6z8nwhbysKad3sQ1
+	 Nbf4H2WNL417ms1KiSSpEgBOvYdsvg6i2TxnA1B1MLtugurRK313lNurYiEj8YTqJM
+	 yOzT5kZxK/Lvw==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240325085948.26203-1-johan+linaro@kernel.org>
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2 1/3] wifi: ath: Convert sprintf/snprintf to sysfs_emit
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20240315055211.1347548-1-lizhijian@fujitsu.com>
+References: <20240315055211.1347548-1-lizhijian@fujitsu.com>
+To: Li Zhijian <lizhijian@fujitsu.com>
+Cc: linux-kernel@vger.kernel.org, Li Zhijian <lizhijian@fujitsu.com>,
+ Jeff Johnson <jjohnson@kernel.org>, linux-wireless@vger.kernel.org,
+ ath11k@lists.infradead.org, ath10k@lists.infradead.org
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <171136379518.1022746.15442509873111996623.kvalo@kernel.org>
+Date: Mon, 25 Mar 2024 10:49:56 +0000 (UTC)
 
-On Mon, Mar 25, 2024 at 09:59:48AM +0100, Johan Hovold wrote:
-> Make sure that the new mlme_link_id_dbg() macro honours
-> CONFIG_MAC80211_MLME_DEBUG as intended to avoid spamming the log with
-> messages like:
+Li Zhijian <lizhijian@fujitsu.com> wrote:
+
+> Per filesystems/sysfs.rst, show() should only use sysfs_emit()
+> or sysfs_emit_at() when formatting the value to be returned to user space.
 > 
-> 	wlan0: no EHT support, limiting to HE
-> 	wlan0: determined local STA to be HE, BW limited to 160 MHz
-> 	wlan0: determined AP xx:xx:xx:xx:xx:xx to be VHT
-> 	wlan0: connecting with VHT mode, max bandwidth 160 MHz
+> coccinelle complains that there are still a couple of functions that use
+> snprintf(). Convert them to sysfs_emit().
 > 
-> Fixes: 310c8387c638 ("wifi: mac80211: clean up connection process")
-> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+> sprintf() will be converted as weel if they have.
+> 
+> Generally, this patch is generated by
+> make coccicheck M=<path/to/file> MODE=patch \
+> COCCI=scripts/coccinelle/api/device_attr_show.cocci
+> 
+> No functional change intended
+> 
+> CC: Kalle Valo <kvalo@kernel.org>
+> CC: Jeff Johnson <jjohnson@kernel.org>
+> CC: linux-wireless@vger.kernel.org
+> CC: ath11k@lists.infradead.org
+> CC: ath10k@lists.infradead.org
+> Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-Sorry about the resend. The original patch is here:
+Patch applied to ath-next branch of ath.git, thanks.
 
-	https://lore.kernel.org/linux-wireless/20240324160559.18861-1-johan+linaro@kernel.org/
+fa1a4f15bdca wifi: ath: Convert sprintf/snprintf to sysfs_emit
 
-Lore appears to be acting up, but before I realised that I thought I'd
-messed up my mail setup.
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20240315055211.1347548-1-lizhijian@fujitsu.com/
 
-Johan
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
 
