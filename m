@@ -1,145 +1,86 @@
-Return-Path: <linux-wireless+bounces-5198-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5199-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDF5988A8AA
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Mar 2024 17:15:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87DE088A91C
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Mar 2024 17:26:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 538F41F67927
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Mar 2024 16:15:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 439CB380919
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Mar 2024 16:26:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA22E1474A5;
-	Mon, 25 Mar 2024 14:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35BD26E616;
+	Mon, 25 Mar 2024 14:27:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="QRUuEYaJ"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="rWp4NeTC"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D90146D6B
-	for <linux-wireless@vger.kernel.org>; Mon, 25 Mar 2024 14:09:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A083E128377
+	for <linux-wireless@vger.kernel.org>; Mon, 25 Mar 2024 14:27:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711375767; cv=none; b=oa8WnwO2kwOCNtL71JWtmUh6564/q339qJHzEZ1L8bPPHF5wou2TEI96NLd0sHtm9MBOAdXWIYxSfkPO3VOTdnzp2y9xihFShzs5DlU9RN/YtbogiFpQ0J9RLqHfPWUIPUrBApZXD0r++elmu4ZMefe1WeDTVHZNBC2Jnxd5aWQ=
+	t=1711376865; cv=none; b=kMnpLHz1OBBHQQXeP/qIPWtSQuzCAgb5NM5XR0bM5n1Gu+0f5f0+thD4oMb136tBF4v5DwMudZcm2SuKMlVVi+Y9ppzABUdyhjYlJPLgFDltVWtKx4RcPh8RlKKcZSNKoq0bjkK4qcT1oVk6tWmSQ6PZ/LQDc8el5vacaoknUsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711375767; c=relaxed/simple;
-	bh=Q186ZwCP59wb65acR46Ym/x35a2ynPh5L0W6/TiLR8U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=utznHyzdfsl+QmwB1HfZ6aDWxWJzva3VDJ4Zo6zMbG5TrL8byfa1M/I8iUmBEayYwY3Ivtxp5U2tlRoPMSbF/JGkwAw52JUknAfIBCtniKNNwvQT3GKGuZwBM8Cma8NCyoAv5on/eBMUq61545MpLrwdT5raoxLEmEVV2KOSRro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=QRUuEYaJ; arc=none smtp.client-ip=209.85.208.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2d68c6a4630so53312241fa.3
-        for <linux-wireless@vger.kernel.org>; Mon, 25 Mar 2024 07:09:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1711375764; x=1711980564; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CfuObMCkrCoZSR2Wc4+k3mUI6EGOtW5n3H7jAAQzsO8=;
-        b=QRUuEYaJWrnftGnBemS05m1T5cXGEomfYiCsWFZXCjdNRXCcZmsL7BZLlhWiRCN2vu
-         Q1tHYVdnJgNpynusyfNkbWelCltqFsu9g5EqJ/ZRlLbYnpPEKEvdEdzcOKfvKrIEfOkA
-         1EjcBYVy51FpDVJX6F7TGkFVcvqn3unil0+D6Cat2FVJprbQGuoJhR8reNm33dp7amG6
-         JDgQkuWJgVtyK+r+2xxDneepDbxQKIqJSLbXjJ8Zs2Hyz2hvKGhEs5C+QcwZTAxHCNBp
-         j+2JWTB6vMEWp6de1QHco2cs55wikJo0Pd0PqTKnLqE2F1AjU6nGBEDCzDasSbDML0/8
-         j7QA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711375764; x=1711980564;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CfuObMCkrCoZSR2Wc4+k3mUI6EGOtW5n3H7jAAQzsO8=;
-        b=nmB2H2PZRWy3Aow38uuwsU35ZN7zdV25XuAVViPOUSXQpHf6zXsMXZaxM93Z1bm7La
-         E9Tx7Yudq7Xn1RhbGPGyOXTOGQvsOYqdD7j+Jw8h9Aycr1UvOLj19YjybxOTaIuHL4eX
-         B7nxDHy+eBWlGGzCu5/X6rIGing3L9YQF8ZobVw+a6kytKhzNtmicYGnlOEcv/lDWCix
-         T+zmxFhieEWodfYXhwhKmHsVNX+8VD0IISAsNpQabOKAoQnaJPfq6sf0InJyKw96/JNk
-         GQGGEdofcC81M0DN+fr3P+1DkYHB08IMTQnh7arR8SSIKphKPtYWXByu/dVHOdsURLnZ
-         5yFQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU9QELJVC5MqMJPtPbDPdAw4c+VRbSLqk5gfdsrAOjVitr5+xLFBkpjNZu1gTtHswEbFJDyqjmPfZRg+DSKSYhqzQzpk+G6etlv6Itb7oA=
-X-Gm-Message-State: AOJu0YxV2hmGsKWy4BK0YXXumc3k/MoL+HtWaAGlFY4J+myIVoWPMhqa
-	UMNC5R7uGVqy5zsuBcrvMrwLdeMbn8PL/6UQ0xPJiT0IiK/weVpaW1bUCyEqZvLtV+MUpUtP11x
-	AWlcNDKAiYlmG8pESiHctN/LZGATXuz58efzMqQ==
-X-Google-Smtp-Source: AGHT+IEvJFLfJKGkEqnYgSEId2a/oSfTm8lmiWB7lZbWVsuHFW1Kj1Md8cKVyFWUl5FdFvxVvX1pTsDznN8+aT1HRMo=
-X-Received: by 2002:a2e:a590:0:b0:2d4:62b7:4c7b with SMTP id
- m16-20020a2ea590000000b002d462b74c7bmr5582449ljp.51.1711375763943; Mon, 25
- Mar 2024 07:09:23 -0700 (PDT)
+	s=arc-20240116; t=1711376865; c=relaxed/simple;
+	bh=PSQZ+Ozdu8cQPLJxQXrDn9n6O7TZmAyAIkZ18i1ub1o=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=I0krzM2QiIX2poz5ylr0LmqNHq4hUWw4+XRUwjUK2n/CvxejtSwZCQ5do9wxYSZd8uS7IFVpAaCpdsJGhBZerkZKxFQ7jOKtKgF6ff3zwrdPQPIt0rKRL7P4R6ijrrAeU5iGeP4vj+IG4Tjhdk+ektYuwrKjPGIUXwy+r1BlTlI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=rWp4NeTC; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=SBbUL15zjlK6CBiHDHkylojz2BS2Xhc/F/dz7Eh30wY=;
+	t=1711376862; x=1712586462; b=rWp4NeTC33cj4VoHh6Pv3xe29pvfObAEhYm6PlmGZp90Tms
+	cnAbwFx8lz38cDoJ0gMqx0cthSXJPjO7pNXGduCW63oRbkURhpyDUDNY4lMO81eIJZTFNR+OxEIHo
+	uOV7n/kszbYjQihK1c/7OHW8ZOl6Vkwu+v8wM2wssxQp4gR2lGVphw8DfQVPbjB8GUn+3iJWdjC2w
+	BH1idrLY1ZJXjqUMZf8Rj8fxPcmEBA3V+zQEFAKHQ6QZqWga+gW4SuRElvhleqUlKcXeQXILmyapX
+	P6NYMmccVlYiP1I4bRGR1EbOE1XxoVae92CEqJENBkiSdUztjKT//QB00xHJ/2kw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rolIZ-0000000DsNl-3zfs;
+	Mon, 25 Mar 2024 15:27:40 +0100
+Message-ID: <b4fd4267dd4751a85a472c5daa137c06f5303fc1.camel@sipsolutions.net>
+Subject: Re: [PATCH 15/17] wifi: iwlwifi: mvm: select STA mask only for
+ active links
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Cc: linux-wireless@vger.kernel.org
+Date: Mon, 25 Mar 2024 15:27:39 +0100
+In-Reply-To: <20240320232419.c6818d1c6033.I6357f05c55ef111002ddc169287eb356ca0c1b21@changeid>
+References: <20240320212638.1446082-1-miriam.rachel.korenblit@intel.com>
+	 <20240320232419.c6818d1c6033.I6357f05c55ef111002ddc169287eb356ca0c1b21@changeid>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240325131624.26023-1-brgl@bgdev.pl> <20240325131624.26023-5-brgl@bgdev.pl>
- <87r0fy8lde.fsf@kernel.org>
-In-Reply-To: <87r0fy8lde.fsf@kernel.org>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Mon, 25 Mar 2024 15:09:12 +0100
-Message-ID: <CAMRc=Mc2Tc8oHr5NVo=aHAADkJtGCDAVvJs+7V-19m2zGi-vbw@mail.gmail.com>
-Subject: Re: [PATCH v6 04/16] dt-bindings: net: wireless: qcom,ath11k:
- describe the ath11k on QCA6390
-To: Kalle Valo <kvalo@kernel.org>
-Cc: Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Saravana Kannan <saravanak@google.com>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Arnd Bergmann <arnd@arndb.de>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Alex Elder <elder@linaro.org>, Srini Kandagatla <srinivas.kandagatla@linaro.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Abel Vesa <abel.vesa@linaro.org>, 
-	Manivannan Sadhasivam <mani@kernel.org>, Lukas Wunner <lukas@wunner.de>, 
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, linux-bluetooth@vger.kernel.org, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-pci@vger.kernel.org, linux-pm@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-malware-bazaar: not-scanned
 
-On Mon, Mar 25, 2024 at 2:57=E2=80=AFPM Kalle Valo <kvalo@kernel.org> wrote=
-:
->
-> Bartosz Golaszewski <brgl@bgdev.pl> writes:
->
-> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> >
-> > Add a PCI compatible for the ATH11K module on QCA6390 and describe the
-> > power inputs from the PMU that it consumes.
-> >
-> > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->
-> [...]
->
-> > +allOf:
-> > +  - if:
-> > +      properties:
-> > +        compatible:
-> > +          contains:
-> > +            const: pci17cb,1101
-> > +    then:
-> > +      required:
-> > +        - vddrfacmn-supply
-> > +        - vddaon-supply
-> > +        - vddwlcx-supply
-> > +        - vddwlmx-supply
-> > +        - vddrfa0p8-supply
-> > +        - vddrfa1p2-supply
-> > +        - vddrfa1p7-supply
-> > +        - vddpcie0p9-supply
-> > +        - vddpcie1p8-supply
->
-> I don't know DT well enough to know what the "required:" above means,
-> but does this take into account that there are normal "plug&play" type
-> of QCA6390 boards as well which don't need any DT settings?
->
+On Wed, 2024-03-20 at 23:26 +0200, Miri Korenblit wrote:
+>=20
+> -		link_sta =3D
+> +		mvm_link_sta =3D
+>  			rcu_dereference_check(mvmsta->link[link_id],
+>  					      lockdep_is_held(&mvm->mutex));
+>  		if (!link_sta)
+>  			continue;
+>=20
 
-Do they require a DT node though for some reason?
+I forgot to adjust this condition, and as we found out, that will be
+needed during link switch :)
 
-Bart
+I'll fix that when I apply it.
+
+johannes
 
