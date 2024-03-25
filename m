@@ -1,84 +1,88 @@
-Return-Path: <linux-wireless+bounces-5225-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5226-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E1CC88ACDE
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Mar 2024 19:02:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EF9888AD13
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Mar 2024 19:09:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FC7A1C3BD4D
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Mar 2024 18:02:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F0E31C28D55
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Mar 2024 18:09:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871B614A8E;
-	Mon, 25 Mar 2024 17:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4028737145;
+	Mon, 25 Mar 2024 17:30:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eM49x+yJ"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="M9PQwdDY"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8AFEEA8
-	for <linux-wireless@vger.kernel.org>; Mon, 25 Mar 2024 17:22:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90ABD50272
+	for <linux-wireless@vger.kernel.org>; Mon, 25 Mar 2024 17:30:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711387361; cv=none; b=odNVu6mv0tgCngkdYftfCWaP8dmo69p3FMjbZ8Aq6ach1ED5bRL6BTttnz7YFooG9U95V2Mp5V48vEsSPBNBxlLjMmvwv1cZb3xwoV4ljT8XvTTpuageJj0VeyoBGRoWygkNGxuGOE6YCeBSnSNkmigtTecSyeedL+MH/+ViLZI=
+	t=1711387837; cv=none; b=HlW637Dfm//NPcI0wabDpQm2a8Plhettjma5QK4U0Hl2B4sLUwMur582/C9zbHj/of0XeqVhLCMjArwJs/12tTv3eCdV+JXZY0OEhXAFuZLAv+x1RBBWn4OMViONcz3i+B9VI2yfYFAnEscBDvtcbIG80cxZ9mebfgF5LEW4Nfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711387361; c=relaxed/simple;
-	bh=JZTxDP0SzyHpcG7qdAUA28Ye/YlJBVeBvrW2Vf5JUEI=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=iU+02Gs9vyhAElMS9Bpel6polJK4oPunADdDvq2+yukeOwVkHh371VJgXVsv63wsuUsdEiGELjaTag37dxmXL1DN/j58exEfrtipHHs5hT+6d7uEUyUo2T0tdYGnskApe65jn3R2tNk26ICALsUd8IEAPCJyXxTpgGkZjmIREYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eM49x+yJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B920C433F1;
-	Mon, 25 Mar 2024 17:22:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711387360;
-	bh=JZTxDP0SzyHpcG7qdAUA28Ye/YlJBVeBvrW2Vf5JUEI=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=eM49x+yJAaeZLs2lFuNZ0Ivs6Fdb5fEBl0rn0sikquEQ1zAilfaPUjiHNEnwx4pvp
-	 qsADHPiZgR5KAfzvYS3x86OaMbTMG8JNeJ42keQAZU2a77Frb6pf1Z0avXXseNsjA+
-	 wLqC3+J0FdWwoBmdyPlsRkV6bwLwzLnVP2q1Evx2Y2QZ211LHaSf7987p3AaWAtPMt
-	 +Pyk82EiGEgYF1jjJ+qqCpt+1g+219d/egHHzyb0mMAhj5HRxGhphqtmCROVV8MK82
-	 PMZHVUemEinJtR+Ciu5ScvFrCxbN9pjlGQZaSUtd87lYxzfv8qWxg4RmwoGl/jvdcj
-	 +wlQohrOPoaMg==
-From: Kalle Valo <kvalo@kernel.org>
-To: nbd@nbd.name
-Cc: lorenzo.bianconi@redhat.com,  linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v2] wifi: mt76: mt7915: workaround dubious x | !y warning
-References: <20240325155838.1558680-1-kvalo@kernel.org>
-Date: Mon, 25 Mar 2024 19:22:38 +0200
-In-Reply-To: <20240325155838.1558680-1-kvalo@kernel.org> (Kalle Valo's message
-	of "Mon, 25 Mar 2024 17:58:38 +0200")
-Message-ID: <87cyri1b1d.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1711387837; c=relaxed/simple;
+	bh=XN6jSiwUYPrnwlVKoMqbblGFuCTk19zWzlzhzTpPRj0=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=JI9CT37lCS8zPbMpwpbUrYHMuW6ZozRiA6/X8TIS6dlELcXcthXkpPKWXq68KDc4gRQl1cv5srEgJiJMlZqRmAGaWlEiLsiqAKd7eCmIziTMFv2SVvyikJFbZB/RLpRJjknmKLcF5NAOACm0iGAEpmChR681Vj2Iex+ADaB/MyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=M9PQwdDY; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=nnKY1T08A15M6+1Z34Dh4uInNkexLpDJIf7Y4hljiKU=;
+	t=1711387835; x=1712597435; b=M9PQwdDYn0M447Upu3Frfy0DREuvBtfOPwXD6HeNY8ZC7SI
+	U5u2QX0h5C0dg3Fyqnzd6NM3llRbmMEd0tNB+QzBk6hHq5HdprOYqDoMNJjLgmEHp9cp8bz3pDMAf
+	+tHO4DKy0H+ESxT+DyiPFDUOqvaP9Wyv6ir9EDEdHn0Hb21n6YV6sNoobawyHBqfW0WJIPdaNL5lM
+	tkcCD3PFGAnTV9GjbJWE/snEp3ZjXdRzQmaZUoNSG5/Bl9uR/bsROYVh4Kho5GDhVqhIGTOTAty2Q
+	WMxUs4TBjWvL+mLBafI6aHhsJb18yiajvns7pZYqoH9zXijZztwcSRT3jp/EcSTA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1roo9Z-0000000DzFW-0yRT;
+	Mon, 25 Mar 2024 18:30:33 +0100
+Message-ID: <449f6afbc20c57f704dbeabc3a8eac8fec676405.camel@sipsolutions.net>
+Subject: Re: [PATCH] wifi: mac80211: Ensure links are cleaned up when driver
+ fails.
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Ben Greear <greearb@candelatech.com>, linux-wireless
+	 <linux-wireless@vger.kernel.org>
+Date: Mon, 25 Mar 2024 18:30:32 +0100
+In-Reply-To: <5fe480c4-fa39-1d29-a5e9-ba2447b08dd2@candelatech.com>
+References: <20231111001023.1335122-1-greearb@candelatech.com>
+	 <5fe480c4-fa39-1d29-a5e9-ba2447b08dd2@candelatech.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-malware-bazaar: not-scanned
 
-Kalle Valo <kvalo@kernel.org> writes:
+On Mon, 2024-03-25 at 09:10 -0700, Ben Greear wrote:
+> On 11/10/23 16:10, greearb@candelatech.com wrote:
+> > From: Ben Greear <greearb@candelatech.com>
+> >=20
+> > On cleanup paths, links need to be deleted even if the driver fails
+> > to do so.  Add a flag to cause driver errors to be ignored in
+> > appropriate cases.
+> >=20
+> > This appears to fix some kernel warnings and crashes.
+>=20
+> Hello Johannes,
+>=20
+> Any interest in this patch?
 
-> Sparse warns:
->
-> drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c:526:9: warning: dubious: x | !y
->
-> Workaround it by using the '?' operator. Compile tested only.
->
-> Signed-off-by: Kalle Valo <kvalo@kernel.org>
-> ---
-> v2:
->
-> * use parenthesis
+Well, you threw a bunch of unrelated stuff into it, and didn't even
+really explain why it's needed ... so not really?
 
-Felix&Lorenzo, if this looks ok to you I would like to take this
-directly to wireless-next. I'm aiming that the next wireless-next pull
-request is sparse warning free :)
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+johannes
 
