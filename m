@@ -1,73 +1,53 @@
-Return-Path: <linux-wireless+bounces-5259-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5260-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE6B988B619
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Mar 2024 01:31:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8342F88B6BC
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Mar 2024 02:22:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2CB81C363FD
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Mar 2024 00:31:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9BB51C31CBF
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Mar 2024 01:22:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 424E914A85;
-	Tue, 26 Mar 2024 00:31:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="tqQEq4jA"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E3791CAB5;
+	Tue, 26 Mar 2024 01:22:00 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D96D1B7E4
-	for <linux-wireless@vger.kernel.org>; Tue, 26 Mar 2024 00:30:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C69361BF58
+	for <linux-wireless@vger.kernel.org>; Tue, 26 Mar 2024 01:21:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711413060; cv=none; b=DiAi7PuF2mXuSV8vnZdOVsSEWHYVhIL6pCHxNbZP5rZj6G9/2BFN3T/FCavLkvJqiCtIUpPLLztjiwWfZbwLFham/vqZa0OUIEGYMNhq9ZIvYHr7hWjU3yC9zywpOGZws/HGLZNGwrOzr630y27PUzP9xny2Oa7j8kww3opYbsQ=
+	t=1711416120; cv=none; b=VgiQ1zRO56YBx84HIdrhRgvnaLbUhBHTilt/VI/CrS4HyZQRyIArgFZPfZ8Lo7i9LyC1oDFd1bZHpXWW1GBCtxKvfztg00zwtKx5hSbHNt4/lmbauH7RtzLEnd3VzD5wHksNTzV9+K1/IW7KDJOAfyadNGNzhel1KANAPvqGpI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711413060; c=relaxed/simple;
-	bh=+2QdTD/7XZNbn+OCqxENYNmtQGOxatH1Ztd+gW9L1P8=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=bWuowL1Co5P0PJXPIl+SqxudvRnfxcBQM4H3YtnJbPLy3Kj6f7D/lD/a+wr5UnLZlVGgsHlf3cXUIJ7n1ctmMUcJfAnCk6Q0jYUZaBCcJdtzyASLjV2CkCv6CK6tWTvB209Dwz8CWvos2vYwFmbFRSQN59Ro8AF1IOny6vf6pDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=tqQEq4jA; arc=none smtp.client-ip=210.61.82.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 1a80b3e6eb0811ee935d6952f98a51a9-20240326
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=d5EWYJtwADKsUoaus/ouDpTQKGw+PIs1wCdfP57Bel0=;
-	b=tqQEq4jAYEFsbFaGdNd5L4b6dL2tz00J/DCSwmmVMB5lVUfB+4jnCkWNFgRFd9coiYI6LJPLLr4jfI9cnYGJ1dcGtp5gD92V8BMfeyLT1xbb4v8J7RAaItC25/llqUhysKstSP39d0L3PXoh2T8HhAvkHWyt3PO/76vd2Wm+24Q=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.37,REQID:eb72bd18-ead9-4782-acbb-009d80d698cb,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:6f543d0,CLOUDID:6cda5000-c26b-4159-a099-3b9d0558e447,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-	RL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,
-	SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 1a80b3e6eb0811ee935d6952f98a51a9-20240326
-Received: from mtkmbs14n2.mediatek.inc [(172.21.101.76)] by mailgw02.mediatek.com
-	(envelope-from <michael-cy.lee@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 967355950; Tue, 26 Mar 2024 08:30:53 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
+	s=arc-20240116; t=1711416120; c=relaxed/simple;
+	bh=J/qb+7xNJoBXCZQrlrAmOQqh9Tib5iErWfxPRaQA2nE=;
+	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
+	 Content-Type:Message-ID:Date; b=suC+Mvjxs1wD7BD6A/1YZt3xoOmasp49PVHbfZ2GC8rpDukMZDCwHF0hioC+ipY4gzNGS+yKhNpgodexfe0FbCwWBbSb1jb/Lj2qRnszZ37ERM3KKUKOjbmRdYO0fiRl/3xkG6d0kfstGEoCasSUgy2/BWQxqx89OfoOtikKjA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 42Q1LgCB23435110, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 42Q1LgCB23435110
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 26 Mar 2024 09:21:43 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Tue, 26 Mar 2024 08:30:51 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Tue, 26 Mar 2024 08:30:51 +0800
-From: Michael-CY Lee <michael-cy.lee@mediatek.com>
-To: linux-wireless <linux-wireless@vger.kernel.org>
-CC: Johannes Berg <johannes@sipsolutions.net>, Felix Fietkau <nbd@nbd.name>,
-	Lorenzo Bianconi <lorenzo@kernel.org>, Evelyn Tsai
-	<evelyn.tsai@mediatek.com>, Money Wang <money.wang@mediatek.com>,
-	linux-mediatek <linux-mediatek@lists.infradead.org>, Michael-CY Lee
-	<michael-cy.lee@mediatek.com>
-Subject: [PATCH] wifi: mac80211: extend IEEE80211_KEY_FLAG_GENERATE_MMIE to other ciphers
-Date: Tue, 26 Mar 2024 08:30:36 +0800
-Message-ID: <20240326003036.15215-1-michael-cy.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+ 15.1.2507.35; Tue, 26 Mar 2024 09:21:43 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Tue, 26 Mar
+ 2024 09:21:43 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Ping-Ke Shih <pkshih@realtek.com>, <kvalo@kernel.org>
+CC: <ku920601@realtek.com>, <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH] wifi: rtw88: coex: Prevent doing I/O during Wi-Fi power saving
+In-Reply-To: <20240320075047.31810-1-pkshih@realtek.com>
+References: <20240320075047.31810-1-pkshih@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -75,78 +55,33 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
+Message-ID: <45afda7b-db1e-485d-af67-21fc13577fc8@RTEXMBS04.realtek.com.tw>
+Date: Tue, 26 Mar 2024 09:21:43 +0800
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-This commit extends the flag IEEE80211_KEY_FLAG_GENERATE_MMIE to
-BIP-CMAC-256, BIP-GMAC-128 and BIP-GMAC-256 for the same reason that the
-flag was added.
-(a0b4496a4368: mac80211: add IEEE80211_KEY_FLAG_GENERATE_MMIE to ieee80211_key_flags)
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-Signed-off-by: Michael-CY Lee <michael-cy.lee@mediatek.com>
+> From: Ching-Te Ku <ku920601@realtek.com>
+> 
+> Fix Wi-Fi 2.4Ghz throughput drop over than 40% when Bluetooh is idle.
+> The code flow will read registers during Wi-Fi power saving, and be
+> returned, which results in incorrect counters to do mechanism judgment.
+> Adjust the code flow. Will leave Wi-Fi power save mode first then update
+> counters.
+> 
+> Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+
+1 patch(es) applied to rtw-next branch of rtw.git, thanks.
+
+c2c0de23f91b wifi: rtw88: coex: Prevent doing I/O during Wi-Fi power saving
+
 ---
- include/net/mac80211.h |  4 ++--
- net/mac80211/wpa.c     | 12 ++++++++++--
- 2 files changed, 12 insertions(+), 4 deletions(-)
-
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index f5b6f46..7709854 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -2133,8 +2133,8 @@ static inline bool lockdep_vif_wiphy_mutex_held(struct ieee80211_vif *vif)
-  *	@IEEE80211_KEY_FLAG_GENERATE_MMIC on the same key.
-  * @IEEE80211_KEY_FLAG_NO_AUTO_TX: Key needs explicit Tx activation.
-  * @IEEE80211_KEY_FLAG_GENERATE_MMIE: This flag should be set by the driver
-- *	for a AES_CMAC key to indicate that it requires sequence number
-- *	generation only
-+ *	for a AES_CMAC or a AES_GMAC key to indicate that it requires sequence
-+ *	number generation only
-  * @IEEE80211_KEY_FLAG_SPP_AMSDU: SPP A-MSDUs can be used with this key
-  *	(set by mac80211 from the sta->spp_amsdu flag)
-  */
-diff --git a/net/mac80211/wpa.c b/net/mac80211/wpa.c
-index daf1bcc..e66f917 100644
---- a/net/mac80211/wpa.c
-+++ b/net/mac80211/wpa.c
-@@ -903,7 +903,8 @@ ieee80211_crypto_aes_cmac_256_encrypt(struct ieee80211_tx_data *tx)
- 
- 	info = IEEE80211_SKB_CB(skb);
- 
--	if (info->control.hw_key)
-+	if (info->control.hw_key &&
-+	    !(key->conf.flags & IEEE80211_KEY_FLAG_GENERATE_MMIE))
- 		return TX_CONTINUE;
- 
- 	if (WARN_ON(skb_tailroom(skb) < sizeof(*mmie)))
-@@ -919,6 +920,9 @@ ieee80211_crypto_aes_cmac_256_encrypt(struct ieee80211_tx_data *tx)
- 
- 	bip_ipn_set64(mmie->sequence_number, pn64);
- 
-+	if (info->control.hw_key)
-+		return TX_CONTINUE;
-+
- 	bip_aad(skb, aad);
- 
- 	/* MIC = AES-256-CMAC(IGTK, AAD || Management Frame Body || MMIE, 128)
-@@ -1048,7 +1052,8 @@ ieee80211_crypto_aes_gmac_encrypt(struct ieee80211_tx_data *tx)
- 
- 	info = IEEE80211_SKB_CB(skb);
- 
--	if (info->control.hw_key)
-+	if (info->control.hw_key &&
-+	    !(key->conf.flags & IEEE80211_KEY_FLAG_GENERATE_MMIE))
- 		return TX_CONTINUE;
- 
- 	if (WARN_ON(skb_tailroom(skb) < sizeof(*mmie)))
-@@ -1064,6 +1069,9 @@ ieee80211_crypto_aes_gmac_encrypt(struct ieee80211_tx_data *tx)
- 
- 	bip_ipn_set64(mmie->sequence_number, pn64);
- 
-+	if (info->control.hw_key)
-+		return TX_CONTINUE;
-+
- 	bip_aad(skb, aad);
- 
- 	hdr = (struct ieee80211_hdr *)skb->data;
--- 
-2.25.1
+https://github.com/pkshih/rtw.git
 
 
