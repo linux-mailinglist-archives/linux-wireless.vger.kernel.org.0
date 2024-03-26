@@ -1,81 +1,88 @@
-Return-Path: <linux-wireless+bounces-5278-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5279-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16EFE88C225
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Mar 2024 13:32:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D1FF88C2D3
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Mar 2024 14:00:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F846B21501
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Mar 2024 12:32:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE69B1C37830
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Mar 2024 13:00:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0425679E4;
-	Tue, 26 Mar 2024 12:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AF571EB56;
+	Tue, 26 Mar 2024 13:00:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MYa4Vslj"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="n6+LIudR"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED47139E;
-	Tue, 26 Mar 2024 12:32:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5EF5C8FF
+	for <linux-wireless@vger.kernel.org>; Tue, 26 Mar 2024 13:00:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711456334; cv=none; b=bjQqqlMaH33ygEG09LVaMrf3GOv3VZixQmLZm2fqo/vCp/X41xZeyr6UgA8mxImelGKSPoBv6G9FOx9JIsy8Liu6NMsFXZCph3oNrpeyvCnirDFh3FTf/FAX/rRNgFHWP7R/ynSRrGj/o8n+HruEqTh/AXf7z/MXVyGwMy6R9Fk=
+	t=1711458015; cv=none; b=JwHx8asBww0d4srJDZEgJQ3aKl3F7/697Zj8FYnwoRwc79qlEZVtoOXIE6/DT7BwmUF4A5yNcPYXsGEzoVNrYtQebSZ8E/54FgmOUv5KWt7uk6hf3+ErMBCgie+I/A68fLfBBJp1l6o16phXNvxdI0u9LsdE0Nag4QSaVKvUEwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711456334; c=relaxed/simple;
-	bh=stZGntb/EkNeA0sqMpP34JEU8CoCxYM+VpStBeNimXs=;
-	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=MnnGdSuPOc9Crts2+bjrRcN7jBWmHoW8/29i7qlAWY92y0NS7n9GIXqyjzQIlfQyfSwTUXBJmYkPvwahBOUNhtKSP2p6P2xD1k6pvznK/r0OV5qxrVjyVSine/iLm9eFxqyoS7ez15gP6NgfBj9yujNxlUZGq2sUWTx1xrxv5To=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MYa4Vslj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E862C433F1;
-	Tue, 26 Mar 2024 12:32:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711456334;
-	bh=stZGntb/EkNeA0sqMpP34JEU8CoCxYM+VpStBeNimXs=;
-	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=MYa4VsljBaJVaFlcjYOqG/IB0rQoPFMfI5n9pY+wKkVCQwebMktMr2z9688Q7utHF
-	 AAj1pJYfRMoGKOiz2prC5lrG+Xeq0o9XXYyDoICcM3jAqiH7TG/ZwFazKrK1FXPmI5
-	 3HhCT6oAQgFifs8Zd9CWYs1J8gXpbkwMd4wTigBzE5LQre+r9ES+ESgHZKmL7r0apm
-	 jUj5dfF0rPEgDYjR4vScx8AQ44TxWRbiJnhZSE/MbrdTYwNJwC/XIeRBZFPNYesRye
-	 F6tkg4Y3l+rhcr4Y+LXPz23bVC/FX3imJC7iiMR2a7XBhJG+OUQXA9LFIcSlWW8/c0
-	 F9331sL4rG9TA==
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1711458015; c=relaxed/simple;
+	bh=XquPexlBeCnUmNJuwf4QZdgQ1z92DGFKafdA+mtAJfg=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=OasMFmFK9Gftg3b6z5j2DexHuvqHDQhLu3GlLNqw2Hxn15p3iS9uW5SSNPet0sCZn64LHzcXOcyUhgGtqPgmcm+jUZMMv0UApM7Q7DncreGi7Pa1DtnE1sDlGlEqFd4lINnP57IxEDgUcq380921r7lC1TzRmaSoj/xf+vi0EQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=n6+LIudR; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=XbtUGTxTvdJ+nSK0YCv7H45g7hymlRPfVV935Zo+Jys=;
+	t=1711458013; x=1712667613; b=n6+LIudRPm7nKwEoKXG5HReIh01fzjW9aCjiHcItEYaYUF3
+	nNGN09PN8NTl4i9B4h+SmbHlHWneFWybMW00QW1O/OnVdOmXXez+N8pkTHaZ98ZbqMNNlKFzZmrgV
+	Ja2ncW1ZioKpX+8FMoKLGa8vmdZ5PfTdy+WiKBqo3oZSE3QDHISEJ3mekyNFz/7IZsAqsF88MsnX6
+	jjFn13pZHOB1RFaoFkgy0J+Ou0oWr9gXbIi2PTgBJyxtt4lEVGNfl6z8Xb3TspXtMHqwmB+DSJRsy
+	WFHivcKVseK/rLRHepC4Z7SAK5J07dOC7qJ5KRjl9ynB3Cag7TpWzr0bFbmpE3hw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rp6PR-0000000Fj8w-2tR7;
+	Tue, 26 Mar 2024 14:00:09 +0100
+Message-ID: <8efc258b698acd504c1fc699d026b906bf383894.camel@sipsolutions.net>
+Subject: Re: [PATCH 01/10] wifi: mac80211: Add EHT UL MU-MIMO flag in
+ ieee80211_bss_conf
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>, 
+	ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+Date: Tue, 26 Mar 2024 14:00:08 +0100
+In-Reply-To: <20240325201031.10837-2-quic_pradeepc@quicinc.com>
+References: <20240325201031.10837-1-quic_pradeepc@quicinc.com>
+	 <20240325201031.10837-2-quic_pradeepc@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: MAINTAINERS: wifi: mwifiex: add Francesco as reviewer
-From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240321163420.11158-1-francesco@dolcini.it>
-References: <20240321163420.11158-1-francesco@dolcini.it>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: Brian Norris <briannorris@chromium.org>,
- Francesco Dolcini <francesco@dolcini.it>, linux-kernel@vger.kernel.org,
- linux-wireless@vger.kernel.org
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <171145633125.3037799.11730170138730953666.kvalo@kernel.org>
-Date: Tue, 26 Mar 2024 12:32:13 +0000 (UTC)
+X-malware-bazaar: not-scanned
 
-Francesco Dolcini <francesco@dolcini.it> wrote:
+On Mon, 2024-03-25 at 13:10 -0700, Pradeep Kumar Chitrapu wrote:
+> Add flag for Full Bandwidth UL MU-MIMO for EHT. This is utilized
+> to pass EHT MU-MIMO configurations from user space to driver in
+> AP mode.
 
-> As discussed on the mailing list, add myself as mwifiex driver reviewer.
-> 
-> Link: https://lore.kernel.org/all/20240318112830.GA9565@francesco-nb/
-> Signed-off-by: Francesco Dolcini <francesco@dolcini.it>
-> Acked-by: Brian Norris <briannorris@chromium.org>
+This ^^ doesn't match this:
 
-Patch applied to wireless.git, thanks.
+> + * @eht_80mhz_full_bw_ul_mumimo: does this BSS support the reception (AP=
+) or transmission
+> + *	(non-AP STA) of an EHT TB PPDU on an RU that spans the entire PPDU
+> + *	bandwidth
+>=20
 
-8ea3f4f1a1b4 MAINTAINERS: wifi: mwifiex: add Francesco as reviewer
+which doesn't match the implementation ... Wouldn't be a bad idea to
+actually do what it documents though, I guess?
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240321163420.11158-1-francesco@dolcini.it/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+johannes
 
