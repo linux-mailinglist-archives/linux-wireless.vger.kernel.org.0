@@ -1,74 +1,63 @@
-Return-Path: <linux-wireless+bounces-5288-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5289-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17D2388CAE5
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Mar 2024 18:30:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB21E88CB17
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Mar 2024 18:37:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 999641F6590D
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Mar 2024 17:30:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB2A53244CF
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Mar 2024 17:37:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D61F21CD2D;
-	Tue, 26 Mar 2024 17:30:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A947D1CD2E;
+	Tue, 26 Mar 2024 17:37:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B4KLqaZY"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="lritVc9v"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2BD51CF9B
-	for <linux-wireless@vger.kernel.org>; Tue, 26 Mar 2024 17:30:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B16E8A95B
+	for <linux-wireless@vger.kernel.org>; Tue, 26 Mar 2024 17:37:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711474220; cv=none; b=hMnxyWCql/yBubFvbBnkHez4RIK0V4aGMtk1sSRnMacRRyTxS00mvm5XVy6/PoYChUQtDktQ9Gj2if2+GkNSgd9LMYnJSC2Ob/WfA1q1JWyKsP+3deI0K4EHeoHjGi7nGWkr2aswQgb98XywD4JFs/KP0w4+hiBwgNDfcwXlwIk=
+	t=1711474671; cv=none; b=SqnMAYn1GBw7xreva6T9GdPn4mc0oDKYQ/ZF/BsPNYkOlbHaXhW2Pl+v18QJcE6e/iAxLpcR4c2mlU+m6Q5j09MHmRemLvP8eW4BeqdYcnfvaFVdTlcnh8RP1zvBelLzUUuEwAwm3SaHcB5DtPDD+wGerddCBe1YfthcFVEAIQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711474220; c=relaxed/simple;
-	bh=6VVxL8dDdhGxwIbfiSuGs7I5CKuKiuU4LilEjtb+oko=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sBMcNg3irtNMfIL8+zbG2rPlfQ+AgEjvFTojolRzsWvkVHY/li6zvLzr8QVsqGTh47nUBSV4tg9lSeSs6XTnBgusX3vlH07DrKlrwQWpztvnAMkbbFujdf5R8b2M+uw6lnOa/laHqtW+muRo3kPznB7MlxVXQo2bptJQzUcsS48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B4KLqaZY; arc=none smtp.client-ip=209.85.208.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2d6ee6c9945so5619031fa.3
-        for <linux-wireless@vger.kernel.org>; Tue, 26 Mar 2024 10:30:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711474217; x=1712079017; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=FunLBNSFotRb+aA+5dZO9Og2kuqXv/9opKuv8VaZg1c=;
-        b=B4KLqaZY7FNyRz7g0e6d6ZnW9AAgRTNGCXjhc5yRx3249Z6WUmC6hHppjr4LOm4Q/A
-         9OUaZs+LtId3uaEP6rgd6ADSC/AJiIJ24+BANgyzGJx+LRHjPwvXA8vAvxfYqcVPSVwe
-         Db0Cm7qXH5YX01e+n2P/59dc9kJH77cEZcsqGuc8URwSZoZ5kKpwOXzmaj3d/Ckbta8/
-         JBr7jhbalSIHHvDhmiHbUkvqHxLYjSAGp/1SPn4lQluv5GfGgp0GDMtRqYhsLooXsPcs
-         pM1GOd6aflAevRTrniOfer5EKyFBQB1qPCascmR8O42VUwjQG3dTPK4s7AtyhUG/WEeW
-         v8DA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711474217; x=1712079017;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=FunLBNSFotRb+aA+5dZO9Og2kuqXv/9opKuv8VaZg1c=;
-        b=VvE6It0LSR2773W6Rr/D6mbHMZfRH5MDVvdXRl8NKpeDS50cD+5FcYL6TpkYu13JMR
-         PDdSE3PZ+fmAfp0TtBdxCWwEVGCeanUYhrrF15h3j5wZs6w2Fjvgego66ttGhiCOM3KG
-         2anEGHKrWJIQp1WmFH6VitsNjturtBUmDvhFMo+XqqXbp+pvWEbd/35/Y8Q2Q9xhniQ6
-         oI71z92eJ8VZkw4zG0p6VeHOnZUwnndefV2l0Xq/Ovd5wE6DP6RNc4ODgQwsXTnrfS3k
-         h2Nyt9cxQUnb5jE3T+w2O9n+wj5NDdvvNVcwcHLu0bnJv0ppKh0NoSev3Qsp8e8iQVLp
-         +IIA==
-X-Forwarded-Encrypted: i=1; AJvYcCX/hvJunixSGZWcFTE0TqYZStT/fnjs7hpgcs48NLHaOBIorqG7a9MoCXvJe7Fcy9q0PZCYrD0oj1woFoBvXW7E+JR/pBD4o77Fp35H4kQ=
-X-Gm-Message-State: AOJu0YwM5/RJu/me3d8NNSdBd1cxnw25BaHtCtMt76pYkH/AYQt8zXDU
-	u40snxoFTZlHRLzWj13Z8d/PAxcwQKuioXdy9JCV3UJN0ztQk/wr
-X-Google-Smtp-Source: AGHT+IEs87YIekdzFwgYYsTVAO3JpXflZ1nl9+IjbA3GkemWC9AEqcjJVA1v5ZdKudmH2US8yrphRA==
-X-Received: by 2002:a2e:9015:0:b0:2d6:f127:f5e7 with SMTP id h21-20020a2e9015000000b002d6f127f5e7mr1026715ljg.21.1711474216771;
-        Tue, 26 Mar 2024 10:30:16 -0700 (PDT)
-Received: from [192.168.89.216] ([109.166.138.186])
-        by smtp.gmail.com with ESMTPSA id j6-20020a05600c190600b0041480a98bb3sm11472817wmq.15.2024.03.26.10.30.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 Mar 2024 10:30:16 -0700 (PDT)
-Message-ID: <8a90f3cb-7218-4f23-8aa7-fcc68e2f4a93@gmail.com>
-Date: Tue, 26 Mar 2024 19:30:11 +0200
+	s=arc-20240116; t=1711474671; c=relaxed/simple;
+	bh=xMzq9iVgaewctc8NkPonTG8yDLV8QoISJYNO81PvofI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=ox24dtKzBQYQBzmIoSWUeZ7dNcLg4sE3TAlSFOaMTdDQW3wkTYk6GO2lyfgLdeOhUJzs8ZYrm+lGwXytn+/aJspLdAcjd8Rnb9DLRbnI+QDklzO18cKAJ2uOvnXIta08L0pyKthNdL9nBHpIYeWjcKm+G5kAmDVDMC0J9rpW5ao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=lritVc9v; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42QCJ5ZY021597;
+	Tue, 26 Mar 2024 17:37:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=YNIpaKlclGRETpF/2f/uhy0oGDE7y2HTiWrsd5QTLt0=; b=lr
+	itVc9vZNDp2OBiiztOT7ZPE4QoOuiaCqvGxSJJoDTy/xAR6ovwAz1SYB6EgZoqgh
+	PtM/5Rugs2UHrJhLLvw5Nuu6AQimo/+9PBLboMxgMd+h7Xyi81f73FjchLdreGQe
+	Xjb23q6O6yRwYWTywcKF32E8sKURa1dNO8ogVNYYgvqLFNXbzAPEmC9bx/YzCH8N
+	kTqVPwAFMShE2EBE39bzExKAq0MM2RHL5VB7tIX3TKWteE7w+virXK858A/EkSu/
+	W0NT4mvlkKmpRjitP9LyOwUEp9Rcgzr7TLMRZISPYYcgBqhJDxO75ZZX9yF8PqQb
+	Mdtk+GsdZsGL8a8IIIvg==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3x3s7n1qcq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 26 Mar 2024 17:37:40 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42QHbdXx001633
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 26 Mar 2024 17:37:39 GMT
+Received: from [10.110.10.42] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Tue, 26 Mar
+ 2024 10:37:39 -0700
+Message-ID: <d3b269fa-33c0-44c3-a458-27c1ed943cb0@quicinc.com>
+Date: Tue, 26 Mar 2024 10:37:38 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -76,114 +65,143 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 04/12] wifi: rtlwifi: Add rtl8192du/table.{c,h}
+Subject: Re: [PATCH 6/6] wifi: ath12k: support SMPS configuration for 6 GHz
 Content-Language: en-US
-To: Ping-Ke Shih <pkshih@realtek.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>,
- "s.l-h@gmx.de" <s.l-h@gmx.de>, "chewitt@libreelec.tv" <chewitt@libreelec.tv>
-References: <7f4b3309-1580-48f3-9426-29f1eb4052fd@gmail.com>
- <ed50254c-889e-4dcd-93db-f63b776e3503@gmail.com>
- <5170c29a7b565fdec2e004f9391d325328ef5a72.camel@realtek.com>
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <5170c29a7b565fdec2e004f9391d325328ef5a72.camel@realtek.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: Baochen Qiang <quic_bqiang@quicinc.com>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240325212304.28241-1-quic_pradeepc@quicinc.com>
+ <20240325212304.28241-7-quic_pradeepc@quicinc.com>
+ <2c7739bd-09d4-4e0d-ab8c-32e8d2d030b8@quicinc.com>
+From: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
+In-Reply-To: <2c7739bd-09d4-4e0d-ab8c-32e8d2d030b8@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: Xplc4_J9yMlU6BoknbjADriau_BoHrdP
+X-Proofpoint-ORIG-GUID: Xplc4_J9yMlU6BoknbjADriau_BoHrdP
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-26_07,2024-03-21_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ malwarescore=0 adultscore=0 suspectscore=0 mlxscore=0 priorityscore=1501
+ impostorscore=0 clxscore=1015 phishscore=0 mlxlogscore=999 bulkscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2403210001 definitions=main-2403260125
 
-On 22/03/2024 05:46, Ping-Ke Shih wrote:
-> On Wed, 2024-03-20 at 21:36 +0200, Bitterblue Smith wrote:
+
+
+On 3/25/2024 8:38 PM, Baochen Qiang wrote:
+> 
+> 
+> On 3/26/2024 5:23 AM, Pradeep Kumar Chitrapu wrote:
+>> Parse SMPS configuration from IEs and configure. Without this,
+>> SMPS is not enabled for 6 GHz band.
 >>
->> These contain the MAC, BB, RF, and AGC initialisation tables for
->> RTL8192DU.
+>> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
 >>
->> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+>> Signed-off-by: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
 >> ---
->> v3:
->>  - No change.
+>>   drivers/net/wireless/ath/ath12k/mac.c | 25 +++++++++++++++++--------
+>>   1 file changed, 17 insertions(+), 8 deletions(-)
 >>
->> v2:
->>  - Patch is new in v2, split from patch 3/3 in v1.
->> ---
->>  .../realtek/rtlwifi/rtl8192du/table.c         | 1675 +++++++++++++++++
->>  .../realtek/rtlwifi/rtl8192du/table.h         |   30 +
->>  2 files changed, 1705 insertions(+)
->>  create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/table.c
->>  create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/table.h
->>
->> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192du/table.c
->> b/drivers/net/wireless/realtek/rtlwifi/rtl8192du/table.c
->> new file mode 100644
->> index 000000000000..6f571255c1a5
->> --- /dev/null
->> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192du/table.c
->> @@ -0,0 +1,1675 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +/* Copyright(c) 2009-2012  Realtek Corporation.*/
->> +
->> +#include <linux/types.h>
->> +
->> +#include "table.h"
->> +
->> +u32 rtl8192du_phy_reg_2tarray[PHY_REG_2T_ARRAYLENGTH] = {
+>> diff --git a/drivers/net/wireless/ath/ath12k/mac.c 
+>> b/drivers/net/wireless/ath/ath12k/mac.c
+>> index b4114dd22bf0..433b8be74997 100644
+>> --- a/drivers/net/wireless/ath/ath12k/mac.c
+>> +++ b/drivers/net/wireless/ath/ath12k/mac.c
+>> @@ -1964,12 +1964,17 @@ static void ath12k_peer_assoc_h_he_6ghz(struct 
+>> ath12k *ar,
+>>   }
+>>   static inline int ath12k_get_smps_from_capa(const struct 
+>> ieee80211_sta_ht_cap *ht_cap,
+>> +                        const struct ieee80211_he_6ghz_capa 
+>> *he_6ghz_capa,
+>>                           int *smps)
+>>   {
+>> -    if (!ht_cap->ht_supported)
+>> +    if (!ht_cap->ht_supported && !he_6ghz_capa->capa)
+>>           return -EOPNOTSUPP;
+>> -    *smps = u16_get_bits(ht_cap->cap, IEEE80211_HT_CAP_SM_PS);
+>> +    if (ht_cap->ht_supported)
+>> +        *smps = u16_get_bits(ht_cap->cap, IEEE80211_HT_CAP_SM_PS);
+>> +    else
+>> +        *smps = le16_get_bits(he_6ghz_capa->capa,
+>> +                      IEEE80211_HE_6GHZ_CAP_SM_PS);
+>>       if (*smps >= ARRAY_SIZE(ath12k_smps_map))
+>>           return -EINVAL;
+>> @@ -1980,10 +1985,11 @@ static inline int 
+>> ath12k_get_smps_from_capa(const struct ieee80211_sta_ht_cap *h
+>>   static void ath12k_peer_assoc_h_smps(struct ieee80211_sta *sta,
+>>                        struct ath12k_wmi_peer_assoc_arg *arg)
+>>   {
+>> +    const struct ieee80211_he_6ghz_capa *he_6ghz_capa = 
+>> &sta->deflink.he_6ghz_capa;
+>>       const struct ieee80211_sta_ht_cap *ht_cap = &sta->deflink.ht_cap;
+>>       int smps;
+>> -    if (ath12k_get_smps_from_capa(ht_cap, &smps))
+>> +    if (ath12k_get_smps_from_capa(ht_cap, he_6ghz_capa, &smps))
+>>           return;
+>>       switch (smps) {
+>> @@ -2457,11 +2463,12 @@ static void ath12k_peer_assoc_prepare(struct 
+>> ath12k *ar,
+>>   static int ath12k_setup_peer_smps(struct ath12k *ar, struct 
+>> ath12k_vif *arvif,
+>>                     const u8 *addr,
+>> -                  const struct ieee80211_sta_ht_cap *ht_cap)
+>> +                  const struct ieee80211_sta_ht_cap *ht_cap,
+>> +                  const struct ieee80211_he_6ghz_capa *he_6ghz_capa)
+>>   {
+>>       int smps, ret = 0;
+>> -    ret = ath12k_get_smps_from_capa(ht_cap, &smps);
+>> +    ret = ath12k_get_smps_from_capa(ht_cap, he_6ghz_capa, &smps);
+>>       if (ret < 0)
+>>           return ret;
+>> @@ -2514,7 +2521,8 @@ static void ath12k_bss_assoc(struct ath12k *ar,
+>>       }
+>>       ret = ath12k_setup_peer_smps(ar, arvif, bss_conf->bssid,
+>> -                     &ap_sta->deflink.ht_cap);
+>> +                     &ap_sta->deflink.ht_cap,
+>> +                     &ap_sta->deflink.he_6ghz_capa);
+>>       if (ret) {
+>>           ath12k_warn(ar->ab, "failed to setup peer SMPS for vdev %d: 
+>> %d\n",
+>>                   arvif->vdev_id, ret);
+>> @@ -3677,7 +3685,8 @@ static int ath12k_station_assoc(struct ath12k *ar,
+>>           return 0;
+>>       ret = ath12k_setup_peer_smps(ar, arvif, sta->addr,
+>> -                     &sta->deflink.ht_cap);
+>> +                     &sta->deflink.ht_cap,
+>> +                     &sta->deflink.he_6ghz_capa);
+>>       if (ret) {
+>>           ath12k_warn(ar->ab, "failed to setup peer SMPS for vdev %d: 
+>> %d\n",
+>>                   arvif->vdev_id, ret);
+>> @@ -8104,7 +8113,7 @@ static int ath12k_mac_hw_register(struct 
+>> ath12k_hw *ah)
+>>        * for each band for a dual band capable radio. It will be 
+>> tricky to
+>>        * handle it when the ht capability different for each band.
+>>        */
+>> -    if (ht_cap & WMI_HT_CAP_DYNAMIC_SMPS)
+>> +    if (ht_cap & WMI_HT_CAP_DYNAMIC_SMPS || ar->supports_6ghz)
+> WCN7850 supports 6 GHz but it does not support feature 
+> NL80211_FEATURE_DYNAMIC_SMPS. Enabling this for WCN7850 can lead to 
+> MU-MIMO test failures.
 > 
-> static const ?
-> 
->> +
->> +u32 rtl8192du_phy_reg_array_pg[PHY_REG_ARRAY_PG_LENGTH] = {
-> 
-> static const ?
-> 
+>>           wiphy->features |= NL80211_FEATURE_DYNAMIC_SMPS;
+>>       wiphy->max_scan_ssids = WLAN_SCAN_PARAMS_MAX_SSID;
 
-I can make them static if I move them to table.h. Only phy.c
-includes this header, so that should be fine.
+Thanks Baochen
 
-> [...]
-> 
->> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192du/table.h
->> b/drivers/net/wireless/realtek/rtlwifi/rtl8192du/table.h
->> new file mode 100644
->> index 000000000000..71d943158c5f
->> --- /dev/null
->> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192du/table.h
->> @@ -0,0 +1,30 @@
->> +/* SPDX-License-Identifier: GPL-2.0 */
->> +/* Copyright(c) 2009-2012  Realtek Corporation.*/
->> +
->> +#ifndef __RTL92DE_TABLE__H_
->> +#define __RTL92DE_TABLE__H_
->> +
->> +/*Created on  2011/ 1/14,  1:35*/
-> 
-> Not sure what it means? In fact, version info is added in these tables
-> already.
-> 
+will address this in next revision..
+can you please let me know if WCN7850 firmware advertises any capability 
+flag for this?
+If not, I am planning to use hw_params for differentiating feature 
+support. I will further look and update in next revision.
 
-It's copied from rtl8192de. I'll delete the comment.
-
->> +
->> +#define PHY_REG_2T_ARRAYLENGTH 372
->> +extern u32 rtl8192du_phy_reg_2tarray[PHY_REG_2T_ARRAYLENGTH];
->> +#define PHY_REG_ARRAY_PG_LENGTH 624
->> +extern u32 rtl8192du_phy_reg_array_pg[PHY_REG_ARRAY_PG_LENGTH];
->> +#define RADIOA_2T_ARRAYLENGTH 378
->> +extern u32 rtl8192du_radioa_2tarray[RADIOA_2T_ARRAYLENGTH];
->> +#define RADIOB_2T_ARRAYLENGTH 384
->> +extern u32 rtl8192du_radiob_2tarray[RADIOB_2T_ARRAYLENGTH];
->> +#define RADIOA_2T_INT_PA_ARRAYLENGTH 378
->> +extern u32 rtl8192du_radioa_2t_int_paarray[RADIOA_2T_INT_PA_ARRAYLENGTH];
->> +#define RADIOB_2T_INT_PA_ARRAYLENGTH 384
->> +extern u32 rtl8192du_radiob_2t_int_paarray[RADIOB_2T_INT_PA_ARRAYLENGTH];
->> +#define MAC_2T_ARRAYLENGTH 192
->> +extern u32 rtl8192du_mac_2tarray[MAC_2T_ARRAYLENGTH];
->> +#define AGCTAB_ARRAYLENGTH 386
->> +extern u32 rtl8192du_agctab_array[AGCTAB_ARRAYLENGTH];
->> +#define AGCTAB_5G_ARRAYLENGTH 194
->> +extern u32 rtl8192du_agctab_5garray[AGCTAB_5G_ARRAYLENGTH];
->> +#define AGCTAB_2G_ARRAYLENGTH 194
->> +extern u32 rtl8192du_agctab_2garray[AGCTAB_2G_ARRAYLENGTH];
->> +
->> +#endif
->> --
->> 2.43.2
-
+Thanks
+Pradeep
 
