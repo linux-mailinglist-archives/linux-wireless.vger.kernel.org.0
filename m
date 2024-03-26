@@ -1,160 +1,127 @@
-Return-Path: <linux-wireless+bounces-5273-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5274-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07FAA88BC05
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Mar 2024 09:11:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53A5A88BCA2
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Mar 2024 09:39:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B86C8287181
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Mar 2024 08:11:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 076501F345E0
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Mar 2024 08:39:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CA7D133425;
-	Tue, 26 Mar 2024 08:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5214F134C4;
+	Tue, 26 Mar 2024 08:39:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sJWLaQVr"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Vhn0uVGT"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20FEF18C38;
-	Tue, 26 Mar 2024 08:11:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADA5A134A8
+	for <linux-wireless@vger.kernel.org>; Tue, 26 Mar 2024 08:39:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711440670; cv=none; b=mCao3r+ICnaeWiYyqrn71CHPzSWWqYhhx+BFqqlfdxkdDwhHOklE1iTQVwHR1B39e3k5mhRcntZyMuZohEj7QYZHB4ImFDn/V21JURDF2N0c6Lp8SNVAh1HKINXMhZt2DMhbhKIdJv0OugnP2wZabSXhiDvJg4hBqb4OFQ7dwy4=
+	t=1711442347; cv=none; b=Y6s6Dy+0mm9KR+Mt6qWyx0tULRxs+rkSuvW7GjXsvpMeDv8yYg6OMX+wMXEjJ8nMLq7vN2UCQsaJVMGWBLkyvUvEwXo3P3FMlhMsTLVI4P1SDxwZnb8D1RweeCB5wMjtk54gsUGsnWvgSlf9fGkh/ClYKIXQfs2k+etFJFsslf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711440670; c=relaxed/simple;
-	bh=qgPYrZ/NPDwrw9n8R5vjfsAIwZpztvwYlvGEZ1/cqwk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NG/FvRiOnM/tp0nL8UZO09SsUKws9rSqGBUw8pt/iXXrcdsArP2t3fR+qYh2NQrVvehU81SLE4MYa8vqhTvCH+zPP/tsk6gfy1IEvajX3IB85fOL2bHuvPbpHjzHT0/WMr4Qheo1f441JjLCucNNyQVF2UDlBZmFGRPB+kbKh1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sJWLaQVr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9209BC433F1;
-	Tue, 26 Mar 2024 08:11:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711440669;
-	bh=qgPYrZ/NPDwrw9n8R5vjfsAIwZpztvwYlvGEZ1/cqwk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sJWLaQVrmHkXdPfZu2CLehPVBt1a3A07VW9D2hHdhmdx1dfdxfVkVKCTg3D62osKG
-	 covenVtPafFo/IsLWh5g6/g3y4hUOYHVaYVuutRm+dDNWvFegJiXJkyb9LPukcVk1u
-	 m2VKGv9L+iOGqzN1zqikyJWB7X2H+66W3diLGpPYXcd955q0ivSrK5+w1rrysq8ScW
-	 jQgegNSKueMZQeTO9BeBWfCCjyuJE8rYmEQ3DowcaWuUvoIMe1slI1gbwfkLgkTh5p
-	 0SWFa6/UJfRQdfXuO3A8YQwEULv6J+4OPmMdm50N29USGF6PCDE72cs+NvDxnyRPel
-	 LHLk7KAb/beXQ==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1rp1tr-000000005vk-2JeX;
-	Tue, 26 Mar 2024 09:11:16 +0100
-Date: Tue, 26 Mar 2024 09:11:15 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Saravana Kannan <saravanak@google.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Alex Elder <elder@linaro.org>,
-	Srini Kandagatla <srinivas.kandagatla@linaro.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Lukas Wunner <lukas@wunner.de>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-wireless@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
-	linux-pm@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	ath11k@lists.infradead.org
-Subject: Re: [PATCH v6 04/16] dt-bindings: net: wireless: qcom,ath11k:
- describe the ath11k on QCA6390
-Message-ID: <ZgKDI4Es11aN5nx7@hovoldconsulting.com>
-References: <20240325131624.26023-1-brgl@bgdev.pl>
- <20240325131624.26023-5-brgl@bgdev.pl>
- <87r0fy8lde.fsf@kernel.org>
- <CAMRc=Mc2Tc8oHr5NVo=aHAADkJtGCDAVvJs+7V-19m2zGi-vbw@mail.gmail.com>
- <87frwe8jiu.fsf@kernel.org>
+	s=arc-20240116; t=1711442347; c=relaxed/simple;
+	bh=9/8QmuTuktPRnY9eZHx3iYXVrtDt4L7d6NyrT1Nw5hU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=c41iBniw/bEPoYh0BeRtcEWq9Sn/EDcX1CGyioVcW/XZSaZKM7EqAOX4FOH6ZwguS/ZmblpkqwQ1v/SFjt12y0D/FAGp1RJbf7qjbHM4/wtCDGt+C/KpxYCH9qUXL4ULede4Sw6a2Ihk0LGfdee2y/pah5YgHysnH3Bj0bBaL8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Vhn0uVGT; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42Q8TNah012334;
+	Tue, 26 Mar 2024 08:39:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=Nrr9mmSaGKEJA5RtRlryQ4/Y77pFqg8xcjJjYBT+KWs=; b=Vh
+	n0uVGT6asTZacFodHKLQIRM4jhlmv2EoeteUOeehKOmcz7RAQ0u4l4DVjUDJXw23
+	vJuJ3MpYaLaZD8pplT0xmv1mcspBpcm5GM+Wk1mrw5IGJy+4eBE8luoVX/9MgP/Y
+	VsiolJ/f7MfYne6E78+EeJjbKtkTX3YkYYFATICiEkBV9zth4eTR88Z2t390dR3J
+	lbcfnGUBXp0FzQBMG1KrSmSXC08dANDbS1anIwngyMvqp4o0/R4FTU0u8xVT2ml/
+	IXbEkdkCuwhbb3iKBTv0MxHCbd1Bd0F45KmCPz8lSk12Pknr3gqgknATxzOosyCY
+	lPVQHGoKzPNzV6MOIA5Q==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3x3tvy813h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 26 Mar 2024 08:39:01 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42Q8d0A6022846
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 26 Mar 2024 08:39:00 GMT
+Received: from [10.201.207.136] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Tue, 26 Mar
+ 2024 01:38:59 -0700
+Message-ID: <5d306110-ec5d-442e-9193-462176de3a2a@quicinc.com>
+Date: Tue, 26 Mar 2024 14:08:55 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87frwe8jiu.fsf@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: mac80211: validate link status before deciding on
+ off channel Tx
+Content-Language: en-US
+To: Johannes Berg <johannes@sipsolutions.net>
+CC: <linux-wireless@vger.kernel.org>, Sriram R <quic_srirrama@quicinc.com>
+References: <20240312154620.242773-1-quic_adisi@quicinc.com>
+ <2c8338a29d3c42ebbf1fd5efd348c14471fa5004.camel@sipsolutions.net>
+ <bc2422eb-efae-423e-b60a-2aa0a3ea94fb@quicinc.com>
+ <cd8f0071-1033-46b8-b7d7-3140079e8a5a@quicinc.com>
+ <5576f8160e7d4b707fe2dc3681721cb49dfeec5d.camel@sipsolutions.net>
+From: Aditya Kumar Singh <quic_adisi@quicinc.com>
+In-Reply-To: <5576f8160e7d4b707fe2dc3681721cb49dfeec5d.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: PLznc4pSOo0vPyRNEIvoBThEVfX0MdWE
+X-Proofpoint-ORIG-GUID: PLznc4pSOo0vPyRNEIvoBThEVfX0MdWE
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-26_04,2024-03-21_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 mlxlogscore=585
+ clxscore=1015 priorityscore=1501 adultscore=0 suspectscore=0
+ lowpriorityscore=0 phishscore=0 bulkscore=0 malwarescore=0 spamscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2403210001 definitions=main-2403260059
 
-On Mon, Mar 25, 2024 at 04:37:29PM +0200, Kalle Valo wrote:
-> Bartosz Golaszewski <brgl@bgdev.pl> writes:
-> > On Mon, Mar 25, 2024 at 2:57 PM Kalle Valo <kvalo@kernel.org> wrote:
-> >> Bartosz Golaszewski <brgl@bgdev.pl> writes:
-> >> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> >> >
-> >> > Add a PCI compatible for the ATH11K module on QCA6390 and describe the
-> >> > power inputs from the PMU that it consumes.
-> >> >
-> >> > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> >>
-> >> [...]
-> >>
-> >> > +allOf:
-> >> > +  - if:
-> >> > +      properties:
-> >> > +        compatible:
-> >> > +          contains:
-> >> > +            const: pci17cb,1101
-> >> > +    then:
-> >> > +      required:
-> >> > +        - vddrfacmn-supply
-> >> > +        - vddaon-supply
-> >> > +        - vddwlcx-supply
-> >> > +        - vddwlmx-supply
-> >> > +        - vddrfa0p8-supply
-> >> > +        - vddrfa1p2-supply
-> >> > +        - vddrfa1p7-supply
-> >> > +        - vddpcie0p9-supply
-> >> > +        - vddpcie1p8-supply
-> >>
-> >> I don't know DT well enough to know what the "required:" above means,
-> >> but does this take into account that there are normal "plug&play" type
-> >> of QCA6390 boards as well which don't need any DT settings?
-> >
-> > Do they require a DT node though for some reason?
+On 3/26/24 13:12, Johannes Berg wrote:
+> On Tue, 2024-03-26 at 11:27 +0530, Aditya Kumar Singh wrote:
+>> On 3/26/24 09:58, Aditya Kumar Singh wrote:
+>>>> Can you fix
+>>>> that too? And if you fix that ... yeah we probably still should have
+>>>> this patch but ... _without_ this:
+>>>>
+>>>
+>>> Sure let me try to fix that as well. So here's what Im planning -
+>>> 1. Separate the ether_addr changes into a separate independent patch.
+>>> 2. Patch series to fix the active flag handling at link level.
+>>
+>> Upon checking further, I see -
+>>
+>> If we fix the setting of the flag only when first link comes up and
+>> reset it only when last link is removed, then probably there is no need
+>> to add separate handler - ieee80211_is_link_bss_active() to check if
+>> any one link is active or not.
+>>
+>> FWIW, the purpose of the new function introduced is to check if at least
+>> one of the link is active. And now if the flag is set, this ultimately
+>> means that one link is at least active. So we do not need to go and
+>> check in each link again right?
+>>
+> Yes, which is why I even noticed the whole mess with 'active'.
 > 
-> You can attach the device to any PCI slot, connect the WLAN antenna and
-> it just works without DT nodes. I'm trying to make sure here that basic
-> setup still works.
-> 
-> Adding also Johan and ath11k list. For example, I don't know what's the
-> plan with Lenovo X13s, will it use this framework? I guess in theory we
-> could have devices which use qcom,ath11k-calibration-variant from DT but
-> not any of these supply properties?
+> johannes
 
-In theory we could, but at least the WCN6855 in the X13s has a similar
-set of supplies and enable gpios which are currently not fully described
-in the devicetree as there has been no support for doing so thus far.
-Instead we rely on the bootloader to enable the module.
-
-I haven't had time to look at the latest attempt on adding support for
-handling such resources, but eventually we'll need to address this in
-some way.
-
-Johan
+Sure, then I will just try to fix the sdata->bss->active flag usage and 
+send a patch soon.
 
