@@ -1,93 +1,160 @@
-Return-Path: <linux-wireless+bounces-5272-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5273-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C3ED88BBD4
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Mar 2024 08:59:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07FAA88BC05
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Mar 2024 09:11:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15EAF1F39C3A
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Mar 2024 07:59:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B86C8287181
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Mar 2024 08:11:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68C89134724;
-	Tue, 26 Mar 2024 07:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CA7D133425;
+	Tue, 26 Mar 2024 08:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Nsu/q7hX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sJWLaQVr"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4262A132C15;
-	Tue, 26 Mar 2024 07:58:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20FEF18C38;
+	Tue, 26 Mar 2024 08:11:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711439925; cv=none; b=YdcUuewWQ+tIC/ctcgbY/3K5Ki6DPtK1mYCFOkG5UNj+SRFgJOnN/CqCcvY5x8UUxpvC+ChIl6yirp3hQbL3TzY4GMh2wnWlB7AlO08MOU3f+ZF+KdVGhm/pyin3wrqwjHniJ6kPN7F2wqKkfZJLzxcSa1IP4TMhY3uiFOroLpY=
+	t=1711440670; cv=none; b=mCao3r+ICnaeWiYyqrn71CHPzSWWqYhhx+BFqqlfdxkdDwhHOklE1iTQVwHR1B39e3k5mhRcntZyMuZohEj7QYZHB4ImFDn/V21JURDF2N0c6Lp8SNVAh1HKINXMhZt2DMhbhKIdJv0OugnP2wZabSXhiDvJg4hBqb4OFQ7dwy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711439925; c=relaxed/simple;
-	bh=/9gEICQkPxTh8V8z1+Y8Fr0I4JhmrwJPTKvpFN55dOk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=mxWkfakQ+0t3aH3gpZ5qRmzz7JOwDzWN/8E1r95b307RDu6ywV+07M/9AqChcr0rE/idYw+czxiloMLuV34YHTjYGU6tMEszJ4WtUkEbFZMOpu9B4Wr74AZ4icSDCK/HHgtyMoDzhBaN4qoiNJ9mX4+4QExmRqSlUoFyBRwpkeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Nsu/q7hX; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=96w4obakqWrnv85p1XrQClv6lIKZ68sh74iV28ewsN4=;
-	t=1711439923; x=1712649523; b=Nsu/q7hXVCNTUZ+oRdoKD0ZUKL2JbYprISgbNhEzgA2dBIC
-	Zc7P/8JsmFQfn5GEEKtcD7WZxv1t3wuxaWiRtppEEUDBFIcLPm0O96v+ke3ksWbPyRr5fiaHb4y5O
-	NwqCHfcddTxxX9X9Fe7No2vPB888bfIdx2HwkY+w3c86WXG86h0xHhq+UC5lM0fv8Pt6hbD1uBkq8
-	UHif0tHtglIjLS+Um/Qom2KoxL6gSzTr9eavauImnr71FV16rFs+JwMaEEZ3tGlbJmuc7mSwjJMdR
-	Wsg7XWQnLQidDUoI4XZA1iOfeIr2EH8cLPdC5zYaWM3rSpa91el153/eCNvUVOiw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1rp1hd-0000000FYWl-0jJE;
-	Tue, 26 Mar 2024 08:58:37 +0100
-Message-ID: <49041c649349a3b252118f9bb26521e5d47c82b1.camel@sipsolutions.net>
-Subject: Re: linux-next: manual merge of the wireless-next tree with the
- wireless tree
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Stephen Rothwell <sfr@canb.auug.org.au>, Kalle Valo <kvalo@kernel.org>
-Cc: Wireless <linux-wireless@vger.kernel.org>, Linux Kernel Mailing List
- <linux-kernel@vger.kernel.org>, Linux Next Mailing List
- <linux-next@vger.kernel.org>, Miri Korenblit
- <miriam.rachel.korenblit@intel.com>
-Date: Tue, 26 Mar 2024 08:58:36 +0100
-In-Reply-To: <20240326100945.765b8caf@canb.auug.org.au>
-References: <20240326100945.765b8caf@canb.auug.org.au>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
+	s=arc-20240116; t=1711440670; c=relaxed/simple;
+	bh=qgPYrZ/NPDwrw9n8R5vjfsAIwZpztvwYlvGEZ1/cqwk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NG/FvRiOnM/tp0nL8UZO09SsUKws9rSqGBUw8pt/iXXrcdsArP2t3fR+qYh2NQrVvehU81SLE4MYa8vqhTvCH+zPP/tsk6gfy1IEvajX3IB85fOL2bHuvPbpHjzHT0/WMr4Qheo1f441JjLCucNNyQVF2UDlBZmFGRPB+kbKh1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sJWLaQVr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9209BC433F1;
+	Tue, 26 Mar 2024 08:11:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711440669;
+	bh=qgPYrZ/NPDwrw9n8R5vjfsAIwZpztvwYlvGEZ1/cqwk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sJWLaQVrmHkXdPfZu2CLehPVBt1a3A07VW9D2hHdhmdx1dfdxfVkVKCTg3D62osKG
+	 covenVtPafFo/IsLWh5g6/g3y4hUOYHVaYVuutRm+dDNWvFegJiXJkyb9LPukcVk1u
+	 m2VKGv9L+iOGqzN1zqikyJWB7X2H+66W3diLGpPYXcd955q0ivSrK5+w1rrysq8ScW
+	 jQgegNSKueMZQeTO9BeBWfCCjyuJE8rYmEQ3DowcaWuUvoIMe1slI1gbwfkLgkTh5p
+	 0SWFa6/UJfRQdfXuO3A8YQwEULv6J+4OPmMdm50N29USGF6PCDE72cs+NvDxnyRPel
+	 LHLk7KAb/beXQ==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1rp1tr-000000005vk-2JeX;
+	Tue, 26 Mar 2024 09:11:16 +0100
+Date: Tue, 26 Mar 2024 09:11:15 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Kalle Valo <kvalo@kernel.org>
+Cc: Bartosz Golaszewski <brgl@bgdev.pl>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Saravana Kannan <saravanak@google.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Alex Elder <elder@linaro.org>,
+	Srini Kandagatla <srinivas.kandagatla@linaro.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Lukas Wunner <lukas@wunner.de>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-wireless@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	ath11k@lists.infradead.org
+Subject: Re: [PATCH v6 04/16] dt-bindings: net: wireless: qcom,ath11k:
+ describe the ath11k on QCA6390
+Message-ID: <ZgKDI4Es11aN5nx7@hovoldconsulting.com>
+References: <20240325131624.26023-1-brgl@bgdev.pl>
+ <20240325131624.26023-5-brgl@bgdev.pl>
+ <87r0fy8lde.fsf@kernel.org>
+ <CAMRc=Mc2Tc8oHr5NVo=aHAADkJtGCDAVvJs+7V-19m2zGi-vbw@mail.gmail.com>
+ <87frwe8jiu.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87frwe8jiu.fsf@kernel.org>
 
-Hi Stephen,
+On Mon, Mar 25, 2024 at 04:37:29PM +0200, Kalle Valo wrote:
+> Bartosz Golaszewski <brgl@bgdev.pl> writes:
+> > On Mon, Mar 25, 2024 at 2:57 PM Kalle Valo <kvalo@kernel.org> wrote:
+> >> Bartosz Golaszewski <brgl@bgdev.pl> writes:
+> >> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> >> >
+> >> > Add a PCI compatible for the ATH11K module on QCA6390 and describe the
+> >> > power inputs from the PMU that it consumes.
+> >> >
+> >> > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> >>
+> >> [...]
+> >>
+> >> > +allOf:
+> >> > +  - if:
+> >> > +      properties:
+> >> > +        compatible:
+> >> > +          contains:
+> >> > +            const: pci17cb,1101
+> >> > +    then:
+> >> > +      required:
+> >> > +        - vddrfacmn-supply
+> >> > +        - vddaon-supply
+> >> > +        - vddwlcx-supply
+> >> > +        - vddwlmx-supply
+> >> > +        - vddrfa0p8-supply
+> >> > +        - vddrfa1p2-supply
+> >> > +        - vddrfa1p7-supply
+> >> > +        - vddpcie0p9-supply
+> >> > +        - vddpcie1p8-supply
+> >>
+> >> I don't know DT well enough to know what the "required:" above means,
+> >> but does this take into account that there are normal "plug&play" type
+> >> of QCA6390 boards as well which don't need any DT settings?
+> >
+> > Do they require a DT node though for some reason?
+> 
+> You can attach the device to any PCI slot, connect the WLAN antenna and
+> it just works without DT nodes. I'm trying to make sure here that basic
+> setup still works.
+> 
+> Adding also Johan and ath11k list. For example, I don't know what's the
+> plan with Lenovo X13s, will it use this framework? I guess in theory we
+> could have devices which use qcom,ath11k-calibration-variant from DT but
+> not any of these supply properties?
 
-Thanks for the heads-up.
+In theory we could, but at least the WCN6855 in the X13s has a similar
+set of supplies and enable gpios which are currently not fully described
+in the devicetree as there has been no support for doing so thus far.
+Instead we rely on the bootloader to enable the module.
 
-> between commit:
->=20
->   5f4040050553 ("wifi: iwlwifi: mvm: disable MLO for the time being")
->=20
-> from the wireless tree and commit:
->=20
->   bbd6d0f8bc51 ("wifi: iwlwifi: mvm: advertise IEEE80211_HW_HANDLES_QUIET=
-_CSA")
->=20
-> from the wireless-next tree.
+I haven't had time to look at the latest attempt on adding support for
+handling such resources, but eventually we'll need to address this in
+some way.
 
-I kind of knew this was going to happen (given how the patches applied
-or rather didn't), but nothing to prevent it yet. I think we'll get it
-fixed in due time,=C2=A0before all the -next stuff goes anywhere.
-
-Thanks,
-johannes
+Johan
 
