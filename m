@@ -1,114 +1,162 @@
-Return-Path: <linux-wireless+bounces-5393-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5394-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAE7688EE85
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 19:49:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC02988EE8A
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 19:51:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F9601F35521
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 18:49:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9698F2967B3
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 18:51:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC89612DD8C;
-	Wed, 27 Mar 2024 18:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D4FF14EC50;
+	Wed, 27 Mar 2024 18:50:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JzcAO3EW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JlbUqpRC"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9860112A144
-	for <linux-wireless@vger.kernel.org>; Wed, 27 Mar 2024 18:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0087A12A144;
+	Wed, 27 Mar 2024 18:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711565336; cv=none; b=Vhcp00yPL6bm3pVd/J4ensD104J5Orjz5D/6V8gTA8XU6Gl4YYjOiqY+vLE6087Tz8zPJL5ZKAe3Rsru7al69Pd2nS1M4Stnai6IaRRlqehNdLTXGNhJ44I+cF+mJnq9G2U/eiXCpBya8/qq2JMw0/te5DbH6f1GhPCApC1UoaI=
+	t=1711565456; cv=none; b=PLVhESmaZnBS+5k5lePMyoN5X73x2tYeQBUcutPt66S6zj21x2VWbZ3GjjNVB+jNCFJGj9TeUNQlqTA5G2yQFTI3F6CAZJAZZ9eUTN4fSioQebZE3HN2bCenlSnI5qHaKQZBfE1uWOPIAlSPXk6WaENG2gZJeOIw10vVgD/yB0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711565336; c=relaxed/simple;
-	bh=PJj5tJI5Uq0v6Gm5m6XtsNrMIeh/6WHKpLNA5pIoB5A=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=FLszLUmHTdSA2HjuBZfghhTj2+q8I1TF6mthLJn1JLtDEYEYV/GDgePin5e9tIoTyV30ASv5NAjGRhmirfvicl+zfeOgvneM7EpcAGe2HK98MGGwL2TudA3Ra/7l5Um/g2JsgjS5RO6zyNkFA8zkEK1EQQjizLahY/EI9RjRibw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JzcAO3EW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF8CDC433F1;
-	Wed, 27 Mar 2024 18:48:54 +0000 (UTC)
+	s=arc-20240116; t=1711565456; c=relaxed/simple;
+	bh=qpmpb6mRaGuhJK5sjkD5qbyw9yG7+XNJ/p3wzxWXdp4=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=Pez9bN5cyhtTzrUUSeWQuRfnVhbAOGpgZFybg9HSi258IjDgc62RbiBA0t1C1RiekjPgkurKv2X5ZYFiipYCLGC0Y12wvMqlRM/rRd8hoMG12ddDxOuJJRJevfK6fw6ppD/fVOsAYL4wLcyyofcjbCqPc+NyNHChNk1Jxtc1LXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JlbUqpRC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03846C433F1;
+	Wed, 27 Mar 2024 18:50:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711565336;
-	bh=PJj5tJI5Uq0v6Gm5m6XtsNrMIeh/6WHKpLNA5pIoB5A=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=JzcAO3EWJbcibtBQdyVXlE2JG9Tt32Rw3UqYyB6G+D6wIKya+59uV2LgKG0OY8kDR
-	 6OMmNhpDSMPRt8UZRsUMgwcgtaUJ9O8epS1je1vBD5xOl6Z5+VLvk26Ms+1KkRt99g
-	 RE6xausnsYZ3ZJJtOYkQq6vUQAXmX47sPgI0SvoSSkk1X9gGkaKCMJU4gGqCJUEG5N
-	 ytyeg/9G0i6Rou2clV68jQ8b55Q74x5sJ5PzncArxPSeIyO6AtLIL8h7vRh95DCl53
-	 LMuvfU9mNfrgTCsnwtWh3kDssetDD0ThlPLp3JAPVF7bdOzZi0/fUvfU5NbTJeiLaT
-	 rJqQL0aLInu/g==
-From: Kalle Valo <kvalo@kernel.org>
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Cc: Ping-Ke Shih <pkshih@realtek.com>,  "linux-wireless@vger.kernel.org"
- <linux-wireless@vger.kernel.org>,  "Larry.Finger@lwfinger.net"
- <Larry.Finger@lwfinger.net>,  "s.l-h@gmx.de" <s.l-h@gmx.de>,
-  "chewitt@libreelec.tv" <chewitt@libreelec.tv>
-Subject: Re: [PATCH v3 11/12] wifi: rtlwifi: Add rtl8192du/sw.{c,h}
-References: <7f4b3309-1580-48f3-9426-29f1eb4052fd@gmail.com>
-	<2eb79c8c-cf2c-4696-b958-e8d961628e17@gmail.com>
-	<f86a40493745a53ff73083f87b3e8fae215eac77.camel@realtek.com>
-	<66565618-3638-47e5-afe5-3530214da0c9@gmail.com>
-Date: Wed, 27 Mar 2024 20:48:53 +0200
-In-Reply-To: <66565618-3638-47e5-afe5-3530214da0c9@gmail.com> (Bitterblue
-	Smith's message of "Wed, 27 Mar 2024 16:07:20 +0200")
-Message-ID: <87ttkrzf1m.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=k20201202; t=1711565455;
+	bh=qpmpb6mRaGuhJK5sjkD5qbyw9yG7+XNJ/p3wzxWXdp4=;
+	h=Date:From:To:Cc:Subject:From;
+	b=JlbUqpRCa0HYhHCaPC01tZxS1z3riWCuuqj0Gj5voTcCiRcnkO6npEAZhB5cYr16S
+	 ZN5CvTgdrZ3sy35aJ/dPqwZ259M5fRAVol3IH5FabkQvuksxwks99Un/DpNB8SpNTk
+	 BJE3iQwA1wK6GaLB+he1Z+SeoKNqKjrbrKkV0ziANrof44oTWv1mABDVwn6c3A5+H2
+	 li/AInDIe0O20xgfbu4L6hA/HABidjyxvJktEZ5kJ4EQuMwoZmMVAkh303x0jzvGeU
+	 ROwCTJiB7e3qYiTD1XACxAG/tpWBEUprWf9t1VyKWrz2IXOe5f/HEcUqKWFUatyyVh
+	 22TDrIykc0wAg==
+Date: Wed, 27 Mar 2024 12:50:52 -0600
+From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+To: Kalle Valo <kvalo@kernel.org>, Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	linux-hardening@vger.kernel.org
+Subject: [PATCH][next] wifi: cfg80211: Use __counted_by() in struct
+ wmi_start_scan_cmd and avoid -Wfamnae warning
+Message-ID: <ZgRqjGShTl3y5FFB@neat>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Bitterblue Smith <rtl8821cerfe2@gmail.com> writes:
+Prepare for the coming implementation by GCC and Clang of the
+__counted_by attribute. Flexible array members annotated with
+__counted_by can have their accesses bounds-checked at run-time
+via CONFIG_UBSAN_BOUNDS (for array indexing) and CONFIG_FORTIFY_SOURCE
+(for strcpy/memcpy-family functions).
 
-> On 22/03/2024 08:04, Ping-Ke Shih wrote:
->> On Wed, 2024-03-20 at 21:43 +0200, Bitterblue Smith wrote:
->
-> [...]
->
->>> +DEFINE_MUTEX(globalmutex_power);
->>> +DEFINE_MUTEX(globalmutex_for_fwdownload);
->>> +DEFINE_MUTEX(globalmutex_for_power_and_efuse);
->>> +DEFINE_MUTEX(globalmutex_for_mac0_2g_mac1_5g);
->> 
->> The consumers of globalmutex_for_mac0_2g_mac1_5g are complex. Why do they
->> check mutex_is_locked()? Race conditions between two instances?
->> 
->
-> I couldn't think of a sufficiently short name, like
-> "lock_mac0_2g_mac1_5g", so I used mutex_is_locked(). That's probably
-> a bad idea. It should be like this:
->
-> 	/* Let the first starting mac load RF parameters and do LCK */
-> 	if (rtlhal->macphymode == DUALMAC_DUALPHY &&
-> 	    ((rtlhal->interfaceindex == 0 && rtlhal->bandset == BAND_ON_2_4G) ||
-> 	     (rtlhal->interfaceindex == 1 && rtlhal->bandset == BAND_ON_5G))) {
-> 		mutex_lock(&globalmutex_for_mac0_2g_mac1_5g);
-> 		lock_mac0_2g_mac1_5g = true;
-> 	}
+Also, -Wflex-array-member-not-at-end is coming in GCC-14, and we are
+getting ready to enable it globally.
 
-Few quick comments, I haven't reviewed the actual patchset yet:
+So, use the `DEFINE_FLEX()` helper for an on-stack definition of
+a flexible structure where the size of the flexible-array member
+is known at compile-time, and refactor the rest of the code,
+accordingly.
 
-The mutexes look too finegrained and makes me suspicious about the
-locking design.
+So, with these changes, fix the following warning:
+drivers/net/wireless/ath/wil6210/cfg80211.c:896:43: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
 
-Having global variables like globalmutex_power is a big no no. They would
-not work if there are two devices on the same host, right?
+Link: https://github.com/KSPP/linux/issues/202
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+---
+ drivers/net/wireless/ath/wil6210/cfg80211.c | 22 ++++++++++-----------
+ drivers/net/wireless/ath/wil6210/wmi.h      |  2 +-
+ 2 files changed, 11 insertions(+), 13 deletions(-)
 
-Conditional locking is usually something to avoid.
-
-I'm starting to wonder if extending rtlwifi is actually the right
-approach. We have modern drivers like rtl8xxxu, rtw88 etc. with better
-design.
-
+diff --git a/drivers/net/wireless/ath/wil6210/cfg80211.c b/drivers/net/wireless/ath/wil6210/cfg80211.c
+index dbe4b3478f03..836b49954171 100644
+--- a/drivers/net/wireless/ath/wil6210/cfg80211.c
++++ b/drivers/net/wireless/ath/wil6210/cfg80211.c
+@@ -892,10 +892,8 @@ static int wil_cfg80211_scan(struct wiphy *wiphy,
+ 	struct wil6210_priv *wil = wiphy_to_wil(wiphy);
+ 	struct wireless_dev *wdev = request->wdev;
+ 	struct wil6210_vif *vif = wdev_to_vif(wil, wdev);
+-	struct {
+-		struct wmi_start_scan_cmd cmd;
+-		u16 chnl[4];
+-	} __packed cmd;
++	DEFINE_FLEX(struct wmi_start_scan_cmd, cmd,
++		    channel_list, num_channels, 4);
+ 	uint i, n;
+ 	int rc;
+ 
+@@ -977,9 +975,9 @@ static int wil_cfg80211_scan(struct wiphy *wiphy,
+ 	vif->scan_request = request;
+ 	mod_timer(&vif->scan_timer, jiffies + WIL6210_SCAN_TO);
+ 
+-	memset(&cmd, 0, sizeof(cmd));
+-	cmd.cmd.scan_type = WMI_ACTIVE_SCAN;
+-	cmd.cmd.num_channels = 0;
++	memset(cmd, 0, sizeof(*cmd));
++	cmd->scan_type = WMI_ACTIVE_SCAN;
++	cmd->num_channels = 0;
+ 	n = min(request->n_channels, 4U);
+ 	for (i = 0; i < n; i++) {
+ 		int ch = request->channels[i]->hw_value;
+@@ -991,7 +989,8 @@ static int wil_cfg80211_scan(struct wiphy *wiphy,
+ 			continue;
+ 		}
+ 		/* 0-based channel indexes */
+-		cmd.cmd.channel_list[cmd.cmd.num_channels++].channel = ch - 1;
++		cmd->num_channels++;
++		cmd->channel_list[cmd->num_channels - 1].channel = ch - 1;
+ 		wil_dbg_misc(wil, "Scan for ch %d  : %d MHz\n", ch,
+ 			     request->channels[i]->center_freq);
+ 	}
+@@ -1007,16 +1006,15 @@ static int wil_cfg80211_scan(struct wiphy *wiphy,
+ 	if (rc)
+ 		goto out_restore;
+ 
+-	if (wil->discovery_mode && cmd.cmd.scan_type == WMI_ACTIVE_SCAN) {
+-		cmd.cmd.discovery_mode = 1;
++	if (wil->discovery_mode && cmd->scan_type == WMI_ACTIVE_SCAN) {
++		cmd->discovery_mode = 1;
+ 		wil_dbg_misc(wil, "active scan with discovery_mode=1\n");
+ 	}
+ 
+ 	if (vif->mid == 0)
+ 		wil->radio_wdev = wdev;
+ 	rc = wmi_send(wil, WMI_START_SCAN_CMDID, vif->mid,
+-		      &cmd, sizeof(cmd.cmd) +
+-		      cmd.cmd.num_channels * sizeof(cmd.cmd.channel_list[0]));
++		      cmd, struct_size(cmd, channel_list, cmd->num_channels));
+ 
+ out_restore:
+ 	if (rc) {
+diff --git a/drivers/net/wireless/ath/wil6210/wmi.h b/drivers/net/wireless/ath/wil6210/wmi.h
+index 71bf2ae27a98..b47606d9068c 100644
+--- a/drivers/net/wireless/ath/wil6210/wmi.h
++++ b/drivers/net/wireless/ath/wil6210/wmi.h
+@@ -474,7 +474,7 @@ struct wmi_start_scan_cmd {
+ 	struct {
+ 		u8 channel;
+ 		u8 reserved;
+-	} channel_list[];
++	} channel_list[] __counted_by(num_channels);
+ } __packed;
+ 
+ #define WMI_MAX_PNO_SSID_NUM	(16)
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.34.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
