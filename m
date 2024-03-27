@@ -1,55 +1,55 @@
-Return-Path: <linux-wireless+bounces-5312-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5313-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F41E488D47F
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 03:24:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4DE188D48D
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 03:30:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A41E81F2F950
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 02:24:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 684A3B21EA3
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 02:29:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E8A12033A;
-	Wed, 27 Mar 2024 02:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F02C20DC4;
+	Wed, 27 Mar 2024 02:29:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LfCiw42j"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QYoJy9vw"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E506B1D558;
-	Wed, 27 Mar 2024 02:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3444420B0F;
+	Wed, 27 Mar 2024 02:29:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711506280; cv=none; b=Dgu6aTGe6Nn3GZOu4jpIBYc5gqvPIvbXV1F+l22nRdOikzGhx1nQx8UqjAjUEvPBxo0+ZOjqlvMOe53Ad1bdX+QOLEGrFvwg5GF+0dBz+DePj1uCTwKLMV47ZHGT9X02Fl/3Tl2NCHxniN94xcqPdcgf6ngRge6vbihXjDETEVE=
+	t=1711506595; cv=none; b=HmODh4xTuhjLCX5s6mrkgODPXXygsJe98uRe9LB4GOxcie4WNxJunRDy4CKq/zdzylb4AztoBXKkVtj9DAsh5q9+iVz0gdAldb3/nW7ZO7LuiGEKPlHM5ex0+LPXo7kYEUrlygicYeqLgzufF193KGV+WoFh9/mN37g0VQipoO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711506280; c=relaxed/simple;
-	bh=cpRe0I624W4PyDCoKNNY5T363n+NwNGTXK8OdWcxSxg=;
+	s=arc-20240116; t=1711506595; c=relaxed/simple;
+	bh=iGtT6jSeuSKi2wZy+guCtvd6Kk3jk1aGH4lQCxNk5nk=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=N8XdS5nAc0TkwwyzcleNOyPuPJnl/K3o4NNTPAHl6D66tFhNBJGe0KfD2cfNX6oVamjVSFhevFlIvM91WEEsg6f4bvEPeXdIIayIBmLyaS896Bf9HIYf1rOyiJ+1pYK5nYIno07jI3Re/o19SACnWLLdy2MupkkOvSsIeGd7ctU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LfCiw42j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4013C433C7;
-	Wed, 27 Mar 2024 02:24:38 +0000 (UTC)
+	 Content-Disposition; b=EOGxgWu9W8kjVfHxEtmp01BQGUvM3317KxtF6BTyfYiENGUPfr2Pyb5fkk44g06tOiEkovxFWzznbgwazkhdZwhhRq3rN4mgRW4BE3qfU0/HC5/JYtoSbUs4ld9t0SxIBsNQdAS81Spcsr/FsGGaBjs9t6GCbDsCPBMQ4GKSIVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QYoJy9vw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A566C433C7;
+	Wed, 27 Mar 2024 02:29:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711506279;
-	bh=cpRe0I624W4PyDCoKNNY5T363n+NwNGTXK8OdWcxSxg=;
+	s=k20201202; t=1711506594;
+	bh=iGtT6jSeuSKi2wZy+guCtvd6Kk3jk1aGH4lQCxNk5nk=;
 	h=Date:From:To:Cc:Subject:From;
-	b=LfCiw42jEQuYzJPv+ZRPpfcJ5fxsiood1r6awmH8kHA5HEOeP5agOA7zvLdUsma//
-	 IGj1ELM3Y2kp20BtVP4KQ7LzNmxzQ7YQYExxdjlfizxoQbAEB9J+vAxrwN2/9LZg37
-	 sAfPj6e6CnkV8BOR6wX0QeR25zneNxwITLTMtwW5kX9eiyDLyFeb+mfBhjuNtQNJDU
-	 p2HpN8OsskC3OXnXSgBZU435oDDZQHvFUamoxPagMZdCSpC2I6KUntyA7pSGewTwjX
-	 vEEmSbqt9YuanODT361aRy27u7OILvpC/5VTelQ7HFmUeUT5wMj9Fmgy5KID4f39tj
-	 hVpcdVMl3KJeg==
-Date: Tue, 26 Mar 2024 20:24:36 -0600
+	b=QYoJy9vwN2OcLc9T/LrDxZy2Jc1KRy/Maoi5ufvzLgU8JPYZnJJsczxIn3iF98Cwz
+	 ZmT+WTbD4SKQtKs0fqKy4sjdBN6kQssLg8ywj3W+XFbWoaB0gLMgjVu8E/IBX5kGzi
+	 cYbGOmE80CNzUHKZAHaBDN8cfAkDYhFJF9tWy5+gvch6OEOV0hfxVDRDb1bOWmTDXw
+	 eJYlBy//mDp9D+Ft6q73VHr1qYWd65h77z0XL5Ju5d1BzEqfLbiV+r3kgPsMCaLu9f
+	 dCod5ALAEOvMjujfGGACgZyleAoXmnImNDOJJMNiwFIqdR7+/oGGepvx1NZSUXOGMb
+	 xca7PUapcB31A==
+Date: Tue, 26 Mar 2024 20:29:52 -0600
 From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
 To: Kalle Valo <kvalo@kernel.org>
 Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
 	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
 	linux-hardening@vger.kernel.org
-Subject: [PATCH][next] wifi: wil6210: Annotate struct
- wmi_set_link_monitor_cmd with __counted_by()
-Message-ID: <ZgODZOB4fOBvKl7R@neat>
+Subject: [PATCH][next] wifi: wil6210: Avoid -Wflex-array-member-not-at-end
+ warning
+Message-ID: <ZgOEoCWguq3n1OqQ@neat>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -59,30 +59,60 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-Prepare for the coming implementation by GCC and Clang of the __counted_by
-attribute. Flexible array members annotated with __counted_by can have
-their accesses bounds-checked at run-time via CONFIG_UBSAN_BOUNDS (for
-array indexing) and CONFIG_FORTIFY_SOURCE (for strcpy/memcpy-family
-functions).
+Use the `DEFINE_FLEX()` helper for an on-stack definition of
+a flexible structure where the size of the flexible-array member
+is known at compile-time, and refactor the rest of the code,
+accordingly.
 
+So, with these changes, fix the following warning:
+drivers/net/wireless/ath/wil6210/wmi.c:4018:49: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+
+Link: https://github.com/KSPP/linux/issues/202
 Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 ---
- drivers/net/wireless/ath/wil6210/wmi.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/ath/wil6210/wmi.c | 19 +++++++------------
+ 1 file changed, 7 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/wil6210/wmi.h b/drivers/net/wireless/ath/wil6210/wmi.h
-index 71bf2ae27a98..6813f9e0bcf7 100644
---- a/drivers/net/wireless/ath/wil6210/wmi.h
-+++ b/drivers/net/wireless/ath/wil6210/wmi.h
-@@ -3320,7 +3320,7 @@ struct wmi_set_link_monitor_cmd {
- 	u8 rssi_hyst;
- 	u8 reserved[12];
- 	u8 rssi_thresholds_list_size;
--	s8 rssi_thresholds_list[];
-+	s8 rssi_thresholds_list[] __counted_by(rssi_thresholds_list_size);
- } __packed;
+diff --git a/drivers/net/wireless/ath/wil6210/wmi.c b/drivers/net/wireless/ath/wil6210/wmi.c
+index 6fdb77d4c59e..cc0ad70f0d01 100644
+--- a/drivers/net/wireless/ath/wil6210/wmi.c
++++ b/drivers/net/wireless/ath/wil6210/wmi.c
+@@ -4014,28 +4014,23 @@ int wmi_set_cqm_rssi_config(struct wil6210_priv *wil,
+ 	struct net_device *ndev = wil->main_ndev;
+ 	struct wil6210_vif *vif = ndev_to_vif(ndev);
+ 	int rc;
+-	struct {
+-		struct wmi_set_link_monitor_cmd cmd;
+-		s8 rssi_thold;
+-	} __packed cmd = {
+-		.cmd = {
+-			.rssi_hyst = rssi_hyst,
+-			.rssi_thresholds_list_size = 1,
+-		},
+-		.rssi_thold = rssi_thold,
+-	};
+ 	struct {
+ 		struct wmi_cmd_hdr hdr;
+ 		struct wmi_set_link_monitor_event evt;
+ 	} __packed reply = {
+ 		.evt = {.status = WMI_FW_STATUS_FAILURE},
+ 	};
++	DEFINE_FLEX(struct wmi_set_link_monitor_cmd, cmd,
++		    rssi_thresholds_list, rssi_thresholds_list_size, 1);
++
++	cmd->rssi_hyst = rssi_hyst;
++	cmd->rssi_thresholds_list[0] = rssi_thold;
  
- /* wmi_link_monitor_event_type */
+ 	if (rssi_thold > S8_MAX || rssi_thold < S8_MIN || rssi_hyst > U8_MAX)
+ 		return -EINVAL;
+ 
+-	rc = wmi_call(wil, WMI_SET_LINK_MONITOR_CMDID, vif->mid, &cmd,
+-		      sizeof(cmd), WMI_SET_LINK_MONITOR_EVENTID,
++	rc = wmi_call(wil, WMI_SET_LINK_MONITOR_CMDID, vif->mid, cmd,
++		      sizeof(*cmd), WMI_SET_LINK_MONITOR_EVENTID,
+ 		      &reply, sizeof(reply), WIL_WMI_CALL_GENERAL_TO_MS);
+ 	if (rc) {
+ 		wil_err(wil, "WMI_SET_LINK_MONITOR_CMDID failed, rc %d\n", rc);
 -- 
 2.34.1
 
