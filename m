@@ -1,137 +1,147 @@
-Return-Path: <linux-wireless+bounces-5373-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5374-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 325DC88EB6A
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 17:37:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02F9088EB99
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 17:49:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CA991C21EB0
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 16:37:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E439293BE3
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 16:49:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90264131BBB;
-	Wed, 27 Mar 2024 16:36:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09F70149E1F;
+	Wed, 27 Mar 2024 16:49:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="YEFIF9rs"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="nOgGCeYW"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF6DB131BCA
-	for <linux-wireless@vger.kernel.org>; Wed, 27 Mar 2024 16:36:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F92212F583
+	for <linux-wireless@vger.kernel.org>; Wed, 27 Mar 2024 16:49:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711557417; cv=none; b=ZQA6qiUng7YNW75Yhb45zpCfBD1E8R5C3ioVoAxM3ZAvHIc1j+TprtMKDoqwtSFl14hFXBLwPFI2GzFakoZa1rsHonuuT7ANxn3sTwem75URnbsrY5Eq3tsdNs4bINIWj+jwbqKws2mJTbWmVfOXnOIxyGP234kQVh82OszZBrw=
+	t=1711558146; cv=none; b=Ckfc91V9cmjNiea7FhXfCnixZEKfQbdcPHUoBQ+OSgBpYD6cu1TjcwSVlw/kAnWKZ+6IuaHopgwHuYdi+noqf6ZUOBIQS45fihxtQeH62PEU7Av40gc+kAVOjpQ1DkIo/HhjQckygS+lHSM1BoQzvGqGT3AjGALcir4ygKK+mpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711557417; c=relaxed/simple;
-	bh=lzYy8Kji+MK52RfD99/YmEqnoRSMUk9wNGQoVEHsg08=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=rb3Fld5c6RuN9y7TJbPhRJNRlEiuWC/jfGwHduzsbCRtBie3rTLQSXSbC7ZaxZHQYL7cDkhdUhN9R5f2+Zv+xXRh51fJvxtqgUetnaH2qiO4tfDipMr4JAH0hknR3VeFGn5ScdGClWhOCQ5LHZ7x2rfRyB0I2R1tUzkmtjphVFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=YEFIF9rs; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42REWK9n012346;
-	Wed, 27 Mar 2024 16:34:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=xgtWmVEsDFLcu1A8EvEyTLzh6xkczJ80UK97IYO3b44=; b=YE
-	FIF9rs2kJbgWr5BufWJQJqHp+FA7easj3orBx/bfMVM0ByazNKBvmufOINhTlNDd
-	Bn5tLRyPfSO9MDhFWL9F7HnmOEynRmn84vX7cFS2FdKD6iWBbtnEitQNSHBFOBHe
-	CEIYm09NgJAHZdwvyLPHhD4hUe/nlkXJoLG/QLh/zibEYOQST7thq2DUqZKihKqk
-	KjvglRCT5qtSiZF4FFzaMQGeO/3BQJvl+C7c5G5Qy38ncIfO+/0/y2dGMufS0Uub
-	OM/q9qGfbFx12gul6GLVnJFB7yc337/NAXSZKO0xEQMsm+gDa6QRdgyOfxSGKXFW
-	uXltokcV5n09rbi55NOg==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3x477yteds-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 27 Mar 2024 16:34:37 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42RGYaRk009216
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 27 Mar 2024 16:34:36 GMT
-Received: from [10.110.28.48] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Wed, 27 Mar
- 2024 09:34:35 -0700
-Message-ID: <d0cfe92b-c696-4a60-9eaf-f81f6ee5e75f@quicinc.com>
-Date: Wed, 27 Mar 2024 09:34:34 -0700
+	s=arc-20240116; t=1711558146; c=relaxed/simple;
+	bh=tbp6KZ04r4B1c4Q0pk1lD2JPlBlcT8pOim03CLlTlzQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jlAmA/YTiNT+Aam7hrIfaGEyAF6vPHNqjeihiqJ5Pg4MywAX6zAk2naxDV9NXaGqSuNpZKx7k5/rI0O4/dvpNZYd8xG16zXo2hjguuEwR11DdEd8CtlPlu/bnez5s3B61yK6BPAgd5adFUpuMb3w7lgT5eaaBTj0uYuJiPzpelQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=nOgGCeYW; arc=none smtp.client-ip=148.163.129.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 4373710006B;
+	Wed, 27 Mar 2024 16:49:03 +0000 (UTC)
+Received: from [192.168.100.159] (unknown [50.251.239.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by mail3.candelatech.com (Postfix) with ESMTPSA id E485113C2B0;
+	Wed, 27 Mar 2024 09:49:01 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com E485113C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1711558142;
+	bh=tbp6KZ04r4B1c4Q0pk1lD2JPlBlcT8pOim03CLlTlzQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=nOgGCeYWkHCdJmloX9UY/SFiccBZzLG0Agj7Z4941EkMnUYEMa0fkkLzAXOpeW/0K
+	 mCUJf0BokAD4gzMWEg9byoNrhPpeigj84b0QT97YaM7ZgAquZIlabOckIb3IS5KCWH
+	 Lae4QJDMY534EdffuSQohcla8Z8JfBq/+2YMJjyk=
+Message-ID: <2dda8ef8-b004-2afc-c398-5a3c92aa7267@candelatech.com>
+Date: Wed, 27 Mar 2024 09:49:01 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 04/12] wifi: rtlwifi: Add rtl8192du/table.{c,h}
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH] wifi: mt76: mt7925: Fix invalid chandef access.
 Content-Language: en-US
-To: Ping-Ke Shih <pkshih@realtek.com>, "kvalo@kernel.org" <kvalo@kernel.org>,
-        "rtl8821cerfe2@gmail.com" <rtl8821cerfe2@gmail.com>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>,
-        "s.l-h@gmx.de"
-	<s.l-h@gmx.de>,
-        "chewitt@libreelec.tv" <chewitt@libreelec.tv>
-References: <7f4b3309-1580-48f3-9426-29f1eb4052fd@gmail.com>
- <ed50254c-889e-4dcd-93db-f63b776e3503@gmail.com>
- <5170c29a7b565fdec2e004f9391d325328ef5a72.camel@realtek.com>
- <8a90f3cb-7218-4f23-8aa7-fcc68e2f4a93@gmail.com> <87y1a4yqvh.fsf@kernel.org>
- <5d117cf09134b034e704b8a1b5167235963a9c88.camel@realtek.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <5d117cf09134b034e704b8a1b5167235963a9c88.camel@realtek.com>
-Content-Type: text/plain; charset="UTF-8"
+To: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: linux-wireless@vger.kernel.org
+References: <20240320192723.3440938-1-greearb@candelatech.com>
+ <ZftrMyXvN7JcWhHH@lore-desk>
+From: Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+In-Reply-To: <ZftrMyXvN7JcWhHH@lore-desk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: g_GTkgKKqoMRmI0Bnie5l2JJdgqq-i_j
-X-Proofpoint-ORIG-GUID: g_GTkgKKqoMRmI0Bnie5l2JJdgqq-i_j
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-27_12,2024-03-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011
- priorityscore=1501 phishscore=0 adultscore=0 mlxscore=0 spamscore=0
- lowpriorityscore=0 malwarescore=0 suspectscore=0 impostorscore=0
- mlxlogscore=687 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2403210001 definitions=main-2403270114
+X-MDID: 1711558143-YeMDW48QTesw
+X-MDID-O:
+ us5;ut7;1711558143;YeMDW48QTesw;<greearb@candelatech.com>;0161bc757c83381a5b931166ef547186
 
-On 3/27/2024 2:30 AM, Ping-Ke Shih wrote:
-> On Wed, 2024-03-27 at 11:18 +0200, Kalle Valo wrote:
+On 3/20/24 16:03, Lorenzo Bianconi wrote:
+>> From: Ben Greear <greearb@candelatech.com>
 >>
->> Bitterblue Smith <rtl8821cerfe2@gmail.com> writes:
+>> mt76.ctx can be null, and that causes chandef to be null.
+>> Use logic found in similar code paths to use chandef
+>> from the phy object in case ctx is NULL.
 >>
->>>>> --- /dev/null
->>>>> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192du/table.c
->>>>> @@ -0,0 +1,1675 @@
->>>>> +// SPDX-License-Identifier: GPL-2.0
->>>>> +/* Copyright(c) 2009-2012  Realtek Corporation.*/
->>>>> +
->>>>> +#include <linux/types.h>
->>>>> +
->>>>> +#include "table.h"
->>>>> +
->>>>> +u32 rtl8192du_phy_reg_2tarray[PHY_REG_2T_ARRAYLENGTH] = {
->>>>
->>>> static const ?
->>>>
->>>>> +
->>>>> +u32 rtl8192du_phy_reg_array_pg[PHY_REG_ARRAY_PG_LENGTH] = {
->>>>
->>>> static const ?
->>>>
->>>
->>> I can make them static if I move them to table.h. Only phy.c
->>> includes this header, so that should be fine.
->>
->> Do note that .h files can't contain static variables, otherwise there
->> will be duplicate data.
->>
+>> With this, my system no longer crashes, but STA will still not
+>> associate.
 > 
-> Indeed, so these cases should be 'const u32', no need 'static'. 
+> Hi Ben,
 > 
+> can you please add 'Fixes' tag to help people backporting the fix?
+> I think it is:
+> Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips")
+
+I'm not able to reproduce the crash on upstream drivers, the crash only happened when
+I had a local patch that caused it to not associate.
+
+I still think the patch should go upstream as there may be other paths to hit the bug,
+but maybe it doesn't need to be backported?
+
+Let me know if you still want me to do the Fixes thing.
+
+Thanks,
+Ben
+
 > 
-Or make them static and have accessor functions to return pointers to the tables
+> Regards,
+> Lorenzo
+> 
+>>
+>> Signed-off-by: Ben Greear <greearb@candelatech.com>
+>> ---
+>>   drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 6 ++++--
+>>   1 file changed, 4 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+>> index bd37cb8d734b..feb818411a25 100644
+>> --- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+>> +++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+>> @@ -1502,7 +1502,8 @@ mt7925_mcu_sta_phy_tlv(struct sk_buff *skb,
+>>   		       struct ieee80211_vif *vif, struct ieee80211_sta *sta)
+>>   {
+>>   	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
+>> -	struct cfg80211_chan_def *chandef = &mvif->mt76.ctx->def;
+>> +	struct mt76_phy *mphy = mvif->phy->mt76;
+>> +	struct cfg80211_chan_def *chandef = mvif->mt76.ctx ? &mvif->mt76.ctx->def : &mphy->chandef;
+>>   	struct sta_rec_phy *phy;
+>>   	struct tlv *tlv;
+>>   	u8 af = 0, mm = 0;
+>> @@ -1569,7 +1570,8 @@ mt7925_mcu_sta_rate_ctrl_tlv(struct sk_buff *skb,
+>>   			     struct ieee80211_vif *vif, struct ieee80211_sta *sta)
+>>   {
+>>   	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
+>> -	struct cfg80211_chan_def *chandef = &mvif->mt76.ctx->def;
+>> +	struct mt76_phy *mphy = mvif->phy->mt76;
+>> +	struct cfg80211_chan_def *chandef = mvif->mt76.ctx ? &mvif->mt76.ctx->def : &mphy->chandef;
+>>   	enum nl80211_band band = chandef->chan->band;
+>>   	struct sta_rec_ra_info *ra_info;
+>>   	struct tlv *tlv;
+>> -- 
+>> 2.42.0
+>>
+>>
+
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
+
+
 
