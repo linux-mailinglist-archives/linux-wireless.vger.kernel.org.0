@@ -1,102 +1,168 @@
-Return-Path: <linux-wireless+bounces-5318-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5319-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AA4888DA46
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 10:31:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 088B888DAF6
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 11:09:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4189E29B58A
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 09:31:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BB291C2390C
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 10:09:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EA171F606;
-	Wed, 27 Mar 2024 09:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22A033EA86;
+	Wed, 27 Mar 2024 10:09:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="cPNelnD8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F580171D2
-	for <linux-wireless@vger.kernel.org>; Wed, 27 Mar 2024 09:31:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EA28381BE
+	for <linux-wireless@vger.kernel.org>; Wed, 27 Mar 2024 10:09:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711531881; cv=none; b=kVVAUiM5bjXCG/TqSBLMnoPwzdSEcHfSippzsyECh44lRu64bdtVj9mfBwoaYoDwOFlRzet7O2WbChVYkzbYB/GnpSYVfP+OT4ZVcEZzan8cX8b2hhcSd3PCC9urNEFVf6dN3WBfJl5+0C/aHfiOM7+3sas25SfMghMBagFYs3E=
+	t=1711534187; cv=none; b=RbQh5t/yuwq1b1aaFNOTSAXzTh6hU4HK8ulR7WNflI/gfjYMFgxQt6LDx7oSVsn80rg5JnXSfA3Wc2BZSkZCU9BmUSh6/EHHbyvtmTA+l2gimHwFXXR3xdQAKdzXbZFvE/ZzHc9k+VG2SRWXnPcCrXc3PMp5JGoMn3IEHMo20ls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711531881; c=relaxed/simple;
-	bh=WUKXPErArQ261sLs1cPxTLoNn8aYpyKhxpT/z24H58A=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Th5OuKSUexN9HZYFdbDy1r1DEDBZ7nama6Zj8rU/8hS1gsLLR7/Smvb6L3xwjnNTESO73VIy60FS5KPC+914MN0NJsPEPUIInNTOhRRQv35T4Ww8veHqZoT8jytnFxdNez/iXNn5NkPmu4DH5KxBl0XtIOBI+spnOyKS0o9ALIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 42R9UZ6h8763952, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 42R9UZ6h8763952
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 27 Mar 2024 17:30:35 +0800
-Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Wed, 27 Mar 2024 17:30:36 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Wed, 27 Mar 2024 17:30:35 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::4c42:f80:bcc2:d00f]) by
- RTEXMBS04.realtek.com.tw ([fe80::4c42:f80:bcc2:d00f%5]) with mapi id
- 15.01.2507.035; Wed, 27 Mar 2024 17:30:35 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: "kvalo@kernel.org" <kvalo@kernel.org>,
-        "rtl8821cerfe2@gmail.com"
-	<rtl8821cerfe2@gmail.com>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>,
-        "s.l-h@gmx.de"
-	<s.l-h@gmx.de>,
-        "chewitt@libreelec.tv" <chewitt@libreelec.tv>
-Subject: Re: [PATCH v3 04/12] wifi: rtlwifi: Add rtl8192du/table.{c,h}
-Thread-Topic: [PATCH v3 04/12] wifi: rtlwifi: Add rtl8192du/table.{c,h}
-Thread-Index: AQHaev3qY3Nayk5vYE26xHTZIDMXTLFCmpOAgAcv14CAAY8s8v//fNcA
-Date: Wed, 27 Mar 2024 09:30:35 +0000
-Message-ID: <5d117cf09134b034e704b8a1b5167235963a9c88.camel@realtek.com>
-References: <7f4b3309-1580-48f3-9426-29f1eb4052fd@gmail.com>
-	 <ed50254c-889e-4dcd-93db-f63b776e3503@gmail.com>
-	 <5170c29a7b565fdec2e004f9391d325328ef5a72.camel@realtek.com>
-	 <8a90f3cb-7218-4f23-8aa7-fcc68e2f4a93@gmail.com>
-	 <87y1a4yqvh.fsf@kernel.org>
-In-Reply-To: <87y1a4yqvh.fsf@kernel.org>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-user-agent: Evolution 3.36.1-2 
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <BADF21C715B8D04798118596D796244F@realtek.com>
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1711534187; c=relaxed/simple;
+	bh=+p7C2uFZZ/ouX0fbmRshSoUsgbkM9JpjNuWXtOEraOQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=nNpLnMdhzGBqMamx86YJQpHmsPnMu7Ib2cM2/i/a4Raz/9CPY/nu1JU5elDKjPi3OQuGH4HLCnI9TaFJDqtvNJggajPo7XUpw7x5uH+e1yUcQPpb1pScwdgyFzaDhcxrvniqbj+/9SLww0mUHy1jNWaZQG4oR8fI9zJJEGv6M4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=cPNelnD8; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42R8NGCP020977;
+	Wed, 27 Mar 2024 10:09:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=Go75WFpQ11JIbQ6GcC+LxZIYbIddhsA7jBFd1k3Sj98=; b=cP
+	NelnD8pY0gBjmCArU8Uhd2EcTaCH6kbV/M1lowtszrW1uPyBnZTls2SbcHC5lj38
+	B5aew8bOE5roaBTMawMQ1AHr+/pEQ+tBLtCYZDEv9GdqBMFrWDw+96AiQsY03x1A
+	WbgpcD4PZNxzFOFBlinel59lvvHiKH1v8ozmNHTOWw1sTlszpgg+agObQS+ffa+4
+	JxHD85VOzoY8w6FTEH1xB94OCk4uDPBMmBhjR1dN73j5TG9vP4d4y2+NdfzHKxqi
+	vUrvH15nrQNUHUMgfc6/FUjkakg1CIKhFhBLwdF9rsDxIG0xFCzSUHpRMWAj8Gnp
+	F3WJI6Hq1B8Rvsiow/9g==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3x47839bxu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 27 Mar 2024 10:09:35 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42RA9YII005676
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 27 Mar 2024 10:09:34 GMT
+Received: from [10.216.7.159] (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Wed, 27 Mar
+ 2024 03:09:32 -0700
+Message-ID: <14699537-99b2-e468-6a7b-7b721193400e@quicinc.com>
+Date: Wed, 27 Mar 2024 15:39:28 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v2 1/2] wifi: cfg80211/mac80211: Add support to rx retry
+ stats
+To: Johannes Berg <johannes@sipsolutions.net>, <ath11k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240319134522.4021062-1-quic_haric@quicinc.com>
+ <20240319134522.4021062-2-quic_haric@quicinc.com>
+ <d364e872eb29f03236630bab49a3243e2118ab22.camel@sipsolutions.net>
+Content-Language: en-US
+From: Hari Chandrakanthan <quic_haric@quicinc.com>
+In-Reply-To: <d364e872eb29f03236630bab49a3243e2118ab22.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: Hj9cwXoew0W_bsJq_vZz1QfFVDOD03oK
+X-Proofpoint-ORIG-GUID: Hj9cwXoew0W_bsJq_vZz1QfFVDOD03oK
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-27_05,2024-03-21_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxscore=0
+ suspectscore=0 mlxlogscore=647 impostorscore=0 lowpriorityscore=0
+ phishscore=0 spamscore=0 priorityscore=1501 clxscore=1011 malwarescore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2403210001 definitions=main-2403270068
 
-T24gV2VkLCAyMDI0LTAzLTI3IGF0IDExOjE4ICswMjAwLCBLYWxsZSBWYWxvIHdyb3RlOg0KPiAN
-Cj4gQml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyaXRlczoNCj4g
-DQo+ID4gPiA+IC0tLSAvZGV2L251bGwNCj4gPiA+ID4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxl
-c3MvcmVhbHRlay9ydGx3aWZpL3J0bDgxOTJkdS90YWJsZS5jDQo+ID4gPiA+IEBAIC0wLDAgKzEs
-MTY3NSBAQA0KPiA+ID4gPiArLy8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0yLjANCj4g
-PiA+ID4gKy8qIENvcHlyaWdodChjKSAyMDA5LTIwMTIgIFJlYWx0ZWsgQ29ycG9yYXRpb24uKi8N
-Cj4gPiA+ID4gKw0KPiA+ID4gPiArI2luY2x1ZGUgPGxpbnV4L3R5cGVzLmg+DQo+ID4gPiA+ICsN
-Cj4gPiA+ID4gKyNpbmNsdWRlICJ0YWJsZS5oIg0KPiA+ID4gPiArDQo+ID4gPiA+ICt1MzIgcnRs
-ODE5MmR1X3BoeV9yZWdfMnRhcnJheVtQSFlfUkVHXzJUX0FSUkFZTEVOR1RIXSA9IHsNCj4gPiA+
-IA0KPiA+ID4gc3RhdGljIGNvbnN0ID8NCj4gPiA+IA0KPiA+ID4gPiArDQo+ID4gPiA+ICt1MzIg
-cnRsODE5MmR1X3BoeV9yZWdfYXJyYXlfcGdbUEhZX1JFR19BUlJBWV9QR19MRU5HVEhdID0gew0K
-PiA+ID4gDQo+ID4gPiBzdGF0aWMgY29uc3QgPw0KPiA+ID4gDQo+ID4gDQo+ID4gSSBjYW4gbWFr
-ZSB0aGVtIHN0YXRpYyBpZiBJIG1vdmUgdGhlbSB0byB0YWJsZS5oLiBPbmx5IHBoeS5jDQo+ID4g
-aW5jbHVkZXMgdGhpcyBoZWFkZXIsIHNvIHRoYXQgc2hvdWxkIGJlIGZpbmUuDQo+IA0KPiBEbyBu
-b3RlIHRoYXQgLmggZmlsZXMgY2FuJ3QgY29udGFpbiBzdGF0aWMgdmFyaWFibGVzLCBvdGhlcndp
-c2UgdGhlcmUNCj4gd2lsbCBiZSBkdXBsaWNhdGUgZGF0YS4NCj4gDQoNCkluZGVlZCwgc28gdGhl
-c2UgY2FzZXMgc2hvdWxkIGJlICdjb25zdCB1MzInLCBubyBuZWVkICdzdGF0aWMnLiANCg0KDQo=
+
+On 3/25/2024 9:13 PM, Johannes Berg wrote:
+> On Tue, 2024-03-19 at 19:15 +0530, Hari Chandrakanthan wrote:
+>> Add support to count station level rx retries.
+> Should the subject say "for ... stats"?
+>
+>> +++ b/net/mac80211/sta_info.c
+>> @@ -2653,6 +2653,11 @@ void sta_set_sinfo(struct sta_info *sta, struct station_info *sinfo,
+>>   		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_RETRIES);
+>>   	}
+>>   
+>> +	if (!(sinfo->filled & BIT_ULL(NL80211_STA_INFO_RX_RETRIES))) {
+>> +		sinfo->rx_retries = sta->deflink.rx_stats.rx_retries;
+>> +		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_RX_RETRIES);
+>> +	}
+> The use of deflink here seems ... questionable?
+>
+> I know we've not really done any stats properly here for link STA
+> (patches welcome), but I guess this could be a first one that at least
+> sums up all the links like all of these should, and then find a way to
+> expose per-link as well?
+>
+> Although possibly we should just expose per-link to cfg80211, and then
+> have cfg80211 sum up for the MLD representation...
+>
+>
+> Either way, seems odd to add something now that absolutely cannot work
+> for MLO?
+>
+ok.
+
+Fields such packet count, retries etc can be summed up for the MLD 
+representation and the existing NL
+attribute can be used for exposing the summed up value.
+
+But there are fields such as signal avg, bitrate etc which cannot be 
+summed up.
+Should we expose such fields of each link STA through NL?
+
+Sample station dump log for reference:
+         inactive time:  271110 ms
+         rx bytes:       1129
+         rx packets:     13
+         tx bytes:       219
+         tx packets:     3
+         tx retries:     38
+         tx failed:      0
+         rx drop misc:   0
+         signal:         -16 dBm
+         signal avg:     -20 dBm
+         tx bitrate:     6.0 MBit/s
+         tx duration:    452 us
+         rx bitrate:     260.0 MBit/s VHT-MCS 6 short GI VHT-NSS 4
+         rx duration:    792 us
+         last ack signal:0 dBm
+         avg ack signal: 0 dBm
+         authorized:     yes
+         authenticated:  yes
+         associated:     yes
+         preamble:       long
+         WMM/WME:        yes
+         MFP:            no
+         TDLS peer:      no
+         DTIM period:    2
+         beacon interval:100
+         short slot time:yes
+         connected time: 869 seconds
+         associated at [boottime]:       1040062.600s
+         associated at:  1695979678173 ms
+         current time:   1695980547138 ms
+
+> johannes
 
