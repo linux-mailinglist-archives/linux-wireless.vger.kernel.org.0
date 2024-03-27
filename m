@@ -1,114 +1,154 @@
-Return-Path: <linux-wireless+bounces-5401-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5402-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E92D788EEDF
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 20:09:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B47C88EF0A
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 20:14:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 267F71C281DE
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 19:09:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 065E829F8C7
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 19:14:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9210A14D44F;
-	Wed, 27 Mar 2024 19:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE8D7152DEE;
+	Wed, 27 Mar 2024 19:13:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="qGdsfb5n"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DnygISV0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from omta36.uswest2.a.cloudfilter.net (omta36.uswest2.a.cloudfilter.net [35.89.44.35])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 091CC147C8D
-	for <linux-wireless@vger.kernel.org>; Wed, 27 Mar 2024 19:09:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6EC914F138;
+	Wed, 27 Mar 2024 19:13:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711566589; cv=none; b=QGO1WpsgqRSVQKGjqe8JaHhRYB9Qvwh3RMbLG8UN9LOxm+ubRJEewIx7eFLNTHKCC1G1tmRWej/1399tX+wcpZ8tOHlalMBdGb1KIZtBZq7lOLb71XLtF5h47W0O57kR3pvoSc/TBKfKko+ZGTezHZqCBeltq2CQ4NJzqWIRD/k=
+	t=1711566826; cv=none; b=A0lXclHZczJHwEyc9XjHVO/UOLW6SBX4uoDcCPVWzN0xDVE79yWWImFvRJR0MoIahwoCcxXjetN+RlwAn+pq8dkBu2tfKpRSymQ9BMDd5Z9u2wo/sBH+8jSm6v3opOfLSrxe1uOpw96lFwyyju+ujrjb6pFMmi97x6/Bgw4pxTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711566589; c=relaxed/simple;
-	bh=VuFdCUTeCOnad4gk6omCYrg21NlNNqeSLBu5rRtqVXc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=p6wgoCnYIIJQQNXA3+WiVxS1MyPc110ZL1rdJHbZRvxoH5HWPP571bob+J3h1cW8hkeg0I9FqWqSu/NFExAPhlkiiMqGxz2QX6UjCgKaSTf9y+Qd9bM9SdMIbX/oU/sVvckZefFOB2e85I1Rzvg47o1q1J4D7DUYuvdSyZcjM0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=qGdsfb5n; arc=none smtp.client-ip=35.89.44.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
-Received: from eig-obgw-6007a.ext.cloudfilter.net ([10.0.30.247])
-	by cmsmtp with ESMTPS
-	id pWKmrLINstf2QpYehr430J; Wed, 27 Mar 2024 19:09:47 +0000
-Received: from gator4166.hostgator.com ([108.167.133.22])
-	by cmsmtp with ESMTPS
-	id pYegrwgNNVdenpYehrvUU4; Wed, 27 Mar 2024 19:09:47 +0000
-X-Authority-Analysis: v=2.4 cv=M4FLKTws c=1 sm=1 tr=0 ts=66046efb
- a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=zXgy4KOrraTBHT4+ULisNA==:17
- a=IkcTkHD0fZMA:10 a=K6JAEmCyrfEA:10 a=wYkD_t78qR0A:10
- a=jgUHHrBZrz3db-_ODY8A:9 a=QEXdDO2ut3YA:10
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=agm2AiH62BDQPh9qtko/Ix12J6Yxy9RCLO/4NODZzQU=; b=qGdsfb5n3srrLy6Jbt0CD1F9Ay
-	CnkPWga/hrZcYJpakf7dMoa5k7jGT+aNsEAUb9q8H8wv2wRB8l+jOC/zR3JZdFkYcX5gf5buskJII
-	fwRfy6b9HE5BEiN9J9FneDQ3xFEvzPSByG2S2NTmZ30Fy3w7zX7gp2GdcAeS6tKGEUFdtniyvh9zr
-	n2nFX1hsQ5fk+hxRnY03QzzhlcSYShxZsjpLDMw3axJVvdEXbnBzDC8dJMG48ltyuS3pEdVOyTbBw
-	fcl38+ziLh8h9ZnAxMBBLsYyc2fNQPjOrr40I1N4cZ3TRv9XzfI7rrJQzDPF5+PF7feKalGZHSFGF
-	itV6vdGg==;
-Received: from [201.172.173.147] (port=55016 helo=[192.168.15.10])
-	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <gustavo@embeddedor.com>)
-	id 1rpYeg-003lvN-10;
-	Wed, 27 Mar 2024 14:09:46 -0500
-Message-ID: <62d3dd2c-ef46-4931-a9d6-8455b7b60870@embeddedor.com>
-Date: Wed, 27 Mar 2024 13:09:44 -0600
+	s=arc-20240116; t=1711566826; c=relaxed/simple;
+	bh=NckPbqFmFfNbzUcph+tZohyESREqpmqBmwqXhaXExZg=;
+	h=Content-Type:MIME-Version:From:Subject:To:Cc:Message-Id:Date; b=GYY67mbi4k9+2Iaenz955KpMZLwUHSj2KB8xM+neV+gyND5i4lJwXv5UUylcUuOCqy7qrbcv3ltCK/6KfyYn/SV84y1Vg/90krsEq23/CTby6iLcg5Fnq051zlWKJGug2B1Lbs/eNGc4l9lCNGHBJjJcKyUiJ/s/YhnrZZClkb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DnygISV0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A1EAC433C7;
+	Wed, 27 Mar 2024 19:13:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711566826;
+	bh=NckPbqFmFfNbzUcph+tZohyESREqpmqBmwqXhaXExZg=;
+	h=From:Subject:To:Cc:Date:From;
+	b=DnygISV04hQ8NKdBvFgRPDxuG91zuhhlFqIazTprT7FcScLKrvauNTFWETjcpfkrZ
+	 IWVf5otvzTLnzO5C0maLuxtqflA/kdhnbu5wB6NOEWjLedGsKK1LvvGpA9GmiAhN8a
+	 a6u5UYbnZTkFLMFgXqhRdFSmTFrUltXMFsRPFhFayycv3Pfu9Igboq+AoPvsJatx7c
+	 9uRj//+rDi+p8+BV2WI6/vy8fTuQOB4b9/CxbkTjkGWEmgpFvDn5ta3+QVGBsAyF0I
+	 g7DcaXXHa95epygHd5fFAr32R0aRjkmtVkfwDcYk9MbZ/K0ip8MF0nGfhlXWZ+nnKI
+	 dvkXvNK8p8lxA==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH][next] wifi: cfg80211: Use __counted_by() in struct
- wmi_start_scan_cmd and avoid -Wfamnae warning
-Content-Language: en-US
-To: Kalle Valo <kvalo@kernel.org>, "Gustavo A. R. Silva"
- <gustavoars@kernel.org>
-Cc: Jeff Johnson <quic_jjohnson@quicinc.com>, linux-wireless@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-References: <ZgRqjGShTl3y5FFB@neat> <87edbv7b9z.fsf@kernel.org>
-From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-In-Reply-To: <87edbv7b9z.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 201.172.173.147
-X-Source-L: No
-X-Exim-ID: 1rpYeg-003lvN-10
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: ([192.168.15.10]) [201.172.173.147]:55016
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 8
-X-Org: HG=hgshared;ORG=hostgator;
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfNKwPDzaXAwGn9hVMXeBuFDXQq30XDVIe8VMwPaTnpdsnAypMIEeS4qGKtPiFzwkj5gn1KmErIqjaB4JZ9Dm2bpwKo0/zIFqqNC6DxbsVGd5VfYGp2wD
- cNqFx2vwlFmhQddHQxUiSo5VqZNFqyDwj5B6NdhJ/EiSFUXYHLRJp7Lqcf67E3HEYuaRohaFUToRJXGUJuqQONXQGPmlk13OhgStAKceRsLUE2DmZggTyus4
+From: Kalle Valo <kvalo@kernel.org>
+Subject: pull-request: wireless-2024-03-27
+To: netdev@vger.kernel.org
+Cc: linux-wireless@vger.kernel.org
+Message-Id: <20240327191346.1A1EAC433C7@smtp.kernel.org>
+Date: Wed, 27 Mar 2024 19:13:45 +0000 (UTC)
 
+Hi,
 
-> The subject should being with "wifi: wil6210:", I can fix that. (Didn't
-> review the rest yet.)
-> 
+here's a pull request to net tree, more info below. Please let me know if there
+are any problems.
 
-It seems I got it right in a subsequent patch. :)
+Kalle
 
-Thanks, Kalle.
---
-Gustavo
+The following changes since commit 67072c314f5f0ec12a7a51a19f7156eebb073654:
+
+  Merge branch 'tcp-rds-fix-use-after-free-around-kernel-tcp-reqsk' (2024-03-12 18:56:18 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2024-03-27
+
+for you to fetch changes up to 8ea3f4f1a1b4242d5fc273f41aa7c86f6b40178c:
+
+  MAINTAINERS: wifi: mwifiex: add Francesco as reviewer (2024-03-26 14:31:09 +0200)
+
+----------------------------------------------------------------
+wireless fixes for v6.9-rc2
+
+The first fixes for v6.9. Ping-Ke Shih now maintains a separate tree
+for Realtek drivers, document that in the MAINTAINERS. Plenty of fixes
+for both to stack and iwlwifi. Our kunit tests were working only on um
+architecture but that's fixed now.
+
+----------------------------------------------------------------
+Ayala Beker (1):
+      wifi: mac80211: correctly set active links upon TTLM
+
+Benjamin Berg (2):
+      wifi: iwlwifi: mvm: guard against invalid STA ID on removal
+      wifi: iwlwifi: mvm: include link ID when releasing frames
+
+Emmanuel Grumbach (1):
+      wifi: iwlwifi: mvm: pick the version of SESSION_PROTECTION_NOTIF
+
+Felix Fietkau (1):
+      wifi: mac80211: check/clear fast rx for non-4addr sta VLAN changes
+
+Francesco Dolcini (1):
+      MAINTAINERS: wifi: mwifiex: add Francesco as reviewer
+
+Igor Artemiev (1):
+      wifi: cfg80211: fix rdev_dump_mpp() arguments order
+
+Ilan Peer (1):
+      wifi: iwlwifi: mvm: Configure the link mapping for non-MLD FW
+
+Jeff Johnson (1):
+      wifi: mac80211: fix ieee80211_bss_*_flags kernel-doc
+
+Johan Hovold (1):
+      wifi: mac80211: fix mlme_link_id_dbg()
+
+Johannes Berg (8):
+      wifi: cfg80211: add a flag to disable wireless extensions
+      wifi: iwlwifi: mvm: disable MLO for the time being
+      wifi: mac80211: fix prep_connection error path
+      wifi: iwlwifi: mvm: rfi: fix potential response leaks
+      wifi: iwlwifi: fw: don't always use FW dump trig
+      wifi: iwlwifi: read txq->read_ptr under lock
+      wifi: iwlwifi: mvm: handle debugfs names more carefully
+      kunit: fix wireless test dependencies
+
+Ping-Ke Shih (2):
+      wifi: rtw89: coex: fix configuration for shared antenna for 8922A
+      MAINTAINERS: wifi: add git tree for Realtek WiFi drivers
+
+Shaul Triebitz (1):
+      wifi: iwlwifi: mvm: consider having one active link
+
+ MAINTAINERS                                        |  6 +++
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c        | 15 +++---
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c        | 16 +++---
+ .../net/wireless/intel/iwlwifi/mvm/debugfs-vif.c   | 11 ++--
+ drivers/net/wireless/intel/iwlwifi/mvm/link.c      | 59 +++++++++++++++++-----
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c  |  9 +++-
+ drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c   |  7 ++-
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h       |  4 ++
+ drivers/net/wireless/intel/iwlwifi/mvm/rfi.c       |  8 ++-
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c      | 20 +++-----
+ .../net/wireless/intel/iwlwifi/mvm/time-event.c    |  5 +-
+ drivers/net/wireless/intel/iwlwifi/queue/tx.c      |  2 +-
+ drivers/net/wireless/realtek/rtw89/rtw8922a.c      |  2 +-
+ include/net/cfg80211.h                             |  2 +
+ net/mac80211/cfg.c                                 |  5 +-
+ net/mac80211/debug.h                               |  2 +-
+ net/mac80211/ieee80211_i.h                         |  4 +-
+ net/mac80211/mlme.c                                | 15 ++++--
+ net/wireless/trace.h                               |  2 +-
+ net/wireless/wext-core.c                           |  7 ++-
+ tools/testing/kunit/configs/all_tests.config       |  2 +
+ 21 files changed, 138 insertions(+), 65 deletions(-)
+
 
