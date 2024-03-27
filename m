@@ -1,63 +1,63 @@
-Return-Path: <linux-wireless+bounces-5411-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5412-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0443488F16D
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 22:57:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 498C788F174
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 22:58:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FE031F27B55
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 21:57:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F33311F257A1
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 21:58:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1580115382F;
-	Wed, 27 Mar 2024 21:56:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04A9115382B;
+	Wed, 27 Mar 2024 21:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Q1A9XLWL"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="GkaiEv3D"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61EBF14D2B5;
-	Wed, 27 Mar 2024 21:56:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A04C153822;
+	Wed, 27 Mar 2024 21:57:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711576616; cv=none; b=j2e9y9CC0NJ3xgPsO4Dj3zJFlU5nNmSGMM9X1DJTAKFJF2Pcqk3Izdf5XbhejsP07vgZbf8R1OuOk13gUFUKpJ2YejiMQdE0rRxN+Fs9FOLMyqHQckZJu73hdesXfX/dYvE0NUSLRAn5znogWdkR/HC5ivJs0HjwhFZYmuU2Png=
+	t=1711576656; cv=none; b=axLo8ZDkgruAlfX8M5pcbG1uvly+vamWSqfG9lGMBlZlE9IUOzJKKG2Jn9QJiop5oMQfnM9Z+3LtCj4OHcN6/uPklvC849Nqm+Lf9LU4khpwvxgQVBKDEGfnW5W3D8CSVPC4EXeL5393SxmHpQwIPoWrDiLalcz3+B5o6rItlf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711576616; c=relaxed/simple;
-	bh=ISq7nL0MCjV0q2xYanA81OaMJO+3t4kSdLr8g3E1Nyg=;
+	s=arc-20240116; t=1711576656; c=relaxed/simple;
+	bh=No9c2+vWYCBWwMnt1dM6LzgpdTAP4Nv0ncW8x+hZVig=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=mS9GeIsPqT/H3xU3N5QzG8Nhm8iGdHFYdjInFPP7JSOJ7uzCynBSf5d9kzU2j7cJxKax/CCe2V30TVl8WVB7UUYjDFyGzU/oaCvrIC7TJlVYjl1gfjbc9kMhaXROLC2sPyKcUzv+FrAV4m4tGwXfXw8lVBKE6AJ6fyHBZPua8Ts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Q1A9XLWL; arc=none smtp.client-ip=205.220.180.131
+	 In-Reply-To:Content-Type; b=izdrgeY6eMVTZkbhIO+XCHDgTFfh+M0sKDYXOt26gouAD6pdT0huLQk+TEyddfVXx0DrRWucdeAQGTck+ekdytigmB5z+56Wf6VCV8Cfr7cArLIAHltBZRiA0g+nmCmiCBDq5E71bgCSUn7zLayPRxZemeA5SO9WQsgKi0JiZLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=GkaiEv3D; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42RLmDJZ019592;
-	Wed, 27 Mar 2024 21:56:51 GMT
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42RLlfd3001052;
+	Wed, 27 Mar 2024 21:57:32 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	message-id:date:mime-version:subject:to:cc:references:from
 	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=vv8xA4/mVYkR+YakQcsUhlKG9wQSF4c/gv/+lZU9rLw=; b=Q1
-	A9XLWLkht511vU9Fic9Yp9rvGCpwHEWde8nV/HR6/F7fpVZwIgoDDGJqJNyz77BD
-	NkOVrveQeJxfxBUwERSOxaW+pNe4tuRV/SQQbD41tddYGoV5hJ2KbYZuLn6wldrE
-	xM6aHpXMLV5hnfHlGnjddy08hWIEl4cXSTF5e/jEPPnyXUJJnnKDETrPammsAetO
-	DVBkATTKMCqCxkcKE/OId2qV8+5KJmhQuDkQQQ8Ajoa2geSGCgq5iegPSrgEsRiH
-	mS4mg5ZOc+InGPtdysbOzNZQ7/HOtrMz0kuqTNeiaKb9qzMnok5gg3v1XT18iia+
-	pgszRl2OVERzlLMFJHAQ==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3x4u208389-1
+	qcppdkim1; bh=Cmxj55j51YjAMBIJuwAO3+RXfWLP8G52XXR5VHzeqRc=; b=Gk
+	aiEv3DU3VSnOodCokzWrKLziZzQr67O7C2d28Y5NBCf0CD9+4+wyXJRFCe/fMw16
+	RpYGD4i5d6iigQl+Eb7MTqvOrSKckzHMhTvZX4wbsCyDfpJIRvALdHZHmofXcTgd
+	L4E/Gx1DapIc6UkpJuK17Nthg03+7i/KsUjj1YjT2jRmm/qk1G1W5mSra86G20Kc
+	VgWCo4u8rOunaf/fVPX2cjFzTsWbBhFBFGVBka3oDbbvTw/Ob6QaNQFTiNTpdTaW
+	1CmNUd+CECX2Zr+TDJHBAF+xwG0cRulvrEO9JcZr3o/GoIQMh0ux0oLPR/Uj4AJN
+	GVhQ1VZ5xKPxEpdLUcoA==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3x4u1wg3dt-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 27 Mar 2024 21:56:50 +0000 (GMT)
+	Wed, 27 Mar 2024 21:57:31 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42RLunV9030345
+	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42RLvUws015428
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 27 Mar 2024 21:56:49 GMT
+	Wed, 27 Mar 2024 21:57:31 GMT
 Received: from [10.227.110.203] (10.80.80.8) by nalasex01a.na.qualcomm.com
  (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Wed, 27 Mar
- 2024 14:56:49 -0700
-Message-ID: <258a3863-36ce-4f07-a1cb-a28673ad1f17@quicinc.com>
-Date: Wed, 27 Mar 2024 14:56:48 -0700
+ 2024 14:57:30 -0700
+Message-ID: <a90d43dc-144c-4fe8-9cea-0d765d5de131@quicinc.com>
+Date: Wed, 27 Mar 2024 14:57:30 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,35 +65,35 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2][next] wifi: wil6210: cfg80211: Use __counted_by() in
- struct wmi_start_scan_cmd and avoid some -Wfamnae warnings
+Subject: Re: [PATCH v2][next] wifi: wil6210: wmi: Use __counted_by() in struct
+ wmi_set_link_monitor_cmd and avoid -Wfamnae warning
 Content-Language: en-US
 To: "Gustavo A. R. Silva" <gustavoars@kernel.org>,
         Kalle Valo
 	<kvalo@kernel.org>
 CC: <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <linux-hardening@vger.kernel.org>
-References: <ZgSP/CMSVfr68R2u@neat>
+References: <ZgSTCmdP+omePvWg@neat>
 From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <ZgSP/CMSVfr68R2u@neat>
+In-Reply-To: <ZgSTCmdP+omePvWg@neat>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: qWe04CBVAaAy2kQTpNuk_ALUq3tMYgW3
-X-Proofpoint-GUID: qWe04CBVAaAy2kQTpNuk_ALUq3tMYgW3
+X-Proofpoint-GUID: uomM1ntEBt3dv-cNukiQYASJrkEzr-gE
+X-Proofpoint-ORIG-GUID: uomM1ntEBt3dv-cNukiQYASJrkEzr-gE
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-03-27_18,2024-03-27_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 malwarescore=0
- bulkscore=0 priorityscore=1501 mlxlogscore=717 impostorscore=0 mlxscore=0
- adultscore=0 suspectscore=0 phishscore=0 lowpriorityscore=0 spamscore=0
+ adultscore=0 lowpriorityscore=0 bulkscore=0 phishscore=0 impostorscore=0
+ mlxlogscore=763 mlxscore=0 spamscore=0 suspectscore=0 priorityscore=1501
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2403210001
- definitions=main-2403270156
+ definitions=main-2403270155
 
-On 3/27/2024 2:30 PM, Gustavo A. R. Silva wrote:
+On 3/27/2024 2:43 PM, Gustavo A. R. Silva wrote:
 > Prepare for the coming implementation by GCC and Clang of the
 > __counted_by attribute. Flexible array members annotated with
 > __counted_by can have their accesses bounds-checked at run-time
@@ -109,11 +109,12 @@ On 3/27/2024 2:30 PM, Gustavo A. R. Silva wrote:
 > accordingly.
 > 
 > So, with these changes, fix the following warning:
-> drivers/net/wireless/ath/wil6210/cfg80211.c:896:43: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> drivers/net/wireless/ath/wil6210/wmi.c:4018:49: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
 > 
 > Link: https://github.com/KSPP/linux/issues/202
 > Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 
 Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+
 
 
