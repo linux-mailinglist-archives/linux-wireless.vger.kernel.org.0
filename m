@@ -1,63 +1,66 @@
-Return-Path: <linux-wireless+bounces-5406-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5407-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD1A488F0BD
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 22:18:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2952488F0D4
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 22:23:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F06AE1C29D7D
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 21:18:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D20EF1F223C8
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 21:23:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01C511514E7;
-	Wed, 27 Mar 2024 21:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C41271514FF;
+	Wed, 27 Mar 2024 21:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="JFTmVSZP"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="nO6nQhvz"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from omta34.uswest2.a.cloudfilter.net (omta34.uswest2.a.cloudfilter.net [35.89.44.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40AB04CB38;
-	Wed, 27 Mar 2024 21:18:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0870114388B
+	for <linux-wireless@vger.kernel.org>; Wed, 27 Mar 2024 21:23:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711574306; cv=none; b=hnlS8KXiEYSA3R9GNg0U+IMcDtmyhK4rPkH3+kVqZINhOTkIeSHsPGf0V7TEy1QsabhAXWxZinCA2EzWLrh7bB/TZmmA8ySQyVRR9MFczaVW5nx6mHT0KLMoXlJe58flxIsFk3E1Tfz3vcbNLiuJF2MeVSwn/fpUgjCdEpcjd4I=
+	t=1711574616; cv=none; b=tIK0mZRxWw7LMyfyYRZLVvrfZ9BaFWPBTtdPYsD7zR8FECBj2GkaHnA4Azi5X5ckLbpOeQbZa5lg4F+AR0NR3xoiONYlwAQOa/QXT4YeOCPQF2OesuKnkHVfne/BuDFETALSR+cGwSXJG9pu+g020fXYjbftg9VpRmcD09xPSKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711574306; c=relaxed/simple;
-	bh=ipR9hzWi9zOw+0dtltYaJnP36cAh8+wgGS76t0QXEmo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=MOTQANzB/PTpLicc6yDwkqxIzFZ4kLvzaCXxrQMubZAI5Pp3oHltb0x4DTSBaaXx8/EjVRt8t1bnLyX5ebev31QpEs+QwKZAtbxsfj1Mf3S7vr78aDRT807cB+Lk9CC4eu9FGmp5EDhAHgd8pvEKPQCAc9czBl1M1KhRbPMRZ/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=JFTmVSZP; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42RLEeJT013323;
-	Wed, 27 Mar 2024 21:18:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=5odMItVmcOfOMhCJL0bB7D3uH/Ex4aUfIXFkrQuBSoI=; b=JF
-	TmVSZPz493vFHJYMBdxskWf8HTu0AE5M/KHCEFtBaQ4bMEtGTl3aR/qzmREsZ6pm
-	SSJi4o5kpyrDR97J+rKavntKImyb7AWN+f95C92bQ+I1bI02GAf3cUaLq4jMkvBy
-	CKwQ/8jUZlnY+S16hGnKUD6w0RpkBXWr2XXbR67W79+6/Bn6BLgGVCz7jjdzwIFQ
-	1lNN1IRFV6vbSTABSXG9Ocmn2sbNdKOQbRmO8/SUaQYatvOo6ood+JE0s+kk1OZz
-	TVmQEiEQL+jp0mt1P/EIXYV/2tVmn8tgvqw3+gRNalo0B3q2E+tGHVcLGJMumw9D
-	vAMSa/EHia/Q3od4AKGA==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3x4u1yr0wx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 27 Mar 2024 21:18:21 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42RLIKYc024990
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 27 Mar 2024 21:18:20 GMT
-Received: from [10.227.110.203] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Wed, 27 Mar
- 2024 14:18:20 -0700
-Message-ID: <3670c9af-3266-4b9b-928e-e91a68db7123@quicinc.com>
-Date: Wed, 27 Mar 2024 14:18:19 -0700
+	s=arc-20240116; t=1711574616; c=relaxed/simple;
+	bh=SFk0yMhEz0n0/INYOQ4iL0r35gb6Smhb0rfON65CVy4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Sgc4Xd4RFwfrA4hWjR4FmQj//48X4/iPPO9qJDnNMHiLGX5S36L+udYOKceVFhCLUOs2aOlgGmZvJABFyegUkGIkKd+bUFhafJz9AxUA0NrHYilELoZBO+Va0q9D7ylnKdWk2LnlFSWr2TSNnKKhEwkBy7JlhYepBeo/H62BZEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=nO6nQhvz; arc=none smtp.client-ip=35.89.44.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
+Received: from eig-obgw-6006a.ext.cloudfilter.net ([10.0.30.182])
+	by cmsmtp with ESMTPS
+	id pYs4rgxcNHXmApakAryeH5; Wed, 27 Mar 2024 21:23:34 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+	by cmsmtp with ESMTPS
+	id pak9rAVyZEKylpakAr6Em3; Wed, 27 Mar 2024 21:23:34 +0000
+X-Authority-Analysis: v=2.4 cv=Bombw5X5 c=1 sm=1 tr=0 ts=66048e56
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=zXgy4KOrraTBHT4+ULisNA==:17
+ a=IkcTkHD0fZMA:10 a=K6JAEmCyrfEA:10 a=wYkD_t78qR0A:10
+ a=r1m6Mex8H7dn_w9A3qgA:9 a=QEXdDO2ut3YA:10
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=VTBvfIo+Q/FuoSo4pHyZkH/akXuqsBymcH2C02HWSbE=; b=nO6nQhvz8wxflrFyP+PfzA3NA2
+	W2IkCrjoo0kgypSKPNA4F9mZrvQJkGLrKGKteQQS0koQBh40jxQeCkBxsdiguyhvzNJRgsA7Frmgq
+	JevGXRf9cTerFLN8eabJwIjIvuRJ6nCWkId7e4Be4WvmRmyGBwi0JMd8gRIgBrQBNInKgdfEEp35U
+	NWIDSxd3MqstORrK5VPyNgNIw4sKVzzCFCroD29AK8WCOTlpC5yp8pAiOC7i85fbDkoICja1kTWSU
+	cAy9CWiUnTy3VX3vhRwmrGqdLdl9YBCXcJEaP056OLOJ6doxW1uGxBurzIeWspuEV8dljv0e/Nf3R
+	/xD3mOVA==;
+Received: from [201.172.173.147] (port=40896 helo=[192.168.15.10])
+	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <gustavo@embeddedor.com>)
+	id 1rpak9-001WFn-1A;
+	Wed, 27 Mar 2024 16:23:33 -0500
+Message-ID: <db78155a-65c1-455b-aaaf-0463b17009f5@embeddedor.com>
+Date: Wed, 27 Mar 2024 15:23:32 -0600
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -68,139 +71,60 @@ User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH][next] wifi: cfg80211: Use __counted_by() in struct
  wmi_start_scan_cmd and avoid -Wfamnae warning
 Content-Language: en-US
-To: "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Kalle Valo
-	<kvalo@kernel.org>
-CC: <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-hardening@vger.kernel.org>
+To: Jeff Johnson <quic_jjohnson@quicinc.com>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>, Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-hardening@vger.kernel.org
 References: <ZgRqjGShTl3y5FFB@neat>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <ZgRqjGShTl3y5FFB@neat>
-Content-Type: text/plain; charset="UTF-8"
+ <3670c9af-3266-4b9b-928e-e91a68db7123@quicinc.com>
+From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+In-Reply-To: <3670c9af-3266-4b9b-928e-e91a68db7123@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: avsc72lS1iUa_AjePAihMSqXGNNMmh_8
-X-Proofpoint-GUID: avsc72lS1iUa_AjePAihMSqXGNNMmh_8
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-27_18,2024-03-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 impostorscore=0
- mlxscore=0 lowpriorityscore=0 priorityscore=1501 bulkscore=0
- mlxlogscore=999 spamscore=0 adultscore=0 malwarescore=0 suspectscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2403210001 definitions=main-2403270151
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 201.172.173.147
+X-Source-L: No
+X-Exim-ID: 1rpak9-001WFn-1A
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: ([192.168.15.10]) [201.172.173.147]:40896
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 9
+X-Org: HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfDokpGyBszGs7D7a3liQbV3ODCTV9sHKhZ9Mw+pvhH05XiuaZhZG0DUo+34BV/rAPMJ1Uafr0fLsPkwq4G/wuVhfgv+klaHzLgg39vOhPBgEoziK2qQ7
+ /tCPnWe3SalUOLxvEO0HXISZ1qsYHQ48P4J+ObczBx6/jM5JJTYyPhtOIt+u/8OL4K4gP/g8eH+VkgJEQbVOM6c4+HG1T0anPUPFX2+vDbrVG1uuECGm8ZFJ
 
-On 3/27/2024 11:50 AM, Gustavo A. R. Silva wrote:
-> Prepare for the coming implementation by GCC and Clang of the
-> __counted_by attribute. Flexible array members annotated with
-> __counted_by can have their accesses bounds-checked at run-time
-> via CONFIG_UBSAN_BOUNDS (for array indexing) and CONFIG_FORTIFY_SOURCE
-> (for strcpy/memcpy-family functions).
-> 
-> Also, -Wflex-array-member-not-at-end is coming in GCC-14, and we are
-> getting ready to enable it globally.
-> 
-> So, use the `DEFINE_FLEX()` helper for an on-stack definition of
-> a flexible structure where the size of the flexible-array member
-> is known at compile-time, and refactor the rest of the code,
-> accordingly.
-> 
-> So, with these changes, fix the following warning:
-> drivers/net/wireless/ath/wil6210/cfg80211.c:896:43: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> 
-> Link: https://github.com/KSPP/linux/issues/202
-> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-> ---
->  drivers/net/wireless/ath/wil6210/cfg80211.c | 22 ++++++++++-----------
->  drivers/net/wireless/ath/wil6210/wmi.h      |  2 +-
->  2 files changed, 11 insertions(+), 13 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ath/wil6210/cfg80211.c b/drivers/net/wireless/ath/wil6210/cfg80211.c
-> index dbe4b3478f03..836b49954171 100644
-> --- a/drivers/net/wireless/ath/wil6210/cfg80211.c
-> +++ b/drivers/net/wireless/ath/wil6210/cfg80211.c
-> @@ -892,10 +892,8 @@ static int wil_cfg80211_scan(struct wiphy *wiphy,
->  	struct wil6210_priv *wil = wiphy_to_wil(wiphy);
->  	struct wireless_dev *wdev = request->wdev;
->  	struct wil6210_vif *vif = wdev_to_vif(wil, wdev);
-> -	struct {
-> -		struct wmi_start_scan_cmd cmd;
-> -		u16 chnl[4];
-> -	} __packed cmd;
-> +	DEFINE_FLEX(struct wmi_start_scan_cmd, cmd,
-> +		    channel_list, num_channels, 4);
->  	uint i, n;
->  	int rc;
->  
-> @@ -977,9 +975,9 @@ static int wil_cfg80211_scan(struct wiphy *wiphy,
->  	vif->scan_request = request;
->  	mod_timer(&vif->scan_timer, jiffies + WIL6210_SCAN_TO);
->  
-> -	memset(&cmd, 0, sizeof(cmd));
-> -	cmd.cmd.scan_type = WMI_ACTIVE_SCAN;
-> -	cmd.cmd.num_channels = 0;
-> +	memset(cmd, 0, sizeof(*cmd));
 
-Isn't this unnecessary since DEFINE_FLEX() logic "{ .obj.COUNTER = COUNT, }"
-should result in everything else being zeroed?
+>> -	memset(&cmd, 0, sizeof(cmd));
+>> -	cmd.cmd.scan_type = WMI_ACTIVE_SCAN;
+>> -	cmd.cmd.num_channels = 0;
+>> +	memset(cmd, 0, sizeof(*cmd));
+> 
+> Isn't this unnecessary since DEFINE_FLEX() logic "{ .obj.COUNTER = COUNT, }"
+> should result in everything else being zeroed?
+> 
+> And if that isn't sufficient, DEFINE_FLEX() itself says we should "Use
+> __struct_size(@NAME) to get compile-time size of it afterwards"
+> 
+> Note the current memset won't zero the flex array and hence if the actual
+> number of channels is less than 4 then kernel stack contents could be exposed
+> to firmware.
 
-And if that isn't sufficient, DEFINE_FLEX() itself says we should "Use
-__struct_size(@NAME) to get compile-time size of it afterwards"
+Yes, that's correct. The current memset() will only zero out a total of
+sizeof(struct wmi_start_scan_cmd) bytes, which of course doesn't include
+the flex-array member.
 
-Note the current memset won't zero the flex array and hence if the actual
-number of channels is less than 4 then kernel stack contents could be exposed
-to firmware.
+Thanks for the review, I'll remove that line!
 
-> +	cmd->scan_type = WMI_ACTIVE_SCAN;
-> +	cmd->num_channels = 0;
->  	n = min(request->n_channels, 4U);
->  	for (i = 0; i < n; i++) {
->  		int ch = request->channels[i]->hw_value;
-> @@ -991,7 +989,8 @@ static int wil_cfg80211_scan(struct wiphy *wiphy,
->  			continue;
->  		}
->  		/* 0-based channel indexes */
-> -		cmd.cmd.channel_list[cmd.cmd.num_channels++].channel = ch - 1;
-> +		cmd->num_channels++;
-> +		cmd->channel_list[cmd->num_channels - 1].channel = ch - 1;
->  		wil_dbg_misc(wil, "Scan for ch %d  : %d MHz\n", ch,
->  			     request->channels[i]->center_freq);
->  	}
-> @@ -1007,16 +1006,15 @@ static int wil_cfg80211_scan(struct wiphy *wiphy,
->  	if (rc)
->  		goto out_restore;
->  
-> -	if (wil->discovery_mode && cmd.cmd.scan_type == WMI_ACTIVE_SCAN) {
-> -		cmd.cmd.discovery_mode = 1;
-> +	if (wil->discovery_mode && cmd->scan_type == WMI_ACTIVE_SCAN) {
-> +		cmd->discovery_mode = 1;
->  		wil_dbg_misc(wil, "active scan with discovery_mode=1\n");
->  	}
->  
->  	if (vif->mid == 0)
->  		wil->radio_wdev = wdev;
->  	rc = wmi_send(wil, WMI_START_SCAN_CMDID, vif->mid,
-> -		      &cmd, sizeof(cmd.cmd) +
-> -		      cmd.cmd.num_channels * sizeof(cmd.cmd.channel_list[0]));
-> +		      cmd, struct_size(cmd, channel_list, cmd->num_channels));
->  
->  out_restore:
->  	if (rc) {
-> diff --git a/drivers/net/wireless/ath/wil6210/wmi.h b/drivers/net/wireless/ath/wil6210/wmi.h
-> index 71bf2ae27a98..b47606d9068c 100644
-> --- a/drivers/net/wireless/ath/wil6210/wmi.h
-> +++ b/drivers/net/wireless/ath/wil6210/wmi.h
-> @@ -474,7 +474,7 @@ struct wmi_start_scan_cmd {
->  	struct {
->  		u8 channel;
->  		u8 reserved;
-> -	} channel_list[];
-> +	} channel_list[] __counted_by(num_channels);
->  } __packed;
->  
->  #define WMI_MAX_PNO_SSID_NUM	(16)
+--
+Gustavo
 
 
