@@ -1,159 +1,114 @@
-Return-Path: <linux-wireless+bounces-5392-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5393-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4563788EE66
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 19:40:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAE7688EE85
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 19:49:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2B292A2898
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 18:40:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F9601F35521
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 18:49:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1C3132189;
-	Wed, 27 Mar 2024 18:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC89612DD8C;
+	Wed, 27 Mar 2024 18:48:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="nxDsV4CO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JzcAO3EW"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from omta36.uswest2.a.cloudfilter.net (omta36.uswest2.a.cloudfilter.net [35.89.44.35])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 541AD1514C4
-	for <linux-wireless@vger.kernel.org>; Wed, 27 Mar 2024 18:40:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9860112A144
+	for <linux-wireless@vger.kernel.org>; Wed, 27 Mar 2024 18:48:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711564804; cv=none; b=B31uMfE0+ZffyE1Z7f4XmG+9EtOMUgKvUYqnnbsWctrFgdxZ1sPaZLwvnTJJi194K0Vr6f+zoTg0oeLrnubMQgF/gZfZg+lZKttVFCOhfwPMnQs89pGOUHPw6rmn0uEBIaJl54GRMhd1ustmfIk86SbZkXgzakw2Jlh41EyhPBU=
+	t=1711565336; cv=none; b=Vhcp00yPL6bm3pVd/J4ensD104J5Orjz5D/6V8gTA8XU6Gl4YYjOiqY+vLE6087Tz8zPJL5ZKAe3Rsru7al69Pd2nS1M4Stnai6IaRRlqehNdLTXGNhJ44I+cF+mJnq9G2U/eiXCpBya8/qq2JMw0/te5DbH6f1GhPCApC1UoaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711564804; c=relaxed/simple;
-	bh=wWGHjeDpZavQDjtU7nfyce/8Gzr5lFSubbp9E1BsPb4=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=X6vT3BJFDeN9607wAaG29wZkhfTfW4375+ZP+rqmOExCGFx1JESClTdytVxSwMsgihrHyWLywHvRQmhe3ErRPbqpvqDBpRwJSzxREVIkh5fntPmCfMgTLal/E9p/3cz9c+MokHi4tOM9/HtnGZ/oVioQjYR7PVIyHRKW6HMdA1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=nxDsV4CO; arc=none smtp.client-ip=35.89.44.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
-Received: from eig-obgw-5004a.ext.cloudfilter.net ([10.0.29.221])
-	by cmsmtp with ESMTPS
-	id pWKmrLINBtf2QpYBor3iYa; Wed, 27 Mar 2024 18:39:57 +0000
-Received: from gator4166.hostgator.com ([108.167.133.22])
-	by cmsmtp with ESMTPS
-	id pYBnrow4kGDo0pYBor4iZt; Wed, 27 Mar 2024 18:39:56 +0000
-X-Authority-Analysis: v=2.4 cv=I+uuR8gg c=1 sm=1 tr=0 ts=660467fc
- a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=zXgy4KOrraTBHT4+ULisNA==:17
- a=IkcTkHD0fZMA:10 a=K6JAEmCyrfEA:10 a=wYkD_t78qR0A:10 a=VwQbUJbxAAAA:8
- a=v8LEnFnaCG9JqxBWnZgA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=AjGcO6oz07-iQ99wixmX:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:References:Cc:To:From:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=FhDtWBwKqrP+NfoVTgkUPYrjUuTaeWvHamIeomR7TP8=; b=nxDsV4COKwzy/QvEUoQXdXPYYa
-	B2ZhbypKNVqUDaJzVjIe4F6zqVBrrfR2TVf5cRu5p2foSZh9qpfii0BAUzyoXr21OnTzhVCJCACW5
-	/RpePPrhJwvz7DstKvZfD9oqJh38oK7Lpa6yulSGhmEiKhwmXTmNvvss3uWswDiCcFSNW2EcSNHbJ
-	fyCFs2YIaFBX4ELZklgIoekEV9bzy7GgKT49bm0qF9uHU3GhygN1YolFobABcHKSdZgC4qLYzQ5nd
-	5BA6s9z+w/E2OCqBusMSSQEVBjToo+3IJEkUMqw168R1CuKZTe1cijlv57+GqnuKil0fh3PUm8SqR
-	e5qTmU1w==;
-Received: from [201.172.173.147] (port=49700 helo=[192.168.15.10])
-	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <gustavo@embeddedor.com>)
-	id 1rpYBn-003LDL-1K;
-	Wed, 27 Mar 2024 13:39:55 -0500
-Message-ID: <4e1261a7-25a9-4193-a9e9-9bc137893f08@embeddedor.com>
-Date: Wed, 27 Mar 2024 12:39:54 -0600
+	s=arc-20240116; t=1711565336; c=relaxed/simple;
+	bh=PJj5tJI5Uq0v6Gm5m6XtsNrMIeh/6WHKpLNA5pIoB5A=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=FLszLUmHTdSA2HjuBZfghhTj2+q8I1TF6mthLJn1JLtDEYEYV/GDgePin5e9tIoTyV30ASv5NAjGRhmirfvicl+zfeOgvneM7EpcAGe2HK98MGGwL2TudA3Ra/7l5Um/g2JsgjS5RO6zyNkFA8zkEK1EQQjizLahY/EI9RjRibw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JzcAO3EW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF8CDC433F1;
+	Wed, 27 Mar 2024 18:48:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711565336;
+	bh=PJj5tJI5Uq0v6Gm5m6XtsNrMIeh/6WHKpLNA5pIoB5A=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=JzcAO3EWJbcibtBQdyVXlE2JG9Tt32Rw3UqYyB6G+D6wIKya+59uV2LgKG0OY8kDR
+	 6OMmNhpDSMPRt8UZRsUMgwcgtaUJ9O8epS1je1vBD5xOl6Z5+VLvk26Ms+1KkRt99g
+	 RE6xausnsYZ3ZJJtOYkQq6vUQAXmX47sPgI0SvoSSkk1X9gGkaKCMJU4gGqCJUEG5N
+	 ytyeg/9G0i6Rou2clV68jQ8b55Q74x5sJ5PzncArxPSeIyO6AtLIL8h7vRh95DCl53
+	 LMuvfU9mNfrgTCsnwtWh3kDssetDD0ThlPLp3JAPVF7bdOzZi0/fUvfU5NbTJeiLaT
+	 rJqQL0aLInu/g==
+From: Kalle Valo <kvalo@kernel.org>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Cc: Ping-Ke Shih <pkshih@realtek.com>,  "linux-wireless@vger.kernel.org"
+ <linux-wireless@vger.kernel.org>,  "Larry.Finger@lwfinger.net"
+ <Larry.Finger@lwfinger.net>,  "s.l-h@gmx.de" <s.l-h@gmx.de>,
+  "chewitt@libreelec.tv" <chewitt@libreelec.tv>
+Subject: Re: [PATCH v3 11/12] wifi: rtlwifi: Add rtl8192du/sw.{c,h}
+References: <7f4b3309-1580-48f3-9426-29f1eb4052fd@gmail.com>
+	<2eb79c8c-cf2c-4696-b958-e8d961628e17@gmail.com>
+	<f86a40493745a53ff73083f87b3e8fae215eac77.camel@realtek.com>
+	<66565618-3638-47e5-afe5-3530214da0c9@gmail.com>
+Date: Wed, 27 Mar 2024 20:48:53 +0200
+In-Reply-To: <66565618-3638-47e5-afe5-3530214da0c9@gmail.com> (Bitterblue
+	Smith's message of "Wed, 27 Mar 2024 16:07:20 +0200")
+Message-ID: <87ttkrzf1m.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2][next] wifi: wil6210: Annotate a couple of structs with
- __counted_by()
-Content-Language: en-US
-From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-To: Jeff Johnson <quic_jjohnson@quicinc.com>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>, Kalle Valo <kvalo@kernel.org>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-hardening@vger.kernel.org
-References: <ZgRayuCJ0gQinMvr@neat>
- <3f19627e-4472-4ed1-9e2e-b0b427682910@quicinc.com>
- <5a6bdbc6-b37e-4c6b-9bff-470fd560663b@embeddedor.com>
-In-Reply-To: <5a6bdbc6-b37e-4c6b-9bff-470fd560663b@embeddedor.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 201.172.173.147
-X-Source-L: No
-X-Exim-ID: 1rpYBn-003LDL-1K
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: ([192.168.15.10]) [201.172.173.147]:49700
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 9
-X-Org: HG=hgshared;ORG=hostgator;
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfGO1Ut/Ihq5rCvFnASbY72Oe70Imld/vi/ZHH57BW86NuLoN3jjXctwGVSrnUD7YrGNxwW1rQ38rQFwmFhUCjSCkVD59p8WKwz1kQolACKYENHYKLkk6
- LV3ndnGgK3aneND4bwe22iAhrME8uKP6O9wun2dSQhsDcANN4j89TPrZHZHdZG1Y7ERzcPpkj4Rehq//Stvmf4Bznj1EoCOnkZyLs2zXozkm4KqgJKhqQlqU
+Content-Type: text/plain
 
+Bitterblue Smith <rtl8821cerfe2@gmail.com> writes:
 
->>>   #define WMI_MAX_PNO_SSID_NUM    (16)
->>> @@ -3320,7 +3320,7 @@ struct wmi_set_link_monitor_cmd {
->>>       u8 rssi_hyst;
->>>       u8 reserved[12];
->>>       u8 rssi_thresholds_list_size;
->>> -    s8 rssi_thresholds_list[];
->>> +    s8 rssi_thresholds_list[] __counted_by(rssi_thresholds_list_size);
->>>   } __packed;
->>
->> this looks ok to me, although I think there is another issue associated with
->> this, namely the way the code populates the rssi_thresholds_list is by
->> defining a separate anonymous struct:
->>     struct {
->>         struct wmi_set_link_monitor_cmd cmd;
->>         s8 rssi_thold;
->>     } __packed cmd = {
->>         .cmd = {
->>             .rssi_hyst = rssi_hyst,
->>             .rssi_thresholds_list_size = 1,
->>         },
->>         .rssi_thold = rssi_thold,
->>     };
->>
->> I would expect gcc and clang to both complain about that s8 rssi_thold comes
->> after a flexible array (even though its purpose is to be the value of
->> rssi_thresholds_list[0])
->>
+> On 22/03/2024 08:04, Ping-Ke Shih wrote:
+>> On Wed, 2024-03-20 at 21:43 +0200, Bitterblue Smith wrote:
+>
+> [...]
+>
+>>> +DEFINE_MUTEX(globalmutex_power);
+>>> +DEFINE_MUTEX(globalmutex_for_fwdownload);
+>>> +DEFINE_MUTEX(globalmutex_for_power_and_efuse);
+>>> +DEFINE_MUTEX(globalmutex_for_mac0_2g_mac1_5g);
+>> 
+>> The consumers of globalmutex_for_mac0_2g_mac1_5g are complex. Why do they
+>> check mutex_is_locked()? Race conditions between two instances?
+>> 
+>
+> I couldn't think of a sufficiently short name, like
+> "lock_mac0_2g_mac1_5g", so I used mutex_is_locked(). That's probably
+> a bad idea. It should be like this:
+>
+> 	/* Let the first starting mac load RF parameters and do LCK */
+> 	if (rtlhal->macphymode == DUALMAC_DUALPHY &&
+> 	    ((rtlhal->interfaceindex == 0 && rtlhal->bandset == BAND_ON_2_4G) ||
+> 	     (rtlhal->interfaceindex == 1 && rtlhal->bandset == BAND_ON_5G))) {
+> 		mutex_lock(&globalmutex_for_mac0_2g_mac1_5g);
+> 		lock_mac0_2g_mac1_5g = true;
+> 	}
 
-I will merge these two patches together:
+Few quick comments, I haven't reviewed the actual patchset yet:
 
-https://lore.kernel.org/linux-hardening/ZgODZOB4fOBvKl7R@neat/
-https://lore.kernel.org/linux-hardening/ZgOEoCWguq3n1OqQ@neat/
+The mutexes look too finegrained and makes me suspicious about the
+locking design.
 
-and send these changes together with the DEFINE_FLEX() transformation
-in drivers/net/wireless/ath/wil6210/cfg80211.c
+Having global variables like globalmutex_power is a big no no. They would
+not work if there are two devices on the same host, right?
 
-diff --git a/drivers/net/wireless/ath/wil6210/wmi.h b/drivers/net/wireless/ath/wil6210/wmi.h
-index 71bf2ae27a98..38f64524019e 100644
---- a/drivers/net/wireless/ath/wil6210/wmi.h
-+++ b/drivers/net/wireless/ath/wil6210/wmi.h
-@@ -474,7 +474,7 @@ struct wmi_start_scan_cmd {
-       struct {
-           u8 channel;
-           u8 reserved;
--    } channel_list[];
-+    } channel_list[] __counted_by(num_channels);
-   } __packed;
+Conditional locking is usually something to avoid.
 
-Thanks
---
-Gustavo
+I'm starting to wonder if extending rtlwifi is actually the right
+approach. We have modern drivers like rtl8xxxu, rtw88 etc. with better
+design.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
