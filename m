@@ -1,149 +1,183 @@
-Return-Path: <linux-wireless+bounces-5365-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5366-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E07788E88D
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 16:22:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD90188EB59
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 17:32:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 910261F3357F
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 15:22:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 117F9B25AC7
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 15:38:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F4551465A3;
-	Wed, 27 Mar 2024 15:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFAA212EBF3;
+	Wed, 27 Mar 2024 15:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Xv8hUgYJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iwiHh61d"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 242EA12F36C
-	for <linux-wireless@vger.kernel.org>; Wed, 27 Mar 2024 15:07:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8938F12EBEB;
+	Wed, 27 Mar 2024 15:26:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711552041; cv=none; b=KmuHyOrjCqA9Qefegg+W7daAHq7eCXEVVmkltUJ9jUxnaNMdje76hRammSClYejnfYpRGeTObZ9eh4UvbDvEE03knIhBW4zVAXJ/SHBCwlbyVJ4fAcSS2ooqVoEa/a5ZjBTqLQfawOYonRgFioZjQzfN0T2PeA6Lw+Wm2+EPOOA=
+	t=1711553205; cv=none; b=txsfxYAcqz4dAXyeBFlHHudDXHC2nuhrmG7CTJV5M3Q8+5b8iLeUFV+IFKjaG2jdZCrvSMvon5/Kbk0RPXfwTM24qYHt1mohddzqvy7Q1EAcToZz4l7z3WKcdkuYW8xpcBQTPFijY99USe1/IXFAoPwwEGB4S/AtZLjqOrh3d/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711552041; c=relaxed/simple;
-	bh=mzk+bgPSkQUzL/vnXJBmrg/umyndJWoEggObcfG9yAE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=KhKwZ8Hs6JHhsHG5DS3tu0o9dEEP2yPC28l3HbrcFxneSPsWk4q4ue6VkgrOAtNjsZaVeKK4wqEPvg7ZdnnkOFjRRJr3KTEZRKVIk77u045gn4DGpj2xBrSY7T2qkT3sk/7Jgky1aYvwtE4K9nCgIGEZT3ucYPsVkYPWDdLJ7io=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Xv8hUgYJ; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=mzk+bgPSkQUzL/vnXJBmrg/umyndJWoEggObcfG9yAE=;
-	t=1711552039; x=1712761639; b=Xv8hUgYJu6xv70b5vHEiLDkMoUCB0LD8/Y4yIvE0EMo/o0n
-	l//qs2pztVxQ1Z81ZudEgoj/xQBz/jI7ILl+IumIYA1+Rwn0evQDQwGQJS431Q/lGG5CHzNCSn8Op
-	ZxasN0KReqVcTodxpYLLSblp5oyJuAsOq1nob4gs8FLsq3KOp4qfNZ7k8nGfDRUcTYp4PBgXs6cMV
-	V0RuiY5dFfKHFwh5/XPmAemVNfiQugCq9amU3V6o9QC9lSM3UIdwIhKGebCXZmfIDheW5VdHmUQFG
-	pRddKATeMr8HLgmNLIh3WeNcphvzBrLGJ08y0Lyb9FTMyc3XRNXpy9n/l91Od4ew==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1rpUru-0000000HAgP-26MD;
-	Wed, 27 Mar 2024 16:07:10 +0100
-Message-ID: <f5cb9edcea875920e0ce156be76d06c78d1279ec.camel@sipsolutions.net>
-Subject: Re: [PATCH v2 1/2] wifi: cfg80211/mac80211: Add support to rx retry
- stats
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Jeff Johnson <quic_jjohnson@quicinc.com>, Hari Chandrakanthan
-	 <quic_haric@quicinc.com>, ath11k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-Date: Wed, 27 Mar 2024 16:07:09 +0100
-In-Reply-To: <68c6fcbd-0aaa-43b2-b5e2-08367c11e79d@quicinc.com>
-References: <20240319134522.4021062-1-quic_haric@quicinc.com>
-	 <20240319134522.4021062-2-quic_haric@quicinc.com>
-	 <d364e872eb29f03236630bab49a3243e2118ab22.camel@sipsolutions.net>
-	 <14699537-99b2-e468-6a7b-7b721193400e@quicinc.com>
-	 <b9dfab64822bacf0cc72380c0de034b79d489668.camel@sipsolutions.net>
-	 <68c6fcbd-0aaa-43b2-b5e2-08367c11e79d@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
+	s=arc-20240116; t=1711553205; c=relaxed/simple;
+	bh=xfNHOSKv48bSU7NuAi7I0qBTiozewQufq628NrTXsiM=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=J0gu6nMF7aQ4mxuunhgFlsuJ76i1fvEvRbPPYzEnzR/C5rqxMY4DepCwS/J5uCEa64W+3eAlw0814nsP0bUueBDJlXU2gQlf6QoyEiyr2J13C9hWpzp6HiOBASHlykyS2S/CCWNzgav9hm+TkKKcGfw4rcMm8bm0IyRO0Wy7uCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iwiHh61d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2628EC433C7;
+	Wed, 27 Mar 2024 15:26:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711553205;
+	bh=xfNHOSKv48bSU7NuAi7I0qBTiozewQufq628NrTXsiM=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=iwiHh61devQAR73M1P77U063PFLm2SEQJmoM8HLXDkAM2izfSJxWRsXlGkkSUElwj
+	 IPd5eVgWYftZKh1l94QfKnxanq85d3o9b8jxFsrcqN+IbA6Y/+SHpjCstQ7jCstWgr
+	 vK5e0XRgfHxlOyiBfn0fAwsqMfy88RkYcmNcuslW4N3F9RA5fLdBQqIuQkWhCTApBG
+	 hwKMPM68lhKt+sVnaX8PzaYXb7VViDqhUunzy5u7Y8m1/y+zuQLCWr5paKsw+lUsmP
+	 gv+fbtKJjT0i0o+qwGpbmPZyYw7Q3e1yRdza0HsCpJJp2HjwCfmpu24bIPrLmhvOJz
+	 7r8RkiDGTotWw==
+From: Kalle Valo <kvalo@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Breno Leitao <leitao@debian.org>,  Jeff Johnson
+ <quic_jjohnson@quicinc.com>,  Jeff Johnson <jjohnson@kernel.org>,
+  keescook@chromium.org,  "open list:NETWORKING DRIVERS (WIRELESS)"
+ <linux-wireless@vger.kernel.org>,  "open list:QUALCOMM ATHEROS ATH10K
+ WIRELESS DRIVER" <ath10k@lists.infradead.org>,  open list
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] ath10k: allocate dummy net_device dynamically
+References: <20240319104754.2535294-1-leitao@debian.org>
+	<9fcdb857-da62-4832-ae11-043fe993e4ad@quicinc.com>
+	<20240321072821.59f56757@kernel.org>
+	<5039256c-03eb-4cda-8d11-49e4561cf1ef@quicinc.com>
+	<20240321151744.246ce2d0@kernel.org> <Zf2ceu2O47lLbKU3@gmail.com>
+	<20240322082336.49f110cc@kernel.org>
+Date: Wed, 27 Mar 2024 17:26:41 +0200
+In-Reply-To: <20240322082336.49f110cc@kernel.org> (Jakub Kicinski's message of
+	"Fri, 22 Mar 2024 08:23:36 -0700")
+Message-ID: <87le637l1q.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain
 
-On Wed, 2024-03-27 at 08:02 -0700, Jeff Johnson wrote:
-> > I'm also imagining that we change the API from cfg80211 to the drivers
-> > to get the *link* STA information, and do the summing up and/or "best"
-> > selection there in cfg80211 itself. However, I am prepared to accept th=
-e
-> > possibility that we may do _both_ in the API, if not all drivers can
-> > even do all of the statistics per link. We should probably still have
-> > the link STAs in the statistics in nl80211, but then they may not be
-> > populated?
->=20
-> First remember that there are a lot of statistics, and each driver is fre=
-e to
-> return as many or as few as they support, indicating the ones they are
-> returning using the "filled" bitmap.=C2=A0
+Jakub Kicinski <kuba@kernel.org> writes:
 
-Yes, I'd think we want to use the same data structure for both, though
-setting something in *both* links and *mld* would (should) be an error.
+> On Fri, 22 Mar 2024 07:58:02 -0700 Breno Leitao wrote:
+>> > Looks like init_dummy_netdev wipes the netdev structure clean, so I
+>> > don't think we can use it directly as the setup function, Breno :(  
+>> 
+>> Before my patch,  init_dummy_netdev was being also used. The patch was
+>> basically replacing the init_dummy_netdev by alloc_netdev() with will
+>> call "setup(dev);" later. 
+>> 
+>> -               init_dummy_netdev(&irq_grp->napi_ndev);
+>> +               irq_grp->napi_ndev = alloc_netdev(0, "dummy", NET_NAME_UNKNOWN,
+>> +                                                 init_dummy_netdev);
+>> 
+>> I am wondering if alloc_netdev() is messing with something instead of
+>> init_dummy_netdev().
+>
+> alloc_netdev() allocates some memory and initializes lists which
+> free_netdev() wants to free, basically. But init_dummy_netdev() does:
+>
+> 	/* Clear everything. Note we don't initialize spinlocks
+> 	 * are they aren't supposed to be taken by any of the
+> 	 * NAPI code and this dummy netdev is supposed to be
+> 	 * only ever used for NAPI polls
+> 	 */
+> 	memset(dev, 0, sizeof(struct net_device));
+>
+> so all those pointers and init alloc_netdev() did before calling setup
+> will get wiped.
 
-> I would expect MLO-capable drivers to
-> provide the same information on a per-link basis that they previously pro=
-vided
-> on a per-interface basis, but the "filled" bitmap leaves that to the driv=
-ers.
+After some tweaking I was able to get an old x86 laptop with ath10k back
+alive and I tested this patch using QCA9984/QCA9994 hw1.0 PCI device. As
+expected it did crash during rmmod and it seems to crash because
+dev->dev_addr is zero:
 
-Unless we don't actually ask the drivers at the MLD level if (the
-station is an MLD). But I suspect we will have to do both, ask for MLD-
-level stats and link-level stats.
+[  130.849286] dev->dev_addr 00000000 dev->dev_addr_shadow 5acebe41
 
-> But I think a fundamental question needs to be answered: To what extent d=
-o we
-> need to support legacy userspace applications that are not MLO-aware?
+Breno, I can now easily test new ath10k and ath11k patches, just let me
+know. Here's the full back trace:
 
-I have no idea who even uses this and how :-) But I guess things like
-NetworkManager might, even just to show some signal strength values
-etc.?
+[  130.849310] BUG: kernel NULL pointer dereference, address: 00000000
+[  130.849413] #PF: supervisor read access in kernel mode
+[  130.849450] #PF: error_code(0x0000) - not-present page
+[  130.849486] *pdpt = 00000000048b9001 *pde = 0000000000000000 
+[  130.849529] Oops: 0000 [#1] PREEMPT SMP PTI
+[  130.849564] CPU: 1 PID: 882 Comm: rmmod Tainted: G            E      6.9.0-rc1-wt-ath+ #17
+[  130.849617] Hardware name: Hewlett-Packard HP ProBook 6540b/1722, BIOS 68CDD Ver. F.04 01/27/2010
+[  130.849671] EIP: memcmp+0x4c/0x54
+[  130.849706] Code: 39 d9 74 0a 0f b6 03 0f b6 32 29 f0 74 ec 5b 5e 5d c3 8d b4 26 00 00 00 00 90 83 e9 04 83 c3 04 83 c2 04 83 f9 03 76 c2 8b 02 <39> 03 74 ec eb c0 66 90 55 89 e5 e8 a4 ff ff ff 5d c3 66 90 55 89
+[  130.849809] EAX: 00000000 EBX: 00000000 ECX: 00000020 EDX: c32c1d84
+[  130.854170] ESI: c32c1d84 EDI: 00000000 EBP: c4b87e2c ESP: c4b87e24
+[  130.854222] DS: 007b ES: 007b FS: 00d8 GS: 0033 SS: 0068 EFLAGS: 00010216
+[  130.854274] CR0: 80050033 CR2: 00000000 CR3: 03348000 CR4: 000006f0
+[  130.854324] Call Trace:
+[  130.854354]  ? show_regs+0x74/0x7c
+[  130.854393]  ? __die+0x1d/0x58
+[  130.854425]  ? page_fault_oops+0x16c/0x340
+[  130.854469]  ? kernelmode_fixup_or_oops.constprop.0+0x84/0xd4
+[  130.854518]  ? __bad_area_nosemaphore.constprop.0+0x10e/0x1a4
+[  130.854567]  ? lock_mm_and_find_vma+0xeb/0x288
+[  130.854612]  ? bad_area_nosemaphore+0xf/0x14
+[  130.854652]  ? do_user_addr_fault+0x238/0x454
+[  130.854693]  ? exc_page_fault+0x58/0x170
+[  130.854734]  ? pvclock_clocksource_read_nowd+0x130/0x130
+[  130.854781]  ? handle_exception+0x150/0x150
+[  130.854824]  ? posix_cpu_timer_del+0x17/0x140
+[  130.854867]  ? pvclock_clocksource_read_nowd+0x130/0x130
+[  130.854914]  ? memcmp+0x4c/0x54
+[  130.854947]  ? pvclock_clocksource_read_nowd+0x130/0x130
+[  130.857510]  ? memcmp+0x4c/0x54
+[  130.860078]  dev_addr_check+0x27/0xd4
+[  130.862635]  dev_addr_flush+0x18/0x78
+[  130.865178]  free_netdev+0x76/0x1b0
+[  130.867708]  ath10k_core_destroy+0x54/0x84 [ath10k_core]
+[  130.870283]  ath10k_pci_remove+0x88/0xcc [ath10k_pci]
+[  130.872831]  pci_device_remove+0x38/0x90
+[  130.875311]  device_remove+0x37/0x58
+[  130.877757]  device_release_driver_internal+0x185/0x1d8
+[  130.880182]  driver_detach+0x3c/0x78
+[  130.882603]  bus_remove_driver+0x56/0xc0
+[  130.885019]  driver_unregister+0x25/0x40
+[  130.887378]  pci_unregister_driver+0x21/0x60
+[  130.889702]  ath10k_pci_exit+0xd/0x3d0 [ath10k_pci]
+[  130.892007]  __ia32_sys_delete_module+0x163/0x254
+[  130.894291]  ? preempt_count_add+0x6d/0xbc
+[  130.896504]  ? debug_smp_processor_id+0x12/0x14
+[  130.898711]  ? fpregs_assert_state_consistent+0x29/0x50
+[  130.900883]  __do_fast_syscall_32+0x57/0xd0
+[  130.903026]  do_fast_syscall_32+0x29/0x58
+[  130.905178]  do_SYSENTER_32+0x15/0x18
+[  130.907295]  entry_SYSENTER_32+0xa2/0x102
+[  130.909421] EIP: 0xb7ef0569
+[  130.911523] Code: 03 74 c0 01 10 05 03 74 b8 01 10 06 03 74 b4 01 10 07 03 74 b0 01 10 08 03 74 d8 01 00 00 00 00 00 51 52 55 89 e5 0f 34 cd 80 <5d> 5a 59 c3 90 90 90 90 8d 76 00 58 b8 77 00 00 00 cd 80 90 8d 76
+[  130.916271] EAX: ffffffda EBX: 010f618c ECX: 00000800 EDX: 0044b1f9
+[  130.918758] ESI: 010f6150 EDI: 00000001 EBP: bf8957f3 ESP: bf8941b8
+[  130.921221] DS: 007b ES: 007b FS: 0000 GS: 0033 SS: 007b EFLAGS: 00000202
+[  130.923696] Modules linked in: ath10k_usb(E) ath10k_sdio(E) ath10k_pci(E-) ath10k_core(E) ath(E) mac80211(E) cfg80211(E) libarc4(E) snd_hda_codec_hdmi snd_ctl_led ledtrig_audio snd_hda_codec_idt snd_hda_codec_generic intel_powerclamp coretemp snd_hda_intel wmi_bmof kvm_intel snd_intel_dspcfg uvcvideo i915 kvm videobuf2_vmalloc snd_hda_codec i2c_algo_bit drm_buddy snd_hwdep videobuf2_memops btusb uvc drm_display_helper intel_cstate snd_hda_core videobuf2_v4l2 btrtl btintel drm_kms_helper snd_pcm joydev videodev btbcm input_leds snd_timer serio_raw intel_ips binfmt_misc ttm videobuf2_common bluetooth snd lpc_ich mei_me video mc ecdh_generic soundcore ecc drm mei tpm_infineon wmi mac_hid sch_fq_codel parport_pc ppdev lp parport autofs4 netconsole firewire_ohci sdhci_pci cqhci firewire_core ahci psmouse sdhci sky2 crc_itu_t libahci [last unloaded: libarc4]
+[  130.937173] CR2: 0000000000000000
+[  130.939863] ---[ end trace 0000000000000000 ]---
+[  130.942404] EIP: memcmp+0x4c/0x54
+[  130.944777] Code: 39 d9 74 0a 0f b6 03 0f b6 32 29 f0 74 ec 5b 5e 5d c3 8d b4 26 00 00 00 00 90 83 e9 04 83 c3 04 83 c2 04 83 f9 03 76 c2 8b 02 <39> 03 74 ec eb c0 66 90 55 89 e5 e8 a4 ff ff ff 5d c3 66 90 55 89
+[  130.950719] EAX: 00000000 EBX: 00000000 ECX: 00000020 EDX: c32c1d84
+[  130.952997] ESI: c32c1d84 EDI: 00000000 EBP: c4b87e2c ESP: c4b87e24
+[  130.955166] DS: 007b ES: 007b FS: 00d8 GS: 0033 SS: 0068 EFLAGS: 00010216
+[  130.957339] CR0: 80050033 CR2: 00000000 CR3: 03348000 CR4: 000006f0
 
-> My expectation is that MLO-aware applications only need the per-link
-> information, and from that they can derive their own "aggregate" of the
-> per-link information.
 
-Agree, though it'll be a long time until all applications are MLO-aware?
-Unless there aren't many using it, but ...
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-> So to support that we'd need per-link nesting of the
-> associated attributes.
-
-Sure, that's a given.
-
-> And if we don't need to support legacy userspace we
-> could completely remove populating the top-level statistic attributes. No=
-n-MLO
-> interfaces would have a single link nest that contains the same informati=
-on
-> that is now in the top-level of the NL message.
->=20
-> But if we need to support legacy userspace then we would indeed need to
-> continue to populate those top-level attributes with some form of aggrega=
-te data.
-
-I think we probably have to.
-
-> And even for the MLO-aware case there is the issue of how do we want to h=
-andle
-> the case that links may come and go, and hence aggregate counters would a=
-ppear
-> to have huge fluctuations in values when links are added or removed if th=
-e
-> aggregate values are only calculated by adding the values from the
-> currently-attached links.
-
-Good point, when they're really removed we'd want to probably keep that
-value as a bias for the MLD-level stats?
-
-johannes
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
