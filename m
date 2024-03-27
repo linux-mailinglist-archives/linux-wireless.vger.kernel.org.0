@@ -1,34 +1,34 @@
-Return-Path: <linux-wireless+bounces-5353-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5354-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97BD088E815
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 16:12:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26B2188E645
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 15:35:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DBBF3B2C59A
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 14:33:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 588B51C2DA15
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 14:35:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 391D3139D01;
-	Wed, 27 Mar 2024 13:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17BF0155305;
+	Wed, 27 Mar 2024 13:06:47 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8584839EB;
-	Wed, 27 Mar 2024 13:05:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C96139D1A;
+	Wed, 27 Mar 2024 13:06:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711544702; cv=none; b=XAgjyZ5dCmZzJo3FnJvSlxJypaTDBqofS7kvdiRlLD7arFVJYTDmSYhc0lQIO/G0b6ihZhsONVSDHXrkwvfQaIncIOgDK3/gF3ENvHW9jLEj41Z3lVm7tO/GalWstmpOciG9wRZs49HYnBGXHk4kptDEtb57Gv3wDCNMMtYnoBI=
+	t=1711544807; cv=none; b=AnlktMfzGK924gcR6VXBh3uxYZH1BUaXYSWNijKW08MclzRR/4NZbsMzMkQwyYcaYmLpRsvCfKRCHQjPw1rkME23ObgbHvmBxrGpZBXN7qfn3wzugYsQlQdpx165zEQQyUqcVGEHIWJk6x7KkQndqAuTl0NQNWAOJVKojZnhie8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711544702; c=relaxed/simple;
-	bh=HvEgy7qNCDppHe4Qb2WEDENM68hO529w4hNreWKXNUk=;
+	s=arc-20240116; t=1711544807; c=relaxed/simple;
+	bh=lq5c4OQ/5yFeGjaajVMOXJaR21Pssmn50/wixaoQauc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Fyn8qpx9B4iiJ2+lbPWczrq4vU1PPyvbFUcyWgeKmrWnNfkXqslLwDWitQPovyeRZ4BQlM9vvG8bmPjTmAzewMBMhtEge2d76y0VtqapoCwT2UA9CrkZxMc/G+j9u59K81A3Z5ZP4rYdgo52YyMge7xrJtwCG4rJG6UZ6C2XtWs=
+	 MIME-Version; b=pmUeffrdPQcKM8wtfCxSZhnIeDqnN+bOBFgKT8ad4Dxua0xwPrRVz9d+bq3jkxgLGzyl8LuNVWhMjnt38Pl3gz+pgWafRaIyASuDlXOCEFKwPou0r8M6OqJixSuG4R5D5g9AE9O8dzb3bEiVQH53+ZouWYu2PQe+fbeSa97ZjXQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA955C433F1;
-	Wed, 27 Mar 2024 13:04:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24F80C43394;
+	Wed, 27 Mar 2024 13:05:57 +0000 (UTC)
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 To: "Michael S. Tsirkin" <mst@redhat.com>,
 	Jason Wang <jasowang@redhat.com>,
@@ -102,9 +102,9 @@ Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	linux-fsdevel@vger.kernel.org,
 	alsa-devel@alsa-project.org,
 	linux-sound@vger.kernel.org
-Subject: [PATCH 20/22] scsi: virtio: drop owner assignment
-Date: Wed, 27 Mar 2024 14:04:15 +0100
-Message-Id: <20240327130415.378738-1-krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 21/22] fuse: virtio: drop owner assignment
+Date: Wed, 27 Mar 2024 14:05:52 +0100
+Message-Id: <20240327130552.378821-1-krzysztof.kozlowski@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240327-module-owner-virtio-v1-0-0feffab77d99@linaro.org>
 References: <20240327-module-owner-virtio-v1-0-0feffab77d99@linaro.org>
@@ -124,21 +124,21 @@ Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Depends on the first patch.
 ---
- drivers/scsi/virtio_scsi.c | 1 -
+ fs/fuse/virtio_fs.c | 1 -
  1 file changed, 1 deletion(-)
 
-diff --git a/drivers/scsi/virtio_scsi.c b/drivers/scsi/virtio_scsi.c
-index 617eb892f4ad..89ca26945721 100644
---- a/drivers/scsi/virtio_scsi.c
-+++ b/drivers/scsi/virtio_scsi.c
-@@ -1052,7 +1052,6 @@ static struct virtio_driver virtio_scsi_driver = {
- 	.feature_table = features,
- 	.feature_table_size = ARRAY_SIZE(features),
- 	.driver.name = KBUILD_MODNAME,
--	.driver.owner = THIS_MODULE,
- 	.id_table = id_table,
- 	.probe = virtscsi_probe,
- #ifdef CONFIG_PM_SLEEP
+diff --git a/fs/fuse/virtio_fs.c b/fs/fuse/virtio_fs.c
+index 322af827a232..ca7b64f9c3c7 100644
+--- a/fs/fuse/virtio_fs.c
++++ b/fs/fuse/virtio_fs.c
+@@ -1023,7 +1023,6 @@ static const unsigned int feature_table[] = {};
+ 
+ static struct virtio_driver virtio_fs_driver = {
+ 	.driver.name		= KBUILD_MODNAME,
+-	.driver.owner		= THIS_MODULE,
+ 	.id_table		= id_table,
+ 	.feature_table		= feature_table,
+ 	.feature_table_size	= ARRAY_SIZE(feature_table),
 -- 
 2.34.1
 
