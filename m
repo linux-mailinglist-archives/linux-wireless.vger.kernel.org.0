@@ -1,63 +1,67 @@
-Return-Path: <linux-wireless+bounces-5403-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5404-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CBDB88F092
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 22:01:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EA6F88F09E
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 22:06:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 185062A5479
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 21:01:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B035D1C2B0C5
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 21:06:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5914915351D;
-	Wed, 27 Mar 2024 21:01:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61DE715351C;
+	Wed, 27 Mar 2024 21:06:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="HzExBfGA"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="plXN80LV"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from omta38.uswest2.a.cloudfilter.net (omta38.uswest2.a.cloudfilter.net [35.89.44.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B86E215351C;
-	Wed, 27 Mar 2024 21:01:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A694E15350C
+	for <linux-wireless@vger.kernel.org>; Wed, 27 Mar 2024 21:06:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711573283; cv=none; b=lli4/f7bJ2bP6EoDdlrkHoHEy3S5ZGhYjyJ6QTHuHPsXl1dAyamqQbZRJ7vTWO4OCjd1bA5b+V256YVNBou6RrEum+o1OmXIxiLeUobitmHzR2O33hY0v8Nr7kRnecj/uWL9fiYnxPn8LRcr6d3L1WHkYtB/ny4BN04vlUoJypg=
+	t=1711573586; cv=none; b=tcFsgSZWTC7OEvpXr35XyYxmpHnfbzMP5meWv2YtOEfsfGqbTmv0UyGpPAJhCGGMQ0x8Jy/sIJT88EHHmZow9x3SPn6Y4nzwX+5RHZiqheQvYmXPeNpRzxAWoki/lW8A0iTEmNcyvIVL1xIcaAr57lTuji0Vhz0dw+20xeqLZ74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711573283; c=relaxed/simple;
-	bh=OPurRJ5xp6aX8HKk/buUQYjAT54YFne/0QOnhHJzkRE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=sqmaXQlJZx/ISBPVNj7cnwUje0848WkSFV9m3dFs0gIevTLTGnhktKEDQeAZ7JchWqmzycTzzdhOKfCTeu8qlaBzCqRcld3RM4YJ83+fU8xDVs5H77mx+FpTuMQ+iUGUDl06WqVy52TuREOz7AO8oAjTeloaBO8yHF/64V/OeoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=HzExBfGA; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42RL0BDo018853;
-	Wed, 27 Mar 2024 21:01:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=xmtVpysrBXcgF+Pog62RluWsO9TEDjl7iMQWHnudVBY=; b=Hz
-	ExBfGAzeo8rFS6NU2MB68p2l2/IdaEJuJbbt/r53shABVELEOid8vVo9CIPrvMjp
-	YOvcrk6w6OP+q3BP+du/kryKLUU2fVMNOAq0p8SLsu4P/HYIb1F+gDzwoPIz+qKh
-	yxyY3Cu6sVrUMV3Sn4s3e2Hg3hjx+dk+FIipLxLbF7H94OiMjyDkLchTj0F5xrC8
-	K53Gfk+0Oj4b01lMFTRh7IiW3xlu6DwRZc9AxS/nBq+8B6kwW68C1ixtawKD4BeZ
-	ixyYxzHZpPZxDXW+zMlCAWrMc1t+1/wEkmh77hX3rdRb1mzkT7FBYhfFSsJ5Rhdp
-	HF+0BdYI+3p0lJQ9EXfw==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3x4u04r033-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 27 Mar 2024 21:01:12 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42RL1BWK029439
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 27 Mar 2024 21:01:11 GMT
-Received: from [10.227.110.203] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Wed, 27 Mar
- 2024 14:01:11 -0700
-Message-ID: <dc556824-d499-430c-850e-fb0ca55dd5fe@quicinc.com>
-Date: Wed, 27 Mar 2024 14:01:10 -0700
+	s=arc-20240116; t=1711573586; c=relaxed/simple;
+	bh=Xx5MpaWvy5522jqTooimseYw/Jm8R5vpweYD4JwX7nk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DGJBneDet2L6PH91nfgZ6Q/8xlkoTM5e08yTWYgWeibWuiEzwaHLFX//Gx/UrE8ax649wR4KhYB/itXt8/GoGLo3zSB7x9y6PsyYy8sE+6iSSDwf3vxGck1wLqFwaoaKuEP16mGQNWON2jz/cMXBT5ux6nk03nVrvnU369CyWKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=plXN80LV; arc=none smtp.client-ip=35.89.44.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
+Received: from eig-obgw-6002a.ext.cloudfilter.net ([10.0.30.222])
+	by cmsmtp with ESMTPS
+	id p9arrcQTPDI6fpaTXrEKgI; Wed, 27 Mar 2024 21:06:23 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+	by cmsmtp with ESMTPS
+	id paTWrxPlziKqRpaTWrXYUs; Wed, 27 Mar 2024 21:06:22 +0000
+X-Authority-Analysis: v=2.4 cv=I9quR8gg c=1 sm=1 tr=0 ts=66048a4e
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=zXgy4KOrraTBHT4+ULisNA==:17
+ a=IkcTkHD0fZMA:10 a=K6JAEmCyrfEA:10 a=wYkD_t78qR0A:10 a=COk6AnOGAAAA:8
+ a=1VVxQOVvkDxVd9r07kAA:9 a=QEXdDO2ut3YA:10 a=oeCWIyVaUf8A:10
+ a=TjNXssC_j7lpFel5tvFf:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=0qCww4XnuD7HGbcNfioDP3N0BucgDEPTS/31Ql+x+hY=; b=plXN80LVUebjbHVxO2SjTlb2ZP
+	djrrZWoC1bsw6SEGq6k3t9zjtKqgwNe/Ar5RJEb63BpWKG94ofEC1ykvpXutIVLCWNudFi93KhSPo
+	e1gR0hIpWIhz1HAcu1yUhOAXVT4Ov0s3AN8SgLUMjwc6UOHF25Q8u9OJMQpC/haQXmFwZWxY+zt5X
+	Ns9lq514ralTgD+uTDwdfGLN9IMU3pCOSCAKRuwBdAb5XAuRNqH/IA0WeiI08bzMGGQQ1dR1mt6TD
+	+X+GLKIMb0E9G11nD9RGUtKs6W7lDwW7giEmnLVgwAnq77cp6Ub51D4HGZvNtIyt9sHNd1TiT2fR4
+	VOxkTrbA==;
+Received: from [201.172.173.147] (port=56048 helo=[192.168.15.10])
+	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <gustavo@embeddedor.com>)
+	id 1rpaTW-001BZU-0M;
+	Wed, 27 Mar 2024 16:06:22 -0500
+Message-ID: <0abb2673-1c60-4374-8c88-b5f0eaa3be33@embeddedor.com>
+Date: Wed, 27 Mar 2024 15:06:20 -0600
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -68,55 +72,46 @@ User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH][next] wifi: wil6210: wmi: Use __counted_by() in struct
  wmi_set_link_monitor_cmd and avoid -Wfamnae warning
 Content-Language: en-US
-To: "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Kalle Valo
-	<kvalo@kernel.org>
-CC: <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-hardening@vger.kernel.org>
+To: Jeff Johnson <quic_jjohnson@quicinc.com>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>, Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-hardening@vger.kernel.org
 References: <ZgRsn72WkHzfCUsa@neat>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <ZgRsn72WkHzfCUsa@neat>
-Content-Type: text/plain; charset="UTF-8"
+ <dc556824-d499-430c-850e-fb0ca55dd5fe@quicinc.com>
+From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+In-Reply-To: <dc556824-d499-430c-850e-fb0ca55dd5fe@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: -42v3xr_7ZE0RIUA4Hc1HvCqp3LbjyXW
-X-Proofpoint-GUID: -42v3xr_7ZE0RIUA4Hc1HvCqp3LbjyXW
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-27_18,2024-03-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 malwarescore=0
- mlxlogscore=807 clxscore=1015 mlxscore=0 priorityscore=1501 adultscore=0
- suspectscore=0 lowpriorityscore=0 impostorscore=0 bulkscore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2403210001
- definitions=main-2403270149
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 201.172.173.147
+X-Source-L: No
+X-Exim-ID: 1rpaTW-001BZU-0M
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: ([192.168.15.10]) [201.172.173.147]:56048
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 3
+X-Org: HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfJ1Zyqfszm/q71ihbl29wZ/whMT0uL54IVLO+v5cLUZFrRAQzm8pEHugJqwTvosPybYDQ+eQRJOG+THhtBmWnG2NJMi4/8H+EH2qUy55cy9inTchQkX0
+ Ks6zQAQmo6pGhkpyDD4AJqKKKlg7QlPKr+fe5XLB1a6LQzXr/sJOfNGImxG7p5EUfRjI/3JroWNA3YjVLfOLR3ioQH9pNxDdPFRMASa88Y8dOruSW7VatWvR
 
-On 3/27/2024 11:59 AM, Gustavo A. R. Silva wrote:
-> Prepare for the coming implementation by GCC and Clang of the
-> __counted_by attribute. Flexible array members annotated with
-> __counted_by can have their accesses bounds-checked at run-time
-> via CONFIG_UBSAN_BOUNDS (for array indexing) and CONFIG_FORTIFY_SOURCE
-> (for strcpy/memcpy-family functions).
-> 
-> Also, -Wflex-array-member-not-at-end is coming in GCC-14, and we are
-> getting ready to enable it globally.
-> 
-> So, use the `DEFINE_FLEX()` helper for an on-stack definition of
-> a flexible structure where the size of the flexible-array member
-> is known at compile-time, and refactor the rest of the code,
-> accordingly.
-> 
-> So, with these changes, fix the following warning:
-> drivers/net/wireless/ath/wil6210/wmi.c:4018:49: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> 
-> Link: https://github.com/KSPP/linux/issues/202
-> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-That DEFINE_FLEX() macro takes a bit of time to understand! But I finally
-digested it so...
+> That DEFINE_FLEX() macro takes a bit of time to understand! But I finally
+> digested it so...
+> 
+> Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> 
 
-Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Thanks for your time and RB tag!
 
+--
+Gustavo
 
