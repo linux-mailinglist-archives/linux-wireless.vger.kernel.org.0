@@ -1,85 +1,198 @@
-Return-Path: <linux-wireless+bounces-5350-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5351-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B60AD88E5F1
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 15:29:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1682D88E5F6
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 15:30:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C32A29E66A
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 14:29:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A6912A31E2
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 14:30:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07A9C41757;
-	Wed, 27 Mar 2024 12:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30A9C12DD91;
+	Wed, 27 Mar 2024 12:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lONlhKnk"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="jh7i9jbn"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7F5E12A171
-	for <linux-wireless@vger.kernel.org>; Wed, 27 Mar 2024 12:53:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 823DB12F38C
+	for <linux-wireless@vger.kernel.org>; Wed, 27 Mar 2024 12:55:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711544026; cv=none; b=OzVMpyQAx6JECfFaOwqF+UKuNqf3Jq59FsvEKWEiuoMduI00u+1BEa9o6zpch4mZItVhV2JHapNY1AWOlnRXISHLPCiEm1ovGeMBJIAK5Si1Hhpa940b6jHGo0Dl338yV2eMaErnfInCVNsypVvPilVaPzOq0qGuhgGoAAExF+Y=
+	t=1711544102; cv=none; b=cTa+v6ZOokFu2EXq5gQqdx15ncwqVDvaeXQUBDNlHrw4hDR7Z6rZqDRbbb3/JkKoPH8di5bOJ3JIOmfupUA4EolqQelQQ8la+e/aqHklZ9BeFhSrvdffzj281loAUMSGMl140qgYqyaT+UZxRla0/pEGt9KUm/g/T/CphWcIsjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711544026; c=relaxed/simple;
-	bh=D7ySzSKFyti1KATa654us7jWP/1eYd/sw70xVw/Wwc8=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=VmbCv1kGMUqED7+TYh5pbWDLIekno0DdPdTXAIljMVsWu16QZEUmnytN5RqklDJ6Gx+US1nNp5b6yQkETjV9rSJWKBMjeV8t1royodGbG1Vc4Too+dZykSPaqS3NrSddMn6QgPUy4HypZzg+ur5iX+60/n/6APYBB0tOxRLHeNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lONlhKnk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1566EC433C7;
-	Wed, 27 Mar 2024 12:53:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711544026;
-	bh=D7ySzSKFyti1KATa654us7jWP/1eYd/sw70xVw/Wwc8=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=lONlhKnkpDdURqlm0KaVNAQWr+WrkTbbQVmrPwTnDun8BOK56s7Ov+/UmJ3iDayV6
-	 ii1E0DBAAWpFIm3MalYfKOMgVUlBNUmIswTjAcpcB7eXDYpFs36JSDMaqnqFdQbme+
-	 5GhR4Pb9n1iLS3ap0p4LdTe7fLPkae3HjQTcK8db98pQjhbSKL+G1Tj/Jy0MF1w+4J
-	 ODBpavhVmIFr9PJvFt1bK9FAFn7Fg2yKHFK9fhIN1Nz3fVDMbG12hqPCkQqiw6ZPhU
-	 Gbz66O1wPqnH84aUuX47OAwESELZs7ycVzUktjYcX9e40lR7Hdf78Gel1kBkd2BLf2
-	 shsC91ZJySzQA==
-From: Kalle Valo <kvalo@kernel.org>
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Cc: Ping-Ke Shih <pkshih@realtek.com>,  "linux-wireless@vger.kernel.org"
- <linux-wireless@vger.kernel.org>,  "Larry.Finger@lwfinger.net"
- <Larry.Finger@lwfinger.net>,  "s.l-h@gmx.de" <s.l-h@gmx.de>,
-  "chewitt@libreelec.tv" <chewitt@libreelec.tv>
-Subject: Re: [PATCH v3 04/12] wifi: rtlwifi: Add rtl8192du/table.{c,h}
-References: <7f4b3309-1580-48f3-9426-29f1eb4052fd@gmail.com>
-	<ed50254c-889e-4dcd-93db-f63b776e3503@gmail.com>
-	<5170c29a7b565fdec2e004f9391d325328ef5a72.camel@realtek.com>
-	<8a90f3cb-7218-4f23-8aa7-fcc68e2f4a93@gmail.com>
-	<87y1a4yqvh.fsf@kernel.org>
-	<5d117cf09134b034e704b8a1b5167235963a9c88.camel@realtek.com>
-	<de1af6c3-25e2-4480-9da3-f3e5de1d6d5f@gmail.com>
-Date: Wed, 27 Mar 2024 14:53:43 +0200
-In-Reply-To: <de1af6c3-25e2-4480-9da3-f3e5de1d6d5f@gmail.com> (Bitterblue
-	Smith's message of "Wed, 27 Mar 2024 14:36:06 +0200")
-Message-ID: <87ttkr7s4o.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1711544102; c=relaxed/simple;
+	bh=gTFmeIWaWZYZbC0gTxXCf8i+5T6huZtTwmnbY15DArY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=uStn9UUf9M6lOqaXCLebp7sDkqa+EDFiiifsrLqj8xFIop/7oVtih7GFuHGhYpk83Uf32UyHZ5YZ9Y4JCHUYDHZV6i0Cr2AKX/cW7Ksqugax7mH1ig2cvekGxso0pvyRbe7OrDvRqgd2a2MMCltQzGqGwTYvCOh7j1XuGdCY1lQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=jh7i9jbn; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42RAZfX5023903;
+	Wed, 27 Mar 2024 12:54:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=FrQzsn87xaPozpOsr6mrbRGEBewC/DvcdWCLtE3LggY=; b=jh
+	7i9jbnTPz+T+4WRdYruqZu7uz7IAMT1bGRQMebdLoFvQQQu3nOU3Xwyn5ocwnwkT
+	8NyKLgPWXc2RvW7ps2I0MHnmqika9sLj3t0d06izLbgxHESWs1HrX75k3BM+eFgX
+	an67XaQHW7o80tdbNXYIvWwCIti1YE19d4NHCSum29py8BUQZQrRtLSbbJYp66Fl
+	6GSTtADgjvv64wzzs54NSMsJWabvD6FY0hqfudD5SWj3crA1F7UJ1AwoQNgLcaM4
+	7D2MptpW6NkLa0ryapcXD2hqRMsHgP0ZRnyCMaOBLAoLnFu8R3/VSeazql5RQL+W
+	rS9yLn1h97YGgChkxuNA==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3x4hu2rb8n-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 27 Mar 2024 12:54:46 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42RCskt1011989
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 27 Mar 2024 12:54:46 GMT
+Received: from [10.110.105.230] (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Wed, 27 Mar
+ 2024 05:54:45 -0700
+Message-ID: <3f5b9e74-d898-416b-9b08-d008883c7e58@quicinc.com>
+Date: Wed, 27 Mar 2024 20:54:42 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: ath12k: report signal for iw dev xxx station dump
+To: Kalle Valo <kvalo@kernel.org>
+CC: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+References: <20240219111417.1185-1-quic_lingbok@quicinc.com>
+ <87o7b8amcn.fsf@kernel.org>
+Content-Language: en-US
+From: Lingbo Kong <quic_lingbok@quicinc.com>
+In-Reply-To: <87o7b8amcn.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: EyqYlXtp9seqaVCzx4qFOCmnhiwXSEkO
+X-Proofpoint-GUID: EyqYlXtp9seqaVCzx4qFOCmnhiwXSEkO
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-27_08,2024-03-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ phishscore=0 adultscore=0 spamscore=0 mlxlogscore=999 suspectscore=0
+ mlxscore=0 bulkscore=0 malwarescore=0 clxscore=1015 impostorscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2403210001 definitions=main-2403270088
 
-Bitterblue Smith <rtl8821cerfe2@gmail.com> writes:
 
-> Only phy.c includes table.h, so nothing would be duplicated.
 
-You mean _at the moment_ nothing would be duplicated, but once another
-file includes the header file it will be duplicated.
+On 2024/3/21 0:39, Kalle Valo wrote:
+> Lingbo Kong <quic_lingbok@quicinc.com> writes:
+> 
+>> The signal of "iw dev xxx station dump" always show 0 dBm. This is because
+>> currently signal is only set in ath12k_mgmt_rx_event function, and not set
+>> for rx data packet. So, change to get signal from firmware and report to
+>> mac80211.
+> 
+>>   	/* TODO: Use real NF instead of default one. */
+>> -	sinfo->signal = arsta->rssi_comb + ATH12K_DEFAULT_NOISE_FLOOR;
+>> -	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_SIGNAL);
+>> +	signal = arsta->rssi_comb;
+>> +
+>> +	if (!signal &&
+>> +	    arsta->arvif->vdev_type == WMI_VDEV_TYPE_STA &&
+>> +	    ar->ab->hw_params->supports_rssi_stats &&
+>> +	    !(ath12k_mac_get_fw_stats(ar, ar->pdev->pdev_id, 0,
+>> +				      WMI_REQUEST_VDEV_STAT)))
+>> +		signal = arsta->rssi_beacon;
+>> +
+>> +	if (signal) {
+>> +		sinfo->signal = signal;
+>> +		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_SIGNAL);
+>> +	}
+>>   }
+> 
+> If I'm reading the patch correctly this is the sequence:
+> 
+> 1. ath12k_mac_op_sta_statistics() is called
+> 
+> 2. WMI_REQUEST_STATS_CMDID is sent to the firmware
+> 
+> 3. ath12k_mac_op_sta_statistics() returns
+> 
+> 4. firmware sends WMI_UPDATE_STATS_EVENTID to host
+> 
+> 5. ath12k_wmi_tlv_fw_stats_data_parse() stores signal to arsta->rssi_beacon
+> 
+> So doesn't this mean that ath12k_mac_op_sta_statistics() actually uses
+> the previous value? And if ath12k_mac_op_sta_statistics() is called very
+> seldom, like once an hour, the signal value can be one hour wrong?
+>
 
-Anyway, Linus has said that static variables don't belong to a header
-file and I agree with him.
+Hi, kalle, you're right.
+Thanks you for pointing this out.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+I should add a struct completion to make up the synchronization mechanism.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+So, i add a struct completion in struct ath12k, then modify the 
+ath12k_mac_get_fw_stats() function:
+
++static int ath12k_mac_get_fw_stats(struct ath12k *ar, u32 pdev_id,
++                                  u32 vdev_id, u32 stats_id)
++{
++       struct ath12k_base *ab = ar->ab;
++       int ret, left;
++
++       mutex_lock(&ar->conf_mutex);
++
++       if (ar->state != ATH12K_STATE_ON) {
++               ret = -ENETDOWN;
++               goto err_unlock;
++       }
++
++       reinit_completion(&ar->fw_stats_complete);
++
++       ret = ath12k_wmi_send_stats_request_cmd(ar, stats_id, vdev_id, 
+pdev_id);
++
++       if (ret) {
++               ath12k_warn(ab, "failed to request fw stats: %d\n", ret);
++               goto err_unlock;
++       }
++
++       ath12k_dbg(ab, ATH12K_DBG_WMI,
++                  "get fw stat pdev id %d vdev id %d stats id 0x%x\n",
++                  pdev_id, vdev_id, stats_id);
++
++       left = wait_for_completion_timeout(&ar->fw_stats_complete, 1 * HZ);
++
++       if (!left)
++               ath12k_warn(ab, "time out while waiting for get fw 
+stats\n");
++err_unlock:
++
++       mutex_unlock(&ar->conf_mutex);
++       return ret;
++}
+
+then add "complete(&ar->fw_stats_complete);" at the end of 
+ath12k_wmi_tlv_fw_stats_data_parse() function.
+
+what do you think of this?
+
+> Also I don't see any protection when accessing arsta->rssi_beacon.
+> 
+
+i think add protection is unnecessary when accessing arsta->rssi_beacon 
+in ath12k_mac_op_sta_statistics() function, because we just take its 
+value and don't change it.
+
+Best regards
+Lingbo Kong
 
