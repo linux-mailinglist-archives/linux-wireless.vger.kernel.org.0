@@ -1,265 +1,177 @@
-Return-Path: <linux-wireless+bounces-5363-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5364-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B033A88EA1A
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 16:59:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB2A288E867
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 16:20:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EDAC4B2C6D7
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 15:17:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF95B1C2F21F
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 15:20:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42D0213E6B4;
-	Wed, 27 Mar 2024 14:52:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 891783717F;
+	Wed, 27 Mar 2024 15:02:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="fC4xPg1/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-io1-f69.google.com (mail-io1-f69.google.com [209.85.166.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6212413E411
-	for <linux-wireless@vger.kernel.org>; Wed, 27 Mar 2024 14:52:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E869E12F36F
+	for <linux-wireless@vger.kernel.org>; Wed, 27 Mar 2024 15:02:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711551142; cv=none; b=raReFQWhxyHUeFvEwduVwt69WwxVrbGC2p01DNpQmv4aePZ2sEdSaywgMJO0fqlduhIzKtxSUVllRUuqCL7t0Xjruyw5jHg4RpJ1cBJdgg0NlHRFAEr6hYoMcbgdlbkxNP0DfkbSC2Y1ZtxW+swgXzgPPdeMGLo3rP/hZpLj2ZY=
+	t=1711551765; cv=none; b=VThKm/teGjuTe0PlgsGlGLAM6sdoGujJFcM8kM00yb3CQbWjRBaUef0Rjtuo++v0MOGLFqSMgAcXorasH7p5w0JEf51nZAlTHyF2xq9lYK4cNDImD9Kb3HHNMugLgvrycYJqoYEXhUjeRJC3AZPbBsYfbpDVZLYXhxOEN8Quk/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711551142; c=relaxed/simple;
-	bh=71rJq7Xp8Cqgp8M2d8+P1WXkdN3xzz0kedDaTR9okh8=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=ewLRZe4OwUa1A4jTF/13D4Wgk2UGKEEOQp376VrYqzKVHTrgu7fIp5wAzCNk+xvMblNxWDQWwICKv9FlHfilN9s1nsniI9uA9B3mJLy6aoi792b+WWEcPsKmpeSdr+kbboFSPOoa/jBjpmrBUxY/i3BAlbwgfiOXvlPhJK245i8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f69.google.com with SMTP id ca18e2360f4ac-7cc74ea9c20so747147839f.1
-        for <linux-wireless@vger.kernel.org>; Wed, 27 Mar 2024 07:52:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711551139; x=1712155939;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=9Zz5Gummoz+kjUDcBWiUlBWeOeyMoyGTY6ig/qkgeKg=;
-        b=ufs5go9eRRnLhaALus3vnL8fwb/FLp8lsxwXL/qGrSp1vn/mDYZtBsxOPDp5WFGEgs
-         C82+iCt+w5uOh8GoJ0n1pQDhgCK4MtqTP4ouJSRe+RIM/sup+qFJ6kE60awfRgvOqj/9
-         BCzJbMfFYiQHesSvY5HsZ9rkkUBys+rV5hLmZfKU/jk9A0dSPvXAvuMyL6DutWIr86CJ
-         77e7tjpqQgUHt+AjJPVreRNx3xCOea/HZKdIwzz91FUpExe/GcfKgBFViY1KVc0oV0OQ
-         pBsspbTlq40SMIDDJxDAhFQvpzaTAcugwJ9PV9oTBaMvn+Ou3YoWpFCqA/8tKv80bqNi
-         JDIw==
-X-Forwarded-Encrypted: i=1; AJvYcCWg447uCUHiWEfhKGSsdtizJxfCSNzwiWENkLftWcA0tgFeaQV0MKcEZ61HzG2eukF7hTZVgaSRD7Nzj5i2IVWMROTmbDVgZMv5Rev8x+Y=
-X-Gm-Message-State: AOJu0YzsS8U0N1Z/IYEhi3DbjQbWmZt+WVuCjGFL+DmOYBvHxFoJGST2
-	T/DgzQ9qBqABjNGcqTYqsrFntXEkGYzgha3PZ7lkVueNHvOoxAkdcVeynoqeoYMWoeuXiUW4h56
-	UQTTpDmsR/Y0h7doy4N3BsitTcLFOe+1Q7ZbcltEh9cSop+piXlh1UKo=
-X-Google-Smtp-Source: AGHT+IHBacTzIE+E1O1ogxORsrkRvTUqLPNLlGhjmN8DFpzF0NyBgHXnhmdHMvgV+Iht5TXt+tVCSAfgmiROLTwxAwKTVtJ4aecF
+	s=arc-20240116; t=1711551765; c=relaxed/simple;
+	bh=/HOFC4NMzQLH+fZipOwDqlkFH7ZST9l+6racndSRpZY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=hoGfXeFlrrCjGH9Io0ATW9zWQaxG2XmGuIAWxz2ycw0Jvl357ybbvlAy0a8i5Sf7JKzOubM4Q72Mmu7B+qaud3MAuiYM9yseZEcBAlsJ7fwMWj6rUBV9KP0lUOzMLvXU51x+Yr1smmq8OlLMHYlKQ0ChYKCSi+yQDVYzXBEfAkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=fC4xPg1/; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42RDdPX5004238;
+	Wed, 27 Mar 2024 15:02:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=3N1FmIYiPH53Ka4MptREjaALirR4n0ouCVqaY1qOPtU=; b=fC
+	4xPg1/KbDFhkdpH1mbJUHMYoT1plAb9ZwVKVh4YsDs92UbRHqmDUFq+/yzM847u6
+	YlqTPJMhdNX9FDN9Y4M7oxkNP3HijVyZaigoEifpPyqjt5ApOj+bkzhHpIxsPN10
+	04VX0+XqbI1kM33aYQp/ya0w2ZR4PWujjCW7aDzUpop3rsytU4iHhrZIU6khE9H1
+	QNRk92KJy25eiqyaOxP1wxsvG6zYVTXgsAYbZ52qjdsQUpXPwXBhppo805ZdX/xS
+	xz0AfH78wI9ZQgoFozeYvNNg14Bigqgaoxr09n1lOae+kFlAnh9cPMeN8/BkSMF5
+	8wogyBwyfzIJyW2oE9EA==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3x4mh9g7bq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 27 Mar 2024 15:02:34 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42RF2Xfk014545
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 27 Mar 2024 15:02:33 GMT
+Received: from [10.110.28.48] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Wed, 27 Mar
+ 2024 08:02:32 -0700
+Message-ID: <68c6fcbd-0aaa-43b2-b5e2-08367c11e79d@quicinc.com>
+Date: Wed, 27 Mar 2024 08:02:32 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6602:640f:b0:7d0:7c06:805a with SMTP id
- gn15-20020a056602640f00b007d07c06805amr9787iob.3.1711551139625; Wed, 27 Mar
- 2024 07:52:19 -0700 (PDT)
-Date: Wed, 27 Mar 2024 07:52:19 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000b146890614a58da4@google.com>
-Subject: [syzbot] [wireless?] possible deadlock in ieee80211_open
-From: syzbot <syzbot+7526b1c2ce0b9a92e9a6@syzkaller.appspotmail.com>
-To: davem@davemloft.net, edumazet@google.com, johannes@sipsolutions.net, 
-	kuba@kernel.org, linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] wifi: cfg80211/mac80211: Add support to rx retry
+ stats
+To: Johannes Berg <johannes@sipsolutions.net>,
+        Hari Chandrakanthan
+	<quic_haric@quicinc.com>,
+        <ath11k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240319134522.4021062-1-quic_haric@quicinc.com>
+ <20240319134522.4021062-2-quic_haric@quicinc.com>
+ <d364e872eb29f03236630bab49a3243e2118ab22.camel@sipsolutions.net>
+ <14699537-99b2-e468-6a7b-7b721193400e@quicinc.com>
+ <b9dfab64822bacf0cc72380c0de034b79d489668.camel@sipsolutions.net>
+Content-Language: en-US
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <b9dfab64822bacf0cc72380c0de034b79d489668.camel@sipsolutions.net>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: dzcq6EVj_P6iDDnJd7NywHEMWer9ggaI
+X-Proofpoint-ORIG-GUID: dzcq6EVj_P6iDDnJd7NywHEMWer9ggaI
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-27_12,2024-03-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
+ bulkscore=0 clxscore=1015 adultscore=0 impostorscore=0 spamscore=0
+ priorityscore=1501 suspectscore=0 phishscore=0 mlxlogscore=979
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2403210001 definitions=main-2403270103
 
-Hello,
+On 3/27/2024 3:32 AM, Johannes Berg wrote:
+> On Wed, 2024-03-27 at 15:39 +0530, Hari Chandrakanthan wrote:
+> 
+>> Fields such packet count, retries etc can be summed up for the MLD 
+>> representation and the existing NL attribute can be used for exposing
+>> the summed up value.
+> 
+> I think the existing attributes can also be used for per-link STA?
+> 
+> I'm kind of imagining that - once we actually do all of this properly -
+> the representation in nl80211 would be something like
+> 
+> 
+> STA 00:00:00:00:00:00
+>  - TX bytes: 123456
+>  - RX bytes: 654321
+>  - signal avg: -60 dBm     // picking the best of all links?
+>  ...
+>  - LINK 00:00:00:00:00:01
+>     - link ID: 10
+>     - TX bytes: 100000
+>     - RX bytes: 600000
+>     - signal avg: -60 dBm
+>  - LINK 00:00:00:00:00:02
+>     - link ID: 11
+>     - TX bytes: 23456
+>     - RX bytes: 54321
+>     - signal avg: -70 dBm
+> 
+> etc.
+> 
+>> But there are fields such as signal avg, bitrate etc which cannot be 
+>> summed up.
+> 
+> Right, but I guess we can pick 'best' for those, to at least have a
+> value? Or we could just not emit those attributes I guess, but not sure
+> if that's then all that useful?
+> 
+>> Should we expose such fields of each link STA through NL?
+> 
+> All of them, I guess?
+> 
+> I'm also imagining that we change the API from cfg80211 to the drivers
+> to get the *link* STA information, and do the summing up and/or "best"
+> selection there in cfg80211 itself. However, I am prepared to accept the
+> possibility that we may do _both_ in the API, if not all drivers can
+> even do all of the statistics per link. We should probably still have
+> the link STAs in the statistics in nl80211, but then they may not be
+> populated?
 
-syzbot found the following issue on:
+First remember that there are a lot of statistics, and each driver is free to
+return as many or as few as they support, indicating the ones they are
+returning using the "filled" bitmap. I would expect MLO-capable drivers to
+provide the same information on a per-link basis that they previously provided
+on a per-interface basis, but the "filled" bitmap leaves that to the drivers.
 
-HEAD commit:    237bb5f7f7f5 cxgb4: unnecessary check for 0 in the free_sg..
-git tree:       net-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=113622a5180000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=6fb1be60a193d440
-dashboard link: https://syzkaller.appspot.com/bug?extid=7526b1c2ce0b9a92e9a6
-compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+But I think a fundamental question needs to be answered: To what extent do we
+need to support legacy userspace applications that are not MLO-aware?
 
-Unfortunately, I don't have any reproducer for this issue yet.
+My expectation is that MLO-aware applications only need the per-link
+information, and from that they can derive their own "aggregate" of the
+per-link information. So to support that we'd need per-link nesting of the
+associated attributes. And if we don't need to support legacy userspace we
+could completely remove populating the top-level statistic attributes. Non-MLO
+interfaces would have a single link nest that contains the same information
+that is now in the top-level of the NL message.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/728c4d735738/disk-237bb5f7.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/fcd84ee276f5/vmlinux-237bb5f7.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/366f6292e769/bzImage-237bb5f7.xz
+But if we need to support legacy userspace then we would indeed need to
+continue to populate those top-level attributes with some form of aggregate data.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+7526b1c2ce0b9a92e9a6@syzkaller.appspotmail.com
+And even for the MLO-aware case there is the issue of how do we want to handle
+the case that links may come and go, and hence aggregate counters would appear
+to have huge fluctuations in values when links are added or removed if the
+aggregate values are only calculated by adding the values from the
+currently-attached links.
 
-netlink: 'syz-executor.0': attribute type 10 has an invalid length.
-======================================================
-WARNING: possible circular locking dependency detected
-6.8.0-syzkaller-05204-g237bb5f7f7f5 #0 Not tainted
-------------------------------------------------------
-syz-executor.0/7478 is trying to acquire lock:
-ffff888077110768 (&rdev->wiphy.mtx){+.+.}-{3:3}, at: wiphy_lock include/net/cfg80211.h:5951 [inline]
-ffff888077110768 (&rdev->wiphy.mtx){+.+.}-{3:3}, at: ieee80211_open+0xe7/0x200 net/mac80211/iface.c:449
-
-but task is already holding lock:
-ffff888064974d20 (team->team_lock_key#17){+.+.}-{3:3}, at: team_add_slave+0xad/0x2750 drivers/net/team/team.c:1973
-
-which lock already depends on the new lock.
-
-
-the existing dependency chain (in reverse order) is:
-
--> #1 (team->team_lock_key#17){+.+.}-{3:3}:
-       lock_acquire+0x1e4/0x530 kernel/locking/lockdep.c:5754
-       __mutex_lock_common kernel/locking/mutex.c:608 [inline]
-       __mutex_lock+0x136/0xd70 kernel/locking/mutex.c:752
-       team_port_change_check+0x51/0x1e0 drivers/net/team/team.c:2995
-       team_device_event+0x161/0x5b0 drivers/net/team/team.c:3021
-       notifier_call_chain+0x18f/0x3b0 kernel/notifier.c:93
-       call_netdevice_notifiers_extack net/core/dev.c:1988 [inline]
-       call_netdevice_notifiers net/core/dev.c:2002 [inline]
-       dev_close_many+0x33c/0x4c0 net/core/dev.c:1543
-       unregister_netdevice_many_notify+0x544/0x16d0 net/core/dev.c:11071
-       macvlan_device_event+0x7bc/0x850 drivers/net/macvlan.c:1828
-       notifier_call_chain+0x18f/0x3b0 kernel/notifier.c:93
-       call_netdevice_notifiers_extack net/core/dev.c:1988 [inline]
-       call_netdevice_notifiers net/core/dev.c:2002 [inline]
-       unregister_netdevice_many_notify+0xd96/0x16d0 net/core/dev.c:11096
-       unregister_netdevice_many net/core/dev.c:11154 [inline]
-       unregister_netdevice_queue+0x303/0x370 net/core/dev.c:11033
-       unregister_netdevice include/linux/netdevice.h:3115 [inline]
-       _cfg80211_unregister_wdev+0x162/0x560 net/wireless/core.c:1206
-       ieee80211_if_remove+0x25d/0x3a0 net/mac80211/iface.c:2242
-       ieee80211_del_iface+0x19/0x30 net/mac80211/cfg.c:202
-       rdev_del_virtual_intf net/wireless/rdev-ops.h:62 [inline]
-       cfg80211_remove_virtual_intf+0x230/0x3f0 net/wireless/util.c:2847
-       genl_family_rcv_msg_doit net/netlink/genetlink.c:1113 [inline]
-       genl_family_rcv_msg net/netlink/genetlink.c:1193 [inline]
-       genl_rcv_msg+0xb14/0xec0 net/netlink/genetlink.c:1208
-       netlink_rcv_skb+0x1e3/0x430 net/netlink/af_netlink.c:2559
-       genl_rcv+0x28/0x40 net/netlink/genetlink.c:1217
-       netlink_unicast_kernel net/netlink/af_netlink.c:1335 [inline]
-       netlink_unicast+0x7ea/0x980 net/netlink/af_netlink.c:1361
-       netlink_sendmsg+0x8e1/0xcb0 net/netlink/af_netlink.c:1905
-       sock_sendmsg_nosec net/socket.c:730 [inline]
-       __sock_sendmsg+0x221/0x270 net/socket.c:745
-       ____sys_sendmsg+0x525/0x7d0 net/socket.c:2584
-       ___sys_sendmsg net/socket.c:2638 [inline]
-       __sys_sendmsg+0x2b0/0x3a0 net/socket.c:2667
-       do_syscall_64+0xfb/0x240
-       entry_SYSCALL_64_after_hwframe+0x6d/0x75
-
--> #0 (&rdev->wiphy.mtx){+.+.}-{3:3}:
-       check_prev_add kernel/locking/lockdep.c:3134 [inline]
-       check_prevs_add kernel/locking/lockdep.c:3253 [inline]
-       validate_chain+0x18cb/0x58e0 kernel/locking/lockdep.c:3869
-       __lock_acquire+0x1346/0x1fd0 kernel/locking/lockdep.c:5137
-       lock_acquire+0x1e4/0x530 kernel/locking/lockdep.c:5754
-       __mutex_lock_common kernel/locking/mutex.c:608 [inline]
-       __mutex_lock+0x136/0xd70 kernel/locking/mutex.c:752
-       wiphy_lock include/net/cfg80211.h:5951 [inline]
-       ieee80211_open+0xe7/0x200 net/mac80211/iface.c:449
-       __dev_open+0x2d3/0x450 net/core/dev.c:1430
-       dev_open+0xae/0x1b0 net/core/dev.c:1466
-       team_port_add drivers/net/team/team.c:1214 [inline]
-       team_add_slave+0x9b3/0x2750 drivers/net/team/team.c:1974
-       do_set_master net/core/rtnetlink.c:2685 [inline]
-       do_setlink+0xe70/0x41f0 net/core/rtnetlink.c:2891
-       __rtnl_newlink net/core/rtnetlink.c:3680 [inline]
-       rtnl_newlink+0x180b/0x20a0 net/core/rtnetlink.c:3727
-       rtnetlink_rcv_msg+0x89b/0x10d0 net/core/rtnetlink.c:6595
-       netlink_rcv_skb+0x1e3/0x430 net/netlink/af_netlink.c:2559
-       netlink_unicast_kernel net/netlink/af_netlink.c:1335 [inline]
-       netlink_unicast+0x7ea/0x980 net/netlink/af_netlink.c:1361
-       netlink_sendmsg+0x8e1/0xcb0 net/netlink/af_netlink.c:1905
-       sock_sendmsg_nosec net/socket.c:730 [inline]
-       __sock_sendmsg+0x221/0x270 net/socket.c:745
-       ____sys_sendmsg+0x525/0x7d0 net/socket.c:2584
-       ___sys_sendmsg net/socket.c:2638 [inline]
-       __sys_sendmsg+0x2b0/0x3a0 net/socket.c:2667
-       do_syscall_64+0xfb/0x240
-       entry_SYSCALL_64_after_hwframe+0x6d/0x75
-
-other info that might help us debug this:
-
- Possible unsafe locking scenario:
-
-       CPU0                    CPU1
-       ----                    ----
-  lock(team->team_lock_key#17);
-                               lock(&rdev->wiphy.mtx);
-                               lock(team->team_lock_key#17);
-  lock(&rdev->wiphy.mtx);
-
- *** DEADLOCK ***
-
-2 locks held by syz-executor.0/7478:
- #0: ffffffff8f385a08 (rtnl_mutex){+.+.}-{3:3}, at: rtnl_lock net/core/rtnetlink.c:79 [inline]
- #0: ffffffff8f385a08 (rtnl_mutex){+.+.}-{3:3}, at: rtnetlink_rcv_msg+0x842/0x10d0 net/core/rtnetlink.c:6592
- #1: ffff888064974d20 (team->team_lock_key#17){+.+.}-{3:3}, at: team_add_slave+0xad/0x2750 drivers/net/team/team.c:1973
-
-stack backtrace:
-CPU: 0 PID: 7478 Comm: syz-executor.0 Not tainted 6.8.0-syzkaller-05204-g237bb5f7f7f5 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/29/2024
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x1e7/0x2e0 lib/dump_stack.c:106
- check_noncircular+0x36a/0x4a0 kernel/locking/lockdep.c:2187
- check_prev_add kernel/locking/lockdep.c:3134 [inline]
- check_prevs_add kernel/locking/lockdep.c:3253 [inline]
- validate_chain+0x18cb/0x58e0 kernel/locking/lockdep.c:3869
- __lock_acquire+0x1346/0x1fd0 kernel/locking/lockdep.c:5137
- lock_acquire+0x1e4/0x530 kernel/locking/lockdep.c:5754
- __mutex_lock_common kernel/locking/mutex.c:608 [inline]
- __mutex_lock+0x136/0xd70 kernel/locking/mutex.c:752
- wiphy_lock include/net/cfg80211.h:5951 [inline]
- ieee80211_open+0xe7/0x200 net/mac80211/iface.c:449
- __dev_open+0x2d3/0x450 net/core/dev.c:1430
- dev_open+0xae/0x1b0 net/core/dev.c:1466
- team_port_add drivers/net/team/team.c:1214 [inline]
- team_add_slave+0x9b3/0x2750 drivers/net/team/team.c:1974
- do_set_master net/core/rtnetlink.c:2685 [inline]
- do_setlink+0xe70/0x41f0 net/core/rtnetlink.c:2891
- __rtnl_newlink net/core/rtnetlink.c:3680 [inline]
- rtnl_newlink+0x180b/0x20a0 net/core/rtnetlink.c:3727
- rtnetlink_rcv_msg+0x89b/0x10d0 net/core/rtnetlink.c:6595
- netlink_rcv_skb+0x1e3/0x430 net/netlink/af_netlink.c:2559
- netlink_unicast_kernel net/netlink/af_netlink.c:1335 [inline]
- netlink_unicast+0x7ea/0x980 net/netlink/af_netlink.c:1361
- netlink_sendmsg+0x8e1/0xcb0 net/netlink/af_netlink.c:1905
- sock_sendmsg_nosec net/socket.c:730 [inline]
- __sock_sendmsg+0x221/0x270 net/socket.c:745
- ____sys_sendmsg+0x525/0x7d0 net/socket.c:2584
- ___sys_sendmsg net/socket.c:2638 [inline]
- __sys_sendmsg+0x2b0/0x3a0 net/socket.c:2667
- do_syscall_64+0xfb/0x240
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
-RIP: 0033:0x7fc81627dda9
-Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 e1 20 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fc81701e0c8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007fc8163abf80 RCX: 00007fc81627dda9
-RDX: 0000000000000000 RSI: 0000000020000600 RDI: 0000000000000003
-RBP: 00007fc8162ca47a R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 000000000000000b R14: 00007fc8163abf80 R15: 00007ffd5f0eb6a8
- </TASK>
-team0: Port device wlan1 added
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+/jeff
 
