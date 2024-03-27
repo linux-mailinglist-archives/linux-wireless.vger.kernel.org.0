@@ -1,45 +1,45 @@
-Return-Path: <linux-wireless+bounces-5325-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5326-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E275B88E1D0
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 14:12:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDD0E88E2A1
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 14:30:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C703299C9E
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 13:12:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F17128ACFA
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 13:30:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62F4615E5B5;
-	Wed, 27 Mar 2024 12:18:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBBE31741E6;
+	Wed, 27 Mar 2024 12:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o3XvKgIr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aCsoSzgq"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B65A15E5B1;
-	Wed, 27 Mar 2024 12:18:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A12181741D9;
+	Wed, 27 Mar 2024 12:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711541931; cv=none; b=oYn6TXF1MNYWpzxlS7Fx3gf+XeTrTshUI/ZVbXSPfKMsjQLekaRiMcnBg1yKh/xefFeUD9/tvEM1Y/P/vo1DGf+Y67GeK/X2U9h/Z2GU9Uzf38gpDOGd8uSJ0ZHqQSQvRzi2ex3CZ4eXX+AvooZl2/8etMJnSnIVjLuLzQQF7WE=
+	t=1711542145; cv=none; b=q9/tCyqu/tjh4hMdtBVUz6HEAVragJRZvcO+hjcXgRilMCz/2H1HCqvpsYQtmHsxB0qwL8jUT6MgC0+imWc3e37eFfQg07wRAwKfi5fog+J2015DgUFWmeP+qdv9D85I0Twy+YZLsjcB2yjfppQzqSHl3zNHLsvxG9L7Wq9BLIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711541931; c=relaxed/simple;
-	bh=oBkH1nL4C7rZuNctsgK7SA4BCR4SVTCn+D+VIRkoVnU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=M+wiE5ljhEtbmZwLcwe+aWn08RNLFMFbsHPlpp1mnFcDy30yANZvIwJKA5KN/J0e1sXsnFC3TZ9PRaP28jHXsIafmV9Xyx80CKl4aLTi9VjiK00YFM8rXgVi2oPjmNYUjYcbHYxI8CRM/dKK+/yOuAQRh4EQVsKWvuY6zH5jPeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o3XvKgIr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B08EC43390;
-	Wed, 27 Mar 2024 12:18:50 +0000 (UTC)
+	s=arc-20240116; t=1711542145; c=relaxed/simple;
+	bh=obkURlhBHAKHE8xVthfoKQaujgJoT6xVDQt6hnursTY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cmsp2R26jhTjufdI0wExjRSpjxMvUnzmPqPSXBSphWmd00YlFuo/MnyaWlq5/ylNOhXV/yybXofvh1VnrvKrFccTYBDNW9abbv/k7zGX04s7YIeliLNIjp/nH0IWvmf6C3Mj+YD8LwFQxxG685U+9f/+B4gidVqVlARvYwV1NkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aCsoSzgq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 680A3C433C7;
+	Wed, 27 Mar 2024 12:22:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711541931;
-	bh=oBkH1nL4C7rZuNctsgK7SA4BCR4SVTCn+D+VIRkoVnU=;
+	s=k20201202; t=1711542145;
+	bh=obkURlhBHAKHE8xVthfoKQaujgJoT6xVDQt6hnursTY=;
 	h=From:To:Cc:Subject:Date:From;
-	b=o3XvKgIrz2/lGDhBot33Hi/pq3/8rYndn5qP1gOxB0CbIgEabGnsaP8HSM/ZdM9Vv
-	 exH5fARNtEmwqOYPFBwy4p+w44JAGkurP0UPKCHsDUoEW2bvUpp54A0FfQds7LS7LP
-	 EtaYoF/eiN2I34/LGQHWj6hvcX/gq11seKW6AunSTpXR770wRQd6LuBabC/dvsOIks
-	 0/xsu1Vct9fT491JaaSt5rZcL72WMJLxfT5seB51sr4ccczCVsKoZGp8weuJRC5fvR
-	 ONnN0im8Ko/ukaPLQbHtlhEHN8ZZwq8cgPXIMYsksd+tQ0wmalUA9UKWVf5k1fco+4
-	 HFoDqVY9EB0UQ==
+	b=aCsoSzgqngG2yz92vGG72QAt4NTdokMe1X38CCdIn0Wy6jmsVxO2DP3iSlBJJFw9U
+	 s2ndjV0sT4unS5HcCSPOF54GOgUi+gN0jNinWQZJxIKZWgIJiBXZOOZyPiV/Ye6koi
+	 dRu91zeFtallPgg5bOM2OVpM84aKTEzwTU+/zFj2VMHWuFTTO12bdGQ7OuNVcJeecJ
+	 pbvre+Bxm3oBPISVbjfk0NpI7MgChy9nIeXbtRyazOQY8l4NOk6Q6E1Lj3Oa71Bv4q
+	 XdhZC2u8Y9hwOc+FRYanU/syTerZbemxkww1KsvhewR0yDMsPAPLnYFAuShOCYIRG9
+	 305AubdBMDf2g==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
 	morrownr@gmail.com
@@ -48,9 +48,9 @@ Cc: Larry Finger <Larry.Finger@lwfinger.net>,
 	Kalle Valo <kvalo@kernel.org>,
 	linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: FAILED: Patch "wifi: rtw88: Add missing VID/PIDs for 8811CU and 8821CU" failed to apply to 5.10-stable tree
-Date: Wed, 27 Mar 2024 08:18:49 -0400
-Message-ID: <20240327121849.2834701-1-sashal@kernel.org>
+Subject: FAILED: Patch "wifi: rtw88: Add missing VID/PIDs for 8811CU and 8821CU" failed to apply to 5.4-stable tree
+Date: Wed, 27 Mar 2024 08:22:23 -0400
+Message-ID: <20240327122223.2837673-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -62,7 +62,7 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
