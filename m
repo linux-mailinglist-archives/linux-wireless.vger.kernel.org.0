@@ -1,56 +1,55 @@
-Return-Path: <linux-wireless+bounces-5322-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5323-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F05488E055
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 13:33:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 235B788E064
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 13:35:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E0071C231CF
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 12:33:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 686E9B26DB5
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 12:35:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D6B2146A91;
-	Wed, 27 Mar 2024 12:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F15171487CD;
+	Wed, 27 Mar 2024 12:12:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZhQ4Irik"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n/v8f+Ih"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 371491474A8;
-	Wed, 27 Mar 2024 12:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C46231482F5;
+	Wed, 27 Mar 2024 12:12:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711541538; cv=none; b=REZdRITa8ClGrra9P5y/JGaRHLQpXk1nzQG1gaTLV+h55VHSPr2Y4wiOQiARvTOk24xFDS9dVljVfIlDWjcoTwEQvE0TXEpeHr7qCdaNytACslSsOchwhSvxTGIkhFU6qqyjKRRgK6AsSj/M2LyeSJOhBF1IYDUYZf1wrkm2Lik=
+	t=1711541553; cv=none; b=D/g22LrDrx/V3wfWHNHb3lMxbYjavPGIiafCMgC/bZPzcsWMB89euBLGxE2YScmEP0+eH7PBFC9X50KBrdhppy75w9/ANCFydzVt2QywoOcRtE4y0p5GGUoE+gmrKYrQ4wBf6DeG8aRbihH10RVVNh7qomXPst95/qKH/31p4is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711541538; c=relaxed/simple;
-	bh=x7Od7Ej++ypZ/c2dRwQta2AbGRkonXYXpVhHLHC0VSQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QYAlR+3zOR8axf0EIx1lW5wohTwz6qjbLG38WgRiaEi7QRktUN8LClrEtXMwOjI8myqQOlW4XGqbcR0UjZhV23b2wBNdanDWHSV2yBkgthxE9NmI2ib25qzmNMe3j60txkope0KPiFSsE2Vm3wJzMNDObVtGQuBzS6tFjoB5I9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZhQ4Irik; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29A70C43390;
-	Wed, 27 Mar 2024 12:12:17 +0000 (UTC)
+	s=arc-20240116; t=1711541553; c=relaxed/simple;
+	bh=meVdZ+I3Etmw9Ync3NQCCfPHAChryipvSKQ37gSv00Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EVQjkzPKvn6CIl5bhJaxW3YBY8xDqi8tIZrL9eDT7wTIwllORKyXiq0V+lGMorTNsP1sZCR6m7zsgKwVgEVyQ2wTierRsMMlm6CDE0En9stEx/JjMnQa/JGHqY1qLepOT2HvLz6Dw8Ma4gk5OXaf9dg+fnA84yjr5p2g/WOmvlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n/v8f+Ih; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9649AC433F1;
+	Wed, 27 Mar 2024 12:12:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711541538;
-	bh=x7Od7Ej++ypZ/c2dRwQta2AbGRkonXYXpVhHLHC0VSQ=;
+	s=k20201202; t=1711541553;
+	bh=meVdZ+I3Etmw9Ync3NQCCfPHAChryipvSKQ37gSv00Y=;
 	h=From:To:Cc:Subject:Date:From;
-	b=ZhQ4IrikOXjlRLjCXgRjkHYx0BmdToxDf5QcT+CJabDNAEJoemBNTz6nb6oM0MgLp
-	 kbZMUw2y3xGbpxbpmcBpkLjP+VGlUjMcTyJsP65YAIXLdlk1WzB3XT+YDGkjYOw2YC
-	 V+MpfqaRCkLz4i9icnsBqvsdu05pJUHw2X8/wMNygOQN2rpQ6pL5lOkZsXgbWBmF6P
-	 pjvdzJTGLH3VbxvAXaF/I3pLmTlQQPGYuIpzFB05vvbBUjLIrOXFFohuVwq1UpIIuV
-	 C1ug7ujcAj7STn9yLgXqTGpGx5M+fyqhVzIwFaBvT8QMKvTUA3A39U9iVYzjgMcBy+
-	 49ij/O1qOgscw==
+	b=n/v8f+IhvsXodfwkAGsIdOMHmLtVhY/lOf/Cfm3LuVrqmZ/bi1BrlYf8/HROjKRrJ
+	 +Zg+wrpKhN8mZnVVUZQ39Im1ETbgHIRLLAFxl8g9Dc/skDOni8OGUBXN0XoMADJIAb
+	 sMfjEvBymSAiQc8XdT04L/ORLMSRUf1wH2SxRHWmdGfRqfMINTBEk8RnS+Um/XbCm9
+	 EGmLt5+ocsbEgYxUTCR0M0+Gx5cqswXMG3K7LqtB0nC1fdOMzYQ45h1IzGBdSQBgIo
+	 GVcR7xDZ+ahqn0Cp0wivH1Hlk0Y+xRmhR+tbxGRW92/Gpx0ulIxGE25McKz6mfOFqG
+	 TfZdIn/TO/TIQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	morrownr@gmail.com
-Cc: Larry Finger <Larry.Finger@lwfinger.net>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	johannes.berg@intel.com
+Cc: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
 	linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: FAILED: Patch "wifi: rtw88: Add missing VID/PIDs for 8811CU and 8821CU" failed to apply to 6.1-stable tree
-Date: Wed, 27 Mar 2024 08:12:16 -0400
-Message-ID: <20240327121216.2829390-1-sashal@kernel.org>
+Subject: FAILED: Patch "wifi: mac80211: track capability/opmode NSS separately" failed to apply to 6.1-stable tree
+Date: Wed, 27 Mar 2024 08:12:31 -0400
+Message-ID: <20240327121231.2829578-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -72,86 +71,200 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From b8a62478f3b143592d1241de1a7f5f8629ad0f49 Mon Sep 17 00:00:00 2001
-From: Nick Morrow <morrownr@gmail.com>
-Date: Tue, 27 Feb 2024 02:34:40 +0000
-Subject: [PATCH] wifi: rtw88: Add missing VID/PIDs for 8811CU and 8821CU
+From a8bca3e9371dc5e276af4168be099b2a05554c2a Mon Sep 17 00:00:00 2001
+From: Johannes Berg <johannes.berg@intel.com>
+Date: Wed, 28 Feb 2024 12:01:57 +0100
+Subject: [PATCH] wifi: mac80211: track capability/opmode NSS separately
 
-Add VID/PIDs that are known to be missing for this driver.
+We're currently tracking rx_nss for each station, and that
+is meant to be initialized to the capability NSS and later
+reduced by the operating mode notification NSS.
 
-Removed /* 8811CU */ and /* 8821CU */ as they are redundant
-since the file is specific to those chips.
+However, we're mixing up capabilities and operating mode
+NSS in the same variable. This forces us to recalculate
+the NSS capability on operating mode notification RX,
+which is a bit strange; due to the previous fix I had to
+never keep rx_nss as zero, it also means that the capa is
+never taken into account properly.
 
-Removed /* TOTOLINK A650UA v3 */ as the manufacturer. It has a REALTEK
-VID so it may not be specific to this adapter.
-
-Verified and tested.
+Fix all this by storing the capability value, that can be
+recalculated unconditionally whenever needed, and storing
+the operating mode notification NSS separately, taking it
+into account when assigning the final rx_nss value.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Nick Morrow <morrownr@gmail.com>
-Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/4ume7mjw63u7.XlMUvUuacW2ErhOCdqlLkw2@1EHFQ.trk.elasticemail.com
+Fixes: dd6c064cfc3f ("wifi: mac80211: set station RX-NSS on reconfig")
+Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240228120157.0e1c41924d1d.I0acaa234e0267227b7e3ef81a59117c8792116bc@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- .../net/wireless/realtek/rtw88/rtw8821cu.c    | 40 ++++++++++++-------
- 1 file changed, 26 insertions(+), 14 deletions(-)
+ net/mac80211/cfg.c         |  2 +-
+ net/mac80211/ieee80211_i.h |  2 +-
+ net/mac80211/rate.c        |  2 +-
+ net/mac80211/sta_info.h    |  6 ++++-
+ net/mac80211/vht.c         | 46 ++++++++++++++++++--------------------
+ 5 files changed, 30 insertions(+), 28 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821cu.c b/drivers/net/wireless/realtek/rtw88/rtw8821cu.c
-index 7a5cbdc31ef79..e2c7d9f876836 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8821cu.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8821cu.c
-@@ -9,24 +9,36 @@
- #include "usb.h"
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 0744113f3535d..3aa96898a250d 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -1867,7 +1867,7 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
+ 					      sband->band);
+ 	}
  
- static const struct usb_device_id rtw_8821cu_id_table[] = {
--	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0xb82b, 0xff, 0xff, 0xff),
--	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) }, /* 8821CU */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0x2006, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0x8731, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0x8811, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0xb820, 0xff, 0xff, 0xff),
--	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) }, /* 8821CU */
--	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0xc821, 0xff, 0xff, 0xff),
--	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) }, /* 8821CU */
-+	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0xb82b, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0xc80c, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0xc811, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0xc820, 0xff, 0xff, 0xff),
--	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) }, /* 8821CU */
-+	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0xc821, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0xc82a, 0xff, 0xff, 0xff),
--	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) }, /* 8821CU */
-+	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0xc82b, 0xff, 0xff, 0xff),
--	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) }, /* 8821CU */
--	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0xc811, 0xff, 0xff, 0xff),
--	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) }, /* 8811CU */
--	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0x8811, 0xff, 0xff, 0xff),
--	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) }, /* 8811CU */
--	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0x2006, 0xff, 0xff, 0xff),
--	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) }, /* TOTOLINK A650UA v3 */
-+	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0xc82c, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2001, 0x331d, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) }, /* D-Link */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x7392, 0xc811, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) }, /* Edimax */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x7392, 0xd811, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) }, /* Edimax */
- 	{},
- };
- MODULE_DEVICE_TABLE(usb, rtw_8821cu_id_table);
+-	ieee80211_sta_set_rx_nss(link_sta);
++	ieee80211_sta_init_nss(link_sta);
+ 
+ 	return ret;
+ }
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index 4bec625a84d12..32b5ac8947bdd 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -2153,7 +2153,7 @@ enum ieee80211_sta_rx_bandwidth
+ ieee80211_sta_cap_rx_bw(struct link_sta_info *link_sta);
+ enum ieee80211_sta_rx_bandwidth
+ ieee80211_sta_cur_vht_bw(struct link_sta_info *link_sta);
+-void ieee80211_sta_set_rx_nss(struct link_sta_info *link_sta);
++void ieee80211_sta_init_nss(struct link_sta_info *link_sta);
+ enum ieee80211_sta_rx_bandwidth
+ ieee80211_chan_width_to_rx_bw(enum nl80211_chan_width width);
+ enum nl80211_chan_width
+diff --git a/net/mac80211/rate.c b/net/mac80211/rate.c
+index 34e03b9522c8a..192c5f8b9e086 100644
+--- a/net/mac80211/rate.c
++++ b/net/mac80211/rate.c
+@@ -37,7 +37,7 @@ void rate_control_rate_init(struct sta_info *sta)
+ 	struct ieee80211_supported_band *sband;
+ 	struct ieee80211_chanctx_conf *chanctx_conf;
+ 
+-	ieee80211_sta_set_rx_nss(&sta->deflink);
++	ieee80211_sta_init_nss(&sta->deflink);
+ 
+ 	if (!ref)
+ 		return;
+diff --git a/net/mac80211/sta_info.h b/net/mac80211/sta_info.h
+index f03731a5bbee2..a52fb76386d01 100644
+--- a/net/mac80211/sta_info.h
++++ b/net/mac80211/sta_info.h
+@@ -3,7 +3,7 @@
+  * Copyright 2002-2005, Devicescape Software, Inc.
+  * Copyright 2013-2014  Intel Mobile Communications GmbH
+  * Copyright(c) 2015-2017 Intel Deutschland GmbH
+- * Copyright(c) 2020-2023 Intel Corporation
++ * Copyright(c) 2020-2024 Intel Corporation
+  */
+ 
+ #ifndef STA_INFO_H
+@@ -482,6 +482,8 @@ struct ieee80211_fragment_cache {
+  *	same for non-MLD STA. This is used as key for searching link STA
+  * @link_id: Link ID uniquely identifying the link STA. This is 0 for non-MLD
+  *	and set to the corresponding vif LinkId for MLD STA
++ * @op_mode_nss: NSS limit as set by operating mode notification, or 0
++ * @capa_nss: NSS limit as determined by local and peer capabilities
+  * @link_hash_node: hash node for rhashtable
+  * @sta: Points to the STA info
+  * @gtk: group keys negotiated with this station, if any
+@@ -518,6 +520,8 @@ struct link_sta_info {
+ 	u8 addr[ETH_ALEN];
+ 	u8 link_id;
+ 
++	u8 op_mode_nss, capa_nss;
++
+ 	struct rhlist_head link_hash_node;
+ 
+ 	struct sta_info *sta;
+diff --git a/net/mac80211/vht.c b/net/mac80211/vht.c
+index 2c475c439ba9b..642891cafbaf2 100644
+--- a/net/mac80211/vht.c
++++ b/net/mac80211/vht.c
+@@ -4,7 +4,7 @@
+  *
+  * Portions of this file
+  * Copyright(c) 2015 - 2016 Intel Deutschland GmbH
+- * Copyright (C) 2018 - 2023 Intel Corporation
++ * Copyright (C) 2018 - 2024 Intel Corporation
+  */
+ 
+ #include <linux/ieee80211.h>
+@@ -541,15 +541,11 @@ ieee80211_sta_cur_vht_bw(struct link_sta_info *link_sta)
+ 	return bw;
+ }
+ 
+-void ieee80211_sta_set_rx_nss(struct link_sta_info *link_sta)
++void ieee80211_sta_init_nss(struct link_sta_info *link_sta)
+ {
+ 	u8 ht_rx_nss = 0, vht_rx_nss = 0, he_rx_nss = 0, eht_rx_nss = 0, rx_nss;
+ 	bool support_160;
+ 
+-	/* if we received a notification already don't overwrite it */
+-	if (link_sta->pub->rx_nss)
+-		return;
+-
+ 	if (link_sta->pub->eht_cap.has_eht) {
+ 		int i;
+ 		const u8 *rx_nss_mcs = (void *)&link_sta->pub->eht_cap.eht_mcs_nss_supp;
+@@ -627,7 +623,15 @@ void ieee80211_sta_set_rx_nss(struct link_sta_info *link_sta)
+ 	rx_nss = max(vht_rx_nss, ht_rx_nss);
+ 	rx_nss = max(he_rx_nss, rx_nss);
+ 	rx_nss = max(eht_rx_nss, rx_nss);
+-	link_sta->pub->rx_nss = max_t(u8, 1, rx_nss);
++	rx_nss = max_t(u8, 1, rx_nss);
++	link_sta->capa_nss = rx_nss;
++
++	/* that shouldn't be set yet, but we can handle it anyway */
++	if (link_sta->op_mode_nss)
++		link_sta->pub->rx_nss =
++			min_t(u8, rx_nss, link_sta->op_mode_nss);
++	else
++		link_sta->pub->rx_nss = rx_nss;
+ }
+ 
+ u32 __ieee80211_vht_handle_opmode(struct ieee80211_sub_if_data *sdata,
+@@ -637,7 +641,7 @@ u32 __ieee80211_vht_handle_opmode(struct ieee80211_sub_if_data *sdata,
+ 	enum ieee80211_sta_rx_bandwidth new_bw;
+ 	struct sta_opmode_info sta_opmode = {};
+ 	u32 changed = 0;
+-	u8 nss, cur_nss;
++	u8 nss;
+ 
+ 	/* ignore - no support for BF yet */
+ 	if (opmode & IEEE80211_OPMODE_NOTIF_RX_NSS_TYPE_BF)
+@@ -647,23 +651,17 @@ u32 __ieee80211_vht_handle_opmode(struct ieee80211_sub_if_data *sdata,
+ 	nss >>= IEEE80211_OPMODE_NOTIF_RX_NSS_SHIFT;
+ 	nss += 1;
+ 
+-	if (link_sta->pub->rx_nss != nss) {
+-		cur_nss = link_sta->pub->rx_nss;
+-		/* Reset rx_nss and call ieee80211_sta_set_rx_nss() which
+-		 * will set the same to max nss value calculated based on capability.
+-		 */
+-		link_sta->pub->rx_nss = 0;
+-		ieee80211_sta_set_rx_nss(link_sta);
+-		/* Do not allow an nss change to rx_nss greater than max_nss
+-		 * negotiated and capped to APs capability during association.
+-		 */
+-		if (nss <= link_sta->pub->rx_nss) {
+-			link_sta->pub->rx_nss = nss;
+-			sta_opmode.rx_nss = nss;
+-			changed |= IEEE80211_RC_NSS_CHANGED;
+-			sta_opmode.changed |= STA_OPMODE_N_SS_CHANGED;
++	if (link_sta->op_mode_nss != nss) {
++		if (nss <= link_sta->capa_nss) {
++			link_sta->op_mode_nss = nss;
++
++			if (nss != link_sta->pub->rx_nss) {
++				link_sta->pub->rx_nss = nss;
++				changed |= IEEE80211_RC_NSS_CHANGED;
++				sta_opmode.rx_nss = link_sta->pub->rx_nss;
++				sta_opmode.changed |= STA_OPMODE_N_SS_CHANGED;
++			}
+ 		} else {
+-			link_sta->pub->rx_nss = cur_nss;
+ 			pr_warn_ratelimited("Ignoring NSS change in VHT Operating Mode Notification from %pM with invalid nss %d",
+ 					    link_sta->pub->addr, nss);
+ 		}
 -- 
 2.43.0
 
