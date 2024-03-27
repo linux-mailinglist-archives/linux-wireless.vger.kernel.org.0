@@ -1,117 +1,133 @@
-Return-Path: <linux-wireless+bounces-5404-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5405-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EA6F88F09E
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 22:06:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7EDA88F0A9
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 22:11:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B035D1C2B0C5
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 21:06:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67BBC1F2C54C
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 21:11:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61DE715351C;
-	Wed, 27 Mar 2024 21:06:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE71F153506;
+	Wed, 27 Mar 2024 21:11:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="plXN80LV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bQtccIVw"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from omta38.uswest2.a.cloudfilter.net (omta38.uswest2.a.cloudfilter.net [35.89.44.37])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A694E15350C
-	for <linux-wireless@vger.kernel.org>; Wed, 27 Mar 2024 21:06:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BDA7152E07;
+	Wed, 27 Mar 2024 21:11:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711573586; cv=none; b=tcFsgSZWTC7OEvpXr35XyYxmpHnfbzMP5meWv2YtOEfsfGqbTmv0UyGpPAJhCGGMQ0x8Jy/sIJT88EHHmZow9x3SPn6Y4nzwX+5RHZiqheQvYmXPeNpRzxAWoki/lW8A0iTEmNcyvIVL1xIcaAr57lTuji0Vhz0dw+20xeqLZ74=
+	t=1711573883; cv=none; b=qKrGMOPHukVMIJ78FqQ1j4UNMTbcRTt/ulRhDPQIJ/gLiVSJ+TuHEbnuuhdW06GZtlwaXtSz9nO7GBtfADm1iYhF4FMYtqQc1xX3K0DIr1lB/8KEuYAhjmRUyK6CYF5e6ym0YgjUKGJBLxHJiVYzBR7CwE0fTwtvVipik5mEB08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711573586; c=relaxed/simple;
-	bh=Xx5MpaWvy5522jqTooimseYw/Jm8R5vpweYD4JwX7nk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DGJBneDet2L6PH91nfgZ6Q/8xlkoTM5e08yTWYgWeibWuiEzwaHLFX//Gx/UrE8ax649wR4KhYB/itXt8/GoGLo3zSB7x9y6PsyYy8sE+6iSSDwf3vxGck1wLqFwaoaKuEP16mGQNWON2jz/cMXBT5ux6nk03nVrvnU369CyWKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=plXN80LV; arc=none smtp.client-ip=35.89.44.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
-Received: from eig-obgw-6002a.ext.cloudfilter.net ([10.0.30.222])
-	by cmsmtp with ESMTPS
-	id p9arrcQTPDI6fpaTXrEKgI; Wed, 27 Mar 2024 21:06:23 +0000
-Received: from gator4166.hostgator.com ([108.167.133.22])
-	by cmsmtp with ESMTPS
-	id paTWrxPlziKqRpaTWrXYUs; Wed, 27 Mar 2024 21:06:22 +0000
-X-Authority-Analysis: v=2.4 cv=I9quR8gg c=1 sm=1 tr=0 ts=66048a4e
- a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=zXgy4KOrraTBHT4+ULisNA==:17
- a=IkcTkHD0fZMA:10 a=K6JAEmCyrfEA:10 a=wYkD_t78qR0A:10 a=COk6AnOGAAAA:8
- a=1VVxQOVvkDxVd9r07kAA:9 a=QEXdDO2ut3YA:10 a=oeCWIyVaUf8A:10
- a=TjNXssC_j7lpFel5tvFf:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=0qCww4XnuD7HGbcNfioDP3N0BucgDEPTS/31Ql+x+hY=; b=plXN80LVUebjbHVxO2SjTlb2ZP
-	djrrZWoC1bsw6SEGq6k3t9zjtKqgwNe/Ar5RJEb63BpWKG94ofEC1ykvpXutIVLCWNudFi93KhSPo
-	e1gR0hIpWIhz1HAcu1yUhOAXVT4Ov0s3AN8SgLUMjwc6UOHF25Q8u9OJMQpC/haQXmFwZWxY+zt5X
-	Ns9lq514ralTgD+uTDwdfGLN9IMU3pCOSCAKRuwBdAb5XAuRNqH/IA0WeiI08bzMGGQQ1dR1mt6TD
-	+X+GLKIMb0E9G11nD9RGUtKs6W7lDwW7giEmnLVgwAnq77cp6Ub51D4HGZvNtIyt9sHNd1TiT2fR4
-	VOxkTrbA==;
-Received: from [201.172.173.147] (port=56048 helo=[192.168.15.10])
-	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <gustavo@embeddedor.com>)
-	id 1rpaTW-001BZU-0M;
-	Wed, 27 Mar 2024 16:06:22 -0500
-Message-ID: <0abb2673-1c60-4374-8c88-b5f0eaa3be33@embeddedor.com>
-Date: Wed, 27 Mar 2024 15:06:20 -0600
+	s=arc-20240116; t=1711573883; c=relaxed/simple;
+	bh=oTnKlubl3uH5wFO9lV+FBwfsUlprxdrKnXH/rfzlnLM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lFtLEbz+WH7n5NyaH2RdrWcRqzZ+6f86Itah+sUg/02X+mgtloxFZ/EQU0JdHtRc7/jhf+6t9qFTjnG7VBaVXlQ+/N+mN7AsuQNc4sc3hIvXqq0H7e/edgl8RuTeWLXW2TaooajKDL9B5D12JyTt2hV2qb5cx24cIDYpRG1b7OM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bQtccIVw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1D8CC433F1;
+	Wed, 27 Mar 2024 21:11:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711573883;
+	bh=oTnKlubl3uH5wFO9lV+FBwfsUlprxdrKnXH/rfzlnLM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bQtccIVw6KLhkY+o8OPOmg33CFVXRvxtmB5iGdfkvI6x5TLhcqnXobL87VcKGWCoo
+	 hEEA7hQlDV+PoOK9UDjQGbf9PAcUE2drNEg1YzxLOhGt/QZavwWBLEkrTL8TxdrzwA
+	 +RJFIymXP24phYo/Rf/tHf+0LzfLng+MsLaecKnG7PmHFH+3lS0t4px3K8lJeRw8Ps
+	 HdDur5qq4oZrAh+Jyrc6GEwcE5piRdb5yyPAScMBtrvkxLVbGZGpk8ULYPOSH0j7Gf
+	 5lDPdySI/picQyOuLaVcE3TNNAu+2AMyoMIswnmGuMnwXXXBElSlWi4AKt6ejrPEap
+	 rWSWUF8K0gBWg==
+Date: Wed, 27 Mar 2024 21:11:19 +0000
+From: Simon Horman <horms@kernel.org>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: Re: [RFC PATCH v2 1/4] tracing: add __print_sym() to replace
+ __print_symbolic()
+Message-ID: <20240327211119.GW403975@kernel.org>
+References: <20240326192131.438648-6-johannes@sipsolutions.net>
+ <20240326202131.9d261d5bb667.I9bd2617499f0d170df58471bc51379742190f92d@changeid>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH][next] wifi: wil6210: wmi: Use __counted_by() in struct
- wmi_set_link_monitor_cmd and avoid -Wfamnae warning
-Content-Language: en-US
-To: Jeff Johnson <quic_jjohnson@quicinc.com>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>, Kalle Valo <kvalo@kernel.org>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-hardening@vger.kernel.org
-References: <ZgRsn72WkHzfCUsa@neat>
- <dc556824-d499-430c-850e-fb0ca55dd5fe@quicinc.com>
-From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-In-Reply-To: <dc556824-d499-430c-850e-fb0ca55dd5fe@quicinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 201.172.173.147
-X-Source-L: No
-X-Exim-ID: 1rpaTW-001BZU-0M
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: ([192.168.15.10]) [201.172.173.147]:56048
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 3
-X-Org: HG=hgshared;ORG=hostgator;
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfJ1Zyqfszm/q71ihbl29wZ/whMT0uL54IVLO+v5cLUZFrRAQzm8pEHugJqwTvosPybYDQ+eQRJOG+THhtBmWnG2NJMi4/8H+EH2qUy55cy9inTchQkX0
- Ks6zQAQmo6pGhkpyDD4AJqKKKlg7QlPKr+fe5XLB1a6LQzXr/sJOfNGImxG7p5EUfRjI/3JroWNA3YjVLfOLR3ioQH9pNxDdPFRMASa88Y8dOruSW7VatWvR
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240326202131.9d261d5bb667.I9bd2617499f0d170df58471bc51379742190f92d@changeid>
 
-
-> That DEFINE_FLEX() macro takes a bit of time to understand! But I finally
-> digested it so...
+On Tue, Mar 26, 2024 at 08:15:56PM +0100, Johannes Berg wrote:
+> From: Johannes Berg <johannes.berg@intel.com>
 > 
-> Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> The way __print_symbolic() works is limited and inefficient
+> in multiple ways:
+>  - you can only use it with a static list of symbols, but
+>    e.g. the SKB dropreasons are now a dynamic list
 > 
+>  - it builds the list in memory _three_ times, so it takes
+>    a lot of memory:
+>    - The print_fmt contains the list (since it's passed to
+>      the macro there). This actually contains the names
+>      _twice_, which is fixed up at runtime.
+>    - TRACE_DEFINE_ENUM() puts a 24-byte struct trace_eval_map
+>      for every entry, plus the string pointed to by it, which
+>      cannot be deduplicated with the strings in the print_fmt
+>    - The in-kernel symbolic printing creates yet another list
+>      of struct trace_print_flags for trace_print_symbols_seq()
+> 
+>  - it also requires runtime fixup during init, which is a lot
+>    of string parsing due to the print_fmt fixup
+> 
+> Introduce __print_sym() to - over time - replace the old one.
+> We can easily extend this also to __print_flags later, but I
+> cared only about the SKB dropreasons for now, which has only
+> __print_symbolic().
+> 
+> This new __print_sym() requires only a single list of items,
+> created by TRACE_DEFINE_SYM_LIST(), or can even use another
+> already existing list by using TRACE_DEFINE_SYM_FNS() with
+> lookup and show methods.
+> 
+> Then, instead of doing an init-time fixup, just do this at the
+> time when userspace reads the print_fmt. This way, dynamically
+> updated lists are possible.
+> 
+> For userspace, nothing actually changes, because the print_fmt
+> is shown exactly the same way the old __print_symbolic() was.
+> 
+> This adds about 4k .text in my test builds, but that'll be
+> more than paid for by the actual conversions.
+> 
+> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 
-Thanks for your time and RB tag!
+Hi Johannes,
 
---
-Gustavo
+I'm seeing some allmodconfig build problems with this applied on top of
+net-next.
+
+In file included from ./include/trace/trace_events.h:27,
+                 from ./include/trace/define_trace.h:102,
+                 from ./include/trace/events/module.h:134,
+                 from kernel/module/main.c:64:
+./include/trace/stages/init.h:30: warning: "TRACE_DEFINE_SYM_FNS" redefined
+   30 | #define TRACE_DEFINE_SYM_FNS(_symbol_id, _lookup, _show)                \
+      |
+In file included from ./include/linux/trace_events.h:11,
+                 from kernel/module/main.c:14:
+./include/linux/tracepoint.h:130: note: this is the location of the previous definition
+  130 | #define TRACE_DEFINE_SYM_FNS(...)
+      |
+./include/trace/stages/init.h:54: warning: "TRACE_DEFINE_SYM_LIST" redefined
+   54 | #define TRACE_DEFINE_SYM_LIST(_symbol_id, ...)                          \
+      |
+./include/linux/tracepoint.h:131: note: this is the location of the previous definition
+  131 | #define TRACE_DEFINE_SYM_LIST(...)
+      |
+
 
