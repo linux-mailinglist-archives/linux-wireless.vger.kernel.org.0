@@ -1,154 +1,122 @@
-Return-Path: <linux-wireless+bounces-5402-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5403-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B47C88EF0A
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 20:14:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CBDB88F092
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 22:01:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 065E829F8C7
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 19:14:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 185062A5479
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 21:01:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE8D7152DEE;
-	Wed, 27 Mar 2024 19:13:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5914915351D;
+	Wed, 27 Mar 2024 21:01:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DnygISV0"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="HzExBfGA"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6EC914F138;
-	Wed, 27 Mar 2024 19:13:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B86E215351C;
+	Wed, 27 Mar 2024 21:01:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711566826; cv=none; b=A0lXclHZczJHwEyc9XjHVO/UOLW6SBX4uoDcCPVWzN0xDVE79yWWImFvRJR0MoIahwoCcxXjetN+RlwAn+pq8dkBu2tfKpRSymQ9BMDd5Z9u2wo/sBH+8jSm6v3opOfLSrxe1uOpw96lFwyyju+ujrjb6pFMmi97x6/Bgw4pxTw=
+	t=1711573283; cv=none; b=lli4/f7bJ2bP6EoDdlrkHoHEy3S5ZGhYjyJ6QTHuHPsXl1dAyamqQbZRJ7vTWO4OCjd1bA5b+V256YVNBou6RrEum+o1OmXIxiLeUobitmHzR2O33hY0v8Nr7kRnecj/uWL9fiYnxPn8LRcr6d3L1WHkYtB/ny4BN04vlUoJypg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711566826; c=relaxed/simple;
-	bh=NckPbqFmFfNbzUcph+tZohyESREqpmqBmwqXhaXExZg=;
-	h=Content-Type:MIME-Version:From:Subject:To:Cc:Message-Id:Date; b=GYY67mbi4k9+2Iaenz955KpMZLwUHSj2KB8xM+neV+gyND5i4lJwXv5UUylcUuOCqy7qrbcv3ltCK/6KfyYn/SV84y1Vg/90krsEq23/CTby6iLcg5Fnq051zlWKJGug2B1Lbs/eNGc4l9lCNGHBJjJcKyUiJ/s/YhnrZZClkb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DnygISV0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A1EAC433C7;
-	Wed, 27 Mar 2024 19:13:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711566826;
-	bh=NckPbqFmFfNbzUcph+tZohyESREqpmqBmwqXhaXExZg=;
-	h=From:Subject:To:Cc:Date:From;
-	b=DnygISV04hQ8NKdBvFgRPDxuG91zuhhlFqIazTprT7FcScLKrvauNTFWETjcpfkrZ
-	 IWVf5otvzTLnzO5C0maLuxtqflA/kdhnbu5wB6NOEWjLedGsKK1LvvGpA9GmiAhN8a
-	 a6u5UYbnZTkFLMFgXqhRdFSmTFrUltXMFsRPFhFayycv3Pfu9Igboq+AoPvsJatx7c
-	 9uRj//+rDi+p8+BV2WI6/vy8fTuQOB4b9/CxbkTjkGWEmgpFvDn5ta3+QVGBsAyF0I
-	 g7DcaXXHa95epygHd5fFAr32R0aRjkmtVkfwDcYk9MbZ/K0ip8MF0nGfhlXWZ+nnKI
-	 dvkXvNK8p8lxA==
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1711573283; c=relaxed/simple;
+	bh=OPurRJ5xp6aX8HKk/buUQYjAT54YFne/0QOnhHJzkRE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=sqmaXQlJZx/ISBPVNj7cnwUje0848WkSFV9m3dFs0gIevTLTGnhktKEDQeAZ7JchWqmzycTzzdhOKfCTeu8qlaBzCqRcld3RM4YJ83+fU8xDVs5H77mx+FpTuMQ+iUGUDl06WqVy52TuREOz7AO8oAjTeloaBO8yHF/64V/OeoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=HzExBfGA; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42RL0BDo018853;
+	Wed, 27 Mar 2024 21:01:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=xmtVpysrBXcgF+Pog62RluWsO9TEDjl7iMQWHnudVBY=; b=Hz
+	ExBfGAzeo8rFS6NU2MB68p2l2/IdaEJuJbbt/r53shABVELEOid8vVo9CIPrvMjp
+	YOvcrk6w6OP+q3BP+du/kryKLUU2fVMNOAq0p8SLsu4P/HYIb1F+gDzwoPIz+qKh
+	yxyY3Cu6sVrUMV3Sn4s3e2Hg3hjx+dk+FIipLxLbF7H94OiMjyDkLchTj0F5xrC8
+	K53Gfk+0Oj4b01lMFTRh7IiW3xlu6DwRZc9AxS/nBq+8B6kwW68C1ixtawKD4BeZ
+	ixyYxzHZpPZxDXW+zMlCAWrMc1t+1/wEkmh77hX3rdRb1mzkT7FBYhfFSsJ5Rhdp
+	HF+0BdYI+3p0lJQ9EXfw==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3x4u04r033-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 27 Mar 2024 21:01:12 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42RL1BWK029439
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 27 Mar 2024 21:01:11 GMT
+Received: from [10.227.110.203] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Wed, 27 Mar
+ 2024 14:01:11 -0700
+Message-ID: <dc556824-d499-430c-850e-fb0ca55dd5fe@quicinc.com>
+Date: Wed, 27 Mar 2024 14:01:10 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH][next] wifi: wil6210: wmi: Use __counted_by() in struct
+ wmi_set_link_monitor_cmd and avoid -Wfamnae warning
+Content-Language: en-US
+To: "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Kalle Valo
+	<kvalo@kernel.org>
+CC: <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-hardening@vger.kernel.org>
+References: <ZgRsn72WkHzfCUsa@neat>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <ZgRsn72WkHzfCUsa@neat>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-From: Kalle Valo <kvalo@kernel.org>
-Subject: pull-request: wireless-2024-03-27
-To: netdev@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org
-Message-Id: <20240327191346.1A1EAC433C7@smtp.kernel.org>
-Date: Wed, 27 Mar 2024 19:13:45 +0000 (UTC)
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: -42v3xr_7ZE0RIUA4Hc1HvCqp3LbjyXW
+X-Proofpoint-GUID: -42v3xr_7ZE0RIUA4Hc1HvCqp3LbjyXW
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-27_18,2024-03-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 malwarescore=0
+ mlxlogscore=807 clxscore=1015 mlxscore=0 priorityscore=1501 adultscore=0
+ suspectscore=0 lowpriorityscore=0 impostorscore=0 bulkscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2403210001
+ definitions=main-2403270149
 
-Hi,
+On 3/27/2024 11:59 AM, Gustavo A. R. Silva wrote:
+> Prepare for the coming implementation by GCC and Clang of the
+> __counted_by attribute. Flexible array members annotated with
+> __counted_by can have their accesses bounds-checked at run-time
+> via CONFIG_UBSAN_BOUNDS (for array indexing) and CONFIG_FORTIFY_SOURCE
+> (for strcpy/memcpy-family functions).
+> 
+> Also, -Wflex-array-member-not-at-end is coming in GCC-14, and we are
+> getting ready to enable it globally.
+> 
+> So, use the `DEFINE_FLEX()` helper for an on-stack definition of
+> a flexible structure where the size of the flexible-array member
+> is known at compile-time, and refactor the rest of the code,
+> accordingly.
+> 
+> So, with these changes, fix the following warning:
+> drivers/net/wireless/ath/wil6210/wmi.c:4018:49: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> 
+> Link: https://github.com/KSPP/linux/issues/202
+> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-here's a pull request to net tree, more info below. Please let me know if there
-are any problems.
+That DEFINE_FLEX() macro takes a bit of time to understand! But I finally
+digested it so...
 
-Kalle
-
-The following changes since commit 67072c314f5f0ec12a7a51a19f7156eebb073654:
-
-  Merge branch 'tcp-rds-fix-use-after-free-around-kernel-tcp-reqsk' (2024-03-12 18:56:18 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2024-03-27
-
-for you to fetch changes up to 8ea3f4f1a1b4242d5fc273f41aa7c86f6b40178c:
-
-  MAINTAINERS: wifi: mwifiex: add Francesco as reviewer (2024-03-26 14:31:09 +0200)
-
-----------------------------------------------------------------
-wireless fixes for v6.9-rc2
-
-The first fixes for v6.9. Ping-Ke Shih now maintains a separate tree
-for Realtek drivers, document that in the MAINTAINERS. Plenty of fixes
-for both to stack and iwlwifi. Our kunit tests were working only on um
-architecture but that's fixed now.
-
-----------------------------------------------------------------
-Ayala Beker (1):
-      wifi: mac80211: correctly set active links upon TTLM
-
-Benjamin Berg (2):
-      wifi: iwlwifi: mvm: guard against invalid STA ID on removal
-      wifi: iwlwifi: mvm: include link ID when releasing frames
-
-Emmanuel Grumbach (1):
-      wifi: iwlwifi: mvm: pick the version of SESSION_PROTECTION_NOTIF
-
-Felix Fietkau (1):
-      wifi: mac80211: check/clear fast rx for non-4addr sta VLAN changes
-
-Francesco Dolcini (1):
-      MAINTAINERS: wifi: mwifiex: add Francesco as reviewer
-
-Igor Artemiev (1):
-      wifi: cfg80211: fix rdev_dump_mpp() arguments order
-
-Ilan Peer (1):
-      wifi: iwlwifi: mvm: Configure the link mapping for non-MLD FW
-
-Jeff Johnson (1):
-      wifi: mac80211: fix ieee80211_bss_*_flags kernel-doc
-
-Johan Hovold (1):
-      wifi: mac80211: fix mlme_link_id_dbg()
-
-Johannes Berg (8):
-      wifi: cfg80211: add a flag to disable wireless extensions
-      wifi: iwlwifi: mvm: disable MLO for the time being
-      wifi: mac80211: fix prep_connection error path
-      wifi: iwlwifi: mvm: rfi: fix potential response leaks
-      wifi: iwlwifi: fw: don't always use FW dump trig
-      wifi: iwlwifi: read txq->read_ptr under lock
-      wifi: iwlwifi: mvm: handle debugfs names more carefully
-      kunit: fix wireless test dependencies
-
-Ping-Ke Shih (2):
-      wifi: rtw89: coex: fix configuration for shared antenna for 8922A
-      MAINTAINERS: wifi: add git tree for Realtek WiFi drivers
-
-Shaul Triebitz (1):
-      wifi: iwlwifi: mvm: consider having one active link
-
- MAINTAINERS                                        |  6 +++
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c        | 15 +++---
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c        | 16 +++---
- .../net/wireless/intel/iwlwifi/mvm/debugfs-vif.c   | 11 ++--
- drivers/net/wireless/intel/iwlwifi/mvm/link.c      | 59 +++++++++++++++++-----
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c  |  9 +++-
- drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c   |  7 ++-
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h       |  4 ++
- drivers/net/wireless/intel/iwlwifi/mvm/rfi.c       |  8 ++-
- drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c      | 20 +++-----
- .../net/wireless/intel/iwlwifi/mvm/time-event.c    |  5 +-
- drivers/net/wireless/intel/iwlwifi/queue/tx.c      |  2 +-
- drivers/net/wireless/realtek/rtw89/rtw8922a.c      |  2 +-
- include/net/cfg80211.h                             |  2 +
- net/mac80211/cfg.c                                 |  5 +-
- net/mac80211/debug.h                               |  2 +-
- net/mac80211/ieee80211_i.h                         |  4 +-
- net/mac80211/mlme.c                                | 15 ++++--
- net/wireless/trace.h                               |  2 +-
- net/wireless/wext-core.c                           |  7 ++-
- tools/testing/kunit/configs/all_tests.config       |  2 +
- 21 files changed, 138 insertions(+), 65 deletions(-)
+Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
 
