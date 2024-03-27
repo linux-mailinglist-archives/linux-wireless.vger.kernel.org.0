@@ -1,168 +1,122 @@
-Return-Path: <linux-wireless+bounces-5319-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5320-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 088B888DAF6
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 11:09:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67DD188DB48
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 11:33:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BB291C2390C
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 10:09:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 211F329A483
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Mar 2024 10:33:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22A033EA86;
-	Wed, 27 Mar 2024 10:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 485B63DABF2;
+	Wed, 27 Mar 2024 10:33:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="cPNelnD8"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="qwOiM01O"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EA28381BE
-	for <linux-wireless@vger.kernel.org>; Wed, 27 Mar 2024 10:09:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE4801C32
+	for <linux-wireless@vger.kernel.org>; Wed, 27 Mar 2024 10:32:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711534187; cv=none; b=RbQh5t/yuwq1b1aaFNOTSAXzTh6hU4HK8ulR7WNflI/gfjYMFgxQt6LDx7oSVsn80rg5JnXSfA3Wc2BZSkZCU9BmUSh6/EHHbyvtmTA+l2gimHwFXXR3xdQAKdzXbZFvE/ZzHc9k+VG2SRWXnPcCrXc3PMp5JGoMn3IEHMo20ls=
+	t=1711535581; cv=none; b=ViVh+MXQmopyEPaCcjmkFvU+fXfHETCY0bnmoFp4u/phv/w/UXv99J8xgK1DhZuUJ0cAUVaQtj05XASBSuF1Xq5DFW9VvEvfYo1yU3T24cAGScML7lOQtpvAymzf45YpeFEA+RBVwvMPGOk7Y22id9n3jEUu2W4kHzmEb0Ts3Bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711534187; c=relaxed/simple;
-	bh=+p7C2uFZZ/ouX0fbmRshSoUsgbkM9JpjNuWXtOEraOQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=nNpLnMdhzGBqMamx86YJQpHmsPnMu7Ib2cM2/i/a4Raz/9CPY/nu1JU5elDKjPi3OQuGH4HLCnI9TaFJDqtvNJggajPo7XUpw7x5uH+e1yUcQPpb1pScwdgyFzaDhcxrvniqbj+/9SLww0mUHy1jNWaZQG4oR8fI9zJJEGv6M4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=cPNelnD8; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42R8NGCP020977;
-	Wed, 27 Mar 2024 10:09:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=Go75WFpQ11JIbQ6GcC+LxZIYbIddhsA7jBFd1k3Sj98=; b=cP
-	NelnD8pY0gBjmCArU8Uhd2EcTaCH6kbV/M1lowtszrW1uPyBnZTls2SbcHC5lj38
-	B5aew8bOE5roaBTMawMQ1AHr+/pEQ+tBLtCYZDEv9GdqBMFrWDw+96AiQsY03x1A
-	WbgpcD4PZNxzFOFBlinel59lvvHiKH1v8ozmNHTOWw1sTlszpgg+agObQS+ffa+4
-	JxHD85VOzoY8w6FTEH1xB94OCk4uDPBMmBhjR1dN73j5TG9vP4d4y2+NdfzHKxqi
-	vUrvH15nrQNUHUMgfc6/FUjkakg1CIKhFhBLwdF9rsDxIG0xFCzSUHpRMWAj8Gnp
-	F3WJI6Hq1B8Rvsiow/9g==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3x47839bxu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 27 Mar 2024 10:09:35 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42RA9YII005676
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 27 Mar 2024 10:09:34 GMT
-Received: from [10.216.7.159] (10.80.80.8) by nalasex01b.na.qualcomm.com
- (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Wed, 27 Mar
- 2024 03:09:32 -0700
-Message-ID: <14699537-99b2-e468-6a7b-7b721193400e@quicinc.com>
-Date: Wed, 27 Mar 2024 15:39:28 +0530
+	s=arc-20240116; t=1711535581; c=relaxed/simple;
+	bh=hJoWUkjdXDGunBBaPdo1Z+jEaLnPmlcOcciOy8yx4GI=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=geV7L59lYbuuIWkWYVEDsdA0Giurx6jNiugAR8IRnFN2Au1Yq2xoqT4OCfbnNP6CDV4DY90JHpX3rdbx7LidTK8PyGsmR3O5tMPE5pITS7aWWfMVqkaKLw15H65jXbBx8xT/Wn+4X5CjCdTat+M+mtMe320L3YHH5hpqP2HILE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=qwOiM01O; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=/vE/qKbFcsr453lP/nQUsxyq9xtcN9Hp1eXb/WHDqZg=;
+	t=1711535578; x=1712745178; b=qwOiM01OpzZfSafN2pAgvWEjkQrIW3LiY6lQvRtZizsVsGe
+	KKxxrKeaiWOQiX9FH6ID3Bp+88M7Z0ugB8FgpqAzT6nxA3PxyUJr/gcbw/HpBYTR3alxffAmHs2KU
+	mfEaTcg1bIHR8OnHbs5nYXOHk1V3NT+poyJrt4jVscKAa/iW1wIAJwMR6EpfhbnFcHigwC130nLPC
+	/RNeNUZFlgFX4quv5LL3YV3/OdkmnLGpgXMnWnFkogCGUePYbq4fyJ4UFfozCY7kc0nP/a9be7OsK
+	B7J5Vq9iqIr1AjpnhUVIbXVS3AwYafYxV+HW21+cpDty5Zx60jQi3ztbIp+EUG/A==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rpQaP-0000000H0PI-00ZZ;
+	Wed, 27 Mar 2024 11:32:49 +0100
+Message-ID: <b9dfab64822bacf0cc72380c0de034b79d489668.camel@sipsolutions.net>
+Subject: Re: [PATCH v2 1/2] wifi: cfg80211/mac80211: Add support to rx retry
+ stats
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Hari Chandrakanthan <quic_haric@quicinc.com>, ath11k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+Date: Wed, 27 Mar 2024 11:32:48 +0100
+In-Reply-To: <14699537-99b2-e468-6a7b-7b721193400e@quicinc.com>
+References: <20240319134522.4021062-1-quic_haric@quicinc.com>
+	 <20240319134522.4021062-2-quic_haric@quicinc.com>
+	 <d364e872eb29f03236630bab49a3243e2118ab22.camel@sipsolutions.net>
+	 <14699537-99b2-e468-6a7b-7b721193400e@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v2 1/2] wifi: cfg80211/mac80211: Add support to rx retry
- stats
-To: Johannes Berg <johannes@sipsolutions.net>, <ath11k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20240319134522.4021062-1-quic_haric@quicinc.com>
- <20240319134522.4021062-2-quic_haric@quicinc.com>
- <d364e872eb29f03236630bab49a3243e2118ab22.camel@sipsolutions.net>
-Content-Language: en-US
-From: Hari Chandrakanthan <quic_haric@quicinc.com>
-In-Reply-To: <d364e872eb29f03236630bab49a3243e2118ab22.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: Hj9cwXoew0W_bsJq_vZz1QfFVDOD03oK
-X-Proofpoint-ORIG-GUID: Hj9cwXoew0W_bsJq_vZz1QfFVDOD03oK
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-27_05,2024-03-21_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxscore=0
- suspectscore=0 mlxlogscore=647 impostorscore=0 lowpriorityscore=0
- phishscore=0 spamscore=0 priorityscore=1501 clxscore=1011 malwarescore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2403210001 definitions=main-2403270068
+X-malware-bazaar: not-scanned
+
+On Wed, 2024-03-27 at 15:39 +0530, Hari Chandrakanthan wrote:
+
+> Fields such packet count, retries etc can be summed up for the MLD=20
+> representation and the existing NL attribute can be used for exposing
+> the summed up value.
+
+I think the existing attributes can also be used for per-link STA?
+
+I'm kind of imagining that - once we actually do all of this properly -
+the representation in nl80211 would be something like
 
 
-On 3/25/2024 9:13 PM, Johannes Berg wrote:
-> On Tue, 2024-03-19 at 19:15 +0530, Hari Chandrakanthan wrote:
->> Add support to count station level rx retries.
-> Should the subject say "for ... stats"?
->
->> +++ b/net/mac80211/sta_info.c
->> @@ -2653,6 +2653,11 @@ void sta_set_sinfo(struct sta_info *sta, struct station_info *sinfo,
->>   		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_RETRIES);
->>   	}
->>   
->> +	if (!(sinfo->filled & BIT_ULL(NL80211_STA_INFO_RX_RETRIES))) {
->> +		sinfo->rx_retries = sta->deflink.rx_stats.rx_retries;
->> +		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_RX_RETRIES);
->> +	}
-> The use of deflink here seems ... questionable?
->
-> I know we've not really done any stats properly here for link STA
-> (patches welcome), but I guess this could be a first one that at least
-> sums up all the links like all of these should, and then find a way to
-> expose per-link as well?
->
-> Although possibly we should just expose per-link to cfg80211, and then
-> have cfg80211 sum up for the MLD representation...
->
->
-> Either way, seems odd to add something now that absolutely cannot work
-> for MLO?
->
-ok.
+STA 00:00:00:00:00:00
+ - TX bytes: 123456
+ - RX bytes: 654321
+ - signal avg: -60 dBm     // picking the best of all links?
+ ...
+ - LINK 00:00:00:00:00:01
+    - link ID: 10
+    - TX bytes: 100000
+    - RX bytes: 600000
+    - signal avg: -60 dBm
+ - LINK 00:00:00:00:00:02
+    - link ID: 11
+    - TX bytes: 23456
+    - RX bytes: 54321
+    - signal avg: -70 dBm
 
-Fields such packet count, retries etc can be summed up for the MLD 
-representation and the existing NL
-attribute can be used for exposing the summed up value.
+etc.
 
-But there are fields such as signal avg, bitrate etc which cannot be 
-summed up.
-Should we expose such fields of each link STA through NL?
+> But there are fields such as signal avg, bitrate etc which cannot be=20
+> summed up.
 
-Sample station dump log for reference:
-         inactive time:  271110 ms
-         rx bytes:       1129
-         rx packets:     13
-         tx bytes:       219
-         tx packets:     3
-         tx retries:     38
-         tx failed:      0
-         rx drop misc:   0
-         signal:         -16 dBm
-         signal avg:     -20 dBm
-         tx bitrate:     6.0 MBit/s
-         tx duration:    452 us
-         rx bitrate:     260.0 MBit/s VHT-MCS 6 short GI VHT-NSS 4
-         rx duration:    792 us
-         last ack signal:0 dBm
-         avg ack signal: 0 dBm
-         authorized:     yes
-         authenticated:  yes
-         associated:     yes
-         preamble:       long
-         WMM/WME:        yes
-         MFP:            no
-         TDLS peer:      no
-         DTIM period:    2
-         beacon interval:100
-         short slot time:yes
-         connected time: 869 seconds
-         associated at [boottime]:       1040062.600s
-         associated at:  1695979678173 ms
-         current time:   1695980547138 ms
+Right, but I guess we can pick 'best' for those, to at least have a
+value? Or we could just not emit those attributes I guess, but not sure
+if that's then all that useful?
 
-> johannes
+> Should we expose such fields of each link STA through NL?
+
+All of them, I guess?
+
+I'm also imagining that we change the API from cfg80211 to the drivers
+to get the *link* STA information, and do the summing up and/or "best"
+selection there in cfg80211 itself. However, I am prepared to accept the
+possibility that we may do _both_ in the API, if not all drivers can
+even do all of the statistics per link. We should probably still have
+the link STAs in the statistics in nl80211, but then they may not be
+populated?
+
+johannes
 
