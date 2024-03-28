@@ -1,61 +1,59 @@
-Return-Path: <linux-wireless+bounces-5487-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5488-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CF3189082B
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 19:23:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82EDE89082F
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 19:25:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9FBB7B21063
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 18:23:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 283851F24141
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 18:25:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AC4681AAA;
-	Thu, 28 Mar 2024 18:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F1F52C18F;
+	Thu, 28 Mar 2024 18:25:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="LdiqOYTU"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="sMr3HbN4"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59A212C18F
-	for <linux-wireless@vger.kernel.org>; Thu, 28 Mar 2024 18:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF03F1879
+	for <linux-wireless@vger.kernel.org>; Thu, 28 Mar 2024 18:25:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711650201; cv=none; b=Wx6qn/tXZ7jpWXJvxuDXoleD+BN7RvxL4yG7Fa/ncXEqvFkXz6t0EmvOPK4cdcr0qR3PzPWp4riefxSiIEOp6KxDnC9ZD3xT+yCkstneJPLHXeazBpvQkL6TuuB3VqyCCNHlI1Ya6sCqOm7RK6Gi681vc+aRO7phJ0eN6tYs7BU=
+	t=1711650336; cv=none; b=cipupqCf7iOTW6eQ0QHEU5f5PXcRIz+cvgOsBj5jGoEQRYtf76OsDhsTC7nyLFftJR11c8AHFn9hM5DB9/Jivq1NJwNHB6PyE6SDJpUOmykoYOVGTYhsRJPdHRIWA/Wyqfk0Nj3V6TtE1y6iIEkE11wJHjijHDGpunpdJTjuxcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711650201; c=relaxed/simple;
-	bh=QSgmME2J6uhuRZWBQdVwMkKxTAsAIa4zM5ULoJLck0A=;
+	s=arc-20240116; t=1711650336; c=relaxed/simple;
+	bh=4ISEsymbowgkORltO8GqXHNWkZd0dNrHh6FP402gvfQ=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=qHLQn0cVLCCiyQEaW+e51T/deykNij/IZrk4XAWjLG39dCFYja8ZU9pD0m+30SVQdnw1xgZVrm8jdlXMg94VVVKe75uXYWUCY/8tm9Vrgu3zaoxkU0oeHPlHIRqTU0nvIAWG7I2/VuAeXWmUZcV4mshqrSmebX71vvazl3O3gyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=LdiqOYTU; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=Y0h3IaGM2ErV44OCF58leOh5RInE+cUvUmcKRESWik5X3tkGR2FiHXeXq4PxNciYU13NedHyi3elMsNV7gTrLzy2KwhEpgLTzOYTypjt6dvNH2iM/h96sApULHJna+4SJzSbyumCzlV6PMPNw0LBzDlA8RHT4PTEeEr8GVChgiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=sMr3HbN4; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=gX5i6kQcc4wcaG2Vb+4D3mmuB9agF0nM5XqRS2bTYrw=;
-	t=1711650199; x=1712859799; b=LdiqOYTUrfY+6ttO/1SP28LGpA2eepBZ3MIljp/yRn500Yl
-	m90FMZUqheiNbBhLbFWQ53rJxjMNN+HGufk0BcVyAJRFy6dwlYCVj32R1+WFHC4rx4otMtkBfdlHY
-	2SKk3wSqMpbD2YyApPFwsSK+ijmTSgA3rTlqmyeAfLC8Kb9kjUI3byGxjMnFygWf+CZb7bRpArd2i
-	G2yY40kXI2HweYKXTvEZUlycZY0CLt2QOkE7XGDOg7D1sfib9zIOgvoj6+YGGtRmJhhEdSw+MuFJr
-	7RGgMviVCoATo0Iw0GMrMq4n0Fo8ALUDSDURvYi/mtUn8KWcC6M9iC1X6xJtCZUw==;
+	Resent-Cc:Resent-Message-ID; bh=4ISEsymbowgkORltO8GqXHNWkZd0dNrHh6FP402gvfQ=;
+	t=1711650334; x=1712859934; b=sMr3HbN49CCLM5gL/NI3u1gzquSliOFE2SV8uI+WgCRJ+Zc
+	OKZfyj0hUiv4JSJZxUqwiaY0QyMUU0N151R+5mjqmcuKpHei3vUanisLpTInmB7FpwJPcYb6B6Et1
+	l8/uYkqT8n6JpGxfVSKL6Q+e4a5fiOjxZhznl9mf6eDN7v0zwbJekQnTz7rlycP03CeVL3agKKoix
+	doOTPVVsL0hNlSOtlyIdrREYvVoMXyQNyMrZsvoMwhstupkmYJOORd/QQPKu4S38q1TJMTh8CPMT2
+	vk270wAclPMmpKUw6Pzu2B/DCcLdFrywrh7s/ugvry/p4vyyYpwy3tPmnz35YWkw==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.97)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1rpuPE-00000001DeD-155z;
-	Thu, 28 Mar 2024 19:23:16 +0100
-Message-ID: <3f77e4e0455fbfdec7e14777cf116175eae32f49.camel@sipsolutions.net>
-Subject: Re: [RFC 2/2] wifi: mac80211: Add support for link reconfigure
- removal
+	id 1rpuRQ-00000001Dl0-0D7A;
+	Thu, 28 Mar 2024 19:25:32 +0100
+Message-ID: <36c9759651193a1de32020b9f9a019523eebabc8.camel@sipsolutions.net>
+Subject: Re: [RFC 0/2] Add Multi-Link Reconfigure link removal support
 From: Johannes Berg <johannes@sipsolutions.net>
 To: Manish Dharanenthiran <quic_mdharane@quicinc.com>
 Cc: linux-wireless@vger.kernel.org
-Date: Thu, 28 Mar 2024 19:23:14 +0100
-In-Reply-To: <20240328055235.3034174-3-quic_mdharane@quicinc.com>
+Date: Thu, 28 Mar 2024 19:25:30 +0100
+In-Reply-To: <20240328055235.3034174-1-quic_mdharane@quicinc.com>
 References: <20240328055235.3034174-1-quic_mdharane@quicinc.com>
-	 <20240328055235.3034174-3-quic_mdharane@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
@@ -68,61 +66,20 @@ MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
 On Thu, 2024-03-28 at 11:22 +0530, Manish Dharanenthiran wrote:
+> This is a preparation for supporting Multi-Link reconfigure link removal
+> procedure[IEEE P802.11be/D5.0 - 35.3.6.3 Removing affiliated APs] for
+> driver which supports offloaded Multi-Link reconfigure link removal.
 >=20
-> +int __ieee80211_link_reconfig_remove(struct ieee80211_local *local,
-> +				     struct ieee80211_sub_if_data *sdata,
-> +				     const struct cfg80211_link_reconfig_removal_params *params)
-> +{
-> +	struct ieee80211_link_data *link;
-> +	int ret;
-> +
-> +	if (!ieee80211_sdata_running(sdata))
-> +		return -ENETDOWN;
-> +
-> +	if (sdata->vif.type !=3D NL80211_IFTYPE_AP)
-> +		return -EINVAL;
-> +
-> +	link =3D sdata_dereference(sdata->link[params->link_id], sdata);
-> +	if (!link)
-> +		return -ENOLINK;
-> +
-> +	ret =3D drv_link_reconfig_remove(local, sdata, params);
-> +
-> +	return ret;
+> Multi-Link reconfigure link removal offloaded drivers will take care
+> of updating the reconfiguration MLE in self and partner beacons.
 
-Again ... remove the 'ret' variable, it serves no purpose at all.
-
-> +}
-> +
-> +int ieee80211_update_link_reconfig_remove_status(struct ieee80211_vif *v=
-if,
-> +						 unsigned int link_id,
-> +						 u8 tbtt_count, u64 tsf,
-> +						 enum ieee80211_link_reconfig_remove_state status)
-> +{
-> +	struct ieee80211_sub_if_data *sdata =3D vif_to_sdata(vif);
-> +
-> +	if (vif->type !=3D NL80211_IFTYPE_AP) {
-> +		sdata_err(sdata, "Discarding link reconfig status for unsupported vif =
-type\n");
-
-Uh, no. Remove that message please.
-
-> +TRACE_EVENT(drv_link_reconfig_remove,
-> +	    TP_PROTO(struct ieee80211_local *local,
-> +		     struct ieee80211_sub_if_data *sdata,
-> +		     const struct cfg80211_link_reconfig_removal_params *params),
-> +
-> +	TP_ARGS(local, sdata, params),
-> +
-> +	TP_STRUCT__entry(LOCAL_ENTRY
-> +			 VIF_ENTRY
-> +			 __field(u32, link_id)
-> +			 __field(u16, count)
-> +			 __dynamic_array(u8, frame, params->ie_len)
-> +	),
-
-All the same things about indentation apply here.
+I think we need to flesh that out. I don't know if you saw the CSA
+discussion, but I think it's pretty obvious that the same discussion
+about partner links is going to apply here. That doesn't necessarily
+mean that you _have_ to do that in this set (though I'd actually like to
+see it to support hwsim, for testing purposes of both sides), but I
+think the way it's written now the API doesn't consider how we might
+update partner links if it's not automatically handled by firmware, etc.
 
 johannes
 
