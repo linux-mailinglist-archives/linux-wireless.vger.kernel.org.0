@@ -1,125 +1,129 @@
-Return-Path: <linux-wireless+bounces-5501-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5502-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D55B4890CB3
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 22:51:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8511C890D79
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 23:22:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FB9C2933D6
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 21:51:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4063F29D7CF
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 22:22:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09D6713AD35;
-	Thu, 28 Mar 2024 21:51:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3386F13BC1C;
+	Thu, 28 Mar 2024 22:16:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="YZl8heIg"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="1FYqTFq4"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90F2B13AD23
-	for <linux-wireless@vger.kernel.org>; Thu, 28 Mar 2024 21:51:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFBE012FF95;
+	Thu, 28 Mar 2024 22:16:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711662694; cv=none; b=frx9m8i+Rl4vnmODUBYf4RKrekPSWXU7kqDDTflXT/vqYu/C/62Ec/o7Vzfytv3wBLXScrj8SwQtDOBpGuWTY25K2yqOYdFIcqrODLb2fffycSEpwiis8LhoV6cUUSApgYmK6W+5K32ET2KJUfhoo+ce7bm8lu1YgMWvsLFwu3o=
+	t=1711664177; cv=none; b=DGNVL0LWXsopWDbJNkAY2MjwRRM0fLxpEhv5Gf/eRdQxtwLqz78eXsKsv2hu7FSDPrJB2A/YMvEL70BosHNZsNhPVZcCACCiKBDy5KkJk8PVoojFDC8VmSMww0mtz+sjuav5jG6me+WCeJmkfUqz1yqPbIJlaQN51s8ec0d9SbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711662694; c=relaxed/simple;
-	bh=ZEE26gPTJZ/hBbsHNUyGFvQicSGcferjjPKlGEmy+hU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C7R7MOmtPcC/4xC5GBZTBW4DByu14PTUOzP3CEd0GrrH37B0S0uwUfSCd08dlZflZU6WRdG46VuKOXExu9UI8ZtSQ7S60R3ou2ii7j7MLA3hgUV5uYRi6hKHrc0JCgMloZNlOGYRVcb4bIVBOr2RV6hou11BL1wuoLnoG20fwT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=YZl8heIg; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-1e00d1e13a2so11370555ad.0
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Mar 2024 14:51:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1711662693; x=1712267493; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZHpNoyxs0hG49ZqgEYrAt6uwLA+lg8Ao3v4qhonPl2o=;
-        b=YZl8heIgfO51Hm6eSKT1QMTgLXlAKdpvfPUNx+DHG0WTMfqsdc5Rt/zKG+k/Yse23e
-         tfcMAToSuR99q5A9o9uPmOxyBTpntieWiDt+gVzgRwqXOelb0x5HZpojOIm+JyMKphsU
-         kbeSaHjjp8vv0LZ0IRrui3VpSA0V8+Beq7y+M=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711662693; x=1712267493;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZHpNoyxs0hG49ZqgEYrAt6uwLA+lg8Ao3v4qhonPl2o=;
-        b=paNyCaZItmnd5o0/ZS/de07Lh87finNToiHkxvjy2lC2YZ7AfR07VDQfZaIsBi2w+g
-         TMY05SdpAVxjfagAO+PD6d0Q5zsUu0By4WzOOSO83svUPFX9NONMI7B4G0HeoiSB3gGN
-         slLu8TS4P/dVdMmOeNlZpKiVTbSNbVAy3wAbc5u85+d95JvYm0F9ovFvd1lzKYHd+GLU
-         IdTeWc6uTAR51B5KTJ6REj6Dphg/DwBzk0hZA6R4saJ3HKyuYeRO/b4beqkbhdvqHhEk
-         GDicWCNAuPDhsbeQ6XAk4899Mmf5STXZ/GMrZA3h8KCoxnoza+dkmxTouuHqZPz5gmYc
-         +J3w==
-X-Forwarded-Encrypted: i=1; AJvYcCVk3CtAKySCVeayvMBXo50XdRzLFXsLEHHosvBp932N2YoWJq1Y4voz9mIux1mee/vk3teITPBVGZwYHBGe99QQ7ajUTXv7OhfJanymK30=
-X-Gm-Message-State: AOJu0Yy3CigRUThwSRuvAMR8kYuQLykdO49JcYOReqgg/hPAUFv32Jd/
-	W3Pagik9owKoFcnLMYEjfV6TN8vYUE9M77BBkbuXTly9HtV7Ztx+8MJEATQmpw==
-X-Google-Smtp-Source: AGHT+IEMvDfUims4WapdrR4k340zi5+TetBtVJ7L44Et9CdsFiQpLpmuyGP05ekYi4VrMKMaXxz5qQ==
-X-Received: by 2002:a17:903:11d2:b0:1de:f93f:4410 with SMTP id q18-20020a17090311d200b001def93f4410mr818655plh.8.1711662692925;
-        Thu, 28 Mar 2024 14:51:32 -0700 (PDT)
-Received: from www.outflux.net ([198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id p17-20020a170902e75100b001def0897284sm2119344plf.76.2024.03.28.14.51.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Mar 2024 14:51:32 -0700 (PDT)
-Date: Thu, 28 Mar 2024 14:51:32 -0700
-From: Kees Cook <keescook@chromium.org>
-To: Arnd Bergmann <arnd@kernel.org>
-Cc: Christian Lamparter <chunkeey@googlemail.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>,
-	linux-hardening@vger.kernel.org,
-	Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@toke.dk>,
-	linux-wireless@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-	Colin Ian King <colin.i.king@gmail.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] [RESEND] wifi: carl9170: re-fix fortified-memset
- warning
-Message-ID: <202403281451.6E8EB15E0@keescook>
-References: <20240328135509.3755090-1-arnd@kernel.org>
- <20240328135509.3755090-2-arnd@kernel.org>
+	s=arc-20240116; t=1711664177; c=relaxed/simple;
+	bh=fdtZQoLZf+k6qboyWg53YmVU9ZYYXUnvEjjAvY2Zbuc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=W0LE/RkoPvPsjPHCiztSukqrfYv4P6cA/etmEGP1mUiyFY3hl2lILSd2RZfnjwA0CnUpQZDmgjYYUEECe2suj4rF3uicfXLxb1t85XoyJQ5xoOAzn8/XOREcaqO/MMIpx2yzzjqFmSm2WW9KtUFd9ZJhQ28SQw+q1ElcPFiNQaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=1FYqTFq4; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=3ilz03y73fsrB9+n9Uy1QM7lLm0rRc6zHwaEe0RJkzw=; b=1FYqTFq4DcCU2YvlnoviU4q3hR
+	iN522UQydezjRLomRP9sBO6dNPuBVE2ulNe+3qTQ4Fb80kPqgwrSdMrPKOD95BOfMpmx8qiNoVtwt
+	+BKJ6PTbQfRvsXsHzCaQMiWJgU2JyffRmZphRmtiyF2KZ9ZfU8k8NSCK6K/KFLT0awC0+YlBF24hT
+	KBKx3WRDqAixwQWCy4EgZjzZwoD0qgMxOmHYIiaxp3LMaNc4DiS2E/DeRZMjI38aqHgFMUWSZC0JL
+	DI9FGUxeyhCFUmxoQ19OzXe3LQtCHdpJUTTLAVJd5z817HIept4Zjr9eaYcF+8qRZRVMxhuG676Y0
+	KqPp6Zqw==;
+Received: from [50.53.2.121] (helo=[192.168.254.15])
+	by bombadil.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rpy2Z-0000000FtcS-3SpS;
+	Thu, 28 Mar 2024 22:16:07 +0000
+Message-ID: <a009a21a-56d7-4a1a-aaf9-feefa5acc561@infradead.org>
+Date: Thu, 28 Mar 2024 15:16:07 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240328135509.3755090-2-arnd@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: mac80222: Fix ieee80211_i.h kernel-doc issues
+Content-Language: en-US
+To: Jeff Johnson <quic_jjohnson@quicinc.com>,
+ Johannes Berg <johannes@sipsolutions.net>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240328-ieee80211_i-kerneldoc-v1-1-e848bdec58f3@quicinc.com>
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20240328-ieee80211_i-kerneldoc-v1-1-e848bdec58f3@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Mar 28, 2024 at 02:55:04PM +0100, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> The carl9170_tx_release() function sometimes triggers a fortified-memset
-> warning in my randconfig builds:
-> 
-> In file included from include/linux/string.h:254,
->                  from drivers/net/wireless/ath/carl9170/tx.c:40:
-> In function 'fortify_memset_chk',
->     inlined from 'carl9170_tx_release' at drivers/net/wireless/ath/carl9170/tx.c:283:2,
->     inlined from 'kref_put' at include/linux/kref.h:65:3,
->     inlined from 'carl9170_tx_put_skb' at drivers/net/wireless/ath/carl9170/tx.c:342:9:
-> include/linux/fortify-string.h:493:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
->   493 |                         __write_overflow_field(p_size_field, size);
-> 
-> Kees previously tried to avoid this by using memset_after(), but it seems
-> this does not fully address the problem. I noticed that the memset_after()
-> here is done on a different part of the union (status) than the original
-> cast was from (rate_driver_data), which may confuse the compiler.
-> 
-> Unfortunately, the memset_after() trick does not work on driver_rates[]
-> because that is part of an anonymous struct, and I could not get
-> struct_group() to do this either. Using two separate memset() calls
-> on the two members does address the warning though.
-> 
-> Fixes: fb5f6a0e8063b ("mac80211: Use memset_after() to clear tx status")
-> Link: https://lore.kernel.org/lkml/20230623152443.2296825-1-arnd@kernel.org/
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Hi,
 
-Reviewed-by: Kees Cook <keescook@chromium.org>
+On 3/28/24 14:08, Jeff Johnson wrote:
+> kernel-doc flagged the following issues:
+> 
+> net/mac80211/ieee80211_i.h:146: warning: expecting prototype for enum ieee80211_corrupt_data_flags. Prototype was for enum ieee80211_bss_corrupt_data_flags instead
+> net/mac80211/ieee80211_i.h:163: warning: expecting prototype for enum ieee80211_valid_data_flags. Prototype was for enum ieee80211_bss_valid_data_flags instead
+> 
+> Correct the documentation to match the code.
+> 
+> Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+
+These seem to be corrected in linux-next already.
+However, I do still see this one:
+
+ieee80211_i.h:689: warning: missing initial short description on line:
+ * struct mesh_table
+
+Thanks.
+
+> ---
+> This file is being modified by a quicinc.com patch and my review
+> process flagged these pre-existing kernel-doc issues.
+> ---
+>  net/mac80211/ieee80211_i.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+> index def611e4e55f..458f63ce9a32 100644
+> --- a/net/mac80211/ieee80211_i.h
+> +++ b/net/mac80211/ieee80211_i.h
+> @@ -132,7 +132,7 @@ struct ieee80211_bss {
+>  };
+>  
+>  /**
+> - * enum ieee80211_corrupt_data_flags - BSS data corruption flags
+> + * enum ieee80211_bss_corrupt_data_flags - BSS data corruption flags
+>   * @IEEE80211_BSS_CORRUPT_BEACON: last beacon frame received was corrupted
+>   * @IEEE80211_BSS_CORRUPT_PROBE_RESP: last probe response received was corrupted
+>   *
+> @@ -145,7 +145,7 @@ enum ieee80211_bss_corrupt_data_flags {
+>  };
+>  
+>  /**
+> - * enum ieee80211_valid_data_flags - BSS valid data flags
+> + * enum ieee80211_bss_valid_data_flags - BSS valid data flags
+>   * @IEEE80211_BSS_VALID_WMM: WMM/UAPSD data was gathered from non-corrupt IE
+>   * @IEEE80211_BSS_VALID_RATES: Supported rates were gathered from non-corrupt IE
+>   * @IEEE80211_BSS_VALID_ERP: ERP flag was gathered from non-corrupt IE
+> 
+> ---
+> base-commit: b68b2beadfd30907faae944358de3a17acf6fdb6
+> change-id: 20240328-ieee80211_i-kerneldoc-d28d95f5c5d3
+> 
+> 
 
 -- 
-Kees Cook
+#Randy
 
