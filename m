@@ -1,131 +1,249 @@
-Return-Path: <linux-wireless+bounces-5463-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5464-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A6D18900DE
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 14:56:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5B57890173
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 15:16:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 309BB1F260A3
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 13:56:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C56E1F26E35
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 14:16:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B29C82870;
-	Thu, 28 Mar 2024 13:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6D6811CA9;
+	Thu, 28 Mar 2024 14:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eZjGgAqL"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="DoonoYSp"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5069181AC1;
-	Thu, 28 Mar 2024 13:55:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 945C47D07C
+	for <linux-wireless@vger.kernel.org>; Thu, 28 Mar 2024 14:16:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711634136; cv=none; b=oAZQq0iLjqMH6m/c2CWuQPEArsrQDRezCaKNbwztnrllCG8KwlBhy0p8OW3nmFElWWbdIcz0CCnKUcaMziV/3fyHrauDtk7OlELxdntumFMw1Z8lF7Jxnv8+94BWjtWc+oqxy+5+/daVbAXdQSqOfoXP4YHfHQeyW7mg3ckb5mk=
+	t=1711635394; cv=none; b=sZBkiGpbk6yMP4Tre0uyGuYuGnMLKURzmBdPvJNVgksZh0jMyynckMIW37KVQ9Rpfe+ZRFQsXh3PTyc5fw/qG+CfdA+dV/p8X0/WEuR5B0PeLK6aauUXmsDX4aVEKsm4K7MIVg6IGhPMrf+bQRXOSl7Bpfx4Vw2v8/hLhdbnocA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711634136; c=relaxed/simple;
-	bh=B1bIIrooihislE1mX6BRJC65yAmjnRAiaxE9OMZQxAY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RqCENXwZp8ijks5Y4brg+iD+Kd4bondaHdyQyKJbqJffhFxf1gZop8QHdoJ3ilXcDwVyURX7vSGEI4mj8OJBCqjXKhMBrwxP+2Za8xtKd6Gz/3m4zDQX6qUJbaTnpgpVJD5teND7J3NkPE9Rq1LTg076u+PbWxlWCOYrIuz2hFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eZjGgAqL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97163C433C7;
-	Thu, 28 Mar 2024 13:55:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711634136;
-	bh=B1bIIrooihislE1mX6BRJC65yAmjnRAiaxE9OMZQxAY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eZjGgAqL4xfmx+WtA+DkKBbpM0763PjFCAfx7FMQr7cL7//eBJVQP5QwfqrQ/WbVZ
-	 qB2za8R9/WhWcvAsK3nUbTZjLQQFP1GHR5RneRJPQWh3jbhr3mDMhdlp7mr8Wp1gCN
-	 riwiiWjnA2CGUMpMjzlBXYXevIlkmuBlUJ7zkZy/shsLb4Y4GW0X4+Ei69Y67wLgip
-	 T3zN8gEsbmh0DVdesbL8czMAUOJIB3ZMDxxs8X5Xi+NClNLGzIcMx3aZn0HtQzLC7U
-	 usJ1xUL/E/RS3M0JU3jwITusYF0fwi6QxFOT8/+lJXikBKde7hEab2/RORmzN7zIQB
-	 aj+BkIsu2YE7Q==
-From: Arnd Bergmann <arnd@kernel.org>
-To: Kees Cook <keescook@chromium.org>,
-	Kalle Valo <kvalo@kernel.org>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-Cc: linux-hardening@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	Arnd Bergmann <arnd@arndb.de>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Hancheng Yang <hyang@freebox.fr>,
-	Remi Pommarel <repk@triplefau.lt>,
-	Johannes Berg <johannes.berg@intel.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] wifi: ath9k: work around memset overflow warning
-Date: Thu, 28 Mar 2024 14:55:05 +0100
-Message-Id: <20240328135509.3755090-3-arnd@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240328135509.3755090-1-arnd@kernel.org>
-References: <20240328135509.3755090-1-arnd@kernel.org>
+	s=arc-20240116; t=1711635394; c=relaxed/simple;
+	bh=LpXl2FH8uvrt+mDGz18YPTIYsQlfLecKrGpVB3IUrDA=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=u830nWmEaOVehfxdb3s7QAX0CD41nfza9K2inUnj0heKfdxRgKDZEm84oO+0neg8aeXQR0WzKK7QLNQSKuL9exxCBGLbB7uQk/Vn67Nc+CV+fh0h9hOqlTXC5V/9uOeYWhHsUxjfZoIsCojSIjuRZpNsyE69kc552yy6lL2mdDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=DoonoYSp; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=qFmBhPh8gg8olzgrUk+NQzaUZcs1g3w7206VS3gQTmM=;
+	t=1711635391; x=1712844991; b=DoonoYSpY5LjpICkpJ7Cj9DUMXD4Ec9U6+vYOsGbofDmfT6
+	Z71grhPRPgg+hU0CJ1U6yiFmsPWRmQbWboMZ3NlPuBGRcn6d0M0GowMoEQf09CL8F/m6irRAmf/4x
+	5eF3KmECv2QxRqSl/g63Z0AnfcK2AvJzQ7b/FU56OApTFGHTwMUPfEzRaBFRQDcn//g59sn1Pl4aX
+	5kdry0kXxdRwkckUIn9H6zTY5ui0/l13YBoQPfln6fNX8tyWyHlxKFLW0BumeB1/ngyCZ2baIrK/H
+	VXp4RIGFHSSn11GiXMdCef5K2hiFGu6e4jyVVR/2lYNKaKGjDKgss0u47RnZrUuw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rpqYN-000000012MS-2C0b;
+	Thu, 28 Mar 2024 15:16:27 +0100
+Message-ID: <a24b7d967dbe31ef613fae8c331f4ff718482c93.camel@sipsolutions.net>
+Subject: Re: [PATCH 09/13] wifi: cfg80211: Add multi-hardware iface
+ combination support
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>, 
+	ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org, Vasanthakumar Thiagarajan
+	 <quic_vthiagar@quicinc.com>
+Date: Thu, 28 Mar 2024 15:16:26 +0100
+In-Reply-To: <20240328072916.1164195-10-quic_periyasa@quicinc.com>
+References: <20240328072916.1164195-1-quic_periyasa@quicinc.com>
+	 <20240328072916.1164195-10-quic_periyasa@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 
-From: Arnd Bergmann <arnd@arndb.de>
+On Thu, 2024-03-28 at 12:59 +0530, Karthikeyan Periyasamy wrote:
+>=20
+>   * @new_beacon_int: set this to the beacon interval of a new interface
+>   *	that's not operating yet, if such is to be checked as part of
+>   *	the verification
+> + * @chandef: Channel definition for which the interface combination is t=
+o be
+> + *	checked, when checking during interface preparation on a new channel,
+> + *	for example. This will be used when the driver advertises underlying
+> + *	hw specific interface combination in a multi physical hardware device=
+.
+> + *	This will be NULL when the interface combination check is not due to
+> + *	channel or the interface combination does not include per-hw
+> + *	advertisement.
 
-gcc-9 and some other older versions produce a false-positive warning
-for zeroing two fields
+This is input, so "will be" doesn't make much sense, more like "must
+be"?
 
-In file included from include/linux/string.h:369,
-                 from drivers/net/wireless/ath/ath9k/main.c:18:
-In function 'fortify_memset_chk',
-    inlined from 'ath9k_ps_wakeup' at drivers/net/wireless/ath/ath9k/main.c:140:3:
-include/linux/fortify-string.h:462:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
-  462 |                         __write_overflow_field(p_size_field, size);
-      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+But I'm confused as to how that works with num_different_channels being
+here too?
 
-Using a struct_group seems to reliably avoid the warning and
-not make the code much uglier. The combined memset() should even
-save a couple of cpu cycles.
+This function was, as far as I can tell, always checking the _full_
+state. Now you're changing that, and I'm neither sure why, nor does it
+seem well documented.
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
-This is from randconfig testing, see https://pastebin.com/yjKk5N81
-for a reproducer
----
- drivers/net/wireless/ath/ath.h        | 6 ++++--
- drivers/net/wireless/ath/ath9k/main.c | 3 +--
- 2 files changed, 5 insertions(+), 4 deletions(-)
+> + * @n_per_hw: number of Per-HW interface combinations.
+> + * @per_hw: @n_per_hw of hw specific interface combinations. Per-hw chan=
+nel
+> + *	list index as advertised in wiphy @hw_chans is used as index
+> + *	in @per_hw to maintain the interface combination of the corresponding
+> + *	hw.
 
-diff --git a/drivers/net/wireless/ath/ath.h b/drivers/net/wireless/ath/ath.h
-index f02a308a9ffc..34654f710d8a 100644
---- a/drivers/net/wireless/ath/ath.h
-+++ b/drivers/net/wireless/ath/ath.h
-@@ -171,8 +171,10 @@ struct ath_common {
- 	unsigned int clockrate;
- 
- 	spinlock_t cc_lock;
--	struct ath_cycle_counters cc_ani;
--	struct ath_cycle_counters cc_survey;
-+	struct_group(cc,
-+		struct ath_cycle_counters cc_ani;
-+		struct ath_cycle_counters cc_survey;
-+	);
- 
- 	struct ath_regulatory regulatory;
- 	struct ath_regulatory reg_world_copy;
-diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
-index a2943aaecb20..01173aac3045 100644
---- a/drivers/net/wireless/ath/ath9k/main.c
-+++ b/drivers/net/wireless/ath/ath9k/main.c
-@@ -135,8 +135,7 @@ void ath9k_ps_wakeup(struct ath_softc *sc)
- 	if (power_mode != ATH9K_PM_AWAKE) {
- 		spin_lock(&common->cc_lock);
- 		ath_hw_cycle_counters_update(common);
--		memset(&common->cc_survey, 0, sizeof(common->cc_survey));
--		memset(&common->cc_ani, 0, sizeof(common->cc_ani));
-+		memset(&common->cc, 0, sizeof(common->cc));
- 		spin_unlock(&common->cc_lock);
- 	}
- 
--- 
-2.39.2
+What?
 
+If I'm reading that correctly, which is all but guaranteed, doesn't that
+actually mean you don't need n_per_hw at all, since it necessarily equal
+to n_hw_chans?
+
+> +/**
+> + * cfg80211_per_hw_iface_comb_advertised - if per-hw iface combination s=
+upported
+> + *
+> + * @wiphy: the wiphy
+> + *
+> + * This function is used to check underlying per-hw interface combinatio=
+n is
+> + * advertised by the driver.
+> + */
+> +bool cfg80211_per_hw_iface_comb_advertised(struct wiphy *wiphy);
+
+Is that even worth an export rather than being inline? Is it even needed
+outside of cfg80211 itself?
+
+Also for cfg80211_get_hw_idx_by_chan(), is it really needed?
+
+I'm also wondering if we really should use the "hw_idx" everywhere.
+Maybe that'd be more useful as a pointer to struct
+ieee80211_chans_per_hw in most places (other than nl80211, obviously)?
+
+The index always feels pretty fragile, a pointer at least gives us type-
+checking?
+
+Even in the interface combination advertising, perhaps, though not sure
+how that'd work for the drivers.
+
+> +static const struct ieee80211_iface_per_hw *
+> +cfg80211_get_hw_iface_comb_by_idx(struct wiphy *wiphy,
+> +				  const struct ieee80211_iface_combination *c,
+> +				  int idx)
+> +{
+> +	int i;
+> +
+> +	for (i =3D 0; i < c->n_hw_list; i++)
+> +		if (c->iface_hw_list[i].hw_chans_idx =3D=3D idx)
+> +			break;
+> +
+> +	if (i =3D=3D c->n_hw_list)
+> +		return NULL;
+> +
+> +	return &c->iface_hw_list[i];
+> +}
+
+???
+
+Hint: it's perfectly legal to return directly from a loop.
+
+> +static int
+> +cfg80211_validate_iface_comb_per_hw_limits(struct wiphy *wiphy,
+> +					   struct iface_combination_params *params,
+> +					   const struct ieee80211_iface_combination *c,
+> +					   u16 *num_ifaces, u32 *all_iftypes)
+> +{
+> +	struct ieee80211_iface_limit *limits;
+> +	const struct iface_comb_per_hw_params *per_hw;
+> +	const struct ieee80211_iface_per_hw *per_hw_comb;
+> +	int i, ret =3D 0;
+
+The =3D 0 doesn't seem needed.
+
+> +		ret =3D cfg80211_validate_iface_limits(wiphy,
+> +						     per_hw->iftype_num,
+> +						     limits,
+> +						     per_hw_comb->n_limits,
+> +						     all_iftypes);
+> +
+> +		kfree(limits);
+> +
+> +		if (ret)
+> +			goto out;
+> +	}
+> +
+> +out:
+> +	return ret;
+
+That 'out' label is pointless.
+
+> +static void cfg80211_put_iface_comb_iftypes(u16 *num_ifaces)
+> +{
+> +	kfree(num_ifaces);
+> +}
+
+Not sure I see value in that indirection?
+
+> +static u16*
+
+missing space
+
+> +cfg80211_get_iface_comb_iftypes(struct wiphy *wiphy,
+> +				struct iface_combination_params *params,
+> +				u32 *used_iftypes)
+> +{
+> +	const struct iface_comb_per_hw_params *per_hw;
+> +	u16 *num_ifaces;
+> +	int i;
+> +	u8 num_hw;
+> +
+> +	num_hw =3D params->n_per_hw ? params->n_per_hw : 1;
+
+I think we're allowed to use the "?:" shortcut.
+
+> +	num_ifaces =3D kcalloc(num_hw, sizeof(*num_ifaces), GFP_KERNEL);
+> +	if (!num_ifaces)
+> +		return NULL;
+
+But ... maybe we should just cap num_hw to a reasonable limit (4? 5?)
+and use a static array in the caller instead of allocating here.
+
+> +	is_per_hw =3D cfg80211_per_hw_iface_comb_advertised(wiphy);
+
+Maybe call that "have_per_hw_combinations" or so? Or "check_per_hw"
+even, "is" seems not clear - "what is?"
+
+> +	/* check per HW validation */
+> +	if (params->n_per_hw) {
+> +		if (!is_per_hw)
+> +			return -EINVAL;
+> +
+> +		if (params->n_per_hw > wiphy->num_hw)
+> +			return -EINVAL;
+> +	}
+> +
+> +	if (is_per_hw && params->chandef &&
+> +	    cfg80211_chandef_valid(params->chandef))
+> +		hw_chan_idx =3D cfg80211_get_hw_idx_by_chan(wiphy,
+> +							  params->chandef->chan);
+> +
+> +	num_ifaces =3D cfg80211_get_iface_comb_iftypes(wiphy,
+> +						     params,
+> +						     &used_iftypes);
+> +	if (!num_ifaces)
+> +		return -ENOMEM;
+
+But still like I said above, all this code seems really odd to me now,
+it's checking *either* the per-hw and then only for a single HW, *or*
+the global, but ... seems it should do full checks for both, if needed?
+
+johannes
 
