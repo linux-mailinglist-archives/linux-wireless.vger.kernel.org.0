@@ -1,77 +1,128 @@
-Return-Path: <linux-wireless+bounces-5493-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5494-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 463088908C9
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 19:57:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 453BC890904
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 20:20:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76FBA1C23554
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 18:57:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 750E01C21614
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 19:20:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4203C3CF73;
-	Thu, 28 Mar 2024 18:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD011136E13;
+	Thu, 28 Mar 2024 19:20:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ti6Tw9mM"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="IwjaLNsI"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A5211849;
-	Thu, 28 Mar 2024 18:57:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA349137C27
+	for <linux-wireless@vger.kernel.org>; Thu, 28 Mar 2024 19:20:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711652261; cv=none; b=AiOWxdUOtasvU/lVGm3tjh1InbmkR7HDv/O8uYKYI+dVYrlimIzhvAGXFb3hqbaOdluCUki9rPiFpiPsT1Sc0HbhZq2dUcSuwSfeVYitxxO0HvBqW+cd31rUQ9QWe8wfGGGez8/NJDNEUIWEkg33NB/AKy1qjj9w/XE8pkJm6SY=
+	t=1711653617; cv=none; b=WT+B3geWAYYF7ysGmgkZDkCyCYaAPD5zsfuzHxUVuPTwjoLyTFBL/5REhVPXBj3NfwU+jS01Xc2MmN7fokH9zOChNh51raR+eOsel07lsT+aaBjMz6zDQfgFw8Gzjsw97ngbIm/hG8PcK0qUZ5EPoGJkQxFcIYOClMyCXKI2vFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711652261; c=relaxed/simple;
-	bh=g8MZoSOBw83lfy1GQGN+fYvIbwsa4mnyeiq8LMMUAbw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BBJFPvo6RZOpe/TNOm6Y90BC6MiXrObRhjbR6j+0oARoGoI5KpzlvIRYtoD0YAsSZZ9Dyic+dta6X73nVeqVI1DdvNapPbss/wnc3M7ziObh0f/y8JClqrOouFjYHDoZ/gHCwwa+8DTO4qZR/EuAPMCGFXG/ZwBnYT9qjICvKFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ti6Tw9mM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A43B2C433C7;
-	Thu, 28 Mar 2024 18:57:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711652261;
-	bh=g8MZoSOBw83lfy1GQGN+fYvIbwsa4mnyeiq8LMMUAbw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ti6Tw9mMMkTBavcMr86LzhVafkUKbgTXs+DJ6l9HnvUJFa5/xg1SngxeY7S0O+Uul
-	 uNPxj6Nm9l3lBPwl+KOM8IHUD8F74Ok4LxdD8acbvwlx6y/18dnrr0rgOExUPDQfrB
-	 s0T7Hw0h6TJcZUNzHAsZd+fAPfpZczhpHXwFyrFU2hy0dO9Nuyj+m6cIXO/NQmRr49
-	 ix6BypTQQpIvqDWp+hWwKWEha/TEU+mQfG/jnEjUTc4PblbILf7d/OfV3tgshCbxQY
-	 kwsvK1xr4+AKzxzfvZdZ+KHUpCNz61MxWnF063i3bTp9g9iw0cs5a6ddzmC42e9Ex4
-	 E1HRQ1jqvy4zQ==
-Date: Thu, 28 Mar 2024 11:57:39 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
- ath12k@lists.infradead.org, linux-wireless@vger.kernel.org, Vasanthakumar
- Thiagarajan <quic_vthiagar@quicinc.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH 02/13] wifi: nl80211: send underlying multi-hardware
- channel capabilities to user space
-Message-ID: <20240328115739.78ec5650@kernel.org>
-In-Reply-To: <485ca445f0f0c47179a338df2538e74d520627ad.camel@sipsolutions.net>
-References: <20240328072916.1164195-1-quic_periyasa@quicinc.com>
-	<20240328072916.1164195-3-quic_periyasa@quicinc.com>
-	<6d92d0ba4a8764cd91cc20c4bd35613bcc41dfcd.camel@sipsolutions.net>
-	<9d5c2f9f-19b5-af4d-8018-1eb97fac10d6@quicinc.com>
-	<9d0f309da45ae657cd2ce0bc11a93d66e856ef64.camel@sipsolutions.net>
-	<20240328114903.1d0c8af9@kernel.org>
-	<485ca445f0f0c47179a338df2538e74d520627ad.camel@sipsolutions.net>
+	s=arc-20240116; t=1711653617; c=relaxed/simple;
+	bh=jlKX/71Rl4LteIviSrCFAPH8SPdylApgi56PoMqwqis=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cM24KkTlhWDb3XlXQqpeDS6Rozhcco9J8G9EGMkKDNSB832EiHoGWdyNgVcE3ubKzZ4X3qNrsvSdRy2oI4IGpr1KvIpVoB9jHivKXRXhGehIoxOOwg/WxofYkmqMot6jfM2asMscVzRIv4Nx4WH1fHE+j9jURY7ZEmy1cLsbVK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=IwjaLNsI; arc=none smtp.client-ip=44.202.169.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
+Received: from eig-obgw-5001a.ext.cloudfilter.net ([10.0.29.139])
+	by cmsmtp with ESMTPS
+	id psCnrFfluuh6spvIHr9PU3; Thu, 28 Mar 2024 19:20:09 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+	by cmsmtp with ESMTPS
+	id pvIGrLwy03g73pvIGrFnAl; Thu, 28 Mar 2024 19:20:09 +0000
+X-Authority-Analysis: v=2.4 cv=esUUzZpX c=1 sm=1 tr=0 ts=6605c2e9
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=zXgy4KOrraTBHT4+ULisNA==:17
+ a=IkcTkHD0fZMA:10 a=K6JAEmCyrfEA:10 a=wYkD_t78qR0A:10 a=VwQbUJbxAAAA:8
+ a=l-0SYlq0ot4ByQFz_X4A:9 a=QEXdDO2ut3YA:10 a=AjGcO6oz07-iQ99wixmX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=eT7vaZHHjEMxhRKG/6gsWxmfF8xNUtEbKXpbgQbV3qw=; b=IwjaLNsI6Y7EXjAPREVGB0BwxR
+	/uuAa5Y+CvEpx0kpNiHwvmWF3IlM+6z1DF0j/a2yEDijMI1EiN5O5jwyXlBPqDDEym2TqEDSVyMpg
+	YTCtYUabqYNXD0flDzstbAQUgMz0z1Uax5EfYnKVTDq2o0bhK1qthJDRs2xVRUVoNlj+jGooQBaTS
+	/P7UvqyKzRNJO9uZ89ob/BESxZujmY9o+UUlCGVSlmKYvczBH9QEgbzjjZ0JFDRCqqfFQRLiBoOHZ
+	KKVrPeuaspGWeF06Gmx3726VpOc1l0WS9oSR2qq4D73FeCHPY8Osy+j+OK7Q5WIjsIh1XdicIhAF1
+	ZsYFAYHQ==;
+Received: from [201.172.173.147] (port=37368 helo=[192.168.15.10])
+	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <gustavo@embeddedor.com>)
+	id 1rpvIG-003u8l-0S;
+	Thu, 28 Mar 2024 14:20:08 -0500
+Message-ID: <5f91acad-23c5-4e0c-b468-8aab56b0ff7a@embeddedor.com>
+Date: Thu, 28 Mar 2024 13:20:06 -0600
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH][next] wifi: wil6210: Annotate struct
+ wmi_set_link_monitor_cmd with __counted_by()
+Content-Language: en-US
+To: Kalle Valo <kvalo@kernel.org>, "Gustavo A. R. Silva"
+ <gustavoars@kernel.org>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-hardening@vger.kernel.org
+References: <ZgODZOB4fOBvKl7R@neat>
+ <171163065000.129280.2362402378382558964.kvalo@kernel.org>
+From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+In-Reply-To: <171163065000.129280.2362402378382558964.kvalo@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 201.172.173.147
+X-Source-L: No
+X-Exim-ID: 1rpvIG-003u8l-0S
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: ([192.168.15.10]) [201.172.173.147]:37368
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 3
+X-Org: HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfNDB2w1Bzsk6JklYsXem3kFu6c5xql3U+bwkgu/J4ZWU+4o175OWHEcXEA+ghO0xl4nIgv0oD4DA6SDNF5sX/udVzWqoe/c0C+nTxhU/KRAvYNPSSjht
+ qtshn1nEH7EI5BlFrklmKcaNs7v7jvhNUgwzPAPyj/tDSuQZ+EzMezT93+Xl8ehxMOkwztFkEN2SDdwJwGJHErFKi1OlZUqSL7pCuMQDn4vff5W6+rjh/uLW
 
-On Thu, 28 Mar 2024 19:53:33 +0100 Johannes Berg wrote:
-> I suppose we could even define a
+
+
+On 3/28/24 06:57, Kalle Valo wrote:
+> "Gustavo A. R. Silva" <gustavoars@kernel.org> wrote:
 > 
-> nla_for_each_type(..., type)
+>> Prepare for the coming implementation by GCC and Clang of the __counted_by
+>> attribute. Flexible array members annotated with __counted_by can have
+>> their accesses bounds-checked at run-time via CONFIG_UBSAN_BOUNDS (for
+>> array indexing) and CONFIG_FORTIFY_SOURCE (for strcpy/memcpy-family
+>> functions).
+>>
+>> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+> 
+> I'm dropping this because it looks like you sent a different patch, but
+> it's quite hard to know for sure.
 
-That's probably a good idea for the kernel! We already have a bunch of
-the loops with the if (type != DESIRED) continue, as you mentioned.
+Ah yes, sorry, this was replaced by the following patch:
+
+https://lore.kernel.org/linux-hardening/ZgSTCmdP+omePvWg@neat/
+
+Thanks!
+--
+Gustavo
 
