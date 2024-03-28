@@ -1,129 +1,169 @@
-Return-Path: <linux-wireless+bounces-5502-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5503-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8511C890D79
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 23:22:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8032890DB4
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 23:37:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4063F29D7CF
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 22:22:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 34DE2B243D3
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 22:37:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3386F13BC1C;
-	Thu, 28 Mar 2024 22:16:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01D7B26AC5;
+	Thu, 28 Mar 2024 22:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="1FYqTFq4"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="djx5LAUI"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFBE012FF95;
-	Thu, 28 Mar 2024 22:16:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C24131D68F;
+	Thu, 28 Mar 2024 22:37:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711664177; cv=none; b=DGNVL0LWXsopWDbJNkAY2MjwRRM0fLxpEhv5Gf/eRdQxtwLqz78eXsKsv2hu7FSDPrJB2A/YMvEL70BosHNZsNhPVZcCACCiKBDy5KkJk8PVoojFDC8VmSMww0mtz+sjuav5jG6me+WCeJmkfUqz1yqPbIJlaQN51s8ec0d9SbA=
+	t=1711665427; cv=none; b=QL6BcG9XXLcEKx2OVY5meytW59ai0Sp6rnjfQNHjIeL/dPw0MlL6Dv1yrt8IJlJdhaxYr0Or2c76uoslVgqvJbF3Mb7UNA/MmtknUp3J6fnQOnPPVBaFayWWaaHOIwXxi4gyFuStKWoJ0QWNeFm61J6p5kI6ap7Wr1ShG9PH7V0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711664177; c=relaxed/simple;
-	bh=fdtZQoLZf+k6qboyWg53YmVU9ZYYXUnvEjjAvY2Zbuc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=W0LE/RkoPvPsjPHCiztSukqrfYv4P6cA/etmEGP1mUiyFY3hl2lILSd2RZfnjwA0CnUpQZDmgjYYUEECe2suj4rF3uicfXLxb1t85XoyJQ5xoOAzn8/XOREcaqO/MMIpx2yzzjqFmSm2WW9KtUFd9ZJhQ28SQw+q1ElcPFiNQaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=1FYqTFq4; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1711665427; c=relaxed/simple;
+	bh=xQvSGwjpy1U6i/xX+phhJvt3/ov4BDw8GZ/yLMQj2dU=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=P4O/OD3+mKo7aNTqoiHtAnvMDtKl1l6+ava/ozWl9R5PoHdhikmepfcY1M0m5jj42OMk2lJ+kvt3CZaUizQXcJis1kGmxk6MEyTTTvGTCnlCSll0a26Qmwi5QvfMz2BP36DeVjMCUkmAZAMupGid/5hlHrHs+IY+9risyEaLRYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=djx5LAUI; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=3ilz03y73fsrB9+n9Uy1QM7lLm0rRc6zHwaEe0RJkzw=; b=1FYqTFq4DcCU2YvlnoviU4q3hR
-	iN522UQydezjRLomRP9sBO6dNPuBVE2ulNe+3qTQ4Fb80kPqgwrSdMrPKOD95BOfMpmx8qiNoVtwt
-	+BKJ6PTbQfRvsXsHzCaQMiWJgU2JyffRmZphRmtiyF2KZ9ZfU8k8NSCK6K/KFLT0awC0+YlBF24hT
-	KBKx3WRDqAixwQWCy4EgZjzZwoD0qgMxOmHYIiaxp3LMaNc4DiS2E/DeRZMjI38aqHgFMUWSZC0JL
-	DI9FGUxeyhCFUmxoQ19OzXe3LQtCHdpJUTTLAVJd5z817HIept4Zjr9eaYcF+8qRZRVMxhuG676Y0
-	KqPp6Zqw==;
-Received: from [50.53.2.121] (helo=[192.168.254.15])
-	by bombadil.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rpy2Z-0000000FtcS-3SpS;
-	Thu, 28 Mar 2024 22:16:07 +0000
-Message-ID: <a009a21a-56d7-4a1a-aaf9-feefa5acc561@infradead.org>
-Date: Thu, 28 Mar 2024 15:16:07 -0700
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=acFz8ZofxmGGcr8Ugossbm6NCpv7kLhJA9jmyA4gPP0=;
+	t=1711665425; x=1712875025; b=djx5LAUI7FnX5I56/ZNLZNWxFlCG0bFWh/HFUvIEYn8nM3U
+	ZNzAiYoz645+29heGeoeiaYBpeNkFTBhPTwwaL1pi8YJxz/kx8c0fQAFXgCTJzDhROVCB+QJe5NNj
+	s0UDHFax7KqW3RdEKKjGZUMzhAEghnwlw7Wnf/UQRQYlxx3lo27OkZ9lJZDnvGEbj1vZqr9BzJO3y
+	YFmlO6+ZFoXbgddGTsrlknQRgJsohG59/VDVu7cLE7EOBWtcLFa3XhZyhJT8Hrxmd9tE8i5iADxhc
+	3YG1GNC+F1dfNr7arbV0CvuGcQBs2aR1R/bSZekCxv+o5AWM4+hlo/H3L9myLJ3g==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rpyMo-00000001QZ0-2sTv;
+	Thu, 28 Mar 2024 23:37:02 +0100
+Message-ID: <a67ce10d440ecaf8313e4f35832305f71d2f921c.camel@sipsolutions.net>
+Subject: Re: [syzbot] [wireless?] possible deadlock in ieee80211_open
+From: Johannes Berg <johannes@sipsolutions.net>
+To: syzbot <syzbot+7526b1c2ce0b9a92e9a6@syzkaller.appspotmail.com>, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Date: Thu, 28 Mar 2024 23:37:01 +0100
+In-Reply-To: <000000000000b146890614a58da4@google.com>
+References: <000000000000b146890614a58da4@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: mac80222: Fix ieee80211_i.h kernel-doc issues
-Content-Language: en-US
-To: Jeff Johnson <quic_jjohnson@quicinc.com>,
- Johannes Berg <johannes@sipsolutions.net>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240328-ieee80211_i-kerneldoc-v1-1-e848bdec58f3@quicinc.com>
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20240328-ieee80211_i-kerneldoc-v1-1-e848bdec58f3@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 
-Hi,
+On Wed, 2024-03-27 at 07:52 -0700, syzbot wrote:
+>=20
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+> WARNING: possible circular locking dependency detected
+> 6.8.0-syzkaller-05204-g237bb5f7f7f5 #0 Not tainted
+> ------------------------------------------------------
+> syz-executor.0/7478 is trying to acquire lock:
+> ffff888077110768 (&rdev->wiphy.mtx){+.+.}-{3:3}, at: wiphy_lock include/n=
+et/cfg80211.h:5951 [inline]
+> ffff888077110768 (&rdev->wiphy.mtx){+.+.}-{3:3}, at: ieee80211_open+0xe7/=
+0x200 net/mac80211/iface.c:449
+>=20
+> but task is already holding lock:
+> ffff888064974d20 (team->team_lock_key#17){+.+.}-{3:3}, at: team_add_slave=
++0xad/0x2750 drivers/net/team/team.c:1973
+>=20
+> which lock already depends on the new lock.
 
-On 3/28/24 14:08, Jeff Johnson wrote:
-> kernel-doc flagged the following issues:
-> 
-> net/mac80211/ieee80211_i.h:146: warning: expecting prototype for enum ieee80211_corrupt_data_flags. Prototype was for enum ieee80211_bss_corrupt_data_flags instead
-> net/mac80211/ieee80211_i.h:163: warning: expecting prototype for enum ieee80211_valid_data_flags. Prototype was for enum ieee80211_bss_valid_data_flags instead
-> 
-> Correct the documentation to match the code.
-> 
-> Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Hmm.
 
-These seem to be corrected in linux-next already.
-However, I do still see this one:
+> the existing dependency chain (in reverse order) is:
+>=20
+> -> #1 (team->team_lock_key#17){+.+.}-{3:3}:
+>        lock_acquire+0x1e4/0x530 kernel/locking/lockdep.c:5754
+>        __mutex_lock_common kernel/locking/mutex.c:608 [inline]
+>        __mutex_lock+0x136/0xd70 kernel/locking/mutex.c:752
+>        team_port_change_check+0x51/0x1e0 drivers/net/team/team.c:2995
+>        team_device_event+0x161/0x5b0 drivers/net/team/team.c:3021
+>        notifier_call_chain+0x18f/0x3b0 kernel/notifier.c:93
+>        call_netdevice_notifiers_extack net/core/dev.c:1988 [inline]
+>        call_netdevice_notifiers net/core/dev.c:2002 [inline]
+>        dev_close_many+0x33c/0x4c0 net/core/dev.c:1543
+>        unregister_netdevice_many_notify+0x544/0x16d0 net/core/dev.c:11071
+>        macvlan_device_event+0x7bc/0x850 drivers/net/macvlan.c:1828
+>        notifier_call_chain+0x18f/0x3b0 kernel/notifier.c:93
+>        call_netdevice_notifiers_extack net/core/dev.c:1988 [inline]
+>        call_netdevice_notifiers net/core/dev.c:2002 [inline]
+>        unregister_netdevice_many_notify+0xd96/0x16d0 net/core/dev.c:11096
+>        unregister_netdevice_many net/core/dev.c:11154 [inline]
+>        unregister_netdevice_queue+0x303/0x370 net/core/dev.c:11033
+>        unregister_netdevice include/linux/netdevice.h:3115 [inline]
+>        _cfg80211_unregister_wdev+0x162/0x560 net/wireless/core.c:1206
+>        ieee80211_if_remove+0x25d/0x3a0 net/mac80211/iface.c:2242
+>        ieee80211_del_iface+0x19/0x30 net/mac80211/cfg.c:202
+>        rdev_del_virtual_intf net/wireless/rdev-ops.h:62 [inline]
+>        cfg80211_remove_virtual_intf+0x230/0x3f0 net/wireless/util.c:2847
 
-ieee80211_i.h:689: warning: missing initial short description on line:
- * struct mesh_table
+So this was the interface being removed via nl80211 (why do we even do
+that? rtnetlink can do that too ...)
 
-Thanks.
+I guess it was a team port, since team_port_get_rtnl() must've been non-
+NULL for this netdev. That acquires the team->lock mutex, but we hold
+the wiphy mutex around unregister_netdevice().
 
-> ---
-> This file is being modified by a quicinc.com patch and my review
-> process flagged these pre-existing kernel-doc issues.
-> ---
->  net/mac80211/ieee80211_i.h | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-> index def611e4e55f..458f63ce9a32 100644
-> --- a/net/mac80211/ieee80211_i.h
-> +++ b/net/mac80211/ieee80211_i.h
-> @@ -132,7 +132,7 @@ struct ieee80211_bss {
->  };
->  
->  /**
-> - * enum ieee80211_corrupt_data_flags - BSS data corruption flags
-> + * enum ieee80211_bss_corrupt_data_flags - BSS data corruption flags
->   * @IEEE80211_BSS_CORRUPT_BEACON: last beacon frame received was corrupted
->   * @IEEE80211_BSS_CORRUPT_PROBE_RESP: last probe response received was corrupted
->   *
-> @@ -145,7 +145,7 @@ enum ieee80211_bss_corrupt_data_flags {
->  };
->  
->  /**
-> - * enum ieee80211_valid_data_flags - BSS valid data flags
-> + * enum ieee80211_bss_valid_data_flags - BSS valid data flags
->   * @IEEE80211_BSS_VALID_WMM: WMM/UAPSD data was gathered from non-corrupt IE
->   * @IEEE80211_BSS_VALID_RATES: Supported rates were gathered from non-corrupt IE
->   * @IEEE80211_BSS_VALID_ERP: ERP flag was gathered from non-corrupt IE
-> 
-> ---
-> base-commit: b68b2beadfd30907faae944358de3a17acf6fdb6
-> change-id: 20240328-ieee80211_i-kerneldoc-d28d95f5c5d3
-> 
-> 
+> -> #0 (&rdev->wiphy.mtx){+.+.}-{3:3}:
+>        check_prev_add kernel/locking/lockdep.c:3134 [inline]
+>        check_prevs_add kernel/locking/lockdep.c:3253 [inline]
+>        validate_chain+0x18cb/0x58e0 kernel/locking/lockdep.c:3869
+>        __lock_acquire+0x1346/0x1fd0 kernel/locking/lockdep.c:5137
+>        lock_acquire+0x1e4/0x530 kernel/locking/lockdep.c:5754
+>        __mutex_lock_common kernel/locking/mutex.c:608 [inline]
+>        __mutex_lock+0x136/0xd70 kernel/locking/mutex.c:752
+>        wiphy_lock include/net/cfg80211.h:5951 [inline]
+>        ieee80211_open+0xe7/0x200 net/mac80211/iface.c:449
+>        __dev_open+0x2d3/0x450 net/core/dev.c:1430
+>        dev_open+0xae/0x1b0 net/core/dev.c:1466
+>        team_port_add drivers/net/team/team.c:1214 [inline]
+>        team_add_slave+0x9b3/0x2750 drivers/net/team/team.c:1974
+>        do_set_master net/core/rtnetlink.c:2685 [inline]
+>        do_setlink+0xe70/0x41f0 net/core/rtnetlink.c:2891
+>        __rtnl_newlink net/core/rtnetlink.c:3680 [inline]
+>        rtnl_newlink+0x180b/0x20a0 net/core/rtnetlink.c:3727
+>        rtnetlink_rcv_msg+0x89b/0x10d0 net/core/rtnetlink.c:6595
 
--- 
-#Randy
+I guess this was actually adding it as a team slave/port, which acquired
+the team->lock mutex, but do_open acquires the wiphy lock.
+
+We _don't_ hold the wiphy mutex around dev_close() when invoked in this
+path (see nl80211_del_interface), but regardless of how we delete the
+interface, we will hold wiphy mutex around the unregister.
+
+Thing is, I'm not sure I see a good way to avoid that? Maybe we could
+defer the unregister, and just set the ieee80211_ptr to NULL to make it
+effectively dead for wireless in the meantime. Not sure.
+
+However, as far as I can tell it's not actually possible for the
+deadlock to happen, because _both_ paths will necessarily be holding the
+RTNL around them - from nl80211 (nl80211_del_interface has
+NL80211_FLAG_NEED_RTNL) and rtnetlink_rcv_msg() respectively.
+
+So ultimately, we're both holding the mutex for internal reasons, but
+given the outer RTNL, I don't see how this would really deadlock.
+
+Given that, I'm inclined to ignore this, although it'd be nice to
+silence lockdep about it somehow I guess?
+
+johannes
 
