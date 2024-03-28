@@ -1,107 +1,168 @@
-Return-Path: <linux-wireless+bounces-5468-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5469-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3AE18902FB
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 16:23:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C737789033C
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 16:39:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4D011C29A0E
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 15:23:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8F501C2877F
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 15:39:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32F5142061;
-	Thu, 28 Mar 2024 15:23:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39E8012FF81;
+	Thu, 28 Mar 2024 15:39:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D/BlgZbT"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="yiXFFCxU"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3D1812F5AF
-	for <linux-wireless@vger.kernel.org>; Thu, 28 Mar 2024 15:23:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94BDC12FF60
+	for <linux-wireless@vger.kernel.org>; Thu, 28 Mar 2024 15:39:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711639413; cv=none; b=baGfT8Fpx5CN+Z/YjqXCVUJzxX1rvaNNcThaRUw+46z681PUu/7RAXztMUjdipbZ1TeNsB5ND8xdOWA9h/sLoYhlMgxXWoKYkx402MU74lBrxlzbtiIWlNcNyadgVNx06+GR56w19+VZfJdJJb5VJIgGTweI57VbKPCtMp1Gx6Y=
+	t=1711640361; cv=none; b=Cg2yS4xlfZDsSUIFqlsi7Oljyn9wNdol5D6abo0CceFkB1/zSZsjKqFo5sNl5xE9ZnVpaG10nd+867TTAnah71+RzLTD/7Dq2LI6PmHexT1CpVvAsOOsnyGjqwM/WIDq19h0CsVl7G9v3s7M8XLKnFZmNwupyN7JXj7U2a1GLWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711639413; c=relaxed/simple;
-	bh=VQFXtnC5NuXBZE1529dN4XXJ4jzTy6Zk5JLfYNv6zX8=;
-	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=WPR+55le4pw58SZrUMD3lDAkViP1AErcvQ2+OthFNpcHdWJE7DoMDjUX33A0oP1xI2BgM9Ev+vbHRUzC870Burr6xdVzzpkRzg7Xx6p2r4Xp5k0PakWbmVY5vnMvW5jCDQGYsXPDsJV5MW09im8p+HkHAx7RE9CmZwZjDO8Q6zQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D/BlgZbT; arc=none smtp.client-ip=209.85.215.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-5e152c757a5so698293a12.2
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Mar 2024 08:23:31 -0700 (PDT)
+	s=arc-20240116; t=1711640361; c=relaxed/simple;
+	bh=G1iRW2zHIY2/EiULrJ1nqfVUKDfTimjQj7b8q3dHoFc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JKpHWhXTf52UiMbZkaPXexW/RWPHEasxAN9mpmnOw5ofav0YGrEZE59WPmLlJGu4RrteSNj0L3etUJXUKc6HXuQhxMo45tp+C8V0R/7ayOjpBH4orFR9BFWvV1Sc00tq9FMrJQNiXBEr7eObSpIDxThlm6zmO4jF0gx2W8NAlqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=yiXFFCxU; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-6e6f69e850bso1287567b3a.0
+        for <linux-wireless@vger.kernel.org>; Thu, 28 Mar 2024 08:39:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711639411; x=1712244211; darn=vger.kernel.org;
-        h=content-transfer-encoding:subject:from:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vhC2Az8FCwQVaMqEG4Rh9Jbbc/IUpRYOfEemirbmdfM=;
-        b=D/BlgZbTgJvioAOTRSYLt2dL7x9Flh0UzqMapZVXhTfAmEXn97dkL29TsFJuU1YAGt
-         eFwYN3cQ/ld912Nps3mDR13gp34jhNbFCAxjmoSyzQpneURP9Qr3uK4wFLmB165X6BL5
-         9AyBxOs+D5M9ExSqkaxmu6JfqlWuW4ITFAUCNlj80UEvKrV+kCRfWjnLWBdDuWrej2Gk
-         wjkk+3yg6G4wmOUND2s2toN2TPaIzx/KTbP78ohRnS8MbChlEXjMJLhiNW6VI+XIwufs
-         MHpLkbxk73wnDGuxY+tZiG791Vr0ehRxqLr+dQIbHQsoV/R+Auq+r+3hKsRUeYxCCEV8
-         5jAg==
+        d=linaro.org; s=google; t=1711640358; x=1712245158; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=mPjQD/vT8EW8FIsS5EhEUvjw7Yq2DPw74odbleQjQC0=;
+        b=yiXFFCxUidOur1Yje4vLUgh6HPAPLTa0A8Jr+L02ErZCnLUGyA5cbWRfLbW2anYSXf
+         OBw4ySIQT0uhUbGcSG01jSnXmA99UGDz+ieVFtksloTDysGebITCGl5U79aib5tRot4U
+         R4S1ExbeBqVsmWInB4bb8zRKX9QyP7Ax6Eh5Ma6rjz8KpZ8v4vKS3+LuOQnifxodUaJY
+         zzOk4VHwBPO7tnFwFYmLG1MzB7aHaa3xKXAwElEJjPQS4p0yDYFN/Ey+1PpWehd8HZdj
+         vYgMf7EihG/MeLThCAKSbALwA7sdiXDqthcdvgmkCW/VSJ7MQdHCJb7IT9nDNTdo6+e8
+         nNWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711639411; x=1712244211;
-        h=content-transfer-encoding:subject:from:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=vhC2Az8FCwQVaMqEG4Rh9Jbbc/IUpRYOfEemirbmdfM=;
-        b=PWS8LTxD5m+ilM1qhGSyecs8z4Uxawyh8db0d1Bj/S7xYn1VADUakeRFFNSPvW5O9A
-         xK0qn1uY0esMCYDSdZOPvwzwHiUEwJT6JkL0UgJg15hlSJgYe5XWLDfNj5Wujpx8+UKP
-         PX5BlmPLYTmAE8FuMD+XVVWlsTqOgymknN+1RlSg+7zqjvR5SyF+9ThcCqFO6k9oozgT
-         n2PBLL1oSdRGbv0A4idv9RRNfUIoEZmztJVG/fdtA5DtngKIRSpIUmvKmXdKyzIj8D9G
-         7bYqvXTqoHgvMJRYMdUTiIqTkdYoG9nqSgXvMHIFTIJ6nu82Yt6gY1GBsLVZpgWKyP5j
-         661Q==
-X-Gm-Message-State: AOJu0YwyR5Yyzr2hfTX400jGBRg/NLhgAUROiDA2rYXBj4/psbwrraBS
-	/VeXNrXUm40cb+BQDP4zwgzC/qM+YdS1kzGhSMZ0ZQ1XCLuBdl/btnQdEafI
-X-Google-Smtp-Source: AGHT+IGWo1bGo8ZfcbffUDMYcfboqa5hc7yPs9Cvsh2XZA4bERfcH8L2yrCyfMfO0bLjG5V7q7gNkA==
-X-Received: by 2002:a17:902:d54c:b0:1dd:7059:a714 with SMTP id z12-20020a170902d54c00b001dd7059a714mr3510132plf.30.1711639410676;
-        Thu, 28 Mar 2024 08:23:30 -0700 (PDT)
-Received: from [192.168.254.87] ([50.39.172.77])
-        by smtp.gmail.com with ESMTPSA id l5-20020a170902f68500b001e06cc3be27sm1711163plg.253.2024.03.28.08.23.29
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 28 Mar 2024 08:23:29 -0700 (PDT)
-Message-ID: <055b857a-83f0-4abb-b6ff-f0eaaf572e64@gmail.com>
-Date: Thu, 28 Mar 2024 08:23:29 -0700
+        d=1e100.net; s=20230601; t=1711640358; x=1712245158;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mPjQD/vT8EW8FIsS5EhEUvjw7Yq2DPw74odbleQjQC0=;
+        b=c8ezSSUrHKValu1b4mONEWAbU27PGELCn0/wpuohVOwnuPjey/B6bywgOfR/6PD2LI
+         acJV/LP3AdRY9Z4U+i2tAjb0APn6WoL4Qw4NdEx3/ANC7zrZRa4TrH9/nl6CmWTpi8Sa
+         XUV6+ee/vDIb1XV6h9C+7iEtpnCI7tTuXbVbv7Mi+X8ix47Ym92YAFJ211e4aD/vwowq
+         u+omFH7rju6hiTxR+sin6/iDBpD+XEITfSgX73NNb4FPBFT3JqGNWB7NdOTfrmVR/Orq
+         H5k99aqNCLWWs1nKnMBJ/1685KpqLxJaPMywsUxidanyadNMSc7oLZQg+E71IqWUeyef
+         H/fQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXX2B9AmUQorMOzjXS01Jdf6QDmLAFkjtaGsRuhQ+Aruz/a9MXyvWmpPJLKRx+mGS1j3ix2HszYirvtF/tCCH5Td+8/ocM2BXuGaeefrmA=
+X-Gm-Message-State: AOJu0YyPw7hutyXCV6z0ssDDR+b7BydDCmbCqIgesN56fiQNkH6aHhvr
+	EIShA/LgKxLGdA7paFSAOwNpDaYjM8JQeJvGV00iJymmu9WvdJh9Wy1f8gpIm5Q=
+X-Google-Smtp-Source: AGHT+IGhUQYINGDQ7hWfiGCoXweY10vLCz/e/x+HjJ8dVvYs43ivIcKXZCgoqnZGIv+19J3DIwIpug==
+X-Received: by 2002:a05:6a00:a12:b0:6ea:92a7:fb82 with SMTP id p18-20020a056a000a1200b006ea92a7fb82mr3800870pfh.27.1711640357806;
+        Thu, 28 Mar 2024 08:39:17 -0700 (PDT)
+Received: from p14s ([2604:3d09:148c:c800:ff63:c57b:4625:b68c])
+        by smtp.gmail.com with ESMTPSA id e2-20020aa798c2000000b006ea923678a6sm1505830pfm.137.2024.03.28.08.39.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 Mar 2024 08:39:17 -0700 (PDT)
+Date: Thu, 28 Mar 2024 09:39:10 -0600
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Richard Weinberger <richard@nod.at>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>, Jens Axboe <axboe@kernel.dk>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Olivia Mackall <olivia@selenic.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Amit Shah <amit@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Gonglei <arei.gonglei@huawei.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Viresh Kumar <vireshk@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	David Airlie <airlied@redhat.com>,
+	Gerd Hoffmann <kraxel@redhat.com>,
+	Gurchetan Singh <gurchetansingh@chromium.org>,
+	Chia-I Wu <olvaffe@gmail.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Joerg Roedel <joro@8bytes.org>, Alexander Graf <graf@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+	Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Vivek Goyal <vgoyal@redhat.com>, Miklos Szeredi <miklos@szeredi.hu>,
+	Anton Yakovlev <anton.yakovlev@opensynergy.com>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	virtualization@lists.linux.dev, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-um@lists.infradead.org,
+	linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+	linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-gpio@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	iommu@lists.linux.dev, netdev@vger.kernel.org, v9fs@lists.linux.dev,
+	kvm@vger.kernel.org, linux-wireless@vger.kernel.org,
+	nvdimm@lists.linux.dev, linux-remoteproc@vger.kernel.org,
+	linux-scsi@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	alsa-devel@alsa-project.org, linux-sound@vger.kernel.org
+Subject: Re: [PATCH 19/22] rpmsg: virtio: drop owner assignment
+Message-ID: <ZgWPHntosUk+5qac@p14s>
+References: <20240327-module-owner-virtio-v1-0-0feffab77d99@linaro.org>
+ <20240327-module-owner-virtio-v1-19-0feffab77d99@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: "open list:MEDIATEK MT76 WIRELESS LAN DRIVER"
- <linux-wireless@vger.kernel.org>
-From: James Prestwood <prestwoj@gmail.com>
-Subject: No way to cancel SAE after CMD_AUTHENTICATE?
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240327-module-owner-virtio-v1-19-0feffab77d99@linaro.org>
 
-Hi,
+On Wed, Mar 27, 2024 at 01:41:12PM +0100, Krzysztof Kozlowski wrote:
+> virtio core already sets the .owner, so driver does not need to.
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> 
+> ---
+> 
+> Depends on the first patch.
+> ---
+>  drivers/rpmsg/virtio_rpmsg_bus.c | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/drivers/rpmsg/virtio_rpmsg_bus.c b/drivers/rpmsg/virtio_rpmsg_bus.c
+> index 1062939c3264..e9e8c1f7829f 100644
+> --- a/drivers/rpmsg/virtio_rpmsg_bus.c
+> +++ b/drivers/rpmsg/virtio_rpmsg_bus.c
+> @@ -1053,7 +1053,6 @@ static struct virtio_driver virtio_ipc_driver = {
+>  	.feature_table	= features,
+>  	.feature_table_size = ARRAY_SIZE(features),
+>  	.driver.name	= KBUILD_MODNAME,
+> -	.driver.owner	= THIS_MODULE,
+>  	.id_table	= id_table,
+>  	.probe		= rpmsg_probe,
+>  	.remove		= rpmsg_remove,
 
-I noticed some odd behavior where userspace is unable to cancel an SAE 
-connection until associated. If you issue a CMD_AUTHENTICATE then 
-immediately (or prior to association) send a CMD_DISCONNECT the kernel 
-will not cancel the authentication and afaict ignore the CMD_DISCONNECT. 
-The kernel will continue to send authenticate events, and even retry 
-authentication until the retry limit after CMD_DISCONNECT is issued.
+Reviewed-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 
-I see the checks in cfg80211_disconnect which seem to back up this 
-behavior where its essentially ignored if not "connected". I'm not sure 
-where to actually fix this since the auth retries are internal to 
-mac80211. Since the device isn't even authenticated I'm unsure what 
-value/structure to even check in order to detect this situation and 
-clean up. But there needs to be some way to cancel the authentication, 
-right?
-
-Thanks,
-
-James
-
+> 
+> -- 
+> 2.34.1
+> 
 
