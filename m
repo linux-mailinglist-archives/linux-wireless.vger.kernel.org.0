@@ -1,112 +1,117 @@
-Return-Path: <linux-wireless+bounces-5475-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5476-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 938B08904DC
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 17:19:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D870F8904DE
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 17:20:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2ACE1B24FA4
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 16:19:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 76E56B2524D
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 16:20:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31B3912EBED;
-	Thu, 28 Mar 2024 16:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5C657E787;
+	Thu, 28 Mar 2024 16:19:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="S6/NF9un"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="IgmHZ63v"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D87F13281C;
-	Thu, 28 Mar 2024 16:19:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 472EE8004E
+	for <linux-wireless@vger.kernel.org>; Thu, 28 Mar 2024 16:19:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711642744; cv=none; b=skXQfMpk1hP/eNbi5APsXMOBLawTglMUkEFjmjLk1oubWAkXMf0lasgBz5rs6cZdomwtloXtvK+5jY33Hh8g+2t38HwJBYkgZ8Z4D2Hr6+aABTgpB9Bd4x94jPsnqihUUMqPYhDZ7XKT/cMd83TdC1aX7uSY/m8kuUpejdGklH0=
+	t=1711642781; cv=none; b=Dn6ROUS1QAlqKGK7gjmMPQvK5NEV1F73xo0P5kLV4ZF1nvjdJ7VJDY+6zinJwZPVRajsncP6cEr0zUMuZ173wiwRqbDDGwlZZEVSLKaHpUdhMqmF7vDRyBq00Rk1E6t3hYq3vzgGyXMHAq+wobThWj8MITihKfHhZNxvrWhnN6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711642744; c=relaxed/simple;
-	bh=vArowKgbDJzmZWDWeF0zjkz6oCdO1S/8qWK3bsATyZE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=KD27New74hni8Ipbx8yYGC9IAou1x7fjdzKGjVqvcYl5Sn3Tkdk49S2Z9Kc1UAM6irOc8PtCsNTJYEIc/yOxZTW3/yb1Bmete5w0LXylZlnro3x8ZFElD3ISG39SpAwRfvPAZGvUK9q1ZwU3hEQMrVF3M33UPqwXF0TNuwhHL9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=S6/NF9un; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=vArowKgbDJzmZWDWeF0zjkz6oCdO1S/8qWK3bsATyZE=;
-	t=1711642742; x=1712852342; b=S6/NF9unt546w6x2hk1vPBPnsuxLzgjllnx9ZtMtDqoc95d
-	wNgOzG8axejD7PtDbS4Cl42RoF3OCfUFuwVUGxP7YlkHUAGyohqowAcPK8qhgUjDM2BnKUsAKhnh+
-	R4Cdx0XazzPGcnfhuYQNX7tLy9HwDMnVYSU3MqoX4yvREerN6sfgh3cfV0wANllA84KpDdVI1sZqU
-	sIqx6AyWtXldqOTbK0fdOSf/NxWanyXUS+/W979jY1ekUzNW68dTci26M10nIKVrnFVA/qfDJHPBJ
-	no6nwsl00J3JeU0DBjzOtexw1SnREbBTM4WPppclSF3YkyPdlpGo8RDfnXP8Xf1w==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1rpsSx-000000017qF-1fBQ;
-	Thu, 28 Mar 2024 17:18:59 +0100
-Message-ID: <0d4878d0dce3c2e9d500d19783dc7be3f995cced.camel@sipsolutions.net>
-Subject: Re: [PATCH 02/13] wifi: nl80211: send underlying multi-hardware
- channel capabilities to user space
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Jeff Johnson <quic_jjohnson@quicinc.com>, Karthikeyan Periyasamy
-	 <quic_periyasa@quicinc.com>, ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org, Vasanthakumar Thiagarajan
-	 <quic_vthiagar@quicinc.com>, netdev@vger.kernel.org, Jakub Kicinski
-	 <kuba@kernel.org>
-Date: Thu, 28 Mar 2024 17:18:58 +0100
-In-Reply-To: <3cc984766a2cf1452ac44054cd736c913c356469.camel@sipsolutions.net>
-References: <20240328072916.1164195-1-quic_periyasa@quicinc.com>
-	 <20240328072916.1164195-3-quic_periyasa@quicinc.com>
-	 <6d92d0ba4a8764cd91cc20c4bd35613bcc41dfcd.camel@sipsolutions.net>
-	 <9d5c2f9f-19b5-af4d-8018-1eb97fac10d6@quicinc.com>
-	 <9d0f309da45ae657cd2ce0bc11a93d66e856ef64.camel@sipsolutions.net>
-	 <14b739c9-18da-0d58-b58d-cccebc505950@quicinc.com>
-	 <3f61f18fbf3372ff88da54cdfbd309e74b2aa4e9.camel@sipsolutions.net>
-	 <2b5fdc14-85f0-48ba-9797-c1f43ecab86e@quicinc.com>
-	 <3cc984766a2cf1452ac44054cd736c913c356469.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
+	s=arc-20240116; t=1711642781; c=relaxed/simple;
+	bh=/wAqZIkYxMgaBGJ4jlSsC5OM8vUy9SihNqGIje/w6NI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Iuoh1fng1yQiegL2OZLrQUEO8iP4/A6MUE+HtTcrgl2iwS0HYwgOr7f7y7uA/AyAQ3YVcNRCtLvRQ/S9ClSaVsa2OF9cYdYNXycrODHgXxqjC46hSiI5GArMDd4kDCSdvPzU+ooJnl8PZ/YqxCss7zAPPqxdv2KZveDOwp66UYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=IgmHZ63v; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42SAVSoi024185;
+	Thu, 28 Mar 2024 16:19:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=qqNaIn1vdQNG08WNesydJO7U23oVtC4uv9qaa9pLUmM=; b=Ig
+	mHZ63v3Ti230P5scwaVODmoACh7NQU7gAY3yuyZmGiLY8yGmdFA4gCU2dPhekFl1
+	4BHiypY1vVm7bTgYzEQi0NKmOJmENwmMlkK/li/iDQ+A1mx1d7pb7m1cQkrBiZqc
+	wUKdv50X12BKbY6nlQPAmxQn2OMmnKiJSr2j1yu7/8nQwlWdWk5Lqy4Bh9jZ+3vZ
+	qkGkFjrVbTNYU8CVjMFvlEJc13VvQOis1qfmTyg+5G5Cd/80cBtObnEPAVNQCiGf
+	tYHG9TfkH0ZjwThlPTxV2y8aJXjMpq2h94OK0jSnwF81GMYSiqSfU0wsdhNC19hJ
+	mw5YlVUltSzc+jnbp40g==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3x54r61h07-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 28 Mar 2024 16:19:33 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42SGJWXU010035
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 28 Mar 2024 16:19:32 GMT
+Received: from [10.110.124.221] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Thu, 28 Mar
+ 2024 09:19:32 -0700
+Message-ID: <7c7fa31b-fe2e-4281-8d4c-e62c39cd1b9a@quicinc.com>
+Date: Thu, 28 Mar 2024 09:19:31 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 06/13] wifi: nl80211: send iface combination to user space
+ in multi-hardware wiphy
+Content-Language: en-US
+To: Johannes Berg <johannes@sipsolutions.net>,
+        Karthikeyan Periyasamy
+	<quic_periyasa@quicinc.com>,
+        <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Vasanthakumar Thiagarajan
+	<quic_vthiagar@quicinc.com>
+References: <20240328072916.1164195-1-quic_periyasa@quicinc.com>
+ <20240328072916.1164195-7-quic_periyasa@quicinc.com>
+ <29fc2719d6814a8e84f5db9ad81c76116a52828b.camel@sipsolutions.net>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <29fc2719d6814a8e84f5db9ad81c76116a52828b.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: QPY9pI_EXv5in7LVaudwa_xU0QFpehrl
+X-Proofpoint-ORIG-GUID: QPY9pI_EXv5in7LVaudwa_xU0QFpehrl
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-28_15,2024-03-28_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 adultscore=0
+ priorityscore=1501 clxscore=1015 lowpriorityscore=0 malwarescore=0
+ bulkscore=0 suspectscore=0 impostorscore=0 spamscore=0 mlxlogscore=991
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2403210001 definitions=main-2403280111
 
-On Thu, 2024-03-28 at 17:17 +0100, Johannes Berg wrote:
-> On Thu, 2024-03-28 at 09:14 -0700, Jeff Johnson wrote:
-> > On 3/28/2024 9:09 AM, Johannes Berg wrote:
-> > > On Thu, 2024-03-28 at 20:40 +0530, Karthikeyan Periyasamy wrote:
-> > > >=20
-> > > > Can you point to any attribute constructed in this way from kernels=
-pace=20
-> > > > for the reference to explore more ?
-> > >=20
-> > > I don't have anything directly, looking at the code finds e.g.
-> > > devlink_dpipe_entry_ctx_append() but honestly that's really quite
-> > > trivial, it just adds that new attribute while iterating whatever lis=
-t
-> > > you have.
-> >=20
-> > Note that we are trying to maintain the same structure used by the curr=
-ent
-> > wiphy global advertisement since we actually refactor and reuse the exi=
-sting code.
->=20
-> Partially, yes. That's not true for the one I was discussing _here_,
-> notably nl80211_put_multi_hw_support(), however.
->=20
-> It's partially true for patch 6, though even there
-> nl80211_put_per_hw_iface_combinations() doesn't need to do it that way,
-> since that's a whole new attribute (NL80211_IFACE_COMB_PER_HW_COMB) and
-> can define the content anew
+On 3/28/2024 6:33 AM, Johannes Berg wrote:
+> On Thu, 2024-03-28 at 12:59 +0530, Karthikeyan Periyasamy wrote:
+[...]
+>> +	hw_combis = nla_nest_start(msg, NL80211_IFACE_COMB_PER_HW_COMB);
+>> +	if (!hw_combis)
+>> +		return -ENOBUFS;
+>> +
+>> +	for (i = 0; i < c->n_hw_list; i++) {
+>> +		struct nlattr *hw_combi, *limits;
+>> +
+>> +		hw_combi = nla_nest_start(msg, i + 1);
+> 
+> And of course the array and splitting discussions apply here too.
 
-I should say "content and how it forms an array in the top-level
-message" here.
+This is where I meant to say that I believe we are trying to reuse the same
+structure and code as the wiphy-global combinations
 
-johannes
 
