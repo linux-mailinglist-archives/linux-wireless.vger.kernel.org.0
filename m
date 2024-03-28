@@ -1,187 +1,142 @@
-Return-Path: <linux-wireless+bounces-5457-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5458-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6046890035
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 14:31:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28566890050
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 14:34:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 148C81C23743
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 13:31:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D65DA290C95
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 13:33:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D8967F7C3;
-	Thu, 28 Mar 2024 13:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 466CA7D09A;
+	Thu, 28 Mar 2024 13:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yb13vG14"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="yDbJAJ38"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53EC63032A
-	for <linux-wireless@vger.kernel.org>; Thu, 28 Mar 2024 13:31:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE5D5405FF
+	for <linux-wireless@vger.kernel.org>; Thu, 28 Mar 2024 13:33:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711632681; cv=none; b=NhB+VzOBnw7Wg0j6HRq0tdOib6AYrMEa6h3dEKzweuKlVE1BOBzp5v9GQBxTxs9blgztbHWwUNTbkxkPMhQgKBaXSDmS496MK6IOXJiljDl+LayF/m11yEiwzvxWj/NY915I8kF9YfnDgfUPfkGmiBNDGJ6UZUKZz0DpuQCzSr8=
+	t=1711632836; cv=none; b=g4reX6L/dRVH8e2DbQLfyLWzefr3ymcOjCLwY+0ybC6195PL/3FbNImNjQE922sNkzXxqQvqnzG1ZUQGQsgykWeT9hXRtu+qd/VMutzN+f47rCXEHb+HZykomAL+Vg99Lb1HsGQpoFQ0SfOKuD1wPhgqHfhK36dTeadfoCVVo1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711632681; c=relaxed/simple;
-	bh=azxE9yNP5eaAvbPhCCtYsbc/uR4PqOX0QhLrDaoSzcg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KS95ALcOky2TPwmJ+GlAhLplUrZSQ8VXklSSDTKMZX4W9Yj1HM2UKXXkT/OelKoaQxEvbqCs7C7H+Z4Kt9z4nNpkkQJE9OwsOv785d9dBMuJXQr1AAApQLpG69DEJeW77hgWI+ysbFqS73a4VnKtG/ajsTHZaby3wUnh7LLH5gA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yb13vG14; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4149749cc36so6995495e9.0
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Mar 2024 06:31:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711632677; x=1712237477; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=U8IcRdMdpGN8ilyT4ORGc/9pN5lQ3dxvtj2bHTjUTYU=;
-        b=Yb13vG14r3ZVTDgDJt3gnXEhaah+1KOa2F3YUHFQtr25bnFm5Ka1r/cqNy9/VwMh4r
-         hdVPCrKre7/F/wlls0C74nXJ9sH8VsYZnMiBn/XYXJ8cZ3C9DIzF3qQ0LfIMhOFSMkeQ
-         qvXbD00Nfy+5fynXz3nS/YL/lVrCd2liEhzaYUm9N/1pTgqbyCdHd4bcezxRp4zo0nZe
-         2sn2MuCbCRdodj4EFrH9d+MEPaJ/Lq+tMjCu5L+QTnTMeytdCbnINt90zRge1Af4QJDF
-         CyKj9AzdvzTqsQ7rLkG/wb/BQ2UGGpUlW1wJlaCU5zxlRs6BZLHgmPkAD60Gd15ZEOes
-         +LVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711632677; x=1712237477;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=U8IcRdMdpGN8ilyT4ORGc/9pN5lQ3dxvtj2bHTjUTYU=;
-        b=tTJb0890ezVz6flHh8kNispe9jwN5RdwkubyW/EV/LEv8x5Up+DkICrDA/r4VtkmHK
-         /k4g2hTPJOy+hiXSQyd+mLDri5J6NwzNItjNi77MFECOkuPTb08JBiE4YCSiFyQZ7voK
-         8AILI7BxZoYRR48bCN+PAyuaJQoKzWLfpLDPN2F9C+J70UNR7xoWEEDODiPAwvukLCst
-         SFXjgrk5Q9tz8CuMHnSSFgZQHNHoblMlp+EzDWlgxEuKDAwIdQqBn1dYCzAYFpjT8EzT
-         jzuzNvaG7NpebNI0ZG0n/ZZ2c9UBVgD3pqAn/jh1voLNVR4Svd8Qf3OPr2weR1cybQCN
-         IJSQ==
-X-Gm-Message-State: AOJu0YyL/SqTNOCtvvBxRFZq9f+MULXnA6097PZZgw4TSOXQi4XWhQIJ
-	yLMxLhRiNlm6jvs7lBys9kwgue+VmBf7du1sFDJtnAYW5z/82lCS
-X-Google-Smtp-Source: AGHT+IGSkHRinw4jr0ANuoT2BoWOLPVrOk4o+5RSQLMbxkxLdEhq0nVMLPVWf/hv7bBxU2CjwK2/0A==
-X-Received: by 2002:a05:600c:3149:b0:414:56ec:22e7 with SMTP id h9-20020a05600c314900b0041456ec22e7mr2420999wmo.21.1711632677428;
-        Thu, 28 Mar 2024 06:31:17 -0700 (PDT)
-Received: from [192.168.1.50] ([79.119.240.188])
-        by smtp.gmail.com with ESMTPSA id h9-20020a05600c314900b004147b824b08sm2348340wmo.7.2024.03.28.06.31.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 28 Mar 2024 06:31:17 -0700 (PDT)
-Message-ID: <7873dee1-46a8-48a7-9059-bc300ac98c23@gmail.com>
-Date: Thu, 28 Mar 2024 15:31:14 +0200
+	s=arc-20240116; t=1711632836; c=relaxed/simple;
+	bh=GIP4Y3zP+Jc0542YRw67X+QNVuem+/PQWwyvTFjX0IM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=cxARvCXLRuy9NNc0WPUy5sgkXLDkSbjo/WtprVZI0Pnc3mqQNPU+4LXlsG1YDGtWaEATFRHp3VpHFHAKZGFjuVukmI1m+Yd2DYoYfLNFUBLXWlifTMdwsfNbR75AHZpzFjXR/L+sucAH9Evg/zH5/y9w7Osg9mirTCvcwYcZn4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=yDbJAJ38; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=ukAwndyN8wSwuY93m82P0N4u/3kEv+p+1SKSqFRuS2o=;
+	t=1711632833; x=1712842433; b=yDbJAJ38K0f9ooUEJqma6yCYsvTKN9F3gl7Ggfx5IvY/2jO
+	POUuDs0Va19dXKuIvkYOB/a4AG2CM/BW+wu4WOuqLyuPLJK5fK2+Kbi2rkXiA9M028VhmwKn146s1
+	4N+kja1ym8fZu7MyR+mwknQX7s/9RtHdynyjdyNL9q8ie0ezn/HV7fbcUGnOyj8cLjQ5oYWmUxIdb
+	jgHDqw7xUIKry7XCkb/MOQul//u0gI8wnXJ9M7iRp5D+0etlblKjWVoc9CcTuKPYIWj4eI3RpgNRY
+	O1/1fBF7/IK+SymWOl+C10UJWP+//KrSuad1m8J0uBB42CeDYDqihrkY+JfhssaA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rppt8-000000010MD-2pDO;
+	Thu, 28 Mar 2024 14:33:50 +0100
+Message-ID: <29fc2719d6814a8e84f5db9ad81c76116a52828b.camel@sipsolutions.net>
+Subject: Re: [PATCH 06/13] wifi: nl80211: send iface combination to user
+ space in multi-hardware wiphy
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>, 
+	ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org, Vasanthakumar Thiagarajan
+	 <quic_vthiagar@quicinc.com>
+Date: Thu, 28 Mar 2024 14:33:49 +0100
+In-Reply-To: <20240328072916.1164195-7-quic_periyasa@quicinc.com>
+References: <20240328072916.1164195-1-quic_periyasa@quicinc.com>
+	 <20240328072916.1164195-7-quic_periyasa@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 11/12] wifi: rtlwifi: Add rtl8192du/sw.{c,h}
-To: Ping-Ke Shih <pkshih@realtek.com>, "kvalo@kernel.org" <kvalo@kernel.org>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
- "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>,
- "s.l-h@gmx.de" <s.l-h@gmx.de>, "chewitt@libreelec.tv" <chewitt@libreelec.tv>
-References: <7f4b3309-1580-48f3-9426-29f1eb4052fd@gmail.com>
- <2eb79c8c-cf2c-4696-b958-e8d961628e17@gmail.com>
- <f86a40493745a53ff73083f87b3e8fae215eac77.camel@realtek.com>
- <66565618-3638-47e5-afe5-3530214da0c9@gmail.com> <87ttkrzf1m.fsf@kernel.org>
- <5696990a-4450-4d92-bbda-1d9ca3a9a619@gmail.com>
- <4672072ef782ae1200886a190c740e0f3ccec2c8.camel@realtek.com>
-Content-Language: en-US
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <4672072ef782ae1200886a190c740e0f3ccec2c8.camel@realtek.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 
-On 28/03/2024 03:46, Ping-Ke Shih wrote:
-> On Thu, 2024-03-28 at 00:53 +0200, Bitterblue Smith wrote:
->>
->> On 27/03/2024 20:48, Kalle Valo wrote:
->>> Bitterblue Smith <rtl8821cerfe2@gmail.com> writes:
->>>
->>>> On 22/03/2024 08:04, Ping-Ke Shih wrote:
->>>>> On Wed, 2024-03-20 at 21:43 +0200, Bitterblue Smith wrote:
->>>>
->>>> [...]
->>>>
->>>>>> +DEFINE_MUTEX(globalmutex_power);
->>>>>> +DEFINE_MUTEX(globalmutex_for_fwdownload);
->>>>>> +DEFINE_MUTEX(globalmutex_for_power_and_efuse);
->>>>>> +DEFINE_MUTEX(globalmutex_for_mac0_2g_mac1_5g);
->>>>>
->>>>> The consumers of globalmutex_for_mac0_2g_mac1_5g are complex. Why do they
->>>>> check mutex_is_locked()? Race conditions between two instances?
->>>>>
->>>>
->>>> I couldn't think of a sufficiently short name, like
->>>> "lock_mac0_2g_mac1_5g", so I used mutex_is_locked(). That's probably
->>>> a bad idea. It should be like this:
->>>>
->>>>      /* Let the first starting mac load RF parameters and do LCK */
->>>>      if (rtlhal->macphymode == DUALMAC_DUALPHY &&
->>>>          ((rtlhal->interfaceindex == 0 && rtlhal->bandset == BAND_ON_2_4G) ||
->>>>           (rtlhal->interfaceindex == 1 && rtlhal->bandset == BAND_ON_5G))) {
->>>>              mutex_lock(&globalmutex_for_mac0_2g_mac1_5g);
->>>>              lock_mac0_2g_mac1_5g = true;
->>>>      }
-> 
-> globalmutex_for_mac0_2g_mac1_5g is only used in rtl92du_hw_init(), and
-> globalmutex_for_power_and_efuse does very similar thing. Can we combine them
-> into one? Since both are only used in rtl92du_hw_init(), it would not be a
-> problem to enlarge their critical section.  
-> 
-> 
->>
->> * Dual MAC dual PHY: this I can't find to buy anymore. This
->> appears in the system as two Wifi devices, each working on
->> a different band. It has two USB interfaces. Two instances
->> of the driver access the same device. This is what the
->> mutexes are for.
-> 
-> I traced the code, and found rules of two MAC/PHY are:
-> 1. read efuse to decide single or two MAC/PHY
-> 2.1. if single MAC/PHY, register_hw as 2T2R (done)
-> 2.2. if dual MAC/PHY (to step 3)
-> 3. read interface index (USB: from bInterfaceNumber; PCI: from PCI onfigure space)
-> 4. register interface index 0 as 1T1R on 5 GHz band only.
->    register interface index 1 as 1T1R on 2 GHz band only.
-> 
-> This is the case two instances (netdev) access single one hardware device,
-> so seemingly it is hard to avoid global locks to prevent racing between them.
-> An alternative thought is to support only single MAC/PHY, but not sure if
-> driver can override setting of efuse that programmed the card as two MAC/PHY.
-> 
->>
->> I said earlier that I think two devices can work at the same
->> time, even with the global mutexes, but now I remembered there
->> are two more global variables: curveindex_5g[] and
->> curveindex_2g[] in phy.c. One driver instance fills one array
->> during LC calibration, but the other driver instance reads
->> from the array when switching the channel. If I'm reading this
->> right. So two devices plugged in at the same time probably
->> won't work correctly.
-> 
-> That should be a problem. 
-> 
->>
->> How can you avoid this when the hardware is the way it is?
->> My one idea is to add a global map to hold the mutexes and
->> arrays, using the USB port number, etc as the key.
-> 
-> Seemingly we need something like per device data. 
-> 
+On Thu, 2024-03-28 at 12:59 +0530, Karthikeyan Periyasamy wrote:
+>=20
+> + *	When describing per-hardware combinations in multi-hardware in
+> + *	one wiphy model, the first possibility can further include the finer
+> + *	capabilities like below
 
-I got another idea: if we have a guarantee that the two USB
-interfaces are probed one at a time, then we can move the global
-things into struct rtl_priv. The first probe call will allocate
-the arrays and initialise the mutexes. The second probe call
-will obtain those from the first struct rtl_priv:
+Not sure I'd say "below" rather than e.g. "like this:"
 
-int rtl_usb_probe(struct usb_interface *intf, ...) {
-	udev = interface_to_usbdev(intf);
-	struct ieee80211_hw *first_hw = usb_get_intfdata(udev->actconfig->interface[0]);
-	struct rtl_priv *first_rtlpriv = rtl_priv(first_hw);
+> + *	hw_chan_idx =3D 0, numbers =3D [ #{STA} <=3D 1, #{AP} <=3D 1 ],
+> + *	channels =3D 1, max =3D 2
+> + *	=3D> allows a STA plus an AP interface on the underlying hardware mac
+> + *	   advertised at index 0 in wiphy @hw_chans array.
+> + *	hw_chan_idx =3D 1, numbers =3D [ #{STA} <=3D 1, #{AP} <=3D 2 ],
+> + *	channels =3D 1, max =3D 3
+> + *	=3D> allows a STA plus two AP interfaces on the underlying hardware m=
+ac
+> + *	   advertised at index 1 in wiphy @hw_chans array.
 
-Something like that.
+Have you checked the rst output for this? Seems likely that's not going
+to be great with that formatting, but I haven't checked.
 
-I am having regrets...
+> + * @NL80211_IFACE_COMB_PER_HW_COMB_HW_IDX: u8 attribute specifying the i=
+ndex
+> + *	to the wiphy @hw_chans list for which the iface combination is being
+> + *	described.
+
+"@hw_chans" doesn't make sense here, this is nl80211, it should refer to
+some attribute
+
+but why didn't you just _say_ in the patch 2 discussion that it's used
+here ...
+
+> + * @NL80211_IFACE_COMB_PER_HW_COMB_LIMITS: nested attribute containing t=
+he
+> + *	limits for the given interface types, see
+> + *	&enum nl80211_iface_limit_attrs.
+> + * @NL80211_IFACE_COMB_PER_HW_COMB_MAXIMUM: u32 attribute giving the max=
+imum
+> + *	number of interfaces that can be created in this group. This number
+> + *	does not apply to the interfaces purely managed in software.
+> + * @NL80211_IFACE_COMB_PER_HW_COMB_NUM_CHANNELS: u32 attribute specifyin=
+g the
+> + *	number of different channels that can be used in this group.
+> + * @NUM_NL80211_IFACE_COMB_PER_HW_COMB: number of attributes
+> + * @MAX_NL80211_IFACE_COMB_PER_HW_COMB: highest attribute number
+> + */
+> +enum nl80211_if_comb_per_hw_comb_attrs {
+> +	NL80211_IFACE_COMB_PER_HW_COMB_UNSPEC,
+> +	NL80211_IFACE_COMB_PER_HW_COMB_HW_IDX,
+> +	NL80211_IFACE_COMB_PER_HW_COMB_LIMITS,
+> +	NL80211_IFACE_COMB_PER_HW_COMB_MAXIMUM,
+> +	NL80211_IFACE_COMB_PER_HW_COMB_NUM_CHANNELS,
+
+Almost all these attributes duplicate - including their docs -
+attributes from enum nl80211_if_combination_attrs. Is it really worth
+doing that, rather than adding NL80211_IFACE_COMB_HW_IDX and documenting
+the different uses of the attribute set?
+
+> +	hw_combis =3D nla_nest_start(msg, NL80211_IFACE_COMB_PER_HW_COMB);
+> +	if (!hw_combis)
+> +		return -ENOBUFS;
+> +
+> +	for (i =3D 0; i < c->n_hw_list; i++) {
+> +		struct nlattr *hw_combi, *limits;
+> +
+> +		hw_combi =3D nla_nest_start(msg, i + 1);
+
+And of course the array and splitting discussions apply here too.
+
+johannes
 
