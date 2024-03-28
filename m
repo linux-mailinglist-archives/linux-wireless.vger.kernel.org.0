@@ -1,63 +1,63 @@
-Return-Path: <linux-wireless+bounces-5459-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5460-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B047189005D
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 14:36:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D02F8900A6
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 14:44:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3A0B9B22C09
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 13:36:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 596A92835CF
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 13:44:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC9D57FBCD;
-	Thu, 28 Mar 2024 13:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA87D364;
+	Thu, 28 Mar 2024 13:43:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="D2ArgLM3"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="EniIon46"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4EF3032A
-	for <linux-wireless@vger.kernel.org>; Thu, 28 Mar 2024 13:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95E37E788
+	for <linux-wireless@vger.kernel.org>; Thu, 28 Mar 2024 13:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711633000; cv=none; b=ZkgZ7udH6If/Nz+9FKLb8YQqDGyQPIJWEbod0zzSFUz3yrLm/lWn7Px2VVwwPH0VJ2/rCn2mbhmtEtGUzAEN3W1az/nm+7JpZ58xt54qlRcq5bZhzVMb67Y85w3lkSwJPjx/jX8bAA61DR39ELwPYy6axtTUBaiSqpsbcW+9UCY=
+	t=1711633408; cv=none; b=BfTdxgK88TDXrV+PlB0V48HJ1Ly0d7pQ2ZM1gSQCjX80yZJ6YkY0piRJjMjfwZfXKOFYHhfTC5/zj2oyU2BvPByBSaLly7XFUlptaoojAaryyhu9+mnkhpgsIHleA5twppiYRb0Lm23prBQHsM3o2+r//qp1ufMq8+Ez91/P7e0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711633000; c=relaxed/simple;
-	bh=AXuKMfb1m8kUFUFM+0UkrmTwC52+lf77wR99khTZxqU=;
+	s=arc-20240116; t=1711633408; c=relaxed/simple;
+	bh=yEbdDCg9XT0bbMdbAgf++MK7yQSAePsnMdQQyr2NnLw=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=mTRgev3gJALdO7IWbbHuvE/ggCdp0ouhi211dCR/QM2Oip/cnwjsI0QSrPGIy7wkPQoguuOw6eqtIzAFzE/zXhhdp+RCnFM2JqOcQAOThL8h6P9g4XeipC8d92xzSgdZCVCFOwwNeqi6d+phS3tFscm9LROt+vrfUO+WnwLS9LA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=D2ArgLM3; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=dIFc53KffZ0cQqtueJyTw2xaHPQu8U7bFQKCXKDU+AW2c+qo/OFA6M2AKGA6hCvUbO0v5ptAPORbWxk3SwqXYXEcRIJW7ik5skBHWEmc6LcgW0K88h5qWUSy4E2cZhZgcB+A+3HwghDP2nkyzS8F7K1zCzmmEftIJt5mjOcVw4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=EniIon46; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=1Rm8OlYxC/AWjajIdqDA4wJmrZGXskO5TRemOf7OBDs=;
-	t=1711632998; x=1712842598; b=D2ArgLM32AzcwsOaSnZE81zaEYSl4sNx5Wz7JXhfRyuO9qc
-	fezGaiHgD4jM2oz/Wl0NfwghKOzQld7xfft3/DVs5UrXxOXEIhLsWiwXqrIEU3quppuSOIytjTvXz
-	myrlaTDPhLGwS6yJenbsfflM6zwViJJYLXU+41lqvv8HN6c/kSvYh25/JDHB9Xf07qBbRrLstB9fI
-	e8rB2nsvNYC4NX9Z5cJFdl7T/8/1yQpUgbXSv4l11Xn8OFE2BPpyuxHbi1zX87lUKbKGoNid3JwVy
-	Q+TLS5rEiwCLcumLiYesyoosQipCSQM64RYvVwFjRbeIPsyXa9d59JTCOFnDy8Og==;
+	Resent-Cc:Resent-Message-ID; bh=y3mavgIZ6BDGJNBJObXPLTocvV0qaxQy/Cey5bC67Sw=;
+	t=1711633406; x=1712843006; b=EniIon4673oG2dql2l/wDgQzyZ5vFP81X5T/CNi5tDxecdQ
+	+OfAyPOhImwRAtmyCEoFiUGwozq8/9Dk7ZHwHVKw2gdpKUuoi4HR7fLfOglnckUeAa4L7sQyM5esn
+	i8lSyoLNVmaWj1m755NwtSbPSngOpJTltKrkXBrUljQ+WRYvCvgW4TIyY6xQ4yyY48e0PaUZfzlHG
+	do71LehsOYmCG89kJraMzIlYctS1RrfmlHp3cKVx7+cSrX8TMmh6k4IGex2bn/gVi9WtwkbwWqBnx
+	uoq3MrAeWMlA5jbshyr/MsWAJV6h8S9fh8NwTotnnq/qEZpuHcXr/6dYnpmLfh0Q==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.97)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1rppvn-000000010W6-3K0C;
-	Thu, 28 Mar 2024 14:36:36 +0100
-Message-ID: <8821e4fe9930560d19809390777451d631821f1f.camel@sipsolutions.net>
-Subject: Re: [PATCH 07/13] wifi: cfg80211/mac80211: Refactor iface comb
- iterate callback for multi-hardware dev
+	id 1rpq2M-000000010wi-3fTE;
+	Thu, 28 Mar 2024 14:43:23 +0100
+Message-ID: <e2c5f81882f86b26be4d9bcf3c9d4b1fd6001b22.camel@sipsolutions.net>
+Subject: Re: [PATCH 08/13] wifi: cfg80211: Refactor the iface combination
+ iteration helper function
 From: Johannes Berg <johannes@sipsolutions.net>
 To: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>, 
 	ath12k@lists.infradead.org
 Cc: linux-wireless@vger.kernel.org, Vasanthakumar Thiagarajan
 	 <quic_vthiagar@quicinc.com>
-Date: Thu, 28 Mar 2024 14:36:34 +0100
-In-Reply-To: <20240328072916.1164195-8-quic_periyasa@quicinc.com>
+Date: Thu, 28 Mar 2024 14:43:21 +0100
+In-Reply-To: <20240328072916.1164195-9-quic_periyasa@quicinc.com>
 References: <20240328072916.1164195-1-quic_periyasa@quicinc.com>
-	 <20240328072916.1164195-8-quic_periyasa@quicinc.com>
+	 <20240328072916.1164195-9-quic_periyasa@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
@@ -71,12 +71,95 @@ X-malware-bazaar: not-scanned
 
 On Thu, 2024-03-28 at 12:59 +0530, Karthikeyan Periyasamy wrote:
 >=20
-> +	int num_interfaces =3D 0, hw_chan_idx =3D -1;
+> +static int
+> +cfg80211_validate_iface_comb_limits(struct wiphy *wiphy,
+> +				    struct iface_combination_params *params,
+> +				    const struct ieee80211_iface_combination *c,
+> +				    u16 num_interfaces, u32 *all_iftypes)
+> +{
+> +	struct ieee80211_iface_limit *limits;
+> +	int ret =3D 0;
 
-No point in that new variable, just statically pass -1?
+That initialization is useless.
 
-And this really is only a cfg80211 patch, with the API updates
-propagated where needed, but we don't list all that in the subject.
+> +
+> +	if (num_interfaces > c->max_interfaces)
+> +		return -EINVAL;
+> +
+> +	if (params->num_different_channels > c->num_different_channels)
+> +		return -EINVAL;
+> +
+> +	limits =3D kmemdup(c->limits, sizeof(limits[0]) * c->n_limits,
+> +			 GFP_KERNEL);
+> +	if (!limits)
+> +		return -ENOMEM;
+> +
+> +	ret =3D cfg80211_validate_iface_limits(wiphy,
+> +					     params->iftype_num,
+> +					     limits,
+> +					     c->n_limits,
+> +					     all_iftypes);
+> +
+> +	kfree(limits);
+> +
+> +	return ret;
+> +}
+> +
+> +static u16 cfg80211_get_iftype_info(struct wiphy *wiphy,
+> +				    const int iftype_num[NUM_NL80211_IFTYPES],
+> +				    u32 *used_iftypes)
+> +{
+> +	enum nl80211_iftype iftype;
+> +	u16 num_interfaces =3D 0;
+> +
+
+This should probably set *used_iftypes =3D 0.
+
+> +	for (iftype =3D 0; iftype < NUM_NL80211_IFTYPES; iftype++) {
+> +		num_interfaces +=3D iftype_num[iftype];
+> +		if (iftype_num[iftype] > 0 &&
+> +		    !cfg80211_iftype_allowed(wiphy, iftype, 0, 1))
+> +			*used_iftypes |=3D BIT(iftype);
+
+and that could really use a rewrite like
+
+		if (!iftype_num[iftype])
+			continue;
+
+		num_interfaces +=3D ...
+
+		if (!allowed...)
+			*used_iftypes |=3D ...;
+
+I'd say.
+
+>  	for (i =3D 0; i < wiphy->n_iface_combinations; i++) {
+>  		const struct ieee80211_iface_combination *c;
+> -		struct ieee80211_iface_limit *limits;
+>  		u32 all_iftypes =3D 0;
+> =20
+>  		c =3D &wiphy->iface_combinations[i];
+> =20
+> -		if (num_interfaces > c->max_interfaces)
+> -			continue;
+> -		if (params->num_different_channels > c->num_different_channels)
+> +		ret =3D cfg80211_validate_iface_comb_limits(wiphy, params,
+> +							  c, num_interfaces,
+> +							  &all_iftypes);
+> +		if (ret =3D=3D -ENOMEM) {
+> +			break;
+> +		} else if (ret) {
+> +			ret =3D 0;
+>  			continue;
+
+Seems that 'break' is equivalent to just 'return ret'? And that setting
+ret =3D 0 seems ... strange.
+
+> -	return 0;
+> +	return ret;
+>  }
+
+And then you don't need that either which is much nicer anyway...
 
 johannes
 
