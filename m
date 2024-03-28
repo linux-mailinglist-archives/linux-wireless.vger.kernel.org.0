@@ -1,174 +1,167 @@
-Return-Path: <linux-wireless+bounces-5421-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5422-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 390EB88F4F8
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 02:55:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10F1A88F70D
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 06:16:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E276E1F2D8BC
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 01:55:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D2611F248D1
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 05:16:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5065124A06;
-	Thu, 28 Mar 2024 01:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 284CF40878;
+	Thu, 28 Mar 2024 05:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="YkDne85H"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gXPbjKTb"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp-relay-canonical-1.canonical.com (smtp-relay-canonical-1.canonical.com [185.125.188.121])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 054A124B34;
-	Thu, 28 Mar 2024 01:55:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.121
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F7FB40862
+	for <linux-wireless@vger.kernel.org>; Thu, 28 Mar 2024 05:16:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711590927; cv=none; b=Li5s/GB18OvLC8ZMb76ymGp8CSWYbPOPosDFqd5cd6+xlreFgiwKi4XUqsyNgLP4rQTfBT/iHz0NOZxjXSYOiwbaXDcRJmDKNKCOUzlLv5BF95wUhEPdutVjXdad/GrTse6XIg0oXZc+oTYPWU1SorViI7dI9a2Dvw30SHL5Ln8=
+	t=1711602998; cv=none; b=Jn6H/TY+yanvIYWMv7z2KJ84iBF6Q8EvUdA6ddukwhIpui/ATmGAyjwX9FQZIc0QGSQ/Y561yArd0qAffNwyIhxHsrcxEdSQD3YLWuiy9AYzjILx9Pg4zAmKvVRhk2Adauq41grHRvMeH1eJ7WJV0D+ygDG4HB+nZenVfDovIdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711590927; c=relaxed/simple;
-	bh=IETo2efBbzGICHkTqHFtKCELfkAub+cYw2cmythX2Po=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=W5mAF8Y5W9UfZpKhtjx6noRwhIC/ahf5NlvQotvg9RcqFUsuLxDymNahp2NISpo57eEWtGq5eF168op+QLmqy5gDpyEaSY5HWScfBknatI8kTa4qPi1ZSZgZ9lgIBNvNPRZ+CMSIO6unVByGhezvlg0seEmjiK+K/KDq1HLAxP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=YkDne85H; arc=none smtp.client-ip=185.125.188.121
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Received: from localhost.localdomain (unknown [222.129.33.118])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id C528D4459A;
-	Thu, 28 Mar 2024 01:55:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1711590923;
-	bh=qpSGpDBVaMWfsCfDS3yMWR+WBH1fbjGdQxPfbs0PY9Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version;
-	b=YkDne85HBVbCg5u3fif4owMpojFWIMsih6daP9g2LtviVHHSdrLZnNnPKHR1k0mEl
-	 sH8PiwWNixaQse3t3TTsiemAJ6dlqoyj3pRfBRhMKYs1Iz4VhHu0I+L6uYceWzexJy
-	 WK330P37q7OszjLbJQ2IVQyCg9X7JNOJuXjMROfMGs4IZzs5GsM0FbWrScPO6/Mtw3
-	 VhfBxgZ4c8dhQuTlNMZJ7PQHoNwcn3cQk9KRWzvGkyVjFr5jS4zWlp84tmw8/qWuRq
-	 ziso0W7QdiSUXptpEN86lyQCQtZc76zgFGyA91js7ml669iCuFYE4FJCsv6jJNGufe
-	 NBzxGdvKHUcqQ==
-From: Aaron Ma <aaron.ma@canonical.com>
-To: sashal@kernel.org
-Cc: stable@vger.kernel.org,
-	gregory.greenman@intel.com,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH 6.6 1/1] wifi: iwlwifi: pcie: fix RB status reading
-Date: Thu, 28 Mar 2024 09:54:02 +0800
-Message-Id: <20240328015402.114435-2-aaron.ma@canonical.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20240328015402.114435-1-aaron.ma@canonical.com>
-References: <20240328015402.114435-1-aaron.ma@canonical.com>
+	s=arc-20240116; t=1711602998; c=relaxed/simple;
+	bh=sBPTJcGEYTbv3hcgUwqNauzYtskOKb+GWpnb7br0MOg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lbSKhW5A/+hpvvIL1eV++hH/cbKIwU4PeM849tC0zZfq6YP6K2P0umvdJ7Y8mrcxfFNssLMcygGXHWjHYuVrC6tUtTEIVrSbv/eBR3RPtl2deNwZ8Th02pL7PhmFmOL4qpj7QckhwOeRaEZzH+4cQF9NhwwWtfLZ8LB6IaIUFd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=gXPbjKTb; arc=none smtp.client-ip=209.85.161.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-5a5362ceb7bso270887eaf.1
+        for <linux-wireless@vger.kernel.org>; Wed, 27 Mar 2024 22:16:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1711602994; x=1712207794; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=NCBBqATkrmhAqNvcc7V5yUc6Bj0MDD2J9Hd2vuTQUac=;
+        b=gXPbjKTbrvtfpT6/qEmVUxns+A30LH6QOiAjT4F0xLZUPzUZg0ordNOvATabg2F/Wl
+         kPv7rlwtWOxfgPm2w1j9yiVchrEqiifXfpuqKbM3c55rO+d/cQmcOVsJtdO/BdsefRN9
+         RxOKLZQ8lQKHo0Up3S4+54dabwBIgvbFJlg0eTR2NGULCedimJYCVi8NEO/uINa2jv1N
+         m9SrGDUqniaEzEwLDKjTqPO6IIW3ujVusL7p6WPrXVYciMFtPwv7L9mAU+/qpWitn5fr
+         hH1CJycNEicAhv28MTJZUrDtXoqvUlSPCv54sDagwBcdt6nzOokgIGUCvI13cWlf71La
+         jDOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711602994; x=1712207794;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NCBBqATkrmhAqNvcc7V5yUc6Bj0MDD2J9Hd2vuTQUac=;
+        b=rmB+F//RYtpIsKNswF5QJgSW3WbkYxdOIoRdFpQHKUS45BdfsynDY/pLo7KVpDT3kO
+         UnOnH8bpSxTkdCmhkWgzDXezzP8PTYdv8NQDvWTX+TMkHPV4zZ2hffUmjtdIn+oT1zfs
+         qW7bcfXSLBNwsPlhFG9SP1sZCaw3eCzii0GXapoQ6NiwNqTGlYycLVk4OsztnpfRrbnx
+         DeIiVd9wVW/jJm1oUl5ghHyKynj1P2Go2G0CGeIPLW08tKXsmsJgEzp73y2OVobgVBS9
+         sb3+9mOOSCDDf+bM0JnoGsflC1yKixqCHiZTdgzGWhGzRsovNkZacqjqPqmYA+Po/6eY
+         SKMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWDPG4y4QiA6G43KNSEKxyb56Hg5eKKUXF5aQcoWpFIUHrNCOCyW3Sc10HTL2ADkA5VSljPDY8ypHT5Lsp++d2a4TgRQuqWIHdhPtPBXgM=
+X-Gm-Message-State: AOJu0Yxkyk/3tsNw4oMggS2pbNrqfx0d1wDQ8oiX9CEp8ld64d/SIdrc
+	rqv4nuj/1DMB4RgFZQtShnJ+BSlNNScRjZIQaD+dpqbIgnID2t13DlK5rxvWRdg=
+X-Google-Smtp-Source: AGHT+IENjWm30W77Sho1F7STKjVDKRSghd/5qoLRwkalJNx2D7PN+W1+MnXgZZvq+TiwN/1tI/fojA==
+X-Received: by 2002:a05:6358:5307:b0:17e:8f90:dd31 with SMTP id n7-20020a056358530700b0017e8f90dd31mr1555244rwf.32.1711602994298;
+        Wed, 27 Mar 2024 22:16:34 -0700 (PDT)
+Received: from localhost ([122.172.85.206])
+        by smtp.gmail.com with ESMTPSA id u23-20020a63df17000000b005e857bba96csm433309pgg.10.2024.03.27.22.16.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 Mar 2024 22:16:33 -0700 (PDT)
+Date: Thu, 28 Mar 2024 10:46:31 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Richard Weinberger <richard@nod.at>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>, Jens Axboe <axboe@kernel.dk>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Olivia Mackall <olivia@selenic.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Amit Shah <amit@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Gonglei <arei.gonglei@huawei.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Viresh Kumar <vireshk@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	David Airlie <airlied@redhat.com>,
+	Gerd Hoffmann <kraxel@redhat.com>,
+	Gurchetan Singh <gurchetansingh@chromium.org>,
+	Chia-I Wu <olvaffe@gmail.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Joerg Roedel <joro@8bytes.org>, Alexander Graf <graf@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+	Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Vivek Goyal <vgoyal@redhat.com>, Miklos Szeredi <miklos@szeredi.hu>,
+	Anton Yakovlev <anton.yakovlev@opensynergy.com>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	virtualization@lists.linux.dev, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-um@lists.infradead.org,
+	linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+	linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-gpio@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	iommu@lists.linux.dev, netdev@vger.kernel.org, v9fs@lists.linux.dev,
+	kvm@vger.kernel.org, linux-wireless@vger.kernel.org,
+	nvdimm@lists.linux.dev, linux-remoteproc@vger.kernel.org,
+	linux-scsi@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	alsa-devel@alsa-project.org, linux-sound@vger.kernel.org
+Subject: Re: [PATCH 09/22] gpio: virtio: drop owner assignment
+Message-ID: <20240328051631.c5eitp4mzaj4bh6i@vireshk-i7>
+References: <20240327-module-owner-virtio-v1-0-0feffab77d99@linaro.org>
+ <20240327-module-owner-virtio-v1-9-0feffab77d99@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240327-module-owner-virtio-v1-9-0feffab77d99@linaro.org>
 
-From: Johannes Berg <johannes.berg@intel.com>
+On 27-03-24, 13:41, Krzysztof Kozlowski wrote:
+> virtio core already sets the .owner, so driver does not need to.
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> 
+> ---
+> 
+> Depends on the first patch.
+> ---
+>  drivers/gpio/gpio-virtio.c | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/drivers/gpio/gpio-virtio.c b/drivers/gpio/gpio-virtio.c
+> index fcc5e8c08973..9fae8e396c58 100644
+> --- a/drivers/gpio/gpio-virtio.c
+> +++ b/drivers/gpio/gpio-virtio.c
+> @@ -653,7 +653,6 @@ static struct virtio_driver virtio_gpio_driver = {
+>  	.remove			= virtio_gpio_remove,
+>  	.driver			= {
+>  		.name		= KBUILD_MODNAME,
+> -		.owner		= THIS_MODULE,
+>  	},
+>  };
+>  module_virtio_driver(virtio_gpio_driver);
 
-[ Upstream commit 9f9797c7de18d2ec6be4ef6e0abbaea585040b39 ]
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
 
-On newer hardware, a queue's RB status / write pointer
-can be bigger than 4095 (0xFFF), so we cannot mask the
-value by 0xFFF unconditionally. Since anyway that's
-only necessary on older hardware, move the masking to
-the helper function and apply it only for older HW.
-This also moves the endian conversion in to handle it
-more easily.
-
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230830112059.7be2a3fff6f4.I94f11dee314a4f7c1941d2d223936b1fa8aa9ee4@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Cc: stable@vger.kernel.org # 6.6.y
-Signed-off-by: Aaron Ma <aaron.ma@canonical.com>
----
- drivers/net/wireless/intel/iwlwifi/pcie/internal.h |  8 ++++----
- drivers/net/wireless/intel/iwlwifi/pcie/rx.c       |  2 +-
- drivers/net/wireless/intel/iwlwifi/pcie/trans.c    | 12 ++++--------
- 3 files changed, 9 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
-index 5602441df2b7e..8408e4ddddedd 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
-@@ -190,17 +190,17 @@ struct iwl_rb_allocator {
-  * iwl_get_closed_rb_stts - get closed rb stts from different structs
-  * @rxq - the rxq to get the rb stts from
-  */
--static inline __le16 iwl_get_closed_rb_stts(struct iwl_trans *trans,
--					    struct iwl_rxq *rxq)
-+static inline u16 iwl_get_closed_rb_stts(struct iwl_trans *trans,
-+					 struct iwl_rxq *rxq)
- {
- 	if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_AX210) {
- 		__le16 *rb_stts = rxq->rb_stts;
- 
--		return READ_ONCE(*rb_stts);
-+		return le16_to_cpu(READ_ONCE(*rb_stts));
- 	} else {
- 		struct iwl_rb_status *rb_stts = rxq->rb_stts;
- 
--		return READ_ONCE(rb_stts->closed_rb_num);
-+		return le16_to_cpu(READ_ONCE(rb_stts->closed_rb_num)) & 0xFFF;
- 	}
- }
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-index 63091c45a576d..be9b5a19e2a7c 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-@@ -1510,7 +1510,7 @@ static int iwl_pcie_rx_handle(struct iwl_trans *trans, int queue, int budget)
- 	spin_lock(&rxq->lock);
- 	/* uCode's read index (stored in shared DRAM) indicates the last Rx
- 	 * buffer that the driver may process (last buffer filled by ucode). */
--	r = le16_to_cpu(iwl_get_closed_rb_stts(trans, rxq)) & 0x0FFF;
-+	r = iwl_get_closed_rb_stts(trans, rxq);
- 	i = rxq->read;
- 
- 	/* W/A 9000 device step A0 wrap-around bug */
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-index 1bc4a0089c6ff..e9807fcca6ad1 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-@@ -2714,11 +2714,9 @@ static ssize_t iwl_dbgfs_rx_queue_read(struct file *file,
- 		pos += scnprintf(buf + pos, bufsz - pos, "\tfree_count: %u\n",
- 				 rxq->free_count);
- 		if (rxq->rb_stts) {
--			u32 r =	__le16_to_cpu(iwl_get_closed_rb_stts(trans,
--								     rxq));
-+			u32 r =	iwl_get_closed_rb_stts(trans, rxq);
- 			pos += scnprintf(buf + pos, bufsz - pos,
--					 "\tclosed_rb_num: %u\n",
--					 r & 0x0FFF);
-+					 "\tclosed_rb_num: %u\n", r);
- 		} else {
- 			pos += scnprintf(buf + pos, bufsz - pos,
- 					 "\tclosed_rb_num: Not Allocated\n");
-@@ -3091,7 +3089,7 @@ static u32 iwl_trans_pcie_dump_rbs(struct iwl_trans *trans,
- 
- 	spin_lock_bh(&rxq->lock);
- 
--	r = le16_to_cpu(iwl_get_closed_rb_stts(trans, rxq)) & 0x0FFF;
-+	r = iwl_get_closed_rb_stts(trans, rxq);
- 
- 	for (i = rxq->read, j = 0;
- 	     i != r && j < allocated_rb_nums;
-@@ -3387,9 +3385,7 @@ iwl_trans_pcie_dump_data(struct iwl_trans *trans,
- 		/* Dump RBs is supported only for pre-9000 devices (1 queue) */
- 		struct iwl_rxq *rxq = &trans_pcie->rxq[0];
- 		/* RBs */
--		num_rbs =
--			le16_to_cpu(iwl_get_closed_rb_stts(trans, rxq))
--			& 0x0FFF;
-+		num_rbs = iwl_get_closed_rb_stts(trans, rxq);
- 		num_rbs = (num_rbs - rxq->read) & RX_QUEUE_MASK;
- 		len += num_rbs * (sizeof(*data) +
- 				  sizeof(struct iwl_fw_error_dump_rb) +
 -- 
-2.34.1
-
+viresh
 
