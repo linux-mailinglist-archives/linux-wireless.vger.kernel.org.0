@@ -1,174 +1,120 @@
-Return-Path: <linux-wireless+bounces-5490-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5491-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B9A689088D
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 19:48:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68ECF89088F
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 19:49:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C6FD1C27C24
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 18:48:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 215F629354D
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Mar 2024 18:49:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E58F14436B;
-	Thu, 28 Mar 2024 18:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1E7781725;
+	Thu, 28 Mar 2024 18:49:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="T74uUOaY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pUXYyF4L"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.183])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9CD9374F1
-	for <linux-wireless@vger.kernel.org>; Thu, 28 Mar 2024 18:48:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A4EA374F1;
+	Thu, 28 Mar 2024 18:49:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711651730; cv=none; b=upNv4j7HAGfCdQ1q6CjsOB3QQB3ibkxzqRUpVknNGM12I73ww7ERTAeWdOaQvgdY7tBaPPJrYJSxt/yo0KF7s8+/NIx0L8CDgi0/BH+wqQS21gwBy1FqzFN21FaHqBDKDLFPsFuEKoGcQRV/5tSb2gUi5dwBqaJ0QNUtgOI1u+8=
+	t=1711651745; cv=none; b=JyUWyhYx73ZLJgAR3WlQID6m8OUv0KYsiVqTe4/AnfYF0mn6sNUJOUFHDXo8kEVLyhLKSRRSGEraKZ90t7SfYvRRm/zwbbMZXf8+Cezp1olACHa0gvx13VgCet6IkVZHW9WlEtDGI8JwmXi7DIA1oEbaU8Xy3lNb42LJi48smyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711651730; c=relaxed/simple;
-	bh=CmB2h6S88adzHttfAYrKSEf4TP3tIHk7MJBcg9ErpW8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Nke0d3hco2+tkUfL2+yCLtOQMMcpXyb3qZpZBeICCL5U56hKy7mdM63PPULQc25ve8JiNlHVGuBkxd9c0eltD75UGdnaAgmUUef1MxTld4Zzsy44wU6CqkcRRaPt9i8MSMjVAUJ3Yq1fGb1dm2Un/dlpwpBgiw7eQAd4svtSiNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=T74uUOaY; arc=none smtp.client-ip=67.231.154.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 447FF300079;
-	Thu, 28 Mar 2024 18:48:40 +0000 (UTC)
-Received: from [192.168.100.159] (unknown [50.251.239.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id 9B5B113C2B0;
-	Thu, 28 Mar 2024 11:48:38 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 9B5B113C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1711651718;
-	bh=CmB2h6S88adzHttfAYrKSEf4TP3tIHk7MJBcg9ErpW8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=T74uUOaYaRZa3U6sZ3vv6DBvwAel+fvNMJ490xACYVZWggN/GMg2FCYhxuveMnqpp
-	 O14Qn2yiY1d62Ab3F0ZBO1bfiQcTJ6KZuXxDem4n3DM88low/AviAFUbjyF3ya8XwV
-	 GXaVNib8j/t2waGOsLw75wo2tkC4cb5ebaGM8Tr4=
-Message-ID: <b890c308-5d66-d9cc-ebff-17e8554f9a69@candelatech.com>
-Date: Thu, 28 Mar 2024 11:48:38 -0700
+	s=arc-20240116; t=1711651745; c=relaxed/simple;
+	bh=99VsYl9LLb/Fgf4qp6tFM6y8MYoeu/u9qF5KbrJouGE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=X4pmxSnXiE0/+kzMxgSH+c8B2ycADEmRKhkBvY0iLGJwWzWXPoaiSx1tGEWIOss5QZQAVXqq6pcqhKIdGLwVCUA2+BZLIBlAhUMyNG5/uOftSjo3RuLnrlp2KeeE/JM3QK1WE4k5ATWsJpxrJl+gN+5ZwEcvavB36Gnkai3VU0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pUXYyF4L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7D10C433F1;
+	Thu, 28 Mar 2024 18:49:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711651745;
+	bh=99VsYl9LLb/Fgf4qp6tFM6y8MYoeu/u9qF5KbrJouGE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=pUXYyF4LKffpWAHKSOSBBDM9VU4bzm9YdG/yU93M5ND28v79HezOyMi8jsUvGwCQU
+	 FSb7X3GsU1qpKUf92xWygjKSCVFJH1KCnIPHddz6n29IMJQjlh5iQFoJdoAHvgNd0F
+	 ZbQ8bVGZPN7+lAd631fadKn/2vb4H2JWCuYRAUwPEW375WyeO9F7ezdqYSsAK2Zc2u
+	 Ab/IJ1F8JG8u1ToVTX6xs3vnYIBCh12Fw++nRegRO1lEHcJQOUZUOlNa+k+uU8HicV
+	 avyCGlvU8KfrjVuZD0pD/zFTfb6CULhfln/ABODz7VAniRT6sp02fqqG6CqtQ/2nVl
+	 n9B0ItU6Q8vfQ==
+Date: Thu, 28 Mar 2024 11:49:03 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
+ ath12k@lists.infradead.org, linux-wireless@vger.kernel.org, Vasanthakumar
+ Thiagarajan  <quic_vthiagar@quicinc.com>, netdev@vger.kernel.org
+Subject: Re: [PATCH 02/13] wifi: nl80211: send underlying multi-hardware
+ channel capabilities to user space
+Message-ID: <20240328114903.1d0c8af9@kernel.org>
+In-Reply-To: <9d0f309da45ae657cd2ce0bc11a93d66e856ef64.camel@sipsolutions.net>
+References: <20240328072916.1164195-1-quic_periyasa@quicinc.com>
+	<20240328072916.1164195-3-quic_periyasa@quicinc.com>
+	<6d92d0ba4a8764cd91cc20c4bd35613bcc41dfcd.camel@sipsolutions.net>
+	<9d5c2f9f-19b5-af4d-8018-1eb97fac10d6@quicinc.com>
+	<9d0f309da45ae657cd2ce0bc11a93d66e856ef64.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v2 1/2] wifi: cfg80211/mac80211: Add support to rx retry
- stats
-Content-Language: en-US
-To: Johannes Berg <johannes@sipsolutions.net>,
- Hari Chandrakanthan <quic_haric@quicinc.com>,
- Jeff Johnson <quic_jjohnson@quicinc.com>, ath11k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-References: <20240319134522.4021062-1-quic_haric@quicinc.com>
- <20240319134522.4021062-2-quic_haric@quicinc.com>
- <d364e872eb29f03236630bab49a3243e2118ab22.camel@sipsolutions.net>
- <14699537-99b2-e468-6a7b-7b721193400e@quicinc.com>
- <b9dfab64822bacf0cc72380c0de034b79d489668.camel@sipsolutions.net>
- <68c6fcbd-0aaa-43b2-b5e2-08367c11e79d@quicinc.com>
- <f5cb9edcea875920e0ce156be76d06c78d1279ec.camel@sipsolutions.net>
- <4d569d40-d0a8-10d5-7e6d-4c9c03c14371@quicinc.com>
- <3f6de100163a8521ab09929abc537e57d26dafea.camel@sipsolutions.net>
-From: Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <3f6de100163a8521ab09929abc537e57d26dafea.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-MDID: 1711651721-hBjz7CKCAwug
-X-MDID-O:
- us5;at1;1711651721;hBjz7CKCAwug;<greearb@candelatech.com>;a91bce00847de6afce4cb86e1e327970
 
-On 3/28/24 10:54, Johannes Berg wrote:
-> On Thu, 2024-03-28 at 22:49 +0530, Hari Chandrakanthan wrote:
->> On 3/27/2024 8:37 PM, Johannes Berg wrote:
->>> On Wed, 2024-03-27 at 08:02 -0700, Jeff Johnson wrote:
->>>>> I'm also imagining that we change the API from cfg80211 to the drivers
->>>>> to get the *link* STA information, and do the summing up and/or "best"
->>>>> selection there in cfg80211 itself. However, I am prepared to accept the
->>>>> possibility that we may do _both_ in the API, if not all drivers can
->>>>> even do all of the statistics per link. We should probably still have
->>>>> the link STAs in the statistics in nl80211, but then they may not be
->>>>> populated?
->>>> First remember that there are a lot of statistics, and each driver is free to
->>>> return as many or as few as they support, indicating the ones they are
->>>> returning using the "filled" bitmap.
->>> Yes, I'd think we want to use the same data structure for both, though
->>> setting something in *both* links and *mld* would (should) be an error.
->> The statistics can be populated by driver or mac80211.(say tx retries,
->> tx packets etc)
+On Thu, 28 Mar 2024 13:01:55 +0100 Johannes Berg wrote:
+> If we do that, including NL80211_MULTI_HW_ATTR_IDX for illustrative
+> purposes though I think it should be removed, we'd end up with:
 > 
-> Right.
+> NL80211_ATTR_MULTI_HW
+>  - NL80211_MULTI_HW_ATTR_IDX: 0
+>  - NL80211_MULTI_HW_ATTR_FREQ: 2412
+>  - NL80211_MULTI_HW_ATTR_FREQ: 2417
+>  ...
+> NL80211_ATTR_MULTI_HW
+>  - NL80211_MULTI_HW_ATTR_IDX: 1
+>  - NL80211_MULTI_HW_ATTR_FREQ: 5180
+>  - NL80211_MULTI_HW_ATTR_FREQ: 5200
+>  ...
 > 
->> So we should also change the existing stats update in mac80211 on link
->> STA basis instead of deflink?
+> which _is_ a lot more compact, and removes all the uninteresting mid-
+> level indexing.
 > 
-> Absolutely, we need to do that, it's been on my list forever, since the
-> early MLO work... I'm a bit torn between not wanting you to have to do
-> all that work (even if we know that we'll have to do it) and on the
-> other hand not wanting to make it worse with more statistics now ...
-> There's no good middle ground here though now.
-> 
->>> Good point, when they're really removed we'd want to probably keep that
->>> value as a bias for the MLD-level stats?
->>
->> ok. Then the statistics value in MLD STA would be bias + summed up value
->> of currently alive links?
-> 
-> I guess? But I'm not sure where we'd actually _keep_ the bias values.
-> Maybe give up on that idea that cfg80211 could sum it all up, and just
-> require the underlying driver (or mac80211) to report both per-link and
-> total stats, where available? That way, mac80211 could keep the bias
-> somewhere and just add it to the total before reporting _that_.
-> 
->> On the same line , ethtool stats(*interface level stats*) in
->> mac80211(ieee80211_get_stats())
->> computes the stats by summing up the current STA statistics.
->> Here stations can come and go and the ethtool stats may not reflect the
->> total packets transmitted or received by the interface.
->> It just reflects the summed up value of current alive stations.
-> 
-> Yeah ... I know Ben loves it, but personally I kind of think of ethtool
-> as a dead legacy interface for this respect, it just doesn't have the
-> ability to reflect the required structures/hierarchy/etc. well since
-> it's just a flat list. Sure you can structure the names in some way, but
-> it's iffy at best. I'd just ignore that for now. If we have better
-> statistics to nl80211, we can always make ethtool support on top of
-> that, perhaps even moving it to cfg80211, if we even need more support
-> there. I'm not hugely in favour, but if it stays contained somewhere and
-> consumes existing APIs I'm OK with it.
+> So in that sense, I prefer that, but I'm truly not sure how the (hand-
+> written) userspace code would deal with that.
 
-I have my own hacks to make ethtool be minimally useful for MLO,
-but I think it can be revisited later once the over-all MLO
-architecture is solidified.
+I think the best way today would be two walks:
 
-As Hari says, even without MLO, the AP's ethtool stats are not well
-defined (it works better for STA vdevs).  Something that can also be fixed later after MLO calms down,
-but my initial thought is to keep per-vdev counters that accumulate
-any per-station counters and then the ethtool logic would not
-try to sum the current stations but rather just grab the accumulated stats.
+	for_each_attr() {
+		switch (type):
+		case THE_A_ARRAY_1:
+			cnt1++;
+			break;
+		case THE_A_ARRAY_2:
+			cnt2++;
+			break;
+	}
 
-Thanks,
-Ben
+	if (cnt1)
+		array_1 = calloc();
+	cnt1 = 0; /* we'll use it as index in second loop */
+	if (cnt2)
+		array_2 = calloc();
+	cnt2 = 0;
 
-> 
->> Since these two problems are similar (ethtool stats and MLD stats
->> calculation),
->> would like to understand what type of value would be more useful to user?
->>
-> 
-> What do you mean by that?
-> 
-> johannes
-> 
+	for_each_attr() {
+		/* [ normal parsing, populating array_1[cnt1++] etc. ] */
+	}
 
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+Compared to "indexed array" the only practical difference I think is
+the fact that all attrs are walked. I think you have to count them
+either way before parsing.
 
-
+I was wondering at some point whether we should require that all
+multi-attr attributes are grouped together. Or add an explicit "count"
+attribute. But couldn't convince myself that such extra rules will
+pay off sufficiently with perf and/or ease of use...
 
