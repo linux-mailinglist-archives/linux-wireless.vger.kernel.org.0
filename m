@@ -1,159 +1,102 @@
-Return-Path: <linux-wireless+bounces-5557-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5558-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DEA289198E
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 13:43:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A1C08919C6
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 13:47:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F33C41F21358
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 12:43:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BAB71C24B87
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 12:47:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A196E149C43;
-	Fri, 29 Mar 2024 12:29:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6991313B5A0;
+	Fri, 29 Mar 2024 12:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nA1ttXm9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BFKojrdj"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7359E1494DA;
-	Fri, 29 Mar 2024 12:29:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F2CC13B599;
+	Fri, 29 Mar 2024 12:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711715341; cv=none; b=PgAKlW6dBdNn/AnOneGnG+CnsTMCciP47QvGt1PNUeXdOoe8b/eUYpnLiwo1jWtB+LmSMZaohkwXnX+2ylkqEFC9+JTn5LLRJAKaxulRcCmSEnefCF+OIk0K9CCWP9aRfXTJa1lA25vMoYyRbpBM1FSeh4y0Qt5YVWq+LW19pA8=
+	t=1711715397; cv=none; b=oDJNF3I/Z2CFtYzFS4wqmQ/orLWVD9zvAYOmLIUKFDvYER3WfRTRa2fEhnGES4qqnJgYHpeTYu3zLOi98eVXE7hE8y+Cu1r7s1qMHC8ocXVTZ4zGHX0qcsSju+TnaJmy0H0bi8511lwjGBv39fr39VyXiRyXk3HMYcMjqBnymfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711715341; c=relaxed/simple;
-	bh=VBbr5zV+DGiCnpCpxIGYBmWTVXJfvphyBATaBXAmY8w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YiJNsYADNvd/QmYdBfvohMZqrCuW4lFTKr5sTMKetUvWSvK/q3uhxtYBqfVYByN4tyK39wyZVQHdtxpd9+wqomkh8Z7CFBvsaueT/QLWfn7scb3ZOAIXxPur9Dbf3YIp+W/EmH4c2HfgSMX/ILcYluWDJvpmoHdaykm5DYL5/Gs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nA1ttXm9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19BA0C433A6;
-	Fri, 29 Mar 2024 12:29:00 +0000 (UTC)
+	s=arc-20240116; t=1711715397; c=relaxed/simple;
+	bh=Ra4UXu1BegVD/dxe6uYDNjPmp+4p/Ri+3qwVOVWo+MA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=BObuwzj7DsgI8xHuhRcwxd5dOviLoQlboghyY0xVUoJamz/zNdvF/8lU/Ms3eiGNdmuNUv6IBpDcscSyne3OtglcBVNHxJKBc/pMS9yPrx/wR3kO/GCXZU3hwJwXHs+feC6ZYGZKFWokOGia2RJEcWJGuimOSV2LQMOdeosVNzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BFKojrdj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A923C43394;
+	Fri, 29 Mar 2024 12:29:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711715341;
-	bh=VBbr5zV+DGiCnpCpxIGYBmWTVXJfvphyBATaBXAmY8w=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nA1ttXm9PKt3XZj729XZD22+k9T98SG4dFAnpAo9Iey9W72Ip38tn5P7f3PjEUwAp
-	 Pkid58TI2m2FKLxK1lwH/HFU1eZqEY9NSVWN2FOqlDriA/tm3Y+z8X1IemCLW07XZt
-	 7QdXTEtSokD9Qf1HcPFt8Pj3pDCK7lcEqCt/xo2idkDUynIg7SqzOTRnWnn6auv9wc
-	 qYMVZXuSTMkAS6WVFi7Eeni8n2WsIPgc91+Mcgj86ANrVsMXn6KoCadYd3c5ffxm1v
-	 GSyHZ5f0/M+byGTr+CQ0nbuINpQBbvk6nd15hWuPbL3mJ275J/tdo803sWs/5pd7ws
-	 BvEs6h/XaVfAw==
+	s=k20201202; t=1711715397;
+	bh=Ra4UXu1BegVD/dxe6uYDNjPmp+4p/Ri+3qwVOVWo+MA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=BFKojrdjGbJCoTpGbw+mgQBNsnXJWd5ajkaFL8O0DV6WAcUmAM+N0pkNQVQkKdibC
+	 AZp9AKdxRRWbW09dwQp7/GAN+DeE1VBznVfQMVGkfXvhGQPT9xXi1pHmqpKboV7GDS
+	 j4FPwx0X62FncIauJgX2oT7yFgMyJrovxlN6ro4iIstJOdGKwfcFVEtXB/PGgwCv2h
+	 yvmlFci+iQTAEmQCHqBNsHyRSw2FzZh2wZfPZbeG2XWdeSo0B7tTXcSmITHuUoNs9c
+	 hVDVldT5eGF10PWa1B2Z8qHVQTM91OxG/vn3DIefqJfoQ0URazeiOFQqtDd35QjYi6
+	 HpZkaDHLyGTGA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	syzbot+d050d437fe47d479d210@syzkaller.appspotmail.com,
+Cc: Dmitry Antipov <dmantipov@yandex.ru>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.8 58/68] wifi: cfg80211: check A-MSDU format more carefully
-Date: Fri, 29 Mar 2024 08:25:54 -0400
-Message-ID: <20240329122652.3082296-58-sashal@kernel.org>
+	kvalo@kernel.org,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 01/52] wifi: ath9k: fix LNA selection in ath_ant_try_scan()
+Date: Fri, 29 Mar 2024 08:28:31 -0400
+Message-ID: <20240329122956.3083859-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240329122652.3082296-1-sashal@kernel.org>
-References: <20240329122652.3082296-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.8.2
+X-stable-base: Linux 6.6.23
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 9ad7974856926129f190ffbe3beea78460b3b7cc ]
+[ Upstream commit d6b27eb997ef9a2aa51633b3111bc4a04748e6d3 ]
 
-If it looks like there's another subframe in the A-MSDU
-but the header isn't fully there, we can end up reading
-data out of bounds, only to discard later. Make this a
-bit more careful and check if the subframe header can
-even be present.
+In 'ath_ant_try_scan()', (most likely) the 2nd LNA's signal
+strength should be used in comparison against RSSI when
+selecting first LNA as the main one. Compile tested only.
 
-Reported-by: syzbot+d050d437fe47d479d210@syzkaller.appspotmail.com
-Link: https://msgid.link/20240226203405.a731e2c95e38.I82ce7d8c0cc8970ce29d0a39fdc07f1ffc425be4@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://msgid.link/20231211172502.25202-1-dmantipov@yandex.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/util.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/ath9k/antenna.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/wireless/util.c b/net/wireless/util.c
-index d1ce3bee27973..b9d15f369378b 100644
---- a/net/wireless/util.c
-+++ b/net/wireless/util.c
-@@ -791,15 +791,19 @@ ieee80211_amsdu_subframe_length(void *field, u8 mesh_flags, u8 hdr_type)
- 
- bool ieee80211_is_valid_amsdu(struct sk_buff *skb, u8 mesh_hdr)
- {
--	int offset = 0, remaining, subframe_len, padding;
-+	int offset = 0, subframe_len, padding;
- 
- 	for (offset = 0; offset < skb->len; offset += subframe_len + padding) {
-+		int remaining = skb->len - offset;
- 		struct {
- 		    __be16 len;
- 		    u8 mesh_flags;
- 		} hdr;
- 		u16 len;
- 
-+		if (sizeof(hdr) > remaining)
-+			return false;
-+
- 		if (skb_copy_bits(skb, offset + 2 * ETH_ALEN, &hdr, sizeof(hdr)) < 0)
- 			return false;
- 
-@@ -807,7 +811,6 @@ bool ieee80211_is_valid_amsdu(struct sk_buff *skb, u8 mesh_hdr)
- 						      mesh_hdr);
- 		subframe_len = sizeof(struct ethhdr) + len;
- 		padding = (4 - subframe_len) & 0x3;
--		remaining = skb->len - offset;
- 
- 		if (subframe_len > remaining)
- 			return false;
-@@ -825,7 +828,7 @@ void ieee80211_amsdu_to_8023s(struct sk_buff *skb, struct sk_buff_head *list,
- {
- 	unsigned int hlen = ALIGN(extra_headroom, 4);
- 	struct sk_buff *frame = NULL;
--	int offset = 0, remaining;
-+	int offset = 0;
- 	struct {
- 		struct ethhdr eth;
- 		uint8_t flags;
-@@ -839,10 +842,14 @@ void ieee80211_amsdu_to_8023s(struct sk_buff *skb, struct sk_buff_head *list,
- 		copy_len = sizeof(hdr);
- 
- 	while (!last) {
-+		int remaining = skb->len - offset;
- 		unsigned int subframe_len;
- 		int len, mesh_len = 0;
- 		u8 padding;
- 
-+		if (copy_len > remaining)
-+			goto purge;
-+
- 		skb_copy_bits(skb, offset, &hdr, copy_len);
- 		if (iftype == NL80211_IFTYPE_MESH_POINT)
- 			mesh_len = __ieee80211_get_mesh_hdrlen(hdr.flags);
-@@ -852,7 +859,6 @@ void ieee80211_amsdu_to_8023s(struct sk_buff *skb, struct sk_buff_head *list,
- 		padding = (4 - subframe_len) & 0x3;
- 
- 		/* the last MSDU has no padding */
--		remaining = skb->len - offset;
- 		if (subframe_len > remaining)
- 			goto purge;
- 		/* mitigate A-MSDU aggregation injection attacks */
+diff --git a/drivers/net/wireless/ath/ath9k/antenna.c b/drivers/net/wireless/ath/ath9k/antenna.c
+index 988222cea9dfe..acc84e6711b0e 100644
+--- a/drivers/net/wireless/ath/ath9k/antenna.c
++++ b/drivers/net/wireless/ath/ath9k/antenna.c
+@@ -643,7 +643,7 @@ static void ath_ant_try_scan(struct ath_ant_comb *antcomb,
+ 				conf->main_lna_conf = ATH_ANT_DIV_COMB_LNA1;
+ 				conf->alt_lna_conf = ATH_ANT_DIV_COMB_LNA1_PLUS_LNA2;
+ 			} else if (antcomb->rssi_sub >
+-				   antcomb->rssi_lna1) {
++				   antcomb->rssi_lna2) {
+ 				/* set to A-B */
+ 				conf->main_lna_conf = ATH_ANT_DIV_COMB_LNA1;
+ 				conf->alt_lna_conf = ATH_ANT_DIV_COMB_LNA1_MINUS_LNA2;
 -- 
 2.43.0
 
