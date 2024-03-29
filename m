@@ -1,57 +1,56 @@
-Return-Path: <linux-wireless+bounces-5559-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5560-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 253338919CC
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 13:47:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46CDF8919E8
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 13:49:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B98081F21723
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 12:47:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1793B23632
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 12:49:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E562413B7A7;
-	Fri, 29 Mar 2024 12:29:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 665371514DB;
+	Fri, 29 Mar 2024 12:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F6bFzoKz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VwlOfhRa"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD94D12FB12;
-	Fri, 29 Mar 2024 12:29:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F45150997;
+	Fri, 29 Mar 2024 12:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711715398; cv=none; b=eo53jm0EDghKA6TUfvnFVbWvDAwnl4PoA7RhTO7xrcKdGu/X+CRqeDYZGG6AgTft9Btle4a0BxM6xBrJhQC/KUktgFnk+zT6cTgaevFxEMYiZeW0Gn98madjItjPc91XFCC3p84w/CJ1L0yWaBERPKtXcssudlzUea58MkPGqK4=
+	t=1711715409; cv=none; b=kzrKEm0BsQ1j2nuuatoiH9hPwXoM+f4Mjd+T1NDYiHTx/ybq4Omf+o9JHV8HsEgjvO7DfpmvwKTfZloIVAIUyRghOFfhsfNHIXm502C7SXVueWF3Qg/i1BHh5ULn1XgQMG/4pUh/4aqXMVaC4PTWl0BqDwCbwYJ5+zyTVm7wuXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711715398; c=relaxed/simple;
-	bh=icd8JE9I8/CsXRr6YD96udCLnIgfHidC0XiNseNAP8Y=;
+	s=arc-20240116; t=1711715409; c=relaxed/simple;
+	bh=WasJpCSSIFNcR7eK7Br91kvJYRBw+AnpK17WiTx7Ozs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pet9RASylgPTuMr95JjRxHB1xCtnpvaMew65QldkfpA8v15KpwZabp7qIfUIdAkl6ObGDnUf5q8/T1zoa0qTdRCMHmQ4ltFK2jkhwV7uG429s6Tt3ZF+kPHENcH/9fzfhBzV05fDx3yvEN7q5taFcCOVzuUDaqgyaC7YrxqlULQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F6bFzoKz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 876B5C433F1;
-	Fri, 29 Mar 2024 12:29:57 +0000 (UTC)
+	 MIME-Version; b=quDTX8yhj+UJ2J6Snyh/w7ahCkgHtaMWfrULHVdzA53fcDdwGjdaqLDdXGM7F/pgytz2ZHSvVVkQZlscw3iv2ZkgwQdv3eCra4OQqm+WnoPNOCKlltRcs7fgnoW2Ywl58eKbldW4ev/aGyVT7mHe+szMOmmJndDCMFTm7uDijNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VwlOfhRa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 315B3C43394;
+	Fri, 29 Mar 2024 12:30:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711715398;
-	bh=icd8JE9I8/CsXRr6YD96udCLnIgfHidC0XiNseNAP8Y=;
+	s=k20201202; t=1711715408;
+	bh=WasJpCSSIFNcR7eK7Br91kvJYRBw+AnpK17WiTx7Ozs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F6bFzoKztbEO0rSubeSDripCuToZLu3KswWqdZpt4TyqOBiC0EgVo+RPFnt+5sXVf
-	 AnFJZWHoRTty0rR9HHDEztexpUWzCY52YR0WRQpDp6zqkORQdrmu+qgA9Zb7fRsVzX
-	 EMV4FzcjJYs2a9Ns5FCWh0H7Q/0A6pjFqbaglJor48rTHvHr1nqucxxrtHHmcnRsAJ
-	 yElCOG6u3OYhyNT2HbEqU7+8iEmXXKKvLdD+/ObTpVhGNCAn65VSQG5vpgQgZsyX+y
-	 +OiPpUHYqF+sEWXMIQ2K9gsHi6yU/IH+I4/+bMCscIKoHHpQn/rJD7zPjhEPqwTy0A
-	 Zik0xz3Nip5tQ==
+	b=VwlOfhRa2cbU9FfB6d47vbAe6gP0t8eAJrho0LCUo13uRdp3TSNr8KtbB7VBvd9G/
+	 cFqo5nQZlPGsN1rtNwGQmcRpHZDIf65dltS4ZzZEEkOjK84KpzEK4V1y6fCLByxSGZ
+	 a0g7FG+jFyFg2XEZp08f6ZsJlZ4FOoesOC1wJ2mmw06iZoHFZ+J31RkOeaHmEdwhUW
+	 RCeU2WATrBUdqjb83fM8pOmCFl42Iqeafi66JRMtBII4GdcewpFFHstMdQnh5HSvMo
+	 6DuJh7VRaEaUB1AEWbNvqXeETPaxRUbHs5LWBuMecwpKpjj2NFSzlITLvReha0fHs9
+	 HPv1nHGzbuvWQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Po-Hao Huang <phhuang@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+Cc: Ping-Ke Shih <pkshih@realtek.com>,
 	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 02/52] wifi: rtw89: fix null pointer access when abort scan
-Date: Fri, 29 Mar 2024 08:28:32 -0400
-Message-ID: <20240329122956.3083859-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 08/52] wifi: rtw89: pci: enlarge RX DMA buffer to consider size of RX descriptor
+Date: Fri, 29 Mar 2024 08:28:38 -0400
+Message-ID: <20240329122956.3083859-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240329122956.3083859-1-sashal@kernel.org>
 References: <20240329122956.3083859-1-sashal@kernel.org>
@@ -66,44 +65,37 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.23
 Content-Transfer-Encoding: 8bit
 
-From: Po-Hao Huang <phhuang@realtek.com>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-[ Upstream commit 7e11a2966f51695c0af0b1f976a32d64dee243b2 ]
+[ Upstream commit c108b4a50dd7650941d4f4ec5c161655a73711db ]
 
-During cancel scan we might use vif that weren't scanning.
-Fix this by using the actual scanning vif.
+Hardware puts RX descriptor and packet in RX DMA buffer, so it could be
+over one buffer size if packet size is 11454, and then it will be split
+into two segments. WiFi 7 chips use larger size of RX descriptor, so
+enlarge DMA buffer size according to RX descriptor to have better
+performance and simple flow.
 
-Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20240119081501.25223-6-pkshih@realtek.com
+Link: https://msgid.link/20240121071826.10159-5-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/mac80211.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtw89/pci.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac80211.c b/drivers/net/wireless/realtek/rtw89/mac80211.c
-index e70757e4dc2c1..8aed0d101bf3b 100644
---- a/drivers/net/wireless/realtek/rtw89/mac80211.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
-@@ -422,7 +422,7 @@ static void rtw89_ops_bss_info_changed(struct ieee80211_hw *hw,
- 			 * when disconnected by peer
- 			 */
- 			if (rtwdev->scanning)
--				rtw89_hw_scan_abort(rtwdev, vif);
-+				rtw89_hw_scan_abort(rtwdev, rtwdev->scan_info.scanning_vif);
- 		}
- 	}
+diff --git a/drivers/net/wireless/realtek/rtw89/pci.h b/drivers/net/wireless/realtek/rtw89/pci.h
+index 2f3d1ad3b0f7d..4259b79b138fb 100644
+--- a/drivers/net/wireless/realtek/rtw89/pci.h
++++ b/drivers/net/wireless/realtek/rtw89/pci.h
+@@ -559,7 +559,7 @@
+ #define RTW89_PCI_TXWD_NUM_MAX		512
+ #define RTW89_PCI_TXWD_PAGE_SIZE	128
+ #define RTW89_PCI_ADDRINFO_MAX		4
+-#define RTW89_PCI_RX_BUF_SIZE		11460
++#define RTW89_PCI_RX_BUF_SIZE		(11454 + 40) /* +40 for rtw89_rxdesc_long_v2 */
  
-@@ -971,7 +971,7 @@ static int rtw89_ops_remain_on_channel(struct ieee80211_hw *hw,
- 	}
- 
- 	if (rtwdev->scanning)
--		rtw89_hw_scan_abort(rtwdev, vif);
-+		rtw89_hw_scan_abort(rtwdev, rtwdev->scan_info.scanning_vif);
- 
- 	if (type == IEEE80211_ROC_TYPE_MGMT_TX)
- 		roc->state = RTW89_ROC_MGMT;
+ #define RTW89_PCI_POLL_BDRAM_RST_CNT	100
+ #define RTW89_PCI_MULTITAG		8
 -- 
 2.43.0
 
