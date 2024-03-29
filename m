@@ -1,83 +1,232 @@
-Return-Path: <linux-wireless+bounces-5525-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5526-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BABA89136B
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 06:53:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25E7B891379
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 07:09:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 056D82889E1
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 05:53:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A65411F2277F
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 06:09:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F5A53D551;
-	Fri, 29 Mar 2024 05:53:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8499E39FD3;
+	Fri, 29 Mar 2024 06:09:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="H4o0G3UQ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7FC837714
-	for <linux-wireless@vger.kernel.org>; Fri, 29 Mar 2024 05:53:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A4037152
+	for <linux-wireless@vger.kernel.org>; Fri, 29 Mar 2024 06:09:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711691625; cv=none; b=hjRyRO7igqUoDrRens5OgrebtMSZZaYTI3sgpKahvqzfq8DBl8coVQKoIS5B8VFuh5A3P0SrxPefUKnNfke7zkpF4zB/mjLeoHQ4U2mjyu8QQ+kKuXchbe285J1V9L9DM+od+fDDt9d8fOKkFzAm/m3bEWVtsTmQRkCsX/27n+s=
+	t=1711692593; cv=none; b=OIz0/rOErq7GuOXw1N94fOyBRJ3ILhkOn3vu4gwqsmo1YMXPeRaEQOX98NwC1tBJzd+vU95tjw+dUynR5gDYwyBJUHJ0arjbF/T1cBgFTVCbyVYlk4JFeuFFvJaHqstkhFE3f8hy4JkH14XP40OZMssjT6Ad7El2GdlhMzCs2D0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711691625; c=relaxed/simple;
-	bh=l+SvkHA/szmqTsW9obSYFYFFgycbp1yYIfn1mpKR4SA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=NZazuY1kAwUTPt0Jy/tCoenvcZTQXxIs8r50OK0lkt8A1mSs/fLvU3G39HgElAUpQj4WwUXsjhkXSnHQ9+XyBzLm3JHbhmGviRmFXDSxr3huAIxVezXcNzyP7SuLBxLLkJSlYaBQtZN1i+ikFNfi+2jVkiYCj6GSEvwVkfsZOso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 42T5reBmB3458865, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 42T5reBmB3458865
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 29 Mar 2024 13:53:40 +0800
-Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+	s=arc-20240116; t=1711692593; c=relaxed/simple;
+	bh=SJpFMYiSeJUdaD7OlwC2Sh8HzriDt3hlSGApt30VYvs=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=tSEqxu9/yYrg4105NvpIVcW3Sk7v9u7Mxrf2IyPcscf5ed+T4w/SCfwCim7TGbUypjKmCiuoppTmOKlLXqFF4id//ipcnnN/V61CzmVz8Yc+racadFDrWPolkbyse3KjFgcR0mW5QYSzT7J2rYAWq5Tp3NsxKbd7NmQrIjciOkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=H4o0G3UQ; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42T5at90030814;
+	Fri, 29 Mar 2024 06:09:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id:mime-version:content-type; s=
+	qcppdkim1; bh=IXvho23lrfCt0ozepxfht/vZqAr9mxHYBoAnEtSbwP0=; b=H4
+	o0G3UQEiRIvfSwt4Mp9vbFa2MMlkbq6B4uqE7XlmKxJRTbpdr1O2JmHxycDli0d9
+	KIflW16GaDWFuoUWt6YDnVet8cmR+0qVKV6SK6LzmRWqNdeIm7bSmHex5L3LNyvp
+	/u/67VZ4LcWd8iSNaXmDc6EDmslKDX12rFd7jxEjKrDRteM7gab5Xw6eCSTizCTT
+	X4Igj/aEnfrJDkK47G0u/FElxflLx63Mtv3+feX9NeQalbd0OjP7UCrq+yop+kVo
+	7J1gR6eeGgWUGQPIFYqN8u08wXQdEbC0VGF4p7Q/AS+nj9rUgZmliDdOqpqYxP2v
+	1pu/M18sXFCgzRiOsR2w==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3x5qkwg3hd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 29 Mar 2024 06:09:48 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42T69mo5022141
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 29 Mar 2024 06:09:48 GMT
+Received: from hu-nithp-blr.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Fri, 29 Mar 2024 13:53:40 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Fri, 29 Mar 2024 13:53:40 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::4c42:f80:bcc2:d00f]) by
- RTEXMBS04.realtek.com.tw ([fe80::4c42:f80:bcc2:d00f%5]) with mapi id
- 15.01.2507.035; Fri, 29 Mar 2024 13:53:40 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: =?utf-8?B?5pa95bCP5LiwKOWMu+eUqOWItuWTgeS6p+S4mumbhuWboi3ljLvnlKjliLY=?=
- =?utf-8?B?5ZOB6ZuG5Zui5pys6YOoKQ==?= <shixiaofeng@weigaogroup.com>
-CC: linux-wireless <linux-wireless@vger.kernel.org>
-Subject: RE: Is RTL8822CE with Kernel 6.1 for imx6
-Thread-Topic: Is RTL8822CE with Kernel 6.1 for imx6
-Thread-Index: AQHae6GreAtxLBDbLkylo+A0KBQKpbFDXUwggAmbqQCAAAOXgIAA6T/Q///WAYCAAIZrcIAAAR+g
-Date: Fri, 29 Mar 2024 05:53:40 +0000
-Message-ID: <78962cc266b94d2e97d4a5d5764c143d@realtek.com>
-References: <28a3b031b06f46c5b10e100392a33286@realtek.com>
- <ABMAEQA-Hji8SdfUpl4fK4pZ.3.1711691249214.Hmail.shixiaofeng@weigaogroup.com>
- <62bd231147994d91bd55b57327990762@realtek.com>
-In-Reply-To: <62bd231147994d91bd55b57327990762@realtek.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ 15.2.1118.40; Thu, 28 Mar 2024 23:09:45 -0700
+From: Nithyanantham P <quic_nithp@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Karthikeyan Periyasamy
+	<quic_periyasa@quicinc.com>,
+        Nithyanantham Paramasivam
+	<quic_nithp@quicinc.com>
+Subject: [PATCH] wifi: ath12k: fix mac id extraction when MSDU spillover in rx error path
+Date: Fri, 29 Mar 2024 11:39:22 +0530
+Message-ID: <20240329060922.677091-1-quic_nithp@quicinc.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: TOmZXpflr0_em-jiwFu5C0n1ndpSGhii
+X-Proofpoint-GUID: TOmZXpflr0_em-jiwFu5C0n1ndpSGhii
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-29_05,2024-03-28_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ phishscore=0 mlxscore=0 mlxlogscore=422 impostorscore=0 clxscore=1011
+ malwarescore=0 spamscore=0 lowpriorityscore=0 suspectscore=0 adultscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2403210001 definitions=main-2403290050
 
-DQoNCj4gPiBTbywgaSB3b3VsZCBsaWtlIHRvIGNoZWNrIHRvIHlvdSwgaXMgdGhlcmUgYW55IHN1
-Y2Nlc3NmdWwgY2FzZSB0aGF0IGEgODgyMkNFIFdJRkkgbW9kdWxlIHdvcmtzIHdlbGwgd2l0aA0K
-PiBLZXJuZWwgNi4xPw0KPiANCj4gSSBzdWdnZXN0IHlvdSBpbnN0YWxsIFVidW50dSBvciBvdGhl
-ciBkaXN0cm8gb24geW91ciB4ODYgUEMsIGFuZCB1cGRhdGUNCj4gKHVwZ3JhZGUgb3IgZG93bmdy
-YWRlKSB0aGUga2VybmVsIHRvIDYuMS4gSGF2ZSB5b3UgdHJpZWQgdGhhdD8NCg0KQnkgdGhlIHdh
-eSwgcGxlYXNlIHVzZSBwbGFpbiB0ZXh0IG1vZGUgYW5kIG5vIHRvcCBwb3N0aW5nLCB3aGljaCBp
-cyBjb252ZW50aW9uIA0Kb2YgdGhpcyBtYWlsaW5nIGxpc3QuIA0KDQoNCg==
+From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+
+Currently, in the rx error data path, mac id is extracted from the
+last 64bits of MSDU end description tag for each entry received in
+the WBM error ring. Then, each entry will be updated into the MSDU
+list for further processing. The extracted mac id is valid when a
+single MSDU is not fragmented and received in the WBM error ring.
+
+In scenarios where the size of a single MSDU received exceeds the
+descriptor buffer size, resulting in fragmented or spillover MSDU
+entries into the WBM error ring. In this case, the extracted mac id
+from each spillover entry is invalid except the last spillover entry
+of the MSDU. This invalid mac id leads to packet rejection.
+
+To address this issue, check if the MSDU continuation flag is set,
+then extract the valid mac id from the last spillover entry.
+Propagate the valid mac id to all the spillover entries of the single
+MSDU in the temporary MSDU list(scatter_msdu_list). Then, update this
+into the MSDU list (msdu_list) for further processing.
+
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+Signed-off-by: Nithyanantham Paramasivam <quic_nithp@quicinc.com>
+---
+ drivers/net/wireless/ath/ath12k/dp_rx.c | 60 +++++++++++++++++++++----
+ 1 file changed, 52 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
+index a593beecdd12..b1b50e14a492 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
+@@ -239,6 +239,14 @@ static inline u8 ath12k_dp_rx_get_msdu_src_link(struct ath12k_base *ab,
+ 	return ab->hal_rx_ops->rx_desc_get_msdu_src_link_id(desc);
+ }
+ 
++static void ath12k_dp_clean_up_skb_list(struct sk_buff_head *skb_list)
++{
++	struct sk_buff *skb;
++
++	while ((skb = __skb_dequeue(skb_list)))
++		dev_kfree_skb_any(skb);
++}
++
+ static int ath12k_dp_purge_mon_ring(struct ath12k_base *ab)
+ {
+ 	int i, reaped = 0;
+@@ -3742,19 +3750,20 @@ int ath12k_dp_rx_process_wbm_err(struct ath12k_base *ab,
+ 	struct hal_rx_wbm_rel_info err_info;
+ 	struct hal_srng *srng;
+ 	struct sk_buff *msdu;
+-	struct sk_buff_head msdu_list;
++	struct sk_buff_head msdu_list, scatter_msdu_list;
+ 	struct ath12k_skb_rxcb *rxcb;
+ 	void *rx_desc;
+ 	u8 mac_id;
+ 	int num_buffs_reaped = 0;
+ 	struct ath12k_rx_desc_info *desc_info;
+ 	int ret, pdev_id;
++	struct hal_rx_desc *msdu_data;
+ 
+ 	__skb_queue_head_init(&msdu_list);
++	__skb_queue_head_init(&scatter_msdu_list);
+ 
+ 	srng = &ab->hal.srng_list[dp->rx_rel_ring.ring_id];
+ 	rx_ring = &dp->rx_refill_buf_ring;
+-
+ 	spin_lock_bh(&srng->lock);
+ 
+ 	ath12k_hal_srng_access_begin(ab, srng);
+@@ -3807,16 +3816,50 @@ int ath12k_dp_rx_process_wbm_err(struct ath12k_base *ab,
+ 			continue;
+ 		}
+ 
++		msdu_data = (struct hal_rx_desc *)msdu->data;
+ 		rxcb->err_rel_src = err_info.err_rel_src;
+ 		rxcb->err_code = err_info.err_code;
+-		rxcb->rx_desc = (struct hal_rx_desc *)msdu->data;
+-
+-		__skb_queue_tail(&msdu_list, msdu);
+-
+ 		rxcb->is_first_msdu = err_info.first_msdu;
+ 		rxcb->is_last_msdu = err_info.last_msdu;
+ 		rxcb->is_continuation = err_info.continuation;
++		rxcb->rx_desc = msdu_data;
++
++		if (err_info.continuation) {
++			__skb_queue_tail(&scatter_msdu_list, msdu);
++		} else {
++			mac_id = ath12k_dp_rx_get_msdu_src_link(ab,
++								msdu_data);
++			if (mac_id >= MAX_RADIOS) {
++				dev_kfree_skb_any(msdu);
++
++				/* In any case continuation bit is set
++				 * in the previous record, cleanup scatter_msdu_list
++				 */
++				ath12k_dp_clean_up_skb_list(&scatter_msdu_list);
++				continue;
++			}
++
++			if (!skb_queue_empty(&scatter_msdu_list)) {
++				struct sk_buff *msdu;
++
++				skb_queue_walk(&scatter_msdu_list, msdu) {
++					rxcb = ATH12K_SKB_RXCB(msdu);
++					rxcb->mac_id = mac_id;
++				}
++
++				skb_queue_splice_tail_init(&scatter_msdu_list,
++							   &msdu_list);
++			}
++
++			rxcb = ATH12K_SKB_RXCB(msdu);
++			rxcb->mac_id = mac_id;
++			__skb_queue_tail(&msdu_list, msdu);
++		}
+ 	}
++	/* In any case continuation bit is set in the
++	 * last record, cleanup scatter_msdu_list
++	 */
++	ath12k_dp_clean_up_skb_list(&scatter_msdu_list);
+ 
+ 	ath12k_hal_srng_access_end(ab, srng);
+ 
+@@ -3830,8 +3873,9 @@ int ath12k_dp_rx_process_wbm_err(struct ath12k_base *ab,
+ 
+ 	rcu_read_lock();
+ 	while ((msdu = __skb_dequeue(&msdu_list))) {
+-		mac_id = ath12k_dp_rx_get_msdu_src_link(ab,
+-							(struct hal_rx_desc *)msdu->data);
++		rxcb = ATH12K_SKB_RXCB(msdu);
++		mac_id = rxcb->mac_id;
++
+ 		pdev_id = ath12k_hw_mac_id_to_pdev_id(ab->hw_params, mac_id);
+ 		ar = ab->pdevs[pdev_id].ar;
+ 
+
+base-commit: fe7e1b830cf3c0272aa4eaf367c4c7b29c169c3d
+-- 
+2.17.1
+
 
