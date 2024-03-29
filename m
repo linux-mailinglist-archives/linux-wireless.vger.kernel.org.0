@@ -1,115 +1,119 @@
-Return-Path: <linux-wireless+bounces-5682-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5680-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAC048933BA
-	for <lists+linux-wireless@lfdr.de>; Sun, 31 Mar 2024 18:47:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FA4689351D
+	for <lists+linux-wireless@lfdr.de>; Sun, 31 Mar 2024 19:23:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F99CB21F92
-	for <lists+linux-wireless@lfdr.de>; Sun, 31 Mar 2024 16:47:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04B0D28CBE9
+	for <lists+linux-wireless@lfdr.de>; Sun, 31 Mar 2024 17:23:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC3631448ED;
-	Sun, 31 Mar 2024 16:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B945148FE9;
+	Sun, 31 Mar 2024 16:29:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=freebsd.org header.i=@freebsd.org header.b="nlhY+zMq"
+	dkim=pass (2048-bit key) header.d=freebsd.org header.i=@freebsd.org header.b="RFrhwXw2"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from a.mx.secunet.com (a.mx.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BC8C1474D7
-	for <linux-wireless@vger.kernel.org>; Sun, 31 Mar 2024 16:39:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5026148FE1
+	for <linux-wireless@vger.kernel.org>; Sun, 31 Mar 2024 16:29:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=62.96.220.36
 ARC-Seal:i=3; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711903193; cv=pass; b=Rzk9Ej0D8fPx2YOlDV/97ievZWk/b50gJNP9Fkj0Wph49zJtuAdRMnCbAuIuBHuTo16DbfjVnDIVOjgn10j4f2ycOgWfFxnbts9OSrSfr8EM5eVviqJOAD4o2gaO36jIdtn49RHGF7CjLgj6HU7FeU5TMrITh13l9QMT5TlNwOg=
+	t=1711902563; cv=pass; b=qitpXnQfM1xGkI0cgzhK7IHH+tHH8CO0vbsLnJ3vy0+KwvE2F80Rm7Pae2Q4wVP8LwU31Bznac757KrArR3ceCw+UF0g1afCVH24zWgapEoi6pHsj+dWPr+6uoORy+nf8MNP1hHdzhfgV6/tS9P2kxXxuq5r9oL23hSkNZ7xI/w=
 ARC-Message-Signature:i=3; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711903193; c=relaxed/simple;
-	bh=7pGYrMUiSkjwH5TCTNsKKcFYxT8HoHviqEpyPHDJo98=;
-	h=Date:From:To:cc:Subject:Message-ID:MIME-Version:Content-Type; b=pZAgXnXdoYGFVafBGa5f+x1mEx0hVo0Lj2QIVToF2whw3bDxxGyKJ9L7LSrCAXThqZUEh9X3phhf4dZXAPpYq1I/J0JtRbe0g/k55kwPOGRDdNW3hH5qI1gSVLosoCQDdFTwQNyO3DjuduE6aw9huWR9mCCMKe3cL/3GvdQ/upo=
-ARC-Authentication-Results:i=3; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=FreeBSD.org; spf=fail smtp.mailfrom=FreeBSD.org; dkim=pass (2048-bit key) header.d=freebsd.org header.i=@freebsd.org header.b=nlhY+zMq; arc=pass smtp.client-ip=96.47.72.81; dmarc=pass (p=none dis=none) header.from=FreeBSD.org; spf=pass smtp.mailfrom=FreeBSD.org; arc=pass smtp.client-ip=62.96.220.36
+	s=arc-20240116; t=1711902563; c=relaxed/simple;
+	bh=ItmHfWjLdvsILXfC8TgEB70myvuqlP3W2q10z6vMhGw=;
+	h=Date:From:To:cc:Subject:Message-ID:MIME-Version:Content-Type; b=ki95Zg3J267y0Rv2Gfm+MnHvdsL3MerILztnHq8FYO3R/MMgP1eV8rl64Fq3Al/qiLqroav4LDe8h1Ppv8oznOlJHHeoI7IG5dlYkrvc8Fdh4yv90SFbXKMmkFUZW6rsG9p0+dYe8xbQPIVGw0+eCaj/LpI/ozG7ukCdpXFQVVA=
+ARC-Authentication-Results:i=3; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=FreeBSD.org; spf=fail smtp.mailfrom=FreeBSD.org; dkim=pass (2048-bit key) header.d=freebsd.org header.i=@freebsd.org header.b=RFrhwXw2; arc=pass smtp.client-ip=96.47.72.81; dmarc=pass (p=none dis=none) header.from=FreeBSD.org; spf=pass smtp.mailfrom=FreeBSD.org; arc=pass smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=FreeBSD.org
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=FreeBSD.org
 Received: from localhost (localhost [127.0.0.1])
-	by a.mx.secunet.com (Postfix) with ESMTP id 513C02087B;
-	Sun, 31 Mar 2024 18:39:50 +0200 (CEST)
+	by a.mx.secunet.com (Postfix) with ESMTP id 6DC3F208E4;
+	Sun, 31 Mar 2024 18:29:20 +0200 (CEST)
 X-Virus-Scanned: by secunet
 Received: from a.mx.secunet.com ([127.0.0.1])
 	by localhost (a.mx.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 9i--duvVKweb; Sun, 31 Mar 2024 18:39:49 +0200 (CEST)
-Received: from mailout1.secunet.com (mailout1.secunet.com [62.96.220.44])
+	with ESMTP id jCsUyx5CqbSG; Sun, 31 Mar 2024 18:29:20 +0200 (CEST)
+Received: from mailout2.secunet.com (mailout2.secunet.com [62.96.220.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by a.mx.secunet.com (Postfix) with ESMTPS id 79FBC2083B;
-	Sun, 31 Mar 2024 18:39:49 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 a.mx.secunet.com 79FBC2083B
+	by a.mx.secunet.com (Postfix) with ESMTPS id EF319208D4;
+	Sun, 31 Mar 2024 18:29:19 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 a.mx.secunet.com EF319208D4
 Received: from cas-essen-01.secunet.de (unknown [10.53.40.201])
-	by mailout1.secunet.com (Postfix) with ESMTP id 6D2A480004A;
-	Sun, 31 Mar 2024 18:39:49 +0200 (CEST)
+	by mailout2.secunet.com (Postfix) with ESMTP id E304080005A;
+	Sun, 31 Mar 2024 18:29:19 +0200 (CEST)
 Received: from mbx-essen-01.secunet.de (10.53.40.197) by
  cas-essen-01.secunet.de (10.53.40.201) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Sun, 31 Mar 2024 18:39:49 +0200
+ 15.1.2507.35; Sun, 31 Mar 2024 18:29:19 +0200
 Received: from Pickup by mbx-essen-01.secunet.de with Microsoft SMTP Server id
- 15.1.2507.17; Sun, 31 Mar 2024 16:36:43 +0000
-X-sender: <linux-wireless+bounces-5627-peter.schumann=secunet.com@vger.kernel.org>
-X-Receiver: <peter.schumann@secunet.com> ORCPT=rfc822;peter.schumann@secunet.com
+ 15.1.2507.17; Sun, 31 Mar 2024 16:23:35 +0000
+X-sender: <linux-wireless+bounces-5628-peter.schumann=secunet.com@vger.kernel.org>
+X-Receiver: <peter.schumann@secunet.com>
+ ORCPT=rfc822;peter.schumann@secunet.com NOTIFY=NEVER;
+ X-ExtendedProps=BQBYABcASAAAAJ05ab4WgQhHsqdZ7WUjHylDTj1TY2h1bWFubiBQZXRlcixPVT1Vc2VycyxPVT1NaWdyYXRpb24sREM9c2VjdW5ldCxEQz1kZQUAbAACAAAFAAwAAgAADwA2AAAATWljcm9zb2Z0LkV4Y2hhbmdlLlRyYW5zcG9ydC5NYWlsUmVjaXBpZW50LkRpc3BsYXlOYW1lDwAPAAAAU2NodW1hbm4sIFBldGVyBQA8AAIAAAUAHQAPAAwAAABtYngtZXNzZW4tMDEFAA4AEQAuyVP5XtO9RYbNJlr9VbVbBQALABcAvgAAAEOSGd+Q7QVIkVZ3ffGxE8RDTj1EQjQsQ049RGF0YWJhc2VzLENOPUV4Y2hhbmdlIEFkbWluaXN0cmF0aXZlIEdyb3VwIChGWURJQk9IRjIzU1BETFQpLENOPUFkbWluaXN0cmF0aXZlIEdyb3VwcyxDTj1zZWN1bmV0LENOPU1pY3Jvc29mdCBFeGNoYW5nZSxDTj1TZXJ2aWNlcyxDTj1Db25maWd1cmF0aW9uLERDPXNlY3VuZXQsREM9ZGUFABIADwBgAAAAL289c2VjdW5ldC9vdT1FeGNoYW5nZSBBZG1pbmlzdHJhdGl2ZSBHcm91cCAoRllESUJPSEYyM1NQRExUKS9jbj1SZWNpcGllbnRzL2NuPVBldGVyIFNjaHVtYW5uNWU3BQBHAAIAAAUARgAHAAMAAAAFAEMAAgAABQAWAAIAAAUAagAJAAEAAAAAAAAABQAUABEAnTlpvhaBCEeyp1ntZSMfKQUAFQAWAAIAAAAPADUAAABNaWNyb3NvZnQuRXhjaGFuZ2UuVHJhbnNwb3J0LkRpcmVjdG9yeURhdGEuSXNSZXNvdXJjZQIAAAUAIwACAAEFACIADwAxAAAAQXV0b1Jlc3BvbnNlU3VwcHJlc3M6IDANClRyYW5zbWl0SGlzdG9yeTogRmFsc
+	2UNCg8ALwAAAE1pY3Jvc29mdC5FeGNoYW5nZS5UcmFuc3BvcnQuRXhwYW5zaW9uR3JvdXBUeXBlDwAVAAAATWVtYmVyc0dyb3VwRXhwYW5zaW9uBQAmAAIAAQ==
 X-CreatedBy: MSExchange15
-X-HeloDomain: mbx-dresden-01.secunet.de
-X-ExtendedProps: BQBjAAoAKkmmlidQ3AgFADcAAgAADwA8AAAATWljcm9zb2Z0LkV4Y2hhbmdlLlRyYW5zcG9ydC5NYWlsUmVjaXBpZW50Lk9yZ2FuaXphdGlvblNjb3BlEQAAAAAAAAAAAAAAAAAAAAAADwA/AAAATWljcm9zb2Z0LkV4Y2hhbmdlLlRyYW5zcG9ydC5EaXJlY3RvcnlEYXRhLk1haWxEZWxpdmVyeVByaW9yaXR5DwADAAAATG93
-X-Source: SMTP:Default MBX-ESSEN-02
-X-SourceIPAddress: 10.53.40.199
-X-EndOfInjectedXHeaders: 17709
+X-HeloDomain: a.mx.secunet.com
+X-ExtendedProps: BQBjAAoAhZPp8x1Q3AgFAGEACAABAAAABQA3AAIAAA8APAAAAE1pY3Jvc29mdC5FeGNoYW5nZS5UcmFuc3BvcnQuTWFpbFJlY2lwaWVudC5Pcmdhbml6YXRpb25TY29wZREAAAAAAAAAAAAAAAAAAAAAAAUASQACAAEFAGIACgBhAAAAjIoAAAUABAAUIAEAAAAaAAAAcGV0ZXIuc2NodW1hbm5Ac2VjdW5ldC5jb20FAAYAAgABDwAqAAAATWljcm9zb2Z0LkV4Y2hhbmdlLlRyYW5zcG9ydC5SZXN1Ym1pdENvdW50BwABAAAADwAJAAAAQ0lBdWRpdGVkAgABBQACAAcAAQAAAAUAAwAHAAAAAAAFAAUAAgABBQBkAA8AAwAAAEh1YgUAKQACAAE=
+X-Source: SMTP:Default MBX-DRESDEN-01
+X-SourceIPAddress: 62.96.220.36
+X-EndOfInjectedXHeaders: 15818
 X-Virus-Scanned: by secunet
-Received-SPF: Pass (sender SPF authorized) identity=mailfrom; client-ip=147.75.80.249; helo=am.mirrors.kernel.org; envelope-from=linux-wireless+bounces-5627-peter.schumann=secunet.com@vger.kernel.org; receiver=peter.schumann@secunet.com 
-DKIM-Filter: OpenDKIM Filter v2.11.0 a.mx.secunet.com 1382520883
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom; client-ip=147.75.199.223; helo=ny.mirrors.kernel.org; envelope-from=linux-wireless+bounces-5628-peter.schumann=secunet.com@vger.kernel.org; receiver=peter.schumann@secunet.com 
+DKIM-Filter: OpenDKIM Filter v2.11.0 a.mx.secunet.com 4250C20883
 X-Original-To: linux-wireless@vger.kernel.org
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=96.47.72.81
 ARC-Seal: i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711752039; cv=pass; b=tk9RYQCCgh9SQhYtCCWcK7FM9rYQHFrjCifuSXfV2ZKYBRZddXb+H+5JBQqkRIYKCcOMOcjySHzqpanduRVzZIkaOliFwMw4D8yVnbSEneXQf5JYqjZRxGXOroAUXStbTan6KFfSmlWez/pTDLhL5Tk9ipn7gZiQuqjLXGduXLE=
+	t=1711752057; cv=pass; b=HQ9Rf4GXMGmZmX0/vX1fUMjwcKfJ4V8qgVXJ8xH0k7pngTQOIh+sYt/qOZ34zT/13DI7mVQ3iGOsKCgN7X5IWwvE3dHwwS8ZNFEKWu96j+KesOiDebD0VN05LYSjR29TXU5QyHLtjgn8UzFJcyS6O2s+yK5EvraSiqMt89ev7bc=
 ARC-Message-Signature: i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711752039; c=relaxed/simple;
-	bh=7pGYrMUiSkjwH5TCTNsKKcFYxT8HoHviqEpyPHDJo98=;
-	h=Date:From:To:cc:Subject:Message-ID:MIME-Version:Content-Type; b=SJMCEY9dfTKY7srUdInOMe3OS/dRYkraA6cbNp5hl4/FLvIcbPWPzmf1XH3SYs+on3KCYhoijAOKCqeV+pihL39qZiiemvJeMHaFuzkyOfb55Bxh30mGmrCqMTWFj8w+boREspGE9i1l5No1me75oPUX/lvcb1M2O0NUKRmsE5Y=
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=FreeBSD.org; spf=pass smtp.mailfrom=FreeBSD.org; dkim=pass (2048-bit key) header.d=freebsd.org header.i=@freebsd.org header.b=nlhY+zMq; arc=pass smtp.client-ip=96.47.72.81
+	s=arc-20240116; t=1711752057; c=relaxed/simple;
+	bh=ItmHfWjLdvsILXfC8TgEB70myvuqlP3W2q10z6vMhGw=;
+	h=Date:From:To:cc:Subject:Message-ID:MIME-Version:Content-Type; b=WaDduBwotT24gjzvbJ0mV3WCWCMic5it3SwDpuY/g8YEoVpAG0RKLB+raB6itaLVR5dDKJC4+vjmem0LYDQu4WPFTBIagNyt0q1THsraIMdzyll0U8Y4stiSPFyByaLat/P3OycDTZpG+7txZ4AYi8u5O4r6r/UdTn12XW0muN4=
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=FreeBSD.org; spf=pass smtp.mailfrom=FreeBSD.org; dkim=pass (2048-bit key) header.d=freebsd.org header.i=@freebsd.org header.b=RFrhwXw2; arc=pass smtp.client-ip=96.47.72.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=FreeBSD.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=FreeBSD.org
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=freebsd.org; s=dkim;
-	t=1711752036;
+	t=1711752055;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=NCVKXUNR3QTD61lMq3BrVIdn17RB8M4l5LHckoatSYM=;
-	b=nlhY+zMquuM9Dk2L1xJoFy63Ikn11pRM8HKL3K/DllVbhqm3QS1C+2VqOUY+yoUzWOuUrL
-	whcEennMqkSsLlSkxWwhzdosLTZpvAPHY3tKp6N/oZhrQZj0zjIx22kR7hyAGjxVBeN8cM
-	g//lMbXNfL+FkzfcOIyco5QcpPT13nsa4SF+PPVktNPgPfp5TdwYlY5ne7MHoH4yDlvfsA
-	GiDCzt5gPcTDdNl3xgqJBl76vlu2mrGEc/T9Y702wQigCOeOGlrfaBy7UugbabRK5Chk4g
-	jFz5XiYyctMDmPfBLAMTqZa1maS79lHYf0EQ8q9aIf+zcSv9iek/60OyV1walw==
-ARC-Seal: i=1; s=dkim; d=freebsd.org; t=1711752036; a=rsa-sha256; cv=none;
-	b=Y+G0KevYLkzTZJViYyJXEmhALqMrv8lx7hmyqNO71OoagPTdsFyS+0Fzo5YEQy7vjYRDzU
-	C2CcrL7D6AnqmCb/4Gjts5LU5JaczAjcGyLO8ncLCYzXizZiK2kIRBBDDWOvqNSV37VHWA
-	zJZNZ6M2j/79US9Am26wibzYzhbEBcyPOrqJ+LsxO93VeEXbLOHzryk7xWXm6KltHBOQG8
-	2cGFoxbCG8pE7zTk2gSqDfqCRwrAJldDDqSganjAoPzwjjllj5y6FpgOeuz1vIzsTRvJYK
-	r34+bJKcPylhxcfNrHRSjjbla5KyO1ZqmYORIuhpaz+DsiTI1tDXr8uQ+yPwqg==
+	bh=Gn7QOGXaVs/MtoXMsTH/aaRdzuSSvZ+fvGeeVoEHcI4=;
+	b=RFrhwXw2sPyHbryVzZEcrhuaruF8U/aOPSsDTTU+pmznBA32uVnDUa3aT1nzASi1e6e3Ol
+	IwlwB/rFMIVniqHHWfiMnXyhN2aqc8kG5zD72N1Atrfnv/7xHa0DgEMlBp7BP6ibMmeoNz
+	uv7Ay7q8BvRNYlUjdnsEANz6516FC6GLenPPM2Z0x7ntd1T+/rc8gr5uzZ6QbemTvYi+/O
+	/r4bLLaYSHten5OFp5J0qO8oF+C03qzNV8EGud7y/Zm+UDoRanVLS2KdOmNJv2jeCcXXQ1
+	XZglQM7DLGTCq8HJv4F/dYafT5G6aA9YBg6+abV0qMt1cF9P/wzf6elJt+BokA==
+ARC-Seal: i=1; s=dkim; d=freebsd.org; t=1711752055; a=rsa-sha256; cv=none;
+	b=UmEXp07ypsN0DLz9c8DP2aty0Nh7AWraLE1IFStNvavO0WlI3hrg4ARx7/QKtn+fOWlnSy
+	9vEdzGvgee5qbOOw6sn5E7YMaRJcF+LNE67fTua+att+DLevykgmEPZA/kEj2lW8HxgecE
+	L48E8kl3r09gkDi1g218YSN7bvTasd8+rrX/RZUC38puKjrTs+2OJUeJ9eJ9B+B1+qXoPF
+	F7ZmOy7Fpu/YworeSNsfMryn7yieZxM6k5b28sLFrJynNgL+MZO3JxL+X8maE9M19/oRbK
+	JLrhgEvIYc53lBkkUi4LOLEpICPvCrUIsKOMvHsVs4SbcE9kBlJxr0z0zE/gjw==
 ARC-Authentication-Results: i=1;
 	mx1.freebsd.org;
 	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=freebsd.org;
-	s=dkim; t=1711752036;
+	s=dkim; t=1711752055;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=NCVKXUNR3QTD61lMq3BrVIdn17RB8M4l5LHckoatSYM=;
-	b=U9F49Dfks3auHb3WWMqG78HoVX02iGp/mod7oPzrZKOzPKg9y1AOsNEKGmRH9kzWPGFP0C
-	KTQOX626BTbSJN+zaoV8ktm8c2l1SKqtWoSpwNWOLtVhvVi5q8rfvDvv2ZJ3irbUqqeDQh
-	mVgJxrjMossvPuvnKUbqZc/Ohk/IrubY1iHnru+WUwWuwWHufkps7CY6iDv/46rnb0NIyT
-	0Cz3QiXaPJFVWWl7yjbCuGlnI26xHklqJlHjLbKVSuHmPxAfbcRBYSR6zMwI1Z60iu+iLT
-	ss4WjBMQXP0eT2d1mC42NxLLGJHUGEV8Bxrhei26KSJzL4EqBk0utbTrOfB3mw==
+	bh=Gn7QOGXaVs/MtoXMsTH/aaRdzuSSvZ+fvGeeVoEHcI4=;
+	b=LrZ9+MlAZmqPns3J7n6gVctDms5hjDm+a8sESfdUmookj3Q6d6cxSA9kGZ4ehxipsYx7aa
+	2SkJ5HmRPgVLycje4L+3qv2M3dbgMALPvHDfARGJva7PXgRF6nQ2CZKlQwIXX4Oucq3hoN
+	22Z51qXzuK0NTWcFFu6eYXTwZiMJsx4NhKvebCGqEeIsmlNl8pnPPfHzbDq89sNl0EQkZU
+	iRLPhUu9Fkqmz9EknU8QHpgpYlt1DzXXgBzcwgEMBbbgA0YewPmsHIpwfFpIORQimnsDhq
+	g6c1z/B+GGbERljetnt+gA1p671FQOzAvsRoN6CaZ63P4QJOkcfgRj1u05Y8Jw==
 X-Virus-Scanned: amavisd-new at sbone.de
-Date: Fri, 29 Mar 2024 22:40:33 +0000 (UTC)
+Date: Fri, 29 Mar 2024 22:40:52 +0000 (UTC)
 From: "Bjoern A. Zeeb" <bz@FreeBSD.org>
 To: linux-wireless@vger.kernel.org
 cc: miriam.rachel.korenblit@intel.com
-Subject: [PATCH 1/3] wifi: iwlwifi: mvm: remove dead code
-Message-ID: <185p689r-ppo9-172r-sq32-5794rs0054qn@SerrOFQ.bet>
+Subject: [PATCH 2/3] wifi: iwlwifi: remove function declaration without
+ function
+Message-ID: <r4q0o9rs-0q52-5125-nro9-p37n72qnn86s@SerrOFQ.bet>
 Precedence: bulk
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -120,218 +124,27 @@ MIME-Version: 1.0
 Content-Type: text/plain; format=flowed; charset=US-ASCII
 X-EXCLAIMER-MD-CONFIG: 2c86f778-e09b-4440-8b15-867914633a10
 
-Both iwl_mvm_ftm_resp_remove_pasn_sta() and
-iwl_mvm_ftm_respoder_add_pasn_sta() are not used anywhere, so
-remove dead code.
-That also orphans iwl_mvm_add_pasn_sta(). Remove that too.
+iwl_trans_pcie_send_hcmd() is left without an implementation.
+Garbage collect.
 
 Signed-off-by:	Bjoern A. Zeeb <bz@FreeBSD.org>
 Sponsored by:	The FreeBSD Foundation
 ---
-  .../intel/iwlwifi/mvm/ftm-responder.c         | 80 -------------------
-  drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  6 --
-  drivers/net/wireless/intel/iwlwifi/mvm/sta.c  | 65 ---------------
-  drivers/net/wireless/intel/iwlwifi/mvm/sta.h  |  3 -
-  4 files changed, 154 deletions(-)
+  drivers/net/wireless/intel/iwlwifi/pcie/internal.h | 1 -
+  1 file changed, 1 deletion(-)
 
-diff --git drivers/net/wireless/intel/iwlwifi/mvm/ftm-responder.c drivers/net/wireless/intel/iwlwifi/mvm/ftm-responder.c
-index 8f10590f9cdd..5bcaeecb8ab4 100644
---- drivers/net/wireless/intel/iwlwifi/mvm/ftm-responder.c
-+++ drivers/net/wireless/intel/iwlwifi/mvm/ftm-responder.c
-@@ -312,86 +312,6 @@ static void iwl_mvm_resp_del_pasn_sta(struct iwl_mvm *mvm,
-  	kfree(sta);
-  }
-
--int iwl_mvm_ftm_respoder_add_pasn_sta(struct iwl_mvm *mvm,
--				      struct ieee80211_vif *vif,
--				      u8 *addr, u32 cipher, u8 *tk, u32 tk_len,
--				      u8 *hltk, u32 hltk_len)
--{
--	int ret;
--	struct iwl_mvm_pasn_sta *sta = NULL;
--	struct iwl_mvm_pasn_hltk_data hltk_data = {
--		.addr = addr,
--		.hltk = hltk,
--	};
--	struct iwl_mvm_pasn_hltk_data *hltk_data_ptr = NULL;
--
--	u8 cmd_ver = iwl_fw_lookup_cmd_ver(mvm->fw,
--					   WIDE_ID(LOCATION_GROUP, TOF_RESPONDER_DYN_CONFIG_CMD),
--					   2);
--
--	lockdep_assert_held(&mvm->mutex);
--
--	if (cmd_ver < 3) {
--		IWL_ERR(mvm, "Adding PASN station not supported by FW\n");
--		return -EOPNOTSUPP;
--	}
--
--	if ((!hltk || !hltk_len) && (!tk || !tk_len)) {
--		IWL_ERR(mvm, "TK and HLTK not set\n");
--		return -EINVAL;
--	}
--
--	if (hltk && hltk_len) {
--		hltk_data.cipher = iwl_mvm_cipher_to_location_cipher(cipher);
--		if (hltk_data.cipher == IWL_LOCATION_CIPHER_INVALID) {
--			IWL_ERR(mvm, "invalid cipher: %u\n", cipher);
--			return -EINVAL;
--		}
--
--		hltk_data_ptr = &hltk_data;
--	}
--
--	if (tk && tk_len) {
--		sta = kzalloc(sizeof(*sta), GFP_KERNEL);
--		if (!sta)
--			return -ENOBUFS;
--
--		ret = iwl_mvm_add_pasn_sta(mvm, vif, &sta->int_sta, addr,
--					   cipher, tk, tk_len);
--		if (ret) {
--			kfree(sta);
--			return ret;
--		}
--
--		memcpy(sta->addr, addr, ETH_ALEN);
--		list_add_tail(&sta->list, &mvm->resp_pasn_list);
--	}
--
--	ret = iwl_mvm_ftm_responder_dyn_cfg_v3(mvm, vif, NULL, hltk_data_ptr);
--	if (ret && sta)
--		iwl_mvm_resp_del_pasn_sta(mvm, vif, sta);
--
--	return ret;
--}
--
--int iwl_mvm_ftm_resp_remove_pasn_sta(struct iwl_mvm *mvm,
--				     struct ieee80211_vif *vif, u8 *addr)
--{
--	struct iwl_mvm_pasn_sta *sta, *prev;
--
--	lockdep_assert_held(&mvm->mutex);
--
--	list_for_each_entry_safe(sta, prev, &mvm->resp_pasn_list, list) {
--		if (!memcmp(sta->addr, addr, ETH_ALEN)) {
--			iwl_mvm_resp_del_pasn_sta(mvm, vif, sta);
--			return 0;
--		}
--	}
--
--	IWL_ERR(mvm, "FTM: PASN station %pM not found\n", addr);
--	return -EINVAL;
--}
--
-  int iwl_mvm_ftm_start_responder(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
-  				struct ieee80211_bss_conf *bss_conf)
-  {
-diff --git drivers/net/wireless/intel/iwlwifi/mvm/mvm.h drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-index 81dbef6947f5..6c6c3516687f 100644
---- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-+++ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-@@ -2279,12 +2279,6 @@ void iwl_mvm_ftm_restart_responder(struct iwl_mvm *mvm,
-  				   struct ieee80211_bss_conf *bss_conf);
-  void iwl_mvm_ftm_responder_stats(struct iwl_mvm *mvm,
-  				 struct iwl_rx_cmd_buffer *rxb);
--int iwl_mvm_ftm_resp_remove_pasn_sta(struct iwl_mvm *mvm,
--				     struct ieee80211_vif *vif, u8 *addr);
--int iwl_mvm_ftm_respoder_add_pasn_sta(struct iwl_mvm *mvm,
--				      struct ieee80211_vif *vif,
--				      u8 *addr, u32 cipher, u8 *tk, u32 tk_len,
--				      u8 *hltk, u32 hltk_len);
-  void iwl_mvm_ftm_responder_clear(struct iwl_mvm *mvm,
-  				 struct ieee80211_vif *vif);
-
-diff --git drivers/net/wireless/intel/iwlwifi/mvm/sta.c drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-index c2e0cff740e9..decafdbc2f5b 100644
---- drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-+++ drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-@@ -4324,71 +4324,6 @@ u16 iwl_mvm_tid_queued(struct iwl_mvm *mvm, struct iwl_mvm_tid_data *tid_data)
-  	return ieee80211_sn_sub(sn, tid_data->next_reclaimed);
-  }
-
--int iwl_mvm_add_pasn_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
--			 struct iwl_mvm_int_sta *sta, u8 *addr, u32 cipher,
--			 u8 *key, u32 key_len)
--{
--	int ret;
--	u16 queue;
--	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
--	struct ieee80211_key_conf *keyconf;
--	unsigned int wdg_timeout =
--		iwl_mvm_get_wd_timeout(mvm, vif, false, false);
--	bool mld = iwl_mvm_has_mld_api(mvm->fw);
--	u32 type = mld ? STATION_TYPE_PEER : IWL_STA_LINK;
--
--	ret = iwl_mvm_allocate_int_sta(mvm, sta, 0,
--				       NL80211_IFTYPE_UNSPECIFIED, type);
--	if (ret)
--		return ret;
--
--	if (mld)
--		ret = iwl_mvm_mld_add_int_sta_with_queue(mvm, sta, addr,
--							 mvmvif->deflink.fw_link_id,
--							 &queue,
--							 IWL_MAX_TID_COUNT,
--							 &wdg_timeout);
--	else
--		ret = iwl_mvm_add_int_sta_with_queue(mvm, mvmvif->id,
--						     mvmvif->color, addr, sta,
--						     &queue,
--						     IWL_MVM_TX_FIFO_BE);
--	if (ret)
--		goto out;
--
--	keyconf = kzalloc(sizeof(*keyconf) + key_len, GFP_KERNEL);
--	if (!keyconf) {
--		ret = -ENOBUFS;
--		goto out;
--	}
--
--	keyconf->cipher = cipher;
--	memcpy(keyconf->key, key, key_len);
--	keyconf->keylen = key_len;
--	keyconf->flags = IEEE80211_KEY_FLAG_PAIRWISE;
--
--	if (mld) {
--		/* The MFP flag is set according to the station mfp field. Since
--		 * we don't have a station, set it manually.
--		 */
--		u32 key_flags =
--			iwl_mvm_get_sec_flags(mvm, vif, NULL, keyconf) |
--			IWL_SEC_KEY_FLAG_MFP;
--		u32 sta_mask = BIT(sta->sta_id);
--
--		ret = iwl_mvm_mld_send_key(mvm, sta_mask, key_flags, keyconf);
--	} else {
--		ret = iwl_mvm_send_sta_key(mvm, sta->sta_id, keyconf, false,
--					   0, NULL, 0, 0, true);
--	}
--
--	kfree(keyconf);
--	return 0;
--out:
--	iwl_mvm_dealloc_int_sta(mvm, sta);
--	return ret;
--}
--
-  void iwl_mvm_cancel_channel_switch(struct iwl_mvm *mvm,
-  				   struct ieee80211_vif *vif,
-  				   u32 id)
-diff --git drivers/net/wireless/intel/iwlwifi/mvm/sta.h drivers/net/wireless/intel/iwlwifi/mvm/sta.h
-index 3cf8a70274ce..f4c901bded70 100644
---- drivers/net/wireless/intel/iwlwifi/mvm/sta.h
-+++ drivers/net/wireless/intel/iwlwifi/mvm/sta.h
-@@ -573,9 +573,6 @@ void iwl_mvm_modify_all_sta_disable_tx(struct iwl_mvm *mvm,
-  void iwl_mvm_csa_client_absent(struct iwl_mvm *mvm, struct ieee80211_vif *vif);
-  int iwl_mvm_sta_ensure_queue(struct iwl_mvm *mvm, struct ieee80211_txq *txq);
-  void iwl_mvm_add_new_dqa_stream_wk(struct work_struct *wk);
--int iwl_mvm_add_pasn_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
--			 struct iwl_mvm_int_sta *sta, u8 *addr, u32 cipher,
--			 u8 *key, u32 key_len);
-  void iwl_mvm_cancel_channel_switch(struct iwl_mvm *mvm,
-  				   struct ieee80211_vif *vif,
-  				   u32 id);
+diff --git drivers/net/wireless/intel/iwlwifi/pcie/internal.h drivers/net/wireless/intel/iwlwifi/pcie/internal.h
+index 7805a42948af..22749a0de78a 100644
+--- drivers/net/wireless/intel/iwlwifi/pcie/internal.h
++++ drivers/net/wireless/intel/iwlwifi/pcie/internal.h
+@@ -552,7 +552,6 @@ void iwl_trans_pcie_txq_set_shared_mode(struct iwl_trans *trans, u32 txq_id,
+  int iwl_trans_pcie_tx(struct iwl_trans *trans, struct sk_buff *skb,
+  		      struct iwl_device_tx_cmd *dev_cmd, int txq_id);
+  void iwl_pcie_txq_check_wrptrs(struct iwl_trans *trans);
+-int iwl_trans_pcie_send_hcmd(struct iwl_trans *trans, struct iwl_host_cmd *cmd);
+  void iwl_pcie_hcmd_complete(struct iwl_trans *trans,
+  			    struct iwl_rx_cmd_buffer *rxb);
+  void iwl_trans_pcie_tx_reset(struct iwl_trans *trans);
 -- 
 2.40.0
 
