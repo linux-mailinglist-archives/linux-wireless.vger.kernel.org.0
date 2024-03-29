@@ -1,103 +1,158 @@
-Return-Path: <linux-wireless+bounces-5578-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5579-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D511A891B7F
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 14:26:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB7DF891F33
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 16:00:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 908D929132E
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 13:26:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45AE41F2ECA2
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 15:00:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89071142E83;
-	Fri, 29 Mar 2024 12:35:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D78B613BC1A;
+	Fri, 29 Mar 2024 12:56:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WxkPTF5k"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jSKZFmf3"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 605C9142E7E;
-	Fri, 29 Mar 2024 12:35:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11EBA8564C;
+	Fri, 29 Mar 2024 12:56:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711715723; cv=none; b=JFpcvZqjHygUpx5mwCdSNEkjKz6cKF7N3gxDwK2IHdUzHlmjnuSehFORAiPmstBqML9CVFnPqtNe4V+ESPDXMSZFHk3FiYe80EtZ0FEbhoiVhG4QZ/v8jcpLdUpcXlx426QHflwXfEl4JFKhnxaU9fiWHvI5YzZVb+An3tfLSIc=
+	t=1711716979; cv=none; b=i8F1IsfBWq+B7xjFCJq3mIapxFXnGLhuFitnHiJlUjDpoCwrAOiLOV1l49YXyQmesx5tTni8d/w5oPv3hBOaanKWxavoAs9Pbds6qGP8OihIeVPYjEvGLMCo/l+CagtMBKzfmfd1Vr3hfDPvrbP4hy8msKc10bh78TK4P5xpbbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711715723; c=relaxed/simple;
-	bh=1GtH/erExVGz0ScC+7d4AU7fiq+KxopxGG/bYX1DvK0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=MYEStWP4pUf8txFe25Hz1u39T6lD5IgIwkL8j76ZE9TiWVBICPTfEKgg/GBmNpuikSW/i+nAREpuxnsOo+lMzLa1iJCQSGxe46RgVDNJzsMiXpkz/mOchwMkn6RNZHZuN7PkadQ7KWpJq69Dyuvorw0D68HP2frcTT/qbhPJEvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WxkPTF5k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11C46C433C7;
-	Fri, 29 Mar 2024 12:35:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711715723;
-	bh=1GtH/erExVGz0ScC+7d4AU7fiq+KxopxGG/bYX1DvK0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=WxkPTF5kxRGQK4gckfr9rmYqqlqelPpURFcWf2EvcqJHzCx+5ZvQexAXN3oazrzTQ
-	 9a0qBeeJPZJeqCWZ8BEwCXKXXdCabK8gwg1dBXtn/PB6VHAVoNX4UHMg9+bkbtTcit
-	 0twwwlHmhEmFVtp1204LAZg8zM0HmRJuQ6aLYEkFG2WrAw37e1Huq7uJ0n3AvfIIZv
-	 XMFXcYgnPMf/sBT2TwKEQZFARK/JkgFuEd370b2H9GQ2gEKgefgCpCEtf/vJlt2xVD
-	 QyQ0RZ1JfwOeqCkOJTI2PrLV8dCbe1dSqbbww5/99OkC29qF5Loh3QzgdPaxL43A34
-	 lCZA4WeJ/rzwg==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Dmitry Antipov <dmantipov@yandex.ru>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
-	Sasha Levin <sashal@kernel.org>,
-	kvalo@kernel.org,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 01/11] wifi: ath9k: fix LNA selection in ath_ant_try_scan()
-Date: Fri, 29 Mar 2024 08:35:07 -0400
-Message-ID: <20240329123522.3086878-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1711716979; c=relaxed/simple;
+	bh=giiR5PK117e80LYqQREc6Pn73ncvElpx/Bps6tfm1ho=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SuyiPfEl2lqcqFcWKTieczZg5wTISqqS+FoT3PWGid1KJ9xuG5kYQCwhYwJL+IcfvQhWmBGfQu3v15IWcqpoKau7AjLoPbuAX9rHdFLqdGCKmuoARGM+3U44NQPAnOBbJ7QNoRQQ6Jq856e8HT5VOsgdF5jusqAAEHNi8GMJBxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jSKZFmf3; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-56c441e66a5so2579533a12.0;
+        Fri, 29 Mar 2024 05:56:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1711716976; x=1712321776; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jhb/ZNVtFOVdFjvoqvyjgcThge4E4KdOyihLh4rO7KA=;
+        b=jSKZFmf31y/X6uPdyGVth2KstcFd+zd92rkDJxWjOvucWf5RVlZv/WJGRIjic90V/z
+         LPR1sVI8et9iBwaHxv+2LbInAi3MtjutUehiUJMCbG4hBiwmnnvcelYUqSlbPs5EvAIA
+         Acs0ZnTt5GP+85fLYJ5hC4izNKkesxlPkx3LMNHmBJg7DKnwLwcWEPjqbYlKQxZ9YZ2F
+         6uww1C1ko93mQz81gJC9Uo52icbDqtKlB2u0J43P+SjCZJvdaZpAxtW1aGTNXEAx8ruP
+         Pn1ekzC7zN2mt9bNZCckGJZWK0jNMXIU4askJfIKuaT/Nsmd7aieTIX6fRrMeYMletWK
+         2R4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711716976; x=1712321776;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=jhb/ZNVtFOVdFjvoqvyjgcThge4E4KdOyihLh4rO7KA=;
+        b=vtSqTkJgmYn/N3cG32kNXUfWoOD7hPDhkUPjx6GLpW+DNYDETtpY0rP8tu2zxQPtSU
+         W7GUM9E9jsYOVv5sh9sYEf6C2+mqZQMuCCkwq/hDpPxAey5asOi9ikObJarT+p2TtwyV
+         jV+wi11HSso+pbsSyM5vIa+mEnaNXIy1fdMzvvZLhk9iWHEqmJyVmOHFr/V0uI2Tp8E7
+         Rh5xqDb0xGjByNJwMt9mlMqtPFYUhHDgeXYcH6AY2TaM1z14DAFEfv96k/EKFxz8Dhdf
+         iYqf4wijkiwWPg1kplZWd5+DYowi/osVYvMePkCLmZJAyJ8fqrYtWLF+2+WHUUMhX4En
+         9+XA==
+X-Forwarded-Encrypted: i=1; AJvYcCV3FlUTz6d3TCtcTJUUUxb58WGpblIMLt5ktnMzyAlOb9fpGvKXe+9NKw69QsqVN/o5A2BOeEnsFVC7RU5tbGb3+6jeXvK1FDMHzmLWMv6GbRsHIE0G7hWLLNBWQfZ/B4n6GZ6u/LvYyL4xgK0=
+X-Gm-Message-State: AOJu0YwuRO2Y923+s9H47itvK1PMt0zQLKp1ALqYe7gtDGMnhslGPp0d
+	gx3QacBZ/fh2/tfRkuD9BTkEsaB8lYuUxKa19BjIDIsoG175HiqV
+X-Google-Smtp-Source: AGHT+IHGPWvOGzQDAj+fZIR/IrGdh825/Sa8pgKD31+sRZhZp4d9wY2dHrBfikuf39Ic1r/fig0JGw==
+X-Received: by 2002:a17:906:a3d6:b0:a4e:360:c979 with SMTP id ca22-20020a170906a3d600b00a4e0360c979mr1425731ejb.48.1711716976038;
+        Fri, 29 Mar 2024 05:56:16 -0700 (PDT)
+Received: from shift.daheim (p200300d5ff0d9a0050f496fffe46beef.dip0.t-ipconnect.de. [2003:d5:ff0d:9a00:50f4:96ff:fe46:beef])
+        by smtp.gmail.com with ESMTPSA id wr1-20020a170907700100b00a473a0f3384sm1916914ejb.16.2024.03.29.05.56.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 29 Mar 2024 05:56:15 -0700 (PDT)
+Received: from localhost.daheim ([127.0.0.1])
+	by shift.daheim with esmtp (Exim 4.97)
+	(envelope-from <chunkeey@gmail.com>)
+	id 1rqBgA-0000000023J-2lZ6;
+	Fri, 29 Mar 2024 13:56:15 +0100
+Message-ID: <74f9afdc-6227-4daa-b501-640b701e2c8b@gmail.com>
+Date: Fri, 29 Mar 2024 13:56:15 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.19.311
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] [RESEND] wifi: carl9170: re-fix fortified-memset
+ warning
+To: Arnd Bergmann <arnd@kernel.org>, Kees Cook <keescook@chromium.org>,
+ Kalle Valo <kvalo@kernel.org>, Johannes Berg <johannes.berg@intel.com>
+Cc: linux-hardening@vger.kernel.org, =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vu?=
+ =?UTF-8?Q?sen?= <toke@toke.dk>, linux-wireless@vger.kernel.org,
+ Arnd Bergmann <arnd@arndb.de>, Colin Ian King <colin.i.king@gmail.com>,
+ linux-kernel@vger.kernel.org
+References: <20240328135509.3755090-1-arnd@kernel.org>
+ <20240328135509.3755090-2-arnd@kernel.org>
+Content-Language: de-DE
+From: Christian Lamparter <chunkeey@gmail.com>
+In-Reply-To: <20240328135509.3755090-2-arnd@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+On 3/28/24 2:55 PM, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> The carl9170_tx_release() function sometimes triggers a fortified-memset
+> warning in my randconfig builds:
+> 
+> In file included from include/linux/string.h:254,
+>                   from drivers/net/wireless/ath/carl9170/tx.c:40:
+> In function 'fortify_memset_chk',
+>      inlined from 'carl9170_tx_release' at drivers/net/wireless/ath/carl9170/tx.c:283:2,
+>      inlined from 'kref_put' at include/linux/kref.h:65:3,
+>      inlined from 'carl9170_tx_put_skb' at drivers/net/wireless/ath/carl9170/tx.c:342:9:
+> include/linux/fortify-string.h:493:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
+>    493 |                         __write_overflow_field(p_size_field, size);
+> 
+> Kees previously tried to avoid this by using memset_after(), but it seems
+> this does not fully address the problem. I noticed that the memset_after()
+> here is done on a different part of the union (status) than the original
+> cast was from (rate_driver_data), which may confuse the compiler.
+> 
+> Unfortunately, the memset_after() trick does not work on driver_rates[]
+> because that is part of an anonymous struct, and I could not get
+> struct_group() to do this either. Using two separate memset() calls
+> on the two members does address the warning though.
+> 
+> Fixes: fb5f6a0e8063b ("mac80211: Use memset_after() to clear tx status")
+> Link: https://lore.kernel.org/lkml/20230623152443.2296825-1-arnd@kernel.org/
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit d6b27eb997ef9a2aa51633b3111bc4a04748e6d3 ]
+Sure... though I think AI-supported compilers will in the future nag about
+this again. Oh well!
 
-In 'ath_ant_try_scan()', (most likely) the 2nd LNA's signal
-strength should be used in comparison against RSSI when
-selecting first LNA as the main one. Compile tested only.
+Acked-by: Christian Lamparter <chunkeey@gmail.com>
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20231211172502.25202-1-dmantipov@yandex.ru
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/wireless/ath/ath9k/antenna.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> ---
+> I found this while testing randconfig builds, a .config that shows this
+> for me is at https://pastebin.com/yWFKvZYu
+> 
+> Sorry I failed to follow up to Kees' request for a reproducer when
+> I posted this last year.
+> ---
+>   drivers/net/wireless/ath/carl9170/tx.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/ath/carl9170/tx.c b/drivers/net/wireless/ath/carl9170/tx.c
+> index e902ca80eba7..0226c31a6cae 100644
+> --- a/drivers/net/wireless/ath/carl9170/tx.c
+> +++ b/drivers/net/wireless/ath/carl9170/tx.c
+> @@ -280,7 +280,8 @@ static void carl9170_tx_release(struct kref *ref)
+>   	 * carl9170_tx_fill_rateinfo() has filled the rate information
+>   	 * before we get to this point.
+>   	 */
+> -	memset_after(&txinfo->status, 0, rates);
+> +	memset(&txinfo->pad, 0, sizeof(txinfo->pad));
+> +	memset(&txinfo->rate_driver_data, 0, sizeof(txinfo->rate_driver_data));
 
-diff --git a/drivers/net/wireless/ath/ath9k/antenna.c b/drivers/net/wireless/ath/ath9k/antenna.c
-index a3668433dc02b..deac6184dd016 100644
---- a/drivers/net/wireless/ath/ath9k/antenna.c
-+++ b/drivers/net/wireless/ath/ath9k/antenna.c
-@@ -643,7 +643,7 @@ static void ath_ant_try_scan(struct ath_ant_comb *antcomb,
- 				conf->main_lna_conf = ATH_ANT_DIV_COMB_LNA1;
- 				conf->alt_lna_conf = ATH_ANT_DIV_COMB_LNA1_PLUS_LNA2;
- 			} else if (antcomb->rssi_sub >
--				   antcomb->rssi_lna1) {
-+				   antcomb->rssi_lna2) {
- 				/* set to A-B */
- 				conf->main_lna_conf = ATH_ANT_DIV_COMB_LNA1;
- 				conf->alt_lna_conf = ATH_ANT_DIV_COMB_LNA1_MINUS_LNA2;
--- 
-2.43.0
 
 
