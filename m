@@ -1,56 +1,59 @@
-Return-Path: <linux-wireless+bounces-5570-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5571-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D731891A85
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 14:04:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE7E6891A8C
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 14:04:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E3E01F25282
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 13:04:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A074286904
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 13:04:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19D0C15A4BE;
-	Fri, 29 Mar 2024 12:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 834E915AD8E;
+	Fri, 29 Mar 2024 12:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hNac0YUQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iImWKph5"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E20C115A4B8;
-	Fri, 29 Mar 2024 12:32:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5888D15AD87;
+	Fri, 29 Mar 2024 12:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711715535; cv=none; b=ToyP4RGT+4Mpb04NxM2t58F+0QqM9bud3up2a9JhWnXYNcfLGyDkdKCii3ov7mDTfWNJlRCuAG2Ep5bBpG4khv6Bqvmf2MWMzdMhRoE6LHwdgz2rYmhSUlNaP34V1nNhq8ro97Uau+6EZwL1yKB56fSjq2FW8JQNQmSC/3GTmI8=
+	t=1711715539; cv=none; b=XjFbN+7pZ47NXDBwzOR/q+2boqecxLL8xiyuCnu+FnKJ4dvrfnmNTT+U20qSeBFp45wY6TL+uCXyVJEIL4qvBO34uBfpJZw8ZdgxRiTkKul5mEcF8f2eI37lXjKBbZ4tjHr+fFGiqvdByVgYMIOKXf9buEu+EsCeJbhVgem2XnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711715535; c=relaxed/simple;
-	bh=hfeqKvdcam+Hx23J93TUs+OCkyZddn32IYf69gkKRwo=;
+	s=arc-20240116; t=1711715539; c=relaxed/simple;
+	bh=qQebnllPk5LkfOKlhw91bpGz6v4lIiE+uLqg0LZ1brE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=URMOeZ8h+64WWE9pENp9LgYmlakGwcU5vvfyvi4IzWbJqmIbXxWOnOC1MUoyIfDz0/Cn9urqUe9GzTqibgIZJIIr6266y/jLvtpA7byXBduPPNbPx9SrAoO56Qx1kHsn2Za7HdVu5Rq7NiH+z47hQhTlOi/FR4D3IYpslFjNiIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hNac0YUQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAA0BC433C7;
-	Fri, 29 Mar 2024 12:32:13 +0000 (UTC)
+	 MIME-Version; b=VwqUjwGtKCs7WFTkTMjdjRhjFdfZVxTQXE8F5UBd8iFl6/vLzlV/E4+i3khVulLuP9iqRm3tGHwBissSpvjQOcNtLS5hPEYFSP7hNYLTmqrAIWu7Osx7NVVQNDx12RsBSksNWjWrT4mn6mh3yIF3MeOvmd6AlRlPL2DoHltkTHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iImWKph5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9CB7C433F1;
+	Fri, 29 Mar 2024 12:32:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711715534;
-	bh=hfeqKvdcam+Hx23J93TUs+OCkyZddn32IYf69gkKRwo=;
+	s=k20201202; t=1711715538;
+	bh=qQebnllPk5LkfOKlhw91bpGz6v4lIiE+uLqg0LZ1brE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hNac0YUQ/tkaIQDD4xSXGyGmbg/zrVsd2LTQ1IdeGlSXlL2dFvKO3W1bbPYPvSKWe
-	 11Rk6NOzwTr0ipno9Sb42oMrnKQeLzDpd9BjmGWpct/OqOex9OSPLDibXsFX/ETtEp
-	 +rspgFnGI+hkVkITczfTagTWmQHAcXdjpp4R8TZPltAyuT+i8fF4aaHQgjh+LEPpZ3
-	 yTMIqGmXHVA9cYRMeikT59JpMNAspKczMYOvDwfxUVlsQAXIbid5jTtFtOKhpT5GVY
-	 QdZzwso1/QgyUf54f+rnGbXGJ202QAK9A2NqiP3sFIZkwwd22cIO66O96U7NApCWEy
-	 rtnvUhyf5WY9g==
+	b=iImWKph5g2WwH/2Q7x/iIxy1DxRiSE/Jd9AAzH3K4mwlsRmF5uwcIPbzimJ8aJr21
+	 SIHMTPGPwv24YC+bj1OaNi3aRrFKsUyUUcL/y+18B0jBIk79UlI+fC5kpkODjSxJ+K
+	 Ljsl3C/6ApomF3S4kH5/p11sZEIg2JmG6R25KjXZDwjOGkuEjP3CmUIA5gRo1dD+AC
+	 5+YolVq84m7U71edsI02EAJeRCdHcTsGFlQPKbK/5wg/PMKlB0eZxsrYq/tMJkqjoO
+	 QEzqTqGJPFL6cNe5sPQh2FsvK+95BdUYrN6WSjihzDNH/M0uyXNeEsV0xR6rZw3kz2
+	 bFRL3R48M/4kQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ping-Ke Shih <pkshih@realtek.com>,
-	Kalle Valo <kvalo@kernel.org>,
+Cc: Mukesh Sisodiya <mukesh.sisodiya@intel.com>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
+	kvalo@kernel.org,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 05/31] wifi: rtw89: pci: enlarge RX DMA buffer to consider size of RX descriptor
-Date: Fri, 29 Mar 2024 08:31:24 -0400
-Message-ID: <20240329123207.3085013-5-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 07/31] wifi: iwlwifi: pcie: Add the PCI device id for new hardware
+Date: Fri, 29 Mar 2024 08:31:26 -0400
+Message-ID: <20240329123207.3085013-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240329123207.3085013-1-sashal@kernel.org>
 References: <20240329123207.3085013-1-sashal@kernel.org>
@@ -65,37 +68,34 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.83
 Content-Transfer-Encoding: 8bit
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
 
-[ Upstream commit c108b4a50dd7650941d4f4ec5c161655a73711db ]
+[ Upstream commit 6770eee75148ba10c0c051885379714773e00b48 ]
 
-Hardware puts RX descriptor and packet in RX DMA buffer, so it could be
-over one buffer size if packet size is 11454, and then it will be split
-into two segments. WiFi 7 chips use larger size of RX descriptor, so
-enlarge DMA buffer size according to RX descriptor to have better
-performance and simple flow.
+Add the support for a new PCI device id.
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20240121071826.10159-5-pkshih@realtek.com
+Signed-off-by: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
+Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240129211905.fde32107e0a3.I597cff4f340e4bed12b7568a0ad504bd4b2c1cf8@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/pci.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/pci.h b/drivers/net/wireless/realtek/rtw89/pci.h
-index 179740607778a..d982c5dc0889f 100644
---- a/drivers/net/wireless/realtek/rtw89/pci.h
-+++ b/drivers/net/wireless/realtek/rtw89/pci.h
-@@ -546,7 +546,7 @@
- #define RTW89_PCI_TXWD_NUM_MAX		512
- #define RTW89_PCI_TXWD_PAGE_SIZE	128
- #define RTW89_PCI_ADDRINFO_MAX		4
--#define RTW89_PCI_RX_BUF_SIZE		11460
-+#define RTW89_PCI_RX_BUF_SIZE		(11454 + 40) /* +40 for rtw89_rxdesc_long_v2 */
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+index 4d4db5f6836be..7f30e6add9933 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+@@ -505,6 +505,7 @@ static const struct pci_device_id iwl_hw_card_ids[] = {
  
- #define RTW89_PCI_POLL_BDRAM_RST_CNT	100
- #define RTW89_PCI_MULTITAG		8
+ /* Bz devices */
+ 	{IWL_PCI_DEVICE(0x2727, PCI_ANY_ID, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0x272D, PCI_ANY_ID, iwl_bz_trans_cfg)},
+ 	{IWL_PCI_DEVICE(0x272b, PCI_ANY_ID, iwl_bz_trans_cfg)},
+ 	{IWL_PCI_DEVICE(0xA840, PCI_ANY_ID, iwl_bz_trans_cfg)},
+ 	{IWL_PCI_DEVICE(0x7740, PCI_ANY_ID, iwl_bz_trans_cfg)},
 -- 
 2.43.0
 
