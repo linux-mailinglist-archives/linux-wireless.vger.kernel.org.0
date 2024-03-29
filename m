@@ -1,158 +1,158 @@
-Return-Path: <linux-wireless+bounces-5579-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5580-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB7DF891F33
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 16:00:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 769A3891F77
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 16:05:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45AE41F2ECA2
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 15:00:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0190E1F30E19
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 15:05:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D78B613BC1A;
-	Fri, 29 Mar 2024 12:56:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7831514386D;
+	Fri, 29 Mar 2024 13:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jSKZFmf3"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="D2niIYrZ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11EBA8564C;
-	Fri, 29 Mar 2024 12:56:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F040142E78
+	for <linux-wireless@vger.kernel.org>; Fri, 29 Mar 2024 13:28:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711716979; cv=none; b=i8F1IsfBWq+B7xjFCJq3mIapxFXnGLhuFitnHiJlUjDpoCwrAOiLOV1l49YXyQmesx5tTni8d/w5oPv3hBOaanKWxavoAs9Pbds6qGP8OihIeVPYjEvGLMCo/l+CagtMBKzfmfd1Vr3hfDPvrbP4hy8msKc10bh78TK4P5xpbbA=
+	t=1711718923; cv=none; b=iw8O73Qu+eK/PkiNxuBvS7R7f5FiZBBfGeC6ufGMEh/WY5z1fp2a0KGvAHJLNgUqgQwPUY8lagN025sJuB3QvT8Y4GaPp7YtoomDyApVA0qLSU0fCOrQFReiv65AR/KrBoX8VRF0/KGSkX0iRGscJ0rqyk34pjBQPu/h1sW5X8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711716979; c=relaxed/simple;
-	bh=giiR5PK117e80LYqQREc6Pn73ncvElpx/Bps6tfm1ho=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SuyiPfEl2lqcqFcWKTieczZg5wTISqqS+FoT3PWGid1KJ9xuG5kYQCwhYwJL+IcfvQhWmBGfQu3v15IWcqpoKau7AjLoPbuAX9rHdFLqdGCKmuoARGM+3U44NQPAnOBbJ7QNoRQQ6Jq856e8HT5VOsgdF5jusqAAEHNi8GMJBxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jSKZFmf3; arc=none smtp.client-ip=209.85.208.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-56c441e66a5so2579533a12.0;
-        Fri, 29 Mar 2024 05:56:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711716976; x=1712321776; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=jhb/ZNVtFOVdFjvoqvyjgcThge4E4KdOyihLh4rO7KA=;
-        b=jSKZFmf31y/X6uPdyGVth2KstcFd+zd92rkDJxWjOvucWf5RVlZv/WJGRIjic90V/z
-         LPR1sVI8et9iBwaHxv+2LbInAi3MtjutUehiUJMCbG4hBiwmnnvcelYUqSlbPs5EvAIA
-         Acs0ZnTt5GP+85fLYJ5hC4izNKkesxlPkx3LMNHmBJg7DKnwLwcWEPjqbYlKQxZ9YZ2F
-         6uww1C1ko93mQz81gJC9Uo52icbDqtKlB2u0J43P+SjCZJvdaZpAxtW1aGTNXEAx8ruP
-         Pn1ekzC7zN2mt9bNZCckGJZWK0jNMXIU4askJfIKuaT/Nsmd7aieTIX6fRrMeYMletWK
-         2R4w==
+	s=arc-20240116; t=1711718923; c=relaxed/simple;
+	bh=zlmV0sBDPPllGZWjPqa2/c1/r7nXDK5/rzJZO9Fvals=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Hvjpr2YFT5JTYNLs9ItPBLONrBOpViCE1YXNAjOJytoF7QmnlFD2BCWIcS2sIYvpo+XY1NT//Ij39Ma7zt/nT6ACI5bnGCjDoo++SD0ReP0mE0HK6d0AV9Q0AmPyLZPNnlqxW/g1qwPhsnwsdyCUg2J67iQRS7+VvcPhfZyfRtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=D2niIYrZ; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1711718920;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9b2+syugljaMrrOP++3j3QqL3+aM8ytb7iOaLk3Q4wQ=;
+	b=D2niIYrZMvpjNrC4G656TPLRc5Q0xOKgrzGDqFoeTgxqV0qqlWadjuRNfrBJ4d7A5Pv5uU
+	lzoBvay1nsqIkFle4B+r8Vnl5T8aXj9pccfyeJar1I03LtIgS5UHvDmy+ZYMnbBGNQGWN2
+	t+//VpR9cO9Jg9au63aOu//y2sWIXSM=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-622-zaoirANaPu-g6tBaybSRjg-1; Fri, 29 Mar 2024 09:28:36 -0400
+X-MC-Unique: zaoirANaPu-g6tBaybSRjg-1
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-33ed0a8beb5so936833f8f.1
+        for <linux-wireless@vger.kernel.org>; Fri, 29 Mar 2024 06:28:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711716976; x=1712321776;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jhb/ZNVtFOVdFjvoqvyjgcThge4E4KdOyihLh4rO7KA=;
-        b=vtSqTkJgmYn/N3cG32kNXUfWoOD7hPDhkUPjx6GLpW+DNYDETtpY0rP8tu2zxQPtSU
-         W7GUM9E9jsYOVv5sh9sYEf6C2+mqZQMuCCkwq/hDpPxAey5asOi9ikObJarT+p2TtwyV
-         jV+wi11HSso+pbsSyM5vIa+mEnaNXIy1fdMzvvZLhk9iWHEqmJyVmOHFr/V0uI2Tp8E7
-         Rh5xqDb0xGjByNJwMt9mlMqtPFYUhHDgeXYcH6AY2TaM1z14DAFEfv96k/EKFxz8Dhdf
-         iYqf4wijkiwWPg1kplZWd5+DYowi/osVYvMePkCLmZJAyJ8fqrYtWLF+2+WHUUMhX4En
-         9+XA==
-X-Forwarded-Encrypted: i=1; AJvYcCV3FlUTz6d3TCtcTJUUUxb58WGpblIMLt5ktnMzyAlOb9fpGvKXe+9NKw69QsqVN/o5A2BOeEnsFVC7RU5tbGb3+6jeXvK1FDMHzmLWMv6GbRsHIE0G7hWLLNBWQfZ/B4n6GZ6u/LvYyL4xgK0=
-X-Gm-Message-State: AOJu0YwuRO2Y923+s9H47itvK1PMt0zQLKp1ALqYe7gtDGMnhslGPp0d
-	gx3QacBZ/fh2/tfRkuD9BTkEsaB8lYuUxKa19BjIDIsoG175HiqV
-X-Google-Smtp-Source: AGHT+IHGPWvOGzQDAj+fZIR/IrGdh825/Sa8pgKD31+sRZhZp4d9wY2dHrBfikuf39Ic1r/fig0JGw==
-X-Received: by 2002:a17:906:a3d6:b0:a4e:360:c979 with SMTP id ca22-20020a170906a3d600b00a4e0360c979mr1425731ejb.48.1711716976038;
-        Fri, 29 Mar 2024 05:56:16 -0700 (PDT)
-Received: from shift.daheim (p200300d5ff0d9a0050f496fffe46beef.dip0.t-ipconnect.de. [2003:d5:ff0d:9a00:50f4:96ff:fe46:beef])
-        by smtp.gmail.com with ESMTPSA id wr1-20020a170907700100b00a473a0f3384sm1916914ejb.16.2024.03.29.05.56.15
+        d=1e100.net; s=20230601; t=1711718915; x=1712323715;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9b2+syugljaMrrOP++3j3QqL3+aM8ytb7iOaLk3Q4wQ=;
+        b=ZZRLPqZTPKU6xKem7rQzRVgpWS5e9EjxIipfmOM2jaIof244VD5Nw1fAMMdEoyNlzW
+         CQ39zxl8MXvwOEOMElgpo0i9dcPs+bkomZTawbMq/1ashSKZOfGgA+NSCiqBJZJ1GDy7
+         UVVML1WjqfQhx+RcmftKVgm9b9Pfhrbyrtf+5MK9Rql7iM8cQSBzRpPNtukPtl9rDRcI
+         3qEQNhNxVUXtA684GiZldyHXhMveIw0KTpfvpupr3bRUGU/FfIt4exOtRu8L78FT0vo6
+         qLVyZb6/DOlaQKus5IujpTaTZJAhNW1ET0jPXZ9mRzDUahwSlvXYbWt7Oox9R93j02oT
+         anDg==
+X-Forwarded-Encrypted: i=1; AJvYcCU8XC+CSdWyN9LZEGbhTWRGUBJLgcPwBTPpZIedhyxVJp+l4K+Ek/oy7s+D/Mgnh6vbUvScdvOr4SxTSC26tfP6C7SNw1rYCj2qHWkXQCg=
+X-Gm-Message-State: AOJu0YzLzJ48Ekio7yMJICpBrgsIYbk3QKf3NkSuGOqvLVWmVNOkHty4
+	ZCaDrVv7FDa7T3C39Gb29CbMIpFnMHmZ1CLrJPQXsVEJ0mv/Fdk83HcKibvPU0Ny1wZXb7Gyfni
+	ZNtFgZ169yOmqd7N9YA120pSDEaTj/nVUy2+Ub6IbmemcV5IeBauYe8AugDXI8uqS
+X-Received: by 2002:a05:6000:258:b0:343:3e54:6208 with SMTP id m24-20020a056000025800b003433e546208mr405118wrz.55.1711718915642;
+        Fri, 29 Mar 2024 06:28:35 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG0y693U6Mrafzyu7YFm6f17FVsvRLIAvGL111PeLg9URymVxfxN4rrw7+XNw571qiaGR1ycw==
+X-Received: by 2002:a05:6000:258:b0:343:3e54:6208 with SMTP id m24-20020a056000025800b003433e546208mr405040wrz.55.1711718915211;
+        Fri, 29 Mar 2024 06:28:35 -0700 (PDT)
+Received: from sgarzare-redhat (host-87-12-25-33.business.telecomitalia.it. [87.12.25.33])
+        by smtp.gmail.com with ESMTPSA id e11-20020a056000194b00b00341c6b53358sm4171063wry.66.2024.03.29.06.28.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Mar 2024 05:56:15 -0700 (PDT)
-Received: from localhost.daheim ([127.0.0.1])
-	by shift.daheim with esmtp (Exim 4.97)
-	(envelope-from <chunkeey@gmail.com>)
-	id 1rqBgA-0000000023J-2lZ6;
-	Fri, 29 Mar 2024 13:56:15 +0100
-Message-ID: <74f9afdc-6227-4daa-b501-640b701e2c8b@gmail.com>
-Date: Fri, 29 Mar 2024 13:56:15 +0100
+        Fri, 29 Mar 2024 06:28:34 -0700 (PDT)
+Date: Fri, 29 Mar 2024 14:28:27 +0100
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, 
+	Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+	Richard Weinberger <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
+	Johannes Berg <johannes@sipsolutions.net>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Stefan Hajnoczi <stefanha@redhat.com>, Jens Axboe <axboe@kernel.dk>, 
+	Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
+	Olivia Mackall <olivia@selenic.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
+	Amit Shah <amit@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Gonglei <arei.gonglei@huawei.com>, 
+	"David S. Miller" <davem@davemloft.net>, Viresh Kumar <vireshk@kernel.org>, 
+	Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
+	David Airlie <airlied@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>, 
+	Gurchetan Singh <gurchetansingh@chromium.org>, Chia-I Wu <olvaffe@gmail.com>, 
+	Jean-Philippe Brucker <jean-philippe@linaro.org>, Joerg Roedel <joro@8bytes.org>, Alexander Graf <graf@amazon.com>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Eric Van Hensbergen <ericvh@kernel.org>, 
+	Latchesar Ionkov <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>, 
+	Christian Schoenebeck <linux_oss@crudebyte.com>, Kalle Valo <kvalo@kernel.org>, 
+	Dan Williams <dan.j.williams@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, 
+	Dave Jiang <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Pankaj Gupta <pankaj.gupta.linux@gmail.com>, Bjorn Andersson <andersson@kernel.org>, 
+	Mathieu Poirier <mathieu.poirier@linaro.org>, "Martin K. Petersen" <martin.petersen@oracle.com>, 
+	Vivek Goyal <vgoyal@redhat.com>, Miklos Szeredi <miklos@szeredi.hu>, 
+	Anton Yakovlev <anton.yakovlev@opensynergy.com>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+	virtualization@lists.linux.dev, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-um@lists.infradead.org, linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org, 
+	linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev, netdev@vger.kernel.org, 
+	v9fs@lists.linux.dev, kvm@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	nvdimm@lists.linux.dev, linux-remoteproc@vger.kernel.org, linux-scsi@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, alsa-devel@alsa-project.org, linux-sound@vger.kernel.org
+Subject: Re: [PATCH 01/22] virtio: store owner from modules with
+ register_virtio_driver()
+Message-ID: <e2xy5kjdctpitcrev2byqc5gcwntvsd6pfutrvp3l2kfe3llgs@l2xp5opj7xu2>
+References: <20240327-module-owner-virtio-v1-0-0feffab77d99@linaro.org>
+ <20240327-module-owner-virtio-v1-1-0feffab77d99@linaro.org>
+ <oaoiehcpkjs3wrhc22pwx676pompxml2z5dcq32a6fvsyntonw@hnohrbbp6wpm>
+ <d01cc73e-a365-4ce8-a25f-780ea45bc581@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] [RESEND] wifi: carl9170: re-fix fortified-memset
- warning
-To: Arnd Bergmann <arnd@kernel.org>, Kees Cook <keescook@chromium.org>,
- Kalle Valo <kvalo@kernel.org>, Johannes Berg <johannes.berg@intel.com>
-Cc: linux-hardening@vger.kernel.org, =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vu?=
- =?UTF-8?Q?sen?= <toke@toke.dk>, linux-wireless@vger.kernel.org,
- Arnd Bergmann <arnd@arndb.de>, Colin Ian King <colin.i.king@gmail.com>,
- linux-kernel@vger.kernel.org
-References: <20240328135509.3755090-1-arnd@kernel.org>
- <20240328135509.3755090-2-arnd@kernel.org>
-Content-Language: de-DE
-From: Christian Lamparter <chunkeey@gmail.com>
-In-Reply-To: <20240328135509.3755090-2-arnd@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <d01cc73e-a365-4ce8-a25f-780ea45bc581@linaro.org>
 
-On 3/28/24 2:55 PM, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> The carl9170_tx_release() function sometimes triggers a fortified-memset
-> warning in my randconfig builds:
-> 
-> In file included from include/linux/string.h:254,
->                   from drivers/net/wireless/ath/carl9170/tx.c:40:
-> In function 'fortify_memset_chk',
->      inlined from 'carl9170_tx_release' at drivers/net/wireless/ath/carl9170/tx.c:283:2,
->      inlined from 'kref_put' at include/linux/kref.h:65:3,
->      inlined from 'carl9170_tx_put_skb' at drivers/net/wireless/ath/carl9170/tx.c:342:9:
-> include/linux/fortify-string.h:493:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
->    493 |                         __write_overflow_field(p_size_field, size);
-> 
-> Kees previously tried to avoid this by using memset_after(), but it seems
-> this does not fully address the problem. I noticed that the memset_after()
-> here is done on a different part of the union (status) than the original
-> cast was from (rate_driver_data), which may confuse the compiler.
-> 
-> Unfortunately, the memset_after() trick does not work on driver_rates[]
-> because that is part of an anonymous struct, and I could not get
-> struct_group() to do this either. Using two separate memset() calls
-> on the two members does address the warning though.
-> 
-> Fixes: fb5f6a0e8063b ("mac80211: Use memset_after() to clear tx status")
-> Link: https://lore.kernel.org/lkml/20230623152443.2296825-1-arnd@kernel.org/
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+On Fri, Mar 29, 2024 at 01:07:31PM +0100, Krzysztof Kozlowski wrote:
+>On 29/03/2024 12:42, Stefano Garzarella wrote:
+>>> };
+>>>
+>>> -int register_virtio_driver(struct virtio_driver *driver)
+>>> +int __register_virtio_driver(struct virtio_driver *driver, struct module *owner)
+>>> {
+>>> 	/* Catch this early. */
+>>> 	BUG_ON(driver->feature_table_size && !driver->feature_table);
+>>> 	driver->driver.bus = &virtio_bus;
+>>> +	driver->driver.owner = owner;
+>>> +
+>>
+>> `.driver.name =  KBUILD_MODNAME` also seems very common, should we put
+>> that in the macro as well?
+>
+>This is a bit different thing. Every driver is expected to set owner to
+>itself (THIS_MODULE), but is every driver name KBUILD_MODNAME?
 
-Sure... though I think AI-supported compilers will in the future nag about
-this again. Oh well!
+Nope, IIUC we have 2 exceptions:
+- drivers/firmware/arm_scmi/virtio.c
+- arch/um/drivers/virt-pci.c
 
-Acked-by: Christian Lamparter <chunkeey@gmail.com>
+>Remember that this overrides whatever driver actually put there.
 
+They can call __register_virtio_driver() where we can add the `name`
+parameter. That said, I don't have a strong opinion, we can leave it
+as it is.
 
-> ---
-> I found this while testing randconfig builds, a .config that shows this
-> for me is at https://pastebin.com/yWFKvZYu
-> 
-> Sorry I failed to follow up to Kees' request for a reproducer when
-> I posted this last year.
-> ---
->   drivers/net/wireless/ath/carl9170/tx.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/ath/carl9170/tx.c b/drivers/net/wireless/ath/carl9170/tx.c
-> index e902ca80eba7..0226c31a6cae 100644
-> --- a/drivers/net/wireless/ath/carl9170/tx.c
-> +++ b/drivers/net/wireless/ath/carl9170/tx.c
-> @@ -280,7 +280,8 @@ static void carl9170_tx_release(struct kref *ref)
->   	 * carl9170_tx_fill_rateinfo() has filled the rate information
->   	 * before we get to this point.
->   	 */
-> -	memset_after(&txinfo->status, 0, rates);
-> +	memset(&txinfo->pad, 0, sizeof(txinfo->pad));
-> +	memset(&txinfo->rate_driver_data, 0, sizeof(txinfo->rate_driver_data));
-
+Thanks,
+Stefano
 
 
