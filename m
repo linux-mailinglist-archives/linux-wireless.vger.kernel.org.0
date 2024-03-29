@@ -1,53 +1,53 @@
-Return-Path: <linux-wireless+bounces-5515-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5516-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A34F8910CA
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 02:58:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E5DC8910D3
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 02:59:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85EF11F23889
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 01:58:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 635E8B22F78
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 01:59:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A283F3FE27;
-	Fri, 29 Mar 2024 01:54:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E16642ABD;
+	Fri, 29 Mar 2024 01:54:30 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE32A3DB89
-	for <linux-wireless@vger.kernel.org>; Fri, 29 Mar 2024 01:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD93E20DCB
+	for <linux-wireless@vger.kernel.org>; Fri, 29 Mar 2024 01:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711677265; cv=none; b=lcFyTIuBs4Ze0Aw1iM8chIM8/hTHN9/2gi2jg8l3hCZQZnfSPgbGlrHn/4CAsCCbqGTzuoxjiYe4QZlf1xIwW/+bUYiu5HGT15FaJcAHGtGNSgVPbVqjJ8jBV0R0ctysfbiHUpGXCjDMujDajFxaMnkmpu00DFs4udCs9pH1Pfc=
+	t=1711677269; cv=none; b=K9Fg1SLIAjiJbek0Lqrm/v8Arw4aLou1ptE625vlA4UcIzdRpQMEOYg59e0VhOoGBjYsQUeGqLzhfEmKgP/sJAWL/J3xyZxtRP0elTfcKtiaZfMA8jeK2Y3RTswCARwv2ZvmMvWrkp+FkouDPcWE6N2G37UT0xinEIiR1bxaHms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711677265; c=relaxed/simple;
-	bh=2KmPigWUc/MRtIkKz5v9r+5GKf6a9mHl9jRfSkUZp7s=;
+	s=arc-20240116; t=1711677269; c=relaxed/simple;
+	bh=Ur60seDagPZ24sD1PvVsfpASEZWYOhVU9/BXwRwvuD8=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DXUPumdCyb1hBSPW3ZUmVAGs+5VpjaTHbAGbVdfLtuxXqm+p7XqnemqhEqZr21FfuPqonbnE9ntU5zdAzeOuvlJzCacc/RZWgXFQxZ7QNh/fFs2GheybJNbLPe4O/fvlbpdipxVgKjD5ZGWmBvImEa16ie0ArSArFYA2gRGSfFI=
+	 MIME-Version:Content-Type; b=pWXDaNAdGRX3JtVapeQr3TuwPHNGPe0zlry5QGkJoHdC7AeB6C8d5YBADkh9h16oQnYwy/5ysi8fyxsGyOV4XqJlLOc96UUMz5q0NqZj5nsSl90fvC5Bth62vMcSDgi/Ruo55F9siDAZyGe76UXVuSosNTrwhqANJgtIhwvFXPE=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 42T1sKfmD3183219, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 42T1sPSR13183256, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 42T1sKfmD3183219
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 42T1sPSR13183256
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Fri, 29 Mar 2024 09:54:20 +0800
+	for <linux-wireless@vger.kernel.org>; Fri, 29 Mar 2024 09:54:25 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Fri, 29 Mar 2024 09:54:20 +0800
+ 15.1.2507.35; Fri, 29 Mar 2024 09:54:25 +0800
 Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 29 Mar
- 2024 09:54:20 +0800
+ 2024 09:54:25 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
 CC: <leo.li@realtek.com>, <kevin_yang@realtek.com>
-Subject: [PATCH 2/4] wifi: rtw89: 8852c: update TX power tables to R69
-Date: Fri, 29 Mar 2024 09:52:49 +0800
-Message-ID: <20240329015251.22762-3-pkshih@realtek.com>
+Subject: [PATCH 3/4] wifi: rtw89: 8852c: add quirk to set PCI BER for certain platforms
+Date: Fri, 29 Mar 2024 09:52:50 +0800
+Message-ID: <20240329015251.22762-4-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240329015251.22762-1-pkshih@realtek.com>
 References: <20240329015251.22762-1-pkshih@realtek.com>
@@ -66,425 +66,249 @@ X-KSE-AntiSpam-Interceptor-Info: fallback
 X-KSE-Antivirus-Interceptor-Info: fallback
 X-KSE-AntiSpam-Interceptor-Info: fallback
 
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
+Increase PCI BER (bit error rate) count depth setting which could increase
+PHY circuit fault tolerance and improve compatibility.
 
-Configure applicable values for IC (Industry Canada) on 5.9GHz.
-
-Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- .../wireless/realtek/rtw89/rtw8852c_table.c   | 90 +++++++++----------
- 1 file changed, 45 insertions(+), 45 deletions(-)
+ drivers/net/wireless/realtek/rtw89/core.c     | 18 +++++++++++++++
+ drivers/net/wireless/realtek/rtw89/core.h     | 10 ++++++++
+ drivers/net/wireless/realtek/rtw89/pci.c      | 19 +++++++++++++++
+ drivers/net/wireless/realtek/rtw89/pci.h      |  5 ++++
+ .../net/wireless/realtek/rtw89/rtw8851be.c    |  1 +
+ .../net/wireless/realtek/rtw89/rtw8852ae.c    |  1 +
+ .../net/wireless/realtek/rtw89/rtw8852be.c    |  1 +
+ .../net/wireless/realtek/rtw89/rtw8852ce.c    | 23 +++++++++++++++++++
+ .../net/wireless/realtek/rtw89/rtw8922ae.c    |  1 +
+ 9 files changed, 79 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c_table.c b/drivers/net/wireless/realtek/rtw89/rtw8852c_table.c
-index ab1a0aadc869..85060c727bb1 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852c_table.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852c_table.c
-@@ -34521,7 +34521,7 @@ const s8 rtw89_8852c_txpwr_lmt_5g[RTW89_5G_BW_NUM][RTW89_NTX_NUM]
- 	[0][0][1][0][RTW89_FCC][48] = 72,
- 	[0][0][1][0][RTW89_ETSI][48] = 127,
- 	[0][0][1][0][RTW89_MKK][48] = 127,
--	[0][0][1][0][RTW89_IC][48] = 127,
-+	[0][0][1][0][RTW89_IC][48] = 72,
- 	[0][0][1][0][RTW89_KCC][48] = 127,
- 	[0][0][1][0][RTW89_ACMA][48] = 127,
- 	[0][0][1][0][RTW89_CN][48] = 127,
-@@ -34534,7 +34534,7 @@ const s8 rtw89_8852c_txpwr_lmt_5g[RTW89_5G_BW_NUM][RTW89_NTX_NUM]
- 	[0][0][1][0][RTW89_FCC][50] = 72,
- 	[0][0][1][0][RTW89_ETSI][50] = 127,
- 	[0][0][1][0][RTW89_MKK][50] = 127,
--	[0][0][1][0][RTW89_IC][50] = 127,
-+	[0][0][1][0][RTW89_IC][50] = 72,
- 	[0][0][1][0][RTW89_KCC][50] = 127,
- 	[0][0][1][0][RTW89_ACMA][50] = 127,
- 	[0][0][1][0][RTW89_CN][50] = 127,
-@@ -34547,7 +34547,7 @@ const s8 rtw89_8852c_txpwr_lmt_5g[RTW89_5G_BW_NUM][RTW89_NTX_NUM]
- 	[0][0][1][0][RTW89_FCC][52] = 72,
- 	[0][0][1][0][RTW89_ETSI][52] = 127,
- 	[0][0][1][0][RTW89_MKK][52] = 127,
--	[0][0][1][0][RTW89_IC][52] = 127,
-+	[0][0][1][0][RTW89_IC][52] = 72,
- 	[0][0][1][0][RTW89_KCC][52] = 127,
- 	[0][0][1][0][RTW89_ACMA][52] = 127,
- 	[0][0][1][0][RTW89_CN][52] = 127,
-@@ -34885,7 +34885,7 @@ const s8 rtw89_8852c_txpwr_lmt_5g[RTW89_5G_BW_NUM][RTW89_NTX_NUM]
- 	[0][1][1][0][RTW89_FCC][48] = 48,
- 	[0][1][1][0][RTW89_ETSI][48] = 127,
- 	[0][1][1][0][RTW89_MKK][48] = 127,
--	[0][1][1][0][RTW89_IC][48] = 127,
-+	[0][1][1][0][RTW89_IC][48] = 48,
- 	[0][1][1][0][RTW89_KCC][48] = 127,
- 	[0][1][1][0][RTW89_ACMA][48] = 127,
- 	[0][1][1][0][RTW89_CN][48] = 127,
-@@ -34898,7 +34898,7 @@ const s8 rtw89_8852c_txpwr_lmt_5g[RTW89_5G_BW_NUM][RTW89_NTX_NUM]
- 	[0][1][1][0][RTW89_FCC][50] = 48,
- 	[0][1][1][0][RTW89_ETSI][50] = 127,
- 	[0][1][1][0][RTW89_MKK][50] = 127,
--	[0][1][1][0][RTW89_IC][50] = 127,
-+	[0][1][1][0][RTW89_IC][50] = 48,
- 	[0][1][1][0][RTW89_KCC][50] = 127,
- 	[0][1][1][0][RTW89_ACMA][50] = 127,
- 	[0][1][1][0][RTW89_CN][50] = 127,
-@@ -34911,7 +34911,7 @@ const s8 rtw89_8852c_txpwr_lmt_5g[RTW89_5G_BW_NUM][RTW89_NTX_NUM]
- 	[0][1][1][0][RTW89_FCC][52] = 48,
- 	[0][1][1][0][RTW89_ETSI][52] = 127,
- 	[0][1][1][0][RTW89_MKK][52] = 127,
--	[0][1][1][0][RTW89_IC][52] = 127,
-+	[0][1][1][0][RTW89_IC][52] = 48,
- 	[0][1][1][0][RTW89_KCC][52] = 127,
- 	[0][1][1][0][RTW89_ACMA][52] = 127,
- 	[0][1][1][0][RTW89_CN][52] = 127,
-@@ -35249,7 +35249,7 @@ const s8 rtw89_8852c_txpwr_lmt_5g[RTW89_5G_BW_NUM][RTW89_NTX_NUM]
- 	[0][0][2][0][RTW89_FCC][48] = 72,
- 	[0][0][2][0][RTW89_ETSI][48] = 127,
- 	[0][0][2][0][RTW89_MKK][48] = 127,
--	[0][0][2][0][RTW89_IC][48] = 127,
-+	[0][0][2][0][RTW89_IC][48] = 72,
- 	[0][0][2][0][RTW89_KCC][48] = 127,
- 	[0][0][2][0][RTW89_ACMA][48] = 127,
- 	[0][0][2][0][RTW89_CN][48] = 127,
-@@ -35262,7 +35262,7 @@ const s8 rtw89_8852c_txpwr_lmt_5g[RTW89_5G_BW_NUM][RTW89_NTX_NUM]
- 	[0][0][2][0][RTW89_FCC][50] = 72,
- 	[0][0][2][0][RTW89_ETSI][50] = 127,
- 	[0][0][2][0][RTW89_MKK][50] = 127,
--	[0][0][2][0][RTW89_IC][50] = 127,
-+	[0][0][2][0][RTW89_IC][50] = 72,
- 	[0][0][2][0][RTW89_KCC][50] = 127,
- 	[0][0][2][0][RTW89_ACMA][50] = 127,
- 	[0][0][2][0][RTW89_CN][50] = 127,
-@@ -35275,7 +35275,7 @@ const s8 rtw89_8852c_txpwr_lmt_5g[RTW89_5G_BW_NUM][RTW89_NTX_NUM]
- 	[0][0][2][0][RTW89_FCC][52] = 72,
- 	[0][0][2][0][RTW89_ETSI][52] = 127,
- 	[0][0][2][0][RTW89_MKK][52] = 127,
--	[0][0][2][0][RTW89_IC][52] = 127,
-+	[0][0][2][0][RTW89_IC][52] = 72,
- 	[0][0][2][0][RTW89_KCC][52] = 127,
- 	[0][0][2][0][RTW89_ACMA][52] = 127,
- 	[0][0][2][0][RTW89_CN][52] = 127,
-@@ -35613,7 +35613,7 @@ const s8 rtw89_8852c_txpwr_lmt_5g[RTW89_5G_BW_NUM][RTW89_NTX_NUM]
- 	[0][1][2][0][RTW89_FCC][48] = 48,
- 	[0][1][2][0][RTW89_ETSI][48] = 127,
- 	[0][1][2][0][RTW89_MKK][48] = 127,
--	[0][1][2][0][RTW89_IC][48] = 127,
-+	[0][1][2][0][RTW89_IC][48] = 48,
- 	[0][1][2][0][RTW89_KCC][48] = 127,
- 	[0][1][2][0][RTW89_ACMA][48] = 127,
- 	[0][1][2][0][RTW89_CN][48] = 127,
-@@ -35626,7 +35626,7 @@ const s8 rtw89_8852c_txpwr_lmt_5g[RTW89_5G_BW_NUM][RTW89_NTX_NUM]
- 	[0][1][2][0][RTW89_FCC][50] = 50,
- 	[0][1][2][0][RTW89_ETSI][50] = 127,
- 	[0][1][2][0][RTW89_MKK][50] = 127,
--	[0][1][2][0][RTW89_IC][50] = 127,
-+	[0][1][2][0][RTW89_IC][50] = 50,
- 	[0][1][2][0][RTW89_KCC][50] = 127,
- 	[0][1][2][0][RTW89_ACMA][50] = 127,
- 	[0][1][2][0][RTW89_CN][50] = 127,
-@@ -35639,7 +35639,7 @@ const s8 rtw89_8852c_txpwr_lmt_5g[RTW89_5G_BW_NUM][RTW89_NTX_NUM]
- 	[0][1][2][0][RTW89_FCC][52] = 48,
- 	[0][1][2][0][RTW89_ETSI][52] = 127,
- 	[0][1][2][0][RTW89_MKK][52] = 127,
--	[0][1][2][0][RTW89_IC][52] = 127,
-+	[0][1][2][0][RTW89_IC][52] = 48,
- 	[0][1][2][0][RTW89_KCC][52] = 127,
- 	[0][1][2][0][RTW89_ACMA][52] = 127,
- 	[0][1][2][0][RTW89_CN][52] = 127,
-@@ -35977,7 +35977,7 @@ const s8 rtw89_8852c_txpwr_lmt_5g[RTW89_5G_BW_NUM][RTW89_NTX_NUM]
- 	[0][1][2][1][RTW89_FCC][48] = 48,
- 	[0][1][2][1][RTW89_ETSI][48] = 127,
- 	[0][1][2][1][RTW89_MKK][48] = 127,
--	[0][1][2][1][RTW89_IC][48] = 127,
-+	[0][1][2][1][RTW89_IC][48] = 48,
- 	[0][1][2][1][RTW89_KCC][48] = 127,
- 	[0][1][2][1][RTW89_ACMA][48] = 127,
- 	[0][1][2][1][RTW89_CN][48] = 127,
-@@ -35990,7 +35990,7 @@ const s8 rtw89_8852c_txpwr_lmt_5g[RTW89_5G_BW_NUM][RTW89_NTX_NUM]
- 	[0][1][2][1][RTW89_FCC][50] = 50,
- 	[0][1][2][1][RTW89_ETSI][50] = 127,
- 	[0][1][2][1][RTW89_MKK][50] = 127,
--	[0][1][2][1][RTW89_IC][50] = 127,
-+	[0][1][2][1][RTW89_IC][50] = 50,
- 	[0][1][2][1][RTW89_KCC][50] = 127,
- 	[0][1][2][1][RTW89_ACMA][50] = 127,
- 	[0][1][2][1][RTW89_CN][50] = 127,
-@@ -36003,7 +36003,7 @@ const s8 rtw89_8852c_txpwr_lmt_5g[RTW89_5G_BW_NUM][RTW89_NTX_NUM]
- 	[0][1][2][1][RTW89_FCC][52] = 48,
- 	[0][1][2][1][RTW89_ETSI][52] = 127,
- 	[0][1][2][1][RTW89_MKK][52] = 127,
--	[0][1][2][1][RTW89_IC][52] = 127,
-+	[0][1][2][1][RTW89_IC][52] = 48,
- 	[0][1][2][1][RTW89_KCC][52] = 127,
- 	[0][1][2][1][RTW89_ACMA][52] = 127,
- 	[0][1][2][1][RTW89_CN][52] = 127,
-@@ -36172,7 +36172,7 @@ const s8 rtw89_8852c_txpwr_lmt_5g[RTW89_5G_BW_NUM][RTW89_NTX_NUM]
- 	[1][0][2][0][RTW89_FCC][47] = 68,
- 	[1][0][2][0][RTW89_ETSI][47] = 127,
- 	[1][0][2][0][RTW89_MKK][47] = 127,
--	[1][0][2][0][RTW89_IC][47] = 127,
-+	[1][0][2][0][RTW89_IC][47] = 68,
- 	[1][0][2][0][RTW89_KCC][47] = 127,
- 	[1][0][2][0][RTW89_ACMA][47] = 127,
- 	[1][0][2][0][RTW89_CN][47] = 127,
-@@ -36185,7 +36185,7 @@ const s8 rtw89_8852c_txpwr_lmt_5g[RTW89_5G_BW_NUM][RTW89_NTX_NUM]
- 	[1][0][2][0][RTW89_FCC][51] = 68,
- 	[1][0][2][0][RTW89_ETSI][51] = 127,
- 	[1][0][2][0][RTW89_MKK][51] = 127,
--	[1][0][2][0][RTW89_IC][51] = 127,
-+	[1][0][2][0][RTW89_IC][51] = 68,
- 	[1][0][2][0][RTW89_KCC][51] = 127,
- 	[1][0][2][0][RTW89_ACMA][51] = 127,
- 	[1][0][2][0][RTW89_CN][51] = 127,
-@@ -36354,7 +36354,7 @@ const s8 rtw89_8852c_txpwr_lmt_5g[RTW89_5G_BW_NUM][RTW89_NTX_NUM]
- 	[1][1][2][0][RTW89_FCC][47] = 62,
- 	[1][1][2][0][RTW89_ETSI][47] = 127,
- 	[1][1][2][0][RTW89_MKK][47] = 127,
--	[1][1][2][0][RTW89_IC][47] = 127,
-+	[1][1][2][0][RTW89_IC][47] = 62,
- 	[1][1][2][0][RTW89_KCC][47] = 127,
- 	[1][1][2][0][RTW89_ACMA][47] = 127,
- 	[1][1][2][0][RTW89_CN][47] = 127,
-@@ -36367,7 +36367,7 @@ const s8 rtw89_8852c_txpwr_lmt_5g[RTW89_5G_BW_NUM][RTW89_NTX_NUM]
- 	[1][1][2][0][RTW89_FCC][51] = 60,
- 	[1][1][2][0][RTW89_ETSI][51] = 127,
- 	[1][1][2][0][RTW89_MKK][51] = 127,
--	[1][1][2][0][RTW89_IC][51] = 127,
-+	[1][1][2][0][RTW89_IC][51] = 60,
- 	[1][1][2][0][RTW89_KCC][51] = 127,
- 	[1][1][2][0][RTW89_ACMA][51] = 127,
- 	[1][1][2][0][RTW89_CN][51] = 127,
-@@ -36536,7 +36536,7 @@ const s8 rtw89_8852c_txpwr_lmt_5g[RTW89_5G_BW_NUM][RTW89_NTX_NUM]
- 	[1][1][2][1][RTW89_FCC][47] = 62,
- 	[1][1][2][1][RTW89_ETSI][47] = 127,
- 	[1][1][2][1][RTW89_MKK][47] = 127,
--	[1][1][2][1][RTW89_IC][47] = 127,
-+	[1][1][2][1][RTW89_IC][47] = 62,
- 	[1][1][2][1][RTW89_KCC][47] = 127,
- 	[1][1][2][1][RTW89_ACMA][47] = 127,
- 	[1][1][2][1][RTW89_CN][47] = 127,
-@@ -36549,7 +36549,7 @@ const s8 rtw89_8852c_txpwr_lmt_5g[RTW89_5G_BW_NUM][RTW89_NTX_NUM]
- 	[1][1][2][1][RTW89_FCC][51] = 60,
- 	[1][1][2][1][RTW89_ETSI][51] = 127,
- 	[1][1][2][1][RTW89_MKK][51] = 127,
--	[1][1][2][1][RTW89_IC][51] = 127,
-+	[1][1][2][1][RTW89_IC][51] = 60,
- 	[1][1][2][1][RTW89_KCC][51] = 127,
- 	[1][1][2][1][RTW89_ACMA][51] = 127,
- 	[1][1][2][1][RTW89_CN][51] = 127,
-@@ -36640,7 +36640,7 @@ const s8 rtw89_8852c_txpwr_lmt_5g[RTW89_5G_BW_NUM][RTW89_NTX_NUM]
- 	[2][0][2][0][RTW89_FCC][49] = 62,
- 	[2][0][2][0][RTW89_ETSI][49] = 127,
- 	[2][0][2][0][RTW89_MKK][49] = 127,
--	[2][0][2][0][RTW89_IC][49] = 127,
-+	[2][0][2][0][RTW89_IC][49] = 62,
- 	[2][0][2][0][RTW89_KCC][49] = 127,
- 	[2][0][2][0][RTW89_ACMA][49] = 127,
- 	[2][0][2][0][RTW89_CN][49] = 127,
-@@ -36731,7 +36731,7 @@ const s8 rtw89_8852c_txpwr_lmt_5g[RTW89_5G_BW_NUM][RTW89_NTX_NUM]
- 	[2][1][2][0][RTW89_FCC][49] = 62,
- 	[2][1][2][0][RTW89_ETSI][49] = 127,
- 	[2][1][2][0][RTW89_MKK][49] = 127,
--	[2][1][2][0][RTW89_IC][49] = 127,
-+	[2][1][2][0][RTW89_IC][49] = 62,
- 	[2][1][2][0][RTW89_KCC][49] = 127,
- 	[2][1][2][0][RTW89_ACMA][49] = 127,
- 	[2][1][2][0][RTW89_CN][49] = 127,
-@@ -36822,7 +36822,7 @@ const s8 rtw89_8852c_txpwr_lmt_5g[RTW89_5G_BW_NUM][RTW89_NTX_NUM]
- 	[2][1][2][1][RTW89_FCC][49] = 62,
- 	[2][1][2][1][RTW89_ETSI][49] = 127,
- 	[2][1][2][1][RTW89_MKK][49] = 127,
--	[2][1][2][1][RTW89_IC][49] = 127,
-+	[2][1][2][1][RTW89_IC][49] = 62,
- 	[2][1][2][1][RTW89_KCC][49] = 127,
- 	[2][1][2][1][RTW89_ACMA][49] = 127,
- 	[2][1][2][1][RTW89_CN][49] = 127,
-@@ -36861,7 +36861,7 @@ const s8 rtw89_8852c_txpwr_lmt_5g[RTW89_5G_BW_NUM][RTW89_NTX_NUM]
- 	[3][0][2][0][RTW89_FCC][45] = 52,
- 	[3][0][2][0][RTW89_ETSI][45] = 127,
- 	[3][0][2][0][RTW89_MKK][45] = 127,
--	[3][0][2][0][RTW89_IC][45] = 127,
-+	[3][0][2][0][RTW89_IC][45] = 52,
- 	[3][0][2][0][RTW89_KCC][45] = 127,
- 	[3][0][2][0][RTW89_ACMA][45] = 127,
- 	[3][0][2][0][RTW89_CN][45] = 127,
-@@ -36900,7 +36900,7 @@ const s8 rtw89_8852c_txpwr_lmt_5g[RTW89_5G_BW_NUM][RTW89_NTX_NUM]
- 	[3][1][2][0][RTW89_FCC][45] = 46,
- 	[3][1][2][0][RTW89_ETSI][45] = 127,
- 	[3][1][2][0][RTW89_MKK][45] = 127,
--	[3][1][2][0][RTW89_IC][45] = 127,
-+	[3][1][2][0][RTW89_IC][45] = 46,
- 	[3][1][2][0][RTW89_KCC][45] = 127,
- 	[3][1][2][0][RTW89_ACMA][45] = 127,
- 	[3][1][2][0][RTW89_CN][45] = 127,
-@@ -36939,7 +36939,7 @@ const s8 rtw89_8852c_txpwr_lmt_5g[RTW89_5G_BW_NUM][RTW89_NTX_NUM]
- 	[3][1][2][1][RTW89_FCC][45] = 46,
- 	[3][1][2][1][RTW89_ETSI][45] = 127,
- 	[3][1][2][1][RTW89_MKK][45] = 127,
--	[3][1][2][1][RTW89_IC][45] = 127,
-+	[3][1][2][1][RTW89_IC][45] = 46,
- 	[3][1][2][1][RTW89_KCC][45] = 127,
- 	[3][1][2][1][RTW89_ACMA][45] = 127,
- 	[3][1][2][1][RTW89_CN][45] = 127,
-@@ -49374,7 +49374,7 @@ const s8 rtw89_8852c_txpwr_lmt_ru_5g[RTW89_RU_NUM][RTW89_NTX_NUM]
- 	[0][0][RTW89_FCC][48] = 46,
- 	[0][0][RTW89_ETSI][48] = 127,
- 	[0][0][RTW89_MKK][48] = 127,
--	[0][0][RTW89_IC][48] = 127,
-+	[0][0][RTW89_IC][48] = 46,
- 	[0][0][RTW89_KCC][48] = 127,
- 	[0][0][RTW89_ACMA][48] = 127,
- 	[0][0][RTW89_CN][48] = 127,
-@@ -49387,7 +49387,7 @@ const s8 rtw89_8852c_txpwr_lmt_ru_5g[RTW89_RU_NUM][RTW89_NTX_NUM]
- 	[0][0][RTW89_FCC][50] = 44,
- 	[0][0][RTW89_ETSI][50] = 127,
- 	[0][0][RTW89_MKK][50] = 127,
--	[0][0][RTW89_IC][50] = 127,
-+	[0][0][RTW89_IC][50] = 44,
- 	[0][0][RTW89_KCC][50] = 127,
- 	[0][0][RTW89_ACMA][50] = 127,
- 	[0][0][RTW89_CN][50] = 127,
-@@ -49400,7 +49400,7 @@ const s8 rtw89_8852c_txpwr_lmt_ru_5g[RTW89_RU_NUM][RTW89_NTX_NUM]
- 	[0][0][RTW89_FCC][52] = 34,
- 	[0][0][RTW89_ETSI][52] = 127,
- 	[0][0][RTW89_MKK][52] = 127,
--	[0][0][RTW89_IC][52] = 127,
-+	[0][0][RTW89_IC][52] = 34,
- 	[0][0][RTW89_KCC][52] = 127,
- 	[0][0][RTW89_ACMA][52] = 127,
- 	[0][0][RTW89_CN][52] = 127,
-@@ -49738,7 +49738,7 @@ const s8 rtw89_8852c_txpwr_lmt_ru_5g[RTW89_RU_NUM][RTW89_NTX_NUM]
- 	[0][1][RTW89_FCC][48] = 20,
- 	[0][1][RTW89_ETSI][48] = 127,
- 	[0][1][RTW89_MKK][48] = 127,
--	[0][1][RTW89_IC][48] = 127,
-+	[0][1][RTW89_IC][48] = 20,
- 	[0][1][RTW89_KCC][48] = 127,
- 	[0][1][RTW89_ACMA][48] = 127,
- 	[0][1][RTW89_CN][48] = 127,
-@@ -49751,7 +49751,7 @@ const s8 rtw89_8852c_txpwr_lmt_ru_5g[RTW89_RU_NUM][RTW89_NTX_NUM]
- 	[0][1][RTW89_FCC][50] = 20,
- 	[0][1][RTW89_ETSI][50] = 127,
- 	[0][1][RTW89_MKK][50] = 127,
--	[0][1][RTW89_IC][50] = 127,
-+	[0][1][RTW89_IC][50] = 20,
- 	[0][1][RTW89_KCC][50] = 127,
- 	[0][1][RTW89_ACMA][50] = 127,
- 	[0][1][RTW89_CN][50] = 127,
-@@ -49764,7 +49764,7 @@ const s8 rtw89_8852c_txpwr_lmt_ru_5g[RTW89_RU_NUM][RTW89_NTX_NUM]
- 	[0][1][RTW89_FCC][52] = 8,
- 	[0][1][RTW89_ETSI][52] = 127,
- 	[0][1][RTW89_MKK][52] = 127,
--	[0][1][RTW89_IC][52] = 127,
-+	[0][1][RTW89_IC][52] = 8,
- 	[0][1][RTW89_KCC][52] = 127,
- 	[0][1][RTW89_ACMA][52] = 127,
- 	[0][1][RTW89_CN][52] = 127,
-@@ -50102,7 +50102,7 @@ const s8 rtw89_8852c_txpwr_lmt_ru_5g[RTW89_RU_NUM][RTW89_NTX_NUM]
- 	[1][0][RTW89_FCC][48] = 56,
- 	[1][0][RTW89_ETSI][48] = 127,
- 	[1][0][RTW89_MKK][48] = 127,
--	[1][0][RTW89_IC][48] = 127,
-+	[1][0][RTW89_IC][48] = 56,
- 	[1][0][RTW89_KCC][48] = 127,
- 	[1][0][RTW89_ACMA][48] = 127,
- 	[1][0][RTW89_CN][48] = 127,
-@@ -50115,7 +50115,7 @@ const s8 rtw89_8852c_txpwr_lmt_ru_5g[RTW89_RU_NUM][RTW89_NTX_NUM]
- 	[1][0][RTW89_FCC][50] = 58,
- 	[1][0][RTW89_ETSI][50] = 127,
- 	[1][0][RTW89_MKK][50] = 127,
--	[1][0][RTW89_IC][50] = 127,
-+	[1][0][RTW89_IC][50] = 58,
- 	[1][0][RTW89_KCC][50] = 127,
- 	[1][0][RTW89_ACMA][50] = 127,
- 	[1][0][RTW89_CN][50] = 127,
-@@ -50128,7 +50128,7 @@ const s8 rtw89_8852c_txpwr_lmt_ru_5g[RTW89_RU_NUM][RTW89_NTX_NUM]
- 	[1][0][RTW89_FCC][52] = 56,
- 	[1][0][RTW89_ETSI][52] = 127,
- 	[1][0][RTW89_MKK][52] = 127,
--	[1][0][RTW89_IC][52] = 127,
-+	[1][0][RTW89_IC][52] = 56,
- 	[1][0][RTW89_KCC][52] = 127,
- 	[1][0][RTW89_ACMA][52] = 127,
- 	[1][0][RTW89_CN][52] = 127,
-@@ -50466,7 +50466,7 @@ const s8 rtw89_8852c_txpwr_lmt_ru_5g[RTW89_RU_NUM][RTW89_NTX_NUM]
- 	[1][1][RTW89_FCC][48] = 34,
- 	[1][1][RTW89_ETSI][48] = 127,
- 	[1][1][RTW89_MKK][48] = 127,
--	[1][1][RTW89_IC][48] = 127,
-+	[1][1][RTW89_IC][48] = 34,
- 	[1][1][RTW89_KCC][48] = 127,
- 	[1][1][RTW89_ACMA][48] = 127,
- 	[1][1][RTW89_CN][48] = 127,
-@@ -50479,7 +50479,7 @@ const s8 rtw89_8852c_txpwr_lmt_ru_5g[RTW89_RU_NUM][RTW89_NTX_NUM]
- 	[1][1][RTW89_FCC][50] = 34,
- 	[1][1][RTW89_ETSI][50] = 127,
- 	[1][1][RTW89_MKK][50] = 127,
--	[1][1][RTW89_IC][50] = 127,
-+	[1][1][RTW89_IC][50] = 34,
- 	[1][1][RTW89_KCC][50] = 127,
- 	[1][1][RTW89_ACMA][50] = 127,
- 	[1][1][RTW89_CN][50] = 127,
-@@ -50492,7 +50492,7 @@ const s8 rtw89_8852c_txpwr_lmt_ru_5g[RTW89_RU_NUM][RTW89_NTX_NUM]
- 	[1][1][RTW89_FCC][52] = 30,
- 	[1][1][RTW89_ETSI][52] = 127,
- 	[1][1][RTW89_MKK][52] = 127,
--	[1][1][RTW89_IC][52] = 127,
-+	[1][1][RTW89_IC][52] = 30,
- 	[1][1][RTW89_KCC][52] = 127,
- 	[1][1][RTW89_ACMA][52] = 127,
- 	[1][1][RTW89_CN][52] = 127,
-@@ -50830,7 +50830,7 @@ const s8 rtw89_8852c_txpwr_lmt_ru_5g[RTW89_RU_NUM][RTW89_NTX_NUM]
- 	[2][0][RTW89_FCC][48] = 64,
- 	[2][0][RTW89_ETSI][48] = 127,
- 	[2][0][RTW89_MKK][48] = 127,
--	[2][0][RTW89_IC][48] = 127,
-+	[2][0][RTW89_IC][48] = 64,
- 	[2][0][RTW89_KCC][48] = 127,
- 	[2][0][RTW89_ACMA][48] = 127,
- 	[2][0][RTW89_CN][48] = 127,
-@@ -50843,7 +50843,7 @@ const s8 rtw89_8852c_txpwr_lmt_ru_5g[RTW89_RU_NUM][RTW89_NTX_NUM]
- 	[2][0][RTW89_FCC][50] = 64,
- 	[2][0][RTW89_ETSI][50] = 127,
- 	[2][0][RTW89_MKK][50] = 127,
--	[2][0][RTW89_IC][50] = 127,
-+	[2][0][RTW89_IC][50] = 64,
- 	[2][0][RTW89_KCC][50] = 127,
- 	[2][0][RTW89_ACMA][50] = 127,
- 	[2][0][RTW89_CN][50] = 127,
-@@ -50856,7 +50856,7 @@ const s8 rtw89_8852c_txpwr_lmt_ru_5g[RTW89_RU_NUM][RTW89_NTX_NUM]
- 	[2][0][RTW89_FCC][52] = 64,
- 	[2][0][RTW89_ETSI][52] = 127,
- 	[2][0][RTW89_MKK][52] = 127,
--	[2][0][RTW89_IC][52] = 127,
-+	[2][0][RTW89_IC][52] = 64,
- 	[2][0][RTW89_KCC][52] = 127,
- 	[2][0][RTW89_ACMA][52] = 127,
- 	[2][0][RTW89_CN][52] = 127,
-@@ -51194,7 +51194,7 @@ const s8 rtw89_8852c_txpwr_lmt_ru_5g[RTW89_RU_NUM][RTW89_NTX_NUM]
- 	[2][1][RTW89_FCC][48] = 40,
- 	[2][1][RTW89_ETSI][48] = 127,
- 	[2][1][RTW89_MKK][48] = 127,
--	[2][1][RTW89_IC][48] = 127,
-+	[2][1][RTW89_IC][48] = 40,
- 	[2][1][RTW89_KCC][48] = 127,
- 	[2][1][RTW89_ACMA][48] = 127,
- 	[2][1][RTW89_CN][48] = 127,
-@@ -51207,7 +51207,7 @@ const s8 rtw89_8852c_txpwr_lmt_ru_5g[RTW89_RU_NUM][RTW89_NTX_NUM]
- 	[2][1][RTW89_FCC][50] = 40,
- 	[2][1][RTW89_ETSI][50] = 127,
- 	[2][1][RTW89_MKK][50] = 127,
--	[2][1][RTW89_IC][50] = 127,
-+	[2][1][RTW89_IC][50] = 40,
- 	[2][1][RTW89_KCC][50] = 127,
- 	[2][1][RTW89_ACMA][50] = 127,
- 	[2][1][RTW89_CN][50] = 127,
-@@ -51220,7 +51220,7 @@ const s8 rtw89_8852c_txpwr_lmt_ru_5g[RTW89_RU_NUM][RTW89_NTX_NUM]
- 	[2][1][RTW89_FCC][52] = 40,
- 	[2][1][RTW89_ETSI][52] = 127,
- 	[2][1][RTW89_MKK][52] = 127,
--	[2][1][RTW89_IC][52] = 127,
-+	[2][1][RTW89_IC][52] = 40,
- 	[2][1][RTW89_KCC][52] = 127,
- 	[2][1][RTW89_ACMA][52] = 127,
- 	[2][1][RTW89_CN][52] = 127,
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index d474b8d5df3d..b8d419a5b9db 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -4069,6 +4069,24 @@ void rtw89_core_ntfy_btc_event(struct rtw89_dev *rtwdev, enum rtw89_btc_hmsg eve
+ 	}
+ }
+ 
++void rtw89_check_quirks(struct rtw89_dev *rtwdev, const struct dmi_system_id *quirks)
++{
++	const struct dmi_system_id *match;
++	enum rtw89_quirks quirk;
++
++	if (!quirks)
++		return;
++
++	for (match = dmi_first_match(quirks); match; match = dmi_first_match(match + 1)) {
++		quirk = (uintptr_t)match->driver_data;
++		if (quirk >= NUM_OF_RTW89_QUIRKS)
++			continue;
++
++		set_bit(quirk, rtwdev->quirks);
++	}
++}
++EXPORT_SYMBOL(rtw89_check_quirks);
++
+ int rtw89_core_start(struct rtw89_dev *rtwdev)
+ {
+ 	int ret;
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index fc1ed8612cf1..1ea5703225fb 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -7,6 +7,7 @@
+ 
+ #include <linux/average.h>
+ #include <linux/bitfield.h>
++#include <linux/dmi.h>
+ #include <linux/firmware.h>
+ #include <linux/iopoll.h>
+ #include <linux/workqueue.h>
+@@ -4079,6 +4080,7 @@ union rtw89_bus_info {
+ 
+ struct rtw89_driver_info {
+ 	const struct rtw89_chip_info *chip;
++	const struct dmi_system_id *quirks;
+ 	union rtw89_bus_info bus;
+ };
+ 
+@@ -4426,6 +4428,12 @@ enum rtw89_flags {
+ 	NUM_OF_RTW89_FLAGS,
+ };
+ 
++enum rtw89_quirks {
++	RTW89_QUIRK_PCI_BER,
++
++	NUM_OF_RTW89_QUIRKS,
++};
++
+ enum rtw89_pkt_drop_sel {
+ 	RTW89_PKT_DROP_SEL_MACID_BE_ONCE,
+ 	RTW89_PKT_DROP_SEL_MACID_BK_ONCE,
+@@ -5186,6 +5194,7 @@ struct rtw89_dev {
+ 	DECLARE_BITMAP(mac_id_map, RTW89_MAX_MAC_ID_NUM);
+ 	DECLARE_BITMAP(flags, NUM_OF_RTW89_FLAGS);
+ 	DECLARE_BITMAP(pkt_offload, RTW89_MAX_PKT_OFLD_NUM);
++	DECLARE_BITMAP(quirks, NUM_OF_RTW89_QUIRKS);
+ 
+ 	struct rtw89_phy_stat phystat;
+ 	struct rtw89_rfk_wait_info rfk_wait;
+@@ -6231,6 +6240,7 @@ int rtw89_core_sta_remove(struct rtw89_dev *rtwdev,
+ void rtw89_core_set_tid_config(struct rtw89_dev *rtwdev,
+ 			       struct ieee80211_sta *sta,
+ 			       struct cfg80211_tid_config *tid_config);
++void rtw89_check_quirks(struct rtw89_dev *rtwdev, const struct dmi_system_id *quirks);
+ int rtw89_core_init(struct rtw89_dev *rtwdev);
+ void rtw89_core_deinit(struct rtw89_dev *rtwdev);
+ int rtw89_core_register(struct rtw89_dev *rtwdev);
+diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
+index 19001130ad94..46e24b3d807f 100644
+--- a/drivers/net/wireless/realtek/rtw89/pci.c
++++ b/drivers/net/wireless/realtek/rtw89/pci.c
+@@ -2298,6 +2298,22 @@ static int rtw89_pci_deglitch_setting(struct rtw89_dev *rtwdev)
+ 	return 0;
+ }
+ 
++static void rtw89_pci_ber(struct rtw89_dev *rtwdev)
++{
++	u32 phy_offset;
++
++	if (!test_bit(RTW89_QUIRK_PCI_BER, rtwdev->quirks))
++		return;
++
++	phy_offset = R_RAC_DIRECT_OFFSET_G1;
++	rtw89_write16(rtwdev, phy_offset + RAC_ANA1E * RAC_MULT, RAC_ANA1E_G1_VAL);
++	rtw89_write16(rtwdev, phy_offset + RAC_ANA2E * RAC_MULT, RAC_ANA2E_VAL);
++
++	phy_offset = R_RAC_DIRECT_OFFSET_G2;
++	rtw89_write16(rtwdev, phy_offset + RAC_ANA1E * RAC_MULT, RAC_ANA1E_G2_VAL);
++	rtw89_write16(rtwdev, phy_offset + RAC_ANA2E * RAC_MULT, RAC_ANA2E_VAL);
++}
++
+ static void rtw89_pci_rxdma_prefth(struct rtw89_dev *rtwdev)
+ {
+ 	if (rtwdev->chip->chip_id != RTL8852A)
+@@ -2695,6 +2711,7 @@ static int rtw89_pci_ops_mac_pre_init_ax(struct rtw89_dev *rtwdev)
+ 	const struct rtw89_pci_info *info = rtwdev->pci_info;
+ 	int ret;
+ 
++	rtw89_pci_ber(rtwdev);
+ 	rtw89_pci_rxdma_prefth(rtwdev);
+ 	rtw89_pci_l1off_pwroff(rtwdev);
+ 	rtw89_pci_deglitch_setting(rtwdev);
+@@ -4171,6 +4188,8 @@ int rtw89_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	rtwdev->hci.rpwm_addr = pci_info->rpwm_addr;
+ 	rtwdev->hci.cpwm_addr = pci_info->cpwm_addr;
+ 
++	rtw89_check_quirks(rtwdev, info->quirks);
++
+ 	SET_IEEE80211_DEV(rtwdev->hw, &pdev->dev);
+ 
+ 	ret = rtw89_core_init(rtwdev);
+diff --git a/drivers/net/wireless/realtek/rtw89/pci.h b/drivers/net/wireless/realtek/rtw89/pci.h
+index a63b6b7c9bfa..87e7081664c1 100644
+--- a/drivers/net/wireless/realtek/rtw89/pci.h
++++ b/drivers/net/wireless/realtek/rtw89/pci.h
+@@ -26,11 +26,16 @@
+ #define RAC_REG_FLD_0			0x1D
+ #define BAC_AUTOK_N_MASK		GENMASK(3, 2)
+ #define PCIE_AUTOK_4			0x3
++#define RAC_ANA1E			0x1E
++#define RAC_ANA1E_G1_VAL		0x66EA
++#define RAC_ANA1E_G2_VAL		0x6EEA
+ #define RAC_ANA1F			0x1F
+ #define RAC_ANA24			0x24
+ #define B_AX_DEGLITCH			GENMASK(11, 8)
+ #define RAC_ANA26			0x26
+ #define B_AX_RXEN			GENMASK(15, 14)
++#define RAC_ANA2E			0x2E
++#define RAC_ANA2E_VAL			0xFFFE
+ #define RAC_CTRL_PPR_V1			0x30
+ #define B_AX_CLK_CALIB_EN		BIT(12)
+ #define B_AX_CALIB_EN			BIT(13)
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851be.c b/drivers/net/wireless/realtek/rtw89/rtw8851be.c
+index ca1374a71727..ec3629d95fda 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8851be.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8851be.c
+@@ -63,6 +63,7 @@ static const struct rtw89_pci_info rtw8851b_pci_info = {
+ 
+ static const struct rtw89_driver_info rtw89_8851be_info = {
+ 	.chip = &rtw8851b_chip_info,
++	.quirks = NULL,
+ 	.bus = {
+ 		.pci = &rtw8851b_pci_info,
+ 	},
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852ae.c b/drivers/net/wireless/realtek/rtw89/rtw8852ae.c
+index 7c6ffedb77e2..fdee5dd4ba14 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852ae.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852ae.c
+@@ -61,6 +61,7 @@ static const struct rtw89_pci_info rtw8852a_pci_info = {
+ 
+ static const struct rtw89_driver_info rtw89_8852ae_info = {
+ 	.chip = &rtw8852a_chip_info,
++	.quirks = NULL,
+ 	.bus = {
+ 		.pci = &rtw8852a_pci_info,
+ 	},
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852be.c b/drivers/net/wireless/realtek/rtw89/rtw8852be.c
+index ed71364e6437..5f941122655c 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852be.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852be.c
+@@ -63,6 +63,7 @@ static const struct rtw89_pci_info rtw8852b_pci_info = {
+ 
+ static const struct rtw89_driver_info rtw89_8852be_info = {
+ 	.chip = &rtw8852b_chip_info,
++	.quirks = NULL,
+ 	.bus = {
+ 		.pci = &rtw8852b_pci_info,
+ 	},
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852ce.c b/drivers/net/wireless/realtek/rtw89/rtw8852ce.c
+index 583ea673a4f5..e07c7f3ade41 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852ce.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852ce.c
+@@ -68,8 +68,31 @@ static const struct rtw89_pci_info rtw8852c_pci_info = {
+ 	.recognize_intrs	= rtw89_pci_recognize_intrs_v1,
+ };
+ 
++static const struct dmi_system_id rtw8852c_pci_quirks[] = {
++	{
++		.ident = "Dell Inc. Vostro 16 5640",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Vostro 16 5640"),
++			DMI_MATCH(DMI_PRODUCT_SKU, "0CA0"),
++		},
++		.driver_data = (void *)RTW89_QUIRK_PCI_BER,
++	},
++	{
++		.ident = "Dell Inc. Inspiron 16 5640",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Inspiron 16 5640"),
++			DMI_MATCH(DMI_PRODUCT_SKU, "0C9F"),
++		},
++		.driver_data = (void *)RTW89_QUIRK_PCI_BER,
++	},
++	{},
++};
++
+ static const struct rtw89_driver_info rtw89_8852ce_info = {
+ 	.chip = &rtw8852c_chip_info,
++	.quirks = rtw8852c_pci_quirks,
+ 	.bus = {
+ 		.pci = &rtw8852c_pci_info,
+ 	},
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922ae.c b/drivers/net/wireless/realtek/rtw89/rtw8922ae.c
+index 4981b657bd7b..ce8aaa9501e1 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8922ae.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8922ae.c
+@@ -61,6 +61,7 @@ static const struct rtw89_pci_info rtw8922a_pci_info = {
+ 
+ static const struct rtw89_driver_info rtw89_8922ae_info = {
+ 	.chip = &rtw8922a_chip_info,
++	.quirks = NULL,
+ 	.bus = {
+ 		.pci = &rtw8922a_pci_info,
+ 	},
 -- 
 2.25.1
 
