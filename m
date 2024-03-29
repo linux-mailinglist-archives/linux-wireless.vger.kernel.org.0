@@ -1,72 +1,72 @@
-Return-Path: <linux-wireless+bounces-5588-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5589-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A978E89226F
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 18:10:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2FFB892272
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 18:11:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11F6B28C9AF
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 17:10:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 960B71F25B46
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 17:11:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6011F136E2F;
-	Fri, 29 Mar 2024 17:10:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6AF41386DF;
+	Fri, 29 Mar 2024 17:10:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="cUmmw78W"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tLpFC7Yt"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0ACA1327F5
-	for <linux-wireless@vger.kernel.org>; Fri, 29 Mar 2024 17:10:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03F0D1369A7
+	for <linux-wireless@vger.kernel.org>; Fri, 29 Mar 2024 17:10:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711732234; cv=none; b=jfUeb0ajLGpYwuCjaMXvuHjVUcfk6U/H2GF3zlckp3sTFguDo22MWrbDDm8gyjoZbwEyfE1s7o6P6KVgVZuv8jKQIXzLhj1M5xZJWQJoByeLdedcS4TUl2/8HuuBbFi2Pa7aPQLvPvSxS9NuAR/ZkSonqd6I+yJwcdSaF3VAN94=
+	t=1711732235; cv=none; b=TczLmcp8gXa1eSFdEQuSxYG8XoCL8Rj8dzZj33oDediT3NovEjzaIBy3bp8tNdQK4xtNR6bi2lYZMhmRfvZcBQrslVddGH2nf8WZedLIqJtkonrRx6Q9kUHt3VLFBKsS5Pgp8i1z/vPThTKU6n2h5E6fBAczSUCObU03KW92dbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711732234; c=relaxed/simple;
-	bh=8PHeUGU+ZRvrLa0WyO7pGv+/fClxC3Ext0tzuOtYQUQ=;
+	s=arc-20240116; t=1711732235; c=relaxed/simple;
+	bh=j8245kNmaqBdGD54O9qpNwjQ/vWPCZt5nPTvELzjL/g=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nuL6VHFfulD386nKLVWbdqHvzHy0ELwVrxuI8xjPCcWyep/nZTPlVgjzc7JB+H6v4xA4AV9vjH250+v69AtzePwDpzNTZCtaS6lDhwbe0jHW1Q+HnspBGPHh99hBy139UrX9ffsB9Iymrif6GrmACQPMwdClHaXNORouvnAXMA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=cUmmw78W; arc=none smtp.client-ip=209.85.128.53
+	 MIME-Version; b=UDr1HPkM9c3Z4Q0iSUZ3HiGv5BWwiVgG4ZEYBikeEZr9/puYK++14soHAZ+s17e9pip9vIKyTH/dmBQ39Vh3YwlnIlVBeOSf+1NDOyCEqmBD+FrhRE57/LOu00s95El68efOAtE6NoI/STrYbZrJLekFqflbVjzmR6YL3CoinSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tLpFC7Yt; arc=none smtp.client-ip=209.85.221.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-415446af364so10214265e9.0
-        for <linux-wireless@vger.kernel.org>; Fri, 29 Mar 2024 10:10:32 -0700 (PDT)
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-341d381d056so1342435f8f.0
+        for <linux-wireless@vger.kernel.org>; Fri, 29 Mar 2024 10:10:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1711732231; x=1712337031; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1711732232; x=1712337032; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xXP8LCcnnVa9d+y1k6oL+GlmX9060FPKOT56CxvkCmk=;
-        b=cUmmw78WVNZx/+hCd2kDLwk3hExyp5chDzgNFU59CWAfjgvb9pzWBdsBKdtb3qIqik
-         EeQz2f2R/73UGAofqdr/PqZ/PjKMm6kCJk8jcMTDXwHRZW5XHMlsoQkS0TkysKJ6F8kD
-         6bO08tCh+VSh5yWG8pk9bShZT+35/yu63F94/DKZZ4FO7jaLXVkHmLTuvMW3DVIEBvMN
-         kx7ceuk4Q/6NRAMGuzcB9UEcJQDEzAApY4UrZfAwy1p09ST743MARw+UikY0cavfxzRy
-         mZPtCY4GElNeWvhL6lLLIoJ4il3Cy08tlbhNLP7zm0U8dUSL4cBx7kAVWcMzU3j0kbHx
-         MJ5w==
+        bh=9JyWn95xLCs1iHXcpGVAjRQMK08lG3ym0K6wct33L3E=;
+        b=tLpFC7YtKxuP4E9ehr4QyL4D8irBYg6EMy5hBtoyHwJtj2jBU+mK8bFcZn9M81ylVY
+         RQWZbtqakPbm0KxA90bxDnDsJvu1v93hI+na4k8oAkUJP0fO/Kcl93wFpOWye6szD33l
+         fl7yItegzx+gBTlPfHarzlUJMtqZ2aPAuCoAv1DTNacJFz25iyX7IYOyVlMt2yLgyMca
+         CmUsc7m27Qgrg5JMMk1qmMX+3DdKz1zIgyKpCB9hkOmWVjYWfyP5ps23ewXHepVOAR62
+         lsyndx67fugh7e7pfLdqHPFqe9Td21FBoqTnbCi6ToLOaiM4QO/Vr0kprwqL/xC/UsfN
+         c9PQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711732231; x=1712337031;
+        d=1e100.net; s=20230601; t=1711732232; x=1712337032;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xXP8LCcnnVa9d+y1k6oL+GlmX9060FPKOT56CxvkCmk=;
-        b=N3CbelgP6WiPvZ+OHYXv3IyeQm7j1lwNRh3ElhFIdhd6GDWA54CSEd1DiIyrjIAekx
-         90zkTLPrSGtMmLfOBTgXBr/7FTIcdyairIusP9jzXqvMWCxjflfmLKQQDMAawaYbds1p
-         8ww6qK7JQWAb63twafdpt4bJAEiEokkI9sAFPQJCN/ScNWjhmadIiFh/ozdEdjm1QF2l
-         YOJa9hGd4HBDcYfTtGfGhiDMh2EvxQcO09DhFvwr5pDAWk6PJzhAOk+3cwSCe2oi3FWm
-         G8i78RPskseGqGLQJqv4at6hKtsBbWhAR+2+FuFgST1fcWIDNQ10EOMh1PnSoLBdpPHk
-         x0qg==
-X-Forwarded-Encrypted: i=1; AJvYcCVer49hwQOtvM7t0Y8taCqm9FmlyQ2/4Izn89phqqbsTXs3mrgMP8yiI4+mOyoN6jHIL2QOTqdDRXeimtY8s9XP2/blJV1zyrF5E4diAp0=
-X-Gm-Message-State: AOJu0YxIW1R30QAs6wsRfIA8VvxkKWWn4RWTWiS/l0XTBCT348d6iCfd
-	pLlDjC4gQyCPRQZqyu43VfYoCxznWC+tpmXOwtVkzqmplBPZp0sftxhkAAJp5gg=
-X-Google-Smtp-Source: AGHT+IGESeQn/WY+9sDt6AYXXFEGPsBJDLNgHvdN9tKgNTMhMDCcaxBcRgMFF4AuYYmG6bqCbcDOXw==
-X-Received: by 2002:a05:600c:4e94:b0:413:fdc2:d9da with SMTP id f20-20020a05600c4e9400b00413fdc2d9damr2587780wmq.12.1711732231217;
-        Fri, 29 Mar 2024 10:10:31 -0700 (PDT)
+        bh=9JyWn95xLCs1iHXcpGVAjRQMK08lG3ym0K6wct33L3E=;
+        b=Ah739HQOXh9WyLHdDdwynDO9OvGYt/cxKUc1FETV66v/eXjxT5aKv0Nv6IbXs5hjCB
+         u3x99PfzvOwwPk5GCNPNrAE6qvZiibvLInwxTkLxPEB3Q+r3SqCc3ggpLLz5gBWfgK6i
+         AovWuZX7XXs2AcVAqbbJewCegZJ6XqKGmm8Ud+0MhqKFuZ9V3wX3xgQ+hvjgYrfiSbfy
+         nsWPhXP19v4eaAjNW+XFB5EuEUm+wYoMDJe9Wlj0K+wTju+SnX+2UFooeQB5mHX1cJoO
+         inyd5LRnGDDIuoi9Iwi9R8/s3B/NQlUh3UXPTD6KaxobVzhOfcqVGa14mLIGb1cG5bfb
+         6/pw==
+X-Forwarded-Encrypted: i=1; AJvYcCXpDMSY5s3LUURn+/g19r1WV/pzRfQjCfm3XFSG/Ard+/wcHIr8k1vrdlgsBFEwjzvUCv2JWb+BRNfUTqjnlwk6kguOU9g0/yJWSAhAKYY=
+X-Gm-Message-State: AOJu0Yz4G2331n7vTNM+btE/p90GERB/Lch0+4yeXLX/Xncp+GxYElRW
+	9mg9aLSxwOg2kW6E/OgwOeMko4zh7uzUOmFy8oxjdsYNPm1Gng9kh5jHHhAlCxc=
+X-Google-Smtp-Source: AGHT+IFW9DruHBuveqwhg+ktCb+5HkBVxgytJ4thp6p1EHASXSQYVUlK+ranP095Y2tSt5loVpZ6xQ==
+X-Received: by 2002:adf:f306:0:b0:33d:269e:132a with SMTP id i6-20020adff306000000b0033d269e132amr1766876wro.15.1711732232518;
+        Fri, 29 Mar 2024 10:10:32 -0700 (PDT)
 Received: from krzk-bin.. ([178.197.223.16])
-        by smtp.gmail.com with ESMTPSA id o17-20020a5d6851000000b0033ec9936909sm4577665wrw.39.2024.03.29.10.10.30
+        by smtp.gmail.com with ESMTPSA id o17-20020a5d6851000000b0033ec9936909sm4577665wrw.39.2024.03.29.10.10.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Mar 2024 10:10:30 -0700 (PDT)
+        Fri, 29 Mar 2024 10:10:32 -0700 (PDT)
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 To: Kalle Valo <kvalo@kernel.org>,
 	Jeff Johnson <jjohnson@kernel.org>,
@@ -77,9 +77,9 @@ To: Kalle Valo <kvalo@kernel.org>,
 	ath10k@lists.infradead.org,
 	linux-kernel@vger.kernel.org
 Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 3/6] wifi: rsi: sdio: simplify module initialization
-Date: Fri, 29 Mar 2024 18:10:16 +0100
-Message-Id: <20240329171019.63836-3-krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 4/6] wifi: ti: wl1251: simplify module initialization
+Date: Fri, 29 Mar 2024 18:10:17 +0100
+Message-Id: <20240329171019.63836-4-krzysztof.kozlowski@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240329171019.63836-1-krzysztof.kozlowski@linaro.org>
 References: <20240329171019.63836-1-krzysztof.kozlowski@linaro.org>
@@ -102,51 +102,40 @@ module_sdio_driver().
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- drivers/net/wireless/rsi/rsi_91x_sdio.c | 31 +------------------------
- 1 file changed, 1 insertion(+), 30 deletions(-)
+ drivers/net/wireless/ti/wl1251/sdio.c | 20 +-------------------
+ 1 file changed, 1 insertion(+), 19 deletions(-)
 
-diff --git a/drivers/net/wireless/rsi/rsi_91x_sdio.c b/drivers/net/wireless/rsi/rsi_91x_sdio.c
-index 8e7b757475d2..1e578533e473 100644
---- a/drivers/net/wireless/rsi/rsi_91x_sdio.c
-+++ b/drivers/net/wireless/rsi/rsi_91x_sdio.c
-@@ -1519,36 +1519,7 @@ static struct sdio_driver rsi_driver = {
- 	}
- #endif
+diff --git a/drivers/net/wireless/ti/wl1251/sdio.c b/drivers/net/wireless/ti/wl1251/sdio.c
+index 4e5b351f80f0..c705081249d6 100644
+--- a/drivers/net/wireless/ti/wl1251/sdio.c
++++ b/drivers/net/wireless/ti/wl1251/sdio.c
+@@ -323,25 +323,7 @@ static struct sdio_driver wl1251_sdio_driver = {
+ 	.remove		= wl1251_sdio_remove,
+ 	.drv.pm		= &wl1251_sdio_pm_ops,
  };
 -
--/**
-- * rsi_module_init() - This function registers the sdio module.
-- * @void: Void.
-- *
-- * Return: 0 on success.
-- */
--static int rsi_module_init(void)
+-static int __init wl1251_sdio_init(void)
 -{
--	int ret;
+-	int err;
 -
--	ret = sdio_register_driver(&rsi_driver);
--	rsi_dbg(INIT_ZONE, "%s: Registering driver\n", __func__);
--	return ret;
+-	err = sdio_register_driver(&wl1251_sdio_driver);
+-	if (err)
+-		wl1251_error("failed to register sdio driver: %d", err);
+-	return err;
 -}
 -
--/**
-- * rsi_module_exit() - This function unregisters the sdio module.
-- * @void: Void.
-- *
-- * Return: None.
-- */
--static void rsi_module_exit(void)
+-static void __exit wl1251_sdio_exit(void)
 -{
--	sdio_unregister_driver(&rsi_driver);
--	rsi_dbg(INFO_ZONE, "%s: Unregistering driver\n", __func__);
+-	sdio_unregister_driver(&wl1251_sdio_driver);
+-	wl1251_notice("unloaded");
 -}
 -
--module_init(rsi_module_init);
--module_exit(rsi_module_exit);
-+module_sdio_driver(rsi_driver);
+-module_init(wl1251_sdio_init);
+-module_exit(wl1251_sdio_exit);
++module_sdio_driver(wl1251_sdio_driver);
  
- MODULE_AUTHOR("Redpine Signals Inc");
- MODULE_DESCRIPTION("Common SDIO layer for RSI drivers");
+ MODULE_DESCRIPTION("TI WL1251 SDIO helpers");
+ MODULE_LICENSE("GPL");
 -- 
 2.34.1
 
