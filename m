@@ -1,176 +1,146 @@
-Return-Path: <linux-wireless+bounces-5625-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5626-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E130D89261E
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 22:34:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 950F48926DE
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 23:40:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A8681F21F06
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 21:34:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49A32284250
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 22:40:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ABFF3FE20;
-	Fri, 29 Mar 2024 21:34:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8DC854BF6;
+	Fri, 29 Mar 2024 22:40:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="hbIgZ9gg"
+	dkim=pass (2048-bit key) header.d=freebsd.org header.i=@freebsd.org header.b="WLHI84jq"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx2.freebsd.org (mx2.freebsd.org [96.47.72.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B4B81DFC4
-	for <linux-wireless@vger.kernel.org>; Fri, 29 Mar 2024 21:34:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711748089; cv=none; b=gIJMsukTcHGi2ooVJQk82VQfFea98KueCFXc+3PMd+bSARSjm/I5MGOdEUDdfcf9uJbEY2Ob5vmiciT55DxKK2va64tPOuPJS74EkcvpFfjBdMrOH/Y4ZJE/BvqbJXeOs3X7ZEBRx8d6nLNiJdsSpscmrphaQU68mp4nuBMb+Ds=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711748089; c=relaxed/simple;
-	bh=xkHjr+s2F9V96bJBi9kgJ17oPEwDnvI5h2kmwnLcZ8U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=dTfmv5DMXujWDSl3vyHwVXMJF+bbMZ92LrZcDSSnv0DCJzl5G8oI4Oe2K5OrAeKxZ+cgOsZhJg2D+w/cNw0UhXjvNJO3YKsDvy8ttvasgLiP1VkMBB1Md41Fv38YJb+I0mdg2qzS2cFmq9K5z2bxas8uO2SVIPuNZIIU878W8CE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=hbIgZ9gg; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42TLP4J2031349;
-	Fri, 29 Mar 2024 21:34:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=qvb6uEI0xknJuqDpXBSOhqtawP0ALfEnbLGvBrR7ic0=; b=hb
-	IgZ9ggvEHs/gX8O2mNXDz5ee86qlMI0wVCA93JOdm19u2U1XzpqERh4zMR7NVQqN
-	uIZfF++NYIHRToJ1sDUG7aMrZV9gWoPqwjGVvsy5hMWlp1mUSvHDP/6UxO+Toa3E
-	EXZrYnRd8He/ReiZ44SLtRGZtli2haOzgyGPx/W/k9EuNUUzH1OTPr3+DSkpxx55
-	ZQEJf8kc9sdcMR6w/eY7HAOyeaC6ngdbvdCE7TToSW5d/aMpf0Zv3s6iLiBNMn+Y
-	Z12Snf1HJJ2AL6D1zovhJKycr7PlM0JYgaEDnjOrHs7sTyZ2YyYFXIiwk9A9FUqW
-	F63zYXfhKH6vlhtot+8Q==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3x5np2ahax-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 29 Mar 2024 21:34:43 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42TLYgvb010328
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 29 Mar 2024 21:34:42 GMT
-Received: from [10.110.124.221] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Fri, 29 Mar
- 2024 14:34:42 -0700
-Message-ID: <a217c752-65fb-4975-8208-c708a0ceeab8@quicinc.com>
-Date: Fri, 29 Mar 2024 14:34:41 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CBD428DCA
+	for <linux-wireless@vger.kernel.org>; Fri, 29 Mar 2024 22:40:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=96.47.72.81
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1711752030; cv=pass; b=oEKzSndGkTuyKgHpEXEf2AuJNWlohPfNSyUXAwG2EBsis7BF06ZVI2hiQonm1WcRIKeNteUsZYAx3pdG/+MbTKzgf2k2XZI/g446EImWDcIt7jNUpKLLr0noIbJYYfxK7TaXanCMsyAzajyZlZXf7VLo/+IYlwAq/SC45bV+m2U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1711752030; c=relaxed/simple;
+	bh=+NVxXRpcb5Eu5Xuis5cdwzL/CLDSHHEsOUJ6slCa1ZY=;
+	h=Date:From:To:cc:Subject:Message-ID:MIME-Version:Content-Type; b=RBPzSLWiwd6FkcH/abXzdMCzP21CgnSFpjg/80Odi6LgtpIkTzTwQAX0A2xlM9O7NWW8XuQOzsKRudVQpH4EaOdC2IBPbOzNP8NftcrTfcWZVskr1gsrapgCCZqqBcN5OEkr27BG6+ZCcs3wGo5TFobcYeiCQJ2fkea9eO2WlME=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=FreeBSD.org; spf=pass smtp.mailfrom=FreeBSD.org; dkim=pass (2048-bit key) header.d=freebsd.org header.i=@freebsd.org header.b=WLHI84jq; arc=pass smtp.client-ip=96.47.72.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=FreeBSD.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=FreeBSD.org
+Received: from mx1.freebsd.org (mx1.freebsd.org [IPv6:2610:1c1:1:606c::19:1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits)
+	 client-signature RSA-PSS (4096 bits))
+	(Client CN "mx1.freebsd.org", Issuer "R3" (verified OK))
+	by mx2.freebsd.org (Postfix) with ESMTPS id 4V5wN50f0Pz4WYr;
+	Fri, 29 Mar 2024 22:40:21 +0000 (UTC)
+	(envelope-from bz@FreeBSD.org)
+Received: from smtp.freebsd.org (smtp.freebsd.org [96.47.72.83])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "smtp.freebsd.org", Issuer "R3" (verified OK))
+	by mx1.freebsd.org (Postfix) with ESMTPS id 4V5wN46tbxz4S8H;
+	Fri, 29 Mar 2024 22:40:20 +0000 (UTC)
+	(envelope-from bz@FreeBSD.org)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=freebsd.org; s=dkim;
+	t=1711752021;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=0KWbc82XY20N6N4WAODbgFtVAzry/IwFpFWBfsmE4uU=;
+	b=WLHI84jqi4rw6ZkSqLva7LEgcgjMDY0CuYLfmB469+0UEDtctCUlt3+mzg6VJP1zqpFdmq
+	hCRVuuyyrM3Rg2a9XJeiyl3fJfQuEqMgR+9dHhwaiqbPOTcLhZSH5y2t5bygPVflabnfCd
+	1FMXpGXYypiGBs2G2GTOrgiGw7FSpR76EF5RAnZP9/dzmhsqBJffB72GbuRvesFj2qNumt
+	cCiAl7KlM6qWkHbuZm1zZj9/UaCvu8qpRbJb8SGJY3HIDKHdKXTtTRpwig35LmRonId2qF
+	6FYdzL2entjgXbIAc+nlH41ovzKVSEHWSv7q70j2Fo+g4gsAV4Lx3PrxUreVJw==
+ARC-Seal: i=1; s=dkim; d=freebsd.org; t=1711752021; a=rsa-sha256; cv=none;
+	b=Z174SQvQR3nn/P4qswFJgahqkv5fsL/P4S6IXrxsObqa8mhUGeMEFn6txcLTUVEcCa58wa
+	JvLSSFYnHyxuUSo0eNRIjS8QhRuVrvLoLuZZUDFa5afXixCzKYA/XtA1dhHIApvOYiUePy
+	zJFcd1razys0FP6Mptp8BYPzJgn80HOXz2BgNFnTvlyynNz+u9sv6e7Hr3B9iU9iaYPrty
+	GCPq0zS5+jIyosxVROpWxM3BtOuam3QFNHGmuXGlQWkX3/m9z4d/yTg2LYF5qLaEEyUSOx
+	+ndbFdIfPjEvDZBu72wLlTW2NccI3PY7LCvjEnKXLGr4gQ6mFU/GjTpEJCImfw==
+ARC-Authentication-Results: i=1;
+	mx1.freebsd.org;
+	none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=freebsd.org;
+	s=dkim; t=1711752021;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=0KWbc82XY20N6N4WAODbgFtVAzry/IwFpFWBfsmE4uU=;
+	b=mbEYFPMr302fUNkaUwIs75J4vIqOTsQFZjKyIDPjJKGqgPBZ/fjTKMIK586wtIYvNXnc6R
+	hFfahOYL9+52H1kQvqDAGL7jGOKz9mC7LdE1ZiyTg5EgWEEvs6sC3gNqsu21zRaPJerBL/
+	s5WUTJgbJdkyKZ3yNuwVAiScjsnK2HSZplH1T8c1mgqWpPaOOFnrXuQlmr8OmZEQOvqHnQ
+	eIfcBwMCNyPjOjBHIvz8w8P6QJ0ZW7VfBJd/Ky3CErlLoLQ9wqzVejVfPdc2g/jC2reVoU
+	V7vDg/AC0bQybNHtPp7FL+IYPq8rd+uGoqPerFjfZGKyHxBgR42cl0AFKYae0w==
+Received: from mx1.sbone.de (cross.sbone.de [195.201.62.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(Client CN "mx1.sbone.de", Issuer "SBone.DE Root Certificate Authority" (not verified))
+	(Authenticated sender: bz/mail)
+	by smtp.freebsd.org (Postfix) with ESMTPSA id 4V5wN45cyYzf25;
+	Fri, 29 Mar 2024 22:40:20 +0000 (UTC)
+	(envelope-from bz@FreeBSD.org)
+Received: from mail.sbone.de (mail.sbone.de [IPv6:fde9:577b:c1a9:4902:0:7404:2:1025])
+	(using TLSv1.2 with cipher ADH-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.sbone.de (Postfix) with ESMTPS id 593738D4A162;
+	Fri, 29 Mar 2024 22:40:19 +0000 (UTC)
+Received: from content-filter.t4-02.sbone.de (content-filter.t4-02.sbone.de [IPv6:fde9:577b:c1a9:4902:0:7404:2:2742])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.sbone.de (Postfix) with ESMTPS id B3FB12D029D8;
+	Fri, 29 Mar 2024 22:40:18 +0000 (UTC)
+X-Virus-Scanned: amavisd-new at sbone.de
+Received: from mail.sbone.de ([IPv6:fde9:577b:c1a9:4902:0:7404:2:1025])
+	by content-filter.t4-02.sbone.de (content-filter.t4-02.sbone.de [IPv6:fde9:577b:c1a9:4902:0:7404:2:2742]) (amavisd-new, port 10024)
+	with ESMTP id t2VatLSMXWGQ; Fri, 29 Mar 2024 22:40:17 +0000 (UTC)
+Received: from strong-iwl0.sbone.de (strong-iwl0.sbone.de [IPv6:fde9:577b:c1a9:4902:b66b:fcff:fef3:e3d2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.sbone.de (Postfix) with ESMTPSA id 9525E2D029D2;
+	Fri, 29 Mar 2024 22:40:17 +0000 (UTC)
+Date: Fri, 29 Mar 2024 22:40:17 +0000 (UTC)
+From: "Bjoern A. Zeeb" <bz@FreeBSD.org>
+To: linux-wireless@vger.kernel.org
+cc: miriam.rachel.korenblit@intel.com
+Subject: [PATCH 0/3] iwlwifi cleanups
+Message-ID: <431o2997-oqn8-p0ro-sq6r-pnr543164r85@SerrOFQ.bet>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 07/10] wifi: ath12k: add support for setting fixed HE
- rate/GI/LTF
-Content-Language: en-US
-To: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>,
-        <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, Muna Sinada <quic_msinada@quicinc.com>
-References: <20240327170910.23975-1-quic_pradeepc@quicinc.com>
- <20240327170910.23975-8-quic_pradeepc@quicinc.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20240327170910.23975-8-quic_pradeepc@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: UL7mfzQFZiMeESN1_X68lWmAWCGiObrn
-X-Proofpoint-GUID: UL7mfzQFZiMeESN1_X68lWmAWCGiObrn
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-29_13,2024-03-28_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
- lowpriorityscore=0 impostorscore=0 priorityscore=1501 spamscore=0
- bulkscore=0 mlxscore=0 malwarescore=0 clxscore=1015 suspectscore=0
- mlxlogscore=999 phishscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2403210001 definitions=main-2403290192
+Content-Type: text/plain; format=flowed; charset=US-ASCII
 
-On 3/27/2024 10:09 AM, Pradeep Kumar Chitrapu wrote:
-> Add support to set fixed HE rate/GI/LTF values using nl80211.
-> Reuse parts of the existing code path already used for HT/VHT
-> to implement the new helpers symmetrically, similar to how
-> HT/VHT is handled.
-> 
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-> 
-> Co-developed-by: Muna Sinada <quic_msinada@quicinc.com>
-> Signed-off-by: Muna Sinada <quic_msinada@quicinc.com>
-> Signed-off-by: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
-> ---
->  drivers/net/wireless/ath/ath12k/mac.c | 588 ++++++++++++++++++++++++--
->  drivers/net/wireless/ath/ath12k/wmi.h |  18 +
->  2 files changed, 562 insertions(+), 44 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-> index 46ef2d63a3de..72232285d2b1 100644
-> --- a/drivers/net/wireless/ath/ath12k/mac.c
-> +++ b/drivers/net/wireless/ath/ath12k/mac.c
-[...]
-> @@ -3888,8 +4130,9 @@ static void ath12k_sta_rc_update_wk(struct work_struct *wk)
->  	mutex_lock(&ar->conf_mutex);
->  
->  	nss = max_t(u32, 1, nss);
-> -	nss = min(nss, max(ath12k_mac_max_ht_nss(ht_mcs_mask),
-> -			   ath12k_mac_max_vht_nss(vht_mcs_mask)));
-> +	nss = min(nss, max3(ath12k_mac_max_ht_nss(ht_mcs_mask),
-> +			    ath12k_mac_max_vht_nss(vht_mcs_mask),
-> +			    ath12k_mac_max_he_nss(he_mcs_mask)));
+Starting to reduce some local changes in FreeBSD against the
+upstream Linux version of the dual-licensed bits of the driver.
 
-When I run this entire series through ath12k-check I'm getting the following
-issue here:
+These are three changes removing dead code or hiding code
+behind the appropriate preprocessor check.
 
-drivers/net/wireless/ath/ath12k/mac.c:4170:15: error: too long token expansion
-drivers/net/wireless/ath/ath12k/mac.c:4170:15: error: too long token expansion
+Please check the MEI changes accordingly with the multiple
+compile-time options under Linux (hope your build bot will
+do that).
 
-caeed0eb7fb4d (Pradeep Kumar Chitrapu 2024-03-27 10:09:07 -0700 4170)   nss = min(nss, max3(ath12k_mac_max_ht_nss(ht_mcs_mask),
+Bjoern A. Zeeb (3):
+   wifi: iwlwifi: mvm: remove dead code
+   wifi: iwlwifi: remove function declaration without function
+   wifi: iwlwifi: mvm: check for CONFIG_IWLMEI to be enabled for more
+     code
 
-I don't see anything wrong with the code.
+  .../intel/iwlwifi/mvm/ftm-responder.c         | 80 -------------------
+  drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  6 --
+  drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |  4 +
+  drivers/net/wireless/intel/iwlwifi/mvm/sta.c  | 65 ---------------
+  drivers/net/wireless/intel/iwlwifi/mvm/sta.h  |  3 -
+  .../wireless/intel/iwlwifi/pcie/internal.h    |  1 -
+  6 files changed, 4 insertions(+), 155 deletions(-)
 
-Even stranger is that when this series is in place, I see this same issue at
-another place:
-drivers/net/wireless/ath/ath12k/mac.c:7903:23: error: too long token expansion
-drivers/net/wireless/ath/ath12k/mac.c:7903:23: error: too long token expansion
-
-But that is actually pre-existing code from the original ath12k driver drop:
-d889913205cf7 (Kalle Valo             2022-11-28 17:09:53 +0200 7903)          nss = min_t(u32, ar->num_tx_chains,
-
-And the issue is not flagged when this series is not present.
-
-However that same logic also caused the same issue in ath11k, and Kalle fixed
-it there with:
-https://lore.kernel.org/all/20231214161740.1582340-1-kvalo@kernel.org/
-
-And one of the MediaTek drivers encountered a similar issue here:
-https://lore.kernel.org/all/5457b92e41909dd75ab3db7a0e9ec372b917a386.1710858172.git.lorenzo@kernel.org/
-
-So there is definitely a tooling issue here.
-
-As a local test I added an intermediate step and now I don't see the issue
-here:
--       u32 changed, bw, nss, smps, bw_prev;
-+       u32 changed, bw, nss, mac_nss, smps, bw_prev;
-...
--       nss = min(nss, max3(ath12k_mac_max_ht_nss(ht_mcs_mask),
--                           ath12k_mac_max_vht_nss(vht_mcs_mask),
--                           ath12k_mac_max_he_nss(he_mcs_mask)));
-+       mac_nss = max3(ath12k_mac_max_ht_nss(ht_mcs_mask),
-+                      ath12k_mac_max_vht_nss(vht_mcs_mask),
-+                      ath12k_mac_max_he_nss(he_mcs_mask));
-+       nss = min(nss, mac_nss);
-
-So let's add something like that in v3 (perhaps pick a better name)
-
-(Even with this I still see the other issue from the original driver drop so
-we may need to separately propagate the ath11k driver change to ath12k).
-
-/jeff
-
-
+-- 
+2.40.0
 
