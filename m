@@ -1,148 +1,168 @@
-Return-Path: <linux-wireless+bounces-5537-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5538-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38FB0891714
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 11:52:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8179C891750
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 12:00:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CAC13B21CC1
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 10:52:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4B381C24038
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 11:00:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C21B041208;
-	Fri, 29 Mar 2024 10:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84F6081731;
+	Fri, 29 Mar 2024 10:58:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="JWlcK3r5"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GS8pjeRX"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773A417F0
-	for <linux-wireless@vger.kernel.org>; Fri, 29 Mar 2024 10:52:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E1EA7D088
+	for <linux-wireless@vger.kernel.org>; Fri, 29 Mar 2024 10:58:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711709547; cv=none; b=JJTCwQ53vhHoRqJtzdyKdbmOlKLO62WMwdJz9JDSnk0mkl9rJZm0YQxMDXphrsirG1kBFt9Y1Y7yet1Mi43RvowyjUrubNz8PctaxaBmRctgSzykTLl6U5/MOXNTKL/tgHh+sOiqUYg2eo/2az+nDqyNM210clbDlnegSbWKbeE=
+	t=1711709894; cv=none; b=VDSSgDIB6PzLxQrqHLcwbegMlqpp5etAj4TWBWDqi5Gfjimp5RmdbkyS4YdfXU8wAv9d4xoQfHJK08A5xxZlwe0ypLlyiKKb0wKempWse02NBLiDPWQbxjF0Rk2xjqkNcCeEV18eUQj8EE1Z6HsRy7to65QTduNVk0cqwQTLv0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711709547; c=relaxed/simple;
-	bh=+om1BZ5r5zlr6iU+9fn5jtmcSz7mmmA447oPQpdOBAE=;
+	s=arc-20240116; t=1711709894; c=relaxed/simple;
+	bh=g8OQfrHBwhFx8ET7d7s7wkLQtKO+Fbki+HGAG42ZO84=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=blKd3oavU9WG7Xy3mU68gu2bxUJTN3ZMw68tyko9k/FUYhBnrKjpaJMGD0BGf2coY5GvmXFTRS8Z1VstxrqYm28ofuFNaM6bMTYDu5MOtWNxG+wfMNQ3GHHvSfuY4XmzQFsFDnIq19DuT4qHPbuJnTOwkBu7EjtwFpWio1oKSBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=JWlcK3r5; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from fpc (unknown [10.10.165.8])
-	by mail.ispras.ru (Postfix) with ESMTPSA id 402164073CEB;
-	Fri, 29 Mar 2024 10:52:15 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 402164073CEB
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1711709535;
-	bh=n24MYDG0R/KHcVvTbb9vZEDg+3ekiFQbkcr9p/aLI7I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JWlcK3r529H/FNKm6alf90kG48ndVNAdTHYKzP3YoGP/q30N7OPaIJyhjcUQC/jyc
-	 pF11pF5JRYjgEobF8HheZnoGpqH17bNXpIRDK/xpnQim3uydn9hCY5H/0zt5p1hgEI
-	 gSvCladdYSVs0ECJnoBOhrnTLmG3y+GwgZxIx3dY=
-Date: Fri, 29 Mar 2024 13:52:08 +0300
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Dmitry Antipov <dmantipov@yandex.ru>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
-	Johannes Berg <johannes.berg@intel.com>,
-	syzbot+fdc5123366fb9c3fdc6d@syzkaller.appspotmail.com,
-	linux-wireless@vger.kernel.org,
-	"lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>
-Subject: Re: [PATCH] wifi: mac80211: don't use rate mask for scanning
-Message-ID: <20240329105208.hj5tviy3mf73yaiw@fpc>
-References: <20240326220854.9594cbb418ca.I7f86c0ba1f98cf7e27c2bacf6c2d417200ecea5c@changeid>
- <4e07f032-ad77-4fdb-a5e6-40323cb39be2@yandex.ru>
+	 Content-Type:Content-Disposition:In-Reply-To; b=KchDTSWF5Y50F4QCfx96ka9dQxchYhWfRUdDvTmI0gcFLA8ZLKMcz2u1n5jZSFLnSXBQtLvSGaemUAP5b4diQu6EL0KS3SSPxsra13QafCsNyPa+0rafT7IbIuzo0ZXmWE8kq0mnTp4CDjI5vkzHCH+wWed0ICR4SGK+vdm4s5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GS8pjeRX; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1711709891;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ObmCChwbxI4fnx/oMY/3duoto3dJqKFQjwXK6r0ebbk=;
+	b=GS8pjeRXpuHXTXXpXCg2ns8t39s6nX3gMs2SgBbl2prc66kkPGtfBd19kJOmWxA4Ms0PXc
+	PuJP99fx8FgzaXP7EA8K1zC2uEmqkxmAOt2mdbqts+6fptiM8uGLqNnMMmDA6NsQlhcLJ/
+	fjfmE6l5USUwrzoWLnTMKFe6Xk8E8VQ=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-616--I5B9TINPcawaD_IGJv6_w-1; Fri, 29 Mar 2024 06:58:09 -0400
+X-MC-Unique: -I5B9TINPcawaD_IGJv6_w-1
+Received: by mail-lf1-f72.google.com with SMTP id 2adb3069b0e04-50e91f9d422so1922994e87.2
+        for <linux-wireless@vger.kernel.org>; Fri, 29 Mar 2024 03:58:09 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711709887; x=1712314687;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ObmCChwbxI4fnx/oMY/3duoto3dJqKFQjwXK6r0ebbk=;
+        b=GDOQBpWgapjDysUGTiDx32lxnbgxlzLaSXxz9B/A7wxXWcNRdnK67gAxYq7jaNQbwC
+         bfrufM5LRFAc8WUrIxG8ZyfSHoSgFvXF+Zl3l6la4AYeQQ4VkC7s91uIZMlPKjiQjssn
+         fYTla+azpBaUmCBmD7JjEZlEKvoFAousmbYnZo5EVGEq2Z7TtpvHjlT3WHd+mx/9kPB9
+         N+LnGPkmceLQPDSExN+kuN7Q8ii7a2io3SXGqhxhqSqOr8QYURh9JwYmiStYIW6DbU1N
+         UxWv8eyBHI8wudUELod9sVQc/vxzN3KntCsAhNL2aURVYg6KPTOEJUYhMCvqjx6diqfb
+         Zt6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVwMQZ/Fem0gQAYhTogb3Qkkt4mL+PasDyPkKxSJ34VvOWfReoAYrMdEVTOj2q/4Ts+DBqf/jymj+VISMAFeLIrGYSxkCr3RcAYMZ+khYA=
+X-Gm-Message-State: AOJu0Yy4TU9l8EpKZvI7irVLPEt8So4RIfg8aHDFjj0jMQ/+nfU9KI89
+	wZHZaFrWIc/B563tAdkRW3TPjyTIatr2+Y4Qczoi8ykpkdcHMHpZmf23rfB98w//NZhx6jjqRyl
+	gw3pZLP5ERtYMe2G0WXvyN4cYboRPymauDEAPqwY9vs7KKAHQ/N018X6Xx8ChGIr7
+X-Received: by 2002:ac2:4197:0:b0:513:d3c0:f66 with SMTP id z23-20020ac24197000000b00513d3c00f66mr1297999lfh.51.1711709886780;
+        Fri, 29 Mar 2024 03:58:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG29WemiigJFVRUgtZdZmONK+lboYNHffuMAIXm6vtZQPUrBU42pJdYIugnsyliFC3CMebqVw==
+X-Received: by 2002:ac2:4197:0:b0:513:d3c0:f66 with SMTP id z23-20020ac24197000000b00513d3c00f66mr1297956lfh.51.1711709886231;
+        Fri, 29 Mar 2024 03:58:06 -0700 (PDT)
+Received: from sgarzare-redhat (host-87-12-25-33.business.telecomitalia.it. [87.12.25.33])
+        by smtp.gmail.com with ESMTPSA id f4-20020a056402194400b0056c4cdc987esm1879596edz.8.2024.03.29.03.58.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 29 Mar 2024 03:58:05 -0700 (PDT)
+Date: Fri, 29 Mar 2024 11:58:00 +0100
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Richard Weinberger <richard@nod.at>, 
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>, Johannes Berg <johannes@sipsolutions.net>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, 
+	Jens Axboe <axboe@kernel.dk>, Marcel Holtmann <marcel@holtmann.org>, 
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>, Olivia Mackall <olivia@selenic.com>, 
+	Herbert Xu <herbert@gondor.apana.org.au>, Amit Shah <amit@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Gonglei <arei.gonglei@huawei.com>, 
+	"David S. Miller" <davem@davemloft.net>, Viresh Kumar <vireshk@kernel.org>, 
+	Linus Walleij <linus.walleij@linaro.org>, David Airlie <airlied@redhat.com>, 
+	Gerd Hoffmann <kraxel@redhat.com>, Gurchetan Singh <gurchetansingh@chromium.org>, 
+	Chia-I Wu <olvaffe@gmail.com>, Jean-Philippe Brucker <jean-philippe@linaro.org>, 
+	Joerg Roedel <joro@8bytes.org>, Alexander Graf <graf@amazon.com>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Eric Van Hensbergen <ericvh@kernel.org>, 
+	Latchesar Ionkov <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>, 
+	Christian Schoenebeck <linux_oss@crudebyte.com>, Kalle Valo <kvalo@kernel.org>, 
+	Dan Williams <dan.j.williams@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, 
+	Dave Jiang <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Pankaj Gupta <pankaj.gupta.linux@gmail.com>, Bjorn Andersson <andersson@kernel.org>, 
+	Mathieu Poirier <mathieu.poirier@linaro.org>, "Martin K. Petersen" <martin.petersen@oracle.com>, 
+	Vivek Goyal <vgoyal@redhat.com>, Miklos Szeredi <miklos@szeredi.hu>, 
+	Anton Yakovlev <anton.yakovlev@opensynergy.com>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+	virtualization@lists.linux.dev, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-um@lists.infradead.org, linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org, 
+	linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev, netdev@vger.kernel.org, 
+	v9fs@lists.linux.dev, kvm@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	nvdimm@lists.linux.dev, linux-remoteproc@vger.kernel.org, linux-scsi@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, alsa-devel@alsa-project.org, linux-sound@vger.kernel.org
+Subject: Re: [PATCH 09/22] gpio: virtio: drop owner assignment
+Message-ID: <wevexb25pa4cwa73tmmlpqyf527drjyfr56j46ddrglofh2mew@sv5hxdqpiu73>
+References: <20240327-module-owner-virtio-v1-0-0feffab77d99@linaro.org>
+ <20240327-module-owner-virtio-v1-9-0feffab77d99@linaro.org>
+ <CAMRc=McY6PJj7fmLkNv07ogcYq=8fUb2o6w2uA1=D9cbzyoRoA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Disposition: inline
-In-Reply-To: <4e07f032-ad77-4fdb-a5e6-40323cb39be2@yandex.ru>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMRc=McY6PJj7fmLkNv07ogcYq=8fUb2o6w2uA1=D9cbzyoRoA@mail.gmail.com>
 
-On Fri, 29. Mar 12:47, Dmitry Antipov wrote:
-> On 3/27/24 00:08, Johannes Berg wrote:
-> 
-> > From: Johannes Berg <johannes.berg@intel.com>
-> > 
-> > The rate mask is intended for use during operation, and
-> > can be set to only have masks for the currently active
-> > band. As such, it cannot be used for scanning which can
-> > be on other bands as well.
-> > 
-> > Simply ignore the rate masks during scanning to avoid
-> > warnings from incorrect settings.
-> > 
-> > Reported-by: syzbot+fdc5123366fb9c3fdc6d@syzkaller.appspotmail.com
-> > Closes: https://syzkaller.appspot.com/bug?extid=fdc5123366fb9c3fdc6d
-> > Co-developed-by: Dmitry Antipov <dmantipov@yandex.ru>
-> > Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-> > Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> 
-> Ugh. Fedor has reported (and I have confirmed) that this still may be
-> reproduced with https://syzkaller.appspot.com/text?tag=ReproC&x=12a8fd7f680000
-> as:
-> 
-> [   40.293787][ T5149] no supported rates for sta 08:02:11:00:00:01 (0xf, band 0) in rate_mask 0xfff with flags 0x10
-> [   40.294789][ T5149] WARNING: CPU: 1 PID: 5149 at net/mac80211/rate.c:380 __rate_control_send_low+0x6af/0x810
-> [   40.295624][ T5149] Modules linked in:
-> [   40.296369][ T5149] CPU: 1 PID: 5149 Comm: repro3 Not tainted 6.9.0-rc1-00179-g46ad21a6b2e3 #1
-> [   40.296918][ T5149] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-1.fc39 04/01/2014
-> [   40.297534][ T5149] RIP: 0010:__rate_control_send_low+0x6af/0x810
-> [   40.297946][ T5149] Code: 8b ac a8 d4 00 00 00 e8 df 4d 4f f7 44 8b 44 24
-> 04 45 89 f9 89 d9 48 8b 74 24 18 89 ea 48 c7 c7 60 68 4e 8c e8 62 a0 11 f7
-> 90 <0f> 0b 90 90 e9 1f fd ff ff 48 8b 7c 24 28 e8 ce 16 ab f7 e9 13 fc
-> [   40.299218][ T5149] RSP: 0018:ffffc9000350ed40 EFLAGS: 00010282
-> [   40.299624][ T5149] RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff8150f9b9
-> [   40.300192][ T5149] RDX: ffff88810b509cc0 RSI: ffffffff8150f9c6 RDI: 0000000000000001
-> [   40.300743][ T5149] RBP: 000000000000000f R08: 0000000000000001 R09: 0000000000000000
-> [   40.301291][ T5149] R10: 0000000000000000 R11: 0000000000000006 R12: ffff88801985f228
-> [   40.301812][ T5149] R13: ffff888107edb088 R14: 000000000000000c R15: 0000000000000010
-> [   40.302335][ T5149] FS:  00007f16474fe740(0000) GS:ffff888135c00000(0000) knlGS:0000000000000000
-> [   40.302945][ T5149] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [   40.303385][ T5149] CR2: 00007f16474ff0e8 CR3: 0000000109dc0000 CR4: 00000000000006f0
-> [   40.303957][ T5149] Call Trace:
-> [   40.304221][ T5149]  <TASK>
-> [   40.308220][ T5149]  rate_control_send_low+0x116/0x7e0
-> [   40.308786][ T5149]  rate_control_get_rate+0x1be/0x590
-> [   40.309153][ T5149]  ieee80211_tx_h_rate_ctrl+0xaa1/0x1a50
-> [   40.310581][ T5149]  invoke_tx_handlers_late+0x133b/0x2ae0
-> [   40.312476][ T5149]  ieee80211_tx+0x306/0x420
-> [   40.314290][ T5149]  ieee80211_xmit+0x30e/0x3e0
-> [   40.314651][ T5149]  __ieee80211_tx_skb_tid_band+0x29b/0x700
-> [   40.315090][ T5149]  ieee80211_tx_skb_tid+0x176/0x4f0
-> [   40.315483][ T5149]  ieee80211_mgmt_tx+0x129a/0x2160
-> [   40.315868][ T5149]  cfg80211_mlme_mgmt_tx+0x910/0x1570
-> [   40.316277][ T5149]  nl80211_tx_mgmt+0x7ad/0xcf0
-> [   40.317822][ T5149]  genl_family_rcv_msg_doit+0x205/0x2f0
-> [   40.319083][ T5149]  genl_rcv_msg+0x56c/0x810
-> [   40.321628][ T5149]  netlink_rcv_skb+0x16e/0x440
-> [   40.324076][ T5149]  genl_rcv+0x28/0x40
-> [   40.324359][ T5149]  netlink_unicast+0x545/0x820
-> [   40.325810][ T5149]  netlink_sendmsg+0x8b8/0xd70
-> [   40.327175][ T5149]  ____sys_sendmsg+0xacf/0xca0
-> [   40.328673][ T5149]  ___sys_sendmsg+0x135/0x1e0
-> [   40.330261][ T5149]  __sys_sendmsg+0x117/0x1f0
-> [   40.330761][ T5149]  do_syscall_64+0xd3/0x260
-> [   40.331047][ T5149]  entry_SYSCALL_64_after_hwframe+0x6d/0x75
-> 
-> Note that the backtrace is different and this
-> one comes from MLME rather than scanning.
-> 
-> Dmitry
-> 
+On Fri, Mar 29, 2024 at 11:27:19AM +0100, Bartosz Golaszewski wrote:
+>On Wed, Mar 27, 2024 at 1:45 PM Krzysztof Kozlowski
+><krzysztof.kozlowski@linaro.org> wrote:
+>>
+>> virtio core already sets the .owner, so driver does not need to.
+>>
+>> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>>
+>> ---
+>>
+>> Depends on the first patch.
+>> ---
+>>  drivers/gpio/gpio-virtio.c | 1 -
+>>  1 file changed, 1 deletion(-)
+>>
+>> diff --git a/drivers/gpio/gpio-virtio.c b/drivers/gpio/gpio-virtio.c
+>> index fcc5e8c08973..9fae8e396c58 100644
+>> --- a/drivers/gpio/gpio-virtio.c
+>> +++ b/drivers/gpio/gpio-virtio.c
+>> @@ -653,7 +653,6 @@ static struct virtio_driver virtio_gpio_driver = {
+>>         .remove                 = virtio_gpio_remove,
+>>         .driver                 = {
+>>                 .name           = KBUILD_MODNAME,
+>> -               .owner          = THIS_MODULE,
+>>         },
+>>  };
+>>  module_virtio_driver(virtio_gpio_driver);
+>>
+>> --
+>> 2.34.1
+>>
+>
+>Applied, thanks!
 
-Yeah, I think it might be caused by a completely different scenario not
-related to scanning - which can be seen from the backtrace. So it may need
-a different analysis and probably a fix in another place.
+Did you also applied the first patch of this series?
 
-The warnings while scanning have been fixed with the proposed patch, I can
-confirm, too.
+Without that I'm not sure it's a good idea to apply this patch as also
+Krzysztof mentioned after ---.
 
---
-Fedor
+Thanks,
+Stefano
+
 
