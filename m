@@ -1,61 +1,60 @@
-Return-Path: <linux-wireless+bounces-5555-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5556-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE053891970
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 13:41:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14BBF891984
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 13:43:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87F2728559D
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 12:41:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C44082866C6
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 12:43:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02AFE148301;
-	Fri, 29 Mar 2024 12:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE9D613AA48;
+	Fri, 29 Mar 2024 12:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NRdKUtsy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YqbPdho2"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA091482FA;
-	Fri, 29 Mar 2024 12:28:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5C08135A50;
+	Fri, 29 Mar 2024 12:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711715319; cv=none; b=OTpk4aYKct+NdSioZPdpn6XwQb0f6RcQhP2qGmLNl6IY7Sb6DHGS0QwMRXq2WYsN1qaeC6Z3rZe8995gb9SC4EiVU+36YK69NNzVpScidftNcxAIS5xf8DFK4DTkpNMu1WEBY6TgBOyWQC3KHwIrNz1qEsqEBO7YK4wzJpGj+FI=
+	t=1711715339; cv=none; b=fEHSTY3xKq/pXHhrQKo/oVgiLgCDymmVJ9ttTy84zY5SpF/HI/zacF/8DsqFWYNCGPWJZG78LFM4CAMMGh2+aMH5xiVilBVewJmFtyS7T1UGQSIuE6Nj9DuH51WO91LjbHDlDxRjwhsNiZPvHxxzhwMCxX8BBT1+COY3fPLKASo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711715319; c=relaxed/simple;
-	bh=JqUuGiDE40YrvaUE3aMQq/tZU7+N7m0ERzkVn3GKpeU=;
+	s=arc-20240116; t=1711715339; c=relaxed/simple;
+	bh=2blYHZzTgc/Bt86ve41KFu0JQMEdKOXO3SMGTZkGYg8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gh6OvyKIHeTcgDCYcGPToxNOBzu9D3omcAbbs/Ly0KYtI3YwztnrT95dqwX2endawYbOW0G7Ke1/Iq9B9KOOixb8G2rXINtegPkZ6yguqK9qYydjG4bTfQ1ywHZAjD6hijQEiv4ATJA3qqxn2U/hHxAuNpNPPbisOWD3Z9BKBgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NRdKUtsy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B634C43390;
-	Fri, 29 Mar 2024 12:28:38 +0000 (UTC)
+	 MIME-Version; b=B24HromVRlf1/W7ndpZshPiFpvzLDpaO62ivnpFoOCwYiu8yoy+77lOKY2LS+OMHnyr+2bgd7XyuUu89LHDxPt9w8sqqDlkEHxih5sC1yVoPWgbvrZicyx07YP4pvF1VH2c2K2I3tOY5Gc5CFC5XBMrbZVqM7kr3DA7akFfTuSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YqbPdho2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99188C433C7;
+	Fri, 29 Mar 2024 12:28:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711715319;
-	bh=JqUuGiDE40YrvaUE3aMQq/tZU7+N7m0ERzkVn3GKpeU=;
+	s=k20201202; t=1711715339;
+	bh=2blYHZzTgc/Bt86ve41KFu0JQMEdKOXO3SMGTZkGYg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NRdKUtsydTwOhKCrwk6pqT3kx//yVceF0JxhHF8tr0AiS8LGf0ytcVprOrTFdsI++
-	 4pyRyl1D4SpmfqSyTbXseqcL+CiO3xy5TAdvqy9eDd3WLoS8Xnk5+js5RGG8Z00adH
-	 tN+8ewYnuhUsojqaDUIUFq18W9JBuL1CWKo1HeLb1UL+OG1789Sq5/6SStNm6qcov6
-	 JYhN4QMpniYH8rFqQM09WOjU6LM9NugQ9p+8NPm7COXVdD9VAepBea30tqrSioexrd
-	 5i0L8WDnWmuB0nllIkxloxQiYRTeXsT7vi5DNQ755sxp/v06MZteQgu8LhNNG0RSJH
-	 Ii+hBAgVq4ECA==
+	b=YqbPdho2P8BTGlG8b+CDlKQDPldse6c/L583JImTyRD7NafIBBoklJAiBWWdcX4o5
+	 Fd6przGtyLFALm0v1hK5wjqOr8W2Z1TRgMTD42YroC5xwVMBQ2YwNP3PHjg20+Ab+e
+	 cCwpBzLW718KK282VHDNUSFzt0QW1K919Ijlbi5KK+sW4USEcfHks6A+ZYIk+Tan0E
+	 NS2Wh2dcDny/QAK5wT/HlDnAGFdYwXn8MhiYhlIslmulYmFNaRPhh/RDnlWPBCJ03R
+	 M+xH0pC5jqTU4Fwz+9mAf1PndSdCUlsRG7ZLVW8+mkSgb7MPPIogVVS53pBGkdIhpd
+	 mH7CTachJ8z/g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Baochen Qiang <quic_bqiang@quicinc.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+Cc: Takashi Iwai <tiwai@suse.de>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	kvalo@kernel.org,
-	jjohnson@kernel.org,
-	linux-wireless@vger.kernel.org,
-	ath11k@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.8 51/68] wifi: ath11k: decrease MHI channel buffer length to 8KB
-Date: Fri, 29 Mar 2024 08:25:47 -0400
-Message-ID: <20240329122652.3082296-51-sashal@kernel.org>
+	gregory.greenman@intel.com,
+	mukesh.sisodiya@intel.com,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.8 57/68] wifi: iwlwifi: Add missing MODULE_FIRMWARE() for *.pnvm
+Date: Fri, 29 Mar 2024 08:25:53 -0400
+Message-ID: <20240329122652.3082296-57-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240329122652.3082296-1-sashal@kernel.org>
 References: <20240329122652.3082296-1-sashal@kernel.org>
@@ -70,90 +69,57 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.8.2
 Content-Transfer-Encoding: 8bit
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 1cca1bddf9ef080503c15378cecf4877f7510015 ]
+[ Upstream commit 4223675d2b5912060a85e48fd8fee51207e00957 ]
 
-Currently buf_len field of ath11k_mhi_config_qca6390 is assigned
-with 0, making MHI use a default size, 64KB, to allocate channel
-buffers. This is likely to fail in some scenarios where system
-memory is highly fragmented and memory compaction or reclaim is
-not allowed.
+A few models require *.pnvm files while we don't declare them via
+MODULE_FIRMWARE().  This resulted in the breakage of WiFi on the
+system that relies on the information from modinfo (e.g. openSUSE
+installer image).
 
-There is a fail report which is caused by it:
-kworker/u32:45: page allocation failure: order:4, mode:0x40c00(GFP_NOIO|__GFP_COMP), nodemask=(null),cpuset=/,mems_allowed=0
-CPU: 0 PID: 19318 Comm: kworker/u32:45 Not tainted 6.8.0-rc3-1.gae4495f-default #1 openSUSE Tumbleweed (unreleased) 493b6d5b382c603654d7a81fc3c144d59a1dfceb
-Workqueue: events_unbound async_run_entry_fn
-Call Trace:
- <TASK>
- dump_stack_lvl+0x47/0x60
- warn_alloc+0x13a/0x1b0
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? __alloc_pages_direct_compact+0xab/0x210
- __alloc_pages_slowpath.constprop.0+0xd3e/0xda0
- __alloc_pages+0x32d/0x350
- ? mhi_prepare_channel+0x127/0x2d0 [mhi 40df44e07c05479f7a6e7b90fba9f0e0031a7814]
- __kmalloc_large_node+0x72/0x110
- __kmalloc+0x37c/0x480
- ? mhi_map_single_no_bb+0x77/0xf0 [mhi 40df44e07c05479f7a6e7b90fba9f0e0031a7814]
- ? mhi_prepare_channel+0x127/0x2d0 [mhi 40df44e07c05479f7a6e7b90fba9f0e0031a7814]
- mhi_prepare_channel+0x127/0x2d0 [mhi 40df44e07c05479f7a6e7b90fba9f0e0031a7814]
- __mhi_prepare_for_transfer+0x44/0x80 [mhi 40df44e07c05479f7a6e7b90fba9f0e0031a7814]
- ? __pfx_____mhi_prepare_for_transfer+0x10/0x10 [mhi 40df44e07c05479f7a6e7b90fba9f0e0031a7814]
- device_for_each_child+0x5c/0xa0
- ? __pfx_pci_pm_resume+0x10/0x10
- ath11k_core_resume+0x65/0x100 [ath11k a5094e22d7223135c40d93c8f5321cf09fd85e4e]
- ? srso_alias_return_thunk+0x5/0xfbef5
- ath11k_pci_pm_resume+0x32/0x60 [ath11k_pci 830b7bfc3ea80ebef32e563cafe2cb55e9cc73ec]
- ? srso_alias_return_thunk+0x5/0xfbef5
- dpm_run_callback+0x8c/0x1e0
- device_resume+0x104/0x340
- ? __pfx_dpm_watchdog_handler+0x10/0x10
- async_resume+0x1d/0x30
- async_run_entry_fn+0x32/0x120
- process_one_work+0x168/0x330
- worker_thread+0x2f5/0x410
- ? __pfx_worker_thread+0x10/0x10
- kthread+0xe8/0x120
- ? __pfx_kthread+0x10/0x10
- ret_from_fork+0x34/0x50
- ? __pfx_kthread+0x10/0x10
- ret_from_fork_asm+0x1b/0x30
- </TASK>
+This patch adds those missing MODULE_FIRMWARE() entries for *.pnvm
+files.
 
-Actually those buffers are used only by QMI target -> host communication.
-And for WCN6855 and QCA6390, the largest packet size for that is less
-than 6KB. So change buf_len field to 8KB, which results in order 1
-allocation if page size is 4KB. In this way, we can at least save some
-memory, and as well as decrease the possibility of allocation failure
-in those scenarios.
+type=feature
+ticket=none
 
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
-
-Reported-by: Vlastimil Babka <vbabka@suse.cz>
-Closes: https://lore.kernel.org/ath11k/96481a45-3547-4d23-ad34-3a8f1d90c1cd@suse.cz/
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240223053111.29170-1-quic_bqiang@quicinc.com
+Link: https://bugzilla.opensuse.org/show_bug.cgi?id=1207553
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://msgid.link/20240228163837.4320-1-tiwai@suse.de
+[move to appropriate files]
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/mhi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/cfg/ax210.c | 6 ++++++
+ drivers/net/wireless/intel/iwlwifi/cfg/bz.c    | 2 ++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath11k/mhi.c b/drivers/net/wireless/ath/ath11k/mhi.c
-index 6835c14b82cc9..337590236485f 100644
---- a/drivers/net/wireless/ath/ath11k/mhi.c
-+++ b/drivers/net/wireless/ath/ath11k/mhi.c
-@@ -106,7 +106,7 @@ static struct mhi_controller_config ath11k_mhi_config_qca6390 = {
- 	.max_channels = 128,
- 	.timeout_ms = 2000,
- 	.use_bounce_buf = false,
--	.buf_len = 0,
-+	.buf_len = 8192,
- 	.num_channels = ARRAY_SIZE(ath11k_mhi_channels_qca6390),
- 	.ch_cfg = ath11k_mhi_channels_qca6390,
- 	.num_events = ARRAY_SIZE(ath11k_mhi_events_qca6390),
+diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/ax210.c b/drivers/net/wireless/intel/iwlwifi/cfg/ax210.c
+index 134635c70ce85..73cbb120a49b4 100644
+--- a/drivers/net/wireless/intel/iwlwifi/cfg/ax210.c
++++ b/drivers/net/wireless/intel/iwlwifi/cfg/ax210.c
+@@ -299,3 +299,9 @@ MODULE_FIRMWARE(IWL_MA_B_HR_B_FW_MODULE_FIRMWARE(IWL_AX210_UCODE_API_MAX));
+ MODULE_FIRMWARE(IWL_MA_B_GF_A_FW_MODULE_FIRMWARE(IWL_AX210_UCODE_API_MAX));
+ MODULE_FIRMWARE(IWL_MA_B_GF4_A_FW_MODULE_FIRMWARE(IWL_AX210_UCODE_API_MAX));
+ MODULE_FIRMWARE(IWL_MA_B_MR_A_FW_MODULE_FIRMWARE(IWL_AX210_UCODE_API_MAX));
++
++MODULE_FIRMWARE("iwlwifi-so-a0-gf-a0.pnvm");
++MODULE_FIRMWARE("iwlwifi-so-a0-gf4-a0.pnvm");
++MODULE_FIRMWARE("iwlwifi-ty-a0-gf-a0.pnvm");
++MODULE_FIRMWARE("iwlwifi-ma-b0-gf-a0.pnvm");
++MODULE_FIRMWARE("iwlwifi-ma-b0-gf4-a0.pnvm");
+diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/bz.c b/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
+index 82da957adcf6e..1b6249561cd58 100644
+--- a/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
++++ b/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
+@@ -179,3 +179,5 @@ MODULE_FIRMWARE(IWL_BZ_A_FM_C_MODULE_FIRMWARE(IWL_BZ_UCODE_API_MAX));
+ MODULE_FIRMWARE(IWL_BZ_A_FM4_B_MODULE_FIRMWARE(IWL_BZ_UCODE_API_MAX));
+ MODULE_FIRMWARE(IWL_GL_B_FM_B_MODULE_FIRMWARE(IWL_BZ_UCODE_API_MAX));
+ MODULE_FIRMWARE(IWL_GL_C_FM_C_MODULE_FIRMWARE(IWL_BZ_UCODE_API_MAX));
++
++MODULE_FIRMWARE("iwlwifi-gl-c0-fm-c0.pnvm");
 -- 
 2.43.0
 
