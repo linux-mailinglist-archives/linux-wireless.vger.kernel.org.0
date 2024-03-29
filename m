@@ -1,45 +1,45 @@
-Return-Path: <linux-wireless+bounces-5576-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5577-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F2E1891B11
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 14:17:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD159891B4F
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 14:22:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB7DD1C250E7
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 13:17:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5FABCB26763
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 13:22:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 374BF16D315;
-	Fri, 29 Mar 2024 12:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE4DD142634;
+	Fri, 29 Mar 2024 12:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QD5/JpoS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a+kXNEgk"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C4E81420C1;
-	Fri, 29 Mar 2024 12:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B31B31422DB;
+	Fri, 29 Mar 2024 12:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711715646; cv=none; b=LOLdm4j5PSDyStfITWjAdMFMA4uFjyl7DoBUgIv0rr+kJBwSxMkWvhNXUUYJTRFlOpJLAwJcMefQ/6MonT0jMqMyOQMjk2XH9fNOmLSS+h+FD+z5T5AcP3ptVu+i8d6hbbhBPNpRsVqM780sM5BUDF92lrX37EcStiyxALcPGSg=
+	t=1711715686; cv=none; b=lITTghMUsZaolSzDNo71JFkH4dtTntdfdR7jUHsg/sFZ6YAhQNGn46p9MYRuzb4QCpFWCsne2YYvlq2udRVQS9fIgBImcB79dQAVA0Jt6ivYy+j9fM/quyYuf8YbhXuzVY4+TymwoT06/tSUkDQ36UiSLUT2Lg55vhUQWPKzztQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711715646; c=relaxed/simple;
+	s=arc-20240116; t=1711715686; c=relaxed/simple;
 	bh=Ra4UXu1BegVD/dxe6uYDNjPmp+4p/Ri+3qwVOVWo+MA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qRN5flrkCUmCMqloOXg5cMgo8zPRrb+zr5uLSWEShU42Xy348A9Mf+CT63aMJfm44S7nVABTaOnBTgUmveU4ePIZzBgaaaWnxoZFsBlgE81avRZdU90y9rUnQBsNKhLIs3jI9KFbZIyWVviMWxk5XqsCag/tTZLcMtJBlPGQg/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QD5/JpoS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 052F4C43390;
-	Fri, 29 Mar 2024 12:34:04 +0000 (UTC)
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jBwuhzm/MCpZBGXiN9v1e8ihZp+nNDiliizpepbW1QQN23dUKkBczVtyQZ3+m2XhAlvxtQ6uyy9AdEnrJXDMkR+ZUXSerilggz6dbhf1ooIcbyqVCVDVcWJynVcaczF13AZ7RLhovnZKUN2WFEgq36O3RYFAhL67cEN+TTHdxVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a+kXNEgk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6202AC433C7;
+	Fri, 29 Mar 2024 12:34:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711715645;
+	s=k20201202; t=1711715686;
 	bh=Ra4UXu1BegVD/dxe6uYDNjPmp+4p/Ri+3qwVOVWo+MA=;
 	h=From:To:Cc:Subject:Date:From;
-	b=QD5/JpoSixfx7/OUXbwfUok7ZVi7vZi9jaP3f+HaOpUXaRMvcDBc5wE8NhnakM2MT
-	 COxXabxXJAhzMvET+ARntMfBVqivVM46GL2IUrjm9afBt0+3+IPcvpedGn1Yq763Y1
-	 T6nrFlWZd6RKg7TUv64RFgInTwWoVoqF5clZqJfLA0SQHb6cDAlG5yGdDykOaWJjcV
-	 mQvylB9VC5KP4VT5Z40aaP3lHu9or0gyuATlVICrcIc285DKeJ+MstIrCmT2Cw6PQ+
-	 rKR32psO6NxZnoUJXRfxWbXk08kknYZ1pY1f4Z3b01b7aTkUYG8e0uxcp0W/VQiEf6
-	 zxC8kitifTQWg==
+	b=a+kXNEgkMcJJ1uQ/n/o6HCgBIs9LDUUHEE/Gsw7wrIsglmWsy0ykE/QLq4XGEoeY0
+	 setr5u7IlrNduiZEy8cJ28pYvzOvr8fBKI6/HQq3+F+EubXpR0H8rUWdeLgb3In/2b
+	 wHmnTqVvtPbf1yV1y56KS72XndmKZ06lQrdLblOMtQwEYcn4nmvn04gStdqzZ0jRrN
+	 GQ1xLkHr9Ta+iJYuDJqEP0+Pp530FAxMDbZApTxNZqK9JVwQTrhU2AlVG8lVLUlWL5
+	 SOOvlueaiEH41gsHdNGu0HBhW5j0ehs7pTI3RrGx2sq6mroaytvv/OXjXJXiDQRBMK
+	 +bXniNafReEbw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -49,9 +49,9 @@ Cc: Dmitry Antipov <dmantipov@yandex.ru>,
 	Sasha Levin <sashal@kernel.org>,
 	kvalo@kernel.org,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 01/17] wifi: ath9k: fix LNA selection in ath_ant_try_scan()
-Date: Fri, 29 Mar 2024 08:33:40 -0400
-Message-ID: <20240329123405.3086155-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 01/15] wifi: ath9k: fix LNA selection in ath_ant_try_scan()
+Date: Fri, 29 Mar 2024 08:34:24 -0400
+Message-ID: <20240329123445.3086536-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -62,7 +62,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.10.214
+X-stable-base: Linux 5.4.273
 Content-Transfer-Encoding: 8bit
 
 From: Dmitry Antipov <dmantipov@yandex.ru>
