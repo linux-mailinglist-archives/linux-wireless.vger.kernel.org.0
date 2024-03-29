@@ -1,153 +1,287 @@
-Return-Path: <linux-wireless+bounces-5518-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5519-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F522891142
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 03:07:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DB578911A8
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 03:25:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4CD21F2426C
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 02:07:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 525F828CE24
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 02:25:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AF05380;
-	Fri, 29 Mar 2024 01:56:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25D4F224D1;
+	Fri, 29 Mar 2024 02:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="kBFcZ5F4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PwIyDdyG"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C9FB1642F
-	for <linux-wireless@vger.kernel.org>; Fri, 29 Mar 2024 01:56:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711677417; cv=none; b=baOkOZiekTJz5CCwBkH6+05pacTdH4AqKcC0CiVfqaPx5j/eFeSZu2u+noituF3GfwJiklWtFCBJeB4vFnjeZWfRJC2uxBu6XSCKloyp9BSGKogif9/R/DptP+MsrdwfoxGIE7fuiQaAmXInkM4pOMCrHRh/HgBX6+tT97UuyO8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711677417; c=relaxed/simple;
-	bh=j+Dw8l+IFgBPvsR5JZNcHAQgvUiOJTewwbfLiiw+03s=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Rbro6dr6Qi6LbfbKBv8UTomM9KDxZ/Vipk+wq4r0LLa7cKtTafnb+5XaDTehy5TbZS9qDxW4V5lWLVe9F4wQoEL+vfZ/jrTzLzmUXAXqkAnSihhtHOb7D2pz6X+34g8U7GilJJhShLa8xK3c3D5e1vhP0XJzbTNcbE1y7/tjDMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=kBFcZ5F4; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42T1f3wM022779;
-	Fri, 29 Mar 2024 01:56:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:mime-version
-	:content-transfer-encoding:content-type; s=qcppdkim1; bh=F9BZd3t
-	29r0aH146EHm7ypIrvmdNcdcAo23/taNDQNk=; b=kBFcZ5F4FEq8DArIRnFnRRK
-	9S70Gj+vW2HRrZYzRW0BRy4P5jChEVANOys1Vg1SW20Im4rNP5XheMF91alFNOHD
-	7HOmI7it2b4xam0tKz7i657CVO0oBBaEm2TS7L8D4KeFZaB3jj1F5I54gxq/X3h/
-	ti17qdbB2EryIyNS0uJpld+ELEA3KZDg3/a4Q+kjXtYo+W2bXmD6tUKucLwlCl5+
-	4JaORG/gOfkaOKPwSb4o/Uq1904OGpoldi7J7OJoIqjEed4RU4lBsFXR18d7bFkK
-	I7lFEpVOKsMhn/aRMLzOz8f5KJsNL1TUcOAU3uNoE6ph5ihTM5huRqI1eP9dTDQ=
-	=
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3x5fr7ggth-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 29 Mar 2024 01:56:50 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42T1un2e012861
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 29 Mar 2024 01:56:49 GMT
-Received: from bqiang-SFF.lan (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Thu, 28 Mar
- 2024 18:56:47 -0700
-From: Baochen Qiang <quic_bqiang@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, <quic_bqiang@quicinc.com>
-Subject: [PATCH] wifi: ath12k: fix flush failure in recovery scenarios
-Date: Fri, 29 Mar 2024 09:56:30 +0800
-Message-ID: <20240329015630.3019-1-quic_bqiang@quicinc.com>
-X-Mailer: git-send-email 2.25.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE1F7490;
+	Fri, 29 Mar 2024 02:24:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1711679099; cv=fail; b=aUargHx/O22AEno02OP3An2nXQvKp/5Wux0LA7pVONJCbQzVcX0m7ZCuKvnEKRyyjOaHZE3GPpfKzYYsMlaC+G6FBAdwFa1RfmPgBMGLtjkQj2YPW8vccolxMKVsz7ww61v+x4Ltkud/NdpOmDqsbOziPj+FGGfjcvZDBM3qT40=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1711679099; c=relaxed/simple;
+	bh=FUCTxdMglq/EfDLNShiBREHOGXOUb44wg4C/C8X7vDw=;
+	h=Date:From:To:CC:Subject:Message-ID:Content-Type:
+	 Content-Disposition:MIME-Version; b=A4XP+Rf4oYh3HKLsweNTO7TVZ6rca/OzxuxqTipNCpKm91mk/TYgWsWIwkd10NGlPi8rv7+jSyQN0HHjYp6Yqz1qjf5XmSZ3wiqyAwJQonFm75XLSpxgJe1V7XLpPWzdxdnh0ZwMpl8RBne1hRgwcUPV1u/VL/P1qhlG5102f6Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PwIyDdyG; arc=fail smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1711679097; x=1743215097;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=FUCTxdMglq/EfDLNShiBREHOGXOUb44wg4C/C8X7vDw=;
+  b=PwIyDdyGvOGHhPbg989N9wFpAFHRfAGxzCnRcoNQCCStkkibQCG3oS5L
+   F6ykCrtDmElp7ur4FS4DwT0AoCuCLIknDOA6JRqzCZsCQkE64gFH8doXI
+   6rC5TVawahn8HJOZ0GCZXwHX5GpFwvmTtXdkX9OB6jAdJJE9/apVMU8Fh
+   zzC0pB/vsaPd93VNyWCHl7EN8e8bDlQ57dhzHNMhliTGRgNcJ7H6BgtlF
+   oUSEjJDA76Ld5RhJzPtDGSOgNfVE6DgjTj0w1PDgpyJpvD8mNp8mHYSX2
+   Q2jowF5fquwGIrguLwTLx88/rsDexFRIqvTSd2gOxVMpr/vY/Mz5U7Znx
+   w==;
+X-CSE-ConnectionGUID: zviu3T5ET06qekXZm+f0BA==
+X-CSE-MsgGUID: vn+kokW7SBuZb5xKL+gHvA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11027"; a="17419270"
+X-IronPort-AV: E=Sophos;i="6.07,162,1708416000"; 
+   d="scan'208";a="17419270"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Mar 2024 19:24:56 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,162,1708416000"; 
+   d="scan'208";a="17483550"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by orviesa008.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 28 Mar 2024 19:24:56 -0700
+Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Thu, 28 Mar 2024 19:24:55 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Thu, 28 Mar 2024 19:24:55 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Thu, 28 Mar 2024 19:24:55 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.169)
+ by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Thu, 28 Mar 2024 19:24:54 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=iTjqgQ7Brs/gehzrlglZSrPEGBV+i91M+xaCpro2pf4tIQ4thZjSAf4zO+0RJ0zzXDAlcHTzWjjmTLFGU5HSqiY1fETNSaFq0z7ljeOvKwwkzqKk5VbRt++lB6M5f/N9fnAQa9Dn89K3oaZlcUFcq17Xix4jnhp1xxB/e3xngjRNgRtAnzCp1m1EhAOGlZ6cSO2UZbL99HQQgbJkgEDepfeoTfk0q7VgV4GA1nO8/MVQ7yJgEklG+wKLVcWNoojriHvNZ7O3DGCaH0UJp0IRg/jjD368lzuX/7nRsgPgH1duNGG/6fXdBgayZI8zz40L+AlLkcy9ev4ILQcBbmAI+Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=d3xpJv/1/K8Qss0ohFCUe18p1tmior5RH4EDGcrd0M4=;
+ b=PCYb9OqVwq3XRt/oV7eUpWeLsh+k1ZmAKUHGteM7y0dQKiK5MOC5I/UD0JA2Hy3wEzAAOtvXeNezW2oAMGgYRjzprjAVIrJnr2S6GnQU2SCwSIA/t2tycypWSSbHLfHP6fySGGOe0bBXcBUIGX02CYXlOgQUhji/BALVOXCjdygf8hCEoxWvDwD+4Jz9//Ej3NnHhYB1oQvz84PnOMJOfM4V+a5uyKI/h/XJdHYTtDqnfUbW1PlBK9dmbOoV6Ldrhc7SmvfO1H/GpG37MNe1YJRTuDAmRs+1oFYu0fjCvIyhbhyiq1fOku4BlyHZI3B/w3AVKZryM8UAdb8Z8ViTyA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from LV3PR11MB8603.namprd11.prod.outlook.com (2603:10b6:408:1b6::9)
+ by SJ0PR11MB6575.namprd11.prod.outlook.com (2603:10b6:a03:477::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.24; Fri, 29 Mar
+ 2024 02:24:52 +0000
+Received: from LV3PR11MB8603.namprd11.prod.outlook.com
+ ([fe80::58dd:99ca:74a6:2e3e]) by LV3PR11MB8603.namprd11.prod.outlook.com
+ ([fe80::58dd:99ca:74a6:2e3e%3]) with mapi id 15.20.7409.031; Fri, 29 Mar 2024
+ 02:24:52 +0000
+Date: Fri, 29 Mar 2024 10:24:43 +0800
+From: kernel test robot <oliver.sang@intel.com>
+To: Johannes Berg <johannes.berg@intel.com>
+CC: <oe-lkp@lists.linux.dev>, <lkp@intel.com>, <linux-kernel@vger.kernel.org>,
+	Ilan Peer <ilan.peer@intel.com>, Miriam Rachel Korenblit
+	<miriam.rachel.korenblit@intel.com>, <linux-wireless@vger.kernel.org>,
+	<oliver.sang@intel.com>
+Subject: [linus:master] [wifi]  310c8387c6: hwsim.autogo_chan_switch.fail
+Message-ID: <202403291042.d9211733-oliver.sang@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+X-ClientProxiedBy: SGBP274CA0001.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b0::13)
+ To LV3PR11MB8603.namprd11.prod.outlook.com (2603:10b6:408:1b6::9)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: bzvV04oXi8eKaWWQTntBhMOfwcZNhGpP
-X-Proofpoint-ORIG-GUID: bzvV04oXi8eKaWWQTntBhMOfwcZNhGpP
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-29_01,2024-03-28_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 suspectscore=0
- bulkscore=0 malwarescore=0 lowpriorityscore=0 spamscore=0 phishscore=0
- mlxscore=0 impostorscore=0 adultscore=0 mlxlogscore=999 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2403210001
- definitions=main-2403290014
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV3PR11MB8603:EE_|SJ0PR11MB6575:EE_
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: E+XXp22ZBZe/EuSN7es90uOTvemRruUpxARmSMIOpD3gZL8wSla139iSqy1uKB8T+r7Tm/Xxj4uPG4sIWEUt9Z++N3fdZ6a8i/FdTVeb65E5uSLlDGxPnCwsE6yqntCatlnnW5iTb/WCxy6DC036pcK09vTLjufkm8UGEfsMVF/Vd8Dgtbz+hL+OL1F4+f27II9q7U7b7OrbuH8JSAK+B7671uqGJnr5YpPVpSDCbX9boGVfAjqCFJwiPi7pEYx/dNeVcOWL67SL+pIn9ZE57ULScAZwvkbhidPXFhwCl0HrM0b8B+kJHzPRNDmQsfqPQtQXTgSbpc2BmnMmg+wRskHSbGGswkJ3xsGYTT4NsEf7CNurQEzxu3fXCSiU+Ph56QikXces52N0WneI1oGSHTCADL+0Julxh/VXFECaZrsIRNRKGIRYIMC/rwlOYNjbKNQsqfnuZhss67JUwyC+bl/sbtvuAm1ST09iCIOsGPuQh6rg4wHvi6WzOB4jkPiaWcJAR4CUSXdGdiCuW+XNIcMBAopi5COIYQnv5QrgyX1aLdDfqBAiyTmQW4knW6y4PXjdVvwVOLkyqFEGNZiEc+xOZ5mF9Z+Q7Jajiz49ngVPo/U9nUpXzLIw05jK/UCI
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR11MB8603.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(376005)(1800799015);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?stfjbQj2d78jRaVpzGF41Ws+s7IUSwCHNUVfEAmcfVQvE5YP6nnHwz7RfQeS?=
+ =?us-ascii?Q?j1DWZWNNbvtYJsjV0rmH981PmPOHsdgiwwjnYexfOuHDVQlc/UnnI65jQpvo?=
+ =?us-ascii?Q?XnUZpC799qpXEQ/ATdPfGpev0iXXMginHB1Hg1c0OMyopW4tyfbitpJ0cVtG?=
+ =?us-ascii?Q?QBeYTL7HVYX2bx9qa2IGqUn/8J+fIxlB1+jU9U3txE/FyF/syrGtpNFGHqPX?=
+ =?us-ascii?Q?0+btzg8b6zvWb5yZ7g4A8Rwwsti2shR78JVAZ+6UCY+rBT09z08hPwadftNO?=
+ =?us-ascii?Q?Y/z0sAfpDqjsje2zMyDcSzG1uiwF3ZPuJYcgpR/PutzG1okuLdFcpnEZN1Kx?=
+ =?us-ascii?Q?gkFZM19o2hzIKZI4jAtLCIodN5BuG8RcIGuiHSnAEUhyBL9WO5iOPK8/AYbV?=
+ =?us-ascii?Q?SR6kfHw3/CrT/1apV2tCp2VxZ2xuaYHaMaKFVZGEFRJQohVrfXciZLQOe86+?=
+ =?us-ascii?Q?Zd6g5PEJFPvZNpagmSKl58QqGnWcy/guimhaWMtvG3x+axdE1Sq0uyydk2pq?=
+ =?us-ascii?Q?39EQPxCoQFKUn3SbBuMgi4xDVNs1pNUl/DabytHd/XNa0w+t56F4v0TI7JyL?=
+ =?us-ascii?Q?Tn4iZaBFTLLdGc1Ex0BT6j1LUXHLIX2mB5LAU8H2tin21O7UAOSx1f+qycH4?=
+ =?us-ascii?Q?0kdXJm87SXcjlO96/szMrpqzt04klmu7hje6XbfBXvMkT7U3ens+4JVhzCK5?=
+ =?us-ascii?Q?jE6rw9bj1J+8HY4F9+K1+ij/4x7xmXtX8lzxWYu87mLPKJXgV2dpW9jpFaxa?=
+ =?us-ascii?Q?oJpdkuVa3Xxe/hu0+nCAujcJxH7VEmWTO1UIU6SdI8JOjD+c4FpHwGZLh4Dz?=
+ =?us-ascii?Q?XNlEtZToB6Vbo9ZRavc85bp20GU/1D7J/TJ8EcwWAWKJ+wTLTHhc6ELDvfLw?=
+ =?us-ascii?Q?De7Nxkoq+7exS8lwlRKWv0gD9ktiUl6xdseu5pNC3/Y5Nga4qwuqM+qr2APH?=
+ =?us-ascii?Q?d1Z3SehVZr3K3gVU6us09tAhpuFOZQWRR8MlYsTd3DsELC6rImDoq8ysl0eD?=
+ =?us-ascii?Q?NUOdGV5jVpf3KgpamdJNw21VzNrwCjV4Q3N/gXV9m+TF8+Tmuz7TvQPa7uTB?=
+ =?us-ascii?Q?PxfkecVIP5UV1fuaZoR6PQCl6TPCsYTOy6Xd3JB0CExhA+vk+Vl6JfKnp2xS?=
+ =?us-ascii?Q?AaQ+YpE4vm4F6ph3oW4LioZwDKz09YISyTCVxedrHvllfZk8qDAhSMZOgLYT?=
+ =?us-ascii?Q?Vkur2ag/tHh6q4BNvdZDkQNGJDJa1LhpTvMaa7qbv71qesrSIJGxLX5P0F5N?=
+ =?us-ascii?Q?OAN/mdT6kYMWpOZQhVhgMFwVlnokU4KeW9jv/PflHqmoDInvbbJh7QyQ0Nm6?=
+ =?us-ascii?Q?DD5scXETBicN0JlD4jyW9E4XMoemlJisvbUuYWPwX7m6FWju2Onnuy0qTUyW?=
+ =?us-ascii?Q?Rsk9WJ6XorsJFrfzSaRC8RuVrv7HVQLUv4JVbPf9u4NNr/BvLG+xWHxlJXsx?=
+ =?us-ascii?Q?SsG7k9MN9/QlOdOMJvE37xiY3w9IwV5ThiaiJRsLlJgh+4KMLDBT5pTddUh6?=
+ =?us-ascii?Q?NHD13mgZrzS6R0RILIMD6xGFTNgf+XEN/htcYh6Q0vl5pLEUV682AkeinkOy?=
+ =?us-ascii?Q?8+WPpmG/xSPWkUyZyzPhTJPooVG1IxuY+T0dIGsbbG+5pqJoO0dVp5LyYWi6?=
+ =?us-ascii?Q?Ow=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: cfd313d2-d796-4415-296d-08dc4f976a04
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR11MB8603.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Mar 2024 02:24:52.0143
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: oflyZxvJMiV+O00fKTpun065jULhLCTh4a10DpmNToLBN2DsgeTOG+uSMLUqdHPEhyWsZ4FSlGs+0zTqdnmiDQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB6575
+X-OriginatorOrg: intel.com
 
-Commit eaf9f17b861b ("wifi: ath12k: relocate ath12k_dp_pdev_pre_alloc()
-call") moves ath12k_dp_pdev_pre_alloc() from ath12k_core_start() to
-ath12k_mac_allocate(), resulting in ath12k_mac_flush() failure in
-recovery scenarios:
 
-[ 6849.684104] ath12k_pci 0000:04:00.0: pdev 0 successfully recovered
-[ 6854.907320] ath12k_pci 0000:04:00.0: failed to flush transmit queue 0
-[ 6860.027353] ath12k_pci 0000:04:00.0: failed to flush transmit queue 0
-[ 6865.143385] ath12k_pci 0000:04:00.0: failed to flush transmit queue 0
 
-This is because, with ath12k_dp_pdev_pre_alloc() moved to ath12k_mac_allocate(),
-dp->num_tx_pending is not reset due to ATH12K_FLAG_REGISTERED set in
-recovery scenarios.
+Hello,
 
-So a possible fix would be to reset that counter at some proper point,
-just like the old design. But considering that the counter tracks number
-of packets pending to be freed or returned to mac80211, forcefully reset
-it might make it hard to expose some real issues. For example if somehow
-ath12k fails to free/return some TX packets, we don't know that because
-no warnings any more.
+kernel test robot noticed "hwsim.autogo_chan_switch.fail" on:
 
-That is to say we should not reset that counter during recovery (which is
-already done due to above commit), instead should decrease it each time
-a packet is freed/returned. Currently almost each related function has
-this logic implemented, except ath12k_dp_cc_cleanup(). So add the same
-there to fix this issue.
+commit: 310c8387c63830bc375827242e0f9fa689f82e21 ("wifi: mac80211: clean up connection process")
+https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git master
 
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+[test failed on linus/master 7033999ecd7b8cf9ea59265035a0150961e023ee]
+[test failed on linux-next/master 26074e1be23143b2388cacb36166766c235feb7c]
 
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/dp.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+in testcase: hwsim
+version: hwsim-x86_64-717e5d7-1_20240320
+with following parameters:
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp.c b/drivers/net/wireless/ath/ath12k/dp.c
-index 1006eef8ff0c..ddfe1eb82d6b 100644
---- a/drivers/net/wireless/ath/ath12k/dp.c
-+++ b/drivers/net/wireless/ath/ath12k/dp.c
-@@ -1150,7 +1150,9 @@ static void ath12k_dp_cc_cleanup(struct ath12k_base *ab)
- 	struct ath12k_rx_desc_info *desc_info;
- 	struct ath12k_tx_desc_info *tx_desc_info, *tmp1;
- 	struct ath12k_dp *dp = &ab->dp;
-+	struct ath12k_skb_cb *skb_cb;
- 	struct sk_buff *skb;
-+	struct ath12k *ar;
- 	int i, j;
- 	u32 pool_id, tx_spt_page;
- 
-@@ -1201,6 +1203,11 @@ static void ath12k_dp_cc_cleanup(struct ath12k_base *ab)
- 			if (!skb)
- 				continue;
- 
-+			skb_cb = ATH12K_SKB_CB(skb);
-+			ar = skb_cb->ar;
-+			if (atomic_dec_and_test(&ar->dp.num_tx_pending))
-+				wake_up(&ar->dp.tx_empty_waitq);
-+
- 			dma_unmap_single(ab->dev, ATH12K_SKB_CB(skb)->paddr,
- 					 skb->len, DMA_TO_DEVICE);
- 			dev_kfree_skb_any(skb);
+	test: autogo_chan_switch
 
-base-commit: fe7e1b830cf3c0272aa4eaf367c4c7b29c169c3d
+
+
+compiler: gcc-12
+test machine: 8 threads 1 sockets Intel(R) Core(TM) i7-4790 v3 @ 3.60GHz (Haswell) with 6G memory
+
+(please refer to attached dmesg/kmsg for entire log/backtrace)
+
+
+
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <oliver.sang@intel.com>
+| Closes: https://lore.kernel.org/oe-lkp/202403291042.d9211733-oliver.sang@intel.com
+
+group: group-20, test: autogo_chan_switch
+2024-03-22 18:48:55 export USER=root
+2024-03-22 18:48:55 ./build.sh
+Building TNC testing tools
+Building wlantest
+Building hs20-osu-client
+Building hostapd
+Building wpa_supplicant
+2024-03-22 18:49:57 ./start.sh
+2024-03-22 18:49:59 ./run-tests.py autogo_chan_switch
+DEV: wlan0: 02:00:00:00:00:00
+DEV: wlan1: 02:00:00:00:01:00
+DEV: wlan2: 02:00:00:00:02:00
+APDEV: wlan3
+APDEV: wlan4
+START autogo_chan_switch 1/1
+Test: P2P autonomous GO switching channels
+Start autonomous GO wlan0
+Try to connect the client to the GO
+wlan1: Trying to discover peer 02:00:00:00:00:00
+Client connected
+sending data without carrier won't work
+Traceback (most recent call last):
+  File "/lkp/benchmarks/hwsim/tests/hwsim/./run-tests.py", line 593, in main
+    t(dev)
+  File "/lkp/benchmarks/hwsim/tests/hwsim/test_p2p_autogo.py", line 357, in test_autogo_chan_switch
+    run_autogo_chan_switch(dev)
+  File "/lkp/benchmarks/hwsim/tests/hwsim/test_p2p_autogo.py", line 375, in run_autogo_chan_switch
+    hwsim_utils.test_connectivity_p2p(dev[0], dev[1])
+  File "/lkp/benchmarks/hwsim/tests/hwsim/hwsim_utils.py", line 227, in test_connectivity_p2p
+    test_connectivity(dev1, dev2, dscp, tos, dev1group=True, dev2group=True)
+  File "/lkp/benchmarks/hwsim/tests/hwsim/hwsim_utils.py", line 217, in test_connectivity
+    raise Exception(last_err)
+Exception: sending data without carrier won't work
+FAIL autogo_chan_switch 15.072969 2024-03-22 18:50:26.967705
+passed 0 test case(s)
+skipped 0 test case(s)
+failed tests: autogo_chan_switch
+2024-03-22 18:50:27 ./run-tests.py autogo_chan_switch_group_iface
+DEV: wlan0: 02:00:00:00:00:00
+DEV: wlan1: 02:00:00:00:01:00
+DEV: wlan2: 02:00:00:00:02:00
+APDEV: wlan3
+APDEV: wlan4
+START autogo_chan_switch_group_iface 1/1
+Test: P2P autonomous GO switching channels (separate group interface)
+Start autonomous GO wlan0
+Try to connect the client to the GO
+wlan1: Trying to discover peer 02:00:00:00:00:00
+Client connected
+sending data without carrier won't work
+Traceback (most recent call last):
+  File "/lkp/benchmarks/hwsim/tests/hwsim/./run-tests.py", line 593, in main
+    t(dev)
+  File "/lkp/benchmarks/hwsim/tests/hwsim/test_p2p_autogo.py", line 383, in test_autogo_chan_switch_group_iface
+    run_autogo_chan_switch(dev)
+  File "/lkp/benchmarks/hwsim/tests/hwsim/test_p2p_autogo.py", line 375, in run_autogo_chan_switch
+    hwsim_utils.test_connectivity_p2p(dev[0], dev[1])
+  File "/lkp/benchmarks/hwsim/tests/hwsim/hwsim_utils.py", line 227, in test_connectivity_p2p
+    test_connectivity(dev1, dev2, dscp, tos, dev1group=True, dev2group=True)
+  File "/lkp/benchmarks/hwsim/tests/hwsim/hwsim_utils.py", line 217, in test_connectivity
+    raise Exception(last_err)
+Exception: sending data without carrier won't work
+FAIL autogo_chan_switch_group_iface 18.357236 2024-03-22 18:50:57.293385
+passed 0 test case(s)
+skipped 0 test case(s)
+failed tests: autogo_chan_switch_group_iface
+2024-03-22 18:50:57 ./run-tests.py p2p_device_autogo_chan_switch
+DEV: wlan0: 02:00:00:00:00:00
+DEV: wlan1: 02:00:00:00:01:00
+DEV: wlan2: 02:00:00:00:02:00
+APDEV: wlan3
+APDEV: wlan4
+START p2p_device_autogo_chan_switch 1/1
+Test: P2P autonomous GO switching channels with cfg80211 P2P Device
+Start autonomous GO wlan7
+Try to connect the client to the GO
+wlan1: Trying to discover peer 42:00:00:00:07:00
+Client connected
+PASS p2p_device_autogo_chan_switch 25.252863 2024-03-22 18:51:34.497093
+passed all 1 test case(s)
+2024-03-22 18:51:34 ./stop.sh
+
+
+
+The kernel config and materials to reproduce are available at:
+https://download.01.org/0day-ci/archive/20240329/202403291042.d9211733-oliver.sang@intel.com
+
+
+
 -- 
-2.25.1
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
 
