@@ -1,171 +1,141 @@
-Return-Path: <linux-wireless+bounces-5629-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5630-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94D578926E1
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 23:41:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1130A8927C2
+	for <lists+linux-wireless@lfdr.de>; Sat, 30 Mar 2024 00:23:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0763B22D5E
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 22:41:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 756D61F224D0
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Mar 2024 23:23:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A08943AC2;
-	Fri, 29 Mar 2024 22:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA53713CC7A;
+	Fri, 29 Mar 2024 23:22:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=freebsd.org header.i=@freebsd.org header.b="mOp4NxDx"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="mTcIVgYm"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx2.freebsd.org (mx2.freebsd.org [96.47.72.81])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDCDC28DCA
-	for <linux-wireless@vger.kernel.org>; Fri, 29 Mar 2024 22:41:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=96.47.72.81
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711752064; cv=pass; b=EhgKJNWW8QggMFzzVGJf6nchTOcMaW+DcgLgjkGme1qWTJXVnAJhVVrzVhzKQnHGCK0K66EkAUpjq7Ou84wxnMHDRfHJDanBQfHgbZeGelgvjLhYWsab60SHqvOoiYRVj7iwGILmeU6XA+WDVQUk8UvcgAFkaGHachoIO+z8bsY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711752064; c=relaxed/simple;
-	bh=+NS8DRolFTEpqULXWD/Iuy5zgqspUBx0v3sCTySgzUo=;
-	h=Date:From:To:cc:Subject:Message-ID:MIME-Version:Content-Type; b=jIcy/TNNGfW2oHIbBgom0fbqzPkdzPi6FsdMA+gE8dNFM2NElgRzASi/oTP88QlmgFxFTo11wtpcwoxC5wIgmtazDMHXgE618SyTtwXvJ1GIipxp3hLyNZhIzZTxgviP3KoDb6Ymqm8SohzP28fL4cC/rJjlh/KaJItNiuL280w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=FreeBSD.org; spf=pass smtp.mailfrom=FreeBSD.org; dkim=pass (2048-bit key) header.d=freebsd.org header.i=@freebsd.org header.b=mOp4NxDx; arc=pass smtp.client-ip=96.47.72.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=FreeBSD.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=FreeBSD.org
-Received: from mx1.freebsd.org (mx1.freebsd.org [96.47.72.80])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits)
-	 client-signature RSA-PSS (4096 bits))
-	(Client CN "mx1.freebsd.org", Issuer "R3" (verified OK))
-	by mx2.freebsd.org (Postfix) with ESMTPS id 4V5wNs6XzMz4WnG;
-	Fri, 29 Mar 2024 22:41:01 +0000 (UTC)
-	(envelope-from bz@FreeBSD.org)
-Received: from smtp.freebsd.org (smtp.freebsd.org [96.47.72.83])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "smtp.freebsd.org", Issuer "R3" (verified OK))
-	by mx1.freebsd.org (Postfix) with ESMTPS id 4V5wNs5lhGz4Rvg;
-	Fri, 29 Mar 2024 22:41:01 +0000 (UTC)
-	(envelope-from bz@FreeBSD.org)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=freebsd.org; s=dkim;
-	t=1711752061;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=dWMhzPy1cNnI3iwH3ixCyPFnhDnothTqn2MInSE3b04=;
-	b=mOp4NxDx6/iQknmZ9dDXUumXeFMEHzFlR0t87ybU9s7v0ZQPAyIW/8muf8SsI57MmLFyFl
-	FSJZ3n7gEv0Pc+6PXtrk2U2D2BTOlzhv06reZvhCRrmintsn/czUGIqBlXqETHCaeD3In5
-	v3ZZgabbbk0q4vYy5F63khBpQwklEymOpsNdSjZXSRK3Tv/O27Tkuaqi4A/kzJ1C0yFWUP
-	nT/SR8J4WpA8CcN9vUg5e9Q52+rGF3mpXtNVX1FZsWKy97PGAHTPKYrqEGP8/kS1J4s6FK
-	HEeS8Kg4ghzqIEpfcCSvRfx+/ljSyohrpDRsiMlTLDOHgKkquJCnhoACdCJWsQ==
-ARC-Seal: i=1; s=dkim; d=freebsd.org; t=1711752061; a=rsa-sha256; cv=none;
-	b=bwtPue1aMceuJocDIXpipKjuhrCJCupGOKNCqD/os0KAljQTBDDADtZsdoEdHVVlyYuDLz
-	5g6AWveVI6kkCuRBd6XE2hK1w/VmFwulfBw7M8pQDnU+rMKVAEnQ5THExna2VBbxo9H7ls
-	AiHHzjmDOXvCIxxVAWSuWq5g/TXgFB2X8okesyfQqmDGnC1VLxQmKv2KolC0KXnGTLd/34
-	EKPgduMfz379BBFTCrxAWCX9tqCR+aiHaK3a2O4Pr0jl5AdS0opndLU0VXiSK7Vwdtx2OP
-	AsE21JjTg/f4EwPFU7SttH3P+ry8Wr2Lasgrj4ji8F88x70epNE/no0jPKvvDw==
-ARC-Authentication-Results: i=1;
-	mx1.freebsd.org;
-	none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=freebsd.org;
-	s=dkim; t=1711752061;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=dWMhzPy1cNnI3iwH3ixCyPFnhDnothTqn2MInSE3b04=;
-	b=cfkgmUVBeZMip0ukhKy4BbEknkJioer2Z7mOGUA0ailhvl382wlRavhnS8sTs3S92v+hCk
-	1prkfvHz6J9QTMSWeusHudphzBAlDydVYuHsl0lb14bhXRWYwLBcFetqft9lxXCUEuTbbe
-	QtQyyTlX6ZK77MdVLyh7SHj+7X29ojPKXARnXydIfFwIZg8G3MjwmAW/dGrP+ZGUI7qJia
-	IGZyhPUK6VWJpeeZL1DsTd+2DHDiUMfLn8ZZNOTxgWt3OSGmnicVRFq/45ugHiazs6t9M3
-	dIecoPO4mEZDKnjWkAphRa6VV2XxLjWlQPnyR3x8Vx+QGmUOvDmiF2zmYFCq2A==
-Received: from mx1.sbone.de (mx1.sbone.de [IPv6:2a01:4f8:13b:39f::9f:25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(Client CN "mx1.sbone.de", Issuer "SBone.DE Root Certificate Authority" (not verified))
-	(Authenticated sender: bz/mail)
-	by smtp.freebsd.org (Postfix) with ESMTPSA id 4V5wNs4jVZzdKY;
-	Fri, 29 Mar 2024 22:41:01 +0000 (UTC)
-	(envelope-from bz@FreeBSD.org)
-Received: from mail.sbone.de (mail.sbone.de [IPv6:fde9:577b:c1a9:4902:0:7404:2:1025])
-	(using TLSv1.2 with cipher ADH-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.sbone.de (Postfix) with ESMTPS id A895F8D4A241;
-	Fri, 29 Mar 2024 22:41:00 +0000 (UTC)
-Received: from content-filter.t4-02.sbone.de (content-filter.t4-02.sbone.de [IPv6:fde9:577b:c1a9:4902:0:7404:2:2742])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.sbone.de (Postfix) with ESMTPS id 6479B2D029D8;
-	Fri, 29 Mar 2024 22:41:00 +0000 (UTC)
-X-Virus-Scanned: amavisd-new at sbone.de
-Received: from mail.sbone.de ([IPv6:fde9:577b:c1a9:4902:0:7404:2:1025])
-	by content-filter.t4-02.sbone.de (content-filter.t4-02.sbone.de [IPv6:fde9:577b:c1a9:4902:0:7404:2:2742]) (amavisd-new, port 10024)
-	with ESMTP id k7yc9PnNa1Tj; Fri, 29 Mar 2024 22:40:59 +0000 (UTC)
-Received: from strong-iwl0.sbone.de (strong-iwl0.sbone.de [IPv6:fde9:577b:c1a9:4902:b66b:fcff:fef3:e3d2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.sbone.de (Postfix) with ESMTPSA id 7AF7C2D029D2;
-	Fri, 29 Mar 2024 22:40:59 +0000 (UTC)
-Date: Fri, 29 Mar 2024 22:40:59 +0000 (UTC)
-From: "Bjoern A. Zeeb" <bz@FreeBSD.org>
-To: linux-wireless@vger.kernel.org
-cc: miriam.rachel.korenblit@intel.com
-Subject: [PATCH 3/3] wifi: iwlwifi: mvm: check for CONFIG_IWLMEI to be enabled
- for more code
-Message-ID: <sq1o7pr0-2137-11np-1or1-650nrro75o13@SerrOFQ.bet>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BFBC4B5DA;
+	Fri, 29 Mar 2024 23:22:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1711754574; cv=none; b=T8ZiMItxzllVnhMN7mKBttTO8VbRcQ5pwVgMkXJuNEACK0+e4inNcZ8iN90okGdVpf/4XMLGqFrAlvzID0wRVqp0hiOWB9i6gZyLgefqExMxVOrYhOiW51hqIUCFSHUDVNq7MA8oNkaOynnbYpgCRYf3+yRvcxU4wI24CcCNGdk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1711754574; c=relaxed/simple;
+	bh=0Bgz3dygYfsN6NPG3lTjxdOt5S268zJki5K2RHRufYU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=VeMYwD+5F7IspitGWxwFCcYDOallyaNt0PUOkIM0AbsFxilqxi/WxMoHMe4PcLRTfSM007ctA6zwN8m1JsxjNwd5SSh2Rp24WTxwRblZx1MLcZHYASy+CnVYxIX6IF4bKR4e5mO9khUMwcVm8dqKFqEhyNbW8adFypnqbwJflIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=mTcIVgYm; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42TLQSj5013426;
+	Fri, 29 Mar 2024 23:22:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=7UwDx5OuW8FtPG7iPK+HFKmVAJuPi5oZKhU7vXS9aS4=; b=mT
+	cIVgYmE4vn+1WKdCBKVvcGY9JpVQgjzMVAqLZ+1qHySgkRDqdScgPph+XSqVvOgd
+	l6yggGX8sisnfUgUXH3Vj3/QyHyb3K8MOhCeRdayW5pgmekSkoXU4zi1mbJ1Jzxt
+	P+1U3mgoKCWPZaNbEBuzLTNyMLkiig0x1jc88aMmEpmJryuvkz6L8ain01FN2Uvc
+	IgaLKzmraIvOv6LxShxYk3V2qayP/Qv67DdjsjrDazoQjgWkUfadtWc+FVqKYhjo
+	kvLGgLc4o9NJoLlPPLAeAl6yLaZfHNUpl6zcfwh/G7H/jMDaYO1lZ/DjIOMntWa8
+	Lpg6rNlqt9WCbM4SY2tg==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3x5sm6j50r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 29 Mar 2024 23:22:35 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42TNMYfx000427
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 29 Mar 2024 23:22:34 GMT
+Received: from [10.110.124.221] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Fri, 29 Mar
+ 2024 16:22:33 -0700
+Message-ID: <8ba398c9-b71c-4447-a1d0-bd560e41f39f@quicinc.com>
+Date: Fri, 29 Mar 2024 16:22:32 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; format=flowed; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/7] wifi: ath10k: sdio: drop driver owner initialization
+Content-Language: en-US
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Ulf Hansson
+	<ulf.hansson@linaro.org>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Luiz Augusto
+ von Dentz <luiz.dentz@gmail.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+        Kalle
+ Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
+        Arend van Spriel
+	<arend.vanspriel@broadcom.com>,
+        Brian Norris <briannorris@chromium.org>,
+        =?UTF-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <jerome.pouiller@silabs.com>
+CC: <linux-mmc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-bluetooth@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <ath10k@lists.infradead.org>, <brcm80211@lists.linux.dev>,
+        <brcm80211-dev-list.pdl@broadcom.com>
+References: <20240329-module-owner-sdio-v1-0-e4010b11ccaa@linaro.org>
+ <20240329-module-owner-sdio-v1-4-e4010b11ccaa@linaro.org>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20240329-module-owner-sdio-v1-4-e4010b11ccaa@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: pj5BXDPNqd-BazKf3WC1xlwtDGjZg8-7
+X-Proofpoint-GUID: pj5BXDPNqd-BazKf3WC1xlwtDGjZg8-7
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-29_13,2024-03-28_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
+ priorityscore=1501 adultscore=0 mlxlogscore=928 suspectscore=0
+ impostorscore=0 spamscore=0 lowpriorityscore=0 bulkscore=0 clxscore=1011
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2403210001 definitions=main-2403290208
 
-Some of the code is only needed in case MEI support is available
-but given it is a GPL-only feature this may lead to unused and/or
-unresolved symbols on platforms sharing the otherwise dual-licensed
-driver code or in case CONFIG_IWLMEI is turned off.
+On 3/29/2024 10:24 AM, Krzysztof Kozlowski wrote:
+> Core in sdio_register_driver() already sets the .owner, so driver does
+> not need to.
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Signed-off-by:	Bjoern A. Zeeb <bz@FreeBSD.org>
-Sponsored by:	The FreeBSD Foundation
-Link: https://cgit.freebsd.org/src/commit/sys/contrib/dev/iwlwifi/mvm/ops.c?id=75c779fb279c2bea90c08e275af5937213bdca81
----
-  drivers/net/wireless/intel/iwlwifi/mvm/ops.c | 4 ++++
-  1 file changed, 4 insertions(+)
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-diff --git drivers/net/wireless/intel/iwlwifi/mvm/ops.c drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-index adbbe19aeae5..2514319bce2a 100644
---- drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-+++ drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-@@ -1029,6 +1029,7 @@ static const struct iwl_dump_sanitize_ops iwl_mvm_sanitize_ops = {
-  	.frob_mem = iwl_mvm_frob_mem,
-  };
+> 
+> ---
+> 
+> Depends on the first patch.
+> ---
+>  drivers/net/wireless/ath/ath10k/sdio.c | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
+> index 1acb9fba9a8e..cddd9e3010ee 100644
+> --- a/drivers/net/wireless/ath/ath10k/sdio.c
+> +++ b/drivers/net/wireless/ath/ath10k/sdio.c
+> @@ -2667,7 +2667,6 @@ static struct sdio_driver ath10k_sdio_driver = {
+>  	.probe = ath10k_sdio_probe,
+>  	.remove = ath10k_sdio_remove,
+>  	.drv = {
+> -		.owner = THIS_MODULE,
+>  		.pm = ATH10K_SDIO_PM_OPS,
+>  	},
+>  };
+> 
 
-+#if IS_ENABLED(CONFIG_IWLMEI)
-  static void iwl_mvm_me_conn_status(void *priv, const struct iwl_mei_conn_info *conn_info)
-  {
-  	struct iwl_mvm *mvm = priv;
-@@ -1078,6 +1079,7 @@ static void iwl_mvm_mei_roaming_forbidden(void *priv, bool forbidden)
-
-  	iwl_mvm_send_roaming_forbidden_event(mvm, mvm->csme_vif, forbidden);
-  }
-+#endif
-
-  static void iwl_mvm_sap_connected_wk(struct work_struct *wk)
-  {
-@@ -1111,6 +1113,7 @@ static void iwl_mvm_sap_connected_wk(struct work_struct *wk)
-  	ieee80211_free_hw(mvm->hw);
-  }
-
-+#if IS_ENABLED(CONFIG_IWLMEI)
-  static void iwl_mvm_mei_sap_connected(void *priv)
-  {
-  	struct iwl_mvm *mvm = priv;
-@@ -1135,6 +1138,7 @@ static const struct iwl_mei_ops mei_ops = {
-  	.sap_connected = iwl_mvm_mei_sap_connected,
-  	.nic_stolen = iwl_mvm_mei_nic_stolen,
-  };
-+#endif
-
-  static struct iwl_op_mode *
-  iwl_op_mode_mvm_start(struct iwl_trans *trans, const struct iwl_cfg *cfg,
--- 
-2.40.0
 
