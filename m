@@ -1,122 +1,96 @@
-Return-Path: <linux-wireless+bounces-5672-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5673-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA05E8932C6
-	for <lists+linux-wireless@lfdr.de>; Sun, 31 Mar 2024 18:27:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 970678932C8
+	for <lists+linux-wireless@lfdr.de>; Sun, 31 Mar 2024 18:27:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6C601C2147B
-	for <lists+linux-wireless@lfdr.de>; Sun, 31 Mar 2024 16:27:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B93A81C212D8
+	for <lists+linux-wireless@lfdr.de>; Sun, 31 Mar 2024 16:27:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7409145FFF;
-	Sun, 31 Mar 2024 16:26:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55833146585;
+	Sun, 31 Mar 2024 16:26:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="TluNSGyt"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Y2tp6sQa"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from a.mx.secunet.com (a.mx.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C98DC146002;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F9B146000;
 	Sun, 31 Mar 2024 16:26:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=62.96.220.36
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711902379; cv=pass; b=sVKjIQGB/J61LvH96lacQw3BGVRrABOffsy0yxOFW69kGShsrwZgrDILoDXJbKinRFEYRIFtS3+3cd781D7tWucchP769NQQQArnvRSCPFYUjutS2fecNPYV/JVwGF+CJ8b+OfmHNXULv/gcXqmc3UQaXo2alPMdunr6n+6KzRA=
+	t=1711902380; cv=fail; b=H6T7oT9V76GBIqIpSjDXFa0SbdKY27rcLSEr1UMeXJYhAhHfu4hNedingZxFJoMg3+T7AgsR/jGpBHzku58VCh6M75EYvmIzlAaZj2ruNPg2f8WgKPXLXE1aACiZ6azwQSGPUV+bcDqqiYwa3Usy62DaJ4JyCueiFHE/mfSVQpw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711902379; c=relaxed/simple;
-	bh=/DssU8MC65A2RpD4iNKexMal8Rlum/svgghigcvg640=;
-	h=From:To:CC:Date:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=qrIzJ3yg3tLGMmRtK+ceXs+7Astdl2lt7D88VO6Bx26Bb3Xa/SPe/dwBZjjek0apaZEkNzZulJ+idaQ049R0QyJD7lfn3ODthBnTN4OQFrXCfVlpparqdAUREQtUhuiZlZuhLQRM9p8e8qMHEOc/D8rZIeNlMFK3o7cDc37skOc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=TluNSGyt; arc=none smtp.client-ip=209.85.208.48; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; arc=pass smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1711902380; c=relaxed/simple;
+	bh=8S7GlK29NB9SItzdrNDqBufqekgEpMd3kpeb0UktTfs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=F59HM5jBlZZQ/tXtsszyDfpOl8O2omw9gS4esmUaYTW52T4vctyHWvo4I4L4XxNsBdY18LympODN4ZSKmF/F6FLycqsirAg7vep8khDXn+3jfO3rs3o1T9lWZqF7e21hh3DSz/6tXfje9U/TAmqNeAtZyRpneJCJpXZWv1TZ20w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=fail (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Y2tp6sQa reason="signature verification failed"; arc=none smtp.client-ip=198.137.202.133; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; arc=fail smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Received: from localhost (localhost [127.0.0.1])
-	by a.mx.secunet.com (Postfix) with ESMTP id 6B7C6207C6;
+	by a.mx.secunet.com (Postfix) with ESMTP id 2DEC92084C;
 	Sun, 31 Mar 2024 18:26:16 +0200 (CEST)
 X-Virus-Scanned: by secunet
 Received: from a.mx.secunet.com ([127.0.0.1])
 	by localhost (a.mx.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id pJ761GHsqKkJ; Sun, 31 Mar 2024 18:26:14 +0200 (CEST)
-Received: from mailout2.secunet.com (mailout2.secunet.com [62.96.220.49])
+	with ESMTP id F85MJJb9DxuO; Sun, 31 Mar 2024 18:26:14 +0200 (CEST)
+Received: from mailout1.secunet.com (mailout1.secunet.com [62.96.220.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by a.mx.secunet.com (Postfix) with ESMTPS id A9D7F20847;
+	by a.mx.secunet.com (Postfix) with ESMTPS id D836E207C6;
 	Sun, 31 Mar 2024 18:26:14 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 a.mx.secunet.com A9D7F20847
+DKIM-Filter: OpenDKIM Filter v2.11.0 a.mx.secunet.com D836E207C6
 Received: from cas-essen-01.secunet.de (unknown [10.53.40.201])
-	by mailout2.secunet.com (Postfix) with ESMTP id 9CB9080004A;
+	by mailout1.secunet.com (Postfix) with ESMTP id CB2D380004E;
 	Sun, 31 Mar 2024 18:26:14 +0200 (CEST)
 Received: from mbx-essen-01.secunet.de (10.53.40.197) by
  cas-essen-01.secunet.de (10.53.40.201) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
  15.1.2507.35; Sun, 31 Mar 2024 18:26:14 +0200
 Received: from Pickup by mbx-essen-01.secunet.de with Microsoft SMTP Server id
- 15.1.2507.17; Sun, 31 Mar 2024 16:23:37 +0000
-X-sender: <linux-wireless+bounces-5634-peter.schumann=secunet.com@vger.kernel.org>
-X-Receiver: <peter.schumann@secunet.com>
- ORCPT=rfc822;peter.schumann@secunet.com NOTIFY=NEVER;
- X-ExtendedProps=BQAVABYAAgAAAAUAFAARAJ05ab4WgQhHsqdZ7WUjHykPADUAAABNaWNyb3NvZnQuRXhjaGFuZ2UuVHJhbnNwb3J0LkRpcmVjdG9yeURhdGEuSXNSZXNvdXJjZQIAAAUAagAJAAEAAAAAAAAABQAWAAIAAAUAQwACAAAFAEYABwADAAAABQBHAAIAAAUAEgAPAGAAAAAvbz1zZWN1bmV0L291PUV4Y2hhbmdlIEFkbWluaXN0cmF0aXZlIEdyb3VwIChGWURJQk9IRjIzU1BETFQpL2NuPVJlY2lwaWVudHMvY249UGV0ZXIgU2NodW1hbm41ZTcFAAsAFwC+AAAAQ5IZ35DtBUiRVnd98bETxENOPURCNCxDTj1EYXRhYmFzZXMsQ049RXhjaGFuZ2UgQWRtaW5pc3RyYXRpdmUgR3JvdXAgKEZZRElCT0hGMjNTUERMVCksQ049QWRtaW5pc3RyYXRpdmUgR3JvdXBzLENOPXNlY3VuZXQsQ049TWljcm9zb2Z0IEV4Y2hhbmdlLENOPVNlcnZpY2VzLENOPUNvbmZpZ3VyYXRpb24sREM9c2VjdW5ldCxEQz1kZQUADgARAC7JU/le071Fhs0mWv1VtVsFAB0ADwAMAAAAbWJ4LWVzc2VuLTAxBQA8AAIAAA8ANgAAAE1pY3Jvc29mdC5FeGNoYW5nZS5UcmFuc3BvcnQuTWFpbFJlY2lwaWVudC5EaXNwbGF5TmFtZQ8ADwAAAFNjaHVtYW5uLCBQZXRlcgUADAACAAAFAGwAAgAABQBYABcASAAAAJ05ab4WgQhHsqdZ7WUjHylDTj1TY2h1bWFubiBQZXRlcixPVT1Vc2VycyxPVT1NaWdyYXRpb24sREM9c2VjdW5ldCxEQz1kZQUAJgACAAEFACIADwAxAAAAQXV0b1Jlc3BvbnNlU3VwcHJlc3M6IDANClRyYW5zbWl0SGlzdG9yeTogRmFsc
-	2UNCg8ALwAAAE1pY3Jvc29mdC5FeGNoYW5nZS5UcmFuc3BvcnQuRXhwYW5zaW9uR3JvdXBUeXBlDwAVAAAATWVtYmVyc0dyb3VwRXhwYW5zaW9uBQAjAAIAAQ==
+ 15.1.2507.17; Sun, 31 Mar 2024 16:23:51 +0000
+X-sender: <netdev+bounces-83514-steffen.klassert=secunet.com@vger.kernel.org>
+X-Receiver: <steffen.klassert@secunet.com>
+ ORCPT=rfc822;steffen.klassert@secunet.com NOTIFY=NEVER;
+ X-ExtendedProps=BQAVABYAAgAAAAUAFAARAPDFCS25BAlDktII2g02frgPADUAAABNaWNyb3NvZnQuRXhjaGFuZ2UuVHJhbnNwb3J0LkRpcmVjdG9yeURhdGEuSXNSZXNvdXJjZQIAAAUAagAJAAEAAAAAAAAABQAWAAIAAAUAQwACAAAFAEYABwADAAAABQBHAAIAAAUAEgAPAGIAAAAvbz1zZWN1bmV0L291PUV4Y2hhbmdlIEFkbWluaXN0cmF0aXZlIEdyb3VwIChGWURJQk9IRjIzU1BETFQpL2NuPVJlY2lwaWVudHMvY249U3RlZmZlbiBLbGFzc2VydDY4YwUACwAXAL4AAACheZxkHSGBRqAcAp3ukbifQ049REI2LENOPURhdGFiYXNlcyxDTj1FeGNoYW5nZSBBZG1pbmlzdHJhdGl2ZSBHcm91cCAoRllESUJPSEYyM1NQRExUKSxDTj1BZG1pbmlzdHJhdGl2ZSBHcm91cHMsQ049c2VjdW5ldCxDTj1NaWNyb3NvZnQgRXhjaGFuZ2UsQ049U2VydmljZXMsQ049Q29uZmlndXJhdGlvbixEQz1zZWN1bmV0LERDPWRlBQAOABEABiAS9uuMOkqzwmEZDvWNNQUAHQAPAAwAAABtYngtZXNzZW4tMDIFADwAAgAADwA2AAAATWljcm9zb2Z0LkV4Y2hhbmdlLlRyYW5zcG9ydC5NYWlsUmVjaXBpZW50LkRpc3BsYXlOYW1lDwARAAAAS2xhc3NlcnQsIFN0ZWZmZW4FAAwAAgAABQBsAAIAAAUAWAAXAEoAAADwxQktuQQJQ5LSCNoNNn64Q049S2xhc3NlcnQgU3RlZmZlbixPVT1Vc2VycyxPVT1NaWdyYXRpb24sREM9c2VjdW5ldCxEQz1kZQUAJgACAAEFACIADwAxAAAAQXV0b1Jlc3BvbnNlU3VwcHJlc3M6IDANClRyYW5zbWl0SGlzdG9ye
+	TogRmFsc2UNCg8ALwAAAE1pY3Jvc29mdC5FeGNoYW5nZS5UcmFuc3BvcnQuRXhwYW5zaW9uR3JvdXBUeXBlDwAVAAAATWVtYmVyc0dyb3VwRXhwYW5zaW9uBQAjAAIAAQ==
 X-CreatedBy: MSExchange15
-X-HeloDomain: b.mx.secunet.com
-X-ExtendedProps: BQBjAAoALJXp8x1Q3AgFAGEACAABAAAABQA3AAIAAA8APAAAAE1pY3Jvc29mdC5FeGNoYW5nZS5UcmFuc3BvcnQuTWFpbFJlY2lwaWVudC5Pcmdhbml6YXRpb25TY29wZREAAAAAAAAAAAAAAAAAAAAAAAUASQACAAEFAGIACgCeAAAAjYoAAAUABAAUIAEAAAAaAAAAcGV0ZXIuc2NodW1hbm5Ac2VjdW5ldC5jb20FAAYAAgABBQApAAIAAQ8ACQAAAENJQXVkaXRlZAIAAQUAAgAHAAEAAAAFAAMABwAAAAAABQAFAAIAAQUAZAAPAAMAAABIdWI=
+X-HeloDomain: a.mx.secunet.com
+X-ExtendedProps: BQBjAAoABdvp8x1Q3AgFAGEACAABAAAABQA3AAIAAA8APAAAAE1pY3Jvc29mdC5FeGNoYW5nZS5UcmFuc3BvcnQuTWFpbFJlY2lwaWVudC5Pcmdhbml6YXRpb25TY29wZREAAAAAAAAAAAAAAAAAAAAAAAUASQACAAEFAGIACgA0AAAAnooAAAUABAAUIAEAAAAcAAAAc3RlZmZlbi5rbGFzc2VydEBzZWN1bmV0LmNvbQUABgACAAEFACkAAgABDwAJAAAAQ0lBdWRpdGVkAgABBQACAAcAAQAAAAUAAwAHAAAAAAAFAAUAAgABBQBkAA8AAwAAAEh1Yg==
 X-Source: SMTP:Default MBX-DRESDEN-01
-X-SourceIPAddress: 62.96.220.37
-X-EndOfInjectedXHeaders: 21878
+X-SourceIPAddress: 62.96.220.36
+X-EndOfInjectedXHeaders: 13893
 X-Virus-Scanned: by secunet
-Received-SPF: Pass (sender SPF authorized) identity=mailfrom; client-ip=139.178.88.99; helo=sv.mirrors.kernel.org; envelope-from=linux-wireless+bounces-5634-peter.schumann=secunet.com@vger.kernel.org; receiver=peter.schumann@secunet.com 
-DKIM-Filter: OpenDKIM Filter v2.11.0 b.mx.secunet.com 119D9200BB
-Authentication-Results: b.mx.secunet.com;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="TluNSGyt"
-X-Original-To: linux-wireless@vger.kernel.org
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom; client-ip=139.178.88.99; helo=sv.mirrors.kernel.org; envelope-from=netdev+bounces-83514-steffen.klassert=secunet.com@vger.kernel.org; receiver=steffen.klassert@secunet.com 
+DKIM-Filter: OpenDKIM Filter v2.11.0 a.mx.secunet.com 524E72084C
+X-Original-To: netdev@vger.kernel.org
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal: i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711756371; cv=none; b=o0WhiN2gZuWU2Os3NZ94lcW9TU34o0+02S/QsxZdV4BfVrVYYp6/RHWQTabBzqWOjNHPaOiMKxezZW+pX9RauPpSXDM1gYSpisw4KJyQ+Uyefk6d4TYljJYwlwrVJ4VujdjzjLUyDwVRsonnjRBdsDWzJ/eIxB5ac0HdZ+0GAyA=
+	t=1711815653; cv=none; b=mS6rVh5T/lZGK8wYPPxiInu59YJakJ7q1MXTMZzo+xYZwJGtSraU8JC5CpDXqofLK+Yp6Vt37MZIksZ4m3e1uACyQEnWLLtAT42lQXIqiaWAts8ZHDF3wNH6RRyLaSFLqHUPp5VjK6ZtJszYL/DUBgOMRVfEY5vozRoc0kwNnmg=
 ARC-Message-Signature: i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711756371; c=relaxed/simple;
-	bh=/DssU8MC65A2RpD4iNKexMal8Rlum/svgghigcvg640=;
-	h=From:To:CC:Date:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=Qx0zqIH66fwE7eJkhUnh80yazidM0iBTIOvXwPv061RLq8Fc0lVd8AxbUBNo4IJKVqIRMc+GeRRVj40YeOtEstHF5IqTn4bM7VYv+YXa0m1+EIkHZH1GWsidbebDc2tqQV9KuuaFiG+kCQmmcUB+iB5bKDvhgovTktsxi7thSdw=
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=TluNSGyt; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1711756368; x=1712361168; darn=vger.kernel.org;
-        h=mime-version:subject:user-agent:references:in-reply-to:message-id
-         :date:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=03RZ/CG5yIikfVZbcTYpNoXJYSXutxMyJ3oQ3TY4G1A=;
-        b=TluNSGytK0iFNCaW7o5eB1sphl6bu4fttqo6x49DqMOhZ1ZBauiztJKxA1zk3nWa2/
-         lhmAxEZuK8T/M6wIxqLwGuKTGWCra03UvbQDwd9avU/Mn6/9fjjlWSqryaA3hYZtlntr
-         84aUU7xr6w+praQC80hxQ/OlguQApLV7wJ/1k=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711756368; x=1712361168;
-        h=mime-version:subject:user-agent:references:in-reply-to:message-id
-         :date:cc:to:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=03RZ/CG5yIikfVZbcTYpNoXJYSXutxMyJ3oQ3TY4G1A=;
-        b=e2xNNN1T7J1DmC3SUqbr0uapTyXb9vSKVr81yY+1GZmQ05lg43lYM1y8KzMbWjdR2x
-         0VrJDDKdhMA0O2chUTKxiuUvK8HsISnNwK33McLttNoYBg8LvX4P8pzlKvqxgJz4ex5q
-         fv6/2SeaHLYZnU4fTBNcKNjf7y6QfTtUNUYTHQqidoj/Ye8KQNO28oFgr9zQsJ5wLv37
-         DoWGkeC/DRyZ07SwMS9tt/whqnx3TB6wV2/yhWhCjRlcMKX7/zg15fuz/JbGXh5L6UEN
-         jDk5wBzL7H40az/xDF+aMnlO1CZq9nNjc7yaVI0l3xrDCg/JOhPBE0byBIsFyvaea7pF
-         3+wQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUR6RUgQHRU6J4kHroncjBswHWjynmy3sa9pAZb836UCBMclv8LHWudh7wx52EnhCT0/wDy/PGCIx1fWrzgqoZjacxLoNQRRcpBWyIpsN4=
-X-Gm-Message-State: AOJu0YwmVYFF1joqEovcCun4L+xy0UJifJzdhu5hA5ZknR/MYxW/vRWm
-	deSMawtVnviPDqBXx3HRIHYWL8EgoBU6mN5EYX3/ya4m43gYYyJCC8E9tyswvg==
-X-Google-Smtp-Source: AGHT+IFlVP4t6RIxSv9LCeKxetcZ0i37Xax/rZfBrQX524SbaGIPRH/aDdJRAvbPea2yviZoN6JCaA==
-X-Received: by 2002:a17:906:595a:b0:a4e:1966:1874 with SMTP id g26-20020a170906595a00b00a4e19661874mr2344347ejr.37.1711756368046;
-        Fri, 29 Mar 2024 16:52:48 -0700 (PDT)
-From: Arend Van Spriel <arend.vanspriel@broadcom.com>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Ulf Hansson <ulf.hansson@linaro.org>, Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, Matthias Brugger <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>, Brian Norris <briannorris@chromium.org>, =?UTF-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <jerome.pouiller@silabs.com>
-CC: <linux-mmc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, <linux-bluetooth@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>, <linux-mediatek@lists.infradead.org>, <linux-wireless@vger.kernel.org>, <ath10k@lists.infradead.org>, <brcm80211@lists.linux.dev>, <brcm80211-dev-list.pdl@broadcom.com>
-Date: Sat, 30 Mar 2024 00:52:45 +0100
-Message-ID: <18e8ca14cc8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <20240329-module-owner-sdio-v1-5-e4010b11ccaa@linaro.org>
-References: <20240329-module-owner-sdio-v1-0-e4010b11ccaa@linaro.org>
- <20240329-module-owner-sdio-v1-5-e4010b11ccaa@linaro.org>
-User-Agent: AquaMail/1.50.0 (build: 105000429)
-Subject: Re: [PATCH 5/7] wifi: brcm80211: drop driver owner initialization
+	s=arc-20240116; t=1711815653; c=relaxed/simple;
+	bh=JNC8qozkgWlE+Q6kdtHfr0XlvCkJCAqLu0MAE1TEAq8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=m+WrL2f7eXA8QKozheTgtynh9tR1Mkhmu0+yvSb/Waw66WKvAnc6YogIpWcM2U7GOSLy5Zn2f9hWYhwc0eQp2nA3c6dARB4QsGQuBesijf+qVWtaWiw5AfCQf3A1pP6jGz+TFDZYo4VIzWrvKRIyD+NoxFUtE6EHzLeocwsMVw4=
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Y2tp6sQa; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=cDTgdTBVRUAZH0p6pwQw4KmwuQ/wNotFO0UsYy13RVs=; b=Y2tp6sQaaVk+sBrRRF0N2ANzw+
+	DJpIXWD4/mDjC2onipuC4uQQKeMs9aRsg/HT1VDwSIKGc3eP+vcLSjAkEbNMPmxTFdVHs6lWfg7Gw
+	MRd9D7hy/FJ+Fu6galftDA1RcyU74rR0nEHQh8Q4Cxw6xr3YPPMLQOXe5cjp/5oS3B9U2a8qsTQYh
+	/hPhHfrFJzmqDas7HWCJG9CrAVgTtD/r+gVTNc9TggRnbyE2zKQl5LZKhL3JxZMjhuQXGolftCOkc
+	NuOgeZu/HfHF4oCfUz6DmYc0A3cejB9ptDTqCWReNGWxbCCDxIVLAhruxGaoU9AB6p90lRi48gqLZ
+	zMJ8rFMw==;
+Message-ID: <1c69304c-abaf-46e4-b58d-a4f9b30a8f5f@infradead.org>
+Date: Sat, 30 Mar 2024 09:20:45 -0700
 Precedence: bulk
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -124,130 +98,389 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; protocol="application/pkcs7-signature";
-	micalg=sha-256; boundary="000000000000489f3e0614d556de"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] wifi: mac80211: remove ieee80211_set_hw_80211_encap()
+Content-Language: en-US
+To: Jeff Johnson <quic_jjohnson@quicinc.com>,
+ Johannes Berg <johannes@sipsolutions.net>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240329-mac80211-kdoc-retval-v1-0-5e4d1ad6c250@quicinc.com>
+ <20240329-mac80211-kdoc-retval-v1-1-5e4d1ad6c250@quicinc.com>
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20240329-mac80211-kdoc-retval-v1-1-5e4d1ad6c250@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-EXCLAIMER-MD-CONFIG: 2c86f778-e09b-4440-8b15-867914633a10
 
---000000000000489f3e0614d556de
-Content-Type: text/plain; format=flowed; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
 
-On March 29, 2024 6:24:57 PM Krzysztof Kozlowski 
-<krzysztof.kozlowski@linaro.org> wrote:
 
-> Core in sdio_register_driver() already sets the .owner, so driver does
-> not need to.
+On 3/29/24 13:27, Jeff Johnson wrote:
+> While fixing kernel-doc issues it was discovered that the
+> ieee80211_set_hw_80211_encap() prototype doesn't actually have an
+> implementation, so remove it.
+>=20
+> Note the implementation was rmeoved in patch 6aea26ce5a4c ("mac80211:
+> rework tx encapsulation offload API").
+>=20
+> Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
->
+Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
+
+Thanks.
+
 > ---
->
-> Depends on the first patch.
+>  include/net/mac80211.h | 12 ------------
+>  1 file changed, 12 deletions(-)
+>=20
+> diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+> index 353488ab94a2..e6a11a982ca8 100644
+> --- a/include/net/mac80211.h
+> +++ b/include/net/mac80211.h
+> @@ -7478,18 +7478,6 @@ u32 ieee80211_calc_rx_airtime(struct ieee80211_hw =
+*hw,
+>  u32 ieee80211_calc_tx_airtime(struct ieee80211_hw *hw,
+>  			      struct ieee80211_tx_info *info,
+>  			      int len);
+> -/**
+> - * ieee80211_set_hw_80211_encap - enable hardware encapsulation offloadi=
+ng.
+> - *
+> - * This function is used to notify mac80211 that a vif can be passed raw=
+ 802.3
+> - * frames. The driver needs to then handle the 802.11 encapsulation insi=
+de the
+> - * hardware or firmware.
+> - *
+> - * @vif: &struct ieee80211_vif pointer from the add_interface callback.
+> - * @enable: indicate if the feature should be turned on or off
+> - */
+> -bool ieee80211_set_hw_80211_encap(struct ieee80211_vif *vif, bool enable=
+);
+> -
+>  /**
+>   * ieee80211_get_fils_discovery_tmpl - Get FILS discovery template.
+>   * @hw: pointer obtained from ieee80211_alloc_hw().
+>=20
+
+--=20
+#Randy
+
+X-sender: <linux-kernel+bounces-125778-steffen.klassert=3Dsecunet.com@vger.=
+kernel.org>
+X-Receiver: <steffen.klassert@secunet.com> ORCPT=3Drfc822;steffen.klassert@=
+secunet.com NOTIFY=3DNEVER; X-ExtendedProps=3DBQAVABYAAgAAAAUAFAARAPDFCS25B=
+AlDktII2g02frgPADUAAABNaWNyb3NvZnQuRXhjaGFuZ2UuVHJhbnNwb3J0LkRpcmVjdG9yeURh=
+dGEuSXNSZXNvdXJjZQIAAAUAagAJAAEAAAAAAAAABQAWAAIAAAUAQwACAAAFAEYABwADAAAABQB=
+HAAIAAAUAEgAPAGIAAAAvbz1zZWN1bmV0L291PUV4Y2hhbmdlIEFkbWluaXN0cmF0aXZlIEdyb3=
+VwIChGWURJQk9IRjIzU1BETFQpL2NuPVJlY2lwaWVudHMvY249U3RlZmZlbiBLbGFzc2VydDY4Y=
+wUACwAXAL4AAACheZxkHSGBRqAcAp3ukbifQ049REI2LENOPURhdGFiYXNlcyxDTj1FeGNoYW5n=
+ZSBBZG1pbmlzdHJhdGl2ZSBHcm91cCAoRllESUJPSEYyM1NQRExUKSxDTj1BZG1pbmlzdHJhdGl=
+2ZSBHcm91cHMsQ049c2VjdW5ldCxDTj1NaWNyb3NvZnQgRXhjaGFuZ2UsQ049U2VydmljZXMsQ0=
+49Q29uZmlndXJhdGlvbixEQz1zZWN1bmV0LERDPWRlBQAOABEABiAS9uuMOkqzwmEZDvWNNQUAH=
+QAPAAwAAABtYngtZXNzZW4tMDIFADwAAgAADwA2AAAATWljcm9zb2Z0LkV4Y2hhbmdlLlRyYW5z=
+cG9ydC5NYWlsUmVjaXBpZW50LkRpc3BsYXlOYW1lDwARAAAAS2xhc3NlcnQsIFN0ZWZmZW4FAAw=
+AAgAABQBsAAIAAAUAWAAXAEoAAADwxQktuQQJQ5LSCNoNNn64Q049S2xhc3NlcnQgU3RlZmZlbi=
+xPVT1Vc2VycyxPVT1NaWdyYXRpb24sREM9c2VjdW5ldCxEQz1kZQUAJgACAAEFACIADwAxAAAAQ=
+XV0b1Jlc3BvbnNlU3VwcHJlc3M6IDANClRyYW5zbWl0SGlzdG9yeTogRmFsc2UNCg8ALwAAAE1p=
+Y3Jvc29mdC5FeGNoYW5nZS5UcmFuc3BvcnQuRXhwYW5zaW9uR3JvdXBUeXBlDwAVAAAATWVtYmV=
+yc0dyb3VwRXhwYW5zaW9uBQAjAAIAAQ=3D=3D
+X-CreatedBy: MSExchange15
+X-HeloDomain: b.mx.secunet.com
+X-ExtendedProps: BQBjAAoABdvp8x1Q3AgFAGEACAABAAAABQA3AAIAAA8APAAAAE1pY3Jvc2=
+9mdC5FeGNoYW5nZS5UcmFuc3BvcnQuTWFpbFJlY2lwaWVudC5Pcmdhbml6YXRpb25TY29wZREAA=
+AAAAAAAAAAAAAAAAAAAAAUASQACAAEFAGIACgA2AAAAnooAAAUABAAUIAEAAAAcAAAAc3RlZmZl=
+bi5rbGFzc2VydEBzZWN1bmV0LmNvbQUABgACAAEFACkAAgABDwAJAAAAQ0lBdWRpdGVkAgABBQA=
+CAAcAAQAAAAUAAwAHAAAAAAAFAAUAAgABBQBkAA8AAwAAAEh1Yg=3D=3D
+X-Source: SMTP:Default MBX-DRESDEN-01
+X-SourceIPAddress: 62.96.220.37
+X-EndOfInjectedXHeaders: 13979
+Received: from cas-essen-02.secunet.de (10.53.40.202) by
+ mbx-dresden-01.secunet.de (10.53.40.199) with Microsoft SMTP Server
+ (version=3DTLS1_2, cipher=3DTLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.37; Sat, 30 Mar 2024 17:21:18 +0100
+Received: from b.mx.secunet.com (62.96.220.37) by cas-essen-02.secunet.de
+ (10.53.40.202) with Microsoft SMTP Server (version=3DTLS1_2,
+ cipher=3DTLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35 via Fronte=
+nd
+ Transport; Sat, 30 Mar 2024 17:21:18 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by b.mx.secunet.com (Postfix) with ESMTP id 16FB320322
+	for <steffen.klassert@secunet.com>; Sat, 30 Mar 2024 17:21:18 +0100 (CET)
+X-Virus-Scanned: by secunet
+X-Spam-Flag: NO
+X-Spam-Score: -5.051
+X-Spam-Level:
+X-Spam-Status: No, score=3D-5.051 tagged_above=3D-999 required=3D2.1
+	tests=3D[BAYES_00=3D-1.9, DKIM_SIGNED=3D0.1, DKIM_VALID=3D-0.1,
+	DKIM_VALID_AU=3D-0.1, HEADER_FROM_DIFFERENT_DOMAINS=3D0.249,
+	MAILING_LIST_MULTI=3D-1, RCVD_IN_DNSWL_MED=3D-2.3, SPF_HELO_NONE=3D0.001,
+	SPF_PASS=3D-0.001] autolearn=3Dunavailable autolearn_force=3Dno
+Authentication-Results: a.mx.secunet.com (amavisd-new);
+	dkim=3Dpass (2048-bit key) header.d=3Dinfradead.org
+Received: from b.mx.secunet.com ([127.0.0.1])
+	by localhost (a.mx.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id H7ounvpW89vG for <steffen.klassert@secunet.com>;
+	Sat, 30 Mar 2024 17:21:17 +0100 (CET)
+Received-SPF: Pass (sender SPF authorized) identity=3Dmailfrom; client-ip=
+=3D139.178.88.99; helo=3Dsv.mirrors.kernel.org; envelope-from=3Dlinux-kerne=
+l+bounces-125778-steffen.klassert=3Dsecunet.com@vger.kernel.org; receiver=
+=3Dsteffen.klassert@secunet.com=20
+DKIM-Filter: OpenDKIM Filter v2.11.0 b.mx.secunet.com 3D5952025D
+Authentication-Results: b.mx.secunet.com;
+	dkim=3Dpass (2048-bit key) header.d=3Dinfradead.org header.i=3D@infradead.=
+org header.b=3D"Y2tp6sQa"
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99]=
+)
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by b.mx.secunet.com (Postfix) with ESMTPS id 3D5952025D
+	for <steffen.klassert@secunet.com>; Sat, 30 Mar 2024 17:21:17 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.2=
+5.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CBA928368F
+	for <steffen.klassert@secunet.com>; Sat, 30 Mar 2024 16:21:15 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E79F3D984;
+	Sat, 30 Mar 2024 16:20:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=3Dpass (2048-bit key) header.d=3Dinfradead.org header.i=3D@infradead.=
+org header.b=3D"Y2tp6sQa"
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.=
+133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 161DDEAC6;
+	Sat, 30 Mar 2024 16:20:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=3Dnone smtp.client-ip=
+=3D198.137.202.133
+ARC-Seal: i=3D1; a=3Drsa-sha256; d=3Dsubspace.kernel.org; s=3Darc-20240116;
+	t=3D1711815653; cv=3Dnone; b=3DmS6rVh5T/lZGK8wYPPxiInu59YJakJ7q1MXTMZzo+xY=
+ZwJGtSraU8JC5CpDXqofLK+Yp6Vt37MZIksZ4m3e1uACyQEnWLLtAT42lQXIqiaWAts8ZHDF3wN=
+H6RRyLaSFLqHUPp5VjK6ZtJszYL/DUBgOMRVfEY5vozRoc0kwNnmg=3D
+ARC-Message-Signature: i=3D1; a=3Drsa-sha256; d=3Dsubspace.kernel.org;
+	s=3Darc-20240116; t=3D1711815653; c=3Drelaxed/simple;
+	bh=3DJNC8qozkgWlE+Q6kdtHfr0XlvCkJCAqLu0MAE1TEAq8=3D;
+	h=3DMessage-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=3Dm+WrL2f7eXA8QKozheTgtynh9tR1Mkhmu0+yvSb/Waw=
+66WKvAnc6YogIpWcM2U7GOSLy5Zn2f9hWYhwc0eQp2nA3c6dARB4QsGQuBesijf+qVWtaWiw5Af=
+CQf3A1pP6jGz+TFDZYo4VIzWrvKRIyD+NoxFUtE6EHzLeocwsMVw4=3D
+ARC-Authentication-Results: i=3D1; smtp.subspace.kernel.org; dmarc=3Dnone (=
+p=3Dnone dis=3Dnone) header.from=3Dinfradead.org; spf=3Dnone smtp.mailfrom=
+=3Dinfradead.org; dkim=3Dpass (2048-bit key) header.d=3Dinfradead.org heade=
+r.i=3D@infradead.org header.b=3DY2tp6sQa; arc=3Dnone smtp.client-ip=3D198.1=
+37.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=3Dnone (p=3Dnone di=
+s=3Dnone) header.from=3Dinfradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=3Dnone smtp.mailfrom=
+=3Dinfradead.org
+DKIM-Signature: v=3D1; a=3Drsa-sha256; q=3Ddns/txt; c=3Drelaxed/relaxed;
+	d=3Dinfradead.org; s=3Dbombadil.20210309; h=3DContent-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=3DcDTgdTBVRUAZH0p6pwQw4KmwuQ/wNotFO0UsYy13RVs=3D; b=3DY2tp6sQaaVk+sBrRR=
+F0N2ANzw+
+	DJpIXWD4/mDjC2onipuC4uQQKeMs9aRsg/HT1VDwSIKGc3eP+vcLSjAkEbNMPmxTFdVHs6lWfg=
+7Gw
+	MRd9D7hy/FJ+Fu6galftDA1RcyU74rR0nEHQh8Q4Cxw6xr3YPPMLQOXe5cjp/5oS3B9U2a8qsT=
+QYh
+	/hPhHfrFJzmqDas7HWCJG9CrAVgTtD/r+gVTNc9TggRnbyE2zKQl5LZKhL3JxZMjhuQXGolftC=
+Okc
+	NuOgeZu/HfHF4oCfUz6DmYc0A3cejB9ptDTqCWReNGWxbCCDxIVLAhruxGaoU9AB6p90lRi48g=
+qLZ
+	zMJ8rFMw=3D=3D;
+Received: from [50.53.2.121] (helo=3D[192.168.254.15])
+	by bombadil.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rqbRm-00000003mZz-0NbX;
+	Sat, 30 Mar 2024 16:20:46 +0000
+Message-ID: <1c69304c-abaf-46e4-b58d-a4f9b30a8f5f@infradead.org>
+Date: Sat, 30 Mar 2024 09:20:45 -0700
+Precedence: bulk
+X-Mailing-List: linux-kernel@vger.kernel.org
+List-Id: <linux-kernel.vger.kernel.org>
+List-Subscribe: <mailto:linux-kernel+subscribe@vger.kernel.org>
+List-Unsubscribe: <mailto:linux-kernel+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] wifi: mac80211: remove ieee80211_set_hw_80211_enca=
+p()
+Content-Language: en-US
+To: Jeff Johnson <quic_jjohnson@quicinc.com>,
+ Johannes Berg <johannes@sipsolutions.net>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com=
+>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240329-mac80211-kdoc-retval-v1-0-5e4d1ad6c250@quicinc.com>
+ <20240329-mac80211-kdoc-retval-v1-1-5e4d1ad6c250@quicinc.com>
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20240329-mac80211-kdoc-retval-v1-1-5e4d1ad6c250@quicinc.com>
+Content-Type: text/plain; charset=3DUTF-8
+Content-Transfer-Encoding: 7bit
+Return-Path: linux-kernel+bounces-125778-steffen.klassert=3Dsecunet.com@vge=
+r.kernel.org
+X-MS-Exchange-Organization-OriginalArrivalTime: 30 Mar 2024 16:21:18.1289
+ (UTC)
+X-MS-Exchange-Organization-Network-Message-Id: 3ba90035-25e3-4e23-285a-08dc=
+50d56dde
+X-MS-Exchange-Organization-OriginalClientIPAddress: 62.96.220.37
+X-MS-Exchange-Organization-OriginalServerIPAddress: 10.53.40.202
+X-MS-Exchange-Organization-Cross-Premises-Headers-Processed: cas-essen-02.s=
+ecunet.de
+X-MS-Exchange-Organization-OrderedPrecisionLatencyInProgress: LSRV=3Dmbx-dr=
+esden-01.secunet.de:TOTAL-HUB=3D0.410|SMR=3D0.349(SMRDE=3D0.036|SMRC=3D0.31=
+3(SMRCL=3D0.101|X-SMRCR=3D0.313))|CAT=3D0.059(CATOS=3D0.011
+ (CATSM=3D0.011(CATSM-Malware
+ Agent=3D0.011))|CATRESL=3D0.022(CATRESLP2R=3D0.019)|CATORES=3D0.023
+ (CATRS=3D0.023(CATRS-Index Routing Agent=3D0.022)));2024-03-30T16:21:18.57=
+1Z
+X-MS-Exchange-Forest-ArrivalHubServer: mbx-dresden-01.secunet.de
+X-MS-Exchange-Organization-AuthSource: cas-essen-02.secunet.de
+X-MS-Exchange-Organization-AuthAs: Anonymous
+X-MS-Exchange-Organization-FromEntityHeader: Internet
+X-MS-Exchange-Organization-OriginalSize: 8603
+X-MS-Exchange-Organization-HygienePolicy: Standard
+X-MS-Exchange-Organization-MessageLatency: SRV=3Dcas-essen-02.secunet.de:TO=
+TAL-FE=3D0.031|SMR=3D0.008(SMRPI=3D0.005(SMRPI-FrontendProxyAgent=3D0.005))=
+|SMS=3D0.024
+X-MS-Exchange-Organization-AVStamp-Enterprise: 1.0
+X-MS-Exchange-Organization-Recipient-Limit-Verified: True
+X-MS-Exchange-Organization-TotalRecipientCount: 1
+X-MS-Exchange-Organization-Rules-Execution-History: 0b0cf904-14ac-4724-8bdf=
+-482ee6223cf2%%%fd34672d-751c-45ae-a963-ed177fcabe23%%%d8080257-b0c3-47b4-b=
+0db-23bc0c8ddb3c%%%95e591a2-5d7d-4afa-b1d0-7573d6c0a5d9%%%f7d0f6bc-4dcc-487=
+6-8c5d-b3d6ddbb3d55%%%16355082-c50b-4214-9c7d-d39575f9f79b
+X-MS-Exchange-Forest-RulesExecuted: mbx-dresden-01
+X-MS-Exchange-Organization-RulesExecuted: mbx-dresden-01
+X-MS-Exchange-Forest-IndexAgent-0: AQ0CZW4AAacEAAAPAAADH4sIAAAAAAAEAI1UbW8a=
+RxCe4w44zsZ5af
+ 0hVStNE7W1MRzmJTamkUWlqlWiqq2SSP2Ilrs9buNjl94dxkj9y/0P
+ nd0DYhLHqWUdO7PPPPO68+9+3at7f0jstbsX7W4fO71h97yJr3gU4S
+ sVy0xJXKYq58O6d4l/xSLhGIkbIad4xVPJk1aoAhRZtuAZihyXLMNQ
+ ZIG65ikPMY9ZTh+ujQXnfHDa7XTGGc/H8XJcCFwGbH50jHPyovLVnG
+ OoeCZ/yJEF+YIlyQpjds2RSUMymyd8xmXOcqFkEzOFKZ+RN3LuE0Bj
+ fqdwtdMPwCa2dMYJHKKQOGd5EOMZ46x7FvDnrB/g0dMZC0xYJt2UL1
+ V6hfkNmiCzRVIQqShKFAvxpz9fPj3eeH0jppKHLbprTVbD3Qq++Hsh
+ gvG7d4U40pKQgR+o2aWu/2t+LfiSjLXhaybDFf68kAmb44s0NIeRkF
+ HKQs5CX6VTY/Q2ZvIq8/XxElutlv6htIJkEfK25Hl7k4of4z/Y6WrM
+ 9s+AO9RJamdARFMeNjUm5AnXKWZHreN1XqGgRFqtKTWXtT/BP/nEhe
+ mYDPkN9p73+oMBm1z0Wdf3+RnrdNjFoBuwAXZOT8/6/XUWn/Sh709O
+ Tu51NRph67x/Pmh2BnhiDmdat+h1bw1fwJJgnN6MmUhzMeNHWZ4ugv
+ wWIF5iI142TYnuMM3/p+k9fx/ZESc1WGFDfz9rLmSOCZfHP5qatRsN
+ 84uNe18YAbhkE+p3zNJwyVJ+91DTy/bXfBvat7HIMFrIwODovMj001
+ YoVS6iFW6aULx2htciwoBJnHB6Y5nGpmyJBPF7G0oa5hnPfKKm554K
+ WhYoOQ8zzUovV1KQMkyKV6wNiXw3WiEzEfLNatGU27RUSnOdzvT5w0
+ xGFNoQv/+o/jriuaK6UhxRqmbGLwvDsVFFLKBXQptowoIrf8tVlHOo
+ B1wEjFYOkWi7iLN8QXFksVokoa4CibQaUBc51XVeU7TN70Sp5P7deG
+ e4Dfo00RgXgazHwQzPeiZwZyamxEwPPhtv9vNqnNOCpEh+5Tn+8vK3
+ N9vNvcKc0xUl5W94RvFyuK2RmuRM6JRMsd67oBqpgMI/Wm/FuqdXzT
+ Oz0rQETglsy4Jq8Q8lEkuWXQYoQ9WBchXcMnhlqFSgWrHAg6oNDp0J
+ RgcP9ghjQ7VmwdfgkWZjWymDWwOPzF2oEaYElQN4SFbG1jNWzgE8oC
+ 9hSE8m+/DAhXpBXocD0tskWlA3TkvgmHhqjgVPoEy0BuC6FuxBjW5N
+ kC5lcWhc01UFDg3GIbBlEQOUrC8tAAtKmsqqaQ3YNfjCMS5I/x5P2B
+ 2xbCI82LcoQqjAwe5tbUe0XF0Eq2I82sXZ+NVZ13T8nqmJXdVB6urt
+ g1fSObqfAzwrxEdatB2oOPAdmdhweGcLCEzxUDE9+MoxRTNW5aIRRW
+ socsPgFErbcow5pekWvSaqwqq4NelXiVOLsFdwuvDENkNS0/3yirYW
+ Xba1xqGOuPC4YuahGJ4itc1I2Eb5kEzuSuQ2M3GWTTDfkOZbg9RWum
+ LV7Zl8lYyLIkdCPjZjXIJH5f8AG1YsPGMJAAABCtkCPD94bWwgdmVy
+ c2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTE2Ij8+DQo8RW1haWxTZX
+ Q+DQogIDxWZXJzaW9uPjE1LjAuMC4wPC9WZXJzaW9uPg0KICA8RW1h
+ aWxzPg0KICAgIDxFbWFpbCBTdGFydEluZGV4PSIzNTgiPg0KICAgIC
+ AgPEVtYWlsU3RyaW5nPnF1aWNfampvaG5zb25AcXVpY2luYy5jb208
+ L0VtYWlsU3RyaW5nPg0KICAgIDwvRW1haWw+DQogICAgPEVtYWlsIF
+ N0YXJ0SW5kZXg9IjQxNSIgUG9zaXRpb249IlNpZ25hdHVyZSI+DQog
+ ICAgICA8RW1haWxTdHJpbmc+cmR1bmxhcEBpbmZyYWRlYWQub3JnPC
+ 9FbWFpbFN0cmluZz4NCiAgICA8L0VtYWlsPg0KICA8L0VtYWlscz4N
+ CjwvRW1haWxTZXQ+AQytBzw/eG1sIHZlcnNpb249IjEuMCIgZW5jb2
+ Rpbmc9InV0Zi0xNiI/Pg0KPENvbnRhY3RTZXQ+DQogIDxWZXJzaW9u
+ PjE1LjAuMC4wPC9WZXJzaW9uPg0KICA8Q29udGFjdHM+DQogICAgPE
+ NvbnRhY3QgU3RhcnRJbmRleD0iMzQ0Ij4NCiAgICAgIDxQZXJzb24g
+ U3RhcnRJbmRleD0iMzQ0Ij4NCiAgICAgICAgPFBlcnNvblN0cmluZz
+ 5KZWZmIEpvaG5zb248L1BlcnNvblN0cmluZz4NCiAgICAgIDwvUGVy
+ c29uPg0KICAgICAgPEVtYWlscz4NCiAgICAgICAgPEVtYWlsIFN0YX
+ J0SW5kZXg9IjM1OCI+DQogICAgICAgICAgPEVtYWlsU3RyaW5nPnF1
+ aWNfampvaG5zb25AcXVpY2luYy5jb208L0VtYWlsU3RyaW5nPg0KIC
+ AgICAgICA8L0VtYWlsPg0KICAgICAgPC9FbWFpbHM+DQogICAgICA8
+ Q29udGFjdFN0cmluZz5KZWZmIEpvaG5zb24gJmx0O3F1aWNfampvaG
+ 5zb25AcXVpY2luYy5jb208L0NvbnRhY3RTdHJpbmc+DQogICAgPC9D
+ b250YWN0Pg0KICAgIDxDb250YWN0IFN0YXJ0SW5kZXg9IjQwMSIgUG
+ 9zaXRpb249IlNpZ25hdHVyZSI+DQogICAgICA8UGVyc29uIFN0YXJ0
+ SW5kZXg9IjQwMSIgUG9zaXRpb249IlNpZ25hdHVyZSI+DQogICAgIC
+ AgIDxQZXJzb25TdHJpbmc+UmFuZHkgRHVubGFwPC9QZXJzb25TdHJp
+ bmc+DQogICAgICA8L1BlcnNvbj4NCiAgICAgIDxFbWFpbHM+DQogIC
+ AgICAgIDxFbWFpbCBTdGFydEluZGV4PSI0MTUiIFBvc2l0aW9uPSJT
+ aWduYXR1cmUiPg0KICAgICAgICAgIDxFbWFpbFN0cmluZz5yZHVubG
+ FwQGluZnJhZGVhZC5vcmc8L0VtYWlsU3RyaW5nPg0KICAgICAgICA8
+ L0VtYWlsPg0KICAgICAgPC9FbWFpbHM+DQogICAgICA8Q29udGFjdF
+ N0cmluZz5SYW5keSBEdW5sYXAgJmx0O3JkdW5sYXBAaW5mcmFkZWFk
+ Lm9yZzwvQ29udGFjdFN0cmluZz4NCiAgICA8L0NvbnRhY3Q+DQogID
+ wvQ29udGFjdHM+DQo8L0NvbnRhY3RTZXQ+AQ7PAVJldHJpZXZlck9w
+ ZXJhdG9yLDEwLDA7UmV0cmlldmVyT3BlcmF0b3IsMTEsMDtQb3N0RG
+ 9jUGFyc2VyT3BlcmF0b3IsMTAsMDtQb3N0RG9jUGFyc2VyT3BlcmF0
+ b3IsMTEsMDtQb3N0V29yZEJyZWFrZXJEaWFnbm9zdGljT3BlcmF0b3
+ IsMTAsMDtQb3N0V29yZEJyZWFrZXJEaWFnbm9zdGljT3BlcmF0b3Is
+ MTEsMDtUcmFuc3BvcnRXcml0ZXJQcm9kdWNlciwyMCwxMw=3D=3D
+X-MS-Exchange-Forest-IndexAgent: 1 2707
+X-MS-Exchange-Forest-EmailMessageHash: 2EE2F216
+X-MS-Exchange-Forest-Language: en
+X-MS-Exchange-Organization-Processed-By-Journaling: Journal Agent
+
+
+
+On 3/29/24 13:27, Jeff Johnson wrote:
+> While fixing kernel-doc issues it was discovered that the
+> ieee80211_set_hw_80211_encap() prototype doesn't actually have an
+> implementation, so remove it.
+>=20
+> Note the implementation was rmeoved in patch 6aea26ce5a4c ("mac80211:
+> rework tx encapsulation offload API").
+>=20
+> Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+
+Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
+
+Thanks.
+
 > ---
-> drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c | 1 -
-> 1 file changed, 1 deletion(-)
->
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c 
-> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-> index 00679a990e3d..13391c2d82aa 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-> @@ -1238,7 +1238,6 @@ static struct sdio_driver brcmf_sdmmc_driver = {
->  .name = KBUILD_MODNAME,
->  .id_table = brcmf_sdmmc_ids,
->  .drv = {
-> - .owner = THIS_MODULE,
->  .pm = pm_sleep_ptr(&brcmf_sdio_pm_ops),
->  .coredump = brcmf_dev_coredump,
->  },
->
-> --
-> 2.34.1
+>  include/net/mac80211.h | 12 ------------
+>  1 file changed, 12 deletions(-)
+>=20
+> diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+> index 353488ab94a2..e6a11a982ca8 100644
+> --- a/include/net/mac80211.h
+> +++ b/include/net/mac80211.h
+> @@ -7478,18 +7478,6 @@ u32 ieee80211_calc_rx_airtime(struct ieee80211_hw =
+*hw,
+>  u32 ieee80211_calc_tx_airtime(struct ieee80211_hw *hw,
+>  			      struct ieee80211_tx_info *info,
+>  			      int len);
+> -/**
+> - * ieee80211_set_hw_80211_encap - enable hardware encapsulation offloadi=
+ng.
+> - *
+> - * This function is used to notify mac80211 that a vif can be passed raw=
+ 802.3
+> - * frames. The driver needs to then handle the 802.11 encapsulation insi=
+de the
+> - * hardware or firmware.
+> - *
+> - * @vif: &struct ieee80211_vif pointer from the add_interface callback.
+> - * @enable: indicate if the feature should be turned on or off
+> - */
+> -bool ieee80211_set_hw_80211_encap(struct ieee80211_vif *vif, bool enable=
+);
+> -
+>  /**
+>   * ieee80211_get_fils_discovery_tmpl - Get FILS discovery template.
+>   * @hw: pointer obtained from ieee80211_alloc_hw().
+>=20
 
+--=20
+#Randy
 
-
-
---000000000000489f3e0614d556de
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-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
-2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
-Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
-HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
-Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
-KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
-Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
-dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
-OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
-MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
-BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
-ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
-zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
-sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
-BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
-N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
-p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
-YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCCchQGzAPp/0Jw9tQc
-c52U5t93n+qW3Ktzl4pCvUij5TAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yNDAzMjkyMzUyNDhaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
-AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEA3AXEIKWOWGEPOcLU/gjQsHR6ARbjM77GLg1T
-nfndpzPeFAawDdJGBX2tV0H3BJxgGfbV2GuOMheYutw+l8IpubpQDsvOsxgaExufohW2gcolae29
-JFqEDjLUnhdbJqJBmleRSTMy6ErXZQGHKYsgXAq9uoD/hYcQBrhvT93d/prM2IhsqYCG5fGE1SJ+
-7pt4m6FWERjYzcI2zzJtWnv7nBSVz8ce2sCy8ZEILGrecer3YzIiymoP9mzgoSQ3+7KF9tERH48H
-DjT/qagylnNDhCSyqNmkgnEpwx2KGJdrzmnJZ65YjNHTSI8x4k9r5m6hy6xKf6bd02iPlhXwDB/E
-xQ==
---000000000000489f3e0614d556de--
 
