@@ -1,49 +1,49 @@
-Return-Path: <linux-wireless+bounces-5702-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5703-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B36D68935C2
-	for <lists+linux-wireless@lfdr.de>; Sun, 31 Mar 2024 22:29:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA5DF8935E3
+	for <lists+linux-wireless@lfdr.de>; Sun, 31 Mar 2024 22:37:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E1CF51C216BF
-	for <lists+linux-wireless@lfdr.de>; Sun, 31 Mar 2024 20:29:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 732901F215F0
+	for <lists+linux-wireless@lfdr.de>; Sun, 31 Mar 2024 20:37:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05FE11474DA;
-	Sun, 31 Mar 2024 20:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C9D463087;
+	Sun, 31 Mar 2024 20:37:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="yYKADDy6"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="oAZWgVnq"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FFBB1474AF;
-	Sun, 31 Mar 2024 20:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 018E8433A6;
+	Sun, 31 Mar 2024 20:37:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711916939; cv=none; b=aUn7ZolK/FiCipUu3sbAjO6jeUitHWCPzmdRxMACeEmiLxUoxNnhn92mcMMii0YRWmRvWGCZY/KFXWVdH7JlXiDU7gqy6dX0yOagydGqHx9wd3MAf7YUJcnbk7mhGj5hm1gQJ5KrfUGJdWXG+DiZAsEM47WkhMhjmki6FHMiJUY=
+	t=1711917455; cv=none; b=g7SDHmtBBpTSWRoZuYaQfblOlW/8I+7q9qzOjCKHvRV8XksDCMKyyHzDvZy/OLGhe2oB01RocpKTyREmwNgXiyX9DH580ckBCji3t77/Hc+4yzhhtrXDO68tx79l8+RW416vjfYEA+nicaP58f1akEW8UN/AN+vgLyzMNZyb960=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711916939; c=relaxed/simple;
-	bh=Z3G7fKPwlf7fDLO1S2xwxB+dd0bn/W00sK5bHPCx1IM=;
+	s=arc-20240116; t=1711917455; c=relaxed/simple;
+	bh=I/ZnOtCPhHLN9eQSnKGa5MWdlOxMIBa92bbKwdR2sWk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JN0CRqgYGi8hx+4xUO8qfS+ojJS/kyqkXM1Mmc38xU9SoB7EGRoSHy0u+znstLMJaGfHkqYvOrdRfUT0x0ibX8kzGTQfQpV1gTlEPOyES37lAgHMqDXTbi66pLWVsKsr6oeStJlanZdV+35uKfT68JbLaPak/kX3ieFEr/92axY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=yYKADDy6; arc=none smtp.client-ip=217.194.8.81
+	 Content-Type:Content-Disposition:In-Reply-To; b=MPUtU7g3Qcxs7MiSIsZg+LbjIWfFm14/nQCosw7g1ObpkrB7cnTtlubEJneCUCtXu8gnu8PtKxfhfxpfPJUs2XpK+mTccW1JsGVyn8sJ17q/vKYNYS3EmpIXpNyMwPXlPSkW/PGRwzoLa9x9O2hDRnG2ckq+bQrL5P5f91g6Ecw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=oAZWgVnq; arc=none smtp.client-ip=217.194.8.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id DA8DD1FA4F;
-	Sun, 31 Mar 2024 22:28:54 +0200 (CEST)
+	by mail11.truemail.it (Postfix) with ESMTPA id 907CA1FA4F;
+	Sun, 31 Mar 2024 22:37:30 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1711916935;
-	bh=W1WdIYmDPtY1FTrhgpULK7tOKrGrAvCVnwsv9uNfoms=; h=From:To:Subject;
-	b=yYKADDy6gHK1jSpdNY4CXDG/jkfpvK3H5NM7GgLm5YW5ENNjcdedzPI1b64Guxn5d
-	 DJ1ZAFAxyF0FGp8ObYSu/DlIQ5H4W3vDWrmjl/v1CLw5xpHesE/yo93ict+NGnZE8Q
-	 R69h7iOswshVZb3kQVx1cwikpZSgUNqZUCtB8oMGKQxgNHEMUurVwqIGfk5YGd73nJ
-	 w2HMtUPvPTAUwSdk47L6tnFvtJEOsBL/w2KmNnsEs4R79fO7+twxy6ZDRxrIzsuVsW
-	 M05beiAyPViRJq8sNPDUY7a+Ti60TX8A7C3N9k+hVXyQw6l15Gw5iDmdm2AyAMj6/M
-	 44lI24y91X01w==
-Date: Sun, 31 Mar 2024 22:28:53 +0200
+	s=default; t=1711917451;
+	bh=4J4UxMw8vCu/e4YwDL2de2cwdYJiMGR5S+olW6/Wq0o=; h=From:To:Subject;
+	b=oAZWgVnqbpNY/NnnmLvGf4jms0+WYBdOHuj6GVG2+twoiY2kvJ59PArKOwyHgrBFu
+	 /MGz/tkWe+HyJtFWVkp5epS7wje5jgCr+lMQ4ElORxQO6762OoDo81tvY6X4FwXtNa
+	 HtADJytvzwGNfGcbyBDGljlmMSyQ8Dy7odJIiQ1jHODmYQLfOU1g5/m4W/jjtva54a
+	 Q/u5I2zChQUKUzs781NCH5eFrqXybF+IgTiw37MCg7aj8nrUAtNk1lSZF159sZhKP8
+	 C4OKL4DuR+tHGgQgT6myIyyFmHPMFt4OTBBONnZQayJGV06MpVBND6girIBxOdCYJr
+	 MPrpOIkJWhgrQ==
+Date: Sun, 31 Mar 2024 22:37:29 +0200
 From: Francesco Dolcini <francesco@dolcini.it>
 To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Cc: Ulf Hansson <ulf.hansson@linaro.org>,
@@ -61,11 +61,11 @@ Cc: Ulf Hansson <ulf.hansson@linaro.org>,
 	linux-mediatek@lists.infradead.org, linux-wireless@vger.kernel.org,
 	ath10k@lists.infradead.org, brcm80211@lists.linux.dev,
 	brcm80211-dev-list.pdl@broadcom.com
-Subject: Re: [PATCH 6/7] wifi: marvell: mwifiex: drop driver owner
- initialization
-Message-ID: <20240331202853.GB4116@francesco-nb>
+Subject: Re: [PATCH 1/7] mmc: sdio: store owner from modules with
+ sdio_register_driver()
+Message-ID: <20240331203729.GC4116@francesco-nb>
 References: <20240329-module-owner-sdio-v1-0-e4010b11ccaa@linaro.org>
- <20240329-module-owner-sdio-v1-6-e4010b11ccaa@linaro.org>
+ <20240329-module-owner-sdio-v1-1-e4010b11ccaa@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -74,13 +74,34 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240329-module-owner-sdio-v1-6-e4010b11ccaa@linaro.org>
+In-Reply-To: <20240329-module-owner-sdio-v1-1-e4010b11ccaa@linaro.org>
 
-On Fri, Mar 29, 2024 at 06:24:36PM +0100, Krzysztof Kozlowski wrote:
-> Core in sdio_register_driver() already sets the .owner, so driver does
-> not need to.
+Hello Krzysztof,
+
+On Fri, Mar 29, 2024 at 06:24:31PM +0100, Krzysztof Kozlowski wrote:
+> Modules registering driver with sdio_register_driver() might
+> forget to set .owner field.  The field is used by some of other kernel
+                             ^^ double space here
+
+> parts for reference counting (try_module_get()), so it is expected that
+> drivers will set it.
+> 
+> Solve the problem by moving this task away from the drivers to the core
+> code, just like we did for platform_driver in
+> commit 9447057eaff8 ("platform_device: use a macro instead of
+> platform_driver_register").
+> 
+> Since many drivers forget to set the .owner, this effectively will fix
+> them.  Examples of fixed drivers are: ath6kl, b43, btsdio.c, ks7010,
+       ^^ and here
+
+> libertas, MediaTek WiFi drivers, Realtek WiFi drivers, rsi, siano,
+> wilc1000, wl1251 and more.
 > 
 > Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+My nit comments are irrelevant, but given you did the same twice I felt
+like letting you know.
 
 Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 
