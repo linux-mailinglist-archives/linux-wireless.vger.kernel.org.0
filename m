@@ -1,195 +1,146 @@
-Return-Path: <linux-wireless+bounces-5670-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5695-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92F3B893270
-	for <lists+linux-wireless@lfdr.de>; Sun, 31 Mar 2024 18:08:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64213893550
+	for <lists+linux-wireless@lfdr.de>; Sun, 31 Mar 2024 20:07:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09D9FB21FED
-	for <lists+linux-wireless@lfdr.de>; Sun, 31 Mar 2024 16:08:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BB455B20C15
+	for <lists+linux-wireless@lfdr.de>; Sun, 31 Mar 2024 18:07:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C7E6146A65;
-	Sun, 31 Mar 2024 16:03:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 964D7145B21;
+	Sun, 31 Mar 2024 18:07:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b="buDtfqkv"
+	dkim=pass (2048-bit key) header.d=freebsd.org header.i=@freebsd.org header.b="ENfHKHCF"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from a.mx.secunet.com (a.mx.secunet.com [62.96.220.36])
+Received: from mx2.freebsd.org (mx2.freebsd.org [96.47.72.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4141914534D;
-	Sun, 31 Mar 2024 16:03:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=62.96.220.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59D524688
+	for <linux-wireless@vger.kernel.org>; Sun, 31 Mar 2024 18:07:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=96.47.72.81
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711901004; cv=fail; b=UfZfq1Z/2bnBs25EMQUzHqe2nIxgXG/tjixss14r9nX541NBzxlKKgctw/aoPm5l/LTx48Dg4tbi6uKjzGNWtBuqNGv6GFIvRIYPB16BSKAwKM+3SzD5M3R3+0TbnDau7SQpK+ecqSAYVwzfT5M+wRZP2V0ltBYjZhhJHHWxXSA=
+	t=1711908470; cv=pass; b=WTfXKAw0bo4DWz2kx5Mf2eIxzo3CJANvjaagts19no9lcclkd11GS6D7KQFfO5U9y0kRS90rvPqP7qXYDafbdRcLm679MWzyGqDnwVIJZzTh3HjEwuOwzbo/1Mmnm6WsQYEqA+2oKqOVQGRxpFOnpdGNirtKat40fq//XbGAaEc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711901004; c=relaxed/simple;
-	bh=PVVuSm2i/BrAi3YIHH//s+w5qN2c55N1o8exyPZvdcs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GQzYuPxkQd8JfXLSKCih+9A3v+Ue2LhXDsn64oef2ZRtTnQb1oRYFl8G92M8+YO+UIijOYlmSualbuu5kjVVNRYxZrQBuf+sdsh1SVyQ/1R5820opWrrNAEmlfC3LZ9RV5gCQdX/rE6vR/xhe3s3xJLWxPL+uL4hXWIWMOUGwPA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=fail smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b=buDtfqkv; arc=none smtp.client-ip=209.85.128.48; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; arc=fail smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=freebox.fr
-Received: from localhost (localhost [127.0.0.1])
-	by a.mx.secunet.com (Postfix) with ESMTP id D0A18208CB;
-	Sun, 31 Mar 2024 18:03:18 +0200 (CEST)
-X-Virus-Scanned: by secunet
-Received: from a.mx.secunet.com ([127.0.0.1])
-	by localhost (a.mx.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id pCFUnSqk4TQe; Sun, 31 Mar 2024 18:03:18 +0200 (CEST)
-Received: from mailout2.secunet.com (mailout2.secunet.com [62.96.220.49])
+	s=arc-20240116; t=1711908470; c=relaxed/simple;
+	bh=O+v7TLaSMAEieSBS053ThteSgklJUCsx7AE3sZPx1CU=;
+	h=Date:From:To:cc:Subject:Message-ID:MIME-Version:Content-Type; b=IFLemo4iwnSsY8/lGE9x8WWMd2PZOundfLzWhw6jyyYrzWzucnE6H7zhyowTdXSacQhhIW7lJLQQFjILYekHK9i0Tiparw5FQ18ocJT2zAhLbLlEgf49DvLr2NUHn2JrotbJ5qEQ//b2ptqIBfeHylicCmmR4ksVfc6+/BjrMNc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=FreeBSD.org; spf=pass smtp.mailfrom=FreeBSD.org; dkim=pass (2048-bit key) header.d=freebsd.org header.i=@freebsd.org header.b=ENfHKHCF; arc=pass smtp.client-ip=96.47.72.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=FreeBSD.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=FreeBSD.org
+Received: from mx1.freebsd.org (mx1.freebsd.org [96.47.72.80])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits)
+	 client-signature RSA-PSS (4096 bits))
+	(Client CN "mx1.freebsd.org", Issuer "R3" (verified OK))
+	by mx2.freebsd.org (Postfix) with ESMTPS id 4V72DY5tlwz4Rrq;
+	Sun, 31 Mar 2024 18:07:41 +0000 (UTC)
+	(envelope-from bz@FreeBSD.org)
+Received: from smtp.freebsd.org (smtp.freebsd.org [IPv6:2610:1c1:1:606c::24b:4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "smtp.freebsd.org", Issuer "R3" (verified OK))
+	by mx1.freebsd.org (Postfix) with ESMTPS id 4V72DY4v3Gz42ws;
+	Sun, 31 Mar 2024 18:07:41 +0000 (UTC)
+	(envelope-from bz@FreeBSD.org)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=freebsd.org; s=dkim;
+	t=1711908461;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=QWFsyRgnApHufeu19p+rnrR5Cazct16bfM2s39Ru9Nw=;
+	b=ENfHKHCFQIMkCg2fOhdiCYeMEyROJGuYlbCIfjqPxejExWneARnObla0Q2xiqQN+BQ8Y7E
+	B8Rbs1UwXA2GQBEOSZ7Rp03lTtdTxnu5Smx6aT3uP4X2JWLy0qKVnTFYfwmBddkrFdSmL2
+	91SEOHBru5PoQavmFQ1DtcMLAugAVTdIc1W2MyKv4XGFhF+JoXULlkU8sgyXz/BD67rR1o
+	BBP80kb/SxPevxxv3802IAdfTcV2kfTlHgfVGZBbyL/HtiPEW2Y7IzkfK8FdYHEXW4BJzC
+	nodyt8GQGokedrh6r5HgiPzOR4pn/axV5D1OIN49WNc+mSwISe/ZMWMtODcdzw==
+ARC-Seal: i=1; s=dkim; d=freebsd.org; t=1711908461; a=rsa-sha256; cv=none;
+	b=XPX7TxHJyk0Yug6Qm4j1Y2GtvI1tHLsBLHe/doAUVMk8ztcUls2BwELu9kS4FxtjI1vl2q
+	Glib3q2phmFyfFh6a8sjAn06us0Rbmk+8fyxYOgMflolaxRNQwk+4Ovt39dKZpZMK6Jls7
+	Did8lmqJedBjyp0QUW9zBpQc/5z/E8ejHwPrqUwo0F0qMTJVJuEGb2+EDMqsSS848BOgc/
+	HztMDOmtW71sMUtU1KDBJ1dUEuCH2mU5JBssPZ75NlsNZYZNhx/Zp6DwW/1D/lD4pkZc45
+	gXmwUC9uhqAvA3NmINaNSZeQDD2beMy8SQeW9YapXxubPDQzd+STEM7VVdVnZA==
+ARC-Authentication-Results: i=1;
+	mx1.freebsd.org;
+	none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=freebsd.org;
+	s=dkim; t=1711908461;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=QWFsyRgnApHufeu19p+rnrR5Cazct16bfM2s39Ru9Nw=;
+	b=C8+8Cx6QH/VWHb1TX/OqAYL65QhmUYVe5x5eruYSNjMKXSpmvTnHKGiry59IcWuy7PEh5b
+	xKokZEi47qD6XCJZU9pWinwDOswq7K9iQnMyXHWez6+mYYt+VxWBejhtfEE/Wuo5ycp/sK
+	Ii1f/MgyMw3kMlllXbqrSuRXlJaq/hIjCRrJbrUHB6zvFHQSpjMX+QmYhA+mvGkIaI6SMF
+	1i2b8gXe9BFRFo88jYP+GhmVovB0Ep37PzDNdAaXae6/ZsVJO/b1U41+ebAaqYpeyaWAPw
+	h8AP0dPO1balDYudDy47rkOCjj8NQ1zID/zchuaJb6eig6sclbidFrAeL3Rp+A==
+Received: from mx1.sbone.de (mx1.sbone.de [IPv6:2a01:4f8:13b:39f::9f:25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(Client CN "mx1.sbone.de", Issuer "SBone.DE Root Certificate Authority" (not verified))
+	(Authenticated sender: bz/mail)
+	by smtp.freebsd.org (Postfix) with ESMTPSA id 4V72DY3lV2zVsm;
+	Sun, 31 Mar 2024 18:07:41 +0000 (UTC)
+	(envelope-from bz@FreeBSD.org)
+Received: from mail.sbone.de (mail.sbone.de [IPv6:fde9:577b:c1a9:4902:0:7404:2:1025])
+	(using TLSv1.2 with cipher ADH-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by a.mx.secunet.com (Postfix) with ESMTPS id 305A2207B2;
-	Sun, 31 Mar 2024 18:03:18 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 a.mx.secunet.com 305A2207B2
-Received: from cas-essen-01.secunet.de (unknown [10.53.40.201])
-	by mailout2.secunet.com (Postfix) with ESMTP id 22DB5800057;
-	Sun, 31 Mar 2024 18:03:18 +0200 (CEST)
-Received: from mbx-essen-01.secunet.de (10.53.40.197) by
- cas-essen-01.secunet.de (10.53.40.201) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Sun, 31 Mar 2024 18:03:17 +0200
-Received: from Pickup by mbx-essen-01.secunet.de with Microsoft SMTP Server id
- 15.1.2507.17; Sun, 31 Mar 2024 15:52:45 +0000
-X-sender: <linux-wireless+bounces-5642-peter.schumann=secunet.com@vger.kernel.org>
-X-Receiver: <peter.schumann@secunet.com>
- ORCPT=rfc822;peter.schumann@secunet.com NOTIFY=NEVER;
- X-ExtendedProps=BQAVABYAAgAAAAUAFAARAJ05ab4WgQhHsqdZ7WUjHykPADUAAABNaWNyb3NvZnQuRXhjaGFuZ2UuVHJhbnNwb3J0LkRpcmVjdG9yeURhdGEuSXNSZXNvdXJjZQIAAAUAagAJAAEAAAAAAAAABQAWAAIAAAUAQwACAAAFAEYABwADAAAABQBHAAIAAAUAEgAPAGAAAAAvbz1zZWN1bmV0L291PUV4Y2hhbmdlIEFkbWluaXN0cmF0aXZlIEdyb3VwIChGWURJQk9IRjIzU1BETFQpL2NuPVJlY2lwaWVudHMvY249UGV0ZXIgU2NodW1hbm41ZTcFAAsAFwC+AAAAQ5IZ35DtBUiRVnd98bETxENOPURCNCxDTj1EYXRhYmFzZXMsQ049RXhjaGFuZ2UgQWRtaW5pc3RyYXRpdmUgR3JvdXAgKEZZRElCT0hGMjNTUERMVCksQ049QWRtaW5pc3RyYXRpdmUgR3JvdXBzLENOPXNlY3VuZXQsQ049TWljcm9zb2Z0IEV4Y2hhbmdlLENOPVNlcnZpY2VzLENOPUNvbmZpZ3VyYXRpb24sREM9c2VjdW5ldCxEQz1kZQUADgARAC7JU/le071Fhs0mWv1VtVsFAB0ADwAMAAAAbWJ4LWVzc2VuLTAxBQA8AAIAAA8ANgAAAE1pY3Jvc29mdC5FeGNoYW5nZS5UcmFuc3BvcnQuTWFpbFJlY2lwaWVudC5EaXNwbGF5TmFtZQ8ADwAAAFNjaHVtYW5uLCBQZXRlcgUADAACAAAFAGwAAgAABQBYABcASAAAAJ05ab4WgQhHsqdZ7WUjHylDTj1TY2h1bWFubiBQZXRlcixPVT1Vc2VycyxPVT1NaWdyYXRpb24sREM9c2VjdW5ldCxEQz1kZQUAJgACAAEFACIADwAxAAAAQXV0b1Jlc3BvbnNlU3VwcHJlc3M6IDANClRyYW5zbWl0SGlzdG9yeTogRmFsc
-	2UNCg8ALwAAAE1pY3Jvc29mdC5FeGNoYW5nZS5UcmFuc3BvcnQuRXhwYW5zaW9uR3JvdXBUeXBlDwAVAAAATWVtYmVyc0dyb3VwRXhwYW5zaW9uBQAjAAIAAQ==
-X-CreatedBy: MSExchange15
-X-HeloDomain: b.mx.secunet.com
-X-ExtendedProps: BQBjAAoA+FxrGbMv3AgFAGEACAABAAAABQA3AAIAAA8APAAAAE1pY3Jvc29mdC5FeGNoYW5nZS5UcmFuc3BvcnQuTWFpbFJlY2lwaWVudC5Pcmdhbml6YXRpb25TY29wZREAAAAAAAAAAAAAAAAAAAAAAAUASQACAAEFAAQAFCABAAAAGgAAAHBldGVyLnNjaHVtYW5uQHNlY3VuZXQuY29tBQAGAAIAAQUAKQACAAEPAAkAAABDSUF1ZGl0ZWQCAAEFAAIABwABAAAABQADAAcAAAAAAAUABQACAAEFAGIACgAMAAAA5IoAAAUAZAAPAAMAAABIdWI=
-X-Source: SMTP:Default MBX-ESSEN-01
-X-SourceIPAddress: 62.96.220.37
-X-EndOfInjectedXHeaders: 16156
-X-Virus-Scanned: by secunet
-Received-SPF: Pass (sender SPF authorized) identity=mailfrom; client-ip=147.75.80.249; helo=am.mirrors.kernel.org; envelope-from=linux-wireless+bounces-5642-peter.schumann=secunet.com@vger.kernel.org; receiver=peter.schumann@secunet.com 
-DKIM-Filter: OpenDKIM Filter v2.11.0 b.mx.secunet.com C963C2025D
-Authentication-Results: b.mx.secunet.com;
-	dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b="buDtfqkv"
-X-Original-To: linux-wireless@vger.kernel.org
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
-ARC-Seal: i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711836289; cv=none; b=cxSuHTsUBGViFoyTNjRzDp3H9Kwbj+reYllOOmJrolDaxQxVO6RpMFPBmKUF1hgNRSVBVaZ/VZxx6pv0UgdBilHTPujciCmbedQyCk24yuukfO/WKQA5603x4IoM27rCuVzyBo+TUIhSlAy1JYDVLtl6yaKj1itpYb21EPIvcq8=
-ARC-Message-Signature: i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711836289; c=relaxed/simple;
-	bh=PVVuSm2i/BrAi3YIHH//s+w5qN2c55N1o8exyPZvdcs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rXxJ8ehiIYQuPPVOoWlRmKCBNgGKmpf3LZTAVNmG5JfZGIa5jUle/+kteleEus7vNFQ+14NUcQwfE0pLSmp9Gidq+C+h0z+kbFbfUZaddK0TWZVh6YZMLog+b1af/mY7NleL9z29xg7qzt121bBfv491q8wQoES3suBLIOk9CWQ=
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b=buDtfqkv; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freebox.fr
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=freebox-fr.20230601.gappssmtp.com; s=20230601; t=1711836286; x=1712441086; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=SGCYWWp9GMIyWYRiLUIkswqhBEjJW45xVVdYqohDnyQ=;
-        b=buDtfqkvqBxlLnqS65zqJ/cACtrKMeM9fj5jx5lMWTOMOcuIYa0nfXs2Z+dl71xqT2
-         oR1oCdo2BGufKALhmivXoJzSHgFcROcJPMM6+L0YPnNOHmlUzb9e9OENal6o2lfc1gC4
-         Jm1fVicJtjJCR4SPRJZnnZH6ndOzeX8WjMWzWh+FKCZOdkFTy9awAAYUySDQWy1sGGw6
-         E1Ry+70LUA/XxJropwgjZ+yoazuCAPGNRhhfBJ/XZgHdgqoedABv9ts0SkcJJ+v+dwDa
-         LJrHmLFtCIhUUcP8mX1tKu4AeS+KZSNi9P9OhpIM/sBgzUYy0IdUA18MXyoCVhVEEGh/
-         Mpzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711836286; x=1712441086;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SGCYWWp9GMIyWYRiLUIkswqhBEjJW45xVVdYqohDnyQ=;
-        b=j4CfW+yg5gOT01ML00GldAirFyRq+yZPOJ2S2Q9cDckHwTjj6PGxKrPx0W1zKZKvAK
-         v2+2jT6QYuqauGNDi/GCE5dFsGdqTnyzVVjuaKFswrFEuYhEmJ708EbiwPsR5NA1uNGg
-         AoAglFWT9Hx/a3vUjAlRyE2DT6/2GL8kWSwbYCew2m3etYo8Jc7PtD3XtHT2xKZAncu3
-         6qFILGXnoqEHSAfeoSG2sddTI22eokB1oIvzmrJtxRQBXMA8HUr9aBszJkMt2FqErdEH
-         kBsKsyq6soYTNthhHKaxFx77hDCI5TRJOzEPyRUwSTHZko4XqL8sPK1UVtWEqfy4r3n+
-         jh3g==
-X-Gm-Message-State: AOJu0YxAojMb4cx1xRrAL1eMEYS4DwajL847oeZeSPYIT+Y8Mww6UHCX
-	by8+b5fNRcHMef+idnad7vsHw2rJto50ypALr89O8L1qYcJgMapi0eOrXN/AeVE=
-X-Google-Smtp-Source: AGHT+IHQblUi6EhvJVc2vxBWhRa0CSocPGwpe4Y/225yNjIZknidoGHYR6Qi/0vpH2PCTsPbf1WZ4Q==
-X-Received: by 2002:a05:600c:3d99:b0:415:475c:2cb7 with SMTP id bi25-20020a05600c3d9900b00415475c2cb7mr6808179wmb.3.1711836285597;
-        Sat, 30 Mar 2024 15:04:45 -0700 (PDT)
-Message-ID: <ea18f91a-710a-4eac-903d-90928caa3090@freebox.fr>
-Date: Sat, 30 Mar 2024 23:04:44 +0100
-Precedence: bulk
+	by mx1.sbone.de (Postfix) with ESMTPS id 66F088D4A241;
+	Sun, 31 Mar 2024 18:07:40 +0000 (UTC)
+Received: from content-filter.t4-02.sbone.de (content-filter.t4-02.sbone.de [IPv6:fde9:577b:c1a9:4902:0:7404:2:2742])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.sbone.de (Postfix) with ESMTPS id E1E052D029D9;
+	Sun, 31 Mar 2024 18:07:39 +0000 (UTC)
+X-Virus-Scanned: amavisd-new at sbone.de
+Received: from mail.sbone.de ([IPv6:fde9:577b:c1a9:4902:0:7404:2:1025])
+	by content-filter.t4-02.sbone.de (content-filter.t4-02.sbone.de [IPv6:fde9:577b:c1a9:4902:0:7404:2:2742]) (amavisd-new, port 10024)
+	with ESMTP id r6GsfbF0UnPH; Sun, 31 Mar 2024 18:07:39 +0000 (UTC)
+Received: from strong-iwl0.sbone.de (strong-iwl0.sbone.de [IPv6:fde9:577b:c1a9:4902:b66b:fcff:fef3:e3d2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.sbone.de (Postfix) with ESMTPSA id A397D2D029D2;
+	Sun, 31 Mar 2024 18:07:38 +0000 (UTC)
+Date: Sun, 31 Mar 2024 18:07:38 +0000 (UTC)
+From: "Bjoern A. Zeeb" <bz@FreeBSD.org>
+To: linux-wireless@vger.kernel.org
+cc: miriam.rachel.korenblit@intel.com
+Subject: [PATCH] wifi: iwlwifi: mvm: fix iwl_ssid_exist() duplicate check
+Message-ID: <04759p9q-p8r3-p811-s0n4-q23r6n3s74s2@SerrOFQ.bet>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] dt-bindings: net: wireless: ath10k: add
- qcom,no-msa-ready-indicator prop
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- Kalle Valo <kvalo@kernel.org>, Jeff Johnson <quic_jjohnson@quicinc.com>,
- ath10k <ath10k@lists.infradead.org>
-Cc: wireless <linux-wireless@vger.kernel.org>, DT
- <devicetree@vger.kernel.org>, MSM <linux-arm-msm@vger.kernel.org>,
- Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Pierre-Hugues Husson <phhusson@freebox.fr>, Arnaud Vrac <avrac@freebox.fr>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>,
- Jami Kettunen <jamipkettunen@gmail.com>,
- Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
-References: <fd26ce4a-a9f3-4ada-8d46-ed36fb2456ca@freebox.fr>
- <84f20fb5-5d48-419c-8eff-d7044afb81c0@freebox.fr>
- <72c162cc-45e0-48b6-8d90-d59fac299375@linaro.org>
- <6bd3db0f-2e18-4ad1-abc2-f59c6acc8037@linaro.org>
-Content-Language: en-US
-From: Marc Gonzalez <mgonzalez@freebox.fr>
-In-Reply-To: <6bd3db0f-2e18-4ad1-abc2-f59c6acc8037@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: 2c86f778-e09b-4440-8b15-867914633a10
+Content-Type: text/plain; format=flowed; charset=US-ASCII
 
-On 30/03/2024 19:23, Krzysztof Kozlowski wrote:
+iwl_ssid_exist() seems to check if a given ssid/ssid_len already
+exists in a given array ssid_list.
+Correctly compare the ssid to the SSID of each array element
+(with a matching SSID length) to better remove duplicates.
 
-> On 30/03/2024 19:20, Krzysztof Kozlowski wrote:
-> 
->> On 28/03/2024 18:36, Marc Gonzalez wrote:
->> 
->>> The ath10k driver waits for an "MSA_READY" indicator
->>> to complete initialization. If the indicator is not
->>> received, then the device remains unusable.
->>>
->>> cf. ath10k_qmi_driver_event_work()
->>>
->>> Several msm8998-based devices are affected by this issue.
->>> Oddly, it seems safe to NOT wait for the indicator, and
->>> proceed immediately when QMI_EVENT_SERVER_ARRIVE.
->>
->> This is v2, so where is the changelog?
-> 
-> Expecting reviewer to dig previous discussions will not help your case.
-> It helps reviewers if you provide necessary information, like resolution
-> of previous discussion in the changelog.
-> 
-> I dig the previous discussion, since you did not mention it here, and it
-> seems you entirely ignored its outcome. That's not a DT property.
-> 
-> NAK, sorry. Please go back to v1 and read the comments you got there.
+Signed-off-by:	Bjoern A. Zeeb <bz@FreeBSD.org>
+Sponsored by:	The FreeBSD Foundation
+---
+  drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
 
-My apologies for omitting the changelog.
-
-And I don't blame you for missing the thread's resolution,
-since I made a bit of a mess of it with my various messages.
-
-The firmware-5.bin approach was deemed DOA since these files
-are parsed too late with respect to the required work-around.
-Thus, we went back to either DT or a to-be-written system used
-in the vendor driver.
-
-Jeff Johnson (one of the maintainers) concluded with:
-"But I'm OK with the DT option as well. Kalle?"
-
-Thus, I spun v2 to get Kalle's Ack, and more crucially to give
-a heads-up to the msm8998 users my patch would impact.
-
-Regards
-
-
+diff --git drivers/net/wireless/intel/iwlwifi/mvm/scan.c drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+index 7b6f1cdca067..343e70e58da5 100644
+--- drivers/net/wireless/intel/iwlwifi/mvm/scan.c
++++ drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+@@ -454,7 +454,7 @@ static int iwl_ssid_exist(u8 *ssid, u8 ssid_len, struct iwl_ssid_ie *ssid_list)
+  		if (!ssid_list[i].len)
+  			break;
+  		if (ssid_list[i].len == ssid_len &&
+-		    !memcmp(ssid_list->ssid, ssid, ssid_len))
++		    !memcmp(ssid_list[i]->ssid, ssid, ssid_len))
+  			return i;
+  	}
+  	return -1;
+-- 
+2.40.0
 
