@@ -1,133 +1,150 @@
-Return-Path: <linux-wireless+bounces-5705-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5706-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40EDB8937C3
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Apr 2024 05:30:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE7FB8937C4
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Apr 2024 05:31:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C32C6281B7E
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Apr 2024 03:30:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9959281B8A
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Apr 2024 03:31:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE8B846B5;
-	Mon,  1 Apr 2024 03:30:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="fCdOgJOH"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8169443D;
+	Mon,  1 Apr 2024 03:31:39 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46B02138C
-	for <linux-wireless@vger.kernel.org>; Mon,  1 Apr 2024 03:30:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1AC82F3E
+	for <linux-wireless@vger.kernel.org>; Mon,  1 Apr 2024 03:31:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711942216; cv=none; b=oVcYLF9nOvAzHDLZjHscuBnLr1iqw87mmICoTluS4cIGe37YUYCe4FoD9NWYr2bUwwPPYfGrxsn5KIXW+45fskK0xW/DhMQGsRqLdkTqe8AVBF269+aZw5NVhyWrPvTz2qZQYyp3FgEQtyngpBZMgVAv0Ue6RTnAXYLFcibK4hs=
+	t=1711942299; cv=none; b=B8UlZpT9p8sKvT+VnI6UixRy5BHoOx7fekD6P2vLtRqNJpLkNACDhNdPzzxtM7hZgrfrHK5+tXK/xRlSlgQKCmYOxdWY4kdC4wXOU5xmCk2B5lhGb8UAc2lODGf6lmkWE5cv3hfhpPfkpDfyaiv0RBTsiMdkq1DO07cDVmhBADU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711942216; c=relaxed/simple;
-	bh=fLQfqi8sG0zzGcDSgtXM73hc7NxgVvTIPMnjMBwDmLU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=P/V1/dQW0MJGvmDCQJItrNPVwD5SfjHgW2KW1tCWWZtI1ILuxqcajzPvioiMqQaC2RjFLuZbZ7307VKLjJXL5vHVurhbADBB57ZCc2qJHviwvb1KqL80vtyywgLrl63c+fsiS6XN1g5Ibo59KalEQbse4SXTYl8L7a/jhFMCSmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=fCdOgJOH; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 43118ouh020552;
-	Mon, 1 Apr 2024 03:30:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=cSojqtgQkPXkc6/pNQm/dipSaLKF9ovzc/xo4XVz7Ow=; b=fC
-	dOgJOHGsUfLifxvk19709OubVi0oqAu3x7ljoolcS53WsCTNBm4NJ9PVZRybnRdX
-	h8uAVjKtp4D9LZsm0EKATKJvDqTKpRR98Vtpz2R07eROkVdRXh0tQzUMdAHpTT94
-	NsdedIOAeaGcFLWeQIZC6RptFTrTockCUHS4IRMfsEdyxHXBkCluCc7+nTaYI9Ru
-	umUjOj4GuYa7Iy26iprd90Z/Ho/ljDoZNzwUJhy3ykevdc57NAq7Wz/Vp2ls57jA
-	Gu7OVY65JBlVvmqGjG3yRHyS0bWCzJp4uLRSFm2er7ymuWm99Us3mtoe33vdnRIE
-	7CVm79LwtdkqyDuDfA7g==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3x69rbb1uw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 01 Apr 2024 03:30:10 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 4313U9le007168
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 1 Apr 2024 03:30:09 GMT
-Received: from [10.231.195.68] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Sun, 31 Mar
- 2024 20:30:07 -0700
-Message-ID: <6e8fe8cf-315c-47bb-b8db-5b17f7323109@quicinc.com>
-Date: Mon, 1 Apr 2024 11:30:05 +0800
+	s=arc-20240116; t=1711942299; c=relaxed/simple;
+	bh=xUblZ8Xu4vAyoBewjt2qFGEL2mQV2zEx029l6nm+cZM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=IQB9qZi/6CiGTrSLedXb7OTIq1PGKm+ZWNNX+d4grgv4kPsxmsJ1SNbMkO4X8tEZr2Z7mU6xtx8VN0a2KHnmjcTexWxObO2GwrQkuvaoJI/+5HNov3bybRYoF7rIaxMclF4P/mUQzoXNGDgmHxWPmH0bl60+rbFXaTsuucu7v2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4313VX7J02396653, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 4313VX7J02396653
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Mon, 1 Apr 2024 11:31:33 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Mon, 1 Apr 2024 11:31:34 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 1 Apr
+ 2024 11:31:33 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: <linux-wireless@vger.kernel.org>
+CC: <phhuang@realtek.com>
+Subject: [PATCH] wifi: rtw88: Set default CQM config if not present
+Date: Mon, 1 Apr 2024 11:30:19 +0800
+Message-ID: <20240401033019.9664-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: ath11k failed to enqueue rx buf: -28
-To: Jeff Johnson <quic_jjohnson@quicinc.com>,
-        James Prestwood
-	<prestwoj@gmail.com>,
-        "open list:MEDIATEK MT76 WIRELESS LAN DRIVER"
-	<linux-wireless@vger.kernel.org>
-CC: "ath11k@lists.infradead.org" <ath11k@lists.infradead.org>
-References: <5c63a3a2-29fe-444c-96f1-f87c89d7af39@gmail.com>
- <216b223b-e871-42d4-8e53-59dd64efe4b9@quicinc.com>
-Content-Language: en-US
-From: Baochen Qiang <quic_bqiang@quicinc.com>
-In-Reply-To: <216b223b-e871-42d4-8e53-59dd64efe4b9@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: Zou7FNRr0pFX8hhgPz-Sj0WuaF4eJN40
-X-Proofpoint-GUID: Zou7FNRr0pFX8hhgPz-Sj0WuaF4eJN40
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-31_21,2024-03-28_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 suspectscore=0
- phishscore=0 lowpriorityscore=0 spamscore=0 mlxlogscore=816 adultscore=0
- clxscore=1011 impostorscore=0 mlxscore=0 bulkscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2403210001
- definitions=main-2404010023
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
+From: Po-Hao Huang <phhuang@realtek.com>
 
+When wpa_supplicant is initiated by users and not by NetworkManager,
+the CQM configuration might not be set. Without this setting, ICs
+with connection quality monitor handled by firmware won't detect
+connection loss. To fix this we prepare a default setting upon
+associated at first, then update again if any is given later.
 
-On 3/30/2024 2:39 AM, Jeff Johnson wrote:
-> On 3/27/2024 9:25 AM, James Prestwood wrote:
->> Hi,
->>
->> This error was brought to my attention in the kernel logs and I'm
->> wondering if it is of any concern:
->>
->> kernel: ath11k_pci 0000:03:00.0: failed to enqueue rx buf: -28
->>
->> It seems to happen every few minutes or so. I don't notice any bad
->> behavior associated with it per-se, but maybe its an issue of some
->> buffer needing to be increased in size? Does this mean a frame is being
->> dropped due to no room to receive it?
->>
->> Hardware we are running is:
->>
->> [    4.610399] ath11k_pci 0000:03:00.0: wcn6855 hw2.1
->> [    5.777030] ath11k_pci 0000:03:00.0: chip_id 0x12 chip_family 0xb
->> board_id 0xff soc_id 0x400c1211
->> [    5.777039] ath11k_pci 0000:03:00.0: fw_version 0x1109996e
->> fw_build_timestamp 2023-12-19 11:11 fw_build_id
->> WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.36
->>
->> Thanks,
->>
->> James
->>
->>
-> 
-> + ath11k list to get more specific eyes on this issue
-> + bcc to internal list as well
-> 
-I will look into this.
-> 
+Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw88/fw.c       | 14 ++++++++++----
+ drivers/net/wireless/realtek/rtw88/fw.h       |  2 ++
+ drivers/net/wireless/realtek/rtw88/mac80211.c |  2 ++
+ 3 files changed, 14 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
+index 3f037ddcecf1..ab7d414d0ba6 100644
+--- a/drivers/net/wireless/realtek/rtw88/fw.c
++++ b/drivers/net/wireless/realtek/rtw88/fw.c
+@@ -783,12 +783,18 @@ void rtw_fw_beacon_filter_config(struct rtw_dev *rtwdev, bool connect,
+ 	static const u8 rssi_min = 0, rssi_max = 100, rssi_offset = 100;
+ 	struct rtw_sta_info *si =
+ 		sta ? (struct rtw_sta_info *)sta->drv_priv : NULL;
+-	s32 threshold = bss_conf->cqm_rssi_thold + rssi_offset;
++	s32 thold = RTW_DEFAULT_CQM_THOLD;
++	u32 hyst = RTW_DEFAULT_CQM_HYST;
+ 	u8 h2c_pkt[H2C_PKT_SIZE] = {0};
+ 
+ 	if (!rtw_fw_feature_check(&rtwdev->fw, FW_FEATURE_BCN_FILTER))
+ 		return;
+ 
++	if (bss_conf->cqm_rssi_thold)
++		thold = bss_conf->cqm_rssi_thold;
++	if (bss_conf->cqm_rssi_hyst)
++		hyst = bss_conf->cqm_rssi_hyst;
++
+ 	if (!connect) {
+ 		SET_H2C_CMD_ID_CLASS(h2c_pkt, H2C_CMD_BCN_FILTER_OFFLOAD_P1);
+ 		SET_BCN_FILTER_OFFLOAD_P1_ENABLE(h2c_pkt, connect);
+@@ -805,15 +811,15 @@ void rtw_fw_beacon_filter_config(struct rtw_dev *rtwdev, bool connect,
+ 	rtw_fw_send_h2c_command(rtwdev, h2c_pkt);
+ 
+ 	memset(h2c_pkt, 0, sizeof(h2c_pkt));
+-	threshold = clamp_t(s32, threshold, rssi_min, rssi_max);
++	thold = clamp_t(s32, thold + rssi_offset, rssi_min, rssi_max);
+ 	SET_H2C_CMD_ID_CLASS(h2c_pkt, H2C_CMD_BCN_FILTER_OFFLOAD_P1);
+ 	SET_BCN_FILTER_OFFLOAD_P1_ENABLE(h2c_pkt, connect);
+ 	SET_BCN_FILTER_OFFLOAD_P1_OFFLOAD_MODE(h2c_pkt,
+ 					       BCN_FILTER_OFFLOAD_MODE_DEFAULT);
+-	SET_BCN_FILTER_OFFLOAD_P1_THRESHOLD(h2c_pkt, (u8)threshold);
++	SET_BCN_FILTER_OFFLOAD_P1_THRESHOLD(h2c_pkt, thold);
+ 	SET_BCN_FILTER_OFFLOAD_P1_BCN_LOSS_CNT(h2c_pkt, BCN_LOSS_CNT);
+ 	SET_BCN_FILTER_OFFLOAD_P1_MACID(h2c_pkt, si->mac_id);
+-	SET_BCN_FILTER_OFFLOAD_P1_HYST(h2c_pkt, bss_conf->cqm_rssi_hyst);
++	SET_BCN_FILTER_OFFLOAD_P1_HYST(h2c_pkt, hyst);
+ 	SET_BCN_FILTER_OFFLOAD_P1_BCN_INTERVAL(h2c_pkt, bss_conf->beacon_int);
+ 	rtw_fw_send_h2c_command(rtwdev, h2c_pkt);
+ }
+diff --git a/drivers/net/wireless/realtek/rtw88/fw.h b/drivers/net/wireless/realtek/rtw88/fw.h
+index 84e47c71ea12..e999c24e4634 100644
+--- a/drivers/net/wireless/realtek/rtw88/fw.h
++++ b/drivers/net/wireless/realtek/rtw88/fw.h
+@@ -29,6 +29,8 @@
+ #define BCN_FILTER_CONNECTION_LOSS	1
+ #define BCN_FILTER_CONNECTED		2
+ #define BCN_FILTER_NOTIFY_BEACON_LOSS	3
++#define RTW_DEFAULT_CQM_THOLD		-70
++#define RTW_DEFAULT_CQM_HYST		4
+ 
+ #define SCAN_NOTIFY_TIMEOUT  msecs_to_jiffies(10)
+ 
+diff --git a/drivers/net/wireless/realtek/rtw88/mac80211.c b/drivers/net/wireless/realtek/rtw88/mac80211.c
+index 7af5bf7fe5b6..0acebbfa13c4 100644
+--- a/drivers/net/wireless/realtek/rtw88/mac80211.c
++++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
+@@ -386,6 +386,8 @@ static void rtw_ops_bss_info_changed(struct ieee80211_hw *hw,
+ 			rtw_coex_media_status_notify(rtwdev, vif->cfg.assoc);
+ 			if (rtw_bf_support)
+ 				rtw_bf_assoc(rtwdev, vif, conf);
++
++			rtw_fw_beacon_filter_config(rtwdev, true, vif);
+ 		} else {
+ 			rtw_leave_lps(rtwdev);
+ 			rtw_bf_disassoc(rtwdev, vif, conf);
+-- 
+2.25.1
+
 
