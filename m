@@ -1,73 +1,63 @@
-Return-Path: <linux-wireless+bounces-5715-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5716-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB35A893CDD
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Apr 2024 17:30:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7C26893F1A
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Apr 2024 18:12:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE4B41C2181D
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Apr 2024 15:30:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BF2E1F22810
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Apr 2024 16:12:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9212246441;
-	Mon,  1 Apr 2024 15:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 629FB43AD6;
+	Mon,  1 Apr 2024 16:12:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GFoY21F+"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ECcGwP3K"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE0B4501C;
-	Mon,  1 Apr 2024 15:30:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1050F47A62
+	for <linux-wireless@vger.kernel.org>; Mon,  1 Apr 2024 16:12:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711985432; cv=none; b=LS1X53cd1wNGc+eVoc1quQsb0xKbHJqYJhpItQStsQRTu4Cj//0xeB4UDyvA+9GPgXUMRkJd6cvj5X8ydqtuZnJbPvD3fnFCocsolDQPLL6GI0+Vwjg2lrPOGRy6h1Vj6t4zv7p5I6Yikti/uu88m0jmJM19VyoTbh+HJ6sLheA=
+	t=1711987926; cv=none; b=lB69DObS5IXicR4LJ3VRLMpvnTdgxWrBd8JwKXmLSiA3EUHqlDLMiY57TmYsa8YwSiLa0u2Kvpp8eXJ5RHiK5werqkXm9uxActTZZ8ZchJ+WJrp8axB5hBkPX1FOxTa7FDtb0S5Jc9OzSAcHHbAs1LFjIHwjFk77Lj8J/gCTz5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711985432; c=relaxed/simple;
-	bh=kwW/UvezWdhhna8gZrKN/DT1SvFNi6W4KnUEdEhxRBg=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=BIUTQB5ELXPeRV6wXCRytcTWDYkV85dPgc6iEoUhdXXNx9fEN3aCQJWQTaH9yRr9mtfmTUd0iQoES8y5jrHsjW50Nfc74FF+OLlMqdhObML14UYPCKo4eJE4HSCfKn76wbDHTWw5GOZBOpPq+wmq/HghFUX4KkjzGpa+33DN5vs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GFoY21F+; arc=none smtp.client-ip=209.85.167.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-51381021af1so5280726e87.0;
-        Mon, 01 Apr 2024 08:30:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711985429; x=1712590229; darn=vger.kernel.org;
-        h=content-transfer-encoding:autocrypt:subject:from:cc:to
-         :content-language:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bSdHQnl/uz145vU7uogIX8qKGpE25neuqOhaoto+Ve8=;
-        b=GFoY21F+s9Nto/AFztSRijMDLVwfWn5QJVhpctpeckNS/dGn/uQysiQEx9iS8W10kG
-         l+cayEnXF4DNwk4LM4VAGYxcxdKpxuvSg0Haht5pCsdASpYVBDMDrmr8sJ2n2NYziaA8
-         Vvqzs7zsQhjIJdfsOfntunE/N3Rile6g66vpXGynPA45H9afo3FgOuyzQMpYIhDOftrr
-         84Q/7lTaQ5EbpdxGCho7f8ZFeF/FnGHz9HPOCaYAYvlKGQMbbL1JqqgLTKVd3/D6O1S0
-         yfDATAQiXYr67GcTVmXF/v73kj73EwgJT9uvIqlglXbUHjBzZI3iGA7M9rGrAoKULyB8
-         sRLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711985429; x=1712590229;
-        h=content-transfer-encoding:autocrypt:subject:from:cc:to
-         :content-language:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bSdHQnl/uz145vU7uogIX8qKGpE25neuqOhaoto+Ve8=;
-        b=swtLMeirqY3WoBzBhgxaAVDCmIHo1FWcoUNwLuRrifKKxicnumqaDeEI1ww91CMKzp
-         YPxLligat38A3T7xAJXnfQaHGY0q7rsnOiR8X+EuXBzk7fEWNPmypdCkSLi57TtyqUxL
-         qnzCeg2RUC94hfRAeUWe4Q1yHL1mxC2UlRZz18VuDGR7EkbNro4GOXn8hhZTFhxF1Zft
-         4/DfsNekHwRTxBvxiltt01/y0h7pjwRcMOrohFD++khYoyt1yfw+wBrFm1ARQ/vT1rA7
-         KZWqwYBWCnLAFL3vM2VXcOHncGjOad0/ApzE0tcswL6FF7DGa43l6yKNw4+GVnGqiR0i
-         veKg==
-X-Forwarded-Encrypted: i=1; AJvYcCUgJXHsu/0H3lLDJ9EDCZTcZzm6zWFYdJS7yHAKo5TNLgdh+c7c0KLb4C/QxcCpLawRXTJPl4QZA3cOdoqHb042MEn5n4HKkH2R
-X-Gm-Message-State: AOJu0Yz/ug3hZYThFg+6/9UGHs8LBggc8gDJFCNzlr0eV6F1igtunowF
-	jfDDpOMunLdAyL9CawX7op/bniZ1iRf1npP+otguCxGKY0sOjlJm
-X-Google-Smtp-Source: AGHT+IE8m6i8mCJcAs3EONB8kEs2SvxnC7e2yJEvhesRJPNPtw3Ma1i+KZKtykGmrnSStwaUkVsrEQ==
-X-Received: by 2002:ac2:44cd:0:b0:516:a686:8ae1 with SMTP id d13-20020ac244cd000000b00516a6868ae1mr3340045lfm.62.1711985428447;
-        Mon, 01 Apr 2024 08:30:28 -0700 (PDT)
-Received: from ?IPV6:2a01:c22:6ffc:6d00:155c:9c47:3959:e8e5? (dynamic-2a01-0c22-6ffc-6d00-155c-9c47-3959-e8e5.c22.pool.telefonica.de. [2a01:c22:6ffc:6d00:155c:9c47:3959:e8e5])
-        by smtp.googlemail.com with ESMTPSA id h6-20020a170906590600b00a46e56c8764sm5376424ejq.114.2024.04.01.08.30.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 01 Apr 2024 08:30:28 -0700 (PDT)
-Message-ID: <cd66af0c-835e-4222-b362-e2e9cafdeb40@gmail.com>
-Date: Mon, 1 Apr 2024 17:30:27 +0200
+	s=arc-20240116; t=1711987926; c=relaxed/simple;
+	bh=sAFPRuTFIwECG2Kj4A167pqEqafJ02wmusFBheriWKY=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
+	 In-Reply-To:Content-Type; b=RNAxMW1xY9r61U9tOcCUa6gtHGKpDXEOHwQN2sE1nQqt9otc57PUyGkwlq4yHhipxpp9aMgzK7xE8BD+JAdI3Vi4MYQpsK5YXKlvFflJn1FPJ4NlZOFLeYhA/iSiJYb9Q7/a4vaPF0Ri77/Jm4SipSXFLbz8G9EVF98B30utYaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ECcGwP3K; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 431ERvrP031119;
+	Mon, 1 Apr 2024 16:11:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:from:to:cc:references
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=TA0nV97rtgv+Y5iM+M2MaCzWOpu3b5opvrWnyuMcovU=; b=EC
+	cGwP3KyiqFpZcdBElaGileGst6O3s1PGfQGxIGKJr2pE056MhdTPZ+XpElu6PrnY
+	kbtRm6YnS5gbhF6bdRk30FFESgUz0HTl5Lt+7vIsNNedjvUKhH1kpGb2RQxPk4oQ
+	hNdC5wBjtpQ5hFcxu5+4UsQx7IK8aq35kSvPEXwC1/e8bzZBS2tRABoMxwRWlvMf
+	wE9ClotsM0ivYwkSa8aRYv1KmiCEn1fxVMEPRqU9ivdboFlLiMjPXvNzg4fjoYFn
+	OYCSKnJ7g9WZ3XM7g7dIVbs/pe76Gkwe9Z7e1X9MW+E/vmNNKt1AOuCIbn+CcEZx
+	O9Lp7f9NWqPwi91a9yRw==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3x7r5712p6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 01 Apr 2024 16:11:59 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 431GBwcT006204
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 1 Apr 2024 16:11:58 GMT
+Received: from [10.110.126.136] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Mon, 1 Apr
+ 2024 09:11:57 -0700
+Message-ID: <daca162b-b434-493a-993f-8817e586e5da@quicinc.com>
+Date: Mon, 1 Apr 2024 09:11:56 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -75,111 +65,58 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] wifi: ath12k: match WMI BSS chan info structure with
+ firmware definition
 Content-Language: en-US
-To: =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
- Kalle Valo <kvalo@kernel.org>, =?UTF-8?Q?Andreas_F=C3=A4rber?=
- <afaerber@suse.de>, Manivannan Sadhasivam
- <manivannan.sadhasivam@linaro.org>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Cc: linux-wireless <linux-wireless@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>, linux-actions@lists.infradead.org,
- "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
-From: Heiner Kallweit <hkallweit1@gmail.com>
-Subject: [PATCH] ath9k: use unmanaged PCI functions in ath9k_pci_owl_loader
-Autocrypt: addr=hkallweit1@gmail.com; keydata=
- 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
-Content-Type: text/plain; charset=UTF-8
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+To: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>,
+        <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, P Praneesh <quic_ppranees@quicinc.com>
+References: <20240331183232.2158756-1-quic_kathirve@quicinc.com>
+ <20240331183232.2158756-3-quic_kathirve@quicinc.com>
+ <59c05ce0-14ab-48f6-9ed2-f10d3f548a85@quicinc.com>
+In-Reply-To: <59c05ce0-14ab-48f6-9ed2-f10d3f548a85@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: Hz14U8lmYXJxqSIwkC31AHuC_uObUCO8
+X-Proofpoint-ORIG-GUID: Hz14U8lmYXJxqSIwkC31AHuC_uObUCO8
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-01_10,2024-04-01_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 malwarescore=0
+ suspectscore=0 priorityscore=1501 spamscore=0 phishscore=0 impostorscore=0
+ lowpriorityscore=0 adultscore=0 mlxscore=0 mlxlogscore=668 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2403210001
+ definitions=main-2404010112
 
-Using the device-managed versions has no benefit here, because
-resources are released as part of the asynchronous fw loading.
+On 4/1/2024 8:01 AM, Jeff Johnson wrote:
+> On 3/31/2024 11:32 AM, Karthikeyan Kathirvel wrote:
+>> From: P Praneesh <quic_ppranees@quicinc.com>
+>>
+>> struct wmi_pdev_bss_chan_info_event is not similar to the firmware
+>> struct definition, this will cause some random failures.
+>>
+>> Fix by matching the struct wmi_pdev_bss_chan_info_event with the
+>> firmware structure definition.
+>>
+>> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+>>
+>> Fixes: d889913205 ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+>>
+> 
+> remove this blank line
+> 
+>> Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
+>> Signed-off-by: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
+> 
+> 
+Kalle can fix this when he merges into pending
 
-Actual reason why I got here is that I was looking for places with
-dubious use of pcim_pin_device().
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
----
- drivers/net/wireless/ath/ath9k/ath9k_pci_owl_loader.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath9k/ath9k_pci_owl_loader.c b/drivers/net/wireless/ath/ath9k/ath9k_pci_owl_loader.c
-index a5eb43f30..bc93ca075 100644
---- a/drivers/net/wireless/ath/ath9k/ath9k_pci_owl_loader.c
-+++ b/drivers/net/wireless/ath/ath9k/ath9k_pci_owl_loader.c
-@@ -65,7 +65,7 @@ static int ath9k_pci_fixup(struct pci_dev *pdev, const u16 *cal_data,
- 
- 	dev_info(&pdev->dev, "fixup device configuration\n");
- 
--	mem = pcim_iomap(pdev, 0, 0);
-+	mem = pci_iomap(pdev, 0, 0);
- 	if (!mem) {
- 		dev_err(&pdev->dev, "ioremap error\n");
- 		return -EINVAL;
-@@ -103,7 +103,7 @@ static int ath9k_pci_fixup(struct pci_dev *pdev, const u16 *cal_data,
- 	pci_write_config_word(pdev, PCI_COMMAND, cmd);
- 
- 	pci_write_config_dword(pdev, PCI_BASE_ADDRESS_0, bar0);
--	pcim_iounmap(pdev, mem);
-+	pci_iounmap(pdev, mem);
- 
- 	pci_disable_device(pdev);
- 
-@@ -200,11 +200,9 @@ static int owl_probe(struct pci_dev *pdev,
- 	const char *eeprom_name;
- 	int err = 0;
- 
--	if (pcim_enable_device(pdev))
-+	if (pci_enable_device(pdev))
- 		return -EIO;
- 
--	pcim_pin_device(pdev);
--
- 	ctx = devm_kzalloc(&pdev->dev, sizeof(*ctx), GFP_KERNEL);
- 	if (!ctx)
- 		return -ENOMEM;
--- 
-2.44.0
 
 
