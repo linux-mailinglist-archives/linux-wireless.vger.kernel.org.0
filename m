@@ -1,128 +1,119 @@
-Return-Path: <linux-wireless+bounces-5712-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5713-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46EEF893BAF
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Apr 2024 15:59:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B0B6893C7C
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Apr 2024 17:00:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42BEA1C2083F
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Apr 2024 13:59:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E95B6281AD3
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Apr 2024 15:00:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07BB13FB1E;
-	Mon,  1 Apr 2024 13:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ACC44501E;
+	Mon,  1 Apr 2024 15:00:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ef2lS3dt"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="b/ovJYlW"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 578F33F8F1
-	for <linux-wireless@vger.kernel.org>; Mon,  1 Apr 2024 13:59:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF44728684
+	for <linux-wireless@vger.kernel.org>; Mon,  1 Apr 2024 15:00:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711979946; cv=none; b=M/UgtSoW7+/8NInWstMV3VTNjdCPf9c6pm8/Ngj5x0Jnkd5n0DqWOX74+KUNNrOS3xPwYCim7D9INB6fP87TV89TTLkmR1XRxQlxH+YuqKvN9A308c12J1t1cOL0ayG8eDGnnlJlri/7gHh6NnyeUlRoSvGYIxQcUhR0Y953Z6w=
+	t=1711983645; cv=none; b=YeGVB4uZLencgwfqVVRXz+HQT6Vh/fJ9KOmtReI6sTCF6e5EVhb1dRre9fX9eshkeVdrMYS6Oqvx3YUsiPomFy9zKKn/VD75bjTOcnJ5RHMnkcN3Qp2IFxZGrYk3B/DuLcCzGTA0G1Om/bYPWIoCoNB14XmM4isfFzjgzqu8JiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711979946; c=relaxed/simple;
-	bh=zlybI7TmVWzDbySNWChtftKc6XXWuwRXyTLO9Q0AR7A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CZszla2MqyrlOZ1KlhB2Qu6HH2fCB70hhGOZijY4Ut2WIs9ME2cT8EBD0X6CfiPFqng4+EHt/Io4znKSgrklj6rbrUpqj1eRYPsN6QltA6YlbVeUkeqDtkDTzOFvMtsYX4IFPmfAn13nUnKdEA29VxdwkIlcMJhMpPcuwrAzRDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ef2lS3dt; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a46a7208eedso522379466b.0
-        for <linux-wireless@vger.kernel.org>; Mon, 01 Apr 2024 06:59:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711979943; x=1712584743; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=eXMcE47Ulq/Wa5XVWw+GY92rlwTaptPUs5eih6zWRKc=;
-        b=ef2lS3dtdRj4f9U3VdWkOAsqwil28bGOB/e0IxKZLr+0AEvUEeXQGAxkbFwCO4XtXT
-         TGWQri3B0DpMFMc/Nckx/fgKmjFndfXMe6Ky4Dl5leviN5QyCnvNiAhynEChlT+PZyJw
-         NKgbDni9hq5SwjqEQLK++FCCln5S0sWv4oxApe7A5hD/b19Li3pD9Zdy3gE9Ifc+tSIB
-         uh17u6lEVjyeqJ7LCjGUfEHCGb4BHHS8RZfpGs6ND9JSUTqkqrwJnddXLjxhFbTvTp6X
-         FLl9NaFGBhs1XPsGYsDl3wkl+riUzihM4EsRu6kcgUQxIC41a879PhskjZkxUQNJ29e8
-         4CRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711979943; x=1712584743;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=eXMcE47Ulq/Wa5XVWw+GY92rlwTaptPUs5eih6zWRKc=;
-        b=s3E/raA7fygeAiUUvMqp2CAtmOv14daQiD6QTjLfX7gK3RPQgezTUTrTL4lGlfL5td
-         w6iVWTkJvpi+c2SB39nA2ENOhhjTcFwpVBJnlLTb6gKib4hFaSA0O0dvrx2iuRNGfz+T
-         RyYJCEs6Z8kVYM27MAQjKOIRtWeXKy+L9mbIA4yst/+I69rzF15b+M0YdZyoKKKzy9Y6
-         d0LCoHRiT3h7qyo10wpO/u9JM0YNw3wiLjupxoEd9N+P45GxmhxV8cFuQxNco9PmcQWT
-         su8lMJJ/c5Lu2mwg73+87TBjzyNZ903Gd+RghckdtgHiheys0bnzioO6VhM80NX+FdQ4
-         r24A==
-X-Gm-Message-State: AOJu0Yw90fSWnde0V9bKFShyVEO6D4b3VMwnYi4vXFY5pmjW1FNIemaz
-	6SG5/5Je8aoJG6G7tAhFNlQVYnKhxrmdR5f3QBWfQJRpvUI1eIhNELBUn8xrRCQDflAMIx6FFKM
-	3qGDfssw7j3ivwMW112EyaPIaUh8=
-X-Google-Smtp-Source: AGHT+IHNzR0b/SKQFR9FfXu8ASm4tHI4P3swXOTFlirTNwV+0Ecp79FK0aTPe6QWOB68b+AiS1dnCH3juBilG0WBc6M=
-X-Received: by 2002:a17:906:a417:b0:a4e:7f72:77cb with SMTP id
- l23-20020a170906a41700b00a4e7f7277cbmr99968ejz.38.1711979943296; Mon, 01 Apr
- 2024 06:59:03 -0700 (PDT)
+	s=arc-20240116; t=1711983645; c=relaxed/simple;
+	bh=pQ34OZYl5mjseT5h3Yt5hxEvSBi8jMLY2teGeEGo4Ls=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=if6K2R07sQLCpV1tyOLxYOBiPxdu+r5SuUpgMawhjHUVijOxGaFsxCtLLtnesevtCULCbAMUKQoa/k7IGWmeVVCcFmTAgpcBumnkFnW42MdwLXLV4fh+dktFltJ//yfcEqk9gE+NIhMyEf1W7G6GHAh8m98nH3FVoABmdyODg8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=b/ovJYlW; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 431DwiUf000388;
+	Mon, 1 Apr 2024 15:00:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=hevkxwDEgR2pYUvj9X2yFlu71zQ4lB/37iRPo7HoeyE=; b=b/
+	ovJYlW2s819vu9kynpJnEzcTd0bemTAo1ae1+bUR6GOlEo5MhmaqRDMoDeI20Lhc
+	aT2hwfykNlbueQDvt0I1axAomotLQgw/sa+4dbYm9weart/Wj+ZzEZ5S+Xgp2zvz
+	1qtgDIST3ofllTmxpw+/gaE1whQYBrTsQLUpqL0QPW/pGI3FRm8DKhUaG8Y7e0nv
+	/TH1NreCYZm25yo82SQyE1DliQbHoI31pDQusASoMTysTwO9G+H8vyrv19bKSk7g
+	aMXzje2T7V4tSSIJyIIq4p0VmivO3nxN2NvSc1vmThH23pa8KYKcyvNoxD9/K1nm
+	LRwPBC/ezvnwWjelwu+Q==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3x7r0hgygy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 01 Apr 2024 15:00:39 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 431F0c38011718
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 1 Apr 2024 15:00:38 GMT
+Received: from [10.110.126.136] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Mon, 1 Apr
+ 2024 08:00:38 -0700
+Message-ID: <c4924128-817a-4026-93f3-acedfe70c858@quicinc.com>
+Date: Mon, 1 Apr 2024 08:00:37 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240327001131.4028431-1-greearb@candelatech.com>
-In-Reply-To: <20240327001131.4028431-1-greearb@candelatech.com>
-From: James Dutton <james.dutton@gmail.com>
-Date: Mon, 1 Apr 2024 14:58:27 +0100
-Message-ID: <CAAMvbhGHe4PM5M=JJZRQ2m5_aVZ=4DPG76MT+q5qi3HA+7_wzQ@mail.gmail.com>
-Subject: Re: [PATCH] wifi: mt76: mt7915: Emulate chanctx methods.
-To: greearb@candelatech.com
-Cc: linux-wireless@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] wifi: ath12k: fix BSS chan info request WMI command
+Content-Language: en-US
+To: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>,
+        <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, P Praneesh <quic_ppranees@quicinc.com>
+References: <20240331183232.2158756-1-quic_kathirve@quicinc.com>
+ <20240331183232.2158756-2-quic_kathirve@quicinc.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20240331183232.2158756-2-quic_kathirve@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: MKsmimNpGOk7zfhpobST5Kv8G_q2o5hF
+X-Proofpoint-ORIG-GUID: MKsmimNpGOk7zfhpobST5Kv8G_q2o5hF
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-01_10,2024-04-01_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ lowpriorityscore=0 priorityscore=1501 malwarescore=0 clxscore=1015
+ phishscore=0 spamscore=0 mlxscore=0 mlxlogscore=865 bulkscore=0
+ suspectscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2403210001 definitions=main-2404010106
 
-Hi.
-I have used this patch, and it fixes wifi for the mediatek board i
-have. the BPI-R3.
-Please add it to wireless-next, 6.9-rc
+On 3/31/2024 11:32 AM, Karthikeyan Kathirvel wrote:
+> From: P Praneesh <quic_ppranees@quicinc.com>
+> 
+> Currently, the firmware returns incorrect pdev_id information in
+> WMI_PDEV_BSS_CHAN_INFO_EVENTID, leading to incorrect filling of
+> the pdev's survey information.
+> 
+> To prevent this issue, when requesting BSS channel information
+> through WMI_PDEV_BSS_CHAN_INFO_REQUEST_CMDID, firmware expects
+> pdev_id as one of the arguments in this WMI command.
+> 
+> Add pdev_id to the struct wmi_pdev_bss_chan_info_req_cmd and fill it
+> during ath12k_wmi_pdev_bss_chan_info_request(). This resolves the
+> issue of sending the correct pdev_id in WMI_PDEV_BSS_CHAN_INFO_EVENTID.
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+> 
+> Fixes: d889913205 ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+> 
 
-Feel free to add:
-Tested-by: James Courtier-Dutton <james.dutton@gmail.com>
+remove this blank line. Fixes tag should be together with S-o-b
 
-Kind Regards
+> Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
+> Signed-off-by: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
 
-James
-
-
-On Wed, 27 Mar 2024 at 00:11, <greearb@candelatech.com> wrote:
->
-> From: Ben Greear <greearb@candelatech.com>
->
-> Looks like this was missed in the initial patch that made
-> the conversion to the emulated chanctx drivers.
->
-> Fixes: commit 0a44dfc07074 ("wifi: mac80211: simplify non-chanctx drivers")
->
-> Signed-off-by: Ben Greear <greearb@candelatech.com>
-> ---
->  drivers/net/wireless/mediatek/mt76/mt7915/main.c | 4 ++++
->  1 file changed, 4 insertions(+)
->
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-> index a246d11d9811..fadb8e62092c 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-> @@ -2050,6 +2050,10 @@ mt7915_net_fill_forward_path(struct ieee80211_hw *hw,
->  #endif
->
->  const struct ieee80211_ops mt7915_ops = {
-> +       .add_chanctx = ieee80211_emulate_add_chanctx,
-> +       .remove_chanctx = ieee80211_emulate_remove_chanctx,
-> +       .change_chanctx = ieee80211_emulate_change_chanctx,
-> +       .switch_vif_chanctx = ieee80211_emulate_switch_vif_chanctx,
->         .tx = mt7915_tx,
->         .start = mt7915_start,
->         .stop = mt7915_stop,
-> --
-> 2.42.0
->
->
 
