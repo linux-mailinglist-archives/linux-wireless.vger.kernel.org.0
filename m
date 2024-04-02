@@ -1,175 +1,134 @@
-Return-Path: <linux-wireless+bounces-5764-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5766-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0315C895DCD
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Apr 2024 22:36:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F18C3895E68
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Apr 2024 23:06:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD91C28A1FB
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Apr 2024 20:36:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F2CC1C23471
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Apr 2024 21:06:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7411115E5C7;
-	Tue,  2 Apr 2024 20:34:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2294F15E5A2;
+	Tue,  2 Apr 2024 21:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="f6U0DyP5"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Ynw2I/0l"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47C215E1FF
-	for <linux-wireless@vger.kernel.org>; Tue,  2 Apr 2024 20:34:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5059815E200
+	for <linux-wireless@vger.kernel.org>; Tue,  2 Apr 2024 21:05:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712090086; cv=none; b=qJF/yQqXcG2wRmHJQAm4XAO9fGUo98XrwveyEb/pSp9bQ4qgQfj4sO2H0KP8jxIF/G7zO9rCHgr61DfZyNW4UABWMomhsN6HT/UK4zMwMyl+he4Q5XFjz8bZau2OCOSb1ir8QNCi3vvHsS5IDZoSs171MUkrAa/CgWWc0ltiY+Y=
+	t=1712091956; cv=none; b=X+doRdCscc0xcJHcLa34p6H+3nFDkAM4zP9qHfRRthoO6+hY+ss6xrTgJENUNNOvm9qXQsdWXQ2KnVBnUrDw6Z7o74jmv+AOAU9PYWwfypHRbHPJkIEZ8JcPwQS6FXFSeNOv1wV/PLJFr3mjTmmFRtPqzHTDlS4Tne5NfECysPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712090086; c=relaxed/simple;
-	bh=PbCYgrPVbVOdhV1jC/4KII4virJ8WGK/ifPusT5Ym9k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f3Y8WXW/VT+TXf76n/y5SA01VVDi1vyHCqIet0gCTiwWT0p/eq/xDblvKQRUHMImBZBJcAtYg+89XJXdNMYu/iof5UdxJ3FMtvZUVTZTOpnpXhy6aufu2Vk88Ocgjzwl9Bcsa1GcC5vb+CWISIpLUxC35TbaAy7+uvPAJx7phAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=f6U0DyP5; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1712090084;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OmliKS7IXk0y+y9ssPc7arVQxLqF15p8TNQCcmbmlpA=;
-	b=f6U0DyP5RTDuDa4zavUrwkOVaS3it37P0oHjHsWeG1Ly6Lg0TSGAlC1XgialT9oJ1I0FwU
-	UlaoJD/wMnY2JW+k4Lj4MMY/LgttSBQxtUE7XhRN7Bfk6XJ9qH8xnbkA6zHjFhUMGNrPjz
-	XepIrotzXv36o1KlWTgPU9830qQy3o4=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-665-0Tm61sA2Nw-68qBkgUVZgw-1; Tue, 02 Apr 2024 16:34:40 -0400
-X-MC-Unique: 0Tm61sA2Nw-68qBkgUVZgw-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BF21F101A520;
-	Tue,  2 Apr 2024 20:34:38 +0000 (UTC)
-Received: from localhost (unknown [10.39.193.21])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 6A6D640C6DAE;
-	Tue,  2 Apr 2024 20:34:37 +0000 (UTC)
-Date: Tue, 2 Apr 2024 16:34:18 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	David Hildenbrand <david@redhat.com>,
-	Gerd Hoffmann <kraxel@redhat.com>,
-	Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Paolo Bonzini <pbonzini@redhat.com>, Jens Axboe <axboe@kernel.dk>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Olivia Mackall <olivia@selenic.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Amit Shah <amit@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Gonglei <arei.gonglei@huawei.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Viresh Kumar <vireshk@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	David Airlie <airlied@redhat.com>,
-	Gurchetan Singh <gurchetansingh@chromium.org>,
-	Chia-I Wu <olvaffe@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Alexander Graf <graf@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>,
-	Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	"James E.J. Bottomley" <jejb@linux.ibm.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Vivek Goyal <vgoyal@redhat.com>, Miklos Szeredi <miklos@szeredi.hu>,
-	Anton Yakovlev <anton.yakovlev@opensynergy.com>,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	virtualization@lists.linux.dev, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-um@lists.infradead.org,
-	linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-	linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-gpio@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	iommu@lists.linux.dev, netdev@vger.kernel.org, v9fs@lists.linux.dev,
-	kvm@vger.kernel.org, linux-wireless@vger.kernel.org,
-	nvdimm@lists.linux.dev, linux-remoteproc@vger.kernel.org,
-	linux-scsi@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	alsa-devel@alsa-project.org, linux-sound@vger.kernel.org
-Subject: Re: [PATCH v2 24/25] fuse: virtio: drop owner assignment
-Message-ID: <20240402203418.GG2507314@fedora>
-References: <20240331-module-owner-virtio-v2-0-98f04bfaf46a@linaro.org>
- <20240331-module-owner-virtio-v2-24-98f04bfaf46a@linaro.org>
+	s=arc-20240116; t=1712091956; c=relaxed/simple;
+	bh=vuJ4Bijtahk+1dkUYyfw9B3QI1rx9OcihkPlCxlpPMQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KO9xDHO7OMqGgRddSFUYHsqNaTlAF35/rA73hQXVd0PgWVA8vYdwX6ZauwckeaNQMPmTceqAQGu0EhGybw6uNj00KsYzI0YHs0IQq4sEEUeltEpaqetyLjjA5EHrelhfLfmzNPSfGEB/xd0wiCDWd8PGhWWgnTslqATqZBow704=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Ynw2I/0l; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 432L5Nbs021037;
+	Tue, 2 Apr 2024 21:05:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=qcppdkim1; bh=Eja0qQ4
+	bFpG/cnGcLoou9CJZ8WjMSBNFw5DfrEJWOBE=; b=Ynw2I/0lOWYoqr9Tz262XQt
+	roEn/gzgotDMszSJZgnwvQkptr+OwhdRJ6tmvLtINWupalNZQ7SfIsVGX+rIvwFm
+	9r3jzvBUgrIvIUSCuMoT+vqNoi7Y+4EKvFDAqbN3pf1/Aa/xYPSKE7gZD2nH2GmS
+	qDPbpVrWBAiCZcH3CRxh/Jx03ciJVX0Bgsv3iBx/ClFyeGCPAUYO/N2W/tskClyB
+	XkSdFPNgVeSc6lpzwZtSFELFZ63rAgqvfSu/tNQmfndh4r/r8tB3Z1SA6JqhA2Vg
+	nsT6IEWr8MDPXEKcopZmjIBnbBgMe1xaiziSPOYKOjhEV0Tg4ftgIuJINpK05Ig=
+	=
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3x8eymhw0q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 02 Apr 2024 21:05:49 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 432L5m2J031796
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 2 Apr 2024 21:05:48 GMT
+Received: from alokad-linux.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.4; Tue, 2 Apr 2024 14:05:48 -0700
+From: Aloka Dixit <quic_alokad@quicinc.com>
+To: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+CC: Aloka Dixit <quic_alokad@quicinc.com>
+Subject: [PATCH 0/9] wifi: ath12k: MBSSID and EMA AP support 
+Date: Tue, 2 Apr 2024 14:05:29 -0700
+Message-ID: <20240402210538.7308-1-quic_alokad@quicinc.com>
+X-Mailer: git-send-email 2.39.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="y2TTKZujScqhsi/4"
-Content-Disposition: inline
-In-Reply-To: <20240331-module-owner-virtio-v2-24-98f04bfaf46a@linaro.org>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: EOM-q9X879RN9p88-Q6IeFF7EHk1dXke
+X-Proofpoint-ORIG-GUID: EOM-q9X879RN9p88-Q6IeFF7EHk1dXke
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-02_14,2024-04-01_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 malwarescore=0
+ priorityscore=1501 impostorscore=0 suspectscore=0 bulkscore=0
+ mlxlogscore=999 lowpriorityscore=0 mlxscore=0 clxscore=1011 phishscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2403210001 definitions=main-2404020157
+
+Add support for multiple BSSID (MBSSID) and enhanced multi-BSSID
+advertisements (EMA) features in AP mode. Set extended capabilities,
+WMI resource configurations to advertise the driver support to
+userspace and to firmware. Configure each MBSSID profile by sending
+BSSID index, total BSS count to firmware. Retrieve and propagate
+MBSSID/EMA beacon templates to firmware. Set the arvif security
+parameters for non-transmitting profiles.
+
+This series has been tested on QCN9274 for AP mode but not on
+WCN7850 as STA support is not part of this version.
+
+One issue unrelated to these driver changes but seen with these:
+cfg80211_mlme_mgmt_tx() fails when hostapd tries to send a Probe
+Response for a directed probe request for a nontransmitted interface.
+Failure happens because both cfg80211_allowed_address() and
+cfg80211_allowed_random_address() return false when SA is that of the
+transmitted interface but wdev points to the nontransmitted interface.
+Association is successful and pings work. Issue is not seen with
+hostapd version up to commit ID 3cd377eb54e7 ("MLD: Ignore failed links
+from association attempt") so will debug commit ID 82453a3482c4
+("AP: Split Probe Response frame IE generation into a separate
+function") and commit ID 6b5e00a80e5f ("AP: Use a struct for Probe
+Response generation in/out params").
+
+Aloka Dixit (9):
+  wifi: ath12k: advertise driver capabilities for MBSSID and EMA
+  wifi: ath12k: configure MBSSID params in vdev create/start
+  wifi: ath12k: rename MBSSID fields in wmi_vdev_up_cmd
+  wifi: ath12k: create a structure for WMI vdev up parameters
+  wifi: ath12k: configure MBSSID parameters in AP mode
+  wifi: ath12k: refactor arvif security parameter configuration
+  wifi: ath12k: add MBSSID beacon support
+  wifi: ath12k: add EMA beacon support
+  wifi: ath12k: skip sending vdev down for channel switch
+
+ drivers/net/wireless/ath/ath12k/hw.h  |   1 +
+ drivers/net/wireless/ath/ath12k/mac.c | 324 +++++++++++++++++++++-----
+ drivers/net/wireless/ath/ath12k/wmi.c |  40 +++-
+ drivers/net/wireless/ath/ath12k/wmi.h |  46 +++-
+ 4 files changed, 345 insertions(+), 66 deletions(-)
 
 
---y2TTKZujScqhsi/4
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Sun, Mar 31, 2024 at 10:44:11AM +0200, Krzysztof Kozlowski wrote:
-> virtio core already sets the .owner, so driver does not need to.
->=20
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
->=20
-> ---
->=20
-> Depends on the first patch.
-> ---
->  fs/fuse/virtio_fs.c | 1 -
->  1 file changed, 1 deletion(-)
-
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-
---y2TTKZujScqhsi/4
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmYMa8oACgkQnKSrs4Gr
-c8hVnAf/cA3xbyK70jAgkZV9EtimcENA8Vicjc5wwuE2Vt1WSOZUWtD+a8KtqIDS
-ICvCIk7XlMHoB7BYaP8qlXQ0kjkARmT7hwEQyqEDL/MzEgyKhChus/pV8g6Cvywl
-OdPkT57aujxEBU5+l5t8TnP2I8CziPoDf0uizIpf5r2pZstP0q/mRVNFevjTDeSu
-L+LjxHElpmAVApGciiGOH+cpPYuKAejObzy5z92m7jZgh/LfHtcK29bhoWwNTL1l
-e6ryz/B2YrpyrVdDjqUD1iJ2WR2qxEUAI3moU5ySGqG/w5Lg0+ji+9TlCE46xoQ/
-U1ALdKDyNFUB1iRXdA00oKhEe6MUOw==
-=AQF3
------END PGP SIGNATURE-----
-
---y2TTKZujScqhsi/4--
+base-commit: fe7e1b830cf3c0272aa4eaf367c4c7b29c169c3d
+-- 
+2.39.0
 
 
