@@ -1,137 +1,175 @@
-Return-Path: <linux-wireless+bounces-5760-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5761-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D45C1895C60
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Apr 2024 21:22:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A0DB895D9A
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Apr 2024 22:33:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EEDC2865E3
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Apr 2024 19:22:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BF361C220B5
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Apr 2024 20:33:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AECBF15B578;
-	Tue,  2 Apr 2024 19:22:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C373415DBB2;
+	Tue,  2 Apr 2024 20:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="HBcq5SXJ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NbtCvpUZ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B3E415B54E
-	for <linux-wireless@vger.kernel.org>; Tue,  2 Apr 2024 19:22:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FA402209F
+	for <linux-wireless@vger.kernel.org>; Tue,  2 Apr 2024 20:33:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712085732; cv=none; b=jYy3LSODVVQoF5hCqlNHFDJI7C0oIKvVdhragTbaItZdtxUy/MllbKyNRn/rySBCkCrzHKOcnKuzF0Y3HzFPmIKtDKEHM++Um/qpxvn1rdZaE9XBdvNKUrF7xG0JiCrZkf3qV3qbcw7bjTjpGgdrUSEPWk+TAFxxGd1nFQmVygY=
+	t=1712090017; cv=none; b=XE5BQYRf1bCWfOowh4wtf4XvhWQiPNWgbxgsNem/sT/xviO7AqHI2yfI9uc6hcHll5xrNWENwgXpfLf1kL61u4tOc/DJPNZVd+o4FORYbDPQpOimjYjkzoup+E/5NJ/9RnHXfTtG7CHVMnPhb3gU+kD/8NPgdWXyG4S+EtAqmUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712085732; c=relaxed/simple;
-	bh=6VDPc8dC1JcqYo92ZRzDEKLFmlwwzK5oDT6XJCq6Wmo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JpqBuM+wBKIDpT4yzZoxNaKflQXt+0txTBzj5Q6kefzkSmwh4ddd+FhS4eLDGOMoJDBbPxFTMkPZsZ5bnIlxaRv5dpTy8w8L0HOp7CzliSzLAR3QGWU9LqJvJAb/lbzWEr8cS2c665LnRESeJLkHFIX7MvLpdEb+Re8+mpJsXn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=HBcq5SXJ; arc=none smtp.client-ip=209.85.128.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-60a068e26d8so56223667b3.3
-        for <linux-wireless@vger.kernel.org>; Tue, 02 Apr 2024 12:22:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1712085730; x=1712690530; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Da5e3no1vFHzxLLTd7RoCIPu3XSpzvc3CS46CEGoz3A=;
-        b=HBcq5SXJLrViHgjstgpubax9Dlp2IzKa8hCEpBI8pthNcyHTYnoz37yxw7mkYlmN08
-         EaEzpXIhWTw/z5r9z4xMlg+axmY2l2PDoLeUscCAjbwZedS4fo6DNjuhy0kk5c6NAY0Y
-         fxSSkftECQTpxamrvr5AIqXm+LncfWFDK58lw7BlftAdPzZVQb+1TC671iardq0sv/k3
-         4uulcRkTyO2ZDLpaymZ/6RXtECjXkB1EP+nL2oMMI9XmOAnN7xM+NF++q4tI1+RUay3r
-         FeT/0koZgvFfnjcN4BEbU0oGusrt8OjWwmTZuCQDp9cTM/gpDb5ZTDl5R7XU0CiDaysu
-         GRBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712085730; x=1712690530;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Da5e3no1vFHzxLLTd7RoCIPu3XSpzvc3CS46CEGoz3A=;
-        b=hhluHDbmnpAqsoDJ53hA2sqLdT1QDDaLOop+gMBdhqwWeG2SXnRkB0EXZawOtrNwmP
-         dVT3S/6sgP7OheAn0JetVNY6UOaiWsev3C+c5GB3GIvpC5Lfl4ROR/oO4cIiJA4lp7y4
-         sc+E7B4ZjD6zoeGgAFvebn4kQgPM44VR0LzgP0O7OPgj61D3Fjn87brWfDu8qHlpLEn0
-         oalUaN1pHCen3ZQjKLOu+JGOwN3uYqOwMuQebUX3iIZ1prPj2Z9gdyxI3cZFAoJMIw8d
-         580YSL6wEr6Rgrrh6IP2y7VolxzQv2i04ceaa7feLTShEyhT88ulagRYSniLM3tj9xjg
-         XKXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXU+vIfOY2EM7Vk/SofGwhpcp+Gebu2pLkKANN+vzArF+0JEuogbGE6r16duNe2ka/Ac723Bt5k2lijn8dgKm5visLZqjYJhpnv1R+0mb4=
-X-Gm-Message-State: AOJu0YwjSrL3Ix+1soK5VcvrvZQYPjaO2ckwcyi6/OTUtXdDxOnVVe0/
-	5uYMmJj8qlOROhSw1qNicLYVJ/YG97xAW70KKdrKPmhl94f7hhMSUYtW2hNpoTKBC7uWqhxb5w5
-	Y8FNwKkOThSynSq/93QA9Lc4YAvC5m18My3wucg==
-X-Google-Smtp-Source: AGHT+IETpb/msZOjlDLCi3odXTnuMId4zqwOakzl+yNSURunQT2Cet2X6wMJNMEfQKszq4oZvWNg6VfgMvBffwUGHoU=
-X-Received: by 2002:a25:a028:0:b0:dbf:ec4:311f with SMTP id
- x37-20020a25a028000000b00dbf0ec4311fmr11410085ybh.58.1712085729697; Tue, 02
- Apr 2024 12:22:09 -0700 (PDT)
+	s=arc-20240116; t=1712090017; c=relaxed/simple;
+	bh=ROySLNzi2sYnSa/JtIXRjIYuaaAEqJzMqCJdYS2UTqE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=f0EvlNAigY8Ws/fAKS6PT/gyyeYOddOZ3FAeI+yzdaPrck6Clm2Z2jUPYM0WhxdklEIyf7mOOQ5K/joM0kEQjsVpCuK+jva5JLjUhezDoSG8HWOHpk+VkN7KS0bo9IuCmNg2lNSVg7zZdyti9BX4wgXn6Y9NQ3LV1HtefdXFztM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NbtCvpUZ; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1712090015;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XkVVzn7sUlZgXUm5P4BgsrM9gYYoxT1YIoFUz7D2uhU=;
+	b=NbtCvpUZtQ/dWb+sAvdbDoUsGMhEuinz2W8Co67s0B/UIAaNLiXJGu7Z+cyx+sxES9ykpi
+	nLh9AfgSfXtOxt1K3dfMYXunjTM8HNKEOb6jPlIKrGJ2RSNib4jCeUzIaMX0bcrJUXd4O7
+	difLW6PrhPZ8Pi4mo73xsCxnYGfFwz4=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-209-ywO5jcPyNGiEQomcpy8Y7w-1; Tue, 02 Apr 2024 16:33:32 -0400
+X-MC-Unique: ywO5jcPyNGiEQomcpy8Y7w-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 16C6F946322;
+	Tue,  2 Apr 2024 20:33:31 +0000 (UTC)
+Received: from localhost (unknown [10.39.193.21])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id EF28B17AA0;
+	Tue,  2 Apr 2024 20:33:26 +0000 (UTC)
+Date: Tue, 2 Apr 2024 16:33:21 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	David Hildenbrand <david@redhat.com>,
+	Gerd Hoffmann <kraxel@redhat.com>,
+	Richard Weinberger <richard@nod.at>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Paolo Bonzini <pbonzini@redhat.com>, Jens Axboe <axboe@kernel.dk>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Olivia Mackall <olivia@selenic.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Amit Shah <amit@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Gonglei <arei.gonglei@huawei.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Viresh Kumar <vireshk@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	David Airlie <airlied@redhat.com>,
+	Gurchetan Singh <gurchetansingh@chromium.org>,
+	Chia-I Wu <olvaffe@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Alexander Graf <graf@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+	Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	"James E.J. Bottomley" <jejb@linux.ibm.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Vivek Goyal <vgoyal@redhat.com>, Miklos Szeredi <miklos@szeredi.hu>,
+	Anton Yakovlev <anton.yakovlev@opensynergy.com>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	virtualization@lists.linux.dev, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-um@lists.infradead.org,
+	linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+	linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-gpio@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	iommu@lists.linux.dev, netdev@vger.kernel.org, v9fs@lists.linux.dev,
+	kvm@vger.kernel.org, linux-wireless@vger.kernel.org,
+	nvdimm@lists.linux.dev, linux-remoteproc@vger.kernel.org,
+	linux-scsi@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	alsa-devel@alsa-project.org, linux-sound@vger.kernel.org
+Subject: Re: [PATCH v2 06/25] virtio_blk: drop owner assignment
+Message-ID: <20240402203321.GD2507314@fedora>
+References: <20240331-module-owner-virtio-v2-0-98f04bfaf46a@linaro.org>
+ <20240331-module-owner-virtio-v2-6-98f04bfaf46a@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <fd26ce4a-a9f3-4ada-8d46-ed36fb2456ca@freebox.fr>
- <5cdad89c-282a-4df5-a286-b8404bc4dd81@freebox.fr> <252618e8-9e80-4774-a96c-caa7f838ef01@linaro.org>
- <502322f1-4f66-4922-bc4e-46bacac23410@linaro.org> <0ca1221b-b707-450f-877d-ca07a601624d@freebox.fr>
- <CAA8EJppeREj-0g9oGCzzKx5ywhg1mgmJR1q8yvXKN7N45do1Xg@mail.gmail.com> <8ef4f56c-83a3-4b26-877e-f1c7a0307e98@postmarketos.org>
-In-Reply-To: <8ef4f56c-83a3-4b26-877e-f1c7a0307e98@postmarketos.org>
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Tue, 2 Apr 2024 22:21:58 +0300
-Message-ID: <CAA8EJpqarGD-8PpUOdOXzNXW2+HnEUF-1k7VC=TLTPJc3qqsGw@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] arm64: dts: qcom: msm8998: set qcom,no-msa-ready-indicator
- for wifi
-To: Alexey Minnekhanov <alexeymin@postmarketos.org>
-Cc: Marc Gonzalez <mgonzalez@freebox.fr>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Kalle Valo <kvalo@kernel.org>, 
-	Jeff Johnson <quic_jjohnson@quicinc.com>, ath10k <ath10k@lists.infradead.org>, 
-	wireless <linux-wireless@vger.kernel.org>, DT <devicetree@vger.kernel.org>, 
-	MSM <linux-arm-msm@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Pierre-Hugues Husson <phhusson@freebox.fr>, Arnaud Vrac <avrac@freebox.fr>, 
-	Bjorn Andersson <andersson@kernel.org>, Jami Kettunen <jamipkettunen@gmail.com>, 
-	Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="n4/kSvCMF0M05hCx"
+Content-Disposition: inline
+In-Reply-To: <20240331-module-owner-virtio-v2-6-98f04bfaf46a@linaro.org>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
 
-On Tue, 2 Apr 2024 at 21:25, Alexey Minnekhanov
-<alexeymin@postmarketos.org> wrote:
->
->
->
-> On 02.04.2024 18:55, Dmitry Baryshkov wrote:
-> > I'd say, we should take a step back and actually verify how this was
-> > handled in the vendor kernel.
->
->
-> AFAIK there is no such thing in vendor kernel driver for this, as
-> this startup procedure is likely handled entirely in userspace in
-> cnss_daemon.
->
-> By the way this workaround is needed also for Wi-Fi in sdm630/660,
-> so no not only msm8998 suffers from this.
 
-Interesting. I have an sdm660 platform. I think I should be able to
-check these workarounds then.
+--n4/kSvCMF0M05hCx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
->
->  > This sounds more like a firmware feature, not a hardware feature
->
->  > having this property in DT does not look right
->
-> I agree with these 2 points above. This can be handled more nicely
-> as firmware feature encoded in firmware-5.bin using ath10k-fwencoder
-> and not involve any new DT compatibles or properties.
+On Sun, Mar 31, 2024 at 10:43:53AM +0200, Krzysztof Kozlowski wrote:
+> virtio core already sets the .owner, so driver does not need to.
+>=20
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>=20
+> ---
+>=20
+> Depends on the first patch.
+> ---
+>  drivers/block/virtio_blk.c | 1 -
+>  1 file changed, 1 deletion(-)
 
-I think Marc has already tried this. The firmware-N.bin, so-called
-"boot firmware" (because for normal devices it also contains the
-actual firmware), is loaded much later. See
-https://lore.kernel.org/ath10k/243a97b7-c298-4307-9f06-8b3a7c3e24fd@freebox.fr/
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 
-Probably we have an option of loading the firmware earlier, so that at
-this stage we already know the quirks set in the firmware-5.bin. But
-note, I haven't checked if at this point the driver has all the
-information to select correct firmware blob.
+--n4/kSvCMF0M05hCx
+Content-Type: application/pgp-signature; name="signature.asc"
 
--- 
-With best wishes
-Dmitry
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmYMa5EACgkQnKSrs4Gr
+c8j8dggAqO8KJXvt+0JqXmgxsfDAxN196OA9Q6Rm7VF0fuMhGpVUUh/iuOtkH59k
+ho0oB9szUvz/1tXZEJPtShx/omt2iENmq22unjzWE7ZmNimALVjtXPaZNTCkYxJn
+Z9//Ks9v/lHCNFzLjSiKC94ktRVJLDXSmG7uEpbeutDrzN9TWRJ8DNnylKmm+qWR
+VDiL3/2+03gC5B/LovTli4ozZuS4JlG37Tnh2Z8ACNrcFC74nv45KtNuQLR+hNy8
+12jEUGkhADWps+fQH7bZebswT9ePfwTfA1xh0pXeeWKCkaiKcgFhZH+JcNQLkwkx
+fC80yZK4qnvU1SmzK2tpfzAk7jUMtQ==
+=5tJl
+-----END PGP SIGNATURE-----
+
+--n4/kSvCMF0M05hCx--
+
 
