@@ -1,228 +1,156 @@
-Return-Path: <linux-wireless+bounces-5754-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5755-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D9EA895AD0
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Apr 2024 19:38:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D971895AED
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Apr 2024 19:42:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2311D2871D8
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Apr 2024 17:38:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48932280FA4
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Apr 2024 17:42:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98CBE15A4A9;
-	Tue,  2 Apr 2024 17:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9896C15AAC4;
+	Tue,  2 Apr 2024 17:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="cwYm0/+M"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="nPYOVy6A"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCD5E15A4A6
-	for <linux-wireless@vger.kernel.org>; Tue,  2 Apr 2024 17:38:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED61C15AAB2
+	for <linux-wireless@vger.kernel.org>; Tue,  2 Apr 2024 17:42:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712079523; cv=none; b=jWLB/UAce8aYas494x9dy6+xH3nzM2whvhEKF0yNDdludYBLo6ptI24jgoA1JHC1izebZoVBU+i2cCchjT07H6dfRu4iABXO1WwUyNr+/rTbRIoz3RS+OjmOWwVi+TP9sRBqmHn/smEKS36tPYnin8R/C76j54ovU+GG52R50Iw=
+	t=1712079730; cv=none; b=bXzRl3hQyyeF0F5DAi8Iah8Tn4lTlCfN/wY0hYEXPho45tZzCqKFAkEtIP0PsaPLWE0wyp2w/X1yQdCZ6bU0U/xoNx0ABaEhLZtCelW7i3pWwxX4TWUZ5Zbd6SEOrCzch6W/4+Muze8IT/9bLnV52Y/vjNi1RWesq/ZfLoQdJdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712079523; c=relaxed/simple;
-	bh=mjehrL1CeGLW4kKW6mfOdXsxoEA+KJygo9ZmNvXCcmw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SuiCmBpzwd+WAkr7Qjsi4fSoftvGM6lkB06n127eUegRxVvnEeJ2lcRA0Yg5PW2glSCJ+NwqQgRW+GCtoCJcDD7B0aCEGKnPD/9W48nyxKGBYKhgPhYcdFqhi/1eSyu71HPlfYhAIzQpJgBk+l3gmPE6KDlfbgzpJhCSbbtIuTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=cwYm0/+M; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-6e6afb754fcso5180077b3a.3
-        for <linux-wireless@vger.kernel.org>; Tue, 02 Apr 2024 10:38:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1712079521; x=1712684321; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=HtrkSh59QkjttbNzKcHQJ3LYMjwTS4ircoPC1SuYzsc=;
-        b=cwYm0/+MP90FD7gcZnZWzAQ1lF6KtZlZ8o0M7ZMvq/P/0O8M1el4K2bZUHzle+WU8w
-         gF1IAfpS3MVTt2+Kkocb2BodYAiDwsGxNSbW7nciozRHzLZ1YhyBZlRsbxvekcqoo6pE
-         qIVFfAk71n4D1B5yQSYnhiH0oBFXgHd25BAxc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712079521; x=1712684321;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HtrkSh59QkjttbNzKcHQJ3LYMjwTS4ircoPC1SuYzsc=;
-        b=LiQTyRYOAAOrL5wsXJeShx5Tf4dyK/aYgY1qj4oQUnxC+iNNqhZ4CEzdFW0yqW5uOD
-         jKEHhF4v6qossTNW6BuzdTpmEgL5hJ5ZScBX1yVOquhWfwHbfceXlz9MKvRzGNHgbnrh
-         cTu6Zery5Aa56B5N/lXyDSzFq+UYfL2OXo1yTOKtRgMhXWwphA36fHf1K1IRQYoom+Zh
-         sRNhx+pBIgSZgVCPr9PTVq1J0imSN2wOsqZ/TgTW6099lg62xR0G9SXF6nf2VjNhnVOK
-         knK40O1FcKQRpRFVWhr6gLUSNGbc6NgTCb1PoS5pU2uWO0k3OT45bzcII1Yybpk9cmh/
-         rExg==
-X-Forwarded-Encrypted: i=1; AJvYcCWkoBcbYd4mrqvJwJ6Iju/pA2xYH9DVQHFZnLOuOTq2dlQWnmZ44wN1ldkFiwgQBaMTf6Ux5yQZXPTVxRiR1OvR/X0dJaiTCUV/hJ5UJEw=
-X-Gm-Message-State: AOJu0Yx3EU/mLHiqRcAxoSkmnwwsu4W543WH+xYH65JtkD95/93GActu
-	GhalZSvFUAnaXU239NeUfqDa76s7MKhZ1VOhIihr8urXZCvcA1T/J/45Vf2v2g==
-X-Google-Smtp-Source: AGHT+IHTJsSiXsH6JTcmk3cWEEqNnvSwl5ZRIjvO/yZBSMNZyrIBM9Ot3MLRUkrax586uwZ+CcwyQw==
-X-Received: by 2002:a05:6a20:7354:b0:1a7:23ae:92c3 with SMTP id v20-20020a056a20735400b001a723ae92c3mr2197471pzc.12.1712079520977;
-        Tue, 02 Apr 2024 10:38:40 -0700 (PDT)
-Received: from localhost ([2620:15c:9d:2:73c6:f4e5:23b5:e248])
-        by smtp.gmail.com with UTF8SMTPSA id n4-20020a170903110400b001dcc7795524sm11363589plh.24.2024.04.02.10.38.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Apr 2024 10:38:40 -0700 (PDT)
-Date: Tue, 2 Apr 2024 10:38:38 -0700
-From: Brian Norris <briannorris@chromium.org>
-To: David Lin <yu-hao.lin@nxp.com>,
-	Johannes Berg <johannes@sipsolutions.net>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
-	Francesco Dolcini <francesco@dolcini.it>,
-	"kvalo@kernel.org" <kvalo@kernel.org>,
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Pete Hsieh <tsung-hsien.hsieh@nxp.com>,
-	"rafael.beims" <rafael.beims@toradex.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>
-Subject: Re: [EXT] Re: [PATCH v9 0/2] wifi: mwifiex: add code to support host
- mlme
-Message-ID: <ZgxCngq_Rguc4qs8@google.com>
-References: <ZfTspRKFgrO9xCTH@google.com>
- <969e95ccc4a1d35b45212b7fcb536ee90995e3b5.camel@sipsolutions.net>
- <PA4PR04MB9638D253189D6DD330B198B2D1332@PA4PR04MB9638.eurprd04.prod.outlook.com>
- <PA4PR04MB9638BE73DDBCE1CE8AA32BA8D1332@PA4PR04MB9638.eurprd04.prod.outlook.com>
- <b2d9a7ef53c5ab4212617e8edf202bbafe52e2f8.camel@sipsolutions.net>
- <ZftaJEIeNfV7YrVo@google.com>
- <PA4PR04MB9638F5037D1AB9BCF51CC9D9D1322@PA4PR04MB9638.eurprd04.prod.outlook.com>
- <Zf4rDifM6bLuqpX2@google.com>
- <4e5f3741819e457c5c79d825c6520cb9ee531b95.camel@sipsolutions.net>
- <PA4PR04MB96386917877832602F221282D13A2@PA4PR04MB9638.eurprd04.prod.outlook.com>
+	s=arc-20240116; t=1712079730; c=relaxed/simple;
+	bh=lCJQDw5/Qay0TwOiLjEb1hBJpU2XiEJD1qoeP7EV5Lw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=QHAVMdLQLw3n/iEdwbWh2YAawVIg14tz5rZHgctigBbml59TXXUkBeCZDaJo4sjesseGQn3/2vAwnrBMfRv3ckPWjKsj77tyMIbEoFOfoqi8vl3nbdW/wBh+FcZXQ2S1V/3DZ/nKsJTbOxI+Rx36oO41qoo1WnvW6K5SCPE2tjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=nPYOVy6A; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 432HDuGA014062;
+	Tue, 2 Apr 2024 17:41:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=T3GWE1qSupUY20Y6R/rpg+vgPMIS2Hu0yYXwkiwEMCY=; b=nP
+	YOVy6AizY52vVM7d9JjZIwQRZXnn9D7mMFxzuZDZAqXXPKxDamd7ltNDcoSXM9Zm
+	iShusafuMIXLQofNdIkY2RU9EMYD6Ms1kWlW8xfIhN5efik1+s7zLqrGZ+Rm+m/E
+	XKFEIeZcdHozVtT8IM9MAoOxD9B6r+uyqTi5PU/zLdMSnlL5o9NP79NQMrfpTIRn
+	JZAhENt3g/hR4v5kIcPGj0+bMxZxfT1tkSynFu0ryBHZFKYamM0IBpNwdRpiRmMW
+	s9EEvqRQ01fYkeiCxSb9VEd/cWxYw8w1jQ2w5p7cYaeO5FN3re1kWKwueQUvUlT7
+	Xkoh+cS2zliYtflp9fdw==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3x8h5es2e5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 02 Apr 2024 17:41:54 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 432HfsM6017964
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 2 Apr 2024 17:41:54 GMT
+Received: from [10.227.110.203] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 2 Apr 2024
+ 10:41:53 -0700
+Message-ID: <6dac32c7-a2b2-4ac3-9c1f-b02f612ee3ef@quicinc.com>
+Date: Tue, 2 Apr 2024 10:41:53 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <PA4PR04MB96386917877832602F221282D13A2@PA4PR04MB9638.eurprd04.prod.outlook.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] wifi: ath12k: extend the link capable flag
+Content-Language: en-US
+To: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
+        <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240329012358.2242354-1-quic_periyasa@quicinc.com>
+ <20240329012358.2242354-2-quic_periyasa@quicinc.com>
+ <f17ab010-5874-495a-8bd8-3e18e85cc327@quicinc.com>
+ <ebeb7fa3-f0d1-230a-80bc-0877fdab7e62@quicinc.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <ebeb7fa3-f0d1-230a-80bc-0877fdab7e62@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: xGoqcFyAnJ3QbKhjaIMD9PzkJHpY7xb2
+X-Proofpoint-ORIG-GUID: xGoqcFyAnJ3QbKhjaIMD9PzkJHpY7xb2
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-02_10,2024-04-01_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501 mlxscore=0
+ lowpriorityscore=0 spamscore=0 mlxlogscore=697 suspectscore=0 adultscore=0
+ bulkscore=0 impostorscore=0 clxscore=1015 malwarescore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2403210001
+ definitions=main-2404020131
 
-Hi Johannes and David,
-
-On Fri, Mar 29, 2024 at 10:06:19AM +0000, David Lin wrote:
-> > From: Johannes Berg <johannes@sipsolutions.net>
-> > 
-> > The way I see it, the issue here isn't necessarily the fact that this uses the
-> > auth command (and then requires assoc, of course), but that we see here
-> > this is "growing" towards a more mac80211-like model, with the code
-> > duplication (albeit little that it is today) implied by that. To me, it seems like
-> > the firmware is moving into the "oh we can't do all _that_ in firmware"
-> > territory, and that brings it closer to mac80211.
-> > 
-> > At the same time, as you say, mac80211 is doing more and more offload
-> > capability, so it seems like apart from "today the firmware requires an assoc
-> > command rather than assoc frame processing in the host", it's actually not
-> > _that_ far apart any more!
-> > 
-> > Now that may be an issue in the short term, but I wouldn't be surprised at
-> > all if desiring to implement FILS and other new features in this space would
-> > make the driver move to assoc frame processing in the host as well, because
-> > it's getting more and more complex, just like auth.
-> > 
-> > At which point - yeah the APIs are still significantly different, but again we'd
-> > end up implementing something that exists in mac80211 today and taking it
-> > into mwifiex?
-
-So it seems there's 2 possible sticking points: code duplication, and
-overall trend in the specs and implementation that might increase
-duplication?
-
-To me, it seems like the duplication is minimal today, or at least, not
-much as a result of anything in this patch proposal. There's some
-repetition of 802.11 definitions already, but that's probably
-orthogonal.
-
-I have less understanding and foresight on the "trend" questions,
-although David seems to somewhat agree in his response below -- that NXP
-intends to handle modern security features in the host more and more,
-which could indeed mean a bit more framing-related duplication.
-
-> Mwifiex is designed based on a "Thick FW" architecture. 
-> As security features become more complicated, this patch adds WPA3 support by offloading to wpa_supplicant/hostapd
-> With this patch, auth, assoc and key handshakes are handled in wpa_supplicant/hostapd. 
-> Wpa_supplicant communicates peer capability and derived keys to driver/FW via cfg80211 assoc and add_key commands.   
-> The cfg80211 commands are standard. Implementation between driver and firmware is vendor specific. It shall not break any existing architecture.
+On 4/2/2024 2:32 AM, Karthikeyan Periyasamy wrote:
 > 
-> > > It may be harder to add
-> > > future additions to the mac80211 stack [*], if we have to add new
-> > > concerns of a non-mac80211 implementation in the mix.
-> > 
-> > Not sure that makes a difference for mac80211 in itself, obviously changes in
-> > this space would then affect mwifiex, but that shouldn't be much of an
-> > issue.
-> > 
 > 
-> With this patch Mwifiex still a non-mac80211 implementation. 
-> Driver communicates with wpa_supplicant/hostapd via cfg80211 
-> I think how driver/FW communicate each other is proprietary, I don't see a dependency with mac80211 here
-
-David, I may have pointed in the wrong direction by claiming "conflict"
-with mac80211. I believe Johannes's concerns are in code duplication.
-Pretty much all other actively-maintained Linux WiFi drivers are based
-on mac80211, so that we don't all have to implement the same frame
-construction and parsing code. mwifiex is somewhat of an outlier in
-actively adding new features while remaining a cfg80211-only driver.
-
-But for myself, I'm not even fully convinced mac80211-style stuff makes
-sense here. Even just looking at the auth() stuff in patch 1, this
-driver is far from a thin layer that allows mac80211 to handle the
-802.11 details. Just look at the 'priv->host_mlme_reg' and
-HostCmd_CMD_MGMT_FRAME_REG stuff -- it seems that the simple act of
-sending a single 802.11 frame requires opting into some FW-specific
-command mask. This feels "thick", like David mentioned above.
-
-> > I'm less worried about this individual patch than what it says about the
-> > direction this driver and firmware are taking, and I fear we'll end up in a
-> > situation where over time this driver actually gets to a point where it should
-> > be using mac80211, but because it's such a piece-meal affair (auth frames
-> > now, etc.) and large architectural change, they'd never actually do that.
-> > 
-> > To be fair, that might also require firmware API changes in some way. I used
-> > to think that was something we should never require, but I'm not so sure
-> > now any more - certainly we've changed our (Intel) FW API in support of
-> > Linux architecture many times, and overall that's for a better product (on
-> > Linux at least.)
-
-Yeah, I feel like I see hints of stuff (in public driver code, and in
-internal discussions with vendors) where things really work best in
-mac80211 land if firmware is developed with *some* consideration for the
-mac80211 Linux architecture (or else already is a very thin firmware
-from the start). I don't feel like Marvell/NXP has that consideration at
-all, and so trying to drag its firmware into mac80211 regardless would
-bring its own unique pain. But that's just a lightly-educated feeling.
-
-> > Also: David, I'd appreciate if you actually took this discussion seriously; so
-> > far you've not really contributed any technical arguments.
+> On 4/1/2024 10:24 PM, Jeff Johnson wrote:
+>> On 3/28/2024 6:23 PM, Karthikeyan Periyasamy wrote:
+>>> Link capability categorized as Single Link Operation (SLO) and Multi Link
+>>> Operation (MLO).
+>>>
+>>> 	* Intra-chip SLO/MLO refers to links present within a chip
+>>> 	* Inter-chip SLO/MLO refers to links present across multiple chips
+>>
+>> Is "chip" the correct term?
+>>
+>> I'm thinking that this should be called "device" since that is the unit of
+>> hardware that is detected by a bus probe function and which is handled by a
+>> *device* driver.
+>>
+>> Doesn't this make more sense if the references to chip and SoC are changed to
+>> device?
+>>
 > 
-> I think we are using standard cfg80211 commands. How it's handled
-> between driver/FW is proprietary, it's carefully verified and shall
-> not impact other features or break any architecture. 
+> In the QMI, SLO/MLO parameter exposed as chip only not device. So 
+> followed the same terminology to avoid confusion for code readability.
+> 
+> struct wlfw_host_mlo_chip_info_s_v01 {
+>          u8 chip_id;
+>          u8 num_local_links;
+>          u8 hw_link_id[QMI_WLFW_MAX_NUM_MLO_LINKS_PER_CHIP_V01];
+>          u8 valid_mlo_link_id[QMI_WLFW_MAX_NUM_MLO_LINKS_PER_CHIP_V01];
+> };
+> 
+> struct qmi_wlanfw_host_cap_req_msg_v01 {
+> 
+> ...
+> 
+> u8 mlo_num_chips;
+> 
+> u8 mlo_chip_info_valid;
+> 
+> struct wlfw_host_mlo_chip_info_s_v01 
+> mlo_chip_info[QMI_WLFW_MAX_NUM_MLO_CHIPS_V01];
+> 
+> ...
+> 
+> }
+> 
 
-David, repeating the "carefully verified" stuff doesn't really help the
-subject at hand, and it's not really a technical argument either, when
-it's not accompanied by any proofs. Being careful and running a good QA
-cycle are excellent and appreciated, but that's not what we're talking
-about any more. We're trying to understand what the firmware
-architecture is like, and what driver architecture matches your future
-development best, with the needs of the Linux community in mind.
+Please don't let firmware interface naming drive host driver code naming.
+And push back on the firmware team when they've introduced poor naming.
 
-(Now, as an example useful argument: if you claimed that implementing a
-mac80211 driver with a generalized ieee80211_ops::tx() function would
-introduce unvetted combinations of control logic that cannot be
-reconciled with your HostCmd protocols, or that QA can't properly vet
-that ... well, that would be a start of a technical argument. But it
-would require more than a sentence or two to describe why that's
-impossible or difficult.)
+As many Software Engineering experts stress, naming is probably the single
+most important thing we do. So we need to make sure we are using the correct
+names for all of the software objects that comprise the driver, especially
+with this multi-device MLO feature where we now have to represent a multitude
+of individual devices as a single logical wiphy.
 
-> We do not see a need why driver has to be redesigned based on
-> mac80211. We can keep adding new features using cfg80211.
+Lack of a single common term for each object in the architecture makes the
+code far less maintainable.
 
-All in all, other than being a little grumpy about reviewing new
-features here, I'm still leaning toward David's statement here -- that I
-don't see why it *must* be rewritten toward mac80211. But I still defer
-to Johannes, and I'm just trying to be a bit of a referee, or the
-proverbial "devil's advocate".
-
-Brian
+/jeff
 
