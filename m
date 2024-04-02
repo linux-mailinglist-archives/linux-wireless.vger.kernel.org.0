@@ -1,108 +1,121 @@
-Return-Path: <linux-wireless+bounces-5739-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5740-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A89E5894B36
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Apr 2024 08:19:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE2DE894B74
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Apr 2024 08:32:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D8241F226C7
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Apr 2024 06:19:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71C232834A4
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Apr 2024 06:32:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 924CA18EA8;
-	Tue,  2 Apr 2024 06:19:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82A261F958;
+	Tue,  2 Apr 2024 06:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RAm8KklI"
+	dkim=pass (2048-bit key) header.d=opensynergy.com header.i=@opensynergy.com header.b="A7CGFidQ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from refb02.tmes.trendmicro.eu (refb02.tmes.trendmicro.eu [18.185.115.60])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5D9B17588;
-	Tue,  2 Apr 2024 06:19:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D551EB2B
+	for <linux-wireless@vger.kernel.org>; Tue,  2 Apr 2024 06:32:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=18.185.115.60
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712038747; cv=fail; b=bEx22FIinUJguU058rmSxL/wKiJer+7HUzpxwJlS+3fa8aNhg8lZD7Y2VAz3ek4avT1pmHJs9anyGUHiv8xTdNjYakGz8Skj14v0zVSnFWHOUO64HF5DNlLycaCXMR3b9FigLI+i3duawwlX1x+SnPcrZfa50hQ27DDacKEXQlY=
+	t=1712039554; cv=fail; b=V88HlX6j16pJwXH6YRFzRHefLf/K/Q3zPuW+fgN/+YDCYESeqhiPnq5+rImgWwP8Zmupyhgx6372pIAfk4TMBUvrE0pTirfOTNRsrYNhQxP/Hk3uPj/RSom3xv7E5gNf6n0/Tql9sW11uEZUASuML0kBwOnEoTxsLubBiYNndBU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712038747; c=relaxed/simple;
-	bh=XKvZCecyMlP1dgSMzQwqxZ1Xy4cSsWEFF41EQXcT8Hw=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=rb2QrCZJmqWW9jZymANBCN5EFYKXlmN/QQu0xDDwG0h8dvLDl7C9C7Rl6PYfIV1Df5s6kKkNY+bblWahpcyoQsQLfL3NMAJm4+XeyAtxsbm1kFfgSWY56zmcAmIQZzel+Uw4x+OIBZ1N6/8ZqgtwJ8T/vmAMpWEpNJS8iTDkE5g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RAm8KklI; arc=fail smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712038744; x=1743574744;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=XKvZCecyMlP1dgSMzQwqxZ1Xy4cSsWEFF41EQXcT8Hw=;
-  b=RAm8KklIMr3xbYMJ6jaB3BwXrsaBmwHTx2RFl3zkDN1lgZP3aPNLo9S8
-   +hRLdQ5aO+LTr/3EgcrgJQ6nJ9leyHIjIYm4CGFBv0c+fDTFYQdCjQEKX
-   YuAMaNi4N9Q7L9iX50crGUJedZ7xeu1yKy0fUoCih2A7mT9F5kB6Y5PnE
-   2M0nq+JvgTUX8HHMvR2KfLDsxRHoWMsXSWPnuIXubbmhAIlPKjtPJKRfE
-   30w4+hbp3FQ+tj0YmEGZvZkbsaNPCw+En8bgY3AiayHRYF9mQUymJiPl8
-   FDyRORfP5wb/T6dxHjAqnwEmIQXD9KINDZbfkzD3gGq7ZfJ74iZvf7AZN
-   A==;
-X-CSE-ConnectionGUID: 4+Of1KeqSvexofsEpLqVzw==
-X-CSE-MsgGUID: a1rG6GqvSMWm/msXU1XpiQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11031"; a="7056569"
-X-IronPort-AV: E=Sophos;i="6.07,174,1708416000"; 
-   d="scan'208";a="7056569"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2024 23:19:03 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,174,1708416000"; 
-   d="scan'208";a="22647391"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
-  by orviesa005.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 01 Apr 2024 23:19:03 -0700
-Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Mon, 1 Apr 2024 23:19:02 -0700
-Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
- fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Mon, 1 Apr 2024 23:19:02 -0700
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.168)
- by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Mon, 1 Apr 2024 23:19:01 -0700
+	s=arc-20240116; t=1712039554; c=relaxed/simple;
+	bh=ZBEAXjMl8aMOJStM89IW/3Bd78fUZuAHkBQ/AZwUAGs=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=Vdob968qvzsA74sU69jw92KH6LUgblwoaTESWCsT6Ugci+Y84Z9KGsEZGS9IyBZLPEzoFwcRV2dEYO276R74Rfsz+7kn4vFJmaqRp7eEBW9hTrxgC+5yM6LKUWtntLCgV67Uj9DPJz+La6+WZrmZfDABmpWzd5Bda98PRlfAJuc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensynergy.com; spf=pass smtp.mailfrom=opensynergy.com; dkim=pass (2048-bit key) header.d=opensynergy.com header.i=@opensynergy.com header.b=A7CGFidQ; arc=fail smtp.client-ip=18.185.115.60
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensynergy.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=opensynergy.com
+Received: from 104.47.7.169_.trendmicro.com (unknown [172.21.19.51])
+	by refb02.tmes.trendmicro.eu (Postfix) with ESMTPS id DF17E10043DDB;
+	Tue,  2 Apr 2024 06:32:23 +0000 (UTC)
+Received: from 104.47.7.169_.trendmicro.com (unknown [172.21.171.124])
+	by repost01.tmes.trendmicro.eu (Postfix) with SMTP id 69DCF10000C4D;
+	Tue,  2 Apr 2024 06:32:15 +0000 (UTC)
+X-TM-MAIL-RECEIVED-TIME: 1712039438.648000
+X-TM-MAIL-UUID: 66fca560-4a5e-4235-9f5a-556509e14da8
+Received: from DEU01-BE0-obe.outbound.protection.outlook.com (unknown [104.47.7.169])
+	by repre01.tmes.trendmicro.eu (Trend Micro Email Security) with ESMTPS id 9E71A1000041F;
+	Tue,  2 Apr 2024 06:30:38 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=B8BSAE3BOOpAbCJ84Wm7tF4ATv8FbXRSD/cQp5AtLysx7+iTad1Q8UB8IFrQtVGddFEuZrJwb/MIfkEpoFzyCly34codByNQcu2/WO96jxRKq+zhL6QygksVRL0+MogSail9ZXaaBmkcgBi+YLXr9bV6pU2+XD48rIw8E8Iw3LvmwWiqZPMxwzDYnShpWABfI2YIbZQm92+LENy2cEPupFX4zwodPeDlCBPtI2V7eQ/s+Lgt5uio7dD3gi//uXwc2juyX/Edmfp9yMDuOtyXouhw8LBJxV4fG6aAkt8GyuxhOOfzmnTSqE5mzURcv+xebkkiqLqyMK8pKh2P6bF44w==
+ b=GlyCwV4WCbhV0P+lbpRtzFgGSR1uDGUA+XFrwWxH6CJKm7DAbnXViMCiH6a1XDUdheA6fb+EosxWZ4ez8R4j6q5XroK274k5l7u2ay9uNr5BZLEGMfhrRxckcCO+lMiy3BwH0NBdntsaexN2HG5yq9xtFUi1an0X77H9UjRocMz+KMzgz9F7d3Q0w7Kiyc4KjWIPcUNjbPExhemLmo9dURqUNiUYo2P+OkNPZUIZDqkL/xvUm/gQprD9umO+vjPO1zUkE3NQ42KzUCiXtLIOtg+JPC3Npc3WBimvnZU1MG+v6luNHs8xy42KwYSlBPI6XuCAxDGgjwz4bxJIHOvv7w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BqkkGmJ+YZQ7w2OEyBreMA76g5Jf9nNRpyqY2VTcWl8=;
- b=iJV3F7Z3hDJFw6SWd/9KMN+JG3wDGkwtu+4iYuDZTbxZD1E3OhgFg9EgOCDsQKGPPr5w4SkGzyCwV4oCzlY77fcOTclJnniJPQS25JUqp1qbnwvRHl5gZtsuO9Iiskgw2N5SyIGiVyywHURN5C1ksfXnq5AxbPgKHOUuIsTtqU7pUF94KWtLq9e1cvFSTq976kfCgt7WAWwAUNdqj9CC11g39Dg1rpTNcCKONlQDqM4DLeAAfGYwbMVXDnriyVyVFvGO8Z/cGjPAXtalDjCtSABfAM0v1ZQrpjnBJ23LO9d5exrlIr4H71DEpWwbot568E1NLWhhs1WM9ueZtyLYKQ==
+ bh=1Qs0KpbVK2J6Fqba87auZMO49qKNG9wDQGX6mRNhOTc=;
+ b=HLADAHymBaTD7/n/uFvEOAST/iqs06xE2ngsGIoZkaH1Qqij8hmhggFk7vbivKmlb07Tr5gDxg/8hkaIhSzC+EMVpcQZttHSSIN5XvnL1P34Wcmw22lEN3YGKaYajewEtQIZ8Wc2KY+DEtBaVmODKsOgaMP91boJA6Va6cJD/MHxSFQNI3mZiKu8KWBoO/0MTxlNmlFnR01XJ0eiAUu5BrgNDW6ASsJUUK57TVVj5qtTi4STgKTP5+0fV28DIIUmJL04x23WLoCmDVm27ZPSykEdlb4ZfIEUwuqXmkN0NhCuJ9Aln+d4k6Z067VNXkFxx2kL5I97D1Ced2IiqpRYoA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from LV3PR11MB8603.namprd11.prod.outlook.com (2603:10b6:408:1b6::9)
- by SJ2PR11MB8347.namprd11.prod.outlook.com (2603:10b6:a03:544::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7452.24; Tue, 2 Apr
- 2024 06:18:59 +0000
-Received: from LV3PR11MB8603.namprd11.prod.outlook.com
- ([fe80::58dd:99ca:74a6:2e3e]) by LV3PR11MB8603.namprd11.prod.outlook.com
- ([fe80::58dd:99ca:74a6:2e3e%3]) with mapi id 15.20.7452.019; Tue, 2 Apr 2024
- 06:18:59 +0000
-Date: Tue, 2 Apr 2024 14:18:51 +0800
-From: Oliver Sang <oliver.sang@intel.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-CC: <oe-lkp@lists.linux.dev>, <lkp@intel.com>, <linux-kernel@vger.kernel.org>,
-	Ilan Peer <ilan.peer@intel.com>, Miriam Rachel Korenblit
-	<miriam.rachel.korenblit@intel.com>, <linux-wireless@vger.kernel.org>,
-	<oliver.sang@intel.com>
-Subject: Re: [linus:master] [wifi]  310c8387c6: hwsim.autogo_chan_switch.fail
-Message-ID: <ZgujSwzFcEwXAeFO@xsang-OptiPlex-9020>
-References: <202403291042.d9211733-oliver.sang@intel.com>
- <21c0ba406df6bc4cbd54810b3ff343ced5462615.camel@sipsolutions.net>
-Content-Type: multipart/mixed; boundary="N59uyj9E2OLxwQK7"
-Content-Disposition: inline
-In-Reply-To: <21c0ba406df6bc4cbd54810b3ff343ced5462615.camel@sipsolutions.net>
-X-ClientProxiedBy: SG2P153CA0017.APCP153.PROD.OUTLOOK.COM (2603:1096::27) To
- LV3PR11MB8603.namprd11.prod.outlook.com (2603:10b6:408:1b6::9)
+ smtp.mailfrom=opensynergy.com; dmarc=pass action=none
+ header.from=opensynergy.com; dkim=pass header.d=opensynergy.com; arc=none
+Message-ID: <cfab0ca9-6e01-4fe7-bf00-3e1e7cd5b33e@opensynergy.com>
+Date: Tue, 2 Apr 2024 08:30:31 +0200
+Subject: Re: [PATCH v2 25/25] sound: virtio: drop owner assignment
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Jonathan Corbet <corbet@lwn.net>,
+ David Hildenbrand <david@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Richard Weinberger <richard@nod.at>,
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+ Johannes Berg <johannes@sipsolutions.net>,
+ Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Jens Axboe <axboe@kernel.dk>, Marcel Holtmann <marcel@holtmann.org>,
+ Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+ Olivia Mackall <olivia@selenic.com>, Herbert Xu
+ <herbert@gondor.apana.org.au>, Amit Shah <amit@kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Gonglei <arei.gonglei@huawei.com>, "David S. Miller" <davem@davemloft.net>,
+ Sudeep Holla <sudeep.holla@arm.com>,
+ Cristian Marussi <cristian.marussi@arm.com>,
+ Viresh Kumar <vireshk@kernel.org>, Linus Walleij <linus.walleij@linaro.org>,
+ Bartosz Golaszewski <brgl@bgdev.pl>, David Airlie <airlied@redhat.com>,
+ Gurchetan Singh <gurchetansingh@chromium.org>, Chia-I Wu
+ <olvaffe@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Daniel Vetter <daniel@ffwll.ch>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+ Robin Murphy <robin.murphy@arm.com>, Alexander Graf <graf@amazon.com>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Eric Van Hensbergen <ericvh@kernel.org>,
+ Latchesar Ionkov <lucho@ionkov.net>,
+ Dominique Martinet <asmadeus@codewreck.org>,
+ Christian Schoenebeck <linux_oss@crudebyte.com>,
+ Stefano Garzarella <sgarzare@redhat.com>, Kalle Valo <kvalo@kernel.org>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>,
+ Ira Weiny <ira.weiny@intel.com>, Pankaj Gupta
+ <pankaj.gupta.linux@gmail.com>, Bjorn Andersson <andersson@kernel.org>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>,
+ "James E.J. Bottomley" <jejb@linux.ibm.com>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ Vivek Goyal <vgoyal@redhat.com>, Miklos Szeredi <miklos@szeredi.hu>,
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+Cc: virtualization@lists.linux.dev, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-um@lists.infradead.org,
+ linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+ linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-gpio@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ iommu@lists.linux.dev, netdev@vger.kernel.org, v9fs@lists.linux.dev,
+ kvm@vger.kernel.org, linux-wireless@vger.kernel.org, nvdimm@lists.linux.dev,
+ linux-remoteproc@vger.kernel.org, linux-scsi@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, alsa-devel@alsa-project.org,
+ linux-sound@vger.kernel.org
+References: <20240331-module-owner-virtio-v2-0-98f04bfaf46a@linaro.org>
+ <20240331-module-owner-virtio-v2-25-98f04bfaf46a@linaro.org>
+Content-Language: en-US
+From: Anton Yakovlev <anton.yakovlev@opensynergy.com>
+In-Reply-To: <20240331-module-owner-virtio-v2-25-98f04bfaf46a@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR0P281CA0159.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:b3::15) To BEZP281MB2374.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:b10:5c::11)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -110,260 +123,121 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV3PR11MB8603:EE_|SJ2PR11MB8347:EE_
+X-MS-TrafficTypeDiagnostic: BEZP281MB2374:EE_|FRYP281MB3161:EE_
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Fqce3Nk/Yf+cEjhqqk9uCBlIR3OgAGDkp5pXyy9nV2I391oUxCTHydoq1+kV8fz3234FuJv0e7SVP/CL8Nnrctzaq+COGS20lmGreqtnN892p49zwoq7L7DYrUQhub3ugwSvMsStpAE7KBsUjeG0URbl3LsB1DFQjf3e0tWFOGPFljFJ86Enb47nOBrOhclp5eRwkWZp0SxX0/qsTK+HJEoCna835y+ObqY9kQvnJXJqgfg4VmSSgU9Ol7XjvoGiwDl8UmwxrvBc8RVII1GCafrNldfTKX6G5XTANB/mnijiJ3kPCx4I+LHfYPH909bCK3MRTj0/4DR2IKPfUdWlsdQbaEGNzHI66Zenh2YHUzhvLD9QLhIZrB/3BMcv5RtSm/mPOMwfAOD1obwtfYbof9RMcrWLOeqKJPzjPoV7jS+OPMcBnnEJKn6BYiwMffBqFkolgpthRh9kAWxxZ4zIxJY7HWJf+SgPysCMPkWU3JDOj+qtoAIRKcC2+9nUPaxb6C1H9y6fjhqxsOK06V29abw5Ynt8Ns0N8ogQPcC6MPvoSX9meJ4fLmi4WQedsMgXvF+yaVHF5MhE6sVj4Ks/XPkwY0p5fb1PQ4nahR4T0bUSo92Ph3jArzeRgB1blQtf
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR11MB8603.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(366007)(376005);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam-Message-Info:
+	fIOq54zz9MjbZGfW0IyOo00+ZveeYzBUBtoIDl46iUfIMnzeu+vTPV9G54jRufB9xtyN1SJgzy4syB6pUDEewcGzGmARyaUEc90sUbRgmsDrKe819Z80/z3vgINJIekjovyogS/XTp/EBxkIOSWNaJ66whwVox7e99xvL8NxD+HwAZ2jHmQ+TsqD3wrwuZJLuzQrQyi5EFNmyS5fdgmy2vzXKKJrIgwUKRHy14E1ldSsMkCiZrq5q8MP2RSafNX5Ep8C9X6A8i7Lh5tConcf49cGHKYiotxJV33vUr9a9fQisNF6leN4Ku38nZIW8G4WpGDZGOt6s0S60GyMXP5OVPd7c6ZYT891EILhOmyxM1NQI0QjEd+QR7xyDvBuAAZEUkFQG8IuIlPMln1iGyTOiwkCdwUDlTfCAnw1Pa7RDmqaKbcx7JDwooRlrlrcUuYpvIo6Wyv1NOqkQVAQ5LgIefzf1OxqIQcoFku95BjcG98I7PGzHFlLgXfL80U0jxfIKK8KxrJy8GE7XZKgadhy1J65AJ/Kxe6y9fFNW4jf8EnGr02Gr25zDt+ZzMkT+H/Mtrl/nzYgtmlTX6CxT82DFoDjKsWvTryQBIWSDN9b/GKTVYSBzWC6QvFwCKD2u6vbrfO4EZwdB2rWnysbst+Fu9m/RjBm9K8KIpca1RpUEq+L0gAfTaWE2DefZdolC5RREJeqXw+7ThmMxeMgLZj0xA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BEZP281MB2374.DEUP281.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(376005)(7416005)(1800799015)(366007)(921011);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?3jDmWYUmarIAw7vHg2/AV7IolcaO0ieG+SXKUj4P/lxfcBdErfIDTM5dp4YL?=
- =?us-ascii?Q?fvzeA1XVIQd20oxO+aocISbagIKBHxB7W5z9BqB5S4uvN9Xtvr8HO/SiVS8U?=
- =?us-ascii?Q?6VTI/0yBnnvYQzh2Ps1QJezuzFU7EgzU4erO/vRF8FSpsrJlit/ZoSZQ/3AG?=
- =?us-ascii?Q?VZg0BKZgVv1hjJphd14xEftSvDDpl7q2dRzurva3O++iYNaCH41YdMfNdrZK?=
- =?us-ascii?Q?hO1TBw46wagWN9vENQDHOguB/B0SbDZzaHIAKplwLbrD4FYi+ssEd404wRkh?=
- =?us-ascii?Q?T+F5l33OqkBgkAgOBvZxZn84caD11zQSDFFm/j/NJmTPL5H1Zygl88BOOeua?=
- =?us-ascii?Q?B5MDWf0HVEObn/QzEiqomGvHeDJFl1Gb3ArglBFCUoNTBB+GM+hm7g4cVjuW?=
- =?us-ascii?Q?OD3mQswqzJ9KHKwHG8xblppp3vGuBR1jwCWwZfCT02GRVWrAB5b+y2kKB0ne?=
- =?us-ascii?Q?csFcF52CJpDuTnzEJnAi/Y0Yw+Xn6zKhbqZkSfJtTySpmWyuEarK/HK1P/xl?=
- =?us-ascii?Q?t+jCI3l9C2MIvtKcDn+8yfGEKZDg5iH73PseiFKV8XcmnAxSoEP9ueKs5Kmu?=
- =?us-ascii?Q?eDw8loxLIjma2yzae/6mlAVGNhKXlIvH9IA//GyiUbGVy9futP0Qtge41V3p?=
- =?us-ascii?Q?PCG+k51aqt123u8ORPUIxly5U3RwBvnQ4j6jENYBb+RVweJ53pVMX57GxqQu?=
- =?us-ascii?Q?dpvC0wsDfZDVqFiUyTkPSrzpzu30eH9WeEGHEy4QK0UNuf2YfXiTxjPq5D5H?=
- =?us-ascii?Q?FPbYY6TDiB5iygxHkkQI2xk20NGs+WZQm82raYlZq5LvmToB/R/QLtcfKQLl?=
- =?us-ascii?Q?hEYQgOG6ra9VlTbPez2RGB7UbdjxIO8bBDBwUFxuRBRssd/8sbPRBawcL+er?=
- =?us-ascii?Q?H1CWKBSzRZEt0770o5AME6Yup7jq1GpPQKNAV7jocV+1i3+9bBd8D3gTuItK?=
- =?us-ascii?Q?+CPAMTCnFPY1LPAfLcP+nagJQOzAUBqfn0pKsZoVhSyGld/CCg5/4J3ITKgi?=
- =?us-ascii?Q?s3OZq3JU8BJSyUUdKEcKpx0/6Bo/pHOq8bZWvKWvMFDt0Vn12i/P7qcnlccc?=
- =?us-ascii?Q?M1uN3hSqWYVyvXB2YHoIN6ZO7FcUnxxYqVbs/IOtJPLKdhafn4xTFmyr6m7H?=
- =?us-ascii?Q?RWQ5ogrOJcUo44PvxB+Qdv3HRGPYAU5UbiYn2LsNJYM/dS7TlAS/eZ7r6arp?=
- =?us-ascii?Q?2C1h3d6SwSn1PBQ84IbjNeStYcW7Dsu6uN8wwHsjkH+GEeNvjqm3roYjhZej?=
- =?us-ascii?Q?wwBobeEHcjqWgxsQheLFPqttFj1AdzVSHm7GJQl9SZEdJDovLS+M4lK/f4N/?=
- =?us-ascii?Q?svuy5gqyJKgfBQAECkcAD6snRLEgzuDXSDFt+7utPXTXOcH1cPDUP0Agl14O?=
- =?us-ascii?Q?a6cUPci5dYiy1yOGVT79dAg6E6L0xzEjpbbnVUqvdDJ8zrzcmi6asQ3qH052?=
- =?us-ascii?Q?IguPmy+q19VtxDFEA78ug2PyJVsro5p3L/+FS61sDFXFFxz0yvhUL8i2ioD8?=
- =?us-ascii?Q?m/FQE7Nkympx0gVZwiTYqT7ynaGhXBbMfAuavze9MINYcZtUdv4qZYBkFqEW?=
- =?us-ascii?Q?m1pdpQNudQeMH+2+UVbtgDzVTbT94U3RaJBg6Dxf1o4kR7ng0b2UoutUTMOm?=
- =?us-ascii?Q?nw=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2d9da658-5a48-46d8-4691-08dc52dcc8d8
-X-MS-Exchange-CrossTenant-AuthSource: LV3PR11MB8603.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?blRUVjYyTkxGV0M0a0VaNlZuQ1NzVDNUYitoWnAwUXRWVFdqVW8xL3ptSnB4?=
+ =?utf-8?B?VHVjTEY0VUtEZ0I2QU5jZXlHcEd4dSs5K3hmdEYzb3dzeFR1czNxZ0lBQ01G?=
+ =?utf-8?B?WFZoQ2k2TXBWNHV4S3VSQWwxNGhIS0JoaFk3R1RzcW5LdHlsOHA5NVJxUElp?=
+ =?utf-8?B?eUpJN2lEV3daeFA3aXZVa1Ura3REa2FNS1p4U21OTDY0NVl1b0tWZndSNnRs?=
+ =?utf-8?B?c3Q4aFhocUpBNllQZlBSVjl1QVlrbDBvUVF4SDFZSUx1eFZlamV0UnFUVkd2?=
+ =?utf-8?B?dUJGYkZjY09rakRaLzNPeUZtYlRDdGtqSkxDSmp6dEdMbWRPbS9xaUJWbk5Z?=
+ =?utf-8?B?TEhmYlhVNW5jb3lQYi91TmlXZ3BoaFh1UkxDM2U3K21OZmI1dWNIcDRVSGVw?=
+ =?utf-8?B?eXZweFIvOXpjSWhtYkVWK3lROUJSVmNIaTRUOXdYUndZVjFKczNWMDJQRlZm?=
+ =?utf-8?B?amJ0aFFJTWhOclBVc2VySjRZaG9hQTI4cThXR0RoMHdQaXlibDJNR2kwc3V4?=
+ =?utf-8?B?Q0VjbDVGc2lkM1JIUE1pVGNIS1A3YWRNVWhZd1U2QTYwMHhlZm5nRUtSUGFw?=
+ =?utf-8?B?dC9lVjFFKzRTQ1lPYmVucTRmYUUzSVBBR1laVmdPaTQ2RkRsckdzeGErZkNF?=
+ =?utf-8?B?WWl2S3pVY1JzcElhY0w0cnNjSUVla3Q3c3NvMFFJK3hHUmI0aHB0ZVkwSVMx?=
+ =?utf-8?B?S0tSejhsSmlIZFZXVFdOem9JcWtIVy9Ta1VvN1ljZUo0cnZZZ3BmSXk3NDNC?=
+ =?utf-8?B?OFQ1TXZKczhKdzd2RTlYU09iNHFBUVB5bTMrUENISHYyZ0FmWEdkV2dsOEF5?=
+ =?utf-8?B?UWtVTFRENTV5MkZONUpSOGpqU3hBWE1HTHZGWDRaM0FXSDBPdW5MVDRROTln?=
+ =?utf-8?B?ZHFrVSswQ25BQURkaUJFdG1qNGh2M1NpenFuRFhCcVNCQmVhY1ZRREZ5OVNT?=
+ =?utf-8?B?MXdkUGdaUTdjNWxYbVJQMWg0cHNYbFp1UFB2cVVURUVOMEFuMkdTQ3ZaeUdQ?=
+ =?utf-8?B?dzlLcXh5a3V5KzdKQTNVV1VQZ2FsMVU3OE5QQW1pL3FwMW5TQVZvRFFZVG5O?=
+ =?utf-8?B?aDdrK01FNFZVdHpRTWxZK2JMK29pOEZhSmhXNHc1RElsY1dyVVI5cHRnWE81?=
+ =?utf-8?B?c0NBVmlhWVNGd3RxZzBvM2I3aGR4aVA0MUNOajNUaGxZVnNhSDEySWkxUDZH?=
+ =?utf-8?B?ejNrRnNLVWJJcGN1UnRoQXRxSjZqQWhVckZnWkVpK25kVUpra0E3c1NHdFJJ?=
+ =?utf-8?B?RCtNaUoyRHJ4bnp1QWh5VS9GV09ydnk4bEpKOUpIaW1xRDBPbnNrNVIwOVQ1?=
+ =?utf-8?B?cEJVeTU2SDQrd0hrS1Avd09FR1VBSkZPVnp2bWR4ZlV4UWJ0b0VLOUNvcWVM?=
+ =?utf-8?B?OGUrVTRsVi8yckxjU1MyWjU4b2h1VU1oN1l1aXBZdGdMN3FISGJuUmxmLzRM?=
+ =?utf-8?B?NEpQR2RPOVZIRnNzWjk1akt3WXlrWlFtc25NTFJZN1RSdS9xYkt4cjRWam5F?=
+ =?utf-8?B?NnNzbEhjMUZBSlpieHBJVktCZFFtWjk2RTRENUoxYTROTVhXQzNEaExCWG1w?=
+ =?utf-8?B?UVlFbklZYTk5ekZwUHhsTlBwM25EaWprcmprYkZKS3lzU2JDYmdWblB6ekJB?=
+ =?utf-8?B?MmF1bW0xQUNFV2VNU0pkSkVRRnRkNkR6eHk0OXRBTnpuWnk3TnpSb21FVGdU?=
+ =?utf-8?B?SysyWFprU0FTRFRtdGtHTm1pQlZvZmFLNXRRV01OUW1lZzRWUG01c1NlUGw4?=
+ =?utf-8?B?dmRqV1pGSTZNUFpRTHJ0eUhXbEFMczBEdGJvc0J4UDJEVkkzU29WOW1GSjNJ?=
+ =?utf-8?B?WDRUOXl1ay9OekVtRHFYSWV3R2dCMXJwT0VsZ2UwM3lhSEdiVWRRM2dsbjdI?=
+ =?utf-8?B?TUgzeCs4YjlyMGFDM1RPRmM0RDYyd210NEtLdFFHRy9MRG1rYXpNYXVyd1FC?=
+ =?utf-8?B?ei9iVHpnK0pWMzBBSW5xZTRiTG03OW15ZGFNbTdQdHRHL3FjWTlGYlFwdlIy?=
+ =?utf-8?B?d2NyRnN4dVFOaXdac0RSOVE0MXdzdEcyS0draThveEVwbDNseEpKSEkxMkhL?=
+ =?utf-8?B?SmVndTNoRXJtSFNwL3dIMGxzRmdkeCt2S0Q2dzhWdCtmaVVnY1h3OSttODE5?=
+ =?utf-8?Q?VC6GVSFSz9C7S9Wo4L5XZo+QI?=
+X-OriginatorOrg: opensynergy.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ad2547a1-b8ea-4071-42df-08dc52de6885
+X-MS-Exchange-CrossTenant-AuthSource: BEZP281MB2374.DEUP281.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2024 06:18:59.7217
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2024 06:30:37.2050
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-Id: 800fae25-9b1b-4edc-993d-c939c4e84a64
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dTn1hMimfAXSMvWQmaM8A9NsNoza4Oziylb4Z83IsZmBAdiPRLEj1nI1krCLaa9MJbB1Adi1+bEz95S57Tf5aw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR11MB8347
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-UserPrincipalName: IJhIWTU+RHOaEdakYzkQ1ad7D2hwRbYVRgbjUAiqMWbve5wY9sDF6b/+ijvv4JfRXP0crWSexiqoil9yPFVbCw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: FRYP281MB3161
+X-TM-AS-ERS: 104.47.7.169-0.0.0.0
+X-TMASE-Version: StarCloud-1.3-9.1.1015-28292.005
+X-TMASE-Result: 10--5.445600-4.000000
+X-TMASE-MatchedRID: wQVy7q402w1TzAVQ78TKJRhvdi92BBAuZK1SF2R3edhrIVA3IGfCC6DE
+	DQa+uiKUH2xok6cGGNABKhB2N2U17vLk2AFN1sunQj0AQ98QP92q8lf9o0av1xIIN3MAx5f9anZ
+	VdS5mxHyDZQoKdarzvOEvGuhUCHAT+IFpwsDCYKBaOxpgjiWHdd/upPexrMg4sZFfGXBYeAAKjR
+	CEKUuElpLHk4pGN/0DFk3xbexPTOS72HhspQkaIw==
+X-TMASE-XGENCLOUD: 9e9e9fa0-8253-4e7c-919c-70703b990615-0-0-200-0
+X-TM-Deliver-Signature: 5FBE828BD7A94C0C52584343C217624E
+X-TM-Addin-Auth: 78cuz+pexj/pn1SmQsOZGkZZYypEyT/44Vj2byjl7NNjYTH0fSc9lfkL0fP
+	xPDhlwk1PfhNKWFCVMj9tFI8/gEUTGFLrDXomc/w5mFspJcQvW8bjQnb+FSG9QRjqGtUQPFgol8
+	Ww9/WL3vHqsq6VQWeaWmBp08o0va3jKPQsEnlzZ5fzN5HBIyRVKAaEU3wb8qnjye0TzNasLDM1I
+	71TpnnRTvDzoJIdCdDaXnUWrAVcysLbHbzZ6kIEdTILRnq/hwrHCMEGlyZhZlhz28TwTs1DY+2x
+	REGvXOXiBuZsb1o=.P4ei9focH1shZUt6/8XbQLxrdp4UTkVfy2yLfcnabYWfblNk64FUohEbOH
+	UOH+AMU/Ckd5AX1DzCuC3+4Pu7tKP9ejAofN7LVSP+lhgk3VVOx0jCIddBoOEKnWY3gRH0uu0Qq
+	02k3cH+Sqs0Y+R9KIz9YUAS1GDXDErPQ5pKO+r6mKkGlw1dwLJnnE2bJ6LTbHclwxioVu4fuqA5
+	Ph+bsLwi3zQKkiYBOfTAez8aGkogKYXjce0bfeArPtVJ73vac004ukEG9CR33oxoH/MOn+1CRzM
+	fR1QqFeto2OlRdIhVbHa+koY8W3at2JdfvqmDciv2+HiNF/koBYm+QsZeOg==
+X-TM-Addin-ProductCode: EMS
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=opensynergy.com;
+	s=TM-DKIM-20210503141657; t=1712039535;
+	bh=ZBEAXjMl8aMOJStM89IW/3Bd78fUZuAHkBQ/AZwUAGs=; l=889;
+	h=Date:To:From;
+	b=A7CGFidQ7EmvHwlJ1HrqwRnbnsXMZ3gjCVHFSGu9WkvgXKcwtOK84GoQWE+sJXa5d
+	 C8qilhq95NUIlunEbT3uRWpyT2VZzaGUvb8Y8d+kPfevSbp3Hw3Ja6cIYRlU5oY12L
+	 F4TIBe2UNLP7eeessSTSj8EAc2Z/5aPHH3pgY2KKN4hILWfJmMFxhfhXvFhdgJC3TC
+	 z4/hz6/LS4+jn1K4yfEJ57JrIjDulP2cPA5aszppGAdznzIyF3cf9zzvdNAoeFJO5J
+	 kVk+MnW6pUmKdCb+SrYsC0H+aO2JxIouNRNPYR8g62naKKGqj/f+AvcOv7RVCHQJ+A
+	 tPhogaFJgwvHg==
 
---N59uyj9E2OLxwQK7
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
+Hi Krzysztof,
 
-hi, johannes,
-
-On Fri, Mar 29, 2024 at 11:08:51AM +0100, Johannes Berg wrote:
-> On Fri, 2024-03-29 at 10:24 +0800, kernel test robot wrote:
-> > 
-> > Hello,
-> > 
-> > kernel test robot noticed "hwsim.autogo_chan_switch.fail" on:
-> > 
-> > commit: 310c8387c63830bc375827242e0f9fa689f82e21 ("wifi: mac80211: clean up connection process")
-> > https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git master
-> > 
-> > [test failed on linus/master 7033999ecd7b8cf9ea59265035a0150961e023ee]
-> > [test failed on linux-next/master 26074e1be23143b2388cacb36166766c235feb7c]
-> > 
-> > in testcase: hwsim
-> > version: hwsim-x86_64-717e5d7-1_20240320
-> > with following parameters:
-> > 
-> > 	test: autogo_chan_switch
+On 31.03.2024 10:44, Krzysztof Kozlowski wrote:
+> virtio core already sets the .owner, so driver does not need to.
 > 
-> Does any of that tell you which version of the tests it's using? It
-> doesn't tell me, and "717e5d7" doesn't seem to be a hostap sha1. I also
-> didn't find it in the CI archive.
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-sorry for confusing, due to some history reason, we improperly captured sha1
-from https://github.com/bcopeland/wmediumd.git in the version label.
-
-now we fixed it and it will show such like hwsim-x86_64-07c9f183e-1_20240402
-in the future. the 07c9f183e is from http://w1.fi/hostap.git
-
-07c9f183e (HEAD -> main, origin/pending, origin/main, origin/HEAD) tests: Avoid control interface throttling in various test cases
+Acked-by: Anton Yakovlev <anton.yakovlev@opensynergy.com>
 
 
-by just this version, we tested 310c8387c6 and its parent again, confirmed
-the issue is still persistent
-
-61f0261131c8dc2b 310c8387c63830bc375827242e0
----------------- ---------------------------
-       fail:runs  %reproduction    fail:runs
-           |             |             |
-           :10          80%          10:10    hwsim.autogo_chan_switch.fail
-           :10          80%          10:10    hwsim.autogo_chan_switch_group_iface.fail
-
-I attached one hwsim output from parent (hwsim.61f0261131) and one from
-310c8387c6 (hwsim.310c8387c6) for details.
-
-
+> ---
 > 
-> That said, there were test issues raised with recent commits (and
-> particularly this one), even upstream one of them (eht puncturing 1) is
-> still failing as far as I know.
-
-thanks for information! if you have any patch want us to test, just let us
-know. Thanks!
-
+> Depends on the first patch.
+> ---
+>   sound/virtio/virtio_card.c | 1 -
+>   1 file changed, 1 deletion(-)
 > 
-> johannes
+> diff --git a/sound/virtio/virtio_card.c b/sound/virtio/virtio_card.c
+> index 2da20c625247..7805daea0102 100644
+> --- a/sound/virtio/virtio_card.c
+> +++ b/sound/virtio/virtio_card.c
+> @@ -438,7 +438,6 @@ static unsigned int features[] = {
+>   
+>   static struct virtio_driver virtsnd_driver = {
+>   	.driver.name = KBUILD_MODNAME,
+> -	.driver.owner = THIS_MODULE,
+>   	.id_table = id_table,
+>   	.feature_table = features,
+>   	.feature_table_size = ARRAY_SIZE(features),
 > 
-
---N59uyj9E2OLxwQK7
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: attachment; filename="hwsim.61f0261131"
-
-group: group-20, test: autogo_chan_switch
-2024-04-02 02:33:29 export USER=root
-2024-04-02 02:33:29 ./build.sh
-Building TNC testing tools
-Building wlantest
-Building hs20-osu-client
-Building hostapd
-Building wpa_supplicant
-2024-04-02 02:34:30 ./start.sh
-2024-04-02 02:34:32 ./run-tests.py autogo_chan_switch
-DEV: wlan0: 02:00:00:00:00:00
-DEV: wlan1: 02:00:00:00:01:00
-DEV: wlan2: 02:00:00:00:02:00
-APDEV: wlan3
-APDEV: wlan4
-START autogo_chan_switch 1/1
-Test: P2P autonomous GO switching channels
-Start autonomous GO wlan0
-Try to connect the client to the GO
-wlan1: Trying to discover peer 02:00:00:00:00:00
-Client connected
-PASS autogo_chan_switch 16.361446 2024-04-02 02:35:03.458893
-passed all 1 test case(s)
-2024-04-02 02:35:03 ./run-tests.py autogo_chan_switch_group_iface
-DEV: wlan0: 02:00:00:00:00:00
-DEV: wlan1: 02:00:00:00:01:00
-DEV: wlan2: 02:00:00:00:02:00
-APDEV: wlan3
-APDEV: wlan4
-START autogo_chan_switch_group_iface 1/1
-Test: P2P autonomous GO switching channels (separate group interface)
-Start autonomous GO wlan0
-Try to connect the client to the GO
-wlan1: Trying to discover peer 02:00:00:00:00:00
-Client connected
-PASS autogo_chan_switch_group_iface 17.332407 2024-04-02 02:35:32.180969
-passed all 1 test case(s)
-2024-04-02 02:35:32 ./run-tests.py p2p_device_autogo_chan_switch
-DEV: wlan0: 02:00:00:00:00:00
-DEV: wlan1: 02:00:00:00:01:00
-DEV: wlan2: 02:00:00:00:02:00
-APDEV: wlan3
-APDEV: wlan4
-START p2p_device_autogo_chan_switch 1/1
-Test: P2P autonomous GO switching channels with cfg80211 P2P Device
-Start autonomous GO wlan7
-Try to connect the client to the GO
-wlan1: Trying to discover peer 42:00:00:00:07:00
-Client connected
-PASS p2p_device_autogo_chan_switch 24.354487 2024-04-02 02:36:07.851656
-passed all 1 test case(s)
-2024-04-02 02:36:07 ./stop.sh
-
---N59uyj9E2OLxwQK7
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: attachment; filename="hwsim.310c8387c6"
-
-group: group-20, test: autogo_chan_switch
-2024-04-02 02:29:04 export USER=root
-2024-04-02 02:29:04 ./build.sh
-Building TNC testing tools
-Building wlantest
-Building hs20-osu-client
-Building hostapd
-Building wpa_supplicant
-2024-04-02 02:30:06 ./start.sh
-2024-04-02 02:30:07 ./run-tests.py autogo_chan_switch
-DEV: wlan0: 02:00:00:00:00:00
-DEV: wlan1: 02:00:00:00:01:00
-DEV: wlan2: 02:00:00:00:02:00
-APDEV: wlan3
-APDEV: wlan4
-START autogo_chan_switch 1/1
-Test: P2P autonomous GO switching channels
-Start autonomous GO wlan0
-Try to connect the client to the GO
-wlan1: Trying to discover peer 02:00:00:00:00:00
-Client connected
-sending data without carrier won't work
-Traceback (most recent call last):
-  File "/lkp/benchmarks/hwsim/tests/hwsim/./run-tests.py", line 593, in main
-    t(dev)
-  File "/lkp/benchmarks/hwsim/tests/hwsim/test_p2p_autogo.py", line 357, in test_autogo_chan_switch
-    run_autogo_chan_switch(dev)
-  File "/lkp/benchmarks/hwsim/tests/hwsim/test_p2p_autogo.py", line 375, in run_autogo_chan_switch
-    hwsim_utils.test_connectivity_p2p(dev[0], dev[1])
-  File "/lkp/benchmarks/hwsim/tests/hwsim/hwsim_utils.py", line 227, in test_connectivity_p2p
-    test_connectivity(dev1, dev2, dscp, tos, dev1group=True, dev2group=True)
-  File "/lkp/benchmarks/hwsim/tests/hwsim/hwsim_utils.py", line 217, in test_connectivity
-    raise Exception(last_err)
-Exception: sending data without carrier won't work
-FAIL autogo_chan_switch 16.286132 2024-04-02 02:30:39.168596
-passed 0 test case(s)
-skipped 0 test case(s)
-failed tests: autogo_chan_switch
-2024-04-02 02:30:39 ./run-tests.py autogo_chan_switch_group_iface
-DEV: wlan0: 02:00:00:00:00:00
-DEV: wlan1: 02:00:00:00:01:00
-DEV: wlan2: 02:00:00:00:02:00
-APDEV: wlan3
-APDEV: wlan4
-START autogo_chan_switch_group_iface 1/1
-Test: P2P autonomous GO switching channels (separate group interface)
-Start autonomous GO wlan0
-Try to connect the client to the GO
-wlan1: Trying to discover peer 02:00:00:00:00:00
-Client connected
-sending data without carrier won't work
-Traceback (most recent call last):
-  File "/lkp/benchmarks/hwsim/tests/hwsim/./run-tests.py", line 593, in main
-    t(dev)
-  File "/lkp/benchmarks/hwsim/tests/hwsim/test_p2p_autogo.py", line 383, in test_autogo_chan_switch_group_iface
-    run_autogo_chan_switch(dev)
-  File "/lkp/benchmarks/hwsim/tests/hwsim/test_p2p_autogo.py", line 375, in run_autogo_chan_switch
-    hwsim_utils.test_connectivity_p2p(dev[0], dev[1])
-  File "/lkp/benchmarks/hwsim/tests/hwsim/hwsim_utils.py", line 227, in test_connectivity_p2p
-    test_connectivity(dev1, dev2, dscp, tos, dev1group=True, dev2group=True)
-  File "/lkp/benchmarks/hwsim/tests/hwsim/hwsim_utils.py", line 217, in test_connectivity
-    raise Exception(last_err)
-Exception: sending data without carrier won't work
-FAIL autogo_chan_switch_group_iface 17.390208 2024-04-02 02:31:07.869510
-passed 0 test case(s)
-skipped 0 test case(s)
-failed tests: autogo_chan_switch_group_iface
-2024-04-02 02:31:07 ./run-tests.py p2p_device_autogo_chan_switch
-DEV: wlan0: 02:00:00:00:00:00
-DEV: wlan1: 02:00:00:00:01:00
-DEV: wlan2: 02:00:00:00:02:00
-APDEV: wlan3
-APDEV: wlan4
-START p2p_device_autogo_chan_switch 1/1
-Test: P2P autonomous GO switching channels with cfg80211 P2P Device
-Start autonomous GO wlan7
-Try to connect the client to the GO
-wlan1: Trying to discover peer 42:00:00:00:07:00
-Client connected
-PASS p2p_device_autogo_chan_switch 24.104111 2024-04-02 02:31:43.303405
-passed all 1 test case(s)
-2024-04-02 02:31:43 ./stop.sh
-
---N59uyj9E2OLxwQK7--
 
